@@ -3008,11 +3008,11 @@ xmlSecAppInit(void) {
     }
     intialized = 1;
 
-    /* Init libxml */
+    /* Init LibXML2 */
     xmlInitParser();
     LIBXML_TEST_VERSION
 
-    /* Init libxslt */
+    /* Init LibXSLT */
 #ifndef XMLSEC_NO_XSLT
     /* disable everything */
     xsltSecPrefs = xsltNewSecurityPrefs();
@@ -3081,7 +3081,7 @@ xmlSecAppShutdown(void) {
         fprintf(stderr, "Error: xmlsec shutdown failed.\n");
     }
 
-    /* Shutdown libxslt/libxml */
+    /* Shutdown LibXSLT / LibXML2*/
 #ifndef XMLSEC_NO_XSLT
     xsltFreeSecurityPrefs(xsltSecPrefs);
     xsltCleanupGlobals();

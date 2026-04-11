@@ -1,35 +1,52 @@
 # Initialization and shutdown
 
-XML Security Library initialization/shutdown process includes initialization and shutdown of the dependent libraries:
-- libxml library;
-- libxslt library;
-- crypto library (OpenSSL, GnuTLS, GCrypt, NSS, ...);
-- xmlsec library ( [xmlSecInit](../api/xmlsec_core_helpers.md#xmlsecinit) and [xmlSecShutdown](../api/xmlsec_core_helpers.md#xmlsecshutdown) functions);
-- xmlsec-crypto library ( [xmlSecCryptoDLLoadLibrary](../api/xmlsec_core_dl.md#xmlseccryptodlloadlibrary) to load xmlsec-crypto library dynamicaly if needed, [xmlSecCryptoInit](../api/xmlsec_core_app.md#xmlseccryptoinit) and [xmlSecCryptoShutdown](../api/xmlsec_core_app.md#xmlseccryptoshutdown) functions);
-xmlsec-crypto library also provides a convinient functions [xmlSecCryptoAppInit](../api/xmlsec_core_app.md#xmlseccryptoappinit) and [xmlSecCryptoAppShutdown](../api/xmlsec_core_app.md#xmlseccryptoappshutdown) to initialize the crypto library itself but application can do it by itself.
+The XML Security Library initialization and shutdown process includes
+initializing and shutting down the following dependencies:
+- the libxml2 library;
+- the libxslt library;
+- a crypto library such as OpenSSL, NSS, or GnuTLS (the
+    `xmlsec-crypto` library provides the convenience functions
+    [xmlSecCryptoAppInit](../api/xmlsec_core_app.md#xmlseccryptoappinit)
+    and
+    [xmlSecCryptoAppShutdown](../api/xmlsec_core_app.md#xmlseccryptoappshutdown));
+- the xmlsec library
+    ([xmlSecInit](../api/xmlsec_core_helpers.md#xmlsecinit) and
+    [xmlSecShutdown](../api/xmlsec_core_helpers.md#xmlsecshutdown));
+- the xmlsec-crypto library
+    ([xmlSecCryptoDLLoadLibrary](../api/xmlsec_core_dl.md#xmlseccryptodlloadlibrary)
+    for dynamic loading when needed,
+    [xmlSecCryptoInit](../api/xmlsec_core_app.md#xmlseccryptoinit), and
+    [xmlSecCryptoShutdown](../api/xmlsec_core_app.md#xmlseccryptoshutdown)).
 
-**Example: Initializing application**
+## Example: Initializing an application
 
 ```c
-    /* Init libxml and libxslt libraries */
+    /* Init LibXML2 */
     xmlInitParser();
     LIBXML_TEST_VERSION
-    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
-    xmlSubstituteEntitiesDefault(1);
+
+    /* Init LibXSLT */
 #ifndef XMLSEC_NO_XSLT
-    xmlIndentTreeOutput = 1;
+    /* disable all XSLT file and network access */
+    xsltSecPrefs = xsltNewSecurityPrefs();
+    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
+    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
+    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid);
+    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_NETWORK,     xsltSecurityForbid);
+    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_NETWORK,    xsltSecurityForbid);
+    xsltSetDefaultSecurityPrefs(xsltSecPrefs);
 #endif /* XMLSEC_NO_XSLT */
 
-    /* Init xmlsec library */
+    /* Init XMLSec */
     if(xmlSecInit() < 0) {
-	fprintf(stderr, "Error: xmlsec initialization failed.\n");
-	return(-1);
+        fprintf(stderr, "Error: xmlsec initialization failed.\n");
+        return(-1);
     }
 
     /* Check loaded library version */
     if(xmlSecCheckVersion() != 1) {
-	fprintf(stderr, "Error: loaded xmlsec library version is not compatible.\n");
-	return(-1);
+        fprintf(stderr, "Error: loaded xmlsec library version is not compatible.\n");
+        return(-1);
     }
 
     /* Load default crypto engine if we are supporting dynamic
@@ -39,27 +56,27 @@ xmlsec-crypto library also provides a convinient functions [xmlSecCryptoAppInit]
      */
 #ifdef XMLSEC_CRYPTO_DYNAMIC_LOADING
     if(xmlSecCryptoDLLoadLibrary(NULL) < 0) {
-	fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
-			"that you have it installed and check shared libraries path\n"
-			"(LD_LIBRARY_PATH) envornment variable.\n");
-	return(-1);
+        fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
+                        "that you have it installed and check shared libraries path\n"
+                        "(LD_LIBRARY_PATH and/or LTDL_LIBRARY_PATH) environment variables.\n");
+        return(-1);
     }
 #endif /* XMLSEC_CRYPTO_DYNAMIC_LOADING */
 
     /* Init crypto library */
     if(xmlSecCryptoAppInit(NULL) < 0) {
-	fprintf(stderr, "Error: crypto initialization failed.\n");
-	return(-1);
+        fprintf(stderr, "Error: crypto initialization failed.\n");
+        return(-1);
     }
 
     /* Init xmlsec-crypto library */
     if(xmlSecCryptoInit() < 0) {
-	fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
-	return(-1);
+        fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
+        return(-1);
     }
 ```
 
-**Example: Shutting down application**
+## Example: Shutting down an application
 
 ```c
     /* Shutdown xmlsec-crypto library */
@@ -68,13 +85,15 @@ xmlsec-crypto library also provides a convinient functions [xmlSecCryptoAppInit]
     /* Shutdown crypto library */
     xmlSecCryptoAppShutdown();
 
-    /* Shutdown xmlsec library */
+    /* Shutdown XMLSec */
     xmlSecShutdown();
 
-    /* Shutdown libxslt/libxml */
+    /* Shutdown LibXSLT / LibXML2*/
 #ifndef XMLSEC_NO_XSLT
+    xsltFreeSecurityPrefs(xsltSecPrefs);
     xsltCleanupGlobals();
 #endif /* XMLSEC_NO_XSLT */
     xmlCleanupParser();
 ```
 
+[Full program listing](../examples/sign1.md)

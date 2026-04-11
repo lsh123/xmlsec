@@ -2,21 +2,32 @@
 
 ## Overview
 
-Compiling and linking application with XML Security Library requires specifying correct compilation flags, library files and paths to include and library files. As we discussed before, XML Security Library consist of the core xmlsec library and several xmlsec-crypto libraries. Application has a choice of selecting crypto library at link time or dynamicaly loading it at run time. Please note, that loading crypto engines dynamicaly may introduce security problems on some platforms.
+Compiling and linking an application with XML Security Library requires
+the correct compilation flags, include paths, libraries, and library
+paths for XML Security Library itself and for all of its dependencies.
+The XML Security Library consists of the core xmlsec library and
+several xmlsec-crypto libraries. An application can select the crypto
+library at link time or load it dynamically at run time. Please note
+that dynamically loading crypto engines may introduce security issues
+on some platforms.
 
 ## Include files
 
-In order to use XML Security Library an application should include one or more of the following files:
-- `xmlsec/xmlsec.h` - XML Security Library initialization and shutdown functions;
+To use XML Security Library, an application should include one
+or more of the following files:
+- `xmlsec/xmlsec.h` - XML Security Library initialization and
+  shutdown functions;
 - `xmlsec/xmldsig.h` - XML Digital Signature functions;
 - `xmlsec/xmlenc.h` - XML Encryption functions;
 - `xmlsec/xmltree.h` - helper functions for XML documents manipulation;
-- `xmlsec/templates.h` - helper functions for dynamic XML Digital Signature and XML Encryption templates creation;
+- `xmlsec/templates.h` - helper functions for creating dynamic XML
+	Digital Signature and XML Encryption templates;
 - `xmlsec/crypto.h` - automatic XML Security Crypto Library selection.
 
-If necessary, the application should also include LibXML, LibXSLT and crypto library header files.
+If necessary, the application should also include LibXML, LibXSLT and
+crypto library header files.
 
-**Example: Example includes file section**
+### Example: includes file section
 
 ```c
 #include <libxml/tree.h>
@@ -37,11 +48,13 @@ If necessary, the application should also include LibXML, LibXSLT and crypto lib
 
 ## Compiling and linking on Unix
 
-There are several ways to get necessary compilation and linking information on Unix and application can use any of these methods to do crypto engine selection either at linking or run time.
+There are several ways to obtain the required compilation and linking
+information on Linux/Unix. An application can use any of these methods
+to select a crypto engine either at link time or at run time.
 
 ### PKG_CHECK_MODULES() macro
 
-**Example: Using PKG_CHECK_MODULES() macro in a configure.in file to select crypto engine (openssl) at linking time**
+#### Example: PKG_CHECK_MODULES() to select OpenSSL at link time
 
 ```autoconf
 dnl
@@ -53,7 +66,7 @@ CPPFLAGS="$CPPFLAGS $XMLSEC_CFLAGS"
 LDFLAGS="$LDFLAGS $XMLSEC_LIBS"
 ```
 
-**Example: Using PKG_CHECK_MODULES() macro in a configure.in file to enable dynamical loading of xmlsec-crypto library**
+#### Example: PKG_CHECK_MODULES() to enable dynamic xmlsec-crypto loading
 
 ```autoconf
 dnl
@@ -67,7 +80,7 @@ LDFLAGS="$LDFLAGS $XMLSEC_LIBS"
 
 ### pkg-config script
 
-**Example: Using pkg-config script in a Makefile to select crypto engine (nss) at linking time**
+#### Example: pkg-config to select NSS at link time
 
 ```makefile
 PROGRAM = test
@@ -86,7 +99,7 @@ clean:
 	@rm -rf $(PROGRAM)
 ```
 
-**Example: Using pkg-config script in a Makefile to enable dynamical loading of xmlsec-crypto library**
+#### Example: pkg-config to enable dynamic xmlsec-crypto loading
 
 ```makefile
 PROGRAM = test
@@ -107,7 +120,7 @@ clean:
 
 ### xmlsec1-config script
 
-**Example: Using xmlsec1-config script in a Makefile to select crypto engine (e.g. gnutls) at linking time**
+#### Example: xmlsec1-config to select GnuTLS at link time
 
 ```makefile
 PROGRAM = test
@@ -126,7 +139,7 @@ clean:
 	@rm -rf $(PROGRAM)
 ```
 
-**Example: Using xmlsec1-config script in a Makefile to enable dynamical loading of xmlsec-crypto library**
+#### Example: xmlsec1-config to enable dynamic xmlsec-crypto loading
 
 ```makefile
 PROGRAM = test
@@ -147,11 +160,41 @@ clean:
 
 ## Compiling and linking on Windows
 
-On Windows there is no such simple and elegant solution. Please check `README` file in `win32` folder of the library package for latest instructions. However, there are few general things, that you need to remember:
+On Windows there is no easy way to automatically configure compilation
+options or paths. You have to do everything manually.
 
-- *All libraries linked to your application must be compiled with the same Microsoft Runtime Libraries.*
+### Global Defines
 
-- *Static linking with XML Security Library requires additional global defines:*
+If you want to use automatic crypto library configuration with the
+`xmlsec/crypto.h` file, add one of the following global defines:
+
+```c
+#define XMLSEC_CRYPTO_MSCNG
+#define XMLSEC_CRYPTO_OPENSSL
+#define XMLSEC_CRYPTO_GNUTLS
+#define XMLSEC_CRYPTO_NSS
+#define XMLSEC_CRYPTO_MSCRYPTO
+```
+
+You will also need to define all configuration parameters used when
+building XML Security Library (`XMLSEC_NO_AES`, `XMLSEC_NO_X509`, ...).
+
+There are three options for loading the `xmlsec-crypto` library in an
+application:
+
+- To load the `xmlsec-crypto` library at runtime, add the following
+	global define:
+
+```c
+#define XMLSEC_CRYPTO_DYNAMIC_LOADING
+```
+
+- To select the `xmlsec-crypto` library at build/link time, add the
+	selected `xmlsec-crypto` library, along with all of its
+	dependencies, to the linker.
+
+- To statically link with XML Security Library, add the following
+	global defines:
 
 ```c
 #define LIBXML_STATIC
@@ -159,15 +202,22 @@ On Windows there is no such simple and elegant solution. Please check `README` f
 #define XMLSEC_STATIC
 ```
 
-- If you do not want to dynamicaly load xmlsec-crypto library and prefer to select crypto engine at linking then you should link your application with xmlsec and at least one of xmlsec-crypto libraries.
+### Setting include and library paths.
 
-- In order to enable dynamic loading for xmlsec-crypto library you should add additional global define:
+As usual, you need the correct include and library paths for XMLSec,
+LibXML, LibXSLT, OpenSSL, or any other library used by your
+application.
 
-```c
-#define XMLSEC_CRYPTO_DYNAMIC_LOADING
-```
+### Selecting correct Windows runtime libraries.
 
-## Compiling and linking on other systems
+Microsoft Visual Studio provides several C runtimes for different
+combinations of single-threaded vs multi-threaded mode, static vs
+dynamic linking, and debug vs release builds. The
+rule is simple: ***exactly the same runtime MUST be used throughout
+the application (including all dependencies)***.
 
-Well, nothing is impossible, it's only software (you managed to compile the library itself, do you?). I'll be happy to include in this manual your expirience with compiling and linking applications with XML Security Library on other platforms (if you would like to share it).
+By default, `cscript configure.js` uses `/MD` (non-debug version of
+multithreaded DLL runtime). Use `cruntime=<new runtime>` option to
+change it (see the XML Security Library
+[installation tutorial](install.md) for more details).
 

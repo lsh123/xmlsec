@@ -1,114 +1,131 @@
-# Using X509 Certificates
+# Using X509 certificates
 
 ## Overview
 
-X509 certificate is one of many possible keys data object that can be associated with a key. Application may read and write X509 data from/to XML file. The X509 certificates management policies significantly vary from one crypto library to another. The examples in this chapter were tested with OpenSSL and they might be broken if anither crypto engine is used. Check API reference documentation for more specific information about your crypto engine.
+An X509 certificate is one of many possible key data objects that can
+be associated with a key. An application can read and write X509 data
+to and from an XML file. X509 certificate management policies vary
+significantly from one crypto library to another. Check the reference
+documentation for the cryptographic library for details.
 
-## Signing data with X509 certificate
+## Signing data with an X509 certificate
 
-To sign a file using X509 certificate, an application need to associate the certificate (or certificates) with the private key using one of the following functions:
-- [xmlSecOpenSSLAppKeyCertLoad](../api/xmlsec_openssl_app.md#xmlsecopensslappkeycertload) - loads certificate from a file and adds to the key;
-- [xmlSecOpenSSLAppPkcs12Load](../api/xmlsec_openssl_app.md#xmlsecopensslapppkcs12load) - loads private key and all the certificates associated with it from a PKCS12 file;
-- [xmlSecKeyAdoptData](../api/xmlsec_core_keys.md#xmlseckeyadoptdata) - low level function to add key data (including X509 key data) to the key.
+To sign a file using an X509 certificate, an application needs to
+associate the certificate (or certificates) with the private key using
+one of the following functions:
 
-**Example: Loading private key and X509 certificate**
+- [xmlSecOpenSSLAppKeyCertLoad](../api/xmlsec_openssl_app.md#xmlsecopensslappkeycertload):
+  loads certificate from a file and adds to the key;
+- [xmlSecOpenSSLAppPkcs12Load](../api/xmlsec_openssl_app.md#xmlsecopensslapppkcs12load):
+  loads private key and all the certificates associated with it from
+  a PKCS12 file;
+- [xmlSecKeyAdoptData](../api/xmlsec_core_keys.md#xmlseckeyadoptdata):
+    low-level function to add key data (including X509 key data) to the key.
+
+### Example: Loading private key and X509 certificate
 
 ```c
-    /* load private key, assuming that there is not password */
-    key = xmlSecCryptoAppKeyLoad(key_file, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
-    if(key == NULL) {
+    /* load private key, assuming that there is no password */
+    dsigCtx->signKey = xmlSecCryptoAppKeyLoadEx(key_file,
+        xmlSecKeyDataTypePrivate,
+        xmlSecKeyDataFormatPem,
+        NULL,
+        NULL,
+        NULL);
+    if(dsigCtx->signKey == NULL) {
         fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", key_file);
-	goto done;
+        goto done;
     }
 
     /* load certificate and add to the key */
-    if(xmlSecCryptoAppKeyCertLoad(key, cert_file, xmlSecKeyDataFormatPem) < 0) {
+    if(xmlSecCryptoAppKeyCertLoad(dsigCtx->signKey, cert_file, xmlSecKeyDataFormatPem) < 0) {
         fprintf(stderr,"Error: failed to load pem certificate \"%s\"\n", cert_file);
-	goto done;
+        goto done;
     }
+
 ```
 [Full program listing](../examples/sign3.md)
 
-Next step is to prepare signature template with [<dsig:X509Data/>](http://www.w3.org/TR/xmldsig-core/#sec-X509Data) child of the [<dsig:KeyInfo/>](http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo) element. When XML Security Library finds this node in the template, it automatically creates [<dsig:X509Certificate/>](http://www.w3.org/TR/xmldsig-core/#sec-X509Data) children of the [<dsig:X509Data/>](http://www.w3.org/TR/xmldsig-core/#sec-X509Data) element and writes to result XML document all the certificates associated with the signature key.
+The next step is to add a
+[dsig:X509Data](http://www.w3.org/TR/xmldsig-core/#sec-X509Data) node
+to the
+[dsig:KeyInfo](http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo) element
+in the signature template. When the XML Security Library finds this
+node in the template, it automatically creates
+[dsig:X509Certificate](http://www.w3.org/TR/xmldsig-core/#sec-X509Data)
+child elements and writes all the certificates associated with the
+signature key to the resulting XML document.
 
-**Example: Dynamicaly creating a signature template for signing document using X509 certificate**
+### Example: Dynamically creating a signature template with X509 data
 
 ```c
-    /* create signature template for RSA-SHA1 enveloped signature */
-    signNode = xmlSecTmplSignatureCreate(doc, xmlSecTransformExclC14NId,
-				         xmlSecTransformRsaSha1Id, NULL);
-    if(signNode == NULL) {
-	fprintf(stderr, "Error: failed to create signature template\n");
-	goto done;
-    }
-
-    /* add <dsig:Signature/> node to the doc */
-    xmlAddChild(xmlDocGetRootElement(doc), signNode);
-
-    /* add reference */
-    refNode = xmlSecTmplSignatureAddReference(signNode, xmlSecTransformSha1Id,
-					NULL, NULL, NULL);
-    if(refNode == NULL) {
-	fprintf(stderr, "Error: failed to add reference to signature template\n");
-	goto done;
-    }
-
-    /* add enveloped transform */
-    if(xmlSecTmplReferenceAddTransform(refNode, xmlSecTransformEnvelopedId) == NULL) {
-	fprintf(stderr, "Error: failed to add enveloped transform to reference\n");
-	goto done;
-    }
-
     /* add <dsig:KeyInfo/> and <dsig:X509Data/> */
     keyInfoNode = xmlSecTmplSignatureEnsureKeyInfo(signNode, NULL);
     if(keyInfoNode == NULL) {
-	fprintf(stderr, "Error: failed to add key info\n");
-	goto done;
+        fprintf(stderr, "Error: failed to add key info\n");
+        goto done;
     }
 
-    if(xmlSecTmplKeyInfoAddX509Data(keyInfoNode) == NULL) {
-	fprintf(stderr, "Error: failed to add X509Data node\n");
-	goto done;
+    x509DataNode = xmlSecTmplKeyInfoAddX509Data(keyInfoNode);
+    if(x509DataNode == NULL) {
+        fprintf(stderr, "Error: failed to add X509Data node\n");
+        goto done;
+    }
+
+    if(xmlSecTmplX509DataAddSubjectName(x509DataNode) == NULL) {
+        fprintf(stderr, "Error: failed to add X509SubjectName node\n");
+        goto done;
+    }
+
+    if(xmlSecTmplX509DataAddCertificate(x509DataNode) == NULL) {
+        fprintf(stderr, "Error: failed to add X509Certificate node\n");
+        goto done;
     }
 ```
 [Full program listing](../examples/sign3.md)
 
-## Verifing document signed with X509 certificates
+## Verifying a document signed with X509 certificates
 
-If the document is signed with an X509 certificate then the signature verification consist of two steps:
-- Creating and verifing X509 certificates chain.
-- Verifing signature itself using key exrtacted from a certificate verified on previous step.
-Certificates chain is constructed from certificates in a way that each certificate in the chain is signed with previous one:
+If a document is signed with an X509 certificate, signature
+verification consists of two steps:
+- Creating and verifying the X509 certificates
+  [chain of trust](https://letsencrypt.org/certificates/).
+- Verifying the signature itself using the key extracted from a
+  certificate verified on the previous step.
 
-**Certificates chain**
+
+### Example: Certificates chain of trust
 
 ```
 Certificate A (signed with B) <- Certificate B (signed with C) <- ... <- Root Certificate (signed by itself)
 ```
 
-At the end of the chain there is a "Root Certificate" which is signed by itself. There is no way to verify the validity of the root certificate and application have to "trust" it (another name for root certificates is "trusted" certificates).
+At the end of the chain of trust, there is a trusted certificate (for
+example, a "Root Certificate" that is signed by itself). The
+"trusted" certificates are usually configured in the cryptographic
+library or can be loaded by the XML Security Library.
+For example, the
+[xmlSecCryptoAppKeysMngrCertLoad](../api/xmlsec_core_app.md#xmlseccryptoappkeysmngrcertload)
+function can be used to load both "trusted" and "untrusted"
+certificates.
 
-Application can use [xmlSecCryptoAppKeysMngrCertLoad](../api/xmlsec_core_app.md#xmlseccryptoappkeysmngrcertload) function to load both "trusted" and "un-trusted" certificates. However, the selection of "trusted" certificates is very sensitive process and this function might be not implemented for some crypto engines. In this case, the "trusted" certificates list is loaded during initialization or specified in crypto engine configuration files. Check XML Security Library API reference for more details.
-
-**Example: Loading trusted X509 certificate**
+### Example: Loading trusted X509 certificate
 
 ```c
 /**
- * load_trusted_certs:
- * @files:		the list of filenames.
- * @files_size:		the number of filenames in #files.
- *
- * Creates simple keys manager and load trusted certificates from PEM #files.
- * The caller is responsible for destroing returned keys manager using
- * @xmlSecKeysMngrDestroy.
- *
- * Returns the pointer to newly created keys manager or NULL if an error
+ * @brief Creates a keys manager and loads trusted X.509 certificates.
+ * @details Creates a simple keys manager and loads trusted certificates from PEM #files.
+ * The caller is responsible for destroying returned keys manager using
+ * #xmlSecKeysMngrDestroy.
+ * @param files the list of filenames.
+ * @param files_size the number of filenames in #files.
+ * @return the pointer to newly created keys manager or NULL if an error
  * occurs.
  */
 xmlSecKeysMngrPtr
 load_trusted_certs(char** files, int files_size) {
     xmlSecKeysMngrPtr mngr;
-    int i;
+    int ii;
 
     assert(files);
     assert(files_size > 0);
@@ -119,24 +136,24 @@ load_trusted_certs(char** files, int files_size) {
      */
     mngr = xmlSecKeysMngrCreate();
     if(mngr == NULL) {
-	fprintf(stderr, "Error: failed to create keys manager.\n");
-	return(NULL);
+        fprintf(stderr, "Error: failed to create keys manager.\n");
+        return(NULL);
     }
     if(xmlSecCryptoAppDefaultKeysMngrInit(mngr) < 0) {
-	fprintf(stderr, "Error: failed to initialize keys manager.\n");
-	xmlSecKeysMngrDestroy(mngr);
-	return(NULL);
+        fprintf(stderr, "Error: failed to initialize keys manager.\n");
+        xmlSecKeysMngrDestroy(mngr);
+        return(NULL);
     }
 
-    for(i = 0; i < files_size; ++i) {
-	assert(files[i]);
+    for(ii = 0; ii < files_size; ++ii) {
+        assert(files[ii]);
 
-	/* load trusted cert */
-	if(xmlSecCryptoAppKeysMngrCertLoad(mngr, files[i], xmlSecKeyDataFormatPem, xmlSecKeyDataTypeTrusted) < 0) {
-    	    fprintf(stderr,"Error: failed to load pem certificate from \"%s\"\n", files[i]);
-	    xmlSecKeysMngrDestroy(mngr);
-	    return(NULL);
-	}
+        /* load trusted cert */
+        if(xmlSecCryptoAppKeysMngrCertLoad(mngr, files[ii], xmlSecKeyDataFormatPem, xmlSecKeyDataTypeTrusted) < 0) {
+            fprintf(stderr,"Error: failed to load pem certificate from \"%s\"\n", files[ii]);
+            xmlSecKeysMngrDestroy(mngr);
+            return(NULL);
+        }
     }
 
     return(mngr);

@@ -1,18 +1,43 @@
 # Using context objects
 
-The great flexibility of XML Digital Signature and XML Encryption specification is one of the most interesting and in the same time, most dangerouse feature for an application developer. For example, XPath and XSLT transform can make it very difficult to find out what exactly was signed by just looking at the transforms and the input data. Many protocols based on XML Digital Signature and XML Encryption restrict allowed key data types, allowed transforms or possible input data. For example, signature in a simple SAML Response should have only one [<dsig:Reference/>](http://www.w3.org/TR/xmldsig-core/#sec-Reference) element with an empty or NULL URI attribute and only one enveloped transform. XML Security Library uses "context" objects to let application enable or disable particular features, return the result data and the information collected during the processing. Also all the context objects defined in XML Security library have a special `userData` member which could be used by application to pass application specific data around. XML Security Library never use this field. The application creates a new [xmlSecDSigCtx](../api/xmlsec_core_xmldsig.md#xmlsecdsigctxcreate) or [xmlSecEncCtx](../api/xmlsec_core_xmlenc.md#xmlsecencctxcreate) object for each operation, sets necessary options and consumes result returned in the context after signature, verification, encryption or decryption.
 
-**Example: SAML signature validation**
+The [XML Digital Signature](http://www.w3.org/TR/xmldsig-core/) and the
+[XML Encryption](http://www.w3.org/TR/xmlenc-core/) standards are very
+flexible. Without the necessary checks, that flexibility can create
+security vulnerabilities if an application does not ensure that the
+standards are used properly.
+
+For example, XPath and XSLT transforms can make it very difficult to
+find out what exactly was signed by just looking at the transforms and
+the input data. Many protocols based on the
+[XML Digital Signature](http://www.w3.org/TR/xmldsig-core/)
+and the [XML Encryption](http://www.w3.org/TR/xmlenc-core/) standards
+restrict allowed key data types, allowed transforms, and input data:
+a simple SAML Response should have only one
+[dsig:Reference](http://www.w3.org/TR/xmldsig-core/#sec-Reference)
+element with an empty or NULL URI attribute, and exactly one enveloped
+transform.
+
+The XML Security Library uses "context" objects (e.g.
+[xmlSecDSigCtx](../api/xmlsec_core_xmldsig.md#xmlsecdsigctxcreate)
+or
+[xmlSecEncCtx](../api/xmlsec_core_xmlenc.md#xmlsecencctxcreate)) to
+allow the application to control enabled features, and also to return
+the additional information that the application MUST verify to confirm
+that the signature or encryption meets application requirements.
+The application typically creates a new "context" object for each
+operation, sets the necessary options, and then uses the result
+returned in the context after signing, verification, encryption, or
+decryption.
+
+## Example: SAML signature validation
 
 ```c
 /**
- * verify_file:
- * @mngr:		the pointer to keys manager.
- * @xml_file:		the signed XML file name.
- *
- * Verifies XML signature in #xml_file.
- *
- * Returns 0 on success or a negative value if an error occurs.
+ * @brief Verifies XML signature in #xml_file.
+ * @param mngr the pointer to keys manager.
+ * @param xml_file the signed XML file name.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
@@ -25,24 +50,24 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
     assert(xml_file);
 
     /* load file */
-    doc = xmlParseFile(xml_file);
+    doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
-	goto done;
+        fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
+        goto done;
     }
 
     /* find start node */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
     if(node == NULL) {
-	fprintf(stderr, "Error: start node not found in \"%s\"\n", xml_file);
-	goto done;
+        fprintf(stderr, "Error: start node not found in \"%s\"\n", xml_file);
+        goto done;
     }
 
     /* create signature context */
     dsigCtx = xmlSecDSigCtxCreate(mngr);
     if(dsigCtx == NULL) {
         fprintf(stderr,"Error: failed to create signature context\n");
-	goto done;
+        goto done;
     }
 
     /* limit the Reference URI attributes to empty or NULL */
@@ -55,7 +80,7 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
        (xmlSecDSigCtxEnableSignatureTransform(dsigCtx, xmlSecTransformRsaSha1Id) < 0)) {
 
         fprintf(stderr,"Error: failed to limit allowed signature transforms\n");
-	goto done;
+        goto done;
     }
     if((xmlSecDSigCtxEnableReferenceTransform(dsigCtx, xmlSecTransformInclC14NId) < 0) ||
        (xmlSecDSigCtxEnableReferenceTransform(dsigCtx, xmlSecTransformExclC14NId) < 0) ||
@@ -63,19 +88,23 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
        (xmlSecDSigCtxEnableReferenceTransform(dsigCtx, xmlSecTransformEnvelopedId) < 0)) {
 
         fprintf(stderr,"Error: failed to limit allowed reference transforms\n");
-	goto done;
+        goto done;
     }
 
     /* in addition, limit possible key data to valid X509 certificates only */
     if(xmlSecPtrListAdd(&(dsigCtx->keyInfoReadCtx.enabledKeyData), BAD_CAST xmlSecKeyDataX509Id) < 0) {
         fprintf(stderr,"Error: failed to limit allowed key data\n");
-	goto done;
+        goto done;
+    }
+    if(xmlSecPtrListAdd(&(dsigCtx->keyInfoReadCtx.enabledKeyData), BAD_CAST xmlSecKeyDataNameId) < 0) {
+        fprintf(stderr,"Error: failed to limit allowed key data\n");
+        goto done;
     }
 
     /* Verify signature */
     if(xmlSecDSigCtxVerify(dsigCtx, node) < 0) {
         fprintf(stderr,"Error: signature verify\n");
-	goto done;
+        goto done;
     }
 
     /* check that we have only one Reference */
@@ -83,14 +112,14 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
         (xmlSecPtrListGetSize(&(dsigCtx->signedInfoReferences)) != 1)) {
 
         fprintf(stderr,"Error: only one reference is allowed\n");
-	goto done;
+        goto done;
     }
 
-    /* print verification result to stdout */
-    if(dsigCtx->status == xmlSecDSigStatusSucceeded) {
-	fprintf(stdout, "Signature is OK\n");
+    /* verify results and print outcome to stdout */
+    if(verify_signature_results(dsigCtx) == 0) {
+        fprintf(stdout, "Signature is OK\n");
     } else {
-	fprintf(stdout, "Signature is INVALID\n");
+        fprintf(stdout, "Signature is INVALID\n");
     }
 
     /* success */
@@ -99,13 +128,17 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
 done:
     /* cleanup */
     if(dsigCtx != NULL) {
-	xmlSecDSigCtxDestroy(dsigCtx);
+        xmlSecDSigCtxDestroy(dsigCtx);
     }
 
     if(doc != NULL) {
-	xmlFreeDoc(doc);
+        xmlFreeDoc(doc);
     }
     return(res);
 }
+
 ```
+[Full program listing](../examples/verify-saml.md)
+
+
 

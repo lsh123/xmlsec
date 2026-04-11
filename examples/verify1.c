@@ -57,13 +57,13 @@ main(int argc, char **argv) {
         return(1);
     }
 
-    /* Init libxml and libxslt libraries */
+    /* Init LibXML2 */
     xmlInitParser();
     LIBXML_TEST_VERSION
 
-    /* Init libxslt */
+    /* Init LibXSLT */
 #ifndef XMLSEC_NO_XSLT
-    /* disable everything */
+    /* disable all XSLT file and network access */
     xsltSecPrefs = xsltNewSecurityPrefs();
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
@@ -73,7 +73,7 @@ main(int argc, char **argv) {
     xsltSetDefaultSecurityPrefs(xsltSecPrefs);
 #endif /* XMLSEC_NO_XSLT */
 
-    /* Init xmlsec library */
+    /* Init XMLSec */
     if(xmlSecInit() < 0) {
         fprintf(stderr, "Error: xmlsec initialization failed.\n");
         return(-1);
@@ -121,10 +121,10 @@ main(int argc, char **argv) {
     /* Shutdown crypto library */
     xmlSecCryptoAppShutdown();
 
-    /* Shutdown xmlsec library */
+    /* Shutdown XMLSec */
     xmlSecShutdown();
 
-    /* Shutdown libxslt/libxml */
+    /* Shutdown LibXSLT / LibXML2*/
 #ifndef XMLSEC_NO_XSLT
     xsltFreeSecurityPrefs(xsltSecPrefs);
     xsltCleanupGlobals();
@@ -172,14 +172,19 @@ verify_file(const char* xml_file, const char* key_file) {
         goto done;
     }
 
-    /* load public key */
-    dsigCtx->signKey = xmlSecCryptoAppKeyLoadEx(key_file, xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
+    /* load public or private key */
+    dsigCtx->signKey = xmlSecCryptoAppKeyLoadEx(key_file,
+        xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic,
+        xmlSecKeyDataFormatPem,
+        NULL,
+        NULL,
+        NULL);
     if(dsigCtx->signKey == NULL) {
         fprintf(stderr,"Error: failed to load public pem key from \"%s\"\n", key_file);
         goto done;
     }
 
-    /* set key name to the file name, this is just an example! */
+    /* set the key name to the file name; this is only an example */
     if(xmlSecKeySetName(dsigCtx->signKey, BAD_CAST key_file) < 0) {
         fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
         goto done;
@@ -187,11 +192,11 @@ verify_file(const char* xml_file, const char* key_file) {
 
     /* Verify signature */
     if(xmlSecDSigCtxVerify(dsigCtx, node) < 0) {
-        fprintf(stderr,"Error: signature verificaton failed\n");
+        fprintf(stderr,"Error: signature verification failed\n");
         goto done;
     }
 
-    /* verif results and print outcome to stdout */
+    /* verify results and print outcome to stdout */
     if(verify_signature_results(dsigCtx) == 0) {
         fprintf(stdout, "Signature is OK\n");
     } else {
@@ -229,7 +234,7 @@ verify_signature_results(xmlSecDSigCtxPtr dsigCtx) {
 
     /* check that signature verification succeeded */
     if(dsigCtx->status != xmlSecDSigStatusSucceeded) {
-        fprintf(stderr,"Error: Signature verificaton result is not SUCCESS\n");
+        fprintf(stderr,"Error: Signature verification result is not SUCCESS\n");
         return(-1);
     }
 

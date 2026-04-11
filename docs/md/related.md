@@ -22,10 +22,10 @@
 
 ### Projects {#projects}
 
-- XMLSec Library is included as part of Debian GNU/Linux. For more information see the [coordination page](http://memebeam.org/toys/DebianXmlsec).
-- XMLSec Library [FreeBSD](http://www.freebsd.org/cgi/cvsweb.cgi/ports/security/xmlsec/) and [OpenBSD](https://openports.pl/path/security/xmlsec) ports.
-- [Python xmlsec module](https://github.com/mehcode/python-xmlsec) — Python bindings for XMLSec Library.
-- [Perl CPAN module](https://metacpan.org/pod/XML::LibXML::xmlsec) — Perl bindings for XMLSec Library ([source code](https://github.com/estrelow/Perl-LibXML-Sec)).
+- XML Security Library is included as part of Debian GNU/Linux. For more information see the [coordination page](http://memebeam.org/toys/DebianXmlsec).
+- XML Security Library [FreeBSD](http://www.freebsd.org/cgi/cvsweb.cgi/ports/security/xmlsec/) and [OpenBSD](https://openports.pl/path/security/xmlsec) ports.
+- [Python xmlsec module](https://github.com/mehcode/python-xmlsec) — Python bindings for XML Security Library.
+- [Perl CPAN module](https://metacpan.org/pod/XML::LibXML::xmlsec) — Perl bindings for XML Security Library ([source code](https://github.com/estrelow/Perl-LibXML-Sec)).
 - [Lasso Library](http://lasso.entrouvert.org/) — the [Liberty Alliance](http://www.projectliberty.org/) standards implementation.
 - [OpenSAML](http://www.opensaml.org/) — an open source implementation of [SAML 1.0 specification](http://www.oasis-open.org/committees/security/#documents).
 

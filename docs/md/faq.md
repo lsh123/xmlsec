@@ -8,7 +8,7 @@ available that can help you to get started.
 
 ## 1. License(s).
 
-### 1.1. Licensing Terms for XMLSec library. {#section_1_1}
+### 1.1. Licensing Terms for XML Security Library. {#section_1_1}
 
 XML Security Library is released under the [MIT License](http://www.opensource.org/licenses/mit-license.html),
 see the file Copyright in the distribution for the precise wording.
@@ -37,22 +37,7 @@ See XML Security Library [download page](http://www.aleksey.com/xmlsec/).
 
 ### 2.2. How to compile xmlsec? {#section_2_2}
 
-On Unix just follow the "standard":
-
-```
-gunzip -c xmlsec-<version>.tar.gz | tar xvf -
-cd xmlsec-<version>
-mkdir build
-cd build
-../configure --help
-../configure [configure options]
-make
-make check
-make install
-```
-
-On Windows the process is more complicated. Please check readme file in
-the `xmlsec-<version>/win32` folder.
+See  XML Security Library [installation guide](tutorial/install.md)
 
 ### 2.3. What other libraries are needed to compile/install xmlsec? {#section_2_3}
 
@@ -80,7 +65,7 @@ make
 
 Yes, you can. Please run `configure --help` for the list of possible configuration options.
 
-### 2.7. I am compiling XMLSec library on Windows and it does not compile or crashes right after the launch. Can you help me? {#section_2_7}
+### 2.7. I am compiling XML Security Library on Windows and it does not compile or crashes right after the launch. Can you help me? {#section_2_7}
 
 There are several possible reasons why you might have problems on Windows:
 
@@ -95,7 +80,7 @@ There are several possible reasons why you might have problems on Windows:
   the libraries used by the application (e.g. XMLSec, LibXML2, LibXSLT, ...).
 
 - **Mismatched compilation parameters.**
-  The XMLSec library and the application should use the **same** defines. For example, when linking
+  The XML Security Library and the application should use the **same** defines. For example, when linking
   statically, the `#define XMLSEC_STATIC` or `/DXMLSEC_STATIC=1` should be used
   (and same applies to `LIBXML_STATIC` and `LIBXSLT_STATIC` defines). These defines
   are critical on Windows (e.g. to ensure `__declspec(dllimport)` is done correctly) but have
@@ -166,7 +151,7 @@ in xmlsec:
 **UPDATE:** It appears that a newer version (November, 2005) of the Visa3D DTD has this problem fixed and
 now "id" attribute is declared as ID correctly.
 
-### 3.5. The XMLSec library or XMLSec command line tool fails because the key cannot be found. What's wrong? {#section_3_5}
+### 3.5. The XML Security Library or XMLSec command line tool fails because the key cannot be found. What's wrong? {#section_3_5}
 
 There might be multiple reasons for the "key cannot be found error":
 
@@ -193,12 +178,12 @@ There might be multiple reasons for the "key cannot be found error":
 
 - **Certificate cannot be verified.** See the next [question 3.6](#section_3_6) in this FAQ.
 
-### 3.6. The XMLSec library or XMLSec command line tool fails because the certificate cannot be verified. What's wrong? {#section_3_6}
+### 3.6. The XML Security Library or XMLSec command line tool fails because the certificate cannot be verified. What's wrong? {#section_3_6}
 
-There might be several reasons why XMLSec library cannot verify a certificate:
+There might be several reasons why XML Security Library cannot verify a certificate:
 
 - First, check that both trusted (root) and untrusted certificates from the certificate chain are provided to
-  the XMLSec library or command line tool (e.g. in the XML file, or loaded into the keys manager,
+  the XML Security Library or command line tool (e.g. in the XML file, or loaded into the keys manager,
   or available in the crypto library certificates store, or provided in the command line, or ...).
 
 - Check if any of the certificates in the certificate verification chain expired.
@@ -223,22 +208,22 @@ There might be several reasons why XMLSec library cannot verify a certificate:
   there is no mechanism to verify the key origin (and for example, this enables to create "fake" signatures).
   **THIS IS NOT SECURE AND NOT RECOMMENDED.**
 
-### 3.7. I really like the XMLSec library but it is based on OpenSSL and I have to use another crypto library in my application. Can you write code to support my crypto library? {#section_3_7}
+### 3.7. I really like the XML Security Library but it is based on OpenSSL and I have to use another crypto library in my application. Can you write code to support my crypto library? {#section_3_7}
 
-The XMLSec library has a very modular structure and there should be no problem with using another crypto library.
+The XML Security Library has a very modular structure and there should be no problem with using another crypto library.
 For example, XMLSec already supports NSS, GnuTLS, GCrypt and multiple Microsoft Crypto APIs. If your favorite
 cryptographic library is not supported by XMLSec then you can either write integration yourself or contact me
 to discuss possible options.
 
-### 3.8. I really like the XMLSec library but it does not have cipher or transform that I need. Can you write code for me? {#section_3_8}
+### 3.8. I really like the XML Security Library but it does not have cipher or transform that I need. Can you write code for me? {#section_3_8}
 
-The XMLSec library has a very modular structure and it is easy to add any cipher or other transform. You can
+The XML Security Library has a very modular structure and it is easy to add any cipher or other transform. You can
 either write integration yourself or contact me to discuss possible options.
 
 ### 3.9. I am trying to validate a signature created by another software but validation fails. What's wrong? {#section_3_9}
 
 There might be many reasons for the failures and most likely cause is the incorrect implementation of the
-XMLDSig specification by the other software package. XMLSec library tries to handle as many issues as possible
+XMLDSig specification by the other software package. XML Security Library tries to handle as many issues as possible
 automatically (e.g. missing or added leading zeros in the signature value in many Java implementations).
 Another known problem is using ASN1 encoding for ECDSA signatures and you can try
 `--enable-asn1-signatures-hack` option for [xmlsec command line utility](xmlsec-man.md) or set

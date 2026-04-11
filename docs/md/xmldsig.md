@@ -4,7 +4,7 @@ XML Security library supports the following features as defined in
 [XML Signature Syntax and Processing 1.1](https://www.w3.org/TR/xmldsig-core1/)
 (also see [RFC 9231](https://www.ietf.org/rfc/rfc9231.html)):
 
-### XMLSec Library core features {#core}
+### XML Security Library core features {#core}
 
 | Feature | [Requirements](https://www.w3.org/TR/xmldsig-core/#sec-AlgID) | Status |
 |---|---|---|

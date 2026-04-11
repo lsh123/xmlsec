@@ -60,13 +60,13 @@ main(int argc, char **argv) {
         return(1);
     }
 
-    /* Init libxml and libxslt libraries */
+    /* Init LibXML2 */
     xmlInitParser();
     LIBXML_TEST_VERSION
 
-    /* Init libxslt */
+    /* Init LibXSLT */
 #ifndef XMLSEC_NO_XSLT
-    /* disable everything */
+    /* disable all XSLT file and network access */
     xsltSecPrefs = xsltNewSecurityPrefs();
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
@@ -76,7 +76,7 @@ main(int argc, char **argv) {
     xsltSetDefaultSecurityPrefs(xsltSecPrefs);
 #endif /* XMLSEC_NO_XSLT */
 
-    /* Init xmlsec library */
+    /* Init XMLSec */
     if(xmlSecInit() < 0) {
         fprintf(stderr, "Error: xmlsec initialization failed.\n");
         return(-1);
@@ -135,10 +135,10 @@ main(int argc, char **argv) {
     /* Shutdown crypto library */
     xmlSecCryptoAppShutdown();
 
-    /* Shutdown xmlsec library */
+    /* Shutdown XMLSec */
     xmlSecShutdown();
 
-    /* Shutdown libxslt/libxml */
+    /* Shutdown LibXSLT / LibXML2*/
 #ifndef XMLSEC_NO_XSLT
     xsltFreeSecurityPrefs(xsltSecPrefs);
     xsltCleanupGlobals();
@@ -150,7 +150,7 @@ main(int argc, char **argv) {
 
 /**
  * @brief Creates a keys manager and loads PEM keys from files.
- * @details Creates simple keys manager and load PEM keys from #files in it.
+ * @details Creates a simple keys manager and loads the PEM keys from #files into it.
  * The caller is responsible for destroying returned keys manager using
  * #xmlSecKeysMngrDestroy.
  * @param files the list of filenames.
@@ -193,7 +193,7 @@ load_keys(char** files, int files_size) {
             return(NULL);
         }
 
-        /* set key name to the file name, this is just an example! */
+        /* set the key name to the file name; this is only an example */
         if(xmlSecKeySetName(key, BAD_CAST files[i]) < 0) {
             fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", files[i]);
             xmlSecKeyDestroy(key);
@@ -201,8 +201,8 @@ load_keys(char** files, int files_size) {
             return(NULL);
         }
 
-        /* add key to keys manager, from now on keys manager is responsible
-         * for destroying key
+        /* add the key to the keys manager; from now on, the keys manager
+         * is responsible for destroying it
          */
         if(xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key) < 0) {
             fprintf(stderr,"Error: failed to add key from \"%s\" to keys manager\n", files[i]);
@@ -258,7 +258,7 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
         goto done;
     }
 
-    /* verif results and print outcome to stdout */
+    /* verify results and print outcome to stdout */
     if(verify_signature_results(dsigCtx) == 0) {
         fprintf(stdout, "Signature is OK\n");
     } else {
@@ -297,7 +297,7 @@ verify_signature_results(xmlSecDSigCtxPtr dsigCtx) {
 
     /* check that signature verification succeeded */
     if(dsigCtx->status != xmlSecDSigStatusSucceeded) {
-        fprintf(stderr,"Error: Signature verificaton result is not SUCCESS\n");
+        fprintf(stderr,"Error: Signature verification result is not SUCCESS\n");
         return(-1);
     }
 

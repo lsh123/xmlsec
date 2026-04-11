@@ -21,7 +21,7 @@
  *      ./sign1 sign1-tmpl.xml rsakey.pem > sign1-res.xml
  * \endcode
  *
- * The result signature could be validated using verify1 example:
+ * The resulting signature can be validated using the verify1 example:
  *
  * \code{.sh}
  *      ./verify1 sign1-res.xml rsapub.pem
@@ -61,13 +61,13 @@ main(int argc, char **argv) {
         return(1);
     }
 
-    /* Init libxml and libxslt libraries */
+    /* Init LibXML2 */
     xmlInitParser();
     LIBXML_TEST_VERSION
 
-    /* Init libxslt */
+    /* Init LibXSLT */
 #ifndef XMLSEC_NO_XSLT
-    /* disable everything */
+    /* disable all XSLT file and network access */
     xsltSecPrefs = xsltNewSecurityPrefs();
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
@@ -77,7 +77,7 @@ main(int argc, char **argv) {
     xsltSetDefaultSecurityPrefs(xsltSecPrefs);
 #endif /* XMLSEC_NO_XSLT */
 
-    /* Init xmlsec library */
+    /* Init XMLSec */
     if(xmlSecInit() < 0) {
         fprintf(stderr, "Error: xmlsec initialization failed.\n");
         return(-1);
@@ -125,10 +125,10 @@ main(int argc, char **argv) {
     /* Shutdown crypto library */
     xmlSecCryptoAppShutdown();
 
-    /* Shutdown xmlsec library */
+    /* Shutdown XMLSec */
     xmlSecShutdown();
 
-    /* Shutdown libxslt/libxml */
+    /* Shutdown LibXSLT / LibXML2*/
 #ifndef XMLSEC_NO_XSLT
     xsltFreeSecurityPrefs(xsltSecPrefs);
     xsltCleanupGlobals();
@@ -176,14 +176,19 @@ sign_file(const char* tmpl_file, const char* key_file) {
         goto done;
     }
 
-    /* load private key, assuming that there is not password */
-    dsigCtx->signKey = xmlSecCryptoAppKeyLoadEx(key_file, xmlSecKeyDataTypePrivate, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
+    /* load private key, assuming that there is no password */
+    dsigCtx->signKey = xmlSecCryptoAppKeyLoadEx(key_file,
+        xmlSecKeyDataTypePrivate,
+        xmlSecKeyDataFormatPem,
+        NULL,
+        NULL,
+        NULL);
     if(dsigCtx->signKey == NULL) {
         fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", key_file);
         goto done;
     }
 
-    /* set key name to the file name, this is just an example! */
+    /* set the key name to the file name; this is only an example */
     if(xmlSecKeySetName(dsigCtx->signKey, BAD_CAST key_file) < 0) {
         fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
         goto done;

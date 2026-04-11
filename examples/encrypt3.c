@@ -6,8 +6,8 @@
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * @brief XML Security Library example: Encrypting XML file with a session key and dynamicaly created template.
- * @details Encrypts XML file using a dynamicaly created template file and a session
+ * @brief XML Security Library example: Encrypting an XML file with a session key and a dynamically created template.
+ * @details Encrypts an XML file using a dynamically created template and a session
  * DES key (encrypted with an RSA key).
  *
  * Usage:
@@ -23,7 +23,7 @@
  *      ./encrypt3 encrypt3-doc.xml rsakey.pem > encrypt3-res.xml
  * \endcode
  *
- * The result could be decrypted with decrypt3 example:
+ * The result can be decrypted using the decrypt3 example:
  *
  * \code{.sh}
  *      ./decrypt3 encrypt3-res.xml
@@ -66,13 +66,13 @@ main(int argc, char **argv) {
         return(1);
     }
 
-    /* Init libxml and libxslt libraries */
+    /* Init LibXML2 */
     xmlInitParser();
     LIBXML_TEST_VERSION
 
-    /* Init libxslt */
+    /* Init LibXSLT */
 #ifndef XMLSEC_NO_XSLT
-    /* disable everything */
+    /* disable all XSLT file and network access */
     xsltSecPrefs = xsltNewSecurityPrefs();
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
@@ -82,7 +82,7 @@ main(int argc, char **argv) {
     xsltSetDefaultSecurityPrefs(xsltSecPrefs);
 #endif /* XMLSEC_NO_XSLT */
 
-    /* Init xmlsec library */
+    /* Init XMLSec */
     if(xmlSecInit() < 0) {
         fprintf(stderr, "Error: xmlsec initialization failed.\n");
         return(-1);
@@ -141,10 +141,10 @@ main(int argc, char **argv) {
     /* Shutdown crypto library */
     xmlSecCryptoAppShutdown();
 
-    /* Shutdown xmlsec library */
+    /* Shutdown XMLSec */
     xmlSecShutdown();
 
-    /* Shutdown libxslt/libxml */
+    /* Shutdown LibXSLT / LibXML2*/
 #ifndef XMLSEC_NO_XSLT
     xsltFreeSecurityPrefs(xsltSecPrefs);
     xsltCleanupGlobals();
@@ -156,7 +156,7 @@ main(int argc, char **argv) {
 
 /**
  * @brief Creates a keys manager and loads an RSA key from a file.
- * @details Creates simple keys manager and load RSA key from #key_file in it.
+ * @details Creates a simple keys manager and loads the RSA key from #key_file into it.
  * The caller is responsible for destroying returned keys manager using
  * #xmlSecKeysMngrDestroy.
  * @param key_file the key filename.
@@ -193,7 +193,7 @@ load_rsa_keys(char* key_file) {
         return(NULL);
     }
 
-    /* set key name to the file name, this is just an example! */
+    /* set the key name to the file name; this is only an example */
     if(xmlSecKeySetName(key, BAD_CAST key_file) < 0) {
         fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
         xmlSecKeyDestroy(key);
@@ -216,8 +216,8 @@ load_rsa_keys(char* key_file) {
 
 /**
  * @brief Encrypts an XML file using a session DES key and RSA key transport.
- * @details Encrypts #xml_file using a dynamicaly created template, a session DES key
- * and an RSA key from keys manager.
+ * @details Encrypts #xml_file using a dynamically created template, a session DES key,
+ * and an RSA key from the keys manager.
  * @param mngr the pointer to keys manager.
  * @param xml_file the encryption template file name.
  * @param key_name the RSA key name.
@@ -314,7 +314,7 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
         goto done;
     }
 
-    /* we template is inserted in the doc */
+    /* the template is inserted into the document */
     encDataNode = NULL;
 
     /* print encrypted data with document to stdout */

@@ -62,13 +62,13 @@ main(int argc, char **argv) {
         return(1);
     }
 
-    /* Init libxml and libxslt libraries */
+    /* Init LibXML2 */
     xmlInitParser();
     LIBXML_TEST_VERSION
 
-    /* Init libxslt */
+    /* Init LibXSLT */
 #ifndef XMLSEC_NO_XSLT
-    /* disable everything */
+    /* disable all XSLT file and network access */
     xsltSecPrefs = xsltNewSecurityPrefs();
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
@@ -78,7 +78,7 @@ main(int argc, char **argv) {
     xsltSetDefaultSecurityPrefs(xsltSecPrefs);
 #endif /* XMLSEC_NO_XSLT */
 
-    /* Init xmlsec library */
+    /* Init XMLSec */
     if(xmlSecInit() < 0) {
         fprintf(stderr, "Error: xmlsec initialization failed.\n");
         return(-1);
@@ -136,10 +136,10 @@ main(int argc, char **argv) {
     /* Shutdown crypto library */
     xmlSecCryptoAppShutdown();
 
-    /* Shutdown xmlsec library */
+    /* Shutdown XMLSec */
     xmlSecShutdown();
 
-    /* Shutdown libxslt/libxml */
+    /* Shutdown LibXSLT / LibXML2*/
 #ifndef XMLSEC_NO_XSLT
     xsltFreeSecurityPrefs(xsltSecPrefs);
     xsltCleanupGlobals();
@@ -236,7 +236,7 @@ create_files_keys_mngr(void) {
     xmlSecKeyStorePtr keysStore;
     xmlSecKeysMngrPtr mngr;
 
-    /* create files based keys store */
+    /* create a file-based keys store */
     keysStore = xmlSecKeyStoreCreate(files_keys_store_get_klass());
     if(keysStore == NULL) {
         fprintf(stderr, "Error: failed to create keys store.\n");
@@ -297,9 +297,9 @@ static xmlSecKeyStoreKlass files_keys_store_klass = {
 
 /**
  * @brief Gets the files-based keys store klass.
- * @details The files based keys store klass: we assume that key name is the
- * key file name.
- * @return files based keys store klass.
+ * @details Returns the file-based keys store klass; it assumes that the key
+ * name is the key file name.
+ * @return the file-based keys store klass.
  */
 xmlSecKeyStoreId
 files_keys_store_get_klass(void) {
@@ -308,8 +308,8 @@ files_keys_store_get_klass(void) {
 
 /**
  * @brief Finds a key in the files-based keys store.
- * @details Lookups key in the #store. The caller is responsible for destroying
- * returned key with #xmlSecKeyDestroy function.
+ * @details Looks up a key in #store. The caller is responsible for destroying
+ * the returned key with #xmlSecKeyDestroy.
  * @param store the pointer to simple keys store.
  * @param name the desired key name.
  * @param keyInfoCtx the pointer to <dsig:KeyInfo/> node processing context.
@@ -323,14 +323,14 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
     assert(store);
     assert(keyInfoCtx);
 
-    /* it's possible to do not have the key name or desired key type
-     * but we could do nothing in this case */
+    /* it is possible that the key name or desired key type is missing,
+     * and there is nothing we can do in that case */
     if((name == NULL) || (keyInfoCtx->keyReq.keyId == xmlSecKeyDataIdUnknown)){
         return(NULL);
     }
 
-    /* we don't want to open files in a folder other than "current";
-     * to prevent it limit the characters in the key name to alpha/digit,
+    /* we do not want to open files outside the current folder;
+     * to prevent that, limit the characters in the key name to letters, digits,
      * '.', '-' or '_'.
      */
     for(p = name; (*p) != '\0'; ++p) {

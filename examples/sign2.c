@@ -6,8 +6,8 @@
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * @brief XML Security Library example: Signing a file with a dynamicaly created template.
- * @details Signs a file using a dynamicaly created template and key from PEM file.
+ * @brief XML Security Library example: Signing a file with a dynamically created template.
+ * @details Signs a file using a dynamically created template and a key from a PEM file.
  * The signature has one reference with one enveloped transform to sign
  * the whole document except the <dsig:Signature/> node itself.
  *
@@ -23,7 +23,7 @@
  *      ./sign2 sign2-doc.xml rsakey.pem > sign2-res.xml
  * \endcode
  *
- * The result signature could be validated using verify1 example:
+ * The resulting signature can be validated using the verify1 example:
  *
  * \code{.sh}
  *      ./verify1 sign2-res.xml rsapub.pem
@@ -49,6 +49,7 @@
 #include <xmlsec/crypto.h>
 
 int sign_file(const char* xml_file, const char* key_file);
+xmlNodePtr create_signature_template(xmlDocPtr doc);
 
 int
 main(int argc, char **argv) {
@@ -64,13 +65,13 @@ main(int argc, char **argv) {
         return(1);
     }
 
-    /* Init libxml and libxslt libraries */
+    /* Init LibXML2 */
     xmlInitParser();
     LIBXML_TEST_VERSION
 
-    /* Init libxslt */
+    /* Init LibXSLT */
 #ifndef XMLSEC_NO_XSLT
-    /* disable everything */
+    /* disable all XSLT file and network access */
     xsltSecPrefs = xsltNewSecurityPrefs();
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
@@ -80,7 +81,7 @@ main(int argc, char **argv) {
     xsltSetDefaultSecurityPrefs(xsltSecPrefs);
 #endif /* XMLSEC_NO_XSLT */
 
-    /* Init xmlsec library */
+    /* Init XMLSec */
     if(xmlSecInit() < 0) {
         fprintf(stderr, "Error: xmlsec initialization failed.\n");
         return(-1);
@@ -128,10 +129,10 @@ main(int argc, char **argv) {
     /* Shutdown crypto library */
     xmlSecCryptoAppShutdown();
 
-    /* Shutdown xmlsec library */
+    /* Shutdown XMLSec */
     xmlSecShutdown();
 
-    /* Shutdown libxslt/libxml */
+    /* Shutdown LibXSLT / LibXML2*/
 #ifndef XMLSEC_NO_XSLT
     xsltFreeSecurityPrefs(xsltSecPrefs);
     xsltCleanupGlobals();
@@ -142,9 +143,60 @@ main(int argc, char **argv) {
 }
 
 /**
+ * @brief Adds enveloped signature template to the XML document.
+ * @param doc the XML document.
+ * @return pointer to the dsig:Signature node or NULL if an error occurs.
+ */
+xmlNodePtr
+create_signature_template(xmlDocPtr doc){
+    xmlNodePtr signNode = NULL;
+    xmlNodePtr refNode = NULL;
+    xmlNodePtr keyInfoNode = NULL;
+
+    assert(doc);
+
+    /* create signature template for RSA-SHA1 enveloped signature */
+    signNode = xmlSecTmplSignatureCreate(doc, xmlSecTransformExclC14NId, xmlSecTransformRsaSha1Id, NULL);
+    if(signNode == NULL) {
+        fprintf(stderr, "Error: failed to create signature template\n");
+        return(NULL);
+    }
+
+    /* add <dsig:Signature/> node to the doc */
+    xmlAddChild(xmlDocGetRootElement(doc), signNode);
+
+    /* add <dsig:Reference/> node */
+    refNode = xmlSecTmplSignatureAddReference(signNode, xmlSecTransformSha1Id, NULL, BAD_CAST "", NULL);
+    if(refNode == NULL) {
+        fprintf(stderr, "Error: failed to add reference to signature template\n");
+        return(NULL);
+    }
+
+    /* adds <dsig:Transform/> node with enveloped transform */
+    if(xmlSecTmplReferenceAddTransform(refNode, xmlSecTransformEnvelopedId) == NULL) {
+        fprintf(stderr, "Error: failed to add enveloped transform to reference\n");
+        return(NULL);
+    }
+
+    /* add <dsig:KeyInfo/> and <dsig:KeyName/> nodes to put key name in the signed document */
+    keyInfoNode = xmlSecTmplSignatureEnsureKeyInfo(signNode, NULL);
+    if(keyInfoNode == NULL) {
+        fprintf(stderr, "Error: failed to add key info\n");
+        return(NULL);
+    }
+    if(xmlSecTmplKeyInfoAddKeyName(keyInfoNode, NULL) == NULL) {
+        fprintf(stderr, "Error: failed to add key name\n");
+        return(NULL);
+    }
+
+    /* done */
+    return(signNode);
+}
+
+/**
  * @brief Signs an XML file using a dynamically created enveloped signature template.
- * @details Signs the #xml_file using private key from #key_file and dynamicaly
- * created enveloped signature template.
+ * @details Signs #xml_file using the private key from #key_file and a
+ * dynamically created enveloped signature template.
  * @param xml_file the XML file name.
  * @param key_file the PEM private key file name.
  * @return 0 on success or a negative value if an error occurs.
@@ -153,13 +205,12 @@ int
 sign_file(const char* xml_file, const char* key_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr signNode = NULL;
-    xmlNodePtr refNode = NULL;
-    xmlNodePtr keyInfoNode = NULL;
     xmlSecDSigCtxPtr dsigCtx = NULL;
     int res = -1;
 
     assert(xml_file);
     assert(key_file);
+
 
     /* load doc file */
     doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT);
@@ -168,40 +219,10 @@ sign_file(const char* xml_file, const char* key_file) {
         goto done;
     }
 
-    /* create signature template for RSA-SHA1 enveloped signature */
-    signNode = xmlSecTmplSignatureCreate(doc, xmlSecTransformExclC14NId,
-                                         xmlSecTransformRsaSha1Id, NULL);
+    /* add signature template */
+    signNode = create_signature_template(doc);
     if(signNode == NULL) {
         fprintf(stderr, "Error: failed to create signature template\n");
-        goto done;
-    }
-
-    /* add <dsig:Signature/> node to the doc */
-    xmlAddChild(xmlDocGetRootElement(doc), signNode);
-
-    /* add reference */
-    refNode = xmlSecTmplSignatureAddReference(signNode, xmlSecTransformSha1Id,
-                                        NULL, BAD_CAST "", NULL);
-    if(refNode == NULL) {
-        fprintf(stderr, "Error: failed to add reference to signature template\n");
-        goto done;
-    }
-
-    /* add enveloped transform */
-    if(xmlSecTmplReferenceAddTransform(refNode, xmlSecTransformEnvelopedId) == NULL) {
-        fprintf(stderr, "Error: failed to add enveloped transform to reference\n");
-        goto done;
-    }
-
-    /* add <dsig:KeyInfo/> and <dsig:KeyName/> nodes to put key name in the signed document */
-    keyInfoNode = xmlSecTmplSignatureEnsureKeyInfo(signNode, NULL);
-    if(keyInfoNode == NULL) {
-        fprintf(stderr, "Error: failed to add key info\n");
-        goto done;
-    }
-
-    if(xmlSecTmplKeyInfoAddKeyName(keyInfoNode, NULL) == NULL) {
-        fprintf(stderr, "Error: failed to add key name\n");
         goto done;
     }
 
@@ -212,14 +233,19 @@ sign_file(const char* xml_file, const char* key_file) {
         goto done;
     }
 
-    /* load private key, assuming that there is not password */
-    dsigCtx->signKey = xmlSecCryptoAppKeyLoadEx(key_file, xmlSecKeyDataTypePrivate, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
+    /* load private key, assuming that there is no password */
+    dsigCtx->signKey = xmlSecCryptoAppKeyLoadEx(key_file,
+        xmlSecKeyDataTypePrivate,
+        xmlSecKeyDataFormatPem,
+        NULL,
+        NULL,
+        NULL);
     if(dsigCtx->signKey == NULL) {
         fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", key_file);
         goto done;
     }
 
-    /* set key name to the file name, this is just an example! */
+    /* set the key name to the file name; this is only an example */
     if(xmlSecKeySetName(dsigCtx->signKey, BAD_CAST key_file) < 0) {
         fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
         goto done;
@@ -232,7 +258,7 @@ sign_file(const char* xml_file, const char* key_file) {
     }
 
     /* print signed document to stdout */
-    xmlDocDump(stdout, doc);
+    xmlDocDump(stdout, signNode->doc);
 
     /* success */
     res = 0;

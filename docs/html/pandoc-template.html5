@@ -28,6 +28,7 @@
           <li><a href="xmldsig.html">XML Digital Signature</a></li>
           <li><a href="xmlenc.html">XML Encryption</a></li>
           <li><a href="c14n.html">XML Canonicalization</a></li>
+          <li><a href="key-formats.html">Key Formats</a></li>
         </ul>
       </li>
       <li><a href="news.html">News</a></li>

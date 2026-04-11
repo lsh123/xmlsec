@@ -6,11 +6,11 @@
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * @brief XML Security Library example: Verifying a simple SAML response with X509 certificate
+ * @brief XML Security Library example: Verifying a simple SAML response with an X509 certificate
  * @details Verifies a simple SAML response. In addition to regular verification
- * we ensure that the signature has only one <dsig:Reference/> element
+ * it also ensures that the signature has only one <dsig:Reference/> element
  * with an empty or NULL URI attribute and one enveloped signature transform
- * as it is required by SAML specification.
+ * as required by the SAML specification.
  *
  * This example was developed and tested with OpenSSL crypto library. The
  * certificates management policies for another crypto library may break it.
@@ -33,7 +33,7 @@
  *      ./verify-saml verify-saml-bad-res.xml ca2cert.pem cacert.pem
  * \endcode
  *
- * In the same time, verify3 example successfully verifies this signature:
+ * At the same time, the verify3 example successfully verifies this signature:
  *
  * \code{.sh}
  *      ./verify3 verify-saml-bad-res.xml ca2cert.pem cacert.pem
@@ -82,7 +82,7 @@ main(int argc, char **argv) {
 
     /* Init LibXSLT */
 #ifndef XMLSEC_NO_XSLT
-    /* disable everything */
+    /* disable all XSLT file and network access */
     xsltSecPrefs = xsltNewSecurityPrefs();
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
@@ -166,7 +166,7 @@ main(int argc, char **argv) {
 
 /**
  * @brief Creates a keys manager and loads trusted X.509 certificates.
- * @details Creates simple keys manager and load trusted certificates from PEM #files.
+ * @details Creates a simple keys manager and loads trusted certificates from PEM #files.
  * The caller is responsible for destroying returned keys manager using
  * #xmlSecKeysMngrDestroy.
  * @param files the list of filenames.

@@ -47,7 +47,7 @@ some other key storage.
 
 /**
  * @brief Creates a keys manager and loads PEM keys from files.
- * @details Creates simple keys manager and load PEM keys from #files in it.
+ * @details Creates a simple keys manager and loads the PEM keys from #files into it.
  * The caller is responsible for destroying returned keys manager using
  * #xmlSecKeysMngrDestroy.
  * @param files the list of filenames.
@@ -90,7 +90,7 @@ load_keys(char** files, int files_size) {
             return(NULL);
         }
 
-        /* set key name to the file name, this is just an example! */
+        /* set the key name to the file name; this is only an example */
         if(xmlSecKeySetName(key, BAD_CAST files[i]) < 0) {
             fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", files[i]);
             xmlSecKeyDestroy(key);
@@ -98,8 +98,8 @@ load_keys(char** files, int files_size) {
             return(NULL);
         }
 
-        /* add key to keys manager, from now on keys manager is responsible
-         * for destroying key
+        /* add the key to the keys manager; from now on, the keys manager
+         * is responsible for destroying it
          */
         if(xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key) < 0) {
             fprintf(stderr,"Error: failed to add key from \"%s\" to keys manager\n", files[i]);
@@ -158,7 +158,7 @@ create_files_keys_mngr(void) {
     xmlSecKeyStorePtr keysStore;
     xmlSecKeysMngrPtr mngr;
 
-    /* create files based keys store */
+    /* create a file-based keys store */
     keysStore = xmlSecKeyStoreCreate(files_keys_store_get_klass());
     if(keysStore == NULL) {
         fprintf(stderr, "Error: failed to create keys store.\n");
@@ -219,9 +219,9 @@ static xmlSecKeyStoreKlass files_keys_store_klass = {
 
 /**
  * @brief Gets the files-based keys store klass.
- * @details The files based keys store klass: we assume that key name is the
- * key file name.
- * @return files based keys store klass.
+ * @details Returns the file-based keys store klass; it assumes that the key
+ * name is the key file name.
+ * @return the file-based keys store klass.
  */
 xmlSecKeyStoreId
 files_keys_store_get_klass(void) {
@@ -230,8 +230,8 @@ files_keys_store_get_klass(void) {
 
 /**
  * @brief Finds a key in the files-based keys store.
- * @details Lookups key in the #store. The caller is responsible for destroying
- * returned key with #xmlSecKeyDestroy function.
+ * @details Looks up a key in #store. The caller is responsible for destroying
+ * the returned key with #xmlSecKeyDestroy.
  * @param store the pointer to simple keys store.
  * @param name the desired key name.
  * @param keyInfoCtx the pointer to <dsig:KeyInfo/> node processing context.
@@ -245,14 +245,14 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
     assert(store);
     assert(keyInfoCtx);
 
-    /* it's possible to not have the key name or desired key type
-     * but we could do nothing in this case */
+    /* it is possible that the key name or desired key type is missing,
+     * and there is nothing we can do in that case */
     if((name == NULL) || (keyInfoCtx->keyReq.keyId == xmlSecKeyDataIdUnknown)){
         return(NULL);
     }
 
-    /* we don't want to open files in a folder other than "current";
-     * to prevent it limit the characters in the key name to alpha/digit,
+    /* we do not want to open files outside the current folder;
+     * to prevent that, limit the characters in the key name to letters, digits,
      * '.', '-' or '_'.
      */
     for(p = name; (*p) != '\0'; ++p) {

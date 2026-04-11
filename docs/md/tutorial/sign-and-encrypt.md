@@ -93,7 +93,7 @@ sign_file(const char* tmpl_file, const char* key_file) {
         goto done;
     }
 
-    /* set key name to the file name, this is just an example! */
+    /* set the key name to the file name; this is only an example */
     if(xmlSecKeySetName(dsigCtx->signKey, BAD_CAST key_file) < 0) {
         fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
         goto done;
@@ -152,20 +152,20 @@ A typical encryption process includes the following steps:
 ### Example: Encrypting binary data with a template
 
 ```c
+
 /**
- * encrypt_file:
- * @tmpl_file:		the encryption template file name.
- * @key_file:		the Triple DES key file.
- * @data:		the binary data to encrypt.
- * @dataSize:		the binary data size.
- *
- * Encrypts binary #data using template from #tmpl_file and DES key from
+ * @brief Encrypts binary data using a DES key and a template file.
+ * @details Encrypts binary #data using template from #tmpl_file and DES key from
  * #key_file.
- *
- * Returns 0 on success or a negative value if an error occurs.
+ * @param tmpl_file the encryption template file name.
+ * @param key_file the Triple DES key file.
+ * @param data the binary data to encrypt.
+ * @param dataSize the binary data size.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
-encrypt_file(const char* tmpl_file, const char* key_file, const unsigned char* data, size_t dataSize) {
+encrypt_file(const char* tmpl_file, const char* key_file,
+             const unsigned char* data, size_t dataSize) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
     xmlSecEncCtxPtr encCtx = NULL;
@@ -176,43 +176,43 @@ encrypt_file(const char* tmpl_file, const char* key_file, const unsigned char* d
     assert(data);
 
     /* load template */
-    doc = xmlParseFile(tmpl_file);
+    doc = xmlReadFile(tmpl_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-	fprintf(stderr, "Error: unable to parse file \"%s\"\n", tmpl_file);
-	goto done;
+        fprintf(stderr, "Error: unable to parse file \"%s\"\n", tmpl_file);
+        goto done;
     }
 
     /* find start node */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
     if(node == NULL) {
-	fprintf(stderr, "Error: start node not found in \"%s\"\n", tmpl_file);
-	goto done;
+        fprintf(stderr, "Error: start node not found in \"%s\"\n", tmpl_file);
+        goto done;
     }
 
     /* create encryption context, we don't need keys manager in this example */
     encCtx = xmlSecEncCtxCreate(NULL);
     if(encCtx == NULL) {
         fprintf(stderr,"Error: failed to create encryption context\n");
-	goto done;
+        goto done;
     }
 
-    /* load DES key */
+    /* load DES key, assuming that there is no password */
     encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
     if(encCtx->encKey == NULL) {
         fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);
-	goto done;
+        goto done;
     }
 
-    /* set key name to the file name, this is just an example! */
-    if(xmlSecKeySetName(encCtx->encKey, key_file) < 0) {
-    	fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
-	goto done;
+    /* set the key name to the file name; this is only an example */
+    if(xmlSecKeySetName(encCtx->encKey, BAD_CAST key_file) < 0) {
+        fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
+        goto done;
     }
 
     /* encrypt the data */
     if(xmlSecEncCtxBinaryEncrypt(encCtx, node, data, dataSize) < 0) {
         fprintf(stderr,"Error: encryption failed\n");
-    	goto done;
+        goto done;
     }
 
     /* print encrypted data with document to stdout */
@@ -222,13 +222,14 @@ encrypt_file(const char* tmpl_file, const char* key_file, const unsigned char* d
     res = 0;
 
 done:
+
     /* cleanup */
     if(encCtx != NULL) {
-	xmlSecEncCtxDestroy(encCtx);
+        xmlSecEncCtxDestroy(encCtx);
     }
 
     if(doc != NULL) {
-	xmlFreeDoc(doc);
+        xmlFreeDoc(doc);
     }
     return(res);
 }

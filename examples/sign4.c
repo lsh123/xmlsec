@@ -6,9 +6,9 @@
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * @brief XML Security Library example: Signing a file with a dynamicaly created template and an X509 certificate.
- * @details Signs a file using a dynamicaly created template, key from PEM file and
- * an X509 certificate. The signature has one reference using "ID" attribute
+ * @brief XML Security Library example: Signing a file with a dynamically created template and an X509 certificate.
+ * @details Signs a file using a dynamically created template, a key from a PEM file, and
+ * an X509 certificate. The signature has one reference using the "ID" attribute
  * of the node to be signed. The key certificate is written in the <dsig:X509Data/> node.
  *
  * This example was developed and tested with OpenSSL crypto library. The
@@ -26,7 +26,7 @@
  *      ./sign4 sign4-doc.xml "data" rsakey.pem rsacert.pem > sign4-res.xml
  * \endcode
  *
- * The result signature could be validated using verify3 example:
+ * The resulting signature can be validated using the verify3 example:
  *
  * \code{.sh}
  *      ./verify3 sign4-res.xml ca2cert.pem cacert.pem
@@ -73,7 +73,7 @@ main(int argc, char **argv) {
 
     /* Init LibXSLT */
 #ifndef XMLSEC_NO_XSLT
-    /* disable everything */
+    /* disable all XSLT file and network access */
     xsltSecPrefs = xsltNewSecurityPrefs();
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
@@ -146,8 +146,8 @@ main(int argc, char **argv) {
 
 /**
  * @brief Signs an XML file using a private key, X.509 certificate, and ID-based reference.
- * @details Signs the #xml_file using private key from #key_file and dynamicaly
- * created enveloped signature template. The certificate from #cert_file
+ * @details Signs #xml_file using the private key from #key_file and a
+ * dynamically created enveloped signature template. The certificate from #cert_file
  * is placed in the <dsig:X509Data/> node.
  * @param xml_file the XML file name.
  * @param id_attr the ID attribute of the node to sign.
@@ -254,7 +254,7 @@ sign_file(const char* xml_file, const char* id_attr, const char* key_file, const
         goto done;
     }
 
-    /* set key name to the file name, this is just an example! */
+    /* set the key name to the file name; this is only an example */
     if(xmlSecKeySetName(dsigCtx->signKey, BAD_CAST key_file) < 0) {
         fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
         goto done;

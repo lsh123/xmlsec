@@ -27,7 +27,7 @@ initializing and shutting down the following dependencies:
 
     /* Init LibXSLT */
 #ifndef XMLSEC_NO_XSLT
-    /* disable everything */
+    /* disable all XSLT file and network access */
     xsltSecPrefs = xsltNewSecurityPrefs();
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);

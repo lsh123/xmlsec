@@ -67,7 +67,7 @@ main(int argc, char **argv) {
 
     /* Init LibXSLT */
 #ifndef XMLSEC_NO_XSLT
-    /* disable everything */
+    /* disable all XSLT file and network access */
     xsltSecPrefs = xsltNewSecurityPrefs();
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
@@ -151,7 +151,7 @@ main(int argc, char **argv) {
 
 /**
  * @brief Creates a keys manager and loads trusted X.509 certificates.
- * @details Creates simple keys manager and load trusted certificates from PEM #files.
+ * @details Creates a simple keys manager and loads trusted certificates from PEM #files.
  * The caller is responsible for destroying returned keys manager using
  * #xmlSecKeysMngrDestroy.
  * @param files the list of filenames.
@@ -200,7 +200,7 @@ load_trusted_certs(char** files, int files_size) {
  * @brief Verifies XML signature in #xml_file.
  * @param mngr the pointer to keys manager.
  * @param xml_file the signed XML file name.
- * @param id__attr the expected ID attribute for the node that was signed
+ * @param id_attr the expected ID attribute for the signed node
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -272,7 +272,7 @@ done:
  * @details Verifies XML signature results to ensure that signature was applied
  * to the expected data.
  * @param dsigCtx the XMLDSig context
- * @param id__attr the expected ID attribute for the node that was signed
+ * @param id_attr the expected ID attribute for the signed node
  * @return 0 on success or a negative value if an error occurs.
  */
 int

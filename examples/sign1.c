@@ -21,7 +21,7 @@
  *      ./sign1 sign1-tmpl.xml rsakey.pem > sign1-res.xml
  * \endcode
  *
- * The result signature could be validated using verify1 example:
+ * The resulting signature can be validated using the verify1 example:
  *
  * \code{.sh}
  *      ./verify1 sign1-res.xml rsapub.pem
@@ -67,7 +67,7 @@ main(int argc, char **argv) {
 
     /* Init LibXSLT */
 #ifndef XMLSEC_NO_XSLT
-    /* disable everything */
+    /* disable all XSLT file and network access */
     xsltSecPrefs = xsltNewSecurityPrefs();
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
@@ -188,7 +188,7 @@ sign_file(const char* tmpl_file, const char* key_file) {
         goto done;
     }
 
-    /* set key name to the file name, this is just an example! */
+    /* set the key name to the file name; this is only an example */
     if(xmlSecKeySetName(dsigCtx->signKey, BAD_CAST key_file) < 0) {
         fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
         goto done;

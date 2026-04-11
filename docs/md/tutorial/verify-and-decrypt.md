@@ -81,14 +81,14 @@ verify_file(const char* xml_file, const char* key_file) {
         goto done;
     }
 
-    /* load public key */
+    /* load public or private key */
     dsigCtx->signKey = xmlSecCryptoAppKeyLoadEx(key_file, xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
     if(dsigCtx->signKey == NULL) {
         fprintf(stderr,"Error: failed to load public pem key from \"%s\"\n", key_file);
         goto done;
     }
 
-    /* set key name to the file name, this is just an example! */
+    /* set the key name to the file name; this is only an example */
     if(xmlSecKeySetName(dsigCtx->signKey, BAD_CAST key_file) < 0) {
         fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
         goto done;
@@ -258,7 +258,7 @@ decrypt_file(const char* enc_file, const char* key_file) {
         goto done;
     }
 
-    /* set key name to the file name, this is just an example! */
+    /* set the key name to the file name; this is only an example */
     if(xmlSecKeySetName(encCtx->encKey, BAD_CAST key_file) < 0) {
         fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
         goto done;

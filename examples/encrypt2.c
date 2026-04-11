@@ -6,9 +6,9 @@
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * @brief XML Security Library example: Encrypting XML file with a dynamicaly created template.
- * @details Encrypts XML file using a dynamicaly created template file and a DES key
- * from a binary file
+ * @brief XML Security Library example: Encrypting an XML file with a dynamically created template.
+ * @details Encrypts an XML file using a dynamically created template and a DES key
+ * from a binary file.
  *
  * Usage:
  *
@@ -22,7 +22,7 @@
  *      ./encrypt2 encrypt2-doc.xml deskey.bin > encrypt2-res.xml
  * \endcode
  *
- * The result could be decrypted with decrypt1 example:
+ * The result can be decrypted using the decrypt1 example:
  *
  * \code{.sh}
  *      ./decrypt1 encrypt2-res.xml deskey.bin
@@ -70,7 +70,7 @@ main(int argc, char **argv) {
 
     /* Init LibXSLT */
 #ifndef XMLSEC_NO_XSLT
-    /* disable everything */
+    /* disable all XSLT file and network access */
     xsltSecPrefs = xsltNewSecurityPrefs();
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
@@ -183,8 +183,8 @@ create_encryption_template(xmlDocPtr doc) {
 
 /**
  * @brief Encrypts an XML file using a dynamically created template and DES key.
- * @details Encrypts #xml_file using a dynamicaly created template and DES key from
- * #key_file.
+ * @details Encrypts #xml_file using a dynamically created template and the DES key
+ * from #key_file.
  * @param xml_file the encryption template file name.
  * @param key_file the Triple DES key file.
  * @return 0 on success or a negative value if an error occurs.
@@ -227,7 +227,7 @@ encrypt_file(const char* xml_file, const char* key_file) {
         goto done;
     }
 
-    /* set key name to the file name, this is just an example! */
+    /* set the key name to the file name; this is only an example */
     if(xmlSecKeySetName(encCtx->encKey, BAD_CAST key_file) < 0) {
         fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
         goto done;
@@ -239,7 +239,7 @@ encrypt_file(const char* xml_file, const char* key_file) {
         goto done;
     }
 
-    /* we template is inserted in the doc */
+    /* the template is inserted into the document */
     encDataNode = NULL;
 
     /* print encrypted data with document to stdout */

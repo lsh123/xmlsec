@@ -114,7 +114,7 @@ certificates.
 ```c
 /**
  * @brief Creates a keys manager and loads trusted X.509 certificates.
- * @details Creates simple keys manager and load trusted certificates from PEM #files.
+ * @details Creates a simple keys manager and loads trusted certificates from PEM #files.
  * The caller is responsible for destroying returned keys manager using
  * #xmlSecKeysMngrDestroy.
  * @param files the list of filenames.

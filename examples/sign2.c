@@ -6,8 +6,8 @@
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * @brief XML Security Library example: Signing a file with a dynamicaly created template.
- * @details Signs a file using a dynamicaly created template and key from PEM file.
+ * @brief XML Security Library example: Signing a file with a dynamically created template.
+ * @details Signs a file using a dynamically created template and a key from a PEM file.
  * The signature has one reference with one enveloped transform to sign
  * the whole document except the <dsig:Signature/> node itself.
  *
@@ -23,7 +23,7 @@
  *      ./sign2 sign2-doc.xml rsakey.pem > sign2-res.xml
  * \endcode
  *
- * The result signature could be validated using verify1 example:
+ * The resulting signature can be validated using the verify1 example:
  *
  * \code{.sh}
  *      ./verify1 sign2-res.xml rsapub.pem
@@ -71,7 +71,7 @@ main(int argc, char **argv) {
 
     /* Init LibXSLT */
 #ifndef XMLSEC_NO_XSLT
-    /* disable everything */
+    /* disable all XSLT file and network access */
     xsltSecPrefs = xsltNewSecurityPrefs();
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
@@ -195,8 +195,8 @@ create_signature_template(xmlDocPtr doc){
 
 /**
  * @brief Signs an XML file using a dynamically created enveloped signature template.
- * @details Signs the #xml_file using private key from #key_file and dynamicaly
- * created enveloped signature template.
+ * @details Signs #xml_file using the private key from #key_file and a
+ * dynamically created enveloped signature template.
  * @param xml_file the XML file name.
  * @param key_file the PEM private key file name.
  * @return 0 on success or a negative value if an error occurs.
@@ -245,7 +245,7 @@ sign_file(const char* xml_file, const char* key_file) {
         goto done;
     }
 
-    /* set key name to the file name, this is just an example! */
+    /* set the key name to the file name; this is only an example */
     if(xmlSecKeySetName(dsigCtx->signKey, BAD_CAST key_file) < 0) {
         fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
         goto done;

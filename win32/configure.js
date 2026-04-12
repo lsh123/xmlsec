@@ -307,39 +307,6 @@ function validateMemcheckOption(opt) {
 	}
 }
 
-/* Creates the readme file for the binary distribution of 'bname', for the
-   version 'ver' in the file 'file'. This one is called from the Makefile when
-   generating a binary distribution. The parameters are passed by make. */
-function genReadme(bname, ver, file)
-{
-	var fso, f;
-	fso = new ActiveXObject("Scripting.FileSystemObject");
-	f = fso.CreateTextFile(file, true);
-	f.WriteLine("  " + bname + " " + ver);
-	f.WriteLine("  --------------");
-	f.WriteBlankLines(1);
-	f.WriteLine("  This is " + bname + ", version " + ver + ", binary package for the native Win32/IA32");
-	f.WriteLine("platform.");
-	f.WriteBlankLines(1);
-	f.WriteLine("  The files in this package do not require any special installation");
-	f.WriteLine("steps. Extract the contents of the archive whereever you wish and");
-	f.WriteLine("make sure that your tools which use " + bname + " can find it.");
-	f.WriteBlankLines(1);
-	f.WriteLine("  For example, if you want to run the supplied utilities from the command");
-	f.WriteLine("line, you can, if you wish, add the 'bin' subdirectory to the PATH");
-	f.WriteLine("environment variable.");
-	f.WriteLine("  If you want to make programmes in C which use " + bname + ", you'll");
-	f.WriteLine("likely know how to use the contents of this package. If you don't, please");
-	f.WriteLine("refer to your compiler's documentation.");
-	f.WriteBlankLines(1);
-	f.WriteLine("  If there is something you cannot keep for yourself, such as a problem,");
-	f.WriteLine("a cheer of joy, a comment or a suggestion, feel free to contact me using");
-	f.WriteLine("the address below.");
-	f.WriteBlankLines(1);
-	f.WriteLine("Igor Zlatkovic (igor@zlatkovic.com)");
-	f.Close();
-}
-
 /*
  * main(),
  * Execution begins here.
@@ -416,16 +383,9 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			error = 1;
             WScript.Echo("ERROR: Unknown option'" + opt + "'\n");
 		}
-	} else if (i == 0) {
-		if (arg == "genreadme") {
-			// This command comes from the Makefile and will not be checked
-			// for errors, because Makefile will always supply right parameters.
-			genReadme(WScript.Arguments(1), WScript.Arguments(2), WScript.Arguments(3));
-			WScript.Quit(0);
-		} else if (arg == "help") {
-			usage();
-			WScript.Quit(0);
-		}
+	} else if (i == 0 && arg == "help") {
+		usage();
+		WScript.Quit(0);
 	} else {
 		error = 1;
 	}
@@ -543,6 +503,12 @@ txtOut += "\n";
 txtOut += "Crypto configuration\n";
 txtOut += "-------------------------\n";
 txtOut += " Use OpenSSL3 Engine: " + boolToStr(withOpenSSL3Engines) + "\n";
+txtOut += "\n";
+txtOut += "\n";
+txtOut += "DEPREACTED: the configure.js script is no longer supported and will be removed in a future release.\n"
+txtOut += "Please use PowerShell version (configure.ps1) to configure the build instead.\n";
+txtOut += "\n";
+
 WScript.Echo(txtOut);
 
 // Done.

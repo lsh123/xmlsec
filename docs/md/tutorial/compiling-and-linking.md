@@ -216,8 +216,8 @@ dynamic linking, and debug vs release builds. The
 rule is simple: ***exactly the same runtime MUST be used throughout
 the application (including all dependencies)***.
 
-By default, `cscript configure.js` uses `/MD` (non-debug version of
-multithreaded DLL runtime). Use `cruntime=<new runtime>` option to
-change it (see the XML Security Library
-[installation tutorial](install.md) for more details).
+By default, `configure.ps1` uses the `/MD` (non-debug version of 
+the multithreaded DLL runtime) runtime libraries. 
+Use `cruntime=<new runtime>` option to change it (see the XML Security
+Library [installation tutorial](install.md) for more details).
 

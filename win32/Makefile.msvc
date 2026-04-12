@@ -1054,10 +1054,3 @@ $(BINDIR)\xmlsec_unit_testsa.exe: xmlseca $(XMLSEC_APPS_INTDIR_A)\unit_tests $(B
 $(BINDIR)\xmlsec_unit_tests.exe: xmlsec $(XMLSEC_APPS_INTDIR)\unit_tests $(BINDIR) $(XMLSEC_UNIT_TESTS_OBJS) $(XMLSEC_UNIT_TESTS_RES)
 	$(LD) $(LDFLAGS) /OUT:$@ $(XMLSEC_IMP) $(XMLSEC_CRYPTO_IMP) $(APP_LIBS) $(XMLSEC_UNIT_TESTS_OBJS) $(XMLSEC_UNIT_TESTS_RES)
 
-# This is a target for me, to make a binary distribution. Not for the public use,
-# keep your hands off :-)
-BDVERSION = $(XMLSEC_VERSION_MAJOR).$(XMLSEC_VERSION_MINOR).$(XMLSEC_VERSION_SUBMINOR)
-BDPREFIX = $(XMLSEC_BASENAME)-$(BDVERSION).win32
-bindist : all
-	$(MAKE) /nologo PREFIX=$(BDPREFIX) SOPREFIX=$(BDPREFIX)\bin install
-	cscript //NoLogo configure.js genreadme $(XMLSEC_BASENAME) $(BDVERSION) $(BDPREFIX)\readme.txt

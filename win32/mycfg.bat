@@ -23,7 +23,8 @@ SET XMLSEC_OPTIONS=crypto=%XMLSEC_CRYPTO% legacy-features=yes static=no debug=ye
 
 nmake clean
 del /F Makefile configure.txt
-cscript configure.js prefix=%XMLSEC_PREFIX% %XMLSEC_OPTIONS% include=%XMLSEC_INCLUDE% lib=%XMLSEC_LIB%
+REM cscript configure.js prefix=%XMLSEC_PREFIX% %XMLSEC_OPTIONS% include=%XMLSEC_INCLUDE% lib=%XMLSEC_LIB%
+powershell -ExecutionPolicy Bypass -File configure.ps1 prefix=%XMLSEC_PREFIX% %XMLSEC_OPTIONS% include=%XMLSEC_INCLUDE% lib=%XMLSEC_LIB%
 
 @ECHO OFF
 mkdir binaries

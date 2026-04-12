@@ -97,7 +97,7 @@ Visual Studio, run the following commands:
 ```
 gunzip -c xmlsec1-<version>.tar.gz | tar xvf -
 cd xmlsec1-<version>\win32
-cscript configure.js [possible configure options]
+powershell -ExecutionPolicy Bypass -File configure.ps1 [possible configure options]
 nmake
 nmake install
 ```
@@ -105,7 +105,7 @@ nmake install
 To see the configuration options, run:
 
 ```
-cscript configure.js help
+powershell -ExecutionPolicy Bypass -File configure.ps1 help
 ```
 
 Note: Do not use path names that contain spaces. This will fail.
@@ -121,5 +121,5 @@ The following command configures the build as follows:
 - Include debug symbols in the binaries.
 
 ```
-cscript configure.js crypto=mscng cruntime=/MD prefix=c:\opt include=c:\opt\include lib=c:\opt\lib debug=yes
+powershell -ExecutionPolicy Bypass -File configure.ps1 crypto=mscng cruntime=/MD prefix=c:\opt include=c:\opt\include lib=c:\opt\lib debug=yes
 ```

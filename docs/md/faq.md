@@ -8,34 +8,24 @@ available that can help you to get started.
 
 ## 1. License(s).
 
-### 1.1. Licensing Terms for XML Security Library. {#section_1_1}
+### 1.1. Licensing Terms for XML Security Library.
 
 XML Security Library is released under the [MIT License](http://www.opensource.org/licenses/mit-license.html),
 see the file Copyright in the distribution for the precise wording.
 
-### 1.2. Can I use xmlsec with proprietary application or library? Can I use xmlsec with a GNU GPL application or library? {#section_1_2}
+### 1.2. Can I use xmlsec with proprietary application or library? Can I use xmlsec with a GNU GPL application or library?
 
-Probably, you will need to ask a lawyer. But IANAL answer can be found in the following table:
-
-| XML Security Library module | Dependencies | Dependencies Licenses | Using with proprietary code | Using with MIT/BSD code | Using with GPL code |
-|---|---|---|---|---|---|
-| xmlsec-core | [LibXML2](http://xmlsoft.org), [LibXSLT](http://xmlsoft.org/XSLT) | MIT License | Yes | Yes | Yes |
-| xmlsec-openssl | [OpenSSL](http://www.openssl.org) | [OpenSSL licenses](https://www.openssl.org/source/license.html) | Yes | Yes | It's complicated, see [OpenSSL FAQ](https://www.openssl.org/docs/faq.md) for more details |
-| xmlsec-nss | [NSS](http://www.mozilla.org/projects/security/pki/nss/) | MPLv2 | Yes | Yes | Yes |
-| xmlsec-gnutls | [GnuTLS](http://www.gnu.org/software/gnutls/) | LGPLv2.1+ | It's complicated, talk to a lawyer | Yes | Yes |
-| xmlsec-mscrypto and xmlsec-mscng | Windows OS | Microsoft licensing, part of Windows OS. | It's complicated, talk to a lawyer | It's complicated, talk to a lawyer | It's complicated, talk to a lawyer |
-| xmlsec-gcrypt | [LibGCrypt](https://gnupg.org/software/libgcrypt/) | LGPLv2.1+ | It's complicated, talk to a lawyer | Yes | Yes |
-
-If you have questions about XML Security Library licensing then feel free to send these questions
-to the [XMLSec GitHub Discussions](https://github.com/lsh123/xmlsec/discussions).
+Probably, you will need to ask a lawyer. If you have questions about XML Security Library
+licensing then feel free to send these questions to the
+[XMLSec GitHub Discussions](https://github.com/lsh123/xmlsec/discussions).
 
 ## 2. Building XMLSec.
 
-### 2.1. Where can I get xmlsec? {#section_2_1}
+### 2.1. Where can I get xmlsec?
 
 See XML Security Library [download page](http://www.aleksey.com/xmlsec/).
 
-### 2.2. How to compile xmlsec? {#section_2_2}
+### 2.2. How to compile xmlsec? 
 
 See  XML Security Library [installation guide](tutorial/install.md)
 
@@ -43,13 +33,13 @@ See  XML Security Library [installation guide](tutorial/install.md)
 
 See [Download page](download.md) for detailed list.
 
-### 2.4. Why does make check fail for some tests? {#section_2_4}
+### 2.4. Why does make check fail for some tests?
 
 The most likely reason is that some features might require additional configuration (e.g. installing
 and configuring GOST plugins for OpenSSL and MSCrypto). Otherwise, please submit
 a [bug report](http://www.aleksey.com/xmlsec/bugs.html) and I'll try to fix it.
 
-### 2.5. I got the xmlsec source code from GitHub and there is no `configure` script. Where can I get it? {#section_2_5}
+### 2.5. I got the xmlsec source code from GitHub and there is no `configure` script. Where can I get it?
 
 The `configure` (and several other files) are generated. Use the `autogen.sh` script to regenerate these files:
 
@@ -61,11 +51,11 @@ make
 ...
 ```
 
-### 2.6. I do not need all these features supported by xmlsec. Can I disable some of them? {#section_2_6}
+### 2.6. I do not need all these features supported by xmlsec. Can I disable some of them?
 
 Yes, you can. Please run `configure --help` for the list of possible configuration options.
 
-### 2.7. I am compiling XML Security Library on Windows and it does not compile or crashes right after the launch. Can you help me? {#section_2_7}
+### 2.7. I am compiling XML Security Library on Windows and it does not compile or crashes right after the launch. Can you help me?
 
 There are several possible reasons why you might have problems on Windows:
 
@@ -88,14 +78,16 @@ There are several possible reasons why you might have problems on Windows:
 
 ## 3. Using XMLSec.
 
-### 3.1. xmlSecDSigCtxValidate() function returned 0. Does this mean that the signature is valid? {#section_3_1}
+### 3.1. xmlSecDSigCtxValidate() function returned 0. Does this mean that the signature is valid?
 
 **No!** The `xmlSecDSigCtxValidate()` function returns 0 when there are no *processing*
 errors during signature validation (i.e. the document has correct syntax, all keys were found, etc.).
 The signature is valid if and only if the `xmlSecDSigCtxValidate()` function returns 0 **and**
 the `status` member of the `xmlSecDSigCtx` structure is equal to `xmlSecDSigStatusSucceeded`.
+Also see [XML Signature Best Practices] (https://www.w3.org/TR/xmldsig-bestpractices/) for
+other things you should be checking.
 
-### 3.2. I am trying to sign a part of XML document using an "Id" attribute but it does not work. Do you support "Id" attributes at all? {#section_3_2}
+### 3.2. I am trying to sign a part of XML document using an "Id" attribute but it does not work. Do you support "Id" attributes at all?
 
 Yes, the `Id` attributes are supported by both XMLSec and LibXML2 libraries. However, you have to
 tell LibXML2/XMLSec what is the name of the ID attribute. XML specification does not require ID attribute to
@@ -122,14 +114,16 @@ have name "ID", "Id" or "id". It can be anything you want! There are several way
 - **Use xmlAddID function.** If you are writing an application, you can declare an ID attribute using
   the `xmlAddID` LibXML2 function.
 
-### 3.3. I am trying to sign an XML document and I have a warning about "empty nodes set". Should I worry about this? {#section_3_3}
+### 3.3. I am trying to sign an XML document and I have a warning about "empty nodes set". Should I worry about this?
 
 Most likely **yes**. When it's not an error from specification point of view, I can hardly imagine
 a real world case that requires signing an empty nodes set (i.e. signing an empty string). Most likely,
 you have this error because you are trying to use an ID attribute and you did not declare the ID attribute
-(see [section 3.2](#section_3_2) about ID attributes).
+(see question 3.2 above about ID attributes).
+Also see [XML Signature Best Practices] (https://www.w3.org/TR/xmldsig-bestpractices/) for
+other things you should be checking.
 
-### 3.4. I am trying to sign/validate a document but xmlXPtrEval function can't evaluate "xpointer(id('XXXXXXX'))" expression. What's wrong? {#section_3_4}
+### 3.4. I am trying to sign/validate a document but xmlXPtrEval function can't evaluate "xpointer(id('XXXXXXX'))" expression. What's wrong?
 
 First of all, read [section 3.2](#section_3_2) about ID attributes. If you have tried to declare
 the required ID attribute and you still have problems then it is likely working with the Visa 3D protocol.
@@ -151,7 +145,7 @@ in xmlsec:
 **UPDATE:** It appears that a newer version (November, 2005) of the Visa3D DTD has this problem fixed and
 now "id" attribute is declared as ID correctly.
 
-### 3.5. The XML Security Library or XMLSec command line tool fails because the key cannot be found. What's wrong? {#section_3_5}
+### 3.5. The XML Security Library or XMLSec command line tool fails because the key cannot be found. What's wrong?
 
 There might be multiple reasons for the "key cannot be found error":
 
@@ -178,7 +172,7 @@ There might be multiple reasons for the "key cannot be found error":
 
 - **Certificate cannot be verified.** See the next [question 3.6](#section_3_6) in this FAQ.
 
-### 3.6. The XML Security Library or XMLSec command line tool fails because the certificate cannot be verified. What's wrong? {#section_3_6}
+### 3.6. The XML Security Library or XMLSec command line tool fails because the certificate cannot be verified. What's wrong?
 
 There might be several reasons why XML Security Library cannot verify a certificate:
 
@@ -208,19 +202,19 @@ There might be several reasons why XML Security Library cannot verify a certific
   there is no mechanism to verify the key origin (and for example, this enables to create "fake" signatures).
   **THIS IS NOT SECURE AND NOT RECOMMENDED.**
 
-### 3.7. I really like the XML Security Library but it is based on OpenSSL and I have to use another crypto library in my application. Can you write code to support my crypto library? {#section_3_7}
+### 3.7. I really like the XML Security Library but it is based on OpenSSL and I have to use another crypto library in my application. Can you write code to support my crypto library?
 
 The XML Security Library has a very modular structure and there should be no problem with using another crypto library.
 For example, XMLSec already supports NSS, GnuTLS, GCrypt and multiple Microsoft Crypto APIs. If your favorite
 cryptographic library is not supported by XMLSec then you can either write integration yourself or contact me
 to discuss possible options.
 
-### 3.8. I really like the XML Security Library but it does not have cipher or transform that I need. Can you write code for me? {#section_3_8}
+### 3.8. I really like the XML Security Library but it does not have cipher or transform that I need. Can you write code for me?
 
 The XML Security Library has a very modular structure and it is easy to add any cipher or other transform. You can
 either write integration yourself or contact me to discuss possible options.
 
-### 3.9. I am trying to validate a signature created by another software but validation fails. What's wrong? {#section_3_9}
+### 3.9. I am trying to validate a signature created by another software but validation fails. What's wrong?
 
 There might be many reasons for the failures and most likely cause is the incorrect implementation of the
 XMLDSig specification by the other software package. XML Security Library tries to handle as many issues as possible
@@ -234,7 +228,7 @@ another software packet and ask them to help you debug the issue. Use `--store-r
 pre-signatures buffers from XMLSec and compare those against the similar buffers from the another software as
 a first step in debugging process.
 
-### 3.10. I am trying to validate a signature created by XMLSec with another software but validation fails. What's wrong? {#section_3_10}
+### 3.10. I am trying to validate a signature created by XMLSec with another software but validation fails. What's wrong?
 
-[Same advice](#section_3_9) as above applies.
+Same advice (question 3.9 above) applies.
 

@@ -35,6 +35,8 @@ A typical signature verification process includes the following steps:
 - Perform additional checks to ensure the signature is valid (for
     example, validate References and Transforms to ensure that the
     expected data was actually signed).
+    See [XML Signature Best Practices] (https://www.w3.org/TR/xmldsig-bestpractices/)
+    for more details.
 - Destroy the signature context using the
   [xmlSecDSigCtxDestroy](../api/xmlsec_core_xmldsig.md#xmlsecdsigctxdestroy)
   function.

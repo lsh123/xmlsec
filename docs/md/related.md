@@ -1,5 +1,19 @@
 # XML Security Library: Related
 
+
+### Specifications
+
+- [XML Signature Syntax and Processing Specification](http://www.w3.org/TR/xmldsig-core/) ([working group](http://www.w3.org/Signature/Overview.html))
+- [XML Encryption Syntax and Processing Specification](http://www.w3.org/TR/xmlenc-core/) ([working group](http://www.w3.org/Encryption/2001/))
+- [XML Signature Best Practices] (https://www.w3.org/TR/xmldsig-bestpractices/)
+- [Additional XML Security URIs] (https://www.rfc-editor.org/rfc/rfc9231.html)
+- [XML Key Management Specification](http://www.w3.org/TR/xkms2/) ([working group](http://www.w3.org/2001/XKMS/))
+- [Extensible Markup Language (XML) 1.0 Specification](http://www.w3.org/TR/REC-xml)
+- [Namespaces in XML](http://www.w3.org/TR/REC-xml-names/)
+- [XML Path Language (XPath) Version 1.0](http://www.w3.org/TR/xpath)
+- [XML Pointer language (XPointer)](http://www.w3.org/TR/WD-xptr)
+
+
 ### Books
 
 - [Secure XML: The New Syntax for Signatures and Encryption](https://www.amazon.com/Secure-XML-Syntax-Signatures-Encryption/dp/0201756056) — Donald E. Eastlake
@@ -11,16 +25,7 @@
 - [Web Services Security](https://www.amazon.com/Web-Services-Security-Mark-ONeill/dp/0072224711) — Mark O'Neill
 - [Public Key Infrastructure: Building Trusted Applications and Web Services](https://www.amazon.com/Public-Key-Infrastructure-Building-Applications/dp/0849308224) — John R. Vacca
 
-### Dependencies {#dependencies}
-
-- [LibXML](http://xmlsoft.org/) — GNOME [XML](http://www.w3.org/TR/REC-xml) library.
-- [LibXSLT](http://xmlsoft.org/XSLT/) — GNOME [XSLT](http://www.w3.org/TR/xslt) / [EXSLT](http://www.exslt.org/) library.
-- [OpenSSL](http://www.openssl.org) — [SSL](http://www.netscape.com/eng/ssl3/) / TLS implementation.
-- [GnuTLS](http://www.gnu.org/software/gnutls/)
-- [Libgcrypt](https://www.gnupg.org/software/libgcrypt/index.html)
-- [NSS](http://www.mozilla.org/projects/security/pki/nss/) — Mozilla cryptographic library.
-
-### Projects {#projects}
+### Projects
 
 - XML Security Library is included as part of Debian GNU/Linux. For more information see the [coordination page](http://memebeam.org/toys/DebianXmlsec).
 - XML Security Library [FreeBSD](http://www.freebsd.org/cgi/cvsweb.cgi/ports/security/xmlsec/) and [OpenBSD](https://openports.pl/path/security/xmlsec) ports.
@@ -29,17 +34,8 @@
 - [Lasso Library](http://lasso.entrouvert.org/) — the [Liberty Alliance](http://www.projectliberty.org/) standards implementation.
 - [OpenSAML](http://www.opensaml.org/) — an open source implementation of [SAML 1.0 specification](http://www.oasis-open.org/committees/security/#documents).
 
-### Specifications {#specifications}
 
-- [XML Signature Syntax and Processing Specification](http://www.w3.org/TR/xmldsig-core/) ([working group](http://www.w3.org/Signature/Overview.html)).
-- [XML Encryption Syntax and Processing Specification](http://www.w3.org/TR/xmlenc-core/) ([working group](http://www.w3.org/Encryption/2001/)).
-- [XML Key Management Specification](http://www.w3.org/TR/xkms2/) ([working group](http://www.w3.org/2001/XKMS/)).
-- [Extensible Markup Language (XML) 1.0 Specification](http://www.w3.org/TR/REC-xml).
-- [Namespaces in XML](http://www.w3.org/TR/REC-xml-names/).
-- [XML Path Language (XPath) Version 1.0](http://www.w3.org/TR/xpath).
-- [XML Pointer language (XPointer)](http://www.w3.org/TR/WD-xptr).
-
-### Articles {#articles}
+### Articles
 
 - [XML Security page](http://www.google.com/url?sa=U&start=1&q=http://www.nue.et-inf.uni-siegen.de/%7Egeuer-pollmann/xml_security.html&e=267) — Christian Geuer-Pollmann's collection of links about XML Security.
 - [An Introduction to XML Encryption and XML Signature](http://www-106.ibm.com/developerworks/xml/library/s-xmlsec.html/index.html).

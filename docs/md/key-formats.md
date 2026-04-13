@@ -2,7 +2,7 @@
 
 XML Security library supports the following key, certificate, and CRL formats:
 
-### XMLSec Cryptographic Libraries key formats {#formats}
+### XMLSec Cryptographic Libraries key formats
 
 | Format | XMLSec with OpenSSL | XMLSec with NSS | XMLSec with GnuTLS | XMLSec with MSCng | XMLSec with MSCrypto | XMLSec with GCrypt |
 |---|---|---|---|---|---|---|

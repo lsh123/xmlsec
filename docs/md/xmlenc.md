@@ -4,7 +4,7 @@ XML Security library supports the following features as defined in
 [XML Encryption Syntax and Processing Version 1.1](https://www.w3.org/TR/xmlenc-core1/#sec-AlgID)
 (also see [RFC 9231](https://www.ietf.org/rfc/rfc9231.html)):
 
-### XML Security Library core features {#core}
+### XML Security Library core features
 
 | Feature | [Requirements](https://www.w3.org/TR/xmlenc-core1/#sec-AlgID) | Status |
 |---|---|---|
@@ -29,7 +29,7 @@ XML Security library supports the following features as defined in
 | **Transforms** | | |
 | [XML Canonicalization](https://www.w3.org/TR/xmlenc-core1/#sec-Alg-Canonicalition) | | See [XMLDsig Report](xmldsig.md) |
 
-### XMLSec Cryptographic Libraries features {#algorithms}
+### XMLSec Cryptographic Libraries features
 
 | Algorithm | [Requirements](https://www.w3.org/TR/xmlenc-core1/#sec-AlgID) | XMLSec with OpenSSL | XMLSec with NSS | XMLSec with GnuTLS | XMLSec with MSCng | XMLSec with MSCrypto [(1)](#feature-disabled) | XMLSec with GCrypt [(1)](#feature-disabled) |
 |---|---|---|---|---|---|---|---|
@@ -75,7 +75,7 @@ XML Security library supports the following features as defined in
 | **Message Digest** | | | | | | | |
 | [Message Digest Algorithms](https://www.w3.org/TR/xmlenc-core1/#sec-Alg-MessageDigest) | | See [XMLDsig Report](xmldsig.md) | | | | | |
 
-### Notes {#notes}
+### Notes
 
 1. <a id="feature-disabled"></a> The feature is disabled by default but can be re-enabled at build time.
 2. <a id="derived-key"></a> Some optional features in DerivedKey element are not supported ([more details](https://github.com/lsh123/xmlsec/issues/515)).
@@ -88,7 +88,7 @@ XML Security library supports the following features as defined in
 9. <a id="nss-x25519-only"></a> The xmlsec-nss library only supports X25519; X448 (Curve448) is not yet implemented in NSS.
 10. <a id="mscng-x25519-only"></a> The xmlsec-mscng library only supports X25519; X448 (Curve448) is not supported.
 
-### Test vectors {#test-vectors}
+### Test vectors
 
 - [XML Encryption 1.0 interop (2002)](http://www.w3.org/Encryption/2002/02-xenc-interop.html)
 - [XML Encryption 1.1 interop (2012)](https://www.w3.org/TR/2012/NOTE-xmlenc-core1-interop-20121113/)

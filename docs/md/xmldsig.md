@@ -4,7 +4,7 @@ XML Security library supports the following features as defined in
 [XML Signature Syntax and Processing 1.1](https://www.w3.org/TR/xmldsig-core1/)
 (also see [RFC 9231](https://www.ietf.org/rfc/rfc9231.html)):
 
-### XML Security Library core features {#core}
+### XML Security Library core features
 
 | Feature | [Requirements](https://www.w3.org/TR/xmldsig-core/#sec-AlgID) | Status |
 |---|---|---|
@@ -50,7 +50,7 @@ XML Security library supports the following features as defined in
 | [Decryption Transform](https://www.w3.org/TR/xmlenc-decrypt/) | Optional | Yes |
 | [XPointer Transform](https://www.ietf.org/rfc/rfc9231.html#section-2.5.1) | Optional | Yes |
 
-### XMLSec Cryptographic Libraries features {#algorithms}
+### XMLSec Cryptographic Libraries features
 
 | Algorithm | [Requirements](https://www.w3.org/TR/xmldsig-core/#sec-AlgID) | XMLSec with OpenSSL | XMLSec with NSS | XMLSec with GnuTLS | XMLSec with MSCng | XMLSec with MSCrypto [(1)](#feature-disabled) | XMLSec with GCrypt [(1)](#feature-disabled) |
 |---|---|---|---|---|---|---|---|
@@ -122,7 +122,7 @@ XML Security library supports the following features as defined in
 | [The SPKIData Element](https://www.w3.org/TR/xmldsig-core1/#sec-SPKIData) | Optional | No | No | No | No | No | No |
 | [The DEREncodedKeyValue Element](https://www.w3.org/TR/xmldsig-core1/#sec-DEREncodedKeyValue) | Optional | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) [(11)](#mscng-xdh) | No | No |
 
-### Notes {#notes}
+### Notes
 
 1. <a id="feature-disabled"></a> The feature is disabled by default but can be re-enabled at build time.
 2. <a id="xslt"></a> Requires [LibXSLT](http://xmlsoft.org/XSLT/downloads.html) library.
@@ -136,7 +136,7 @@ XML Security library supports the following features as defined in
 10. <a id="mscng-sha3"></a> SHA3 digest algorithms in xmlsec-mscng require Windows 11 22H2 or later.
 11. <a id="mscng-xdh"></a> The xmlsec-mscng library supports XDH (X25519) key data (X448 is not supported); see the [XML Encryption Interoperability Report](xmlenc.md) for key agreement support details.
 
-### Test vectors {#test-vectors}
+### Test vectors
 
 - [XML Signature 1.0 interop (2001)](http://www.w3.org/Signature/2001/04/05-xmldsig.md)
 - [XML Signature 1.1 interop (2012)](https://www.w3.org/TR/2012/NOTE-xmldsig-core1-interop-20121113/)

@@ -94,9 +94,9 @@ static X509*            xmlSecOpenSSLX509FindChildCert                  (STACK_O
                                                                          X509 *cert);
 static X509_NAME*       xmlSecOpenSSLX509NameRead                       (const xmlChar *str);
 
-static int              xmlSecOpenSSLX509NamesCompare                   (X509_NAME *a,
-                                                                         X509_NAME *b);
-static STACK_OF(X509_NAME_ENTRY)*  xmlSecOpenSSLX509_NAME_ENTRIES_copy  (X509_NAME *a);
+static int              xmlSecOpenSSLX509NamesCompare                   (XMLSEC_OPENSSL400_CONST X509_NAME *a,
+                                                                         XMLSEC_OPENSSL400_CONST X509_NAME *b);
+static STACK_OF(X509_NAME_ENTRY)*  xmlSecOpenSSLX509_NAME_ENTRIES_copy  (XMLSEC_OPENSSL400_CONST X509_NAME *a);
 static int              xmlSecOpenSSLX509_NAME_ENTRIES_cmp              (STACK_OF(X509_NAME_ENTRY) * a,
                                                                          STACK_OF(X509_NAME_ENTRY) * b);
 static int              xmlSecOpenSSLX509_NAME_ENTRY_cmp                (const X509_NAME_ENTRY * const *a,
@@ -390,6 +390,19 @@ xmlSecOpenSSLX509StoreVerifyAndCopyCrls(X509_STORE* xst, X509_STORE_CTX* xsc, ST
     return(0);
 }
 
+
+/* X509_cmp_time is deprecated in OpenSSL 4.0.0 */
+#if defined(XMLSEC_OPENSSL_API_400)
+/* ASN1_TIME_cmp_time_t() and ASN1_UTCTIME_cmp_time_t() return -1 if s is before t,
+   0 if s equals t, or 1 if s is after t. -2 is returned on error */
+#define xmlSecOpenSSLAsn1TimeCmp(a, b) ASN1_TIME_cmp_time_t((a), *(b))
+#else /* defined(XMLSEC_OPENSSL_API_400) */
+/* X509_cmp_time() and X509_cmp_current_time() return -1 if asn1_time is earlier than,
+   or equal to, in_tm (resp. current time), and 1 otherwise. These methods return 0
+   on error. */
+#define xmlSecOpenSSLAsn1TimeCmp(a, b) X509_cmp_time((a), (b))
+#endif /* defined(XMLSEC_OPENSSL_API_400) */
+
 static int
 xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked(X509 * cert, STACK_OF(X509_REVOKED) *revoked_certs, xmlSecKeyInfoCtx* keyInfoCtx) {
     X509_REVOKED * revoked_cert;
@@ -436,14 +449,14 @@ xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked(X509 * cert, STACK_OF(X509_REVOKE
                 xmlSecOpenSSLError("X509_REVOKED_get0_revocationDate(revoked_cert)", NULL);
                 return(-1);
             }
-            ret = X509_cmp_time(revocationDate, &tt);
+            ret = xmlSecOpenSSLAsn1TimeCmp(revocationDate, &tt);
             if (ret == 0) {
                 xmlSecOpenSSLError("X509_cmp_time(revocationDate)", NULL);
                 return(-1);
             }
             /* ret = 1: asn1_time is later than time */
             if (ret > 0) {
-                X509_NAME *issuer;
+                XMLSEC_OPENSSL400_CONST X509_NAME *issuer;
                 char issuer_name[256];
                 time_t ts;
 
@@ -476,9 +489,9 @@ xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked(X509 * cert, STACK_OF(X509_REVOKE
 
 /* tries to find the best CRL, returns 1 on success, 0 if crl is not found, or a negative value on error */
 static int
-xmlSecOpenSSLX509StoreFindBestCrl(X509_NAME *cert_issuer, STACK_OF(X509_CRL) *crls, X509_CRL **res) {
+xmlSecOpenSSLX509StoreFindBestCrl(XMLSEC_OPENSSL400_CONST X509_NAME *cert_issuer, STACK_OF(X509_CRL) *crls, X509_CRL **res) {
     X509_CRL *crl = NULL;
-    X509_NAME *crl_issuer;
+    XMLSEC_OPENSSL400_CONST X509_NAME *crl_issuer;
     const ASN1_TIME * lastUpdate;
     time_t resLastUpdateTime = 0;
     xmlSecOpenSSLSizeT ii, num;
@@ -526,7 +539,7 @@ xmlSecOpenSSLX509StoreFindBestCrl(X509_NAME *cert_issuer, STACK_OF(X509_CRL) *cr
 
         /* return -1 if asn1_time is earlier than, or equal to, ts
          * and 1 otherwise. These methods return 0 on error.*/
-        ret = X509_cmp_time(lastUpdate, &resLastUpdateTime);
+        ret = xmlSecOpenSSLAsn1TimeCmp(lastUpdate, &resLastUpdateTime);
         if(ret == 0) {
             xmlSecOpenSSLError("X509_cmp_time(lastUpdate)", NULL);
             return(-1);
@@ -550,7 +563,7 @@ xmlSecOpenSSLX509StoreFindBestCrl(X509_NAME *cert_issuer, STACK_OF(X509_CRL) *cr
 
 static int
 xmlSecOpenSSLX509StoreVerifyCertAgainstCrls(STACK_OF(X509_CRL) *crls, X509* cert, xmlSecKeyInfoCtx* keyInfoCtx) {
-    X509_NAME *cert_issuer;
+    XMLSEC_OPENSSL400_CONST X509_NAME *cert_issuer;
     X509_CRL *crl = NULL;
     STACK_OF(X509_REVOKED) * revoked_certs;
     int ret;
@@ -1418,7 +1431,7 @@ xmlSecOpenSSLX509StoreFinalize(xmlSecKeyDataStorePtr store) {
  *
   *****************************************************************************/
 static X509*
-xmlSecOpenSSLX509FindTrustedIssuer(X509_STORE* xst, X509_NAME* issuer) {
+xmlSecOpenSSLX509FindTrustedIssuer(X509_STORE* xst, XMLSEC_OPENSSL400_CONST X509_NAME* issuer) {
     STACK_OF(X509_OBJECT)* objects = NULL;
     xmlSecOpenSSLSizeT ii, num;
     X509* issuer_cert = NULL;
@@ -1427,17 +1440,24 @@ xmlSecOpenSSLX509FindTrustedIssuer(X509_STORE* xst, X509_NAME* issuer) {
     xmlSecAssert2(issuer != NULL, NULL);
 
     /* Get all objects from the trusted store */
+#if defined(XMLSEC_OPENSSL_API_350)
+    objects = X509_STORE_get1_objects(xst);
+    if(objects == NULL) {
+        return(NULL);
+    }
+#else   /* defined(XMLSEC_OPENSSL_API_350) */
     objects = X509_STORE_get0_objects(xst);
     if(objects == NULL) {
         return(NULL);
     }
+#endif /* defined(XMLSEC_OPENSSL_API_350) */
 
     /* Search for a certificate with matching subject */
     num = sk_X509_OBJECT_num(objects);
     for(ii = 0; ii < num; ++ii) {
         X509_OBJECT* obj = sk_X509_OBJECT_value(objects, ii);
         X509* cert;
-        X509_NAME* cert_subject;
+        XMLSEC_OPENSSL400_CONST X509_NAME* cert_subject;
 
         if(obj == NULL) {
             continue;
@@ -1469,11 +1489,17 @@ xmlSecOpenSSLX509FindTrustedIssuer(X509_STORE* xst, X509_NAME* issuer) {
         }
     }
 
+    /* list returned by X509_STORE_get1_objects needs to be freed */
+#if defined(XMLSEC_OPENSSL_API_350)
+    sk_X509_OBJECT_pop_free(objects, X509_OBJECT_free);
+#endif /* defined(XMLSEC_OPENSSL_API_350) */
+
+    /* done */
     return(issuer_cert);
 }
 
 static X509*
-xmlSecOpenSSLX509FindUntrustedIssuer(X509_NAME* issuer, X509_STORE* xst, X509_STORE_CTX* xsc, STACK_OF(X509)* untrusted, xmlSecKeyInfoCtx* keyInfoCtx) {
+xmlSecOpenSSLX509FindUntrustedIssuer(XMLSEC_OPENSSL400_CONST X509_NAME* issuer, X509_STORE* xst, X509_STORE_CTX* xsc, STACK_OF(X509)* untrusted, xmlSecKeyInfoCtx* keyInfoCtx) {
     X509* issuer_cert = NULL;
     xmlSecOpenSSLSizeT ii, num;
     int ret;
@@ -1491,7 +1517,7 @@ xmlSecOpenSSLX509FindUntrustedIssuer(X509_NAME* issuer, X509_STORE* xst, X509_ST
     num = sk_X509_num(untrusted);
     for(ii = 0; ii < num; ++ii) {
         X509* cert = sk_X509_value(untrusted, ii);
-        X509_NAME* cert_subject;
+        XMLSEC_OPENSSL400_CONST X509_NAME* cert_subject;
 
         if(cert == NULL) {
             continue;
@@ -1544,7 +1570,7 @@ done:
 }
 
 static X509*
-xmlSecOpenSSLX509FindIssuer(X509_NAME* issuer, X509_STORE* xst, X509_STORE_CTX* xsc, STACK_OF(X509)* untrusted, xmlSecKeyInfoCtx* keyInfoCtx) {
+xmlSecOpenSSLX509FindIssuer(XMLSEC_OPENSSL400_CONST X509_NAME* issuer, X509_STORE* xst, X509_STORE_CTX* xsc, STACK_OF(X509)* untrusted, xmlSecKeyInfoCtx* keyInfoCtx) {
     X509* issuer_cert = NULL;
 
     xmlSecAssert2(xst != NULL, NULL);
@@ -1586,7 +1612,7 @@ xmlSecOpenSSLX509VerifyCRLTimeValidity(X509_CRL *crl, xmlSecKeyInfoCtx* keyInfoC
 
     /* Verify thisUpdate */
     if(thisUpdate != NULL) {
-        ret = X509_cmp_time(thisUpdate, &verification_time);
+        ret = xmlSecOpenSSLAsn1TimeCmp(thisUpdate, &verification_time);
         if(ret == 0) {
             xmlSecOpenSSLError("X509_cmp_time(thisUpdate)", NULL);
             return(-1);
@@ -1603,17 +1629,12 @@ xmlSecOpenSSLX509VerifyCRLTimeValidity(X509_CRL *crl, xmlSecKeyInfoCtx* keyInfoC
 
     /* Verify nextUpdate */
     if(nextUpdate != NULL) {
-        ret = X509_cmp_time(nextUpdate, &verification_time);
-        if(ret == 0) {
-            xmlSecOpenSSLError("X509_cmp_time(nextUpdate)", NULL);
-            return(-1);
-        }
-        if(ret < 0) {
-            /* nextUpdate < verification_time: CRL expired */
+        ret = xmlSecOpenSSLAsn1TimeCmp(nextUpdate, &verification_time);
+        if(ret <= 0) {
+            /* nextUpdate <= verification_time: CRL expired */
             char issuer[256];
             xmlSecOpenSSLX509NameToString(X509_CRL_get_issuer(crl), issuer, sizeof(issuer));
-            xmlSecOtherError2(XMLSEC_ERRORS_R_CRL_HAS_EXPIRED, NULL,
-                            "issuer=%s", issuer);
+            xmlSecOtherError2(XMLSEC_ERRORS_R_CRL_HAS_EXPIRED, NULL, "issuer=%s", issuer);
             return(0);
         }
     }
@@ -1717,17 +1738,17 @@ xmlSecOpenSSLX509FindCertCtxInitialize(xmlSecOpenSSLX509FindCertCtxPtr ctx,
     const xmlChar *issuerName, const xmlChar *issuerSerial,
     const xmlSecByte * ski, xmlSecSize skiSize
 ) {
+    int skiLen;
+    int ret;
+
     xmlSecAssert2(ctx != NULL, -1);
 
     memset(ctx, 0, sizeof(*ctx));
 
-    /* simplest one first */
-    if((ski != NULL) && (skiSize > 0)) {
-        ctx->ski = ski;
-        XMLSEC_SAFE_CAST_SIZE_TO_INT(skiSize, ctx->skiLen, return(-1), NULL);
-    }
+    /* cast first */
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(skiSize, skiLen, return(-1), NULL);
 
-
+    /* Subject name */
     if(subjectName != NULL) {
         ctx->subjectName = xmlSecOpenSSLX509NameRead(subjectName);
         if(ctx->subjectName == NULL) {
@@ -1738,6 +1759,7 @@ xmlSecOpenSSLX509FindCertCtxInitialize(xmlSecOpenSSLX509FindCertCtxPtr ctx,
         }
     }
 
+    /* Issuer name / serial */
     if((issuerName != NULL) && (issuerSerial != NULL)) {
         BIGNUM *bn = NULL;
 
@@ -1770,6 +1792,23 @@ xmlSecOpenSSLX509FindCertCtxInitialize(xmlSecOpenSSLX509FindCertCtxPtr ctx,
         }
         BN_clear_free(bn);
     }
+
+    /* SKI */
+    if((ski != NULL) && (skiLen > 0)) {
+        ctx->ski = ASN1_OCTET_STRING_new();
+        if(ctx->ski == NULL) {
+            xmlSecOpenSSLError("ASN1_OCTET_STRING_new", NULL);
+            xmlSecOpenSSLX509FindCertCtxFinalize(ctx);
+            return(-1);
+        }
+        ret = ASN1_OCTET_STRING_set(ctx->ski, ski, skiLen);
+        if(ret != 1) {
+            xmlSecOpenSSLError("ASN1_OCTET_STRING_set", NULL);
+            xmlSecOpenSSLX509FindCertCtxFinalize(ctx);
+            return(-1);
+        }
+    }
+
 
     /* done! */
     return(0);
@@ -1823,13 +1862,16 @@ void xmlSecOpenSSLX509FindCertCtxFinalize(xmlSecOpenSSLX509FindCertCtxPtr ctx) {
     if(ctx->issuerSerial != NULL) {
         ASN1_INTEGER_free(ctx->issuerSerial);
     }
+    if(ctx->ski != NULL) {
+        ASN1_OCTET_STRING_free(ctx->ski);
+    }
     memset(ctx, 0, sizeof(*ctx));
 }
 
 
 static int
-xmlSecOpenSSLX509MatchBySubjectName(X509* cert, X509_NAME* subjectName) {
-    X509_NAME * certSubjectName;
+xmlSecOpenSSLX509MatchBySubjectName(X509* cert, XMLSEC_OPENSSL400_CONST X509_NAME* subjectName) {
+    XMLSEC_OPENSSL400_CONST X509_NAME * certSubjectName;
     int ret;
 
     xmlSecAssert2(cert != NULL, -1);
@@ -1854,9 +1896,9 @@ xmlSecOpenSSLX509MatchBySubjectName(X509* cert, X509_NAME* subjectName) {
 }
 
 static int
-xmlSecOpenSSLX509MatchByIssuer(X509* cert,  X509_NAME* issuerName, ASN1_INTEGER* issuerSerial) {
+xmlSecOpenSSLX509MatchByIssuer(X509* cert, XMLSEC_OPENSSL400_CONST X509_NAME* issuerName, ASN1_INTEGER* issuerSerial) {
     ASN1_INTEGER* certSerial;
-    X509_NAME* certName;
+    XMLSEC_OPENSSL400_CONST X509_NAME* certName;
 
     xmlSecAssert2(cert != NULL, -1);
 
@@ -1878,14 +1920,15 @@ xmlSecOpenSSLX509MatchByIssuer(X509* cert,  X509_NAME* issuerName, ASN1_INTEGER*
 }
 
 static int
-xmlSecOpenSSLX509MatchBySki(X509* cert, const xmlSecByte* ski, int skiLen) {
-    X509_EXTENSION* ext;
+xmlSecOpenSSLX509MatchBySki(X509* cert, ASN1_OCTET_STRING* ski) {
+    XMLSEC_OPENSSL400_CONST X509_EXTENSION* ext;
     ASN1_OCTET_STRING* keyId;
+    int ret;
     int index;
 
     xmlSecAssert2(cert != NULL, -1);
 
-    if((ski == NULL) || (skiLen <= 0)) {
+    if(ski == NULL){
         return(0);
     }
 
@@ -1901,7 +1944,9 @@ xmlSecOpenSSLX509MatchBySki(X509* cert, const xmlSecByte* ski, int skiLen) {
     if(keyId == NULL) {
         return(0);
     }
-    if((keyId->length != skiLen) || (memcmp(keyId->data, ski, (size_t)skiLen) != 0)) {
+
+    ret = ASN1_OCTET_STRING_cmp(keyId, ski);
+    if(ret != 0) {
         ASN1_OCTET_STRING_free(keyId);
         return(0);
     }
@@ -1963,7 +2008,7 @@ xmlSecOpenSSLX509FindCertCtxMatch(xmlSecOpenSSLX509FindCertCtxPtr ctx, X509* cer
         return(1);
     }
 
-    ret = xmlSecOpenSSLX509MatchBySki(cert, ctx->ski, ctx->skiLen);
+    ret = xmlSecOpenSSLX509MatchBySki(cert, ctx->ski);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLX509MatchBySki", NULL);
         return(-1);
@@ -1987,7 +2032,7 @@ xmlSecOpenSSLX509FindCertCtxMatch(xmlSecOpenSSLX509FindCertCtxPtr ctx, X509* cer
 
 static unsigned long
 xmlSecOpenSSLX509GetSubjectHash(X509* x) {
-    X509_NAME* name;
+    XMLSEC_OPENSSL400_CONST X509_NAME* name;
     unsigned long res;
 
     xmlSecAssert2(x != NULL, 0);
@@ -2009,7 +2054,7 @@ xmlSecOpenSSLX509GetSubjectHash(X509* x) {
 
 static unsigned long
 xmlSecOpenSSLX509GetIssuerHash(X509* x) {
-    X509_NAME* name;
+    XMLSEC_OPENSSL400_CONST X509_NAME* name;
     unsigned long res;
 
     xmlSecAssert2(x != NULL, 0);
@@ -2244,10 +2289,10 @@ xmlSecOpenSSLX509NameRead(const xmlChar *str) {
 }
 
 /*
- * This function DOES NOT create duplicates for X509_NAME_ENTRY objects!
+ * This function CREATES duplicates for X509_NAME_ENTRY objects!
  */
 static STACK_OF(X509_NAME_ENTRY)*
-xmlSecOpenSSLX509_NAME_ENTRIES_copy(X509_NAME * a) {
+xmlSecOpenSSLX509_NAME_ENTRIES_copy(XMLSEC_OPENSSL400_CONST X509_NAME * a) {
     STACK_OF(X509_NAME_ENTRY) * res = NULL;
     int ii;
     xmlSecOpenSSLSizeT ret;
@@ -2259,9 +2304,18 @@ xmlSecOpenSSLX509_NAME_ENTRIES_copy(X509_NAME * a) {
     }
 
     for (ii = X509_NAME_entry_count(a) - 1; ii >= 0; --ii) {
-        ret = sk_X509_NAME_ENTRY_push(res, X509_NAME_get_entry(a, ii));
+        XMLSEC_OPENSSL400_CONST X509_NAME_ENTRY* entry = X509_NAME_get_entry(a, ii);
+        X509_NAME_ENTRY* entry_dup = X509_NAME_ENTRY_dup(entry);
+        if(entry_dup == NULL) {
+            xmlSecOpenSSLError("X509_NAME_ENTRY_dup", NULL);
+            sk_X509_NAME_ENTRY_pop_free(res, X509_NAME_ENTRY_free);
+            return(NULL);
+        }
+
+        ret = sk_X509_NAME_ENTRY_push(res, entry_dup);
         if(ret <= 0) {
             xmlSecOpenSSLError("sk_X509_NAME_ENTRY_push", NULL);
+            sk_X509_NAME_ENTRY_pop_free(res, X509_NAME_ENTRY_free);
             return(NULL);
         }
     }
@@ -2312,7 +2366,7 @@ int xmlSecOpenSSLX509_NAME_ENTRIES_cmp(STACK_OF(X509_NAME_ENTRY)* a,  STACK_OF(X
  * Returns 0 if equal
  */
 static int
-xmlSecOpenSSLX509NamesCompare(X509_NAME *a, X509_NAME *b) {
+xmlSecOpenSSLX509NamesCompare(XMLSEC_OPENSSL400_CONST X509_NAME *a, XMLSEC_OPENSSL400_CONST X509_NAME *b) {
     STACK_OF(X509_NAME_ENTRY) *a1 = NULL;
     STACK_OF(X509_NAME_ENTRY) *b1 = NULL;
     int ret;
@@ -2328,7 +2382,7 @@ xmlSecOpenSSLX509NamesCompare(X509_NAME *a, X509_NAME *b) {
     b1 = xmlSecOpenSSLX509_NAME_ENTRIES_copy(b);
     if(b1 == NULL) {
         xmlSecInternalError("xmlSecOpenSSLX509_NAME_ENTRIES_copy", NULL);
-        sk_X509_NAME_ENTRY_free(a1);
+        sk_X509_NAME_ENTRY_pop_free(a1, X509_NAME_ENTRY_free);
         return(1);
     }
 
@@ -2342,16 +2396,16 @@ xmlSecOpenSSLX509NamesCompare(X509_NAME *a, X509_NAME *b) {
     ret = xmlSecOpenSSLX509_NAME_ENTRIES_cmp(a1, b1);
 
     /* cleanup */
-    sk_X509_NAME_ENTRY_free(a1);
-    sk_X509_NAME_ENTRY_free(b1);
+    sk_X509_NAME_ENTRY_pop_free(a1, X509_NAME_ENTRY_free);
+    sk_X509_NAME_ENTRY_pop_free(b1, X509_NAME_ENTRY_free);
     return(ret);
 }
 
 /* returns 0 if equal */
 static int
 xmlSecOpenSSLX509_NAME_ENTRY_cmp(const X509_NAME_ENTRY * const *a, const X509_NAME_ENTRY * const *b) {
-    ASN1_STRING *a_value, *b_value;
-    ASN1_OBJECT *a_name,  *b_name;
+    XMLSEC_OPENSSL400_CONST ASN1_STRING *a_value, *b_value;
+    XMLSEC_OPENSSL400_CONST ASN1_OBJECT *a_name,  *b_name;
     int a_len, b_len;
     int ret;
 

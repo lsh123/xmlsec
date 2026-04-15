@@ -51,8 +51,8 @@
 #include "../cast_helpers.h"
 #include "../x509_helpers.h"
 
-#include "private.h"
 #include "openssl_compat.h"
+#include "private.h"
 
 /******************************************************************************
  *
@@ -975,7 +975,7 @@ done:
 
 static int
 xmlSecOpenSSLX509SKIWrite(X509* cert, xmlSecBufferPtr buf) {
-    X509_EXTENSION *ext;
+    XMLSEC_OPENSSL400_CONST X509_EXTENSION *ext;
     ASN1_OCTET_STRING *keyId = NULL;
     const xmlSecByte* keyIdData;
     int index, keyIdLen;
@@ -1130,7 +1130,7 @@ xmlSecOpenSSLX509DigestWrite(X509* cert, const xmlChar* algorithm, xmlSecBufferP
 }
 
 static xmlChar*
-xmlSecOpenSSLX509NameWrite(X509_NAME* nm) {
+xmlSecOpenSSLX509NameWrite(XMLSEC_OPENSSL400_CONST X509_NAME* nm) {
     xmlChar* res = NULL;
     BIO *mem = NULL;
     xmlChar* buf = NULL;
@@ -1795,7 +1795,7 @@ done:
 }
 
 void
-xmlSecOpenSSLX509NameToString(X509_NAME* name, char* buf, int bufLen) {
+xmlSecOpenSSLX509NameToString(XMLSEC_OPENSSL400_CONST X509_NAME* name, char* buf, int bufLen) {
     BIO* mem;
     char* data = NULL;
     long len;

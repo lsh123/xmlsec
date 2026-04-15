@@ -11,9 +11,6 @@
  */
 #include "globals.h"
 
-#include <openssl/evp.h>
-#include <openssl/x509.h>
-
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/keys.h>
@@ -24,6 +21,11 @@
 
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/evp.h>
+
+#include "openssl_compat.h"
+
+#include <openssl/evp.h>
+#include <openssl/x509.h>
 
 #ifdef XMLSEC_OPENSSL_API_300
 #include <openssl/provider.h>

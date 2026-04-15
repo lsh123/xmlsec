@@ -41,24 +41,26 @@ int             xmlSecOpenSSLGenerateRandomBytes             (xmlSecByte* data, 
 #define XMLSEC_NO_CHACHA20                  1
 
 
-#define ENGINE_cleanup(...)                 {}
-#define CONF_modules_unload(...)            {}
+#define ENGINE_cleanup()                    {}
 
 #define RAND_priv_bytes(buf,len)            RAND_bytes((buf), (len))
 #define RAND_write_file(file)               (0)
 
 #define EVP_PKEY_base_id(pkey)              EVP_PKEY_id(pkey)
 #define EVP_CipherFinal(ctx, out, out_len)  EVP_CipherFinal_ex((ctx), (out), (out_len))
-#define EVP_read_pw_string(...)             (-1)
+#define EVP_read_pw_string(buf,len, prompt, verify)     (-1)
 
-#define X509_get0_pubkey(cert)              X509_get_pubkey((cert))
 #define X509_STORE_CTX_get_by_subject       X509_STORE_get_by_subject
 
 /* simply return success */
 #define sk_X509_reserve(crts, num)          (1)
 #define sk_X509_CRL_reserve(crls, num)      (1)
 
-#endif /* OPENSSL_IS_BORINGSSL */
+#endif /* defined(OPENSSL_IS_BORINGSSL) || defined(OPENSSL_IS_AWSLC) */
+
+#if defined(OPENSSL_IS_BORINGSSL)
+#define X509_get0_pubkey(cert)              X509_get_pubkey((cert))
+#endif /* defined(OPENSSL_IS_BORINGSSL) */
 
 
 /* BoringSSL redefines int->size_t or int->unsigned */
@@ -147,6 +149,17 @@ typedef int xmlSecOpenSSLSizeT;
 
 #endif /* defined(LIBRESSL_VERSION_NUMBER) */
 
+/******************************************************************************
+ *
+ * OpenSSL 4.0.0 compatibility
+ *
+  *****************************************************************************/
+#if !defined(XMLSEC_OPENSSL_API_400)
+/* OpenSSL 4.0.0 or newer adds "const" in a few places */
+#define XMLSEC_OPENSSL400_CONST
+#else   /* !defined(XMLSEC_OPENSSL_API_400) */
+#define XMLSEC_OPENSSL400_CONST  const
+#endif /* !defined(XMLSEC_OPENSSL_API_400) */
 
 /******************************************************************************
  *
@@ -203,7 +216,7 @@ typedef int xmlSecOpenSSLSizeT;
 /******************************************************************************
  *
  * Common constants that aren't defined anywhere.
- *xmlSecOpenSSLGenerateRandom
+ *
   *****************************************************************************/
 #ifndef XMLSEC_NO_GOST
 #define XMLSEC_OPENSSL_DIGEST_NAME_GOST94       "md_gost94"
@@ -225,11 +238,7 @@ typedef int xmlSecOpenSSLSizeT;
 #define XMLSEC_OPENSSL_CIPHER_NAME_AES128_GCM       "AES-128-GCM"
 #define XMLSEC_OPENSSL_CIPHER_NAME_AES192_GCM       "AES-192-GCM"
 #define XMLSEC_OPENSSL_CIPHER_NAME_AES256_GCM       "AES-256-GCM"
-#define XMLSEC_OPENSSL_CIPHER_NAME_CAMELLIA128_CBC  "CAMELLIA-128-CBC"
-#define XMLSEC_OPENSSL_CIPHER_NAME_CAMELLIA192_CBC  "CAMELLIA-192-CBC"
-#define XMLSEC_OPENSSL_CIPHER_NAME_CAMELLIA256_CBC  "CAMELLIA-256-CBC"
-#define XMLSEC_OPENSSL_CIPHER_NAME_CHACHA20         "ChaCha20"
-#define XMLSEC_OPENSSL_CIPHER_NAME_CHACHA20_POLY1305 "ChaCha20-Poly1305"
+
 
 #endif /* XMLSEC_OPENSSL_API_300 */
 

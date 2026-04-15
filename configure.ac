@@ -686,7 +686,7 @@ OPENSSL_LIB_STATIC_MARKER="libcrypto.a"
 OPENSSL_LIBS_LIST="-lcrypto"
 
 XMLSEC_NO_OPENSSL="1"
-OPENSSL_VERSION=""
+XMLSEC_OPENSSL_VERSION=""
 OPENSSL_INCLUDE_PATH=
 OPENSSL_LIB_PATH=
 OPENSSL_TEST_CONFIG=
@@ -802,21 +802,21 @@ AC_MSG_CHECKING(for openssl library >= $OPENSSL_MIN_VERSION)
 if test "z$OPENSSL_FOUND" = "zyes" ; then
     OLD_CPPFLAGS=$CPPFLAGS
     CPPFLAGS="$CPPFLAGS $OPENSSL_CFLAGS"
-    if test "z$OPENSSL_VERSION" = "z" ; then
+    if test "z$XMLSEC_OPENSSL_VERSION" = "z" ; then
         AC_EGREP_CPP(greater-than-minvers, [
             #include <openssl/opensslv.h>
             #if defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER >= 0x30900000L
             greater-than-minvers
             #endif
         ],[
-            OPENSSL_VERSION="LibreSSL >= 3.9"
+            XMLSEC_OPENSSL_VERSION="LibreSSL >= 3.9"
             enable_dh=no
         ],[
-            OPENSSL_VERSION=""
+            XMLSEC_OPENSSL_VERSION=""
         ])
     fi
 
-    if test "z$OPENSSL_VERSION" = "z" ; then
+    if test "z$XMLSEC_OPENSSL_VERSION" = "z" ; then
         AC_EGREP_CPP(greater-than-minvers, [
             #include <openssl/opensslv.h>
             #include <openssl/crypto.h>
@@ -826,17 +826,17 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
             #endif
             #endif
         ],[
-            OPENSSL_VERSION="AWSLC >= 1.1.1"
+            XMLSEC_OPENSSL_VERSION="AWSLC >= 1.1.1"
             enable_ripemd160=no
             enable_dsa=no
             enable_dh=no
             enable_sha3=no
         ],[
-            OPENSSL_VERSION=""
+            XMLSEC_OPENSSL_VERSION=""
         ])
     fi
 
-    if test "z$OPENSSL_VERSION" = "z" ; then
+    if test "z$XMLSEC_OPENSSL_VERSION" = "z" ; then
         AC_EGREP_CPP(greater-than-minvers, [
             #include <openssl/opensslv.h>
             #include <openssl/crypto.h>
@@ -846,56 +846,70 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
             #endif
             #endif
         ],[
-            OPENSSL_VERSION="BoringSSL >= 1.1.1"
+            XMLSEC_OPENSSL_VERSION="BoringSSL >= 1.1.1"
             enable_ripemd160=no
             enable_dsa=no
             enable_dh=no
             enable_sha3=no
         ],[
-            OPENSSL_VERSION=""
+            XMLSEC_OPENSSL_VERSION=""
         ])
     fi
 
-    if test "z$OPENSSL_VERSION" = "z" ; then
+    if test "z$XMLSEC_OPENSSL_VERSION" = "z" ; then
+        AC_EGREP_CPP(greater-than-minvers, [
+            #include <openssl/opensslv.h>
+            #if OPENSSL_VERSION_NUMBER >= 0x40000000L
+            greater-than-minvers
+            #endif
+        ],[
+            XMLSEC_OPENSSL_VERSION="4.0.0"
+            OPENSSL_TEST_CONFIG="openssl3.cnf"
+        ],[
+            XMLSEC_OPENSSL_VERSION=""
+        ])
+    fi
+
+    if test "z$XMLSEC_OPENSSL_VERSION" = "z" ; then
         AC_EGREP_CPP(greater-than-minvers, [
             #include <openssl/opensslv.h>
             #if OPENSSL_VERSION_NUMBER >= 0x30000000L
             greater-than-minvers
             #endif
         ],[
-            OPENSSL_VERSION="3.0.0"
+            XMLSEC_OPENSSL_VERSION="3.0.0"
             OPENSSL_TEST_CONFIG="openssl3.cnf"
         ],[
-            OPENSSL_VERSION=""
+            XMLSEC_OPENSSL_VERSION=""
         ])
     fi
 
-    if test "z$OPENSSL_VERSION" = "z" ; then
+    if test "z$XMLSEC_OPENSSL_VERSION" = "z" ; then
         AC_EGREP_CPP(greater-than-minvers, [
             #include <openssl/opensslv.h>
             #if OPENSSL_VERSION_NUMBER >= 0x10100010L
             greater-than-minvers
             #endif
         ],[
-            OPENSSL_VERSION="1.1.1"
+            XMLSEC_OPENSSL_VERSION="1.1.1"
         ],[
-            OPENSSL_VERSION=""
+            XMLSEC_OPENSSL_VERSION=""
         ])
     fi
 
     CPPFLAGS=$OLD_CPPFLAGS
 
-    if test "z$OPENSSL_VERSION" != "z" ; then
+    if test "z$XMLSEC_OPENSSL_VERSION" != "z" ; then
         OPENSSL_FOUND=yes
     else
         OPENSSL_FOUND=no
     fi
 fi
 if test "z$OPENSSL_FOUND" = "zyes" ; then
-    if test "z$OPENSSL_VERSION" = "z1.1.1" ; then
-        AC_MSG_RESULT([yes (openssl version '$OPENSSL_VERSION' --- DEPRECATED)])
+    if test "z$XMLSEC_OPENSSL_VERSION" = "z1.1.1" ; then
+        AC_MSG_RESULT([yes (openssl version '$XMLSEC_OPENSSL_VERSION' --- DEPRECATED)])
     else
-        AC_MSG_RESULT([yes (openssl version '$OPENSSL_VERSION')])
+        AC_MSG_RESULT([yes (openssl version '$XMLSEC_OPENSSL_VERSION')])
     fi
 else
     AC_MSG_RESULT([$OPENSSL_FOUND])
@@ -918,11 +932,11 @@ AC_SUBST(OPENSSL_CRYPTO_LIB)
 AC_SUBST(OPENSSL_TEST_CONFIG)
 AC_SUBST(OPENSSL_MIN_VERSION)
 AC_SUBST(OPENSSL3_MIN_VERSION)
-AC_SUBST(OPENSSL_VERSION)
+AC_SUBST(XMLSEC_OPENSSL_VERSION)
 
 dnl See if we should build OpenSSL 3+ with engines support
 AC_ARG_ENABLE([openssl3_engines],[AS_HELP_STRING([--enable-openssl3-engines],[enable engines support for OpenSSL 3+ (no)])])
-if test "z$OPENSSL_VERSION" = "z3.0.0" ; then
+if test "z$XMLSEC_OPENSSL_VERSION" = "z3.0.0" ; then
     AC_MSG_CHECKING(for OpenSSL 3+ engines support)
     if test "z$enable_openssl3_engines" = "zyes" ; then
         XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_OPENSSL3_ENGINES=1"

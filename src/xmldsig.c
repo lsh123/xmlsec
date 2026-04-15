@@ -1083,12 +1083,12 @@ xmlSecDSigCtxDebugXmlDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
     xmlSecAssert(output != NULL);
 
     if(dsigCtx->operation == xmlSecTransformOperationSign) {
-        fprintf(output, "<SignatureContext\n");
+        fprintf(output, "<SignatureContext");
     } else {
-        fprintf(output, "<VerificationContext\n");
+        fprintf(output, "<VerificationContext");
     }
     fprintf(output, " status=\"%s\"", xmlSecDSigCtxGetStatusString(dsigCtx->status));
-    fprintf(output, " failureReason=\"%s\"\n", xmlSecDSigCtxGetFailureReasonString(dsigCtx->failureReason));
+    fprintf(output, " failureReason=\"%s\"", xmlSecDSigCtxGetFailureReasonString(dsigCtx->failureReason));
     fprintf(output, ">\n");
 
     fprintf(output, "<Flags>%08x</Flags>\n", dsigCtx->flags);

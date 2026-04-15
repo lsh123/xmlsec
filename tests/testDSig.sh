@@ -259,7 +259,7 @@ execDSigPrintXmlDebugTest() {
 
     # check xmllint availability for --print-xml-debug test
     if command -v xmllint >/dev/null 2>&1 ; then
-        printf "    Verify --print-xml-debug output with xmllint          "
+        printf "    Verify --print-xml-debug output with xmllint         "
         echo "xmllint --noout $tmpfile.2" >> $curlogfile
         xmllint --noout $tmpfile.2 >> $curlogfile 2>> $curlogfile
 

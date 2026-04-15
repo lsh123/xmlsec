@@ -21,6 +21,17 @@
 #include "xmlsec_unit_tests.h"
 #include "../src/x509_helpers.h"
 
+#include <libxml/parser.h>
+
+#ifndef XMLSEC_NO_XSLT
+#include <libxslt/xslt.h>
+#include <libxslt/extensions.h>
+#include <libxslt/xsltInternals.h>
+#include <libxslt/xsltutils.h>
+#include <libxslt/security.h>
+#include <libexslt/exslt.h>
+#endif /* XMLSEC_NO_XSLT */
+
 #if defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC)
 #include <crtdbg.h>
 #endif /*defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC) */
@@ -36,6 +47,11 @@ static void testXmlSecErrorsCallback(const char* file, int line, const char* fun
 /* test group filter: if non-NULL, only the matching group runs */
 static const char * g_testGroupFilter;
 static int g_testGroupSkip;
+
+#ifndef XMLSEC_NO_XSLT
+static xsltSecurityPrefsPtr xsltSecPrefs = NULL;
+#endif /* XMLSEC_NO_XSLT */
+
 
 #if defined(XMLSEC_WINDOWS) && defined(UNICODE) && defined(__MINGW32__)
 int wmain(int argc, wchar_t* argv[]);
@@ -54,8 +70,36 @@ int main(int argc, const char **argv) {
 #endif /* defined(XMLSEC_WINDOWS) && defined(UNICODE) */
 
 #if defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC)
+    _CrtMemState memStateAtStart;
+#endif /* defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC) */
+
+    /* Init LibXML2 */
+    xmlInitParser();
+    LIBXML_TEST_VERSION
+
+    /* Init LibXSLT */
+#ifndef XMLSEC_NO_XSLT
+    /* disable everything */
+    xsltSecPrefs = xsltNewSecurityPrefs();
+    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
+    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
+    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid);
+    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_NETWORK,     xsltSecurityForbid);
+    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_NETWORK,    xsltSecurityForbid);
+    xsltSetDefaultSecurityPrefs(xsltSecPrefs);
+#endif /* XMLSEC_NO_XSLT */
+
+#if defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC)
     fprintf(stderr, "Enabling memory leaks detection\n");
-    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_CHECK_ALWAYS_DF | _CRTDBG_DELAY_FREE_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+    /* Force libxml2 thread-local state allocation (xmlNewGlobalState)
+     * before the checkpoint. It is triggered lazily on the first
+     * xmlNewParserCtxt() via xmlDictCreate() -> xmlRandom(). */
+    {
+        xmlParserCtxtPtr warmupCtxt = xmlNewParserCtxt();
+        if(warmupCtxt != NULL) { xmlFreeParserCtxt(warmupCtxt); }
+    }
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_CHECK_ALWAYS_DF | _CRTDBG_DELAY_FREE_MEM_DF);
+    _CrtMemCheckpoint(&memStateAtStart);
 #endif /* defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC) */
 
 
@@ -109,6 +153,18 @@ int main(int argc, const char **argv) {
     }
 
 done:
+    xmlSecErrorsSetCallback(xmlSecErrorsDefaultCallback);
+    free(g_testLogBuffer);
+    g_testLogBuffer = NULL;
+    g_testGroupFilter = NULL;
+
+    /* Shutdown LibXSLT / LibXML2*/
+#ifndef XMLSEC_NO_XSLT
+    xsltFreeSecurityPrefs(xsltSecPrefs);
+    xsltCleanupGlobals();
+#endif /* XMLSEC_NO_XSLT */
+    xmlCleanupParser();
+
 #if defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC)
     _CrtSetReportMode(_CRT_WARN,    _CRTDBG_MODE_FILE);
     _CrtSetReportMode(_CRT_ERROR,   _CRTDBG_MODE_FILE);
@@ -117,13 +173,16 @@ done:
     _CrtSetReportFile(_CRT_WARN,    _CRTDBG_FILE_STDERR);
     _CrtSetReportFile(_CRT_ERROR,   _CRTDBG_FILE_STDERR);
     _CrtSetReportFile(_CRT_ASSERT,  _CRTDBG_FILE_STDERR);
-    _CrtDumpMemoryLeaks();
+    {
+        _CrtMemState memStateNow, memStateDiff;
+        _CrtMemCheckpoint(&memStateNow);
+        if (_CrtMemDifference(&memStateDiff, &memStateAtStart, &memStateNow)
+            && ((ptrdiff_t)memStateDiff.lCounts[_NORMAL_BLOCK] > 0 || (ptrdiff_t)memStateDiff.lCounts[_CLIENT_BLOCK] > 0)) {
+            _CrtMemDumpAllObjectsSince(&memStateAtStart);
+            return(1);
+        }
+    }
 #endif /*  defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC) */
-
-    xmlSecErrorsSetCallback(xmlSecErrorsDefaultCallback);
-    free(g_testLogBuffer);
-    g_testLogBuffer = NULL;
-    g_testGroupFilter = NULL;
 
     return(res);
 }

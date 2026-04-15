@@ -8,12 +8,12 @@ REM
 REM Aleksey Sanin <aleksey@aleksey.com>
 REM
 
-SET XMLSEC_CRYPTO=openssl
+SET XMLSEC_CRYPTO=mscng
 SET XMLSEC_DEBUG=yes
 
 IF "%XMLSEC_DEBUG%" == "yes" (
     SET PREFIX=%USERHOME%\distro.debug
-    SET XMLSEC_OPTIONS=debug=yes memcheck=no cruntime=/MDd
+    SET XMLSEC_OPTIONS=debug=yes memcheck=yes cruntime=/MDd
 ) ELSE (
     SET PREFIX=%USERHOME%\distro.release
     SET XMLSEC_OPTIONS=debug=no memcheck=no cruntime=/MD

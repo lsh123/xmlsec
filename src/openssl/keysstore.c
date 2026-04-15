@@ -26,6 +26,7 @@
 #include <xmlsec/openssl/x509.h>
 
 #include "../cast_helpers.h"
+#include "openssl_compat.h"
 #include "private.h"
 
 /******************************************************************************

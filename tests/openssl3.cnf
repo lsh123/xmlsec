@@ -6,7 +6,7 @@ config_diagnostics = 1
 
 [openssl_init]
 providers = provider_sect
-engines = engine_section
+#engines = engine_section
 
 # List of providers to load
 [provider_sect]
@@ -24,12 +24,12 @@ activate = 1
 activate = 1
 
 # List of engines to load
-[engine_section]
+#[engine_section]
 # gost = gost_section
 
-[gost_section]
-engine_id = gost
-dynamic_path = path to gost.so
+#[gost_section]
+#engine_id = gost
+#dynamic_path = path to gost.so
 # default_algorithms = ALL
-init = 1
+#init = 1
 

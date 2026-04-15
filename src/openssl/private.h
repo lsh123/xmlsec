@@ -49,8 +49,7 @@ typedef struct _xmlSecOpenSSLX509FindCertCtx {
     X509_NAME * subjectName;
     X509_NAME * issuerName;
     ASN1_INTEGER * issuerSerial;
-    const xmlSecByte * ski; /* NOT OWNED */
-    int skiLen;
+    ASN1_OCTET_STRING * ski;
 
     const xmlSecByte * digestValue; /* NOT OWNED */
     unsigned int digestLen;
@@ -89,7 +88,7 @@ X509_CRL*       xmlSecOpenSSLX509CrlLoadBIO                     (BIO* bio,
                                                                  xmlSecKeyDataFormat format);
 
 int             xmlSecOpenSSLX509Asn1TimeToTime                 (const ASN1_TIME * t, time_t * res);
-void            xmlSecOpenSSLX509NameToString                   (X509_NAME* name, char* buf, int bufLen);
+void            xmlSecOpenSSLX509NameToString                   (XMLSEC_OPENSSL400_CONST X509_NAME* name, char* buf, int bufLen);
 
 
 STACK_OF(X509)*        xmlSecOpenSSLKeyDataX509GetCerts         (xmlSecKeyDataPtr data);

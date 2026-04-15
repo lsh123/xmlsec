@@ -254,15 +254,15 @@ xmlSecOpenSSLKWRfc3394Initialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_CAMELLIA
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWCamellia128Id)) {
-        XMLSEC_OPENSSL_KW_RFC3394_SET_CIPHER(ctx, XMLSEC_OPENSSL_CIPHER_NAME_CAMELLIA128_CBC, xmlSecOpenSSLKWCamelliaEncryptDecrypt);
+        XMLSEC_OPENSSL_KW_RFC3394_SET_CIPHER(ctx, SN_camellia_128_cbc, xmlSecOpenSSLKWCamelliaEncryptDecrypt);
         keyExpectedSize = XMLSEC_BINARY_KEY_BYTES_SIZE_128;
         keyDataId = xmlSecOpenSSLKeyDataCamelliaId;
     } else if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWCamellia192Id)) {
-        XMLSEC_OPENSSL_KW_RFC3394_SET_CIPHER(ctx, XMLSEC_OPENSSL_CIPHER_NAME_CAMELLIA192_CBC, xmlSecOpenSSLKWCamelliaEncryptDecrypt);
+        XMLSEC_OPENSSL_KW_RFC3394_SET_CIPHER(ctx, SN_camellia_192_cbc, xmlSecOpenSSLKWCamelliaEncryptDecrypt);
         keyExpectedSize = XMLSEC_BINARY_KEY_BYTES_SIZE_192;
         keyDataId = xmlSecOpenSSLKeyDataCamelliaId;
     } else if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWCamellia256Id)) {
-        XMLSEC_OPENSSL_KW_RFC3394_SET_CIPHER(ctx, XMLSEC_OPENSSL_CIPHER_NAME_CAMELLIA256_CBC, xmlSecOpenSSLKWCamelliaEncryptDecrypt);
+        XMLSEC_OPENSSL_KW_RFC3394_SET_CIPHER(ctx, SN_camellia_256_cbc, xmlSecOpenSSLKWCamelliaEncryptDecrypt);
         keyExpectedSize = XMLSEC_BINARY_KEY_BYTES_SIZE_256;
         keyDataId = xmlSecOpenSSLKeyDataCamelliaId;
     } else

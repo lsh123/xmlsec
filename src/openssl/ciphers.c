@@ -807,17 +807,17 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_CAMELLIA
     if(transform->id == xmlSecOpenSSLTransformCamellia128CbcId) {
-        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_camellia_128_cbc(), XMLSEC_OPENSSL_CIPHER_NAME_CAMELLIA128_CBC);
+        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_camellia_128_cbc(), SN_camellia_128_cbc);
         ctx->keyId      = xmlSecOpenSSLKeyDataCamelliaId;
         ctx->cbcMode    = 1;
         ctx->isIvPrepended = 1;
     } else if(transform->id == xmlSecOpenSSLTransformCamellia192CbcId) {
-        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_camellia_192_cbc(), XMLSEC_OPENSSL_CIPHER_NAME_CAMELLIA192_CBC);
+        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_camellia_192_cbc(), SN_camellia_192_cbc);
         ctx->keyId      = xmlSecOpenSSLKeyDataCamelliaId;
         ctx->cbcMode    = 1;
         ctx->isIvPrepended = 1;
     } else if(transform->id == xmlSecOpenSSLTransformCamellia256CbcId) {
-        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_camellia_256_cbc(), XMLSEC_OPENSSL_CIPHER_NAME_CAMELLIA256_CBC);
+        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_camellia_256_cbc(), SN_camellia_256_cbc);
         ctx->keyId      = xmlSecOpenSSLKeyDataCamelliaId;
         ctx->cbcMode    = 1;
         ctx->isIvPrepended = 1;
@@ -826,13 +826,13 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_CHACHA20
     if(transform->id == xmlSecOpenSSLTransformChaCha20Id) {
-        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_chacha20(), XMLSEC_OPENSSL_CIPHER_NAME_CHACHA20);
+        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_chacha20(), SN_chacha20);
         ctx->keyId      = xmlSecOpenSSLKeyDataChaCha20Id;
         ctx->cbcMode    = 1;                            /* stream cipher treated as CBC-mode (blockLen=1, no padding, IV from XML node) */
         ctx->ivLen      = XMLSEC_CHACHA20_IV_SIZE;
         ctx->isIvPrepended = 0;                         /* IV is in XML transform (nonce + counter) */
     } else if(transform->id == xmlSecOpenSSLTransformChaCha20Poly1305Id) {
-        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_chacha20_poly1305(), XMLSEC_OPENSSL_CIPHER_NAME_CHACHA20_POLY1305);
+        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_chacha20_poly1305(), SN_chacha20_poly1305);
         ctx->keyId      = xmlSecOpenSSLKeyDataChaCha20Id;
         ctx->cbcMode    = 0;                            /* AEAD cipher (GCM-like mode: no CBC padding, tag appended) */
         ctx->ivLen      = XMLSEC_CHACHA20_NONCE_SIZE ;  /* This is the nonce length for rather than an IV */

@@ -186,7 +186,11 @@ xmlSecOpenSSLAppShutdown(void) {
         ERR_print_errors_fp(stderr);
     }
 #endif /* _MSC_VER */
-    /* OpenSSL 1.1.0+ does not require explicit cleanup */
+
+    /* OpenSSL 1.1.0+ does not require explicit cleanup but this fixes valgrind errors */
+    OPENSSL_cleanup();
+
+    /* done */
     return(0);
 }
 

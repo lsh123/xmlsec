@@ -312,10 +312,12 @@ for ($i = 0; ($i -lt $args.Count) -and ($script:errorFlag -eq 0); $i++) {
             "memcheck" {
                 $script:buildWithMemcheck = ValidateMemcheckOption $val
                 if ($script:buildWithMemcheck -eq "") {
-                    $script:errorFlag = 1
                     Write-Host "ERROR: Invalid value for 'memcheck' parameter, supported options are 'yes' or 'leaks', 'asan', and 'no'."
+                    $script:errorFlag = 1
+                } elseif ($script:buildWithMemcheck -ne "no") {
+                    Write-Host "Note: Memcheck option '$($script:buildWithMemcheck)' is selected, enabling debug symbols."
+                    $script:buildDebug = 1
                 }
-                $script:buildDebug = 1
             }
             "pedantic"            { $script:buildPedantic = StrToBool $val }
             "cc"                  { $script:buildCc = $val }

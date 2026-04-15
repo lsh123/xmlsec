@@ -1058,9 +1058,7 @@ xmlSecDSigCtxDebugDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
        (xmlSecBufferGetData(dsigCtx->result) != NULL)) {
 
         fprintf(output, "== Result - start buffer:\n");
-        (void)fwrite(xmlSecBufferGetData(dsigCtx->result),
-                     xmlSecBufferGetSize(dsigCtx->result),
-                     1, output);
+        xmlSecBufferDebugHexDump(dsigCtx->result, output);
         fprintf(output, "\n== Result - end buffer\n");
     }
     if(((dsigCtx->flags & XMLSEC_DSIG_FLAGS_STORE_SIGNATURE) != 0) &&
@@ -1068,9 +1066,7 @@ xmlSecDSigCtxDebugDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
        (xmlSecBufferGetData(xmlSecDSigCtxGetPreSignBuffer(dsigCtx)) != NULL)) {
 
         fprintf(output, "== PreSigned data - start buffer:\n");
-        (void)fwrite(xmlSecBufferGetData(xmlSecDSigCtxGetPreSignBuffer(dsigCtx)),
-                     xmlSecBufferGetSize(xmlSecDSigCtxGetPreSignBuffer(dsigCtx)),
-                     1, output);
+        xmlSecBufferDebugHexDump(xmlSecDSigCtxGetPreSignBuffer(dsigCtx), output);
         fprintf(output, "\n== PreSigned data - end buffer\n");
     }
 }
@@ -1087,12 +1083,12 @@ xmlSecDSigCtxDebugXmlDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
     xmlSecAssert(output != NULL);
 
     if(dsigCtx->operation == xmlSecTransformOperationSign) {
-        fprintf(output, "<SignatureContext\n");
+        fprintf(output, "<SignatureContext");
     } else {
-        fprintf(output, "<VerificationContext\n");
+        fprintf(output, "<VerificationContext");
     }
     fprintf(output, " status=\"%s\"", xmlSecDSigCtxGetStatusString(dsigCtx->status));
-    fprintf(output, " failureReason=\"%s\"\n", xmlSecDSigCtxGetFailureReasonString(dsigCtx->failureReason));
+    fprintf(output, " failureReason=\"%s\"", xmlSecDSigCtxGetFailureReasonString(dsigCtx->failureReason));
     fprintf(output, ">\n");
 
     fprintf(output, "<Flags>%08x</Flags>\n", dsigCtx->flags);
@@ -1134,24 +1130,18 @@ xmlSecDSigCtxDebugXmlDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
     xmlSecPtrListDebugXmlDump(&(dsigCtx->manifestReferences), output);
     fprintf(output, "</ManifestReferences>\n");
 
-    if((dsigCtx->result != NULL) &&
-       (xmlSecBufferGetData(dsigCtx->result) != NULL)) {
-
-        fprintf(output, "<Result>");
-        (void)fwrite(xmlSecBufferGetData(dsigCtx->result),
-                     xmlSecBufferGetSize(dsigCtx->result),
-                     1, output);
-        fprintf(output, "</Result>\n");
+    if((dsigCtx->result != NULL) && (xmlSecBufferGetData(dsigCtx->result) != NULL)) {
+        fprintf(output, "<Result>\n");
+        xmlSecBufferDebugHexDump(dsigCtx->result, output);
+        fprintf(output, "\n</Result>\n");
     }
     if(((dsigCtx->flags & XMLSEC_DSIG_FLAGS_STORE_SIGNATURE) != 0) &&
        (xmlSecDSigCtxGetPreSignBuffer(dsigCtx) != NULL) &&
        (xmlSecBufferGetData(xmlSecDSigCtxGetPreSignBuffer(dsigCtx)) != NULL)) {
 
-        fprintf(output, "<PreSignedData>");
-        (void)fwrite(xmlSecBufferGetData(xmlSecDSigCtxGetPreSignBuffer(dsigCtx)),
-                     xmlSecBufferGetSize(xmlSecDSigCtxGetPreSignBuffer(dsigCtx)),
-                     1, output);
-        fprintf(output, "</PreSignedData>\n");
+        fprintf(output, "<PreSignedData>\n");
+        xmlSecBufferDebugHexDump(xmlSecDSigCtxGetPreSignBuffer(dsigCtx), output);
+        fprintf(output, "\n</PreSignedData>\n");
     }
 
     if(dsigCtx->operation == xmlSecTransformOperationSign) {
@@ -1528,9 +1518,7 @@ xmlSecDSigReferenceCtxDebugDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* outp
        (xmlSecBufferGetData(xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx)) != NULL)) {
 
         fprintf(output, "== PreDigest data - start buffer:\n");
-        (void)fwrite(xmlSecBufferGetData(xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx)),
-                     xmlSecBufferGetSize(xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx)),
-                     1, output);
+        xmlSecBufferDebugHexDump(xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx), output);
         fprintf(output, "\n== PreDigest data - end buffer\n");
     }
 
@@ -1538,9 +1526,7 @@ xmlSecDSigReferenceCtxDebugDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* outp
        (xmlSecBufferGetData(dsigRefCtx->result) != NULL)) {
 
         fprintf(output, "== Result - start buffer:\n");
-        (void)fwrite(xmlSecBufferGetData(dsigRefCtx->result),
-                     xmlSecBufferGetSize(dsigRefCtx->result), 1,
-                     output);
+        xmlSecBufferDebugHexDump(dsigRefCtx->result, output);
         fprintf(output, "\n== Result - end buffer\n");
     }
 }
@@ -1587,13 +1573,9 @@ xmlSecDSigReferenceCtxDebugXmlDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* o
         fprintf(output, "</DigestMethod>\n");
     }
 
-    if((dsigRefCtx->result != NULL) &&
-       (xmlSecBufferGetData(dsigRefCtx->result) != NULL)) {
-
+    if((dsigRefCtx->result != NULL) && (xmlSecBufferGetData(dsigRefCtx->result) != NULL)) {
         fprintf(output, "<Result>");
-        (void)fwrite(xmlSecBufferGetData(dsigRefCtx->result),
-                     xmlSecBufferGetSize(dsigRefCtx->result), 1,
-                     output);
+        xmlSecBufferDebugHexDump(dsigRefCtx->result, output);
         fprintf(output, "</Result>\n");
     }
 
@@ -1601,9 +1583,7 @@ xmlSecDSigReferenceCtxDebugXmlDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* o
        (xmlSecBufferGetData(xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx)) != NULL)) {
 
         fprintf(output, "<PreDigestData>");
-        (void)fwrite(xmlSecBufferGetData(xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx)),
-                     xmlSecBufferGetSize(xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx)),
-                     1, output);
+        xmlSecBufferDebugHexDump(xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx), output);
         fprintf(output, "</PreDigestData>\n");
     }
     if(dsigRefCtx->dsigCtx->operation == xmlSecTransformOperationSign) {

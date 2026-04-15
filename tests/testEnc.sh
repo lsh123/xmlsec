@@ -185,6 +185,122 @@ execEncTestWithCryptoConfig() {
     tearDownTest
 }
 
+
+execEncPrintXmlDebugTest() {
+    folder="$1"
+    filename="$2"
+    req_transforms="$3"
+    req_key_data="$4"
+    params1="$5"
+    outputTransform="$6"
+    crypto_config="$7"
+    failures=0
+    test_name="$filename (with --print-xml-debug)"
+
+    if [ -n "$XMLSEC_TEST_NAME" -a "$XMLSEC_TEST_NAME" != "$test_name" ]; then
+        return
+    fi
+
+    # prepare
+    setupTest
+
+    if [ "z$crypto_config" = "z" ] ; then
+        crypto_config="$default_crypto_config"
+    fi
+
+    # starting test
+    if [ -n "$folder" ] ; then
+        cd $topfolder/$folder
+        full_file=$filename
+        echo "Test: $folder/$test_name $extra_message"
+        echo "Test: $folder/$test_name in folder " `pwd` " $extra_message -- $res_success" > $curlogfile
+    else
+        full_file=$topfolder/$filename
+        echo "Test: $test_name $extra_message"
+        echo "Test: $test_name $extra_message -- $res_success" > $curlogfile
+    fi
+    extra_message=""
+
+    # check transforms
+    if [ -n "$req_transforms" ] ; then
+        printf "    Checking required transforms                         "
+        echo "$extra_vars $xmlsec_app check-transforms $xmlsec_params --crypto-config $crypto_config $req_transforms" >> $curlogfile
+        $xmlsec_app check-transforms $xmlsec_params --crypto-config $crypto_config $req_transforms >> $curlogfile 2>> $curlogfile
+        res=$?
+
+        printCheckStatus $?
+        if [ $res -ne 0 ]; then
+            cat $curlogfile >> $logfile
+            tearDownTest
+            return
+        fi
+    fi
+
+    # check key data
+    if [ -n "$req_key_data" ] ; then
+        printf "    Checking required key data                           "
+        echo "$extra_vars $xmlsec_app check-key-data $xmlsec_params --crypto-config $crypto_config $req_key_data" >> $curlogfile
+        $xmlsec_app check-key-data $xmlsec_params --crypto-config $crypto_config $req_key_data >> $curlogfile 2>> $curlogfile
+        res=$?
+        printCheckStatus $?
+        if [ $res -ne 0 ]; then
+            cat $curlogfile >> $logfile
+            tearDownTest
+            return
+        fi
+    fi
+
+    # run test
+    rm -f $tmpfile $tmpfile.3
+    if [ -n "$params1" ] ; then
+        printf "    Decrypt with --print-xml-debug                       "
+        echo "$extra_vars $VALGRIND $xmlsec_app decrypt $xmlsec_params --print-xml-debug --crypto-config $crypto_config $params1 --output $tmpfile $full_file.xml > $tmpfile.3" >> $curlogfile
+        $VALGRIND $xmlsec_app decrypt $xmlsec_params --print-xml-debug --crypto-config $crypto_config $params1 --output $tmpfile $full_file.xml > $tmpfile.3 2>> $curlogfile
+        res=$?
+
+        printCheckStatus $?
+        if [ $? -ne 0 ]; then
+            failures=`expr $failures + 1`
+            cat $curlogfile >> $logfile
+            cat $curlogfile >> $failedlogfile
+            tearDownTest
+            return
+        fi
+    fi
+
+    # check xmllint availability for --print-xml-debug test
+    if command -v xmllint >/dev/null 2>&1 ; then
+        printf "    Verify --print-xml-debug output with xmllint          "
+        echo "xmllint --noout $tmpfile.3" >> $curlogfile
+        xmllint --noout  $tmpfile.3 >> $curlogfile 2>> $curlogfile
+
+        res=$?
+
+        printCheckStatus $?
+        if [ $res -ne 0 ]; then
+            failures=`expr $failures + 1`
+            cat $curlogfile >> $logfile
+            cat $curlogfile >> $failedlogfile
+            tearDownTest
+            return
+        fi
+    else
+        printf "    Checking for xmllint availability                    "
+        echo "Skipping test: xmllint is not available" >> $curlogfile
+        printCheckStatus 1
+        cat $curlogfile >> $logfile
+        cat $curlogfile >> $failedlogfile
+        tearDownTest
+        return
+    fi
+
+    # save logs
+    cat $curlogfile >> $logfile
+
+    # cleanup
+    tearDownTest
+}
+
 ##########################################################################
 ##########################################################################
 ##########################################################################
@@ -1169,6 +1285,14 @@ execEncTest $res_success \
     " " \
     "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123" \
     "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-pubkey$rsa_pub_key_suffix.$pub_key_format --session-key aes-256 --enabled-key-data key-name,enc-key --xml-data $topfolder/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha1.data --node-name http://example.org/paymentv2:CreditCard"  \
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123"
+
+# verify that XML debug output is correct and contains the expected elements and values
+execEncPrintXmlDebugTest \
+    "" \
+    "aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha1" \
+    "aes256-cbc rsa-oaep-mgf1p sha1 sha1" \
+    " " \
     "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123"
 
 if [ "z$xmlsec_feature_rsa_oaep_different_digest_and_mgf1" = "zyes" ] ; then

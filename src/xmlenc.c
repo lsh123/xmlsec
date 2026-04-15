@@ -1017,9 +1017,7 @@ xmlSecEncCtxDebugDump(xmlSecEncCtxPtr encCtx, FILE* output) {
        (encCtx->resultBase64Encoded != 0)) {
 
         fprintf(output, "== Result - start buffer:\n");
-        (void)fwrite(xmlSecBufferGetData(encCtx->result),
-                     xmlSecBufferGetSize(encCtx->result), 1,
-                     output);
+        xmlSecBufferDebugHexDump(encCtx->result, output);
         fprintf(output, "\n== Result - end buffer\n");
     }
 }
@@ -1038,21 +1036,21 @@ xmlSecEncCtxDebugXmlDump(xmlSecEncCtxPtr encCtx, FILE* output) {
     switch(encCtx->mode) {
         case xmlEncCtxModeEncryptedData:
             if(encCtx->operation == xmlSecTransformOperationEncrypt) {
-                fprintf(output, "<DataEncryptionContext ");
+                fprintf(output, "<DataEncryptionContext");
             } else {
-                fprintf(output, "<DataDecryptionContext ");
+                fprintf(output, "<DataDecryptionContext");
             }
             break;
         case xmlEncCtxModeEncryptedKey:
             if(encCtx->operation == xmlSecTransformOperationEncrypt) {
-                fprintf(output, "<KeyEncryptionContext ");
+                fprintf(output, "<KeyEncryptionContext");
             } else {
-                fprintf(output, "<KeyDecryptionContext ");
+                fprintf(output, "<KeyDecryptionContext");
             }
             break;
     }
-    fprintf(output, " status=\"%s\"\n", (encCtx->resultReplaced) ? "replaced" : "not-replaced" );
-    fprintf(output, " failureReason=\"%s\"\n", xmlSecEncCtxGetFailureReasonString(encCtx->failureReason));
+    fprintf(output, " status=\"%s\"", (encCtx->resultReplaced) ? "replaced" : "not-replaced" );
+    fprintf(output, " failureReason=\"%s\"", xmlSecEncCtxGetFailureReasonString(encCtx->failureReason));
     fprintf(output, ">\n");
 
     fprintf(output, "<Flags>%08x</Flags>\n", encCtx->flags);
@@ -1111,9 +1109,7 @@ xmlSecEncCtxDebugXmlDump(xmlSecEncCtxPtr encCtx, FILE* output) {
        (encCtx->resultBase64Encoded != 0)) {
 
         fprintf(output, "<Result>");
-        (void)fwrite(xmlSecBufferGetData(encCtx->result),
-                     xmlSecBufferGetSize(encCtx->result), 1,
-                     output);
+        xmlSecBufferDebugHexDump(encCtx->result, output);
         fprintf(output, "</Result>\n");
     }
 

@@ -514,21 +514,23 @@ XMLSEC_OPENSSL_CFLAGS  = $(XMLSEC_OPENSSL_CFLAGS) /D "XMLSEC_OPENSSL3_ENGINES=1"
 LD 				= link.exe
 LDFLAGS 		= /nologo /debug
 LDFLAGS 		= $(LDFLAGS) /LIBPATH:$(BINDIR) /LIBPATH:$(LIBPREFIX)
-LIBS 			=
+LIBS 			= bcrypt.lib ws2_32.lib
 
 # Optimisation and debug symbols.
 !if "$(DEBUG)" == "1"
 LDFLAGS 		= $(LDFLAGS) /DEBUG /OPT:ICF
+SOLIBS 		    = libxml2d.lib $(LIBS)
+ALIBS 		    = libxml2ds.lib $(LIBS)
 !else
 LDFLAGS 		= $(LDFLAGS) /OPT:REF,ICF
+SOLIBS 		    = libxml2.lib $(LIBS)
+ALIBS 		    = libxml2s.lib $(LIBS)
 !endif
 
 !if "$(PEDANTIC)" == "1"
 LDFLAGS = $(LDFLAGS) /WX
 !endif
 
-SOLIBS 			= $(LIBS) libxml2.lib bcrypt.lib ws2_32.lib
-ALIBS           = $(LIBS) libxml2s.lib bcrypt.lib ws2_32.lib
 
 !if "$(WITH_ICONV)" == "1"
 CFLAGS          = $(CFLAGS) /D "LIBXML_ICONV_ENABLED"
@@ -537,8 +539,13 @@ ALIBS 			= $(ALIBS) iconv_a.lib
 !endif
 
 !if "$(WITH_LIBXSLT)" == "1"
+!if "$(DEBUG)" == "1"
+SOLIBS 			= $(SOLIBS) libxsltd.lib
+ALIBS 			= $(ALIBS) libxsltds.lib
+!else
 SOLIBS 			= $(SOLIBS) libxslt.lib
 ALIBS 			= $(ALIBS) libxslts.lib
+!endif
 !endif
 
 XMLSEC_OPENSSL_SOLIBS   = libcrypto.lib wsock32.lib kernel32.lib user32.lib gdi32.lib crypt32.lib advapi32.lib ws2_32.lib

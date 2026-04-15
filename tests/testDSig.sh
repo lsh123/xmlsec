@@ -214,8 +214,9 @@ execDSigPrintXmlDebugTest() {
         printf "    Checking required transforms                         "
         echo "$extra_vars $xmlsec_app check-transforms --crypto-config $crypto_config $xmlsec_params $req_transforms" >> $curlogfile
         $xmlsec_app check-transforms $xmlsec_params --crypto-config $crypto_config $req_transforms >> $curlogfile 2>> $curlogfile
-        printCheckStatus $?
         res=$?
+
+        printCheckStatus $?
         if [ $res -ne 0 ]; then
             cat $curlogfile >> $logfile
             tearDownTest
@@ -228,8 +229,9 @@ execDSigPrintXmlDebugTest() {
         printf "    Checking required key data                           "
         echo "$extra_vars $xmlsec_app check-key-data $xmlsec_params --crypto-config $crypto_config $req_key_data" >> $curlogfile
         $xmlsec_app check-key-data $xmlsec_params --crypto-config $crypto_config $req_key_data >> $curlogfile 2>> $curlogfile
-        printCheckStatus $?
         res=$?
+
+        printCheckStatus $?
         if [ $res -ne 0 ]; then
             cat $curlogfile >> $logfile
             tearDownTest
@@ -237,38 +239,52 @@ execDSigPrintXmlDebugTest() {
         fi
     fi
 
+    # run test
+     rm -f $tmpfile $tmpfile.2
+    if [ -n "$params1" ] ; then
+        printf "    Verify with --print-xml-debug                        "
+        echo "$extra_vars $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params --print-xml-debug --crypto-config $crypto_config $params1 $full_file.xml > $tmpfile.2" >> $curlogfile
+        $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params --print-xml-debug --crypto-config $crypto_config $params1 $full_file.xml > $tmpfile.2 2>> $curlogfile
+        res=$?
+
+        printRes $expected_res $?
+        if [ $? -ne 0 ]; then
+            failures=`expr $failures + 1`
+            cat $curlogfile >> $logfile
+            cat $curlogfile >> $failedlogfile
+            tearDownTest
+            return
+        fi
+    fi
+
     # check xmllint availability for --print-xml-debug test
-    if ! command -v xmllint >/dev/null 2>&1 ; then
+    if command -v xmllint >/dev/null 2>&1 ; then
+        printf "    Verify --print-xml-debug output with xmllint          "
+        echo "xmllint --noout $tmpfile.2" >> $curlogfile
+        xmllint --noout $tmpfile.2 >> $curlogfile 2>> $curlogfile
+
+        res=$?
+
+        printCheckStatus $?
+        if [ $res -ne 0 ]; then
+            failures=`expr $failures + 1`
+            cat $curlogfile >> $logfile
+            cat $curlogfile >> $failedlogfile
+            tearDownTest
+            return
+        fi
+    else
         printf "    Checking for xmllint availability                    "
         echo "Skipping test: xmllint is not available" >> $curlogfile
         printCheckStatus 1
         cat $curlogfile >> $logfile
+        cat $curlogfile >> $failedlogfile
         tearDownTest
         return
     fi
 
-    # run test
-    printf "    Verify --print-xml-debug XML output                  "
-    echo "$extra_vars $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params --print-xml-debug --crypto-config $crypto_config $params1 $full_file.xml > $tmpfile.2" >> $curlogfile
-    $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params --print-xml-debug --crypto-config $crypto_config $params1 $full_file.xml > $tmpfile.2 2>> $curlogfile
-    res=$?
-
-    # validate results
-    if [ $res -eq 0 ] ; then
-        echo "xmllint --noout $tmpfile.2" >> $curlogfile
-        xmllint --noout $tmpfile.2 >> $curlogfile 2>> $curlogfile
-        res=$?
-    fi
-    printRes $res_success $res
-    if [ $? -ne 0 ]; then
-        failures=`expr $failures + 1`
-    fi
-
     # save logs
     cat $curlogfile >> $logfile
-    if [ $failures -ne 0 ] ; then
-        cat $curlogfile >> $failedlogfile
-    fi
 
     # cleanup
     tearDownTest

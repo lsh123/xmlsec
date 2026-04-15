@@ -226,8 +226,9 @@ execEncPrintXmlDebugTest() {
         printf "    Checking required transforms                         "
         echo "$extra_vars $xmlsec_app check-transforms $xmlsec_params --crypto-config $crypto_config $req_transforms" >> $curlogfile
         $xmlsec_app check-transforms $xmlsec_params --crypto-config $crypto_config $req_transforms >> $curlogfile 2>> $curlogfile
-        printCheckStatus $?
         res=$?
+
+        printCheckStatus $?
         if [ $res -ne 0 ]; then
             cat $curlogfile >> $logfile
             tearDownTest
@@ -240,8 +241,8 @@ execEncPrintXmlDebugTest() {
         printf "    Checking required key data                           "
         echo "$extra_vars $xmlsec_app check-key-data $xmlsec_params --crypto-config $crypto_config $req_key_data" >> $curlogfile
         $xmlsec_app check-key-data $xmlsec_params --crypto-config $crypto_config $req_key_data >> $curlogfile 2>> $curlogfile
-        printCheckStatus $?
         res=$?
+        printCheckStatus $?
         if [ $res -ne 0 ]; then
             cat $curlogfile >> $logfile
             tearDownTest
@@ -249,47 +250,52 @@ execEncPrintXmlDebugTest() {
         fi
     fi
 
+    # run test
+    rm -f $tmpfile $tmpfile.3
+    if [ -n "$params1" ] ; then
+        printf "    Decrypt with --print-xml-debug                       "
+        echo "$extra_vars $VALGRIND $xmlsec_app decrypt $xmlsec_params --print-xml-debug --crypto-config $crypto_config $params1 --output $tmpfile $full_file.xml > $tmpfile.3" >> $curlogfile
+        $VALGRIND $xmlsec_app decrypt $xmlsec_params --print-xml-debug --crypto-config $crypto_config $params1 --output $tmpfile $full_file.xml > $tmpfile.3 2>> $curlogfile
+        res=$?
+
+        printCheckStatus $?
+        if [ $? -ne 0 ]; then
+            failures=`expr $failures + 1`
+            cat $curlogfile >> $logfile
+            cat $curlogfile >> $failedlogfile
+            tearDownTest
+            return
+        fi
+    fi
+
     # check xmllint availability for --print-xml-debug test
-    if ! command -v xmllint >/dev/null 2>&1 ; then
+    if command -v xmllint >/dev/null 2>&1 ; then
+        printf "    Verify --print-xml-debug output with xmllint          "
+        echo "xmllint --noout $tmpfile.3" >> $curlogfile
+        xmllint --noout  $tmpfile.3 >> $curlogfile 2>> $curlogfile
+
+        res=$?
+
+        printCheckStatus $?
+        if [ $res -ne 0 ]; then
+            failures=`expr $failures + 1`
+            cat $curlogfile >> $logfile
+            cat $curlogfile >> $failedlogfile
+            tearDownTest
+            return
+        fi
+    else
         printf "    Checking for xmllint availability                    "
         echo "Skipping test: xmllint is not available" >> $curlogfile
         printCheckStatus 1
         cat $curlogfile >> $logfile
+        cat $curlogfile >> $failedlogfile
         tearDownTest
         return
     fi
 
-    # run test
-    rm -f $tmpfile $tmpfile.3
-    printf "    Decrypt with --print-xml-debug                       "
-    echo "$extra_vars $VALGRIND $xmlsec_app decrypt $xmlsec_params --print-xml-debug --crypto-config $crypto_config $params1 --output $tmpfile $full_file.xml > $tmpfile.3" >> $curlogfile
-    $VALGRIND $xmlsec_app decrypt $xmlsec_params --print-xml-debug --crypto-config $crypto_config $params1 --output $tmpfile $full_file.xml > $tmpfile.3 2>> $curlogfile
-    res=$?
-
-    # validate decrypted data and xml debug output
-    if [ $res -eq 0 ]; then
-        if [ "z$outputTransform" != "z" ] ; then
-            cat $tmpfile | $outputTransform > $tmpfile.2
-            mv $tmpfile.2 $tmpfile
-        fi
-        diff $diff_param $full_file.data $tmpfile >> $curlogfile 2>> $curlogfile
-        res=$?
-    fi
-    if [ $res -eq 0 ] ; then
-        echo "xmllint --noout $tmpfile.3" >> $curlogfile
-        xmllint --noout $tmpfile.3 >> $curlogfile 2>> $curlogfile
-        res=$?
-    fi
-    printRes $res_success $res
-    if [ $? -ne 0 ]; then
-        failures=`expr $failures + 1`
-    fi
-
     # save logs
     cat $curlogfile >> $logfile
-    if [ $failures -ne 0 ] ; then
-        cat $curlogfile >> $failedlogfile
-    fi
 
     # cleanup
     tearDownTest

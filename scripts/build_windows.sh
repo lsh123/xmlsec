@@ -12,8 +12,8 @@
 #
 libxml2_version="2.15.2"
 libxslt_version="1.1.45"
-openssl_version="3.6.1"
-xmlsec_version="1.3.10"
+openssl_version="4.0.0"
+xmlsec_version="1.3.11-rc1"
 
 pwd=`pwd`
 script_dir=`dirname $0`
@@ -319,7 +319,7 @@ elif [ "z$1" = "zcleanup" ] ; then
   rm -rf "${libxml2_install_dir}" "${libxslt_install_dir}" "${openssl_install_dir}" "${xmlsec_install_dir}" "${top_install_dir}\\README.md"
   ls -la "${top_install_dir}"
   echo "*** Done with CLEANUP!!!"
-else 
+else
   echo "Usage: $0 [cleanup|build]"
 fi
 

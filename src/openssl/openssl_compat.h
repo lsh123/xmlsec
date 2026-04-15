@@ -41,24 +41,26 @@ int             xmlSecOpenSSLGenerateRandomBytes             (xmlSecByte* data, 
 #define XMLSEC_NO_CHACHA20                  1
 
 
-#define ENGINE_cleanup(...)                 {}
-#define CONF_modules_unload(...)            {}
+#define ENGINE_cleanup()                    {}
 
 #define RAND_priv_bytes(buf,len)            RAND_bytes((buf), (len))
 #define RAND_write_file(file)               (0)
 
 #define EVP_PKEY_base_id(pkey)              EVP_PKEY_id(pkey)
 #define EVP_CipherFinal(ctx, out, out_len)  EVP_CipherFinal_ex((ctx), (out), (out_len))
-#define EVP_read_pw_string(...)             (-1)
+#define EVP_read_pw_string(buf,len, prompt, verify)     (-1)
 
-#define X509_get0_pubkey(cert)              X509_get_pubkey((cert))
 #define X509_STORE_CTX_get_by_subject       X509_STORE_get_by_subject
 
 /* simply return success */
 #define sk_X509_reserve(crts, num)          (1)
 #define sk_X509_CRL_reserve(crls, num)      (1)
 
-#endif /* OPENSSL_IS_BORINGSSL */
+#endif /* defined(OPENSSL_IS_BORINGSSL) || defined(OPENSSL_IS_AWSLC) */
+
+#if defined(OPENSSL_IS_BORINGSSL)
+#define X509_get0_pubkey(cert)              X509_get_pubkey((cert))
+#endif /* defined(OPENSSL_IS_BORINGSSL) */
 
 
 /* BoringSSL redefines int->size_t or int->unsigned */

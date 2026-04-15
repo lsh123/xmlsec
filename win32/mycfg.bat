@@ -8,10 +8,17 @@ REM
 REM Aleksey Sanin <aleksey@aleksey.com>
 REM
 
-SET XMLSEC_CRYPTO=mscng
+SET XMLSEC_CRYPTO=openssl
+SET XMLSEC_DEBUG=yes
 
+IF "%XMLSEC_DEBUG%" == "yes" (
+    SET PREFIX=%USERHOME%\distro.debug
+    SET XMLSEC_OPTIONS=debug=yes memcheck=no cruntime=/MDd
+) ELSE (
+    SET PREFIX=%USERHOME%\distro.release
+    SET XMLSEC_OPTIONS=debug=no memcheck=no cruntime=/MD
+)
 
-SET PREFIX=%USERHOME%\distro
 SET LIBXML2_PREFIX=%PREFIX%\libxml2
 SET LIBXSLT_PREFIX=%PREFIX%\libxslt
 SET OPENSSL_PREFIX=%PREFIX%\openssl
@@ -19,7 +26,7 @@ SET XMLSEC_PREFIX=%PREFIX%\xmlsec
 
 SET XMLSEC_INCLUDE=%LIBXML2_PREFIX%\include;%LIBXML2_PREFIX%\include\libxml2;%LIBXSLT_PREFIX%\include;%OPENSSL_PREFIX%\include;%MSSDK_INCLUDE%
 SET XMLSEC_LIB=%LIBXML2_PREFIX%\lib;%LIBXSLT_PREFIX%\lib;%OPENSSL_PREFIX%\lib;%MSSDK_LIB%
-SET XMLSEC_OPTIONS=crypto=%XMLSEC_CRYPTO% legacy-features=yes static=no debug=yes memcheck=leaks pedantic=yes
+SET XMLSEC_OPTIONS=crypto=%XMLSEC_CRYPTO% legacy-features=yes static=no pedantic=yes %XMLSEC_OPTIONS%
 
 nmake clean
 del /F Makefile configure.txt

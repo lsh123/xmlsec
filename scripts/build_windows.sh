@@ -2,13 +2,15 @@
 #
 # Must be run from the x64 Native Tools Command Prompt.
 #
-# To build the distribution, run the script with "build" parameter:
+# To build the distribution, run the script with "build-release" or "build-debug" parameter:
 #
-# $ c:\cygwin64\bin\bash scripts\build_windows.sh build
+# $ c:\cygwin64\bin\bash scripts\build_windows.sh build-release
+# $ c:\cygwin64\bin\bash scripts\build_windows.sh build-debug
 #
-# To clean up the build, run the script with "cleanup" parameter:
+# To clean up the build, run the script with "cleanup-release" or "cleanup-debug" parameter:
 #
-# $ c:\cygwin64\bin\bash scripts\build_windows.sh cleanup
+# $ c:\cygwin64\bin\bash scripts\build_windows.sh cleanup-release
+# $ c:\cygwin64\bin\bash scripts\build_windows.sh cleanup-debug
 #
 libxml2_version="2.15.2"
 libxslt_version="1.1.45"
@@ -18,24 +20,45 @@ xmlsec_version="1.3.11-rc1"
 pwd=`pwd`
 script_dir=`dirname $0`
 work_dir=`cygpath "d:\\home\\aleksey\\dev"`
-top_install_dir="d:\\home\\aleksey\\distro"
+top_install_dir_prefix="d:\\home\\aleksey\\distro"
+PERL_PATH="C:\\Strawberry\\perl\\bin"
+LOG_FILE=`cygpath "d:\\home\\aleksey\\tmp\\build-windows.log"`
+
+LIBXML2_LIBXSLT_CMAKE_BUILDDIR=builddir
+LIBXML2_LIBXSLT_CMAKE_ARCH="x64"
+LIBXML2_LIBXSLT_CMAKE_GENERATOR="Visual Studio 17 2022"
+LIBXML2_LIBXSLT_CMAKE_SHARED_LIBS=ON
+
+# figure out configuration
+if [[ "$1" =~ '-release' ]] ; then
+  top_install_dir="${top_install_dir_prefix}.release"
+  LIBXML2_LIBXSLT_CMAKE_CONFIG=Release
+  LIBXML2_LIBXSLT_CMAKE_RUNTIME="MultiThreadedDLL"
+  OPEENSL_XMLSEC_CONFIG="--release"
+  XMLSEC_CONFIG_OPTIONS="debug=no memcheck=no cruntime=/MD"
+  ZIP_POSTFIX=""
+  echo "*** DETECTED RELEASE CONFIGURATION..."
+elif [[ "$1" =~ '-debug' ]] ; then
+  top_install_dir="${top_install_dir_prefix}.debug"
+  LIBXML2_LIBXSLT_CMAKE_CONFIG=Debug
+  LIBXML2_LIBXSLT_CMAKE_RUNTIME="MultiThreadedDebugDLL"
+  OPEENSL_XMLSEC_CONFIG="--debug"
+  XMLSEC_CONFIG_OPTIONS="debug=yes memcheck=yes cruntime=/MDd"
+  ZIP_POSTFIX="-debug"
+  echo "*** DETECTED DEBUG CONFIGURATION..."
+else
+  echo "Usage: $0 [build-release|build-debug|cleanup-release|cleanup-debug]"
+  exit 1
+fi
+
+# things that depend on the release vs debug build
 libxml2_install_dir="${top_install_dir}\libxml2"
 libxslt_install_dir="${top_install_dir}\libxslt"
 openssl_install_dir="${top_install_dir}\openssl"
 xmlsec_install_dir="${top_install_dir}\xmlsec"
 
 zip_folders_and_files="libxml2 libxslt openssl xmlsec README.md"
-zip_output_file="${top_install_dir}\\xmlsec1-${xmlsec_version}-win64.zip"
-
-PERL_PATH="C:\\Strawberry\\perl\\bin"
-LOG_FILE=`cygpath "d:\\home\\aleksey\\tmp\\build-windows.log"`
-
-CMAKE_XMLSEC_BUILDDIR=builddir
-CMAKE_XMLSEC_ARCH="x64"
-CMAKE_XMLSEC_GENERATOR="Visual Studio 17 2022"
-CMAKE_XMLSEC_RUNTIME="MultiThreadedDLL"
-CMAKE_XMLSEC_CONFIG=Release
-CMAKE_XMLSEC_SHARED_LIBS=ON
+zip_output_file="${top_install_dir}\\xmlsec1-${xmlsec_version}-win64${ZIP_POSTFIX}.zip"
 
 function build_libxml2 {
   # Check whether the component is already built.
@@ -66,9 +89,9 @@ function build_libxml2 {
 
   echo "*** Configuring \"${full_name}\" ..."
   cd "${full_name}"
-  cmake -B "${CMAKE_XMLSEC_BUILDDIR}" -A "${CMAKE_XMLSEC_ARCH}" -G "${CMAKE_XMLSEC_GENERATOR}" \
-	  -D CMAKE_MSVC_RUNTIME_LIBRARY="${CMAKE_XMLSEC_RUNTIME}" \
-	  -D BUILD_SHARED_LIBS="${CMAKE_XMLSEC_SHARED_LIBS}" \
+  cmake -B "${LIBXML2_LIBXSLT_CMAKE_BUILDDIR}" -A "${LIBXML2_LIBXSLT_CMAKE_ARCH}" -G "${LIBXML2_LIBXSLT_CMAKE_GENERATOR}" \
+	  -D CMAKE_MSVC_RUNTIME_LIBRARY="${LIBXML2_LIBXSLT_CMAKE_RUNTIME}" \
+	  -D BUILD_SHARED_LIBS="${LIBXML2_LIBXSLT_CMAKE_SHARED_LIBS}" \
 	  -D CMAKE_PREFIX_PATH="${top_install_dir}" \
 	  -D CMAKE_INSTALL_PREFIX="${libxml2_install_dir}" \
 	  -D LIBXML2_WITH_ICONV=OFF \
@@ -80,13 +103,13 @@ function build_libxml2 {
   fi
 
   echo "*** Building \"${full_name}\" ..."
-  cmake --build "${CMAKE_XMLSEC_BUILDDIR}" --config "${CMAKE_XMLSEC_CONFIG}" >> "${LOG_FILE}"
+  cmake --build "${LIBXML2_LIBXSLT_CMAKE_BUILDDIR}" --config "${LIBXML2_LIBXSLT_CMAKE_CONFIG}" >> "${LOG_FILE}"
   if [ $? -ne 0 ]; then
     exit $?
   fi
 
   echo "*** Installing \"${full_name}\" ..."
-  cmake --install "${CMAKE_XMLSEC_BUILDDIR}" --config "${CMAKE_XMLSEC_CONFIG}" >> "${LOG_FILE}"
+  cmake --install "${LIBXML2_LIBXSLT_CMAKE_BUILDDIR}" --config "${LIBXML2_LIBXSLT_CMAKE_CONFIG}" >> "${LOG_FILE}"
   if [ $? -ne 0 ]; then
     exit $?
   fi
@@ -125,9 +148,9 @@ function build_libxslt {
   echo "*** Configuring \"${full_name}\" ..."
 
   cd "${full_name}"
-  cmake -B "${CMAKE_XMLSEC_BUILDDIR}" -A "${CMAKE_XMLSEC_ARCH}" -G "${CMAKE_XMLSEC_GENERATOR}" \
-	  -D CMAKE_MSVC_RUNTIME_LIBRARY="${CMAKE_XMLSEC_RUNTIME}" \
-	  -D BUILD_SHARED_LIBS="${CMAKE_XMLSEC_SHARED_LIBS}" \
+  cmake -B "${LIBXML2_LIBXSLT_CMAKE_BUILDDIR}" -A "${LIBXML2_LIBXSLT_CMAKE_ARCH}" -G "${LIBXML2_LIBXSLT_CMAKE_GENERATOR}" \
+	  -D CMAKE_MSVC_RUNTIME_LIBRARY="${LIBXML2_LIBXSLT_CMAKE_RUNTIME}" \
+	  -D BUILD_SHARED_LIBS="${LIBXML2_LIBXSLT_CMAKE_SHARED_LIBS}" \
 	  -D CMAKE_PREFIX_PATH="${top_install_dir}" \
 	  -D CMAKE_INSTALL_PREFIX="${libxslt_install_dir}" \
 	  -D LIBXSLT_WITH_PYTHON=OFF \
@@ -137,13 +160,13 @@ function build_libxslt {
   fi
 
   echo "*** Building \"${full_name}\" ..."
-  cmake --build "${CMAKE_XMLSEC_BUILDDIR}" --config "${CMAKE_XMLSEC_CONFIG}" >> "${LOG_FILE}"
+  cmake --build "${LIBXML2_LIBXSLT_CMAKE_BUILDDIR}" --config "${LIBXML2_LIBXSLT_CMAKE_CONFIG}" >> "${LOG_FILE}"
   if [ $? -ne 0 ]; then
     exit $?
   fi
 
   echo "*** Installing \"${full_name}\" ..."
-  cmake --install "${CMAKE_XMLSEC_BUILDDIR}" --config "${CMAKE_XMLSEC_CONFIG}" >> "${LOG_FILE}"
+  cmake --install "${LIBXML2_LIBXSLT_CMAKE_BUILDDIR}" --config "${LIBXML2_LIBXSLT_CMAKE_CONFIG}" >> "${LOG_FILE}"
   if [ $? -ne 0 ]; then
     exit $?
   fi
@@ -183,7 +206,7 @@ function build_openssl {
   OLD_PATH="$PATH"
   PATH="$PATH;$PERL_PATH"
   cd "${full_name}"
-  perl Configure no-unit-test --prefix="${openssl_install_dir}" --release VC-WIN64A
+  perl Configure no-unit-test --prefix="${openssl_install_dir}" ${OPEENSL_XMLSEC_CONFIG} VC-WIN64A-HYBRIDCRT 
   PATH="$OLD_PATH"
   if [ $? -ne 0 ]; then
     exit $?
@@ -236,7 +259,7 @@ function build_xmlsec {
 
   echo "*** Configuring \"${full_name}\" ..."
   cd "${full_name_without_rc}\win32"
-  powershell -ExecutionPolicy Bypass -File configure.ps1 pedantic=yes static=no cruntime=/MD unicode=yes \
+  powershell -ExecutionPolicy Bypass -File configure.ps1 pedantic=yes static=no unicode=yes ${XMLSEC_CONFIG_OPTIONS}\
     xslt=yes crypto=openssl,mscng \
     prefix="${xmlsec_install_dir}" \
     include="${libxml2_install_dir}\include;${libxml2_install_dir}\include\libxml2;${libxslt_install_dir}\include;${openssl_install_dir}\include" \
@@ -286,7 +309,7 @@ function create_distro {
 rm "${LOG_FILE}"
 echo "*** LOG FILE: \"${LOG_FILE}\""
 
-if [ "z$1" = "zbuild" ] ; then
+if [[ "$1" =~ 'build-' ]] ; then
   echo "*** BUILD (top dir: ${top_install_dir})..."
   build_libxml2
   if [ $? -ne 0 ]; then
@@ -314,13 +337,14 @@ if [ "z$1" = "zbuild" ] ; then
   fi
   ls -la "${top_install_dir}"
   echo "*** Done with BUILD!!!"
-elif [ "z$1" = "zcleanup" ] ; then
+elif [[ "$1" =~ 'cleanup-' ]] ; then
   echo "*** CLEANUP (top dir: ${top_install_dir})..."
   rm -rf "${libxml2_install_dir}" "${libxslt_install_dir}" "${openssl_install_dir}" "${xmlsec_install_dir}" "${top_install_dir}\\README.md"
   ls -la "${top_install_dir}"
   echo "*** Done with CLEANUP!!!"
 else
-  echo "Usage: $0 [cleanup|build]"
+  echo "Usage: $0 [build-release|build-debug|cleanup-release|cleanup-debug]"
+  exit 1
 fi
 
 exit 0

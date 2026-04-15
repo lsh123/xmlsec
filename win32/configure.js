@@ -346,10 +346,12 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 		else if (opt == "memcheck") {
 			buildWithMemcheck = validateMemcheckOption(arg.substring(opt.length + 1, arg.length));
 			if (buildWithMemcheck == "") {
-				error = 1;
 				WScript.Echo("ERROR: Invalid value for 'memcheck' parameter, supported options are 'yes' or 'leaks', 'asan', and 'no'.\n");
+				error = 1;
+			} else if (buildWithMemcheck != "no") {
+				WScript.Echo("Note: memcheck option '" + buildWithMemcheck + "' will be used, enabling debug symbols.\n");
+				buildDebug = true;
 			}
-			buildDebug = true;
 		} else if (opt == "pedantic")
 			buildPedantic = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "cc")

@@ -651,6 +651,31 @@ xmlSecBufferHexRead(xmlSecBufferPtr buf, const xmlChar* hexStr) {
     return(0);
 }
 
+/**
+ * @brief Writes the content of the buffer as hex string to the output.
+ * @details Writes the content of the @p buf as hex string to the @p output (no more than 32 bytes per line).
+ * @param buf the pointer to buffer object.
+ * @param output the pointer to output FILE.
+ */
+void
+xmlSecBufferDebugHexDump(xmlSecBufferPtr buf, FILE* output) {
+    const xmlSecByte * data;
+    xmlSecSize ii, size;
+
+    xmlSecAssert(buf != NULL);
+    xmlSecAssert(output != NULL);
+
+    data = xmlSecBufferGetData(buf);
+    size = xmlSecBufferGetSize(buf);
+
+    for(ii = 0; ii < size; ++ii) {
+        fprintf(output, "%02x", data[ii]);
+        if((ii + 1) % 32 == 0) {
+            fprintf(output, "\n");
+        }
+    }
+}
+
 /******************************************************************************
  *
  * IO buffer

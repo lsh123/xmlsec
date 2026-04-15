@@ -1017,9 +1017,7 @@ xmlSecEncCtxDebugDump(xmlSecEncCtxPtr encCtx, FILE* output) {
        (encCtx->resultBase64Encoded != 0)) {
 
         fprintf(output, "== Result - start buffer:\n");
-        (void)fwrite(xmlSecBufferGetData(encCtx->result),
-                     xmlSecBufferGetSize(encCtx->result), 1,
-                     output);
+        xmlSecBufferDebugHexDump(encCtx->result, output);
         fprintf(output, "\n== Result - end buffer\n");
     }
 }
@@ -1111,9 +1109,7 @@ xmlSecEncCtxDebugXmlDump(xmlSecEncCtxPtr encCtx, FILE* output) {
        (encCtx->resultBase64Encoded != 0)) {
 
         fprintf(output, "<Result>");
-        (void)fwrite(xmlSecBufferGetData(encCtx->result),
-                     xmlSecBufferGetSize(encCtx->result), 1,
-                     output);
+        xmlSecBufferDebugHexDump(encCtx->result, output);
         fprintf(output, "</Result>\n");
     }
 

@@ -96,6 +96,9 @@ XMLSEC_EXPORT int               xmlSecBufferBase64NodeContentWrite(xmlSecBufferP
 XMLSEC_EXPORT int               xmlSecBufferHexRead             (xmlSecBufferPtr buf,
                                                                  const xmlChar* hexStr);
 
+XMLSEC_EXPORT void              xmlSecBufferDebugHexDump        (xmlSecBufferPtr buf,
+                                                                 FILE* output);
+
 XMLSEC_EXPORT xmlOutputBufferPtr xmlSecBufferCreateOutputBuffer (xmlSecBufferPtr buf);
 
 

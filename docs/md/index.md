@@ -14,12 +14,14 @@ see the Copyright file in the distribution for details.
 
 ## News
 
-- **TODO**
+- **April 30, 2026**
   The [XML Security Library 1.3.11](download.md) release includes the following changes:
+  - (xmlsec-openssl) Added support for OpenSSL 4.0.0.
   - (xmlsec-windows) The XMLSec build configuration script on Windows is converted to PowerShell, the JScript version is deprecated and will be remove in the future versions.
   - (xmlsec-docs) The XMLSec API reference was converted to Doxygen / Pandoc (instead of Gtk-Doc).
   - (xmlsec-docs) The XMLSec API reference, tutorial, and examples had been updated to Markdown files and moved to
     [GitHub Wiki](https://github.com/lsh123/xmlsec/wiki).
+  - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/xmlsec_1_3_11)).
 
 - **April 2, 2026**
   The [XML Security Library 1.3.10](download.md) release includes the following changes:

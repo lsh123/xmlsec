@@ -1295,6 +1295,11 @@ clock_t g_totalTime = 0;
 const char* g_xmlSecCryptoLibrary = NULL;
 const char* gOutputFilename = NULL;
 
+#if defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC)
+static _CrtMemState g_memStateAfterInit;
+static int g_memStateAfterInitSet = 0;
+#endif /* defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC) */
+
 #if defined(XMLSEC_WINDOWS) && defined(UNICODE)
 int wmain(int argc, wchar_t *argv[]) {
 #else /* defined(XMLSEC_WINDOWS) && defined(UNICODE) */
@@ -1313,7 +1318,7 @@ int main(int argc, const char **argv) {
 
 #if defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC)
     fprintf(stderr, "Enabling memory leaks detection\n");
-    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_CHECK_ALWAYS_DF | _CRTDBG_DELAY_FREE_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_CHECK_ALWAYS_DF | _CRTDBG_DELAY_FREE_MEM_DF);
 #endif /* defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC) */
 
 #if defined(XMLSEC_WINDOWS)
@@ -1419,8 +1424,6 @@ done:
 #endif /* defined(XMLSEC_WINDOWS) */
 
 #if defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC)
-    fprintf(stderr, "Printing memory leaks detected:\n");
-
     _CrtSetReportMode(_CRT_WARN,    _CRTDBG_MODE_FILE);
     _CrtSetReportMode(_CRT_ERROR,   _CRTDBG_MODE_FILE);
     _CrtSetReportMode(_CRT_ASSERT,  _CRTDBG_MODE_FILE);
@@ -1428,11 +1431,32 @@ done:
     _CrtSetReportFile(_CRT_WARN,    _CRTDBG_FILE_STDERR);
     _CrtSetReportFile(_CRT_ERROR,   _CRTDBG_FILE_STDERR);
     _CrtSetReportFile(_CRT_ASSERT,  _CRTDBG_FILE_STDERR);
-    if (_CrtDumpMemoryLeaks()) {
-        fprintf(stderr, "Finished printing memory leaks detected\n");
-        return(1);
+
+    if(g_memStateAfterInitSet) {
+        /* Use checkpoint-based comparison to exclude crypto library init
+         * allocations that survive their own cleanup (e.g. OpenSSL 3.x
+         * providers loaded via OPENSSL_CONF). Use (ptrdiff_t) cast
+         * because lCounts is size_t (unsigned) and the difference can
+         * be negative when pre-checkpoint blocks are freed. */
+        _CrtMemState memStateNow, memStateDiff;
+        _CrtMemCheckpoint(&memStateNow);
+        if (_CrtMemDifference(&memStateDiff, &g_memStateAfterInit, &memStateNow)
+            && ((ptrdiff_t)memStateDiff.lCounts[_NORMAL_BLOCK] > 0 || (ptrdiff_t)memStateDiff.lCounts[_CLIENT_BLOCK] > 0)) {
+            fprintf(stderr, "Printing memory leaks detected:\n");
+            _CrtMemDumpAllObjectsSince(&g_memStateAfterInit);
+            fprintf(stderr, "Finished printing memory leaks detected\n");
+            return(1);
+        }
+        fprintf(stderr, "No memory leaks detected\n");
+    } else {
+        /* Fallback: no checkpoint was taken (init failed early) */
+        fprintf(stderr, "Printing memory leaks detected:\n");
+        if (_CrtDumpMemoryLeaks()) {
+            fprintf(stderr, "Finished printing memory leaks detected\n");
+            return(1);
+        }
+        fprintf(stderr, "No memory leaks detected\n");
     }
-    fprintf(stderr, "No memory leaks detected\n");
 #endif /*  defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC) */
 
     return(res);
@@ -1465,6 +1489,20 @@ xmlSecAppExecute(xmlSecAppCommand command, const char** utf8_argv, int argc) {
         xmlSecAppPrintUsage();
         goto done;
     }
+
+#if defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC)
+    /* Take checkpoint after full crypto/library initialization.
+     * This excludes 3rd party library allocations (e.g. OpenSSL 3.x
+     * providers loaded via OPENSSL_CONF) from the leak report.
+     * Also trigger libxml2 thread-local state (xmlNewGlobalState)
+     * which is allocated lazily on first xmlNewParserCtxt(). */
+    {
+        xmlParserCtxtPtr warmupCtxt = xmlNewParserCtxt();
+        if(warmupCtxt != NULL) { xmlFreeParserCtxt(warmupCtxt); }
+    }
+    _CrtMemCheckpoint(&g_memStateAfterInit);
+    g_memStateAfterInitSet = 1;
+#endif /* defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC) */
 
     /* enable XXE? */
     if(xmlSecAppCmdLineParamIsSet(&xxeParam)) {

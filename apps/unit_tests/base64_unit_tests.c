@@ -61,11 +61,13 @@ test_base64_success(
     /* check results */
     if(xmlStrcmp(encoded, (expected != NULL) ? BAD_CAST expected: BAD_CAST str) != 0) {
         testLog("Error: base64 encode returned in='%s' (expected: '%s')\n", (const char*)encoded, (expected != NULL) ? expected : str);
+        xmlFree(encoded);
         testFinishedFailure();
         return;
     }
 
     /* DONE */
+    xmlFree(encoded);
     testFinishedSuccess();
 }
 

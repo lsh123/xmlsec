@@ -75,7 +75,7 @@ AC_PATH_PROG(PANDOC,  pandoc)
 AC_PATH_PROG(PYTHON3, python3)
 AC_PATH_PROG(DOXYGEN, doxygen)
 AM_CONDITIONAL(BUILD_MAN_DOCS,     [test x"$HELP2MAN" != x])
-AM_CONDITIONAL(BUILD_XML_API_DOCS, [test x"$DOXYGEN" != x])
+AM_CONDITIONAL(BUILD_XML_API_DOCS, [test x"$DOXYGEN" != x && test x"$PYTHON3" != x])
 AM_CONDITIONAL(BUILD_MD_DOCS,      [test x"$PANDOC" != x && test x"$PYTHON3" != x])
 AM_CONDITIONAL(BUILD_HTML_DOCS,    [test x"$SED" != x && test x"$PANDOC" != x ])
 

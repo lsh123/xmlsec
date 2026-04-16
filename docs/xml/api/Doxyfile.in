@@ -63,6 +63,7 @@ EXCLUDE_PATTERNS       = */.libs/* \
                          */src/*.h \
                          */src/*/*.h
 EXAMPLE_PATH           = @abs_top_srcdir@/examples
+INPUT_FILTER           = python3 @abs_top_srcdir@/docs/xml/api/doxygen_filter.py
 QUIET                  = YES
 WARNINGS               = YES
 WARN_IF_UNDOCUMENTED   = YES

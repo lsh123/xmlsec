@@ -1558,6 +1558,38 @@ execEncTest $res_success \
     "--pubkey-cert-$cert_format:pub1 $topfolder/keys/rsa/rsa-2048-cert.$cert_format --pubkey-cert-$cert_format:pub2 $topfolder/keys/rsa/rsa-4096-cert.$cert_format --session-key des-192 --xml-data $topfolder/aleksey-xmlenc-01/enc-two-recipients.data" \
     "--lax-key-search $priv_key_option:pub1 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123"
 
+##########################################################################
+#
+# ML-KEM (Key Encapsulation Mechanism, KEM + AES-256-KW hybrid)
+#
+##########################################################################
+if [ "z$xmlsec_feature_ml_kem" = "zyes" ] ; then
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc-aes256-kt-ml_kem_512" \
+    "aes256-cbc ml-kem-512" \
+    "ml-kem" \
+    "$mlkem_priv_key_option:TestKeyName-ml-kem-512 $topfolder/keys/ml-kem/ml-kem-512-key.$mlkem_priv_key_format --pwd secret123 --enabled-key-data key-name,enc-key" \
+    "$mlkem_pub_key_option:TestKeyName-ml-kem-512 $topfolder/keys/ml-kem/ml-kem-512-pubkey.$mlkem_pub_key_format --session-key aes-256 --enabled-key-data key-name,enc-key --xml-data $topfolder/aleksey-xmlenc-01/enc-aes256-kt-ml_kem_512.data --node-name http://example.org/paymentv2:CreditCard" \
+    "$mlkem_priv_key_option:TestKeyName-ml-kem-512 $topfolder/keys/ml-kem/ml-kem-512-key.$mlkem_priv_key_format --pwd secret123 --enabled-key-data key-name,enc-key"
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc-aes256-kt-ml_kem_768" \
+    "aes256-cbc ml-kem-768" \
+    "ml-kem" \
+    "$mlkem_priv_key_option:TestKeyName-ml-kem-768 $topfolder/keys/ml-kem/ml-kem-768-key.$mlkem_priv_key_format --pwd secret123 --enabled-key-data key-name,enc-key" \
+    "$mlkem_pub_key_option:TestKeyName-ml-kem-768 $topfolder/keys/ml-kem/ml-kem-768-pubkey.$mlkem_pub_key_format --session-key aes-256 --enabled-key-data key-name,enc-key --xml-data $topfolder/aleksey-xmlenc-01/enc-aes256-kt-ml_kem_768.data --node-name http://example.org/paymentv2:CreditCard" \
+    "$mlkem_priv_key_option:TestKeyName-ml-kem-768 $topfolder/keys/ml-kem/ml-kem-768-key.$mlkem_priv_key_format --pwd secret123 --enabled-key-data key-name,enc-key"
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc-aes256-kt-ml_kem_1024" \
+    "aes256-cbc ml-kem-1024" \
+    "ml-kem" \
+    "$mlkem_priv_key_option:TestKeyName-ml-kem-1024 $topfolder/keys/ml-kem/ml-kem-1024-key.$mlkem_priv_key_format --pwd secret123 --enabled-key-data key-name,enc-key" \
+    "$mlkem_pub_key_option:TestKeyName-ml-kem-1024 $topfolder/keys/ml-kem/ml-kem-1024-pubkey.$mlkem_pub_key_format --session-key aes-256 --enabled-key-data key-name,enc-key --xml-data $topfolder/aleksey-xmlenc-01/enc-aes256-kt-ml_kem_1024.data --node-name http://example.org/paymentv2:CreditCard" \
+    "$mlkem_priv_key_option:TestKeyName-ml-kem-1024 $topfolder/keys/ml-kem/ml-kem-1024-key.$mlkem_priv_key_format --pwd secret123 --enabled-key-data key-name,enc-key"
+fi # xmlsec_feature_ml_kem
+
 
 ##########################################################################
 #

@@ -441,6 +441,29 @@ const xmlChar xmlSecHrefMLDSA87[]             = "http://www.aleksey.com/xmlsec/2
 
 /******************************************************************************
  *
+ * ML-KEM key strings
+ *
+  *****************************************************************************/
+const xmlChar xmlSecNameMLKEMKeyValue[]       = "ml-kem";
+const xmlChar xmlSecHrefMLKEMKeyValue[]       = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#ml-kem";
+
+/******************************************************************************
+ *
+ * ML-KEM key transport transform strings
+ *
+  *****************************************************************************/
+const xmlChar xmlSecNameMLKEM512[]            = "ml-kem-512";
+const xmlChar xmlSecHrefMLKEM512[]            = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#ml-kem-512";
+
+const xmlChar xmlSecNameMLKEM768[]            = "ml-kem-768";
+const xmlChar xmlSecHrefMLKEM768[]            = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#ml-kem-768";
+
+const xmlChar xmlSecNameMLKEM1024[]           = "ml-kem-1024";
+const xmlChar xmlSecHrefMLKEM1024[]           = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#ml-kem-1024";
+
+
+/******************************************************************************
+ *
  * SLH-DSA key strings
  *
   *****************************************************************************/

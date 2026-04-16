@@ -445,6 +445,28 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMLDSA87[];
 
 /******************************************************************************
  *
+ * ML-KEM key strings
+ *
+  *****************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameMLKEMKeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMLKEMKeyValue[];
+
+/******************************************************************************
+ *
+ * ML-KEM key transport transform strings
+ *
+  *****************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameMLKEM512[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMLKEM512[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameMLKEM768[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMLKEM768[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameMLKEM1024[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMLKEM1024[];
+
+/******************************************************************************
+ *
  * SLH-DSA key strings
  *
   *****************************************************************************/

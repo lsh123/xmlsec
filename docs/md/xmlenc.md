@@ -54,6 +54,9 @@ XML Security library supports the following features as defined in
 | **Key Transport** | | | | | | | |
 | [RSA PKCS1 v1.5](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-1_5) | Optional | Yes | Yes | Yes | Yes | Yes | Yes |
 | [RSA-OAEP (MGF1 with SHA1)](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Required | Yes | Yes | No | Yes | Yes | Yes |
+| ML-KEM-512 (KEM + AES-256-KW hybrid) | EXPERIMENTAL | Yes [(1)](#feature-disabled) [(11)](#openssl35-required) | No | No | No | No | No |
+| ML-KEM-768 (KEM + AES-256-KW hybrid) | EXPERIMENTAL | Yes [(1)](#feature-disabled) [(11)](#openssl35-required) | No | No | No | No | No |
+| ML-KEM-1024 (KEM + AES-256-KW hybrid) | EXPERIMENTAL | Yes [(1)](#feature-disabled) [(11)](#openssl35-required) | No | No | No | No | No |
 | [RSA-OAEP with MGF1-SHA1](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Optional | Yes | Yes | No | Yes [(7)](#rsa-oaep-same-algo) | No | Yes [(7)](#rsa-oaep-same-algo) |
 | [RSA-OAEP with MGF1-SHA224](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Optional | Yes | Yes | No | No | No | Yes [(7)](#rsa-oaep-same-algo) |
 | [RSA-OAEP with MGF1-SHA256](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Optional | Yes | Yes | No | Yes [(7)](#rsa-oaep-same-algo) | No | Yes [(7)](#rsa-oaep-same-algo) |
@@ -87,6 +90,7 @@ XML Security library supports the following features as defined in
 8. <a id="openssl-dhx"></a> The xmlsec-openssl library only supports DHX (X9.42 format) keys for DH algorithm.
 9. <a id="nss-x25519-only"></a> The xmlsec-nss library only supports X25519; X448 (Curve448) is not yet implemented in NSS.
 10. <a id="mscng-x25519-only"></a> The xmlsec-mscng library only supports X25519; X448 (Curve448) is not supported.
+11. <a id="openssl35-required"></a> Requires OpenSSL 3.5.0 or newer.
 
 ### Test vectors
 

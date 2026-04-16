@@ -655,6 +655,16 @@ xmlSecOpenSSLEvpKeyGetId(EVP_PKEY *pKey) {
         }
 #endif /* XMLSEC_NO_MLDSA */
 
+#ifndef XMLSEC_NO_MLKEM
+        if(strcmp(LN_ML_KEM_512, typeName) == 0) {
+            return (NID_ML_KEM_512);
+        } else if(strcmp(LN_ML_KEM_768, typeName) == 0) {
+            return (NID_ML_KEM_768);
+        } else if(strcmp(LN_ML_KEM_1024, typeName) == 0) {
+            return (NID_ML_KEM_1024);
+        }
+#endif /* XMLSEC_NO_MLKEM */
+
 #ifndef XMLSEC_NO_SLHDSA
         if(strcmp(LN_SLH_DSA_SHA2_128f, typeName) == 0) {
             return (EVP_PKEY_SLH_DSA_SHA2_128F);
@@ -724,6 +734,13 @@ xmlSecOpenSSLEvpKeyGetKeyDataId(EVP_PKEY *pKey) {
     case EVP_PKEY_ML_DSA_87:
         return (xmlSecOpenSSLKeyDataMLDSAId);
 #endif /* XMLSEC_NO_MLDSA */
+
+#ifndef XMLSEC_NO_MLKEM
+    case NID_ML_KEM_512:
+    case NID_ML_KEM_768:
+    case NID_ML_KEM_1024:
+        return (xmlSecOpenSSLKeyDataMLKEMId);
+#endif /* XMLSEC_NO_MLKEM */
 
 #ifndef XMLSEC_NO_SLHDSA
     case EVP_PKEY_SLH_DSA_SHA2_128F:
@@ -4022,6 +4039,96 @@ xmlSecOpenSSLKeyDataSLHDSAGetEvp(xmlSecKeyDataPtr data) {
 
 
 #endif /* XMLSEC_NO_SLHDSA */
+
+
+
+#ifndef XMLSEC_NO_MLKEM
+/*
+ * EXPERIMENTAL SUPPORT FOR ML-KEM
+ */
+static int
+xmlSecOpenSSLKeyValueMLKEMCheckKeyType(EVP_PKEY* pKey)
+{
+    xmlSecAssert2(pKey != NULL, -1);
+
+    switch(xmlSecOpenSSLEvpKeyGetId(pKey)) {
+    case NID_ML_KEM_512:
+    case NID_ML_KEM_768:
+    case NID_ML_KEM_1024:
+        return(0);
+    default:
+        return(1);
+    }
+}
+
+XMLSEC_OPENSSL_EVP_KEY_KLASS(MLKEM, MLKEM)
+
+/**
+ * @brief The OpenSSL ML-KEM data klass.
+ * @return pointer to OpenSSL ML-KEM key data klass.
+ */
+xmlSecKeyDataId
+xmlSecOpenSSLKeyDataMLKEMGetKlass(void) {
+    return(&xmlSecOpenSSLKeyDataMLKEMKlass);
+}
+
+/**
+ * @brief Sets the ML-KEM key data value to OpenSSL EVP key.
+ * @param data the pointer to ML-KEM key data.
+ * @param pKey the pointer to OpenSSL EVP key.
+ * @return 0 on success or a negative value otherwise.
+ */
+int
+xmlSecOpenSSLKeyDataMLKEMAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataMLKEMId), -1);
+    xmlSecAssert2(pKey != NULL, -1);
+    xmlSecAssert2(xmlSecOpenSSLKeyValueMLKEMCheckKeyType(pKey) == 0, -1);
+
+    return(xmlSecOpenSSLEvpKeyDataAdoptEvp(data, pKey));
+}
+
+/**
+ * @brief Gets the ML-KEM key size (512, 768, or 1024).
+ * @param data the pointer to ML-KEM key data.
+ * @return 512, 768, or 1024 on success or a negative value otherwise.
+ */
+int
+xmlSecOpenSSLKeyDataMLKEMGetKL(xmlSecKeyDataPtr data) {
+    EVP_PKEY* pKey;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataMLKEMId), -1);
+
+    pKey = xmlSecOpenSSLKeyDataMLKEMGetEvp(data);
+    xmlSecAssert2(pKey != NULL, -1);
+
+    switch(xmlSecOpenSSLEvpKeyGetId(pKey)) {
+    case NID_ML_KEM_512:
+        return 512;
+    case NID_ML_KEM_768:
+        return 768;
+    case NID_ML_KEM_1024:
+        return 1024;
+    default:
+        xmlSecInvalidIntegerTypeError("evp key type", EVP_PKEY_base_id(pKey),
+                "unsupported evp key type", NULL);
+        return(-1);
+    }
+}
+
+/**
+ * @brief Gets the OpenSSL EVP key from ML-KEM key data.
+ * @param data the pointer to ML-KEM key data.
+ * @return pointer to OpenSSL EVP key or NULL if an error occurs.
+ */
+EVP_PKEY*
+xmlSecOpenSSLKeyDataMLKEMGetEvp(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataMLKEMId), NULL);
+
+    return(xmlSecOpenSSLEvpKeyDataGetEvp(data));
+}
+
+
+#endif /* XMLSEC_NO_MLKEM */
 
 
 

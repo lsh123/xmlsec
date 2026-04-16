@@ -311,6 +311,21 @@ xmlSecKeyDataMLDSAGetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->keyDataMLDSAGetKlass());
 }
 /**
+ * @brief The ML-KEM key data klass.
+ * @return ML-KEM key data klass or NULL if an error occurs
+ * (xmlsec-crypto library is not loaded or the ML-KEM key data
+ * klass is not implemented).
+ */
+xmlSecKeyDataId
+xmlSecKeyDataMLKEMGetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataMLKEMGetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "keyDataMLKEMGetKlass");
+        return(xmlSecKeyDataIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->keyDataMLKEMGetKlass());
+}
+/**
  * @brief The SLH-DSA key data klass.
  * @return SLH-DSA key data klass or NULL if an error occurs
  * (xmlsec-crypto library is not loaded or the SLH-DSA key data
@@ -1182,6 +1197,53 @@ xmlSecTransformMLDSA87GetKlass(void) {
     }
 
     return(xmlSecCryptoDLGetFunctions()->transformMLDSA87GetKlass());
+}
+/**
+ * @brief The ML-KEM-512 key transport transform klass.
+ * @return ML-KEM-512 key transport transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformMLKEM512GetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformMLKEM512GetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "transformMLKEM512GetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformMLKEM512GetKlass());
+}
+
+/**
+ * @brief The ML-KEM-768 key transport transform klass.
+ * @return ML-KEM-768 key transport transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformMLKEM768GetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformMLKEM768GetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "transformMLKEM768GetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformMLKEM768GetKlass());
+}
+
+/**
+ * @brief The ML-KEM-1024 key transport transform klass.
+ * @return ML-KEM-1024 key transport transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformMLKEM1024GetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformMLKEM1024GetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "transformMLKEM1024GetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformMLKEM1024GetKlass());
 }
 /**
  * @brief PBKDF2 key derivaton transform klass.

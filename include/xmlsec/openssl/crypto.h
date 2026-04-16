@@ -51,6 +51,11 @@
 #include <openssl/evp.h>
 #endif /* XMLSEC_NO_MLDSA */
 
+#ifndef XMLSEC_NO_MLKEM
+#include <openssl/evp.h>
+#include <openssl/ml_kem.h>
+#endif /* XMLSEC_NO_MLKEM */
+
 #ifndef XMLSEC_NO_SLHDSA
 #include <openssl/evp.h>
 #endif /* XMLSEC_NO_SLHDSA */
@@ -172,6 +177,10 @@ XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateReadFileBio (const ch
 #ifdef OPENSSL_NO_ML_DSA
 #define XMLSEC_NO_MLDSA      1
 #endif /* OPENSSL_NO_ML_DSA */
+
+#ifdef OPENSSL_NO_ML_KEM
+#define XMLSEC_NO_MLKEM      1
+#endif /* OPENSSL_NO_ML_KEM */
 
 #ifdef OPENSSL_NO_SLH_DSA
 #define XMLSEC_NO_SLHDSA      1
@@ -1117,6 +1126,51 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformMLDSA65GetKlass(voi
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformMLDSA87GetKlass(void);
 
 #endif /* XMLSEC_NO_MLDSA */
+
+
+/******************************************************************************
+ *
+ * ML-KEM key and transforms (EXPERIMENTAL)
+ *
+  *****************************************************************************/
+#ifndef XMLSEC_NO_MLKEM
+
+/**
+ * @brief The ML-KEM key klass.
+ */
+#define xmlSecOpenSSLKeyDataMLKEMId \
+        xmlSecOpenSSLKeyDataMLKEMGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataMLKEMGetKlass   (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataMLKEMAdoptEvp   (xmlSecKeyDataPtr data,
+                                                                             EVP_PKEY* pKey);
+XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLKeyDataMLKEMGetEvp     (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataMLKEMGetKL      (xmlSecKeyDataPtr data);
+
+
+/**
+ * @brief The ML-KEM-512 key transport transform klass.
+ */
+#define xmlSecOpenSSLTransformMLKEM512Id  \
+        xmlSecOpenSSLTransformMLKEM512GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformMLKEM512GetKlass(void);
+
+
+/**
+ * @brief The ML-KEM-768 key transport transform klass.
+ */
+#define xmlSecOpenSSLTransformMLKEM768Id  \
+        xmlSecOpenSSLTransformMLKEM768GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformMLKEM768GetKlass(void);
+
+
+/**
+ * @brief The ML-KEM-1024 key transport transform klass.
+ */
+#define xmlSecOpenSSLTransformMLKEM1024Id  \
+        xmlSecOpenSSLTransformMLKEM1024GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformMLKEM1024GetKlass(void);
+
+#endif /* XMLSEC_NO_MLKEM */
 
 
 /******************************************************************************

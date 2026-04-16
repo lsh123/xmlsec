@@ -52,6 +52,7 @@ extern "C" {
 #define xmlSecKeyDataHkdfId                     xmlSecOpenSSLKeyDataHkdfId
 #define xmlSecKeyDataHmacId                     xmlSecOpenSSLKeyDataHmacId
 #define xmlSecKeyDataMLDSAId                    xmlSecOpenSSLKeyDataMLDSAId
+#define xmlSecKeyDataMLKEMId                    xmlSecOpenSSLKeyDataMLKEMId
 #define xmlSecKeyDataPbkdf2Id                   xmlSecOpenSSLKeyDataPbkdf2Id
 #define xmlSecKeyDataRsaId                      xmlSecOpenSSLKeyDataRsaId
 #define xmlSecKeyDataSLHDSAId                   xmlSecOpenSSLKeyDataSLHDSAId
@@ -189,6 +190,10 @@ extern "C" {
 #define xmlSecTransformMLDSA44Id                xmlSecOpenSSLTransformMLDSA44Id
 #define xmlSecTransformMLDSA65Id                xmlSecOpenSSLTransformMLDSA65Id
 #define xmlSecTransformMLDSA87Id                xmlSecOpenSSLTransformMLDSA87Id
+
+#define xmlSecTransformMLKEM512Id               xmlSecOpenSSLTransformMLKEM512Id
+#define xmlSecTransformMLKEM768Id               xmlSecOpenSSLTransformMLKEM768Id
+#define xmlSecTransformMLKEM1024Id              xmlSecOpenSSLTransformMLKEM1024Id
 
 #define xmlSecTransformSLHDSA_SHA2_128f_Id      xmlSecOpenSSLTransformSLHDSA_SHA2_128fId
 #define xmlSecTransformSLHDSA_SHA2_128s_Id      xmlSecOpenSSLTransformSLHDSA_SHA2_128sId

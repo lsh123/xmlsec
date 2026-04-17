@@ -43,6 +43,7 @@
 #include <xmlsec/openssl/evp.h>
 
 #include "../cast_helpers.h"
+#include "../keysdata_helpers.h"
 #include "../transform_helpers.h"
 #include "openssl_compat.h"
 #include "private.h"
@@ -61,9 +62,7 @@ typedef struct _xmlSecOpenSSLMLKEMCtx        xmlSecOpenSSLMLKEMCtx,
                                              *xmlSecOpenSSLMLKEMCtxPtr;
 struct _xmlSecOpenSSLMLKEMCtx {
     xmlSecKeyDataId     keyId;
-    EVP_PKEY*           pKey;
     xmlSecSize          ciphertextSize;   /* size of kem_ciphertext for this variant */
-    xmlSecTransformEncapsulationMechanismParams params;
 };
 
 /******************************************************************************
@@ -84,19 +83,9 @@ static int      xmlSecOpenSSLMLKEMWriteNode                     (xmlSecTransform
                                                                  xmlSecTransformCtxPtr transformCtx);
 static int      xmlSecOpenSSLMLKEMSetKeyReq                     (xmlSecTransformPtr transform,
                                                                  xmlSecKeyReqPtr keyReq);
-static int      xmlSecOpenSSLMLKEMSetKey                        (xmlSecTransformPtr transform,
-                                                                 xmlSecKeyPtr key);
 static int      xmlSecOpenSSLMLKEMExecute                       (xmlSecTransformPtr transform,
                                                                  int last,
                                                                  xmlSecTransformCtxPtr transformCtx);
-static int      xmlSecOpenSSLMLKEMEncapsulate                   (xmlSecOpenSSLMLKEMCtxPtr ctx,
-                                                                 xmlSecBufferPtr ctOut,
-                                                                 xmlSecBufferPtr ssOut,
-                                                                 const xmlChar* transformName);
-static int      xmlSecOpenSSLMLKEMDecapsulate                   (xmlSecOpenSSLMLKEMCtxPtr ctx,
-                                                                 xmlSecBufferPtr in,
-                                                                 xmlSecBufferPtr out,
-                                                                 const xmlChar* transformName);
 static int      xmlSecOpenSSLMLKEMProcess                       (xmlSecTransformPtr transform,
                                                                  xmlSecTransformCtxPtr transformCtx);
 
@@ -113,7 +102,7 @@ static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                  
     xmlSecOpenSSLMLKEMReadNode,                 /* xmlSecTransformNodeReadMethod readNode; */           \
     xmlSecOpenSSLMLKEMWriteNode,                /* xmlSecTransformNodeWriteMethod writeNode; */         \
     xmlSecOpenSSLMLKEMSetKeyReq,                /* xmlSecTransformSetKeyReqMethod setKeyReq; */         \
-    xmlSecOpenSSLMLKEMSetKey,                   /* xmlSecTransformSetKeyMethod setKey; */               \
+    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */               \
     NULL,                                       /* xmlSecTransformValidateMethod validate; */           \
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
@@ -164,7 +153,6 @@ xmlSecOpenSSLTransformMLKEM1024GetKlass(void) {
 static int
 xmlSecOpenSSLMLKEMInitialize(xmlSecTransformPtr transform) {
     xmlSecOpenSSLMLKEMCtxPtr ctx;
-    int ret;
 
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLMLKEMSize), -1);
 
@@ -187,13 +175,6 @@ xmlSecOpenSSLMLKEMInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-    ret = xmlSecTransformEncapsulationMechanismParamsInitialize(&(ctx->params));
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformEncapsulationMechanismParamsInitialize",
-                            xmlSecTransformGetName(transform));
-        return(-1);
-    }
-
     return(0);
 }
 
@@ -205,11 +186,6 @@ xmlSecOpenSSLMLKEMFinalize(xmlSecTransformPtr transform) {
 
     ctx = xmlSecOpenSSLMLKEMGetCtx(transform);
     xmlSecAssert(ctx != NULL);
-
-    if(ctx->pKey != NULL) {
-        EVP_PKEY_free(ctx->pKey);
-    }
-    xmlSecTransformEncapsulationMechanismParamsFinalize(&(ctx->params));
 
     memset(ctx, 0, sizeof(xmlSecOpenSSLMLKEMCtx));
 }
@@ -235,7 +211,7 @@ xmlSecOpenSSLMLKEMSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq
         keyReq->keyType  = xmlSecKeyDataTypePrivate;
         keyReq->keyUsage = xmlSecKeyUsageDecrypt;
     } else {
-        /* called from readNode before operation is set (e.g. via xmlSecTransformKeyAgreementReadKey);
+        /* called from readNode before operation is set (e.g. via xmlSecTransformReadKeyInfoNode);
          * the caller will override keyType with the direction-appropriate value */
         keyReq->keyType  = xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate;
         keyReq->keyUsage = xmlSecKeyUsageEncrypt | xmlSecKeyUsageDecrypt;
@@ -244,81 +220,37 @@ xmlSecOpenSSLMLKEMSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq
 }
 
 static int
-xmlSecOpenSSLMLKEMSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
-    xmlSecOpenSSLMLKEMCtxPtr ctx;
-    EVP_PKEY* pKey;
-
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLMLKEMSize), -1);
-    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) ||
-                  (transform->operation == xmlSecTransformOperationDecrypt), -1);
-    xmlSecAssert2(key != NULL, -1);
-
-    ctx = xmlSecOpenSSLMLKEMGetCtx(transform);
-    xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->keyId != NULL, -1);
-    xmlSecAssert2(ctx->pKey == NULL, -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(xmlSecKeyGetValue(key), ctx->keyId), -1);
-
-    pKey = xmlSecOpenSSLKeyDataMLKEMGetEvp(xmlSecKeyGetValue(key));
-    if(pKey == NULL) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataMLKEMGetEvp",
-                            xmlSecTransformGetName(transform));
-        return(-1);
-    }
-
-    ctx->pKey = xmlSecOpenSSLEvpKeyDup(pKey);
-    if(ctx->pKey == NULL) {
-        xmlSecInternalError("xmlSecOpenSSLEvpKeyDup", xmlSecTransformGetName(transform));
-        return(-1);
-    }
-
-    return(0);
-}
-
-static int
-xmlSecOpenSSLMLKEMReadNode(xmlSecTransformPtr transform, xmlNodePtr node,
-                           xmlSecTransformCtxPtr transformCtx) {
-    xmlSecOpenSSLMLKEMCtxPtr ctx;
-    EVP_PKEY* pKey;
+xmlSecOpenSSLMLKEMReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLMLKEMSize), -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
-    ctx = xmlSecOpenSSLMLKEMGetCtx(transform);
-    xmlSecAssert2(ctx != NULL, -1);
+    if(transformCtx->kemKeyData != NULL) {
+        /* already read, nothing to do */
+        return(0);
+    }
 
-    ret = xmlSecTransformEncapsulationMechanismParamsRead(&(ctx->params), node, transform,
-                                                          transformCtx);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformEncapsulationMechanismParamsRead",
-                            xmlSecTransformGetName(transform));
+    /* create kemKeyData in transform context */
+    transformCtx->kemKeyData = xmlSecKeyDataCreate(xmlSecKeyDataKEMCipherValueId);
+    if(transformCtx->kemKeyData == NULL) {
+        xmlSecInternalError("xmlSecKeyDataCreate(kemKeyData)", xmlSecTransformGetName(transform));
         return(-1);
     }
 
-    /* extract EVP_PKEY from the found key so Encapsulate/Decapsulate can use it */
-    if(ctx->params.recipientKey != NULL) {
-        pKey = xmlSecOpenSSLKeyDataMLKEMGetEvp(xmlSecKeyGetValue(ctx->params.recipientKey));
-        if(pKey == NULL) {
-            xmlSecInternalError("xmlSecOpenSSLKeyDataMLKEMGetEvp",
-                                xmlSecTransformGetName(transform));
-            return(-1);
-        }
-        xmlSecAssert2(ctx->pKey == NULL, -1);
-        ctx->pKey = xmlSecOpenSSLEvpKeyDup(pKey);
-        if(ctx->pKey == NULL) {
-            xmlSecInternalError("xmlSecOpenSSLEvpKeyDup", xmlSecTransformGetName(transform));
-            return(-1);
-        }
+    ret = xmlSecKeyDataKEMCipherValueNodeRead(transformCtx->kemKeyData, node, transform, transformCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyDataKEMCipherValueNodeRead", xmlSecTransformGetName(transform));
+        return(-1);
     }
 
+    /* done */
     return(0);
 }
 
 static int
-xmlSecOpenSSLMLKEMWriteNode(xmlSecTransformPtr transform, xmlNodePtr node,
-                            xmlSecTransformCtxPtr transformCtx) {
+xmlSecOpenSSLMLKEMWriteNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLMLKEMCtxPtr ctx;
     int ret;
 
@@ -328,12 +260,11 @@ xmlSecOpenSSLMLKEMWriteNode(xmlSecTransformPtr transform, xmlNodePtr node,
 
     ctx = xmlSecOpenSSLMLKEMGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(transformCtx->kemKeyData != NULL, -1);
 
-    ret = xmlSecTransformEncapsulationMechanismParamsWrite(&(ctx->params), node, transform,
-                                                           transformCtx);
+    ret = xmlSecKeyDataKEMCipherValueNodeWrite(transformCtx->kemKeyData, node, transform, transformCtx);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformEncapsulationMechanismParamsWrite",
-                            xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecKeyDataKEMCipherValueNodeWrite", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -352,7 +283,6 @@ xmlSecOpenSSLMLKEMExecute(xmlSecTransformPtr transform, int last,
 
     ctx = xmlSecOpenSSLMLKEMGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->pKey != NULL, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
         transform->status = xmlSecTransformStatusWorking;
@@ -378,11 +308,42 @@ xmlSecOpenSSLMLKEMExecute(xmlSecTransformPtr transform, int last,
     return(0);
 }
 
+static EVP_PKEY_CTX*
+xmlSecOpenSSLMLKEMGetPKeyCtx(xmlSecTransformCtxPtr transformCtx) {
+    xmlSecKeyPtr recipientKey;
+    EVP_PKEY* pKey;
+    EVP_PKEY_CTX* pKeyCtx = NULL;
+
+    xmlSecAssert2(transformCtx != NULL, NULL);
+
+
+    /* extract EVP_PKEY from the found key so Encapsulate/Decapsulate can use it */
+    recipientKey = xmlSecKeyDataKEMCipherValueGetRecipientKey(transformCtx->kemKeyData);
+    if(recipientKey == NULL) {
+        xmlSecInternalError("xmlSecKeyDataKEMCipherValueGetRecipientKey", NULL);
+        return(NULL);
+    }
+
+    pKey = xmlSecOpenSSLKeyDataMLKEMGetEvp(xmlSecKeyGetValue(recipientKey));
+    if(pKey == NULL) {
+        xmlSecInternalError("xmlSecOpenSSLKeyDataMLKEMGetEvp", NULL);
+        return(NULL);
+    }
+
+    pKeyCtx = EVP_PKEY_CTX_new_from_pkey(xmlSecOpenSSLGetLibCtx(), pKey, NULL);
+    if(pKeyCtx == NULL) {
+        xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_pkey", NULL);
+        return(NULL);
+    }
+
+    return(pKeyCtx);
+}
+
+
 static int
-xmlSecOpenSSLMLKEMEncapsulate(xmlSecOpenSSLMLKEMCtxPtr ctx,
-                               xmlSecBufferPtr ctOut,
-                               xmlSecBufferPtr ssOut,
-                               const xmlChar* transformName) {
+xmlSecOpenSSLMLKEMEncapsulate(xmlSecTransformCtxPtr transformCtx, xmlSecOpenSSLMLKEMCtxPtr ctx,
+    xmlSecBufferPtr cypherTextOut, xmlSecBufferPtr sharedSecretOut
+) {
     EVP_PKEY_CTX* pKeyCtx = NULL;
     size_t ctLen = 0;
     size_t ssLen = 0;
@@ -393,77 +354,65 @@ xmlSecOpenSSLMLKEMEncapsulate(xmlSecOpenSSLMLKEMCtxPtr ctx,
     int ret;
     int res = -1;
 
+    xmlSecAssert2(transformCtx != NULL, -1);
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->pKey != NULL, -1);
-    xmlSecAssert2(ctOut != NULL, -1);
-    xmlSecAssert2(ssOut != NULL, -1);
+    xmlSecAssert2(cypherTextOut != NULL, -1);
+    xmlSecAssert2(sharedSecretOut != NULL, -1);
 
-    pKeyCtx = EVP_PKEY_CTX_new_from_pkey(xmlSecOpenSSLGetLibCtx(), ctx->pKey, NULL);
+    /* create context */
+    pKeyCtx = xmlSecOpenSSLMLKEMGetPKeyCtx(transformCtx);
     if(pKeyCtx == NULL) {
-        xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_pkey", transformName);
+        xmlSecInternalError("xmlSecOpenSSLMLKEMGetPKeyCtx", NULL);
         goto done;
     }
 
     ret = EVP_PKEY_encapsulate_init(pKeyCtx, NULL);
     if(ret <= 0) {
-        xmlSecOpenSSLError("EVP_PKEY_encapsulate_init", transformName);
+        xmlSecOpenSSLError("EVP_PKEY_encapsulate_init", NULL);
         goto done;
     }
 
     /* get output sizes */
     ret = EVP_PKEY_encapsulate(pKeyCtx, NULL, &ctLen, NULL, &ssLen);
     if(ret <= 0) {
-        xmlSecOpenSSLError("EVP_PKEY_encapsulate(sizes)", transformName);
+        xmlSecOpenSSLError("EVP_PKEY_encapsulate(sizes)", NULL);
+        goto done;
+    }
+    if(ssLen > sizeof(ssBuf)) {
+        xmlSecInternalError2("Shared secret size is too big", NULL, "size=" XMLSEC_SIZE_T_FMT, ssLen);
         goto done;
     }
 
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(ctLen, ctSize, goto done, transformName);
-    ret = xmlSecBufferSetMaxSize(ctOut, ctSize);
+    /* create ct buffer */
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(ctLen, ctSize, goto done, NULL);
+    ret = xmlSecBufferSetSize(cypherTextOut, ctSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetMaxSize(ct)", transformName,
-                             "size=" XMLSEC_SIZE_FMT, ctSize);
+        xmlSecInternalError2("xmlSecBufferSetSize(ct)", NULL, "size=" XMLSEC_SIZE_FMT, ctSize);
         goto done;
     }
-    ctBuf = xmlSecBufferGetData(ctOut);
+    ctBuf = xmlSecBufferGetData(cypherTextOut);
 
     /* perform encapsulation */
     ret = EVP_PKEY_encapsulate(pKeyCtx, ctBuf, &ctLen, ssBuf, &ssLen);
     if(ret <= 0) {
-        xmlSecOpenSSLError("EVP_PKEY_encapsulate", transformName);
-        OPENSSL_cleanse(ssBuf, sizeof(ssBuf));
+        xmlSecOpenSSLError("EVP_PKEY_encapsulate", NULL);
         goto done;
     }
 
-    ret = xmlSecBufferSetSize(ctOut, ctSize);
-    if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize(ct)", transformName,
-                             "size=" XMLSEC_SIZE_FMT, ctSize);
-        OPENSSL_cleanse(ssBuf, sizeof(ssBuf));
-        goto done;
-    }
-
-    /* write shared secret to ssOut so the caller can use it as the CEK */
+    /* write shared secret to sharedSecretOut so the caller can use it as the CEK */
     XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(ssLen, ssSize, goto done, transformName);
-    ret = xmlSecBufferSetMaxSize(ssOut, ssSize);
+    ret = xmlSecBufferSetData(sharedSecretOut, ssBuf, ssSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetMaxSize(ss)", transformName,
-                             "size=" XMLSEC_SIZE_FMT, ssSize);
-        OPENSSL_cleanse(ssBuf, sizeof(ssBuf));
-        goto done;
-    }
-    memcpy(xmlSecBufferGetData(ssOut), ssBuf, ssSize);
-    OPENSSL_cleanse(ssBuf, sizeof(ssBuf));
-
-    ret = xmlSecBufferSetSize(ssOut, ssSize);
-    if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize(ss)", transformName,
-                             "size=" XMLSEC_SIZE_FMT, ssSize);
+        xmlSecInternalError2("xmlSecBufferSetData(ss)", NULL, "size=" XMLSEC_SIZE_FMT, ssSize);
         goto done;
     }
 
+    /* done */
     res = 0;
 
 done:
+    OPENSSL_cleanse(ssBuf, sizeof(ssBuf));
+
     if(pKeyCtx != NULL) {
         EVP_PKEY_CTX_free(pKeyCtx);
     }
@@ -471,9 +420,9 @@ done:
 }
 
 static int
-xmlSecOpenSSLMLKEMDecapsulate(xmlSecOpenSSLMLKEMCtxPtr ctx, xmlSecBufferPtr in,
-                               xmlSecBufferPtr out,
-                               const xmlChar* transformName) {
+xmlSecOpenSSLMLKEMDecapsulate(xmlSecTransformCtxPtr transformCtx, xmlSecOpenSSLMLKEMCtxPtr ctx,
+    xmlSecBufferPtr cypherTextIn, xmlSecBufferPtr sharedSecretOut
+) {
     EVP_PKEY_CTX* pKeyCtx = NULL;
     xmlSecByte ssBuf[OSSL_ML_KEM_SHARED_SECRET_BYTES];
     xmlSecSize inSize;
@@ -483,82 +432,64 @@ xmlSecOpenSSLMLKEMDecapsulate(xmlSecOpenSSLMLKEMCtxPtr ctx, xmlSecBufferPtr in,
     int ret;
     int res = -1;
 
+    xmlSecAssert2(transformCtx != NULL, -1);
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->pKey != NULL, -1);
     xmlSecAssert2(ctx->ciphertextSize > 0, -1);
-    xmlSecAssert2(in != NULL, -1);
-    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(cypherTextIn != NULL, -1);
+    xmlSecAssert2(sharedSecretOut != NULL, -1);
 
-    inSize = xmlSecBufferGetSize(in);
+    inSize = xmlSecBufferGetSize(cypherTextIn);
     if(inSize != ctx->ciphertextSize) {
-        xmlSecInvalidSizeError("Input ciphertext", inSize, ctx->ciphertextSize, transformName);
+        xmlSecInvalidSizeError("Input ciphertext", inSize, ctx->ciphertextSize, NULL);
         return(-1);
     }
 
-    pKeyCtx = EVP_PKEY_CTX_new_from_pkey(xmlSecOpenSSLGetLibCtx(), ctx->pKey, NULL);
+    /* create context */
+    pKeyCtx = xmlSecOpenSSLMLKEMGetPKeyCtx(transformCtx);
     if(pKeyCtx == NULL) {
-        xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_pkey", transformName);
+        xmlSecInternalError("xmlSecOpenSSLMLKEMGetPKeyCtx", NULL);
         goto done;
     }
 
     ret = EVP_PKEY_decapsulate_init(pKeyCtx, NULL);
     if(ret <= 0) {
-        xmlSecOpenSSLError("EVP_PKEY_decapsulate_init", transformName);
+        xmlSecOpenSSLError("EVP_PKEY_decapsulate_init", NULL);
         goto done;
     }
 
     /* get output size */
-    ret = EVP_PKEY_decapsulate(pKeyCtx, NULL, &ssLen,
-                               xmlSecBufferGetData(in), ctx->ciphertextSize);
+    ret = EVP_PKEY_decapsulate(pKeyCtx, NULL, &ssLen, xmlSecBufferGetData(cypherTextIn), ctx->ciphertextSize);
     if(ret <= 0) {
-        xmlSecOpenSSLError("EVP_PKEY_decapsulate(size)", transformName);
+        xmlSecOpenSSLError("EVP_PKEY_decapsulate(size)", NULL);
         goto done;
     }
-    if(ssLen != OSSL_ML_KEM_SHARED_SECRET_BYTES) {
-        xmlSecInternalError2("Unexpected shared secret size", transformName,
-                             "size=%zu", ssLen);
+    if(ssLen > sizeof(ssBuf)) {
+        xmlSecInternalError2("Unexpected shared secret size", NULL, "size=" XMLSEC_SIZE_T_FMT, ssLen);
         goto done;
     }
 
     /* perform decapsulation */
-    ssLen2 = ssLen;
-    ret = EVP_PKEY_decapsulate(pKeyCtx, ssBuf, &ssLen2,
-                               xmlSecBufferGetData(in), ctx->ciphertextSize);
+    ssLen2 = sizeof(ssBuf);
+    ret = EVP_PKEY_decapsulate(pKeyCtx, ssBuf, &ssLen2, xmlSecBufferGetData(cypherTextIn), ctx->ciphertextSize);
     if(ret <= 0) {
-        xmlSecOpenSSLError("EVP_PKEY_decapsulate", transformName);
-        OPENSSL_cleanse(ssBuf, sizeof(ssBuf));
+        xmlSecOpenSSLError("EVP_PKEY_decapsulate", NULL);
         goto done;
     }
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(ssLen2, ssSize, goto done, transformName);
 
     /* write ss to output buffer: this becomes the CEK for content decryption */
-    ret = xmlSecBufferSetMaxSize(out, ssSize);
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(ssLen2, ssSize, goto done, NULL);
+    ret = xmlSecBufferSetData(sharedSecretOut, ssBuf, ssSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetMaxSize", transformName,
-                             "size=" XMLSEC_SIZE_FMT, ssSize);
-        OPENSSL_cleanse(ssBuf, sizeof(ssBuf));
-        goto done;
-    }
-    memcpy(xmlSecBufferGetData(out), ssBuf, ssSize);
-    OPENSSL_cleanse(ssBuf, sizeof(ssBuf));
-
-    ret = xmlSecBufferSetSize(out, ssSize);
-    if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", transformName,
-                             "size=" XMLSEC_SIZE_FMT, ssSize);
+        xmlSecInternalError2("xmlSecBufferSetData", NULL, "size=" XMLSEC_SIZE_FMT, ssSize);
         goto done;
     }
 
-    ret = xmlSecBufferRemoveHead(in, inSize);
-    if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferRemoveHead", transformName,
-                             "size=" XMLSEC_SIZE_FMT, inSize);
-        goto done;
-    }
-
+    /* done */
     res = 0;
 
 done:
+    OPENSSL_cleanse(ssBuf, sizeof(ssBuf));
+
     if(pKeyCtx != NULL) {
         EVP_PKEY_CTX_free(pKeyCtx);
     }
@@ -568,48 +499,41 @@ done:
 static int
 xmlSecOpenSSLMLKEMProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLMLKEMCtxPtr ctx;
+    xmlSecBufferPtr ciphertext;
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLMLKEMSize), -1);
-
-    /* transformCtx is not used directly; key and ciphertext are in ctx->params */
-    (void)transformCtx;
+    xmlSecAssert2(transformCtx != NULL, -1);
 
     ctx = xmlSecOpenSSLMLKEMGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->pKey != NULL, -1);
     xmlSecAssert2(ctx->ciphertextSize > 0, -1);
+    xmlSecAssert2(transformCtx->kemKeyData != NULL, -1);
     xmlSecAssert2(xmlSecBufferGetSize(&(transform->outBuf)) == 0, -1);
 
-    if(transform->operation == xmlSecTransformOperationEncrypt) {
-        /* consume any input (KEM encapsulate takes no input) */
-        xmlSecSize inSize = xmlSecBufferGetSize(&(transform->inBuf));
-        if(inSize > 0) {
-            ret = xmlSecBufferRemoveHead(&(transform->inBuf), inSize);
-            if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferRemoveHead",
-                                     xmlSecTransformGetName(transform),
-                                     "size=" XMLSEC_SIZE_FMT, inSize);
-                return(-1);
-            }
-        }
-        /* ciphertext goes to params.ciphertext; shared secret goes to outBuf as the CEK */
-        ret = xmlSecOpenSSLMLKEMEncapsulate(ctx, &(ctx->params.ciphertext), &(transform->outBuf),
-                                            xmlSecTransformGetName(transform));
+    /* consume any input (KEM encapsulate / decapsulate takes no input) */
+    xmlSecBufferEmpty(&(transform->inBuf));
+
+    /* if we have ciphertext (from readNode) then decapsulate shared secret from it */
+    ciphertext = xmlSecKeyDataKEMCipherValueGetCiphertext(transformCtx->kemKeyData);
+    xmlSecAssert2(ciphertext != NULL, -1);
+
+    if(!xmlSecBufferIsEmpty(ciphertext)) {
+        ret = xmlSecOpenSSLMLKEMDecapsulate(transformCtx, ctx, ciphertext, &(transform->outBuf));
         if(ret < 0) {
-            xmlSecInternalError("xmlSecOpenSSLMLKEMEncapsulate",
-                                xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecOpenSSLMLKEMDecapsulate", xmlSecTransformGetName(transform));
+            return(-1);
+        }
+    } else if(transform->operation == xmlSecTransformOperationEncrypt) {
+        /* encapsulate and store ciphertext directly into kemKeyData */
+        ret = xmlSecOpenSSLMLKEMEncapsulate(transformCtx, ctx, ciphertext, &(transform->outBuf));
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecOpenSSLMLKEMEncapsulate", xmlSecTransformGetName(transform));
             return(-1);
         }
     } else {
-        /* ciphertext is in params.ciphertext (from readNode); shared secret goes to outBuf */
-        ret = xmlSecOpenSSLMLKEMDecapsulate(ctx, &(ctx->params.ciphertext), &(transform->outBuf),
-                                            xmlSecTransformGetName(transform));
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecOpenSSLMLKEMDecapsulate",
-                                xmlSecTransformGetName(transform));
-            return(-1);
-        }
+        xmlSecInvalidTransfromError2(transform, "The ciphertext value is available for decryption (operation=%u)", transform->operation);
+        return(-1);
     }
 
     /* truncate shared secret output to the expected key size if necessary */
@@ -618,14 +542,13 @@ xmlSecOpenSSLMLKEMProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr tr
         if(transform->expectedOutputSize < outSize) {
             ret = xmlSecBufferSetSize(&(transform->outBuf), transform->expectedOutputSize);
             if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferSetSize",
-                                     xmlSecTransformGetName(transform),
-                                     "size=" XMLSEC_SIZE_FMT, transform->expectedOutputSize);
+                xmlSecInternalError2("xmlSecBufferSetSize", xmlSecTransformGetName(transform), "size=" XMLSEC_SIZE_FMT, transform->expectedOutputSize);
                 return(-1);
             }
         }
     }
 
+    /* done */
     return(0);
 }
 

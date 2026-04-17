@@ -429,9 +429,7 @@ xmlSecKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits,
 xmlSecKeyDataType
 xmlSecKeyDataGetType(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataIsValid(data), xmlSecKeyDataTypeUnknown);
-    xmlSecAssert2(data->id->getType != NULL, xmlSecKeyDataTypeUnknown);
-
-    return(data->id->getType(data));
+    return(data->id->getType != NULL ? data->id->getType(data) : xmlSecKeyDataTypeUnknown);
 }
 
 /**
@@ -443,9 +441,7 @@ xmlSecKeyDataGetType(xmlSecKeyDataPtr data) {
 xmlSecSize
 xmlSecKeyDataGetSize(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataIsValid(data), 0);
-    xmlSecAssert2(data->id->getSize != NULL, 0);
-
-    return(data->id->getSize(data));
+    return(data->id->getSize != NULL ? data->id->getSize(data) : 0);
 }
 
 /**

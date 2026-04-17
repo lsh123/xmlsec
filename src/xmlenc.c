@@ -1171,8 +1171,7 @@ xmlSecEncCtxGenerateKey(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xmlSecKey
 
     ret = xmlSecKeyDataBinRead(keyId, key, keyData, keySize, keyInfoCtx);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyDataBinRead",
-                            xmlSecKeyDataKlassGetName(keyId));
+        xmlSecInternalError("xmlSecKeyDataBinRead", xmlSecKeyDataKlassGetName(keyId));
         xmlSecKeyDestroy(key);
         return(NULL);
     }
@@ -1481,7 +1480,6 @@ xmlSecEncCtxEncapsulationMechanismGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyData
     xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx)
 {
     xmlSecKeyPtr key;
-    int ret;
 
     xmlSecAssert2(encCtx != NULL, NULL);
     xmlSecAssert2(encCtx->encMethod == NULL, NULL);
@@ -1516,19 +1514,6 @@ xmlSecEncCtxEncapsulationMechanismGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyData
         return(NULL);
     }
 
-    /* on encrypt: write the KEM ciphertext back to enc:CipherData/enc:CipherValue in the node */
-    if(encCtx->operation == xmlSecTransformOperationEncrypt) {
-        if(encCtx->encMethod->id->writeNode != NULL) {
-            ret = encCtx->encMethod->id->writeNode(encCtx->encMethod, node,
-                                                    &(encCtx->transformCtx));
-            if(ret < 0) {
-                xmlSecInternalError("writeNode", xmlSecNodeGetName(node));
-                xmlSecKeyDestroy(key);
-                return(NULL);
-            }
-        }
-    }
-
     /* success */
     return(key);
 }
@@ -1542,8 +1527,7 @@ xmlSecEncCtxEncapsulationMechanismGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyData
  * @return 0 on success or a negative value if an error occurs.
  */
 int
-xmlSecEncCtxEncapsulationMechanismXmlWrite(xmlSecEncCtxPtr encCtx, xmlNodePtr node,
-    xmlSecKeyInfoCtxPtr keyInfoCtx)
+xmlSecEncCtxEncapsulationMechanismXmlWrite(xmlSecEncCtxPtr encCtx, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx)
 {
     int ret;
 
@@ -1558,8 +1542,7 @@ xmlSecEncCtxEncapsulationMechanismXmlWrite(xmlSecEncCtxPtr encCtx, xmlNodePtr no
 
     /* the EncapsulationMechanism node is the transform node itself */
     encCtx->transformCtx.parentKeyInfoCtx = keyInfoCtx;
-    encCtx->encMethod = xmlSecTransformCtxNodeRead(&(encCtx->transformCtx), node,
-        xmlSecTransformUsageEncapsulationMechanism);
+    encCtx->encMethod = xmlSecTransformCtxNodeRead(&(encCtx->transformCtx), node, xmlSecTransformUsageEncapsulationMechanism);
     if(encCtx->encMethod == NULL) {
         xmlSecInternalError("xmlSecTransformCtxNodeRead", xmlSecNodeGetName(node));
         return(-1);

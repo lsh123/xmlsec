@@ -286,6 +286,9 @@ struct _xmlSecTransformCtx {
     xmlSecTransformPtr                          first;  /**< the first transform in the chain. */
     xmlSecTransformPtr                          last;  /**< the last transform in the chain. */
 
+    /* user by EncapsulationMechanism transforms */
+    xmlSecKeyDataPtr                            kemKeyData;  /**< the pointer to the KEM cipher value key data (used by KEM transforms). */
+
     /* for the future */
     void*                                       reserved0;  /**< reserved for the future. */
     void*                                       reserved1;  /**< reserved for the future. */

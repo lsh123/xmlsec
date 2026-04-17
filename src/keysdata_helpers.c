@@ -29,6 +29,7 @@
 
 #include "cast_helpers.h"
 #include "keysdata_helpers.h"
+#include "transform_helpers.h"
 
 void
 xmlSecKeyDataDebugDumpImpl(xmlSecKeyDataPtr data, FILE* output) {
@@ -2271,4 +2272,309 @@ xmlSecKeyValueRsaXmlWrite(xmlSecKeyValueRsaPtr data, xmlNodePtr node,
     return(0);
 }
 #endif /* !defined(XMLSEC_NO_RSA) */
+
+#ifndef XMLSEC_NO_MLKEM
+/******************************************************************************
+ *
+ * xmlSecKeyDataKEMCipherValue klass - internal helper for KEM ciphertext
+ *
+ * Holds both the recipient key (public for encrypt, private for decrypt) and
+ * the KEM ciphertext exchanged via enc:CipherData/enc:CipherValue.
+ *
+  *****************************************************************************/
+
+#define XMLSEC_KEY_DATA_KEM_CIPHER_VALUE_INIT_BUF_SIZE  256
+
+static int  xmlSecKeyDataKEMCipherValueInitialize   (xmlSecKeyDataPtr data);
+static int  xmlSecKeyDataKEMCipherValueDuplicate    (xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src);
+static void xmlSecKeyDataKEMCipherValueFinalize     (xmlSecKeyDataPtr data);
+
+static xmlSecKeyDataKlass xmlSecKeyDataKEMCipherValueKlass = {
+    sizeof(xmlSecKeyDataKlass),             /* xmlSecSize klassSize */
+    xmlSecKeyDataKEMCipherValueSize,        /* xmlSecSize objSize */
+
+    /* data */
+    BAD_CAST "kem-cipher-value",            /* const xmlChar* name; */
+    xmlSecKeyDataUsageUnknown,              /* xmlSecKeyDataUsage usage; */
+    NULL,                                   /* const xmlChar* href; */
+    NULL,                                   /* const xmlChar* dataNodeName; */
+    NULL,                                   /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    xmlSecKeyDataKEMCipherValueInitialize,  /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecKeyDataKEMCipherValueDuplicate,   /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecKeyDataKEMCipherValueFinalize,    /* xmlSecKeyDataFinalizeMethod finalize; */
+    NULL,                                   /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    NULL,                                   /* xmlSecKeyDataGetTypeMethod getType; */
+    NULL,                                   /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                                   /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    NULL,                                   /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    NULL,                                   /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    NULL,                                   /* xmlSecKeyDataBinReadMethod binRead; */
+    NULL,                                   /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecKeyDataDebugDumpImpl,             /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecKeyDataDebugXmlDumpImpl,          /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                   /* void* reserved0; */
+    NULL,                                   /* void* reserved1; */
+};
+
+static int
+xmlSecKeyDataKEMCipherValueInitialize(xmlSecKeyDataPtr data) {
+    xmlSecKeyDataKEMCipherValue* kemData;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecKeyDataKEMCipherValueSize), -1);
+
+    kemData = (xmlSecKeyDataKEMCipherValue*)data;
+    /* recipientKey is already NULL since xmlSecKeyDataCreate zeroes memory */
+
+    ret = xmlSecBufferInitialize(&(kemData->ciphertext), XMLSEC_KEY_DATA_KEM_CIPHER_VALUE_INIT_BUF_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(ciphertext)", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+    return(0);
+}
+
+static int
+xmlSecKeyDataKEMCipherValueDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecKeyDataKEMCipherValue* dstData;
+    xmlSecKeyDataKEMCipherValue* srcData;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataIsValid(dst), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(dst, xmlSecKeyDataKEMCipherValueSize), -1);
+    xmlSecAssert2(xmlSecKeyDataIsValid(src), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(src, xmlSecKeyDataKEMCipherValueSize), -1);
+
+    dstData = (xmlSecKeyDataKEMCipherValue*)dst;
+    srcData = (xmlSecKeyDataKEMCipherValue*)src;
+
+    /* copy recipient key */
+    if(dstData->recipientKey != NULL) {
+        xmlSecKeyDestroy(dstData->recipientKey);
+        dstData->recipientKey = NULL;
+    }
+    if(srcData->recipientKey != NULL) {
+        dstData->recipientKey = xmlSecKeyDuplicate(srcData->recipientKey);
+        if(dstData->recipientKey == NULL) {
+            xmlSecInternalError("xmlSecKeyDuplicate", xmlSecKeyDataGetName(src));
+            return(-1);
+        }
+    }
+
+    /* copy ciphertext */
+    ret = xmlSecBufferSetData(&(dstData->ciphertext),
+        xmlSecBufferGetData(&(srcData->ciphertext)),
+        xmlSecBufferGetSize(&(srcData->ciphertext)));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferSetData(ciphertext)", xmlSecKeyDataGetName(src));
+        return(-1);
+    }
+    return(0);
+}
+
+static void
+xmlSecKeyDataKEMCipherValueFinalize(xmlSecKeyDataPtr data) {
+    xmlSecKeyDataKEMCipherValue* kemData;
+
+    xmlSecAssert(xmlSecKeyDataIsValid(data));
+    xmlSecAssert(xmlSecKeyDataCheckSize(data, xmlSecKeyDataKEMCipherValueSize));
+
+    kemData = (xmlSecKeyDataKEMCipherValue*)data;
+    if(kemData->recipientKey != NULL) {
+        xmlSecKeyDestroy(kemData->recipientKey);
+        kemData->recipientKey = NULL;
+    }
+    xmlSecBufferFinalize(&(kemData->ciphertext));
+}
+
+/**
+ * @brief Returns the KEM cipher value key data klass.
+ *
+ * @return KEM cipher value key data klass.
+ */
+xmlSecKeyDataId
+xmlSecKeyDataKEMCipherValueGetKlass(void) {
+    return(&xmlSecKeyDataKEMCipherValueKlass);
+}
+
+/**
+ * @brief Gets the recipient key from KEM cipher value key data.
+ * @param data the pointer to KEM cipher value key data.
+ *
+ * @return pointer to the recipient key or NULL if not set.
+ */
+xmlSecKeyPtr
+xmlSecKeyDataKEMCipherValueGetRecipientKey(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataKEMCipherValueId), NULL);
+
+    return(((xmlSecKeyDataKEMCipherValue*)data)->recipientKey);
+}
+
+/**
+ * @brief Gets the KEM ciphertext buffer from KEM cipher value key data.
+ * @param data the pointer to KEM cipher value key data.
+ *
+ * @return pointer to the ciphertext buffer or NULL if an error occurs.
+ */
+xmlSecBufferPtr
+xmlSecKeyDataKEMCipherValueGetCiphertext(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataKEMCipherValueId), NULL);
+
+    return(&(((xmlSecKeyDataKEMCipherValue*)data)->ciphertext));
+}
+
+/**
+ * @brief Sets the KEM ciphertext in KEM cipher value key data.
+ * @param data the pointer to KEM cipher value key data.
+ * @param buf the pointer to the ciphertext bytes.
+ * @param bufSize the size of the ciphertext buffer.
+ *
+ * @return 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecKeyDataKEMCipherValueSetCiphertext(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataKEMCipherValueId), -1);
+    xmlSecAssert2(buf != NULL, -1);
+
+    return(xmlSecBufferSetData(&(((xmlSecKeyDataKEMCipherValue*)data)->ciphertext), buf, bufSize));
+}
+
+int
+xmlSecKeyDataKEMCipherValueNodeRead(xmlSecKeyDataPtr data,
+    xmlNodePtr node, xmlSecTransformPtr kemTransform, xmlSecTransformCtxPtr transformCtx)
+{
+    xmlSecKeyDataKEMCipherValue* kemData;
+    xmlNodePtr cur;
+    xmlNodePtr cipherValueNode;
+    xmlSecKeyDataType keyType;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataKEMCipherValueId), -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(kemTransform != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+    xmlSecAssert2(transformCtx->parentKeyInfoCtx != NULL, -1);
+
+    kemData = (xmlSecKeyDataKEMCipherValue*)data;
+    xmlSecAssert2(kemData->recipientKey == NULL, -1);
+
+    /* on decrypt the recipient uses their private key to decapsulate */
+    if(transformCtx->parentKeyInfoCtx->operation == xmlSecTransformOperationDecrypt) {
+        keyType = xmlSecKeyDataTypePrivate;
+    } else {
+        keyType = xmlSecKeyDataTypePublic;
+    }
+
+    cur = xmlSecGetNextElementNode(node->children);
+
+    /* first is optional ds:KeyInfo containing the recipient's key */
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeKeyInfo, xmlSecDSigNs))) {
+        kemData->recipientKey = xmlSecTransformReadKeyInfoNode(keyType, cur, kemTransform, transformCtx);
+        if(kemData->recipientKey == NULL) {
+            xmlSecInternalError("xmlSecTransformReadKeyInfoNode(KeyInfo)", xmlSecNodeGetName(node));
+            return(-1);
+        }
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    /* next is optional enc:CipherData containing the KEM ciphertext */
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeCipherData, xmlSecEncNs))) {
+        /* find CipherValue inside CipherData */
+        cipherValueNode = xmlSecGetNextElementNode(cur->children);
+        if((cipherValueNode == NULL) || (!xmlSecCheckNodeName(cipherValueNode, xmlSecNodeCipherValue, xmlSecEncNs))) {
+            xmlSecInvalidNodeError(cipherValueNode, xmlSecNodeCipherValue, xmlSecNodeGetName(node));
+            return(-1);
+        }
+
+        ret = xmlSecBufferBase64NodeContentRead(&(kemData->ciphertext), cipherValueNode);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecBufferBase64NodeContentRead(CipherValue)", xmlSecNodeGetName(node));
+            return(-1);
+        }
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    /* if there is something left then it's an error */
+    if(cur != NULL) {
+        xmlSecUnexpectedNodeError(cur, NULL);
+        return(-1);
+    }
+
+    /* done */
+    return(0);
+}
+
+int
+xmlSecKeyDataKEMCipherValueNodeWrite(xmlSecKeyDataPtr data,
+    xmlNodePtr node, xmlSecTransformPtr kemTransform, xmlSecTransformCtxPtr transformCtx)
+{
+    xmlSecKeyDataKEMCipherValue* kemData;
+    xmlNodePtr cur;
+    xmlNodePtr cipherDataNode;
+    xmlNodePtr cipherValueNode;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataKEMCipherValueId), -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(kemTransform != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+    xmlSecAssert2(transformCtx->parentKeyInfoCtx != NULL, -1);
+
+    kemData = (xmlSecKeyDataKEMCipherValue*)data;
+    cur = xmlSecGetNextElementNode(node->children);
+
+    /* first is optional ds:KeyInfo: write recipient's public key */
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeKeyInfo, xmlSecDSigNs))) {
+        if(kemData->recipientKey != NULL) {
+            ret = xmlSecTransformWriteKeyInfoNode(kemData->recipientKey, cur, kemTransform, transformCtx);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecTransformWriteKeyInfoNode(KeyInfo)", xmlSecNodeGetName(node));
+                return(-1);
+            }
+        }
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    /* next is optional enc:CipherData: write the KEM ciphertext into CipherValue */
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeCipherData, xmlSecEncNs))) {
+        cipherDataNode = cur;
+        cipherValueNode = xmlSecGetNextElementNode(cipherDataNode->children);
+        if((cipherValueNode == NULL) || (!xmlSecCheckNodeName(cipherValueNode, xmlSecNodeCipherValue, xmlSecEncNs))) {
+            xmlSecInvalidNodeError(cipherValueNode, xmlSecNodeCipherValue, xmlSecNodeGetName(node));
+            return(-1);
+        }
+
+        if(xmlSecBufferGetSize(&(kemData->ciphertext)) > 0) {
+            ret = xmlSecBufferBase64NodeContentWrite(&(kemData->ciphertext), cipherValueNode,
+                    xmlSecBase64GetDefaultLineSize());
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(CipherValue)", xmlSecNodeGetName(node));
+                return(-1);
+            }
+        }
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    /* if there is something left then it's an error */
+    if(cur != NULL) {
+        xmlSecUnexpectedNodeError(cur, NULL);
+        return(-1);
+    }
+
+    /* done */
+    return(0);
+}
+
+#endif /* XMLSEC_NO_MLKEM */
 

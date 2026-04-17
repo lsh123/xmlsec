@@ -22,6 +22,18 @@
 #include <xmlsec/transforms.h>
 
 
+/* Internal helpers used by key-agreement and KEM code: read / write key info inside transforms */
+XMLSEC_EXPORT xmlSecKeyPtr  xmlSecTransformReadKeyInfoNode       (xmlSecKeyDataType keyType,
+                                                                  xmlNodePtr node,
+                                                                  xmlSecTransformPtr transform,
+                                                                  xmlSecTransformCtxPtr transformCtx);
+XMLSEC_EXPORT int           xmlSecTransformWriteKeyInfoNode      (xmlSecKeyPtr key,
+                                                                  xmlNodePtr node,
+                                                                  xmlSecTransformPtr transform,
+                                                                  xmlSecTransformCtxPtr transformCtx);
+
+
+
 /* Common Key Agreement params */
 struct _xmlSecTransformKeyAgreementParams {
     xmlSecTransformPtr  kdfTransform;
@@ -46,29 +58,6 @@ XMLSEC_EXPORT int   xmlSecTransformKeyAgreementParamsWrite         (xmlSecTransf
                                                                     xmlSecTransformCtxPtr transformCtx);
 
 
-/* EncapsulationMechanism */
-struct _xmlSecTransformEncapsulationMechanismParams {
-    xmlSecKeyPtr        recipientKey; /* recipient public key (encrypt) or private key (decrypt) */
-    xmlSecBuffer        ciphertext;   /* KEM ciphertext from/to enc:CipherData/enc:CipherValue */
-};
-typedef struct _xmlSecTransformEncapsulationMechanismParams
-    xmlSecTransformEncapsulationMechanismParams,
-    *xmlSecTransformEncapsulationMechanismParamsPtr;
-
-XMLSEC_EXPORT int   xmlSecTransformEncapsulationMechanismParamsInitialize(
-                                                                    xmlSecTransformEncapsulationMechanismParamsPtr params);
-XMLSEC_EXPORT void  xmlSecTransformEncapsulationMechanismParamsFinalize(
-                                                                    xmlSecTransformEncapsulationMechanismParamsPtr params);
-XMLSEC_EXPORT int   xmlSecTransformEncapsulationMechanismParamsRead(
-                                                                    xmlSecTransformEncapsulationMechanismParamsPtr params,
-                                                                    xmlNodePtr node,
-                                                                    xmlSecTransformPtr kemTransform,
-                                                                    xmlSecTransformCtxPtr transformCtx);
-XMLSEC_EXPORT int   xmlSecTransformEncapsulationMechanismParamsWrite(
-                                                                    xmlSecTransformEncapsulationMechanismParamsPtr params,
-                                                                    xmlNodePtr node,
-                                                                    xmlSecTransformPtr kemTransform,
-                                                                    xmlSecTransformCtxPtr transformCtx);
 
 
 /* ConcatKDF */

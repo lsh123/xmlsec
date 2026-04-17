@@ -29,7 +29,6 @@
 #include <string.h>
 
 #include <openssl/evp.h>
-#include <openssl/ml_kem.h>
 #include <openssl/objects.h>
 
 #include <xmlsec/xmlsec.h>
@@ -49,6 +48,8 @@
 #include "private.h"
 
 #ifndef XMLSEC_NO_MLKEM
+
+#include <openssl/ml_kem.h>
 
 
 /******************************************************************************

@@ -782,7 +782,7 @@ xmlSecTransformHmacVerify(const xmlSecByte* data, xmlSecSize dataSize,
 /*
  * THIS IS EXPERIMENTAL AND NON-STANDARD
  *
- * <SignatureMethod Algorithm="http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#ml-dsa-44">
+ * <SignatureMethod Algorithm="XMLSEC_ALKESEY_EXPERIMENTAL_2025_12#ml-dsa-44">
  *   <mldsa:MLDSAContextString>base64 encoded context string</mldsa:MLDSAContextString>
  * </SignatureMethod>
  */
@@ -830,7 +830,7 @@ xmlSecTransformMLDSAReadContextString(xmlNodePtr node, xmlSecBufferPtr res) {
 /*
  * THIS IS EXPERIMENTAL AND NON-STANDARD
  *
- * <SignatureMethod Algorithm="http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#ml-dsa-44">
+ * <SignatureMethod Algorithm="XMLSEC_ALKESEY_EXPERIMENTAL_2025_12#slh-dsa-44">
  *   <slhdsa:SLHDSAContextString>base64 encoded context string</slhdsa:SLHDSAContextString>
  * </SignatureMethod>
  */

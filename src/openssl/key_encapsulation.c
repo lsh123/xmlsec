@@ -205,16 +205,16 @@ xmlSecOpenSSLMLKEMSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq
     if(transform->operation == xmlSecTransformOperationEncrypt) {
         /* encapsulate: public key required */
         keyReq->keyType  = xmlSecKeyDataTypePublic;
-        keyReq->keyUsage = xmlSecKeyUsageEncrypt;
+        keyReq->keyUsage = xmlSecKeyUsageKeyEncapsulate;
     } else if(transform->operation == xmlSecTransformOperationDecrypt) {
         /* decapsulate: private key required */
         keyReq->keyType  = xmlSecKeyDataTypePrivate;
-        keyReq->keyUsage = xmlSecKeyUsageDecrypt;
+        keyReq->keyUsage = xmlSecKeyUsageKeyEncapsulate;
     } else {
         /* called from readNode before operation is set (e.g. via xmlSecTransformReadKeyInfoNode);
          * the caller will override keyType with the direction-appropriate value */
         keyReq->keyType  = xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate;
-        keyReq->keyUsage = xmlSecKeyUsageEncrypt | xmlSecKeyUsageDecrypt;
+        keyReq->keyUsage = xmlSecKeyUsageKeyEncapsulate;
     }
     return(0);
 }
@@ -514,26 +514,31 @@ xmlSecOpenSSLMLKEMProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr tr
     /* consume any input (KEM encapsulate / decapsulate takes no input) */
     xmlSecBufferEmpty(&(transform->inBuf));
 
-    /* if we have ciphertext (from readNode) then decapsulate shared secret from it */
+    /* encrypt must always generate a fresh ciphertext; decrypt consumes the parsed ciphertext */
     ciphertext = xmlSecKeyDataKEMCipherValueGetCiphertext(transformCtx->kemKeyData);
     xmlSecAssert2(ciphertext != NULL, -1);
 
-    if(!xmlSecBufferIsEmpty(ciphertext)) {
-        ret = xmlSecOpenSSLMLKEMDecapsulate(transformCtx, ctx, ciphertext, &(transform->outBuf));
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecOpenSSLMLKEMDecapsulate", xmlSecTransformGetName(transform));
-            return(-1);
-        }
-    } else if(transform->operation == xmlSecTransformOperationEncrypt) {
-        /* encapsulate and store ciphertext directly into kemKeyData */
+    if(transform->operation == xmlSecTransformOperationEncrypt) {
+        /* encrypt requires generating a fresh ciphertext */
+        xmlSecBufferEmpty(ciphertext);
+
         ret = xmlSecOpenSSLMLKEMEncapsulate(transformCtx, ctx, ciphertext, &(transform->outBuf));
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLMLKEMEncapsulate", xmlSecTransformGetName(transform));
             return(-1);
         }
     } else {
-        xmlSecInvalidTransfromError2(transform, "The ciphertext value is available for decryption (operation=%u)", transform->operation);
-        return(-1);
+        /* decrypt requires the ciphertext to be present */
+        if(xmlSecBufferIsEmpty(ciphertext)) {
+            xmlSecInvalidTransfromError2(transform, "The ciphertext value is required for decryption (operation=%u)", transform->operation);
+            return(-1);
+        }
+
+        ret = xmlSecOpenSSLMLKEMDecapsulate(transformCtx, ctx, ciphertext, &(transform->outBuf));
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecOpenSSLMLKEMDecapsulate", xmlSecTransformGetName(transform));
+            return(-1);
+        }
     }
 
     /* truncate shared secret output to the expected key size if necessary */

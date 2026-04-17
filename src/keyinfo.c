@@ -2076,6 +2076,8 @@ xmlSecKeyDataAgreementMethodXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNo
  * <as:EncapsulationMechanism/> processing
  *
   *****************************************************************************/
+ #ifndef XMLSEC_NO_MLKEM
+
 static int      xmlSecKeyDataEncapsulationMechanismXmlRead  (xmlSecKeyDataId id,
                                                              xmlSecKeyPtr key,
                                                              xmlNodePtr node,
@@ -2218,7 +2220,6 @@ xmlSecKeyDataEncapsulationMechanismXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         ret = xmlSecKeyAdoptData(key, keyInfoCtx->encCtx->transformCtx.kemKeyData);
         if(ret < 0) {
             xmlSecInternalError("xmlSecKeyAdoptData", xmlSecKeyDataKlassGetName(id));
-            xmlSecKeyDestroy(key);
             return(-1);
         }
         keyInfoCtx->encCtx->transformCtx.kemKeyData = NULL;
@@ -2299,6 +2300,6 @@ xmlSecKeyDataEncapsulationMechanismXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key
 
     return(0);
 }
-
+#endif /* XMLSEC_NO_MLKEM */
 
 #endif /* XMLSEC_NO_XMLENC */

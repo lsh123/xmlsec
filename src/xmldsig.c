@@ -276,6 +276,8 @@ xmlSecDSigCtxSign(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr tmpl) {
     /* add ids for Signature nodes */
     dsigCtx->operation  = xmlSecTransformOperationSign;
     dsigCtx->status     = xmlSecDSigStatusUnknown;
+    dsigCtx->keyInfoReadCtx.operation  = xmlSecTransformOperationSign;
+    dsigCtx->keyInfoWriteCtx.operation = xmlSecTransformOperationSign;
     xmlSecAddIDs(tmpl->doc, tmpl, xmlSecDSigIds);
 
     /* read signature template */
@@ -331,6 +333,8 @@ xmlSecDSigCtxVerify(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     /* add ids for Signature nodes */
     dsigCtx->operation  = xmlSecTransformOperationVerify;
     dsigCtx->status     = xmlSecDSigStatusUnknown;
+    dsigCtx->keyInfoReadCtx.operation  = xmlSecTransformOperationVerify;
+    dsigCtx->keyInfoWriteCtx.operation = xmlSecTransformOperationVerify;
     xmlSecAddIDs(node->doc, node, xmlSecDSigIds);
 
     /* read signature info */

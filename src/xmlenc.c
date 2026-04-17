@@ -1460,8 +1460,7 @@ xmlSecEncCtxAgreementMethodXmlWrite(xmlSecEncCtxPtr encCtx, xmlNodePtr node, xml
  * @brief Generates a key from the EncapsulationMechanism node.
  * @details Generates (decapsulates) a key from @p node:
  * @code{.xml}
- *  <as:EncapsulationMechanism xmlns:as="http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#"
- *                             Algorithm="some uri">
+ *  <as:EncapsulationMechanism xmlns:as="XMLSEC_ALKESEY_EXPERIMENTAL_2025_12"Algorithm="some uri">
  *      <ds:KeyInfo/>
  *      <enc:CipherData>
  *          <enc:CipherValue/>
@@ -1487,8 +1486,19 @@ xmlSecEncCtxEncapsulationMechanismGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyData
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
     /* initialize context and add ID attributes to the list of known ids */
-    encCtx->operation = keyInfoCtx->operation;
-    xmlSecAddIDs(node->doc, node, xmlSecEncIds);
+    switch(keyInfoCtx->operation) {
+        case xmlSecTransformOperationSign:
+        case xmlSecTransformOperationEncrypt:
+            encCtx->operation = xmlSecTransformOperationEncrypt;
+            break;
+        case xmlSecTransformOperationVerify:
+        case xmlSecTransformOperationDecrypt:
+            encCtx->operation = xmlSecTransformOperationDecrypt;
+            break;
+        default:
+            xmlSecInternalError2("invalid operation", NULL, "operation=%u", keyInfoCtx->operation);
+            return(NULL);
+    }
 
     /* the EncapsulationMechanism node is the transform node itself */
     encCtx->transformCtx.parentKeyInfoCtx = keyInfoCtx;

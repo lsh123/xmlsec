@@ -193,10 +193,13 @@ xmlSecKeyDataIdsRegisterDefault(void) {
         return(-1);
     }
     /* EXPERIMENTAL and should NOT be used in production */
+ #ifndef XMLSEC_NO_MLKEM
     if(xmlSecKeyDataIdsRegisterDisabled(xmlSecKeyDataEncapsulationMechanismId) < 0) {
         xmlSecInternalError("xmlSecKeyDataIdsRegister(xmlSecKeyDataEncapsulationMechanismId)", NULL);
         return(-1);
     }
+#endif /* XMLSEC_NO_MLKEM */
+
 #endif /* XMLSEC_NO_XMLENC */
 
     /* KeyValue key data should not be used in production w/o understanding of the security risks */

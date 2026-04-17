@@ -54,9 +54,6 @@ XML Security library supports the following features as defined in
 | **Key Transport** | | | | | | | |
 | [RSA PKCS1 v1.5](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-1_5) | Optional | Yes | Yes | Yes | Yes | Yes | Yes |
 | [RSA-OAEP (MGF1 with SHA1)](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Required | Yes | Yes | No | Yes | Yes | Yes |
-| ML-KEM-512 (KEM + AES-256-KW hybrid) | EXPERIMENTAL | Yes [(1)](#feature-disabled) [(11)](#openssl35-required) | No | No | No | No | No |
-| ML-KEM-768 (KEM + AES-256-KW hybrid) | EXPERIMENTAL | Yes [(1)](#feature-disabled) [(11)](#openssl35-required) | No | No | No | No | No |
-| ML-KEM-1024 (KEM + AES-256-KW hybrid) | EXPERIMENTAL | Yes [(1)](#feature-disabled) [(11)](#openssl35-required) | No | No | No | No | No |
 | [RSA-OAEP with MGF1-SHA1](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Optional | Yes | Yes | No | Yes [(7)](#rsa-oaep-same-algo) | No | Yes [(7)](#rsa-oaep-same-algo) |
 | [RSA-OAEP with MGF1-SHA224](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Optional | Yes | Yes | No | No | No | Yes [(7)](#rsa-oaep-same-algo) |
 | [RSA-OAEP with MGF1-SHA256](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Optional | Yes | Yes | No | Yes [(7)](#rsa-oaep-same-algo) | No | Yes [(7)](#rsa-oaep-same-algo) |
@@ -64,9 +61,13 @@ XML Security library supports the following features as defined in
 | [RSA-OAEP with MGF1-SHA512](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Optional | Yes | Yes | No | Yes [(7)](#rsa-oaep-same-algo) | No | Yes [(7)](#rsa-oaep-same-algo) |
 | **Key Agreement** | | | | | | | |
 | [Elliptic Curve Diffie-Hellman (ECDH)](https://www.w3.org/TR/xmlenc-core1/#sec-ECDH-ES) | Required | Yes [(3)](#openssl3-required) | Yes | Yes | Yes [(5)](#mscng-old-win) | No | No |
-| [XDH Key Agreement](https://www.w3.org/2021/04/xmldsig-more) (X25519, X448) | Optional | Yes [(3)](#openssl3-required) | Yes [(9)](#nss-x25519-only) | Yes | Yes [(10)](#mscng-x25519-only) | No | No |
+| [XDH Key Agreement](https://www.w3.org/2021/04/xmldsig-more) (X25519, X448) | Optional | Yes [(3)](#openssl3-required) [(11)](#openssl35-required) | Yes [(9)](#nss-x25519-only) | Yes | Yes [(10)](#mscng-x25519-only) | No | No |
 | [Diffie-Hellman with legacy KDF](https://www.w3.org/TR/xmlenc-core1/#sec-DHKeyAgreement) | Optional | No | No | No | No | No | No |
 | [Diffie-Hellman with explicit KDF](https://www.w3.org/TR/xmlenc-core1/#sec-DHKeyAgreement) | Optional | Yes [(3)](#openssl3-required) [(8)](#openssl-dhx) | No | No | Yes | No | No |
+| **Key Encapsulation** | EXPERIMENTAL | | | | | | |
+| ML-KEM-512| EXPERIMENTAL | Yes [(1)](#feature-disabled) [(11)](#openssl35-required) | No | No | No | No | No |
+| ML-KEM-768 | EXPERIMENTAL | Yes [(1)](#feature-disabled) [(11)](#openssl35-required) | No | No | No | No | No |
+| ML-KEM-1024 | EXPERIMENTAL | Yes [(1)](#feature-disabled) [(11)](#openssl35-required) | No | No | No | No | No |
 | **Symmetric Key Wrap** | | | | | | | |
 | [Triple DES Key Wrap](https://www.w3.org/TR/xmlenc-core1/#sec-kw-tripledes) | Required | Yes | Yes | Yes | Yes | Yes | Yes |
 | [AES-128 KeyWrap](https://www.w3.org/TR/xmlenc-core1/#sec-kw-aes) | Required | Yes | Yes | Yes | Yes | Yes | Yes |

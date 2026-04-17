@@ -2470,10 +2470,18 @@ xmlSecKeyDataKEMCipherValueNodeRead(xmlSecKeyDataPtr data,
     xmlSecAssert2(kemData->recipientKey == NULL, -1);
 
     /* on decrypt the recipient uses their private key to decapsulate */
-    if(transformCtx->parentKeyInfoCtx->operation == xmlSecTransformOperationDecrypt) {
-        keyType = xmlSecKeyDataTypePrivate;
-    } else {
-        keyType = xmlSecKeyDataTypePublic;
+    switch(transformCtx->parentKeyInfoCtx->operation) {
+        case xmlSecTransformOperationSign:
+        case xmlSecTransformOperationEncrypt:
+            keyType = xmlSecKeyDataTypePublic;
+            break;
+        case xmlSecTransformOperationVerify:
+        case xmlSecTransformOperationDecrypt:
+            keyType = xmlSecKeyDataTypePrivate;
+            break;
+        default:
+            xmlSecInternalError2("invalid operation", NULL, "operation=%u", transformCtx->parentKeyInfoCtx->operation);
+            return(-1);
     }
 
     cur = xmlSecGetNextElementNode(node->children);

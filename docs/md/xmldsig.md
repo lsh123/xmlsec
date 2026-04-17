@@ -109,9 +109,9 @@ XML Security library supports the following features as defined in
 | GOST-R3410-2001 | Optional | Yes [(3)](#gost-openssl) | No | Yes | No | Yes [(4)](#gost-mscrypto) | No |
 | GOST-R3410-2012 (256 bit) | Optional | Yes [(3)](#gost-openssl) | No | Yes | No | Yes [(4)](#gost-mscrypto) | No |
 | GOST-R3411-2012 (512 bit) | Optional | Yes [(3)](#gost-openssl) | No | Yes | No | Yes [(4)](#gost-mscrypto) | No |
-| ML-DSA | EXPERIMENTAL | Yes [(1)](#feature-disabled) | No | Yes [(1)](#feature-disabled) [(7)](#no-context-string) | No | No | No |
-| SLH-DSA-SHA2 (128, 192, 256; fast and slow variants) | EXPERIMENTAL | Yes [(1)](#feature-disabled) | No | No | No | No | No |
-| [EdDSA](https://www.w3.org/2021/04/xmldsig-more) (Ed25519, Ed25519ctx [(8)](#eddsa-ctx), Ed25519ph, Ed448, Ed448ph) | Optional | Yes | Yes [(9)](#eddsa-nss) | Yes | No | No | No |
+| ML-DSA | EXPERIMENTAL | Yes [(1)](#feature-disabled) [(12)](#openssl35-required) | No | Yes [(1)](#feature-disabled) [(7)](#no-context-string) | No | No | No |
+| SLH-DSA-SHA2 (128, 192, 256; fast and slow variants) | EXPERIMENTAL | Yes [(1)](#feature-disabled) [(12)](#openssl35-required) | No | No | No | No | No |
+| [EdDSA](https://www.w3.org/2021/04/xmldsig-more) (Ed25519, Ed25519ctx [(8)](#eddsa-ctx), Ed25519ph, Ed448, Ed448ph) | Optional | Yes [(12)](#openssl35-required) | Yes [(9)](#eddsa-nss) | Yes | No | No | No |
 | **The KeyInfo Element** | | | | | | | |
 | [The DSAKeyValue Element](https://www.w3.org/TR/xmldsig-core1/#sec-DSAKeyValue) | Optional | Yes [(1)](#feature-disabled) [(5)](#dsa-key-value) | Yes [(1)](#feature-disabled) [(5)](#dsa-key-value) | Yes [(1)](#feature-disabled) [(5)](#dsa-key-value) | Yes [(1)](#feature-disabled) [(5)](#dsa-key-value) | Yes [(1)](#feature-disabled) [(5)](#dsa-key-value) | Yes [(1)](#feature-disabled) [(5)](#dsa-key-value) |
 | [The RSAKeyValue Element](https://www.w3.org/TR/xmldsig-core1/#sec-RSAKeyValue) | Optional | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) |
@@ -135,6 +135,7 @@ XML Security library supports the following features as defined in
 9. <a id="eddsa-nss"></a> The xmlsec-nss library only supports Ed25519 (Ed448 is not supported). Additionally, NSS cannot import EdDSA private keys from PKCS#12 files; use unencrypted PKCS#8 DER format instead.
 10. <a id="mscng-sha3"></a> SHA3 digest algorithms in xmlsec-mscng require Windows 11 22H2 or later.
 11. <a id="mscng-xdh"></a> The xmlsec-mscng library supports XDH (X25519) key data (X448 is not supported); see the [XML Encryption Interoperability Report](xmlenc.md) for key agreement support details.
+12. <a id="openssl35-required"></a> Requires OpenSSL 3.5.0 or newer.
 
 ### Test vectors
 

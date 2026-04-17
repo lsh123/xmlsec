@@ -385,6 +385,10 @@ xmlSecOpenSSLMLKEMEncapsulate(xmlSecTransformCtxPtr transformCtx, xmlSecOpenSSLM
 
     /* create ct buffer */
     XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(ctLen, ctSize, goto done, NULL);
+    if(ctSize != ctx->ciphertextSize) {
+        xmlSecInvalidSizeError("Output ciphertext", ctSize, ctx->ciphertextSize, NULL);
+        goto done;
+    }
     ret = xmlSecBufferSetSize(cypherTextOut, ctSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize(ct)", NULL, "size=" XMLSEC_SIZE_FMT, ctSize);
@@ -398,9 +402,14 @@ xmlSecOpenSSLMLKEMEncapsulate(xmlSecTransformCtxPtr transformCtx, xmlSecOpenSSLM
         xmlSecOpenSSLError("EVP_PKEY_encapsulate", NULL);
         goto done;
     }
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(ctLen, ctSize, goto done, NULL);
+    if(ctSize != ctx->ciphertextSize) {
+        xmlSecInvalidSizeError("Output ciphertext", ctSize, ctx->ciphertextSize, NULL);
+        goto done;
+    }
 
     /* write shared secret to sharedSecretOut so the caller can use it as the CEK */
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(ssLen, ssSize, goto done, transformName);
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(ssLen, ssSize, goto done, NULL);
     ret = xmlSecBufferSetData(sharedSecretOut, ssBuf, ssSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetData(ss)", NULL, "size=" XMLSEC_SIZE_FMT, ssSize);

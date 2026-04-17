@@ -10,7 +10,6 @@
  * @addtogroup xmlsec_nss_crypto
  * @brief HMAC transforms implementation for NSS.
  */
-#ifndef XMLSEC_NO_HMAC
 #include "globals.h"
 
 #include <string.h>
@@ -32,6 +31,8 @@
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
 #include "../transform_helpers.h"
+
+#ifndef XMLSEC_NO_HMAC
 
 /******************************************************************************
  *

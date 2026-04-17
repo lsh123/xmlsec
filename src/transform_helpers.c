@@ -608,6 +608,166 @@ done:
     return(res);
 }
 
+/******************************************************************************
+ *
+ * EncapsulationMechanism Params
+ *
+ *****************************************************************************/
+
+#define XMLSEC_TRANSFORM_ENCAPSULATION_MECHANISM_DEFAULT_BUF_SIZE  256
+
+int
+xmlSecTransformEncapsulationMechanismParamsInitialize(xmlSecTransformEncapsulationMechanismParamsPtr params) {
+    int ret;
+
+    xmlSecAssert2(params != NULL, -1);
+
+    memset(params, 0, sizeof(*params));
+
+    ret = xmlSecBufferInitialize(&(params->ciphertext), XMLSEC_TRANSFORM_ENCAPSULATION_MECHANISM_DEFAULT_BUF_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(ciphertext)", NULL);
+        xmlSecTransformEncapsulationMechanismParamsFinalize(params);
+        return(-1);
+    }
+
+    /* done */
+    return(0);
+}
+
+void
+xmlSecTransformEncapsulationMechanismParamsFinalize(xmlSecTransformEncapsulationMechanismParamsPtr params) {
+    xmlSecAssert(params != NULL);
+
+    if(params->recipientKey != NULL) {
+        xmlSecKeyDestroy(params->recipientKey);
+    }
+    xmlSecBufferFinalize(&(params->ciphertext));
+
+    memset(params, 0, sizeof(*params));
+}
+
+int
+xmlSecTransformEncapsulationMechanismParamsRead(xmlSecTransformEncapsulationMechanismParamsPtr params,
+    xmlNodePtr node, xmlSecTransformPtr kemTransform, xmlSecTransformCtxPtr transformCtx)
+{
+    xmlNodePtr cur;
+    xmlNodePtr cipherValueNode;
+    xmlSecKeyDataType keyType;
+    int ret;
+
+    xmlSecAssert2(params != NULL, -1);
+    xmlSecAssert2(params->recipientKey == NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(kemTransform != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+    xmlSecAssert2(transformCtx->parentKeyInfoCtx != NULL, -1);
+
+    /* on decrypt the recipient uses their private key to decapsulate */
+    if(transformCtx->parentKeyInfoCtx->operation == xmlSecTransformOperationDecrypt) {
+        keyType = xmlSecKeyDataTypePrivate;
+    } else {
+        keyType = xmlSecKeyDataTypePublic;
+    }
+
+    cur = xmlSecGetNextElementNode(node->children);
+
+    /* first is optional ds:KeyInfo containing the recipient's key */
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeKeyInfo, xmlSecDSigNs))) {
+        params->recipientKey = xmlSecTransformKeyAgreementReadKey(keyType, cur, kemTransform, transformCtx);
+        if(params->recipientKey == NULL) {
+            xmlSecInternalError("xmlSecTransformKeyAgreementReadKey(KeyInfo)", xmlSecNodeGetName(node));
+            return(-1);
+        }
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    /* next is optional enc:CipherData containing the KEM ciphertext */
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeCipherData, xmlSecEncNs))) {
+        /* find CipherValue inside CipherData */
+        cipherValueNode = xmlSecGetNextElementNode(cur->children);
+        if((cipherValueNode == NULL) || (!xmlSecCheckNodeName(cipherValueNode, xmlSecNodeCipherValue, xmlSecEncNs))) {
+            xmlSecInvalidNodeError(cipherValueNode, xmlSecNodeCipherValue, xmlSecNodeGetName(node));
+            return(-1);
+        }
+
+        ret = xmlSecBufferBase64NodeContentRead(&(params->ciphertext), cipherValueNode);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecBufferBase64NodeContentRead(CipherValue)", xmlSecNodeGetName(node));
+            return(-1);
+        }
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    /* if there is something left then it's an error */
+    if(cur != NULL) {
+        xmlSecUnexpectedNodeError(cur, NULL);
+        return(-1);
+    }
+
+    /* done */
+    return(0);
+}
+
+int
+xmlSecTransformEncapsulationMechanismParamsWrite(xmlSecTransformEncapsulationMechanismParamsPtr params,
+    xmlNodePtr node, xmlSecTransformPtr kemTransform, xmlSecTransformCtxPtr transformCtx)
+{
+    xmlNodePtr cur;
+    xmlNodePtr cipherDataNode;
+    xmlNodePtr cipherValueNode;
+    int ret;
+
+    xmlSecAssert2(params != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(kemTransform != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+    xmlSecAssert2(transformCtx->parentKeyInfoCtx != NULL, -1);
+
+    cur = xmlSecGetNextElementNode(node->children);
+
+    /* first is optional ds:KeyInfo: write recipient's public key */
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeKeyInfo, xmlSecDSigNs))) {
+        if(params->recipientKey != NULL) {
+            ret = xmlSecTransformKeyAgreementWriteKey(params->recipientKey, cur, kemTransform, transformCtx);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecTransformKeyAgreementWriteKey(KeyInfo)", xmlSecNodeGetName(node));
+                return(-1);
+            }
+        }
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    /* next is optional enc:CipherData: write the KEM ciphertext into CipherValue */
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeCipherData, xmlSecEncNs))) {
+        cipherDataNode = cur;
+        cipherValueNode = xmlSecGetNextElementNode(cipherDataNode->children);
+        if((cipherValueNode == NULL) || (!xmlSecCheckNodeName(cipherValueNode, xmlSecNodeCipherValue, xmlSecEncNs))) {
+            xmlSecInvalidNodeError(cipherValueNode, xmlSecNodeCipherValue, xmlSecNodeGetName(node));
+            return(-1);
+        }
+
+        if(xmlSecBufferGetSize(&(params->ciphertext)) > 0) {
+            ret = xmlSecBufferBase64NodeContentWrite(&(params->ciphertext), cipherValueNode,
+                    xmlSecBase64GetDefaultLineSize());
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(CipherValue)", xmlSecNodeGetName(node));
+                return(-1);
+            }
+        }
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    /* if there is something left then it's an error */
+    if(cur != NULL) {
+        xmlSecUnexpectedNodeError(cur, NULL);
+        return(-1);
+    }
+
+    /* done */
+    return(0);
+}
+
 #ifndef XMLSEC_NO_HMAC
 
 /* min output for hmac transform in bits */

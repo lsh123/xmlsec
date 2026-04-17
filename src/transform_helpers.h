@@ -46,6 +46,31 @@ XMLSEC_EXPORT int   xmlSecTransformKeyAgreementParamsWrite         (xmlSecTransf
                                                                     xmlSecTransformCtxPtr transformCtx);
 
 
+/* EncapsulationMechanism */
+struct _xmlSecTransformEncapsulationMechanismParams {
+    xmlSecKeyPtr        recipientKey; /* recipient public key (encrypt) or private key (decrypt) */
+    xmlSecBuffer        ciphertext;   /* KEM ciphertext from/to enc:CipherData/enc:CipherValue */
+};
+typedef struct _xmlSecTransformEncapsulationMechanismParams
+    xmlSecTransformEncapsulationMechanismParams,
+    *xmlSecTransformEncapsulationMechanismParamsPtr;
+
+XMLSEC_EXPORT int   xmlSecTransformEncapsulationMechanismParamsInitialize(
+                                                                    xmlSecTransformEncapsulationMechanismParamsPtr params);
+XMLSEC_EXPORT void  xmlSecTransformEncapsulationMechanismParamsFinalize(
+                                                                    xmlSecTransformEncapsulationMechanismParamsPtr params);
+XMLSEC_EXPORT int   xmlSecTransformEncapsulationMechanismParamsRead(
+                                                                    xmlSecTransformEncapsulationMechanismParamsPtr params,
+                                                                    xmlNodePtr node,
+                                                                    xmlSecTransformPtr kemTransform,
+                                                                    xmlSecTransformCtxPtr transformCtx);
+XMLSEC_EXPORT int   xmlSecTransformEncapsulationMechanismParamsWrite(
+                                                                    xmlSecTransformEncapsulationMechanismParamsPtr params,
+                                                                    xmlNodePtr node,
+                                                                    xmlSecTransformPtr kemTransform,
+                                                                    xmlSecTransformCtxPtr transformCtx);
+
+
 /* ConcatKDF */
 #ifndef XMLSEC_NO_CONCATKDF
 

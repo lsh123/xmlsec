@@ -566,6 +566,16 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefAgreementMethod[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeOriginatorKeyInfo[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRecipientKeyInfo[];
 
+/******************************************************************************
+ *
+ * EncapsulationMechanism
+ *
+  *****************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecExperimental202512Ns[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEncapsulationMechanism[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeEncapsulationMechanism[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEncapsulationMechanism[];
+
 
 
 /******************************************************************************

@@ -2070,4 +2070,168 @@ xmlSecKeyDataAgreementMethodXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNo
 }
 
 
+/******************************************************************************
+ *
+ * <as:EncapsulationMechanism/> processing
+ *
+  *****************************************************************************/
+static int      xmlSecKeyDataEncapsulationMechanismXmlRead  (xmlSecKeyDataId id,
+                                                             xmlSecKeyPtr key,
+                                                             xmlNodePtr node,
+                                                             xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int      xmlSecKeyDataEncapsulationMechanismXmlWrite (xmlSecKeyDataId id,
+                                                             xmlSecKeyPtr key,
+                                                             xmlNodePtr node,
+                                                             xmlSecKeyInfoCtxPtr keyInfoCtx);
+
+
+static xmlSecKeyDataKlass xmlSecKeyDataEncapsulationMechanismKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    sizeof(xmlSecKeyData),
+
+    /* data */
+    xmlSecNameEncapsulationMechanism,
+    xmlSecKeyDataUsageKeyInfoNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+                                                /* xmlSecKeyDataUsage usage; */
+    xmlSecHrefEncapsulationMechanism,           /* const xmlChar* href; */
+    xmlSecNodeEncapsulationMechanism,           /* const xmlChar* dataNodeName; */
+    xmlSecExperimental202512Ns,                 /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    NULL,                                       /* xmlSecKeyDataInitializeMethod initialize; */
+    NULL,                                       /* xmlSecKeyDataDuplicateMethod duplicate; */
+    NULL,                                       /* xmlSecKeyDataFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    NULL,                                       /* xmlSecKeyDataGetTypeMethod getType; */
+    NULL,                                       /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    xmlSecKeyDataEncapsulationMechanismXmlRead, /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    xmlSecKeyDataEncapsulationMechanismXmlWrite,/* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
+    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    NULL,                                       /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    NULL,                                       /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * @brief Gets the EncapsulationMechanism element key data klass.
+ * @details The &lt;as:EncapsulationMechanism/&gt; element key data klass.
+ *
+ * Key Encapsulation Mechanism (KEM) is a cryptographic primitive that securely
+ * transports a symmetric key via public-key operations. The encapsulator uses the
+ * recipient's public key to produce a ciphertext and a shared secret; the recipient
+ * decapsulates the ciphertext with their private key to recover the same secret.
+ *
+ * @return the &lt;as:EncapsulationMechanism/&gt; element processing key data klass.
+ */
+xmlSecKeyDataId
+xmlSecKeyDataEncapsulationMechanismGetKlass(void) {
+    return(&xmlSecKeyDataEncapsulationMechanismKlass);
+}
+
+static int
+xmlSecKeyDataEncapsulationMechanismXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node,
+    xmlSecKeyInfoCtxPtr keyInfoCtx)
+{
+    xmlSecKeyPtr generatedKey;
+    int ret;
+
+    xmlSecAssert2(id == xmlSecKeyDataEncapsulationMechanismId, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeRead, -1);
+
+    /* check the enc level */
+    if(keyInfoCtx->curEncryptedKeyLevel >= keyInfoCtx->maxEncryptedKeyLevel) {
+        xmlSecOtherError3(XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL, xmlSecKeyDataKlassGetName(id),
+            "cur=%d;max=%d", keyInfoCtx->curEncryptedKeyLevel, keyInfoCtx->maxEncryptedKeyLevel);
+        return(-1);
+    }
+
+    /* init enc context */
+    if(keyInfoCtx->encCtx != NULL) {
+        xmlSecEncCtxReset(keyInfoCtx->encCtx);
+    } else {
+        ret = xmlSecKeyInfoCtxCreateEncCtx(keyInfoCtx);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecKeyInfoCtxCreateEncCtx", xmlSecKeyDataKlassGetName(id));
+            return(-1);
+        }
+    }
+    xmlSecAssert2(keyInfoCtx->encCtx != NULL, -1);
+
+    /* copy prefs */
+    ret = xmlSecKeyInfoCtxCopyUserPref(&(keyInfoCtx->encCtx->keyInfoReadCtx), keyInfoCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref(readCtx)", xmlSecKeyDataKlassGetName(id));
+        return(-1);
+    }
+    ret = xmlSecKeyInfoCtxCopyUserPref(&(keyInfoCtx->encCtx->keyInfoWriteCtx), keyInfoCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref(writeCtx)", xmlSecKeyDataKlassGetName(id));
+        return(-1);
+    }
+
+    ++keyInfoCtx->curEncryptedKeyLevel;
+    generatedKey = xmlSecEncCtxEncapsulationMechanismGenerate(keyInfoCtx->encCtx,
+        keyInfoCtx->keyReq.keyId, node, keyInfoCtx);
+    --keyInfoCtx->curEncryptedKeyLevel;
+
+    if(generatedKey == NULL) {
+        /* We might have multiple EncapsulationMechanism elements, each encapsulating
+         * for different recipients; the application can enforce correct decapsulation key.
+         */
+        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION) != 0) {
+            xmlSecInternalError("xmlSecEncCtxEncapsulationMechanismGenerate", xmlSecKeyDataKlassGetName(id));
+            return(-1);
+        }
+        return(0);
+    }
+
+    if(xmlSecKeyReqMatchKey(&(keyInfoCtx->keyReq), generatedKey) != 1) {
+        /* we are not allowed to use this key, ignore and continue */
+        xmlSecKeyDestroy(generatedKey);
+        return(0);
+    }
+
+    ret = xmlSecKeyCopy(key, generatedKey);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyCopy", xmlSecKeyDataKlassGetName(id));
+        xmlSecKeyDestroy(generatedKey);
+        return(-1);
+    }
+
+    /* success */
+    xmlSecKeyDestroy(generatedKey);
+    return(0);
+}
+
+static int
+xmlSecKeyDataEncapsulationMechanismXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node,
+    xmlSecKeyInfoCtxPtr keyInfoCtx)
+{
+    xmlSecAssert2(id == xmlSecKeyDataEncapsulationMechanismId, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(xmlSecKeyIsValid(key), -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeWrite, -1);
+
+    /* The KEM ciphertext was already written to enc:CipherValue during the generate
+     * (encrypt) phase inside xmlSecEncCtxEncapsulationMechanismGenerate. Nothing to do. */
+    return(0);
+}
+
+
 #endif /* XMLSEC_NO_XMLENC */

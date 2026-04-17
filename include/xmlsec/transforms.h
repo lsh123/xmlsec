@@ -217,6 +217,14 @@ typedef unsigned int                            xmlSecTransformUsage;
 #define xmlSecTransformUsageAgreementMethod 0x0040
 
 /**
+ * @brief Transform usable in as:EncapsulationMechanism.
+ * @details Transform is a KEM algorithm used in the &lt;as:EncapsulationMechanism/&gt; element:
+ * on encrypt it encapsulates a symmetric key and writes the ciphertext to CipherValue;
+ * on decrypt it reads the CipherValue and decapsulates to recover the key.
+ */
+#define xmlSecTransformUsageEncapsulationMechanism 0x0080
+
+/**
  * @brief Transform could be used for operation.
  */
 #define xmlSecTransformUsageAny                 0xFFFF

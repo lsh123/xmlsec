@@ -142,6 +142,15 @@ XMLSEC_EXPORT int               xmlSecEncCtxAgreementMethodXmlWrite(xmlSecEncCtx
                                                                  xmlNodePtr node,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
 
+XMLSEC_EXPORT xmlSecKeyPtr      xmlSecEncCtxEncapsulationMechanismGenerate(xmlSecEncCtxPtr encCtx,
+                                                                 xmlSecKeyDataId keyId,
+                                                                 xmlNodePtr node,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
+
+XMLSEC_EXPORT int               xmlSecEncCtxEncapsulationMechanismXmlWrite(xmlSecEncCtxPtr encCtx,
+                                                                 xmlNodePtr node,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
+
 XMLSEC_EXPORT const char*       xmlSecEncCtxGetFailureReasonString(xmlSecEncFailureReason failureReason);
 
 #ifdef __cplusplus

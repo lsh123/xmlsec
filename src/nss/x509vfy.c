@@ -12,8 +12,6 @@
  */
 #include "globals.h"
 
-#ifndef XMLSEC_NO_X509
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -41,6 +39,8 @@
 #include "../cast_helpers.h"
 #include "../x509_helpers.h"
 #include "private.h"
+
+#ifndef XMLSEC_NO_X509
 
 /******************************************************************************
  *

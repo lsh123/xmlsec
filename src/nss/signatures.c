@@ -1153,6 +1153,7 @@ xmlSecNssTransformEcdsaSha512GetKlass(void) {
 }
 
 #endif /* XMLSEC_NO_SHA512 */
+
 #endif /* XMLSEC_NO_EC */
 
 #ifndef XMLSEC_NO_EDDSA
@@ -1336,6 +1337,5 @@ xmlSecNssTransformRsaPssSha512GetKlass(void) {
 }
 
 #endif /* XMLSEC_NO_SHA512 */
-
 
 #endif /* XMLSEC_NO_RSA */

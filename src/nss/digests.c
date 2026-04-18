@@ -134,6 +134,21 @@ xmlSecNssDigestCheckId(xmlSecTransformPtr transform) {
     }
 #endif /* XMLSEC_NO_SHA512 */
 
+#ifndef XMLSEC_NO_SHA3
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformSha3_224Id)) {
+        return(1);
+    }
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformSha3_256Id)) {
+        return(1);
+    }
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformSha3_384Id)) {
+        return(1);
+    }
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformSha3_512Id)) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_SHA3 */
+
     return(0);
 }
 
@@ -185,6 +200,21 @@ xmlSecNssDigestInitialize(xmlSecTransformPtr transform) {
         ctx->digest = SECOID_FindOIDByTag(SEC_OID_SHA512);
     } else
 #endif /* XMLSEC_NO_SHA512 */
+
+#ifndef XMLSEC_NO_SHA3
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformSha3_224Id)) {
+        ctx->digest = SECOID_FindOIDByTag(SEC_OID_SHA3_224);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformSha3_256Id)) {
+        ctx->digest = SECOID_FindOIDByTag(SEC_OID_SHA3_256);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformSha3_384Id)) {
+        ctx->digest = SECOID_FindOIDByTag(SEC_OID_SHA3_384);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformSha3_512Id)) {
+        ctx->digest = SECOID_FindOIDByTag(SEC_OID_SHA3_512);
+    } else
+#endif /* XMLSEC_NO_SHA3 */
 
     if(1) {
         xmlSecInvalidTransfromError(transform)
@@ -448,3 +478,54 @@ xmlSecNssTransformSha512GetKlass(void) {
     return(&xmlSecNssSha512Klass);
 }
 #endif /* XMLSEC_NO_SHA512 */
+
+#ifndef XMLSEC_NO_SHA3
+/******************************************************************************
+ *
+ * SHA3 digest transforms
+ *
+  *****************************************************************************/
+XMLSEC_NSS_DIGEST_KLASS(Sha3_224)
+
+/**
+ * @brief SHA3-224 digest transform klass.
+ * @return pointer to SHA3-224 digest transform klass.
+ */
+xmlSecTransformId
+xmlSecNssTransformSha3_224GetKlass(void) {
+    return(&xmlSecNssSha3_224Klass);
+}
+
+XMLSEC_NSS_DIGEST_KLASS(Sha3_256)
+
+/**
+ * @brief SHA3-256 digest transform klass.
+ * @return pointer to SHA3-256 digest transform klass.
+ */
+xmlSecTransformId
+xmlSecNssTransformSha3_256GetKlass(void) {
+    return(&xmlSecNssSha3_256Klass);
+}
+
+XMLSEC_NSS_DIGEST_KLASS(Sha3_384)
+
+/**
+ * @brief SHA3-384 digest transform klass.
+ * @return pointer to SHA3-384 digest transform klass.
+ */
+xmlSecTransformId
+xmlSecNssTransformSha3_384GetKlass(void) {
+    return(&xmlSecNssSha3_384Klass);
+}
+
+XMLSEC_NSS_DIGEST_KLASS(Sha3_512)
+
+/**
+ * @brief SHA3-512 digest transform klass.
+ * @return pointer to SHA3-512 digest transform klass.
+ */
+xmlSecTransformId
+xmlSecNssTransformSha3_512GetKlass(void) {
+    return(&xmlSecNssSha3_512Klass);
+}
+#endif /* XMLSEC_NO_SHA3 */

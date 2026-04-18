@@ -1100,6 +1100,21 @@ xmlSecNssX509GetDigestFromAlgorithm(const xmlChar* href) {
     } else
 #endif /* XMLSEC_NO_SHA512 */
 
+#ifndef XMLSEC_NO_SHA3
+    if(xmlStrcmp(href, xmlSecHrefSha3_224) == 0) {
+        return(SEC_OID_SHA3_224);
+    } else
+    if(xmlStrcmp(href, xmlSecHrefSha3_256) == 0) {
+        return(SEC_OID_SHA3_256);
+    } else
+    if(xmlStrcmp(href, xmlSecHrefSha3_384) == 0) {
+        return(SEC_OID_SHA3_384);
+    } else
+    if(xmlStrcmp(href, xmlSecHrefSha3_512) == 0) {
+        return(SEC_OID_SHA3_512);
+    } else
+#endif /* XMLSEC_NO_SHA3 */
+
     {
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
             "href=%s", xmlSecErrorsSafeString(href));

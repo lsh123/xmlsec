@@ -40,13 +40,7 @@
 typedef struct _xmlSecGnuTLSKeyTransportCtx       xmlSecGnuTLSKeyTransportCtx;
 typedef struct _xmlSecGnuTLSKeyTransportCtx*      xmlSecGnuTLSKeyTransportCtxPtr;
 
-typedef gnutls_pubkey_t     (*xmlSecGnuTLSKeyDataGetPublicKeyMethod)      (xmlSecKeyDataPtr data);
-typedef gnutls_privkey_t    (*xmlSecGnuTLSKeyDataGetPrivateKeyMethod)     (xmlSecKeyDataPtr data);
-
 struct _xmlSecGnuTLSKeyTransportCtx {
-    xmlSecGnuTLSKeyDataGetPublicKeyMethod   getPubKey;
-    xmlSecGnuTLSKeyDataGetPrivateKeyMethod  getPrivKey;
-
     xmlSecKeyDataId     keyId;
     xmlSecKeyDataPtr    keyData;
 };
@@ -97,8 +91,6 @@ xmlSecGnuTLSKeyTransportInitialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_RSA_PKCS15
     if(transform->id == xmlSecGnuTLSTransformRsaPkcs1Id) {
-        ctx->getPubKey  = xmlSecGnuTLSKeyDataRsaGetPublicKey;
-        ctx->getPrivKey = xmlSecGnuTLSKeyDataRsaGetPrivateKey;
         ctx->keyId = xmlSecGnuTLSKeyDataRsaId;
     } else
 #endif /* XMLSEC_NO_RSA_PKCS15 */
@@ -196,9 +188,9 @@ xmlSecGnuTLSKeyTransportEncrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
     xmlSecAssert2(inSize > 0, -1);
 
     /* get key */
-    pubkey = ctx->getPubKey(ctx->keyData);
+    pubkey = xmlSecGnuTLSKeyDataRsaGetPublicKey(ctx->keyData);
     if(pubkey == NULL) {
-        xmlSecInternalError("ctx->getPubKey", NULL);
+        xmlSecInternalError("xmlSecGnuTLSKeyDataRsaGetPublicKey", NULL);
         return(-1);
     }
 
@@ -245,9 +237,9 @@ xmlSecGnuTLSKeyTransportDecrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
     xmlSecAssert2(inSize > 0, -1);
 
     /* get key */
-    privkey = ctx->getPrivKey(ctx->keyData);
+    privkey = xmlSecGnuTLSKeyDataRsaGetPrivateKey(ctx->keyData);
     if(privkey == NULL) {
-        xmlSecInternalError("ctx->getPrivKey", NULL);
+        xmlSecInternalError("xmlSecGnuTLSKeyDataRsaGetPrivateKey", NULL);
         return(-1);
     }
 
@@ -397,8 +389,6 @@ xmlSecGnuTLSTransformRsaPkcs1GetKlass(void) {
 typedef struct _xmlSecGnuTLSRsaOaepCtx         xmlSecGnuTLSRsaOaepCtx,
                                                 *xmlSecGnuTLSRsaOaepCtxPtr;
 struct _xmlSecGnuTLSRsaOaepCtx {
-    xmlSecGnuTLSKeyDataGetPublicKeyMethod   getPubKey;
-    xmlSecGnuTLSKeyDataGetPrivateKeyMethod  getPrivKey;
     xmlSecKeyDataId                         keyId;
     xmlSecKeyDataPtr                        keyData;
     gnutls_digest_algorithm_t               digestAlg;  /* OAEP hash; also used for MGF1 */
@@ -450,8 +440,6 @@ xmlSecGnuTLSRsaOaepInitialize(xmlSecTransformPtr transform) {
 
     memset(ctx, 0, sizeof(xmlSecGnuTLSRsaOaepCtx));
 
-    ctx->getPubKey  = xmlSecGnuTLSKeyDataRsaGetPublicKey;
-    ctx->getPrivKey = xmlSecGnuTLSKeyDataRsaGetPrivateKey;
     ctx->keyId      = xmlSecGnuTLSKeyDataRsaId;
     ctx->digestAlg  = GNUTLS_DIG_SHA1; /* default per XMLEnc spec */
 
@@ -696,9 +684,9 @@ xmlSecGnuTLSRsaOaepEncrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx,
     inSize = xmlSecBufferGetSize(inBuf);
     xmlSecAssert2(inSize > 0, -1);
 
-    pubkey = ctx->getPubKey(ctx->keyData);
+    pubkey = xmlSecGnuTLSKeyDataRsaGetPublicKey(ctx->keyData);
     if(pubkey == NULL) {
-        xmlSecInternalError("ctx->getPubKey", NULL);
+        xmlSecInternalError("xmlSecGnuTLSKeyDataRsaGetPublicKey", NULL);
         return(-1);
     }
 
@@ -771,9 +759,9 @@ xmlSecGnuTLSRsaOaepDecrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx,
     inSize = xmlSecBufferGetSize(inBuf);
     xmlSecAssert2(inSize > 0, -1);
 
-    privkey = ctx->getPrivKey(ctx->keyData);
+    privkey = xmlSecGnuTLSKeyDataRsaGetPrivateKey(ctx->keyData);
     if(privkey == NULL) {
-        xmlSecInternalError("ctx->getPrivKey", NULL);
+        xmlSecInternalError("xmlSecGnuTLSKeyDataRsaGetPrivateKey", NULL);
         return(-1);
     }
 
@@ -901,32 +889,32 @@ xmlSecGnuTLSRsaOaepExecute(xmlSecTransformPtr transform, int last,
     return(0);
 }
 
-static xmlSecTransformKlass xmlSecGnuTLSRsaOaepKlass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecGnuTLSRsaOaepSize,                   /* xmlSecSize objSize */
-
-    xmlSecNameRsaOaep,                          /* const xmlChar* name; */
-    xmlSecHrefRsaOaep,                          /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
-
-    xmlSecGnuTLSRsaOaepInitialize,             /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecGnuTLSRsaOaepFinalize,               /* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecGnuTLSRsaOaepNodeRead,               /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGnuTLSRsaOaepSetKeyReq,              /* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecGnuTLSRsaOaepSetKey,                 /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecGnuTLSRsaOaepExecute,                /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
+/* Helper macro to define RSA OAEP transform klasses. */
+#define XMLSEC_GNUTLS_RSA_OAEP_KLASS(name)                                                         \
+static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                                      \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                         \
+    xmlSecGnuTLSRsaOaepSize,                    /* xmlSecSize objSize */                           \
+    xmlSecName ## name,                         /* const xmlChar* name; */                         \
+    xmlSecHref ## name,                         /* const xmlChar* href; */                         \
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecTransformUsage usage; */                  \
+    xmlSecGnuTLSRsaOaepInitialize,              /* xmlSecTransformInitializeMethod initialize; */  \
+    xmlSecGnuTLSRsaOaepFinalize,                /* xmlSecTransformFinalizeMethod finalize; */      \
+    xmlSecGnuTLSRsaOaepNodeRead,                /* xmlSecTransformNodeReadMethod readNode; */      \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */    \
+    xmlSecGnuTLSRsaOaepSetKeyReq,               /* xmlSecTransformSetKeyMethod setKeyReq; */       \
+    xmlSecGnuTLSRsaOaepSetKey,                  /* xmlSecTransformSetKeyMethod setKey; */          \
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */       \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */\
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */        \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */          \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */        \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */          \
+    xmlSecGnuTLSRsaOaepExecute,                 /* xmlSecTransformExecuteMethod execute; */        \
+    NULL,                                       /* void* reserved0; */                             \
+    NULL,                                       /* void* reserved1; */                             \
 };
+
+XMLSEC_GNUTLS_RSA_OAEP_KLASS(RsaOaep)
 
 /**
  * @brief RSA-OAEP key transport klass (XMLEnc 1.0).
@@ -938,32 +926,7 @@ xmlSecGnuTLSTransformRsaOaepGetKlass(void) {
     return(&xmlSecGnuTLSRsaOaepKlass);
 }
 
-static xmlSecTransformKlass xmlSecGnuTLSRsaOaepEnc11Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecGnuTLSRsaOaepSize,                   /* xmlSecSize objSize */
-
-    xmlSecNameRsaOaepEnc11,                     /* const xmlChar* name; */
-    xmlSecHrefRsaOaepEnc11,                     /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
-
-    xmlSecGnuTLSRsaOaepInitialize,             /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecGnuTLSRsaOaepFinalize,               /* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecGnuTLSRsaOaepNodeRead,               /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGnuTLSRsaOaepSetKeyReq,              /* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecGnuTLSRsaOaepSetKey,                 /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecGnuTLSRsaOaepExecute,                /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_GNUTLS_RSA_OAEP_KLASS(RsaOaepEnc11)
 
 /**
  * @brief RSA-OAEP key transport klass (XMLEnc 1.1).

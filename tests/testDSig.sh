@@ -889,11 +889,11 @@ if [ "z$xmlsec_feature_x509_data_lookup" = "zyes" ] ; then
         "$priv_key_option $topfolder/keys/rsa/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
         "--untrusted-$cert_format $topfolder/keys/rsa/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
-    if [ "z$crypto" != "znss" -a "z$crypto" != "zmscng" ] ; then
+    if [ "z$crypto" != "zmscng" ] ; then
         execDSigTest $res_success \
             "" \
             "aleksey-xmldsig-01/enveloped-x509-digest-sha3_224" \
-            "sha256 rsa-sha256" \
+            "sha3-224 sha256 rsa-sha256" \
             "rsa x509" \
             "--untrusted-$cert_format $topfolder/keys/rsa/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
             "$priv_key_option $topfolder/keys/rsa/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123 --untrusted-$cert_format $topfolder/keys/rsa/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
@@ -902,7 +902,7 @@ if [ "z$xmlsec_feature_x509_data_lookup" = "zyes" ] ; then
         execDSigTest $res_success \
             "" \
             "aleksey-xmldsig-01/enveloped-x509-digest-sha3_256" \
-            "sha256 rsa-sha256" \
+            "sha3-256 sha256 rsa-sha256" \
             "rsa x509" \
             "--untrusted-$cert_format $topfolder/keys/rsa/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
             "$priv_key_option $topfolder/keys/rsa/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123 --untrusted-$cert_format $topfolder/keys/rsa/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
@@ -911,7 +911,7 @@ if [ "z$xmlsec_feature_x509_data_lookup" = "zyes" ] ; then
         execDSigTest $res_success \
             "" \
             "aleksey-xmldsig-01/enveloped-x509-digest-sha3_384" \
-            "sha256 rsa-sha256" \
+            "sha3-384 sha256 rsa-sha256" \
             "rsa x509" \
             "--untrusted-$cert_format $topfolder/keys/rsa/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
             "$priv_key_option $topfolder/keys/rsa/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123 --untrusted-$cert_format $topfolder/keys/rsa/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
@@ -920,7 +920,7 @@ if [ "z$xmlsec_feature_x509_data_lookup" = "zyes" ] ; then
         execDSigTest $res_success \
             "" \
             "aleksey-xmldsig-01/enveloped-x509-digest-sha3_512" \
-            "sha256 rsa-sha256" \
+            "sha3-512 sha256 rsa-sha256" \
             "rsa x509" \
             "--untrusted-$cert_format $topfolder/keys/rsa/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
             "$priv_key_option $topfolder/keys/rsa/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123 --untrusted-$cert_format $topfolder/keys/rsa/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \

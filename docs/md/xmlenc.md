@@ -53,12 +53,12 @@ XML Security library supports the following features as defined in
 | [HKDF](http://www.w3.org/2021/04/xmldsig-more#hkdf) | Optional | Yes [(3)](#openssl3-required) | Yes | Yes | Yes [(5)](#mscng-old-win) | No | No |
 | **Key Transport** | | | | | | | |
 | [RSA PKCS1 v1.5](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-1_5) | Optional | Yes | Yes | Yes | Yes | Yes | Yes |
-| [RSA-OAEP (MGF1 with SHA1)](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Required | Yes | Yes | No | Yes | Yes | Yes |
-| [RSA-OAEP with MGF1-SHA1](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Optional | Yes | Yes | No | Yes [(7)](#rsa-oaep-same-algo) | No | Yes [(7)](#rsa-oaep-same-algo) |
-| [RSA-OAEP with MGF1-SHA224](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Optional | Yes | Yes | No | No | No | Yes [(7)](#rsa-oaep-same-algo) |
-| [RSA-OAEP with MGF1-SHA256](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Optional | Yes | Yes | No | Yes [(7)](#rsa-oaep-same-algo) | No | Yes [(7)](#rsa-oaep-same-algo) |
-| [RSA-OAEP with MGF1-SHA384](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Optional | Yes | Yes | No | Yes [(7)](#rsa-oaep-same-algo) | No | Yes [(7)](#rsa-oaep-same-algo) |
-| [RSA-OAEP with MGF1-SHA512](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Optional | Yes | Yes | No | Yes [(7)](#rsa-oaep-same-algo) | No | Yes [(7)](#rsa-oaep-same-algo) |
+| [RSA-OAEP (MGF1 with SHA1)](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Required | Yes | Yes | No [(7)](#rsa-oaep-same-algo) | Yes [(7)](#rsa-oaep-same-algo) | Yes [(7)](#rsa-oaep-same-algo) | Yes [(7)](#rsa-oaep-same-algo) |
+| [RSA-OAEP with MGF1-SHA1](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Optional | Yes | Yes | No [(7)](#rsa-oaep-same-algo) | Yes [(7)](#rsa-oaep-same-algo) | Yes [(7)](#rsa-oaep-same-algo) | Yes [(7)](#rsa-oaep-same-algo) |
+| [RSA-OAEP with MGF1-SHA224](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Optional | Yes | Yes | No [(7)](#rsa-oaep-same-algo) | Yes [(7)](#rsa-oaep-same-algo) | No [(7)](#rsa-oaep-same-algo) | Yes [(7)](#rsa-oaep-same-algo) |
+| [RSA-OAEP with MGF1-SHA256](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Optional | Yes | Yes | Yes [(7)](#rsa-oaep-same-algo) | Yes [(7)](#rsa-oaep-same-algo) | No [(7)](#rsa-oaep-same-algo) | Yes [(7)](#rsa-oaep-same-algo) |
+| [RSA-OAEP with MGF1-SHA384](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Optional | Yes | Yes | Yes [(7)](#rsa-oaep-same-algo) | Yes [(7)](#rsa-oaep-same-algo) | No [(7)](#rsa-oaep-same-algo) | Yes [(7)](#rsa-oaep-same-algo) |
+| [RSA-OAEP with MGF1-SHA512](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Optional | Yes | Yes | Yes [(7)](#rsa-oaep-same-algo) | Yes [(7)](#rsa-oaep-same-algo) | No [(7)](#rsa-oaep-same-algo) | Yes [(7)](#rsa-oaep-same-algo) |
 | **Key Agreement** | | | | | | | |
 | [Elliptic Curve Diffie-Hellman (ECDH)](https://www.w3.org/TR/xmlenc-core1/#sec-ECDH-ES) | Required | Yes [(3)](#openssl3-required) | Yes | Yes | Yes [(5)](#mscng-old-win) | No | No |
 | [XDH Key Agreement](https://www.w3.org/2021/04/xmldsig-more) (X25519, X448) | Optional | Yes [(3)](#openssl3-required) | Yes [(9)](#nss-x25519-only) | Yes | Yes [(10)](#mscng-x25519-only) | No | No |
@@ -83,7 +83,7 @@ XML Security library supports the following features as defined in
 4. <a id="concatkdf"></a> Only byte-aligned bit strings in ConcatKDFParams element are supported ([more details](https://github.com/lsh123/xmlsec/issues/514)).
 5. <a id="mscng-old-win"></a> The xmlsec-mscng library does not support some cryptographic algorithms on older versions of Windows.
 6. <a id="pbkdf2"></a> Only "specified" salt is supported for PBKDF2.
-7. <a id="rsa-oaep-same-algo"></a> RSA-OAEP digest algorithm and MGF1 algorithm must be the same.
+7. <a id="rsa-oaep-same-algo"></a>GnuTLS, MSCng, MSCrypto, and GCrypt require RSA-OAEP digest algorithm and MGF1 algorithm to be the same; GnuTLS supports only SHA-256/SHA-384/SHA-512 for RSA-OAEP hash; MSCrypto supports only SHA-1.
 8. <a id="openssl-dhx"></a> The xmlsec-openssl library only supports DHX (X9.42 format) keys for DH algorithm.
 9. <a id="nss-x25519-only"></a> The xmlsec-nss library only supports X25519; X448 (Curve448) is not yet implemented in NSS.
 10. <a id="mscng-x25519-only"></a> The xmlsec-mscng library only supports X25519; X448 (Curve448) is not supported.

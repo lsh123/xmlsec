@@ -2293,7 +2293,7 @@ execDSigTest $res_success \
     "hmac rsa" \
     "--lax-key-search $priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005"
 
-if [ "z$xmlsec_feature_rsa_oaep_different_digest_and_mgf1" = "zyes" ] ; then
+if [  "z$xmlsec_feature_rsa_oaep_sha1" = "zyes" -a "z$xmlsec_feature_rsa_oaep_different_digest_and_mgf1" = "zyes" ] ; then
     execDSigTest $res_success \
         "" \
         "merlin-xmlenc-five/encsig-hmac-sha256-rsa-oaep-mgf1p" \

@@ -46,7 +46,7 @@ XML Security library supports the following features as defined in
 | [XPath Filtering](https://www.w3.org/TR/xmldsig-core1/#sec-XPath) | Recommended | Yes |
 | [XPath Filter 2.0](https://www.w3.org/TR/2002/REC-xmldsig-filter2-20021108/) | Recommended | Yes |
 | [Enveloped Signature Transform](https://www.w3.org/TR/xmldsig-core1/#sec-EnvelopedSignature) | Required | Yes |
-| [XSLT Transform](https://www.w3.org/TR/xmldsig-core1/#sec-XSLT) | Optional | Yes [(2)](#xslt) |
+| [XSLT Transform](https://www.w3.org/TR/xmldsig-core1/#sec-XSLT) | Optional | Yes [(6)](#xslt) |
 | [Decryption Transform](https://www.w3.org/TR/xmlenc-decrypt/) | Optional | Yes |
 | [XPointer Transform](https://www.ietf.org/rfc/rfc9231.html#section-2.5.1) | Optional | Yes |
 
@@ -61,13 +61,13 @@ XML Security library supports the following features as defined in
 | [SHA2-384](https://www.w3.org/TR/xmldsig-core1/#sec-SHA-384) | Optional | Yes | Yes | Yes | Yes | Yes | Yes |
 | [SHA2-512](https://www.w3.org/TR/xmldsig-core1/#sec-SHA-512) | Optional | Yes | Yes | Yes | Yes | Yes | Yes |
 | [SHA3-224](https://www.ietf.org/rfc/rfc9231.html#name-sha-3-algorithms) | Optional | Yes | No | Yes | No | No | No |
-| [SHA3-256](https://www.ietf.org/rfc/rfc9231.html#name-sha-3-algorithms) | Optional | Yes | No | Yes | Yes [(10)](#mscng-sha3) | No | Yes |
-| [SHA3-384](https://www.ietf.org/rfc/rfc9231.html#name-sha-3-algorithms) | Optional | Yes | No | Yes | Yes [(10)](#mscng-sha3) | No | Yes |
-| [SHA3-512](https://www.ietf.org/rfc/rfc9231.html#name-sha-3-algorithms) | Optional | Yes | No | Yes | Yes [(10)](#mscng-sha3) | No | Yes |
+| [SHA3-256](https://www.ietf.org/rfc/rfc9231.html#name-sha-3-algorithms) | Optional | Yes | No | Yes | Yes [(2)](#new-windows-required) | No | Yes |
+| [SHA3-384](https://www.ietf.org/rfc/rfc9231.html#name-sha-3-algorithms) | Optional | Yes | No | Yes | Yes [(2)](#new-windows-required) | No | Yes |
+| [SHA3-512](https://www.ietf.org/rfc/rfc9231.html#name-sha-3-algorithms) | Optional | Yes | No | Yes | Yes [(2)](#new-windows-required) | No | Yes |
 | [RIPEMD160](https://www.w3.org/TR/xmlenc-core1/#sec-RIPEMD-160) | DEPRECATED | Yes [(1)](#feature-disabled) | No | No | No | No | Yes [(1)](#feature-disabled) |
-| GOST-R3411-94 | Optional | Yes [(3)](#gost-openssl) | No | Yes | No | Yes [(4)](#gost-mscrypto) | No |
-| GOST-R3411-2012 (256 bit) | Optional | Yes [(3)](#gost-openssl) | No | Yes | No | Yes [(4)](#gost-mscrypto) | No |
-| GOST-R3411-2012 (512 bit) | Optional | Yes [(3)](#gost-openssl) | No | Yes | No | Yes [(4)](#gost-mscrypto) | No |
+| GOST-R3411-94 | Optional | Yes [(3)](#openssl-gost) | No | Yes | No | Yes [(4)](#mscrypto-gost) | No |
+| GOST-R3411-2012 (256 bit) | Optional | Yes [(3)](#openssl-gost) | No | Yes | No | Yes [(4)](#mscrypto-gost) | No |
+| GOST-R3411-2012 (512 bit) | Optional | Yes [(3)](#openssl-gost) | No | Yes | No | Yes [(4)](#mscrypto-gost) | No |
 | [MD5](https://www.ietf.org/rfc/rfc9231.html#section-2.1.1) | DEPRECATED | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) |
 | **Message Authentication Codes** | | | | | | | |
 | [HMAC-SHA1](https://www.w3.org/TR/xmldsig-core1/#sec-HMAC) | Required (use is DISCOURAGED) | Yes | Yes | Yes | Yes | Yes | Yes |
@@ -94,47 +94,47 @@ XML Security library supports the following features as defined in
 | [ECDSA-SHA2-384](https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA) | Optional | Yes | Yes | Yes | Yes | No | Yes |
 | [ECDSA-SHA2-512](https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA) | Optional | Yes | Yes | Yes | Yes | No | Yes |
 | [ECDSA-SHA3-224](https://www.ietf.org/rfc/rfc9231.html#name-ecdsa-sha-ecdsa-ripemd160-e) | Optional | Yes | No | Yes | No | No | No |
-| [ECDSA-SHA3-256](https://www.ietf.org/rfc/rfc9231.html#name-ecdsa-sha-ecdsa-ripemd160-e) | Optional | Yes | No | Yes | Yes [(10)](#mscng-sha3) | No | Yes |
-| [ECDSA-SHA3-384](https://www.ietf.org/rfc/rfc9231.html#name-ecdsa-sha-ecdsa-ripemd160-e) | Optional | Yes | No | Yes | Yes [(10)](#mscng-sha3) | No | Yes |
-| [ECDSA-SHA3-512](https://www.ietf.org/rfc/rfc9231.html#name-ecdsa-sha-ecdsa-ripemd160-e) | Optional | Yes | No | Yes | Yes [(10)](#mscng-sha3) | No | Yes |
+| [ECDSA-SHA3-256](https://www.ietf.org/rfc/rfc9231.html#name-ecdsa-sha-ecdsa-ripemd160-e) | Optional | Yes | No | Yes | Yes [(2)](#new-windows-required) | No | Yes |
+| [ECDSA-SHA3-384](https://www.ietf.org/rfc/rfc9231.html#name-ecdsa-sha-ecdsa-ripemd160-e) | Optional | Yes | No | Yes | Yes [(2)](#new-windows-required) | No | Yes |
+| [ECDSA-SHA3-512](https://www.ietf.org/rfc/rfc9231.html#name-ecdsa-sha-ecdsa-ripemd160-e) | Optional | Yes | No | Yes | Yes [(2)](#new-windows-required) | No | Yes |
 | [RSASSA-PSS-SHA1 without Parameters](https://www.ietf.org/rfc/rfc9231.html#section-2.3.10) | Optional (use is DISCOURAGED) | Yes | Yes | No | Yes | No | Yes |
 | [RSASSA-PSS-SHA2-224 without Parameters](https://www.ietf.org/rfc/rfc9231.html#section-2.3.10) | Optional | Yes | Yes | No | No | No | No |
 | [RSASSA-PSS-SHA2-256 without Parameters](https://www.ietf.org/rfc/rfc9231.html#section-2.3.10) | Optional | Yes | Yes | Yes | Yes | No | Yes |
 | [RSASSA-PSS-SHA2-384 without Parameters](https://www.ietf.org/rfc/rfc9231.html#section-2.3.10) | Optional | Yes | Yes | Yes | Yes | No | Yes |
 | [RSASSA-PSS-SHA2-512 without Parameters](https://www.ietf.org/rfc/rfc9231.html#section-2.3.10) | Optional | Yes | Yes | Yes | Yes | No | Yes |
 | [RSASSA-PSS-SHA3-224 without Parameters](https://www.ietf.org/rfc/rfc9231.html#section-2.3.10) | Optional | Yes | No | No | No | No | No |
-| [RSASSA-PSS-SHA3-256 without Parameters](https://www.ietf.org/rfc/rfc9231.html#section-2.3.10) | Optional | Yes | No | No | Yes [(10)](#mscng-sha3) | No | Yes |
-| [RSASSA-PSS-SHA3-384 without Parameters](https://www.ietf.org/rfc/rfc9231.html#section-2.3.10) | Optional | Yes | No | No | Yes [(10)](#mscng-sha3) | No | Yes |
-| [RSASSA-PSS-SHA3-512 without Parameters](https://www.ietf.org/rfc/rfc9231.html#section-2.3.10) | Optional | Yes | No | No | Yes [(10)](#mscng-sha3) | No | Yes |
-| GOST-R3410-2001 | Optional | Yes [(3)](#gost-openssl) | No | Yes | No | Yes [(4)](#gost-mscrypto) | No |
-| GOST-R3410-2012 (256 bit) | Optional | Yes [(3)](#gost-openssl) | No | Yes | No | Yes [(4)](#gost-mscrypto) | No |
-| GOST-R3411-2012 (512 bit) | Optional | Yes [(3)](#gost-openssl) | No | Yes | No | Yes [(4)](#gost-mscrypto) | No |
-| ML-DSA | EXPERIMENTAL | Yes [(1)](#feature-disabled) | No | Yes [(1)](#feature-disabled) [(7)](#no-context-string) | No | No | No |
+| [RSASSA-PSS-SHA3-256 without Parameters](https://www.ietf.org/rfc/rfc9231.html#section-2.3.10) | Optional | Yes | No | No | Yes [(2)](#new-windows-required) | No | Yes |
+| [RSASSA-PSS-SHA3-384 without Parameters](https://www.ietf.org/rfc/rfc9231.html#section-2.3.10) | Optional | Yes | No | No | Yes [(2)](#new-windows-required) | No | Yes |
+| [RSASSA-PSS-SHA3-512 without Parameters](https://www.ietf.org/rfc/rfc9231.html#section-2.3.10) | Optional | Yes | No | No | Yes [(2)](#new-windows-required) | No | Yes |
+| GOST-R3410-2001 | Optional | Yes [(3)](#openssl-gost) | No | Yes | No | Yes [(4)](#mscrypto-gost) | No |
+| GOST-R3410-2012 (256 bit) | Optional | Yes [(3)](#openssl-gost) | No | Yes | No | Yes [(4)](#mscrypto-gost) | No |
+| GOST-R3411-2012 (512 bit) | Optional | Yes [(3)](#openssl-gost) | No | Yes | No | Yes [(4)](#mscrypto-gost) | No |
+| ML-DSA | EXPERIMENTAL | Yes [(1)](#feature-disabled) | No | Yes [(1)](#feature-disabled) [(8)](#no-context-string) | No | No | No |
 | SLH-DSA-SHA2 (128, 192, 256; fast and slow variants) | EXPERIMENTAL | Yes [(1)](#feature-disabled) | No | No | No | No | No |
-| [EdDSA](https://www.w3.org/2021/04/xmldsig-more) (Ed25519, Ed25519ctx [(8)](#eddsa-ctx), Ed25519ph, Ed448, Ed448ph) | Optional | Yes | Yes [(9)](#eddsa-nss) | Yes | No | No | No |
+| [EdDSA](https://www.w3.org/2021/04/xmldsig-more) (Ed25519, Ed25519ctx [(9)](#eddsa-ctx), Ed25519ph, Ed448, Ed448ph) | Optional | Yes | Yes [(10)](#only-ed25519) | Yes | No | No | No |
 | **The KeyInfo Element** | | | | | | | |
 | [The DSAKeyValue Element](https://www.w3.org/TR/xmldsig-core1/#sec-DSAKeyValue) | Optional | Yes [(1)](#feature-disabled) [(5)](#dsa-key-value) | Yes [(1)](#feature-disabled) [(5)](#dsa-key-value) | Yes [(1)](#feature-disabled) [(5)](#dsa-key-value) | Yes [(1)](#feature-disabled) [(5)](#dsa-key-value) | Yes [(1)](#feature-disabled) [(5)](#dsa-key-value) | Yes [(1)](#feature-disabled) [(5)](#dsa-key-value) |
 | [The RSAKeyValue Element](https://www.w3.org/TR/xmldsig-core1/#sec-RSAKeyValue) | Optional | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) |
 | [The ECKeyValue Element](https://www.w3.org/TR/xmldsig-core/#sec-ECKeyValue) | Optional | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | No | Yes |
 | [The X509Data Element](https://www.w3.org/TR/xmldsig-core1/#sec-X509Data) | Optional | Yes | Yes | Yes | Yes | Yes | No |
-| [The X509Digest Element](https://www.w3.org/TR/xmldsig-core1/#sec-X509Data) | Optional | Yes | Yes | Yes | Yes [(6)](#mscng-x509-digest) | No | No |
+| [The X509Digest Element](https://www.w3.org/TR/xmldsig-core1/#sec-X509Data) | Optional | Yes | Yes | Yes | Yes [(7)](#only-sha1-x509-digest) | No | No |
 | [The PGPData Element](https://www.w3.org/TR/xmldsig-core1/#sec-PGPData) | Optional | No | No | No | No | No | No |
 | [The SPKIData Element](https://www.w3.org/TR/xmldsig-core1/#sec-SPKIData) | Optional | No | No | No | No | No | No |
-| [The DEREncodedKeyValue Element](https://www.w3.org/TR/xmldsig-core1/#sec-DEREncodedKeyValue) | Optional | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) [(11)](#mscng-xdh) | No | No |
+| [The DEREncodedKeyValue Element](https://www.w3.org/TR/xmldsig-core1/#sec-DEREncodedKeyValue) | Optional | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) [(11)](#only-x25519) | No | No |
 
 ### Notes
 
 1. <a id="feature-disabled"></a> The feature is disabled by default but can be re-enabled at build time.
-2. <a id="xslt"></a> Requires [LibXSLT](http://xmlsoft.org/XSLT/downloads.html) library.
-3. <a id="gost-openssl"></a> GOST support for the xmlsec-openssl library requires installation of the [GOST OpenSSL Engine](https://github.com/gost-engine/engine).
-4. <a id="gost-mscrypto"></a> GOST support for the xmlsec-mscrypto library requires installation of a GOST CSP.
+2. <a id="new-windows-required"></a> Some cryptographic algorithms are not supported on older versions of Windows.
+3. <a id="openssl-gost"></a> GOST support in OpenSSL requires installation of the [GOST OpenSSL Engine](https://github.com/gost-engine/engine).
+4. <a id="mscrypto-gost"></a> GOST support in MSCrypto requires installation of a GOST CSP.
 5. <a id="dsa-key-value"></a> The Seed and PgenCounter are not supported in DSAKeyValue element.
-6. <a id="mscng-x509-digest"></a> The xmlsec-mscng library only supports SHA1 digest algorithm for X509Digest element.
-7. <a id="no-context-string"></a> The ML-DSA or SLH-DSA ContextString is not supported.
-8. <a id="eddsa-ctx"></a> Ed25519ctx requires a non-empty context string (per RFC 8032).
-9. <a id="eddsa-nss"></a> The xmlsec-nss library only supports Ed25519 (Ed448 is not supported). Additionally, NSS cannot import EdDSA private keys from PKCS#12 files; use unencrypted PKCS#8 DER format instead.
-10. <a id="mscng-sha3"></a> SHA3 digest algorithms in xmlsec-mscng require Windows 11 22H2 or later.
-11. <a id="mscng-xdh"></a> The xmlsec-mscng library supports XDH (X25519) key data (X448 is not supported); see the [XML Encryption Interoperability Report](xmlenc.md) for key agreement support details.
+6. <a id="xslt"></a> Requires [LibXSLT](http://xmlsoft.org/XSLT/downloads.html) library.
+7. <a id="only-sha1-x509-digest"></a> Only SHA1 digest algorithm is supported for X509Digest element.
+8. <a id="no-context-string"></a> The ContextString is not supported.
+9. <a id="eddsa-ctx"></a> Ed25519ctx requires a non-empty context string (per RFC 8032).
+10. <a id="only-ed25519"></a> Only Ed25519 (Curve25519) is supported, the Ed448 (Curve448) is not supported.
+11. <a id="only-x25519"></a> Only X25519 (Curve25519) is supported, the X448 (Curve448) is not supported.
 
 ### Test vectors
 

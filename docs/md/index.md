@@ -14,7 +14,7 @@ see the Copyright file in the distribution for details.
 
 ## News
 
-- **April 30, 2026**
+- **April 22, 2026**
   The [XML Security Library 1.3.11](download.md) release includes the following changes:
   - (xmlsec-openssl) Added support for OpenSSL 4.0.0.
   - (xmlsec-windows) The XMLSec build configuration script on Windows is converted to PowerShell, the JScript version is deprecated and will be remove in the future versions.

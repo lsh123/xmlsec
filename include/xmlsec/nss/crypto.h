@@ -72,6 +72,13 @@
 #endif /* !defined(CKM_HKDF_DERIVE) || !defined(CKM_HKDF_DATA) || !defined(CKF_HKDF_SALT_NULL) || !defined(CKF_HKDF_SALT_DATA) */
 #endif /* XMLSEC_NO_HKDF */
 
+/**
+ * @brief Defined because SHA3 algorithms are currently disabled for NSS.
+ * @details SHA3 digest/signature/key-transport combinations are not fully
+ * interoperable across NSS configurations used by xmlsec tests.
+ */
+#define XMLSEC_NO_SHA3 1
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -824,6 +831,41 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha384GetKlass(void);
         xmlSecNssTransformSha512GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha512GetKlass(void);
 #endif /* XMLSEC_NO_SHA512 */
+
+/******************************************************************************
+ *
+ * SHA3 transforms
+ *
+  *****************************************************************************/
+#ifndef XMLSEC_NO_SHA3
+/**
+ * @brief The SHA3-224 digest transform klass.
+ */
+#define xmlSecNssTransformSha3_224Id \
+        xmlSecNssTransformSha3_224GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha3_224GetKlass(void);
+
+/**
+ * @brief The SHA3-256 digest transform klass.
+ */
+#define xmlSecNssTransformSha3_256Id \
+        xmlSecNssTransformSha3_256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha3_256GetKlass(void);
+
+/**
+ * @brief The SHA3-384 digest transform klass.
+ */
+#define xmlSecNssTransformSha3_384Id \
+        xmlSecNssTransformSha3_384GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha3_384GetKlass(void);
+
+/**
+ * @brief The SHA3-512 digest transform klass.
+ */
+#define xmlSecNssTransformSha3_512Id \
+        xmlSecNssTransformSha3_512GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha3_512GetKlass(void);
+#endif /* XMLSEC_NO_SHA3 */
 
 /******************************************************************************
  *

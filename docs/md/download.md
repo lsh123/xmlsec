@@ -6,10 +6,10 @@ XML Security Library source code is available on [GitHub](https://github.com/lsh
 
 ## Stable releases
 
-The latest stable XML Security Library version is **1.3.11**:
+The latest stable XML Security Library version is **1.3.12**:
 
-- [Sources](https://www.aleksey.com/xmlsec/download/xmlsec1-1.3.11.tar.gz)
-  and [signature](https://www.aleksey.com/xmlsec/download/xmlsec1-1.3.11.sig)
+- [Sources](https://www.aleksey.com/xmlsec/download/xmlsec1-1.3.12.tar.gz)
+  and [signature](https://www.aleksey.com/xmlsec/download/xmlsec1-1.3.12.sig)
   for the latest version ([Coverity report](https://scan.coverity.com/projects/xmlsec)).
 - [WIN64 binaries](https://www.aleksey.com/xmlsec/download/win64/) for XML Security Library
   (as well as LibXML2, LibXSLT and OpenSSL).

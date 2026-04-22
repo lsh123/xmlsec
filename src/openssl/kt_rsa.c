@@ -11,8 +11,6 @@
  */
 #include "globals.h"
 
-#ifndef XMLSEC_NO_RSA
-
 #include <stdlib.h>
 #include <string.h>
 
@@ -41,6 +39,8 @@
 #include "../transform_helpers.h"
 #include "openssl_compat.h"
 #include "private.h"
+
+#ifndef XMLSEC_NO_RSA
 
 #ifndef XMLSEC_NO_RSA_PKCS15
 

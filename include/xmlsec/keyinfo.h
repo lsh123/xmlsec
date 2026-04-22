@@ -260,6 +260,13 @@ XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataAgreementMethodGetKlass(voi
 #define xmlSecKeyDataDerivedKeyId       xmlSecKeyDataDerivedKeyGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataDerivedKeyGetKlass(void);
 
+ #ifndef XMLSEC_NO_MLKEM
+/**
+ * @brief The as:EncapsulationMechanism processing class.
+ */
+#define xmlSecKeyDataEncapsulationMechanismId   xmlSecKeyDataEncapsulationMechanismGetKlass()
+XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataEncapsulationMechanismGetKlass(void);
+#endif /* XMLSEC_NO_MLKEM */
 
 #endif /* XMLSEC_NO_XMLENC */
 

@@ -14,6 +14,9 @@
 
 #include <xmlsec/xmlsec.h>
 
+/** THIS IS FOR EXPERIEMENTAL FEATURES, DO NOT USE IN PRODUCTION */
+#define XMLSEC_ALKESEY_EXPERIMENTAL_2025_12   "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#"
+
 /******************************************************************************
  *
  * Global Namespaces
@@ -374,7 +377,7 @@ const xmlChar xmlSecHrefX448[]                  = "http://www.w3.org/2021/04/xml
  *
   *****************************************************************************/
 const xmlChar xmlSecNameXDHKeyValue[]           = "xdh";
-const xmlChar xmlSecHrefXDHKeyValue[]           = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#xdh";
+const xmlChar xmlSecHrefXDHKeyValue[]           = XMLSEC_ALKESEY_EXPERIMENTAL_2025_12 "xdh";
 
 /******************************************************************************
  *
@@ -419,24 +422,47 @@ const xmlChar xmlSecHrefEcdsaSha3_512[]         = "http://www.w3.org/2021/04/xml
  *
   *****************************************************************************/
 const xmlChar xmlSecNameMLDSAKeyValue[]       = "ml-dsa";
-const xmlChar xmlSecHrefMLDSAKeyValue[]       = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#ml-dsa";
+const xmlChar xmlSecHrefMLDSAKeyValue[]       = XMLSEC_ALKESEY_EXPERIMENTAL_2025_12 "ml-dsa";
 
 /******************************************************************************
  *
  * ML-DSA signature trasnsform strings
  *
   *****************************************************************************/
-const xmlChar xmlSecMLDSANs[]                 = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#";
+const xmlChar xmlSecMLDSANs[]                 = XMLSEC_ALKESEY_EXPERIMENTAL_2025_12;
 const xmlChar xmlSecNodeMLDSAContextString[]  = "MLDSAContextString";
 
 const xmlChar xmlSecNameMLDSA44[]             = "ml-dsa-44";
-const xmlChar xmlSecHrefMLDSA44[]             = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#ml-dsa-44";
+const xmlChar xmlSecHrefMLDSA44[]             = XMLSEC_ALKESEY_EXPERIMENTAL_2025_12 "ml-dsa-44";
 
 const xmlChar xmlSecNameMLDSA65[]             = "ml-dsa-65";
-const xmlChar xmlSecHrefMLDSA65[]             = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#ml-dsa-65";
+const xmlChar xmlSecHrefMLDSA65[]             = XMLSEC_ALKESEY_EXPERIMENTAL_2025_12 "ml-dsa-65";
 
 const xmlChar xmlSecNameMLDSA87[]             = "ml-dsa-87";
-const xmlChar xmlSecHrefMLDSA87[]             = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#ml-dsa-87";
+const xmlChar xmlSecHrefMLDSA87[]             = XMLSEC_ALKESEY_EXPERIMENTAL_2025_12 "ml-dsa-87";
+
+
+/******************************************************************************
+ *
+ * ML-KEM key strings
+ *
+  *****************************************************************************/
+const xmlChar xmlSecNameMLKEMKeyValue[]       = "ml-kem";
+const xmlChar xmlSecHrefMLKEMKeyValue[]       = XMLSEC_ALKESEY_EXPERIMENTAL_2025_12 "ml-kem";
+
+/******************************************************************************
+ *
+ * ML-KEM key transport transform strings
+ *
+  *****************************************************************************/
+const xmlChar xmlSecNameMLKEM512[]            = "ml-kem-512";
+const xmlChar xmlSecHrefMLKEM512[]            = XMLSEC_ALKESEY_EXPERIMENTAL_2025_12 "ml-kem-512";
+
+const xmlChar xmlSecNameMLKEM768[]            = "ml-kem-768";
+const xmlChar xmlSecHrefMLKEM768[]            = XMLSEC_ALKESEY_EXPERIMENTAL_2025_12 "ml-kem-768";
+
+const xmlChar xmlSecNameMLKEM1024[]           = "ml-kem-1024";
+const xmlChar xmlSecHrefMLKEM1024[]           = XMLSEC_ALKESEY_EXPERIMENTAL_2025_12 "ml-kem-1024";
 
 
 /******************************************************************************
@@ -445,33 +471,33 @@ const xmlChar xmlSecHrefMLDSA87[]             = "http://www.aleksey.com/xmlsec/2
  *
   *****************************************************************************/
 const xmlChar xmlSecNameSLHDSAKeyValue[]      = "slh-dsa";
-const xmlChar xmlSecHrefSLHDSAKeyValue[]      = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#slh-dsa";
+const xmlChar xmlSecHrefSLHDSAKeyValue[]      = XMLSEC_ALKESEY_EXPERIMENTAL_2025_12 "slh-dsa";
 
 /******************************************************************************
  *
  * SLH-DSA signature trasnsform strings
  *
   *****************************************************************************/
-const xmlChar xmlSecSLHDSANs[]                = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#";
+const xmlChar xmlSecSLHDSANs[]                = XMLSEC_ALKESEY_EXPERIMENTAL_2025_12;
 const xmlChar xmlSecNodeSLHDSAContextString[] = "SLHDSAContextString";
 
 const xmlChar xmlSecNameSLHDSA_SHA2_128f[]    = "slh-dsa-sha2-128f";
-const xmlChar xmlSecHrefSLHDSA_SHA2_128f[]    = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#slh-dsa-sha2-128f";
+const xmlChar xmlSecHrefSLHDSA_SHA2_128f[]    = XMLSEC_ALKESEY_EXPERIMENTAL_2025_12 "slh-dsa-sha2-128f";
 
 const xmlChar xmlSecNameSLHDSA_SHA2_128s[]    = "slh-dsa-sha2-128s";
-const xmlChar xmlSecHrefSLHDSA_SHA2_128s[]    = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#slh-dsa-sha2-128s";
+const xmlChar xmlSecHrefSLHDSA_SHA2_128s[]    = XMLSEC_ALKESEY_EXPERIMENTAL_2025_12 "slh-dsa-sha2-128s";
 
 const xmlChar xmlSecNameSLHDSA_SHA2_192f[]    = "slh-dsa-sha2-192f";
-const xmlChar xmlSecHrefSLHDSA_SHA2_192f[]    = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#slh-dsa-sha2-192f";
+const xmlChar xmlSecHrefSLHDSA_SHA2_192f[]    = XMLSEC_ALKESEY_EXPERIMENTAL_2025_12 "slh-dsa-sha2-192f";
 
 const xmlChar xmlSecNameSLHDSA_SHA2_192s[]    = "slh-dsa-sha2-192s";
-const xmlChar xmlSecHrefSLHDSA_SHA2_192s[]    = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#slh-dsa-sha2-192s";
+const xmlChar xmlSecHrefSLHDSA_SHA2_192s[]    = XMLSEC_ALKESEY_EXPERIMENTAL_2025_12 "slh-dsa-sha2-192s";
 
 const xmlChar xmlSecNameSLHDSA_SHA2_256f[]    = "slh-dsa-sha2-256f";
-const xmlChar xmlSecHrefSLHDSA_SHA2_256f[]    = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#slh-dsa-sha2-256f";
+const xmlChar xmlSecHrefSLHDSA_SHA2_256f[]    = XMLSEC_ALKESEY_EXPERIMENTAL_2025_12 "slh-dsa-sha2-256f";
 
 const xmlChar xmlSecNameSLHDSA_SHA2_256s[]    = "slh-dsa-sha2-256s";
-const xmlChar xmlSecHrefSLHDSA_SHA2_256s[]    = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#slh-dsa-sha2-256s";
+const xmlChar xmlSecHrefSLHDSA_SHA2_256s[]    = XMLSEC_ALKESEY_EXPERIMENTAL_2025_12 "slh-dsa-sha2-256s";
 
 
 /******************************************************************************
@@ -480,14 +506,14 @@ const xmlChar xmlSecHrefSLHDSA_SHA2_256s[]    = "http://www.aleksey.com/xmlsec/2
  *
   *****************************************************************************/
 const xmlChar xmlSecNameEdDSAKeyValue[]       = "eddsa";
-const xmlChar xmlSecHrefEdDSAKeyValue[]       = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#eddsa";
+const xmlChar xmlSecHrefEdDSAKeyValue[]       = XMLSEC_ALKESEY_EXPERIMENTAL_2025_12 "eddsa";
 
 /******************************************************************************
  *
  * EdDSA signature transform strings
  *
   *****************************************************************************/
-const xmlChar xmlSecEdDSANs[]                 = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#";
+const xmlChar xmlSecEdDSANs[]                 = XMLSEC_ALKESEY_EXPERIMENTAL_2025_12;
 const xmlChar xmlSecNodeEdDSAContextString[]  = "EdDSAContextString";
 
 const xmlChar xmlSecNameEdDSAEd25519[]        = "eddsa-ed25519";
@@ -539,6 +565,16 @@ const xmlChar xmlSecHrefAgreementMethod[]       = "http://www.w3.org/2000/09/xml
 
 const xmlChar xmlSecNodeOriginatorKeyInfo[]     = "OriginatorKeyInfo";
 const xmlChar xmlSecNodeRecipientKeyInfo[]      = "RecipientKeyInfo";
+
+/******************************************************************************
+ *
+ * EncapsulationMechanism
+ *
+  *****************************************************************************/
+const xmlChar xmlSecExperimental202512Ns[]          = XMLSEC_ALKESEY_EXPERIMENTAL_2025_12 "";
+const xmlChar xmlSecNameEncapsulationMechanism[]    = "encapsulation-mechanism";
+const xmlChar xmlSecNodeEncapsulationMechanism[]    = "EncapsulationMechanism";
+const xmlChar xmlSecHrefEncapsulationMechanism[]    = XMLSEC_ALKESEY_EXPERIMENTAL_2025_12 "EncapsulationMechanism";
 
 
 /******************************************************************************

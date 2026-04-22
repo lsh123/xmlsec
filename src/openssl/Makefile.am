@@ -31,6 +31,7 @@ libxmlsec1_openssl_la_SOURCES =\
 	hmac.c \
 	kw_rfc_3394.c \
 	kw_des.c \
+	key_encapsulation.c \
 	kt_rsa.c \
 	signatures.c \
 	signatures_legacy.c \

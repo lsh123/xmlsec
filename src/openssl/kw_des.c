@@ -9,7 +9,6 @@
  * @addtogroup xmlsec_openssl_crypto
  * @brief DES Key Transport transforms implementation for OpenSSL.
  */
-#ifndef XMLSEC_NO_DES
 #include "globals.h"
 
 #include <stdlib.h>
@@ -35,6 +34,8 @@
 #ifdef XMLSEC_OPENSSL_API_300
 #include <openssl/core_names.h>
 #endif /* XMLSEC_OPENSSL_API_300 */
+
+#ifndef XMLSEC_NO_DES
 
 
 /******************************************************************************

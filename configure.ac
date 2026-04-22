@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ([2.69])
-AC_INIT([xmlsec1],[1.3.11],[http://www.aleksey.com/xmlsec])
+AC_INIT([xmlsec1],[1.3.12],[http://www.aleksey.com/xmlsec])
 AM_INIT_AUTOMAKE([1.7 tar-ustar subdir-objects -Wno-portability foreign])
 
 dnl Get package and version information from AC_INIT()
@@ -223,6 +223,7 @@ AC_ARG_ENABLE([experimental_features], [AS_HELP_STRING([--enable-experimental-fe
 if test "z$enable_experimental_features" = "zyes" ; then
 
     dnl experimental crypto engines
+    enable_ml_kem="yes"
     enable_ml_dsa="yes"
     enable_slh_dsa="yes"
 
@@ -2184,6 +2185,23 @@ else
 fi
 AM_CONDITIONAL(XMLSEC_NO_MLDSA, test "z$XMLSEC_NO_MLDSA" = "z1")
 AC_SUBST(XMLSEC_NO_MLDSA)
+
+
+dnl ==========================================================================
+dnl Check if we need ML-KEM support (experimental)
+dnl ==========================================================================
+AC_MSG_CHECKING(for experimental ML-KEM support)
+AC_ARG_ENABLE([ml-kem], [AS_HELP_STRING([--enable-ml-kem],[enable experimental ML-KEM support (no)])])
+if test "z$enable_ml_kem" = "zyes" ; then
+    XMLSEC_NO_MLKEM="0"
+    AC_MSG_RESULT([yes])
+else
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_MLKEM=1"
+    XMLSEC_NO_MLKEM="1"
+    AC_MSG_RESULT([disabled])
+fi
+AM_CONDITIONAL(XMLSEC_NO_MLKEM, test "z$XMLSEC_NO_MLKEM" = "z1")
+AC_SUBST(XMLSEC_NO_MLKEM)
 
 
 dnl ==========================================================================

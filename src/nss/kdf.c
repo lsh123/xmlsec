@@ -11,8 +11,6 @@
  */
 #include "globals.h"
 
-#if !defined(XMLSEC_NO_PBKDF2) || !defined(XMLSEC_NO_CONCATKDF) || !defined(XMLSEC_NO_HKDF)
-
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -31,6 +29,9 @@
 
 #include "../cast_helpers.h"
 #include "../transform_helpers.h"
+
+#if !defined(XMLSEC_NO_PBKDF2) || !defined(XMLSEC_NO_CONCATKDF) || !defined(XMLSEC_NO_HKDF)
+
 
 /******************************************************************************
  *

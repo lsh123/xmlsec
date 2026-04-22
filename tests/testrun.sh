@@ -239,6 +239,13 @@ else
     xmlsec_feature_context_string="no"
 fi
 
+# Support for ML-KEM key transport (OpenSSL 3.5+)
+if [ "z$crypto" = "zopenssl" ] ; then
+    xmlsec_feature_ml_kem="yes"
+else
+    xmlsec_feature_ml_kem="no"
+fi
+
 #
 # Setup keys config
 #
@@ -347,6 +354,13 @@ if [ "z$crypto" = "zgcrypt" ] ; then
 else
     rsa_pub_key_suffix=""
 fi
+
+# ML-KEM keys have no certificates and cannot be stored in PKCS12.
+# Use PKCS8-PEM format for private keys and PEM for public keys on all platforms.
+mlkem_priv_key_option="--pkcs8-pem"
+mlkem_priv_key_format="p8-pem"
+mlkem_pub_key_option="--pubkey-pem"
+mlkem_pub_key_format="pem"
 
 # On Windows, we needs to specify Crypto Service Provider (CSP)
 # in the pkcs12 file to ensure it is loaded correctly to be used

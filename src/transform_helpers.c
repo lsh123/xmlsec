@@ -34,6 +34,7 @@
 #include <xmlsec/errors.h>
 
 #include "cast_helpers.h"
+#include "keysdata_helpers.h"
 #include "transform_helpers.h"
 
 
@@ -344,9 +345,9 @@ xmlSecTransformKeyAgreementParamsFinalize(xmlSecTransformKeyAgreementParamsPtr p
     memset(params, 0, sizeof(*params));
 }
 
-static xmlSecKeyPtr
-xmlSecTransformKeyAgreementReadKey(xmlSecKeyDataType keyType, xmlNodePtr node,
-    xmlSecTransformPtr kaTransform, xmlSecTransformCtxPtr transformCtx)
+xmlSecKeyPtr
+xmlSecTransformReadKeyInfoNode(xmlSecKeyDataType keyType, xmlNodePtr node,
+    xmlSecTransformPtr transform, xmlSecTransformCtxPtr transformCtx)
 {
     xmlSecKeyInfoCtx keyInfoCtx;
     xmlSecKeysMngrPtr keysMngr;
@@ -355,7 +356,7 @@ xmlSecTransformKeyAgreementReadKey(xmlSecKeyDataType keyType, xmlNodePtr node,
     int ret;
 
     xmlSecAssert2(node != NULL, NULL);
-    xmlSecAssert2(kaTransform != NULL, NULL);
+    xmlSecAssert2(transform != NULL, NULL);
     xmlSecAssert2(transformCtx != NULL, NULL);
     xmlSecAssert2(transformCtx->parentKeyInfoCtx != NULL, NULL);
 
@@ -376,7 +377,7 @@ xmlSecTransformKeyAgreementReadKey(xmlSecKeyDataType keyType, xmlNodePtr node,
     }
     keyInfoCtx.mode = xmlSecKeyInfoModeRead;
 
-    ret = xmlSecTransformSetKeyReq(kaTransform, &(keyInfoCtx.keyReq));
+    ret = xmlSecTransformSetKeyReq(transform, &(keyInfoCtx.keyReq));
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformSetKeyReq(originator)", xmlSecNodeGetName(node));
         goto done;
@@ -406,9 +407,9 @@ done:
 }
 
 
-static int
-xmlSecTransformKeyAgreementWriteKey(xmlSecKeyPtr key, xmlNodePtr node,
-    xmlSecTransformPtr kaTransform, xmlSecTransformCtxPtr transformCtx)
+int
+xmlSecTransformWriteKeyInfoNode(xmlSecKeyPtr key, xmlNodePtr node,
+    xmlSecTransformPtr transform, xmlSecTransformCtxPtr transformCtx)
 {
     xmlSecKeyInfoCtx keyInfoCtx;
     int ret;
@@ -416,7 +417,7 @@ xmlSecTransformKeyAgreementWriteKey(xmlSecKeyPtr key, xmlNodePtr node,
 
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
-    xmlSecAssert2(kaTransform != NULL, -1);
+    xmlSecAssert2(transform != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
     xmlSecAssert2(transformCtx->parentKeyInfoCtx != NULL, -1);
 
@@ -503,9 +504,9 @@ xmlSecTransformKeyAgreementParamsRead(xmlSecTransformKeyAgreementParamsPtr param
         xmlSecInvalidNodeError(cur, xmlSecNodeOriginatorKeyInfo, NULL);
         goto done;
     }
-    params->keyOriginator = xmlSecTransformKeyAgreementReadKey(originatorKeyType, cur, kaTransform, transformCtx);
+    params->keyOriginator = xmlSecTransformReadKeyInfoNode(originatorKeyType, cur, kaTransform, transformCtx);
     if(params->keyOriginator  == NULL) {
-        xmlSecInternalError("xmlSecTransformKeyAgreementReadKey(OriginatorKeyInfo)", xmlSecNodeGetName(node));
+        xmlSecInternalError("xmlSecTransformReadKeyInfoNode(OriginatorKeyInfo)", xmlSecNodeGetName(node));
         goto done;
     }
 
@@ -515,7 +516,7 @@ xmlSecTransformKeyAgreementParamsRead(xmlSecTransformKeyAgreementParamsPtr param
         xmlSecInvalidNodeError(cur, xmlSecNodeRecipientKeyInfo, NULL);
         goto done;
     }
-    params->keyRecipient = xmlSecTransformKeyAgreementReadKey(recipientKeyType, cur, kaTransform, transformCtx);
+    params->keyRecipient = xmlSecTransformReadKeyInfoNode(recipientKeyType, cur, kaTransform, transformCtx);
     if(params->keyRecipient  == NULL) {
         xmlSecInternalError("xmlSecTransformKeyAgreementReadKey(RecipientKeyInfo)", xmlSecNodeGetName(node));
         goto done;
@@ -573,9 +574,9 @@ xmlSecTransformKeyAgreementParamsWrite(xmlSecTransformKeyAgreementParamsPtr para
         goto done;
     }
     if(params->keyOriginator != NULL) {
-        ret = xmlSecTransformKeyAgreementWriteKey(params->keyOriginator, cur, kaTransform, transformCtx);
+        ret = xmlSecTransformWriteKeyInfoNode(params->keyOriginator, cur, kaTransform, transformCtx);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecTransformKeyAgreementWriteKey(OriginatorKeyInfo)", xmlSecNodeGetName(node));
+            xmlSecInternalError("xmlSecTransformWriteKeyInfoNode(OriginatorKeyInfo)", xmlSecNodeGetName(node));
             goto done;
         }
     }
@@ -587,9 +588,9 @@ xmlSecTransformKeyAgreementParamsWrite(xmlSecTransformKeyAgreementParamsPtr para
         goto done;
     }
     if(params->keyRecipient != NULL) {
-        ret = xmlSecTransformKeyAgreementWriteKey(params->keyRecipient, cur, kaTransform, transformCtx);
+        ret = xmlSecTransformWriteKeyInfoNode(params->keyRecipient, cur, kaTransform, transformCtx);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecTransformKeyAgreementWriteKey(RecipientKeyInfo)", xmlSecNodeGetName(node));
+            xmlSecInternalError("xmlSecTransformWriteKeyInfoNode(RecipientKeyInfo)", xmlSecNodeGetName(node));
             goto done;
         }
     }
@@ -612,6 +613,7 @@ done:
 
 /* min output for hmac transform in bits */
 static xmlSecSize g_xmlsec_transform_hmac_min_output_bits_size = 80;
+
 
 /**
  * @brief Gets the minimum size in bits for HMAC output.
@@ -780,7 +782,7 @@ xmlSecTransformHmacVerify(const xmlSecByte* data, xmlSecSize dataSize,
 /*
  * THIS IS EXPERIMENTAL AND NON-STANDARD
  *
- * <SignatureMethod Algorithm="http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#ml-dsa-44">
+ * <SignatureMethod Algorithm="XMLSEC_ALKESEY_EXPERIMENTAL_2025_12#ml-dsa-44">
  *   <mldsa:MLDSAContextString>base64 encoded context string</mldsa:MLDSAContextString>
  * </SignatureMethod>
  */
@@ -828,7 +830,7 @@ xmlSecTransformMLDSAReadContextString(xmlNodePtr node, xmlSecBufferPtr res) {
 /*
  * THIS IS EXPERIMENTAL AND NON-STANDARD
  *
- * <SignatureMethod Algorithm="http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#ml-dsa-44">
+ * <SignatureMethod Algorithm="XMLSEC_ALKESEY_EXPERIMENTAL_2025_12#slh-dsa-44">
  *   <slhdsa:SLHDSAContextString>base64 encoded context string</slhdsa:SLHDSAContextString>
  * </SignatureMethod>
  */

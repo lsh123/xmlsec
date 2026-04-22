@@ -18,6 +18,7 @@
 
 #include <xmlsec/keysdata.h>
 #include <xmlsec/keysmngr.h>
+#include <xmlsec/transforms.h>
 
 
 XMLSEC_EXPORT void          xmlSecKeyDataDebugDumpImpl(xmlSecKeyDataPtr data, FILE* output);
@@ -282,5 +283,36 @@ XMLSEC_EXPORT int               xmlSecKeyDataDsaXmlWrite                (xmlSecK
                                                                          xmlSecKeyDataDsaWrite writeFunc);
 #endif /* !defined(XMLSEC_NO_DSA) */
 
+#ifndef XMLSEC_NO_MLKEM
+/**
+ * @brief Helper class for KEM ciphertext value - holds the recipient key and
+ *        the KEM ciphertext exchanged via enc:CipherData/enc:CipherValue.
+ */
+typedef struct _xmlSecKeyDataKEMCipherValue {
+    xmlSecKeyData   keyData;
+    xmlSecKeyPtr    recipientKey; /* recipient public key (encrypt) or private key (decrypt) */
+    xmlSecBuffer    ciphertext;   /* KEM ciphertext from/to enc:CipherData/enc:CipherValue */
+} xmlSecKeyDataKEMCipherValue;
+
+#define xmlSecKeyDataKEMCipherValueSize     (sizeof(xmlSecKeyDataKEMCipherValue))
+
+#define xmlSecKeyDataKEMCipherValueId \
+        xmlSecKeyDataKEMCipherValueGetKlass()
+XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataKEMCipherValueGetKlass         (void);
+XMLSEC_EXPORT xmlSecKeyPtr              xmlSecKeyDataKEMCipherValueGetRecipientKey  (xmlSecKeyDataPtr data);
+XMLSEC_EXPORT xmlSecBufferPtr           xmlSecKeyDataKEMCipherValueGetCiphertext    (xmlSecKeyDataPtr data);
+XMLSEC_EXPORT int                       xmlSecKeyDataKEMCipherValueSetCiphertext    (xmlSecKeyDataPtr data,
+                                                                                     const xmlSecByte* buf,
+                                                                                     xmlSecSize bufSize);
+XMLSEC_EXPORT int                       xmlSecKeyDataKEMCipherValueNodeRead         (xmlSecKeyDataPtr data,
+                                                                                     xmlNodePtr node,
+                                                                                     xmlSecTransformPtr kemTransform,
+                                                                                     xmlSecTransformCtxPtr transformCtx);
+XMLSEC_EXPORT int                       xmlSecKeyDataKEMCipherValueNodeWrite        (xmlSecKeyDataPtr data,
+                                                                                     xmlNodePtr node,
+                                                                                     xmlSecTransformPtr kemTransform,
+                                                                                     xmlSecTransformCtxPtr transformCtx);
+
+#endif /* !defined(XMLSEC_NO_MLKEM) */
 
 #endif /* __XMLSEC_KEYSDATA_HELPERS_H__ */

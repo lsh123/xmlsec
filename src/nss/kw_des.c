@@ -10,7 +10,6 @@
  * @addtogroup xmlsec_nss_crypto
  * @brief DES Key Transport transforms implementation for NSS.
  */
-#ifndef XMLSEC_NO_DES
 #include "globals.h"
 
 #include <stdlib.h>
@@ -31,6 +30,8 @@
 
 #include "../kw_helpers.h"
 #include "../cast_helpers.h"
+
+#ifndef XMLSEC_NO_DES
 
 /******************************************************************************
  *

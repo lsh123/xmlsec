@@ -192,12 +192,6 @@ xmlSecOpenSSLKeyAgreementNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     ctx = xmlSecOpenSSLKeyAgreementGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    /* if kamKeyData is already set in transformCtx, skip XML parsing (write path reuse) */
-    if(transformCtx->kamKeyData != NULL) {
-        xmlSecAssert2(xmlSecKeyDataCheckId(transformCtx->kamKeyData, xmlSecKeyDataKAMId), -1);
-        return(0);
-    }
-
     ret = xmlSecTransformKAMRead(&(ctx->params), node, transform, transformCtx);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformKAMRead", xmlSecTransformGetName(transform));
@@ -210,17 +204,20 @@ xmlSecOpenSSLKeyAgreementNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
 static int
 xmlSecOpenSSLKeyAgreementNodeWrite(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecOpenSSLKeyAgreementCtxPtr ctx;
     int ret;
 
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKeyAgreementSize), -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
-    xmlSecAssert2(transformCtx->kamKeyData != NULL, -1);
 
-    ret = xmlSecKeyDataKAMWrite(transformCtx->kamKeyData, node, transform, transformCtx);
+    ctx = xmlSecOpenSSLKeyAgreementGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    ret = xmlSecTransformKAMWrite(&(ctx->params), node, transform, transformCtx);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyDataKAMWrite", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecTransformKAMWrite", xmlSecTransformGetName(transform));
         return(-1);
     }
 

@@ -227,21 +227,9 @@ xmlSecOpenSSLMLKEMReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSec
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
-    if(transformCtx->kemKeyData != NULL) {
-        /* already read, nothing to do */
-        return(0);
-    }
-
-    /* create kemKeyData in transform context */
-    transformCtx->kemKeyData = xmlSecKeyDataCreate(xmlSecKeyDataKEMId);
-    if(transformCtx->kemKeyData == NULL) {
-        xmlSecInternalError("xmlSecKeyDataCreate(kemKeyData)", xmlSecTransformGetName(transform));
-        return(-1);
-    }
-
-    ret = xmlSecKeyDataKEMNodeRead(transformCtx->kemKeyData, node, transform, transformCtx);
+    ret = xmlSecTransformKEMRead(node, transform, transformCtx);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyDataKEMNodeRead", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecTransformKEMRead", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -258,9 +246,9 @@ xmlSecOpenSSLMLKEMWriteNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSe
     xmlSecAssert2(transformCtx != NULL, -1);
     xmlSecAssert2(transformCtx->kemKeyData != NULL, -1);
 
-    ret = xmlSecKeyDataKEMNodeWrite(transformCtx->kemKeyData, node, transform, transformCtx);
+    ret = xmlSecTransformKEMWrite(node, transform, transformCtx);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyDataKEMNodeWrite", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecTransformKEMWrite", xmlSecTransformGetName(transform));
         return(-1);
     }
 

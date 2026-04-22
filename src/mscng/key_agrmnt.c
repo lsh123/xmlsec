@@ -205,12 +205,6 @@ xmlSecMSCngKeyAgreementNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, x
     ctx = xmlSecMSCngKeyAgreementGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    /* if kamKeyData is already set in transformCtx, skip XML parsing (write path reuse) */
-    if(transformCtx->kamKeyData != NULL) {
-        xmlSecAssert2(xmlSecKeyDataCheckId(transformCtx->kamKeyData, xmlSecKeyDataKAMId), -1);
-        return(0);
-    }
-
     ret = xmlSecTransformKAMRead(&(ctx->params), node, transform, transformCtx);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformKAMRead", NULL);
@@ -223,17 +217,20 @@ xmlSecMSCngKeyAgreementNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, x
 
 static int
 xmlSecMSCngKeyAgreementNodeWrite(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecMSCngKeyAgreementCtxPtr ctx;
     int ret;
 
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngKeyAgreementSize), -1);
     xmlSecAssert2(node!= NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
-    xmlSecAssert2(transformCtx->kamKeyData != NULL, -1);
 
-    ret = xmlSecKeyDataKAMWrite(transformCtx->kamKeyData, node, transform, transformCtx);
+    ctx = xmlSecMSCngKeyAgreementGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    ret = xmlSecTransformKAMWrite(&(ctx->params), node, transform, transformCtx);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyDataKAMWrite", NULL);
+        xmlSecInternalError("xmlSecTransformKAMWrite", NULL);
         return(-1);
     }
 
@@ -387,7 +384,7 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(kamKeyData != NULL, -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(kamKeyData, xmlSecKeyDataKAMId), NULL);
+    xmlSecAssert2(xmlSecKeyDataCheckId(kamKeyData, xmlSecKeyDataKAMId), -1);
     xmlSecAssert2(secret != NULL, -1);
 
     kamData = (xmlSecKeyDataKAM*)kamKeyData;

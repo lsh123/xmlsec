@@ -36,16 +36,20 @@ XMLSEC_EXPORT int           xmlSecTransformWriteKeyInfoNode      (xmlSecKeyPtr k
 
 /******************************************************************************
  *
- * Common Key Agreement Method (KAM) Params
+ * Key Agreement Method (KAM) Transform:
+ * - The transform parameters (eg kdf transform) are stored in the
+ * xmlSecTransformKAM structure.
+ * - Keys (originator and recipient) are stored in the xmlSecKeyDataKAM
+ * structure which is attached to the derived-key object and passed around
+ * to avoid (potentially expensive) re-lookup of the keys.
  *
   *****************************************************************************/
 /**
  * @brief Key Agreement transform parameters.
  *
- * Contains the parsed key agreement parameters: KDF transform chain, its key
- * info context, a memory buffer transform to collect output, and the
- * originator/recipient keys.  These are populated during NodeRead and used
- * during Execute and NodeWrite.
+ * Contains the parsed key agreement parameters (excluding the originator / recipient
+ * keys which are cached in the xmlSecKeyDataKAM structure). These are populated
+ * during NodeRead and used during Execute and NodeWrite.
  */
 struct _xmlSecTransformKAM {
     xmlSecTransformPtr      kdfTransform;     /**< Key Derivation Function transform */
@@ -61,12 +65,39 @@ XMLSEC_EXPORT int   xmlSecTransformKAMRead                  (xmlSecTransformKAMP
                                                              xmlNodePtr node,
                                                              xmlSecTransformPtr kamTransform,
                                                              xmlSecTransformCtxPtr transformCtx);
+XMLSEC_EXPORT int   xmlSecTransformKAMWrite                 (xmlSecTransformKAMPtr params,
+                                                             xmlNodePtr node,
+                                                             xmlSecTransformPtr kamTransform,
+                                                             xmlSecTransformCtxPtr transformCtx);
+
+
 XMLSEC_EXPORT int   xmlSecTransformKAMExecuteKdf            (xmlSecTransformKAMPtr params,
                                                              xmlSecTransformOperation operation,
                                                              xmlSecBufferPtr secret,
                                                              xmlSecBufferPtr out,
                                                              xmlSecSize expectedOutputSize,
                                                              xmlSecTransformCtxPtr transformCtx);
+
+
+
+#ifndef XMLSEC_NO_MLKEM
+/******************************************************************************
+ *
+ * Key Encapsulation Method (KEM) Transform: the tranform doesn't have any
+ * additional parameters except the data in the xmlSecKeyDataKEM structure
+ * (which is attached to the derived-key object and passed around
+ * to avoid (potentially expensive) re-lookup of the keys).
+ *
+  *****************************************************************************/
+
+XMLSEC_EXPORT int  xmlSecTransformKEMRead                   (xmlNodePtr node,
+                                                             xmlSecTransformPtr kemTransform,
+                                                             xmlSecTransformCtxPtr transformCtx);
+XMLSEC_EXPORT int  xmlSecTransformKEMWrite                  (xmlNodePtr node,
+                                                             xmlSecTransformPtr kemTransform,
+                                                             xmlSecTransformCtxPtr transformCtx);
+
+#endif /* !defined(XMLSEC_NO_MLKEM) */
 
 
 /* ConcatKDF */

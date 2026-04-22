@@ -298,27 +298,16 @@ typedef struct _xmlSecKeyDataKAM {
     xmlSecKeyPtr    keyRecipient;     /**< recipient key */
 } xmlSecKeyDataKAM;
 
-/** @brief Size of #xmlSecKeyDataKAM struct. */
-#define xmlSecKeyDataKAMSize    (sizeof(xmlSecKeyDataKAM))
 
 /** @brief The KA params key data klass ID. */
 #define xmlSecKeyDataKAMId      xmlSecKeyDataKAMGetKlass()
 
 XMLSEC_EXPORT xmlSecKeyDataId   xmlSecKeyDataKAMGetKlass           (void);
-XMLSEC_EXPORT int               xmlSecKeyDataKAMAdoptOriginatorKey   (xmlSecKeyDataPtr data,
-                                                                    xmlSecKeyPtr key);
-XMLSEC_EXPORT int               xmlSecKeyDataKAMAdoptRecipientKey    (xmlSecKeyDataPtr data,
-                                                                    xmlSecKeyPtr key);
-
-XMLSEC_EXPORT int               xmlSecKeyDataKAMWrite               (xmlSecKeyDataPtr data,
-                                                                     xmlNodePtr node,
-                                                                     xmlSecTransformPtr kamTransform,
-                                                                     xmlSecTransformCtxPtr transformCtx);
 
 
 #ifndef XMLSEC_NO_MLKEM
 /**
- * @brief Key Encapsulation params cached in a key object.
+ * @brief Key Encapsulation data cached in a key object.
  *
  * After a successful key-encapsulation Execute, the recipient key and the ciphertext
  * are stored here and attached to the derived-key object. On the subsequent
@@ -332,8 +321,6 @@ typedef struct _xmlSecKeyDataKEM {
     xmlSecKeyPtr    encapsulationKey; /**< recipient public key (encrypt) or private key (decrypt) */
     xmlSecBuffer    ciphertext;   /**< KEM ciphertext from/to enc:CipherData/enc:CipherValue */
 } xmlSecKeyDataKEM;
-
-#define xmlSecKeyDataKEMSize     (sizeof(xmlSecKeyDataKEM))
 
 #define xmlSecKeyDataKEMId \
         xmlSecKeyDataKEMGetKlass()

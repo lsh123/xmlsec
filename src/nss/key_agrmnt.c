@@ -180,7 +180,7 @@ xmlSecNssKeyAgreementSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKeyAgreementSize), -1);
     xmlSecAssert2(key != NULL, -1);
 
-    /* key agreement uses two keys from ctxTransform->kamKeyData */
+    /* key agreement uses two keys from ctxTransform->extraKeyData (KAM key data) */
     return(0);
 }
 
@@ -231,9 +231,9 @@ xmlSecNssKeyAgreementNodeWrite(xmlSecTransformPtr transform, xmlNodePtr node, xm
 }
 
 static int
-xmlSecNssKeyAgreementExecute(xmlSecTransformPtr transform, int last,
-                              xmlSecTransformCtxPtr transformCtx) {
+xmlSecNssKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecNssKeyAgreementCtxPtr ctx;
+    xmlSecKeyDataPtr kamKeyData;
     xmlSecBufferPtr in, out;
     int ret;
 
@@ -264,7 +264,13 @@ xmlSecNssKeyAgreementExecute(xmlSecTransformPtr transform, int last,
         }
 
         /* Step 1: derive shared secret using NSS ECDH derive support */
-        ret = xmlSecNssKeyAgreementGenerateSecret(ctx, transform->operation, transformCtx->kamKeyData, &secret);
+        kamKeyData = xmlSecTransformCtxExtraKeyDataGet(transformCtx, xmlSecKeyDataKAMId);
+        if(kamKeyData == NULL) {
+            xmlSecInternalError("xmlSecTransformCtxExtraKeyDataGet", xmlSecTransformGetName(transform));
+            xmlSecBufferFinalize(&secret);
+            return(-1);
+        }
+        ret = xmlSecNssKeyAgreementGenerateSecret(ctx, transform->operation, kamKeyData, &secret);
         if(ret < 0) {
             xmlSecInternalError("xmlSecNssKeyAgreementGenerateSecret", xmlSecTransformGetName(transform));
             xmlSecBufferEmpty(&secret);

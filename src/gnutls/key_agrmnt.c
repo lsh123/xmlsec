@@ -181,7 +181,7 @@ xmlSecGnuTLSKeyAgreementSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSKeyAgreementSize), -1);
     xmlSecAssert2(key != NULL, -1);
 
-    /* key agreement uses two keys from ctxTransform->kamKeyData */
+    /* key agreement uses two keys from ctxTransform->extraKeyData (KAM key data) */
     return(0);
 }
 
@@ -233,6 +233,7 @@ xmlSecGnuTLSKeyAgreementNodeWrite(xmlSecTransformPtr transform, xmlNodePtr node,
 static int
 xmlSecGnuTLSKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecGnuTLSKeyAgreementCtxPtr ctx;
+    xmlSecKeyDataPtr kamKeyData;
     xmlSecBufferPtr in, out;
     int ret;
 
@@ -263,7 +264,12 @@ xmlSecGnuTLSKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTr
         }
 
         /* Step 1: derive shared secret using gnutls_privkey_derive_secret */
-        ret = xmlSecGnuTLSKeyAgreementGenerateSecret(ctx, transform->operation, transformCtx->kamKeyData, &secret);
+        kamKeyData = xmlSecTransformCtxExtraKeyDataGet(transformCtx, xmlSecKeyDataKAMId);
+        if(kamKeyData == NULL) {
+            xmlSecInternalError("xmlSecTransformCtxExtraKeyDataGet", xmlSecTransformGetName(transform));
+            return(-1);
+        }
+        ret = xmlSecGnuTLSKeyAgreementGenerateSecret(ctx, transform->operation, kamKeyData, &secret);
         if(ret < 0) {
             xmlSecInternalError("xmlSecGnuTLSKeyAgreementGenerateSecret", xmlSecTransformGetName(transform));
             xmlSecBufferEmpty(&secret);

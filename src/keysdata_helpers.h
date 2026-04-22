@@ -289,7 +289,7 @@ XMLSEC_EXPORT int               xmlSecKeyDataDsaXmlWrite                (xmlSecK
  * After a successful key-agreement Execute, the originator and recipient keys
  * are stored here and attached to the derived-key object.  On the subsequent
  * write path the cached keys are retrieved from the key object and placed into
- * @c transformCtx->kamKeyData so that the backend NodeRead can skip XML parsing
+ * @c transformCtx->extraKeyData (KAM key data) so that the backend NodeRead can skip XML parsing
  * and repeated key-store lookups.
  */
 typedef struct _xmlSecKeyDataKAM {
@@ -312,7 +312,7 @@ XMLSEC_EXPORT xmlSecKeyDataId   xmlSecKeyDataKAMGetKlass           (void);
  * After a successful key-encapsulation Execute, the recipient key and the ciphertext
  * are stored here and attached to the derived-key object. On the subsequent
  * write path the cached data are retrieved from the key object and placed into
- * @c transformCtx->kemKeyData so that the backend NodeRead can skip XML parsing
+ * @c transformCtx->extraKeyData (KEM key data) so that the backend NodeRead can skip XML parsing
  * and repeated key-store lookups.
 
  */

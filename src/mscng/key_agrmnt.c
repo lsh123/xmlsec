@@ -188,7 +188,7 @@ xmlSecMSCngKeyAgreementSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngKeyAgreementSize), -1);
     xmlSecAssert2(key != NULL, -1);
 
-    /* key agreement uses two keys from ctxTransform->kamKeyData */
+    /* key agreement uses two keys from ctxTransform->extraKeyData (KAM key data) */
     return(0);
 }
 
@@ -600,6 +600,7 @@ done:
 static int
 xmlSecMSCngKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecMSCngKeyAgreementCtxPtr ctx;
+    xmlSecKeyDataPtr kamKeyData;
     xmlSecBufferPtr in, out;
     int ret;
 
@@ -631,7 +632,13 @@ xmlSecMSCngKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTra
         }
 
         /* step 1: generate secret with ecdh */
-        ret = xmlSecMSCngKeyAgreementGenerateSecret(ctx, transform->operation, transformCtx->kamKeyData, &secret);
+        kamKeyData = xmlSecTransformCtxExtraKeyDataGet(transformCtx, xmlSecKeyDataKAMId);
+        if(kamKeyData == NULL) {
+            xmlSecInternalError("xmlSecTransformCtxExtraKeyDataGet", xmlSecTransformGetName(transform));
+            xmlSecBufferFinalize(&secret);
+            return(-1);
+        }
+        ret = xmlSecMSCngKeyAgreementGenerateSecret(ctx, transform->operation, kamKeyData, &secret);
         if(ret < 0) {
             xmlSecInternalError("xmlSecMSCngKeyAgreementGenerateSecret", xmlSecTransformGetName(transform));
             xmlSecBufferFinalize(&secret);

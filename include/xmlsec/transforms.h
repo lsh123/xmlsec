@@ -285,16 +285,10 @@ struct _xmlSecTransformCtx {
     xmlChar*                                    xptrExpr;  /**< the xpointer expression from data source URI (if any). */
     xmlSecTransformPtr                          first;  /**< the first transform in the chain. */
     xmlSecTransformPtr                          last;  /**< the last transform in the chain. */
-
-    /* user by EncapsulationMechanism transforms */
-    xmlSecKeyDataPtr                            kemKeyData;  /**< the pointer to the KEM cipher value key data (used by KEM transforms). */
-
-    /* used by AgreementMethod (key agreement) transforms */
-    xmlSecKeyDataPtr                            kamKeyData;  /**< the pointer to the cached key agreement params key data (used by KA transforms). */
+    xmlSecPtrListPtr                            extraKeyData;  /**< the pointer to extra key data list (NULL by default; owned by this context). */
 
     /* for the future */
     void*                                       reserved0;  /**< reserved for the future. */
-    void*                                       reserved1;  /**< reserved for the future. */
 };
 
 XMLSEC_EXPORT xmlSecTransformCtxPtr     xmlSecTransformCtxCreate        (void);
@@ -340,6 +334,13 @@ XMLSEC_EXPORT void                      xmlSecTransformCtxDebugXmlDump  (xmlSecT
 
 XMLSEC_EXPORT xmlSecSize                xmlSecTransformCtxGetDefaultBinaryChunkSize(void);
 XMLSEC_EXPORT void                      xmlSecTransformCtxSetDefaultBinaryChunkSize(xmlSecSize binaryChunkSize);
+
+XMLSEC_EXPORT xmlSecKeyDataPtr          xmlSecTransformCtxExtraKeyDataGet       (xmlSecTransformCtxPtr ctx,
+                                                                                 xmlSecKeyDataId dataId);
+XMLSEC_EXPORT xmlSecKeyDataPtr          xmlSecTransformCtxExtraKeyDataEnsure    (xmlSecTransformCtxPtr ctx,
+                                                                                 xmlSecKeyDataId dataId);
+XMLSEC_EXPORT int                       xmlSecTransformCtxExtraKeyDataAdopt     (xmlSecTransformCtxPtr ctx,
+                                                                                 xmlSecKeyDataPtr data);
 
 
 /**

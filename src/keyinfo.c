@@ -1941,6 +1941,7 @@ xmlSecKeyDataAgreementMethodGetKlass(void) {
 static int
 xmlSecKeyDataAgreementMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyPtr generatedKey;
+    xmlSecKeyDataPtr kamKeyData;
     int ret;
 
     xmlSecAssert2(id == xmlSecKeyDataAgreementMethodId, -1);
@@ -2012,21 +2013,30 @@ xmlSecKeyDataAgreementMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
     /* success */
     xmlSecKeyDestroy(generatedKey);
 
-    /* if the KA transform set kamKeyData, attach it to the key */
-    if(keyInfoCtx->encCtx->transformCtx.kamKeyData != NULL) {
-        ret = xmlSecKeyAdoptData(key, keyInfoCtx->encCtx->transformCtx.kamKeyData);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecKeyAdoptData", xmlSecKeyDataKlassGetName(id));
+    /* if the KA transform set kamKeyData, attach a duplicate to the key */
+    kamKeyData = xmlSecTransformCtxExtraKeyDataGet(&keyInfoCtx->encCtx->transformCtx, xmlSecKeyDataKAMId);
+    if(kamKeyData != NULL) {
+        xmlSecKeyDataPtr kamKeyDataDup = xmlSecKeyDataDuplicate(kamKeyData);
+        if(kamKeyDataDup == NULL) {
+            xmlSecInternalError("xmlSecKeyDataDuplicate(kamKeyData)", xmlSecKeyDataKlassGetName(id));
             return(-1);
         }
-        keyInfoCtx->encCtx->transformCtx.kamKeyData = NULL;
+        ret = xmlSecKeyAdoptData(key, kamKeyDataDup);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecKeyAdoptData", xmlSecKeyDataKlassGetName(id));
+            xmlSecKeyDataDestroy(kamKeyDataDup);
+            return(-1);
+        }
+        /* kamKeyDataDup is now owned by the key */
     }
 
+    /* done */
     return(0);
 }
 
 static int
 xmlSecKeyDataAgreementMethodXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecKeyDataPtr kamKeyData;
     int ret;
 
     xmlSecAssert2(id == xmlSecKeyDataAgreementMethodId, -1);
@@ -2057,6 +2067,26 @@ xmlSecKeyDataAgreementMethodXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNo
     }
     xmlSecAssert2(keyInfoCtx->encCtx != NULL, -1);
 
+    /* if the key has cached KAM data, pre-populate transformCtx so NodeRead can skip XML parsing */
+    kamKeyData = xmlSecKeyGetData(key, xmlSecKeyDataKAMId);
+    if(kamKeyData != NULL) {
+        xmlSecKeyDataPtr kamKeyDataDup;
+
+        kamKeyDataDup = xmlSecKeyDataDuplicate(kamKeyData);
+        if(kamKeyDataDup == NULL) {
+            xmlSecInternalError("xmlSecKeyDataDuplicate(kamKeyData)", xmlSecKeyDataKlassGetName(id));
+            return(-1);
+        }
+
+        ret = xmlSecTransformCtxExtraKeyDataAdopt(&(keyInfoCtx->encCtx->transformCtx), kamKeyDataDup);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecTransformCtxExtraKeyDataAdopt", xmlSecKeyDataKlassGetName(id));
+            xmlSecKeyDataDestroy(kamKeyDataDup);
+            return(-1);
+        }
+        /* kamKeyDataDup is now owned by the transform context */
+    }
+
     /* copy prefs */
     ret = xmlSecKeyInfoCtxCopyUserPref(&(keyInfoCtx->encCtx->keyInfoReadCtx), keyInfoCtx);
     if(ret < 0) {
@@ -2069,18 +2099,6 @@ xmlSecKeyDataAgreementMethodXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNo
         return(-1);
     }
 
-    /* if the key has cached KA params, pre-populate transformCtx so NodeRead can skip XML parsing */
-    {
-        xmlSecKeyDataPtr kamKeyData = xmlSecKeyGetData(key, xmlSecKeyDataKAMId);
-        if(kamKeyData != NULL) {
-            xmlSecAssert2(keyInfoCtx->encCtx->transformCtx.kamKeyData == NULL, -1);
-            keyInfoCtx->encCtx->transformCtx.kamKeyData = xmlSecKeyDataDuplicate(kamKeyData);
-            if(keyInfoCtx->encCtx->transformCtx.kamKeyData == NULL) {
-                xmlSecInternalError("xmlSecKeyDataDuplicate(kamKeyData)", xmlSecKeyDataKlassGetName(id));
-                return(-1);
-            }
-        }
-    }
 
     ++keyInfoCtx->curEncryptedKeyLevel;
     ret = xmlSecEncCtxAgreementMethodXmlWrite(keyInfoCtx->encCtx, node, keyInfoCtx);
@@ -2170,6 +2188,7 @@ static int
 xmlSecKeyDataEncapsulationMechanismXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node,
     xmlSecKeyInfoCtxPtr keyInfoCtx)
 {
+    xmlSecKeyDataPtr kemKeyData;
     xmlSecKeyPtr generatedKey;
     int ret;
 
@@ -2239,14 +2258,21 @@ xmlSecKeyDataEncapsulationMechanismXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     }
     xmlSecKeyDestroy(generatedKey);
 
-    /* if the KEM transform set kemKeyData, attach it to the key */
-    if(keyInfoCtx->encCtx->transformCtx.kemKeyData != NULL) {
-        ret = xmlSecKeyAdoptData(key, keyInfoCtx->encCtx->transformCtx.kemKeyData);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecKeyAdoptData", xmlSecKeyDataKlassGetName(id));
+    /* if the KEM transform set kemKeyData, attach a duplicate to the key (keep data in transform) */
+    kemKeyData = xmlSecTransformCtxExtraKeyDataGet(&keyInfoCtx->encCtx->transformCtx, xmlSecKeyDataKEMId);
+    if(kemKeyData != NULL) {
+        xmlSecKeyDataPtr kemKeyDataDup = xmlSecKeyDataDuplicate(kemKeyData);
+        if(kemKeyDataDup == NULL) {
+            xmlSecInternalError("xmlSecKeyDataDuplicate(kemKeyData)", xmlSecKeyDataKlassGetName(id));
             return(-1);
         }
-        keyInfoCtx->encCtx->transformCtx.kemKeyData = NULL;
+        ret = xmlSecKeyAdoptData(key, kemKeyDataDup);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecKeyAdoptData", xmlSecKeyDataKlassGetName(id));
+            xmlSecKeyDataDestroy(kemKeyDataDup);
+            return(-1);
+        }
+        /* kemKeyDataDup is now owned by the key */
     }
 
     /* success */
@@ -2258,6 +2284,7 @@ xmlSecKeyDataEncapsulationMechanismXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key
     xmlSecKeyInfoCtxPtr keyInfoCtx)
 {
     xmlSecKeyDataPtr kemKeyData;
+    xmlSecKeyDataPtr kemKeyDataDup;
     int ret;
 
     xmlSecAssert2(id == xmlSecKeyDataEncapsulationMechanismId, -1);
@@ -2267,12 +2294,6 @@ xmlSecKeyDataEncapsulationMechanismXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeWrite, -1);
 
-    /* we should have kemKeyData in the key */
-    kemKeyData = xmlSecKeyGetData(key, xmlSecKeyDataKEMId);
-    if(kemKeyData == NULL) {
-        xmlSecInternalError("xmlSecKeyGetDataById(kemKeyData)", xmlSecKeyDataKlassGetName(id));
-        return(-1);
-    }
 
     /* there might be several nodes that can re-use encCtx */
 
@@ -2294,12 +2315,26 @@ xmlSecKeyDataEncapsulationMechanismXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key
         }
     }
     xmlSecAssert2(keyInfoCtx->encCtx != NULL, -1);
-    xmlSecAssert2(keyInfoCtx->encCtx->transformCtx.kemKeyData == NULL, -1);
-    keyInfoCtx->encCtx->transformCtx.kemKeyData = xmlSecKeyDataDuplicate(kemKeyData);
-    if(keyInfoCtx->encCtx->transformCtx.kemKeyData == NULL) {
+
+    /* we should have kemKeyData in the key, pre-populate transformCtx */
+    kemKeyData = xmlSecKeyGetData(key, xmlSecKeyDataKEMId);
+    if(kemKeyData == NULL) {
+        xmlSecInternalError("xmlSecKeyGetDataById(kemKeyData)", xmlSecKeyDataKlassGetName(id));
+        return(-1);
+    }
+
+    kemKeyDataDup = xmlSecKeyDataDuplicate(kemKeyData);
+    if(kemKeyDataDup == NULL) {
         xmlSecInternalError("xmlSecKeyDataDuplicate(kemKeyData)", xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
+    ret = xmlSecTransformCtxExtraKeyDataAdopt(&(keyInfoCtx->encCtx->transformCtx), kemKeyDataDup);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformCtxExtraKeyDataAdopt", xmlSecKeyDataKlassGetName(id));
+        xmlSecKeyDataDestroy(kemKeyDataDup);
+        return(-1);
+    }
+    /* kemKeyDataDup is now owned by the transform context */
 
     /* copy prefs */
     ret = xmlSecKeyInfoCtxCopyUserPref(&(keyInfoCtx->encCtx->keyInfoReadCtx), keyInfoCtx);

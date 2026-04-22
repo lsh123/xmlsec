@@ -15,8 +15,9 @@
 #include <openssl/crypto.h>
 #include <openssl/rand.h>
 
-#include "../cast_helpers.h"
+#include <xmlsec/xmlsec.h>
 
+#include "../cast_helpers.h"
 
 /* internal helpers */
 int             xmlSecOpenSSLGenerateRandomBytes             (xmlSecByte* data, xmlSecSize size);
@@ -33,13 +34,6 @@ int             xmlSecOpenSSLGenerateRandomBytes             (xmlSecByte* data, 
 #define XMLSEC_OPENSSL_NO_ASN1_TIME_TO_TM   1
 #define XMLSEC_OPENSSL_NO_STORE             1
 #define XMLSEC_OPENSSL_NO_DEEP_COPY         1
-#define XMLSEC_NO_RSA_OAEP                  1
-#define XMLSEC_NO_DH                        1
-#define XMLSEC_NO_DSA                       1
-#define XMLSEC_NO_SHA3                      1
-#define XMLSEC_NO_CAMELLIA                  1
-#define XMLSEC_NO_CHACHA20                  1
-
 
 #define ENGINE_cleanup()                    {}
 
@@ -137,9 +131,6 @@ typedef int xmlSecOpenSSLSizeT;
 #define XMLSEC_OPENSSL_NO_STORE             1
 #define XMLSEC_OPENSSL_NO_PWD_CALLBACK      1
 #define XMLSEC_OPENSSL_NO_DEEP_COPY         1
-#define XMLSEC_NO_DH                        1
-#define XMLSEC_NO_CAMELLIA                  1
-#define XMLSEC_NO_CHACHA20                  1
 
 #define RAND_priv_bytes(buf,len)            RAND_bytes((buf), (len))
 
@@ -166,12 +157,7 @@ typedef int xmlSecOpenSSLSizeT;
  * OpenSSL 3.5.0 compatibility
  *
   *****************************************************************************/
-#if !defined(XMLSEC_OPENSSL_API_350)
-#define XMLSEC_NO_MLDSA                     1
-#define XMLSEC_NO_SLHDSA                    1
-#define XMLSEC_NO_EDDSA                     1
-#define XMLSEC_NO_XDH                       1
-#endif /* !defined(XMLSEC_OPENSSL_API_350) */
+
 
 /******************************************************************************
  *
@@ -179,22 +165,6 @@ typedef int xmlSecOpenSSLSizeT;
  *
   *****************************************************************************/
 #if !defined(XMLSEC_OPENSSL_API_300)
-
-/* ConcatKDF (SSKDF) key derivation algorithm is only available on OpenSSL 3.0.0 or newer
- * (https://www.openssl.org/docs/man3.0/man7/EVP_KDF-SS.html)
- */
-#define XMLSEC_NO_CONCATKDF     1
-
-/* PBKDF2 key derivation algorithm is only available on OpenSSL 3.0.0 or newer
- * (https://www.openssl.org/docs/man3.0/man7/EVP_KDF-PBKDF2.html)
- */
-#define XMLSEC_NO_PBKDF2        1
-
-/* HKDF key derivation algorithm is only available on OpenSSL 3.0.0 or newer
- * (https://www.openssl.org/docs/man3.0/man7/EVP_KDF-HKDF.html)
- */
-#define XMLSEC_NO_HKDF          1
-
 
 #define BIO_new_ex(libctx,type)                                     BIO_new((type))
 #define PEM_read_bio_PrivateKey_ex(bp,x,cb,u,libctx,propq)          PEM_read_bio_PrivateKey((bp),(x),(cb),(u))

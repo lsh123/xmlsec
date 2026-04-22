@@ -254,6 +254,18 @@ mkdir ml-dsa
 ./scripts/create-ml-dsa-87.sh
 ```
 
+### Generate ML-KEM keys
+
+ML-KEM keys have no certificates. Private keys are stored as PKCS#8 PEM files
+(encrypted with password `secret123`). Public keys are stored as plain PEM files.
+
+```
+mkdir ml-kem
+./scripts/create-ml-kem-512.sh
+./scripts/create-ml-kem-768.sh
+./scripts/create-ml-kem-1024.sh
+```
+
 ### Generate SLH-DSA keys with second level CA
 
 ```

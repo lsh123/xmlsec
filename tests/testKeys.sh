@@ -534,6 +534,36 @@ execKeysTest $res_success   \
     "--pwd secret123 --enabled-key-data key-name"
 
 execKeysTest $res_success   \
+    "ml-kem"                \
+    ""                      \
+    "ml-kem-512"                            \
+    "$topfolder/keys/ml-kem/ml-kem-512-key"      \
+    "$topfolder/keys/ml-kem/ml-kem-512-pubkey"   \
+    ""                      \
+    ""                      \
+    "--pwd secret123"
+
+execKeysTest $res_success   \
+    "ml-kem"                \
+    ""                      \
+    "ml-kem-768"                            \
+    "$topfolder/keys/ml-kem/ml-kem-768-key"      \
+    "$topfolder/keys/ml-kem/ml-kem-768-pubkey"   \
+    ""                      \
+    ""                      \
+    "--pwd secret123"
+
+execKeysTest $res_success   \
+    "ml-kem"                \
+    ""                      \
+    "ml-kem-1024"                           \
+    "$topfolder/keys/ml-kem/ml-kem-1024-key"     \
+    "$topfolder/keys/ml-kem/ml-kem-1024-pubkey"  \
+    ""                      \
+    ""                      \
+    "--pwd secret123"
+
+execKeysTest $res_success   \
     "pbkdf2"               \
     "test-pbkdf2"          \
     "pbkdf2-256"

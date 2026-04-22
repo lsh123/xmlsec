@@ -22,6 +22,18 @@
 #include <xmlsec/transforms.h>
 
 
+/* Internal helpers used by key-agreement and KEM code: read / write key info inside transforms */
+XMLSEC_EXPORT xmlSecKeyPtr  xmlSecTransformReadKeyInfoNode       (xmlSecKeyDataType keyType,
+                                                                  xmlNodePtr node,
+                                                                  xmlSecTransformPtr transform,
+                                                                  xmlSecTransformCtxPtr transformCtx);
+XMLSEC_EXPORT int           xmlSecTransformWriteKeyInfoNode      (xmlSecKeyPtr key,
+                                                                  xmlNodePtr node,
+                                                                  xmlSecTransformPtr transform,
+                                                                  xmlSecTransformCtxPtr transformCtx);
+
+
+
 /* Common Key Agreement params */
 struct _xmlSecTransformKeyAgreementParams {
     xmlSecTransformPtr  kdfTransform;
@@ -44,6 +56,8 @@ XMLSEC_EXPORT int   xmlSecTransformKeyAgreementParamsWrite         (xmlSecTransf
                                                                     xmlNodePtr node,
                                                                     xmlSecTransformPtr kaTransform,
                                                                     xmlSecTransformCtxPtr transformCtx);
+
+
 
 
 /* ConcatKDF */

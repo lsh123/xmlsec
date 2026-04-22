@@ -239,6 +239,7 @@ XMLSEC_OPENSSL_OBJS = \
 	$(XMLSEC_OPENSSL_INTDIR)\kdf.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\key_agrmnt.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\keysstore.obj \
+	$(XMLSEC_OPENSSL_INTDIR)\key_encapsulation.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\kt_rsa.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\kw_rfc_3394.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\kw_des.obj \
@@ -259,6 +260,7 @@ XMLSEC_OPENSSL_OBJS_A = \
 	$(XMLSEC_OPENSSL_INTDIR_A)\kdf.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\key_agrmnt.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\keysstore.obj \
+	$(XMLSEC_OPENSSL_INTDIR_A)\key_encapsulation.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\kt_rsa.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\kw_rfc_3394.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\kw_des.obj \

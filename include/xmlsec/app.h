@@ -110,6 +110,11 @@ XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataHkdfGetKlass(void);
 #define xmlSecKeyDataMLDSAId                    xmlSecKeyDataMLDSAGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataMLDSAGetKlass(void);
 /**
+ * @brief The ML-KEM key klass.
+ */
+#define xmlSecKeyDataMLKEMId                    xmlSecKeyDataMLKEMGetKlass()
+XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataMLKEMGetKlass(void);
+/**
  * @brief The PBKDF2 key klass.
  */
 #define xmlSecKeyDataPbkdf2Id                   xmlSecKeyDataPbkdf2GetKlass()
@@ -390,6 +395,22 @@ XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformMLDSA65GetKlass(v
  */
 #define xmlSecTransformMLDSA87Id                xmlSecTransformMLDSA87GetKlass()
 XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformMLDSA87GetKlass(void);
+
+/**
+ * @brief The ML-KEM-512 key transport transform klass.
+ */
+#define xmlSecTransformMLKEM512Id               xmlSecTransformMLKEM512GetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformMLKEM512GetKlass(void);
+/**
+ * @brief The ML-KEM-768 key transport transform klass.
+ */
+#define xmlSecTransformMLKEM768Id               xmlSecTransformMLKEM768GetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformMLKEM768GetKlass(void);
+/**
+ * @brief The ML-KEM-1024 key transport transform klass.
+ */
+#define xmlSecTransformMLKEM1024Id              xmlSecTransformMLKEM1024GetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformMLKEM1024GetKlass(void);
 
 /**
  * @brief The PBKDF2 key derivation transform klass.

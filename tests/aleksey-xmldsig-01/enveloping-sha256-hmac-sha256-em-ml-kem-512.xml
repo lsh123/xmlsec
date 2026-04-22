@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+  <SignedInfo>
+    <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+    <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#hmac-sha256"/>
+    <Reference URI="#object">
+      <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+      <DigestValue>iDhYt78o294fA6pzQ7k44+eejrQMi+WX3l3UrUdtL1Q=</DigestValue>
+    </Reference>
+  </SignedInfo>
+  <SignatureValue>hVQ5lhfDqaOCHCR/6AXGW7L4rc72pzSJrQlAsAjo5vY=</SignatureValue>
+  <KeyInfo>
+    <as:EncapsulationMechanism xmlns:as="http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#" Algorithm="http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#ml-kem-512">
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:KeyName>TestKeyName-ml-kem-512</ds:KeyName>
+      </ds:KeyInfo>
+      <enc:CipherData xmlns:enc="http://www.w3.org/2001/04/xmlenc#">
+        <enc:CipherValue>Z9JDrGMOIEbMdf1EVbfX9Wy808rigL7BjnCAbdSWK3wCJv6m/FnzK00eIAhU/116
+4txCBwLNdqdKPPyqsUM8PAJC3Iiv5X3tcXnd80+7nHW23dY5eYpkt16TWfWyuoH7
+NFrQarzx5pqOqRAh3Kg/5nsR7i4aSWRlwCure6PlyL2n41V65bMGJ6G5RmX7X3Zp
+3BxShP632bJn9vCVsJRjR7u5OSpehnsabD89BgNcJcpfNbuZz8rvxJ2wl569wxHy
+j7uQD55PYFC7kOicWpd6pXKF9pt3L065K5dxlux5Tk8heJK7/eoZ+0AjEZs6ve2+
+Z2BjaVfd5+a/iWB3LBnspSikK6NvjPx6tkC2Yv0IURX58SX0nEah+M/4wrgnjvut
+frmmeYNXBI1jyQOMqfLnAPdEqs+H6dc6Z/QuiPVt1IPw9Xdct4xHk96Q0ZR+ak75
+JAv51D2rQyXAphGhbYs4naAP2hyUMGPiXa/yrwnbxVYn215ReSzNkTnpZZ6PxZIK
+rK/8NIjvJSpvtxXgV7OaiybEZJffcbqTD2VsBwKM5C0910gjXM6YWoTVtNvXDLvv
+biFJrjCZVFxJKaqkmww1JK4MX1touR54AVIzA2sR/uYR61qX+sEALXQxdxxy1tie
+ueARdtyElKdxtn3BwWFpSiiESaDtnTNl5qy1bX1w1gd8Vp1erkoKnYhXGJVoR/t1
+j8I7mOKimPZYRKqTbZziVjYvncqRtyN4/ayvUB0ODZsfZBFex/3X+PUkHybSWqVm
+yELzvyWcsdvAMeMm4l5+gLlRLo6I+3tUuQH6tafx2AaWhPnI8/+KMP0Y9ZWuCb1m
+Q9fWkhDPKCGKLC4FYr6MOnyzDjrs+nIUvxtjhQ2XMAmI4suKZkx2MgZCd5L8byuL
+nR3TlgXAkuMmSA+dly8OyqcRxhPooMPjwxtjbUqnmuVqHcTHF/VRmdjLZrVN4SZw
+UmQ/gaIk5EpkntoUxM5kRbYlUWfghhWZfsYJQZv/vtesX4pQ+YLVZVhOY6hnM0jM</enc:CipherValue>
+      </enc:CipherData>
+    </as:EncapsulationMechanism>
+  </KeyInfo>
+  <Object Id="object">some text</Object>
+</Signature>

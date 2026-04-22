@@ -445,6 +445,28 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMLDSA87[];
 
 /******************************************************************************
  *
+ * ML-KEM key strings
+ *
+  *****************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameMLKEMKeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMLKEMKeyValue[];
+
+/******************************************************************************
+ *
+ * ML-KEM key transport transform strings
+ *
+  *****************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameMLKEM512[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMLKEM512[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameMLKEM768[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMLKEM768[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameMLKEM1024[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMLKEM1024[];
+
+/******************************************************************************
+ *
  * SLH-DSA key strings
  *
   *****************************************************************************/
@@ -543,6 +565,16 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefAgreementMethod[];
 
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeOriginatorKeyInfo[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRecipientKeyInfo[];
+
+/******************************************************************************
+ *
+ * EncapsulationMechanism
+ *
+  *****************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecExperimental202512Ns[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEncapsulationMechanism[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeEncapsulationMechanism[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEncapsulationMechanism[];
 
 
 

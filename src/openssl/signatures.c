@@ -11,7 +11,6 @@
  */
 #include "globals.h"
 
-
 #include <string.h>
 
 #include <openssl/evp.h>

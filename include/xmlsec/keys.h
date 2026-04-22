@@ -67,6 +67,11 @@ typedef unsigned int                    xmlSecKeyUsage;
 #define xmlSecKeyUsageKeyAgreement      0x00000040
 
 /**
+ * @brief The key is used for key encapsulation (KEM).
+ */
+#define xmlSecKeyUsageKeyEncapsulate    0x00000080
+
+/**
  * @brief Key can be used in any way.
  */
 #define xmlSecKeyUsageAny               0xFFFFFFFF

@@ -28,6 +28,17 @@ Example:
 make check XMLSEC_TEST_REPRODUCIBLE=y
 ```
 
+## Recreate XML files on ailures
+
+To re-create or generate new XML files, use `XMLSEC_TEST_UPDATE_XML_ON_FAILURE` flag:
+
+Example:
+
+```
+make check XMLSEC_TEST_UPDATE_XML_ON_FAILURE=yes
+```
+
+
 ## Running tests after disabling features
 
 If you disabled some features and tests are failing because there are too many

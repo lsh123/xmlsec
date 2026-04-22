@@ -192,6 +192,14 @@ xmlSecKeyDataIdsRegisterDefault(void) {
         xmlSecInternalError("xmlSecKeyDataIdsRegister(xmlSecKeyDataDerivedKeyId)", NULL);
         return(-1);
     }
+    /* EXPERIMENTAL and should NOT be used in production */
+ #ifndef XMLSEC_NO_MLKEM
+    if(xmlSecKeyDataIdsRegisterDisabled(xmlSecKeyDataEncapsulationMechanismId) < 0) {
+        xmlSecInternalError("xmlSecKeyDataIdsRegister(xmlSecKeyDataEncapsulationMechanismId)", NULL);
+        return(-1);
+    }
+#endif /* XMLSEC_NO_MLKEM */
+
 #endif /* XMLSEC_NO_XMLENC */
 
     /* KeyValue key data should not be used in production w/o understanding of the security risks */
@@ -424,9 +432,7 @@ xmlSecKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits,
 xmlSecKeyDataType
 xmlSecKeyDataGetType(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataIsValid(data), xmlSecKeyDataTypeUnknown);
-    xmlSecAssert2(data->id->getType != NULL, xmlSecKeyDataTypeUnknown);
-
-    return(data->id->getType(data));
+    return(data->id->getType != NULL ? data->id->getType(data) : xmlSecKeyDataTypeUnknown);
 }
 
 /**
@@ -438,9 +444,7 @@ xmlSecKeyDataGetType(xmlSecKeyDataPtr data) {
 xmlSecSize
 xmlSecKeyDataGetSize(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataIsValid(data), 0);
-    xmlSecAssert2(data->id->getSize != NULL, 0);
-
-    return(data->id->getSize(data));
+    return(data->id->getSize != NULL ? data->id->getSize(data) : 0);
 }
 
 /**

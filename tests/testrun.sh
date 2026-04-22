@@ -189,21 +189,41 @@ fi
 
 
 # Advanced RSA OAEP modes:
-# - MSCrypto only supports SHA1 for digest and mgf1
-if [ "z$crypto" != "zmscrypto" ] ; then
-    xmlsec_feature_rsa_oaep_non_sha1="yes"
-else
-    xmlsec_feature_rsa_oaep_non_sha1="no"
-fi
-
-# Advanced RSA OAEP modes:
-# - MSCrypto only supports SHA1 for digest and mgf1
-# - GCrypt/GnuTLS and MSCng only supoprts the *same* algorithm for *both* digest and mgf1
-if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" -a "z$crypto" != "zgcrypt" ] ; then
+# - GnuTLS:   digest/MFG1 must be same, only supports SHA-256, SHA-384, SHA-512 for RSA-OAEP hash (not SHA-1)
+# - MSCng:    digest/MFG1 must be same
+# - MSCrypto: digest/MFG1 must be same, only supports SHA1 for digest and mgf1
+# - GCrypt:   digest/MFG1 must be same
+if [ "z$crypto" != "zgnutls" -a "z$crypto" != "zmscng" -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zgcrypt" ] ; then
     xmlsec_feature_rsa_oaep_different_digest_and_mgf1="yes"
 else
     xmlsec_feature_rsa_oaep_different_digest_and_mgf1="no"
 fi
+if [ "z$crypto" != "zgnutls" ] ; then
+    xmlsec_feature_rsa_oaep_sha1="yes"
+else
+    xmlsec_feature_rsa_oaep_sha1="no"
+fi
+if [ "z$crypto" != "zgnutls" -a "z$crypto" != "zmscrypto" ] ; then
+    xmlsec_feature_rsa_oaep_sha224="yes"
+else
+    xmlsec_feature_rsa_oaep_sha224="no"
+fi
+if [ "z$crypto" != "zmscrypto" ] ; then
+    xmlsec_feature_rsa_oaep_sha256="yes"
+else
+    xmlsec_feature_rsa_oaep_sha256="no"
+fi
+if [ "z$crypto" != "zmscrypto" ] ; then
+    xmlsec_feature_rsa_oaep_sha384="yes"
+else
+    xmlsec_feature_rsa_oaep_sha384="no"
+fi
+if [ "z$crypto" != "zmscrypto" ] ; then
+    xmlsec_feature_rsa_oaep_sha512="yes"
+else
+    xmlsec_feature_rsa_oaep_sha512="no"
+fi
+
 
 # Support for ASN1 signatures
 if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" -o "z$crypto" = "znss" -o  "z$crypto" = "zmscng"  ] ; then

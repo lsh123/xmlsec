@@ -37,7 +37,16 @@
 extern "C" {
 #endif /* __cplusplus */
 
-XMLSEC_CRYPTO_EXPORT xmlSecCryptoDLFunctionsPtr xmlSecCryptoGetFunctions_gnutls(void);
+/******************************************************************************
+ *
+ * Check for features available in the current version of GnuTLS.
+ *
+  *****************************************************************************/
+/* RSA-OAEP was added in GnuTLS 3.8.4 (2024) */
+#if GNUTLS_VERSION_NUMBER < 0x030804
+#define XMLSEC_NO_RSA_OAEP      1
+#endif /* GNUTLS_VERSION_NUMBER < 0x030804 */
+
 
 /******************************************************************************
  *
@@ -52,6 +61,8 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSGenerateRandom      (xmlSecB
                                                                          xmlSecSize size);
 
 
+/* Get the function pointers for the GnuTLS crypto engine */
+XMLSEC_CRYPTO_EXPORT xmlSecCryptoDLFunctionsPtr xmlSecCryptoGetFunctions_gnutls(void);
 
 /******************************************************************************
  *
@@ -907,6 +918,22 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformRsaPssSha512GetKlass
         xmlSecGnuTLSTransformRsaPkcs1GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformRsaPkcs1GetKlass(void);
 #endif /* XMLSEC_NO_RSA_PKCS15 */
+
+#ifndef XMLSEC_NO_RSA_OAEP
+/**
+ * @brief The RSA-OAEP key transport transform klass (XMLEnc 1.0).
+ */
+#define xmlSecGnuTLSTransformRsaOaepId \
+        xmlSecGnuTLSTransformRsaOaepGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformRsaOaepGetKlass(void);
+
+/**
+ * @brief The RSA-OAEP key transport transform klass (XMLEnc 1.1).
+ */
+#define xmlSecGnuTLSTransformRsaOaepEnc11Id \
+        xmlSecGnuTLSTransformRsaOaepEnc11GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformRsaOaepEnc11GetKlass(void);
+#endif /* XMLSEC_NO_RSA_OAEP */
 
 #endif /* XMLSEC_NO_RSA */
 

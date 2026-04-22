@@ -15,7 +15,7 @@
 libxml2_version="2.15.2"
 libxslt_version="1.1.45"
 openssl_version="4.0.0"
-xmlsec_version="1.3.11-rc1"
+xmlsec_version="1.3.12-rc1"
 
 pwd=`pwd`
 script_dir=`dirname $0`
@@ -206,7 +206,7 @@ function build_openssl {
   OLD_PATH="$PATH"
   PATH="$PATH;$PERL_PATH"
   cd "${full_name}"
-  perl Configure no-unit-test --prefix="${openssl_install_dir}" ${OPEENSL_XMLSEC_CONFIG} VC-WIN64A-HYBRIDCRT 
+  perl Configure no-unit-test --prefix="${openssl_install_dir}" ${OPEENSL_XMLSEC_CONFIG} VC-WIN64A-HYBRIDCRT
   PATH="$OLD_PATH"
   if [ $? -ne 0 ]; then
     exit $?

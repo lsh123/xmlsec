@@ -2,7 +2,7 @@
 
 - **TBD**
   The [XML Security Library 1.3.12](download.md) release includes the following changes:
-  - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/xmlsec_1_3_12)).
+  - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/1.3.12)).
 
 
 - **April 22, 2026**
@@ -12,7 +12,7 @@
   - (xmlsec-docs) The XMLSec API reference was converted to Doxygen / Pandoc (instead of Gtk-Doc).
   - (xmlsec-docs) The XMLSec API reference, tutorial, and examples had been updated to Markdown files and moved to
     [GitHub Wiki](https://github.com/lsh123/xmlsec/wiki).
-  - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/xmlsec_1_3_11)).
+  - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/1.3.11)).
 
 - April 2, 2026
   The [XML Security Library 1.3.10](download.md) release includes the following changes:
@@ -35,7 +35,7 @@
     HKDF key derivation algorithm; and SHA3 digest algorithms.
   - (xmlsec-mscng) Added support for loading CRLs from command line.
   - (xmlsec-test) Created scripts to generate keys, regenerated all keys with standard names, and updated tests accordingly.
-  - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/xmlsec_1_3_10)).
+  - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/1.3.10)).
 
 - November 10, 2025
   The [XML Security Library 1.3.9](download.md) release includes the following changes:

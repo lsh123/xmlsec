@@ -97,6 +97,7 @@ XML Security library supports the following features as defined in
 | [ECDSA-SHA3-256](https://www.ietf.org/rfc/rfc9231.html#name-ecdsa-sha-ecdsa-ripemd160-e) | Optional | Yes | No | Yes | Yes [(2)](#new-windows-required) | No | Yes |
 | [ECDSA-SHA3-384](https://www.ietf.org/rfc/rfc9231.html#name-ecdsa-sha-ecdsa-ripemd160-e) | Optional | Yes | No | Yes | Yes [(2)](#new-windows-required) | No | Yes |
 | [ECDSA-SHA3-512](https://www.ietf.org/rfc/rfc9231.html#name-ecdsa-sha-ecdsa-ripemd160-e) | Optional | Yes | No | Yes | Yes [(2)](#new-windows-required) | No | Yes |
+| [EdDSA](https://www.w3.org/2021/04/xmldsig-more) (Ed25519, Ed25519ctx [(9)](#eddsa-ctx), Ed25519ph, Ed448, Ed448ph) | Optional | Yes [(12)](#openssl35-required)  | Yes [(10)](#only-ed25519) | Yes | No | No | No |
 | [RSASSA-PSS-SHA1 without Parameters](https://www.ietf.org/rfc/rfc9231.html#section-2.3.10) | Optional (use is DISCOURAGED) | Yes | Yes | No | Yes | No | Yes |
 | [RSASSA-PSS-SHA2-224 without Parameters](https://www.ietf.org/rfc/rfc9231.html#section-2.3.10) | Optional | Yes | Yes | No | No | No | No |
 | [RSASSA-PSS-SHA2-256 without Parameters](https://www.ietf.org/rfc/rfc9231.html#section-2.3.10) | Optional | Yes | Yes | Yes | Yes | No | Yes |
@@ -109,9 +110,8 @@ XML Security library supports the following features as defined in
 | GOST-R3410-2001 | Optional | Yes [(3)](#openssl-gost) | No | Yes | No | Yes [(4)](#mscrypto-gost) | No |
 | GOST-R3410-2012 (256 bit) | Optional | Yes [(3)](#openssl-gost) | No | Yes | No | Yes [(4)](#mscrypto-gost) | No |
 | GOST-R3411-2012 (512 bit) | Optional | Yes [(3)](#openssl-gost) | No | Yes | No | Yes [(4)](#mscrypto-gost) | No |
-| ML-DSA | EXPERIMENTAL | Yes [(1)](#feature-disabled) | No | Yes [(1)](#feature-disabled) [(8)](#no-context-string) | No | No | No |
-| SLH-DSA-SHA2 (128, 192, 256; fast and slow variants) | EXPERIMENTAL | Yes [(1)](#feature-disabled) | No | No | No | No | No |
-| [EdDSA](https://www.w3.org/2021/04/xmldsig-more) (Ed25519, Ed25519ctx [(9)](#eddsa-ctx), Ed25519ph, Ed448, Ed448ph) | Optional | Yes | Yes [(10)](#only-ed25519) | Yes | No | No | No |
+| ML-DSA | EXPERIMENTAL | Yes [(1)](#feature-disabled)[(12)](#openssl35-required)  | No | Yes [(1)](#feature-disabled) [(8)](#no-context-string) | No | No | No |
+| SLH-DSA-SHA2 (128, 192, 256; fast and slow variants) | EXPERIMENTAL | Yes [(1)](#feature-disabled)[(12)](#openssl35-required)  | No | No | No | No | No |
 | **The KeyInfo Element** | | | | | | | |
 | [The DSAKeyValue Element](https://www.w3.org/TR/xmldsig-core1/#sec-DSAKeyValue) | Optional | Yes [(1)](#feature-disabled) [(5)](#dsa-key-value) | Yes [(1)](#feature-disabled) [(5)](#dsa-key-value) | Yes [(1)](#feature-disabled) [(5)](#dsa-key-value) | Yes [(1)](#feature-disabled) [(5)](#dsa-key-value) | Yes [(1)](#feature-disabled) [(5)](#dsa-key-value) | Yes [(1)](#feature-disabled) [(5)](#dsa-key-value) |
 | [The RSAKeyValue Element](https://www.w3.org/TR/xmldsig-core1/#sec-RSAKeyValue) | Optional | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) |
@@ -135,6 +135,7 @@ XML Security library supports the following features as defined in
 9. <a id="eddsa-ctx"></a> Ed25519ctx requires a non-empty context string (per RFC 8032).
 10. <a id="only-ed25519"></a> Only Ed25519 (Curve25519) is supported, the Ed448 (Curve448) is not supported.
 11. <a id="only-x25519"></a> Only X25519 (Curve25519) is supported, the X448 (Curve448) is not supported.
+12. <a id="openssl35-required"></a> Requires OpenSSL 3.5.0 or newer.
 
 ### Test vectors
 

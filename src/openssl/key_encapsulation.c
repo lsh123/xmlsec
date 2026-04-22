@@ -233,15 +233,15 @@ xmlSecOpenSSLMLKEMReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSec
     }
 
     /* create kemKeyData in transform context */
-    transformCtx->kemKeyData = xmlSecKeyDataCreate(xmlSecKeyDataKEMCipherValueId);
+    transformCtx->kemKeyData = xmlSecKeyDataCreate(xmlSecKeyDataKEMId);
     if(transformCtx->kemKeyData == NULL) {
         xmlSecInternalError("xmlSecKeyDataCreate(kemKeyData)", xmlSecTransformGetName(transform));
         return(-1);
     }
 
-    ret = xmlSecKeyDataKEMCipherValueNodeRead(transformCtx->kemKeyData, node, transform, transformCtx);
+    ret = xmlSecKeyDataKEMNodeRead(transformCtx->kemKeyData, node, transform, transformCtx);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyDataKEMCipherValueNodeRead", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecKeyDataKEMNodeRead", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -251,20 +251,16 @@ xmlSecOpenSSLMLKEMReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSec
 
 static int
 xmlSecOpenSSLMLKEMWriteNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
-    xmlSecOpenSSLMLKEMCtxPtr ctx;
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLMLKEMSize), -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
-
-    ctx = xmlSecOpenSSLMLKEMGetCtx(transform);
-    xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(transformCtx->kemKeyData != NULL, -1);
 
-    ret = xmlSecKeyDataKEMCipherValueNodeWrite(transformCtx->kemKeyData, node, transform, transformCtx);
+    ret = xmlSecKeyDataKEMNodeWrite(transformCtx->kemKeyData, node, transform, transformCtx);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyDataKEMCipherValueNodeWrite", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecKeyDataKEMNodeWrite", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -318,9 +314,9 @@ xmlSecOpenSSLMLKEMGetPKeyCtx(xmlSecTransformCtxPtr transformCtx) {
 
 
     /* extract EVP_PKEY from the found key so Encapsulate/Decapsulate can use it */
-    recipientKey = xmlSecKeyDataKEMCipherValueGetRecipientKey(transformCtx->kemKeyData);
+    recipientKey = xmlSecKeyDataKEMGetRecipientKey(transformCtx->kemKeyData);
     if(recipientKey == NULL) {
-        xmlSecInternalError("xmlSecKeyDataKEMCipherValueGetRecipientKey", NULL);
+        xmlSecInternalError("xmlSecKeyDataKEMGetRecipientKey", NULL);
         return(NULL);
     }
 
@@ -524,7 +520,7 @@ xmlSecOpenSSLMLKEMProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr tr
     xmlSecBufferEmpty(&(transform->inBuf));
 
     /* encrypt must always generate a fresh ciphertext; decrypt consumes the parsed ciphertext */
-    ciphertext = xmlSecKeyDataKEMCipherValueGetCiphertext(transformCtx->kemKeyData);
+    ciphertext = xmlSecKeyDataKEMGetCiphertext(transformCtx->kemKeyData);
     xmlSecAssert2(ciphertext != NULL, -1);
 
     if(transform->operation == xmlSecTransformOperationEncrypt) {

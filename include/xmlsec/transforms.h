@@ -276,7 +276,7 @@ struct _xmlSecTransformCtx {
     xmlSecTransformCtxPreExecuteCallback        preExecCallback;  /**< the callback called after preparing transform chain and right before actual data processing; application can use this callback to change transforms parameters, insert additional transforms in the chain or do additional validation (and abort transform execution if needed). */
 
     /* used by Key Agreement transforms */
-    xmlSecKeyInfoCtxPtr                         parentKeyInfoCtx;  /**< the parent's key info ctx for key agreement. */
+    xmlSecKeyInfoCtxPtr                         parentKeyInfoCtx;  /**< the parent's key info ctx for key agreement, key encapsulation, etc. */
 
     /* results */
     xmlSecBufferPtr                             result;  /**< the pointer to transforms result buffer. */
@@ -288,6 +288,9 @@ struct _xmlSecTransformCtx {
 
     /* user by EncapsulationMechanism transforms */
     xmlSecKeyDataPtr                            kemKeyData;  /**< the pointer to the KEM cipher value key data (used by KEM transforms). */
+
+    /* used by AgreementMethod (key agreement) transforms */
+    xmlSecKeyDataPtr                            kamKeyData;  /**< the pointer to the cached key agreement params key data (used by KA transforms). */
 
     /* for the future */
     void*                                       reserved0;  /**< reserved for the future. */

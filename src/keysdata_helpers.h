@@ -283,35 +283,74 @@ XMLSEC_EXPORT int               xmlSecKeyDataDsaXmlWrite                (xmlSecK
                                                                          xmlSecKeyDataDsaWrite writeFunc);
 #endif /* !defined(XMLSEC_NO_DSA) */
 
+/**
+ * @brief Key agreement params cached in a key object.
+ *
+ * After a successful key-agreement Execute, the originator and recipient keys
+ * are stored here and attached to the derived-key object.  On the subsequent
+ * write path the cached keys are retrieved from the key object and placed into
+ * @c transformCtx->kamKeyData so that the backend NodeRead can skip XML parsing
+ * and repeated key-store lookups.
+ */
+typedef struct _xmlSecKeyDataKAM {
+    xmlSecKeyData   keyData;          /**< base key data (MUST be first) */
+    xmlSecKeyPtr    keyOriginator;    /**< originator key */
+    xmlSecKeyPtr    keyRecipient;     /**< recipient key */
+} xmlSecKeyDataKAM;
+
+/** @brief Size of #xmlSecKeyDataKAM struct. */
+#define xmlSecKeyDataKAMSize    (sizeof(xmlSecKeyDataKAM))
+
+/** @brief The KA params key data klass ID. */
+#define xmlSecKeyDataKAMId      xmlSecKeyDataKAMGetKlass()
+
+XMLSEC_EXPORT xmlSecKeyDataId   xmlSecKeyDataKAMGetKlass           (void);
+XMLSEC_EXPORT int               xmlSecKeyDataKAMAdoptOriginatorKey   (xmlSecKeyDataPtr data,
+                                                                    xmlSecKeyPtr key);
+XMLSEC_EXPORT int               xmlSecKeyDataKAMAdoptRecipientKey    (xmlSecKeyDataPtr data,
+                                                                    xmlSecKeyPtr key);
+
+XMLSEC_EXPORT int               xmlSecKeyDataKAMWrite               (xmlSecKeyDataPtr data,
+                                                                     xmlNodePtr node,
+                                                                     xmlSecTransformPtr kamTransform,
+                                                                     xmlSecTransformCtxPtr transformCtx);
+
+
 #ifndef XMLSEC_NO_MLKEM
 /**
- * @brief Helper class for KEM ciphertext value - holds the recipient key and
- *        the KEM ciphertext exchanged via enc:CipherData/enc:CipherValue.
+ * @brief Key Encapsulation params cached in a key object.
+ *
+ * After a successful key-encapsulation Execute, the recipient key and the ciphertext
+ * are stored here and attached to the derived-key object. On the subsequent
+ * write path the cached data are retrieved from the key object and placed into
+ * @c transformCtx->kemKeyData so that the backend NodeRead can skip XML parsing
+ * and repeated key-store lookups.
+
  */
-typedef struct _xmlSecKeyDataKEMCipherValue {
+typedef struct _xmlSecKeyDataKEM {
     xmlSecKeyData   keyData;
-    xmlSecKeyPtr    recipientKey; /* recipient public key (encrypt) or private key (decrypt) */
-    xmlSecBuffer    ciphertext;   /* KEM ciphertext from/to enc:CipherData/enc:CipherValue */
-} xmlSecKeyDataKEMCipherValue;
+    xmlSecKeyPtr    encapsulationKey; /**< recipient public key (encrypt) or private key (decrypt) */
+    xmlSecBuffer    ciphertext;   /**< KEM ciphertext from/to enc:CipherData/enc:CipherValue */
+} xmlSecKeyDataKEM;
 
-#define xmlSecKeyDataKEMCipherValueSize     (sizeof(xmlSecKeyDataKEMCipherValue))
+#define xmlSecKeyDataKEMSize     (sizeof(xmlSecKeyDataKEM))
 
-#define xmlSecKeyDataKEMCipherValueId \
-        xmlSecKeyDataKEMCipherValueGetKlass()
-XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataKEMCipherValueGetKlass         (void);
-XMLSEC_EXPORT xmlSecKeyPtr              xmlSecKeyDataKEMCipherValueGetRecipientKey  (xmlSecKeyDataPtr data);
-XMLSEC_EXPORT xmlSecBufferPtr           xmlSecKeyDataKEMCipherValueGetCiphertext    (xmlSecKeyDataPtr data);
-XMLSEC_EXPORT int                       xmlSecKeyDataKEMCipherValueSetCiphertext    (xmlSecKeyDataPtr data,
-                                                                                     const xmlSecByte* buf,
-                                                                                     xmlSecSize bufSize);
-XMLSEC_EXPORT int                       xmlSecKeyDataKEMCipherValueNodeRead         (xmlSecKeyDataPtr data,
-                                                                                     xmlNodePtr node,
-                                                                                     xmlSecTransformPtr kemTransform,
-                                                                                     xmlSecTransformCtxPtr transformCtx);
-XMLSEC_EXPORT int                       xmlSecKeyDataKEMCipherValueNodeWrite        (xmlSecKeyDataPtr data,
-                                                                                     xmlNodePtr node,
-                                                                                     xmlSecTransformPtr kemTransform,
-                                                                                     xmlSecTransformCtxPtr transformCtx);
+#define xmlSecKeyDataKEMId \
+        xmlSecKeyDataKEMGetKlass()
+XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataKEMGetKlass         (void);
+XMLSEC_EXPORT xmlSecKeyPtr              xmlSecKeyDataKEMGetRecipientKey  (xmlSecKeyDataPtr data);
+XMLSEC_EXPORT xmlSecBufferPtr           xmlSecKeyDataKEMGetCiphertext    (xmlSecKeyDataPtr data);
+XMLSEC_EXPORT int                       xmlSecKeyDataKEMSetCiphertext    (xmlSecKeyDataPtr data,
+                                                                          const xmlSecByte* buf,
+                                                                          xmlSecSize bufSize);
+XMLSEC_EXPORT int                       xmlSecKeyDataKEMNodeRead         (xmlSecKeyDataPtr data,
+                                                                          xmlNodePtr node,
+                                                                          xmlSecTransformPtr kemTransform,
+                                                                          xmlSecTransformCtxPtr transformCtx);
+XMLSEC_EXPORT int                       xmlSecKeyDataKEMNodeWrite        (xmlSecKeyDataPtr data,
+                                                                          xmlNodePtr node,
+                                                                          xmlSecTransformPtr kemTransform,
+                                                                          xmlSecTransformCtxPtr transformCtx);
 
 #endif /* !defined(XMLSEC_NO_MLKEM) */
 

@@ -398,6 +398,12 @@ xmlSecTransformCtxReset(xmlSecTransformCtxPtr ctx) {
         ctx->kemKeyData = NULL;
     }
 
+    /* destroy kamKeyData */
+    if(ctx->kamKeyData != NULL) {
+        xmlSecKeyDataDestroy(ctx->kamKeyData);
+        ctx->kamKeyData = NULL;
+    }
+
     /* destroy uri */
     if(ctx->uri != NULL) {
         xmlFree(ctx->uri);

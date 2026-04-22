@@ -21,6 +21,7 @@
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
 
+#include "keysdata_helpers.h"
 
 /* Internal helpers used by key-agreement and KEM code: read / write key info inside transforms */
 XMLSEC_EXPORT xmlSecKeyPtr  xmlSecTransformReadKeyInfoNode       (xmlSecKeyDataType keyType,
@@ -33,31 +34,39 @@ XMLSEC_EXPORT int           xmlSecTransformWriteKeyInfoNode      (xmlSecKeyPtr k
                                                                   xmlSecTransformCtxPtr transformCtx);
 
 
-
-/* Common Key Agreement params */
-struct _xmlSecTransformKeyAgreementParams {
-    xmlSecTransformPtr  kdfTransform;
-    xmlSecKeyInfoCtx    kdfKeyInfoCtx;
-
-    xmlSecTransformPtr  memBufTransform;
-
-    xmlSecKeyPtr        keyOriginator;
-    xmlSecKeyPtr        keyRecipient;
+/******************************************************************************
+ *
+ * Common Key Agreement Method (KAM) Params
+ *
+  *****************************************************************************/
+/**
+ * @brief Key Agreement transform parameters.
+ *
+ * Contains the parsed key agreement parameters: KDF transform chain, its key
+ * info context, a memory buffer transform to collect output, and the
+ * originator/recipient keys.  These are populated during NodeRead and used
+ * during Execute and NodeWrite.
+ */
+struct _xmlSecTransformKAM {
+    xmlSecTransformPtr      kdfTransform;     /**< Key Derivation Function transform */
+    xmlSecKeyInfoCtx        kdfKeyInfoCtx;    /**< Context for KDF key info */
+    xmlSecTransformPtr      memBufTransform;  /**< Memory buffer to collect KDF output */
 };
-typedef struct _xmlSecTransformKeyAgreementParams xmlSecTransformKeyAgreementParams, *xmlSecTransformKeyAgreementParamsPtr;
+typedef struct _xmlSecTransformKAM                          xmlSecTransformKAM,
+                                                            *xmlSecTransformKAMPtr;
 
-XMLSEC_EXPORT int   xmlSecTransformKeyAgreementParamsInitialize    (xmlSecTransformKeyAgreementParamsPtr params);
-XMLSEC_EXPORT void  xmlSecTransformKeyAgreementParamsFinalize      (xmlSecTransformKeyAgreementParamsPtr params);
-XMLSEC_EXPORT int   xmlSecTransformKeyAgreementParamsRead          (xmlSecTransformKeyAgreementParamsPtr params,
-                                                                    xmlNodePtr node,
-                                                                    xmlSecTransformPtr kaTransform,
-                                                                    xmlSecTransformCtxPtr transformCtx);
-XMLSEC_EXPORT int   xmlSecTransformKeyAgreementParamsWrite         (xmlSecTransformKeyAgreementParamsPtr params,
-                                                                    xmlNodePtr node,
-                                                                    xmlSecTransformPtr kaTransform,
-                                                                    xmlSecTransformCtxPtr transformCtx);
-
-
+XMLSEC_EXPORT int   xmlSecTransformKAMInitialize            (xmlSecTransformKAMPtr params);
+XMLSEC_EXPORT void  xmlSecTransformKAMFinalize              (xmlSecTransformKAMPtr params);
+XMLSEC_EXPORT int   xmlSecTransformKAMRead                  (xmlSecTransformKAMPtr params,
+                                                             xmlNodePtr node,
+                                                             xmlSecTransformPtr kamTransform,
+                                                             xmlSecTransformCtxPtr transformCtx);
+XMLSEC_EXPORT int   xmlSecTransformKAMExecuteKdf            (xmlSecTransformKAMPtr params,
+                                                             xmlSecTransformOperation operation,
+                                                             xmlSecBufferPtr secret,
+                                                             xmlSecBufferPtr out,
+                                                             xmlSecSize expectedOutputSize,
+                                                             xmlSecTransformCtxPtr transformCtx);
 
 
 /* ConcatKDF */

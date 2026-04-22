@@ -2011,6 +2011,17 @@ xmlSecKeyDataAgreementMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
 
     /* success */
     xmlSecKeyDestroy(generatedKey);
+
+    /* if the KA transform set kamKeyData, attach it to the key */
+    if(keyInfoCtx->encCtx->transformCtx.kamKeyData != NULL) {
+        ret = xmlSecKeyAdoptData(key, keyInfoCtx->encCtx->transformCtx.kamKeyData);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecKeyAdoptData", xmlSecKeyDataKlassGetName(id));
+            return(-1);
+        }
+        keyInfoCtx->encCtx->transformCtx.kamKeyData = NULL;
+    }
+
     return(0);
 }
 
@@ -2056,6 +2067,19 @@ xmlSecKeyDataAgreementMethodXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNo
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref(writeCtx)", xmlSecKeyDataKlassGetName(id));
         return(-1);
+    }
+
+    /* if the key has cached KA params, pre-populate transformCtx so NodeRead can skip XML parsing */
+    {
+        xmlSecKeyDataPtr kamKeyData = xmlSecKeyGetData(key, xmlSecKeyDataKAMId);
+        if(kamKeyData != NULL) {
+            xmlSecAssert2(keyInfoCtx->encCtx->transformCtx.kamKeyData == NULL, -1);
+            keyInfoCtx->encCtx->transformCtx.kamKeyData = xmlSecKeyDataDuplicate(kamKeyData);
+            if(keyInfoCtx->encCtx->transformCtx.kamKeyData == NULL) {
+                xmlSecInternalError("xmlSecKeyDataDuplicate(kamKeyData)", xmlSecKeyDataKlassGetName(id));
+                return(-1);
+            }
+        }
     }
 
     ++keyInfoCtx->curEncryptedKeyLevel;
@@ -2244,7 +2268,7 @@ xmlSecKeyDataEncapsulationMechanismXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key
     xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeWrite, -1);
 
     /* we should have kemKeyData in the key */
-    kemKeyData = xmlSecKeyGetData(key, xmlSecKeyDataKEMCipherValueId);
+    kemKeyData = xmlSecKeyGetData(key, xmlSecKeyDataKEMId);
     if(kemKeyData == NULL) {
         xmlSecInternalError("xmlSecKeyGetDataById(kemKeyData)", xmlSecKeyDataKlassGetName(id));
         return(-1);

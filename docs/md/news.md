@@ -1,5 +1,10 @@
 # XML Security Library: News
 
+- **TBD**
+  The [XML Security Library 1.3.12](download.md) release includes the following changes:
+  - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/xmlsec_1_3_12)).
+
+
 - **April 22, 2026**
   The [XML Security Library 1.3.11](download.md) release includes the following changes:
   - (xmlsec-openssl) Added support for OpenSSL 4.0.0.

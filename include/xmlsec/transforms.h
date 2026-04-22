@@ -276,7 +276,7 @@ struct _xmlSecTransformCtx {
     xmlSecTransformCtxPreExecuteCallback        preExecCallback;  /**< the callback called after preparing transform chain and right before actual data processing; application can use this callback to change transforms parameters, insert additional transforms in the chain or do additional validation (and abort transform execution if needed). */
 
     /* used by Key Agreement transforms */
-    xmlSecKeyInfoCtxPtr                         parentKeyInfoCtx;  /**< the parent's key info ctx for key agreement. */
+    xmlSecKeyInfoCtxPtr                         parentKeyInfoCtx;  /**< the parent's key info ctx for key agreement, key encapsulation, etc. */
 
     /* results */
     xmlSecBufferPtr                             result;  /**< the pointer to transforms result buffer. */
@@ -285,13 +285,10 @@ struct _xmlSecTransformCtx {
     xmlChar*                                    xptrExpr;  /**< the xpointer expression from data source URI (if any). */
     xmlSecTransformPtr                          first;  /**< the first transform in the chain. */
     xmlSecTransformPtr                          last;  /**< the last transform in the chain. */
-
-    /* user by EncapsulationMechanism transforms */
-    xmlSecKeyDataPtr                            kemKeyData;  /**< the pointer to the KEM cipher value key data (used by KEM transforms). */
+    xmlSecPtrListPtr                            extraKeyData;  /**< the pointer to extra key data list (NULL by default; owned by this context). */
 
     /* for the future */
     void*                                       reserved0;  /**< reserved for the future. */
-    void*                                       reserved1;  /**< reserved for the future. */
 };
 
 XMLSEC_EXPORT xmlSecTransformCtxPtr     xmlSecTransformCtxCreate        (void);
@@ -337,6 +334,13 @@ XMLSEC_EXPORT void                      xmlSecTransformCtxDebugXmlDump  (xmlSecT
 
 XMLSEC_EXPORT xmlSecSize                xmlSecTransformCtxGetDefaultBinaryChunkSize(void);
 XMLSEC_EXPORT void                      xmlSecTransformCtxSetDefaultBinaryChunkSize(xmlSecSize binaryChunkSize);
+
+XMLSEC_EXPORT xmlSecKeyDataPtr          xmlSecTransformCtxExtraKeyDataGet       (xmlSecTransformCtxPtr ctx,
+                                                                                 xmlSecKeyDataId dataId);
+XMLSEC_EXPORT xmlSecKeyDataPtr          xmlSecTransformCtxExtraKeyDataEnsure    (xmlSecTransformCtxPtr ctx,
+                                                                                 xmlSecKeyDataId dataId);
+XMLSEC_EXPORT int                       xmlSecTransformCtxExtraKeyDataAdopt     (xmlSecTransformCtxPtr ctx,
+                                                                                 xmlSecKeyDataPtr data);
 
 
 /**

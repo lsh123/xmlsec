@@ -1355,20 +1355,6 @@ done:
  * @brief Generates a key from the AgreementMethod node.
  * @details Generates (derives) key from @p node (https://www.w3.org/TR/xmlenc-core1/#sec-AgreementMethod):
  *
- * @code{.xml}
- *  <element name="AgreementMethod" type="xenc:AgreementMethodType"/>
- *  <complexType name="AgreementMethodType" mixed="true">
- *      <sequence>
- *          <element name="KA-Nonce" minOccurs="0" type="base64Binary"/>
- *          <!-- <element ref="ds:DigestMethod" minOccurs="0"/> -->
- *          <any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
- *          <element name="OriginatorKeyInfo" minOccurs="0" type="ds:KeyInfoType"/>
- *          <element name="RecipientKeyInfo" minOccurs="0" type="ds:KeyInfoType"/>
- *      </sequence>
- *      <attribute name="Algorithm" type="anyURI" use="required"/>
- *  </complexType>
- * @endcode
- *
  * @param encCtx the pointer to encryption processing context.
  * @param keyId the expected key id, the actual derived key might have a different id.
  * @param node the pointer to &lt;enc:AgreementMethod/&gt; node.
@@ -1459,14 +1445,6 @@ xmlSecEncCtxAgreementMethodXmlWrite(xmlSecEncCtxPtr encCtx, xmlNodePtr node, xml
 /**
  * @brief Generates a key from the EncapsulationMechanism node.
  * @details Generates (decapsulates) a key from @p node:
- * @code{.xml}
- *  <as:EncapsulationMechanism xmlns:as="XMLSEC_ALKESEY_EXPERIMENTAL_2025_12"Algorithm="some uri">
- *      <ds:KeyInfo/>
- *      <enc:CipherData>
- *          <enc:CipherValue/>
- *      </enc:CipherData>
- *  </as:EncapsulationMechanism>
- * @endcode
  *
  * @param encCtx the pointer to encryption processing context.
  * @param keyId the expected key id, the actual generated key might have a different id.

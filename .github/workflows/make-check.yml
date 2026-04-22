@@ -23,7 +23,7 @@ jobs:
           # default build with all legacy features
           - config_flags: --enable-legacy-features --enable-ftp --enable-http --enable-gcrypt
           # static openssl build
-          - config_flags: --enable-static --enable-static-linking --disable-openssl3-engines --without-nss --without-gnutls --without-gcrypt --enable-legacy-features
+          - config_flags: --enable-static --enable-static-linking --disable-openssl3-engines --without-nss --without-gnutls --without-gcrypt --enable-legacy-features --enable-experimental-features
           # static gnutls build with GOST
           - config_flags: --enable-static --enable-static-linking --without-openssl --without-nss --without-gcrypt --enable-gost --enable-gost2012 --enable-legacy-features
     steps:
@@ -324,7 +324,7 @@ jobs:
       shell: pwsh
       working-directory: ${{ env.INSTALL_FOLDER }}
       env:
-        LIBS_URL: "https://github.com/lsh123/xmlsec/releases/download/${{ env.LIBS_VERSION }}/xmlsec1-${{ env.LIBS_VERSION }}-win64-debug.zip"
+        LIBS_URL: "https://github.com/lsh123/xmlsec/releases/download/${{ env.LIBS_VERSION }}/xmlsec1-${{ env.LIBS_VERSION }}-win64.zip"
         LIBS_FILE: "xmlsec1-${{ env.LIBS_VERSION }}-win64.zip"
       run: |
           Invoke-WebRequest ${{ env.LIBS_URL }} -OutFile ${{ env.LIBS_FILE }}
@@ -339,8 +339,7 @@ jobs:
       shell: cmd
       run: |
           call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
-          powershell -ExecutionPolicy Bypass -File configure.ps1 pedantic=yes static=no ^
-              debug=yes memcheck=yes cruntime=/MDd ^
+          powershell -ExecutionPolicy Bypass -File configure.ps1 pedantic=yes static=no cruntime=/MD debug=no memcheck=no ^
               crypto=${{ matrix.crypto }} ${{ matrix.config_flags }} ^
               prefix=${{ env.INSTALL_FOLDER }}\xmlsec.build ^
               include=${{ env.INSTALL_FOLDER }}\libxml2\include;${{ env.INSTALL_FOLDER }}\libxml2\include\libxml2;${{ env.INSTALL_FOLDER }}\libxslt\include;${{ env.INSTALL_FOLDER }}\openssl\include;%MSSDK_INCLUDE% ^

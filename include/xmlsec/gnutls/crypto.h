@@ -47,6 +47,11 @@ extern "C" {
 #define XMLSEC_NO_RSA_OAEP      1
 #endif /* GNUTLS_VERSION_NUMBER < 0x030804 */
 
+/* ML-DSA was added in GnuTLS  3.8.9 (2025) */
+#if GNUTLS_VERSION_NUMBER < 0x030809
+#define XMLSEC_NO_MLDSA        1
+#endif /* GNUTLS_VERSION_NUMBER < 0x030809 */
+
 
 /******************************************************************************
  *

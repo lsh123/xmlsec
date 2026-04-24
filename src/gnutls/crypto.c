@@ -31,6 +31,23 @@
 
 static xmlSecCryptoDLFunctionsPtr gXmlSecGnuTLSFunctions = NULL;
 
+#ifndef XMLSEC_NO_MLDSA
+static int
+xmlSecGnuTLSIsMlDSASupported(void)
+{
+    const gnutls_pk_algorithm_t *list = gnutls_pk_list();
+    for (int i = 0; list[i] != 0; i++) {
+        if (list[i] == GNUTLS_PK_MLDSA44 ||
+            list[i] == GNUTLS_PK_MLDSA65 ||
+            list[i] == GNUTLS_PK_MLDSA87
+        ) {
+            return 1;
+        }
+    }
+    return 0;
+}
+#endif /* XMLSEC_NO_MLDSA */
+
 /**
  * @brief Gets the pointer to xmlsec-gnutls functions table.
  * @return the xmlsec-gnutls functions table or NULL if an error occurs.
@@ -38,6 +55,9 @@ static xmlSecCryptoDLFunctionsPtr gXmlSecGnuTLSFunctions = NULL;
 xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoGetFunctions_gnutls(void) {
     static xmlSecCryptoDLFunctions functions;
+#ifndef XMLSEC_NO_MLDSA
+    int isMlDSASupported = xmlSecGnuTLSIsMlDSASupported();
+#endif /* XMLSEC_NO_MLDSA */
 
     if(gXmlSecGnuTLSFunctions != NULL) {
         return(gXmlSecGnuTLSFunctions);
@@ -90,7 +110,9 @@ xmlSecCryptoGetFunctions_gnutls(void) {
 #endif /* XMLSEC_NO_GOST2012 */
 
 #ifndef XMLSEC_NO_MLDSA
-    gXmlSecGnuTLSFunctions->keyDataMLDSAGetKlass        = xmlSecGnuTLSKeyDataMLDSAGetKlass;
+    if(isMlDSASupported != 0) {
+        gXmlSecGnuTLSFunctions->keyDataMLDSAGetKlass    = xmlSecGnuTLSKeyDataMLDSAGetKlass;
+    }
 #endif /* XMLSEC_NO_MLDSA */
 
 #ifndef XMLSEC_NO_EDDSA
@@ -244,9 +266,11 @@ xmlSecCryptoGetFunctions_gnutls(void) {
 
     /* ML-DSA */
 #ifndef XMLSEC_NO_MLDSA
-    gXmlSecGnuTLSFunctions->transformMLDSA44GetKlass            = xmlSecGnuTLSTransformMLDSA44GetKlass;
-    gXmlSecGnuTLSFunctions->transformMLDSA65GetKlass            = xmlSecGnuTLSTransformMLDSA65GetKlass;
-    gXmlSecGnuTLSFunctions->transformMLDSA87GetKlass            = xmlSecGnuTLSTransformMLDSA87GetKlass;
+    if(isMlDSASupported != 0) {
+        gXmlSecGnuTLSFunctions->transformMLDSA44GetKlass        = xmlSecGnuTLSTransformMLDSA44GetKlass;
+        gXmlSecGnuTLSFunctions->transformMLDSA65GetKlass        = xmlSecGnuTLSTransformMLDSA65GetKlass;
+        gXmlSecGnuTLSFunctions->transformMLDSA87GetKlass        = xmlSecGnuTLSTransformMLDSA87GetKlass;
+    }
 #endif /* XMLSEC_NO_MLDSA */
 
     /* EdDSA */

@@ -49,7 +49,7 @@ extern "C" {
 
 /* ML-DSA was added in GnuTLS  3.8.9 (2025) */
 #if GNUTLS_VERSION_NUMBER < 0x030809
-#define XMLSEC_NO_ML_DSA        1
+#define XMLSEC_NO_MLDSA        1
 #endif /* GNUTLS_VERSION_NUMBER < 0x030809 */
 
 

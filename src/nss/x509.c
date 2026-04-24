@@ -1259,9 +1259,9 @@ xmlSecNssX509DigestWrite(CERTCertificate* cert, const xmlChar* algorithm, xmlSec
         return(-1);
     }
 
-    digestAlg = xmlSecNssX509GetDigestFromAlgorithm(algorithm);
+    digestAlg = xmlSecNssGetDigestFromHref(algorithm);
     if(digestAlg == SEC_OID_UNKNOWN) {
-        xmlSecInternalError("xmlSecNssX509GetDigestFromAlgorithm", NULL);
+        xmlSecInternalError("xmlSecNssGetDigestFromHref", NULL);
         return(-1);
     }
 

@@ -29,6 +29,7 @@
 
 #include "../cast_helpers.h"
 #include "../transform_helpers.h"
+#include "private.h"
 
 #if !defined(XMLSEC_NO_PBKDF2) || !defined(XMLSEC_NO_CONCATKDF) || !defined(XMLSEC_NO_HKDF)
 
@@ -338,49 +339,6 @@ xmlSecNssKdfSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 }
 
 #ifndef XMLSEC_NO_CONCATKDF
-static SECOidTag
-xmlSecNssConcatKdfGetDigestFromHref(const xmlChar* href) {
-    if(href == NULL) {
-        return(SEC_OID_SHA256);
-    }
-
-#ifndef XMLSEC_NO_SHA1
-    if(xmlStrcmp(href, xmlSecHrefSha1) == 0) {
-        return(SEC_OID_SHA1);
-    } else
-#endif /* XMLSEC_NO_SHA1 */
-
-#ifndef XMLSEC_NO_SHA224
-    if(xmlStrcmp(href, xmlSecHrefSha224) == 0) {
-        return(SEC_OID_SHA224);
-    } else
-#endif /* XMLSEC_NO_SHA224 */
-
-#ifndef XMLSEC_NO_SHA256
-    if(xmlStrcmp(href, xmlSecHrefSha256) == 0) {
-        return(SEC_OID_SHA256);
-    } else
-#endif /* XMLSEC_NO_SHA256 */
-
-#ifndef XMLSEC_NO_SHA384
-    if(xmlStrcmp(href, xmlSecHrefSha384) == 0) {
-        return(SEC_OID_SHA384);
-    } else
-#endif /* XMLSEC_NO_SHA384 */
-
-#ifndef XMLSEC_NO_SHA512
-    if(xmlStrcmp(href, xmlSecHrefSha512) == 0) {
-        return(SEC_OID_SHA512);
-    } else
-#endif /* XMLSEC_NO_SHA512 */
-
-    {
-        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
-            "href=%s", xmlSecErrorsSafeString(href));
-        return(SEC_OID_UNKNOWN);
-    }
-}
-
 static int
 xmlSecNssConcatKdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
                            xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
@@ -415,9 +373,9 @@ xmlSecNssConcatKdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
         return(-1);
     }
 
-    ctx->u.concatKdf.digestAlgo = xmlSecNssConcatKdfGetDigestFromHref(ctx->u.concatKdf.params.digestMethod);
+    ctx->u.concatKdf.digestAlgo = xmlSecNssGetDigestFromHref(ctx->u.concatKdf.params.digestMethod);
     if(ctx->u.concatKdf.digestAlgo == SEC_OID_UNKNOWN) {
-        xmlSecInternalError("xmlSecNssConcatKdfGetDigestFromHref", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecNssGetDigestFromHref", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -787,6 +745,7 @@ xmlSecNssHkdfGetHashMechFromHref(const xmlChar* href) {
         return(CKM_SHA512);
     } else
 #endif /* XMLSEC_NO_SHA512 */
+
 
     {
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,

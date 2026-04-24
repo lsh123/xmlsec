@@ -223,6 +223,11 @@ if [ "z$crypto" != "zmscrypto" ] ; then
 else
     xmlsec_feature_rsa_oaep_sha512="no"
 fi
+if [ "z$crypto" != "znss" ] ; then
+    xmlsec_feature_rsa_oaep_sha3="yes"
+else
+    xmlsec_feature_rsa_oaep_sha3="no"
+fi
 
 
 # Support for ASN1 signatures

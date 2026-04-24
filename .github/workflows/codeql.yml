@@ -90,7 +90,7 @@ jobs:
       run: |
         mkdir install.dir
         autoreconf -i -f
-        ./configure --prefix=${GITHUB_WORKSPACE}/install.dir --enable-werror --enable-pedantic --enable-legacy-features --enable-ftp --enable-http
+        ./configure --prefix=${GITHUB_WORKSPACE}/install.dir --enable-werror --enable-pedantic --enable-experimental-features --enable-legacy-features --enable-ftp --enable-http
         make
 
     - name: Perform CodeQL Analysis

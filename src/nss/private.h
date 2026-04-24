@@ -36,6 +36,8 @@ extern "C" {
  */
 #define XMLSEC_NSS_MAX_DIGEST_SIZE              128
 
+SECOidTag   xmlSecNssGetDigestFromHref                  (const xmlChar* href);
+
 
 /******************************************************************************
  *
@@ -80,8 +82,6 @@ CERTCertificate * xmlSecNssX509StoreFindCertByValue     (xmlSecKeyDataStorePtr s
                                                          xmlSecKeyX509DataValuePtr x509Value);
 xmlSecKeyPtr xmlSecNssX509FindKeyByValue                (xmlSecPtrListPtr keysList,
                                                          xmlSecKeyX509DataValuePtr x509Value);
-
-SECOidTag   xmlSecNssX509GetDigestFromAlgorithm          (const xmlChar* href);
 
 int         xmlSecNssX509StoreVerifyKey                 (xmlSecKeyDataStorePtr store,
                                                          xmlSecKeyPtr key,

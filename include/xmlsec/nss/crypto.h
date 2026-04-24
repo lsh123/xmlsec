@@ -72,13 +72,6 @@
 #endif /* !defined(CKM_HKDF_DERIVE) || !defined(CKM_HKDF_DATA) || !defined(CKF_HKDF_SALT_NULL) || !defined(CKF_HKDF_SALT_DATA) */
 #endif /* XMLSEC_NO_HKDF */
 
-/**
- * @brief Defined because SHA3 algorithms are currently disabled for NSS.
- * @details SHA3 digest/signature/key-transport combinations are not fully
- * interoperable across NSS configurations used by xmlsec tests.
- */
-#define XMLSEC_NO_SHA3 1
-
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */

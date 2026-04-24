@@ -60,10 +60,10 @@ XML Security library supports the following features as defined in
 | [SHA2-256](https://www.w3.org/TR/xmldsig-core1/#sec-SHA-256) | Required | Yes | Yes | Yes | Yes | Yes | Yes |
 | [SHA2-384](https://www.w3.org/TR/xmldsig-core1/#sec-SHA-384) | Optional | Yes | Yes | Yes | Yes | Yes | Yes |
 | [SHA2-512](https://www.w3.org/TR/xmldsig-core1/#sec-SHA-512) | Optional | Yes | Yes | Yes | Yes | Yes | Yes |
-| [SHA3-224](https://www.ietf.org/rfc/rfc9231.html#name-sha-3-algorithms) | Optional | Yes | No | Yes | No | No | No |
-| [SHA3-256](https://www.ietf.org/rfc/rfc9231.html#name-sha-3-algorithms) | Optional | Yes | No | Yes | Yes [(2)](#new-windows-required) | No | Yes |
-| [SHA3-384](https://www.ietf.org/rfc/rfc9231.html#name-sha-3-algorithms) | Optional | Yes | No | Yes | Yes [(2)](#new-windows-required) | No | Yes |
-| [SHA3-512](https://www.ietf.org/rfc/rfc9231.html#name-sha-3-algorithms) | Optional | Yes | No | Yes | Yes [(2)](#new-windows-required) | No | Yes |
+| [SHA3-224](https://www.ietf.org/rfc/rfc9231.html#name-sha-3-algorithms) | Optional | Yes | Yes | Yes | No | No | No |
+| [SHA3-256](https://www.ietf.org/rfc/rfc9231.html#name-sha-3-algorithms) | Optional | Yes | Yes | Yes | Yes [(2)](#new-windows-required) | No | Yes |
+| [SHA3-384](https://www.ietf.org/rfc/rfc9231.html#name-sha-3-algorithms) | Optional | Yes | Yes | Yes | Yes [(2)](#new-windows-required) | No | Yes |
+| [SHA3-512](https://www.ietf.org/rfc/rfc9231.html#name-sha-3-algorithms) | Optional | Yes | Yes | Yes | Yes [(2)](#new-windows-required) | No | Yes |
 | [RIPEMD160](https://www.w3.org/TR/xmlenc-core1/#sec-RIPEMD-160) | DEPRECATED | Yes [(1)](#feature-disabled) | No | No | No | No | Yes [(1)](#feature-disabled) |
 | GOST-R3411-94 | Optional | Yes [(3)](#openssl-gost) | No | Yes | No | Yes [(4)](#mscrypto-gost) | No |
 | GOST-R3411-2012 (256 bit) | Optional | Yes [(3)](#openssl-gost) | No | Yes | No | Yes [(4)](#mscrypto-gost) | No |

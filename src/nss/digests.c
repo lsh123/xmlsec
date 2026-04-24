@@ -95,6 +95,66 @@ static xmlSecTransformKlass xmlSecNss ## name ## Klass = {                      
 #define XMLSEC_NSS_DIGEST_KLASS(name)                                                                   \
     XMLSEC_NSS_DIGEST_KLASS_EX(name, NULL)
 
+SECOidTag
+xmlSecNssGetDigestFromHref(const xmlChar* href) {
+    if(href == NULL) {
+#ifndef XMLSEC_NO_SHA256
+        return(SEC_OID_SHA256);
+#else  /* XMLSEC_NO_SHA256 */
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL, "SHA256 is disabled; href=%s", xmlSecErrorsSafeString(href));
+        return(SEC_OID_UNKNOWN);
+#endif /* XMLSEC_NO_SHA256 */
+    } else
+
+#ifndef XMLSEC_NO_SHA1
+    if(xmlStrcmp(href, xmlSecHrefSha1) == 0) {
+        return(SEC_OID_SHA1);
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+    if(xmlStrcmp(href, xmlSecHrefSha224) == 0) {
+        return(SEC_OID_SHA224);
+    } else
+#endif /* XMLSEC_NO_SHA224 */
+
+#ifndef XMLSEC_NO_SHA256
+    if(xmlStrcmp(href, xmlSecHrefSha256) == 0) {
+        return(SEC_OID_SHA256);
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    if(xmlStrcmp(href, xmlSecHrefSha384) == 0) {
+        return(SEC_OID_SHA384);
+    } else
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    if(xmlStrcmp(href, xmlSecHrefSha512) == 0) {
+        return(SEC_OID_SHA512);
+    } else
+#endif /* XMLSEC_NO_SHA512 */
+
+#ifndef XMLSEC_NO_SHA3
+    if(xmlStrcmp(href, xmlSecHrefSha3_224) == 0) {
+        return(SEC_OID_SHA3_224);
+    } else if(xmlStrcmp(href, xmlSecHrefSha3_256) == 0) {
+        return(SEC_OID_SHA3_256);
+    } else if(xmlStrcmp(href, xmlSecHrefSha3_384) == 0) {
+        return(SEC_OID_SHA3_384);
+    } else if(xmlStrcmp(href, xmlSecHrefSha3_512) == 0) {
+        return(SEC_OID_SHA3_512);
+    } else
+#endif /* XMLSEC_NO_SHA3 */
+
+    {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
+            "href=%s", xmlSecErrorsSafeString(href));
+        return(SEC_OID_UNKNOWN);
+    }
+}
+
 static int
 xmlSecNssDigestCheckId(xmlSecTransformPtr transform) {
 

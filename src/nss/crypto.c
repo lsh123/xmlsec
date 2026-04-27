@@ -637,7 +637,7 @@ xmlSecNssInit (void)  {
     }
 
     /* set default errors callback for xmlsec to us */
-    xmlSecErrorsSetCallback(xmlSecNssErrorsDefaultCallback);
+    xmlSecErrorsSetSystemCallback(xmlSecNssErrorsDefaultCallback);
 
     /* update the avaialble algos based on NSS configs */
     xmlSecNssUpdateAvailableCryptoTransforms(xmlSecCryptoGetFunctions_nss());
@@ -657,6 +657,9 @@ xmlSecNssInit (void)  {
  */
 int
 xmlSecNssShutdown(void) {
+    /* remove callback */
+    xmlSecErrorsSetSystemCallback(xmlSecErrorsDefaultCallback);
+
     return(0);
 }
 

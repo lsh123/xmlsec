@@ -23,6 +23,7 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/transforms.h>
+#include <xmlsec/errors.h>
 
 #ifdef __GNUC__
 #ifdef HAVE_ANSIDECL_H
@@ -61,6 +62,14 @@ typedef int                     (*xmlSecCryptoShutdownMethod)           (void);
  * @return 0 on success or a negative value otherwise.
  */
 typedef int                     (*xmlSecCryptoKeysMngrInitMethod)       (xmlSecKeysMngrPtr mngr);
+
+
+/******************************************************************************
+ *
+ * Errors
+ *
+  *****************************************************************************/
+XMLSEC_EXPORT void              xmlSecErrorsSetSystemCallback         (xmlSecErrorsCallback callback);
 
 /******************************************************************************
  *

@@ -93,8 +93,14 @@ static const xmlSecErrorDescription xmlSecErrorsTable[XMLSEC_ERRORS_MAX_NUMBER +
   { 0,                                          NULL}
 };
 
-static xmlSecErrorsCallback xmlSecErrorsClbk = xmlSecErrorsDefaultCallback;
-static int  xmlSecPrintErrorMessages = 1;       /* whether the error messages will be printed immediately */
+/* We have sytstem callback that can be set by the xmlsec-crypto library and user callback
+ * that user can set. We always prioritize user callback if set. Note that if user sets
+ * NULL callback then we disable errors reporting */
+static xmlSecErrorsCallback xmlSecErrorsSystemClbk = xmlSecErrorsDefaultCallback;
+static xmlSecErrorsCallback xmlSecErrorsUserClbk   = NULL;
+static int xmlSecErrorsClbkIsSetByUser = 0;
+
+static int xmlSecPrintErrorMessages = 1;       /* whether the error messages will be printed immediately */
 
 static int gXmlSecErrorsPrintCryptoLibraryLogOnExitIsEnabled = 0;
 
@@ -124,7 +130,20 @@ xmlSecErrorsShutdown(void) {
  */
 void
 xmlSecErrorsSetCallback(xmlSecErrorsCallback callback) {
-    xmlSecErrorsClbk = callback;
+    xmlSecErrorsUserClbk = callback;
+    xmlSecErrorsClbkIsSetByUser = 1;
+}
+
+
+/**
+ * @brief Sets the system errors callback function.
+ * @details Sets the system errors callback function to @p callback that will be called
+ * every time an error occurs.
+ * @param callback the new system errors callback function.
+ */
+void
+xmlSecErrorsSetSystemCallback(xmlSecErrorsCallback callback) {
+    xmlSecErrorsSystemClbk = callback;
 }
 
 /**
@@ -224,8 +243,10 @@ xmlSecErrorsGetMsg(xmlSecSize pos) {
 void
 xmlSecError(const char* file, int line, const char* func,
             const char* errorObject, const char* errorSubject,
-            int reason, const char* msg, ...) {
-    if(xmlSecErrorsClbk != NULL) {
+            int reason, const char* msg, ...
+) {
+    xmlSecErrorsCallback callback = (xmlSecErrorsClbkIsSetByUser != 0) ? xmlSecErrorsUserClbk : xmlSecErrorsSystemClbk;
+    if(callback != NULL) {
         xmlChar error_msg[XMLSEC_ERRORS_BUFFER_SIZE];
         int ret;
 
@@ -243,7 +264,7 @@ xmlSecError(const char* file, int line, const char* func,
         } else {
             error_msg[0] = '\0';
         }
-        xmlSecErrorsClbk(file, line, func, errorObject, errorSubject, reason, (char*)error_msg);
+        callback(file, line, func, errorObject, errorSubject, reason, (char*)error_msg);
     }
 }
 

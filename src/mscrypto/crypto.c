@@ -278,7 +278,7 @@ xmlSecMSCryptoInit (void)  {
     }
 
     /* set default errors callback for xmlsec to us */
-    xmlSecErrorsSetCallback(xmlSecMSCryptoErrorsDefaultCallback);
+    xmlSecErrorsSetSystemCallback(xmlSecMSCryptoErrorsDefaultCallback);
 
     /* register our klasses */
     if(xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(xmlSecCryptoGetFunctions_mscrypto()) < 0) {
@@ -294,6 +294,9 @@ xmlSecMSCryptoInit (void)  {
  */
 int
 xmlSecMSCryptoShutdown(void) {
+    /* remove callback */
+    xmlSecErrorsSetSystemCallback(xmlSecErrorsDefaultCallback);
+
     /* if necessary, do additional shutdown here */
     return(0);
 }

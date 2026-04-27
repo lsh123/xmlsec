@@ -734,7 +734,7 @@ xmlSecOpenSSLErrorsInit(void) {
 #endif /* !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_NO_ERR) */
 
     /* and set default errors callback for xmlsec to us */
-    xmlSecErrorsSetCallback(xmlSecOpenSSLErrorsDefaultCallback);
+    xmlSecErrorsSetSystemCallback(xmlSecOpenSSLErrorsDefaultCallback);
 
     return(0);
 }
@@ -743,7 +743,7 @@ xmlSecOpenSSLErrorsInit(void) {
 static void
 xmlSecOpenSSLErrorsShutdown(void) {
     /* remove callback */
-    xmlSecErrorsSetCallback(NULL);
+    xmlSecErrorsSetSystemCallback(xmlSecErrorsDefaultCallback);
 
 #if !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR)
     /* unload xmlsec strings from OpenSSL */

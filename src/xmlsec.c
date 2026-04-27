@@ -73,6 +73,9 @@ xmlSecSetExternalEntityLoader(xmlExternalEntityLoader entityLoader) {
  * @details Initializes XML Security Library. The depended libraries
  * (LibXML and LibXSLT) must be initialized before.
  *
+ * Note: The application SHOULD NOT initialize the XML Security Library
+ * more than once per process.
+ *
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -102,7 +105,8 @@ xmlSecInit(void) {
         xmlSecDefaultExternalEntityLoader = xmlGetExternalEntityLoader();
     }
 
-    /* new parser option XML_PARSE_NO_XXE available since 2.13.0 and is set as default options for parsers */
+    /* new parser option XML_PARSE_NO_XXE available since 2.13.0 and is
+     * set as default options for parsers */
 #if LIBXML_VERSION < 21300
     xmlSetExternalEntityLoader(xmlSecNoXxeExternalEntityLoader);
 #endif /* LIBXML_VERSION < 21300 */
@@ -114,6 +118,10 @@ xmlSecInit(void) {
 
 /**
  * @brief Clean ups the XML Security Library.
+ * @details Clean ups the XML Security Library.
+ *
+ * Note: Once this function has been called it might be
+ * impossible to reinitialise the library correctly.
  *
  * @return 0 on success or a negative value otherwise.
  */

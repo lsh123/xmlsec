@@ -42,6 +42,10 @@ static const char missingMethodError[] = "Method is missing in the dynamically l
 /**
  * @brief Initializes the XMLSec crypto engine.
  * @details XMLSec library specific crypto engine initialization.
+ *
+ * Note: The application SHOULD NOT initialize the XML Security Library
+ * more than once per process.
+ *
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -56,6 +60,11 @@ xmlSecCryptoInit(void) {
 
 /**
  * @brief XMLSec library specific crypto engine shutdown.
+ * @details XMLSec library specific crypto engine shutdown.
+ *
+ * Note: Once this function has been called it might be
+ * impossible to reinitialise the library correctly.
+ *
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -1920,7 +1929,12 @@ xmlSecTransformSha3_512GetKlass(void) {
  * @details General crypto engine initialization. This function is used
  * by the XMLSec command-line utility and is called before the
  * #xmlSecInit function.
+ *
+ * Note: The application SHOULD NOT initialize the XML Security Library
+ * more than once per process.
+ *
  * @param config the path to crypto library configuration.
+ *
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -1939,6 +1953,10 @@ xmlSecCryptoAppInit(const char* config) {
  * @details General crypto engine shutdown. This function is used
  * by the XMLSec command-line utility and is called after the
  * #xmlSecShutdown function.
+ *
+ * Note: Once this function has been called it might be
+ * impossible to reinitialise the library correctly.
+ *
  * @return 0 on success or a negative value otherwise.
  */
 int

@@ -82,7 +82,6 @@ xmlSecNodeSetDestroy(xmlSecNodeSetPtr nset) {
     xmlDocPtr destroyDoc = NULL;
 
     xmlSecAssert(nset != NULL);
-    xmlSecAssert(nset->reserved == NULL); /* reserved field should not be used */
 
     while((tmp = nset) != NULL) {
         if((nset->next != NULL) && (nset->next != nset)) {
@@ -141,7 +140,7 @@ xmlSecNodeSetOneContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr pare
                 break;
             case xmlSecNodeSetList:
                 xmlSecNotImplementedError("xmlSecNodeSetList is deprecated");
-                return(-1);
+                return(0);
             default:
                 break;
         }

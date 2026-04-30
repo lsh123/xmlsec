@@ -394,6 +394,58 @@ test_xmlSecNodeSetWalk_visits_elements_attributes_and_namespaces(void) {
     testFinishedSuccess();
 }
 
+static void
+test_xmlSecNodeSetDumpTextNodes_preserves_document_order(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    xmlSecNodeSetPtr nset;
+    xmlBufferPtr buffer;
+    xmlOutputBufferPtr out;
+    int ret;
+
+    testStart("xmlSecNodeSetDumpTextNodes preserves document order");
+
+    doc = nodesetTestParseDoc("<Root><A>1</A><B>2</B><C><D>3</D></C></Root>");
+    if(doc == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    root = xmlDocGetRootElement(doc);
+    nset = xmlSecNodeSetGetChildren(doc, root, 1, 0);
+    buffer = xmlBufferCreate();
+    out = (buffer != NULL) ? xmlOutputBufferCreateBuffer(buffer, NULL) : NULL;
+    if((root == NULL) || (nset == NULL) || (buffer == NULL) || (out == NULL)) {
+        testLog("Error: failed to prepare dump text nodes test data\n");
+        if(out != NULL) {
+            xmlOutputBufferClose(out);
+        } else if(buffer != NULL) {
+            xmlBufferFree(buffer);
+        }
+        xmlSecNodeSetDestroy(nset);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecNodeSetDumpTextNodes(nset, out);
+    if((ret < 0) || (xmlOutputBufferFlush(out) < 0) ||
+       !xmlStrEqual(xmlBufferContent(buffer), BAD_CAST "123")) {
+        testLog("Error: dump text nodes output mismatch (ret=%d, text='%s')\n",
+            ret, (xmlBufferContent(buffer) != NULL) ? (const char*)xmlBufferContent(buffer) : "(null)");
+        xmlOutputBufferClose(out);
+        xmlSecNodeSetDestroy(nset);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlOutputBufferClose(out);
+    xmlSecNodeSetDestroy(nset);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
 int
 test_nodeset(void) {
     int success = 1;
@@ -414,6 +466,7 @@ test_nodeset(void) {
 
     testGroupStart("xmlSecNodeSetWalk");
     test_xmlSecNodeSetWalk_visits_elements_attributes_and_namespaces();
+    test_xmlSecNodeSetDumpTextNodes_preserves_document_order();
     if(testGroupFinished() != 1) { success = 0; }
 
     return(success);

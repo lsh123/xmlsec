@@ -426,7 +426,7 @@ xmlSecNodeSetWalkRecursive(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walk
         if((cur->type == XML_ELEMENT_NODE) || (cur->type == XML_DOCUMENT_NODE)) {
             xmlNodePtr node;
 
-            node = cur->children;
+            node = cur->last;
             while(node != NULL) {
                 if(queueSize >= queueMaxSize) {
                     struct xmlSecNodeSetWalkRecursiveStep* tmpQueue;
@@ -445,7 +445,7 @@ xmlSecNodeSetWalkRecursive(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walk
                 queue[queueSize].parent = cur;
                 ++queueSize;
 
-                node = node->next;
+                node = node->prev;
             }
         }
     }

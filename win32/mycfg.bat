@@ -9,7 +9,7 @@ REM Aleksey Sanin <aleksey@aleksey.com>
 REM
 
 SET XMLSEC_CRYPTO=mscng
-SET XMLSEC_DEBUG=yes
+SET XMLSEC_DEBUG=no
 
 IF "%XMLSEC_DEBUG%" == "yes" (
     SET PREFIX=%USERHOME%\distro.debug

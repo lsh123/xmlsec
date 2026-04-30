@@ -85,6 +85,7 @@ xmlsec1_DEPENDENCIES = \
 # xmlsec unit tests
 xmlsec_unit_tests_SOURCES = \
 	unit_tests/base64_unit_tests.c \
+	unit_tests/nodeset_unit_tests.c \
 	unit_tests/transform_helpers_unit_tests.c \
 	unit_tests/x509_unit_tests.c \
 	unit_tests/xmltree_unit_tests.c \

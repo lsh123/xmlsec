@@ -37,7 +37,7 @@ typedef enum {
     xmlSecNodeSetTreeWithoutComments,  /**< nodes set = nodes in the list and all their subtress but no comment nodes. */
     xmlSecNodeSetTreeInvert,  /**< nodes set = all document nodes minus nodes in the list and all their subtress. */
     xmlSecNodeSetTreeWithoutCommentsInvert,  /**< nodes set = all document nodes minus (nodes in the list and all their subtress plus all comment nodes). */
-    xmlSecNodeSetList  /**< nodes set = all nodes in the children list of nodes sets. */
+    xmlSecNodeSetList  /**< DEPRECATED: nodes set = all nodes in the children list of nodes sets. */
 } xmlSecNodeSetType;
 
 /**
@@ -60,7 +60,7 @@ struct _xmlSecNodeSet {
     xmlSecNodeSetOp     op;  /**< the operation type. */
     xmlSecNodeSetPtr    next;  /**< the next nodes set. */
     xmlSecNodeSetPtr    prev;  /**< the previous nodes set. */
-    xmlSecNodeSetPtr    children;  /**< the children list (valid only if type equal to #xmlSecNodeSetList). */
+    void*               reserved;  /**< the reserved pointer. DEPRECATED: the children list (valid only if type equal to #xmlSecNodeSetList). */
 };
 
 /**
@@ -89,9 +89,6 @@ XMLSEC_EXPORT int               xmlSecNodeSetContains   (xmlSecNodeSetPtr nset,
 XMLSEC_EXPORT xmlSecNodeSetPtr  xmlSecNodeSetAdd        (xmlSecNodeSetPtr nset,
                                                          xmlSecNodeSetPtr newNSet,
                                                          xmlSecNodeSetOp op);
-XMLSEC_EXPORT xmlSecNodeSetPtr  xmlSecNodeSetAddList    (xmlSecNodeSetPtr nset,
-                                                         xmlSecNodeSetPtr newNSet,
-                                                         xmlSecNodeSetOp op);
 XMLSEC_EXPORT xmlSecNodeSetPtr  xmlSecNodeSetGetChildren(xmlDocPtr doc,
                                                          const xmlNodePtr parent,
                                                          int withComments,
@@ -103,6 +100,12 @@ XMLSEC_EXPORT int               xmlSecNodeSetDumpTextNodes(xmlSecNodeSetPtr nset
                                                         xmlOutputBufferPtr out);
 XMLSEC_EXPORT void              xmlSecNodeSetDebugDump  (xmlSecNodeSetPtr nset,
                                                          FILE *output);
+
+
+XMLSEC_EXPORT XMLSEC_DEPRECATED xmlSecNodeSetPtr  xmlSecNodeSetAddList(xmlSecNodeSetPtr nset,
+                                                         xmlSecNodeSetPtr newNSet,
+                                                         xmlSecNodeSetOp op);
+
 
 #ifdef __cplusplus
 }

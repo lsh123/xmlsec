@@ -888,6 +888,44 @@ if [ "z$xmlsec_feature_x509_data_lookup" = "zyes" ] ; then
         "--untrusted-$cert_format $topfolder/keys/rsa/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
         "$priv_key_option $topfolder/keys/rsa/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
         "--untrusted-$cert_format $topfolder/keys/rsa/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+    if [ "z$crypto" != "zmscng" ] ; then
+        execDSigTest $res_success \
+            "" \
+            "aleksey-xmldsig-01/enveloped-x509-digest-sha3_224" \
+            "sha3-224 sha256 rsa-sha256" \
+            "rsa x509" \
+            "--untrusted-$cert_format $topfolder/keys/rsa/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+            "$priv_key_option $topfolder/keys/rsa/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123 --untrusted-$cert_format $topfolder/keys/rsa/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+            "--untrusted-$cert_format $topfolder/keys/rsa/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+        execDSigTest $res_success \
+            "" \
+            "aleksey-xmldsig-01/enveloped-x509-digest-sha3_256" \
+            "sha3-256 sha256 rsa-sha256" \
+            "rsa x509" \
+            "--untrusted-$cert_format $topfolder/keys/rsa/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+            "$priv_key_option $topfolder/keys/rsa/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123 --untrusted-$cert_format $topfolder/keys/rsa/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+            "--untrusted-$cert_format $topfolder/keys/rsa/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+        execDSigTest $res_success \
+            "" \
+            "aleksey-xmldsig-01/enveloped-x509-digest-sha3_384" \
+            "sha3-384 sha256 rsa-sha256" \
+            "rsa x509" \
+            "--untrusted-$cert_format $topfolder/keys/rsa/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+            "$priv_key_option $topfolder/keys/rsa/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123 --untrusted-$cert_format $topfolder/keys/rsa/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+            "--untrusted-$cert_format $topfolder/keys/rsa/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+        execDSigTest $res_success \
+            "" \
+            "aleksey-xmldsig-01/enveloped-x509-digest-sha3_512" \
+            "sha3-512 sha256 rsa-sha256" \
+            "rsa x509" \
+            "--untrusted-$cert_format $topfolder/keys/rsa/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+            "$priv_key_option $topfolder/keys/rsa/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123 --untrusted-$cert_format $topfolder/keys/rsa/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+            "--untrusted-$cert_format $topfolder/keys/rsa/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+    fi
 fi
 
 if [ "z$xmlsec_feature_nssdb_lookup" = "zyes" ] ; then
@@ -1758,6 +1796,37 @@ if [ "z$xmlsec_feature_context_string" = "zyes" ] ; then
 fi
 
 
+## ML-KEM (HMAC signature with encapsulated key)
+if [ "z$xmlsec_feature_ml_kem" = "zyes" ] ; then
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloping-sha256-hmac-sha256-em-ml-kem-512" \
+    "sha256 hmac-sha256 ml-kem-512" \
+    "hmac ml-kem" \
+    "$mlkem_priv_key_option:TestKeyName-ml-kem-512 $topfolder/keys/ml-kem/ml-kem-512-key.$mlkem_priv_key_format --pwd secret123 --enabled-key-data key-name,encapsulation-mechanism" \
+    "$mlkem_pub_key_option:TestKeyName-ml-kem-512 $topfolder/keys/ml-kem/ml-kem-512-pubkey.$mlkem_pub_key_format --enabled-key-data key-name,encapsulation-mechanism" \
+    "$mlkem_priv_key_option:TestKeyName-ml-kem-512 $topfolder/keys/ml-kem/ml-kem-512-key.$mlkem_priv_key_format --pwd secret123 --enabled-key-data key-name,encapsulation-mechanism"
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloping-sha256-hmac-sha256-em-ml-kem-768" \
+    "sha256 hmac-sha256 ml-kem-768" \
+    "hmac ml-kem" \
+    "$mlkem_priv_key_option:TestKeyName-ml-kem-768 $topfolder/keys/ml-kem/ml-kem-768-key.$mlkem_priv_key_format --pwd secret123 --enabled-key-data key-name,encapsulation-mechanism" \
+    "$mlkem_pub_key_option:TestKeyName-ml-kem-768 $topfolder/keys/ml-kem/ml-kem-768-pubkey.$mlkem_pub_key_format --enabled-key-data key-name,encapsulation-mechanism" \
+    "$mlkem_priv_key_option:TestKeyName-ml-kem-768 $topfolder/keys/ml-kem/ml-kem-768-key.$mlkem_priv_key_format --pwd secret123 --enabled-key-data key-name,encapsulation-mechanism"
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloping-sha256-hmac-sha256-em-ml-kem-1024" \
+    "sha256 hmac-sha256 ml-kem-1024" \
+    "hmac ml-kem" \
+    "$mlkem_priv_key_option:TestKeyName-ml-kem-1024 $topfolder/keys/ml-kem/ml-kem-1024-key.$mlkem_priv_key_format --pwd secret123 --enabled-key-data key-name,encapsulation-mechanism" \
+    "$mlkem_pub_key_option:TestKeyName-ml-kem-1024 $topfolder/keys/ml-kem/ml-kem-1024-pubkey.$mlkem_pub_key_format --enabled-key-data key-name,encapsulation-mechanism" \
+    "$mlkem_priv_key_option:TestKeyName-ml-kem-1024 $topfolder/keys/ml-kem/ml-kem-1024-key.$mlkem_priv_key_format --pwd secret123 --enabled-key-data key-name,encapsulation-mechanism"
+fi # xmlsec_feature_ml_kem
+
+
 ## EdDSA
 execDSigTest $res_success \
     "" \
@@ -2293,7 +2362,7 @@ execDSigTest $res_success \
     "hmac rsa" \
     "--lax-key-search $priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005"
 
-if [ "z$xmlsec_feature_rsa_oaep_different_digest_and_mgf1" = "zyes" ] ; then
+if [  "z$xmlsec_feature_rsa_oaep_sha1" = "zyes" -a "z$xmlsec_feature_rsa_oaep_different_digest_and_mgf1" = "zyes" ] ; then
     execDSigTest $res_success \
         "" \
         "merlin-xmlenc-five/encsig-hmac-sha256-rsa-oaep-mgf1p" \

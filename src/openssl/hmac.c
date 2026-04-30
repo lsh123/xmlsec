@@ -9,7 +9,6 @@
  * @addtogroup xmlsec_openssl_crypto
  * @brief HMAC transforms implementation for OpenSSL.
  */
-#ifndef XMLSEC_NO_HMAC
 #include "globals.h"
 
 #include <stdlib.h>
@@ -37,6 +36,7 @@
 #include "../keysdata_helpers.h"
 #include "../transform_helpers.h"
 
+#ifndef XMLSEC_NO_HMAC
 
 /******************************************************************************
  *

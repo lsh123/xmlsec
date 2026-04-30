@@ -13,8 +13,6 @@
  */
 #include "globals.h"
 
-#ifndef XMLSEC_NO_X509
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -47,6 +45,8 @@
 #include "../cast_helpers.h"
 #include "../x509_helpers.h"
 #include "private.h"
+
+#ifndef XMLSEC_NO_X509
 
 /******************************************************************************
  *
@@ -1259,9 +1259,9 @@ xmlSecNssX509DigestWrite(CERTCertificate* cert, const xmlChar* algorithm, xmlSec
         return(-1);
     }
 
-    digestAlg = xmlSecNssX509GetDigestFromAlgorithm(algorithm);
+    digestAlg = xmlSecNssGetDigestFromHref(algorithm);
     if(digestAlg == SEC_OID_UNKNOWN) {
-        xmlSecInternalError("xmlSecNssX509GetDigestFromAlgorithm", NULL);
+        xmlSecInternalError("xmlSecNssGetDigestFromHref", NULL);
         return(-1);
     }
 

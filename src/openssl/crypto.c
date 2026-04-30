@@ -144,6 +144,10 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->keyDataMLDSAGetKlass       = xmlSecOpenSSLKeyDataMLDSAGetKlass;
 #endif /* XMLSEC_NO_MLDSA */
 
+#ifndef XMLSEC_NO_MLKEM
+    gXmlSecOpenSSLFunctions->keyDataMLKEMGetKlass       = xmlSecOpenSSLKeyDataMLKEMGetKlass;
+#endif /* XMLSEC_NO_MLKEM */
+
 #ifndef XMLSEC_NO_SLHDSA
     gXmlSecOpenSSLFunctions->keyDataSLHDSAGetKlass      = xmlSecOpenSSLKeyDataSLHDSAGetKlass;
 #endif /* XMLSEC_NO_SLHDSA */
@@ -342,6 +346,13 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->transformMLDSA65GetKlass            = xmlSecOpenSSLTransformMLDSA65GetKlass;
     gXmlSecOpenSSLFunctions->transformMLDSA87GetKlass            = xmlSecOpenSSLTransformMLDSA87GetKlass;
 #endif /* XMLSEC_NO_MLDSA */
+
+    /* ML-KEM */
+#ifndef XMLSEC_NO_MLKEM
+    gXmlSecOpenSSLFunctions->transformMLKEM512GetKlass           = xmlSecOpenSSLTransformMLKEM512GetKlass;
+    gXmlSecOpenSSLFunctions->transformMLKEM768GetKlass           = xmlSecOpenSSLTransformMLKEM768GetKlass;
+    gXmlSecOpenSSLFunctions->transformMLKEM1024GetKlass          = xmlSecOpenSSLTransformMLKEM1024GetKlass;
+#endif /* XMLSEC_NO_MLKEM */
 
 
     /* PBKDF2 */
@@ -723,7 +734,7 @@ xmlSecOpenSSLErrorsInit(void) {
 #endif /* !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_NO_ERR) */
 
     /* and set default errors callback for xmlsec to us */
-    xmlSecErrorsSetCallback(xmlSecOpenSSLErrorsDefaultCallback);
+    xmlSecErrorsSetSystemCallback(xmlSecOpenSSLErrorsDefaultCallback);
 
     return(0);
 }
@@ -732,7 +743,7 @@ xmlSecOpenSSLErrorsInit(void) {
 static void
 xmlSecOpenSSLErrorsShutdown(void) {
     /* remove callback */
-    xmlSecErrorsSetCallback(NULL);
+    xmlSecErrorsSetSystemCallback(xmlSecErrorsDefaultCallback);
 
 #if !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR)
     /* unload xmlsec strings from OpenSSL */

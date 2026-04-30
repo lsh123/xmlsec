@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+  <SignedInfo>
+    <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+    <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#hmac-sha256"/>
+    <Reference URI="#object">
+      <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+      <DigestValue>iDhYt78o294fA6pzQ7k44+eejrQMi+WX3l3UrUdtL1Q=</DigestValue>
+    </Reference>
+  </SignedInfo>
+  <SignatureValue>JqCfzLGcIXRFB/xTNnP3kH4DWijEPHNepp4hQzPhHgk=</SignatureValue>
+  <KeyInfo>
+    <as:EncapsulationMechanism xmlns:as="http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#" Algorithm="http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#ml-kem-1024">
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:KeyName>TestKeyName-ml-kem-1024</ds:KeyName>
+      </ds:KeyInfo>
+      <enc:CipherData xmlns:enc="http://www.w3.org/2001/04/xmlenc#">
+        <enc:CipherValue>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</enc:CipherValue>
+      </enc:CipherData>
+    </as:EncapsulationMechanism>
+  </KeyInfo>
+  <Object Id="object">some text</Object>
+</Signature>

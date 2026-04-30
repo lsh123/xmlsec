@@ -11,8 +11,6 @@
  */
 #include "globals.h"
 
-#ifndef XMLSEC_NO_X509
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -41,6 +39,8 @@
 #include "../x509_helpers.h"
 #include "openssl_compat.h"
 #include "private.h"
+
+#ifndef XMLSEC_NO_X509
 
 /******************************************************************************
  *

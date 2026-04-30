@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PaymentInfo xmlns="http://example.org/paymentv2">
+  <Name>John Smith</Name>
+  <CreditCard Currency="USD" Limit="5,000"><EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Id="ED" Type="http://www.w3.org/2001/04/xmlenc#Content">
+  <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes256-cbc"/>
+  <ds:KeyInfo>
+    <as:EncapsulationMechanism xmlns:as="http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#" Algorithm="http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#ml-kem-512">
+      <ds:KeyInfo>
+        <ds:KeyName>TestKeyName-ml-kem-512</ds:KeyName>
+      </ds:KeyInfo>
+      <CipherData>
+        <CipherValue>weoY27BQVFq+XJTqScPpGQS3/6KW9jR/cXPrugqIJlT5hrDuy1TqxOVK/u22+vLW
+MH11JbKefOHBPxwwNGAq6YcnmDORz/QNG3LlKp8jbMgjzR2LlrEeBBAivj1ZBYjl
+f1M0mxnUTS41gk+aq8Om4PulfZyfMlvn/0cm/BIFn+55LAl7qVWgvLMeRjqmOzFa
+CGPUCE2O/d1SU+4+QXC7OJF05f3BujaLyxQUJCkGXJ3BS/QJOkdaKXsKEekcmTIK
+DgCEqeiiSViM2EyqhioCJKErHSDW/8dMzFB8sGbcm5LnT20A1rL9d7KrOY0BhssL
+eJJ4Rz8KtZDFkfYV7fUd5BnqPpE6Qz/9QN2B3VsaHNgkBGX9tgBowiMwt9VImEzC
+ni+gBQcNiGmdmJX2bNf7S9ZfQhhgl76+6KHQY5+HXl0LkChDD1/8PNXKNvLhIfpD
+62Q4cnLKNyDk3PF4xCOvb/tDhW+vqKOjaTBn092BKJgS2NVRt/arBFjFno81IwWu
+qOh0lbqfwe5/JNJ9wb4Bbni7j9+eLT9JRUFWhBn0RSK4fay7k3oz87fwW5bWNWEy
+EA/qb/IKTRWpost1cfN2WnID+wsfIWG5CKzN4Nb3ZcbLNeMD7tTaaIUdFPsKXz0D
+kpNwxlDhQHFwwEom5chqIAT9KPtIWd3fbbHOUXEOy9ikynRlRWe4XxaowWZlbGrn
+B50XbUOFuah5mxMxzrbq0a/jDZ97g197bRkfxujKS7k2CUyCEATQCrv4LvIrpujR
+sCwEks2cceK6VdWgEhGGltdQoDZ+hmdTzx4X1TYZJv+vbveGyUmBhzheDVuK2/e0
+VS98IvbMztVHd+/DjVcPSAVhxlIl+tWb6dMnQHP858ZPfOkc0mPDbhK3nMvNw3Jj
+5ierETgung7KCvUS8LUvoS8EHDAAfNxP9Zny3eA3QO9AY/Evqyl6jucNl8A843FU
+aga3hAjQgLJoWS/mlaPYhB2nQ/vqFmfynSuZ8Py98BPjKWhOt6T9f86ahybui/kK</CipherValue>
+      </CipherData>
+    </as:EncapsulationMechanism>
+  </ds:KeyInfo>
+  <CipherData>
+    <CipherValue>IDnIA61zzWFHsv+0yGriVSHi3yZrLpEPVCjgQy9Kzu8D+vm9TWcgU4sR4agoGOLy
+4FzIrY2noyOaTkN1f9bzRYJb6m8lNBe1gb9mKrep2d0r5Uw1L0wGIy1IZB+S3NDp
+fTjnVqvgVpj/ROIiFgpQzOtivjIFTDjPZoac8s03P0PhPPEKYl4UaUQoDqdCHm0F</CipherValue>
+  </CipherData>
+</EncryptedData></CreditCard>
+</PaymentInfo>

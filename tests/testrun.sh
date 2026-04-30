@@ -189,21 +189,46 @@ fi
 
 
 # Advanced RSA OAEP modes:
-# - MSCrypto only supports SHA1 for digest and mgf1
-if [ "z$crypto" != "zmscrypto" ] ; then
-    xmlsec_feature_rsa_oaep_non_sha1="yes"
-else
-    xmlsec_feature_rsa_oaep_non_sha1="no"
-fi
-
-# Advanced RSA OAEP modes:
-# - MSCrypto only supports SHA1 for digest and mgf1
-# - GCrypt/GnuTLS and MSCng only supoprts the *same* algorithm for *both* digest and mgf1
-if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" -a "z$crypto" != "zgcrypt" ] ; then
+# - GnuTLS:   digest/MFG1 must be same, only supports SHA-256, SHA-384, SHA-512 for RSA-OAEP hash (not SHA-1)
+# - MSCng:    digest/MFG1 must be same
+# - MSCrypto: digest/MFG1 must be same, only supports SHA1 for digest and mgf1
+# - GCrypt:   digest/MFG1 must be same
+if [ "z$crypto" != "zgnutls" -a "z$crypto" != "zmscng" -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zgcrypt" ] ; then
     xmlsec_feature_rsa_oaep_different_digest_and_mgf1="yes"
 else
     xmlsec_feature_rsa_oaep_different_digest_and_mgf1="no"
 fi
+if [ "z$crypto" != "zgnutls" ] ; then
+    xmlsec_feature_rsa_oaep_sha1="yes"
+else
+    xmlsec_feature_rsa_oaep_sha1="no"
+fi
+if [ "z$crypto" != "zgnutls" -a "z$crypto" != "zmscrypto" ] ; then
+    xmlsec_feature_rsa_oaep_sha224="yes"
+else
+    xmlsec_feature_rsa_oaep_sha224="no"
+fi
+if [ "z$crypto" != "zmscrypto" ] ; then
+    xmlsec_feature_rsa_oaep_sha256="yes"
+else
+    xmlsec_feature_rsa_oaep_sha256="no"
+fi
+if [ "z$crypto" != "zmscrypto" ] ; then
+    xmlsec_feature_rsa_oaep_sha384="yes"
+else
+    xmlsec_feature_rsa_oaep_sha384="no"
+fi
+if [ "z$crypto" != "zmscrypto" ] ; then
+    xmlsec_feature_rsa_oaep_sha512="yes"
+else
+    xmlsec_feature_rsa_oaep_sha512="no"
+fi
+if [ "z$crypto" != "znss" ] ; then
+    xmlsec_feature_rsa_oaep_sha3="yes"
+else
+    xmlsec_feature_rsa_oaep_sha3="no"
+fi
+
 
 # Support for ASN1 signatures
 if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" -o "z$crypto" = "znss" -o  "z$crypto" = "zmscng"  ] ; then
@@ -217,6 +242,13 @@ if [ "z$crypto" = "zopenssl" ] ; then
     xmlsec_feature_context_string="yes"
 else
     xmlsec_feature_context_string="no"
+fi
+
+# Support for ML-KEM key transport (OpenSSL 3.5+)
+if [ "z$crypto" = "zopenssl" ] ; then
+    xmlsec_feature_ml_kem="yes"
+else
+    xmlsec_feature_ml_kem="no"
 fi
 
 #
@@ -327,6 +359,13 @@ if [ "z$crypto" = "zgcrypt" ] ; then
 else
     rsa_pub_key_suffix=""
 fi
+
+# ML-KEM keys have no certificates and cannot be stored in PKCS12.
+# Use PKCS8-PEM format for private keys and PEM for public keys on all platforms.
+mlkem_priv_key_option="--pkcs8-pem"
+mlkem_priv_key_format="p8-pem"
+mlkem_pub_key_option="--pubkey-pem"
+mlkem_pub_key_format="pem"
 
 # On Windows, we needs to specify Crypto Service Provider (CSP)
 # in the pkcs12 file to ensure it is loaded correctly to be used

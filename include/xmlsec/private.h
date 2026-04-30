@@ -23,6 +23,7 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/transforms.h>
+#include <xmlsec/errors.h>
 
 #ifdef __GNUC__
 #ifdef HAVE_ANSIDECL_H
@@ -61,6 +62,14 @@ typedef int                     (*xmlSecCryptoShutdownMethod)           (void);
  * @return 0 on success or a negative value otherwise.
  */
 typedef int                     (*xmlSecCryptoKeysMngrInitMethod)       (xmlSecKeysMngrPtr mngr);
+
+
+/******************************************************************************
+ *
+ * Errors
+ *
+  *****************************************************************************/
+XMLSEC_EXPORT void              xmlSecErrorsSetSystemCallback         (xmlSecErrorsCallback callback);
 
 /******************************************************************************
  *
@@ -383,6 +392,7 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoKeyDataGetKlassMethod            keyDataHkdfGetKlass;  /**< the method to get pointer to HKDF key data klass. */
     xmlSecCryptoKeyDataGetKlassMethod            keyDataHmacGetKlass;  /**< the method to get pointer to HMAC key data klass. */
     xmlSecCryptoKeyDataGetKlassMethod            keyDataMLDSAGetKlass;  /**< the method to get pointer to ML-DSA key data klass. */
+    xmlSecCryptoKeyDataGetKlassMethod            keyDataMLKEMGetKlass;  /**< the method to get pointer to ML-KEM key data klass. */
     xmlSecCryptoKeyDataGetKlassMethod            keyDataPbkdf2GetKlass;  /**< the method to get pointer to PBKDF2 key data klass. */
     xmlSecCryptoKeyDataGetKlassMethod            keyDataRsaGetKlass;  /**< the method to get pointer to RSA key data klass. */
     xmlSecCryptoKeyDataGetKlassMethod            keyDataSLHDSAGetKlass;  /**< the method to get pointer to SLH-DSA key data klass. */
@@ -466,6 +476,10 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod          transformMLDSA44GetKlass;  /**< the method to get pointer to ML-DSA-44 signature transform. */
     xmlSecCryptoTransformGetKlassMethod          transformMLDSA65GetKlass;  /**< the method to get pointer to ML-DSA-65 signature transform. */
     xmlSecCryptoTransformGetKlassMethod          transformMLDSA87GetKlass;  /**< the method to get pointer to ML-DSA-87 signature transform. */
+
+    xmlSecCryptoTransformGetKlassMethod          transformMLKEM512GetKlass;  /**< the method to get pointer to ML-KEM-512 key transport transform. */
+    xmlSecCryptoTransformGetKlassMethod          transformMLKEM768GetKlass;  /**< the method to get pointer to ML-KEM-768 key transport transform. */
+    xmlSecCryptoTransformGetKlassMethod          transformMLKEM1024GetKlass;  /**< the method to get pointer to ML-KEM-1024 key transport transform. */
 
     xmlSecCryptoTransformGetKlassMethod          transformMd5GetKlass;  /**< the method to get pointer to MD5 digest transform. */
     xmlSecCryptoTransformGetKlassMethod          transformPbkdf2GetKlass;  /**< the method to get pointer to Pbkdf2 KDF transform. */

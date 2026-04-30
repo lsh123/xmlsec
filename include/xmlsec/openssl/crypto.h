@@ -26,11 +26,77 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/dl.h>
 
-#include <openssl/err.h>
+/******************************************************************************
+ *
+ * What version of the OpenSSL API do we have? (also see configure.ac)
+ *
+ *****************************************************************************/
 #include <openssl/opensslv.h>
+
+#if defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER >= 0x30900000L
+/* LibreSSL implements (most of) OpenSSL 1.1 API */
+#define XMLSEC_OPENSSL_API_111      1
+#elif OPENSSL_VERSION_NUMBER >= 0x40000000L
+#define XMLSEC_OPENSSL_API_400      1
+#define XMLSEC_OPENSSL_API_350      1
+#define XMLSEC_OPENSSL_API_300      1
+#elif OPENSSL_VERSION_NUMBER >= 0x30500000L
+#define XMLSEC_OPENSSL_API_350      1
+#define XMLSEC_OPENSSL_API_300      1
+#elif OPENSSL_VERSION_NUMBER >= 0x30000000L
+#define XMLSEC_OPENSSL_API_300      1
+#elif OPENSSL_VERSION_NUMBER >= 0x10101000L
+#define XMLSEC_OPENSSL_API_111      1
+#else  /* OPENSSL_VERSION_NUMBER */
+#error "This version of OpenSSL library is not supported"
+#endif /* OPENSSL_VERSION_NUMBER */
+
+/******************************************************************************
+ *
+ * OpenSSL and friends have different capabilities, so we need to define
+ * what is supported and what is not.
+ *
+*****************************************************************************/
+#if defined(OPENSSL_IS_BORINGSSL) || defined(OPENSSL_IS_AWSLC)
+#define XMLSEC_NO_RSA_OAEP              1
+#define XMLSEC_NO_DH                    1
+#define XMLSEC_NO_DSA                   1
+#define XMLSEC_NO_SHA3                  1
+#define XMLSEC_NO_CAMELLIA              1
+#define XMLSEC_NO_CHACHA20              1
+#endif /* defined(OPENSSL_IS_BORINGSSL) || defined(OPENSSL_IS_AWSLC) */
+
+#if defined(LIBRESSL_VERSION_NUMBER)
+#define XMLSEC_NO_DH                    1
+#define XMLSEC_NO_CAMELLIA              1
+#define XMLSEC_NO_CHACHA20              1
+#endif /* defined(LIBRESSL_VERSION_NUMBER) */
+
+#if !defined(XMLSEC_OPENSSL_API_350)
+#define XMLSEC_NO_MLDSA                 1
+#define XMLSEC_NO_MLKEM                 1
+#define XMLSEC_NO_SLHDSA                1
+#define XMLSEC_NO_EDDSA                 1
+#define XMLSEC_NO_XDH                   1
+#endif /* !defined(XMLSEC_OPENSSL_API_350) */
+
+#if !defined(XMLSEC_OPENSSL_API_300)
+#define XMLSEC_NO_CONCATKDF             1
+#define XMLSEC_NO_PBKDF2                1
+#define XMLSEC_NO_HKDF                  1
+#endif /* !defined(XMLSEC_OPENSSL_API_300) */
+
+
+/******************************************************************************
+ *
+ * Include OpenSSL headers for various algorithms and data types.
+ *
+ *****************************************************************************/
+#include <openssl/err.h>
 #if !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC)
 #include <openssl/opensslconf.h>
-#endif /* OPENSSL_IS_BORINGSSL */
+#endif /*  !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC) */
+
 
 #ifndef XMLSEC_NO_DSA
 #include <openssl/dsa.h>
@@ -51,6 +117,11 @@
 #include <openssl/evp.h>
 #endif /* XMLSEC_NO_MLDSA */
 
+#ifndef XMLSEC_NO_MLKEM
+#include <openssl/evp.h>
+#include <openssl/ml_kem.h>
+#endif /* XMLSEC_NO_MLKEM */
+
 #ifndef XMLSEC_NO_SLHDSA
 #include <openssl/evp.h>
 #endif /* XMLSEC_NO_SLHDSA */
@@ -67,28 +138,7 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/******************************************************************************
- *
- * What version of the openssl API do we have? (also see configure.ac)
- *
-  *****************************************************************************/
-#if defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER >= 0x30900000L
-/* LibreSSL implements (most of) OpenSSL 1.1 API */
-#define XMLSEC_OPENSSL_API_111      1
-#elif OPENSSL_VERSION_NUMBER >= 0x40000000L
-#define XMLSEC_OPENSSL_API_400      1
-#define XMLSEC_OPENSSL_API_350      1
-#define XMLSEC_OPENSSL_API_300      1
-#elif OPENSSL_VERSION_NUMBER >= 0x30500000L
-#define XMLSEC_OPENSSL_API_350      1
-#define XMLSEC_OPENSSL_API_300      1
-#elif OPENSSL_VERSION_NUMBER >= 0x30000000L
-#define XMLSEC_OPENSSL_API_300      1
-#elif OPENSSL_VERSION_NUMBER >= 0x10101000L
-#define XMLSEC_OPENSSL_API_111      1
-#else  /* OPENSSL_VERSION_NUMBER */
-#error "This version of OpenSSL library is not supported"
-#endif /* OPENSSL_VERSION_NUMBER */
+
 
 /******************************************************************************
  *
@@ -172,6 +222,10 @@ XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateReadFileBio (const ch
 #ifdef OPENSSL_NO_ML_DSA
 #define XMLSEC_NO_MLDSA      1
 #endif /* OPENSSL_NO_ML_DSA */
+
+#ifdef OPENSSL_NO_ML_KEM
+#define XMLSEC_NO_MLKEM      1
+#endif /* OPENSSL_NO_ML_KEM */
 
 #ifdef OPENSSL_NO_SLH_DSA
 #define XMLSEC_NO_SLHDSA      1
@@ -1117,6 +1171,51 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformMLDSA65GetKlass(voi
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformMLDSA87GetKlass(void);
 
 #endif /* XMLSEC_NO_MLDSA */
+
+
+/******************************************************************************
+ *
+ * ML-KEM key and transforms (EXPERIMENTAL)
+ *
+  *****************************************************************************/
+#ifndef XMLSEC_NO_MLKEM
+
+/**
+ * @brief The ML-KEM key klass.
+ */
+#define xmlSecOpenSSLKeyDataMLKEMId \
+        xmlSecOpenSSLKeyDataMLKEMGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataMLKEMGetKlass   (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataMLKEMAdoptEvp   (xmlSecKeyDataPtr data,
+                                                                             EVP_PKEY* pKey);
+XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLKeyDataMLKEMGetEvp     (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataMLKEMGetKL      (xmlSecKeyDataPtr data);
+
+
+/**
+ * @brief The ML-KEM-512 key transport transform klass.
+ */
+#define xmlSecOpenSSLTransformMLKEM512Id  \
+        xmlSecOpenSSLTransformMLKEM512GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformMLKEM512GetKlass(void);
+
+
+/**
+ * @brief The ML-KEM-768 key transport transform klass.
+ */
+#define xmlSecOpenSSLTransformMLKEM768Id  \
+        xmlSecOpenSSLTransformMLKEM768GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformMLKEM768GetKlass(void);
+
+
+/**
+ * @brief The ML-KEM-1024 key transport transform klass.
+ */
+#define xmlSecOpenSSLTransformMLKEM1024Id  \
+        xmlSecOpenSSLTransformMLKEM1024GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformMLKEM1024GetKlass(void);
+
+#endif /* XMLSEC_NO_MLKEM */
 
 
 /******************************************************************************

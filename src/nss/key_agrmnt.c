@@ -50,8 +50,7 @@
 
 typedef struct _xmlSecNssKeyAgreementCtx    xmlSecNssKeyAgreementCtx, *xmlSecNssKeyAgreementCtxPtr;
 struct _xmlSecNssKeyAgreementCtx {
-    xmlSecTransformKeyAgreementParams params;
-    xmlSecKeyPtr secretKey;
+    xmlSecTransformKAM params;
     xmlSecSize expected_secret_len; /* 32 for X25519 */
 };
 
@@ -75,16 +74,8 @@ static int              xmlSecNssKeyAgreementExecute            (xmlSecTransform
 /* Helper functions */
 static int              xmlSecNssKeyAgreementGenerateSecret     (xmlSecNssKeyAgreementCtxPtr ctx,
                                                                   xmlSecTransformOperation operation,
+                                                                  xmlSecKeyDataPtr kamKeyData,
                                                                   xmlSecBufferPtr secret);
-static xmlSecKeyPtr     xmlSecNssKeyAgreementCreateKdfKey       (xmlSecNssKeyAgreementCtxPtr ctx,
-                                                                  xmlSecBufferPtr secret);
-static int              xmlSecNssKeyAgreementExecuteKdf         (xmlSecNssKeyAgreementCtxPtr ctx,
-                                                                  xmlSecTransformOperation operation,
-                                                                  xmlSecBufferPtr secret,
-                                                                  xmlSecBufferPtr out,
-                                                                  xmlSecSize expectedOutputSize,
-                                                                  xmlSecTransformCtxPtr transformCtx);
-
 /******************************************************************************
  *
  * Key Agreement unified context
@@ -131,9 +122,9 @@ xmlSecNssKeyAgreementInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-    ret = xmlSecTransformKeyAgreementParamsInitialize(&(ctx->params));
+    ret = xmlSecTransformKAMInitialize(&(ctx->params));
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformKeyAgreementParamsInitialize",
+        xmlSecInternalError("xmlSecTransformKAMInitialize",
                             xmlSecTransformGetName(transform));
         xmlSecNssKeyAgreementFinalize(transform);
         return(-1);
@@ -153,12 +144,7 @@ xmlSecNssKeyAgreementFinalize(xmlSecTransformPtr transform) {
     ctx = xmlSecNssKeyAgreementGetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
-    if(ctx->secretKey != NULL) {
-        xmlSecKeyDestroy(ctx->secretKey);
-        ctx->secretKey = NULL;
-    }
-
-    xmlSecTransformKeyAgreementParamsFinalize(&(ctx->params));
+    xmlSecTransformKAMFinalize(&(ctx->params));
     memset(ctx, 0, sizeof(xmlSecNssKeyAgreementCtx));
 }
 
@@ -190,23 +176,16 @@ xmlSecNssKeyAgreementSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr key
 
 static int
 xmlSecNssKeyAgreementSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
-    xmlSecNssKeyAgreementCtxPtr ctx;
-
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKeyAgreementSize), -1);
     xmlSecAssert2(key != NULL, -1);
 
-    ctx = xmlSecNssKeyAgreementGetCtx(transform);
-    xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->params.kdfTransform != NULL, -1);
-
-    /* key agreement uses two keys via ctx->params */
+    /* key agreement uses two keys from ctxTransform->extraKeyData (KAM key data) */
     return(0);
 }
 
 static int
-xmlSecNssKeyAgreementNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
-                               xmlSecTransformCtxPtr transformCtx) {
+xmlSecNssKeyAgreementNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
     xmlSecNssKeyAgreementCtxPtr ctx;
     int ret;
 
@@ -217,12 +196,10 @@ xmlSecNssKeyAgreementNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
     ctx = xmlSecNssKeyAgreementGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->params.kdfTransform == NULL, -1);
 
-    ret = xmlSecTransformKeyAgreementParamsRead(&(ctx->params), node, transform, transformCtx);
+    ret = xmlSecTransformKAMRead(&(ctx->params), node, transform, transformCtx);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformKeyAgreementParamsRead",
-                            xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecTransformKAMRead", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -231,8 +208,7 @@ xmlSecNssKeyAgreementNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 }
 
 static int
-xmlSecNssKeyAgreementNodeWrite(xmlSecTransformPtr transform, xmlNodePtr node,
-                                xmlSecTransformCtxPtr transformCtx) {
+xmlSecNssKeyAgreementNodeWrite(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
     xmlSecNssKeyAgreementCtxPtr ctx;
     int ret;
 
@@ -244,10 +220,10 @@ xmlSecNssKeyAgreementNodeWrite(xmlSecTransformPtr transform, xmlNodePtr node,
     ctx = xmlSecNssKeyAgreementGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ret = xmlSecTransformKeyAgreementParamsWrite(&(ctx->params), node, transform, transformCtx);
+
+    ret = xmlSecTransformKAMWrite(&(ctx->params), node, transform, transformCtx);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformKeyAgreementParamsWrite",
-                            xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecTransformKAMWrite", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -255,9 +231,9 @@ xmlSecNssKeyAgreementNodeWrite(xmlSecTransformPtr transform, xmlNodePtr node,
 }
 
 static int
-xmlSecNssKeyAgreementExecute(xmlSecTransformPtr transform, int last,
-                              xmlSecTransformCtxPtr transformCtx) {
+xmlSecNssKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecNssKeyAgreementCtxPtr ctx;
+    xmlSecKeyDataPtr kamKeyData;
     xmlSecBufferPtr in, out;
     int ret;
 
@@ -271,7 +247,6 @@ xmlSecNssKeyAgreementExecute(xmlSecTransformPtr transform, int last,
 
     ctx = xmlSecNssKeyAgreementGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->params.kdfTransform != NULL, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
         transform->status = xmlSecTransformStatusWorking;
@@ -289,21 +264,25 @@ xmlSecNssKeyAgreementExecute(xmlSecTransformPtr transform, int last,
         }
 
         /* Step 1: derive shared secret using NSS ECDH derive support */
-        ret = xmlSecNssKeyAgreementGenerateSecret(ctx, transform->operation, &secret);
+        kamKeyData = xmlSecTransformCtxExtraKeyDataGet(transformCtx, xmlSecKeyDataKAMId);
+        if(kamKeyData == NULL) {
+            xmlSecInternalError("xmlSecTransformCtxExtraKeyDataGet", xmlSecTransformGetName(transform));
+            xmlSecBufferFinalize(&secret);
+            return(-1);
+        }
+        ret = xmlSecNssKeyAgreementGenerateSecret(ctx, transform->operation, kamKeyData, &secret);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecNssKeyAgreementGenerateSecret",
-                                xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecNssKeyAgreementGenerateSecret", xmlSecTransformGetName(transform));
             xmlSecBufferEmpty(&secret);
             xmlSecBufferFinalize(&secret);
             return(-1);
         }
 
         /* Step 2: derive output key with KDF (ConcatKDF) */
-        ret = xmlSecNssKeyAgreementExecuteKdf(ctx, transform->operation, &secret, out,
+        ret = xmlSecTransformKAMExecuteKdf(&(ctx->params), transform->operation, &secret, out,
             transform->expectedOutputSize, transformCtx);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecNssKeyAgreementExecuteKdf",
-                                xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecTransformKAMExecuteKdf", xmlSecTransformGetName(transform));
             xmlSecBufferEmpty(&secret);
             xmlSecBufferFinalize(&secret);
             return(-1);
@@ -311,6 +290,7 @@ xmlSecNssKeyAgreementExecute(xmlSecTransformPtr transform, int last,
 
         xmlSecBufferEmpty(&secret);
         xmlSecBufferFinalize(&secret);
+
         transform->status = xmlSecTransformStatusFinished;
         return(0);
     } else if(transform->status == xmlSecTransformStatusFinished) {
@@ -328,7 +308,9 @@ xmlSecNssKeyAgreementExecute(xmlSecTransformPtr transform, int last,
 static int
 xmlSecNssKeyAgreementGenerateSecret(xmlSecNssKeyAgreementCtxPtr ctx,
                                      xmlSecTransformOperation operation,
+                                     xmlSecKeyDataPtr kamKeyData,
                                      xmlSecBufferPtr secret) {
+    xmlSecKeyDataKAM* kamData;
     xmlSecKeyDataPtr myKeyValue, otherKeyValue;
     SECKEYPrivateKey *myPrivKey = NULL;
     SECKEYPublicKey  *otherPubKey = NULL;
@@ -340,19 +322,24 @@ xmlSecNssKeyAgreementGenerateSecret(xmlSecNssKeyAgreementCtxPtr ctx,
     int res = -1;
 
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->params.keyRecipient != NULL, -1);
-    xmlSecAssert2(ctx->params.keyOriginator != NULL, -1);
+    xmlSecAssert2(kamKeyData != NULL, -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(kamKeyData, xmlSecKeyDataKAMId), -1);
     xmlSecAssert2(secret != NULL, -1);
+
+    kamData = (xmlSecKeyDataKAM*)kamKeyData;
+    xmlSecAssert2(kamData != NULL, -1);
+    xmlSecAssert2(kamData->keyOriginator != NULL, -1);
+    xmlSecAssert2(kamData->keyRecipient != NULL, -1);
 
     /* determine which key is ours (has private key) based on operation */
     if(operation == xmlSecTransformOperationEncrypt) {
         /* originator side: our private key + recipient's public key */
-        myKeyValue    = xmlSecKeyGetValue(ctx->params.keyOriginator);
-        otherKeyValue = xmlSecKeyGetValue(ctx->params.keyRecipient);
+        myKeyValue    = xmlSecKeyGetValue(kamData->keyOriginator);
+        otherKeyValue = xmlSecKeyGetValue(kamData->keyRecipient);
     } else {
         /* recipient side: our private key + originator's public key */
-        myKeyValue    = xmlSecKeyGetValue(ctx->params.keyRecipient);
-        otherKeyValue = xmlSecKeyGetValue(ctx->params.keyOriginator);
+        myKeyValue    = xmlSecKeyGetValue(kamData->keyRecipient);
+        otherKeyValue = xmlSecKeyGetValue(kamData->keyOriginator);
     }
 
     if(myKeyValue == NULL) {
@@ -461,93 +448,6 @@ done:
         xmlSecBufferEmpty(secret);
     }
     return(res);
-}
-
-/* Create KDF key from shared secret */
-static xmlSecKeyPtr
-xmlSecNssKeyAgreementCreateKdfKey(xmlSecNssKeyAgreementCtxPtr ctx, xmlSecBufferPtr secret) {
-    xmlSecKeyPtr key = NULL;
-    xmlSecKeyDataId keyId;
-    xmlSecByte *secretData;
-    xmlSecSize secretSize;
-    int ret;
-
-    xmlSecAssert2(ctx != NULL, NULL);
-    xmlSecAssert2(secret != NULL, NULL);
-
-    secretData = xmlSecBufferGetData(secret);
-    secretSize = xmlSecBufferGetSize(secret);
-    xmlSecAssert2(secretData != NULL, NULL);
-    xmlSecAssert2(secretSize > 0, NULL);
-
-    /* get keyId from kdfTransform's keyReq */
-    keyId = ctx->params.kdfKeyInfoCtx.keyReq.keyId;
-
-    key = xmlSecKeyCreate();
-    if(key == NULL) {
-        xmlSecInternalError("xmlSecKeyCreate", xmlSecKeyDataKlassGetName(keyId));
-        return(NULL);
-    }
-    ret = xmlSecKeyDataBinRead(keyId, key, secretData, secretSize, &(ctx->params.kdfKeyInfoCtx));
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyDataBinRead", xmlSecKeyDataKlassGetName(keyId));
-        xmlSecKeyDestroy(key);
-        return(NULL);
-    }
-
-    /* done */
-    return(key);
-}
-
-/* Execute KDF to derive final key */
-static int
-xmlSecNssKeyAgreementExecuteKdf(xmlSecNssKeyAgreementCtxPtr ctx,
-                                 xmlSecTransformOperation operation,
-                                 xmlSecBufferPtr secret,
-                                 xmlSecBufferPtr out,
-                                 xmlSecSize expectedOutputSize,
-                                 xmlSecTransformCtxPtr transformCtx) {
-    xmlSecBufferPtr memBuf;
-    int ret;
-
-    xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->secretKey == NULL, -1);
-    xmlSecAssert2(ctx->params.kdfTransform != NULL, -1);
-    xmlSecAssert2(ctx->params.memBufTransform != NULL, -1);
-    xmlSecAssert2(secret != NULL, -1);
-    xmlSecAssert2(out != NULL, -1);
-
-    ctx->params.kdfTransform->operation = operation;
-    ctx->params.kdfTransform->expectedOutputSize = expectedOutputSize;
-
-    /* create key from shared secret for the KDF transform */
-    ctx->secretKey = xmlSecNssKeyAgreementCreateKdfKey(ctx, secret);
-    if(ctx->secretKey == NULL) {
-        xmlSecInternalError("xmlSecNssKeyAgreementCreateKdfKey", NULL);
-        return(-1);
-    }
-
-    ret = xmlSecTransformSetKey(ctx->params.kdfTransform, ctx->secretKey);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformSetKey", NULL);
-        return(-1);
-    }
-
-    ret = xmlSecTransformPushBin(ctx->params.kdfTransform, NULL, 0, 1, transformCtx);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformPushBin", NULL);
-        return(-1);
-    }
-
-    memBuf = xmlSecTransformMemBufGetBuffer(ctx->params.memBufTransform);
-    if(memBuf == NULL) {
-        xmlSecInternalError("xmlSecTransformMemBufGetBuffer", NULL);
-        return(-1);
-    }
-
-    /* swap output into out buffer */
-    xmlSecBufferSwap(out, memBuf);
-    return(0);
 }
 
 /* Helper macros to define the key agreement transform klass */

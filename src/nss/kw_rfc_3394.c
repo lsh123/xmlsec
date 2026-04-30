@@ -10,8 +10,6 @@
  * @addtogroup xmlsec_nss_crypto
  * @brief AES/Camellia Key Transport (RFC 3394) implementation for NSS.
  */
-#if !defined(XMLSEC_NO_AES) || !defined(XMLSEC_NO_CAMELLIA)
-
 #include "globals.h"
 
 #include <stdlib.h>
@@ -31,6 +29,9 @@
 
 #include "../kw_helpers.h"
 #include "../cast_helpers.h"
+
+#if !defined(XMLSEC_NO_AES) || !defined(XMLSEC_NO_CAMELLIA)
+
 
 /*
  * NSS needs to implement AES KW internally and then the code

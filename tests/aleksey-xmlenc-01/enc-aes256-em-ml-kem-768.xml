@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PaymentInfo xmlns="http://example.org/paymentv2">
+  <Name>John Smith</Name>
+  <CreditCard Currency="USD" Limit="5,000"><EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Id="ED" Type="http://www.w3.org/2001/04/xmlenc#Content">
+  <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes256-cbc"/>
+  <ds:KeyInfo>
+    <as:EncapsulationMechanism xmlns:as="http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#" Algorithm="http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#ml-kem-768">
+      <ds:KeyInfo>
+        <ds:KeyName>TestKeyName-ml-kem-768</ds:KeyName>
+      </ds:KeyInfo>
+      <CipherData>
+        <CipherValue>zsgqiW/wB7kSKyQK+EpYWn/QO/Mtj1P27ehR3nAMl0wFskaj0sr0py6ZF5VlqMn6
+SxRmJdyOOyLwFM5fOcCYD4ygla5o6NQry+mEOqwvXHKniqHV2KPKiKz/UuTsYbMK
+5tPs3Pyfo/OQnhLtT682Q3aaBTT9Ehd2HXNYlyPzAbvu/twu+zUwzsIWiOXrWZAN
+hoDob9+yHdN7MKQp87n/NHxfD1WpuDlaUDgtuQ2yEMulIe3RvE40QBIVC/R9G3Sa
+kUXg+uhSxfWWqLqax6PGuKm1KN+d9zhkLWzrFHM1PVHt55pWGpVE6j1gnpPmnk1w
+vYQWLSHEP+9VVQr8cnUp9948NZn8c4nP9OCJNMWNZuRbg4lA0ZPRJETlc7Up6wcb
+ewyBZxWS5JqKLqIV2UTgxmSQq4pbVTEM0VSyUenBktfETJhGimYLKARzwMEIWtxU
+kS9/3F8rbfTt5J14QJKGsH9o/DZJlBnTj5xbXrcf3qs8hOunh+7LFAQzv/3KRst6
+iX8LVtk/812oIfPf+mnL8qvqRvxvx5ACPRBPik6ifuHInE9q8xHDpkqhL+V794gh
+1ZFG0oAjyEvzGnO+FQzAElO5CYCrTa4T1ByXEBQyyCH1a5fb0CtxNCMUb1a2g7F3
+Pl0V7gJjdNUPtB2MA1FI0TLCQ7ab+X4pb59NARWS71oR4jQXqf8IR4lJ2h4AcRGK
+82bghTqpJSrnq19IXhK9zytQqdqZfSdm1PCnrIVTl0WkFyA5EHtlDewNr5TmiTWF
+TnBZiA9n09li0xYlsHkHEgkxYTBe5eSHlPXPFtK/XQHkSO20yoABj26bFYJ/I9RT
+T+PIr6nNyGrcgscw2k6C0zxFiKgnHFg5qj7s0ibdEysko8yG2LEMxV2bNoSGofjg
+rho8uGcYVPqyQml+4dRPUeAOqwNhicpuzlmxMOZxJVJ2lN+o/84AaC0YrTBkd2hq
+5EJdYuTI+H+ehvk0xAJwTYz+IbB9HDBqg/9LYjvfFJGMgxXQtPQaU946DZ7kt6Gf
+nSZpCjdqgPLwjvtDCmRzllsBrayu/DezFyhBFstexn9IMP3rnqK1GRtMNpGIeOIK
+Wz9e/bmglNixiIY/rJcUO2WOOeW9SvEZliNHTzIJ9T10RjRpsak1lBVDdPSna5XM
+bglGYJvLBCtfx68afTS0MCBhBLvHpgfDq35354GGDqQ92slaq9J8LKBXl0+esbWE
+yTrZNCRDZYOkWC5d3SX8REHhLXWB5307RgjkN3YY0fsc/imj1Z2bBdDf+GFZArzk
+hRiane62fVJOucJRZQoi69etrL5njrsDf0UIRyxksLHO/gNJphfuyUWahbryNTnc
+z67NCO7Y1+mAiPX7P70D5z0PLInYkzwxBtTYHaRFJaWQXjuTZHyiLh1XBoSlNDyw
+q48Lp6Lmr6LW+bLktPu4r0bD7/bszI573sqnvrtqerY=</CipherValue>
+      </CipherData>
+    </as:EncapsulationMechanism>
+  </ds:KeyInfo>
+  <CipherData>
+    <CipherValue>3xWUktApk5wRPfRXlD1qeNMMFswjeqlSeNenfADMGLZe/I0Wovg4Zsog+JMYnBiB
+P3V/4ctqfDjw8EIQvz5581m6kKJuINzt9R1wmuoyvHg7xlZ+9jCOYZfktBA6mzR3
+4CTmknvxWcEbiQI9Y+v8v6wdm/V/3mbtz/5w3Cv40vfjcaH76ERtMb9XNcT1sTAJ</CipherValue>
+  </CipherData>
+</EncryptedData></CreditCard>
+</PaymentInfo>

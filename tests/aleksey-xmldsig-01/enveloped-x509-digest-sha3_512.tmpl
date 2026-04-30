@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Envelope xmlns="urn:envelope">
+  <Data>
+	Hello, World!
+  </Data>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+            <Transform Algorithm="http://www.w3.org/TR/1999/REC-xpath-19991116">
+            <XPath xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">not(ancestor-or-self::dsig:Signature)</XPath>
+            </Transform>
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+        <DigestValue></DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue/>
+    <KeyInfo>
+      <X509Data>
+        <X509Digest xmlns="http://www.w3.org/2009/xmldsig11#" Algorithm="http://www.w3.org/2007/05/xmldsig-more#sha3-512">
+        AO4amGZNPllXK6SQLgWD+9FI1BG+hU3+tMzcuhwv3gYQW7VC2AdYb8oVC2jzHAr/Y35Ao0pe1DXmo6/+wGWDfA==
+        </X509Digest>
+        <X509Digest xmlns="http://www.w3.org/2009/xmldsig11#" Algorithm="http://www.w3.org/2007/05/xmldsig-more#sha3-512">
+        54UFyARlf0bv8UxzmkPi1plr5D499QwrBCR2/UUeALpDzycbBSgVF6dQBNjUU2WClvzO56h5b1ix79poJNuA3A==
+        </X509Digest>
+        <X509Digest xmlns="http://www.w3.org/2009/xmldsig11#" Algorithm="http://www.w3.org/2007/05/xmldsig-more#sha3-512">
+        9PfhTtLpiw70lVWAJ+aA4hy7nNnc7pHhagbgFrO11bbM7kLP34ESIsgS6HJwKWc32l3Zb3bLPxMzm+w3p3NNkQ==
+        </X509Digest>
+      </X509Data>
+    </KeyInfo>
+  </Signature>
+</Envelope>

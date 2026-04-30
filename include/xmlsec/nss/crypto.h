@@ -827,6 +827,41 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha512GetKlass(void);
 
 /******************************************************************************
  *
+ * SHA3 transforms
+ *
+  *****************************************************************************/
+#ifndef XMLSEC_NO_SHA3
+/**
+ * @brief The SHA3-224 digest transform klass.
+ */
+#define xmlSecNssTransformSha3_224Id \
+        xmlSecNssTransformSha3_224GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha3_224GetKlass(void);
+
+/**
+ * @brief The SHA3-256 digest transform klass.
+ */
+#define xmlSecNssTransformSha3_256Id \
+        xmlSecNssTransformSha3_256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha3_256GetKlass(void);
+
+/**
+ * @brief The SHA3-384 digest transform klass.
+ */
+#define xmlSecNssTransformSha3_384Id \
+        xmlSecNssTransformSha3_384GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha3_384GetKlass(void);
+
+/**
+ * @brief The SHA3-512 digest transform klass.
+ */
+#define xmlSecNssTransformSha3_512Id \
+        xmlSecNssTransformSha3_512GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha3_512GetKlass(void);
+#endif /* XMLSEC_NO_SHA3 */
+
+/******************************************************************************
+ *
  * MD5 transforms
  *
   *****************************************************************************/

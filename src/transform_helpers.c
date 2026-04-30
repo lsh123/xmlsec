@@ -34,6 +34,7 @@
 #include <xmlsec/errors.h>
 
 #include "cast_helpers.h"
+#include "keysdata_helpers.h"
 #include "transform_helpers.h"
 
 
@@ -298,55 +299,9 @@ xmlSecTransformConcatKdfParamsGetFixedInfo(xmlSecTransformConcatKdfParamsPtr par
 
 #endif /* XMLSEC_NO_CONCATKDF */
 
-/******************************************************************************
- * Common Key Agreement Params
- *****************************************************************************/
-int
-xmlSecTransformKeyAgreementParamsInitialize(xmlSecTransformKeyAgreementParamsPtr params) {
-    int ret;
-
-    xmlSecAssert2(params != NULL, -1);
-
-    memset(params, 0, sizeof(*params));
-
-    ret = xmlSecKeyInfoCtxInitialize(&(params->kdfKeyInfoCtx), NULL); /* no keys manager needed */
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyInfoCtxInitialize", NULL);
-        xmlSecTransformKeyAgreementParamsFinalize(params);
-        return(-1);
-    }
-
-    /* done */
-    return(0);
-}
-
-void
-xmlSecTransformKeyAgreementParamsFinalize(xmlSecTransformKeyAgreementParamsPtr params) {
-    xmlSecAssert(params != NULL);
-
-
-    xmlSecKeyInfoCtxFinalize(&(params->kdfKeyInfoCtx));
-
-    if(params->kdfTransform != NULL) {
-        xmlSecTransformDestroy(params->kdfTransform);
-    }
-    if(params->memBufTransform != NULL) {
-        xmlSecTransformDestroy(params->memBufTransform);
-    }
-    if(params->keyOriginator != NULL) {
-        xmlSecKeyDestroy(params->keyOriginator);
-    }
-    if(params->keyRecipient != NULL) {
-        xmlSecKeyDestroy(params->keyRecipient);
-    }
-
-    /* cleanup */
-    memset(params, 0, sizeof(*params));
-}
-
-static xmlSecKeyPtr
-xmlSecTransformKeyAgreementReadKey(xmlSecKeyDataType keyType, xmlNodePtr node,
-    xmlSecTransformPtr kaTransform, xmlSecTransformCtxPtr transformCtx)
+xmlSecKeyPtr
+xmlSecTransformReadKeyInfoNode(xmlSecKeyDataType keyType, xmlNodePtr node,
+    xmlSecTransformPtr transform, xmlSecTransformCtxPtr transformCtx)
 {
     xmlSecKeyInfoCtx keyInfoCtx;
     xmlSecKeysMngrPtr keysMngr;
@@ -355,7 +310,7 @@ xmlSecTransformKeyAgreementReadKey(xmlSecKeyDataType keyType, xmlNodePtr node,
     int ret;
 
     xmlSecAssert2(node != NULL, NULL);
-    xmlSecAssert2(kaTransform != NULL, NULL);
+    xmlSecAssert2(transform != NULL, NULL);
     xmlSecAssert2(transformCtx != NULL, NULL);
     xmlSecAssert2(transformCtx->parentKeyInfoCtx != NULL, NULL);
 
@@ -376,7 +331,7 @@ xmlSecTransformKeyAgreementReadKey(xmlSecKeyDataType keyType, xmlNodePtr node,
     }
     keyInfoCtx.mode = xmlSecKeyInfoModeRead;
 
-    ret = xmlSecTransformSetKeyReq(kaTransform, &(keyInfoCtx.keyReq));
+    ret = xmlSecTransformSetKeyReq(transform, &(keyInfoCtx.keyReq));
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformSetKeyReq(originator)", xmlSecNodeGetName(node));
         goto done;
@@ -406,9 +361,9 @@ done:
 }
 
 
-static int
-xmlSecTransformKeyAgreementWriteKey(xmlSecKeyPtr key, xmlNodePtr node,
-    xmlSecTransformPtr kaTransform, xmlSecTransformCtxPtr transformCtx)
+int
+xmlSecTransformWriteKeyInfoNode(xmlSecKeyPtr key, xmlNodePtr node,
+    xmlSecTransformPtr transform, xmlSecTransformCtxPtr transformCtx)
 {
     xmlSecKeyInfoCtx keyInfoCtx;
     int ret;
@@ -416,7 +371,7 @@ xmlSecTransformKeyAgreementWriteKey(xmlSecKeyPtr key, xmlNodePtr node,
 
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
-    xmlSecAssert2(kaTransform != NULL, -1);
+    xmlSecAssert2(transform != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
     xmlSecAssert2(transformCtx->parentKeyInfoCtx != NULL, -1);
 
@@ -451,24 +406,79 @@ done:
 }
 
 
+/******************************************************************************
+ *
+ * Key Agreement Method (KAM) Transform
+ * https://www.w3.org/TR/xmlenc-core1/#sec-AgreementMethod:
+ *
+ * @code{.xml}
+ *  <element name="AgreementMethod" type="xenc:AgreementMethodType"/>
+ *  <complexType name="AgreementMethodType" mixed="true">
+ *      <sequence>
+ *          <element name="KA-Nonce" minOccurs="0" type="base64Binary"/>
+ *          <!-- <element ref="ds:DigestMethod" minOccurs="0"/> -->
+ *          <any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+ *          <element name="OriginatorKeyInfo" minOccurs="0" type="ds:KeyInfoType"/>
+ *          <element name="RecipientKeyInfo" minOccurs="0" type="ds:KeyInfoType"/>
+ *      </sequence>
+ *      <attribute name="Algorithm" type="anyURI" use="required"/>
+ *  </complexType>
+ * @endcode
+ *
+ *****************************************************************************/
+
 int
-xmlSecTransformKeyAgreementParamsRead(xmlSecTransformKeyAgreementParamsPtr params, xmlNodePtr node,
-    xmlSecTransformPtr kaTransform, xmlSecTransformCtxPtr transformCtx)
-{
-    xmlNodePtr cur;
-    xmlSecKeyDataType originatorKeyType, recipientKeyType;
+xmlSecTransformKAMInitialize(xmlSecTransformKAMPtr params) {
     int ret;
-    int res = -1;
+
+    xmlSecAssert2(params != NULL, -1);
+
+    memset(params, 0, sizeof(*params));
+
+    ret = xmlSecKeyInfoCtxInitialize(&(params->kdfKeyInfoCtx), NULL); /* no keys manager needed */
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyInfoCtxInitialize", NULL);
+        xmlSecTransformKAMFinalize(params);
+        return(-1);
+    }
+
+    /* done */
+    return(0);
+}
+
+void
+xmlSecTransformKAMFinalize(xmlSecTransformKAMPtr params) {
+    xmlSecAssert(params != NULL);
+
+    xmlSecKeyInfoCtxFinalize(&(params->kdfKeyInfoCtx));
+
+    if(params->kdfTransform != NULL) {
+        xmlSecTransformDestroy(params->kdfTransform);
+    }
+    if(params->memBufTransform != NULL) {
+        xmlSecTransformDestroy(params->memBufTransform);
+    }
+
+    /* cleanup */
+    memset(params, 0, sizeof(*params));
+}
+
+int
+xmlSecTransformKAMRead(xmlSecTransformKAMPtr params, xmlNodePtr node, xmlSecTransformPtr kamTransform, xmlSecTransformCtxPtr transformCtx)
+{
+    xmlSecKeyDataPtr kamKeyData;
+    xmlSecKeyDataKAM* kamData;
+    xmlSecKeyDataType originatorKeyType, recipientKeyType;
+    xmlNodePtr cur;
+    int ret;
 
     xmlSecAssert2(params != NULL, -1);
     xmlSecAssert2(params->kdfTransform == NULL, -1);
     xmlSecAssert2(params->memBufTransform == NULL, -1);
-    xmlSecAssert2(params->keyOriginator == NULL, -1);
-    xmlSecAssert2(params->keyRecipient == NULL, -1);
-    xmlSecAssert2(kaTransform != NULL, -1);
-    xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
     xmlSecAssert2(transformCtx->parentKeyInfoCtx != NULL, -1);
+    xmlSecAssert2(kamTransform != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
 
     if(transformCtx->parentKeyInfoCtx->operation == xmlSecTransformOperationEncrypt) {
         /* we are encrypting on originator side which needs private key */
@@ -480,122 +490,145 @@ xmlSecTransformKeyAgreementParamsRead(xmlSecTransformKeyAgreementParamsPtr param
         recipientKeyType = xmlSecKeyDataTypePrivate;
     }
 
-    /* first is required KeyDerivationMethod */
+    /* get or create kamKeyData in transformCtx and set originator/recipient keys */
+    kamKeyData = xmlSecTransformCtxExtraKeyDataEnsure(transformCtx, xmlSecKeyDataKAMId);
+    if(kamKeyData == NULL) {
+        xmlSecInternalError("xmlSecTransformCtxExtraKeyDataEnsure(kamKeyData)", xmlSecNodeGetName(node));
+        return(-1);
+    }
+    xmlSecAssert2(xmlSecKeyDataCheckId(kamKeyData, xmlSecKeyDataKAMId), -1);
+    kamData = (xmlSecKeyDataKAM*)kamKeyData;
+
+    /* start with the first child element of the node */
     cur = xmlSecGetNextElementNode(node->children);
+
+    /* first is required KeyDerivationMethod */
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeKeyDerivationMethod, xmlSecEnc11Ns))) {
         xmlSecInvalidNodeError(cur, xmlSecNodeKeyDerivationMethod, NULL);
-        goto done;
+        return(-1);
     }
     params->kdfTransform = xmlSecTransformNodeRead(cur, xmlSecTransformUsageKeyDerivationMethod, transformCtx);
     if(params->kdfTransform  == NULL) {
         xmlSecInternalError("xmlSecTransformNodeRead", xmlSecNodeGetName(node));
-        goto done;
+        return(-1);
     }
     ret = xmlSecTransformSetKeyReq(params->kdfTransform, &(params->kdfKeyInfoCtx.keyReq));
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformSetKeyReq", xmlSecNodeGetName(node));
-        goto done;
+        return(-1);
     }
-
-    /* next node is required OriginatorKeyInfo (we need public key)*/
     cur = xmlSecGetNextElementNode(cur->next);
+
+    /* next node is required OriginatorKeyInfo (we need public key) */
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeOriginatorKeyInfo, xmlSecEncNs))) {
         xmlSecInvalidNodeError(cur, xmlSecNodeOriginatorKeyInfo, NULL);
-        goto done;
+        return(-1);
     }
-    params->keyOriginator = xmlSecTransformKeyAgreementReadKey(originatorKeyType, cur, kaTransform, transformCtx);
-    if(params->keyOriginator  == NULL) {
-        xmlSecInternalError("xmlSecTransformKeyAgreementReadKey(OriginatorKeyInfo)", xmlSecNodeGetName(node));
-        goto done;
+    /* only lookup key if not already present in kamData */
+    if(kamData->keyOriginator == NULL) {
+        kamData->keyOriginator = xmlSecTransformReadKeyInfoNode(originatorKeyType, cur, kamTransform, transformCtx);
+        if(kamData->keyOriginator == NULL) {
+            xmlSecInternalError("xmlSecTransformReadKeyInfoNode(OriginatorKeyInfo)", xmlSecNodeGetName(node));
+            return(-1);
+        }
     }
-
-    /* next node is required RecipientKeyInfo (we need private key)*/
     cur = xmlSecGetNextElementNode(cur->next);
+
+    /* next node is required RecipientKeyInfo (we need private key) */
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeRecipientKeyInfo, xmlSecEncNs))) {
         xmlSecInvalidNodeError(cur, xmlSecNodeRecipientKeyInfo, NULL);
-        goto done;
+        return(-1);
     }
-    params->keyRecipient = xmlSecTransformKeyAgreementReadKey(recipientKeyType, cur, kaTransform, transformCtx);
-    if(params->keyRecipient  == NULL) {
-        xmlSecInternalError("xmlSecTransformKeyAgreementReadKey(RecipientKeyInfo)", xmlSecNodeGetName(node));
-        goto done;
+    /* only lookup key if not already present in kamData */
+    if(kamData->keyRecipient == NULL) {
+        kamData->keyRecipient = xmlSecTransformReadKeyInfoNode(recipientKeyType, cur, kamTransform, transformCtx);
+        if(kamData->keyRecipient == NULL) {
+            xmlSecInternalError("xmlSecTransformReadKeyInfoNode(RecipientKeyInfo)", xmlSecNodeGetName(node));
+            return(-1);
+        }
     }
+    cur = xmlSecGetNextElementNode(cur->next);
 
     /* if there is something left than it's an error */
-    cur = xmlSecGetNextElementNode(cur->next);
     if(cur != NULL) {
         xmlSecUnexpectedNodeError(cur,  NULL);
-        goto done;
+        return(-1);
     }
 
     /* append MemBuf transform after kdf transform to collect results */
     params->memBufTransform = xmlSecTransformCreate(xmlSecTransformMemBufId);
     if(!xmlSecTransformIsValid(params->memBufTransform )) {
         xmlSecInternalError("xmlSecTransformCreate(MemBufId)",  xmlSecNodeGetName(node));
-        goto done;
+        return(-1);
     }
     params->kdfTransform->next = params->memBufTransform;
     params->memBufTransform->prev = params->kdfTransform;
 
     /* success */
-    res = 0;
-
-done:
-    return(res);
+    return(0);
 }
 
+
 int
-xmlSecTransformKeyAgreementParamsWrite(xmlSecTransformKeyAgreementParamsPtr params, xmlNodePtr node,
-    xmlSecTransformPtr kaTransform, xmlSecTransformCtxPtr transformCtx)
-{
+xmlSecTransformKAMWrite(xmlSecTransformKAMPtr params, xmlNodePtr node, xmlSecTransformPtr kamTransform, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecKeyDataKAM* kamData;
     xmlNodePtr cur;
     int ret;
     int res = -1;
 
     xmlSecAssert2(params != NULL, -1);
-    xmlSecAssert2(kaTransform != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(kamTransform != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
     xmlSecAssert2(transformCtx->parentKeyInfoCtx != NULL, -1);
 
-    /* first is required KeyDerivationMethod */
+    {
+        xmlSecKeyDataPtr kamKeyData = xmlSecTransformCtxExtraKeyDataGet(transformCtx, xmlSecKeyDataKAMId);
+        xmlSecAssert2(kamKeyData != NULL, -1);
+        xmlSecAssert2(xmlSecKeyDataCheckId(kamKeyData, xmlSecKeyDataKAMId), -1);
+        kamData = (xmlSecKeyDataKAM*)kamKeyData;
+    }
+
+    /* start with the first child element of the node */
     cur = xmlSecGetNextElementNode(node->children);
+
+    /* first is required KeyDerivationMethod */
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeKeyDerivationMethod, xmlSecEnc11Ns))) {
         xmlSecInvalidNodeError(cur, xmlSecNodeKeyDerivationMethod, NULL);
         goto done;
     }
     /* do nothing for KeyDerivationMethod for now */
-
-    /* next node is required OriginatorKeyInfo (we need public key)*/
     cur = xmlSecGetNextElementNode(cur->next);
+
+    /* next node is required OriginatorKeyInfo */
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeOriginatorKeyInfo, xmlSecEncNs))) {
         xmlSecInvalidNodeError(cur, xmlSecNodeOriginatorKeyInfo, NULL);
         goto done;
     }
-    if(params->keyOriginator != NULL) {
-        ret = xmlSecTransformKeyAgreementWriteKey(params->keyOriginator, cur, kaTransform, transformCtx);
+    if(kamData->keyOriginator != NULL) {
+        ret = xmlSecTransformWriteKeyInfoNode(kamData->keyOriginator, cur, kamTransform, transformCtx);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecTransformKeyAgreementWriteKey(OriginatorKeyInfo)", xmlSecNodeGetName(node));
+            xmlSecInternalError("xmlSecTransformWriteKeyInfoNode(OriginatorKeyInfo)", xmlSecNodeGetName(node));
             goto done;
         }
     }
-
-    /* next node is required RecipientKeyInfo (we need private key)*/
     cur = xmlSecGetNextElementNode(cur->next);
+
+    /* next node is required RecipientKeyInfo */
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeRecipientKeyInfo, xmlSecEncNs))) {
         xmlSecInvalidNodeError(cur, xmlSecNodeRecipientKeyInfo, NULL);
         goto done;
     }
-    if(params->keyRecipient != NULL) {
-        ret = xmlSecTransformKeyAgreementWriteKey(params->keyRecipient, cur, kaTransform, transformCtx);
+    if(kamData->keyRecipient != NULL) {
+        ret = xmlSecTransformWriteKeyInfoNode(kamData->keyRecipient, cur, kamTransform, transformCtx);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecTransformKeyAgreementWriteKey(RecipientKeyInfo)", xmlSecNodeGetName(node));
+            xmlSecInternalError("xmlSecTransformWriteKeyInfoNode(RecipientKeyInfo)", xmlSecNodeGetName(node));
             goto done;
         }
     }
+    cur = xmlSecGetNextElementNode(cur->next);
 
     /* if there is something left than it's an error */
-    cur = xmlSecGetNextElementNode(cur->next);
     if(cur != NULL) {
         xmlSecUnexpectedNodeError(cur,  NULL);
         goto done;
@@ -608,10 +641,285 @@ done:
     return(res);
 }
 
+
+static xmlSecKeyPtr
+xmlSecTransformKAMCreateKdfKey(xmlSecTransformKAMPtr params, xmlSecBufferPtr secret) {
+    xmlSecKeyPtr key = NULL;
+    xmlSecKeyDataId keyId;
+    xmlSecByte * secretData;
+    xmlSecSize secretSize;
+    int ret;
+
+    xmlSecAssert2(params != NULL, NULL);
+    xmlSecAssert2(secret != NULL, NULL);
+
+    secretData = xmlSecBufferGetData(secret);
+    secretSize = xmlSecBufferGetSize(secret);
+    xmlSecAssert2(secretData != NULL, NULL);
+    xmlSecAssert2(secretSize > 0, NULL);
+
+    /* get keyId from kdfTransform's keyReq */
+    keyId = params->kdfKeyInfoCtx.keyReq.keyId;
+
+    key = xmlSecKeyCreate();
+    if(key == NULL) {
+        xmlSecInternalError("xmlSecKeyCreate", xmlSecKeyDataKlassGetName(keyId));
+        return(NULL);
+    }
+    ret = xmlSecKeyDataBinRead(keyId, key, secretData, secretSize, &(params->kdfKeyInfoCtx));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyDataBinRead", xmlSecKeyDataKlassGetName(keyId));
+        xmlSecKeyDestroy(key);
+        return(NULL);
+    }
+
+    /* done */
+    return(key);
+}
+
+int
+xmlSecTransformKAMExecuteKdf(xmlSecTransformKAMPtr params, xmlSecTransformOperation operation,
+    xmlSecBufferPtr secret, xmlSecBufferPtr out, xmlSecSize expectedOutputSize,
+    xmlSecTransformCtxPtr transformCtx)
+{
+    xmlSecKeyPtr secretKey = NULL;
+    xmlSecBufferPtr memBuf;
+    int ret;
+    int res = -1;
+
+    xmlSecAssert2(params != NULL, -1);
+    xmlSecAssert2(params->kdfTransform != NULL, -1);
+    xmlSecAssert2(params->memBufTransform != NULL, -1);
+    xmlSecAssert2(secret != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);
+
+    params->kdfTransform->operation = operation;
+    params->kdfTransform->expectedOutputSize = expectedOutputSize;
+
+    secretKey = xmlSecTransformKAMCreateKdfKey(params, secret);
+    if(secretKey == NULL) {
+        xmlSecInternalError("xmlSecTransformKAMCreateKdfKey", NULL);
+        goto done;
+    }
+
+    ret = xmlSecTransformSetKey(params->kdfTransform, secretKey);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformSetKey", NULL);
+        goto done;
+    }
+
+    ret = xmlSecTransformPushBin(params->kdfTransform, NULL, 0, 1, transformCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformPushBin", NULL);
+        goto done;
+    }
+
+    memBuf = xmlSecTransformMemBufGetBuffer(params->memBufTransform);
+    if(memBuf == NULL) {
+        xmlSecInternalError("xmlSecTransformMemBufGetBuffer", NULL);
+        goto done;
+    }
+
+    xmlSecBufferSwap(out, memBuf);
+    res = 0;
+
+done:
+    if(secretKey != NULL) {
+        xmlSecKeyDestroy(secretKey);
+    }
+    return(res);
+}
+
+/******************************************************************************
+ *
+ * Key Encapsulation Method (KEM) Transform
+ *
+ * Note that CipherReference node is not currently supported
+ *
+ * @code{.xml}
+ *  <as:EncapsulationMechanism xmlns:as="XMLSEC_ALKESEY_EXPERIMENTAL_2025_12"Algorithm="some uri">
+ *      <ds:KeyInfo/>
+ *      <enc:CipherData>
+ *          <enc:CipherValue/>
+ *      </enc:CipherData>
+ *  </as:EncapsulationMechanism>
+ * @endcode
+ *
+ *****************************************************************************/
+
+#ifndef XMLSEC_NO_MLKEM
+
+int
+xmlSecTransformKEMRead(xmlNodePtr node, xmlSecTransformPtr kemTransform, xmlSecTransformCtxPtr transformCtx)
+{
+    xmlSecKeyDataPtr kemKeyData;
+    xmlSecKeyDataKEM* kemData;
+    xmlNodePtr cur;
+    xmlSecKeyDataType keyType;
+    int ret;
+
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(kemTransform != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+    xmlSecAssert2(transformCtx->parentKeyInfoCtx != NULL, -1);
+
+
+    /* get or create kemKeyData in transformCtx */
+    kemKeyData = xmlSecTransformCtxExtraKeyDataEnsure(transformCtx, xmlSecKeyDataKEMId);
+    if(kemKeyData == NULL) {
+        xmlSecInternalError("xmlSecTransformCtxExtraKeyDataEnsure(kemKeyData)", xmlSecNodeGetName(node));
+        return(-1);
+    }
+    xmlSecAssert2(xmlSecKeyDataCheckId(kemKeyData, xmlSecKeyDataKEMId), -1);
+    kemData = (xmlSecKeyDataKEM*)kemKeyData;
+
+    /* on decrypt the recipient uses their private key to decapsulate */
+    switch(transformCtx->parentKeyInfoCtx->operation) {
+        case xmlSecTransformOperationSign:
+        case xmlSecTransformOperationEncrypt:
+            keyType = xmlSecKeyDataTypePublic;
+            break;
+        case xmlSecTransformOperationVerify:
+        case xmlSecTransformOperationDecrypt:
+            keyType = xmlSecKeyDataTypePrivate;
+            break;
+        default:
+            xmlSecInternalError2("invalid operation", NULL, "operation=%u", transformCtx->parentKeyInfoCtx->operation);
+            return(-1);
+    }
+
+    /* start with the first child element of the node */
+    cur = xmlSecGetNextElementNode(node->children);
+
+    /* first is required ds:KeyInfo containing the encapsulation key */
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeKeyInfo, xmlSecDSigNs))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeKeyInfo, NULL);
+        return(-1);
+    }
+    /* only lookup key if not already present in kemData */
+    if(kemData->encapsulationKey == NULL) {
+        kemData->encapsulationKey = xmlSecTransformReadKeyInfoNode(keyType, cur, kemTransform, transformCtx);
+        if(kemData->encapsulationKey == NULL) {
+            xmlSecInternalError("xmlSecTransformReadKeyInfoNode(KeyInfo)", xmlSecNodeGetName(node));
+             return(-1);
+        }
+    }
+    cur = xmlSecGetNextElementNode(cur->next);
+
+    /* next is required enc:CipherData containing the KEM ciphertext (might be empty during encryption) */
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeCipherData, xmlSecEncNs))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeCipherData, NULL);
+        return(-1);
+    }
+
+    /* only read it if we don't have it already */
+    if(xmlSecBufferIsEmpty(&(kemData->ciphertext))) {
+        xmlNodePtr cipherValueNode;
+
+        /* find CipherValue inside CipherData */
+        cipherValueNode = xmlSecGetNextElementNode(cur->children);
+        if((cipherValueNode == NULL) || (!xmlSecCheckNodeName(cipherValueNode, xmlSecNodeCipherValue, xmlSecEncNs))) {
+            xmlSecInvalidNodeError(cipherValueNode, xmlSecNodeCipherValue, xmlSecNodeGetName(node));
+            return(-1);
+        }
+
+        ret = xmlSecBufferBase64NodeContentRead(&(kemData->ciphertext), cipherValueNode);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecBufferBase64NodeContentRead(CipherValue)", xmlSecNodeGetName(node));
+            return(-1);
+        }
+    }
+    cur = xmlSecGetNextElementNode(cur->next);
+
+    /* if there is something left then it's an error */
+    if(cur != NULL) {
+        xmlSecUnexpectedNodeError(cur, NULL);
+        return(-1);
+    }
+
+    /* done */
+    return(0);
+}
+
+
+int
+xmlSecTransformKEMWrite(xmlNodePtr node, xmlSecTransformPtr kemTransform, xmlSecTransformCtxPtr transformCtx)
+{
+    xmlSecKeyDataKEM* kemData;
+    xmlNodePtr cur;
+    int ret;
+
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(kemTransform != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+    xmlSecAssert2(transformCtx->parentKeyInfoCtx != NULL, -1);
+
+    {
+        xmlSecKeyDataPtr kemKeyData = xmlSecTransformCtxExtraKeyDataGet(transformCtx, xmlSecKeyDataKEMId);
+        xmlSecAssert2(kemKeyData != NULL, -1);
+        xmlSecAssert2(xmlSecKeyDataCheckId(kemKeyData, xmlSecKeyDataKEMId), -1);
+        kemData = (xmlSecKeyDataKEM*)kemKeyData;
+    }
+
+    /* start with the first child element of the node */
+    cur = xmlSecGetNextElementNode(node->children);
+
+    /* first is required ds:KeyInfo: write recipient's public key */
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeKeyInfo, xmlSecDSigNs))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeKeyInfo, NULL);
+        return(-1);
+    }
+    if(kemData->encapsulationKey != NULL) {
+        ret = xmlSecTransformWriteKeyInfoNode(kemData->encapsulationKey, cur, kemTransform, transformCtx);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecTransformWriteKeyInfoNode(KeyInfo)", xmlSecNodeGetName(node));
+            return(-1);
+        }
+    }
+    cur = xmlSecGetNextElementNode(cur->next);
+
+    /* next is required enc:CipherData containing the KEM ciphertext (might be empty during encryption) */
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeCipherData, xmlSecEncNs))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeCipherData, NULL);
+        return(-1);
+    }
+
+    /* only write if not empty */
+    if(!xmlSecBufferIsEmpty(&(kemData->ciphertext))) {
+        xmlNodePtr cipherValueNode;
+
+        cipherValueNode = xmlSecGetNextElementNode(cur->children);
+        if((cipherValueNode == NULL) || (!xmlSecCheckNodeName(cipherValueNode, xmlSecNodeCipherValue, xmlSecEncNs))) {
+            xmlSecInvalidNodeError(cipherValueNode, xmlSecNodeCipherValue, xmlSecNodeGetName(node));
+            return(-1);
+        }
+
+        ret = xmlSecBufferBase64NodeContentWrite(&(kemData->ciphertext), cipherValueNode, xmlSecBase64GetDefaultLineSize());
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(CipherValue)", xmlSecNodeGetName(node));
+            return(-1);
+        }
+    }
+    cur = xmlSecGetNextElementNode(cur->next);
+
+    /* if there is something left then it's an error */
+    if(cur != NULL) {
+        xmlSecUnexpectedNodeError(cur, NULL);
+        return(-1);
+    }
+
+    /* done */
+    return(0);
+}
+#endif /* !defined(XMLSEC_NO_MLKEM) */
+
+
+
 #ifndef XMLSEC_NO_HMAC
 
 /* min output for hmac transform in bits */
 static xmlSecSize g_xmlsec_transform_hmac_min_output_bits_size = 80;
+
 
 /**
  * @brief Gets the minimum size in bits for HMAC output.
@@ -780,7 +1088,7 @@ xmlSecTransformHmacVerify(const xmlSecByte* data, xmlSecSize dataSize,
 /*
  * THIS IS EXPERIMENTAL AND NON-STANDARD
  *
- * <SignatureMethod Algorithm="http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#ml-dsa-44">
+ * <SignatureMethod Algorithm="XMLSEC_ALKESEY_EXPERIMENTAL_2025_12#ml-dsa-44">
  *   <mldsa:MLDSAContextString>base64 encoded context string</mldsa:MLDSAContextString>
  * </SignatureMethod>
  */
@@ -828,7 +1136,7 @@ xmlSecTransformMLDSAReadContextString(xmlNodePtr node, xmlSecBufferPtr res) {
 /*
  * THIS IS EXPERIMENTAL AND NON-STANDARD
  *
- * <SignatureMethod Algorithm="http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#ml-dsa-44">
+ * <SignatureMethod Algorithm="XMLSEC_ALKESEY_EXPERIMENTAL_2025_12#slh-dsa-44">
  *   <slhdsa:SLHDSAContextString>base64 encoded context string</slhdsa:SLHDSAContextString>
  * </SignatureMethod>
  */

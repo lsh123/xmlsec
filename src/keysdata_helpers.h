@@ -18,6 +18,7 @@
 
 #include <xmlsec/keysdata.h>
 #include <xmlsec/keysmngr.h>
+#include <xmlsec/transforms.h>
 
 
 XMLSEC_EXPORT void          xmlSecKeyDataDebugDumpImpl(xmlSecKeyDataPtr data, FILE* output);
@@ -282,5 +283,62 @@ XMLSEC_EXPORT int               xmlSecKeyDataDsaXmlWrite                (xmlSecK
                                                                          xmlSecKeyDataDsaWrite writeFunc);
 #endif /* !defined(XMLSEC_NO_DSA) */
 
+/**
+ * @brief Key agreement params cached in a key object.
+ *
+ * After a successful key-agreement Execute, the originator and recipient keys
+ * are stored here and attached to the derived-key object.  On the subsequent
+ * write path the cached keys are retrieved from the key object and placed into
+ * @c transformCtx->extraKeyData (KAM key data) so that the backend NodeRead can skip XML parsing
+ * and repeated key-store lookups.
+ */
+typedef struct _xmlSecKeyDataKAM {
+    xmlSecKeyData   keyData;          /**< base key data (MUST be first) */
+    xmlSecKeyPtr    keyOriginator;    /**< originator key */
+    xmlSecKeyPtr    keyRecipient;     /**< recipient key */
+} xmlSecKeyDataKAM;
+
+
+/** @brief The KA params key data klass ID. */
+#define xmlSecKeyDataKAMId      xmlSecKeyDataKAMGetKlass()
+
+XMLSEC_EXPORT xmlSecKeyDataId   xmlSecKeyDataKAMGetKlass           (void);
+
+
+#ifndef XMLSEC_NO_MLKEM
+/**
+ * @brief Key Encapsulation data cached in a key object.
+ *
+ * After a successful key-encapsulation Execute, the recipient key and the ciphertext
+ * are stored here and attached to the derived-key object. On the subsequent
+ * write path the cached data are retrieved from the key object and placed into
+ * @c transformCtx->extraKeyData (KEM key data) so that the backend NodeRead can skip XML parsing
+ * and repeated key-store lookups.
+
+ */
+typedef struct _xmlSecKeyDataKEM {
+    xmlSecKeyData   keyData;
+    xmlSecKeyPtr    encapsulationKey; /**< recipient public key (encrypt) or private key (decrypt) */
+    xmlSecBuffer    ciphertext;   /**< KEM ciphertext from/to enc:CipherData/enc:CipherValue */
+} xmlSecKeyDataKEM;
+
+#define xmlSecKeyDataKEMId \
+        xmlSecKeyDataKEMGetKlass()
+XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataKEMGetKlass         (void);
+XMLSEC_EXPORT xmlSecKeyPtr              xmlSecKeyDataKEMGetRecipientKey  (xmlSecKeyDataPtr data);
+XMLSEC_EXPORT xmlSecBufferPtr           xmlSecKeyDataKEMGetCiphertext    (xmlSecKeyDataPtr data);
+XMLSEC_EXPORT int                       xmlSecKeyDataKEMSetCiphertext    (xmlSecKeyDataPtr data,
+                                                                          const xmlSecByte* buf,
+                                                                          xmlSecSize bufSize);
+XMLSEC_EXPORT int                       xmlSecKeyDataKEMNodeRead         (xmlSecKeyDataPtr data,
+                                                                          xmlNodePtr node,
+                                                                          xmlSecTransformPtr kemTransform,
+                                                                          xmlSecTransformCtxPtr transformCtx);
+XMLSEC_EXPORT int                       xmlSecKeyDataKEMNodeWrite        (xmlSecKeyDataPtr data,
+                                                                          xmlNodePtr node,
+                                                                          xmlSecTransformPtr kemTransform,
+                                                                          xmlSecTransformCtxPtr transformCtx);
+
+#endif /* !defined(XMLSEC_NO_MLKEM) */
 
 #endif /* __XMLSEC_KEYSDATA_HELPERS_H__ */

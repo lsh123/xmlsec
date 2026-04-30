@@ -291,6 +291,138 @@ xmlSecTransformCtxSetDefaultBinaryChunkSize(xmlSecSize binaryChunkSize) {
     g_xmlSecTransformCtxDefaultBinaryChunkSize = binaryChunkSize;
 }
 
+/**
+ * @brief Gets extra key data with a given @p dataId from the transforms context.
+ * @details Returns the existing key data object with klass @p dataId from
+ * @p ctx->extraKeyData list, or NULL if the list is empty or no matching entry
+ * is found.
+ * @param ctx the pointer to transforms chain processing context.
+ * @param dataId the requested key data klass.
+ *
+ * @return pointer to key data or NULL if not found.
+ */
+xmlSecKeyDataPtr
+xmlSecTransformCtxExtraKeyDataGet(xmlSecTransformCtxPtr ctx, xmlSecKeyDataId dataId) {
+    xmlSecKeyDataPtr data;
+    xmlSecSize pos, size;
+
+    xmlSecAssert2(ctx != NULL, NULL);
+    xmlSecAssert2(dataId != xmlSecKeyDataIdUnknown, NULL);
+
+    if(ctx->extraKeyData == NULL) {
+        return(NULL);
+    }
+
+    size = xmlSecPtrListGetSize(ctx->extraKeyData);
+    for(pos = 0; pos < size; ++pos) {
+        data = (xmlSecKeyDataPtr)xmlSecPtrListGetItem(ctx->extraKeyData, pos);
+        if((data != NULL) && (data->id == dataId)) {
+            return(data);
+        }
+    }
+    return(NULL);
+}
+
+/**
+ * @brief Ensures extra key data with a given @p dataId exists in the transforms context.
+ * @details Returns the existing key data object with klass @p dataId from
+ * @p ctx->extraKeyData, or creates and adds a new one if not present.
+ * The @p ctx takes ownership of any newly created key data.
+ * @param ctx the pointer to transforms chain processing context.
+ * @param dataId the requested key data klass.
+ *
+ * @return pointer to key data or NULL if an error occurs.
+ */
+xmlSecKeyDataPtr
+xmlSecTransformCtxExtraKeyDataEnsure(xmlSecTransformCtxPtr ctx, xmlSecKeyDataId dataId) {
+    xmlSecKeyDataPtr data;
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, NULL);
+    xmlSecAssert2(dataId != xmlSecKeyDataIdUnknown, NULL);
+
+    /* check if the key data already exists */
+    data = xmlSecTransformCtxExtraKeyDataGet(ctx, dataId);
+    if(data != NULL) {
+        return(data);
+    }
+
+    /* create list if needed */
+    if(ctx->extraKeyData == NULL) {
+        ctx->extraKeyData = xmlSecPtrListCreate(xmlSecKeyDataListId);
+        if(ctx->extraKeyData == NULL) {
+            xmlSecInternalError("xmlSecPtrListCreate(xmlSecKeyDataListId)", NULL);
+            return(NULL);
+        }
+    }
+
+    /* create key data */
+    data = xmlSecKeyDataCreate(dataId);
+    if(data == NULL) {
+        xmlSecInternalError2("xmlSecKeyDataCreate", NULL, "dataId=%s", xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)));
+        return(NULL);
+    }
+
+    /* and add it to the list */
+    ret = xmlSecPtrListAdd(ctx->extraKeyData, data);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecPtrListAdd", NULL);
+        xmlSecKeyDataDestroy(data);
+        return(NULL);
+    }
+
+    /* done */
+    return(data);
+}
+
+
+/**
+ * @brief Adopts key data into the transforms context extra key data list.
+ * @details Adds @p data to @p ctx->extraKeyData list. The context takes
+ * ownership of @p data. Returns an error if key data of the same type
+ * already exists in the list.
+ * @param ctx the pointer to transforms chain processing context.
+ * @param data the key data to adopt (must not be NULL).
+ *
+ * @return 0 on success or a negative value if an error occurs (including
+ * when key data of the same type is already present).
+ */
+int
+xmlSecTransformCtxExtraKeyDataAdopt(xmlSecTransformCtxPtr ctx, xmlSecKeyDataPtr data) {
+    xmlSecKeyDataPtr existingData;
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(data->id != xmlSecKeyDataIdUnknown, -1);
+
+    /* return an error if key data of this type already exists */
+    existingData = xmlSecTransformCtxExtraKeyDataGet(ctx, data->id);
+    if(existingData != NULL) {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
+            "extra key data of type '%s' already exists",
+            xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(data->id)));
+        return(-1);
+    }
+
+    /* create list if needed */
+    if(ctx->extraKeyData == NULL) {
+        ctx->extraKeyData = xmlSecPtrListCreate(xmlSecKeyDataListId);
+        if(ctx->extraKeyData == NULL) {
+            xmlSecInternalError("xmlSecPtrListCreate(xmlSecKeyDataListId)", NULL);
+            return(-1);
+        }
+    }
+
+    /* add to list (list takes ownership) */
+    ret = xmlSecPtrListAdd(ctx->extraKeyData, data);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecPtrListAdd", NULL);
+        return(-1);
+    }
+
+    return(0);
+}
 
 
 /**
@@ -391,6 +523,12 @@ xmlSecTransformCtxReset(xmlSecTransformCtxPtr ctx) {
 
     ctx->result = NULL;
     ctx->status = xmlSecTransformStatusNone;
+
+    /* destroy extra key data */
+    if(ctx->extraKeyData != NULL) {
+        xmlSecPtrListDestroy(ctx->extraKeyData);
+        ctx->extraKeyData = NULL;
+    }
 
     /* destroy uri */
     if(ctx->uri != NULL) {

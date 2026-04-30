@@ -283,7 +283,7 @@ xmlSecEncCtxBinaryEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl,
     xmlSecAssert2(encCtx != NULL, -1);
     xmlSecAssert2(encCtx->result == NULL, -1);
     xmlSecAssert2(tmpl != NULL, -1);
-    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2((data != NULL) || (dataSize == 0), -1);
 
     /* initialize context and add ID atributes to the list of known ids */
     encCtx->operation = xmlSecTransformOperationEncrypt;
@@ -829,7 +829,7 @@ xmlSecEncCtxEncDataNodeWrite(xmlSecEncCtxPtr encCtx) {
         encCtx->resultReplaced = 1;
     }
 
-    /* update &lt;enc:KeyInfo/&gt; node */
+    /* update <enc:KeyInfo/> node */
     if(encCtx->keyInfoNode != NULL) {
         ret = xmlSecKeyInfoNodeWrite(encCtx->keyInfoNode, encCtx->encKey, &(encCtx->keyInfoWriteCtx));
         if(ret < 0) {
@@ -1171,8 +1171,7 @@ xmlSecEncCtxGenerateKey(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xmlSecKey
 
     ret = xmlSecKeyDataBinRead(keyId, key, keyData, keySize, keyInfoCtx);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyDataBinRead",
-                            xmlSecKeyDataKlassGetName(keyId));
+        xmlSecInternalError("xmlSecKeyDataBinRead", xmlSecKeyDataKlassGetName(keyId));
         xmlSecKeyDestroy(key);
         return(NULL);
     }
@@ -1356,20 +1355,6 @@ done:
  * @brief Generates a key from the AgreementMethod node.
  * @details Generates (derives) key from @p node (https://www.w3.org/TR/xmlenc-core1/#sec-AgreementMethod):
  *
- * @code{.xml}
- *  <element name="AgreementMethod" type="xenc:AgreementMethodType"/>
- *  <complexType name="AgreementMethodType" mixed="true">
- *      <sequence>
- *          <element name="KA-Nonce" minOccurs="0" type="base64Binary"/>
- *          <!-- <element ref="ds:DigestMethod" minOccurs="0"/> -->
- *          <any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
- *          <element name="OriginatorKeyInfo" minOccurs="0" type="ds:KeyInfoType"/>
- *          <element name="RecipientKeyInfo" minOccurs="0" type="ds:KeyInfoType"/>
- *      </sequence>
- *      <attribute name="Algorithm" type="anyURI" use="required"/>
- *  </complexType>
- * @endcode
- *
  * @param encCtx the pointer to encryption processing context.
  * @param keyId the expected key id, the actual derived key might have a different id.
  * @param node the pointer to &lt;enc:AgreementMethod/&gt; node.
@@ -1440,6 +1425,112 @@ xmlSecEncCtxAgreementMethodXmlWrite(xmlSecEncCtxPtr encCtx, xmlNodePtr node, xml
     /* the AgreementMethod node is the transform node itself */
     encCtx->transformCtx.parentKeyInfoCtx = keyInfoCtx;
     encCtx->encMethod = xmlSecTransformCtxNodeRead(&(encCtx->transformCtx), node, xmlSecTransformUsageAgreementMethod);
+    if(encCtx->encMethod == NULL) {
+        xmlSecInternalError("xmlSecTransformCtxNodeRead", xmlSecNodeGetName(node));
+        return(-1);
+    }
+
+    /* write */
+    if(encCtx->encMethod->id->writeNode != NULL) {
+        ret = encCtx->encMethod->id->writeNode(encCtx->encMethod, node, &(encCtx->transformCtx));
+        if(ret < 0) {
+            xmlSecInternalError("writeNode", xmlSecNodeGetName(node));
+            return(-1);
+        }
+    }
+
+    return(0);
+}
+
+/**
+ * @brief Generates a key from the EncapsulationMechanism node.
+ * @details Generates (decapsulates) a key from @p node:
+ *
+ * @param encCtx the pointer to encryption processing context.
+ * @param keyId the expected key id, the actual generated key might have a different id.
+ * @param node the pointer to &lt;as:EncapsulationMechanism/&gt; node.
+ * @param keyInfoCtx the pointer to the "parent" key info context.
+ * @return the generated key on success or NULL if an error occurs.
+ */
+xmlSecKeyPtr
+xmlSecEncCtxEncapsulationMechanismGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId,
+    xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx)
+{
+    xmlSecKeyPtr key;
+
+    xmlSecAssert2(encCtx != NULL, NULL);
+    xmlSecAssert2(encCtx->encMethod == NULL, NULL);
+    xmlSecAssert2(node != NULL, NULL);
+    xmlSecAssert2(keyInfoCtx != NULL, NULL);
+
+    /* initialize context and add ID attributes to the list of known ids */
+    switch(keyInfoCtx->operation) {
+        case xmlSecTransformOperationSign:
+        case xmlSecTransformOperationEncrypt:
+            encCtx->operation = xmlSecTransformOperationEncrypt;
+            break;
+        case xmlSecTransformOperationVerify:
+        case xmlSecTransformOperationDecrypt:
+            encCtx->operation = xmlSecTransformOperationDecrypt;
+            break;
+        default:
+            xmlSecInternalError2("invalid operation", NULL, "operation=%u", keyInfoCtx->operation);
+            return(NULL);
+    }
+
+    /* the EncapsulationMechanism node is the transform node itself */
+    encCtx->transformCtx.parentKeyInfoCtx = keyInfoCtx;
+    encCtx->encMethod = xmlSecTransformCtxNodeRead(&(encCtx->transformCtx), node,
+        xmlSecTransformUsageEncapsulationMechanism);
+    if(encCtx->encMethod == NULL) {
+        xmlSecInternalError("xmlSecTransformCtxNodeRead", xmlSecNodeGetName(node));
+        return(NULL);
+    }
+
+    /* expected key size is determined by the requirements from the uplevel key info */
+    encCtx->encMethod->expectedOutputSize = keyInfoCtx->keyReq.keyBitsSize / 8;
+    encCtx->encMethod->operation = encCtx->operation;
+    encCtx->keyInfoReadCtx.operation = encCtx->operation;
+    encCtx->keyInfoWriteCtx.operation = encCtx->operation;
+
+    /* KEM transform handles key lookup internally via its params; skip SetKeyReq/FindKey/SetKey */
+
+    /* generate (encapsulate/decapsulate) the shared secret as the key */
+    key = xmlSecEncCtxGenerateKey(encCtx, keyId, keyInfoCtx);
+    if(key == NULL) {
+        xmlSecInternalError("xmlSecEncCtxGenerateKey", NULL);
+        return(NULL);
+    }
+
+    /* success */
+    return(key);
+}
+
+/**
+ * @brief Writes the EncapsulationMechanism XML content into the node.
+ * @details Writes the EncapsulationMechanism XML content for the given @p encCtx into @p node.
+ * @param encCtx the pointer to encryption context.
+ * @param node the pointer to the EncapsulationMechanism XML node.
+ * @param keyInfoCtx the pointer to key info context.
+ * @return 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecEncCtxEncapsulationMechanismXmlWrite(xmlSecEncCtxPtr encCtx, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx)
+{
+    int ret;
+
+    xmlSecAssert2(encCtx != NULL, -1);
+    xmlSecAssert2(encCtx->encMethod == NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    /* initialize context and add ID attributes to the list of known ids */
+    encCtx->operation = keyInfoCtx->operation;
+    xmlSecAddIDs(node->doc, node, xmlSecEncIds);
+
+    /* the EncapsulationMechanism node is the transform node itself */
+    encCtx->transformCtx.parentKeyInfoCtx = keyInfoCtx;
+    encCtx->encMethod = xmlSecTransformCtxNodeRead(&(encCtx->transformCtx), node, xmlSecTransformUsageEncapsulationMechanism);
     if(encCtx->encMethod == NULL) {
         xmlSecInternalError("xmlSecTransformCtxNodeRead", xmlSecNodeGetName(node));
         return(-1);

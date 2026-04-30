@@ -42,6 +42,10 @@ static const char missingMethodError[] = "Method is missing in the dynamically l
 /**
  * @brief Initializes the XMLSec crypto engine.
  * @details XMLSec library specific crypto engine initialization.
+ *
+ * Note: The application SHOULD NOT initialize the XML Security Library
+ * more than once per process.
+ *
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -56,6 +60,11 @@ xmlSecCryptoInit(void) {
 
 /**
  * @brief XMLSec library specific crypto engine shutdown.
+ * @details XMLSec library specific crypto engine shutdown.
+ *
+ * Note: Once this function has been called it might be
+ * impossible to reinitialise the library correctly.
+ *
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -309,6 +318,21 @@ xmlSecKeyDataMLDSAGetKlass(void) {
     }
 
     return(xmlSecCryptoDLGetFunctions()->keyDataMLDSAGetKlass());
+}
+/**
+ * @brief The ML-KEM key data klass.
+ * @return ML-KEM key data klass or NULL if an error occurs
+ * (xmlsec-crypto library is not loaded or the ML-KEM key data
+ * klass is not implemented).
+ */
+xmlSecKeyDataId
+xmlSecKeyDataMLKEMGetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataMLKEMGetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "keyDataMLKEMGetKlass");
+        return(xmlSecKeyDataIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->keyDataMLKEMGetKlass());
 }
 /**
  * @brief The SLH-DSA key data klass.
@@ -1184,6 +1208,53 @@ xmlSecTransformMLDSA87GetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->transformMLDSA87GetKlass());
 }
 /**
+ * @brief The ML-KEM-512 key transport transform klass.
+ * @return ML-KEM-512 key transport transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformMLKEM512GetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformMLKEM512GetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "transformMLKEM512GetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformMLKEM512GetKlass());
+}
+
+/**
+ * @brief The ML-KEM-768 key transport transform klass.
+ * @return ML-KEM-768 key transport transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformMLKEM768GetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformMLKEM768GetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "transformMLKEM768GetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformMLKEM768GetKlass());
+}
+
+/**
+ * @brief The ML-KEM-1024 key transport transform klass.
+ * @return ML-KEM-1024 key transport transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformMLKEM1024GetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformMLKEM1024GetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "transformMLKEM1024GetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformMLKEM1024GetKlass());
+}
+/**
  * @brief PBKDF2 key derivaton transform klass.
  * @return pointer to PBKDF2 key derivaton transform or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
@@ -1858,7 +1929,12 @@ xmlSecTransformSha3_512GetKlass(void) {
  * @details General crypto engine initialization. This function is used
  * by the XMLSec command-line utility and is called before the
  * #xmlSecInit function.
+ *
+ * Note: The application SHOULD NOT initialize the XML Security Library
+ * more than once per process.
+ *
  * @param config the path to crypto library configuration.
+ *
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -1877,6 +1953,10 @@ xmlSecCryptoAppInit(const char* config) {
  * @details General crypto engine shutdown. This function is used
  * by the XMLSec command-line utility and is called after the
  * #xmlSecShutdown function.
+ *
+ * Note: Once this function has been called it might be
+ * impossible to reinitialise the library correctly.
+ *
  * @return 0 on success or a negative value otherwise.
  */
 int

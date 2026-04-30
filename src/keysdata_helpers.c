@@ -21,9 +21,10 @@
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
-#include <xmlsec/transforms.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/keyinfo.h>
+#include <xmlsec/membuf.h>
+#include <xmlsec/strings.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/private.h>
 
@@ -2271,4 +2272,317 @@ xmlSecKeyValueRsaXmlWrite(xmlSecKeyValueRsaPtr data, xmlNodePtr node,
     return(0);
 }
 #endif /* !defined(XMLSEC_NO_RSA) */
+
+/******************************************************************************
+ *
+ * xmlSecKeyDataKAM klass - internal cache for key agreement params
+ *
+ * Holds the originator and recipient keys after a successful Execute so that
+ * the write path can reuse them without re-parsing the AgreementMethod node.
+ *
+  *****************************************************************************/
+
+/** @brief Size of #xmlSecKeyDataKAM struct. */
+#define xmlSecKeyDataKAMSize    (sizeof(xmlSecKeyDataKAM))
+
+static int  xmlSecKeyDataKAMInitialize (xmlSecKeyDataPtr data);
+static int  xmlSecKeyDataKAMDuplicate  (xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src);
+static void xmlSecKeyDataKAMFinalize   (xmlSecKeyDataPtr data);
+
+static xmlSecKeyDataKlass xmlSecKeyDataKAMKlass = {
+    sizeof(xmlSecKeyDataKlass),         /* xmlSecSize klassSize */
+    xmlSecKeyDataKAMSize,          /* xmlSecSize objSize */
+
+    /* data */
+    BAD_CAST "ka-params",               /* const xmlChar* name; */
+    xmlSecKeyDataUsageUnknown,          /* xmlSecKeyDataUsage usage; */
+    NULL,                               /* const xmlChar* href; */
+    NULL,                               /* const xmlChar* dataNodeName; */
+    NULL,                               /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    xmlSecKeyDataKAMInitialize,    /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecKeyDataKAMDuplicate,     /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecKeyDataKAMFinalize,      /* xmlSecKeyDataFinalizeMethod finalize; */
+    NULL,                               /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    NULL,                               /* xmlSecKeyDataGetTypeMethod getType; */
+    NULL,                               /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                               /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    NULL,                               /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    NULL,                               /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    NULL,                               /* xmlSecKeyDataBinReadMethod binRead; */
+    NULL,                               /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecKeyDataDebugDumpImpl,         /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecKeyDataDebugXmlDumpImpl,      /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                               /* void* reserved0; */
+    NULL,                               /* void* reserved1; */
+};
+
+static int
+xmlSecKeyDataKAMInitialize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecKeyDataKAMSize), -1);
+    /* keyOriginator and keyRecipient already NULL (memory zeroed by xmlSecKeyDataCreate) */
+    return(0);
+}
+
+static int
+xmlSecKeyDataKAMDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecKeyDataKAM* dstData;
+    xmlSecKeyDataKAM* srcData;
+
+    xmlSecAssert2(xmlSecKeyDataIsValid(dst), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(dst, xmlSecKeyDataKAMSize), -1);
+    xmlSecAssert2(xmlSecKeyDataIsValid(src), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(src, xmlSecKeyDataKAMSize), -1);
+
+    dstData = (xmlSecKeyDataKAM*)dst;
+    srcData = (xmlSecKeyDataKAM*)src;
+
+    /* copy originator key */
+    if(dstData->keyOriginator != NULL) {
+        xmlSecKeyDestroy(dstData->keyOriginator);
+        dstData->keyOriginator = NULL;
+    }
+    if(srcData->keyOriginator != NULL) {
+        dstData->keyOriginator = xmlSecKeyDuplicate(srcData->keyOriginator);
+        if(dstData->keyOriginator == NULL) {
+            xmlSecInternalError("xmlSecKeyDuplicate(keyOriginator)", xmlSecKeyDataGetName(src));
+            return(-1);
+        }
+    }
+
+    /* copy recipient key */
+    if(dstData->keyRecipient != NULL) {
+        xmlSecKeyDestroy(dstData->keyRecipient);
+        dstData->keyRecipient = NULL;
+    }
+    if(srcData->keyRecipient != NULL) {
+        dstData->keyRecipient = xmlSecKeyDuplicate(srcData->keyRecipient);
+        if(dstData->keyRecipient == NULL) {
+            xmlSecInternalError("xmlSecKeyDuplicate(keyRecipient)", xmlSecKeyDataGetName(src));
+            return(-1);
+        }
+    }
+
+    return(0);
+}
+
+static void
+xmlSecKeyDataKAMFinalize(xmlSecKeyDataPtr data) {
+    xmlSecKeyDataKAM* kamData;
+
+    xmlSecAssert(xmlSecKeyDataIsValid(data));
+    xmlSecAssert(xmlSecKeyDataCheckSize(data, xmlSecKeyDataKAMSize));
+
+    kamData = (xmlSecKeyDataKAM*)data;
+    if(kamData->keyOriginator != NULL) {
+        xmlSecKeyDestroy(kamData->keyOriginator);
+        kamData->keyOriginator = NULL;
+    }
+    if(kamData->keyRecipient != NULL) {
+        xmlSecKeyDestroy(kamData->keyRecipient);
+        kamData->keyRecipient = NULL;
+    }
+}
+
+/**
+ * @brief Returns the KA params key data klass.
+ * @return KA params key data klass.
+ */
+xmlSecKeyDataId
+xmlSecKeyDataKAMGetKlass(void) {
+    return(&xmlSecKeyDataKAMKlass);
+}
+
+
+#ifndef XMLSEC_NO_MLKEM
+/******************************************************************************
+ *
+ * xmlSecKeyDataKEM klass - internal helper for KEM ciphertext
+ *
+ * Holds both the recipient key (public for encrypt, private for decrypt) and
+ * the KEM ciphertext exchanged via enc:CipherData/enc:CipherValue.
+ *
+  *****************************************************************************/
+
+#define XMLSEC_KEY_DATA_KEM_CIPHER_VALUE_INIT_BUF_SIZE  256
+
+#define xmlSecKeyDataKEMSize     (sizeof(xmlSecKeyDataKEM))
+
+
+static int  xmlSecKeyDataKEMInitialize   (xmlSecKeyDataPtr data);
+static int  xmlSecKeyDataKEMDuplicate    (xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src);
+static void xmlSecKeyDataKEMFinalize     (xmlSecKeyDataPtr data);
+
+static xmlSecKeyDataKlass xmlSecKeyDataKEMKlass = {
+    sizeof(xmlSecKeyDataKlass),             /* xmlSecSize klassSize */
+    xmlSecKeyDataKEMSize,                   /* xmlSecSize objSize */
+
+    /* data */
+    BAD_CAST "kem-cipher-value",            /* const xmlChar* name; */
+    xmlSecKeyDataUsageUnknown,              /* xmlSecKeyDataUsage usage; */
+    NULL,                                   /* const xmlChar* href; */
+    NULL,                                   /* const xmlChar* dataNodeName; */
+    NULL,                                   /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    xmlSecKeyDataKEMInitialize,             /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecKeyDataKEMDuplicate,              /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecKeyDataKEMFinalize,               /* xmlSecKeyDataFinalizeMethod finalize; */
+    NULL,                                   /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    NULL,                                   /* xmlSecKeyDataGetTypeMethod getType; */
+    NULL,                                   /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                                   /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    NULL,                                   /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    NULL,                                   /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    NULL,                                   /* xmlSecKeyDataBinReadMethod binRead; */
+    NULL,                                   /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecKeyDataDebugDumpImpl,             /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecKeyDataDebugXmlDumpImpl,          /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                   /* void* reserved0; */
+    NULL,                                   /* void* reserved1; */
+};
+
+static int
+xmlSecKeyDataKEMInitialize(xmlSecKeyDataPtr data) {
+    xmlSecKeyDataKEM* kemData;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecKeyDataKEMSize), -1);
+
+    kemData = (xmlSecKeyDataKEM*)data;
+    /* recipientKey is already NULL since xmlSecKeyDataCreate zeroes memory */
+
+    ret = xmlSecBufferInitialize(&(kemData->ciphertext), XMLSEC_KEY_DATA_KEM_CIPHER_VALUE_INIT_BUF_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(ciphertext)", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+    return(0);
+}
+
+static int
+xmlSecKeyDataKEMDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecKeyDataKEM* dstData;
+    xmlSecKeyDataKEM* srcData;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataIsValid(dst), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(dst, xmlSecKeyDataKEMSize), -1);
+    xmlSecAssert2(xmlSecKeyDataIsValid(src), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(src, xmlSecKeyDataKEMSize), -1);
+
+    dstData = (xmlSecKeyDataKEM*)dst;
+    srcData = (xmlSecKeyDataKEM*)src;
+
+    /* copy recipient key */
+    if(dstData->encapsulationKey != NULL) {
+        xmlSecKeyDestroy(dstData->encapsulationKey);
+        dstData->encapsulationKey = NULL;
+    }
+    if(srcData->encapsulationKey != NULL) {
+        dstData->encapsulationKey = xmlSecKeyDuplicate(srcData->encapsulationKey);
+        if(dstData->encapsulationKey == NULL) {
+            xmlSecInternalError("xmlSecKeyDuplicate", xmlSecKeyDataGetName(src));
+            return(-1);
+        }
+    }
+
+    /* copy ciphertext */
+    ret = xmlSecBufferSetData(&(dstData->ciphertext),
+        xmlSecBufferGetData(&(srcData->ciphertext)),
+        xmlSecBufferGetSize(&(srcData->ciphertext)));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferSetData(ciphertext)", xmlSecKeyDataGetName(src));
+        return(-1);
+    }
+    return(0);
+}
+
+static void
+xmlSecKeyDataKEMFinalize(xmlSecKeyDataPtr data) {
+    xmlSecKeyDataKEM* kemData;
+
+    xmlSecAssert(xmlSecKeyDataIsValid(data));
+    xmlSecAssert(xmlSecKeyDataCheckSize(data, xmlSecKeyDataKEMSize));
+
+    kemData = (xmlSecKeyDataKEM*)data;
+    if(kemData->encapsulationKey != NULL) {
+        xmlSecKeyDestroy(kemData->encapsulationKey);
+        kemData->encapsulationKey = NULL;
+    }
+    xmlSecBufferFinalize(&(kemData->ciphertext));
+}
+
+/**
+ * @brief Returns the KEM cipher value key data klass.
+ *
+ * @return KEM cipher value key data klass.
+ */
+xmlSecKeyDataId
+xmlSecKeyDataKEMGetKlass(void) {
+    return(&xmlSecKeyDataKEMKlass);
+}
+
+/**
+ * @brief Gets the recipient key from KEM cipher value key data.
+ * @param data the pointer to KEM cipher value key data.
+ *
+ * @return pointer to the recipient key or NULL if not set.
+ */
+xmlSecKeyPtr
+xmlSecKeyDataKEMGetRecipientKey(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataKEMId), NULL);
+
+    return(((xmlSecKeyDataKEM*)data)->encapsulationKey);
+}
+
+/**
+ * @brief Gets the KEM ciphertext buffer from KEM cipher value key data.
+ * @param data the pointer to KEM cipher value key data.
+ *
+ * @return pointer to the ciphertext buffer or NULL if an error occurs.
+ */
+xmlSecBufferPtr
+xmlSecKeyDataKEMGetCiphertext(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataKEMId), NULL);
+
+    return(&(((xmlSecKeyDataKEM*)data)->ciphertext));
+}
+
+/**
+ * @brief Sets the KEM ciphertext in KEM cipher value key data.
+ * @param data the pointer to KEM cipher value key data.
+ * @param buf the pointer to the ciphertext bytes.
+ * @param bufSize the size of the ciphertext buffer.
+ *
+ * @return 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecKeyDataKEMSetCiphertext(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataKEMId), -1);
+    xmlSecAssert2(buf != NULL, -1);
+
+    return(xmlSecBufferSetData(&(((xmlSecKeyDataKEM*)data)->ciphertext), buf, bufSize));
+}
+
+#endif /* XMLSEC_NO_MLKEM */
 

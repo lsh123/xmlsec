@@ -19,6 +19,7 @@ DISTCLEANFILES = \
 
 EXTRA_DIST = \
     Doxyfile.in \
+    doxygen_filter.py \
     wincrypt.h \
     windows.h \
     $(NULL)
@@ -38,7 +39,7 @@ all:
 #
 if BUILD_XML_API_DOCS
 
-docs:
+docs: $(DOXYFILE)
 	@echo "-- Generating doxygen XML API docs..."
 	@$(DOXYGEN) $(builddir)/$(DOXYFILE)
 	@echo "-- Done. XML output: $(abs_top_builddir)/docs/xml/api/$(XML_OUTDIR)"

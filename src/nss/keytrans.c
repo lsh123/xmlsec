@@ -864,6 +864,21 @@ xmlSecNssRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
         ctx->oaepHashAlg = CKM_SHA512;
     } else
 #endif /* XMLSEC_NO_SHA512 */
+
+#ifndef XMLSEC_NO_SHA3
+    if (xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha3_224) == 0) {
+        ctx->oaepHashAlg = CKM_SHA3_224;
+    } else
+    if (xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha3_256) == 0) {
+        ctx->oaepHashAlg = CKM_SHA3_256;
+    } else
+    if (xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha3_384) == 0) {
+        ctx->oaepHashAlg = CKM_SHA3_384;
+    } else
+    if (xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha3_512) == 0) {
+        ctx->oaepHashAlg = CKM_SHA3_512;
+    } else
+#endif /* XMLSEC_NO_SHA3 */
     {
         xmlSecInvalidTransfromError2(transform,
             "digest algorithm=\"%s\" is not supported for rsa/oaep",

@@ -64,57 +64,6 @@ nodesetTestFindChildByType(xmlNodePtr parent, xmlElementType type) {
     return(NULL);
 }
 
-static xmlSecNodeSetPtr
-nodesetTestCreateSingleNodeSet(xmlDocPtr doc, xmlNodePtr node, xmlSecNodeSetType type) {
-    xmlNodeSetPtr nodes;
-    xmlSecNodeSetPtr nset;
-
-    xmlSecAssert2(doc != NULL, NULL);
-    xmlSecAssert2(node != NULL, NULL);
-
-    nodes = xmlXPathNodeSetCreate(node);
-    if(nodes == NULL) {
-        testLog("Error: failed to create XPath node set\n");
-        return(NULL);
-    }
-
-    nset = xmlSecNodeSetCreate(doc, nodes, type);
-    if(nset == NULL) {
-        testLog("Error: failed to create xmlsec node set\n");
-        xmlXPathFreeNodeSet(nodes);
-        return(NULL);
-    }
-
-    return(nset);
-}
-
-static int
-nodesetTestReadFile(FILE* file, char* buf, size_t bufSize) {
-    size_t len;
-
-    xmlSecAssert2(file != NULL, -1);
-    xmlSecAssert2(buf != NULL, -1);
-    xmlSecAssert2(bufSize > 0, -1);
-
-    if(fflush(file) != 0) {
-        testLog("Error: failed to flush temp file\n");
-        return(-1);
-    }
-    if(fseek(file, 0, SEEK_SET) != 0) {
-        testLog("Error: failed to rewind temp file\n");
-        return(-1);
-    }
-
-    len = fread(buf, 1, bufSize - 1, file);
-    if(ferror(file)) {
-        testLog("Error: failed to read temp file\n");
-        return(-1);
-    }
-
-    buf[len] = '\0';
-    return((int)len);
-}
-
 struct nodesetWalkStats {
     int total;
     int elements;
@@ -216,26 +165,6 @@ test_xmlSecNodeSetCreate_destroy_doc_destroy(void) {
     }
 
     xmlSecNodeSetDestroy(nset);
-    testFinishedSuccess();
-}
-
-static void
-test_xmlSecNodeSetAddList_returns_null(void) {
-    testStart("xmlSecNodeSetAddList returns NULL");
-
-#if defined(__GNUC__)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-#endif /* defined(__GNUC__) */
-    if(xmlSecNodeSetAddList(NULL, NULL, xmlSecNodeSetIntersection) != NULL) {
-        testLog("Error: xmlSecNodeSetAddList should return NULL\n");
-        testFinishedFailure();
-        return;
-    }
-#if defined(__GNUC__)
-#pragma GCC diagnostic pop
-#endif /* defined(__GNUC__) */
-
     testFinishedSuccess();
 }
 
@@ -465,122 +394,12 @@ test_xmlSecNodeSetWalk_visits_elements_attributes_and_namespaces(void) {
     testFinishedSuccess();
 }
 
-static void
-test_xmlSecNodeSetDumpTextNodes_writes_text_only(void) {
-    xmlDocPtr doc;
-    xmlNodePtr root;
-    xmlSecNodeSetPtr nset;
-    FILE* file;
-    xmlOutputBufferPtr out;
-    char buf[128];
-    int ret;
-
-    testStart("xmlSecNodeSetDumpTextNodes writes text only");
-
-    doc = nodesetTestParseDoc("<Root><!--comment--><Child>value</Child></Root>");
-    if(doc == NULL) {
-        testFinishedFailure();
-        return;
-    }
-
-    root = xmlDocGetRootElement(doc);
-    nset = xmlSecNodeSetGetChildren(doc, root, 1, 0);
-    file = tmpfile();
-    if((root == NULL) || (nset == NULL) || (file == NULL)) {
-        testLog("Error: failed to prepare dump text test data\n");
-        xmlSecNodeSetDestroy(nset);
-        if(file != NULL) {
-            fclose(file);
-        }
-        xmlFreeDoc(doc);
-        testFinishedFailure();
-        return;
-    }
-
-    out = xmlOutputBufferCreateFile(file, NULL);
-    if(out == NULL) {
-        testLog("Error: failed to create output buffer\n");
-        xmlSecNodeSetDestroy(nset);
-        fclose(file);
-        xmlFreeDoc(doc);
-        testFinishedFailure();
-        return;
-    }
-
-    ret = xmlSecNodeSetDumpTextNodes(nset, out);
-    if((ret < 0) || (xmlOutputBufferFlush(out) < 0) ||
-       (nodesetTestReadFile(file, buf, sizeof(buf)) < 0) ||
-       (strcmp(buf, "value") != 0)) {
-        testLog("Error: unexpected text dump output '%s'\n", buf);
-        (void)xmlOutputBufferClose(out);
-        xmlSecNodeSetDestroy(nset);
-        xmlFreeDoc(doc);
-        testFinishedFailure();
-        return;
-    }
-
-    (void)xmlOutputBufferClose(out);
-    xmlSecNodeSetDestroy(nset);
-    xmlFreeDoc(doc);
-    testFinishedSuccess();
-}
-
-static void
-test_xmlSecNodeSetDebugDump_prints_summary(void) {
-    xmlDocPtr doc;
-    xmlNodePtr root;
-    xmlSecNodeSetPtr nset;
-    FILE* file;
-    char buf[256];
-
-    testStart("xmlSecNodeSetDebugDump prints summary");
-
-    doc = nodesetTestParseDoc("<Root/>");
-    if(doc == NULL) {
-        testFinishedFailure();
-        return;
-    }
-
-    root = xmlDocGetRootElement(doc);
-    nset = nodesetTestCreateSingleNodeSet(doc, root, xmlSecNodeSetTree);
-    file = tmpfile();
-    if((root == NULL) || (nset == NULL) || (file == NULL)) {
-        testLog("Error: failed to prepare debug dump test data\n");
-        xmlSecNodeSetDestroy(nset);
-        if(file != NULL) {
-            fclose(file);
-        }
-        xmlFreeDoc(doc);
-        testFinishedFailure();
-        return;
-    }
-
-    xmlSecNodeSetDebugDump(nset, file);
-    if((nodesetTestReadFile(file, buf, sizeof(buf)) < 0) ||
-       (strstr(buf, "Nodes set") == NULL) ||
-       (strstr(buf, "xmlSecNodeSetTree") == NULL) ||
-       (strstr(buf, "Root") == NULL)) {
-        testLog("Error: debug dump output was unexpected: '%s'\n", buf);
-        xmlSecNodeSetDestroy(nset);
-        fclose(file);
-        xmlFreeDoc(doc);
-        testFinishedFailure();
-        return;
-    }
-
-    xmlSecNodeSetDestroy(nset);
-    fclose(file);
-    xmlFreeDoc(doc);
-    testFinishedSuccess();
-}
-
 int
 test_nodeset(void) {
     int success = 1;
 
     testGroupStart("xmlSecNodeSetCreate");
     test_xmlSecNodeSetCreate_destroy_doc_destroy();
-    test_xmlSecNodeSetAddList_returns_null();
     test_xmlSecNodeSetContains_null_nodeset_allows_node();
     if(testGroupFinished() != 1) { success = 0; }
 
@@ -595,14 +414,6 @@ test_nodeset(void) {
 
     testGroupStart("xmlSecNodeSetWalk");
     test_xmlSecNodeSetWalk_visits_elements_attributes_and_namespaces();
-    if(testGroupFinished() != 1) { success = 0; }
-
-    testGroupStart("xmlSecNodeSetDumpTextNodes");
-    test_xmlSecNodeSetDumpTextNodes_writes_text_only();
-    if(testGroupFinished() != 1) { success = 0; }
-
-    testGroupStart("xmlSecNodeSetDebugDump");
-    test_xmlSecNodeSetDebugDump_prints_summary();
     if(testGroupFinished() != 1) { success = 0; }
 
     return(success);

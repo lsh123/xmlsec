@@ -594,26 +594,16 @@ xmlSecMSCngVerifyCertTime(PCCERT_CONTEXT cert, LPFILETIME time) {
     return(0);
 }
 
-/**
- * @brief Verifies @p cert against the trusted store.
- * @details Verifies @p cert based on trustedStore (ignoring system trusted certificates).
- * @param cert the certificate to verify.
- * @param time pointer to FILETIME that we are interested in (if NULL, don't check certificate notBefore/notAfter)
- * @param trustedStore trusted certificates added via xmlSecMSCngX509StoreAdoptCert().
- * @param untrustedStore untrusted certificates stack.
- * @param certStore the certificates stack from the document.
- * @return 1 on success (cert verified), 0 if cert can't be verified, or a negative value if an error occurs.
- */
+/* returns 1 if verified, 0 if not, or a negative value if an error occurs */
 static int
-xmlSecMSCngX509StoreVerifyCertificateOwn(PCCERT_CONTEXT cert, FILETIME* time,
-    HCERTSTORE trustedStore, HCERTSTORE untrustedStore, HCERTSTORE certStore
-) {
-    PCCERT_CONTEXT issuerCert = NULL;
+xmlSecMSCngX509StoreVerifyCertificateItself(PCCERT_CONTEXT cert, FILETIME* time, HCERTSTORE trustedStore, HCERTSTORE certStore)
+{
     int ret;
 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(trustedStore != NULL, -1);
     xmlSecAssert2(certStore != NULL, -1);
+
 
     /* if time is specified, check certificate notBefore/notAfter */
     if (time != NULL) {
@@ -632,8 +622,7 @@ xmlSecMSCngX509StoreVerifyCertificateOwn(PCCERT_CONTEXT cert, FILETIME* time,
     }
 
     /* does trustedStore contain cert directly? */
-    ret = xmlSecMSCngX509StoreContainsCert(trustedStore,
-        &(cert->pCertInfo->Subject), cert);
+    ret = xmlSecMSCngX509StoreContainsCert(trustedStore, &(cert->pCertInfo->Subject), cert);
     if(ret < 0) {
         xmlSecInternalError("xmlSecMSCngX509StoreContainsCert", NULL);
         return(-1);
@@ -643,8 +632,7 @@ xmlSecMSCngX509StoreVerifyCertificateOwn(PCCERT_CONTEXT cert, FILETIME* time,
     }
 
     /* does trustedStore contain the issuer cert? */
-    ret = xmlSecMSCngX509StoreContainsCert(trustedStore,
-        &(cert->pCertInfo->Issuer), cert);
+    ret = xmlSecMSCngX509StoreContainsCert(trustedStore, &(cert->pCertInfo->Issuer), cert);
     if(ret < 0) {
         xmlSecInternalError("xmlSecMSCngX509StoreContainsCert", NULL);
         return(-1);
@@ -653,88 +641,164 @@ xmlSecMSCngX509StoreVerifyCertificateOwn(PCCERT_CONTEXT cert, FILETIME* time,
         return(1);
     }
 
-    /* is cert self-signed? no recursion in that case */
-    if(CertCompareCertificateName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-            &(cert->pCertInfo->Subject),
-            &(cert->pCertInfo->Issuer))) {
-        /* not verified */
-        return(0);
-    }
+    /* no luck */
+    return(0);
+}
 
-    /* the same checks recursively for the issuer cert in certStore */
-    issuerCert = CertFindCertificateInStore(certStore,
+static PCCERT_CONTEXT
+xmlSecMSCngX509StoreFindIssuer(HCERTSTORE store, PCCERT_CONTEXT cert) {
+    PCCERT_CONTEXT issuerCert = NULL;
+    int ret;
+
+    xmlSecAssert2(store != NULL, NULL);
+    xmlSecAssert2(cert != NULL, NULL);
+
+    issuerCert = CertFindCertificateInStore(store,
         X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
         0,
         CERT_FIND_SUBJECT_NAME,
         &(cert->pCertInfo->Issuer),
         NULL);
-    if(issuerCert != NULL) {
-        ret = xmlSecMSCngX509StoreVerifySubject(cert, issuerCert);
-        if (ret < 0) {
-            xmlSecInternalError("xmlSecMSCngX509StoreVerifySubject", NULL);
-            CertFreeCertificateContext(issuerCert);
-            return(-1);
-        }
-        else if (ret == 0) {
-            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-                NULL,
-                "xmlSecMSCngX509StoreVerifySubject");
-            CertFreeCertificateContext(issuerCert);
-            return(-1);
-        }
-
-        ret = xmlSecMSCngX509StoreVerifyCertificateOwn(issuerCert, time,
-            trustedStore, untrustedStore, certStore);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateOwn", NULL);
-            CertFreeCertificateContext(issuerCert);
-            return(-1);
-        } else if (ret == 1) {
-            /* success */
-            CertFreeCertificateContext(issuerCert);
-            return(1);
-        }
-        CertFreeCertificateContext(issuerCert);
+    if(issuerCert == NULL) {
+        return(NULL);
     }
 
-    /* the same checks recursively for the issuer cert in untrustedStore */
-    issuerCert = CertFindCertificateInStore(untrustedStore,
-        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-        0,
-        CERT_FIND_SUBJECT_NAME,
-        &(cert->pCertInfo->Issuer),
-        NULL);
-    if(issuerCert != NULL) {
-        ret = xmlSecMSCngX509StoreVerifySubject(cert, issuerCert);
-        if (ret < 0) {
-            xmlSecInternalError("xmlSecMSCngX509StoreVerifySubject", NULL);
-            CertFreeCertificateContext(issuerCert);
-            return(-1);
-        }
-        else if (ret == 0) {
-            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-                NULL,
-                "xmlSecMSCngX509StoreVerifySubject");
-            CertFreeCertificateContext(issuerCert);
-            return(-1);
-        }
+    ret = xmlSecMSCngX509StoreVerifySubject(cert, issuerCert);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecMSCngX509StoreVerifySubject", NULL);
+        CertFreeCertificateContext(issuerCert);
+        return(NULL);
+    } else if (ret == 0) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL, "xmlSecMSCngX509StoreVerifySubject");
+        CertFreeCertificateContext(issuerCert);
+        return(NULL);
+    }
 
-        ret = xmlSecMSCngX509StoreVerifyCertificateOwn(issuerCert, time,
-            trustedStore, untrustedStore, certStore);
+    return(issuerCert);
+}
+
+struct xmlSecMSCngX509StoreVerifyCertificateChainStep {
+    PCCERT_CONTEXT cert;
+    BOOL freeCert;
+};
+#define XMLSEC_MSCNG_X509_STORE_VERIFY_CERTIFICATE_CHAIN_STEP_SIZE 32
+
+/**
+ * @brief Verifies @p cert against the trusted store.
+ * @details Verifies @p cert based on trustedStore (ignoring system trusted certificates).
+ * @param cert the certificate to verify.
+ * @param time pointer to FILETIME that we are interested in (if NULL, don't check certificate notBefore/notAfter)
+ * @param trustedStore trusted certificates added via xmlSecMSCngX509StoreAdoptCert().
+ * @param untrustedStore untrusted certificates stack.
+ * @param certStore the certificates stack from the document.
+ * @return 1 on success (cert verified), 0 if cert can't be verified, or a negative value if an error occurs.
+ */
+static int
+xmlSecMSCngX509StoreVerifyCertificateChain(PCCERT_CONTEXT cert, FILETIME* time,
+    HCERTSTORE trustedStore, HCERTSTORE untrustedStore, HCERTSTORE certStore
+) {
+    struct xmlSecMSCngX509StoreVerifyCertificateChainStep * queue = NULL;
+    xmlSecSize queueSize = 0, queueMaxSize = 0;
+    PCCERT_CONTEXT currentCert = NULL;
+    BOOL freeCurrentCert = FALSE;
+    int res = -1;
+    int ret;
+
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(trustedStore != NULL, -1);
+    xmlSecAssert2(certStore != NULL, -1);
+
+    /* setup queue */
+    queue = (struct xmlSecMSCngX509StoreVerifyCertificateChainStep*)xmlMalloc(sizeof(struct xmlSecMSCngX509StoreVerifyCertificateChainStep) * XMLSEC_MSCNG_X509_STORE_VERIFY_CERTIFICATE_CHAIN_STEP_SIZE);
+    if(queue == NULL) {
+        xmlSecMallocError(sizeof(struct xmlSecMSCngX509StoreVerifyCertificateChainStep) * XMLSEC_MSCNG_X509_STORE_VERIFY_CERTIFICATE_CHAIN_STEP_SIZE, NULL);
+        return(-1);
+    }
+    queueMaxSize = XMLSEC_MSCNG_X509_STORE_VERIFY_CERTIFICATE_CHAIN_STEP_SIZE;
+
+    queue[0].cert = cert;
+    queue[0].freeCert = FALSE;
+    queueSize = 1;
+
+    while(queueSize > 0) {
+        PCCERT_CONTEXT issuerCert = NULL;
+
+        currentCert = queue[queueSize - 1].cert;
+        freeCurrentCert = queue[queueSize - 1].freeCert;
+        --queueSize;
+
+        /* check certificate itself */
+        ret = xmlSecMSCngX509StoreVerifyCertificateItself(currentCert, time, trustedStore, certStore);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateOwn", NULL);
-            CertFreeCertificateContext(issuerCert);
-            return(-1);
+            xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateItself", NULL);
+            goto done;
         } else if (ret == 1) {
             /* success */
-            CertFreeCertificateContext(issuerCert);
-            return(1);
+            res = 1;
+            goto done;
         }
-        CertFreeCertificateContext(issuerCert);
+
+        /* is cert self-signed? no recursion in that case */
+        if(CertCompareCertificateName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                &(currentCert->pCertInfo->Subject),
+                &(currentCert->pCertInfo->Issuer)) == FALSE
+        ) {
+            /* we need space for at most 2 issuer certificates */
+            if(queueSize + 2 > queueMaxSize) {
+                struct xmlSecMSCngX509StoreVerifyCertificateChainStep * newQueue;
+                xmlSecSize newQueueMaxSize = queueMaxSize + XMLSEC_MSCNG_X509_STORE_VERIFY_CERTIFICATE_CHAIN_STEP_SIZE;
+
+                newQueue = (struct xmlSecMSCngX509StoreVerifyCertificateChainStep*)xmlRealloc(queue, sizeof(struct xmlSecMSCngX509StoreVerifyCertificateChainStep) * newQueueMaxSize);
+                if(newQueue == NULL) {
+                    xmlSecMallocError(sizeof(struct xmlSecMSCngX509StoreVerifyCertificateChainStep) * newQueueMaxSize, NULL);
+                    goto done;
+                }
+                queue = newQueue;
+                queueMaxSize = newQueueMaxSize;
+            }
+
+            /* try issuer in certStore */
+            issuerCert = xmlSecMSCngX509StoreFindIssuer(certStore, currentCert);
+            if(issuerCert != NULL) {
+                queue[queueSize].cert = issuerCert;
+                queue[queueSize].freeCert = TRUE;
+                ++queueSize;
+            }
+
+            /* try issuer in untrustedStore */
+            issuerCert = xmlSecMSCngX509StoreFindIssuer(untrustedStore, currentCert);
+            if(issuerCert != NULL) {
+                xmlSecAssert2(queueSize < queueMaxSize, -1);
+                queue[queueSize].cert = issuerCert;
+                queue[queueSize].freeCert = TRUE;
+                ++queueSize;
+            }
+        }
+
+        if(freeCurrentCert == TRUE) {
+            CertFreeCertificateContext(currentCert);
+        }
+        currentCert = NULL;
+        freeCurrentCert = FALSE;
     }
 
     /* not verified */
-    return(0);
+    res = 0;
+
+done:
+    if((currentCert != NULL) && (freeCurrentCert == TRUE)) {
+        CertFreeCertificateContext(currentCert);
+    }
+    if(queue != NULL) {
+        xmlSecSize ii;
+        for(ii = 0; ii < queueSize; ++ii) {
+            if((queue[ii].cert != NULL) && (queue[ii].freeCert == TRUE)) {
+                CertFreeCertificateContext(queue[ii].cert);
+            }
+        }
+        xmlFree(queue);
+    }
+    return(res);
 }
 
 /**
@@ -896,7 +960,7 @@ xmlSecMSCngX509StoreVerifyCertificate(xmlSecMSCngX509StoreCtxPtr ctx, PCCERT_CON
     }
 
     /* verify based on the own trusted certificates */
-    ret = xmlSecMSCngX509StoreVerifyCertificateOwn(cert, time,
+    ret = xmlSecMSCngX509StoreVerifyCertificateChain(cert, time,
         ctx->trusted, ctx->untrusted, certStore);
     if(ret < 0){
         xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateOwn", NULL);
@@ -1060,7 +1124,7 @@ xmlSecMSCngX509StoreVerifyCrl(xmlSecKeyDataStorePtr store, PCCRL_CONTEXT crl,
                     CRYPT_VERIFY_CERT_SIGN_ISSUER_CERT, (void*)issuerCert,
                     0, NULL) == TRUE) {
                 /* verify that the issuer cert itself chains to a trusted root */
-                ret = xmlSecMSCngX509StoreVerifyCertificateOwn(issuerCert, time,
+                ret = xmlSecMSCngX509StoreVerifyCertificateChain(issuerCert, time,
                     ctx->trusted, ctx->untrusted, ctx->untrusted);
                 if (ret < 0) {
                     xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateOwn", NULL);

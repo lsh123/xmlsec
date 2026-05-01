@@ -183,6 +183,7 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, unsigned long *buflen, stru
 }
 
 #define XMLSEC_GCRYPT_ASN1_MAX_OBJECT_ID_SIZE    32
+#define XMLSEC_GCRYPT_ASN1_MAX_RECURSION_LEVEL   4
 typedef xmlSecByte xmlSecGCryptAsn1ObjectId[XMLSEC_GCRYPT_ASN1_MAX_OBJECT_ID_SIZE];
 
 typedef struct _xmlSecGCryptAsn1EcObjectIdToCurve {
@@ -244,6 +245,13 @@ xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSe
     xmlSecAssert2(objectids != NULL, -1);
     xmlSecAssert2(objectids_size > 0, -1);
     xmlSecAssert2(objectids_out_size != NULL, -1);
+    xmlSecAssert2(level >= 0, -1);
+
+    if(level > XMLSEC_GCRYPT_ASN1_MAX_RECURSION_LEVEL) {
+        xmlSecInternalError2("xmlSecGCryptAsn1ParseIntegerSequence", NULL,
+            "recursion level exceeded: level=%d", level);
+        return(-1);
+    }
 
     /* initialize */
     buf = *buffer;

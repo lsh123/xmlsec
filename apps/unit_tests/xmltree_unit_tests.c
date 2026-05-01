@@ -1351,6 +1351,303 @@ test_xmlSecGetNextElementNode_no_elements(void) {
 }
 
 /******************************************************************************
+ * xmlSecTreeWalk
+  *****************************************************************************/
+typedef struct {
+    int count;
+    xmlNodePtr nodes[32];
+} xmltreeWalkCtx;
+
+static int
+xmltreeWalkCollect(xmlNodePtr cur, void* data) {
+    xmltreeWalkCtx* ctx = (xmltreeWalkCtx*)data;
+    if(ctx->count < 32) {
+        ctx->nodes[ctx->count++] = cur;
+    }
+    return(1); /* continue */
+}
+
+static int
+xmltreeWalkStop(xmlNodePtr cur, void* data) {
+    xmltreeWalkCtx* ctx = (xmltreeWalkCtx*)data;
+    ctx->nodes[ctx->count++] = cur;
+    return(0); /* stop */
+}
+
+static int
+xmltreeWalkError(xmlNodePtr cur, void* data) {
+    (void)cur;
+    (void)data;
+    return(-1); /* error */
+}
+
+static void
+test_xmlSecTreeWalk_null_node(void) {
+    testStart("xmlSecTreeWalk: NULL node returns success without calling callback");
+
+    /* callback should never be called, just check return value */
+    if(xmlSecTreeWalk(NULL, xmltreeWalkCollect, NULL) != 0) {
+        testLog("Error: expected 0 for NULL node\n");
+        testFinishedFailure();
+        return;
+    }
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTreeWalk_single_node(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    xmltreeWalkCtx ctx;
+    int ret;
+
+    testStart("xmlSecTreeWalk: visits single root node");
+
+    doc = xmltreeTestCreateDoc(BAD_CAST "Root", NULL);
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        testFinishedFailure();
+        return;
+    }
+    root = xmlDocGetRootElement(doc);
+
+    memset(&ctx, 0, sizeof(ctx));
+    ret = xmlSecTreeWalk(root, xmltreeWalkCollect, &ctx);
+    if(ret < 0) {
+        testLog("Error: xmlSecTreeWalk failed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(ctx.count != 1 || ctx.nodes[0] != root) {
+        testLog("Error: expected 1 visit to root, got %d\n", ctx.count);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTreeWalk_visits_children(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root, child1, child2;
+    xmltreeWalkCtx ctx;
+    int ret;
+
+    testStart("xmlSecTreeWalk: visits root and all children in order");
+
+    doc = xmltreeTestCreateDoc(BAD_CAST "Root", NULL);
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        testFinishedFailure();
+        return;
+    }
+    root   = xmlDocGetRootElement(doc);
+    /* use xmlNewChild (no text nodes) so the count is predictable */
+    child1 = xmlNewChild(root, NULL, BAD_CAST "Child1", NULL);
+    child2 = xmlNewChild(root, NULL, BAD_CAST "Child2", NULL);
+    if(child1 == NULL || child2 == NULL) {
+        testLog("Error: failed to add children\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    memset(&ctx, 0, sizeof(ctx));
+    ret = xmlSecTreeWalk(root, xmltreeWalkCollect, &ctx);
+    if(ret < 0) {
+        testLog("Error: xmlSecTreeWalk failed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    /* root visited first, then children in document order */
+    if(ctx.count != 3) {
+        testLog("Error: expected 3 visits, got %d\n", ctx.count);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(ctx.nodes[0] != root || ctx.nodes[1] != child1 || ctx.nodes[2] != child2) {
+        testLog("Error: nodes visited in wrong order\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTreeWalk_visits_nested(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root, parent, child;
+    xmltreeWalkCtx ctx;
+    int ret;
+
+    testStart("xmlSecTreeWalk: visits deeply nested nodes");
+
+    doc = xmltreeTestCreateDoc(BAD_CAST "Root", NULL);
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        testFinishedFailure();
+        return;
+    }
+    root   = xmlDocGetRootElement(doc);
+    /* use xmlNewChild (no text nodes) so the count is predictable */
+    parent = xmlNewChild(root,   NULL, BAD_CAST "Parent", NULL);
+    child  = xmlNewChild(parent, NULL, BAD_CAST "Child",  NULL);
+    if(parent == NULL || child == NULL) {
+        testLog("Error: failed to add nodes\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    memset(&ctx, 0, sizeof(ctx));
+    ret = xmlSecTreeWalk(root, xmltreeWalkCollect, &ctx);
+    if(ret < 0) {
+        testLog("Error: xmlSecTreeWalk failed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(ctx.count != 3) {
+        testLog("Error: expected 3 visits, got %d\n", ctx.count);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(ctx.nodes[0] != root || ctx.nodes[1] != parent || ctx.nodes[2] != child) {
+        testLog("Error: nested nodes visited in wrong order\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTreeWalk_stop(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root, child1;
+    xmltreeWalkCtx ctx;
+    int ret;
+
+    testStart("xmlSecTreeWalk: stops walk when callback returns 0");
+
+    doc = xmltreeTestCreateDoc(BAD_CAST "Root", NULL);
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        testFinishedFailure();
+        return;
+    }
+    root   = xmlDocGetRootElement(doc);
+    child1 = xmlSecAddChild(root, BAD_CAST "Child1", NULL);
+    if(child1 == NULL) {
+        testLog("Error: failed to add child\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    (void)xmlSecAddChild(root, BAD_CAST "Child2", NULL);
+
+    /* stop on first visit (root) — should not visit children */
+    memset(&ctx, 0, sizeof(ctx));
+    ret = xmlSecTreeWalk(root, xmltreeWalkStop, &ctx);
+    if(ret < 0) {
+        testLog("Error: xmlSecTreeWalk failed unexpectedly\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(ctx.count != 1 || ctx.nodes[0] != root) {
+        testLog("Error: expected walk to stop after root, got %d visits\n", ctx.count);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTreeWalk_callback_error(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    xmltreeWalkCtx ctx;
+    int ret;
+
+    testStart("xmlSecTreeWalk: returns error when callback returns negative");
+
+    doc = xmltreeTestCreateDoc(BAD_CAST "Root", NULL);
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        testFinishedFailure();
+        return;
+    }
+    root = xmlDocGetRootElement(doc);
+
+    memset(&ctx, 0, sizeof(ctx));
+    ret = xmlSecTreeWalk(root, xmltreeWalkError, &ctx);
+    if(ret >= 0) {
+        testLog("Error: expected negative return on callback error, got %d\n", ret);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTreeWalk_skips_siblings(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root, sib1, sib2;
+    xmltreeWalkCtx ctx;
+    int ret;
+
+    testStart("xmlSecTreeWalk: does not visit siblings of start node");
+
+    doc = xmltreeTestCreateDoc(BAD_CAST "Root", NULL);
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        testFinishedFailure();
+        return;
+    }
+    root = xmlDocGetRootElement(doc);
+    sib1 = xmlSecAddChild(root, BAD_CAST "Sibling1", NULL);
+    sib2 = xmlSecAddChild(root, BAD_CAST "Sibling2", NULL);
+    if(sib1 == NULL || sib2 == NULL) {
+        testLog("Error: failed to add siblings\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* walk starting from sib1 — should NOT visit sib2 */
+    memset(&ctx, 0, sizeof(ctx));
+    ret = xmlSecTreeWalk(sib1, xmltreeWalkCollect, &ctx);
+    if(ret < 0) {
+        testLog("Error: xmlSecTreeWalk failed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(ctx.count != 1 || ctx.nodes[0] != sib1) {
+        testLog("Error: expected only sib1, got %d nodes\n", ctx.count);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+/******************************************************************************
  * exported entry point
   *****************************************************************************/
 int
@@ -1435,6 +1732,16 @@ test_xmltree(void) {
     test_xmlSecGetNextElementNode_already_element();
     test_xmlSecGetNextElementNode_skips_text();
     test_xmlSecGetNextElementNode_no_elements();
+    if(testGroupFinished() != 1) { success = 0; }
+
+    testGroupStart("xmlSecTreeWalk");
+    test_xmlSecTreeWalk_null_node();
+    test_xmlSecTreeWalk_single_node();
+    test_xmlSecTreeWalk_visits_children();
+    test_xmlSecTreeWalk_visits_nested();
+    test_xmlSecTreeWalk_stop();
+    test_xmlSecTreeWalk_callback_error();
+    test_xmlSecTreeWalk_skips_siblings();
     if(testGroupFinished() != 1) { success = 0; }
 
     return(success);

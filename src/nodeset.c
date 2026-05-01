@@ -20,6 +20,7 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/nodeset.h>
+#include <xmlsec/xmltree.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/private.h>
 
@@ -30,19 +31,14 @@
         (node)->parent : \
         (xmlNodePtr)((xmlNsPtr)(node))->next)
 
-struct xmlSecNodeSetWalkRecursiveStep {
-    xmlNodePtr node, parent;
-};
-#define XMLSEC_NODESET_WALK_RECURSIVE_STEP_SIZE 1024
 
 static int      xmlSecNodeSetOneContains                (xmlSecNodeSetPtr nset,
                                                          xmlNodePtr node,
                                                          xmlNodePtr parent);
 static int      xmlSecNodeSetWalkRecursive              (xmlSecNodeSetPtr nset,
+                                                         xmlNodePtr startNode,
                                                          xmlSecNodeSetWalkCallback walkFunc,
-                                                         void* data,
-                                                         xmlNodePtr cur,
-                                                         xmlNodePtr parent);
+                                                         void* data);
 
 /**
  * @brief Creates a new nodes set.
@@ -327,16 +323,18 @@ xmlSecNodeSetWalk(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc, voi
 
     /* special cases */
     if(nset->nodes != NULL) {
-        int i;
+        int ii;
 
         switch(nset->type) {
         case xmlSecNodeSetNormal:
         case xmlSecNodeSetTree:
         case xmlSecNodeSetTreeWithoutComments:
-            for(i = 0; (ret >= 0) && (i < nset->nodes->nodeNr); ++i) {
-                ret = xmlSecNodeSetWalkRecursive(nset, walkFunc, data,
-                    nset->nodes->nodeTab[i],
-                    xmlSecGetParent(nset->nodes->nodeTab[i]));
+            for(ii = 0; (ret >= 0) && (ii < nset->nodes->nodeNr); ++ii) {
+                ret = xmlSecNodeSetWalkRecursive(nset, nset->nodes->nodeTab[ii], walkFunc, data);
+                if(ret < 0) {
+                    xmlSecInternalError("xmlSecNodeSetWalkRecursive", NULL);
+                    return(ret);
+                }
             }
             return(ret);
         default:
@@ -345,111 +343,97 @@ xmlSecNodeSetWalk(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc, voi
     }
 
     for(cur = nset->doc->children; (cur != NULL) && (ret >= 0); cur = cur->next) {
-        ret = xmlSecNodeSetWalkRecursive(nset, walkFunc, data, cur, xmlSecGetParent(cur));
+        ret = xmlSecNodeSetWalkRecursive(nset, cur, walkFunc, data);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecNodeSetWalkRecursive", NULL);
+            return(ret);
+        }
     }
     return(ret);
 }
 
+typedef struct {
+    xmlSecNodeSetPtr nset;
+    xmlSecNodeSetWalkCallback walkFunc;
+    void* data;
+} xmlSecNodeSetWalkCtx;
+
 static int
-xmlSecNodeSetWalkRecursive(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc, void* data, xmlNodePtr startNode, xmlNodePtr startNodeParent) {
-    struct xmlSecNodeSetWalkRecursiveStep* queue;
-    xmlSecSize queueSize, queueMaxSize;
+xmlSecNodeSetWalkRecursiveCallback(xmlNodePtr cur, void* data) {
+    xmlSecNodeSetWalkCtx* ctx = (xmlSecNodeSetWalkCtx*)data;
+    xmlNodePtr parent = xmlSecGetParent(cur);
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->nset != NULL, -1);
+    xmlSecAssert2(ctx->walkFunc != NULL, -1);
+    xmlSecAssert2(cur != NULL, -1);
+
+    /* the node itself */
+    if(xmlSecNodeSetContains(ctx->nset, cur, parent)) {
+        ret = ctx->walkFunc(ctx->nset, cur, parent, ctx->data);
+        if(ret < 0) {
+            return(-1);
+        }
+    }
+
+    /* element and document nodes have children */
+    if((cur->type == XML_ELEMENT_NODE) || (cur->type == XML_DOCUMENT_NODE)) {
+        xmlAttrPtr attr;
+        xmlNodePtr node;
+        xmlNsPtr ns, tmp;
+
+        attr = (xmlAttrPtr)cur->properties;
+        while(attr != NULL) {
+            if(xmlSecNodeSetContains(ctx->nset, (xmlNodePtr)attr, cur)) {
+                ret = ctx->walkFunc(ctx->nset, (xmlNodePtr)attr, cur, ctx->data);
+                if(ret < 0) {
+                    return(-1);
+                }
+            }
+            attr = attr->next;
+        }
+
+        node = cur;
+        while(node != NULL) {
+            ns = node->nsDef;
+            while(ns != NULL) {
+                tmp = xmlSearchNs(ctx->nset->doc, cur, ns->prefix);
+                if((tmp == ns) && xmlSecNodeSetContains(ctx->nset, (xmlNodePtr)ns, cur)) {
+                    ret = ctx->walkFunc(ctx->nset, (xmlNodePtr)ns, cur, ctx->data);
+                    if(ret < 0) {
+                        return(-1);
+                    }
+                }
+                ns = ns->next;
+            }
+            node = node->parent;
+        }
+    }
+
+    /* done and continue the walk */
+    return(1);
+}
+
+static int
+xmlSecNodeSetWalkRecursive(xmlSecNodeSetPtr nset, xmlNodePtr startNode, xmlSecNodeSetWalkCallback walkFunc, void* data) {
+    xmlSecNodeSetWalkCtx ctx;
     int ret;
 
     xmlSecAssert2(nset != NULL, -1);
     xmlSecAssert2(startNode != NULL, -1);
     xmlSecAssert2(walkFunc != NULL, -1);
 
-    /* setup the queue */
-    queue = (struct xmlSecNodeSetWalkRecursiveStep*)xmlMalloc(sizeof(struct xmlSecNodeSetWalkRecursiveStep) * XMLSEC_NODESET_WALK_RECURSIVE_STEP_SIZE);
-    if(queue == NULL) {
-        xmlSecMallocError(sizeof(struct xmlSecNodeSetWalkRecursiveStep) * XMLSEC_NODESET_WALK_RECURSIVE_STEP_SIZE, NULL);
+    ctx.nset = nset;
+    ctx.walkFunc = walkFunc;
+    ctx.data = data;
+
+    ret = xmlSecTreeWalk(startNode, xmlSecNodeSetWalkRecursiveCallback, &ctx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTreeWalk", NULL);
         return(-1);
     }
-    queueMaxSize = XMLSEC_NODESET_WALK_RECURSIVE_STEP_SIZE;
-    queue[0].node = startNode;
-    queue[0].parent = startNodeParent;
-    queueSize = 1;
 
-    while(queueSize > 0) {
-        xmlNodePtr cur = queue[queueSize - 1].node;
-        xmlNodePtr parent = queue[queueSize - 1].parent;
-        --queueSize;
-
-        /* the node itself */
-        if(xmlSecNodeSetContains(nset, cur, parent)) {
-            ret = walkFunc(nset, cur, parent, data);
-            if(ret < 0) {
-                xmlFree(queue);
-                return(ret);
-            }
-        }
-
-        /* element node has attributes, namespaces  */
-        if(cur->type == XML_ELEMENT_NODE) {
-            xmlAttrPtr attr;
-            xmlNodePtr node;
-            xmlNsPtr ns, tmp;
-
-            attr = (xmlAttrPtr)cur->properties;
-            while(attr != NULL) {
-                if(xmlSecNodeSetContains(nset, (xmlNodePtr)attr, cur)) {
-                    ret = walkFunc(nset, (xmlNodePtr)attr, cur, data);
-                    if(ret < 0) {
-                        xmlFree(queue);
-                        return(ret);
-                    }
-                }
-                attr = attr->next;
-            }
-
-            node = cur;
-            while(node != NULL) {
-                ns = node->nsDef;
-                while(ns != NULL) {
-                    tmp = xmlSearchNs(nset->doc, cur, ns->prefix);
-                    if((tmp == ns) && xmlSecNodeSetContains(nset, (xmlNodePtr)ns, cur)) {
-                        ret = walkFunc(nset, (xmlNodePtr)ns, cur, data);
-                        if(ret < 0) {
-                            xmlFree(queue);
-                            return(ret);
-                        }
-                    }
-                    ns = ns->next;
-                }
-                node = node->parent;
-            }
-        }
-
-        /* element and document nodes have children */
-        if((cur->type == XML_ELEMENT_NODE) || (cur->type == XML_DOCUMENT_NODE)) {
-            xmlNodePtr node;
-
-            node = cur->last;
-            while(node != NULL) {
-                if(queueSize >= queueMaxSize) {
-                    struct xmlSecNodeSetWalkRecursiveStep* tmpQueue;
-                    xmlSecSize newMaxSize = queueMaxSize + XMLSEC_NODESET_WALK_RECURSIVE_STEP_SIZE;
-
-                    tmpQueue = (struct xmlSecNodeSetWalkRecursiveStep*)xmlRealloc(queue, sizeof(struct xmlSecNodeSetWalkRecursiveStep) * newMaxSize);
-                    if(tmpQueue == NULL) {
-                        xmlSecMallocError(sizeof(struct xmlSecNodeSetWalkRecursiveStep) * newMaxSize, NULL);
-                        xmlFree(queue);
-                        return(-1);
-                    }
-                    queue = tmpQueue;
-                    queueMaxSize = newMaxSize;
-                }
-                queue[queueSize].node = node;
-                queue[queueSize].parent = cur;
-                ++queueSize;
-
-                node = node->prev;
-            }
-        }
-    }
-
-    xmlFree(queue);
     return(0);
 }
 

@@ -1210,6 +1210,8 @@ typedef enum {
     xmlSecAppCommandDecrypt
 } xmlSecAppCommand;
 
+#define XMLSEC_APP_PARSE_COMMAND_MAX_LEVEL 2
+
 typedef struct _xmlSecAppXmlData                                xmlSecAppXmlData,
                                                                 *xmlSecAppXmlDataPtr;
 struct _xmlSecAppXmlData {
@@ -1225,6 +1227,7 @@ static void                     xmlSecAppXmlDataDestroy         (xmlSecAppXmlDat
 
 
 static xmlSecAppCommand         xmlSecAppParseCommand           (const char* cmd,
+                                                                 int level,
                                                                  xmlSecAppCmdLineParamTopic* topics,
                                                                  xmlSecAppCommand* subCommand);
 static void                     xmlSecAppPrintHelp              (xmlSecAppCommand command,
@@ -1348,7 +1351,7 @@ int main(int argc, const char **argv) {
         xmlSecAppPrintUsage();
         goto done;
     }
-    command = xmlSecAppParseCommand(utf8_argv[1], &cmdLineTopics, &subCommand);
+    command = xmlSecAppParseCommand(utf8_argv[1], 0, &cmdLineTopics, &subCommand);
     if(command == xmlSecAppCommandUnknown) {
         fprintf(stderr, "Error: unknown command \"%s\"\n", utf8_argv[1]);
         xmlSecAppPrintUsage();
@@ -3368,12 +3371,17 @@ xmlSecAppXmlDataDestroy(xmlSecAppXmlDataPtr data) {
 }
 
 static xmlSecAppCommand
-xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics, xmlSecAppCommand* subCommand) {
+xmlSecAppParseCommand(const char* cmd, int level, xmlSecAppCmdLineParamTopic* cmdLineTopics, xmlSecAppCommand* subCommand) {
     if(subCommand != NULL) {
         (*subCommand) = xmlSecAppCommandUnknown;
     }
 
-    if((cmd == NULL) || (cmdLineTopics == NULL)) {
+    if((cmd == NULL) || (cmdLineTopics == NULL) || (level < 0)) {
+        return(xmlSecAppCommandUnknown);
+    } else
+
+    if(level > XMLSEC_APP_PARSE_COMMAND_MAX_LEVEL) {
+        (*cmdLineTopics) = 0;
         return(xmlSecAppCommandUnknown);
     } else
 
@@ -3390,7 +3398,7 @@ xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics
     if((strncmp(cmd, "help-", 5) == 0) || (strncmp(cmd, "--help-", 7) == 0)) {
         cmd = (cmd[0] == '-') ? cmd + 7 : cmd + 5;
         if(subCommand) {
-            (*subCommand) = xmlSecAppParseCommand(cmd, cmdLineTopics, NULL);
+            (*subCommand) = xmlSecAppParseCommand(cmd, level + 1, cmdLineTopics, NULL);
         } else {
             (*cmdLineTopics) = 0;
         }

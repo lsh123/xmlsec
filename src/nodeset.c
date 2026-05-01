@@ -428,9 +428,9 @@ xmlSecNodeSetWalkRecursive(xmlSecNodeSetPtr nset, xmlNodePtr startNode, xmlSecNo
     ctx.walkFunc = walkFunc;
     ctx.data = data;
 
-    ret = xmlSecTreeWalk(startNode, xmlSecNodeSetWalkRecursiveCallback, &ctx);
+    ret = xmlSecDepthFirstTreeWalk(startNode, xmlSecNodeSetWalkRecursiveCallback, &ctx);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTreeWalk", NULL);
+        xmlSecInternalError("xmlSecDepthFirstTreeWalk", NULL);
         return(-1);
     }
 

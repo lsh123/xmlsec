@@ -126,7 +126,7 @@ XMLSEC_EXPORT xmlChar*          xmlSecGetQName          (xmlNodePtr node,
  */
 typedef int (*xmlSecTreeWalkCallback)                   (xmlNodePtr cur,
                                                          void* data);
-XMLSEC_EXPORT int               xmlSecTreeWalk          (xmlNodePtr node,
+XMLSEC_EXPORT int               xmlSecDepthFirstTreeWalk(xmlNodePtr node,
                                                          xmlSecTreeWalkCallback callback,
                                                          void* data);
 

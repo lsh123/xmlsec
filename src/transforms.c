@@ -264,6 +264,7 @@ xmlSecTransformUriTypeCheck(xmlSecTransformUriType type, const xmlChar* uri) {
  *
   *****************************************************************************/
 static xmlSecSize g_xmlSecTransformCtxDefaultBinaryChunkSize = (64*1024); /* 64kb */
+static unsigned int g_xmlSecTransformCtxDefaultMaxDepth = 16u; /* 16 levels */
 
 /**
  * @brief Gets the default binary chunk size.
@@ -289,6 +290,31 @@ void
 xmlSecTransformCtxSetDefaultBinaryChunkSize(xmlSecSize binaryChunkSize) {
     xmlSecAssert(binaryChunkSize > 0);
     g_xmlSecTransformCtxDefaultBinaryChunkSize = binaryChunkSize;
+}
+
+
+/**
+ * @brief Gets the default max depth.
+ * @details Gets the max depth for transform context execution.
+ *
+ * @return the current max depth value.
+ */
+unsigned int
+xmlSecTransformCtxGetDefaultMaxDepth(void) {
+    return(g_xmlSecTransformCtxDefaultMaxDepth);
+}
+
+
+/**
+ * @brief Sets the default max depth.
+ * @details Sets the max depth for transform context execution. If set to 0,
+ * max depth check is disabled.
+ * This function is not thread safe and should only be called during initialization.
+ * @param maxDepth the new max depth value.
+ */
+void
+xmlSecTransformCtxSetDefaultMaxDepth(unsigned int maxDepth) {
+    g_xmlSecTransformCtxDefaultMaxDepth = maxDepth;
 }
 
 /**
@@ -494,6 +520,9 @@ xmlSecTransformCtxInitialize(xmlSecTransformCtxPtr ctx) {
 
     ctx->enabledUris = xmlSecTransformUriTypeAny;
     ctx->binaryChunkSize = xmlSecTransformCtxGetDefaultBinaryChunkSize();
+    ctx->maxDepth = xmlSecTransformCtxGetDefaultMaxDepth();
+
+    /* done */
     return(0);
 }
 
@@ -565,7 +594,7 @@ xmlSecTransformCtxCopyUserPref(xmlSecTransformCtxPtr dst, xmlSecTransformCtxPtr 
 
     dst->userData        = src->userData;
     dst->flags           = src->flags;
-    dst->flags2          = src->flags2;
+    dst->maxDepth        = src->maxDepth;
     dst->enabledUris     = src->enabledUris;
     dst->preExecCallback = src->preExecCallback;
 
@@ -1257,7 +1286,7 @@ xmlSecTransformCtxDebugDump(xmlSecTransformCtxPtr ctx, FILE* output) {
         XMLSEC_ENUM_CAST(ctx->status));
 
     fprintf(output, "== flags: 0x%08x\n", ctx->flags);
-    fprintf(output, "== flags2: 0x%08x\n", ctx->flags2);
+    fprintf(output, "== maxDepth: %u\n", ctx->maxDepth);
     if(xmlSecPtrListGetSize(&(ctx->enabledTransforms)) > 0) {
         fprintf(output, "== enabled transforms: ");
         xmlSecTransformIdListDebugDump(&(ctx->enabledTransforms), output);
@@ -1291,7 +1320,7 @@ xmlSecTransformCtxDebugXmlDump(xmlSecTransformCtxPtr ctx, FILE* output) {
         XMLSEC_ENUM_CAST(ctx->status));
 
     fprintf(output, "<Flags>%08x</Flags>\n", ctx->flags);
-    fprintf(output, "<Flags2>%08x</Flags2>\n", ctx->flags2);
+    fprintf(output, "<maxDepth>%u</maxDepth>\n", ctx->maxDepth);
     if(xmlSecPtrListGetSize(&(ctx->enabledTransforms)) > 0) {
         fprintf(output, "<EnabledTransforms>\n");
         xmlSecTransformIdListDebugXmlDump(&(ctx->enabledTransforms), output);

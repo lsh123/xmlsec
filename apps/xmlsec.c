@@ -216,6 +216,18 @@ static xmlSecAppCmdLineParam transformBinChunkSizeParam = {
     NULL
 };
 
+static xmlSecAppCmdLineParam transformMaxDepthParam = {
+    xmlSecAppCmdLineTopicCryptoConfig,
+    "--transform-max-depth",
+    NULL,
+    "--transform-max-depth <depth>"
+    "\n\tsets the max depth for transforms execution to <depth>; "
+    "\n\tset to 0 to disable max depth check",
+    xmlSecAppCmdLineParamTypeNumber,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};
+
 static xmlSecAppCmdLineParam verboseParam = {
     xmlSecAppCmdLineTopicGeneral,
     "--verbose",
@@ -1187,6 +1199,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &repeatParam,
     &base64LineSizeParam,
     &transformBinChunkSizeParam,
+    &transformMaxDepthParam,
     &xxeParam,
     &urlMapParam,
     &helpParam,
@@ -1552,6 +1565,17 @@ xmlSecAppExecute(xmlSecAppCommand command, const char** utf8_argv, int argc) {
             goto done;
         }
         xmlSecTransformCtxSetDefaultBinaryChunkSize((xmlSecSize)chunkSize);
+    }
+
+    /* transform max depth */
+    if(xmlSecAppCmdLineParamIsSet(&transformMaxDepthParam)) {
+        int maxDepth = xmlSecAppCmdLineParamGetInt(&transformMaxDepthParam, 0);
+        if(maxDepth < 0) {
+            fprintf(stderr, "Error: transform max depth should be greater than or equal to zero\n");
+            xmlSecAppPrintUsage();
+            goto done;
+        }
+        xmlSecTransformCtxSetDefaultMaxDepth((unsigned int)maxDepth);
     }
 
     /* load keys */
@@ -3824,9 +3848,9 @@ xmlSecAppAddIDAttr(xmlNodePtr node, const xmlChar* attrName, const xmlChar* node
     ctx.nodeName = nodeName;
     ctx.nsHref = nsHref;
 
-    ret = xmlSecTreeWalk(node, xmlSecAppAddIDAttrCallback, &ctx);
+    ret = xmlSecDepthFirstTreeWalk(node, xmlSecAppAddIDAttrCallback, &ctx);
     if(ret < 0) {
-        fprintf(stderr, "Error: xmlSecTreeWalk failed\n");
+        fprintf(stderr, "Error: xmlSecDepthFirstTreeWalk failed\n");
         return(-1);
     }
 

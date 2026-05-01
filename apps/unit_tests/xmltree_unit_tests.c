@@ -1351,7 +1351,7 @@ test_xmlSecGetNextElementNode_no_elements(void) {
 }
 
 /******************************************************************************
- * xmlSecTreeWalk
+ * xmlSecDepthFirstTreeWalk
   *****************************************************************************/
 typedef struct {
     int count;
@@ -1382,11 +1382,11 @@ xmltreeWalkError(xmlNodePtr cur, void* data) {
 }
 
 static void
-test_xmlSecTreeWalk_null_node(void) {
-    testStart("xmlSecTreeWalk: NULL node returns success without calling callback");
+test_xmlSecDepthFirstTreeWalk_null_node(void) {
+    testStart("xmlSecDepthFirstTreeWalk: NULL node returns success without calling callback");
 
     /* callback should never be called, just check return value */
-    if(xmlSecTreeWalk(NULL, xmltreeWalkCollect, NULL) != 0) {
+    if(xmlSecDepthFirstTreeWalk(NULL, xmltreeWalkCollect, NULL) != 0) {
         testLog("Error: expected 0 for NULL node\n");
         testFinishedFailure();
         return;
@@ -1395,13 +1395,13 @@ test_xmlSecTreeWalk_null_node(void) {
 }
 
 static void
-test_xmlSecTreeWalk_single_node(void) {
+test_xmlSecDepthFirstTreeWalk_single_node(void) {
     xmlDocPtr doc;
     xmlNodePtr root;
     xmltreeWalkCtx ctx;
     int ret;
 
-    testStart("xmlSecTreeWalk: visits single root node");
+    testStart("xmlSecDepthFirstTreeWalk: visits single root node");
 
     doc = xmltreeTestCreateDoc(BAD_CAST "Root", NULL);
     if(doc == NULL) {
@@ -1412,9 +1412,9 @@ test_xmlSecTreeWalk_single_node(void) {
     root = xmlDocGetRootElement(doc);
 
     memset(&ctx, 0, sizeof(ctx));
-    ret = xmlSecTreeWalk(root, xmltreeWalkCollect, &ctx);
+    ret = xmlSecDepthFirstTreeWalk(root, xmltreeWalkCollect, &ctx);
     if(ret < 0) {
-        testLog("Error: xmlSecTreeWalk failed\n");
+        testLog("Error: xmlSecDepthFirstTreeWalk failed\n");
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
@@ -1430,13 +1430,13 @@ test_xmlSecTreeWalk_single_node(void) {
 }
 
 static void
-test_xmlSecTreeWalk_visits_children(void) {
+test_xmlSecDepthFirstTreeWalk_visits_children(void) {
     xmlDocPtr doc;
     xmlNodePtr root, child1, child2;
     xmltreeWalkCtx ctx;
     int ret;
 
-    testStart("xmlSecTreeWalk: visits root and all children in order");
+    testStart("xmlSecDepthFirstTreeWalk: visits root and all children in order");
 
     doc = xmltreeTestCreateDoc(BAD_CAST "Root", NULL);
     if(doc == NULL) {
@@ -1456,9 +1456,9 @@ test_xmlSecTreeWalk_visits_children(void) {
     }
 
     memset(&ctx, 0, sizeof(ctx));
-    ret = xmlSecTreeWalk(root, xmltreeWalkCollect, &ctx);
+    ret = xmlSecDepthFirstTreeWalk(root, xmltreeWalkCollect, &ctx);
     if(ret < 0) {
-        testLog("Error: xmlSecTreeWalk failed\n");
+        testLog("Error: xmlSecDepthFirstTreeWalk failed\n");
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
@@ -1481,13 +1481,13 @@ test_xmlSecTreeWalk_visits_children(void) {
 }
 
 static void
-test_xmlSecTreeWalk_visits_nested(void) {
+test_xmlSecDepthFirstTreeWalk_visits_nested(void) {
     xmlDocPtr doc;
     xmlNodePtr root, parent, child;
     xmltreeWalkCtx ctx;
     int ret;
 
-    testStart("xmlSecTreeWalk: visits deeply nested nodes");
+    testStart("xmlSecDepthFirstTreeWalk: visits deeply nested nodes");
 
     doc = xmltreeTestCreateDoc(BAD_CAST "Root", NULL);
     if(doc == NULL) {
@@ -1507,9 +1507,9 @@ test_xmlSecTreeWalk_visits_nested(void) {
     }
 
     memset(&ctx, 0, sizeof(ctx));
-    ret = xmlSecTreeWalk(root, xmltreeWalkCollect, &ctx);
+    ret = xmlSecDepthFirstTreeWalk(root, xmltreeWalkCollect, &ctx);
     if(ret < 0) {
-        testLog("Error: xmlSecTreeWalk failed\n");
+        testLog("Error: xmlSecDepthFirstTreeWalk failed\n");
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
@@ -1531,13 +1531,13 @@ test_xmlSecTreeWalk_visits_nested(void) {
 }
 
 static void
-test_xmlSecTreeWalk_stop(void) {
+test_xmlSecDepthFirstTreeWalk_stop(void) {
     xmlDocPtr doc;
     xmlNodePtr root, child1;
     xmltreeWalkCtx ctx;
     int ret;
 
-    testStart("xmlSecTreeWalk: stops walk when callback returns 0");
+    testStart("xmlSecDepthFirstTreeWalk: stops walk when callback returns 0");
 
     doc = xmltreeTestCreateDoc(BAD_CAST "Root", NULL);
     if(doc == NULL) {
@@ -1557,9 +1557,9 @@ test_xmlSecTreeWalk_stop(void) {
 
     /* stop on first visit (root) — should not visit children */
     memset(&ctx, 0, sizeof(ctx));
-    ret = xmlSecTreeWalk(root, xmltreeWalkStop, &ctx);
+    ret = xmlSecDepthFirstTreeWalk(root, xmltreeWalkStop, &ctx);
     if(ret < 0) {
-        testLog("Error: xmlSecTreeWalk failed unexpectedly\n");
+        testLog("Error: xmlSecDepthFirstTreeWalk failed unexpectedly\n");
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
@@ -1575,13 +1575,13 @@ test_xmlSecTreeWalk_stop(void) {
 }
 
 static void
-test_xmlSecTreeWalk_callback_error(void) {
+test_xmlSecDepthFirstTreeWalk_callback_error(void) {
     xmlDocPtr doc;
     xmlNodePtr root;
     xmltreeWalkCtx ctx;
     int ret;
 
-    testStart("xmlSecTreeWalk: returns error when callback returns negative");
+    testStart("xmlSecDepthFirstTreeWalk: returns error when callback returns negative");
 
     doc = xmltreeTestCreateDoc(BAD_CAST "Root", NULL);
     if(doc == NULL) {
@@ -1592,7 +1592,7 @@ test_xmlSecTreeWalk_callback_error(void) {
     root = xmlDocGetRootElement(doc);
 
     memset(&ctx, 0, sizeof(ctx));
-    ret = xmlSecTreeWalk(root, xmltreeWalkError, &ctx);
+    ret = xmlSecDepthFirstTreeWalk(root, xmltreeWalkError, &ctx);
     if(ret >= 0) {
         testLog("Error: expected negative return on callback error, got %d\n", ret);
         xmlFreeDoc(doc);
@@ -1604,13 +1604,13 @@ test_xmlSecTreeWalk_callback_error(void) {
 }
 
 static void
-test_xmlSecTreeWalk_skips_siblings(void) {
+test_xmlSecDepthFirstTreeWalk_skips_siblings(void) {
     xmlDocPtr doc;
     xmlNodePtr root, sib1, sib2;
     xmltreeWalkCtx ctx;
     int ret;
 
-    testStart("xmlSecTreeWalk: does not visit siblings of start node");
+    testStart("xmlSecDepthFirstTreeWalk: does not visit siblings of start node");
 
     doc = xmltreeTestCreateDoc(BAD_CAST "Root", NULL);
     if(doc == NULL) {
@@ -1630,9 +1630,9 @@ test_xmlSecTreeWalk_skips_siblings(void) {
 
     /* walk starting from sib1 — should NOT visit sib2 */
     memset(&ctx, 0, sizeof(ctx));
-    ret = xmlSecTreeWalk(sib1, xmltreeWalkCollect, &ctx);
+    ret = xmlSecDepthFirstTreeWalk(sib1, xmltreeWalkCollect, &ctx);
     if(ret < 0) {
-        testLog("Error: xmlSecTreeWalk failed\n");
+        testLog("Error: xmlSecDepthFirstTreeWalk failed\n");
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
@@ -1646,6 +1646,7 @@ test_xmlSecTreeWalk_skips_siblings(void) {
     xmlFreeDoc(doc);
     testFinishedSuccess();
 }
+
 
 /******************************************************************************
  * exported entry point
@@ -1734,14 +1735,14 @@ test_xmltree(void) {
     test_xmlSecGetNextElementNode_no_elements();
     if(testGroupFinished() != 1) { success = 0; }
 
-    testGroupStart("xmlSecTreeWalk");
-    test_xmlSecTreeWalk_null_node();
-    test_xmlSecTreeWalk_single_node();
-    test_xmlSecTreeWalk_visits_children();
-    test_xmlSecTreeWalk_visits_nested();
-    test_xmlSecTreeWalk_stop();
-    test_xmlSecTreeWalk_callback_error();
-    test_xmlSecTreeWalk_skips_siblings();
+    testGroupStart("xmlSecDepthFirstTreeWalk");
+    test_xmlSecDepthFirstTreeWalk_null_node();
+    test_xmlSecDepthFirstTreeWalk_single_node();
+    test_xmlSecDepthFirstTreeWalk_visits_children();
+    test_xmlSecDepthFirstTreeWalk_visits_nested();
+    test_xmlSecDepthFirstTreeWalk_stop();
+    test_xmlSecDepthFirstTreeWalk_callback_error();
+    test_xmlSecDepthFirstTreeWalk_skips_siblings();
     if(testGroupFinished() != 1) { success = 0; }
 
     return(success);

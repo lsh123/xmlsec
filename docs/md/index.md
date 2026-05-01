@@ -19,6 +19,7 @@ see the Copyright file in the distribution for details.
   - (xmlsec-openssl) Added experimental ML-KEM support.
   - (xmlsec-nss) Added SHA3 support.
   - (xmlsec-gnutls) Added RSA-OEAP (SHA-256/SHA-384/SHA-512) support.
+  - (xmlsec-core) Added `--transform-max-depth` option to control maximum transforms execution depth (`0` disables the depth check).
   - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/1.3.12)).
 
 - **April 22, 2026**

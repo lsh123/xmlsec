@@ -268,8 +268,8 @@ typedef int             (*xmlSecTransformCtxPreExecuteCallback)         (xmlSecT
 struct _xmlSecTransformCtx {
     /* user settings */
     void*                                       userData;  /**< the pointer to user data (xmlsec and xmlsec-crypto never touch this). */
-    unsigned int                                flags;  /**< the bit mask flags to control transforms execution (reserved for the future). */
-    unsigned int                                flags2;  /**< the bit mask flags to control transforms execution (reserved for the future). */
+    unsigned int                                flags;  /**< the bit mask flags to control transforms execution. */
+    unsigned int                                maxDepth;  /**< the maximum depth for transforms (eg Relationshi Transform) execution (if 0 then depth check is disabled). */
     xmlSecSize                                  binaryChunkSize;  /**< the chunk of size for binary transforms processing. */
     xmlSecTransformUriType                      enabledUris;  /**< the allowed transform data source uri types. */
     xmlSecPtrList                               enabledTransforms;  /**< the list of enabled transforms; if list is empty (default) then all registered transforms are enabled. */
@@ -334,6 +334,9 @@ XMLSEC_EXPORT void                      xmlSecTransformCtxDebugXmlDump  (xmlSecT
 
 XMLSEC_EXPORT xmlSecSize                xmlSecTransformCtxGetDefaultBinaryChunkSize(void);
 XMLSEC_EXPORT void                      xmlSecTransformCtxSetDefaultBinaryChunkSize(xmlSecSize binaryChunkSize);
+
+XMLSEC_EXPORT unsigned int              xmlSecTransformCtxGetDefaultMaxDepth(void);
+XMLSEC_EXPORT void                      xmlSecTransformCtxSetDefaultMaxDepth(unsigned int maxDepth);
 
 XMLSEC_EXPORT xmlSecKeyDataPtr          xmlSecTransformCtxExtraKeyDataGet       (xmlSecTransformCtxPtr ctx,
                                                                                  xmlSecKeyDataId dataId);

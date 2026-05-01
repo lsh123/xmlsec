@@ -316,7 +316,7 @@ xmlSecFindNode(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) 
 
     /* Walk the tree */
     for(cur = parent; cur != NULL; cur = cur->next) {
-        ret = xmlSecTreeWalk(cur, xmlSecFindNodeCallback, &ctx);
+        ret = xmlSecDepthFirstTreeWalk(cur, xmlSecFindNodeCallback, &ctx);
         if(ret < 0) {
             return(NULL);
         }
@@ -882,9 +882,9 @@ xmlSecAddIDs(xmlDocPtr doc, xmlNodePtr node, const xmlChar** ids) {
     ctx.ids = ids;
 
     if((node != NULL) && (node->type == XML_ELEMENT_NODE)) {
-        ret = xmlSecTreeWalk(node, xmlSecAddIDsCallback, &ctx);
+        ret = xmlSecDepthFirstTreeWalk(node, xmlSecAddIDsCallback, &ctx);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecTreeWalk", NULL);
+            xmlSecInternalError("xmlSecDepthFirstTreeWalk", NULL);
             return;
         }
     } else if(node == NULL) {
@@ -892,9 +892,9 @@ xmlSecAddIDs(xmlDocPtr doc, xmlNodePtr node, const xmlChar** ids) {
             if(cur->type != XML_ELEMENT_NODE) {
                 continue;
             }
-            ret = xmlSecTreeWalk(cur, xmlSecAddIDsCallback, &ctx);
+            ret = xmlSecDepthFirstTreeWalk(cur, xmlSecAddIDsCallback, &ctx);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecTreeWalk", NULL);
+                xmlSecInternalError("xmlSecDepthFirstTreeWalk", NULL);
                 return;
             }
         }
@@ -1014,7 +1014,7 @@ static xmlSecPtrListKlass xmlSecXmlNodePtrListKlass = {
  * @return 0 on success or a negative value if an error occurs.
  */
 int
-xmlSecTreeWalk(xmlNodePtr node, xmlSecTreeWalkCallback callback, void* data) {
+xmlSecDepthFirstTreeWalk(xmlNodePtr node, xmlSecTreeWalkCallback callback, void* data) {
     xmlSecPtrList queue;
     xmlNodePtr cur;
     int ret;

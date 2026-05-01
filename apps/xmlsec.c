@@ -3742,60 +3742,85 @@ xmlSecAppWriteResult(const char* inputFileName, const char* outputFileNameTmpl, 
     return(0);
 }
 
+struct xmlSecAppAddIDAttrCallbackCtx {
+    const xmlChar* attrName;
+    const xmlChar* nodeName;
+    const xmlChar* nsHref;
+};
+
 static int
-xmlSecAppAddIDAttr(xmlNodePtr node, const xmlChar* attrName, const xmlChar* nodeName, const xmlChar* nsHref) {
+xmlSecAppAddIDAttrCallback(xmlNodePtr cur, void* data) {
+    struct xmlSecAppAddIDAttrCallbackCtx* ctx;
     xmlAttrPtr attr, tmpAttr;
-    xmlNodePtr cur;
     xmlChar* id;
 
-    if((node == NULL) || (attrName == NULL) || (nodeName == NULL)) {
-        return(-1);
+    xmlSecAssert2(cur != NULL, -1);
+    xmlSecAssert2(data != NULL, -1);
+
+    if(cur->type != XML_ELEMENT_NODE) {
+        return(1);
     }
 
-    /* process children first because it does not matter much but does simplify code */
-    cur = xmlSecGetNextElementNode(node->children);
-    while(cur != NULL) {
-        if(xmlSecAppAddIDAttr(cur, attrName, nodeName, nsHref) < 0) {
-            return(-1);
-        }
-        cur = xmlSecGetNextElementNode(cur->next);
-    }
+    ctx = data;
 
     /* node name must match */
-    if(!xmlStrEqual(node->name, nodeName)) {
-        return(0);
+    if(!xmlStrEqual(cur->name, ctx->nodeName)) {
+        return(1);
     }
 
     /* if nsHref is set then it also should match */
-    if((nsHref != NULL) && (node->ns != NULL) && (!xmlStrEqual(nsHref, node->ns->href))) {
-        return(0);
+    if((ctx->nsHref != NULL) && (cur->ns != NULL) && (!xmlStrEqual(ctx->nsHref, cur->ns->href))) {
+        return(1);
     }
 
     /* the attribute with name equal to attrName should exist */
-    for(attr = node->properties; attr != NULL; attr = attr->next) {
-        if(xmlStrEqual(attr->name, attrName)) {
+    for(attr = cur->properties; attr != NULL; attr = attr->next) {
+        if(xmlStrEqual(attr->name, ctx->attrName)) {
             break;
         }
     }
     if(attr == NULL) {
-        return(0);
+        return(1);
     }
 
     /* and this attr should have a value */
-    id = xmlNodeListGetString(node->doc, attr->children, 1);
+    id = xmlNodeListGetString(cur->doc, attr->children, 1);
     if(id == NULL) {
-        return(0);
+        return(1);
     }
 
     /* check that we don't have same ID already */
-    tmpAttr = xmlGetID(node->doc, id);
+    tmpAttr = xmlGetID(cur->doc, id);
     if(tmpAttr == NULL) {
-        xmlAddID(NULL, node->doc, id, attr);
+        xmlAddID(NULL, cur->doc, id, attr);
     } else if(tmpAttr != attr) {
         fprintf(stderr, "Error: duplicate ID attribute \"%s\"\n", id);
         xmlFree(id);
         return(-1);
     }
     xmlFree(id);
+
+    return(1);
+}
+
+static int
+xmlSecAppAddIDAttr(xmlNodePtr node, const xmlChar* attrName, const xmlChar* nodeName, const xmlChar* nsHref) {
+    struct xmlSecAppAddIDAttrCallbackCtx ctx;
+    int ret;
+
+    if((node == NULL) || (attrName == NULL) || (nodeName == NULL)) {
+        return(-1);
+    }
+
+    ctx.attrName = attrName;
+    ctx.nodeName = nodeName;
+    ctx.nsHref = nsHref;
+
+    ret = xmlSecTreeWalk(node, xmlSecAppAddIDAttrCallback, &ctx);
+    if(ret < 0) {
+        fprintf(stderr, "Error: xmlSecTreeWalk failed\n");
+        return(-1);
+    }
+
     return(0);
 }

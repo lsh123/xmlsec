@@ -108,7 +108,7 @@ XMLSEC_EXPORT int               xmlSecNodeEncodeAndSetContent
                                                         (xmlNodePtr node,
                                                          const xmlChar *buffer);
 XMLSEC_EXPORT void              xmlSecAddIDs            (xmlDocPtr doc,
-                                                         xmlNodePtr cur,
+                                                         xmlNodePtr node,
                                                          const xmlChar** ids);
 XMLSEC_EXPORT xmlDocPtr         xmlSecCreateTree        (const xmlChar* rootNodeName,
                                                          const xmlChar* rootNodeNs);
@@ -118,6 +118,17 @@ XMLSEC_EXPORT xmlChar*          xmlSecGetQName          (xmlNodePtr node,
                                                          const xmlChar* href,
                                                          const xmlChar* local);
 
+/**
+ * @brief for XML tree walk.
+ * @param cur the current XML node.
+ * @param data the user data passed to the callback.
+ * @return 1 to continue the walk, 0 to stop the walk, or a negative value to stop the walk with an error.
+ */
+typedef int (*xmlSecTreeWalkCallback)                   (xmlNodePtr cur,
+                                                         void* data);
+XMLSEC_EXPORT int               xmlSecTreeWalk          (xmlNodePtr node,
+                                                         xmlSecTreeWalkCallback callback,
+                                                         void* data);
 
 XMLSEC_EXPORT int               xmlSecPrintXmlString    (FILE * fd,
                                                          const xmlChar * str);

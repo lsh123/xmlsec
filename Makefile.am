@@ -5,7 +5,11 @@
 # make tar-release  : builds distribution tar.gz (including docs)
 #
 NULL =
-SUBDIRS 	    = include src apps man docs
+SUBDIRS  = include src
+if XMLSEC_APPS
+SUBDIRS += apps
+endif
+SUBDIRS += man docs
 
 SAFE_VERSION	= @XMLSEC_VERSION_SAFE@
 

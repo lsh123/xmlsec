@@ -2447,6 +2447,21 @@ AM_CONDITIONAL(XMLSEC_NO_XMLENC, test "z$XMLSEC_NO_XMLENC" = "z1")
 AC_SUBST(XMLSEC_NO_XMLENC)
 
 dnl ==========================================================================
+dnl See if we need apps
+dnl ==========================================================================
+AC_MSG_CHECKING(for apps)
+AC_ARG_ENABLE([apps], [AS_HELP_STRING([--enable-apps],[enable applications (yes)])])
+if test "z$enable_apps" = "zno" ; then
+    XMLSEC_APPS="0"
+    AC_MSG_RESULT([disabled])
+else
+    XMLSEC_APPS="1"
+    AC_MSG_RESULT([yes])
+fi
+AM_CONDITIONAL(XMLSEC_APPS, test "z$XMLSEC_APPS" = "z1")
+AC_SUBST(XMLSEC_APPS)
+
+dnl ==========================================================================
 dnl Static linking (implies enable_crypto_dl="no")
 dnl ==========================================================================
 XMLSEC_STATIC_BINARIES=""

@@ -37,6 +37,7 @@
 extern "C" {
 #endif /* __cplusplus */
 
+/* \cond Exclude from Doxygen */
 /******************************************************************************
  *
  * Check for features available in the current version of GnuTLS.
@@ -51,7 +52,7 @@ extern "C" {
 #if GNUTLS_VERSION_NUMBER < 0x030809
 #define XMLSEC_NO_MLDSA        1
 #endif /* GNUTLS_VERSION_NUMBER < 0x030809 */
-
+/* \endcond End exclude from Doxygen */
 
 /******************************************************************************
  *

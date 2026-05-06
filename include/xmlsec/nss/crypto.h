@@ -31,6 +31,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/dl.h>
 
+/* \cond Exclude from Doxygen */
 /**
  * MD5 was removed (https://bugs.gentoo.org/764437)
  *
@@ -42,9 +43,7 @@
 #ifndef XMLSEC_NO_XDH
 #if (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 103))
 /**
- * @brief Defined if XDH key agreement is not supported on this NSS platform.
- * @details Defined if XDH key agreement is not supported by NSS on this platform
- * (requires NSS >= 3.103).
+ * XDH requires NSS >= 3.103
  */
 #define XMLSEC_NO_XDH 1
 #endif /* (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 103)) */
@@ -53,9 +52,7 @@
 #ifndef XMLSEC_NO_EDDSA
 #if (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 99))
 /**
- * @brief Defined if EdDSA signatures are not supported on this NSS platform.
- * @details Defined if EdDSA signatures are not supported by NSS on this platform
- * (requires NSS >= 3.99).
+ * EdDSA requires NSS >= 3.99
  */
 #define XMLSEC_NO_EDDSA 1
 #endif /* (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 99)) */
@@ -64,13 +61,13 @@
 #ifndef XMLSEC_NO_HKDF
 #if !defined(CKM_HKDF_DERIVE) || !defined(CKM_HKDF_DATA) || !defined(CKF_HKDF_SALT_NULL) || !defined(CKF_HKDF_SALT_DATA)
 /**
- * @brief Defined if HKDF key derivation is not supported on this NSS platform.
- * @details Defined if HKDF key derivation is not supported by NSS on this platform
- * (requires PKCS#11 HKDF mechanism support).
+ * HKDF requires PKCS#11 HKDF mechanism support.
  */
 #define XMLSEC_NO_HKDF 1
 #endif /* !defined(CKM_HKDF_DERIVE) || !defined(CKM_HKDF_DATA) || !defined(CKF_HKDF_SALT_NULL) || !defined(CKF_HKDF_SALT_DATA) */
 #endif /* XMLSEC_NO_HKDF */
+/* \endcond End exclude from Doxygen */
+
 
 #ifdef __cplusplus
 extern "C" {

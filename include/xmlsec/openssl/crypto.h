@@ -26,6 +26,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/dl.h>
 
+/* \cond Exclude from Doxygen */
 /******************************************************************************
  *
  * What version of the OpenSSL API do we have? (also see configure.ac)
@@ -85,6 +86,7 @@
 #define XMLSEC_NO_PBKDF2                1
 #define XMLSEC_NO_HKDF                  1
 #endif /* !defined(XMLSEC_OPENSSL_API_300) */
+/* \endcond End exclude from Doxygen */
 
 
 /******************************************************************************

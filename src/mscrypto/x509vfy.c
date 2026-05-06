@@ -414,7 +414,7 @@ struct xmlSecMSCryptoBuildCertChainStep {
 
 /**
  * @brief Builds certificates chain manually.
- * @param cert the certificate we check
+ * @param theCert the certificate we check
  * @param pfTime pointer to FILETIME that we are interested in
  * @param store_trusted trusted certificates added via API
  * @param store_untrusted untrusted certificates added via API

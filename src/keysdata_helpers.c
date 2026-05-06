@@ -2282,7 +2282,7 @@ xmlSecKeyValueRsaXmlWrite(xmlSecKeyValueRsaPtr data, xmlNodePtr node,
  *
   *****************************************************************************/
 
-/** @brief Size of #xmlSecKeyDataKAM struct. */
+/** @brief Size of the internal xmlSecKeyDataKAM struct. */
 #define xmlSecKeyDataKAMSize    (sizeof(xmlSecKeyDataKAM))
 
 static int  xmlSecKeyDataKAMInitialize (xmlSecKeyDataPtr data);

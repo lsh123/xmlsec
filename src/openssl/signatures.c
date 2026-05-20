@@ -31,6 +31,7 @@
 
 #ifdef XMLSEC_OPENSSL_API_300
 #include <openssl/core_names.h>
+#include <openssl/provider.h>
 #endif /* XMLSEC_OPENSSL_API_300 */
 
 #include "../cast_helpers.h"
@@ -1084,6 +1085,11 @@ xmlSecOpenSSLEvpSignatureCreatePkeyCtx(xmlSecTransformPtr transform, xmlSecOpenS
         OSSL_PARAM params[2];
         int paramsPos = 0;
         EVP_SIGNATURE *sigAlg;
+        EVP_PKEY *pKey;
+        const OSSL_PROVIDER *keyProv;
+        const char *provName;
+        const char *propQueryPtr = NULL;
+        xmlChar propQuery[128];
 
         /* setup params */
         if ((ctx->contextString != NULL) && (xmlSecBufferGetData(ctx->contextString) != NULL)) {
@@ -1095,7 +1101,26 @@ xmlSecOpenSSLEvpSignatureCreatePkeyCtx(xmlSecTransformPtr transform, xmlSecOpenS
         }
         params[paramsPos++] = OSSL_PARAM_construct_end();
 
-        sigAlg = EVP_SIGNATURE_fetch(xmlSecOpenSSLGetLibCtx(), ctx->signatureName, NULL);
+        /* Fetch the signature implementation from the key's owning provider.
+         * Otherwise, pass NULL to EVP_Signature_fetch to use the default provider. */
+        pKey = EVP_PKEY_CTX_get0_pkey(pKeyCtx);
+        if (pKey != NULL) {
+            keyProv = EVP_PKEY_get0_provider(pKey);
+            if (keyProv != NULL) {
+                provName = OSSL_PROVIDER_get0_name(keyProv);
+                if (provName != NULL) {
+                    ret = xmlStrPrintf(propQuery, sizeof(propQuery),
+                                       "provider=%s", provName);
+                    if (ret < 0) {
+                        xmlSecXmlError("xmlStrPrintf", xmlSecTransformGetName(transform));
+                        goto error;
+                    }
+                    propQueryPtr = (const char *)propQuery;
+                }
+            }
+        }
+        sigAlg = EVP_SIGNATURE_fetch(xmlSecOpenSSLGetLibCtx(),
+                                     ctx->signatureName, propQueryPtr);
         if(sigAlg == NULL) {
             xmlSecOpenSSLError2("EVP_SIGNATURE_fetch", xmlSecTransformGetName(transform),
                 "name=%s", xmlSecErrorsSafeString(ctx->signatureName));

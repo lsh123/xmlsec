@@ -632,7 +632,7 @@ xmlSecBnCompare(xmlSecBnPtr bn, const xmlSecByte* data, xmlSecSize dataSize) {
     } else if(bnSize < dataSize) {
         return(-1);
     } else if(bnSize > dataSize) {
-        return(-1);
+        return(1);
     }
 
     xmlSecAssert2(bnData != NULL, -1);
@@ -679,7 +679,7 @@ xmlSecBnCompareReverse(xmlSecBnPtr bn, const xmlSecByte* data, xmlSecSize dataSi
     } else if(bnSize < dataSize) {
         return(-1);
     } else if(bnSize > dataSize) {
-        return(-1);
+        return(1);
     }
 
     xmlSecAssert2(bnData != NULL, -1);

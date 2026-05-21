@@ -571,14 +571,17 @@ xmlSecBnAdd(xmlSecBnPtr bn, int delta) {
         }
     } else {
         for(over = -delta, ii = xmlSecBufferGetSize(bn); (ii > 0) && (over > 0);) {
+            int byteSub;
             xmlSecAssert2(data != NULL, -1);
             tmp = data[--ii];
-            if(tmp < over) {
-                data[ii] = 0;
-                over = (over - tmp) / 256;
+            byteSub = over & 0xFF;
+            if(tmp >= byteSub) {
+                data[ii] = (xmlSecByte)(tmp - byteSub);
+                over = over >> 8;
             } else {
-                data[ii] = (xmlSecByte)(tmp - over);
-                over = 0;
+                /* underflow: wrap and propagate a borrow to the next higher byte */
+                data[ii] = (xmlSecByte)(tmp + 256 - byteSub);
+                over = (over >> 8) + 1;
             }
         }
     }

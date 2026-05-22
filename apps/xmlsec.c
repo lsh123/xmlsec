@@ -1683,7 +1683,7 @@ xmlSecAppExecute(xmlSecAppCommand command, const char** utf8_argv, int argc) {
         long double msecs;
 
         g_repeats = xmlSecAppCmdLineParamGetInt(&repeatParam, 1);
-        msecs = (1000 * g_totalTime) / (long double)CLOCKS_PER_SEC;
+        msecs = (1000 * (long double)g_totalTime) / (long double)CLOCKS_PER_SEC;
         fprintf(stderr, "Executed %d tests in %.2Lf msec\n", g_repeats, msecs);
     }
 

@@ -362,6 +362,10 @@ xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
     }
     xmlSecAssert2(ii < len, NULL);
 
+    if(ii == 0) {
+        res[ii++] = '0';
+    }
+
     /* we might have '0' at the beggining, remove it but keep one zero */
     for(len = ii; (len > 1) && (res[len - 1] == '0'); len--) {
     }
@@ -496,6 +500,7 @@ xmlSecBnDiv(xmlSecBnPtr bn, int divider, int* mod) {
     xmlSecAssert2(mod != NULL, -1);
 
     if(divider == 1) {
+        (*mod) = 0;
         return(0);
     }
 
@@ -537,7 +542,7 @@ xmlSecBnDiv(xmlSecBnPtr bn, int divider, int* mod) {
  */
 int
 xmlSecBnAdd(xmlSecBnPtr bn, int delta) {
-    int over, tmp;
+    int over, tmp, byteDelta;
     xmlSecByte* data;
     xmlSecSize ii;
     xmlSecByte ch;
@@ -573,12 +578,13 @@ xmlSecBnAdd(xmlSecBnPtr bn, int delta) {
         for(over = -delta, ii = xmlSecBufferGetSize(bn); (ii > 0) && (over > 0);) {
             xmlSecAssert2(data != NULL, -1);
             tmp = data[--ii];
-            if(tmp < over) {
-                data[ii] = 0;
-                over = (over - tmp) / 256;
+            byteDelta = over % 256;
+            over = over / 256;
+            if(tmp < byteDelta) {
+                data[ii] = (xmlSecByte)(tmp + 256 - byteDelta);
+                ++over;
             } else {
-                data[ii] = (xmlSecByte)(tmp - over);
-                over = 0;
+                data[ii] = (xmlSecByte)(tmp - byteDelta);
             }
         }
     }
@@ -632,7 +638,7 @@ xmlSecBnCompare(xmlSecBnPtr bn, const xmlSecByte* data, xmlSecSize dataSize) {
     } else if(bnSize < dataSize) {
         return(-1);
     } else if(bnSize > dataSize) {
-        return(-1);
+        return(1);
     }
 
     xmlSecAssert2(bnData != NULL, -1);
@@ -679,7 +685,7 @@ xmlSecBnCompareReverse(xmlSecBnPtr bn, const xmlSecByte* data, xmlSecSize dataSi
     } else if(bnSize < dataSize) {
         return(-1);
     } else if(bnSize > dataSize) {
-        return(-1);
+        return(1);
     }
 
     xmlSecAssert2(bnData != NULL, -1);

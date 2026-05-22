@@ -38,6 +38,7 @@ void testLog(const char* fmt, ...);
 
 /* tests */
 int test_base64(void);
+int test_bn(void);
 int test_transform_helpers(void);
 int test_xmlSecX509EscapedStringRead(void);
 int test_xmlSecX509AttrValueStringRead(void);

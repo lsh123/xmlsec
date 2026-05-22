@@ -4261,3 +4261,62 @@ xmlSecOpenSSLKeyDataXdhGetEvp(xmlSecKeyDataPtr data) {
 
 
 #endif /* XMLSEC_NO_XDH */
+
+/******************************************************************************
+ *
+ * EVP Util functions
+ *
+  *****************************************************************************/
+#if defined(XMLSEC_OPENSSL_API_350)
+
+/**
+ * @brief Creates a provider query string "provider=&lt;name&gt;" for the key in @p pKeyCtx.
+ *
+ * Determines the owning provider of the key in @p pKeyCtx and writes a property
+ * query string of the form "provider=&lt;name&gt;" into @p buf.  This can then be
+ * passed to EVP_SIGNATURE_fetch() so that the signature implementation is
+ * fetched from the same provider that owns the key (needed e.g. when the key
+ * lives in a PKCS#11 token via pkcs11-provider).
+ *
+ * @param pKeyCtx the pointer to EVP_PKEY_CTX.
+ * @param buf the buffer to write the provider query string into.
+ * @param bufSize the size of @p buf in bytes.
+ * @return pointer to @p buf on success, or NULL if no provider could be
+ *         determined or an error occurs.
+ */
+const xmlChar*
+xmlSecOpenSslEvpGetProviderQuery(EVP_PKEY_CTX* pKeyCtx, xmlChar* buf, int bufSize) {
+    EVP_PKEY *pKey;
+    const OSSL_PROVIDER *keyProv;
+    const char *provName;
+    int ret;
+
+    xmlSecAssert2(pKeyCtx != NULL, NULL);
+    xmlSecAssert2(buf != NULL, NULL);
+    xmlSecAssert2(bufSize > 0, NULL);
+
+    pKey = EVP_PKEY_CTX_get0_pkey(pKeyCtx);
+    if(pKey == NULL) {
+        return(NULL);
+    }
+
+    keyProv = EVP_PKEY_get0_provider(pKey);
+    if(keyProv == NULL) {
+        return(NULL);
+    }
+
+    provName = OSSL_PROVIDER_get0_name(keyProv);
+    if(provName == NULL) {
+        return(NULL);
+    }
+
+    ret = xmlStrPrintf(buf, bufSize, "provider=%s", provName);
+    if(ret < 0) {
+        xmlSecXmlError("xmlStrPrintf", NULL);
+        return(NULL);
+    }
+
+    return(buf);
+}
+
+#endif /* defined(XMLSEC_OPENSSL_API_350) */

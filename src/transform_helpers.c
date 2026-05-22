@@ -1897,14 +1897,24 @@ xmlSecTransformRsaOaepParamsRead(xmlSecTransformRsaOaepParamsPtr oaepParams, xml
                 return(-1);
             }
         } else if (xmlSecCheckNodeName(cur, xmlSecNodeDigestMethod, xmlSecDSigNs)) {
-            /* digest algorithm attribute is required */
+            /* digest algorithm attribute is required; free any previously
+             * stored value to avoid a leak if the node appears more than once */
+            if (oaepParams->digestAlgorithm != NULL) {
+                xmlFree(oaepParams->digestAlgorithm);
+                oaepParams->digestAlgorithm = NULL;
+            }
             oaepParams->digestAlgorithm = xmlGetProp(cur, xmlSecAttrAlgorithm);
             if (oaepParams->digestAlgorithm == NULL) {
                 xmlSecInvalidNodeAttributeError(cur, xmlSecAttrAlgorithm, NULL, "empty");
                 return(-1);
             }
         } else if (xmlSecCheckNodeName(cur, xmlSecNodeRsaMGF, xmlSecEnc11Ns)) {
-            /* mgf1 digest algorithm attribute is required */
+            /* mgf1 digest algorithm attribute is required; free any previously
+             * stored value to avoid a leak if the node appears more than once */
+            if (oaepParams->mgf1DigestAlgorithm != NULL) {
+                xmlFree(oaepParams->mgf1DigestAlgorithm);
+                oaepParams->mgf1DigestAlgorithm = NULL;
+            }
             oaepParams->mgf1DigestAlgorithm = xmlGetProp(cur, xmlSecAttrAlgorithm);
             if (oaepParams->mgf1DigestAlgorithm == NULL) {
                 xmlSecInvalidNodeAttributeError(cur, xmlSecAttrAlgorithm, NULL, "empty");

@@ -382,6 +382,7 @@ xmlSecTransformRelationshipProcessNodeList(xmlSecTransformPtr transform, xmlOutp
         if(xmlStrcmp(cur->name, xmlSecNodeRelationship) == 0) {
             if(xmlListInsert(list, cur) != 0) {
                 xmlSecXmlError("xmlListInsert", xmlSecTransformGetName(transform));
+                xmlListDelete(list);
                 return(-1);
             }
         } else {

@@ -37,6 +37,7 @@
 #include "../cast_helpers.h"
 #include "../transform_helpers.h"
 #include "openssl_compat.h"
+#include "private.h"
 
 /*
  * The ECDSA signature were added to EVP interface in 3.0.0
@@ -1085,11 +1086,8 @@ xmlSecOpenSSLEvpSignatureCreatePkeyCtx(xmlSecTransformPtr transform, xmlSecOpenS
         OSSL_PARAM params[2];
         int paramsPos = 0;
         EVP_SIGNATURE *sigAlg;
-        EVP_PKEY *pKey;
-        const OSSL_PROVIDER *keyProv;
-        const char *provName;
-        const char *propQueryPtr = NULL;
-        xmlChar propQuery[128];
+        xmlChar providerQueryBuffer[256];
+        const xmlChar* providerQuery = NULL;
 
         /* setup params */
         if ((ctx->contextString != NULL) && (xmlSecBufferGetData(ctx->contextString) != NULL)) {
@@ -1102,25 +1100,9 @@ xmlSecOpenSSLEvpSignatureCreatePkeyCtx(xmlSecTransformPtr transform, xmlSecOpenS
         params[paramsPos++] = OSSL_PARAM_construct_end();
 
         /* Fetch the signature implementation from the key's owning provider.
-         * Otherwise, pass NULL to EVP_Signature_fetch to use the default provider. */
-        pKey = EVP_PKEY_CTX_get0_pkey(pKeyCtx);
-        if (pKey != NULL) {
-            keyProv = EVP_PKEY_get0_provider(pKey);
-            if (keyProv != NULL) {
-                provName = OSSL_PROVIDER_get0_name(keyProv);
-                if (provName != NULL) {
-                    ret = xmlStrPrintf(propQuery, sizeof(propQuery),
-                                       "provider=%s", provName);
-                    if (ret < 0) {
-                        xmlSecXmlError("xmlStrPrintf", xmlSecTransformGetName(transform));
-                        goto error;
-                    }
-                    propQueryPtr = (const char *)propQuery;
-                }
-            }
-        }
-        sigAlg = EVP_SIGNATURE_fetch(xmlSecOpenSSLGetLibCtx(),
-                                     ctx->signatureName, propQueryPtr);
+         * Otherwise, pass NULL to EVP_SIGNATURE_fetch to use the default provider. */
+        providerQuery = xmlSecOpenSslEvpGetProviderQuery(pKeyCtx, providerQueryBuffer, sizeof(providerQueryBuffer));
+        sigAlg = EVP_SIGNATURE_fetch(xmlSecOpenSSLGetLibCtx(), ctx->signatureName, (const char*)providerQuery);
         if(sigAlg == NULL) {
             xmlSecOpenSSLError2("EVP_SIGNATURE_fetch", xmlSecTransformGetName(transform),
                 "name=%s", xmlSecErrorsSafeString(ctx->signatureName));
@@ -1129,16 +1111,14 @@ xmlSecOpenSSLEvpSignatureCreatePkeyCtx(xmlSecTransformPtr transform, xmlSecOpenS
         if(transform->operation == xmlSecTransformOperationSign) {
             ret = EVP_PKEY_sign_message_init(pKeyCtx, sigAlg, params);
             if(ret <= 0) {
-                xmlSecOpenSSLError2("EVP_PKEY_sign_message_init", xmlSecTransformGetName(transform),
-                    "ret=%d", ret);
+                xmlSecOpenSSLError2("EVP_PKEY_sign_message_init", xmlSecTransformGetName(transform), "ret=%d", ret);
                 EVP_SIGNATURE_free(sigAlg);
                 goto error;
             }
         } else {
             ret = EVP_PKEY_verify_message_init(pKeyCtx, sigAlg, params);
             if(ret <= 0) {
-                xmlSecOpenSSLError2("EVP_PKEY_verify_message_init", xmlSecTransformGetName(transform),
-                    "ret=%d", ret);
+                xmlSecOpenSSLError2("EVP_PKEY_verify_message_init", xmlSecTransformGetName(transform), "ret=%d", ret);
                 EVP_SIGNATURE_free(sigAlg);
                 goto error;
             }
@@ -1173,8 +1153,7 @@ xmlSecOpenSSLEvpSignatureCreatePkeyCtx(xmlSecTransformPtr transform, xmlSecOpenS
 
             ret = EVP_PKEY_CTX_set_rsa_pss_saltlen(pKeyCtx, saltlen);
             if(ret <= 0) {
-                xmlSecOpenSSLError2("EVP_PKEY_CTX_set_rsa_pss_saltlen", xmlSecTransformGetName(transform),
-                    "ret=%d", ret);
+                xmlSecOpenSSLError2("EVP_PKEY_CTX_set_rsa_pss_saltlen", xmlSecTransformGetName(transform), "ret=%d", ret);
                 goto error;
             }
         }

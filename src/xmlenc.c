@@ -1310,12 +1310,12 @@ xmlSecEncCtxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xm
         xmlSecOtherError2(XMLSEC_ERRORS_R_KEY_NOT_FOUND, NULL,
             "encMethod=%s", xmlSecErrorsSafeString(xmlSecTransformGetName(encCtx->encMethod)));
         xmlSecEncCtxMarkAsFailed(encCtx, xmlSecEncFailureReasonKeyNotFound);
-        return(NULL);
+        goto done;
     }
     ret = xmlSecTransformSetKey(encCtx->encMethod, encCtx->encKey);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformSetKey", xmlSecTransformGetName(encCtx->encMethod));
-        return(NULL);
+        goto done;
     }
 
     /* let's get the derive key! */

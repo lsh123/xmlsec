@@ -152,6 +152,7 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                                 xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlChar* str = NULL;
     xmlSecKeyDataPtr data = NULL;
+    xmlSecKeyDataPtr existingData;
     xmlSecSize decodedSize;
     int ret;
     int res = -1;
@@ -175,29 +176,30 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         goto done;
     }
 
-    /* check do we have a key already */
-    data = xmlSecKeyGetValue(key);
-    if(data != NULL) {
+    /* check do we have a key already; the returned pointer is owned by the
+     * key, do not store it in `data` (which the `done:` cleanup destroys). */
+    existingData = xmlSecKeyGetValue(key);
+    if(existingData != NULL) {
         xmlSecBufferPtr buffer;
 
-        if(!xmlSecKeyDataCheckId(data, id)) {
-            xmlSecOtherError2(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST, xmlSecKeyDataGetName(data),
+        if(!xmlSecKeyDataCheckId(existingData, id)) {
+            xmlSecOtherError2(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST, xmlSecKeyDataGetName(existingData),
                 "id=%s", xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)));
             goto done;
         }
 
-        buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
+        buffer = xmlSecKeyDataBinaryValueGetBuffer(existingData);
         if(buffer != NULL) {
             if(xmlSecBufferGetSize(buffer) != decodedSize) {
                 xmlSecOtherError3(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
-                    xmlSecKeyDataGetName(data),
+                    xmlSecKeyDataGetName(existingData),
                     "cur-data-size=" XMLSEC_SIZE_FMT "; new-data-size=" XMLSEC_SIZE_FMT,
                     xmlSecBufferGetSize(buffer), decodedSize);
                 goto done;
             }
             if((decodedSize > 0) && (memcmp(xmlSecBufferGetData(buffer), str, decodedSize) != 0)) {
                 xmlSecOtherError(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
-                    xmlSecKeyDataGetName(data),
+                    xmlSecKeyDataGetName(existingData),
                     "key already has a different value");
                 goto done;
             }

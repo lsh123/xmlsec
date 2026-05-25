@@ -920,7 +920,7 @@ xmlSecKeyValueEcXmlRead(xmlSecKeyValueEcPtr data, xmlNodePtr node) {
         xmlSecInvalidNodeError(cur, xmlSecNodePublicKey, NULL);
         return(-1);
     }
-    ret = xmlSecBufferBase64NodeContentRead(&(data->pubkey), node);
+    ret = xmlSecBufferBase64NodeContentRead(&(data->pubkey), cur);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferBase64NodeContentRead(pubkey)", NULL);
         return(-1);

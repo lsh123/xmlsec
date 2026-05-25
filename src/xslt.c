@@ -490,7 +490,7 @@ xmlSecXslProcess(xmlSecXsltCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out) 
     output = NULL;
     if(ret < 0) {
         xmlSecXmlError("xmlOutputBufferClose", NULL);
-        return(-1);
+        goto done;
     }
 
     res = 0;

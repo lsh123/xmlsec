@@ -1036,7 +1036,7 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
     if(keyInfoCtx->curRetrievalMethodLevel >= keyInfoCtx->maxRetrievalMethodLevel) {
         xmlSecOtherError3(XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL, xmlSecKeyDataKlassGetName(id),
             "cur=%d;max=%d",keyInfoCtx->curRetrievalMethodLevel, keyInfoCtx->maxRetrievalMethodLevel);
-        goto done;
+        return(-1);
     }
     ++keyInfoCtx->curRetrievalMethodLevel;
 
@@ -1133,10 +1133,10 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
             goto done;
         }
     }
-    --keyInfoCtx->curRetrievalMethodLevel;
 
     res = 0;
 done:
+    --keyInfoCtx->curRetrievalMethodLevel;
     if(uri != NULL) {
         xmlFree(uri);
     }
@@ -1344,7 +1344,7 @@ xmlSecKeyDataKeyInfoReferenceXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNo
     if(keyInfoCtx->curKeyInfoReferenceLevel >= keyInfoCtx->maxKeyInfoReferenceLevel) {
         xmlSecOtherError3(XMLSEC_ERRORS_R_MAX_KEYINFOREFERENCE_LEVEL, xmlSecKeyDataKlassGetName(id),
             "cur=%d;max=%d",keyInfoCtx->curKeyInfoReferenceLevel, keyInfoCtx->maxKeyInfoReferenceLevel);
-        goto done;
+        return(-1);
     }
     ++keyInfoCtx->curKeyInfoReferenceLevel;
 
@@ -1394,10 +1394,10 @@ xmlSecKeyDataKeyInfoReferenceXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNo
         goto done;
     }
 
-    --keyInfoCtx->curKeyInfoReferenceLevel;
     res = 0;
 
 done:
+    --keyInfoCtx->curKeyInfoReferenceLevel;
     if(uri != NULL) {
         xmlFree(uri);
     }

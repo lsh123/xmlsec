@@ -379,6 +379,7 @@ xmlSecNssX509StoreRemoveRevokedCerts(xmlSecNssX509StoreCtxPtr x509StoreCtx, CERT
         rv = CERT_AddCertToListTail((*res),  cert);
         if(rv != SECSuccess) {
             xmlSecNssError("CERT_AddCertToListTail", NULL);
+            CERT_DestroyCertificate(cert);
             return(-1);
         }
     }

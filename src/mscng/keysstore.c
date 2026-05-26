@@ -239,7 +239,7 @@ xmlSecMSCngKeysStoreSetKeyValueFromCert(xmlSecKeyPtr key, PCCERT_CONTEXT cert, x
         return(-1);
     }
 
-    keyValue = xmlSecMSCngCertAdopt(cert, keyReq->keyType);
+    keyValue = xmlSecMSCngCertAdopt(certTmp, keyReq->keyType);
     if (keyValue == NULL) {
         xmlSecInternalError("xmlSecMSCngCertAdopt", NULL);
         CertFreeCertificateContext(certTmp);

@@ -267,6 +267,7 @@ xmlSecGnuTLSKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTr
         kamKeyData = xmlSecTransformCtxExtraKeyDataGet(transformCtx, xmlSecKeyDataKAMId);
         if(kamKeyData == NULL) {
             xmlSecInternalError("xmlSecTransformCtxExtraKeyDataGet", xmlSecTransformGetName(transform));
+            xmlSecBufferFinalize(&secret);
             return(-1);
         }
         ret = xmlSecGnuTLSKeyAgreementGenerateSecret(ctx, transform->operation, kamKeyData, &secret);

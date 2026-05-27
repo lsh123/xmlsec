@@ -446,11 +446,21 @@ xmlSecKWDes3Decode(xmlSecKWDes3Id kwDes3Id, xmlSecTransformPtr transform,
         goto done;
     }
 
-    /* check sha1 */
+    /* check sha1 in constant time: the checksum is derived from the unwrapped
+     * key, so the number of matching leading bytes must not leak through timing */
     xmlSecAssert2(XMLSEC_KW_DES3_BLOCK_LENGTH <= sizeof(sha1), -1);
-    if(memcmp(sha1, out + outSz, XMLSEC_KW_DES3_BLOCK_LENGTH) != 0) {
-        xmlSecInvalidDataError("SHA1 does not match", NULL);
-        goto done;
+    {
+        const xmlSecByte* cks = out + outSz;
+        xmlSecByte diff = 0;
+        xmlSecSize ii;
+
+        for(ii = 0; ii < XMLSEC_KW_DES3_BLOCK_LENGTH; ++ii) {
+            diff |= (xmlSecByte)(sha1[ii] ^ cks[ii]);
+        }
+        if(diff != 0) {
+            xmlSecInvalidDataError("SHA1 does not match", NULL);
+            goto done;
+        }
     }
 
     /* success */

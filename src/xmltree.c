@@ -1750,14 +1750,14 @@ xmlSecQName2BitMaskNodesRead(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr* n
             xmlFree(content);
             return(-1);
         }
-        xmlFree(content);
-
         if((stopOnUnknown != 0) && (tmp == 0)) {
             /* todo: better error */
             xmlSecInternalError2("xmlSecQName2BitMaskGetBitMaskFromString", NULL,
                                  "value=%s", xmlSecErrorsSafeString(content));
+            xmlFree(content);
             return(-1);
         }
+        xmlFree(content);
 
         (*mask) |= tmp;
         cur = xmlSecGetNextElementNode(cur->next);

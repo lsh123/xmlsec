@@ -190,7 +190,7 @@ xmlSecGetNodeContentAsSize(const xmlNodePtr cur, xmlSecSize defValue, xmlSecSize
     }
 
     /* skip spaces at the end */
-    while(isspace((int)(*endptr))) {
+    while(isspace((unsigned char)(*endptr))) {
         ++endptr;
     }
     if((content + xmlStrlen(content)) != BAD_CAST endptr) {

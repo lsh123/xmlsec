@@ -2332,12 +2332,13 @@ xmlSecMSCngAppKeyReadPubKeyFromDer(const xmlSecByte* derData, DWORD derDataLen) 
             xmlSecInternalError("xmlSecMSCngKeyDataAdoptKey(DH pub)", NULL);
             goto done;
         }
+        hPubKey = NULL; /* owned by data */
+
         ret = xmlSecMSCngKeyDataSetDhQ(data, pQ, pQLen);
         if(ret < 0) {
             xmlSecInternalError("xmlSecMSCngKeyDataSetDhQ", NULL);
             goto done;
         }
-        hPubKey = NULL; /* owned by data */
         res = data;
         data = NULL;
         goto done;

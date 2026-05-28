@@ -897,10 +897,20 @@ xmlSecKWRfc3394Decode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transfor
     /* do not keep data in memory */
     memset(block, 0, sizeof(block));
 
-    /* check the output */
-    if(memcmp(xmlSecKWRfc3394MagicBlock, out, XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE) != 0) {
-        xmlSecInvalidDataError("bad magic block", NULL);
-        return(-1);
+    /* check the output in constant time: the first block is derived from the
+     * unwrapped key, so the number of matching leading bytes must not leak
+     * through timing */
+    {
+        xmlSecByte diff = 0;
+        xmlSecSize ii;
+
+        for(ii = 0; ii < XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE; ++ii) {
+            diff |= (xmlSecByte)(xmlSecKWRfc3394MagicBlock[ii] ^ out[ii]);
+        }
+        if(diff != 0) {
+            xmlSecInvalidDataError("bad magic block", NULL);
+            return(-1);
+        }
     }
 
     /* get rid of magic block */

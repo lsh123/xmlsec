@@ -355,6 +355,8 @@ xmlSecMSCngKeyDataDhRead(xmlSecKeyDataId id, xmlSecKeyValueDhPtr dhValue) {
         xmlSecInternalError("xmlSecMSCngKeyDataAdoptKey", xmlSecKeyDataGetName(data));
         goto done;
     }
+    hKey = 0; /* now owned by data */
+
     if(xmlSecBufferGetSize(&(dhValue->q)) > 0) {
         XMLSEC_SAFE_CAST_SIZE_TO_UINT(xmlSecBufferGetSize(&(dhValue->q)), dwBlobSize, goto done, NULL);
         ret = xmlSecMSCngKeyDataSetDhQ(data, xmlSecBufferGetData(&(dhValue->q)), dwBlobSize);
@@ -363,7 +365,6 @@ xmlSecMSCngKeyDataDhRead(xmlSecKeyDataId id, xmlSecKeyValueDhPtr dhValue) {
             goto done;
         }
     }
-    hKey = 0; /* now owned by data */
 
     /* success */
     res = data;
@@ -722,12 +723,13 @@ xmlSecMSCngKeyDataDhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLen
         xmlSecInternalError("xmlSecMSCngKeyDataAdoptBCryptPrivKey", NULL);
         goto done;
     }
+    hPrivKey = NULL; /* owned by data */
+
     ret = xmlSecMSCngKeyDataSetDhQ(data, pQ, pQLen);
     if(ret < 0) {
         xmlSecInternalError("xmlSecMSCngKeyDataSetDhQ", NULL);
         goto done;
     }
-    hPrivKey = NULL; /* owned by data */
 
     res = data;
     data = NULL;

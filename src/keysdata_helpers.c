@@ -197,11 +197,23 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     xmlSecBufferGetSize(buffer), decodedSize);
                 goto done;
             }
-            if((decodedSize > 0) && (memcmp(xmlSecBufferGetData(buffer), str, decodedSize) != 0)) {
-                xmlSecOtherError(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
-                    xmlSecKeyDataGetName(existingData),
-                    "key already has a different value");
-                goto done;
+            if(decodedSize > 0) {
+                /* compare in constant time: the existing buffer holds secret
+                 * symmetric key bytes (e.g. HMAC/AES) so the matching-prefix
+                 * length must not leak through timing */
+                const xmlSecByte* curData = xmlSecBufferGetData(buffer);
+                xmlSecByte diff = 0;
+                xmlSecSize ii;
+
+                for(ii = 0; ii < decodedSize; ++ii) {
+                    diff |= (xmlSecByte)(curData[ii] ^ ((const xmlSecByte*)str)[ii]);
+                }
+                if(diff != 0) {
+                    xmlSecOtherError(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
+                        xmlSecKeyDataGetName(existingData),
+                        "key already has a different value");
+                    goto done;
+                }
             }
 
             /* we already have exactly the same key */
@@ -345,11 +357,23 @@ xmlSecKeyDataBinaryValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     xmlSecBufferGetSize(buffer), bufSize);
                 return(-1);
             }
-            if((bufSize > 0) && (memcmp(xmlSecBufferGetData(buffer), buf, bufSize) != 0)) {
-                xmlSecOtherError(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
-                    xmlSecKeyDataGetName(data),
-                    "key already has a different value");
-                return(-1);
+            if(bufSize > 0) {
+                /* compare in constant time: the existing buffer holds secret
+                 * symmetric key bytes (e.g. HMAC/AES) so the matching-prefix
+                 * length must not leak through timing */
+                const xmlSecByte* curData = xmlSecBufferGetData(buffer);
+                xmlSecByte diff = 0;
+                xmlSecSize ii;
+
+                for(ii = 0; ii < bufSize; ++ii) {
+                    diff |= (xmlSecByte)(curData[ii] ^ buf[ii]);
+                }
+                if(diff != 0) {
+                    xmlSecOtherError(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
+                        xmlSecKeyDataGetName(data),
+                        "key already has a different value");
+                    return(-1);
+                }
             }
 
             /* we already have exactly the same key */

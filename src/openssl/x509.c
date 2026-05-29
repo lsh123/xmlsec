@@ -1454,7 +1454,7 @@ xmlSecOpenSSLX509Asn1TimeToTime(const ASN1_TIME * t, time_t * res) {
 
 #define g2(p) (((p)[0]-'0')*10+(p)[1]-'0')
     if(t->type == V_ASN1_UTCTIME) {
-        xmlSecAssert2(t->length > 12, 0);
+        xmlSecAssert2(t->length > 12, -1);
 
         /* this code is copied from OpenSSL asn1/a_utctm.c file */
         tm.tm_year = g2(t->data);
@@ -1469,7 +1469,7 @@ xmlSecOpenSSLX509Asn1TimeToTime(const ASN1_TIME * t, time_t * res) {
         if(t->data[12] == 'Z') {
             offset = 0;
         } else {
-            xmlSecAssert2(t->length > 16, 0);
+            xmlSecAssert2(t->length > 16, -1);
 
             offset = g2(t->data + 13) * 60 + g2(t->data + 15);
             if(t->data[12] == '-') {
@@ -1478,7 +1478,7 @@ xmlSecOpenSSLX509Asn1TimeToTime(const ASN1_TIME * t, time_t * res) {
         }
         tm.tm_isdst = -1;
     } else {
-        xmlSecAssert2(t->length > 14, 0);
+        xmlSecAssert2(t->length > 14, -1);
 
         tm.tm_year = g2(t->data) * 100 + g2(t->data + 2);
         tm.tm_mon  = g2(t->data + 4) - 1;
@@ -1489,7 +1489,7 @@ xmlSecOpenSSLX509Asn1TimeToTime(const ASN1_TIME * t, time_t * res) {
         if(t->data[14] == 'Z') {
             offset = 0;
         } else {
-            xmlSecAssert2(t->length > 18, 0);
+            xmlSecAssert2(t->length > 18, -1);
 
             offset = g2(t->data + 15) * 60 + g2(t->data + 17);
             if(t->data[14] == '-') {

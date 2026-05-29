@@ -477,6 +477,7 @@ xmlSecNodeSetWalkRecursive(xmlSecNodeSetPtr nset, xmlNodePtr startNode, xmlSecNo
  */
 xmlSecNodeSetPtr
 xmlSecNodeSetGetChildren(xmlDocPtr doc, const xmlNodePtr parent, int withComments, int invert) {
+    xmlSecNodeSetPtr nset;
     xmlNodeSetPtr nodes;
     xmlSecNodeSetType type;
 
@@ -508,7 +509,13 @@ xmlSecNodeSetGetChildren(xmlDocPtr doc, const xmlNodePtr parent, int withComment
         type = xmlSecNodeSetTreeWithoutComments;
     }
 
-    return(xmlSecNodeSetCreate(doc, nodes, type));
+    nset = xmlSecNodeSetCreate(doc, nodes, type);
+    if(nset == NULL) {
+        xmlSecInternalError("xmlSecNodeSetCreate", NULL);
+        xmlXPathFreeNodeSet(nodes);
+        return(NULL);
+    }
+    return(nset);
 }
 
 static int

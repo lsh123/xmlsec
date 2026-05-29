@@ -1587,6 +1587,7 @@ xmlSecTransformPump(xmlSecTransformPtr left, xmlSecTransformPtr right, xmlSecTra
         xmlSecInvalidTransfromError2(left,
                     "transforms input/output data formats do not match, right transform=\"%s\"",
                     xmlSecErrorsSafeString(xmlSecTransformGetName(right)));
+        return(-1);
     }
     return(0);
 }

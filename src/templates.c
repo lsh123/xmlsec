@@ -1358,6 +1358,8 @@ xmlSecTmplX509DataAddDigest(xmlNodePtr x509DataNode, const xmlChar* digestAlgori
 
     if(xmlSetProp(cur, xmlSecAttrAlgorithm, digestAlgorithm) == NULL) {
         xmlSecXmlError2("xmlSetProp", NULL, "name=%s", xmlSecErrorsSafeString(xmlSecAttrAlgorithm));
+        xmlUnlinkNode(cur);
+        xmlFreeNode(cur);
         return(NULL);
     }
 

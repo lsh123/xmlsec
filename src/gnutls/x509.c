@@ -231,7 +231,7 @@ xmlSecGnuTLSKeyDataX509AddCertInternal(xmlSecGnuTLSX509DataCtxPtr ctx, gnutls_x5
     }
 
     /* ensure that key cert is the first one */
-    if(keyCert != 1) {
+    if(keyCert != 0) {
         ret = xmlSecPtrListInsert(&(ctx->certsList), cert, 0);
         if(ret < 0) {
             xmlSecInternalError("xmlSecPtrListInsert(0)", NULL);

@@ -367,6 +367,8 @@ xmlSecGCryptHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
             }
         }
         if(last) {
+            xmlSecSize dgstSize;
+
             /* get the final digest */
             gcry_md_final(ctx->digestCtx);
             dgst = gcry_md_read(ctx->digestCtx, ctx->digest);
@@ -375,7 +377,12 @@ xmlSecGCryptHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
                                   xmlSecTransformGetName(transform));
                 return(-1);
             }
-            memcpy(ctx->dgst, dgst, XMLSEC_TRANSFORM_HMAC_BITS_TO_BYTES(ctx->dgstSizeInBits));
+            /* gcry_md_read returns only the digest's own bytes, so copy that
+             * many; dgstSizeInBits is just the (possibly larger) truncation
+             * length requested via HMACOutputLength and must not drive the copy */
+            dgstSize = gcry_md_get_algo_dlen(ctx->digest);
+            xmlSecAssert2(dgstSize <= sizeof(ctx->dgst), -1);
+            memcpy(ctx->dgst, dgst, dgstSize);
 
             /* write results if needed */
             if(transform->operation == xmlSecTransformOperationSign) {

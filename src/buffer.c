@@ -728,3 +728,36 @@ xmlSecBufferIOClose(xmlSecBufferPtr buf) {
     /* just do nothing */
     return(0);
 }
+
+/**
+ * Helpers
+ */
+
+/**
+ * @brief Compares two memory buffers in constant time.
+ * @details Compares @p buf1 and @p buf2 across exactly @p size bytes without
+ * leaking the number of matching leading bytes through timing.
+ * @param buf1 the first buffer.
+ * @param buf2 the second buffer.
+ * @param size the number of bytes to compare.
+ * @return 1 if the buffers are equal, 0 if they are not equal, or a negative
+ * value if an error occurs.
+ */
+int
+xmlSecMemEqual(const xmlSecByte* buf1, const xmlSecByte* buf2, xmlSecSize size) {
+    xmlSecByte diff = 0;
+    xmlSecSize ii;
+
+    if(size <= 0) {
+        return(1);
+    }
+
+    xmlSecAssert2(buf1 != NULL, -1);
+    xmlSecAssert2(buf2 != NULL, -1);
+
+    for(ii = 0; ii < size; ++ii) {
+        diff |= (buf1[ii] ^ buf2[ii]);
+    }
+
+    return((diff == 0) ? 1 : 0);
+}

@@ -449,18 +449,14 @@ xmlSecKWDes3Decode(xmlSecKWDes3Id kwDes3Id, xmlSecTransformPtr transform,
     /* check sha1 in constant time: the checksum is derived from the unwrapped
      * key, so the number of matching leading bytes must not leak through timing */
     xmlSecAssert2(XMLSEC_KW_DES3_BLOCK_LENGTH <= sizeof(sha1), -1);
-    {
-        const xmlSecByte* cks = out + outSz;
-        xmlSecByte diff = 0;
-        xmlSecSize ii;
-
-        for(ii = 0; ii < XMLSEC_KW_DES3_BLOCK_LENGTH; ++ii) {
-            diff |= (xmlSecByte)(sha1[ii] ^ cks[ii]);
-        }
-        if(diff != 0) {
-            xmlSecInvalidDataError("SHA1 does not match", NULL);
-            goto done;
-        }
+    ret = xmlSecMemEqual(sha1, out + outSz, XMLSEC_KW_DES3_BLOCK_LENGTH);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMemEqual", NULL);
+        goto done;
+    }
+    if(ret == 0) {
+        xmlSecInvalidDataError("SHA1 does not match", NULL);
+        goto done;
     }
 
     /* success */
@@ -898,7 +894,12 @@ xmlSecKWRfc3394Decode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transfor
     memset(block, 0, sizeof(block));
 
     /* check the output */
-    if(memcmp(xmlSecKWRfc3394MagicBlock, out, XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE) != 0) {
+    ret = xmlSecMemEqual(xmlSecKWRfc3394MagicBlock, out, XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMemEqual", NULL);
+        return(-1);
+    }
+    if(ret == 0) {
         xmlSecInvalidDataError("bad magic block", NULL);
         return(-1);
     }

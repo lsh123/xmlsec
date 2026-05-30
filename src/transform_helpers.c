@@ -1044,9 +1044,10 @@ int
 xmlSecTransformHmacVerify(const xmlSecByte* data, xmlSecSize dataSize,
     const xmlSecByte * hmac, xmlSecSize hmacSizeInBits, xmlSecSize hmacMaxSizeInBytes)
 {
-    xmlSecSize hmacSize, ii;
+    xmlSecSize hmacSize;
     xmlSecByte lastByteMask;
-    xmlSecByte diff;
+    xmlSecByte lastByteDiff;
+    int ret;
 
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(dataSize > 0, -1);
@@ -1065,12 +1066,14 @@ xmlSecTransformHmacVerify(const xmlSecByte* data, xmlSecSize dataSize,
     /* compare in constant time so the number of matching leading bytes is not
      * leaked through timing; the last byte is masked for truncated HMAC output */
     lastByteMask = g_hmac_last_byte_masks[hmacSizeInBits % 8];
-    diff = 0;
-    for(ii = 0; (ii + 1) < hmacSize; ++ii) {
-        diff |= (xmlSecByte)(hmac[ii] ^ data[ii]);
+    lastByteDiff = (xmlSecByte)((hmac[hmacSize - 1] & lastByteMask) ^ (data[dataSize - 1] & lastByteMask));
+
+    ret = xmlSecMemEqual(hmac, data, hmacSize - 1);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMemEqual", NULL);
+        return(-1);
     }
-    diff |= (xmlSecByte)((hmac[hmacSize - 1] & lastByteMask) ^ (data[dataSize - 1] & lastByteMask));
-    if(diff != 0) {
+    if((ret == 0) || (lastByteDiff != 0)) {
         xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH, NULL, "data and digest do not match");
         return(0);
     }

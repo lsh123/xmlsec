@@ -16,6 +16,7 @@
 #include <openssl/evp.h>
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/buffer.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
@@ -340,6 +341,7 @@ xmlSecOpenSSLEvpDigestVerify(xmlSecTransformPtr transform,
                         const xmlSecByte* data, xmlSecSize dataSize,
                         xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLEvpDigestCtxPtr ctx;
+    int ret;
 
     xmlSecAssert2(xmlSecOpenSSLEvpDigestCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpDigestSize), -1);
@@ -359,7 +361,12 @@ xmlSecOpenSSLEvpDigestVerify(xmlSecTransformPtr transform,
         return(0);
     }
 
-    if(memcmp(ctx->dgst, data, ctx->dgstSize) != 0) {
+    ret = xmlSecMemEqual(ctx->dgst, data, ctx->dgstSize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMemEqual", xmlSecTransformGetName(transform));
+        return(-1);
+    }
+    if(ret == 0) {
         xmlSecInvalidDataError("data and digest do not match",
                 xmlSecTransformGetName(transform));
         transform->status = xmlSecTransformStatusFail;

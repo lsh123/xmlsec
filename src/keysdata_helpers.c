@@ -18,6 +18,7 @@
 #include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/buffer.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
@@ -197,7 +198,12 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     xmlSecBufferGetSize(buffer), decodedSize);
                 goto done;
             }
-            if((decodedSize > 0) && (memcmp(xmlSecBufferGetData(buffer), str, decodedSize) != 0)) {
+            ret = xmlSecMemEqual(xmlSecBufferGetData(buffer), (const xmlSecByte*)str, decodedSize);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecMemEqual", xmlSecKeyDataGetName(existingData));
+                goto done;
+            }
+            if(ret == 0) {
                 xmlSecOtherError(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
                     xmlSecKeyDataGetName(existingData),
                     "key already has a different value");
@@ -345,7 +351,12 @@ xmlSecKeyDataBinaryValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     xmlSecBufferGetSize(buffer), bufSize);
                 return(-1);
             }
-            if((bufSize > 0) && (memcmp(xmlSecBufferGetData(buffer), buf, bufSize) != 0)) {
+            ret = xmlSecMemEqual(xmlSecBufferGetData(buffer), buf, bufSize);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecMemEqual", xmlSecKeyDataGetName(data));
+                return(-1);
+            }
+            if(ret == 0) {
                 xmlSecOtherError(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
                     xmlSecKeyDataGetName(data),
                     "key already has a different value");

@@ -389,7 +389,7 @@ xmlSecKeyDataBinaryValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         xmlSecInternalError("xmlSecKeyReqMatchKeyValue",
             xmlSecKeyDataKlassGetName(id));
         xmlSecKeyDataDestroy(data);
-        return(0);
+        return(-1);
     }
 
     ret = xmlSecKeySetValue(key, data);

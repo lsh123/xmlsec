@@ -333,7 +333,8 @@ xmlSecPtrListSet(xmlSecPtrListPtr list, xmlSecPtr item, xmlSecSize pos) {
 
 /**
  * @brief Destroys a list item at the given position.
- * @details Destroys list item at the position @p pos and sets it value to NULL.
+ * @details Destroys list item at the position @p pos and shifts all following
+ * items towards the beginning of the list.
  * @param list the pointer to list.
  * @param pos the position.
  * @return 0 on success or a negative value if an error occurs.
@@ -347,16 +348,18 @@ xmlSecPtrListRemove(xmlSecPtrListPtr list, xmlSecSize pos) {
     if((list->id->destroyItem != NULL) && (list->data[pos] != NULL)) {
         list->id->destroyItem(list->data[pos]);
     }
-    list->data[pos] = NULL;
-    if(pos == list->use - 1) {
-        --list->use;
+    if(pos < (list->use - 1)) {
+        memmove(&(list->data[pos]), &(list->data[pos + 1]), sizeof(xmlSecPtr) * (list->use - pos - 1));
     }
+    --list->use;
+    list->data[list->use] = NULL;
     return(0);
 }
 
 /**
  * @brief Removes and returns a list item.
- * @details Remove the list item at the position @p pos and return it back.
+ * @details Remove the list item at the position @p pos, shift all following
+ * items towards the beginning of the list, and return the removed item back.
  * @param list the pointer to list.
  * @param pos the position.
  * @return the pointer to the list item.
@@ -370,10 +373,11 @@ xmlSecPtrListRemoveAndReturn(xmlSecPtrListPtr list, xmlSecSize pos) {
     xmlSecAssert2(pos < list->use, NULL);
 
     res = list->data[pos];
-    list->data[pos] = NULL;
-    if(pos == list->use - 1) {
-        --list->use;
+    if(pos < (list->use - 1)) {
+        memmove(&(list->data[pos]), &(list->data[pos + 1]), sizeof(xmlSecPtr) * (list->use - pos - 1));
     }
+    --list->use;
+    list->data[list->use] = NULL;
     return(res);
 }
 

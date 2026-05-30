@@ -504,8 +504,6 @@ xmlSecGnuTLSAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     /* create x509 certs data */
     certsSize = xmlSecPtrListGetSize(&certsList);
     if((certsSize > 0) || (key_cert != NULL)) {
-        xmlSecSize ii;
-
         x509Data = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataX509Id);
         if(x509Data == NULL) {
             xmlSecInternalError("xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataX509Id)", NULL);
@@ -523,8 +521,8 @@ xmlSecGnuTLSAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
         }
 
         /* copy all other certs */
-        for(ii = 0; ii < certsSize; ++ii) {
-            gnutls_x509_crt_t cert = xmlSecPtrListRemoveAndReturn(&certsList, ii);
+        while(xmlSecPtrListGetSize(&certsList) > 0) {
+            gnutls_x509_crt_t cert = xmlSecPtrListRemoveAndReturn(&certsList, 0);
             if(cert == NULL) {
                 continue;
             }

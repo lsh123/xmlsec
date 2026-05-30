@@ -29,14 +29,7 @@ static int g_listItemDebugXmlDumpCount = 0;
 static xmlSecListTestItem* test_list_item_create                 (int value);
 static xmlSecPtr          test_list_item_duplicate              (xmlSecPtr ptr);
 static void               test_list_item_destroy                (xmlSecPtr ptr);
-static void               test_list_item_debug_dump             (xmlSecPtr ptr,
-                                                                 FILE* output);
-static void               test_list_item_debug_xml_dump         (xmlSecPtr ptr,
-                                                                 FILE* output);
 static void               test_list_item_reset_counters         (void);
-static int                test_list_output_read                 (FILE* output,
-                                                                 char* buffer,
-                                                                 size_t bufferSize);
 static void               test_list_reset_default_alloc_mode    (void);
 
 static void               test_ptr_list_default_alloc_mode      (void);
@@ -54,8 +47,8 @@ static xmlSecPtrListKlass g_xmlSecListTestKlass = {
     BAD_CAST "test-list",
     test_list_item_duplicate,
     test_list_item_destroy,
-    test_list_item_debug_dump,
-    test_list_item_debug_xml_dump,
+    NULL,
+    NULL,
 };
 
 static xmlSecPtrListKlass g_xmlSecListShallowKlass = {
@@ -107,61 +100,11 @@ test_list_item_destroy(xmlSecPtr ptr) {
 }
 
 static void
-test_list_item_debug_dump(xmlSecPtr ptr, FILE* output) {
-    xmlSecListTestItem* item;
-
-    if((ptr == NULL) || (output == NULL)) {
-        return;
-    }
-
-    item = (xmlSecListTestItem*)ptr;
-    ++g_listItemDebugDumpCount;
-    fprintf(output, "item=%d\n", item->value);
-}
-
-static void
-test_list_item_debug_xml_dump(xmlSecPtr ptr, FILE* output) {
-    xmlSecListTestItem* item;
-
-    if((ptr == NULL) || (output == NULL)) {
-        return;
-    }
-
-    item = (xmlSecListTestItem*)ptr;
-    ++g_listItemDebugXmlDumpCount;
-    fprintf(output, "<Item value=\"%d\"/>\n", item->value);
-}
-
-static void
 test_list_item_reset_counters(void) {
     g_listItemDuplicateCount = 0;
     g_listItemDestroyCount = 0;
     g_listItemDebugDumpCount = 0;
     g_listItemDebugXmlDumpCount = 0;
-}
-
-static int
-test_list_output_read(FILE* output, char* buffer, size_t bufferSize) {
-    size_t readSize;
-
-    if((output == NULL) || (buffer == NULL) || (bufferSize < 2)) {
-        return(-1);
-    }
-
-    if(fflush(output) != 0) {
-        return(-1);
-    }
-    if(fseek(output, 0, SEEK_SET) != 0) {
-        return(-1);
-    }
-
-    readSize = fread(buffer, 1, bufferSize - 1, output);
-    if(ferror(output)) {
-        return(-1);
-    }
-
-    buffer[readSize] = '\0';
-    return(0);
 }
 
 static void

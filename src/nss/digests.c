@@ -20,6 +20,7 @@
 #include <pk11pub.h>
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/buffer.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
@@ -316,6 +317,7 @@ xmlSecNssDigestVerify(xmlSecTransformPtr transform,
                         const xmlSecByte* data, xmlSecSize dataSize,
                         xmlSecTransformCtxPtr transformCtx) {
     xmlSecNssDigestCtxPtr ctx;
+    int ret;
 
     xmlSecAssert2(xmlSecNssDigestCheckId(transform), -1);
     xmlSecAssert2(transform->operation == xmlSecTransformOperationVerify, -1);
@@ -336,7 +338,12 @@ xmlSecNssDigestVerify(xmlSecTransformPtr transform,
         return(0);
     }
 
-    if(memcmp(ctx->dgst, data, dataSize) != 0) {
+    ret = xmlSecMemEqual(ctx->dgst, data, dataSize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMemEqual", xmlSecTransformGetName(transform));
+        return(-1);
+    }
+    if(ret == 0) {
         xmlSecInvalidDataError("data and digest do not match",
                 xmlSecTransformGetName(transform));
         transform->status = xmlSecTransformStatusFail;

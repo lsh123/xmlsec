@@ -102,7 +102,12 @@ XMLSEC_EXPORT void              xmlSecBufferDebugHexDump        (xmlSecBufferPtr
 XMLSEC_EXPORT xmlOutputBufferPtr xmlSecBufferCreateOutputBuffer (xmlSecBufferPtr buf);
 
 
-
+/**
+ * Helpers
+ */
+XMLSEC_EXPORT int               xmlSecMemEqual                  (const xmlSecByte* buf1,
+																 const xmlSecByte* buf2,
+																 xmlSecSize size);
 
 #ifdef __cplusplus
 }

@@ -1777,7 +1777,7 @@ if [ "z$xmlsec_feature_rsa_oaep_sha1" = "zyes" ] ; then
         "$priv_key_option:my-rsa-key $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret"
 fi
 
-if [ "z$xmlsec_feature_rsa_oaep_sha1" = "zyes" -a"z$xmlsec_feature_rsa_oaep_different_digest_and_mgf1" = "zyes" ] ; then
+if [ "z$xmlsec_feature_rsa_oaep_sha1" = "zyes" -a "z$xmlsec_feature_rsa_oaep_different_digest_and_mgf1" = "zyes" ] ; then
     execEncTest $res_success \
         "" \
         "01-phaos-xmlenc-3/enc-element-3des-kt-rsa_oaep_sha256" \

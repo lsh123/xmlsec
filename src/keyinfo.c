@@ -1202,13 +1202,13 @@ xmlSecKeyDataRetrievalMethodReadXmlResult(xmlSecKeyDataId typeId, xmlSecKeyPtr k
                             nodeName, nodeNs, xmlSecKeyDataUsageRetrievalMethodNodeXml);
     }
     if(dataId == xmlSecKeyDataIdUnknown) {
-        xmlFreeDoc(doc);
-
         /* laxi schema validation but application can disable it */
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_KEYVALUE_STOP_ON_UNKNOWN_CHILD) != 0) {
             xmlSecUnexpectedNodeError(cur, xmlSecKeyDataKlassGetName(typeId));
+            xmlFreeDoc(doc);
             return(-1);
         }
+        xmlFreeDoc(doc);
         return(0);
     } else if((typeId != xmlSecKeyDataIdUnknown) && (typeId != dataId) &&
               ((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_MISMATCH_HREF) != 0)) {

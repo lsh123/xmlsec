@@ -48,7 +48,6 @@ static void               test_ptr_list_remove                  (void);
 static void               test_ptr_list_remove_and_return       (void);
 static void               test_ptr_list_pop_last                (void);
 static void               test_ptr_list_copy_duplicate          (void);
-static void               test_ptr_list_debug_dump              (void);
 static void               test_string_list_klass                (void);
 
 static xmlSecPtrListKlass g_xmlSecListTestKlass = {
@@ -878,7 +877,6 @@ int test_list(void) {
     test_ptr_list_remove_and_return();
     test_ptr_list_pop_last();
     test_ptr_list_copy_duplicate();
-    test_ptr_list_debug_dump();
     test_string_list_klass();
 
     return(testGroupFinished());

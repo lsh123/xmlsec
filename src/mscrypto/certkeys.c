@@ -1343,7 +1343,7 @@ xmlSecMSCryptoKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) 
     data = NULL;
 
 done:
-    if (hProv == 0) {
+    if (hProv != 0) {
         CryptReleaseContext(hProv, 0);
     }
     if (hKey != 0) {

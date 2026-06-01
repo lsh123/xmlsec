@@ -409,6 +409,7 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
             xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH, xmlSecTransformGetName(transform),
                 "CryptVerifySignature: signature verification failed");
             transform->status = xmlSecTransformStatusFail;
+            res = 0;
             goto done;
         } else {
             xmlSecMSCryptoError("CryptVerifySignature", xmlSecTransformGetName(transform));

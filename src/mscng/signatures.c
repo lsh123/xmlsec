@@ -813,6 +813,7 @@ xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
                 xmlSecTransformGetName(transform),
                 "BCryptVerifySignature: the signature was not verified");
             transform->status = xmlSecTransformStatusFail;
+            res = 0;
             goto done;
         } else {
             xmlSecMSCngNtError("BCryptVerifySignature",

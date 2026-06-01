@@ -812,8 +812,8 @@ xmlSecGnuTLSReadDerInteger(const xmlSecByte * data, xmlSecSize dataSize, xmlSecS
         return(-1);
     }
 
-    /* val */
-    if(dataSize < (*ii) + len) {
+    /* val: (*ii) <= dataSize here, so check len without overflowing (*ii) + len */
+    if(len > dataSize - (*ii)) {
         return(-1);
     }
     /* skip zeros if any */

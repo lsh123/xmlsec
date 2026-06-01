@@ -1503,6 +1503,7 @@ xmlSecMSCngX509GetFriendlyNameUnicode(PCCERT_CONTEXT cert) {
         &dwPropSize);
     if ((ret != TRUE) || (dwPropSize <= 0)) {
         xmlSecMSCngLastError("CertGetCertificateContextProperty", NULL);
+        xmlFree(pbFriendlyName);
         return(NULL);
     }
 

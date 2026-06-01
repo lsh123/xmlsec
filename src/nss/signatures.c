@@ -754,6 +754,7 @@ xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
                              xmlSecTransformGetName(transform),
                              "signature verification failed");
             transform->status = xmlSecTransformStatusFail;
+            return(0);
         } else {
             xmlSecNssError((ctx->isEdDSA) ? "PK11_Verify" : "VFY_EndWithSignature",
                            xmlSecTransformGetName(transform));

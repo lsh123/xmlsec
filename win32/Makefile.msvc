@@ -151,6 +151,7 @@ XMLSEC_APPS_OBJS_A = \
 XMLSEC_UNIT_TESTS_OBJS = \
 	$(XMLSEC_APPS_INTDIR)\unit_tests\base64_unit_tests.obj \
 	$(XMLSEC_APPS_INTDIR)\unit_tests\bn_unit_tests.obj \
+	$(XMLSEC_APPS_INTDIR)\unit_tests\buffer_unit_tests.obj \
 	$(XMLSEC_APPS_INTDIR)\unit_tests\list_unit_tests.obj \
 	$(XMLSEC_APPS_INTDIR)\unit_tests\nodeset_unit_tests.obj \
 	$(XMLSEC_APPS_INTDIR)\unit_tests\templates_unit_tests.obj \
@@ -161,6 +162,7 @@ XMLSEC_UNIT_TESTS_OBJS = \
 XMLSEC_UNIT_TESTS_OBJS_A = \
 	$(XMLSEC_APPS_INTDIR_A)\unit_tests\base64_unit_tests.obj \
 	$(XMLSEC_APPS_INTDIR_A)\unit_tests\bn_unit_tests.obj \
+	$(XMLSEC_APPS_INTDIR_A)\unit_tests\buffer_unit_tests.obj \
 	$(XMLSEC_APPS_INTDIR_A)\unit_tests\list_unit_tests.obj \
 	$(XMLSEC_APPS_INTDIR_A)\unit_tests\nodeset_unit_tests.obj \
 	$(XMLSEC_APPS_INTDIR_A)\unit_tests\templates_unit_tests.obj \

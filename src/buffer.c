@@ -226,6 +226,10 @@ xmlSecBufferSetSize(xmlSecBufferPtr buf, xmlSecSize size) {
         return(-1);
     }
 
+    if(size < buf->size) {
+        xmlSecAssert2(buf->data != NULL, -1);
+        memset(buf->data + size, 0, buf->size - size);
+    }
 
     buf->size = size;
     return(0);

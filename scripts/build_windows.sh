@@ -12,7 +12,7 @@
 # $ c:\cygwin64\bin\bash scripts\build_windows.sh cleanup-release
 # $ c:\cygwin64\bin\bash scripts\build_windows.sh cleanup-debug
 #
-libxml2_version="2.15.2"
+libxml2_version="2.15.3"
 libxslt_version="1.1.45"
 openssl_version="4.0.0"
 xmlsec_version="1.3.12-rc1"

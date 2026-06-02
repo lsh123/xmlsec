@@ -14,7 +14,7 @@ see the Copyright file in the distribution for details.
 
 ## News
 
-- **TBD**
+- **June 23, 2026**
   The [XML Security Library 1.3.12](download.md) release includes the following changes:
   - (xmlsec-openssl) Added experimental ML-KEM support.
   - (xmlsec-nss) Added SHA3 support.

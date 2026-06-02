@@ -1,7 +1,11 @@
 # XML Security Library: News
 
-- **TBD**
+- **June 23, 2026**
   The [XML Security Library 1.3.12](download.md) release includes the following changes:
+  - (xmlsec-openssl) Added experimental ML-KEM support.
+  - (xmlsec-nss) Added SHA3 support.
+  - (xmlsec-gnutls) Added RSA-OEAP (SHA-256/SHA-384/SHA-512) support.
+  - (xmlsec-core) Added `--transform-max-depth` option to control maximum transforms execution depth (`0` disables the depth check).
   - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/1.3.12)).
 
 

@@ -362,6 +362,17 @@ xmlSecGnuTLSHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
         /* get hash */
         gnutls_hmac_output(ctx->hmac, ctx->hmacOutput);
 
+        /* HMACOutputLength can only truncate the digest, not extend it past the bytes we have */
+        {
+            xmlSecSize dgstSize = (xmlSecSize)gnutls_hmac_get_len(ctx->hmacAlgo);
+            if(XMLSEC_TRANSFORM_HMAC_BITS_TO_BYTES(ctx->hmacSizeInBits) > dgstSize) {
+                xmlSecInvalidSizeMoreThanError("HMAC output length",
+                    XMLSEC_TRANSFORM_HMAC_BITS_TO_BYTES(ctx->hmacSizeInBits), dgstSize,
+                    xmlSecTransformGetName(transform));
+                return(-1);
+            }
+        }
+
         /* write results if needed */
         if(transform->operation == xmlSecTransformOperationSign) {
             ret = xmlSecTransformHmacWriteOutput(ctx->hmacOutput, ctx->hmacSizeInBits, XMLSEC_TRANSFORM_HMAC_MAX_OUTPUT_SIZE, out);

@@ -126,6 +126,9 @@ int main(int argc, const char **argv) {
     if (test_bn() != 1) {
         success = 0;
     }
+    if (test_buffer() != 1) {
+        success = 0;
+    }
     if (test_list() != 1) {
         success = 0;
     }

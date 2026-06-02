@@ -558,6 +558,14 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
                 ctx->dgstSizeInBits = dgstSize * 8; /* no dgst size specified, use all we have */
             }
 
+            /* HMACOutputLength can only truncate the digest, not extend it past the bytes we have */
+            if(XMLSEC_TRANSFORM_HMAC_BITS_TO_BYTES(ctx->dgstSizeInBits) > dgstSize) {
+                xmlSecInvalidSizeMoreThanError("HMAC output length",
+                    XMLSEC_TRANSFORM_HMAC_BITS_TO_BYTES(ctx->dgstSizeInBits), dgstSize,
+                    xmlSecTransformGetName(transform));
+                return(-1);
+            }
+
             /* write results if needed */
             if(transform->operation == xmlSecTransformOperationSign) {
                 ret = xmlSecTransformHmacWriteOutput(ctx->dgst, ctx->dgstSizeInBits, dgstSize, out);

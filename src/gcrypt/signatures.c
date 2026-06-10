@@ -968,6 +968,7 @@ xmlSecGCryptDsaVerify(int digest XMLSEC_ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_d
     gcry_mpi_t m_sig_s = NULL;
     gcry_sexp_t s_sig = NULL;
     gcry_sexp_t s_key;
+    xmlSecSize signHalfLen;
     gpg_error_t err;
     int res = -1;
 
@@ -975,10 +976,27 @@ xmlSecGCryptDsaVerify(int digest XMLSEC_ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_d
     xmlSecAssert2(dgst != NULL, -1);
     xmlSecAssert2(dgstSize > 0, -1);
     xmlSecAssert2(data != NULL, -1);
-    xmlSecAssert2(dataSize == (XMLSEC_GCRYPT_DSA_SIG_SIZE + XMLSEC_GCRYPT_DSA_SIG_SIZE), -1);
+    xmlSecAssert2(dataSize > 0, -1);
 
     s_key = xmlSecGCryptKeyDataDsaGetPublicKey(key_data);
     xmlSecAssert2(s_key != NULL, -1);
+
+    /* r and s are expected to be the same size and to match the key size
+     * (RFC 6931); however some implementations (e.g. Java) cut or add leading
+     * zeros, see https://github.com/lsh123/xmlsec/issues/228 and
+     * https://github.com/lsh123/xmlsec/issues/941 */
+    signHalfLen = XMLSEC_GCRYPT_DSA_SIG_SIZE;
+    if(dataSize == 2 * signHalfLen) {
+        /* good, do nothing */
+    } else if((dataSize < 2 * signHalfLen) && (dataSize % 2 == 0)) {
+        signHalfLen = dataSize / 2;
+    } else if((dataSize > 2 * signHalfLen) && (dataSize % 2 == 0)) {
+        signHalfLen = dataSize / 2;
+    } else {
+        xmlSecInvalidSizeDataError("dataSize", dataSize,
+            "2 * XMLSEC_GCRYPT_DSA_SIG_SIZE", NULL);
+        goto done;
+    }
 
     /* get the current digest, can't use "hash" :( */
     err = gcry_mpi_scan(&m_hash, GCRYMPI_FMT_USG, dgst, dgstSize, NULL);
@@ -997,12 +1015,12 @@ xmlSecGCryptDsaVerify(int digest XMLSEC_ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_d
     }
 
     /* get the existing signature */
-    err = gcry_mpi_scan(&m_sig_r, GCRYMPI_FMT_USG, data, XMLSEC_GCRYPT_DSA_SIG_SIZE, NULL);
+    err = gcry_mpi_scan(&m_sig_r, GCRYMPI_FMT_USG, data, signHalfLen, NULL);
     if((err != GPG_ERR_NO_ERROR) || (m_sig_r == NULL)) {
         xmlSecGCryptError("gcry_mpi_scan(r)", err, NULL);
         goto done;
     }
-    err = gcry_mpi_scan(&m_sig_s, GCRYMPI_FMT_USG, data + XMLSEC_GCRYPT_DSA_SIG_SIZE, XMLSEC_GCRYPT_DSA_SIG_SIZE, NULL);
+    err = gcry_mpi_scan(&m_sig_s, GCRYMPI_FMT_USG, data + signHalfLen, signHalfLen, NULL);
     if((err != GPG_ERR_NO_ERROR) || (m_sig_s == NULL)) {
         xmlSecGCryptError("gcry_mpi_scan(s)", err, NULL);
         goto done;
@@ -2227,6 +2245,7 @@ xmlSecGCryptEcdsaVerify(int digest, xmlSecKeyDataPtr key_data,
     gcry_sexp_t s_key;
     const char * algo_name;
     xmlSecSize keySize;
+    xmlSecSize signHalfLen;
     gpg_error_t err;
     int res = -1;
 
@@ -2242,8 +2261,18 @@ xmlSecGCryptEcdsaVerify(int digest, xmlSecKeyDataPtr key_data,
     keySize = (keySize + 7) / 8;
     xmlSecAssert2(keySize > 0, -1);
 
-    /* check signature size */
-    if(dataSize != 2 * keySize) {
+    /* r and s are expected to be the same size and to match the key size
+     * (RFC 6931); however some implementations (e.g. Java) cut or add leading
+     * zeros, see https://github.com/lsh123/xmlsec/issues/228 and
+     * https://github.com/lsh123/xmlsec/issues/941 */
+    signHalfLen = keySize;
+    if(dataSize == 2 * signHalfLen) {
+        /* good, do nothing */
+    } else if((dataSize < 2 * signHalfLen) && (dataSize % 2 == 0)) {
+        signHalfLen = dataSize / 2;
+    } else if((dataSize > 2 * signHalfLen) && (dataSize % 2 == 0)) {
+        signHalfLen = dataSize / 2;
+    } else {
         xmlSecInternalError3("Invalid signature size", NULL,
             "actual=" XMLSEC_SIZE_FMT "; expected=" XMLSEC_SIZE_FMT, dataSize, 2 * keySize);
         goto done;
@@ -2273,12 +2302,12 @@ xmlSecGCryptEcdsaVerify(int digest, xmlSecKeyDataPtr key_data,
     }
 
     /* get the existing signature */
-    err = gcry_mpi_scan(&m_sig_r, GCRYMPI_FMT_USG, data, keySize, NULL);
+    err = gcry_mpi_scan(&m_sig_r, GCRYMPI_FMT_USG, data, signHalfLen, NULL);
     if((err != GPG_ERR_NO_ERROR) || (m_sig_r == NULL)) {
         xmlSecGCryptError("gcry_mpi_scan(r)", err, NULL);
         goto done;
     }
-    err = gcry_mpi_scan(&m_sig_s, GCRYMPI_FMT_USG, data + keySize, keySize, NULL);
+    err = gcry_mpi_scan(&m_sig_s, GCRYMPI_FMT_USG, data + signHalfLen, signHalfLen, NULL);
     if((err != GPG_ERR_NO_ERROR) || (m_sig_s == NULL)) {
         xmlSecGCryptError("gcry_mpi_scan(s)", err, NULL);
         goto done;

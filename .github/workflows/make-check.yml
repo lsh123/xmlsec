@@ -333,11 +333,6 @@ jobs:
       run: |
           git config --global core.autocrlf input
     - uses: actions/checkout@v2
-    - name: debug-vs-install
-      shell: cmd
-      run: |
-          echo Checking for Visual Studio installations via vswhere...
-          "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -all -format text
     - uses: ilammy/msvc-dev-cmd@v1
       with:
         arch: x64

@@ -218,7 +218,7 @@ test_xmlSecNodeSetGetChildren_without_comments_contains_subtree(void) {
     grandchild = nodesetTestFindChild(child, BAD_CAST "Grandchild");
     sibling = nodesetTestFindChild(root, BAD_CAST "Sibling");
     comment = nodesetTestFindChildByType(child, XML_COMMENT_NODE);
-    childAttr = child->properties;
+    childAttr = (child != NULL) ? child->properties : NULL;
     nset = xmlSecNodeSetGetChildren(doc, child, 0, 0);
     if((child == NULL) || (grandchild == NULL) || (sibling == NULL) ||
        (comment == NULL) || (childAttr == NULL) || (nset == NULL)) {
@@ -418,7 +418,7 @@ test_xmlSecNodeSetDumpTextNodes_preserves_document_order(void) {
     if((root == NULL) || (nset == NULL) || (buffer == NULL) || (out == NULL)) {
         testLog("Error: failed to prepare dump text nodes test data\n");
         if(out != NULL) {
-            xmlOutputBufferClose(out);
+            (void)xmlOutputBufferClose(out);
         } else if(buffer != NULL) {
             xmlBufferFree(buffer);
         }

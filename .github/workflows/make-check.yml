@@ -314,7 +314,7 @@ jobs:
             config_flags: unicode=no
     env:
       INSTALL_FOLDER: c:\install.dir
-      LIBS_VERSION: 1.3.11
+      LIBS_VERSION: 1.3.12
     steps:
     - name: create-dirs
       run: |

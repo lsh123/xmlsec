@@ -11,6 +11,8 @@
 #include <stddef.h>
 #include <string.h>
 
+int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size);
+
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include <libxml/xmlerror.h>

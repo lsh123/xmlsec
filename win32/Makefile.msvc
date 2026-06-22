@@ -61,9 +61,13 @@ AUTOCONF = .\configure.txt
 !if "$(STATIC)" == "1"
 APP_NAME = xmlseca.exe
 UNIT_TESTS_APP_NAME = xmlsec_unit_testsa.exe
+XMLSEC_FUZZER_APP_NAME = xmlsec_fuzzera.exe
+XMLSEC_DSIG_VERIFY_FUZZER_APP_NAME = xmlsec_dsig_verify_fuzzera.exe
 !else
 APP_NAME = xmlsec.exe
 UNIT_TESTS_APP_NAME = xmlsec_unit_tests.exe
+XMLSEC_FUZZER_APP_NAME = xmlsec_fuzzer.exe
+XMLSEC_DSIG_VERIFY_FUZZER_APP_NAME = xmlsec_dsig_verify_fuzzer.exe
 !endif
 APP_NAME_MANIFEST = $(APP_NAME).manifest
 
@@ -113,6 +117,9 @@ XMLSEC_MSCNG_A 		= $(XMLSEC_MSCNG_BASENAME)_a.lib
 XMLSEC_APPS_INTDIR      = apps.int
 XMLSEC_APPS_INTDIR_A    = apps_a.int
 
+XMLSEC_OSS_FUZZ_INTDIR  = apps_oss_fuzz.int
+XMLSEC_OSS_FUZZ_INTDIR_A= apps_oss_fuzz_a.int
+
 XMLSEC_INTDIR           = $(XMLSEC_BASENAME).int
 XMLSEC_INTDIR_A         = $(XMLSEC_BASENAME)_a.int
 
@@ -135,6 +142,7 @@ XMLSEC_OPENSSL_SRCDIR   = $(XMLSEC_SRCDIR)\openssl
 XMLSEC_NSS_SRCDIR   	= $(XMLSEC_SRCDIR)\nss
 XMLSEC_MSCRYPTO_SRCDIR  = $(XMLSEC_SRCDIR)\mscrypto
 XMLSEC_MSCNG_SRCDIR  = $(XMLSEC_SRCDIR)\mscng
+XMLSEC_OSS_FUZZ_SRCDIR  = $(APPS_SRCDIR)\oss-fuzz
 
 #
 # Object files for libraries and apps.
@@ -170,6 +178,20 @@ XMLSEC_UNIT_TESTS_OBJS_A = \
 	$(XMLSEC_APPS_INTDIR_A)\unit_tests\x509_unit_tests.obj \
 	$(XMLSEC_APPS_INTDIR_A)\unit_tests\xmltree_unit_tests.obj \
 	$(XMLSEC_APPS_INTDIR_A)\unit_tests\xmlsec_unit_tests.obj
+
+XMLSEC_FUZZER_OBJS = \
+	$(XMLSEC_OSS_FUZZ_INTDIR)\xmlsec_target.obj \
+	$(XMLSEC_OSS_FUZZ_INTDIR)\standalone_fuzz_runner.obj
+XMLSEC_FUZZER_OBJS_A = \
+	$(XMLSEC_OSS_FUZZ_INTDIR_A)\xmlsec_target.obj \
+	$(XMLSEC_OSS_FUZZ_INTDIR_A)\standalone_fuzz_runner.obj
+
+XMLSEC_DSIG_VERIFY_FUZZER_OBJS = \
+	$(XMLSEC_OSS_FUZZ_INTDIR)\xmlsec_dsig_verify_target.obj \
+	$(XMLSEC_OSS_FUZZ_INTDIR)\standalone_fuzz_runner.obj
+XMLSEC_DSIG_VERIFY_FUZZER_OBJS_A = \
+	$(XMLSEC_OSS_FUZZ_INTDIR_A)\xmlsec_dsig_verify_target.obj \
+	$(XMLSEC_OSS_FUZZ_INTDIR_A)\standalone_fuzz_runner.obj
 
 XMLSEC_OBJS = \
 	$(XMLSEC_INTDIR)\app.obj\
@@ -679,7 +701,7 @@ EXTRA_CRYPTO_TARGETS = $(EXTRA_CRYPTO_TARGETS) $(XMLSEC_MSCRYPTO_TARGETS)
 
 all: apps $(XMLSEC_APP_TARGETS) $(EXTRA_CRYPTO_TARGETS)
 
-apps: $(BINDIR)\$(APP_NAME) $(BINDIR)\$(UNIT_TESTS_APP_NAME)
+apps: $(BINDIR)\$(APP_NAME) $(BINDIR)\$(UNIT_TESTS_APP_NAME) $(BINDIR)\$(XMLSEC_FUZZER_APP_NAME)
 
 xmlseca: $(BINDIR)\$(XMLSEC_A) $(XMLSEC_DEFAULT_CRYPTO_A)
 xmlsec: $(BINDIR)\$(XMLSEC_SO) $(XMLSEC_DEFAULT_CRYPTO)
@@ -696,7 +718,14 @@ mscrypto: $(BINDIR)\$(XMLSEC_MSCRYPTO_SO)
 mscnga: $(BINDIR)\$(XMLSEC_MSCNG_A)
 mscng: $(BINDIR)\$(XMLSEC_MSCNG_SO)
 
-check : check-unit-tests check-keys check-dsig check-enc
+check : check-unit-tests check-keys check-dsig check-enc check-fuzz
+
+check-fuzz : $(BINDIR)\$(XMLSEC_FUZZER_APP_NAME)
+	set ASAN_OPTIONS=continue_on_error=0
+	cd ..
+	win32\$(BINDIR)\$(XMLSEC_FUZZER_APP_NAME)
+	cd win32
+	set ASAN_OPTIONS=
 
 check-unit-tests : $(BINDIR)\$(UNIT_TESTS_APP_NAME)
 	set ASAN_OPTIONS=continue_on_error=0
@@ -748,6 +777,8 @@ clean :
 	if exist $(XMLSEC_MSCNG_INTDIR_A) rmdir /S /Q $(XMLSEC_MSCNG_INTDIR_A)
 	if exist $(XMLSEC_APPS_INTDIR) rmdir /S /Q $(XMLSEC_APPS_INTDIR)
 	if exist $(XMLSEC_APPS_INTDIR_A) rmdir /S /Q $(XMLSEC_APPS_INTDIR_A)
+	if exist $(XMLSEC_OSS_FUZZ_INTDIR) rmdir /S /Q $(XMLSEC_OSS_FUZZ_INTDIR)
+	if exist $(XMLSEC_OSS_FUZZ_INTDIR_A) rmdir /S /Q $(XMLSEC_OSS_FUZZ_INTDIR_A)
 	if exist $(BINDIR) rmdir /S /Q $(BINDIR)
 
 rebuild : clean all
@@ -855,6 +886,10 @@ $(XMLSEC_APPS_INTDIR_A) :
 	if not exist $(XMLSEC_APPS_INTDIR_A) mkdir $(XMLSEC_APPS_INTDIR_A)
 $(XMLSEC_APPS_INTDIR_A)\unit_tests : $(XMLSEC_APPS_INTDIR_A)
 	if not exist $(XMLSEC_APPS_INTDIR_A)\unit_tests mkdir $(XMLSEC_APPS_INTDIR_A)\unit_tests
+$(XMLSEC_OSS_FUZZ_INTDIR) :
+	if not exist $(XMLSEC_OSS_FUZZ_INTDIR) mkdir $(XMLSEC_OSS_FUZZ_INTDIR)
+$(XMLSEC_OSS_FUZZ_INTDIR_A) :
+	if not exist $(XMLSEC_OSS_FUZZ_INTDIR_A) mkdir $(XMLSEC_OSS_FUZZ_INTDIR_A)
 
 $(XMLSEC_INTDIR) :
 	if not exist $(XMLSEC_INTDIR) mkdir $(XMLSEC_INTDIR)
@@ -888,6 +923,8 @@ $(XMLSEC_MSCNG_INTDIR_A) :
 	$(CC) $(CFLAGS) $(APP_CFLAGS) /Fo$(XMLSEC_APPS_INTDIR)\ /c $<
 {$(APPS_SRCDIR)\unit_tests}.c{$(XMLSEC_APPS_INTDIR)\unit_tests}.obj::
 	$(CC) $(CFLAGS) $(APP_CFLAGS) /Fo$(XMLSEC_APPS_INTDIR)\unit_tests\ /c $<
+{$(XMLSEC_OSS_FUZZ_SRCDIR)}.c{$(XMLSEC_OSS_FUZZ_INTDIR)}.obj::
+	$(CC) $(CFLAGS) $(XMLSEC_OPENSSL_CFLAGS) /Fo$(XMLSEC_OSS_FUZZ_INTDIR)\ /c $<
 
 {$(XMLSEC_SRCDIR)}.c{$(XMLSEC_INTDIR)}.obj::
 	$(CC) $(CFLAGS) /Fo$(XMLSEC_INTDIR)\ /c $<
@@ -921,6 +958,9 @@ $(XMLSEC_MSCNG_INTDIR_A) :
 {$(APPS_SRCDIR)\unit_tests}.c{$(XMLSEC_APPS_INTDIR_A)\unit_tests}.obj::
 	$(CC) /D "LIBXML_STATIC" /D "LIBXSLT_STATIC" /D "XMLSEC_STATIC" \
 		$(CFLAGS) $(APP_CFLAGS) /Fo$(XMLSEC_APPS_INTDIR_A)\unit_tests\ /c $<
+{$(XMLSEC_OSS_FUZZ_SRCDIR)}.c{$(XMLSEC_OSS_FUZZ_INTDIR_A)}.obj::
+	$(CC) /D "LIBXML_STATIC" /D "LIBXSLT_STATIC" /D "XMLSEC_STATIC" \
+		$(CFLAGS) $(XMLSEC_OPENSSL_CFLAGS) /Fo$(XMLSEC_OSS_FUZZ_INTDIR_A)\ /c $<
 
 {$(XMLSEC_SRCDIR)}.c{$(XMLSEC_INTDIR_A)}.obj::
 	$(CC) /D "LIBXML_STATIC" /D "LIBXSLT_STATIC" /D "XMLSEC_STATIC" \
@@ -1017,6 +1057,18 @@ $(XMLSEC_UNIT_TESTS_RES) : version.rc $(BINDIR)
 		/d "RC_DESCRIPTION=\"XML Security Library - unit tests\"" \
 		/d "RC_FILETYPE=VFT_APP" /fo $@ version.rc
 
+XMLSEC_FUZZER_RES = $(BINDIR)\xmlsec-fuzzer.res
+$(XMLSEC_FUZZER_RES) : version.rc $(BINDIR)
+	$(RC) $(RCFLAGS) /d "RC_FILENAME=\"$(XMLSEC_FUZZER_APP_NAME)\"" \
+		/d "RC_DESCRIPTION=\"XML Security Library - fuzzer\"" \
+		/d "RC_FILETYPE=VFT_APP" /fo $@ version.rc
+
+XMLSEC_DSIG_VERIFY_FUZZER_RES = $(BINDIR)\xmlsec-dsig-verify-fuzzer.res
+$(XMLSEC_DSIG_VERIFY_FUZZER_RES) : version.rc $(BINDIR)
+	$(RC) $(RCFLAGS) /d "RC_FILENAME=\"$(XMLSEC_DSIG_VERIFY_FUZZER_APP_NAME)\"" \
+		/d "RC_DESCRIPTION=\"XML Security Library - DSig verify fuzzer\"" \
+		/d "RC_FILETYPE=VFT_APP" /fo $@ version.rc
+
 #
 # Creates the shared objects and archives.
 #
@@ -1067,4 +1119,14 @@ $(BINDIR)\xmlsec_unit_testsa.exe: xmlseca $(XMLSEC_APPS_INTDIR_A)\unit_tests $(B
 	$(LD) $(LDFLAGS) /OUT:$@ $(XMLSEC_A) $(XMLSEC_CRYPTO_A) $(APP_LIBS) $(XMLSEC_UNIT_TESTS_OBJS_A) $(XMLSEC_UNIT_TESTS_RES)
 $(BINDIR)\xmlsec_unit_tests.exe: xmlsec $(XMLSEC_APPS_INTDIR)\unit_tests $(BINDIR) $(XMLSEC_UNIT_TESTS_OBJS) $(XMLSEC_UNIT_TESTS_RES)
 	$(LD) $(LDFLAGS) /OUT:$@ $(XMLSEC_IMP) $(XMLSEC_CRYPTO_IMP) $(APP_LIBS) $(XMLSEC_UNIT_TESTS_OBJS) $(XMLSEC_UNIT_TESTS_RES)
+
+$(BINDIR)\xmlsec_fuzzera.exe: xmlseca $(XMLSEC_OSS_FUZZ_INTDIR_A) $(BINDIR) $(XMLSEC_FUZZER_OBJS_A) $(XMLSEC_FUZZER_RES)
+	$(LD) $(LDFLAGS) /OUT:$@ $(XMLSEC_A) $(ALIBS) $(XMLSEC_FUZZER_OBJS_A) $(XMLSEC_FUZZER_RES)
+$(BINDIR)\xmlsec_fuzzer.exe: xmlsec $(XMLSEC_OSS_FUZZ_INTDIR) $(BINDIR) $(XMLSEC_FUZZER_OBJS) $(XMLSEC_FUZZER_RES)
+	$(LD) $(LDFLAGS) /OUT:$@ $(XMLSEC_IMP) $(SOLIBS) $(XMLSEC_FUZZER_OBJS) $(XMLSEC_FUZZER_RES)
+
+$(BINDIR)\xmlsec_dsig_verify_fuzzera.exe: xmlseca $(XMLSEC_OSS_FUZZ_INTDIR_A) $(BINDIR) $(XMLSEC_DSIG_VERIFY_FUZZER_OBJS_A) $(XMLSEC_DSIG_VERIFY_FUZZER_RES)
+	$(LD) $(LDFLAGS) /OUT:$@ $(XMLSEC_A) $(XMLSEC_OPENSSL_A) $(ALIBS) $(XMLSEC_OPENSSL_ALIBS) $(XMLSEC_DSIG_VERIFY_FUZZER_OBJS_A) $(XMLSEC_DSIG_VERIFY_FUZZER_RES)
+$(BINDIR)\xmlsec_dsig_verify_fuzzer.exe: xmlsec $(XMLSEC_OSS_FUZZ_INTDIR) $(BINDIR) $(XMLSEC_DSIG_VERIFY_FUZZER_OBJS) $(XMLSEC_DSIG_VERIFY_FUZZER_RES)
+	$(LD) $(LDFLAGS) /OUT:$@ $(XMLSEC_IMP) $(XMLSEC_OPENSSL_IMP) $(SOLIBS) $(XMLSEC_OPENSSL_SOLIBS) $(XMLSEC_DSIG_VERIFY_FUZZER_OBJS) $(XMLSEC_DSIG_VERIFY_FUZZER_RES)
 

@@ -100,14 +100,20 @@ CHECK_CRYPTO_LIST = \
 	$(NULL)
 
 
-.PHONY: all check check-all check-info check-keys check-dsig check-enc docs-build
+.PHONY: all check check-all check-info check-keys check-dsig check-enc check-fuzz docs-build
 
 all:
 
-check: check-all check-info
+check: check-all check-fuzz check-info
 
 check-unit-tests: $(UNIT_TEST_APP)
 	@($(PRECHECK_COMMANDS) && $(ABS_BUILDDIR)/$(UNIT_TEST_APP))
+
+check-fuzz: $(ABS_BUILDDIR)/apps/xmlsec_fuzzer$(EXEEXT)
+	@($(PRECHECK_COMMANDS) && \
+	echo "=================== Checking oss-fuzz harnesses ========================" && \
+	$(ABS_BUILDDIR)/apps/xmlsec_fuzzer$(EXEEXT) \
+	)
 
 check-all: $(TEST_APP) check-unit-tests
 	for crypto in $(CHECK_CRYPTO_LIST) ; do \

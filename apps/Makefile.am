@@ -1,7 +1,7 @@
 NULL =
 
 bin_PROGRAMS = xmlsec1
-noinst_PROGRAMS = xmlsec_unit_tests
+noinst_PROGRAMS = xmlsec_unit_tests xmlsec_fuzzer
 
 XMLSEC_LIBS = $(top_builddir)/src/libxmlsec1.la
 
@@ -116,3 +116,70 @@ xmlsec_unit_tests_DEPENDENCIES = \
 	$(CRYPTO_DEPS) \
 	$(XMLSEC_LIBS) \
 	$(NULL)
+
+# xmlsec fuzzer (OSS-Fuzz harness — XML parsing surface, no crypto dependency)
+xmlsec_fuzzer_SOURCES = \
+	oss-fuzz/xmlsec_target.c \
+	oss-fuzz/standalone_fuzz_runner.c \
+	$(NULL)
+
+xmlsec_fuzzer_CFLAGS = \
+	-DPACKAGE=\"@PACKAGE@\" \
+	-I../include \
+	-I$(top_srcdir)/include \
+	$(XMLSEC_DEFINES) \
+	$(LIBXML_CFLAGS) \
+	$(NULL)
+
+xmlsec_fuzzer_LDFLAGS = \
+	@XMLSEC_STATIC_BINARIES@ \
+	@XMLSEC_EXTRA_LDFLAGS@ \
+	$(NULL)
+
+xmlsec_fuzzer_LDADD = \
+	$(LIBXML_LIBS) \
+	$(XMLSEC_LIBS) \
+	$(NULL)
+
+xmlsec_fuzzer_DEPENDENCIES = \
+	$(XMLSEC_LIBS) \
+	$(NULL)
+
+# xmlsec DSig-verify fuzzer (OSS-Fuzz harness — OpenSSL only)
+if !XMLSEC_NO_OPENSSL
+noinst_PROGRAMS += xmlsec_dsig_verify_fuzzer
+
+XMLSEC_OPENSSL_LIB = $(top_builddir)/src/openssl/libxmlsec1-openssl.la
+
+xmlsec_dsig_verify_fuzzer_SOURCES = \
+	oss-fuzz/xmlsec_dsig_verify_target.c \
+	oss-fuzz/standalone_fuzz_runner.c \
+	$(NULL)
+
+xmlsec_dsig_verify_fuzzer_CFLAGS = \
+	-DPACKAGE=\"@PACKAGE@\" \
+	-I../include \
+	-I$(top_srcdir)/include \
+	$(XMLSEC_DEFINES) \
+	$(XMLSEC_OPENSSL_CFLAGS) \
+	$(LIBXML_CFLAGS) \
+	$(NULL)
+
+xmlsec_dsig_verify_fuzzer_LDFLAGS = \
+	@XMLSEC_STATIC_BINARIES@ \
+	@XMLSEC_EXTRA_LDFLAGS@ \
+	$(NULL)
+
+xmlsec_dsig_verify_fuzzer_LDADD = \
+	$(LIBXML_LIBS) \
+	$(OPENSSL_LIBS) \
+	$(XMLSEC_OPENSSL_LIB) \
+	$(XMLSEC_LIBS) \
+	$(NULL)
+
+xmlsec_dsig_verify_fuzzer_DEPENDENCIES = \
+	$(XMLSEC_OPENSSL_LIB) \
+	$(XMLSEC_LIBS) \
+	$(NULL)
+
+endif # !XMLSEC_NO_OPENSSL

@@ -2687,8 +2687,8 @@ xmlSecTransformIOBufferClose(xmlSecTransformIOBufferPtr buffer) {
     if(buffer->mode == xmlSecTransformIOBufferModeWrite) {
         ret = xmlSecTransformPushBin(buffer->transform, NULL, 0, 1, buffer->transformCtx);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecTransformPushBin",
-                                xmlSecTransformGetName(buffer->transform));
+            xmlSecInternalError("xmlSecTransformPushBin", xmlSecTransformGetName(buffer->transform));
+            xmlSecTransformIOBufferDestroy(buffer);
             return(-1);
         }
     }

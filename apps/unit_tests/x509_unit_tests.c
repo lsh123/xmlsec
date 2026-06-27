@@ -456,3 +456,255 @@ test_xmlSecX509NameRead(void) {
     /* done */
     return (testGroupFinished());
 }
+
+
+/******************************************************************************
+ * test_xmlSecX509SerialNumberRead
+ *****************************************************************************/
+static void
+test_xmlSecX509SerialNumberRead_success(
+    const char *name,
+    const char *str,
+    const xmlSecByte *expectedBytes,
+    xmlSecSize expectedLen
+) {
+    xmlSecByte res[XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES];
+    xmlSecSize written = 0;
+    int ret;
+
+    xmlSecAssert(name != NULL);
+    xmlSecAssert(str != NULL);
+    xmlSecAssert(expectedBytes != NULL);
+
+    testStart(name);
+
+    ret = xmlSecX509SerialNumberRead(BAD_CAST str, res, sizeof(res), &written);
+    if(ret < 0) {
+        testLog("Error: xmlSecX509SerialNumberRead failed for '%s'\n", str);
+        testFinishedFailure();
+        return;
+    }
+
+    if(written != expectedLen) {
+        testLog("Error: xmlSecX509SerialNumberRead returned written=%u (expected: %u) for '%s'\n",
+            (unsigned)written, (unsigned)expectedLen, str);
+        testFinishedFailure();
+        return;
+    }
+
+    if(memcmp(res, expectedBytes, (size_t)expectedLen) != 0) {
+        testLog("Error: xmlSecX509SerialNumberRead returned unexpected bytes for '%s'\n", str);
+        testFinishedFailure();
+        return;
+    }
+
+    /* DONE */
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecX509SerialNumberRead_roundtrip(
+    const char *name,
+    const char *str,
+    const char *expectedStr
+) {
+    xmlSecByte res[XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES];
+    xmlSecSize written = 0;
+    xmlChar *back = NULL;
+    int ret;
+
+    xmlSecAssert(name != NULL);
+    xmlSecAssert(str != NULL);
+    xmlSecAssert(expectedStr != NULL);
+
+    testStart(name);
+
+    ret = xmlSecX509SerialNumberRead(BAD_CAST str, res, sizeof(res), &written);
+    if(ret < 0) {
+        testLog("Error: xmlSecX509SerialNumberRead failed for '%s'\n", str);
+        testFinishedFailure();
+        return;
+    }
+    if(written == 0) {
+        testLog("Error: xmlSecX509SerialNumberRead returned written=0 for '%s'\n", str);
+        testFinishedFailure();
+        return;
+    }
+
+    back = xmlSecX509SerialNumberWrite(res, written);
+    if(back == NULL) {
+        testLog("Error: xmlSecX509SerialNumberWrite failed for '%s'\n", str);
+        testFinishedFailure();
+        return;
+    }
+
+    if(xmlStrcmp(back, BAD_CAST expectedStr) != 0) {
+        testLog("Error: round-trip for '%s' returned '%s' (expected '%s')\n",
+            str, (const char*)back, expectedStr);
+        xmlFree(back);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFree(back);
+    /* DONE */
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecX509SerialNumberWrite_success(
+    const char *name,
+    const xmlSecByte *data,
+    xmlSecSize dataSize,
+    const char *expectedStr
+) {
+    xmlChar *str = NULL;
+
+    xmlSecAssert(name != NULL);
+    xmlSecAssert(data != NULL);
+    xmlSecAssert(expectedStr != NULL);
+
+    testStart(name);
+
+    str = xmlSecX509SerialNumberWrite(data, dataSize);
+    if(str == NULL) {
+        testLog("Error: xmlSecX509SerialNumberWrite failed for '%s'\n", name);
+        testFinishedFailure();
+        return;
+    }
+
+    if(xmlStrcmp(str, BAD_CAST expectedStr) != 0) {
+        testLog("Error: xmlSecX509SerialNumberWrite returned '%s' (expected '%s')\n",
+            (const char*)str, expectedStr);
+        xmlFree(str);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFree(str);
+    /* DONE */
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecX509SerialNumberRead_failure_with_res_size(
+    const char *name,
+    const char *str,
+    xmlSecSize resSize
+) {
+    xmlSecByte res[XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES];
+    xmlSecSize written = 0;
+    int ret;
+
+    xmlSecAssert(name != NULL);
+    xmlSecAssert(str != NULL);
+
+    testStart(name);
+
+    ret = xmlSecX509SerialNumberRead(BAD_CAST str, res, resSize, &written);
+    if(ret >= 0) {
+        testLog("Error: xmlSecX509SerialNumberRead expected to fail for '%s'\n", str);
+        testFinishedFailure();
+        return;
+    }
+
+    /* DONE */
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecX509SerialNumberRead_failure(
+    const char *name,
+    const char *str
+) {
+    test_xmlSecX509SerialNumberRead_failure_with_res_size(name, str, XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES);
+}
+
+int
+test_xmlSecX509SerialNumberRead(void) {
+    /* DER byte representations for success test vectors */
+    static const xmlSecByte bytes_0[]           = { 0x00 };
+    static const xmlSecByte bytes_1[]           = { 0x01 };
+    static const xmlSecByte bytes_127[]         = { 0x7F };
+    static const xmlSecByte bytes_128[]         = { 0x00, 0x80 };
+    static const xmlSecByte bytes_255[]         = { 0x00, 0xFF };
+    static const xmlSecByte bytes_256[]         = { 0x01, 0x00 };
+    static const xmlSecByte bytes_32768[]       = { 0x00, 0x80, 0x00 };
+    static const xmlSecByte bytes_65535[]       = { 0x00, 0xFF, 0xFF };
+    static const xmlSecByte bytes_65536[]       = { 0x01, 0x00, 0x00 };
+    static const xmlSecByte bytes_4294967295[]  = { 0x00, 0xFF, 0xFF, 0xFF, 0xFF };
+    static const xmlSecByte bytes_4294967296[]  = { 0x01, 0x00, 0x00, 0x00, 0x00 };
+    static const xmlSecByte bytes_00_80[]       = { 0x00, 0x80 };
+    static const xmlSecByte bytes_00_00[]       = { 0x00, 0x00 };
+    /* 2^159 - 1 = 730750818665451459101842416358141509827966271487 (20 bytes, MSB=0, max accepted) */
+    static const xmlSecByte bytes_2_159_minus_1[] = {
+        0x7F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+        0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
+    };
+
+    /* start */
+    testGroupStart("xmlSecX509SerialNumberRead");
+
+    /* positive tests: boundary single-byte values */
+    test_xmlSecX509SerialNumberRead_success("zero",                                    "0",   bytes_0,   1);
+    test_xmlSecX509SerialNumberRead_success("one",                                     "1",   bytes_1,   1);
+    test_xmlSecX509SerialNumberRead_success("127 (max single-byte, MSB=0)",          "127",  bytes_127, 1);
+    test_xmlSecX509SerialNumberRead_success("128 (first value needing 0x00 prefix)", "128",  bytes_128, 2);
+    test_xmlSecX509SerialNumberRead_success("255",                                   "255",  bytes_255, 2);
+
+    /* positive tests: multi-byte values */
+    test_xmlSecX509SerialNumberRead_success("256 (0x0100)",                           "256",        bytes_256,        2);
+    test_xmlSecX509SerialNumberRead_success("32768 (0x8000, needs 0x00 prefix)",      "32768",      bytes_32768,      3);
+    test_xmlSecX509SerialNumberRead_success("65535 (0xFFFF)",                         "65535",      bytes_65535,      3);
+    test_xmlSecX509SerialNumberRead_success("65536 (0x10000)",                        "65536",      bytes_65536,      3);
+    test_xmlSecX509SerialNumberRead_success("4294967295 (0xFFFFFFFF)",                "4294967295", bytes_4294967295, 5);
+    test_xmlSecX509SerialNumberRead_success("4294967296 (0x100000000)",               "4294967296", bytes_4294967296, 5);
+
+    /* positive tests: leading decimal zeros are silently stripped */
+    test_xmlSecX509SerialNumberRead_success("leading zeros (00001 -> 1)",  "00001", bytes_1, 1);
+    test_xmlSecX509SerialNumberRead_success("49 digits accepted when value is small enough",
+        "0730750818665451459101842416358141509827966271487",
+        bytes_2_159_minus_1, 20);
+
+    /* positive tests: maximum accepted value (2^159-1, 20 bytes, first byte MSB=0) */
+    test_xmlSecX509SerialNumberRead_success("2^159-1 (max accepted, 20 bytes)",
+        "730750818665451459101842416358141509827966271487",
+        bytes_2_159_minus_1, 20);
+
+    /* round-trip tests: Read -> Write must recover the canonical (no leading zeros) decimal string */
+    test_xmlSecX509SerialNumberRead_roundtrip("round-trip 0",          "0",    "0");
+    test_xmlSecX509SerialNumberRead_roundtrip("round-trip 127",        "127",  "127");
+    test_xmlSecX509SerialNumberRead_roundtrip("round-trip 128",        "128",  "128");
+    test_xmlSecX509SerialNumberRead_roundtrip("round-trip 256",        "256",  "256");
+    test_xmlSecX509SerialNumberRead_roundtrip("round-trip 65535",      "65535","65535");
+    test_xmlSecX509SerialNumberRead_roundtrip("round-trip 13-byte value",
+        "123456789012345678901234567890", "123456789012345678901234567890");
+    test_xmlSecX509SerialNumberRead_roundtrip("round-trip leading zeros stripped", "00256", "256");
+    test_xmlSecX509SerialNumberRead_roundtrip("round-trip 49 digits canonicalized",
+        "0730750818665451459101842416358141509827966271487",
+        "730750818665451459101842416358141509827966271487");
+
+    /* direct write tests: canonicalize DER encodings that the read helper does not produce */
+    test_xmlSecX509SerialNumberWrite_success("write strips ASN.1 sign prefix", bytes_00_80, sizeof(bytes_00_80), "128");
+    test_xmlSecX509SerialNumberWrite_success("write canonicalizes all-zero bytes", bytes_00_00, sizeof(bytes_00_00), "0");
+
+    /* negative tests */
+    test_xmlSecX509SerialNumberRead_failure("empty string",                        "");
+    test_xmlSecX509SerialNumberRead_failure("letters only",                        "abc");
+    test_xmlSecX509SerialNumberRead_failure("digit followed by letter",            "1a2");
+    test_xmlSecX509SerialNumberRead_failure("leading space",                       " 1");
+    test_xmlSecX509SerialNumberRead_failure("trailing space",                      "1 ");
+    test_xmlSecX509SerialNumberRead_failure("plus sign",                           "+1");
+    test_xmlSecX509SerialNumberRead_failure("minus sign",                          "-1");
+    test_xmlSecX509SerialNumberRead_failure("50 digits (>= XMLSEC_X509_MAX_SERIAL_NUMBER_CHARS)",
+        "12345678901234567890123456789012345678901234567890");
+    test_xmlSecX509SerialNumberRead_failure("2^160 (too large during accumulation)",
+        "1461501637330902918203684832716283019655932542976");
+    test_xmlSecX509SerialNumberRead_failure("2^159 (too large: MSB set, would need 21-byte DER)",
+        "730750818665451459101842416358141509827966271488");
+    test_xmlSecX509SerialNumberRead_failure_with_res_size("output buffer too small", "1",
+        XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES - 1U);
+
+    /* done */
+    return (testGroupFinished());
+}

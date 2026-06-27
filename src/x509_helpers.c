@@ -1315,7 +1315,7 @@ xmlSecX509SerialNumberRead(const xmlChar *str, xmlSecByte *res, xmlSecSize resSi
     unsigned char buf[XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES];
     size_t start;
     size_t len;
-    unsigned int idx;
+    size_t idx;
     unsigned int digit;
     unsigned int carry;
 
@@ -1370,19 +1370,21 @@ xmlSecX509SerialNumberRead(const xmlChar *str, xmlSecByte *res, xmlSecSize resSi
         }
     }
 
-    /* Keep a single zero byte for the zero value. */
-    while((start < (sizeof(buf) - 1U)) && (buf[start] == 0U)) {
-        ++start;
-    }
+    /* buf[start] is always non-zero here because:
+     *   - the carry loop (the only path that decrements start) writes carry & 0xFF where carry > 0;
+     *   - for input "0" start stays at sizeof(buf)-1 and buf[start]==0 is the valid zero value,
+     *     but that case is guarded by start == sizeof(buf)-1 so no advancement is needed. */
+    xmlSecAssert2((start == (sizeof(buf) - 1U)) || (buf[start] != 0U), -1);
 
     /* ASN.1 INTEGER is signed: prepend 0x00 for positive values with MSB set. */
     if((buf[start] & 0x80U) != 0U) {
-        if(start == 0U) {
+        if(start > 0) {
+            --start;
+            buf[start] = 0U;
+        } else {
             xmlSecInternalError("integer value is too large", NULL);
             return(-1);
         }
-        --start;
-        buf[start] = 0U;
     }
 
     /* start is always in [0, sizeof(buf)-1] at this point */

@@ -188,6 +188,11 @@ int                xmlSecMSCngKeyDataDsaPubkeyWrite                 (BCRYPT_KEY_
   *****************************************************************************/
 #ifndef XMLSEC_NO_X509
 
+/* MinGW may ship older wincrypt.h that lacks CERT_FIND_SHA256_HASH */
+#ifndef CERT_FIND_SHA256_HASH
+#define CERT_FIND_SHA256_HASH               (15 << 16)
+#endif /* CERT_FIND_SHA256_HASH */
+
 int                 xmlSecMSCngX509StoreVerifyKey                    (xmlSecKeyDataStorePtr store,
                                                                      xmlSecKeyPtr key,
                                                                      xmlSecKeyInfoCtxPtr keyInfoCtx);

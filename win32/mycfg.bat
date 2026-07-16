@@ -10,13 +10,14 @@ REM
 
 SET XMLSEC_CRYPTO=mscng
 SET XMLSEC_DEBUG=no
+SET XMLSEC_UNICODE=yes
 
 IF "%XMLSEC_DEBUG%" == "yes" (
     SET PREFIX=%USERHOME%\distro.debug
-    SET XMLSEC_OPTIONS=debug=yes memcheck=yes cruntime=/MDd
+    SET XMLSEC_OPTIONS=debug=yes memcheck=yes cruntime=/MDd unicode=%XMLSEC_UNICODE%
 ) ELSE (
     SET PREFIX=%USERHOME%\distro.release
-    SET XMLSEC_OPTIONS=debug=no memcheck=no cruntime=/MD
+    SET XMLSEC_OPTIONS=debug=no memcheck=no cruntime=/MD unicode=%XMLSEC_UNICODE%
 )
 
 SET LIBXML2_PREFIX=%PREFIX%\libxml2

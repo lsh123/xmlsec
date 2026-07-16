@@ -176,7 +176,7 @@ static xmlSecAppCmdLineParam cryptoConfigParam = {
     "--crypto-config",
     NULL,
     "--crypto-config <path>"
-    "\n\tpath to crypto engine configuration; interpretation is crypto-engine specific:"
+    "\n\tcrypto engine configuration:"
     "\n\t  openssl: the path to the OpenSSL trusted certificates folder;"
     "\n\t  nss:     the path to the NSS database;"
     "\n\t  mscng:   the Windows certificate store name (default \"MY:ROOT\"), one of:"

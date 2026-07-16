@@ -34,6 +34,15 @@
 #define XMLSEC_MSCNG_APP_DEFAULT_CURRENT_USER_CERT_STORE_NAME   TEXT("MY")
 #define XMLSEC_MSCNG_APP_DEFAULT_LOCAL_MACHINE_CERT_STORE_NAME  TEXT("ROOT")
 
+/* CERT_STORE_PROV_SYSTEM is always CERT_STORE_PROV_SYSTEM_W and unconditionally
+ * expects wchar_t* for pvPara.  In a non-Unicode (ANSI) build LPCTSTR is char*,
+ * so use the TCHAR-correct variant to avoid silently passing the wrong type. */
+#ifdef UNICODE
+#define XMLSEC_MSCNG_CERT_STORE_PROV_SYSTEM CERT_STORE_PROV_SYSTEM_W
+#else  /* UNICODE */
+#define XMLSEC_MSCNG_CERT_STORE_PROV_SYSTEM CERT_STORE_PROV_SYSTEM_A
+#endif /* UNICODE */
+
 /******************************************************************************
  *
  * Helper: open a CERT_STORE_PROV_COLLECTION aggregating both the local
@@ -70,7 +79,7 @@ xmlSecMSCngCertStoreCtxInitialize(xmlSecMSCngCertStoreCtx* ctx, LPCTSTR localMac
 
     /* local machine store (soft failure: may require elevation) */
     ctx->hLocalMachine = CertOpenStore(
-        CERT_STORE_PROV_SYSTEM,
+        XMLSEC_MSCNG_CERT_STORE_PROV_SYSTEM,
         0,
         0,
         CERT_SYSTEM_STORE_LOCAL_MACHINE | CERT_STORE_OPEN_EXISTING_FLAG | CERT_STORE_READONLY_FLAG,
@@ -88,7 +97,7 @@ xmlSecMSCngCertStoreCtxInitialize(xmlSecMSCngCertStoreCtx* ctx, LPCTSTR localMac
 
     /* current user store (soft failure) */
     ctx->hCurrentUser = CertOpenStore(
-        CERT_STORE_PROV_SYSTEM,
+        XMLSEC_MSCNG_CERT_STORE_PROV_SYSTEM,
         0,
         0,
         CERT_SYSTEM_STORE_CURRENT_USER | CERT_STORE_OPEN_EXISTING_FLAG | CERT_STORE_READONLY_FLAG,
@@ -104,14 +113,9 @@ xmlSecMSCngCertStoreCtxInitialize(xmlSecMSCngCertStoreCtx* ctx, LPCTSTR localMac
         }
     }
 
-    /* fail only if both individual stores are unavailable */
-    if(ctx->hLocalMachine == NULL && ctx->hCurrentUser == NULL) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
-            "neither LocalMachine nor CurrentUser store could be opened");
-        CertCloseStore(ctx->hCollection, 0);
-        ctx->hCollection = NULL;
-        return(-1);
-    }
+    /* both individual stores being unavailable is not a hard failure:
+     * the collection will simply be empty and any cert lookup will
+     * return "not found" */
 
     return(0);
 }

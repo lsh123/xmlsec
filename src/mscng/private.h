@@ -21,11 +21,6 @@
 
 #include "../keysdata_helpers.h"
 
-/* Mingw may ship an older bcrypt.h that lacks this KDF identifier. */
-#ifndef BCRYPT_KDF_RAW_SECRET
-#define BCRYPT_KDF_RAW_SECRET               L"TRUNCATE"
-#endif /* BCRYPT_KDF_RAW_SECRET */
-
 /* Reverse @len bytes of @buf in-place (little-endian <-> big-endian conversion). */
 static inline void
 xmlSecMSCngReverseBytes(BYTE* buf, DWORD len) {
@@ -77,46 +72,7 @@ int                xmlSecMSCngCreateDerForBcryptPubkey              (xmlSecKeyDa
                                                                      LPVOID* ppDer,
                                                                      DWORD* pcbDer);
 
-#ifndef XMLSEC_NO_EC
-/* Mingw has old version of bcrypt.h file */
-#ifndef BCRYPT_ECDSA_PUBLIC_GENERIC_MAGIC
-#define BCRYPT_ECDSA_PUBLIC_GENERIC_MAGIC   0x50444345  // ECDP
-#endif /* BCRYPT_ECDSA_PUBLIC_GENERIC_MAGIC */
-#endif /* XMLSEC_NO_EC */
-
-#ifndef XMLSEC_NO_DH
-
-#ifndef szOID_X942_DH
-#define szOID_X942_DH "1.2.840.10046.2.1"
-#endif /* szOID_X942_DH */
-
-#endif /* XMLSEC_NO_DH */
-
 #ifndef XMLSEC_NO_XDH
-
-/* OID for X25519 public/private key (RFC 8410, id-X25519) */
-#ifndef szOID_X25519
-#define szOID_X25519 "1.3.101.110"
-#endif /* szOID_X25519 */
-
-/* BCrypt curve name for Curve25519 (may be missing in older MinGW bcrypt.h) */
-#ifndef BCRYPT_ECC_CURVE_25519
-#define BCRYPT_ECC_CURVE_25519          L"curve25519"
-#endif /* BCRYPT_ECC_CURVE_25519 */
-
-/* Generic ECDH definitions (may be missing in older MinGW bcrypt.h) */
-#ifndef BCRYPT_ECDH_PUBLIC_GENERIC_MAGIC
-#define BCRYPT_ECDH_PUBLIC_GENERIC_MAGIC    0x504B4345  /* ECKP */
-#endif /* BCRYPT_ECDH_PUBLIC_GENERIC_MAGIC */
-#ifndef BCRYPT_ECDH_PRIVATE_GENERIC_MAGIC
-#define BCRYPT_ECDH_PRIVATE_GENERIC_MAGIC   0x564B4345  /* ECKV */
-#endif /* BCRYPT_ECDH_PRIVATE_GENERIC_MAGIC */
-#ifndef BCRYPT_ECDH_ALGORITHM
-#define BCRYPT_ECDH_ALGORITHM               L"ECDH"
-#endif /* BCRYPT_ECDH_ALGORITHM */
-#ifndef BCRYPT_ECC_CURVE_NAME
-#define BCRYPT_ECC_CURVE_NAME               L"ECCCurveName"
-#endif /* BCRYPT_ECC_CURVE_NAME */
 
 BCRYPT_KEY_HANDLE  xmlSecMSCngKeyDataXdhImportPublicKey             (const xmlSecByte* pubKeyBytes,
                                                                      DWORD pubKeyLen);
@@ -187,11 +143,6 @@ int                xmlSecMSCngKeyDataDsaPubkeyWrite                 (BCRYPT_KEY_
  *
   *****************************************************************************/
 #ifndef XMLSEC_NO_X509
-
-/* MinGW may ship older wincrypt.h that lacks CERT_FIND_SHA256_HASH */
-#ifndef CERT_FIND_SHA256_HASH
-#define CERT_FIND_SHA256_HASH               (22 << 16)
-#endif /* CERT_FIND_SHA256_HASH */
 
 int                 xmlSecMSCngX509StoreVerifyKey                    (xmlSecKeyDataStorePtr store,
                                                                      xmlSecKeyPtr key,

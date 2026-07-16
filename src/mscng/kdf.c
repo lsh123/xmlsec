@@ -31,33 +31,6 @@
 #include "../keysdata_helpers.h"
 #include "../transform_helpers.h"
 
-/* Mingw has old version of bcrypt.h file */
-#if !defined(KDF_SALT)
-#define KDF_SALT                0xF
-#endif /*  !defined(KDF_SALT)*/
-#if !defined(KDF_ITERATION_COUNT)
-#define KDF_ITERATION_COUNT     0x10
-#endif /*  !defined(KDF_ITERATION_COUNT) */
-
-
-/* HKDF support requires Windows 10 1709+ (SDK 10.0.16299+).
- * Salt is set via BCryptSetProperty(BCRYPT_HKDF_SALT_AND_FINALIZE), not via
- * BCryptKeyDerivation params (KDF_HKDF_SALT is marked testing-only in the SDK).
- * Only KDF_HKDF_INFO is used in BCryptKeyDerivation params. */
-#if !defined(KDF_HKDF_SALT)
-#define KDF_HKDF_SALT           0x13    /* testing-only */
-#endif /* !defined(KDF_HKDF_SALT) */
-#if !defined(KDF_HKDF_INFO)
-#define KDF_HKDF_INFO           0x14
-#endif /* !defined(KDF_HKDF_INFO) */
-#if !defined(BCRYPT_HKDF_HASH_ALGORITHM)
-#define BCRYPT_HKDF_HASH_ALGORITHM      L"HkdfHashAlgorithm"
-#endif /* !defined(BCRYPT_HKDF_HASH_ALGORITHM) */
-#if !defined(BCRYPT_HKDF_SALT_AND_FINALIZE)
-#define BCRYPT_HKDF_SALT_AND_FINALIZE   L"HkdfSaltAndFinalize"
-#endif /* !defined(BCRYPT_HKDF_SALT_AND_FINALIZE) */
-
-
 /******************************************************************************
  *
  * Unified KDF transform context (used for both PBKDF2 and HKDF)

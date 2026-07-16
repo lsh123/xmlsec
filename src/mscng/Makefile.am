@@ -43,6 +43,7 @@ libxmlsec1_mscng_la_SOURCES =\
 	symkeys.c \
 	x509.c \
 	x509vfy.c \
+	xmlsec-mingw.h \
 	$(NULL)
 
 libxmlsec1_mscng_la_LIBADD = \

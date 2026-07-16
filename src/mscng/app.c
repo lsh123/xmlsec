@@ -34,7 +34,77 @@
 #include "private.h"
 
 /* config info for the mscng keysstore */
-static LPTSTR gXmlSecMSCngAppCertStoreName = NULL;
+static LPTSTR gXmlSecMSCngAppCurrentUserCertStoreName = NULL;
+static LPTSTR gXmlSecMSCngAppLocalMachineCertStoreName = NULL;
+
+static int
+xmlSecMSCngAppParseConfig(const char* config, LPTSTR* pCurrentUserStoreName, LPTSTR* pLocalMachineStoreName)
+{
+    const char* colonPos;
+
+    xmlSecAssert2(config != NULL, -1);
+    xmlSecAssert2(pCurrentUserStoreName != NULL, -1);
+    xmlSecAssert2(pLocalMachineStoreName != NULL, -1);
+
+    *pCurrentUserStoreName = NULL;
+    *pLocalMachineStoreName = NULL;
+
+    colonPos = strchr(config, ':');
+    if(colonPos == NULL) {
+        /* single name: use for both current user and local machine */
+        if(strlen(config) > 0) {
+            *pCurrentUserStoreName = xmlSecWin32ConvertUtf8ToTstr((const xmlChar*)config);
+            if(*pCurrentUserStoreName == NULL) {
+                xmlSecInternalError2("xmlSecWin32ConvertUtf8ToTstr(currentUser)", NULL,
+                    "config=%s", xmlSecErrorsSafeString(config));
+                return(-1);
+            }
+            *pLocalMachineStoreName = xmlSecWin32ConvertUtf8ToTstr((const xmlChar*)config);
+            if(*pLocalMachineStoreName == NULL) {
+                xmlSecInternalError2("xmlSecWin32ConvertUtf8ToTstr(localMachine)", NULL,
+                    "config=%s", xmlSecErrorsSafeString(config));
+                xmlFree(*pCurrentUserStoreName);
+                *pCurrentUserStoreName = NULL;
+                return(-1);
+            }
+        }
+    } else {
+        /* two-part format: <current-user>:<local-machine> */
+        size_t currentUserLen = (size_t)(colonPos - config);
+        const char* localMachinePart = colonPos + 1;
+
+        if(currentUserLen > 0) {
+            char* tmp = (char*)xmlMalloc(currentUserLen + 1);
+            if(tmp == NULL) {
+                xmlSecMallocError(currentUserLen + 1, NULL);
+                return(-1);
+            }
+            memcpy(tmp, config, currentUserLen);
+            tmp[currentUserLen] = '\0';
+
+            *pCurrentUserStoreName = xmlSecWin32ConvertUtf8ToTstr((const xmlChar*)tmp);
+            xmlFree(tmp);
+            if(*pCurrentUserStoreName == NULL) {
+                xmlSecInternalError("xmlSecWin32ConvertUtf8ToTstr(currentUser)", NULL);
+                return(-1);
+            }
+        }
+
+        if(strlen(localMachinePart) > 0) {
+            *pLocalMachineStoreName = xmlSecWin32ConvertUtf8ToTstr((const xmlChar*)localMachinePart);
+            if(*pLocalMachineStoreName == NULL) {
+                xmlSecInternalError("xmlSecWin32ConvertUtf8ToTstr(localMachine)", NULL);
+                if(*pCurrentUserStoreName != NULL) {
+                    xmlFree(*pCurrentUserStoreName);
+                    *pCurrentUserStoreName = NULL;
+                }
+                return(-1);
+            }
+        }
+    }
+
+    return(0);
+}
 
 /**
  * @brief Initializes the MSCng crypto engine.
@@ -47,22 +117,21 @@ static LPTSTR gXmlSecMSCngAppCertStoreName = NULL;
  */
 int
 xmlSecMSCngAppInit(const char* config) {
+    int ret;
+
     /* initialize MSCng crypto engine */
 
-    /* config parameter is an ms cert store name */
+    /* config parameter is an ms cert store name (or pair of names) */
     if(config != NULL && strlen(config) > 0) {
-        if(gXmlSecMSCngAppCertStoreName != NULL) {
+        if(gXmlSecMSCngAppCurrentUserCertStoreName != NULL || gXmlSecMSCngAppLocalMachineCertStoreName != NULL) {
             /* deny double initialization */
-            xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_CONFIG, NULL,
-                "config=%s, config already set",
-                xmlSecErrorsSafeString(config));
+            xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_CONFIG, NULL, "config=%s, config already set", xmlSecErrorsSafeString(config));
             return(-1);
         }
 
-        gXmlSecMSCngAppCertStoreName = xmlSecWin32ConvertUtf8ToTstr((const xmlChar*)config);
-        if(gXmlSecMSCngAppCertStoreName == NULL) {
-            xmlSecInternalError2("xmlSecWin32ConvertUtf8ToTstr", NULL,
-                "config=%s", xmlSecErrorsSafeString(config));
+        ret = xmlSecMSCngAppParseConfig(config, &gXmlSecMSCngAppCurrentUserCertStoreName, &gXmlSecMSCngAppLocalMachineCertStoreName);
+        if(ret < 0) {
+            xmlSecInternalError2("xmlSecMSCngAppParseConfig", NULL, "config=%s", xmlSecErrorsSafeString(config));
             return(-1);
         }
     }
@@ -81,23 +150,39 @@ xmlSecMSCngAppInit(const char* config) {
 int
 xmlSecMSCngAppShutdown(void) {
     /* shutdown MSCng crypto engine */
-    if(gXmlSecMSCngAppCertStoreName != NULL) {
-        xmlFree(gXmlSecMSCngAppCertStoreName);
-        gXmlSecMSCngAppCertStoreName = NULL;
+    if(gXmlSecMSCngAppCurrentUserCertStoreName != NULL) {
+        xmlFree(gXmlSecMSCngAppCurrentUserCertStoreName);
+        gXmlSecMSCngAppCurrentUserCertStoreName = NULL;
+    }
+    if(gXmlSecMSCngAppLocalMachineCertStoreName != NULL) {
+        xmlFree(gXmlSecMSCngAppLocalMachineCertStoreName);
+        gXmlSecMSCngAppLocalMachineCertStoreName = NULL;
     }
     return(0);
 }
 
 /**
- * @brief Gets the MSCng certs store name.
- * @details Gets the MS Cng certs store name set by #xmlSecMSCngAppInit function.
+ * @brief Gets the MSCng certs store name for the current user.
+ * @details Gets the MSCng certs store name for the current user set by #xmlSecMSCngAppInit function.
  *
- * @return the MS Cng certs name used by xmlsec-mscng.
+ * @return the MSCng certs name for the current user used by xmlsec-mscng.
  */
 LPCTSTR
-xmlSecMSCngAppGetCertStoreName(void) {
-    return(gXmlSecMSCngAppCertStoreName);
+xmlSecMSCngAppGetCurrentUserCertStoreName(void) {
+    return(gXmlSecMSCngAppCurrentUserCertStoreName);
 }
+
+/**
+ * @brief Gets the MSCng certs store name for the local machine.
+ * @details Gets the MSCng certs store name for the local machine set by #xmlSecMSCngAppInit function.
+ *
+ * @return the MSCng certs name for the local machine used by xmlsec-mscng.
+ */
+LPCTSTR
+xmlSecMSCngAppGetLocalMachineCertStoreName(void) {
+    return(gXmlSecMSCngAppLocalMachineCertStoreName);
+}
+
 
 /**
  * @brief Reads a key from a file.

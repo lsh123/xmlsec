@@ -31,28 +31,156 @@
 #include "../cast_helpers.h"
 #include "private.h"
 
-#define XMLSEC_MSCNG_APP_DEFAULT_CERT_STORE_NAME TEXT("MY")
+#define XMLSEC_MSCNG_APP_DEFAULT_CURRENT_USER_CERT_STORE_NAME   TEXT("MY")
+#define XMLSEC_MSCNG_APP_DEFAULT_LOCAL_MACHINE_CERT_STORE_NAME  TEXT("ROOT")
+
+/******************************************************************************
+ *
+ * Helper: open a CERT_STORE_PROV_COLLECTION aggregating both the local
+ * machine and current user system stores for the given store name (e.g. "MY").
+ * Local machine is added at priority 1 (searched first), current user at 2.
+ * Opening either individual store is treated as a soft failure – a warning is
+ * logged but the other store is still tried.  Returns 0 on success or -1 if
+ * neither store could be opened.
+ *
+  *****************************************************************************/
+typedef struct _xmlSecMSCngCertStoreCtx {
+    HCERTSTORE hCollection;
+    HCERTSTORE hLocalMachine;
+    HCERTSTORE hCurrentUser;
+} xmlSecMSCngCertStoreCtx;
+
+
+static int
+xmlSecMSCngCertStoreCtxInitialize(xmlSecMSCngCertStoreCtx* ctx, LPCTSTR localMachineStoreName, LPCTSTR currentUserStoreName) {
+    BOOL ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(localMachineStoreName != NULL, -1);
+    xmlSecAssert2(currentUserStoreName != NULL, -1);
+
+    memset(ctx, 0, sizeof(xmlSecMSCngCertStoreCtx));
+
+    /* collection store – aggregates the two physical stores */
+    ctx->hCollection = CertOpenStore(CERT_STORE_PROV_COLLECTION, 0, 0, 0, NULL);
+    if(ctx->hCollection == NULL) {
+        xmlSecMSCngLastError("CertOpenStore(CERT_STORE_PROV_COLLECTION)", NULL);
+        return(-1);
+    }
+
+    /* local machine store (soft failure: may require elevation) */
+    ctx->hLocalMachine = CertOpenStore(
+        CERT_STORE_PROV_SYSTEM,
+        0,
+        0,
+        CERT_SYSTEM_STORE_LOCAL_MACHINE | CERT_STORE_OPEN_EXISTING_FLAG | CERT_STORE_READONLY_FLAG,
+        localMachineStoreName);
+    if(ctx->hLocalMachine != NULL) {
+        ret = CertAddStoreToCollection(ctx->hCollection, ctx->hLocalMachine,
+            CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG, 1);
+        if(ret == FALSE) {
+            xmlSecMSCngLastError("CertAddStoreToCollection(LocalMachine)", NULL);
+            /* non-fatal – continue without local machine store */
+            CertCloseStore(ctx->hLocalMachine, 0);
+            ctx->hLocalMachine = NULL;
+        }
+    }
+
+    /* current user store (soft failure) */
+    ctx->hCurrentUser = CertOpenStore(
+        CERT_STORE_PROV_SYSTEM,
+        0,
+        0,
+        CERT_SYSTEM_STORE_CURRENT_USER | CERT_STORE_OPEN_EXISTING_FLAG | CERT_STORE_READONLY_FLAG,
+        currentUserStoreName);
+    if(ctx->hCurrentUser != NULL) {
+        ret = CertAddStoreToCollection(ctx->hCollection, ctx->hCurrentUser,
+            CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG, 2);
+        if(ret == FALSE) {
+            xmlSecMSCngLastError("CertAddStoreToCollection(CurrentUser)", NULL);
+            /* non-fatal */
+            CertCloseStore(ctx->hCurrentUser, 0);
+            ctx->hCurrentUser = NULL;
+        }
+    }
+
+    /* fail only if both individual stores are unavailable */
+    if(ctx->hLocalMachine == NULL && ctx->hCurrentUser == NULL) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
+            "neither LocalMachine nor CurrentUser store could be opened");
+        CertCloseStore(ctx->hCollection, 0);
+        ctx->hCollection = NULL;
+        return(-1);
+    }
+
+    return(0);
+}
+
+static void
+xmlSecMSCngCertStoreCtxFinalize(xmlSecMSCngCertStoreCtx* ctx) {
+    if(ctx == NULL) {
+        return;
+    }
+    /* close individual stores before the collection */
+    if(ctx->hLocalMachine != NULL) {
+        CertCloseStore(ctx->hLocalMachine, 0);
+        ctx->hLocalMachine = NULL;
+    }
+    if(ctx->hCurrentUser != NULL) {
+        CertCloseStore(ctx->hCurrentUser, 0);
+        ctx->hCurrentUser = NULL;
+    }
+    if(ctx->hCollection != NULL) {
+        CertCloseStore(ctx->hCollection, 0);
+        ctx->hCollection = NULL;
+    }
+}
 
 /******************************************************************************
  *
  * MSCng Keys Store. Uses Simple Keys Store under the hood
  *
   *****************************************************************************/
-XMLSEC_KEY_STORE_DECLARE(MSCngKeysStore, xmlSecKeyStorePtr)
+ typedef struct _xmlSecMSCngKeysStoreCtx {
+    xmlSecKeyStorePtr       simpleKeyStore;
+    xmlSecMSCngCertStoreCtx certStoreCtx;
+} xmlSecMSCngKeysStoreCtx;
+
+XMLSEC_KEY_STORE_DECLARE(MSCngKeysStore, xmlSecMSCngKeysStoreCtx)
 #define xmlSecMSCngKeysStoreSize XMLSEC_KEY_STORE_SIZE(MSCngKeysStore)
 
 static int
 xmlSecMSCngKeysStoreInitialize(xmlSecKeyStorePtr store) {
-    xmlSecKeyStorePtr *simpleKeyStore;
+    xmlSecMSCngKeysStoreCtx* ctx;
+    LPCTSTR currentUserStoreName;
+    LPCTSTR localMachineStoreName;
+    int ret;
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCngKeysStoreId), -1);
 
-    simpleKeyStore = xmlSecMSCngKeysStoreGetCtx(store);
-    xmlSecAssert2(*simpleKeyStore == NULL, -1);
+    ctx = xmlSecMSCngKeysStoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->simpleKeyStore == NULL, -1);
 
-    *simpleKeyStore = xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId);
-    if(*simpleKeyStore == NULL) {
+    ctx->simpleKeyStore = xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId);
+    if(ctx->simpleKeyStore == NULL) {
         xmlSecInternalError("xmlSecKeyStoreCreate", xmlSecKeyStoreGetName(store));
+        return(-1);
+    }
+
+    currentUserStoreName = xmlSecMSCngAppGetCurrentUserCertStoreName();
+    if(currentUserStoreName == NULL) {
+        currentUserStoreName = XMLSEC_MSCNG_APP_DEFAULT_CURRENT_USER_CERT_STORE_NAME;
+    }
+    localMachineStoreName = xmlSecMSCngAppGetLocalMachineCertStoreName();
+    if(localMachineStoreName == NULL) {
+        localMachineStoreName = XMLSEC_MSCNG_APP_DEFAULT_LOCAL_MACHINE_CERT_STORE_NAME;
+    }
+    ret = xmlSecMSCngCertStoreCtxInitialize(&ctx->certStoreCtx, localMachineStoreName, currentUserStoreName);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngCertStoreCtxInitialize", xmlSecKeyStoreGetName(store));
+        xmlSecKeyStoreDestroy(ctx->simpleKeyStore);
+        ctx->simpleKeyStore = NULL;
         return(-1);
     }
 
@@ -61,20 +189,21 @@ xmlSecMSCngKeysStoreInitialize(xmlSecKeyStorePtr store) {
 
 static void
 xmlSecMSCngKeysStoreFinalize(xmlSecKeyStorePtr store) {
-    xmlSecKeyStorePtr *simpleKeyStore;
+    xmlSecMSCngKeysStoreCtx* ctx;
 
     xmlSecAssert(xmlSecKeyStoreCheckId(store, xmlSecMSCngKeysStoreId));
 
-    simpleKeyStore = xmlSecMSCngKeysStoreGetCtx(store);
-    xmlSecAssert((simpleKeyStore != NULL) && (*simpleKeyStore != NULL));
+    ctx = xmlSecMSCngKeysStoreGetCtx(store);
+    xmlSecAssert((ctx != NULL) && (ctx->simpleKeyStore != NULL));
 
-    xmlSecKeyStoreDestroy(*simpleKeyStore);
+    xmlSecKeyStoreDestroy(ctx->simpleKeyStore);
+    ctx->simpleKeyStore = NULL;
+    xmlSecMSCngCertStoreCtxFinalize(&ctx->certStoreCtx);
 }
 
 static PCCERT_CONTEXT
 xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    LPCTSTR storeName;
-    HCERTSTORE hStore = NULL;
+    xmlSecMSCngKeysStoreCtx* ctx;
     PCCERT_CONTEXT cert = NULL;
     LPTSTR lptName = NULL;
     LPWSTR lpwName = NULL;
@@ -83,17 +212,9 @@ xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name, xmlSe
     xmlSecAssert2(name != NULL, NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
-    storeName = xmlSecMSCngAppGetCertStoreName();
-    if(storeName == NULL) {
-        storeName = XMLSEC_MSCNG_APP_DEFAULT_CERT_STORE_NAME;
-    }
-
-    hStore = CertOpenSystemStore(0, storeName);
-    if(hStore == NULL) {
-        xmlSecMSCngLastError2("CertOpenSystemStore", xmlSecKeyStoreGetName(store),
-            "name=%s", xmlSecErrorsSafeString(storeName));
-        goto done;
-    }
+    ctx = xmlSecMSCngKeysStoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, NULL);
+    xmlSecAssert2(ctx->certStoreCtx.hCollection != NULL, NULL);
 
     /* convert name to tstr */
     lptName = xmlSecWin32ConvertUtf8ToTstr(name);
@@ -106,7 +227,7 @@ xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name, xmlSe
     /* find cert based on subject */
     if (cert == NULL) {
         cert = xmlSecMSCngX509FindCertBySubject(
-            hStore,
+            ctx->certStoreCtx.hCollection,
             lptName,
             X509_ASN_ENCODING | PKCS_7_ASN_ENCODING);
     }
@@ -127,7 +248,7 @@ xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name, xmlSe
         while (1) {
             LPCWSTR lpwFriendlyName;
 
-            pCertCtxIter = CertEnumCertificatesInStore(hStore, pCertCtxIter);
+            pCertCtxIter = CertEnumCertificatesInStore(ctx->certStoreCtx.hCollection, pCertCtxIter);
             if(pCertCtxIter == NULL) {
                 break;
             }
@@ -150,7 +271,7 @@ xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name, xmlSe
     /* find cert based on part of the name */
     if(cert == NULL) {
         cert = CertFindCertificateInStore(
-            hStore,
+            ctx->certStoreCtx.hCollection,
             X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
             0,
             CERT_FIND_SUBJECT_STR,
@@ -166,11 +287,6 @@ done:
     }
     if (lpwName != NULL) {
         xmlFree(lpwName);
-    }
-    if(hStore != NULL) {
-        /* dwFlags=0 means close the store with memory remaining allocated for
-         * contexts that have not been freed */
-        CertCloseStore(hStore, 0);
     }
 
     return(cert);
@@ -297,7 +413,7 @@ xmlSecMSCngKeysStoreCreateKeyFromCert(PCCERT_CONTEXT cert, xmlSecKeyReqPtr keyRe
 
 static xmlSecKeyPtr
 xmlSecMSCngKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecKeyStorePtr* simpleKeyStore;
+    xmlSecMSCngKeysStoreCtx* ctx;
     xmlSecKeyReqPtr keyReq = NULL;
     PCCERT_CONTEXT cert = NULL;
     xmlSecKeyPtr key = NULL;
@@ -307,11 +423,11 @@ xmlSecMSCngKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSec
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCngKeysStoreId), NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
-    simpleKeyStore = xmlSecMSCngKeysStoreGetCtx(store);
-    xmlSecAssert2(((simpleKeyStore != NULL) && (*simpleKeyStore != NULL)), NULL);
+    ctx = xmlSecMSCngKeysStoreGetCtx(store);
+    xmlSecAssert2(((ctx != NULL) && (ctx->simpleKeyStore != NULL)), NULL);
 
     /* look for the key in the simple store */
-    key = xmlSecKeyStoreFindKey(*simpleKeyStore, name, keyInfoCtx);
+    key = xmlSecKeyStoreFindKey(ctx->simpleKeyStore, name, keyInfoCtx);
     if(key != NULL) {
         return(key);
     }
@@ -364,8 +480,7 @@ done:
 static xmlSecKeyPtr
 xmlSecMSCngKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509DataValuePtr x509Data, xmlSecKeyInfoCtxPtr keyInfoCtx) {
 #ifndef XMLSEC_NO_X509
-    LPCTSTR storeName;
-    HCERTSTORE hStore = NULL;
+    xmlSecMSCngKeysStoreCtx* ctx;
     xmlSecMSCngX509FindCertCtx findCertCtx;
     PCCERT_CONTEXT cert = NULL;
     xmlSecKeyPtr key;
@@ -375,33 +490,22 @@ xmlSecMSCngKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509Da
     xmlSecAssert2(x509Data != NULL, NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
-    /* open system store */
-    storeName = xmlSecMSCngAppGetCertStoreName();
-    if (storeName == NULL) {
-        storeName = XMLSEC_MSCNG_APP_DEFAULT_CERT_STORE_NAME;
-    }
-
-    hStore = CertOpenSystemStore(0, storeName);
-    if (hStore == NULL) {
-        xmlSecMSCngLastError2("CertOpenSystemStore", xmlSecKeyStoreGetName(store),
-            "name=%s", xmlSecErrorsSafeString(storeName));
-        return(NULL);
-    }
+    ctx = xmlSecMSCngKeysStoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, NULL);
+    xmlSecAssert2(ctx->certStoreCtx.hCollection != NULL, NULL);
 
     /* init find certs */
     ret = xmlSecMSCngX509FindCertCtxInitializeFromValue(&findCertCtx, x509Data);
     if (ret < 0) {
         xmlSecInternalError("xmlSecMSCngX509FindCertCtxInitializeFromValue", NULL);
         xmlSecMSCngX509FindCertCtxFinalize(&findCertCtx);
-        CertCloseStore(hStore, 0);
         return(NULL);
     }
 
     /* do we have a cert we can use? not an error if we don't! */
-    cert = xmlSecMSCngX509FindCert(hStore, &findCertCtx);
+    cert = xmlSecMSCngX509FindCert(ctx->certStoreCtx.hCollection, &findCertCtx);
     if (cert == NULL) {
         xmlSecMSCngX509FindCertCtxFinalize(&findCertCtx);
-        CertCloseStore(hStore, 0);
         return(NULL);
     }
 
@@ -411,7 +515,6 @@ xmlSecMSCngKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509Da
         xmlSecInternalError("xmlSecMSCngKeysStoreCreateKeyFromCert", xmlSecKeyStoreGetName(store));
         CertFreeCertificateContext(cert);
         xmlSecMSCngX509FindCertCtxFinalize(&findCertCtx);
-        CertCloseStore(hStore, 0);
         return(NULL);
     }
 
@@ -434,7 +537,6 @@ xmlSecMSCngKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509Da
     /* done! */
     CertFreeCertificateContext(cert);
     xmlSecMSCngX509FindCertCtxFinalize(&findCertCtx);
-    CertCloseStore(hStore, 0);
     return(key);
 #else  /* XMLSEC_NO_X509 */
     return(NULL);
@@ -476,17 +578,17 @@ xmlSecMSCngKeysStoreGetKlass(void) {
  */
 int
 xmlSecMSCngKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
-    xmlSecKeyStorePtr *simpleKeyStore;
+    xmlSecMSCngKeysStoreCtx* ctx;
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCngKeysStoreId), -1);
     xmlSecAssert2((key != NULL), -1);
 
-    simpleKeyStore = xmlSecMSCngKeysStoreGetCtx(store);
-    xmlSecAssert2(simpleKeyStore != NULL, -1);
-    xmlSecAssert2(*simpleKeyStore != NULL, -1);
-    xmlSecAssert2(xmlSecKeyStoreCheckId(*simpleKeyStore, xmlSecSimpleKeysStoreId), -1);
+    ctx = xmlSecMSCngKeysStoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->simpleKeyStore != NULL, -1);
+    xmlSecAssert2(xmlSecKeyStoreCheckId(ctx->simpleKeyStore, xmlSecSimpleKeysStoreId), -1);
 
-    return(xmlSecSimpleKeysStoreAdoptKey(*simpleKeyStore, key));
+    return(xmlSecSimpleKeysStoreAdoptKey(ctx->simpleKeyStore, key));
 }
 
 /**
@@ -510,15 +612,15 @@ xmlSecMSCngKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri, xmlSecKeysMng
  */
 int
 xmlSecMSCngKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecKeyDataType type) {
-    xmlSecKeyStorePtr *simpleKeyStore;
+    xmlSecMSCngKeysStoreCtx* ctx;
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCngKeysStoreId), -1);
     xmlSecAssert2((filename != NULL), -1);
 
-    simpleKeyStore = xmlSecMSCngKeysStoreGetCtx(store);
-    xmlSecAssert2(simpleKeyStore != NULL, -1);
-    xmlSecAssert2(*simpleKeyStore != NULL, -1);
-    xmlSecAssert2(xmlSecKeyStoreCheckId(*simpleKeyStore, xmlSecSimpleKeysStoreId), -1);
+    ctx = xmlSecMSCngKeysStoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->simpleKeyStore != NULL, -1);
+    xmlSecAssert2(xmlSecKeyStoreCheckId(ctx->simpleKeyStore, xmlSecSimpleKeysStoreId), -1);
 
-    return(xmlSecSimpleKeysStoreSave(*simpleKeyStore, filename, type));
+    return(xmlSecSimpleKeysStoreSave(ctx->simpleKeyStore, filename, type));
 }

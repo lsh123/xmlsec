@@ -16,6 +16,7 @@ see the Copyright file in the distribution for details.
 
 - **TBD**
   The [XML Security Library 1.3.13](download.md) release includes the following changes:
+  - (xmlsec-mscng) Added support for using both current user and local machine certificates store for verifying the certificates.
   - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/xmlsec_1_3_13)).
 
 - **June 23, 2026**

@@ -35,7 +35,18 @@ extern "C" {
   *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppInit                   (const char* config);
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppShutdown               (void);
-XMLSEC_CRYPTO_EXPORT LPCTSTR    xmlSecMSCngAppGetCertStoreName       (void);
+
+XMLSEC_CRYPTO_EXPORT LPCTSTR    xmlSecMSCngAppGetCurrentUserCertStoreName (void);
+XMLSEC_CRYPTO_EXPORT LPCTSTR    xmlSecMSCngAppGetLocalMachineCertStoreName(void);
+
+/**
+ * @brief DEPRECATED. Gets the MSCng certs store name for the current user.
+ * @details DEPRECATED. This is a backward compatibility macro that calls #xmlSecMSCngAppGetCurrentUserCertStoreName.
+ *
+ * @return the MSCng certs name for the current user used by xmlsec-mscng.
+ */
+#define xmlSecMSCngAppGetCertStoreName() xmlSecMSCngAppGetCurrentUserCertStoreName()
+
 
 /******************************************************************************
  *

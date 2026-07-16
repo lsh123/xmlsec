@@ -176,7 +176,13 @@ static xmlSecAppCmdLineParam cryptoConfigParam = {
     "--crypto-config",
     NULL,
     "--crypto-config <path>"
-    "\n\tpath to crypto engine configuration",
+    "\n\tpath to crypto engine configuration; interpretation is crypto-engine specific:"
+    "\n\t  openssl: the path to the OpenSSL trusted certificates folder;"
+    "\n\t  nss:     the path to the NSS database;"
+    "\n\t  mscng:   the Windows certificate store name (default \"MY:ROOT\"), one of:"
+    "\n\t    <name>              use <name> for both CurrentUser and LocalMachine stores"
+    "\n\t    <user>:<machine>    use <user> for CurrentUser, <machine> for LocalMachine;"
+    "\n\t  gnutls:  the parameter is ignored, GnuTLS uses the system default trusted certificates store",
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagNone,
     NULL

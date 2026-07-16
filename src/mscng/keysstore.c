@@ -113,9 +113,14 @@ xmlSecMSCngCertStoreCtxInitialize(xmlSecMSCngCertStoreCtx* ctx, LPCTSTR localMac
         }
     }
 
-    /* both individual stores being unavailable is not a hard failure:
-     * the collection will simply be empty and any cert lookup will
-     * return "not found" */
+    /* fail only if both individual stores are unavailable */
+    if(ctx->hLocalMachine == NULL && ctx->hCurrentUser == NULL) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
+            "neither LocalMachine nor CurrentUser store could be opened");
+        CertCloseStore(ctx->hCollection, 0);
+        ctx->hCollection = NULL;
+        return(-1);
+    }
 
     return(0);
 }

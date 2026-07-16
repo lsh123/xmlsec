@@ -117,7 +117,7 @@ XML Security library supports the following features as defined in
 | [The RSAKeyValue Element](https://www.w3.org/TR/xmldsig-core1/#sec-RSAKeyValue) | Optional | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) |
 | [The ECKeyValue Element](https://www.w3.org/TR/xmldsig-core/#sec-ECKeyValue) | Optional | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | No | Yes |
 | [The X509Data Element](https://www.w3.org/TR/xmldsig-core1/#sec-X509Data) | Optional | Yes | Yes | Yes | Yes | Yes | No |
-| [The X509Digest Element](https://www.w3.org/TR/xmldsig-core1/#sec-X509Data) | Optional | Yes | Yes | Yes | Yes [(7)](#only-sha1-x509-digest) | No | No |
+| [The X509Digest Element](https://www.w3.org/TR/xmldsig-core1/#sec-X509Data) | Optional | Yes | Yes | Yes | Yes [(7)](#mscng-limited-x509-digest) | No | No |
 | [The PGPData Element](https://www.w3.org/TR/xmldsig-core1/#sec-PGPData) | Optional | No | No | No | No | No | No |
 | [The SPKIData Element](https://www.w3.org/TR/xmldsig-core1/#sec-SPKIData) | Optional | No | No | No | No | No | No |
 | [The DEREncodedKeyValue Element](https://www.w3.org/TR/xmldsig-core1/#sec-DEREncodedKeyValue) | Optional | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) [(11)](#only-x25519) | No | No |
@@ -130,7 +130,7 @@ XML Security library supports the following features as defined in
 4. <a id="mscrypto-gost"></a> GOST support in MSCrypto requires installation of a GOST CSP.
 5. <a id="dsa-key-value"></a> The Seed and PgenCounter are not supported in DSAKeyValue element.
 6. <a id="xslt"></a> Requires [LibXSLT](http://xmlsoft.org/XSLT/downloads.html) library.
-7. <a id="only-sha1-x509-digest"></a> Only SHA1 digest algorithm is supported for X509Digest element.
+7. <a id="mscng-limited-x509-digest"></a> MSCng only supports SHA1 and SHA256 digest algorithms in the X509Digest element.
 8. <a id="no-context-string"></a> The ContextString is not supported.
 9. <a id="eddsa-ctx"></a> Ed25519ctx requires a non-empty context string (per RFC 8032).
 10. <a id="only-ed25519"></a> Only Ed25519 (Curve25519) is supported, the Ed448 (Curve448) is not supported.

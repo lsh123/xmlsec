@@ -205,6 +205,7 @@ typedef struct _xmlSecMSCngX509FindCertCtx {
 
     const xmlSecByte * digestValue; /* NOT OWNED */
     DWORD digestLen;
+    DWORD digestFindType; /* CERT_FIND_SHA1_HASH or CERT_FIND_SHA256_HASH */
 } xmlSecMSCngX509FindCertCtx, *xmlSecMSCngX509FindCertCtxPtr;
 
 int                 xmlSecMSCngX509FindCertCtxInitialize            (xmlSecMSCngX509FindCertCtxPtr ctx,

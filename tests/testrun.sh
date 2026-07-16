@@ -133,18 +133,44 @@ else
     xmlsec_feature_x509_data_lookup="no"
 fi
 
+# MSCng only supports SHA1 as cert digests and cannot lookup the key
+if [ "z$crypto" = "zopenssl" -o "z$crypto" = "znss" -o "z$crypto" = "zgnutls" -o "z$crypto" = "zmscng" ] ; then
+    xmlsec_feature_x509_data_lookup_digest_sha1="yes"
+else
+    xmlsec_feature_x509_data_lookup_digest_sha1="no"
+fi
+if [ "z$crypto" = "zopenssl" -o "z$crypto" = "znss" -o "z$crypto" = "zgnutls" ] ; then
+    xmlsec_feature_x509_data_lookup_digest_sha224="yes"
+else
+    xmlsec_feature_x509_data_lookup_digest_sha224="no"
+fi
+if [ "z$crypto" = "zopenssl" -o "z$crypto" = "znss" -o "z$crypto" = "zgnutls" -o "z$crypto" = "zmscng" ] ; then
+    xmlsec_feature_x509_data_lookup_digest_sha256="yes"
+else
+    xmlsec_feature_x509_data_lookup_digest_sha256="no"
+fi
+if [ "z$crypto" = "zopenssl" -o "z$crypto" = "znss" -o "z$crypto" = "zgnutls" ] ; then
+    xmlsec_feature_x509_data_lookup_digest_sha384="yes"
+else
+    xmlsec_feature_x509_data_lookup_digest_sha384="no"
+fi
+if [ "z$crypto" = "zopenssl" -o "z$crypto" = "znss" -o "z$crypto" = "zgnutls" ] ; then
+    xmlsec_feature_x509_data_lookup_digest_sha512="yes"
+else
+    xmlsec_feature_x509_data_lookup_digest_sha512="no"
+fi
+if [ "z$crypto" = "zopenssl" -o "z$crypto" = "znss" -o "z$crypto" = "zgnutls" ] ; then
+    xmlsec_feature_x509_data_lookup_digest_sha3="yes"
+else
+    xmlsec_feature_x509_data_lookup_digest_sha3="no"
+fi
+
+
 # Only NSS can lookup certs in NSS DB, skip certs verification for signatures
 if [ "z$crypto" = "znss"  ] ; then
     xmlsec_feature_nssdb_lookup="yes"
 else
     xmlsec_feature_nssdb_lookup="no"
-fi
-
-# MSCng only supports SHA1 as cert digests and cannot lookup the key
-if [ "z$crypto" = "zmscng" ] ; then
-    xmlsec_feature_x509_data_lookup_digest="yes"
-else
-    xmlsec_feature_x509_data_lookup_digest="no"
 fi
 
 # currently only openssl and gnutls support skipping time checks

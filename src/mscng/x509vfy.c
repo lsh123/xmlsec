@@ -1426,14 +1426,15 @@ xmlSecMSCngX509FindCertBySki(HCERTSTORE store, const xmlSecByte* ski, DWORD skiL
         NULL));
 }
 
-/* ONLY SHA1 DIGEST IS CURRENTLY SUPPORTED */
+/* SHA1 and SHA256 digests are currently supported */
 static PCCERT_CONTEXT
-xmlSecMSCngX509FindCertByDigest(HCERTSTORE store, const xmlSecByte* digest, DWORD digestLen, DWORD dwCertEncodingType) {
+xmlSecMSCngX509FindCertByDigest(HCERTSTORE store, const xmlSecByte* digest, DWORD digestLen, DWORD dwCertEncodingType, DWORD findType) {
     CRYPT_HASH_BLOB blob;
 
     xmlSecAssert2(store != 0, NULL);
     xmlSecAssert2(digest != NULL, NULL);
     xmlSecAssert2(digestLen > 0, NULL);
+    xmlSecAssert2(findType != 0, NULL);
 
     blob.pbData = (PBYTE)digest; /* remove const */
     blob.cbData = digestLen;
@@ -1441,7 +1442,7 @@ xmlSecMSCngX509FindCertByDigest(HCERTSTORE store, const xmlSecByte* digest, DWOR
     return(CertFindCertificateInStore(store,
         dwCertEncodingType,
         0,
-        CERT_FIND_SHA1_HASH,
+        findType,
         &blob,
         NULL));
 }
@@ -1465,8 +1466,8 @@ xmlSecMSCngX509FindCert(HCERTSTORE store, xmlSecMSCngX509FindCertCtxPtr findCert
     if((cert == NULL) &&  (findCertCtx->ski != NULL) && (findCertCtx->skiLen > 0)) {
         cert = xmlSecMSCngX509FindCertBySki(store, findCertCtx->ski, findCertCtx->skiLen, dwCertEncodingType);
     }
-    if ((cert == NULL) && (findCertCtx->digestValue != NULL) && (findCertCtx->digestLen > 0)) {
-        cert = xmlSecMSCngX509FindCertByDigest(store, findCertCtx->digestValue, findCertCtx->digestLen, dwCertEncodingType);
+    if ((cert == NULL) && (findCertCtx->digestValue != NULL) && (findCertCtx->digestLen > 0) && (findCertCtx->digestFindType != 0)) {
+        cert = xmlSecMSCngX509FindCertByDigest(store, findCertCtx->digestValue, findCertCtx->digestLen, dwCertEncodingType, findCertCtx->digestFindType);
     }
 
     return(cert);
@@ -1855,8 +1856,12 @@ xmlSecMSCngX509FindCertCtxInitializeFromValue(xmlSecMSCngX509FindCertCtxPtr ctx,
     if ((!xmlSecBufferIsEmpty(&(x509Value->digest))) && (x509Value->digestAlgorithm != NULL)) {
         xmlSecSize digestSize;
 
-        /* only SHA1 algorithm is currently supported */
-        if (xmlStrcmp(x509Value->digestAlgorithm, xmlSecHrefSha1) != 0) {
+        /* SHA1 and SHA256 algorithms are currently supported */
+        if (xmlStrcmp(x509Value->digestAlgorithm, xmlSecHrefSha1) == 0) {
+            ctx->digestFindType = CERT_FIND_SHA1_HASH;
+        } else if (xmlStrcmp(x509Value->digestAlgorithm, xmlSecHrefSha256) == 0) {
+            ctx->digestFindType = CERT_FIND_SHA256_HASH;
+        } else {
             xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
                 "href=%s", xmlSecErrorsSafeString(x509Value->digestAlgorithm));
             xmlSecMSCngX509FindCertCtxFinalize(ctx);

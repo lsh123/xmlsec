@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Configure script for xmlsec, specific for Windows with PowerShell.
 
@@ -67,6 +67,7 @@ $script:buildPedantic = 1
 $script:buildCc = "cl.exe"
 $script:buildCflags = ""
 $script:buildStatic = 1
+$script:buildApps = 1
 $script:buildPrefix = "install.dir"
 $script:buildBinPrefix = '$(PREFIX)\bin'
 $script:buildIncPrefix = '$(PREFIX)\include'
@@ -105,9 +106,9 @@ function Show-Usage {
     Write-Host "Usage:"
     Write-Host "  powershell -ExecutionPolicy Bypass -File $scriptName <options>"
     Write-Host "  powershell -ExecutionPolicy Bypass -File $scriptName help"
-    Write-Host ""        
+    Write-Host ""
     Write-Host "Options can be specified in the form <option>=<value>."
-    Write-Host ""        
+    Write-Host ""
     Write-Host "Win32 build options:"
     Write-Host "  unicode:                  Build Unicode version (default: '$(if ($script:buildUnicode) { 'yes' } else { 'no' })')"
     Write-Host "  debug:                    Build unoptimised debug executables (default: '$(if ($script:buildDebug) { 'yes' } else { 'no' })')"
@@ -117,6 +118,7 @@ function Show-Usage {
     Write-Host "  cc:                       Build with the specified compiler (default: '$($script:buildCc)')"
     Write-Host "  cflags:                   Build with the specified compiler flags (default: '$($script:buildCflags)')"
     Write-Host "  static:                   Build static xmlsec libraries (default: '$(if ($script:buildStatic) { 'yes' } else { 'no' })')"
+    Write-Host "  apps:                     Build binaries from the 'apps/' folder (default: '$(if ($script:buildApps) { 'yes' } else { 'no' })')"
     Write-Host "  prefix:                   Base directory for the installation (default: '$($script:buildPrefix)')"
     Write-Host "  bindir:                   Directory where xmlsec and friends should be installed (default: '$($script:buildBinPrefix)')"
     Write-Host "  incdir:                   Directory where headers should be installed (default: '$($script:buildIncPrefix)')"
@@ -137,7 +139,7 @@ function Show-Usage {
     Write-Host "  rsa-pkcs15:               Enable RSA PKCS#1.5 key transport (default: '$(if ($script:withRsaPkcs15) { 'yes' } else { 'no' })')"
     Write-Host "  gost:                     Enable GOST algorithms (default: '$(if ($script:withGost) { 'yes' } else { 'no' })')"
     Write-Host "  legacy-features:          Enable legacy features and crypto algorithms (default: '$(if ($script:withLegacyFeatures) { 'yes' } else { 'no' })')"
-    Write-Host ""        
+    Write-Host ""
     Write-Host "Crypto options:"
     Write-Host "  with-openssl3-engines:    Enable ENGINE interface support for OpenSSL (default: '$(if ($script:withOpenSSL3Engines) { 'yes' } else { 'no' })')"
     Write-Host ""
@@ -211,6 +213,7 @@ function DiscoverVersion {
     $lines += "CC=$($script:buildCc)"
     $lines += "CFLAGS=$($script:buildCflags)"
     $lines += "STATIC=$(if ($script:buildStatic) { '1' } else { '0' })"
+    $lines += "WITH_APPS=$(if ($script:buildApps) { '1' } else { '0' })"
     $lines += "PREFIX=$($script:buildPrefix)"
     $lines += "BINPREFIX=$($script:buildBinPrefix)"
     $lines += "INCPREFIX=$($script:buildIncPrefix)"
@@ -323,6 +326,7 @@ for ($i = 0; ($i -lt $args.Count) -and ($script:errorFlag -eq 0); $i++) {
             "cc"                  { $script:buildCc = $val }
             "cflags"              { $script:buildCflags = $val }
             "static"              { $script:buildStatic = StrToBool $val }
+            "apps"                { $script:buildApps = StrToBool $val }
             "prefix"              { $script:buildPrefix = $val }
             "incdir"              { $script:buildIncPrefix = $val }
             "bindir"              { $script:buildBinPrefix = $val }
@@ -455,6 +459,7 @@ Write-Host "            Unicode: $(BoolToStr $script:buildUnicode)"
 Write-Host "      Debug symbols: $(BoolToStr $script:buildDebug)"
 Write-Host "           Memcheck: $($script:buildWithMemcheck)"
 Write-Host " Static xmlsec libs: $(BoolToStr $script:buildStatic)"
+Write-Host "         Build apps: $(BoolToStr $script:buildApps)"
 Write-Host "     Install prefix: $($script:buildPrefix)"
 Write-Host "       Put tools in: $($script:buildBinPrefix)"
 Write-Host "     Put headers in: $($script:buildIncPrefix)"

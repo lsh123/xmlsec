@@ -1,7 +1,10 @@
 NULL =
 
 bin_PROGRAMS = xmlsec1
-noinst_PROGRAMS = xmlsec_unit_tests xmlsec_fuzzer
+noinst_PROGRAMS = xmlsec_fuzzer
+if HAVE_XMLDEBUGDUMPDOCUMENT
+noinst_PROGRAMS += xmlsec_unit_tests
+endif
 
 XMLSEC_LIBS = $(top_builddir)/src/libxmlsec1.la
 
@@ -83,6 +86,7 @@ xmlsec1_DEPENDENCIES = \
 	$(NULL)
 
 # xmlsec unit tests
+
 xmlsec_unit_tests_SOURCES = \
 	unit_tests/base64_unit_tests.c \
 	unit_tests/bn_unit_tests.c \

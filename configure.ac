@@ -506,6 +506,8 @@ if test "z$LIBXML_FOUND" = "zyes" ; then
 fi
 AC_MSG_RESULT([$LIBXML_FOUND])
 
+
+
 dnl LibXML2 is required so if we didn't find it then it is a fatal error.
 if test "z$LIBXML_FOUND" != "zyes" ; then
     AC_MSG_ERROR([libxml2 library >= $LIBXML_MIN_VERSION is required for this version of $XMLSEC_PACKAGE])
@@ -516,6 +518,34 @@ AC_SUBST(LIBXML_CFLAGS)
 AC_SUBST(LIBXML_LIBS)
 AC_SUBST(LIBXML_CONFIG)
 AC_SUBST(LIBXML_MIN_VERSION)
+
+dnl Check for debug support in libxml2
+
+save_CFLAGS="$CFLAGS"
+save_LIBS="$LIBS"
+
+CFLAGS="$CFLAGS $LIBXML_CFLAGS"
+LIBS="$LIBXML_LIBS $LIBS"
+
+AC_MSG_CHECKING([whether libxml2 provides xmlDebugDumpDocument])
+AC_LINK_IFELSE(
+  [AC_LANG_PROGRAM(
+    [[#include <libxml/debugXML.h>]],
+    [[xmlDebugDumpDocument(NULL);]]
+  )],
+  [
+    AC_MSG_RESULT([yes])
+    have_xmlDebugDumpDocument=yes
+  ],
+  [
+    AC_MSG_RESULT([no])
+  ]
+)
+
+CFLAGS="$save_CFLAGS"
+LIBS="$save_LIBS"
+
+AM_CONDITIONAL(HAVE_XMLDEBUGDUMPDOCUMENT, [test "x$have_xmlDebugDumpDocument" = "xyes"])
 
 dnl ==========================================================================
 dnl find libxslt

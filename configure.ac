@@ -321,6 +321,24 @@ AC_DEFUN([AX_FIND_FOLDER],[
     done
 ])
 
+dnl Macro to test and add compiler flag
+AC_DEFUN([AX_CHECK_CFLAG], [
+  AC_MSG_CHECKING([whether $CC supports $1])
+  save_CFLAGS="$CFLAGS"
+  CFLAGS="$CFLAGS $1"
+
+  AC_COMPILE_IFELSE(
+    [AC_LANG_PROGRAM([], [])],
+    [
+      AC_MSG_RESULT([yes])
+    ],
+    [
+      CFLAGS="$save_CFLAGS"
+      AC_MSG_RESULT([no])
+    ]
+  )
+])
+
 dnl ==========================================================================
 dnl find libxml
 dnl ==========================================================================
@@ -2692,17 +2710,17 @@ AC_ARG_ENABLE([pedantic], [AS_HELP_STRING([--enable-pedantic],[enable pedantic c
 if test "z$enable_pedantic" = "zno" ; then
     AC_MSG_RESULT([disabled])
 else
+    AC_MSG_RESULT([yes])
     CFLAGS="$CFLAGS -O -std=c99 -pedantic -pedantic-errors -W -Wall -Wextra"
-    CFLAGS="$CFLAGS -fno-inline -Wnull-dereference -Wdouble-promotion"
+    CFLAGS="$CFLAGS -fno-inline -Wdouble-promotion"
     CFLAGS="$CFLAGS -Wformat=2 -Wformat-security -Wformat-nonliteral"
     CFLAGS="$CFLAGS -Wconversion -Wunused -Wshadow -Wpointer-arith -Wcast-align"
     CFLAGS="$CFLAGS -Wwrite-strings -Wmissing-prototypes"
     CFLAGS="$CFLAGS -Wnested-externs -Wredundant-decls"
 
-    if test "z$build_with_gcc" = "zyes" ; then
-        CFLAGS="$CFLAGS -Wformat-overflow=2 -Wformat-signedness"
-    fi
-    AC_MSG_RESULT([yes])
+    AX_CHECK_CFLAG([-Wnull-dereference])
+    AX_CHECK_CFLAG([-Wformat-overflow=2])
+    AX_CHECK_CFLAG([-Wformat-signedness])
 fi
 
 dnl ==========================================================================

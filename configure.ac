@@ -114,6 +114,18 @@ case "${cc_ver}" in
     ;;
 esac
 
+dnl Extract compiler major version for use in flag selection later
+gcc_major_ver=0
+clang_major_ver=0
+if test "z$build_with_gcc" = "zyes" ; then
+    gcc_major_ver=`$CC -dumpversion 2>/dev/null | cut -d. -f1`
+    if test "z$gcc_major_ver" = "z" ; then gcc_major_ver=0 ; fi
+fi
+if test "z$build_with_clang" = "zyes" ; then
+    clang_major_ver=`$CC --version 2>/dev/null | head -1 | $SED 's/.*version \([0-9]*\)\..*/\1/'`
+    if test "z$clang_major_ver" = "z" ; then clang_major_ver=0 ; fi
+fi
+
 
 dnl ==========================================================================
 dnl Perform host specific configuration
@@ -2691,18 +2703,52 @@ AC_MSG_CHECKING(for pedantic)
 AC_ARG_ENABLE([pedantic], [AS_HELP_STRING([--enable-pedantic],[enable pedantic compilation flags (yes)])])
 if test "z$enable_pedantic" = "zno" ; then
     AC_MSG_RESULT([disabled])
-else
+elif test "z$build_with_gcc" = "zyes" ; then
+    dnl Flags supported since GCC 3.x (always available in any modern GCC)
     CFLAGS="$CFLAGS -O -std=c99 -pedantic -pedantic-errors -W -Wall -Wextra"
-    CFLAGS="$CFLAGS -fno-inline -Wnull-dereference -Wdouble-promotion"
+    CFLAGS="$CFLAGS -fno-inline"
     CFLAGS="$CFLAGS -Wformat=2 -Wformat-security -Wformat-nonliteral"
     CFLAGS="$CFLAGS -Wconversion -Wunused -Wshadow -Wpointer-arith -Wcast-align"
     CFLAGS="$CFLAGS -Wwrite-strings -Wmissing-prototypes"
     CFLAGS="$CFLAGS -Wnested-externs -Wredundant-decls"
 
-    if test "z$build_with_gcc" = "zyes" ; then
-        CFLAGS="$CFLAGS -Wformat-overflow=2 -Wformat-signedness"
+    dnl GCC >= 5: -Wdouble-promotion (added in GCC 4.6; require major >= 5 to
+    dnl           avoid minor-version checks for the ancient GCC 4.x series)
+    dnl GCC >= 5: -Wformat-signedness (added in GCC 5.1)
+    if test "$gcc_major_ver" -ge 5 ; then
+        CFLAGS="$CFLAGS -Wdouble-promotion -Wformat-signedness"
     fi
+
+    dnl GCC >= 6: -Wnull-dereference (added in GCC 6)
+    if test "$gcc_major_ver" -ge 6 ; then
+        CFLAGS="$CFLAGS -Wnull-dereference"
+    fi
+
+    dnl GCC >= 7: -Wformat-overflow=2 (added in GCC 7; not supported by Clang)
+    if test "$gcc_major_ver" -ge 7 ; then
+        CFLAGS="$CFLAGS -Wformat-overflow=2"
+    fi
+
     AC_MSG_RESULT([yes])
+elif test "z$build_with_clang" = "zyes" ; then
+    dnl Flags supported since Clang 3.x (always available in any modern Clang)
+    CFLAGS="$CFLAGS -O -std=c99 -pedantic -pedantic-errors -W -Wall -Wextra"
+    CFLAGS="$CFLAGS -fno-inline"
+    CFLAGS="$CFLAGS -Wformat=2 -Wformat-security -Wformat-nonliteral"
+    CFLAGS="$CFLAGS -Wconversion -Wunused -Wshadow -Wpointer-arith -Wcast-align"
+    CFLAGS="$CFLAGS -Wwrite-strings -Wmissing-prototypes"
+    CFLAGS="$CFLAGS -Wformat-signedness"
+
+    dnl Clang >= 4: -Wdouble-promotion (added in Clang 3.6; require major >= 4
+    dnl            to avoid minor-version checks for the ancient Clang 3.x series)
+    dnl Clang >= 4: -Wnull-dereference (added in Clang 3.9; same reasoning)
+    if test "$clang_major_ver" -ge 4 ; then
+        CFLAGS="$CFLAGS -Wdouble-promotion -Wnull-dereference"
+    fi
+
+    AC_MSG_RESULT([yes])
+else
+    AC_MSG_RESULT([disabled (unsupported compiler)])
 fi
 
 dnl ==========================================================================

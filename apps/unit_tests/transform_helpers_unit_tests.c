@@ -13,7 +13,6 @@
 
 #include <libxml/parser.h>
 #include <libxml/tree.h>
-#include <libxml/debugXML.h>
 
 #include "xmlsec_unit_tests.h"
 #include <xmlsec/strings.h>
@@ -288,7 +287,6 @@ test_xmlSecTransformChaCha20Poly1305ParamsWrite_roundtrip(void) {
     nonceContent = xmlNodeGetContent(nonceNode);
     if((nonceContent == NULL) || (xmlStrcmp(nonceContent, BAD_CAST "000102030405060708090a0b") != 0)) {
         testLog("Error: ChaCha20-Poly1305 params write serialized unexpected nonce\n");
-        xmlDebugDumpDocument(stdout, doc);
 
         xmlFree(nonceContent);
         xmlFreeDoc(doc);

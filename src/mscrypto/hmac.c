@@ -264,6 +264,7 @@ xmlSecMSCryptoHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
             xmlSecTransformGetName(transform));
         return(-1);
     }
+    xmlSecAssert2(XMLSEC_TRANSFORM_HMAC_BITS_TO_BYTES(ctx->dgstSizeInBits) <= XMLSEC_TRANSFORM_HMAC_MAX_OUTPUT_SIZE, -1);
 
     return(0);
 }

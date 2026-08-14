@@ -971,6 +971,7 @@ xmlSecTransformHmacReadOutputBitsSize(xmlNodePtr node, xmlSecSize defaultSize, x
     cur = xmlSecGetNextElementNode(node->children);
     if ((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeHMACOutputLength, xmlSecDSigNs)) {
         xmlSecSize minSize;
+        xmlSecSize maxSize;
         int ret;
 
         ret = xmlSecGetNodeContentAsSize(cur, defaultSize, res);
@@ -988,6 +989,18 @@ xmlSecTransformHmacReadOutputBitsSize(xmlNodePtr node, xmlSecSize defaultSize, x
             xmlSecInvalidNodeContentError3(cur, NULL,
                 "HMAC output length=" XMLSEC_SIZE_FMT "; HMAC min output length=" XMLSEC_SIZE_FMT,
                 (*res), minSize);
+            return(-1);
+        }
+
+        /* Ensure that HMAC length does not exceed the maximum buffer size.
+           Otherwise, an attacker can set an oversized value that causes
+           out-of-bounds reads when the truncated digest is accessed.
+        */
+        maxSize = XMLSEC_TRANSFORM_HMAC_MAX_OUTPUT_SIZE * 8;
+        if ((*res) > maxSize) {
+            xmlSecInvalidNodeContentError3(cur, NULL,
+                "HMAC output length=" XMLSEC_SIZE_FMT "; HMAC max output length=" XMLSEC_SIZE_FMT,
+                (*res), maxSize);
             return(-1);
         }
 

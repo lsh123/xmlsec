@@ -2299,9 +2299,9 @@ execDSigTest $res_success \
     "merlin-xmldsig-twenty-three/signature-retrievalmethod-rawx509crt" \
     "sha1 dsa-sha1" \
     "dsa x509" \
-    "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --untrusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/nemain.$cert_format --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005" \
-    "--lax-key-search $priv_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa/dsa-1024-key.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --trusted-$cert_format $topfolder/keys/ca2cert.$cert_format $url_map_xml_stylesheet_2005"
+    "--enabled-retrieval-method-uris remote --trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --untrusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/nemain.$cert_format --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005" \
+    "--enabled-retrieval-method-uris remote --lax-key-search $priv_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa/dsa-1024-key.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
+    "--enabled-retrieval-method-uris remote  --trusted-$cert_format $topfolder/keys/cacert.$cert_format --trusted-$cert_format $topfolder/keys/ca2cert.$cert_format $url_map_xml_stylesheet_2005"
 
 execDSigTest $res_success \
     "" \
@@ -2534,7 +2534,7 @@ if [ "z$xmlsec_feature_md5_certs" = "zyes" ] ; then
         "signature-rsa-detached-xslt-transform-retrieval-method" \
         "xslt sha1 rsa-sha1" \
         "rsa x509" \
-        "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00  $url_map_rfc3161"
+        "--enabled-retrieval-method-uris remote --trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00  $url_map_rfc3161"
 
     execDSigTest $res_success \
         "phaos-xmldsig-three" \

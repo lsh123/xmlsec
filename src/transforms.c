@@ -518,7 +518,9 @@ xmlSecTransformCtxInitialize(xmlSecTransformCtxPtr ctx) {
         return(-1);
     }
 
-    ctx->enabledUris = xmlSecTransformUriTypeAny;
+    /* Allow only empty and same-document URIs. Applications needing remote/local dereference
+    can explicitly opt in. */
+    ctx->enabledUris =  xmlSecTransformUriTypeEmpty | xmlSecTransformUriTypeSameDocument;
     ctx->binaryChunkSize = xmlSecTransformCtxGetDefaultBinaryChunkSize();
     ctx->maxDepth = xmlSecTransformCtxGetDefaultMaxDepth();
 
@@ -886,7 +888,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
 
     /* check uri */
     if(xmlSecTransformUriTypeCheck(ctx->enabledUris, uri) != 1) {
-        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE, NULL, "uri=%s", xmlSecErrorsSafeString(uri));
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_URI_TYPE, NULL, "uri=%s", xmlSecErrorsSafeString(uri));
         goto done;
     }
 

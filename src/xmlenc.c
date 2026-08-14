@@ -463,7 +463,8 @@ xmlSecEncCtxUriEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, const xmlChar *u
     encCtx->operation = xmlSecTransformOperationEncrypt;
     xmlSecAddIDs(tmpl->doc, tmpl, xmlSecEncIds);
 
-    /* we need to add input uri transform first */
+    /* we need to add input uri transform first, make sure to enable local and remote URIs */
+    encCtx->transformCtx.enabledUris |= xmlSecTransformUriTypeLocal | xmlSecTransformUriTypeRemote;
     ret = xmlSecTransformCtxSetUri(&(encCtx->transformCtx), uri, tmpl);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecTransformCtxSetUri", NULL,

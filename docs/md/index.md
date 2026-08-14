@@ -16,6 +16,10 @@ see the Copyright file in the distribution for details.
 
 - **TBD**
   The [XML Security Library 1.3.13](download.md) release includes the following changes:
+  - (xmlsec-core) Restricted the default enabled transform URIs to empty and same document URIs only.
+  Use `--enabled-retrieval-method-uris`, `--enabled-key-info-reference-uris`, `--enabled-reference-uris`, etc.
+  parameters for XMLSec command line tool if local or remote URIs usage is required (or set corresponding
+  fields in the the `xmlSecDSigCtx` and `xmlSecEncCtx` structs in your applications).
   - (xmlsec-mscng) Added support for using both current user and local machine certificates store for verifying the certificates.
   - (xmlsec-windows) Added `apps` option to `configure.ps1` to control whether the command-line binaries in the `apps/` folder are built (default: `yes`).
   - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/xmlsec_1_3_13)).

@@ -3587,6 +3587,8 @@ xmlSecAppGetUriType(const char* string) {
             type |= xmlSecTransformUriTypeLocal;
         } else if(strcmp(string, "remote") == 0) {
             type |= xmlSecTransformUriTypeRemote;
+        } else if(strcmp(string, "any") == 0) {
+            type |= xmlSecTransformUriTypeAny;
         } else {
             fprintf(stderr, "Error: invalid uri type: \"%s\"\n", string);
             return(xmlSecTransformUriTypeNone);

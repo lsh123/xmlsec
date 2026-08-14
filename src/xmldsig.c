@@ -160,7 +160,7 @@ xmlSecDSigCtxInitialize(xmlSecDSigCtxPtr dsigCtx, xmlSecKeysMngrPtr keysMngr) {
         return(ret);
     }
 
-    dsigCtx->enabledReferenceUris = xmlSecTransformUriTypeAny;
+    dsigCtx->enabledReferenceUris =  xmlSecTransformUriTypeEmpty | xmlSecTransformUriTypeSameDocument;
     return(0);
 }
 

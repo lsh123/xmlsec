@@ -687,8 +687,7 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node, xm
         /* the dsig spec does require SignatureMethod node
          * to be present but in some case it application might decide to
          * minimize traffic */
-        dsigCtx->signMethod = xmlSecTransformCtxCreateAndAppend(&(dsigCtx->transformCtx),
-                                                              dsigCtx->defSignMethodId);
+        dsigCtx->signMethod = xmlSecTransformCtxCreateAndAppend(&(dsigCtx->transformCtx), dsigCtx->defSignMethodId);
         if(dsigCtx->signMethod == NULL) {
             xmlSecInternalError("xmlSecTransformCtxCreateAndAppend", NULL);
             return(-1);
@@ -1388,12 +1387,11 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
         }
 
         cur = xmlSecGetNextElementNode(cur->next);
-    } else if(dsigRefCtx->dsigCtx->defSignMethodId != xmlSecTransformIdUnknown) {
+    } else if(dsigRefCtx->dsigCtx->defDigestMethodId != xmlSecTransformIdUnknown) {
         /* the dsig spec does require DigestMethod node
          * to be present but in some case it application might decide to
          * minimize traffic */
-        dsigRefCtx->digestMethod = xmlSecTransformCtxCreateAndAppend(&(dsigRefCtx->transformCtx),
-                                                              dsigRefCtx->dsigCtx->defSignMethodId);
+        dsigRefCtx->digestMethod = xmlSecTransformCtxCreateAndAppend(&(dsigRefCtx->transformCtx), dsigRefCtx->dsigCtx->defDigestMethodId);
         if(dsigRefCtx->digestMethod == NULL) {
             xmlSecInternalError("xmlSecTransformCtxCreateAndAppend", NULL);
             return(-1);

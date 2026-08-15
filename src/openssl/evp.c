@@ -1345,11 +1345,13 @@ xmlSecOpenSSLKeyDataDsaSetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDsaP
             xmlSecKeyDataGetName(data));
         goto done;
     }
-    ret = OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_PRIV_KEY, dsaKeyValue->priv_key);
-    if(ret != 1) {
-        xmlSecOpenSSLError("OSSL_PARAM_BLD_push_BN(priv_key)",
-            xmlSecKeyDataGetName(data));
-        goto done;
+    if(dsaKeyValue->priv_key != NULL) {
+        ret = OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_PRIV_KEY, dsaKeyValue->priv_key);
+        if(ret != 1) {
+            xmlSecOpenSSLError("OSSL_PARAM_BLD_push_BN(priv_key)",
+                xmlSecKeyDataGetName(data));
+            goto done;
+        }
     }
 
     params = OSSL_PARAM_BLD_to_param(param_bld);
@@ -1371,7 +1373,11 @@ xmlSecOpenSSLKeyDataDsaSetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDsaP
             xmlSecKeyDataGetName(data));
         goto done;
     }
-    ret = EVP_PKEY_fromdata(ctx, &pKey, EVP_PKEY_KEYPAIR, params);
+    /*
+     * If the private key is not present, import only the public key.
+     * Importing a keypair with an empty private key parameter fails.
+     */
+    ret = EVP_PKEY_fromdata(ctx, &pKey, (dsaKeyValue->priv_key != NULL) ? EVP_PKEY_KEYPAIR : EVP_PKEY_PUBLIC_KEY, params);
     if(ret <= 0) {
         xmlSecOpenSSLError("EVP_PKEY_fromdata",
             xmlSecKeyDataGetName(data));
@@ -2139,6 +2145,14 @@ xmlSecOpenSSLKeyDataDhSetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDhPtr
             goto done;
         }
     }
+    if(dhKeyValue->private != NULL) {
+        ret = OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_PRIV_KEY, dhKeyValue->private);
+        if(ret != 1) {
+            xmlSecOpenSSLError("OSSL_PARAM_BLD_push_BN(private)",
+                xmlSecKeyDataGetName(data));
+            goto done;
+        }
+    }
 
     /* create params */
     params = OSSL_PARAM_BLD_to_param(param_bld);
@@ -2160,7 +2174,11 @@ xmlSecOpenSSLKeyDataDhSetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDhPtr
             xmlSecKeyDataGetName(data));
         goto done;
     }
-    ret = EVP_PKEY_fromdata(ctx, &pKey, EVP_PKEY_KEYPAIR, params);
+    /*
+     * If the private key is not present, import only the public key.
+     * Importing a keypair with an empty private key parameter fails.
+     */
+    ret = EVP_PKEY_fromdata(ctx, &pKey, (dhKeyValue->private != NULL) ? EVP_PKEY_KEYPAIR : EVP_PKEY_PUBLIC_KEY, params);
     if(ret <= 0) {
         xmlSecOpenSSLError("EVP_PKEY_fromdata",
             xmlSecKeyDataGetName(data));
@@ -3628,11 +3646,13 @@ xmlSecOpenSSLKeyDataRsaSetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueRsaP
             xmlSecKeyDataGetName(data));
         goto done;
     }
-    ret = OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_RSA_D, rsaKeyValue->d);
-    if(ret != 1) {
-        xmlSecOpenSSLError("OSSL_PARAM_BLD_push_BN(d)",
-            xmlSecKeyDataGetName(data));
-        goto done;
+    if(rsaKeyValue->d != NULL) {
+        ret = OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_RSA_D, rsaKeyValue->d);
+        if(ret != 1) {
+            xmlSecOpenSSLError("OSSL_PARAM_BLD_push_BN(d)",
+                xmlSecKeyDataGetName(data));
+            goto done;
+        }
     }
 
     params = OSSL_PARAM_BLD_to_param(param_bld);
@@ -3654,7 +3674,11 @@ xmlSecOpenSSLKeyDataRsaSetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueRsaP
             xmlSecKeyDataGetName(data));
         goto done;
     }
-    ret = EVP_PKEY_fromdata(ctx, &pKey, EVP_PKEY_KEYPAIR, params);
+    /*
+     * If the private key is not present, import only the public key.
+     * Importing a keypair with an empty private key parameter fails.
+     */
+    ret = EVP_PKEY_fromdata(ctx, &pKey, (rsaKeyValue->d != NULL) ? EVP_PKEY_KEYPAIR : EVP_PKEY_PUBLIC_KEY, params);
     if(ret <= 0) {
         xmlSecOpenSSLError("EVP_PKEY_fromdata",
             xmlSecKeyDataGetName(data));

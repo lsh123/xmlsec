@@ -119,6 +119,9 @@ XMLSEC_EXPORT void              xmlSecPtrListDebugXmlDump       (xmlSecPtrListPt
 
 /**
  * @brief Duplicates item @p ptr.
+ * @details If this method is not NULL then the list klass must also provide
+ * #xmlSecPtrDestroyItemMethod to release items duplicated by this method,
+ * including partial copies rolled back after an error.
  * @param ptr the poinetr to list item.
  * @return pointer to new item copy or NULL if an error occurs.
  */
@@ -143,8 +146,8 @@ typedef void                    (*xmlSecPtrDebugDumpItemMethod) (xmlSecPtr ptr,
  */
 struct _xmlSecPtrListKlass {
     const xmlChar*                      name;  /**< the list klass name. */
-    xmlSecPtrDuplicateItemMethod        duplicateItem;  /**< the duplicate item method. */
-    xmlSecPtrDestroyItemMethod          destroyItem;  /**< the destroy item method. */
+    xmlSecPtrDuplicateItemMethod        duplicateItem;  /**< the duplicate item method; requires destroyItem when not NULL. */
+    xmlSecPtrDestroyItemMethod          destroyItem;  /**< the destroy item method for list-owned items, including duplicated items. */
     xmlSecPtrDebugDumpItemMethod        debugDumpItem;  /**< the debug dump item method. */
     xmlSecPtrDebugDumpItemMethod        debugXmlDumpItem;  /**< the debug dump item in xml format method. */
 };

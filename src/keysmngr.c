@@ -60,6 +60,7 @@ xmlSecKeysMngrCreate(void) {
     ret = xmlSecPtrListInitialize(&(mngr->storesList), xmlSecKeyDataStorePtrListId);
     if(ret < 0) {
         xmlSecInternalError("xmlSecPtrListInitialize(xmlSecKeyDataStorePtrListId)", NULL);
+        xmlFree(mngr);
         return(NULL);
     }
 

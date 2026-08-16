@@ -151,20 +151,24 @@ xmlSecPtrListEmpty(xmlSecPtrListPtr list) {
 /**
  * @brief Copies items from one list to another.
  * @details Copies @p src list items to @p dst list using duplicateItem method
- * of the list klass. If duplicateItem method is NULL then
- * we jsut copy pointers to items.
+ * of the list klass. If duplicateItem is provided then the list klass must
+ * also provide destroyItem so partially copied items can be released on
+ * errors. If duplicateItem method is NULL then we jsut copy pointers to items.
  * @param dst the pointer to destination list.
  * @param src the pointer to source list.
  * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
-    xmlSecSize i;
+    xmlSecSize ii;
+    xmlSecSize initialUse;
     int ret;
 
     xmlSecAssert2(xmlSecPtrListIsValid(dst), -1);
     xmlSecAssert2(xmlSecPtrListIsValid(src), -1);
     xmlSecAssert2(dst->id == src->id, -1);
+
+    initialUse = dst->use;
 
     /* allocate memory */
     ret = xmlSecPtrListEnsureSize(dst, dst->use + src->use);
@@ -175,18 +179,30 @@ xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
     }
 
     /* copy one item after another */
-    for(i = 0; i < src->use; ++i, ++dst->use) {
+    for(ii = 0; ii < src->use; ++ii, ++dst->use) {
         xmlSecAssert2(src->data != NULL, -1);
         xmlSecAssert2(dst->data != NULL, -1);
 
-        if((dst->id->duplicateItem != NULL) && (src->data[i] != NULL)) {
-            dst->data[dst->use] = dst->id->duplicateItem(src->data[i]);
+        if((dst->id->duplicateItem != NULL) && (src->data[ii] != NULL)) {
+            dst->data[dst->use] = dst->id->duplicateItem(src->data[ii]);
             if(dst->data[dst->use] == NULL) {
+                xmlSecSize pos;
+
+                if(dst->id->destroyItem != NULL) {
+                    for(pos = initialUse; pos < dst->use; ++pos) {
+                        xmlSecAssert2(dst->data != NULL, -1);
+                        if(dst->data[pos] != NULL) {
+                            dst->id->destroyItem(dst->data[pos]);
+                            dst->data[pos] = NULL;
+                        }
+                    }
+                }
+                dst->use = initialUse;
                 xmlSecInternalError("duplicateItem", xmlSecPtrListGetName(src));
                 return(-1);
             }
         } else {
-            dst->data[dst->use] = src->data[i];
+            dst->data[dst->use] = src->data[ii];
         }
     }
 

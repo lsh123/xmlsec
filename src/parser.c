@@ -274,7 +274,10 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
     if(input == NULL) {
         xmlSecXmlParserError("xmlNewIOInputStream", ctxt, xmlSecTransformGetName(transform));
         xmlFreeParserCtxt(ctxt);
+#if (LIBXML_VERSION < 21300)
+        /* libxml2 >= 2.13 frees the buffer itself on failure */
         xmlFreeParserInputBuffer(buf);
+#endif /* (LIBXML_VERSION < 21300) */
         return(-1);
     }
 

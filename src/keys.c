@@ -350,6 +350,12 @@ xmlSecKeyReqCopy(xmlSecKeyReqPtr dst, xmlSecKeyReqPtr src) {
     xmlSecAssert2(dst != NULL, -1);
     xmlSecAssert2(src != NULL, -1);
 
+    if(dst == src) {
+        return(0);
+    }
+
+    xmlSecPtrListEmpty(&dst->keyUseWithList);
+
     dst->keyId          = src->keyId;
     dst->keyType        = src->keyType;
     dst->keyUsage       = src->keyUsage;

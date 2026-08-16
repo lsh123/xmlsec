@@ -73,6 +73,10 @@ static int              xmlSecTransformC14NExecute      (xmlSecTransformId id,
                                                          xmlSecNodeSetPtr nodes,
                                                          xmlSecPtrListPtr nsList,
                                                          xmlOutputBufferPtr buf);
+
+#define XMLSEC_IS_XML_SPACE(ch) \
+    (((ch) == ' ') || ((ch) == '\t') || ((ch) == '\n') || ((ch) == '\r'))
+
 static int
 xmlSecTransformC14NInitialize(xmlSecTransformPtr transform) {
     xmlSecPtrListPtr nsList;
@@ -138,10 +142,20 @@ xmlSecTransformC14NNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSe
             return(-1);
         }
 
-        /* the list of namespaces is space separated */
-        for(p = n = list; ((p != NULL) && ((*p) != '\0')); p = n) {
-            n = (xmlChar*)xmlStrchr(p, ' ');
-            if(n != NULL) {
+        /* the list of namespaces is XML whitespace separated */
+        for(p = list; ((p != NULL) && ((*p) != '\0')); p = n) {
+            while((*p != '\0') && XMLSEC_IS_XML_SPACE(*p)) {
+                ++p;
+            }
+            if(*p == '\0') {
+                break;
+            }
+
+            n = p;
+            while((*n != '\0') && !XMLSEC_IS_XML_SPACE(*n)) {
+                ++n;
+            }
+            if(*n != '\0') {
                 *(n++) = '\0';
             }
 

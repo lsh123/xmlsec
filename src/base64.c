@@ -69,6 +69,11 @@ static const xmlSecByte base64[] =
   *****************************************************************************/
 static int g_xmlsec_base64_default_line_size = XMLSEC_BASE64_LINESIZE;
 
+static int
+xmlSecBase64IsValidColumns(int columns) {
+    return((columns == 0) || (columns > 1));
+}
+
 /**
  * @brief Gets the current default line size.
  * @return The current default line size.
@@ -81,11 +86,13 @@ xmlSecBase64GetDefaultLineSize(void)
 
 /**
  * @brief Sets the current default line size.
- * @param columns number of columns
+ * @param columns number of columns; use 0 for no line breaks or a value greater than 1.
  */
 void
 xmlSecBase64SetDefaultLineSize(int columns)
 {
+    xmlSecAssert(xmlSecBase64IsValidColumns(columns));
+
     g_xmlsec_base64_default_line_size = columns;
 }
 
@@ -146,7 +153,7 @@ static int                      xmlSecBase64CtxDecodeIsFinished (xmlSecBase64Ctx
  * @brief Allocates and initializes new base64 context.
  *
  * @param encode the encode/decode flag (1 - encode, 0 - decode).
- * @param columns the max line length.
+ * @param columns the max line length; use 0 for no line breaks or a value greater than 1.
  *
  * @return a pointer to newly created xmlSecBase64Ctx structure
  * or NULL if an error occurs.
@@ -190,12 +197,13 @@ xmlSecBase64CtxDestroy(xmlSecBase64CtxPtr ctx) {
  * @brief Initializes new base64 context.
  * @param ctx the pointer to xmlSecBase64Ctx structure,
  * @param encode the encode/decode flag (1 - encode, 0 - decode)
- * @param columns the max line length.
+ * @param columns the max line length; use 0 for no line breaks or a value greater than 1.
  * @return 0 on success and a negative value otherwise.
  */
 int
 xmlSecBase64CtxInitialize(xmlSecBase64CtxPtr ctx, int encode, int columns) {
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(xmlSecBase64IsValidColumns(columns), -1);
 
     memset(ctx, 0, sizeof(xmlSecBase64Ctx));
 
@@ -568,10 +576,23 @@ xmlSecBase64CtxDecodeIsFinished(xmlSecBase64CtxPtr ctx) {
 static xmlSecSize
 xmlSecBase64GetEncodeSize(xmlSecSize columnsSize, xmlSecSize inSize) {
     xmlSecSize size;
+    xmlSecSize blocks;
 
-    size = (4 * inSize) / 3 + 4;
-    if(columnsSize > 0) {
+    blocks = inSize / 3;
+    if((inSize % 3) != 0) {
+        ++blocks;
+    }
+    if(blocks > (XMLSEC_SIZE_MAX / 4)) {
+        return(0);
+    }
+    size = blocks * 4;
+
+    if(columnsSize > 1) {
+        /* columnsSize is at least 2, so this is safe */
         size += (size / columnsSize) + 4;
+    }
+    if(size > XMLSEC_SIZE_MAX - 1) {
+        return(0);
     }
     return(size + 1);
 }
@@ -579,7 +600,18 @@ xmlSecBase64GetEncodeSize(xmlSecSize columnsSize, xmlSecSize inSize) {
 
 static xmlSecSize
 xmlSecBase64GetDecodeSize(xmlSecSize inSize) {
-    return(3 * inSize / 4 + 8);
+    xmlSecSize blocks;
+
+    blocks = inSize / 4;
+    if((inSize % 4) != 0) {
+        /* this only happens if we have line breaks, etc. so just to be safe */
+        ++blocks;
+    }
+
+    if(blocks > ((XMLSEC_SIZE_MAX - 8)/ 3)) {
+        return(0);
+    }
+    return(3 * blocks + 8);
 }
 
 /**
@@ -589,8 +621,7 @@ xmlSecBase64GetDecodeSize(xmlSecSize inSize) {
  * xmlFree() function.
  * @param in the input buffer.
  * @param inSize the input buffer size.
- * @param columns the output max line length (if 0 then no line breaks
- *                      would be inserted)
+ * @param columns the output max line length; use 0 for no line breaks or a value greater than 1.
  * @return newly allocated string with base64 encoded data
  * or NULL if an error occurs.
  */
@@ -781,7 +812,7 @@ xmlSecTransformBase64GetKlass(void) {
 /**
  * @brief Sets the max line size to @p lineSize.
  * @param transform the pointer to BASE64 encode transform.
- * @param lineSize the new max line size.
+ * @param lineSize the new max line size; use 0 for no line breaks or a value greater than 1.
  */
 void
 xmlSecTransformBase64SetLineSize(xmlSecTransformPtr transform, xmlSecSize lineSize) {

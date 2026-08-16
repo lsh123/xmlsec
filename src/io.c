@@ -522,7 +522,11 @@ xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const xmlChar *uri) {
         if (unescaped != NULL) {
             ctx->clbks = xmlSecIOCallbackPtrListFind(&xmlSecAllIOCallbacks, unescaped);
             if(ctx->clbks != NULL) {
-                ctx->clbksCtx = ctx->clbks->opencallback(unescaped);
+                if(ctx->clbks->opencallback != NULL) {
+                    ctx->clbksCtx = ctx->clbks->opencallback(unescaped);
+                } else {
+                    ctx->clbksCtx = NULL;
+                }
             }
             xmlFree(unescaped);
         }
@@ -535,7 +539,11 @@ xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const xmlChar *uri) {
     if (ctx->clbks == NULL) {
         ctx->clbks = xmlSecIOCallbackPtrListFind(&xmlSecAllIOCallbacks, (char*)uri);
         if(ctx->clbks != NULL) {
-            ctx->clbksCtx = ctx->clbks->opencallback((char*)uri);
+            if(ctx->clbks->opencallback != NULL) {
+                ctx->clbksCtx = ctx->clbks->opencallback((char*)uri);
+            } else {
+                ctx->clbksCtx = NULL;
+            }
         }
     }
 

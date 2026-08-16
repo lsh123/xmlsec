@@ -204,7 +204,8 @@ static xmlSecAppCmdLineParam base64LineSizeParam = {
     "--base64-line-size",
     NULL,
     "--base64-line-size <size>"
-    "\n\tsets the max line size for base64 encodings to <size>",
+    "\n\tsets the max line size for base64 encodings to <size>; use 0 to disable"
+    "\n\tline breaks, otherwise <size> must be greater than 1",
     xmlSecAppCmdLineParamTypeNumber,
     xmlSecAppCmdLineParamFlagNone,
     NULL
@@ -1554,8 +1555,8 @@ xmlSecAppExecute(xmlSecAppCommand command, const char** utf8_argv, int argc) {
     /* base64 line size */
     if(xmlSecAppCmdLineParamIsSet(&base64LineSizeParam)) {
         int lineSize = xmlSecAppCmdLineParamGetInt(&base64LineSizeParam, 0);
-        if(lineSize <= 0) {
-            fprintf(stderr, "Error: base64 line size should be greater than zero\n");
+        if((lineSize != 0) && (lineSize <= 1)) {
+            fprintf(stderr, "Error: base64 line size should be 0 or greater than 1\n");
             xmlSecAppPrintUsage();
             goto done;
         }

@@ -836,7 +836,7 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
         XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_chacha20_poly1305(), SN_chacha20_poly1305);
         ctx->keyId      = xmlSecOpenSSLKeyDataChaCha20Id;
         ctx->cbcMode    = 0;                            /* AEAD cipher (GCM-like mode: no CBC padding, tag appended) */
-        ctx->ivLen      = XMLSEC_CHACHA20_NONCE_SIZE ;  /* This is the nonce length for rather than an IV */
+        ctx->ivLen      = XMLSEC_CHACHA20_NONCE_SIZE;   /* This is the nonce length for ChaCha20-Poly1305 mode rather than an IV */
         ctx->isIvPrepended = 0; /* IV is in XML transform (nonce) */
     } else
 #endif /* XMLSEC_NO_CHACHA20 */
@@ -895,7 +895,7 @@ xmlSecOpenSSLEvpBlockCipherFinalize(xmlSecTransformPtr transform) {
     }
 #endif /* XMLSEC_OPENSSL_API_300 */
     xmlSecBufferFinalize(&(ctx->aad));
-    memset(ctx, 0, sizeof(xmlSecOpenSSLEvpBlockCipherCtx));
+    OPENSSL_cleanse(ctx, sizeof(xmlSecOpenSSLEvpBlockCipherCtx));
 }
 
 static int
@@ -1034,9 +1034,6 @@ xmlSecOpenSSLEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSe
     } else if(transform->status == xmlSecTransformStatusFinished) {
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(in) == 0, -1);
-    } else if(transform->status == xmlSecTransformStatusNone) {
-        /* the only way we can get here is if there is no enough data in the input */
-        xmlSecAssert2(last == 0, -1);
     } else {
         xmlSecInvalidTransfromStatusError(transform);
         return(-1);
@@ -1256,7 +1253,7 @@ xmlSecOpenSSLChaCha20NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
         /* both nonce and counter were present in XML: IV is ready */
         ctx->ivInitialized = 1;
     } else {
-        /* add random nonce agter counter */
+        /* add random nonce after counter */
         ctx->ivRandomOffset = XMLSEC_CHACHA20_COUNTER_SIZE;
     }
 

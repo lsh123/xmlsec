@@ -383,6 +383,12 @@ xmlSecOpenSSLKWRfc3394Execute(xmlSecTransformPtr transform, int last,
   *****************************************************************************/
 #ifdef XMLSEC_OPENSSL_API_300
 
+/* RFC 3394 specifies single-block (ECB) encryption. We use a CBC cipher with an
+ * explicit all-zero IV so the behavior is well-defined and portable rather than
+ * relying on OpenSSL's implicit zero-IV default for a NULL IV. */
+static unsigned char xmlSecOpenSSLKWRfc3394ZeroIv[XMLSEC_KW_RFC3394_BLOCK_SIZE] =
+    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
 static int
 xmlSecOpenSSLKWRfc3394EncryptDecrypt(xmlSecOpenSSLKWRfc3394CtxPtr ctx, const xmlSecByte * in, xmlSecSize inSize,
                                 xmlSecByte * out, xmlSecSize outSize, xmlSecSize * outWritten,
@@ -415,29 +421,29 @@ xmlSecOpenSSLKWRfc3394EncryptDecrypt(xmlSecOpenSSLKWRfc3394CtxPtr ctx, const xml
     }
 
     ret = EVP_CipherInit_ex2(cctx, ctx->cipher, keyData,
-        NULL, ((encrypt != 0) ? 1 : 0), NULL);
+        xmlSecOpenSSLKWRfc3394ZeroIv, ((encrypt != 0) ? 1 : 0), NULL);
     if (ret != 1) {
-        xmlSecOpenSSLError("EVP_CIPHER_init_ex2(encrypt)", NULL);
+        xmlSecOpenSSLError("EVP_CipherInit_ex2", NULL);
         goto done;
     }
 
     ret = EVP_CIPHER_CTX_set_padding(cctx, 0);
     if (ret != 1) {
-        xmlSecOpenSSLError("EVP_CIPHER_CTX_set_padding)", NULL);
+        xmlSecOpenSSLError("EVP_CIPHER_CTX_set_padding", NULL);
         goto done;
     }
 
     XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, goto done, NULL);
     ret = EVP_CipherUpdate(cctx, out, &nOut, in, inLen);
     if (ret != 1) {
-        xmlSecOpenSSLError("EVP_CipherUpdate(encrypt)", NULL);
+        xmlSecOpenSSLError("EVP_CipherUpdate", NULL);
         goto done;
     }
 
     outLen = nOut;
     ret = EVP_CipherFinal_ex(cctx, out + outLen, &nOut);
     if (ret != 1) {
-        xmlSecOpenSSLError("EVP_CipherFinal_ex(encrypt)", NULL);
+        xmlSecOpenSSLError("EVP_CipherFinal_ex", NULL);
         goto done;
     }
 
@@ -594,7 +600,7 @@ xmlSecOpenSSLKWAesEncryptDecrypt(xmlSecOpenSSLKWRfc3394CtxPtr ctx, const xmlSecB
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(in != NULL, -1);
-    xmlSecAssert2(inSize >= AES_BLOCK_SIZE, -1);
+    xmlSecAssert2(inSize == XMLSEC_KW_RFC3394_BLOCK_SIZE, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= AES_BLOCK_SIZE, -1);
     xmlSecAssert2(outWritten != NULL, -1);
@@ -702,6 +708,7 @@ xmlSecOpenSSLKWCamelliaEncryptDecrypt(xmlSecOpenSSLKWRfc3394CtxPtr ctx, const xm
     keySize = xmlSecBufferGetSize(&(ctx->parentCtx.keyBuffer));
     xmlSecAssert2(keyData != NULL, -1);
     xmlSecAssert2(keySize > 0, -1);
+    xmlSecAssert2(keySize == ctx->parentCtx.keyExpectedSize, -1);
 
     /* set key */
     XMLSEC_SAFE_CAST_SIZE_T_TO_INT((keySize * 8), keySizeBits, return(-1), NULL);

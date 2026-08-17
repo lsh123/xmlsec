@@ -17,6 +17,7 @@
 
 #include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/keysmngr.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -28,7 +29,7 @@ extern "C" {
  *
   *****************************************************************************/
 /**
- * @brief A OpenSSL keys store klass id.
+ * @brief An OpenSSL keys store klass id.
  */
 #define xmlSecOpenSSLKeysStoreId        xmlSecOpenSSLKeysStoreGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyStoreId   xmlSecOpenSSLKeysStoreGetKlass(void);

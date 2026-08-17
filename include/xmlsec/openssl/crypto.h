@@ -683,7 +683,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformEcdhGetKlass(void);
 
 /******************************************************************************
  *
- * GOST 2001 keys and ransforms
+ * GOST 2001 keys and transforms
  *
   *****************************************************************************/
 
@@ -800,7 +800,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformHmacMd5GetKlass(voi
 
 #ifndef XMLSEC_NO_RIPEMD160
 /**
- * @brief The HMAC with RipeMD160 signature transform klass.
+ * @brief The HMAC with RIPEMD160 signature transform klass.
  */
 #define xmlSecOpenSSLTransformHmacRipemd160Id \
         xmlSecOpenSSLTransformHmacRipemd160GetKlass()
@@ -856,7 +856,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformHmacSha512GetKlass(
 
 /******************************************************************************
  *
- * Md5 transforms
+ * MD5 transforms
  *
   *****************************************************************************/
 #ifndef XMLSEC_NO_MD5
@@ -1028,7 +1028,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaPkcs1GetKlass(vo
 #ifndef XMLSEC_NO_RSA_OAEP
 /**
  * @brief The RSA OAEP key transport transform klass.
- * @details The RSA PKCS1 key transport transform klass (XMLEnc 1.0).
+ * @details The RSA OAEP key transport transform klass (XMLEnc 1.0).
  */
 #define xmlSecOpenSSLTransformRsaOaepId \
         xmlSecOpenSSLTransformRsaOaepGetKlass()
@@ -1036,7 +1036,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaOaepGetKlass(voi
 
 /**
  * @brief The RSA OAEP-Enc11 key transport transform klass.
- * @details The RSA PKCS1 key transport transform klass (XMLEnc 1.1).
+ * @details The RSA OAEP key transport transform klass (XMLEnc 1.1).
  */
 #define xmlSecOpenSSLTransformRsaOaepEnc11Id \
         xmlSecOpenSSLTransformRsaOaepEnc11GetKlass()

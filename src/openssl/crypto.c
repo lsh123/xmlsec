@@ -7,8 +7,8 @@
  */
 /**
  * @addtogroup xmlsec_openssl_crypto
- * @brief Crypto key dat and transforms implementation for OpenSSL.
- * Implementation of keys and tranforms for OpenSSL.
+ * @brief Crypto key data and transforms implementation for OpenSSL.
+ * Implementation of keys and transforms for OpenSSL.
  */
 #include "globals.h"
 
@@ -51,7 +51,7 @@ static char gXmlSecOpenSSLErrorsDefault[] = "xmlsec routines";
 static ERR_STRING_DATA xmlSecOpenSSLStrLib[2];
 static ERR_STRING_DATA xmlSecOpenSSLStrDefReason[2];
 static ERR_STRING_DATA xmlSecOpenSSLStrReasons[XMLSEC_ERRORS_MAX_NUMBER + 1];
-#endif /* !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_NO_ERR) */
+#endif /* !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR) */
 
 /**
  * @brief Gets the xmlsec-openssl functions table.
@@ -649,7 +649,7 @@ xmlSecOpenSSLGenerateRandomBytes(xmlSecByte* buffer, xmlSecSize size) {
  * @brief Generates random bytes into @p buffer.
  * @details Generates @p size random bytes and puts result in @p buffer.
  * @param buffer the destination buffer.
- * @param size the numer of bytes to generate.
+ * @param size the number of bytes to generate.
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -668,7 +668,7 @@ xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
     /* get random data */
     ret = xmlSecOpenSSLGenerateRandomBytes(xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer));
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecOpenSSLGenerateRandomBytes", NULL, "size =" XMLSEC_SIZE_FMT, size);
+        xmlSecInternalError2("xmlSecOpenSSLGenerateRandomBytes", NULL, "size=" XMLSEC_SIZE_FMT, size);
         return(-1);
     }
 
@@ -695,7 +695,7 @@ xmlSecOpenSSLErrorsDefaultCallback(const char* file, int line, const char* func,
     ERR_put_error(gXmlSecOpenSSLErrorsLib,
                 XMLSEC_OPENSSL_ERRORS_FUNCTION,
                 reason, file, line);
-#endif /* !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_NO_ERR) */
+#endif /* !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR) */
 
     xmlSecErrorsDefaultCallback(file, line, func,
                 errorObject, errorSubject,
@@ -731,7 +731,7 @@ xmlSecOpenSSLErrorsInit(void) {
     ERR_load_strings(gXmlSecOpenSSLErrorsLib, xmlSecOpenSSLStrLib); /* define xmlsec lib name */
     ERR_load_strings(gXmlSecOpenSSLErrorsLib, xmlSecOpenSSLStrDefReason); /* define default reason */
     ERR_load_strings(gXmlSecOpenSSLErrorsLib, xmlSecOpenSSLStrReasons);
-#endif /* !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_NO_ERR) */
+#endif /* !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR) */
 
     /* and set default errors callback for xmlsec to us */
     xmlSecErrorsSetSystemCallback(xmlSecOpenSSLErrorsDefaultCallback);
@@ -750,7 +750,7 @@ xmlSecOpenSSLErrorsShutdown(void) {
     ERR_unload_strings(gXmlSecOpenSSLErrorsLib, xmlSecOpenSSLStrLib);
     ERR_unload_strings(gXmlSecOpenSSLErrorsLib, xmlSecOpenSSLStrDefReason);
     ERR_unload_strings(gXmlSecOpenSSLErrorsLib, xmlSecOpenSSLStrReasons);
-#endif /* !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_NO_ERR) */
+#endif /* !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR) */
 }
 
 /**
@@ -790,12 +790,9 @@ xmlSecOpenSSLGetDefaultTrustedCertsFolder(void) {
 static OSSL_LIB_CTX* gXmlSecOpenSSLLibCtx = NULL;
 
 /**
- * @param libctx the OSSL_LIB_CTX object to be used by xmlsec-openssl
- *                    or NULL to use default.
- *
- * Sets the OSSL_LIB_CTX object to be used by xmlsec-openssl. The caller is
- * responsible for lifetime of this object.
- *
+ * @brief Sets the OpenSSL library context used by xmlsec.
+ * @details The caller retains ownership of @p libctx and must keep it alive for as long as
+ * xmlsec uses it; freeing it while xmlsec still references it is a use-after-free.
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -805,10 +802,8 @@ xmlSecOpenSSLSetLibCtx(OSSL_LIB_CTX* libctx) {
 }
 
 /**
- * @brief Gets the current OSSL_LIB_CTX object to be used by xmlsec-openssl or
- * NULL if the default one is used.
- *
- * @return the current OSSL_LIB_CTX object or NULL if default is used.
+ * @brief Gets the OpenSSL library context used by xmlsec.
+ * @return a borrowed pointer to the library context; the caller must NOT free it.
  */
 OSSL_LIB_CTX*
 xmlSecOpenSSLGetLibCtx(void) {
@@ -823,9 +818,8 @@ xmlSecOpenSSLGetLibCtx(void) {
   *****************************************************************************/
 
 /**
- * @brief Creates a memory BIO for OpenSSL 3.0.
- * @details Creates a memory BIO using xmlSecOpenSSLGetLibCtx() for OpenSSL 3.0.
- * @return the pointer to BIO object or NULL if an error occurs.
+ * @brief Creates a memory BIO.
+ * @return a new BIO that the caller owns and must free with BIO_free().
  */
 BIO*
 xmlSecOpenSSLCreateMemBio(void) {
@@ -840,13 +834,10 @@ xmlSecOpenSSLCreateMemBio(void) {
 }
 
 /**
- * @brief Creates a read-only memory BIO using xmlSecOpenSSLGetLibCtx() for
+ * @brief Creates a memory-buffer BIO over @p buf.
  * @param buf the data
  * @param bufSize the data size
- *
- * OpenSSL 3.0 containing @p len bytes of data from @p buf.
- *
- * @return the pointer to BIO object or NULL if an error occurs/
+ * @return a new BIO that the caller owns and must free with BIO_free().
  */
 BIO*
 xmlSecOpenSSLCreateMemBufBio(const xmlSecByte *buf, xmlSecSize bufSize) {
@@ -866,12 +857,9 @@ xmlSecOpenSSLCreateMemBufBio(const xmlSecByte *buf, xmlSecSize bufSize) {
 }
 
 /**
- * @brief Creates a read-only file BIO using xmlSecOpenSSLGetLibCtx() for
+ * @brief Creates a read-file BIO for @p path.
  * @param path the file path
- *
- * OpenSSL 3.0.
- *
- * @return the pointer to BIO object or NULL if an error occurs/
+ * @return a new BIO that the caller owns and must free with BIO_free().
  */
 BIO*
 xmlSecOpenSSLCreateReadFileBio(const char* path) {

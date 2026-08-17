@@ -11,10 +11,7 @@
  */
 #include "globals.h"
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
-#include <ctype.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/base64.h>
@@ -175,7 +172,7 @@ xmlSecOpenSSLKeyAgreementSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKeyAgreementSize), -1);
     xmlSecAssert2(key != NULL, -1);
 
-    /* key agreement uses two keys from ctxTransform->extraKeyData (KAM key data) */
+    /* key agreement uses two keys from transformCtx->extraKeyData (KAM key data) */
     return(0);
 }
 

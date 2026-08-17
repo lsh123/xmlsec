@@ -122,10 +122,8 @@ xmlSecOpenSSLX509StoreGetKlass(void) {
  * @param issuerSerial the desired certificate issuer serial number.
  * @param ski the desired certificate SKI.
  * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
- *
- *
- * @return pointer to found certificate or NULL if certificate is not found
- * or an error occurs.
+ * @return a borrowed pointer to the found certificate, or NULL if certificate is not found
+ * or an error occurs; the caller must NOT free it.
  */
 X509*
 xmlSecOpenSSLX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
@@ -161,10 +159,8 @@ xmlSecOpenSSLX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName
  * @param ski the desired certificate SKI.
  * @param skiSize the desired certificate SKI size.
  * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
- *
- *
- * @return pointer to found certificate or NULL if certificate is not found
- * or an error occurs.
+ * @return a borrowed pointer to the found certificate, or NULL if certificate is not found
+ * or an error occurs; the caller must NOT free it.
  */
 X509*
 xmlSecOpenSSLX509StoreFindCert_ex(xmlSecKeyDataStorePtr store,
@@ -473,7 +469,7 @@ xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked(X509 * cert, STACK_OF(X509_REVOKE
                         "issuer=%s; revocationDate=%lf", issuer_name, (double)ts);
                 } else {
                     xmlSecOtherError2(XMLSEC_ERRORS_R_CRL_NOT_YET_VALID, NULL,
-                        "revocationDates=%lf", (double)ts);
+                        "revocationDate=%lf", (double)ts);
                 }
                 continue;
             }
@@ -775,7 +771,7 @@ xmlSecOpenSSLX509StoreVerifyCert(X509_STORE* xst, X509_STORE_CTX* xsc, X509* cer
 
     chain = X509_STORE_CTX_get0_chain(xsc);
     if(chain == NULL) {
-        xmlSecOpenSSLError("X509_STORE_CTX_get0_chain(crls)", NULL);
+        xmlSecOpenSSLError("X509_STORE_CTX_get0_chain", NULL);
         goto done;
     }
 
@@ -875,7 +871,7 @@ xmlSecOpenSSLX509FilterCrlsByTime(STACK_OF(X509_CRL)* crls, xmlSecKeyInfoCtx* ke
  * @param certs the untrusted certificates stack.
  * @param crls the crls stack.
  * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
- * @return pointer to the first verified certificate from @p certs.
+ * @return a borrowed pointer to the first verified certificate from @p certs, or NULL if an error occurs; the caller must NOT free it.
  */
 X509*
 xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* certs, XMLSEC_STACK_OF_X509_CRL* crls, xmlSecKeyInfoCtx* keyInfoCtx) {
@@ -1175,7 +1171,7 @@ done:
 
 /**
  * @brief Adds cert to the trusted or untrusted store.
- * @details Adds trusted (root) or untrusted certificate to the store.
+ * @details On success, ownership of @p cert transfers to the store; on failure the caller retains ownership.
  * @param store the pointer to X509 key data store klass.
  * @param cert the pointer to OpenSSL X509 certificate.
  * @param type the certificate type (trusted/untrusted).
@@ -1220,6 +1216,7 @@ xmlSecOpenSSLX509StoreAdoptCert(xmlSecKeyDataStorePtr store, X509* cert, xmlSecK
 
 /**
  * @brief Adds X509 CRL to the store.
+ * @details On success, ownership of @p crl transfers to the store; on failure the caller retains ownership.
  * @param store the pointer to X509 key data store klass.
  * @param crl the pointer to OpenSSL X509_CRL.
  * @return 0 on success or a negative value if an error occurs.
@@ -1234,13 +1231,13 @@ xmlSecOpenSSLX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, X509_CRL* crl) {
 
     ctx = xmlSecOpenSSLX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, -1);
-        xmlSecAssert2(ctx->crls != NULL, -1);
+    xmlSecAssert2(ctx->crls != NULL, -1);
 
-        ret = sk_X509_CRL_push(ctx->crls, crl);
-        if(ret <= 0) {
-            xmlSecOpenSSLError("sk_X509_CRL_push", xmlSecKeyDataStoreGetName(store));
-            return(-1);
-        }
+    ret = sk_X509_CRL_push(ctx->crls, crl);
+    if(ret <= 0) {
+        xmlSecOpenSSLError("sk_X509_CRL_push", xmlSecKeyDataStoreGetName(store));
+        return(-1);
+    }
 
     return (0);
 }
@@ -2383,7 +2380,7 @@ xmlSecOpenSSLX509NamesCompare(XMLSEC_OPENSSL400_CONST X509_NAME *a, XMLSEC_OPENS
     if(b1 == NULL) {
         xmlSecInternalError("xmlSecOpenSSLX509_NAME_ENTRIES_copy", NULL);
         sk_X509_NAME_ENTRY_pop_free(a1, X509_NAME_ENTRY_free);
-        return(1);
+        return(-1);
     }
 
     /* sort both */

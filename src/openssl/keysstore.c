@@ -15,8 +15,6 @@
 #include <string.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/buffer.h>
-#include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/private.h>
@@ -82,7 +80,7 @@ xmlSecOpenSSLKeysStoreInitialize(xmlSecKeyStorePtr store) {
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecOpenSSLKeysStoreId), -1);
 
     simplekeystore = xmlSecOpenSSLKeysStoreGetCtx(store);
-    xmlSecAssert2(((simplekeystore == NULL) || (*simplekeystore == NULL)), -1);
+    xmlSecAssert2(((simplekeystore != NULL) && (*simplekeystore == NULL)), -1);
 
     *simplekeystore = xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId);
     if(*simplekeystore == NULL) {

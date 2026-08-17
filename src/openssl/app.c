@@ -517,7 +517,7 @@ xmlSecOpenSSLAppEngineKeyLoad(const char *engineName, const char *engineKeyId,
     }
 
     if(ENGINE_ctrl_cmd(engine, "SET_USER_INTERFACE", 0, (void *)UI_null(), 0, 1) < 0) {
-        xmlSecOpenSSLError("ENGINE_ctrl_cmd_string(SET_USER_INTERFACE)", NULL);
+        xmlSecOpenSSLError("ENGINE_ctrl_cmd(SET_USER_INTERFACE)", NULL);
         goto done;
     }
     if(!ENGINE_set_default(engine, ENGINE_METHOD_ALL)) {
@@ -878,7 +878,7 @@ xmlSecOpenSSLAppStoreKeyLoad(const char *uri, xmlSecKeyDataType type, const char
                 }
             }
             break;
-#endif /* !defined(XMLSEC_OPENSSL_API_300) */
+#endif /* defined(XMLSEC_OPENSSL_API_300) */
         case OSSL_STORE_INFO_CERT:
             cert = OSSL_STORE_INFO_get1_CERT(info);
             if(cert == NULL) {
@@ -917,7 +917,7 @@ xmlSecOpenSSLAppStoreKeyLoad(const char *uri, xmlSecKeyDataType type, const char
             pKey = pPubKey;
             pPubKey = NULL;
         } else {
-            xmlSecOpenSSLError("Neither private or public key is not found in the store", NULL);
+            xmlSecOpenSSLError("Neither private nor public key was found in the store", NULL);
             goto done;
         }
     }
@@ -930,7 +930,7 @@ xmlSecOpenSSLAppStoreKeyLoad(const char *uri, xmlSecKeyDataType type, const char
     /* finally create a key, xmlSecOpenSSLCreateKey will set values to NULL as it uses them */
     res = xmlSecOpenSSLCreateKey(&pKey, &keyCert, &certs);
     if(res == NULL) {
-        xmlSecInternalError("xmlSecKeyAdoptData", NULL);
+        xmlSecInternalError("xmlSecOpenSSLCreateKey", NULL);
         goto done;
     }
 
@@ -1302,7 +1302,7 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
     /* finally create a key, xmlSecOpenSSLCreateKey will set values to NULL as it uses them */
     res = xmlSecOpenSSLCreateKey(&pKey, &keyCert, &chain);
     if(res == NULL) {
-        xmlSecInternalError("xmlSecKeyAdoptData", NULL);
+        xmlSecInternalError("xmlSecOpenSSLCreateKey", NULL);
         goto done;
     }
 

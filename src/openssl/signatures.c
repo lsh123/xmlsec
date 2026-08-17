@@ -1907,7 +1907,7 @@ xmlSecOpenSSLEvpSignatureDsa_XmlDSig2OpenSSL(const xmlSecTransformId transformId
          * https://github.com/lsh123/xmlsec/issues/941 */
         signHalfLen = signLen / 2;
     } else {
-        xmlSecInternalError3("xmlSecOpenSSLEvpSignatureDsaHalfLen", NULL,
+        xmlSecInternalError3("xmlSecOpenSSLEvpSignatureDsa_XmlDSig2OpenSSL", NULL,
             "signLen=%d; signHalfLen=%d", signLen, signHalfLen);
         goto done;
     }
@@ -2183,7 +2183,7 @@ xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(
          * https://github.com/lsh123/xmlsec/issues/941 */
          signHalfLen = signLen / 2;
     } else {
-        xmlSecInternalError3("xmlSecOpenSSLEvpSignatureEcdsaHalfLen", NULL,
+        xmlSecInternalError3("xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL", NULL,
             "signLen=%d; signHalfLen=%d", signLen, signHalfLen);
         goto done;
     }

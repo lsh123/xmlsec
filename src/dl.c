@@ -287,8 +287,10 @@ xmlSecCryptoDLLibraryConstructGetFunctionsName(const xmlChar* name) {
 
     xmlSecAssert2(name != NULL, NULL);
 
-    len = xmlStrlen(name) + xmlStrlen(BAD_CAST XMLSEC_CRYPTO_DL_GET_FUNCTIONS_TMPL) + 1;
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(NULL), -1);
+    size = xmlSecStrlen(name) +
+           xmlSecStrlen(BAD_CAST XMLSEC_CRYPTO_DL_GET_FUNCTIONS_TMPL) +
+           1;
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(size, len, return(NULL), NULL);
 
     res = (xmlChar*)xmlMalloc(size + 1);
     if(res == NULL) {

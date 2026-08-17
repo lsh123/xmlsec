@@ -840,8 +840,8 @@ xmlSecKeyX509DataValueXmlWrite(xmlSecKeyX509DataValuePtr x509Value, xmlNodePtr n
 /**
  * @brief Reads X509 escaped string.
  * @details Reads X509 escaped string (see https://datatracker.ietf.org/doc/html/rfc4514#section-3).
- * The function parses the string in the @p in paramter until end of string or @p delim is encountered.
- * The @p in and @p inSize parameters are moved to the next character (e.g. delimeter if it was encountered
+ * The function parses the string in the @p in parameter until end of string or @p delim is encountered.
+ * The @p in and @p inSize parameters are moved to the next character (e.g. delimiter if it was encountered
  * during parsing).
  * @param in the in/out pointer to the parsed string.
  * @param inSize the in/out size of the parsed string.
@@ -881,7 +881,7 @@ xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
                 /* stop */
                 state = XMLSEC_X509_NAME_READ_STATE_DELIMETER;
             } else if (inCh == '\\') {
-                /* do not update output, move to next chat */
+                  /* do not update output, move to next char */
                 state = XMLSEC_X509_NAME_READ_STATE_AFTER_SLASH1;
                 ++ii;
             } else {
@@ -964,8 +964,8 @@ xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
  *   - string (eg 'abc')
  *   - quoted string (eg '"abc"')
  *   - hexstring (eg '@p A0B0')
- * The function parses the string in the @p in paramter until end of string or @p delim is encountered.
- * The @p in and @p inSize parameters are moved to the next character (e.g. delimeter if it was encountered
+ * The function parses the string in the @p in parameter until end of string or @p delim is encountered.
+ * The @p in and @p inSize parameters are moved to the next character (e.g. delimiter if it was encountered
  * during parsing).
  * @param in the in/out pointer to the parsed string.
  * @param inSize the in/out size of the parsed string.
@@ -1031,7 +1031,7 @@ xmlSecX509AttrValueStringRead(
             }
         }
     } else if((**in) == '#') {
-        /* read octect value:
+        /* read octet value:
                 hexstring = SHARP 1*hexpair
                 hexpair = HEX HEX
         */

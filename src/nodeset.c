@@ -463,7 +463,7 @@ xmlSecNodeSetWalkRecursive(xmlSecNodeSetPtr nset, xmlNodePtr startNode, xmlSecNo
  *    all nodes in the @p parent subtree;
  *  - if @p withComments is 0 and @p invert is 0:
  *    all nodes in the @p parent subtree except comment nodes;
- *  - if @p withComments is not 0 and @p invert not is 0:
+ *  - if @p withComments is not 0 and @p invert is not 0:
  *    all nodes in the @p doc except nodes in the @p parent subtree;
  *  - if @p withComments is 0 and @p invert is 0:
  *    all nodes in the @p doc except nodes in the @p parent subtree
@@ -494,7 +494,14 @@ xmlSecNodeSetGetChildren(xmlDocPtr doc, const xmlNodePtr parent, int withComment
         xmlNodePtr cur;
         for(cur = doc->children; cur != NULL; cur = cur->next) {
             if(withComments || (cur->type != XML_COMMENT_NODE)) {
-                xmlXPathNodeSetAdd(nodes, cur);
+                int ret;
+
+                ret = xmlXPathNodeSetAdd(nodes, cur);
+                if(ret < 0) {
+                    xmlSecXmlError("xmlXPathNodeSetAdd", NULL);
+                    xmlXPathFreeNodeSet(nodes);
+                    return(NULL);
+                }
             }
         }
     }
@@ -530,6 +537,9 @@ xmlSecNodeSetDumpTextNodesWalkCallback(xmlSecNodeSetPtr nset, xmlNodePtr cur,
     UNREFERENCED_PARAMETER(parent);
 
     if(cur->type != XML_TEXT_NODE) {
+        return(0);
+    }
+    if(cur->content == NULL) {
         return(0);
     }
     ret = xmlOutputBufferWriteString((xmlOutputBufferPtr)data,
@@ -592,6 +602,9 @@ xmlSecNodeSetDebugDump(xmlSecNodeSetPtr nset, FILE *output) {
         xmlSecNotImplementedError("xmlSecNodeSetList is deprecated");
         fprintf(output, "(xmlSecNodeSetList)\n");
         break;
+    default:
+        xmlSecUnsupportedEnumValueError("node set type", nset->type, NULL);
+        break;
     }
 
     len = xmlXPathNodeSetGetLength(nset->nodes);
@@ -609,10 +622,11 @@ xmlSecNodeSetDebugDump(xmlSecNodeSetPtr nset, FILE *output) {
                 XMLSEC_ENUM_CAST(cur->type),
                 (ns->prefix) ? ns->prefix : BAD_CAST "null",
                 (ns->href) ? ns->href : BAD_CAST "null",
-                (((xmlNodePtr)ns->next)->ns &&
+                ((ns->next != NULL) &&
+                 ((xmlNodePtr)ns->next)->ns &&
                  ((xmlNodePtr)ns->next)->ns->prefix) ?
-                  ((xmlNodePtr)ns->next)->ns->prefix : BAD_CAST "null",
-                ((xmlNodePtr)ns->next)->name);
+                 ((xmlNodePtr)ns->next)->ns->prefix : BAD_CAST "null",
+                (ns->next != NULL) ? ((xmlNodePtr)ns->next)->name : BAD_CAST "null");
         }
     }
 }

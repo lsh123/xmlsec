@@ -23,7 +23,6 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/base64.h>
-#include <xmlsec/keyinfo.h>
 #include <xmlsec/membuf.h>
 #include <xmlsec/strings.h>
 #include <xmlsec/errors.h>
@@ -658,7 +657,7 @@ done:
  * @param base64LineSize the base64 max line size.
  * @param addLineBreaks the flag indicating if we need to add line breaks around base64 output.
  * @param writeFunc the pointer to the function that converts
- *                      xmlSecKeyData to  xmlSecKeyValueEc.
+ *                      xmlSecKeyData to xmlSecKeyValueEc.
  *
  * @return 0 on success or a negative value if an error occurs.
  */
@@ -791,7 +790,7 @@ xmlSecKeyDataEcPublicKeySplitComponents (xmlSecKeyValueEcPtr ecValue) {
     data = xmlSecBufferGetData(&(ecValue->pubkey));
     size = xmlSecBufferGetSize(&(ecValue->pubkey));
     if((data == NULL) || (size <= 1) || ((size % 2) != 1)) {
-        xmlSecInvalidSizeDataError("PublicKey", size, "ECPoint data should have an odd size > 1 ", NULL);
+        xmlSecInvalidSizeDataError("PublicKey", size, "ECPoint data should have an odd size > 1", NULL);
         return(-1);
     }
     if(data[0] != XMLSEC_ECKEYVALYU_ECPOINT_MAGIC_BYTE) {
@@ -801,7 +800,7 @@ xmlSecKeyDataEcPublicKeySplitComponents (xmlSecKeyValueEcPtr ecValue) {
     ++data;
     size = (size - 1) / 2;
 
-    /* set pub_y */
+    /* set pub_x */
     ret = xmlSecBufferSetData(&(ecValue->pub_x), data, size);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetData(pub_x)", NULL,
@@ -844,7 +843,7 @@ xmlSecKeyDataEcPublicKeyCombineComponents (xmlSecKeyValueEcPtr ecValue) {
     size = 1 + 2 * sizeKey; /* <magic byte> || x || y */
     ret = xmlSecBufferSetSize(&(ecValue->pubkey), size);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize(pubkeyy)", NULL,
+        xmlSecInternalError2("xmlSecBufferSetSize(pubkey)", NULL,
             "size=" XMLSEC_SIZE_FMT, size);
         return(-1);
     }
@@ -1004,7 +1003,7 @@ xmlSecKeyValueEcXmlWrite(xmlSecKeyValueEcPtr data, xmlNodePtr node,  int base64L
 
     ret = xmlSecBufferBase64NodeContentWrite(&(data->pubkey), cur, base64LineSize);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(q)", NULL);
+        xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(pubkey)", NULL);
         return(-1);
     }
     if(addLineBreaks) {
@@ -1027,7 +1026,7 @@ xmlSecKeyValueEcXmlWrite(xmlSecKeyValueEcPtr data, xmlNodePtr node,  int base64L
  *          <sequence minOccurs="0">
  *              <element name="P" type="ds:CryptoBinary"/>
  *              <element name="Q" type="ds:CryptoBinary"/>
- *              <element name="Generator"type="ds:CryptoBinary"/>
+ *              <element name="Generator" type="ds:CryptoBinary"/>
  *          </sequence>
  *          <element name="Public" type="ds:CryptoBinary"/>
  *          <sequence minOccurs="0">
@@ -1137,7 +1136,7 @@ done:
  * @param base64LineSize the base64 max line size.
  * @param addLineBreaks the flag indicating if we need to add line breaks around base64 output.
  * @param writeFunc the pointer to the function that converts
- *                      xmlSecKeyData to  xmlSecKeyValueDh.
+ *                      xmlSecKeyData to xmlSecKeyValueDh.
  *
  * @return 0 on success or a negative value if an error occurs.
  */
@@ -1432,7 +1431,7 @@ xmlSecKeyValueDhXmlWrite(xmlSecKeyValueDhPtr data, xmlNodePtr node, int base64Li
     }
     ret = xmlSecBufferBase64NodeContentWrite(&(data->public), cur, base64LineSize);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(g)", NULL);
+        xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(xmlSecNodeDHPublic)", NULL);
         return(-1);
     }
     if(addLineBreaks) {
@@ -1453,7 +1452,7 @@ xmlSecKeyValueDhXmlWrite(xmlSecKeyValueDhPtr data, xmlNodePtr node, int base64Li
         }
         ret = xmlSecBufferBase64NodeContentWrite(&(data->seed), cur, base64LineSize);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(g)", NULL);
+            xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(xmlSecNodeDHSeed)", NULL);
             return(-1);
         }
         if(addLineBreaks) {
@@ -1475,7 +1474,7 @@ xmlSecKeyValueDhXmlWrite(xmlSecKeyValueDhPtr data, xmlNodePtr node, int base64Li
         }
         ret = xmlSecBufferBase64NodeContentWrite(&(data->pgenCounter), cur, base64LineSize);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(g)", NULL);
+            xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(xmlSecNodeDHPgenCounter)", NULL);
             return(-1);
         }
         if(addLineBreaks) {
@@ -1594,7 +1593,7 @@ done:
  * @param base64LineSize the base64 max line size.
  * @param addLineBreaks the flag indicating if we need to add line breaks around base64 output.
  * @param writeFunc the pointer to the function that converts
- *                      xmlSecKeyData to  xmlSecKeyValueDsa.
+ *                      xmlSecKeyData to xmlSecKeyValueDsa.
  *
  * @return 0 on success or a negative value if an error occurs.
  */
@@ -1806,7 +1805,7 @@ xmlSecKeyValueDsaXmlRead(xmlSecKeyValueDsaPtr data, xmlNodePtr node) {
     }
 
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSAPgenCounter, xmlSecDSigNs))) {
-        xmlSecNotImplementedError("DSA key value pgencounter parameter is not supported");
+        xmlSecNotImplementedError("DSA key value PgenCounter parameter is not supported");
         cur = xmlSecGetNextElementNode(cur->next);
     }
 
@@ -2040,7 +2039,7 @@ done:
  * @param base64LineSize the base64 max line size.
  * @param addLineBreaks the flag indicating if we need to add line breaks around base64 output.
  * @param writeFunc the pointer to the function that converts
- *                      xmlSecKeyData to  xmlSecKeyValueRsa.
+ *                      xmlSecKeyData to xmlSecKeyValueRsa.
  *
  * @return 0 on success or a negative value if an error occurs.
  */
@@ -2127,13 +2126,13 @@ xmlSecKeyValueRsaInitialize(xmlSecKeyValueRsaPtr data) {
     }
     ret = xmlSecBufferInitialize(&(data->publicExponent), XMLSEC_KEY_DATA_RSA_INIT_BUF_SIZE);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferInitialize(q)", NULL);
+        xmlSecInternalError("xmlSecBufferInitialize(publicExponent)", NULL);
         xmlSecKeyValueRsaFinalize(data);
         return(-1);
     }
     ret = xmlSecBufferInitialize(&(data->privateExponent), XMLSEC_KEY_DATA_RSA_INIT_BUF_SIZE);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferInitialize(g)", NULL);
+        xmlSecInternalError("xmlSecBufferInitialize(privateExponent)", NULL);
         xmlSecKeyValueRsaFinalize(data);
         return(-1);
     }
@@ -2160,26 +2159,26 @@ xmlSecKeyValueRsaXmlRead(xmlSecKeyValueRsaPtr data, xmlNodePtr node) {
 
     cur = xmlSecGetNextElementNode(node->children);
 
-    /* first is REQUIRED  Modulus node. */
+    /* first is REQUIRED Modulus node. */
     if((cur == NULL) || (!xmlSecCheckNodeName(cur,  xmlSecNodeRSAModulus, xmlSecDSigNs))) {
-        xmlSecInvalidNodeError(cur, xmlSecNodeDSAP, NULL);
+        xmlSecInvalidNodeError(cur, xmlSecNodeRSAModulus, NULL);
         return(-1);
     }
     ret = xmlSecBufferBase64NodeContentRead(&(data->modulus), cur);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferBase64NodeContentRead(p)", NULL);
+        xmlSecInternalError("xmlSecBufferBase64NodeContentRead(modulus)", NULL);
         return(-1);
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
     /* next is REQUIRED Exponent node. */
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeRSAExponent, xmlSecDSigNs))) {
-        xmlSecInvalidNodeError(cur, xmlSecNodeDSAQ, NULL);
+        xmlSecInvalidNodeError(cur, xmlSecNodeRSAExponent, NULL);
         return(-1);
     }
     ret = xmlSecBufferBase64NodeContentRead(&(data->publicExponent), cur);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferBase64NodeContentRead(q)", NULL);
+        xmlSecInternalError("xmlSecBufferBase64NodeContentRead(exponent)", NULL);
         return(-1);
     }
     cur = xmlSecGetNextElementNode(cur->next);
@@ -2189,7 +2188,7 @@ xmlSecKeyValueRsaXmlRead(xmlSecKeyValueRsaPtr data, xmlNodePtr node) {
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeRSAPrivateExponent, xmlSecNs))) {
         ret = xmlSecBufferBase64NodeContentRead(&(data->privateExponent), cur);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecBufferBase64NodeContentRead(x)", NULL);
+            xmlSecInternalError("xmlSecBufferBase64NodeContentRead(privateExponent)", NULL);
             return(-1);
         }
         cur = xmlSecGetNextElementNode(cur->next);

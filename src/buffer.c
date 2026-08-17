@@ -35,9 +35,9 @@ static xmlSecSize gInitialSize = 1024;
 
 /**
  * @brief Sets the default buffer allocation mode.
- * @details Sets new global default allocation mode and minimal intial size.
+ * @details Sets new global default allocation mode and minimal initial size.
  * @param defAllocMode the new default buffer allocation mode.
- * @param defInitialSize the new default buffer minimal intial size.
+ * @param defInitialSize the new default buffer minimal initial size.
  */
 void
 xmlSecBufferSetDefaultAllocMode(xmlSecAllocMode defAllocMode, xmlSecSize defInitialSize) {
@@ -52,7 +52,7 @@ xmlSecBufferSetDefaultAllocMode(xmlSecAllocMode defAllocMode, xmlSecSize defInit
  * @details Allocates and initializes new memory buffer with given size.
  * Caller is responsible for calling #xmlSecBufferDestroy function
  * to free the buffer.
- * @param size the intial size.
+ * @param size the initial size.
  * @return pointer to newly allocated buffer or NULL if an error occurs.
  */
 xmlSecBufferPtr
@@ -267,11 +267,23 @@ xmlSecBufferSetMaxSize(xmlSecBufferPtr buf, xmlSecSize size) {
 
     switch(buf->allocMode) {
         case xmlSecAllocModeExact:
+            if(size > XMLSEC_SIZE_MAX - 8) {
+                xmlSecInvalidSizeError("size", size, (XMLSEC_SIZE_MAX - 8), NULL);
+                return(-1);
+            }
             newSize = size + 8;
             break;
         case xmlSecAllocModeDouble:
+            if(size > ((XMLSEC_SIZE_MAX - 32) / 2)) {
+                xmlSecInvalidSizeError("size", size, ((XMLSEC_SIZE_MAX - 32) / 2), NULL);
+                return(-1);
+            }
             newSize = 2 * size + 32;
             break;
+        default:
+            xmlSecInvalidIntegerDataError("allocMode", (int)(buf->allocMode),
+                "xmlSecAllocModeExact or xmlSecAllocModeDouble", NULL);
+            return(-1);
     }
 
     if(newSize < gInitialSize) {
@@ -334,6 +346,10 @@ xmlSecBufferAppend(xmlSecBufferPtr buf, const xmlSecByte* data, xmlSecSize size)
 
     if(size > 0) {
         xmlSecAssert2(data != NULL, -1);
+        if(buf->size > XMLSEC_SIZE_MAX - size) {
+            xmlSecInvalidSizeError("size", size, (XMLSEC_SIZE_MAX - buf->size), NULL);
+            return(-1);
+        }
 
         ret = xmlSecBufferSetMaxSize(buf, buf->size + size);
         if(ret < 0) {
@@ -365,6 +381,10 @@ xmlSecBufferPrepend(xmlSecBufferPtr buf, const xmlSecByte* data, xmlSecSize size
 
     if(size > 0) {
         xmlSecAssert2(data != NULL, -1);
+        if(buf->size > XMLSEC_SIZE_MAX - size) {
+            xmlSecInvalidSizeError("size", size, (XMLSEC_SIZE_MAX - buf->size), NULL);
+            return(-1);
+        }
 
         ret = xmlSecBufferSetMaxSize(buf, buf->size + size);
         if(ret < 0) {
@@ -651,7 +671,7 @@ xmlSecBufferHexRead(xmlSecBufferPtr buf, const xmlChar* hexStr) {
         (*data) = xmlSecFromHex2(ch1, ch2);
     }
 
-    /* sucess */
+    /* success */
     return(0);
 }
 
@@ -700,6 +720,8 @@ static int      xmlSecBufferIOClose                             (xmlSecBufferPtr
  */
 xmlOutputBufferPtr
 xmlSecBufferCreateOutputBuffer(xmlSecBufferPtr buf) {
+    xmlSecAssert2(buf != NULL, NULL);
+
     return(xmlOutputBufferCreateIO((xmlOutputWriteCallback)xmlSecBufferIOWrite,
                                      (xmlOutputCloseCallback)xmlSecBufferIOClose,
                                      buf,

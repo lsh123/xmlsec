@@ -193,7 +193,7 @@ typedef int                     (*xmlSecCryptoAppDefaultKeysMngrSaveMethod)
 /**
  * @brief Reads a cert from a file and adds it to the keys manager.
  * @details Reads cert from @p filename and adds to the list of trusted or known
- * untrusted certs in @p store.
+ * untrusted certs in @p mngr.
  * @param mngr the keys manager.
  * @param filename the certificate file.
  * @param format the certificate file format.
@@ -208,7 +208,7 @@ typedef int                     (*xmlSecCryptoAppKeysMngrCertLoadMethod)(xmlSecK
 /**
  * @brief Reads a cert from memory and adds it to the keys manager.
  * @details Reads cert from @p data and adds to the list of trusted or known
- * untrusted certs in @p store.
+ * untrusted certs in @p mngr.
  * @param mngr the keys manager.
  * @param data the certificate data.
  * @param dataSize the certificate data size.
@@ -224,7 +224,7 @@ typedef int                     (*xmlSecCryptoAppKeysMngrCertLoadMemoryMethod)(x
                                                                          xmlSecKeyDataType type);
 /**
  * @brief Reads CRLs from a file and adds to the keys manager.
- * @details Reads crls from @p filename and adds to the list of crls in @p store.
+ * @details Reads crls from @p filename and adds to the list of crls in @p mngr.
  * @param mngr the keys manager.
  * @param filename the CRL file.
  * @param format the CRL file format.
@@ -235,7 +235,7 @@ typedef int                     (*xmlSecCryptoAppKeysMngrCrlLoadMethod)(xmlSecKe
                                                                          xmlSecKeyDataFormat format);
 /**
  * @brief Reads CRLs from memory and adds to the keys manager.
- * @details Reads crls from @p data and adds to the list of crls in @p store.
+ * @details Reads crls from @p data and adds to the list of crls in @p mngr.
  * @param mngr the keys manager.
  * @param data the CRL data.
  * @param dataSize the CRL data size.
@@ -345,7 +345,7 @@ typedef xmlSecKeyPtr            (*xmlSecCryptoAppPkcs12LoadMemoryMethod)(const x
                                                                          void* pwdCallbackCtx);
 /**
  * @brief Reads a cert from a file and adds it to the key.
- * @details Reads the certificate from $@p filename and adds it to key.
+ * @details Reads the certificate from @p filename and adds it to key.
  * @param key the pointer to key.
  * @param filename the certificate filename.
  * @param format the certificate file format.
@@ -401,7 +401,7 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoKeyDataGetKlassMethod            keyDataXdhGetKlass;  /**< the method to get pointer to XDH key data klass. */
     xmlSecCryptoKeyDataGetKlassMethod            keyDataX509GetKlass;  /**< the method to get pointer to X509 key data klass. */
     xmlSecCryptoKeyDataGetKlassMethod            keyDataRawX509CertGetKlass;  /**< the method to get pointer to raw X509 cert key data klass. */
-    xmlSecCryptoKeyDataGetKlassMethod            keyDataDEREncodedKeyValueGetKlass;  /**< the method to get pointer to X509 key data klass. */
+    xmlSecCryptoKeyDataGetKlassMethod            keyDataDEREncodedKeyValueGetKlass;  /**< the method to get pointer to DER encoded key value key data klass. */
 
     /* Key data store ids */
     xmlSecCryptoKeyDataStoreGetKlassMethod       x509StoreGetKlass;  /**< the method to get pointer to X509 key data store. */
@@ -429,7 +429,7 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod          transformChaCha20GetKlass;  /**< the method to get pointer to ChaCha20 stream cipher encryption transform. */
     xmlSecCryptoTransformGetKlassMethod          transformChaCha20Poly1305GetKlass;  /**< the method to get pointer to ChaCha20-Poly1305 AEAD encryption transform. */
 
-    xmlSecCryptoTransformGetKlassMethod          transformConcatKdfGetKlass;  /**< the method to get pointer to PBKDF2 KDF transform. */
+    xmlSecCryptoTransformGetKlassMethod          transformConcatKdfGetKlass;  /**< the method to get pointer to ConcatKDF KDF transform. */
 
     xmlSecCryptoTransformGetKlassMethod          transformDes3CbcGetKlass;  /**< the method to get pointer to Triple DES encryption transform. */
     xmlSecCryptoTransformGetKlassMethod          transformKWDes3GetKlass;  /**< the method to get pointer to Triple DES key wrapper transform. */
@@ -494,17 +494,17 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod          transformRsaSha384GetKlass;  /**< the method to get pointer to RSA-SHA2-384 signature transform. */
     xmlSecCryptoTransformGetKlassMethod          transformRsaSha512GetKlass;  /**< the method to get pointer to RSA-SHA2-512 signature transform. */
 
-    xmlSecCryptoTransformGetKlassMethod          transformRsaPssSha1GetKlass;  /**< the method to get pointer to RSA-PSS-HA1 signature transform. */
+    xmlSecCryptoTransformGetKlassMethod          transformRsaPssSha1GetKlass;  /**< the method to get pointer to RSA-PSS-SHA1 signature transform. */
 
     xmlSecCryptoTransformGetKlassMethod          transformRsaPssSha224GetKlass;  /**< the method to get pointer to RSA-PSS-SHA2-224 signature transform. */
     xmlSecCryptoTransformGetKlassMethod          transformRsaPssSha256GetKlass;  /**< the method to get pointer to RSA-PSS-SHA2-256 signature transform. */
     xmlSecCryptoTransformGetKlassMethod          transformRsaPssSha384GetKlass;  /**< the method to get pointer to RSA-PSS-SHA2-384 signature transform. */
     xmlSecCryptoTransformGetKlassMethod          transformRsaPssSha512GetKlass;  /**< the method to get pointer to RSA-PSS-SHA2-512 signature transform. */
 
-    xmlSecCryptoTransformGetKlassMethod          transformRsaPssSha3_224GetKlass;  /**< the method to get pointer to RSA-PSS-SHA2-224 signature transform. */
-    xmlSecCryptoTransformGetKlassMethod          transformRsaPssSha3_256GetKlass;  /**< the method to get pointer to RSA-PSS-SHA2-256 signature transform. */
-    xmlSecCryptoTransformGetKlassMethod          transformRsaPssSha3_384GetKlass;  /**< the method to get pointer to RSA-PSS-SHA2-384 signature transform. */
-    xmlSecCryptoTransformGetKlassMethod          transformRsaPssSha3_512GetKlass;  /**< the method to get pointer to RSA-PSS-SHA2-512 signature transform. */
+    xmlSecCryptoTransformGetKlassMethod          transformRsaPssSha3_224GetKlass;  /**< the method to get pointer to RSA-PSS-SHA3-224 signature transform. */
+    xmlSecCryptoTransformGetKlassMethod          transformRsaPssSha3_256GetKlass;  /**< the method to get pointer to RSA-PSS-SHA3-256 signature transform. */
+    xmlSecCryptoTransformGetKlassMethod          transformRsaPssSha3_384GetKlass;  /**< the method to get pointer to RSA-PSS-SHA3-384 signature transform. */
+    xmlSecCryptoTransformGetKlassMethod          transformRsaPssSha3_512GetKlass;  /**< the method to get pointer to RSA-PSS-SHA3-512 signature transform. */
 
     xmlSecCryptoTransformGetKlassMethod          transformRsaPkcs1GetKlass;  /**< the method to get pointer to RSA-PKCS1_5 key transport transform. */
     xmlSecCryptoTransformGetKlassMethod          transformRsaOaepGetKlass;  /**< the method to get pointer to RSA-OAEP key transport transform (XMLEnc 1.0). */
@@ -513,7 +513,7 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod          transformSLHDSA_SHA2_128fGetKlass;  /**< the method to get pointer to SLH-DSA-SHA2-128f signature transform. */
     xmlSecCryptoTransformGetKlassMethod          transformSLHDSA_SHA2_128sGetKlass;  /**< the method to get pointer to SLH-DSA-SHA2-128s signature transform. */
     xmlSecCryptoTransformGetKlassMethod          transformSLHDSA_SHA2_192fGetKlass;  /**< the method to get pointer to SLH-DSA-SHA2-192f signature transform. */
-    xmlSecCryptoTransformGetKlassMethod          transformSLHDSA_SHA2_192sGetKlass;  /**< the method to get pointer to SLH-DSA-SHA2-192f signature transform. */
+    xmlSecCryptoTransformGetKlassMethod          transformSLHDSA_SHA2_192sGetKlass;  /**< the method to get pointer to SLH-DSA-SHA2-192s signature transform. */
     xmlSecCryptoTransformGetKlassMethod          transformSLHDSA_SHA2_256fGetKlass;  /**< the method to get pointer to SLH-DSA-SHA2-256f signature transform. */
     xmlSecCryptoTransformGetKlassMethod          transformSLHDSA_SHA2_256sGetKlass;  /**< the method to get pointer to SLH-DSA-SHA2-256s signature transform. */
 
@@ -540,7 +540,7 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoAppShutdownMethod                cryptoAppShutdown;  /**< the default crypto engine shutdown method. */
     xmlSecCryptoAppDefaultKeysMngrInitMethod     cryptoAppDefaultKeysMngrInit;  /**< the default keys manager init method. */
     xmlSecCryptoAppDefaultKeysMngrAdoptKeyMethod cryptoAppDefaultKeysMngrAdoptKey;  /**< the default keys manager adopt key method. */
-    xmlSecCryptoAppDefaultKeysMngVerifyKeyMethod cryptoAppDefaultKeysMngrVerifyKey;  /**< the defualt keys manager verify key method. */
+    xmlSecCryptoAppDefaultKeysMngVerifyKeyMethod cryptoAppDefaultKeysMngrVerifyKey;  /**< the default keys manager verify key method. */
     xmlSecCryptoAppDefaultKeysMngrLoadMethod     cryptoAppDefaultKeysMngrLoad;  /**< the default keys manager load method. */
     xmlSecCryptoAppDefaultKeysMngrSaveMethod     cryptoAppDefaultKeysMngrSave;  /**< the default keys manager save method. */
     xmlSecCryptoAppKeysMngrCertLoadMethod        cryptoAppKeysMngrCertLoad;  /**< the default keys manager file cert load method. */
@@ -550,7 +550,7 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoAppKeysMngrCrlLoadMemoryMethod   cryptoAppKeysMngrCrlLoadMemory;  /**< the default keys manager memory crl load method. */
     xmlSecCryptoAppKeyLoadMethod                 cryptoAppKeyLoad;  /**< the key file load method. */
     xmlSecCryptoAppKeyLoadExMethod               cryptoAppKeyLoadEx;  /**< the key file load method. */
-    xmlSecCryptoAppKeyLoadMemoryMethod           cryptoAppKeyLoadMemory;  /**< the meory key load method. */
+    xmlSecCryptoAppKeyLoadMemoryMethod           cryptoAppKeyLoadMemory;  /**< the memory key load method. */
     xmlSecCryptoAppPkcs12LoadMethod              cryptoAppPkcs12Load;  /**< the pkcs12 file load method. */
     xmlSecCryptoAppPkcs12LoadMemoryMethod        cryptoAppPkcs12LoadMemory;  /**< the memory pkcs12 load method. */
     xmlSecCryptoAppKeyCertLoadMethod             cryptoAppKeyCertLoad;  /**< the cert file load method. */
@@ -685,7 +685,7 @@ struct _xmlSecCryptoDLFunctions {
 
 
 /**
-* @brief Shift bits if node present but and not empty.
+* @brief Shift bits if node present and not empty.
 */
 #define XMLSEC_X509DATA_SHIFT_IF_NOT_EMPTY                      16
 

@@ -168,8 +168,8 @@ const xmlChar * xmlSecGetDefaultCrypto(void) {
  * @param subminor the subminor version number.
  * @param mode the version check mode.
  *
- * @return 1 if the loaded xmlsec library version is OK to use
- * 0 if it is not or a negative value if an error occurs.
+ * @return 1 if the loaded xmlsec library version is OK to use,
+ * 0 if it is not.
  */
 int
 xmlSecCheckVersionExt(int major, int minor, int subminor, xmlSecCheckVersionMode mode) {

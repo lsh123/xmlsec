@@ -380,6 +380,7 @@ xmlSecCryptoDLShutdown(void) {
     int ret;
 
     xmlSecPtrListFinalize(&gXmlSecCryptoDLLibraries);
+    gXmlSecCryptoDLFunctions = NULL;
 
 #ifdef XMLSEC_DL_LIBLTDL
     ret = lt_dlexit ();
@@ -601,7 +602,6 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
      *
       *****************************************************************************/
     XMLSEC_REGISTER_TRANSFORM(Aes128Cbc);                           // transformAes128CbcGetKlass
-    XMLSEC_REGISTER_TRANSFORM(Aes192Cbc);                           // transformAes192CbcGetKlass
     XMLSEC_REGISTER_TRANSFORM(Aes192Cbc);                           // transformAes192CbcGetKlass
     XMLSEC_REGISTER_TRANSFORM(Aes256Cbc);                           // transformAes256CbcGetKlass
 

@@ -23,7 +23,6 @@
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/base64.h>
-#include <xmlsec/keyinfo.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/private.h>
 #include <xmlsec/x509.h>
@@ -134,7 +133,7 @@ xmlSecKeyDataIdsRegister(xmlSecKeyDataId id) {
 
 /**
  * @brief Registers a key data klass in the global list (disabled).
- * @details Registers @p id in the global list of key data klasses and but DO NOT enable this key data.
+ * @details Registers @p id in the global list of key data klasses but DO NOT enable this key data.
  * @param id the key data klass.
  *
  * @return 0 on success or a negative value if an error occurs.
@@ -170,12 +169,12 @@ xmlSecKeyDataIdsRegisterDefault(void) {
     }
 
     if(xmlSecKeyDataIdsRegister(xmlSecKeyDataRetrievalMethodId) < 0) {
-        xmlSecInternalError("xmlSecKeyDataIdsRegister(xmlSecKeyDataRetrievalMethodId", NULL);
+        xmlSecInternalError("xmlSecKeyDataIdsRegister(xmlSecKeyDataRetrievalMethodId)", NULL);
         return(-1);
     }
 
     if(xmlSecKeyDataIdsRegister(xmlSecKeyDataKeyInfoReferenceId) < 0) {
-        xmlSecInternalError("xmlSecKeyDataIdsRegister(xmlSecKeyDataKeyInfoReferenceId", NULL);
+        xmlSecInternalError("xmlSecKeyDataIdsRegister(xmlSecKeyDataKeyInfoReferenceId)", NULL);
         return(-1);
     }
 
@@ -586,7 +585,8 @@ xmlSecKeyDataIdListFindByNode(xmlSecPtrListPtr list, const xmlChar* nodeName,
 
         if(((usage & dataId->usage) != 0) &&
            xmlStrEqual(nodeName, dataId->dataNodeName) &&
-           xmlStrEqual(nodeNs, dataId->dataNodeNs)) {
+           ((nodeNs == NULL && dataId->dataNodeNs == NULL) ||
+            xmlStrEqual(nodeNs, dataId->dataNodeNs))) {
 
            return(dataId);
         }
@@ -735,6 +735,7 @@ xmlSecKeyDataStoreCreate(xmlSecKeyDataStoreId id)  {
     int ret;
 
     xmlSecAssert2(id != NULL, NULL);
+    xmlSecAssert2(id->klassSize >= sizeof(xmlSecKeyDataStoreKlass), NULL);
     xmlSecAssert2(id->objSize > 0, NULL);
 
     /* Allocate a new xmlSecKeyDataStore and fill the fields. */
@@ -764,7 +765,7 @@ xmlSecKeyDataStoreCreate(xmlSecKeyDataStoreId id)  {
  * @brief Destroys a key data store.
  * @details Destroys the key data store created with #xmlSecKeyDataStoreCreate
  * function.
- * @param store the pointer to the key data store..
+ * @param store the pointer to the key data store.
  */
 void
 xmlSecKeyDataStoreDestroy(xmlSecKeyDataStorePtr store) {

@@ -223,7 +223,7 @@ xmlSecTransformConcatKdfParamsRead(xmlSecTransformConcatKdfParamsPtr params, xml
     }
     ret = xmlSecTransformConcatKdfParamsReadsBitsAttr(&(params->bufSuppPrivInfo), node, xmlSecNodeConcatKDFAttrSuppPrivInfo);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformConcatKdfParamsReadsBitsAttr(ASuppPrivInfo)", NULL);
+        xmlSecInternalError("xmlSecTransformConcatKdfParamsReadsBitsAttr(SuppPrivInfo)", NULL);
         return(-1);
     }
 
@@ -344,7 +344,7 @@ xmlSecTransformReadKeyInfoNode(xmlSecKeyDataType keyType, xmlNodePtr node,
         goto done;
     }
     if(!xmlSecKeyMatch(key, NULL, &(keyInfoCtx.keyReq))) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_KEY_NOT_FOUND, xmlSecNodeGetName(node), "key doesn't match requiremetns");
+        xmlSecOtherError(XMLSEC_ERRORS_R_KEY_NOT_FOUND, xmlSecNodeGetName(node), "key doesn't match requirements");
         goto done;
     }
 
@@ -549,7 +549,7 @@ xmlSecTransformKAMRead(xmlSecTransformKAMPtr params, xmlNodePtr node, xmlSecTran
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
-    /* if there is something left than it's an error */
+    /* if there is something left, then it's an error */
     if(cur != NULL) {
         xmlSecUnexpectedNodeError(cur,  NULL);
         return(-1);
@@ -628,7 +628,7 @@ xmlSecTransformKAMWrite(xmlSecTransformKAMPtr params, xmlNodePtr node, xmlSecTra
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
-    /* if there is something left than it's an error */
+    /* if there is something left, then it's an error */
     if(cur != NULL) {
         xmlSecUnexpectedNodeError(cur,  NULL);
         goto done;
@@ -1325,7 +1325,7 @@ xmlSecTransformPbkdf2ParamsReadSalt(xmlSecTransformPbkdf2ParamsPtr params, xmlNo
     xmlSecAssert2(params != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
 
-    /* first and onluy node is required Salt / Specified (Salt / OtherSource is not supported)*/
+    /* first and only node is required Salt / Specified (Salt / OtherSource is not supported)*/
     cur  = xmlSecGetNextElementNode(node->children);
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodePbkdf2SaltSpecified, xmlSecEnc11Ns))) {
         xmlSecInvalidNodeError(cur, xmlSecNodePbkdf2SaltSpecified, NULL);

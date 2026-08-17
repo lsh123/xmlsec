@@ -30,7 +30,7 @@
 
 /******************************************************************************
  *
- * XML Relationshi transform
+ * XML Relationship transform
  *
  *  * [Relationship transform](http://standards.iso.org/ittf/PubliclyAvailableStandards/c061796_ISO_IEC_29500-2_2012.zip)
  *

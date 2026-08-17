@@ -33,7 +33,7 @@
 #include "cast_helpers.h"
 
 
-static const xmlChar*    g_xmlsec_xmltree_default_linefeed = xmlSecStringCR;
+static const xmlChar*    g_xmlsec_xmltree_default_linefeed = xmlSecStringLF;
 
 /**
  * @brief Gets the current default linefeed.
@@ -84,7 +84,7 @@ xmlSecGetNodeContentAndTrim(const xmlNodePtr cur) {
     while((bb <= ee) && isspace(*ee)) { --ee; }
     *(ee + 1) = '\0';
 
-    /* move string to the beggining */
+    /* move string to the beginning */
     if(content != bb) {
         memmove(content, bb, (size_t)xmlStrlen(bb) + 1);
     }
@@ -992,7 +992,7 @@ xmlSecIsEmptyString(const xmlChar* str) {
 }
 
 
-/* Helpers  for XML Tree traversal */
+/* Helpers for XML Tree traversal */
 #define xmlSecXmlNodePtrListId  (&xmlSecXmlNodePtrListKlass)
 static xmlSecPtrListKlass xmlSecXmlNodePtrListKlass = {
     BAD_CAST "xml-node-ptr-list",
@@ -1079,7 +1079,7 @@ xmlSecDepthFirstTreeWalk(xmlNodePtr node, xmlSecTreeWalkCallback callback, void*
  * @details Encodes the @p str (e.g. replaces '&' with '&amp;') and writes it to @p fd.
  * @param fd the file descriptor to write the XML string to
  * @param str the string
- * @return he number of bytes transmitted or a negative value if an error occurs.
+ * @return the number of bytes transmitted or a negative value if an error occurs.
  */
 int
 xmlSecPrintXmlString(FILE * fd, const xmlChar * str) {
@@ -1195,7 +1195,7 @@ xmlSecQName2IntegerGetInfo(xmlSecQName2IntegerInfoConstPtr info, int intValue) {
 
 /**
  * @brief Maps a QName to an integer value.
- * @details Maps qname qname to an integer and returns it in @p intValue.
+ * @details Maps a qname to an integer and returns it in @p intValue.
  * @param info the qname<->integer mapping information.
  * @param qnameHref the qname href value.
  * @param qnameLocalPart the qname local part value.
@@ -1411,7 +1411,7 @@ xmlSecQName2IntegerNodeWrite(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr no
 
 /**
  * @brief Reads an attribute's QName value and converts it to an integer.
- * @details Gets the value of @p attrName atrtibute from @p node and converts it to integer
+ * @details Gets the value of @p attrName attribute from @p node and converts it to integer
  * according to @p info.
  * @param info the qname<->integer mapping information.
  * @param node the element node.
@@ -1612,7 +1612,7 @@ xmlSecQName2BitMaskGetBitMask(xmlSecQName2BitMaskInfoConstPtr info,
  * @param info the qname<->integer mapping information.
  * @param node the pointer to node.
  * @param qname the qname string.
- * @param mask the pointer to result msk value.
+ * @param mask the pointer to result mask value.
  * @return 0 on success or a negative value if an error occurs,
  */
 int

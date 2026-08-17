@@ -117,7 +117,7 @@ xmlSecKeyDataAesGetKlass(void) {
 /**
  * @brief The ConcatKDF key data klass.
  * @return ConcatKDF key data klass or NULL if an error occurs
- * (xmlsec-crypto library is not loaded or the HMAC key data
+ * (xmlsec-crypto library is not loaded or the ConcatKDF key data
  * klass is not implemented).
  */
 xmlSecKeyDataId
@@ -139,7 +139,7 @@ xmlSecKeyDataConcatKdfGetKlass(void) {
 xmlSecKeyDataId
 xmlSecKeyDataDesGetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataDesGetKlass == NULL)) {
-        xmlSecNotImplementedError2(missingMethodError, "keyDataDesId");
+        xmlSecNotImplementedError2(missingMethodError, "keyDataDesGetKlass");
         return(xmlSecKeyDataIdUnknown);
     }
 
@@ -277,7 +277,7 @@ xmlSecKeyDataHkdfGetKlass(void) {
 /**
  * @brief The PBKDF2 key data klass.
  * @return PBKDF2 key data klass or NULL if an error occurs
- * (xmlsec-crypto library is not loaded or the HMAC key data
+ * (xmlsec-crypto library is not loaded or the PBKDF2 key data
  * klass is not implemented).
  */
 xmlSecKeyDataId
@@ -417,7 +417,7 @@ xmlSecKeyDataRawX509CertGetKlass(void) {
 
 /**
  * @brief The DEREncodedKeyValue key data klass.
- * @return X5DEREncodedKeyValue09 key data klass or NULL if an error occurs
+ * @return DEREncodedKeyValue key data klass or NULL if an error occurs
  * (xmlsec-crypto library is not loaded or the DEREncodedKeyValue key data
  * klass is not implemented).
  */
@@ -445,7 +445,7 @@ xmlSecKeyDataStoreId
 xmlSecX509StoreGetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->x509StoreGetKlass == NULL)) {
         xmlSecNotImplementedError2(missingMethodError, "x509StoreGetKlass");
-        return(xmlSecKeyStoreIdUnknown);
+        return(xmlSecKeyDataStoreIdUnknown);
     }
 
     return(xmlSecCryptoDLGetFunctions()->x509StoreGetKlass());
@@ -556,8 +556,8 @@ xmlSecTransformAes256GcmGetKlass(void)
 }
 
 /**
- * @brief ConcatKDF key derivaton transform klass.
- * @return pointer to ConcatKDF key derivaton transform or NULL if an error
+ * @brief ConcatKDF key derivation transform klass.
+ * @return pointer to ConcatKDF key derivation transform or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -574,7 +574,7 @@ xmlSecTransformConcatKdfGetKlass(void)
 
 /**
  * @brief The AES-128 key wrapper transform klass.
- * @return AES-128 kew wrapper transform klass or NULL if an error
+ * @return AES-128 key wrapper transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -590,7 +590,7 @@ xmlSecTransformKWAes128GetKlass(void) {
 
 /**
  * @brief The AES-192 key wrapper transform klass.
- * @return AES-192 kew wrapper transform klass or NULL if an error
+ * @return AES-192 key wrapper transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -606,7 +606,7 @@ xmlSecTransformKWAes192GetKlass(void) {
 
 /**
  * @brief The AES-256 key wrapper transform klass.
- * @return AES-256 kew wrapper transform klass or NULL if an error
+ * @return AES-256 key wrapper transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1255,8 +1255,8 @@ xmlSecTransformMLKEM1024GetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->transformMLKEM1024GetKlass());
 }
 /**
- * @brief PBKDF2 key derivaton transform klass.
- * @return pointer to PBKDF2 key derivaton transform or NULL if an error
+ * @brief PBKDF2 key derivation transform klass.
+ * @return pointer to PBKDF2 key derivation transform or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1483,7 +1483,7 @@ xmlSecTransformRsaPssSha512GetKlass(void) {
 
 
 /**
- * @brief The RSA-PSS-SHA2-224 signature transform klass.
+ * @brief The RSA-PSS-SHA3-224 signature transform klass.
  * @return RSA-PSS-SHA3-224 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
@@ -1499,7 +1499,7 @@ xmlSecTransformRsaPssSha3_224GetKlass(void) {
 }
 
 /**
- * @brief The RSA-PSS-SHA2-256 signature transform klass.
+ * @brief The RSA-PSS-SHA3-256 signature transform klass.
  * @return RSA-PSS-SHA3-256 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
@@ -1515,7 +1515,7 @@ xmlSecTransformRsaPssSha3_256GetKlass(void) {
 }
 
 /**
- * @brief The RSA-PSS-SHA2-384 signature transform klass.
+ * @brief The RSA-PSS-SHA3-384 signature transform klass.
  * @return RSA-PSS-SHA3-384 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
@@ -1531,7 +1531,7 @@ xmlSecTransformRsaPssSha3_384GetKlass(void) {
 }
 
 /**
- * @brief The RSA-PSS-SHA2-512 signature transform klass.
+ * @brief The RSA-PSS-SHA3-512 signature transform klass.
  * @return RSA-PSS-SHA3-512 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
@@ -2263,7 +2263,7 @@ xmlSecCryptoAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
 
 /**
  * @brief Loads a certificate and adds it to a key.
- * @details Reads the certificate from $@p filename and adds it to key.
+ * @details Reads the certificate from @p filename and adds it to key.
  * @param key the pointer to key.
  * @param filename the certificate filename.
  * @param format the certificate file format.
@@ -2305,7 +2305,7 @@ xmlSecCryptoAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSe
  */
 void*
 xmlSecCryptoAppGetDefaultPwdCallback(void) {
-    if(xmlSecCryptoDLGetFunctions() == NULL) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppDefaultPwdCallback == NULL)) {
         xmlSecNotImplementedError2(missingMethodError, "cryptoAppDefaultPwdCallback");
         return(NULL);
     }

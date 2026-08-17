@@ -33,7 +33,7 @@
  * @details The implementation of XPath "here()" function.
  * See xmlXPtrHereFunction() in xpointer.c. the only change is that
  * we return NodeSet instead of NodeInterval.
- * @param ctxt the ponter to XPath context.
+ * @param ctxt the pointer to XPath context.
  * @param nargs the arguments number.
  */
 static void
@@ -245,7 +245,7 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
         return(NULL);
     }
 
-    /* sometime LibXML2 returns an empty nodeset or just NULL, we want
+    /* sometimes LibXML2 returns an empty nodeset or just NULL, we want
     to reserve NULL for our own purposes so we simply create an empty
     node set here */
     if(xpathObj->nodesetval == NULL) {

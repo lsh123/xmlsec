@@ -15,6 +15,7 @@
 
 #include <libxml/tree.h>
 #include <libxml/parser.h>
+#include <stdint.h>
 
 #include <xmlsec/version.h>
 #include <xmlsec/exports.h>
@@ -135,8 +136,7 @@ XMLSEC_EXPORT xmlSecSize                        xmlSecStrlen            (const x
 /**
  * @brief Checks if loaded library version exactly matches.
  * @details Macro. Returns 1 if the loaded xmlsec library version exactly matches
- * the one used to compile the caller, 0 if it does not or a negative
- * value if an error occurs.
+ * the one used to compile the caller, 0 if it does not.
  */
 #define xmlSecCheckVersionExact()       \
     xmlSecCheckVersionExt(XMLSEC_VERSION_MAJOR, XMLSEC_VERSION_MINOR, XMLSEC_VERSION_SUBMINOR, xmlSecCheckVersionExactMatch)
@@ -144,8 +144,7 @@ XMLSEC_EXPORT xmlSecSize                        xmlSecStrlen            (const x
 /**
  * @brief Checks if loaded library version is ABI compatible.
  * @details Macro. Returns 1 if the loaded xmlsec library version ABI compatible with
- * the one used to compile the caller, 0 if it does not or a negative
- * value if an error occurs.
+ * the one used to compile the caller, 0 if it does not.
  */
 #define xmlSecCheckVersion()    \
     xmlSecCheckVersionExt(XMLSEC_VERSION_MAJOR, XMLSEC_VERSION_MINOR, XMLSEC_VERSION_SUBMINOR, xmlSecCheckVersionABICompatible)

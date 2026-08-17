@@ -14,7 +14,7 @@
 
 #include <xmlsec/xmlsec.h>
 
-/** THIS IS FOR EXPERIEMENTAL FEATURES, DO NOT USE IN PRODUCTION */
+/** THIS IS FOR EXPERIMENTAL FEATURES, DO NOT USE IN PRODUCTION */
 #define XMLSEC_ALKESEY_EXPERIMENTAL_2025_12   "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#"
 
 /******************************************************************************
@@ -381,7 +381,7 @@ const xmlChar xmlSecHrefXDHKeyValue[]           = XMLSEC_ALKESEY_EXPERIMENTAL_20
 
 /******************************************************************************
  *
- * ECDSA sigantures strings
+ * ECDSA signatures strings
  *
  * https://www.ietf.org/rfc/rfc9231.html@p name-ecdsa-sha-ecdsa-ripemd160-e
  *
@@ -426,7 +426,7 @@ const xmlChar xmlSecHrefMLDSAKeyValue[]       = XMLSEC_ALKESEY_EXPERIMENTAL_2025
 
 /******************************************************************************
  *
- * ML-DSA signature trasnsform strings
+ * ML-DSA signature transform strings
  *
   *****************************************************************************/
 const xmlChar xmlSecMLDSANs[]                 = XMLSEC_ALKESEY_EXPERIMENTAL_2025_12;
@@ -475,7 +475,7 @@ const xmlChar xmlSecHrefSLHDSAKeyValue[]      = XMLSEC_ALKESEY_EXPERIMENTAL_2025
 
 /******************************************************************************
  *
- * SLH-DSA signature trasnsform strings
+ * SLH-DSA signature transform strings
  *
   *****************************************************************************/
 const xmlChar xmlSecSLHDSANs[]                = XMLSEC_ALKESEY_EXPERIMENTAL_2025_12;
@@ -761,7 +761,7 @@ const xmlChar xmlSecHrefMgf1Sha256[]            = "http://www.w3.org/2009/xmlenc
 const xmlChar xmlSecHrefMgf1Sha384[]            = "http://www.w3.org/2009/xmlenc11#mgf1sha384";
 const xmlChar xmlSecHrefMgf1Sha512[]            = "http://www.w3.org/2009/xmlenc11#mgf1sha512";
 
-/* RSS PSS https://www.rfc-editor.org/rfc/rfc9231.txt */
+/* RSA PSS https://www.rfc-editor.org/rfc/rfc9231.txt */
 const xmlChar xmlSecNameRsaPssSha1[]            = "rsa-pss-sha1";
 const xmlChar xmlSecHrefRsaPssSha1[]            = "http://www.w3.org/2007/05/xmldsig-more#sha1-rsa-MGF1";
 
@@ -941,3 +941,4 @@ const xmlChar xmlSecHrefXslt[]                  = "http://www.w3.org/TR/1999/REC
   *****************************************************************************/
 const xmlChar xmlSecStringEmpty[]               = "";
 const xmlChar xmlSecStringCR[]                  = "\n";
+const xmlChar xmlSecStringLF[]                  = "\n";

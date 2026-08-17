@@ -302,7 +302,13 @@ extern "C" {
 /**
  * @brief Impossible to cast from one type to another.
  */
-#define XMLSEC_ERROR_R_CAST_IMPOSSIBLE                  101
+#define XMLSEC_ERRORS_R_CAST_IMPOSSIBLE                 101
+
+/**
+ * @brief Impossible to cast from one type to another.
+ * DEPRECATED. Use #XMLSEC_ERRORS_R_CAST_IMPOSSIBLE instead.
+ */
+#define XMLSEC_ERROR_R_CAST_IMPOSSIBLE                  XMLSEC_ERRORS_R_CAST_IMPOSSIBLE
 
 /**
  * @brief The maximum xmlsec errors number.
@@ -318,6 +324,7 @@ extern "C" {
   *****************************************************************************/
 /**
  * @brief The errors reporting callback function.
+ * @param file the error location file name (__FILE__ macro).
  * @param line the error location line number (__LINE__ macro).
  * @param func the error location function name (__func__ macro).
  * @param errorObject the error specific error object (e.g. transform, key data, etc).

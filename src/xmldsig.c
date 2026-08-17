@@ -241,7 +241,7 @@ xmlSecDSigCtxEnableSignatureTransform(xmlSecDSigCtxPtr dsigCtx, xmlSecTransformI
 /**
  * @brief Gets the pre-signature buffer for the SignedInfo element.
  * @details Gets pointer to the buffer with serialized &lt;dsig:SignedInfo/&gt; element
- * just before signature claculation (valid if and only if
+ * just before signature calculation (valid if and only if
  * #XMLSEC_DSIG_FLAGS_STORE_SIGNATURE context flag is set.
  *
  * @param dsigCtx the pointer to &lt;dsig:Signature/&gt; processing context.
@@ -506,7 +506,7 @@ xmlSecDSigCtxProcessSignatureNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
         cur = xmlSecGetNextElementNode(cur->next);
     }
 
-    /* if there is something left than it's an error */
+    /* if there is something left, then it's an error */
     if(cur != NULL) {
         xmlSecUnexpectedNodeError(cur,  NULL);
         return(-1);
@@ -644,7 +644,7 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node, xm
         }
     } else if(dsigCtx->defC14NMethodId != xmlSecTransformIdUnknown) {
         /* the dsig spec does require CanonicalizationMethod node
-         * to be present but in some case it application might decide to
+         * to be present but in some case the application might decide to
          * minimize traffic */
         dsigCtx->c14nMethod = xmlSecTransformCtxCreateAndAppend(&(dsigCtx->transformCtx),
                                                               dsigCtx->defC14NMethodId);
@@ -685,10 +685,9 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node, xm
         cur = xmlSecGetNextElementNode(cur->next);
     } else if(dsigCtx->defSignMethodId != xmlSecTransformIdUnknown) {
         /* the dsig spec does require SignatureMethod node
-         * to be present but in some case it application might decide to
+         * to be present but in some case the application might decide to
          * minimize traffic */
-        dsigCtx->signMethod = xmlSecTransformCtxCreateAndAppend(&(dsigCtx->transformCtx),
-                                                              dsigCtx->defSignMethodId);
+        dsigCtx->signMethod = xmlSecTransformCtxCreateAndAppend(&(dsigCtx->transformCtx), dsigCtx->defSignMethodId);
         if(dsigCtx->signMethod == NULL) {
             xmlSecInternalError("xmlSecTransformCtxCreateAndAppend", NULL);
             return(-1);
@@ -720,7 +719,7 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node, xm
         return(-1);
     }
 
-    /* if there is something left than it's an error */
+    /* if there is something left, then it's an error */
     if(cur != NULL) {
         xmlSecUnexpectedNodeError(cur,  NULL);
         return(-1);
@@ -800,7 +799,7 @@ xmlSecDSigCtxProcessKeyInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
         return(-1);
     }
 
-    /* ignore <dsig:KeyInfo /> if there is the key is already set */
+    /* ignore <dsig:KeyInfo /> if the key is already set */
     /* todo: throw an error if key is set and node != NULL? */
     if((dsigCtx->signKey == NULL) && (dsigCtx->keyInfoReadCtx.keysMngr != NULL)
                         && (dsigCtx->keyInfoReadCtx.keysMngr->getKey != NULL)) {
@@ -951,7 +950,7 @@ xmlSecDSigCtxProcessManifestNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
             return(-1);
         }
 
-        /* we don;t care if Reference processing failed because
+        /* we don't care if Reference processing failed because
          * it's Manifest node */
         cur = xmlSecGetNextElementNode(cur->next);
     }
@@ -1214,7 +1213,7 @@ xmlSecDSigReferenceCtxDestroy(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
  * @param dsigRefCtx the pointer to &lt;dsig:Reference/&gt; element processing context.
  * @param dsigCtx the pointer to parent &lt;dsig:Signature/&gt; node processing context.
  * @param origin the reference origin (&lt;dsig:SignedInfo/&gt; or &lt;dsig:Manifest/&gt; node).
- * @return 0 on succes or aa negative value otherwise.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecDSigReferenceCtxInitialize(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlSecDSigCtxPtr dsigCtx,
@@ -1284,7 +1283,7 @@ xmlSecDSigReferenceCtxFinalize(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
  * @brief Gets the pre-digest buffer for the Reference element.
  * @details Gets the results of &lt;dsig:Reference/&gt; node processing just before digesting
  * (valid only if #XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES or
- * #XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES flas of signature context
+ * #XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES flags of signature context
  * is set).
  *
  * @param dsigRefCtx the pointer to &lt;dsig:Reference/&gt; element processing context.
@@ -1315,7 +1314,7 @@ xmlSecDSigReferenceCtxGetPreDigestBuffer(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
  *
  * @param dsigRefCtx the pointer to &lt;dsig:Reference/&gt; element processing context.
  * @param node the pointer to &lt;dsig:Reference/&gt; node.
- * @return 0 on succes or aa negative value otherwise.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodePtr node) {
@@ -1388,12 +1387,11 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
         }
 
         cur = xmlSecGetNextElementNode(cur->next);
-    } else if(dsigRefCtx->dsigCtx->defSignMethodId != xmlSecTransformIdUnknown) {
+    } else if(dsigRefCtx->dsigCtx->defDigestMethodId != xmlSecTransformIdUnknown) {
         /* the dsig spec does require DigestMethod node
-         * to be present but in some case it application might decide to
+         * to be present but in some case the application might decide to
          * minimize traffic */
-        dsigRefCtx->digestMethod = xmlSecTransformCtxCreateAndAppend(&(dsigRefCtx->transformCtx),
-                                                              dsigRefCtx->dsigCtx->defSignMethodId);
+        dsigRefCtx->digestMethod = xmlSecTransformCtxCreateAndAppend(&(dsigRefCtx->transformCtx), dsigRefCtx->dsigCtx->defDigestMethodId);
         if(dsigRefCtx->digestMethod == NULL) {
             xmlSecInternalError("xmlSecTransformCtxCreateAndAppend", NULL);
             return(-1);

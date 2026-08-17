@@ -160,8 +160,8 @@ xmlSecTransformXsltSetDefaultSecurityPrefs(xsltSecurityPrefsPtr sec) {
  *
  * This transform requires an octet stream as input. If the actual input is an
  * XPath node-set, then the signature application should attempt to convert it
- * to octets (apply Canonical XML]) as described in the Reference Processing
- * Model (section 4.3.3.2).]
+ * to octets (apply Canonical XML) as described in the Reference Processing
+ * Model (section 4.3.3.2).
  *
  * The output of this transform is an octet stream. The processing rules for
  * the XSL style sheet or transform element are stated in the XSLT specification
@@ -525,7 +525,7 @@ xmlSecXsApplyStylesheet(xmlSecXsltCtxPtr ctx, xmlDocPtr doc) {
         goto done;
     }
 
-    /* set security prefs  */
+    /* set security prefs */
     ret = xsltSetCtxtSecurityPrefs(g_xslt_default_security_prefs, xsltCtx);
     if(ret < 0) {
         xmlSecXsltError("xsltSetCtxtSecurityPrefs", ctx->xslt, NULL);

@@ -83,8 +83,8 @@ XMLSEC_EXPORT void              xmlSecPtrListDebugXmlDump       (xmlSecPtrListPt
                                                                  FILE* output);
 
 /**
- * @brief Macro. Returns lists's name.
- * @param list the ponter to list.
+ * @brief Macro. Returns list's name.
+ * @param list the pointer to list.
  */
 #define xmlSecPtrListGetName(list) \
         (((list) != NULL) ? xmlSecPtrListKlassGetName((list)->id) : NULL)
@@ -119,20 +119,23 @@ XMLSEC_EXPORT void              xmlSecPtrListDebugXmlDump       (xmlSecPtrListPt
 
 /**
  * @brief Duplicates item @p ptr.
- * @param ptr the poinetr to list item.
+ * @details If this method is not NULL then the list klass must also provide
+ * #xmlSecPtrDestroyItemMethod to release items duplicated by this method,
+ * including partial copies rolled back after an error.
+ * @param ptr the pointer to list item.
  * @return pointer to new item copy or NULL if an error occurs.
  */
 typedef xmlSecPtr               (*xmlSecPtrDuplicateItemMethod) (xmlSecPtr ptr);
 
 /**
  * @brief Destroys list item @p ptr.
- * @param ptr the poinetr to list item.
+ * @param ptr the pointer to list item.
  */
 typedef void                    (*xmlSecPtrDestroyItemMethod)   (xmlSecPtr ptr);
 
 /**
- * @brief Prints debug information about @p item to @p output.
- * @param ptr the poinetr to list item.
+ * @brief Prints debug information about @p ptr to @p output.
+ * @param ptr the pointer to list item.
  * @param output the output FILE.
  */
 typedef void                    (*xmlSecPtrDebugDumpItemMethod) (xmlSecPtr ptr,
@@ -143,8 +146,8 @@ typedef void                    (*xmlSecPtrDebugDumpItemMethod) (xmlSecPtr ptr,
  */
 struct _xmlSecPtrListKlass {
     const xmlChar*                      name;  /**< the list klass name. */
-    xmlSecPtrDuplicateItemMethod        duplicateItem;  /**< the duplicate item method. */
-    xmlSecPtrDestroyItemMethod          destroyItem;  /**< the destroy item method. */
+    xmlSecPtrDuplicateItemMethod        duplicateItem;  /**< the duplicate item method; requires destroyItem when not NULL. */
+    xmlSecPtrDestroyItemMethod          destroyItem;  /**< the destroy item method for list-owned items, including duplicated items. */
     xmlSecPtrDebugDumpItemMethod        debugDumpItem;  /**< the debug dump item method. */
     xmlSecPtrDebugDumpItemMethod        debugXmlDumpItem;  /**< the debug dump item in xml format method. */
 };

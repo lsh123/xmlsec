@@ -162,7 +162,7 @@ typedef enum {
  */
 struct _xmlSecKeyInfoCtx {
     void*                               userData;  /**< the pointer to user data (xmlsec and xmlsec-crypto never touch this). */
-    unsigned int                        flags;  /**< the bit mask for flags that control processin. */
+    unsigned int                        flags;  /**< the bit mask for flags that control processing. */
     unsigned int                        flags2;  /**< reserved for future. */
     xmlSecKeysMngrPtr                   keysMngr;  /**< the pointer to current keys manager. */
     xmlSecKeyInfoMode                   mode;  /**< do we read or write <dsig:KeyInfo /> element. */
@@ -174,7 +174,7 @@ struct _xmlSecKeyInfoCtx {
     int                                 maxRetrievalMethodLevel;  /**< the max recursion level when processing &lt;dsig:RetrievalMethod/&gt; element; default level is 1 (see also #curRetrievalMethodLevel). */
 
     /* KeyInfoReference */
-    xmlSecTransformCtx                  keyInfoReferenceCtx;  /**< the transforms context for&lt;dsig11:KeyInfoReference/&gt; element processing. */
+    xmlSecTransformCtx                  keyInfoReferenceCtx;  /**< the transforms context for &lt;dsig11:KeyInfoReference/&gt; element processing. */
     int                                 maxKeyInfoReferenceLevel;  /**< the max recursion level when processing &lt;dsig11:KeyInfoReference/&gt; element; default level is 1 (see also #curKeyInfoReferenceLevel). */
 
 #ifndef XMLSEC_NO_XMLENC
@@ -193,9 +193,9 @@ struct _xmlSecKeyInfoCtx {
     void*                               deprecated0;  /**< DEPRECATED: reserved for PGP. */
 
     /* internal data */
-    int                                 curRetrievalMethodLevel;  /**< the current&lt;dsig:RetrievalMethod/&gt; element processing level (see #maxRetrievalMethodLevel). */
-    int                                 curKeyInfoReferenceLevel;  /**< the current&lt;dsig11:KeyInfoReference/&gt; element processing level (see #maxKeyInfoReferenceLevel). */
-    int                                 curEncryptedKeyLevel;  /**< the current&lt;enc:EncryptedKey/&gt; or&lt;enc11:DerivedKey/&gt; element processing level (see #maxEncryptedKeyLevel). */
+    int                                 curRetrievalMethodLevel;  /**< the current &lt;dsig:RetrievalMethod/&gt; element processing level (see #maxRetrievalMethodLevel). */
+    int                                 curKeyInfoReferenceLevel;  /**< the current &lt;dsig11:KeyInfoReference/&gt; element processing level (see #maxKeyInfoReferenceLevel). */
+    int                                 curEncryptedKeyLevel;  /**< the current &lt;enc:EncryptedKey/&gt; or &lt;enc11:DerivedKey/&gt; element processing level (see #maxEncryptedKeyLevel). */
     xmlSecTransformOperation            operation;  /**< the transform operation for this key info. */
     xmlSecKeyReq                        keyReq;  /**< the current key requirements. */
 

@@ -113,8 +113,8 @@ static xmlSecIOCallbackPtr              xmlSecIOCallbackPtrListFind     (xmlSecP
                                                                          const char* uri);
 
 /**
- * @brief The keys list klass.
- * @return keys list id.
+ * @brief The IO callback list klass.
+ * @return IO callback list id.
  */
 static xmlSecPtrListId
 xmlSecIOCallbackPtrListGetKlass(void) {
@@ -254,10 +254,10 @@ xmlSecIOFileExtractFilename(char const* filename, char** out) {
     } else if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file:///", 8)) {
         escaped = &filename[7];
     } else if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file://", 7)) {
-        /* lots of generators seems to lazy to read RFC 1738 */
+        /* lots of generators seems too lazy to read RFC 1738 */
         escaped = &filename[6];
     } else if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file:/", 6)) {
-        /* lots of generators seems to lazy to read RFC 1738 */
+        /* lots of generators seems too lazy to read RFC 1738 */
         escaped = &filename[5];
     } else {
         (*out) = NULL;

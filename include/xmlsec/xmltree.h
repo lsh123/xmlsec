@@ -135,7 +135,7 @@ XMLSEC_EXPORT int               xmlSecPrintXmlString    (FILE * fd,
 
 /**
  * @brief Returns 1 if the character is a hex digit.
- * @details Macro. Returns 1 if @c is a hex digit or 0 other wise.
+ * @details Macro. Returns 1 if @c is a hex digit or 0 otherwise.
  * @param c the character.
  */
 #define xmlSecIsHex(c) \

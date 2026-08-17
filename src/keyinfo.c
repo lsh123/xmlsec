@@ -159,7 +159,7 @@ xmlSecKeyInfoNodeWrite(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCt
         nodeName = cur->name;
         nodeNs = xmlSecGetNodeNsHref(cur);
 
-        /* use global eanbled list only if we don't have a local one */
+        /* use global enabled list only if we don't have a local one */
         if(xmlSecPtrListGetSize(&(keyInfoCtx->enabledKeyData)) > 0) {
                 dataId = xmlSecKeyDataIdListFindByNode(&(keyInfoCtx->enabledKeyData),
                             nodeName, nodeNs,
@@ -346,7 +346,7 @@ xmlSecKeyInfoCtxReset(xmlSecKeyInfoCtxPtr keyInfoCtx) {
 
 /**
  * @brief Creates an encryption context for KeyInfo processing.
- * @details Creates encryption context form processing &lt;enc:EncryptedKey/&gt; child
+ * @details Creates encryption context for processing &lt;enc:EncryptedKey/&gt; child
  * of &lt;dsig:KeyInfo/&gt; element.
  * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
@@ -669,7 +669,7 @@ xmlSecKeyDataNameXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, 
             xmlSecKeyEmpty(key);
 
             /* TODO: since we will destroy tmpKey anyway, we can easily
-             * just re-assign key data values. It'll save use some memory
+             * just re-assign key data values. It'll save us some memory
              * malloc/free
              */
 
@@ -1238,7 +1238,7 @@ xmlSecKeyDataRetrievalMethodReadXmlResult(xmlSecKeyDataId typeId, xmlSecKeyPtr k
 
 /******************************************************************************
  *
- *&lt;dsig11:KeyInfoReference/&gt; element  processing
+ *&lt;dsig11:KeyInfoReference/&gt; element processing
  *
   *****************************************************************************/
 static int                      xmlSecKeyDataKeyInfoReferenceXmlRead(xmlSecKeyDataId id,
@@ -1834,7 +1834,7 @@ xmlSecKeyDataDerivedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr 
      * (https://github.com/lsh123/xmlsec/issues/515)
      */
     if(xmlSecKeyReqMatchKey(&(keyInfoCtx->keyReq), generatedKey) != 1) {
-        /* we are not allowed to use  this key, ignore and continue */
+        /* we are not allowed to use this key, ignore and continue */
         xmlSecKeyDestroy(generatedKey);
         return(0);
     }
@@ -1860,7 +1860,7 @@ xmlSecKeyDataDerivedKeyXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeWrite, -1);
 
-    /* do nothing, the template should already have all the necesary data to generate the key correctly */
+    /* do nothing, the template should already have all the necessary data to generate the key correctly */
     return(0);
 }
 
@@ -1998,7 +1998,7 @@ xmlSecKeyDataAgreementMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
     }
 
     if(xmlSecKeyReqMatchKey(&(keyInfoCtx->keyReq), generatedKey) != 1) {
-        /* we are not allowed to use  this key, ignore and continue */
+        /* we are not allowed to use this key, ignore and continue */
         xmlSecKeyDestroy(generatedKey);
         return(0);
     }
@@ -2046,7 +2046,7 @@ xmlSecKeyDataAgreementMethodXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNo
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeWrite, -1);
 
-    /* there might be several nodes that can re-use encCtx, we need to re-read the node before writing it  */
+    /* there might be several nodes that can re-use encCtx, we need to re-read the node before writing it */
 
     /* check the enc level */
     if(keyInfoCtx->curEncryptedKeyLevel >= keyInfoCtx->maxEncryptedKeyLevel) {

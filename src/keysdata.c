@@ -133,7 +133,7 @@ xmlSecKeyDataIdsRegister(xmlSecKeyDataId id) {
 
 /**
  * @brief Registers a key data klass in the global list (disabled).
- * @details Registers @p id in the global list of key data klasses and but DO NOT enable this key data.
+ * @details Registers @p id in the global list of key data klasses but DO NOT enable this key data.
  * @param id the key data klass.
  *
  * @return 0 on success or a negative value if an error occurs.
@@ -765,7 +765,7 @@ xmlSecKeyDataStoreCreate(xmlSecKeyDataStoreId id)  {
  * @brief Destroys a key data store.
  * @details Destroys the key data store created with #xmlSecKeyDataStoreCreate
  * function.
- * @param store the pointer to the key data store..
+ * @param store the pointer to the key data store.
  */
 void
 xmlSecKeyDataStoreDestroy(xmlSecKeyDataStorePtr store) {

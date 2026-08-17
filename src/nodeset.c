@@ -463,7 +463,7 @@ xmlSecNodeSetWalkRecursive(xmlSecNodeSetPtr nset, xmlNodePtr startNode, xmlSecNo
  *    all nodes in the @p parent subtree;
  *  - if @p withComments is 0 and @p invert is 0:
  *    all nodes in the @p parent subtree except comment nodes;
- *  - if @p withComments is not 0 and @p invert not is 0:
+ *  - if @p withComments is not 0 and @p invert is not 0:
  *    all nodes in the @p doc except nodes in the @p parent subtree;
  *  - if @p withComments is 0 and @p invert is 0:
  *    all nodes in the @p doc except nodes in the @p parent subtree

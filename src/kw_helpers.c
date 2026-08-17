@@ -255,7 +255,7 @@ xmlSecTransformKWDes3Execute(xmlSecTransformPtr transform, xmlSecTransformKWDes3
  * 4. Generate 8 random octets [RANDOM] and call this IV.
  * 5. Encrypt WKCKS in CBC mode using KEK as the key and IV as the
  *    initialization vector. Call the results TEMP1.
- * 6. Left TEMP2 = IV || TEMP1.
+ * 6. Let TEMP2 = IV || TEMP1.
  * 7. Reverse the order of the octets in TEMP2 and call the result TEMP3.
  * 8. Encrypt TEMP3 in CBC mode using the KEK and an initialization vector
  *    of 0x4adda22c79e82105. The resulting cipher text is the desired result.
@@ -727,10 +727,10 @@ xmlSecTransformKWRfc3394Execute(xmlSecTransformPtr transform, xmlSecTransformKWR
  *      If N>1, perform the following steps:
  *   2. Initialize variables:
  *          * Set A to 0xA6A6A6A6A6A6A6A6
- *          * Fori=1 to N,
+ *          * For i=1 to N,
  *            R(i)=P(i)
  *   3. Calculate intermediate values:
- *          * Forj=0 to 5,
+ *          * For j=0 to 5,
  *                o For i=1 to N,
  *                  t= i + j*N
  *                  B=AES(K)enc(A|R(i))

@@ -397,7 +397,7 @@ xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlSecP
     } else if(id == xmlSecTransformRemoveXmlTagsC14NId) {
         ret = xmlSecNodeSetDumpTextNodes(nodes, buf);
     } else {
-        /* shoudn't be possible to come here, actually */
+        /* shouldn't be possible to come here, actually */
         xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_TRANSFORM,
                          xmlSecTransformKlassGetName(id), NULL);
         return(-1);
@@ -625,7 +625,7 @@ static xmlSecTransformKlass xmlSecTransformExclC14NKlass = {
 
 /**
  * @brief Gets the exclusive C14N transform klass.
- * @details Exclusive canoncicalization that omits comments transform klass
+ * @details Exclusive canonicalization that omits comments transform klass
  * (http://www.w3.org/TR/xml-exc-c14n/).
  * @return exclusive c14n transform id.
  */
@@ -669,7 +669,7 @@ static xmlSecTransformKlass xmlSecTransformExclC14NWithCommentsKlass = {
 
 /**
  * @brief Gets the exclusive C14N with comments transform klass.
- * @details Exclusive canoncicalization that includes comments transform klass
+ * @details Exclusive canonicalization that includes comments transform klass
  * (http://www.w3.org/TR/xml-exc-c14n/).
  * @return exclusive c14n with comments transform id.
  */

@@ -293,7 +293,7 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
         return(-1);
     }
 
-    /* finaly do the parsing */
+    /* finally do the parsing */
     ret = xmlParseDocument(ctxt);
     if((ret < 0) || (ctxt->myDoc == NULL)) {
         xmlSecXmlParserError("xmlParseDocument", ctxt, xmlSecTransformGetName(transform));
@@ -558,7 +558,7 @@ xmlSecParsePrepareCtxt(xmlParserCtxtPtr ctxt) {
 /*
  * To block network access and loading of external entities:
  * - XML_PARSE_NO_XXE: disable loading of external content (available >= 2.13.0),
- *   it disables XML_PARSE_DTDLOAD | XML_PARSE_DTDATTR ut we keep those in defaults
+ *   it disables XML_PARSE_DTDLOAD | XML_PARSE_DTDATTR but we keep those in defaults
  *   to make it work if XML_PARSE_NO_XXE is disabled (e.g. with --xxe option)
  * - XML_PARSE_NONET: forbid network access
  *

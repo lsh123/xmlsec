@@ -83,7 +83,7 @@ XMLSEC_EXPORT void              xmlSecPtrListDebugXmlDump       (xmlSecPtrListPt
                                                                  FILE* output);
 
 /**
- * @brief Macro. Returns lists's name.
+ * @brief Macro. Returns list's name.
  * @param list the pointer to list.
  */
 #define xmlSecPtrListGetName(list) \

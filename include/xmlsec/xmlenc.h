@@ -38,7 +38,7 @@ extern "C" {
  * @brief The xmlSecEncCtx mode.
  */
 typedef enum {
-    xmlEncCtxModeEncryptedData = 0,  /**< the &lt;enc:EncryptedData/&gt; element procesing. */
+    xmlEncCtxModeEncryptedData = 0,  /**< the &lt;enc:EncryptedData/&gt; element processing. */
     xmlEncCtxModeEncryptedKey  /**< the &lt;enc:EncryptedKey/&gt; element processing. */
 } xmlEncCtxMode;
 
@@ -86,8 +86,8 @@ struct _xmlSecEncCtx {
     xmlChar*                    id;  /**< the ID attribute of &lt;enc:EncryptedData/&gt; or &lt;enc:EncryptedKey/&gt; node. */
     xmlChar*                    type;  /**< the Type attribute of &lt;enc:EncryptedData/&gt; or &lt;enc:EncryptedKey/&gt; node. */
     xmlChar*                    mimeType;  /**< the MimeType attribute of &lt;enc:EncryptedData/&gt; or &lt;enc:EncryptedKey/&gt; node. */
-    xmlChar*                    encoding;  /**< the Encoding attributeof &lt;enc:EncryptedData/&gt; or &lt;enc:EncryptedKey/&gt; node. */
-    xmlChar*                    recipient;  /**< the Recipient attribute of &lt;enc:EncryptedKey/&gt; node.. */
+    xmlChar*                    encoding;  /**< the Encoding attribute of &lt;enc:EncryptedData/&gt; or &lt;enc:EncryptedKey/&gt; node. */
+    xmlChar*                    recipient;  /**< the Recipient attribute of &lt;enc:EncryptedKey/&gt; node. */
     xmlChar*                    carriedKeyName;  /**< the CarriedKeyName attribute of &lt;enc:EncryptedKey/&gt; node. */
 
     /* these are internal data, nobody should change that except us */

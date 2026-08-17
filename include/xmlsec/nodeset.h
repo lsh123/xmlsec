@@ -33,10 +33,10 @@ typedef struct _xmlSecNodeSet   xmlSecNodeSet, *xmlSecNodeSetPtr;
 typedef enum {
     xmlSecNodeSetNormal = 0,  /**< nodes set = nodes in the list. */
     xmlSecNodeSetInvert,  /**< nodes set = all document nodes minus nodes in the list. */
-    xmlSecNodeSetTree,  /**< nodes set = nodes in the list and all their subtress. */
-    xmlSecNodeSetTreeWithoutComments,  /**< nodes set = nodes in the list and all their subtress but no comment nodes. */
-    xmlSecNodeSetTreeInvert,  /**< nodes set = all document nodes minus nodes in the list and all their subtress. */
-    xmlSecNodeSetTreeWithoutCommentsInvert,  /**< nodes set = all document nodes minus (nodes in the list and all their subtress plus all comment nodes). */
+    xmlSecNodeSetTree,  /**< nodes set = nodes in the list and all their subtrees. */
+    xmlSecNodeSetTreeWithoutComments,  /**< nodes set = nodes in the list and all their subtrees but no comment nodes. */
+    xmlSecNodeSetTreeInvert,  /**< nodes set = all document nodes minus nodes in the list and all their subtrees. */
+    xmlSecNodeSetTreeWithoutCommentsInvert,  /**< nodes set = all document nodes minus (nodes in the list and all their subtrees plus all comment nodes). */
     xmlSecNodeSetList  /**< DEPRECATED: nodes set = all nodes in the children list of nodes sets. */
 } xmlSecNodeSetType;
 
@@ -71,7 +71,7 @@ struct _xmlSecNodeSet {
  * @param parent the pointer to the @p cur parent node.
  * @param data the pointer to application specific data.
  * @return 0 on success or a negative value if an error occurs
- * an walk procedure should be interrupted.
+ * a walk procedure should be interrupted.
  */
 typedef int (*xmlSecNodeSetWalkCallback)                (xmlSecNodeSetPtr nset,
                                                          xmlNodePtr cur,

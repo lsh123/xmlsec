@@ -35,9 +35,9 @@ static xmlSecSize gInitialSize = 1024;
 
 /**
  * @brief Sets the default buffer allocation mode.
- * @details Sets new global default allocation mode and minimal intial size.
+ * @details Sets new global default allocation mode and minimal initial size.
  * @param defAllocMode the new default buffer allocation mode.
- * @param defInitialSize the new default buffer minimal intial size.
+ * @param defInitialSize the new default buffer minimal initial size.
  */
 void
 xmlSecBufferSetDefaultAllocMode(xmlSecAllocMode defAllocMode, xmlSecSize defInitialSize) {
@@ -52,7 +52,7 @@ xmlSecBufferSetDefaultAllocMode(xmlSecAllocMode defAllocMode, xmlSecSize defInit
  * @details Allocates and initializes new memory buffer with given size.
  * Caller is responsible for calling #xmlSecBufferDestroy function
  * to free the buffer.
- * @param size the intial size.
+ * @param size the initial size.
  * @return pointer to newly allocated buffer or NULL if an error occurs.
  */
 xmlSecBufferPtr
@@ -671,7 +671,7 @@ xmlSecBufferHexRead(xmlSecBufferPtr buf, const xmlChar* hexStr) {
         (*data) = xmlSecFromHex2(ch1, ch2);
     }
 
-    /* sucess */
+    /* success */
     return(0);
 }
 

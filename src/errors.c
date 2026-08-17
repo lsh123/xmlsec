@@ -62,7 +62,7 @@ static const xmlSecErrorDescription xmlSecErrorsTable[XMLSEC_ERRORS_MAX_NUMBER +
   { XMLSEC_ERRORS_R_MISSING_NODE_ATTRIBUTE,     "missing node attribute" },
   { XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,       "node already present" },
   { XMLSEC_ERRORS_R_UNEXPECTED_NODE,            "unexpected node" },
-  { XMLSEC_ERRORS_R_NODE_NOT_FOUND,             "node node found" },
+  { XMLSEC_ERRORS_R_NODE_NOT_FOUND,             "node not found" },
   { XMLSEC_ERRORS_R_INVALID_TRANSFORM,          "invalid transform" },
   { XMLSEC_ERRORS_R_INVALID_TRANSFORM_KEY,      "invalid transform key" },
   { XMLSEC_ERRORS_R_INVALID_URI_TYPE,           "invalid URI type" },
@@ -93,7 +93,7 @@ static const xmlSecErrorDescription xmlSecErrorsTable[XMLSEC_ERRORS_MAX_NUMBER +
   { 0,                                          NULL}
 };
 
-/* We have sytstem callback that can be set by the xmlsec-crypto library and user callback
+/* We have system callback that can be set by the xmlsec-crypto library and user callback
  * that user can set. We always prioritize user callback if set. Note that if user sets
  * NULL callback then we disable errors reporting */
 static xmlSecErrorsCallback xmlSecErrorsSystemClbk = xmlSecErrorsDefaultCallback;
@@ -155,7 +155,7 @@ xmlSecErrorsSetSystemCallback(xmlSecErrorsCallback callback) {
  * @param func the error location function name (__FUNCTION__ macro).
  * @param errorObject the error specific error object
  * @param errorSubject the error specific error subject.
- * @param reason the error code.S
+ * @param reason the error code.
  * @param msg the additional error message.
  */
 void

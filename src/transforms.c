@@ -117,7 +117,7 @@ xmlSecTransformIdsInit(void) {
 
 /**
  * @brief Shuts down the transform klasses.
- * @details Shuts down the keys data klasses. This function is called from the
+ * @details Shuts down the transform klasses. This function is called from the
  * #xmlSecShutdown function and the application should not call it directly.
  */
 void
@@ -644,7 +644,7 @@ xmlSecTransformCtxAppend(xmlSecTransformCtxPtr ctx, xmlSecTransformPtr transform
 
 /**
  * @brief Connects a transform to the beginning of the chain in @p ctx.
- * @details Connects the @p transform to the beggining of the chain of transforms in the @p ctx
+ * @details Connects the @p transform to the beginning of the chain of transforms in the @p ctx
  * (see #xmlSecTransformConnect function for details).
  * @param ctx the pointer to transforms chain processing context.
  * @param transform the pointer to new transform.
@@ -1797,7 +1797,7 @@ xmlSecTransformPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
  * @details Pops data from previous transform in the chain, processes the data and
  * returns result in @p nodes.
  * @param transform the pointer to transform object.
- * @param nodes the pointer to store popinter to result nodes.
+ * @param nodes the pointer to store pointer to result nodes.
  * @param transformCtx the pointer to transform context object.
  *
  * @return 0 on success or a negative value if an error occurs.
@@ -2176,7 +2176,7 @@ xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
                         "size=" XMLSEC_SIZE_FMT, (inSize + chunkSize));
                     return(-1);
                 }
-                final = 0; /* the previous transform returned some data..*/
+                final = 0; /* the previous transform returned some data */
             } else {
                 final = 1; /* no data returned from previous transform, we are done */
             }
@@ -2268,7 +2268,7 @@ xmlSecTransformDefaultPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nod
  * @details Pops data from previous transform in the chain, processes the data
  * by calling transform's execute method and returns result in @p nodes.
  * @param transform the pointer to transform object.
- * @param nodes the pointer to store popinter to result nodes.
+ * @param nodes the pointer to store pointer to result nodes.
  * @param transformCtx the pointer to transform context object.
  *
  * @return 0 on success or a negative value if an error occurs.

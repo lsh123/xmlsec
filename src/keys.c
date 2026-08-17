@@ -71,7 +71,7 @@ xmlSecKeyUseWithReset(xmlSecKeyUseWithPtr keyUseWith) {
 }
 
 /**
- * @brief Copies information from @p dst to @p src.
+ * @brief Copies information from @p src to @p dst.
  * @param dst the pointer to destination object.
  * @param src the pointer to source object.
  *
@@ -583,7 +583,7 @@ xmlSecKeyCopy(xmlSecKeyPtr keyDst, xmlSecKeyPtr keySrc) {
     }
 
 /**
- * @brief Swaps key data for @p key1 and#key2
+ * @brief Swaps key data for @p key1 and @p key2
  * @param key1 the first key.
  * @param key2 the second key.
  *

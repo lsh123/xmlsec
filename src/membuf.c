@@ -51,7 +51,7 @@ static xmlSecTransformKlass xmlSecTransformMemBufKlass = {
     0,                                          /* xmlSecAlgorithmUsage usage; */
 
     xmlSecTransformMemBufInitialize,            /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecTransformMemBufFinalize,              /* xmlSecTransformFianlizeMethod finalize; */
+    xmlSecTransformMemBufFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
     NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */

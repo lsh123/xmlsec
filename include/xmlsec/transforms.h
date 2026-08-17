@@ -145,7 +145,7 @@ typedef xmlSecByte                              xmlSecTransformDataType;
 
 /**
  * @brief The transform data type is unknown.
- * @details The transform data type is unknown or nor data expected.
+ * @details The transform data type is unknown or no data expected.
  */
 #define xmlSecTransformDataTypeUnknown          0x0000
 
@@ -269,7 +269,7 @@ struct _xmlSecTransformCtx {
     /* user settings */
     void*                                       userData;  /**< the pointer to user data (xmlsec and xmlsec-crypto never touch this). */
     unsigned int                                flags;  /**< the bit mask flags to control transforms execution. */
-    unsigned int                                maxDepth;  /**< the maximum depth for transforms (eg Relationshi Transform) execution (if 0 then depth check is disabled). */
+    unsigned int                                maxDepth;  /**< the maximum depth for transforms (eg Relationship Transform) execution (if 0 then depth check is disabled). */
     xmlSecSize                                  binaryChunkSize;  /**< the chunk of size for binary transforms processing. */
     xmlSecTransformUriType                      enabledUris;  /**< the allowed transform data source uri types. */
     xmlSecPtrList                               enabledTransforms;  /**< the list of enabled transforms; if list is empty (default) then all registered transforms are enabled. */
@@ -383,7 +383,7 @@ struct _xmlSecTransform {
     /* used for some transform (e.g. KDF) to determine the desired output size */
     xmlSecSize                          expectedOutputSize;  /**< the expected transform output size (used for key wraps). */
 
-    /* transform flags (use uintptr_t to insure struct size stays the same) )*/
+    /* transform flags (use uintptr_t to ensure struct size stays the same) */
     uintptr_t                           flags;  /**< the transform flags (eg user specified vs inserted by XMLSec). */
 
     /* reserved for the future */
@@ -666,7 +666,7 @@ typedef int             (*xmlSecTransformPushXmlMethod)         (xmlSecTransform
  * @details The transform specific method to pop data from previous transform in the chain,
  * process the data and return result in @p nodes.
  * @param transform the pointer to transform object.
- * @param nodes the pointer to store popinter to result nodes.
+ * @param nodes the pointer to store pointer to result nodes.
  * @param transformCtx the pointer to transform context object.
  * @return 0 on success or a negative value otherwise.
  */
@@ -709,9 +709,9 @@ struct _xmlSecTransformKlass {
     xmlSecTransformGetDataTypeMethod    getDataType;  /**< the input/output data type query method. */
 
     xmlSecTransformPushBinMethod        pushBin;  /**< the binary data "push thru chain" processing method. */
-    xmlSecTransformPopBinMethod         popBin;  /**< the binary data "pop from chain" procesing method. */
+    xmlSecTransformPopBinMethod         popBin;  /**< the binary data "pop from chain" processing method. */
     xmlSecTransformPushXmlMethod        pushXml;  /**< the XML data "push thru chain" processing method. */
-    xmlSecTransformPopXmlMethod         popXml;  /**< the XML data "pop from chain" procesing method. */
+    xmlSecTransformPopXmlMethod         popXml;  /**< the XML data "pop from chain" processing method. */
 
     /* low level method */
     xmlSecTransformExecuteMethod        execute;  /**< the low level data processing method used  by default implementations of #pushBin, #popBin, #pushXml and #popXml. */

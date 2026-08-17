@@ -227,7 +227,7 @@ typedef enum {
     xmlSecKeyDataFormatDer,  /**< the DER key data (cert or public/private key). */
     xmlSecKeyDataFormatPkcs8Pem,  /**< the PKCS8 PEM private key. */
     xmlSecKeyDataFormatPkcs8Der,  /**< the PKCS8 DER private key. */
-    xmlSecKeyDataFormatPkcs12,  /**< the PKCS12 format (bag of keys and certs) */
+    xmlSecKeyDataFormatPkcs12,  /**< the PKCS12 format (bag of keys and certs). */
     xmlSecKeyDataFormatCertPem,  /**< the PEM cert. */
     xmlSecKeyDataFormatCertDer,  /**< the DER cert. */
     xmlSecKeyDataFormatEngine,  /**< the crypto engine (e.g. OpenSSL ENGINE). */
@@ -494,7 +494,7 @@ struct _xmlSecKeyDataKlass {
     /* get info */
     xmlSecKeyDataGetTypeMethod          getType;  /**< the method to access data's type information. */
     xmlSecKeyDataGetSizeMethod          getSize;  /**< the method to access data's size. */
-    void*                               deprecated0;  /**< DEPRECAED: the method to access data's string identifier. */
+    void*                               deprecated0;  /**< DEPRECATED: the method to access data's string identifier. */
 
     /* read/write */
     xmlSecKeyDataXmlReadMethod          xmlRead;  /**< the method for reading data from XML node. */

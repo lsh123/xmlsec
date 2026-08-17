@@ -217,7 +217,7 @@ struct _xmlSecKeyStoreKlass {
     xmlSecKeyStoreInitializeMethod              initialize;  /**< the store's initialization method. */
     xmlSecKeyStoreFinalizeMethod                finalize;  /**< the store's finalization (destroy) method. */
 
-    /* key loopkup */
+    /* key lookup */
     xmlSecKeyStoreFindKeyMethod                 findKey;  /**< the store's method to find key by key name. */
     xmlSecKeyStoreFindKeyFromX509DataMethod     findKeyFromX509Data;  /**< the store's method to find key based on x509 data. */
 

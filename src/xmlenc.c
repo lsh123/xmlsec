@@ -285,7 +285,7 @@ xmlSecEncCtxBinaryEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl,
     xmlSecAssert2(tmpl != NULL, -1);
     xmlSecAssert2((data != NULL) || (dataSize == 0), -1);
 
-    /* initialize context and add ID atributes to the list of known ids */
+      /* initialize context and add ID attributes to the list of known ids */
     encCtx->operation = xmlSecTransformOperationEncrypt;
     xmlSecAddIDs(tmpl->doc, tmpl, xmlSecEncIds);
 
@@ -335,7 +335,7 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(node->doc != NULL, -1);
 
-    /* initialize context and add ID atributes to the list of known ids */
+      /* initialize context and add ID attributes to the list of known ids */
     encCtx->operation = xmlSecTransformOperationEncrypt;
     xmlSecAddIDs(tmpl->doc, tmpl, xmlSecEncIds);
 
@@ -459,7 +459,7 @@ xmlSecEncCtxUriEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, const xmlChar *u
     xmlSecAssert2(tmpl != NULL, -1);
     xmlSecAssert2(uri != NULL, -1);
 
-    /* initialize context and add ID atributes to the list of known ids */
+      /* initialize context and add ID attributes to the list of known ids */
     encCtx->operation = xmlSecTransformOperationEncrypt;
     xmlSecAddIDs(tmpl->doc, tmpl, xmlSecEncIds);
 
@@ -581,7 +581,7 @@ xmlSecEncCtxDecryptToBuffer(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     xmlSecAssert2(encCtx->result == NULL, NULL);
     xmlSecAssert2(node != NULL, NULL);
 
-    /* initialize context and add ID atributes to the list of known ids */
+      /* initialize context and add ID attributes to the list of known ids */
     encCtx->operation = xmlSecTransformOperationDecrypt;
     xmlSecAddIDs(node->doc, node, xmlSecEncIds);
 
@@ -716,7 +716,7 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
         }
     }
 
-    /* if there is something left than it's an error */
+    /* if there is something left, then it's an error */
     if(cur != NULL) {
         xmlSecUnexpectedNodeError(cur,  NULL);
         return(-1);
@@ -922,7 +922,7 @@ xmlSecEncCtxCipherReferenceNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
         cur = xmlSecGetNextElementNode(cur->next);
     }
 
-    /* if there is something left than it's an error */
+    /* if there is something left, then it's an error */
     if(cur != NULL) {
         xmlSecUnexpectedNodeError(cur,  NULL);
         return(-1);
@@ -1227,7 +1227,7 @@ xmlSecEncCtxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xm
     xmlSecAssert2(node != NULL, NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
-    /* initialize context and add ID atributes to the list of known ids */
+      /* initialize context and add ID attributes to the list of known ids */
     encCtx->operation = keyInfoCtx->operation;
     xmlSecAddIDs(node->doc, node, xmlSecEncIds);
 
@@ -1281,7 +1281,7 @@ xmlSecEncCtxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xm
         cur = xmlSecGetNextElementNode(cur->next);
     }
 
-    /* forth node is optional MasterKeyName */
+      /* fourth node is optional MasterKeyName */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeMasterKeyName, xmlSecEnc11Ns))) {
         masterKeyName = xmlSecGetNodeContentAndTrim(cur);
         if(masterKeyName == NULL) {
@@ -1292,7 +1292,7 @@ xmlSecEncCtxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xm
         cur = xmlSecGetNextElementNode(cur->next);
     }
 
-    /* if there is something left than it's an error */
+    /* if there is something left, then it's an error */
     if(cur != NULL) {
         xmlSecUnexpectedNodeError(cur,  NULL);
         goto done;
@@ -1371,7 +1371,7 @@ xmlSecEncCtxAgreementMethodGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyI
     xmlSecAssert2(node != NULL, NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
-    /* initialize context and add ID atributes to the list of known ids */
+      /* initialize context and add ID attributes to the list of known ids */
     encCtx->operation = keyInfoCtx->operation;
     xmlSecAddIDs(node->doc, node, xmlSecEncIds);
 
@@ -1419,7 +1419,7 @@ xmlSecEncCtxAgreementMethodXmlWrite(xmlSecEncCtxPtr encCtx, xmlNodePtr node, xml
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    /* initialize context and add ID atributes to the list of known ids */
+      /* initialize context and add ID attributes to the list of known ids */
     encCtx->operation = keyInfoCtx->operation;
     xmlSecAddIDs(node->doc, node, xmlSecEncIds);
 

@@ -279,7 +279,7 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
  * freeing returned string with xmlFree.
  * @param bn the pointer to BN.
  * @param base the base for returned string.
- * @return the string represenataion if BN or a NULL if an error occurs.
+ * @return the string representation of BN or a NULL if an error occurs.
  */
 xmlChar*
 xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
@@ -366,7 +366,7 @@ xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
         res[ii++] = '0';
     }
 
-    /* we might have '0' at the beggining, remove it but keep one zero */
+    /* we might have '0' at the beginning, remove it but keep one zero */
     for(len = ii; (len > 1) && (res[len - 1] == '0'); len--) {
     }
     res[len] = '\0';
@@ -404,7 +404,7 @@ xmlSecBnFromHexString(xmlSecBnPtr bn, const xmlChar* str) {
  * @details Writes @p bn to hex string. Caller is responsible for
  * freeing returned string with xmlFree.
  * @param bn the pointer to BN.
- * @return the string represenataion if BN or a NULL if an error occurs.
+ * @return the string representation of BN or a NULL if an error occurs.
  */
 xmlChar*
 xmlSecBnToHexString(xmlSecBnPtr bn) {
@@ -427,7 +427,7 @@ xmlSecBnFromDecString(xmlSecBnPtr bn, const xmlChar* str) {
  * @details Writes @p bn to decimal string. Caller is responsible for
  * freeing returned string with xmlFree.
  * @param bn the pointer to BN.
- * @return the string represenataion if BN or a NULL if an error occurs.
+ * @return the string representation of BN or a NULL if an error occurs.
  */
 xmlChar*
 xmlSecBnToDecString(xmlSecBnPtr bn) {
@@ -619,7 +619,7 @@ xmlSecBnCompare(xmlSecBnPtr bn, const xmlSecByte* data, xmlSecSize dataSize) {
     bnData = xmlSecBnGetData(bn);
     bnSize = xmlSecBnGetSize(bn);
 
-    /* skip zeros in the beggining */
+    /* skip zeros in the beginning */
     while((dataSize > 0) && (data != 0) && (data[0] == 0)) {
         ++data;
         --dataSize;
@@ -667,7 +667,7 @@ xmlSecBnCompareReverse(xmlSecBnPtr bn, const xmlSecByte* data, xmlSecSize dataSi
     bnData = xmlSecBnGetData(bn);
     bnSize = xmlSecBnGetSize(bn);
 
-    /* skip zeros in the beggining */
+    /* skip zeros in the beginning */
     while((dataSize > 0) && (data != 0) && (data[dataSize - 1] == 0)) {
         --dataSize;
     }

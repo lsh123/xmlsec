@@ -605,7 +605,7 @@ xmlSecTmplPrepareEncData(xmlNodePtr parentNode, xmlSecTransformId encMethodId) {
  * @brief Ensures a &lt;dsig:KeyInfo/&gt; child in the &lt;enc:EncryptedData/&gt; node.
  * @details Adds &lt;dsig:KeyInfo/&gt; to the  &lt;enc:EncryptedData/&gt; node @p encNode.
  * @param encNode the pointer to &lt;enc:EncryptedData/&gt; node.
- * @param id the Id attrbibute (optional).
+ * @param id the Id attribute (optional).
  *
  * @return the pointer to newly created &lt;dsig:KeyInfo/&gt; node or
  * NULL if an error occurs.
@@ -733,7 +733,7 @@ xmlSecTmplEncDataEnsureCipherValue(xmlNodePtr encNode) {
         return(NULL);
     }
 
-    /* check that we don;t have CipherReference node */
+    /* check that we don't have CipherReference node */
     tmp = xmlSecFindChild(cipherDataNode, xmlSecNodeCipherReference, xmlSecEncNs);
     if(tmp != NULL) {
         xmlSecNodeAlreadyPresentError(cipherDataNode, xmlSecNodeCipherReference, NULL);
@@ -776,7 +776,7 @@ xmlSecTmplEncDataEnsureCipherReference(xmlNodePtr encNode, const xmlChar *uri) {
         return(NULL);
     }
 
-    /* check that we don;t have CipherValue node */
+    /* check that we don't have CipherValue node */
     tmp = xmlSecFindChild(cipherDataNode, xmlSecNodeCipherValue, xmlSecEncNs);
     if(tmp != NULL) {
         xmlSecNodeAlreadyPresentError(cipherDataNode, xmlSecNodeCipherValue, NULL);
@@ -801,7 +801,7 @@ xmlSecTmplEncDataEnsureCipherReference(xmlNodePtr encNode, const xmlChar *uri) {
 
 /**
  * @brief Gets pointer to &lt;enc:EncryptionMethod/&gt; node.
- * @param encNode the pointer to <enc:EcnryptedData /> node.
+ * @param encNode the pointer to <enc:EncryptedData /> node.
  *
  * @return pointer to <enc:EncryptionMethod /> node or NULL if an error occurs.
  */

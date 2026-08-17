@@ -153,7 +153,7 @@ xmlSecPtrListEmpty(xmlSecPtrListPtr list) {
  * @details Copies @p src list items to @p dst list using duplicateItem method
  * of the list klass. If duplicateItem is provided then the list klass must
  * also provide destroyItem so partially copied items can be released on
- * errors. If duplicateItem method is NULL then we jsut copy pointers to items.
+ * errors. If duplicateItem method is NULL then we just copy pointers to items.
  * @param dst the pointer to destination list.
  * @param src the pointer to source list.
  * @return 0 on success or a negative value if an error occurs.

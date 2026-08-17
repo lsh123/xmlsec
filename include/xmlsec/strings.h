@@ -354,7 +354,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefXDHKeyValue[];
 
 /******************************************************************************
  *
- * ECDSA sigantures strings
+ * ECDSA signatures strings
  *
   *****************************************************************************/
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEcdsaRipemd160[];
@@ -428,7 +428,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMLDSAKeyValue[];
 
 /******************************************************************************
  *
- * ML-DSA signature trasnsform strings
+ * ML-DSA signature transform strings
  *
   *****************************************************************************/
 XMLSEC_EXPORT_VAR const xmlChar xmlSecMLDSANs[];
@@ -475,7 +475,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefSLHDSAKeyValue[];
 
 /******************************************************************************
  *
- * SLH-DSA signature trasnsform strings
+ * SLH-DSA signature transform strings
  *
   *****************************************************************************/
 XMLSEC_EXPORT_VAR const xmlChar xmlSecSLHDSANs[];
@@ -762,7 +762,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMgf1Sha384[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMgf1Sha512[];
 
 
-/* RSS PSS https://www.rfc-editor.org/rfc/rfc9231.txt */
+/* RSA PSS https://www.rfc-editor.org/rfc/rfc9231.txt */
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaPssSha1[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaPssSha1[];
 
@@ -877,7 +877,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNameX509Store[];
 
 /******************************************************************************
  *
- * DEPRECATD PGP strings
+ * DEPRECATED PGP strings
  *
   *****************************************************************************/
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNamePGPData[];

@@ -685,7 +685,7 @@ struct _xmlSecCryptoDLFunctions {
 
 
 /**
-* @brief Shift bits if node present but and not empty.
+* @brief Shift bits if node present and not empty.
 */
 #define XMLSEC_X509DATA_SHIFT_IF_NOT_EMPTY                      16
 

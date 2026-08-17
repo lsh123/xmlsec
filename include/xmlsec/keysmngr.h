@@ -144,13 +144,13 @@ XMLSEC_EXPORT xmlSecKeyPtr      xmlSecKeyStoreFindKeyFromX509Data(xmlSecKeyStore
 
 /**
  * @brief Macro. Returns 1 if store is valid and object size meets minimum.
- * @details Macro. Returns 1 if @p store is valid and @p stores's object has at least @p size bytes.
+ * @details Macro. Returns 1 if @p store is valid and @p store 's object has at least @p size bytes.
  * @param store the pointer to store.
  * @param size the expected size.
  */
 #define xmlSecKeyStoreCheckSize(store, size) \
         (xmlSecKeyStoreIsValid(( store )) && \
-         (( store )->id->objSize >= size))
+          (( store )->id->objSize >= ( size )))
 
 
 /******************************************************************************
@@ -161,7 +161,7 @@ XMLSEC_EXPORT xmlSecKeyPtr      xmlSecKeyStoreFindKeyFromX509Data(xmlSecKeyStore
 /**
  * @brief The "unknown" id.
  */
-#define xmlSecKeyStoreIdUnknown                         ((xmlSecKeyDataStoreId)NULL)
+#define xmlSecKeyStoreIdUnknown                         ((xmlSecKeyStoreId)NULL)
 
 /**
  * @brief Keys store specific initialization method.

@@ -720,6 +720,8 @@ static int      xmlSecBufferIOClose                             (xmlSecBufferPtr
  */
 xmlOutputBufferPtr
 xmlSecBufferCreateOutputBuffer(xmlSecBufferPtr buf) {
+    xmlSecAssert2(buf != NULL, NULL);
+
     return(xmlOutputBufferCreateIO((xmlOutputWriteCallback)xmlSecBufferIOWrite,
                                      (xmlOutputCloseCallback)xmlSecBufferIOClose,
                                      buf,

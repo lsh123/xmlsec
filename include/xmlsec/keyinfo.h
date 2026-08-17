@@ -179,7 +179,7 @@ struct _xmlSecKeyInfoCtx {
 
 #ifndef XMLSEC_NO_XMLENC
     /* EncryptedKey or DerivedKey */
-    xmlSecEncCtxPtr                     encCtx;  /**< the encryption context for <dsig:EncryptedKey /> element processing. */
+    xmlSecEncCtxPtr                     encCtx;  /**< the encryption context for <enc:EncryptedKey /> element processing. */
     int                                 maxEncryptedKeyLevel;  /**< the max recursion level when processing &lt;enc:EncryptedKey/&gt; element; default level is 1 (see #curEncryptedKeyLevel). */
 #endif /* XMLSEC_NO_XMLENC */
 

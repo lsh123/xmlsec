@@ -939,7 +939,8 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefXslt[];
  *
   *****************************************************************************/
 XMLSEC_EXPORT_VAR const xmlChar xmlSecStringEmpty[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecStringCR[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecStringCR[]; /* DEPRECATED */
+XMLSEC_EXPORT_VAR const xmlChar xmlSecStringLF[];
 
 #ifdef __cplusplus
 }

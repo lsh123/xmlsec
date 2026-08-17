@@ -230,7 +230,7 @@ XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformConcatKdfGetKlass
 #define xmlSecTransformDes3CbcId                xmlSecTransformDes3CbcGetKlass()
 XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformDes3CbcGetKlass(void);
 /**
- * @brief The DES3 CBC cipher transform klass.
+ * @brief The Triple DES key wrap transform klass.
  */
 #define xmlSecTransformKWDes3Id                 xmlSecTransformKWDes3GetKlass()
 XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformKWDes3GetKlass(void);
@@ -286,7 +286,7 @@ XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformEcdsaSha224GetKla
 #define xmlSecTransformEcdsaSha256Id            xmlSecTransformEcdsaSha256GetKlass()
 XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformEcdsaSha256GetKlass(void);
 /**
- * @brief The ECDS-SHA2-384 signature transform klass.
+ * @brief The ECDSA-SHA2-384 signature transform klass.
  */
 #define xmlSecTransformEcdsaSha384Id            xmlSecTransformEcdsaSha384GetKlass()
 XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformEcdsaSha384GetKlass(void);
@@ -307,7 +307,7 @@ XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformEcdsaSha3_224GetK
 #define xmlSecTransformEcdsaSha3_256Id          xmlSecTransformEcdsaSha3_256GetKlass()
 XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformEcdsaSha3_256GetKlass(void);
 /**
- * @brief The ECDS-SHA3-384 signature transform klass.
+ * @brief The ECDSA-SHA3-384 signature transform klass.
  */
 #define xmlSecTransformEcdsaSha3_384Id          xmlSecTransformEcdsaSha3_384GetKlass()
 XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformEcdsaSha3_384GetKlass(void);
@@ -512,12 +512,12 @@ XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformRsaPssSha3_512Get
 #define xmlSecTransformRsaPkcs1Id               xmlSecTransformRsaPkcs1GetKlass()
 XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformRsaPkcs1GetKlass(void);
 /**
- * @brief The RSA PKCS1 key transport transform klass (XMLEnc 1.0).
+ * @brief The RSA-OAEP key transport transform klass (XMLEnc 1.0).
  */
 #define xmlSecTransformRsaOaepId                xmlSecTransformRsaOaepGetKlass()
 XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformRsaOaepGetKlass(void);
 /**
- * @brief The RSA PKCS1 key transport transform klass (XMLEnc 1.1).
+ * @brief The RSA-OAEP key transport transform klass (XMLEnc 1.1).
  */
 #define xmlSecTransformRsaOaepEnc11Id           xmlSecTransformRsaOaepEnc11GetKlass()
 XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformRsaOaepEnc11GetKlass(void);

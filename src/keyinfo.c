@@ -544,11 +544,11 @@ xmlSecKeyInfoCtxDebugXmlDump(xmlSecKeyInfoCtxPtr keyInfoCtx, FILE* output) {
     }
 
     fprintf(output, "<RetrievalMethodLevel cur=\"%d\" max=\"%d\" />\n",
-        keyInfoCtx->curEncryptedKeyLevel, keyInfoCtx->maxEncryptedKeyLevel);
+        keyInfoCtx->curRetrievalMethodLevel, keyInfoCtx->maxRetrievalMethodLevel);
     xmlSecTransformCtxDebugXmlDump(&(keyInfoCtx->retrievalMethodCtx), output);
 
     fprintf(output, "<KeyInfoReferenceLevel cur=\"%d\" max=\"%d\" />\n",
-        keyInfoCtx->curEncryptedKeyLevel, keyInfoCtx->maxEncryptedKeyLevel);
+        keyInfoCtx->curKeyInfoReferenceLevel, keyInfoCtx->maxKeyInfoReferenceLevel);
     xmlSecTransformCtxDebugXmlDump(&(keyInfoCtx->keyInfoReferenceCtx), output);
 
 #ifndef XMLSEC_NO_XMLENC
@@ -736,7 +736,7 @@ xmlSecKeyDataNameXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node,
 
     name = xmlSecKeyGetName(key);
     if(name == NULL) {
-        return(8);
+        return(0);
     }
 
     if(!xmlSecIsEmptyNode(node)) {

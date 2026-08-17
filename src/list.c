@@ -260,6 +260,10 @@ xmlSecPtrListGetSize(xmlSecPtrListPtr list) {
 xmlSecPtr
 xmlSecPtrListGetItem(xmlSecPtrListPtr list, xmlSecSize pos) {
     xmlSecAssert2(xmlSecPtrListIsValid(list), NULL);
+
+    if(pos >= list->use) {
+        return(NULL);
+    }
     xmlSecAssert2(list->data != NULL, NULL);
     xmlSecAssert2(pos < list->use, NULL);
 
@@ -469,7 +473,7 @@ xmlSecPtrListEnsureSize(xmlSecPtrListPtr list, xmlSecSize size) {
 
     xmlSecAssert2(xmlSecPtrListIsValid(list), -1);
 
-    if(size < list->max) {
+    if(size <= list->max) {
         return(0);
     }
 

@@ -295,7 +295,7 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
 
     /* finaly do the parsing */
     ret = xmlParseDocument(ctxt);
-    if(ret < 0) {
+    if((ret < 0) || (ctxt->myDoc == NULL)) {
         xmlSecXmlParserError("xmlParseDocument", ctxt, xmlSecTransformGetName(transform));
         if(ctxt->myDoc != NULL) {
             xmlFreeDoc(ctxt->myDoc);

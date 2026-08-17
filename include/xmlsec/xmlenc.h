@@ -74,9 +74,9 @@ struct _xmlSecEncCtx {
     xmlSecTransformId           defEncMethodId;  /**< the default encryption method (used if &lt;enc:EncryptionMethod/&gt; node is not present). */
 
     /* these data are returned */
-    xmlSecKeyPtr                encKey;  /**< the signature key; application may set #encKey before calling encryption/decryption functions. */
+    xmlSecKeyPtr                encKey;  /**< the encryption key; application may set #encKey before calling encryption/decryption functions. */
     xmlSecTransformOperation    operation;  /**< the operation: encrypt or decrypt. */
-    xmlSecBufferPtr             result;  /**< the pointer to signature (not valid for signature verification). */
+    xmlSecBufferPtr             result;  /**< the pointer to the encrypted/decrypted data buffer (valid after a successful encrypt/decrypt operation). */
     int                         resultBase64Encoded;  /**< the flag: if set then result in #result is base64 encoded. */
     int                         resultReplaced;  /**< the flag: if set then resulted &lt;enc:EncryptedData/&gt; or &lt;enc:EncryptedKey/&gt; node is added to the document. */
     xmlSecTransformPtr          encMethod;  /**< the pointer to encryption transform. */
@@ -96,7 +96,7 @@ struct _xmlSecEncCtx {
     xmlNodePtr                  keyInfoNode;  /**< the pointer to &lt;enc:KeyInfo/&gt; node. */
     xmlNodePtr                  cipherValueNode;  /**< the pointer to &lt;enc:CipherValue/&gt; node. */
 
-    xmlNodePtr                  replacedNodeList;  /**< the first node of the list of replaced nodes depending on the nodeReplacementMode */
+    xmlNodePtr                  replacedNodeList;  /**< the first node of the list of replaced nodes (populated when the #XMLSEC_ENC_RETURN_REPLACED_NODE flag is set) */
     void*                       reserved1;  /**< reserved for the future. */
 };
 

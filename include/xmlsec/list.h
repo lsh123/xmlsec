@@ -84,7 +84,7 @@ XMLSEC_EXPORT void              xmlSecPtrListDebugXmlDump       (xmlSecPtrListPt
 
 /**
  * @brief Macro. Returns lists's name.
- * @param list the ponter to list.
+ * @param list the pointer to list.
  */
 #define xmlSecPtrListGetName(list) \
         (((list) != NULL) ? xmlSecPtrListKlassGetName((list)->id) : NULL)
@@ -122,20 +122,20 @@ XMLSEC_EXPORT void              xmlSecPtrListDebugXmlDump       (xmlSecPtrListPt
  * @details If this method is not NULL then the list klass must also provide
  * #xmlSecPtrDestroyItemMethod to release items duplicated by this method,
  * including partial copies rolled back after an error.
- * @param ptr the poinetr to list item.
+ * @param ptr the pointer to list item.
  * @return pointer to new item copy or NULL if an error occurs.
  */
 typedef xmlSecPtr               (*xmlSecPtrDuplicateItemMethod) (xmlSecPtr ptr);
 
 /**
  * @brief Destroys list item @p ptr.
- * @param ptr the poinetr to list item.
+ * @param ptr the pointer to list item.
  */
 typedef void                    (*xmlSecPtrDestroyItemMethod)   (xmlSecPtr ptr);
 
 /**
- * @brief Prints debug information about @p item to @p output.
- * @param ptr the poinetr to list item.
+ * @brief Prints debug information about @p ptr to @p output.
+ * @param ptr the pointer to list item.
  * @param output the output FILE.
  */
 typedef void                    (*xmlSecPtrDebugDumpItemMethod) (xmlSecPtr ptr,

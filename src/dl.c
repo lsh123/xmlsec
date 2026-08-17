@@ -603,7 +603,6 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
       *****************************************************************************/
     XMLSEC_REGISTER_TRANSFORM(Aes128Cbc);                           // transformAes128CbcGetKlass
     XMLSEC_REGISTER_TRANSFORM(Aes192Cbc);                           // transformAes192CbcGetKlass
-    XMLSEC_REGISTER_TRANSFORM(Aes192Cbc);                           // transformAes192CbcGetKlass
     XMLSEC_REGISTER_TRANSFORM(Aes256Cbc);                           // transformAes256CbcGetKlass
 
     XMLSEC_REGISTER_TRANSFORM(Aes128Gcm);                           // transformAes128GcmGetKlass

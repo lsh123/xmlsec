@@ -78,4 +78,4 @@ docs/html/html.stamp
 build-*/*
 scripts/__pycache__
 .github/copilot-instructions.md
-
+.opencode/

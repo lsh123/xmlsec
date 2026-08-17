@@ -139,7 +139,7 @@ xmlSecKeyDataConcatKdfGetKlass(void) {
 xmlSecKeyDataId
 xmlSecKeyDataDesGetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataDesGetKlass == NULL)) {
-        xmlSecNotImplementedError2(missingMethodError, "keyDataDesId");
+        xmlSecNotImplementedError2(missingMethodError, "keyDataDesGetKlass");
         return(xmlSecKeyDataIdUnknown);
     }
 
@@ -445,7 +445,7 @@ xmlSecKeyDataStoreId
 xmlSecX509StoreGetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->x509StoreGetKlass == NULL)) {
         xmlSecNotImplementedError2(missingMethodError, "x509StoreGetKlass");
-        return(xmlSecKeyStoreIdUnknown);
+        return(xmlSecKeyDataStoreIdUnknown);
     }
 
     return(xmlSecCryptoDLGetFunctions()->x509StoreGetKlass());
@@ -2305,7 +2305,7 @@ xmlSecCryptoAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSe
  */
 void*
 xmlSecCryptoAppGetDefaultPwdCallback(void) {
-    if(xmlSecCryptoDLGetFunctions() == NULL) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppDefaultPwdCallback == NULL)) {
         xmlSecNotImplementedError2(missingMethodError, "cryptoAppDefaultPwdCallback");
         return(NULL);
     }

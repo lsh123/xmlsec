@@ -423,7 +423,7 @@ typedef int                     (*xmlSecKeyDataBinReadMethod)   (xmlSecKeyDataId
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
 /**
  * @brief Key data specific method to write a binary buffer.
- * @details Key data specific method for reading binary buffer.
+ * @details Key data specific method for writing binary buffer.
  * @param id the data id.
  * @param key the key.
  * @param buf the output buffer.
@@ -620,7 +620,7 @@ XMLSEC_EXPORT void              xmlSecKeyDataStoreDestroy       (xmlSecKeyDataSt
 
 /**
  * @brief Macro. Returns 1 if @p store's object has at least @p size bytes.
- * @details Macro. Returns 1 if @p data is valid and @p stores's object has at least @p size bytes.
+ * @details Macro. Returns 1 if @p store is valid and @p store 's object has at least @p size bytes.
  * @param store the pointer to store.
  * @param size the expected size.
  */

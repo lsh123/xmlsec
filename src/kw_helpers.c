@@ -84,8 +84,12 @@ xmlSecTransformKWDes3Finalize(xmlSecTransformPtr transform, xmlSecTransformKWDes
 }
 
 int
-xmlSecTransformKWDes3SetKeyReq(xmlSecTransformPtr transform, xmlSecTransformKWDes3CtxPtr ctx,
-                        xmlSecKeyReqPtr keyReq) {
+xmlSecTransformKWDes3SetKeyReq(xmlSecTransformPtr transform, xmlSecTransformKWDes3CtxPtr ctx, xmlSecKeyReqPtr keyReq) {
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->keyId != NULL, -1);
+    xmlSecAssert2(keyReq != NULL, -1);
+
     keyReq->keyId   = ctx->keyId;
     keyReq->keyType = xmlSecKeyDataTypeSymmetric;
     if(transform->operation == xmlSecTransformOperationEncrypt) {
@@ -546,7 +550,7 @@ xmlSecTransformKWRfc3394SetKeyReq(xmlSecTransformPtr transform, xmlSecTransformK
     xmlSecAssert2(ctx->keyId != NULL, -1);
     xmlSecAssert2(keyReq != NULL, -1);
 
-    keyReq->keyId   = ctx->keyId;;
+    keyReq->keyId   = ctx->keyId;
     keyReq->keyType = xmlSecKeyDataTypeSymmetric;
     if(transform->operation == xmlSecTransformOperationEncrypt) {
         keyReq->keyUsage = xmlSecKeyUsageEncrypt;

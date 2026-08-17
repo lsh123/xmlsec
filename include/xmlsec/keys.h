@@ -112,7 +112,7 @@ struct _xmlSecKeyUseWith {
 };
 
 /**
- * @brief The keys list klass.
+ * @brief The key use-with list klass.
  */
 #define xmlSecKeyUseWithPtrListId       xmlSecKeyUseWithPtrListGetKlass()
 XMLSEC_EXPORT xmlSecPtrListId   xmlSecKeyUseWithPtrListGetKlass (void);
@@ -221,8 +221,8 @@ XMLSEC_EXPORT xmlSecKeyPtr      xmlSecKeyReadMemory     (xmlSecKeyDataId dataId,
 
 /**
  * @brief Macro. Returns 1 if @p key is valid.
- * @details Macro. Returns 1 if @p key is not NULL and @p key->id is not NULL
- * or 0 otherwise.
+ * @details Macro. Returns 1 if @p key is not NULL, @p key->value is not NULL
+ * and @p key->value->id is not NULL, or 0 otherwise.
  * @param key the pointer to key.
  */
 #define xmlSecKeyIsValid(key) \

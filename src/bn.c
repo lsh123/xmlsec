@@ -808,7 +808,6 @@ xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
         content = xmlSecBnToHexString(bn);
         if(content == NULL) {
             xmlSecInternalError("xmlSecBnToHexString", NULL);
-            xmlFree(content);
             return(-1);
         }
         xmlNodeSetContent(cur, content);
@@ -818,7 +817,6 @@ xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
         content = xmlSecBnToDecString(bn);
         if(content == NULL) {
             xmlSecInternalError("xmlSecBnToDecString", NULL);
-            xmlFree(content);
             return(-1);
         }
         xmlNodeSetContent(cur, content);

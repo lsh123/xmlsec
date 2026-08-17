@@ -20,7 +20,6 @@
 #include <xmlsec/buffer.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
-#include <xmlsec/keys.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/membuf.h>
 #include <xmlsec/errors.h>
@@ -125,7 +124,7 @@ xmlSecTransformMemBufFinalize(xmlSecTransformPtr transform) {
     buffer = xmlSecMemBufGetCtx(transform);
     xmlSecAssert(buffer != NULL);
 
-    xmlSecBufferFinalize(xmlSecMemBufGetCtx(transform));
+    xmlSecBufferFinalize(buffer);
 }
 
 static int

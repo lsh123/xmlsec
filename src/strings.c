@@ -941,3 +941,4 @@ const xmlChar xmlSecHrefXslt[]                  = "http://www.w3.org/TR/1999/REC
   *****************************************************************************/
 const xmlChar xmlSecStringEmpty[]               = "";
 const xmlChar xmlSecStringCR[]                  = "\n";
+const xmlChar xmlSecStringLF[]                  = "\n";

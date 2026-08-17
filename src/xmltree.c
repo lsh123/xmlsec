@@ -33,7 +33,7 @@
 #include "cast_helpers.h"
 
 
-static const xmlChar*    g_xmlsec_xmltree_default_linefeed = xmlSecStringCR;
+static const xmlChar*    g_xmlsec_xmltree_default_linefeed = xmlSecStringLF;
 
 /**
  * @brief Gets the current default linefeed.

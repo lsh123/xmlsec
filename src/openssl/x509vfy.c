@@ -387,17 +387,38 @@ xmlSecOpenSSLX509StoreVerifyAndCopyCrls(X509_STORE* xst, X509_STORE_CTX* xsc, ST
 }
 
 
-/* X509_cmp_time is deprecated in OpenSSL 4.0.0 */
+/* X509_cmp_time is deprecated in OpenSSL 4.0.0. The two APIs have incompatible
+   return-value conventions:
+     - ASN1_TIME_cmp_time_t() (OpenSSL 4.0): -1 before, 0 equal, 1 after, -2 error
+     - X509_cmp_time() (older): -1 before-or-equal, 1 after, 0 error
+   This helper reports whether (a) is after (b), normalizing both to:
+     > 0  : (a) is after (b)
+     0    : (a) is before or equal to (b)
+     < 0  : error */
+static int
+xmlSecOpenSSLAsn1TimeIsAfter(const ASN1_TIME * a, time_t * b) {
 #if defined(XMLSEC_OPENSSL_API_400)
-/* ASN1_TIME_cmp_time_t() and ASN1_UTCTIME_cmp_time_t() return -1 if s is before t,
-   0 if s equals t, or 1 if s is after t. -2 is returned on error */
-#define xmlSecOpenSSLAsn1TimeCmp(a, b) ASN1_TIME_cmp_time_t((a), *(b))
+    int ret = ASN1_TIME_cmp_time_t(a, *b);
+    if(ret < 0) {
+        /* -2 is an error; -1 means (a) is before (b) */
+        return(ret == -2 ? -1 : 0);
+    }
+    /* ret >= 0: 0 means equal, 1 means after */
+    return(ret > 0 ? 1 : 0);
 #else /* defined(XMLSEC_OPENSSL_API_400) */
-/* X509_cmp_time() and X509_cmp_current_time() return -1 if asn1_time is earlier than,
-   or equal to, in_tm (resp. current time), and 1 otherwise. These methods return 0
-   on error. */
-#define xmlSecOpenSSLAsn1TimeCmp(a, b) X509_cmp_time((a), (b))
+    int ret = X509_cmp_time(a, b);
+    if(ret < 0) {
+        /* before-or-equal */
+        return(0);
+    }
+    if(ret == 0) {
+        /* error */
+        return(-1);
+    }
+    /* after */
+    return(1);
 #endif /* defined(XMLSEC_OPENSSL_API_400) */
+}
 
 static int
 xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked(X509 * cert, STACK_OF(X509_REVOKED) *revoked_certs, xmlSecKeyInfoCtx* keyInfoCtx) {
@@ -445,12 +466,12 @@ xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked(X509 * cert, STACK_OF(X509_REVOKE
                 xmlSecOpenSSLError("X509_REVOKED_get0_revocationDate(revoked_cert)", NULL);
                 return(-1);
             }
-            ret = xmlSecOpenSSLAsn1TimeCmp(revocationDate, &tt);
-            if (ret == 0) {
-                xmlSecOpenSSLError("X509_cmp_time(revocationDate)", NULL);
+            ret = xmlSecOpenSSLAsn1TimeIsAfter(revocationDate, &tt);
+            if (ret < 0) {
+                xmlSecOpenSSLError("xmlSecOpenSSLAsn1TimeIsAfter(revocationDate)", NULL);
                 return(-1);
             }
-            /* ret = 1: asn1_time is later than time */
+            /* ret > 0: revocationDate is later than the verification time */
             if (ret > 0) {
                 XMLSEC_OPENSSL400_CONST X509_NAME *issuer;
                 char issuer_name[256];
@@ -533,15 +554,16 @@ xmlSecOpenSSLX509StoreFindBestCrl(XMLSEC_OPENSSL400_CONST X509_NAME *cert_issuer
             continue;
         }
 
-        /* return -1 if asn1_time is earlier than, or equal to, ts
-         * and 1 otherwise. These methods return 0 on error.*/
-        ret = xmlSecOpenSSLAsn1TimeCmp(lastUpdate, &resLastUpdateTime);
-        if(ret == 0) {
-            xmlSecOpenSSLError("X509_cmp_time(lastUpdate)", NULL);
+        /* ret > 0: lastUpdate is after resLastUpdateTime (crl is newer)
+         * ret == 0: lastUpdate is before or equal (keep current best)
+         * ret < 0: error */
+        ret = xmlSecOpenSSLAsn1TimeIsAfter(lastUpdate, &resLastUpdateTime);
+        if(ret < 0) {
+            xmlSecOpenSSLError("xmlSecOpenSSLAsn1TimeIsAfter(lastUpdate)", NULL);
             return(-1);
         }
         if(ret > 0) {
-            /* asn1_time is greater than ts (i.e. crl is newer than crl in res)*/
+            /* lastUpdate is greater than resLastUpdateTime (i.e. crl is newer than crl in res)*/
             (*res) = crl;
 
             ret = xmlSecOpenSSLX509Asn1TimeToTime(lastUpdate, &resLastUpdateTime);
@@ -1609,9 +1631,9 @@ xmlSecOpenSSLX509VerifyCRLTimeValidity(X509_CRL *crl, xmlSecKeyInfoCtx* keyInfoC
 
     /* Verify thisUpdate */
     if(thisUpdate != NULL) {
-        ret = xmlSecOpenSSLAsn1TimeCmp(thisUpdate, &verification_time);
-        if(ret == 0) {
-            xmlSecOpenSSLError("X509_cmp_time(thisUpdate)", NULL);
+        ret = xmlSecOpenSSLAsn1TimeIsAfter(thisUpdate, &verification_time);
+        if(ret < 0) {
+            xmlSecOpenSSLError("xmlSecOpenSSLAsn1TimeIsAfter(thisUpdate)", NULL);
             return(-1);
         }
         if(ret > 0) {
@@ -1626,9 +1648,13 @@ xmlSecOpenSSLX509VerifyCRLTimeValidity(X509_CRL *crl, xmlSecKeyInfoCtx* keyInfoC
 
     /* Verify nextUpdate */
     if(nextUpdate != NULL) {
-        ret = xmlSecOpenSSLAsn1TimeCmp(nextUpdate, &verification_time);
-        if(ret <= 0) {
-            /* nextUpdate <= verification_time: CRL expired */
+        ret = xmlSecOpenSSLAsn1TimeIsAfter(nextUpdate, &verification_time);
+        if(ret < 0) {
+            xmlSecOpenSSLError("xmlSecOpenSSLAsn1TimeIsAfter(nextUpdate)", NULL);
+            return(-1);
+        }
+        if(ret == 0) {
+            /* nextUpdate is before or equal to verification_time: CRL expired */
             char issuer[256];
             xmlSecOpenSSLX509NameToString(X509_CRL_get_issuer(crl), issuer, sizeof(issuer));
             xmlSecOtherError2(XMLSEC_ERRORS_R_CRL_HAS_EXPIRED, NULL, "issuer=%s", issuer);

@@ -267,7 +267,7 @@ xmlSecOpenSSLEvpSignatureCheckId(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaPssSha3_512Id)) {
         return(1);
     } else
-#endif /* XMLSEC_NO_SHA512 */
+#endif /* XMLSEC_NO_SHA3 */
 
 #endif /* XMLSEC_NO_RSA */
 
@@ -1125,7 +1125,7 @@ xmlSecOpenSSLEvpSignatureCreatePkeyCtx(xmlSecTransformPtr transform, xmlSecOpenS
         }
         EVP_SIGNATURE_free(sigAlg);
     }
-#endif /* !defined(XMLSEC_OPENSSL_API_350) */
+#endif /* defined(XMLSEC_OPENSSL_API_350) */
     else {
         xmlSecInternalError("Signature digest is not specified", xmlSecTransformGetName(transform));
         goto error;
@@ -1245,16 +1245,16 @@ xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
         ret = EVP_PKEY_verify(pKeyCtx, fixedData, dataLen, dataToSign, dataToSignSize);
         break;
 #else  /* XMLSEC_NO_EC */
-        xmlSecNotImplementedError("DSA signatures support is disabled during compilation");
+        xmlSecNotImplementedError("ECDSA signatures support is disabled during compilation");
         goto done;
 #endif /* XMLSEC_NO_EC */
     default:
         /* make compiler happy */
-        xmlSecNotImplementedError("Singature format is not implemented");
+        xmlSecNotImplementedError("Signature format is not implemented");
         goto done;
     }
 
-    /* Verify: ret == 1 is sucess, ret == 0 is verification failed, ret < 0 is an error  */
+    /* Verify: ret == 1 is success, ret == 0 is verification failed, ret < 0 is an error  */
     if(ret < 0) {
         /* error */
         xmlSecOpenSSLError("EVP_PKEY_verify", xmlSecTransformGetName(transform));
@@ -1398,7 +1398,7 @@ xmlSecOpenSSLEvpSignatureStart(xmlSecTransformPtr transform, xmlSecOpenSSLEvpSig
     xmlSecAssert2(transform != NULL, -1);
     xmlSecAssert2(ctx != NULL, -1);
 
-    /* some singatures have digest as part of the algorithm */
+    /* some signatures have digest as part of the algorithm */
     if(ctx->digest != NULL) {
         xmlSecAssert2(ctx->digestCtx != NULL, -1);
 
@@ -1430,7 +1430,7 @@ xmlSecOpenSSLEvpSignatureUpdate(xmlSecTransformPtr transform, xmlSecOpenSSLEvpSi
         return(0);
     }
 
-    /* some singatures have digest as part of the algorithm */
+    /* some signatures have digest as part of the algorithm */
     if(ctx->digest != NULL) {
         xmlSecAssert2(ctx->digestCtx != NULL, -1);
 
@@ -1531,8 +1531,6 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
     out = &(transform->outBuf);
     outSize = xmlSecBufferGetSize(out);
 
-    ctx = xmlSecOpenSSLEvpSignatureGetCtx(transform);
-    xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->pKey != NULL, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
@@ -1881,12 +1879,12 @@ xmlSecOpenSSLEvpSignatureDsa_XmlDSig2OpenSSL(const xmlSecTransformId transformId
     int res = -1;
     int ret;
 
-    xmlSecAssert2(transformId != NULL, 0);
-    xmlSecAssert2(data != NULL, 0);
-    xmlSecAssert2(dataSize > 0, 0);
-    xmlSecAssert2(out != NULL, 0);
-    xmlSecAssert2((*out) == NULL, 0);
-    xmlSecAssert2(outLen != NULL, 0);
+    xmlSecAssert2(transformId != NULL, -1);
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(dataSize > 0, -1);
+    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2((*out) == NULL, -1);
+    xmlSecAssert2(outLen != NULL, -1);
 
     /* calculate signature size */
     signHalfLen = xmlSecOpenSSLEvpSignatureDsaHalfLen(transformId);
@@ -1933,7 +1931,7 @@ xmlSecOpenSSLEvpSignatureDsa_XmlDSig2OpenSSL(const xmlSecTransformId transformId
     }
     ret = DSA_SIG_set0(sig, rr, ss);
     if(ret == 0) {
-        xmlSecOpenSSLError("ECDSA_SIG_set0()", NULL);
+        xmlSecOpenSSLError("DSA_SIG_set0()", NULL);
         goto done;
     }
     rr = NULL; /* owned by sig now */
@@ -1941,7 +1939,7 @@ xmlSecOpenSSLEvpSignatureDsa_XmlDSig2OpenSSL(const xmlSecTransformId transformId
 
     ret = i2d_DSA_SIG(sig, out); /* ret is size of signature on success */
     if (ret < 0) {
-        xmlSecOpenSSLError("i2d_ECDSA_SIG", NULL);
+        xmlSecOpenSSLError("i2d_DSA_SIG", NULL);
         goto done;
     }
 
@@ -1975,13 +1973,13 @@ xmlSecOpenSSLEvpSignatureDsa_OpenSSL2XmlDSig(const xmlSecTransformId transformId
     int ret;
     int res = -1;
 
-    xmlSecAssert2(transformId != NULL, 0);
-    xmlSecAssert2(data != NULL, 0);
+    xmlSecAssert2(transformId != NULL, -1);
+    xmlSecAssert2(data != NULL, -1);
 
     buf = xmlSecBufferGetData(data);
     bufSize = xmlSecBufferGetSize(data);
-    xmlSecAssert2(buf != NULL, 0);
-    xmlSecAssert2(bufSize > 0, 0);
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(bufSize > 0, -1);
 
     /* calculate signature size */
     signHalfLen = xmlSecOpenSSLEvpSignatureDsaHalfLen(transformId);
@@ -2026,7 +2024,7 @@ xmlSecOpenSSLEvpSignatureDsa_OpenSSL2XmlDSig(const xmlSecTransformId transformId
         goto done;
     }
     buf = xmlSecBufferGetData(data);
-    xmlSecAssert2(buf != NULL, 0);
+    xmlSecAssert2(buf != NULL, -1);
 
     /* write components */
     xmlSecAssert2((rLen + sLen) <= 2 * signHalfLen, -1);
@@ -2064,7 +2062,7 @@ xmlSecOpenSSLTransformDsaSha1GetKlass(void) {
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
-/* DSA-SHA1 signature transform: xmlSecOpenSSLDsaSha256Klass */
+/* DSA-SHA256 signature transform: xmlSecOpenSSLDsaSha256Klass */
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(DsaSha256)
 
 /**
@@ -2204,7 +2202,7 @@ xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(
 
     sig = ECDSA_SIG_new();
     if (sig == NULL) {
-        xmlSecOpenSSLError("DSA_SIG_new", NULL);
+        xmlSecOpenSSLError("ECDSA_SIG_new", NULL);
         goto done;
     }
     ret = ECDSA_SIG_set0(sig, rr, ss);
@@ -2303,7 +2301,7 @@ xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig(xmlSecTransformCtxPtr transformCt
         goto done;
     }
     buf = xmlSecBufferGetData(data);
-    xmlSecAssert2(buf != NULL, 0);
+    xmlSecAssert2(buf != NULL, -1);
 
     /* write components */
     xmlSecAssert2((rLen + sLen) <= 2 * signHalfLen, -1);

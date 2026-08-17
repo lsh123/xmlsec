@@ -139,6 +139,7 @@ static xmlSecKeyDataType xmlSecOpenSSLEvpKeyDataGetType          (xmlSecKeyDataP
 
 /**
  * @brief Sets the value of key data.
+ * @details On success, ownership of @p pKey transfers to xmlsec; on failure the caller retains ownership.
  * @param data the pointer to OpenSSL EVP key data.
  * @param pKey the pointer to EVP key.
  * @return 0 on success or a negative value otherwise.
@@ -164,7 +165,7 @@ xmlSecOpenSSLEvpKeyDataAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
 /**
  * @brief Gets the EVP_PKEY from the key data.
  * @param data the pointer to OpenSSL EVP data.
- * @return pointer to EVP_PKEY or NULL if an error occurs.
+ * @return a borrowed pointer to EVP_PKEY, or NULL if an error occurs; the caller must NOT free it.
  */
 EVP_PKEY*
 xmlSecOpenSSLEvpKeyDataGetEvp(xmlSecKeyDataPtr data) {
@@ -182,7 +183,7 @@ xmlSecOpenSSLEvpKeyDataGetEvp(xmlSecKeyDataPtr data) {
 /**
  * @brief Gets the EVP_PKEY from the key.
  * @param key the pointer to OpenSSL EVP key.
- * @return pointer to EVP_PKEY or NULL if an error occurs.
+ * @return a borrowed pointer to EVP_PKEY, or NULL if an error occurs; the caller must NOT free it.
  */
 EVP_PKEY*
 xmlSecOpenSSLKeyGetEvp(xmlSecKeyPtr key) {
@@ -612,7 +613,7 @@ xmlSecOpenSSLEvpKeyDataGetType(xmlSecKeyDataPtr data) {
 /**
  * @brief Duplicates @p pKey.
  * @param pKey the pointer to EVP_PKEY.
- * @return pointer to newly created EVP_PKEY object or NULL if an error occurs.
+ * @return a new EVP_PKEY that the caller owns and must free with EVP_PKEY_free(), or NULL if an error occurs.
  */
 EVP_PKEY*
 xmlSecOpenSSLEvpKeyDup(EVP_PKEY* pKey) {
@@ -778,6 +779,7 @@ xmlSecOpenSSLEvpKeyGetKeyDataId(EVP_PKEY *pKey) {
 
 /**
  * @brief Creates xmlsec key object from OpenSSL key object.
+ * @details On success, ownership of @p pKey transfers to the returned key; on failure the caller retains ownership.
  * @param pKey the pointer to EVP_PKEY.
  * @return pointer to newly created xmlsec key or NULL if an error occurs.
  */
@@ -1017,6 +1019,7 @@ xmlSecOpenSSLKeyDataDsaGetKlass(void) {
 
 /**
  * @brief Sets the DSA key data value to OpenSSL EVP key.
+ * @details On success, ownership of @p pKey transfers to xmlsec; on failure the caller retains ownership.
  * @param data the pointer to DSA key data.
  * @param pKey the pointer to OpenSSL EVP key.
  * @return 0 on success or a negative value otherwise.
@@ -1033,7 +1036,7 @@ xmlSecOpenSSLKeyDataDsaAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
 /**
  * @brief Gets the OpenSSL EVP key from DSA key data.
  * @param data the pointer to DSA key data.
- * @return pointer to OpenSSL EVP key or NULL if an error occurs.
+ * @return a borrowed pointer to OpenSSL EVP key, or NULL if an error occurs; the caller must NOT free it.
  */
 EVP_PKEY*
 xmlSecOpenSSLKeyDataDsaGetEvp(xmlSecKeyDataPtr data) {
@@ -1545,7 +1548,7 @@ xmlSecOpenSSLKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
             xmlSecKeyDataKlassGetName(id));
         goto done;
     }
-    /* q */
+    /* g */
     ret = xmlSecOpenSSLGetBNValue(&(dsaValue->g), &(dsaKeyValue.g));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLGetBNValue(g)",
@@ -1561,7 +1564,7 @@ xmlSecOpenSSLKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     }
     /* x (only for private key) */
     if(xmlSecBufferGetSize(&(dsaValue->x)) > 0) {
-        /* p */
+        /* x */
         ret = xmlSecOpenSSLGetBNValue(&(dsaValue->x), &(dsaKeyValue.priv_key));
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLGetBNValue(x)",
@@ -1659,7 +1662,7 @@ xmlSecOpenSSLKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /* x (only if availabel and requested) */
+    /* x (only if available and requested) */
     if((writePrivateKey != 0) && (dsaKeyValue.priv_key != NULL)) {
         ret = xmlSecOpenSSLSetBNValue(dsaKeyValue.priv_key, &(dsaValue->x));
         if(ret < 0) {
@@ -1785,6 +1788,7 @@ xmlSecOpenSSLKeyDataDhGetKlass(void) {
 
 /**
  * @brief Sets the DH key data value to OpenSSL EVP key.
+ * @details On success, ownership of @p pKey transfers to xmlsec; on failure the caller retains ownership.
  * @param data the pointer to DH key data.
  * @param pKey the pointer to OpenSSL EVP key.
  * @return 0 on success or a negative value otherwise.
@@ -1801,7 +1805,7 @@ xmlSecOpenSSLKeyDataDhAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
 /**
  * @brief Gets the OpenSSL EVP key from DH key data.
  * @param data the pointer to DH key data.
- * @return pointer to OpenSSL EVP key or NULL if an error occurs.
+ * @return a borrowed pointer to OpenSSL EVP key, or NULL if an error occurs; the caller must NOT free it.
  */
 EVP_PKEY*
 xmlSecOpenSSLKeyDataDhGetEvp(xmlSecKeyDataPtr data) {
@@ -2571,6 +2575,7 @@ xmlSecOpenSSLKeyDataEcGetKlass(void) {
 
 /**
  * @brief Sets the EC key data value to OpenSSL EVP key.
+ * @details On success, ownership of @p pKey transfers to xmlsec; on failure the caller retains ownership.
  * @param data the pointer to EC key data.
  * @param pKey the pointer to OpenSSL EVP key.
  * @return 0 on success or a negative value otherwise.
@@ -2586,7 +2591,7 @@ xmlSecOpenSSLKeyDataEcAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
 /**
  * @brief Gets the OpenSSL EVP key from EC key data.
  * @param data the pointer to EC key data.
- * @return pointer to OpenSSL EVP key or NULL if an error occurs.
+ * @return a borrowed pointer to OpenSSL EVP key, or NULL if an error occurs; the caller must NOT free it.
  */
 EVP_PKEY*
 xmlSecOpenSSLKeyDataEcGetEvp(xmlSecKeyDataPtr data) {
@@ -2680,7 +2685,7 @@ xmlSecOpenSSLKeyDataEcSetEcKey(xmlSecKeyDataPtr data,  EC_KEY* ecKey) {
 
     ret = EVP_PKEY_set1_EC_KEY(pKey, ecKey);
     if(ret != 1) {
-        xmlSecOpenSSLError("EVP_PKEY_new", xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("EVP_PKEY_set1_EC_KEY", xmlSecKeyDataGetName(data));
         EVP_PKEY_free(pKey);
         return(-1);
     }
@@ -3245,6 +3250,7 @@ xmlSecOpenSSLKeyDataRsaGetKlass(void) {
 
 /**
  * @brief Sets the RSA key data value to OpenSSL EVP key.
+ * @details On success, ownership of @p pKey transfers to xmlsec; on failure the caller retains ownership.
  * @param data the pointer to RSA key data.
  * @param pKey the pointer to OpenSSL EVP key.
  * @return 0 on success or a negative value otherwise.
@@ -3261,7 +3267,7 @@ xmlSecOpenSSLKeyDataRsaAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
 /**
  * @brief Gets the OpenSSL EVP key from RSA key data.
  * @param data the pointer to RSA key data.
- * @return pointer to OpenSSL EVP key or NULL if an error occurs.
+ * @return a borrowed pointer to OpenSSL EVP key, or NULL if an error occurs; the caller must NOT free it.
  */
 EVP_PKEY*
 xmlSecOpenSSLKeyDataRsaGetEvp(xmlSecKeyDataPtr data) {
@@ -3514,7 +3520,7 @@ xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     }
     ret = EVP_PKEY_keygen_init(pctx);
     if(ret <= 0) {
-        xmlSecOpenSSLError("EVP_PKEY_paramgen_init",
+        xmlSecOpenSSLError("EVP_PKEY_keygen_init",
             xmlSecKeyDataGetName(data));
         goto done;
     }
@@ -3543,7 +3549,7 @@ xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     }
     ret = EVP_PKEY_CTX_set_params(pctx, params);
     if(ret <= 0) {
-        xmlSecOpenSSLError("EVP_PKEY_CTX_set_param",
+        xmlSecOpenSSLError("EVP_PKEY_CTX_set_params",
             xmlSecKeyDataGetName(data));
         goto done;
     }
@@ -3747,7 +3753,7 @@ xmlSecOpenSSLKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     }
     /* PrivateExponent (only for private key) */
     if(xmlSecBufferGetSize(&(rsaValue->privateExponent)) > 0) {
-        /* p */
+        /* d */
         ret = xmlSecOpenSSLGetBNValue(&(rsaValue->privateExponent), &(rsaKeyValue.d));
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLGetBNValue(x)",
@@ -3827,7 +3833,7 @@ xmlSecOpenSSLKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /* PrivateExponent (only if availabel and requested) */
+    /* PrivateExponent (only if available and requested) */
     if((writePrivateKey != 0) && (rsaKeyValue.d != NULL)) {
         ret = xmlSecOpenSSLSetBNValue(rsaKeyValue.d, &(rsaValue->privateExponent));
         if(ret < 0) {
@@ -3939,6 +3945,7 @@ xmlSecOpenSSLKeyDataMLDSAGetKlass(void) {
 
 /**
  * @brief Sets the MLDSA key data value to OpenSSL EVP key.
+ * @details On success, ownership of @p pKey transfers to xmlsec; on failure the caller retains ownership.
  * @param data the pointer to MLDSA key data.
  * @param pKey the pointer to OpenSSL EVP key.
  * @return 0 on success or a negative value otherwise.
@@ -3987,7 +3994,7 @@ xmlSecOpenSSLKeyDataMLDSAGetKL(xmlSecKeyDataPtr data) {
 /**
  * @brief Gets the OpenSSL EVP key from MLDSA key data.
  * @param data the pointer to MLDSA key data.
- * @return pointer to OpenSSL EVP key or NULL if an error occurs.
+ * @return a borrowed pointer to OpenSSL EVP key, or NULL if an error occurs; the caller must NOT free it.
  */
 EVP_PKEY*
 xmlSecOpenSSLKeyDataMLDSAGetEvp(xmlSecKeyDataPtr data) {
@@ -4036,6 +4043,7 @@ xmlSecOpenSSLKeyDataSLHDSAGetKlass(void) {
 
 /**
  * @brief Sets the SLHDSA key data value to OpenSSL EVP key.
+ * @details On success, ownership of @p pKey transfers to xmlsec; on failure the caller retains ownership.
  * @param data the pointer to SLHDSA key data.
  * @param pKey the pointer to OpenSSL EVP key.
  * @return 0 on success or a negative value otherwise.
@@ -4052,7 +4060,7 @@ xmlSecOpenSSLKeyDataSLHDSAAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
 /**
  * @brief Gets the OpenSSL EVP key from SLHDSA key data.
  * @param data the pointer to SLHDSA key data.
- * @return pointer to OpenSSL EVP key or NULL if an error occurs.
+ * @return a borrowed pointer to OpenSSL EVP key, or NULL if an error occurs; the caller must NOT free it.
  */
 EVP_PKEY*
 xmlSecOpenSSLKeyDataSLHDSAGetEvp(xmlSecKeyDataPtr data) {
@@ -4098,6 +4106,7 @@ xmlSecOpenSSLKeyDataMLKEMGetKlass(void) {
 
 /**
  * @brief Sets the ML-KEM key data value to OpenSSL EVP key.
+ * @details On success, ownership of @p pKey transfers to xmlsec; on failure the caller retains ownership.
  * @param data the pointer to ML-KEM key data.
  * @param pKey the pointer to OpenSSL EVP key.
  * @return 0 on success or a negative value otherwise.
@@ -4142,7 +4151,7 @@ xmlSecOpenSSLKeyDataMLKEMGetKL(xmlSecKeyDataPtr data) {
 /**
  * @brief Gets the OpenSSL EVP key from ML-KEM key data.
  * @param data the pointer to ML-KEM key data.
- * @return pointer to OpenSSL EVP key or NULL if an error occurs.
+ * @return a borrowed pointer to OpenSSL EVP key, or NULL if an error occurs; the caller must NOT free it.
  */
 EVP_PKEY*
 xmlSecOpenSSLKeyDataMLKEMGetEvp(xmlSecKeyDataPtr data) {
@@ -4187,6 +4196,7 @@ xmlSecOpenSSLKeyDataEdDSAGetKlass(void) {
 
 /**
  * @brief Sets the EdDSA key data value to OpenSSL EVP key.
+ * @details On success, ownership of @p pKey transfers to xmlsec; on failure the caller retains ownership.
  * @param data the pointer to EdDSA key data.
  * @param pKey the pointer to OpenSSL EVP key.
  * @return 0 on success or a negative value otherwise.
@@ -4203,7 +4213,7 @@ xmlSecOpenSSLKeyDataEdDSAAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
 /**
  * @brief Gets the OpenSSL EVP key from EdDSA key data.
  * @param data the pointer to EdDSA key data.
- * @return pointer to OpenSSL EVP key or NULL if an error occurs.
+ * @return a borrowed pointer to OpenSSL EVP key, or NULL if an error occurs; the caller must NOT free it.
  */
 EVP_PKEY*
 xmlSecOpenSSLKeyDataEdDSAGetEvp(xmlSecKeyDataPtr data) {
@@ -4247,6 +4257,7 @@ xmlSecOpenSSLKeyDataXdhGetKlass(void) {
 
 /**
  * @brief Sets the XDH key data value to OpenSSL EVP key.
+ * @details On success, ownership of @p pKey transfers to xmlsec; on failure the caller retains ownership.
  * @param data the pointer to XDH key data.
  * @param pKey the pointer to OpenSSL EVP key.
  * @return 0 on success or a negative value otherwise.
@@ -4273,7 +4284,7 @@ xmlSecOpenSSLKeyDataXdhAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
 /**
  * @brief Gets the OpenSSL EVP key from XDH key data.
  * @param data the pointer to XDH key data.
- * @return pointer to OpenSSL EVP key or NULL if an error occurs.
+ * @return a borrowed pointer to OpenSSL EVP key, or NULL if an error occurs; the caller must NOT free it.
  */
 EVP_PKEY*
 xmlSecOpenSSLKeyDataXdhGetEvp(xmlSecKeyDataPtr data) {

@@ -602,7 +602,7 @@ static xmlSecTransformKlass xmlSecOpenSSLHmac ## name ## Klass = {              
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */         \
     xmlSecOpenSSLHmacSetKeyReq,                 /* xmlSecTransformSetKeyReqMethod setKeyReq; */         \
     xmlSecOpenSSLHmacSetKey,                    /* xmlSecTransformSetKeyMethod setKey; */               \
-    xmlSecOpenSSLHmacVerify,                    /* xmlSecTransformValidateMethod validate; */           \
+    xmlSecOpenSSLHmacVerify,                    /* xmlSecTransformVerifyMethod verify; */               \
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \

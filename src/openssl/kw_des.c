@@ -7,7 +7,7 @@
  */
 /**
  * @addtogroup xmlsec_openssl_crypto
- * @brief DES Key Transport transforms implementation for OpenSSL.
+ * @brief DES Key Wrap transforms implementation for OpenSSL.
  */
 #include "globals.h"
 
@@ -320,6 +320,7 @@ xmlSecOpenSSLKWDes3GenerateRandom(xmlSecTransformPtr transform XMLSEC_ATTRIBUTE_
     UNREFERENCED_PARAMETER(transform);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize > 0, -1);
+    xmlSecAssert2(outWritten != NULL, -1);
 
     ret = xmlSecOpenSSLGenerateRandomBytes(out, outSize);
     if(ret < 0) {

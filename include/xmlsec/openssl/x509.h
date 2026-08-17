@@ -29,12 +29,12 @@ extern "C" {
 #endif /* __cplusplus */
 
 /**
- * @brief Macro. To make docbook happy.
+ * @brief OpenSSL X509 stack type (alias for STACK_OF(X509)).
  */
 #define XMLSEC_STACK_OF_X509            STACK_OF(X509)
 
 /**
- * @brief Macro. To make docbook happy.
+ * @brief OpenSSL X509 CRL stack type (alias for STACK_OF(X509_CRL)).
  */
 #define XMLSEC_STACK_OF_X509_CRL        STACK_OF(X509_CRL)
 
@@ -117,7 +117,7 @@ XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED X509* xmlSecOpenSSLX509StoreFindCert_ex(x
                                                                          xmlSecSize skiSize,
                                                                          xmlSecKeyInfoCtx* keyInfoCtx);
 
- #ifdef __cplusplus
+#ifdef __cplusplus
 }
 #endif /* __cplusplus */
 

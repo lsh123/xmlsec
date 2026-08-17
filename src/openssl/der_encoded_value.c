@@ -244,7 +244,10 @@ xmlSecOpenSSLKeyDataDEREncodedKeyValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr 
         xmlSecInternalError("xmlSecBase64Encode", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
-    xmlNodeAddContent(node, content);
+    if(xmlNodeAddContent(node, content) < 0) {
+        xmlSecXmlError("xmlNodeAddContent", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
 
     /* success */
     res = 0;

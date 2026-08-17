@@ -465,8 +465,6 @@ xmlSecOpenSSLSignatureLegacyExecute(xmlSecTransformPtr transform, int last, xmlS
     inSize = xmlSecBufferGetSize(in);
     outSize = xmlSecBufferGetSize(out);
 
-    ctx = xmlSecOpenSSLSignatureLegacyGetCtx(transform);
-    xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->digest != NULL, -1);
     xmlSecAssert2(ctx->digestCtx != NULL, -1);
     xmlSecAssert2(ctx->pKey != NULL, -1);
@@ -611,7 +609,7 @@ xmlSecOpenSSLSignatureLegacyEcdsaSignImpl(EVP_PKEY* pKey, const xmlSecByte* buf,
     /* get key */
     ecKey = EVP_PKEY_get1_EC_KEY(pKey);
     if(ecKey == NULL) {
-        xmlSecOpenSSLError("EVP_PKEY_get1_DSA", NULL);
+        xmlSecOpenSSLError("EVP_PKEY_get1_EC_KEY", NULL);
         goto done;
     }
 
@@ -657,7 +655,7 @@ xmlSecOpenSSLSignatureLegacyEcdsaVerifyImpl(
     /* get key */
     ecKey = EVP_PKEY_get1_EC_KEY(pKey);
     if(ecKey == NULL) {
-        xmlSecOpenSSLError("EVP_PKEY_get1_DSA", NULL);
+        xmlSecOpenSSLError("EVP_PKEY_get1_EC_KEY", NULL);
         goto done;
     }
 
@@ -741,13 +739,13 @@ xmlSecOpenSSLSignatureLegacyEcdsa_OpenSSLToXmlDsig(
     /* check sizes */
     rLen = BN_num_bytes(rr);
     if ((rLen <= 0) || (rLen > signHalfLen)) {
-        xmlSecInvalidDataError("Signature rr length is zero or greater than expected based on key size", NULL);
+        xmlSecInvalidDataError("Signature r length is zero or greater than expected based on key size", NULL);
         return(-1);
     }
 
     sLen = BN_num_bytes(ss);
     if ((sLen <= 0) || (sLen > signHalfLen)) {
-        xmlSecInvalidDataError("Signature ss length is zero or greater than expected based on key size", NULL);
+        xmlSecInvalidDataError("Signature s length is zero or greater than expected based on key size", NULL);
         return(-1);
     }
 
@@ -798,8 +796,8 @@ xmlSecOpenSSLSignatureLegacyEcdsaSign(
     /* convert to XMLDSig format */
     ret = xmlSecOpenSSLSignatureLegacyEcdsa_OpenSSLToXmlDsig(ctx, transformCtx, sig, out);
     if(ret < 0) {
-         xmlSecInternalError("xmlSecOpenSSLSignatureLegacyEcdsaSignImpl", NULL);
-         ECDSA_SIG_free(sig);
+        xmlSecInternalError("xmlSecOpenSSLSignatureLegacyEcdsa_OpenSSLToXmlDsig", NULL);
+        ECDSA_SIG_free(sig);
         return(-1);
     }
     ECDSA_SIG_free(sig);
@@ -843,7 +841,7 @@ xmlSecOpenSSLSignatureLegacyEcdsa_XmlDSigToOpenSSL(
     /* calculate signature size */
     signHalfLen = xmlSecOpenSSLSignatureLegacyEcdsaSignatureHalfLen(ctx->pKey);
     if(signHalfLen <= 0) {
-        xmlSecInternalError("xmlSecOpenSSLSignatureLegacyEcdsaSignatureHalfSize", NULL);
+        xmlSecInternalError("xmlSecOpenSSLSignatureLegacyEcdsaSignatureHalfLen", NULL);
         return(NULL);
     }
 
@@ -868,7 +866,7 @@ xmlSecOpenSSLSignatureLegacyEcdsa_XmlDSigToOpenSSL(
     /* create/read signature */
     sig = ECDSA_SIG_new();
     if (sig == NULL) {
-        xmlSecOpenSSLError("DSA_SIG_new", NULL);
+        xmlSecOpenSSLError("ECDSA_SIG_new", NULL);
         return(NULL);
     }
 

@@ -165,7 +165,7 @@ xmlSecOpenSSLKdfInitialize(xmlSecTransformPtr transform) {
 
     ctx->kctx = EVP_KDF_CTX_new(kdf);
     if(ctx->kctx == NULL) {
-        xmlSecOpenSSLError2("EVP_KDF_CTX_new(SSKDF)", NULL, "kdf=%s", xmlSecErrorsSafeString(ctx->kdfName));
+        xmlSecOpenSSLError2("EVP_KDF_CTX_new", NULL, "kdf=%s", xmlSecErrorsSafeString(ctx->kdfName));
         xmlSecOpenSSLKdfFinalize(transform);
         EVP_KDF_free(kdf);
         return(-1);
@@ -463,7 +463,7 @@ xmlSecOpenSSLConcatKdfSetDigestNameFromHref(xmlSecOpenSSLKdfCtxPtr ctx, const xm
         return(-1);
     }
 
-    /* save algorigthm in the context, params just holds a pointer */
+    /* save algorithm in the context, params just holds a pointer */
     xmlSecAssert2(digestName != NULL, -1);
     ctx->digest = xmlStrdup(BAD_CAST digestName);
     if(ctx->digest == NULL) {
@@ -655,7 +655,7 @@ xmlSecOpenSSLPbkdf2SetDigestNameFromHref(xmlSecOpenSSLKdfCtxPtr ctx, const xmlCh
         return(-1);
     }
 
-    /* save algorigthm in the context, params just holds a pointer */
+    /* save algorithm in the context, params just holds a pointer */
     xmlSecAssert2(digestName != NULL, -1);
     ctx->digest = xmlStrdup(BAD_CAST digestName);
     if(ctx->digest == NULL) {
@@ -940,7 +940,7 @@ xmlSecOpenSSLHkdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
         goto done;
     }
 
-    /* set HKDF mode: EXTRACT_AND_EXPAND */
+    /* set HKDF mode: EXTRACT_AND_EXPAND (stored in ctx->mac, which is unused by HKDF; a transform instance is only ever one KDF type) */
     ctx->mac = xmlStrdup(BAD_CAST "EXTRACT_AND_EXPAND");
     if(ctx->mac == NULL) {
         xmlSecStrdupError(BAD_CAST "EXTRACT_AND_EXPAND", NULL);

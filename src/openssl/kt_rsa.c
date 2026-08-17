@@ -218,12 +218,16 @@ xmlSecOpenSSLRsaPkcs1SetKeyImpl(xmlSecOpenSSLRsaPkcs1CtxPtr ctx, EVP_PKEY* pKey,
         ret = EVP_PKEY_encrypt_init(ctx->pKeyCtx);
         if (ret <= 0) {
             xmlSecOpenSSLError("EVP_PKEY_encrypt_init", NULL);
+            EVP_PKEY_CTX_free(ctx->pKeyCtx);
+            ctx->pKeyCtx = NULL;
             return (-1);
         }
     } else {
         ret = EVP_PKEY_decrypt_init(ctx->pKeyCtx);
         if (ret <= 0) {
             xmlSecOpenSSLError("EVP_PKEY_decrypt_init", NULL);
+            EVP_PKEY_CTX_free(ctx->pKeyCtx);
+            ctx->pKeyCtx = NULL;
             return (-1);
         }
     }
@@ -231,6 +235,8 @@ xmlSecOpenSSLRsaPkcs1SetKeyImpl(xmlSecOpenSSLRsaPkcs1CtxPtr ctx, EVP_PKEY* pKey,
     ret = EVP_PKEY_CTX_set_rsa_padding(ctx->pKeyCtx, RSA_PKCS1_PADDING);
     if (ret <= 0) {
         xmlSecOpenSSLError("EVP_PKEY_CTX_set_rsa_padding", NULL);
+        EVP_PKEY_CTX_free(ctx->pKeyCtx);
+        ctx->pKeyCtx = NULL;
         return (-1);
     }
 
@@ -720,6 +726,7 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
             ctx->md, ctx->mgf1md);
         if(ret != 1) {
             xmlSecOpenSSLError("RSA_padding_add_PKCS1_OAEP_mgf1", NULL);
+            OPENSSL_cleanse(xmlSecBufferGetData(&tmp), ctx->keySize);
             xmlSecBufferFinalize(&tmp);
             return(-1);
         }
@@ -729,9 +736,11 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
             outBuf, rsa, RSA_NO_PADDING);
         if(ret <= 0) {
             xmlSecOpenSSLError("RSA_public_encrypt(RSA_NO_PADDING)", NULL);
+            OPENSSL_cleanse(xmlSecBufferGetData(&tmp), ctx->keySize);
             xmlSecBufferFinalize(&tmp);
             return(-1);
         }
+        OPENSSL_cleanse(xmlSecBufferGetData(&tmp), ctx->keySize);
         xmlSecBufferFinalize(&tmp);
 
         /* success */
@@ -751,7 +760,7 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
         /*
          * the private decrypt w/o padding adds '0's at the beginning.
          * it's not clear for me can I simply skip all '0's from the
-         * beggining so I have to do decode it back to BIGNUM and dump
+          * beginning so I have to do decode it back to BIGNUM and dump
          * buffer again
          */
         bn = BN_new();
@@ -822,12 +831,16 @@ xmlSecOpenSSLRsaOaepSetKeyImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, EVP_PKEY* pKey,
         ret = EVP_PKEY_encrypt_init(ctx->pKeyCtx);
         if (ret <= 0) {
             xmlSecOpenSSLError("EVP_PKEY_encrypt_init", NULL);
+            EVP_PKEY_CTX_free(ctx->pKeyCtx);
+            ctx->pKeyCtx = NULL;
             return (-1);
         }
     } else {
         ret = EVP_PKEY_decrypt_init(ctx->pKeyCtx);
         if (ret <= 0) {
             xmlSecOpenSSLError("EVP_PKEY_decrypt_init", NULL);
+            EVP_PKEY_CTX_free(ctx->pKeyCtx);
+            ctx->pKeyCtx = NULL;
             return (-1);
         }
     }
@@ -835,6 +848,8 @@ xmlSecOpenSSLRsaOaepSetKeyImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, EVP_PKEY* pKey,
     ret = EVP_PKEY_CTX_set_rsa_padding(ctx->pKeyCtx, RSA_PKCS1_OAEP_PADDING);
     if (ret <= 0) {
          xmlSecOpenSSLError("EVP_PKEY_CTX_set_rsa_padding", NULL);
+        EVP_PKEY_CTX_free(ctx->pKeyCtx);
+        ctx->pKeyCtx = NULL;
         return(-1);
     }
 
@@ -844,10 +859,10 @@ xmlSecOpenSSLRsaOaepSetKeyImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, EVP_PKEY* pKey,
 
 // We can put all the params into one OSSL_PARAM array and setup everything at-once.
 // However, in OpenSSL <= 3.0.7 there is a bug that mixes OAEP digest and
-// OAEP MGf1 digest (https://pullanswer.com/questions/mgf1-digest-not-set-correctly-when-configuring-rsa-evp_pkey_ctx-with-ossl_params)
+// OAEP MGF1 digest (https://pullanswer.com/questions/mgf1-digest-not-set-correctly-when-configuring-rsa-evp_pkey_ctx-with-ossl_params)
 // so we do one param at a time.
 static int
-xmlSecOpenSSSLRsaOaepSetParamsIfNeeded(xmlSecOpenSSLRsaOaepCtxPtr ctx) {
+xmlSecOpenSSLRsaOaepSetParamsIfNeeded(xmlSecOpenSSLRsaOaepCtxPtr ctx) {
     xmlSecByte* label;
     xmlSecSize labelSize;
     int ret;
@@ -923,9 +938,9 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
     xmlSecAssert2(outBuf != NULL, -1);
     xmlSecAssert2(outSize != NULL, -1);
 
-    ret = xmlSecOpenSSSLRsaOaepSetParamsIfNeeded(ctx);
+    ret = xmlSecOpenSSLRsaOaepSetParamsIfNeeded(ctx);
     if(ret != 0) {
-        xmlSecInternalError("xmlSecOpenSSSLRsaOaepSetParamsIfNeeded", NULL);
+        xmlSecInternalError("xmlSecOpenSSLRsaOaepSetParamsIfNeeded", NULL);
         return(-1);
     }
 
@@ -1230,7 +1245,7 @@ xmlSecOpenSSLRsaOaepSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     ret = xmlSecOpenSSLRsaOaepSetKeyImpl(ctx, pKey, encrypt);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataRsaGetEvp",
+        xmlSecInternalError("xmlSecOpenSSLRsaOaepSetKeyImpl",
             xmlSecTransformGetName(transform));
         return(-1);
     }

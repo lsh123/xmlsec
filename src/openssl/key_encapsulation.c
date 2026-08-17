@@ -331,7 +331,7 @@ xmlSecOpenSSLMLKEMGetPKeyCtx(xmlSecTransformCtxPtr transformCtx) {
 
 static int
 xmlSecOpenSSLMLKEMEncapsulate(xmlSecTransformCtxPtr transformCtx, xmlSecOpenSSLMLKEMCtxPtr ctx,
-    xmlSecBufferPtr cypherTextOut, xmlSecBufferPtr sharedSecretOut
+    xmlSecBufferPtr cipherTextOut, xmlSecBufferPtr sharedSecretOut
 ) {
     EVP_PKEY_CTX* pKeyCtx = NULL;
     size_t ctLen = 0;
@@ -345,7 +345,7 @@ xmlSecOpenSSLMLKEMEncapsulate(xmlSecTransformCtxPtr transformCtx, xmlSecOpenSSLM
 
     xmlSecAssert2(transformCtx != NULL, -1);
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(cypherTextOut != NULL, -1);
+    xmlSecAssert2(cipherTextOut != NULL, -1);
     xmlSecAssert2(sharedSecretOut != NULL, -1);
 
     /* create context */
@@ -378,12 +378,16 @@ xmlSecOpenSSLMLKEMEncapsulate(xmlSecTransformCtxPtr transformCtx, xmlSecOpenSSLM
         xmlSecInvalidSizeError("Output ciphertext", ctSize, ctx->ciphertextSize, NULL);
         goto done;
     }
-    ret = xmlSecBufferSetSize(cypherTextOut, ctSize);
+    ret = xmlSecBufferSetSize(cipherTextOut, ctSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize(ct)", NULL, "size=" XMLSEC_SIZE_FMT, ctSize);
         goto done;
     }
-    ctBuf = xmlSecBufferGetData(cypherTextOut);
+    ctBuf = xmlSecBufferGetData(cipherTextOut);
+    if(ctBuf == NULL) {
+        xmlSecInternalError("xmlSecBufferGetData", NULL);
+        goto done;
+    }
 
     /* perform encapsulation */
     ret = EVP_PKEY_encapsulate(pKeyCtx, ctBuf, &ctLen, ssBuf, &ssLen);
@@ -419,7 +423,7 @@ done:
 
 static int
 xmlSecOpenSSLMLKEMDecapsulate(xmlSecTransformCtxPtr transformCtx, xmlSecOpenSSLMLKEMCtxPtr ctx,
-    xmlSecBufferPtr cypherTextIn, xmlSecBufferPtr sharedSecretOut
+    xmlSecBufferPtr cipherTextIn, xmlSecBufferPtr sharedSecretOut
 ) {
     EVP_PKEY_CTX* pKeyCtx = NULL;
     xmlSecByte ssBuf[OSSL_ML_KEM_SHARED_SECRET_BYTES];
@@ -433,10 +437,10 @@ xmlSecOpenSSLMLKEMDecapsulate(xmlSecTransformCtxPtr transformCtx, xmlSecOpenSSLM
     xmlSecAssert2(transformCtx != NULL, -1);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->ciphertextSize > 0, -1);
-    xmlSecAssert2(cypherTextIn != NULL, -1);
+    xmlSecAssert2(cipherTextIn != NULL, -1);
     xmlSecAssert2(sharedSecretOut != NULL, -1);
 
-    inSize = xmlSecBufferGetSize(cypherTextIn);
+    inSize = xmlSecBufferGetSize(cipherTextIn);
     if(inSize != ctx->ciphertextSize) {
         xmlSecInvalidSizeError("Input ciphertext", inSize, ctx->ciphertextSize, NULL);
         return(-1);
@@ -456,7 +460,7 @@ xmlSecOpenSSLMLKEMDecapsulate(xmlSecTransformCtxPtr transformCtx, xmlSecOpenSSLM
     }
 
     /* get output size */
-    ret = EVP_PKEY_decapsulate(pKeyCtx, NULL, &ssLen, xmlSecBufferGetData(cypherTextIn), ctx->ciphertextSize);
+    ret = EVP_PKEY_decapsulate(pKeyCtx, NULL, &ssLen, xmlSecBufferGetData(cipherTextIn), ctx->ciphertextSize);
     if(ret <= 0) {
         xmlSecOpenSSLError("EVP_PKEY_decapsulate(size)", NULL);
         goto done;
@@ -468,7 +472,7 @@ xmlSecOpenSSLMLKEMDecapsulate(xmlSecTransformCtxPtr transformCtx, xmlSecOpenSSLM
 
     /* perform decapsulation */
     ssLen2 = sizeof(ssBuf);
-    ret = EVP_PKEY_decapsulate(pKeyCtx, ssBuf, &ssLen2, xmlSecBufferGetData(cypherTextIn), ctx->ciphertextSize);
+    ret = EVP_PKEY_decapsulate(pKeyCtx, ssBuf, &ssLen2, xmlSecBufferGetData(cipherTextIn), ctx->ciphertextSize);
     if(ret <= 0) {
         xmlSecOpenSSLError("EVP_PKEY_decapsulate", NULL);
         goto done;

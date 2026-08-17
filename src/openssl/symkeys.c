@@ -15,8 +15,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <openssl/rand.h>
-
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
@@ -31,7 +29,7 @@
 
 /******************************************************************************
  *
- * Symmetic (binary) keys - just a wrapper for xmlSecKeyDataBinary
+ * Symmetric (binary) keys - just a wrapper for xmlSecKeyDataBinary
  *
   *****************************************************************************/
 static int      xmlSecOpenSSLSymKeyDataInitialize       (xmlSecKeyDataPtr data);
@@ -560,7 +558,7 @@ xmlSecOpenSSLKeyDataPbkdf2GetKlass(void) {
 
 /**
  * @brief Sets the value of PBKDF2 key data.
- * @param data the pointer to Pbkdf2 key data.
+ * @param data the pointer to PBKDF2 key data.
  * @param buf the pointer to key value.
  * @param bufSize the key value size (in bytes).
  * @return 0 on success or a negative value if an error occurs.
@@ -606,7 +604,7 @@ xmlSecOpenSSLKeyDataHkdfGetKlass(void) {
 
 /**
  * @brief Sets the value of HKDF key data (IKM).
- * @param data the pointer to Hkdf key data.
+ * @param data the pointer to HKDF key data.
  * @param buf the pointer to key value.
  * @param bufSize the key value size (in bytes).
  * @return 0 on success or a negative value if an error occurs.

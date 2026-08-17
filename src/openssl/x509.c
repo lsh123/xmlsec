@@ -180,10 +180,8 @@ xmlSecOpenSSLKeyDataX509GetKlass(void) {
 /**
  * @brief Gets the certificate from which the key was extracted.
  * @param data the pointer to X509 key data.
- *
- *
- * @return the key's certificate or NULL if key data was not used for key
- * extraction or an error occurs.
+ * @return a borrowed pointer to the key's certificate, or NULL if key data was not used for key
+ * extraction or an error occurs; the caller must NOT free it.
  */
 X509*
 xmlSecOpenSSLKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
@@ -200,7 +198,6 @@ xmlSecOpenSSLKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
 
 static int
 xmlSecOpenSSLKeyDataX509AddCertInternal(xmlSecOpenSSLX509DataCtxPtr ctx, X509* cert, int keyCert) {
-    X509* dup;
     xmlSecOpenSSLSizeT ret;
 
     xmlSecAssert2(ctx != NULL, -1);
@@ -214,11 +211,10 @@ xmlSecOpenSSLKeyDataX509AddCertInternal(xmlSecOpenSSLX509DataCtxPtr ctx, X509* c
         }
     }
 
-    /* we don't want duplicates */
-    dup = sk_X509_delete_ptr(ctx->certsList, cert);
-    if(dup != NULL) {
-        X509_free(dup);
-    }
+    /* we don't want duplicates: if this exact cert object is already in the list,
+       remove it so it can be re-inserted below (do not free it - we re-add the
+       same object) */
+    (void)sk_X509_delete_ptr(ctx->certsList, cert);
 
     /* ensure that key cert is the first one */
     if(keyCert != 0) {
@@ -240,14 +236,12 @@ xmlSecOpenSSLKeyDataX509AddCertInternal(xmlSecOpenSSLX509DataCtxPtr ctx, X509* c
 }
 
 /**
- * @brief Adds certificate to the X509 key data and sets the it as the key's
- * @param data the pointer to X509 key data.
- * @param cert the pointer to OpenSSL X509 certificate.
- *
- * certificate in @p data. On success, the @p data owns the cert.
+ * @brief Adds certificate to the X509 key data and sets it as the key's certificate.
+ * @details On success, ownership of @p cert transfers to xmlsec; on failure the caller retains ownership.
  * This function DOES NOT check if the key matches the key cert
  * (use #xmlSecOpenSSLAppKeyCertLoadBIO that performs this check).
- *
+ * @param data the pointer to X509 key data.
+ * @param cert the pointer to OpenSSL X509 certificate.
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -282,7 +276,7 @@ xmlSecOpenSSLKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, X509* cert) {
 
 /**
  * @brief Adds certificate to the X509 key data.
- * @details Adds certificate to the X509 key data. On success, the @p data owns the cert.
+ * @details On success, ownership of @p cert transfers to xmlsec; on failure the caller retains ownership.
  * @param data the pointer to X509 key data.
  * @param cert the pointer to OpenSSL X509 certificate.
  * @return 0 on success or a negative value if an error occurs.
@@ -310,10 +304,8 @@ xmlSecOpenSSLKeyDataX509AdoptCert(xmlSecKeyDataPtr data, X509* cert) {
  * @brief Gets a certificate from X509 key data.
  * @param data the pointer to X509 key data.
  * @param pos the desired certificate position.
- *
- *
- * @return the pointer to certificate or NULL if @p pos is larger than the
- * number of certificates in @p data or an error occurs.
+ * @return a borrowed pointer to the certificate, or NULL if @p pos is larger than the
+ * number of certificates in @p data or an error occurs; the caller must NOT free it.
  */
 X509*
 xmlSecOpenSSLKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
@@ -336,7 +328,7 @@ xmlSecOpenSSLKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
 /**
  * @brief Gets the number of certificates in @p data.
  * @param data the pointer to X509 key data.
- * @return te number of certificates in @p data.
+ * @return the number of certificates in @p data.
  */
 xmlSecSize
 xmlSecOpenSSLKeyDataX509GetCertsSize(xmlSecKeyDataPtr data) {
@@ -360,6 +352,7 @@ xmlSecOpenSSLKeyDataX509GetCertsSize(xmlSecKeyDataPtr data) {
 
 /**
  * @brief Adds CRL to the X509 key data.
+ * @details On success, ownership of @p crl transfers to xmlsec; on failure the caller retains ownership.
  * @param data the pointer to X509 key data.
  * @param crl the pointer to OpenSSL X509 CRL.
  * @return 0 on success or a negative value if an error occurs.
@@ -396,10 +389,8 @@ xmlSecOpenSSLKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, X509_CRL* crl) {
  * @brief Gets a CRL from X509 key data.
  * @param data the pointer to X509 key data.
  * @param pos the desired CRL position.
- *
- *
- * @return the pointer to CRL or NULL if @p pos is larger than the
- * number of CRLs in @p data or an error occurs.
+ * @return a borrowed pointer to the CRL, or NULL if @p pos is larger than the
+ * number of CRLs in @p data or an error occurs; the caller must NOT free it.
  */
 X509_CRL*
 xmlSecOpenSSLKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {
@@ -421,7 +412,7 @@ xmlSecOpenSSLKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {
 /**
  * @brief Gets the number of CRLs in @p data.
  * @param data the pointer to X509 key data.
- * @return te number of CRLs in @p data.
+ * @return the number of CRLs in @p data.
  */
 xmlSecSize
 xmlSecOpenSSLKeyDataX509GetCrlsSize(xmlSecKeyDataPtr data) {
@@ -1299,7 +1290,7 @@ xmlSecOpenSSLKeyDataX509Write(xmlSecKeyDataPtr data,  xmlSecKeyX509DataValuePtr 
             }
             x509Value->issuerSerial = xmlSecOpenSSLASN1IntegerWrite(X509_get_serialNumber(cert));
             if(x509Value->issuerSerial == NULL) {
-                xmlSecInternalError2("xmlSecOpenSSLASN1IntegerWrite(X509_get_serialNumber))",
+                xmlSecInternalError2("xmlSecOpenSSLASN1IntegerWrite(X509_get_serialNumber)",
                     xmlSecKeyDataGetName(data),
                     "pos=" XMLSEC_SIZE_FMT, ctx->crtPos);
                 return(-1);
@@ -1325,7 +1316,7 @@ xmlSecOpenSSLKeyDataX509Write(xmlSecKeyDataPtr data,  xmlSecKeyX509DataValuePtr 
             return(-1);
         }
 
-        if((content & XMLSEC_X509DATA_CRL_NODE) != 0) {
+        if (XMLSEC_X509DATA_HAS_EMPTY_NODE(content, XMLSEC_X509DATA_CRL_NODE)) {
             ret = xmlSecOpenSSLX509CrlDerWrite(crl, &(x509Value->crl));
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecOpenSSLX509CrlDerWrite",
@@ -1616,7 +1607,7 @@ xmlSecOpenSSLVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, 
 /**
  * @brief Extracts public key from the @p cert.
  * @param cert the certificate.
- * @return public key value or NULL if an error occurs.
+ * @return a new key data that the caller owns and must destroy with xmlSecKeyDataDestroy(), or NULL if an error occurs.
  */
 xmlSecKeyDataPtr
 xmlSecOpenSSLX509CertGetKey(X509* cert) {

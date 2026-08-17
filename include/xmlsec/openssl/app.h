@@ -15,7 +15,6 @@
  * @{
  */
 
-#include <openssl/pem.h>
 #include <openssl/bio.h>
 
 #include <xmlsec/exports.h>

@@ -703,6 +703,8 @@ xmlSecBufferHexRead(xmlSecBufferPtr buf, const xmlChar* hexStr) {
         ch2 = *(hexStr++);
         if(!xmlSecIsHex(ch1) || !xmlSecIsHex(ch2)) {
             xmlSecInvalidDataError("Unexpected character (not hex)", NULL);
+            /* do not leave the buffer in a partially-decoded, resized state */
+            xmlSecBufferEmpty(buf);
             return (-1);
         }
         (*data) = xmlSecFromHex2(ch1, ch2);

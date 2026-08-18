@@ -94,8 +94,15 @@ static const xmlSecErrorDescription xmlSecErrorsTable[XMLSEC_ERRORS_MAX_NUMBER +
 };
 
 /* We have system callback that can be set by the xmlsec-crypto library and user callback
- * that user can set. We always prioritize user callback if set. Note that if user sets
- * NULL callback then we disable errors reporting */
+ * that user can set. We always prioritize user callback if set. Note that passing a NULL
+ * callback to xmlSecErrorsSetCallback() clears the user override and falls back to the
+ * system (default) callback.
+ *
+ * NOTE: The global state below (the callbacks, xmlSecPrintErrorMessages and
+ * gXmlSecErrorsPrintCryptoLibraryLogOnExitIsEnabled) is plain mutable state that is read
+ * and written without any synchronization. These functions are therefore NOT thread-safe:
+ * a concurrent setter while another thread reports an error is a data race. Applications
+ * must serialize access to the setters (e.g. configure them before spawning threads). */
 static xmlSecErrorsCallback xmlSecErrorsSystemClbk = xmlSecErrorsDefaultCallback;
 static xmlSecErrorsCallback xmlSecErrorsUserClbk   = NULL;
 static int xmlSecErrorsClbkIsSetByUser = 0;
@@ -125,13 +132,16 @@ xmlSecErrorsShutdown(void) {
 /**
  * @brief Sets the errors callback function.
  * @details Sets the errors callback function to @p callback that will be called
- * every time an error occurs.
- * @param callback the new errors callback function.
+ * every time an error occurs. Passing NULL clears the user override and restores
+ * the system (default) callback, so this can be used to undo a previous call.
+ * Note that this function is not thread-safe (see the module notes).
+ * @param callback the new errors callback function, or NULL to fall back to the default.
  */
 void
 xmlSecErrorsSetCallback(xmlSecErrorsCallback callback) {
     xmlSecErrorsUserClbk = callback;
-    xmlSecErrorsClbkIsSetByUser = 1;
+    /* a NULL callback clears the user override so we fall back to the system/default callback */
+    xmlSecErrorsClbkIsSetByUser = (callback != NULL) ? 1 : 0;
 }
 
 
@@ -139,6 +149,7 @@ xmlSecErrorsSetCallback(xmlSecErrorsCallback callback) {
  * @brief Sets the system errors callback function.
  * @details Sets the system errors callback function to @p callback that will be called
  * every time an error occurs.
+ * Note that this function is not thread-safe (see the module notes).
  * @param callback the new system errors callback function.
  */
 void

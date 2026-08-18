@@ -84,6 +84,7 @@ AC_HEADER_DIRENT
 
 dnl Checks for library functions.
 AC_CHECK_FUNCS([memset_explicit explicit_bzero memset_s])
+AC_CHECK_DECLS([memset_explicit, explicit_bzero, memset_s], [], [], [[#include <string.h>]])
 
 
 dnl ==========================================================================

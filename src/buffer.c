@@ -831,11 +831,11 @@ xmlSecMemCleanse(void* data, size_t size) {
 
 #if defined(XMLSEC_WINDOWS)
     SecureZeroMemory(data, size);
-#elif defined(HAVE_MEMSET_EXPLICIT)
+#elif defined(HAVE_MEMSET_EXPLICIT) && defined(HAVE_DECL_MEMSET_EXPLICIT) && (HAVE_DECL_MEMSET_EXPLICIT == 1)
     memset_explicit(data, 0, size);
-#elif defined(HAVE_EXPLICIT_BZERO)
+#elif defined(HAVE_EXPLICIT_BZERO) && defined(HAVE_DECL_EXPLICIT_BZERO) && (HAVE_DECL_EXPLICIT_BZERO == 1)
     explicit_bzero(data, size);
-#elif defined(HAVE_MEMSET_S)
+#elif defined(HAVE_MEMSET_S) && defined(HAVE_DECL_MEMSET_S) && (HAVE_DECL_MEMSET_S == 1)
     (void)memset_s(data, size, 0, size);
 #else
     /* Fallback: zero through a volatile pointer so the compiler cannot

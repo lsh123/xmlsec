@@ -333,7 +333,7 @@ xmlSecOpenSSLEvpDigestFinalize(xmlSecTransformPtr transform) {
     }
 #endif /* XMLSEC_OPENSSL_API_300 */
 
-    memset(ctx, 0, sizeof(xmlSecOpenSSLEvpDigestCtx));
+    OPENSSL_cleanse(ctx, sizeof(xmlSecOpenSSLEvpDigestCtx));
 }
 
 static int

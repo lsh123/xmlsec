@@ -83,6 +83,7 @@ dnl Checks for header files.
 AC_HEADER_DIRENT
 
 
+
 dnl ==========================================================================
 dnl XMLSec configs
 dnl ==========================================================================
@@ -2705,7 +2706,7 @@ if test "z$enable_pedantic" = "zno" ; then
     AC_MSG_RESULT([disabled])
 elif test "z$build_with_gcc" = "zyes" ; then
     dnl Flags supported since GCC 3.x (always available in any modern GCC)
-    CFLAGS="$CFLAGS -O -std=c99 -pedantic -pedantic-errors -W -Wall -Wextra"
+    CFLAGS="$CFLAGS -O -pedantic -pedantic-errors -W -Wall -Wextra"
     CFLAGS="$CFLAGS -fno-inline"
     CFLAGS="$CFLAGS -Wformat=2 -Wformat-security -Wformat-nonliteral"
     CFLAGS="$CFLAGS -Wconversion -Wunused -Wshadow -Wpointer-arith -Wcast-align"
@@ -2729,10 +2730,17 @@ elif test "z$build_with_gcc" = "zyes" ; then
         CFLAGS="$CFLAGS -Wformat-overflow=2"
     fi
 
+    dnl GCC >= 13: --std=c23 (added in GCC 14)
+    if test "$gcc_major_ver" -ge 14 ; then
+        CFLAGS="$CFLAGS -std=c23"
+    else
+        CFLAGS="$CFLAGS -std=c99"
+    fi
+
     AC_MSG_RESULT([yes])
 elif test "z$build_with_clang" = "zyes" ; then
     dnl Flags supported since Clang 3.x (always available in any modern Clang)
-    CFLAGS="$CFLAGS -O -std=c99 -pedantic -pedantic-errors -W -Wall -Wextra"
+    CFLAGS="$CFLAGS -O -pedantic -pedantic-errors -W -Wall -Wextra"
     CFLAGS="$CFLAGS -fno-inline"
     CFLAGS="$CFLAGS -Wformat=2 -Wformat-security -Wformat-nonliteral"
     CFLAGS="$CFLAGS -Wconversion -Wunused -Wshadow -Wpointer-arith -Wcast-align"
@@ -2746,22 +2754,42 @@ elif test "z$build_with_clang" = "zyes" ; then
         CFLAGS="$CFLAGS -Wdouble-promotion -Wnull-dereference"
     fi
 
+    dnl Clang >= 18: --std=c23 (added in Clang 18)
+    if test "$clang_major_ver" -ge 18 ; then
+        CFLAGS="$CFLAGS -std=c23"
+    else
+        CFLAGS="$CFLAGS -std=c99"
+    fi
+
     AC_MSG_RESULT([yes])
 else
     AC_MSG_RESULT([disabled (unsupported compiler)])
 fi
 
 dnl ==========================================================================
-dnl Secure memset
+dnl Secure memset (DEPREACTED in favor or true secure wipe -- see xmlSecMemCleanse)
 dnl ==========================================================================
 AC_MSG_CHECKING(for secure memset)
-AC_ARG_ENABLE([secure-memset], [AS_HELP_STRING([--enable-secure-memset],[enable secure memset compilation flags (yes)])])
+AC_ARG_ENABLE([secure-memset], [AS_HELP_STRING([--enable-secure-memset],[enable secure memset compilation flags (DEPRECATED, yes)])])
 if test "z$enable_secure_memset" != "zno" ; then
     CFLAGS="$CFLAGS -fno-builtin-memset"
-    AC_MSG_RESULT([yes])
+    AC_MSG_RESULT([DEPRECATED, yes])
 else
     AC_MSG_RESULT([disabled])
 fi
+
+
+dnl ==========================================================================
+dnl Checks for library functions (using all CFLAGS, etc)
+dnl ==========================================================================
+AC_CHECK_FUNCS([memset_explicit explicit_bzero memset_s])
+AC_CHECK_DECLS([memset_explicit, explicit_bzero, memset_s], [], [], [[
+    #if defined(__GNUC__) && !defined(_GNU_SOURCE)
+    #define _GNU_SOURCE
+    #endif
+
+    #include <string.h>
+]])
 
 
 dnl ==========================================================================
@@ -2845,6 +2873,7 @@ for i in $XMLSEC_CRYPTO_LIST ; do
     XMLSEC_CRYPTO_PC_FILES_LIST="$XMLSEC_CRYPTO_PC_FILES_LIST $XMLSEC_PACKAGE-$i.pc"
 done
 AC_SUBST(XMLSEC_CRYPTO_PC_FILES_LIST)
+
 
 dnl ==========================================================================
 dnl Writing result files

@@ -258,7 +258,7 @@ xmlSecOpenSSLEvpKeyDataFinalize(xmlSecKeyDataPtr data) {
     if(ctx->pKey != NULL) {
         EVP_PKEY_free(ctx->pKey);
     }
-    memset(ctx, 0, sizeof(xmlSecOpenSSLEvpKeyDataCtx));
+    OPENSSL_cleanse(ctx, sizeof(xmlSecOpenSSLEvpKeyDataCtx));
 }
 
 #ifndef XMLSEC_OPENSSL_API_300
@@ -977,7 +977,7 @@ xmlSecOpenSSLKeyValueDsaFinalize(xmlSecOpenSSLKeyValueDsaPtr dsaKeyValue) {
     if((dsaKeyValue->notOwner == 0) && (dsaKeyValue->priv_key != NULL)) {
         BN_clear_free(dsaKeyValue->priv_key);
     }
-    memset(dsaKeyValue, 0, sizeof(*dsaKeyValue));
+    OPENSSL_cleanse(dsaKeyValue, sizeof(*dsaKeyValue));
 }
 
 
@@ -1747,7 +1747,7 @@ xmlSecOpenSSLKeyValueDhFinalize(xmlSecOpenSSLKeyValueDhPtr dhKeyValue) {
     if((dhKeyValue->notOwner == 0) && (dhKeyValue->pgenCounter != NULL)) {
         BN_clear_free(dhKeyValue->pgenCounter);
     }
-    memset(dhKeyValue, 0, sizeof(*dhKeyValue));
+    OPENSSL_cleanse(dhKeyValue, sizeof(*dhKeyValue));
 }
 
 
@@ -3164,7 +3164,7 @@ xmlSecOpenSSLKeyValueRsaFinalize(xmlSecOpenSSLKeyValueRsaPtr rsaKeyValue) {
     if((rsaKeyValue->notOwner == 0) && (rsaKeyValue->d != NULL)) {
         BN_clear_free(rsaKeyValue->d);
     }
-    memset(rsaKeyValue, 0, sizeof(*rsaKeyValue));
+    OPENSSL_cleanse(rsaKeyValue, sizeof(*rsaKeyValue));
 }
 
 /******************************************************************************

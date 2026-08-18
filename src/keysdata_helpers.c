@@ -82,6 +82,7 @@ xmlSecKeyDataBinaryValueInitialize(xmlSecKeyDataPtr data) {
                             xmlSecKeyDataGetName(data));
         return(-1);
     }
+    buffer->flags |= XMLSEC_BUFFER_FLAG_SECURE;
 
     return(0);
 }
@@ -1696,6 +1697,7 @@ xmlSecKeyValueDsaInitialize(xmlSecKeyValueDsaPtr data) {
         xmlSecKeyValueDsaFinalize(data);
         return(-1);
     }
+    data->x.flags |= XMLSEC_BUFFER_FLAG_SECURE;
     ret = xmlSecBufferInitialize(&(data->y), XMLSEC_KEY_DATA_DSA_INIT_BUF_SIZE);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize(y)", NULL);
@@ -2136,6 +2138,7 @@ xmlSecKeyValueRsaInitialize(xmlSecKeyValueRsaPtr data) {
         xmlSecKeyValueRsaFinalize(data);
         return(-1);
     }
+    data->privateExponent.flags |= XMLSEC_BUFFER_FLAG_SECURE;
     return(0);
 }
 

@@ -15,6 +15,7 @@
  * @{
  */
 
+#include <stddef.h>
 #include <libxml/tree.h>
 
 #include <xmlsec/exports.h>
@@ -33,9 +34,18 @@ typedef struct _xmlSecBuffer                                    xmlSecBuffer,
  * @details The memory allocation mode (used by xmlSecBuffer and xmlSecList).
  */
 typedef enum {
-    xmlSecAllocModeExact = 0,  /**< the memory allocation mode that minimizes total allocated memory size. */
-    xmlSecAllocModeDouble  /**< the memory allocation mode that tries to minimize the number of malloc calls. */
+    xmlSecAllocModeExact = 0,   /**< the memory allocation mode that minimizes total allocated memory size. */
+    xmlSecAllocModeDouble       /**< the memory allocation mode that tries to minimize the number of malloc calls. */
 } xmlSecAllocMode;
+
+
+/**
+ * @brief The buffer behavior flags.
+ * @details The buffer behavior flags (used by xmlSecBuffer).
+ */
+#define XMLSEC_BUFFER_FLAG_ALLOC_MODE_EXACT      0x0000
+#define XMLSEC_BUFFER_FLAG_ALLOC_MODE_DOUBLE     0x0001
+#define XMLSEC_BUFFER_FLAG_SECURE                0x1000
 
 /******************************************************************************
  *
@@ -50,7 +60,7 @@ struct _xmlSecBuffer {
     xmlSecByte*         data;  /**< the pointer to buffer data. */
     xmlSecSize          size;  /**< the current data size. */
     xmlSecSize          maxSize;  /**< the max data size (allocated buffer size). */
-    xmlSecAllocMode     allocMode;  /**< the buffer memory allocation mode. */
+    int                 flags;  /**< the buffer behavior flags. */
 };
 
 XMLSEC_EXPORT void              xmlSecBufferSetDefaultAllocMode (xmlSecAllocMode defAllocMode,
@@ -108,6 +118,8 @@ XMLSEC_EXPORT xmlOutputBufferPtr xmlSecBufferCreateOutputBuffer (xmlSecBufferPtr
 XMLSEC_EXPORT int               xmlSecMemEqual                  (const xmlSecByte* buf1,
 																 const xmlSecByte* buf2,
 																 xmlSecSize size);
+
+XMLSEC_EXPORT void              xmlSecMemCleanse                (void* data, size_t size);
 
 #ifdef __cplusplus
 }

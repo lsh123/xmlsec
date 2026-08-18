@@ -304,7 +304,7 @@ xmlSecMSCngKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
     BCRYPT_KEY_HANDLE hKey = NULL;
     DWORD cbData;
     PBYTE pbKeyObject = NULL;
-    DWORD cbKeyObject;
+    DWORD cbKeyObject = 0;
     xmlSecBuffer blob;
     int blob_initialized = 0;
     BCRYPT_KEY_DATA_BLOB_HEADER* blobHeader;
@@ -338,6 +338,7 @@ xmlSecMSCngKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
         xmlSecInternalError("xmlSecBufferInitialize", NULL);
         goto done;
     }
+    blob.flags |= XMLSEC_BUFFER_FLAG_SECURE;
     blob_initialized = 1;
 
     status = BCryptOpenAlgorithmProvider(
@@ -434,6 +435,7 @@ done:
         BCryptDestroyKey(hKey);
     }
     if (pbKeyObject != NULL) {
+        xmlSecMemCleanse(pbKeyObject, cbKeyObject);
         xmlFree(pbKeyObject);
     }
     if (hAlg != NULL) {
@@ -454,7 +456,7 @@ xmlSecMSCngKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
     BCRYPT_KEY_HANDLE hKey = NULL;
     DWORD cbData;
     PBYTE pbKeyObject = NULL;
-    DWORD cbKeyObject;
+    DWORD cbKeyObject = 0;
     xmlSecBuffer blob;
     int blob_initialized = 0;
     BCRYPT_KEY_DATA_BLOB_HEADER* blobHeader;
@@ -488,6 +490,7 @@ xmlSecMSCngKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
         xmlSecInternalError("xmlSecBufferInitialize", NULL);
         goto done;
     }
+    blob.flags |= XMLSEC_BUFFER_FLAG_SECURE;
     blob_initialized = 1;
 
     status = BCryptOpenAlgorithmProvider(
@@ -584,6 +587,7 @@ done:
         BCryptDestroyKey(hKey);
     }
     if (pbKeyObject != NULL) {
+        xmlSecMemCleanse(pbKeyObject, cbKeyObject);
         xmlFree(pbKeyObject);
     }
     if (hAlg != NULL) {

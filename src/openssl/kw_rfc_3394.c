@@ -313,7 +313,7 @@ xmlSecOpenSSLKWRfc3394Finalize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_OPENSSL_API_300 */
 
     xmlSecTransformKWRfc3394Finalize(transform, &(ctx->parentCtx));
-    memset(ctx, 0, sizeof(xmlSecOpenSSLKWRfc3394Ctx));
+    OPENSSL_cleanse(ctx, sizeof(xmlSecOpenSSLKWRfc3394Ctx));
 }
 
 static int

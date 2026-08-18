@@ -1686,7 +1686,7 @@ xmlSecKeyDataEncryptedKeyXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodeP
     res = 0;
 done:
     if(keyBuf != NULL) {
-        memset(keyBuf, 0, keySize);
+        xmlSecMemCleanse(keyBuf, keySize);
         xmlFree(keyBuf); keyBuf = NULL;
     }
     return(res);

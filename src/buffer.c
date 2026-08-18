@@ -9,7 +9,21 @@
  * @addtogroup xmlsec_core_buffer
  * @brief Binary memory buffer functions.
  */
+
+/* Required for xmlSecMemCleanse when compiled with --enable-pedantic (ie with -std=c99 or -std=c23) (also see configure.ac) */
+#if defined(__GNUC__) && !defined(_GNU_SOURCE)
+#define _GNU_SOURCE
+#endif
+
+/* SecureZeroMemory() is declared in <windows.h>. */
+#if defined(XMLSEC_WINDOWS)
+#include <windows.h>
+#endif /* defined(XMLSEC_WINDOWS) */
+
+
 #include "globals.h"
+
+
 
 #include <stdlib.h>
 #include <string.h>
@@ -32,6 +46,21 @@
   *****************************************************************************/
 static xmlSecAllocMode gAllocMode = xmlSecAllocModeDouble;
 static xmlSecSize gInitialSize = 1024;
+
+static void
+xmlSecBufferWipe(xmlSecBufferPtr buf, xmlSecByte* data, xmlSecSize size) {
+    xmlSecAssert(buf != NULL);
+
+    if((data == NULL) || (size == 0)) {
+        return;
+    }
+
+    if((buf->flags & XMLSEC_BUFFER_FLAG_SECURE) != 0) {
+        xmlSecMemCleanse(data, size);
+    } else {
+        memset(data, 0, size);
+    }
+}
 
 /**
  * @brief Sets the default buffer allocation mode.
@@ -102,7 +131,19 @@ xmlSecBufferInitialize(xmlSecBufferPtr buf, xmlSecSize size) {
 
     buf->data = NULL;
     buf->size = buf->maxSize = 0;
-    buf->allocMode = gAllocMode;
+    buf->flags = 0;
+
+    switch(gAllocMode) {
+        case xmlSecAllocModeExact:
+            buf->flags |= XMLSEC_BUFFER_FLAG_ALLOC_MODE_EXACT;
+            break;
+        case xmlSecAllocModeDouble:
+            buf->flags |= XMLSEC_BUFFER_FLAG_ALLOC_MODE_DOUBLE;
+            break;
+        default:
+            xmlSecInvalidIntegerDataError("allocMode", (int)(gAllocMode), "xmlSecAllocModeExact or xmlSecAllocModeDouble", NULL);
+            return(-1);
+    }
 
     return(xmlSecBufferSetMaxSize(buf, size));
 }
@@ -124,6 +165,7 @@ xmlSecBufferFinalize(xmlSecBufferPtr buf) {
     }
     buf->data = NULL;
     buf->size = buf->maxSize = 0;
+    buf->flags = 0;
 }
 
 /**
@@ -136,7 +178,7 @@ xmlSecBufferEmpty(xmlSecBufferPtr buf) {
 
     if(buf->data != 0) {
         xmlSecAssert(buf->maxSize > 0);
-        memset(buf->data, 0, buf->maxSize);
+        xmlSecBufferWipe(buf, buf->data, buf->maxSize);
     }
     buf->size = 0;
 }
@@ -228,7 +270,7 @@ xmlSecBufferSetSize(xmlSecBufferPtr buf, xmlSecSize size) {
 
     if(size < buf->size) {
         xmlSecAssert2(buf->data != NULL, -1);
-        memset(buf->data + size, 0, buf->size - size);
+        xmlSecBufferWipe(buf, buf->data + size, buf->size - size);
     }
 
     buf->size = size;
@@ -265,25 +307,20 @@ xmlSecBufferSetMaxSize(xmlSecBufferPtr buf, xmlSecSize size) {
         return(0);
     }
 
-    switch(buf->allocMode) {
-        case xmlSecAllocModeExact:
-            if(size > XMLSEC_SIZE_MAX - 8) {
-                xmlSecInvalidSizeError("size", size, (XMLSEC_SIZE_MAX - 8), NULL);
-                return(-1);
-            }
-            newSize = size + 8;
-            break;
-        case xmlSecAllocModeDouble:
-            if(size > ((XMLSEC_SIZE_MAX - 32) / 2)) {
-                xmlSecInvalidSizeError("size", size, ((XMLSEC_SIZE_MAX - 32) / 2), NULL);
-                return(-1);
-            }
-            newSize = 2 * size + 32;
-            break;
-        default:
-            xmlSecInvalidIntegerDataError("allocMode", (int)(buf->allocMode),
-                "xmlSecAllocModeExact or xmlSecAllocModeDouble", NULL);
+
+    if((buf->flags & XMLSEC_BUFFER_FLAG_ALLOC_MODE_DOUBLE) != 0) {
+      if(size > ((XMLSEC_SIZE_MAX - 32) / 2)) {
+            xmlSecInvalidSizeError("size", size, ((XMLSEC_SIZE_MAX - 32) / 2), NULL);
             return(-1);
+        }
+        newSize = 2 * size + 32;
+    } else {
+        /* use exact mode */
+        if(size > XMLSEC_SIZE_MAX - 8) {
+            xmlSecInvalidSizeError("size", size, (XMLSEC_SIZE_MAX - 8), NULL);
+            return(-1);
+        }
+        newSize = size + 8;
     }
 
     if(newSize < gInitialSize) {
@@ -327,7 +364,7 @@ xmlSecBufferSwap(xmlSecBufferPtr buf1, xmlSecBufferPtr buf2) {
     SWAP(xmlSecByte*,       buf1->data, buf2->data);
     SWAP(xmlSecSize,        buf1->size, buf2->size);
     SWAP(xmlSecSize,        buf1->maxSize, buf2->maxSize);
-    SWAP(xmlSecAllocMode,   buf1->allocMode, buf2->allocMode);
+    SWAP(int,               buf1->flags, buf2->flags);
 }
 
 /**
@@ -422,7 +459,7 @@ xmlSecBufferRemoveHead(xmlSecBufferPtr buf, xmlSecSize size) {
     }
     if(buf->size < buf->maxSize) {
         xmlSecAssert2(buf->data != NULL, -1);
-        memset(buf->data + buf->size, 0, buf->maxSize - buf->size);
+        xmlSecBufferWipe(buf, buf->data + buf->size, buf->maxSize - buf->size);
     }
     return(0);
 }
@@ -445,7 +482,7 @@ xmlSecBufferRemoveTail(xmlSecBufferPtr buf, xmlSecSize size) {
     }
     if(buf->size < buf->maxSize) {
         xmlSecAssert2(buf->data != NULL, -1);
-        memset(buf->data + buf->size, 0, buf->maxSize - buf->size);
+        xmlSecBufferWipe(buf, buf->data + buf->size, buf->maxSize - buf->size);
     }
     return(0);
 }
@@ -786,4 +823,41 @@ xmlSecMemEqual(const xmlSecByte* buf1, const xmlSecByte* buf2, xmlSecSize size) 
     }
 
     return((diff == 0) ? 1 : 0);
+}
+
+
+/**
+ * @brief Securely wipes (zeroes) a block of memory.
+ * @details Overwrites @p size bytes starting at @p data with zeros, using a
+ * platform-specific secure zeroing routine that the compiler cannot optimize
+ * away. Use this to clear sensitive data (keys, secrets, intermediate key
+ * material) before it is freed or reused.
+ * @param data the pointer to the memory to wipe.
+ * @param size the number of bytes to wipe.
+ */
+void
+xmlSecMemCleanse(void* data, size_t size) {
+    if((data == NULL) || (size == 0)) {
+        return;
+    }
+
+#if defined(XMLSEC_WINDOWS)
+    SecureZeroMemory(data, size);
+#elif defined(HAVE_MEMSET_EXPLICIT) && defined(HAVE_DECL_MEMSET_EXPLICIT) && (HAVE_DECL_MEMSET_EXPLICIT == 1)
+    memset_explicit(data, 0, size);
+#elif defined(HAVE_EXPLICIT_BZERO) && defined(HAVE_DECL_EXPLICIT_BZERO) && (HAVE_DECL_EXPLICIT_BZERO == 1)
+    explicit_bzero(data, size);
+#elif defined(HAVE_MEMSET_S) && defined(HAVE_DECL_MEMSET_S) && (HAVE_DECL_MEMSET_S == 1)
+    (void)memset_s(data, size, 0, size);
+#else
+    /* Fallback: zero through a volatile pointer so the compiler cannot
+     * optimize the write away. */
+    {
+        volatile unsigned char* p = (volatile unsigned char*)data;
+        while(size > 0) {
+            *p++ = 0;
+            size--;
+        }
+    }
+#endif
 }

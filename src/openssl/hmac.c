@@ -272,7 +272,7 @@ xmlSecOpenSSLHmacFinalize(xmlSecTransformPtr transform) {
     }
 #endif /* XMLSEC_OPENSSL_API_300 */
 
-    memset(ctx, 0, sizeof(xmlSecOpenSSLHmacCtx));
+    OPENSSL_cleanse(ctx, sizeof(xmlSecOpenSSLHmacCtx));
 }
 
 static int

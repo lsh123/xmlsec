@@ -152,6 +152,7 @@ xmlSecTransformConcatKdfParamsInitialize(xmlSecTransformConcatKdfParamsPtr param
         xmlSecTransformConcatKdfParamsFinalize(params);
         return(-1);
     }
+    params->bufSuppPrivInfo.flags |= XMLSEC_BUFFER_FLAG_SECURE;
 
     /* done */
     return(0);

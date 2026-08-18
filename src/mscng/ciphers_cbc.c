@@ -175,6 +175,7 @@ xmlSecMSCngCbcBlockCipherFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     if(ctx->pbIV != NULL) {
+        memset(ctx->pbIV, 0, ctx->cbIV);
         xmlFree(ctx->pbIV);
     }
     if(ctx->hKey != NULL) {
@@ -284,6 +285,7 @@ xmlSecMSCngCbcBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
             "size=" XMLSEC_SIZE_FMT, blobSize);
         goto done;
     }
+    blob.flags |= XMLSEC_BUFFER_FLAG_SECURE;
     bufInitialized = 1;
 
     xmlSecBufferSetSize(&blob, blobSize);

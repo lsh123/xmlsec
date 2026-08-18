@@ -1106,6 +1106,9 @@ xmlSecKeyReadBuffer(xmlSecKeyDataId dataId, xmlSecBuffer* buffer) {
     xmlSecAssert2(dataId != xmlSecKeyDataIdUnknown, NULL);
     xmlSecAssert2(buffer != NULL, NULL);
 
+    /* mark buffer as sensitive */
+    buffer->flags |= XMLSEC_BUFFER_FLAG_SECURE;
+
     /* create key data */
     key = xmlSecKeyCreate();
     if(key == NULL) {

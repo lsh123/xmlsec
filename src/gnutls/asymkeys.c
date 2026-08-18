@@ -915,6 +915,7 @@ done:
         gnutls_free(y.data);
     }
     if(x.data != NULL) {
+        xmlSecMemCleanse(x.data, x.size);
         gnutls_free(x.data);
     }
 

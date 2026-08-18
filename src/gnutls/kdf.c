@@ -173,6 +173,7 @@ xmlSecGnuTLSKdfInitialize(xmlSecTransformPtr transform) {
         xmlSecGnuTLSKdfFinalize(transform);
         return(-1);
     }
+    ctx->key.flags |= XMLSEC_BUFFER_FLAG_SECURE;
 
     /* init KDF-specific structures */
     if(0) {
@@ -184,6 +185,7 @@ xmlSecGnuTLSKdfInitialize(xmlSecTransformPtr transform) {
             xmlSecGnuTLSKdfFinalize(transform);
             return(-1);
         }
+        ctx->u.concatKdf.fixedInfo.flags |= XMLSEC_BUFFER_FLAG_SECURE;
         ret = xmlSecTransformConcatKdfParamsInitialize(&(ctx->u.concatKdf.params));
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformConcatKdfParamsInitialize", NULL);
@@ -595,7 +597,7 @@ xmlSecGnuTLSConcatKdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen, x
     }
 
     /* securely wipe sensitive data from stack */
-    memset(hashBuf, 0, sizeof(hashBuf));
+    xmlSecMemCleanse(hashBuf, sizeof(hashBuf));
 
     /* success */
     return(0);
@@ -1010,7 +1012,7 @@ xmlSecGnuTLSHkdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen, xmlSec
     err = gnutls_hkdf_extract(ctx->u.hkdf.mac, &keyDatum, &saltDatum, prk);
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_hkdf_extract", err, NULL);
-        memset(prk, 0, prkLen);
+        xmlSecMemCleanse(prk, prkLen);
         xmlFree(prk);
         return(-1);
     }
@@ -1019,20 +1021,20 @@ xmlSecGnuTLSHkdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen, xmlSec
      * gnutls_hkdf_expand(mac, key, info, output, length) */
     {
         gnutls_datum_t prkDatum;
-        XMLSEC_SAFE_CAST_SIZE_TO_UINT(prkLen, prkDatum.size, memset(prk, 0, prkLen); xmlFree(prk); return(-1), NULL);
+        XMLSEC_SAFE_CAST_SIZE_TO_UINT(prkLen, prkDatum.size, xmlSecMemCleanse(prk, prkLen); xmlFree(prk); return(-1), NULL);
         prkDatum.data = prk;
         err = gnutls_hkdf_expand(ctx->u.hkdf.mac, &prkDatum, &infoDatum, outData, outLen);
     }
 
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_hkdf_expand", err, NULL);
-        memset(prk, 0, prkLen);
+        xmlSecMemCleanse(prk, prkLen);
         xmlFree(prk);
         return(-1);
     }
 
     /* clean up PRK */
-    memset(prk, 0, prkLen);
+    xmlSecMemCleanse(prk, prkLen);
     xmlFree(prk);
 
     /* success */

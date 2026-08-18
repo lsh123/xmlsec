@@ -262,6 +262,7 @@ xmlSecGnuTLSKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTr
             xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
             return(-1);
         }
+        secret.flags |= XMLSEC_BUFFER_FLAG_SECURE;
 
         /* Step 1: derive shared secret using gnutls_privkey_derive_secret */
         kamKeyData = xmlSecTransformCtxExtraKeyDataGet(transformCtx, xmlSecKeyDataKAMId);
@@ -420,7 +421,7 @@ xmlSecGnuTLSKeyAgreementGenerateSecret(xmlSecGnuTLSKeyAgreementCtxPtr ctx, xmlSe
 done:
     if(secretDatum.data != NULL) {
         /* securely wipe and free the GnuTLS-allocated secret */
-        memset(secretDatum.data, 0, secretDatum.size);
+        xmlSecMemCleanse(secretDatum.data, secretDatum.size);
         gnutls_free(secretDatum.data);
     }
     if((res != 0) && (secret != NULL)) {

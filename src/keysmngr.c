@@ -288,7 +288,7 @@ xmlSecKeyStoreDestroy(xmlSecKeyStorePtr store) {
     if(store->id->finalize != NULL) {
         (store->id->finalize)(store);
     }
-    memset(store, 0, store->id->objSize);
+    xmlSecMemCleanse(store, store->id->objSize);
     xmlFree(store);
 }
 

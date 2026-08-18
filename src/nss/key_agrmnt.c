@@ -262,6 +262,7 @@ xmlSecNssKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
             xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
             return(-1);
         }
+        secret.flags |= XMLSEC_BUFFER_FLAG_SECURE;
 
         /* Step 1: derive shared secret using NSS ECDH derive support */
         kamKeyData = xmlSecTransformCtxExtraKeyDataGet(transformCtx, xmlSecKeyDataKAMId);
@@ -434,7 +435,7 @@ done:
         /* securely wipe the key material before freeing */
         SECItem *kd = PK11_GetKeyData(symKey);
         if(kd != NULL && kd->data != NULL) {
-            memset(kd->data, 0, kd->len);
+            xmlSecMemCleanse(kd->data, kd->len);
         }
         PK11_FreeSymKey(symKey);
     }

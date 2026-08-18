@@ -259,9 +259,11 @@ xmlSecGnuTLSKeyTransportDecrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
     ret = xmlSecBufferAppend(outBuf, plaintext.data, plaintext.size);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferAppend", NULL);
+        xmlSecMemCleanse(plaintext.data, plaintext.size);
         gnutls_free(plaintext.data);
         return(-1);
     }
+    xmlSecMemCleanse(plaintext.data, plaintext.size);
     gnutls_free(plaintext.data);
 
     /* success */
@@ -805,6 +807,7 @@ xmlSecGnuTLSRsaOaepDecrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx,
     }
 
     ret = xmlSecBufferAppend(outBuf, plaintext.data, plaintext.size);
+    xmlSecMemCleanse(plaintext.data, plaintext.size);
     gnutls_free(plaintext.data);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferAppend", NULL);

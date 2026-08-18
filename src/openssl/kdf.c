@@ -179,6 +179,7 @@ xmlSecOpenSSLKdfInitialize(xmlSecTransformPtr transform) {
         xmlSecOpenSSLKdfFinalize(transform);
         return(-1);
     }
+    ctx->buffer.flags |= XMLSEC_BUFFER_FLAG_SECURE;
 
     ret = xmlSecBufferInitialize(&(ctx->buffer2), 0);
     if(ret < 0) {
@@ -186,6 +187,7 @@ xmlSecOpenSSLKdfInitialize(xmlSecTransformPtr transform) {
         xmlSecOpenSSLKdfFinalize(transform);
         return(-1);
     }
+    ctx->buffer2.flags |= XMLSEC_BUFFER_FLAG_SECURE;
 
     /* done */
     return(0);
@@ -216,7 +218,7 @@ xmlSecOpenSSLKdfFinalize(xmlSecTransformPtr transform) {
     xmlSecBufferFinalize(&(ctx->buffer));
     xmlSecBufferFinalize(&(ctx->buffer2));
 
-    memset(ctx, 0, sizeof(xmlSecOpenSSLKdfCtx));
+    OPENSSL_cleanse(ctx, sizeof(xmlSecOpenSSLKdfCtx));
 }
 
 
@@ -538,15 +540,16 @@ xmlSecOpenSSLConcatKdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     }
     fixedInfoData = xmlSecBufferGetData(&(ctx->buffer));
     fixedInfoSize = xmlSecBufferGetSize(&(ctx->buffer));
-    if((fixedInfoData == NULL) || (fixedInfoSize == 0)) {
-        xmlSecInvalidSizeDataError("fixedInfoSize", fixedInfoSize, "> 0", xmlSecTransformGetName(transform));
-        goto done;
+    /* FixedInfo is optional per NIST SP 800-56A; all components (AlgorithmID, PartyUInfo,
+     * PartyVInfo, SuppPubInfo, SuppPrivInfo) may be absent. Only set OSSL_KDF_PARAM_INFO
+     * when fixedInfo is non-empty. */
+    if((fixedInfoData != NULL) && (fixedInfoSize > 0)) {
+        if(ctx->paramsPos >= XMLSEC_OPENSSL_KDF_MAX_PARAMS) {
+            xmlSecInvalidSizeDataError("Kdf Params Number", ctx->paramsPos, "too big", xmlSecTransformGetName(transform));
+            goto done;
+        }
+        ctx->params[ctx->paramsPos++] = OSSL_PARAM_construct_octet_string(OSSL_KDF_PARAM_INFO, fixedInfoData, fixedInfoSize);
     }
-    if(ctx->paramsPos >= XMLSEC_OPENSSL_KDF_MAX_PARAMS) {
-        xmlSecInvalidSizeDataError("Kdf Params Number", ctx->paramsPos, "too big", xmlSecTransformGetName(transform));
-        goto done;
-    }
-    ctx->params[ctx->paramsPos++] = OSSL_PARAM_construct_octet_string(OSSL_KDF_PARAM_INFO, fixedInfoData, fixedInfoSize);
 
     /* set openssl digest name from params */
     ret = xmlSecOpenSSLConcatKdfSetDigestNameFromHref(ctx, params.digestMethod);

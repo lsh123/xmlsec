@@ -165,16 +165,20 @@ xmlSecMSCngGcmBlockCipherFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     if(ctx->pbIV != NULL) {
+        memset(ctx->pbIV, 0, ctx->cbIV);
         xmlFree(ctx->pbIV);
     }
 
     if(ctx->authInfo.pbNonce != NULL) {
+        memset(ctx->authInfo.pbNonce, 0, ctx->authInfo.cbNonce);
         xmlFree(ctx->authInfo.pbNonce);
     }
     if(ctx->authInfo.pbTag != NULL) {
+        memset(ctx->authInfo.pbTag, 0, ctx->authInfo.cbTag);
         xmlFree(ctx->authInfo.pbTag);
     }
     if(ctx->authInfo.pbMacContext != NULL) {
+        xmlSecMemCleanse(ctx->authInfo.pbMacContext, ctx->authInfo.cbMacContext);
         xmlFree(ctx->authInfo.pbMacContext);
     }
 
@@ -285,6 +289,7 @@ xmlSecMSCngGcmBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
             "size=" XMLSEC_SIZE_FMT, blobSize);
         goto done;
     }
+    blob.flags |= XMLSEC_BUFFER_FLAG_SECURE;
     bufInitialized = 1;
 
     xmlSecBufferSetSize(&blob, blobSize);

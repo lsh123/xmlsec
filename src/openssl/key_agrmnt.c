@@ -146,7 +146,7 @@ xmlSecOpenSSLKeyAgreementFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     xmlSecTransformKAMFinalize(&(ctx->params));
-    memset(ctx, 0, sizeof(xmlSecOpenSSLKeyAgreementCtx));
+    OPENSSL_cleanse(ctx, sizeof(xmlSecOpenSSLKeyAgreementCtx));
 }
 
 static int
@@ -254,6 +254,7 @@ xmlSecOpenSSLKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecT
             xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
             return(-1);
         }
+        secret.flags |= XMLSEC_BUFFER_FLAG_SECURE;
 
         /* Step 1: derive shared secret (keyOriginator required) */
         kamKeyData = xmlSecTransformCtxExtraKeyDataGet(transformCtx, xmlSecKeyDataKAMId);

@@ -155,7 +155,7 @@ xmlSecGnuTLSHmacInitialize(xmlSecTransformPtr transform) {
 
     /* not found */
     {
-        xmlSecInvalidTransfromError(transform)
+        xmlSecInvalidTransformError(transform)
         return(-1);
     }
 

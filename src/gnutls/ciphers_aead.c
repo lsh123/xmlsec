@@ -197,7 +197,7 @@ xmlSecGnuTLSAeadCipherInitialize(xmlSecTransformPtr transform) {
 
     if(1) {
         xmlSecBufferFinalize(&ctx->aad);
-        xmlSecInvalidTransfromError(transform)
+        xmlSecInvalidTransformError(transform)
         return(-1);
     }
 
@@ -549,7 +549,7 @@ xmlSecGnuTLSAeadCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTran
         /* the only way we can get here is if there is no enough data in the input */
         xmlSecAssert2(last == 0, -1);
     } else {
-        xmlSecInvalidTransfromStatusError(transform);
+        xmlSecInvalidTransformStatusError(transform);
         return(-1);
     }
 

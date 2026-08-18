@@ -163,7 +163,7 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
     } else if(transform->status == xmlSecTransformStatusFinished) {
         return(0);
     } else if(transform->status != xmlSecTransformStatusWorking) {
-        xmlSecInvalidTransfromStatusError(transform);
+        xmlSecInvalidTransformStatusError(transform);
         return(-1);
     }
     xmlSecAssert2(transform->status == xmlSecTransformStatusWorking, -1);
@@ -245,14 +245,14 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
         (*nodes) = NULL;
         return(0);
     default:
-        xmlSecInvalidTransfromStatusError(transform);
+        xmlSecInvalidTransformStatusError(transform);
         return(-1);
     }
     xmlSecAssert2(transform->status == xmlSecTransformStatusWorking, -1);
 
     /* prepare parser context */
     if(transform->prev == NULL) {
-        xmlSecInvalidTransfromError2(transform, "prev transform=\"%s\"", xmlSecErrorsSafeString(transform->prev));
+        xmlSecInvalidTransformError2(transform, "prev transform=\"%s\"", xmlSecErrorsSafeString(transform->prev));
         return(-1);
     }
 

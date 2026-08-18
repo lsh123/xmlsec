@@ -208,7 +208,7 @@ xmlSecGnuTLSDigestInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_GOST2012 */
 
     if(1) {
-        xmlSecInvalidTransfromError(transform)
+        xmlSecInvalidTransformError(transform)
         return(-1);
     }
 

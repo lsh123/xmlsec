@@ -156,7 +156,7 @@ xmlSecMSCngKWAesInitialize(xmlSecTransformPtr transform) {
     } else if(transform->id == xmlSecMSCngTransformKWAes256Id) {
         keyExpectedSize = XMLSEC_BINARY_KEY_BYTES_SIZE_256;
     } else {
-        xmlSecInvalidTransfromError(transform)
+        xmlSecInvalidTransformError(transform)
         return(-1);
     }
 

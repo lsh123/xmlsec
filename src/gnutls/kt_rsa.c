@@ -97,7 +97,7 @@ xmlSecGnuTLSKeyTransportInitialize(xmlSecTransformPtr transform) {
 
     /* not found */
     {
-        xmlSecInvalidTransfromError(transform);
+        xmlSecInvalidTransformError(transform);
         return(-1);
     }
 
@@ -302,7 +302,7 @@ xmlSecGnuTLSKeyTransportExecute(xmlSecTransformPtr transform, int last, xmlSecTr
         xmlSecAssert2(outSize == 0, -1);
 
         if(inSize <= 0) {
-            xmlSecInvalidTransfromStatusError(transform);
+            xmlSecInvalidTransformStatusError(transform);
             return(-1);
         }
 
@@ -333,7 +333,7 @@ xmlSecGnuTLSKeyTransportExecute(xmlSecTransformPtr transform, int last, xmlSecTr
 
     if(transform->status == xmlSecTransformStatusFinished) {
         if(inSize != 0) {
-            xmlSecInvalidTransfromStatusError2(transform,
+            xmlSecInvalidTransformStatusError2(transform,
                     "More data available in the input buffer");
             return(-1);
         }
@@ -550,7 +550,7 @@ xmlSecGnuTLSRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     } else
 #endif /* XMLSEC_NO_SHA3 */
     {
-        xmlSecInvalidTransfromError2(transform,
+        xmlSecInvalidTransformError2(transform,
             "digest algorithm=\"%s\" is not supported for rsa/oaep",
             xmlSecErrorsSafeString(oaepParams.digestAlgorithm));
         xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
@@ -589,7 +589,7 @@ xmlSecGnuTLSRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     } else
 #endif /* XMLSEC_NO_SHA512 */
     {
-        xmlSecInvalidTransfromError2(transform,
+        xmlSecInvalidTransformError2(transform,
             "mgf1 digest algorithm=\"%s\" is not supported for rsa/oaep",
             xmlSecErrorsSafeString(oaepParams.mgf1DigestAlgorithm));
         xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
@@ -598,7 +598,7 @@ xmlSecGnuTLSRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
     /* GnuTLS limitation: MGF1 digest must equal the OAEP digest */
     if(mgf1DigestAlg != digestAlg) {
-        xmlSecInvalidTransfromError2(transform,
+        xmlSecInvalidTransformError2(transform,
             "GnuTLS does not support different MGF1 and OAEP digests: "
             "mgf1=\"%s\" differs from oaep digest",
             xmlSecErrorsSafeString(oaepParams.mgf1DigestAlgorithm));
@@ -850,7 +850,7 @@ xmlSecGnuTLSRsaOaepExecute(xmlSecTransformPtr transform, int last,
         xmlSecAssert2(outSize == 0, -1);
 
         if(inSize <= 0) {
-            xmlSecInvalidTransfromStatusError(transform);
+            xmlSecInvalidTransformStatusError(transform);
             return(-1);
         }
 
@@ -883,7 +883,7 @@ xmlSecGnuTLSRsaOaepExecute(xmlSecTransformPtr transform, int last,
     if(transform->status == xmlSecTransformStatusFinished) {
         inSize = xmlSecBufferGetSize(inBuf);
         if(inSize != 0) {
-            xmlSecInvalidTransfromStatusError2(transform,
+            xmlSecInvalidTransformStatusError2(transform,
                 "More data available in the input buffer");
             return(-1);
         }

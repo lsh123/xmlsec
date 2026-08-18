@@ -313,7 +313,7 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
     } else if(transform->status == xmlSecTransformStatusFinished) {
         return(0);
     } else if(transform->status != xmlSecTransformStatusWorking) {
-        xmlSecInvalidTransfromStatusError(transform);
+        xmlSecInvalidTransformStatusError(transform);
         return(-1);
     }
     xmlSecAssert2(transform->status == xmlSecTransformStatusWorking, -1);
@@ -443,7 +443,7 @@ xmlSecXsltExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr 
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(inSize == 0, -1);
     } else {
-        xmlSecInvalidTransfromStatusError(transform);
+        xmlSecInvalidTransformStatusError(transform);
         return(-1);
     }
     return(0);

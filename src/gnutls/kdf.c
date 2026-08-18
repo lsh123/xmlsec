@@ -162,7 +162,7 @@ xmlSecGnuTLSKdfInitialize(xmlSecTransformPtr transform) {
 
     /* not found */
     {
-        xmlSecInvalidTransfromError(transform);
+        xmlSecInvalidTransformError(transform);
         return(-1);
     }
 
@@ -1147,7 +1147,7 @@ xmlSecGnuTLSKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
             }
 #endif /* XMLSEC_NO_HKDF */
         } else {
-            xmlSecInvalidTransfromError(transform);
+            xmlSecInvalidTransformError(transform);
             return(-1);
         }
 
@@ -1157,7 +1157,7 @@ xmlSecGnuTLSKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(in) == 0, -1);
     } else {
-        xmlSecInvalidTransfromStatusError(transform);
+        xmlSecInvalidTransformStatusError(transform);
         return(-1);
     }
 

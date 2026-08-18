@@ -423,7 +423,7 @@ xmlSecOpenSSLRsaPkcs1Execute(xmlSecTransformPtr transform, int last,
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
-        xmlSecInvalidTransfromStatusError(transform);
+        xmlSecInvalidTransformStatusError(transform);
         return(-1);
     }
     return(0);
@@ -1121,7 +1121,7 @@ xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 #endif /* XMLSEC_NO_SHA3 */
 
     {
-       xmlSecInvalidTransfromError2(transform,
+       xmlSecInvalidTransformError2(transform,
             "digest algorithm=\"%s\" is not supported for rsa/oaep",
             xmlSecErrorsSafeString(oaepParams.digestAlgorithm));
         xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
@@ -1168,7 +1168,7 @@ xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     } else
 #endif /* XMLSEC_NO_SHA512 */
     {
-       xmlSecInvalidTransfromError2(transform,
+       xmlSecInvalidTransformError2(transform,
             "mgf1 digest algorithm=\"%s\" is not supported for rsa/oaep",
             xmlSecErrorsSafeString(oaepParams.mgf1DigestAlgorithm));
         xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
@@ -1288,7 +1288,7 @@ xmlSecOpenSSLRsaOaepExecute(xmlSecTransformPtr transform, int last,
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
-        xmlSecInvalidTransfromStatusError(transform);
+        xmlSecInvalidTransformStatusError(transform);
         return(-1);
     }
     return(0);

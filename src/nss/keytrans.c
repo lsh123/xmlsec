@@ -138,7 +138,7 @@ xmlSecNssKeyTransportInitialize(xmlSecTransformPtr transform) {
 
     /* not found */
     {
-        xmlSecInvalidTransfromError(transform);
+        xmlSecInvalidTransformError(transform);
         return(-1);
     }
 
@@ -636,7 +636,7 @@ xmlSecNssKeyTransportExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
         }
 
         if((context->material == NULL) && (last != 0)) {
-            xmlSecInvalidTransfromStatusError2(transform,
+            xmlSecInvalidTransformStatusError2(transform,
                     "No enough data to initialize transform");
             return(-1);
         }
@@ -661,12 +661,12 @@ xmlSecNssKeyTransportExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
         }
     } else if(transform->status == xmlSecTransformStatusFinished) {
         if(xmlSecBufferGetSize(inBuf) != 0) {
-            xmlSecInvalidTransfromStatusError2(transform,
+            xmlSecInvalidTransformStatusError2(transform,
                     "More data available in the input buffer");
             return(-1);
         }
     } else {
-        xmlSecInvalidTransfromStatusError(transform);
+        xmlSecInvalidTransformStatusError(transform);
         return(-1);
     }
 
@@ -880,7 +880,7 @@ xmlSecNssRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     } else
 #endif /* XMLSEC_NO_SHA3 */
     {
-        xmlSecInvalidTransfromError2(transform,
+        xmlSecInvalidTransformError2(transform,
             "digest algorithm=\"%s\" is not supported for rsa/oaep",
             xmlSecErrorsSafeString(oaepParams.digestAlgorithm));
         xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
@@ -927,7 +927,7 @@ xmlSecNssRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     } else
 #endif /* XMLSEC_NO_SHA512 */
     {
-        xmlSecInvalidTransfromError2(transform,
+        xmlSecInvalidTransformError2(transform,
             "mgf1 digest algorithm=\"%s\" is not supported for rsa/oaep",
             xmlSecErrorsSafeString(oaepParams.mgf1DigestAlgorithm));
         xmlSecTransformRsaOaepParamsFinalize(&oaepParams);

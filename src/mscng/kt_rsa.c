@@ -289,7 +289,7 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         } else
 #endif /* XMLSEC_NO_RSA_OAEP */
         {
-            xmlSecInvalidTransfromError(transform)
+            xmlSecInvalidTransformError(transform)
             return(-1);
         }
 
@@ -355,7 +355,7 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         } else
 #endif /* XMLSEC_NO_RSA_OAEP */
         {
-            xmlSecInvalidTransfromError(transform)
+            xmlSecInvalidTransformError(transform)
             return(-1);
         }
 
@@ -412,7 +412,7 @@ xmlSecMSCngRsaPkcs1OaepExecute(xmlSecTransformPtr transform, int last,
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
-        xmlSecInvalidTransfromStatusError(transform);
+        xmlSecInvalidTransformStatusError(transform);
         return(-1);
     }
 
@@ -490,7 +490,7 @@ xmlSecMSCngRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     } else
 #endif /* XMLSEC_NO_SHA512 */
     {
-        xmlSecInvalidTransfromError2(transform,
+        xmlSecInvalidTransformError2(transform,
             "digest algorithm=\"%s\" is not supported for rsa/oaep",
             xmlSecErrorsSafeString(oaepParams.digestAlgorithm));
         xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
@@ -531,7 +531,7 @@ xmlSecMSCngRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     } else
 #endif /* XMLSEC_NO_SHA512 */
     {
-        xmlSecInvalidTransfromError2(transform,
+        xmlSecInvalidTransformError2(transform,
             "mgf1 digest algorithm=\"%s\" is not supported for rsa/oaep",
             xmlSecErrorsSafeString(oaepParams.mgf1DigestAlgorithm));
         xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
@@ -543,7 +543,7 @@ xmlSecMSCngRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
         xmlChar* digestAlg = xmlSecWin32ConvertUnicodeToUtf8(ctx->pszDigestAlgId);
         xmlChar* mgf1Alg = xmlSecWin32ConvertUnicodeToUtf8(mgf1AlgId);
 
-        xmlSecInvalidTransfromError3(transform,
+        xmlSecInvalidTransformError3(transform,
             "for mscng, rsa/oaep mgf1 algorithm=\"%s\" must be the same as digest algorithm=\"%s\"",
             xmlSecErrorsSafeString(digestAlg),
             xmlSecErrorsSafeString(mgf1Alg));

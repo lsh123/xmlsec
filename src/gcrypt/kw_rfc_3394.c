@@ -122,7 +122,7 @@ xmlSecGCryptKWAesInitialize(xmlSecTransformPtr transform) {
         ctx->cipher     = GCRY_CIPHER_AES256;
         keyExpectedSize = XMLSEC_BINARY_KEY_BYTES_SIZE_256;
     } else {
-        xmlSecInvalidTransfromError(transform)
+        xmlSecInvalidTransformError(transform)
         return(-1);
     }
 

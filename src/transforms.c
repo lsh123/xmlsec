@@ -1593,7 +1593,7 @@ xmlSecTransformPump(xmlSecTransformPtr left, xmlSecTransformPtr right, xmlSecTra
 
         xmlFree(buf);
     } else {
-        xmlSecInvalidTransfromError2(left,
+        xmlSecInvalidTransformError2(left,
                     "transforms input/output data formats do not match, right transform=\"%s\"",
                     xmlSecErrorsSafeString(xmlSecTransformGetName(right)));
         return(-1);
@@ -1941,7 +1941,7 @@ xmlSecTransformConnect(xmlSecTransformPtr left, xmlSecTransformPtr right,
             middleId = xmlSecTransformInclC14NId;
         }
     } else {
-        xmlSecInvalidTransfromError2(left,
+        xmlSecInvalidTransformError2(left,
                     "transforms types do not match, right transform=\"%s\"",
                     xmlSecErrorsSafeString(xmlSecTransformGetName(right)));
         return(-1);
@@ -2534,7 +2534,7 @@ xmlSecTransformCreateOutputBuffer(xmlSecTransformPtr transform, xmlSecTransformC
     /* check that we have binary push method for this transform */
     type = xmlSecTransformDefaultGetDataType(transform, xmlSecTransformModePush, transformCtx);
     if((type & xmlSecTransformDataTypeBin) == 0) {
-        xmlSecInvalidTransfromError2(transform,
+        xmlSecInvalidTransformError2(transform,
             "push binary data not supported, type=\"" XMLSEC_ENUM_FMT "\"",
             XMLSEC_ENUM_CAST(type));
         return(NULL);
@@ -2580,7 +2580,7 @@ xmlSecTransformCreateInputBuffer(xmlSecTransformPtr transform, xmlSecTransformCt
     /* check that we have binary pop method for this transform */
     type = xmlSecTransformDefaultGetDataType(transform, xmlSecTransformModePop, transformCtx);
     if((type & xmlSecTransformDataTypeBin) == 0) {
-        xmlSecInvalidTransfromError2(transform,
+        xmlSecInvalidTransformError2(transform,
             "pop binary data not supported, type=\"" XMLSEC_ENUM_FMT "\"",
             XMLSEC_ENUM_CAST(type));
         return(NULL);

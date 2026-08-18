@@ -181,7 +181,7 @@ xmlSecTransformMemBufExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(inSize == 0, -1);
     } else {
-        xmlSecInvalidTransfromStatusError(transform);
+        xmlSecInvalidTransformStatusError(transform);
         return(-1);
     }
     return(0);

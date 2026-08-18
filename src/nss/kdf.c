@@ -180,7 +180,7 @@ xmlSecNssKdfInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_HKDF */
 
     {
-        xmlSecInvalidTransfromError(transform);
+        xmlSecInvalidTransformError(transform);
         return(-1);
     }
 
@@ -1031,7 +1031,7 @@ xmlSecNssKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
 #endif /* XMLSEC_NO_HKDF */
 
         } else {
-            xmlSecInvalidTransfromError(transform);
+            xmlSecInvalidTransformError(transform);
             return(-1);
         }
 
@@ -1044,7 +1044,7 @@ xmlSecNssKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
         return(0);
     }
 
-    xmlSecInvalidTransfromStatusError(transform);
+    xmlSecInvalidTransformStatusError(transform);
     return(-1);
 }
 

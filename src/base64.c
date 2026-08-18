@@ -958,7 +958,7 @@ xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
             xmlSecAssert2(xmlSecBufferGetSize(in) == 0, -1);
             break;
         default:
-            xmlSecInvalidTransfromStatusError(transform);
+            xmlSecInvalidTransformStatusError(transform);
             return(-1);
     }
     return(0);

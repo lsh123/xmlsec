@@ -10,12 +10,19 @@
  * @brief Binary memory buffer functions.
  */
 
-#include "globals.h"
+/* Required for xmlSecMemCleanse when compiled with --enable-pedantic (ie with -std=c99 or -std=c23) (also see configure.ac) */
+#if defined(__GNUC__) && !defined(_GNU_SOURCE)
+#define _GNU_SOURCE
+#endif
 
 /* SecureZeroMemory() is declared in <windows.h>. */
 #if defined(XMLSEC_WINDOWS)
 #include <windows.h>
 #endif /* defined(XMLSEC_WINDOWS) */
+
+
+#include "globals.h"
+
 
 
 #include <stdlib.h>

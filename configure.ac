@@ -82,9 +82,6 @@ AM_CONDITIONAL(BUILD_HTML_DOCS,    [test x"$SED" != x && test x"$PANDOC" != x ])
 dnl Checks for header files.
 AC_HEADER_DIRENT
 
-dnl Checks for library functions.
-AC_CHECK_FUNCS([memset_explicit explicit_bzero memset_s])
-AC_CHECK_DECLS([memset_explicit, explicit_bzero, memset_s], [], [], [[#include <string.h>]])
 
 
 dnl ==========================================================================
@@ -2863,6 +2860,20 @@ for i in $XMLSEC_CRYPTO_LIST ; do
     XMLSEC_CRYPTO_PC_FILES_LIST="$XMLSEC_CRYPTO_PC_FILES_LIST $XMLSEC_PACKAGE-$i.pc"
 done
 AC_SUBST(XMLSEC_CRYPTO_PC_FILES_LIST)
+
+
+dnl ==========================================================================
+dnl Checks for library functions (using all CFLAGS, etc)
+dnl ==========================================================================
+AC_CHECK_FUNCS([memset_explicit explicit_bzero memset_s])
+AC_CHECK_DECLS([memset_explicit, explicit_bzero, memset_s], [], [], [[
+    #if defined(__GNUC__) && !defined(_GNU_SOURCE)
+    #define _GNU_SOURCE
+    #endif
+
+    #include <string.h>
+]])
+
 
 dnl ==========================================================================
 dnl Writing result files

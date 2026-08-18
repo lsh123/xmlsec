@@ -261,7 +261,7 @@ static void xmlSecMSCryptoDigestFinalize(xmlSecTransformPtr transform) {
         CryptReleaseContext(ctx->provider, 0);
     }
 
-    memset(ctx, 0, sizeof(xmlSecMSCryptoDigestCtx));
+    xmlSecMemCleanse(ctx, sizeof(xmlSecMSCryptoDigestCtx));
 }
 
 static int

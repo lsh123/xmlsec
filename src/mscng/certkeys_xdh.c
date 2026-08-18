@@ -127,6 +127,7 @@ xmlSecMSCngKeyDataDuplicateBCryptXdhPrivKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HA
     status = BCryptExportKey(src, NULL, BCRYPT_ECCPRIVATE_BLOB, pbPrivBlob, cbPrivBlob, &cbPrivBlob, 0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptExportKey(X25519 priv, data)", NULL, status);
+        xmlSecMemCleanse(pbPrivBlob, cbPrivBlob);
         xmlFree(pbPrivBlob);
         return(-1);
     }
@@ -135,6 +136,7 @@ xmlSecMSCngKeyDataDuplicateBCryptXdhPrivKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HA
     status = BCryptOpenAlgorithmProvider(&hAlg, BCRYPT_ECDH_ALGORITHM, NULL, 0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptOpenAlgorithmProvider(X25519 priv dup)", NULL, status);
+        xmlSecMemCleanse(pbPrivBlob, cbPrivBlob);
         xmlFree(pbPrivBlob);
         return(-1);
     }
@@ -143,12 +145,14 @@ xmlSecMSCngKeyDataDuplicateBCryptXdhPrivKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HA
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptSetProperty(curve25519 priv dup)", NULL, status);
         BCryptCloseAlgorithmProvider(hAlg, 0);
+        xmlSecMemCleanse(pbPrivBlob, cbPrivBlob);
         xmlFree(pbPrivBlob);
         return(-1);
     }
 
     status = BCryptImportKeyPair(hAlg, NULL, BCRYPT_ECCPRIVATE_BLOB, &hKey, pbPrivBlob, cbPrivBlob, 0);
     BCryptCloseAlgorithmProvider(hAlg, 0);
+    xmlSecMemCleanse(pbPrivBlob, cbPrivBlob);
     xmlFree(pbPrivBlob);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptImportKeyPair(X25519 priv dup)", NULL, status);
@@ -224,7 +228,7 @@ xmlSecMSCngKeyDataXdhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLe
         xmlSecMallocError(cbPrivBlob, NULL);
         goto done;
     }
-    memset(pbPrivBlob, 0, cbPrivBlob);
+    xmlSecMemCleanse(pbPrivBlob, cbPrivBlob);
     {
         BCRYPT_ECCKEY_BLOB* pHdr = (BCRYPT_ECCKEY_BLOB*)pbPrivBlob;
         pHdr->dwMagic = BCRYPT_ECDH_PRIVATE_GENERIC_MAGIC;
@@ -394,6 +398,7 @@ done:
         BCryptCloseAlgorithmProvider(hAlg, 0);
     }
     if(pbPrivBlob != NULL) {
+        xmlSecMemCleanse(pbPrivBlob, cbPrivBlob);
         xmlFree(pbPrivBlob);
     }
     if(pki != NULL) {

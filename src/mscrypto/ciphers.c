@@ -497,7 +497,7 @@ xmlSecMSCryptoBlockCipherFinalize(xmlSecTransformPtr transform) {
         CryptReleaseContext(ctx->cryptProvider, 0);
     }
 
-    memset(ctx, 0, sizeof(xmlSecMSCryptoBlockCipherCtx));
+    xmlSecMemCleanse(ctx, sizeof(xmlSecMSCryptoBlockCipherCtx));
 }
 
 static int

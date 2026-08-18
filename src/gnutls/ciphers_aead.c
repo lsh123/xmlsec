@@ -219,7 +219,7 @@ xmlSecGnuTLSAeadCipherFinalize(xmlSecTransformPtr transform) {
         gnutls_aead_cipher_deinit(ctx->cipher);
     }
     xmlSecBufferFinalize(&ctx->aad);
-    memset(ctx, 0, sizeof(xmlSecGnuTLSAeadCipherCtx));
+    xmlSecMemCleanse(ctx, sizeof(xmlSecGnuTLSAeadCipherCtx));
 }
 
 static int

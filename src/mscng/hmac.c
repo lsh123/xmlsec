@@ -185,7 +185,7 @@ xmlSecMSCngHmacFinalize(xmlSecTransformPtr transform) {
         BCryptCloseAlgorithmProvider(ctx->hAlg, 0);
     }
 
-    memset(ctx, 0, sizeof(xmlSecMSCngHmacCtx));
+    xmlSecMemCleanse(ctx, sizeof(xmlSecMSCngHmacCtx));
 }
 
 static int

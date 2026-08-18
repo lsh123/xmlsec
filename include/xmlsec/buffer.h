@@ -109,6 +109,8 @@ XMLSEC_EXPORT int               xmlSecMemEqual                  (const xmlSecByt
 																 const xmlSecByte* buf2,
 																 xmlSecSize size);
 
+XMLSEC_EXPORT void              xmlSecMemCleanse               (void* data, size_t size);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

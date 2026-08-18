@@ -315,7 +315,7 @@ xmlSecOpenSSLRsaPkcs1Finalize(xmlSecTransformPtr transform) {
     }
 #endif /* XMLSEC_OPENSSL_API_300 */
 
-    memset(ctx, 0, sizeof(xmlSecOpenSSLRsaPkcs1Ctx));
+    OPENSSL_cleanse(ctx, sizeof(xmlSecOpenSSLRsaPkcs1Ctx));
 }
 
 static int
@@ -1008,7 +1008,7 @@ xmlSecOpenSSLRsaOaepFinalize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_OPENSSL_API_300 */
 
     xmlSecBufferFinalize(&(ctx->oaepParams));
-    memset(ctx, 0, sizeof(xmlSecOpenSSLRsaOaepCtx));
+    OPENSSL_cleanse(ctx, sizeof(xmlSecOpenSSLRsaOaepCtx));
 }
 
 /* small helper macros to reduce clutter in the code */

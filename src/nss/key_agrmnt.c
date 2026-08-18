@@ -434,7 +434,7 @@ done:
         /* securely wipe the key material before freeing */
         SECItem *kd = PK11_GetKeyData(symKey);
         if(kd != NULL && kd->data != NULL) {
-            memset(kd->data, 0, kd->len);
+            xmlSecMemCleanse(kd->data, kd->len);
         }
         PK11_FreeSymKey(symKey);
     }

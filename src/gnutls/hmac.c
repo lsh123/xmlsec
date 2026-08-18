@@ -185,7 +185,7 @@ xmlSecGnuTLSHmacFinalize(xmlSecTransformPtr transform) {
     if(ctx->hmac != NULL) {
         gnutls_hmac_deinit(ctx->hmac, NULL);
     }
-    memset(ctx, 0, sizeof(xmlSecGnuTLSHmacCtx));
+    xmlSecMemCleanse(ctx, sizeof(xmlSecGnuTLSHmacCtx));
 }
 
 static int

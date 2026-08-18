@@ -895,7 +895,7 @@ xmlSecKWRfc3394Decode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transfor
         }
     }
     /* do not keep data in memory */
-    memset(block, 0, sizeof(block));
+    xmlSecMemCleanse(block, sizeof(block));
 
     /* check the output */
     ret = xmlSecMemEqual(xmlSecKWRfc3394MagicBlock, out, XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE);

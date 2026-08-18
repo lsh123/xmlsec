@@ -165,16 +165,20 @@ xmlSecMSCngGcmBlockCipherFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     if(ctx->pbIV != NULL) {
+        xmlSecMemCleanse(ctx->pbIV, ctx->cbIV);
         xmlFree(ctx->pbIV);
     }
 
     if(ctx->authInfo.pbNonce != NULL) {
+        xmlSecMemCleanse(ctx->authInfo.pbNonce, ctx->authInfo.cbNonce);
         xmlFree(ctx->authInfo.pbNonce);
     }
     if(ctx->authInfo.pbTag != NULL) {
+        xmlSecMemCleanse(ctx->authInfo.pbTag, ctx->authInfo.cbTag);
         xmlFree(ctx->authInfo.pbTag);
     }
     if(ctx->authInfo.pbMacContext != NULL) {
+        xmlSecMemCleanse(ctx->authInfo.pbMacContext, ctx->authInfo.cbMacContext);
         xmlFree(ctx->authInfo.pbMacContext);
     }
 
@@ -190,7 +194,7 @@ xmlSecMSCngGcmBlockCipherFinalize(xmlSecTransformPtr transform) {
         BCryptCloseAlgorithmProvider(ctx->hAlg, 0);
     }
 
-    memset(ctx, 0, sizeof(xmlSecMSCngGcmBlockCipherCtx));
+    xmlSecMemCleanse(ctx, sizeof(xmlSecMSCngGcmBlockCipherCtx));
 }
 
 static int
@@ -380,7 +384,7 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
             return(-1);
         }
     }
-    memset(ctx->authInfo.pbTag, 0, xmlSecMSCngAesGcmTagLengthInBytes);
+    xmlSecMemCleanse(ctx->authInfo.pbTag, xmlSecMSCngAesGcmTagLengthInBytes);
     ctx->authInfo.cbTag = xmlSecMSCngAesGcmTagLengthInBytes;
 
     /* Need some working buffers */
@@ -395,7 +399,7 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
         }
     }
     ctx->cbIV = ctx->dwBlockLen;
-    memset(ctx->pbIV, 0, blockSize);
+    xmlSecMemCleanse(ctx->pbIV, blockSize);
 
     /* Setup an empty MAC context if we're chaining calls */
     status = BCryptGetProperty(ctx->hAlg,
@@ -417,7 +421,7 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
         }
     }
     ctx->authInfo.cbMacContext = authTagLengths.dwMaxLength;
-    memset(ctx->authInfo.pbMacContext, 0, authTagLengths.dwMaxLength);
+    xmlSecMemCleanse(ctx->authInfo.pbMacContext, authTagLengths.dwMaxLength);
     ctx->authInfo.dwFlags |= BCRYPT_AUTH_MODE_CHAIN_CALLS_FLAG;
 
     if (encrypt) {

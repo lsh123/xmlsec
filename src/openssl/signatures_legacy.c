@@ -342,7 +342,7 @@ xmlSecOpenSSLSignatureLegacyFinalize(xmlSecTransformPtr transform) {
         EVP_MD_CTX_free(ctx->digestCtx);
     }
 
-    memset(ctx, 0, sizeof(xmlSecOpenSSLSignatureLegacyCtx));
+    OPENSSL_cleanse(ctx, sizeof(xmlSecOpenSSLSignatureLegacyCtx));
 }
 
 static int

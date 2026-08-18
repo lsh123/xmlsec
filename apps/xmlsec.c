@@ -3632,7 +3632,7 @@ static char*
 xmlSecAppGetOutputFilename(const char* inputFileName, const char* outputFileNameTmpl) {
     char* inputFileNameCopy = NULL;
     char* inputBasename;
-    char* outputFileNameTmplPointer;
+    const char* outputFileNameTmplPointer;
     size_t resSize;
     char* res = NULL;
 #if !defined(_MSC_VER)

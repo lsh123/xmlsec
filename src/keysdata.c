@@ -305,7 +305,7 @@ xmlSecKeyDataDestroy(xmlSecKeyDataPtr data) {
     if(data->id->finalize != NULL) {
         (data->id->finalize)(data);
     }
-    memset(data, 0, data->id->objSize);
+    xmlSecMemCleanse(data, data->id->objSize);
     xmlFree(data);
 }
 
@@ -775,7 +775,7 @@ xmlSecKeyDataStoreDestroy(xmlSecKeyDataStorePtr store) {
     if(store->id->finalize != NULL) {
         (store->id->finalize)(store);
     }
-    memset(store, 0, store->id->objSize);
+    xmlSecMemCleanse(store, store->id->objSize);
     xmlFree(store);
 }
 

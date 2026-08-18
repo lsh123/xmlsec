@@ -245,7 +245,7 @@ static void xmlSecMSCryptoSignatureFinalize(xmlSecTransformPtr transform) {
         ctx->data = NULL;
     }
 
-    memset(ctx, 0, sizeof(xmlSecMSCryptoSignatureCtx));
+    xmlSecMemCleanse(ctx, sizeof(xmlSecMSCryptoSignatureCtx));
 }
 
 static int xmlSecMSCryptoSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {

@@ -241,7 +241,7 @@ xmlSecMSCryptoHmacFinalize(xmlSecTransformPtr transform) {
         CryptReleaseContext(ctx->provider, 0);
     }
 
-    memset(ctx, 0, sizeof(xmlSecMSCryptoHmacCtx));
+    xmlSecMemCleanse(ctx, sizeof(xmlSecMSCryptoHmacCtx));
 }
 
 static int

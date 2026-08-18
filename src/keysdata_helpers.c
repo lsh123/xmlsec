@@ -763,7 +763,7 @@ xmlSecKeyValueEcFinalize(xmlSecKeyValueEcPtr data) {
     xmlSecBufferFinalize(&(data->pub_x));
     xmlSecBufferFinalize(&(data->pub_y));
 
-    memset(data, 0, sizeof(xmlSecKeyValueEc));
+    xmlSecMemCleanse(data, sizeof(xmlSecKeyValueEc));
 }
 
 
@@ -1261,7 +1261,7 @@ xmlSecKeyValueDhFinalize(xmlSecKeyValueDhPtr data) {
     xmlSecBufferFinalize(&(data->public));
     xmlSecBufferFinalize(&(data->seed));
     xmlSecBufferFinalize(&(data->pgenCounter));
-    memset(data, 0, sizeof(xmlSecKeyValueDh));
+    xmlSecMemCleanse(data, sizeof(xmlSecKeyValueDh));
 }
 
 static int
@@ -1715,7 +1715,7 @@ xmlSecKeyValueDsaFinalize(xmlSecKeyValueDsaPtr data) {
     xmlSecBufferFinalize(&(data->g));
     xmlSecBufferFinalize(&(data->x));
     xmlSecBufferFinalize(&(data->y));
-    memset(data, 0, sizeof(xmlSecKeyValueDsa));
+    xmlSecMemCleanse(data, sizeof(xmlSecKeyValueDsa));
 }
 
 static int
@@ -2146,7 +2146,7 @@ xmlSecKeyValueRsaFinalize(xmlSecKeyValueRsaPtr data) {
     xmlSecBufferFinalize(&(data->modulus));
     xmlSecBufferFinalize(&(data->publicExponent));
     xmlSecBufferFinalize(&(data->privateExponent));
-    memset(data, 0, sizeof(xmlSecKeyValueRsa));
+    xmlSecMemCleanse(data, sizeof(xmlSecKeyValueRsa));
 }
 
 static int

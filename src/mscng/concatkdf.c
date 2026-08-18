@@ -128,7 +128,7 @@ xmlSecMSCngConcatKdfFinalize(xmlSecTransformPtr transform) {
     xmlSecBufferFinalize(&(ctx->fixedInfo));
     xmlSecTransformConcatKdfParamsFinalize(&(ctx->params));
 
-    memset(ctx, 0, sizeof(xmlSecMSCngConcatKdfCtx));
+    xmlSecMemCleanse(ctx, sizeof(xmlSecMSCngConcatKdfCtx));
 }
 
 

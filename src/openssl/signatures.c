@@ -968,7 +968,7 @@ xmlSecOpenSSLEvpSignatureFinalize(xmlSecTransformPtr transform) {
 #endif /* defined(XMLSEC_OPENSSL_API_350) */
 
     /* done */
-    memset(ctx, 0, sizeof(xmlSecOpenSSLEvpSignatureCtx));
+    OPENSSL_cleanse(ctx, sizeof(xmlSecOpenSSLEvpSignatureCtx));
 }
 
 static int

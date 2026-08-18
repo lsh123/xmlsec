@@ -144,7 +144,7 @@ xmlSecGnuTLSKeyAgreementFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     xmlSecTransformKAMFinalize(&(ctx->params));
-    memset(ctx, 0, sizeof(xmlSecGnuTLSKeyAgreementCtx));
+    xmlSecMemCleanse(ctx, sizeof(xmlSecGnuTLSKeyAgreementCtx));
 }
 
 static int
@@ -420,7 +420,7 @@ xmlSecGnuTLSKeyAgreementGenerateSecret(xmlSecGnuTLSKeyAgreementCtxPtr ctx, xmlSe
 done:
     if(secretDatum.data != NULL) {
         /* securely wipe and free the GnuTLS-allocated secret */
-        memset(secretDatum.data, 0, secretDatum.size);
+        xmlSecMemCleanse(secretDatum.data, secretDatum.size);
         gnutls_free(secretDatum.data);
     }
     if((res != 0) && (secret != NULL)) {

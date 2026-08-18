@@ -1146,7 +1146,7 @@ xmlSecGnuTLSX509StoreFinalize(xmlSecKeyDataStorePtr store) {
     xmlSecPtrListFinalize(&(ctx->certsUntrusted));
     xmlSecPtrListFinalize(&(ctx->crls));
 
-    memset(ctx, 0, sizeof(xmlSecGnuTLSX509StoreCtx));
+    xmlSecMemCleanse(ctx, sizeof(xmlSecGnuTLSX509StoreCtx));
 }
 
 

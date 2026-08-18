@@ -350,6 +350,7 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
 
 done:
     if(keyBlob != NULL) {
+        xmlSecMemCleanse(keyBlob, keyBlobLen);
         xmlFree(keyBlob);
     }
     if (hKey != 0) {
@@ -468,7 +469,7 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
         xmlSecMallocError(sizeof(BYTE) * keyBlobLen, NULL);
         goto done;
     }
-    memset(keyBlob, 0, keyBlobLen);
+    xmlSecMemCleanse(keyBlob, keyBlobLen);
 
     /* initialize PUBLICKEYSTRUC */
     pubKeyStruc             = (PUBLICKEYSTRUC*)(keyBlob);
@@ -517,6 +518,7 @@ done:
         CryptDestroyKey(hTempKey);
     }
     if(keyBlob != NULL) {
+        xmlSecMemCleanse(keyBlob, keyBlobLen);
         xmlFree(keyBlob);
     }
     return(res);

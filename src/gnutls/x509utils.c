@@ -574,7 +574,7 @@ xmlSecGnuTLSX509FindCertCtxInitializeFromValue(xmlSecGnuTLSX509FindCertCtxPtr ct
 void xmlSecGnuTLSX509FindCertCtxFinalize(xmlSecGnuTLSX509FindCertCtxPtr ctx) {
     xmlSecAssert(ctx != NULL);
 
-    memset(ctx, 0, sizeof(*ctx));
+    xmlSecMemCleanse(ctx, sizeof(*ctx));
 }
 
 
@@ -1269,7 +1269,7 @@ xmlSecGnuTLSDnAttrsDeinitialize(xmlSecGnuTLSDnAttr * attrs, xmlSecSize attrsSize
             xmlFree(attrs[ii].value);
         }
     }
-    memset(attrs, 0, attrsSize * sizeof(xmlSecGnuTLSDnAttr));
+    xmlSecMemCleanse(attrs, attrsSize * sizeof(xmlSecGnuTLSDnAttr));
 }
 
 const xmlSecGnuTLSDnAttr *

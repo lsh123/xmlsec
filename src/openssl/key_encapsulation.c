@@ -187,7 +187,7 @@ xmlSecOpenSSLMLKEMFinalize(xmlSecTransformPtr transform) {
     ctx = xmlSecOpenSSLMLKEMGetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
-    memset(ctx, 0, sizeof(xmlSecOpenSSLMLKEMCtx));
+    OPENSSL_cleanse(ctx, sizeof(xmlSecOpenSSLMLKEMCtx));
 }
 
 static int

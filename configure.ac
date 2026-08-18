@@ -2705,7 +2705,7 @@ if test "z$enable_pedantic" = "zno" ; then
     AC_MSG_RESULT([disabled])
 elif test "z$build_with_gcc" = "zyes" ; then
     dnl Flags supported since GCC 3.x (always available in any modern GCC)
-    CFLAGS="$CFLAGS -O -std=c99 -pedantic -pedantic-errors -W -Wall -Wextra"
+    CFLAGS="$CFLAGS -O -pedantic -pedantic-errors -W -Wall -Wextra"
     CFLAGS="$CFLAGS -fno-inline"
     CFLAGS="$CFLAGS -Wformat=2 -Wformat-security -Wformat-nonliteral"
     CFLAGS="$CFLAGS -Wconversion -Wunused -Wshadow -Wpointer-arith -Wcast-align"
@@ -2729,10 +2729,17 @@ elif test "z$build_with_gcc" = "zyes" ; then
         CFLAGS="$CFLAGS -Wformat-overflow=2"
     fi
 
+    dnl GCC >= 13: --std=c23 (added in GCC 13)
+    if test "$gcc_major_ver" -ge 13 ; then
+        CFLAGS="$CFLAGS -std=c23"
+    else
+        CFLAGS="$CFLAGS -std=c99"
+    fi
+
     AC_MSG_RESULT([yes])
 elif test "z$build_with_clang" = "zyes" ; then
     dnl Flags supported since Clang 3.x (always available in any modern Clang)
-    CFLAGS="$CFLAGS -O -std=c99 -pedantic -pedantic-errors -W -Wall -Wextra"
+    CFLAGS="$CFLAGS -O -pedantic -pedantic-errors -W -Wall -Wextra"
     CFLAGS="$CFLAGS -fno-inline"
     CFLAGS="$CFLAGS -Wformat=2 -Wformat-security -Wformat-nonliteral"
     CFLAGS="$CFLAGS -Wconversion -Wunused -Wshadow -Wpointer-arith -Wcast-align"
@@ -2744,6 +2751,13 @@ elif test "z$build_with_clang" = "zyes" ; then
     dnl Clang >= 4: -Wnull-dereference (added in Clang 3.9; same reasoning)
     if test "$clang_major_ver" -ge 4 ; then
         CFLAGS="$CFLAGS -Wdouble-promotion -Wnull-dereference"
+    fi
+
+    dnl Clang >= 18: --std=c23 (added in Clang 18)
+    if test "$clang_major_ver" -ge 18 ; then
+        CFLAGS="$CFLAGS -std=c23"
+    else
+        CFLAGS="$CFLAGS -std=c99"
     fi
 
     AC_MSG_RESULT([yes])

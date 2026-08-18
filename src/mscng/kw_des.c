@@ -369,6 +369,7 @@ done:
     xmlSecBufferFinalize(&blob);
 
     if (pbKeyObject != NULL) {
+        xmlSecMemCleanse(pbKeyObject, cbKeyObject);
         xmlFree(pbKeyObject);
     }
 
@@ -539,6 +540,7 @@ done:
     xmlSecBufferFinalize(&blob);
 
     if (pbKeyObject != NULL) {
+        xmlSecMemCleanse(pbKeyObject, cbKeyObject);
         xmlFree(pbKeyObject);
     }
 
@@ -593,7 +595,7 @@ xmlSecMSCngKWDes3Finalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     xmlSecTransformKWDes3Finalize(transform, ctx);
-    memset(ctx, 0, sizeof(xmlSecMSCngKWDes3Ctx));
+    xmlSecMemCleanse(ctx, sizeof(xmlSecMSCngKWDes3Ctx));
 }
 
 static int

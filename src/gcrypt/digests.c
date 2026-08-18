@@ -212,7 +212,7 @@ xmlSecGCryptDigestFinalize(xmlSecTransformPtr transform) {
     if(ctx->digestCtx != NULL) {
         gcry_md_close(ctx->digestCtx);
     }
-    memset(ctx, 0, sizeof(xmlSecGCryptDigestCtx));
+    xmlSecMemCleanse(ctx, sizeof(xmlSecGCryptDigestCtx));
 }
 
 static int

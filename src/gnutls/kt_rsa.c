@@ -118,7 +118,7 @@ xmlSecGnuTLSKeyTransportFinalize(xmlSecTransformPtr transform) {
     if(ctx->keyData != NULL) {
         xmlSecKeyDataDestroy(ctx->keyData);
     }
-    memset(ctx, 0, sizeof(xmlSecGnuTLSKeyTransportCtx));
+    xmlSecMemCleanse(ctx, sizeof(xmlSecGnuTLSKeyTransportCtx));
 }
 
 static int
@@ -259,9 +259,11 @@ xmlSecGnuTLSKeyTransportDecrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
     ret = xmlSecBufferAppend(outBuf, plaintext.data, plaintext.size);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferAppend", NULL);
+        xmlSecMemCleanse(plaintext.data, plaintext.size);
         gnutls_free(plaintext.data);
         return(-1);
     }
+    xmlSecMemCleanse(plaintext.data, plaintext.size);
     gnutls_free(plaintext.data);
 
     /* success */
@@ -466,7 +468,7 @@ xmlSecGnuTLSRsaOaepFinalize(xmlSecTransformPtr transform) {
         ctx->keyData = NULL;
     }
     xmlSecBufferFinalize(&(ctx->oaepParams));
-    memset(ctx, 0, sizeof(xmlSecGnuTLSRsaOaepCtx));
+    xmlSecMemCleanse(ctx, sizeof(xmlSecGnuTLSRsaOaepCtx));
 }
 
 static int
@@ -805,6 +807,7 @@ xmlSecGnuTLSRsaOaepDecrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx,
     }
 
     ret = xmlSecBufferAppend(outBuf, plaintext.data, plaintext.size);
+    xmlSecMemCleanse(plaintext.data, plaintext.size);
     gnutls_free(plaintext.data);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferAppend", NULL);

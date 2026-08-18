@@ -1440,7 +1440,7 @@ xmlSecOpenSSLX509StoreFinalize(xmlSecKeyDataStorePtr store) {
         X509_VERIFY_PARAM_free(ctx->vpm);
     }
 
-    memset(ctx, 0, sizeof(xmlSecOpenSSLX509StoreCtx));
+    OPENSSL_cleanse(ctx, sizeof(xmlSecOpenSSLX509StoreCtx));
 }
 
 
@@ -1888,7 +1888,7 @@ void xmlSecOpenSSLX509FindCertCtxFinalize(xmlSecOpenSSLX509FindCertCtxPtr ctx) {
     if(ctx->ski != NULL) {
         ASN1_OCTET_STRING_free(ctx->ski);
     }
-    memset(ctx, 0, sizeof(*ctx));
+    OPENSSL_cleanse(ctx, sizeof(*ctx));
 }
 
 

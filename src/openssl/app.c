@@ -2041,7 +2041,7 @@ xmlSecOpenSSLDefaultPasswordCallback(char *buf, int buflen, int verify, void *us
         ret = EVP_read_pw_string(buf2, buflen, (char*)prompt, 0);
         if(ret != 0) {
             xmlSecOpenSSLError("EVP_read_pw_string", NULL);
-            memset(buf2, 0, bufsize);
+            OPENSSL_cleanse(buf2, bufsize);
             xmlFree(buf2);
             return(-1);
         }
@@ -2052,7 +2052,7 @@ xmlSecOpenSSLDefaultPasswordCallback(char *buf, int buflen, int verify, void *us
             int len;
             sz = strlen(buf);
 
-            memset(buf2, 0, bufsize);
+            OPENSSL_cleanse(buf2, bufsize);
             xmlFree(buf2);
 
             XMLSEC_SAFE_CAST_SIZE_T_TO_INT(sz, len, return(-1), NULL);
@@ -2060,7 +2060,7 @@ xmlSecOpenSSLDefaultPasswordCallback(char *buf, int buflen, int verify, void *us
         }
 
         /* try again */
-        memset(buf2, 0, bufsize);
+        OPENSSL_cleanse(buf2, bufsize);
         xmlFree(buf2);
     }
 

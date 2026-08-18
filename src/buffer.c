@@ -9,7 +9,14 @@
  * @addtogroup xmlsec_core_buffer
  * @brief Binary memory buffer functions.
  */
+
 #include "globals.h"
+
+/* SecureZeroMemory() is declared in <windows.h>. */
+#if defined(XMLSEC_WINDOWS)
+#include <windows.h>
+#endif /* defined(XMLSEC_WINDOWS) */
+
 
 #include <stdlib.h>
 #include <string.h>
@@ -136,7 +143,7 @@ xmlSecBufferEmpty(xmlSecBufferPtr buf) {
 
     if(buf->data != 0) {
         xmlSecAssert(buf->maxSize > 0);
-        memset(buf->data, 0, buf->maxSize);
+        xmlSecMemCleanse(buf->data, buf->maxSize);
     }
     buf->size = 0;
 }
@@ -228,7 +235,7 @@ xmlSecBufferSetSize(xmlSecBufferPtr buf, xmlSecSize size) {
 
     if(size < buf->size) {
         xmlSecAssert2(buf->data != NULL, -1);
-        memset(buf->data + size, 0, buf->size - size);
+        xmlSecMemCleanse(buf->data + size, buf->size - size);
     }
 
     buf->size = size;
@@ -422,7 +429,7 @@ xmlSecBufferRemoveHead(xmlSecBufferPtr buf, xmlSecSize size) {
     }
     if(buf->size < buf->maxSize) {
         xmlSecAssert2(buf->data != NULL, -1);
-        memset(buf->data + buf->size, 0, buf->maxSize - buf->size);
+        xmlSecMemCleanse(buf->data + buf->size, buf->maxSize - buf->size);
     }
     return(0);
 }
@@ -445,7 +452,7 @@ xmlSecBufferRemoveTail(xmlSecBufferPtr buf, xmlSecSize size) {
     }
     if(buf->size < buf->maxSize) {
         xmlSecAssert2(buf->data != NULL, -1);
-        memset(buf->data + buf->size, 0, buf->maxSize - buf->size);
+        xmlSecMemCleanse(buf->data + buf->size, buf->maxSize - buf->size);
     }
     return(0);
 }
@@ -786,4 +793,37 @@ xmlSecMemEqual(const xmlSecByte* buf1, const xmlSecByte* buf2, xmlSecSize size) 
     }
 
     return((diff == 0) ? 1 : 0);
+}
+
+
+/**
+ * @brief Securely wipes (zeroes) a block of memory.
+ * @details Overwrites @p size bytes starting at @p data with zeros, using a
+ * platform-specific secure zeroing routine that the compiler cannot optimize
+ * away. Use this to clear sensitive data (keys, secrets, intermediate key
+ * material) before it is freed or reused.
+ * @param data the pointer to the memory to wipe.
+ * @param size the number of bytes to wipe.
+ */
+void
+xmlSecMemCleanse(void* data, size_t size) {
+    if((data == NULL) || (size == 0)) {
+        return;
+    }
+
+#if defined(XMLSEC_WINDOWS)
+    SecureZeroMemory(data, size);
+#elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 202311L
+    memset_explicit(data, 0, size);
+#else
+    /* Fallback: zero through a volatile pointer so the compiler cannot
+     * optimize the write away. */
+    {
+        volatile unsigned char* p = (volatile unsigned char*)data;
+        while(size > 0) {
+            *p++ = 0;
+            size--;
+        }
+    }
+#endif
 }

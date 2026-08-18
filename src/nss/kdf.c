@@ -508,7 +508,7 @@ xmlSecNssConcatKdfGenerateKey(xmlSecNssKdfCtxPtr ctx, xmlSecSize outLen, xmlSecB
         counterVal++;
     }
 
-    memset(hashBuf, 0, sizeof(hashBuf));
+    xmlSecMemCleanse(hashBuf, sizeof(hashBuf));
     return(0);
 }
 #endif /* XMLSEC_NO_CONCATKDF */

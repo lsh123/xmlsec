@@ -507,7 +507,7 @@ xmlSecGnuTLSKeyDataX509Finalize(xmlSecKeyDataPtr data) {
     xmlSecPtrListFinalize(&(ctx->crlsList));
     xmlSecPtrListFinalize(&(ctx->certsList));
 
-    memset(ctx, 0, sizeof(xmlSecGnuTLSX509DataCtx));
+    xmlSecMemCleanse(ctx, sizeof(xmlSecGnuTLSX509DataCtx));
 }
 
 static int

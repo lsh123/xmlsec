@@ -487,7 +487,7 @@ xmlSecOpenSSLKeyDataX509Finalize(xmlSecKeyDataPtr data) {
     if(ctx->crlsList != NULL) {
         sk_X509_CRL_pop_free(ctx->crlsList, X509_CRL_free);
     }
-    memset(ctx, 0, sizeof(xmlSecOpenSSLX509DataCtx));
+    OPENSSL_cleanse(ctx, sizeof(xmlSecOpenSSLX509DataCtx));
 }
 
 static int

@@ -184,7 +184,7 @@ xmlSecMSCngKWAesFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     xmlSecTransformKWRfc3394Finalize(transform, &(ctx->parentCtx));
-    memset(ctx, 0, sizeof(xmlSecMSCngKWAesCtx));
+    xmlSecMemCleanse(ctx, sizeof(xmlSecMSCngKWAesCtx));
 }
 
 static int
@@ -434,6 +434,7 @@ done:
         BCryptDestroyKey(hKey);
     }
     if (pbKeyObject != NULL) {
+        xmlSecMemCleanse(pbKeyObject, cbKeyObject);
         xmlFree(pbKeyObject);
     }
     if (hAlg != NULL) {
@@ -584,6 +585,7 @@ done:
         BCryptDestroyKey(hKey);
     }
     if (pbKeyObject != NULL) {
+        xmlSecMemCleanse(pbKeyObject, cbKeyObject);
         xmlFree(pbKeyObject);
     }
     if (hAlg != NULL) {

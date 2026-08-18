@@ -140,7 +140,7 @@ xmlSecGnuTLSAsymKeyDataFinalize(xmlSecKeyDataPtr data) {
     if(ctx->privkey != NULL) {
         gnutls_privkey_deinit (ctx->privkey);
     }
-    memset(ctx, 0, sizeof(xmlSecGnuTLSAsymKeyDataCtx));
+    xmlSecMemCleanse(ctx, sizeof(xmlSecGnuTLSAsymKeyDataCtx));
 }
 
 static int
@@ -915,6 +915,7 @@ done:
         gnutls_free(y.data);
     }
     if(x.data != NULL) {
+        xmlSecMemCleanse(x.data, x.size);
         gnutls_free(x.data);
     }
 

@@ -505,7 +505,7 @@ xmlSecMSCryptoKeyDataX509Finalize(xmlSecKeyDataPtr data) {
         }
     }
 
-    memset(ctx, 0, sizeof(xmlSecMSCryptoX509DataCtx));
+    xmlSecMemCleanse(ctx, sizeof(xmlSecMSCryptoX509DataCtx));
 }
 
 static int

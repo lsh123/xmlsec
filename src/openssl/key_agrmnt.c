@@ -146,7 +146,7 @@ xmlSecOpenSSLKeyAgreementFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     xmlSecTransformKAMFinalize(&(ctx->params));
-    memset(ctx, 0, sizeof(xmlSecOpenSSLKeyAgreementCtx));
+    OPENSSL_cleanse(ctx, sizeof(xmlSecOpenSSLKeyAgreementCtx));
 }
 
 static int

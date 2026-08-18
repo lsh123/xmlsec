@@ -774,7 +774,7 @@ xmlSecMSCryptoKeyDataFinalize(xmlSecKeyDataPtr data) {
     xmlSecMSCryptoKeyDataCtxDestroyCert(ctx);
     xmlSecMSCryptoKeyDataCtxDestroyProvider(ctx);
 
-    memset(ctx, 0, sizeof(xmlSecMSCryptoKeyDataCtx));
+    xmlSecMemCleanse(ctx, sizeof(xmlSecMSCryptoKeyDataCtx));
 }
 
 static xmlSecSize

@@ -211,7 +211,7 @@ static void xmlSecMSCngDigestFinalize(xmlSecTransformPtr transform) {
         xmlFree(ctx->pbHash);
     }
 
-    memset(ctx, 0, sizeof(xmlSecMSCngDigestCtx));
+    xmlSecMemCleanse(ctx, sizeof(xmlSecMSCngDigestCtx));
 }
 
 static int

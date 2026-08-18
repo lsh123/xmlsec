@@ -2767,16 +2767,29 @@ else
 fi
 
 dnl ==========================================================================
-dnl Secure memset
+dnl Secure memset (DEPREACTED in favor or true secure wipe -- see xmlSecMemCleanse)
 dnl ==========================================================================
 AC_MSG_CHECKING(for secure memset)
-AC_ARG_ENABLE([secure-memset], [AS_HELP_STRING([--enable-secure-memset],[enable secure memset compilation flags (yes)])])
+AC_ARG_ENABLE([secure-memset], [AS_HELP_STRING([--enable-secure-memset],[enable secure memset compilation flags (DEPRECATED, yes)])])
 if test "z$enable_secure_memset" != "zno" ; then
     CFLAGS="$CFLAGS -fno-builtin-memset"
-    AC_MSG_RESULT([yes])
+    AC_MSG_RESULT([DEPRECATED, yes])
 else
     AC_MSG_RESULT([disabled])
 fi
+
+
+dnl ==========================================================================
+dnl Checks for library functions (using all CFLAGS, etc)
+dnl ==========================================================================
+AC_CHECK_FUNCS([memset_explicit explicit_bzero memset_s])
+AC_CHECK_DECLS([memset_explicit, explicit_bzero, memset_s], [], [], [[
+    #if defined(__GNUC__) && !defined(_GNU_SOURCE)
+    #define _GNU_SOURCE
+    #endif
+
+    #include <string.h>
+]])
 
 
 dnl ==========================================================================
@@ -2860,19 +2873,6 @@ for i in $XMLSEC_CRYPTO_LIST ; do
     XMLSEC_CRYPTO_PC_FILES_LIST="$XMLSEC_CRYPTO_PC_FILES_LIST $XMLSEC_PACKAGE-$i.pc"
 done
 AC_SUBST(XMLSEC_CRYPTO_PC_FILES_LIST)
-
-
-dnl ==========================================================================
-dnl Checks for library functions (using all CFLAGS, etc)
-dnl ==========================================================================
-AC_CHECK_FUNCS([memset_explicit explicit_bzero memset_s])
-AC_CHECK_DECLS([memset_explicit, explicit_bzero, memset_s], [], [], [[
-    #if defined(__GNUC__) && !defined(_GNU_SOURCE)
-    #define _GNU_SOURCE
-    #endif
-
-    #include <string.h>
-]])
 
 
 dnl ==========================================================================

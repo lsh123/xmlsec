@@ -2729,8 +2729,8 @@ elif test "z$build_with_gcc" = "zyes" ; then
         CFLAGS="$CFLAGS -Wformat-overflow=2"
     fi
 
-    dnl GCC >= 13: --std=c23 (added in GCC 13)
-    if test "$gcc_major_ver" -ge 13 ; then
+    dnl GCC >= 13: --std=c23 (added in GCC 14)
+    if test "$gcc_major_ver" -ge 14 ; then
         CFLAGS="$CFLAGS -std=c23"
     else
         CFLAGS="$CFLAGS -std=c99"

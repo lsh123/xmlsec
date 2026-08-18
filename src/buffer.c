@@ -124,8 +124,19 @@ xmlSecBufferInitialize(xmlSecBufferPtr buf, xmlSecSize size) {
 
     buf->data = NULL;
     buf->size = buf->maxSize = 0;
-    buf->allocMode = gAllocMode;
     buf->flags = 0;
+
+    switch(gAllocMode) {
+        case xmlSecAllocModeExact:
+            buf->flags |= XMLSEC_BUFFER_FLAG_ALLOC_MODE_EXACT;
+            break;
+        case xmlSecAllocModeDouble:
+            buf->flags |= XMLSEC_BUFFER_FLAG_ALLOC_MODE_DOUBLE;
+            break;
+        default:
+            xmlSecInvalidIntegerDataError("allocMode", (int)(gAllocMode), "xmlSecAllocModeExact or xmlSecAllocModeDouble", NULL);
+            return(-1);
+    }
 
     return(xmlSecBufferSetMaxSize(buf, size));
 }
@@ -289,25 +300,20 @@ xmlSecBufferSetMaxSize(xmlSecBufferPtr buf, xmlSecSize size) {
         return(0);
     }
 
-    switch(buf->allocMode) {
-        case xmlSecAllocModeExact:
-            if(size > XMLSEC_SIZE_MAX - 8) {
-                xmlSecInvalidSizeError("size", size, (XMLSEC_SIZE_MAX - 8), NULL);
-                return(-1);
-            }
-            newSize = size + 8;
-            break;
-        case xmlSecAllocModeDouble:
-            if(size > ((XMLSEC_SIZE_MAX - 32) / 2)) {
-                xmlSecInvalidSizeError("size", size, ((XMLSEC_SIZE_MAX - 32) / 2), NULL);
-                return(-1);
-            }
-            newSize = 2 * size + 32;
-            break;
-        default:
-            xmlSecInvalidIntegerDataError("allocMode", (int)(buf->allocMode),
-                "xmlSecAllocModeExact or xmlSecAllocModeDouble", NULL);
+
+    if((buf->flags & XMLSEC_BUFFER_FLAG_ALLOC_MODE_DOUBLE) != 0) {
+      if(size > ((XMLSEC_SIZE_MAX - 32) / 2)) {
+            xmlSecInvalidSizeError("size", size, ((XMLSEC_SIZE_MAX - 32) / 2), NULL);
             return(-1);
+        }
+        newSize = 2 * size + 32;
+    } else {
+        /* use exact mode */
+        if(size > XMLSEC_SIZE_MAX - 8) {
+            xmlSecInvalidSizeError("size", size, (XMLSEC_SIZE_MAX - 8), NULL);
+            return(-1);
+        }
+        newSize = size + 8;
     }
 
     if(newSize < gInitialSize) {
@@ -351,7 +357,6 @@ xmlSecBufferSwap(xmlSecBufferPtr buf1, xmlSecBufferPtr buf2) {
     SWAP(xmlSecByte*,       buf1->data, buf2->data);
     SWAP(xmlSecSize,        buf1->size, buf2->size);
     SWAP(xmlSecSize,        buf1->maxSize, buf2->maxSize);
-    SWAP(xmlSecAllocMode,   buf1->allocMode, buf2->allocMode);
     SWAP(int,               buf1->flags, buf2->flags);
 }
 

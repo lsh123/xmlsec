@@ -43,7 +43,9 @@ typedef enum {
  * @brief The buffer behavior flags.
  * @details The buffer behavior flags (used by xmlSecBuffer).
  */
-#define XMLSEC_BUFFER_FLAG_SECURE                0x0001
+#define XMLSEC_BUFFER_FLAG_ALLOC_MODE_EXACT      0x0000
+#define XMLSEC_BUFFER_FLAG_ALLOC_MODE_DOUBLE     0x0001
+#define XMLSEC_BUFFER_FLAG_SECURE                0x1000
 
 /******************************************************************************
  *
@@ -58,7 +60,6 @@ struct _xmlSecBuffer {
     xmlSecByte*         data;  /**< the pointer to buffer data. */
     xmlSecSize          size;  /**< the current data size. */
     xmlSecSize          maxSize;  /**< the max data size (allocated buffer size). */
-    xmlSecAllocMode     allocMode;  /**< the buffer memory allocation mode. */
     int                 flags;  /**< the buffer behavior flags. */
 };
 

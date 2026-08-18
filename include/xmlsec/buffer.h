@@ -38,6 +38,13 @@ typedef enum {
     xmlSecAllocModeDouble       /**< the memory allocation mode that tries to minimize the number of malloc calls. */
 } xmlSecAllocMode;
 
+
+/**
+ * @brief The buffer behavior flags.
+ * @details The buffer behavior flags (used by xmlSecBuffer).
+ */
+#define XMLSEC_BUFFER_FLAG_SECURE                0x0001
+
 /******************************************************************************
  *
  * xmlSecBuffer
@@ -52,6 +59,7 @@ struct _xmlSecBuffer {
     xmlSecSize          size;  /**< the current data size. */
     xmlSecSize          maxSize;  /**< the max data size (allocated buffer size). */
     xmlSecAllocMode     allocMode;  /**< the buffer memory allocation mode. */
+    int                 flags;  /**< the buffer behavior flags. */
 };
 
 XMLSEC_EXPORT void              xmlSecBufferSetDefaultAllocMode (xmlSecAllocMode defAllocMode,

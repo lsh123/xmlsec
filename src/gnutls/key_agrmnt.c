@@ -262,6 +262,7 @@ xmlSecGnuTLSKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTr
             xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
             return(-1);
         }
+        secret.flags |= XMLSEC_BUFFER_FLAG_SECURE;
 
         /* Step 1: derive shared secret using gnutls_privkey_derive_secret */
         kamKeyData = xmlSecTransformCtxExtraKeyDataGet(transformCtx, xmlSecKeyDataKAMId);

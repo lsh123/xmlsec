@@ -630,6 +630,7 @@ xmlSecMSCngKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
             return(-1);
         }
+        secret.flags |= XMLSEC_BUFFER_FLAG_SECURE;
 
         /* step 1: generate secret with ecdh */
         kamKeyData = xmlSecTransformCtxExtraKeyDataGet(transformCtx, xmlSecKeyDataKAMId);

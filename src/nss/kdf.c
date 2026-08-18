@@ -190,6 +190,7 @@ xmlSecNssKdfInitialize(xmlSecTransformPtr transform) {
         xmlSecNssKdfFinalize(transform);
         return(-1);
     }
+    ctx->key.flags |= XMLSEC_BUFFER_FLAG_SECURE;
 
     if(0) {
 #ifndef XMLSEC_NO_CONCATKDF
@@ -200,6 +201,7 @@ xmlSecNssKdfInitialize(xmlSecTransformPtr transform) {
             xmlSecNssKdfFinalize(transform);
             return(-1);
         }
+        ctx->u.concatKdf.fixedInfo.flags |= XMLSEC_BUFFER_FLAG_SECURE;
         ret = xmlSecTransformConcatKdfParamsInitialize(&(ctx->u.concatKdf.params));
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformConcatKdfParamsInitialize", NULL);

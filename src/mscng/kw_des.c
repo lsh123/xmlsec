@@ -238,6 +238,7 @@ xmlSecMSCngKWDes3BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         xmlSecInternalError("xmlSecBufferInitialize", NULL);
         goto done;
     }
+    blob.flags |= XMLSEC_BUFFER_FLAG_SECURE;
 
     status = BCryptOpenAlgorithmProvider(
         &hAlg,
@@ -420,6 +421,7 @@ xmlSecMSCngKWDes3BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         xmlSecInternalError("xmlSecBufferInitialize", NULL);
         goto done;
     }
+    blob.flags |= XMLSEC_BUFFER_FLAG_SECURE;
 
     status = BCryptOpenAlgorithmProvider(
         &hAlg,

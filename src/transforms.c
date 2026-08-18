@@ -1404,6 +1404,13 @@ xmlSecTransformCreate(xmlSecTransformId id) {
         return(NULL);
     }
 
+    if(((transform->id->usage & xmlSecTransformUsageKeyDerivationMethod) != 0) ||
+       ((transform->id->usage & xmlSecTransformUsageAgreementMethod) != 0) ||
+       ((transform->id->usage & xmlSecTransformUsageEncapsulationMechanism) != 0)
+    ) {
+        transform->outBuf.flags |= XMLSEC_BUFFER_FLAG_SECURE;
+    }
+
     return(transform);
 }
 

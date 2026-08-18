@@ -40,6 +40,21 @@
 static xmlSecAllocMode gAllocMode = xmlSecAllocModeDouble;
 static xmlSecSize gInitialSize = 1024;
 
+static void
+xmlSecBufferWipe(xmlSecBufferPtr buf, xmlSecByte* data, xmlSecSize size) {
+    xmlSecAssert(buf != NULL);
+
+    if((data == NULL) || (size == 0)) {
+        return;
+    }
+
+    if((buf->flags & XMLSEC_BUFFER_FLAG_SECURE) != 0) {
+        xmlSecMemCleanse(data, size);
+    } else {
+        memset(data, 0, size);
+    }
+}
+
 /**
  * @brief Sets the default buffer allocation mode.
  * @details Sets new global default allocation mode and minimal initial size.
@@ -110,6 +125,7 @@ xmlSecBufferInitialize(xmlSecBufferPtr buf, xmlSecSize size) {
     buf->data = NULL;
     buf->size = buf->maxSize = 0;
     buf->allocMode = gAllocMode;
+    buf->flags = 0;
 
     return(xmlSecBufferSetMaxSize(buf, size));
 }
@@ -131,6 +147,7 @@ xmlSecBufferFinalize(xmlSecBufferPtr buf) {
     }
     buf->data = NULL;
     buf->size = buf->maxSize = 0;
+    buf->flags = 0;
 }
 
 /**
@@ -143,7 +160,7 @@ xmlSecBufferEmpty(xmlSecBufferPtr buf) {
 
     if(buf->data != 0) {
         xmlSecAssert(buf->maxSize > 0);
-        memset(buf->data, 0, buf->maxSize);
+        xmlSecBufferWipe(buf, buf->data, buf->maxSize);
     }
     buf->size = 0;
 }
@@ -235,7 +252,7 @@ xmlSecBufferSetSize(xmlSecBufferPtr buf, xmlSecSize size) {
 
     if(size < buf->size) {
         xmlSecAssert2(buf->data != NULL, -1);
-        memset(buf->data + size, 0, buf->size - size);
+        xmlSecBufferWipe(buf, buf->data + size, buf->size - size);
     }
 
     buf->size = size;
@@ -335,6 +352,7 @@ xmlSecBufferSwap(xmlSecBufferPtr buf1, xmlSecBufferPtr buf2) {
     SWAP(xmlSecSize,        buf1->size, buf2->size);
     SWAP(xmlSecSize,        buf1->maxSize, buf2->maxSize);
     SWAP(xmlSecAllocMode,   buf1->allocMode, buf2->allocMode);
+    SWAP(int,               buf1->flags, buf2->flags);
 }
 
 /**
@@ -429,7 +447,7 @@ xmlSecBufferRemoveHead(xmlSecBufferPtr buf, xmlSecSize size) {
     }
     if(buf->size < buf->maxSize) {
         xmlSecAssert2(buf->data != NULL, -1);
-        memset(buf->data + buf->size, 0, buf->maxSize - buf->size);
+        xmlSecBufferWipe(buf, buf->data + buf->size, buf->maxSize - buf->size);
     }
     return(0);
 }
@@ -452,7 +470,7 @@ xmlSecBufferRemoveTail(xmlSecBufferPtr buf, xmlSecSize size) {
     }
     if(buf->size < buf->maxSize) {
         xmlSecAssert2(buf->data != NULL, -1);
-        memset(buf->data + buf->size, 0, buf->maxSize - buf->size);
+        xmlSecBufferWipe(buf, buf->data + buf->size, buf->maxSize - buf->size);
     }
     return(0);
 }

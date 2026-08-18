@@ -126,6 +126,7 @@ xmlSecMSCngKdfInitialize(xmlSecTransformPtr transform) {
         xmlSecMSCngKdfFinalize(transform);
         return(-1);
     }
+    ctx->key.flags |= XMLSEC_BUFFER_FLAG_SECURE;
 
 #ifndef XMLSEC_NO_PBKDF2
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformPbkdf2Id)) {

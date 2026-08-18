@@ -173,6 +173,7 @@ xmlSecGnuTLSKdfInitialize(xmlSecTransformPtr transform) {
         xmlSecGnuTLSKdfFinalize(transform);
         return(-1);
     }
+    ctx->key.flags |= XMLSEC_BUFFER_FLAG_SECURE;
 
     /* init KDF-specific structures */
     if(0) {
@@ -184,6 +185,7 @@ xmlSecGnuTLSKdfInitialize(xmlSecTransformPtr transform) {
             xmlSecGnuTLSKdfFinalize(transform);
             return(-1);
         }
+        ctx->u.concatKdf.fixedInfo.flags |= XMLSEC_BUFFER_FLAG_SECURE;
         ret = xmlSecTransformConcatKdfParamsInitialize(&(ctx->u.concatKdf.params));
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformConcatKdfParamsInitialize", NULL);

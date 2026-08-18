@@ -179,6 +179,7 @@ xmlSecOpenSSLKdfInitialize(xmlSecTransformPtr transform) {
         xmlSecOpenSSLKdfFinalize(transform);
         return(-1);
     }
+    ctx->buffer.flags |= XMLSEC_BUFFER_FLAG_SECURE;
 
     ret = xmlSecBufferInitialize(&(ctx->buffer2), 0);
     if(ret < 0) {
@@ -186,6 +187,7 @@ xmlSecOpenSSLKdfInitialize(xmlSecTransformPtr transform) {
         xmlSecOpenSSLKdfFinalize(transform);
         return(-1);
     }
+    ctx->buffer2.flags |= XMLSEC_BUFFER_FLAG_SECURE;
 
     /* done */
     return(0);

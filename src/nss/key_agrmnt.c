@@ -262,6 +262,7 @@ xmlSecNssKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
             xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
             return(-1);
         }
+        secret.flags |= XMLSEC_BUFFER_FLAG_SECURE;
 
         /* Step 1: derive shared secret using NSS ECDH derive support */
         kamKeyData = xmlSecTransformCtxExtraKeyDataGet(transformCtx, xmlSecKeyDataKAMId);

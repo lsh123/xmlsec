@@ -144,7 +144,7 @@ xmlSecGnuTLSKeyAgreementFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     xmlSecTransformKAMFinalize(&(ctx->params));
-    xmlSecMemCleanse(ctx, sizeof(xmlSecGnuTLSKeyAgreementCtx));
+    memset(ctx, 0, sizeof(xmlSecGnuTLSKeyAgreementCtx));
 }
 
 static int

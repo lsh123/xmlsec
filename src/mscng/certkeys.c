@@ -467,7 +467,7 @@ xmlSecMSCngCertKeyDataFinalize(xmlSecKeyDataPtr data) {
         CertFreeCertificateContext(ctx->cert);
     }
 
-    xmlSecMemCleanse(ctx, sizeof(xmlSecMSCngKeyDataCtx));
+    memset(ctx, 0, sizeof(xmlSecMSCngKeyDataCtx));
 }
 
 static int
@@ -1730,7 +1730,7 @@ xmlSecMSCngDhValueFinalize(xmlSecKeyValueDhPtr dhValue) {
     xmlSecBufferFinalize(&(dhValue->public));
     xmlSecBufferFinalize(&(dhValue->seed));
     xmlSecBufferFinalize(&(dhValue->pgenCounter));
-    xmlSecMemCleanse(dhValue, sizeof(*dhValue));
+    memset(dhValue, 0, sizeof(*dhValue));
 }
 
 static int
@@ -1862,7 +1862,7 @@ static int
 xmlSecMSCngDhValidatePublicSubgroup(xmlSecBufferPtr p, xmlSecBufferPtr g,
     xmlSecBufferPtr q, BCRYPT_KEY_HANDLE publicKey) {
     DWORD cbKey;
-    DWORD cbPrivBlob;
+    DWORD cbPrivBlob = 0;
     BCRYPT_DH_KEY_BLOB* dhPriv;
     BCRYPT_ALG_HANDLE hAlg = NULL;
     BCRYPT_KEY_HANDLE hQPrivKey = NULL;
@@ -1894,7 +1894,7 @@ xmlSecMSCngDhValidatePublicSubgroup(xmlSecBufferPtr p, xmlSecBufferPtr g,
         xmlSecMallocError(cbPrivBlob, NULL);
         goto done;
     }
-    xmlSecMemCleanse(pbPrivBlob, cbPrivBlob);
+    memset(pbPrivBlob, 0, cbPrivBlob);
 
     dhPriv = (BCRYPT_DH_KEY_BLOB*)pbPrivBlob;
     dhPriv->dwMagic = BCRYPT_DH_PRIVATE_MAGIC;

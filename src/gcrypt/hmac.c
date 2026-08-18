@@ -203,7 +203,7 @@ xmlSecGCryptHmacFinalize(xmlSecTransformPtr transform) {
     if(ctx->digestCtx != NULL) {
         gcry_md_close(ctx->digestCtx);
     }
-    xmlSecMemCleanse(ctx, sizeof(xmlSecGCryptHmacCtx));
+    memset(ctx, 0, sizeof(xmlSecGCryptHmacCtx));
 }
 
 static int

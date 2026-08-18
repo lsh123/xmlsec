@@ -165,16 +165,16 @@ xmlSecMSCngGcmBlockCipherFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     if(ctx->pbIV != NULL) {
-        xmlSecMemCleanse(ctx->pbIV, ctx->cbIV);
+        memset(ctx->pbIV, 0, ctx->cbIV);
         xmlFree(ctx->pbIV);
     }
 
     if(ctx->authInfo.pbNonce != NULL) {
-        xmlSecMemCleanse(ctx->authInfo.pbNonce, ctx->authInfo.cbNonce);
+        memset(ctx->authInfo.pbNonce, 0, ctx->authInfo.cbNonce);
         xmlFree(ctx->authInfo.pbNonce);
     }
     if(ctx->authInfo.pbTag != NULL) {
-        xmlSecMemCleanse(ctx->authInfo.pbTag, ctx->authInfo.cbTag);
+        memset(ctx->authInfo.pbTag, 0, ctx->authInfo.cbTag);
         xmlFree(ctx->authInfo.pbTag);
     }
     if(ctx->authInfo.pbMacContext != NULL) {
@@ -194,7 +194,7 @@ xmlSecMSCngGcmBlockCipherFinalize(xmlSecTransformPtr transform) {
         BCryptCloseAlgorithmProvider(ctx->hAlg, 0);
     }
 
-    xmlSecMemCleanse(ctx, sizeof(xmlSecMSCngGcmBlockCipherCtx));
+    memset(ctx, 0, sizeof(xmlSecMSCngGcmBlockCipherCtx));
 }
 
 static int
@@ -384,7 +384,7 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
             return(-1);
         }
     }
-    xmlSecMemCleanse(ctx->authInfo.pbTag, xmlSecMSCngAesGcmTagLengthInBytes);
+    memset(ctx->authInfo.pbTag, 0, xmlSecMSCngAesGcmTagLengthInBytes);
     ctx->authInfo.cbTag = xmlSecMSCngAesGcmTagLengthInBytes;
 
     /* Need some working buffers */
@@ -399,7 +399,7 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
         }
     }
     ctx->cbIV = ctx->dwBlockLen;
-    xmlSecMemCleanse(ctx->pbIV, blockSize);
+    memset(ctx->pbIV, 0, blockSize);
 
     /* Setup an empty MAC context if we're chaining calls */
     status = BCryptGetProperty(ctx->hAlg,
@@ -421,7 +421,7 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
         }
     }
     ctx->authInfo.cbMacContext = authTagLengths.dwMaxLength;
-    xmlSecMemCleanse(ctx->authInfo.pbMacContext, authTagLengths.dwMaxLength);
+    memset(ctx->authInfo.pbMacContext, 0, authTagLengths.dwMaxLength);
     ctx->authInfo.dwFlags |= BCRYPT_AUTH_MODE_CHAIN_CALLS_FLAG;
 
     if (encrypt) {

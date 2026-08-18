@@ -244,7 +244,7 @@ xmlSecGnuTLSDigestFinalize(xmlSecTransformPtr transform) {
     if(ctx->hash != NULL) {
         gnutls_hash_deinit(ctx->hash, NULL);
     }
-    xmlSecMemCleanse(ctx, sizeof(xmlSecGnuTLSDigestCtx));
+    memset(ctx, 0, sizeof(xmlSecGnuTLSDigestCtx));
 }
 
 static int

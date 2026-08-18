@@ -180,7 +180,7 @@ xmlSecGnuTLSKWDes3Finalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     xmlSecTransformKWDes3Finalize(transform, ctx);
-    xmlSecMemCleanse(ctx, sizeof(xmlSecGnuTLSKWDes3Ctx));
+    memset(ctx, 0, sizeof(xmlSecGnuTLSKWDes3Ctx));
 }
 
 static int

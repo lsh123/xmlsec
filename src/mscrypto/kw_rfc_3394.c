@@ -198,7 +198,7 @@ xmlSecMSCryptoKWAesFinalize(xmlSecTransformPtr transform) {
     }
 
     xmlSecTransformKWRfc3394Finalize(transform, &(ctx->parentCtx));
-    xmlSecMemCleanse(ctx, sizeof(xmlSecMSCryptoKWAesCtx));
+    memset(ctx, 0, sizeof(xmlSecMSCryptoKWAesCtx));
 }
 
 static int

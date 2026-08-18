@@ -262,7 +262,7 @@ xmlSecGCryptRsaPkcs1Finalize(xmlSecTransformPtr transform) {
         xmlSecKeyDataDestroy(ctx->keyData);
     }
 
-    xmlSecMemCleanse(ctx, sizeof(xmlSecGCryptRsaPkcs1Ctx));
+    memset(ctx, 0, sizeof(xmlSecGCryptRsaPkcs1Ctx));
 }
 
 static int
@@ -654,7 +654,7 @@ xmlSecGCryptRsaOaepFinalize(xmlSecTransformPtr transform) {
         xmlSecKeyDataDestroy(ctx->keyData);
     }
 
-    xmlSecMemCleanse(ctx, sizeof(xmlSecGCryptRsaOaepCtx));
+    memset(ctx, 0, sizeof(xmlSecGCryptRsaOaepCtx));
 }
 
 static int

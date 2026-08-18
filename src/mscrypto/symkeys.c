@@ -222,7 +222,7 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
 {
     HCRYPTKEY hKey = 0;
     LPBYTE keyBlob = NULL;
-    DWORD keyBlobLen;
+    DWORD keyBlobLen = 0;
     PUBLICKEYSTRUC* pubKeyStruc;
     RSAPUBKEY* rsaPubKey;
     DWORD bitLen, n;
@@ -367,7 +367,7 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
                                      HCRYPTKEY *hSessionKey) {
     ALG_ID dwPrivKeyAlg;
     LPBYTE keyBlob = NULL;
-    DWORD keyBlobLen, rndBlobSize, dwSize, n;
+    DWORD keyBlobLen = 0, rndBlobSize, dwSize, n;
     PUBLICKEYSTRUC* pubKeyStruc;
     ALG_ID* pAlgId;
     DWORD dwPublicKeySize;
@@ -469,7 +469,7 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
         xmlSecMallocError(sizeof(BYTE) * keyBlobLen, NULL);
         goto done;
     }
-    xmlSecMemCleanse(keyBlob, keyBlobLen);
+    memset(keyBlob, 0, keyBlobLen);
 
     /* initialize PUBLICKEYSTRUC */
     pubKeyStruc             = (PUBLICKEYSTRUC*)(keyBlob);

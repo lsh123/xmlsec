@@ -175,7 +175,7 @@ xmlSecMSCngCbcBlockCipherFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     if(ctx->pbIV != NULL) {
-        xmlSecMemCleanse(ctx->pbIV, ctx->cbIV);
+        memset(ctx->pbIV, 0, ctx->cbIV);
         xmlFree(ctx->pbIV);
     }
     if(ctx->hKey != NULL) {
@@ -190,7 +190,7 @@ xmlSecMSCngCbcBlockCipherFinalize(xmlSecTransformPtr transform) {
         BCryptCloseAlgorithmProvider(ctx->hAlg, 0);
     }
 
-    xmlSecMemCleanse(ctx, sizeof(xmlSecMSCngCbcBlockCipherCtx));
+    memset(ctx, 0, sizeof(xmlSecMSCngCbcBlockCipherCtx));
 }
 
 static int

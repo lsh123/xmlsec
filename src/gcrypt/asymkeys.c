@@ -145,7 +145,7 @@ xmlSecGCryptAsymKeyDataFinalize(xmlSecKeyDataPtr data) {
     if(ctx->priv_key != NULL) {
         gcry_sexp_release(ctx->priv_key);
     }
-    xmlSecMemCleanse(ctx, sizeof(xmlSecGCryptAsymKeyDataCtx));
+    memset(ctx, 0, sizeof(xmlSecGCryptAsymKeyDataCtx));
 }
 
 static int

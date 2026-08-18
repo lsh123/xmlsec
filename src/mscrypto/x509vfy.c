@@ -915,7 +915,7 @@ xmlSecMSCryptoX509StoreFinalize(xmlSecKeyDataStorePtr store) {
         CertCloseStore(ctx->untrusted, 0);
     }
 
-    xmlSecMemCleanse(ctx, sizeof(xmlSecMSCryptoX509StoreCtx));
+    memset(ctx, 0, sizeof(xmlSecMSCryptoX509StoreCtx));
 }
 
 

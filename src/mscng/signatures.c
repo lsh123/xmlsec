@@ -470,7 +470,7 @@ static void xmlSecMSCngSignatureFinalize(xmlSecTransformPtr transform) {
         xmlFree(ctx->pbHash);
     }
 
-    xmlSecMemCleanse(ctx, sizeof(xmlSecMSCngSignatureCtx));
+    memset(ctx, 0, sizeof(xmlSecMSCngSignatureCtx));
 }
 
 static int xmlSecMSCngSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {

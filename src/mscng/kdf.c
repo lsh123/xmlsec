@@ -184,7 +184,7 @@ xmlSecMSCngKdfFinalize(xmlSecTransformPtr transform) {
     }
 #endif /* XMLSEC_NO_HKDF */
 
-    xmlSecMemCleanse(ctx, sizeof(xmlSecMSCngKdfCtx));
+    memset(ctx, 0, sizeof(xmlSecMSCngKdfCtx));
 }
 
 

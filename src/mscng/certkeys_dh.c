@@ -67,7 +67,7 @@ xmlSecMSCngKeyDataDuplicateBCryptDhPrivKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HAN
     }
     status = BCryptImportKeyPair(hDhAlg, NULL, BCRYPT_DH_PRIVATE_BLOB, &hDhAlgKey, pbPrivBlob, cbPrivBlob, 0);
     BCryptCloseAlgorithmProvider(hDhAlg, 0);
-    xmlSecMemCleanse(pbPrivBlob, cbPrivBlob);
+    memset(pbPrivBlob, 0, cbPrivBlob);
     xmlFree(pbPrivBlob);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptImportKeyPair(DH priv dup)", NULL, status);
@@ -662,7 +662,7 @@ xmlSecMSCngKeyDataDhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLen
         if(cbY > cbKey) { cbY = cbKey; } /* safety */
         {
             PUCHAR pbY = pbPrivBlob + sizeof(BCRYPT_DH_KEY_BLOB) + cbKey * 2;
-            xmlSecMemCleanse(pbY, cbKey);
+            memset(pbY, 0, cbKey);
             /* derive into Y field of the private blob (right-aligned) */
             PUCHAR pbYtmp = pbY + cbKey - cbY;
             status = BCryptDeriveKey(hSelfSecret, BCRYPT_KDF_RAW_SECRET, NULL, pbYtmp, cbY, &cbY, 0);

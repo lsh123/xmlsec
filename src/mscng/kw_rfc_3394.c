@@ -184,7 +184,7 @@ xmlSecMSCngKWAesFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     xmlSecTransformKWRfc3394Finalize(transform, &(ctx->parentCtx));
-    xmlSecMemCleanse(ctx, sizeof(xmlSecMSCngKWAesCtx));
+    memset(ctx, 0, sizeof(xmlSecMSCngKWAesCtx));
 }
 
 static int
@@ -304,7 +304,7 @@ xmlSecMSCngKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
     BCRYPT_KEY_HANDLE hKey = NULL;
     DWORD cbData;
     PBYTE pbKeyObject = NULL;
-    DWORD cbKeyObject;
+    DWORD cbKeyObject = 0;
     xmlSecBuffer blob;
     int blob_initialized = 0;
     BCRYPT_KEY_DATA_BLOB_HEADER* blobHeader;
@@ -455,7 +455,7 @@ xmlSecMSCngKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
     BCRYPT_KEY_HANDLE hKey = NULL;
     DWORD cbData;
     PBYTE pbKeyObject = NULL;
-    DWORD cbKeyObject;
+    DWORD cbKeyObject = 0;
     xmlSecBuffer blob;
     int blob_initialized = 0;
     BCRYPT_KEY_DATA_BLOB_HEADER* blobHeader;

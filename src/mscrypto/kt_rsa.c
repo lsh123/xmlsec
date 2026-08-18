@@ -147,7 +147,7 @@ xmlSecMSCryptoRsaPkcs1OaepFinalize(xmlSecTransformPtr transform) {
     }
 
     xmlSecBufferFinalize(&(ctx->oaepParams));
-    xmlSecMemCleanse(ctx, sizeof(xmlSecMSCryptoRsaPkcs1OaepCtx));
+    memset(ctx, 0, sizeof(xmlSecMSCryptoRsaPkcs1OaepCtx));
 }
 
 static int

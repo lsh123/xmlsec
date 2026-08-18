@@ -232,7 +232,7 @@ xmlSecGnuTLSKWRfc3394Finalize(xmlSecTransformPtr transform) {
         gnutls_cipher_deinit(ctx->cipher);
     }
     xmlSecTransformKWRfc3394Finalize(transform, &(ctx->parentCtx));
-    xmlSecMemCleanse(ctx, sizeof(xmlSecGnuTLSKWRfc3394Ctx));
+    memset(ctx, 0, sizeof(xmlSecGnuTLSKWRfc3394Ctx));
 }
 
 static int

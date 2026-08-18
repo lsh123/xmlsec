@@ -118,7 +118,7 @@ xmlSecGnuTLSKeyTransportFinalize(xmlSecTransformPtr transform) {
     if(ctx->keyData != NULL) {
         xmlSecKeyDataDestroy(ctx->keyData);
     }
-    xmlSecMemCleanse(ctx, sizeof(xmlSecGnuTLSKeyTransportCtx));
+    memset(ctx, 0, sizeof(xmlSecGnuTLSKeyTransportCtx));
 }
 
 static int
@@ -468,7 +468,7 @@ xmlSecGnuTLSRsaOaepFinalize(xmlSecTransformPtr transform) {
         ctx->keyData = NULL;
     }
     xmlSecBufferFinalize(&(ctx->oaepParams));
-    xmlSecMemCleanse(ctx, sizeof(xmlSecGnuTLSRsaOaepCtx));
+    memset(ctx, 0, sizeof(xmlSecGnuTLSRsaOaepCtx));
 }
 
 static int

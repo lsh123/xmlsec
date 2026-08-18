@@ -440,7 +440,7 @@ xmlSecGCryptBlockCipherFinalize(xmlSecTransformPtr transform) {
         gcry_cipher_close(ctx->cipherCtx);
     }
 
-    xmlSecMemCleanse(ctx, sizeof(xmlSecGCryptBlockCipherCtx));
+    memset(ctx, 0, sizeof(xmlSecGCryptBlockCipherCtx));
 }
 
 static int

@@ -160,7 +160,7 @@ xmlSecGCryptKWAesFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     xmlSecTransformKWRfc3394Finalize(transform, &(ctx->parentCtx));
-    xmlSecMemCleanse(ctx, sizeof(xmlSecGCryptKWAesCtx));
+    memset(ctx, 0, sizeof(xmlSecGCryptKWAesCtx));
 }
 
 static int

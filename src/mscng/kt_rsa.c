@@ -114,7 +114,7 @@ xmlSecMSCngRsaPkcs1OaepFinalize(xmlSecTransformPtr transform) {
     }
 
     xmlSecBufferFinalize(&(ctx->oaepParams));
-    xmlSecMemCleanse(ctx, sizeof(xmlSecMSCngRsaPkcs1OaepCtx));
+    memset(ctx, 0, sizeof(xmlSecMSCngRsaPkcs1OaepCtx));
 }
 
 static int

@@ -152,7 +152,7 @@ xmlSecMSCngKeyDataDuplicateBCryptXdhPrivKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HA
 
     status = BCryptImportKeyPair(hAlg, NULL, BCRYPT_ECCPRIVATE_BLOB, &hKey, pbPrivBlob, cbPrivBlob, 0);
     BCryptCloseAlgorithmProvider(hAlg, 0);
-    xmlSecMemCleanse(pbPrivBlob, cbPrivBlob);
+    memset(pbPrivBlob, 0, cbPrivBlob);
     xmlFree(pbPrivBlob);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptImportKeyPair(X25519 priv dup)", NULL, status);

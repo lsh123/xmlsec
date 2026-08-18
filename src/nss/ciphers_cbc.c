@@ -500,7 +500,7 @@ xmlSecNssCbcCipherFinalize(xmlSecTransformPtr transform) {
         PK11_DestroyContext(ctx->cipherCtx, PR_TRUE);
     }
 
-    xmlSecMemCleanse(ctx, sizeof(xmlSecNssCbcCipherCtx));
+    memset(ctx, 0, sizeof(xmlSecNssCbcCipherCtx));
 }
 
 static int

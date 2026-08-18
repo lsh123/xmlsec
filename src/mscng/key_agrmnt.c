@@ -161,7 +161,7 @@ xmlSecMSCngKeyAgreementFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     xmlSecTransformKAMFinalize(&(ctx->params));
-    xmlSecMemCleanse(ctx, sizeof(xmlSecMSCngKeyAgreementCtx));
+    memset(ctx, 0, sizeof(xmlSecMSCngKeyAgreementCtx));
 }
 
 

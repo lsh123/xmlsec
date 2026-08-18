@@ -82,6 +82,9 @@ AM_CONDITIONAL(BUILD_HTML_DOCS,    [test x"$SED" != x && test x"$PANDOC" != x ])
 dnl Checks for header files.
 AC_HEADER_DIRENT
 
+dnl Checks for library functions.
+AC_CHECK_FUNCS([memset_explicit explicit_bzero memset_s])
+
 
 dnl ==========================================================================
 dnl XMLSec configs

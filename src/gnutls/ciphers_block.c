@@ -555,7 +555,7 @@ xmlSecGnuTLSBlockCipherFinalize(xmlSecTransformPtr transform) {
     if(ctx->cipher != NULL) {
         gnutls_cipher_deinit(ctx->cipher);
     }
-    xmlSecMemCleanse(ctx, sizeof(xmlSecGnuTLSBlockCipherCtx));
+    memset(ctx, 0, sizeof(xmlSecGnuTLSBlockCipherCtx));
 }
 
 static int

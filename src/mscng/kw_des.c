@@ -206,7 +206,7 @@ xmlSecMSCngKWDes3BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     BCRYPT_KEY_HANDLE hKey = NULL;
     DWORD cbData;
     PBYTE pbKeyObject = NULL;
-    DWORD cbKeyObject;
+    DWORD cbKeyObject = 0;
     xmlSecBuffer blob;
     BCRYPT_KEY_DATA_BLOB_HEADER* blobHeader;
     xmlSecSize blobHeaderSize, blobSizeInBits;
@@ -389,7 +389,7 @@ xmlSecMSCngKWDes3BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     BCRYPT_KEY_HANDLE hKey = NULL;
     DWORD cbData;
     PBYTE pbKeyObject = NULL;
-    DWORD cbKeyObject;
+    DWORD cbKeyObject = 0;
     xmlSecBuffer blob;
     BCRYPT_KEY_DATA_BLOB_HEADER* blobHeader;
     xmlSecSize blobHeaderSize, blobSizeInBits;
@@ -595,7 +595,7 @@ xmlSecMSCngKWDes3Finalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     xmlSecTransformKWDes3Finalize(transform, ctx);
-    xmlSecMemCleanse(ctx, sizeof(xmlSecMSCngKWDes3Ctx));
+    memset(ctx, 0, sizeof(xmlSecMSCngKWDes3Ctx));
 }
 
 static int

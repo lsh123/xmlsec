@@ -262,7 +262,7 @@ xmlSecGnuTLSKdfFinalize(xmlSecTransformPtr transform) {
 
     xmlSecBufferFinalize(&(ctx->key));
 
-    xmlSecMemCleanse(ctx, sizeof(xmlSecGnuTLSKdfCtx));
+    memset(ctx, 0, sizeof(xmlSecGnuTLSKdfCtx));
 }
 
 

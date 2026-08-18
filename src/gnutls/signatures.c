@@ -577,7 +577,7 @@ xmlSecGnuTLSSignatureFinalize(xmlSecTransformPtr transform) {
         gnutls_hash_deinit(ctx->hash, NULL);
     }
     xmlSecBufferFinalize(&(ctx->preSignBuffer));
-    xmlSecMemCleanse(ctx, sizeof(xmlSecGnuTLSSignatureCtx));
+    memset(ctx, 0, sizeof(xmlSecGnuTLSSignatureCtx));
 }
 
 static int

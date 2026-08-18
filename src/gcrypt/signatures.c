@@ -525,7 +525,7 @@ xmlSecGCryptPkSignatureFinalize(xmlSecTransformPtr transform) {
         gcry_md_close(ctx->digestCtx);
     }
 
-    xmlSecMemCleanse(ctx, sizeof(xmlSecGCryptPkSignatureCtx));
+    memset(ctx, 0, sizeof(xmlSecGCryptPkSignatureCtx));
 }
 
 static int

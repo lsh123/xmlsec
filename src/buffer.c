@@ -143,7 +143,7 @@ xmlSecBufferEmpty(xmlSecBufferPtr buf) {
 
     if(buf->data != 0) {
         xmlSecAssert(buf->maxSize > 0);
-        xmlSecMemCleanse(buf->data, buf->maxSize);
+        memset(buf->data, 0, buf->maxSize);
     }
     buf->size = 0;
 }
@@ -235,7 +235,7 @@ xmlSecBufferSetSize(xmlSecBufferPtr buf, xmlSecSize size) {
 
     if(size < buf->size) {
         xmlSecAssert2(buf->data != NULL, -1);
-        xmlSecMemCleanse(buf->data + size, buf->size - size);
+        memset(buf->data + size, 0, buf->size - size);
     }
 
     buf->size = size;
@@ -429,7 +429,7 @@ xmlSecBufferRemoveHead(xmlSecBufferPtr buf, xmlSecSize size) {
     }
     if(buf->size < buf->maxSize) {
         xmlSecAssert2(buf->data != NULL, -1);
-        xmlSecMemCleanse(buf->data + buf->size, buf->maxSize - buf->size);
+        memset(buf->data + buf->size, 0, buf->maxSize - buf->size);
     }
     return(0);
 }
@@ -452,7 +452,7 @@ xmlSecBufferRemoveTail(xmlSecBufferPtr buf, xmlSecSize size) {
     }
     if(buf->size < buf->maxSize) {
         xmlSecAssert2(buf->data != NULL, -1);
-        xmlSecMemCleanse(buf->data + buf->size, buf->maxSize - buf->size);
+        memset(buf->data + buf->size, 0, buf->maxSize - buf->size);
     }
     return(0);
 }
@@ -813,8 +813,12 @@ xmlSecMemCleanse(void* data, size_t size) {
 
 #if defined(XMLSEC_WINDOWS)
     SecureZeroMemory(data, size);
-#elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 202311L
+#elif defined(HAVE_MEMSET_EXPLICIT)
     memset_explicit(data, 0, size);
+#elif defined(HAVE_EXPLICIT_BZERO)
+    explicit_bzero(data, size);
+#elif defined(HAVE_MEMSET_S)
+    (void)memset_s(data, size, 0, size);
 #else
     /* Fallback: zero through a volatile pointer so the compiler cannot
      * optimize the write away. */

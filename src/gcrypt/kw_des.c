@@ -181,7 +181,7 @@ xmlSecGCryptKWDes3Finalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     xmlSecTransformKWDes3Finalize(transform, ctx);
-    xmlSecMemCleanse(ctx, sizeof(xmlSecGCryptKWDes3Ctx));
+    memset(ctx, 0, sizeof(xmlSecGCryptKWDes3Ctx));
 }
 
 static int

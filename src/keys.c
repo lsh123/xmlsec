@@ -513,7 +513,7 @@ xmlSecKeyEmpty(xmlSecKeyPtr key) {
         xmlSecPtrListDestroy(key->dataList);
     }
 
-    xmlSecMemCleanse(key, sizeof(xmlSecKey));
+    memset(key, 0, sizeof(xmlSecKey));
 }
 
 /**

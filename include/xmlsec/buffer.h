@@ -15,6 +15,7 @@
  * @{
  */
 
+#include <stddef.h>
 #include <libxml/tree.h>
 
 #include <xmlsec/exports.h>
@@ -33,8 +34,8 @@ typedef struct _xmlSecBuffer                                    xmlSecBuffer,
  * @details The memory allocation mode (used by xmlSecBuffer and xmlSecList).
  */
 typedef enum {
-    xmlSecAllocModeExact = 0,  /**< the memory allocation mode that minimizes total allocated memory size. */
-    xmlSecAllocModeDouble  /**< the memory allocation mode that tries to minimize the number of malloc calls. */
+    xmlSecAllocModeExact = 0,   /**< the memory allocation mode that minimizes total allocated memory size. */
+    xmlSecAllocModeDouble       /**< the memory allocation mode that tries to minimize the number of malloc calls. */
 } xmlSecAllocMode;
 
 /******************************************************************************
@@ -109,7 +110,7 @@ XMLSEC_EXPORT int               xmlSecMemEqual                  (const xmlSecByt
 																 const xmlSecByte* buf2,
 																 xmlSecSize size);
 
-XMLSEC_EXPORT void              xmlSecMemCleanse               (void* data, size_t size);
+XMLSEC_EXPORT void              xmlSecMemCleanse                (void* data, size_t size);
 
 #ifdef __cplusplus
 }

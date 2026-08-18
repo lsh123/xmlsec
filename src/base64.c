@@ -76,6 +76,8 @@ xmlSecBase64IsValidColumns(int columns) {
 
 /**
  * @brief Gets the current default line size.
+ * @note Not thread-safe: the value is a process-wide global, set it before
+ * concurrent use of the base64 APIs (see xmlSecBase64SetDefaultLineSize).
  * @return The current default line size.
  */
 int
@@ -86,6 +88,10 @@ xmlSecBase64GetDefaultLineSize(void)
 
 /**
  * @brief Sets the current default line size.
+ * @note Not thread-safe: the value is a process-wide global. Call this
+ * function before any concurrent use of the base64 encode/decode APIs
+ * (e.g. during application initialization) and do not change it while other
+ * threads may be encoding.
  * @param columns number of columns; use 0 for no line breaks or a value greater than 1.
  */
 void
@@ -276,11 +282,13 @@ int
 xmlSecBase64CtxFinal_ex(xmlSecBase64CtxPtr ctx, xmlSecByte *out, xmlSecSize outSize, xmlSecSize* outWritten) {
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
-    xmlSecAssert2(outSize > 0, -1);
     xmlSecAssert2(outWritten != NULL, -1);
 
     if(ctx->encode != 0) {
         int ret;
+
+        /* the encode path always writes at least one byte (or fails), so it needs a non-empty buffer */
+        xmlSecAssert2(outSize > 0, -1);
 
         ret = xmlSecBase64CtxEncodeFinal(ctx, out, outSize, outWritten);
         if(ret < 0) {
@@ -525,6 +533,7 @@ xmlSecBase64CtxDecode(xmlSecBase64CtxPtr ctx,
                      xmlSecByte* outBuf, xmlSecSize outBufSize, xmlSecSize* outBufResSize) {
     xmlSecBase64Status status = xmlSecBase64StatusNext;
     xmlSecSize inPos, outPos;
+    xmlSecByte nextByte;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(inBuf != NULL, -1);
@@ -533,14 +542,24 @@ xmlSecBase64CtxDecode(xmlSecBase64CtxPtr ctx,
     xmlSecAssert2(outBufResSize != NULL, -1);
 
     /* decode */
-    for(inPos = outPos = 0; (inPos < inBufSize) && (outPos < outBufSize) && (status != xmlSecBase64StatusDone); ) {
-        status = xmlSecBase64CtxDecodeByte(ctx, inBuf[inPos], &(outBuf[outPos]));
+    for(inPos = outPos = 0; (inPos < inBufSize) && (status != xmlSecBase64StatusDone); ) {
+        status = xmlSecBase64CtxDecodeByte(ctx, inBuf[inPos], &nextByte);
         switch(status) {
             case xmlSecBase64StatusConsumeAndNext:
-                ++inPos;
+                if(outPos >= outBufSize) {
+                    xmlSecInvalidSizeOtherError("output base64 buffer size is too small", NULL);
+                    return(-1);
+                }
+                outBuf[outPos] = nextByte;
                 ++outPos;
+                ++inPos;
                 break;
             case xmlSecBase64StatusConsumeAndRepeat:
+                if(outPos >= outBufSize) {
+                    xmlSecInvalidSizeOtherError("output base64 buffer size is too small", NULL);
+                    return(-1);
+                }
+                outBuf[outPos] = nextByte;
                 ++outPos;
                 break;
             case xmlSecBase64StatusNext:
@@ -549,8 +568,7 @@ xmlSecBase64CtxDecode(xmlSecBase64CtxPtr ctx,
             case xmlSecBase64StatusDone:
                 break;
             case xmlSecBase64StatusFailed:
-                xmlSecInternalError2("xmlSecBase64CtxDecodeByte", NULL,
-                    "status=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(status));
+                xmlSecInternalError2("xmlSecBase64CtxDecodeByte", NULL, "status=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(status));
                 return(-1);
         }
     }

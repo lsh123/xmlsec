@@ -15,6 +15,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <limits.h>
 
 #include <libxml/tree.h>
 
@@ -147,7 +148,9 @@ xmlSecBnZero(xmlSecBnPtr bn) {
 
 /**
  * @brief Reads @p bn from string @p str in given base.
- * @details Reads @p bn from string @p str assuming it has base @p base.
+ * @details Reads @p bn from string @p str assuming it has base @p base. The value is
+ * always treated as an unsigned magnitude; a sign character ('+' or '-') is not
+ * allowed and will be rejected as an invalid digit.
  * @param bn the pointer to BN.
  * @param str the string with BN.
  * @param base the base for @p str.
@@ -159,7 +162,6 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
     xmlSecSize ii, strSize, size;
     xmlSecByte ch;
     xmlSecByte* data;
-    int positive;
     int ret;
 
     xmlSecAssert2(bn != NULL, -1);
@@ -169,19 +171,21 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
 
     XMLSEC_SAFE_CAST_SIZE_TO_INT(base, baseInt, return(-1), NULL);
 
-    /* trivial case */
-    strSize = xmlSecStrlen(str);
-    if(strSize <= 0) {
-        return(0);
-    }
+    /* reset the buffer just in case */
+    xmlSecBnZero(bn);
 
     /* The result size could not exceed the input string length
      * because each char fits inside a byte in all cases :)
      * In truth, it would be likely less than 1/2 input string length
      * because each byte is represented by 2 chars. If needed,
      * buffer size would be increased by Mul/Add functions.
-     * Finally, we can add one byte for 00 or 10 prefix.
+     * Finally, we can add one byte for the 00 prefix.
      */
+    strSize = xmlSecStrlen(str);
+    if(strSize / 2 + 2 > XMLSEC_SIZE_MAX - xmlSecBufferGetSize(bn)) {
+        xmlSecInvalidSizeError("size", strSize, XMLSEC_SIZE_MAX, NULL);
+        return (-1);
+    }
     size = xmlSecBufferGetSize(bn) + strSize / 2 + 1 + 1;
     ret = xmlSecBufferSetMaxSize(bn, size);
     if(ret < 0) {
@@ -190,34 +194,9 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
         return (-1);
     }
 
-    /* figure out if it is positive or negative number */
-    positive = 1; /* no sign, positive by default */
+    /* parse the unsigned number; a sign character is not a valid digit and
+     * will be rejected by the lookup table check below */
     ii = 0;
-    while(ii < strSize) {
-        ch = str[ii++];
-
-        /* skip spaces */
-        if(isspace(ch)) {
-            continue;
-        }
-
-        /* check if it is + or - */
-        if(ch == '+') {
-            positive = 1;
-            break;
-        } else if(ch == '-') {
-            positive = 0;
-            break;
-        }
-
-        /* otherwise, it must be start of the number, make sure that we will look
-         * at this character in next loop */
-        xmlSecAssert2(ii > 0, -1);
-        --ii;
-        break;
-    }
-
-    /* now parse the number itself */
     while(ii < strSize) {
         ch = str[ii++];
         if(isspace(ch)) {
@@ -243,7 +222,9 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
         }
     }
 
-    /* check if we need to add 00 prefix, do this for empty bn too */
+    /* prepend a 0x00 byte when the most significant bit is set (or the value
+     * is zero) so that the buffer stays a valid unsigned magnitude; this keeps
+     * the result compatible with DER/ASN.1 INTEGER consumers */
     data = xmlSecBufferGetData(bn);
     size = xmlSecBufferGetSize(bn);
     if(((size > 0) && (data[0] > 127)) || (size == 0))  {
@@ -255,28 +236,14 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
         }
     }
 
-    /* do 2's compliment and add 1 to represent negative value */
-    if(positive == 0) {
-        data = xmlSecBufferGetData(bn);
-        size = xmlSecBufferGetSize(bn);
-        for(ii = 0; ii < size; ++ii) {
-            data[ii] ^= 0xFF;
-        }
-
-        ret = xmlSecBnAdd(bn, 1);
-        if(ret < 0) {
-            xmlSecInternalError2("xmlSecBnAdd", NULL, "base=" XMLSEC_SIZE_FMT, base);
-            return (-1);
-        }
-    }
-
     return(0);
 }
 
 /**
  * @brief Writes @p bn to string with given base.
- * @details Writes @p bn to string with base @p base. Caller is responsible for
- * freeing returned string with xmlFree.
+ * @details Writes @p bn to string with base @p base. The value is always treated as
+ * an unsigned magnitude, so the result never carries a sign. Caller is responsible
+ * for freeing returned string with xmlFree.
  * @param bn the pointer to BN.
  * @param base the base for returned string.
  * @return the string representation of BN or a NULL if an error occurs.
@@ -284,10 +251,8 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
 xmlChar*
 xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
     xmlSecBn bn2;
-    int positive = 1;
     xmlChar* res;
     xmlSecSize ii, len, size;
-    xmlSecByte* data;
     int baseInt;
     int ret;
     int nn;
@@ -299,8 +264,7 @@ xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
 
     XMLSEC_SAFE_CAST_SIZE_TO_INT(base, baseInt, return(NULL), NULL);
 
-    /* copy bn */
-    data = xmlSecBufferGetData(bn);
+    /* copy bn (treated as an unsigned magnitude) */
     size = xmlSecBufferGetSize(bn);
     ret = xmlSecBnInitialize(&bn2, size);
     if(ret < 0) {
@@ -308,31 +272,11 @@ xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
         return (NULL);
     }
 
-    ret = xmlSecBnSetData(&bn2, data, size);
+    ret = xmlSecBnSetData(&bn2, xmlSecBufferGetData(bn), size);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBnSetData", NULL, "size=" XMLSEC_SIZE_FMT, size);
         xmlSecBnFinalize(&bn2);
         return (NULL);
-    }
-
-    /* check if it is a negative number or not */
-    data = xmlSecBufferGetData(&bn2);
-    size = xmlSecBufferGetSize(&bn2);
-    if((size > 0) && (data[0] > 127)) {
-        /* subtract 1 and do 2's compliment */
-        ret = xmlSecBnAdd(&bn2, -1);
-        if(ret < 0) {
-            xmlSecInternalError2("xmlSecBnAdd", NULL, "size=" XMLSEC_SIZE_FMT, size);
-            xmlSecBnFinalize(&bn2);
-            return (NULL);
-        }
-        for(ii = 0; ii < size; ++ii) {
-            data[ii] ^= 0xFF;
-        }
-
-        positive = 0;
-    } else {
-        positive = 1;
     }
 
     /* Result string len is
@@ -340,6 +284,11 @@ xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
      * Since the smallest base == 2 then we can get away with
      *      len = 8 * <bn size>
      */
+    if(size > (XMLSEC_SIZE_MAX - 2) / 8) {
+        xmlSecInvalidSizeError("size", size, (XMLSEC_SIZE_MAX - 2) / 8, NULL);
+        xmlSecBnFinalize(&bn2);
+        return (NULL);
+    }
     len = 8 * size + 1 + 1;
     res = (xmlChar*)xmlMalloc(len + 1);
     if(res == NULL) {
@@ -370,12 +319,6 @@ xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
     for(len = ii; (len > 1) && (res[len - 1] == '0'); len--) {
     }
     res[len] = '\0';
-
-    /* add "-" for negative numbers */
-    if(positive == 0) {
-        res[len] = '-';
-        res[++len] = '\0';
-    }
 
     /* swap the string because we wrote it in reverse order */
     for(ii = 0; ii < len / 2; ii++) {
@@ -443,7 +386,7 @@ xmlSecBnToDecString(xmlSecBnPtr bn) {
 int
 xmlSecBnMul(xmlSecBnPtr bn, int multiplier) {
     xmlSecByte* data;
-    int over;
+    unsigned long long over;
     xmlSecSize ii;
     xmlSecByte ch;
     int ret;
@@ -461,7 +404,7 @@ xmlSecBnMul(xmlSecBnPtr bn, int multiplier) {
     while(ii > 0) {
         xmlSecAssert2(data != NULL, -1);
 
-        over     = over + multiplier * data[--ii];
+        over     = over + (unsigned long long)multiplier * data[--ii];
         data[ii] = (xmlSecByte)(over % 256);
         over     = over / 256;
     }
@@ -470,6 +413,20 @@ xmlSecBnMul(xmlSecBnPtr bn, int multiplier) {
         ch      = (xmlSecByte)(over % 256);
         over    = over / 256;
 
+        ret = xmlSecBufferPrepend(bn, &ch, 1);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecBufferPrepend(1)", NULL);
+            return (-1);
+        }
+    }
+
+    /* keep the buffer a valid unsigned magnitude: prepend a 0x00 byte when the
+     * most significant bit is set so DER/ASN.1 INTEGER consumers read it as
+     * non-negative (re-read data/size since prepends may have reallocated) */
+    data = xmlSecBufferGetData(bn);
+    ii = xmlSecBufferGetSize(bn);
+    if((ii > 0) && (data != NULL) && (data[0] > 127)) {
+        ch = 0;
         ret = xmlSecBufferPrepend(bn, &ch, 1);
         if(ret < 0) {
             xmlSecInternalError("xmlSecBufferPrepend(1)", NULL);
@@ -490,7 +447,8 @@ xmlSecBnMul(xmlSecBnPtr bn, int multiplier) {
  */
 int
 xmlSecBnDiv(xmlSecBnPtr bn, int divider, int* mod) {
-    int over;
+    unsigned long long over;
+    unsigned long long dividerULL;
     xmlSecSize ii, size;
     xmlSecByte* data;
     int ret;
@@ -503,6 +461,7 @@ xmlSecBnDiv(xmlSecBnPtr bn, int divider, int* mod) {
         (*mod) = 0;
         return(0);
     }
+    dividerULL = (unsigned long long)divider;
 
     data = xmlSecBufferGetData(bn);
     size = xmlSecBufferGetSize(bn);
@@ -510,10 +469,10 @@ xmlSecBnDiv(xmlSecBnPtr bn, int divider, int* mod) {
         xmlSecAssert2(data != NULL, -1);
 
         over     = over * 256 + data[ii];
-        data[ii] = (xmlSecByte)(over / divider);
-        over     = over % divider;
+        data[ii] = (xmlSecByte)(over / dividerULL);
+        over     = over % dividerULL;
     }
-    (*mod) = over;
+    (*mod) = (int)over;
 
     /* remove leading zeros */
     for(ii = 0; ii < size; ii++) {
@@ -536,15 +495,19 @@ xmlSecBnDiv(xmlSecBnPtr bn, int divider, int* mod) {
 
 /**
  * @brief Adds @p delta to @p bn.
+ * @details The value is treated as an unsigned magnitude. A negative @p delta
+ * performs a subtraction; if the result would go below zero an error is returned.
+ * On error, the value of @p bn is undefined and must not be used.
  * @param bn the pointer to BN.
  * @param delta the delta.
  * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecBnAdd(xmlSecBnPtr bn, int delta) {
-    int over, tmp, byteDelta;
+    unsigned int over, byteDelta;
+    unsigned int tmp;
     xmlSecByte* data;
-    xmlSecSize ii;
+    xmlSecSize ii, size;
     xmlSecByte ch;
     int ret;
 
@@ -556,10 +519,10 @@ xmlSecBnAdd(xmlSecBnPtr bn, int delta) {
 
     data = xmlSecBufferGetData(bn);
     if(delta > 0) {
-        for(over = delta, ii = xmlSecBufferGetSize(bn); (ii > 0) && (over > 0) ;) {
+        for(over = (unsigned int)delta, ii = xmlSecBufferGetSize(bn); (ii > 0) && (over > 0) ;) {
             xmlSecAssert2(data != NULL, -1);
             tmp      = data[--ii];
-            over    += tmp;
+            over    += (unsigned int)tmp;
             data[ii] = (xmlSecByte)(over % 256);
             over     = over / 256;
         }
@@ -574,18 +537,65 @@ xmlSecBnAdd(xmlSecBnPtr bn, int delta) {
                 return (-1);
             }
         }
+
+        /* keep the buffer a valid unsigned magnitude: prepend a 0x00 byte when
+         * the most significant bit is set so DER/ASN.1 INTEGER consumers read
+         * it as non-negative (re-read data/size since prepends may have reallocated) */
+        data = xmlSecBufferGetData(bn);
+        size = xmlSecBufferGetSize(bn);
+        if((size > 0) && (data != NULL) && (data[0] > 127)) {
+            ch = 0;
+            ret = xmlSecBufferPrepend(bn, &ch, 1);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecBufferPrepend(1)", NULL);
+                return (-1);
+            }
+        }
     } else {
-        for(over = -delta, ii = xmlSecBufferGetSize(bn); (ii > 0) && (over > 0);) {
+        unsigned int absDelta;
+
+        /* avoid undefined behavior from negating INT_MIN */
+        absDelta = (delta == INT_MIN) ? (((unsigned int)INT_MAX) + 1U) : (unsigned int)(-delta);
+
+        size = xmlSecBufferGetSize(bn);
+
+        /* subtract |delta| from the least significant bytes; a borrow that runs
+         * past the most significant byte (over still non-zero when ii reaches 0)
+         * means the value was smaller than |delta|, i.e. the result would go below
+         * zero which is not representable for an unsigned BN */
+        over = absDelta;
+        for(ii = size; (ii > 0) && (over > 0);) {
             xmlSecAssert2(data != NULL, -1);
             tmp = data[--ii];
             byteDelta = over % 256;
             over = over / 256;
             if(tmp < byteDelta) {
-                data[ii] = (xmlSecByte)(tmp + 256 - byteDelta);
+                data[ii] = (xmlSecByte)((tmp + 256U) - byteDelta);
                 ++over;
             } else {
                 data[ii] = (xmlSecByte)(tmp - byteDelta);
             }
+        }
+
+        if(over > 0) {
+            xmlSecInvalidIntegerDataError("delta", delta, "value >= |delta| (result must not go below zero)", NULL);
+            return (-1);
+        }
+
+        /* trim leading zeros to keep the canonical form, but keep at least one
+         * byte and never expose a most-significant byte with its high bit set
+         * (that would be misread as negative); in that case the 0x00 prefix is
+         * kept so the buffer stays a valid unsigned magnitude */
+        size = xmlSecBufferGetSize(bn);
+        data = xmlSecBufferGetData(bn);
+        while((size > 1) && (data != NULL) && (data[0] == 0x00) && (data[1] < 0x80)) {
+            ret = xmlSecBufferRemoveHead(bn, 1);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecBufferRemoveHead(1)", NULL);
+                return (-1);
+            }
+            size = xmlSecBufferGetSize(bn);
+            data = xmlSecBufferGetData(bn);
         }
     }
     return(0);

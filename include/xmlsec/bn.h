@@ -12,6 +12,8 @@
  * @defgroup xmlsec_core_bn Big Numbers
  * @ingroup xmlsec_core
  * @brief Big-number (arbitrary-precision integer) utility functions.
+ * @details Values are always treated as unsigned magnitudes; operations that would
+ * produce a result below zero return an error.
  * @{
  */
 

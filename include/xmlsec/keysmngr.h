@@ -27,14 +27,6 @@ extern "C" {
 #endif /* __cplusplus */
 
 /**
- * @brief The key klass.
- */
-typedef const struct _xmlSecKeyKlass                    xmlSecKeyKlass;
-/**
- * @brief Pointer to #xmlSecKeyKlass.
- */
-typedef const struct _xmlSecKeyKlass                    *xmlSecKeyId;
-/**
  * @brief The key store klass.
  */
 typedef const struct _xmlSecKeyStoreKlass               xmlSecKeyStoreKlass;

@@ -179,7 +179,7 @@ xmlSecMSCngDigestInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_SHA3 */
 
     {
-        xmlSecInvalidTransfromError(transform);
+        xmlSecInvalidTransformError(transform);
         return(-1);
     }
 
@@ -406,7 +406,7 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
     } else if(transform->status == xmlSecTransformStatusFinished) {
         xmlSecAssert2(xmlSecBufferGetSize(in) == 0, -1);
     } else {
-        xmlSecInvalidTransfromStatusError(transform);
+        xmlSecInvalidTransformStatusError(transform);
         return(-1);
     }
 

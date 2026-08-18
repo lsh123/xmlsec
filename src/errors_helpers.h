@@ -752,7 +752,7 @@ extern "C" {
  * @details Macro. The XMLSec library macro for reporting an invalid transform errors.
  * @param transform the transform.
  */
-#define xmlSecInvalidTransfromError(transform) \
+#define xmlSecInvalidTransformError(transform) \
     {                                                 \
         xmlSecError(XMLSEC_ERRORS_HERE,               \
                    (const char*)xmlSecTransformGetName(transform), \
@@ -769,7 +769,7 @@ extern "C" {
  * @param msg the extra message.
  * @param param the extra message param.
  */
-#define xmlSecInvalidTransfromError2(transform, msg, param) \
+#define xmlSecInvalidTransformError2(transform, msg, param) \
     {                                                 \
         xmlSecError(XMLSEC_ERRORS_HERE,               \
                    (const char*)xmlSecTransformGetName(transform), \
@@ -787,7 +787,7 @@ extern "C" {
  * @param param1 the extra message param.
  * @param param2 the extra message param.
  */
-#define xmlSecInvalidTransfromError3(transform, msg, param1, param2) \
+#define xmlSecInvalidTransformError3(transform, msg, param1, param2) \
     {                                                 \
         xmlSecError(XMLSEC_ERRORS_HERE,               \
                    (const char*)xmlSecTransformGetName(transform), \
@@ -802,7 +802,7 @@ extern "C" {
  * @details Macro. The XMLSec library macro for reporting an invalid transform status errors.
  * @param transform the transform.
  */
-#define xmlSecInvalidTransfromStatusError(transform)   \
+#define xmlSecInvalidTransformStatusError(transform)   \
     {                                                  \
         xmlSecError(XMLSEC_ERRORS_HERE,                \
                    (const char*)xmlSecTransformGetName(transform), \
@@ -819,7 +819,7 @@ extern "C" {
  * @param transform the transform.
  * @param msg the extra message.
  */
-#define xmlSecInvalidTransfromStatusError2(transform, msg) \
+#define xmlSecInvalidTransformStatusError2(transform, msg) \
     {                                                 \
         xmlSecError(XMLSEC_ERRORS_HERE,               \
                    (const char*)xmlSecTransformGetName(transform), \

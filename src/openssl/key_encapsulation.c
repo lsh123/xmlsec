@@ -171,7 +171,7 @@ xmlSecOpenSSLMLKEMInitialize(xmlSecTransformPtr transform) {
         ctx->keyId           = xmlSecOpenSSLKeyDataMLKEMId;
         ctx->ciphertextSize  = OSSL_ML_KEM_1024_CIPHERTEXT_BYTES;
     } else {
-        xmlSecInvalidTransfromError(transform);
+        xmlSecInvalidTransformError(transform);
         return(-1);
     }
 
@@ -285,7 +285,7 @@ xmlSecOpenSSLMLKEMExecute(xmlSecTransformPtr transform, int last,
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
-        xmlSecInvalidTransfromStatusError(transform);
+        xmlSecInvalidTransformStatusError(transform);
         return(-1);
     }
     return(0);
@@ -540,7 +540,7 @@ xmlSecOpenSSLMLKEMProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr tr
     } else {
         /* decrypt requires the ciphertext to be present */
         if(xmlSecBufferIsEmpty(ciphertext)) {
-            xmlSecInvalidTransfromError2(transform, "The ciphertext value is required for decryption (operation=%u)", transform->operation);
+            xmlSecInvalidTransformError2(transform, "The ciphertext value is required for decryption (operation=%u)", transform->operation);
             return(-1);
         }
 

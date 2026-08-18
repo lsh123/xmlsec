@@ -481,7 +481,7 @@ xmlSecGCryptRsaPkcs1Execute(xmlSecTransformPtr transform, int last,
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
-        xmlSecInvalidTransfromStatusError(transform);
+        xmlSecInvalidTransformStatusError(transform);
         return(-1);
     }
     return(0);
@@ -730,7 +730,7 @@ xmlSecGCryptRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     } else
 #endif /* XMLSEC_NO_SHA512 */
     {
-        xmlSecInvalidTransfromError2(transform,
+        xmlSecInvalidTransformError2(transform,
             "digest algorithm=\"%s\" is not supported for rsa/oaep",
             xmlSecErrorsSafeString(oaepParams.digestAlgorithm));
         xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
@@ -777,7 +777,7 @@ xmlSecGCryptRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     } else
 #endif /* XMLSEC_NO_SHA512 */
     {
-        xmlSecInvalidTransfromError2(transform,
+        xmlSecInvalidTransformError2(transform,
             "mgf1 digest algorithm=\"%s\" is not supported for rsa/oaep",
             xmlSecErrorsSafeString(oaepParams.mgf1DigestAlgorithm));
         xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
@@ -786,7 +786,7 @@ xmlSecGCryptRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
     /* GCrypt only supports *same* algorithms for digest and mgf1 */
     if ((mgf1Alg != NULL) && (ctx->hashAlg != NULL) && (strcmp(ctx->hashAlg, mgf1Alg) != 0)) {
-        xmlSecInvalidTransfromError3(transform,
+        xmlSecInvalidTransformError3(transform,
             "for gcrypt/gnutls, rsa/oaep mgf1 algorithm=\"%s\" must be the same as digest algorithm=\"%s\"",
             xmlSecErrorsSafeString(ctx->hashAlg),
             xmlSecErrorsSafeString(mgf1Alg));
@@ -1046,7 +1046,7 @@ xmlSecGCryptRsaOaepExecute(xmlSecTransformPtr transform, int last,
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
-        xmlSecInvalidTransfromStatusError(transform);
+        xmlSecInvalidTransformStatusError(transform);
         return(-1);
     }
     return(0);

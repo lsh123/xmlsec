@@ -187,7 +187,7 @@ xmlSecGnuTLSKWRfc3394Initialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_CAMELLIA */
 
     {
-        xmlSecInvalidTransfromError(transform)
+        xmlSecInvalidTransformError(transform)
         xmlSecGnuTLSKWRfc3394Finalize(transform);
         return(-1);
     }

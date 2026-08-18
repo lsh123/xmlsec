@@ -147,7 +147,7 @@ xmlSecMSCryptoKWAesInitialize(xmlSecTransformPtr transform) {
         ctx->providers              = xmlSecMSCryptoProviderInfo_Aes;
         keyExpectedSize             = XMLSEC_BINARY_KEY_BYTES_SIZE_256;
     } else {
-        xmlSecInvalidTransfromError(transform)
+        xmlSecInvalidTransformError(transform)
         return(-1);
     }
 

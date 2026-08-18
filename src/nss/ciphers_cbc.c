@@ -479,7 +479,7 @@ xmlSecNssCbcCipherInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_CAMELLIA */
 
     if(1) {
-        xmlSecInvalidTransfromError(transform)
+        xmlSecInvalidTransformError(transform)
         return(-1);
     }
 
@@ -630,7 +630,7 @@ xmlSecNssCbcCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
         /* the only way we can get here is if there is no enough data in the input */
         xmlSecAssert2(last == 0, -1);
     } else {
-        xmlSecInvalidTransfromStatusError(transform);
+        xmlSecInvalidTransformStatusError(transform);
         return(-1);
     }
 

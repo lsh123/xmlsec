@@ -134,7 +134,7 @@ xmlSecMSCngCbcBlockCipherInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_DES */
 
     {
-        xmlSecInvalidTransfromError(transform)
+        xmlSecInvalidTransformError(transform)
         return(-1);
     }
 
@@ -774,7 +774,7 @@ xmlSecMSCngCbcBlockCipherExecute(xmlSecTransformPtr transform, int last,
         /* the only way we can get here is if there is not enough data in the input */
         xmlSecAssert2(last == 0, -1);
     } else {
-        xmlSecInvalidTransfromStatusError(transform);
+        xmlSecInvalidTransformStatusError(transform);
         return(-1);
     }
 

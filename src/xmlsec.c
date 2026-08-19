@@ -46,6 +46,10 @@ xmlSecNoXxeExternalEntityLoader(const char *URL, const char *ID,
         return(NULL);
     }
     if (ctxt->input_id == 1) {
+        if (xmlSecDefaultExternalEntityLoader == NULL) {
+            xmlSecXmlError("xmlSecNoXxeExternalEntityLoader", NULL);
+            return(NULL);
+        }
         return xmlSecDefaultExternalEntityLoader((const char *) URL, ID, ctxt);
     }
     xmlSecXmlError2("xmlSecNoXxeExternalEntityLoader", NULL,
@@ -61,10 +65,14 @@ xmlSecNoXxeExternalEntityLoader(const char *URL, const char *ID,
  */
 void
 xmlSecSetExternalEntityLoader(xmlExternalEntityLoader entityLoader) {
-    if (entityLoader == NULL) {
-        entityLoader = xmlSecDefaultExternalEntityLoader;
+    if (entityLoader != NULL) {
+        xmlSetExternalEntityLoader(entityLoader);
+    } else if (xmlSecDefaultExternalEntityLoader != NULL) {
+        xmlSetExternalEntityLoader(xmlSecDefaultExternalEntityLoader);
+    } else {
+        /* log an error but ignore it (non critical) */
+        xmlSecXmlError("xmlSecSetExternalEntityLoader", NULL);
     }
-    xmlSetExternalEntityLoader(entityLoader);
 }
 
 
@@ -81,7 +89,11 @@ xmlSecSetExternalEntityLoader(xmlExternalEntityLoader entityLoader) {
 int
 xmlSecInit(void) {
     xmlSecErrorsInit();
-    xmlSecIOInit();
+
+    if(xmlSecIOInit() < 0) {
+        xmlSecInternalError("xmlSecIOInit", NULL);
+        return(-1);
+    }
 
 #ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
     if(xmlSecCryptoDLInit() < 0) {
@@ -111,8 +123,6 @@ xmlSecInit(void) {
     xmlSetExternalEntityLoader(xmlSecNoXxeExternalEntityLoader);
 #endif /* LIBXML_VERSION < 21300 */
 
-    /* we use rand() function to generate id attributes */
-    srand((unsigned int)time(NULL));
     return(0);
 }
 
@@ -145,6 +155,13 @@ xmlSecShutdown(void) {
 #ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
 done:
 #endif /* XMLSEC_NO_CRYPTO_DYNAMIC_LOADING */
+
+#if LIBXML_VERSION < 21300
+    /* restore the original external entity loader */
+    if (xmlSecDefaultExternalEntityLoader != NULL) {
+        xmlSetExternalEntityLoader(xmlSecDefaultExternalEntityLoader);
+    }
+#endif /* LIBXML_VERSION < 21300 */
 
     xmlSecIOShutdown();
     xmlSecErrorsShutdown();
@@ -199,6 +216,9 @@ xmlSecCheckVersionExt(int major, int minor, int subminor, xmlSecCheckVersionMode
             return(0);
         }
         break;
+    default:
+        xmlSecUnsupportedEnumValueError("mode", mode, NULL);
+        return(0);
     }
 
     return(1);

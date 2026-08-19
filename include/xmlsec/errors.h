@@ -232,7 +232,7 @@ extern "C" {
 /**
  * @brief Max allowed KeyInfoReference level reached.
  */
-#define XMLSEC_ERRORS_R_MAX_KEYINFOREFERENCE_LEVEL        51
+#define XMLSEC_ERRORS_R_MAX_KEYINFOREFERENCE_LEVEL      53
 
 /**
  * @brief Max EncryptedKey level reached.

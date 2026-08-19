@@ -120,6 +120,9 @@ int main(int argc, const char **argv) {
     /* run tests */
     fprintf(stdout, "=================== Checking xmlsec-core =================================\n");
 
+    if (test_xmlsec() != 1) {
+        success = 0;
+    }
     if (test_base64() != 1) {
         success = 0;
     }
@@ -325,4 +328,105 @@ void testFinishedFailure(void) {
     testLogFlush();
     testFinishedFailed += 1;
     testsName = NULL;
+}
+
+
+/******************************************************************************
+ *
+ * src/xmlsec.c: xmlSecStrlen / xmlSecCheckVersionExt
+ *
+ *****************************************************************************/
+static void
+test_xmlSecStrlen_null(void) {
+    testStart("xmlSecStrlen(NULL)");
+
+    if(xmlSecStrlen(NULL) != 0) {
+        testLog("Error: xmlSecStrlen(NULL) should return 0\n");
+        testFinishedFailure();
+        return;
+    }
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecStrlen_string(void) {
+    testStart("xmlSecStrlen(\"abc\")");
+
+    if(xmlSecStrlen(BAD_CAST "abc") != 3) {
+        testLog("Error: xmlSecStrlen(\"abc\") should return 3\n");
+        testFinishedFailure();
+        return;
+    }
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecCheckVersionExt_exact_match(void) {
+    testStart("xmlSecCheckVersionExt exact match (self)");
+
+    if(xmlSecCheckVersionExt(XMLSEC_VERSION_MAJOR, XMLSEC_VERSION_MINOR,
+            XMLSEC_VERSION_SUBMINOR, xmlSecCheckVersionExactMatch) != 1) {
+        testLog("Error: exact match against own version should return 1\n");
+        testFinishedFailure();
+        return;
+    }
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecCheckVersionExt_abi_compatible(void) {
+    testStart("xmlSecCheckVersionExt ABI compatible (self)");
+
+    if(xmlSecCheckVersionExt(XMLSEC_VERSION_MAJOR, XMLSEC_VERSION_MINOR,
+            XMLSEC_VERSION_SUBMINOR, xmlSecCheckVersionABICompatible) != 1) {
+        testLog("Error: ABI-compatible check against own version should return 1\n");
+        testFinishedFailure();
+        return;
+    }
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecCheckVersionExt_major_mismatch(void) {
+    testStart("xmlSecCheckVersionExt major mismatch");
+
+    if(xmlSecCheckVersionExt(XMLSEC_VERSION_MAJOR + 1, XMLSEC_VERSION_MINOR,
+            XMLSEC_VERSION_SUBMINOR, xmlSecCheckVersionExactMatch) != 0) {
+        testLog("Error: major version mismatch should return 0\n");
+        testFinishedFailure();
+        return;
+    }
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecCheckVersionExt_invalid_mode(void) {
+    testStart("xmlSecCheckVersionExt invalid mode (default case)");
+
+    /* an out-of-range mode must be rejected (exercises the switch default) */
+    if(xmlSecCheckVersionExt(XMLSEC_VERSION_MAJOR, XMLSEC_VERSION_MINOR,
+            XMLSEC_VERSION_SUBMINOR, (xmlSecCheckVersionMode)99) != 0) {
+        testLog("Error: invalid mode should return 0\n");
+        testFinishedFailure();
+        return;
+    }
+    testFinishedSuccess();
+}
+
+int
+test_xmlsec(void) {
+    int success = 1;
+
+    testGroupStart("xmlsec core helpers");
+
+    test_xmlSecStrlen_null();
+    test_xmlSecStrlen_string();
+    test_xmlSecCheckVersionExt_exact_match();
+    test_xmlSecCheckVersionExt_abi_compatible();
+    test_xmlSecCheckVersionExt_major_mismatch();
+    test_xmlSecCheckVersionExt_invalid_mode();
+
+    if(testGroupFinished() != 1) { success = 0; }
+
+    return(success);
 }

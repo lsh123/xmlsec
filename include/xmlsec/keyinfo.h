@@ -127,7 +127,15 @@ typedef enum {
  * @details If the flag is set then we'll stop when <enc:EncryptedKey /> element
  * processing fails.
  */
-#define XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION 0x00001000
+#define XMLSEC_KEYINFO_FLAGS_ENCKEY_STOP_ON_FAILED_DECRYPTION 0x00001000
+
+/**
+ * @deprecated Use XMLSEC_KEYINFO_FLAGS_ENCKEY_STOP_ON_FAILED_DECRYPTION instead.
+ * The old name ("DONT_STOP") contradicted the actual behavior (set = stop); it is
+ * kept only for source compatibility and maps to the same value.
+ */
+#define XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION \
+    XMLSEC_KEYINFO_FLAGS_ENCKEY_STOP_ON_FAILED_DECRYPTION
 
 /**
  * @brief Stop when an empty node is found.

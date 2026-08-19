@@ -228,6 +228,7 @@ xmlSecNodeSetContainsNode(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr par
 int
 xmlSecNodeSetContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent) {
     int status = 1;
+    int first = 1;
     xmlSecNodeSetPtr curNset;
 
     xmlSecAssert2(node != NULL, 0);
@@ -241,28 +242,35 @@ xmlSecNodeSetContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent)
     status = 1;
     curNset = nset;
     do {
-        switch(curNset->op) {
-        case xmlSecNodeSetIntersection:
-            if(status && !xmlSecNodeSetContainsNode(curNset, node, parent)) {
-                status = 0;
+        /* the first element defines the base set */
+        if(first) {
+            status = xmlSecNodeSetContainsNode(curNset, node, parent);
+            first = 0;
+        } else  {
+            switch(curNset->op) {
+            case xmlSecNodeSetIntersection:
+                if(status && !xmlSecNodeSetContainsNode(curNset, node, parent)) {
+                    status = 0;
+                }
+                break;
+            case xmlSecNodeSetSubtraction:
+                if(status && xmlSecNodeSetContainsNode(curNset, node, parent)) {
+                    status = 0;
+                }
+                break;
+            case xmlSecNodeSetUnion:
+                if(!status && xmlSecNodeSetContainsNode(curNset, node, parent)) {
+                    status = 1;
+                }
+                break;
+            default:
+                xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_OPERATION, NULL,
+                    "node set operation=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(curNset->op));
+                return(-1);
             }
-            break;
-        case xmlSecNodeSetSubtraction:
-            if(status && xmlSecNodeSetContainsNode(curNset, node, parent)) {
-                status = 0;
-            }
-            break;
-        case xmlSecNodeSetUnion:
-            if(!status && xmlSecNodeSetContainsNode(curNset, node, parent)) {
-                status = 1;
-            }
-            break;
-        default:
-            xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_OPERATION, NULL,
-                "node set operation=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(curNset->op));
-            return(-1);
         }
         curNset = curNset->next;
+        xmlSecAssert2(curNset != NULL, -1);
     } while(curNset != nset);
 
     /* done */
@@ -320,6 +328,21 @@ xmlSecNodeSetAddList(xmlSecNodeSetPtr nset XMLSEC_ATTRIBUTE_UNUSED,
     return(NULL);
 }
 
+/* checks if any of the node's ancestors is in the nodeset */
+static int
+xmlSecNodeSetContainsAncestor(xmlSecNodeSetPtr nset, xmlNodePtr node) {
+    xmlNodePtr cur;
+
+    xmlSecAssert2(nset != NULL, 0);
+    xmlSecAssert2(node != NULL, 0);
+
+    for(cur = xmlSecGetParent(node); (cur != NULL) && (cur->type != XML_NAMESPACE_DECL); cur = cur->parent) {
+        if(xmlSecNodeSetContains(nset, cur, xmlSecGetParent(cur)) == 1) {
+            return(1);
+        }
+    }
+    return(0);
+}
 
 /**
  * @brief Walks all nodes in a set calling a callback function.
@@ -349,6 +372,13 @@ xmlSecNodeSetWalk(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc, voi
         case xmlSecNodeSetTree:
         case xmlSecNodeSetTreeWithoutComments:
             for(ii = 0; (ret >= 0) && (ii < nset->nodes->nodeNr); ++ii) {
+                /* skip nodes whose ancestor is already in the set: that
+                 * ancestor's walk covers this node's entire subtree, so
+                 * starting a second walk here would visit the overlapping
+                 * nodes more than once */
+                if(xmlSecNodeSetContainsAncestor(nset, nset->nodes->nodeTab[ii])) {
+                    continue;
+                }
                 ret = xmlSecNodeSetWalkRecursive(nset, nset->nodes->nodeTab[ii], walkFunc, data);
                 if(ret < 0) {
                     xmlSecInternalError("xmlSecNodeSetWalkRecursive", NULL);

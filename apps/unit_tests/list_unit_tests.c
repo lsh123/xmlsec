@@ -41,6 +41,7 @@ static void               test_ptr_list_remove                  (void);
 static void               test_ptr_list_remove_and_return       (void);
 static void               test_ptr_list_pop_last                (void);
 static void               test_ptr_list_copy_duplicate          (void);
+static void               test_ptr_list_invalid_alloc_mode      (void);
 static void               test_string_list_klass                (void);
 
 static xmlSecPtrListKlass g_xmlSecListTestKlass = {
@@ -808,6 +809,61 @@ done:
     testFinishedFailure();
 }
 
+static void
+test_ptr_list_invalid_alloc_mode(void) {
+    xmlSecPtrListPtr list = NULL;
+    xmlSecListTestItem* item = NULL;
+    int ret;
+
+    testStart("xmlSecPtrListAdd rejects an invalid allocation mode");
+    test_list_item_reset_counters();
+    test_list_reset_default_alloc_mode();
+
+    list = xmlSecPtrListCreate(&g_xmlSecListShallowKlass);
+    if(list == NULL) {
+        testLog("Error: xmlSecPtrListCreate failed\n");
+        goto done;
+    }
+
+    /* force the reallocation path and corrupt the allocation mode so that
+     * xmlSecPtrListEnsureSize must reject it instead of silently clamping to
+     * the initial size (which would allow an out-of-bounds write) */
+    list->max = 0;
+    list->allocMode = (xmlSecAllocMode)99;
+
+    item = test_list_item_create(42);
+    if(item == NULL) {
+        testLog("Error: failed to create test item\n");
+        goto done;
+    }
+
+    ret = xmlSecPtrListAdd(list, item);
+    if(ret >= 0) {
+        testLog("Error: xmlSecPtrListAdd succeeded with an invalid allocation mode\n");
+        goto done;
+    }
+    if(xmlSecPtrListGetSize(list) != 0) {
+        testLog("Error: list size changed after a failed add\n");
+        goto done;
+    }
+
+    xmlSecPtrListDestroy(list);
+    list = NULL;
+    test_list_reset_default_alloc_mode();
+    testFinishedSuccess();
+    return;
+
+done:
+    if(item != NULL) {
+        test_list_item_destroy(item);
+    }
+    if(list != NULL) {
+        xmlSecPtrListDestroy(list);
+    }
+    test_list_reset_default_alloc_mode();
+    testFinishedFailure();
+}
+
 int test_list(void) {
     testGroupStart("list");
 
@@ -820,6 +876,7 @@ int test_list(void) {
     test_ptr_list_remove_and_return();
     test_ptr_list_pop_last();
     test_ptr_list_copy_duplicate();
+    test_ptr_list_invalid_alloc_mode();
     test_string_list_klass();
 
     return(testGroupFinished());

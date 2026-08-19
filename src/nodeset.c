@@ -326,6 +326,21 @@ xmlSecNodeSetAddList(xmlSecNodeSetPtr nset XMLSEC_ATTRIBUTE_UNUSED,
     return(NULL);
 }
 
+/* checks if any of the node's ancestors is in the nodeset */
+static int
+xmlSecNodeSetContainsAncestor(xmlSecNodeSetPtr nset, xmlNodePtr node) {
+    xmlNodePtr cur;
+
+    xmlSecAssert2(nset != NULL, 0);
+    xmlSecAssert2(node != NULL, 0);
+
+    for(cur = xmlSecGetParent(node); (cur != NULL) && (cur->type != XML_NAMESPACE_DECL); cur = cur->parent) {
+        if(xmlSecNodeSetContains(nset, cur, xmlSecGetParent(cur)) == 1) {
+            return(1);
+        }
+    }
+    return(0);
+}
 
 /**
  * @brief Walks all nodes in a set calling a callback function.
@@ -355,6 +370,13 @@ xmlSecNodeSetWalk(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc, voi
         case xmlSecNodeSetTree:
         case xmlSecNodeSetTreeWithoutComments:
             for(ii = 0; (ret >= 0) && (ii < nset->nodes->nodeNr); ++ii) {
+                /* skip nodes whose ancestor is already in the set: that
+                 * ancestor's walk covers this node's entire subtree, so
+                 * starting a second walk here would visit the overlapping
+                 * nodes more than once */
+                if(xmlSecNodeSetContainsAncestor(nset, nset->nodes->nodeTab[ii])) {
+                    continue;
+                }
                 ret = xmlSecNodeSetWalkRecursive(nset, nset->nodes->nodeTab[ii], walkFunc, data);
                 if(ret < 0) {
                     xmlSecInternalError("xmlSecNodeSetWalkRecursive", NULL);

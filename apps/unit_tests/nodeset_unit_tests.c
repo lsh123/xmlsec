@@ -518,6 +518,220 @@ test_xmlSecNodeSetWalk_deduplicates_overlapping_subtrees(void) {
 }
 
 static void
+test_xmlSecNodeSetWalk_normal_set_visits_each_node_once(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    xmlNodePtr child;
+    xmlNodeSetPtr nodes;
+    xmlSecNodeSetPtr nset;
+    struct nodesetWalkStats stats;
+    int ret;
+
+    testStart("xmlSecNodeSetWalk visits each node once for a Normal set with overlapping members");
+
+    doc = nodesetTestParseDoc("<Root><Child>text</Child></Root>");
+    if(doc == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    root = xmlDocGetRootElement(doc);
+    child = nodesetTestFindChild(root, BAD_CAST "Child");
+    if((root == NULL) || (child == NULL)) {
+        testLog("Error: failed to prepare walk dedup test data\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* a Normal node set containing both an ancestor and a descendant */
+    nodes = xmlXPathNodeSetCreate(root);
+    if(nodes == NULL) {
+        testLog("Error: failed to create XPath node set\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(xmlXPathNodeSetAdd(nodes, child) < 0) {
+        testLog("Error: failed to add descendant to XPath node set\n");
+        xmlXPathFreeNodeSet(nodes);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    nset = xmlSecNodeSetCreate(doc, nodes, xmlSecNodeSetNormal);
+    if(nset == NULL) {
+        testLog("Error: failed to create xmlsec node set\n");
+        xmlXPathFreeNodeSet(nodes);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* only the set members are visited (text is not in the set), and each
+     * of them must be visited exactly once */
+    memset(&stats, 0, sizeof(stats));
+    ret = xmlSecNodeSetWalk(nset, nodesetTestWalkStatsCallback, &stats);
+    if((ret < 0) || (stats.total != 2) || (stats.elements != 2) || (stats.text != 0)) {
+        testLog("Error: walk visited overlapping nodes more than once "
+            "(ret=%d total=%d elem=%d text=%d)\n",
+            ret, stats.total, stats.elements, stats.text);
+        xmlSecNodeSetDestroy(nset);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecNodeSetDestroy(nset);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecNodeSetWalk_skips_descendants_listed_before_ancestors(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    xmlNodePtr child;
+    xmlNodeSetPtr nodes;
+    xmlSecNodeSetPtr nset;
+    struct nodesetWalkStats stats;
+    int ret;
+
+    testStart("xmlSecNodeSetWalk visits each node once when the descendant is listed first");
+
+    doc = nodesetTestParseDoc("<Root><Child>text</Child></Root>");
+    if(doc == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    root = xmlDocGetRootElement(doc);
+    child = nodesetTestFindChild(root, BAD_CAST "Child");
+    if((root == NULL) || (child == NULL)) {
+        testLog("Error: failed to prepare walk dedup test data\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* add the descendant first so that it appears before its ancestor in
+     * the node list */
+    nodes = xmlXPathNodeSetCreate(child);
+    if(nodes == NULL) {
+        testLog("Error: failed to create XPath node set\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(xmlXPathNodeSetAdd(nodes, root) < 0) {
+        testLog("Error: failed to add ancestor to XPath node set\n");
+        xmlXPathFreeNodeSet(nodes);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    nset = xmlSecNodeSetCreate(doc, nodes, xmlSecNodeSetTree);
+    if(nset == NULL) {
+        testLog("Error: failed to create xmlsec node set\n");
+        xmlXPathFreeNodeSet(nodes);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* each node of the covered subtree must be visited exactly once */
+    memset(&stats, 0, sizeof(stats));
+    ret = xmlSecNodeSetWalk(nset, nodesetTestWalkStatsCallback, &stats);
+    if((ret < 0) || (stats.total != 3) || (stats.elements != 2) || (stats.text != 1)) {
+        testLog("Error: walk visited overlapping nodes more than once "
+            "(ret=%d total=%d elem=%d text=%d)\n",
+            ret, stats.total, stats.elements, stats.text);
+        xmlSecNodeSetDestroy(nset);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecNodeSetDestroy(nset);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecNodeSetWalk_visits_nested_chain_once(void) {
+    xmlDocPtr doc;
+    xmlNodePtr a;
+    xmlNodePtr b;
+    xmlNodePtr c;
+    xmlNodeSetPtr nodes;
+    xmlSecNodeSetPtr nset;
+    struct nodesetWalkStats stats;
+    int ret;
+
+    testStart("xmlSecNodeSetWalk visits each node once for a fully nested chain");
+
+    doc = nodesetTestParseDoc("<A><B><C>text</C></B></A>");
+    if(doc == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    a = xmlDocGetRootElement(doc);
+    b = nodesetTestFindChild(a, BAD_CAST "B");
+    c = (b != NULL) ? nodesetTestFindChild(b, BAD_CAST "C") : NULL;
+    if((a == NULL) || (b == NULL) || (c == NULL)) {
+        testLog("Error: failed to prepare walk dedup test data\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* a Tree node set containing three nested levels */
+    nodes = xmlXPathNodeSetCreate(a);
+    if(nodes == NULL) {
+        testLog("Error: failed to create XPath node set\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if((xmlXPathNodeSetAdd(nodes, b) < 0) || (xmlXPathNodeSetAdd(nodes, c) < 0)) {
+        testLog("Error: failed to add nested nodes to XPath node set\n");
+        xmlXPathFreeNodeSet(nodes);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    nset = xmlSecNodeSetCreate(doc, nodes, xmlSecNodeSetTree);
+    if(nset == NULL) {
+        testLog("Error: failed to create xmlsec node set\n");
+        xmlXPathFreeNodeSet(nodes);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* A, B, C and the text node must each be visited exactly once */
+    memset(&stats, 0, sizeof(stats));
+    ret = xmlSecNodeSetWalk(nset, nodesetTestWalkStatsCallback, &stats);
+    if((ret < 0) || (stats.total != 4) || (stats.elements != 3) || (stats.text != 1)) {
+        testLog("Error: walk visited overlapping nodes more than once "
+            "(ret=%d total=%d elem=%d text=%d)\n",
+            ret, stats.total, stats.elements, stats.text);
+        xmlSecNodeSetDestroy(nset);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecNodeSetDestroy(nset);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
 test_xmlSecNodeSetAdd_union_head_is_absolute_set(void) {
     xmlDocPtr doc;
     xmlNodePtr root;
@@ -615,6 +829,9 @@ test_nodeset(void) {
     test_xmlSecNodeSetWalk_visits_elements_attributes_and_namespaces();
     test_xmlSecNodeSetDumpTextNodes_preserves_document_order();
     test_xmlSecNodeSetWalk_deduplicates_overlapping_subtrees();
+    test_xmlSecNodeSetWalk_normal_set_visits_each_node_once();
+    test_xmlSecNodeSetWalk_skips_descendants_listed_before_ancestors();
+    test_xmlSecNodeSetWalk_visits_nested_chain_once();
     if(testGroupFinished() != 1) { success = 0; }
 
     return(success);

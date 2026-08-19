@@ -708,3 +708,33 @@ test_xmlSecX509SerialNumberRead(void) {
     /* done */
     return (testGroupFinished());
 }
+
+/******************************************************************************
+ * xmlSecKeyDataX509XmlRead
+ *****************************************************************************/
+static void
+test_xmlSecKeyDataX509XmlRead_null_key_fails(void) {
+    int ret;
+
+    testStart("xmlSecKeyDataX509XmlRead: NULL key is rejected");
+
+    /* the 'key' parameter must be validated (and rejected) before it is
+     * dereferenced via xmlSecKeySwap(); passing NULL must yield an error,
+     * not a crash */
+    ret = xmlSecKeyDataX509XmlRead(NULL, NULL, NULL, NULL, NULL);
+    if(ret >= 0) {
+        testLog("Error: expected failure for NULL key, got ret=%d\n", ret);
+        testFinishedFailure();
+        return;
+    }
+
+    /* DONE */
+    testFinishedSuccess();
+}
+
+int
+test_xmlSecKeyDataX509XmlRead(void) {
+    testGroupStart("xmlSecKeyDataX509XmlRead");
+    test_xmlSecKeyDataX509XmlRead_null_key_fails();
+    return (testGroupFinished());
+}

@@ -520,7 +520,10 @@ xmlSecEncCtxDecrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
         return(-1);
     }
 
-    /* replace original node if requested */
+    /* replace original node if requested.
+     * Note: a NULL type (no Type attribute) is intentionally left unreplaced so the
+     * caller can treat the decrypted result as a raw buffer (e.g. binary data); the
+     * 'resultReplaced' flag is the mechanism by which callers detect this. */
     if((encCtx->type != NULL) && xmlStrEqual(encCtx->type, xmlSecTypeEncElement)) {
         /* check if we need to return the replaced node */
         if((encCtx->flags & XMLSEC_ENC_RETURN_REPLACED_NODE) != 0) {
@@ -826,7 +829,10 @@ xmlSecEncCtxEncDataNodeWrite(xmlSecEncCtxPtr encCtx) {
         xmlSecAssert2(inBuf != NULL, -1);
         XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, return(-1), NULL);
 
-        xmlNodeSetContentLen(encCtx->cipherValueNode, inBuf, inLen);
+        if(xmlNodeSetContentLen(encCtx->cipherValueNode, inBuf, inLen) < 0) {
+            xmlSecXmlError("xmlNodeSetContentLen", encCtx->cipherValueNode);
+            return(-1);
+        }
         encCtx->resultReplaced = 1;
     }
 
@@ -879,6 +885,11 @@ xmlSecEncCtxCipherDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
             }
         }
         cur = xmlSecGetNextElementNode(cur->next);
+    } else if(cur == NULL) {
+        /* the XML-Enc schema requires CipherData to contain either a CipherValue
+         * or a CipherReference child; an empty CipherData is invalid */
+        xmlSecInvalidDataError("CipherData node must contain either a CipherValue or a CipherReference node", NULL);
+        return(-1);
     }
 
     if(cur != NULL) {
@@ -915,8 +926,7 @@ xmlSecEncCtxCipherReferenceNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
         ret = xmlSecTransformCtxNodesListRead(&(encCtx->transformCtx), cur,
                                     xmlSecTransformUsageDSigTransform);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecTransformCtxNodesListRead",
-                                xmlSecNodeGetName(encCtx->encMethodNode));
+            xmlSecInternalError("xmlSecTransformCtxNodesListRead", xmlSecNodeGetName(cur));
             return(-1);
         }
         cur = xmlSecGetNextElementNode(cur->next);

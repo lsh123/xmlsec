@@ -147,6 +147,9 @@ int main(int argc, const char **argv) {
     if (test_xmlSecX509SerialNumberRead() != 1) {
         success = 0;
     }
+    if (test_xmlSecKeyDataX509XmlRead() != 1) {
+        success = 0;
+    }
     if (test_nodeset() != 1) {
         success = 0;
     }

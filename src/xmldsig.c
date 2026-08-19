@@ -305,10 +305,15 @@ xmlSecDSigCtxSign(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr tmpl) {
     outBuf = xmlSecBufferGetData(dsigCtx->result);
     outSize = xmlSecBufferGetSize(dsigCtx->result);
     XMLSEC_SAFE_CAST_SIZE_TO_INT(outSize, outLen, return(-1), NULL);
+#if LIBXML_VERSION >= 21300
     if(xmlNodeSetContentLen(dsigCtx->signValueNode, outBuf, outLen) < 0) {
         xmlSecXmlError("xmlNodeSetContentLen", dsigCtx->signValueNode);
         return(-1);
     }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetContentLen() returns void and cannot report errors */
+    xmlNodeSetContentLen(dsigCtx->signValueNode, outBuf, outLen);
+#endif /* LIBXML_VERSION >= 21300 */
 
     /* set success status and we are done */
     xmlSecDSigCtxMarkAsSucceeded(dsigCtx);
@@ -1461,10 +1466,15 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
         outBuf = xmlSecBufferGetData(dsigRefCtx->result);
         outSize = xmlSecBufferGetSize(dsigRefCtx->result);
         XMLSEC_SAFE_CAST_SIZE_TO_INT(outSize, outLen, return(-1), NULL);
+#if LIBXML_VERSION >= 21300
         if(xmlNodeSetContentLen(digestValueNode, outBuf, outLen) < 0) {
             xmlSecXmlError("xmlNodeSetContentLen", digestValueNode);
             return(-1);
         }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeSetContentLen() returns void and cannot report errors */
+        xmlNodeSetContentLen(digestValueNode, outBuf, outLen);
+#endif /* LIBXML_VERSION >= 21300 */
 
         /* set success status and we are done */
         dsigRefCtx->status = xmlSecDSigStatusSucceeded;

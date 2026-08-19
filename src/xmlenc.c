@@ -829,10 +829,15 @@ xmlSecEncCtxEncDataNodeWrite(xmlSecEncCtxPtr encCtx) {
         xmlSecAssert2(inBuf != NULL, -1);
         XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, return(-1), NULL);
 
+#if LIBXML_VERSION >= 21300
         if(xmlNodeSetContentLen(encCtx->cipherValueNode, inBuf, inLen) < 0) {
             xmlSecXmlError("xmlNodeSetContentLen", encCtx->cipherValueNode);
             return(-1);
         }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeSetContentLen() returns void and cannot report errors */
+        xmlNodeSetContentLen(encCtx->cipherValueNode, inBuf, inLen);
+#endif /* LIBXML_VERSION >= 21300 */
         encCtx->resultReplaced = 1;
     }
 

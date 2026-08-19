@@ -161,6 +161,10 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
 
         transform->status = xmlSecTransformStatusWorking;
     } else if(transform->status == xmlSecTransformStatusFinished) {
+        if((data != NULL) && (dataSize > 0)) {
+            xmlSecInvalidTransformStatusError2(transform, "data pushed after transform finished");
+            return(-1);
+        }
         return(0);
     } else if(transform->status != xmlSecTransformStatusWorking) {
         xmlSecInvalidTransformStatusError(transform);
@@ -578,6 +582,8 @@ static int g_xmlsec_parser_default_options = XML_PARSE_NO_XXE | XML_PARSE_NONET 
 #endif /* LIBXML_VERSION < 21300 */
 /**
  * @brief Gets default LibXML2 parser options.
+ * @note Not thread-safe: the value is a process-wide global, set it before
+ * concurrent use of the XML parsing APIs (see xmlSecParserSetDefaultOptions).
  * @return the current default LibXML2 parser options.
  */
 int
@@ -587,6 +593,10 @@ xmlSecParserGetDefaultOptions(void) {
 
 /**
  * @brief Sets default LibXML2 parser options.
+ * @note Not thread-safe: the value is a process-wide global. Call this
+ * function before any concurrent use of the XML parsing APIs
+ * (e.g. during application initialization) and do not change it while other
+ * threads may be parsing.
  * @param options the new parser options.
  */
 void xmlSecParserSetDefaultOptions(int options) {

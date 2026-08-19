@@ -371,7 +371,7 @@ xmlSecTransformWriteKeyInfoNode(xmlSecKeyPtr key, xmlNodePtr node,
     int res = -1;
 
     xmlSecAssert2(node != NULL, -1);
-    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(transform != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
     xmlSecAssert2(transformCtx->parentKeyInfoCtx != NULL, -1);
@@ -1024,6 +1024,7 @@ xmlSecTransformHmacWriteOutput(const xmlSecByte * hmac, xmlSecSize hmacSizeInBit
     xmlSecSize hmacSize;
     xmlSecByte lastByteMask;
     xmlSecByte* outData;
+    xmlSecSize outSize;
     int ret;
 
     xmlSecAssert2(hmac != NULL, -1);
@@ -1043,11 +1044,12 @@ xmlSecTransformHmacWriteOutput(const xmlSecByte * hmac, xmlSecSize hmacSizeInBit
     /* fix up last byte */
     lastByteMask = g_hmac_last_byte_masks[hmacSizeInBits % 8];
     outData = xmlSecBufferGetData(out);
-    if(outData == NULL) {
+    outSize = xmlSecBufferGetSize(out);
+    if((outData == NULL) || (outSize == 0)) {
         xmlSecInternalError("xmlSecBufferGetData", NULL);
         return(-1);
     }
-    outData[hmacSize - 1] &= lastByteMask;
+    outData[outSize - 1] &= lastByteMask;
 
     /* success */
     return(0);

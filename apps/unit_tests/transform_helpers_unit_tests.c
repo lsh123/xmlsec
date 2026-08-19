@@ -362,8 +362,215 @@ test_xmlSecTransformChaCha20Poly1305ParamsRead_missing_nonce(void) {
 
 #endif /* XMLSEC_NO_CHACHA20 */
 
+#ifndef XMLSEC_NO_HMAC
+
+/******************************************************************************
+ * xmlSecTransformHmacWriteOutput
+   *****************************************************************************/
+static void
+test_xmlSecTransformHmacWriteOutput_empty_full_bytes(void) {
+    static const xmlSecByte hmac[3] = { 0x12, 0x34, 0xAB };
+    xmlSecBuffer buf;
+    xmlSecByte* data;
+    int ret;
+
+    testStart("xmlSecTransformHmacWriteOutput: empty buffer, full byte length");
+
+    ret = xmlSecBufferInitialize(&buf, 16);
+    if(ret < 0) {
+        testLog("Error: failed to initialize buffer\n");
+        testFinishedFailure();
+        return;
+    }
+
+    /* 16 bits => 2 bytes written */
+    ret = xmlSecTransformHmacWriteOutput(hmac, 16, 3, &buf);
+    if(ret < 0) {
+        testLog("Error: xmlSecTransformHmacWriteOutput failed\n");
+        xmlSecBufferFinalize(&buf);
+        testFinishedFailure();
+        return;
+    }
+
+    if(xmlSecBufferGetSize(&buf) != 2) {
+        testLog("Error: expected buffer size 2, got %u\n", (unsigned)xmlSecBufferGetSize(&buf));
+        xmlSecBufferFinalize(&buf);
+        testFinishedFailure();
+        return;
+    }
+    data = xmlSecBufferGetData(&buf);
+    if((data == NULL) || (data[0] != 0x12) || (data[1] != 0x34)) {
+        testLog("Error: expected bytes {0x12,0x34}, got {%02X,%02X}\n",
+                data ? (unsigned)data[0] : 0, data ? (unsigned)data[1] : 0);
+        xmlSecBufferFinalize(&buf);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecBufferFinalize(&buf);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformHmacWriteOutput_empty_partial_bytes(void) {
+    static const xmlSecByte hmac[3] = { 0x12, 0x34, 0xAB };
+    xmlSecBuffer buf;
+    xmlSecByte* data;
+    int ret;
+
+    testStart("xmlSecTransformHmacWriteOutput: empty buffer, partial byte masks last byte");
+
+    ret = xmlSecBufferInitialize(&buf, 16);
+    if(ret < 0) {
+        testLog("Error: failed to initialize buffer\n");
+        testFinishedFailure();
+        return;
+    }
+
+    /* 12 bits => 2 bytes written, last byte masked with 0xF0 (0x34 & 0xF0 = 0x30) */
+    ret = xmlSecTransformHmacWriteOutput(hmac, 12, 3, &buf);
+    if(ret < 0) {
+        testLog("Error: xmlSecTransformHmacWriteOutput failed\n");
+        xmlSecBufferFinalize(&buf);
+        testFinishedFailure();
+        return;
+    }
+
+    if(xmlSecBufferGetSize(&buf) != 2) {
+        testLog("Error: expected buffer size 2, got %u\n", (unsigned)xmlSecBufferGetSize(&buf));
+        xmlSecBufferFinalize(&buf);
+        testFinishedFailure();
+        return;
+    }
+    data = xmlSecBufferGetData(&buf);
+    if((data == NULL) || (data[0] != 0x12) || (data[1] != 0x30)) {
+        testLog("Error: expected bytes {0x12,0x30}, got {%02X,%02X}\n",
+                data ? (unsigned)data[0] : 0, data ? (unsigned)data[1] : 0);
+        xmlSecBufferFinalize(&buf);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecBufferFinalize(&buf);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformHmacWriteOutput_prefilled_partial_bytes(void) {
+    static const xmlSecByte hmac[3] = { 0x12, 0x34, 0xAB };
+    static const xmlSecByte prefill[2] = { 0xAA, 0xBB };
+    xmlSecBuffer buf;
+    xmlSecByte* data;
+    int ret;
+
+    testStart("xmlSecTransformHmacWriteOutput: prefilled buffer masks appended last byte only");
+
+    ret = xmlSecBufferInitialize(&buf, 16);
+    if(ret < 0) {
+        testLog("Error: failed to initialize buffer\n");
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecBufferAppend(&buf, prefill, sizeof(prefill));
+    if(ret < 0) {
+        testLog("Error: failed to prefill buffer\n");
+        xmlSecBufferFinalize(&buf);
+        testFinishedFailure();
+        return;
+    }
+
+    /* 12 bits => 2 bytes appended after the 2 prefilled bytes.
+     * The last byte of the *appended* HMAC (index 3) must be masked with 0xF0,
+     * while the prefilled bytes (indices 0..1) must remain untouched. */
+    ret = xmlSecTransformHmacWriteOutput(hmac, 12, 3, &buf);
+    if(ret < 0) {
+        testLog("Error: xmlSecTransformHmacWriteOutput failed\n");
+        xmlSecBufferFinalize(&buf);
+        testFinishedFailure();
+        return;
+    }
+
+    if(xmlSecBufferGetSize(&buf) != 4) {
+        testLog("Error: expected buffer size 4, got %u\n", (unsigned)xmlSecBufferGetSize(&buf));
+        xmlSecBufferFinalize(&buf);
+        testFinishedFailure();
+        return;
+    }
+    data = xmlSecBufferGetData(&buf);
+    if((data == NULL) || (data[0] != 0xAA) || (data[1] != 0xBB) ||
+       (data[2] != 0x12) || (data[3] != 0x30)) {
+        testLog("Error: expected bytes {AA,BB,12,30}, got {%02X,%02X,%02X,%02X}\n",
+                data ? (unsigned)data[0] : 0, data ? (unsigned)data[1] : 0,
+                data ? (unsigned)data[2] : 0, data ? (unsigned)data[3] : 0);
+        xmlSecBufferFinalize(&buf);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecBufferFinalize(&buf);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformHmacWriteOutput_prefilled_full_bytes(void) {
+    static const xmlSecByte hmac[2] = { 0x12, 0x34 };
+    static const xmlSecByte prefill[1] = { 0xAA };
+    xmlSecBuffer buf;
+    xmlSecByte* data;
+    int ret;
+
+    testStart("xmlSecTransformHmacWriteOutput: prefilled buffer, full byte length");
+
+    ret = xmlSecBufferInitialize(&buf, 16);
+    if(ret < 0) {
+        testLog("Error: failed to initialize buffer\n");
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecBufferAppend(&buf, prefill, sizeof(prefill));
+    if(ret < 0) {
+        testLog("Error: failed to prefill buffer\n");
+        xmlSecBufferFinalize(&buf);
+        testFinishedFailure();
+        return;
+    }
+
+    /* 16 bits => 2 bytes appended after the 1 prefilled byte */
+    ret = xmlSecTransformHmacWriteOutput(hmac, 16, 2, &buf);
+    if(ret < 0) {
+        testLog("Error: xmlSecTransformHmacWriteOutput failed\n");
+        xmlSecBufferFinalize(&buf);
+        testFinishedFailure();
+        return;
+    }
+
+    if(xmlSecBufferGetSize(&buf) != 3) {
+        testLog("Error: expected buffer size 3, got %u\n", (unsigned)xmlSecBufferGetSize(&buf));
+        xmlSecBufferFinalize(&buf);
+        testFinishedFailure();
+        return;
+    }
+    data = xmlSecBufferGetData(&buf);
+    if((data == NULL) || (data[0] != 0xAA) || (data[1] != 0x12) || (data[2] != 0x34)) {
+        testLog("Error: expected bytes {AA,12,34}, got {%02X,%02X,%02X}\n",
+                data ? (unsigned)data[0] : 0, data ? (unsigned)data[1] : 0, data ? (unsigned)data[2] : 0);
+        xmlSecBufferFinalize(&buf);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecBufferFinalize(&buf);
+    testFinishedSuccess();
+}
+
+#endif /* XMLSEC_NO_HMAC */
+
 int
 test_transform_helpers(void) {
+    int success = 1;
+
 #ifndef XMLSEC_NO_CHACHA20
     testGroupStart("transform helpers");
 
@@ -374,8 +581,19 @@ test_transform_helpers(void) {
     test_xmlSecTransformChaCha20Poly1305ParamsRead_missing_nonce();
     test_xmlSecTransformChaCha20Poly1305ParamsWrite_roundtrip();
 
-    return(testGroupFinished());
-#else
-    return(1);
+    if(testGroupFinished() != 1) { success = 0; }
 #endif /* XMLSEC_NO_CHACHA20 */
+
+#ifndef XMLSEC_NO_HMAC
+    testGroupStart("xmlSecTransformHmacWriteOutput");
+
+    test_xmlSecTransformHmacWriteOutput_empty_full_bytes();
+    test_xmlSecTransformHmacWriteOutput_empty_partial_bytes();
+    test_xmlSecTransformHmacWriteOutput_prefilled_partial_bytes();
+    test_xmlSecTransformHmacWriteOutput_prefilled_full_bytes();
+
+    if(testGroupFinished() != 1) { success = 0; }
+#endif /* XMLSEC_NO_HMAC */
+
+    return(success);
 }

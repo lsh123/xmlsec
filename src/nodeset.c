@@ -228,6 +228,7 @@ xmlSecNodeSetContainsNode(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr par
 int
 xmlSecNodeSetContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent) {
     int status = 1;
+    int first = 1;
     xmlSecNodeSetPtr curNset;
 
     xmlSecAssert2(node != NULL, 0);
@@ -253,7 +254,11 @@ xmlSecNodeSetContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent)
             }
             break;
         case xmlSecNodeSetUnion:
-            if(!status && xmlSecNodeSetContainsNode(curNset, node, parent)) {
+            /* the first element defines the base set */
+            if(first) {
+                status = xmlSecNodeSetContainsNode(curNset, node, parent);
+                first = 0;
+            } else  if(!status && xmlSecNodeSetContainsNode(curNset, node, parent)) {
                 status = 1;
             }
             break;
@@ -263,6 +268,7 @@ xmlSecNodeSetContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent)
             return(-1);
         }
         curNset = curNset->next;
+        xmlSecAssert2(curNset != NULL, -1);
     } while(curNset != nset);
 
     /* done */

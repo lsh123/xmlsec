@@ -479,15 +479,34 @@ xmlSecPtrListEnsureSize(xmlSecPtrListPtr list, xmlSecSize size) {
 
     switch(list->allocMode) {
         case xmlSecAllocModeExact:
+            if(size > (XMLSEC_SIZE_MAX - 8)) {
+                xmlSecInvalidSizeError("size", size, (XMLSEC_SIZE_MAX - 8), NULL);
+                return(-1);
+            }
             newSize = size + 8;
             break;
         case xmlSecAllocModeDouble:
+            if(size > ((XMLSEC_SIZE_MAX - 32) / 2)) {
+                xmlSecInvalidSizeError("size", size, ((XMLSEC_SIZE_MAX - 32) / 2), NULL);
+                return(-1);
+            }
             newSize = 2 * size + 32;
             break;
+        default:
+            /* an invalid/corrupted allocation mode must not silently fall through
+             * to a clamped (and possibly insufficient) capacity */
+            xmlSecUnsupportedEnumValueError("alloc mode", list->allocMode, NULL);
+            return(-1);
     }
 
     if(newSize < gInitialSize) {
         newSize = gInitialSize;
+    }
+
+    /* guard against sizeof(xmlSecPtr) * newSize overflowing xmlSecSize */
+    if(newSize > (XMLSEC_SIZE_MAX / sizeof(xmlSecPtr))) {
+        xmlSecInvalidSizeError("size", newSize, (XMLSEC_SIZE_MAX / sizeof(xmlSecPtr)), NULL);
+        return(-1);
     }
 
     if(list->data != NULL) {

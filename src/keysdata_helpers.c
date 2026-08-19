@@ -991,6 +991,8 @@ xmlSecKeyValueEcXmlWrite(xmlSecKeyValueEcPtr data, xmlNodePtr node,  int base64L
         curve = (xmlChar *)xmlMalloc(size);
         if(curve == NULL) {
             xmlSecMallocError(size, NULL);
+            xmlUnlinkNode(cur);
+            xmlFreeNode(cur);
             return(-1);
         }
 
@@ -998,12 +1000,25 @@ xmlSecKeyValueEcXmlWrite(xmlSecKeyValueEcPtr data, xmlNodePtr node,  int base64L
         if(ret < 0) {
             xmlSecXmlError("xmlStrPrintf", NULL);
             xmlFree(curve);
+            xmlUnlinkNode(cur);
+            xmlFreeNode(cur);
             return(-1);
         }
-        xmlSetProp(cur, xmlSecAttrURI, curve);
+        if(xmlSetProp(cur, xmlSecAttrURI, curve) == NULL) {
+            xmlSecXmlError2("xmlSetProp", NULL, "name=%s", xmlSecErrorsSafeString(xmlSecAttrURI));
+            xmlFree(curve);
+            xmlUnlinkNode(cur);
+            xmlFreeNode(cur);
+            return(-1);
+        }
         xmlFree(curve);
     } else {
-        xmlSetProp(cur, xmlSecAttrURI, data->curve);
+        if(xmlSetProp(cur, xmlSecAttrURI, data->curve) == NULL) {
+            xmlSecXmlError2("xmlSetProp", NULL, "name=%s", xmlSecErrorsSafeString(xmlSecAttrURI));
+            xmlUnlinkNode(cur);
+            xmlFreeNode(cur);
+            return(-1);
+        }
     }
 
     /* second node is PublicKey node */

@@ -246,7 +246,7 @@ xmlSecNodeSetContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent)
         if(first) {
             status = xmlSecNodeSetContainsNode(curNset, node, parent);
             first = 0;
-        } else  {
+        } else {
             switch(curNset->op) {
             case xmlSecNodeSetIntersection:
                 if(status && !xmlSecNodeSetContainsNode(curNset, node, parent)) {

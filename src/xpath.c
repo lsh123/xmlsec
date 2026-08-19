@@ -38,12 +38,18 @@
  */
 static void
 xmlSecXPathHereFunction(xmlXPathParserContextPtr ctxt, int nargs) {
+    xmlXPathObjectPtr obj;
+
     CHECK_ARITY(0);
 
     if((ctxt == NULL) || (ctxt->context == NULL) || (ctxt->context->here == NULL)) {
         XP_ERROR(XPTR_SYNTAX_ERROR);
     }
-    valuePush(ctxt, xmlXPathNewNodeSet(ctxt->context->here));
+    obj = xmlXPathNewNodeSet(ctxt->context->here);
+    if(obj == NULL) {
+        XP_ERROR(XPATH_MEMORY_ERROR);
+    }
+    valuePush(ctxt, obj);
 }
 
 /******************************************************************************
@@ -216,9 +222,14 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
 
     /* here function works only on the same document */
     if(hereNode->doc == doc) {
-        xmlXPathRegisterFunc(data->ctx, (xmlChar *)"here", xmlSecXPathHereFunction);
         data->ctx->here = hereNode;
         data->ctx->xptr = 1;
+        xmlXPathRegisterFunc(data->ctx, (xmlChar *)"here", xmlSecXPathHereFunction);
+    } else {
+        /* clear any stale "here" node/function left over from a previous
+         * execution against another document */
+        data->ctx->here = NULL;
+        xmlXPathRegisterFunc(data->ctx, (xmlChar *)"here", NULL);
     }
 
     /* execute xpath or xpointer expression */
@@ -677,6 +688,12 @@ xmlSecTransformXPath2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xml
         cur = xmlSecGetNextElementNode(cur->next);
     }
 
+    /* check that we have at least one XPath node */
+    if(xmlSecPtrListGetSize(dataList) == 0) {
+        xmlSecInvalidNodeContentError(node, xmlSecTransformGetName(transform), "empty");
+        return(-1);
+    }
+
     /* check that we have nothing else */
     if(cur != NULL) {
         xmlSecUnexpectedNodeError(cur, xmlSecTransformGetName(transform));
@@ -752,8 +769,6 @@ xmlSecTransformXPointerSetExpr(xmlSecTransformPtr transform, const xmlChar* expr
     xmlSecAssert2(expr != NULL, -1);
     xmlSecAssert2(hereNode != NULL, -1);
 
-    transform->hereNode = hereNode;
-
     dataList = xmlSecXPathGetCtx(transform);
     xmlSecAssert2(xmlSecPtrListCheckId(dataList, xmlSecXPathDataListId), -1);
     xmlSecAssert2(xmlSecPtrListGetSize(dataList) == 0, -1);
@@ -793,6 +808,10 @@ xmlSecTransformXPointerSetExpr(xmlSecTransformPtr transform, const xmlChar* expr
     /* set correct node set type and operation */
     data->nodeSetOp     = xmlSecNodeSetIntersection;
     data->nodeSetType   = nodeSetType;
+
+    /* set the "here" node only after all fallible operations succeeded,
+     * so a failed call leaves the transform unmodified */
+    transform->hereNode = hereNode;
 
     return(0);
 }
@@ -982,6 +1001,12 @@ xmlSecTransformVisa3DHackExecute(xmlSecTransformPtr transform, int last,
     idPtr = xmlSecVisa3DHackGetCtx(transform);
     xmlSecAssert2(idPtr != NULL, -1);
     xmlSecAssert2((*idPtr) != NULL, -1);
+
+    /* if there are no input nodes we must have a "here" node to get the
+     * document from (in the normal flow inNodes is always set) */
+    if(transform->inNodes == NULL) {
+        xmlSecAssert2(transform->hereNode != NULL, -1);
+    }
 
     doc = (transform->inNodes != NULL) ? transform->inNodes->doc : transform->hereNode->doc;
     xmlSecAssert2(doc != NULL, -1);

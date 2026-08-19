@@ -37,6 +37,7 @@ void testLog(const char* fmt, ...);
 
 
 /* tests */
+int test_xmlsec(void);
 int test_base64(void);
 int test_bn(void);
 int test_buffer(void);

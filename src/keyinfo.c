@@ -1586,7 +1586,7 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
          * for different recipients but application can enforce
          * correct enc key.
          */
-        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION) != 0) {
+        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_ENCKEY_STOP_ON_FAILED_DECRYPTION) != 0) {
             xmlSecInternalError("xmlSecEncCtxDecryptToBuffer", xmlSecKeyDataKlassGetName(id));
             return(-1);
         }
@@ -1789,7 +1789,7 @@ xmlSecKeyDataDerivedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr 
          * for different recipients but application can enforce
          * correct enc key.
          */
-        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION) != 0) {
+        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_ENCKEY_STOP_ON_FAILED_DECRYPTION) != 0) {
             xmlSecInternalError("xmlSecEncCtxDerivedKeyGenerate", xmlSecKeyDataKlassGetName(id));
             return(-1);
         }
@@ -1946,7 +1946,7 @@ xmlSecKeyDataAgreementMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
          * for different recipients but application can enforce
          * correct enc key.
          */
-        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION) != 0) {
+        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_ENCKEY_STOP_ON_FAILED_DECRYPTION) != 0) {
             xmlSecInternalError("xmlSecEncCtxAgreementMethodGenerate", xmlSecKeyDataKlassGetName(id));
             return(-1);
         }
@@ -2168,7 +2168,7 @@ xmlSecKeyDataEncapsulationMechanismXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         /* We might have multiple EncapsulationMechanism elements, each encapsulating
          * for different recipients; the application can enforce correct decapsulation key.
          */
-        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION) != 0) {
+        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_ENCKEY_STOP_ON_FAILED_DECRYPTION) != 0) {
             xmlSecInternalError("xmlSecEncCtxEncapsulationMechanismGenerate", xmlSecKeyDataKlassGetName(id));
             return(-1);
         }

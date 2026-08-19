@@ -106,16 +106,29 @@ static xmlSecTransformKlass xmlSecXsltKlass = {
 
 static xsltSecurityPrefsPtr g_xslt_default_security_prefs = NULL;
 
-void xmlSecTransformXsltInitialize(void) {
-    xmlSecAssert(g_xslt_default_security_prefs == NULL);
+int xmlSecTransformXsltInitialize(void) {
+    xsltSecurityPrefsPtr sec;
 
-    g_xslt_default_security_prefs = xsltNewSecurityPrefs();
-    xmlSecAssert(g_xslt_default_security_prefs != NULL);
-    xsltSetSecurityPrefs(g_xslt_default_security_prefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
-    xsltSetSecurityPrefs(g_xslt_default_security_prefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
-    xsltSetSecurityPrefs(g_xslt_default_security_prefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid);
-    xsltSetSecurityPrefs(g_xslt_default_security_prefs,  XSLT_SECPREF_READ_NETWORK,     xsltSecurityForbid);
-    xsltSetSecurityPrefs(g_xslt_default_security_prefs,  XSLT_SECPREF_WRITE_NETWORK,    xsltSecurityForbid);
+    xmlSecAssert2(g_xslt_default_security_prefs == NULL, -1);
+
+    sec = xsltNewSecurityPrefs();
+    if(sec == NULL) {
+        xmlSecXsltError("xsltNewSecurityPrefs", NULL, NULL);
+        return(-1);
+    }
+    if((xsltSetSecurityPrefs(sec, XSLT_SECPREF_READ_FILE, xsltSecurityForbid) < 0) ||
+       (xsltSetSecurityPrefs(sec, XSLT_SECPREF_WRITE_FILE, xsltSecurityForbid) < 0) ||
+       (xsltSetSecurityPrefs(sec, XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid) < 0) ||
+       (xsltSetSecurityPrefs(sec, XSLT_SECPREF_READ_NETWORK, xsltSecurityForbid) < 0) ||
+       (xsltSetSecurityPrefs(sec, XSLT_SECPREF_WRITE_NETWORK, xsltSecurityForbid) < 0)
+    ) {
+        xmlSecXsltError("xsltSetSecurityPrefs", NULL, NULL);
+        xsltFreeSecurityPrefs(sec);
+        return(-1);
+    }
+
+    g_xslt_default_security_prefs = sec;
+    return(0);
 }
 
 void xmlSecTransformXsltShutdown(void) {
@@ -375,7 +388,7 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
 
         ret = xsltSaveResultTo(output, docOut, ctx->xslt);
         if(ret < 0) {
-            xmlSecXsltError("xsltParseStylesheetDoc", ctx->xslt, xmlSecTransformGetName(transform));
+            xmlSecXsltError("xsltSaveResultTo", ctx->xslt, xmlSecTransformGetName(transform));
             (void)xmlOutputBufferClose(output);
             xmlFreeDoc(docOut);
             return(-1);
@@ -525,7 +538,11 @@ xmlSecXsApplyStylesheet(xmlSecXsltCtxPtr ctx, xmlDocPtr doc) {
         goto done;
     }
 
-    /* set security prefs */
+    /* set security prefs (fail closed: never run without a security policy) */
+    if(g_xslt_default_security_prefs == NULL) {
+        xmlSecXsltError("xsltSetCtxtSecurityPrefs", ctx->xslt, NULL);
+        goto done;
+    }
     ret = xsltSetCtxtSecurityPrefs(g_xslt_default_security_prefs, xsltCtx);
     if(ret < 0) {
         xmlSecXsltError("xsltSetCtxtSecurityPrefs", ctx->xslt, NULL);

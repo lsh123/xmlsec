@@ -109,7 +109,11 @@ xmlSecTransformIdsInit(void) {
     }
 
 #ifndef XMLSEC_NO_XSLT
-    xmlSecTransformXsltInitialize();
+    ret = xmlSecTransformXsltInitialize();
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformXsltInitialize", NULL);
+        return(-1);
+    }
 #endif /* XMLSEC_NO_XSLT */
 
     return(0);

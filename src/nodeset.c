@@ -242,30 +242,32 @@ xmlSecNodeSetContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent)
     status = 1;
     curNset = nset;
     do {
-        switch(curNset->op) {
-        case xmlSecNodeSetIntersection:
-            if(status && !xmlSecNodeSetContainsNode(curNset, node, parent)) {
-                status = 0;
+        /* the first element defines the base set */
+        if(first) {
+            status = xmlSecNodeSetContainsNode(curNset, node, parent);
+            first = 0;
+        } else  {
+            switch(curNset->op) {
+            case xmlSecNodeSetIntersection:
+                if(status && !xmlSecNodeSetContainsNode(curNset, node, parent)) {
+                    status = 0;
+                }
+                break;
+            case xmlSecNodeSetSubtraction:
+                if(status && xmlSecNodeSetContainsNode(curNset, node, parent)) {
+                    status = 0;
+                }
+                break;
+            case xmlSecNodeSetUnion:
+                if(!status && xmlSecNodeSetContainsNode(curNset, node, parent)) {
+                    status = 1;
+                }
+                break;
+            default:
+                xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_OPERATION, NULL,
+                    "node set operation=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(curNset->op));
+                return(-1);
             }
-            break;
-        case xmlSecNodeSetSubtraction:
-            if(status && xmlSecNodeSetContainsNode(curNset, node, parent)) {
-                status = 0;
-            }
-            break;
-        case xmlSecNodeSetUnion:
-            /* the first element defines the base set */
-            if(first) {
-                status = xmlSecNodeSetContainsNode(curNset, node, parent);
-                first = 0;
-            } else  if(!status && xmlSecNodeSetContainsNode(curNset, node, parent)) {
-                status = 1;
-            }
-            break;
-        default:
-            xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_OPERATION, NULL,
-                "node set operation=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(curNset->op));
-            return(-1);
         }
         curNset = curNset->next;
         xmlSecAssert2(curNset != NULL, -1);

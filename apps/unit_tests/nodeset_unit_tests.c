@@ -806,6 +806,131 @@ test_xmlSecNodeSetAdd_union_head_is_absolute_set(void) {
     testFinishedSuccess();
 }
 
+static void
+test_xmlSecNodeSetAdd_union_after_intersection_keeps_base_set(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    xmlNodePtr a;
+    xmlNodePtr b;
+    xmlNodePtr c;
+    xmlNodePtr d;
+    xmlNodeSetPtr nodesA;
+    xmlNodeSetPtr nodesB;
+    xmlNodeSetPtr nodesC;
+    xmlSecNodeSetPtr nset;
+    xmlSecNodeSetPtr tmp;
+    int retA;
+    int retB;
+    int retC;
+    int retD;
+
+    testStart("xmlSecNodeSetAdd with a Union after an Intersection keeps the base set");
+
+    doc = nodesetTestParseDoc("<Root><A><B><C/></B></A><D/></Root>");
+    if(doc == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    root = xmlDocGetRootElement(doc);
+    a = nodesetTestFindChild(root, BAD_CAST "A");
+    d = nodesetTestFindChild(root, BAD_CAST "D");
+    b = (a != NULL) ? nodesetTestFindChild(a, BAD_CAST "B") : NULL;
+    c = (b != NULL) ? nodesetTestFindChild(b, BAD_CAST "C") : NULL;
+    if((root == NULL) || (a == NULL) || (b == NULL) || (c == NULL) || (d == NULL)) {
+        testLog("Error: failed to prepare union-after-intersection test data\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* build the list exactly like the xpath2 transform does:
+     * intersect A, then subtract B, then union C. Because each new
+     * element is inserted before the head, the final list (from the
+     * head) is A(Intersection) -> C(Union) -> B(Subtraction) */
+    nodesA = xmlXPathNodeSetCreate(a);
+    nodesB = xmlXPathNodeSetCreate(b);
+    nodesC = xmlXPathNodeSetCreate(c);
+    if((nodesA == NULL) || (nodesB == NULL) || (nodesC == NULL)) {
+        testLog("Error: failed to create XPath node sets\n");
+        if(nodesA != NULL) { xmlXPathFreeNodeSet(nodesA); }
+        if(nodesB != NULL) { xmlXPathFreeNodeSet(nodesB); }
+        if(nodesC != NULL) { xmlXPathFreeNodeSet(nodesC); }
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    nset = xmlSecNodeSetCreate(doc, nodesA, xmlSecNodeSetNormal);
+    if(nset == NULL) {
+        testLog("Error: xmlSecNodeSetCreate failed\n");
+        xmlXPathFreeNodeSet(nodesA);
+        xmlXPathFreeNodeSet(nodesB);
+        xmlXPathFreeNodeSet(nodesC);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    tmp = xmlSecNodeSetCreate(doc, nodesB, xmlSecNodeSetNormal);
+    if(tmp == NULL) {
+        testLog("Error: xmlSecNodeSetCreate failed\n");
+        xmlXPathFreeNodeSet(nodesC);
+        xmlSecNodeSetDestroy(nset);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    nset = xmlSecNodeSetAdd(nset, tmp, xmlSecNodeSetSubtraction);
+    if(nset == NULL) {
+        testLog("Error: xmlSecNodeSetAdd failed for subtraction\n");
+        xmlXPathFreeNodeSet(nodesC);
+        xmlSecNodeSetDestroy(nset);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    tmp = xmlSecNodeSetCreate(doc, nodesC, xmlSecNodeSetNormal);
+    if(tmp == NULL) {
+        testLog("Error: xmlSecNodeSetCreate failed\n");
+        xmlSecNodeSetDestroy(nset);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    nset = xmlSecNodeSetAdd(nset, tmp, xmlSecNodeSetUnion);
+    if(nset == NULL) {
+        testLog("Error: xmlSecNodeSetAdd failed for union\n");
+        xmlSecNodeSetDestroy(nset);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* the expected set is (A union C) minus B: A and C are members,
+     * B and D are not. A used to be lost because the Union element
+     * overwrote the base set established by the Intersection head */
+    retA = xmlSecNodeSetContains(nset, a, root);
+    retB = xmlSecNodeSetContains(nset, b, a);
+    retC = xmlSecNodeSetContains(nset, c, b);
+    retD = xmlSecNodeSetContains(nset, d, root);
+    if((retA != 1) || (retB != 0) || (retC != 1) || (retD != 0)) {
+        testLog("Error: union-after-intersection membership is incorrect "
+            "(a=%d b=%d c=%d d=%d)\n", retA, retB, retC, retD);
+        xmlSecNodeSetDestroy(nset);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecNodeSetDestroy(nset);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
 int
 test_nodeset(void) {
     int success = 1;
@@ -823,6 +948,7 @@ test_nodeset(void) {
     testGroupStart("xmlSecNodeSetAdd");
     test_xmlSecNodeSetAdd_subtraction_removes_subtree();
     test_xmlSecNodeSetAdd_union_head_is_absolute_set();
+    test_xmlSecNodeSetAdd_union_after_intersection_keeps_base_set();
     if(testGroupFinished() != 1) { success = 0; }
 
     testGroupStart("xmlSecNodeSetWalk");

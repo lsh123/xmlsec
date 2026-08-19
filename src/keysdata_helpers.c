@@ -439,6 +439,11 @@ xmlSecKeyDataBinaryValueBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2(buffer != NULL, -1);
 
     (*bufSize) = xmlSecBufferGetSize(buffer);
+    if((*bufSize) == 0) {
+        /* nothing to write; avoid xmlMalloc(0) which may return NULL */
+        (*buf) = NULL;
+        return(0);
+    }
     (*buf) = (xmlSecByte*) xmlMalloc((*bufSize));
     if((*buf) == NULL) {
         xmlSecMallocError((*bufSize),
@@ -504,6 +509,7 @@ xmlSecKeyDataBinaryValueDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 xmlSecSize
 xmlSecKeyDataBinaryValueGetSize(xmlSecKeyDataPtr data) {
     xmlSecBufferPtr buffer;
+    xmlSecSize size;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), 0);
     xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecKeyDataBinarySize), 0);
@@ -511,8 +517,14 @@ xmlSecKeyDataBinaryValueGetSize(xmlSecKeyDataPtr data) {
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
     xmlSecAssert2(buffer != NULL, 0);
 
+    size = xmlSecBufferGetSize(buffer);
+    if(size > (XMLSEC_SIZE_MAX / 8)) {
+        xmlSecInvalidSizeError("size", size, (XMLSEC_SIZE_MAX / 8), NULL);
+        return(0);
+    }
+
     /* return size in bits */
-    return(8 * xmlSecBufferGetSize(buffer));
+    return(8 * size);
 }
 
 /**
@@ -841,6 +853,10 @@ xmlSecKeyDataEcPublicKeyCombineComponents (xmlSecKeyValueEcPtr ecValue) {
 
     /* max of the two sizes (prepend 0s if needed) */
     sizeKey = (sizeX >= sizeY) ? sizeX : sizeY;
+    if(sizeKey > ((XMLSEC_SIZE_MAX - 1) / 2)) {
+        xmlSecInvalidSizeError("sizeKey", sizeKey, ((XMLSEC_SIZE_MAX - 1) / 2), NULL);
+        return(-1);
+    }
     size = 1 + 2 * sizeKey; /* <magic byte> || x || y */
     ret = xmlSecBufferSetSize(&(ecValue->pubkey), size);
     if(ret < 0) {
@@ -1766,7 +1782,7 @@ xmlSecKeyValueDsaXmlRead(xmlSecKeyValueDsaPtr data, xmlNodePtr node) {
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSAX, xmlSecNs))) {
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSAX, xmlSecDSigNs))) {
         /* next is X node. It is REQUIRED for private key but
          * we are not sure exactly what do we read */
         ret = xmlSecBufferBase64NodeContentRead(&(data->x), cur);
@@ -1891,7 +1907,7 @@ xmlSecKeyValueDsaXmlWrite(xmlSecKeyValueDsaPtr data, xmlNodePtr node,
 
     /* next is X node: write it ONLY for private keys and ONLY if it is requested */
     if((writePrivateKey != 0) && (xmlSecBufferGetSize(&(data->x)) > 0)) {
-        cur = xmlSecAddChild(node, xmlSecNodeDSAX, xmlSecNs);
+        cur = xmlSecAddChild(node, xmlSecNodeDSAX, xmlSecDSigNs);
         if(cur == NULL) {
             xmlSecInternalError("xmlSecAddChild(NodeDSAX)", NULL);
             return(-1);
@@ -2188,7 +2204,7 @@ xmlSecKeyValueRsaXmlRead(xmlSecKeyValueRsaPtr data, xmlNodePtr node) {
 
     /* next is PrivateExponent node. It is REQUIRED for private key but
     * we are not sure exactly what are we reading */
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeRSAPrivateExponent, xmlSecNs))) {
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeRSAPrivateExponent, xmlSecDSigNs))) {
         ret = xmlSecBufferBase64NodeContentRead(&(data->privateExponent), cur);
         if(ret < 0) {
             xmlSecInternalError("xmlSecBufferBase64NodeContentRead(privateExponent)", NULL);
@@ -2264,7 +2280,7 @@ xmlSecKeyValueRsaXmlWrite(xmlSecKeyValueRsaPtr data, xmlNodePtr node,
 
     /* next is PrivateExponent node: write it ONLY for private keys and ONLY if it is requested */
     if((writePrivateKey != 0) && (xmlSecBufferGetSize(&(data->privateExponent)) > 0)) {
-        cur = xmlSecAddChild(node, xmlSecNodeRSAPrivateExponent, xmlSecNs);
+        cur = xmlSecAddChild(node, xmlSecNodeRSAPrivateExponent, xmlSecDSigNs);
         if(cur == NULL) {
             xmlSecInternalError("xmlSecAddChild(PrivateExponent)", NULL);
             return(-1);

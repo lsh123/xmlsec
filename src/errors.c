@@ -132,16 +132,26 @@ xmlSecErrorsShutdown(void) {
 /**
  * @brief Sets the errors callback function.
  * @details Sets the errors callback function to @p callback that will be called
- * every time an error occurs. Passing NULL clears the user override and restores
- * the system (default) callback, so this can be used to undo a previous call.
+ * every time an error occurs.
+ *
  * Note that this function is not thread-safe (see the module notes).
  * @param callback the new errors callback function, or NULL to fall back to the default.
  */
 void
 xmlSecErrorsSetCallback(xmlSecErrorsCallback callback) {
     xmlSecErrorsUserClbk = callback;
-    /* a NULL callback clears the user override so we fall back to the system/default callback */
-    xmlSecErrorsClbkIsSetByUser = (callback != NULL) ? 1 : 0;
+    xmlSecErrorsClbkIsSetByUser =  1;
+}
+
+/**
+ * @brief Clears the custom errors callback function.
+ * @details Clears the custom errors callback function and restores default.
+ * Note that this function is not thread-safe (see the module notes).
+ */
+void
+xmlSecErrorsClearCallback(void) {
+    xmlSecErrorsUserClbk = NULL;
+    xmlSecErrorsClbkIsSetByUser = 0;
 }
 
 

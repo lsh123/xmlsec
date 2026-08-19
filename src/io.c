@@ -173,6 +173,8 @@ xmlSecIOInit(void) {
     ret = xmlSecIORegisterDefaultCallbacks();
     if(ret < 0) {
         xmlSecInternalError("xmlSecIORegisterDefaultCallbacks", NULL);
+        /* roll back the partially-initialized state (callback list, nanoFTP/nanoHTTP) */
+        xmlSecIOShutdown();
         return(-1);
     }
 
@@ -534,9 +536,10 @@ xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const xmlChar *uri) {
 
     /*
      * If this failed try with a non-escaped uri this may be a strange
-     * filename
+     * filename. Gate on clbksCtx (not clbks) so that a callback found via the
+     * unescaped URI whose opencallback returned NULL still gets a raw-URI retry.
      */
-    if (ctx->clbks == NULL) {
+    if (ctx->clbksCtx == NULL) {
         ctx->clbks = xmlSecIOCallbackPtrListFind(&xmlSecAllIOCallbacks, (char*)uri);
         if(ctx->clbks != NULL) {
             if(ctx->clbks->opencallback != NULL) {

@@ -275,11 +275,10 @@ xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
 
         xmlSecAssert2(transform->inNodes == NULL, -1);
 
-        /* todo: isn't it an error? */
+        /* a C14N transform with no previous transform has no input to canonicalize */
         if(transform->prev == NULL) {
-            (*dataSize) = 0;
-            transform->status = xmlSecTransformStatusFinished;
-            return(0);
+            xmlSecInternalError("xmlSecTransformC14NPopBin", xmlSecTransformGetName(transform));
+            return(-1);
         }
 
         /* get xml data from previous transform */

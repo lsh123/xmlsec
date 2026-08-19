@@ -546,8 +546,8 @@ int
 xmlSecKeyDataIdListFind(xmlSecPtrListPtr list, xmlSecKeyDataId dataId) {
     xmlSecSize i, size;
 
-    xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecKeyDataIdListId), 0);
-    xmlSecAssert2(dataId != NULL, 0);
+    xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecKeyDataIdListId), -1);
+    xmlSecAssert2(dataId != NULL, -1);
 
     size = xmlSecPtrListGetSize(list);
     for(i = 0; i < size; ++i) {
@@ -807,6 +807,11 @@ xmlSecKeyDataStorePtrListGetKlass(void) {
  * @details Sets global flag to import keys to persistent storage (MSCrypto and MSCNG).
  * Also see PKCS12_NO_PERSIST_KEY.
  *
+ * Note that this flag is process-wide mutable state shared by all threads and is
+ * not protected by any synchronization; it should only be set before any key
+ * import operations begin. Once set, the flag can only ever be 1: there is no
+ * function to clear it back to 0.
+ *
  */
 void xmlSecImportSetPersistKey(void) {
     xmlSecImportPersistKey = 1;
@@ -816,6 +821,9 @@ void xmlSecImportSetPersistKey(void) {
  * @brief Gets global flag for importing keys to persistent storage.
  * @details Gets global flag to import keys to persistent storage (MSCrypto and MSCNG).
  * Also see PKCS12_NO_PERSIST_KEY.
+ *
+ * The value is process-wide mutable state (see #xmlSecImportSetPersistKey) and is
+ * not protected by any synchronization.
  *
  * @return 1 if keys should be imported into persistent storage and 0 otherwise.
  */

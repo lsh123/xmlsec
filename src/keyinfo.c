@@ -644,6 +644,7 @@ xmlSecKeyDataNameGetKlass(void) {
 static int
 xmlSecKeyDataNameXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlChar* newName;
+    const xmlChar* oldName;
     int ret;
 
     xmlSecAssert2(id == xmlSecKeyDataNameId, -1);
@@ -692,29 +693,28 @@ xmlSecKeyDataNameXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, 
                 xmlFree(newName);
                 return(-1);
             }
-        }
-        /* TODO: record the key names we tried */
-    } else {
-        const xmlChar* oldName;
 
-        /* if we already have a keyname, make sure that it matches or set it */
-        oldName = xmlSecKeyGetName(key);
-        if(oldName != NULL) {
-            if(!xmlStrEqual(oldName, newName)) {
-                xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_KEY_DATA,
-                                 xmlSecKeyDataKlassGetName(id),
-                                 "key name is already specified");
-                xmlFree(newName);
-                return(-1);
-            }
-        } else {
-            ret = xmlSecKeySetName(key, newName);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecKeySetName",
-                                    xmlSecKeyDataKlassGetName(id));
-                xmlFree(newName);
-                return(-1);
-            }
+            /* done */
+            xmlFree(newName);
+            return(0);
+        }
+        /* key not found in the manager; fall through to set the name anyway */
+    }
+
+    /* if we already have a keyname, make sure that it matches or set it */
+    oldName = xmlSecKeyGetName(key);
+    if(oldName != NULL) {
+        if(!xmlStrEqual(oldName, newName)) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_KEY_DATA, xmlSecKeyDataKlassGetName(id), "key name is already specified");
+            xmlFree(newName);
+            return(-1);
+        }
+    } else {
+        ret = xmlSecKeySetName(key, newName);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecKeySetName", xmlSecKeyDataKlassGetName(id));
+            xmlFree(newName);
+            return(-1);
         }
     }
 
@@ -836,6 +836,10 @@ xmlSecKeyDataValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node,
     cur = xmlSecGetNextElementNode(node->children);
     if(cur == NULL) {
         /* just an empty node */
+        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
+            xmlSecInvalidNodeContentError(node, xmlSecKeyDataKlassGetName(id), "empty");
+            return(-1);
+        }
         return(0);
     }
 
@@ -1203,7 +1207,7 @@ xmlSecKeyDataRetrievalMethodReadXmlResult(xmlSecKeyDataId typeId, xmlSecKeyPtr k
     }
     if(dataId == xmlSecKeyDataIdUnknown) {
         /* laxi schema validation but application can disable it */
-        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_KEYVALUE_STOP_ON_UNKNOWN_CHILD) != 0) {
+        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_UNKNOWN_CHILD) != 0) {
             xmlSecUnexpectedNodeError(cur, xmlSecKeyDataKlassGetName(typeId));
             xmlFreeDoc(doc);
             return(-1);
@@ -1573,18 +1577,6 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
     }
     xmlSecAssert2(keyInfoCtx->encCtx != NULL, -1);
 
-    /* copy prefs */
-    ret = xmlSecKeyInfoCtxCopyUserPref(&(keyInfoCtx->encCtx->keyInfoReadCtx), keyInfoCtx);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref(readCtx)", xmlSecKeyDataKlassGetName(id));
-        return(-1);
-    }
-    ret = xmlSecKeyInfoCtxCopyUserPref(&(keyInfoCtx->encCtx->keyInfoWriteCtx), keyInfoCtx);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref(writeCtx)", xmlSecKeyDataKlassGetName(id));
-        return(-1);
-    }
-
     /* decrypt */
     ++keyInfoCtx->curEncryptedKeyLevel;
     result = xmlSecEncCtxDecryptToBuffer(keyInfoCtx->encCtx, node);
@@ -1663,18 +1655,6 @@ xmlSecKeyDataEncryptedKeyXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodeP
         }
     }
     xmlSecAssert2(keyInfoCtx->encCtx != NULL, -1);
-
-    /* copy prefs */
-    ret = xmlSecKeyInfoCtxCopyUserPref(&(keyInfoCtx->encCtx->keyInfoReadCtx), keyInfoCtx);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref(readCtx)", xmlSecKeyDataKlassGetName(id));
-        goto done;
-    }
-    ret = xmlSecKeyInfoCtxCopyUserPref(&(keyInfoCtx->encCtx->keyInfoWriteCtx), keyInfoCtx);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref(writeCtx)", xmlSecKeyDataKlassGetName(id));
-        goto done;
-    }
 
     /* encrypt */
     ret = xmlSecEncCtxBinaryEncrypt(keyInfoCtx->encCtx, node, keyBuf, keySize);
@@ -1799,18 +1779,6 @@ xmlSecKeyDataDerivedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr 
         }
     }
     xmlSecAssert2(keyInfoCtx->encCtx != NULL, -1);
-
-    /* copy prefs */
-    ret = xmlSecKeyInfoCtxCopyUserPref(&(keyInfoCtx->encCtx->keyInfoReadCtx), keyInfoCtx);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref(readCtx)", xmlSecKeyDataKlassGetName(id));
-        return(-1);
-    }
-    ret = xmlSecKeyInfoCtxCopyUserPref(&(keyInfoCtx->encCtx->keyInfoWriteCtx), keyInfoCtx);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref(writeCtx)", xmlSecKeyDataKlassGetName(id));
-        return(-1);
-    }
 
     ++keyInfoCtx->curEncryptedKeyLevel;
     generatedKey = xmlSecEncCtxDerivedKeyGenerate(keyInfoCtx->encCtx, keyInfoCtx->keyReq.keyId, node, keyInfoCtx);
@@ -1969,18 +1937,6 @@ xmlSecKeyDataAgreementMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
     }
     xmlSecAssert2(keyInfoCtx->encCtx != NULL, -1);
 
-    /* copy prefs */
-    ret = xmlSecKeyInfoCtxCopyUserPref(&(keyInfoCtx->encCtx->keyInfoReadCtx), keyInfoCtx);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref(readCtx)", xmlSecKeyDataKlassGetName(id));
-        return(-1);
-    }
-    ret = xmlSecKeyInfoCtxCopyUserPref(&(keyInfoCtx->encCtx->keyInfoWriteCtx), keyInfoCtx);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref(writeCtx)", xmlSecKeyDataKlassGetName(id));
-        return(-1);
-    }
-
     ++keyInfoCtx->curEncryptedKeyLevel;
     generatedKey = xmlSecEncCtxAgreementMethodGenerate(keyInfoCtx->encCtx, keyInfoCtx->keyReq.keyId, node, keyInfoCtx);
     --keyInfoCtx->curEncryptedKeyLevel;
@@ -2086,19 +2042,6 @@ xmlSecKeyDataAgreementMethodXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNo
         }
         /* kamKeyDataDup is now owned by the transform context */
     }
-
-    /* copy prefs */
-    ret = xmlSecKeyInfoCtxCopyUserPref(&(keyInfoCtx->encCtx->keyInfoReadCtx), keyInfoCtx);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref(readCtx)", xmlSecKeyDataKlassGetName(id));
-        return(-1);
-    }
-    ret = xmlSecKeyInfoCtxCopyUserPref(&(keyInfoCtx->encCtx->keyInfoWriteCtx), keyInfoCtx);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref(writeCtx)", xmlSecKeyDataKlassGetName(id));
-        return(-1);
-    }
-
 
     ++keyInfoCtx->curEncryptedKeyLevel;
     ret = xmlSecEncCtxAgreementMethodXmlWrite(keyInfoCtx->encCtx, node, keyInfoCtx);
@@ -2217,18 +2160,6 @@ xmlSecKeyDataEncapsulationMechanismXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     }
     xmlSecAssert2(keyInfoCtx->encCtx != NULL, -1);
 
-    /* copy prefs */
-    ret = xmlSecKeyInfoCtxCopyUserPref(&(keyInfoCtx->encCtx->keyInfoReadCtx), keyInfoCtx);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref(readCtx)", xmlSecKeyDataKlassGetName(id));
-        return(-1);
-    }
-    ret = xmlSecKeyInfoCtxCopyUserPref(&(keyInfoCtx->encCtx->keyInfoWriteCtx), keyInfoCtx);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref(writeCtx)", xmlSecKeyDataKlassGetName(id));
-        return(-1);
-    }
-
     ++keyInfoCtx->curEncryptedKeyLevel;
     generatedKey = xmlSecEncCtxEncapsulationMechanismGenerate(keyInfoCtx->encCtx, keyInfoCtx->keyReq.keyId, node, keyInfoCtx);
     --keyInfoCtx->curEncryptedKeyLevel;
@@ -2335,18 +2266,6 @@ xmlSecKeyDataEncapsulationMechanismXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key
         return(-1);
     }
     /* kemKeyDataDup is now owned by the transform context */
-
-    /* copy prefs */
-    ret = xmlSecKeyInfoCtxCopyUserPref(&(keyInfoCtx->encCtx->keyInfoReadCtx), keyInfoCtx);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref(readCtx)", xmlSecKeyDataKlassGetName(id));
-        return(-1);
-    }
-    ret = xmlSecKeyInfoCtxCopyUserPref(&(keyInfoCtx->encCtx->keyInfoWriteCtx), keyInfoCtx);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref(writeCtx)", xmlSecKeyDataKlassGetName(id));
-        return(-1);
-    }
 
     ++keyInfoCtx->curEncryptedKeyLevel;
     ret = xmlSecEncCtxEncapsulationMechanismXmlWrite(keyInfoCtx->encCtx, node, keyInfoCtx);

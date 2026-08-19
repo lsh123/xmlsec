@@ -341,9 +341,11 @@ typedef void (*xmlSecErrorsCallback)                            (const char* fil
                                                                  const char* msg);
 
 
+
 XMLSEC_EXPORT void              xmlSecErrorsInit                (void);
 XMLSEC_EXPORT void              xmlSecErrorsShutdown            (void);
 XMLSEC_EXPORT void              xmlSecErrorsSetCallback         (xmlSecErrorsCallback callback);
+XMLSEC_EXPORT void              xmlSecErrorsClearCallback       (void);
 XMLSEC_EXPORT void              xmlSecErrorsDefaultCallback     (const char* file,
                                                                  int line,
                                                                  const char* func,

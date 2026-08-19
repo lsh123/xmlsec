@@ -141,6 +141,12 @@ xmlSecSetNodeContentAsHex(xmlNodePtr node, const xmlSecByte* data, xmlSecSize si
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
 
+    /* guard against integer overflow in 'contentSize = (2 * size) + 1' */
+    if(size > ((XMLSEC_SIZE_MAX - 1) / 2)) {
+        xmlSecInvalidSizeError("size", size, ((XMLSEC_SIZE_MAX - 1) / 2), NULL);
+        return(-1);
+    }
+
     contentSize = (2 * size) + 1;
     content = (xmlChar*)xmlMalloc(contentSize);
     if(content == NULL) {
@@ -178,6 +184,12 @@ xmlSecGetNodeContentAsSize(const xmlNodePtr cur, xmlSecSize defValue, xmlSecSize
 
     content = xmlSecGetNodeContentAndTrim(cur);
     if(content == NULL) {
+        (*res) = defValue;
+        return(0);
+    }
+    if(xmlStrlen(content) == 0) {
+        /* empty or whitespace-only content: use the default value */
+        xmlFree(content);
         (*res) = defValue;
         return(0);
     }
@@ -410,6 +422,8 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
             nsPtr = xmlNewNs(cur, ns, NULL);
             if(nsPtr == NULL) {
                 xmlSecXmlError("xmlNewNs", NULL);
+                xmlUnlinkNode(cur);
+                xmlFreeNode(cur);
                 return(NULL);
             }
         }
@@ -420,6 +434,8 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
     text = xmlNewText(xmlSecGetDefaultLineFeed());
     if(text == NULL) {
         xmlSecXmlError("xmlNewText", NULL);
+        xmlUnlinkNode(cur);
+        xmlFreeNode(cur);
         return(NULL);
     }
     xmlAddChild(parent, text);
@@ -536,6 +552,12 @@ xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
         nsPtr = xmlSearchNsByHref(cur->doc, cur, ns);
         if((nsPtr == NULL) || (xmlSearchNs(cur->doc, cur, nsPtr->prefix) != nsPtr)) {
             nsPtr = xmlNewNs(cur, ns, NULL);
+            if(nsPtr == NULL) {
+                xmlSecXmlError("xmlNewNs", NULL);
+                xmlUnlinkNode(cur);
+                xmlFreeNode(cur);
+                return(NULL);
+            }
         }
         xmlSetNs(cur, nsPtr);
     }
@@ -544,6 +566,8 @@ xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
     text = xmlNewText(xmlSecGetDefaultLineFeed());
     if(text == NULL) {
         xmlSecXmlError("xmlNewText", NULL);
+        xmlUnlinkNode(cur);
+        xmlFreeNode(cur);
         return(NULL);
     }
     xmlAddNextSibling(node, text);
@@ -582,6 +606,12 @@ xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
         nsPtr = xmlSearchNsByHref(cur->doc, cur, ns);
         if((nsPtr == NULL) || (xmlSearchNs(cur->doc, cur, nsPtr->prefix) != nsPtr)) {
             nsPtr = xmlNewNs(cur, ns, NULL);
+            if(nsPtr == NULL) {
+                xmlSecXmlError("xmlNewNs", NULL);
+                xmlUnlinkNode(cur);
+                xmlFreeNode(cur);
+                return(NULL);
+            }
         }
         xmlSetNs(cur, nsPtr);
     }
@@ -590,6 +620,8 @@ xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
     text = xmlNewText(xmlSecGetDefaultLineFeed());
     if(text == NULL) {
         xmlSecXmlError("xmlNewText", NULL);
+        xmlUnlinkNode(cur);
+        xmlFreeNode(cur);
         return(NULL);
     }
     xmlAddPrevSibling(node, text);
@@ -635,12 +667,14 @@ int
 xmlSecReplaceNodeAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr* replaced) {
     xmlNodePtr oldNode;
     int restoreRoot = 0;
+    xmlNodePtr origNodeDocChildren = NULL;
 
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(newNode != NULL, -1);
 
     /* fix documents children if necessary first */
     if((node->doc != NULL) && (node->doc->children == node)) {
+        origNodeDocChildren = node->doc->children;
         node->doc->children = node->next;
         restoreRoot = 1;
     }
@@ -650,6 +684,10 @@ xmlSecReplaceNodeAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr* repl
 
     oldNode = xmlReplaceNode(node, newNode);
     if(oldNode == NULL) {
+        /* restore the document children we mutated above so the tree is not left corrupted */
+        if(restoreRoot != 0) {
+            node->doc->children = origNodeDocChildren;
+        }
         xmlSecXmlError("xmlReplaceNode", NULL);
         return(-1);
     }

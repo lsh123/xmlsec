@@ -158,6 +158,7 @@ xmlSecKeyDataX509XmlRead(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xmlNodePtr nod
     int res = -1;
     int ret;
 
+    xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
@@ -228,7 +229,7 @@ xmlSecX509DataGetNodeContent(xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx, xm
     xmlNodePtr cur;
     int content = 0;
 
-    xmlSecAssert2(node != NULL, 0);
+    xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(digestAlgorithm != NULL, -1);
     xmlSecAssert2((*digestAlgorithm) == NULL, -1);

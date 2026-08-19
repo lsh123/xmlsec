@@ -365,6 +365,64 @@ test_xmlSecGetNodeContentAsSize_nonnumeric_fails(void) {
     testFinishedSuccess();
 }
 
+static void
+test_xmlSecGetNodeContentAsSize_empty_returns_default(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    xmlSecSize val = 0;
+    int ret;
+
+    testStart("xmlSecGetNodeContentAsSize: empty content returns default");
+
+    doc = xmltreeTestCreateDoc(BAD_CAST "Root", NULL);
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        testFinishedFailure();
+        return;
+    }
+    root = xmlDocGetRootElement(doc);
+    /* no content set: node is empty */
+
+    ret = xmlSecGetNodeContentAsSize(root, 7, &val);
+    if(ret < 0 || val != 7) {
+        testLog("Error: expected val=7 (default), got ret=%d val=%u\n", ret, (unsigned int)val);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecGetNodeContentAsSize_whitespace_only_returns_default(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    xmlSecSize val = 0;
+    int ret;
+
+    testStart("xmlSecGetNodeContentAsSize: whitespace-only content returns default");
+
+    doc = xmltreeTestCreateDoc(BAD_CAST "Root", NULL);
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        testFinishedFailure();
+        return;
+    }
+    root = xmlDocGetRootElement(doc);
+    xmlNodeSetContent(root, BAD_CAST "   \t\n\r  ");
+
+    ret = xmlSecGetNodeContentAsSize(root, 42, &val);
+    if(ret < 0 || val != 42) {
+        testLog("Error: expected val=42 (default), got ret=%d val=%u\n", ret, (unsigned int)val);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
 /******************************************************************************
  * xmlSecGetNodeContentAsHex / xmlSecSetNodeContentAsHex
   *****************************************************************************/
@@ -1675,6 +1733,8 @@ test_xmltree(void) {
     test_xmlSecGetNodeContentAsSize_zero();
     test_xmlSecGetNodeContentAsSize_negative_fails();
     test_xmlSecGetNodeContentAsSize_nonnumeric_fails();
+    test_xmlSecGetNodeContentAsSize_empty_returns_default();
+    test_xmlSecGetNodeContentAsSize_whitespace_only_returns_default();
     if(testGroupFinished() != 1) { success = 0; }
 
     testGroupStart("xmlSecNodeContentHex");

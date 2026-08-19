@@ -46,6 +46,7 @@ int test_xmlSecX509EscapedStringRead(void);
 int test_xmlSecX509AttrValueStringRead(void);
 int test_xmlSecX509NameRead(void);
 int test_xmlSecX509SerialNumberRead(void);
+int test_xmlSecKeyDataX509XmlRead(void);
 int test_nodeset(void);
 int test_xmltree(void);
 int test_templates(void);

@@ -305,7 +305,15 @@ xmlSecDSigCtxSign(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr tmpl) {
     outBuf = xmlSecBufferGetData(dsigCtx->result);
     outSize = xmlSecBufferGetSize(dsigCtx->result);
     XMLSEC_SAFE_CAST_SIZE_TO_INT(outSize, outLen, return(-1), NULL);
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeSetContentLen(dsigCtx->signValueNode, outBuf, outLen) < 0) {
+        xmlSecXmlError("xmlNodeSetContentLen", dsigCtx->signValueNode);
+        return(-1);
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetContentLen() returns void and cannot report errors */
     xmlNodeSetContentLen(dsigCtx->signValueNode, outBuf, outLen);
+#endif /* LIBXML_VERSION >= 21300 */
 
     /* set success status and we are done */
     xmlSecDSigCtxMarkAsSucceeded(dsigCtx);
@@ -642,6 +650,8 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node, xm
                                 "node=%s", xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
             return(-1);
         }
+        /* the C14N node was consumed; move to the next element */
+        cur = xmlSecGetNextElementNode(cur->next);
     } else if(dsigCtx->defC14NMethodId != xmlSecTransformIdUnknown) {
         /* the dsig spec does require CanonicalizationMethod node
          * to be present but in some case the application might decide to
@@ -672,8 +682,9 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node, xm
         }
     }
 
-    /* next node is required SignatureMethod. */
-    cur = xmlSecGetNextElementNode( ((cur != NULL) ? cur->next : node->children) );
+    /* next node is required SignatureMethod.
+     * Note: 'cur' already points to the element after the CanonicalizationMethod
+     * (or to the first element child if a default C14N method was used), so no advancement here. */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeSignatureMethod, xmlSecDSigNs))) {
         dsigCtx->signMethod = xmlSecTransformCtxNodeRead(&(dsigCtx->transformCtx),
                                         cur, xmlSecTransformUsageSignatureMethod);
@@ -1455,7 +1466,15 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
         outBuf = xmlSecBufferGetData(dsigRefCtx->result);
         outSize = xmlSecBufferGetSize(dsigRefCtx->result);
         XMLSEC_SAFE_CAST_SIZE_TO_INT(outSize, outLen, return(-1), NULL);
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeSetContentLen(digestValueNode, outBuf, outLen) < 0) {
+            xmlSecXmlError("xmlNodeSetContentLen", digestValueNode);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeSetContentLen() returns void and cannot report errors */
         xmlNodeSetContentLen(digestValueNode, outBuf, outLen);
+#endif /* LIBXML_VERSION >= 21300 */
 
         /* set success status and we are done */
         dsigRefCtx->status = xmlSecDSigStatusSucceeded;

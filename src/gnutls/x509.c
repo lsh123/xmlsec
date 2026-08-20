@@ -31,7 +31,6 @@
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/x509.h>
-#include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/private.h>
 
@@ -250,12 +249,10 @@ xmlSecGnuTLSKeyDataX509AddCertInternal(xmlSecGnuTLSX509DataCtxPtr ctx, gnutls_x5
 }
 
 /**
- * @brief Adds certificate to the X509 key data and sets the it as the key's
+ * @brief Adds certificate to the X509 key data and sets it as the key's
+ * certificate in @p data. On success, the @p data owns the cert.
  * @param data the pointer to X509 key data.
  * @param cert the pointer to GnuTLS X509 certificate.
- *
- * certificate in @p data. On success, the @p data owns the cert.
- *
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -337,7 +334,7 @@ xmlSecGnuTLSKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
 /**
  * @brief Gets the number of certificates in @p data.
  * @param data the pointer to X509 key data.
- * @return te number of certificates in @p data.
+ * @return the number of certificates in @p data.
  */
 xmlSecSize
 xmlSecGnuTLSKeyDataX509GetCertsSize(xmlSecKeyDataPtr data) {
@@ -402,7 +399,7 @@ xmlSecGnuTLSKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {
 /**
  * @brief Gets the number of crls in @p data.
  * @param data the pointer to X509 key data.
- * @return te number of crls in @p data.
+ * @return the number of crls in @p data.
  */
 xmlSecSize
 xmlSecGnuTLSKeyDataX509GetCrlsSize(xmlSecKeyDataPtr data) {
@@ -478,7 +475,7 @@ xmlSecGnuTLSKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
         xmlSecSize ii, size;
 
         size = xmlSecPtrListGetSize(&(ctxDst->certsList));
-        xmlSecAssert2(size == xmlSecPtrListGetSize(&(ctxDst->certsList)), -1);
+        xmlSecAssert2(size == xmlSecPtrListGetSize(&(ctxSrc->certsList)), -1);
         for(ii = 0; ii < size; ++ii) {
             gnutls_x509_crt_t cert = xmlSecPtrListGetItem(&(ctxSrc->certsList), ii);
             if(cert == ctxSrc->keyCert) {
@@ -548,7 +545,7 @@ xmlSecGnuTLSKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         xmlSecKeyDataDestroy(data);
         return(0);
     }
-    data = NULL; /* owned by data now */
+    data = NULL; /* owned by key now */
 
     /* success */
     return(0);
@@ -699,7 +696,6 @@ xmlSecGnuTLSKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
         fprintf(output, "</CRL>\n");
     }
 
-    /* we don't print out crls */
     fprintf(output, "</X509Data>\n");
 }
 
@@ -1193,7 +1189,7 @@ xmlSecGnuTLSKeyDataRawX509CertBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         xmlSecKeyDataDestroy(data);
         return(0);
     }
-    data = NULL; /* owned by data now */
+    data = NULL; /* owned by key now */
 
     /* success */
     return(0);

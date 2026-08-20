@@ -170,7 +170,7 @@ xmlSecGnuTLSKeyDataDEREncodedKeyValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr ke
 
 	err = gnutls_pubkey_import(pubkey, &datum, GNUTLS_X509_FMT_DER);
 	if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_pubkey_init", err, xmlSecKeyDataKlassGetName(id));
+        xmlSecGnuTLSError("gnutls_pubkey_import", err, xmlSecKeyDataKlassGetName(id));
         goto done;
 	}
 

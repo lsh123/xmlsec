@@ -214,11 +214,10 @@ xmlSecGnuTLSDigestInitialize(xmlSecTransformPtr transform) {
 
     /* check hash output size */
     ctx->dgstSize = gnutls_hash_get_len(ctx->dgstAlgo);
-    if(ctx->dgstSize <= 0) {
+    if ((ctx->dgstSize <= 0) || (ctx->dgstSize > XMLSEC_GNUTLS_MAX_DIGEST_SIZE)){
         xmlSecGnuTLSError("gnutls_hash_get_len", 0, NULL);
         return(-1);
     }
-    xmlSecAssert2(ctx->dgstSize < XMLSEC_GNUTLS_MAX_DIGEST_SIZE, -1);
 
     /* create hash */
     err =  gnutls_hash_init(&(ctx->hash), ctx->dgstAlgo);
@@ -353,6 +352,9 @@ xmlSecGnuTLSDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
     if(transform->status == xmlSecTransformStatusFinished) {
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
+    } else if(transform->status != xmlSecTransformStatusWorking) {
+        xmlSecInvalidTransformStatusError(transform);
+        return(-1);
     }
 
     return(0);

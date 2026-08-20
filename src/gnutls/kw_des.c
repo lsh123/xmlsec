@@ -281,6 +281,7 @@ xmlSecGnuTLSKWDes3GenerateRandom(xmlSecTransformPtr transform,
 
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize > 0, -1);
+    xmlSecAssert2(outWritten != NULL, -1);
 
     err = gnutls_rnd(GNUTLS_RND_RANDOM, out, outSize);
     if(err != GNUTLS_E_SUCCESS) {

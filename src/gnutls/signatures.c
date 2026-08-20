@@ -835,7 +835,7 @@ xmlSecGnuTLSReadDerInteger(const xmlSecByte * data, xmlSecSize dataSize, xmlSecS
 static int
 xmlSecGnuTLSFromDer(const gnutls_datum_t* src, gnutls_datum_t* dst, xmlSecSize size) {
     xmlSecSize ii = 0;
-    xmlSecSize len, srcSize;
+    xmlSecSize len, srcSize, seqEnd;
     int ret;
     int res = -1;
 
@@ -859,8 +859,7 @@ xmlSecGnuTLSFromDer(const gnutls_datum_t* src, gnutls_datum_t* dst, xmlSecSize s
 
     /* sequence tag */
     if(srcSize < ii + 1) {
-        xmlSecInvalidSizeLessThanError("Expected asn1 sequence tag",
-                    srcSize, ii + 2, NULL);
+        xmlSecInvalidSizeLessThanError("Expected asn1 sequence tag", srcSize, ii + 1, NULL);
         goto done;
     }
     if(src->data[ii] != XMLSEC_GNUTLS_ASN1_TAG_SEQUENCE) {
@@ -875,6 +874,11 @@ xmlSecGnuTLSFromDer(const gnutls_datum_t* src, gnutls_datum_t* dst, xmlSecSize s
         xmlSecInvalidDataError("Invalid DER sequence length", NULL);
         goto done;
     }
+    if(len > srcSize - ii) {
+        xmlSecInvalidDataError("DER sequence length exceeds data size", NULL);
+        goto done;
+    }
+    seqEnd = ii + len;
 
     /* r */
     ret = xmlSecGnuTLSReadDerInteger(src->data, srcSize, &ii, dst->data, size);
@@ -887,6 +891,12 @@ xmlSecGnuTLSFromDer(const gnutls_datum_t* src, gnutls_datum_t* dst, xmlSecSize s
     ret = xmlSecGnuTLSReadDerInteger(src->data, srcSize, &ii, dst->data + size, size);
     if(ret < 0) {
         xmlSecInvalidDataError("Cannot read DER integer s", NULL);
+        goto done;
+    }
+
+    /* check that the consumed content matches the declared SEQUENCE length */
+    if(ii != seqEnd) {
+        xmlSecInvalidDataError("DER sequence length mismatch", NULL);
         goto done;
     }
 
@@ -915,7 +925,7 @@ done:
 */
 static int
 xmlSecGnuTLSSignatureGetDerHalfSize(gnutls_sign_algorithm_t algo, xmlSecSize keySize, xmlSecSize * res) {
-    xmlSecAssert2(res != 0, -1);
+    xmlSecAssert2(res != NULL, -1);
 
     switch(algo) {
         /*  Fixed length (DSA-SHA*)  */
@@ -1221,9 +1231,6 @@ xmlSecGnuTLSSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
     out = &(transform->outBuf);
     inSize = xmlSecBufferGetSize(in);
     outSize = xmlSecBufferGetSize(out);
-
-    ctx = xmlSecGnuTLSSignatureGetCtx(transform);
-    xmlSecAssert2(ctx != NULL, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
         xmlSecAssert2(outSize == 0, -1);

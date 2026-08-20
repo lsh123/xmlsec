@@ -277,6 +277,10 @@ xmlSecGnuTLSKdfSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) 
     xmlSecAssert2(keyReq != NULL, -1);
 
     ctx = xmlSecGnuTLSKdfGetCtx(transform);
+    if(ctx == NULL) {
+        xmlSecInternalError("xmlSecGnuTLSKdfGetCtx", xmlSecTransformGetName(transform));
+        return(-1);
+    }
     xmlSecAssert2(ctx->keyId != NULL, -1);
 
     keyReq->keyId       = ctx->keyId;
@@ -712,6 +716,13 @@ xmlSecGnuTLSPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     ret = xmlSecTransformPbkdf2ParamsRead(&(ctx->u.pbkdf2.params), cur);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformPbkdf2ParamsRead", NULL);
+        return(-1);
+    }
+
+    /* if we have something else then it's an error */
+    cur = xmlSecGetNextElementNode(cur->next);
+    if(cur != NULL) {
+        xmlSecUnexpectedNodeError(cur,  NULL);
         return(-1);
     }
 

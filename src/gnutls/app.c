@@ -632,7 +632,7 @@ xmlSecGnuTLSAppPemDerPubKeyLoadMemory(const gnutls_datum_t * datum, gnutls_x509_
 	/* Convert our raw public-key to a gnutls_pubkey_t structure */
 	err = gnutls_pubkey_import(pubkey, datum, fmt);
 	if(err < 0) {
-        xmlSecGnuTLSError("gnutls_pubkey_init", err, NULL);
+        xmlSecGnuTLSError("gnutls_pubkey_import", err, NULL);
         gnutls_pubkey_deinit(pubkey);
         return(NULL);
 	}

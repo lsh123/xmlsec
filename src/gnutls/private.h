@@ -185,7 +185,7 @@ void                    xmlSecGnuTLSDnAttrsInitialize           (xmlSecGnuTLSDnA
                                                                  xmlSecSize attrsSize);
 void                    xmlSecGnuTLSDnAttrsDeinitialize         (xmlSecGnuTLSDnAttr * attrs,
                                                                  xmlSecSize attrsSize);
-const xmlSecGnuTLSDnAttr * xmlSecGnuTLSDnAttrrsFind             (const xmlSecGnuTLSDnAttr * attrs,
+const xmlSecGnuTLSDnAttr * xmlSecGnuTLSDnAttrsFind              (const xmlSecGnuTLSDnAttr * attrs,
                                                                  xmlSecSize attrsSize,
                                                                  const xmlChar * key);
 int                     xmlSecGnuTLSDnAttrsEqual                (const xmlSecGnuTLSDnAttr * ll,

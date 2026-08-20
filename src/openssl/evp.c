@@ -1066,39 +1066,39 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
 #ifndef XMLSEC_OPENSSL_API_300
 
+/* on success, the ownership of @p dsa is transfered to @p data,
+ * on error, the caller is still responsible for destroying it
+ */
 static int
 xmlSecOpenSSLKeyDataDsaAdoptDsa(xmlSecKeyDataPtr data, DSA* dsa) {
     EVP_PKEY* pKey = NULL;
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId), -1);
+    xmlSecAssert2(dsa != NULL, -1);
 
     /* construct new EVP_PKEY */
-    if(dsa != NULL) {
-        pKey = EVP_PKEY_new();
-        if(pKey == NULL) {
-            xmlSecOpenSSLError("EVP_PKEY_new",
-                               xmlSecKeyDataGetName(data));
-            return(-1);
-        }
-        ret = EVP_PKEY_assign_DSA(pKey, dsa);
-        if(ret != 1) {
-            xmlSecOpenSSLError("EVP_PKEY_assign_DSA",
-                               xmlSecKeyDataGetName(data));
-            EVP_PKEY_free(pKey);
-            return(-1);
-        }
+    pKey = EVP_PKEY_new();
+    if(pKey == NULL) {
+        xmlSecOpenSSLError("EVP_PKEY_new", xmlSecKeyDataGetName(data));
+        return(-1);
     }
 
     ret = xmlSecOpenSSLKeyDataDsaAdoptEvp(data, pKey);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataDsaAdoptEvp",
-                            xmlSecKeyDataGetName(data));
-        if(pKey != NULL) {
-            EVP_PKEY_free(pKey);
-        }
+        xmlSecInternalError("xmlSecOpenSSLKeyDataDsaAdoptEvp", xmlSecKeyDataGetName(data));
+        EVP_PKEY_free(pKey);
         return(-1);
     }
+    /* data owns pKey now */
+
+    ret = EVP_PKEY_assign_DSA(pKey, dsa);
+    if(ret != 1) {
+        xmlSecOpenSSLError("EVP_PKEY_assign_DSA", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+
+    /* success: data->pKey owns dsa now */
     return(0);
 }
 
@@ -1190,11 +1190,10 @@ xmlSecOpenSSLKeyDataDsaSetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDsaP
 
     ret = xmlSecOpenSSLKeyDataDsaAdoptDsa(data, dsa);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataDsaAdoptDsa",
-            xmlSecKeyDataGetName(data));
+        xmlSecInternalError("xmlSecOpenSSLKeyDataDsaAdoptDsa", xmlSecKeyDataGetName(data));
         goto done;
     }
-    dsa = NULL;
+    dsa = NULL;  /* ownership transferred to AdoptDsa */
 
     /* success */
     res = 0;
@@ -1245,7 +1244,7 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
         xmlSecInternalError("xmlSecOpenSSLKeyDataDsaAdoptDsa", xmlSecKeyDataGetName(data));
         goto done;
     }
-    dsa = NULL;
+    dsa = NULL;  /* ownership transferred to AdoptDsa */
 
     /* success */
     res = 0;
@@ -1382,14 +1381,12 @@ xmlSecOpenSSLKeyDataDsaSetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDsaP
      */
     ret = EVP_PKEY_fromdata(ctx, &pKey, (dsaKeyValue->priv_key != NULL) ? EVP_PKEY_KEYPAIR : EVP_PKEY_PUBLIC_KEY, params);
     if(ret <= 0) {
-        xmlSecOpenSSLError("EVP_PKEY_fromdata",
-            xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("EVP_PKEY_fromdata", xmlSecKeyDataGetName(data));
         goto done;
     }
     ret = xmlSecOpenSSLKeyDataDsaAdoptEvp(data, pKey);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataDsaAdoptEvp",
-            xmlSecKeyDataGetName(data));
+        xmlSecInternalError("xmlSecOpenSSLKeyDataDsaAdoptEvp", xmlSecKeyDataGetName(data));
         goto done;
     }
     pKey = NULL;
@@ -1835,39 +1832,39 @@ xmlSecOpenSSLKeyDataDhXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
 #ifndef XMLSEC_OPENSSL_API_300
 
+/* on success, the ownership of @p dh is transfered to @p data,
+ * on error, the caller is still responsible for destroying it
+ */
 static int
 xmlSecOpenSSLKeyDataDhAdoptDh(xmlSecKeyDataPtr data, DH* dh) {
     EVP_PKEY* pKey = NULL;
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDhId), -1);
+    xmlSecAssert2(dh != NULL, -1);
 
     /* construct new EVP_PKEY */
-    if(dh != NULL) {
-        pKey = EVP_PKEY_new();
-        if(pKey == NULL) {
-            xmlSecOpenSSLError("EVP_PKEY_new",
-                               xmlSecKeyDataGetName(data));
-            return(-1);
-        }
-        ret = EVP_PKEY_assign_DH(pKey, dh);
-        if(ret != 1) {
-            xmlSecOpenSSLError("EVP_PKEY_assign_DH",
-                               xmlSecKeyDataGetName(data));
-            EVP_PKEY_free(pKey);
-            return(-1);
-        }
+    pKey = EVP_PKEY_new();
+    if(pKey == NULL) {
+        xmlSecOpenSSLError("EVP_PKEY_new", xmlSecKeyDataGetName(data));
+        return(-1);
     }
 
     ret = xmlSecOpenSSLKeyDataDhAdoptEvp(data, pKey);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataDhAdoptEvp",
-                            xmlSecKeyDataGetName(data));
-        if(pKey != NULL) {
-            EVP_PKEY_free(pKey);
-        }
+        xmlSecInternalError("xmlSecOpenSSLKeyDataDhAdoptEvp", xmlSecKeyDataGetName(data));
+        EVP_PKEY_free(pKey);
         return(-1);
     }
+    /* data owns pKey now*/
+
+    ret = EVP_PKEY_assign_DH(pKey, dh);
+    if(ret != 1) {
+        xmlSecOpenSSLError("EVP_PKEY_assign_DH", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+
+    /* success: data->pKey owns dh now */
     return(0);
 }
 
@@ -1959,11 +1956,10 @@ xmlSecOpenSSLKeyDataDhSetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDhPtr
 
     ret = xmlSecOpenSSLKeyDataDhAdoptDh(data, dh);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataDhAdoptDh",
-            xmlSecKeyDataGetName(data));
+        xmlSecInternalError("xmlSecOpenSSLKeyDataDhAdoptDh", xmlSecKeyDataGetName(data));
         goto done;
     }
-    dh = NULL;
+    dh = NULL;  /* ownership transferred to data */
 
     /* success */
     res = 0;
@@ -2013,7 +2009,7 @@ xmlSecOpenSSLKeyDataDhGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSe
         xmlSecInternalError("xmlSecOpenSSLKeyDataDhAdoptDh", xmlSecKeyDataGetName(data));
         goto done;
     }
-    dh = NULL;
+    dh = NULL;  /* ownership transferred to data */
 
     /* success */
     res = 0;
@@ -2665,6 +2661,9 @@ xmlSecOpenSSLKeyDataEcGetEcKey(xmlSecKeyDataPtr data) {
     return((pKey != NULL) ? EVP_PKEY_get0_EC_KEY(pKey) : NULL);
 }
 
+/* on success, the ownership of @p ecKey is transfered to @p data,
+ * on error, the caller is still responsible for destroying it
+ */
 static int
 xmlSecOpenSSLKeyDataEcSetEcKey(xmlSecKeyDataPtr data,  EC_KEY* ecKey) {
     EVP_PKEY* pKey;
@@ -2683,20 +2682,22 @@ xmlSecOpenSSLKeyDataEcSetEcKey(xmlSecKeyDataPtr data,  EC_KEY* ecKey) {
         return(-1);
     }
 
-    ret = EVP_PKEY_set1_EC_KEY(pKey, ecKey);
-    if(ret != 1) {
-        xmlSecOpenSSLError("EVP_PKEY_set1_EC_KEY", xmlSecKeyDataGetName(data));
-        EVP_PKEY_free(pKey);
-        return(-1);
-    }
-
     ret = xmlSecOpenSSLKeyDataEcAdoptEvp(data, pKey);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLKeyDataEcAdoptEvp", xmlSecKeyDataGetName(data));
         EVP_PKEY_free(pKey);
         return(-1);
     }
-    pKey = NULL; /* owned by data */
+    /* data owns pKey now */
+
+    ret = EVP_PKEY_set1_EC_KEY(pKey, ecKey);
+    if(ret != 1) {
+        xmlSecOpenSSLError("EVP_PKEY_set1_EC_KEY", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+    EC_KEY_free(ecKey);
+
+    /* success: data -> pKey owns ecKey now */
     return(0);
 }
 
@@ -2866,6 +2867,7 @@ xmlSecOpenSSLKeyDataEcSetValue(xmlSecKeyDataPtr data, const xmlChar* curveOid, x
         xmlSecInternalError("xmlSecOpenSSLKeyDataEcSetEcKey", xmlSecKeyDataGetName(data));
         goto done;
     }
+    eckey = NULL; /* data owns eckey now */
 
     /* success */
     res = 0;
@@ -3296,40 +3298,40 @@ xmlSecOpenSSLKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 }
 
 #ifndef XMLSEC_OPENSSL_API_300
+
+/* on success, the ownership of @p rsa is transfered to @p data,
+ * on error, the caller is still responsible for destroying it
+ */
 static int
 xmlSecOpenSSLKeyDataRsaAdoptRsa(xmlSecKeyDataPtr data, RSA* rsa) {
     EVP_PKEY* pKey = NULL;
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId), -1);
+    xmlSecAssert2(rsa != NULL, -1);
 
     /* construct new EVP_PKEY */
-    if(rsa != NULL) {
-        pKey = EVP_PKEY_new();
-        if(pKey == NULL) {
-            xmlSecOpenSSLError("EVP_PKEY_new",
-                               xmlSecKeyDataGetName(data));
-            return(-1);
-        }
-
-        ret = EVP_PKEY_assign_RSA(pKey, rsa);
-        if(ret != 1) {
-            xmlSecOpenSSLError("EVP_PKEY_assign_RSA",
-                               xmlSecKeyDataGetName(data));
-            EVP_PKEY_free(pKey);
-            return(-1);
-        }
+    pKey = EVP_PKEY_new();
+    if(pKey == NULL) {
+        xmlSecOpenSSLError("EVP_PKEY_new", xmlSecKeyDataGetName(data));
+        return(-1);
     }
 
     ret = xmlSecOpenSSLKeyDataRsaAdoptEvp(data, pKey);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataRsaAdoptEvp",
-                            xmlSecKeyDataGetName(data));
-        if(pKey != NULL) {
-            EVP_PKEY_free(pKey);
-        }
+        xmlSecInternalError("xmlSecOpenSSLKeyDataRsaAdoptEvp", xmlSecKeyDataGetName(data));
+        EVP_PKEY_free(pKey);
         return(-1);
     }
+    /* data owns pKey now */
+
+    ret = EVP_PKEY_assign_RSA(pKey, rsa);
+    if(ret != 1) {
+        xmlSecOpenSSLError("EVP_PKEY_assign_RSA", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+
+    /* success: data -> pKey owns rsa now */
     return(0);
 }
 
@@ -3391,8 +3393,7 @@ xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
         xmlSecInternalError("xmlSecOpenSSLKeyDataRsaAdoptRsa", xmlSecKeyDataGetName(data));
         goto done;
     }
-    rsa = NULL;
-
+    rsa = NULL;  /* ownership transferred to AdoptRsa */
 
     /* success */
     res = 0;
@@ -3469,7 +3470,7 @@ xmlSecOpenSSLKeyDataRsaSetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueRsaP
             xmlSecKeyDataGetName(data));
         goto done;
     }
-    rsa = NULL;
+    rsa = NULL;  /* ownership transferred to AdoptRsa */
 
     /* success */
     res = 0;

@@ -240,7 +240,15 @@ xmlSecNssKeyDataDEREncodedKeyValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
         xmlSecInternalError("xmlSecBase64Encode", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeAddContent(node, content) < 0) {
+        xmlSecXmlError("xmlNodeAddContent", node);
+        goto done;
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeAddContent() returns void and cannot report errors */
     xmlNodeAddContent(node, content);
+#endif /* LIBXML_VERSION >= 21300 */
 
     /* success */
     res = 0;

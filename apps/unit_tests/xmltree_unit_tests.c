@@ -111,7 +111,17 @@ test_xmlSecGetNodeContentAndTrim_plain(void) {
         return;
     }
     root = xmlDocGetRootElement(doc);
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeSetContent(root, BAD_CAST "hello") < 0) {
+        testLog("Error: failed to set node content\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
     xmlNodeSetContent(root, BAD_CAST "hello");
+#endif /* LIBXML_VERSION >= 21300 */
 
     content = xmlSecGetNodeContentAndTrim(root);
     if(content == NULL || xmlStrcmp(content, BAD_CAST "hello") != 0) {
@@ -141,7 +151,17 @@ test_xmlSecGetNodeContentAndTrim_leading_trailing_spaces(void) {
         return;
     }
     root = xmlDocGetRootElement(doc);
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeSetContent(root, BAD_CAST "   hello world   ") < 0) {
+        testLog("Error: failed to set node content\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
     xmlNodeSetContent(root, BAD_CAST "   hello world   ");
+#endif /* LIBXML_VERSION >= 21300 */
 
     content = xmlSecGetNodeContentAndTrim(root);
     if(content == NULL || xmlStrcmp(content, BAD_CAST "hello world") != 0) {
@@ -171,7 +191,17 @@ test_xmlSecGetNodeContentAndTrim_tabs_and_newlines(void) {
         return;
     }
     root = xmlDocGetRootElement(doc);
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeSetContent(root, BAD_CAST "\t\n  value  \n\t") < 0) {
+        testLog("Error: failed to set node content\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
     xmlNodeSetContent(root, BAD_CAST "\t\n  value  \n\t");
+#endif /* LIBXML_VERSION >= 21300 */
 
     content = xmlSecGetNodeContentAndTrim(root);
     if(content == NULL || xmlStrcmp(content, BAD_CAST "value") != 0) {
@@ -201,7 +231,17 @@ test_xmlSecGetNodeContentAndTrim_whitespace_only_becomes_empty(void) {
         return;
     }
     root = xmlDocGetRootElement(doc);
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeSetContent(root, BAD_CAST "   \t ") < 0) {
+        testLog("Error: failed to set node content\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
     xmlNodeSetContent(root, BAD_CAST "   \t ");
+#endif /* LIBXML_VERSION >= 21300 */
 
     content = xmlSecGetNodeContentAndTrim(root);
     /* whitespace-only input → trimmed to empty string "" (not NULL) */
@@ -236,7 +276,17 @@ test_xmlSecGetNodeContentAsSize_valid(void) {
         return;
     }
     root = xmlDocGetRootElement(doc);
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeSetContent(root, BAD_CAST "42") < 0) {
+        testLog("Error: failed to set node content\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
     xmlNodeSetContent(root, BAD_CAST "42");
+#endif /* LIBXML_VERSION >= 21300 */
 
     ret = xmlSecGetNodeContentAsSize(root, 0, &val);
     if(ret < 0 || val != 42) {
@@ -265,7 +315,17 @@ test_xmlSecGetNodeContentAsSize_with_spaces(void) {
         return;
     }
     root = xmlDocGetRootElement(doc);
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeSetContent(root, BAD_CAST "  128  ") < 0) {
+        testLog("Error: failed to set node content\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
     xmlNodeSetContent(root, BAD_CAST "  128  ");
+#endif /* LIBXML_VERSION >= 21300 */
 
     ret = xmlSecGetNodeContentAsSize(root, 0, &val);
     if(ret < 0 || val != 128) {
@@ -294,7 +354,17 @@ test_xmlSecGetNodeContentAsSize_zero(void) {
         return;
     }
     root = xmlDocGetRootElement(doc);
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeSetContent(root, BAD_CAST "0") < 0) {
+        testLog("Error: failed to set node content\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
     xmlNodeSetContent(root, BAD_CAST "0");
+#endif /* LIBXML_VERSION >= 21300 */
 
     ret = xmlSecGetNodeContentAsSize(root, 99, &val);
     if(ret < 0 || val != 0) {
@@ -323,7 +393,17 @@ test_xmlSecGetNodeContentAsSize_negative_fails(void) {
         return;
     }
     root = xmlDocGetRootElement(doc);
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeSetContent(root, BAD_CAST "-5") < 0) {
+        testLog("Error: failed to set node content\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
     xmlNodeSetContent(root, BAD_CAST "-5");
+#endif /* LIBXML_VERSION >= 21300 */
 
     ret = xmlSecGetNodeContentAsSize(root, 0, &val);
     if(ret >= 0) {
@@ -352,7 +432,17 @@ test_xmlSecGetNodeContentAsSize_nonnumeric_fails(void) {
         return;
     }
     root = xmlDocGetRootElement(doc);
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeSetContent(root, BAD_CAST "abc") < 0) {
+        testLog("Error: failed to set node content\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
     xmlNodeSetContent(root, BAD_CAST "abc");
+#endif /* LIBXML_VERSION >= 21300 */
 
     ret = xmlSecGetNodeContentAsSize(root, 0, &val);
     if(ret >= 0) {
@@ -410,7 +500,17 @@ test_xmlSecGetNodeContentAsSize_whitespace_only_returns_default(void) {
         return;
     }
     root = xmlDocGetRootElement(doc);
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeSetContent(root, BAD_CAST "   \t\n\r  ") < 0) {
+        testLog("Error: failed to set node content\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
     xmlNodeSetContent(root, BAD_CAST "   \t\n\r  ");
+#endif /* LIBXML_VERSION >= 21300 */
 
     ret = xmlSecGetNodeContentAsSize(root, 42, &val);
     if(ret < 0 || val != 42) {
@@ -613,7 +713,17 @@ test_xmlSecIsEmptyNode_whitespace_text(void) {
         return;
     }
     root = xmlDocGetRootElement(doc);
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeSetContent(root, BAD_CAST "   \n\t  ") < 0) {
+        testLog("Error: failed to set node content\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
     xmlNodeSetContent(root, BAD_CAST "   \n\t  ");
+#endif /* LIBXML_VERSION >= 21300 */
 
     ret = xmlSecIsEmptyNode(root);
     if(ret != 1) {
@@ -641,7 +751,17 @@ test_xmlSecIsEmptyNode_text_content(void) {
         return;
     }
     root = xmlDocGetRootElement(doc);
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeSetContent(root, BAD_CAST "hello") < 0) {
+        testLog("Error: failed to set node content\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
     xmlNodeSetContent(root, BAD_CAST "hello");
+#endif /* LIBXML_VERSION >= 21300 */
 
     ret = xmlSecIsEmptyNode(root);
     if(ret != 0) {

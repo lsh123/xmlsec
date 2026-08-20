@@ -696,19 +696,45 @@ xmlSecKeyX509DataValueXmlWriteBase64Blob(xmlSecBufferPtr buf, xmlNodePtr node,
 
     child = xmlSecEnsureEmptyChild(node, nodeName, nodeNs);
     if(child == NULL) {
-        xmlSecInternalError2("xmlSecEnsureEmptyChild()", NULL,
-            "nodeName=%s", xmlSecErrorsSafeString(nodeName));
+        xmlSecInternalError2("xmlSecEnsureEmptyChild()", NULL, "nodeName=%s", xmlSecErrorsSafeString(nodeName));
         goto done;
     }
 
     if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeAddContent(child, xmlSecGetDefaultLineFeed()) < 0) {
+            xmlSecXmlError("xmlNodeAddContent", child);
+            child = NULL;
+            goto done;
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeAddContent() returns void and cannot report errors */
         xmlNodeAddContent(child, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
     }
 
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeSetContent(child, content) < 0) {
+        xmlSecXmlError("xmlNodeSetContent", child);
+        child = NULL;
+        goto done;
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
     xmlNodeSetContent(child, content);
+#endif /* LIBXML_VERSION >= 21300 */
 
     if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeAddContent(child, xmlSecGetDefaultLineFeed()) < 0) {
+            xmlSecXmlError("xmlNodeAddContent", child);
+            child = NULL;
+            goto done;
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeAddContent() returns void and cannot report errors */
         xmlNodeAddContent(child, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
     }
 
     /* success */
@@ -738,7 +764,15 @@ xmlSecKeyX509DataValueXmlWriteString(const xmlChar* content, xmlNodePtr node,
         return(-1);
     }
 
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeSetContent(cur, content) < 0) {
+        xmlSecXmlError("xmlNodeSetContent", cur);
+        return(-1);
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
     xmlNodeSetContent(cur, content);
+#endif /* LIBXML_VERSION >= 21300 */
 
     /* success */
     return(0);

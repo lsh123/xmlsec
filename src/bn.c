@@ -803,7 +803,15 @@ xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
     }
 
     if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+            xmlSecXmlError("xmlNodeAddContent", cur);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeAddContent() returns void and cannot report errors */
         xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
     }
 
     switch(format) {
@@ -820,7 +828,16 @@ xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
             xmlSecInternalError("xmlSecBnToHexString", NULL);
             return(-1);
         }
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeSetContent(cur, content) < 0) {
+            xmlSecXmlError("xmlNodeSetContent", cur);
+            xmlFree(content);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
         xmlNodeSetContent(cur, content);
+#endif /* LIBXML_VERSION >= 21300 */
         xmlFree(content);
         break;
     case xmlSecBnDec:
@@ -829,13 +846,30 @@ xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
             xmlSecInternalError("xmlSecBnToDecString", NULL);
             return(-1);
         }
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeSetContent(cur, content) < 0) {
+            xmlSecXmlError("xmlNodeSetContent", cur);
+            xmlFree(content);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
         xmlNodeSetContent(cur, content);
+#endif /* LIBXML_VERSION >= 21300 */
         xmlFree(content);
         break;
     }
 
     if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+            xmlSecXmlError("xmlNodeAddContent", cur);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeAddContent() returns void and cannot report errors */
         xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
     }
 
     return(0);

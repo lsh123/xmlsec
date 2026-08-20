@@ -1596,7 +1596,15 @@ xmlSecTmplTransformAddHmacOutputLength(xmlNodePtr transformNode, xmlSecSize bits
     sprintf(buf, XMLSEC_SIZE_FMT, bitsLen);
 #endif /* defined(_MSC_VER) */
 
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeSetContent(cur, BAD_CAST buf) < 0) {
+        xmlSecXmlError("xmlNodeSetContent", cur);
+        return(-1);
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
     xmlNodeSetContent(cur, BAD_CAST buf);
+#endif /* LIBXML_VERSION >= 21300 */
     return(0);
 }
 
@@ -1636,7 +1644,16 @@ xmlSecTmplTransformAddRsaOaepParam(xmlNodePtr transformNode, const xmlSecByte *b
         return(-1);
     }
 
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeSetContent(oaepParamNode, base64) < 0) {
+        xmlSecXmlError("xmlNodeSetContent", oaepParamNode);
+        xmlFree(base64);
+        return(-1);
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
     xmlNodeSetContent(oaepParamNode, base64);
+#endif /* LIBXML_VERSION >= 21300 */
     xmlFree(base64);
     return(0);
 }

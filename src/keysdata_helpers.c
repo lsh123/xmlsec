@@ -300,7 +300,16 @@ xmlSecKeyDataBinaryValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                             xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeSetContent(node, str) < 0) {
+        xmlSecXmlError("xmlNodeSetContent", node);
+        xmlFree(str);
+        return(-1);
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
     xmlNodeSetContent(node, str);
+#endif /* LIBXML_VERSION >= 21300 */
     xmlFree(str);
     return(0);
 }
@@ -1028,9 +1037,25 @@ xmlSecKeyValueEcXmlWrite(xmlSecKeyValueEcPtr data, xmlNodePtr node,  int base64L
         return(-1);
     }
     if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+            xmlSecXmlError("xmlNodeSetContent", cur);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
         xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
     } else {
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeSetContent(cur, xmlSecStringEmpty) < 0) {
+            xmlSecXmlError("xmlNodeSetContent", cur);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
         xmlNodeSetContent(cur, xmlSecStringEmpty);
+#endif /* LIBXML_VERSION >= 21300 */
     }
 
     ret = xmlSecBufferBase64NodeContentWrite(&(data->pubkey), cur, base64LineSize);
@@ -1039,7 +1064,15 @@ xmlSecKeyValueEcXmlWrite(xmlSecKeyValueEcPtr data, xmlNodePtr node,  int base64L
         return(-1);
     }
     if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+            xmlSecXmlError("xmlNodeAddContent", cur);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeAddContent() returns void and cannot report errors */
         xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
     }
 
     /* done */
@@ -1392,9 +1425,25 @@ xmlSecKeyValueDhXmlWrite(xmlSecKeyValueDhPtr data, xmlNodePtr node, int base64Li
             return(-1);
         }
         if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+            if(xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+                xmlSecXmlError("xmlNodeSetContent", cur);
+                return(-1);
+            }
+#else /* LIBXML_VERSION >= 21300 */
+            /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
             xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
         } else {
+#if LIBXML_VERSION >= 21300
+            if(xmlNodeSetContent(cur, xmlSecStringEmpty) < 0) {
+                xmlSecXmlError("xmlNodeSetContent", cur);
+                return(-1);
+            }
+#else /* LIBXML_VERSION >= 21300 */
+            /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
             xmlNodeSetContent(cur, xmlSecStringEmpty);
+#endif /* LIBXML_VERSION >= 21300 */
         }
         ret = xmlSecBufferBase64NodeContentWrite(&(data->p), cur, base64LineSize);
         if(ret < 0) {
@@ -1402,7 +1451,15 @@ xmlSecKeyValueDhXmlWrite(xmlSecKeyValueDhPtr data, xmlNodePtr node, int base64Li
             return(-1);
         }
         if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+            if(xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+                xmlSecXmlError("xmlNodeAddContent", cur);
+                return(-1);
+            }
+#else /* LIBXML_VERSION >= 21300 */
+            /* libxml2 < 2.13.0: xmlNodeAddContent() returns void and cannot report errors */
             xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
         }
     }
 
@@ -1414,9 +1471,25 @@ xmlSecKeyValueDhXmlWrite(xmlSecKeyValueDhPtr data, xmlNodePtr node, int base64Li
             return(-1);
         }
         if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+            if(xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+                xmlSecXmlError("xmlNodeSetContent", cur);
+                return(-1);
+            }
+#else /* LIBXML_VERSION >= 21300 */
+            /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
             xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
         } else {
+#if LIBXML_VERSION >= 21300
+            if(xmlNodeSetContent(cur, xmlSecStringEmpty) < 0) {
+                xmlSecXmlError("xmlNodeSetContent", cur);
+                return(-1);
+            }
+#else /* LIBXML_VERSION >= 21300 */
+            /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
             xmlNodeSetContent(cur, xmlSecStringEmpty);
+#endif /* LIBXML_VERSION >= 21300 */
         }
         ret = xmlSecBufferBase64NodeContentWrite(&(data->q), cur, base64LineSize);
         if(ret < 0) {
@@ -1424,7 +1497,15 @@ xmlSecKeyValueDhXmlWrite(xmlSecKeyValueDhPtr data, xmlNodePtr node, int base64Li
             return(-1);
         }
         if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+            if(xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+                xmlSecXmlError("xmlNodeAddContent", cur);
+                return(-1);
+            }
+#else /* LIBXML_VERSION >= 21300 */
+            /* libxml2 < 2.13.0: xmlNodeAddContent() returns void and cannot report errors */
             xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
         }
     }
 
@@ -1436,9 +1517,25 @@ xmlSecKeyValueDhXmlWrite(xmlSecKeyValueDhPtr data, xmlNodePtr node, int base64Li
             return(-1);
         }
         if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+            if(xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+                xmlSecXmlError("xmlNodeSetContent", cur);
+                return(-1);
+            }
+#else /* LIBXML_VERSION >= 21300 */
+            /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
             xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
         } else {
+#if LIBXML_VERSION >= 21300
+            if(xmlNodeSetContent(cur, xmlSecStringEmpty) < 0) {
+                xmlSecXmlError("xmlNodeSetContent", cur);
+                return(-1);
+            }
+#else /* LIBXML_VERSION >= 21300 */
+            /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
             xmlNodeSetContent(cur, xmlSecStringEmpty);
+#endif /* LIBXML_VERSION >= 21300 */
         }
         ret = xmlSecBufferBase64NodeContentWrite(&(data->generator), cur, base64LineSize);
         if(ret < 0) {
@@ -1446,7 +1543,15 @@ xmlSecKeyValueDhXmlWrite(xmlSecKeyValueDhPtr data, xmlNodePtr node, int base64Li
             return(-1);
         }
         if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+            if(xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+                xmlSecXmlError("xmlNodeAddContent", cur);
+                return(-1);
+            }
+#else /* LIBXML_VERSION >= 21300 */
+            /* libxml2 < 2.13.0: xmlNodeAddContent() returns void and cannot report errors */
             xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
         }
     }
 
@@ -1457,9 +1562,25 @@ xmlSecKeyValueDhXmlWrite(xmlSecKeyValueDhPtr data, xmlNodePtr node, int base64Li
         return(-1);
     }
     if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+            xmlSecXmlError("xmlNodeSetContent", cur);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
         xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
     } else {
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeSetContent(cur, xmlSecStringEmpty) < 0) {
+            xmlSecXmlError("xmlNodeSetContent", cur);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
         xmlNodeSetContent(cur, xmlSecStringEmpty);
+#endif /* LIBXML_VERSION >= 21300 */
     }
     ret = xmlSecBufferBase64NodeContentWrite(&(data->public), cur, base64LineSize);
     if(ret < 0) {
@@ -1467,7 +1588,15 @@ xmlSecKeyValueDhXmlWrite(xmlSecKeyValueDhPtr data, xmlNodePtr node, int base64Li
         return(-1);
     }
     if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+            xmlSecXmlError("xmlNodeAddContent", cur);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeAddContent() returns void and cannot report errors */
         xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
     }
 
     /* next is optional seed node. */
@@ -1478,9 +1607,25 @@ xmlSecKeyValueDhXmlWrite(xmlSecKeyValueDhPtr data, xmlNodePtr node, int base64Li
             return(-1);
         }
         if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+            if(xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+                xmlSecXmlError("xmlNodeSetContent", cur);
+                return(-1);
+            }
+#else /* LIBXML_VERSION >= 21300 */
+            /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
             xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
         } else {
+#if LIBXML_VERSION >= 21300
+            if(xmlNodeSetContent(cur, xmlSecStringEmpty) < 0) {
+                xmlSecXmlError("xmlNodeSetContent", cur);
+                return(-1);
+            }
+#else /* LIBXML_VERSION >= 21300 */
+            /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
             xmlNodeSetContent(cur, xmlSecStringEmpty);
+#endif /* LIBXML_VERSION >= 21300 */
         }
         ret = xmlSecBufferBase64NodeContentWrite(&(data->seed), cur, base64LineSize);
         if(ret < 0) {
@@ -1488,7 +1633,15 @@ xmlSecKeyValueDhXmlWrite(xmlSecKeyValueDhPtr data, xmlNodePtr node, int base64Li
             return(-1);
         }
         if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+            if(xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+                xmlSecXmlError("xmlNodeAddContent", cur);
+                return(-1);
+            }
+#else /* LIBXML_VERSION >= 21300 */
+            /* libxml2 < 2.13.0: xmlNodeAddContent() returns void and cannot report errors */
             xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
         }
     }
 
@@ -1500,9 +1653,25 @@ xmlSecKeyValueDhXmlWrite(xmlSecKeyValueDhPtr data, xmlNodePtr node, int base64Li
             return(-1);
         }
         if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+            if(xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+                xmlSecXmlError("xmlNodeSetContent", cur);
+                return(-1);
+            }
+#else /* LIBXML_VERSION >= 21300 */
+            /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
             xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
         } else {
+#if LIBXML_VERSION >= 21300
+            if(xmlNodeSetContent(cur, xmlSecStringEmpty) < 0) {
+                xmlSecXmlError("xmlNodeSetContent", cur);
+                return(-1);
+            }
+#else /* LIBXML_VERSION >= 21300 */
+            /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
             xmlNodeSetContent(cur, xmlSecStringEmpty);
+#endif /* LIBXML_VERSION >= 21300 */
         }
         ret = xmlSecBufferBase64NodeContentWrite(&(data->pgenCounter), cur, base64LineSize);
         if(ret < 0) {
@@ -1510,7 +1679,15 @@ xmlSecKeyValueDhXmlWrite(xmlSecKeyValueDhPtr data, xmlNodePtr node, int base64Li
             return(-1);
         }
         if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+            if(xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+                xmlSecXmlError("xmlNodeAddContent", cur);
+                return(-1);
+            }
+#else /* LIBXML_VERSION >= 21300 */
+            /* libxml2 < 2.13.0: xmlNodeAddContent() returns void and cannot report errors */
             xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
         }
     }
 
@@ -1867,9 +2044,25 @@ xmlSecKeyValueDsaXmlWrite(xmlSecKeyValueDsaPtr data, xmlNodePtr node,
         return(-1);
     }
     if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+            xmlSecXmlError("xmlNodeSetContent", cur);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
         xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
     } else {
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeSetContent(cur, xmlSecStringEmpty) < 0) {
+            xmlSecXmlError("xmlNodeSetContent", cur);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
         xmlNodeSetContent(cur, xmlSecStringEmpty);
+#endif /* LIBXML_VERSION >= 21300 */
     }
     ret = xmlSecBufferBase64NodeContentWrite(&(data->p), cur, base64LineSize);
     if(ret < 0) {
@@ -1877,7 +2070,15 @@ xmlSecKeyValueDsaXmlWrite(xmlSecKeyValueDsaPtr data, xmlNodePtr node,
         return(-1);
     }
     if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+            xmlSecXmlError("xmlNodeAddContent", cur);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeAddContent() returns void and cannot report errors */
         xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
     }
 
     /* next is Q node. */
@@ -1887,9 +2088,25 @@ xmlSecKeyValueDsaXmlWrite(xmlSecKeyValueDsaPtr data, xmlNodePtr node,
         return(-1);
     }
     if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+            xmlSecXmlError("xmlNodeSetContent", cur);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
         xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
     } else {
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeSetContent(cur, xmlSecStringEmpty) < 0) {
+            xmlSecXmlError("xmlNodeSetContent", cur);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
         xmlNodeSetContent(cur, xmlSecStringEmpty);
+#endif /* LIBXML_VERSION >= 21300 */
     }
     ret = xmlSecBufferBase64NodeContentWrite(&(data->q), cur, base64LineSize);
     if(ret < 0) {
@@ -1897,7 +2114,15 @@ xmlSecKeyValueDsaXmlWrite(xmlSecKeyValueDsaPtr data, xmlNodePtr node,
         return(-1);
     }
     if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+            xmlSecXmlError("xmlNodeAddContent", cur);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeAddContent() returns void and cannot report errors */
         xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
     }
 
     /* next is G node. */
@@ -1907,9 +2132,25 @@ xmlSecKeyValueDsaXmlWrite(xmlSecKeyValueDsaPtr data, xmlNodePtr node,
         return(-1);
     }
     if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+            xmlSecXmlError("xmlNodeSetContent", cur);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
         xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
     } else {
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeSetContent(cur, xmlSecStringEmpty) < 0) {
+            xmlSecXmlError("xmlNodeSetContent", cur);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
         xmlNodeSetContent(cur, xmlSecStringEmpty);
+#endif /* LIBXML_VERSION >= 21300 */
     }
     ret = xmlSecBufferBase64NodeContentWrite(&(data->g), cur, base64LineSize);
     if(ret < 0) {
@@ -1917,7 +2158,15 @@ xmlSecKeyValueDsaXmlWrite(xmlSecKeyValueDsaPtr data, xmlNodePtr node,
         return(-1);
     }
     if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+            xmlSecXmlError("xmlNodeAddContent", cur);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeAddContent() returns void and cannot report errors */
         xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
     }
 
     /* next is X node: write it ONLY for private keys and ONLY if it is requested */
@@ -1928,9 +2177,25 @@ xmlSecKeyValueDsaXmlWrite(xmlSecKeyValueDsaPtr data, xmlNodePtr node,
             return(-1);
         }
         if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+            if(xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+                xmlSecXmlError("xmlNodeSetContent", cur);
+                return(-1);
+            }
+#else /* LIBXML_VERSION >= 21300 */
+            /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
             xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
         } else {
+#if LIBXML_VERSION >= 21300
+            if(xmlNodeSetContent(cur, xmlSecStringEmpty) < 0) {
+                xmlSecXmlError("xmlNodeSetContent", cur);
+                return(-1);
+            }
+#else /* LIBXML_VERSION >= 21300 */
+            /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
             xmlNodeSetContent(cur, xmlSecStringEmpty);
+#endif /* LIBXML_VERSION >= 21300 */
         }
         ret = xmlSecBufferBase64NodeContentWrite(&(data->x), cur, base64LineSize);
         if(ret < 0) {
@@ -1938,7 +2203,15 @@ xmlSecKeyValueDsaXmlWrite(xmlSecKeyValueDsaPtr data, xmlNodePtr node,
             return(-1);
         }
         if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+            if(xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+                xmlSecXmlError("xmlNodeAddContent", cur);
+                return(-1);
+            }
+#else /* LIBXML_VERSION >= 21300 */
+            /* libxml2 < 2.13.0: xmlNodeAddContent() returns void and cannot report errors */
             xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
         }
     }
 
@@ -1949,9 +2222,25 @@ xmlSecKeyValueDsaXmlWrite(xmlSecKeyValueDsaPtr data, xmlNodePtr node,
         return(-1);
     }
     if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+            xmlSecXmlError("xmlNodeSetContent", cur);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
         xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
     } else {
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeSetContent(cur, xmlSecStringEmpty) < 0) {
+            xmlSecXmlError("xmlNodeSetContent", cur);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
         xmlNodeSetContent(cur, xmlSecStringEmpty);
+#endif /* LIBXML_VERSION >= 21300 */
     }
     ret = xmlSecBufferBase64NodeContentWrite(&(data->y), cur, base64LineSize);
     if(ret < 0) {
@@ -1959,7 +2248,15 @@ xmlSecKeyValueDsaXmlWrite(xmlSecKeyValueDsaPtr data, xmlNodePtr node,
         return(-1);
     }
     if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+            xmlSecXmlError("xmlNodeAddContent", cur);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeAddContent() returns void and cannot report errors */
         xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
     }
 
     return(0);
@@ -2260,9 +2557,25 @@ xmlSecKeyValueRsaXmlWrite(xmlSecKeyValueRsaPtr data, xmlNodePtr node,
         return(-1);
     }
     if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+            xmlSecXmlError("xmlNodeSetContent", cur);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
         xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
     } else {
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeSetContent(cur, xmlSecStringEmpty) < 0) {
+            xmlSecXmlError("xmlNodeSetContent", cur);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
         xmlNodeSetContent(cur, xmlSecStringEmpty);
+#endif /* LIBXML_VERSION >= 21300 */
     }
     ret = xmlSecBufferBase64NodeContentWrite(&(data->modulus), cur, base64LineSize);
     if(ret < 0) {
@@ -2270,7 +2583,15 @@ xmlSecKeyValueRsaXmlWrite(xmlSecKeyValueRsaPtr data, xmlNodePtr node,
         return(-1);
     }
     if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+            xmlSecXmlError("xmlNodeAddContent", cur);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeAddContent() returns void and cannot report errors */
         xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
     }
 
     /* next is Exponent node. */
@@ -2280,9 +2601,25 @@ xmlSecKeyValueRsaXmlWrite(xmlSecKeyValueRsaPtr data, xmlNodePtr node,
         return(-1);
     }
     if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+            xmlSecXmlError("xmlNodeSetContent", cur);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
         xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
     } else {
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeSetContent(cur, xmlSecStringEmpty) < 0) {
+            xmlSecXmlError("xmlNodeSetContent", cur);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
         xmlNodeSetContent(cur, xmlSecStringEmpty);
+#endif /* LIBXML_VERSION >= 21300 */
     }
     ret = xmlSecBufferBase64NodeContentWrite(&(data->publicExponent), cur, base64LineSize);
     if(ret < 0) {
@@ -2290,7 +2627,15 @@ xmlSecKeyValueRsaXmlWrite(xmlSecKeyValueRsaPtr data, xmlNodePtr node,
         return(-1);
     }
     if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+            xmlSecXmlError("xmlNodeAddContent", cur);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeAddContent() returns void and cannot report errors */
         xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
     }
 
     /* next is PrivateExponent node: write it ONLY for private keys and ONLY if it is requested */
@@ -2301,9 +2646,25 @@ xmlSecKeyValueRsaXmlWrite(xmlSecKeyValueRsaPtr data, xmlNodePtr node,
             return(-1);
         }
         if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+            if(xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+                xmlSecXmlError("xmlNodeSetContent", cur);
+                return(-1);
+            }
+#else /* LIBXML_VERSION >= 21300 */
+            /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
             xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
         } else {
+#if LIBXML_VERSION >= 21300
+            if(xmlNodeSetContent(cur, xmlSecStringEmpty) < 0) {
+                xmlSecXmlError("xmlNodeSetContent", cur);
+                return(-1);
+            }
+#else /* LIBXML_VERSION >= 21300 */
+            /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
             xmlNodeSetContent(cur, xmlSecStringEmpty);
+#endif /* LIBXML_VERSION >= 21300 */
         }
         ret = xmlSecBufferBase64NodeContentWrite(&(data->privateExponent), cur, base64LineSize);
         if(ret < 0) {
@@ -2311,7 +2672,15 @@ xmlSecKeyValueRsaXmlWrite(xmlSecKeyValueRsaPtr data, xmlNodePtr node,
             return(-1);
         }
         if(addLineBreaks) {
+#if LIBXML_VERSION >= 21300
+            if(xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+                xmlSecXmlError("xmlNodeAddContent", cur);
+                return(-1);
+            }
+#else /* LIBXML_VERSION >= 21300 */
+            /* libxml2 < 2.13.0: xmlNodeAddContent() returns void and cannot report errors */
             xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
         }
     }
 

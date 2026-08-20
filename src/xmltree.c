@@ -160,7 +160,16 @@ xmlSecSetNodeContentAsHex(xmlNodePtr node, const xmlSecByte* data, xmlSecSize si
     }
     content[2 * size] = '\0';
 
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeSetContent(node, content) < 0) {
+        xmlSecXmlError("xmlNodeSetContent", node);
+        xmlFree(content);
+        return(-1);
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
     xmlNodeSetContent(node, content);
+#endif /* LIBXML_VERSION >= 21300 */
     xmlFree(content);
     return(0);
 }
@@ -748,7 +757,15 @@ xmlSecReplaceContentAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr *r
         }
     } else {
         /* just delete the content */
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeSetContent(node, NULL) < 0) {
+            xmlSecXmlError("xmlNodeSetContent", node);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
         xmlNodeSetContent(node, NULL);
+#endif /* LIBXML_VERSION >= 21300 */
     }
 
     /* swap nodes */
@@ -847,10 +864,27 @@ xmlSecNodeEncodeAndSetContent(xmlNodePtr node, const xmlChar * buffer) {
             xmlSecXmlError("xmlEncodeSpecialChars", NULL);
             return(-1);
         }
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeSetContent(node, tmp) < 0) {
+            xmlSecXmlError("xmlNodeSetContent", node);
+            xmlFree(tmp);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
         xmlNodeSetContent(node, tmp);
+#endif /* LIBXML_VERSION >= 21300 */
         xmlFree(tmp);
     } else {
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeSetContent(node, NULL) < 0) {
+            xmlSecXmlError("xmlNodeSetContent", node);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
         xmlNodeSetContent(node, NULL);
+#endif /* LIBXML_VERSION >= 21300 */
     }
     return(0);
 }
@@ -1442,7 +1476,16 @@ xmlSecQName2IntegerNodeWrite(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr no
         return(-1);
     }
 
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeSetContent(cur, qname) < 0) {
+        xmlSecXmlError("xmlNodeSetContent", cur);
+        xmlFree(qname);
+        return(-1);
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
     xmlNodeSetContent(cur, qname);
+#endif /* LIBXML_VERSION >= 21300 */
     xmlFree(qname);
     return(0);
 }
@@ -1847,7 +1890,16 @@ xmlSecQName2BitMaskNodesWrite(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr n
                 return(-1);
             }
 
+#if LIBXML_VERSION >= 21300
+            if(xmlNodeSetContent(cur, qname) < 0) {
+                xmlSecXmlError("xmlNodeSetContent", cur);
+                xmlFree(qname);
+                return(-1);
+            }
+#else /* LIBXML_VERSION >= 21300 */
+            /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
             xmlNodeSetContent(cur, qname);
+#endif /* LIBXML_VERSION >= 21300 */
             xmlFree(qname);
         }
     }

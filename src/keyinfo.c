@@ -915,7 +915,15 @@ xmlSecKeyDataValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node
     xmlSecAssert2(nodeName != NULL, -1);
 
     /* remove all existing key value */
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeSetContent(node, NULL) < 0) {
+        xmlSecXmlError("xmlNodeSetContent", node);
+        return(-1);
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
     xmlNodeSetContent(node, NULL);
+#endif /* LIBXML_VERSION >= 21300 */
 
     /* create key node */
     cur = xmlSecAddChild(node, nodeName, nodeNs);

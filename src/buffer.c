@@ -650,7 +650,16 @@ xmlSecBufferBase64NodeContentWrite(xmlSecBufferPtr buf, xmlNodePtr node, int col
         return(-1);
     }
 
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeAddContent(node, content) < 0) {
+        xmlSecXmlError("xmlNodeAddContent", node);
+        xmlFree(content);
+        return(-1);
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeAddContent() returns void and cannot report errors */
     xmlNodeAddContent(node, content);
+#endif /* LIBXML_VERSION >= 21300 */
     xmlFree(content);
 
     return(0);

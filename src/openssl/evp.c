@@ -1084,19 +1084,22 @@ xmlSecOpenSSLKeyDataDsaAdoptDsa(xmlSecKeyDataPtr data, DSA* dsa) {
         return(-1);
     }
 
+    ret = EVP_PKEY_assign_DSA(pKey, dsa);
+    if(ret != 1) {
+        xmlSecOpenSSLError("EVP_PKEY_assign_DSA", xmlSecKeyDataGetName(data));
+        EVP_PKEY_free(pKey);
+        return(-1);
+    }
+    /* pKey owns dsa now */
+
     ret = xmlSecOpenSSLKeyDataDsaAdoptEvp(data, pKey);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLKeyDataDsaAdoptEvp", xmlSecKeyDataGetName(data));
+        DSA_up_ref(dsa); /* give dsa back to the caller (ignore return value) */
         EVP_PKEY_free(pKey);
         return(-1);
     }
     /* data owns pKey now */
-
-    ret = EVP_PKEY_assign_DSA(pKey, dsa);
-    if(ret != 1) {
-        xmlSecOpenSSLError("EVP_PKEY_assign_DSA", xmlSecKeyDataGetName(data));
-        return(-1);
-    }
 
     /* success: data->pKey owns dsa now */
     return(0);
@@ -1850,19 +1853,22 @@ xmlSecOpenSSLKeyDataDhAdoptDh(xmlSecKeyDataPtr data, DH* dh) {
         return(-1);
     }
 
+    ret = EVP_PKEY_assign_DH(pKey, dh);
+    if(ret != 1) {
+        xmlSecOpenSSLError("EVP_PKEY_assign_DH", xmlSecKeyDataGetName(data));
+        EVP_PKEY_free(pKey);
+        return(-1);
+    }
+    /* pKey owns dh now */
+
     ret = xmlSecOpenSSLKeyDataDhAdoptEvp(data, pKey);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLKeyDataDhAdoptEvp", xmlSecKeyDataGetName(data));
+        DH_up_ref(dh); /* give dh back to the caller (ignore return value) */
         EVP_PKEY_free(pKey);
         return(-1);
     }
     /* data owns pKey now*/
-
-    ret = EVP_PKEY_assign_DH(pKey, dh);
-    if(ret != 1) {
-        xmlSecOpenSSLError("EVP_PKEY_assign_DH", xmlSecKeyDataGetName(data));
-        return(-1);
-    }
 
     /* success: data->pKey owns dh now */
     return(0);
@@ -2682,6 +2688,13 @@ xmlSecOpenSSLKeyDataEcSetEcKey(xmlSecKeyDataPtr data,  EC_KEY* ecKey) {
         return(-1);
     }
 
+    ret = EVP_PKEY_set1_EC_KEY(pKey, ecKey);
+    if(ret != 1) {
+        xmlSecOpenSSLError("EVP_PKEY_set1_EC_KEY", xmlSecKeyDataGetName(data));
+        EVP_PKEY_free(pKey);
+        return(-1);
+    }
+
     ret = xmlSecOpenSSLKeyDataEcAdoptEvp(data, pKey);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLKeyDataEcAdoptEvp", xmlSecKeyDataGetName(data));
@@ -2690,14 +2703,8 @@ xmlSecOpenSSLKeyDataEcSetEcKey(xmlSecKeyDataPtr data,  EC_KEY* ecKey) {
     }
     /* data owns pKey now */
 
-    ret = EVP_PKEY_set1_EC_KEY(pKey, ecKey);
-    if(ret != 1) {
-        xmlSecOpenSSLError("EVP_PKEY_set1_EC_KEY", xmlSecKeyDataGetName(data));
-        return(-1);
-    }
-    EC_KEY_free(ecKey);
-
     /* success: data -> pKey owns ecKey now */
+    EC_KEY_free(ecKey);
     return(0);
 }
 
@@ -3316,20 +3323,22 @@ xmlSecOpenSSLKeyDataRsaAdoptRsa(xmlSecKeyDataPtr data, RSA* rsa) {
         xmlSecOpenSSLError("EVP_PKEY_new", xmlSecKeyDataGetName(data));
         return(-1);
     }
+    ret = EVP_PKEY_assign_RSA(pKey, rsa);
+    if(ret != 1) {
+        xmlSecOpenSSLError("EVP_PKEY_assign_RSA", xmlSecKeyDataGetName(data));
+        EVP_PKEY_free(pKey);
+        return(-1);
+    }
+    /* pKey owns rsa now */
 
     ret = xmlSecOpenSSLKeyDataRsaAdoptEvp(data, pKey);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLKeyDataRsaAdoptEvp", xmlSecKeyDataGetName(data));
+        RSA_up_ref(rsa); /* give rsa back to the caller (ignore return value) */
         EVP_PKEY_free(pKey);
         return(-1);
     }
     /* data owns pKey now */
-
-    ret = EVP_PKEY_assign_RSA(pKey, rsa);
-    if(ret != 1) {
-        xmlSecOpenSSLError("EVP_PKEY_assign_RSA", xmlSecKeyDataGetName(data));
-        return(-1);
-    }
 
     /* success: data -> pKey owns rsa now */
     return(0);

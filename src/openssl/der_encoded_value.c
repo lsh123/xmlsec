@@ -244,7 +244,16 @@ xmlSecOpenSSLKeyDataDEREncodedKeyValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr 
         xmlSecInternalError("xmlSecBase64Encode", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
+#if LIBXML_VERSION >= 21300
+    ret = xmlNodeAddContent(node, content);
+    if(ret < 0) {
+        xmlSecInternalError("xmlNodeAddContent", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeAddContent() returns void and cannot report errors */
     xmlNodeAddContent(node, content);
+#endif /* LIBXML_VERSION >= 21300 */
 
     /* success */
     res = 0;

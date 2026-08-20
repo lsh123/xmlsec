@@ -437,32 +437,35 @@ xmlSecOpenSSLKWDes3Encrypt(const xmlSecByte* key, xmlSecSize keySize,
     xmlSecAssert2(outSize >= inSize, -1);
     xmlSecAssert2(outWritten != NULL, -1);
 
-    len = EVP_CIPHER_key_length(EVP_des_ede3_cbc());
+#ifndef XMLSEC_OPENSSL_API_300
+    cipher = EVP_des_ede3_cbc();
+    if(cipher == NULL) {
+        xmlSecOpenSSLError("EVP_des_ede3_cbc", NULL);
+        goto done;
+    }
+#else /* XMLSEC_OPENSSL_API_300 */
+    cipher = EVP_CIPHER_fetch(xmlSecOpenSSLGetLibCtx(), XMLSEC_OPENSSL_CIPHER_NAME_DES3_EDE, NULL);
+    if(cipher == NULL) {
+        xmlSecOpenSSLError("EVP_CIPHER_fetch(des3)", NULL);
+        goto done;
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
+
+    len = EVP_CIPHER_key_length(cipher);
     if(len <= 0) {
-        xmlSecOpenSSLError("EVP_CIPHER_key_length(EVP_des_ede3_cbc)", NULL);
+        xmlSecOpenSSLError("EVP_CIPHER_key_length", NULL);
         goto done;
     }
     XMLSEC_OPENSSL_SAFE_CAST_UINT_TO_SIZE(len, size, goto done, NULL);
     xmlSecAssert2(keySize == size, -1);
 
-    len = EVP_CIPHER_iv_length(EVP_des_ede3_cbc());
+    len = EVP_CIPHER_iv_length(cipher);
     if (len <= 0) {
-        xmlSecOpenSSLError("EVP_CIPHER_iv_length(EVP_des_ede3_cbc)", NULL);
+        xmlSecOpenSSLError("EVP_CIPHER_iv_length", NULL);
         goto done;
     }
     XMLSEC_OPENSSL_SAFE_CAST_UINT_TO_SIZE(len, size, goto done, NULL);
     xmlSecAssert2(ivSize == size, -1);
-
-#ifndef XMLSEC_OPENSSL_API_300
-    cipher = EVP_des_ede3_cbc();
-#else /* XMLSEC_OPENSSL_API_300 */
-    cipher = EVP_CIPHER_fetch(xmlSecOpenSSLGetLibCtx(), XMLSEC_OPENSSL_CIPHER_NAME_DES3_EDE, NULL);
-    if(cipher == NULL) {
-        xmlSecOpenSSLError("EVP_CIPHER_fetch(DES3_EDE)", NULL);
-        goto done;
-    }
-
-#endif /* XMLSEC_OPENSSL_API_300 */
 
     cipherCtx = EVP_CIPHER_CTX_new();
     if(cipherCtx == NULL) {

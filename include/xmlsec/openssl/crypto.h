@@ -78,7 +78,6 @@
 #define XMLSEC_NO_MLKEM                 1
 #define XMLSEC_NO_SLHDSA                1
 #define XMLSEC_NO_EDDSA                 1
-#define XMLSEC_NO_XDH                   1
 #endif /* !defined(XMLSEC_OPENSSL_API_350) */
 
 #if !defined(XMLSEC_OPENSSL_API_300)
@@ -924,7 +923,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformHkdfGetKlass(void);
 
 /******************************************************************************
  *
- * RipeMD160 transforms
+ * RIPEMD160 transforms
  *
   *****************************************************************************/
 #ifndef XMLSEC_NO_RIPEMD160

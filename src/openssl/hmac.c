@@ -455,6 +455,12 @@ xmlSecOpenSSLHmacVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->dgstSizeInBits > 0, -1);
 
+    /* defensive bounds check: ensure the digest fits in the fixed-size buffer */
+    if(XMLSEC_TRANSFORM_HMAC_BITS_TO_BYTES(ctx->dgstSizeInBits) > EVP_MAX_MD_SIZE) {
+        xmlSecInternalError("xmlSecOpenSSLHmacVerify: hmac size is too long", xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
     /* Returns 1 for match, 0 for no match, <0 for errors. */
     ret = xmlSecTransformHmacVerify(data, dataSize, ctx->dgst, ctx->dgstSizeInBits, EVP_MAX_MD_SIZE);
     if(ret < 0) {

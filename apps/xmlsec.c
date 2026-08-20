@@ -859,6 +859,20 @@ static xmlSecAppCmdLineParam enableAsn1SignaturesHackParam = {
     NULL
 };
 
+static xmlSecAppCmdLineParam relationshipLegacyParam = {
+    xmlSecAppCmdLineTopicDSigCommon,
+    "--relationship-legacy",
+    NULL,
+    "--relationship-legacy"
+    "\n\tuse the legacy Relationship transform behaviour: keep foreign namespace"
+    "\n\tdeclarations (written as a single unprefixed xmlns=\"...\") and do not remove"
+    "\n\ttext/comment nodes. This restores the pre-spec-conformance output for backward"
+    "\n\tcompatibility with documents signed by older xmlsec versions.",
+    xmlSecAppCmdLineParamTypeFlag,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};
+
 
 #endif /* XMLSEC_NO_XMLDSIG */
 
@@ -1099,6 +1113,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &enabledRefUrisParam,
     &enableVisa3DHackParam,
     &enableAsn1SignaturesHackParam,
+    &relationshipLegacyParam,
 
 #ifndef XMLSEC_NO_HMAC
     &hmacMinOutputLenParam,
@@ -1917,6 +1932,9 @@ xmlSecAppPrepareDSigCtx(xmlSecDSigCtxPtr dsigCtx) {
     }
     if(xmlSecAppCmdLineParamIsSet(&enableAsn1SignaturesHackParam)) {
         dsigCtx->flags |= XMLSEC_DSIG_FLAGS_USE_ASN1_SIGNATURE_VALUES;
+    }
+    if(xmlSecAppCmdLineParamIsSet(&relationshipLegacyParam)) {
+        dsigCtx->flags |= XMLSEC_DSIG_FLAGS_RELATIONSHIP_LEGACY;
     }
 
 #ifndef XMLSEC_NO_HMAC

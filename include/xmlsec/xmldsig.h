@@ -108,6 +108,16 @@ typedef enum {
 #define XMLSEC_DSIG_FLAGS_USE_ASN1_SIGNATURE_VALUES             0x00000020
 
 /**
+ * @brief If set, use the legacy Relationship transform behaviour.
+ * @details If this flag is set then the Relationship transform restores its historical
+ * behaviour for foreign namespace declarations and text/comment node removal (see
+ * #XMLSEC_TRANSFORMCTX_FLAGS_RELATIONSHIP_LEGACY). This is propagated to the transform
+ * context of every Reference. It exists purely for backward compatibility with documents
+ * signed by older xmlsec versions and is off by default.
+ */
+#define XMLSEC_DSIG_FLAGS_RELATIONSHIP_LEGACY                   0x00000040
+
+/**
  * @brief XML DSig processing context.
  */
 struct _xmlSecDSigCtx {

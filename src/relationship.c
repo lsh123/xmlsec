@@ -456,6 +456,15 @@ xmlSecTransformRelationshipWriteEscapedValue(xmlOutputBufferPtr buf, const xmlCh
 
     /* Worst case every character expands to "&quot;" (6 bytes). */
     len = strlen((const char*)value);
+    if(len > ((SIZE_MAX - 1U) / 6U)) {
+        xmlSecSize lenSize;
+        xmlSecSize maxLenSize;
+
+        XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(len, lenSize, return(-1), NULL);
+        XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(((SIZE_MAX - 1U) / 6U), maxLenSize, return(-1), NULL);
+        xmlSecInvalidSizeError("value", lenSize, maxLenSize, NULL);
+        return(-1);
+    }
     escaped = xmlMalloc(len * 6 + 1);
     if(escaped == NULL) {
         xmlSecXmlError("xmlMalloc", NULL);
@@ -541,21 +550,32 @@ xmlSecTransformRelationshipWriteProp(xmlOutputBufferPtr buf, const xmlChar * nam
 static int
 xmlSecTransformRelationshipWriteNsDecl(xmlOutputBufferPtr buf, xmlNsPtr ns) {
     xmlChar* name;
+    xmlChar* tmp;
+    const xmlChar* href;
     int ret;
 
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(ns != NULL, -1);
 
+    href = (ns->href != NULL) ? ns->href : BAD_CAST "";
     if(ns->prefix == NULL) {
-        return(xmlSecTransformRelationshipWriteProp(buf, BAD_CAST "xmlns", ns->href));
+        return(xmlSecTransformRelationshipWriteProp(buf, BAD_CAST "xmlns", href));
     }
 
-    name = xmlStrcat(BAD_CAST "xmlns:", ns->prefix);
+    name = xmlStrdup(BAD_CAST "xmlns:");
     if(name == NULL) {
-        xmlSecXmlError("xmlStrcat", NULL);
+        xmlSecXmlError("xmlStrdup", NULL);
         return(-1);
     }
-    ret = xmlSecTransformRelationshipWriteProp(buf, name, ns->href);
+    tmp = xmlStrcat(name, ns->prefix);
+    if(tmp == NULL) {
+        xmlSecXmlError("xmlStrcat", NULL);
+        xmlFree(name);
+        return(-1);
+    }
+    name = tmp;
+
+    ret = xmlSecTransformRelationshipWriteProp(buf, name, href);
     xmlFree(name);
     return(ret);
 }
@@ -612,7 +632,7 @@ xmlSecTransformRelationshipProcessElementNode(xmlSecTransformPtr transform, xmlO
         }
     } else {
         for(ns = cur->nsDef; ns != NULL; ns = ns->next) {
-            if(xmlStrcmp(ns->href, xmlSecRelationshipsNs) != 0) {
+            if((ns->href == NULL) || (xmlStrcmp(ns->href, xmlSecRelationshipsNs) != 0)) {
                 continue;
             }
             ret = xmlSecTransformRelationshipWriteNsDecl(buf, ns);

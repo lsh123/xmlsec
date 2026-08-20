@@ -182,4 +182,38 @@ xmlsec_dsig_verify_fuzzer_DEPENDENCIES = \
 	$(XMLSEC_LIBS) \
 	$(NULL)
 
+# xmlsec KeyInfo fuzzer (OSS-Fuzz harness — OpenSSL only)
+noinst_PROGRAMS += xmlsec_keyinfo_fuzzer
+
+xmlsec_keyinfo_fuzzer_SOURCES = \
+	oss-fuzz/xmlsec_keyinfo_target.c \
+	oss-fuzz/standalone_fuzz_runner.c \
+	$(NULL)
+
+xmlsec_keyinfo_fuzzer_CFLAGS = \
+	-DPACKAGE=\"@PACKAGE@\" \
+	-I../include \
+	-I$(top_srcdir)/include \
+	$(XMLSEC_DEFINES) \
+	$(XMLSEC_OPENSSL_CFLAGS) \
+	$(LIBXML_CFLAGS) \
+	$(NULL)
+
+xmlsec_keyinfo_fuzzer_LDFLAGS = \
+	@XMLSEC_STATIC_BINARIES@ \
+	@XMLSEC_EXTRA_LDFLAGS@ \
+	$(NULL)
+
+xmlsec_keyinfo_fuzzer_LDADD = \
+	$(LIBXML_LIBS) \
+	$(OPENSSL_LIBS) \
+	$(XMLSEC_OPENSSL_LIB) \
+	$(XMLSEC_LIBS) \
+	$(NULL)
+
+xmlsec_keyinfo_fuzzer_DEPENDENCIES = \
+	$(XMLSEC_OPENSSL_LIB) \
+	$(XMLSEC_LIBS) \
+	$(NULL)
+
 endif # !XMLSEC_NO_OPENSSL

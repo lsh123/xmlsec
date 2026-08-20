@@ -343,6 +343,7 @@ xmlSecGnuTLSBlockCipherCtxFinal(xmlSecGnuTLSBlockCipherCtxPtr ctx, xmlSecBufferP
     } else {
         /* update the last one block with padding */
         xmlSecAssert2(inSize == ctx->blockSize, -1);
+
         ret = xmlSecGnuTLSBlockCipherCtxUpdateBlock(ctx, inBuf, inSize, out, encrypt, cipherName);
         if(ret < 0) {
             xmlSecInternalError("xmlSecGnuTLSBlockCipherCtxUpdateBlock", xmlSecErrorsSafeString(cipherName));
@@ -358,9 +359,8 @@ xmlSecGnuTLSBlockCipherCtxFinal(xmlSecGnuTLSBlockCipherCtxPtr ctx, xmlSecBufferP
 
         /* get the pad length from the last byte */
         padSize = outBuf[outSize - 1];
-        if(padSize > ctx->blockSize) {
-            xmlSecInvalidSizeMoreThanError("Input pad size",
-                    padSize, ctx->blockSize, xmlSecErrorsSafeString(cipherName));
+        if((padSize == 0)  || (padSize > ctx->blockSize)) {
+            xmlSecInvalidSizeMoreThanError("Input pad size", padSize, ctx->blockSize, xmlSecErrorsSafeString(cipherName));
             return(-1);
         }
         xmlSecAssert2(padSize <= outSize, -1);

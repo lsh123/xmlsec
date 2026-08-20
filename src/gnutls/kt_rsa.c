@@ -560,8 +560,8 @@ xmlSecGnuTLSRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     /* GnuTLS uses the same digest for both OAEP hash and MGF1 hash.
      * If an MGF1 algorithm is specified, verify it matches the OAEP digest. */
     if(oaepParams.mgf1DigestAlgorithm == NULL) {
-        /* no MGF1 specified: GnuTLS will use OAEP digest for MGF1 (correct per XMLEnc 1.0 default) */
-        mgf1DigestAlg = digestAlg;
+        /* no MGF1 specified: default to SHA-1 per XMLEnc 1.0 */
+        mgf1DigestAlg = GNUTLS_DIG_SHA1;
     } else
 #ifndef XMLSEC_NO_SHA1
     if(xmlStrcmp(oaepParams.mgf1DigestAlgorithm, xmlSecHrefMgf1Sha1) == 0) {

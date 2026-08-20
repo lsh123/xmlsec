@@ -360,8 +360,8 @@ xmlSecGnuTLSAsymKeyDataGetSize(xmlSecKeyDataPtr data) {
     xmlSecSize res;
     int ret;
 
-    xmlSecAssert2(xmlSecKeyDataIsValid(data), xmlSecKeyDataTypeUnknown);
-    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecGnuTLSAsymKeyDataSize), xmlSecKeyDataTypeUnknown);
+    xmlSecAssert2(xmlSecKeyDataIsValid(data), 0);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecGnuTLSAsymKeyDataSize), 0);
 
     ctx = xmlSecGnuTLSAsymKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, 0);
@@ -392,14 +392,14 @@ xmlSecGnuTLSAsymKeyDataGetSize(xmlSecKeyDataPtr data) {
 
 /******************************************************************************
  *
- * Asymetric keys helpers
+ * Asymmetric keys helpers
  *
   *****************************************************************************/
 
 /**
  * @brief Creates XMLSec key from GnuTLS public key.
  * @param pubkey the pointer to GnuTLS public key.
- * @return 0 on success or a negative value otherwise.
+ * @return pointer to newly created key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecGnuTLSAsymmetricKeyCreatePub(gnutls_pubkey_t pubkey) {
@@ -452,7 +452,7 @@ xmlSecGCryptAsymetricKeyCreatePub(gnutls_pubkey_t pubkey) {
 /**
  * @brief Creates XMLSec key from GnuTLS private key.
  * @param privkey the pointer to GnuTLS private key.
- * @return 0 on success or a negative value otherwise.
+ * @return pointer to newly created key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecGnuTLSAsymmetricKeyCreatePriv(gnutls_privkey_t privkey) {
@@ -1144,7 +1144,7 @@ xmlSecGnuTLSKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyV
                 &curve, &pub_x, &pub_y, NULL,
                 GNUTLS_EXPORT_FLAG_NO_LZ);
         if(err != GNUTLS_E_SUCCESS) {
-            xmlSecGnuTLSError("gnutls_privkey_export_ec_raw2", err, xmlSecKeyDataKlassGetName(id));
+            xmlSecGnuTLSError("gnutls_privkey_export_ecc_raw2", err, xmlSecKeyDataKlassGetName(id));
             goto done;
         }
     } else if(pubkey != NULL) {
@@ -1152,7 +1152,7 @@ xmlSecGnuTLSKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyV
 			       &curve, &pub_x, &pub_y,
                    GNUTLS_EXPORT_FLAG_NO_LZ);
         if(err != GNUTLS_E_SUCCESS) {
-            xmlSecGnuTLSError("gnutls_pubkey_export_ec_raw2", err, xmlSecKeyDataKlassGetName(id));
+            xmlSecGnuTLSError("gnutls_pubkey_export_ecc_raw2", err, xmlSecKeyDataKlassGetName(id));
             goto done;
         }
     } else {
@@ -1508,6 +1508,7 @@ done:
         gnutls_free(publicExponent.data);
     }
     if(privateExponent.data != NULL) {
+        xmlSecMemCleanse(privateExponent.data, privateExponent.size);
         gnutls_free(privateExponent.data);
     }
 

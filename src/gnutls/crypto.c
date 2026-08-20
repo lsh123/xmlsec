@@ -212,8 +212,11 @@ xmlSecCryptoGetFunctions_gnutls(void) {
 
 #ifndef XMLSEC_NO_SHA1
     gXmlSecGnuTLSFunctions->transformDsaSha1GetKlass            = xmlSecGnuTLSTransformDsaSha1GetKlass;
-    gXmlSecGnuTLSFunctions->transformDsaSha256GetKlass          = xmlSecGnuTLSTransformDsaSha256GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    gXmlSecGnuTLSFunctions->transformDsaSha256GetKlass          = xmlSecGnuTLSTransformDsaSha256GetKlass;
+#endif /* XMLSEC_NO_SHA256 */
 
 #endif /* XMLSEC_NO_DSA */
 
@@ -424,9 +427,12 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     gXmlSecGnuTLSFunctions->cryptoAppKeysMngrCrlLoadAndVerify   = xmlSecGnuTLSAppKeysMngrCrlLoadAndVerify;
     gXmlSecGnuTLSFunctions->cryptoAppKeysMngrCrlLoadMemory      = xmlSecGnuTLSAppKeysMngrCrlLoadMemory;
     gXmlSecGnuTLSFunctions->cryptoAppPkcs12Load                 = xmlSecGnuTLSAppPkcs12Load;
+    gXmlSecGnuTLSFunctions->cryptoAppPkcs12LoadMemory           = xmlSecGnuTLSAppPkcs12LoadMemory;
     gXmlSecGnuTLSFunctions->cryptoAppKeyCertLoad                = xmlSecGnuTLSAppKeyCertLoad;
+    gXmlSecGnuTLSFunctions->cryptoAppKeyCertLoadMemory          = xmlSecGnuTLSAppKeyCertLoadMemory;
 #endif /* XMLSEC_NO_X509 */
     gXmlSecGnuTLSFunctions->cryptoAppKeyLoadEx                  = xmlSecGnuTLSAppKeyLoadEx;
+    gXmlSecGnuTLSFunctions->cryptoAppKeyLoadMemory              = xmlSecGnuTLSAppKeyLoadMemory;
     gXmlSecGnuTLSFunctions->cryptoAppDefaultPwdCallback         = (void*)xmlSecGnuTLSAppGetDefaultPwdCallback();
 
     return(gXmlSecGnuTLSFunctions);
@@ -507,7 +513,7 @@ xmlSecGnuTLSKeysMngrInit(xmlSecKeysMngrPtr mngr) {
  * @brief Generates random bytes into @p buffer.
  * @details Generates @p size random bytes and puts result in @p buffer.
  * @param buffer the destination buffer.
- * @param size the numer of bytes to generate.
+ * @param size the number of bytes to generate.
  * @return 0 on success or a negative value otherwise.
  */
 int

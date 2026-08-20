@@ -29,7 +29,7 @@
 
 /******************************************************************************
  *
- * Symmetic (binary) keys - just a wrapper for xmlSecKeyDataBinary
+ * Symmetric (binary) keys - just a wrapper for xmlSecKeyDataBinary
  *
   *****************************************************************************/
 static int      xmlSecGnuTLSSymKeyDataInitialize       (xmlSecKeyDataPtr data);
@@ -438,7 +438,7 @@ xmlSecGnuTLSKeyDataHmacSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecS
 #ifndef XMLSEC_NO_PBKDF2
 /******************************************************************************
  *
- * PBDKF2 key klass
+ * PBKDF2 key klass
  *
   *****************************************************************************/
 XMLSEC_GNUTLS_SYMKEY_KLASS_EX(Pbkdf2, xmlSecNamePbkdf2, xmlSecHrefPbkdf2, xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml, NULL, NULL)

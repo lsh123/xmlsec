@@ -82,7 +82,7 @@ xmlSecGnuTLSKeysStoreInitialize(xmlSecKeyStorePtr store) {
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecGnuTLSKeysStoreId), -1);
 
     simplekeystore = xmlSecGnuTLSKeysStoreGetCtx(store);
-    xmlSecAssert2(((simplekeystore == NULL) || (*simplekeystore == NULL)), -1);
+    xmlSecAssert2(((simplekeystore != NULL) && (*simplekeystore == NULL)), -1);
 
     *simplekeystore = xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId);
     if(*simplekeystore == NULL) {
@@ -101,9 +101,10 @@ xmlSecGnuTLSKeysStoreFinalize(xmlSecKeyStorePtr store) {
     xmlSecAssert(xmlSecKeyStoreCheckId(store, xmlSecGnuTLSKeysStoreId));
 
     simplekeystore = xmlSecGnuTLSKeysStoreGetCtx(store);
-    xmlSecAssert((simplekeystore != NULL) && (*simplekeystore != NULL));
-
-    xmlSecKeyStoreDestroy(*simplekeystore);
+    if((simplekeystore != NULL) && (*simplekeystore != NULL)) {
+        xmlSecKeyStoreDestroy(*simplekeystore);
+        *simplekeystore = NULL;
+    }
 }
 
 static xmlSecKeyPtr

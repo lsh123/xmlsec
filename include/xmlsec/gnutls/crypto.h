@@ -26,12 +26,6 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/dl.h>
 #include <gnutls/gnutls.h>
-#ifndef XMLSEC_NO_DSA
-#include <gnutls/x509.h>
-#endif /* XMLSEC_NO_DSA */
-#ifndef XMLSEC_NO_RSA
-#include <gnutls/x509.h>
-#endif /* XMLSEC_NO_RSA */
 
 #ifdef __cplusplus
 extern "C" {
@@ -48,7 +42,7 @@ extern "C" {
 #define XMLSEC_NO_RSA_OAEP      1
 #endif /* GNUTLS_VERSION_NUMBER < 0x030804 */
 
-/* ML-DSA was added in GnuTLS  3.8.9 (2025) */
+/* ML-DSA was added in GnuTLS 3.8.9 (2025) */
 #if GNUTLS_VERSION_NUMBER < 0x030809
 #define XMLSEC_NO_MLDSA        1
 #endif /* GNUTLS_VERSION_NUMBER < 0x030809 */
@@ -467,7 +461,7 @@ XMLSEC_CRYPTO_EXPORT gnutls_privkey_t   xmlSecGnuTLSKeyDataGost2001GetPrivateKey
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformGostR3411_94GetKlass(void);
 
 /**
- * @brief The GOST-2001 GOSTR3411-94 signature transform klass.
+ * @brief The GOST-2001 GOSTR3411_94 signature transform klass.
  * @details The GOST2001 GOSTR3411_94 signature transform klass.
  */
 #define xmlSecGnuTLSTransformGost2001GostR3411_94Id \
@@ -528,7 +522,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformGostR3411_2012_512Ge
 
 /**
  * @brief The GOST-2012 256-bit signature transform klass.
- * @details The GOST R 34.10-2012 - GOST R 3411-2012 256 bit signature transform klass.
+ * @details The GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform klass.
  */
 #define xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_256Id \
         xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_256GetKlass()
@@ -537,7 +531,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformGostR3410_2012GostR3
 
 /**
  * @brief The GOST-2012 512-bit signature transform klass.
- * @details The GOST R 34.10-2012 - GOST R 3411-2012 512 bit signature transform klass.
+ * @details The GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform klass.
  */
 #define xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_512Id \
         xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_512GetKlass()

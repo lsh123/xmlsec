@@ -581,6 +581,7 @@ void xmlSecGnuTLSX509FindCertCtxFinalize(xmlSecGnuTLSX509FindCertCtxPtr ctx) {
 static int
 xmlSecGnuTLSX509MatchBySubjectName(gnutls_x509_crt_t cert, const xmlChar* subjectName) {
     xmlChar * certSubjectName;
+    int ret;
 
     xmlSecAssert2(cert != NULL, -1);
 
@@ -590,11 +591,16 @@ xmlSecGnuTLSX509MatchBySubjectName(gnutls_x509_crt_t cert, const xmlChar* subjec
 
     certSubjectName = xmlSecGnuTLSX509CertGetSubjectDN(cert);
     if(certSubjectName == NULL) {
-        return(0);
+        return(-1);
     }
 
-    /* returns 1 if equal */
-    if(xmlSecGnuTLSX509DnsEqual(subjectName, certSubjectName) != 1) {
+    /* returns 1 if equal, -1 on error */
+    ret = xmlSecGnuTLSX509DnsEqual(subjectName, certSubjectName);
+    if(ret < 0) {
+        xmlFree(certSubjectName);
+        return(-1);
+    }
+    if(ret != 1) {
         xmlFree(certSubjectName);
         return(0);
     }
@@ -608,6 +614,7 @@ static int
 xmlSecGnuTLSX509MatchByIssuer(gnutls_x509_crt_t cert,  const xmlChar* issuerName, const xmlChar* issuerSerial) {
     xmlChar* certIssuerSerial;
     xmlChar* certIssuerName;
+    int ret;
 
     xmlSecAssert2(cert != NULL, -1);
 
@@ -616,14 +623,27 @@ xmlSecGnuTLSX509MatchByIssuer(gnutls_x509_crt_t cert,  const xmlChar* issuerName
     }
 
     certIssuerName = xmlSecGnuTLSX509CertGetIssuerDN(cert);
-    if((certIssuerName == NULL) || (xmlSecGnuTLSX509DnsEqual(issuerName, certIssuerName) != 1)) {
+    if(certIssuerName == NULL) {
+        return(-1);
+    }
+
+    /* returns 1 if equal, -1 on error */
+    ret = xmlSecGnuTLSX509DnsEqual(issuerName, certIssuerName);
+    if(ret < 0) {
+        xmlFree(certIssuerName);
+        return(-1);
+    }
+    if(ret != 1) {
         xmlFree(certIssuerName);
         return(0);
     }
     xmlFree(certIssuerName);
 
     certIssuerSerial = xmlSecGnuTLSX509CertGetIssuerSerial(cert);
-    if((certIssuerSerial == NULL) || (!xmlStrEqual(issuerSerial, certIssuerSerial))) {
+    if(certIssuerSerial == NULL) {
+        return(-1);
+    }
+    if(!xmlStrEqual(issuerSerial, certIssuerSerial)) {
         xmlFree(certIssuerSerial);
         return(0);
     }
@@ -1229,6 +1249,10 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const 
     res = 0;
 
 done:
+    if((res < 0) && (*priv_key != NULL)) {
+        gnutls_x509_privkey_deinit(*priv_key);
+        *priv_key = NULL;
+    }
     if(cert != NULL) {
         gnutls_x509_crt_deinit(cert);
     }
@@ -1273,7 +1297,7 @@ xmlSecGnuTLSDnAttrsDeinitialize(xmlSecGnuTLSDnAttr * attrs, xmlSecSize attrsSize
 }
 
 const xmlSecGnuTLSDnAttr *
-xmlSecGnuTLSDnAttrrsFind(const xmlSecGnuTLSDnAttr * attrs,
+xmlSecGnuTLSDnAttrsFind(const xmlSecGnuTLSDnAttr * attrs,
                          xmlSecSize attrsSize,
                          const xmlChar * key)
 {
@@ -1341,7 +1365,7 @@ xmlSecGnuTLSDnAttrsEqual(const xmlSecGnuTLSDnAttr * ll, xmlSecSize llSize,
             continue;
         }
 
-        tmp = xmlSecGnuTLSDnAttrrsFind(rr, rrSize, ll[ii].key);
+        tmp = xmlSecGnuTLSDnAttrsFind(rr, rrSize, ll[ii].key);
         if(tmp == NULL) {
             return(0); /* attribute was not found */
         }

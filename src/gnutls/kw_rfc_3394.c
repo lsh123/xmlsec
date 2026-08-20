@@ -392,8 +392,7 @@ xmlSecGnuTLSKWRfc3394BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte
     xmlSecAssert2(ctx->ivSize > 0, -1);
     xmlSecAssert2(ctx->ivSize <= XMLSEC_KW_RFC3394_BLOCK_SIZE, -1);
     xmlSecAssert2(ctx->blockSize > 0, -1);
-    xmlSecAssert2(inSize >= ctx->blockSize, -1);
-    xmlSecAssert2((inSize % ctx->blockSize) == 0, -1);
+    xmlSecAssert2(inSize == ctx->blockSize, -1);
 
     if(ctx->cipher == NULL) {
         ret = xmlSecGnuTLSKWRfc3394InitCipher(ctx);

@@ -863,6 +863,7 @@ xmlNodePtr
 xmlSecTmplEncDataEnsureCipherReference(xmlNodePtr encNode, const xmlChar *uri) {
     xmlNodePtr cipherDataNode;
     xmlNodePtr res, tmp;
+    int created = 0;
 
     xmlSecAssert2(encNode != NULL, NULL);
 
@@ -886,13 +887,16 @@ xmlSecTmplEncDataEnsureCipherReference(xmlNodePtr encNode, const xmlChar *uri) {
             xmlSecInternalError("xmlSecAddChild(xmlSecNodeCipherReference)", NULL);
             return(NULL);
         }
+        created = 1;
     }
 
     if(uri != NULL) {
         if(xmlSetProp(res, xmlSecAttrURI, uri) == NULL) {
             xmlSecXmlError2("xmlSetProp", NULL, "name=%s", xmlSecErrorsSafeString(xmlSecAttrURI));
-            xmlUnlinkNode(res);
-            xmlFreeNode(res);
+            if(created) {
+                xmlUnlinkNode(res);
+                xmlFreeNode(res);
+            }
             return(NULL);
         }
     }

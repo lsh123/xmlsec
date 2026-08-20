@@ -607,6 +607,9 @@ xmlSecBase64GetEncodeSize(xmlSecSize columnsSize, xmlSecSize inSize) {
 
     if(columnsSize > 1) {
         /* columnsSize is at least 2, so this is safe */
+        if(size > XMLSEC_SIZE_MAX - 1 - (size / columnsSize) - 4) {
+            return(0);
+        }
         size += (size / columnsSize) + 4;
     }
     if(size > XMLSEC_SIZE_MAX - 1) {
@@ -910,6 +913,16 @@ xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
                 } else {
                     outMaxLen = xmlSecBase64GetDecodeSize(inSize);
                 }
+                if(outMaxLen == 0) {
+                    xmlSecInternalError2("xmlSecBase64Execute", xmlSecTransformGetName(transform),
+                        "inSize=" XMLSEC_SIZE_FMT, inSize);
+                    return(-1);
+                }
+                if(outSize > XMLSEC_SIZE_MAX - outMaxLen) {
+                    xmlSecInternalError3("xmlSecBufferSetMaxSize", xmlSecTransformGetName(transform),
+                        "outSize=" XMLSEC_SIZE_FMT "; outMaxLen=" XMLSEC_SIZE_FMT, outSize, outMaxLen);
+                    return(-1);
+                }
                 ret = xmlSecBufferSetMaxSize(out, outSize + outMaxLen);
                 if(ret < 0) {
                     xmlSecInternalError2("xmlSecBufferSetMaxSize", xmlSecTransformGetName(transform),
@@ -946,6 +959,11 @@ xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
                 outSize = xmlSecBufferGetSize(out);
                 outMaxLen = 16; /* last block */
 
+                if(outSize > XMLSEC_SIZE_MAX - outMaxLen) {
+                    xmlSecInternalError3("xmlSecBufferSetMaxSize", xmlSecTransformGetName(transform),
+                        "outSize=" XMLSEC_SIZE_FMT "; outMaxLen=" XMLSEC_SIZE_FMT, outSize, outMaxLen);
+                    return(-1);
+                }
                 ret = xmlSecBufferSetMaxSize(out, outSize + outMaxLen);
                 if(ret < 0) {
                     xmlSecInternalError2("xmlSecBufferSetMaxSize", xmlSecTransformGetName(transform),

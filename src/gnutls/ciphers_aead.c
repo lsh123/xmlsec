@@ -329,8 +329,7 @@ xmlSecGnuTLSAeadCipherEncrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
 
     if(ctx->isIvPrepended) {
         /* AES-GCM mode: generate random IV and prepend it to output */
-        xmlSecAssert2(inSize > ctx->ivSize, -1);
-        xmlSecAssert2(plaintext != NULL, -1);
+        xmlSecAssert2(plaintext != NULL || inSize == 0, -1);
 
         /* output = IV + ciphertext + tag + extra room */
         outSize = ctx->ivSize + inSize + ctx->tagSize + 2 * XMLSEC_GNUTLS_AEAD_CIPHER_MAX_BLOCK_SIZE;

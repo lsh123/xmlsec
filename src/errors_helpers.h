@@ -879,7 +879,7 @@ extern "C" {
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
                     (const char*)(errorObject),             \
                     NULL,                                   \
-                    XMLSEC_ERROR_R_CAST_IMPOSSIBLE,         \
+                    XMLSEC_ERRORS_R_CAST_IMPOSSIBLE,        \
                     "src-type=" #srcType "; src-val=" srcFmt  \
                     ";dst-type=" #dstType "; dst-min=" dstFmt \
                     ";dst-max=" dstFmt "",                  \

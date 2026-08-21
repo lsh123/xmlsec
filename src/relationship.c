@@ -262,6 +262,11 @@ xmlSecTransformRelationshipCompare(xmlNodePtr node1, xmlNodePtr node2) {
 
     id1 = xmlGetProp(node1, xmlSecRelationshipAttrId);
     id2 = xmlGetProp(node2, xmlSecRelationshipAttrId);
+    if(id1 == NULL && id2 == NULL) {
+        /* Both lack an Id: treat as equal so the comparator is a strict weak ordering. */
+        ret = 0;
+        goto done;
+    }
     if(id1 == NULL) {
         ret = -1;
         goto done;
@@ -379,7 +384,25 @@ xmlSecTransformRelationshipProcessNodeList(xmlSecTransformPtr transform, xmlOutp
     }
 
     for(; cur; cur = cur->next) {
-        if(xmlStrcmp(cur->name, xmlSecNodeRelationship) == 0) {
+        /*
+         * Step 3: remove all characters (text nodes) and comments from the Relationships
+         * XML content. Only element nodes are serialized; text/comment/PI nodes are skipped
+         * so they are not written out as spurious <text>/<comment> elements.
+         *
+         * Legacy mode (XMLSEC_TRANSFORMCTX_FLAGS_RELATIONSHIP_LEGACY): restore the old
+         * behaviour and serialize non-element nodes as well.
+         */
+        if(((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_RELATIONSHIP_LEGACY) == 0) &&
+           (cur->type != XML_ELEMENT_NODE)) {
+            continue;
+        }
+
+        /*
+         * Step 2: only Relationship elements in the Relationships namespace are sorted and
+         * filtered. Match on name AND namespace so a foreign element that merely shares the
+         * local name "Relationship" is not mistaken for a real relationship entry.
+         */
+        if(xmlSecCheckNodeName(cur, xmlSecNodeRelationship, xmlSecRelationshipsNs)) {
             if(xmlListInsert(list, cur) != 0) {
                 xmlSecXmlError("xmlListInsert", xmlSecTransformGetName(transform));
                 xmlListDelete(list);
@@ -415,6 +438,70 @@ xmlSecTransformRelationshipProcessNodeList(xmlSecTransformPtr transform, xmlOutp
     return(0);
 }
 
+/*
+ * Writes an attribute value, escaping the XML special characters (&, <, >, ") so that the
+ * generated document stays well-formed. Without this, a Target value containing e.g. '&' or '"'
+ * would produce invalid XML that fails to re-parse ("EntityRef: expecting ';'").
+ */
+static int
+xmlSecTransformRelationshipWriteEscapedValue(xmlOutputBufferPtr buf, const xmlChar* value) {
+    xmlChar* escaped;
+    xmlChar* dst;
+    const xmlChar* src;
+    size_t len;
+    int ret;
+
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(value != NULL, -1);
+
+    /* Worst case every character expands to "&quot;" (6 bytes). */
+    len = strlen((const char*)value);
+    if(len > ((SIZE_MAX - 1U) / 6U)) {
+        xmlSecSize lenSize;
+        xmlSecSize maxLenSize;
+
+        XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(len, lenSize, return(-1), NULL);
+        XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(((SIZE_MAX - 1U) / 6U), maxLenSize, return(-1), NULL);
+        xmlSecInvalidSizeError("value", lenSize, maxLenSize, NULL);
+        return(-1);
+    }
+    escaped = xmlMalloc(len * 6 + 1);
+    if(escaped == NULL) {
+        xmlSecXmlError("xmlMalloc", NULL);
+        return(-1);
+    }
+
+    dst = escaped;
+    for(src = value; *src != '\0'; ++src) {
+        switch(*src) {
+        case '&':
+            memcpy(dst, "&amp;", 5);
+            dst += 5;
+            break;
+        case '<':
+            memcpy(dst, "&lt;", 4);
+            dst += 4;
+            break;
+        case '>':
+            memcpy(dst, "&gt;", 4);
+            dst += 4;
+            break;
+        case '"':
+            memcpy(dst, "&quot;", 6);
+            dst += 6;
+            break;
+        default:
+            *dst++ = *src;
+            break;
+        }
+    }
+    *dst = '\0';
+
+    ret = xmlOutputBufferWriteString(buf, (const char*)escaped);
+    xmlFree(escaped);
+    return(ret);
+}
+
 static int
 xmlSecTransformRelationshipWriteProp(xmlOutputBufferPtr buf, const xmlChar * name, const xmlChar * value) {
     int ret;
@@ -440,9 +527,9 @@ xmlSecTransformRelationshipWriteProp(xmlOutputBufferPtr buf, const xmlChar * nam
             xmlSecXmlError("xmlOutputBufferWriteString", NULL);
             return(-1);
         }
-        ret = xmlOutputBufferWriteString(buf, (const char*) value);
+        ret = xmlSecTransformRelationshipWriteEscapedValue(buf, value);
         if(ret < 0) {
-            xmlSecXmlError("xmlOutputBufferWriteString", NULL);
+            xmlSecXmlError("xmlSecTransformRelationshipWriteEscapedValue", NULL);
             return(-1);
         }
         ret = xmlOutputBufferWriteString(buf, "\"");
@@ -455,17 +542,49 @@ xmlSecTransformRelationshipWriteProp(xmlOutputBufferPtr buf, const xmlChar * nam
     return (0);
 }
 
+/*
+ * Writes a single namespace declaration, preserving the original prefix:
+ *   default namespace  ->  xmlns="href"
+ *   prefixed           ->  xmlns:prefix="href"
+ */
 static int
-xmlSecTransformRelationshipWriteNs(xmlOutputBufferPtr buf, const xmlChar * href) {
-    xmlSecAssert2(buf != NULL, -1);
+xmlSecTransformRelationshipWriteNsDecl(xmlOutputBufferPtr buf, xmlNsPtr ns) {
+    xmlChar* name;
+    xmlChar* tmp;
+    const xmlChar* href;
+    int ret;
 
-    return(xmlSecTransformRelationshipWriteProp(buf, BAD_CAST "xmlns", (href != NULL) ? href : BAD_CAST ""));
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(ns != NULL, -1);
+
+    href = (ns->href != NULL) ? ns->href : BAD_CAST "";
+    if(ns->prefix == NULL) {
+        return(xmlSecTransformRelationshipWriteProp(buf, BAD_CAST "xmlns", href));
+    }
+
+    name = xmlStrdup(BAD_CAST "xmlns:");
+    if(name == NULL) {
+        xmlSecXmlError("xmlStrdup", NULL);
+        return(-1);
+    }
+    tmp = xmlStrcat(name, ns->prefix);
+    if(tmp == NULL) {
+        xmlSecXmlError("xmlStrcat", NULL);
+        xmlFree(name);
+        return(-1);
+    }
+    name = tmp;
+
+    ret = xmlSecTransformRelationshipWriteProp(buf, name, href);
+    xmlFree(name);
+    return(ret);
 }
 
 
 static int
 xmlSecTransformRelationshipProcessElementNode(xmlSecTransformPtr transform, xmlOutputBufferPtr buf, xmlNodePtr cur, unsigned int depth, xmlSecTransformCtxPtr transformCtx) {
     xmlAttrPtr attr;
+    xmlNsPtr ns;
     int foundTargetMode = 0;
     int ret;
 
@@ -489,13 +608,39 @@ xmlSecTransformRelationshipProcessElementNode(xmlSecTransformPtr transform, xmlO
         return(-1);
     }
 
-    /* write namespaces */
-    if(cur->nsDef != NULL) {
-        ret = xmlSecTransformRelationshipWriteNs(buf, cur->nsDef->href);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecTransformRelationshipWriteNs",
-                                xmlSecTransformGetName(transform));
-            return(-1);
+    /*
+     * Write namespaces.
+     *
+     * Step 2, point 1: remove all namespace declarations except the Relationships namespace
+     * declaration. So we walk the declared namespaces and emit only the one(s) bound to the
+     * Relationships namespace, preserving the original prefix. Foreign namespace declarations
+     * (e.g. xmlns:foo="...") are dropped so they do not leak into the canonical output.
+     *
+     * Legacy mode (XMLSEC_TRANSFORMCTX_FLAGS_RELATIONSHIP_LEGACY): restore the old behaviour
+     * of writing a single unprefixed xmlns="..." declaration for the first declared namespace,
+     * regardless of whether it is the Relationships namespace.
+     */
+    if((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_RELATIONSHIP_LEGACY) != 0) {
+        if(cur->nsDef != NULL) {
+            ret = xmlSecTransformRelationshipWriteProp(buf, BAD_CAST "xmlns",
+                        (cur->nsDef->href != NULL) ? cur->nsDef->href : BAD_CAST "");
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecTransformRelationshipWriteProp(xmlns)",
+                                    xmlSecTransformGetName(transform));
+                return(-1);
+            }
+        }
+    } else {
+        for(ns = cur->nsDef; ns != NULL; ns = ns->next) {
+            if((ns->href == NULL) || (xmlStrcmp(ns->href, xmlSecRelationshipsNs) != 0)) {
+                continue;
+            }
+            ret = xmlSecTransformRelationshipWriteNsDecl(buf, ns);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecTransformRelationshipWriteNsDecl",
+                                    xmlSecTransformGetName(transform));
+                return(-1);
+            }
         }
     }
 
@@ -522,8 +667,12 @@ xmlSecTransformRelationshipProcessElementNode(xmlSecTransformPtr transform, xmlO
         xmlFree(value);
     }
 
-    /* write TargetMode */
-    if(xmlStrcmp(cur->name, xmlSecNodeRelationship) == 0 && !foundTargetMode) {
+    /*
+     * Step 3, point 6: add a TargetMode attribute with its default value ("Internal") if this
+     * optional attribute is missing. Only apply to real Relationship elements (Relationships
+     * namespace), not to foreign elements that merely share the local name.
+     */
+    if(xmlSecCheckNodeName(cur, xmlSecNodeRelationship, xmlSecRelationshipsNs) && !foundTargetMode) {
         ret = xmlSecTransformRelationshipWriteProp(buf, xmlSecRelationshipAttrTargetMode, BAD_CAST "Internal");
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformRelationshipWriteProp(TargetMode=Internal)", xmlSecTransformGetName(transform));
@@ -648,91 +797,20 @@ xmlSecTransformRelationshipPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPt
 
 static int
 xmlSecTransformRelationshipPopBin(xmlSecTransformPtr transform, xmlSecByte* data, xmlSecSize maxDataSize, xmlSecSize* dataSize, xmlSecTransformCtxPtr transformCtx) {
-    xmlSecBufferPtr out;
-    int ret;
-
-    xmlSecAssert2(data != NULL, -1);
-    xmlSecAssert2(dataSize != NULL, -1);
-    xmlSecAssert2(transformCtx != NULL, -1);
-
-    out = &(transform->outBuf);
-    if(transform->status == xmlSecTransformStatusNone) {
-       xmlOutputBufferPtr buf;
-
-       xmlSecAssert2(transform->inNodes == NULL, -1);
-
-       if(transform->prev == NULL) {
-           (*dataSize) = 0;
-           transform->status = xmlSecTransformStatusFinished;
-           return(0);
-       }
-
-       /* get xml data from previous transform */
-       ret = xmlSecTransformPopXml(transform->prev, &(transform->inNodes), transformCtx);
-       if(ret < 0) {
-           xmlSecInternalError("xmlSecTransformPopXml",
-                               xmlSecTransformGetName(transform));
-           return(-1);
-       }
-
-       /* dump everything to internal buffer */
-       buf = xmlSecBufferCreateOutputBuffer(out);
-       if(buf == NULL) {
-           xmlSecInternalError("xmlSecBufferCreateOutputBuffer",
-                               xmlSecTransformGetName(transform));
-           return(-1);
-       }
-
-       ret = xmlC14NExecute(transform->inNodes->doc, (xmlC14NIsVisibleCallback)xmlSecNodeSetContains, transform->inNodes, XML_C14N_1_0, NULL, 0, buf);
-       if(ret < 0) {
-            xmlSecInternalError("xmlC14NExecute",
-                                xmlSecTransformGetName(transform));
-           (void)xmlOutputBufferClose(buf);
-           return(-1);
-       }
-
-       ret = xmlOutputBufferClose(buf);
-       if(ret < 0) {
-           xmlSecXmlError("xmlOutputBufferClose", xmlSecTransformGetName(transform));
-           return(-1);
-       }
-       transform->status = xmlSecTransformStatusWorking;
-    }
-
-    if(transform->status == xmlSecTransformStatusWorking) {
-       xmlSecSize outSize;
-
-       /* return chunk after chunk */
-       outSize = xmlSecBufferGetSize(out);
-       if(outSize > maxDataSize) {
-           outSize = maxDataSize;
-       }
-       if(outSize > transformCtx->binaryChunkSize) {
-           outSize = transformCtx->binaryChunkSize;
-       }
-       if(outSize > 0) {
-           xmlSecAssert2(xmlSecBufferGetData(out), -1);
-
-           memcpy(data, xmlSecBufferGetData(out), outSize);
-           ret = xmlSecBufferRemoveHead(out, outSize);
-           if(ret < 0) {
-               xmlSecInternalError2("xmlSecBufferRemoveHead",
-                                    xmlSecTransformGetName(transform),
-                                    "size=" XMLSEC_SIZE_FMT, outSize);
-               return(-1);
-           }
-       } else if(xmlSecBufferGetSize(out) == 0) {
-           transform->status = xmlSecTransformStatusFinished;
-       }
-       (*dataSize) = outSize;
-    } else if(transform->status == xmlSecTransformStatusFinished) {
-       /* the only way we can get here is if there is no output */
-       xmlSecAssert2(xmlSecBufferGetSize(out) == 0, -1);
-       (*dataSize) = 0;
-    } else {
-       xmlSecInvalidTransformStatusError(transform);
-       return(-1);
-    }
-
-    return(0);
+    /*
+     * Intentionally unimplemented. The xmlsec1 sign/verify and encrypt/decrypt flows drive
+     * the transform chain in push mode only: a parser is inserted before this transform (to
+     * turn the input bytes into XML) and its PushXml serializes the result and writes it
+     * straight into the following transform, so the pull-style PopBin entry point is never
+     * reached. The popBin method pointer is kept set solely so that data-type negotiation
+     * (xmlSecTransformConnect) still reports a "Bin" output and inserts the required parser
+     * after this transform; if it is ever invoked we fail loudly rather than produce output.
+     */
+    (void)transform;
+    (void)data;
+    (void)maxDataSize;
+    (void)dataSize;
+    (void)transformCtx;
+    xmlSecNotImplementedError("xmlSecTransformRelationshipPopBin");
+    return(-1);
 }

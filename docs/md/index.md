@@ -16,10 +16,12 @@ see the Copyright file in the distribution for details.
 
 - **TBD**
   The [XML Security Library 1.3.13](download.md) release includes the following changes:
+  - (xmlsec-core) Fixed several issues with Relationship transform handling. To restore the old (broken) behaviour,
+  use `--relationship-legacy` flag (or set corresponding flag in the the `xmlSecDSigCtx` structs in your application code).
   - (xmlsec-core) Restricted the default enabled reference and transform URIs to empty and same document URIs only.
   Use  `--enabled-reference-uris`, `--enabled-retrieval-method-uris`, `--enabled-key-info-reference-uris`, etc.
   parameters for XMLSec command line tool if local or remote URIs usage is required (or set corresponding
-  fields in the the `xmlSecDSigCtx` and `xmlSecEncCtx` structs in your applications).
+  flag in the the `xmlSecDSigCtx` and `xmlSecEncCtx` structs in your application code).
   - (xmlsec-mscng) Added support for using both current user and local machine certificates store for verifying the certificates.
   - (xmlsec-mscng) Enforced HMAC length checks similar to other crypto backends.
   - (xmlsec-windows) Added `apps` option to `configure.ps1` to control whether the command-line binaries in the `apps/` folder are built (default: `yes`).

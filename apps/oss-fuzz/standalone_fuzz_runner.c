@@ -18,7 +18,7 @@
 #include <assert.h>
 
 /* Declared by the fuzzer harness (xmlsec_target.c / xmlsec_dsig_verify_target.c /
-   xmlsec_keyinfo_target.c). */
+   xmlsec_keyload_target.c / xmlsec_keyinfo_target.c). */
 extern int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size);
 
 int main(int argc, char** argv) {

@@ -215,7 +215,7 @@ xmlSecGnuTLSDigestInitialize(xmlSecTransformPtr transform) {
     /* check hash output size */
     ctx->dgstSize = gnutls_hash_get_len(ctx->dgstAlgo);
     if ((ctx->dgstSize <= 0) || (ctx->dgstSize > XMLSEC_GNUTLS_MAX_DIGEST_SIZE)){
-        xmlSecGnuTLSError("gnutls_hash_get_len", 0, NULL);
+        xmlSecInternalError("gnutls_hash_get_len", xmlSecTransformGetName(transform));
         return(-1);
     }
 

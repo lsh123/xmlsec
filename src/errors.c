@@ -95,9 +95,7 @@ static const xmlSecErrorDescription xmlSecErrorsTable[XMLSEC_ERRORS_MAX_NUMBER +
 };
 
 /* We have system callback that can be set by the xmlsec-crypto library and user callback
- * that user can set. We always prioritize user callback if set. Note that passing a NULL
- * callback to xmlSecErrorsSetCallback() clears the user override and falls back to the
- * system (default) callback.
+ * that user can set. We always prioritize user callback if set.
  *
  * NOTE: The global state below (the callbacks, xmlSecPrintErrorMessages and
  * gXmlSecErrorsPrintCryptoLibraryLogOnExitIsEnabled) is plain mutable state that is read

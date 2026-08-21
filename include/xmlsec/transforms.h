@@ -261,6 +261,20 @@ typedef int             (*xmlSecTransformCtxPreExecuteCallback)         (xmlSecT
  */
 #define XMLSEC_TRANSFORMCTX_FLAGS_SUPPORT_ASN1_SIGNATURE_VALUES 0x00000002
 
+/**
+ * @brief Use the legacy (pre-spec-conformance) Relationship transform behaviour.
+ * @details If this flag is set then the Relationship transform restores its historical
+ * behaviour for two aspects that were changed to conform to ECMA-376 Part 2 (ISO/IEC
+ * 29500-2) section 10.6:
+ *   - foreign namespace declarations are written as a single unprefixed xmlns="..."
+ *     (the first declared namespace) instead of being filtered down to the Relationships
+ *     namespace only;
+ *   - text/comment/PI nodes are serialized (as spurious elements) instead of being removed.
+ * This flag exists purely for backward compatibility with documents signed by older xmlsec
+ * versions and is off by default.
+ */
+#define XMLSEC_TRANSFORMCTX_FLAGS_RELATIONSHIP_LEGACY 0x00000004
+
 
 /**
  * @brief The transform execution context.

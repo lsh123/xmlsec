@@ -1265,6 +1265,9 @@ xmlSecDSigReferenceCtxInitialize(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlSecDSi
     if((dsigCtx->flags & XMLSEC_DSIG_FLAGS_USE_ASN1_SIGNATURE_VALUES) != 0) {
         dsigRefCtx->transformCtx.flags |= XMLSEC_TRANSFORMCTX_FLAGS_SUPPORT_ASN1_SIGNATURE_VALUES;
     }
+    if((dsigCtx->flags & XMLSEC_DSIG_FLAGS_RELATIONSHIP_LEGACY) != 0) {
+        dsigRefCtx->transformCtx.flags |= XMLSEC_TRANSFORMCTX_FLAGS_RELATIONSHIP_LEGACY;
+    }
     return(0);
 }
 

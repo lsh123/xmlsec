@@ -1176,6 +1176,68 @@ execDSigTest $res_success \
     "--enabled-reference-uris any $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
+# Relationship transform: whitespace/text nodes between elements must be dropped (spec step 3).
+execDSigTest $res_success \
+    "aleksey-xmldsig-01" \
+    "enveloping-sha256-rsa-sha256-relationship-whitespace" \
+    "sha256 rsa-sha256 relationship" \
+    "rsa x509" \
+    "--enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "--enabled-reference-uris any $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+# Relationship transform: attribute values containing & and " must be escaped (well-formed output).
+execDSigTest $res_success \
+    "aleksey-xmldsig-01" \
+    "enveloping-sha256-rsa-sha256-relationship-attr-escape" \
+    "sha256 rsa-sha256 relationship" \
+    "rsa x509" \
+    "--enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "--enabled-reference-uris any $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+# Relationship transform: foreign namespace declarations must be removed (spec step 2.1).
+execDSigTest $res_success \
+    "aleksey-xmldsig-01" \
+    "enveloping-sha256-rsa-sha256-relationship-ns" \
+    "sha256 rsa-sha256 relationship" \
+    "rsa x509" \
+    "--enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "--enabled-reference-uris any $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+# Relationship transform: a foreign element named "Relationship" must not be treated as one.
+execDSigTest $res_success \
+    "aleksey-xmldsig-01" \
+    "enveloping-sha256-rsa-sha256-relationship-foreign" \
+    "sha256 rsa-sha256 relationship" \
+    "rsa x509" \
+    "--enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "--enabled-reference-uris any $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+# Relationship transform (legacy mode): with --relationship-legacy the old behaviour is restored,
+# so text/comment nodes are serialized as spurious elements instead of being removed.
+execDSigTest $res_success \
+    "aleksey-xmldsig-01" \
+    "enveloping-sha256-rsa-sha256-relationship-whitespace-legacy" \
+    "sha256 rsa-sha256 relationship" \
+    "rsa x509" \
+    "--relationship-legacy --enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "--relationship-legacy --enabled-reference-uris any $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--relationship-legacy --enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+# Relationship transform (legacy mode): with --relationship-legacy the old behaviour is restored,
+# so foreign namespace declarations are written as a single unprefixed xmlns="..." instead of being removed.
+execDSigTest $res_success \
+    "aleksey-xmldsig-01" \
+    "enveloping-sha256-rsa-sha256-relationship-ns-legacy" \
+    "sha256 rsa-sha256 relationship" \
+    "rsa x509" \
+    "--relationship-legacy --enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "--relationship-legacy --enabled-reference-uris any $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--relationship-legacy --enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloping-sha384-rsa-sha384" \

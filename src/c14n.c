@@ -256,100 +256,27 @@ xmlSecTransformC14NPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
     transform->status = xmlSecTransformStatusFinished;
     return(0);
 }
-
 static int
 xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
-                            xmlSecSize maxDataSize, xmlSecSize* dataSize,
-                            xmlSecTransformCtxPtr transformCtx) {
-    xmlSecBufferPtr out;
-    int ret;
-
-    xmlSecAssert2(xmlSecTransformC14NCheckId(transform), -1);
-    xmlSecAssert2(data != NULL, -1);
-    xmlSecAssert2(dataSize != NULL, -1);
-    xmlSecAssert2(transformCtx != NULL, -1);
-
-    out = &(transform->outBuf);
-    if(transform->status == xmlSecTransformStatusNone) {
-        xmlOutputBufferPtr buf;
-
-        xmlSecAssert2(transform->inNodes == NULL, -1);
-
-        /* a C14N transform with no previous transform has no input to canonicalize */
-        if(transform->prev == NULL) {
-            xmlSecInternalError("xmlSecTransformC14NPopBin", xmlSecTransformGetName(transform));
-            return(-1);
-        }
-
-        /* get xml data from previous transform */
-        ret = xmlSecTransformPopXml(transform->prev, &(transform->inNodes), transformCtx);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecTransformPopXml",
-                                xmlSecTransformGetName(transform));
-            return(-1);
-        }
-
-        /* dump everything to internal buffer */
-        buf = xmlSecBufferCreateOutputBuffer(out);
-        if(buf == NULL) {
-            xmlSecInternalError("xmlSecBufferCreateOutputBuffer",
-                                xmlSecTransformGetName(transform));
-            return(-1);
-        }
-
-        /* we are using a semi-hack here: we know that xmlSecPtrList keeps
-         * all pointers in the big array */
-        ret = xmlSecTransformC14NExecute(transform->id, transform->inNodes,
-                xmlSecC14NGetCtx(transform), buf);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecTransformC14NExecute",
-                                xmlSecTransformGetName(transform));
-            (void)xmlOutputBufferClose(buf);
-            return(-1);
-        }
-        ret = xmlOutputBufferClose(buf);
-        if(ret < 0) {
-            xmlSecXmlError("xmlOutputBufferClose", xmlSecTransformGetName(transform));
-            return(-1);
-        }
-        transform->status = xmlSecTransformStatusWorking;
-    }
-
-    if(transform->status == xmlSecTransformStatusWorking) {
-        xmlSecSize outSize;
-
-        /* return chunk after chunk */
-        outSize = xmlSecBufferGetSize(out);
-        if(outSize > maxDataSize) {
-            outSize = maxDataSize;
-        }
-        if(outSize > transformCtx->binaryChunkSize) {
-            outSize = transformCtx->binaryChunkSize;
-        }
-        if(outSize > 0) {
-            xmlSecAssert2(xmlSecBufferGetData(&(transform->outBuf)), -1);
-
-            memcpy(data, xmlSecBufferGetData(&(transform->outBuf)), outSize);
-            ret = xmlSecBufferRemoveHead(&(transform->outBuf), outSize);
-            if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform),
-                    "size=" XMLSEC_SIZE_FMT, outSize);
-                return(-1);
-            }
-        } else if(xmlSecBufferGetSize(out) == 0) {
-            transform->status = xmlSecTransformStatusFinished;
-        }
-        (*dataSize) = outSize;
-    } else if(transform->status == xmlSecTransformStatusFinished) {
-        /* the only way we can get here is if there is no output */
-        xmlSecAssert2(xmlSecBufferGetSize(out) == 0, -1);
-        (*dataSize) = 0;
-    } else {
-        xmlSecInvalidTransformStatusError(transform);
-        return(-1);
-    }
-
-    return(0);
+                             xmlSecSize maxDataSize, xmlSecSize* dataSize,
+                             xmlSecTransformCtxPtr transformCtx) {
+    /*
+     * Intentionally unimplemented. The xmlsec1 sign/verify and encrypt/decrypt flows drive
+     * the transform chain in push mode only: a C14N transform is always fed via PushXml and
+     * writes its canonicalized result straight into the following transform, so this
+     * pull-style PopBin entry point is never reached (the only pump call site pulls from the
+     * InputURI source). The popBin method pointer is kept set solely so that data-type
+     * negotiation (xmlSecTransformConnect) still reports a "Bin" output and connects this
+     * transform to a binary consumer; if it is ever invoked we fail loudly rather than
+     * produce output.
+     */
+    (void)transform;
+    (void)data;
+    (void)maxDataSize;
+    (void)dataSize;
+    (void)transformCtx;
+    xmlSecNotImplementedError("xmlSecTransformC14NPopBin");
+    return(-1);
 }
 
 static int

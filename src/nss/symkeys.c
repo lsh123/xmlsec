@@ -28,7 +28,7 @@
 
 /******************************************************************************
  *
- * Symmetic (binary) keys - just a wrapper for xmlSecKeyDataBinary
+ * Symmetric (binary) keys - just a wrapper for xmlSecKeyDataBinary
  *
   *****************************************************************************/
 static int      xmlSecNssSymKeyDataInitialize           (xmlSecKeyDataPtr data);
@@ -227,7 +227,7 @@ xmlSecNssSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
 
 /******************************************************************************
  *
- * Symmetic keys Klasses
+ * Symmetric keys Klasses
  *
   *****************************************************************************/
 #define XMLSEC_NSS_SYMKEY_KLASS_EX(name, keyName, usage, keyHref, keyNodeName, keyNodeNs, xmlRead, xmlWrite) \

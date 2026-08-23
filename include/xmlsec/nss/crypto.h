@@ -343,8 +343,8 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformDsaSha256GetKlass(void)
 /**
  * @brief The EC key klass.
  */
-#define xmlSecNssKeyDataEcId            xmlSecNsskeyDataEcGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNsskeyDataEcGetKlass(void);
+#define xmlSecNssKeyDataEcId            xmlSecNssKeyDataEcGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNssKeyDataEcGetKlass(void);
 
 /**
  * @brief The ECDH key agreement transform klass.
@@ -463,15 +463,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecNssTransformX25519GetKlass(void);
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNssKeyDataHmacGetKlass    (void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecNssKeyDataHmacSet         (xmlSecKeyDataPtr data,
                                                                          const xmlSecByte* buf,
-                                                                         xmlSecSize bufSize);
-#ifndef XMLSEC_NO_MD5
-/**
- * @brief The HMAC with MD5 signature transform klass.
- */
-#define xmlSecNssTransformHmacMd5Id \
-        xmlSecNssTransformHmacMd5GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHmacMd5GetKlass(void);
-#endif /* XMLSEC_NO_MD5 */
+                                                                          xmlSecSize bufSize);
 
 #ifndef XMLSEC_NO_RIPEMD160
 /**
@@ -622,15 +614,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHkdfGetKlass(void);
 #define xmlSecNssKeyDataRsaId \
         xmlSecNssKeyDataRsaGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNssKeyDataRsaGetKlass     (void);
-
-#ifndef XMLSEC_NO_MD5
-/**
- * @brief The RSA-MD5 signature transform klass.
- */
-#define xmlSecNssTransformRsaMd5Id  \
-        xmlSecNssTransformRsaMd5GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaMd5GetKlass(void);
-#endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_SHA1
 /**
@@ -856,22 +839,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha3_384GetKlass(void);
         xmlSecNssTransformSha3_512GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha3_512GetKlass(void);
 #endif /* XMLSEC_NO_SHA3 */
-
-/******************************************************************************
- *
- * MD5 transforms
- *
-  *****************************************************************************/
-#ifndef XMLSEC_NO_MD5
-/**
- * @brief The MD5 digest transform klass.
- */
-#define xmlSecNssTransformMd5Id \
-        xmlSecNssTransformMd5GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformMd5GetKlass(void);
-#endif /* XMLSEC_NO_MD5 */
-
-
 
 /******************************************************************************
  *

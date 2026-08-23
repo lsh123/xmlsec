@@ -399,6 +399,7 @@ xmlSecNssConcatKdfGenerateKey(xmlSecNssKdfCtxPtr ctx, xmlSecSize outLen, xmlSecB
     xmlSecByte* outData;
     SECOidData* oidData;
     unsigned int hashLen;
+    unsigned int keyLen;
     xmlSecSize pos;
     xmlSecByte hashBuf[XMLSEC_NSS_KDF_MAX_HASH_SIZE];
     xmlSecByte counter[4];
@@ -466,9 +467,9 @@ xmlSecNssConcatKdfGenerateKey(xmlSecNssKdfCtxPtr ctx, xmlSecSize outLen, xmlSecB
             return(-1);
         }
 
-        XMLSEC_SAFE_CAST_SIZE_TO_UINT(keySize, hashLen,
+        XMLSEC_SAFE_CAST_SIZE_TO_UINT(keySize, keyLen,
             PK11_DestroyContext(hashCtx, PR_TRUE); return(-1), NULL);
-        rv = PK11_DigestOp(hashCtx, keyData, hashLen);
+        rv = PK11_DigestOp(hashCtx, keyData, keyLen);
         if(rv != SECSuccess) {
             xmlSecNssError("PK11_DigestOp(Z)", NULL);
             PK11_DestroyContext(hashCtx, PR_TRUE);

@@ -205,7 +205,7 @@ xmlSecNssHmacFinalize(xmlSecTransformPtr transform) {
     if(ctx->digestCtx != NULL) {
         PK11_DestroyContext(ctx->digestCtx, PR_TRUE);
     }
-    memset(ctx, 0, sizeof(xmlSecNssHmacCtx));
+    xmlSecMemCleanse(ctx, sizeof(xmlSecNssHmacCtx));
 }
 
 static int

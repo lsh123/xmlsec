@@ -199,11 +199,9 @@ xmlSecNssPKIKeyDataAdoptKey(xmlSecKeyDataPtr data,
 }
 
 /**
- * @brief Build a KeyData object from the given Private Key and Public
+ * @brief Build a KeyData object from the given Private Key and Public Key handles.
  * @param privkey the NSS Private Key handle
  * @param pubkey the NSS Public Key handle
- *
- * Key handles.
  *
  * @return pointer to KeyData object or NULL if an error occurs.
  */
@@ -392,7 +390,7 @@ xmlSecNssPKIKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     xmlSecAssert2(ctxSrc != NULL, -1);
 
     if (xmlSecNSSPKIKeyDataCtxDup(ctxDst, ctxSrc) != 0) {
-        xmlSecInternalError("xmlSecNssPKIKeydataCtxDup",
+        xmlSecInternalError("xmlSecNSSPKIKeyDataCtxDup",
                             xmlSecKeyDataGetName(dst));
         return(-1);
     }
@@ -432,10 +430,10 @@ xmlSecNssPKIKeyDataGetSize(xmlSecKeyDataPtr data) {
     case rsaKey:
         return(8 * SECKEY_PublicKeyStrength(ctx->pubkey));
     case ecKey:
-        return(SECKEY_SignatureLen(ctx->pubkey));
+        return(SECKEY_PublicKeyStrengthInBits(ctx->pubkey));
 #ifndef XMLSEC_NO_EDDSA
     case edKey:
-        return(SECKEY_SignatureLen(ctx->pubkey));
+        return(SECKEY_PublicKeyStrengthInBits(ctx->pubkey));
 #endif /* XMLSEC_NO_EDDSA */
 #ifndef XMLSEC_NO_XDH
     case ecMontKey:
@@ -605,7 +603,7 @@ static xmlSecKeyDataKlass xmlSecNssKeyData ## lcname ## Klass = {               
  *
  * ============================================================================
  *
- * To support reading/writing private keys an X element added (before Y).
+ * To support reading/writing private keys an X element is added (before Y).
  *
  * The current implementation does not support Seed and PgenCounter!
  * by this the P, Q and G are *required*!
@@ -963,7 +961,7 @@ xmlSecNssKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
  *
  * ============================================================================
  *
- * To support reading/writing private keys an PrivateExponent element is added
+ * To support reading/writing private keys a PrivateExponent element is added
  * to the end
  *
   *****************************************************************************/
@@ -1238,7 +1236,7 @@ XMLSEC_NSS_PKI_KEY_KLASS_EX(Ec, EC, xmlSecDSig11Ns,
  * @return pointer to EC key data klass.
  */
 xmlSecKeyDataId
-xmlSecNsskeyDataEcGetKlass(void) {
+xmlSecNssKeyDataEcGetKlass(void) {
     return(&xmlSecNssKeyDataEcKlass);
 }
 

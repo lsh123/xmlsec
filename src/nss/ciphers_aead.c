@@ -352,10 +352,9 @@ xmlSecNssAeadCipherEncrypt(xmlSecNssAeadCipherCtxPtr ctx, xmlSecBufferPtr in, xm
     xmlSecAssert2(out != NULL, -1);
 
     inSize = xmlSecBufferGetSize(in);
-    xmlSecAssert2(inSize > 0, -1);
 
     plaintext = xmlSecBufferGetData(in);
-    xmlSecAssert2(plaintext != NULL, -1);
+    xmlSecAssert2(plaintext != NULL || inSize == 0, -1);
 
     if(!ctx->ivInitialized) {
         /* nonce was not in XML, generate a random one for encrypt */
@@ -396,7 +395,7 @@ xmlSecNssAeadCipherEncrypt(xmlSecNssAeadCipherCtxPtr ctx, xmlSecBufferPtr in, xm
         xmlSecAssert2(outData != NULL, -1);
     }
 
-    /* get legnths */
+    /* get lengths */
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(inSize, inputlen, return(-1), NULL);
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(outSize, maxoutputlen, return(-1), NULL);
     outputlen = maxoutputlen;
@@ -418,7 +417,7 @@ xmlSecNssAeadCipherEncrypt(xmlSecNssAeadCipherCtxPtr ctx, xmlSecBufferPtr in, xm
     /* encrypt */
     rv = PK11_Encrypt(symKey, ctx->mechanism, &param,
             outData, &outputlen, maxoutputlen,
-            plaintext, inputlen);
+            plaintext != NULL ? plaintext : (xmlSecByte*)"", inputlen);
     if(rv != SECSuccess) {
         xmlSecNssError("PK11_Encrypt", NULL);
         PK11_FreeSymKey(symKey);
@@ -499,7 +498,7 @@ xmlSecNssAeadCipherDecrypt(xmlSecNssAeadCipherCtxPtr ctx, xmlSecBufferPtr in, xm
         return(-1);
     }
 
-    /* get legnths */
+    /* get lengths */
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(inSize, inputlen, return(-1), NULL);
     outputlen = maxoutputlen = inputlen;
 

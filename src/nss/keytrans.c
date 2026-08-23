@@ -221,8 +221,8 @@ xmlSecNssKeyTransportSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2(key != NULL, -1);
 
     context = xmlSecNssKeyTransportGetCtx(transform);
-    if((context == NULL) || (context->keyId == NULL) || (context->pubkey != NULL)) {
-        xmlSecInternalError("xmlSecNssKeyTransportGetCtx", xmlSecTransformGetName(transform));
+    if((context == NULL) || (context->keyId == NULL) || ((context->pubkey != NULL) || (context->prikey != NULL))) {
+        xmlSecInternalError("xmlSecNssKeyTransportSetKey", xmlSecTransformGetName(transform));
         return(-1);
     }
     xmlSecAssert2(xmlSecKeyCheckId(key, context->keyId), -1);
@@ -294,7 +294,7 @@ xmlSecNssKeyTransportCtxInit(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr in
 
     ctx->material = xmlSecBufferCreate(blockSize);
     if(ctx->material == NULL) {
-        xmlSecInternalError2("xmlSecBufferSetData", NULL,
+        xmlSecInternalError2("xmlSecBufferCreate", NULL,
             "size=" XMLSEC_SIZE_FMT, blockSize);
         return(-1);
     }
@@ -480,7 +480,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
         /* Create template symmetric key from material if needed */
         symKey = xmlSecNssKeyTransportLoadSymKeyUsingPublicKeySlot(ctx, &oriskv);
         if (symKey == NULL) {
-            xmlSecInternalError("xmlSecNssKeyTransportLoadSymKeyFromPublicKey", NULL);
+            xmlSecInternalError("xmlSecNssKeyTransportLoadSymKeyUsingPublicKeySlot", NULL);
             goto done;
         }
 
@@ -635,12 +635,6 @@ xmlSecNssKeyTransportExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
             }
         }
 
-        if((context->material == NULL) && (last != 0)) {
-            xmlSecInvalidTransformStatusError2(transform,
-                    "No enough data to initialize transform");
-            return(-1);
-        }
-
         if(context->material != NULL) {
             rtv = xmlSecNssKeyTransportCtxUpdate(context, inBuf, outBuf, operation, transformCtx);
             if(rtv < 0) {
@@ -748,9 +742,9 @@ static xmlSecTransformKlass xmlSecNssRsaOaepKlass = {
 };
 
 /**
- * @brief RSA-PKCS1 key transport klass for XMLEnc 1.0.
- * @details The RSA-PKCS1 key transport transform klass (XMLEnc 1.0).
- * @return RSA-PKCS1 key transport transform klass.
+ * @brief RSA-OAEP key transport klass for XMLEnc 1.0.
+ * @details The RSA-OAEP key transport transform klass (XMLEnc 1.0).
+ * @return RSA-OAEP key transport transform klass.
  */
 xmlSecTransformId
 xmlSecNssTransformRsaOaepGetKlass(void) {
@@ -785,9 +779,9 @@ static xmlSecTransformKlass xmlSecNssRsaOaepEnc11Klass = {
 };
 
 /**
- * @brief RSA-PKCS1 key transport klass for XMLEnc 1.1.
- * @details The RSA-PKCS1 key transport transform klass (XMLEnc 1.1).
- * @return RSA-PKCS1 key transport transform klass.
+ * @brief RSA-OAEP key transport klass for XMLEnc 1.1.
+ * @details The RSA-OAEP key transport transform klass (XMLEnc 1.1).
+ * @return RSA-OAEP key transport transform klass.
  */
 xmlSecTransformId
 xmlSecNssTransformRsaOaepEnc11GetKlass(void) {
@@ -845,7 +839,7 @@ xmlSecNssRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     if (xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha224) == 0) {
         ctx->oaepHashAlg = CKM_SHA224;
     } else
-#endif /* XMLSEC_NO_SHA256 */
+#endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA256
     if (xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha256) == 0) {
@@ -907,7 +901,7 @@ xmlSecNssRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     if (xmlStrcmp(oaepParams.mgf1DigestAlgorithm, xmlSecHrefMgf1Sha224) == 0) {
         ctx->oaepMgf = CKG_MGF1_SHA224;
     } else
-#endif /* XMLSEC_NO_SHA256 */
+#endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA256
     if (xmlStrcmp(oaepParams.mgf1DigestAlgorithm, xmlSecHrefMgf1Sha256) == 0) {

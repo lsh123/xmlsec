@@ -99,16 +99,50 @@ xmlSecNssAppInit(const char* config) {
                          "fipsSlotDescription", "fipsPrivateSlotDescription",
                          0, 0);
 
-    /* setup for PKCS12 */
+    /* setup for PKCS12, report errors but do not fail */
     PORT_SetUCS2_ASCIIConversionFunction(xmlSecNssAppAscii2UCS2Conv);
-    SEC_PKCS12EnableCipher(PKCS12_RC4_40, 1);
-    SEC_PKCS12EnableCipher(PKCS12_RC4_128, 1);
-    SEC_PKCS12EnableCipher(PKCS12_RC2_CBC_40, 1);
-    SEC_PKCS12EnableCipher(PKCS12_RC2_CBC_128, 1);
-    SEC_PKCS12EnableCipher(PKCS12_DES_56, 1);
-    SEC_PKCS12EnableCipher(PKCS12_DES_EDE3_168, 1);
-    SEC_PKCS12SetPreferredCipher(PKCS12_DES_EDE3_168, 1);
+    rv = SEC_PKCS12EnableCipher(PKCS12_RC4_40, 1);
+    if(rv != SECSuccess) {
+        xmlSecNssError("SEC_PKCS12EnableCipher(PKCS12_RC4_40)", NULL);
+    }
+    rv = SEC_PKCS12EnableCipher(PKCS12_RC4_128, 1);
+    if(rv != SECSuccess) {
+        xmlSecNssError("SEC_PKCS12EnableCipher(PKCS12_RC4_128)", NULL);
+    }
+    rv = SEC_PKCS12EnableCipher(PKCS12_RC2_CBC_40, 1);
+    if(rv != SECSuccess) {
+        xmlSecNssError("SEC_PKCS12EnableCipher(PKCS12_RC2_CBC_40)", NULL);
+    }
+    rv = SEC_PKCS12EnableCipher(PKCS12_RC2_CBC_128, 1);
+    if(rv != SECSuccess) {
+        xmlSecNssError("SEC_PKCS12EnableCipher(PKCS12_RC2_CBC_128)", NULL);
+    }
+    rv = SEC_PKCS12EnableCipher(PKCS12_DES_56, 1);
+    if(rv != SECSuccess) {
+        xmlSecNssError("SEC_PKCS12EnableCipher(PKCS12_DES_56)", NULL);
+    }
+    rv = SEC_PKCS12EnableCipher(PKCS12_DES_EDE3_168, 1);
+    if(rv != SECSuccess) {
+        xmlSecNssError("SEC_PKCS12EnableCipher(PKCS12_DES_EDE3_168)", NULL);
+    }
+    rv = SEC_PKCS12SetPreferredCipher(PKCS12_DES_EDE3_168, 1);
+    if(rv != SECSuccess) {
+        xmlSecNssError("SEC_PKCS12SetPreferredCipher(PKCS12_DES_EDE3_168)", NULL);
+    }
+    rv = SEC_PKCS12SetPreferredCipher(PKCS12_AES_CBC_128, 1);
+    if(rv != SECSuccess) {
+        xmlSecNssError("SEC_PKCS12SetPreferredCipher(PKCS12_AES_CBC_128)", NULL);
+    }
+    rv = SEC_PKCS12SetPreferredCipher(PKCS12_AES_CBC_192, 1);
+    if(rv != SECSuccess) {
+        xmlSecNssError("SEC_PKCS12SetPreferredCipher(PKCS12_AES_CBC_192)", NULL);
+    }
+    rv = SEC_PKCS12SetPreferredCipher(PKCS12_AES_CBC_256, 1);
+    if(rv != SECSuccess) {
+        xmlSecNssError("SEC_PKCS12SetPreferredCipher(PKCS12_AES_CBC_256)", NULL);
+    }
 
+    /* done */
     return(0);
 }
 
@@ -664,6 +698,7 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
     switch(format) {
     case xmlSecKeyDataFormatPkcs8Der:
     case xmlSecKeyDataFormatDer:
+    case xmlSecKeyDataFormatCertDer:
         cert = xmlSecNssX509CertDerRead(CERT_GetDefaultCertDB(), secItem->data, secItem->len);
         if(cert == NULL) {
             xmlSecInternalError2("xmlSecNssX509CertDerRead", NULL,
@@ -671,6 +706,7 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
             goto done;
         }
         break;
+    case xmlSecKeyDataFormatPem:
     case xmlSecKeyDataFormatCertPem:
         cert = xmlSecNssX509CertPemRead(CERT_GetDefaultCertDB(), secItem->data, secItem->len);
         if(cert == NULL) {
@@ -1271,6 +1307,7 @@ xmlSecNssAppKeysMngrCertLoadSECItem(xmlSecKeysMngrPtr mngr, SECItem* secItem,
 
     switch(format) {
     case xmlSecKeyDataFormatDer:
+    case xmlSecKeyDataFormatCertDer:
         cert = xmlSecNssX509CertDerRead(CERT_GetDefaultCertDB(), secItem->data, secItem->len);
         if(cert == NULL) {
             xmlSecInternalError2("xmlSecNssX509CertDerRead", NULL,
@@ -1278,6 +1315,7 @@ xmlSecNssAppKeysMngrCertLoadSECItem(xmlSecKeysMngrPtr mngr, SECItem* secItem,
             return(-1);
         }
         break;
+    case xmlSecKeyDataFormatPem:
     case xmlSecKeyDataFormatCertPem:
         cert = xmlSecNssX509CertPemRead(CERT_GetDefaultCertDB(), secItem->data, secItem->len);
         if(cert == NULL) {
@@ -1308,7 +1346,7 @@ xmlSecNssAppKeysMngrCertLoadSECItem(xmlSecKeysMngrPtr mngr, SECItem* secItem,
  *
  * @param mngr the pointer to keys manager.
  * @param filename the CRL file.
- * @param format the CRL file format (PEM or DER).
+ * @param format the CRL file format (DER; NSS has no API to decode PEM CRLs).
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -1374,7 +1412,7 @@ xmlSecNssAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlSec
  *
  * @param mngr the keys manager.
  * @param filename the CRL filename.
- * @param format the CRL format (PEM or DER).
+ * @param format the CRL format (DER; NSS has no API to decode PEM CRLs).
  * @param keyInfoCtx the key info context for verification parameters.
  * @return 0 on success or a negative value otherwise.
  */
@@ -1464,7 +1502,7 @@ done:
  * @param mngr the pointer to keys manager.
  * @param data the CRL data.
  * @param dataSize the CRL data size.
- * @param format the CRL format (PEM or DER).
+ * @param format the CRL format (DER; NSS has no API to decode PEM CRLs).
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -1546,7 +1584,7 @@ xmlSecNssAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 
         keysStore = xmlSecKeyStoreCreate(xmlSecNssKeysStoreId);
         if(keysStore == NULL) {
-            xmlSecInternalError("xmlSecKeyStoreCreate(xmlSecNssX509StoreId)", NULL);
+            xmlSecInternalError("xmlSecKeyStoreCreate(xmlSecNssKeysStoreId)", NULL);
             return(-1);
         }
 

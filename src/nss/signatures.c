@@ -253,7 +253,7 @@ xmlSecNssSignatureInitialize(xmlSecTransformPtr transform) {
         /* This creates a signature which is ASN1 encoded */
         ctx->alg = SEC_OID_ANSIX962_ECDSA_SHA224_SIGNATURE;
     } else
-#endif /* XMLSEC_NO_SHA24 */
+#endif /* XMLSEC_NO_SHA224 */
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformEcdsaSha256Id)) {
         ctx->keyId = xmlSecNssKeyDataEcId;
@@ -427,14 +427,22 @@ xmlSecNssSignatureFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     if (transform->operation == xmlSecTransformOperationSign) {
-        SGN_DestroyContext(ctx->u.sig.sigctx, PR_TRUE);
-        if (ctx->u.sig.privkey) {
+        if (ctx->u.sig.sigctx != NULL) {
+            SGN_DestroyContext(ctx->u.sig.sigctx, PR_TRUE);
+            ctx->u.sig.sigctx = NULL;
+        }
+        if (ctx->u.sig.privkey != NULL) {
             SECKEY_DestroyPrivateKey(ctx->u.sig.privkey);
+            ctx->u.sig.privkey = NULL;
         }
     } else {
-        VFY_DestroyContext(ctx->u.vfy.vfyctx, PR_TRUE);
-        if (ctx->u.vfy.pubkey) {
+        if (ctx->u.vfy.vfyctx != NULL) {
+            VFY_DestroyContext(ctx->u.vfy.vfyctx, PR_TRUE);
+            ctx->u.vfy.vfyctx = NULL;
+        }
+        if (ctx->u.vfy.pubkey != NULL) {
             SECKEY_DestroyPublicKey(ctx->u.vfy.pubkey);
+            ctx->u.vfy.pubkey = NULL;
         }
     }
 
@@ -566,9 +574,15 @@ xmlSecNssSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2(value != NULL, -1);
 
     if (transform->operation == xmlSecTransformOperationSign) {
+        if (ctx->u.sig.sigctx) {
+            SGN_DestroyContext(ctx->u.sig.sigctx, PR_TRUE);
+            ctx->u.sig.sigctx = NULL;
+        }
         if (ctx->u.sig.privkey) {
             SECKEY_DestroyPrivateKey(ctx->u.sig.privkey);
+            ctx->u.sig.privkey = NULL;
         }
+
         ctx->u.sig.privkey = xmlSecNssPKIKeyDataGetPrivKey(value);
         if(ctx->u.sig.privkey == NULL) {
             xmlSecInternalError("xmlSecNssPKIKeyDataGetPrivKey", xmlSecTransformGetName(transform));
@@ -598,9 +612,15 @@ xmlSecNssSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
             }
         }
     } else {
-        if (ctx->u.vfy.pubkey) {
-            SECKEY_DestroyPublicKey(ctx->u.vfy.pubkey);
+        if (ctx->u.vfy.vfyctx != NULL) {
+            VFY_DestroyContext(ctx->u.vfy.vfyctx, PR_TRUE);
+            ctx->u.vfy.vfyctx = NULL;
         }
+        if (ctx->u.vfy.pubkey != NULL) {
+            SECKEY_DestroyPublicKey(ctx->u.vfy.pubkey);
+            ctx->u.vfy.pubkey = NULL;
+        }
+
         ctx->u.vfy.pubkey = xmlSecNssPKIKeyDataGetPubKey(value);
         if(ctx->u.vfy.pubkey == NULL) {
             xmlSecInternalError("xmlSecNssPKIKeyDataGetPubKey",
@@ -834,8 +854,6 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
     inSize = xmlSecBufferGetSize(in);
     outSize = xmlSecBufferGetSize(out);
 
-    ctx = xmlSecNssSignatureGetCtx(transform);
-    xmlSecAssert2(ctx != NULL, -1);
     if(transform->operation == xmlSecTransformOperationSign) {
         if (!ctx->isEdDSA) {
             xmlSecAssert2(ctx->u.sig.sigctx != NULL, -1);
@@ -976,18 +994,16 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 
                     signatureClr = xmlSecNssSignatureDecode(ctx, &signature);
                     if(signatureClr == NULL) {
-                        xmlSecInternalError("xmlSecNssSignatureDecode",
-                            xmlSecTransformGetName(transform));
+                        xmlSecInternalError("xmlSecNssSignatureDecode", xmlSecTransformGetName(transform));
                         SECITEM_FreeItem(&signature, PR_FALSE);
                         return(-1);
                     }
 
                     ret = xmlSecBufferSetData(out, signatureClr->data, signatureClr->len);
                     if(ret < 0) {
-                        xmlSecInternalError2("xmlSecBufferSetData",
-                            xmlSecTransformGetName(transform),
-                            "size=%u", signatureClr->len);
+                        xmlSecInternalError2("xmlSecBufferSetData", xmlSecTransformGetName(transform), "size=%u", signatureClr->len);
                         SECITEM_FreeItem(&signature, PR_FALSE);
+                        SECITEM_FreeItem(signatureClr, PR_TRUE);
                         return(-1);
                     }
 
@@ -996,9 +1012,7 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                     /* This signature is used as-is */
                     ret = xmlSecBufferSetData(out, signature.data, signature.len);
                     if(ret < 0) {
-                        xmlSecInternalError2("xmlSecBufferSetData",
-                            xmlSecTransformGetName(transform),
-                            "size=%u", signature.len);
+                        xmlSecInternalError2("xmlSecBufferSetData", xmlSecTransformGetName(transform), "size=%u", signature.len);
                         SECITEM_FreeItem(&signature, PR_FALSE);
                         return(-1);
                     }

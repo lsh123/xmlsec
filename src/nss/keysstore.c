@@ -10,7 +10,7 @@
  * @addtogroup xmlsec_nss_keysstore
  * @brief Keys store implementation for NSS.
  * @details Nss keys store that uses Simple Keys Store under the hood.
- * Uses the NSS DB as a backing store for the finding keys, but the NSS DB is
+ * Uses the NSS DB as a backing store for finding keys, but the NSS DB is
  * not written to by the keys store. So, if store->findkey is done and the key is
  * not found in the simple keys store, the NSS DB is looked up. If store is called
  * to adopt a key, that key is not written to the NSS DB. Thus, the NSS DB can be
@@ -148,7 +148,7 @@ xmlSecNssKeysStoreInitialize(xmlSecKeyStorePtr store) {
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecNssKeysStoreId), -1);
 
     ss = xmlSecNssKeysStoreGetCtx(store);
-    xmlSecAssert2(((ss == NULL) || (*ss == NULL)), -1);
+    xmlSecAssert2(((ss != NULL) && (*ss == NULL)), -1);
 
     *ss = xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId);
     if(*ss == NULL) {
@@ -178,6 +178,7 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
     xmlSecKeyPtr key = NULL;
     xmlSecKeyPtr retval = NULL;
     xmlSecKeyReqPtr keyReq = NULL;
+    CERTCertDBHandle *certDb = NULL;
     CERTCertificate *cert = NULL;
     SECKEYPublicKey *pubkey = NULL;
     SECKEYPrivateKey *privkey = NULL;
@@ -197,7 +198,7 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
     }
 
     /* Try to find the key in the NSS DB, and construct an xmlSecKey.
-     * we must have a name to lookup keys in NSS DB.
+     * we must have a name to look up keys in the NSS DB.
      */
     if (name == NULL) {
         goto done;
@@ -210,7 +211,13 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
      */
     keyReq = &(keyInfoCtx->keyReq);
     if (keyReq->keyType & (xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate)) {
-        cert = CERT_FindCertByNickname (CERT_GetDefaultCertDB(), (char *)name);
+        certDb = CERT_GetDefaultCertDB();
+        if (certDb == NULL) {
+            xmlSecNssError("CERT_GetDefaultCertDB", NULL);
+            goto done;
+        }
+
+        cert = CERT_FindCertByNickname(certDb, (const char *)name);
         if (cert == NULL) {
             goto done;
         }
@@ -258,6 +265,13 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
             goto done;
         }
         cert = NULL; /* owned by x509 data */
+
+        ret = xmlSecKeyAdoptData(key, x509Data);
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecKeyAdoptData", NULL);
+            goto done;
+        }
+        x509Data = NULL;
 #endif /* XMLSEC_NO_X509 */
 
         ret = xmlSecKeySetValue(key, data);
@@ -267,12 +281,11 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
         }
         data = NULL;
 
-        ret = xmlSecKeyAdoptData(key, x509Data);
+        ret = xmlSecKeySetName(key, name);
         if (ret < 0) {
-            xmlSecInternalError("xmlSecKeyAdoptData", NULL);
+            xmlSecInternalError("xmlSecKeySetName", xmlSecKeyStoreGetName(store));
             goto done;
         }
-        x509Data = NULL;
 
         retval = key;
         key = NULL;

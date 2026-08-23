@@ -8,8 +8,8 @@
  */
 /**
  * @addtogroup xmlsec_nss_crypto
- * @brief Crypto key dat and transforms implementation for NSS.
- * Implementation of keys and tranforms for NSS.
+ * @brief Crypto key data and transforms implementation for NSS.
+ * Implementation of keys and transforms for NSS.
  */
 #include "globals.h"
 
@@ -117,7 +117,7 @@ xmlSecCryptoGetFunctions_nss(void) {
 #endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_EC
-    gXmlSecNssFunctions->keyDataEcGetKlass              = xmlSecNsskeyDataEcGetKlass;
+    gXmlSecNssFunctions->keyDataEcGetKlass              = xmlSecNssKeyDataEcGetKlass;
 #endif /* XMLSEC_NO_EC */
 
 #ifndef XMLSEC_NO_HMAC
@@ -219,8 +219,6 @@ xmlSecCryptoGetFunctions_nss(void) {
 
     /* ECDSA */
 #ifndef XMLSEC_NO_EC
-    gXmlSecNssFunctions->keyDataEcGetKlass          = xmlSecNsskeyDataEcGetKlass;
-
     gXmlSecNssFunctions->transformEcdhGetKlass      = xmlSecNssTransformEcdhGetKlass;
 
 #ifndef XMLSEC_NO_SHA1
@@ -446,7 +444,7 @@ xmlSecNssUpdateAvailableCryptoTransforms(xmlSecCryptoDLFunctionsPtr functions) {
         functions->transformAes128GcmGetKlass     = NULL;
     }
     if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_AES_192_GCM) == 0) {
-        functions->transformAes256GcmGetKlass     = NULL;
+        functions->transformAes192GcmGetKlass     = NULL;
     }
 
     /* kw: uses AES ECB */
@@ -639,7 +637,7 @@ xmlSecNssInit (void)  {
     /* set default errors callback for xmlsec to us */
     xmlSecErrorsSetSystemCallback(xmlSecNssErrorsDefaultCallback);
 
-    /* update the avaialble algos based on NSS configs */
+    /* update the available algos based on NSS configs */
     xmlSecNssUpdateAvailableCryptoTransforms(xmlSecCryptoGetFunctions_nss());
 
     /* register our klasses */
@@ -721,6 +719,7 @@ xmlSecNssGetInternalKeySlot(void)
         rv = PK11_InitPin(slot, NULL, NULL);
         if (rv != SECSuccess) {
             xmlSecNssError("PK11_InitPin", NULL);
+            PK11_FreeSlot(slot);
             return NULL;
         }
     }
@@ -730,6 +729,7 @@ xmlSecNssGetInternalKeySlot(void)
         if (rv != SECSuccess) {
             xmlSecNssError2("PK11_Authenticate", NULL,
                             "token=%s", xmlSecErrorsSafeString(PK11_GetTokenName(slot)));
+            PK11_FreeSlot(slot);
             return NULL;
         }
     }
@@ -741,7 +741,7 @@ xmlSecNssGetInternalKeySlot(void)
  * @brief Generates random bytes into @p buffer.
  * @details Generates @p size random bytes and puts result in @p buffer.
  * @param buffer the destination buffer.
- * @param size the numer of bytes to generate.
+ * @param size the number of bytes to generate.
  * @return 0 on success or a negative value otherwise.
  */
 int

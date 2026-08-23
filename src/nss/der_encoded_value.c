@@ -100,7 +100,7 @@ static xmlSecKeyDataKlass xmlSecNssKeyDataDEREncodedKeyValueKlass = {
  *      </complexType>
  * @endcode
  *
- * @return the &lt;dsig11:DEREncodedKeyValue/&gt;element processing key data klass.
+ * @return the &lt;dsig11:DEREncodedKeyValue/&gt; element processing key data klass.
  */
 xmlSecKeyDataId
 xmlSecNssKeyDataDEREncodedKeyValueGetKlass(void) {

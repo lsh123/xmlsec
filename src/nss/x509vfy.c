@@ -440,7 +440,7 @@ xmlSecNssX509StoreVerifyCert(CERTCertDBHandle *handle, CERTCertificate* cert, xm
 
     /* it's important to set the usage here, otherwise no real verification
      * is performed. */
-    status = CERT_VerifyCertificate(handle, cert, PR_FALSE,
+    status = CERT_VerifyCertificate(handle, cert, PR_TRUE,
                 certificateUsageEmailSigner,
                 verificationTime , NULL, NULL, NULL);
     if(status == SECSuccess) {
@@ -478,7 +478,7 @@ xmlSecNssX509StoreVerifyCert(CERTCertDBHandle *handle, CERTCertificate* cert, xm
 }
 
 /**
- * @brief Verifies @p key with the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * @brief Verifies @p key against the X509 store.
  * @param store the pointer to X509 key data store klass.
  * @param key the pointer to key.
  * @param keyInfoCtx the key info context for verification.
@@ -486,9 +486,6 @@ xmlSecNssX509StoreVerifyCert(CERTCertDBHandle *handle, CERTCertificate* cert, xm
  * function:
  * - Checks that key certificate is present
  * - Checks that key certificate is valid
- *
- * Adds @p key to the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
- * function.
  *
  * @return 1 if key is verified, 0 otherwise, or a negative value if an error occurs.
  */
@@ -744,7 +741,6 @@ xmlSecNssX509VerifyCRLTimeValidity(CERTSignedCrl* crl, xmlSecKeyInfoCtxPtr keyIn
 static int
 xmlSecNssX509VerifyCRLSignature(xmlSecNssX509StoreCtxPtr ctx, CERTSignedCrl* crl, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     CERTCertificate* issuer_cert = NULL;
-    SECKEYPublicKey* pubkey = NULL;
     SECStatus rv;
     int64 verificationTime;
     int res = -1;
@@ -780,13 +776,6 @@ xmlSecNssX509VerifyCRLSignature(xmlSecNssX509StoreCtxPtr ctx, CERTSignedCrl* crl
         goto done;
     }
 
-    /* Get the public key from the issuer certificate */
-    pubkey = CERT_ExtractPublicKey(issuer_cert);
-    if(pubkey == NULL) {
-        xmlSecNssError("CERT_ExtractPublicKey", NULL);
-        goto done;
-    }
-
     /* get verification time */
     verificationTime = xmlSecNssX509SGetVerificationTime(keyInfoCtx);
 
@@ -803,9 +792,6 @@ xmlSecNssX509VerifyCRLSignature(xmlSecNssX509StoreCtxPtr ctx, CERTSignedCrl* crl
     res = 1;
 
 done:
-    if(pubkey != NULL) {
-        SECKEY_DestroyPublicKey(pubkey);
-    }
     if(issuer_cert != NULL) {
         CERT_DestroyCertificate(issuer_cert);
     }
@@ -813,7 +799,7 @@ done:
 }
 
 /**
- * @brief Verifies @p crl by checking:
+ * @brief Verifies @p crl by checking its signature and validity period.
  * @param store the pointer to X509 key data store klass.
  * @param crl the CRL to verify.
  * @param keyInfoCtx the key info context for verification parameters.

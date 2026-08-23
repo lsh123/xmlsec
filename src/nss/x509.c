@@ -281,11 +281,11 @@ xmlSecNssKeyDataX509AddCertInternal(xmlSecNssX509DataCtxPtr ctx, CERTCertificate
 }
 
 /**
- * @brief Adds certificate to the X509 key data and sets the it as the key's
+ * @brief Adds certificate to the X509 key data and sets it as the key's certificate in @p data.
  * @param data the pointer to X509 key data.
  * @param cert the pointer to NSS X509 certificate.
  *
- * certificate in @p data. On success, the @p data owns the cert.
+ * On success, the @p data owns the cert.
  *
  * @return 0 on success or a negative value if an error occurs.
  */
@@ -379,7 +379,7 @@ xmlSecNssKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
 /**
  * @brief Gets the number of certificates in @p data.
  * @param data the pointer to X509 key data.
- * @return te number of certificates in @p data.
+ * @return the number of certificates in @p data.
  */
 xmlSecSize
 xmlSecNssKeyDataX509GetCertsSize(xmlSecKeyDataPtr data) {
@@ -453,7 +453,7 @@ xmlSecNssKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {
 /**
  * @brief Gets the number of CRLs in @p data.
  * @param data the pointer to X509 key data.
- * @return te number of CRLs in @p data.
+ * @return the number of CRLs in @p data.
  */
 xmlSecSize
 xmlSecNssKeyDataX509GetCrlsSize(xmlSecKeyDataPtr data) {
@@ -877,14 +877,14 @@ xmlSecNssKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x509V
 
             x509Value->issuerName = xmlSecNssX509NameWrite(&(cert->issuer));
             if(x509Value->issuerName == NULL) {
-                xmlSecInternalError2("xmlSecNssX509NameWrite(ssuer)",
+                xmlSecInternalError2("xmlSecNssX509NameWrite(issuer)",
                     xmlSecKeyDataGetName(data),
                     "pos=" XMLSEC_SIZE_FMT, ctx->crtPos);
                 return(-1);
             }
             x509Value->issuerSerial = xmlSecX509SerialNumberWrite(cert->serialNumber.data, (xmlSecSize)cert->serialNumber.len);
             if(x509Value->issuerSerial == NULL) {
-                xmlSecInternalError2("xmlSecX509SerialNumberWrite(serialNumber))",
+                xmlSecInternalError2("xmlSecX509SerialNumberWrite(serialNumber)",
                     xmlSecKeyDataGetName(data),
                     "pos=" XMLSEC_SIZE_FMT, ctx->crtPos);
                 return(-1);
@@ -981,7 +981,7 @@ xmlSecNssVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data,  xml
     }
     ret = xmlSecNssKeyDataX509AdoptKeyCert(data, keyCert);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecNssX509CertGetKey", xmlSecKeyDataGetName(data));
+        xmlSecInternalError("xmlSecNssKeyDataX509AdoptKeyCert", xmlSecKeyDataGetName(data));
         CERT_DestroyCertificate(keyCert);
         return(-1);
     }
@@ -1065,7 +1065,10 @@ xmlSecNssX509CertGetKey(CERTCertificate* cert) {
         return(NULL);
     }
 
-    /* see if we can find private key too for this cert */
+    /* Look for a matching private key too. A NULL result is acceptable: it means no
+     * private key is associated with this cert (this function primarily extracts the
+     * public key), and xmlSecNssPKIAdoptKey handles a NULL privkey by yielding a
+     * public-key-only key. */
     privkey = PK11_FindKeyByAnyCert(cert, NULL);
 
     data = xmlSecNssPKIAdoptKey(privkey, pubkey);
@@ -1296,8 +1299,8 @@ xmlSecNssX509CertDebugDump(CERTCertificate* cert, FILE* output) {
     xmlSecAssert(cert != NULL);
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "==== Subject Name: %s\n", cert->subjectName);
-    fprintf(output, "==== Issuer Name: %s\n", cert->issuerName);
+    fprintf(output, "==== Subject Name: %s\n", (cert->subjectName != NULL) ? cert->subjectName : "");
+    fprintf(output, "==== Issuer Name: %s\n", (cert->issuerName != NULL) ? cert->issuerName : "");
     sn = &(cert->serialNumber);
 
     for (i = 0; i < sn->len; i++) {

@@ -33,9 +33,12 @@
 #include "../keysdata_helpers.h"
 #include "../transform_helpers.h"
 
+#if !defined(XMLSEC_NO_EC) || !defined(XMLSEC_NO_XDH)
+
+
 /*
  * NSS uses CKM_ECDH1_DERIVE (0x00001050) for key agreement on all elliptic-curve
- * types, including Montgomery-curve keys (X25519, X448).  The PKCS#11 v3.0 constant
+ * types, including Montgomery-curve keys (X25519).  The PKCS#11 v3.0 constant
  * CKM_XEDDH (0x00001044) is NOT defined by NSS and, worse, its numeric value
  * conflicts with CKM_ECDSA_SHA256 in NSS's own pkcs11t.h header, causing
  * SEC_ERROR_INVALID_ALGORITHM at runtime.  Use CKM_ECDH1_DERIVE instead.
@@ -43,8 +46,9 @@
 
 /******************************************************************************
  *
- * XDH KeyAgreement context (X25519 and X448, RFC 7748)
- * - XMLDSig spec: https://www.w3.org/2021/04/xmldsig-more
+ * Key Agreement context (ECDH and XDH)
+ * - ECDH spec: https://www.w3.org/TR/xmlenc-core1/#sec-ECDH-ES
+ * - XDH spec: https://www.w3.org/2021/04/xmldsig-more (X25519, RFC 7748)
  *
   *****************************************************************************/
 
@@ -366,7 +370,7 @@ xmlSecNssKeyAgreementGenerateSecret(xmlSecNssKeyAgreementCtxPtr ctx,
     }
 
     /* derive shared secret via PKCS#11 CKM_ECDH1_DERIVE; NSS routes this to the
-     * correct ECDH operation for both regular EC and Montgomery-curve (X25519/X448)
+     * correct ECDH operation for both regular EC and Montgomery-curve (X25519)
      * keys based on the key type, not the mechanism alone. */
     symKey = PK11_PubDeriveWithKDF(
         myPrivKey, otherPubKey,
@@ -376,7 +380,7 @@ xmlSecNssKeyAgreementGenerateSecret(xmlSecNssKeyAgreementCtxPtr ctx,
         CKM_ECDH1_DERIVE, /* derive mechanism (also works for ecMontKey in NSS) */
         CKM_GENERIC_SECRET_KEY_GEN, /* target mechanism */
         CKA_DERIVE,     /* operation */
-        0,              /* keySize: 0 = use mechanism default (32 or 56 bytes) */
+        0,              /* keySize: 0 = use mechanism default (curve-dependent for ECDH; 32 bytes for X25519) */
         CKD_NULL,       /* no PKCS#11-level KDF; ConcatKDF is applied above */
         NULL,           /* sharedData */
         NULL            /* wincx */
@@ -516,3 +520,9 @@ xmlSecNssTransformX25519GetKlass(void) {
     return(&xmlSecNssX25519Klass);
 }
 #endif /* XMLSEC_NO_XDH */
+
+#else
+
+typedef int make_iso_compilers_happy;
+
+#endif /* !defined(XMLSEC_NO_EC) || !defined(XMLSEC_NO_XDH) */

@@ -875,7 +875,7 @@ xmlSecMSCngKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x50
                 }
                 x509Value->issuerSerial = xmlSecMSCngASN1IntegerWrite(&(ctx->crt->pCertInfo->SerialNumber));
                 if (x509Value->issuerSerial == NULL) {
-                    xmlSecInternalError("xmlSecMSCngASN1IntegerWrite(issuer serial))", xmlSecKeyDataGetName(data));
+                    xmlSecInternalError("xmlSecMSCngASN1IntegerWrite(issuer serial)", xmlSecKeyDataGetName(data));
                     return(-1);
                 }
             }

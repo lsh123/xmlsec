@@ -934,7 +934,7 @@ xmlSecMSCngKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     xmlSecAssert2(xmlSecBufferGetData(&(rsaValue->modulus)) != NULL, NULL);
     xmlSecAssert2(xmlSecBufferGetData(&(rsaValue->publicExponent)) != NULL, NULL);
 
-    /* dont reverse blobs as both the XML and CNG works with big-endian */
+    /* don'treverse blobs as both the XML and CNG works with big-endian */
     mSize = xmlSecBufferGetSize(&(rsaValue->modulus));
     peSize = xmlSecBufferGetSize(&(rsaValue->publicExponent));
     xmlSecAssert2(mSize > 0, NULL);
@@ -1148,7 +1148,7 @@ xmlSecMSCngKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
 
     /* next is PrivateExponent node: not supported in MSCrypto */
 
-    /* dont reverse blobs as both the XML and CNG works with big-endian */
+    /* don'treverse blobs as both the XML and CNG works with big-endian */
     /* success */
     res = 0;
 
@@ -1336,7 +1336,7 @@ xmlSecMSCngKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
     /* turn the read data into a public key blob, as documented at
      * https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/ns-bcrypt-bcrypt_ecckey_blob>
      *
-     * dont reverse blobs as both the XML and CNG works with big-endian
+     * don'treverse blobs as both the XML and CNG works with big-endian
      *
      */
     offset = sizeof(BCRYPT_ECCKEY_BLOB);
@@ -1532,7 +1532,7 @@ xmlSecMSCngKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyVa
         goto done;
     }
 
-    /* dont reverse blobs as both the XML and CNG works with big-endian */
+    /* don'treverse blobs as both the XML and CNG works with big-endian */
 
     /* success */
     res = 0;

@@ -283,7 +283,7 @@ xmlSecMSCngKeyDataDhRead(xmlSecKeyDataId id, xmlSecKeyValueDhPtr dhValue) {
     xmlSecAssert2(xmlSecBufferGetData(&(dhValue->generator)) != NULL, NULL);
     xmlSecAssert2(xmlSecBufferGetData(&(dhValue->public)) != NULL, NULL);
 
-    /* dont reverse blobs: both XML and CNG use big-endian */
+    /* don't reverse blobs: both XML and CNG use big-endian */
     pSize = xmlSecBufferGetSize(&(dhValue->p));
     gSize = xmlSecBufferGetSize(&(dhValue->generator));
     publicSize = xmlSecBufferGetSize(&(dhValue->public));
@@ -441,7 +441,7 @@ xmlSecMSCngKeyDataDhPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDhPtr dh
         goto done;
     }
 
-    /* dont reverse blobs: both XML and CNG use big-endian */
+    /* don't reverse blobs: both XML and CNG use big-endian */
 
     /* P */
     ret = xmlSecBufferSetData(&(dhValue->p), bufData, dhkey->cbKey);
@@ -567,7 +567,7 @@ xmlSecMSCngKeyDataDhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLen
         }
     }
 
-    /* cbKey = max(pPLen, pGLen, pXLen), rounded up to 4-byte boundary — use pPLen */
+    /* p is the largest DH value, so its length is used as the key size (no alignment is enforced here) */
     cbKey = pPLen;
 
     /* Build BCRYPT_DH_PRIVATE_BLOB: header + P + G + Public(Y=G^X mod P) + Private(X)
@@ -649,6 +649,9 @@ xmlSecMSCngKeyDataDhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLen
         status = BCryptSecretAgreement(hPrivKey, hGPubKey, &hSelfSecret, 0);
         BCryptDestroyKey(hGPubKey);
         if(status != STATUS_SUCCESS) {
+            if(hSelfSecret != NULL) {
+                BCryptDestroySecret(hSelfSecret);
+            }
             xmlSecMSCngNtError("BCryptSecretAgreement(self Y)", NULL, status);
             goto done;
         }

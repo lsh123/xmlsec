@@ -468,7 +468,10 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
                 goto done;
             }
             secretData = xmlSecBufferGetData(secret);
-            xmlSecAssert2(secretData != NULL, -1);
+            if(secretData == NULL) {
+                BCryptDestroySecret(hBCryptSecret);
+                goto done;
+            }
 
             /* get key agreement secret */
             status = BCryptDeriveKey(hBCryptSecret, BCRYPT_KDF_RAW_SECRET, NULL,
@@ -526,7 +529,7 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
         goto done;
     }
 
-     /* get size and allocte buffer */
+    /* get size and allocate buffer */
     status = NCryptDeriveKey(
         hSecret,
         BCRYPT_KDF_RAW_SECRET,
@@ -547,7 +550,9 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
         goto done;
     }
     secretData = xmlSecBufferGetData(secret);
-    xmlSecAssert2(secretData != NULL, -1);
+    if (secretData == NULL) {
+        goto done;
+    }
 
     /* get key */
     status = NCryptDeriveKey(

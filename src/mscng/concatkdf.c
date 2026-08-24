@@ -33,7 +33,7 @@
 
 /******************************************************************************
  *
- * CONCATKDF2 transform
+ * ConcatKDF transform
  *
   *****************************************************************************/
 #define XMLSEC_MSCNG_KDF_DEFAULT_BUF_SIZE 64
@@ -290,7 +290,7 @@ xmlSecMSCngConcatKdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 }
 
 static int
-xmlSecMSCngConcatKdfPeformKeyDerivation(
+xmlSecMSCngConcatKdfPerformKeyDerivation(
     LPCWSTR pszHashAlgo,
     PBYTE pbSecret, ULONG cbSecret,
     PBYTE pbFixedInfo, ULONG cbFixedInfo,
@@ -300,8 +300,8 @@ xmlSecMSCngConcatKdfPeformKeyDerivation(
     BCRYPT_ALG_HANDLE hKdfAlg = NULL;
     BCRYPT_KEY_HANDLE hKey= NULL;
     DWORD cbResultLength = 0;
-    BCryptBuffer paramBufferCONCATKDF2[2];
-    BCryptBufferDesc paramsCONCATKDF2;
+    BCryptBuffer paramBufferCONCATKDF[2];
+    BCryptBufferDesc paramsCONCATKDF;
     int res = -1;
 
     xmlSecAssert2(pszHashAlgo != NULL, -1);
@@ -312,16 +312,16 @@ xmlSecMSCngConcatKdfPeformKeyDerivation(
     xmlSecAssert2(pbOut != NULL, -1);
     xmlSecAssert2(cbOut > 0, -1);
 
-    paramBufferCONCATKDF2[0].cbBuffer = cbFixedInfo;
-    paramBufferCONCATKDF2[0].BufferType = KDF_GENERIC_PARAMETER;
-    paramBufferCONCATKDF2[0].pvBuffer = pbFixedInfo;
-    paramBufferCONCATKDF2[1].cbBuffer = ((ULONG)wcslen(pszHashAlgo) + 1) * sizeof(WCHAR);
-    paramBufferCONCATKDF2[1].BufferType = KDF_HASH_ALGORITHM;
-    paramBufferCONCATKDF2[1].pvBuffer = (LPWSTR)pszHashAlgo;
+    paramBufferCONCATKDF[0].cbBuffer = cbFixedInfo;
+    paramBufferCONCATKDF[0].BufferType = KDF_GENERIC_PARAMETER;
+    paramBufferCONCATKDF[0].pvBuffer = pbFixedInfo;
+    paramBufferCONCATKDF[1].cbBuffer = ((ULONG)wcslen(pszHashAlgo) + 1) * sizeof(WCHAR);
+    paramBufferCONCATKDF[1].BufferType = KDF_HASH_ALGORITHM;
+    paramBufferCONCATKDF[1].pvBuffer = (LPWSTR)pszHashAlgo;
 
-    paramsCONCATKDF2.ulVersion = BCRYPTBUFFER_VERSION;
-    paramsCONCATKDF2.cBuffers = 2;
-    paramsCONCATKDF2.pBuffers = paramBufferCONCATKDF2;
+    paramsCONCATKDF.ulVersion = BCRYPTBUFFER_VERSION;
+    paramsCONCATKDF.cBuffers = 2;
+    paramsCONCATKDF.pBuffers = paramBufferCONCATKDF;
 
     /* get algo provider */
     status = BCryptOpenAlgorithmProvider(
@@ -351,7 +351,7 @@ xmlSecMSCngConcatKdfPeformKeyDerivation(
     /* generate the output key */
     status = BCryptKeyDerivation(
         hKey,
-        &paramsCONCATKDF2,
+        &paramsCONCATKDF,
         pbOut,
         cbOut,
         &cbResultLength,
@@ -428,14 +428,14 @@ xmlSecMSCngConcatKdfDerive(xmlSecMSCngConcatKdfCtxPtr ctx, xmlSecBufferPtr out, 
     xmlSecAssert2(outData != NULL, -1);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(outSize, outLen, return(-1), NULL);
 
-    ret = xmlSecMSCngConcatKdfPeformKeyDerivation(
+    ret = xmlSecMSCngConcatKdfPerformKeyDerivation(
         ctx->pszAlgId,
         passData, passLen,
         fixedInfoData, fixedInfoLen,
         outData, outLen
     );
     if (ret < 0) {
-        xmlSecInternalError2("xmlSecMSCngConcatKdfPeformKeyDerivation", NULL,
+        xmlSecInternalError2("xmlSecMSCngConcatKdfPerformKeyDerivation", NULL,
             "size=" XMLSEC_SIZE_FMT, outSize);
         return(-1);
     }
@@ -498,7 +498,7 @@ xmlSecMSCngConcatKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
 
 /******************************************************************************
  *
- * CONCATKDF2 key derivation algorithm
+ * ConcatKDF key derivation algorithm
  *
   *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCngConcatKdfKlass = {
@@ -530,8 +530,8 @@ static xmlSecTransformKlass xmlSecMSCngConcatKdfKlass = {
 };
 
 /**
- * @brief The CONCATKDF2 key derivation transform klass.
- * @return the CONCATKDF2 key derivation transform klass.
+ * @brief The ConcatKDF key derivation transform klass.
+ * @return the ConcatKDF key derivation transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformConcatKdfGetKlass(void) {

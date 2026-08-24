@@ -251,8 +251,8 @@ xmlSecMSCngKeyDataXdhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLe
         goto done;
     }
 
-    /* Import private key with zeroed public key; skip public key validation so
-     * BCrypt accepts the blob even though public[32] is all-zeros.
+    /* Import private key with a placeholder public key (base point u=9); skip public
+     * key validation so BCrypt accepts the blob.
      * On Windows 10 1709+ BCRYPT_NO_KEY_VALIDATION is supported for ECDH curves. */
     status = BCryptImportKeyPair(hAlg, NULL, BCRYPT_ECCPRIVATE_BLOB, &hPrivKeyTemp,
         pbPrivBlob, cbPrivBlob, BCRYPT_NO_KEY_VALIDATION);
@@ -287,6 +287,9 @@ xmlSecMSCngKeyDataXdhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLe
         status = BCryptSecretAgreement(hPrivKeyTemp, hBasePoint, &hSelfSecret, 0);
         BCryptDestroyKey(hBasePoint);
         if(status != STATUS_SUCCESS) {
+            if(hSelfSecret != NULL) {
+                BCryptDestroySecret(hSelfSecret);
+            }
             xmlSecMSCngNtError("BCryptSecretAgreement(X25519 self u)", NULL, status);
             goto done;
         }

@@ -242,7 +242,7 @@ xmlSecMSCngGcmBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngGcmBlockCipherSize), -1);
     xmlSecAssert2(key != NULL, -1);
 
-    /* get the symmetric key into bufData */
+    /* get the symmetric key into keyData */
     ctx = xmlSecMSCngGcmBlockCipherGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->hKey == 0, -1);
@@ -366,7 +366,7 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
     xmlSecAssert2(ctx->dwBlockLen > 0, -1);
 
     /* Check that we haven't already allocated space for the nonce. Might
-     * happen if the context is initialised more that once */
+     * happen if the context is initialised more than once */
     if (ctx->authInfo.pbNonce == NULL) {
         ctx->authInfo.pbNonce = xmlMalloc(xmlSecMSCngAesGcmNonceLengthInBytes);
         if (ctx->authInfo.pbNonce == NULL) {
@@ -391,7 +391,9 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
     /* Need some working buffers */
     XMLSEC_SAFE_CAST_ULONG_TO_SIZE(ctx->dwBlockLen, blockSize, return(-1), cipherName);
 
-    /* iv len == block len */
+    /* Note: for GCM the nonce is carried in authInfo.pbNonce (see above);
+     * this block-sized IV buffer is a vestigial allocation carried over from
+     * the CBC implementation and is not the GCM nonce. */
     if (ctx->pbIV == NULL) {
         ctx->pbIV = xmlMalloc(blockSize);
         if (ctx->pbIV == NULL) {
@@ -717,7 +719,7 @@ xmlSecMSCngGcmBlockCipherCtxFinal(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
         /* check if we really have decrypted the numbers of bytes that we
         * requested */
         if(dwCLen != dwInSize) {
-            xmlSecInternalError3("BCryptEncrypt", cipherName,
+            xmlSecInternalError3("BCryptDecrypt", cipherName,
                 "in-size=%lu; out-size=%lu", dwInSize, dwCLen);
             return(-1);
         }

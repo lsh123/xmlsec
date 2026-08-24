@@ -49,7 +49,7 @@ struct _xmlSecMSCngRsaPkcs1OaepCtx {
  *
   *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MSCngRsaPkcs1Oaep, xmlSecMSCngRsaPkcs1OaepCtx)
-#define xmlSeccMSCngRsaPkcs1OaepSize XMLSEC_TRANSFORM_SIZE(MSCngRsaPkcs1Oaep)
+#define xmlSecMSCngRsaPkcs1OaepSize XMLSEC_TRANSFORM_SIZE(MSCngRsaPkcs1Oaep)
 
 static int
 xmlSecMSCngRsaPkcs1OaepCheckId(xmlSecTransformPtr transform) {
@@ -79,7 +79,7 @@ xmlSecMSCngRsaPkcs1OaepInitialize(xmlSecTransformPtr transform) {
     int ret;
 
     xmlSecAssert2(xmlSecMSCngRsaPkcs1OaepCheckId(transform), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSeccMSCngRsaPkcs1OaepSize), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngRsaPkcs1OaepSize), -1);
 
     ctx = xmlSecMSCngRsaPkcs1OaepGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
@@ -103,7 +103,7 @@ xmlSecMSCngRsaPkcs1OaepFinalize(xmlSecTransformPtr transform) {
     xmlSecMSCngRsaPkcs1OaepCtxPtr ctx;
 
     xmlSecAssert(xmlSecMSCngRsaPkcs1OaepCheckId(transform));
-    xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSeccMSCngRsaPkcs1OaepSize));
+    xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecMSCngRsaPkcs1OaepSize));
 
     ctx = xmlSecMSCngRsaPkcs1OaepGetCtx(transform);
     xmlSecAssert(ctx != NULL);
@@ -123,7 +123,7 @@ xmlSecMSCngRsaPkcs1OaepSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr 
 
     xmlSecAssert2(xmlSecMSCngRsaPkcs1OaepCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSeccMSCngRsaPkcs1OaepSize), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngRsaPkcs1OaepSize), -1);
     xmlSecAssert2(keyReq != NULL, -1);
 
     ctx = xmlSecMSCngRsaPkcs1OaepGetCtx(transform);
@@ -146,7 +146,7 @@ xmlSecMSCngRsaPkcs1OaepSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     xmlSecAssert2(xmlSecMSCngRsaPkcs1OaepCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSeccMSCngRsaPkcs1OaepSize), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngRsaPkcs1OaepSize), -1);
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(xmlSecKeyGetValue(key), xmlSecMSCngKeyDataRsaId), -1);
 
@@ -181,7 +181,7 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
 
     xmlSecAssert2(xmlSecMSCngRsaPkcs1OaepCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSeccMSCngRsaPkcs1OaepSize), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngRsaPkcs1OaepSize), -1);
 
     ctx = xmlSecMSCngRsaPkcs1OaepGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
@@ -197,7 +197,7 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
     outSize = xmlSecBufferGetSize(out);
     xmlSecAssert2(outSize == 0, -1);
 
-    /* the encoded size is equal to the keys size so we could not
+    /* the encoded size is equal to the key's size so we could not
      * process more than that */
     if((transform->operation == xmlSecTransformOperationEncrypt) && (inSize >= keySize)) {
         xmlSecInvalidSizeLessThanError("Input data", inSize, keySize,
@@ -387,7 +387,7 @@ xmlSecMSCngRsaPkcs1OaepExecute(xmlSecTransformPtr transform, int last,
 
     xmlSecAssert2(xmlSecMSCngRsaPkcs1OaepCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSeccMSCngRsaPkcs1OaepSize), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngRsaPkcs1OaepSize), -1);
     UNREFERENCED_PARAMETER(transformCtx);
 
     ctx = xmlSecMSCngRsaPkcs1OaepGetCtx(transform);
@@ -428,12 +428,13 @@ xmlSecMSCngRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     int ret;
 
     xmlSecAssert2(xmlSecMSCngRsaPkcs1OaepCheckId(transform), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSeccMSCngRsaPkcs1OaepSize), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngRsaPkcs1OaepSize), -1);
     xmlSecAssert2(node != NULL, -1);
     UNREFERENCED_PARAMETER(transformCtx);
 
     ctx = xmlSecMSCngRsaPkcs1OaepGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(xmlSecBufferGetSize(&(ctx->oaepParams)) == 0, -1);
 
     ret = xmlSecTransformRsaOaepParamsInitialize(&oaepParams);
     if (ret < 0) {
@@ -569,7 +570,7 @@ xmlSecMSCngRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 static xmlSecTransformKlass xmlSecMSCngRsaOaepKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSeccMSCngRsaPkcs1OaepSize,               /* xmlSecSize objSize */
+    xmlSecMSCngRsaPkcs1OaepSize,               /* xmlSecSize objSize */
 
     xmlSecNameRsaOaep,                          /* const xmlChar* name; */
     xmlSecHrefRsaOaep,                          /* const xmlChar* href; */
@@ -607,7 +608,7 @@ xmlSecMSCngTransformRsaOaepGetKlass(void) {
 static xmlSecTransformKlass xmlSecMSCngRsaOaepEnc11Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSeccMSCngRsaPkcs1OaepSize,               /* xmlSecSize objSize */
+    xmlSecMSCngRsaPkcs1OaepSize,               /* xmlSecSize objSize */
 
     xmlSecNameRsaOaepEnc11,                     /* const xmlChar* name; */
     xmlSecHrefRsaOaepEnc11,                     /* const xmlChar* href; */
@@ -652,7 +653,7 @@ xmlSecMSCngTransformRsaOaepEnc11GetKlass(void) {
 static xmlSecTransformKlass xmlSecMSCngRsaPkcs1Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSeccMSCngRsaPkcs1OaepSize,               /* xmlSecSize objSize */
+    xmlSecMSCngRsaPkcs1OaepSize,               /* xmlSecSize objSize */
 
     xmlSecNameRsaPkcs1,                         /* const xmlChar* name; */
     xmlSecHrefRsaPkcs1,                         /* const xmlChar* href; */

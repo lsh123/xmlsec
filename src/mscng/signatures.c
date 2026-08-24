@@ -27,7 +27,7 @@
 
  /******************************************************************************
   *
-  * DSA EVP
+  * DSA
   *
   * https://www.w3.org/TR/xmldsig-core1/#sec-DSA
   * The output of the DSA algorithm consists of a pair of integers usually referred by the pair (r, s).
@@ -446,13 +446,9 @@ static void xmlSecMSCngSignatureFinalize(xmlSecTransformPtr transform) {
         xmlSecKeyDataDestroy(ctx->data);
     }
 
-    // MSDN documents at
-    // https://msdn.microsoft.com/en-us/library/windows/desktop/aa376217(v=vs.85).aspx
-    // that the order of cleanup should be:
-    // - algo handle
-    // - hash handle
-    // - hash object pointer
-    // - hash pointer
+    // Cleanup follows the sample-code order from
+    // https://msdn.microsoft.com/en-us/library/windows/desktop/aa376217(v=vs.85).aspx:
+    // close the algorithm provider, destroy the hash, then free the hash object and buffer.
 
     if(ctx->hHashAlg != 0) {
         BCryptCloseAlgorithmProvider(ctx->hHashAlg, 0);
@@ -584,7 +580,7 @@ xmlSecMSCngSignatureFixBrokenJava(xmlSecMSCngSignatureCtxPtr ctx,
         }
         memset(res, 0, 2 * halfSize);
 
-        /* add zeros at the beggining of both r and s */
+        /* add zeros at the beginning of both r and s */
         offset = (2 * halfSize - dataSize) / 2;
         memcpy(res + offset, data, dataSize / 2);
         memcpy(res + halfSize + offset, data + dataSize / 2, dataSize / 2);
@@ -604,7 +600,7 @@ xmlSecMSCngSignatureFixBrokenJava(xmlSecMSCngSignatureCtxPtr ctx,
         }
         memset(res, 0, 2 * halfSize);
 
-        /* remove zeros at the beggining of both r and s (note: we don't check if those
+        /* remove zeros at the beginning of both r and s (note: we don't check if those
          * are actually zeros, just hope for the best) */
         offset = (dataSize - 2 * halfSize) / 2;
         memcpy(res, data + offset, halfSize);
@@ -688,7 +684,7 @@ xmlSecMSCngSignatureFixBrokenASN1(xmlSecMSCngSignatureCtxPtr ctx,
         &eccSignatureLen
     );
     if ((status != TRUE) || (eccSignature == NULL) || (eccSignatureLen <= 0)) {
-        xmlSecMSCngNtError("CryptDecodeObjectEx", NULL, STATUS_SUCCESS);
+        xmlSecMSCngLastError("CryptDecodeObjectEx(X509_ECC_SIGNATURE)", NULL);
         return(-1);
     }
 
@@ -706,7 +702,7 @@ xmlSecMSCngSignatureFixBrokenASN1(xmlSecMSCngSignatureCtxPtr ctx,
         return(-1);
     }
 
-    /* copy r and s other */
+    /* copy r and s over */
     res = (xmlSecByte*)xmlMalloc(2 * halfSize);
     if (res == NULL) {
         xmlSecMallocError(2 * halfSize, NULL);
@@ -738,7 +734,7 @@ xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
     BCRYPT_KEY_HANDLE pubkey;
     NTSTATUS status;
     BCRYPT_PKCS1_PADDING_INFO pkcs1PaddingInfo;
-    BCRYPT_PSS_PADDING_INFO pssPadingInfo;
+    BCRYPT_PSS_PADDING_INFO pssPaddingInfo;
     VOID* pPaddingInfo = NULL;
     xmlSecByte* fixedData = NULL;
     xmlSecSize fixedDataSize = 0;
@@ -769,9 +765,9 @@ xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
         pkcs1PaddingInfo.pszAlgId = ctx->pszHashAlgId;
         pPaddingInfo = &pkcs1PaddingInfo;
     } else if (ctx->dwInfoFlags == BCRYPT_PAD_PSS) {
-        pssPadingInfo.pszAlgId = ctx->pszHashAlgId;
-        pssPadingInfo.cbSalt = ctx->dwRsaPssSaltSize;
-        pPaddingInfo = &pssPadingInfo;
+        pssPaddingInfo.pszAlgId = ctx->pszHashAlgId;
+        pssPaddingInfo.cbSalt = ctx->dwRsaPssSaltSize;
+        pPaddingInfo = &pssPaddingInfo;
     } else if ((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_SUPPORT_ASN1_SIGNATURE_VALUES) != 0) {
         /* however some implementations (e.g. Java) just put ASN1 structure in the signature
          * https://github.com/lsh123/xmlsec/issues/995 */
@@ -804,7 +800,7 @@ xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
         pPaddingInfo,
         ctx->pbHash,
         ctx->cbHash,
-        (PBYTE)((fixedData != NULL) ? fixedData : data),
+        (PBYTE)data,
         dwDataSize,
         ctx->dwInfoFlags);
     if(status != STATUS_SUCCESS) {
@@ -852,7 +848,7 @@ xmlSecMSCngSignatureConvertToASN1(xmlSecMSCngSignatureCtxPtr ctx, xmlSecBufferPt
         return(-1);
     }
 
-    /* MSCng expect little-endian */
+    /* CERT_ECC_SIGNATURE carries little-endian integers */
     data = xmlSecBufferGetData(buf);
     dataSize = xmlSecBufferGetSize(buf);
     halfSize = dataSize / 2;
@@ -879,7 +875,7 @@ xmlSecMSCngSignatureConvertToASN1(xmlSecMSCngSignatureCtxPtr ctx, xmlSecBufferPt
         &encodedDataSize
     );
     if ((status != TRUE) || (encodedData == NULL) || (encodedDataSize <= 0)) {
-        xmlSecMSCngNtError("CryptEncodeObjectEx", NULL, STATUS_SUCCESS);
+        xmlSecMSCngLastError("CryptEncodeObjectEx(X509_ECC_SIGNATURE)", NULL);
         return(-1);
     }
 
@@ -903,7 +899,7 @@ xmlSecMSCngSignatureSign(
 ) {
     NCRYPT_KEY_HANDLE privkey;
     BCRYPT_PKCS1_PADDING_INFO pkcs1PaddingInfo;
-    BCRYPT_PSS_PADDING_INFO pssPadingInfo;
+    BCRYPT_PSS_PADDING_INFO pssPaddingInfo;
     VOID* pPaddingInfo = NULL;
     DWORD cbSignature;
     NTSTATUS status;
@@ -955,9 +951,9 @@ xmlSecMSCngSignatureSign(
         pPaddingInfo = &pkcs1PaddingInfo;
     }
     else if (ctx->dwInfoFlags == BCRYPT_PAD_PSS) {
-        pssPadingInfo.pszAlgId = ctx->pszHashAlgId;
-        pssPadingInfo.cbSalt = ctx->dwRsaPssSaltSize;
-        pPaddingInfo = &pssPadingInfo;
+        pssPaddingInfo.pszAlgId = ctx->pszHashAlgId;
+        pssPaddingInfo.cbSalt = ctx->dwRsaPssSaltSize;
+        pPaddingInfo = &pssPaddingInfo;
     }
 
     /* sign the hash */

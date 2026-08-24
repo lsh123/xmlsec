@@ -326,6 +326,7 @@ xmlSecMSCngKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
 
     ctx = xmlSecMSCngKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->pszAlgId != NULL, -1);
 
     keyData = xmlSecBufferGetData(&(ctx->parentCtx.keyBuffer));
     keySize = xmlSecBufferGetSize(&(ctx->parentCtx.keyBuffer));
@@ -343,7 +344,7 @@ xmlSecMSCngKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
 
     status = BCryptOpenAlgorithmProvider(
         &hAlg,
-        BCRYPT_AES_ALGORITHM,
+        ctx->pszAlgId,
         NULL,
         0);
     if (status != STATUS_SUCCESS) {
@@ -402,11 +403,6 @@ xmlSecMSCngKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
     if (status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptImportKey", NULL, status);
         goto done;
-    }
-
-    /* handle padding ourselves */
-    if (out != in) {
-        memcpy(out, in, inSize);
     }
 
     cbData = 0;
@@ -478,6 +474,7 @@ xmlSecMSCngKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
 
     ctx = xmlSecMSCngKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->pszAlgId != NULL, -1);
 
     keyData = xmlSecBufferGetData(&(ctx->parentCtx.keyBuffer));
     keySize = xmlSecBufferGetSize(&(ctx->parentCtx.keyBuffer));
@@ -495,7 +492,7 @@ xmlSecMSCngKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
 
     status = BCryptOpenAlgorithmProvider(
         &hAlg,
-        BCRYPT_AES_ALGORITHM,
+        ctx->pszAlgId,
         NULL,
         0);
     if (status != STATUS_SUCCESS) {
@@ -554,11 +551,6 @@ xmlSecMSCngKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
     if (status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptImportKey", NULL, status);
         goto done;
-    }
-
-    /* handle padding ourselves */
-    if (out != in) {
-        memcpy(out, in, inSize);
     }
 
     cbData = 0;

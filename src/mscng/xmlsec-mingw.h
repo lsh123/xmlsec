@@ -22,6 +22,12 @@
 #define BCRYPT_HKDF_ALGORITHM               L"HKDF"
 #endif /* !defined(BCRYPT_HKDF_ALGORITHM) */
 
+/* SHA224 algorithm identifier is not defined in the Windows SDK bcrypt.h;
+ * provide a fallback so the code compiles with all SDK versions. */
+#ifndef BCRYPT_SHA224_ALGORITHM
+#define BCRYPT_SHA224_ALGORITHM L"SHA224"
+#endif /* BCRYPT_SHA224_ALGORITHM */
+
 /* SHA3 algorithm identifiers: available in Windows SDK 10.0.22621+ (Windows 11 22H2).
  * Define fallback values so the code compiles with older SDK versions; the calls will fail
  * at runtime on systems that do not support these algorithms. */

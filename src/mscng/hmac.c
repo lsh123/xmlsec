@@ -70,9 +70,6 @@ static xmlSecTransformKlass xmlSecMSCng ## name ## Klass = {                    
     NULL,                                       /* void* reserved1; */                              \
 };
 
-/* 80 is a minimum value from: https://www.w3.org/TR/xmldsig-core1/#sec-SignatureMethod */
-#define XMLSEC_MSCNG_HMAC_MIN_LENGTH                     80
-
 static int
 xmlSecMSCngHmacCheckId(xmlSecTransformPtr transform) {
 
@@ -174,6 +171,7 @@ xmlSecMSCngHmacFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     if(ctx->hash != NULL) {
+        xmlSecMemCleanse(ctx->hash, ctx->hashLength);
         xmlFree(ctx->hash);
     }
 
@@ -261,7 +259,7 @@ xmlSecMSCngHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     xmlSecAssert2(xmlSecBufferGetData(buffer) != NULL, -1);
 
-    /* at this point we know what should be they key, go ahead with the CNG
+    /* at this point we know what should be the key, go ahead with the CNG
      * calls */
 
     status = BCryptOpenAlgorithmProvider(&ctx->hAlg,

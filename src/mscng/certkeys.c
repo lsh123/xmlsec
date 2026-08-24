@@ -363,10 +363,8 @@ xmlSecMSCngCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
 }
 
 /**
- * @brief Native MSCng public key retrieval from xmlsec keydata. The returned key must
- * @param data the key data to retrieve certificate from.
- *
- * not be destroyed by the caller.
+ * @brief Native MSCng public key retrieval from xmlsec keydata. The returned key must not be destroyed by the caller.
+ * @param data the key data to retrieve public key from.
  *
  * @return key on success or 0 otherwise.
  */
@@ -384,10 +382,8 @@ xmlSecMSCngKeyDataGetPubKey(xmlSecKeyDataPtr data) {
 }
 
 /**
- * @brief Native MSCng private key retrieval from xmlsec keydata. The returned key
- * @param data the key data to retrieve certificate from.
- *
- * must not be destroyed by the caller.
+ * @brief Native MSCng private key retrieval from xmlsec keydata. The returned key must not be destroyed by the caller.
+ * @param data the key data to retrieve private key from.
  *
  * @return key on success or 0 otherwise.
  */
@@ -733,7 +729,7 @@ xmlSecMSCngCertKeyDataGetSize(xmlSecKeyDataPtr data) {
             &lenlen,
             0);
         if(status != STATUS_SUCCESS) {
-            xmlSecMSCngNtError("BCryptGetproperty", NULL, status);
+            xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
             return(0);
         }
         xmlSecAssert2(lenlen == sizeof(length), 0);
@@ -1123,8 +1119,8 @@ xmlSecMSCngKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
 
     /* check sizes */
     if (bufLen < (sizeof(BCRYPT_RSAKEY_BLOB) + rsakey->cbPublicExp + rsakey->cbModulus)) {
-        xmlSecMSCngNtError3("CryptExportKey", xmlSecKeyDataKlassGetName(id),
-            STATUS_SUCCESS, "dwBlobLen: %lu; keyLen: %lu", bufLen, rsakey->cbPublicExp);
+        xmlSecMSCngNtError3("BCryptExportKey", xmlSecKeyDataKlassGetName(id),
+            STATUS_SUCCESS, "dwBlobLen: %lu; keyLen: %lu", bufLen, rsakey->cbModulus);
         goto done;
 
     }
@@ -1276,7 +1272,7 @@ static const xmlSecMSCngKeyDataEccCurveNameAndMagic g_xmlSecMSCngKeyDataEccCurve
 
 
 static const xmlChar*
-xmlSecOpenSSLKeyDataEcGetOidFromMagic(ULONG magic) {
+xmlSecMSCngKeyDataEcGetOidFromMagic(ULONG magic) {
     xmlSecSize size = sizeof(g_xmlSecMSCngKeyDataEccCurveNameAndMagic) / sizeof(g_xmlSecMSCngKeyDataEccCurveNameAndMagic[0]);
 
     xmlSecAssert2(magic != 0, NULL);
@@ -1346,7 +1342,7 @@ xmlSecMSCngKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
 
     ret = xmlSecBufferInitialize(&blob, blobSize);
     if (ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", xmlSecKeyDataKlassGetName(id),
+        xmlSecInternalError2("xmlSecBufferInitialize", xmlSecKeyDataKlassGetName(id),
             "size=" XMLSEC_SIZE_FMT, blobSize);
         goto done;
     }
@@ -1364,7 +1360,7 @@ xmlSecMSCngKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
     eckey = (BCRYPT_ECCKEY_BLOB*)blobData;
     blobType = xmlSecMSCngKeyDataEcGetTypeAndMagicFromOid(ecValue->curve, &(eckey->dwMagic));
     if ((blobType == NULL) || (eckey->dwMagic == 0)) {
-        xmlSecInternalError2("xmlSecOpenSSLKeyDataEcGetOidFromNid", xmlSecKeyDataKlassGetName(id),
+        xmlSecInternalError2("xmlSecMSCngKeyDataEcGetTypeAndMagicFromOid", xmlSecKeyDataKlassGetName(id),
             "curve=%s", xmlSecErrorsSafeString(ecValue->curve));
         goto done;
     }
@@ -1507,9 +1503,9 @@ xmlSecMSCngKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyVa
         goto done;
     }
     /* curve */
-    curve = xmlSecOpenSSLKeyDataEcGetOidFromMagic(eckey->dwMagic);
+    curve = xmlSecMSCngKeyDataEcGetOidFromMagic(eckey->dwMagic);
     if (curve == NULL) {
-        xmlSecInternalError2("xmlSecOpenSSLKeyDataEcGetOidFromMagic", xmlSecKeyDataKlassGetName(id),
+        xmlSecInternalError2("xmlSecMSCngKeyDataEcGetOidFromMagic", xmlSecKeyDataKlassGetName(id),
             "magic=%lu", eckey->dwMagic);
         goto done;
     }
@@ -1884,7 +1880,7 @@ xmlSecMSCngDhValidatePublicSubgroup(xmlSecBufferPtr p, xmlSecBufferPtr g,
 
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(xmlSecBufferGetSize(p), cbKey, return(-1), NULL);
     if(cbKey > XMLSEC_MSCNG_DSA_MAX_P_SIZE) {
-        xmlSecInvalidSizeMoreThanError("DSA P size", (xmlSecSize)cbKey, (xmlSecSize)XMLSEC_MSCNG_DSA_MAX_P_SIZE, NULL);
+        xmlSecInvalidSizeMoreThanError("DH P size", (xmlSecSize)cbKey, (xmlSecSize)XMLSEC_MSCNG_DSA_MAX_P_SIZE, NULL);
         goto done;
     }
     cbPrivBlob = (DWORD)sizeof(BCRYPT_DH_KEY_BLOB) + cbKey * 4U;
@@ -2200,11 +2196,9 @@ done:
 
 
 /**
- * @brief Loads a public key of any supported type (RSA, DSA, EC, DH) from a raw
+ * @brief Loads a public key of any supported type (RSA, DSA, EC, DH) from a raw SubjectPublicKeyInfo DER blob.
  * @param derData DER-encoded SubjectPublicKeyInfo.
  * @param derDataLen length of @p derData.
- *
- * SubjectPublicKeyInfo DER blob.
  *
  * @return new key data or NULL on failure.
  */

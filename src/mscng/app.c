@@ -112,7 +112,8 @@ xmlSecMSCngAppParseConfig(const char* config, LPTSTR* pCurrentUserStoreName, LPT
  * by the XMLSec command-line utility and is called before the
  * #xmlSecInit function.
  *
- * @param config the path to MSCng configuration (unused).
+ * @param config the cert store name (or a <user>:<machine> pair of names)
+ *         parsed by xmlSecMSCngAppParseConfig, or NULL.
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -343,8 +344,7 @@ xmlSecMSCngAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecK
     /* create key */
     key = xmlSecKeyCreate();
     if(key == NULL) {
-        xmlSecInternalError("xmlSecKeyCreate",
-            xmlSecKeyDataGetName(x509Data));
+        xmlSecInternalError("xmlSecKeyCreate", NULL);
         goto done;
     }
 
@@ -594,7 +594,7 @@ xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, cons
         goto cleanup;
     }
 
-    /* enumerate over certifiates in the store */
+    /* enumerate over certificates in the store */
     while((cert = CertEnumCertificatesInStore(certStore, cert)) != NULL) {
         /* multiple private keys, use the first one */
         if ((privKeyData == NULL) && (xmlSecMSCngIsPrivateKeyCert(cert, xmlSecImportGetPersistKey()) == TRUE)) {
@@ -640,7 +640,7 @@ xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, cons
 
             ret = xmlSecMSCngKeyDataX509AdoptCert(keyData, certDuplicate);
             if (ret < 0) {
-                xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptKeyCert", NULL);
+                xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCert", NULL);
                 goto cleanup;
             }
             certDuplicate = NULL;

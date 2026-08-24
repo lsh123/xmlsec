@@ -97,7 +97,7 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataDEREncodedKeyValueKlass = {
  *      </complexType>
  * @endcode
  *
- * @return the &lt;dsig11:DEREncodedKeyValue/&gt;element processing key data klass.
+ * @return the &lt;dsig11:DEREncodedKeyValue/&gt; element processing key data klass.
  */
 xmlSecKeyDataId
 xmlSecMSCngKeyDataDEREncodedKeyValueGetKlass(void) {
@@ -153,7 +153,7 @@ xmlSecMSCngKeyDataDEREncodedKeyValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(dataSize, dataLen, goto done, xmlSecKeyDataKlassGetName(id));
     keyData = xmlSecMSCngAppKeyReadPubKeyFromDer(data, dataLen);
     if(keyData == NULL) {
-        xmlSecInternalError("xmlSecMSCngAppKeyLoadPubKeyDerMemory", xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecMSCngAppKeyReadPubKeyFromDer", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 

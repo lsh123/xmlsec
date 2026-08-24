@@ -238,7 +238,7 @@ xmlSecMSCngCbcBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngCbcBlockCipherSize), -1);
     xmlSecAssert2(key != NULL, -1);
 
-    /* get the symmetric key into bufData */
+    /* get the symmetric key into keyBuffer/keyData */
     ctx = xmlSecMSCngCbcBlockCipherGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->hKey == 0, -1);
@@ -337,9 +337,7 @@ xmlSecMSCngCbcBlockCipherCtxInit(xmlSecMSCngCbcBlockCipherCtxPtr ctx,
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->hKey != 0, -1);
     xmlSecAssert2(ctx->ctxInitialized == 0, -1);
-    xmlSecAssert2(ctx->hKey != 0, -1);
     xmlSecAssert2(ctx->hAlg != 0, -1);
-    xmlSecAssert2(ctx->ctxInitialized == 0, -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
@@ -597,7 +595,7 @@ xmlSecMSCngCbcBlockCipherCtxFinal(xmlSecMSCngCbcBlockCipherCtxPtr ctx,
                 dwSize,
                 BCRYPT_USE_SYSTEM_PREFERRED_RNG);
             if(status != STATUS_SUCCESS) {
-                xmlSecMSCngNtError("BCryptGetProperty", cipherName, status);
+                xmlSecMSCngNtError("BCryptGenRandom", cipherName, status);
                 return(-1);
             }
         }
@@ -637,7 +635,7 @@ xmlSecMSCngCbcBlockCipherCtxFinal(xmlSecMSCngCbcBlockCipherCtxPtr ctx,
             &dwCLen,
             0);
         if(status != STATUS_SUCCESS) {
-            xmlSecMSCngNtError("BCryptDecrypt", cipherName, status);
+            xmlSecMSCngNtError("BCryptEncrypt", cipherName, status);
             return(-1);
         }
 
@@ -823,7 +821,7 @@ xmlSecMSCngTransformAes256CbcGetKlass(void) {
 
 #ifndef XMLSEC_NO_DES
 
-/* Tripple-DES CBC block cipher klass: xmlSecMSCngDes3CbcKlass */
+/* Triple-DES CBC block cipher klass: xmlSecMSCngDes3CbcKlass */
 XMLSEC_MSCNG_CBC_CIPHER_KLASS(Des3Cbc)
 
 /**

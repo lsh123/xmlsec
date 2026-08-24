@@ -492,11 +492,11 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         offset += pSize;
 
         /*  g  */
-        memcpy(blobData + offset, xmlSecBufferGetData(&(dsaValue->g)), gSize);
+        memcpy(blobData + offset + (pSize - gSize), xmlSecBufferGetData(&(dsaValue->g)), gSize);
         offset += pSize; /* gSize <= pSize */
 
         /*  y  */
-        memcpy(blobData + offset, xmlSecBufferGetData(&(dsaValue->y)), ySize);
+        memcpy(blobData + offset + (pSize - ySize), xmlSecBufferGetData(&(dsaValue->y)), ySize);
         offset += pSize; /* ySize <= pSize */
     } else {
 #if XMLSEC_MSCNG_HAVE_DSA_V2
@@ -527,11 +527,11 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         offset += pSize;
 
         /*  g  */
-        memcpy(blobData + offset, xmlSecBufferGetData(&(dsaValue->g)), gSize);
+        memcpy(blobData + offset + (pSize - gSize), xmlSecBufferGetData(&(dsaValue->g)), gSize);
         offset += pSize; /* gSize <= pSize */
 
         /*  y  */
-        memcpy(blobData + offset, xmlSecBufferGetData(&(dsaValue->y)), ySize);
+        memcpy(blobData + offset + (pSize - ySize), xmlSecBufferGetData(&(dsaValue->y)), ySize);
         offset += pSize; /* ySize <= pSize */
 #else /* XMLSEC_MSCNG_HAVE_DSA_V2 */
     xmlSecNotImplementedError("DSA keys with q > 20 bytes require newer Windows SDK bcrypt definitions");

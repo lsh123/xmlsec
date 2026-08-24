@@ -491,8 +491,10 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
                 goto done;
             }
 
-            /* BCrypt BCRYPT_KDF_RAW_SECRET returns the DH shared secret in little-endian
-             * (host) byte order. Reverse to get big-endian Z for ConcatKDF. */
+            /* CNG returns the raw shared secret in a byte order that differs from the
+             * standard representation ConcatKDF / other backends expect, so reverse it
+             * to produce Z. This applies to all key-agreement types (DH/ECDH/X25519)
+             * and is verified by the X25519 round-trip test. */
             {
                 xmlSecByte* pStart = secretData;
                 xmlSecByte* pEnd = secretData + secretSize - 1;
@@ -577,8 +579,8 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
         goto done;
     }
 
-    /* the raw secret is returned to us in host byte order, so we need to swap it to big
-     * endian order. */
+    /* the raw secret comes back in CNG's native byte order; swap it to the standard
+     * representation ConcatKDF / other backends expect (required for all key types). */
     start = secretData;
     end = secretData + dwSecretLen - 1;
     while (start < end) {

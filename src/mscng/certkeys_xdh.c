@@ -294,7 +294,7 @@ xmlSecMSCngKeyDataXdhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLe
             goto done;
         }
 
-        /* BCryptDeriveKey with BCRYPT_KDF_RAW_SECRET gives us X25519(d, 9) = u in LE. */
+        /* BCryptDeriveKey with BCRYPT_KDF_RAW_SECRET gives us X25519(d, 9) = u in big-endian. */
         status = BCryptDeriveKey(hSelfSecret, BCRYPT_KDF_RAW_SECRET, NULL, NULL, 0, &cbDerived, 0);
         if((status != STATUS_SUCCESS) || (cbDerived == 0)) {
             BCryptDestroySecret(hSelfSecret);
@@ -310,8 +310,8 @@ xmlSecMSCngKeyDataXdhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLe
             xmlSecMSCngNtError("BCryptDeriveKey(X25519 u data)", NULL, status);
             goto done;
         }
-        /* BCrypt returns Curve25519 scalar result in little-endian (LE). For the key
-         * blob the public u-coordinate is also LE, so no reversal needed here. */
+        /* BCryptDeriveKey returns the derived u in big-endian. Keep it as-is for now;
+         * it is reversed when written into the little-endian ECC blob below. */
     }
 
     /* Destroy the temp key (had wrong public key) and re-import with correct public key */
@@ -319,8 +319,9 @@ xmlSecMSCngKeyDataXdhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLe
     hPrivKeyTemp = NULL;
 
     /* Write the correct public key u-coordinate into the blob.
-     * BCryptDeriveKey(BCRYPT_KDF_RAW_SECRET) returns u in little-endian but
-     * BCRYPT_ECCPRIVATE_BLOB expects the u-coordinate in big-endian.  Reverse. */
+     * The ECC blob stores the Curve25519 u-coordinate in little-endian (the RFC 7748
+     * wire format, matching the public-import path above), but BCryptDeriveKey returned
+     * it in big-endian.  Reverse to match the blob's little-endian representation. */
     xmlSecMSCngReverseCopy(pbPrivBlob + sizeof(BCRYPT_ECCKEY_BLOB), pubKeyU, 32);
 
     /* Re-import with the correct public key */

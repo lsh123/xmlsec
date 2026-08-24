@@ -65,7 +65,7 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngX509StoreAdoptCrl         (xm
                                                                               PCCRL_CONTEXT crl);
 /**
  * @brief Verifies a CRL against trusted certificates in the store.
- * @details Verifies @p crl against the trusted certificates in @p store.
+ * @details Verifies @p crl signature against trusted certificates (falling back to untrusted intermediates) and checks its thisUpdate/nextUpdate validity window.
  * @param store the pointer to X509 key data store klass.
  * @param crl the pointer to CRL.
  * @param keyInfoCtx the pointer to key info context.

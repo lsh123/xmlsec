@@ -92,6 +92,8 @@ static int
 xmlSecMSCngKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     PCCERT_CONTEXT srcCert = NULL;
     PCCERT_CONTEXT dstCert;
+    PCCRL_CONTEXT srcCrl = NULL;
+    PCCRL_CONTEXT dstCrl;
     xmlSecMSCngX509DataCtxPtr srcCtx;
     xmlSecMSCngX509DataCtxPtr dstCtx;
     int ret;
@@ -132,6 +134,25 @@ xmlSecMSCngKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
             }
         }
         dstCert = NULL; /* owned by dst now */
+    }
+
+    /* duplicate the CRLs */
+    while((srcCrl = CertEnumCRLsInStore(srcCtx->hMemStore, srcCrl)) != NULL) {
+        dstCrl = CertDuplicateCRLContext(srcCrl);
+        if(dstCrl == NULL) {
+            xmlSecMSCngLastError("CertDuplicateCRLContext", NULL);
+            CertFreeCRLContext(srcCrl);
+            return(-1);
+        }
+
+        ret = xmlSecMSCngKeyDataX509AdoptCrl(dst, dstCrl);
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCrl", NULL);
+            CertFreeCRLContext(srcCrl);
+            CertFreeCRLContext(dstCrl);
+            return(-1);
+        }
+        dstCrl = NULL; /* owned by dst now */
     }
 
     /* done */
@@ -331,9 +352,9 @@ xmlSecMSCngX509CertGetTime(FILETIME in, time_t* out) {
     *out <<= 32;
     *out |= in.dwLowDateTime;
     /* 100 nanoseconds -> seconds */
-    *out /= 10000;
+    *out /= 10000000;
     /* 1601-01-01 epoch -> 1970-01-01 epoch */
-    *out -= 11644473600000;
+    *out -= 11644473600;
 
     return(0);
 }

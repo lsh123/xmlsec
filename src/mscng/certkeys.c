@@ -85,15 +85,17 @@ xmlSecMSCngKeyDataCertGetPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE* k
 static int
 xmlSecMSCngKeyDataCertGetPrivkey(PCCERT_CONTEXT cert, NCRYPT_KEY_HANDLE* key, BOOL* needsFree) {
     int ret;
+    CERT_KEY_CONTEXT ckc;
+    DWORD dwCkcLen = sizeof(ckc);
+    BOOL res;
 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(needsFree != NULL, -1);
 
     /* try non persistent key */
-    CERT_KEY_CONTEXT ckc;
-    DWORD dwCkcLen = sizeof(ckc);
-    if (CertGetCertificateContextProperty(cert, CERT_KEY_CONTEXT_PROP_ID, &ckc, &dwCkcLen)) {
+    res = CertGetCertificateContextProperty(cert, CERT_KEY_CONTEXT_PROP_ID, &ckc, &dwCkcLen);
+    if (res && (ckc.hNCryptKey != 0)) {
         (*key) = ckc.hNCryptKey;
         (*needsFree) = FALSE; /* this key doesnt need NCryptFreeObject */
         return(0);
@@ -116,7 +118,7 @@ xmlSecMSCngKeyDataCertGetPrivkey(PCCERT_CONTEXT cert, NCRYPT_KEY_HANDLE* key, BO
             xmlSecMSCngLastError("CryptAcquireCertificatePrivateKey", NULL);
             return(-1);
         }
-        (*needsFree) = TRUE;
+        (*needsFree) = fCallerFreeProvOrNCryptKey;
         return(0);
     }
 

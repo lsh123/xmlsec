@@ -307,8 +307,7 @@ xmlSecMSCngConcatKdfPerformKeyDerivation(
     xmlSecAssert2(pszHashAlgo != NULL, -1);
     xmlSecAssert2(pbSecret != NULL, -1);
     xmlSecAssert2(cbSecret > 0, -1);
-    xmlSecAssert2(pbFixedInfo != NULL, -1);
-    xmlSecAssert2(cbFixedInfo > 0, -1);
+    xmlSecAssert2((cbFixedInfo == 0) || (pbFixedInfo != NULL), -1);
     xmlSecAssert2(pbOut != NULL, -1);
     xmlSecAssert2(cbOut > 0, -1);
 
@@ -409,12 +408,9 @@ xmlSecMSCngConcatKdfDerive(xmlSecMSCngConcatKdfCtxPtr ctx, xmlSecBufferPtr out, 
         xmlSecInternalError("xmlSecTransformConcatKdfParamsGetFixedInfo", NULL);
         return(-1);
     }
+    /* fixedInfo is optional per NIST SP 800-56A and may be empty */
     fixedInfoData = xmlSecBufferGetData(&(ctx->fixedInfo));
     fixedInfoSize = xmlSecBufferGetSize(&(ctx->fixedInfo));
-    if ((fixedInfoData == NULL) || (fixedInfoSize == 0)) {
-        xmlSecInvalidSizeDataError("fixedInfoSize", fixedInfoSize, "> 0", NULL);
-        return(-1);
-    }
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(fixedInfoSize, fixedInfoLen, return(-1), NULL);
 
     /* allocate output buffer */

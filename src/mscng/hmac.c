@@ -245,6 +245,9 @@ xmlSecMSCngHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     ctx = xmlSecMSCngHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->initialized == 0, -1);
+    xmlSecAssert2(ctx->hAlg == NULL, -1);
+    xmlSecAssert2(ctx->hash == NULL, -1);
+    xmlSecAssert2(ctx->hHash == NULL, -1);
 
     value = xmlSecKeyGetValue(key);
     xmlSecAssert2(xmlSecKeyDataCheckId(value, xmlSecMSCngKeyDataHmacId), -1);
@@ -261,7 +264,6 @@ xmlSecMSCngHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     /* at this point we know what should be the key, go ahead with the CNG
      * calls */
-
     status = BCryptOpenAlgorithmProvider(&ctx->hAlg,
         ctx->pszAlgId,
         NULL,

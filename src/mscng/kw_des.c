@@ -135,6 +135,11 @@ xmlSecMSCngKWDes3Sha1(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSe
         goto done;
     }
 
+    if(outSize < cbHash) {
+        xmlSecInvalidSizeLessThanError("outSize", outSize, (xmlSecSize)cbHash, NULL);
+        goto done;
+    }
+
     pbHash = (PBYTE)xmlMalloc(cbHash);
     if(pbHash == NULL) {
         xmlSecMallocError(cbHash, NULL);
@@ -173,7 +178,7 @@ xmlSecMSCngKWDes3Sha1(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSe
         xmlSecMSCngNtError("BCryptFinishHash", NULL, status);
         goto done;
     }
-    memcpy(out, pbHash, outSize);
+    memcpy(out, pbHash, cbHash);
     XMLSEC_SAFE_CAST_ULONG_TO_SIZE(cbHash, (*outWritten), goto done, NULL);
     res = 0;
 

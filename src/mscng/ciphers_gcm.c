@@ -41,6 +41,7 @@ struct _xmlSecMSCngGcmBlockCipherCtx {
     PBYTE pbIV;
     ULONG cbIV;
     PBYTE pbKeyObject;
+    DWORD dwKeyObjectLength;
     DWORD dwBlockLen;
     xmlSecKeyDataId keyId;
     xmlSecSize keySize;
@@ -186,6 +187,9 @@ xmlSecMSCngGcmBlockCipherFinalize(xmlSecTransformPtr transform) {
         BCryptDestroyKey(ctx->hKey);
     }
 
+    if((ctx->pbKeyObject != NULL) && (ctx->dwKeyObjectLength > 0)) {
+        xmlSecMemCleanse(ctx->pbKeyObject, ctx->dwKeyObjectLength);
+    }
     if(ctx->pbKeyObject != NULL) {
         xmlFree(ctx->pbKeyObject);
     }
@@ -280,6 +284,7 @@ xmlSecMSCngGcmBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
         xmlSecMallocError(dwKeyObjectLength, xmlSecTransformGetName(transform));
         goto done;
     }
+    ctx->dwKeyObjectLength = dwKeyObjectLength;
 
     /* prefix the key with a BCRYPT_KEY_DATA_BLOB_HEADER */
     blobSize = sizeof(BCRYPT_KEY_DATA_BLOB_HEADER) + ctx->keySize;

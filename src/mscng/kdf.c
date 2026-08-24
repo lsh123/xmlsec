@@ -277,6 +277,12 @@ xmlSecMSCngPbkdf2GetMacFromHref(const xmlChar* href) {
     } else
 #endif /* XMLSEC_NO_SHA1 */
 
+#ifndef XMLSEC_NO_SHA224
+    if(xmlStrcmp(href, xmlSecHrefHmacSha224) == 0) {
+        return(BCRYPT_SHA224_ALGORITHM);
+    } else
+#endif /* XMLSEC_NO_SHA224 */
+
 #ifndef XMLSEC_NO_SHA256
     if(xmlStrcmp(href, xmlSecHrefHmacSha256) == 0) {
         return(BCRYPT_SHA256_ALGORITHM);
@@ -348,7 +354,7 @@ xmlSecMSCngPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 }
 
 static int
-xmlSecMSCngPbkdf2PeformKeyDerivation(
+xmlSecMSCngPbkdf2PerformKeyDerivation(
     LPCWSTR pszHashAlgo,
     PBYTE pbSecret, ULONG cbSecret,
     PBYTE pbSalt, ULONG cbSalt,
@@ -424,7 +430,7 @@ xmlSecMSCngPbkdf2PeformKeyDerivation(
         goto done;
     }
     if (cbResultLength != cbOut) {
-        xmlSecInvalidSizeError("Derived key length doesn't match requested",
+        xmlSecInvalidSizeError("Derived key length doesn't match the requested",
             (xmlSecSize)cbResultLength, (xmlSecSize)cbOut, NULL);
         goto done;
     }
@@ -484,7 +490,7 @@ xmlSecMSCngPbkdf2Derive(xmlSecMSCngKdfCtxPtr ctx, xmlSecBufferPtr out) {
     xmlSecAssert2(outData != NULL, -1);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(ctx->pbkdf2Params.keyLength, outLen, return(-1), NULL);
 
-    ret = xmlSecMSCngPbkdf2PeformKeyDerivation(
+    ret = xmlSecMSCngPbkdf2PerformKeyDerivation(
         ctx->pszAlgId,
         passData, passLen,
         saltData, saltLen,
@@ -492,7 +498,7 @@ xmlSecMSCngPbkdf2Derive(xmlSecMSCngKdfCtxPtr ctx, xmlSecBufferPtr out) {
         outData, outLen
     );
     if (ret < 0) {
-        xmlSecInternalError2("xmlSecMSCngPbkdf2PeformKeyDerivation", NULL,
+        xmlSecInternalError2("xmlSecMSCngPbkdf2PerformKeyDerivation", NULL,
             "size=" XMLSEC_SIZE_FMT, ctx->pbkdf2Params.keyLength);
         return(-1);
     }
@@ -530,6 +536,12 @@ xmlSecMSCngHkdfGetMacFromHref(const xmlChar* href) {
         return(BCRYPT_SHA1_ALGORITHM);
     } else
 #endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+    if(xmlStrcmp(href, xmlSecHrefHmacSha224) == 0) {
+        return(BCRYPT_SHA224_ALGORITHM);
+    } else
+#endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA256
     if(xmlStrcmp(href, xmlSecHrefHmacSha256) == 0) {
@@ -602,7 +614,7 @@ xmlSecMSCngHkdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 }
 
 static int
-xmlSecMSCngHkdfPeformKeyDerivation(
+xmlSecMSCngHkdfPerformKeyDerivation(
     LPCWSTR pszHashAlgo,
     PBYTE pbIkm, ULONG cbIkm,
     PBYTE pbSalt, ULONG cbSalt,
@@ -700,7 +712,7 @@ xmlSecMSCngHkdfPeformKeyDerivation(
         goto done;
     }
     if(cbResultLength != cbOut) {
-        xmlSecInvalidSizeError("Derived key length doesn't match requested",
+        xmlSecInvalidSizeError("Derived key length doesn't match the requested",
             (xmlSecSize)cbResultLength, (xmlSecSize)cbOut, NULL);
         goto done;
     }
@@ -776,7 +788,7 @@ xmlSecMSCngHkdfDerive(xmlSecMSCngKdfCtxPtr ctx, xmlSecBufferPtr out, xmlSecSize 
     xmlSecAssert2(outData != NULL, -1);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(outSize, outLen, return(-1), NULL);
 
-    ret = xmlSecMSCngHkdfPeformKeyDerivation(
+    ret = xmlSecMSCngHkdfPerformKeyDerivation(
         ctx->pszAlgId,
         ikmData, ikmLen,
         saltData, saltLen,
@@ -784,7 +796,7 @@ xmlSecMSCngHkdfDerive(xmlSecMSCngKdfCtxPtr ctx, xmlSecBufferPtr out, xmlSecSize 
         outData, outLen
     );
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecMSCngHkdfPeformKeyDerivation", NULL,
+        xmlSecInternalError2("xmlSecMSCngHkdfPerformKeyDerivation", NULL,
             "size=" XMLSEC_SIZE_FMT, outSize);
         return(-1);
     }
@@ -836,7 +848,7 @@ xmlSecMSCngKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
 #ifndef XMLSEC_NO_PBKDF2
         if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformPbkdf2Id)) {
             if((ctx->pbkdf2Params.keyLength > 0) && (ctx->pbkdf2Params.keyLength != transform->expectedOutputSize)){
-                xmlSecInvalidSizeError("Output kdf size doesn't match expected",
+                xmlSecInvalidSizeError("Output KDF size doesn't match the expected",
                     transform->expectedOutputSize, ctx->pbkdf2Params.keyLength, xmlSecTransformGetName(transform));
                 return(-1);
             }
@@ -854,7 +866,7 @@ xmlSecMSCngKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
 #ifndef XMLSEC_NO_HKDF
         if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformHkdfId)) {
             if((ctx->hkdfParams.keyLength > 0) && (ctx->hkdfParams.keyLength != transform->expectedOutputSize)){
-                xmlSecInvalidSizeError("Output kdf size doesn't match expected",
+                xmlSecInvalidSizeError("Output KDF size doesn't match the expected",
                     transform->expectedOutputSize, ctx->hkdfParams.keyLength, xmlSecTransformGetName(transform));
                 return(-1);
             }

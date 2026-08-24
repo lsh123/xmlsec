@@ -230,7 +230,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaPkcs1GetKlass(void
 
 #ifndef XMLSEC_NO_RSA_OAEP
 /**
- * @brief The RSA OAEP key transport klass (XMLEnc 1.0).
+ * @brief The RSA OAEP key transport transform klass.
  * @details The RSA OAEP key transport transform klass (XMLEnc 1.0).
  */
 #define xmlSecMSCngTransformRsaOaepId \
@@ -239,7 +239,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaOaepGetKlass(void)
 
 
 /**
- * @brief The RSA OAEP key transport klass (XMLEnc 1.1).
+ * @brief The RSA OAEP key transport transform klass.
  * @details The RSA OAEP key transport transform klass (XMLEnc 1.1).
  */
 #define xmlSecMSCngTransformRsaOaepEnc11Id \
@@ -489,14 +489,14 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformMd5GetKlass(void);
 #ifndef XMLSEC_NO_PBKDF2
 
 /**
-* @brief The PBKDF2 key klass.
-*/
+ * @brief The PBKDF2 key klass.
+ */
 #define xmlSecMSCngKeyDataPbkdf2Id \
         xmlSecMSCngKeyDataPbkdf2GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCngKeyDataPbkdf2GetKlass(void);
 
 /**
- * @brief The PBDKF2 key derivation transform klass.
+ * @brief The PBKDF2 key derivation transform klass.
  */
 #define xmlSecMSCngTransformPbkdf2Id \
        xmlSecMSCngTransformPbkdf2GetKlass()

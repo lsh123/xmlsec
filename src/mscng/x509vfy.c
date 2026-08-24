@@ -442,7 +442,7 @@ xmlSecMSCngX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, PCCRL_CONTEXT crl) {
  * @param store may contain a CRL
  * @param cert the certificate that is revoked (or not)
  * @param time the time for CRL validity check (can be NULL)
- * @return 0 on success or a negative value if an errors occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 static int
 xmlSecMSCngCheckRevocation(HCERTSTORE store, PCCERT_CONTEXT cert, LPFILETIME time) {
@@ -614,7 +614,7 @@ xmlSecMSCngX509StoreVerifyCertificateItself(PCCERT_CONTEXT cert, FILETIME* time,
         }
     }
 
-    /* check certificate revokation */
+    /* check certificate revocation */
     ret = xmlSecMSCngCheckRevocation(certStore, cert, time);
     if(ret < 0) {
         xmlSecInternalError("xmlSecMSCngCheckRevocation", NULL);
@@ -963,7 +963,7 @@ xmlSecMSCngX509StoreVerifyCertificate(xmlSecMSCngX509StoreCtxPtr ctx, PCCERT_CON
     ret = xmlSecMSCngX509StoreVerifyCertificateChain(cert, time,
         ctx->trusted, ctx->untrusted, certStore);
     if(ret < 0){
-        xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateOwn", NULL);
+        xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateChain", NULL);
         return(-1);
     } else if(ret == 1) {
         /* success */
@@ -1027,7 +1027,7 @@ xmlSecMSCngX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, xml
     }
     certStore = xmlSecMSCngKeyDataX509GetCertStore(x509Data);
     if (certStore == 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataX509GetKeyCert", xmlSecKeyDataStoreGetName(store));
+        xmlSecInternalError("xmlSecMSCngKeyDataX509GetCertStore", xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
 
@@ -1127,7 +1127,7 @@ xmlSecMSCngX509StoreVerifyCrl(xmlSecKeyDataStorePtr store, PCCRL_CONTEXT crl,
                 ret = xmlSecMSCngX509StoreVerifyCertificateChain(issuerCert, time,
                     ctx->trusted, ctx->untrusted, ctx->untrusted);
                 if (ret < 0) {
-                    xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateOwn", NULL);
+                    xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateChain", NULL);
                     CertFreeCertificateContext(issuerCert);
                     return(-1);
                 }

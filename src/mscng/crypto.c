@@ -82,13 +82,13 @@ xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoGetFunctions_mscng(void) {
     static xmlSecCryptoDLFunctions functions;
 
-    /* DSA-SHA256 requirs Windows 8 / Windows Server 2012+. */
+    /* DSA-SHA256 requires Windows 8 / Windows Server 2012+. */
 #if !defined(XMLSEC_NO_DSA) && !defined(XMLSEC_NO_SHA256)
     int isDsaSha256Supported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_DSA_ALGORITHM, 2048, NULL);
 #endif /* !defined(XMLSEC_NO_DSA) && !defined(XMLSEC_NO_SHA256) */
 
 
-    /* ConcatKDF (SP800-56A) requirs Windows 8 / Windows Server 2012+. */
+    /* ConcatKDF (SP800-56A) requires Windows 8 / Windows Server 2012+. */
 #ifndef XMLSEC_NO_CONCATKDF
     int isConcatKdfSupported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_SP80056A_CONCAT_ALGORITHM, 0, NULL);
 #endif /* XMLSEC_NO_CONCATKDF */
@@ -474,8 +474,6 @@ xmlSecMSCngInit (void)  {
         return(-1);
     }
     return(0);
-
-    /* TODO: if necessary do, additional initialization here */
 }
 
 /**
@@ -492,7 +490,7 @@ xmlSecMSCngShutdown(void) {
  * @brief Generates @p size random bytes into @p buffer.
  * @details Generates @p size random bytes and puts result in @p buffer.
  * @param buffer the destination buffer.
- * @param size the numer of bytes to generate.
+ * @param size the number of bytes to generate.
  * @return 0 on success or a negative value otherwise.
  */
 int

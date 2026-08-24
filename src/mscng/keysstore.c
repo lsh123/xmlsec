@@ -47,7 +47,8 @@
  *
  * Helper: open a CERT_STORE_PROV_COLLECTION aggregating both the local
  * machine and current user system stores for the given store name (e.g. "MY").
- * Local machine is added at priority 1 (searched first), current user at 2.
+ * Current user is added at priority 2 and therefore searched first; local
+ * machine is added at priority 1 and searched second.
  * Opening either individual store is treated as a soft failure – a warning is
  * logged but the other store is still tried.  Returns 0 on success or -1 if
  * neither store could be opened.
@@ -84,7 +85,9 @@ xmlSecMSCngCertStoreCtxInitialize(xmlSecMSCngCertStoreCtx* ctx, LPCTSTR localMac
         0,
         CERT_SYSTEM_STORE_LOCAL_MACHINE | CERT_STORE_OPEN_EXISTING_FLAG | CERT_STORE_READONLY_FLAG,
         localMachineStoreName);
-    if(ctx->hLocalMachine != NULL) {
+    if(ctx->hLocalMachine == NULL) {
+        xmlSecMSCngLastError("CertOpenStore(LocalMachine)", NULL);
+    } else {
         ret = CertAddStoreToCollection(ctx->hCollection, ctx->hLocalMachine,
             CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG, 1);
         if(ret == FALSE) {
@@ -102,7 +105,9 @@ xmlSecMSCngCertStoreCtxInitialize(xmlSecMSCngCertStoreCtx* ctx, LPCTSTR localMac
         0,
         CERT_SYSTEM_STORE_CURRENT_USER | CERT_STORE_OPEN_EXISTING_FLAG | CERT_STORE_READONLY_FLAG,
         currentUserStoreName);
-    if(ctx->hCurrentUser != NULL) {
+    if(ctx->hCurrentUser == NULL) {
+        xmlSecMSCngLastError("CertOpenStore(CurrentUser)", NULL);
+    } else {
         ret = CertAddStoreToCollection(ctx->hCollection, ctx->hCurrentUser,
             CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG, 2);
         if(ret == FALSE) {
@@ -203,10 +208,13 @@ xmlSecMSCngKeysStoreFinalize(xmlSecKeyStorePtr store) {
     xmlSecAssert(xmlSecKeyStoreCheckId(store, xmlSecMSCngKeysStoreId));
 
     ctx = xmlSecMSCngKeysStoreGetCtx(store);
-    xmlSecAssert((ctx != NULL) && (ctx->simpleKeyStore != NULL));
-
-    xmlSecKeyStoreDestroy(ctx->simpleKeyStore);
-    ctx->simpleKeyStore = NULL;
+    if(ctx == NULL) {
+        return;
+    }
+    if(ctx->simpleKeyStore != NULL) {
+        xmlSecKeyStoreDestroy(ctx->simpleKeyStore);
+        ctx->simpleKeyStore = NULL;
+    }
     xmlSecMSCngCertStoreCtxFinalize(&ctx->certStoreCtx);
 }
 
@@ -526,22 +534,6 @@ xmlSecMSCngKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509Da
         xmlSecMSCngX509FindCertCtxFinalize(&findCertCtx);
         return(NULL);
     }
-
-    /* TODO: search simple keys store? */
-    /*
-    simplekeystore = xmlSecMSCngKeysStoreGetCtx(store);
-    xmlSecAssert2(((simplekeystore != NULL) && (*simplekeystore != NULL)), NULL);
-
-    keysList = xmlSecSimpleKeysStoreGetKeys(*simplekeystore);
-    if (keysList == NULL) {
-        xmlSecInternalError("xmlSecSimpleKeysStoreGetKeys", NULL);
-        return(NULL);
-    }
-    key = xmlSecMSCngX509FindKeyByValue(keysList, x509Data);
-    if (key == NULL) {
-        return(NULL);
-    }
-    */
 
     /* done! */
     CertFreeCertificateContext(cert);

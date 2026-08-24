@@ -33,13 +33,13 @@
 static void
 xmlSecMSCngReverseBlob(CRYPT_UINT_BLOB* blob, DWORD* pSize) {
     xmlSecAssert(blob != NULL);
-    xmlSecAssert(blob->pbData != NULL);
     xmlSecAssert(pSize != NULL);
 
     *pSize = blob->cbData;
     if(*pSize == 0) {
         return;
     }
+    xmlSecAssert(blob->pbData != NULL);
     xmlSecMSCngReverseBytes(blob->pbData, *pSize);
     while(*pSize > 1 && blob->pbData[0] == 0) {
         blob->pbData++;
@@ -163,7 +163,7 @@ xmlSecMSCngKeyDataCertGetDsaPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE
         /* V2: BCRYPT_DSA_KEY_BLOB_V2 for keys > 1024-bit (2048/3072-bit)
          * layout: header + seed[cbGroupSize] + q[cbGroupSize] + p[cbKey] + g[cbKey] + y[cbKey] */
         if(qBlobSize > XMLSEC_MSCNG_DSA_V2_Q_SIZE) {
-            xmlSecInvalidSizeMoreThanError("DSA Q size", (xmlSecSize)qBlobSize, (xmlSecSize)XMLSEC_MSCNG_DSA_MAX_Q_SIZE, NULL);
+            xmlSecInvalidSizeMoreThanError("DSA Q size", (xmlSecSize)qBlobSize, (xmlSecSize)XMLSEC_MSCNG_DSA_V2_Q_SIZE, NULL);
             goto done;
         }
         if(pSize > XMLSEC_MSCNG_DSA_MAX_P_SIZE) {
@@ -416,7 +416,7 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     xmlSecAssert2(xmlSecBufferGetData(&(dsaValue->g)) != NULL, NULL);
     xmlSecAssert2(xmlSecBufferGetData(&(dsaValue->y)) != NULL, NULL);
 
-    /* dont reverse blobs as both the XML and CNG works with big-endian */
+    /* don't reverse blobs as both the XML and CNG work with big-endian */
     pSize = xmlSecBufferGetSize(&(dsaValue->p));
     qSize = xmlSecBufferGetSize(&(dsaValue->q));
     gSize = xmlSecBufferGetSize(&(dsaValue->g));
@@ -492,11 +492,11 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         offset += pSize;
 
         /*  g  */
-        memcpy(blobData + offset, xmlSecBufferGetData(&(dsaValue->g)), gSize);
+        memcpy(blobData + offset + (pSize - gSize), xmlSecBufferGetData(&(dsaValue->g)), gSize);
         offset += pSize; /* gSize <= pSize */
 
         /*  y  */
-        memcpy(blobData + offset, xmlSecBufferGetData(&(dsaValue->y)), ySize);
+        memcpy(blobData + offset + (pSize - ySize), xmlSecBufferGetData(&(dsaValue->y)), ySize);
         offset += pSize; /* ySize <= pSize */
     } else {
 #if XMLSEC_MSCNG_HAVE_DSA_V2
@@ -527,11 +527,11 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         offset += pSize;
 
         /*  g  */
-        memcpy(blobData + offset, xmlSecBufferGetData(&(dsaValue->g)), gSize);
+        memcpy(blobData + offset + (pSize - gSize), xmlSecBufferGetData(&(dsaValue->g)), gSize);
         offset += pSize; /* gSize <= pSize */
 
         /*  y  */
-        memcpy(blobData + offset, xmlSecBufferGetData(&(dsaValue->y)), ySize);
+        memcpy(blobData + offset + (pSize - ySize), xmlSecBufferGetData(&(dsaValue->y)), ySize);
         offset += pSize; /* ySize <= pSize */
 #else /* XMLSEC_MSCNG_HAVE_DSA_V2 */
     xmlSecNotImplementedError("DSA keys with q > 20 bytes require newer Windows SDK bcrypt definitions");
@@ -597,6 +597,27 @@ done:
     return(res);
 }
 
+/* Strips leading zero bytes from a big-endian value without copying it.
+ * Returns a pointer to the first non-zero byte and sets *outSize to the
+ * remaining length; if all bytes are zero, returns a pointer to the last
+ * byte with *outSize = 1. */
+static const xmlSecByte*
+xmlSecMSCngDsaStripLeadingZeros(const xmlSecByte* data, xmlSecSize size, xmlSecSize* outSize) {
+    xmlSecAssert2(data != NULL, NULL);
+    xmlSecAssert2(outSize != NULL, NULL);
+
+    if(size == 0) {
+        *outSize = 0;
+        return(data);
+    }
+    while((size > 1) && (data[0] == 0)) {
+        data++;
+        size--;
+    }
+    *outSize = size;
+    return(data);
+}
+
 int
 xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey,  xmlSecKeyValueDsaPtr dsaValue) {
     NTSTATUS status;
@@ -605,6 +626,8 @@ xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey,  xmlSecKeyValueDsaPtr
     xmlSecByte* bufData;
     DWORD bufLen = 0;
     BCRYPT_DSA_KEY_BLOB* dsakey;
+    const xmlSecByte* stripped;
+    xmlSecSize strippedSize;
     int ret;
     int res = -1;
 
@@ -662,7 +685,8 @@ xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey,  xmlSecKeyValueDsaPtr
         bufData += sizeof(BCRYPT_DSA_KEY_BLOB);
 
         /* p */
-        ret = xmlSecBufferSetData(&(dsaValue->p), bufData, dsakey->cbKey);
+        stripped = xmlSecMSCngDsaStripLeadingZeros(bufData, dsakey->cbKey, &strippedSize);
+        ret = xmlSecBufferSetData(&(dsaValue->p), stripped, strippedSize);
         if (ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetData(p)", NULL, "keyLen=%lu", dsakey->cbKey);
             goto done;
@@ -671,14 +695,16 @@ xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey,  xmlSecKeyValueDsaPtr
 
         /* q (in header, fixed 20 bytes) */
         xmlSecAssert2(sizeof(dsakey->q) <= XMLSEC_MSCNG_DSA_MAX_Q_SIZE, -1);
-        ret = xmlSecBufferSetData(&(dsaValue->q), (xmlSecByte*)dsakey->q, sizeof(dsakey->q));
+        stripped = xmlSecMSCngDsaStripLeadingZeros((const xmlSecByte*)dsakey->q, sizeof(dsakey->q), &strippedSize);
+        ret = xmlSecBufferSetData(&(dsaValue->q), stripped, strippedSize);
         if (ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetData(q)", NULL, "keyLen=%lu", dsakey->cbKey);
             goto done;
         }
 
         /* g */
-        ret = xmlSecBufferSetData(&(dsaValue->g), bufData, dsakey->cbKey);
+        stripped = xmlSecMSCngDsaStripLeadingZeros(bufData, dsakey->cbKey, &strippedSize);
+        ret = xmlSecBufferSetData(&(dsaValue->g), stripped, strippedSize);
         if (ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetData(g)", NULL,"keyLen=%lu", dsakey->cbKey);
             goto done;
@@ -689,7 +715,8 @@ xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey,  xmlSecKeyValueDsaPtr
          * so we just ignore it */
 
         /* y */
-        ret = xmlSecBufferSetData(&(dsaValue->y), bufData, dsakey->cbKey);
+        stripped = xmlSecMSCngDsaStripLeadingZeros(bufData, dsakey->cbKey, &strippedSize);
+        ret = xmlSecBufferSetData(&(dsaValue->y), stripped, strippedSize);
         if (ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetData(y)", NULL, "keyLen=%lu", dsakey->cbKey);
             goto done;
@@ -712,7 +739,8 @@ xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey,  xmlSecKeyValueDsaPtr
         v2Data = bufData + sizeof(BCRYPT_DSA_KEY_BLOB_V2);
 
         /* q (after seed) */
-        ret = xmlSecBufferSetData(&(dsaValue->q), v2Data + dsakey2v->cbSeedLength, dsakey2v->cbGroupSize);
+        stripped = xmlSecMSCngDsaStripLeadingZeros(v2Data + dsakey2v->cbSeedLength, dsakey2v->cbGroupSize, &strippedSize);
+        ret = xmlSecBufferSetData(&(dsaValue->q), stripped, strippedSize);
         if (ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetData(q)", NULL, "qLen=%lu", dsakey2v->cbGroupSize);
             goto done;
@@ -720,7 +748,8 @@ xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey,  xmlSecKeyValueDsaPtr
         v2Data += dsakey2v->cbSeedLength + dsakey2v->cbGroupSize;
 
         /* p */
-        ret = xmlSecBufferSetData(&(dsaValue->p), v2Data, dsakey2v->cbKey);
+        stripped = xmlSecMSCngDsaStripLeadingZeros(v2Data, dsakey2v->cbKey, &strippedSize);
+        ret = xmlSecBufferSetData(&(dsaValue->p), stripped, strippedSize);
         if (ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetData(p)", NULL, "keyLen=%lu", dsakey2v->cbKey);
             goto done;
@@ -728,7 +757,8 @@ xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey,  xmlSecKeyValueDsaPtr
         v2Data += dsakey2v->cbKey;
 
         /* g */
-        ret = xmlSecBufferSetData(&(dsaValue->g), v2Data, dsakey2v->cbKey);
+        stripped = xmlSecMSCngDsaStripLeadingZeros(v2Data, dsakey2v->cbKey, &strippedSize);
+        ret = xmlSecBufferSetData(&(dsaValue->g), stripped, strippedSize);
         if (ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetData(g)", NULL, "keyLen=%lu", dsakey2v->cbKey);
             goto done;
@@ -739,7 +769,8 @@ xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey,  xmlSecKeyValueDsaPtr
          * so we just ignore it */
 
         /* y */
-        ret = xmlSecBufferSetData(&(dsaValue->y), v2Data, dsakey2v->cbKey);
+        stripped = xmlSecMSCngDsaStripLeadingZeros(v2Data, dsakey2v->cbKey, &strippedSize);
+        ret = xmlSecBufferSetData(&(dsaValue->y), stripped, strippedSize);
         if (ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetData(y)", NULL, "keyLen=%lu", dsakey2v->cbKey);
             goto done;
@@ -751,7 +782,7 @@ xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey,  xmlSecKeyValueDsaPtr
         goto done;
     }
 
-    /* dont reverse blobs as both the XML and CNG works with big-endian */
+    /* don't reverse blobs as both the XML and CNG work with big-endian */
 
     /* success */
     res = 0;

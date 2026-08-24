@@ -135,6 +135,11 @@ xmlSecMSCngKWDes3Sha1(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSe
         goto done;
     }
 
+    if(outSize < cbHash) {
+        xmlSecInvalidSizeLessThanError("outSize", outSize, (xmlSecSize)cbHash, NULL);
+        goto done;
+    }
+
     pbHash = (PBYTE)xmlMalloc(cbHash);
     if(pbHash == NULL) {
         xmlSecMallocError(cbHash, NULL);
@@ -173,7 +178,7 @@ xmlSecMSCngKWDes3Sha1(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSe
         xmlSecMSCngNtError("BCryptFinishHash", NULL, status);
         goto done;
     }
-    memcpy(out, pbHash, outSize);
+    memcpy(out, pbHash, cbHash);
     XMLSEC_SAFE_CAST_ULONG_TO_SIZE(cbHash, (*outWritten), goto done, NULL);
     res = 0;
 
@@ -209,7 +214,7 @@ xmlSecMSCngKWDes3BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     DWORD cbKeyObject = 0;
     xmlSecBuffer blob;
     BCRYPT_KEY_DATA_BLOB_HEADER* blobHeader;
-    xmlSecSize blobHeaderSize, blobSizeInBits;
+    xmlSecSize blobHeaderSize, blockLen;
     NTSTATUS status;
     xmlSecSize keySize, blobSize;
     DWORD dwBlobSize, dwInSize, dwIvSize, dwOutSize;
@@ -317,16 +322,11 @@ xmlSecMSCngKWDes3BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
         goto done;
     }
-    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwBlockLen, blobSizeInBits, goto done, NULL);
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwBlockLen, blockLen, goto done, NULL);
 
-    if(ivSize < blobSizeInBits / 8) {
-        xmlSecInvalidSizeLessThanError("ivSize", ivSize, blobSizeInBits / 8, NULL);
+    if(ivSize < blockLen) {
+        xmlSecInvalidSizeLessThanError("ivSize", ivSize, blockLen, NULL);
         goto done;
-    }
-
-    /* handle padding manually */
-    if(out != in) {
-        memcpy(out, in, inSize);
     }
 
     /* caller handles iv manually, so let CNG work on a copy */
@@ -393,7 +393,7 @@ xmlSecMSCngKWDes3BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     DWORD cbKeyObject = 0;
     xmlSecBuffer blob;
     BCRYPT_KEY_DATA_BLOB_HEADER* blobHeader;
-    xmlSecSize blobHeaderSize, blobSizeInBits;
+    xmlSecSize blobHeaderSize, blockLen;
     xmlSecSize keySize, blobSize;
     DWORD dwBlobSize, dwInSize, dwIvSize, dwOutSize;
     NTSTATUS status;
@@ -500,16 +500,11 @@ xmlSecMSCngKWDes3BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
         goto done;
     }
-    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwBlockLen, blobSizeInBits, goto done, NULL);
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwBlockLen, blockLen, goto done, NULL);
 
-    if(ivSize < blobSizeInBits / 8) {
-        xmlSecInvalidSizeLessThanError("ivSize", ivSize, blobSizeInBits / 8, NULL);
+    if(ivSize < blockLen) {
+        xmlSecInvalidSizeLessThanError("ivSize", ivSize, blockLen, NULL);
         goto done;
-    }
-
-    /* handle padding manually */
-    if(out != in) {
-        memcpy(out, in, inSize);
     }
 
     cbData = 0;
@@ -553,7 +548,7 @@ done:
     return(res);
 }
 
-static xmlSecKWDes3Klass xmlSecMSCngKWDesKlass = {
+static xmlSecKWDes3Klass xmlSecMSCngKWDes3ImplKlass = {
     /* callbacks */
     xmlSecMSCngKWDes3GenerateRandom,        /* xmlSecKWDes3GenerateRandomMethod     generateRandom; */
     xmlSecMSCngKWDes3Sha1,                  /* xmlSecKWDes3Sha1Method               sha1; */
@@ -577,7 +572,7 @@ xmlSecMSCngKWDes3Initialize(xmlSecTransformPtr transform) {
     xmlSecAssert2(ctx != NULL, -1);
     memset(ctx, 0, sizeof(xmlSecMSCngKWDes3Ctx));
 
-    ret = xmlSecTransformKWDes3Initialize(transform, ctx, &xmlSecMSCngKWDesKlass,
+    ret = xmlSecTransformKWDes3Initialize(transform, ctx, &xmlSecMSCngKWDes3ImplKlass,
         xmlSecMSCngKeyDataDesId);
     if (ret < 0) {
         xmlSecInternalError("xmlSecTransformKWDes3Initialize", xmlSecTransformGetName(transform));

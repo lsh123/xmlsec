@@ -477,7 +477,7 @@ XMLSEC_MSCNG_DIGEST_KLASS_EX(Sha384)
 
 /**
  * @brief SHA-384 digest transform klass.
- * @return pointer to SHA-256 digest transform klass.
+ * @return pointer to SHA-384 digest transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformSha384GetKlass(void) {

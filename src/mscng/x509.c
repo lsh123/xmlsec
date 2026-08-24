@@ -92,6 +92,8 @@ static int
 xmlSecMSCngKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     PCCERT_CONTEXT srcCert = NULL;
     PCCERT_CONTEXT dstCert;
+    PCCRL_CONTEXT srcCrl = NULL;
+    PCCRL_CONTEXT dstCrl;
     xmlSecMSCngX509DataCtxPtr srcCtx;
     xmlSecMSCngX509DataCtxPtr dstCtx;
     int ret;
@@ -132,6 +134,25 @@ xmlSecMSCngKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
             }
         }
         dstCert = NULL; /* owned by dst now */
+    }
+
+    /* duplicate the CRLs */
+    while((srcCrl = CertEnumCRLsInStore(srcCtx->hMemStore, srcCrl)) != NULL) {
+        dstCrl = CertDuplicateCRLContext(srcCrl);
+        if(dstCrl == NULL) {
+            xmlSecMSCngLastError("CertDuplicateCRLContext", NULL);
+            CertFreeCRLContext(srcCrl);
+            return(-1);
+        }
+
+        ret = xmlSecMSCngKeyDataX509AdoptCrl(dst, dstCrl);
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCrl", NULL);
+            CertFreeCRLContext(srcCrl);
+            CertFreeCRLContext(dstCrl);
+            return(-1);
+        }
+        dstCrl = NULL; /* owned by dst now */
     }
 
     /* done */
@@ -179,11 +200,10 @@ xmlSecMSCngKeyDataX509AddCertInternal(xmlSecMSCngX509DataCtxPtr ctx, PCCERT_CONT
 }
 
 /**
- * @brief Adds certificate to the X509 key data and sets the it as the key's
- * @param data the pointer to key data.
- * @param cert the pointer to certificates.
- *
+ * @brief Adds certificate to the X509 key data and sets it as the key's
  * certificate in @p data. On success, the @p data owns the cert.
+ * @param data the pointer to key data.
+ * @param cert the pointer to certificate.
  *
  * @return 0 on success or a negative value otherwise.
  */
@@ -234,7 +254,7 @@ xmlSecMSCngKeyDataX509AdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->hMemStore != 0, -1);
 
-    /* pkcs12 files sometime have key cert twice: as the key cert and as the cert in the chain */
+    /* pkcs12 files sometimes have key cert twice: as the key cert and as the cert in the chain */
     if ((ctx->keyCert != NULL) && (CertCompareCertificate(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, cert->pCertInfo, ctx->keyCert->pCertInfo) == TRUE)) {
         CertFreeCertificateContext(cert); /* caller expects data to own the cert on success. */
         return(0);
@@ -332,16 +352,16 @@ xmlSecMSCngX509CertGetTime(FILETIME in, time_t* out) {
     *out <<= 32;
     *out |= in.dwLowDateTime;
     /* 100 nanoseconds -> seconds */
-    *out /= 10000;
+    *out /= 10000000;
     /* 1601-01-01 epoch -> 1970-01-01 epoch */
-    *out -= 11644473600000;
+    *out -= 11644473600;
 
     return(0);
 }
 
 /* returns 1 if cert was found and verified and also data was adopted, 0 if not, or negative value if an error occurs */
 static int
-xmlSecMSCnVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecMSCngVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecMSCngX509DataCtxPtr ctx;
     xmlSecKeyDataStorePtr x509Store;
     xmlSecKeyDataPtr keyValue;
@@ -479,7 +499,7 @@ xmlSecMSCngKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x509
     xmlSecAssert2(x509Value != NULL, -1);
     xmlSecAssert2(keysMngr != NULL, -1);
 
-    /* read CRT or CRL */
+    /* read CERT or CRL */
     if (xmlSecBufferGetSize(&(x509Value->cert)) > 0) {
         cert = xmlSecMSCngX509CertDerRead(xmlSecBufferGetData(&(x509Value->cert)),
             xmlSecBufferGetSize(&(x509Value->cert)));
@@ -492,7 +512,7 @@ xmlSecMSCngKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x509
         crl = xmlSecMSCngX509CrlDerRead(xmlSecBufferGetData(&(x509Value->crl)),
             xmlSecBufferGetSize(&(x509Value->crl)));
         if (crl == NULL) {
-            xmlSecInternalError("xmlSecMSCngX509CertDerRead", xmlSecKeyDataGetName(data));
+            xmlSecInternalError("xmlSecMSCngX509CrlDerRead", xmlSecKeyDataGetName(data));
             goto done;
         }
     }
@@ -579,16 +599,16 @@ xmlSecMSCngKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         return(0);
     }
 
-    ret = xmlSecMSCnVerifyAndAdoptX509KeyData(key, data, keyInfoCtx);
+    ret = xmlSecMSCngVerifyAndAdoptX509KeyData(key, data, keyInfoCtx);
     if (ret < 0) {
-        xmlSecInternalError("xmlSecMSCnVerifyAndAdoptX509KeyData", xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecMSCngVerifyAndAdoptX509KeyData", xmlSecKeyDataKlassGetName(id));
         xmlSecKeyDataDestroy(data);
     } else if (ret != 1) {
         /* no errors but key was not found and data was not adopted */
         xmlSecKeyDataDestroy(data);
         return(0);
     }
-    data = NULL; /* owned by data now */
+    data = NULL; /* owned by key now */
 
     /* success */
     return(0);
@@ -759,21 +779,48 @@ xmlSecMSCngX509DigestWrite(PCCERT_CONTEXT cert, const xmlChar* algorithm, xmlSec
 }
 
 
-typedef struct _xmlSecMSCngKeyDataX5099WriteContext {
+typedef struct _xmlSecMSCngKeyDataX509WriteContext {
     HCERTSTORE store;
     PCCERT_CONTEXT crt;
     PCCRL_CONTEXT crl;
     int doneCrts;
     int doneCrls;
-} xmlSecMSCngKeyDataX5099WriteContext;
+} xmlSecMSCngKeyDataX509WriteContext;
+
+static int
+xmlSecMSCngKeyDataX509WriteContextInitialize(xmlSecMSCngKeyDataX509WriteContext* ctx, HCERTSTORE store) {
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(store != 0, -1);
+
+    memset(ctx, 0, sizeof(xmlSecMSCngKeyDataX509WriteContext));
+    ctx->store = store;
+
+    return(0);
+}
+
+static void
+xmlSecMSCngKeyDataX509WriteContextFinalize(xmlSecMSCngKeyDataX509WriteContext* ctx) {
+    xmlSecAssert(ctx != NULL);
+
+    if(ctx->crt != NULL) {
+        CertFreeCertificateContext(ctx->crt);
+        ctx->crt = NULL;
+    }
+    if(ctx->crl != NULL) {
+        CertFreeCRLContext(ctx->crl);
+        ctx->crl = NULL;
+    }
+    ctx->store = 0;
+    ctx->doneCrts = 0;
+    ctx->doneCrls = 0;
+}
 
 /* xmlSecKeyDataX509Write: returns 1 on success, 0 if no more certs/crls are available,
  * or a negative value if an error occurs.
  */
 static int
-xmlSecMSCngKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x509Value,
-                            int content, void* context) {
-    xmlSecMSCngKeyDataX5099WriteContext* ctx;
+xmlSecMSCngKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x509Value, int content, void* context) {
+    xmlSecMSCngKeyDataX509WriteContext* ctx;
     int ret;
 
     xmlSecAssert2(data != NULL, -1);
@@ -781,11 +828,11 @@ xmlSecMSCngKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x50
     xmlSecAssert2(x509Value != NULL, -1);
     xmlSecAssert2(context != NULL, -1);
 
-    ctx = (xmlSecMSCngKeyDataX5099WriteContext*)context;
+    ctx = (xmlSecMSCngKeyDataX509WriteContext*)context;
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->store != NULL, -1);
 
-    /* try to get and write the next cert if availablle */
+    /* try to get and write the next cert if available */
     if (ctx->doneCrts == 0) {
         ctx->crt = CertEnumCertificatesInStore(ctx->store, ctx->crt);
         if (ctx->crt != NULL) {
@@ -828,8 +875,8 @@ xmlSecMSCngKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x50
                 }
                 x509Value->issuerSerial = xmlSecMSCngASN1IntegerWrite(&(ctx->crt->pCertInfo->SerialNumber));
                 if (x509Value->issuerSerial == NULL) {
-                    xmlSecInternalError("xmlSecMSCngASN1IntegerWrite(issuer serial))", xmlSecKeyDataGetName(data));
-                   return(-1);
+                    xmlSecInternalError("xmlSecMSCngASN1IntegerWrite(issuer serial)", xmlSecKeyDataGetName(data));
+                    return(-1);
                 }
             }
             if( (XMLSEC_X509DATA_HAS_EMPTY_NODE(content, XMLSEC_X509DATA_DIGEST_NODE)) && (x509Value->digestAlgorithm != NULL)) {
@@ -846,7 +893,7 @@ xmlSecMSCngKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x50
         }
     }
 
-    /* try to get and write the next crl if availablle */
+    /* try to get and write the next crl if available */
     if (ctx->doneCrls == 0) {
         ctx->crl = CertEnumCRLsInStore(ctx->store, ctx->crl);
         if (ctx->crl != NULL) {
@@ -876,7 +923,7 @@ xmlSecMSCngKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x50
 static int
 xmlSecMSCngKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                                xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecMSCngKeyDataX5099WriteContext context;
+    xmlSecMSCngKeyDataX509WriteContext context;
     xmlSecMSCngX509DataCtxPtr x509DataCtx;
     xmlSecKeyDataPtr data;
     int ret;
@@ -894,21 +941,23 @@ xmlSecMSCngKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2(x509DataCtx != NULL, -1);
 
     /* setup context */
-    context.store = x509DataCtx->hMemStore;
-    context.crt = NULL;
-    context.crl = NULL;
-    context.doneCrts = context.doneCrls = 0;
+    ret = xmlSecMSCngKeyDataX509WriteContextInitialize(&context, x509DataCtx->hMemStore);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataX509WriteContextInitialize", xmlSecKeyDataKlassGetName(id));
+        return(-1);
+    }
 
     ret = xmlSecKeyDataX509XmlWrite(data, node, keyInfoCtx,
         xmlSecBase64GetDefaultLineSize(), 1, /* add line breaks */
         xmlSecMSCngKeyDataX509Write, &context);
     if (ret < 0) {
-        xmlSecInternalError("xmlSecKeyDataX509XmlWrite",
-            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecKeyDataX509XmlWrite", xmlSecKeyDataKlassGetName(id));
+        xmlSecMSCngKeyDataX509WriteContextFinalize(&context);
         return(-1);
     }
 
     /* success */
+    xmlSecMSCngKeyDataX509WriteContextFinalize(&context);
     return(0);
 }
 
@@ -1130,7 +1179,7 @@ xmlSecMSCngKeyDataRawX509CertBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     data = xmlSecKeyDataCreate(xmlSecMSCngKeyDataX509Id);
     if(data == NULL) {
-        xmlSecInternalError("xmlSecKeyDataCreate(xmlSecKeyDataCreate)", xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecKeyDataCreate(xmlSecMSCngKeyDataX509Id)", xmlSecKeyDataKlassGetName(id));
         CertFreeCertificateContext(cert);
         return(-1);
     }
@@ -1144,9 +1193,9 @@ xmlSecMSCngKeyDataRawX509CertBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     }
     cert = NULL; /* owned by data now */
 
-    ret = xmlSecMSCnVerifyAndAdoptX509KeyData(key, data, keyInfoCtx);
+    ret = xmlSecMSCngVerifyAndAdoptX509KeyData(key, data, keyInfoCtx);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCnVerifyAndAdoptX509KeyData", xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecMSCngVerifyAndAdoptX509KeyData", xmlSecKeyDataKlassGetName(id));
         xmlSecKeyDataDestroy(data);
         return(-1);
     } else if (ret != 1) {
@@ -1154,7 +1203,7 @@ xmlSecMSCngKeyDataRawX509CertBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         xmlSecKeyDataDestroy(data);
         return(0);
     }
-    data = NULL; /* owned by data now */
+    data = NULL; /* owned by key now */
 
     /* success */
     return(0);

@@ -162,6 +162,240 @@ xmlSecMSCngKeyDataDuplicateBCryptXdhPrivKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HA
     return(0);
 }
 
+#define XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE 32
+
+/**
+ * @brief Builds a BCRYPT_ECCPRIVATE_BLOB for an X25519 key and imports it with a placeholder public key.
+ * @details Allocates and fills a BCRYPT_ECCPRIVATE_BLOB (header + u + v + d) from the given private
+ *          scalar, using the Curve25519 base point (u=9) as a placeholder public key, then imports it
+ *          with BCRYPT_NO_KEY_VALIDATION so BCrypt accepts the blob. The caller owns the returned blob
+ *          and temp key handle and must free/destroy them.
+ * @param pScalar raw 32-byte X25519 private scalar (little-endian).
+ * @param pbPrivBlob receives the allocated blob; caller frees with xmlSecMemCleanse + xmlFree.
+ * @param cbPrivBlob receives the blob size in bytes.
+ * @param hPrivKeyTemp receives the imported temp key handle; caller destroys with BCryptDestroyKey.
+ * @return 0 on success, -1 on failure.
+ */
+static int
+xmlSecMSCngXdhBuildPrivBlobAndImport(BCRYPT_ALG_HANDLE hAlg, const xmlSecByte* pScalar,
+    PUCHAR* pbPrivBlob, DWORD* cbPrivBlob, BCRYPT_KEY_HANDLE* hPrivKeyTemp
+) {
+    PUCHAR pb = NULL;
+    BCRYPT_ECCKEY_BLOB* pHdr;
+    DWORD cb;
+    NTSTATUS status;
+    int res = -1;
+
+    xmlSecAssert2(hAlg != NULL, -1);
+    xmlSecAssert2(pScalar != NULL, -1);
+    xmlSecAssert2(pbPrivBlob != NULL, -1);
+    xmlSecAssert2(cbPrivBlob != NULL, -1);
+    xmlSecAssert2(hPrivKeyTemp != NULL, -1);
+
+    /* header (8) + u-coord (32) + v-coord (32) + private scalar (32) = 104 bytes.
+     * BCrypt X25519 private blobs always use the 3*cbKey layout (u, v, d) even though X25519 is a
+     * Montgomery curve and v is unused (kept as zero).  The correct public key u-coordinate is
+     * derived and filled in before the final re-import; BCRYPT_NO_KEY_VALIDATION lets BCrypt accept
+     * any placeholder public key for the temporary first import. */
+    cb = sizeof(BCRYPT_ECCKEY_BLOB) + 3 * XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE;   /* header + u(32) + v(32) + d(32) */
+    pb = (PUCHAR)xmlMalloc(cb);
+    if(pb == NULL) {
+        xmlSecMallocError(cb, NULL);
+        goto done;
+    }
+    xmlSecMemCleanse(pb, cb);
+
+    /* header */
+    pHdr = (BCRYPT_ECCKEY_BLOB*)pb;
+    pHdr->dwMagic = BCRYPT_ECDH_PRIVATE_GENERIC_MAGIC;
+    pHdr->cbKey = XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE;
+    
+    /* u-cord:  base point u=9 (LE) as placeholder for u-coord */
+    pb[sizeof(BCRYPT_ECCKEY_BLOB)] = 0x09; /* */
+    /* v-coord (offset 40) stays zero (unused for Montgomery curve) */
+    /* private scalar d */
+    memcpy(pb + sizeof(BCRYPT_ECCKEY_BLOB) + 2 * XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE, pScalar, XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE); 
+
+    /* Import private key with a placeholder public key (base point u=9); skip public
+     * key validation so BCrypt accepts the blob.
+     * On Windows 10 1709+ BCRYPT_NO_KEY_VALIDATION is supported for ECDH curves. */
+    status = BCryptImportKeyPair(
+        hAlg,
+        NULL,
+        BCRYPT_ECCPRIVATE_BLOB,
+        hPrivKeyTemp,
+        pb,
+        cb,
+        BCRYPT_NO_KEY_VALIDATION
+    );
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptImportKeyPair(X25519 priv PKCS8, no-validate)", NULL, status);
+        goto done;
+    }
+
+    /* success */
+    (*pbPrivBlob) = pb;
+    (*cbPrivBlob) = cb;
+    pb = NULL; /* ownership transferred to caller */
+    res = 0;
+
+done:
+    if(pb != NULL) {
+        xmlSecMemCleanse(pb, cb);
+        xmlFree(pb);
+    }
+    return(res);
+}
+
+/**
+ * @brief Derives the X25519 public key u-coordinate as u = X25519(d, 9).
+ * @details Performs a self-agreement between the private key and the Curve25519 base point (u=9)
+ *          to compute the public key u-coordinate. The result is returned in BCrypt's native
+ *          (big-endian) byte order; the caller reverses it when writing into the little-endian blob.
+ * @param hAlg open ECDH algorithm provider configured for Curve25519.
+ * @param hPrivKeyTemp imported X25519 private key handle (from xmlSecMSCngXdhBuildPrivBlobAndImport).
+ * @param pubKeyU receives the derived 32-byte u-coordinate (big-endian).
+ * @return 0 on success, -1 on failure.
+ */
+static int
+xmlSecMSCngXdhDerivePubKeyU(BCRYPT_ALG_HANDLE hAlg, BCRYPT_KEY_HANDLE hPrivKeyTemp, xmlSecByte* pubKeyU, DWORD pubKeyULen) {
+    BCRYPT_KEY_HANDLE hBasePoint = NULL;
+    BCRYPT_SECRET_HANDLE hSelfSecret = NULL;
+    BCRYPT_ECCKEY_BLOB* pHdr;
+    xmlSecByte basePointBlob[sizeof(BCRYPT_ECCKEY_BLOB) + 2 * XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE]; /* header + u(32) + v(32) */
+    DWORD cbDerived = 0;
+    NTSTATUS status;
+    int res = -1;
+
+    xmlSecAssert2(hAlg != NULL, -1);
+    xmlSecAssert2(hPrivKeyTemp != NULL, -1);
+    xmlSecAssert2(pubKeyU != NULL, -1);
+    xmlSecAssert2(pubKeyULen == XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE, -1);
+
+    /* Build the Curve25519 base point (u=9 in little-endian: first byte 0x09, rest 0x00). */
+    memset(basePointBlob, 0, sizeof(basePointBlob));
+    
+    /* header */
+    pHdr = (BCRYPT_ECCKEY_BLOB*)basePointBlob;
+    pHdr->dwMagic = BCRYPT_ECDH_PUBLIC_GENERIC_MAGIC;
+    pHdr->cbKey = 32;
+
+    /* base point u = 9 (little-endian); v stays zero */
+    basePointBlob[sizeof(BCRYPT_ECCKEY_BLOB)] = 0x09;
+
+    status = BCryptImportKeyPair(
+        hAlg,
+        NULL,
+        BCRYPT_ECCPUBLIC_BLOB,
+        &hBasePoint,
+        (PUCHAR)basePointBlob,
+        sizeof(basePointBlob),
+        0
+    );
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptImportKeyPair(X25519 base point)", NULL, status);
+        goto done;
+    }
+    xmlSecAssert2(hBasePoint != NULL, -1);
+
+    status = BCryptSecretAgreement(hPrivKeyTemp, hBasePoint, &hSelfSecret, 0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptSecretAgreement(X25519 self u)", NULL, status);
+        goto done;
+    }
+    xmlSecAssert2(hSelfSecret != NULL, -1);
+
+    /* BCryptDeriveKey with BCRYPT_KDF_RAW_SECRET gives us X25519(d, 9) = u in big-endian. */
+    status = BCryptDeriveKey(hSelfSecret, BCRYPT_KDF_RAW_SECRET, NULL, NULL, 0, &cbDerived, 0);
+    if((status != STATUS_SUCCESS) || (cbDerived == 0)) {
+        xmlSecMSCngNtError("BCryptDeriveKey(X25519 u size)", NULL, status);
+        goto done;
+    }
+
+    /* prepend zeros if needed */
+    memset(pubKeyU, 0, pubKeyULen);
+    cbDerived = min(cbDerived, pubKeyULen); /* safety guard */
+    status = BCryptDeriveKey(
+        hSelfSecret,
+        BCRYPT_KDF_RAW_SECRET,
+        NULL,
+        pubKeyU + (pubKeyULen - cbDerived),
+        cbDerived,
+        &cbDerived,
+        0
+    );
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptDeriveKey(X25519 u data)", NULL, status);
+        goto done;
+    }
+
+    /* BCryptDeriveKey returns the derived u in big-endian. Keep it as-is for now;
+     * it is reversed when written into the little-endian ECC blob by the caller. */
+    res = 0;
+
+done:
+    if(hSelfSecret != NULL) {
+        BCryptDestroySecret(hSelfSecret);
+    }    
+    if(hBasePoint != NULL) {
+        BCryptDestroyKey(hBasePoint);
+    }
+    return(res);
+}
+
+/**
+ * @brief Imports an X25519 public key handle from a successfully imported private key.
+ * @details Round-trips through BCrypt's own ECCPUBLIC_BLOB: exports the public portion from the
+ *          private key and re-imports it as a standalone public key handle. Deriving the public key
+ *          ourselves and crafting an ECCPUBLIC_BLOB is fragile (byte-order, canonicity constraints);
+ *          exporting from hPrivKey guarantees a valid, re-importable blob.
+ * @param hAlg open ECDH algorithm provider configured for Curve25519.
+ * @param hPrivKey imported X25519 private key handle (with correct public key).
+ * @param hPubKey receives the imported public key handle; caller destroys with BCryptDestroyKey.
+ * @return 0 on success, -1 on failure.
+ */
+static int
+xmlSecMSCngXdhImportPubKeyHandle(BCRYPT_ALG_HANDLE hAlg, BCRYPT_KEY_HANDLE hPrivKey, BCRYPT_KEY_HANDLE* hPubKey) {
+    PUCHAR pbPubBlob = NULL;
+    DWORD cbPubBlob = 0;
+    NTSTATUS status;
+    int res = -1;
+
+    xmlSecAssert2(hAlg != NULL, -1);
+    xmlSecAssert2(hPrivKey != NULL, -1);
+    xmlSecAssert2(hPubKey != NULL, -1);
+
+    status = BCryptExportKey(hPrivKey, NULL, BCRYPT_ECCPUBLIC_BLOB, NULL, 0, &cbPubBlob, 0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptExportKey(X25519 pub from priv, size)", NULL, status);
+        goto done;
+    }
+    pbPubBlob = (PUCHAR)xmlMalloc(cbPubBlob);
+    if(pbPubBlob == NULL) {
+        xmlSecMallocError(cbPubBlob, NULL);
+        goto done;
+    }
+    status = BCryptExportKey(hPrivKey, NULL, BCRYPT_ECCPUBLIC_BLOB, pbPubBlob, cbPubBlob, &cbPubBlob, 0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptExportKey(X25519 pub from priv, data)", NULL, status);
+        goto done;
+    }
+    status = BCryptImportKeyPair(hAlg, NULL, BCRYPT_ECCPUBLIC_BLOB, hPubKey, pbPubBlob, cbPubBlob, 0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptImportKeyPair(X25519 pub from priv)", NULL, status);
+        goto done;
+    }
+
+    /* success */
+    res = 0;
+
+done:
+    if(pbPubBlob != NULL) {
+        xmlFree(pbPubBlob);
+    }
+    return(res);
+}
+
 /**
  * @brief Loads an X25519 private key from a PKCS8 DER blob.
  * @details Loads an X25519 private key (and derives the public key) from a PKCS8 DER blob.
@@ -182,7 +416,7 @@ xmlSecMSCngKeyDataXdhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLe
     BCRYPT_KEY_HANDLE hPubKey = NULL;
     PUCHAR pbPrivBlob = NULL;
     DWORD cbPrivBlob = 0;
-    xmlSecByte pubKeyU[32];             /* derived public key u-coordinate (LE) */
+    xmlSecByte pubKeyU[XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE];             /* derived public key u-coordinate (LE) */
     NTSTATUS status;
     int ret;
 
@@ -194,7 +428,8 @@ xmlSecMSCngKeyDataXdhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLe
             PKCS_PRIVATE_KEY_INFO,
             derData, derDataLen,
             CRYPT_DECODE_ALLOC_FLAG | CRYPT_DECODE_NOCOPY_FLAG,
-            NULL, &pki, &pkiLen)) {
+            NULL, &pki, &pkiLen)
+    ) {
         /* silently fail so callers can try other formats */
         goto done;
     }
@@ -210,108 +445,42 @@ xmlSecMSCngKeyDataXdhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLe
     if(pki->PrivateKey.cbData < 2 ||
        pki->PrivateKey.pbData == NULL ||
        pki->PrivateKey.pbData[0] != 0x04 /* OCTET STRING */ ||
-       pki->PrivateKey.pbData[1] != 32   /* length 32 */ ||
-       pki->PrivateKey.cbData < 34) {
+       pki->PrivateKey.pbData[1] != XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE   /* length */ ||
+       pki->PrivateKey.cbData < (XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE + 2)
+    ) {
         xmlSecInternalError("X25519 PKCS8: malformed or non-32-byte CurvePrivateKey", NULL);
         goto done;
     }
     pScalar = pki->PrivateKey.pbData + 2;  /* 32-byte little-endian private scalar */
 
-    /* Build BCRYPT_ECCPRIVATE_BLOB: header (8) + u-coord (32) + v-coord (32) + private scalar (32) = 104 bytes.
-     * BCrypt X25519 private blobs always use the 3*cbKey layout (u, v, d) even though X25519 is a
-     * Montgomery curve and v is unused (kept as zero).  The correct public key u-coordinate is
-     * derived and filled in before the final re-import; BCRYPT_NO_KEY_VALIDATION lets BCrypt accept
-     * any placeholder public key for the temporary first import. */
-    cbPrivBlob = sizeof(BCRYPT_ECCKEY_BLOB) + 96;   /* header + u(32) + v(32) + d(32) */
-    pbPrivBlob = (PUCHAR)xmlMalloc(cbPrivBlob);
-    if(pbPrivBlob == NULL) {
-        xmlSecMallocError(cbPrivBlob, NULL);
-        goto done;
-    }
-    xmlSecMemCleanse(pbPrivBlob, cbPrivBlob);
-    {
-        BCRYPT_ECCKEY_BLOB* pHdr = (BCRYPT_ECCKEY_BLOB*)pbPrivBlob;
-        pHdr->dwMagic = BCRYPT_ECDH_PRIVATE_GENERIC_MAGIC;
-        pHdr->cbKey = 32;
-    }
-    pbPrivBlob[sizeof(BCRYPT_ECCKEY_BLOB)] = 0x09; /* base point u=9 (LE) as placeholder for u-coord */
-    /* v-coord (offset 40) stays zero (unused for Montgomery curve) */
-    memcpy(pbPrivBlob + sizeof(BCRYPT_ECCKEY_BLOB) + 64, pScalar, 32); /* private scalar d at offset 72 */
-
-    /* Open ECDH algorithm provider with Curve25519 */
+    /* Open ECDH algorithm provider with Curve25519 (shared by all steps below) */
     status = BCryptOpenAlgorithmProvider(&hAlg, BCRYPT_ECDH_ALGORITHM, NULL, 0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptOpenAlgorithmProvider(X25519 PKCS8)", NULL, status);
         goto done;
     }
-    status = BCryptSetProperty(hAlg, BCRYPT_ECC_CURVE_NAME,
-        (PUCHAR)BCRYPT_ECC_CURVE_25519, sizeof(BCRYPT_ECC_CURVE_25519), 0);
+    status = BCryptSetProperty(
+        hAlg,
+        BCRYPT_ECC_CURVE_NAME,
+        (PUCHAR)BCRYPT_ECC_CURVE_25519,
+        sizeof(BCRYPT_ECC_CURVE_25519),
+        0
+    );
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptSetProperty(curve25519 PKCS8)", NULL, status);
         goto done;
     }
 
-    /* Import private key with a placeholder public key (base point u=9); skip public
-     * key validation so BCrypt accepts the blob.
-     * On Windows 10 1709+ BCRYPT_NO_KEY_VALIDATION is supported for ECDH curves. */
-    status = BCryptImportKeyPair(hAlg, NULL, BCRYPT_ECCPRIVATE_BLOB, &hPrivKeyTemp,
-        pbPrivBlob, cbPrivBlob, BCRYPT_NO_KEY_VALIDATION);
-    if(status != STATUS_SUCCESS) {
-        xmlSecMSCngNtError("BCryptImportKeyPair(X25519 priv PKCS8, no-validate)", NULL, status);
+    /* Build the BCRYPT_ECCPRIVATE_BLOB (placeholder public key) and import the private key */
+    ret = xmlSecMSCngXdhBuildPrivBlobAndImport(hAlg, pScalar, &pbPrivBlob, &cbPrivBlob, &hPrivKeyTemp);
+    if(ret < 0) {
         goto done;
     }
 
-    /* Derive the public key u = X25519(d, 9) by performing a self-agreement with the
-     * Curve25519 base point (u=9 in little-endian: first byte 0x09, rest 0x00). */
-    {
-        BCRYPT_KEY_HANDLE hBasePoint = NULL;
-        BCRYPT_SECRET_HANDLE hSelfSecret = NULL;
-        xmlSecByte basePointBlob[sizeof(BCRYPT_ECCKEY_BLOB) + 64]; /* header + u(32) + v(32) */
-        DWORD cbDerived = 0;
-
-        memset(basePointBlob, 0, sizeof(basePointBlob));
-        {
-            BCRYPT_ECCKEY_BLOB* pHdr = (BCRYPT_ECCKEY_BLOB*)basePointBlob;
-            pHdr->dwMagic = BCRYPT_ECDH_PUBLIC_GENERIC_MAGIC;
-            pHdr->cbKey = 32;
-        }
-        basePointBlob[sizeof(BCRYPT_ECCKEY_BLOB)] = 0x09;  /* base point u = 9 (little-endian); v stays zero */
-
-        status = BCryptImportKeyPair(hAlg, NULL, BCRYPT_ECCPUBLIC_BLOB, &hBasePoint,
-            (PUCHAR)basePointBlob, sizeof(basePointBlob), 0);
-        if(status != STATUS_SUCCESS) {
-            xmlSecMSCngNtError("BCryptImportKeyPair(X25519 base point)", NULL, status);
-            goto done;
-        }
-
-        status = BCryptSecretAgreement(hPrivKeyTemp, hBasePoint, &hSelfSecret, 0);
-        BCryptDestroyKey(hBasePoint);
-        if(status != STATUS_SUCCESS) {
-            if(hSelfSecret != NULL) {
-                BCryptDestroySecret(hSelfSecret);
-            }
-            xmlSecMSCngNtError("BCryptSecretAgreement(X25519 self u)", NULL, status);
-            goto done;
-        }
-
-        /* BCryptDeriveKey with BCRYPT_KDF_RAW_SECRET gives us X25519(d, 9) = u in big-endian. */
-        status = BCryptDeriveKey(hSelfSecret, BCRYPT_KDF_RAW_SECRET, NULL, NULL, 0, &cbDerived, 0);
-        if((status != STATUS_SUCCESS) || (cbDerived == 0)) {
-            BCryptDestroySecret(hSelfSecret);
-            xmlSecMSCngNtError("BCryptDeriveKey(X25519 u size)", NULL, status);
-            goto done;
-        }
-        if(cbDerived > 32) { cbDerived = 32; }  /* safety guard */
-        memset(pubKeyU, 0, sizeof(pubKeyU));
-        status = BCryptDeriveKey(hSelfSecret, BCRYPT_KDF_RAW_SECRET, NULL,
-            pubKeyU + (32 - cbDerived), cbDerived, &cbDerived, 0);
-        BCryptDestroySecret(hSelfSecret);
-        if(status != STATUS_SUCCESS) {
-            xmlSecMSCngNtError("BCryptDeriveKey(X25519 u data)", NULL, status);
-            goto done;
-        }
-        /* BCryptDeriveKey returns the derived u in big-endian. Keep it as-is for now;
-         * it is reversed when written into the little-endian ECC blob below. */
+    /* Derive the public key u = X25519(d, 9) via self-agreement with the base point */
+    ret = xmlSecMSCngXdhDerivePubKeyU(hAlg, hPrivKeyTemp, pubKeyU, sizeof(pubKeyU));
+    if(ret < 0) {
+        goto done;
     }
 
     /* Destroy the temp key (had wrong public key) and re-import with correct public key */
@@ -325,44 +494,24 @@ xmlSecMSCngKeyDataXdhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLe
     xmlSecMSCngReverseCopy(pbPrivBlob + sizeof(BCRYPT_ECCKEY_BLOB), pubKeyU, 32);
 
     /* Re-import with the correct public key */
-    status = BCryptImportKeyPair(hAlg, NULL, BCRYPT_ECCPRIVATE_BLOB, &hPrivKey,
-        pbPrivBlob, cbPrivBlob, 0);
+    status = BCryptImportKeyPair(
+        hAlg,
+        NULL,
+        BCRYPT_ECCPRIVATE_BLOB,
+        &hPrivKey,
+        pbPrivBlob,
+        cbPrivBlob,
+        0
+    );
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptImportKeyPair(X25519 priv PKCS8, final)", NULL, status);
         goto done;
     }
 
-    /* Import public key handle by round-tripping through BCrypt's own ECCPUBLIC_BLOB.
-     * Deriving the public key ourselves and crafting an ECCPUBLIC_BLOB is fragile
-     * (byte-order, canonicity constraints).  Instead export the public portion from
-     * the successfully imported hPrivKey — BCrypt guarantees the exported blob is valid
-     * and can be re-imported without any transformation. */
-    {
-        PUCHAR pbPubBlob = NULL;
-        DWORD cbPubBlob = 0;
-
-        status = BCryptExportKey(hPrivKey, NULL, BCRYPT_ECCPUBLIC_BLOB, NULL, 0, &cbPubBlob, 0);
-        if(status != STATUS_SUCCESS) {
-            xmlSecMSCngNtError("BCryptExportKey(X25519 pub from priv, size)", NULL, status);
-            goto done;
-        }
-        pbPubBlob = (PUCHAR)xmlMalloc(cbPubBlob);
-        if(pbPubBlob == NULL) {
-            xmlSecMallocError(cbPubBlob, NULL);
-            goto done;
-        }
-        status = BCryptExportKey(hPrivKey, NULL, BCRYPT_ECCPUBLIC_BLOB, pbPubBlob, cbPubBlob, &cbPubBlob, 0);
-        if(status != STATUS_SUCCESS) {
-            xmlSecMSCngNtError("BCryptExportKey(X25519 pub from priv, data)", NULL, status);
-            xmlFree(pbPubBlob);
-            goto done;
-        }
-        status = BCryptImportKeyPair(hAlg, NULL, BCRYPT_ECCPUBLIC_BLOB, &hPubKey, pbPubBlob, cbPubBlob, 0);
-        xmlFree(pbPubBlob);
-        if(status != STATUS_SUCCESS) {
-            xmlSecMSCngNtError("BCryptImportKeyPair(X25519 pub from priv)", NULL, status);
-            goto done;
-        }
+    /* Import the public key handle by round-tripping through BCrypt's own ECCPUBLIC_BLOB */
+    ret = xmlSecMSCngXdhImportPubKeyHandle(hAlg, hPrivKey, &hPubKey);
+    if(ret < 0) {
+        goto done;
     }
 
     /* Assemble XDH key data */
@@ -385,6 +534,7 @@ xmlSecMSCngKeyDataXdhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLe
     }
     hPrivKey = NULL; /* owned by data */
 
+    /* success! */
     res = data;
     data = NULL;
 

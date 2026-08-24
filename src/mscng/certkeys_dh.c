@@ -489,6 +489,264 @@ done:
 }
 
 /**
+ * @brief Builds a BCRYPT_DH_PRIVATE_BLOB for an X9.42 DH key and imports it with a placeholder public key.
+ * @details Allocates and fills a BCRYPT_DH_PRIVATE_BLOB (P | G | Y | X) from the given DH parameters,
+ *          using G as a placeholder for the public value Y, then imports it so BCrypt accepts the blob.
+ *          The real Y = G^X mod P is derived later and written into the blob before the final re-import.
+ *          The caller owns the returned blob and key handle and must free/destroy them.
+ * @param hAlg open DH algorithm provider.
+ * @param pP prime P (big-endian).
+ * @param pPLen length of P in bytes.
+ * @param pG generator G (big-endian).
+ * @param pGLen length of G in bytes.
+ * @param pX private exponent X (big-endian).
+ * @param pXLen length of X in bytes.
+ * @param pbPrivBlob receives the allocated blob; caller frees with xmlSecMemCleanse + xmlFree.
+ * @param cbPrivBlob receives the blob size in bytes.
+ * @param hPrivKey receives the imported (placeholder) key handle; caller destroys with BCryptDestroyKey.
+ * @return 0 on success, -1 on failure.
+ */
+static int
+xmlSecMSCngDhBuildPrivBlobAndImport(BCRYPT_ALG_HANDLE hAlg,
+    const xmlSecByte* pP, DWORD pPLen,
+    const xmlSecByte* pG, DWORD pGLen,
+    const xmlSecByte* pX, DWORD pXLen,
+    PUCHAR* pbPrivBlob, DWORD* cbPrivBlob, 
+    BCRYPT_KEY_HANDLE* hPrivKey
+) {
+    DWORD cbKey;
+    PUCHAR pb = NULL;
+    BCRYPT_DH_KEY_BLOB* dhPriv;
+    NTSTATUS status;
+    int ret;
+    int res = -1;
+
+    xmlSecAssert2(hAlg != NULL, -1);
+    xmlSecAssert2(pP != NULL, -1);
+    xmlSecAssert2(pG != NULL, -1);
+    xmlSecAssert2(pX != NULL, -1);
+    xmlSecAssert2(pbPrivBlob != NULL, -1);
+    xmlSecAssert2(cbPrivBlob != NULL, -1);
+    xmlSecAssert2(hPrivKey != NULL, -1);
+
+    /* p is the largest DH value, so its length is used as the key size */
+    cbKey = pPLen;
+    if(cbKey > ((((DWORD)~0U) - sizeof(BCRYPT_DH_KEY_BLOB)) / 4)) {
+        xmlSecInvalidSizeError("DH key size too large",
+            (xmlSecSize)cbKey,
+            (xmlSecSize)((((DWORD)~0U) - sizeof(BCRYPT_DH_KEY_BLOB)) / 4),
+            NULL);
+        goto done;
+    }
+
+    /* BCRYPT_DH_PRIVATE_BLOB layout: P[cbKey] | G[cbKey] | Public(Y)[cbKey] | Private(X)[cbKey] */
+    *cbPrivBlob = sizeof(BCRYPT_DH_KEY_BLOB) + cbKey * 4;
+    pb = (PUCHAR)xmlMalloc(*cbPrivBlob);
+    if(pb == NULL) {
+        xmlSecMallocError(*cbPrivBlob, NULL);
+        goto done;
+    }
+    xmlSecMemCleanse(pb, (*cbPrivBlob));
+
+    dhPriv = (BCRYPT_DH_KEY_BLOB*)pb;
+    dhPriv->dwMagic = BCRYPT_DH_PRIVATE_MAGIC;
+    dhPriv->cbKey = cbKey;
+
+    ret = xmlSecMSCngDhBlobCopy(pb + sizeof(BCRYPT_DH_KEY_BLOB),              cbKey, pP, pPLen); /* P */
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngDhBlobCopy(P)", NULL);
+        goto done;
+    }
+    ret = xmlSecMSCngDhBlobCopy(pb + sizeof(BCRYPT_DH_KEY_BLOB) + cbKey,      cbKey, pG, pGLen); /* G */
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngDhBlobCopy(G)", NULL);
+        goto done;
+    }
+    ret = xmlSecMSCngDhBlobCopy(pb + sizeof(BCRYPT_DH_KEY_BLOB) + cbKey * 2,  cbKey, pG, pGLen); /* Public(Y) = G placeholder */
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngDhBlobCopy(Y-placeholder)", NULL);
+        goto done;
+    }
+    ret = xmlSecMSCngDhBlobCopy(pb + sizeof(BCRYPT_DH_KEY_BLOB) + cbKey * 3,  cbKey, pX, pXLen); /* Private(X) */
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngDhBlobCopy(X)", NULL);
+        goto done;
+    }
+
+    status = BCryptImportKeyPair(hAlg, NULL, BCRYPT_DH_PRIVATE_BLOB, hPrivKey, pb, (*cbPrivBlob), 0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptImportKeyPair(DH priv)", NULL, status);
+        goto done;
+    }
+
+    /* success */
+    (*pbPrivBlob) = pb;
+    pb = NULL; /* ownership transferred to caller */
+    res = 0;
+
+done:
+    if(pb != NULL) {
+        xmlSecMemCleanse(pb, (*cbPrivBlob));
+        xmlFree(pb);
+    }
+    return(res);
+}
+
+/**
+ * @brief Derives the DH public value Y = G^X mod P and writes it into the private blob.
+ * @details Performs a self-agreement between the (placeholder) private key and a public key whose
+ *          Y is set to G, which computes G^X mod P. The result (little-endian from BCrypt) is reversed
+ *          to big-endian and written right-aligned into slot 2 (the Y field) of the private blob.
+ * @param hAlg open DH algorithm provider.
+ * @param hPrivKey imported (placeholder) DH private key handle.
+ * @param pbPrivBlob the BCRYPT_DH_PRIVATE_BLOB whose Y field is updated in place.
+ * @return 0 on success, -1 on failure.
+ */
+static int
+xmlSecMSCngDhDerivePubKeyY(BCRYPT_ALG_HANDLE hAlg, BCRYPT_KEY_HANDLE hPrivKey, PUCHAR pbPrivBlob) {
+    DWORD cbKey;
+    BCRYPT_KEY_HANDLE hGPubKey = NULL;
+    BCRYPT_SECRET_HANDLE hSelfSecret = NULL;
+    BCRYPT_DH_KEY_BLOB* dhGPub;
+    DWORD cbGPubBlob;
+    DWORD cbY = 0;
+    PUCHAR pbY, pbYtmp;
+    PUCHAR pbGPubBlob = NULL;
+    NTSTATUS status;
+    int res = -1;
+
+    xmlSecAssert2(hAlg != NULL, -1);
+    xmlSecAssert2(hPrivKey != NULL, -1);
+    xmlSecAssert2(pbPrivBlob != NULL, -1);
+
+    cbKey = ((BCRYPT_DH_KEY_BLOB*)pbPrivBlob)->cbKey;
+    cbGPubBlob = sizeof(BCRYPT_DH_KEY_BLOB) + cbKey * 3;
+
+    /* Build a public key blob (P | G | Y=G) to use as the self-agreement peer */
+    pbGPubBlob = (PUCHAR)xmlMalloc(cbGPubBlob);
+    if(pbGPubBlob == NULL) {
+        xmlSecMallocError(cbGPubBlob, NULL);
+        goto done;
+    }
+    memset(pbGPubBlob, 0, cbGPubBlob);
+
+    /* header */
+    dhGPub = (BCRYPT_DH_KEY_BLOB*)pbGPubBlob;
+    dhGPub->dwMagic = BCRYPT_DH_PUBLIC_MAGIC;
+    dhGPub->cbKey = cbKey;
+    
+    /* P and G same as our key; Y = G (the generator itself) */
+    memcpy(pbGPubBlob + sizeof(BCRYPT_DH_KEY_BLOB),              pbPrivBlob + sizeof(BCRYPT_DH_KEY_BLOB),         cbKey); /* P */
+    memcpy(pbGPubBlob + sizeof(BCRYPT_DH_KEY_BLOB) + cbKey,      pbPrivBlob + sizeof(BCRYPT_DH_KEY_BLOB) + cbKey, cbKey); /* G */
+    memcpy(pbGPubBlob + sizeof(BCRYPT_DH_KEY_BLOB) + cbKey * 2,  pbPrivBlob + sizeof(BCRYPT_DH_KEY_BLOB) + cbKey, cbKey); /* Y = G */
+    
+    status = BCryptImportKeyPair(hAlg, NULL, BCRYPT_DH_PUBLIC_BLOB, &hGPubKey, pbGPubBlob, cbGPubBlob, 0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptImportKeyPair(DH G pub)", NULL, status);
+        goto done;
+    }
+
+    status = BCryptSecretAgreement(hPrivKey, hGPubKey, &hSelfSecret, 0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptSecretAgreement(self Y)", NULL, status);
+        goto done;
+    }
+
+    /* Get Y = G^X mod P (little-endian from BCrypt) */
+    status = BCryptDeriveKey(hSelfSecret, BCRYPT_KDF_RAW_SECRET, NULL, NULL, 0, &cbY, 0);
+    if((status != STATUS_SUCCESS) || (cbY == 0)) {
+        xmlSecMSCngNtError("BCryptDeriveKey(Y size)", NULL, status);
+        goto done;
+    }
+    cbY = min(cbY, cbKey); /* safety */
+
+    /* derive into Y field of the private blob (right-aligned) */
+    pbY = pbPrivBlob + sizeof(BCRYPT_DH_KEY_BLOB) + cbKey * 2;
+    memset(pbY, 0, cbKey);
+    
+    pbYtmp = pbY + cbKey - cbY;
+    status = BCryptDeriveKey(hSelfSecret, BCRYPT_KDF_RAW_SECRET, NULL, pbYtmp, cbY, &cbY, 0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptDeriveKey(Y data)", NULL, status);
+        goto done;
+    }
+
+    /* BCrypt returns little-endian; reverse to big-endian */
+    xmlSecMSCngReverseBytes(pbYtmp, cbY);
+    
+    /* success */
+    res = 0;
+
+done:
+    if(hSelfSecret != NULL) {
+        BCryptDestroySecret(hSelfSecret);
+    }
+    if(hGPubKey != NULL) {
+        BCryptDestroyKey(hGPubKey);
+    }
+    if(pbGPubBlob != NULL) {
+        xmlFree(pbGPubBlob);
+    }
+    return(res);
+}
+
+/**
+ * @brief Imports a DH public key handle from the P, G, Y values stored in a private blob.
+ * @details Builds a BCRYPT_DH_PUBLIC_BLOB (P | G | Y) by copying slots 0, 1, 2 of the given private
+ *          blob (where Y is already correct), then imports it as a standalone public key handle.
+ * @param hAlg open DH algorithm provider.
+ * @param pbPrivBlob the BCRYPT_DH_PRIVATE_BLOB with a correct Y in slot 2.
+ * @param hPubKey receives the imported public key handle; caller destroys with BCryptDestroyKey.
+ * @return 0 on success, -1 on failure.
+ */
+static int
+xmlSecMSCngDhImportPubKeyHandle(BCRYPT_ALG_HANDLE hAlg, PUCHAR pbPrivBlob, BCRYPT_KEY_HANDLE* hPubKey) {
+    DWORD cbKey;
+    DWORD cbPubBlob;
+    PUCHAR pbPubBlob = NULL;
+    BCRYPT_DH_KEY_BLOB* dhPub;
+    NTSTATUS status;
+    int res = -1;
+
+    xmlSecAssert2(hAlg != NULL, -1);
+    xmlSecAssert2(pbPrivBlob != NULL, -1);
+    xmlSecAssert2(hPubKey != NULL, -1);
+
+    cbKey = ((BCRYPT_DH_KEY_BLOB*)pbPrivBlob)->cbKey;
+    cbPubBlob = sizeof(BCRYPT_DH_KEY_BLOB) + cbKey * 3;
+
+    pbPubBlob = (PUCHAR)xmlMalloc(cbPubBlob);
+    if(pbPubBlob == NULL) {
+        xmlSecMallocError(cbPubBlob, NULL);
+        goto done;
+    }
+    memset(pbPubBlob, 0, cbPubBlob);
+    
+    
+    /* header */
+    dhPub = (BCRYPT_DH_KEY_BLOB*)pbPubBlob;
+    dhPub->dwMagic = BCRYPT_DH_PUBLIC_MAGIC;
+    dhPub->cbKey = cbKey;
+
+    /* copy P, G, Y (slots 0, 1, 2) from the private blob — Y is now correct */
+    memcpy(pbPubBlob + sizeof(BCRYPT_DH_KEY_BLOB), pbPrivBlob + sizeof(BCRYPT_DH_KEY_BLOB), cbKey * 3);
+
+    status = BCryptImportKeyPair(hAlg, NULL, BCRYPT_DH_PUBLIC_BLOB, hPubKey, pbPubBlob, cbPubBlob, 0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptImportKeyPair(DH pub)", NULL, status);
+        goto done;
+    }
+
+    res = 0;
+
+done:
+    if(pbPubBlob != NULL) {
+        xmlFree(pbPubBlob);
+    }
+    return(res);
+}
+
+/**
  * @brief Loads an X9.42 DH private key (and derives public key) from a PKCS8 DER blob.
  * @param derData DER-encoded PKCS8 PrivateKeyInfo for an X9.42 DH key.
  * @param derDataLen length of @p derData.
@@ -511,10 +769,10 @@ xmlSecMSCngKeyDataDhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLen
     DWORD pQLen = 0;
     const xmlSecByte* pX = NULL;
     DWORD pXLen = 0;
-    DWORD cbKey = 0;
     PUCHAR pbPrivBlob = NULL;
     DWORD cbPrivBlob = 0;
-    BCRYPT_DH_KEY_BLOB* dhPriv = NULL;
+    const xmlSecByte* inner;
+    DWORD innerLen;
     BCRYPT_KEY_HANDLE hPrivKey = NULL;
     BCRYPT_KEY_HANDLE hPubKey = NULL;
     BCRYPT_ALG_HANDLE hAlg = NULL;
@@ -529,7 +787,8 @@ xmlSecMSCngKeyDataDhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLen
             PKCS_PRIVATE_KEY_INFO,
             derData, derDataLen,
             CRYPT_DECODE_ALLOC_FLAG | CRYPT_DECODE_NOCOPY_FLAG,
-            NULL, &pki, &pkiLen)) {
+            NULL, &pki, &pkiLen)
+    ) {
         xmlSecMSCngLastError("CryptDecodeObjectEx(PKCS8)", NULL);
         goto done;
     }
@@ -550,165 +809,68 @@ xmlSecMSCngKeyDataDhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLen
     /* Parse P and G from AlgorithmIdentifier.Parameters */
     ret = xmlSecMSCngDhParseDhParameters(
         pki->Algorithm.Parameters.pbData, pki->Algorithm.Parameters.cbData,
-        &pP, &pPLen, &pG, &pGLen, &pQ, &pQLen);
+        &pP, &pPLen,
+        &pG, &pGLen,
+        &pQ, &pQLen
+    );
     if(ret < 0) {
         xmlSecInternalError("xmlSecMSCngDhParseDhParameters", NULL);
         goto done;
     }
 
     /* Parse X from PrivateKey (inner OCTET STRING contains a DER INTEGER X) */
-    {
-        const xmlSecByte* inner = pki->PrivateKey.pbData;
-        DWORD innerLen = pki->PrivateKey.cbData;
-        pX = xmlSecMSCngDerDecodeInteger(inner, inner + innerLen, &pXLen);
-        if(pX == NULL) {
-            xmlSecInternalError("DH PKCS8: failed to parse private key INTEGER X", NULL);
-            goto done;
-        }
-    }
-
-    /* p is the largest DH value, so its length is used as the key size (no alignment is enforced here) */
-    cbKey = pPLen;
-
-    /* Build BCRYPT_DH_PRIVATE_BLOB: header + P + G + Public(Y=G^X mod P) + Private(X)
-     * BCRYPT_DH_PRIVATE_BLOB layout: P[cbKey] | G[cbKey] | Public(Y)[cbKey] | Private(X)[cbKey]
-     * We first import with G as Y placeholder, then compute the real Y = G^X mod P using a
-     * self-agreement trick: BCryptSecretAgreement(hPriv, pubWithY=G) computes G^X mod P. */
-    cbPrivBlob = sizeof(BCRYPT_DH_KEY_BLOB) + cbKey * 4;
-    pbPrivBlob = (PUCHAR)xmlMalloc(cbPrivBlob);
-    if(pbPrivBlob == NULL) {
-        xmlSecMallocError(cbPrivBlob, NULL);
-        goto done;
-    }
-    xmlSecMemCleanse(pbPrivBlob, cbPrivBlob);
-    dhPriv = (BCRYPT_DH_KEY_BLOB*)pbPrivBlob;
-    dhPriv->dwMagic = BCRYPT_DH_PRIVATE_MAGIC;
-    dhPriv->cbKey = cbKey;
-    ret = xmlSecMSCngDhBlobCopy(pbPrivBlob + sizeof(BCRYPT_DH_KEY_BLOB),              cbKey, pP, pPLen); /* P */
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngDhBlobCopy(P)", NULL);
-        goto done;
-    }
-    ret = xmlSecMSCngDhBlobCopy(pbPrivBlob + sizeof(BCRYPT_DH_KEY_BLOB) + cbKey,      cbKey, pG, pGLen); /* G */
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngDhBlobCopy(G)", NULL);
-        goto done;
-    }
-    ret = xmlSecMSCngDhBlobCopy(pbPrivBlob + sizeof(BCRYPT_DH_KEY_BLOB) + cbKey * 2,  cbKey, pG, pGLen); /* Public(Y) = G placeholder initially */
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngDhBlobCopy(Y-placeholder)", NULL);
-        goto done;
-    }
-    ret = xmlSecMSCngDhBlobCopy(pbPrivBlob + sizeof(BCRYPT_DH_KEY_BLOB) + cbKey * 3,  cbKey, pX, pXLen); /* Private(X) = actual private exponent */
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngDhBlobCopy(X)", NULL);
+    inner = pki->PrivateKey.pbData;
+    innerLen = pki->PrivateKey.cbData;
+    if((innerLen == 0) || (inner == NULL)) {
+        xmlSecInternalError("DH PKCS8: missing private key payload", NULL);
         goto done;
     }
 
+    pX = xmlSecMSCngDerDecodeInteger(inner, inner + innerLen, &pXLen);
+    if(pX == NULL) {
+        xmlSecInternalError("DH PKCS8: failed to parse private key INTEGER X", NULL);
+        goto done;
+    }
+   
+    /* Open DH algorithm provider (shared by all steps below) */
     status = BCryptOpenAlgorithmProvider(&hAlg, BCRYPT_DH_ALGORITHM, NULL, 0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptOpenAlgorithmProvider(DH)", NULL, status);
         goto done;
     }
 
-    status = BCryptImportKeyPair(hAlg, NULL, BCRYPT_DH_PRIVATE_BLOB, &hPrivKey, pbPrivBlob, cbPrivBlob, 0);
-    if(status != STATUS_SUCCESS) {
-        xmlSecMSCngNtError("BCryptImportKeyPair(DH priv)", NULL, status);
+    /* Build the BCRYPT_DH_PRIVATE_BLOB (Y=G placeholder) and import the private key */
+    ret = xmlSecMSCngDhBuildPrivBlobAndImport(
+        hAlg,
+        pP, pPLen,
+        pG, pGLen,
+        pX, pXLen,
+        &pbPrivBlob, &cbPrivBlob,
+        &hPrivKey
+    );
+    if(ret < 0) {
         goto done;
     }
 
-    /* Compute the real Y = G^X mod P using self-agreement trick:
-     * BCryptSecretAgreement(hPrivKey, pubKeyWithY=G) computes G^X mod P (little-endian).
-     * We reverse the bytes to get big-endian Y, then rebuild the blob with correct Y. */
-    {
-        BCRYPT_KEY_HANDLE hGPubKey = NULL;
-        BCRYPT_SECRET_HANDLE hSelfSecret = NULL;
-        DWORD cbGPubBlob = sizeof(BCRYPT_DH_KEY_BLOB) + cbKey * 3;
-        DWORD cbY = 0;
-        PUCHAR pbGPubBlob = (PUCHAR)xmlMalloc(cbGPubBlob);
-        if(pbGPubBlob == NULL) {
-            xmlSecMallocError(cbGPubBlob, NULL);
-            goto done;
-        }
-        memset(pbGPubBlob, 0, cbGPubBlob);
-        {
-            BCRYPT_DH_KEY_BLOB* dhGPub = (BCRYPT_DH_KEY_BLOB*)pbGPubBlob;
-            dhGPub->dwMagic = BCRYPT_DH_PUBLIC_MAGIC;
-            dhGPub->cbKey = cbKey;
-            /* P and G same as our key; Y = G (the generator itself) */
-            memcpy(pbGPubBlob + sizeof(BCRYPT_DH_KEY_BLOB),              pbPrivBlob + sizeof(BCRYPT_DH_KEY_BLOB),         cbKey); /* P */
-            memcpy(pbGPubBlob + sizeof(BCRYPT_DH_KEY_BLOB) + cbKey,      pbPrivBlob + sizeof(BCRYPT_DH_KEY_BLOB) + cbKey, cbKey); /* G */
-            memcpy(pbGPubBlob + sizeof(BCRYPT_DH_KEY_BLOB) + cbKey * 2,  pbPrivBlob + sizeof(BCRYPT_DH_KEY_BLOB) + cbKey, cbKey); /* Y = G */
-        }
-        status = BCryptImportKeyPair(hAlg, NULL, BCRYPT_DH_PUBLIC_BLOB, &hGPubKey, pbGPubBlob, cbGPubBlob, 0);
-        xmlFree(pbGPubBlob);
-        if(status != STATUS_SUCCESS) {
-            xmlSecMSCngNtError("BCryptImportKeyPair(DH G pub)", NULL, status);
-            goto done;
-        }
-        status = BCryptSecretAgreement(hPrivKey, hGPubKey, &hSelfSecret, 0);
-        BCryptDestroyKey(hGPubKey);
-        if(status != STATUS_SUCCESS) {
-            if(hSelfSecret != NULL) {
-                BCryptDestroySecret(hSelfSecret);
-            }
-            xmlSecMSCngNtError("BCryptSecretAgreement(self Y)", NULL, status);
-            goto done;
-        }
-        /* Get Y = G^X mod P (little-endian from BCrypt) */
-        status = BCryptDeriveKey(hSelfSecret, BCRYPT_KDF_RAW_SECRET, NULL, NULL, 0, &cbY, 0);
-        if((status != STATUS_SUCCESS) || (cbY == 0)) {
-            BCryptDestroySecret(hSelfSecret);
-            xmlSecMSCngNtError("BCryptDeriveKey(Y size)", NULL, status);
-            goto done;
-        }
-        if(cbY > cbKey) { cbY = cbKey; } /* safety */
-        {
-            PUCHAR pbY = pbPrivBlob + sizeof(BCRYPT_DH_KEY_BLOB) + cbKey * 2;
-            memset(pbY, 0, cbKey);
-            /* derive into Y field of the private blob (right-aligned) */
-            PUCHAR pbYtmp = pbY + cbKey - cbY;
-            status = BCryptDeriveKey(hSelfSecret, BCRYPT_KDF_RAW_SECRET, NULL, pbYtmp, cbY, &cbY, 0);
-            BCryptDestroySecret(hSelfSecret);
-            if(status != STATUS_SUCCESS) {
-                xmlSecMSCngNtError("BCryptDeriveKey(Y data)", NULL, status);
-                goto done;
-            }
-            /* BCrypt returns little-endian; reverse to big-endian */
-            xmlSecMSCngReverseBytes(pbYtmp, cbY);
-        }
-        /* Destroy the placeholder private key handle; re-import with correct Y */
-        BCryptDestroyKey(hPrivKey);
-        hPrivKey = NULL;
-        status = BCryptImportKeyPair(hAlg, NULL, BCRYPT_DH_PRIVATE_BLOB, &hPrivKey, pbPrivBlob, cbPrivBlob, 0);
-        if(status != STATUS_SUCCESS) {
-            xmlSecMSCngNtError("BCryptImportKeyPair(DH priv with Y)", NULL, status);
-            goto done;
-        }
+    /* Derive the real Y = G^X mod P and write it into the blob's Y field */
+    ret = xmlSecMSCngDhDerivePubKeyY(hAlg, hPrivKey, pbPrivBlob);
+    if(ret < 0) {
+        goto done;
     }
 
-    /* Build public key blob using the now-correct Y from slot2 of private blob */
-    {
-        PUCHAR pbPubBlob = NULL;
-        DWORD cbPubBlob = sizeof(BCRYPT_DH_KEY_BLOB) + cbKey * 3;
-        BCRYPT_DH_KEY_BLOB* dhPub;
-        pbPubBlob = (PUCHAR)xmlMalloc(cbPubBlob);
-        if(pbPubBlob == NULL) {
-            xmlSecMallocError(cbPubBlob, NULL);
-            goto done;
-        }
-        memset(pbPubBlob, 0, cbPubBlob);
-        dhPub = (BCRYPT_DH_KEY_BLOB*)pbPubBlob;
-        dhPub->dwMagic = BCRYPT_DH_PUBLIC_MAGIC;
-        dhPub->cbKey = cbKey;
-        /* copy P, G, Y (slots 0, 1, 2) from the private blob — Y is now correct */
-        memcpy(pbPubBlob + sizeof(BCRYPT_DH_KEY_BLOB), pbPrivBlob + sizeof(BCRYPT_DH_KEY_BLOB), cbKey * 3);
-        status = BCryptImportKeyPair(hAlg, NULL, BCRYPT_DH_PUBLIC_BLOB, &hPubKey, pbPubBlob, cbPubBlob, 0);
-        xmlFree(pbPubBlob);
-        if(status != STATUS_SUCCESS) {
-            xmlSecMSCngNtError("BCryptImportKeyPair(DH pub)", NULL, status);
-            goto done;
-        }
+    /* Destroy the placeholder private key handle; re-import with correct Y */
+    BCryptDestroyKey(hPrivKey);
+    hPrivKey = NULL;
+    status = BCryptImportKeyPair(hAlg, NULL, BCRYPT_DH_PRIVATE_BLOB, &hPrivKey, pbPrivBlob, cbPrivBlob, 0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptImportKeyPair(DH priv with Y)", NULL, status);
+        goto done;
+    }
+
+    /* Import the public key handle from the P, G, Y values in the private blob */
+    ret = xmlSecMSCngDhImportPubKeyHandle(hAlg, pbPrivBlob, &hPubKey);
+    if(ret < 0) {
+        goto done;
     }
 
     /* Assemble key data */

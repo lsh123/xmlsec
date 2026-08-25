@@ -217,7 +217,7 @@ xmlSecOpenSSLAppCheckMemoryBioConsumed(BIO* bio, xmlSecKeyDataFormat format) {
         }
         return (1);
     default:
-        /* unexepected memory bio format */
+        /* unexpected memory bio format */
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL, "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
         return(-1);
     }
@@ -264,6 +264,10 @@ xmlSecOpenSSLAppCheckFileBioConsumed(BIO* bio, xmlSecKeyDataFormat format) {
         } while(BIO_should_retry(bio) != 0);
 
         /* if we get here, we are at EOF or error */
+        if(bytes_read < 0) {
+            xmlSecOpenSSLError("BIO_read", NULL);
+            return(-1);
+        }
         if(BIO_eof(bio) != 1) {
             xmlSecInvalidDataError("Remaining unprocessed data in file",  NULL);
             return(0);
@@ -272,7 +276,7 @@ xmlSecOpenSSLAppCheckFileBioConsumed(BIO* bio, xmlSecKeyDataFormat format) {
         /* good: this is EOF and we are done*/
         return (1);
     default:
-        /* unexepected memory bio format */
+        /* unexpected file bio format */
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL, "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
         return(-1);
     }
@@ -1841,29 +1845,31 @@ xmlSecOpenSSLAppKeysMngrCrlLoadAndVerify(xmlSecKeysMngrPtr mngr, const char *fil
 
     crl = xmlSecOpenSSLX509CrlLoadBIO(bio, format);
     if(crl == NULL) {
-        xmlSecInternalError2("xmlSecOpenSSLX509CrlLoadBIO", NULL,
-            "filename=%s", xmlSecErrorsSafeString(filename));
+        xmlSecInternalError2("xmlSecOpenSSLX509CrlLoadBIO", NULL, "filename=%s", xmlSecErrorsSafeString(filename));
+        goto done;
+    }
+
+    /* check if any bytes remaining */
+    if(xmlSecOpenSSLAppCheckFileBioConsumed(bio, format) != 1) {
+        xmlSecInternalError2("xmlSecOpenSSLAppCheckFileBioConsumed", NULL, "filename=%s", xmlSecErrorsSafeString(filename));
         goto done;
     }
 
     /* Verify the in-memory CRL */
     ret = xmlSecOpenSSLX509StoreVerifyCrl(x509Store, crl, keyInfoCtx);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecOpenSSLX509StoreVerifyCrl", NULL,
-            "filename=%s", xmlSecErrorsSafeString(filename));
+        xmlSecInternalError2("xmlSecOpenSSLX509StoreVerifyCrl", NULL, "filename=%s", xmlSecErrorsSafeString(filename));
         goto done;
     } else if(ret != 1) {
         /* Verification failed - treat as error */
-        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
-            "filename=%s", xmlSecErrorsSafeString(filename));
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "filename=%s", xmlSecErrorsSafeString(filename));
         goto done;
     }
 
     /* Adopt the verified in-memory CRL */
     ret = xmlSecOpenSSLX509StoreAdoptCrl(x509Store, crl);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecOpenSSLX509StoreAdoptCrl", NULL,
-            "filename=%s", xmlSecErrorsSafeString(filename));
+        xmlSecInternalError2("xmlSecOpenSSLX509StoreAdoptCrl", NULL, "filename=%s", xmlSecErrorsSafeString(filename));
         goto done;
     }
 

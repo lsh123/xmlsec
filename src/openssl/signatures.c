@@ -2269,6 +2269,8 @@ xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig(xmlSecTransformCtxPtr transformCt
     xmlSecSize bufSize;
     int bufLen, signHalfLen, rLen, sLen;
     ECDSA_SIG* sig = NULL;
+    ptrdiff_t consumed;
+    xmlSecSize consumedSize;
     const BIGNUM* rr = NULL;
     const BIGNUM* ss = NULL;
     int ret;
@@ -2299,6 +2301,16 @@ xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig(xmlSecTransformCtxPtr transformCt
         xmlSecOpenSSLError("d2i_ECDSA_SIG", NULL);
         goto done;
     }
+
+    /* check if any bytes remaining */
+    consumed = buf - xmlSecBufferGetData(data);
+    XMLSEC_SAFE_CAST_PTRDIFF_TO_SIZE(consumed, consumedSize, goto done, NULL);
+    if(consumedSize < bufSize) {
+        xmlSecInvalidSizeDataError("Remaining bytes", (bufSize - consumedSize), "0 bytes",  NULL);
+        goto done;
+    }
+
+    /* extract signature values */
     ECDSA_SIG_get0(sig, &rr, &ss);
     if((rr == NULL) || (ss == NULL)) {
         xmlSecOpenSSLError("ECDSA_SIG_get0", NULL);

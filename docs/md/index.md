@@ -16,15 +16,20 @@ see the Copyright file in the distribution for details.
 
 - **TBD**
   The [XML Security Library 1.3.13](download.md) release includes the following changes:
-  - (xmlsec-core) Fixed several issues with Relationship transform handling. To restore the old (broken) behaviour,
-  use `--relationship-legacy` flag (or set corresponding flag in the the `xmlSecDSigCtx` structs in your application code).
-  - (xmlsec-core) Restricted the default enabled reference and transform URIs to empty and same document URIs only.
-  Use  `--enabled-reference-uris`, `--enabled-retrieval-method-uris`, `--enabled-key-info-reference-uris`, etc.
-  parameters for XMLSec command line tool if local or remote URIs usage is required (or set corresponding
-  flag in the the `xmlSecDSigCtx` and `xmlSecEncCtx` structs in your application code).
-  - (xmlsec-mscng) Added support for using both current user and local machine certificates store for verifying the certificates.
+  - (xmlsec-core, **not backward compatible**) Fixed several issues with Relationship transform handling.
+    To restore the old (broken) behaviour, use `--relationship-legacy` flag (or set corresponding flag in
+    the the `xmlSecDSigCtx` structs in your application code).
+  - (xmlsec-core, **not backward compatible**) Restricted the default enabled reference and transform URIs
+    to empty and same document URIs only. Use  `--enabled-reference-uris`, `--enabled-retrieval-method-uris`,
+  `--enabled-key-info-reference-uris`, etc. parameters for XMLSec command line tool if local or remote URIs
+    usage is required (or set corresponding flag in the the `xmlSecDSigCtx` and `xmlSecEncCtx` structs in your
+    application code).
+  - (xmlsec-openssl) Added checks to enforce full consumption of parsed DER objects.
+  - (xmlsec-mscng) Added support for using both current user and local machine certificates store for verifying
+    the certificates.
   - (xmlsec-mscng) Enforced HMAC length checks similar to other crypto backends.
-  - (xmlsec-windows) Added `apps` option to `configure.ps1` to control whether the command-line binaries in the `apps/` folder are built (default: `yes`).
+  - (xmlsec-windows) Added `apps` option to `configure.ps1` to control whether the command-line binaries in
+    the `apps/` folder are built (default: `yes`).
   - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/xmlsec_1_3_13)).
 
 - **June 23, 2026**
@@ -32,13 +37,15 @@ see the Copyright file in the distribution for details.
   - (xmlsec-openssl) Added experimental ML-KEM support.
   - (xmlsec-nss) Added SHA3 support.
   - (xmlsec-gnutls) Added RSA-OEAP (SHA-256/SHA-384/SHA-512) support.
-  - (xmlsec-core) Added `--transform-max-depth` option to control maximum transforms execution depth (`0` disables the depth check).
+  - (xmlsec-core) Added `--transform-max-depth` option to control maximum transforms execution depth
+    (`0` disables the depth check).
   - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/1.3.12)).
 
 - **April 22, 2026**
   The [XML Security Library 1.3.11](download.md) release includes the following changes:
   - (xmlsec-openssl) Added support for OpenSSL 4.0.0.
-  - (xmlsec-windows) The XMLSec build configuration script on Windows is converted to PowerShell, the JScript version is deprecated and will be remove in the future versions.
+  - (xmlsec-windows) The XMLSec build configuration script on Windows is converted to PowerShell, the JScript version is
+    deprecated and will be remove in the future versions.
   - (xmlsec-docs) The XMLSec API reference was converted to Doxygen / Pandoc (instead of Gtk-Doc).
   - (xmlsec-docs) The XMLSec API reference, tutorial, and examples had been updated to Markdown files and moved to
     [GitHub Wiki](https://github.com/lsh123/xmlsec/wiki).
@@ -46,15 +53,15 @@ see the Copyright file in the distribution for details.
 
 - **April 2, 2026**
   The [XML Security Library 1.3.10](download.md) release includes the following changes:
-  - The minimum supported versions for dependencies are now: LibXML2 >= 2.9.13 (February 19, 2022), LibXSLT >= 1.1.35 (February 16, 2022),
-    OpenSSL >= 3.0.13 (January 30, 2024), LibreSSL >= 3.9.0 (March 9, 2024), NSS >= 3.91 (June 26, 2023), NSPR >= 4.34.1 (June 26, 2023),
-    GnuTLS >= 3.8.3 (January 1, 2024).
+  - The minimum supported versions for dependencies are now: LibXML2 >= 2.9.13 (February 19, 2022),
+    LibXSLT >= 1.1.35 (February 16, 2022), OpenSSL >= 3.0.13 (January 30, 2024), LibreSSL >= 3.9.0 (March 9, 2024),
+    NSS >= 3.91 (June 26, 2023), NSPR >= 4.34.1 (June 26, 2023), GnuTLS >= 3.8.3 (January 1, 2024).
   - (xmlsec-core) Disabled all key value data for all key types by default (use `--enabled-key-data` flag to re-enable if needed).
   - (xmlsec-core) Added `--enable-asn1-signatures-hack` option to allow generation / verification of ASN1 signature values.
   - (xmlsec-core) Added `--verify-crls` option to verify CRLs when loading from command line.
   - (xmlsec-openssl) Added support for EdDSA signature algorithm; XDH (X25519 and X448) key agreement algorithms;
-    HKDF key derivation algorithm; Camellia block cipher and key wrap algorithms; ChaCha20 and ChaCha20-Poly1305 encryption algorithms;
-    and **experimental** ML-DSA and SLH-DSA-SHA2 signature algorithms.
+    HKDF key derivation algorithm; Camellia block cipher and key wrap algorithms; ChaCha20 and ChaCha20-Poly1305 encryption
+    algorithms; and **experimental** ML-DSA and SLH-DSA-SHA2 signature algorithms.
   - (xmlsec-gnutls) Added support for EdDSA signature algorithms; ECDH and XDH (X25519 and X448) key agreement algorithms;
     ConcatKDF, PBKDF2, and HKDF key derivation algorithms; ChaCha20 and ChaCha20-Poly1305 encryption algorithms;
     SHA2-224 and SHA3-224 digest algorithms; and **experimental** support for ML-DSA signature algorithms.
@@ -80,7 +87,8 @@ see the Copyright file in the distribution for details.
   The [XML Security Library 1.3.8](download.md) release includes the following changes:
   - (xmlsec-openssl) Deprecated support for OpenSSL 1.1.1 ([reached its End of Life in September, 2023](https://openssl-corporation.org/post/2023-09-11-eol-111/)).
   - (xmlsec-openssl) Added AWS-LC support.
-  - (xmlsec-openssl, xmlsec-gnutls, xmlsec-mscng) Added support for longer than expected DSA and ECDSA signatures to support broken Java implementations.
+  - (xmlsec-openssl, xmlsec-gnutls, xmlsec-mscng) Added support for longer than expected DSA and ECDSA signatures to support
+    broken Java implementations.
   - (xmlsec command line tool) Added option `--add-id-attr` to add ID attributes by name to all nodes in the document.
   - (xmlsec-core) Added RSA MGF1 and digest template API.
   - (xmlsec-core) Added example of signing / verifying signature by ID attribute.
@@ -94,14 +102,18 @@ see the Copyright file in the distribution for details.
 
 - **February 11, 2025**
   The [XML Security Library 1.3.7](download.md) release includes the following changes:
-  - (xmlsec-core) Added `XMLSEC_TRANSFORM_FLAGS_USER_SPECIFIED` flag to `xmlSecTransform` to differentiate transforms specified in the input XML file vs transforms automatically added by XML Security Library.
-  - (xmlsec-core) Added signature result verification to the examples to demonstrate the need to ensure the correct data is actually signed.
-  - (xmlsec-core) Disabled old crypto algorithms (MD5, RIPEMD160) and the old crypto engines (MSCrypto, GCrypt) by default (use `--with-legacy-features` option to reenable everything).
+  - (xmlsec-core) Added `XMLSEC_TRANSFORM_FLAGS_USER_SPECIFIED` flag to `xmlSecTransform` to differentiate transforms
+    specified in the input XML file vs transforms automatically added by XML Security Library.
+  - (xmlsec-core) Added signature result verification to the examples to demonstrate the need to ensure the correct
+    data is actually signed.
+  - (xmlsec-core) Disabled old crypto algorithms (MD5, RIPEMD160) and the old crypto engines (MSCrypto, GCrypt) by default
+    (use `--with-legacy-features` option to reenable everything).
   - (xmlsec-openssl) Fixed excess padding in ECDSA signature generation.
   - (xmlsec-openssl) Fixed build warnings for BoringSSL / AWS-LC.
   - (xmlsec-nss) Fixed certificates search in NSS DB.
   - (xmlsec-openssl, xmlsec-gnutls, xmlsec-mscng) Added an option to skip timestamp checks for certificates and CLRs.
-  - (xmlsec-windows) Disabled old crypto algorithms (MD5, RIPEMD160), made "mscng" the default crypto engine on Windows, and added support for "legacy-features" flag for `configure.js`.
+  - (xmlsec-windows) Disabled old crypto algorithms (MD5, RIPEMD160), made "mscng" the default crypto engine on Windows, and
+    added support for "legacy-features" flag for `configure.js`.
   - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/master)).
 
 - **October 22, 2024**

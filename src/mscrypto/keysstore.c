@@ -253,17 +253,16 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
                                                       CERT_FRIENDLY_NAME_PROP_ID,
                                                       NULL,
                                                       &dwPropSize)) {
-                CertFreeCertificateContext(pCertCtxIter);
                 continue;
             }
 
             pbFriendlyName = xmlMalloc(dwPropSize);
             if(pbFriendlyName == NULL) {
                 xmlSecMallocError(dwPropSize, xmlSecKeyStoreGetName(store));
-                CertFreeCertificateContext(pCertCtxIter);
                 xmlFree(lpwName);
                 xmlFree(wcName);
                 CertCloseStore(hStoreHandle, 0);
+                CertFreeCertificateContext(pCertCtxIter);
                 return(NULL);
             }
 
@@ -272,7 +271,6 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
                                                       pbFriendlyName,
                                                       &dwPropSize)) {
                 xmlFree(pbFriendlyName);
-                CertFreeCertificateContext(pCertCtxIter);
                 continue;
             }
 
@@ -284,7 +282,6 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
               break;
             }
             xmlFree(pbFriendlyName);
-            CertFreeCertificateContext(pCertCtxIter);
         }
 
         xmlFree(lpwName);

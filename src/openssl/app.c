@@ -194,6 +194,87 @@ xmlSecOpenSSLAppShutdown(void) {
     return(0);
 }
 
+/* Returns 1 if data is fully consumed or format doesn't require it, 0 if not, -1 on error */
+static int
+xmlSecOpenSSLAppCheckMemoryBioConsumed(BIO* bio, xmlSecKeyDataFormat format) {
+    xmlSecAssert2(bio != NULL, -1);
+    xmlSecAssert2(BIO_method_type(bio) == BIO_TYPE_MEM, -1);
+
+    switch(format) {
+    case xmlSecKeyDataFormatPem:
+    case xmlSecKeyDataFormatPkcs8Pem:
+    case xmlSecKeyDataFormatCertPem:
+        /* PEM formats have "end marker" and might contain more data */
+        return(1);
+    case xmlSecKeyDataFormatDer:
+    case xmlSecKeyDataFormatPkcs8Der:
+    case xmlSecKeyDataFormatPkcs12:
+    case  xmlSecKeyDataFormatCertDer:
+        /* DER formats are binary and should consume all data */
+        if(BIO_ctrl_pending(bio) > 0) {
+            xmlSecInvalidSizeDataError("Remaining in buffer bytes", BIO_ctrl_pending(bio), "0 bytes",  NULL);
+            return (0);
+        }
+        return (1);
+    default:
+        /* unexepected memory bio format */
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL, "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
+        return(-1);
+    }
+}
+
+
+/* Returns 1 if data is fully consumed or format doesn't require it, 0 if not, -1 on error */
+static int
+xmlSecOpenSSLAppCheckFileBioConsumed(BIO* bio, xmlSecKeyDataFormat format) {
+    long current_pos;
+    unsigned char buffer[1];
+    int bytes_read;
+
+    xmlSecAssert2(bio != NULL, -1);
+    xmlSecAssert2(BIO_method_type(bio) == BIO_TYPE_FILE, -1);
+
+    switch(format) {
+    case xmlSecKeyDataFormatPem:
+    case xmlSecKeyDataFormatPkcs8Pem:
+    case xmlSecKeyDataFormatCertPem:
+        /* PEM formats have "end marker" and might contain more data */
+        return(1);
+    case xmlSecKeyDataFormatDer:
+    case xmlSecKeyDataFormatPkcs8Der:
+    case xmlSecKeyDataFormatPkcs12:
+    case  xmlSecKeyDataFormatCertDer:
+        /* DER formats are binary and should consume all data */
+        current_pos = BIO_tell(bio);
+        if(current_pos < 0) {
+            xmlSecOpenSSLError("BIO_tell", NULL);
+            return(-1);
+        }
+        while(true) {
+            bytes_read = BIO_read(bio, buffer, sizeof(buffer));
+            if (bytes_read == 1) {
+                xmlSecInvalidDataError("Remaining unprocessed data in file",  NULL);
+                if(BIO_seek(bio, current_pos) < 0) {
+                    xmlSecOpenSSLError("BIO_seek", NULL);
+                    return(-1);
+                }
+                return(0);
+            }
+            /* check if we should retry */
+            if (BIO_should_retry(bio) == 0) {
+                return(BIO_eof(bio) != 0 ? 1 : 0);
+            }
+            /* keep retrying */
+        }
+
+        return (1);
+    default:
+        /* unexepected memory bio format */
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL, "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
+        return(-1);
+    }
+}
+
 /**
  * @brief Reads a key from a file.
  * @param filename the key filename.
@@ -258,14 +339,20 @@ xmlSecOpenSSLAppKeyLoadEx(const char *filename, xmlSecKeyDataType type, xmlSecKe
 
         bio = xmlSecOpenSSLCreateReadFileBio(filename);
         if(bio == NULL) {
-            xmlSecInternalError2("xmlSecOpenSSLCreateReadFileBio", NULL,
-                                "filename=%s", xmlSecErrorsSafeString(filename));
+            xmlSecInternalError2("xmlSecOpenSSLCreateReadFileBio", NULL, "filename=%s", xmlSecErrorsSafeString(filename));
             return(NULL);
         }
 
         key = xmlSecOpenSSLAppKeyLoadBIO (bio, format, pwd, pwdCallback, pwdCallbackCtx);
         if(key == NULL) {
             xmlSecInternalError2("xmlSecOpenSSLAppKeyLoadBIO", NULL, "filename=%s", xmlSecErrorsSafeString(filename));
+            BIO_free_all(bio);
+            return(NULL);
+        }
+
+        if(xmlSecOpenSSLAppCheckFileBioConsumed(bio, format) != 1) {
+            xmlSecInternalError2("xmlSecOpenSSLAppCheckFileBioConsumed", NULL, "filename=%s", xmlSecErrorsSafeString(filename));
+            xmlSecKeyDestroy(key);
             BIO_free_all(bio);
             return(NULL);
         }
@@ -312,8 +399,8 @@ xmlSecOpenSSLAppKeyLoadMemory(
     }
 
     /* check if any bytes remaining */
-    if(BIO_ctrl_pending(bio) > 0) {
-        xmlSecInvalidSizeDataError("Remaining in buffer bytes", BIO_ctrl_pending(bio), "0 bytes",  NULL);
+    if(xmlSecOpenSSLAppCheckMemoryBioConsumed(bio, format) != 1) {
+        xmlSecInternalError("xmlSecOpenSSLAppCheckMemoryBioConsumed", NULL);
         xmlSecKeyDestroy(key);
         BIO_free_all(bio);
         return(NULL);
@@ -1010,15 +1097,19 @@ xmlSecOpenSSLAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDat
 
     bio = xmlSecOpenSSLCreateReadFileBio(filename);
     if(bio == NULL) {
-        xmlSecInternalError2("xmlSecOpenSSLCreateReadFileBio", NULL,
-                             "filename=%s", xmlSecErrorsSafeString(filename));
+        xmlSecInternalError2("xmlSecOpenSSLCreateReadFileBio", NULL, "filename=%s", xmlSecErrorsSafeString(filename));
         return(-1);
     }
 
     ret = xmlSecOpenSSLAppKeyCertLoadBIO(key, bio, format);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecOpenSSLAppKeyCertLoadBIO", NULL,
-                             "filename=%s", xmlSecErrorsSafeString(filename));
+        xmlSecInternalError2("xmlSecOpenSSLAppKeyCertLoadBIO", NULL, "filename=%s", xmlSecErrorsSafeString(filename));
+        BIO_free_all(bio);
+        return(-1);
+    }
+
+    if(xmlSecOpenSSLAppCheckFileBioConsumed(bio, format) != 1) {
+        xmlSecInternalError2("xmlSecOpenSSLAppCheckFileBioConsumed", NULL, "filename=%s", xmlSecErrorsSafeString(filename));
         BIO_free_all(bio);
         return(-1);
     }
@@ -1064,8 +1155,8 @@ xmlSecOpenSSLAppKeyCertLoadMemory(
     }
 
     /* check if any bytes remaining */
-    if(BIO_ctrl_pending(bio) > 0) {
-        xmlSecInvalidSizeDataError("Remaining in buffer bytes", BIO_ctrl_pending(bio), "0 bytes",  NULL);
+    if(xmlSecOpenSSLAppCheckMemoryBioConsumed(bio, format) != 1) {
+        xmlSecInternalError("xmlSecOpenSSLAppCheckMemoryBioConsumed", NULL);
         BIO_free_all(bio);
         return(-1);
     }
@@ -1180,8 +1271,7 @@ done:
  * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
-xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd,
-                           void* pwdCallback, void* pwdCallbackCtx) {
+xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd, void* pwdCallback, void* pwdCallbackCtx) {
     BIO* bio;
     xmlSecKeyPtr key;
 
@@ -1189,15 +1279,20 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd,
 
     bio = xmlSecOpenSSLCreateReadFileBio(filename);
     if(bio == NULL) {
-        xmlSecInternalError2("xmlSecOpenSSLCreateReadFileBio", NULL,
-                             "filename=%s", xmlSecErrorsSafeString(filename));
+        xmlSecInternalError2("xmlSecOpenSSLCreateReadFileBio", NULL, "filename=%s", xmlSecErrorsSafeString(filename));
         return(NULL);
     }
 
     key = xmlSecOpenSSLAppPkcs12LoadBIO(bio, pwd, pwdCallback, pwdCallbackCtx);
     if(key == NULL) {
-        xmlSecInternalError2("xmlSecOpenSSLAppPkcs12LoadBIO", NULL,
-                             "filename=%s", xmlSecErrorsSafeString(filename));
+        xmlSecInternalError2("xmlSecOpenSSLAppPkcs12LoadBIO", NULL, "filename=%s", xmlSecErrorsSafeString(filename));
+        BIO_free_all(bio);
+        return(NULL);
+    }
+
+    if(xmlSecOpenSSLAppCheckFileBioConsumed(bio, xmlSecKeyDataFormatPkcs12) != 1) {
+        xmlSecInternalError2("xmlSecOpenSSLAppCheckFileBioConsumed", NULL, "filename=%s", xmlSecErrorsSafeString(filename));
+        xmlSecKeyDestroy(key);
         BIO_free_all(bio);
         return(NULL);
     }
@@ -1244,8 +1339,8 @@ xmlSecOpenSSLAppPkcs12LoadMemory(
     }
 
     /* check if any bytes remaining */
-    if(BIO_ctrl_pending(bio) > 0) {
-        xmlSecInvalidSizeDataError("Remaining in buffer bytes", BIO_ctrl_pending(bio), "0 bytes",  NULL);
+    if(xmlSecOpenSSLAppCheckMemoryBioConsumed(bio, xmlSecKeyDataFormatPkcs12) != 1) {
+        xmlSecInternalError("xmlSecOpenSSLAppCheckMemoryBioConsumed", NULL);
         xmlSecKeyDestroy(key);
         BIO_free_all(bio);
         return(NULL);
@@ -1439,8 +1534,7 @@ done:
  * @return 0 on success or a negative value otherwise.
  */
 int
-xmlSecOpenSSLAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
-                            xmlSecKeyDataFormat format, xmlSecKeyDataType type) {
+xmlSecOpenSSLAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlSecKeyDataFormat format, xmlSecKeyDataType type) {
     BIO* bio;
     int ret;
 
@@ -1450,15 +1544,19 @@ xmlSecOpenSSLAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
 
     bio = xmlSecOpenSSLCreateReadFileBio(filename);
     if(bio == NULL) {
-        xmlSecInternalError2("xmlSecOpenSSLCreateReadFileBio", NULL,
-                             "filename=%s", xmlSecErrorsSafeString(filename));
+        xmlSecInternalError2("xmlSecOpenSSLCreateReadFileBio", NULL, "filename=%s", xmlSecErrorsSafeString(filename));
         return(-1);
     }
 
     ret = xmlSecOpenSSLAppKeysMngrCertLoadBIO(mngr, bio, format, type);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecOpenSSLAppKeysMngrCertLoadBIO", NULL,
-                             "filename=%s", xmlSecErrorsSafeString(filename));
+        xmlSecInternalError2("xmlSecOpenSSLAppKeysMngrCertLoadBIO", NULL, "filename=%s", xmlSecErrorsSafeString(filename));
+        BIO_free_all(bio);
+        return(-1);
+    }
+
+    if(xmlSecOpenSSLAppCheckFileBioConsumed(bio, format) != 1) {
+        xmlSecInternalError2("xmlSecOpenSSLAppCheckFileBioConsumed", NULL, "filename=%s", xmlSecErrorsSafeString(filename));
         BIO_free_all(bio);
         return(-1);
     }
@@ -1508,8 +1606,8 @@ xmlSecOpenSSLAppKeysMngrCertLoadMemory(
     }
 
     /* check if any bytes remaining */
-    if(BIO_ctrl_pending(bio) > 0) {
-        xmlSecInvalidSizeDataError("Remaining in buffer bytes", BIO_ctrl_pending(bio), "0 bytes",  NULL);
+    if(xmlSecOpenSSLAppCheckMemoryBioConsumed(bio, format) != 1) {
+        xmlSecInternalError("xmlSecOpenSSLAppCheckMemoryBioConsumed", NULL);
         BIO_free_all(bio);
         return(-1);
     }
@@ -1583,15 +1681,19 @@ xmlSecOpenSSLAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xm
 
     bio = xmlSecOpenSSLCreateReadFileBio(filename);
     if(bio == NULL) {
-        xmlSecInternalError2("xmlSecOpenSSLCreateReadFileBio", NULL,
-            "filename=%s", xmlSecErrorsSafeString(filename));
+        xmlSecInternalError2("xmlSecOpenSSLCreateReadFileBio", NULL, "filename=%s", xmlSecErrorsSafeString(filename));
         return(-1);
     }
 
     ret = xmlSecOpenSSLAppKeysMngrCrlLoadBIO(mngr, bio, format);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecOpenSSLAppKeysMngrCrlLoadBIO", NULL,
-            "filename=%s", xmlSecErrorsSafeString(filename));
+        xmlSecInternalError2("xmlSecOpenSSLAppKeysMngrCrlLoadBIO", NULL, "filename=%s", xmlSecErrorsSafeString(filename));
+        BIO_free_all(bio);
+        return(-1);
+    }
+
+    if(xmlSecOpenSSLAppCheckFileBioConsumed(bio, format) != 1) {
+        xmlSecInternalError2("xmlSecOpenSSLAppCheckFileBioConsumed", NULL, "filename=%s", xmlSecErrorsSafeString(filename));
         BIO_free_all(bio);
         return(-1);
     }
@@ -1638,8 +1740,8 @@ xmlSecOpenSSLAppKeysMngrCrlLoadMemory(
     }
 
     /* check if any bytes remaining */
-    if(BIO_ctrl_pending(bio) > 0) {
-        xmlSecInvalidSizeDataError("Remaining in buffer bytes", BIO_ctrl_pending(bio), "0 bytes",  NULL);
+    if(xmlSecOpenSSLAppCheckMemoryBioConsumed(bio, format) != 1) {
+        xmlSecInternalError("xmlSecOpenSSLAppCheckMemoryBioConsumed", NULL);
         BIO_free_all(bio);
         return(-1);
     }

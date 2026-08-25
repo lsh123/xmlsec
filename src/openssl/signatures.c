@@ -1968,6 +1968,8 @@ xmlSecOpenSSLEvpSignatureDsa_OpenSSL2XmlDSig(const xmlSecTransformId transformId
     xmlSecSize bufSize;
     int bufLen, signHalfLen, rLen, sLen;
     DSA_SIG* sig = NULL;
+    ptrdiff_t consumed;
+    xmlSecSize consumedSize;
     const BIGNUM* rr = NULL;
     const BIGNUM* ss = NULL;
     int ret;
@@ -1995,6 +1997,16 @@ xmlSecOpenSSLEvpSignatureDsa_OpenSSL2XmlDSig(const xmlSecTransformId transformId
         xmlSecOpenSSLError("d2i_DSA_SIG", NULL);
         goto done;
     }
+
+    /* check if any bytes remaining */
+    consumed = buf - xmlSecBufferGetData(data);
+    XMLSEC_SAFE_CAST_PTRDIFF_TO_SIZE(consumed, consumedSize, goto done, NULL);
+    if(consumedSize < bufSize) {
+        xmlSecInvalidSizeDataError("Remaining bytes", (bufSize - consumedSize), "0 bytes",  NULL);
+        goto done;
+    }
+
+    /* extract signature values */
     DSA_SIG_get0(sig, &rr, &ss);
     if((rr == NULL) || (ss == NULL)) {
         xmlSecOpenSSLError("DSA_SIG_get0", NULL);
@@ -2004,14 +2016,12 @@ xmlSecOpenSSLEvpSignatureDsa_OpenSSL2XmlDSig(const xmlSecTransformId transformId
     /* check sizes */
     rLen = BN_num_bytes(rr);
     if ((rLen <= 0) || (rLen > signHalfLen)) {
-        xmlSecOpenSSLError3("BN_num_bytes(rr)", NULL,
-            "signHalfLen=%d; rLen=%d", signHalfLen, rLen);
+        xmlSecOpenSSLError3("BN_num_bytes(rr)", NULL, "signHalfLen=%d; rLen=%d", signHalfLen, rLen);
         goto done;
     }
     sLen = BN_num_bytes(ss);
     if ((sLen <= 0) || (sLen > signHalfLen)) {
-        xmlSecOpenSSLError3("BN_num_bytes(ss)", NULL,
-            "signHalfLen=%d; sLen=%d", signHalfLen, sLen);
+        xmlSecOpenSSLError3("BN_num_bytes(ss)", NULL, "signHalfLen=%d; sLen=%d", signHalfLen, sLen);
         goto done;
     }
 
@@ -2019,8 +2029,7 @@ xmlSecOpenSSLEvpSignatureDsa_OpenSSL2XmlDSig(const xmlSecTransformId transformId
     XMLSEC_SAFE_CAST_INT_TO_SIZE(2 * signHalfLen, bufSize, goto done, NULL);
     ret = xmlSecBufferSetSize(data, bufSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
-            "size=" XMLSEC_SIZE_FMT, bufSize);
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, bufSize);
         goto done;
     }
     buf = xmlSecBufferGetData(data);
@@ -2102,7 +2111,11 @@ static int
 xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL_WithASN1(const xmlSecByte * data, xmlSecSize dataSize, unsigned char ** out, int * outLen)
 {
     ECDSA_SIG* sig = NULL;
+    const unsigned char *signData = data;
     int dataLen;
+    ptrdiff_t consumed;
+    xmlSecSize consumedSize;
+    int res = -1;
     int ret;
 
     xmlSecAssert2(data != NULL, -1);
@@ -2113,23 +2126,35 @@ xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL_WithASN1(const xmlSecByte * data,
 
     XMLSEC_SAFE_CAST_SIZE_TO_INT(dataSize, dataLen, return(-1), NULL);
 
-    sig = d2i_ECDSA_SIG(NULL, (const unsigned char **)&data, dataLen);
+    sig = d2i_ECDSA_SIG(NULL, &signData, dataLen);
     if (sig == NULL) {
         xmlSecOpenSSLError("d2i_ECDSA_SIG()", NULL);
-        return(-1);
+        goto done;
+    }
+
+    /* check if any bytes remaining */
+    consumed = signData - data;
+    XMLSEC_SAFE_CAST_PTRDIFF_TO_SIZE(consumed, consumedSize, goto done, NULL);
+    if(consumedSize < dataSize) {
+        xmlSecInvalidSizeDataError("Remaining bytes", (dataSize - consumedSize), "0 bytes",  NULL);
+        goto done;
     }
 
     ret = i2d_ECDSA_SIG(sig, out); /* ret is size of signature on success */
     if (ret < 0) {
         xmlSecOpenSSLError("i2d_ECDSA_SIG()", NULL);
-        ECDSA_SIG_free(sig);
-        return(-1);
+        goto done;
     }
 
     /* success */
     (*outLen) = ret;
-    ECDSA_SIG_free(sig);
-    return(0);
+    res = 0;
+
+done:
+    if(sig != NULL) {
+        ECDSA_SIG_free(sig);
+    }
+    return(res);
 }
 
 static int

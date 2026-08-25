@@ -1751,6 +1751,14 @@ xmlSecOpenSSLX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
         goto done;
     }
 
+    /* check if any bytes remaining */
+    if(BIO_ctrl_pending(bio) > 0) {
+        xmlSecInvalidSizeDataError("Remaining in buffer", BIO_ctrl_pending(bio), "0 bytes",  NULL);
+        X509_free(cert);
+        cert = NULL;
+        goto done;
+    }
+
 done:
     if(bio != NULL) {
         BIO_free_all(bio);
@@ -1761,6 +1769,7 @@ done:
 static X509_CRL*
 xmlSecOpenSSLX509CrlDerRead(xmlSecByte* buf, xmlSecSize size) {
     X509_CRL *crl = NULL;
+    X509_CRL *res = NULL;
     BIO *bio = NULL;
 
     xmlSecAssert2(buf != NULL, NULL);
@@ -1768,8 +1777,7 @@ xmlSecOpenSSLX509CrlDerRead(xmlSecByte* buf, xmlSecSize size) {
 
     bio = xmlSecOpenSSLCreateMemBufBio(buf, size);
     if(bio == NULL) {
-        xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
-            "size=" XMLSEC_SIZE_FMT, size);
+        xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL, "size=" XMLSEC_SIZE_FMT, size);
         goto done;
     }
     crl = xmlSecOpenSSLX509CrlLoadBIO(bio, xmlSecKeyDataFormatDer);
@@ -1778,12 +1786,25 @@ xmlSecOpenSSLX509CrlDerRead(xmlSecByte* buf, xmlSecSize size) {
         goto done;
     }
 
+    /* check if any bytes remaining */
+    if(BIO_ctrl_pending(bio) > 0) {
+        xmlSecInvalidSizeDataError("Remaining in buffer", BIO_ctrl_pending(bio), "0 bytes",  NULL);
+        goto done;
+    }
+
+    /* success */
+    res = crl;
+    crl = NULL;
+
 done:
     /* cleanup */
+    if(crl != NULL) {
+        X509_CRL_free(crl);
+    }
     if(bio != NULL) {
         BIO_free_all(bio);
     }
-    return(crl);
+    return(res);
 }
 
 void

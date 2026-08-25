@@ -123,6 +123,8 @@ xmlSecOpenSSLKeyDataDEREncodedKeyValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr k
     EVP_PKEY * pKey = NULL;
     xmlSecKeyDataPtr keyData = NULL;
     xmlNodePtr cur;
+    ptrdiff_t consumed;
+    xmlSecSize consumedSize;
     int res = -1;
     int ret;
 
@@ -178,6 +180,14 @@ xmlSecOpenSSLKeyDataDEREncodedKeyValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr k
         goto done;
     }
 #endif /* XMLSEC_OPENSSL_API_300 */
+
+    /* check if any bytes remaining */
+    consumed = data - (xmlSecBufferGetData(&buffer));
+    XMLSEC_SAFE_CAST_PTRDIFF_TO_SIZE(consumed, consumedSize, goto done, xmlSecKeyDataKlassGetName(id));
+    if(consumedSize < dataSize) {
+        xmlSecInvalidSizeDataError("Remaining bytes", (dataSize - consumedSize), "0 bytes",  NULL);
+        goto done;
+    }
 
     /* add to key */
     keyData = xmlSecOpenSSLEvpKeyAdopt(pKey);

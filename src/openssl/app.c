@@ -265,8 +265,7 @@ xmlSecOpenSSLAppKeyLoadEx(const char *filename, xmlSecKeyDataType type, xmlSecKe
 
         key = xmlSecOpenSSLAppKeyLoadBIO (bio, format, pwd, pwdCallback, pwdCallbackCtx);
         if(key == NULL) {
-            xmlSecInternalError2("xmlSecOpenSSLAppKeyLoadBIO", NULL,
-                                "filename=%s", xmlSecErrorsSafeString(filename));
+            xmlSecInternalError2("xmlSecOpenSSLAppKeyLoadBIO", NULL, "filename=%s", xmlSecErrorsSafeString(filename));
             BIO_free_all(bio);
             return(NULL);
         }
@@ -288,9 +287,10 @@ xmlSecOpenSSLAppKeyLoadEx(const char *filename, xmlSecKeyDataType type, xmlSecKe
  * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
-xmlSecOpenSSLAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
-                        xmlSecKeyDataFormat format, const char *pwd,
-                        void* pwdCallback, void* pwdCallbackCtx) {
+xmlSecOpenSSLAppKeyLoadMemory(
+    const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format,
+    const char *pwd, void* pwdCallback, void* pwdCallbackCtx
+) {
     BIO* bio;
     xmlSecKeyPtr key;
 
@@ -300,8 +300,7 @@ xmlSecOpenSSLAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     /* this would be a read only BIO, cast from const is ok */
     bio = xmlSecOpenSSLCreateMemBufBio((void*)data, dataSize);
     if(bio == NULL) {
-        xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
-                            "dataSize=" XMLSEC_SIZE_FMT,  dataSize);
+        xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL, "dataSize=" XMLSEC_SIZE_FMT,  dataSize);
         return(NULL);
     }
 
@@ -312,6 +311,15 @@ xmlSecOpenSSLAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
         return(NULL);
     }
 
+    /* check if any bytes remaining */
+    if(BIO_ctrl_pending(bio) > 0) {
+        xmlSecInvalidSizeDataError("Remaining in buffer bytes", BIO_ctrl_pending(bio), "0 bytes",  NULL);
+        xmlSecKeyDestroy(key);
+        BIO_free_all(bio);
+        return(NULL);
+    }
+
+    /* success */
     BIO_free_all(bio);
     return(key);
 }
@@ -327,9 +335,10 @@ xmlSecOpenSSLAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
  * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
-xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
-                        const char *pwd, void* pwdCallback,
-                        void* pwdCallbackCtx) {
+xmlSecOpenSSLAppKeyLoadBIO(
+    BIO* bio, xmlSecKeyDataFormat format,
+    const char *pwd, void* pwdCallback, void* pwdCallbackCtx
+) {
 
     xmlSecKeyPtr key = NULL;
     xmlSecKeyDataPtr data;
@@ -1029,8 +1038,10 @@ xmlSecOpenSSLAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDat
  * @return 0 on success or a negative value otherwise.
  */
 int
-xmlSecOpenSSLAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSecSize dataSize,
-                                xmlSecKeyDataFormat format) {
+xmlSecOpenSSLAppKeyCertLoadMemory(
+    xmlSecKeyPtr key,
+    const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format
+) {
     BIO* bio;
     int ret;
 
@@ -1041,8 +1052,7 @@ xmlSecOpenSSLAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlS
     /* this would be a read only BIO, cast from const is ok */
     bio = xmlSecOpenSSLCreateMemBufBio((void*)data, dataSize);
     if(bio == NULL) {
-        xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
-                            "dataSize=" XMLSEC_SIZE_FMT,  dataSize);
+        xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL, "dataSize=" XMLSEC_SIZE_FMT,  dataSize);
         return(-1);
     }
 
@@ -1053,6 +1063,14 @@ xmlSecOpenSSLAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlS
         return(-1);
     }
 
+    /* check if any bytes remaining */
+    if(BIO_ctrl_pending(bio) > 0) {
+        xmlSecInvalidSizeDataError("Remaining in buffer bytes", BIO_ctrl_pending(bio), "0 bytes",  NULL);
+        BIO_free_all(bio);
+        return(-1);
+    }
+
+    /* success */
     BIO_free_all(bio);
     return(0);
 }
@@ -1202,9 +1220,10 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd,
  * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
-xmlSecOpenSSLAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
-                           const char *pwd, void* pwdCallback,
-                           void* pwdCallbackCtx) {
+xmlSecOpenSSLAppPkcs12LoadMemory(
+    const xmlSecByte* data, xmlSecSize dataSize,
+    const char *pwd, void* pwdCallback, void* pwdCallbackCtx
+) {
     BIO* bio;
     xmlSecKeyPtr key;
 
@@ -1213,8 +1232,7 @@ xmlSecOpenSSLAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     /* this would be a read only BIO, cast from const is ok */
     bio = xmlSecOpenSSLCreateMemBufBio((void*)data, dataSize);
     if(bio == NULL) {
-        xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
-                            "dataSize=" XMLSEC_SIZE_FMT,  dataSize);
+        xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL, "dataSize=" XMLSEC_SIZE_FMT,  dataSize);
         return(NULL);
     }
 
@@ -1225,6 +1243,15 @@ xmlSecOpenSSLAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
         return(NULL);
     }
 
+    /* check if any bytes remaining */
+    if(BIO_ctrl_pending(bio) > 0) {
+        xmlSecInvalidSizeDataError("Remaining in buffer bytes", BIO_ctrl_pending(bio), "0 bytes",  NULL);
+        xmlSecKeyDestroy(key);
+        BIO_free_all(bio);
+        return(NULL);
+    }
+
+    /* success */
     BIO_free_all(bio);
     return(key);
 }
@@ -1453,9 +1480,11 @@ xmlSecOpenSSLAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
  * @return 0 on success or a negative value otherwise.
  */
 int
-xmlSecOpenSSLAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data,
-                                    xmlSecSize dataSize, xmlSecKeyDataFormat format,
-                                    xmlSecKeyDataType type) {
+xmlSecOpenSSLAppKeysMngrCertLoadMemory(
+    xmlSecKeysMngrPtr mngr,
+    const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format,
+    xmlSecKeyDataType type
+) {
     BIO* bio;
     int ret;
 
@@ -1467,8 +1496,7 @@ xmlSecOpenSSLAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte*
     /* this would be a read only BIO, cast from const is ok */
     bio = xmlSecOpenSSLCreateMemBufBio((void*)data, dataSize);
     if(bio == NULL) {
-        xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
-                            "dataSize=" XMLSEC_SIZE_FMT,  dataSize);
+        xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL, "dataSize=" XMLSEC_SIZE_FMT,  dataSize);
         return(-1);
     }
 
@@ -1479,6 +1507,14 @@ xmlSecOpenSSLAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte*
         return(-1);
     }
 
+    /* check if any bytes remaining */
+    if(BIO_ctrl_pending(bio) > 0) {
+        xmlSecInvalidSizeDataError("Remaining in buffer bytes", BIO_ctrl_pending(bio), "0 bytes",  NULL);
+        BIO_free_all(bio);
+        return(-1);
+    }
+
+    /* success */
     BIO_free_all(bio);
     return(0);
 }
@@ -1575,7 +1611,10 @@ xmlSecOpenSSLAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xm
  * @return 0 on success or a negative value otherwise.
  */
 int
-xmlSecOpenSSLAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format) {
+xmlSecOpenSSLAppKeysMngrCrlLoadMemory(
+    xmlSecKeysMngrPtr mngr,
+    const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format
+) {
     BIO* bio;
     int ret;
 
@@ -1587,8 +1626,7 @@ xmlSecOpenSSLAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* 
     /* this would be a read only BIO, cast from const is ok */
     bio = xmlSecOpenSSLCreateMemBufBio((void*)data, dataSize);
     if(bio == NULL) {
-        xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
-                            "dataSize=" XMLSEC_SIZE_FMT,  dataSize);
+        xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL, "dataSize=" XMLSEC_SIZE_FMT,  dataSize);
         return(-1);
     }
 
@@ -1599,6 +1637,14 @@ xmlSecOpenSSLAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* 
         return(-1);
     }
 
+    /* check if any bytes remaining */
+    if(BIO_ctrl_pending(bio) > 0) {
+        xmlSecInvalidSizeDataError("Remaining in buffer bytes", BIO_ctrl_pending(bio), "0 bytes",  NULL);
+        BIO_free_all(bio);
+        return(-1);
+    }
+
+    /* success */
     BIO_free_all(bio);
     return(0);
 }

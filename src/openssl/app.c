@@ -250,7 +250,7 @@ xmlSecOpenSSLAppCheckFileBioConsumed(BIO* bio, xmlSecKeyDataFormat format) {
             xmlSecOpenSSLError("BIO_tell", NULL);
             return(-1);
         }
-        while(true) {
+        do {
             bytes_read = BIO_read(bio, buffer, sizeof(buffer));
             if (bytes_read == 1) {
                 xmlSecInvalidDataError("Remaining unprocessed data in file",  NULL);
@@ -260,13 +260,16 @@ xmlSecOpenSSLAppCheckFileBioConsumed(BIO* bio, xmlSecKeyDataFormat format) {
                 }
                 return(0);
             }
-            /* check if we should retry */
-            if (BIO_should_retry(bio) == 0) {
-                return(BIO_eof(bio) != 0 ? 1 : 0);
-            }
-            /* keep retrying */
+            /* keep retrying if we can */
+        } while(BIO_should_retry(bio) != 0);
+
+        /* if we get here, we are at EOF or error */
+        if(BIO_eof(bio) != 1) {
+            xmlSecInvalidDataError("Remaining unprocessed data in file",  NULL);
+            return(0);
         }
 
+        /* good: this is EOF and we are done*/
         return (1);
     default:
         /* unexepected memory bio format */

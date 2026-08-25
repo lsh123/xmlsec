@@ -599,6 +599,7 @@ xmlSecMSCngKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         return(0);
     }
 
+    /* if not, then try to extract the key from certificates */
     ret = xmlSecMSCngVerifyAndAdoptX509KeyData(key, data, keyInfoCtx);
     if (ret < 0) {
         xmlSecInternalError("xmlSecMSCngVerifyAndAdoptX509KeyData", xmlSecKeyDataKlassGetName(id));

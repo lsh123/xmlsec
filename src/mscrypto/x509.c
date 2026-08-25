@@ -517,23 +517,46 @@ xmlSecMSCryptoKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2(id == xmlSecMSCryptoKeyDataX509Id, -1);
     xmlSecAssert2(key != NULL, -1);
 
-    data = xmlSecKeyEnsureData(key, id);
+    data = xmlSecKeyDataCreate(xmlSecMSCryptoKeyDataX509Id);
     if (data == NULL) {
-        xmlSecInternalError("xmlSecKeyEnsureData", xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecKeyDataCreate(xmlSecMSCryptoKeyDataX509Id)", xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
 
     ret = xmlSecKeyDataX509XmlRead(key, data, node, keyInfoCtx, xmlSecMSCryptoKeyDataX509Read);
     if (ret < 0) {
         xmlSecInternalError("xmlSecKeyDataX509XmlRead", xmlSecKeyDataKlassGetName(id));
+        xmlSecKeyDataDestroy(data);
         return(-1);
     }
 
+    /* did we find the key already? */
+    if (xmlSecKeyGetValue(key) != NULL) {
+        xmlSecKeyDataDestroy(data);
+        return(0);
+    }
+
+    /* if not, then try to extract the key from certificates */
     ret = xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(data, key, keyInfoCtx);
     if (ret < 0) {
         xmlSecInternalError("xmlSecMSCryptoKeyDataX509VerifyAndExtractKey", xmlSecKeyDataKlassGetName(id));
+        xmlSecKeyDataDestroy(data);
         return(-1);
     }
+
+    if (xmlSecKeyGetValue(key) != NULL) {
+        ret = xmlSecKeyAdoptData(key, data);
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecKeyAdoptData", xmlSecKeyDataKlassGetName(id));
+            xmlSecKeyDataDestroy(data);
+            return(-1);
+        }
+        data = NULL; /* owned by key now */
+    } else {
+        xmlSecKeyDataDestroy(data);
+    }
+
+    /* success */
     return(0);
 }
 

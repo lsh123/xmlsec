@@ -159,12 +159,6 @@ xmlSecNssGetDigestFromHref(const xmlChar* href) {
 static int
 xmlSecNssDigestCheckId(xmlSecTransformPtr transform) {
 
-#ifndef XMLSEC_NO_MD5
-    if(xmlSecTransformCheckId(transform, xmlSecNssTransformMd5Id)) {
-        return(1);
-    }
-#endif /* XMLSEC_NO_MD5 */
-
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformSha1Id)) {
         return(1);
@@ -225,12 +219,6 @@ xmlSecNssDigestInitialize(xmlSecTransformPtr transform) {
 
     /* initialize context */
     memset(ctx, 0, sizeof(xmlSecNssDigestCtx));
-
-#ifndef XMLSEC_NO_MD5
-    if(xmlSecTransformCheckId(transform, xmlSecNssTransformMd5Id)) {
-        ctx->digest = SECOID_FindOIDByTag(SEC_OID_MD5);
-    } else
-#endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformSha1Id)) {
@@ -435,25 +423,6 @@ xmlSecNssDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
 
     return(0);
 }
-
-#ifndef XMLSEC_NO_MD5
-/******************************************************************************
- *
- * Md5 Digest transforms
- *
-  *****************************************************************************/
-XMLSEC_NSS_DIGEST_KLASS(Md5)
-
-/**
- * @brief MD5 digest transform klass.
- * @return pointer to MD5 digest transform klass.
- */
-xmlSecTransformId
-xmlSecNssTransformMd5GetKlass(void) {
-    return(&xmlSecNssMd5Klass);
-}
-#endif /* XMLSEC_NO_MD5 */
-
 
 #ifndef XMLSEC_NO_SHA1
 /******************************************************************************

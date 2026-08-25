@@ -99,7 +99,7 @@ xmlSecNssAppInit(const char* config) {
                          "fipsSlotDescription", "fipsPrivateSlotDescription",
                          0, 0);
 
-    /* setup for PKCS12, report errors but do not fail */
+    /* setup for PKCS12, report errors but do not fail since older algos might have been disabled */
     PORT_SetUCS2_ASCIIConversionFunction(xmlSecNssAppAscii2UCS2Conv);
     rv = SEC_PKCS12EnableCipher(PKCS12_RC4_40, 1);
     if(rv != SECSuccess) {

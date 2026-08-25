@@ -85,11 +85,6 @@ static int      xmlSecNssHmacExecute                    (xmlSecTransformPtr tran
 static int
 xmlSecNssHmacCheckId(xmlSecTransformPtr transform) {
 
-#ifndef XMLSEC_NO_MD5
-    if(xmlSecTransformCheckId(transform, xmlSecNssTransformHmacMd5Id)) {
-        return(1);
-    }
-#endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_RIPEMD160
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformHmacRipemd160Id)) {
@@ -141,12 +136,6 @@ xmlSecNssHmacInitialize(xmlSecTransformPtr transform) {
     ctx = xmlSecNssHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     memset(ctx, 0, sizeof(xmlSecNssHmacCtx));
-
-#ifndef XMLSEC_NO_MD5
-    if(xmlSecTransformCheckId(transform, xmlSecNssTransformHmacMd5Id)) {
-        ctx->digestType = CKM_MD5_HMAC;
-    } else
-#endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_RIPEMD160
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformHmacRipemd160Id)) {
@@ -501,23 +490,6 @@ xmlSecNssTransformHmacRipemd160GetKlass(void) {
 }
 #endif /* XMLSEC_NO_RIPEMD160 */
 
-#ifndef XMLSEC_NO_MD5
-/******************************************************************************
- *
- * HMAC MD5
- *
-  *****************************************************************************/
-XMLSEC_NSS_HMAC_KLASS(Md5)
-
-/**
- * @brief The HMAC-MD5 transform klass.
- * @return the HMAC-MD5 transform klass.
- */
-xmlSecTransformId
-xmlSecNssTransformHmacMd5GetKlass(void) {
-    return(&xmlSecNssHmacMd5Klass);
-}
-#endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_SHA1
 /******************************************************************************

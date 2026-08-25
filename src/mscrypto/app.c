@@ -360,6 +360,7 @@ xmlSecMSCryptoAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xml
 
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(dataSize > 0, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
     kdata = xmlSecKeyEnsureData(key, xmlSecMSCryptoKeyDataX509Id);
@@ -552,7 +553,7 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
         dwDataLen = sizeof(dwData);
         dwData = 0;
         /* Find the certificate that has the private key */
-        if((TRUE == CertGetCertificateContextProperty(pCert, CERT_KEY_SPEC_PROP_ID, &dwData, &dwDataLen)) && (dwData > 0)) {
+        if((keyData == NULL) && (TRUE == CertGetCertificateContextProperty(pCert, CERT_KEY_SPEC_PROP_ID, &dwData, &dwDataLen)) && (dwData > 0)) {
             tmpcert = CertDuplicateCertificateContext(pCert);
             if(tmpcert == NULL) {
                 xmlSecMSCryptoError("CertDuplicateCertificateContext",
@@ -603,7 +604,7 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
 
     if (keyData == NULL) {
         /* private key not found in PKCS12 file */
-        xmlSecInternalError2("xmlSecMSCryptoAppPkcs12Load", xmlSecKeyDataGetName(x509Data),
+        xmlSecInternalError2("xmlSecMSCryptoAppPkcs12LoadMemory", xmlSecKeyDataGetName(x509Data),
             "private key not found in PKCS12 file, size = %lu", pfx.cbData);
         goto done;
     }
@@ -880,7 +881,7 @@ xmlSecMSCryptoAppDefaultKeysMngrAdoptTrustedStore(xmlSecKeysMngrPtr mngr, HCERTS
         }
 
         if( xmlSecMSCryptoX509StoreAdoptTrustedStore( x509Store, trustedStore ) < 0 ) {
-            xmlSecInternalError("xmlSecMSCryptoX509StoreAdoptKeyStore",
+            xmlSecInternalError("xmlSecMSCryptoX509StoreAdoptTrustedStore",
                                 xmlSecKeyDataStoreGetName(x509Store));
             return(-1) ;
         }
@@ -911,7 +912,7 @@ xmlSecMSCryptoAppDefaultKeysMngrAdoptUntrustedStore(xmlSecKeysMngrPtr mngr, HCER
     }
 
     if(xmlSecMSCryptoX509StoreAdoptUntrustedStore(x509Store, untrustedStore) < 0) {
-        xmlSecInternalError("xmlSecMSCryptoX509StoreAdoptKeyStore",
+        xmlSecInternalError("xmlSecMSCryptoX509StoreAdoptUntrustedStore",
                             xmlSecKeyDataStoreGetName(x509Store));
         return(-1);
     }
@@ -941,7 +942,7 @@ xmlSecMSCryptoAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 
         keysStore = xmlSecKeyStoreCreate(xmlSecMSCryptoKeysStoreId);
         if(keysStore == NULL) {
-            xmlSecInternalError("xmlSecKeyStoreCreate(xmlSecMSCryptoX509StoreId)", NULL);
+            xmlSecInternalError("xmlSecKeyStoreCreate(xmlSecMSCryptoKeysStoreId)", NULL);
             return(-1);
         }
 

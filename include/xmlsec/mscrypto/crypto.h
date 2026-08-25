@@ -65,7 +65,7 @@ XMLSEC_CRYPTO_EXPORT void               xmlSecMSCryptoErrorsDefaultCallback(cons
  */
 #define xmlSecMSCryptoKeyDataDsaId \
         xmlSecMSCryptoKeyDataDsaGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCryptoKeyDataDsaGetKlass        (void);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCryptoKeyDataDsaGetKlass(void);
 
 /**
  * @brief The DSA SHA1 signature transform klass.
@@ -88,7 +88,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformDsaSha1GetKlass(vo
  */
 #define xmlSecMSCryptoKeyDataGost2001Id \
         xmlSecMSCryptoKeyDataGost2001GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCryptoKeyDataGost2001GetKlass   (void);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCryptoKeyDataGost2001GetKlass(void);
 
 /**
  * @brief The GOST2001-GOSTR3411-94 transform klass.
@@ -113,14 +113,14 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformGost2001GostR3411_
  */
 #define xmlSecMSCryptoKeyDataGost2012_256Id \
         xmlSecMSCryptoKeyDataGost2012_256GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCryptoKeyDataGost2012_256GetKlass   (void);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCryptoKeyDataGost2012_256GetKlass(void);
 
 /**
  * @brief The GOST R 34.10-2012 512 key klass
  */
 #define xmlSecMSCryptoKeyDataGost2012_512Id \
         xmlSecMSCryptoKeyDataGost2012_512GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCryptoKeyDataGost2012_512GetKlass   (void);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCryptoKeyDataGost2012_512GetKlass(void);
 
 /**
  * @brief The GOST2012-256 signature transform klass.
@@ -315,7 +315,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformGostR3411_94GetKla
 
 /******************************************************************************
  *
- * GOST R 34.10-2012 256 and 512-bit digests
+ * GOST R 34.11-2012 256 and 512-bit digests
  *
   *****************************************************************************/
 

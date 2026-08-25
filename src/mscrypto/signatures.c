@@ -43,7 +43,6 @@ typedef struct _xmlSecMSCryptoSignatureCtx      xmlSecMSCryptoSignatureCtx,
                                                 *xmlSecMSCryptoSignatureCtxPtr;
 struct _xmlSecMSCryptoSignatureCtx {
     xmlSecKeyDataPtr    data;
-    ALG_ID              alg_id;
     HCRYPTHASH          mscHash;
     HCRYPTPROV          hFallbackProv;  /* fallback provider acquired when default provider can't create hash */
     ALG_ID              digestAlgId;
@@ -566,7 +565,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
 
             ret = xmlSecBufferInitialize(&tmp, outSize);
             if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferSetMaxSize",
+                xmlSecInternalError2("xmlSecBufferInitialize",
                                      xmlSecTransformGetName(transform),
                                      "size=" XMLSEC_SIZE_FMT, outSize);
                 return(-1);
@@ -847,7 +846,7 @@ xmlSecMSCryptoTransformRsaSha384GetKlass(void) {
 #ifndef XMLSEC_NO_SHA512
 /******************************************************************************
  *
- * RSA-SHA2512 signature transform
+ * RSA-SHA2-512 signature transform
  *
   *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoRsaSha512Klass = {
@@ -1018,7 +1017,7 @@ static xmlSecTransformKlass xmlSecMSCryptoGost2012_256Klass = {
 
 /**
  * @brief The GOST R 34.10-2012 signature transform klass.
- * @return GOST2001-GOST R 34.10-2012 signature transform klass.
+ * @return GOST R 34.10-2012 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformGost2012_256GetKlass(void) {
@@ -1060,7 +1059,7 @@ static xmlSecTransformKlass xmlSecMSCryptoGost2012_512Klass = {
 
 /**
  * @brief The GOST R 34.10-2012 signature transform klass.
- * @return GOST2001-GOST R 34.10-2012 signature transform klass.
+ * @return GOST R 34.10-2012 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformGost2012_512GetKlass(void) {

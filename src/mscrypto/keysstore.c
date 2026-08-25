@@ -10,8 +10,8 @@
  * @addtogroup xmlsec_mscrypto_keysstore
  * @brief Keys store implementation for Microsoft Crypto API.
  * MSCrypto keys store that uses Simple Keys Store under the hood. Uses the
- * MS Certificate store as a backing store for the finding keys, but the
- * MS Certificate store not written to by the keys store.
+ * MS Certificate store as a backing store for finding keys, but the
+ * MS Certificate store is not written to by the keys store.
  * So, if store->findkey is done and the key is not found in the simple
  * keys store, the MS Certificate store is looked up.
  * Thus, the MS Certificate store can be used to pre-load keys and becomes
@@ -191,10 +191,19 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
 
     hStoreHandle = CertOpenSystemStore(0, storeName);
     if (NULL == hStoreHandle) {
-        xmlSecMSCryptoError2("CertOpenSystemStore",
-                             xmlSecKeyStoreGetName(store),
-                             "storeName=%s",
-                             xmlSecErrorsSafeString(storeName));
+        xmlChar* storeNameUtf8;
+
+        storeNameUtf8 = xmlSecWin32ConvertTstrToUtf8(storeName);
+        if(storeNameUtf8 != NULL) {
+            xmlSecMSCryptoError2("CertOpenSystemStore",
+                                 xmlSecKeyStoreGetName(store),
+                                 "storeName=%s",
+                                 storeNameUtf8);
+            xmlFree(storeNameUtf8);
+        } else {
+            xmlSecMSCryptoError("CertOpenSystemStore",
+                                xmlSecKeyStoreGetName(store));
+        }
         return(NULL);
     }
 
@@ -216,7 +225,7 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
     }
 
     /*
-     * Try ro find certificate with name="Friendly Name"
+     * Try to find certificate with name="Friendly Name"
      */
     if (NULL == pCertContext) {
         DWORD dwPropSize;

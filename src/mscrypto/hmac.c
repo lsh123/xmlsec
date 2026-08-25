@@ -63,7 +63,7 @@ struct _xmlSecMSCryptoHmacCtx {
     HCRYPTHASH      mscHash;
     unsigned char   dgst[XMLSEC_TRANSFORM_HMAC_MAX_OUTPUT_SIZE];
     xmlSecSize      dgstSize;
-    xmlSecSize      dgstSizeInBits;   /* dgst size in bytes */
+    xmlSecSize      dgstSizeInBits;   /* dgst size in bits */
     int             ctxInitialized;
 };
 
@@ -465,8 +465,8 @@ xmlSecMSCryptoHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                 0);
 
             if (ret == 0) {
-                xmlSecInternalError2("CryptGetHashParam", xmlSecTransformGetName(transform),
-                    "size=" XMLSEC_SIZE_FMT, inSize);
+                xmlSecMSCryptoError2("CryptGetHashParam", xmlSecTransformGetName(transform),
+                    "size=" XMLSEC_SIZE_FMT, retLen);
                 return(-1);
             }
             xmlSecAssert2(retLen > 0, -1);

@@ -434,8 +434,8 @@ static xmlSecTransformKlass xmlSecMSCryptoMd5Klass = {
 };
 
 /**
- * @brief SHA-1 digest transform klass.
- * @return pointer to SHA-1 digest transform klass.
+ * @brief MD-5 digest transform klass.
+ * @return pointer to MD-5 digest transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformMd5GetKlass(void) {

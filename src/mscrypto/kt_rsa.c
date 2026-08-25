@@ -356,7 +356,7 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
 
         hKey = xmlSecMSCryptoKeyDataGetDecryptKey(ctx->data);
         if (0 == hKey) {
-            xmlSecInternalError("xmlSecMSCryptoKeyDataGetKey", xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecMSCryptoKeyDataGetDecryptKey", xmlSecTransformGetName(transform));
             return (-1);
         }
 

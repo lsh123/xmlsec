@@ -278,7 +278,7 @@ xmlSecMSCryptoKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
 /**
  * @brief Gets the number of certificates in @p data.
  * @param data the pointer to X509 key data.
- * @return te number of certificates in @p data.
+ * @return the number of certificates in @p data.
  */
 xmlSecSize
 xmlSecMSCryptoKeyDataX509GetCertsSize(xmlSecKeyDataPtr data) {
@@ -352,7 +352,7 @@ xmlSecMSCryptoKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {
 /**
  * @brief Gets the number of CRLs in @p data.
  * @param data the pointer to X509 key data.
- * @return te number of CRLs in @p data.
+ * @return the number of CRLs in @p data.
  */
 xmlSecSize
 xmlSecMSCryptoKeyDataX509GetCrlsSize(xmlSecKeyDataPtr data) {
@@ -680,7 +680,7 @@ xmlSecMSCryptoKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x
         crl = xmlSecMSCryptoX509CrlDerRead(xmlSecBufferGetData(&(x509Value->crl)),
             xmlSecBufferGetSize(&(x509Value->crl)));
         if (crl == NULL) {
-            xmlSecInternalError("xmlSecMSCryptoX509CertDerRead", xmlSecKeyDataGetName(data));
+            xmlSecInternalError("xmlSecMSCryptoX509CrlDerRead", xmlSecKeyDataGetName(data));
             goto done;
         }
     }
@@ -824,7 +824,7 @@ xmlSecMSCryptoKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr 
             }
             x509Value->issuerSerial = xmlSecMSCryptoASN1IntegerWrite(&(cert->pCertInfo->SerialNumber));
             if (x509Value->issuerSerial == NULL) {
-                xmlSecInternalError2("xmlSecMSCryptoASN1IntegerWrite(issuer serial))",
+                xmlSecInternalError2("xmlSecMSCryptoASN1IntegerWrite(issuer serial)",
                     xmlSecKeyDataGetName(data),
                     "pos=" XMLSEC_SIZE_FMT, ctx->crtPos);
                 CertFreeCertificateContext(cert);

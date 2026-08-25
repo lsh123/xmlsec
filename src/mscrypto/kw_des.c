@@ -428,8 +428,9 @@ xmlSecMSCryptoKWDes3BlockEncrypt(xmlSecTransformPtr transform,
     xmlSecAssert2(keyBufSize >= XMLSEC_KW_DES3_KEY_LENGTH, -1);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(keyBufSize, dwKeyBufSize, goto done, NULL);
 
-    /* Import this key and get an HCRYPTKEY handle, we do it again and again
-       to ensure we don't go into CBC mode */
+    /* Import this key and get an HCRYPTKEY handle. We do it again and again
+       to obtain a fresh session key per call so the CBC feedback register
+       starts from the newly set IV (no chaining state leaks between calls) */
     if (!xmlSecMSCryptoImportPlainSessionBlob(ctx->desCryptProvider,
         ctx->pubPrivKey,
         ctx->desAlgorithmIdentifier,
@@ -462,14 +463,13 @@ xmlSecMSCryptoKWDes3BlockEncrypt(xmlSecTransformPtr transform,
         goto done;
     }
 
-    /* Set process last block to false, since we handle padding ourselves, and MSCrypto padding
-     * can be skipped. I hope this will work .... */
     if(out != in) {
         memcpy(out, in, inSize);
     }
 
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwCLen, goto done, NULL);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(outSize, dwOutSize, goto done, NULL);
+    /* Pass Final=FALSE to CryptEncrypt since the input is a whole number of blocks and MSCrypto's own padding must be skipped. */
     if(!CryptEncrypt(cryptKey, 0, FALSE, 0, out, &dwCLen, dwOutSize)) {
         xmlSecMSCryptoError("CryptEncrypt", NULL);
         goto done;
@@ -519,8 +519,9 @@ xmlSecMSCryptoKWDes3BlockDecrypt(xmlSecTransformPtr transform,
     xmlSecAssert2(keyBufSize >= XMLSEC_KW_DES3_KEY_LENGTH, -1);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(keyBufSize, dwKeyBufSize, goto done, NULL);
 
-    /* Import this key and get an HCRYPTKEY handle, we do it again and again
-       to ensure we don't go into CBC mode */
+    /* Import this key and get an HCRYPTKEY handle. We do it again and again
+       to obtain a fresh session key per call so the CBC feedback register
+       starts from the newly set IV (no chaining state leaks between calls) */
     if (!xmlSecMSCryptoImportPlainSessionBlob(ctx->desCryptProvider,
         ctx->pubPrivKey,
         ctx->desAlgorithmIdentifier,
@@ -552,13 +553,12 @@ xmlSecMSCryptoKWDes3BlockDecrypt(xmlSecTransformPtr transform,
         goto done;
     }
 
-    /* Set process last block to false, since we handle padding ourselves, and MSCrypto padding
-     * can be skipped. I hope this will work .... */
     if(out != in) {
         memcpy(out, in, inSize);
     }
 
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwCLen, goto done, NULL);
+    /* Pass Final=FALSE to CryptDecrypt since the input is a whole number of blocks and MSCrypto's own padding must be skipped. */
     if(!CryptDecrypt(cryptKey, 0, FALSE, 0, out, &dwCLen)) {
         xmlSecMSCryptoError("CryptDecrypt", NULL);
         goto done;

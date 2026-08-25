@@ -849,8 +849,7 @@ xmlSecOpenSSLCreateMemBufBio(const xmlSecByte *buf, xmlSecSize bufSize) {
     XMLSEC_SAFE_CAST_SIZE_TO_INT(bufSize, bufLen, return(NULL), NULL);
     bio = BIO_new_mem_buf((const void*)buf, bufLen);
     if(bio == NULL) {
-        xmlSecOpenSSLError2("BIO_new_mem_buf", NULL,
-                            "dataSize=%d", bufLen);
+        xmlSecOpenSSLError2("BIO_new_mem_buf", NULL, "dataSize=%d", bufLen);
         return(NULL);
     }
     return(bio);

@@ -817,6 +817,7 @@ xmlSecOpenSSLSignatureLegacyEcdsa_XmlDSigToOpenSSL(
     BIGNUM* rr = NULL;
     BIGNUM* ss = NULL;
     xmlSecOpenSSLSizeT signLen, signHalfLen;
+    ECDSA_SIG* res = NULL;
     int ret;
 
     xmlSecAssert2(ctx != NULL, NULL);
@@ -827,74 +828,93 @@ xmlSecOpenSSLSignatureLegacyEcdsa_XmlDSigToOpenSSL(
     /* however some implementations (e.g. Java) just put ASN1 structure in the signature
      * https://github.com/lsh123/xmlsec/issues/995 */
     if((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_SUPPORT_ASN1_SIGNATURE_VALUES) != 0) {
+        const unsigned char *data = signData;
         int dataLen;
+        ptrdiff_t consumed;
+        xmlSecSize consumedSize;
 
-        XMLSEC_SAFE_CAST_SIZE_TO_INT(signSize, dataLen, return(NULL), NULL);
-        sig = d2i_ECDSA_SIG(NULL, (const unsigned char **)&signData, dataLen);
+        XMLSEC_SAFE_CAST_SIZE_TO_INT(signSize, dataLen, goto done, NULL);
+        sig = d2i_ECDSA_SIG(NULL, &data, dataLen);
         if (sig == NULL) {
             xmlSecOpenSSLError("d2i_ECDSA_SIG()", NULL);
-            return(NULL);
+            goto done;
         }
-        return(sig);
-    }
 
-    /* calculate signature size */
-    signHalfLen = xmlSecOpenSSLSignatureLegacyEcdsaSignatureHalfLen(ctx->pKey);
-    if(signHalfLen <= 0) {
-        xmlSecInternalError("xmlSecOpenSSLSignatureLegacyEcdsaSignatureHalfLen", NULL);
-        return(NULL);
-    }
-
-    /* check size: we expect the r and s to be the same size and match the size of
-     * the key (RFC 6931) */
-    XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_SIZE_T(signSize, signLen, return(NULL), NULL);
-    if(signLen == 2 * signHalfLen) {
-        /* good, do nothing */
-    } else if((signLen < 2 * signHalfLen) && (signLen % 2 == 0)) {
-        /* however some implementations (e.g. Java) cut leading zeros:
-         * https://github.com/lsh123/xmlsec/issues/228 */
-        signHalfLen = signLen / 2;
-    } else if((signLen > 2 * signHalfLen) && (signLen % 2 == 0)) {
-        /* however some implementations (e.g. Java) add leading zeros:
-         * https://github.com/lsh123/xmlsec/issues/941*/
-        signHalfLen = signLen / 2;
+        /* check if any bytes remaining */
+        consumed = data - signData;
+        XMLSEC_SAFE_CAST_PTRDIFF_TO_SIZE(consumed, consumedSize, goto done, NULL);
+        if(consumedSize < signSize) {
+            xmlSecInvalidSizeDataError("Remaining bytes", (signSize - consumedSize), "0 bytes",  NULL);
+            goto done;
+        }
     } else {
-        xmlSecInvalidDataError("Signature length doesn't match key size", NULL);
-        return(NULL);
+
+        /* calculate signature size */
+        signHalfLen = xmlSecOpenSSLSignatureLegacyEcdsaSignatureHalfLen(ctx->pKey);
+        if(signHalfLen <= 0) {
+            xmlSecInternalError("xmlSecOpenSSLSignatureLegacyEcdsaSignatureHalfLen", NULL);
+            goto done;
+        }
+
+        /* check size: we expect the r and s to be the same size and match the size of
+        * the key (RFC 6931) */
+        XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_SIZE_T(signSize, signLen, goto done, NULL);
+        if(signLen == 2 * signHalfLen) {
+            /* good, do nothing */
+        } else if((signLen < 2 * signHalfLen) && (signLen % 2 == 0)) {
+            /* however some implementations (e.g. Java) cut leading zeros:
+            * https://github.com/lsh123/xmlsec/issues/228 */
+            signHalfLen = signLen / 2;
+        } else if((signLen > 2 * signHalfLen) && (signLen % 2 == 0)) {
+            /* however some implementations (e.g. Java) add leading zeros:
+            * https://github.com/lsh123/xmlsec/issues/941*/
+            signHalfLen = signLen / 2;
+        } else {
+            xmlSecInvalidDataError("Signature length doesn't match key size", NULL);
+            goto done;
+        }
+
+        /* create/read signature */
+        sig = ECDSA_SIG_new();
+        if (sig == NULL) {
+            xmlSecOpenSSLError("ECDSA_SIG_new", NULL);
+            goto done;
+        }
+
+        rr = BN_bin2bn(signData, signHalfLen, NULL);
+        if(rr == NULL) {
+            xmlSecOpenSSLError("BN_bin2bn(sig->r)", NULL);
+            goto done;
+        }
+        ss = BN_bin2bn(signData + signHalfLen, signHalfLen, NULL);
+        if(ss == NULL) {
+            xmlSecOpenSSLError("BN_bin2bn(sig->s)", NULL);
+            goto done;
+        }
+
+        ret = ECDSA_SIG_set0(sig, rr, ss);
+        if(ret == 0) {
+            xmlSecOpenSSLError("ECDSA_SIG_set0()", NULL);
+            goto done;
+        }
+        rr = ss = NULL; /* owned by sig now */
     }
 
-    /* create/read signature */
-    sig = ECDSA_SIG_new();
-    if (sig == NULL) {
-        xmlSecOpenSSLError("ECDSA_SIG_new", NULL);
-        return(NULL);
-    }
+    /* success */
+    res = sig;
+    sig = NULL;
 
-    rr = BN_bin2bn(signData, signHalfLen, NULL);
-    if(rr == NULL) {
-        xmlSecOpenSSLError("BN_bin2bn(sig->r)", NULL);
-        ECDSA_SIG_free(sig);
-        return(NULL);
-    }
-    ss = BN_bin2bn(signData + signHalfLen, signHalfLen, NULL);
-    if(ss == NULL) {
-        xmlSecOpenSSLError("BN_bin2bn(sig->s)", NULL);
+done:
+    if(rr != NULL) {
         BN_clear_free(rr);
-        ECDSA_SIG_free(sig);
-        return(NULL);
     }
-
-    ret = ECDSA_SIG_set0(sig, rr, ss);
-    if(ret == 0) {
-        xmlSecOpenSSLError("ECDSA_SIG_set0()", NULL);
-        BN_clear_free(rr);
+    if(ss != NULL) {
         BN_clear_free(ss);
-        ECDSA_SIG_free(sig);
-        return(NULL);
     }
-
-    /* done */
-    return(sig);
+    if(sig != NULL) {
+        ECDSA_SIG_free(sig);
+    }
+    return(res);
 }
 
 static int

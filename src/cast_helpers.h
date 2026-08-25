@@ -149,6 +149,11 @@
     }                                                                          \
     (dstVal) = (int)(srcVal);                                                  \
 
+#define XMLSEC_SAFE_CAST_PTRDIFF_TO_SIZE(srcVal, dstVal, errorAction, errorObject)  \
+    XMLSEC_SAFE_CAST_MIN_CHECK(ptrdiff_t, (long long)(srcVal), "%lld",              \
+        xmlSecSize, (dstVal), XMLSEC_SIZE_FMT, (xmlSecSize)0, XMLSEC_SIZE_MAX,      \
+        errorAction, (errorObject))
+
 
 /******************************************************************************
  *

@@ -15,9 +15,9 @@
 
 #include <string.h>
 
-#ifndef XMLSEC_NO_GOST
+#if !defined(XMLSEC_NO_GOST) || !defined(XMLSEC_NO_GOST2012)
 #include "csp_calg.h"
-#endif
+#endif /* !defined(XMLSEC_NO_GOST) || !defined(XMLSEC_NO_GOST2012) */
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
@@ -647,6 +647,9 @@ xmlSecMSCryptoTransformGostR3411_94GetKlass(void) {
     return(&xmlSecMSCryptoGostR3411_94Klass);
 }
 
+#endif /* XMLSEC_NO_GOST */
+
+#ifndef XMLSEC_NO_GOST2012
 /******************************************************************************
  *
  * GOSTR3411-2012/256
@@ -725,4 +728,4 @@ xmlSecTransformId
 xmlSecMSCryptoTransformGostR3411_2012_512GetKlass(void) {
     return(&xmlSecMSCryptoGostR3411_2012_512Klass);
 }
-#endif /* XMLSEC_NO_GOST*/
+#endif /* XMLSEC_NO_GOST2012 */

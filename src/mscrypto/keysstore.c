@@ -231,7 +231,17 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
         DWORD dwPropSize;
         PBYTE pbFriendlyName;
         PCCERT_CONTEXT pCertCtxIter = NULL;
+        LPWSTR lpwName;
 
+        /* convert name to unicode */
+        lpwName = xmlSecWin32ConvertUtf8ToUnicode(name);
+        if (lpwName == NULL) {
+            xmlSecInternalError("xmlSecWin32ConvertUtf8ToUnicode(name)",
+                                xmlSecKeyStoreGetName(store));
+            xmlFree(wcName);
+            CertCloseStore(hStoreHandle, 0);
+            return(NULL);
+        }
 
         while (1) {
            pCertCtxIter = CertEnumCertificatesInStore(hStoreHandle, pCertCtxIter);
@@ -243,13 +253,15 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
                                                       CERT_FRIENDLY_NAME_PROP_ID,
                                                       NULL,
                                                       &dwPropSize)) {
+                CertFreeCertificateContext(pCertCtxIter);
                 continue;
             }
 
             pbFriendlyName = xmlMalloc(dwPropSize);
             if(pbFriendlyName == NULL) {
-                CertFreeCertificateContext(pCertCtxIter);
                 xmlSecMallocError(dwPropSize, xmlSecKeyStoreGetName(store));
+                CertFreeCertificateContext(pCertCtxIter);
+                xmlFree(lpwName);
                 xmlFree(wcName);
                 CertCloseStore(hStoreHandle, 0);
                 return(NULL);
@@ -260,17 +272,22 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
                                                       pbFriendlyName,
                                                       &dwPropSize)) {
                 xmlFree(pbFriendlyName);
+                CertFreeCertificateContext(pCertCtxIter);
                 continue;
             }
 
             /* Compare FriendlyName to name */
-            if (!lstrcmp(wcName, (LPCTSTR)pbFriendlyName)) {
+            if (lstrcmpW(lpwName, (LPCWSTR)pbFriendlyName) == 0) {
               pCertContext = pCertCtxIter;
+              pCertCtxIter = NULL; /* just in case */
               xmlFree(pbFriendlyName);
               break;
             }
             xmlFree(pbFriendlyName);
+            CertFreeCertificateContext(pCertCtxIter);
         }
+
+        xmlFree(lpwName);
     }
 
     /* We don't give up easily, now try to find cert with part of the name

@@ -896,7 +896,7 @@ xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr
         cert = xmlSecMSCryptoX509StoreVerify(x509Store, ctx->hMemStore, keyInfoCtx);
         if(cert != NULL) {
             xmlSecKeyDataPtr keyValue = NULL;
-        PCCERT_CONTEXT pCert = NULL;
+            PCCERT_CONTEXT pCert = NULL;
 
             ctx->keyCert = CertDuplicateCertificateContext(cert);
             if(ctx->keyCert == NULL) {
@@ -924,7 +924,7 @@ xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr
                                 return(-1);
                         }
                         pCert = NULL ;
-                } else if( ( keyInfoCtx->keyReq.keyType & xmlSecKeyDataTypePublic ) == xmlSecKeyDataTypePublic ) {
+                } else {
                         keyValue = xmlSecMSCryptoCertAdopt( pCert, xmlSecKeyDataTypePublic ) ;
                         if(keyValue == NULL) {
                                 xmlSecInternalError("xmlSecMSCryptoCertAdopt",
@@ -933,9 +933,6 @@ xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr
                                 return(-1);
                         }
                         pCert = NULL ;
-                } else {
-                        CertFreeCertificateContext(pCert);
-                        pCert = NULL;
                 }
 
             /* verify that the key matches our expectations */

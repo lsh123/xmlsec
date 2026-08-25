@@ -15,10 +15,10 @@
 #include <string.h>
 #include <stdlib.h>
 
-#ifndef XMLSEC_NO_GOST
+#if !defined(XMLSEC_NO_GOST) || !defined(XMLSEC_NO_GOST2012)
 #include "csp_oid.h"
 #include "csp_calg.h"
-#endif
+#endif /* !defined(XMLSEC_NO_GOST) || !defined(XMLSEC_NO_GOST2012) */
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/base64.h>
@@ -1070,7 +1070,7 @@ xmlSecMSCryptoKeyDataRsaInitialize(xmlSecKeyDataPtr data) {
     xmlSecMSCryptoKeyDataCtxPtr ctx;
     int ret;
 
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataRsaId), xmlSecKeyDataTypeUnknown);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataRsaId), -1);
 
     ret = xmlSecMSCryptoKeyDataInitialize(data);
     if(ret != 0) {
@@ -1128,8 +1128,8 @@ xmlSecMSCryptoKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits,
     int res = -1;
     int ret;
 
-    xmlSecAssert2(xmlSecKeyDataIsValid(data), xmlSecKeyDataTypeUnknown);
-    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCryptoKeyDataSize), xmlSecKeyDataTypeUnknown);
+    xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCryptoKeyDataSize), -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataRsaId), -1);
     xmlSecAssert2(sizeBits > 0, -1);
     UNREFERENCED_PARAMETER(type);
@@ -1659,7 +1659,7 @@ xmlSecMSCryptoKeyDataDsaInitialize(xmlSecKeyDataPtr data) {
     xmlSecMSCryptoKeyDataCtxPtr ctx;
     int ret;
 
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataDsaId), xmlSecKeyDataTypeUnknown);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataDsaId), -1);
 
     ret = xmlSecMSCryptoKeyDataInitialize(data);
     if(ret != 0) {
@@ -1716,8 +1716,8 @@ xmlSecMSCryptoKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xml
     int res = -1;
     int ret;
 
-    xmlSecAssert2(xmlSecKeyDataIsValid(data), xmlSecKeyDataTypeUnknown);
-    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCryptoKeyDataSize), xmlSecKeyDataTypeUnknown);
+    xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCryptoKeyDataSize), -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataDsaId), -1);
     xmlSecAssert2(sizeBits > 0, -1);
     UNREFERENCED_PARAMETER(type);
@@ -2245,7 +2245,7 @@ xmlSecMSCryptoKeyDataGost2001Initialize(xmlSecKeyDataPtr data) {
     xmlSecMSCryptoKeyDataCtxPtr ctx;
     int ret;
 
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataGost2001Id), xmlSecKeyDataTypeUnknown);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataGost2001Id), -1);
 
     ret = xmlSecMSCryptoKeyDataInitialize(data);
     if(ret != 0) {
@@ -2401,7 +2401,7 @@ xmlSecMSCryptoKeyDataGost2012_256Initialize(xmlSecKeyDataPtr data) {
     xmlSecMSCryptoKeyDataCtxPtr ctx;
     int ret;
 
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataGost2012_256Id), xmlSecKeyDataTypeUnknown);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataGost2012_256Id), -1);
 
     ret = xmlSecMSCryptoKeyDataInitialize(data);
     if(ret != 0) {
@@ -2553,7 +2553,7 @@ xmlSecMSCryptoKeyDataGost2012_512Initialize(xmlSecKeyDataPtr data) {
     xmlSecMSCryptoKeyDataCtxPtr ctx;
     int ret;
 
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataGost2012_512Id), xmlSecKeyDataTypeUnknown);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataGost2012_512Id), -1);
 
     ret = xmlSecMSCryptoKeyDataInitialize(data);
     if(ret != 0) {

@@ -541,6 +541,14 @@ xmlSecMSCryptoRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
         return(-1);
     }
 
+    if ((oaepParams.mgf1DigestAlgorithm != NULL) && (xmlStrcmp(oaepParams.mgf1DigestAlgorithm, xmlSecHrefMgf1Sha1) != 0)) {
+        xmlSecInvalidTransformError2(transform,
+            "mgf1 digest algorithm=\"%s\" is not supported for rsa/oaep",
+            xmlSecErrorsSafeString(oaepParams.mgf1DigestAlgorithm));
+        xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
+        return(-1);
+    }
+
     /* put oaep params buffer into ctx */
     xmlSecBufferSwap(&(oaepParams.oaepParams), &(ctx->oaepParams));
 

@@ -77,9 +77,7 @@ extern "C" {
 #define xmlSecTransformDsaSha1Id                xmlSecMSCryptoTransformDsaSha1Id
 
 #define xmlSecTransformHmacMd5Id                xmlSecMSCryptoTransformHmacMd5Id
-#define xmlSecTransformHmacRipemd160Id          xmlSecMSCryptoTransformHmacRipemd160Id
 #define xmlSecTransformHmacSha1Id               xmlSecMSCryptoTransformHmacSha1Id
-#define xmlSecTransformHmacSha224Id             xmlSecMSCryptoTransformHmacSha224Id
 #define xmlSecTransformHmacSha256Id             xmlSecMSCryptoTransformHmacSha256Id
 #define xmlSecTransformHmacSha384Id             xmlSecMSCryptoTransformHmacSha384Id
 #define xmlSecTransformHmacSha512Id             xmlSecMSCryptoTransformHmacSha512Id

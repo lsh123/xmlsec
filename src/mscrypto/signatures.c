@@ -16,9 +16,9 @@
 #include <string.h>
 #include <stdlib.h>
 
-#ifndef XMLSEC_NO_GOST
+#if !defined(XMLSEC_NO_GOST) || !defined(XMLSEC_NO_GOST2012)
 #include "csp_calg.h"
-#endif
+#endif /* !defined(XMLSEC_NO_GOST) || !defined(XMLSEC_NO_GOST2012) */
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>

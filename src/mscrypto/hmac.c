@@ -540,50 +540,6 @@ xmlSecMSCryptoTransformHmacMd5GetKlass(void) {
 
 #endif /* XMLSEC_NO_MD5 */
 
-
-#ifndef XMLSEC_NO_RIPEMD160
-/******************************************************************************
- *
- * HMAC RIPEMD160
- *
-  *****************************************************************************/
-static xmlSecTransformKlass xmlSecMSCryptoHmacRipemd160Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecMSCryptoHmacSize,                      /* xmlSecSize objSize */
-
-    xmlSecNameHmacRipemd160,                    /* const xmlChar* name; */
-    xmlSecHrefHmacRipemd160,                    /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
-
-    xmlSecMSCryptoHmacInitialize,                /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCryptoHmacFinalize,                  /* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecMSCryptoHmacNodeRead,                  /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCryptoHmacSetKeyReq,                 /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecMSCryptoHmacSetKey,                    /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCryptoHmacVerify,                    /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCryptoHmacExecute,                   /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
-
-/**
- * @brief The HMAC-RIPEMD160 transform klass.
- * @return the HMAC-RIPEMD160 transform klass.
- */
-xmlSecTransformId
-xmlSecMSCryptoTransformHmacRipemd160GetKlass(void) {
-    return(&xmlSecMSCryptoHmacRipemd160Klass);
-}
-#endif /* XMLSEC_NO_RIPEMD160 */
-
 #ifndef XMLSEC_NO_SHA1
 /******************************************************************************
  *
@@ -627,50 +583,6 @@ xmlSecMSCryptoTransformHmacSha1GetKlass(void) {
 }
 
 #endif /* XMLSEC_NO_SHA1 */
-
-#ifndef XMLSEC_NO_SHA224
-/******************************************************************************
- *
- * HMAC SHA224
- *
-  *****************************************************************************/
-static xmlSecTransformKlass xmlSecMSCryptoHmacSha224Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecMSCryptoHmacSize,                      /* xmlSecSize objSize */
-
-    xmlSecNameHmacSha224,                       /* const xmlChar* name; */
-    xmlSecHrefHmacSha224,                       /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
-
-    xmlSecMSCryptoHmacInitialize,                /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCryptoHmacFinalize,                  /* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecMSCryptoHmacNodeRead,                  /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCryptoHmacSetKeyReq,                 /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecMSCryptoHmacSetKey,                    /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCryptoHmacVerify,                    /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCryptoHmacExecute,                   /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
-
-/**
- * @brief The HMAC-SHA224 transform klass.
- * @return the HMAC-SHA224 transform klass.
- */
-xmlSecTransformId
-xmlSecMSCryptoTransformHmacSha224GetKlass(void) {
-    return(&xmlSecMSCryptoHmacSha224Klass);
-}
-
-#endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA256
 /******************************************************************************

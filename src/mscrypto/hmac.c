@@ -466,7 +466,7 @@ xmlSecMSCryptoHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 
             if (ret == 0) {
                 xmlSecMSCryptoError2("CryptGetHashParam", xmlSecTransformGetName(transform),
-                    "size=" XMLSEC_SIZE_FMT, retLen);
+                    "size=" XMLSEC_SIZE_FMT, (xmlSecSize)retLen);
                 return(-1);
             }
             xmlSecAssert2(retLen > 0, -1);

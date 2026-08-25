@@ -32,14 +32,18 @@
 #include <xmlsec/dl.h>
 
 /* \cond Exclude from Doxygen */
+
+
 /**
  * MD5 was removed (https://bugs.gentoo.org/764437)
  *
- * XDH support requires public NSS KeyType values for Ed25519/X25519/X448.
- * In particular, ecMontKey used by xmlsec was added in NSS 3.103.
  */
 #define XMLSEC_NO_MD5 1
 
+/**
+ * XDH support requires public NSS KeyType values for Ed25519/X25519/X448.
+ * In particular, ecMontKey used by xmlsec was added in NSS 3.103.
+ */
 #ifndef XMLSEC_NO_XDH
 #if (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 103))
 /**

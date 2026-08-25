@@ -139,11 +139,6 @@ xmlSecNssSignatureCheckId(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_RSA
 
-#ifndef XMLSEC_NO_MD5
-    if(xmlSecTransformCheckId(transform, xmlSecNssTransformRsaMd5Id)) {
-        return(1);
-    }
-#endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformRsaSha1Id)) {
@@ -287,14 +282,6 @@ xmlSecNssSignatureInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_EDDSA */
 
 #ifndef XMLSEC_NO_RSA
-
-#ifndef XMLSEC_NO_MD5
-    if(xmlSecTransformCheckId(transform, xmlSecNssTransformRsaMd5Id)) {
-        ctx->keyId      = xmlSecNssKeyDataRsaId;
-        ctx->alg        = SEC_OID_PKCS1_MD5_WITH_RSA_ENCRYPTION;
-    } else
-#endif /* XMLSEC_NO_MD5 */
-
 
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformRsaSha1Id)) {
@@ -1186,21 +1173,6 @@ xmlSecNssTransformEdDSAEd25519GetKlass(void) {
 #endif /* XMLSEC_NO_EDDSA */
 
 #ifndef XMLSEC_NO_RSA
-
-#ifndef XMLSEC_NO_MD5
-/* RSA-MD5 signature transform: xmlSecNssRsaMd5Klass */
-XMLSEC_NSS_SIGNATURE_KLASS(RsaMd5)
-
-/**
- * @brief The RSA-MD5 signature transform klass.
- * @return RSA-MD5 signature transform klass.
- */
-xmlSecTransformId
-xmlSecNssTransformRsaMd5GetKlass(void) {
-    return(&xmlSecNssRsaMd5Klass);
-}
-
-#endif /* XMLSEC_NO_MD5 */
 
 
 #ifndef XMLSEC_NO_SHA1

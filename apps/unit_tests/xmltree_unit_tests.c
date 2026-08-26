@@ -1471,7 +1471,13 @@ test_xmlSecGetNextElementNode_skips_text(void) {
         testFinishedFailure();
         return;
     }
-    xmlAddChild(root, textNode);
+    if(xmlAddChild(root, textNode) == NULL) {
+        testLog("Error: failed to add text node\n");
+        xmlFreeNode(textNode);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
 
     elemNode = xmlNewChild(root, NULL, BAD_CAST "Elem", NULL);
     if(elemNode == NULL) {
@@ -1515,7 +1521,13 @@ test_xmlSecGetNextElementNode_no_elements(void) {
         testFinishedFailure();
         return;
     }
-    xmlAddChild(root, textNode);
+    if(xmlAddChild(root, textNode) == NULL) {
+        testLog("Error: failed to add text node\n");
+        xmlFreeNode(textNode);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
 
     found = xmlSecGetNextElementNode(textNode);
     if(found != NULL) {
@@ -1548,7 +1560,9 @@ xmltreeWalkCollect(xmlNodePtr cur, void* data) {
 static int
 xmltreeWalkStop(xmlNodePtr cur, void* data) {
     xmltreeWalkCtx* ctx = (xmltreeWalkCtx*)data;
-    ctx->nodes[ctx->count++] = cur;
+    if(ctx->count < 32) {
+        ctx->nodes[ctx->count++] = cur;
+    }
     return(0); /* stop */
 }
 

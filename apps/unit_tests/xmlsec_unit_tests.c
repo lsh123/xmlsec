@@ -47,6 +47,7 @@ static void testXmlSecErrorsCallback(const char* file, int line, const char* fun
 /* test group filter: if non-NULL, only the matching group runs */
 static const char * g_testGroupFilter;
 static int g_testGroupSkip;
+static int g_testGroupsMatched;
 
 #ifndef XMLSEC_NO_XSLT
 static xsltSecurityPrefsPtr xsltSecPrefs = NULL;
@@ -172,6 +173,11 @@ int main(int argc, const char **argv) {
         success = 0;
     }
 
+    /* a filter that matches no group is a user error (e.g. a typo), not a pass */
+    if((g_testGroupFilter != NULL) && (g_testGroupsMatched == 0)) {
+        fprintf(stderr, "Error: no test group matched the filter \"%s\"\n", g_testGroupFilter);
+        success = 0;
+    }
 
     if(success == 1) {
         /* success! */
@@ -291,6 +297,7 @@ void testGroupStart(const char * name) {
         return;
     }
     g_testGroupSkip = 0;
+    g_testGroupsMatched += 1;
     fprintf(stdout, "=== STARTED TESTS FOR '%s'\n", testsGroupName);
 }
 

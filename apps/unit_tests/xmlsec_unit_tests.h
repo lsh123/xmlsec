@@ -24,7 +24,7 @@ extern "C" {
 
 /* helper functions */
 void testGroupStart(const char * name);
-int  testGroupFinished(void);
+int testGroupFinished(void);
 
 void testStart(const char * name);
 void testFinishedSuccess(void);
@@ -57,6 +57,3 @@ int test_templates(void);
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_UNIT_TESTS_H__ */
-
-
-

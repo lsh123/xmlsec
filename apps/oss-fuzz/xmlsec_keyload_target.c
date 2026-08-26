@@ -103,22 +103,13 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
     key = xmlSecOpenSSLAppKeyLoadMemory((const xmlSecByte*)data, (xmlSecSize)size,
                                         format, FUZZ_KEY_PWD, NULL, NULL);
     if (key != NULL) {
+#ifndef XMLSEC_NO_X509
         /* A loaded key can carry a certificate chain, which is a separate
          * reader. Feed the same bytes to it. */
         (void)xmlSecOpenSSLAppKeyCertLoadMemory(key, (const xmlSecByte*)data,
                                                 (xmlSecSize)size, format);
+#endif /* XMLSEC_NO_X509 */
         xmlSecKeyDestroy(key);
-    }
-
-    /* The PKCS#12 loader has its own entry point, not reachable through the
-     * format argument above on every code path. */
-    if (format == xmlSecKeyDataFormatPkcs12) {
-        key = xmlSecOpenSSLAppPkcs12LoadMemory((const xmlSecByte*)data,
-                                               (xmlSecSize)size,
-                                               FUZZ_KEY_PWD, NULL, NULL);
-        if (key != NULL) {
-            xmlSecKeyDestroy(key);
-        }
     }
 
     return 0;

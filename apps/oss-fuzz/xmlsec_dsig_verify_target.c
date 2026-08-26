@@ -9,7 +9,9 @@
  */
 #include <stdint.h>
 #include <stddef.h>
+#include <stdio.h>
 #include <string.h>
+#include <limits.h>
 
 int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size);
 
@@ -28,11 +30,9 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size);
 #include <xmlsec/openssl/crypto.h>
 
 /* Fixed self-signed RSA test certificate (PEM), stored as individual lines so
- * the source contains no backslash-escape sequences. The OSS-Fuzz build.sh
- * runs `echo -e` over this file (to prepend an include); `echo -e` would expand
- * any literal newline-escape in the source and corrupt string literals, so we avoid them
- * and re-assemble the PEM (with real newlines) at runtime. Loaded as a trusted
- * cert so the X509 key-resolution path is exercised during verification. */
+ * the source contains no backslash-escape sequences; the PEM is re-assembled
+ * (with real newline characters) at runtime. Loaded as a trusted cert so the
+ * X509 key-resolution path is exercised during verification. */
 static const char* const g_cert_lines[] = {
     "-----BEGIN CERTIFICATE-----",
     "MIIDDzCCAfegAwIBAgIUCnv9ljdf65kswXi7sntLjL2/IcowDQYJKoZIhvcNAQEL",
@@ -57,6 +57,9 @@ static const char* const g_cert_lines[] = {
 #define G_CERT_NLINES ((int)(sizeof(g_cert_lines) / sizeof(g_cert_lines[0])))
 
 static int g_initialized = 0;
+/* Set when do_init() fails, so a failed one-time init is not retried on
+ * every input. */
+static int g_init_failed = 0;
 static xmlSecKeysMngrPtr g_mngr = NULL;
 
 static void ignore_error(void* ctx, const char* msg, ...) {
@@ -117,9 +120,11 @@ static int do_init(void) {
         /* Best effort: load embedded trusted cert. If it fails we keep going
          * with an (essentially empty) manager; the signature parsing surface
          * still runs. */
-        xmlSecOpenSSLAppKeysMngrCertLoadMemory(g_mngr,
+        if (xmlSecOpenSSLAppKeysMngrCertLoadMemory(g_mngr,
             (const xmlSecByte*)pem, (xmlSecSize)off,
-            xmlSecKeyDataFormatCertPem, xmlSecKeyDataTypeTrusted);
+            xmlSecKeyDataFormatCertPem, xmlSecKeyDataTypeTrusted) < 0) {
+            fprintf(stderr, "xmlsec_dsig_verify_target: failed to load the embedded trusted cert\n");
+        }
     }
 
     return 0;
@@ -131,19 +136,17 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
     xmlSecDSigCtxPtr dsigCtx = NULL;
 
     if (!g_initialized) {
-        if (do_init() < 0) {
-            /* Initialization is one-time; if it fails there is nothing to do. */
-            return 0;
-        }
+        g_init_failed = (do_init() < 0);
         g_initialized = 1;
     }
-
-    if (size == 0) {
+    /* Skip inputs that cannot be represented as the int length expected by
+     * xmlReadMemory(). */
+    if (g_init_failed || size == 0 || size > (size_t)INT_MAX) {
         return 0;
     }
 
-    /* Parse the document from memory. NONET / NOENT defang external fetches
-     * and entity expansion. */
+    /* Parse the document from memory. NONET prevents external fetches;
+     * NOENT substitutes internal (general) entities at parse time. */
     doc = xmlReadMemory((const char*)data, (int)size, "fuzz.xml", NULL,
                         XML_PARSE_NONET | XML_PARSE_NOENT);
     if (doc == NULL || xmlDocGetRootElement(doc) == NULL) {

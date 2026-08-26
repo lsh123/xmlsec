@@ -71,7 +71,7 @@ test_xmlSecTransformChaCha20ParamsRead_missing_nonce(void) {
     xmlNodePtr node;
     xmlSecByte iv[XMLSEC_CHACHA20_IV_SIZE];
     xmlSecSize ivSize = 0;
-    int noncePresent = 0;
+    int noncePresent = 1;
     int ret;
 
     testStart("ChaCha20 read missing nonce");
@@ -142,7 +142,7 @@ test_xmlSecTransformChaCha20ParamsRead_missing_nonce_strict(void) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node;
     xmlSecByte iv[XMLSEC_CHACHA20_IV_SIZE];
-    int noncePresent = 0;
+    int noncePresent = 1;
     xmlSecSize ivSize = 0;
     int ret;
 

@@ -86,6 +86,10 @@ main(int argc, char **argv) {
 #ifndef XMLSEC_NO_XSLT
     /* disable all XSLT file and network access */
     xsltSecPrefs = xsltNewSecurityPrefs();
+    if(xsltSecPrefs == NULL) {
+        fprintf(stderr, "Error: failed to create the xslt security prefs\n");
+        goto done;
+    }
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid);

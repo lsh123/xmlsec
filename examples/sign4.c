@@ -193,7 +193,11 @@ sign_file(const char* xml_file, const char* id_attr, const char* key_file, const
     }
 
     /* add <dsig:Signature/> node to the doc */
-    xmlAddChild(xmlDocGetRootElement(doc), signNode);
+    if(xmlAddChild(xmlDocGetRootElement(doc), signNode) == NULL) {
+        fprintf(stderr, "Error: failed to add signature node to the document\n");
+        xmlFreeNode(signNode);
+        goto done;
+    }
 
     /* add reference */
     if (strlen(id_attr) + 2 > sizeof(uri)) {
@@ -273,7 +277,10 @@ sign_file(const char* xml_file, const char* id_attr, const char* key_file, const
     }
 
     /* print signed document to stdout */
-    xmlDocDump(stdout, doc);
+    if(xmlDocDump(stdout, doc) < 0) {
+        fprintf(stderr, "Error: failed to write the signed document to stdout\n");
+        goto done;
+    }
 
     /* success */
     res = 0;

@@ -6,9 +6,9 @@
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * @brief XML Security Library example: Decrypting an encrypted file using keys manager.
- * @details Decrypts encrypted XML file using keys manager and a list of
- * DES key from a binary file
+ * @brief XML Security Library example: Decrypting an encrypted file using a keys manager.
+ * @details Decrypts encrypted XML file using a keys manager and a list of
+ * DES keys from a binary file.
  *
  * Usage:
  *
@@ -187,7 +187,7 @@ load_des_keys(char** files, int files_size) {
         /* load DES key */
         key = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, files[i]);
         if(key == NULL) {
-            fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", files[i]);
+            fprintf(stderr,"Error: failed to load DES key from binary file \"%s\"\n", files[i]);
             xmlSecKeysMngrDestroy(mngr);
             return(NULL);
         }
@@ -216,10 +216,10 @@ load_des_keys(char** files, int files_size) {
 
 /**
  * @brief Decrypts an encrypted XML file using a DES key from keys manager.
- * @details Decrypts the XML file #enc_file using DES key from #key_file and
- * prints results to stdout.
+ * @details Decrypts the XML file #enc_file using DES keys from the keys manager
+ * and prints results to stdout.
  * @param mngr the pointer to keys manager.
- * @param enc_file the encrypted XML  file name.
+ * @param enc_file the encrypted XML file name.
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -232,7 +232,7 @@ decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file) {
     assert(mngr);
     assert(enc_file);
 
-    /* load template */
+    /* load encrypted file */
     doc = xmlReadFile(enc_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
         fprintf(stderr, "Error: unable to parse file \"%s\"\n", enc_file);

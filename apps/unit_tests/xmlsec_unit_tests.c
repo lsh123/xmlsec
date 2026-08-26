@@ -165,7 +165,7 @@ int main(int argc, const char **argv) {
 
 
     if(success == 1) {
-        /* sucecss! */
+        /* success! */
         fprintf(stdout, "=================== Checking xmlsec-core: SUCCESS =================================\n");
         res = 0;
     } else {
@@ -268,7 +268,7 @@ static const char * testsGroupName = NULL;
 static const char * testsName = NULL;
 static int testsStarted = 0;
 static int testsFinishedSuccess = 0;
-static int testFinishedFailed = 0;
+static int testsFinishedFailed = 0;
 
 void testGroupStart(const char * name) {
     xmlSecAssert(name != NULL);
@@ -276,7 +276,7 @@ void testGroupStart(const char * name) {
     testsGroupName = name;
     testsStarted = 0;
     testsFinishedSuccess = 0;
-    testFinishedFailed = 0;
+    testsFinishedFailed = 0;
     if((g_testGroupFilter != NULL) && (strcmp(g_testGroupFilter, name) != 0)) {
         g_testGroupSkip = 1;
         return;
@@ -292,12 +292,12 @@ int testGroupFinished(void) {
         testsGroupName = NULL;
         return 1;
     }
-    fprintf(stdout, "=== FINSIHED TESTS FOR '%s': TOTAL=%d, SUCCESS=%d, FAILURE=%d, NOT FIISHED=%d\n",
+    fprintf(stdout, "=== FINISHED TESTS FOR '%s': TOTAL=%d, SUCCESS=%d, FAILURE=%d, NOT FINISHED=%d\n",
         testsGroupName,
         testsStarted,
         testsFinishedSuccess,
-        testFinishedFailed,
-        (testsStarted - (testsFinishedSuccess + testFinishedFailed))
+        testsFinishedFailed,
+        (testsStarted - (testsFinishedSuccess + testsFinishedFailed))
     );
     testsGroupName = NULL;
     return testsStarted == testsFinishedSuccess ? 1 : 0;
@@ -326,7 +326,7 @@ void testFinishedFailure(void) {
     if(g_testGroupSkip) { return; }
     fprintf(stdout, "    %s     FAILED\n", testsName);
     testLogFlush();
-    testFinishedFailed += 1;
+    testsFinishedFailed += 1;
     testsName = NULL;
 }
 

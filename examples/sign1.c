@@ -7,7 +7,7 @@
  */
 /**
  * @brief XML Security Library example: Signing a template file.
- * @details Signs a template file using a key from PEM file
+ * @details Signs a template file using a key from a PEM file
  *
  * Usage:
  *
@@ -128,7 +128,7 @@ main(int argc, char **argv) {
     /* Shutdown XMLSec */
     xmlSecShutdown();
 
-    /* Shutdown LibXSLT / LibXML2*/
+    /* Shutdown LibXSLT / LibXML2 */
 #ifndef XMLSEC_NO_XSLT
     xsltFreeSecurityPrefs(xsltSecPrefs);
     xsltCleanupGlobals();
@@ -184,7 +184,7 @@ sign_file(const char* tmpl_file, const char* key_file) {
         NULL,
         NULL);
     if(dsigCtx->signKey == NULL) {
-        fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", key_file);
+        fprintf(stderr,"Error: failed to load private PEM key from \"%s\"\n", key_file);
         goto done;
     }
 

@@ -560,7 +560,7 @@ static xmlSecAppCmdLineParam enabledRetrievalMethodUrisParam = {
     "--enabled-retrieval-method-uris",
     NULL,
     "--enabled-retrieval-method-uris <list>"
-    "\n\tcomma separated list of of the following values:"
+    "\n\tcomma separated list of the following values:"
     "\n\t\"empty\", \"same-doc\", \"local\",\"remote\" to restrict possible URI"
     "\n\tattribute values for the <dsig:RetrievalMethod> element.",
     xmlSecAppCmdLineParamTypeStringList,
@@ -573,7 +573,7 @@ static xmlSecAppCmdLineParam enabledKeyInfoReferenceUrisParam = {
     "--enabled-key-info-reference-uris",
     NULL,
     "--enabled-key-info-reference-uris <list>"
-    "\n\tcomma separated list of of the following values:"
+    "\n\tcomma separated list of the following values:"
     "\n\t\"empty\", \"same-doc\", \"local\",\"remote\" to restrict possible URI"
     "\n\tattribute values for the <dsig11:KeyInfoReference> element.",
     xmlSecAppCmdLineParamTypeStringList,
@@ -731,7 +731,7 @@ static xmlSecAppCmdLineParam idAttrParam = {
     NULL,
     "--id-attr[:<attr-name>] [<node-namespace-uri>:]<node-name>"
     "\n\tadds attributes <attr-name> (default value \"id\") from all nodes"
-    "\n\twith<node-name> and namespace <node-namespace-uri> to the list of"
+    "\n\twith <node-name> and namespace <node-namespace-uri> to the list of"
     "\n\tknown ID attributes; this is a hack and if you can use DTD or schema"
     "\n\tto declare ID attributes instead (see \"--dtd-file\" option)",
     xmlSecAppCmdLineParamTypeString,
@@ -825,7 +825,7 @@ static xmlSecAppCmdLineParam enabledRefUrisParam = {
     "--enabled-reference-uris",
     NULL,
     "--enabled-reference-uris <list>"
-    "\n\tcomma separated list of of the following values:"
+    "\n\tcomma separated list of the following values:"
     "\n\t\"empty\", \"same-doc\", \"local\",\"remote\" to restrict possible URI"
     "\n\tattribute values for the <dsig:Reference> element",
     xmlSecAppCmdLineParamTypeStringList,
@@ -887,7 +887,7 @@ static xmlSecAppCmdLineParam enabledCipherRefUrisParam = {
     "--enabled-cipher-reference-uris",
     NULL,
     "--enabled-cipher-reference-uris <list>"
-    "\n\tcomma separated list of of the following values:"
+    "\n\tcomma separated list of the following values:"
     "\n\t\"empty\", \"same-doc\", \"local\",\"remote\" to restrict possible URI"
     "\n\tattribute values for the <enc:CipherReference> element",
     xmlSecAppCmdLineParamTypeStringList,
@@ -930,7 +930,7 @@ static xmlSecAppCmdLineParam pkcs12Param = {
     "--pkcs12",
     NULL,
     "--pkcs12[:<name>] <file>"
-    "\n\tload load private key from pkcs12 file <file>",
+    "\n\tload private key from pkcs12 file <file>",
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
     NULL
@@ -1442,7 +1442,7 @@ int main(int argc, const char **argv) {
         goto done;
     }
 
-    /* sucecss! */
+    /* success! */
     res = 0;
 
 done:
@@ -1561,7 +1561,7 @@ xmlSecAppExecute(xmlSecAppCommand command, const char** utf8_argv, int argc) {
        xmlSecErrorsDefaultCallbackEnableOutput(0);
     }
 
-    /* enable deatiled crypto library errors on exit */
+    /* enable detailed crypto library errors on exit */
     if(xmlSecAppCmdLineParamIsSet(&printCryptoErrorsParam)) {
        xmlSecErrorsPrintCryptoLibraryLogOnExitSet(1);
     }
@@ -1642,7 +1642,7 @@ xmlSecAppExecute(xmlSecAppCommand command, const char** utf8_argv, int argc) {
                     fprintf(stderr, "Error: transform \"%s\" not found\n", utf8_argv[ii]);
                     goto done;
                 } else {
-                    fprintf(stdout, "Transforms \"%s\" found\n", utf8_argv[ii]);
+                    fprintf(stdout, "Transform \"%s\" found\n", utf8_argv[ii]);
                 }
             }
             break;
@@ -1760,7 +1760,7 @@ xmlSecAppSignFile(const char* inputFileName, const char* outputFileNameTmpl) {
     }
     g_totalTime += clock() - start_time;
 
-    /* return an error if siganture failed */
+    /* return an error if signature failed */
     if(dsigCtx.status != xmlSecDSigStatusSucceeded) {
         goto done;
     }
@@ -2758,7 +2758,7 @@ xmlSecAppLoadKeys(void) {
                     xmlSecKeyDataFormatPem,
                     keyInfoCtx,
                     verifyKeys) < 0) {
-            fprintf(stderr, "Error: failed to load private key from \"%s\".\n",
+            fprintf(stderr, "Error: failed to load public key from \"%s\".\n",
                     value->strListValue);
             xmlSecKeyInfoCtxDestroy(keyInfoCtx);
             return(-1);
@@ -2875,7 +2875,7 @@ xmlSecAppLoadKeys(void) {
     for(value = concatKdfKeyParam.value; value != NULL; value = value->next) {
         if(value->strValue == NULL) {
             fprintf(stderr, "Error: invalid value for option \"%s\".\n",
-                    hmacKeyParam.fullName);
+                    concatKdfKeyParam.fullName);
             xmlSecKeyInfoCtxDestroy(keyInfoCtx);
             return(-1);
         } else if(xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(g_keysManager,
@@ -2929,7 +2929,7 @@ xmlSecAppLoadKeys(void) {
     for(value = pbkdf2KeyParam.value; value != NULL; value = value->next) {
         if(value->strValue == NULL) {
             fprintf(stderr, "Error: invalid value for option \"%s\".\n",
-                    hmacKeyParam.fullName);
+                    pbkdf2KeyParam.fullName);
             xmlSecKeyInfoCtxDestroy(keyInfoCtx);
             return(-1);
         } else if(xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(g_keysManager,
@@ -3083,7 +3083,7 @@ static int xmlSecAppInputCloseCallback(void* context) {
 }
 
 
-static int intialized = 0;
+static int initialized = 0;
 
 #ifndef XMLSEC_NO_XSLT
 static xsltSecurityPrefsPtr xsltSecPrefs = NULL;
@@ -3093,10 +3093,10 @@ static int
 xmlSecAppInit(void) {
     int ret;
 
-    if(intialized != 0) {
+    if(initialized != 0) {
         return(0);
     }
-    intialized = 1;
+    initialized = 1;
 
     /* Init LibXML2 */
     xmlInitParser();
@@ -3117,7 +3117,7 @@ xmlSecAppInit(void) {
     /* Init xmlsec */
     ret = xmlSecInit();
     if(ret < 0) {
-        fprintf(stderr, "Error: xmlsec intialization failed.\n");
+        fprintf(stderr, "Error: xmlsec initialization failed.\n");
         return(-1);
     }
     if(xmlSecCheckVersion() != 1) {
@@ -3131,7 +3131,7 @@ xmlSecAppInit(void) {
                                     xmlSecAppInputReadCallback,
                                     xmlSecAppInputCloseCallback);
     if(ret < 0) {
-        fprintf(stderr, "Error: xmlsec IO callbacks intialization failed.\n");
+        fprintf(stderr, "Error: xmlsec IO callbacks initialization failed.\n");
         return(-1);
     }
 
@@ -3149,7 +3149,7 @@ xmlSecAppInit(void) {
 
     /* Init Crypto */
     if(xmlSecAppCryptoInit(xmlSecAppCmdLineParamGetString(&cryptoConfigParam)) < 0) {
-        fprintf(stderr, "Error: xmlsec crypto intialization failed.\n");
+        fprintf(stderr, "Error: xmlsec crypto initialization failed.\n");
         return(-1);
     }
     return(0);
@@ -3157,7 +3157,7 @@ xmlSecAppInit(void) {
 
 static void
 xmlSecAppShutdown(void) {
-    if(intialized == 0) {
+    if(initialized == 0) {
         return;
     }
 
@@ -3716,13 +3716,13 @@ xmlSecAppGetOutputFilename(const char* inputFileName, const char* outputFileName
 #if !defined(_MSC_VER)
     tmp = strcat(res, inputBasename);
     if(tmp == NULL) {
-        fprintf(stderr, "Error: failed to append input basemame\n");
+        fprintf(stderr, "Error: failed to append input basename\n");
         goto done;
     }
 #else /* !defined(_MSC_VER) */
     err = strcat_s(res, resSize, inputBasename);
     if(err != 0) {
-        fprintf(stderr, "Error: failed to append input basemame: %d\n", (int)err);
+        fprintf(stderr, "Error: failed to append input basename: %d\n", (int)err);
         goto done;
     }
 #endif /* !defined(_MSC_VER) */

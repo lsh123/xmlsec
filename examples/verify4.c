@@ -6,10 +6,10 @@
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * @brief XML Security Library example: Verifying a file signed with X509 certificate
- * @details Verifies a file signed with X509 certificate.
+ * @brief XML Security Library example: Verifying a file signed with an X509 certificate
+ * @details Verifies a file signed with an X509 certificate.
  *
- * This example was developed and tested with OpenSSL crypto library. The
+ * This example was developed and tested with the OpenSSL crypto library. The
  * certificates management policies for another crypto library may break it.
  *
  * Usage:
@@ -139,7 +139,7 @@ main(int argc, char **argv) {
     /* Shutdown XMLSec */
     xmlSecShutdown();
 
-    /* Shutdown LibXSLT / LibXML2*/
+    /* Shutdown LibXSLT / LibXML2 */
 #ifndef XMLSEC_NO_XSLT
     xsltFreeSecurityPrefs(xsltSecPrefs);
     xsltCleanupGlobals();
@@ -187,7 +187,7 @@ load_trusted_certs(char** files, int files_size) {
 
         /* load trusted cert */
         if(xmlSecCryptoAppKeysMngrCertLoad(mngr, files[i], xmlSecKeyDataFormatPem, xmlSecKeyDataTypeTrusted) < 0) {
-            fprintf(stderr,"Error: failed to load pem certificate from \"%s\"\n", files[i]);
+            fprintf(stderr,"Error: failed to load PEM certificate from \"%s\"\n", files[i]);
             xmlSecKeysMngrDestroy(mngr);
             return(NULL);
         }
@@ -241,7 +241,7 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* id_attr) {
 
     /* Verify signature */
     if(xmlSecDSigCtxVerify(dsigCtx, node) < 0) {
-        fprintf(stderr,"Error: signature verify\n");
+        fprintf(stderr,"Error: signature verification failed\n");
         goto done;
     }
 
@@ -290,8 +290,7 @@ verify_signature_results(xmlSecDSigCtxPtr dsigCtx, const char* id_attr) {
         return(-1);
     }
 
-    /* in this example we expect exactly ONE reference with URI="" and
-    *  exactly ONE enveloped signature transform (i.e. the whole document is signed)*/
+    /* in this example we expect exactly ONE reference with URI "#<id-attribute>" and no unexpected transforms */
     if(xmlSecPtrListGetSize(&(dsigCtx->signedInfoReferences)) != 1) {
         fprintf(stderr,"Error: Exactly one Reference is expected\n");
         return(-1);

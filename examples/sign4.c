@@ -26,10 +26,10 @@
  *      ./sign4 sign4-doc.xml "data" rsakey.pem rsacert.pem > sign4-res.xml
  * \endcode
  *
- * The resulting signature can be validated using the verify3 example:
+ * The resulting signature can be validated using the verify4 example:
  *
  * \code{.sh}
- *      ./verify3 sign4-res.xml ca2cert.pem cacert.pem
+ *      ./verify4 sign4-res.xml "data" ca2cert.pem cacert.pem
  * \endcode
  */
 #include <stdlib.h>
@@ -147,7 +147,7 @@ main(int argc, char **argv) {
 /**
  * @brief Signs an XML file using a private key, X.509 certificate, and ID-based reference.
  * @details Signs #xml_file using the private key from #key_file and a
- * dynamically created enveloped signature template. The certificate from #cert_file
+ * dynamically created signature template. The certificate from #cert_file
  * is placed in the <dsig:X509Data/> node.
  * @param xml_file the XML file name.
  * @param id_attr the ID attribute of the node to sign.

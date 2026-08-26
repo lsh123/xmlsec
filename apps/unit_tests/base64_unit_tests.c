@@ -60,7 +60,7 @@ test_base64_success(
 
     /* check results */
     if(xmlStrcmp(encoded, (expected != NULL) ? BAD_CAST expected: BAD_CAST str) != 0) {
-        testLog("Error: base64 encode returned in='%s' (expected: '%s')\n", (const char*)encoded, (expected != NULL) ? expected : str);
+        testLog("Error: base64 encode returned '%s' (expected: '%s')\n", (const char*)encoded, (expected != NULL) ? expected : str);
         xmlFree(encoded);
         testFinishedFailure();
         return;
@@ -252,7 +252,7 @@ int test_base64(void) {
     test_base64_failure("check NULL", NULL);
     test_base64_failure("check missing both '='", "Rg");
     test_base64_failure("check missing second '='", "Rg=");
-    test_base64_failure("check missing first '='", "Rm8");
+    test_base64_failure("check missing '='", "Rm8");
     test_base64_failure("check output buffer too small", "Rm9vQmFyIEZvb0JhciBGb29CYXIgRm9vQmFyIEZvb0JhciBGb29CYXIgRm9vQmFyIEZvb0JhciBGb29CYXIgRm9vQmFyIA==");
     test_base64_failure("check non base64 chars", "Rm9v;g==");
 

@@ -185,7 +185,7 @@ create_encryption_template(xmlDocPtr doc) {
  * @brief Encrypts an XML file using a dynamically created template and DES key.
  * @details Encrypts #xml_file using a dynamically created template and the DES key
  * from #key_file.
- * @param xml_file the encryption template file name.
+ * @param xml_file the XML file name.
  * @param key_file the Triple DES key file.
  * @return 0 on success or a negative value if an error occurs.
  */
@@ -209,7 +209,7 @@ encrypt_file(const char* xml_file, const char* key_file) {
     /* create encryption template */
     encDataNode = create_encryption_template(doc);
     if(encDataNode == NULL) {
-            fprintf(stderr,"Error: failed to create encryption context\n");
+        fprintf(stderr,"Error: failed to create encryption template\n");
         goto done;
     }
 

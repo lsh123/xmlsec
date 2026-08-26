@@ -279,7 +279,7 @@ test_buffer_is_empty(void) {
         return;
     }
 
-    /* freshly initialised buffer with no data is empty */
+    /* freshly initialized buffer with no data is empty */
     ret = xmlSecBufferInitialize(&buf, 0);
     if(ret < 0) {
         testLog("Error: xmlSecBufferInitialize failed\n");

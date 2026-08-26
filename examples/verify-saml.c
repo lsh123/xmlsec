@@ -281,7 +281,7 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
 
     /* Verify signature */
     if(xmlSecDSigCtxVerify(dsigCtx, node) < 0) {
-        fprintf(stderr,"Error: signature verify\n");
+        fprintf(stderr,"Error: signature verification failed\n");
         goto done;
     }
 

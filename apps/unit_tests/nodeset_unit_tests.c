@@ -152,6 +152,7 @@ test_xmlSecNodeSetCreate_destroy_doc_destroy(void) {
        (nset->type != xmlSecNodeSetNormal) || (nset->destroyDoc != 0) ||
        (nset->next != nset) || (nset->prev != nset)) {
         testLog("Error: xmlSecNodeSetCreate initialized fields incorrectly\n");
+        nset->destroyDoc = 1;
         xmlSecNodeSetDestroy(nset);
         testFinishedFailure();
         return;
@@ -224,7 +225,9 @@ test_xmlSecNodeSetGetChildren_without_comments_contains_subtree(void) {
     if((child == NULL) || (grandchild == NULL) || (sibling == NULL) ||
        (comment == NULL) || (childAttr == NULL) || (nset == NULL)) {
         testLog("Error: failed to prepare subtree test data\n");
-        xmlSecNodeSetDestroy(nset);
+        if(nset != NULL) {
+            xmlSecNodeSetDestroy(nset);
+        }
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
@@ -272,7 +275,9 @@ test_xmlSecNodeSetGetChildren_invert_excludes_subtree(void) {
     nset = xmlSecNodeSetGetChildren(doc, child, 1, 1);
     if((child == NULL) || (grandchild == NULL) || (sibling == NULL) || (nset == NULL)) {
         testLog("Error: failed to prepare invert test data\n");
-        xmlSecNodeSetDestroy(nset);
+        if(nset != NULL) {
+            xmlSecNodeSetDestroy(nset);
+        }
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
@@ -321,8 +326,12 @@ test_xmlSecNodeSetAdd_subtraction_removes_subtree(void) {
     if((keep == NULL) || (drop == NULL) || (nested == NULL) ||
        (nset == NULL) || (removed == NULL)) {
         testLog("Error: failed to prepare node set subtraction test\n");
-        xmlSecNodeSetDestroy(nset);
-        xmlSecNodeSetDestroy(removed);
+        if(nset != NULL) {
+            xmlSecNodeSetDestroy(nset);
+        }
+        if(removed != NULL) {
+            xmlSecNodeSetDestroy(removed);
+        }
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
@@ -331,6 +340,7 @@ test_xmlSecNodeSetAdd_subtraction_removes_subtree(void) {
     if(xmlSecNodeSetAdd(nset, removed, xmlSecNodeSetSubtraction) != nset) {
         testLog("Error: xmlSecNodeSetAdd did not return the original list head\n");
         xmlSecNodeSetDestroy(nset);
+        xmlSecNodeSetDestroy(removed);
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
@@ -373,7 +383,9 @@ test_xmlSecNodeSetWalk_visits_elements_attributes_and_namespaces(void) {
     nset = xmlSecNodeSetGetChildren(doc, root, 1, 0);
     if((root == NULL) || (nset == NULL)) {
         testLog("Error: failed to prepare walk test data\n");
-        xmlSecNodeSetDestroy(nset);
+        if(nset != NULL) {
+            xmlSecNodeSetDestroy(nset);
+        }
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
@@ -423,7 +435,9 @@ test_xmlSecNodeSetDumpTextNodes_preserves_document_order(void) {
         } else if(buffer != NULL) {
             xmlBufferFree(buffer);
         }
-        xmlSecNodeSetDestroy(nset);
+        if(nset != NULL) {
+            xmlSecNodeSetDestroy(nset);
+        }
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
@@ -739,6 +753,7 @@ test_xmlSecNodeSetAdd_union_head_is_absolute_set(void) {
     xmlNodePtr drop;
     xmlNodeSetPtr nodes;
     xmlSecNodeSetPtr nset;
+    xmlSecNodeSetPtr tmpNset;
     int retKeep;
     int retDrop;
 
@@ -780,15 +795,16 @@ test_xmlSecNodeSetAdd_union_head_is_absolute_set(void) {
         return;
     }
 
-    nset = xmlSecNodeSetAdd(NULL, nset, xmlSecNodeSetUnion);
-    if(nset == NULL) {
+    tmpNset = xmlSecNodeSetAdd(NULL, nset, xmlSecNodeSetUnion);
+    if(tmpNset == NULL) {
         testLog("Error: xmlSecNodeSetAdd failed for union head\n");
-        /* nset owns nodes, so both will be freed by destroy */
+        /* the original nset owns nodes, so both will be freed by destroy */
         xmlSecNodeSetDestroy(nset);
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
     }
+    nset = tmpNset;
 
     retKeep = xmlSecNodeSetContains(nset, keep, root);
     retDrop = xmlSecNodeSetContains(nset, drop, root);
@@ -819,6 +835,7 @@ test_xmlSecNodeSetAdd_union_after_intersection_keeps_base_set(void) {
     xmlNodeSetPtr nodesC;
     xmlSecNodeSetPtr nset;
     xmlSecNodeSetPtr tmp;
+    xmlSecNodeSetPtr tmpNset;
     int retA;
     int retB;
     int retC;
@@ -875,6 +892,7 @@ test_xmlSecNodeSetAdd_union_after_intersection_keeps_base_set(void) {
     tmp = xmlSecNodeSetCreate(doc, nodesB, xmlSecNodeSetNormal);
     if(tmp == NULL) {
         testLog("Error: xmlSecNodeSetCreate failed\n");
+        xmlXPathFreeNodeSet(nodesB);
         xmlXPathFreeNodeSet(nodesC);
         xmlSecNodeSetDestroy(nset);
         xmlFreeDoc(doc);
@@ -882,33 +900,38 @@ test_xmlSecNodeSetAdd_union_after_intersection_keeps_base_set(void) {
         return;
     }
 
-    nset = xmlSecNodeSetAdd(nset, tmp, xmlSecNodeSetSubtraction);
-    if(nset == NULL) {
+    tmpNset = xmlSecNodeSetAdd(nset, tmp, xmlSecNodeSetSubtraction);
+    if(tmpNset == NULL) {
         testLog("Error: xmlSecNodeSetAdd failed for subtraction\n");
         xmlXPathFreeNodeSet(nodesC);
         xmlSecNodeSetDestroy(nset);
+        xmlSecNodeSetDestroy(tmp);
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
     }
+    nset = tmpNset;
 
     tmp = xmlSecNodeSetCreate(doc, nodesC, xmlSecNodeSetNormal);
     if(tmp == NULL) {
         testLog("Error: xmlSecNodeSetCreate failed\n");
+        xmlXPathFreeNodeSet(nodesC);
         xmlSecNodeSetDestroy(nset);
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
     }
 
-    nset = xmlSecNodeSetAdd(nset, tmp, xmlSecNodeSetUnion);
-    if(nset == NULL) {
+    tmpNset = xmlSecNodeSetAdd(nset, tmp, xmlSecNodeSetUnion);
+    if(tmpNset == NULL) {
         testLog("Error: xmlSecNodeSetAdd failed for union\n");
         xmlSecNodeSetDestroy(nset);
+        xmlSecNodeSetDestroy(tmp);
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
     }
+    nset = tmpNset;
 
     /* the expected set is (A union C) minus B: A and C are members,
      * B and D are not. A used to be lost because the Union element

@@ -383,11 +383,15 @@ test_ptr_list_set(void) {
         testLog("Error: failed to create test items\n");
         goto done;
     }
-    if((xmlSecPtrListAdd(&list, item1) < 0) || (xmlSecPtrListAdd(&list, item2) < 0)) {
-        testLog("Error: xmlSecPtrListAdd failed\n");
+    if(xmlSecPtrListAdd(&list, item1) < 0) {
+        testLog("Error: xmlSecPtrListAdd failed for item1\n");
         goto done;
     }
     item1 = NULL;
+    if(xmlSecPtrListAdd(&list, item2) < 0) {
+        testLog("Error: xmlSecPtrListAdd failed for item2\n");
+        goto done;
+    }
     item2 = NULL;
 
     if(xmlSecPtrListSet(&list, item3, 1) < 0) {
@@ -450,14 +454,20 @@ test_ptr_list_remove(void) {
         testLog("Error: failed to create test items\n");
         goto done;
     }
-    if((xmlSecPtrListAdd(&list, item1) < 0) ||
-       (xmlSecPtrListAdd(&list, item2) < 0) ||
-       (xmlSecPtrListAdd(&list, item3) < 0)) {
-        testLog("Error: xmlSecPtrListAdd failed\n");
+    if(xmlSecPtrListAdd(&list, item1) < 0) {
+        testLog("Error: xmlSecPtrListAdd failed for item1\n");
         goto done;
     }
     item1 = NULL;
+    if(xmlSecPtrListAdd(&list, item2) < 0) {
+        testLog("Error: xmlSecPtrListAdd failed for item2\n");
+        goto done;
+    }
     item2 = NULL;
+    if(xmlSecPtrListAdd(&list, item3) < 0) {
+        testLog("Error: xmlSecPtrListAdd failed for item3\n");
+        goto done;
+    }
     item3 = NULL;
 
     if(xmlSecPtrListRemove(&list, 1) < 0) {
@@ -528,14 +538,20 @@ test_ptr_list_remove_and_return(void) {
         testLog("Error: failed to create test items\n");
         goto done;
     }
-    if((xmlSecPtrListAdd(&list, item1) < 0) ||
-       (xmlSecPtrListAdd(&list, item2) < 0) ||
-       (xmlSecPtrListAdd(&list, item3) < 0)) {
-        testLog("Error: xmlSecPtrListAdd failed\n");
+    if(xmlSecPtrListAdd(&list, item1) < 0) {
+        testLog("Error: xmlSecPtrListAdd failed for item1\n");
         goto done;
     }
     item1 = NULL;
+    if(xmlSecPtrListAdd(&list, item2) < 0) {
+        testLog("Error: xmlSecPtrListAdd failed for item2\n");
+        goto done;
+    }
     item2 = NULL;
+    if(xmlSecPtrListAdd(&list, item3) < 0) {
+        testLog("Error: xmlSecPtrListAdd failed for item3\n");
+        goto done;
+    }
     item3 = NULL;
 
     removed = (xmlSecListTestItem*)xmlSecPtrListRemoveAndReturn(&list, 1);
@@ -603,11 +619,15 @@ test_ptr_list_pop_last(void) {
         testLog("Error: failed to create test items\n");
         goto done;
     }
-    if((xmlSecPtrListAdd(&list, item1) < 0) || (xmlSecPtrListAdd(&list, item2) < 0)) {
-        testLog("Error: xmlSecPtrListAdd failed\n");
+    if(xmlSecPtrListAdd(&list, item1) < 0) {
+        testLog("Error: xmlSecPtrListAdd failed for item1\n");
         goto done;
     }
     item1 = NULL;
+    if(xmlSecPtrListAdd(&list, item2) < 0) {
+        testLog("Error: xmlSecPtrListAdd failed for item2\n");
+        goto done;
+    }
     item2 = NULL;
 
     popped = (xmlSecListTestItem*)xmlSecPtrListPopLast(&list);
@@ -671,11 +691,15 @@ test_ptr_list_copy_duplicate(void) {
         testLog("Error: failed to create test items\n");
         goto done;
     }
-    if((xmlSecPtrListAdd(&src, item1) < 0) || (xmlSecPtrListAdd(&src, item2) < 0)) {
-        testLog("Error: xmlSecPtrListAdd failed\n");
+    if(xmlSecPtrListAdd(&src, item1) < 0) {
+        testLog("Error: xmlSecPtrListAdd failed for item1\n");
         goto done;
     }
     item1 = NULL;
+    if(xmlSecPtrListAdd(&src, item2) < 0) {
+        testLog("Error: xmlSecPtrListAdd failed for item2\n");
+        goto done;
+    }
     item2 = NULL;
 
     if(xmlSecPtrListCopy(&dst, &src) < 0) {
@@ -761,11 +785,15 @@ test_string_list_klass(void) {
         testLog("Error: failed to allocate string list items\n");
         goto done;
     }
-    if((xmlSecPtrListAdd(list, item1) < 0) || (xmlSecPtrListAdd(list, item2) < 0)) {
-        testLog("Error: xmlSecPtrListAdd failed for string list\n");
+    if(xmlSecPtrListAdd(list, item1) < 0) {
+        testLog("Error: xmlSecPtrListAdd failed for string list item1\n");
         goto done;
     }
     item1 = NULL;
+    if(xmlSecPtrListAdd(list, item2) < 0) {
+        testLog("Error: xmlSecPtrListAdd failed for string list item2\n");
+        goto done;
+    }
     item2 = NULL;
 
     duplicate = xmlSecPtrListDuplicate(list);

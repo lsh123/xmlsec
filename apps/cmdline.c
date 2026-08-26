@@ -114,7 +114,7 @@ xmlSecAppCmdLineParamsListParse(xmlSecAppCmdLineParamPtr* params,
 
     /* check that all parameters at the end are filenames */
     for(ii = pos; (ii < argc); ++ii) {
-        if((argv[ii][0] == '-') && (strcmp(argv[pos], XMLSEC_STDOUT_FILENAME) != 0)) {
+        if((argv[ii][0] == '-') && (strcmp(argv[ii], XMLSEC_STDOUT_FILENAME) != 0)) {
             fprintf(stderr, "Error: filename is expected instead of parameter \"%s\".\n", argv[ii]);
             return(-1);
         }

@@ -134,10 +134,10 @@ main(int argc, char **argv) {
 }
 
 /**
- * @brief Decrypts an encrypted XML file using a DES key.
- * @details Decrypts the XML file #enc_file using DES key from #key_file and
+ * @brief Decrypts an encrypted XML file using a Triple DES key.
+ * @details Decrypts the XML file #enc_file using Triple DES key from #key_file and
  * prints results to stdout.
- * @param enc_file the encrypted XML  file name.
+ * @param enc_file the encrypted XML file name.
  * @param key_file the Triple DES key file.
  * @return 0 on success or a negative value if an error occurs.
  */

@@ -6,4 +6,4 @@
 # Appendix B. XML Security Library Encryption Klasses
 
 ## Figure: XML Security Library Encryption Klasses
-> ![XML Security Library Encryption Klasses](images/encryption-structure.png)
+![XML Security Library Encryption Klasses](images/encryption-structure.png)

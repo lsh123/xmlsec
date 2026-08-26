@@ -1,6 +1,6 @@
 # XML Security Library Tutorial
 
-This tutorial explains how to use XML Security Library to perform
+This tutorial explains how to use the XML Security Library to perform
 XML Digital Signature and XML Encryption operations. For the complete
 API reference, see the [XML Security Library API Reference](../api/index.md).
 For code examples, see the [XML Security Library Examples](../examples/index.md).
@@ -11,9 +11,9 @@ For code examples, see the [XML Security Library Examples](../examples/index.md)
 * [Building the library](install.md) — Building and installing
 the XML Security Library
 * [Compiling your application](compiling-and-linking.md) — Compiling
-and linking your application with XML Security Library
+and linking your application with the XML Security Library
 * [Initialization and shutdown](init-and-shutdown.md) — Initializing and
-shutting down the XML Security library and its dependencies
+shutting down the XML Security Library and its dependencies
 * [Signing and encrypting documents](sign-and-encrypt.md) — Signing XML
 documents and encrypting data using templates
 * [Creating dynamic templates](creating-templates.md) — Programmatically
@@ -22,7 +22,7 @@ constructing signature and encryption templates
 signatures and decrypting encrypted documents
 * [Keys](using-keys.md) — Key structure and key data objects
 * [Keys manager](using-keysmngr.md) — Managing keys with the built-in store,
-using keys manager for operations, and implementing custom stores
+using the keys manager for operations, and implementing custom stores
 * [Using X509 certificates](using-x509-certs.md) — Signing and verifying with
 X509 certificates
 * [Using context objects](using-contexts.md) — Controlling operations and

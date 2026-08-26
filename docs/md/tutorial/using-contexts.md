@@ -35,7 +35,7 @@ decryption.
 ```c
 /**
  * @brief Verifies XML signature in #xml_file.
- * @param mngr the pointer to keys manager.
+ * @param mngr the pointer to a keys manager.
  * @param xml_file the signed XML file name.
  * @return 0 on success or a negative value if an error occurs.
  */
@@ -91,7 +91,7 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
         goto done;
     }
 
-    /* in addition, limit possible key data to valid X509 certificates only */
+    /* in addition, limit possible key data to valid X509 certificates and key names */
     if(xmlSecPtrListAdd(&(dsigCtx->keyInfoReadCtx.enabledKeyData), BAD_CAST xmlSecKeyDataX509Id) < 0) {
         fprintf(stderr,"Error: failed to limit allowed key data\n");
         goto done;

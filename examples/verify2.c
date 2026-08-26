@@ -151,7 +151,7 @@ main(int argc, char **argv) {
 /**
  * @brief Creates a keys manager and loads PEM keys from files.
  * @details Creates a simple keys manager and loads the PEM keys from #files into it.
- * The caller is responsible for destroying returned keys manager using
+ * The caller is responsible for destroying the returned keys manager using
  * #xmlSecKeysMngrDestroy.
  * @param files the list of filenames.
  * @param files_size the number of filenames in #files.

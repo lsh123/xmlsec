@@ -8,7 +8,7 @@
   The [XML Security Library 1.3.12](download.md) release includes the following changes:
   - (xmlsec-openssl) Added experimental ML-KEM support.
   - (xmlsec-nss) Added SHA3 support.
-  - (xmlsec-gnutls) Added RSA-OEAP (SHA-256/SHA-384/SHA-512) support.
+  - (xmlsec-gnutls) Added RSA-OAEP (SHA-256/SHA-384/SHA-512) support.
   - (xmlsec-core) Added `--transform-max-depth` option to control maximum transforms execution depth
     (`0` disables the depth check).
   - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/1.3.12)).
@@ -17,7 +17,7 @@
   The [XML Security Library 1.3.11](download.md) release includes the following changes:
   - (xmlsec-openssl) Added support for OpenSSL 4.0.0.
   - (xmlsec-windows) The XMLSec build configuration script on Windows is converted to PowerShell, the JScript version is
-    deprecated and will be remove in the future versions.
+    deprecated and will be removed in future versions.
   - (xmlsec-docs) The XMLSec API reference was converted to Doxygen / Pandoc (instead of Gtk-Doc).
   - (xmlsec-docs) The XMLSec API reference, tutorial, and examples had been updated to Markdown files and moved to
     [GitHub Wiki](https://github.com/lsh123/xmlsec/wiki).
@@ -38,8 +38,7 @@
     ConcatKDF, PBKDF2, and HKDF key derivation algorithms; ChaCha20 and ChaCha20-Poly1305 encryption algorithms;
     SHA2-224 and SHA3-224 digest algorithms; and **experimental** support for ML-DSA signature algorithms.
   - (xmlsec-nss) Added support for EdDSA (Ed25519) signature algorithms; ECDH and XDH (X25519) key agreement algorithms;
-    ConcatKDF and HKDF key derivation algorithms; and ChaCha20-Poly1305 encryption algorithm.
-    Camellia block cipher and key wrap algorithms.
+    ConcatKDF and HKDF key derivation algorithms; Camellia block cipher and key wrap algorithms; and ChaCha20-Poly1305 encryption algorithm.
   - (xmlsec-mscng) Added support for DSA-SHA256 signature algorithm; XDH (X25519) and DH (X9.42 DHX) key agreement algorithms;
     HKDF key derivation algorithm; and SHA3 digest algorithms.
   - (xmlsec-mscng) Added support for loading CRLs from command line.
@@ -53,7 +52,7 @@
   - (xmlsec-openssl) Added octet parser in X509 names.
   - (xmlsec-mscng) Added support for non-persistent PKCS12 keys.
   - (xmlsec-windows) Simplified windows build and removed `with-dl` option for `configure.js`.
-  - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/master)).
+  - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/1.3.9)).
 
 - **October 15, 2025**
   The [XML Security Library 1.3.8](download.md) release includes the following changes:
@@ -64,7 +63,7 @@
   - (xmlsec command line tool) Added option `--add-id-attr` to add ID attributes by name to all nodes in the document.
   - (xmlsec-core) Added RSA MGF1 and digest template API.
   - (xmlsec-core) Added example of signing / verifying signature by ID attribute.
-  - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/master)).
+  - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/1.3.8)).
 
 - **June 16, 2025**
   The legacy [XML Security Library 1.2.42](download.md) release includes the following changes:
@@ -79,21 +78,21 @@
   - (xmlsec-core) Added signature result verification to the examples to demonstrate the need to ensure the correct
     data is actually signed.
   - (xmlsec-core) Disabled old crypto algorithms (MD5, RIPEMD160) and the old crypto engines (MSCrypto, GCrypt) by default
-    (use `--with-legacy-features` option to reenable everything).
+    (use `--enable-legacy-features` option to re-enable everything).
   - (xmlsec-openssl) Fixed excess padding in ECDSA signature generation.
   - (xmlsec-openssl) Fixed build warnings for BoringSSL / AWS-LC.
   - (xmlsec-nss) Fixed certificates search in NSS DB.
-  - (xmlsec-openssl, xmlsec-gnutls, xmlsec-mscng) Added an option to skip timestamp checks for certificates and CLRs.
+  - (xmlsec-openssl, xmlsec-gnutls, xmlsec-mscng) Added an option to skip timestamp checks for certificates and CRLs.
   - (xmlsec-windows) Disabled old crypto algorithms (MD5, RIPEMD160), made "mscng" the default crypto engine on Windows, and
     added support for "legacy-features" flag for `configure.js`.
-  - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/master)).
+  - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/1.3.7)).
 
 - **October 22, 2024**
   The [XML Security Library 1.3.6](download.md) release includes the following changes:
   - (xmlsec-openssl) Fixed build if OpenSSL 3.0 doesn't have engines support enabled.
   - (xmlsec-mscng, xmlsec-mscrypto) Added support for multiple trusted certs with the same subject.
-  - (windows) Disabled iconv support by default (use `iconv=yes` option for `configure.js` to re-enable it).
-  - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/master)).
+  - (xmlsec-windows) Disabled iconv support by default (use `iconv=yes` option for `configure.js` to re-enable it).
+  - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/1.3.6)).
 
 - **July 19, 2024**
   The [XML Security Library 1.3.5 and legacy 1.2.41](download.md) releases include the following changes:
@@ -107,7 +106,7 @@
   The legacy [XML Security Library 1.2.40](https://www.aleksey.com/xmlsec/download/xmlsec1-1.2.40.tar.gz) release includes the following changes:
   - (xmlsec-core) Fixed functions deprecated in LibXML2 2.13.1 (including disabling HTTP support by default).
   - (xmlsec-nss) Increased keys size in all tests to support NSS 3.101.
-  - (windows) Added "ftp" and "http" flags in 'configure.js' (both are disabled by default).
+  - (xmlsec-windows) Added "ftp" and "http" flags in 'configure.js' (both are disabled by default).
   - Several other small fixes ([more details](https://github.com/lsh123/xmlsec/commits/xmlsec-1_2_x)).
 
 - **April 9, 2024**
@@ -115,21 +114,21 @@
   - (xmlsec-openssl) Support cert dates before unix epoch start.
   - (xmlsec-openssl) Fix build for LibreSSL or BoringSSL.
   - (xmlsec-nss) Ensure NSS algorithms are initialized.
-  - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/master)).
+  - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/1.3.4)).
 
 - **January 4, 2024**
   The [XML Security Library 1.3.3](download.md) release includes the following changes:
   - (xmlsec-core) Disabled KeyValue and DEREncodedKeyValue XML nodes by default. Use the '--enabled-key-data' option
     for the xmlsec command line utility or update the 'keyInfoCtx.enabledKeyData' parameter if you need to re-enable these nodes
     (also see [question 3.5 in the FAQ](faq.md)).
-  - (xmlsec-core) Removed '--enable-size-t' ('size_t' for MSVC builds) option and made 'xmlSecSize' to always be the same as 'size_t'.
+  - (xmlsec-core) Removed '--enable-size-t' ('size_t' for MSVC builds) option and made 'xmlSecSize' always the same as 'size_t'.
   - (xmlsec-core) Removed previously deprecated functions, defines, etc.
   - (xmlsec-core) Fixed build for LibXML2 library v2.12.0.
-  - (xmlsec-openssl) Removed support for OpenSSL 1.1.0 ([end of life in Aug 2016](https://endoflife.date/openssl)).
+  - (xmlsec-openssl) Removed support for OpenSSL 1.1.0 ([end of life in September 2019](https://endoflife.date/openssl)).
     The minimum OpenSSL supported version is 1.1.1; the version 3.0.0 or greater is recommended.
   - (xmlsec-nss) Added runtime check for the enabled algorithms in NSS.
   - (xmlsec-mscrypto) Removed NT4 support.
-  - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/master)).
+  - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/1.3.3)).
 
 - **December 12, 2023**
   The legacy [XML Security Library 1.2.39](https://www.aleksey.com/xmlsec/download/) release includes the following changes:
@@ -143,7 +142,7 @@
   - (xmlsec-nss) Added a check to ensure that the key certificate matches the key.
   - (xmlsec-nss) Added support for xmlsec command line tool '--verify-keys' option.
   - (xmlsec-gnutls) Added support for GOST R 34.11-94, GOST R 34.11-2012 256 bit, and GOST R 34.11-2012 512 bit digest algorithms.
-  - (xmlsec-gnutls) Added support for GOST R 34.10-2001, GOST R 34.11-2012 256 bit, and GOST R 34.11-2012 512 bit signature algorithms.
+  - (xmlsec-gnutls) Added support for GOST R 34.10-2001, GOST R 34.10-2012 256 bit, and GOST R 34.10-2012 512 bit signature algorithms.
   - (xmlsec-gnutls) Added support for xmlsec command line tool '--verify-keys' option.
   - (xmlsec-gnutls) Added check to ensure that the key certificate matches the key.
   - (xmlsec-mscng) Added support for xmlsec command line tool '--verify-keys' option.
@@ -154,7 +153,7 @@
   - (MinGW build) The xmlsec-mscrypto is moved down in the default crypto library selection list as it is now
     in maintenance mode (use '--with-default-crypto' option to force the selection).
   - (MinGW build) Fixed the static libraries build with "--enable-static-linking" option.
-  - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/master)).
+  - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/1.3.2)).
 
 - **July 5, 2023**
   The legacy [XML Security Library 1.2.38](https://www.aleksey.com/xmlsec/download/) release includes the following changes:
@@ -168,7 +167,7 @@
   - Added support for clang compiler on non-MacOSX platforms.
   - (xmlsec-openssl) Restored support for LibreSSL and bumped minimum required version to 3.5.0.
   - (xmlsec-nss) Restored minimum supported NSS version to 3.35.
-  - Several other small fixes ([more details](https://github.com/lsh123/xmlsec/commits/master)).
+  - Several other small fixes ([more details](https://github.com/lsh123/xmlsec/commits/1.3.1)).
 
 - **April 12, 2023**
   The [XML Security Library 1.3.0](download.md) release includes the following changes:
@@ -181,7 +180,7 @@
     - (**API breaking change**) The KeyName element content is now trimmed before key search is performed.
     - (**API breaking change**) Disabled FTP support by default. Use "--enable-ftp" configure option to restore it. Also added
       "--enable-http" and "--enable-files" configure options to control support for loading files over HTTP or locally.
-    - (**API/ABI breaking change**) Disabled MD5 digest method by default. Use "--enable-md5" configure options ("legacy-crypto" option on Windows) to re-enable MD5.
+    - (**API/ABI breaking change**) Disabled MD5 digest method by default. Use "--enable-md5" configure option ("legacy-crypto" option on Windows) to re-enable MD5.
     - (**ABI breaking change**) Added "failureReason" field to xmlSecDSigCtx and xmlEncCtx to provide more granular operation failure reason.
     - (**ABI breaking change**) Removed deprecated functions.
     - Added support for loading keys through [ossl-store](https://www.openssl.org/docs/man3.0/man7/ossl_store.html) interface (e.g.
@@ -216,7 +215,7 @@
     - Bumped minimal GnuTLS version to 3.6.13.
     - Added support for [SHA3 digests](https://www.ietf.org/rfc/rfc9231.html#name-sha-3-algorithms).
     - Added support for [ECDSA signatures](https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA).
-    - Added support for [DSA-SHA256 signatures](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP).
+    - Added support for [DSA-SHA256 signatures](https://www.w3.org/TR/xmldsig-core1/#sec-DSA).
     - Added support for [RSA PSS signatures (without parameters)](https://www.ietf.org/rfc/rfc9231.html#section-2.3.10).
     - Added support for [RSA PKCS 1.5 key transport](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-1_5).
     - Added support for [AES GCM ciphers](https://www.w3.org/TR/xmlenc-core1/#sec-AES-GCM).
@@ -498,13 +497,13 @@
 - **February 23, 2005**
   The new [XML Security Library 1.2.7](download.md) release
   includes several bug fixes and minor enhancements:
-  - (core) added xmlSecSimpleKeysStoreGetKeys() function.
-  - (core) added functions to create `<X509Data/>` node children in the signature template.
-  - (core) fixed xmlSecGenerateID() function.
-  - (core) fixed dynamic linking initialization/shutdown when custom memory allocation functions are used.
-  - (core) fixed encrypted text parsing and xmlParseInNodeContext() function.
-  - (openssl) fixed parsing quoted values in the certificate subject.
-  - (mscrypto) negative numbers support in xmlSecBnFromString()/xmlSecBnToString() functions.
+  - (xmlsec-core) added xmlSecSimpleKeysStoreGetKeys() function.
+  - (xmlsec-core) added functions to create `<X509Data/>` node children in the signature template.
+  - (xmlsec-core) fixed xmlSecGenerateID() function.
+  - (xmlsec-core) fixed dynamic linking initialization/shutdown when custom memory allocation functions are used.
+  - (xmlsec-core) fixed encrypted text parsing and xmlParseInNodeContext() function.
+  - (xmlsec-openssl) fixed parsing quoted values in the certificate subject.
+  - (xmlsec-mscrypto) negative numbers support in xmlSecBnFromString()/xmlSecBnToString() functions.
 
 - **August 25, 2004**
   The new [XML Security Library 1.2.6](download.md)
@@ -557,7 +556,7 @@
 
 - **September 17, 2003**
   The new [XML Security Library 1.1.2](download.md) release
-  introduces dynamical crypto engines loading based on ltdl library (including
+  introduces dynamic loading of crypto engines based on the ltdl library (including
   tutorial, API reference and documentation updates); adds an ability to build
   multiple xmlsec-crypto libraries in one build on Windows; fixes minor problems
   in test suite and multiple warnings when building on Sun Solaris.
@@ -582,7 +581,7 @@
 - **July 15, 2003**
   There were several minor patches during last month and it's time to do
   a new [XML Security Library 1.0.4](download.md)
-  release to pick up them: x509 certificates names comparison function
+  release to pick them up: x509 certificates names comparison function
   now supports multiple entries with the same object name (Roumen);
   multiple build fixes; documentation mistypes fixes.
   Also I gave an XML Security presentation at
@@ -594,7 +593,7 @@
   release adds PKCS#8 support for xmlsec-openssl (Tej) and fixes several
   configuration and portability problems.
 
-- **June 03, 2003**
+- **June 3, 2003**
   The [XML Security Library 1.0.2](download.md)
   release includes several fixes in xmlsec-nss configuration and
   linking options (Tej), PKCS12 files reading improvements,
@@ -607,7 +606,7 @@
   The [XML Security Library 1.0.1](download.md)
   release is a maintenance release. It fixes several compilation
   problems found in 1.0.0 release on the following platforms:
-  OpenBSD/sparc64, Win32 Wacom C, Sun Workshop CC 6.0. Also from
+  OpenBSD/sparc64, Win32 Watcom C, Sun Workshop CC 6.0. Also from
   now on Win32 MSVC port enables the threading support
   by default (this is a part of the Igor's change to
   LibXML2/LibXSLT/XMLSec libraries). If you don't
@@ -787,7 +786,7 @@
 - **April 16, 2002**
   A lot of changes and time for new release [XMLSec 0.0.3](download.md):
   - The first release that includes [XML Encryption support](xmlenc.md)!
-    The bad news is that most of new features require [OpenSSL 0.9.7](download.md) which is
+    The bad news is that most of new features require OpenSSL 0.9.7 which is
     not officially released yet.
   - Options to enable/disable support for particular algorithms were
     added to the `./configure` script.
@@ -802,7 +801,7 @@
   were provided by Merlin Hughes. XML Security Library successfully passed
   **all tests** after small test program tweaking and adding workaround
   for an [OpenSSL CRL problem](http://groups.google.com/groups?hl=en&threadm=96uofi%2417gh%241%40FreeBSD.csie.NCTU.edu.tw&rnum=2&prev=/groups%3Fq%3DX509_STORE_add_crl%26hl%3Den%26selm%3D96uofi%252417gh%25241%2540FreeBSD.csie.NCTU.edu.tw%26rnum%3D2).
-  These new tests are included into the distribution and previous Merlin's
+  These new tests are included in the distribution and Merlin's previous
   test suites are removed. Because of these changes I decided to generate
   a new package that also will include the Online XML Digital Signature Verifier code.
 
@@ -812,11 +811,11 @@
   Perl script. The idea was stolen from [Manoj K. Srivastava](http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2002AprJun/0006.html).
 
 - **March 31, 2002**
-  Some major changes and a time for new release: [XML Security Library 0.0.2](download.md). Now XML Security Library supports **all** MUST/SHOULD/MAY
+  Some major changes and the time for new release: [XML Security Library 0.0.2](download.md). Now XML Security Library supports **all** MUST/SHOULD/MAY
   [features](xmldsig.md) from XMLDSig standard!
   - Added X509 certificates and certificate chains support.
   - The detailed signature generation/verification results are made available to the application.
-  - [RetrievalMethod, Manifests and additional algorithms](https://www.rfc-editor.org/rfc/rfc9231.html) are added.
+  - [RetrievalMethod, Manifests and additional algorithms](https://www.rfc-editor.org/rfc/rfc4051) are added.
   - The Transforms and KeyInfo code was significantly re-written with a goal
     to separate it from XMLDSig logic for better re-usability (in XML Encryption, etc.).
 

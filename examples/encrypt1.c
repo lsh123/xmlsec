@@ -140,8 +140,8 @@ main(int argc, char **argv) {
 }
 
 /**
- * @brief Encrypts binary data using a DES key and a template file.
- * @details Encrypts binary #data using template from #tmpl_file and DES key from
+ * @brief Encrypts binary data using a Triple DES key and a template file.
+ * @details Encrypts binary #data using template from #tmpl_file and Triple DES key from
  * #key_file.
  * @param tmpl_file the encryption template file name.
  * @param key_file the Triple DES key file.
@@ -182,7 +182,7 @@ encrypt_file(const char* tmpl_file, const char* key_file,
         goto done;
     }
 
-    /* load DES key, assuming that there is no password */
+    /* load DES key */
     encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
     if(encCtx->encKey == NULL) {
         fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);
@@ -201,7 +201,7 @@ encrypt_file(const char* tmpl_file, const char* key_file,
         goto done;
     }
 
-    /* print encrypted data with document to stdout */
+    /* print encrypted data with the document to stdout */
     xmlDocDump(stdout, doc);
 
     /* success */

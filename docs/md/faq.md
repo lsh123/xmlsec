@@ -3,7 +3,7 @@
 ## 0. Where can I read more about XML Signature and XML Encryption?
 
 First of all, read the original specifications: [XML Digital Signature](http://www.w3.org/Signature/) and
-[XML Encryption](http://www.w3.org/Encryption/). Also there are [several books](related.md)
+[XML Encryption](http://www.w3.org/Encryption/). Also, there are [several books](related.md)
 available that can help you to get started.
 
 ## 1. License(s).
@@ -37,7 +37,7 @@ See [Download page](download.md) for detailed list.
 
 The most likely reason is that some features might require additional configuration (e.g. installing
 and configuring GOST plugins for OpenSSL and MSCrypto). Otherwise, please submit
-a [bug report](http://www.aleksey.com/xmlsec/bugs.html) and I'll try to fix it.
+a [bug report](https://github.com/lsh123/xmlsec/issues) and I'll try to fix it.
 
 ### 2.5. I got the xmlsec source code from GitHub and there is no `configure` script. Where can I get it?
 
@@ -61,11 +61,11 @@ There are several possible reasons why you might have problems on Windows:
 
 - **Incorrect MS C runtime libraries.**
   Windows basically has multiple C runtimes. First, there is one called `libc.lib` and it can
-  only be linked to statically. The other is called `msvcrt.dll` and can only be linked
-  to dynamically. The first one occurs in its single-threaded and multithreaded variants.
-  Then for each of the libraries above, there are both debug and release version (we are at **six**
+  only be linked statically. The other is called `msvcrt.dll` and can only be linked
+  dynamically. The first one occurs in its single-threaded and multithreaded variants.
+  Then for each of the libraries above, there are both debug and release versions (we are at **six**
   runtimes!). Next, different versions of Microsoft Visual C/C++ have different runtimes
-  which aren't compatible with each other (e.g. MSVC 6.0 runtime is not compatible with .NET 2003 runtime).
+  which aren't compatible with each other (e.g. the MSVC 6.0 runtime is not compatible with the Visual Studio .NET 2003 (MSVC 7.1) runtime).
   The rule is simple: exactly the same runtime must be used throughout the application and **all**
   the libraries used by the application (e.g. XMLSec, LibXML2, LibXSLT, ...).
 
@@ -78,16 +78,16 @@ There are several possible reasons why you might have problems on Windows:
 
 ## 3. Using XMLSec.
 
-### 3.1. xmlSecDSigCtxValidate() function returned 0. Does this mean that the signature is valid?
+### 3.1. xmlSecDSigCtxVerify() function returned 0. Does this mean that the signature is valid?
 
-**No!** The `xmlSecDSigCtxValidate()` function returns 0 when there are no *processing*
+**No!** The `xmlSecDSigCtxVerify()` function returns 0 when there are no *processing*
 errors during signature validation (i.e. the document has correct syntax, all keys were found, etc.).
-The signature is valid if and only if the `xmlSecDSigCtxValidate()` function returns 0 **and**
+The signature is valid if and only if the `xmlSecDSigCtxVerify()` function returns 0 **and**
 the `status` member of the `xmlSecDSigCtx` structure is equal to `xmlSecDSigStatusSucceeded`.
-Also see [XML Signature Best Practices] (https://www.w3.org/TR/xmldsig-bestpractices/) for
+Also see [XML Signature Best Practices](https://www.w3.org/TR/xmldsig-bestpractices/) for
 other things you should be checking.
 
-### 3.2. I am trying to sign a part of XML document using an "Id" attribute but it does not work. Do you support "Id" attributes at all?
+### 3.2. I am trying to sign a part of XML document using an "Id" attribute but it does not work. Do you support "Id" attributes at all? {#section_3_2}
 
 Yes, the `Id` attributes are supported by both XMLSec and LibXML2 libraries. However, you have to
 tell LibXML2/XMLSec what is the name of the ID attribute. XML specification does not require ID attribute to
@@ -103,13 +103,13 @@ have name "ID", "Id" or "id". It can be anything you want! There are several way
   ```
 
   The DTD might be directly included in the XML file or located in a standalone file. In the second case, you might
-  load the DTD in [xmlsec command line utility](xmlsec-man.md) with the `--dtd-file` option.
+  load the DTD with the [xmlsec command line utility](xmlsec-man.md) using the `--dtd-file` option.
 
-- **Use xml:id.** The [xml:id](http://www.w3.org/TR/xml-id/) spec allows to declare
-  an ID attribute in the schema or DTD.
+- **Use xml:id.** The [xml:id](http://www.w3.org/TR/xml-id/) spec declares the ID attribute
+  without any DTD or schema declaration.
 
 - **Use --id-attr for [xmlsec command line utility](xmlsec-man.md).** The `--id-attr` command
-  line option allows to quickly declare an ID attribute for [xmlsec command line utility](xmlsec-man.md).
+  line option allows you to quickly declare an ID attribute for the [xmlsec command line utility](xmlsec-man.md).
 
 - **Use xmlAddID function.** If you are writing an application, you can declare an ID attribute using
   the `xmlAddID` LibXML2 function.
@@ -120,18 +120,18 @@ Most likely **yes**. When it's not an error from specification point of view, I 
 a real world case that requires signing an empty nodes set (i.e. signing an empty string). Most likely,
 you have this error because you are trying to use an ID attribute and you did not declare the ID attribute
 (see question 3.2 above about ID attributes).
-Also see [XML Signature Best Practices] (https://www.w3.org/TR/xmldsig-bestpractices/) for
+Also see [XML Signature Best Practices](https://www.w3.org/TR/xmldsig-bestpractices/) for
 other things you should be checking.
 
 ### 3.4. I am trying to sign/validate a document but xmlXPtrEval function can't evaluate "xpointer(id('XXXXXXX'))" expression. What's wrong?
 
 First of all, read [section 3.2](#section_3_2) about ID attributes. If you have tried to declare
-the required ID attribute and you still have problems then it is likely working with the Visa 3D protocol.
-This protocol tries to reference to an "id" attribute defined as CDATA instead of ID in the DTD (it is
+the required ID attribute and you still have problems, then you are likely working with the Visa 3D protocol.
+This protocol tries to reference an "id" attribute defined as CDATA instead of ID in the DTD (it is
 impossible in XML as described in [section 3.2](#section_3_2)). Even worse, the value of the
-Visa 3D "id" attribute may start from number or contain "+" or "/" and this breaks the
+Visa 3D "id" attribute may start with a number or contain "+" or "/" and this breaks the
 [XML specification](http://www.w3.org/TR/REC-xml#sec-attribute-types) again. The right solution
-for this problem is to change Visa 3D protocol. As a practical solution, try (on your own risk) the "Visa 3D hack"
+for this problem is to change Visa 3D protocol. As a practical solution, try (at your own risk) the "Visa 3D hack"
 in xmlsec:
 
 - First, register ID attributes manually (using either `xmlAddID` function or
@@ -147,7 +147,7 @@ now "id" attribute is declared as ID correctly.
 
 ### 3.5. The XML Security Library or XMLSec command line tool fails because the key cannot be found. What's wrong?
 
-There might be multiple reasons for the "key cannot be found error":
+There might be multiple reasons for the "key cannot be found" error:
 
 - **KeyValue or DEREncodedKeyValue nodes are disabled by default.** The `KeyValue` and `DEREncodedKeyValue`
   nodes allow definition of the key value directly in an XML file. This creates a security risk because there is no mechanism
@@ -172,7 +172,7 @@ There might be multiple reasons for the "key cannot be found error":
 
 - **Certificate cannot be verified.** See the next [question 3.6](#section_3_6) in this FAQ.
 
-### 3.6. The XML Security Library or XMLSec command line tool fails because the certificate cannot be verified. What's wrong?
+### 3.6. The XML Security Library or XMLSec command line tool fails because the certificate cannot be verified. What's wrong? {#section_3_6}
 
 There might be several reasons why XML Security Library cannot verify a certificate:
 
@@ -223,10 +223,10 @@ Another known problem is using ASN1 encoding for ECDSA signatures and you can tr
 `--enable-asn1-signatures-hack` option for [xmlsec command line utility](xmlsec-man.md) or set
 `dsigCtx->flags |= XMLSEC_DSIG_FLAGS_USE_ASN1_SIGNATURE_VALUES;` flag on the XML DSig context (this is a hack
 and can cause interoperability problems). If nothing works, then you will need to reach out to the authors of
-another software packet and ask them to help you debug the issue. Use `--store-references` and
+another software package and ask them to help you debug the issue. Use `--store-references` and
 `--store-signatures` options for the [xmlsec command line utility](xmlsec-man.md) to get pre-digest and
-pre-signatures buffers from XMLSec and compare those against the similar buffers from the another software as
-a first step in debugging process.
+pre-signatures buffers from XMLSec and compare those against the similar buffers from another software as
+a first step in the debugging process.
 
 ### 3.10. I am trying to validate a signature created by XMLSec with another software but validation fails. What's wrong?
 

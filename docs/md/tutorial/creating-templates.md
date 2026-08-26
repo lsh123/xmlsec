@@ -50,7 +50,7 @@ the necessary cryptographic operations.
 </dsig:Signature>
 ```
 
-###  Example: Creating dynamic signature template
+### Example: Creating a dynamic signature template
 
 ```c
 /**
@@ -116,7 +116,7 @@ difference is that some nodes (for example,
 are empty. The XML Security Library fills these nodes after performing
 the necessary cryptographic operations.
 
-### XML Encryption structure
+### XML Encryption template structure
 
 ```xml
 <enc:EncryptedData Id? Type? MimeType? Encoding?>
@@ -169,7 +169,7 @@ create_encryption_template(xmlDocPtr doc) {
         return(NULL);
     }
 
-    /* add <dsig:KeyInfo/> and <dsig:KeyName/> nodes to put key name in the signed document */
+    /* add <dsig:KeyInfo/> and <dsig:KeyName/> nodes to put key name in the encrypted document */
     keyInfoNode = xmlSecTmplEncDataEnsureKeyInfo(encDataNode, NULL);
     if(keyInfoNode == NULL) {
         fprintf(stderr, "Error: failed to add key info\n");

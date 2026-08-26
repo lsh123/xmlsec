@@ -15,9 +15,9 @@ associate the certificate (or certificates) with the private key using
 one of the following functions:
 
 - [xmlSecOpenSSLAppKeyCertLoad](../api/xmlsec_openssl_app.md#xmlsecopensslappkeycertload):
-  loads certificate from a file and adds to the key;
+  loads a certificate from a file and adds it to the key;
 - [xmlSecOpenSSLAppPkcs12Load](../api/xmlsec_openssl_app.md#xmlsecopensslapppkcs12load):
-  loads private key and all the certificates associated with it from
+  loads a private key and all the certificates associated with it from
   a PKCS12 file;
 - [xmlSecKeyAdoptData](../api/xmlsec_core_keys.md#xmlseckeyadoptdata):
     low-level function to add key data (including X509 key data) to the key.
@@ -88,10 +88,10 @@ signature key to the resulting XML document.
 
 If a document is signed with an X509 certificate, signature
 verification consists of two steps:
-- Creating and verifying the X509 certificates
+- Creating and verifying the X509 certificate
   [chain of trust](https://letsencrypt.org/certificates/).
 - Verifying the signature itself using the key extracted from a
-  certificate verified on the previous step.
+  certificate verified in the previous step.
 
 
 ### Example: Certificates chain of trust

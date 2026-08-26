@@ -276,7 +276,7 @@ create_files_keys_mngr(void) {
  * Files Keys Store: we assume that key's name (content of the
  * <dsig:KeyName/> element is a name of the file with a key (in the
  * current folder).
- * Attention: this probably not a good solution for high traffic systems.
+ * Attention: this is probably not a good solution for high traffic systems.
  *
   *****************************************************************************/
 static xmlSecKeyPtr             files_keys_store_find_key       (xmlSecKeyStorePtr store,
@@ -310,7 +310,7 @@ files_keys_store_get_klass(void) {
  * @brief Finds a key in the files-based keys store.
  * @details Looks up a key in #store. The caller is responsible for destroying
  * the returned key with #xmlSecKeyDestroy.
- * @param store the pointer to simple keys store.
+ * @param store the pointer to the files-based keys store.
  * @param name the desired key name.
  * @param keyInfoCtx the pointer to <dsig:KeyInfo/> node processing context.
  * @return pointer to key or NULL if key not found or an error occurs.
@@ -340,14 +340,14 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
     }
 
     if((keyInfoCtx->keyReq.keyId == xmlSecKeyDataDsaId) || (keyInfoCtx->keyReq.keyId == xmlSecKeyDataRsaId)) {
-        /* load key from a pem file, if key is not found then it's an error (is it?) */
+        /* load key from a pem file, if key is not found then it's an error */
         key = xmlSecCryptoAppKeyLoadEx((const char*)name, xmlSecKeyDataTypePrivate, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
         if(key == NULL) {
-            fprintf(stderr,"Error: failed to load public pem key from \"%s\"\n", name);
+            fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", name);
             return(NULL);
         }
     } else {
-        /* otherwise it's a binary key, if key is not found then it's an error (is it?) */
+        /* otherwise it's a binary key, if key is not found then it's an error */
         key = xmlSecKeyReadBinaryFile(keyInfoCtx->keyReq.keyId, (const char*)name);
         if(key == NULL) {
             fprintf(stderr,"Error: failed to load key from binary file \"%s\"\n", name);

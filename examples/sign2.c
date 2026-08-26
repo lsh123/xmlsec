@@ -262,7 +262,10 @@ sign_file(const char* xml_file, const char* key_file) {
     }
 
     /* print signed document to stdout */
-    xmlDocDump(stdout, signNode->doc);
+    if(xmlDocDump(stdout, signNode->doc) < 0) {
+        fprintf(stderr, "Error: failed to write the signed document to stdout\n");
+        goto done;
+    }
 
     /* success */
     res = 0;

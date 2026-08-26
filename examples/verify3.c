@@ -217,7 +217,7 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
     assert(xml_file);
 
     /* load file */
-    doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET);
+    doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
         fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
         goto done;
@@ -248,6 +248,7 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
         fprintf(stdout, "Signature is OK\n");
     } else {
         fprintf(stdout, "Signature is INVALID\n");
+        goto done;
     }
 
     /* success */

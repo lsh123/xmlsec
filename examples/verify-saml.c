@@ -354,7 +354,7 @@ verify_signature_results(xmlSecDSigCtxPtr dsigCtx) {
     }
 
     /* check URI */
-    if(!xmlStrEqual(dsigRefCtx->uri, BAD_CAST "")) {
+    if((dsigRefCtx->uri != NULL) && (!xmlStrEqual(dsigRefCtx->uri, BAD_CAST ""))) {
         fprintf(stderr,"Error: Reference URI value doesn't match expected one\n");
         return(-1);
     }

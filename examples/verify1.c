@@ -207,6 +207,7 @@ verify_file(const char* xml_file, const char* key_file) {
         fprintf(stdout, "Signature is OK\n");
     } else {
         fprintf(stdout, "Signature is INVALID\n");
+        goto done;
     }
 
     /* success */

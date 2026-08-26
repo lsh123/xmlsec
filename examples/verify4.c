@@ -48,10 +48,12 @@ int verify_signature_results(xmlSecDSigCtxPtr dsigCtx, const char* id_attr);
 
 int
 main(int argc, char **argv) {
+    int xmlsec_initialized = 0;
 #ifndef XMLSEC_NO_XSLT
     xsltSecurityPrefsPtr xsltSecPrefs = NULL;
 #endif /* XMLSEC_NO_XSLT */
-    xmlSecKeysMngrPtr mngr;
+    xmlSecKeysMngrPtr mngr = NULL;
+    int res = -1;
 
     assert(argv);
 
@@ -69,6 +71,10 @@ main(int argc, char **argv) {
 #ifndef XMLSEC_NO_XSLT
     /* disable all XSLT file and network access */
     xsltSecPrefs = xsltNewSecurityPrefs();
+    if(xsltSecPrefs == NULL) {
+        fprintf(stderr, "Error: failed to create the xslt security prefs\n");
+        goto xslt_cleanup;
+    }
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid);
@@ -80,13 +86,13 @@ main(int argc, char **argv) {
     /* Init XMLSec */
     if(xmlSecInit() < 0) {
         fprintf(stderr, "Error: xmlsec initialization failed.\n");
-        return(-1);
+        goto xslt_cleanup;
     }
 
     /* Check loaded library version */
     if(xmlSecCheckVersion() != 1) {
         fprintf(stderr, "Error: loaded xmlsec library version is not compatible.\n");
-        return(-1);
+        goto done;
     }
 
     /* Load default crypto engine if we are supporting dynamic
@@ -99,46 +105,51 @@ main(int argc, char **argv) {
         fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
                         "that you have it installed and check shared libraries path\n"
                         "(LD_LIBRARY_PATH and/or LTDL_LIBRARY_PATH) environment variables.\n");
-        return(-1);
+        goto done;
     }
 #endif /* XMLSEC_CRYPTO_DYNAMIC_LOADING */
 
     /* Init crypto library */
     if(xmlSecCryptoAppInit(NULL) < 0) {
         fprintf(stderr, "Error: crypto initialization failed.\n");
-        return(-1);
+        goto done;
     }
 
     /* Init xmlsec-crypto library */
     if(xmlSecCryptoInit() < 0) {
         fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
-        return(-1);
+        goto done;
     }
+    xmlsec_initialized = 1;
 
     /* create keys manager and load trusted certificates */
     mngr = load_trusted_certs(&(argv[3]), argc - 3);
     if(mngr == NULL) {
-        return(-1);
+        goto done;
     }
 
     /* verify file */
     if(verify_file(mngr, argv[1], argv[2]) < 0) {
-        xmlSecKeysMngrDestroy(mngr);
-        return(-1);
+        goto done;
     }
 
+    /* success! */
+    res = 0;
+
+done:
     /* destroy keys manager */
-    xmlSecKeysMngrDestroy(mngr);
+    if(mngr != NULL) {
+        xmlSecKeysMngrDestroy(mngr);
+    }
 
-    /* Shutdown xmlsec-crypto library */
-    xmlSecCryptoShutdown();
+    /* shutdown xmlsec-crypto library and xmlsec itself */
+    if (xmlsec_initialized != 0) {
+        xmlSecCryptoShutdown();
+        xmlSecCryptoAppShutdown();
+        xmlSecShutdown();
+    }
 
-    /* Shutdown crypto library */
-    xmlSecCryptoAppShutdown();
-
-    /* Shutdown XMLSec */
-    xmlSecShutdown();
-
+xslt_cleanup:
     /* Shutdown LibXSLT / LibXML2 */
 #ifndef XMLSEC_NO_XSLT
     xsltFreeSecurityPrefs(xsltSecPrefs);
@@ -146,7 +157,7 @@ main(int argc, char **argv) {
 #endif /* XMLSEC_NO_XSLT */
     xmlCleanupParser();
 
-    return(0);
+    return(res);
 }
 
 /**
@@ -216,7 +227,7 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* id_attr) {
     assert(id_attr);
 
     /* load file */
-    doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET);
+    doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
         fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
         goto done;
@@ -250,6 +261,7 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* id_attr) {
         fprintf(stdout, "Signature is OK\n");
     } else {
         fprintf(stdout, "Signature is INVALID\n");
+        goto done;
     }
 
     /* success */

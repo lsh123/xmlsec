@@ -66,6 +66,7 @@ int main(int argc, const char **argv) {
     int success = 1;
     int res = 1;
 #if defined(XMLSEC_WINDOWS) && defined(UNICODE)
+    errno_t wcstombsRet;
     char testGroupFilterBuf[256] = { '\0' };
 #endif /* defined(XMLSEC_WINDOWS) && defined(UNICODE) */
 
@@ -81,6 +82,10 @@ int main(int argc, const char **argv) {
 #ifndef XMLSEC_NO_XSLT
     /* disable everything */
     xsltSecPrefs = xsltNewSecurityPrefs();
+    if(xsltSecPrefs == NULL) {
+        fprintf(stderr, "Error: xsltNewSecurityPrefs failed\n");
+        goto done;
+    }
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid);
@@ -110,7 +115,11 @@ int main(int argc, const char **argv) {
     }
     if(argc == 2) {
 #if defined(XMLSEC_WINDOWS) && defined(UNICODE)
-        wcstombs_s(NULL, testGroupFilterBuf, sizeof(testGroupFilterBuf), argv[1], sizeof(testGroupFilterBuf) - 1);
+        wcstombsRet = wcstombs_s(NULL, testGroupFilterBuf, sizeof(testGroupFilterBuf), argv[1], sizeof(testGroupFilterBuf) - 1);
+        if(wcstombsRet != 0) {
+            fprintf(stderr, "Error: failed to convert the test group filter name\n");
+            goto done;
+        }
         g_testGroupFilter = testGroupFilterBuf;
 #else /* defined(XMLSEC_WINDOWS) && defined(UNICODE) */
         g_testGroupFilter = argv[1];
@@ -179,7 +188,7 @@ done:
     g_testLogBuffer = NULL;
     g_testGroupFilter = NULL;
 
-    /* Shutdown LibXSLT / LibXML2*/
+    /* shutdown LibXSLT / LibXML2 */
 #ifndef XMLSEC_NO_XSLT
     xsltFreeSecurityPrefs(xsltSecPrefs);
     xsltCleanupGlobals();

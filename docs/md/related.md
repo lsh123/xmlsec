@@ -30,7 +30,6 @@
 - [Python xmlsec module](https://github.com/mehcode/python-xmlsec) — Python bindings for XML Security Library.
 - [Perl CPAN module](https://metacpan.org/pod/XML::LibXML::xmlsec) — Perl bindings for XML Security Library ([source code](https://github.com/estrelow/Perl-LibXML-Sec)).
 - [Lasso Library](http://lasso.entrouvert.org/) — the Liberty Alliance standards implementation.
-- [OpenSAML](http://www.opensaml.org/) — an open source implementation of [the SAML 1.0 specification](http://www.oasis-open.org/committees/security/#documents).
 
 ### Articles
 

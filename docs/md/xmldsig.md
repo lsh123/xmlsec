@@ -141,5 +141,5 @@ XML Security library supports the following features as defined in
 
 ### Test vectors
 
-- [XML Signature 1.0 interop (2001)](http://www.w3.org/Signature/2001/04/05-xmldsig.md)
+- [XML Signature 1.0 interop (2001)](https://www.w3.org/Signature/2001/04/05-xmldsig-interop.html)
 - [XML Signature 1.1 interop (2012)](https://www.w3.org/TR/2012/NOTE-xmldsig-core1-interop-20121113/)

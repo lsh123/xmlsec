@@ -272,8 +272,8 @@ test_xmlSecX509AttrValueStringRead(void) {
 #define TEST_X509_NAME_MAX_COUNT 16
 
 typedef struct test_X509Name {
-    xmlChar names[256][TEST_X509_NAME_MAX_COUNT];
-    xmlChar values[256][TEST_X509_NAME_MAX_COUNT];
+    xmlChar names[TEST_X509_NAME_MAX_COUNT][256];
+    xmlChar values[TEST_X509_NAME_MAX_COUNT][1024];
     xmlSecSize valueSizes[TEST_X509_NAME_MAX_COUNT];
     int types[TEST_X509_NAME_MAX_COUNT];
     int pos;

@@ -15,7 +15,13 @@ static void ignore(void* ctx, const char* msg, ...) {
 int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
     xmlSetGenericErrorFunc(NULL, &ignore);
     xmlSecBufferPtr buf = xmlSecBufferCreate(size);
-    xmlSecBufferSetData(buf, data, size);
+    if(buf == NULL) {
+        return 0;
+    }
+    if(xmlSecBufferSetData(buf, data, size) < 0) {
+        xmlSecBufferDestroy(buf);
+        return 0;
+    }
     xmlDocPtr doc = xmlSecParseMemory(xmlSecBufferGetData(buf),
             xmlSecBufferGetSize(buf), 0);
 

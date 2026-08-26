@@ -21,8 +21,8 @@ ifeq ($(XMLSEC_CHECK),found)
     CFLAGS += $(shell $(PKG_CONFIG) --cflags $(XMLSEC_PKG_CONFIG))
     LDLIBS += $(shell $(PKG_CONFIG) --libs $(XMLSEC_PKG_CONFIG))
 else
-	CFLAGS := $(CFLAGS) $(shell xmlsec1-config --cflags)
-	LDLIBS := $(LDLIBS) $(shell xmlsec1-config --libs)
+    CFLAGS := $(CFLAGS) $(shell xmlsec1-config --cflags)
+    LDLIBS := $(LDLIBS) $(shell xmlsec1-config --libs)
 endif
 
 # add compiler specific flags

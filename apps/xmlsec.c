@@ -1390,7 +1390,6 @@ int main(int argc, const char **argv) {
     if(command == xmlSecAppCommandUnknown) {
         fprintf(stderr, "Error: unknown command \"%s\"\n", utf8_argv[1]);
         xmlSecAppPrintUsage();
-        res = 0;
         goto done;
     }
 
@@ -1416,7 +1415,8 @@ int main(int argc, const char **argv) {
     /* is it a help request? */
     if(xmlSecAppCmdLineParamIsSet(&helpParam)) {
         xmlSecAppPrintHelp(command, cmdLineTopics);
-        return(0);
+        res = 0;
+        goto done;
     }
 
     /* we need to have some files at the end */
@@ -3171,7 +3171,7 @@ xmlSecAppShutdown(void) {
         fprintf(stderr, "Error: xmlsec shutdown failed.\n");
     }
 
-    /* Shutdown LibXSLT / LibXML2*/
+    /* shutdown LibXSLT / LibXML2 */
 #ifndef XMLSEC_NO_XSLT
     xsltFreeSecurityPrefs(xsltSecPrefs);
     xsltCleanupGlobals();
@@ -3690,7 +3690,7 @@ xmlSecAppGetOutputFilename(const char* inputFileName, const char* outputFileName
     }
 #else /* !defined(_MSC_VER) */
     inputBasename = inputFileNameCopy;
-    err = _splitpath_s(inputFileName, NULL, 0, NULL, 0, inputBasename, strlen(inputBasename), NULL, 0);
+    err = _splitpath_s(inputFileName, NULL, 0, NULL, 0, inputBasename, strlen(inputFileName) + 1, NULL, 0);
     if(err != 0) {
         fprintf(stderr, "Error: failed to split the input filename \"%s\": %d\n", inputFileName, (int)err);
         goto done;

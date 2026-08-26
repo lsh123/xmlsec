@@ -21,6 +21,8 @@ initializing and shutting down the following dependencies:
 ## Example: Initializing an application
 
 ```c
+    int xmlsec_initialized = 0;
+
     /* Init LibXML2 */
     xmlInitParser();
     LIBXML_TEST_VERSION
@@ -74,21 +76,21 @@ initializing and shutting down the following dependencies:
         fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
         return(-1);
     }
+
+    xmlsec_initialized = 1;
 ```
 
 ## Example: Shutting down an application
 
 ```c
-    /* Shutdown xmlsec-crypto library */
-    xmlSecCryptoShutdown();
+    /* shutdown xmlsec-crypto library and xmlsec itself */
+    if (xmlsec_initialized != 0) {
+        xmlSecCryptoShutdown();
+        xmlSecCryptoAppShutdown();
+        xmlSecShutdown();
+    }
 
-    /* Shutdown crypto library */
-    xmlSecCryptoAppShutdown();
-
-    /* Shutdown XMLSec */
-    xmlSecShutdown();
-
-    /* Shutdown LibXSLT / LibXML2*/
+    /* shutdown LibXSLT / LibXML2 */
 #ifndef XMLSEC_NO_XSLT
     xsltFreeSecurityPrefs(xsltSecPrefs);
     xsltCleanupGlobals();

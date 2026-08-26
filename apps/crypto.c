@@ -34,6 +34,9 @@ xmlSecAppCryptoInit(const char* config) {
     }
     if(xmlSecCryptoInit() < 0) {
         fprintf(stderr, "Error: xmlSecCryptoInit failed\n");
+        if(xmlSecCryptoAppShutdown() < 0) {
+            fprintf(stderr, "Error: xmlSecCryptoAppShutdown failed\n");
+        }
         return(-1);
     }
 
@@ -42,16 +45,18 @@ xmlSecAppCryptoInit(const char* config) {
 
 int
 xmlSecAppCryptoShutdown(void) {
+    int ret = 0;
+
     if(xmlSecCryptoShutdown() < 0) {
         fprintf(stderr, "Error: xmlSecCryptoShutdown failed\n");
-        return(-1);
+        ret = -1;
     }
 
     if(xmlSecCryptoAppShutdown() < 0) {
         fprintf(stderr, "Error: xmlSecCryptoAppShutdown failed\n");
-        return(-1);
+        ret = -1;
     }
-    return(0);
+    return(ret);
 }
 
 int

@@ -55,9 +55,11 @@ int sign_file(const char* xml_file, const char* id_attr, const char* key_file, c
 
 int
 main(int argc, char **argv) {
+    int xmlsec_initialized = 0;
 #ifndef XMLSEC_NO_XSLT
     xsltSecurityPrefsPtr xsltSecPrefs = NULL;
 #endif /* XMLSEC_NO_XSLT */
+    int res = -1;
 
     assert(argv);
 
@@ -86,13 +88,13 @@ main(int argc, char **argv) {
     /* Init XMLSec */
     if(xmlSecInit() < 0) {
         fprintf(stderr, "Error: xmlsec initialization failed.\n");
-        return(-1);
+        goto done;
     }
 
     /* Check loaded library version */
     if(xmlSecCheckVersion() != 1) {
         fprintf(stderr, "Error: loaded xmlsec library version is not compatible.\n");
-        return(-1);
+        goto done;
     }
 
     /* Load default crypto engine if we are supporting dynamic
@@ -105,43 +107,47 @@ main(int argc, char **argv) {
         fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
                         "that you have it installed and check shared libraries path\n"
                         "(LD_LIBRARY_PATH and/or LTDL_LIBRARY_PATH) environment variables.\n");
-        return(-1);
+        goto done;
     }
 #endif /* XMLSEC_CRYPTO_DYNAMIC_LOADING */
 
     /* Init crypto library */
     if(xmlSecCryptoAppInit(NULL) < 0) {
         fprintf(stderr, "Error: crypto initialization failed.\n");
-        return(-1);
+        goto done;
     }
 
     /* Init xmlsec-crypto library */
     if(xmlSecCryptoInit() < 0) {
         fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
-        return(-1);
+        goto done;
     }
+    xmlsec_initialized = 1;
 
+    /* sign file */
     if(sign_file(argv[1], argv[2], argv[3], argv[4]) < 0) {
-        return(-1);
+        goto done;
     }
 
-    /* Shutdown xmlsec-crypto library */
-    xmlSecCryptoShutdown();
+    /* success! */
+    res = 0;
 
-    /* Shutdown crypto library */
-    xmlSecCryptoAppShutdown();
+done:
+    /* shutdown xmlsec-crypto library and xmlsec itself */
+    if (xmlsec_initialized != 0) {
+        xmlSecCryptoShutdown();
+        xmlSecCryptoAppShutdown();
+        xmlSecShutdown();
+    }
 
-    /* Shutdown XMLSec */
-    xmlSecShutdown();
-
-    /* Shutdown LibXSLT / LibXML2*/
+    /* shutdown LibXSLT / LibXML2 */
 #ifndef XMLSEC_NO_XSLT
     xsltFreeSecurityPrefs(xsltSecPrefs);
     xsltCleanupGlobals();
 #endif /* XMLSEC_NO_XSLT */
     xmlCleanupParser();
 
-    return(0);
+    return(res);
 }
 
 /**

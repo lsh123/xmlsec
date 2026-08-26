@@ -19,7 +19,7 @@ or more of the following files:
   shutdown functions;
 - `xmlsec/xmldsig.h` - XML Digital Signature functions;
 - `xmlsec/xmlenc.h` - XML Encryption functions;
-- `xmlsec/xmltree.h` - helper functions for XML documents manipulation;
+- `xmlsec/xmltree.h` - helper functions for XML document manipulation;
 - `xmlsec/templates.h` - helper functions for creating dynamic XML
 	Digital Signature and XML Encryption templates;
 - `xmlsec/crypto.h` - automatic XML Security Crypto Library selection.
@@ -126,9 +126,9 @@ clean:
 PROGRAM = test
 PROGRAM_FILES = test.c
 
-CFLAGS	+= -g $(shell xmlsec1-config --crypto gnutls --cflags)
+CFLAGS	+= -g $(shell xmlsec1-config --crypto=gnutls --cflags)
 LDFLAGS	+= -g
-LIBS 	+= $(shell xmlsec1-config --crypto gnutls --libs)
+LIBS 	+= $(shell xmlsec1-config --crypto=gnutls --libs)
 
 all: $(PROGRAM)
 
@@ -202,13 +202,13 @@ application:
 #define XMLSEC_STATIC
 ```
 
-### Setting include and library paths.
+### Setting include and library paths
 
 As usual, you need the correct include and library paths for XMLSec,
 LibXML, LibXSLT, OpenSSL, or any other library used by your
 application.
 
-### Selecting correct Windows runtime libraries.
+### Selecting correct Windows runtime libraries
 
 Microsoft Visual Studio provides several C runtimes for different
 combinations of single-threaded vs multi-threaded mode, static vs
@@ -218,6 +218,6 @@ the application (including all dependencies)***.
 
 By default, `configure.ps1` uses the `/MD` (non-debug version of 
 the multithreaded DLL runtime) runtime libraries. 
-Use `cruntime=<new runtime>` option to change it (see the XML Security
+Use the `cruntime=<new runtime>` option to change it (see the XML Security
 Library [installation tutorial](install.md) for more details).
 

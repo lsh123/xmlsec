@@ -33,10 +33,10 @@ A typical signature verification process includes the following steps:
   [xmlSecDSigCtx](../api/xmlsec_core_xmldsig.md#xmlsecdsigctxcreate)
   structure).
 - Perform additional checks to ensure the signature is valid (for
-    example, validate References and Transforms to ensure that the
-    expected data was actually signed).
-    See [XML Signature Best Practices] (https://www.w3.org/TR/xmldsig-bestpractices/)
-    for more details.
+  example, validate References and Transforms to ensure that the
+  expected data was actually signed).
+  See [XML Signature Best Practices](https://www.w3.org/TR/xmldsig-bestpractices/)
+  for more details.
 - Destroy the signature context using the
   [xmlSecDSigCtxDestroy](../api/xmlsec_core_xmldsig.md#xmlsecdsigctxdestroy)
   function.
@@ -199,7 +199,7 @@ A typical decryption process includes the following steps:
 - Load the decryption key(s), X509 certificates, etc. into the
   [keys manager](../api/xmlsec_core_keysmngr.md#xmlseckeysmngrcreate)
   or set the key in the encryption context (the `encKey` member of
-  [xmlSecEncCtx](../api/xmlsec_core_xmlenc.md#xmlsecencctxcreate)
+  the [xmlSecEncCtx](../api/xmlsec_core_xmlenc.md#xmlsecencctxcreate)
   structure).
 - Decrypt the data by calling the
     [xmlSecEncCtxDecrypt](../api/xmlsec_core_xmlenc.md#xmlsecencctxdecrypt)
@@ -215,10 +215,10 @@ A typical decryption process includes the following steps:
 ```c
 
 /**
- * @brief Decrypts an encrypted XML file using a DES key.
- * @details Decrypts the XML file #enc_file using DES key from #key_file and
+ * @brief Decrypts an encrypted XML file using a Triple DES key.
+ * @details Decrypts the XML file #enc_file using Triple DES key from #key_file and
  * prints results to stdout.
- * @param enc_file the encrypted XML  file name.
+ * @param enc_file the encrypted XML file name.
  * @param key_file the Triple DES key file.
  * @return 0 on success or a negative value if an error occurs.
  */

@@ -4,8 +4,8 @@
 
 The XML Security Library performs signing or encryption by processing a
 template that specifies the signing or encryption parameters
-(transforms, algorithms, keys, etc.) and, optionally, the input XML or
-binary data if it is not already included in the template. The
+(transforms, algorithms, keys, etc.). The input XML or binary data can
+be included in the template or supplied to the library separately. The
 template has the same structure as the desired result, but some of its
 nodes might be empty. The XML Security Library finds the key for
 signing or encryption in the keys manager or in the signing/encryption
@@ -45,7 +45,7 @@ A typical signature process includes the following steps:
 
 /**
  * @brief Signs an XML template file using a private key.
- * @details Signs the #tmpl_file using private key from #key_file.
+ * @details Signs the #tmpl_file using a private key from #key_file.
  * @param tmpl_file the signature template file name.
  * @param key_file the PEM private key file name.
  * @return 0 on success or a negative value if an error occurs.
@@ -138,7 +138,7 @@ A typical encryption process includes the following steps:
 - Load the encryption key(s), X509 certificates, etc. into the
   [keys manager](../api/xmlsec_core_keysmngr.md#xmlseckeysmngrcreate)
   or set the key in the encryption context (the `encKey` member of
-  [xmlSecEncCtx](../api/xmlsec_core_xmlenc.md#xmlsecencctxcreate)
+  the [xmlSecEncCtx](../api/xmlsec_core_xmlenc.md#xmlsecencctxcreate)
   structure).
 - Encrypt the data by calling one of the following functions:
   - [xmlSecEncCtxBinaryEncrypt](../api/xmlsec_core_xmlenc.md#xmlsecencctxbinaryencrypt)
@@ -154,8 +154,8 @@ A typical encryption process includes the following steps:
 ```c
 
 /**
- * @brief Encrypts binary data using a DES key and a template file.
- * @details Encrypts binary #data using template from #tmpl_file and DES key from
+ * @brief Encrypts binary data using a Triple DES key and a template file.
+ * @details Encrypts binary #data using template from #tmpl_file and Triple DES key from
  * #key_file.
  * @param tmpl_file the encryption template file name.
  * @param key_file the Triple DES key file.
@@ -196,7 +196,7 @@ encrypt_file(const char* tmpl_file, const char* key_file,
         goto done;
     }
 
-    /* load DES key, assuming that there is no password */
+    /* load DES key */
     encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
     if(encCtx->encKey == NULL) {
         fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);
@@ -215,7 +215,7 @@ encrypt_file(const char* tmpl_file, const char* key_file,
         goto done;
     }
 
-    /* print encrypted data with document to stdout */
+    /* print encrypted data with the document to stdout */
     xmlDocDump(stdout, doc);
 
     /* success */

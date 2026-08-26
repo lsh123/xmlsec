@@ -9,6 +9,7 @@ And at least one of the following cryptographic libraries:
 - [OpenSSL](https://www.openssl.org) >= 3.0.13 (>= 3.5.0 is recommended)
 - [LibreSSL](https://www.libressl.org/) >= 3.9.0
 - [BoringSSL](https://boringssl.googlesource.com/boringssl/) >= 1.1.0
+- [AWS-LC](https://github.com/aws/aws-lc) >= 1.66.0
 - [NSS](https://firefox-source-docs.mozilla.org/security/nss/index.html) >= 3.91 (with [NSPR](https://firefox-source-docs.mozilla.org/nspr/index.html) >= 4.34.1)
 - [GnuTLS](https://www.gnutls.org/) >= 3.8.3
 - [Microsoft Cryptography API: Next Generation (CNG)](https://learn.microsoft.com/en-us/windows/win32/seccng/cng-portal)
@@ -35,9 +36,9 @@ apt install openssl libssl3 libssl-dev
 apt install libnspr4 libnspr4-dev libnss3 libnss3-dev libnss3-tools
 
 # gnutls libraries
-apt install libgnutls30
+apt install libgnutls28-dev
 
-# gnutls libraries
+# gcrypt libraries
 apt install libgcrypt20 libgcrypt20-dev
 
 # required for building man pages and docs
@@ -81,15 +82,13 @@ To see the configuration options, run:
 Building from the command line is the only supported method. To build
 from the command line, you must make sure that your compiler works
 there as well. The simplest way is to launch the
-`x64 Native Tools Command Prompt for VS 2022` (or a similar)
+`x64 Native Tools Command Prompt for VS 2022` (or a similar one)
 specialized shell environment that automatically sets the necessary
 environment variables. Alternatively, you can use `vcvars64.bat` (or
 similar) scripts.
 
-The XML Security Library on Windows uses `JScript` to configure the
-build automatically. `JScript` is widely available, but if it is not
-available on your machine for any reason, you can also configure the
-build manually.
+The XML Security Library on Windows uses PowerShell (`configure.ps1`)
+to configure the build automatically.
 
 To build and install XML Security Library on Windows using Microsoft
 Visual Studio, run the following commands:
@@ -101,6 +100,9 @@ powershell -ExecutionPolicy Bypass -File configure.ps1 [possible configure optio
 nmake
 nmake install
 ```
+
+Note: the extraction command requires GNU `gunzip` and `tar` (e.g. from
+Git for Windows, MSYS2, or Cygwin).
 
 To see the configuration options, run:
 

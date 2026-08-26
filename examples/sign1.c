@@ -140,7 +140,7 @@ main(int argc, char **argv) {
 
 /**
  * @brief Signs an XML template file using a private key.
- * @details Signs the #tmpl_file using private key from #key_file.
+ * @details Signs the #tmpl_file using a private key from #key_file.
  * @param tmpl_file the signature template file name.
  * @param key_file the PEM private key file name.
  * @return 0 on success or a negative value if an error occurs.

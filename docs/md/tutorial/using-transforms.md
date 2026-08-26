@@ -20,7 +20,7 @@ input of the next transform.
 
 The data flows through the transform chain one transform at a time:
 
-## Figure: Transform chain created for [dsig:Reference](http://www.w3.org/TR/xmldsig-core/#sec-Reference) element processing
+### Figure: Transform chain created for [dsig:Reference](http://www.w3.org/TR/xmldsig-core/#sec-Reference) element processing
 
 ![Transform chain created for dsig:Reference element processing](images/transforms-chain.png)
 

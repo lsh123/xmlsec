@@ -166,7 +166,7 @@ create_encryption_template(xmlDocPtr doc) {
         return(NULL);
     }
 
-    /* add <dsig:KeyInfo/> and <dsig:KeyName/> nodes to put key name in the signed document */
+    /* add <dsig:KeyInfo/> and <dsig:KeyName/> nodes to put key name in the encrypted document */
     keyInfoNode = xmlSecTmplEncDataEnsureKeyInfo(encDataNode, NULL);
     if(keyInfoNode == NULL) {
         fprintf(stderr, "Error: failed to add key info\n");

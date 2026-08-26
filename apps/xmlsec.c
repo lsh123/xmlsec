@@ -3690,7 +3690,7 @@ xmlSecAppGetOutputFilename(const char* inputFileName, const char* outputFileName
     }
 #else /* !defined(_MSC_VER) */
     inputBasename = inputFileNameCopy;
-    err = _splitpath_s(inputFileName, NULL, 0, inputBasename, strlen(inputFileName) + 1, NULL, 0);
+    err = _splitpath_s(inputFileName, NULL, 0, NULL, 0, inputBasename, strlen(inputFileName) + 1, NULL, 0);
     if(err != 0) {
         fprintf(stderr, "Error: failed to split the input filename \"%s\": %d\n", inputFileName, (int)err);
         goto done;

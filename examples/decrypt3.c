@@ -150,11 +150,11 @@ main(int argc, char **argv) {
 }
 
 /**
- * @brief Decrypts an encrypted XML file using a DES key from keys manager.
- * @details Decrypts the XML file #enc_file using DES key from #key_file and
+ * @brief Decrypts an encrypted XML file using a keys manager.
+ * @details Decrypts the XML file #enc_file using keys from the keys manager and
  * prints results to stdout.
  * @param mngr the pointer to keys manager.
- * @param enc_file the encrypted XML  file name.
+ * @param enc_file the encrypted XML file name.
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -274,7 +274,7 @@ create_files_keys_mngr(void) {
 /******************************************************************************
  *
  * Files Keys Store: we assume that key's name (content of the
- * <dsig:KeyName/> element is a name of the file with a key (in the
+ * <dsig:KeyName/> element) is a name of the file with a key (in the
  * current folder).
  * Attention: this is probably not a good solution for high traffic systems.
  *

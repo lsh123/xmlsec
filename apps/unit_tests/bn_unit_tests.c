@@ -644,7 +644,7 @@ test_xmlSecBnAdd_updatesValue(void) {
     xmlSecBn bn;
     int ret;
 
-    testStart("xmlSecBnAdd: updates decimal value");
+    testStart("xmlSecBnAdd: updates hex value");
 
     ret = xmlSecBnInitialize(&bn, 0);
     if(ret < 0) {

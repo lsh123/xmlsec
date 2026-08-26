@@ -219,7 +219,7 @@ load_rsa_keys(char* key_file) {
  * @details Encrypts #xml_file using a dynamically created template, a session DES key,
  * and an RSA key from the keys manager.
  * @param mngr the pointer to keys manager.
- * @param xml_file the encryption template file name.
+ * @param xml_file the XML file name.
  * @param key_name the RSA key name.
  * @return 0 on success or a negative value if an error occurs.
  */
@@ -237,7 +237,7 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
     assert(xml_file);
     assert(key_name);
 
-    /* load template */
+    /* load XML file */
     doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
         fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
@@ -271,7 +271,7 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
                                     xmlSecTransformRsaPkcs1Id,
                                     NULL, NULL, NULL);
     if(encKeyNode == NULL) {
-        fprintf(stderr, "Error: failed to add key info\n");
+        fprintf(stderr, "Error: failed to add EncryptedKey node\n");
         goto done;
     }
 

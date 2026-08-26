@@ -12,7 +12,7 @@
  * transform to sign the whole document except the <dsig:Signature/> node
  * itself. The key certificate is written in the <dsig:X509Data/> node.
  *
- * This example was developed and tested with OpenSSL crypto library. The
+ * This example was developed and tested with the OpenSSL crypto library. The
  * certificates management policies for another crypto library may break it.
  *
  * Usage:
@@ -98,7 +98,7 @@ main(int argc, char **argv) {
 
     /* Load default crypto engine if we are supporting dynamic
      * loading for xmlsec-crypto libraries. Use the crypto library
-     * name ("openssl", "nss", etc.) to load corresponding
+     * name ("openssl", "nss", etc.) to load the corresponding
      * xmlsec-crypto library.
      */
 #ifdef XMLSEC_CRYPTO_DYNAMIC_LOADING
@@ -224,7 +224,7 @@ sign_file(const char* xml_file, const char* key_file, const char* cert_file) {
         goto done;
     }
 
-    /* create signature context, we don't need keys manager in this example */
+    /* create signature context, we don't need a keys manager in this example */
     dsigCtx = xmlSecDSigCtxCreate(NULL);
     if(dsigCtx == NULL) {
         fprintf(stderr,"Error: failed to create signature context\n");
@@ -251,7 +251,7 @@ sign_file(const char* xml_file, const char* key_file, const char* cert_file) {
 
     /* set the key name to the file name; this is only an example */
     if(xmlSecKeySetName(dsigCtx->signKey, BAD_CAST key_file) < 0) {
-        fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
+        fprintf(stderr,"Error: failed to set the key name for the key from \"%s\"\n", key_file);
         goto done;
     }
 

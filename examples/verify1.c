@@ -7,7 +7,7 @@
  */
 /**
  * @brief XML Security Library example: Verifying a file using a single key.
- * @details Verifies a file using a key from PEM file.
+ * @details Verifies a file using a key from a PEM file.
  *
  * Usage:
  *
@@ -136,7 +136,7 @@ main(int argc, char **argv) {
 
 /**
  * @brief Verifies XML signature in a file using a public key.
- * @details Verifies XML signature in #xml_file using public key from #key_file.
+ * @details Verifies the XML signature in #xml_file using the public key from #key_file.
  * @param xml_file the signed XML file name.
  * @param key_file the PEM public key file name.
  * @return 0 on success or a negative value if an error occurs.

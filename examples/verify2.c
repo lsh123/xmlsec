@@ -6,8 +6,8 @@
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * @brief XML Security Library example: Verifying a file using keys manager.
- * @details Verifies a file using keys manager
+ * @brief XML Security Library example: Verifying a file using a keys manager.
+ * @details Verifies a file using a keys manager.
  *
  * Usage:
  *
@@ -254,7 +254,7 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
 
     /* Verify signature */
     if(xmlSecDSigCtxVerify(dsigCtx, node) < 0) {
-        fprintf(stderr,"Error: signature verify\n");
+        fprintf(stderr,"Error: signature verification failed\n");
         goto done;
     }
 

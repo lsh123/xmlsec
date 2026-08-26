@@ -416,7 +416,7 @@ xmlSecAppCryptoSimpleKeysMngrKeyGenerate(xmlSecKeysMngrPtr mngr, const char* key
 
     key = xmlSecAppCryptoKeyGenerate(keyKlassAndSize, name, xmlSecKeyDataTypePermanent);
     if(key == NULL) {
-        fprintf(stderr, "Error: xmlSecAppCryptoSimpleKeysMngrKeyGenerate failed: name=%s\n",
+        fprintf(stderr, "Error: xmlSecAppCryptoKeyGenerate failed: name=%s\n",
                 xmlSecErrorsSafeString(name));
         return(-1);
     }
@@ -457,8 +457,8 @@ xmlSecAppCryptoKeyGenerate(const char* keyKlassAndSize, const char* name, xmlSec
     *(p++) = '\0';
     size = atoi(p);
     if(size <= 0) {
-       fprintf(stderr, "Error: key size should be greater than zero \"%s\"\n",
-                    xmlSecErrorsSafeString(buf));
+        fprintf(stderr, "Error: key size should be greater than zero \"%s\"\n",
+                    xmlSecErrorsSafeString(keyKlassAndSize));
         xmlFree(buf);
         return(NULL);
     }

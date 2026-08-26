@@ -26,7 +26,7 @@ test_xmlSecX509EscapedStringRead_success(
     const char * name,
     const char * str,
     const char delim,
-    int ingoreTrailingSpaces,
+    int ignoreTrailingSpaces,
     const char* expectedIn,
     const char* expectedOut
 ) {
@@ -48,7 +48,7 @@ test_xmlSecX509EscapedStringRead_success(
     inSize = size;
     outSize = 0;
 
-    ret = xmlSecX509EscapedStringRead(&inStr, &inSize, out, sizeof(out) - 1, &outSize, (xmlChar)delim, ingoreTrailingSpaces);
+    ret = xmlSecX509EscapedStringRead(&inStr, &inSize, out, sizeof(out) - 1, &outSize, (xmlChar)delim, ignoreTrailingSpaces);
     if(ret < 0) {
         testLog("Error: xmlSecX509EscapedStringRead failed for '%s'\n", str);
         testFinishedFailure();
@@ -78,7 +78,7 @@ test_xmlSecX509EscapedStringRead_failure(
     const char * name,
     const char * str,
     const char delim,
-    int ingoreTrailingSpaces
+    int ignoreTrailingSpaces
 ) {
     const xmlChar *inStr;
     xmlSecSize size, inSize;
@@ -97,7 +97,7 @@ test_xmlSecX509EscapedStringRead_failure(
     inSize = size;
     outSize = 0;
 
-    ret = xmlSecX509EscapedStringRead(&inStr, &inSize, out, sizeof(out) - 1, &outSize, (xmlChar)delim, ingoreTrailingSpaces);
+    ret = xmlSecX509EscapedStringRead(&inStr, &inSize, out, sizeof(out) - 1, &outSize, (xmlChar)delim, ignoreTrailingSpaces);
     if(ret >= 0) {
         testLog("Error: xmlSecX509EscapedStringRead expected to fail for '%s'\n", (str != NULL) ? str : "NULL");
         testFinishedFailure();
@@ -120,8 +120,8 @@ test_xmlSecX509EscapedStringRead(void) {
     test_xmlSecX509EscapedStringRead_success("check end of line without trailing spaces", "Foo Bar  ", '=', 1, "", "Foo Bar");
     test_xmlSecX509EscapedStringRead_success("check with trailing spaces", "Foo Bar  =Value", '=', 0, "=Value", "Foo Bar  ");
     test_xmlSecX509EscapedStringRead_success("check without trailing spaces", "Foo Bar  =Value", '=', 1, "=Value", "Foo Bar");
-    test_xmlSecX509EscapedStringRead_success("check \\<char> converted to <char> ", "Fo\\o Bar=Value", '=', 0, "=Value", "Foo Bar");
-    test_xmlSecX509EscapedStringRead_success("check \\XXX converted to <char> ", "Fo\\6F Bar=Value", '=', 0, "=Value", "Foo Bar");
+    test_xmlSecX509EscapedStringRead_success("check \\<char> converted to <char>", "Fo\\o Bar=Value", '=', 0, "=Value", "Foo Bar");
+    test_xmlSecX509EscapedStringRead_success("check \\XXX converted to <char>", "Fo\\6F Bar=Value", '=', 0, "=Value", "Foo Bar");
 
     /* negative tests */
     test_xmlSecX509EscapedStringRead_failure("check NULL", NULL, '=', 0);
@@ -141,7 +141,7 @@ test_xmlSecX509AttrValueStringRead_success(
     const char * name,
     const char * str,
     const char delim,
-    int ingoreTrailingSpaces,
+    int ignoreTrailingSpaces,
     const char* expectedIn,
     const char* expectedOut,
     int expectedType
@@ -165,7 +165,7 @@ test_xmlSecX509AttrValueStringRead_success(
     inSize = size;
     outSize = 0;
 
-    ret = xmlSecX509AttrValueStringRead(&inStr, &inSize, out, sizeof(out) - 1, &outSize, &type, (xmlChar)delim, ingoreTrailingSpaces);
+    ret = xmlSecX509AttrValueStringRead(&inStr, &inSize, out, sizeof(out) - 1, &outSize, &type, (xmlChar)delim, ignoreTrailingSpaces);
     if(ret < 0) {
         testLog("Error: xmlSecX509AttrValueStringRead failed for '%s'\n", str);
         testFinishedFailure();
@@ -199,7 +199,7 @@ test_xmlSecX509AttrValueStringRead_failure(
     const char * name,
     const char * str,
     const char delim,
-    int ingoreTrailingSpaces
+    int ignoreTrailingSpaces
 ) {
     const xmlChar *inStr;
     xmlSecSize size, inSize;
@@ -219,7 +219,7 @@ test_xmlSecX509AttrValueStringRead_failure(
     inSize = size;
     outSize = 0;
 
-    ret = xmlSecX509AttrValueStringRead(&inStr, &inSize, out, sizeof(out) - 1, &outSize, &type, (xmlChar)delim, ingoreTrailingSpaces);
+    ret = xmlSecX509AttrValueStringRead(&inStr, &inSize, out, sizeof(out) - 1, &outSize, &type, (xmlChar)delim, ignoreTrailingSpaces);
     if(ret >= 0) {
         testLog("Error: xmlSecX509AttrValueStringRead expected to fail for '%s'\n", (str != NULL) ? str : "NULL");
         testFinishedFailure();
@@ -345,7 +345,7 @@ test_xmlSecX509NameRead_success(
 
     /* check results */
     if(nms.pos != expectedCount) {
-        testLog("Error: xmlSecX509NameRead returned type='%d' (expected: '%d')\n", nms.pos , expectedCount);
+        testLog("Error: xmlSecX509NameRead returned pos='%d' (expected: '%d')\n", nms.pos , expectedCount);
         testFinishedFailure();
         return;
     }
@@ -355,7 +355,7 @@ test_xmlSecX509NameRead_success(
         return;
     }
     if(nms.pos > 0 && xmlStrcmp(nms.values[0], BAD_CAST value0) != 0) {
-        testLog("Error: xmlSecX509NameRead returned nms.value[0]='%s' (expected: '%s')\n", (const char*)nms.values[0], value0);
+        testLog("Error: xmlSecX509NameRead returned nms.values[0]='%s' (expected: '%s')\n", (const char*)nms.values[0], value0);
         testFinishedFailure();
         return;
     }
@@ -375,12 +375,12 @@ test_xmlSecX509NameRead_success(
         return;
     }
     if(nms.pos > 1 && xmlStrcmp(nms.values[1], BAD_CAST value1) != 0) {
-        testLog("Error: xmlSecX509NameRead returned nms.value[1]='%s' (expected: '%s')\n", (const char*)nms.values[1], value1);
+        testLog("Error: xmlSecX509NameRead returned nms.values[1]='%s' (expected: '%s')\n", (const char*)nms.values[1], value1);
         testFinishedFailure();
         return;
     }
     if(nms.pos > 1 && (int)(nms.valueSizes[1]) != xmlStrlen(BAD_CAST value1)) {
-        testLog("Error: xmlSecX509NameRead returned nms.valueSizes[0]='%d' (expected: '%d')\n", (int)(nms.valueSizes[1]), xmlStrlen(BAD_CAST value1));
+        testLog("Error: xmlSecX509NameRead returned nms.valueSizes[1]='%d' (expected: '%d')\n", (int)(nms.valueSizes[1]), xmlStrlen(BAD_CAST value1));
         testFinishedFailure();
         return;
     }

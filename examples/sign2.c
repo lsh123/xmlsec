@@ -172,7 +172,7 @@ create_signature_template(xmlDocPtr doc){
         return(NULL);
     }
 
-    /* adds <dsig:Transform/> node with enveloped transform */
+    /* add <dsig:Transform/> node with enveloped transform */
     if(xmlSecTmplReferenceAddTransform(refNode, xmlSecTransformEnvelopedId) == NULL) {
         fprintf(stderr, "Error: failed to add enveloped transform to reference\n");
         return(NULL);

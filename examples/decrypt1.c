@@ -134,11 +134,11 @@ main(int argc, char **argv) {
 }
 
 /**
- * @brief Decrypts an encrypted XML file using a Triple DES key.
- * @details Decrypts the XML file #enc_file using Triple DES key from #key_file and
+ * @brief Decrypts an encrypted XML file using a DES key.
+ * @details Decrypts the XML file #enc_file using DES key from #key_file and
  * prints results to stdout.
  * @param enc_file the encrypted XML file name.
- * @param key_file the Triple DES key file.
+ * @param key_file the DES key file.
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -151,7 +151,7 @@ decrypt_file(const char* enc_file, const char* key_file) {
     assert(enc_file);
     assert(key_file);
 
-    /* load template */
+    /* load encrypted file */
     doc = xmlReadFile(enc_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
         fprintf(stderr, "Error: unable to parse file \"%s\"\n", enc_file);
@@ -175,7 +175,7 @@ decrypt_file(const char* enc_file, const char* key_file) {
     /* load DES key */
     encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
     if(encCtx->encKey == NULL) {
-        fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);
+        fprintf(stderr,"Error: failed to load DES key from binary file \"%s\"\n", key_file);
         goto done;
     }
 

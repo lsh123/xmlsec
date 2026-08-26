@@ -360,7 +360,7 @@ xmlSecAppGetGmtTime(struct tm* timeptr) {
     /* t1 is gmt time "mapped" to localtime as-is */
     t1 = mktime(timeptr);
     if(t1 == -1) {
-        fprintf(stderr, "Error: mktime(timeptr) failed");
+        fprintf(stderr, "Error: mktime(timeptr) failed\n");
         return(0);
     }
     tm1 = gmtime(&t1);
@@ -372,7 +372,7 @@ xmlSecAppGetGmtTime(struct tm* timeptr) {
     /* t2 is "mapped" gmt time converted to gmt */
     t2 = mktime(tm1);
     if(t2 == -1) {
-        fprintf(stderr, "Error: mktime(tm1) failed");
+        fprintf(stderr, "Error: mktime(tm1) failed\n");
         return(0);
     }
 

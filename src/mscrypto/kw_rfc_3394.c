@@ -8,7 +8,7 @@
  */
 /**
  * @addtogroup xmlsec_mscrypto_crypto
- * @brief AES/Camellia Key Transport (RFC 3394) implementation for MSCrypto.
+ * @brief AES Key Transport (RFC 3394) implementation for MSCrypto.
  */
 #include "globals.h"
 
@@ -312,14 +312,13 @@ xmlSecMSCryptoKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte *
     }
     xmlSecAssert2(cryptKey != 0, -1);
 
-    /* Set process last block to false, since we handle padding ourselves, and MSCrypto padding
-     * can be skipped. I hope this will work .... */
     if(out != in) {
         memcpy(out, in, inSize);
     }
 
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwCLen, goto done, NULL);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(outSize, dwOutSize, goto done, NULL);
+    /* Pass Final=FALSE to CryptEncrypt since the input is a whole number of blocks and MSCrypto's own padding must be skipped. */
     if(!CryptEncrypt(cryptKey, 0, FALSE, 0, out, &dwCLen, dwOutSize)) {
         xmlSecMSCryptoError("CryptEncrypt", NULL);
         goto done;
@@ -383,13 +382,12 @@ xmlSecMSCryptoKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte *
     }
     xmlSecAssert2(cryptKey != 0, -1);
 
-    /* Set process last block to false, since we handle padding ourselves, and MSCrypto padding
-     * can be skipped. I hope this will work .... */
     if(out != in) {
         memcpy(out, in, inSize);
     }
 
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwCLen, goto done, NULL);
+    /* Pass Final=FALSE to CryptDecrypt since the input is a whole number of blocks and MSCrypto's own padding must be skipped. */
     if(!CryptDecrypt(cryptKey, 0, FALSE, 0, out, &dwCLen)) {
         xmlSecMSCryptoError("CryptDecrypt", NULL);
         goto done;
@@ -414,7 +412,7 @@ done:
   *****************************************************************************/
 
 /*
- * The AES-128 kew wrapper transform klass.
+ * The AES-128 key wrapper transform klass.
  */
 static xmlSecTransformKlass xmlSecMSCryptoKWAes128Klass = {
     /* klass/object sizes */
@@ -454,7 +452,7 @@ xmlSecMSCryptoTransformKWAes128GetKlass(void) {
 
 
 /*
- * The AES-192 kew wrapper transform klass.
+ * The AES-192 key wrapper transform klass.
  */
 static xmlSecTransformKlass xmlSecMSCryptoKWAes192Klass = {
     /* klass/object sizes */
@@ -493,7 +491,7 @@ xmlSecMSCryptoTransformKWAes192GetKlass(void) {
 }
 
 /*
- * The AES-256 kew wrapper transform klass.
+ * The AES-256 key wrapper transform klass.
  */
 static xmlSecTransformKlass xmlSecMSCryptoKWAes256Klass = {
     /* klass/object sizes */

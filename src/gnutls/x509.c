@@ -535,6 +535,7 @@ xmlSecGnuTLSKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         return(0);
     }
 
+    /* if not, then try to extract the key from certificates */
     ret = xmlSecGnuTLSKVerifyAndAdoptX509KeyData(key, data, keyInfoCtx);
     if(ret < 0) {
         xmlSecInternalError("xmlSecGnuTLSKVerifyAndAdoptX509KeyData", xmlSecKeyDataKlassGetName(id));

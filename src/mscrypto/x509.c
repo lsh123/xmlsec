@@ -278,7 +278,7 @@ xmlSecMSCryptoKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
 /**
  * @brief Gets the number of certificates in @p data.
  * @param data the pointer to X509 key data.
- * @return te number of certificates in @p data.
+ * @return the number of certificates in @p data.
  */
 xmlSecSize
 xmlSecMSCryptoKeyDataX509GetCertsSize(xmlSecKeyDataPtr data) {
@@ -352,7 +352,7 @@ xmlSecMSCryptoKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {
 /**
  * @brief Gets the number of CRLs in @p data.
  * @param data the pointer to X509 key data.
- * @return te number of CRLs in @p data.
+ * @return the number of CRLs in @p data.
  */
 xmlSecSize
 xmlSecMSCryptoKeyDataX509GetCrlsSize(xmlSecKeyDataPtr data) {
@@ -517,23 +517,46 @@ xmlSecMSCryptoKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2(id == xmlSecMSCryptoKeyDataX509Id, -1);
     xmlSecAssert2(key != NULL, -1);
 
-    data = xmlSecKeyEnsureData(key, id);
+    data = xmlSecKeyDataCreate(xmlSecMSCryptoKeyDataX509Id);
     if (data == NULL) {
-        xmlSecInternalError("xmlSecKeyEnsureData", xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecKeyDataCreate(xmlSecMSCryptoKeyDataX509Id)", xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
 
     ret = xmlSecKeyDataX509XmlRead(key, data, node, keyInfoCtx, xmlSecMSCryptoKeyDataX509Read);
     if (ret < 0) {
         xmlSecInternalError("xmlSecKeyDataX509XmlRead", xmlSecKeyDataKlassGetName(id));
+        xmlSecKeyDataDestroy(data);
         return(-1);
     }
 
+    /* did we find the key already? */
+    if (xmlSecKeyGetValue(key) != NULL) {
+        xmlSecKeyDataDestroy(data);
+        return(0);
+    }
+
+    /* if not, then try to extract the key from certificates */
     ret = xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(data, key, keyInfoCtx);
     if (ret < 0) {
         xmlSecInternalError("xmlSecMSCryptoKeyDataX509VerifyAndExtractKey", xmlSecKeyDataKlassGetName(id));
+        xmlSecKeyDataDestroy(data);
         return(-1);
     }
+
+    if (xmlSecKeyGetValue(key) != NULL) {
+        ret = xmlSecKeyAdoptData(key, data);
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecKeyAdoptData", xmlSecKeyDataKlassGetName(id));
+            xmlSecKeyDataDestroy(data);
+            return(-1);
+        }
+        data = NULL; /* owned by key now */
+    } else {
+        xmlSecKeyDataDestroy(data);
+    }
+
+    /* success */
     return(0);
 }
 
@@ -680,7 +703,7 @@ xmlSecMSCryptoKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x
         crl = xmlSecMSCryptoX509CrlDerRead(xmlSecBufferGetData(&(x509Value->crl)),
             xmlSecBufferGetSize(&(x509Value->crl)));
         if (crl == NULL) {
-            xmlSecInternalError("xmlSecMSCryptoX509CertDerRead", xmlSecKeyDataGetName(data));
+            xmlSecInternalError("xmlSecMSCryptoX509CrlDerRead", xmlSecKeyDataGetName(data));
             goto done;
         }
     }
@@ -824,7 +847,7 @@ xmlSecMSCryptoKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr 
             }
             x509Value->issuerSerial = xmlSecMSCryptoASN1IntegerWrite(&(cert->pCertInfo->SerialNumber));
             if (x509Value->issuerSerial == NULL) {
-                xmlSecInternalError2("xmlSecMSCryptoASN1IntegerWrite(issuer serial))",
+                xmlSecInternalError2("xmlSecMSCryptoASN1IntegerWrite(issuer serial)",
                     xmlSecKeyDataGetName(data),
                     "pos=" XMLSEC_SIZE_FMT, ctx->crtPos);
                 CertFreeCertificateContext(cert);
@@ -896,7 +919,7 @@ xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr
         cert = xmlSecMSCryptoX509StoreVerify(x509Store, ctx->hMemStore, keyInfoCtx);
         if(cert != NULL) {
             xmlSecKeyDataPtr keyValue = NULL;
-        PCCERT_CONTEXT pCert = NULL;
+            PCCERT_CONTEXT pCert = NULL;
 
             ctx->keyCert = CertDuplicateCertificateContext(cert);
             if(ctx->keyCert == NULL) {
@@ -924,7 +947,7 @@ xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr
                                 return(-1);
                         }
                         pCert = NULL ;
-                } else if( ( keyInfoCtx->keyReq.keyType & xmlSecKeyDataTypePublic ) == xmlSecKeyDataTypePublic ) {
+                } else {
                         keyValue = xmlSecMSCryptoCertAdopt( pCert, xmlSecKeyDataTypePublic ) ;
                         if(keyValue == NULL) {
                                 xmlSecInternalError("xmlSecMSCryptoCertAdopt",
@@ -933,9 +956,6 @@ xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr
                                 return(-1);
                         }
                         pCert = NULL ;
-                } else {
-                        CertFreeCertificateContext(pCert);
-                        pCert = NULL;
                 }
 
             /* verify that the key matches our expectations */

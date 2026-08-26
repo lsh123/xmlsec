@@ -39,7 +39,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCryptoKeyDataX509GetKlass(void);
 
 XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT     xmlSecMSCryptoKeyDataX509GetKeyCert     (xmlSecKeyDataPtr data);
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoKeyDataX509AdoptKeyCert   (xmlSecKeyDataPtr data,
-                                                                                PCCERT_CONTEXT cert);
+                                                                                 PCCERT_CONTEXT cert);
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoKeyDataX509AdoptCert      (xmlSecKeyDataPtr data,
                                                                                  PCCERT_CONTEXT cert);
 XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT     xmlSecMSCryptoKeyDataX509GetCert        (xmlSecKeyDataPtr data,

@@ -15,9 +15,9 @@
 
 #include <string.h>
 
-#ifndef XMLSEC_NO_GOST
+#if !defined(XMLSEC_NO_GOST) || !defined(XMLSEC_NO_GOST2012)
 #include "csp_calg.h"
-#endif
+#endif /* !defined(XMLSEC_NO_GOST) || !defined(XMLSEC_NO_GOST2012) */
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
@@ -434,8 +434,8 @@ static xmlSecTransformKlass xmlSecMSCryptoMd5Klass = {
 };
 
 /**
- * @brief SHA-1 digest transform klass.
- * @return pointer to SHA-1 digest transform klass.
+ * @brief MD-5 digest transform klass.
+ * @return pointer to MD-5 digest transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformMd5GetKlass(void) {
@@ -647,6 +647,9 @@ xmlSecMSCryptoTransformGostR3411_94GetKlass(void) {
     return(&xmlSecMSCryptoGostR3411_94Klass);
 }
 
+#endif /* XMLSEC_NO_GOST */
+
+#ifndef XMLSEC_NO_GOST2012
 /******************************************************************************
  *
  * GOSTR3411-2012/256
@@ -725,4 +728,4 @@ xmlSecTransformId
 xmlSecMSCryptoTransformGostR3411_2012_512GetKlass(void) {
     return(&xmlSecMSCryptoGostR3411_2012_512Klass);
 }
-#endif /* XMLSEC_NO_GOST*/
+#endif /* XMLSEC_NO_GOST2012 */

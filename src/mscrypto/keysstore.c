@@ -10,8 +10,8 @@
  * @addtogroup xmlsec_mscrypto_keysstore
  * @brief Keys store implementation for Microsoft Crypto API.
  * MSCrypto keys store that uses Simple Keys Store under the hood. Uses the
- * MS Certificate store as a backing store for the finding keys, but the
- * MS Certificate store not written to by the keys store.
+ * MS Certificate store as a backing store for finding keys, but the
+ * MS Certificate store is not written to by the keys store.
  * So, if store->findkey is done and the key is not found in the simple
  * keys store, the MS Certificate store is looked up.
  * Thus, the MS Certificate store can be used to pre-load keys and becomes
@@ -191,10 +191,19 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
 
     hStoreHandle = CertOpenSystemStore(0, storeName);
     if (NULL == hStoreHandle) {
-        xmlSecMSCryptoError2("CertOpenSystemStore",
-                             xmlSecKeyStoreGetName(store),
-                             "storeName=%s",
-                             xmlSecErrorsSafeString(storeName));
+        xmlChar* storeNameUtf8;
+
+        storeNameUtf8 = xmlSecWin32ConvertTstrToUtf8(storeName);
+        if(storeNameUtf8 != NULL) {
+            xmlSecMSCryptoError2("CertOpenSystemStore",
+                                 xmlSecKeyStoreGetName(store),
+                                 "storeName=%s",
+                                 storeNameUtf8);
+            xmlFree(storeNameUtf8);
+        } else {
+            xmlSecMSCryptoError("CertOpenSystemStore",
+                                xmlSecKeyStoreGetName(store));
+        }
         return(NULL);
     }
 
@@ -216,13 +225,23 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
     }
 
     /*
-     * Try ro find certificate with name="Friendly Name"
+     * Try to find certificate with name="Friendly Name"
      */
     if (NULL == pCertContext) {
         DWORD dwPropSize;
         PBYTE pbFriendlyName;
         PCCERT_CONTEXT pCertCtxIter = NULL;
+        LPWSTR lpwName;
 
+        /* convert name to unicode */
+        lpwName = xmlSecWin32ConvertUtf8ToUnicode(name);
+        if (lpwName == NULL) {
+            xmlSecInternalError("xmlSecWin32ConvertUtf8ToUnicode(name)",
+                                xmlSecKeyStoreGetName(store));
+            xmlFree(wcName);
+            CertCloseStore(hStoreHandle, 0);
+            return(NULL);
+        }
 
         while (1) {
            pCertCtxIter = CertEnumCertificatesInStore(hStoreHandle, pCertCtxIter);
@@ -239,10 +258,11 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
 
             pbFriendlyName = xmlMalloc(dwPropSize);
             if(pbFriendlyName == NULL) {
-                CertFreeCertificateContext(pCertCtxIter);
                 xmlSecMallocError(dwPropSize, xmlSecKeyStoreGetName(store));
+                xmlFree(lpwName);
                 xmlFree(wcName);
                 CertCloseStore(hStoreHandle, 0);
+                CertFreeCertificateContext(pCertCtxIter);
                 return(NULL);
             }
 
@@ -255,13 +275,16 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
             }
 
             /* Compare FriendlyName to name */
-            if (!lstrcmp(wcName, (LPCTSTR)pbFriendlyName)) {
+            if (lstrcmpW(lpwName, (LPCWSTR)pbFriendlyName) == 0) {
               pCertContext = pCertCtxIter;
+              pCertCtxIter = NULL; /* just in case */
               xmlFree(pbFriendlyName);
               break;
             }
             xmlFree(pbFriendlyName);
         }
+
+        xmlFree(lpwName);
     }
 
     /* We don't give up easily, now try to find cert with part of the name

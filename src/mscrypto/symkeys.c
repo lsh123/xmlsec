@@ -31,7 +31,7 @@
 
 /******************************************************************************
  *
- * Symmetic (binary) keys - just a wrapper for xmlSecKeyDataBinary
+ * Symmetric (binary) keys - just a wrapper for xmlSecKeyDataBinary
  *
   *****************************************************************************/
 static int      xmlSecMSCryptoSymKeyDataInitialize      (xmlSecKeyDataPtr data);
@@ -289,7 +289,7 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
     }
     bitLen = rsaPubKey->bitlen;
 
-    /*  Modify the Exponent in Key BLOB format Key BLOB format is documented in SDK */
+    /*  Modify the Exponent in Key BLOB format; Key BLOB format is documented in SDK */
     rsaPubKey->pubexp = 1;
 
     /* Private-key BLOBs, type PRIVATEKEYBLOB, are used to store private keys outside a CSP.
@@ -306,7 +306,7 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
      * BYTE privateExponent[rsapubkey.bitlen/8];        1/8
      */
     if(keyBlobLen < sizeof(PUBLICKEYSTRUC) + sizeof(RSAPUBKEY) + bitLen / 2 + bitLen / 16) {
-        xmlSecMSCryptoError2("CryptExportKey", NULL, "keBlobLen=%lu", keyBlobLen);
+        xmlSecMSCryptoError2("CryptExportKey", NULL, "keyBlobLen=%lu", keyBlobLen);
         goto done;
     }
     ptr = (BYTE*)(keyBlob + sizeof(PUBLICKEYSTRUC) + sizeof(RSAPUBKEY));
@@ -446,7 +446,7 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
     /* 3 is for the first reserved byte after the key material and the 2 reserved bytes at the end. */
     if(dwPublicKeySize / 8 < dwKeyMaterial + 3) {
         xmlSecMSCryptoError3("CryptGetKeyParam(KP_KEYLEN)", NULL,
-            "dwKeyMaterial+3=%lu; dwProvSessionKeySize/8=%lu", (dwKeyMaterial + 3), (dwPublicKeySize / 3));
+            "dwKeyMaterial+3=%lu; dwPublicKeySize/8=%lu", (dwKeyMaterial + 3), (dwPublicKeySize / 8));
         goto done;
     }
     rndBlobSize = dwPublicKeySize / 8 - (dwKeyMaterial + 3);

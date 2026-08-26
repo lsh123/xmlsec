@@ -167,7 +167,7 @@ xmlSecMSCryptoX509StoreFindCert_ex(xmlSecKeyDataStorePtr store, xmlChar* subject
             issuerName, issuerSerial, ski, skiSize);
     }
 
-    /* search untrusted certs store */
+    /* search trusted certs store */
     if ((ctx->trusted != NULL) && (pCert == NULL)) {
         pCert = xmlSecMSCryptoX509FindCert(ctx->trusted, subjectName,
             issuerName, issuerSerial, ski, skiSize);
@@ -461,7 +461,7 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT theCert, LPFILETIME pfTime,
         freeCurrentCert = queue[queueSize - 1].freeCert;
         --queueSize;
 
-        /* check certificate validity and revokation */
+        /* check certificate validity and revocation */
         if (!xmlSecMSCryptoVerifyCertTime(currentCert, pfTime)) {
             xmlSecOtherError(XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
                 xmlSecKeyDataStoreGetName(store),
@@ -630,7 +630,7 @@ xmlSecMSCryptoX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs,
         xmlSecAssert2(cert->pCertInfo != NULL, NULL);
 
         /* if cert is the issuer of any other cert in the list, then it is
-          * to be skipped except a case of a celf-signed cert*/
+          * to be skipped except a case of a self-signed cert*/
         do {
             nextCert = CertFindCertificateInStore(certs,
                     X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
@@ -1070,7 +1070,7 @@ xmlSecMSCryptoX509FindCertBySubject(HCERTSTORE store, const LPTSTR wcSubject, DW
 
 /**
  * @brief Searches for a cert by @p issuer in the @p store.
- * @details Searches for a cert with given @p subject in the @p store
+ * @details Searches for a cert with given @p issuer in the @p store
  * @param store the pointer to certs store
  * @param wcIssuer the cert issuer (Unicode)
  * @param issuerSerialBn the cert issuer serial
@@ -1279,7 +1279,7 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store, const xmlChar *subjectName,
 
         ret = xmlSecBnFromDecString(&issuerSerialBn, issuerSerial);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecBnInitialize", NULL);
+            xmlSecInternalError("xmlSecBnFromDecString", NULL);
             xmlSecBnFinalize(&issuerSerialBn);
             return(NULL);
         }

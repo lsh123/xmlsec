@@ -177,7 +177,7 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     }
     inSize = inBlocks * blockSize;
 
-    /* we write out the input size plus may be one block */
+    /* we write out the input size plus maybe one block */
     ret = xmlSecBufferSetMaxSize(out, outSize + inSize + blockSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetMaxSize", cipherName,
@@ -200,7 +200,7 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
         }
     } else {
         if (!CryptDecrypt(ctx->cryptKey, 0, FALSE, 0, outBuf, &dwCLen)) {
-            xmlSecMSCryptoError("CryptSetKeyDecrypt", cipherName);
+            xmlSecMSCryptoError("CryptDecrypt", cipherName);
             return(-1);
         }
     }
@@ -303,8 +303,7 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     if(encrypt) {
         DWORD dwBufLen;
 
-        /* Set process last block to false, since we handle padding ourselves, and MSCrypto padding
-         * can be skipped. I hope this will work .... */
+        /* Pass Final=FALSE to CryptEncrypt since padding is handled manually above and MSCrypto's own padding must be skipped. */
         XMLSEC_SAFE_CAST_SIZE_TO_ULONG((inSize + blockSize), dwBufLen, return(-1), cipherName);
         if(!CryptEncrypt(ctx->cryptKey, 0, FALSE, 0, outBuf, &dwCLen, dwBufLen)) {
             xmlSecMSCryptoError("CryptEncrypt", cipherName);
@@ -643,7 +642,7 @@ xmlSecMSCryptoBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecT
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(in) == 0, -1);
     } else if(transform->status == xmlSecTransformStatusNone) {
-        /* the only way we can get here is if there is no enough data in the input */
+        /* the only way we can get here is if there is not enough data in the input */
         xmlSecAssert2(last == 0, -1);
     } else {
         xmlSecInvalidTransformStatusError(transform);

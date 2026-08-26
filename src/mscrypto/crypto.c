@@ -346,7 +346,7 @@ static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Random[] = {
  * @brief Generates @p size random bytes into @p buffer.
  * @details Generates @p size random bytes and puts result in @p buffer.
  * @param buffer the destination buffer.
- * @param size the numer of bytes to generate.
+ * @param size the number of bytes to generate.
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -388,7 +388,7 @@ done:
 }
 
 /**
- * @brief Returns the system error message for the give error code.
+ * @brief Returns the system error message for the given error code.
  * @param dwError the error code.
  * @param out the output buffer.
  * @param outLen the output buffer size.

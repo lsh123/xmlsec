@@ -672,7 +672,7 @@ xmlSecMSCngCbcBlockCipherCtxFinal(xmlSecMSCngCbcBlockCipherCtxPtr ctx,
 
     if(encrypt == 0) {
         /* check padding */
-        if(inSize < outBuf[blockSize - 1]) {
+        if((outBuf[blockSize - 1] == 0) || (inSize < outBuf[blockSize - 1])) {
             xmlSecInvalidSizeLessThanError("Input data padding", inSize, outBuf[blockSize - 1], cipherName);
             return(-1);
         }

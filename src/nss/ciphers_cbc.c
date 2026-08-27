@@ -346,7 +346,7 @@ xmlSecNssCbcCipherCtxFinal(xmlSecNssCbcCipherCtxPtr ctx,
 
         /* check padding */
         padding = (xmlSecSize)outBuf[blockLen - 1];
-        if(outSize2 < padding) {
+        if((padding == 0) || (outSize2 < padding)) {
             xmlSecInvalidSizeLessThanError("Input data padding",
                     inSize, padding, cipherName);
             return(-1);

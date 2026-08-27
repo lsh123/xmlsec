@@ -80,7 +80,6 @@ struct tag_info
   int class;             /* Object class.  */
   unsigned long tag;     /* The tag of the object.  */
   unsigned long length;  /* Length of the values.  */
-  int nhdr;              /* Length of the header (TL).  */
   unsigned int ndef:1;   /* The object has an indefinite length.  */
   unsigned int cons:1;   /* This is a constructed object.  */
 };
@@ -109,7 +108,6 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, unsigned long *buflen, stru
 
     ti->length = 0;
     ti->ndef = 0;
-    ti->nhdr = 0;
 
     /* Get the tag */
     if (length <= 0) {
@@ -117,7 +115,6 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, unsigned long *buflen, stru
     }
     c = *buf++;
     length--;
-    ti->nhdr++;
 
     ti->class = (c & 0xc0) >> 6;
     ti->cons  = !!(c & 0x20);
@@ -138,7 +135,6 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, unsigned long *buflen, stru
             }
             c = *buf++;
             length--;
-            ti->nhdr++;
             tag |= (c & 0x7f);
             num_tag_bytes++;
         } while ( (c & 0x80) );
@@ -151,7 +147,6 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, unsigned long *buflen, stru
     }
     c = *buf++;
     length--;
-    ti->nhdr++;
 
     if ( !(c & 0x80) ) {
         ti->length = c;
@@ -175,7 +170,6 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, unsigned long *buflen, stru
                 return -1; /* Premature EOF.  */
             }
             c = *buf++; length--;
-            ti->nhdr++;
             len |= (c & 0xff);
         }
         ti->length = len;
@@ -455,6 +449,14 @@ xmlSecGCryptAsn1GuessKeyType(gcry_mpi_t * integers, xmlSecSize integers_num, xml
     }
 }
 
+/**
+ * @brief Parses a DER-encoded public or private key.
+ * @details Supported formats are PKCS#1 RSAPrivateKey/RSAPublicKey, traditional DSAPrivateKey, traditional ECPrivateKey, and SPKI DSA/EC public keys. PKCS#8-wrapped private keys (the standard output of "openssl pkey -outform DER") are not supported and are rejected with an error; use one of the traditional formats above instead.
+ * @param der the DER-encoded key data.
+ * @param derlen the size of the DER-encoded key data.
+ * @param type the expected key type, or xmlSecGCryptDerKeyTypeAuto to guess it from the data.
+ * @return pointer to the key data or NULL if an error occurs.
+ */
 xmlSecKeyDataPtr
 xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
                      enum xmlSecGCryptDerKeyType type) {
@@ -497,6 +499,15 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         }
     }
 
+    /* PKCS#8-wrapped private keys (PrivateKeyInfo) are not supported and would be
+     * misparsed into a garbage key: they flatten to exactly two integers
+     * [version(0), <raw-key blob>] with an algorithm object id present. Detect this
+     * shape and fail instead of building a wrong key. */
+    if((integers_num == 2) && (objectids_num >= 1) && (gcry_mpi_get_nbits(integers[0]) == 0)) {
+        xmlSecInvalidDataError("PKCS#8 private keys are not supported; use a traditional format (PKCS#1 RSAPrivateKey, DSAPrivateKey, or ECPrivateKey)", NULL);
+        goto done;
+    }
+
     switch(type) {
 #ifndef XMLSEC_NO_DSA
     case xmlSecGCryptDerKeyTypePrivateDsa:
@@ -509,8 +520,14 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
 
         /* first is always 0, ignore */
 
-        /* Convert from OpenSSL parameter ordering to the OpenPGP order. */
-        /* First check that x < y; if not swap x and y  */
+        /* The last two integers are the DSA private exponent x and public key y,
+         * but their order is not fixed by the encoding: OpenSSL writes p,q,g,y,x
+         * while RFC 3279 writes p,q,g,x,y. Disambiguate by assuming x < y, i.e.
+         * take the smaller value as x (integers[4]) and the larger as y
+         * (integers[5]). This holds in practice because x < q is a short exponent
+         * while y = g^x mod p is a full-size field element, so y is almost always
+         * larger than x. Note this is a heuristic: for a key where y < x the two
+         * values are swapped and the resulting key is silently wrong. */
         if (gcry_mpi_cmp (integers[4], integers[5]) > 0) {
             gcry_mpi_swap (integers[4], integers[5]);
         }

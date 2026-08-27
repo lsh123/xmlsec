@@ -357,7 +357,7 @@ xmlSecGCryptKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     ctx = xmlSecGCryptKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->blockSize > 0, -1);
-    xmlSecAssert2(inSize >= ctx->blockSize, -1);
+    xmlSecAssert2(inSize == ctx->blockSize, -1);
     xmlSecAssert2(outSize >= ctx->blockSize, -1);
 
     keyData = xmlSecBufferGetData(&(ctx->parentCtx.keyBuffer));
@@ -419,7 +419,7 @@ xmlSecGCryptKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     ctx = xmlSecGCryptKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->blockSize > 0, -1);
-    xmlSecAssert2(inSize >= ctx->blockSize, -1);
+    xmlSecAssert2(inSize == ctx->blockSize, -1);
     xmlSecAssert2(outSize >= ctx->blockSize, -1);
 
     keyData = xmlSecBufferGetData(&(ctx->parentCtx.keyBuffer));

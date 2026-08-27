@@ -71,6 +71,7 @@ struct _xmlSecGCryptKWAesCtx {
     int                 mode;
     unsigned int        flags;
     xmlSecSize          blockSize;
+    gcry_cipher_hd_t    cipherHandle;
 };
 
 /******************************************************************************
@@ -159,6 +160,10 @@ xmlSecGCryptKWAesFinalize(xmlSecTransformPtr transform) {
     ctx = xmlSecGCryptKWAesGetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
+    if(ctx->cipherHandle != NULL) {
+        gcry_cipher_close(ctx->cipherHandle);
+        ctx->cipherHandle = NULL;
+    }
     xmlSecTransformKWRfc3394Finalize(transform, &(ctx->parentCtx));
     memset(ctx, 0, sizeof(xmlSecGCryptKWAesCtx));
 }
@@ -197,6 +202,14 @@ xmlSecGCryptKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         xmlSecInternalError("xmlSecTransformKWRfc3394SetKey", xmlSecTransformGetName(transform));
         return(-1);
     }
+
+    /* a cached cipher handle (if any) was initialized with the previous key;
+       close it so it is re-opened with the new key on the next block operation */
+    if(ctx->cipherHandle != NULL) {
+        gcry_cipher_close(ctx->cipherHandle);
+        ctx->cipherHandle = NULL;
+    }
+
     return(0);
 }
 
@@ -338,15 +351,60 @@ xmlSecGCryptTransformKWAes256GetKlass(void) {
   *****************************************************************************/
 static unsigned char g_zero_iv[XMLSEC_KW_RFC3394_BLOCK_SIZE] =
     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+/**
+ * @brief Opens the cached cipher handle and sets the key.
+ *
+ * The cipher handle is opened once and reused across all block operations of a
+ * transform, so that the AES key expansion performed by gcry_cipher_setkey()
+ * happens only once instead of once per block. The handle is closed by
+ * xmlSecGCryptKWAesFinalize(), or when a new key is set via
+ * xmlSecGCryptKWAesSetKey().
+ *
+ * @param ctx the AES KW transform context.
+ * @return 0 on success, -1 otherwise.
+ */
 static int
-xmlSecGCryptKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSecSize inSize,
-                               xmlSecByte * out, xmlSecSize outSize,
-                               xmlSecSize * outWritten) {
-    xmlSecGCryptKWAesCtxPtr ctx;
+xmlSecGCryptKWAesInitCipher(xmlSecGCryptKWAesCtxPtr ctx) {
     xmlSecByte* keyData;
     xmlSecSize keySize;
-    gcry_cipher_hd_t cipherCtx;
     gcry_error_t err;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->cipherHandle == NULL, -1);
+    xmlSecAssert2(ctx->parentCtx.keyExpectedSize > 0, -1);
+
+    keyData = xmlSecBufferGetData(&(ctx->parentCtx.keyBuffer));
+    keySize = xmlSecBufferGetSize(&(ctx->parentCtx.keyBuffer));
+    xmlSecAssert2(keyData != NULL, -1);
+    xmlSecAssert2(keySize > 0, -1);
+    xmlSecAssert2(ctx->parentCtx.keyExpectedSize == keySize, -1);
+
+    err = gcry_cipher_open(&(ctx->cipherHandle), ctx->cipher, ctx->mode, ctx->flags);
+    if(err != GPG_ERR_NO_ERROR) {
+        xmlSecGCryptError("gcry_cipher_open", err, NULL);
+        return(-1);
+    }
+
+    err = gcry_cipher_setkey(ctx->cipherHandle, keyData, keySize);
+    if(err != GPG_ERR_NO_ERROR) {
+        xmlSecGCryptError("gcry_cipher_setkey", err, NULL);
+        gcry_cipher_close(ctx->cipherHandle);
+        ctx->cipherHandle = NULL;
+        return(-1);
+    }
+
+    /* done */
+    return(0);
+}
+
+static int
+xmlSecGCryptKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSecSize inSize,
+                                xmlSecByte * out, xmlSecSize outSize,
+                                xmlSecSize * outWritten) {
+    xmlSecGCryptKWAesCtxPtr ctx;
+    gcry_error_t err;
+    int ret;
 
     xmlSecAssert2(xmlSecGCryptKWAesCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGCryptKWAesSize), -1);
@@ -360,40 +418,27 @@ xmlSecGCryptKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     xmlSecAssert2(inSize == ctx->blockSize, -1);
     xmlSecAssert2(outSize >= ctx->blockSize, -1);
 
-    keyData = xmlSecBufferGetData(&(ctx->parentCtx.keyBuffer));
-    keySize = xmlSecBufferGetSize(&(ctx->parentCtx.keyBuffer));
-    xmlSecAssert2(keyData != NULL, -1);
-    xmlSecAssert2(keySize > 0, -1);
-    xmlSecAssert2(ctx->parentCtx.keyExpectedSize == keySize, -1);
-
-    err = gcry_cipher_open(&cipherCtx, ctx->cipher, ctx->mode, ctx->flags);
-    if(err != GPG_ERR_NO_ERROR) {
-        xmlSecGCryptError("gcry_cipher_open", err, NULL);
-        return(-1);
+    if(ctx->cipherHandle == NULL) {
+        ret = xmlSecGCryptKWAesInitCipher(ctx);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGCryptKWAesInitCipher", xmlSecTransformGetName(transform));
+            return(-1);
+        }
     }
-
-    err = gcry_cipher_setkey(cipherCtx, keyData, keySize);
-    if(err != GPG_ERR_NO_ERROR) {
-        xmlSecGCryptError("gcry_cipher_setkey", err, NULL);
-        gcry_cipher_close(cipherCtx);
-        return(-1);
-    }
+    xmlSecAssert2(ctx->cipherHandle != NULL, -1);
 
     /* use zero IV and CBC mode to ensure we get result as-is */
-    err = gcry_cipher_setiv(cipherCtx, g_zero_iv, sizeof(g_zero_iv));
+    err = gcry_cipher_setiv(ctx->cipherHandle, g_zero_iv, sizeof(g_zero_iv));
     if(err != GPG_ERR_NO_ERROR) {
         xmlSecGCryptError("gcry_cipher_setiv", err, NULL);
-        gcry_cipher_close(cipherCtx);
         return(-1);
     }
 
-    err = gcry_cipher_encrypt(cipherCtx, out, outSize, in, inSize);
+    err = gcry_cipher_encrypt(ctx->cipherHandle, out, outSize, in, inSize);
     if(err != GPG_ERR_NO_ERROR) {
         xmlSecGCryptError("gcry_cipher_encrypt", err, NULL);
-        gcry_cipher_close(cipherCtx);
         return(-1);
     }
-    gcry_cipher_close(cipherCtx);
 
     /* success */
     (*outWritten) = ctx->blockSize;
@@ -402,13 +447,11 @@ xmlSecGCryptKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
 
 static int
 xmlSecGCryptKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSecSize inSize,
-                               xmlSecByte * out, xmlSecSize outSize,
-                               xmlSecSize * outWritten) {
+                                xmlSecByte * out, xmlSecSize outSize,
+                                xmlSecSize * outWritten) {
     xmlSecGCryptKWAesCtxPtr ctx;
-    xmlSecByte* keyData;
-    xmlSecSize keySize;
-    gcry_cipher_hd_t cipherCtx;
     gcry_error_t err;
+    int ret;
 
     xmlSecAssert2(xmlSecGCryptKWAesCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGCryptKWAesSize), -1);
@@ -422,40 +465,27 @@ xmlSecGCryptKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     xmlSecAssert2(inSize == ctx->blockSize, -1);
     xmlSecAssert2(outSize >= ctx->blockSize, -1);
 
-    keyData = xmlSecBufferGetData(&(ctx->parentCtx.keyBuffer));
-    keySize = xmlSecBufferGetSize(&(ctx->parentCtx.keyBuffer));
-    xmlSecAssert2(keyData != NULL, -1);
-    xmlSecAssert2(keySize > 0, -1);
-    xmlSecAssert2(ctx->parentCtx.keyExpectedSize == keySize, -1);
-
-    err = gcry_cipher_open(&cipherCtx, ctx->cipher, ctx->mode, ctx->flags);
-    if(err != GPG_ERR_NO_ERROR) {
-        xmlSecGCryptError("gcry_cipher_open", err, NULL);
-        return(-1);
+    if(ctx->cipherHandle == NULL) {
+        ret = xmlSecGCryptKWAesInitCipher(ctx);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGCryptKWAesInitCipher", xmlSecTransformGetName(transform));
+            return(-1);
+        }
     }
-
-    err = gcry_cipher_setkey(cipherCtx, keyData, keySize);
-    if(err != GPG_ERR_NO_ERROR) {
-        xmlSecGCryptError("gcry_cipher_setkey", err, NULL);
-        gcry_cipher_close(cipherCtx);
-        return(-1);
-    }
+    xmlSecAssert2(ctx->cipherHandle != NULL, -1);
 
     /* use zero IV and CBC mode to ensure we get result as-is */
-    err = gcry_cipher_setiv(cipherCtx, g_zero_iv, sizeof(g_zero_iv));
+    err = gcry_cipher_setiv(ctx->cipherHandle, g_zero_iv, sizeof(g_zero_iv));
     if(err != GPG_ERR_NO_ERROR) {
         xmlSecGCryptError("gcry_cipher_setiv", err, NULL);
-        gcry_cipher_close(cipherCtx);
         return(-1);
     }
 
-    err = gcry_cipher_decrypt(cipherCtx, out, outSize, in, inSize);
+    err = gcry_cipher_decrypt(ctx->cipherHandle, out, outSize, in, inSize);
     if(err != GPG_ERR_NO_ERROR) {
         xmlSecGCryptError("gcry_cipher_decrypt", err, NULL);
-        gcry_cipher_close(cipherCtx);
         return(-1);
     }
-    gcry_cipher_close(cipherCtx);
 
     /* success */
     (*outWritten) = ctx->blockSize;

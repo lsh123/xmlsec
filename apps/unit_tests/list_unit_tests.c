@@ -29,6 +29,8 @@ static int g_listItemDebugXmlDumpCount = 0;
 static xmlSecListTestItem* test_list_item_create                 (int value);
 static xmlSecPtr          test_list_item_duplicate              (xmlSecPtr ptr);
 static void               test_list_item_destroy                (xmlSecPtr ptr);
+static void               test_list_item_debug_dump             (xmlSecPtr ptr, FILE* output);
+static void               test_list_item_debug_xml_dump         (xmlSecPtr ptr, FILE* output);
 static void               test_list_item_reset_counters         (void);
 static void               test_list_reset_default_alloc_mode    (void);
 
@@ -42,6 +44,8 @@ static void               test_ptr_list_remove_and_return       (void);
 static void               test_ptr_list_pop_last                (void);
 static void               test_ptr_list_copy_duplicate          (void);
 static void               test_ptr_list_invalid_alloc_mode      (void);
+static void               test_ptr_list_get_item_out_of_range   (void);
+static void               test_ptr_list_debug_dump              (void);
 static void               test_string_list_klass                (void);
 
 static xmlSecPtrListKlass g_xmlSecListTestKlass = {
@@ -58,6 +62,14 @@ static xmlSecPtrListKlass g_xmlSecListShallowKlass = {
     NULL,
     NULL,
     NULL,
+};
+
+static xmlSecPtrListKlass g_xmlSecListDebugKlass = {
+    BAD_CAST "test-list-debug",
+    test_list_item_duplicate,
+    test_list_item_destroy,
+    test_list_item_debug_dump,
+    test_list_item_debug_xml_dump,
 };
 
 static xmlSecListTestItem*
@@ -98,6 +110,32 @@ test_list_item_destroy(xmlSecPtr ptr) {
 
     ++g_listItemDestroyCount;
     xmlFree(ptr);
+}
+
+static void
+test_list_item_debug_dump(xmlSecPtr ptr, FILE* output) {
+    xmlSecListTestItem* item;
+
+    if(ptr == NULL) {
+        return;
+    }
+
+    item = (xmlSecListTestItem*)ptr;
+    fprintf(output, "item value=%d\n", item->value);
+    ++g_listItemDebugDumpCount;
+}
+
+static void
+test_list_item_debug_xml_dump(xmlSecPtr ptr, FILE* output) {
+    xmlSecListTestItem* item;
+
+    if(ptr == NULL) {
+        return;
+    }
+
+    item = (xmlSecListTestItem*)ptr;
+    fprintf(output, "  <Item value=\"%d\"/>\n", item->value);
+    ++g_listItemDebugXmlDumpCount;
 }
 
 static void
@@ -758,6 +796,130 @@ done:
 }
 
 static void
+test_ptr_list_get_item_out_of_range(void) {
+    xmlSecPtrList list;
+    xmlSecListTestItem* item = NULL;
+    xmlSecListTestItem* firstItem;
+
+    memset(&list, 0, sizeof(list));
+
+    testStart("xmlSecPtrListGetItem out-of-range returns NULL");
+    test_list_item_reset_counters();
+
+    if(xmlSecPtrListInitialize(&list, &g_xmlSecListTestKlass) < 0) {
+        testLog("Error: xmlSecPtrListInitialize failed\n");
+        goto done;
+    }
+
+    item = test_list_item_create(42);
+    if(item == NULL) {
+        testLog("Error: failed to create test item\n");
+        goto done;
+    }
+    if(xmlSecPtrListAdd(&list, item) < 0) {
+        testLog("Error: xmlSecPtrListAdd failed\n");
+        goto done;
+    }
+    item = NULL;
+
+    /* in-bounds access must still work */
+    firstItem = (xmlSecListTestItem*)xmlSecPtrListGetItem(&list, 0);
+    if((firstItem == NULL) || (firstItem->value != 42)) {
+        testLog("Error: xmlSecPtrListGetItem(0) returned unexpected item\n");
+        goto done;
+    }
+
+    /* out-of-range access (pos == use and pos > use) must return NULL */
+    if(xmlSecPtrListGetItem(&list, 1) != NULL) {
+        testLog("Error: xmlSecPtrListGetItem(pos==use) should return NULL\n");
+        goto done;
+    }
+    if(xmlSecPtrListGetItem(&list, 5) != NULL) {
+        testLog("Error: xmlSecPtrListGetItem(pos>use) should return NULL\n");
+        goto done;
+    }
+
+    xmlSecPtrListFinalize(&list);
+    testFinishedSuccess();
+    return;
+
+done:
+    if(item != NULL) {
+        test_list_item_destroy(item);
+    }
+    if(xmlSecPtrListIsValid(&list)) {
+        xmlSecPtrListFinalize(&list);
+    }
+    testFinishedFailure();
+}
+
+static void
+test_ptr_list_debug_dump(void) {
+    xmlSecPtrList list;
+    xmlSecListTestItem* item1 = NULL;
+    xmlSecListTestItem* item2 = NULL;
+
+    memset(&list, 0, sizeof(list));
+
+    testStart("xmlSecPtrListDebugDump/xmlSecPtrListDebugXmlDump");
+    test_list_item_reset_counters();
+
+    if(xmlSecPtrListInitialize(&list, &g_xmlSecListDebugKlass) < 0) {
+        testLog("Error: xmlSecPtrListInitialize failed\n");
+        goto done;
+    }
+
+    item1 = test_list_item_create(1);
+    item2 = test_list_item_create(2);
+    if((item1 == NULL) || (item2 == NULL)) {
+        testLog("Error: failed to create test items\n");
+        goto done;
+    }
+    if(xmlSecPtrListAdd(&list, item1) < 0) {
+        testLog("Error: xmlSecPtrListAdd failed for item1\n");
+        goto done;
+    }
+    item1 = NULL;
+    if(xmlSecPtrListAdd(&list, item2) < 0) {
+        testLog("Error: xmlSecPtrListAdd failed for item2\n");
+        goto done;
+    }
+    item2 = NULL;
+
+    /* DebugDump must invoke the per-item debug dump method once per item */
+    xmlSecPtrListDebugDump(&list, stdout);
+    if(g_listItemDebugDumpCount != 2) {
+        testLog("Error: xmlSecPtrListDebugDump invoked the item dump %d times instead of 2\n",
+            g_listItemDebugDumpCount);
+        goto done;
+    }
+
+    /* DebugXmlDump must invoke the per-item XML dump method once per item */
+    xmlSecPtrListDebugXmlDump(&list, stdout);
+    if(g_listItemDebugXmlDumpCount != 2) {
+        testLog("Error: xmlSecPtrListDebugXmlDump invoked the item XML dump %d times instead of 2\n",
+            g_listItemDebugXmlDumpCount);
+        goto done;
+    }
+
+    xmlSecPtrListFinalize(&list);
+    testFinishedSuccess();
+    return;
+
+done:
+    if(item1 != NULL) {
+        test_list_item_destroy(item1);
+    }
+    if(item2 != NULL) {
+        test_list_item_destroy(item2);
+    }
+    if(xmlSecPtrListIsValid(&list)) {
+        xmlSecPtrListFinalize(&list);
+    }
+    testFinishedFailure();
+}
+
+static void
 test_string_list_klass(void) {
     xmlSecPtrListPtr list = NULL;
     xmlSecPtrListPtr duplicate = NULL;
@@ -905,6 +1067,8 @@ int test_list(void) {
     test_ptr_list_pop_last();
     test_ptr_list_copy_duplicate();
     test_ptr_list_invalid_alloc_mode();
+    test_ptr_list_get_item_out_of_range();
+    test_ptr_list_debug_dump();
     test_string_list_klass();
 
     return(testGroupFinished());

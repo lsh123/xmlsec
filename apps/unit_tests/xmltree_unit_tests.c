@@ -257,6 +257,121 @@ test_xmlSecGetNodeContentAndTrim_whitespace_only_becomes_empty(void) {
     testFinishedSuccess();
 }
 
+static void
+test_xmlSecGetNodeContentAndTrim_empty_element_returns_empty_string(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    xmlChar* content;
+
+    testStart("xmlSecGetNodeContentAndTrim: empty element returns empty string");
+
+    doc = xmltreeTestCreateDoc(BAD_CAST "Root", NULL);
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        testFinishedFailure();
+        return;
+    }
+    root = xmlDocGetRootElement(doc);
+    /* no content set: node has no children at all */
+
+    content = xmlSecGetNodeContentAndTrim(root);
+    if((content == NULL) || (content[0] != '\0')) {
+        testLog("Error: expected empty string for empty element, got '%s'\n",
+                (content != NULL) ? (char*)content : "NULL");
+        if(content != NULL) { xmlFree(content); }
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(content);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecGetNodeContentAndTrim_mixed_content_concatenates_text_nodes(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    xmlNodePtr text1, child, text2;
+    xmlChar* content;
+
+    testStart("xmlSecGetNodeContentAndTrim: mixed content concatenates text nodes only");
+
+    doc = xmltreeTestCreateDoc(BAD_CAST "Root", NULL);
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        testFinishedFailure();
+        return;
+    }
+    root = xmlDocGetRootElement(doc);
+
+    /* build: <Root>hello <Child>world</Child> tail</Root> */
+    text1 = xmlNewText(BAD_CAST "hello ");
+    if(text1 == NULL) {
+        testLog("Error: failed to create text node\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(xmlAddChild(root, text1) == NULL) {
+        testLog("Error: failed to add text node\n");
+        xmlFreeNode(text1);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    child = xmlNewChild(root, NULL, BAD_CAST "Child", NULL);
+    if(child == NULL) {
+        testLog("Error: failed to add child element\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeSetContent(child, BAD_CAST "world") < 0) {
+        testLog("Error: failed to set child content\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
+    xmlNodeSetContent(child, BAD_CAST "world");
+#endif /* LIBXML_VERSION >= 21300 */
+
+    text2 = xmlNewText(BAD_CAST " tail");
+    if(text2 == NULL) {
+        testLog("Error: failed to create text node\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(xmlAddChild(root, text2) == NULL) {
+        testLog("Error: failed to add text node\n");
+        xmlFreeNode(text2);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    content = xmlSecGetNodeContentAndTrim(root);
+    /* libxml2's xmlNodeGetContent() concatenates only the text/CDATA
+     * descendants of the node; child element tags are not serialized.
+     * So <Root>hello <Child>world</Child> tail</Root> yields "hello world tail". */
+    if(content == NULL || xmlStrcmp(content, BAD_CAST "hello world tail") != 0) {
+        testLog("Error: expected 'hello world tail', got '%s'\n",
+                content ? (char*)content : "NULL");
+        xmlFree(content);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(content);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
 /******************************************************************************
  * xmlSecGetNodeContentAsSize
   *****************************************************************************/
@@ -523,6 +638,86 @@ test_xmlSecGetNodeContentAsSize_whitespace_only_returns_default(void) {
     testFinishedSuccess();
 }
 
+static void
+test_xmlSecGetNodeContentAsSize_overflow_fails(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    xmlSecSize val = 0;
+    int ret;
+
+    testStart("xmlSecGetNodeContentAsSize: overflowing number fails");
+
+    doc = xmltreeTestCreateDoc(BAD_CAST "Root", NULL);
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        testFinishedFailure();
+        return;
+    }
+    root = xmlDocGetRootElement(doc);
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeSetContent(root, BAD_CAST "99999999999999999999") < 0) {
+        testLog("Error: failed to set node content\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
+    xmlNodeSetContent(root, BAD_CAST "99999999999999999999");
+#endif /* LIBXML_VERSION >= 21300 */
+
+    ret = xmlSecGetNodeContentAsSize(root, 0, &val);
+    if(ret >= 0) {
+        testLog("Error: expected failure for overflowing number, got ret=%d val=%u\n",
+                ret, (unsigned int)val);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecGetNodeContentAsSize_trailing_garbage_fails(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    xmlSecSize val = 0;
+    int ret;
+
+    testStart("xmlSecGetNodeContentAsSize: trailing non-numeric characters fail");
+
+    doc = xmltreeTestCreateDoc(BAD_CAST "Root", NULL);
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        testFinishedFailure();
+        return;
+    }
+    root = xmlDocGetRootElement(doc);
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeSetContent(root, BAD_CAST "123abc") < 0) {
+        testLog("Error: failed to set node content\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
+    xmlNodeSetContent(root, BAD_CAST "123abc");
+#endif /* LIBXML_VERSION >= 21300 */
+
+    ret = xmlSecGetNodeContentAsSize(root, 0, &val);
+    if(ret >= 0) {
+        testLog("Error: expected failure for trailing non-numeric characters, got ret=%d val=%u\n",
+                ret, (unsigned int)val);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
 /******************************************************************************
  * xmlSecGetNodeContentAsHex / xmlSecSetNodeContentAsHex
   *****************************************************************************/
@@ -665,6 +860,155 @@ test_xmlSecSetNodeContentAsHex_empty(void) {
     }
     xmlFree(content);
     xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecGetNodeContentAsHex_odd_length_fails(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    xmlSecBuffer buf;
+    int ret;
+
+    testStart("xmlSecGetNodeContentAsHex: odd-length hex string fails");
+
+    ret = xmlSecBufferInitialize(&buf, 64);
+    if(ret < 0) {
+        testLog("Error: failed to initialize buffer\n");
+        testFinishedFailure();
+        return;
+    }
+
+    doc = xmltreeTestCreateDoc(BAD_CAST "Root", NULL);
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        xmlSecBufferFinalize(&buf);
+        testFinishedFailure();
+        return;
+    }
+    root = xmlDocGetRootElement(doc);
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeSetContent(root, BAD_CAST "abc") < 0) {
+        testLog("Error: failed to set node content\n");
+        xmlFreeDoc(doc);
+        xmlSecBufferFinalize(&buf);
+        testFinishedFailure();
+        return;
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
+    xmlNodeSetContent(root, BAD_CAST "abc");
+#endif /* LIBXML_VERSION >= 21300 */
+
+    ret = xmlSecGetNodeContentAsHex(root, &buf);
+    if(ret >= 0) {
+        testLog("Error: expected failure for odd-length hex string, got ret=%d\n", ret);
+        xmlFreeDoc(doc);
+        xmlSecBufferFinalize(&buf);
+        testFinishedFailure();
+        return;
+    }
+    xmlFreeDoc(doc);
+    xmlSecBufferFinalize(&buf);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecGetNodeContentAsHex_nonhex_fails(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    xmlSecBuffer buf;
+    int ret;
+
+    testStart("xmlSecGetNodeContentAsHex: non-hex characters fail");
+
+    ret = xmlSecBufferInitialize(&buf, 64);
+    if(ret < 0) {
+        testLog("Error: failed to initialize buffer\n");
+        testFinishedFailure();
+        return;
+    }
+
+    doc = xmltreeTestCreateDoc(BAD_CAST "Root", NULL);
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        xmlSecBufferFinalize(&buf);
+        testFinishedFailure();
+        return;
+    }
+    root = xmlDocGetRootElement(doc);
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeSetContent(root, BAD_CAST "zz") < 0) {
+        testLog("Error: failed to set node content\n");
+        xmlFreeDoc(doc);
+        xmlSecBufferFinalize(&buf);
+        testFinishedFailure();
+        return;
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
+    xmlNodeSetContent(root, BAD_CAST "zz");
+#endif /* LIBXML_VERSION >= 21300 */
+
+    ret = xmlSecGetNodeContentAsHex(root, &buf);
+    if(ret >= 0) {
+        testLog("Error: expected failure for non-hex characters, got ret=%d\n", ret);
+        xmlFreeDoc(doc);
+        xmlSecBufferFinalize(&buf);
+        testFinishedFailure();
+        return;
+    }
+    xmlFreeDoc(doc);
+    xmlSecBufferFinalize(&buf);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecGetNodeContentAsHex_empty_node_succeeds_with_zero_bytes(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    xmlSecBuffer buf;
+    int ret;
+
+    testStart("xmlSecGetNodeContentAsHex: empty node content succeeds with zero bytes");
+
+    ret = xmlSecBufferInitialize(&buf, 64);
+    if(ret < 0) {
+        testLog("Error: failed to initialize buffer\n");
+        testFinishedFailure();
+        return;
+    }
+
+    doc = xmltreeTestCreateDoc(BAD_CAST "Root", NULL);
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        xmlSecBufferFinalize(&buf);
+        testFinishedFailure();
+        return;
+    }
+    root = xmlDocGetRootElement(doc);
+    /* no content set: node has no children at all */
+
+    ret = xmlSecGetNodeContentAsHex(root, &buf);
+    if(ret < 0) {
+        testLog("Error: expected success for empty node content, got ret=%d\n", ret);
+        xmlFreeDoc(doc);
+        xmlSecBufferFinalize(&buf);
+        testFinishedFailure();
+        return;
+    }
+    /* xmlNodeGetContent() yields an empty string for a childless element and
+     * xmlSecBufferHexRead() treats an empty hex string as a valid zero-byte read. */
+    if(xmlSecBufferGetSize(&buf) != 0) {
+        testLog("Error: expected zero bytes for empty node content, got %u\n",
+                (unsigned int)xmlSecBufferGetSize(&buf));
+        xmlFreeDoc(doc);
+        xmlSecBufferFinalize(&buf);
+        testFinishedFailure();
+        return;
+    }
+    xmlFreeDoc(doc);
+    xmlSecBufferFinalize(&buf);
     testFinishedSuccess();
 }
 
@@ -1859,6 +2203,8 @@ test_xmltree(void) {
     test_xmlSecGetNodeContentAndTrim_leading_trailing_spaces();
     test_xmlSecGetNodeContentAndTrim_tabs_and_newlines();
     test_xmlSecGetNodeContentAndTrim_whitespace_only_becomes_empty();
+    test_xmlSecGetNodeContentAndTrim_empty_element_returns_empty_string();
+    test_xmlSecGetNodeContentAndTrim_mixed_content_concatenates_text_nodes();
     if(testGroupFinished() != 1) { success = 0; }
 
     testGroupStart("xmlSecGetNodeContentAsSize");
@@ -1869,12 +2215,17 @@ test_xmltree(void) {
     test_xmlSecGetNodeContentAsSize_nonnumeric_fails();
     test_xmlSecGetNodeContentAsSize_empty_returns_default();
     test_xmlSecGetNodeContentAsSize_whitespace_only_returns_default();
+    test_xmlSecGetNodeContentAsSize_overflow_fails();
+    test_xmlSecGetNodeContentAsSize_trailing_garbage_fails();
     if(testGroupFinished() != 1) { success = 0; }
 
     testGroupStart("xmlSecNodeContentHex");
     test_xmlSecNodeContentHex_roundtrip();
     test_xmlSecSetNodeContentAsHex_encoding();
     test_xmlSecSetNodeContentAsHex_empty();
+    test_xmlSecGetNodeContentAsHex_odd_length_fails();
+    test_xmlSecGetNodeContentAsHex_nonhex_fails();
+    test_xmlSecGetNodeContentAsHex_empty_node_succeeds_with_zero_bytes();
     if(testGroupFinished() != 1) { success = 0; }
 
     testGroupStart("xmlSecIsEmptyNode");

@@ -64,6 +64,8 @@ win32/libxmlsec_a.int/
 win32/libxmlsec_mscng.int/
 win32/libxmlsec_mscrypto.int/
 win32/libxmlsec_mscrypto_a.int/
+win32/libxmlsec_openssl.int/
+win32/libxmlsec_openssl_a.int/
 win32/tmp
 win32/vc140.pdb
 docs/sgml/api/code

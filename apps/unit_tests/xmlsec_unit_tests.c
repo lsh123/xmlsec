@@ -19,7 +19,7 @@
 
 /* must be included before any other xmlsec header */
 #include "xmlsec_unit_tests.h"
-#include "../src/x509_helpers.h"
+#include "../../src/x509_helpers.h"
 
 #include <libxml/parser.h>
 
@@ -429,6 +429,134 @@ test_xmlSecCheckVersionExt_invalid_mode(void) {
     testFinishedSuccess();
 }
 
+static void
+test_xmlSecCheckVersionExt_abi_lower_minor(void) {
+    testStart("xmlSecCheckVersionExt ABI compatible (lower minor)");
+
+    if(XMLSEC_VERSION_MINOR == 0) {
+        testLog("Info: lower-minor ABI check skipped because current minor is 0\n");
+        testFinishedSuccess();
+        return;
+    }
+
+    if(xmlSecCheckVersionExt(XMLSEC_VERSION_MAJOR, XMLSEC_VERSION_MINOR - 1,
+            XMLSEC_VERSION_SUBMINOR, xmlSecCheckVersionABICompatible) != 1) {
+        testLog("Error: ABI-compatible check with a lower minor version should return 1\n");
+        testFinishedFailure();
+        return;
+    }
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecCheckVersionExt_abi_lower_subminor(void) {
+    testStart("xmlSecCheckVersionExt ABI compatible (lower subminor)");
+
+    if(XMLSEC_VERSION_SUBMINOR == 0) {
+        testLog("Info: lower-subminor ABI check skipped because current subminor is 0\n");
+        testFinishedSuccess();
+        return;
+    }
+
+    if(xmlSecCheckVersionExt(XMLSEC_VERSION_MAJOR, XMLSEC_VERSION_MINOR,
+            XMLSEC_VERSION_SUBMINOR - 1, xmlSecCheckVersionABICompatible) != 1) {
+        testLog("Error: ABI-compatible check with a lower subminor version should return 1\n");
+        testFinishedFailure();
+        return;
+    }
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecCheckVersionExt_abi_higher_minor(void) {
+    testStart("xmlSecCheckVersionExt ABI compatible (higher minor)");
+
+    if(xmlSecCheckVersionExt(XMLSEC_VERSION_MAJOR, XMLSEC_VERSION_MINOR + 1,
+            XMLSEC_VERSION_SUBMINOR, xmlSecCheckVersionABICompatible) != 0) {
+        testLog("Error: ABI-compatible check with a higher minor version should return 0\n");
+        testFinishedFailure();
+        return;
+    }
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecCheckVersionExt_abi_higher_subminor(void) {
+    testStart("xmlSecCheckVersionExt ABI compatible (higher subminor)");
+
+    if(xmlSecCheckVersionExt(XMLSEC_VERSION_MAJOR, XMLSEC_VERSION_MINOR,
+            XMLSEC_VERSION_SUBMINOR + 1, xmlSecCheckVersionABICompatible) != 0) {
+        testLog("Error: ABI-compatible check with a higher subminor version should return 0\n");
+        testFinishedFailure();
+        return;
+    }
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecCheckVersionExt_exact_mismatch_minor_lower(void) {
+    testStart("xmlSecCheckVersionExt exact match (lower minor)");
+
+    if(XMLSEC_VERSION_MINOR == 0) {
+        testLog("Info: lower-minor exact-match check skipped because current minor is 0\n");
+        testFinishedSuccess();
+        return;
+    }
+
+    if(xmlSecCheckVersionExt(XMLSEC_VERSION_MAJOR, XMLSEC_VERSION_MINOR - 1,
+            XMLSEC_VERSION_SUBMINOR, xmlSecCheckVersionExactMatch) != 0) {
+        testLog("Error: exact match with a lower minor version should return 0\n");
+        testFinishedFailure();
+        return;
+    }
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecCheckVersionExt_exact_mismatch_minor_higher(void) {
+    testStart("xmlSecCheckVersionExt exact match (higher minor)");
+
+    if(xmlSecCheckVersionExt(XMLSEC_VERSION_MAJOR, XMLSEC_VERSION_MINOR + 1,
+            XMLSEC_VERSION_SUBMINOR, xmlSecCheckVersionExactMatch) != 0) {
+        testLog("Error: exact match with a higher minor version should return 0\n");
+        testFinishedFailure();
+        return;
+    }
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecCheckVersionExt_exact_mismatch_subminor_lower(void) {
+    testStart("xmlSecCheckVersionExt exact match (lower subminor)");
+
+    if(XMLSEC_VERSION_SUBMINOR == 0) {
+        testLog("Info: lower-subminor exact-match check skipped because current subminor is 0\n");
+        testFinishedSuccess();
+        return;
+    }
+
+    if(xmlSecCheckVersionExt(XMLSEC_VERSION_MAJOR, XMLSEC_VERSION_MINOR,
+            XMLSEC_VERSION_SUBMINOR - 1, xmlSecCheckVersionExactMatch) != 0) {
+        testLog("Error: exact match with a lower subminor version should return 0\n");
+        testFinishedFailure();
+        return;
+    }
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecCheckVersionExt_exact_mismatch_subminor_higher(void) {
+    testStart("xmlSecCheckVersionExt exact match (higher subminor)");
+
+    if(xmlSecCheckVersionExt(XMLSEC_VERSION_MAJOR, XMLSEC_VERSION_MINOR,
+            XMLSEC_VERSION_SUBMINOR + 1, xmlSecCheckVersionExactMatch) != 0) {
+        testLog("Error: exact match with a higher subminor version should return 0\n");
+        testFinishedFailure();
+        return;
+    }
+    testFinishedSuccess();
+}
+
 int
 test_xmlsec(void) {
     int success = 1;
@@ -441,6 +569,14 @@ test_xmlsec(void) {
     test_xmlSecCheckVersionExt_abi_compatible();
     test_xmlSecCheckVersionExt_major_mismatch();
     test_xmlSecCheckVersionExt_invalid_mode();
+    test_xmlSecCheckVersionExt_abi_lower_minor();
+    test_xmlSecCheckVersionExt_abi_lower_subminor();
+    test_xmlSecCheckVersionExt_abi_higher_minor();
+    test_xmlSecCheckVersionExt_abi_higher_subminor();
+    test_xmlSecCheckVersionExt_exact_mismatch_minor_lower();
+    test_xmlSecCheckVersionExt_exact_mismatch_minor_higher();
+    test_xmlSecCheckVersionExt_exact_mismatch_subminor_lower();
+    test_xmlSecCheckVersionExt_exact_mismatch_subminor_higher();
 
     if(testGroupFinished() != 1) { success = 0; }
 

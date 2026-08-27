@@ -17,7 +17,7 @@
 #include "xmlsec_unit_tests.h"
 #include <xmlsec/strings.h>
 #include <xmlsec/xmltree.h>
-#include "../src/transform_helpers.h"
+#include "../../src/transform_helpers.h"
 
 #ifndef XMLSEC_NO_CHACHA20
 
@@ -128,42 +128,6 @@ test_xmlSecTransformChaCha20ParamsRead_missing_counter(void) {
         return;
     }
 
-    xmlFreeDoc(doc);
-    testFinishedSuccess();
-}
-
-static void
-test_xmlSecTransformChaCha20ParamsRead_missing_nonce_strict(void) {
-    static const char xml[] =
-        "<EncryptionMethod xmlns=\"http://www.w3.org/2001/04/xmlenc#\" "
-        "xmlns:dsig-more=\"http://www.w3.org/2021/04/xmldsig-more#\">"
-        "<dsig-more:Counter>01020304</dsig-more:Counter>"
-        "</EncryptionMethod>";
-    xmlDocPtr doc = NULL;
-    xmlNodePtr node;
-    xmlSecByte iv[XMLSEC_CHACHA20_IV_SIZE];
-    int noncePresent = 1;
-    xmlSecSize ivSize = 0;
-    int ret;
-
-    testStart("ChaCha20 read missing nonce strict");
-
-    node = xmlSecUnitTestParseNode(xml, &doc);
-    if(node == NULL) {
-        testFinishedFailure();
-        return;
-    }
-
-    memset(iv, 0xFF, sizeof(iv));
-    ret = xmlSecTransformChaCha20ParamsRead(node, iv, sizeof(iv), &ivSize, &noncePresent);
-    if((ret < 0) || (ivSize != XMLSEC_CHACHA20_IV_SIZE) || (noncePresent != 0) ||
-       (memcmp(iv, "\x01\x02\x03\x04", XMLSEC_CHACHA20_COUNTER_SIZE) != 0) ||
-       (memcmp(iv + XMLSEC_CHACHA20_COUNTER_SIZE, "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", XMLSEC_CHACHA20_NONCE_SIZE) != 0)) {
-        testLog("Error: ChaCha20 params read did not accept missing nonce with required counter\n");
-        xmlFreeDoc(doc);
-        testFinishedFailure();
-        return;
-    }
     xmlFreeDoc(doc);
     testFinishedSuccess();
 }
@@ -356,6 +320,426 @@ test_xmlSecTransformChaCha20Poly1305ParamsRead_missing_nonce(void) {
         return;
     }
 
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformChaCha20ParamsRead_invalid_nonce_hex_odd_length(void) {
+    static const char xml[] =
+        "<EncryptionMethod xmlns=\"http://www.w3.org/2001/04/xmlenc#\" "
+        "xmlns:dsig-more=\"http://www.w3.org/2021/04/xmldsig-more#\">"
+        "<dsig-more:Nonce>0102030</dsig-more:Nonce>"
+        "<dsig-more:Counter>01020304</dsig-more:Counter>"
+        "</EncryptionMethod>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecByte iv[XMLSEC_CHACHA20_IV_SIZE];
+    xmlSecSize ivSize = 0;
+    int noncePresent = 0;
+    int ret;
+
+    testStart("ChaCha20 read invalid nonce hex (odd length)");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    memset(iv, 0xFF, sizeof(iv));
+    ret = xmlSecTransformChaCha20ParamsRead(node, iv, sizeof(iv), &ivSize, &noncePresent);
+    if(ret >= 0) {
+        testLog("Error: ChaCha20 params read accepted nonce with odd-length hex content\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformChaCha20ParamsRead_invalid_nonce_hex_non_hex_chars(void) {
+    static const char xml[] =
+        "<EncryptionMethod xmlns=\"http://www.w3.org/2001/04/xmlenc#\" "
+        "xmlns:dsig-more=\"http://www.w3.org/2021/04/xmldsig-more#\">"
+        "<dsig-more:Nonce>0102zz0405060708090a0b</dsig-more:Nonce>"
+        "<dsig-more:Counter>01020304</dsig-more:Counter>"
+        "</EncryptionMethod>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecByte iv[XMLSEC_CHACHA20_IV_SIZE];
+    xmlSecSize ivSize = 0;
+    int noncePresent = 0;
+    int ret;
+
+    testStart("ChaCha20 read invalid nonce hex (non-hex characters)");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    memset(iv, 0xFF, sizeof(iv));
+    ret = xmlSecTransformChaCha20ParamsRead(node, iv, sizeof(iv), &ivSize, &noncePresent);
+    if(ret >= 0) {
+        testLog("Error: ChaCha20 params read accepted nonce with non-hex characters\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformChaCha20ParamsRead_invalid_nonce_size(void) {
+    static const char xml[] =
+        "<EncryptionMethod xmlns=\"http://www.w3.org/2001/04/xmlenc#\" "
+        "xmlns:dsig-more=\"http://www.w3.org/2021/04/xmldsig-more#\">"
+        "<dsig-more:Nonce>0102030405060708</dsig-more:Nonce>"
+        "<dsig-more:Counter>01020304</dsig-more:Counter>"
+        "</EncryptionMethod>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecByte iv[XMLSEC_CHACHA20_IV_SIZE];
+    xmlSecSize ivSize = 0;
+    int noncePresent = 0;
+    int ret;
+
+    testStart("ChaCha20 read invalid nonce size");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    memset(iv, 0xFF, sizeof(iv));
+    ret = xmlSecTransformChaCha20ParamsRead(node, iv, sizeof(iv), &ivSize, &noncePresent);
+    if(ret >= 0) {
+        testLog("Error: ChaCha20 params read accepted nonce of wrong size\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformChaCha20ParamsRead_invalid_counter_size(void) {
+    static const char xml[] =
+        "<EncryptionMethod xmlns=\"http://www.w3.org/2001/04/xmlenc#\" "
+        "xmlns:dsig-more=\"http://www.w3.org/2021/04/xmldsig-more#\">"
+        "<dsig-more:Nonce>000102030405060708090a0b</dsig-more:Nonce>"
+        "<dsig-more:Counter>0102030405</dsig-more:Counter>"
+        "</EncryptionMethod>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecByte iv[XMLSEC_CHACHA20_IV_SIZE];
+    xmlSecSize ivSize = 0;
+    int noncePresent = 0;
+    int ret;
+
+    testStart("ChaCha20 read invalid counter size");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    memset(iv, 0xFF, sizeof(iv));
+    ret = xmlSecTransformChaCha20ParamsRead(node, iv, sizeof(iv), &ivSize, &noncePresent);
+    if(ret >= 0) {
+        testLog("Error: ChaCha20 params read accepted counter of wrong size\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformChaCha20ParamsRead_unexpected_extra_child(void) {
+    static const char xml[] =
+        "<EncryptionMethod xmlns=\"http://www.w3.org/2001/04/xmlenc#\" "
+        "xmlns:dsig-more=\"http://www.w3.org/2021/04/xmldsig-more#\">"
+        "<dsig-more:Nonce>000102030405060708090a0b</dsig-more:Nonce>"
+        "<dsig-more:Counter>01020304</dsig-more:Counter>"
+        "<dsig-more:Extra>unexpected</dsig-more:Extra>"
+        "</EncryptionMethod>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecByte iv[XMLSEC_CHACHA20_IV_SIZE];
+    xmlSecSize ivSize = 0;
+    int noncePresent = 0;
+    int ret;
+
+    testStart("ChaCha20 read unexpected extra child");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    memset(iv, 0xFF, sizeof(iv));
+    ret = xmlSecTransformChaCha20ParamsRead(node, iv, sizeof(iv), &ivSize, &noncePresent);
+    if(ret >= 0) {
+        testLog("Error: ChaCha20 params read accepted an unexpected extra child element\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformChaCha20ParamsRead_counter_before_nonce(void) {
+    static const char xml[] =
+        "<EncryptionMethod xmlns=\"http://www.w3.org/2001/04/xmlenc#\" "
+        "xmlns:dsig-more=\"http://www.w3.org/2021/04/xmldsig-more#\">"
+        "<dsig-more:Counter>01020304</dsig-more:Counter>"
+        "<dsig-more:Nonce>000102030405060708090a0b</dsig-more:Nonce>"
+        "</EncryptionMethod>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecByte iv[XMLSEC_CHACHA20_IV_SIZE];
+    xmlSecSize ivSize = 0;
+    int noncePresent = 0;
+    int ret;
+
+    testStart("ChaCha20 read counter before nonce");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    memset(iv, 0xFF, sizeof(iv));
+    ret = xmlSecTransformChaCha20ParamsRead(node, iv, sizeof(iv), &ivSize, &noncePresent);
+    if(ret >= 0) {
+        testLog("Error: ChaCha20 params read accepted counter appearing before nonce\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformChaCha20Poly1305ParamsRead_aad(void) {
+    static const char xml[] =
+        "<EncryptionMethod xmlns=\"http://www.w3.org/2001/04/xmlenc#\" "
+        "xmlns:dsig-more=\"http://www.w3.org/2021/04/xmldsig-more#\">"
+        "<dsig-more:Nonce>000102030405060708090a0b</dsig-more:Nonce>"
+        "<dsig-more:AAD>0123456789abcdef</dsig-more:AAD>"
+        "</EncryptionMethod>";
+    static const xmlSecByte ivExpected[XMLSEC_CHACHA20_NONCE_SIZE] = {
+        0x00, 0x01, 0x02, 0x03,
+        0x04, 0x05, 0x06, 0x07,
+        0x08, 0x09, 0x0A, 0x0B
+    };
+    static const char aadExpected[] = "0123456789abcdef";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecBuffer aad;
+    xmlSecByte iv[XMLSEC_CHACHA20_NONCE_SIZE];
+    xmlSecSize ivSize = 0;
+    int noncePresent = 0;
+    int ret;
+
+    testStart("ChaCha20-Poly1305 read AAD");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecBufferInitialize(&aad, 0);
+    if(ret < 0) {
+        testLog("Error: failed to initialize AAD buffer\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    memset(iv, 0xFF, sizeof(iv));
+    ret = xmlSecTransformChaCha20Poly1305ParamsRead(node, &aad, iv, sizeof(iv), &ivSize, &noncePresent);
+    if((ret < 0) || (ivSize != XMLSEC_CHACHA20_NONCE_SIZE) || (noncePresent != 1) ||
+       (memcmp(iv, ivExpected, sizeof(ivExpected)) != 0)) {
+        testLog("Error: ChaCha20-Poly1305 params read failed with AAD present\n");
+        xmlSecBufferFinalize(&aad);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    if((xmlSecBufferGetSize(&aad) != (xmlSecSize)(sizeof(aadExpected) - 1)) ||
+       (memcmp(xmlSecBufferGetData(&aad), aadExpected, sizeof(aadExpected) - 1) != 0)) {
+        testLog("Error: ChaCha20-Poly1305 params read did not store AAD content into the buffer\n");
+        xmlSecBufferFinalize(&aad);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecBufferFinalize(&aad);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformChaCha20Poly1305ParamsRead_invalid_nonce_hex_odd_length(void) {
+    static const char xml[] =
+        "<EncryptionMethod xmlns=\"http://www.w3.org/2001/04/xmlenc#\" "
+        "xmlns:dsig-more=\"http://www.w3.org/2021/04/xmldsig-more#\">"
+        "<dsig-more:Nonce>0102030</dsig-more:Nonce>"
+        "</EncryptionMethod>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecBuffer aad;
+    xmlSecByte iv[XMLSEC_CHACHA20_NONCE_SIZE];
+    xmlSecSize ivSize = 0;
+    int noncePresent = 0;
+    int ret;
+
+    testStart("ChaCha20-Poly1305 read invalid nonce hex (odd length)");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecBufferInitialize(&aad, 0);
+    if(ret < 0) {
+        testLog("Error: failed to initialize AAD buffer\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    memset(iv, 0xFF, sizeof(iv));
+    ret = xmlSecTransformChaCha20Poly1305ParamsRead(node, &aad, iv, sizeof(iv), &ivSize, &noncePresent);
+    if(ret >= 0) {
+        testLog("Error: ChaCha20-Poly1305 params read accepted nonce with odd-length hex content\n");
+        xmlSecBufferFinalize(&aad);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecBufferFinalize(&aad);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformChaCha20Poly1305ParamsRead_invalid_nonce_size(void) {
+    static const char xml[] =
+        "<EncryptionMethod xmlns=\"http://www.w3.org/2001/04/xmlenc#\" "
+        "xmlns:dsig-more=\"http://www.w3.org/2021/04/xmldsig-more#\">"
+        "<dsig-more:Nonce>0102030405060708</dsig-more:Nonce>"
+        "</EncryptionMethod>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecBuffer aad;
+    xmlSecByte iv[XMLSEC_CHACHA20_NONCE_SIZE];
+    xmlSecSize ivSize = 0;
+    int noncePresent = 0;
+    int ret;
+
+    testStart("ChaCha20-Poly1305 read invalid nonce size");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecBufferInitialize(&aad, 0);
+    if(ret < 0) {
+        testLog("Error: failed to initialize AAD buffer\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    memset(iv, 0xFF, sizeof(iv));
+    ret = xmlSecTransformChaCha20Poly1305ParamsRead(node, &aad, iv, sizeof(iv), &ivSize, &noncePresent);
+    if(ret >= 0) {
+        testLog("Error: ChaCha20-Poly1305 params read accepted nonce of wrong size\n");
+        xmlSecBufferFinalize(&aad);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecBufferFinalize(&aad);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformChaCha20Poly1305ParamsRead_unexpected_extra_child(void) {
+    static const char xml[] =
+        "<EncryptionMethod xmlns=\"http://www.w3.org/2001/04/xmlenc#\" "
+        "xmlns:dsig-more=\"http://www.w3.org/2021/04/xmldsig-more#\">"
+        "<dsig-more:Nonce>000102030405060708090a0b</dsig-more:Nonce>"
+        "<dsig-more:AAD>0123456789abcdef</dsig-more:AAD>"
+        "<dsig-more:Extra>unexpected</dsig-more:Extra>"
+        "</EncryptionMethod>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecBuffer aad;
+    xmlSecByte iv[XMLSEC_CHACHA20_NONCE_SIZE];
+    xmlSecSize ivSize = 0;
+    int noncePresent = 0;
+    int ret;
+
+    testStart("ChaCha20-Poly1305 read unexpected extra child");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecBufferInitialize(&aad, 0);
+    if(ret < 0) {
+        testLog("Error: failed to initialize AAD buffer\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    memset(iv, 0xFF, sizeof(iv));
+    ret = xmlSecTransformChaCha20Poly1305ParamsRead(node, &aad, iv, sizeof(iv), &ivSize, &noncePresent);
+    if(ret >= 0) {
+        testLog("Error: ChaCha20-Poly1305 params read accepted an unexpected extra child element\n");
+        xmlSecBufferFinalize(&aad);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecBufferFinalize(&aad);
     xmlFreeDoc(doc);
     testFinishedSuccess();
 }
@@ -576,10 +960,19 @@ test_transform_helpers(void) {
 
     test_xmlSecTransformChaCha20ParamsRead_missing_nonce();
     test_xmlSecTransformChaCha20ParamsRead_missing_counter();
-    test_xmlSecTransformChaCha20ParamsRead_missing_nonce_strict();
     test_xmlSecTransformChaCha20ParamsWrite_roundtrip();
+    test_xmlSecTransformChaCha20ParamsRead_invalid_nonce_hex_odd_length();
+    test_xmlSecTransformChaCha20ParamsRead_invalid_nonce_hex_non_hex_chars();
+    test_xmlSecTransformChaCha20ParamsRead_invalid_nonce_size();
+    test_xmlSecTransformChaCha20ParamsRead_invalid_counter_size();
+    test_xmlSecTransformChaCha20ParamsRead_unexpected_extra_child();
+    test_xmlSecTransformChaCha20ParamsRead_counter_before_nonce();
     test_xmlSecTransformChaCha20Poly1305ParamsRead_missing_nonce();
     test_xmlSecTransformChaCha20Poly1305ParamsWrite_roundtrip();
+    test_xmlSecTransformChaCha20Poly1305ParamsRead_aad();
+    test_xmlSecTransformChaCha20Poly1305ParamsRead_invalid_nonce_hex_odd_length();
+    test_xmlSecTransformChaCha20Poly1305ParamsRead_invalid_nonce_size();
+    test_xmlSecTransformChaCha20Poly1305ParamsRead_unexpected_extra_child();
 
     if(testGroupFinished() != 1) { success = 0; }
 #endif /* XMLSEC_NO_CHACHA20 */

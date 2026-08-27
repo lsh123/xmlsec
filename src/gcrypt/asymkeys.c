@@ -1530,7 +1530,7 @@ static xmlSecKeyDataKlass xmlSecGCryptKeyDataEcKlass = {
  * @return pointer to GCrypt EC key data klass.
  */
 xmlSecKeyDataId
-xmlSecGCryptkeyDataEcGetKlass(void) {
+xmlSecGCryptKeyDataEcGetKlass(void) {
     return(&xmlSecGCryptKeyDataEcKlass);
 }
 

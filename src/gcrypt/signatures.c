@@ -2101,7 +2101,6 @@ xmlSecGCryptEcdsaSign(int digest, xmlSecKeyDataPtr key_data,
         goto done;
     }
 
-    /* get the current digest, can't use "hash" :( */
     err = gcry_mpi_scan(&m_hash, GCRYMPI_FMT_USG, dgst, dgstSize, NULL);
     if((err != GPG_ERR_NO_ERROR) || (m_hash == NULL)) {
         xmlSecGCryptError("gcry_mpi_scan(hash)", err, NULL);
@@ -2254,7 +2253,6 @@ xmlSecGCryptEcdsaVerify(int digest, xmlSecKeyDataPtr key_data,
         goto done;
     }
 
-    /* get the current digest, can't use "hash" :( */
     err = gcry_mpi_scan(&m_hash, GCRYMPI_FMT_USG, dgst, dgstSize, NULL);
     if((err != GPG_ERR_NO_ERROR) || (m_hash == NULL)) {
         xmlSecGCryptError("gcry_mpi_scan(hash)", err, NULL);

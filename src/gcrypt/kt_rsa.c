@@ -338,7 +338,7 @@ xmlSecGCryptRsaPkcs1Encrypt(xmlSecGCryptRsaPkcs1CtxPtr ctx, xmlSecBufferPtr in, 
     XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, return(-1), NULL);
 
     err = gcry_sexp_build(&s_plaintext_data, NULL,
-            "(data (flags pkcs1)(hash-algo sha1)"
+            "(data (flags pkcs1)"
             "(value %b))",
             inLen, xmlSecBufferGetData(in));
     if((err != GPG_ERR_NO_ERROR) || (s_plaintext_data == NULL)) {
@@ -396,7 +396,7 @@ xmlSecGCryptRsaPkcs1Decrypt(xmlSecGCryptRsaPkcs1CtxPtr ctx, xmlSecBufferPtr in, 
     XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, return(-1), NULL);
 
     err = gcry_sexp_build(&s_encrypted_data, NULL,
-            "(enc-val (flags pkcs1)(hash-algo sha1)"
+            "(enc-val (flags pkcs1)"
             "(rsa (a %b)))",
             inLen, xmlSecBufferGetData(in));
     if((err != GPG_ERR_NO_ERROR) || (s_encrypted_data == NULL)) {

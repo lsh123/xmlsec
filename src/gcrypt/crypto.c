@@ -70,7 +70,7 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
 #endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_EC
-    gXmlSecGCryptFunctions->keyDataEcGetKlass        = xmlSecGCryptkeyDataEcGetKlass;
+    gXmlSecGCryptFunctions->keyDataEcGetKlass        = xmlSecGCryptKeyDataEcGetKlass;
 #endif /* XMLSEC_NO_EC */
 
 #ifndef XMLSEC_NO_HMAC

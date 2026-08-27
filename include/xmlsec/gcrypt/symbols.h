@@ -39,20 +39,10 @@ extern "C" {
 #define xmlSecKeyDataAesId                      xmlSecGCryptKeyDataAesId
 #define xmlSecKeyDataDesId                      xmlSecGCryptKeyDataDesId
 #define xmlSecKeyDataDsaId                      xmlSecGCryptKeyDataDsaId
-#define xmlSecKeyDataEcdId                      xmlSecGCryptKeyDataEcId
 #define xmlSecKeyDataEcdsaId                    xmlSecGCryptKeyDataEcId
 #define xmlSecKeyDataEcId                       xmlSecGCryptKeyDataEcId
 #define xmlSecKeyDataHmacId                     xmlSecGCryptKeyDataHmacId
 #define xmlSecKeyDataRsaId                      xmlSecGCryptKeyDataRsaId
-#define xmlSecKeyDataX509Id                     xmlSecGCryptKeyDataX509Id
-#define xmlSecKeyDataRawX509CertId              xmlSecGCryptKeyDataRawX509CertId
-
-/******************************************************************************
- *
- * Key data store ids
- *
-  *****************************************************************************/
-#define xmlSecX509StoreId                       xmlSecGCryptX509StoreId
 
 /******************************************************************************
  *
@@ -76,8 +66,6 @@ extern "C" {
 #define xmlSecTransformDsaSha1Id                xmlSecGCryptTransformDsaSha1Id
 
 #define xmlSecTransformHmacMd5Id                xmlSecGCryptTransformHmacMd5Id
-#define xmlSecTransformMd5Id                    xmlSecGCryptTransformMd5Id
-#define xmlSecTransformRipemd160Id              xmlSecGCryptTransformRipemd160Id
 
 #define xmlSecTransformEcdsaSha1Id              xmlSecGCryptTransformEcdsaSha1Id
 
@@ -94,6 +82,9 @@ extern "C" {
 #define xmlSecTransformHmacSha512Id             xmlSecGCryptTransformHmacSha512Id
 #define xmlSecTransformHmacRipemd160Id          xmlSecGCryptTransformHmacRipemd160Id
 #define xmlSecTransformHmacSha1Id               xmlSecGCryptTransformHmacSha1Id
+
+#define xmlSecTransformMd5Id                    xmlSecGCryptTransformMd5Id
+#define xmlSecTransformRipemd160Id              xmlSecGCryptTransformRipemd160Id
 
 #define xmlSecTransformRsaMd5Id                 xmlSecGCryptTransformRsaMd5Id
 #define xmlSecTransformRsaRipemd160Id           xmlSecGCryptTransformRsaRipemd160Id

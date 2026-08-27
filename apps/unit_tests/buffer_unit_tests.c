@@ -36,8 +36,84 @@ test_buffer_reset_default_alloc_mode(void) {
     xmlSecBufferSetDefaultAllocMode(xmlSecAllocModeDouble, 1024);
 }
 
+#ifdef _MSC_VER
+static int
+test_buffer_get_env_copy(const char* name, char* out, size_t outSize) {
+    char* value = NULL;
+    size_t required = 0;
+    errno_t err;
+
+    xmlSecAssert2(name != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(outSize > 0, -1);
+
+    out[0] = '\0';
+    err = _dupenv_s(&value, &required, name);
+    if((err != 0) || (value == NULL) || (required == 0) || (value[0] == '\0')) {
+        if(value != NULL) {
+            free(value);
+        }
+        return(-1);
+    }
+
+    if(sprintf_s(out, outSize, "%s", value) < 0) {
+        free(value);
+        return(-1);
+    }
+
+    free(value);
+    return(0);
+}
+#endif
+
+static const char*
+test_buffer_get_temp_dir(void) {
+#ifdef _MSC_VER
+    static char tmpPath[512];
+#else
+    const char* value;
+#endif
+
+    /* Prefer OS-provided temp locations; CI working directories may be read-only. */
+#ifndef _MSC_VER
+    value = getenv("TMPDIR");
+    if((value != NULL) && (value[0] != '\0')) {
+        return(value);
+    }
+#endif
+
+#ifdef _MSC_VER
+    if(test_buffer_get_env_copy("TMP", tmpPath, sizeof(tmpPath)) == 0) {
+        return(tmpPath);
+    }
+
+    if(test_buffer_get_env_copy("TEMP", tmpPath, sizeof(tmpPath)) == 0) {
+        return(tmpPath);
+    }
+
+    if(test_buffer_get_env_copy("USERPROFILE", tmpPath, sizeof(tmpPath)) == 0) {
+        return(tmpPath);
+    }
+#else
+    value = getenv("TMP");
+    if((value != NULL) && (value[0] != '\0')) {
+        return(value);
+    }
+
+    value = getenv("TEMP");
+    if((value != NULL) && (value[0] != '\0')) {
+        return(value);
+    }
+#endif
+
+    return(".");
+}
+
 static int
 test_buffer_make_temp_name(char* tmpName, size_t tmpNameSize, const char* suffix) {
+    const char* tmpDir;
+    size_t tmpDirLen;
+    const char* sep;
     long now;
     unsigned int ticks;
 #ifdef _MSC_VER
@@ -52,12 +128,24 @@ test_buffer_make_temp_name(char* tmpName, size_t tmpNameSize, const char* suffix
     xmlSecAssert2(tmpNameSize > 0, -1);
     xmlSecAssert2(suffix != NULL, -1);
 
+    tmpDir = test_buffer_get_temp_dir();
+    xmlSecAssert2(tmpDir != NULL, -1);
+    tmpDirLen = strlen(tmpDir);
+
+#ifdef _MSC_VER
+    sep = ((tmpDirLen > 0) && (tmpDir[tmpDirLen - 1] != '\\') && (tmpDir[tmpDirLen - 1] != '/')) ? "\\" : "";
+#else
+    sep = ((tmpDirLen > 0) && (tmpDir[tmpDirLen - 1] != '/')) ? "/" : "";
+#endif
+
     now = (long)time(NULL);
     ticks = (unsigned int)clock();
 #ifdef _MSC_VER
-    ret = sprintf_s(tmpName, tmpNameSize, "xmlsec_unit_tests_%ld_%d_%u_%s", now, pid, ticks, suffix);
+    ret = sprintf_s(tmpName, tmpNameSize, "%s%sxmlsec_unit_tests_%ld_%d_%u_%s",
+        tmpDir, sep, now, pid, ticks, suffix);
 #else
-    ret = snprintf(tmpName, tmpNameSize, "xmlsec_unit_tests_%ld_%d_%u_%s", now, pid, ticks, suffix);
+    ret = snprintf(tmpName, tmpNameSize, "%s%sxmlsec_unit_tests_%ld_%d_%u_%s",
+        tmpDir, sep, now, pid, ticks, suffix);
 #endif
     if((ret < 0) || ((size_t)ret >= tmpNameSize)) {
         return(-1);

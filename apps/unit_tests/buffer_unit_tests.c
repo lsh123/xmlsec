@@ -104,6 +104,21 @@ test_buffer_get_temp_dir(void) {
     if((value != NULL) && (value[0] != '\0')) {
         return(value);
     }
+
+#ifdef P_tmpdir
+    if((P_tmpdir != NULL) && (P_tmpdir[0] != '\0')) {
+        return(P_tmpdir);
+    }
+#endif
+
+    /* Common writable fallback on Unix-like CI runners. */
+    if(access("/tmp", W_OK) == 0) {
+        return("/tmp");
+    }
+
+    if(access("/var/tmp", W_OK) == 0) {
+        return("/var/tmp");
+    }
 #endif
 
     return(".");

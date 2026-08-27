@@ -131,7 +131,7 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecGCryptKeyDataDesSet       (xmlSecK
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformDes3CbcGetKlass(void);
 
 /**
- * @brief The DES3 KW transform klass.
+ * @brief The DES3 key wrap transform klass.
  */
 #define xmlSecGCryptTransformKWDes3Id \
         xmlSecGCryptTransformKWDes3GetKlass()
@@ -182,8 +182,10 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformDsaSha1GetKlass(void
 /**
  * @brief The EC key klass.
  */
-#define xmlSecGCryptKeyDataEcId         xmlSecGCryptkeyDataEcGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGCryptkeyDataEcGetKlass           (void);
+#define xmlSecGCryptKeyDataEcId         xmlSecGCryptKeyDataEcGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGCryptKeyDataEcGetKlass          (void);
+/* Deprecated: use xmlSecGCryptKeyDataEcGetKlass. Retained for source compatibility with the misspelled name released in 1.3.10. */
+#define xmlSecGCryptkeyDataEcGetKlass   xmlSecGCryptKeyDataEcGetKlass
 XMLSEC_CRYPTO_EXPORT int                xmlSecGCryptKeyDataEcAdoptKey           (xmlSecKeyDataPtr data,
                                                                                  gcry_sexp_t ec_key);
 XMLSEC_CRYPTO_EXPORT int                xmlSecGCryptKeyDataEcAdoptKeyPair       (xmlSecKeyDataPtr data,
@@ -284,7 +286,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformHmacMd5GetKlass(void
 
 #ifndef XMLSEC_NO_RIPEMD160
 /**
- * @brief The HMAC with RipeMD160 signature transform klass.
+ * @brief The HMAC with RIPEMD160 signature transform klass.
  */
 #define xmlSecGCryptTransformHmacRipemd160Id \
         xmlSecGCryptTransformHmacRipemd160GetKlass()
@@ -563,7 +565,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformSha3_512GetKlass(voi
 
 /******************************************************************************
  *
- * Md5 transforms
+ * MD5 transforms
  *
   *****************************************************************************/
 #ifndef XMLSEC_NO_MD5
@@ -578,7 +580,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformMd5GetKlass(void);
 
 /******************************************************************************
  *
- * RipeMD160 transforms
+ * RIPEMD160 transforms
  *
   *****************************************************************************/
 #ifndef XMLSEC_NO_RIPEMD160

@@ -96,7 +96,7 @@ typedef xmlSecTransformKWDes3Ctx xmlSecGCryptKWDes3Ctx,
 
 /******************************************************************************
  *
- * Tripple DES KW transforms
+ * Triple DES KW transforms
  *
  * xmlSecTransform + xmlSecGCryptKWDes3Ctx
  *
@@ -253,7 +253,6 @@ xmlSecGCryptKWDes3Sha1(xmlSecTransformPtr transform,
                        const xmlSecByte * in, xmlSecSize inSize,
                        xmlSecByte * out, xmlSecSize outSize,
                        xmlSecSize * outWritten) {
-    xmlSecGCryptKWDes3CtxPtr ctx;
     gcry_md_hd_t digestCtx;
     xmlSecByte* outBuf;
     unsigned int outBufSize;
@@ -266,9 +265,6 @@ xmlSecGCryptKWDes3Sha1(xmlSecTransformPtr transform,
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize > 0, -1);
     xmlSecAssert2(outWritten != NULL, -1);
-
-    ctx = xmlSecGCryptKWDes3GetCtx(transform);
-    xmlSecAssert2(ctx != NULL, -1);
 
     outBufSize = gcry_md_get_algo_dlen(GCRY_MD_SHA1);
     xmlSecAssert2(outSize >= outBufSize, -1);
@@ -404,9 +400,9 @@ xmlSecGCryptKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
     gcry_error_t err;
 
     xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(keySize >= key_len, -1);
+    xmlSecAssert2(keySize == key_len, -1);
     xmlSecAssert2(iv != NULL, -1);
-    xmlSecAssert2(ivSize >= block_len, -1);
+    xmlSecAssert2(ivSize == block_len, -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize > 0, -1);
     xmlSecAssert2(out != NULL, -1);

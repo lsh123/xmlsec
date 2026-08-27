@@ -338,7 +338,7 @@ xmlSecGCryptRsaPkcs1Encrypt(xmlSecGCryptRsaPkcs1CtxPtr ctx, xmlSecBufferPtr in, 
     XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, return(-1), NULL);
 
     err = gcry_sexp_build(&s_plaintext_data, NULL,
-            "(data (flags pkcs1)(hash-algo sha1)"
+            "(data (flags pkcs1)"
             "(value %b))",
             inLen, xmlSecBufferGetData(in));
     if((err != GPG_ERR_NO_ERROR) || (s_plaintext_data == NULL)) {
@@ -396,7 +396,7 @@ xmlSecGCryptRsaPkcs1Decrypt(xmlSecGCryptRsaPkcs1CtxPtr ctx, xmlSecBufferPtr in, 
     XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, return(-1), NULL);
 
     err = gcry_sexp_build(&s_encrypted_data, NULL,
-            "(enc-val (flags pkcs1)(hash-algo sha1)"
+            "(enc-val (flags pkcs1)"
             "(rsa (a %b)))",
             inLen, xmlSecBufferGetData(in));
     if((err != GPG_ERR_NO_ERROR) || (s_encrypted_data == NULL)) {
@@ -410,7 +410,7 @@ xmlSecGCryptRsaPkcs1Decrypt(xmlSecGCryptRsaPkcs1CtxPtr ctx, xmlSecBufferPtr in, 
         xmlSecGCryptKeyDataRsaGetPrivateKey(ctx->keyData),
         out);
     if(ret != 0) {
-        xmlSecInternalError("xmlSecGCryptRsaKtEncrypt", NULL);
+        xmlSecInternalError("xmlSecGCryptRsaKtDecrypt", NULL);
         goto done;
     }
 
@@ -788,8 +788,8 @@ xmlSecGCryptRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     if ((mgf1Alg != NULL) && (ctx->hashAlg != NULL) && (strcmp(ctx->hashAlg, mgf1Alg) != 0)) {
         xmlSecInvalidTransformError3(transform,
             "for gcrypt/gnutls, rsa/oaep mgf1 algorithm=\"%s\" must be the same as digest algorithm=\"%s\"",
-            xmlSecErrorsSafeString(ctx->hashAlg),
-            xmlSecErrorsSafeString(mgf1Alg));
+            xmlSecErrorsSafeString(mgf1Alg),
+            xmlSecErrorsSafeString(ctx->hashAlg));
         xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
         return(-1);
     }
@@ -975,7 +975,7 @@ xmlSecGCryptRsaOaepDecrypt(xmlSecGCryptRsaOaepCtxPtr ctx, xmlSecBufferPtr in, xm
         xmlSecGCryptKeyDataRsaGetPrivateKey(ctx->keyData),
         out);
     if(ret != 0) {
-        xmlSecInternalError("xmlSecGCryptRsaKtEncrypt", NULL);
+        xmlSecInternalError("xmlSecGCryptRsaKtDecrypt", NULL);
         goto done;
     }
 

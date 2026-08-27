@@ -57,6 +57,10 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppKeysMngrCertLoad         (xmlSecK
 XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppKeysMngrCrlLoad          (xmlSecKeysMngrPtr mngr,
                                                                          const char *filename,
                                                                          xmlSecKeyDataFormat format);
+XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppKeysMngrCrlLoadMemory    (xmlSecKeysMngrPtr mngr,
+                                                                         const xmlSecByte* data,
+                                                                         xmlSecSize dataSize,
+                                                                         xmlSecKeyDataFormat format);
 XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppKeysMngrCrlLoadAndVerify (xmlSecKeysMngrPtr mngr,
                                                                          const char *filename,
                                                                          xmlSecKeyDataFormat format,

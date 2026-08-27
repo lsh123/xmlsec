@@ -54,7 +54,7 @@ Noteworthy changes in version 1.4.3 (2008-09-18)
 
  * Try to auto-initialize Libgcrypt to minimize the effect of
    applications not doing that correctly.  This is not a perfect
-   solution but given that many applicationion would totally fail
+    solution but given that many applications would totally fail
    without such a hack, we try to help at least with the most common
    cases.  Folks, please read the manual to learn how to properly
    initialize Libgcrypt!
@@ -88,12 +88,12 @@ Noteworthy changes in version 1.4.3 (2008-09-18)
        process might still be running with increased privileges and that
        the secure memory has not been initialized.  */
 
-    /* Allocate a pool of 32k secure memory.  This make the secure memory
+    /* Allocate a pool of 32k secure memory.  This makes the secure memory
        available and also drops privileges where needed.  */
     err = gcry_control(GCRYCTL_INIT_SECMEM, 32768, 0);
     if(err != GPG_ERR_NO_ERROR) {
         xmlSecGCryptError("gcry_control(GCRYCTL_INIT_SECMEM)", err, NULL);
-        /* ignore this error because of libgrcypt bug in allocating memory,
+        /* ignore this error because of libgcrypt bug in allocating memory,
         see https://github.com/lsh123/xmlsec/issues/415 for more details */
     }
 
@@ -392,6 +392,30 @@ int
 xmlSecGCryptAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlSecKeyDataFormat format) {
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
+
+    xmlSecNotImplementedError("GCrypt doesn't support X509 certificates");
+    return(-1);
+}
+
+/**
+ * @brief GCrypt does not support X509 certificates.
+ * @details Reads crls from binary buffer @p data and adds to the list of crls in @p store.
+ *
+ * @param mngr the keys manager.
+ * @param data the CRL binary data.
+ * @param dataSize the CRL binary data size.
+ * @param format the CRL file format.
+ * @return 0 on success or a negative value otherwise.
+ */
+int
+xmlSecGCryptAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr,
+                                      const xmlSecByte* data,
+                                      xmlSecSize dataSize,
+                                      xmlSecKeyDataFormat format) {
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(dataSize > 0, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
     xmlSecNotImplementedError("GCrypt doesn't support X509 certificates");

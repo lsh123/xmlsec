@@ -28,7 +28,7 @@
 
 /******************************************************************************
  *
- * Symmetic (binary) keys - just a wrapper for xmlSecKeyDataBinary
+ * Symmetric (binary) keys - just a wrapper for xmlSecKeyDataBinary
  *
   *****************************************************************************/
 static int      xmlSecGCryptSymKeyDataInitialize        (xmlSecKeyDataPtr data);

@@ -70,7 +70,7 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
 #endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_EC
-    gXmlSecGCryptFunctions->keyDataEcGetKlass        = xmlSecGCryptkeyDataEcGetKlass;
+    gXmlSecGCryptFunctions->keyDataEcGetKlass        = xmlSecGCryptKeyDataEcGetKlass;
 #endif /* XMLSEC_NO_EC */
 
 #ifndef XMLSEC_NO_HMAC
@@ -139,11 +139,11 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
 #endif /* XMLSEC_NO_SHA512 */
 
 
-#ifndef XMLSEC_NO_SHA256
+#ifndef XMLSEC_NO_SHA3
     gXmlSecGCryptFunctions->transformEcdsaSha3_256GetKlass      = xmlSecGCryptTransformEcdsaSha3_256GetKlass;
     gXmlSecGCryptFunctions->transformEcdsaSha3_384GetKlass      = xmlSecGCryptTransformEcdsaSha3_384GetKlass;
     gXmlSecGCryptFunctions->transformEcdsaSha3_512GetKlass      = xmlSecGCryptTransformEcdsaSha3_512GetKlass;
-#endif /* XMLSEC_NO_SHA512 */
+#endif /* XMLSEC_NO_SHA3 */
 
 #endif /* XMLSEC_NO_EC */
 
@@ -286,6 +286,7 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
 #ifndef XMLSEC_NO_X509
     gXmlSecGCryptFunctions->cryptoAppKeysMngrCertLoad           = xmlSecGCryptAppKeysMngrCertLoad;
     gXmlSecGCryptFunctions->cryptoAppKeysMngrCrlLoad            = xmlSecGCryptAppKeysMngrCrlLoad;
+    gXmlSecGCryptFunctions->cryptoAppKeysMngrCrlLoadMemory      = xmlSecGCryptAppKeysMngrCrlLoadMemory;
     gXmlSecGCryptFunctions->cryptoAppKeysMngrCrlLoadAndVerify   = xmlSecGCryptAppKeysMngrCrlLoadAndVerify;
     gXmlSecGCryptFunctions->cryptoAppPkcs12Load                 = xmlSecGCryptAppPkcs12Load;
     gXmlSecGCryptFunctions->cryptoAppKeyCertLoad                = xmlSecGCryptAppKeyCertLoad;
@@ -344,7 +345,7 @@ xmlSecGCryptKeysMngrInit(xmlSecKeysMngrPtr mngr) {
  * @brief Generates random bytes into @p buffer.
  * @details Generates @p size random bytes and puts result in @p buffer.
  * @param buffer the destination buffer.
- * @param size the numer of bytes to generate.
+ * @param size the number of bytes to generate.
  * @return 0 on success or a negative value otherwise.
  */
 int

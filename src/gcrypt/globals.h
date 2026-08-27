@@ -29,7 +29,7 @@
 
 /**
  * @brief Macro. Reports GCrypt crypto errors.
- * @details Macro. The XMLSec library macro for reporting GCrypt crypro errors.
+ * @details Macro. The XMLSec library macro for reporting GCrypt crypto errors.
  * @param errorFunction the failed function name.
  * @param errCode the GCrypt error code.
  * @param errorObject the error specific error object (e.g. transform, key data, etc).
@@ -51,7 +51,7 @@
 
 /**
  * @brief Macro. Reports GCrypt crypto errors.
- * @details Macro. The XMLSec library macro for reporting GCrypt crypro errors.
+ * @details Macro. The XMLSec library macro for reporting GCrypt crypto errors.
  * @param errorFunction the failed function name.
  * @param errCode the GCrypt error code.
  * @param errorObject the error specific error object (e.g. transform, key data, etc).

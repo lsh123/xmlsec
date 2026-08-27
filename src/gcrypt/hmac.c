@@ -203,7 +203,7 @@ xmlSecGCryptHmacFinalize(xmlSecTransformPtr transform) {
     if(ctx->digestCtx != NULL) {
         gcry_md_close(ctx->digestCtx);
     }
-    memset(ctx, 0, sizeof(xmlSecGCryptHmacCtx));
+    xmlSecMemCleanse(ctx, sizeof(xmlSecGCryptHmacCtx));
 }
 
 static int
@@ -227,7 +227,7 @@ xmlSecGCryptHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
         return(-1);
     }
     xmlSecAssert2(ctx->dgstSizeInBits > 0, -1);
-    xmlSecAssert2(XMLSEC_TRANSFORM_HMAC_BITS_TO_BYTES(ctx->dgstSizeInBits) < XMLSEC_TRANSFORM_HMAC_MAX_OUTPUT_SIZE, -1);
+    xmlSecAssert2(XMLSEC_TRANSFORM_HMAC_BITS_TO_BYTES(ctx->dgstSizeInBits) <= XMLSEC_TRANSFORM_HMAC_MAX_OUTPUT_SIZE, -1);
 
     return(0);
 }
@@ -377,16 +377,27 @@ xmlSecGCryptHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
                                   xmlSecTransformGetName(transform));
                 return(-1);
             }
-            /* gcry_md_read returns only the digest's own bytes, so copy that
-             * many; dgstSizeInBits is just the (possibly larger) truncation
-             * length requested via HMACOutputLength and must not drive the copy */
             dgstSize = gcry_md_get_algo_dlen(ctx->digest);
+            xmlSecAssert2(dgstSize > 0, -1);
             xmlSecAssert2(dgstSize <= sizeof(ctx->dgst), -1);
             memcpy(ctx->dgst, dgst, dgstSize);
 
+            /* check/set the result digest size */
+            if(ctx->dgstSizeInBits == 0) {
+                ctx->dgstSizeInBits = dgstSize * 8; /* no dgst size specified, use all we have */
+            }
+
+            /* HMACOutputLength can only truncate the digest, not extend it past the bytes we have */
+            if(XMLSEC_TRANSFORM_HMAC_BITS_TO_BYTES(ctx->dgstSizeInBits) > dgstSize) {
+                xmlSecInvalidSizeMoreThanError("HMAC output length",
+                    XMLSEC_TRANSFORM_HMAC_BITS_TO_BYTES(ctx->dgstSizeInBits), dgstSize,
+                    xmlSecTransformGetName(transform));
+                return(-1);
+            }
+
             /* write results if needed */
             if(transform->operation == xmlSecTransformOperationSign) {
-                ret = xmlSecTransformHmacWriteOutput(ctx->dgst, ctx->dgstSizeInBits, XMLSEC_TRANSFORM_HMAC_MAX_OUTPUT_SIZE, out);
+                ret = xmlSecTransformHmacWriteOutput(ctx->dgst, ctx->dgstSizeInBits, dgstSize, out);
                 if(ret < 0) {
                     xmlSecInternalError("xmlSecTransformHmacWriteOutput", xmlSecTransformGetName(transform));
                     return(-1);

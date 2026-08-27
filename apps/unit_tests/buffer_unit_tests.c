@@ -8,10 +8,19 @@
 /**
  * @brief XML Security Library buffer unit tests.
  */
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
+
+#ifdef _MSC_VER
+#include <process.h>
+#else
+#include <unistd.h>
+#endif
 
 #include <libxml/tree.h>
+#include <libxml/xmlIO.h>
 
 /* must be included before any other xmlsec header */
 #include "xmlsec_unit_tests.h"
@@ -25,6 +34,138 @@ static void
 test_buffer_reset_default_alloc_mode(void) {
     /* restore the library-wide default so subsequent tests are unaffected */
     xmlSecBufferSetDefaultAllocMode(xmlSecAllocModeDouble, 1024);
+}
+
+#ifdef _MSC_VER
+static int
+test_buffer_get_env_copy(const char* name, char* out, size_t outSize) {
+    char* value = NULL;
+    size_t required = 0;
+    errno_t err;
+
+    xmlSecAssert2(name != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(outSize > 0, -1);
+
+    out[0] = '\0';
+    err = _dupenv_s(&value, &required, name);
+    if((err != 0) || (value == NULL) || (required == 0) || (value[0] == '\0')) {
+        if(value != NULL) {
+            free(value);
+        }
+        return(-1);
+    }
+
+    if(sprintf_s(out, outSize, "%s", value) < 0) {
+        free(value);
+        return(-1);
+    }
+
+    free(value);
+    return(0);
+}
+#endif
+
+static const char*
+test_buffer_get_temp_dir(void) {
+#ifdef _MSC_VER
+    static char tmpPath[512];
+#else
+    const char* value;
+#endif
+
+    /* Prefer OS-provided temp locations; CI working directories may be read-only. */
+#ifndef _MSC_VER
+    value = getenv("TMPDIR");
+    if((value != NULL) && (value[0] != '\0')) {
+        return(value);
+    }
+#endif
+
+#ifdef _MSC_VER
+    if(test_buffer_get_env_copy("TMP", tmpPath, sizeof(tmpPath)) == 0) {
+        return(tmpPath);
+    }
+
+    if(test_buffer_get_env_copy("TEMP", tmpPath, sizeof(tmpPath)) == 0) {
+        return(tmpPath);
+    }
+
+    if(test_buffer_get_env_copy("USERPROFILE", tmpPath, sizeof(tmpPath)) == 0) {
+        return(tmpPath);
+    }
+#else
+    value = getenv("TMP");
+    if((value != NULL) && (value[0] != '\0')) {
+        return(value);
+    }
+
+    value = getenv("TEMP");
+    if((value != NULL) && (value[0] != '\0')) {
+        return(value);
+    }
+
+#ifdef P_tmpdir
+    if((P_tmpdir != NULL) && (P_tmpdir[0] != '\0')) {
+        return(P_tmpdir);
+    }
+#endif
+
+    /* Common writable fallback on Unix-like CI runners. */
+    if(access("/tmp", W_OK) == 0) {
+        return("/tmp");
+    }
+
+    if(access("/var/tmp", W_OK) == 0) {
+        return("/var/tmp");
+    }
+#endif
+
+    return(".");
+}
+
+static int
+test_buffer_make_temp_name(char* tmpName, size_t tmpNameSize, const char* suffix) {
+    const char* tmpDir;
+    size_t tmpDirLen;
+    const char* sep;
+    long now;
+    unsigned int ticks;
+#ifdef _MSC_VER
+    int pid = _getpid();
+    int ret;
+#else
+    int pid = getpid();
+    int ret;
+#endif
+
+    xmlSecAssert2(tmpName != NULL, -1);
+    xmlSecAssert2(tmpNameSize > 0, -1);
+    xmlSecAssert2(suffix != NULL, -1);
+
+    tmpDir = test_buffer_get_temp_dir();
+    xmlSecAssert2(tmpDir != NULL, -1);
+    tmpDirLen = strlen(tmpDir);
+
+#ifdef _MSC_VER
+    sep = ((tmpDirLen > 0) && (tmpDir[tmpDirLen - 1] != '\\') && (tmpDir[tmpDirLen - 1] != '/')) ? "\\" : "";
+#else
+    sep = ((tmpDirLen > 0) && (tmpDir[tmpDirLen - 1] != '/')) ? "/" : "";
+#endif
+
+    now = (long)time(NULL);
+    ticks = (unsigned int)clock();
+#ifdef _MSC_VER
+    ret = sprintf_s(tmpName, tmpNameSize, "%s%sxmlsec_unit_tests_%ld_%d_%u_%s",
+        tmpDir, sep, now, pid, ticks, suffix);
+#else
+    ret = snprintf(tmpName, tmpNameSize, "%s%sxmlsec_unit_tests_%ld_%d_%u_%s",
+        tmpDir, sep, now, pid, ticks, suffix);
+#endif
+    if((ret < 0) || ((size_t)ret >= tmpNameSize)) {
+        return(-1);
+    }
+    return(0);
 }
 
 /* ------------------------------------------------------------------ */
@@ -1094,6 +1235,15 @@ test_buffer_hex_read_failure(
         return;
     }
 
+    /* a failed decode must leave the buffer empty (src/buffer.c guarantees this) */
+    if(!xmlSecBufferIsEmpty(&buf)) {
+        testLog("Error: buffer is not empty after a failed hex read "
+            "(size=" XMLSEC_SIZE_FMT ")\n", xmlSecBufferGetSize(&buf));
+        xmlSecBufferFinalize(&buf);
+        testFinishedFailure();
+        return;
+    }
+
     xmlSecBufferFinalize(&buf);
     testFinishedSuccess();
 }
@@ -1159,6 +1309,382 @@ test_buffer_hex_read(void) {
 }
 
 /* ------------------------------------------------------------------ */
+/* xmlSecBuffer grow / realloc path test                               */
+/* ------------------------------------------------------------------ */
+
+static void
+test_buffer_grow_beyond_initial_allocation(void) {
+    xmlSecBufferPtr buf = NULL;
+    const xmlSecByte head[] = { 'A', 'B', 'C', 'D', 'E', 'F' };
+    xmlSecSize headLen = sizeof(head);
+    xmlSecSize bigLen = 2048;
+    xmlSecByte* big = NULL;
+    xmlSecSize ii;
+
+    testStart("xmlSecBufferAppend - grow beyond initial allocation (realloc path)");
+    test_buffer_reset_default_alloc_mode();
+
+    buf = xmlSecBufferCreate(0);
+    if(buf == NULL) {
+        testLog("Error: xmlSecBufferCreate(0) failed\n");
+        goto done;
+    }
+
+    /* first append allocates the buffer (data was NULL -> xmlMalloc path) */
+    if(xmlSecBufferAppend(buf, head, headLen) < 0) {
+        testLog("Error: initial xmlSecBufferAppend failed\n");
+        goto done;
+    }
+
+    /* build a payload large enough to force a regrowth (xmlRealloc path) */
+    big = (xmlSecByte*)malloc(bigLen);
+    if(big == NULL) {
+        testLog("Error: malloc for grow payload failed\n");
+        goto done;
+    }
+    for(ii = 0; ii < bigLen; ++ii) {
+        big[ii] = (xmlSecByte)(ii & 0xFF);
+    }
+
+    if(xmlSecBufferAppend(buf, big, bigLen) < 0) {
+        testLog("Error: xmlSecBufferAppend (grow) failed\n");
+        goto done;
+    }
+
+    /* total size must be head + big */
+    if(xmlSecBufferGetSize(buf) != (headLen + bigLen)) {
+        testLog("Error: size=" XMLSEC_SIZE_FMT " expected " XMLSEC_SIZE_FMT "\n",
+            xmlSecBufferGetSize(buf), headLen + bigLen);
+        goto done;
+    }
+
+    /* the pre-existing head bytes must be preserved across the regrowth */
+    if(memcmp(xmlSecBufferGetData(buf), head, headLen) != 0) {
+        testLog("Error: head bytes were not preserved after regrowth\n");
+        goto done;
+    }
+
+    /* and the appended payload must be intact */
+    if(memcmp(xmlSecBufferGetData(buf) + headLen, big, bigLen) != 0) {
+        testLog("Error: appended payload does not match after regrowth\n");
+        goto done;
+    }
+
+    free(big);
+    big = NULL;
+    xmlSecBufferDestroy(buf);
+    buf = NULL;
+    testFinishedSuccess();
+    return;
+
+done:
+    if(big != NULL) {
+        free(big);
+    }
+    if(buf != NULL) {
+        xmlSecBufferDestroy(buf);
+    }
+    testFinishedFailure();
+}
+
+/* ------------------------------------------------------------------ */
+/* xmlSecMemEqual / xmlSecMemCleanse tests                             */
+/* ------------------------------------------------------------------ */
+
+static void
+test_buffer_mem_equal(void) {
+    const xmlSecByte a[] = { 0x00, 0x11, 0x22, 0x33, 0xFF };
+    const xmlSecByte b[] = { 0x00, 0x11, 0x22, 0x33, 0xFF };
+    const xmlSecByte c[] = { 0x00, 0x11, 0x22, 0x34, 0xFF };
+
+    testStart("xmlSecMemEqual");
+
+    /* identical buffers -> equal */
+    if(xmlSecMemEqual(a, b, sizeof(a)) != 1) {
+        testLog("Error: xmlSecMemEqual should report equal buffers as equal\n");
+        testFinishedFailure();
+        return;
+    }
+
+    /* differing buffers -> not equal */
+    if(xmlSecMemEqual(a, c, sizeof(a)) != 0) {
+        testLog("Error: xmlSecMemEqual should report differing buffers as not equal\n");
+        testFinishedFailure();
+        return;
+    }
+
+    /* zero length -> trivially equal */
+    if(xmlSecMemEqual(a, c, 0) != 1) {
+        testLog("Error: xmlSecMemEqual with size 0 should return 1\n");
+        testFinishedFailure();
+        return;
+    }
+
+    testFinishedSuccess();
+}
+
+static void
+test_buffer_mem_cleanse(void) {
+    unsigned char block[16];
+    size_t ii;
+    int allZero;
+
+    testStart("xmlSecMemCleanse");
+
+    /* NULL / zero-size calls must be safe no-ops */
+    xmlSecMemCleanse(NULL, 0);
+    xmlSecMemCleanse(block, 0);
+
+    /* fill with a non-zero pattern, then wipe and verify all bytes are zero */
+    for(ii = 0; ii < sizeof(block); ++ii) {
+        block[ii] = (unsigned char)(0xA5 + ii);
+    }
+
+    xmlSecMemCleanse(block, sizeof(block));
+
+    allZero = 1;
+    for(ii = 0; ii < sizeof(block); ++ii) {
+        if(block[ii] != 0) {
+            allZero = 0;
+            break;
+        }
+    }
+    if(!allZero) {
+        testLog("Error: xmlSecMemCleanse did not zero the memory block\n");
+        testFinishedFailure();
+        return;
+    }
+
+    testFinishedSuccess();
+}
+
+/* ------------------------------------------------------------------ */
+/* xmlSecBufferReadFile / xmlSecBufferDebugHexDump tests               */
+/* ------------------------------------------------------------------ */
+
+static void
+test_buffer_read_file(void) {
+    xmlSecBufferPtr buf = NULL;
+    char tmpName[160] = { '\0' };
+    const xmlSecByte payload[] = { 0x00, 0x01, 0x02, 0xAB, 0xCD, 0xEF, 0xFF };
+    FILE* f = NULL;
+
+    testStart("xmlSecBufferReadFile");
+    test_buffer_reset_default_alloc_mode();
+
+    if(test_buffer_make_temp_name(tmpName, sizeof(tmpName), "readfile_tmp.bin") < 0) {
+        testLog("Error: failed to build temp file name\n");
+        testFinishedFailure();
+        return;
+    }
+
+    /* write a known payload to a temp file in the current directory */
+#ifndef _MSC_VER
+    f = fopen(tmpName, "wb");
+#else
+    fopen_s(&f, tmpName, "wb");
+#endif
+    if(f == NULL) {
+        testLog("Error: failed to create temp file '%s'\n", tmpName);
+        goto done;
+    }
+    if(fwrite(payload, 1, sizeof(payload), f) != sizeof(payload)) {
+        testLog("Error: failed to write temp file payload\n");
+        goto done;
+    }
+    fclose(f);
+    f = NULL;
+
+    buf = xmlSecBufferCreate(0);
+    if(buf == NULL) {
+        testLog("Error: xmlSecBufferCreate(0) failed\n");
+        goto done;
+    }
+
+    if(xmlSecBufferReadFile(buf, tmpName) < 0) {
+        testLog("Error: xmlSecBufferReadFile failed for an existing file\n");
+        goto done;
+    }
+
+    if(xmlSecBufferGetSize(buf) != sizeof(payload)) {
+        testLog("Error: size=" XMLSEC_SIZE_FMT " expected " XMLSEC_SIZE_FMT "\n",
+            xmlSecBufferGetSize(buf), sizeof(payload));
+        goto done;
+    }
+    if(memcmp(xmlSecBufferGetData(buf), payload, sizeof(payload)) != 0) {
+        testLog("Error: read file content does not match the written payload\n");
+        goto done;
+    }
+
+    /* a missing file must be rejected */
+    if(xmlSecBufferReadFile(buf, "xmlsec_unit_tests_no_such_file_xyz.bin") >= 0) {
+        testLog("Error: xmlSecBufferReadFile should fail for a missing file\n");
+        goto done;
+    }
+
+    xmlSecBufferDestroy(buf);
+    buf = NULL;
+    remove(tmpName);
+    testFinishedSuccess();
+    return;
+
+done:
+    if(f != NULL) {
+        fclose(f);
+    }
+    if(buf != NULL) {
+        xmlSecBufferDestroy(buf);
+    }
+    remove(tmpName);
+    testFinishedFailure();
+}
+
+static void
+test_buffer_debug_hex_dump(void) {
+    xmlSecBufferPtr buf = NULL;
+    char tmpName[160] = { '\0' };
+    const xmlSecByte data[] = { 0x00, 0x01, 0x7F, 0x80, 0xFF };
+    FILE* f = NULL;
+    char line[64];
+
+    testStart("xmlSecBufferDebugHexDump");
+    test_buffer_reset_default_alloc_mode();
+
+    if(test_buffer_make_temp_name(tmpName, sizeof(tmpName), "hexdump_tmp.txt") < 0) {
+        testLog("Error: failed to build temp file name\n");
+        testFinishedFailure();
+        return;
+    }
+
+    buf = xmlSecBufferCreate(0);
+    if(buf == NULL) {
+        testLog("Error: xmlSecBufferCreate(0) failed\n");
+        goto done;
+    }
+    if(xmlSecBufferAppend(buf, data, sizeof(data)) < 0) {
+        testLog("Error: xmlSecBufferAppend failed\n");
+        goto done;
+    }
+
+#ifndef _MSC_VER
+    f = fopen(tmpName, "w");
+#else
+    fopen_s(&f, tmpName, "w");
+#endif
+    if(f == NULL) {
+        testLog("Error: failed to create hex dump temp file\n");
+        goto done;
+    }
+
+    xmlSecBufferDebugHexDump(buf, f);
+    fclose(f);
+    f = NULL;
+
+#ifndef _MSC_VER
+    f = fopen(tmpName, "r");
+#else
+    fopen_s(&f, tmpName, "r");
+#endif
+    if(f == NULL) {
+        testLog("Error: failed to reopen hex dump temp file\n");
+        goto done;
+    }
+    if(fgets(line, sizeof(line), f) == NULL) {
+        testLog("Error: failed to read hex dump output\n");
+        goto done;
+    }
+    fclose(f);
+    f = NULL;
+
+    /* 5 bytes (< 32) -> a single line of lowercase hex, no trailing newline */
+    if(strcmp(line, "00017f80ff") != 0) {
+        testLog("Error: hex dump output '%s' expected '00017f80ff'\n", line);
+        goto done;
+    }
+
+    xmlSecBufferDestroy(buf);
+    buf = NULL;
+    remove(tmpName);
+    testFinishedSuccess();
+    return;
+
+done:
+    if(f != NULL) {
+        fclose(f);
+    }
+    if(buf != NULL) {
+        xmlSecBufferDestroy(buf);
+    }
+    remove(tmpName);
+    testFinishedFailure();
+}
+
+/* ------------------------------------------------------------------ */
+/* xmlSecBufferCreateOutputBuffer test                                 */
+/* ------------------------------------------------------------------ */
+
+static void
+test_buffer_create_output_buffer(void) {
+    xmlSecBufferPtr buf = NULL;
+    xmlOutputBufferPtr out = NULL;
+    const char* text = "hello output buffer";
+
+    testStart("xmlSecBufferCreateOutputBuffer");
+    test_buffer_reset_default_alloc_mode();
+
+    /* NULL input must be rejected */
+    if(xmlSecBufferCreateOutputBuffer(NULL) != NULL) {
+        testLog("Error: xmlSecBufferCreateOutputBuffer(NULL) should return NULL\n");
+        testFinishedFailure();
+        return;
+    }
+
+    buf = xmlSecBufferCreate(0);
+    if(buf == NULL) {
+        testLog("Error: xmlSecBufferCreate(0) failed\n");
+        goto done;
+    }
+
+    out = xmlSecBufferCreateOutputBuffer(buf);
+    if(out == NULL) {
+        testLog("Error: xmlSecBufferCreateOutputBuffer returned NULL\n");
+        goto done;
+    }
+
+    /* writing through the libxml output buffer must land in the xmlSecBuffer */
+    if(xmlOutputBufferWrite(out, (int)strlen(text), text) < 0) {
+        testLog("Error: xmlOutputBufferWrite failed\n");
+        goto done;
+    }
+    xmlOutputBufferClose(out);
+    out = NULL;
+
+    if(xmlSecBufferGetSize(buf) != strlen(text)) {
+        testLog("Error: size=" XMLSEC_SIZE_FMT " expected " XMLSEC_SIZE_FMT "\n",
+            xmlSecBufferGetSize(buf), strlen(text));
+        goto done;
+    }
+    if(memcmp(xmlSecBufferGetData(buf), text, strlen(text)) != 0) {
+        testLog("Error: output buffer content does not match the written text\n");
+        goto done;
+    }
+
+    xmlSecBufferDestroy(buf);
+    buf = NULL;
+    testFinishedSuccess();
+    return;
+
+done:
+    if(out != NULL) {
+        xmlOutputBufferClose(out);
+    }
+    if(buf != NULL) {
+        xmlSecBufferDestroy(buf);
+    }
+    testFinishedFailure();
+}
+
+/* ------------------------------------------------------------------ */
 /* Public entry point                                                  */
 /* ------------------------------------------------------------------ */
 
@@ -1186,6 +1712,12 @@ test_buffer(void) {
     test_buffer_remove_tail();
     test_buffer_reverse();
     test_buffer_hex_read();
+    test_buffer_grow_beyond_initial_allocation();
+    test_buffer_mem_equal();
+    test_buffer_mem_cleanse();
+    test_buffer_read_file();
+    test_buffer_debug_hex_dump();
+    test_buffer_create_output_buffer();
 
     return testGroupFinished();
 }

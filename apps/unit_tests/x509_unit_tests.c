@@ -16,7 +16,7 @@
 
 /* must be included before any other xmlsec header */
 #include "xmlsec_unit_tests.h"
-#include "../src/x509_helpers.h"
+#include "../../src/x509_helpers.h"
 
 /******************************************************************************
  * test_xmlSecX509EscapedStringRead
@@ -122,6 +122,11 @@ test_xmlSecX509EscapedStringRead(void) {
     test_xmlSecX509EscapedStringRead_success("check without trailing spaces", "Foo Bar  =Value", '=', 1, "=Value", "Foo Bar");
     test_xmlSecX509EscapedStringRead_success("check \\<char> converted to <char>", "Fo\\o Bar=Value", '=', 0, "=Value", "Foo Bar");
     test_xmlSecX509EscapedStringRead_success("check \\XXX converted to <char>", "Fo\\6F Bar=Value", '=', 0, "=Value", "Foo Bar");
+    test_xmlSecX509EscapedStringRead_success("check escaped delimiter '=' converted to '='", "Fo\\=o Bar=Value", '=', 0, "=Value", "Fo=o Bar");
+    test_xmlSecX509EscapedStringRead_success("check truncated escape at end of line (lone backslash)", "Foo\\", '=', 0, "", "Foo");
+    test_xmlSecX509EscapedStringRead_success("check truncated escape at end of line (lone backslash) without trailing spaces", "Foo\\", '=', 1, "", "Foo");
+    test_xmlSecX509EscapedStringRead_success("check truncated escape at end of line (backslash + one hex digit)", "Foo\\6", '=', 0, "", "Foo");
+    test_xmlSecX509EscapedStringRead_success("check truncated escape at end of line (backslash + one hex digit) without trailing spaces", "Foo\\6", '=', 1, "", "Foo");
 
     /* negative tests */
     test_xmlSecX509EscapedStringRead_failure("check NULL", NULL, '=', 0);
@@ -251,6 +256,11 @@ test_xmlSecX509AttrValueStringRead(void) {
     test_xmlSecX509AttrValueStringRead_success("check octet/hex end of line", "#466F6F20426172", ',', 1, "", "Foo Bar", XMLSEC_X509_VALUE_TYPE_OCTET_STRING);
     test_xmlSecX509AttrValueStringRead_success("check octet/hex with trailing spaces", "#466F6F20426172  ,name=value", ',', 0, "  ,name=value", "Foo Bar", XMLSEC_X509_VALUE_TYPE_OCTET_STRING);
     test_xmlSecX509AttrValueStringRead_success("check octet/hex without trailing spaces", "#466F6F20426172  ,name=value", ',', 1, ",name=value", "Foo Bar", XMLSEC_X509_VALUE_TYPE_OCTET_STRING);
+    test_xmlSecX509AttrValueStringRead_success("check escaped comma in value", "Foo\\,Bar,name=value", ',', 0, ",name=value", "Foo,Bar", XMLSEC_X509_VALUE_TYPE_UF8_STRING);
+    test_xmlSecX509AttrValueStringRead_success("check escaped comma inside quoted string", "\"Foo\\,Bar\",name=value", ',', 0, ",name=value", "Foo,Bar", XMLSEC_X509_VALUE_TYPE_UF8_STRING);
+    test_xmlSecX509AttrValueStringRead_success("check escaped double quote inside quoted string", "\"Foo\\\"Bar\",name=value", ',', 0, ",name=value", "Foo\"Bar", XMLSEC_X509_VALUE_TYPE_UF8_STRING);
+    test_xmlSecX509AttrValueStringRead_success("check empty octet string", "#,name=value", ',', 0, ",name=value", "", XMLSEC_X509_VALUE_TYPE_OCTET_STRING);
+    test_xmlSecX509AttrValueStringRead_success("check empty octet string end of line", "#", ',', 0, "", "", XMLSEC_X509_VALUE_TYPE_OCTET_STRING);
 
     /* negative tests */
     test_xmlSecX509AttrValueStringRead_failure("check NULL", NULL, ',', 0);
@@ -427,6 +437,70 @@ test_xmlSecX509NameRead_failure(
     testFinishedSuccess();
 }
 
+static void
+test_xmlSecX509NameRead_multiple_pairs_success(
+    const char * name,
+    const char * str,
+    xmlSecx509NameReplacements * replacements,
+    int expectedCount,
+    const char * const * expectedNames,
+    const char * const * expectedValues,
+    const int * expectedTypes
+) {
+    test_X509Name nms;
+    int ii;
+    int ret;
+
+    xmlSecAssert(name != NULL);
+    xmlSecAssert(str != NULL);
+    xmlSecAssert(0 < expectedCount && expectedCount <= TEST_X509_NAME_MAX_COUNT);
+    xmlSecAssert(expectedNames != NULL);
+    xmlSecAssert(expectedValues != NULL);
+    xmlSecAssert(expectedTypes != NULL);
+
+    testStart(name);
+
+    memset(&nms, 0, sizeof(nms));
+    ret = xmlSecX509NameRead(BAD_CAST str, replacements, test_xmlSecX509NameReadCallback, &nms);
+    if(ret < 0) {
+        testLog("Error: xmlSecX509NameRead failed for '%s'\n", str);
+        testFinishedFailure();
+        return;
+    }
+
+    /* check results */
+    if(nms.pos != expectedCount) {
+        testLog("Error: xmlSecX509NameRead returned pos='%d' (expected: '%d')\n", nms.pos, expectedCount);
+        testFinishedFailure();
+        return;
+    }
+    for(ii = 0; ii < expectedCount; ++ii) {
+        if(xmlStrcmp(nms.names[ii], BAD_CAST expectedNames[ii]) != 0) {
+            testLog("Error: xmlSecX509NameRead returned nms.names[%d]='%s' (expected: '%s')\n", ii, (const char*)nms.names[ii], expectedNames[ii]);
+            testFinishedFailure();
+            return;
+        }
+        if(xmlStrcmp(nms.values[ii], BAD_CAST expectedValues[ii]) != 0) {
+            testLog("Error: xmlSecX509NameRead returned nms.values[%d]='%s' (expected: '%s')\n", ii, (const char*)nms.values[ii], expectedValues[ii]);
+            testFinishedFailure();
+            return;
+        }
+        if((int)(nms.valueSizes[ii]) != xmlStrlen(BAD_CAST expectedValues[ii])) {
+            testLog("Error: xmlSecX509NameRead returned nms.valueSizes[%d]='%d' (expected: '%d')\n", ii, (int)(nms.valueSizes[ii]), xmlStrlen(BAD_CAST expectedValues[ii]));
+            testFinishedFailure();
+            return;
+        }
+        if(nms.types[ii] != expectedTypes[ii]) {
+            testLog("Error: xmlSecX509NameRead returned nms.types[%d]='%d' (expected: '%d')\n", ii, nms.types[ii], expectedTypes[ii]);
+            testFinishedFailure();
+            return;
+        }
+    }
+
+    /* DONE */
+    testFinishedSuccess();
+}
+
 
 static xmlSecx509NameReplacements test_X509NameReplacements[]  = {
     { BAD_CAST "E", BAD_CAST  "emailAddress"},
@@ -449,6 +523,22 @@ test_xmlSecX509NameRead(void) {
     test_xmlSecX509NameRead_success("check spaces", "Foo = Bar, emailAddress = Value", NULL, 2, "Foo", "Bar", XMLSEC_X509_VALUE_TYPE_UF8_STRING, "emailAddress", "Value", XMLSEC_X509_VALUE_TYPE_UF8_STRING);
     test_xmlSecX509NameRead_success("check end comma", "Foo=Bar,emailAddress=Value,", NULL, 2, "Foo", "Bar", XMLSEC_X509_VALUE_TYPE_UF8_STRING, "emailAddress", "Value", XMLSEC_X509_VALUE_TYPE_UF8_STRING);
     test_xmlSecX509NameRead_success("check email address", "Foo=Bar,E=Value,", test_X509NameReplacements, 2, "Foo", "Bar", XMLSEC_X509_VALUE_TYPE_UF8_STRING, "emailAddress", "Value", XMLSEC_X509_VALUE_TYPE_UF8_STRING);
+
+    /* positive tests: more than two name/value pairs (verified for all pairs) */
+    {
+        static const char * names3[] = { "Foo", "Bar", "Baz" };
+        static const char * values3[] = { "One", "Two", "Three" };
+        static const int types3[] = { XMLSEC_X509_VALUE_TYPE_UF8_STRING, XMLSEC_X509_VALUE_TYPE_UF8_STRING, XMLSEC_X509_VALUE_TYPE_UF8_STRING };
+
+        test_xmlSecX509NameRead_multiple_pairs_success("check three values", "Foo=One,Bar=Two,Baz=Three", NULL, 3, names3, values3, types3);
+    }
+    {
+        static const char * names16[TEST_X509_NAME_MAX_COUNT] = { "N0", "N1", "N2", "N3", "N4", "N5", "N6", "N7", "N8", "N9", "N10", "N11", "N12", "N13", "N14", "N15" };
+        static const char * values16[TEST_X509_NAME_MAX_COUNT] = { "V0", "V1", "V2", "V3", "V4", "V5", "V6", "V7", "V8", "V9", "V10", "V11", "V12", "V13", "V14", "V15" };
+        static const int types16[TEST_X509_NAME_MAX_COUNT] = { XMLSEC_X509_VALUE_TYPE_UF8_STRING, XMLSEC_X509_VALUE_TYPE_UF8_STRING, XMLSEC_X509_VALUE_TYPE_UF8_STRING, XMLSEC_X509_VALUE_TYPE_UF8_STRING, XMLSEC_X509_VALUE_TYPE_UF8_STRING, XMLSEC_X509_VALUE_TYPE_UF8_STRING, XMLSEC_X509_VALUE_TYPE_UF8_STRING, XMLSEC_X509_VALUE_TYPE_UF8_STRING, XMLSEC_X509_VALUE_TYPE_UF8_STRING, XMLSEC_X509_VALUE_TYPE_UF8_STRING, XMLSEC_X509_VALUE_TYPE_UF8_STRING, XMLSEC_X509_VALUE_TYPE_UF8_STRING, XMLSEC_X509_VALUE_TYPE_UF8_STRING, XMLSEC_X509_VALUE_TYPE_UF8_STRING, XMLSEC_X509_VALUE_TYPE_UF8_STRING, XMLSEC_X509_VALUE_TYPE_UF8_STRING };
+
+        test_xmlSecX509NameRead_multiple_pairs_success("check 16 values (max count)", "N0=V0,N1=V1,N2=V2,N3=V3,N4=V4,N5=V5,N6=V6,N7=V7,N8=V8,N9=V9,N10=V10,N11=V11,N12=V12,N13=V13,N14=V14,N15=V15", NULL, TEST_X509_NAME_MAX_COUNT, names16, values16, types16);
+    }
 
     /* negative tests */
     test_xmlSecX509NameRead_failure("check NULL", NULL, NULL, 0);

@@ -1433,8 +1433,1663 @@ test_xmlSecTmplX509IssuerSerialAddSerialNumber_content(void) {
 }
 
 /******************************************************************************
+ * xmlSecTmplTransformAddXPath nsList
+    *****************************************************************************/
+static void
+test_xmlSecTmplTransformAddXPath_ns_list(void) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr transformNode;
+    xmlNodePtr xpathNode;
+    xmlNsPtr ns;
+    int foundPref = 0;
+    int foundDefault = 0;
+    const xmlChar* nsList[] = {
+        BAD_CAST "p1", BAD_CAST "http://example.com/ns1",
+        BAD_CAST "#default", BAD_CAST "http://example.com/default",
+        NULL
+    };
+
+    testStart("xmlSecTmplTransformAddXPath: writes namespace list to XPath node");
+
+    transformNode = testCreateTransformNode(&doc);
+    if(transformNode == NULL) {
+        testLog("Error: failed to create Transform node\n");
+        testFinishedFailure();
+        return;
+    }
+
+    if(xmlSecTmplTransformAddXPath(transformNode, BAD_CAST "//p1:node", nsList) != 0) {
+        testLog("Error: xmlSecTmplTransformAddXPath with nsList failed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xpathNode = xmlSecFindChild(transformNode, xmlSecNodeXPath, xmlSecDSigNs);
+    if(xpathNode == NULL) {
+        testLog("Error: <dsig:XPath> not found\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* both namespaces must be declared on the XPath node itself */
+    for(ns = xpathNode->nsDef; ns != NULL; ns = ns->next) {
+        if(ns->prefix != NULL && xmlStrEqual(ns->prefix, BAD_CAST "p1") &&
+           ns->href != NULL && xmlStrEqual(ns->href, BAD_CAST "http://example.com/ns1")) {
+            foundPref = 1;
+        }
+        if(ns->prefix == NULL &&
+           ns->href != NULL && xmlStrEqual(ns->href, BAD_CAST "http://example.com/default")) {
+            foundDefault = 1;
+        }
+    }
+    if(foundPref != 1) {
+        testLog("Error: namespace 'p1' not declared on <dsig:XPath>\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(foundDefault != 1) {
+        testLog("Error: default namespace not declared on <dsig:XPath>\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTmplTransformAddXPath_ns_list_malformed(void) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr transformNode;
+    const xmlChar* badNsList[] = { BAD_CAST "p1", NULL };
+
+    testStart("xmlSecTmplTransformAddXPath: odd-length ns list fails");
+
+    transformNode = testCreateTransformNode(&doc);
+    if(transformNode == NULL) {
+        testLog("Error: failed to create Transform node\n");
+        testFinishedFailure();
+        return;
+    }
+
+    if(xmlSecTmplTransformAddXPath(transformNode, BAD_CAST "//node", badNsList) >= 0) {
+        testLog("Error: expected xmlSecTmplTransformAddXPath to fail with odd-length ns list\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+/******************************************************************************
+ * optional attributes
+    *****************************************************************************/
+static void
+test_xmlSecTmplSignatureAddReference_with_type(void) {
+    xmlNodePtr signNode = NULL;
+    xmlNodePtr refNode;
+    xmlChar* attr;
+
+    testStart("xmlSecTmplSignatureAddReference: sets Type attribute");
+
+    signNode = xmlSecTmplSignatureCreate(NULL,
+        xmlSecTransformInclC14NId,
+        xmlSecTransformEnvelopedId,
+        NULL);
+    if(signNode == NULL) {
+        testLog("Error: xmlSecTmplSignatureCreate returned NULL\n");
+        testFinishedFailure();
+        return;
+    }
+
+    refNode = xmlSecTmplSignatureAddReference(signNode,
+        xmlSecTransformInclC14NId,
+        BAD_CAST "ref1",
+        BAD_CAST "#data",
+        BAD_CAST "http://www.w3.org/2000/09/xmldsig#Object");
+    if(refNode == NULL) {
+        testLog("Error: xmlSecTmplSignatureAddReference returned NULL\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+
+    attr = xmlGetProp(refNode, xmlSecAttrType);
+    if(attr == NULL || xmlStrcmp(attr, BAD_CAST "http://www.w3.org/2000/09/xmldsig#Object") != 0) {
+        testLog("Error: expected Type='http://www.w3.org/2000/09/xmldsig#Object', got '%s'\n",
+                attr ? (char*)attr : "NULL");
+        xmlFree(attr);
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(attr);
+
+    xmlFreeNode(signNode);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTmplSignatureEnsureKeyInfo_with_id(void) {
+    xmlNodePtr signNode = NULL;
+    xmlNodePtr keyInfoNode;
+    xmlChar* attr;
+
+    testStart("xmlSecTmplSignatureEnsureKeyInfo: sets Id attribute");
+
+    signNode = xmlSecTmplSignatureCreate(NULL,
+        xmlSecTransformInclC14NId,
+        xmlSecTransformEnvelopedId,
+        NULL);
+    if(signNode == NULL) {
+        testLog("Error: xmlSecTmplSignatureCreate returned NULL\n");
+        testFinishedFailure();
+        return;
+    }
+
+    keyInfoNode = xmlSecTmplSignatureEnsureKeyInfo(signNode, BAD_CAST "ki1");
+    if(keyInfoNode == NULL) {
+        testLog("Error: xmlSecTmplSignatureEnsureKeyInfo returned NULL\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+
+    attr = xmlGetProp(keyInfoNode, xmlSecAttrId);
+    if(attr == NULL || xmlStrcmp(attr, BAD_CAST "ki1") != 0) {
+        testLog("Error: expected Id='ki1', got '%s'\n", attr ? (char*)attr : "NULL");
+        xmlFree(attr);
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(attr);
+
+    xmlFreeNode(signNode);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTmplEncDataEnsureKeyInfo_with_id(void) {
+    xmlNodePtr encNode = NULL;
+    xmlNodePtr keyInfoNode;
+    xmlChar* attr;
+
+    testStart("xmlSecTmplEncDataEnsureKeyInfo: sets Id attribute");
+
+    encNode = xmlSecTmplEncDataCreate(NULL, xmlSecTransformExclC14NId,
+        NULL, NULL, NULL, NULL);
+    if(encNode == NULL) {
+        testLog("Error: xmlSecTmplEncDataCreate returned NULL\n");
+        testFinishedFailure();
+        return;
+    }
+
+    keyInfoNode = xmlSecTmplEncDataEnsureKeyInfo(encNode, BAD_CAST "ki2");
+    if(keyInfoNode == NULL) {
+        testLog("Error: xmlSecTmplEncDataEnsureKeyInfo returned NULL\n");
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+
+    attr = xmlGetProp(keyInfoNode, xmlSecAttrId);
+    if(attr == NULL || xmlStrcmp(attr, BAD_CAST "ki2") != 0) {
+        testLog("Error: expected Id='ki2', got '%s'\n", attr ? (char*)attr : "NULL");
+        xmlFree(attr);
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(attr);
+
+    xmlFreeNode(encNode);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTmplEncDataCreate_optional_attributes(void) {
+    xmlNodePtr encNode = NULL;
+    xmlChar* attr;
+
+    testStart("xmlSecTmplEncDataCreate: sets Type, MimeType and Encoding attributes");
+
+    encNode = xmlSecTmplEncDataCreate(NULL,
+        xmlSecTransformExclC14NId,
+        BAD_CAST "enc1",
+        BAD_CAST "http://www.w3.org/2001/04/xmlenc#Element",
+        BAD_CAST "text/plain",
+        BAD_CAST "base64");
+    if(encNode == NULL) {
+        testLog("Error: xmlSecTmplEncDataCreate returned NULL\n");
+        testFinishedFailure();
+        return;
+    }
+
+    attr = xmlGetProp(encNode, xmlSecAttrType);
+    if(attr == NULL || xmlStrcmp(attr, BAD_CAST "http://www.w3.org/2001/04/xmlenc#Element") != 0) {
+        testLog("Error: expected Type='http://www.w3.org/2001/04/xmlenc#Element', got '%s'\n",
+                attr ? (char*)attr : "NULL");
+        xmlFree(attr);
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(attr);
+
+    attr = xmlGetProp(encNode, xmlSecAttrMimeType);
+    if(attr == NULL || xmlStrcmp(attr, BAD_CAST "text/plain") != 0) {
+        testLog("Error: expected MimeType='text/plain', got '%s'\n",
+                attr ? (char*)attr : "NULL");
+        xmlFree(attr);
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(attr);
+
+    attr = xmlGetProp(encNode, xmlSecAttrEncoding);
+    if(attr == NULL || xmlStrcmp(attr, BAD_CAST "base64") != 0) {
+        testLog("Error: expected Encoding='base64', got '%s'\n",
+                attr ? (char*)attr : "NULL");
+        xmlFree(attr);
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(attr);
+
+    xmlFreeNode(encNode);
+    testFinishedSuccess();
+}
+
+/******************************************************************************
+ * xmlSecTmplSignatureAddObject / xmlSecTmplReferenceAddTransform /
+ * xmlSecTmplObjectAddSignProperties / xmlSecTmplObjectAddManifest
+    *****************************************************************************/
+static void
+test_xmlSecTmplSignatureAddObject_attributes(void) {
+    xmlNodePtr signNode = NULL;
+    xmlNodePtr objectNode;
+    xmlChar* attr;
+
+    testStart("xmlSecTmplSignatureAddObject: adds Object with Id, MimeType and Encoding");
+
+    signNode = xmlSecTmplSignatureCreate(NULL,
+        xmlSecTransformInclC14NId,
+        xmlSecTransformEnvelopedId,
+        NULL);
+    if(signNode == NULL) {
+        testLog("Error: xmlSecTmplSignatureCreate returned NULL\n");
+        testFinishedFailure();
+        return;
+    }
+
+    objectNode = xmlSecTmplSignatureAddObject(signNode,
+        BAD_CAST "obj1",
+        BAD_CAST "text/plain",
+        BAD_CAST "base64");
+    if(objectNode == NULL) {
+        testLog("Error: xmlSecTmplSignatureAddObject returned NULL\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+    if(!xmlSecCheckNodeName(objectNode, xmlSecNodeObject, xmlSecDSigNs)) {
+        testLog("Error: returned node is not <dsig:Object>\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+
+    attr = xmlGetProp(objectNode, xmlSecAttrId);
+    if(attr == NULL || xmlStrcmp(attr, BAD_CAST "obj1") != 0) {
+        testLog("Error: expected Id='obj1', got '%s'\n", attr ? (char*)attr : "NULL");
+        xmlFree(attr);
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(attr);
+
+    attr = xmlGetProp(objectNode, xmlSecAttrMimeType);
+    if(attr == NULL || xmlStrcmp(attr, BAD_CAST "text/plain") != 0) {
+        testLog("Error: expected MimeType='text/plain', got '%s'\n",
+                attr ? (char*)attr : "NULL");
+        xmlFree(attr);
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(attr);
+
+    attr = xmlGetProp(objectNode, xmlSecAttrEncoding);
+    if(attr == NULL || xmlStrcmp(attr, BAD_CAST "base64") != 0) {
+        testLog("Error: expected Encoding='base64', got '%s'\n",
+                attr ? (char*)attr : "NULL");
+        xmlFree(attr);
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(attr);
+
+    xmlFreeNode(signNode);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTmplReferenceAddTransform(void) {
+    xmlNodePtr signNode = NULL;
+    xmlNodePtr refNode;
+    xmlNodePtr transformsNode;
+    xmlNodePtr transformNode;
+    xmlChar* attr;
+
+    testStart("xmlSecTmplReferenceAddTransform: adds Transforms wrapper with Transform");
+
+    signNode = xmlSecTmplSignatureCreate(NULL,
+        xmlSecTransformInclC14NId,
+        xmlSecTransformEnvelopedId,
+        NULL);
+    if(signNode == NULL) {
+        testLog("Error: xmlSecTmplSignatureCreate returned NULL\n");
+        testFinishedFailure();
+        return;
+    }
+
+    refNode = xmlSecTmplSignatureAddReference(signNode,
+        xmlSecTransformInclC14NId,
+        BAD_CAST "ref1",
+        BAD_CAST "#data",
+        NULL);
+    if(refNode == NULL) {
+        testLog("Error: xmlSecTmplSignatureAddReference returned NULL\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+
+    transformNode = xmlSecTmplReferenceAddTransform(refNode, xmlSecTransformEnvelopedId);
+    if(transformNode == NULL) {
+        testLog("Error: xmlSecTmplReferenceAddTransform returned NULL\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+    if(!xmlSecCheckNodeName(transformNode, xmlSecNodeTransform, xmlSecDSigNs)) {
+        testLog("Error: returned node is not <dsig:Transform>\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+
+    /* must be wrapped in <dsig:Transforms> */
+    transformsNode = xmlSecFindChild(refNode, xmlSecNodeTransforms, xmlSecDSigNs);
+    if(transformsNode == NULL || transformNode->parent != transformsNode) {
+        testLog("Error: Transform is not a child of <dsig:Transforms>\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+
+    attr = xmlGetProp(transformNode, xmlSecAttrAlgorithm);
+    if(attr == NULL || xmlStrcmp(attr, xmlSecTransformEnvelopedId->href) != 0) {
+        testLog("Error: Transform Algorithm mismatch: '%s'\n",
+                attr ? (char*)attr : "NULL");
+        xmlFree(attr);
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(attr);
+
+    /* DigestMethod must still be present */
+    if(xmlSecFindChild(refNode, xmlSecNodeDigestMethod, xmlSecDSigNs) == NULL) {
+        testLog("Error: <dsig:DigestMethod> missing after adding Transform\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeNode(signNode);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTmplObjectAddSignProperties(void) {
+    xmlNodePtr signNode = NULL;
+    xmlNodePtr objectNode;
+    xmlNodePtr propsNode;
+    xmlChar* attr;
+
+    testStart("xmlSecTmplObjectAddSignProperties: adds SignatureProperties with Id and Target");
+
+    signNode = xmlSecTmplSignatureCreate(NULL,
+        xmlSecTransformInclC14NId,
+        xmlSecTransformEnvelopedId,
+        NULL);
+    if(signNode == NULL) {
+        testLog("Error: xmlSecTmplSignatureCreate returned NULL\n");
+        testFinishedFailure();
+        return;
+    }
+
+    objectNode = xmlSecTmplSignatureAddObject(signNode, NULL, NULL, NULL);
+    if(objectNode == NULL) {
+        testLog("Error: xmlSecTmplSignatureAddObject returned NULL\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+
+    propsNode = xmlSecTmplObjectAddSignProperties(objectNode, BAD_CAST "props1", BAD_CAST "#sig");
+    if(propsNode == NULL) {
+        testLog("Error: xmlSecTmplObjectAddSignProperties returned NULL\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+    if(!xmlSecCheckNodeName(propsNode, xmlSecNodeSignatureProperties, xmlSecDSigNs)) {
+        testLog("Error: returned node is not <dsig:SignatureProperties>\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+
+    attr = xmlGetProp(propsNode, xmlSecAttrId);
+    if(attr == NULL || xmlStrcmp(attr, BAD_CAST "props1") != 0) {
+        testLog("Error: expected Id='props1', got '%s'\n", attr ? (char*)attr : "NULL");
+        xmlFree(attr);
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(attr);
+
+    attr = xmlGetProp(propsNode, xmlSecAttrTarget);
+    if(attr == NULL || xmlStrcmp(attr, BAD_CAST "#sig") != 0) {
+        testLog("Error: expected Target='#sig', got '%s'\n", attr ? (char*)attr : "NULL");
+        xmlFree(attr);
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(attr);
+
+    xmlFreeNode(signNode);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTmplObjectAddManifest_with_reference(void) {
+    xmlNodePtr signNode = NULL;
+    xmlNodePtr objectNode;
+    xmlNodePtr manifestNode;
+    xmlNodePtr refNode;
+    xmlChar* attr;
+
+    testStart("xmlSecTmplObjectAddManifest: adds Manifest with Reference");
+
+    signNode = xmlSecTmplSignatureCreate(NULL,
+        xmlSecTransformInclC14NId,
+        xmlSecTransformEnvelopedId,
+        NULL);
+    if(signNode == NULL) {
+        testLog("Error: xmlSecTmplSignatureCreate returned NULL\n");
+        testFinishedFailure();
+        return;
+    }
+
+    objectNode = xmlSecTmplSignatureAddObject(signNode, BAD_CAST "obj1", NULL, NULL);
+    if(objectNode == NULL) {
+        testLog("Error: xmlSecTmplSignatureAddObject returned NULL\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+
+    manifestNode = xmlSecTmplObjectAddManifest(objectNode, BAD_CAST "man1");
+    if(manifestNode == NULL) {
+        testLog("Error: xmlSecTmplObjectAddManifest returned NULL\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+    if(!xmlSecCheckNodeName(manifestNode, xmlSecNodeManifest, xmlSecDSigNs)) {
+        testLog("Error: returned node is not <dsig:Manifest>\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+    attr = xmlGetProp(manifestNode, xmlSecAttrId);
+    if(attr == NULL || xmlStrcmp(attr, BAD_CAST "man1") != 0) {
+        testLog("Error: expected Manifest Id='man1', got '%s'\n",
+                attr ? (char*)attr : "NULL");
+        xmlFree(attr);
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(attr);
+
+    refNode = xmlSecTmplManifestAddReference(manifestNode,
+        xmlSecTransformInclC14NId,
+        BAD_CAST "mref1",
+        BAD_CAST "#data",
+        NULL);
+    if(refNode == NULL) {
+        testLog("Error: xmlSecTmplManifestAddReference returned NULL\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+    if(!xmlSecCheckNodeName(refNode, xmlSecNodeReference, xmlSecDSigNs)) {
+        testLog("Error: returned node is not <dsig:Reference>\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+    if(xmlSecFindChild(refNode, xmlSecNodeDigestMethod, xmlSecDSigNs) == NULL) {
+        testLog("Error: <dsig:DigestMethod> not found in Manifest Reference\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+    if(xmlSecFindChild(refNode, xmlSecNodeDigestValue, xmlSecDSigNs) == NULL) {
+        testLog("Error: <dsig:DigestValue> not found in Manifest Reference\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeNode(signNode);
+    testFinishedSuccess();
+}
+
+/******************************************************************************
+ * xmlSecTmplEncDataEnsureEncProperties / xmlSecTmplEncDataAddEncProperty /
+ * xmlSecTmplEncDataGetEncMethodNode / xmlSecTmplCipherReferenceAddTransform /
+ * xmlSecTmplReferenceListAddDataReference / xmlSecTmplReferenceListAddKeyReference
+    *****************************************************************************/
+static void
+test_xmlSecTmplEncDataEnsureEncProperties_and_AddEncProperty(void) {
+    xmlNodePtr encNode = NULL;
+    xmlNodePtr propsNode;
+    xmlNodePtr propNode;
+    xmlChar* attr;
+
+    testStart("xmlSecTmplEncDataAddEncProperty: adds EncryptionProperties with EncryptionProperty");
+
+    encNode = xmlSecTmplEncDataCreate(NULL, xmlSecTransformExclC14NId,
+        NULL, NULL, NULL, NULL);
+    if(encNode == NULL) {
+        testLog("Error: xmlSecTmplEncDataCreate returned NULL\n");
+        testFinishedFailure();
+        return;
+    }
+
+    propsNode = xmlSecTmplEncDataEnsureEncProperties(encNode, BAD_CAST "props1");
+    if(propsNode == NULL) {
+        testLog("Error: xmlSecTmplEncDataEnsureEncProperties returned NULL\n");
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+    if(!xmlSecCheckNodeName(propsNode, xmlSecNodeEncryptionProperties, xmlSecEncNs)) {
+        testLog("Error: returned node is not <enc:EncryptionProperties>\n");
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+    attr = xmlGetProp(propsNode, xmlSecAttrId);
+    if(attr == NULL || xmlStrcmp(attr, BAD_CAST "props1") != 0) {
+        testLog("Error: expected EncryptionProperties Id='props1', got '%s'\n",
+                attr ? (char*)attr : "NULL");
+        xmlFree(attr);
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(attr);
+
+    propNode = xmlSecTmplEncDataAddEncProperty(encNode, BAD_CAST "prop1", BAD_CAST "#target");
+    if(propNode == NULL) {
+        testLog("Error: xmlSecTmplEncDataAddEncProperty returned NULL\n");
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+    if(!xmlSecCheckNodeName(propNode, xmlSecNodeEncryptionProperty, xmlSecEncNs)) {
+        testLog("Error: returned node is not <enc:EncryptionProperty>\n");
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+    if(propNode->parent != propsNode) {
+        testLog("Error: EncryptionProperty is not a child of EncryptionProperties\n");
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+
+    attr = xmlGetProp(propNode, xmlSecAttrId);
+    if(attr == NULL || xmlStrcmp(attr, BAD_CAST "prop1") != 0) {
+        testLog("Error: expected EncryptionProperty Id='prop1', got '%s'\n",
+                attr ? (char*)attr : "NULL");
+        xmlFree(attr);
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(attr);
+
+    attr = xmlGetProp(propNode, xmlSecAttrTarget);
+    if(attr == NULL || xmlStrcmp(attr, BAD_CAST "#target") != 0) {
+        testLog("Error: expected Target='#target', got '%s'\n",
+                attr ? (char*)attr : "NULL");
+        xmlFree(attr);
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(attr);
+
+    xmlFreeNode(encNode);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTmplEncDataGetEncMethodNode(void) {
+    xmlNodePtr encNode = NULL;
+    xmlNodePtr methodNode;
+
+    testStart("xmlSecTmplEncDataGetEncMethodNode: returns EncryptionMethod or NULL");
+
+    /* with method */
+    encNode = xmlSecTmplEncDataCreate(NULL, xmlSecTransformExclC14NId,
+        NULL, NULL, NULL, NULL);
+    if(encNode == NULL) {
+        testLog("Error: xmlSecTmplEncDataCreate returned NULL\n");
+        testFinishedFailure();
+        return;
+    }
+
+    methodNode = xmlSecTmplEncDataGetEncMethodNode(encNode);
+    if(methodNode == NULL) {
+        testLog("Error: xmlSecTmplEncDataGetEncMethodNode returned NULL for existing method\n");
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+    if(!xmlSecCheckNodeName(methodNode, xmlSecNodeEncryptionMethod, xmlSecEncNs)) {
+        testLog("Error: returned node is not <enc:EncryptionMethod>\n");
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+    xmlFreeNode(encNode);
+
+    /* without method */
+    encNode = xmlSecTmplEncDataCreate(NULL, NULL, NULL, NULL, NULL, NULL);
+    if(encNode == NULL) {
+        testLog("Error: xmlSecTmplEncDataCreate returned NULL\n");
+        testFinishedFailure();
+        return;
+    }
+
+    methodNode = xmlSecTmplEncDataGetEncMethodNode(encNode);
+    if(methodNode != NULL) {
+        testLog("Error: expected NULL for missing EncryptionMethod\n");
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeNode(encNode);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTmplCipherReferenceAddTransform(void) {
+    xmlNodePtr encNode = NULL;
+    xmlNodePtr refNode;
+    xmlNodePtr transformsNode;
+    xmlNodePtr transformNode;
+    xmlChar* attr;
+
+    testStart("xmlSecTmplCipherReferenceAddTransform: adds enc:Transforms with dsig:Transform");
+
+    encNode = xmlSecTmplEncDataCreate(NULL, xmlSecTransformExclC14NId,
+        NULL, NULL, NULL, NULL);
+    if(encNode == NULL) {
+        testLog("Error: xmlSecTmplEncDataCreate returned NULL\n");
+        testFinishedFailure();
+        return;
+    }
+
+    refNode = xmlSecTmplEncDataEnsureCipherReference(encNode, BAD_CAST "#target");
+    if(refNode == NULL) {
+        testLog("Error: xmlSecTmplEncDataEnsureCipherReference returned NULL\n");
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+
+    transformNode = xmlSecTmplCipherReferenceAddTransform(refNode, xmlSecTransformEnvelopedId);
+    if(transformNode == NULL) {
+        testLog("Error: xmlSecTmplCipherReferenceAddTransform returned NULL\n");
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+    if(!xmlSecCheckNodeName(transformNode, xmlSecNodeTransform, xmlSecDSigNs)) {
+        testLog("Error: returned node is not <dsig:Transform>\n");
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+
+    /* must be wrapped in <enc:Transforms> */
+    transformsNode = xmlSecFindChild(refNode, xmlSecNodeTransforms, xmlSecEncNs);
+    if(transformsNode == NULL || transformNode->parent != transformsNode) {
+        testLog("Error: Transform is not a child of <enc:Transforms>\n");
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+
+    attr = xmlGetProp(transformNode, xmlSecAttrAlgorithm);
+    if(attr == NULL || xmlStrcmp(attr, xmlSecTransformEnvelopedId->href) != 0) {
+        testLog("Error: Transform Algorithm mismatch: '%s'\n",
+                attr ? (char*)attr : "NULL");
+        xmlFree(attr);
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(attr);
+
+    xmlFreeNode(encNode);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTmplReferenceListAddDataReference_and_KeyReference(void) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr encKeyNode = NULL;
+    xmlNodePtr refListNode;
+    xmlNodePtr dataRefNode;
+    xmlNodePtr keyRefNode;
+    xmlChar* attr;
+
+    testStart("xmlSecTmplReferenceListAdd*: adds DataReference and KeyReference");
+
+    doc = xmlNewDoc(BAD_CAST "1.0");
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        testFinishedFailure();
+        return;
+    }
+
+    encKeyNode = xmlNewDocNode(doc, NULL, xmlSecNodeEncryptedKey, NULL);
+    if(encKeyNode == NULL) {
+        testLog("Error: failed to create EncryptedKey node\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlSetNs(encKeyNode, xmlNewNs(encKeyNode, xmlSecEncNs, NULL));
+    xmlDocSetRootElement(doc, encKeyNode);
+
+    dataRefNode = xmlSecTmplReferenceListAddDataReference(encKeyNode, BAD_CAST "#data");
+    if(dataRefNode == NULL) {
+        testLog("Error: xmlSecTmplReferenceListAddDataReference returned NULL\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(!xmlSecCheckNodeName(dataRefNode, xmlSecNodeDataReference, xmlSecEncNs)) {
+        testLog("Error: returned node is not <enc:DataReference>\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    refListNode = xmlSecFindChild(encKeyNode, xmlSecNodeReferenceList, xmlSecEncNs);
+    if(refListNode == NULL || dataRefNode->parent != refListNode) {
+        testLog("Error: DataReference is not a child of <enc:ReferenceList>\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    attr = xmlGetProp(dataRefNode, xmlSecAttrURI);
+    if(attr == NULL || xmlStrcmp(attr, BAD_CAST "#data") != 0) {
+        testLog("Error: expected URI='#data', got '%s'\n", attr ? (char*)attr : "NULL");
+        xmlFree(attr);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(attr);
+
+    keyRefNode = xmlSecTmplReferenceListAddKeyReference(encKeyNode, BAD_CAST "#key");
+    if(keyRefNode == NULL) {
+        testLog("Error: xmlSecTmplReferenceListAddKeyReference returned NULL\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(!xmlSecCheckNodeName(keyRefNode, xmlSecNodeKeyReference, xmlSecEncNs)) {
+        testLog("Error: returned node is not <enc:KeyReference>\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(keyRefNode->parent != refListNode) {
+        testLog("Error: KeyReference is not a child of the same <enc:ReferenceList>\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    attr = xmlGetProp(keyRefNode, xmlSecAttrURI);
+    if(attr == NULL || xmlStrcmp(attr, BAD_CAST "#key") != 0) {
+        testLog("Error: expected URI='#key', got '%s'\n", attr ? (char*)attr : "NULL");
+        xmlFree(attr);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(attr);
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+/******************************************************************************
+ * xmlSecTmplKeyInfoAddKeyValue / xmlSecTmplKeyInfoAddRetrievalMethod /
+ * xmlSecTmplKeyInfoAddEncryptedKey / xmlSecTmplX509DataAdd*
+    *****************************************************************************/
+static void
+test_xmlSecTmplKeyInfoAddKeyValue(void) {
+    xmlNodePtr signNode = NULL;
+    xmlNodePtr keyInfoNode;
+    xmlNodePtr keyValueNode;
+
+    testStart("xmlSecTmplKeyInfoAddKeyValue: adds KeyValue node");
+
+    signNode = xmlSecTmplSignatureCreate(NULL,
+        xmlSecTransformInclC14NId,
+        xmlSecTransformEnvelopedId,
+        NULL);
+    if(signNode == NULL) {
+        testLog("Error: xmlSecTmplSignatureCreate returned NULL\n");
+        testFinishedFailure();
+        return;
+    }
+
+    keyInfoNode = xmlSecTmplSignatureEnsureKeyInfo(signNode, NULL);
+    if(keyInfoNode == NULL) {
+        testLog("Error: xmlSecTmplSignatureEnsureKeyInfo returned NULL\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+
+    keyValueNode = xmlSecTmplKeyInfoAddKeyValue(keyInfoNode);
+    if(keyValueNode == NULL) {
+        testLog("Error: xmlSecTmplKeyInfoAddKeyValue returned NULL\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+    if(!xmlSecCheckNodeName(keyValueNode, xmlSecNodeKeyValue, xmlSecDSigNs)) {
+        testLog("Error: returned node is not <dsig:KeyValue>\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeNode(signNode);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTmplKeyInfoAddRetrievalMethod(void) {
+    xmlNodePtr signNode = NULL;
+    xmlNodePtr keyInfoNode;
+    xmlNodePtr rmNode;
+    xmlChar* attr;
+
+    testStart("xmlSecTmplKeyInfoAddRetrievalMethod: adds RetrievalMethod with URI and Type");
+
+    signNode = xmlSecTmplSignatureCreate(NULL,
+        xmlSecTransformInclC14NId,
+        xmlSecTransformEnvelopedId,
+        NULL);
+    if(signNode == NULL) {
+        testLog("Error: xmlSecTmplSignatureCreate returned NULL\n");
+        testFinishedFailure();
+        return;
+    }
+
+    keyInfoNode = xmlSecTmplSignatureEnsureKeyInfo(signNode, NULL);
+    if(keyInfoNode == NULL) {
+        testLog("Error: xmlSecTmplSignatureEnsureKeyInfo returned NULL\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+
+    rmNode = xmlSecTmplKeyInfoAddRetrievalMethod(keyInfoNode,
+        BAD_CAST "#key",
+        BAD_CAST "http://www.w3.org/2001/04/xmlenc#public");
+    if(rmNode == NULL) {
+        testLog("Error: xmlSecTmplKeyInfoAddRetrievalMethod returned NULL\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+    if(!xmlSecCheckNodeName(rmNode, xmlSecNodeRetrievalMethod, xmlSecDSigNs)) {
+        testLog("Error: returned node is not <dsig:RetrievalMethod>\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+
+    attr = xmlGetProp(rmNode, xmlSecAttrURI);
+    if(attr == NULL || xmlStrcmp(attr, BAD_CAST "#key") != 0) {
+        testLog("Error: expected URI='#key', got '%s'\n", attr ? (char*)attr : "NULL");
+        xmlFree(attr);
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(attr);
+
+    attr = xmlGetProp(rmNode, xmlSecAttrType);
+    if(attr == NULL || xmlStrcmp(attr, BAD_CAST "http://www.w3.org/2001/04/xmlenc#public") != 0) {
+        testLog("Error: expected Type='http://www.w3.org/2001/04/xmlenc#public', got '%s'\n",
+                attr ? (char*)attr : "NULL");
+        xmlFree(attr);
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(attr);
+
+    xmlFreeNode(signNode);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTmplRetrievalMethodAddTransform(void) {
+    xmlNodePtr signNode = NULL;
+    xmlNodePtr keyInfoNode;
+    xmlNodePtr rmNode;
+    xmlNodePtr transformsNode;
+    xmlNodePtr transformNode;
+    xmlChar* attr;
+
+    testStart("xmlSecTmplRetrievalMethodAddTransform: adds Transforms wrapper with Transform");
+
+    signNode = xmlSecTmplSignatureCreate(NULL,
+        xmlSecTransformInclC14NId,
+        xmlSecTransformEnvelopedId,
+        NULL);
+    if(signNode == NULL) {
+        testLog("Error: xmlSecTmplSignatureCreate returned NULL\n");
+        testFinishedFailure();
+        return;
+    }
+
+    keyInfoNode = xmlSecTmplSignatureEnsureKeyInfo(signNode, NULL);
+    if(keyInfoNode == NULL) {
+        testLog("Error: xmlSecTmplSignatureEnsureKeyInfo returned NULL\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+
+    rmNode = xmlSecTmplKeyInfoAddRetrievalMethod(keyInfoNode, BAD_CAST "#key", NULL);
+    if(rmNode == NULL) {
+        testLog("Error: xmlSecTmplKeyInfoAddRetrievalMethod returned NULL\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+
+    transformNode = xmlSecTmplRetrievalMethodAddTransform(rmNode, xmlSecTransformEnvelopedId);
+    if(transformNode == NULL) {
+        testLog("Error: xmlSecTmplRetrievalMethodAddTransform returned NULL\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+    if(!xmlSecCheckNodeName(transformNode, xmlSecNodeTransform, xmlSecDSigNs)) {
+        testLog("Error: returned node is not <dsig:Transform>\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+
+    /* must be wrapped in <dsig:Transforms> */
+    transformsNode = xmlSecFindChild(rmNode, xmlSecNodeTransforms, xmlSecDSigNs);
+    if(transformsNode == NULL || transformNode->parent != transformsNode) {
+        testLog("Error: Transform is not a child of <dsig:Transforms>\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+
+    attr = xmlGetProp(transformNode, xmlSecAttrAlgorithm);
+    if(attr == NULL || xmlStrcmp(attr, xmlSecTransformEnvelopedId->href) != 0) {
+        testLog("Error: Transform Algorithm mismatch: '%s'\n",
+                attr ? (char*)attr : "NULL");
+        xmlFree(attr);
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(attr);
+
+    xmlFreeNode(signNode);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTmplKeyInfoAddEncryptedKey(void) {
+    xmlNodePtr signNode = NULL;
+    xmlNodePtr keyInfoNode;
+    xmlNodePtr encKeyNode;
+    xmlNodePtr methodNode;
+    xmlChar* attr;
+
+    testStart("xmlSecTmplKeyInfoAddEncryptedKey: adds EncryptedKey with attributes and children");
+
+    signNode = xmlSecTmplSignatureCreate(NULL,
+        xmlSecTransformInclC14NId,
+        xmlSecTransformEnvelopedId,
+        NULL);
+    if(signNode == NULL) {
+        testLog("Error: xmlSecTmplSignatureCreate returned NULL\n");
+        testFinishedFailure();
+        return;
+    }
+
+    keyInfoNode = xmlSecTmplSignatureEnsureKeyInfo(signNode, NULL);
+    if(keyInfoNode == NULL) {
+        testLog("Error: xmlSecTmplSignatureEnsureKeyInfo returned NULL\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+
+    encKeyNode = xmlSecTmplKeyInfoAddEncryptedKey(keyInfoNode,
+        xmlSecTransformExclC14NId,
+        BAD_CAST "ek1",
+        BAD_CAST "http://www.w3.org/2001/04/xmlenc#Element",
+        BAD_CAST "recipient@example.com");
+    if(encKeyNode == NULL) {
+        testLog("Error: xmlSecTmplKeyInfoAddEncryptedKey returned NULL\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+    if(!xmlSecCheckNodeName(encKeyNode, xmlSecNodeEncryptedKey, xmlSecEncNs)) {
+        testLog("Error: returned node is not <enc:EncryptedKey>\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+
+    attr = xmlGetProp(encKeyNode, xmlSecAttrId);
+    if(attr == NULL || xmlStrcmp(attr, BAD_CAST "ek1") != 0) {
+        testLog("Error: expected Id='ek1', got '%s'\n", attr ? (char*)attr : "NULL");
+        xmlFree(attr);
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(attr);
+
+    attr = xmlGetProp(encKeyNode, xmlSecAttrType);
+    if(attr == NULL || xmlStrcmp(attr, BAD_CAST "http://www.w3.org/2001/04/xmlenc#Element") != 0) {
+        testLog("Error: expected Type='http://www.w3.org/2001/04/xmlenc#Element', got '%s'\n",
+                attr ? (char*)attr : "NULL");
+        xmlFree(attr);
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(attr);
+
+    attr = xmlGetProp(encKeyNode, xmlSecAttrRecipient);
+    if(attr == NULL || xmlStrcmp(attr, BAD_CAST "recipient@example.com") != 0) {
+        testLog("Error: expected Recipient='recipient@example.com', got '%s'\n",
+                attr ? (char*)attr : "NULL");
+        xmlFree(attr);
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(attr);
+
+    /* EncryptionMethod with Algorithm */
+    methodNode = xmlSecFindChild(encKeyNode, xmlSecNodeEncryptionMethod, xmlSecEncNs);
+    if(methodNode == NULL) {
+        testLog("Error: <enc:EncryptionMethod> not found in EncryptedKey\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+    attr = xmlGetProp(methodNode, xmlSecAttrAlgorithm);
+    if(attr == NULL || xmlStrcmp(attr, xmlSecHrefExcC14N) != 0) {
+        testLog("Error: EncryptionMethod Algorithm mismatch: '%s'\n",
+                attr ? (char*)attr : "NULL");
+        xmlFree(attr);
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(attr);
+
+    /* CipherData must be present */
+    if(xmlSecFindChild(encKeyNode, xmlSecNodeCipherData, xmlSecEncNs) == NULL) {
+        testLog("Error: <enc:CipherData> not found in EncryptedKey\n");
+        xmlFreeNode(signNode);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeNode(signNode);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTmplX509DataAddSubNodes(void) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr signNode = NULL;
+    xmlNodePtr keyInfoNode;
+    xmlNodePtr x509DataNode;
+    xmlNodePtr subjectNameNode;
+    xmlNodePtr skiNode;
+    xmlNodePtr digestNode;
+    xmlNodePtr certNode;
+    xmlChar* attr;
+
+    testStart("xmlSecTmplX509DataAdd*: adds SubjectName, SKI, Digest and Certificate");
+
+    doc = xmlNewDoc(BAD_CAST "1.0");
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        testFinishedFailure();
+        return;
+    }
+
+    signNode = xmlSecTmplSignatureCreate(doc,
+        xmlSecTransformInclC14NId,
+        xmlSecTransformEnvelopedId,
+        NULL);
+    if(signNode == NULL) {
+        testLog("Error: xmlSecTmplSignatureCreate returned NULL\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlDocSetRootElement(doc, signNode);
+
+    keyInfoNode = xmlSecTmplSignatureEnsureKeyInfo(signNode, NULL);
+    if(keyInfoNode == NULL) {
+        testLog("Error: xmlSecTmplSignatureEnsureKeyInfo returned NULL\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    x509DataNode = xmlSecTmplKeyInfoAddX509Data(keyInfoNode);
+    if(x509DataNode == NULL) {
+        testLog("Error: xmlSecTmplKeyInfoAddX509Data returned NULL\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    subjectNameNode = xmlSecTmplX509DataAddSubjectName(x509DataNode);
+    if(subjectNameNode == NULL) {
+        testLog("Error: xmlSecTmplX509DataAddSubjectName returned NULL\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(!xmlSecCheckNodeName(subjectNameNode, xmlSecNodeX509SubjectName, xmlSecDSigNs)) {
+        testLog("Error: returned node is not <dsig:X509SubjectName>\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    skiNode = xmlSecTmplX509DataAddSKI(x509DataNode);
+    if(skiNode == NULL) {
+        testLog("Error: xmlSecTmplX509DataAddSKI returned NULL\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(!xmlSecCheckNodeName(skiNode, xmlSecNodeX509SKI, xmlSecDSigNs)) {
+        testLog("Error: returned node is not <dsig:X509SKI>\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    digestNode = xmlSecTmplX509DataAddDigest(x509DataNode, xmlSecHrefSha1);
+    if(digestNode == NULL) {
+        testLog("Error: xmlSecTmplX509DataAddDigest returned NULL\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(!xmlSecCheckNodeName(digestNode, xmlSecNodeX509Digest, xmlSecDSig11Ns)) {
+        testLog("Error: returned node is not <dsig11:X509Digest>\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    attr = xmlGetProp(digestNode, xmlSecAttrAlgorithm);
+    if(attr == NULL || xmlStrcmp(attr, xmlSecHrefSha1) != 0) {
+        testLog("Error: expected X509Digest Algorithm='%s', got '%s'\n",
+                (char*)xmlSecHrefSha1, attr ? (char*)attr : "NULL");
+        xmlFree(attr);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(attr);
+
+    certNode = xmlSecTmplX509DataAddCertificate(x509DataNode);
+    if(certNode == NULL) {
+        testLog("Error: xmlSecTmplX509DataAddCertificate returned NULL\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(!xmlSecCheckNodeName(certNode, xmlSecNodeX509Certificate, xmlSecDSigNs)) {
+        testLog("Error: returned node is not <dsig:X509Certificate>\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTmplX509DataAddCRL(void) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr signNode = NULL;
+    xmlNodePtr keyInfoNode;
+    xmlNodePtr x509DataNode;
+    xmlNodePtr crlNode;
+
+    testStart("xmlSecTmplX509DataAddCRL: adds X509CRL node");
+
+    doc = xmlNewDoc(BAD_CAST "1.0");
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        testFinishedFailure();
+        return;
+    }
+
+    signNode = xmlSecTmplSignatureCreate(doc,
+        xmlSecTransformInclC14NId,
+        xmlSecTransformEnvelopedId,
+        NULL);
+    if(signNode == NULL) {
+        testLog("Error: xmlSecTmplSignatureCreate returned NULL\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlDocSetRootElement(doc, signNode);
+
+    keyInfoNode = xmlSecTmplSignatureEnsureKeyInfo(signNode, NULL);
+    if(keyInfoNode == NULL) {
+        testLog("Error: xmlSecTmplSignatureEnsureKeyInfo returned NULL\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    x509DataNode = xmlSecTmplKeyInfoAddX509Data(keyInfoNode);
+    if(x509DataNode == NULL) {
+        testLog("Error: xmlSecTmplKeyInfoAddX509Data returned NULL\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    crlNode = xmlSecTmplX509DataAddCRL(x509DataNode);
+    if(crlNode == NULL) {
+        testLog("Error: xmlSecTmplX509DataAddCRL returned NULL\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(!xmlSecCheckNodeName(crlNode, xmlSecNodeX509CRL, xmlSecDSigNs)) {
+        testLog("Error: returned node is not <dsig:X509CRL>\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* second call must fail (node already present) */
+    if(xmlSecTmplX509DataAddCRL(x509DataNode) != NULL) {
+        testLog("Error: expected second xmlSecTmplX509DataAddCRL to fail\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+/******************************************************************************
+ * xmlSecTmplTransformAddHmacOutputLength / xmlSecTmplTransformAddRsaOaepParam /
+ * xmlSecTmplTransformAddRsaMgf / xmlSecTmplTransformAddRsaDigest /
+ * xmlSecTmplTransformAddXsltStylesheet
+    *****************************************************************************/
+static void
+test_xmlSecTmplTransformAddHmacOutputLength(void) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr transformNode;
+    xmlNodePtr hmacNode;
+    xmlChar* content;
+
+    testStart("xmlSecTmplTransformAddHmacOutputLength: adds HMACOutputLength with bit length");
+
+    transformNode = testCreateTransformNode(&doc);
+    if(transformNode == NULL) {
+        testLog("Error: failed to create Transform node\n");
+        testFinishedFailure();
+        return;
+    }
+
+    if(xmlSecTmplTransformAddHmacOutputLength(transformNode, 128) != 0) {
+        testLog("Error: xmlSecTmplTransformAddHmacOutputLength failed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    hmacNode = xmlSecFindChild(transformNode, xmlSecNodeHMACOutputLength, xmlSecDSigNs);
+    if(hmacNode == NULL) {
+        testLog("Error: <dsig:HMACOutputLength> not found\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    content = xmlNodeGetContent(hmacNode);
+    if(content == NULL || xmlStrcmp(content, BAD_CAST "128") != 0) {
+        testLog("Error: expected content '128', got '%s'\n",
+                content ? (char*)content : "NULL");
+        xmlFree(content);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(content);
+
+    /* second call must fail */
+    if(xmlSecTmplTransformAddHmacOutputLength(transformNode, 256) >= 0) {
+        testLog("Error: expected second xmlSecTmplTransformAddHmacOutputLength to fail\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTmplTransformAddRsaOaepParam(void) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr transformNode;
+    xmlNodePtr oaepNode;
+    xmlChar* content;
+    const xmlSecByte buf[] = { 0x01, 0x02, 0x03 };
+
+    testStart("xmlSecTmplTransformAddRsaOaepParam: adds base64-encoded OAEPParam");
+
+    transformNode = testCreateTransformNode(&doc);
+    if(transformNode == NULL) {
+        testLog("Error: failed to create Transform node\n");
+        testFinishedFailure();
+        return;
+    }
+
+    if(xmlSecTmplTransformAddRsaOaepParam(transformNode, buf, sizeof(buf)) != 0) {
+        testLog("Error: xmlSecTmplTransformAddRsaOaepParam failed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    oaepNode = xmlSecFindChild(transformNode, xmlSecNodeRsaOAEPparams, xmlSecEncNs);
+    if(oaepNode == NULL) {
+        testLog("Error: <enc:OAEPParam> not found\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    content = xmlNodeGetContent(oaepNode);
+    /* base64 of {0x01, 0x02, 0x03} is "AQID" */
+    if(content == NULL || xmlStrcmp(content, BAD_CAST "AQID") != 0) {
+        testLog("Error: expected OAEPParam content 'AQID', got '%s'\n",
+                content ? (char*)content : "NULL");
+        xmlFree(content);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(content);
+
+    /* second call must fail */
+    if(xmlSecTmplTransformAddRsaOaepParam(transformNode, buf, sizeof(buf)) >= 0) {
+        testLog("Error: expected second xmlSecTmplTransformAddRsaOaepParam to fail\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTmplTransformAddRsaMgf(void) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr transformNode;
+    xmlNodePtr mgfNode;
+    xmlChar* attr;
+
+    testStart("xmlSecTmplTransformAddRsaMgf: adds MGF node with Algorithm");
+
+    transformNode = testCreateTransformNode(&doc);
+    if(transformNode == NULL) {
+        testLog("Error: failed to create Transform node\n");
+        testFinishedFailure();
+        return;
+    }
+
+    if(xmlSecTmplTransformAddRsaMgf(transformNode, xmlSecHrefSha1) != 0) {
+        testLog("Error: xmlSecTmplTransformAddRsaMgf failed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    mgfNode = xmlSecFindChild(transformNode, xmlSecNodeRsaMGF, xmlSecEnc11Ns);
+    if(mgfNode == NULL) {
+        testLog("Error: <enc11:MGF> not found\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    attr = xmlGetProp(mgfNode, xmlSecAttrAlgorithm);
+    if(attr == NULL || xmlStrcmp(attr, xmlSecHrefSha1) != 0) {
+        testLog("Error: expected MGF Algorithm='%s', got '%s'\n",
+                (char*)xmlSecHrefSha1, attr ? (char*)attr : "NULL");
+        xmlFree(attr);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(attr);
+
+    /* second call must fail */
+    if(xmlSecTmplTransformAddRsaMgf(transformNode, xmlSecHrefSha1) >= 0) {
+        testLog("Error: expected second xmlSecTmplTransformAddRsaMgf to fail\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTmplTransformAddRsaDigest(void) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr transformNode;
+    xmlNodePtr digestNode;
+    xmlChar* attr;
+
+    testStart("xmlSecTmplTransformAddRsaDigest: adds DigestMethod with Algorithm");
+
+    transformNode = testCreateTransformNode(&doc);
+    if(transformNode == NULL) {
+        testLog("Error: failed to create Transform node\n");
+        testFinishedFailure();
+        return;
+    }
+
+    if(xmlSecTmplTransformAddRsaDigest(transformNode, xmlSecHrefSha1) != 0) {
+        testLog("Error: xmlSecTmplTransformAddRsaDigest failed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    digestNode = xmlSecFindChild(transformNode, xmlSecNodeDigestMethod, xmlSecDSigNs);
+    if(digestNode == NULL) {
+        testLog("Error: <dsig:DigestMethod> not found\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    attr = xmlGetProp(digestNode, xmlSecAttrAlgorithm);
+    if(attr == NULL || xmlStrcmp(attr, xmlSecHrefSha1) != 0) {
+        testLog("Error: expected DigestMethod Algorithm='%s', got '%s'\n",
+                (char*)xmlSecHrefSha1, attr ? (char*)attr : "NULL");
+        xmlFree(attr);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(attr);
+
+    /* second call must fail */
+    if(xmlSecTmplTransformAddRsaDigest(transformNode, xmlSecHrefSha1) >= 0) {
+        testLog("Error: expected second xmlSecTmplTransformAddRsaDigest to fail\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTmplTransformAddXsltStylesheet(void) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr transformNode;
+    xmlNodePtr stylesheetNode;
+
+    testStart("xmlSecTmplTransformAddXsltStylesheet: replaces content with parsed stylesheet");
+
+    transformNode = testCreateTransformNode(&doc);
+    if(transformNode == NULL) {
+        testLog("Error: failed to create Transform node\n");
+        testFinishedFailure();
+        return;
+    }
+
+    if(xmlSecTmplTransformAddXsltStylesheet(transformNode,
+        BAD_CAST "<xsl:stylesheet xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" version=\"1.0\">"
+                 "<xsl:template match=\"/\"><out/></xsl:template>"
+                 "</xsl:stylesheet>") != 0) {
+        testLog("Error: xmlSecTmplTransformAddXsltStylesheet failed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    stylesheetNode = xmlSecFindChild(transformNode, BAD_CAST "stylesheet",
+        BAD_CAST "http://www.w3.org/1999/XSL/Transform");
+    if(stylesheetNode == NULL) {
+        testLog("Error: <xsl:stylesheet> not found inside Transform\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTmplTransformAddXsltStylesheet_malformed(void) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr transformNode;
+
+    testStart("xmlSecTmplTransformAddXsltStylesheet: malformed XSLT fails");
+
+    transformNode = testCreateTransformNode(&doc);
+    if(transformNode == NULL) {
+        testLog("Error: failed to create Transform node\n");
+        testFinishedFailure();
+        return;
+    }
+
+    if(xmlSecTmplTransformAddXsltStylesheet(transformNode,
+        BAD_CAST "<xsl:stylesheet><unclosed>") >= 0) {
+        testLog("Error: expected xmlSecTmplTransformAddXsltStylesheet to fail with malformed XSLT\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+/******************************************************************************
  * exported entry point
-   *****************************************************************************/
+    *****************************************************************************/
 int
 test_templates(void) {
     int success = 1;
@@ -1457,16 +3112,19 @@ test_templates(void) {
     testGroupStart("xmlSecTmplSignatureEnsureKeyInfo");
     test_xmlSecTmplSignatureEnsureKeyInfo_adds_node();
     test_xmlSecTmplSignatureEnsureKeyInfo_idempotent();
+    test_xmlSecTmplSignatureEnsureKeyInfo_with_id();
     if(testGroupFinished() != 1) { success = 0; }
 
     testGroupStart("xmlSecTmplSignatureAddReference");
     test_xmlSecTmplSignatureAddReference_with_uri();
     test_xmlSecTmplSignatureAddReference_multiple();
+    test_xmlSecTmplSignatureAddReference_with_type();
     if(testGroupFinished() != 1) { success = 0; }
 
     testGroupStart("xmlSecTmplEncDataCreate");
     test_xmlSecTmplEncDataCreate_structure();
     test_xmlSecTmplEncDataCreate_null_method();
+    test_xmlSecTmplEncDataCreate_optional_attributes();
     if(testGroupFinished() != 1) { success = 0; }
 
     testGroupStart("xmlSecTmplEncDataEnsureCipherValue");
@@ -1477,6 +3135,7 @@ test_templates(void) {
     testGroupStart("xmlSecTmplEncDataEnsureKeyInfo");
     test_xmlSecTmplEncDataEnsureKeyInfo_adds_node();
     test_xmlSecTmplEncDataEnsureKeyInfo_idempotent();
+    test_xmlSecTmplEncDataEnsureKeyInfo_with_id();
     if(testGroupFinished() != 1) { success = 0; }
 
     testGroupStart("xmlSecTmplKeyInfoAddKeyName");
@@ -1497,6 +3156,8 @@ test_templates(void) {
     testGroupStart("xmlSecTmplTransformAddXPath");
     test_xmlSecTmplTransformAddXPath_expression();
     test_xmlSecTmplTransformAddXPath_already_present();
+    test_xmlSecTmplTransformAddXPath_ns_list();
+    test_xmlSecTmplTransformAddXPath_ns_list_malformed();
     if(testGroupFinished() != 1) { success = 0; }
 
     testGroupStart("xmlSecTmplTransformAddXPath2");
@@ -1511,6 +3172,77 @@ test_templates(void) {
     testGroupStart("xmlSecTmplX509IssuerSerial");
     test_xmlSecTmplX509IssuerSerialAddIssuerName_content();
     test_xmlSecTmplX509IssuerSerialAddSerialNumber_content();
+    if(testGroupFinished() != 1) { success = 0; }
+
+    testGroupStart("xmlSecTmplSignatureAddObject");
+    test_xmlSecTmplSignatureAddObject_attributes();
+    if(testGroupFinished() != 1) { success = 0; }
+
+    testGroupStart("xmlSecTmplReferenceAddTransform");
+    test_xmlSecTmplReferenceAddTransform();
+    if(testGroupFinished() != 1) { success = 0; }
+
+    testGroupStart("xmlSecTmplObjectAddSignProperties");
+    test_xmlSecTmplObjectAddSignProperties();
+    if(testGroupFinished() != 1) { success = 0; }
+
+    testGroupStart("xmlSecTmplObjectAddManifest");
+    test_xmlSecTmplObjectAddManifest_with_reference();
+    if(testGroupFinished() != 1) { success = 0; }
+
+    testGroupStart("xmlSecTmplEncDataEnsureEncProperties");
+    test_xmlSecTmplEncDataEnsureEncProperties_and_AddEncProperty();
+    if(testGroupFinished() != 1) { success = 0; }
+
+    testGroupStart("xmlSecTmplEncDataGetEncMethodNode");
+    test_xmlSecTmplEncDataGetEncMethodNode();
+    if(testGroupFinished() != 1) { success = 0; }
+
+    testGroupStart("xmlSecTmplCipherReferenceAddTransform");
+    test_xmlSecTmplCipherReferenceAddTransform();
+    if(testGroupFinished() != 1) { success = 0; }
+
+    testGroupStart("xmlSecTmplReferenceListAdd");
+    test_xmlSecTmplReferenceListAddDataReference_and_KeyReference();
+    if(testGroupFinished() != 1) { success = 0; }
+
+    testGroupStart("xmlSecTmplKeyInfoAddKeyValue");
+    test_xmlSecTmplKeyInfoAddKeyValue();
+    if(testGroupFinished() != 1) { success = 0; }
+
+    testGroupStart("xmlSecTmplKeyInfoAddRetrievalMethod");
+    test_xmlSecTmplKeyInfoAddRetrievalMethod();
+    test_xmlSecTmplRetrievalMethodAddTransform();
+    if(testGroupFinished() != 1) { success = 0; }
+
+    testGroupStart("xmlSecTmplKeyInfoAddEncryptedKey");
+    test_xmlSecTmplKeyInfoAddEncryptedKey();
+    if(testGroupFinished() != 1) { success = 0; }
+
+    testGroupStart("xmlSecTmplX509DataAdd");
+    test_xmlSecTmplX509DataAddSubNodes();
+    test_xmlSecTmplX509DataAddCRL();
+    if(testGroupFinished() != 1) { success = 0; }
+
+    testGroupStart("xmlSecTmplTransformAddHmacOutputLength");
+    test_xmlSecTmplTransformAddHmacOutputLength();
+    if(testGroupFinished() != 1) { success = 0; }
+
+    testGroupStart("xmlSecTmplTransformAddRsaOaepParam");
+    test_xmlSecTmplTransformAddRsaOaepParam();
+    if(testGroupFinished() != 1) { success = 0; }
+
+    testGroupStart("xmlSecTmplTransformAddRsaMgf");
+    test_xmlSecTmplTransformAddRsaMgf();
+    if(testGroupFinished() != 1) { success = 0; }
+
+    testGroupStart("xmlSecTmplTransformAddRsaDigest");
+    test_xmlSecTmplTransformAddRsaDigest();
+    if(testGroupFinished() != 1) { success = 0; }
+
+    testGroupStart("xmlSecTmplTransformAddXsltStylesheet");
+    test_xmlSecTmplTransformAddXsltStylesheet();
+    test_xmlSecTmplTransformAddXsltStylesheet_malformed();
     if(testGroupFinished() != 1) { success = 0; }
 
     return(success);

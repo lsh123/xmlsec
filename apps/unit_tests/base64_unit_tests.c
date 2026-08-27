@@ -173,6 +173,80 @@ test_base64_decode_too_small(
 }
 
 static void
+test_base64_empty_input(
+    const char * name,
+    int columns
+) {
+    xmlSecByte dummy = 0;
+    xmlSecByte decoded[16];
+    xmlSecSize decodedSize = 0xAAAA;
+    xmlChar * encoded;
+    int ret;
+
+    xmlSecAssert(name != NULL);
+
+    testStart(name);
+
+    /* decoding an empty string must succeed and report 0 bytes written */
+    memset(decoded, 0xAA, sizeof(decoded));
+    ret = xmlSecBase64Decode_ex(BAD_CAST "", decoded, sizeof(decoded), &decodedSize);
+    if(ret < 0) {
+        testLog("Error: base64 decode of empty string failed\n");
+        testFinishedFailure();
+        return;
+    }
+    if(decodedSize != 0) {
+        testLog("Error: base64 decode of empty string returned size=%d (expected: 0)\n", (int)decodedSize);
+        testFinishedFailure();
+        return;
+    }
+
+    /* encoding 0 bytes must return an empty string */
+    encoded = xmlSecBase64Encode(&dummy, 0, columns);
+    if(encoded == NULL) {
+        testLog("Error: base64 encode of 0 bytes (columns=%d) failed\n", columns);
+        testFinishedFailure();
+        return;
+    }
+    if(xmlStrlen(encoded) != 0) {
+        testLog("Error: base64 encode of 0 bytes (columns=%d) returned '%s' (expected empty string)\n",
+            columns, (const char*)encoded);
+        xmlFree(encoded);
+        testFinishedFailure();
+        return;
+    }
+
+    /* DONE */
+    xmlFree(encoded);
+    testFinishedSuccess();
+}
+
+static void
+test_base64_encode_invalid_columns(
+    const char * name,
+    int columns
+) {
+    xmlSecByte data[] = { 'F', 'o', 'o' };
+    xmlChar * encoded;
+
+    xmlSecAssert(name != NULL);
+
+    testStart(name);
+
+    /* columns=1 is invalid ("use 0 for no line breaks or a value greater than 1") */
+    encoded = xmlSecBase64Encode(data, sizeof(data), columns);
+    if(encoded != NULL) {
+        testLog("Error: base64 encode with invalid columns=%d was expected to fail\n", columns);
+        xmlFree(encoded);
+        testFinishedFailure();
+        return;
+    }
+
+    /* DONE */
+    testFinishedSuccess();
+}
+
+static void
 test_base64_decode_in_place(
     const char * name,
     const char * str,
@@ -221,6 +295,10 @@ int test_base64(void) {
     /* start */
     testGroupStart("base64");
 
+    /* empty input edge cases */
+    test_base64_empty_input("check empty input (no line breaks)", 0);
+    test_base64_empty_input("check empty input (with line breaks)", 10);
+
     /* positive tests */
     test_base64_success("check 1 char", "Rg==", 0, NULL);
     test_base64_success("check 2 chars", "Rm8=", 0, NULL);
@@ -247,6 +325,9 @@ int test_base64(void) {
     /* in-place decode */
     test_base64_decode_in_place("in-place decode 1 byte", "Rg==", "F", 1);
     test_base64_decode_in_place("in-place decode 3 bytes", "Rm9v", "Foo", 3);
+
+    /* invalid columns boundary (columns must be 0 or > 1) */
+    test_base64_encode_invalid_columns("encode with invalid columns=1", 1);
 
     /* negative tests */
     test_base64_failure("check NULL", NULL);

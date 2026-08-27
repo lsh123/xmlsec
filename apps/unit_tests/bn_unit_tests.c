@@ -2227,6 +2227,154 @@ test_xmlSecBnGetNodeValue_hexReverse(void) {
     testFinishedSuccess();
 }
 
+static void
+test_xmlSecBnAdd_zeroDeltaIsNoop(void) {
+    xmlSecBn bn;
+    xmlChar* str;
+    int ret;
+
+    testStart("xmlSecBnAdd: delta=0 is a no-op");
+
+    ret = xmlSecBnInitialize(&bn, 0);
+    if(ret < 0) {
+        testLog("Error: xmlSecBnInitialize failed\n");
+        testFinishedFailure();
+        return;
+    }
+
+    /* all strings are hexadecimal */
+    ret = xmlSecBnFromHexString(&bn, BAD_CAST "1234");
+    if(ret < 0) {
+        testLog("Error: xmlSecBnFromHexString failed for '1234'\n");
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecBnAdd(&bn, 0);
+    if(ret < 0) {
+        testLog("Error: xmlSecBnAdd with delta=0 failed\n");
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+
+    str = xmlSecBnToHexString(&bn);
+    if(!bnTestCheckString(str, "1234")) {
+        testLog("Error: xmlSecBnAdd with delta=0 changed the value\n");
+        xmlFree(str);
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(str);
+
+    /* delta=0 on an empty (zero) BN must also succeed */
+    xmlSecBnZero(&bn);
+    ret = xmlSecBnAdd(&bn, 0);
+    if(ret < 0) {
+        testLog("Error: xmlSecBnAdd with delta=0 on an empty BN failed\n");
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecBnFinalize(&bn);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecBnMul_invalidMultiplierReturnsError(void) {
+    xmlSecBn bn;
+    int ret;
+
+    testStart("xmlSecBnMul: zero and negative multipliers are rejected");
+
+    ret = xmlSecBnInitialize(&bn, 0);
+    if(ret < 0) {
+        testLog("Error: xmlSecBnInitialize failed\n");
+        testFinishedFailure();
+        return;
+    }
+
+    /* all strings are hexadecimal */
+    ret = xmlSecBnFromHexString(&bn, BAD_CAST "1234");
+    if(ret < 0) {
+        testLog("Error: xmlSecBnFromHexString failed for '1234'\n");
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+
+    /* multiplier=0 must be rejected */
+    ret = xmlSecBnMul(&bn, 0);
+    if(ret >= 0) {
+        testLog("Error: xmlSecBnMul unexpectedly succeeded with multiplier=0\n");
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+
+    /* a negative multiplier must be rejected */
+    ret = xmlSecBnMul(&bn, -1);
+    if(ret >= 0) {
+        testLog("Error: xmlSecBnMul unexpectedly succeeded with multiplier=-1\n");
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecBnFinalize(&bn);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecBnDiv_invalidArgsReturnError(void) {
+    xmlSecBn bn;
+    int mod;
+    int ret;
+
+    testStart("xmlSecBnDiv: zero divider and NULL mod are rejected");
+
+    ret = xmlSecBnInitialize(&bn, 0);
+    if(ret < 0) {
+        testLog("Error: xmlSecBnInitialize failed\n");
+        testFinishedFailure();
+        return;
+    }
+
+    /* all strings are hexadecimal */
+    ret = xmlSecBnFromHexString(&bn, BAD_CAST "1234");
+    if(ret < 0) {
+        testLog("Error: xmlSecBnFromHexString failed for '1234'\n");
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+
+    /* divider=0 must be rejected */
+    mod = -1;
+    ret = xmlSecBnDiv(&bn, 0, &mod);
+    if(ret >= 0) {
+        testLog("Error: xmlSecBnDiv unexpectedly succeeded with divider=0\n");
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+
+    /* a NULL mod pointer must be rejected */
+    ret = xmlSecBnDiv(&bn, 2, NULL);
+    if(ret >= 0) {
+        testLog("Error: xmlSecBnDiv unexpectedly succeeded with a NULL mod pointer\n");
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecBnFinalize(&bn);
+    testFinishedSuccess();
+}
+
 int
 test_bn(void) {
     testGroupStart("bn");
@@ -2248,11 +2396,14 @@ test_bn(void) {
     test_xmlSecBnAdd_zeroResultAndTrimBoundaries();
     test_xmlSecBnAdd_bnValueUndefinedAfterUnderflow();
     test_xmlSecBnAdd_intMinDelta();
+    test_xmlSecBnAdd_zeroDeltaIsNoop();
     test_xmlSecBnMul_updatesValue();
     test_xmlSecBnMul_largeMultiplier();
     test_xmlSecBnAdd_mulProduceCanonicalPrefix();
+    test_xmlSecBnMul_invalidMultiplierReturnsError();
     test_xmlSecBnDiv_updatesValue();
     test_xmlSecBnDiv_largeDivider();
+    test_xmlSecBnDiv_invalidArgsReturnError();
     test_xmlSecBnDiv_zeroBn();
     test_xmlSecBnMulAddDiv_sequence();
     test_xmlSecBnDiv_byOneKeepsValueAndSetsZeroMod();

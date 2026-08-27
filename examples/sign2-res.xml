@@ -9,17 +9,17 @@ XML Security Library example: Original XML doc file for sign2 example.
 <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
 <SignedInfo>
 <CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
-<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+<SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
 <Reference URI="">
 <Transforms>
 <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
 </Transforms>
-<DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
-<DigestValue>HjY8ilZAIEM2tBbPn5mYO1ieIX4=</DigestValue>
+<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+<DigestValue>POwWY1qUxMsC7dZaqXVlSZDaQataXRNFAt+aa0eIlKw=</DigestValue>
 </Reference>
 </SignedInfo>
-<SignatureValue>fUkinGC3hXEUrjJoq8Uc1Gtky7+4AumhtYV5804diUqbFh/SbQI5iPOnJojz0xZK
-WFG9pbfsiWyiqTYlenqDng==</SignatureValue>
+<SignatureValue>DJYNbr1OEGCXWZHDzQrfVp7HRnb03SstZTLZR00WJTrPINNB3H93LEgz/zGOHjTm
+4key8cVFQJn9/pBC26j6Tw==</SignatureValue>
 <KeyInfo>
 <KeyName>rsakey.pem</KeyName>
 </KeyInfo>

@@ -263,12 +263,6 @@ sign_file(const char* xml_file, const char* key_file, const char* cert_file) {
         goto done;
     }
 
-    /* set the key name to the file name; this is only an example */
-    if(xmlSecKeySetName(dsigCtx->signKey, BAD_CAST key_file) < 0) {
-        fprintf(stderr,"Error: failed to set the key name for the key from \"%s\"\n", key_file);
-        goto done;
-    }
-
     /* sign the template */
     if(xmlSecDSigCtxSign(dsigCtx, signNode) < 0) {
         fprintf(stderr,"Error: signature failed\n");

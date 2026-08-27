@@ -17,6 +17,8 @@
 #include <time.h>
 #include <string.h>
 #include <assert.h>
+#include <errno.h>
+#include <limits.h>
 
 #include <xmlsec/xmlsec.h>
 #include "cmdline.h"
@@ -31,9 +33,11 @@ static int                      xmlSecAppCmdLineParamRead       (xmlSecAppCmdLin
                                                                  const char** argv,
                                                                  int argc,
                                                                  int pos);
+static int                      xmlSecAppCmdLineIntParamRead    (const char* str,
+                                                                  int* value);
 static int                      xmlSecAppCmdLineTimeParamRead   (const char* str,
-                                                                 time_t* t,
-                                                                 int is_gmt_time);
+                                                                  time_t* t,
+                                                                  int is_gmt_time);
 
 #if defined(_MSC_VER)
 #define XMLSEC_SCANF     sscanf_s
@@ -316,7 +320,7 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
                 return(-1);
             }
             value->strValue = argv[++pos];
-            if(XMLSEC_SCANF(value->strValue, "%d", &(value->intValue)) != 1) {
+            if(xmlSecAppCmdLineIntParamRead(value->strValue, &(value->intValue)) < 0) {
                 fprintf(stderr, "Error: integer argument \"%s\" is invalid.\n", value->strValue);
                 return(-1);
             }
@@ -380,6 +384,29 @@ xmlSecAppGetGmtTime(struct tm* timeptr) {
     return(t1 - (t2 - t1));
 }
 #endif /* !defined(_MSC_VER) */
+
+static int
+xmlSecAppCmdLineIntParamRead(const char* str, int* value) {
+    char* end = NULL;
+    long v;
+
+    if((str == NULL) || (value == NULL)) {
+        return(-1);
+    }
+
+    /* strtol() rejects out-of-range values (errno=ERANGE) and reports the
+     * first unparsed character, unlike sscanf("%d") which is undefined
+     * behavior on overflow. */
+    errno = 0;
+    v = strtol(str, &end, 10);
+    if((end == str) || (*end != '\0') || (errno == ERANGE) ||
+       (v < INT_MIN) || (v > INT_MAX)) {
+        return(-1);
+    }
+
+    (*value) = (int)v;
+    return(0);
+}
 
 static int
 xmlSecAppCmdLineTimeParamRead(const char* str, time_t* t, int is_gmt_time) {

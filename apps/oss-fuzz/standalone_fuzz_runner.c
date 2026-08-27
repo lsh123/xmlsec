@@ -23,16 +23,20 @@ extern int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size);
 
 int main(int argc, char** argv) {
     int i;
+    int ret = 0;
 
     if (argc < 2) {
-        /* Smoke-test: run once with empty input. */
-        return LLVMFuzzerTestOneInput(NULL, 0);
+        /* Smoke-test: run once with empty input. libFuzzer always passes a
+         * valid pointer even for zero-length input, so use a dummy byte. */
+        static uint8_t dummy = 0;
+        return LLVMFuzzerTestOneInput(&dummy, 0);
     }
 
     for (i = 1; i < argc; i++) {
         FILE* f = NULL;
         long len;
         uint8_t* buf;
+        int inputRet;
 
 #ifdef _MSC_VER
         if (fopen_s(&f, argv[i], "rb") != 0) {
@@ -49,11 +53,13 @@ int main(int argc, char** argv) {
         assert(f != NULL);
 
         if (fseek(f, 0, SEEK_END) != 0) {
+            fprintf(stderr, "standalone_fuzz_runner: cannot seek in '%s'\n", argv[i]);
             fclose(f);
             continue;
         }
         len = ftell(f);
         if (len < 0) {
+            fprintf(stderr, "standalone_fuzz_runner: cannot determine the size of '%s'\n", argv[i]);
             fclose(f);
             continue;
         }
@@ -61,20 +67,25 @@ int main(int argc, char** argv) {
 
         buf = (uint8_t*)malloc((size_t)len + 1);
         if (buf == NULL) {
+            fprintf(stderr, "standalone_fuzz_runner: out of memory reading '%s'\n", argv[i]);
             fclose(f);
             continue;
         }
 
         if (len > 0 && fread(buf, 1, (size_t)len, f) != (size_t)len) {
+            fprintf(stderr, "standalone_fuzz_runner: failed to read '%s'\n", argv[i]);
             free(buf);
             fclose(f);
             continue;
         }
         fclose(f);
 
-        LLVMFuzzerTestOneInput(buf, (size_t)len);
+        inputRet = LLVMFuzzerTestOneInput(buf, (size_t)len);
         free(buf);
+        if (inputRet != 0) {
+            ret = 1;
+        }
     }
 
-    return 0;
+    return ret;
 }

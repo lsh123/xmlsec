@@ -167,7 +167,11 @@ create_signature_template(xmlDocPtr doc){
     }
 
     /* add <dsig:Signature/> node to the doc */
-    xmlAddChild(xmlDocGetRootElement(doc), signNode);
+    if(xmlAddChild(xmlDocGetRootElement(doc), signNode) == NULL) {
+        fprintf(stderr, "Error: failed to add signature node to the document\n");
+        xmlFreeNode(signNode);
+        return(NULL);
+    }
 
     /* add <dsig:Reference/> node */
     refNode = xmlSecTmplSignatureAddReference(signNode, xmlSecTransformSha1Id, NULL, BAD_CAST "", NULL);
@@ -223,10 +227,9 @@ sign_file(const char* xml_file, const char* key_file) {
         goto done;
     }
 
-    /* add signature template */
+    /* add signature template (create_signature_template() reports the error) */
     signNode = create_signature_template(doc);
     if(signNode == NULL) {
-        fprintf(stderr, "Error: failed to create signature template\n");
         goto done;
     }
 
@@ -262,7 +265,7 @@ sign_file(const char* xml_file, const char* key_file) {
     }
 
     /* print signed document to stdout */
-    if(xmlDocDump(stdout, signNode->doc) < 0) {
+    if(xmlDocDump(stdout, doc) < 0) {
         fprintf(stderr, "Error: failed to write the signed document to stdout\n");
         goto done;
     }

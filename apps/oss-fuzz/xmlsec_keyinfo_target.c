@@ -20,6 +20,7 @@
  */
 #include <stdint.h>
 #include <stddef.h>
+#include <limits.h>
 
 int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size);
 
@@ -87,7 +88,9 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
         g_init_failed = (do_init() < 0);
         g_initialized = 1;
     }
-    if (g_init_failed || size == 0) {
+    /* Skip inputs that cannot be represented as the int length expected by
+     * xmlReadMemory(). */
+    if (g_init_failed || size == 0 || size > (size_t)INT_MAX) {
         return 0;
     }
 
@@ -129,7 +132,8 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
     }
 
     keyInfoCtx->mode = xmlSecKeyInfoModeRead;
-    /* Accept any key so no child element is skipped on a type mismatch. */
+    /* Accept any key so the first successfully read child element satisfies
+     * the requirement (the reader then stops, skipping later siblings). */
     keyInfoCtx->keyReq.keyId = xmlSecKeyDataIdUnknown;
     keyInfoCtx->keyReq.keyType = xmlSecKeyDataTypeAny;
     keyInfoCtx->keyReq.keyUsage = xmlSecKeyUsageAny;

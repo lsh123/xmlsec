@@ -334,8 +334,8 @@ static xmlSecSize
 xmlSecGCryptAsymKeyDataGetSize(xmlSecKeyDataPtr data) {
     xmlSecGCryptAsymKeyDataCtxPtr ctx;
 
-    xmlSecAssert2(xmlSecKeyDataIsValid(data), xmlSecKeyDataTypeUnknown);
-    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecGCryptAsymKeyDataSize), xmlSecKeyDataTypeUnknown);
+    xmlSecAssert2(xmlSecKeyDataIsValid(data), 0);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecGCryptAsymKeyDataSize), 0);
 
     ctx = xmlSecGCryptAsymKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, 0);
@@ -840,12 +840,6 @@ xmlSecGCryptKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         xmlSecGCryptError("gcry_mpi_scan(y)", err,
             xmlSecKeyDataKlassGetName(id));
         goto done;
-    }
-
-    /* Convert from OpenSSL parameter ordering to the OpenPGP order. */
-    /* First check that x < y; if not swap x and y  */
-    if((x != NULL) && (gcry_mpi_cmp (x, y) > 0)) {
-        gcry_mpi_swap (x, y);
     }
 
     /* construct pub/priv key pairs */
@@ -1823,6 +1817,9 @@ xmlSecGCryptGetStringFromSExp(const gcry_sexp_t sexp, const char * tok)
     }
 
 done:
+    if(val != NULL) {
+        gcry_sexp_release(val);
+    }
     return(res);
 }
 

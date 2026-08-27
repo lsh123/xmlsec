@@ -283,8 +283,6 @@ xmlSecGCryptPkSignatureCheckId(xmlSecTransformPtr transform) {
     {
         return(0);
     }
-
-    return(0);
 }
 
 static int
@@ -746,7 +744,7 @@ xmlSecGCryptAppendMpi(gcry_mpi_t a, xmlSecBufferPtr out, xmlSecSize min_size) {
     }
     XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(written, writtenSize, return(-1), NULL);
 
-    /* add zeros at the beggining (if needed) */
+    /* add zeros at the beginning (if needed) */
     if((min_size > 0) && (writtenSize < min_size)) {
         outSize += (min_size - writtenSize);
     }
@@ -760,7 +758,7 @@ xmlSecGCryptAppendMpi(gcry_mpi_t a, xmlSecBufferPtr out, xmlSecSize min_size) {
     }
     xmlSecAssert2(xmlSecBufferGetMaxSize(out) > outSize, -1);
 
-    /* add zeros at the beggining (if needed) */
+    /* add zeros at the beginning (if needed) */
     if((min_size > 0) && (writtenSize < min_size)) {
         xmlSecSize ii;
         xmlSecByte * p = xmlSecBufferGetData(out);
@@ -1331,7 +1329,7 @@ xmlSecGCryptRsaPssSign(int digest, xmlSecKeyDataPtr key_data,
                            "(data (flags pss)"
                             "(salt-length %u)"
                             "(hash %s %b))",
-                           dgstSize,  /* The default salt length is the length of the hash function */
+                           dgstLen,  /* The default salt length is the length of the hash function */
                            gcry_md_algo_name(digest),
                            dgstLen, dgst);
     if((err != GPG_ERR_NO_ERROR) || (s_data == NULL)) {
@@ -1429,7 +1427,7 @@ xmlSecGCryptRsaPssVerify(int digest, xmlSecKeyDataPtr key_data,
                            "(data (flags pss)"
                            "(salt-length %u)"
                            "(hash %s %b))",
-                           dgstSize,  /* The default salt length is the length of the hash function */
+                           dgstLen,  /* The default salt length is the length of the hash function */
                            gcry_md_algo_name(digest),
                            dgstLen, dgst);
     if((err != GPG_ERR_NO_ERROR) || (s_data == NULL)) {

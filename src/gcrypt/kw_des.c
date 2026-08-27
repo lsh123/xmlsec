@@ -96,7 +96,7 @@ typedef xmlSecTransformKWDes3Ctx xmlSecGCryptKWDes3Ctx,
 
 /******************************************************************************
  *
- * Tripple DES KW transforms
+ * Triple DES KW transforms
  *
  * xmlSecTransform + xmlSecGCryptKWDes3Ctx
  *

@@ -7,7 +7,7 @@
  */
 /**
  * @addtogroup xmlsec_gcrypt_crypto
- * @brief AES/Camellia Key Transport (RFC 3394) implementation for GCrypt.
+ * @brief AES Key Transport (RFC 3394) implementation for GCrypt.
  */
 #ifndef XMLSEC_NO_AES
 #include "globals.h"

@@ -284,7 +284,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformHmacMd5GetKlass(void
 
 #ifndef XMLSEC_NO_RIPEMD160
 /**
- * @brief The HMAC with RipeMD160 signature transform klass.
+ * @brief The HMAC with RIPEMD160 signature transform klass.
  */
 #define xmlSecGCryptTransformHmacRipemd160Id \
         xmlSecGCryptTransformHmacRipemd160GetKlass()
@@ -563,7 +563,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformSha3_512GetKlass(voi
 
 /******************************************************************************
  *
- * Md5 transforms
+ * MD5 transforms
  *
   *****************************************************************************/
 #ifndef XMLSEC_NO_MD5
@@ -578,7 +578,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformMd5GetKlass(void);
 
 /******************************************************************************
  *
- * RipeMD160 transforms
+ * RIPEMD160 transforms
  *
   *****************************************************************************/
 #ifndef XMLSEC_NO_RIPEMD160

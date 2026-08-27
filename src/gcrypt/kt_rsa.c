@@ -410,7 +410,7 @@ xmlSecGCryptRsaPkcs1Decrypt(xmlSecGCryptRsaPkcs1CtxPtr ctx, xmlSecBufferPtr in, 
         xmlSecGCryptKeyDataRsaGetPrivateKey(ctx->keyData),
         out);
     if(ret != 0) {
-        xmlSecInternalError("xmlSecGCryptRsaKtEncrypt", NULL);
+        xmlSecInternalError("xmlSecGCryptRsaKtDecrypt", NULL);
         goto done;
     }
 
@@ -788,8 +788,8 @@ xmlSecGCryptRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     if ((mgf1Alg != NULL) && (ctx->hashAlg != NULL) && (strcmp(ctx->hashAlg, mgf1Alg) != 0)) {
         xmlSecInvalidTransformError3(transform,
             "for gcrypt/gnutls, rsa/oaep mgf1 algorithm=\"%s\" must be the same as digest algorithm=\"%s\"",
-            xmlSecErrorsSafeString(ctx->hashAlg),
-            xmlSecErrorsSafeString(mgf1Alg));
+            xmlSecErrorsSafeString(mgf1Alg),
+            xmlSecErrorsSafeString(ctx->hashAlg));
         xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
         return(-1);
     }
@@ -975,7 +975,7 @@ xmlSecGCryptRsaOaepDecrypt(xmlSecGCryptRsaOaepCtxPtr ctx, xmlSecBufferPtr in, xm
         xmlSecGCryptKeyDataRsaGetPrivateKey(ctx->keyData),
         out);
     if(ret != 0) {
-        xmlSecInternalError("xmlSecGCryptRsaKtEncrypt", NULL);
+        xmlSecInternalError("xmlSecGCryptRsaKtDecrypt", NULL);
         goto done;
     }
 

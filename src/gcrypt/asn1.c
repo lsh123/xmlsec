@@ -125,7 +125,13 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, unsigned long *buflen, stru
 
     if (tag == 0x1f) {
         tag = 0;
+        int num_tag_bytes = 0;
         do {
+            /* Bound the number of continuation bytes so 'tag <<= 7' cannot shift
+             * past the width of 'unsigned long' (undefined behavior). */
+            if(num_tag_bytes >= 4) {
+                return(-1); /* Tag too long. */
+            }
             tag <<= 7;
             if (length <= 0) {
                 return(-1); /* Premature EOF.  */
@@ -134,6 +140,7 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, unsigned long *buflen, stru
             length--;
             ti->nhdr++;
             tag |= (c & 0x7f);
+            num_tag_bytes++;
         } while ( (c & 0x80) );
     }
     ti->tag = tag;
@@ -155,6 +162,12 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, unsigned long *buflen, stru
     } else {
         unsigned long len = 0;
         int count = c & 0x7f;
+
+        /* DER requires minimal length encoding; more than 4 length bytes is not
+         * needed for any real data and would shift past the width of 'unsigned long' (UB). */
+        if(count > 4) {
+            return -1; /* Invalid length encoding. */
+        }
 
         for (; count; count--) {
             len <<= 8;
@@ -301,15 +314,64 @@ xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSe
                         return(-1);
                     }
 
-                    /* HACK HACK HACK: DSA pubkey has a TAG_BIT_STRING for public exp (y) that has 4 bytes in front
-                     * this is likely going to break something. Note that EC keys also use BIT_STRING but there is no prefixes
-                     */
-                    if((ti.tag == TAG_BIT_STRING) && (ti.length >= 4) && (xmlSecGCryptAsn1IsECKey(objectids, *objectids_out_size) == 0)) {
-                        ti.length -= 4;
-                        length -= 4;
-                        buf += 4;
+                    const xmlSecByte* value = buf;
+                    unsigned long value_len = ti.length;
+
+                    /* A DSA public key (SubjectPublicKeyInfo) wraps the public value (y) in a
+                     * BIT STRING that contains an INTEGER: <unused-bits byte><INTEGER y>. Skip the
+                     * unused-bits byte and the INTEGER tag/length header to reach the value. EC keys
+                     * also use BIT_STRING but their content is not wrapped this way, so leave it as-is. */
+                    if((ti.tag == TAG_BIT_STRING) && (xmlSecGCryptAsn1IsECKey(objectids, *objectids_out_size) == 0)) {
+                        const xmlSecByte* p = buf;
+                        unsigned long remaining = ti.length;
+
+                        /* skip the unused-bits byte */
+                        if(remaining < 1) {
+                            xmlSecInternalError2("xmlSecGCryptAsn1ParseIntegerSequence", NULL, "BIT STRING too short to contain an INTEGER, len=%lu", ti.length);
+                            return(-1);
+                        }
+                        p++; remaining--;
+
+                        /* expect an INTEGER tag */
+                        if((remaining < 1) || (*p != TAG_INTEGER)) {
+                            xmlSecInternalError2("xmlSecGCryptAsn1ParseIntegerSequence", NULL, "INTEGER expected inside BIT STRING, remaining=%lu", remaining);
+                            return(-1);
+                        }
+                        p++; remaining--;
+
+                        /* INTEGER must contain at least one length byte. */
+                        if(remaining < 1) {
+                            xmlSecInternalError2("xmlSecGCryptAsn1ParseIntegerSequence", NULL, "missing INTEGER length inside BIT STRING, remaining=%lu", remaining);
+                            return(-1);
+                        }
+
+                        /* parse the INTEGER length (short or long form) */
+                        unsigned long int_len = 0;
+                        if(*p < 0x80) {
+                            int_len = *p;
+                            p++; remaining--;
+                        } else {
+                            unsigned int num_len_bytes = *p & 0x7f;
+                            if((num_len_bytes == 0) || (num_len_bytes > 4) || (remaining < (1 + num_len_bytes))) {
+                                xmlSecInternalError2("xmlSecGCryptAsn1ParseIntegerSequence", NULL, "invalid INTEGER length inside BIT STRING, len_bytes=%u", num_len_bytes);
+                                return(-1);
+                            }
+                            p++; remaining--;
+                            for(unsigned int ii = 0; ii < num_len_bytes; ++ii) {
+                                int_len = (int_len << 8) | (*p & 0xff);
+                                p++; remaining--;
+                            }
+                        }
+
+                        if(int_len > remaining) {
+                            xmlSecInternalError3("xmlSecGCryptAsn1ParseIntegerSequence", NULL, "INTEGER value larger than BIT STRING content, int_len=%lu, remaining=%lu", int_len, remaining);
+                            return(-1);
+                        }
+                        value = p;
+                        value_len = int_len;
                     }
-                    err = gcry_mpi_scan(&(integers[(*integers_out_size)]), GCRYMPI_FMT_USG, buf, ti.length, NULL);
+
+                    err = gcry_mpi_scan(&(integers[(*integers_out_size)]), GCRYMPI_FMT_USG, value, value_len, NULL);
                     if((err != GPG_ERR_NO_ERROR) || (integers[(*integers_out_size)] == NULL)) {
                         xmlSecGCryptError("gcry_mpi_scan", err, NULL);
                         return(-1);
@@ -352,14 +414,14 @@ xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSe
 }
 
 /* expected number of integers for various keys */
-#define XMLSEC_GNUTLS_ASN1_DSA_PUB_NUM          4U
-#define XMLSEC_GNUTLS_ASN1_DSA_PRIV_NUM         6U
+#define XMLSEC_GCRYPT_ASN1_DSA_PUB_NUM          4U
+#define XMLSEC_GCRYPT_ASN1_DSA_PRIV_NUM         6U
 
-#define XMLSEC_GNUTLS_ASN1_EDCSA_PUB_NUM        1U
-#define XMLSEC_GNUTLS_ASN1_EDCSA_PRIV_NUM       3U
+#define XMLSEC_GCRYPT_ASN1_EDCSA_PUB_NUM        1U
+#define XMLSEC_GCRYPT_ASN1_EDCSA_PRIV_NUM       3U
 
-#define XMLSEC_GNUTLS_ASN1_RSA_PUB_NUM          2U
-#define XMLSEC_GNUTLS_ASN1_RSA_PRIV_NUM         9U
+#define XMLSEC_GCRYPT_ASN1_RSA_PUB_NUM          2U
+#define XMLSEC_GCRYPT_ASN1_RSA_PRIV_NUM         9U
 
 static enum xmlSecGCryptDerKeyType
 xmlSecGCryptAsn1GuessKeyType(gcry_mpi_t * integers, xmlSecSize integers_num, xmlSecGCryptAsn1ObjectId * objectids, xmlSecSize objectids_num) {
@@ -368,9 +430,9 @@ xmlSecGCryptAsn1GuessKeyType(gcry_mpi_t * integers, xmlSecSize integers_num, xml
 
     /* EC key should have the curve object id */
     if(xmlSecGCryptAsn1IsECKey(objectids, objectids_num) != 0) {
-        if(integers_num >= XMLSEC_GNUTLS_ASN1_EDCSA_PRIV_NUM) {
+        if(integers_num >= XMLSEC_GCRYPT_ASN1_EDCSA_PRIV_NUM) {
             return(xmlSecGCryptDerKeyTypePrivateEc);
-        } else if(integers_num >= XMLSEC_GNUTLS_ASN1_EDCSA_PUB_NUM) {
+        } else if(integers_num >= XMLSEC_GCRYPT_ASN1_EDCSA_PUB_NUM) {
             return(xmlSecGCryptDerKeyTypePublicEc);
         } else {
             return(xmlSecGCryptDerKeyTypeAuto);
@@ -379,14 +441,14 @@ xmlSecGCryptAsn1GuessKeyType(gcry_mpi_t * integers, xmlSecSize integers_num, xml
 
     /* try other keys */
     switch(integers_num) {
-    case XMLSEC_GNUTLS_ASN1_DSA_PUB_NUM:
+    case XMLSEC_GCRYPT_ASN1_DSA_PUB_NUM:
         return(xmlSecGCryptDerKeyTypePublicDsa);
-    case XMLSEC_GNUTLS_ASN1_DSA_PRIV_NUM:
+    case XMLSEC_GCRYPT_ASN1_DSA_PRIV_NUM:
         return(xmlSecGCryptDerKeyTypePrivateDsa);
 
-    case XMLSEC_GNUTLS_ASN1_RSA_PUB_NUM:
+    case XMLSEC_GCRYPT_ASN1_RSA_PUB_NUM:
         return(xmlSecGCryptDerKeyTypePublicRsa);
-    case XMLSEC_GNUTLS_ASN1_RSA_PRIV_NUM:
+    case XMLSEC_GCRYPT_ASN1_RSA_PRIV_NUM:
         return(xmlSecGCryptDerKeyTypePrivateRsa);
     default:
         return(xmlSecGCryptDerKeyTypeAuto);
@@ -439,9 +501,9 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
 #ifndef XMLSEC_NO_DSA
     case xmlSecGCryptDerKeyTypePrivateDsa:
         /* check we have enough integers */
-        if(integers_num != XMLSEC_GNUTLS_ASN1_DSA_PRIV_NUM) {
+        if(integers_num != XMLSEC_GCRYPT_ASN1_DSA_PRIV_NUM) {
             xmlSecInvalidSizeError("Private DSA key params",
-                integers_num, (xmlSecSize)XMLSEC_GNUTLS_ASN1_DSA_PRIV_NUM, NULL);
+                integers_num, (xmlSecSize)XMLSEC_GCRYPT_ASN1_DSA_PRIV_NUM, NULL);
             goto done;
         }
 
@@ -493,9 +555,9 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
 
     case xmlSecGCryptDerKeyTypePublicDsa:
         /* check we have enough integers */
-        if(integers_num != XMLSEC_GNUTLS_ASN1_DSA_PUB_NUM) {
+        if(integers_num != XMLSEC_GCRYPT_ASN1_DSA_PUB_NUM) {
             xmlSecInvalidSizeError("Public DSA key params",
-                integers_num, (xmlSecSize)XMLSEC_GNUTLS_ASN1_DSA_PUB_NUM, NULL);
+                integers_num, (xmlSecSize)XMLSEC_GCRYPT_ASN1_DSA_PUB_NUM, NULL);
             goto done;
         }
 
@@ -531,9 +593,9 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
 #ifndef XMLSEC_NO_RSA
     case xmlSecGCryptDerKeyTypePrivateRsa:
         /* check we have enough integers */
-        if(integers_num < XMLSEC_GNUTLS_ASN1_RSA_PRIV_NUM) {
+        if(integers_num < XMLSEC_GCRYPT_ASN1_RSA_PRIV_NUM) {
             xmlSecInvalidSizeError("Private RSA key params",
-                (xmlSecSize)integers_num, (xmlSecSize)XMLSEC_GNUTLS_ASN1_RSA_PRIV_NUM, NULL);
+                (xmlSecSize)integers_num, (xmlSecSize)XMLSEC_GCRYPT_ASN1_RSA_PRIV_NUM, NULL);
             goto done;
         }
 
@@ -578,9 +640,9 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
 
     case xmlSecGCryptDerKeyTypePublicRsa:
         /* check we have enough integers */
-        if(integers_num != XMLSEC_GNUTLS_ASN1_RSA_PUB_NUM) {
+        if(integers_num != XMLSEC_GCRYPT_ASN1_RSA_PUB_NUM) {
             xmlSecInvalidSizeError("Public RSA key params",
-                integers_num, (xmlSecSize)XMLSEC_GNUTLS_ASN1_RSA_PUB_NUM, NULL);
+                integers_num, (xmlSecSize)XMLSEC_GCRYPT_ASN1_RSA_PUB_NUM, NULL);
             goto done;
         }
 
@@ -620,9 +682,9 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
                 (xmlSecSize)objectids_num, (xmlSecSize)1U, NULL);
             goto done;
         }
-        if(integers_num < XMLSEC_GNUTLS_ASN1_EDCSA_PRIV_NUM) {
+        if(integers_num < XMLSEC_GCRYPT_ASN1_EDCSA_PRIV_NUM) {
             xmlSecInvalidSizeError("Private EC key params",
-                (xmlSecSize)integers_num, (xmlSecSize)XMLSEC_GNUTLS_ASN1_EDCSA_PRIV_NUM, NULL);
+                (xmlSecSize)integers_num, (xmlSecSize)XMLSEC_GCRYPT_ASN1_EDCSA_PRIV_NUM, NULL);
             goto done;
         }
 
@@ -688,9 +750,9 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
                 (xmlSecSize)objectids_num, (xmlSecSize)1U, NULL);
             goto done;
         }
-        if(integers_num < XMLSEC_GNUTLS_ASN1_EDCSA_PUB_NUM) {
+        if(integers_num < XMLSEC_GCRYPT_ASN1_EDCSA_PUB_NUM) {
             xmlSecInvalidSizeError("Public EC key params",
-                (xmlSecSize)integers_num, (xmlSecSize)XMLSEC_GNUTLS_ASN1_EDCSA_PUB_NUM, NULL);
+                (xmlSecSize)integers_num, (xmlSecSize)XMLSEC_GCRYPT_ASN1_EDCSA_PUB_NUM, NULL);
             goto done;
         }
 

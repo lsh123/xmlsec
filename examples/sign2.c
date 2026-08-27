@@ -159,8 +159,8 @@ create_signature_template(xmlDocPtr doc){
 
     assert(doc);
 
-    /* create signature template for RSA-SHA1 enveloped signature */
-    signNode = xmlSecTmplSignatureCreate(doc, xmlSecTransformExclC14NId, xmlSecTransformRsaSha1Id, NULL);
+    /* create signature template for RSA-SHA256 enveloped signature */
+    signNode = xmlSecTmplSignatureCreate(doc, xmlSecTransformExclC14NId, xmlSecTransformRsaSha256Id, NULL);
     if(signNode == NULL) {
         fprintf(stderr, "Error: failed to create signature template\n");
         return(NULL);
@@ -174,7 +174,7 @@ create_signature_template(xmlDocPtr doc){
     }
 
     /* add <dsig:Reference/> node */
-    refNode = xmlSecTmplSignatureAddReference(signNode, xmlSecTransformSha1Id, NULL, BAD_CAST "", NULL);
+    refNode = xmlSecTmplSignatureAddReference(signNode, xmlSecTransformSha256Id, NULL, BAD_CAST "", NULL);
     if(refNode == NULL) {
         fprintf(stderr, "Error: failed to add reference to signature template\n");
         return(NULL);

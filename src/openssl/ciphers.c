@@ -543,8 +543,8 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 
         /* get the pad length from the last byte */
         padLen = outBuf[outLen - 1];
-        if(padLen > blockLen) {
-            xmlSecInvalidDataError("padding length is greater than block size for cipher", cipherName);
+        if((padLen == 0) || (padLen > blockLen)) {
+            xmlSecInvalidDataError("invalid padding length for cipher", cipherName);
             return(-1);
         }
         xmlSecAssert2(padLen <= outLen, -1);

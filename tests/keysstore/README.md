@@ -2,7 +2,8 @@
 
 ## xmlsec-mscng
 
-- Import `tests/keys/rsa/rsa-2048-key-win.p12` (double-click on the file in Windows Explorer).
+- Import `tests/keys/rsa/rsa-2048-key-win.p12` (double-click on the file in Windows Explorer;
+  when prompted, enter the PKCS#12 password `secret123`).
 
 - Verify that the import happened, using `certmgr.msc`.
 

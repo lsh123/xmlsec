@@ -1,6 +1,6 @@
 README
 http://groups.google.com/groups?hl=en&threadm=9jlbt7%243141%241%40FreeBSD.csie.NCTU.edu.tw&rnum=20&prev=/groups%3Fq%3Dopenssl%2Bx509%2Bcertificates%2Bchain%26start%3D10%26hl%3Den%26selm%3D9jlbt7%25243141%25241%2540FreeBSD.csie.NCTU.edu.tw%26rnum%3D20
-http://www.post1.com/home/ngps/m2/howto.ca.html
+http://web.archive.org/web/20040808160828/http://www.post1.com:80/home/ngps/m2/howto.ca.html
 
 
 Commands:
@@ -41,7 +41,7 @@ verify ca2.crt
 
 verify user.crt
 
-> openssl x509 -text -in ca3.crt 
+> openssl x509 -text -in user.crt
 > openssl verify -CAfile ca.crt -untrusted ca2.crt user.crt
 
 

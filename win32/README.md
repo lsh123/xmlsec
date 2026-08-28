@@ -6,7 +6,7 @@ This directory contains the files required to build this software on the native 
 
 See the XML Security library [installation tutorial](../docs/md/tutorial/install.md) for details.
 
-## Building your appliation
+## Building your application
 
 See the XML Security library [compiling and linking tutorial](../docs/md/tutorial/compiling-and-linking.md) for details.
 

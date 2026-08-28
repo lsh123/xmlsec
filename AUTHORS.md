@@ -4,10 +4,10 @@
 
 ## Port and Feature Authors
 
-| Area | Author |
-|---|---|
+| Area              | Author                                 |
+|-------------------|----------------------------------------|
 | NSS support       | Tej Arora <tej@netscape.com>, AOL Inc. |
-| MSCryptosupport   | Wouter Ketting <wsh@xs4all.nl>, Cordys R&D BV |
+| MSCrypto support  | Wouter Ketting <wsh@xs4all.nl>, Cordys R&D BV |
 | MSCng support     | Miklos Vajna <vmiklos@vmiklos.hu> |
 | OpenSSL 3 support | David Bailey <snargit@users.noreply.github.com> |
 | AES-GCM support   | David Bailey <snargit@users.noreply.github.com> |

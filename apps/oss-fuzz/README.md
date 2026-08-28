@@ -8,7 +8,7 @@ may have a unit test like so:
 ```
 ASSERT((func_add(4,5)==9))
 ```
-However, corner cases are usually not tested so that `x=INT_MAX; y=1` shows a problem in the implementation/desired output.
+However, corner cases are usually not tested, so `x=INT_MAX; y=1` would expose a problem in the implementation (e.g. an integer overflow producing an undesired output).
 
 Fuzz testing is routinely used to generate such corner cases and feed them to program APIs. oss-fuzz is one such fuzz testing framework that is fully automated and targeted at open-source software (oss) and supported by Google. An enrolled project is continually fuzzed and bug reports are sent to maintainers as and when they are generated.
 

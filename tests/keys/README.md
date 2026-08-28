@@ -151,7 +151,7 @@ mkdir dsa
 
 ### Generate and sign RSA keys with second level CA
 
-Note: CRL need to be regenerated a few days later. This is needed for a test where certificates
+Note: The CRL needs to be regenerated a few days later. This is needed for a test where certificates
 are already valid by time but CRL is not yet.
 
 ```
@@ -216,7 +216,7 @@ Y35Ao0pe1DXmo6/+wGWDfA==
 ```
 
 
-* Creating NSS DB
+### Creating NSS DB
 DO NOT SPECIFY PASSWORD FOR NSS DB (private keys pkcs12 password is 'secret123')
 
 ```
@@ -238,7 +238,7 @@ mkdir ec
 ./scripts/create-ec-prime521v1-second.sh
 ```
 
-### Generate and sign DHX keys with second level CA
+### Generate DHX keys
 ```
 mkdir dhx
 ./scripts/create-dhx-rfc5114-3-first.sh
@@ -298,7 +298,7 @@ mkdir xdh
 ./scripts/create-xdh-x448-second.sh
 ```
 
-### Generate two certs and keys with the same certificate
+### Generate two certs and keys with the same subject
 ```
 openssl req -x509 -newkey rsa:2048 -keyout same-subj-key1.pem -out same-subj-cert1.pem -sha256 -days 3650 -nodes -subj "/C=XX/ST=StateName/L=CityName/O=CompanyName/OU=CompanySectionName/CN=CommonNameOrHostname"
 openssl req -x509 -newkey rsa:2048 -keyout same-subj-key2.pem -out same-subj-cert2.pem -sha256 -days 3650 -nodes -subj "/C=XX/ST=StateName/L=CityName/O=CompanyName/OU=CompanySectionName/CN=CommonNameOrHostname"
@@ -312,8 +312,8 @@ openssl rsa -in same-subj-key2.pem -out same-subj-key2.der --outform DER
 
 
 ### Generate and sign GOST2001 and GOST2012 keys with second level CA
-To enable GOST support, modify openssl.conf file:
-- uncomment the `# gost = gost_section` line'
+To enable GOST support, modify openssl.cnf file:
+- uncomment the `# gost = gost_section` line
 - specify correct path to `gost.so` in the `dynamic_path` variable in the `gost_section` section
 
 ```

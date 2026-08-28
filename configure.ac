@@ -86,6 +86,7 @@ dnl ==========================================================================
 XMLSEC_DEFINES=
 XMLSEC_APP_DEFINES=
 XMLSEC_EXTRA_LDFLAGS=
+XMLSEC_APP_EXTRA_LDFLAGS=
 XMLSEC_CRYPTO_EXTRA_LDFLAGS=
 
 dnl ==========================================================================
@@ -154,6 +155,7 @@ case "${host}" in
     dnl instead libxmlsec1-NN.dll, where NN is a number.
     XMLSEC_EXTRA_LDFLAGS="$XMLSEC_EXTRA_LDFLAGS -no-undefined -avoid-version"
     XMLSEC_CRYPTO_EXTRA_LDFLAGS="$XMLSEC_CRYPTO_EXTRA_LDFLAGS -no-undefined -avoid-version"
+    XMLSEC_APP_EXTRA_LDFLAGS="$XMLSEC_APP_EXTRA_LDFLAGS -mconsole"
 
     build_on_windows=yes
     AC_MSG_RESULT("Windows (MinGW)")
@@ -2830,6 +2832,7 @@ AC_SUBST(LDFLAGS)
 AC_SUBST(XMLSEC_DEFINES)
 AC_SUBST(XMLSEC_APP_DEFINES)
 AC_SUBST(XMLSEC_EXTRA_LDFLAGS)
+AC_SUBST(XMLSEC_APP_EXTRA_LDFLAGS)
 AC_SUBST(XMLSEC_CRYPTO_EXTRA_LDFLAGS)
 
 AC_SUBST(XMLSEC_DEFAULT_CRYPTO)

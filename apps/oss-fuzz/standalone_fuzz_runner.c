@@ -21,7 +21,16 @@
    xmlsec_keyload_target.c / xmlsec_keyinfo_target.c). */
 extern int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size);
 
-int main(int argc, char** argv) {
+#if defined(XMLSEC_WINDOWS) && defined(UNICODE) && defined(__MINGW32__)
+int wmain(int argc, wchar_t* argv[]);
+#endif /* defined(XMLSEC_WINDOWS) && defined(UNICODE) && defined(__MINGW32__) */
+
+
+#if defined(XMLSEC_WINDOWS) && defined(UNICODE)
+int wmain(int argc, wchar_t *argv[]) {
+#else /* defined(XMLSEC_WINDOWS) && defined(UNICODE) */
+int main(int argc, const char **argv) {
+#endif /* defined(XMLSEC_WINDOWS) && defined(UNICODE) */
     int i;
     int ret = 0;
 

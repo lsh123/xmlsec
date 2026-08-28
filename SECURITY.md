@@ -3,7 +3,7 @@
 ## Supported Versions
 
 The XMLSec library WILL provide security updates / fixes for the released versions for 5 years since [the day of the release](https://www.aleksey.com/xmlsec/news.html).
-After 5 years, the support MIGHT be provided on case-by-case basis.
+After 5 years, the support MIGHT be provided on a case-by-case basis.
 
 ### 1.3.x (master)
 
@@ -17,7 +17,7 @@ After 5 years, the support MIGHT be provided on case-by-case basis.
 | xmlsec-gcrypt     | >= 1.3.0  | April 12, 2023     | :x:                   | :white_check_mark:  |
 | xmlsec-mscrypto   | >= 1.3.0  | April 12, 2023     | :x:                   | :white_check_mark:  |
 
-### 1.2.x (mainanance mode from April 2023, planned End-Of-Life in April 2028)
+### 1.2.x (maintenance mode from April 2023, planned End-Of-Life in April 2028)
 
 | Component/Version | Version   | Release date       | Full Support          | Security Support    |
 | ------------------|-----------| -------------------|-----------------------|---------------------|

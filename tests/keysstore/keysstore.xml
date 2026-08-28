@@ -11,7 +11,7 @@
   <SignatureValue>
   </SignatureValue>
   <KeyInfo>
-    <KeyName>TestRsaKey</KeyName>
+    <KeyName>TestKeyName-rsa-2048</KeyName>
   </KeyInfo>
   <Object Id="object">some text</Object>
 </Signature>

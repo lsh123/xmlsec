@@ -45,8 +45,8 @@ are:
 
 1) NSS needs to provide a way to convert a DER integer string to / from
 an ASCII decimal string. Once NSS is fixed, the function `xmlSecNssX509SerialNumberRead`
-in src/nss/x509.c needs to be re-implemented using NSS APIs (the write direction
-is now handled by `xmlSecX509SerialNumberWrite` in src/x509.c). Also see:
+in src/nss/x509vfy.c needs to be re-implemented using NSS APIs (the write direction
+is now handled by `xmlSecX509SerialNumberWrite` in src/x509_helpers.c). Also see:
     - [NSS bug](https://bugzilla.mozilla.org/show_bug.cgi?id=212864)
 
 2) `CERT_FindCertByNameString` does not work in all cases. Also see:
@@ -56,7 +56,7 @@ is now handled by `xmlSecX509SerialNumberWrite` in src/x509.c). Also see:
     - [NSS bug](https://bugzilla.mozilla.org/show_bug.cgi?id=211051)
 
 4) AES Key wrap algorithm is implemented in NSS but not exposed due to
-some bug src/nss/kw_aes.c uses a workaround which should be removed
+some bug; src/nss/kw_rfc_3394.c uses a workaround which should be removed
 when the bug is fixed. Also see:
     - [NSS bug](https://bugzilla.mozilla.org/show_bug.cgi?id=213795)
     - [xmlsec bug](https://github.com/lsh123/xmlsec/issues/6)
@@ -66,19 +66,19 @@ when the bug is fixed. Also see:
         - `xmlSecKeyDataFormatDer`: supported (note that `xmlsec-nss` expects
         private key in DER file to be in PrivateKeyInfo format and private keys
         in the xmlsec test suite aren't in that format);
-        - `xmlsecKeyDataFormatPkcs12`: supported;
+        - `xmlSecKeyDataFormatPkcs12`: supported;
         - `xmlSecKeyDataFormatPkcs8Pem`: NOT supported
         - `xmlSecKeyDataFormatPkcs8Der`: NOT supported
 
-    - `xmlSecNssAppCertLoad()`: This function loads an X509 cert from a file.
+    - `xmlSecNssAppKeyCertLoad()`: This function loads an X509 cert from a file.
         - `xmlSecKeyDataFormatDer`: supported
-        - `xmlSecKeyDataFormatPem`: NOT supported
+        - `xmlSecKeyDataFormatPem`: supported
 
 6) The distinction between "trusted" and "untrusted" certificates in
 xmlsec-openssl is maintained because the OPENSSL application (and
 not the OPENSSL library) has to maintain a cert store and verify
 certificates. With NSS, no such distinction is necessary in the
-application. (Note from Aleksey: Not sure that I understand this point but thats
+application. (Note from Aleksey: Not sure that I understand this point but that's
 what Tej wrote).
 
 7) NSS doesn't support `emailAddress` in the cert subject. There is a hack
@@ -86,4 +86,4 @@ that needs to be removed in `xmlSecNssX509FindCert` function (`nss/x509vfy.c`).
  Also see:
     - [NSS bug](https://bugzilla.mozilla.org/show_bug.cgi?id=561689)
 
-8) CRLs from xml document support is not working at all.
+8) Support for CRLs from XML documents is not working at all.

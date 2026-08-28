@@ -28,7 +28,7 @@ Example:
 make check XMLSEC_TEST_REPRODUCIBLE=y
 ```
 
-## Recreate XML files on ailures
+## Recreate XML files on failures
 
 To re-create or generate new XML files, use `XMLSEC_TEST_UPDATE_XML_ON_FAILURE` flag:
 
@@ -50,11 +50,11 @@ environment variable:
 make check XMLSEC_TEST_IGNORE_PERCENT_SUCCESS=y
 ```
 
-## Statitistics
+## Statistics
 
-The tests are run with legacy algorithms enabled but without GOST. Note that skipped
-tests report is lower than actual because when a test case is skipped, it might include
-multiple subtests (that will be counted in the total successful number).
+The tests are run with legacy algorithms enabled but without GOST. Note that the
+reported number of skipped tests is lower than the actual number, because a single
+skipped test case may include multiple subtests.
 
 - OpenSSL:
   - xmldsig: TOTAL OK: 293; TOTAL FAILED: 0; TOTAL SKIPPED: 3

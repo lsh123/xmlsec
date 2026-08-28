@@ -9,6 +9,7 @@ Server 2008.
 ## Keys manager with MS Certificate store support.
 Similarly to the xmlsec-nss and xmlsec-mscrypto backends, the xmlsec-mscng
 keys manager is based on the XMLSEC Simple Keys Store. If keys are not found
-in the XMLSEC Simple Keys Store, then the MS Certificate store (the `MY` store
-by default, visible as `Personal -> Certificates` in `certmgr.msc`) is used
-to look up keys. The certificate store from the OS is a read-only store.
+in the XMLSEC Simple Keys Store, then the MS Certificate stores (the current
+user `MY` store and the local machine `ROOT` store by default; the `MY` store
+is visible as `Personal -> Certificates` in `certmgr.msc`) are used
+to look up keys. The certificate stores from the OS are read-only stores.

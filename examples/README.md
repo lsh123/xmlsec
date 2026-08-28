@@ -11,8 +11,8 @@ all other required libraries are already installed).
 ### Windows
 - Add paths to include and library files for xmlsec, libxml2, libxslt and
 openssl or nss to the environment variables INCLUDE and LIB.
-- Edit `Makefile.w32` file and specify correct crypto engine (openssl or
-nss for now). You can also specify necessary include and library paths
+- Edit `Makefile.w32` file and specify correct crypto engine (openssl, nss
+or mscrypto). You can also specify necessary include and library paths
 or change from static linking to using DLLs.
 - Run `nmake -f Makefile.w32`
 
@@ -43,7 +43,7 @@ Note that in this example we set KeyName to be the same as the filename of the p
 xmlsec1 sign --privkey:rsakey.pem rsakey.pem --output sign1-res.xml sign1-tmpl.xml
 ```
 
-### sign2: signing a file with a dynamicaly created template
+### sign2: signing a file with a dynamically created template
 
 Files:
 ```
@@ -57,7 +57,7 @@ To run this example:
 ./sign2 sign2-doc.xml rsakey.pem
 ```
 
-### sign3: signing a file with a dynamicaly created template and an X509 certificate
+### sign3: signing a file with a dynamically created template and an X509 certificate
 
 Files:
 ```
@@ -71,7 +71,7 @@ To run this example:
 ./sign3 sign3-doc.xml rsakey.pem rsacert.pem
 ```
 
-### sign4: signing a node in a file with a dynamicaly created template and an X509 certificate
+### sign4: signing a node in a file with a dynamically created template and an X509 certificate
 
 Files:
 ```
@@ -179,8 +179,8 @@ xmlsec1 verify --trusted ca2cert.pem --trusted cacert.pem verify-saml-res.xml
 Files:
 ```
 encrypt1.c          The source code
-encrypt1-res.xml    An example template file for encrypt1.c
-encrypt1-tmpl.xml   The result of processing encrypt1_tmpl.xml by encrypt1.c
+encrypt1-tmpl.xml   An example template file for encrypt1.c
+encrypt1-res.xml    The result of processing encrypt1-tmpl.xml by encrypt1.c
 ```
 
 To run this example:
@@ -195,13 +195,13 @@ the same as the filename of the key:
 xmlsec1 encrypt --deskey:deskey.bin deskey.bin  --binary-data binary.dat --output encrypt1-res.xml encrypt1-tmpl.xml
 ```
 
-### encrypt2: encrypting XML file using a dynamicaly created template
+### encrypt2: encrypting XML file using a dynamically created template
 
 Files:
 ```
 encrypt2.c          The source code
 encrypt2-doc.xml    An example XML file for encryption by encrypt2.c
-encrypt2-res.xml    The result of encryptin encrypt2-doc.xml by encrypt2.c
+encrypt2-res.xml    The result of encrypting encrypt2-doc.xml by encrypt2.c
 ```
 
 To run this example:
@@ -215,11 +215,11 @@ Files:
 ```
 encrypt3.c          The source code
 encrypt3-doc.xml    An example XML file for encryption by encrypt3.c
-encrypt3-res.xml    The result of encryptin encrypt3-doc.xml by encrypt3.c
+encrypt3-res.xml    The result of encrypting encrypt3-doc.xml by encrypt3.c
 ```
 
 To run this example (note: we are using the private key here instead of the public
-key to make decrypt3 example work)):
+key to make decrypt3 example work):
 ```
 ./encrypt3 encrypt3-doc.xml rsakey.pem
 ```
@@ -280,5 +280,5 @@ ca2cert.pem         CA (trusted) certificate (signed with cacert.pem)
 rsakey.pem          Private PEM key file
 rsapub.pem          Public PEM key file
 rsacert.pem         Certificate for rsakey.pem signed with ca2cert.pem
-deskey.bin          A DES keys
+deskey.bin          A DES key
 ```

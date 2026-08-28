@@ -123,8 +123,8 @@ Windows notes:
 - DO: Preserve project coding style:
   - Follow existing naming, macro patterns, and formatting in touched files.
 - DO: Keep documentation in sync for user-visible build/test/configuration changes.
-  - The documentation for API is generated from source code comments.
-- DO: All comments, error messages, etc should follow proper grammar.
+   - The API documentation is generated from source code comments.
+- DO: All comments, error messages, etc. should follow proper grammar.
   - Avoid copy / paste errors.
 - DO NOT introduce unrelated refactors
   - Focus on the task, if any additional issues are discovered -- note them in the final report or add comments to the source code.
@@ -136,7 +136,7 @@ Windows notes:
   - Ask the user if the existing test should be changed 
 
 ## Useful information
-- xmlSecAssert, xmlSecAssert2, etc are executed in both release and debug builds.
+- xmlSecAssert, xmlSecAssert2, etc. are executed in both release and debug builds.
 - Functions are documented in .c files and headers are minimal. 
 
 

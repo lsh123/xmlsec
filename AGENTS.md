@@ -115,7 +115,7 @@ Windows notes:
   - Flag any changes that would impact performance.
 - DO: Keep platform parity in mind:
   - For cross-platform features/fixes, update both Autotools and Windows build paths where applicable.
-- DO: Check all function return values 
+- DO: Check all function return values
   - Sometimes older versions of the dependency library don't return a value and in this case #ifdef's should be used to differentiate old vs new library code paths.
 - DO: When touching tests:
   - Run the narrowest relevant test target first, then broader suites.
@@ -133,10 +133,14 @@ Windows notes:
 - DO NOT Introduce long complex functions
   - Prefer small functions when possible
 - DO NOT Modify existing tests automatically
-  - Ask the user if the existing test should be changed 
+  - Ask the user if the existing test should be changed
+- DO NOT commit or stage changes unless explicitly asked
+  - Ask the user before performing any write git operation
+- DO NOT run tests manually
+  - use 'make check' or (on windows) 'nmake check' commands (or its variations check-dsig, check-enc, etc)
+
 
 ## Useful information
 - xmlSecAssert, xmlSecAssert2, etc. are executed in both release and debug builds.
-- Functions are documented in .c files and headers are minimal. 
-
-
+- Functions are documented in .c files and headers are minimal.
+- Algorithm / feature specific code is wrapped in guards (eg "#ifndef XMLSEC_NO_AES" ... #endif /* XMLSEC_NO_AES */")

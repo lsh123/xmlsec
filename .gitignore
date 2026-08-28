@@ -36,6 +36,7 @@ xmlsec1.spec
 xmlsec1Conf.sh
 Makefile.in
 Makefile
+!examples/Makefile
 apps/Makefile
 docs/Makefile
 docs/api/Makefile
@@ -79,5 +80,4 @@ docs/html/html.stamp
 .vs/
 build-*/*
 scripts/__pycache__
-.github/copilot-instructions.md
 .opencode/

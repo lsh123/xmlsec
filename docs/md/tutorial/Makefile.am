@@ -1,8 +1,8 @@
 #
 # make all 		: prints info message
-# make docs		: generates the MD files (if necessary tools are present) or prints error
-# make install  : tries to copy MD files to install dir first from builddir, then srcdir, then prints warning
-# make dist     : tries to copy MD files to dist dir first from builddir, then srcdir, then prints warning
+# make docs		: copies the static MD files and images from srcdir to builddir
+# make install  : tries to copy MD files to install dir first from builddir, then srcdir, then prints a warning
+# make dist     : tries to copy MD files to dist dir first from builddir, then srcdir, then prints a warning
 #
 NULL =
 
@@ -39,22 +39,24 @@ clean-local:
 distclean-local: clean-local
 
 #
-# Tries to copy MD files to install dir first from builddir, then srcdir, then prints warning
+# Tries to copy MD files to install dir first from builddir, then srcdir, then prints a warning
 #
 install-data-local:
 	@( \
-		$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR) ; \
-		$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/images ; \
 		if test -f $(builddir)/index.md ; then  \
 			echo "-- Installing builddir tutorial docs ..." ; \
+			$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR) ; \
+			$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/images ; \
 			@INSTALL@ -m 0644 $(builddir)/*.md $(DESTDIR)$(TARGET_DIR) ; \
 			@INSTALL@ -m 0644 $(builddir)/images/*.png $(DESTDIR)$(TARGET_DIR)/images/ ; \
 		elif test -f $(srcdir)/index.md ; then  \
 			echo "-- Installing srcdir tutorial docs ..." ; \
+			$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR) ; \
+			$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/images ; \
 			@INSTALL@ -m 0644 $(srcdir)/*.md $(DESTDIR)$(TARGET_DIR) ; \
-    		@INSTALL@ -m 0644 $(srcdir)/images/*.png $(DESTDIR)$(TARGET_DIR)/images/ ; \
+			@INSTALL@ -m 0644 $(srcdir)/images/*.png $(DESTDIR)$(TARGET_DIR)/images/ ; \
 		else \
-			echo "WARNING: Skipping tutorial docs installation: missing necessary tools to build tutorial docs" ; \
+			echo "WARNING: Skipping tutorial docs installation: missing tutorial docs sources in $(srcdir)" ; \
 		fi ; \
 	)
 
@@ -63,21 +65,22 @@ uninstall-local:
 
 
 #
-# Tries to copy MD files to dist dir first from builddir, then srcdir, then prints warning
+# Tries to copy MD files to dist dir first from builddir, then srcdir, then prints a warning
 #
 dist-hook:
 	@( \
-		mkdir -p  $(distdir)/images ; \
 		if test -f $(builddir)/index.md ; then  \
 			echo "-- Copying builddir tutorial docs ..." ; \
+			$(MKDIR_P) $(distdir)/images ; \
 			$(CP) $(builddir)/*.md $(distdir)/ ; \
-			$(CP) $(builddir)/images/* $(distdir)/images/ ; \
+			$(CP) $(builddir)/images/*.png $(distdir)/images/ ; \
 		elif test -f $(srcdir)/index.md ; then  \
 			echo "-- Copying srcdir tutorial docs ..." ; \
+			$(MKDIR_P) $(distdir)/images ; \
 			$(CP) $(srcdir)/*.md $(distdir)/ ; \
-			$(CP) $(srcdir)/images/* $(distdir)/images/ ; \
+			$(CP) $(srcdir)/images/*.png $(distdir)/images/ ; \
 		else \
-			echo "WARNING: Skipping tutorial docs dist (rebuild docs with 'make -C docs docs')" ; \
+			echo "WARNING: Skipping tutorial docs dist: missing tutorial docs sources in $(srcdir)" ; \
 		fi ; \
 	)
 

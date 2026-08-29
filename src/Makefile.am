@@ -22,7 +22,6 @@ EXTRA_DIST = \
 	globals.h \
 	kw_helpers.h \
 	xslt.h \
-	mscrypto \
 	$(XMLSEC_CRYPTO_DISABLED_LIST) \
 	$(NULL)
 
@@ -31,7 +30,6 @@ lib_LTLIBRARIES = \
 	$(NULL)
 
 libxmlsec1_la_SOURCES = \
-	$(LTDL_SOURCE_FILES) \
 	app.c \
 	base64.c \
 	bn.c \

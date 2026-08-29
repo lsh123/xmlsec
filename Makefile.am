@@ -11,8 +11,6 @@ SUBDIRS += apps
 endif
 SUBDIRS += man docs
 
-SAFE_VERSION	= @XMLSEC_VERSION_SAFE@
-
 TEST_APP 	    = apps/xmlsec1$(EXEEXT)
 UNIT_TEST_APP 	= apps/xmlsec_unit_tests$(EXEEXT)
 DEFAULT_CRYPTO	= @XMLSEC_DEFAULT_CRYPTO@
@@ -54,8 +52,9 @@ EXTRA_DIST = \
 	HACKING \
 	README.md \
 	AUTHORS.md \
+	SECURITY.md \
 	xmlsec-openssl.pc.in \
-	xmlsec-nss.pc.in\
+	xmlsec-nss.pc.in \
 	xmlsec-gnutls.pc.in \
 	xmlsec-gcrypt.pc.in \
 	xmlsec-config.in \
@@ -66,10 +65,6 @@ EXTRA_DIST = \
 	xmlsec1-config \
 	xmlsec1.spec \
 	xmlsec1.m4 \
-	$(NULL)
-
-EXTRA_CLEAN = \
-	examples \
 	$(NULL)
 
 ABS_SRCDIR=@abs_srcdir@
@@ -100,24 +95,42 @@ CHECK_CRYPTO_LIST = \
 	$(NULL)
 
 
-.PHONY: all check check-all check-info check-keys check-dsig check-enc check-fuzz docs-build
+.PHONY: all check check-all check-info check-keys check-dsig check-enc check-fuzz \
+	check-unit-tests memcheck memcheck-res perfcheck tar-release cleantar docs-build
 
 all:
+
+if XMLSEC_APPS
 
 check: check-all check-fuzz check-info
 
 check-unit-tests: $(UNIT_TEST_APP)
 	@($(PRECHECK_COMMANDS) && $(ABS_BUILDDIR)/$(UNIT_TEST_APP))
 
-check-fuzz: $(ABS_BUILDDIR)/apps/xmlsec_fuzzer$(EXEEXT)
-	@($(PRECHECK_COMMANDS) && \
-	echo "=================== Checking oss-fuzz harnesses ========================" && \
+if !XMLSEC_NO_OPENSSL
+FUZZ_TARGETS = \
 	$(ABS_BUILDDIR)/apps/xmlsec_fuzzer$(EXEEXT) \
+	$(ABS_BUILDDIR)/apps/xmlsec_dsig_verify_fuzzer$(EXEEXT) \
+	$(ABS_BUILDDIR)/apps/xmlsec_keyinfo_fuzzer$(EXEEXT) \
+	$(ABS_BUILDDIR)/apps/xmlsec_keyload_fuzzer$(EXEEXT) \
+	$(NULL)
+else
+FUZZ_TARGETS = \
+	$(ABS_BUILDDIR)/apps/xmlsec_fuzzer$(EXEEXT) \
+	$(NULL)
+endif
+
+check-fuzz: $(FUZZ_TARGETS)
+	@($(PRECHECK_COMMANDS) && \
+	echo "=================== Checking oss-fuzz harnesses =================================" && \
+	for f in $(FUZZ_TARGETS); do \
+		$$f || exit 1 ; \
+	done \
 	)
 
 check-all: $(TEST_APP) check-unit-tests
 	for crypto in $(CHECK_CRYPTO_LIST) ; do \
-		make check-crypto-$$crypto || exit 1 ; \
+		$(MAKE) $(AM_MAKEFLAGS) check-crypto-$$crypto || exit 1 ; \
 	done
 
 check-crypto-%: $(TEST_APP)
@@ -147,9 +160,9 @@ check-crypto-%: $(TEST_APP)
 
 check-info:
 	@echo "---------------------------- ATTENTION -----------------------------------"
-	@echo "--- Some tests use resources hosted on external HTTP servers.        ---"
-	@echo "--- If you lack an Internet connection or an external resource is    ---"
-	@echo "--- unavailable, the test will fail.                                ---"
+	@echo "--- Some tests use resources hosted on external HTTP servers.          ---"
+	@echo "--- If you lack an Internet connection or an external resource is      ---"
+	@echo "--- unavailable, the test will fail.                                   ---"
 	@echo "---------------------------- ATTENTION -----------------------------------"
 
 check-keys: $(TEST_APP)
@@ -200,12 +213,21 @@ memcheck-crypto-%: $(TEST_APP)
 perfcheck: $(TEST_APP)
 	@(export PERF_TEST=10 && $(MAKE) $(AM_MAKEFLAGS) check)
 
+else
+
+check:
+	@echo "Error: the test suite requires the xmlsec command line tool." 1>&2
+	@echo "Reconfigure with --enable-apps to build it and run the tests." 1>&2
+	@exit 1
+
+endif
+
 # build docs before running make dist
 tar-release: docs-build
 	@(unset CDPATH && $(MAKE) $(AM_MAKEFLAGS) dist)
 
 cleantar:
-	@($(RM) -f xmlsec*.tar.gz COPYING.LIB)
+	@($(RM) -f xmlsec*.tar.gz)
 
 
 docs-build: all

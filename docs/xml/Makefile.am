@@ -1,6 +1,6 @@
 #
 # make all 		: prints info message
-# make docs		: generates the doc files (if necessary tools are present) or prints error
+# make docs		: generates the doc files (if the necessary tools are present) or prints an error
 #
 NULL =
 

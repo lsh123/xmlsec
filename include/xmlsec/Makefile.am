@@ -3,8 +3,6 @@ NULL =
 SUBDIRS = $(XMLSEC_CRYPTO_LIST)
 
 EXTRA_DIST = \
-	mscng \
-	mscrypto \
 	$(XMLSEC_CRYPTO_DISABLED_LIST) \
 	$(NULL)
 
@@ -21,8 +19,8 @@ xmlsecinc_HEADERS = \
 	exports.h \
 	io.h \
 	keyinfo.h \
-	keysdata.h \
 	keys.h \
+	keysdata.h \
 	keysmngr.h \
 	list.h \
 	membuf.h \
@@ -40,6 +38,8 @@ xmlsecinc_HEADERS = \
 	xmltree.h \
 	$(NULL)
 
+.PHONY: remove-old-headers
+
 remove-old-headers:
 	@if test "x$(DESTDIR)" = "x" && test -d "$(includedir)/xmlsec"; then \
 	    echo "----------------------------------------------------------------------"; \
@@ -52,7 +52,7 @@ remove-old-headers:
 	    echo; \
 	    echo "The entire directory will be removed now."; \
 	    echo "To allow parallel installation of different xmlsec library versions,"; \
-	    echo "the header files are now installed in a version specific subdirectory:"; \
+	    echo "the header files are now installed in a version-specific subdirectory:"; \
 	    echo; \
 	    echo "  \"$(xmlsecincdir)\""; \
 	    echo; \

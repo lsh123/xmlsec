@@ -11,6 +11,10 @@ to include any operation performed on the data as a "transform":
 reading data from a URI, XML parsing, XML transformation, digest
 calculation, encryption, decryption, and so on.
 
+### Figure: The XML Security Library transform model
+
+![The XML Security Library transform](images/transform.png)
+
 The XML Security Library constructs a transform chain according to the
 signature/encryption template or the signed/encrypted document. If
 necessary, the XML Security Library inserts additional transforms

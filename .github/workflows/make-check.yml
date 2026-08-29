@@ -265,14 +265,16 @@ jobs:
       working-directory: build.dir
       run: |
           autoreconf -i -f ..
-          ../configure --prefix=`cygpath -u "${GITHUB_WORKSPACE}/install.dir"` --enable-werror  --enable-pedantic \
+          ../configure --prefix=`cygpath -u "${GITHUB_WORKSPACE}/install.dir"` \
+              --disable-silent-rules \
+              --enable-werror --enable-pedantic \
               --enable-mscrypto --enable-mscng ${{ matrix.config_flags }} \
               --build="${{ matrix.arch }}-w64-mingw32" \
               --host="${{ matrix.arch }}-w64-mingw32"
     - name: make
       working-directory: build.dir
       run: |
-          make VERBOSE=1
+          make
     - name: make check
       working-directory: build.dir
       run: |

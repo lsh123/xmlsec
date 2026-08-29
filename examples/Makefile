@@ -5,8 +5,6 @@
 #   make check      - run the sign/verify and encrypt/decrypt checks
 #   make clean      - remove the built programs and object files
 #
-# The crypto backend to link against defaults to openssl; override it with,
-# for example, `make XMLSEC_DEFAULT_CRYPTO=gnutls` (or nss, gcrypt, ...).
 
 PROGRAMS_SIGN   = sign1 sign2 sign3 sign4
 PROGRAMS_VERIFY = verify1 verify2 verify3 verify4 verify-saml
@@ -18,11 +16,8 @@ PROGRAMS = \
 	$(PROGRAMS_ENC) \
 	$(PROGRAMS_DEC)
 
-# crypto backend to link against (openssl, nss, gnutls, gcrypt, ...)
-XMLSEC_DEFAULT_CRYPTO ?= openssl
-
 # try to find pkg-config, if available
-XMLSEC_PKG_CONFIG = xmlsec1 xmlsec1-$(XMLSEC_DEFAULT_CRYPTO)
+XMLSEC_PKG_CONFIG = xmlsec1
 PKG_CONFIG := $(shell command -v pkg-config 2> /dev/null)
 XMLSEC_CHECK := $(shell $(PKG_CONFIG) --exists $(XMLSEC_PKG_CONFIG) 2> /dev/null && echo "found")
 
@@ -35,8 +30,8 @@ else
 	ifeq ($(XMLSEC1_CONFIG),)
 		$(error xmlsec is not installed: neither the pkg-config module 'xmlsec1' nor 'xmlsec1-config' was found)
 	endif
-	override CFLAGS += $(shell xmlsec1-config --crypto=$(XMLSEC_DEFAULT_CRYPTO) --cflags)
-	override LDLIBS += $(shell xmlsec1-config --crypto=$(XMLSEC_DEFAULT_CRYPTO) --libs)
+	override CFLAGS += $(shell xmlsec1-config --cflags)
+	override LDLIBS += $(shell xmlsec1-config --libs)
 endif
 
 # add compiler specific flags

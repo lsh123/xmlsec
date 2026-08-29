@@ -13,9 +13,9 @@ name: "CodeQL Advanced"
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "xmlsec-1_2_x" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "master", "xmlsec-1_2_x" ]
   schedule:
     - cron: '25 14 * * 2'
 
@@ -27,7 +27,7 @@ jobs:
     #   - https://gh.io/supported-runners-and-hardware-resources
     #   - https://gh.io/using-larger-runners (GitHub.com only)
     # Consider using larger runners or machines with greater resources for possible analysis time improvements.
-    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     permissions:
       # required for all workflows
       security-events: write
@@ -45,9 +45,7 @@ jobs:
         include:
         - language: c-cpp
           build-mode: manual
-        - language: javascript-typescript
-          build-mode: none
-        # CodeQL supports the following values keywords for 'language': 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'swift'
+        # CodeQL supports the following keywords for 'language': 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'swift'
         # Use `c-cpp` to analyze code written in C, C++ or both
         # Use 'java-kotlin' to analyze code written in Java, Kotlin or both
         # Use 'javascript-typescript' to analyze code written in JavaScript, TypeScript or both
@@ -90,7 +88,7 @@ jobs:
       run: |
         mkdir install.dir
         autoreconf -i -f
-        ./configure --prefix=${GITHUB_WORKSPACE}/install.dir --enable-werror --enable-pedantic --enable-experimental-features --enable-legacy-features --enable-ftp --enable-http
+        ./configure --prefix=${GITHUB_WORKSPACE}/install.dir --enable-werror --enable-pedantic --enable-experimental-features --enable-legacy-features --enable-ftp --enable-http --with-gcrypt
         make
 
     - name: Perform CodeQL Analysis

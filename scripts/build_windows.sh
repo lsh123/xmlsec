@@ -12,19 +12,16 @@
 # $ c:\cygwin64\bin\bash scripts\build_windows.sh cleanup-release
 # $ c:\cygwin64\bin\bash scripts\build_windows.sh cleanup-debug
 #
+
+# pin all library versions include xmlsec (so we can build rc builds or rebuild specific versions if needed)
 libxml2_version="2.15.3"
 libxslt_version="1.1.45"
 openssl_version="4.0.0"
+xmlsec_version="1.3.13-rc1"
 
 orig_pwd=$(pwd)
 script_dir=$(dirname "$0")
 
-# Derive the xmlsec version from configure.ac (AC_INIT).
-xmlsec_version=$(sed -n 's/^[[:space:]]*AC_INIT(\[xmlsec1\],\[\([^]]*\)\].*/\1/p' "${script_dir}/../configure.ac")
-if [ -z "${xmlsec_version}" ]; then
-  echo "ERROR: could not determine the xmlsec version from configure.ac" >&2
-  exit 1
-fi
 
 # Build locations, overridable via environment variables.
 work_dir="${XMLSEC_BUILD_WORK_DIR:-$(cygpath "d:\\home\\aleksey\\dev")}"

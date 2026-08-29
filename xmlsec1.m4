@@ -27,7 +27,7 @@ AC_DEFUN([AM_PATH_XMLSEC1],[
   AC_ARG_ENABLE(xmlsec1test,
     AC_HELP_STRING(
       [--disable-xmlsec1test],
-      [Do not try to compile and run a test cSOAP program]
+      [Do not try to compile and run a test program]
     ),,
     enable_xmlsec1test=yes
   )
@@ -53,24 +53,35 @@ AC_DEFUN([AM_PATH_XMLSEC1],[
   if test "$XMLSEC1_CONFIG" = "no" ; then
     no_xmlsec1=yes
   else
-    XMLSEC1_CFLAGS=`$XMLSEC1_CONFIG $xmlsec1_config_args --cflags`
-    XMLSEC1_LIBS=`$XMLSEC1_CONFIG $xmlsec1_config_args --libs`
-    xmlsec1_config_major_version=`$XMLSEC1_CONFIG $xmlsec1_config_args --version | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
-    xmlsec1_config_minor_version=`$XMLSEC1_CONFIG $xmlsec1_config_args --version | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\2/'`
-    xmlsec1_config_micro_version=`$XMLSEC1_CONFIG $xmlsec1_config_args --version | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\3/'`
+    XMLSEC1_CFLAGS=`$XMLSEC1_CONFIG $xmlsec1_config_args --cflags` || no_xmlsec1=yes
+    XMLSEC1_LIBS=`$XMLSEC1_CONFIG $xmlsec1_config_args --libs` || no_xmlsec1=yes
+    if test "x$no_xmlsec1" = "xyes" ; then
+      echo "*** xmlsec1-config failed to provide the compile/link flags."
+      echo "*** The installed libxmlsec1 may not support the requested cryptographic backend."
+    fi
+    xmlsec1_config_version=`$XMLSEC1_CONFIG $xmlsec1_config_args --version`
+    xmlsec1_config_major_version=`echo "$xmlsec1_config_version" | \
+           sed -n 's/^\([[0-9]]*\)\.[[0-9]]*\.[[0-9]]*.*$/\1/p'`
+    xmlsec1_config_minor_version=`echo "$xmlsec1_config_version" | \
+           sed -n 's/^[[0-9]]*\.\([[0-9]]*\)\.[[0-9]]*.*$/\1/p'`
+    xmlsec1_config_micro_version=`echo "$xmlsec1_config_version" | \
+           sed -n 's/^[[0-9]]*\.[[0-9]]*\.\([[0-9]]*\).*/\1/p'`
+    for xmlsec1_config_v in "$xmlsec1_config_major_version" "$xmlsec1_config_minor_version" "$xmlsec1_config_micro_version" ; do
+        case "$xmlsec1_config_v" in
+            ''|*[!0-9]*) no_xmlsec1=yes ;;
+        esac
+    done
     if test "x$enable_xmlsec1test" = "xyes" ; then
       ac_save_CFLAGS="$CFLAGS"
       ac_save_LIBS="$LIBS"
       CFLAGS="$CFLAGS $XMLSEC1_CFLAGS"
-      LIBS="$XMLSEC1_LIBS $LIBS"
+      LIBS="$LIBS $XMLSEC1_LIBS"
 dnl
 dnl Now check if the installed libxmlsec1 is sufficiently new.
 dnl (Also sanity checks the results of xmlsec1-config to some extent)
 dnl
       rm -f conf.xmlsec1test
+      AC_LANG_PUSH([C])
       AC_TRY_RUN([
 #include <stdlib.h>
 #include <stdio.h>
@@ -85,12 +96,11 @@ int main(int argc, char **argv) {
 
 	system("touch conf.xmlsec1test");
 
-	/* Capture xmlsec1-config output via autoconf/configure variables */
-	/* HP/UX 9 (%@#!) writes to sscanf strings */
+	/* Parse the minimum version required by the caller (major.minor.micro) */
 	tmp_version = (char *)strdup("$min_xmlsec1_version");
 	if (sscanf(tmp_version, "%d.%d.%d", &major, &minor, &micro) != 3) {
 
-		printf("%s, bad version string from xmlsec1-config\n", "$min_xmlsec1_version");
+		printf("bad minimum version string '%s' specified by the caller\n", "$min_xmlsec1_version");
 		exit(1);
 	}
 	free(tmp_version);
@@ -102,14 +112,14 @@ int main(int argc, char **argv) {
 
 		printf("\n*** An old version of libxmlsec1 (%d.%d.%d) was found.\n", $xmlsec1_config_major_version, $xmlsec1_config_minor_version, $xmlsec1_config_micro_version);
 		printf("*** You need a version of libxmlsec1 newer than %d.%d.%d. The latest version of\n", major, minor, micro);
-		printf("*** libxmlsec1 is always available from http://xmlsec1.sf.net.\n\n");
+		printf("*** libxmlsec1 is always available from http://www.aleksey.com/xmlsec.\n\n");
 		printf("*** If you have already installed a sufficiently new version, this error\n");
 		printf("*** probably means that the wrong copy of the xmlsec1-config shell script is\n");
 		printf("*** being found. The easiest way to fix this is to remove the old version\n");
-		printf("*** of libxmlsec1, but you can also set the XMLSEC1_CONFIG environment to point to the\n");
+		printf("*** of libxmlsec1, but you can also set the XMLSEC1_CONFIG environment variable to point to the\n");
 		printf("*** correct copy of xmlsec1-config. (In this case, you will have to\n");
 		printf("*** modify your LD_LIBRARY_PATH environment variable, or edit /etc/ld.so.conf\n");
-		printf("*** so that the correct libraries are found at run-time))\n");
+		printf("*** so that the correct libraries are found at run-time)\n");
 		return 1;
 	}
 	else {
@@ -118,18 +128,19 @@ int main(int argc, char **argv) {
 	}
 }
 ],, no_xmlsec1=yes,[echo $ac_n "cross compiling; assumed OK... $ac_c"])
-       CFLAGS="$ac_save_CFLAGS"
-       LIBS="$ac_save_LIBS"
-     fi
-  fi
+      AC_LANG_POP([C])
+        CFLAGS="$ac_save_CFLAGS"
+        LIBS="$ac_save_LIBS"
+      fi
+   fi
 
   if test "x$no_xmlsec1" = x ; then
      AC_MSG_RESULT(yes (version $xmlsec1_config_major_version.$xmlsec1_config_minor_version.$xmlsec1_config_micro_version))
-     ifelse([$2], , :, [$2])     
+     ifelse([$2], , :, [$2])
   else
      AC_MSG_RESULT(no)
      if test "$XMLSEC1_CONFIG" = "no" ; then
-       echo "*** The xmlsec1-config script installed by LIBXMLSEC1 could not be found"
+        echo "*** The xmlsec1-config script that comes with libxmlsec1 could not be found"
        echo "*** If libxmlsec1 was installed in PREFIX, make sure PREFIX/bin is in"
        echo "*** your path, or set the XMLSEC1_CONFIG environment variable to the"
        echo "*** full path to xmlsec1-config."
@@ -137,30 +148,32 @@ int main(int argc, char **argv) {
        if test -f conf.xmlsec1test ; then
         :
        else
-          echo "*** Could not run libxmlsec1 test program, checking why..."
-          CFLAGS="$CFLAGS $XMLSEC1_CFLAGS"
-          LIBS="$LIBS $XMLSEC1_LIBS"
-          AC_TRY_LINK([
-#include <libxmlsec1/version.h>
-#include <stdio.h>
-],      [ soap_client_destroy(); return 0;],
+           echo "*** Could not run libxmlsec1 test program, checking why..."
+           CFLAGS="$CFLAGS $XMLSEC1_CFLAGS"
+           LIBS="$LIBS $XMLSEC1_LIBS"
+            AC_LANG_PUSH([C])
+            AC_TRY_LINK([
+ #include <xmlsec/app.h>
+ #include <stdio.h>
+],      [ (void)xmlSecInit; return 0;],
         [ echo "*** The test program compiled, but did not run. This usually means"
           echo "*** that the run-time linker is not finding LIBXMLSEC1 or finding the wrong"
           echo "*** version of LIBXMLSEC1. If it is not finding LIBXMLSEC1, you'll need to set your"
           echo "*** LD_LIBRARY_PATH environment variable, or edit /etc/ld.so.conf to point"
-          echo "*** to the installed location  Also, make sure you have run ldconfig if that"
+           echo "*** to the installed location. Also, make sure you have run ldconfig if that"
           echo "*** is required on your system"
           echo "***"
           echo "*** If you have an old version installed, it is best to remove it, although"
           echo "*** you may also be able to get things to work by modifying LD_LIBRARY_PATH" ],
         [ echo "*** The test program failed to compile or link. See the file config.log for the"
-          echo "*** exact error that occured. This usually means LIBXMLSEC1 was incorrectly installed"
+           echo "*** exact error that occurred. This usually means LIBXMLSEC1 was incorrectly installed"
           echo "*** or that you have moved LIBXMLSEC1 since it was installed. In the latter case, you"
-          echo "*** may want to edit the xmlsec1-config script: $XMLSEC1_CONFIG" ])
-          CFLAGS="$ac_save_CFLAGS"
-          LIBS="$ac_save_LIBS"
-       fi
-     fi
+           echo "*** may want to edit the xmlsec1-config script: $XMLSEC1_CONFIG" ])
+            AC_LANG_POP([C])
+           CFLAGS="$ac_save_CFLAGS"
+           LIBS="$ac_save_LIBS"
+        fi
+      fi
 
      XMLSEC1_CFLAGS=""
      XMLSEC1_LIBS=""

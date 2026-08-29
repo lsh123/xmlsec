@@ -48,7 +48,6 @@ dnl
 AC_LANG(C)
 AC_CANONICAL_HOST
 AC_PROG_CC
-AC_EGREP_CPP(yes, foo)
 AC_PROG_INSTALL
 LT_INIT
 AC_PROG_EGREP
@@ -57,9 +56,6 @@ AC_PROG_EGREP
 dnl
 dnl Find programs
 dnl
-if test "z$RM" = "z" ; then
-    AC_PATH_PROG(RM, rm, /bin/rm)
-fi
 AC_PATH_PROG(CP,   cp,   /bin/cp)
 AC_PATH_PROG(GREP, grep, /bin/grep)
 AC_PATH_PROG(MV,   mv,   /bin/mv)
@@ -90,6 +86,7 @@ dnl ==========================================================================
 XMLSEC_DEFINES=
 XMLSEC_APP_DEFINES=
 XMLSEC_EXTRA_LDFLAGS=
+XMLSEC_APP_EXTRA_LDFLAGS=
 XMLSEC_CRYPTO_EXTRA_LDFLAGS=
 
 dnl ==========================================================================
@@ -138,19 +135,12 @@ build_on_mac=no
 build_on_linux=no
 AC_MSG_CHECKING(for build OS)
 
-dnl Should we separate extra LDFLAGS for the xmlsec and crypto libraries?
-dnl Should we enable --enable-runtime-pseudo-reloc for MinGW and Cygwin?
-if test -n "$shrext"; then
-  XMLSEC_SHLIBSFX="$shrext"
-else
-  dnl changed in libtool (between 1.5.2 and 1.5.14)
-  XMLSEC_SHLIBSFX="$shrext_cmds"
-fi
-
 #
 # Prevent unusual behavior in GCC (see https://news.ycombinator.com/item?id=33770277)
 #
-CFLAGS="$CFLAGS -fno-strict-overflow -fno-strict-aliasing"
+if test "z$build_with_gcc" = "zyes" -o "z$build_with_clang" = "zyes" ; then
+    CFLAGS="$CFLAGS -fno-strict-overflow -fno-strict-aliasing"
+fi
 
 case "${host}" in
   *aix* )
@@ -165,7 +155,7 @@ case "${host}" in
     dnl instead libxmlsec1-NN.dll, where NN is a number.
     XMLSEC_EXTRA_LDFLAGS="$XMLSEC_EXTRA_LDFLAGS -no-undefined -avoid-version"
     XMLSEC_CRYPTO_EXTRA_LDFLAGS="$XMLSEC_CRYPTO_EXTRA_LDFLAGS -no-undefined -avoid-version"
-    XMLSEC_SHLIBSFX=".dll.a"
+    XMLSEC_APP_EXTRA_LDFLAGS="$XMLSEC_APP_EXTRA_LDFLAGS -mconsole"
 
     build_on_windows=yes
     AC_MSG_RESULT("Windows (MinGW)")
@@ -178,8 +168,6 @@ case "${host}" in
     AC_MSG_RESULT("Windows (Cygwin)")
     ;;
   *-*-darwin*)
-    XMLSEC_SHLIBSFX=".dylib"
-
     build_on_mac=yes
     AC_MSG_RESULT("MacOSX")
     ;;
@@ -351,6 +339,7 @@ LIBXML_LIB_PATH=
 LIBXML_CONFIG_PATH=
 LIBXML_FOUND="no"
 AC_ARG_WITH([libxml], [AS_HELP_STRING([--with-libxml@<:@=PFX@:>@],[libxml2 location])])
+AC_ARG_WITH([libxml2], [AS_HELP_STRING([--with-libxml2@<:@=PFX@:>@],[libxml2 location])])
 dnl Priority 0: LibXML2 is disabled: hard error.
 if test "z$with_libxml" = "zno" ; then
     LIBXML_FOUND="disabled"
@@ -363,7 +352,7 @@ if test "z$LIBXML_FOUND" = "zno" -a "z$with_libxml" != "z" -a "z$with_libxml" !=
         LIBXML_CONFIG_PATH="$with_libxml/bin/$LIBXML_CONFIG"
         LIBXML_FOUND="yes"
         AC_MSG_RESULT([yes ("$with_libxml/bin/$LIBXML_CONFIG")])
-    elif test [ -f "$with_libxml/include/libxml2/$LIBXML_INCLUDE_MARKER" ] -a [ -f "$with_libxml/lib/$LIBXML_SHARED_LIB_MARKER" -o -f "$with_libxml/lib/$LIBXML_STATIC_LIB_MARKER" ] ; then
+    elif test -f "$with_libxml/include/libxml2/$LIBXML_INCLUDE_MARKER" -a \( -f "$with_libxml/lib/$LIBXML_SHARED_LIB_MARKER" -o -f "$with_libxml/lib/$LIBXML_STATIC_LIB_MARKER" \) ; then
         LIBXML_INCLUDE_PATH="$with_libxml/include/libxml2"
         LIBXML_LIB_PATH="$with_libxml/lib"
         LIBXML_FOUND="yes"
@@ -380,7 +369,7 @@ if test "z$LIBXML_FOUND" = "zno" -a "z$with_libxml2" != "z" -a "z$with_libxml2" 
         LIBXML_CONFIG_PATH="$with_libxml2/bin/$LIBXML_CONFIG"
         LIBXML_FOUND="yes"
         AC_MSG_RESULT([yes ("$with_libxml2/bin/$LIBXML_CONFIG")])
-    elif test [ -f "$with_libxml2/include/libxml2/$LIBXML_INCLUDE_MARKER" ] -a [ -f "$with_libxml2/lib/$LIBXML_SHARED_LIB_MARKER" -o -f "$with_libxml2/lib/$LIBXML_STATIC_LIB_MARKER" ] ; then
+    elif test -f "$with_libxml2/include/libxml2/$LIBXML_INCLUDE_MARKER" -a \( -f "$with_libxml2/lib/$LIBXML_SHARED_LIB_MARKER" -o -f "$with_libxml2/lib/$LIBXML_STATIC_LIB_MARKER" \) ; then
         LIBXML_INCLUDE_PATH="$with_libxml2/include/libxml2"
         LIBXML_LIB_PATH="$with_libxml2/lib"
         LIBXML_FOUND="yes"
@@ -543,7 +532,7 @@ if test "z$LIBXSLT_FOUND" = "zno" -a "z$with_libxslt" != "z" -a "z$with_libxslt"
         LIBXSLT_CONFIG_PATH="$with_libxslt/bin/$LIBXSLT_CONFIG"
         LIBXSLT_FOUND="yes"
         AC_MSG_RESULT([yes ($with_libxslt/bin/$LIBXSLT_CONFIG)])
-    elif test [ -f "$with_libxslt/include/$LIBXSLT_INCLUDE_MARKER" ] -a [ -f "$with_libxslt/lib/$LIBXSLT_SHARED_LIB_MARKER" -o -f "$with_libxslt/lib/$LIBXSLT_STATIC_LIB_MARKER" ] ; then
+    elif test -f "$with_libxslt/include/$LIBXSLT_INCLUDE_MARKER" -a \( -f "$with_libxslt/lib/$LIBXSLT_SHARED_LIB_MARKER" -o -f "$with_libxslt/lib/$LIBXSLT_STATIC_LIB_MARKER" \) ; then
         LIBXSLT_INCLUDE_PATH="$with_libxslt/include"
         LIBXSLT_LIB_PATH="$with_libxslt/lib"
         LIBXSLT_FOUND="yes"
@@ -730,7 +719,7 @@ if test "z$OPENSSL_FOUND" = "zno" -a "z$with_openssl" != "z" -a "z$with_openssl"
         OPENSSL_LIB_PATH="$with_openssl/lib"
         OPENSSL_FOUND="yes"
         AC_MSG_RESULT([yes])
-    elif test -f "$with_openssl/include/$OPENSSL_INCLUDE_MARKER" -a -f "$with_openssl/libi64/$OPENSSL_LIB_STATIC_MARKER" ; then
+    elif test -f "$with_openssl/include/$OPENSSL_INCLUDE_MARKER" -a -f "$with_openssl/lib64/$OPENSSL_LIB_STATIC_MARKER" ; then
         OPENSSL_INCLUDE_PATH="$with_openssl/include"
         OPENSSL_LIB_PATH="$with_openssl/lib64"
         OPENSSL_FOUND="yes"
@@ -945,12 +934,11 @@ AC_SUBST(OPENSSL_LIBS)
 AC_SUBST(OPENSSL_CRYPTO_LIB)
 AC_SUBST(OPENSSL_TEST_CONFIG)
 AC_SUBST(OPENSSL_MIN_VERSION)
-AC_SUBST(OPENSSL3_MIN_VERSION)
 AC_SUBST(XMLSEC_OPENSSL_VERSION)
 
 dnl See if we should build OpenSSL 3+ with engines support
 AC_ARG_ENABLE([openssl3_engines],[AS_HELP_STRING([--enable-openssl3-engines],[enable engines support for OpenSSL 3+ (no)])])
-if test "z$XMLSEC_OPENSSL_VERSION" = "z3.0.0" ; then
+if test "z$XMLSEC_OPENSSL_VERSION" = "z3.0.0" -o "z$XMLSEC_OPENSSL_VERSION" = "z4.0.0" ; then
     AC_MSG_CHECKING(for OpenSSL 3+ engines support)
     if test "z$enable_openssl3_engines" = "zyes" ; then
         XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_OPENSSL3_ENGINES=1"
@@ -1422,7 +1410,7 @@ MSCNG_LIBS_LIST="-lcrypt32 -lbcrypt -lncrypt"
 
 XMLSEC_NO_MSCNG="1"
 MSCNG_FOUND="no"
-AC_ARG_ENABLE([mscng], [AS_HELP_STRING([--enable-mscng],[enable mscng (no)])])
+AC_ARG_ENABLE([mscng], [AS_HELP_STRING([--enable-mscng],[enable mscng (yes)])])
 AC_MSG_CHECKING(for mscng)
 
 dnl Priority 0: Check if library is not needed
@@ -1878,7 +1866,7 @@ dnl ==========================================================================
 if test "z$build_on_windows" = "zyes" ; then
     AC_MSG_CHECKING(for Unicode support)
     AC_ARG_ENABLE([unicode], [AS_HELP_STRING([--enable-unicode],[enable Unicode support on Windows (yes)])])
-    if test "z$enable_unicode" = "zyes" -o "z$enable_unicode" = "ztrue" ; then
+    if test "z$enable_unicode" != "zno" ; then
         XMLSEC_DEFINES="$XMLSEC_DEFINES -DUNICODE=1 -D_UNICODE=1"
         case "${host}" in
          *-*-mingw*)
@@ -1962,7 +1950,7 @@ dnl ==========================================================================
 dnl Check if we need RIPEMD-160 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for RIPEMD-160 support)
-AC_ARG_ENABLE([ripemd160], [AS_HELP_STRING([--enable-ripemd160],[enable RIPEMD-160 support (no, deprecated))])])
+AC_ARG_ENABLE([ripemd160], [AS_HELP_STRING([--enable-ripemd160],[enable RIPEMD-160 support (no, deprecated)])])
 if test "z$enable_ripemd160" = "zyes" ; then
     XMLSEC_NO_RIPEMD160="0"
     AC_MSG_RESULT([yes (deprecated)])
@@ -2303,7 +2291,7 @@ dnl ==========================================================================
 dnl Check if we need AES support
 dnl ==========================================================================
 AC_MSG_CHECKING(for AES support)
-AC_ARG_ENABLE([aes], [AS_HELP_STRING([--enable-aes],[enable AES support])])
+AC_ARG_ENABLE([aes], [AS_HELP_STRING([--enable-aes],[enable AES support (yes)])])
 if test "z$enable_aes" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_AES=1"
     XMLSEC_NO_AES="1"
@@ -2504,10 +2492,10 @@ LIBLTDL_LIBS=""
 LIBLTDL_FOUND="no"
 
 AC_ARG_WITH([libltdl], [AS_HELP_STRING([--with-libltdl@<:@=PFX@:>@],[libltdl location])])
-AC_ARG_ENABLE([crypto_dl], [AS_HELP_STRING([--enable-crypto-dl],[enable dynamic loading support for xmlsec-crypto libraries (obsolete, use --with-libltdl)])])
+AC_ARG_ENABLE([crypto_dl], [AS_HELP_STRING([--enable-crypto-dl],[enable dynamic loading support for xmlsec-crypto libraries (deprecated, use --with-libltdl)])])
 
 dnl Priority 0: Check if library is not needed
-if test "z$with_libltdl" = "zno" ||  test "z$enable_crypto_dl" = "zno" ; then
+if test "z$with_libltdl" = "zno" -o "z$enable_crypto_dl" = "zno" ; then
     LIBLTDL_FOUND="disabled"
 fi
 
@@ -2546,26 +2534,25 @@ if test "z$LIBLTDL_FOUND" = "zno" -a "z$build_on_mac" = "zyes" ; then
         LIBLTDL_FOUND="yes"
         AC_MSG_RESULT([yes])
     else
-        AC_MSG_RESULT([not found: "$LIBTOOL_PATH/include/$LIBLTDL_INCLUDE_MARKER" file doesn't exist)])
+        AC_MSG_RESULT([not found: "$LIBTOOL_PATH/include/$LIBLTDL_INCLUDE_MARKER" file doesn't exist])
     fi
 fi
 
 dnl Priority 5: Just try to compile/link and hope for the best
 if test "z$LIBLTDL_FOUND" = "zno" ; then
-    AC_CHECK_HEADER([ltdl.h], [
+    AC_CHECK_HEADERS([ltdl.h], [
        AC_CHECK_LIB(
-    	    [ltdl],
-    	    [lt_dlopenext],
-    	    [LIBLTDL=-lltdl],
-    	    [LIBLTDL=]
-        )
+          [ltdl],
+          [lt_dlopenext],
+          [LIBLTDL=-lltdl],
+          [LIBLTDL=]
+       )
     ], [
         LIBLTDL=
     ])
 
     AC_MSG_CHECKING(for libltdl library installation)
     if test "z$LIBLTDL" != "z" ; then
-        LIBLTDL_CFLAGS="$INCLTDL"
         LIBLTDL_LIBS="$LIBLTDL"
         LIBLTDL_FOUND="yes"
         AC_MSG_RESULT([yes])
@@ -2595,7 +2582,7 @@ dnl ==========================================================================
 dnl check if we need dynamic loading in the xmlsec apps
 dnl ==========================================================================
 AC_MSG_CHECKING(for xmlsec-crypto dynamic loading support in command line tool)
-AC_ARG_ENABLE([apps_crypto_dl], [AS_HELP_STRING([--enable-apps-crypto-dl],[ enable dynamic loading support for xmlsec-crypto libraries in xmlsec command line tool (yes)])])
+AC_ARG_ENABLE([apps_crypto_dl], [AS_HELP_STRING([--enable-apps-crypto-dl],[enable dynamic loading support for xmlsec-crypto libraries in xmlsec command line tool (yes)])])
 if test "z$enable_apps_crypto_dl" = "z" ; then
     enable_apps_crypto_dl="$enable_crypto_dl"
 fi
@@ -2604,10 +2591,10 @@ if test "z$enable_apps_crypto_dl" = "zno" ; then
     AC_MSG_RESULT([disabled])
 elif test "z$enable_crypto_dl" = "zno" ; then
     AC_MSG_RESULT([disabled])
-    AC_MSG_ERROR(xmlsec-crypto libraries dynamic loading support in xmlsec command line tool is requested but no dynamic loading in xmlsec itself is disabled)
+    AC_MSG_ERROR(xmlsec-crypto libraries dynamic loading support in xmlsec command line tool is requested but dynamic loading in xmlsec itself is disabled)
 elif test "z$LIBLTDL_FOUND" != "zyes" ; then
     AC_MSG_RESULT([disabled])
-    AC_MSG_ERROR(xmlsec-crypto libraries dynamic loading support in xmlsec command line tool is requested but no LibLTDL is found)
+    AC_MSG_ERROR(xmlsec-crypto libraries dynamic loading support in xmlsec command line tool is requested but LibLTDL was not found)
 else
     XMLSEC_APP_DEFINES="$XMLSEC_APP_DEFINES -DXMLSEC_CRYPTO_DYNAMIC_LOADING=1"
     XMLSEC_NO_APPS_CRYPTO_DYNAMIC_LOADING="0"
@@ -2622,7 +2609,7 @@ dnl Where do we want to install docs
 dnl ==========================================================================
 AC_MSG_CHECKING(for docs folder)
 AC_ARG_WITH([docs-dir], [AS_HELP_STRING([--with-docs-dir=PATH],[path to installed docs])])
-if test "z$with_docs_dir" != "z" ; then
+if test "z$with_docs_dir" != "z" -a "z$with_docs_dir" != "zno" -a "z$with_docs_dir" != "zyes" ; then
     XMLSEC_DOCDIR="$with_docs_dir"
 elif test "z$docsdir" != "z" ; then
     XMLSEC_DOCDIR='$(docsdir)'
@@ -2638,7 +2625,7 @@ dnl Where do we want to install man pages
 dnl ==========================================================================
 AC_MSG_CHECKING(for man pages folder)
 AC_ARG_WITH([man-dir], [AS_HELP_STRING([--with-man-dir=PATH],[path to installed man pages])])
-if test "z$with_man_dir" != "z" ; then
+if test "z$with_man_dir" != "z" -a "z$with_man_dir" != "zno" -a "z$with_man_dir" != "zyes" ; then
     XMLSEC_MANDIR="$with_man_dir"
 elif test "z$mandir" != "z" ; then
     XMLSEC_MANDIR='$(mandir)/man1/'
@@ -2648,18 +2635,6 @@ fi
 
 AC_MSG_RESULT([$XMLSEC_MANDIR])
 AC_SUBST(XMLSEC_MANDIR)
-
-dnl ==========================================================================
-dnl Check if we need Simple Keys Manager
-dnl ==========================================================================
-AC_MSG_CHECKING(for Simple Keys Manager testing)
-AC_ARG_ENABLE([skm], [AS_HELP_STRING([--enable-skm],[enable Simple Keys Manager testing (yes)])])
-if test "z$enable_skm" = "zno" ; then
-    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_SKM_TEST=1"
-    AC_MSG_RESULT([disabled])
-else
-    AC_MSG_RESULT([yes])
-fi
 
 dnl ==========================================================================
 dnl Debug
@@ -2730,7 +2705,7 @@ elif test "z$build_with_gcc" = "zyes" ; then
         CFLAGS="$CFLAGS -Wformat-overflow=2"
     fi
 
-    dnl GCC >= 13: --std=c23 (added in GCC 14)
+    dnl GCC >= 14: --std=c23 (added in GCC 14)
     if test "$gcc_major_ver" -ge 14 ; then
         CFLAGS="$CFLAGS -std=c23"
     else
@@ -2772,7 +2747,9 @@ dnl ==========================================================================
 AC_MSG_CHECKING(for secure memset)
 AC_ARG_ENABLE([secure-memset], [AS_HELP_STRING([--enable-secure-memset],[enable secure memset compilation flags (DEPRECATED, yes)])])
 if test "z$enable_secure_memset" != "zno" ; then
-    CFLAGS="$CFLAGS -fno-builtin-memset"
+    if test "z$build_with_gcc" = "zyes" -o "z$build_with_clang" = "zyes" ; then
+        CFLAGS="$CFLAGS -fno-builtin-memset"
+    fi
     AC_MSG_RESULT([DEPRECATED, yes])
 else
     AC_MSG_RESULT([disabled])
@@ -2803,7 +2780,7 @@ else
     XMLSEC_CHECK_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST"
 fi
 
-XMLSEC_CORE_CFLAGS="$XMLSEC_DEFINES -I${includedir}/xmlsec1  $LIBLTDL_CFLAGS"
+XMLSEC_CORE_CFLAGS="$XMLSEC_DEFINES -I${includedir}/xmlsec1 $LIBLTDL_CFLAGS"
 XMLSEC_CORE_LIBS="-lxmlsec1 $LIBLTDL_LIBS "
 AC_SUBST(XMLSEC_CORE_CFLAGS)
 AC_SUBST(XMLSEC_CORE_LIBS)
@@ -2832,13 +2809,13 @@ XMLSEC_NSS_LIBS="-L${libdir} -l$NSS_CRYPTO_LIB $XMLSEC_CORE_LIBS $NSS_LIBS"
 AC_SUBST(XMLSEC_NSS_CFLAGS)
 AC_SUBST(XMLSEC_NSS_LIBS)
 
-dnl No we will not generate pkg-config file for mscrypto !
+dnl No, we will not generate pkg-config file for mscrypto !
 dnl XMLSEC_MSCRYPTO_CFLAGS="$XMLSEC_CORE_CFLAGS $MSCRYPTO_CFLAGS"
 dnl XMLSEC_MSCRYPTO_LIBS="-L${libdir} -l$MSCRYPTO_CRYPTO_LIB $XMLSEC_CORE_LIBS $MSCRYPTO_LIBS";;
 dnl AC_SUBST(XMLSEC_MSCRYPTO_CFLAGS)
 dnl AC_SUBST(XMLSEC_MSCRYPTO_LIBS)
 
-dnl No we will not generate pkg-config file for mscng.
+dnl No, we will not generate pkg-config file for mscng.
 dnl XMLSEC_MSCNG_CFLAGS="$XMLSEC_CORE_CFLAGS $MSCNG_CFLAGS"
 dnl XMLSEC_MSCNG_LIBS="-L${libdir} -l$MSCNG_CRYPTO_LIB $XMLSEC_CORE_LIBS $MSCNG_LIBS";;
 dnl AC_SUBST(XMLSEC_MSCNG_CFLAGS)
@@ -2855,6 +2832,7 @@ AC_SUBST(LDFLAGS)
 AC_SUBST(XMLSEC_DEFINES)
 AC_SUBST(XMLSEC_APP_DEFINES)
 AC_SUBST(XMLSEC_EXTRA_LDFLAGS)
+AC_SUBST(XMLSEC_APP_EXTRA_LDFLAGS)
 AC_SUBST(XMLSEC_CRYPTO_EXTRA_LDFLAGS)
 
 AC_SUBST(XMLSEC_DEFAULT_CRYPTO)
@@ -2904,10 +2882,19 @@ fi
 
 
 if test "z$XMLSEC_NO_CRYPTO_DYNAMIC_LOADING" = "z1" ; then
-($RM -f xmlsec1.pc && $LN_S xmlsec1-$XMLSEC_DEFAULT_CRYPTO.pc xmlsec1.pc)
+    if test "z$XMLSEC_DEFAULT_CRYPTO" = "zmscng" -o "z$XMLSEC_DEFAULT_CRYPTO" = "zmscrypto" ; then
+        dnl No pkg-config file is generated for mscng/mscrypto, so there is
+        dnl nothing to link xmlsec1.pc to; do not create it.
+        XMLSEC_PC_FILE=""
+    else
+        ($RM -f xmlsec1.pc && $LN_S xmlsec1-$XMLSEC_DEFAULT_CRYPTO.pc xmlsec1.pc)
+        XMLSEC_PC_FILE="xmlsec1.pc"
+    fi
 else
-AC_CONFIG_FILES([xmlsec1.pc:xmlsec.pc.in])
+    AC_CONFIG_FILES([xmlsec1.pc:xmlsec.pc.in])
+    XMLSEC_PC_FILE="xmlsec1.pc"
 fi
+AC_SUBST(XMLSEC_PC_FILE)
 
 AC_CONFIG_FILES([
 include/xmlsec/version.h

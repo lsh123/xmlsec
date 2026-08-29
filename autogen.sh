@@ -2,20 +2,16 @@
 # Run this to generate all the initial makefiles, etc.
 # This is just a trivial wrapper around autoreconf and configure.
 
-srcdir=`dirname $0`
-test -z "$srcdir" && srcdir=.
+set -e
+
+srcdir=$(dirname "$0")
 
 echo Running autoreconf...
-autoreconf -i -f $srcdir
-
-if test x$OBJ_DIR != x; then
-    mkdir -p "$OBJ_DIR"
-    cd "$OBJ_DIR"
-fi
+autoreconf -i -f "$srcdir"
 
 echo
 echo Running configure "$@" ...
-$srcdir/configure "$@"
+"$srcdir"/configure "$@"
 
 echo
 echo "Now type 'make' to compile xmlsec."

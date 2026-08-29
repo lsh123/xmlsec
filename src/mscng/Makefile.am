@@ -53,6 +53,9 @@ libxmlsec1_mscng_la_LIBADD = \
 	../libxmlsec1.la \
 	$(NULL)
 
+libxmlsec1_mscng_la_DEPENDENCIES = \
+	$(NULL)
+
 libxmlsec1_mscng_la_LDFLAGS = \
 	@XMLSEC_CRYPTO_EXTRA_LDFLAGS@ \
 	-version-info @XMLSEC_VERSION_INFO@ \

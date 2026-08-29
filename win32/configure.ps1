@@ -1,6 +1,6 @@
 ﻿<#
 .SYNOPSIS
-    Configure script for xmlsec, specific for Windows with PowerShell.
+    Configure script for xmlsec, specific to Windows with PowerShell.
 
     powershell -ExecutionPolicy Bypass -File configure.ps1 <options>
 
@@ -17,6 +17,8 @@
         Converted to PowerShell
 #>
 
+# The directory where this script resides.
+$scriptRoot = Split-Path -Parent $PSCommandPath
 # The source directory, relative to the one where this file resides.
 $baseDir = ".."
 $srcDir = "$baseDir\src"
@@ -28,15 +30,15 @@ $baseName = "libxmlsec"
 
 # Configure file which contains the version and the output file where
 # we can store our build configuration.
-$configFile = "$baseDir\configure.ac"
-$versionFile = ".\configure.txt"
+$configFile = Join-Path $scriptRoot "..\configure.ac"
+$versionFile = Join-Path $scriptRoot "configure.txt"
 
 # This one will generate config.h for version / package info
-$optsFile = "$baseDir\config.h"
+$optsFile = Join-Path $scriptRoot "..\config.h"
 
 # Input and output files regarding the xmlsec version.
-$versionHeaderIn = "$baseDir\include\xmlsec\version.h.in"
-$versionHeader = "$baseDir\include\xmlsec\version.h"
+$versionHeaderIn = Join-Path $scriptRoot "..\include\xmlsec\version.h.in"
+$versionHeader = Join-Path $scriptRoot "..\include\xmlsec\version.h"
 
 # Version strings for the binary distribution. Will be filled later in the code.
 $script:verMajorXmlSec = ""
@@ -93,9 +95,10 @@ function BoolToStr($opt) {
 }
 
 # Helper function, transforms the argument string into the boolean value.
-function StrToBool($opt) {
+function StrToBool($opt, $name) {
     if ($opt -eq "0" -or $opt -eq "no") { return 0 }
     if ($opt -eq "1" -or $opt -eq "yes") { return 1 }
+    Write-Host "ERROR: Invalid value '$opt' for option '$name', expected 'yes'/'no' (or 1/0)."
     $script:errorFlag = 1
     return 0
 }
@@ -113,7 +116,7 @@ function Show-Usage {
     Write-Host "  unicode:                  Build Unicode version (default: '$(if ($script:buildUnicode) { 'yes' } else { 'no' })')"
     Write-Host "  debug:                    Build unoptimised debug executables (default: '$(if ($script:buildDebug) { 'yes' } else { 'no' })')"
     Write-Host "  memcheck:                 Build unoptimised debug executables with memcheck reporting (default: '$($script:buildWithMemcheck)')"
-    Write-Host "                            with possible options: 'yes' or 'leaks', 'asan', and 'no'."
+    Write-Host "                            with possible options: 'yes'/'leaks', 'asan', or 'no'."
     Write-Host "  pedantic:                 Build with more warnings enabled (default: '$(if ($script:buildPedantic) { 'yes' } else { 'no' })')"
     Write-Host "  cc:                       Build with the specified compiler (default: '$($script:buildCc)')"
     Write-Host "  cflags:                   Build with the specified compiler flags (default: '$($script:buildCflags)')"
@@ -124,14 +127,15 @@ function Show-Usage {
     Write-Host "  incdir:                   Directory where headers should be installed (default: '$($script:buildIncPrefix)')"
     Write-Host "  libdir:                   Directory where static and import libraries should be installed (default: '$($script:buildLibPrefix)')"
     Write-Host "  sodir:                    Directory where shared libraries should be installed (default: '$($script:buildSoPrefix)')"
-    Write-Host "  include:                  Additional search path for the compiler, particularily where LibXML2 and other"
+    Write-Host "  include:                  Additional search path for the compiler, particularly where LibXML2 and other"
     Write-Host "                            dependencies headers can be found (default: '$($script:buildInclude)')"
-    Write-Host "  lib:                      Additional search path for the linker, particularily where LibXML2 and other"
-    Write-Host "                            dependencies libraroes can be found (default: '$($script:buildLib)')"
+    Write-Host "  lib:                      Additional search path for the linker, particularly where LibXML2 and other"
+    Write-Host "                            dependencies libraries can be found (default: '$($script:buildLib)')"
     Write-Host ""
     Write-Host "XML Security Library options:"
     Write-Host "  crypto:                   Crypto engines list, first is default crypto engine (default: '$($script:withCrypto)')"
     Write-Host "                            with possible options: 'mscng', 'openssl', 'nss', and 'mscrypto' (deprecated)"
+    Write-Host "                            OpenSSL versions can be selected with: 'openssl=300', 'openssl-300', 'openssl=111', or 'openssl-111'"
     Write-Host "  xslt:                     LibXSLT is used (default: '$(if ($script:withLibXSLT) { 'yes' } else { 'no' })')"
     Write-Host "  iconv:                    Use the iconv library (default: '$(if ($script:withIconv) { 'yes' } else { 'no' })')"
     Write-Host "  ftp:                      Enable FTP support (default: '$(if ($script:withFTP) { 'yes' } else { 'no' })')"
@@ -169,6 +173,11 @@ function ParseConfigureAc {
 # configuration file. Despite its name, this also writes the configuration
 # file included by our makefile.
 function DiscoverVersion {
+    if (-not (Test-Path $configFile)) {
+        Write-Host "ERROR: Cannot find '$configFile'."
+        $script:errorFlag = 1
+        return
+    }
     # Get version from configure.ac AC_INIT
     $ver = ParseConfigureAc
     if ($null -eq $ver) {
@@ -222,7 +231,7 @@ function DiscoverVersion {
     $lines += 'INCLUDE=$(INCLUDE);' + $script:buildInclude
     $lines += 'LIB=$(LIB);' + $script:buildLib
     $lines += "CRUNTIME=$($script:cruntime)"
-    $lines | Set-Content $versionFile -Encoding UTF8
+    $lines | Set-Content $versionFile -Encoding ASCII
 }
 
 # Configures xmlsec. This one will generate config.h for version / package info.
@@ -236,20 +245,22 @@ function ConfigureXmlSec {
     $lines += "#define PACKAGE_VERSION `"$fullVersion`""
     $lines += "#define PACKAGE_STRING  `"$packageName $fullVersion`""
     $lines += "#define VERSION `"$fullVersion`""
-    $lines | Set-Content $optsFile -Encoding UTF8
+    $lines | Set-Content $optsFile -Encoding ASCII
 }
 
 # This one will generate version.h from version.h.in.
 function ConfigureXmlSecVersion {
-    if (Test-Path $versionHeader) {
-        # version.h is already generated, nothing to do.
+    if (-not (Test-Path $versionHeaderIn)) {
+        Write-Host "ERROR: Cannot find '$versionHeaderIn'."
+        $script:errorFlag = 1
         return
     }
 
     $content = Get-Content $versionHeaderIn
     $output = @()
     $fullVersion = "$($script:verMajorXmlSec).$($script:verMinorXmlSec).$($script:verMicroXmlSec)"
-    $versionInfo = "$([int]$script:verMajorXmlSec + [int]$script:verMinorXmlSec):$($script:verMicroXmlSec):$($script:verMinorXmlSec)"
+    # Keep the same formula as configure.ac (libtool current:revision:age).
+    $versionInfo = "$([int]$script:verMajorXmlSec * 10000 + [int]$script:verMinorXmlSec * 100 + [int]$script:verMicroXmlSec):0:0"
 
     foreach ($ln in $content) {
         if ($ln -match '@XMLSEC_VERSION_MAJOR@') {
@@ -266,7 +277,7 @@ function ConfigureXmlSecVersion {
             $output += $ln
         }
     }
-    $output | Set-Content $versionHeader -Encoding UTF8
+    $output | Set-Content $versionHeader -Encoding ASCII
 }
 
 function ValidateMemcheckOption($opt) {
@@ -302,31 +313,31 @@ for ($i = 0; ($i -lt $args.Count) -and ($script:errorFlag -eq 0); $i++) {
         $val = $arg.Substring($sepIdx + 1)
         switch ($opt) {
             "crypto"              { $script:withCrypto = $val }
-            "xslt"                { $script:withLibXSLT = StrToBool $val }
-            "iconv"               { $script:withIconv = StrToBool $val }
-            "ftp"                 { $script:withFTP = StrToBool $val }
-            "http"                { $script:withHTTP = StrToBool $val }
-            "rsa-pkcs15"          { $script:withRsaPkcs15 = StrToBool $val }
-            "gost"                { $script:withGost = StrToBool $val }
-            "legacy-features"     { $script:withLegacyFeatures = StrToBool $val }
-            "legacy-crypto"       { $script:withLegacyFeatures = StrToBool $val }
-            "unicode"             { $script:buildUnicode = StrToBool $val }
-            "debug"               { $script:buildDebug = StrToBool $val }
+            "xslt"                { $script:withLibXSLT = StrToBool $val "xslt" }
+            "iconv"               { $script:withIconv = StrToBool $val "iconv" }
+            "ftp"                 { $script:withFTP = StrToBool $val "ftp" }
+            "http"                { $script:withHTTP = StrToBool $val "http" }
+            "rsa-pkcs15"          { $script:withRsaPkcs15 = StrToBool $val "rsa-pkcs15" }
+            "gost"                { $script:withGost = StrToBool $val "gost" }
+            "legacy-features"     { $script:withLegacyFeatures = StrToBool $val "legacy-features" }
+            "legacy-crypto"       { $script:withLegacyFeatures = StrToBool $val "legacy-crypto" }
+            "unicode"             { $script:buildUnicode = StrToBool $val "unicode" }
+            "debug"               { $script:buildDebug = StrToBool $val "debug" }
             "memcheck" {
                 $script:buildWithMemcheck = ValidateMemcheckOption $val
                 if ($script:buildWithMemcheck -eq "") {
-                    Write-Host "ERROR: Invalid value for 'memcheck' parameter, supported options are 'yes' or 'leaks', 'asan', and 'no'."
+                    Write-Host "ERROR: Invalid value '$val' for option 'memcheck', supported options are 'yes'/'leaks', 'asan', or 'no'."
                     $script:errorFlag = 1
                 } elseif ($script:buildWithMemcheck -ne "no") {
                     Write-Host "Note: Memcheck option '$($script:buildWithMemcheck)' is selected, enabling debug symbols."
                     $script:buildDebug = 1
                 }
             }
-            "pedantic"            { $script:buildPedantic = StrToBool $val }
+            "pedantic"            { $script:buildPedantic = StrToBool $val "pedantic" }
             "cc"                  { $script:buildCc = $val }
             "cflags"              { $script:buildCflags = $val }
-            "static"              { $script:buildStatic = StrToBool $val }
-            "apps"                { $script:buildApps = StrToBool $val }
+            "static"              { $script:buildStatic = StrToBool $val "static" }
+            "apps"                { $script:buildApps = StrToBool $val "apps" }
             "prefix"              { $script:buildPrefix = $val }
             "incdir"              { $script:buildIncPrefix = $val }
             "bindir"              { $script:buildBinPrefix = $val }
@@ -338,7 +349,7 @@ for ($i = 0; ($i -lt $args.Count) -and ($script:errorFlag -eq 0); $i++) {
                 $script:cruntime = $val
                 $cruntimeSet = 1
             }
-            "with-openssl3-engines" { $script:withOpenSSL3Engines = StrToBool $val }
+            "with-openssl3-engines" { $script:withOpenSSL3Engines = StrToBool $val "with-openssl3-engines" }
             default {
                 $script:errorFlag = 1
                 Write-Host "ERROR: Unknown option '$opt'"
@@ -368,7 +379,7 @@ $script:withCrypto = ""
 $script:withDefaultCrypto = ""
 for ($j = 0; $j -lt $crlist.Count; $j++) {
     $curcrypto = ""
-    switch ($crlist[$j]) {
+    switch ($crlist[$j].Trim()) {
         "openssl" {
             $curcrypto = "openssl"
             $script:withOpenSSL = 1
@@ -397,8 +408,8 @@ for ($j = 0; $j -lt $crlist.Count; $j++) {
             $script:withMSCng = 1
         }
         default {
-            Write-Host "Unknown crypto engine `"$($crlist[$j])`" is found. Aborting."
-            exit $script:errorFlag
+            Write-Host "Unknown crypto engine '$($crlist[$j].Trim())' specified. Aborting."
+            exit 1
         }
     }
     if ($j -eq 0) {
@@ -427,7 +438,12 @@ if ($script:errorFlag -ne 0) {
 }
 
 # Create the Makefile.
-Copy-Item ".\Makefile.msvc" ".\Makefile" -Force
+$makefileMsvc = Join-Path $scriptRoot "Makefile.msvc"
+if (-not (Test-Path $makefileMsvc)) {
+    Write-Host "ERROR: Cannot find '$makefileMsvc'."
+    exit 1
+}
+Copy-Item $makefileMsvc (Join-Path $scriptRoot "Makefile") -Force
 Write-Host "Created Makefile."
 
 # Display the final configuration.
@@ -445,7 +461,7 @@ Write-Host "         Use LibXSLT: $(BoolToStr $script:withLibXSLT)"
 Write-Host "           Use iconv: $(BoolToStr $script:withIconv)"
 Write-Host " Enable RSA PKCS#1.5: $(BoolToStr $script:withRsaPkcs15)"
 Write-Host "         Enable GOST: $(BoolToStr $script:withGost)"
-Write-Host "Enable legacy crypto: $(BoolToStr $script:withLegacyFeatures)"
+Write-Host "Enable legacy features: $(BoolToStr $script:withLegacyFeatures)"
 Write-Host "         Support FTP: $(BoolToStr $script:withFTP)"
 Write-Host "        Support HTTP: $(BoolToStr $script:withHTTP)"
 Write-Host ""

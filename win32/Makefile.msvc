@@ -13,7 +13,7 @@
 # March 2002, Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 #	Created for LibXML and LibXSLT
 # April 2002, Aleksey Sanin <aleksey@aleksey.com>
-#	Modified for XMLSec Libary
+#	Modified for XMLSec Library
 #
 
 AUTOCONF = .\configure.txt
@@ -26,9 +26,9 @@ AUTOCONF = .\configure.txt
 #XMLSEC_SRCDIR = $(BASEDIR)\src
 #APPS_SRCDIR = $(BASEDIR)\apps
 #BINDIR = binaries
-#XMLSEC_MAJOR_VERSION = 0 # set this to the right value.
-#XMLSEC_MINOR_VERSION = 0 # set this to the right value.
-#XMLSEC_MICRO_VERSION = 0 # set this to the right value.
+#XMLSEC_VERSION_MAJOR = 0 # set this to the right value.
+#XMLSEC_VERSION_MINOR = 0 # set this to the right value.
+#XMLSEC_VERSION_SUBMINOR = 0 # set this to the right value.
 #WITH_XMLSEC_DEBUG = 1
 #UNICODE = 1
 #DEBUG = 0
@@ -78,7 +78,7 @@ APP_NAME_MANIFEST = $(APP_NAME).manifest
 
 XMLSEC_NAME 		= xmlsec
 XMLSEC_BASENAME 	= lib$(XMLSEC_NAME)
-XMLSEC_SO 		= $(XMLSEC_BASENAME).dll
+XMLSEC_SO 		    = $(XMLSEC_BASENAME).dll
 XMLSEC_SO_MANIFEST	= $(XMLSEC_BASENAME).dll.manifest
 XMLSEC_PDB 		= $(XMLSEC_BASENAME).pdb
 XMLSEC_IMP 		= $(XMLSEC_BASENAME).lib
@@ -277,6 +277,7 @@ XMLSEC_OBJS_A = \
 	$(XMLSEC_INTDIR_A)\xslt.obj \
 	$(XMLSEC_INTDIR_A)\x509_helpers.obj
 
+# Include strings.obj -> src/strings.c to prevent "error LNK2001: unresolved external symbol"
 XMLSEC_OPENSSL_OBJS = \
 	$(XMLSEC_OPENSSL_INTDIR)\app.obj\
 	$(XMLSEC_OPENSSL_INTDIR)\ciphers.obj \
@@ -320,11 +321,11 @@ XMLSEC_OPENSSL_OBJS_A = \
 	$(XMLSEC_OPENSSL_INTDIR_A)\x509.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\x509vfy.obj
 
+# Include strings.obj -> src/strings.c to prevent "error LNK2001: unresolved external symbol"
 XMLSEC_NSS_OBJS = \
 	$(XMLSEC_NSS_INTDIR)\app.obj \
 	$(XMLSEC_NSS_INTDIR)\ciphers_cbc.obj \
 	$(XMLSEC_NSS_INTDIR)\ciphers_aead.obj \
-	$(XMLSEC_NSS_INTDIR)\concatkdf.obj \
 	$(XMLSEC_NSS_INTDIR)\crypto.obj \
 	$(XMLSEC_NSS_INTDIR)\der_encoded_value.obj \
 	$(XMLSEC_NSS_INTDIR)\digests.obj \
@@ -334,7 +335,7 @@ XMLSEC_NSS_OBJS = \
 	$(XMLSEC_NSS_INTDIR)\key_agrmnt.obj \
 	$(XMLSEC_NSS_INTDIR)\kw_des.obj \
 	$(XMLSEC_NSS_INTDIR)\kw_rfc_3394.obj \
-	$(XMLSEC_NSS_INTDIR)\pbkdf2.obj \
+	$(XMLSEC_NSS_INTDIR)\kdf.obj \
 	$(XMLSEC_NSS_INTDIR)\pkikeys.obj \
 	$(XMLSEC_NSS_INTDIR)\signatures.obj \
 	$(XMLSEC_NSS_INTDIR)\strings.obj \
@@ -345,7 +346,6 @@ XMLSEC_NSS_OBJS_A = \
 	$(XMLSEC_NSS_INTDIR_A)\app.obj \
 	$(XMLSEC_NSS_INTDIR_A)\ciphers_cbc.obj \
 	$(XMLSEC_NSS_INTDIR_A)\ciphers_aead.obj \
-	$(XMLSEC_NSS_INTDIR_A)\concatkdf.obj \
 	$(XMLSEC_NSS_INTDIR_A)\crypto.obj \
 	$(XMLSEC_NSS_INTDIR_A)\der_encoded_value.obj \
 	$(XMLSEC_NSS_INTDIR_A)\digests.obj \
@@ -355,7 +355,7 @@ XMLSEC_NSS_OBJS_A = \
 	$(XMLSEC_NSS_INTDIR_A)\key_agrmnt.obj \
 	$(XMLSEC_NSS_INTDIR_A)\kw_des.obj \
 	$(XMLSEC_NSS_INTDIR_A)\kw_rfc_3394.obj \
-	$(XMLSEC_NSS_INTDIR_A)\pbkdf2.obj \
+	$(XMLSEC_NSS_INTDIR_A)\kdf.obj \
 	$(XMLSEC_NSS_INTDIR_A)\pkikeys.obj \
 	$(XMLSEC_NSS_INTDIR_A)\strings.obj \
 	$(XMLSEC_NSS_INTDIR_A)\signatures.obj \
@@ -363,6 +363,7 @@ XMLSEC_NSS_OBJS_A = \
 	$(XMLSEC_NSS_INTDIR_A)\x509.obj \
 	$(XMLSEC_NSS_INTDIR_A)\x509vfy.obj
 
+# Include strings.obj -> src/strings.c to prevent "error LNK2001: unresolved external symbol"
 XMLSEC_MSCRYPTO_OBJS = \
 	$(XMLSEC_MSCRYPTO_INTDIR)\app.obj\
 	$(XMLSEC_MSCRYPTO_INTDIR)\crypto.obj \
@@ -396,6 +397,7 @@ XMLSEC_MSCRYPTO_OBJS_A = \
 	$(XMLSEC_MSCRYPTO_INTDIR_A)\x509.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR_A)\x509vfy.obj
 
+# Include strings.obj -> src/strings.c to prevent "error LNK2001: unresolved external symbol"
 XMLSEC_MSCNG_OBJS = \
 	$(XMLSEC_MSCNG_INTDIR)\app.obj\
 	$(XMLSEC_MSCNG_INTDIR)\certkeys.obj \
@@ -521,7 +523,7 @@ CFLAGS = $(CFLAGS) /D "NDEBUG" /O2 /Zi
 
 # Enable memcheck.
 !if "$(MEMCHECK)" == "leaks"
-CFLAGS = $(CFLAGS) /EHsc /D "_CRTDBG_MAP_ALLOC" /D_DEBUG
+CFLAGS = $(CFLAGS) /EHsc /D "_CRTDBG_MAP_ALLOC" /D "_DEBUG"
 !endif
 !if "$(MEMCHECK)" == "asan"
 CFLAGS = $(CFLAGS) /fsanitize=address
@@ -535,10 +537,9 @@ CFLAGS = $(CFLAGS) $(CRUNTIME)
 CFLAGS = $(CFLAGS) /DXMLSEC_NO_XSLT=1
 !endif
 
-CFLAGS = $(CFLAGS) /D "XMLSEC_DEFAULT_CRYPTO=\"$(XMLSEC_DEFAULT_CRYPTO)\""
+CFLAGS = $(CFLAGS) /D "XMLSEC_DEFAULT_CRYPTO=\"$(WITH_DEFAULT_CRYPTO)\""
 !if "$(STATIC)" == "1"
 CFLAGS 	= $(CFLAGS) /D "XMLSEC_NO_CRYPTO_DYNAMIC_LOADING"
-APP_CFLAGS = $(APP_CFLAGS) $(XMLSEC_CRYPTO_CFLAGS)
 !else
 CFLAGS = $(CFLAGS) /D "XMLSEC_DL_WIN32"
 APP_CFLAGS = $(APP_CFLAGS) /D "XMLSEC_CRYPTO_DYNAMIC_LOADING"
@@ -549,7 +550,7 @@ XMLSEC_NSS_CFLAGS   	= /D "XMLSEC_CRYPTO_NSS" /D "XMLSEC_DEFAULT_CRYPTO=\"nss\""
 XMLSEC_MSCRYPTO_CFLAGS  = /D "XMLSEC_CRYPTO_MSCRYPTO" /D "XMLSEC_DEFAULT_CRYPTO=\"mscrypto\""
 XMLSEC_MSCNG_CFLAGS     = /D "XMLSEC_CRYPTO_MSCNG" /D "XMLSEC_DEFAULT_CRYPTO=\"mscng\""
 
-# Crytpo options
+# Crypto options
 !if "$(WITH_OPENSSL_VERSION)" == "XMLSEC_OPENSSL_300"
 !if "$(WITH_OPENSSL3_ENGINES)" == "1"
 XMLSEC_OPENSSL_CFLAGS  = $(XMLSEC_OPENSSL_CFLAGS) /D "XMLSEC_OPENSSL3_ENGINES=1"
@@ -579,6 +580,11 @@ ALIBS 		    = libxml2s.lib $(LIBS)
 LDFLAGS = $(LDFLAGS) /WX
 !endif
 
+# Enable memcheck.
+!if "$(MEMCHECK)" == "asan"
+LDFLAGS = $(LDFLAGS) /fsanitize=address
+!endif
+
 
 !if "$(WITH_ICONV)" == "1"
 CFLAGS          = $(CFLAGS) /D "LIBXML_ICONV_ENABLED"
@@ -598,10 +604,6 @@ ALIBS 			= $(ALIBS) libxslts.lib
 
 XMLSEC_OPENSSL_SOLIBS   = libcrypto.lib wsock32.lib kernel32.lib user32.lib gdi32.lib crypt32.lib advapi32.lib ws2_32.lib
 XMLSEC_OPENSSL_ALIBS    = libcrypto.lib wsock32.lib kernel32.lib user32.lib gdi32.lib crypt32.lib advapi32.lib ws2_32.lib
-
-!if "$(WITH_OPENSSL_VERSION)" == "XMLSEC_OPENSSL_300"
-!elseif "$(WITH_OPENSSL_VERSION)" == "XMLSEC_OPENSSL_111"
-!endif
 
 XMLSEC_NSS_SOLIBS       = smime3.lib ssl3.lib nss3.lib libnspr4.lib libplds4.lib libplc4.lib kernel32.lib user32.lib gdi32.lib
 XMLSEC_NSS_ALIBS        = smime3.lib ssl3.lib nss3.lib libnspr4_s.lib libplds4_s.lib libplc4_s.lib kernel32.lib user32.lib gdi32.lib
@@ -677,6 +679,10 @@ XMLSEC_CRYPTO_IMP	    = $(XMLSEC_MSCNG_IMP)
 XMLSEC_CRYPTO_A		    = $(XMLSEC_MSCNG_A)
 !endif
 
+!if "$(STATIC)" == "1"
+APP_CFLAGS = $(APP_CFLAGS) $(XMLSEC_CRYPTO_CFLAGS)
+!endif
+
 
 !if "$(WITH_OPENSSL_VERSION)" == "XMLSEC_OPENSSL_300"
 XMLSEC_OPENSSL_TEST_CONFIG = openssl3.cnf
@@ -740,7 +746,7 @@ openssla: $(BINDIR)\$(XMLSEC_OPENSSL_A)
 openssl: $(BINDIR)\$(XMLSEC_OPENSSL_SO)
 
 nssa: $(BINDIR)\$(XMLSEC_NSS_A)
-nss: $(BINDIR)\$(XMLSEC_NSS_SO) $(XMLSEC_NSS_TARGETS)
+nss: $(BINDIR)\$(XMLSEC_NSS_SO)
 
 mscryptoa: $(BINDIR)\$(XMLSEC_MSCRYPTO_A)
 mscrypto: $(BINDIR)\$(XMLSEC_MSCRYPTO_SO)
@@ -814,7 +820,7 @@ clean :
 rebuild : clean all
 
 install : all
-    :: directoreies
+	:: directories
 	if not exist $(INCPREFIX)\$(XMLSEC_NAME) mkdir $(INCPREFIX)\$(XMLSEC_NAME)
 	if not exist $(BINPREFIX) mkdir $(BINPREFIX)
 	if not exist $(LIBPREFIX) mkdir $(LIBPREFIX)
@@ -824,7 +830,7 @@ install : all
 	if exist $(BINDIR)\$(XMLSEC_OPENSSL_SO) if not exist $(INCPREFIX)\$(XMLSEC_NAME)\openssl mkdir $(INCPREFIX)\$(XMLSEC_NAME)\openssl
 	if exist $(BINDIR)\$(XMLSEC_OPENSSL_A) if not exist $(INCPREFIX)\$(XMLSEC_NAME)\openssl mkdir $(INCPREFIX)\$(XMLSEC_NAME)\openssl
 	if exist $(BINDIR)\$(XMLSEC_OPENSSL_SO) copy $(BASEDIR)\include\$(XMLSEC_NAME)\openssl\*.h $(INCPREFIX)\$(XMLSEC_NAME)\openssl
-    if exist $(BINDIR)\$(XMLSEC_OPENSSL_A) copy $(BASEDIR)\include\$(XMLSEC_NAME)\openssl\*.h $(INCPREFIX)\$(XMLSEC_NAME)\openssl
+	if exist $(BINDIR)\$(XMLSEC_OPENSSL_A) copy $(BASEDIR)\include\$(XMLSEC_NAME)\openssl\*.h $(INCPREFIX)\$(XMLSEC_NAME)\openssl
 	if exist $(BINDIR)\$(XMLSEC_NSS_SO) if not exist $(INCPREFIX)\$(XMLSEC_NAME)\nss mkdir $(INCPREFIX)\$(XMLSEC_NAME)\nss
 	if exist $(BINDIR)\$(XMLSEC_NSS_A) if not exist $(INCPREFIX)\$(XMLSEC_NAME)\nss mkdir $(INCPREFIX)\$(XMLSEC_NAME)\nss
 	if exist $(BINDIR)\$(XMLSEC_NSS_SO) copy $(BASEDIR)\include\$(XMLSEC_NAME)\nss\*.h $(INCPREFIX)\$(XMLSEC_NAME)\nss
@@ -872,27 +878,27 @@ install : all
 uninstall :
 	if exist $(INCPREFIX)\$(XMLSEC_NAME) rmdir /S /Q $(INCPREFIX)\$(XMLSEC_NAME)
 	if exist $(SOPREFIX)\$(XMLSEC_SO) del /F /S /Q $(SOPREFIX)\$(XMLSEC_SO)
-	if exist $(SOPREFIX)\$(XMLSEC_SO_MANIFEST) del /F /S /Q $(SOPREFIX)\$(XMLSEC_SO)
+	if exist $(SOPREFIX)\$(XMLSEC_SO_MANIFEST) del /F /S /Q $(SOPREFIX)\$(XMLSEC_SO_MANIFEST)
 	if exist $(SOPREFIX)\$(XMLSEC_PDB) del /F /S /Q $(SOPREFIX)\$(XMLSEC_PDB)
 	if exist $(LIBPREFIX)\$(XMLSEC_A) del /F /S /Q $(LIBPREFIX)\$(XMLSEC_A)
 	if exist $(LIBPREFIX)\$(XMLSEC_IMP) del /F /S /Q $(LIBPREFIX)\$(XMLSEC_IMP)
 	if exist $(SOPREFIX)\$(XMLSEC_OPENSSL_SO) del /F /S /Q $(SOPREFIX)\$(XMLSEC_OPENSSL_SO)
-	if exist $(SOPREFIX)\$(XMLSEC_OPENSSL_SO_MANIFEST) del /F /S /Q $(SOPREFIX)\$(XMLSEC_OPENSSL_SO)
+	if exist $(SOPREFIX)\$(XMLSEC_OPENSSL_SO_MANIFEST) del /F /S /Q $(SOPREFIX)\$(XMLSEC_OPENSSL_SO_MANIFEST)
 	if exist $(SOPREFIX)\$(XMLSEC_OPENSSL_PDB) del /F /S /Q $(SOPREFIX)\$(XMLSEC_OPENSSL_PDB)
 	if exist $(LIBPREFIX)\$(XMLSEC_OPENSSL_A) del /F /S /Q $(LIBPREFIX)\$(XMLSEC_OPENSSL_A)
 	if exist $(LIBPREFIX)\$(XMLSEC_OPENSSL_IMP) del /F /S /Q $(LIBPREFIX)\$(XMLSEC_OPENSSL_IMP)
 	if exist $(SOPREFIX)\$(XMLSEC_NSS_SO) del /F /S /Q $(SOPREFIX)\$(XMLSEC_NSS_SO)
-	if exist $(SOPREFIX)\$(XMLSEC_NSS_SO_MANIFEST) del /F /S /Q $(SOPREFIX)\$(XMLSEC_NSS_SO)
+	if exist $(SOPREFIX)\$(XMLSEC_NSS_SO_MANIFEST) del /F /S /Q $(SOPREFIX)\$(XMLSEC_NSS_SO_MANIFEST)
 	if exist $(SOPREFIX)\$(XMLSEC_NSS_PDB) del /F /S /Q $(SOPREFIX)\$(XMLSEC_NSS_PDB)
 	if exist $(LIBPREFIX)\$(XMLSEC_NSS_A) del /F /S /Q $(LIBPREFIX)\$(XMLSEC_NSS_A)
 	if exist $(LIBPREFIX)\$(XMLSEC_NSS_IMP) del /F /S /Q $(LIBPREFIX)\$(XMLSEC_NSS_IMP)
 	if exist $(SOPREFIX)\$(XMLSEC_MSCRYPTO_SO) del /F /S /Q $(SOPREFIX)\$(XMLSEC_MSCRYPTO_SO)
-	if exist $(SOPREFIX)\$(XMLSEC_MSCRYPTO_SO_MANIFEST) del /F /S /Q $(SOPREFIX)\$(XMLSEC_MSCRYPTO_SO)
+	if exist $(SOPREFIX)\$(XMLSEC_MSCRYPTO_SO_MANIFEST) del /F /S /Q $(SOPREFIX)\$(XMLSEC_MSCRYPTO_SO_MANIFEST)
 	if exist $(SOPREFIX)\$(XMLSEC_MSCRYPTO_PDB) del /F /S /Q $(SOPREFIX)\$(XMLSEC_MSCRYPTO_PDB)
 	if exist $(LIBPREFIX)\$(XMLSEC_MSCRYPTO_A) del /F /S /Q $(LIBPREFIX)\$(XMLSEC_MSCRYPTO_A)
 	if exist $(LIBPREFIX)\$(XMLSEC_MSCRYPTO_IMP) del /F /S /Q $(LIBPREFIX)\$(XMLSEC_MSCRYPTO_IMP)
 	if exist $(SOPREFIX)\$(XMLSEC_MSCNG_SO) del /F /S /Q $(SOPREFIX)\$(XMLSEC_MSCNG_SO)
-	if exist $(SOPREFIX)\$(XMLSEC_MSCNG_SO_MANIFEST) del /F /S /Q $(SOPREFIX)\$(XMLSEC_MSCNG_SO)
+	if exist $(SOPREFIX)\$(XMLSEC_MSCNG_SO_MANIFEST) del /F /S /Q $(SOPREFIX)\$(XMLSEC_MSCNG_SO_MANIFEST)
 	if exist $(SOPREFIX)\$(XMLSEC_MSCNG_PDB) del /F /S /Q $(SOPREFIX)\$(XMLSEC_MSCNG_PDB)
 	if exist $(LIBPREFIX)\$(XMLSEC_MSCNG_A) del /F /S /Q $(LIBPREFIX)\$(XMLSEC_MSCNG_A)
 	if exist $(LIBPREFIX)\$(XMLSEC_MSCNG_IMP) del /F /S /Q $(LIBPREFIX)\$(XMLSEC_MSCNG_IMP)

@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 #
 # Usage: build_release.sh <version> [<release-candidate-tag>]
 #
@@ -24,12 +25,11 @@ else
 fi
 
 git_uri=git@github.com:lsh123/xmlsec.git
-rpm_root=/usr/src/redhat
 build_root="/tmp/xmlsec-build-area-$today"
 build_tar_file="xmlsec1-${version}.tar.gz"
 tar_file="xmlsec1-${full_version}.tar.gz"
 sig_file="xmlsec1-${full_version}.sig"
-git_version_tag=`echo ${full_version} | sed 's/\./_/g'`
+git_version_tag=`echo "${full_version}" | sed 's/\./_/g'`
 
 echo "============== Creating build area $build_root for building xmlsec1-$version"
 rm -rf "$build_root"
@@ -37,9 +37,15 @@ mkdir -p "$build_root"
 cd "$build_root"
 
 echo "============== Checking out the module '$git_uri'"
-git clone $git_uri
+git clone "$git_uri"
 cd xmlsec
-find . -name ".git" | xargs rm -r
+find . -name .git -exec rm -rf {} +
+
+ac_version=`awk -F'[][]' '/^AC_INIT/ {print $4; exit}' configure.ac`
+if [ "x$ac_version" != "x$version" ]; then
+    echo "ERROR: requested version '$version' does not match the configure.ac version '$ac_version'"
+    exit 1
+fi
 
 echo "============== Building xmlsec1-${full_version}"
 autoreconf -i -f
@@ -55,9 +61,9 @@ cd "$cur_pwd"
 echo "============== Signing tar file"
 gpg --output "${sig_file}" --detach-sig "${tar_file}"
 
-echo "============== Tagging the release ${full_version} on GitHub"
-git tag -a "${full_version}" -f -m 'XMLSec release ${full_version}'
-git tag -a "xmlsec_${git_version_tag}" -f -m 'XMLSec release ${full_version}'
+echo "============== Creating local tags for release ${full_version}"
+git tag -a "${full_version}" -f -m "XMLSec release ${full_version}"
+git tag -a "xmlsec_${git_version_tag}" -f -m "XMLSec release ${full_version}"
 echo "RUN MANUALLY: git push --follow-tags"
 
 echo "======== Publish the release docs to the github wiki:"

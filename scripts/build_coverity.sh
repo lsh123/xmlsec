@@ -1,9 +1,10 @@
 #!/bin/sh
+set -e
 
 # Input parameters.
 cov_token=$1
 version=$2
-if [ "x$version" = "x" ]; then
+if [ x"$cov_token" = x ] || [ x"$version" = x ]; then
     echo "Usage: $0 <token> <version>"
     exit 1
 fi
@@ -16,8 +17,8 @@ script_pwd=$(dirname "$0")
 today=`date +%F-%H-%M-%S`
 tar_file="xmlsec1-$version-$today.tar.gz"
 
-echo "============= Building xmlsec"
-"$script_pwd/../configure" --enable-legacy-features --enable-ftp --enable-http --enable-gcrypt
+echo "============== Building xmlsec"
+"$script_pwd/../configure" --enable-legacy-features --enable-ftp --enable-http --with-gcrypt
 make clean
 rm -rf cov-int/
 cov-build --dir cov-int make -j4
@@ -27,11 +28,10 @@ echo "============== Uploading to Coverity"
 curl \
     --form token="$cov_token" \
     --form email="$cov_email" \
-    --form file=@"$tar_file"  \
+    --form file=@"$tar_file" \
     --form version="$version" \
     --form description="$version built on $today" \
     "$cov_url"
 
-echo "============== Cleanup"
+# Restore the caller's working directory.
 cd "$cur_pwd"
-#rm -rf "$build_root"

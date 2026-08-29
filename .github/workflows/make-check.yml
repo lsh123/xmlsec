@@ -21,7 +21,7 @@ jobs:
           # default build
           - config_flags:
           # default build with all legacy features
-          - config_flags: --enable-experimental-features --enable-legacy-features --enable-ftp --enable-http --enable-gcrypt
+          - config_flags: --enable-experimental-features --enable-legacy-features --enable-ftp --enable-http --with-gcrypt
           # static openssl build
           - config_flags: --enable-static --enable-static-linking --disable-openssl3-engines --without-nss --without-gnutls --without-gcrypt --enable-experimental-features --enable-legacy-features
           # static gnutls build with GOST
@@ -272,7 +272,7 @@ jobs:
     - name: make
       working-directory: build.dir
       run: |
-          make
+          make VERBOSE=1
     - name: make check
       working-directory: build.dir
       run: |

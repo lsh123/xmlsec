@@ -23,7 +23,7 @@ EXTRACT_ALL            = NO
 EXTRACT_PRIVATE        = NO
 EXTRACT_PRIV_VIRTUAL   = NO
 EXTRACT_PACKAGE        = NO
-EXTRACT_STATIC         = YES
+EXTRACT_STATIC         = NO
 EXTRACT_LOCAL_CLASSES  = NO
 EXTRACT_LOCAL_METHODS  = NO
 HIDE_UNDOC_MEMBERS     = NO
@@ -33,7 +33,7 @@ HIDE_IN_BODY_DOCS      = NO
 INTERNAL_DOCS          = NO
 CASE_SENSE_NAMES       = YES
 HIDE_SCOPE_NAMES       = NO
-HIDE_COMPOUND_REFERENCE= NO
+HIDE_COMPOUND_REFERENCE = NO
 SHOW_INCLUDE_FILES     = YES
 SHOW_GROUPED_MEMB_INC  = NO
 FORCE_LOCAL_INCLUDES   = NO
@@ -57,12 +57,8 @@ INPUT                  = @abs_top_srcdir@/include \
 FILE_PATTERNS          = *.h \
                          *.c
 RECURSIVE              = YES
-EXCLUDE_PATTERNS       = */.libs/* \
-                         */Makefile* \
-                         */version.h.in \
-                         */src/*.h \
-                         */src/*/*.h
-EXAMPLE_PATH           = @abs_top_srcdir@/examples
+EXCLUDE_PATTERNS       = */src/*.h \
+                          */src/*/*.h
 INPUT_FILTER           = python3 @abs_top_srcdir@/docs/xml/api/doxygen_filter.py
 QUIET                  = YES
 WARNINGS               = YES
@@ -94,32 +90,18 @@ INCLUDE_PATH           = @abs_top_srcdir@/docs/xml/api \
                          @abs_top_srcdir@/include \
                          @abs_top_srcdir@/src
 INCLUDE_FILE_PATTERNS  = *.h
+# Windows types (LPWSTR, DWORD, NCRYPT_PROV_HANDLE, ...) are provided by the
+# stub headers in this directory (windows.h, wincrypt.h), included via
+# INCLUDE_PATH; do not redefine them here.
 PREDEFINED             = XMLSEC_EXPORT= \
-                         XMLSEC_EXPORT_VAR= \
-                         XMLSEC_CRYPTO_EXPORT= \
-                         XMLSEC_PRIVATE= \
-                         XMLSEC_DEPRECATED= \
-                         XMLSEC_ERRORS_PRINTF_ATTRIBUTE(x,y)= \
-                         HCERTSTORE=void* \
-                         HCRYPTKEY=void* \
-                         HCRYPTPROV=void* \
-                         PCCERT_CONTEXT=void* \
-                         LPTSTR=char* \
-                         LPCTSTR=const\ char* \
-                         LPWSTR=wchar_t* \
-                         LPCWSTR=const\ wchar_t* \
-                         BOOL=int \
-                         DWORD=unsigned\ long \
-                         PBYTE=unsigned\ char* \
-                         BYTE=unsigned\ char \
-                         BCRYPT_ALG_HANDLE=void* \
-                         BCRYPT_KEY_HANDLE=void* \
-                         NCRYPT_KEY_HANDLE=void* \
-                         NCRYPT_PROV_HANDLE=void* \
-                         __WIN32__=1 \
-                         _WIN32=1 \
-                         __GNUC__=1 \
-                         XMLSEC_ATTRIBUTE_UNUSED=
+                          XMLSEC_EXPORT_VAR= \
+                          XMLSEC_CRYPTO_EXPORT= \
+                          XMLSEC_PRIVATE= \
+                          XMLSEC_DEPRECATED= \
+                          XMLSEC_ERRORS_PRINTF_ATTRIBUTE= \
+                          _WIN32=1 \
+                          __GNUC__=1 \
+                          XMLSEC_ATTRIBUTE_UNUSED=
 EXPAND_AS_DEFINED      =
 SKIP_FUNCTION_MACROS   = YES
 TAGFILES               =

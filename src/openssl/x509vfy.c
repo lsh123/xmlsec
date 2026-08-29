@@ -42,6 +42,31 @@
 
 #ifndef XMLSEC_NO_X509
 
+
+
+static int              xmlSecOpenSSLX509VerifyCRLTimeValidity          (X509_CRL *crl,
+                                                                         xmlSecKeyInfoCtx* keyInfoCtx);
+static int              xmlSecOpenSSLX509VerifyCRL                      (X509_STORE* xst,
+                                                                         X509_STORE_CTX* xsc,
+                                                                         STACK_OF(X509)* untrusted,
+                                                                         X509_CRL *crl,
+                                                                         xmlSecKeyInfoCtx* keyInfoCtx);
+static X509*            xmlSecOpenSSLX509FindChildCert                  (STACK_OF(X509) *chain,
+                                                                         X509 *cert);
+static X509_NAME*       xmlSecOpenSSLX509NameRead                       (const xmlChar *str);
+
+static int              xmlSecOpenSSLX509NamesCompare                   (XMLSEC_OPENSSL400_CONST X509_NAME *a,
+                                                                         XMLSEC_OPENSSL400_CONST X509_NAME *b);
+static STACK_OF(X509_NAME_ENTRY)*  xmlSecOpenSSLX509_NAME_ENTRIES_copy  (XMLSEC_OPENSSL400_CONST X509_NAME *a);
+static int              xmlSecOpenSSLX509_NAME_ENTRIES_cmp              (STACK_OF(X509_NAME_ENTRY) * a,
+                                                                         STACK_OF(X509_NAME_ENTRY) * b);
+static int              xmlSecOpenSSLX509_NAME_ENTRY_cmp                (const X509_NAME_ENTRY * const *a,
+                                                                         const X509_NAME_ENTRY * const *b);
+
+static STACK_OF(X509)*  xmlSecOpenSSLX509StoreCombineCerts              (STACK_OF(X509)* certs1, STACK_OF(X509)* certs2);
+
+
+
 /******************************************************************************
  *
  * Internal OpenSSL X509 store CTX
@@ -55,6 +80,7 @@ struct _xmlSecOpenSSLX509StoreCtx {
     STACK_OF(X509_CRL)* crls;
     X509_VERIFY_PARAM * vpm;
 };
+
 
 /******************************************************************************
  *
@@ -83,27 +109,6 @@ static xmlSecKeyDataStoreKlass xmlSecOpenSSLX509StoreKlass = {
     NULL,                                       /* void* reserved1; */
 };
 
-static int              xmlSecOpenSSLX509VerifyCRLTimeValidity          (X509_CRL *crl,
-                                                                         xmlSecKeyInfoCtx* keyInfoCtx);
-static int              xmlSecOpenSSLX509VerifyCRL                      (X509_STORE* xst,
-                                                                         X509_STORE_CTX* xsc,
-                                                                         STACK_OF(X509)* untrusted,
-                                                                         X509_CRL *crl,
-                                                                         xmlSecKeyInfoCtx* keyInfoCtx);
-static X509*            xmlSecOpenSSLX509FindChildCert                  (STACK_OF(X509) *chain,
-                                                                         X509 *cert);
-static X509_NAME*       xmlSecOpenSSLX509NameRead                       (const xmlChar *str);
-
-static int              xmlSecOpenSSLX509NamesCompare                   (XMLSEC_OPENSSL400_CONST X509_NAME *a,
-                                                                         XMLSEC_OPENSSL400_CONST X509_NAME *b);
-static STACK_OF(X509_NAME_ENTRY)*  xmlSecOpenSSLX509_NAME_ENTRIES_copy  (XMLSEC_OPENSSL400_CONST X509_NAME *a);
-static int              xmlSecOpenSSLX509_NAME_ENTRIES_cmp              (STACK_OF(X509_NAME_ENTRY) * a,
-                                                                         STACK_OF(X509_NAME_ENTRY) * b);
-static int              xmlSecOpenSSLX509_NAME_ENTRY_cmp                (const X509_NAME_ENTRY * const *a,
-                                                                         const X509_NAME_ENTRY * const *b);
-
-static STACK_OF(X509)*  xmlSecOpenSSLX509StoreCombineCerts              (STACK_OF(X509)* certs1,
-                                                                         STACK_OF(X509)* certs2);
 /**
  * @brief The OpenSSL X509 certificates store klass.
  * @details The OpenSSL X509 certificates key data store klass.
@@ -888,15 +893,15 @@ xmlSecOpenSSLX509FilterCrlsByTime(STACK_OF(X509_CRL)* crls, xmlSecKeyInfoCtx* ke
 }
 
 /**
- * @brief Verifies @p certs list.
- * @param store the pointer to X509 key data store klass.
+ * @brief Verifies the given certificates list against the store.
+ * @param store the pointer to the X509 key data store.
  * @param certs the untrusted certificates stack.
- * @param crls the crls stack.
- * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
- * @return a borrowed pointer to the first verified certificate from @p certs, or NULL if an error occurs; the caller must NOT free it.
+ * @param crls the CRLs stack.
+ * @param keyInfoCtx the pointer to the &lt;dsig:KeyInfo/&gt; element processing context.
+ * @return a borrowed pointer to the first verified certificate, or NULL if an error occurs; the caller must NOT free it.
  */
 X509*
-xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* certs, XMLSEC_STACK_OF_X509_CRL* crls, xmlSecKeyInfoCtx* keyInfoCtx) {
+xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs, STACK_OF(X509_CRL)* crls, xmlSecKeyInfoCtx* keyInfoCtx) {
     xmlSecOpenSSLX509StoreCtxPtr ctx;
     STACK_OF(X509)* all_untrusted_certs = NULL;
     STACK_OF(X509_CRL)* verified_crls = NULL;

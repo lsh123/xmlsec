@@ -18,8 +18,16 @@ import re
 import sys
 import xml.etree.ElementTree as ET
 
+if sys.version_info < (3, 10):
+    print(
+        f"ERROR: gen-api-md.py requires Python 3.10 or newer "
+        f"(found {sys.version_info.major}.{sys.version_info.minor}).",
+        file=sys.stderr,
+    )
+    sys.exit(2)
+
 # ---------------------------------------------------------------------------
-# Validation helpers
+# Error / warning reporting
 # ---------------------------------------------------------------------------
 
 _errors: list[str] = []
@@ -35,34 +43,6 @@ def _error(msg: str) -> None:
 def _warn(msg: str) -> None:
     _warnings.append(msg)
     print(f"WARNING: {msg}", file=sys.stderr)
-
-
-def _require(node: ET.Element | None, path: str, context: str) -> ET.Element | None:
-    """Assert that *node* is not None; record an error if it is."""
-    if node is None:
-        _error(f"{context}: missing required element <{path}>")
-    return node
-
-
-def _require_attr(node: ET.Element, attr: str, context: str) -> str | None:
-    """Assert that *node* has *attr*; record an error and return None if missing."""
-    val = node.get(attr)
-    if val is None:
-        _error(f"{context}: element <{node.tag}> is missing required attribute '{attr}'")
-    return val
-
-
-def _require_text(node: ET.Element | None, tag: str, context: str) -> str:
-    """Return text of child *tag* or '' with error if missing / empty."""
-    if node is None:
-        _error(f"{context}: parent element is None when looking for <{tag}>")
-        return ""
-    child = node.find(tag)
-    if child is None:
-        _error(f"{context}: missing required child element <{tag}>")
-        return ""
-    text = (child.text or "").strip()
-    return text
 
 
 # ---------------------------------------------------------------------------
@@ -101,7 +81,47 @@ def _inline_markup(node: ET.Element) -> str:
             parts.append(_inline_markup(child))
         if child.tail:
             parts.append(child.tail)
-    return "".join(parts).strip()
+    # Note: no final strip here — callers (e.g. _para_to_md) strip the
+    # complete result, so whitespace at tag boundaries is preserved.
+    return "".join(parts)
+
+
+def _programlisting_to_text(elem: ET.Element) -> str:
+    """Extract the full text of a <programlisting> element.
+
+    Doxygen places inter-token text in element tails and marks spaces with
+    empty <sp/> elements, so a plain text dump (e.g. ET.tostring(method="text"))
+    loses every space.  Walk the tree collecting .text and .tail, rendering
+    <sp/> as a space.
+    """
+    parts: list[str] = []
+    if elem.text:
+        parts.append(elem.text)
+    for child in elem:
+        if child.tag == "sp":
+            parts.append(" ")
+        else:
+            parts.append(_programlisting_to_text(child))
+        if child.tail:
+            parts.append(child.tail)
+    return "".join(parts)
+
+
+def _render_list_items(list_elem: ET.Element, ordered: bool) -> str:
+    """Render the <listitem> children of an <itemizedlist>/<orderedlist>
+    element as a Markdown list.  Items without a <para> (or with empty text)
+    are skipped."""
+    items: list[str] = []
+    for i, li in enumerate(list_elem.findall("listitem"), 1):
+        para = li.find("para")
+        if para is None:
+            continue
+        text = _para_to_md(para)
+        if not text:
+            continue
+        prefix = f"{i}. " if ordered else "- "
+        items.append(prefix + text)
+    return "\n".join(items)
 
 
 def _para_to_md(para: ET.Element) -> str:
@@ -156,27 +176,23 @@ def _para_to_md(para: ET.Element) -> str:
             parts.append(f"[{text}]({url})")
         elif tag == "linebreak":
             parts.append("\n")
-        elif tag in ("ndash",):
+        elif tag == "ndash":
             parts.append("–")
-        elif tag in ("mdash",):
+        elif tag == "mdash":
             parts.append("—")
         elif tag == "sp":
             parts.append(" ")
         elif tag == "itemizedlist":
-            items_md = "\n".join(
-                "- " + _para_to_md(li.find("para") if li.find("para") is not None else ET.Element("para"))
-                for li in child.findall("listitem")
-            )
-            parts.append("\n\n" + items_md)
+            items_md = _render_list_items(child, ordered=False)
+            if items_md:
+                parts.append("\n\n" + items_md)
         elif tag == "orderedlist":
-            items_md = "\n".join(
-                f"{i+1}. " + _para_to_md(li.find("para") if li.find("para") is not None else ET.Element("para"))
-                for i, li in enumerate(child.findall("listitem"))
-            )
-            parts.append("\n\n" + items_md)
+            items_md = _render_list_items(child, ordered=True)
+            if items_md:
+                parts.append("\n\n" + items_md)
         elif tag == "programlisting":
-            code = "".join(ET.tostring(l, encoding="unicode", method="text") for l in child)
-            parts.append(f"\n\n```c\n{code.rstrip()}\n```")
+            code = _programlisting_to_text(child)
+            parts.append(f"\n\n```c\n{code.strip()}\n```")
         elif tag in ("title", "heading"):
             pass  # skip internal headings
         else:
@@ -233,10 +249,18 @@ def _description_to_md(parent: ET.Element | None) -> str:
             if code:
                 paragraphs.append(f"```\n{code}\n```")
         elif child.tag == "programlisting":
-            code = "".join(ET.tostring(l, encoding="unicode", method="text") for l in child)
+            code = _programlisting_to_text(child)
             if code.strip():
-                paragraphs.append(f"```c\n{code.rstrip()}\n```")
-        # other tags (itemizedlist at top level, etc.) — ignored for brevity
+                paragraphs.append(f"```c\n{code.strip()}\n```")
+        else:
+            # Other block-level elements (itemizedlist, simplesect, table, ...)
+            # are not rendered directly; keep their <para> children and warn so
+            # content is never dropped silently.
+            _warn(f"unsupported element <{child.tag}> in description — only its <para> children are rendered")
+            for p in child.findall("para"):
+                text = _para_to_md(p)
+                if text:
+                    paragraphs.append(text)
     return "\n\n".join(paragraphs)
 
 
@@ -288,7 +312,8 @@ def _build_function_signature(member: ET.Element) -> str:
     for param in member.findall("param"):
         ptype = _elem_to_text(param.find("type"))
         pdecl = (param.findtext("declname") or "").strip()
-        # handle function-pointer params: type="void(*" argsstring=")(...)
+        # Doxygen emits the complete parameter type in <type>
+        # (e.g. 'void(*)(int)' for function pointers), so it is used as-is.
         parray = (param.findtext("array") or "").strip()
         if pdecl:
             params_parts.append(f"{ptype} {pdecl}{parray}".strip())
@@ -393,6 +418,11 @@ def _render_typedefs(section: ET.Element) -> str:
     return "\n".join(lines)
 
 
+def _md_table_cell(text: str) -> str:
+    """Escape characters that would break a Markdown table cell."""
+    return text.replace("|", "\\|")
+
+
 def _render_enums(section: ET.Element) -> str:
     lines: list[str] = ["## Enumerations\n"]
     for member in section.findall("memberdef"):
@@ -422,8 +452,18 @@ def _render_enums(section: ET.Element) -> str:
             for ev in values:
                 ev_name = (ev.findtext("name") or "").strip()
                 ev_init = (ev.findtext("initializer") or "").strip()
+                # Doxygen emits <initializer>= 0</initializer>; drop the '='.
+                if ev_init.startswith("="):
+                    ev_init = ev_init[1:].strip()
                 ev_brief = _description_to_md(ev.find("briefdescription")).replace("\n", " ")
-                lines.append(f"| `{ev_name}` | `{ev_init}` | {ev_brief} |")
+                if not ev_brief:
+                    # Doxygen leaves enumvalue/briefdescription empty and puts the
+                    # /**< ... */ text in <detaileddescription> instead.
+                    ev_brief = _description_to_md(ev.find("detaileddescription")).replace("\n", " ")
+                lines.append(
+                    f"| `{_md_table_cell(ev_name)}` | `{_md_table_cell(ev_init)}` "
+                    f"| {_md_table_cell(ev_brief)} |"
+                )
             lines.append("")
         lines.append("---\n")
     return "\n".join(lines)
@@ -566,7 +606,7 @@ def _parse_group_xml(xml_path: str) -> tuple[list[str], GroupInfo] | None:
         group_id=group_id,
         group_name=group_name,
         title=title,
-        brief=_description_to_md(compound.find("briefdescription")),
+        brief=brief,
         filename=_group_id_to_filename(group_id),
         children=[ig.get("refid", "") for ig in compound.findall("innergroup")],
     )
@@ -577,7 +617,7 @@ def _parse_group_xml(xml_path: str) -> tuple[list[str], GroupInfo] | None:
 # Index generation
 # ---------------------------------------------------------------------------
 
-def generate_index_md(groups: dict[str, GroupInfo], out_dir: str, version: str = "") -> str:
+def generate_index_md(groups: dict[str, GroupInfo], out_dir: str, version: str = "") -> str | None:
     """Build index.md with a hierarchical table of contents.
 
     Top-level groups (those not referenced as a child by any other group) are
@@ -585,6 +625,8 @@ def generate_index_md(groups: dict[str, GroupInfo], out_dir: str, version: str =
     follow as nested lists, each level sorted alphabetically by title.
     Any group not reachable from a root is appended at the end under
     "Other Groups" so nothing is silently lost.
+
+    Returns the path of the written index.md, or None if writing failed.
     """
     # Determine root groups: those not listed as a child of any other group
     all_children: set[str] = {c for info in groups.values() for c in info.children}
@@ -649,13 +691,17 @@ def generate_index_md(groups: dict[str, GroupInfo], out_dir: str, version: str =
         lines.append("## Other Groups\n")
         for gid in orphans:
             info = groups[gid]
-            brief_suffix = f" — {info.brief.split(chr(10))[0]}" if info.brief else ""
+            brief_suffix = f" — {info.brief.splitlines()[0]}" if info.brief else ""
             lines.append(f"- [{info.title}]({info.filename}){brief_suffix}")
         lines.append("")
 
     out_path = os.path.join(out_dir, "index.md")
-    with open(out_path, "w", encoding="utf-8") as f:
-        f.write("\n".join(lines) + "\n")
+    try:
+        with open(out_path, "w", encoding="utf-8") as f:
+            f.write("\n".join(lines) + "\n")
+    except OSError as exc:
+        _error(f"failed to write {out_path}: {exc}")
+        return None
     return out_path
 
 
@@ -684,9 +730,14 @@ def main() -> int:
         return 1
 
     # Collect group XML files
+    try:
+        entries = os.listdir(xml_dir)
+    except OSError as exc:
+        print(f"ERROR: cannot read input directory {xml_dir}: {exc}", file=sys.stderr)
+        return 1
     group_files = sorted(
         os.path.join(xml_dir, f)
-        for f in os.listdir(xml_dir)
+        for f in entries
         if f.startswith("group__") and f.endswith(".xml")
     )
 
@@ -703,15 +754,18 @@ def main() -> int:
         if result:
             md_parts, info = result
             parsed[info.group_id] = (md_parts, info)
-        else:
-            _error(f"Failed to parse {xml_path}")
+        # else: the specific failure was already reported by _parse_group_xml
 
     # Determine root groups: those not referenced as a child by any other group
     all_children: set[str] = {c for _, info in parsed.values() for c in info.children}
     root_ids: set[str] = {gid for gid in parsed if gid not in all_children}
 
     # Phase 2: write files, adding version to the heading for root groups
-    os.makedirs(out_dir, exist_ok=True)
+    try:
+        os.makedirs(out_dir, exist_ok=True)
+    except OSError as exc:
+        print(f"ERROR: cannot create output directory {out_dir}: {exc}", file=sys.stderr)
+        return 1
 
     generated: list[str] = []
     groups: dict[str, GroupInfo] = {}
@@ -721,8 +775,12 @@ def main() -> int:
         else:
             md_parts_out = md_parts
         out_path = os.path.join(out_dir, info.filename)
-        with open(out_path, "w", encoding="utf-8") as f:
-            f.write("\n".join(md_parts_out))
+        try:
+            with open(out_path, "w", encoding="utf-8") as f:
+                f.write("\n".join(md_parts_out))
+        except OSError as exc:
+            print(f"ERROR: failed to write {out_path}: {exc}", file=sys.stderr)
+            return 1
         print(f"Generated {out_path}")
         generated.append(out_path)
         groups[group_id] = info
@@ -732,7 +790,8 @@ def main() -> int:
     # Generate index.md
     if groups:
         index_path = generate_index_md(groups, out_dir, version)
-        print(f"Generated {index_path}")
+        if index_path is not None:
+            print(f"Generated {index_path}")
 
     if _errors:
         print(

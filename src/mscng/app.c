@@ -112,7 +112,7 @@ xmlSecMSCngAppParseConfig(const char* config, LPTSTR* pCurrentUserStoreName, LPT
  * by the XMLSec command-line utility and is called before the
  * #xmlSecInit function.
  *
- * @param config the cert store name (or a <user>:<machine> pair of names)
+ * @param config the cert store name (or a &lt;user&gt;:&lt;machine&gt; pair of names)
  *         parsed by xmlSecMSCngAppParseConfig, or NULL.
  * @return 0 on success or a negative value otherwise.
  */

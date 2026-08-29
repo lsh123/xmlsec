@@ -21,7 +21,7 @@ jobs:
           # default build
           - config_flags:
           # default build with all legacy features
-          - config_flags: --enable-experimental-features --enable-legacy-features --enable-ftp --enable-http --enable-gcrypt
+          - config_flags: --enable-experimental-features --enable-legacy-features --enable-ftp --enable-http --with-gcrypt
           # static openssl build
           - config_flags: --enable-static --enable-static-linking --disable-openssl3-engines --without-nss --without-gnutls --without-gcrypt --enable-experimental-features --enable-legacy-features
           # static gnutls build with GOST
@@ -267,7 +267,9 @@ jobs:
       working-directory: build.dir
       run: |
           autoreconf -i -f ..
-          ../configure --prefix=`cygpath -u "${GITHUB_WORKSPACE}/install.dir"` --enable-werror --enable-pedantic \
+          ../configure --prefix=`cygpath -u "${GITHUB_WORKSPACE}/install.dir"` \
+              --enable-werror --enable-pedantic \
+              --enable-werror --enable-pedantic \
               --enable-mscrypto --enable-mscng ${{ matrix.config_flags }} \
               --build="${{ matrix.arch }}-w64-mingw32" \
               --host="${{ matrix.arch }}-w64-mingw32"

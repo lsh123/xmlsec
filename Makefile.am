@@ -18,7 +18,7 @@ UNIT_TEST_APP 	= apps/xmlsec_unit_tests$(EXEEXT)
 DEFAULT_CRYPTO	= @XMLSEC_DEFAULT_CRYPTO@
 
 bin_SCRIPTS 	= xmlsec1-config
-pkgconfig_DATA 	= xmlsec1.pc @XMLSEC_CRYPTO_PC_FILES_LIST@
+pkgconfig_DATA 	= @XMLSEC_PC_FILE@ @XMLSEC_CRYPTO_PC_FILES_LIST@
 pkgconfigdir 	= $(libdir)/pkgconfig
 confexecdir		= $(libdir)
 confexec_DATA 	= xmlsec1Conf.sh
@@ -62,7 +62,7 @@ EXTRA_DIST = \
 	xmlsecConf.sh.in \
 	xmlsec.spec.in \
 	xmlsec1Conf.sh \
-	xmlsec1.pc @XMLSEC_CRYPTO_PC_FILES_LIST@ \
+	@XMLSEC_PC_FILE@ @XMLSEC_CRYPTO_PC_FILES_LIST@ \
 	xmlsec1-config \
 	xmlsec1.spec \
 	xmlsec1.m4 \

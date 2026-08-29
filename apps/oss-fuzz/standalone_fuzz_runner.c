@@ -17,11 +17,32 @@
 #include <stdlib.h>
 #include <assert.h>
 
+#if defined(_WIN32) && defined(UNICODE)
+#include <wchar.h>
+#endif /* defined(_WIN32) && defined(UNICODE) */
+
 /* Declared by the fuzzer harness (xmlsec_target.c / xmlsec_dsig_verify_target.c /
    xmlsec_keyload_target.c / xmlsec_keyinfo_target.c). */
 extern int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size);
 
-int main(int argc, char** argv) {
+#if defined(_WIN32) && defined(UNICODE)
+#define FUZZER_ERROR(msg, param) \
+    fwprintf(stderr, L"standalone_fuzz_runner: %hs '%ls'\n", (msg), (param))
+#else /* defined(_WIN32) && defined(UNICODE) */
+#define FUZZER_ERROR(msg, param) \
+    fprintf(stderr, "standalone_fuzz_runner: %s '%s'\n", (msg), (param))
+#endif /* defined(_WIN32) && defined(UNICODE) */
+
+#if defined(_WIN32) && defined(UNICODE) && defined(__MINGW32__)
+int wmain(int argc, wchar_t* argv[]);
+#endif /* defined(_WIN32) && defined(UNICODE) && defined(__MINGW32__) */
+
+
+#if defined(_WIN32) && defined(UNICODE)
+int wmain(int argc, wchar_t *argv[]) {
+#else /* defined(_WIN32) && defined(UNICODE) */
+int main(int argc, const char **argv) {
+#endif /* defined(_WIN32) && defined(UNICODE) */
     int i;
     int ret = 0;
 
@@ -38,28 +59,37 @@ int main(int argc, char** argv) {
         uint8_t* buf;
         int inputRet;
 
-#ifdef _MSC_VER
+        /* call different fopen flavors based on the environment */
+#if defined(_MSC_VER) && defined(_WIN32) && defined(UNICODE)
+        if (_wfopen_s(&f, argv[i], L"rb") != 0) {
+            FUZZER_ERROR("cannot open", argv[i]);
+            continue;
+        }
+#elif defined(_MSC_VER) && defined(_WIN32) && !defined(UNICODE)
         if (fopen_s(&f, argv[i], "rb") != 0) {
-            fprintf(stderr, "standalone_fuzz_runner: cannot open '%s'\n", argv[i]);
+            FUZZER_ERROR("cannot open", argv[i]);
             continue;
         }
-#else /* _MSC_VER */
+#elif defined(_WIN32) && defined(UNICODE)
+        f = _wfopen(argv[i], L"rb");
+#else /* defined(_WIN32) && defined(UNICODE) */
         f = fopen(argv[i], "rb");
+#endif /* defined(_WIN32) && defined(UNICODE) */
+
         if (f == NULL) {
-            fprintf(stderr, "standalone_fuzz_runner: cannot open '%s'\n", argv[i]);
+            FUZZER_ERROR("cannot open", argv[i]);
             continue;
         }
-#endif /* _MSC_VER */
         assert(f != NULL);
 
         if (fseek(f, 0, SEEK_END) != 0) {
-            fprintf(stderr, "standalone_fuzz_runner: cannot seek in '%s'\n", argv[i]);
+            FUZZER_ERROR("cannot seek in", argv[i]);
             fclose(f);
             continue;
         }
         len = ftell(f);
         if (len < 0) {
-            fprintf(stderr, "standalone_fuzz_runner: cannot determine the size of '%s'\n", argv[i]);
+            FUZZER_ERROR("cannot determine the size of", argv[i]);
             fclose(f);
             continue;
         }
@@ -67,13 +97,13 @@ int main(int argc, char** argv) {
 
         buf = (uint8_t*)malloc((size_t)len + 1);
         if (buf == NULL) {
-            fprintf(stderr, "standalone_fuzz_runner: out of memory reading '%s'\n", argv[i]);
+            FUZZER_ERROR("out of memory reading", argv[i]);
             fclose(f);
             continue;
         }
 
         if (len > 0 && fread(buf, 1, (size_t)len, f) != (size_t)len) {
-            fprintf(stderr, "standalone_fuzz_runner: failed to read '%s'\n", argv[i]);
+            FUZZER_ERROR("failed to read", argv[i]);
             free(buf);
             fclose(f);
             continue;

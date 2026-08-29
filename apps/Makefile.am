@@ -66,6 +66,7 @@ xmlsec1_SOURCES = \
 xmlsec1_LDFLAGS = \
 	@XMLSEC_STATIC_BINARIES@ \
 	@XMLSEC_EXTRA_LDFLAGS@ \
+	@XMLSEC_APP_EXTRA_LDFLAGS@ \
 	$(CRYPTO_LD_FLAGS) \
 	$(NULL)
 
@@ -101,6 +102,7 @@ xmlsec_unit_tests_SOURCES = \
 xmlsec_unit_tests_LDFLAGS = \
 	@XMLSEC_STATIC_BINARIES@ \
 	@XMLSEC_EXTRA_LDFLAGS@ \
+	@XMLSEC_APP_EXTRA_LDFLAGS@ \
 	$(CRYPTO_LD_FLAGS) \
 	$(NULL)
 
@@ -134,6 +136,7 @@ xmlsec_fuzzer_CFLAGS = \
 xmlsec_fuzzer_LDFLAGS = \
 	@XMLSEC_STATIC_BINARIES@ \
 	@XMLSEC_EXTRA_LDFLAGS@ \
+	@XMLSEC_APP_EXTRA_LDFLAGS@ \
 	$(NULL)
 
 xmlsec_fuzzer_LDADD = \
@@ -168,6 +171,7 @@ xmlsec_dsig_verify_fuzzer_CFLAGS = \
 xmlsec_dsig_verify_fuzzer_LDFLAGS = \
 	@XMLSEC_STATIC_BINARIES@ \
 	@XMLSEC_EXTRA_LDFLAGS@ \
+	@XMLSEC_APP_EXTRA_LDFLAGS@ \
 	$(NULL)
 
 xmlsec_dsig_verify_fuzzer_LDADD = \
@@ -202,6 +206,7 @@ xmlsec_keyinfo_fuzzer_CFLAGS = \
 xmlsec_keyinfo_fuzzer_LDFLAGS = \
 	@XMLSEC_STATIC_BINARIES@ \
 	@XMLSEC_EXTRA_LDFLAGS@ \
+	@XMLSEC_APP_EXTRA_LDFLAGS@ \
 	$(NULL)
 
 xmlsec_keyinfo_fuzzer_LDADD = \
@@ -236,6 +241,7 @@ xmlsec_keyload_fuzzer_CFLAGS = \
 xmlsec_keyload_fuzzer_LDFLAGS = \
 	@XMLSEC_STATIC_BINARIES@ \
 	@XMLSEC_EXTRA_LDFLAGS@ \
+	@XMLSEC_APP_EXTRA_LDFLAGS@ \
 	$(NULL)
 
 xmlsec_keyload_fuzzer_LDADD = \

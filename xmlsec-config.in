@@ -8,6 +8,9 @@ libdir="@libdir@"
 
 usage()
 {
+    if [ "$1" -ne 0 ] ; then
+        exec 1>&2
+    fi
     cat <<EOF
 Usage: $package-config [OPTION]...
 
@@ -23,7 +26,8 @@ Known values for OPTION are:
   --exec-prefix=DIR   change XMLSEC executable prefix folder
   --libdir=DIR        change XMLSEC libraries folder
   --crypto=LIB        configure with XMLSEC crypto library (one of the
-                      following: none default openssl nss gnutls gcrypt)
+                      following: none default openssl nss gnutls gcrypt
+                      mscng mscrypto)
   --help              display this help and exit
   --version           output version information
 EOF
@@ -33,11 +37,11 @@ EOF
 
 
 #
-# first parse command line aruments
+# first parse command line arguments
 #
 if [ $# -eq 0 ]
 then
-    usage 1 1>&2
+    usage 1
 fi
 
 cflags=false
@@ -75,6 +79,7 @@ do
 
     --prefix)
         echo $prefix
+        exit 0
     ;;
 
     --exec-prefix=*)
@@ -84,6 +89,7 @@ do
 
     --exec-prefix)
         echo $exec_prefix
+        exit 0
     ;;
 
     --libdir=*)
@@ -92,6 +98,7 @@ do
 
     --libdir)
         echo $libdir
+        exit 0
     ;;
 
     --version)
@@ -150,7 +157,7 @@ the_xmlsec_crypto_lib=""
 case "$crypto" in
 none)
     # no crypto, just the core xmlsec engine (useful when more
-    # than one crypto engine i sused by application)
+    # than one crypto engine is used by application)
     if [ "z@XMLSEC_NO_CRYPTO_DYNAMIC_LOADING@" != "z1" ] ;
     then
         the_crypto_flags="-DXMLSEC_CRYPTO_DYNAMIC_LOADING=1"
@@ -170,7 +177,7 @@ openssl)
         the_crypto_libs="@OPENSSL_LIBS@"
         the_xmlsec_crypto_lib="-l@OPENSSL_CRYPTO_LIB@"
     else
-        echo "Error: the \"$crypto\" cryptographic library is not supported"
+        echo "Error: the \"$crypto\" cryptographic library is not supported" >&2
         usage 1
     fi
     ;;
@@ -182,7 +189,7 @@ gnutls)
         the_crypto_libs="@GNUTLS_LIBS@"
         the_xmlsec_crypto_lib="-l@GNUTLS_CRYPTO_LIB@"
     else
-        echo "Error: the \"$crypto\" cryptographic library is not supported"
+        echo "Error: the \"$crypto\" cryptographic library is not supported" >&2
         usage 1
     fi
     ;;
@@ -190,11 +197,11 @@ gnutls)
 gcrypt)
     if test "@XMLSEC_NO_GCRYPT@" = "0" ;
     then
-        the_crypto_flags="@GCRYPT_CFLAGS@L"
+        the_crypto_flags="@GCRYPT_CFLAGS@"
         the_crypto_libs="@GCRYPT_LIBS@"
         the_xmlsec_crypto_lib="-l@GCRYPT_CRYPTO_LIB@"
     else
-        echo "Error: the \"$crypto\" cryptographic library is not supported"
+        echo "Error: the \"$crypto\" cryptographic library is not supported" >&2
         usage 1
     fi
     ;;
@@ -206,13 +213,37 @@ nss)
         the_crypto_libs="@NSS_LIBS@"
         the_xmlsec_crypto_lib="-l@NSS_CRYPTO_LIB@"
     else
-        echo "Error: the \"$crypto\" cryptographic library is not supported"
+        echo "Error: the \"$crypto\" cryptographic library is not supported" >&2
+        usage 1
+    fi
+    ;;
+
+mscng)
+    if test "@XMLSEC_NO_MSCNG@" = "0";
+    then
+        the_crypto_flags="@MSCNG_CFLAGS@"
+        the_crypto_libs="@MSCNG_LIBS@"
+        the_xmlsec_crypto_lib="-l@MSCNG_CRYPTO_LIB@"
+    else
+        echo "Error: the \"$crypto\" cryptographic library is not supported" >&2
+        usage 1
+    fi
+    ;;
+
+mscrypto)
+    if test "@XMLSEC_NO_MSCRYPTO@" = "0";
+    then
+        the_crypto_flags="@MSCRYPTO_CFLAGS@"
+        the_crypto_libs="@MSCRYPTO_LIBS@"
+        the_xmlsec_crypto_lib="-l@MSCRYPTO_CRYPTO_LIB@"
+    else
+        echo "Error: the \"$crypto\" cryptographic library is not supported" >&2
         usage 1
     fi
     ;;
 
 *)
-    echo "Error: the \"$crypto\" cryptographic library is not supported"
+    echo "Error: the \"$crypto\" cryptographic library is not supported" >&2
     usage 1
     ;;
 
@@ -222,7 +253,7 @@ esac
 # Assemble all the settings together
 #
 the_flags="$the_flags @XMLSEC_CORE_CFLAGS@ $the_xml_flags $the_xslt_flags $the_crypto_flags"
-the_libs="$the_libs -L${libdir} @XMLSEC_CORE_LIBS@ $the_xmlsec_crypto_lib -lxmlsec1 $the_xml_libs $the_xslt_libs $the_crypto_libs"
+the_libs="$the_libs -L${libdir} @XMLSEC_CORE_LIBS@ $the_xmlsec_crypto_lib $the_xml_libs $the_xslt_libs $the_crypto_libs"
 
 if $cflags ;
 then
@@ -231,7 +262,7 @@ fi
 
 if $libs ;
 then
-    all_flags="$all_flags $services $the_libs"
+    all_flags="$all_flags $the_libs"
 fi
 
 if test -z "$all_flags" || test "x$all_flags" = "x " ;
@@ -239,7 +270,7 @@ then
     exit 1
 fi
 
-# Straight out any possible duplicates, but be careful to
+# Strip out any possible duplicates, but be careful to
 # get `-lfoo -lbar -lbaz' for `-lfoo -lbaz -lbar -lbaz'
 other_flags=
 rev_libs=

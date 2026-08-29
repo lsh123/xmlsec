@@ -1,8 +1,8 @@
 #
 # make all 		: prints info message
-# make docs		: generates the doc files (if necessary tools are present) or prints error
-# make install  : tries to copy MD files to install dir first from builddir, then srcdir, then prints warning
-# make dist     : tries to copy MD files to dist dir first from builddir, then srcdir, then prints warning
+# make docs		: generates the doc files (if the necessary tools are present) or prints an error
+# make install  : tries to copy MD files to install dir first from builddir, then srcdir, then prints a warning
+# make dist     : tries to copy MD files to dist dir first from builddir, then srcdir, then prints a warning
 #
 NULL =
 SUBDIRS = examples api tutorial
@@ -25,7 +25,7 @@ all:
 # Generates MD files:
 #   - Static *.md files are copied from sources
 #   - Manpage doc file is generated from man
-#   - API, examples, and tutorial, docs are generated (in that order)
+#   - API, examples, and tutorial docs are generated (in that order)
 #
 if BUILD_MD_DOCS
 
@@ -41,7 +41,7 @@ docs-copy:
 	fi
 
 docs-manpages:
-	@if [ ! -f " $(XMLSEC1_MAN)" ]; then \
+	@if [ ! -f "$(XMLSEC1_MAN)" ]; then \
 		echo "-- Man page is not built yet, rebuilding ..."; \
 		$(MAKE) $(AM_MAKEFLAGS) -C $(abs_top_builddir)/man docs ; \
 	fi
@@ -70,7 +70,7 @@ clean-local:
 distclean-local: clean-local
 
 #
-# Tries to copy MD files to install dir first from builddir, then srcdir, then prints warning
+# Tries to copy MD files to install dir first from builddir, then srcdir, then prints a warning
 #
 install-data-local:
 	@( \
@@ -90,7 +90,7 @@ uninstall-local:
 	@$(RM) -rf $(DESTDIR)$(TARGET_DIR)
 
 #
-# Tries to copy MD files to dist dir first from builddir, then srcdir, then prints warning
+# Tries to copy MD files to dist dir first from builddir, then srcdir, then prints a warning
 #
 dist-hook:
 	@( \

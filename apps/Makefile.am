@@ -5,6 +5,14 @@ noinst_PROGRAMS = xmlsec_unit_tests xmlsec_fuzzer
 
 XMLSEC_LIBS = $(top_builddir)/src/libxmlsec1.la
 
+EXTRA_DIST = \
+	oss-fuzz/README.md \
+	oss-fuzz/config/xmlsec_fuzzer.options \
+	oss-fuzz/config/xmlsec_dsig_verify_fuzzer.options \
+	oss-fuzz/config/xmlsec_keyinfo_fuzzer.options \
+	oss-fuzz/config/xmlsec_keyload_fuzzer.options \
+	$(NULL)
+
 
 # check if we use dynamic loading for xmlsec-crypto or not
 if XMLSEC_NO_APPS_CRYPTO_DYNAMIC_LOADING
@@ -27,11 +35,10 @@ CRYPTO_LD_ADD = \
 
 else
 
-CRYPTO_DEPS =  \
+CRYPTO_DEPS = \
 	$(NULL)
 
 CRYPTO_INCLUDES = \
-	-DXMLSEC_CRYPTO_DYNAMIC_LOADING=1
 	$(NULL)
 
 CRYPTO_LD_FLAGS = \

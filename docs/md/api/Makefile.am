@@ -1,8 +1,8 @@
 #
 # make all 		: prints info message
-# make docs		: regenerates the MD files (if necessary tools are present) or prints error
-# make install  : tries to copy MD files to install dir first from builddir, then srcdir, then prints warning
-# make dist     : tries to copy MD files to dist dir first from builddir, then srcdir, then prints warning
+# make docs		: regenerates the MD files (if the necessary tools are present) or prints an error
+# make install  : tries to copy MD files to install dir first from builddir, then srcdir, then prints a warning
+# make dist     : tries to copy MD files to dist dir first from builddir, then srcdir, then prints a warning
 #
 NULL =
 
@@ -36,8 +36,8 @@ if BUILD_MD_DOCS
 
 docs:
 	@echo "-- Generating API Markdown files ..."
-	@if [ ! -d "$(XML_API_DIR)" ]; then \
-		echo "-- XML API directory not found, generating XML files first ..."; \
+	@if ! ls "$(XML_API_DIR)"/group__*.xml >/dev/null 2>&1 ; then \
+		echo "-- XML API group files not found, generating XML files first ..."; \
 		$(MAKE) $(AM_MAKEFLAGS) -C $(abs_top_builddir)/docs/xml/api docs; \
 	fi
 	@$(PYTHON3) $(GEN_API_MD) "$(PACKAGE_VERSION)" "$(XML_API_DIR)" "$(builddir)"
@@ -45,7 +45,7 @@ docs:
 else
 
 docs:
-	@(echo "=== ERROR: To build Markdown docs, make sure pandoc and python3 are installed" ; exit 1; )
+	@(echo "=== ERROR: To build API Markdown docs, make sure python3 is installed" ; exit 1; )
 
 endif
 
@@ -63,12 +63,13 @@ distclean-local: clean-local
 #
 install-data-local:
 	@( \
-		$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR) ; \
 		if test -f $(builddir)/index.md ; then  \
 			echo "-- Installing builddir API docs ..." ; \
+			$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR) ; \
 			@INSTALL@ -m 0644 $(builddir)/*.md $(DESTDIR)$(TARGET_DIR) ; \
 		elif test -f $(srcdir)/index.md ; then  \
 			echo "-- Installing srcdir API docs ..." ; \
+			$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR) ; \
 			@INSTALL@ -m 0644 $(srcdir)/*.md $(DESTDIR)$(TARGET_DIR) ; \
 		else \
 			echo "WARNING: Skipping API docs installation: missing necessary tools to build API docs" ; \

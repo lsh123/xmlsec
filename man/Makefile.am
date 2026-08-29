@@ -1,8 +1,8 @@
 #
 # make all 		: prints info message
-# make docs		: generates the man pages (if necessary tools are present) or prints error
-# make install  : tries to copy man pages to install dir first from builddir, then srcdir, then prints warning
-# make dist     : tries to copy man pages to dist dir first from builddir, then srcdir, then prints warning
+# make docs		: generates the man pages (if the necessary tools are present) or prints an error
+# make install  : copies the man pages from builddir to the install dir, or prints a warning if they are missing
+# make dist     : copies the man pages from builddir to the dist dir, or prints a warning if they are missing
 #
 NULL =
 
@@ -12,11 +12,10 @@ TARGET_DIR = @XMLSEC_MANDIR@
 XMLSEC1_MAN=xmlsec1.1
 XMLSEC1_CONFIG_MAN=xmlsec1-config.1
 
-XMLSEC1_MAN_SRC=$(srcdir)/xmlsec1.1
-XMLSEC1_CONFIG_MAN_SRC=$(srcdir)/xmlsec1-config.1
-
 XMLSEC_PROGRAM=$(top_builddir)/apps/xmlsec1
 XMLSEC_CONFIG_PROGRAM=$(top_builddir)/xmlsec1-config
+
+.PHONY: all docs
 
 #
 # Docs are not built as part of normal build
@@ -42,7 +41,7 @@ docs:
 		$(XMLSEC_PROGRAM)
 	@echo "Building xmlsec1-config manpage ..."
 	@$(HELP2MAN) --help-option=--help --no-info \
-		--name="detail installed version of xmlsec library" \
+		--name="details about the installed version of the xmlsec library" \
 		--version-option=--version \
 		--output=$(XMLSEC1_CONFIG_MAN) \
 		$(XMLSEC_CONFIG_PROGRAM)
@@ -64,19 +63,15 @@ clean-local:
 distclean-local: clean-local
 
 #
-# Tries to copy man pages to install dir first from builddir, then srcdir, then prints warning
+# Copies the man pages from builddir to the install dir, or prints a warning if they are missing.
 #
 install-data-local:
 	@( \
-		$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR) ; \
 		if test -f $(builddir)/$(XMLSEC1_MAN); then  \
 			echo "-- Installing builddir man pages ..." ; \
+			$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR) ; \
 			@INSTALL@ -m 0644 $(builddir)/$(XMLSEC1_MAN) $(DESTDIR)$(TARGET_DIR) ; \
 			@INSTALL@ -m 0644 $(builddir)/$(XMLSEC1_CONFIG_MAN) $(DESTDIR)$(TARGET_DIR) ; \
-		elif test -f $(srcdir)/$(XMLSEC1_MAN) ; then  \
-			echo "-- Installing srcdir man pages ..." ; \
-			@INSTALL@ -m 0644 $(srcdir)/$(XMLSEC1_MAN) $(DESTDIR)$(TARGET_DIR) ; \
-			@INSTALL@ -m 0644 $(srcdir)/$(XMLSEC1_CONFIG_MAN) $(DESTDIR)$(TARGET_DIR) ; \
 		else \
 			echo "WARNING: Skipping man pages installation (rebuild man pages with 'make -C man docs')" ; \
 		fi ; \
@@ -88,21 +83,15 @@ uninstall-local:
 	@$(RM) -f $(DESTDIR)$(TARGET_DIR)/$(XMLSEC1_CONFIG_MAN)
 
 #
-# Tries to copy man pages to dist dir first from builddir, then srcdir, then prints warning
+# Copies the man pages from builddir to the dist dir, or prints a warning if they are missing.
 #
 dist-hook:
 	@( \
 		if test -f $(builddir)/$(XMLSEC1_MAN) ; then  \
-			echo "-- Copying builddir examples docs ..." ; \
+			echo "-- Copying builddir man pages ..." ; \
 			$(CP) $(builddir)/$(XMLSEC1_MAN) $(distdir)/ ; \
 			$(CP) $(builddir)/$(XMLSEC1_CONFIG_MAN) $(distdir)/ ; \
-		elif test -f $(srcdir)/$(XMLSEC1_MAN); then  \
-			echo "-- Copying srcdir examples docs ..." ; \
-			$(CP) $(srcdir)/$(XMLSEC1_MAN) $(distdir)/ ; \
-			$(CP) $(srcdir)/$(XMLSEC1_CONFIG_MAN) $(distdir)/ ; \
 		else \
 			echo "WARNING: Skipping man pages dist (rebuild man pages with 'make -C man docs')" ; \
 		fi ; \
 	)
-
-

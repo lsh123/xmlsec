@@ -29,16 +29,6 @@ extern "C" {
 #endif /* __cplusplus */
 
 /**
- * @brief OpenSSL X509 stack type (alias for STACK_OF(X509)).
- */
-#define XMLSEC_OPENSSL_STACK_OF_X509            STACK_OF(X509)
-
-/**
- * @brief OpenSSL X509 CRL stack type (alias for STACK_OF(X509_CRL)).
- */
-#define XMLSEC_OPENSSL_STACK_OF_X509_CRL        STACK_OF(X509_CRL)
-
-/**
  * @brief The OpenSSL X509 data klass.
  */
 #define xmlSecOpenSSLKeyDataX509Id \
@@ -76,12 +66,11 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataRawX509CertGetKlass(
  */
 #define xmlSecOpenSSLX509StoreId \
         xmlSecOpenSSLX509StoreGetKlass()
-
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataStoreId xmlSecOpenSSLX509StoreGetKlass(void);
 
 XMLSEC_CRYPTO_EXPORT X509*              xmlSecOpenSSLX509StoreVerify    (xmlSecKeyDataStorePtr store,
-                                                                         XMLSEC_OPENSSL_STACK_OF_X509* certs,
-                                                                         XMLSEC_OPENSSL_STACK_OF_X509_CRL* crls,
+                                                                         STACK_OF(X509)* certs,
+                                                                         STACK_OF(X509_CRL)* crls,
                                                                          xmlSecKeyInfoCtx* keyInfoCtx);
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLX509StoreVerifyKey (xmlSecKeyDataStorePtr store,
                                                                          xmlSecKeyPtr key,

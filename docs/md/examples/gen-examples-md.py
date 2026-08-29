@@ -13,6 +13,23 @@
 import os
 import sys
 
+# Input files (C sources / XML documents) that were referenced but not found.
+_missing_files = []
+
+
+def _fail(msg):
+    print(f"ERROR: {msg}", file=sys.stderr)
+    sys.exit(1)
+
+
+def _read_file(path):
+    """Read a UTF-8 text file, exiting with a clear error on failure."""
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            return f.read()
+    except (OSError, UnicodeDecodeError) as e:
+        _fail(f"failed to read {path}: {e}")
+
 
 def write_index(out_dir, examples):
     """Generate index.md with a table of contents for all examples."""
@@ -30,6 +47,9 @@ def write_index(out_dir, examples):
 
 def write_example(src_dir, out_dir, out_file, title, desc, c_file, *xml_pairs):
     """Generate a single example Markdown file."""
+    if len(xml_pairs) % 2 != 0:
+        _fail(f"{out_file}: expected an even number of label/file arguments, got {len(xml_pairs)}")
+
     out_path = os.path.join(out_dir, out_file)
     with open(out_path, 'w', encoding='utf-8') as f:
         f.write(f'# {title}\n\n')
@@ -39,9 +59,10 @@ def write_example(src_dir, out_dir, out_file, title, desc, c_file, *xml_pairs):
         if os.path.isfile(c_path):
             f.write(f'## Source: `{c_file}`\n\n')
             f.write('```c\n')
-            with open(c_path, 'r', encoding='utf-8') as src:
-                f.write(src.read())
+            f.write(_read_file(c_path))
             f.write('```\n\n')
+        else:
+            _missing_files.append(c_path)
 
         for i in range(0, len(xml_pairs), 2):
             xml_label = xml_pairs[i]
@@ -50,9 +71,10 @@ def write_example(src_dir, out_dir, out_file, title, desc, c_file, *xml_pairs):
             if os.path.isfile(xml_path):
                 f.write(f'## {xml_label}: `{xml_file}`\n\n')
                 f.write('```xml\n')
-                with open(xml_path, 'r', encoding='utf-8') as src:
-                    f.write(src.read())
+                f.write(_read_file(xml_path))
                 f.write('```\n\n')
+            else:
+                _missing_files.append(xml_path)
 
     print(f'Generated {out_path}')
 
@@ -64,12 +86,18 @@ def main():
 
     src = sys.argv[1]
     out = sys.argv[2]
+
+    if not os.path.isdir(src):
+        _fail(f"examples source directory not found: {src}")
+
     os.makedirs(out, exist_ok=True)
 
     examples = []
+    listed_c_files = set()
 
     def ex(out_file, title, desc, c_file, *xml_pairs):
         examples.append((out_file, title, desc))
+        listed_c_files.add(c_file)
         write_example(src, out, out_file, title, desc, c_file, *xml_pairs)
 
     ex('sign1.md',
@@ -87,14 +115,14 @@ def main():
        'Result',         'sign2-res.xml')
 
     ex('sign3.md',
-       'Signing enveloped signature with X509 certificate',
+       'Signing an enveloped signature with an X509 certificate',
        'Creates an enveloped XML Digital Signature using an X509 certificate.',
        'sign3.c',
        'Input Document', 'sign3-doc.xml',
        'Result',         'sign3-res.xml')
 
     ex('sign4.md',
-       'Signing a node by ID with X509 certificate',
+       'Signing a node by ID with an X509 certificate',
        'Signs a specific XML node referenced by ID attribute using an X509 certificate.',
        'sign4.c',
        'Input Document', 'sign4-doc.xml',
@@ -106,7 +134,7 @@ def main():
        'verify1.c')
 
     ex('verify2.md',
-       'Verifying a signature with keys manager',
+       'Verifying a signature with a keys manager',
        'Verifies an XML Digital Signature using a keys manager loaded with multiple keys.',
        'verify2.c')
 
@@ -156,7 +184,7 @@ def main():
        'decrypt1.c')
 
     ex('decrypt2.md',
-       'Decrypting data with keys manager',
+       'Decrypting data with a keys manager',
        'Decrypts encrypted XML data using a keys manager loaded with DES keys.',
        'decrypt2.c')
 
@@ -164,6 +192,18 @@ def main():
        'Writing a custom keys manager',
        'Demonstrates implementing a custom file-based keys store for decryption.',
        'decrypt3.c')
+
+    # Warn about example sources present in the tree but missing from the list above.
+    try:
+        for name in sorted(os.listdir(src)):
+            if name.endswith('.c') and name not in listed_c_files:
+                print(f"WARNING: {name} in {src} is not documented by any example entry", file=sys.stderr)
+    except OSError as e:
+        print(f"WARNING: could not list {src} to cross-check examples: {e}", file=sys.stderr)
+
+    if _missing_files:
+        for path in _missing_files:
+            print(f"WARNING: expected example input file not found: {path}", file=sys.stderr)
 
     write_index(out, examples)
 

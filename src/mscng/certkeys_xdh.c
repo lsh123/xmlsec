@@ -170,6 +170,7 @@ xmlSecMSCngKeyDataDuplicateBCryptXdhPrivKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HA
  *          scalar, using the Curve25519 base point (u=9) as a placeholder public key, then imports it
  *          with BCRYPT_NO_KEY_VALIDATION so BCrypt accepts the blob. The caller owns the returned blob
  *          and temp key handle and must free/destroy them.
+ * @param hAlg open ECDH algorithm provider configured for Curve25519.
  * @param pScalar raw 32-byte X25519 private scalar (little-endian).
  * @param pbPrivBlob receives the allocated blob; caller frees with xmlSecMemCleanse + xmlFree.
  * @param cbPrivBlob receives the blob size in bytes.
@@ -255,6 +256,7 @@ done:
  * @param hAlg open ECDH algorithm provider configured for Curve25519.
  * @param hPrivKeyTemp imported X25519 private key handle (from xmlSecMSCngXdhBuildPrivBlobAndImport).
  * @param pubKeyU receives the derived 32-byte u-coordinate (big-endian).
+ * @param pubKeyULen size of the pubKeyU buffer in bytes; must be 32.
  * @return 0 on success, -1 on failure.
  */
 static int

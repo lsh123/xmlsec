@@ -40,11 +40,25 @@ typedef enum {
 
 
 /**
- * @brief The buffer behavior flags.
- * @details The buffer behavior flags (used by xmlSecBuffer).
+ * @brief Use the exact memory allocation mode.
+ * @details If this flag is set then the buffer uses the exact memory
+ * allocation mode (see #xmlSecAllocModeExact).
  */
 #define XMLSEC_BUFFER_FLAG_ALLOC_MODE_EXACT      0x0000
+
+/**
+ * @brief Use the double memory allocation mode.
+ * @details If this flag is set then the buffer uses the double memory
+ * allocation mode (see #xmlSecAllocModeDouble).
+ */
 #define XMLSEC_BUFFER_FLAG_ALLOC_MODE_DOUBLE     0x0001
+
+/**
+ * @brief Wipe the buffer data with xmlSecMemCleanse() on release.
+ * @details If this flag is set then the buffer data is wiped using
+ * xmlSecMemCleanse() (which cannot be optimized away by the compiler)
+ * instead of memset(0) when the buffer is released or resized.
+ */
 #define XMLSEC_BUFFER_FLAG_SECURE                0x1000
 
 /******************************************************************************

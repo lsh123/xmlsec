@@ -8,39 +8,44 @@ Usage: gen-github-wiki.py <destination_folder>
 import os
 import re
 import sys
+import shlex
 import shutil
 import tempfile
 import subprocess
 
 
+# Special-case word replacements applied after initial capitalize()
+WORD_MAP = {
+    "Api":       "API",
+    "Certkeys":  "CertKeys",
+    "Gcrypt":    "GCrypt",
+    "Gnutls":    "GnuTLS",
+    "Keysmngr":  "KeysMngr",
+    "Keysstore": "KeysStore",
+    "Mscng":     "MSCng",
+    "Mscrypto":  "MSCrypto",
+    "Nss":       "NSS",
+    "Openssl":   "OpenSSL",
+    "Xmlsec":    "XMLSec",
+    "Xmldsig":   "XMLDSig",
+    "Xmlenc":    "XMLEnc",
+}
+
+
+def capitalize_parts(s):
+    """Split on hyphens and underscores, capitalize each word, apply WORD_MAP."""
+    parts = [WORD_MAP.get(p.capitalize(), p.capitalize())
+             for p in re.split(r"[-_]", s) if p]
+    return "-".join(parts)
+
+
 def camel_case_name(folder, filename):
     """
     Convert a folder/filename pair to a camel-cased wiki page name.
-    e.g. ("api", "index.md") -> "Api-Index.md"
+    e.g. ("api", "index.md") -> "API-Index.md"
     e.g. ("tutorial", "compiling-and-linking.md") -> "Tutorial-Compiling-And-Linking.md"
     e.g. ("tutorial", "some_file_name.md") -> "Tutorial-Some-File-Name.md"
     """
-    # Special-case word replacements applied after initial capitalize()
-    WORD_MAP = {
-        "Api":       "API",
-        "Certkeys":  "CertKeys",
-        "Gcrypt":    "GCrypt",
-        "Gnutls":    "GnuTLS",
-        "Keysmngr":  "KeysMngr",
-        "Keysstore": "KeysStore",
-        "Mscng":     "MSCng",
-        "Mscrypto":  "MSCrypto",
-        "Nss":       "NSS",
-        "Openssl":   "OpenSSL",
-        "Xmlsec":    "XMLSec",
-    }
-
-    def capitalize_parts(s):
-        # Split on hyphens and underscores, capitalize each word, apply special cases
-        parts = [WORD_MAP.get(p.capitalize(), p.capitalize())
-                 for p in re.split(r"[-_]", s) if p]
-        return "-".join(parts)
-
     base, ext = os.path.splitext(filename)
     folder_part = capitalize_parts(folder)
     file_part = capitalize_parts(base)
@@ -55,43 +60,8 @@ def camel_case_top_level_name(filename):
     """
     if filename.lower() == "index.md":
         return "Home.md"
-    WORD_MAP = {
-        "Api":       "API",
-        "Certkeys":  "CertKeys",
-        "Gcrypt":    "GCrypt",
-        "Gnutls":    "GnuTLS",
-        "Keysmngr":  "KeysMngr",
-        "Keysstore": "KeysStore",
-        "Mscng":     "MSCng",
-        "Mscrypto":  "MSCrypto",
-        "Nss":       "NSS",
-        "Openssl":   "OpenSSL",
-        "Xmlsec":    "XMLSec",
-        "Xmldsig":   "XMLDSig",
-        "Xmlenc":    "XMLEnc",
-    }
     base, ext = os.path.splitext(filename)
-    parts = [WORD_MAP.get(p.capitalize(), p.capitalize())
-             for p in re.split(r"[-_]", base) if p]
-    return "-".join(parts) + ext
-
-
-def flatten_path_to_wiki_name(rel_path):
-    """
-    Convert a relative path like 'api/index.md' to 'Api-Index.md'.
-    Handles paths with or without leading './' or '../'.
-    Returns None if the path is not a local .md file.
-    """
-    # Normalize and strip leading ./ or ../
-    parts = rel_path.replace("\\", "/").split("/")
-    # Remove empty or '.' or '..' components carefully
-    # We need exactly folder/file structure
-    clean_parts = [p for p in parts if p and p != "."]
-    if len(clean_parts) < 2:
-        return None
-    folder = clean_parts[-2]
-    filename = clean_parts[-1]
-    return camel_case_name(folder, filename)
+    return capitalize_parts(base) + ext
 
 
 def resolve_link_target(source_folder, link_target):
@@ -118,14 +88,24 @@ def fix_md_links(content, source_folder, image_dest_prefix="images/"):
     """
     Fix markdown links and image references in content.
 
-    - Local .md links (e.g. [text](../api/index.md)) -> [text](Api-Index.md)
-    - Local image links (e.g. ![alt](images/foo.png)) -> ![alt](images/foo.png)
-      (images stay in images/ subfolder, path is already relative to dest)
+    - Local .md links (e.g. [text](../api/index.md)) -> [text](API-Index.md)
+    - Image links are rewritten to images/<basename>, since all images from
+      all subfolders are flattened into a single images/ directory in the wiki.
+
+    Links inside fenced code blocks and inline code spans are left as-is,
+    and an optional link title (e.g. [t](img.png "title")) is preserved.
     """
     def replace_link(m):
         prefix = m.group(1)   # '![' or '['
         text = m.group(2)
         target = m.group(3)
+
+        # Preserve an optional "title" after the target path
+        title = ""
+        title_match = re.search(r'\s+"[^"]*"\s*$', target)
+        if title_match:
+            title = target[title_match.start():]
+            target = target[:title_match.start()]
 
         # Skip external links and anchors-only
         if target.startswith("http://") or target.startswith("https://") or target.startswith("#"):
@@ -152,7 +132,7 @@ def fix_md_links(content, source_folder, image_dest_prefix="images/"):
             # or 'examples/images/foo.png'
             # In the wiki, all images are in images/
             img_filename = os.path.basename(resolved)
-            return f"{prefix}{text}]({image_dest_prefix}{img_filename}{anchor})"
+            return f"{prefix}{text}]({image_dest_prefix}{img_filename}{anchor}{title})"
 
         # Is it a .md link?
         _, ext = os.path.splitext(path)
@@ -163,18 +143,30 @@ def fix_md_links(content, source_folder, image_dest_prefix="images/"):
                     wiki_name = os.path.splitext(camel_case_name(folder, filename))[0]
                 else:
                     wiki_name = os.path.splitext(camel_case_top_level_name(filename))[0]
-                return f"{prefix}{text}]({wiki_name}{anchor})"
+                return f"{prefix}{text}]({wiki_name}{anchor}{title})"
 
         return m.group(0)
 
     # Match both image links ![alt](url) and regular links [text](url)
     pattern = re.compile(r"(!\[|\[)([^\]]*)\]\(([^)]*)\)")
-    return pattern.sub(replace_link, content)
+
+    def fix_outside_inline_code(text):
+        # Skip inline code spans (odd parts of the split are code)
+        parts = re.split(r"(`+[^`]*`+)", text)
+        for i in range(0, len(parts), 2):
+            parts[i] = pattern.sub(replace_link, parts[i])
+        return "".join(parts)
+
+    # Skip fenced code blocks (odd parts of the split are fences)
+    segments = re.split(r"(^```.*?^```)", content, flags=re.DOTALL | re.MULTILINE)
+    for i in range(0, len(segments), 2):
+        segments[i] = fix_outside_inline_code(segments[i])
+    return "".join(segments)
 
 
 def collect_images(md_folder):
     """
-    Collect all image files referenced by md files in build_md_folder.
+    List image files stored in the images/ subfolders of md_folder.
     Returns a list of absolute image paths.
     """
     images = []
@@ -193,7 +185,7 @@ def collect_images(md_folder):
 
 def run_command(cmd, cwd=None, description=None):
     """Run a shell command, abort with detailed error on failure."""
-    desc = description or " ".join(cmd) if isinstance(cmd, list) else cmd
+    desc = description or (" ".join(cmd) if isinstance(cmd, list) else cmd)
     print(f"  Running: {desc}")
     result = subprocess.run(
         cmd,
@@ -228,17 +220,19 @@ def main():
         print(f"ERROR: autogen.sh not found at {autogen_sh}", file=sys.stderr)
         sys.exit(1)
 
-    # Create temporary build folder
-    tmp_dir = tempfile.mkdtemp(prefix="xmlsec-wiki-build-", dir="/tmp")
+    # Create temporary build folder (in the platform default temp directory)
+    tmp_dir = tempfile.mkdtemp(prefix="xmlsec-wiki-build-")
     print(f"Temporary build directory: {tmp_dir}")
 
     try:
         # Run autogen.sh from srcdir inside tmp_dir
         print("\n--- Running autogen.sh ---")
+        jobs = os.cpu_count() or 2
+        build_cmd = f"{shlex.quote(autogen_sh)} && make -j{jobs} && make -C docs docs"
         run_command(
-            f"{autogen_sh} && make -j12 && make -C docs docs",
+            build_cmd,
             cwd=tmp_dir,
-            description=f"cd {tmp_dir} && {autogen_sh} && make -C docs docs",
+            description=f"cd {tmp_dir} && {build_cmd}",
         )
 
         # Locate the generated docs/md folder in the build dir
@@ -269,7 +263,7 @@ def main():
         print("\n--- Processing markdown files ---")
 
         # Build a mapping: wiki_name -> (source_folder_name, source_abs_path)
-        wiki_files = {}  # wiki_name -> abs source path
+        wiki_files = {}
         for subfolder in sorted(os.listdir(build_md_folder)):
             subfolder_path = os.path.join(build_md_folder, subfolder)
             if not os.path.isdir(subfolder_path):
@@ -327,9 +321,10 @@ def main():
                 sys.exit(1)
 
             copied_files.append(dest_path)
-            print(f"  Copied: {os.path.join(subfolder, os.path.basename(src_path))} -> {wiki_name}")
+            src_label = os.path.basename(src_path) if subfolder == "." else os.path.join(subfolder, os.path.basename(src_path))
+            print(f"  Copied: {src_label} -> {wiki_name}")
 
-        # Delete obsolete .md files in dest (but never delete Index.md or files starting with "_")
+        # Delete obsolete .md files in dest (but never delete Home.md or files starting with "_")
         new_md_names = set(wiki_files.keys())
         for old_name in sorted(existing_md - new_md_names):
             if old_name == "Home.md" or old_name.startswith("_"):
@@ -354,6 +349,20 @@ def main():
 
         new_image_names = set()
         src_images = collect_images(build_md_folder)
+
+        # All images are flattened into a single images/ directory by basename,
+        # so two source folders containing an image with the same name would
+        # silently overwrite each other; fail loudly instead.
+        images_by_name = {}
+        for img_src in src_images:
+            images_by_name.setdefault(os.path.basename(img_src), []).append(img_src)
+        collisions = {name: paths for name, paths in images_by_name.items() if len(paths) > 1}
+        if collisions:
+            for name in sorted(collisions):
+                print(f"ERROR: multiple source images share the name '{name}':", file=sys.stderr)
+                for path in collisions[name]:
+                    print(f"  {path}", file=sys.stderr)
+            sys.exit(1)
 
         for img_src in sorted(src_images):
             img_filename = os.path.basename(img_src)

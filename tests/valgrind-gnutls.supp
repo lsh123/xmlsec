@@ -1,0 +1,18 @@
+##----------------------------------------------------------------------##
+#
+# Errors to suppress by default with GnuTLS
+#
+# Format of this file is:
+# {
+#     name_of_suppression
+#     kind: one of Param Value1 Value2 Value4 Value8
+#                   Free Addr1 Addr2 Addr4 Addr8
+#                   Cond (previously known as Value0)
+#     (if Param: name of system call param, if Free: name of free-ing fn)
+#     caller0 name, or /name/of/so/file.so
+#     caller1 name, or ditto
+#     (optionally: caller2 name)
+#     (optionally: caller3 name)
+#  }
+
+##----------------------------------------------------------------------##

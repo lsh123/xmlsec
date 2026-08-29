@@ -59,8 +59,14 @@ int main(int argc, const char **argv) {
         uint8_t* buf;
         int inputRet;
 
-#ifdef _MSC_VER
+        /* call different fopen flavors based on the environment */
+#if defined(_MSC_VER) && defined(_WIN32) && defined(UNICODE)
         if (_wfopen_s(&f, argv[i], L"rb") != 0) {
+            FUZZER_ERROR("cannot open", argv[i]);
+            continue;
+        }
+#elif defined(_MSC_VER) && defined(_WIN32) && !defined(UNICODE)
+        if (fopen_s(&f, argv[i], "rb") != 0) {
             FUZZER_ERROR("cannot open", argv[i]);
             continue;
         }

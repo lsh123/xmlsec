@@ -67,6 +67,7 @@
    Memcheck:Cond
    ...
    fun:EVP_DecryptFinal_ex
+   fun:EVP_CipherFinal_ex
    fun:xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock
    ...
 }

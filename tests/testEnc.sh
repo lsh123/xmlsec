@@ -84,11 +84,11 @@ execEncTestWithCryptoConfig() {
         printf "    Checking required transforms                         "
         echo "$extra_vars $xmlsec_app check-transforms $xmlsec_params  --crypto-config $crypto_config $req_transforms" >> $curlogfile
         $xmlsec_app check-transforms $xmlsec_params  --crypto-config $crypto_config $req_transforms >> $curlogfile 2>> $curlogfile
-        printCheckStatus $?
         res=$?
+        printCheckStatus $res
         if [ $res -ne 0 ]; then
-	        cat $curlogfile >> $logfile
-	        tearDownTest
+            cat $curlogfile >> $logfile
+            tearDownTest
             return
         fi
     fi
@@ -98,11 +98,11 @@ execEncTestWithCryptoConfig() {
         printf "    Checking required key data                           "
         echo "$extra_vars $xmlsec_app check-key-data $xmlsec_params --crypto-config $crypto_config $req_key_data" >> $curlogfile
         $xmlsec_app check-key-data $xmlsec_params --crypto-config $crypto_config $req_key_data >> $curlogfile 2>> $curlogfile
-        printCheckStatus $?
         res=$?
+        printCheckStatus $res
         if [ $res -ne 0 ]; then
             cat $curlogfile >> $logfile
-	        tearDownTest
+            tearDownTest
             return
         fi
     fi
@@ -112,7 +112,7 @@ execEncTestWithCryptoConfig() {
     if [ -n "$params1" ] ; then
         rm -f $tmpfile
         printf "    Decrypt existing document                            "
-        echo "$extra_vars $VALGRIND $xmlsec_app decrypt $xmlsec_params --crypto-config $crypto_config $params1 $full_file.xml" >>  $curlogfile
+        echo "$extra_vars $VALGRIND $xmlsec_app decrypt $xmlsec_params --crypto-config $crypto_config $params1 --output $tmpfile $full_file.xml" >>  $curlogfile
         $VALGRIND $xmlsec_app decrypt $xmlsec_params --crypto-config $crypto_config $params1 --output $tmpfile $full_file.xml >> $curlogfile  2>> $curlogfile
         res=$?
         echo "=== TEST RESULT: $res; expected: $expected_res" >> $curlogfile
@@ -126,10 +126,10 @@ execEncTestWithCryptoConfig() {
         else
             printRes $expected_res $res
         fi
-    	if [ $? -ne 0 ]; then
+        if [ $? -ne 0 ]; then
             xml_verification_failed="yes"
             failures=`expr $failures + 1`
-    	fi
+        fi
     fi
 
     if [ -n "$params2" -a -z "$PERF_TEST" ] ; then
@@ -143,8 +143,8 @@ execEncTestWithCryptoConfig() {
         fi
     fi
 
-    # update existing decryption failed
-    if [  "z$XMLSEC_TEST_UPDATE_XML_ON_FAILURE" = "zyes" -a "z$xml_verification_failed" = "zyes" ] ; then
+    # update existing enc document if decryption failed
+    if [  "z$XMLSEC_TEST_UPDATE_XML_ON_FAILURE" = "zyes" -a "z$xml_verification_failed" = "zyes" -a -n "$params2" ] ; then
         printf "    Update existing enc document                         "
         echo "cp $tmpfile $full_file.xml" >> $curlogfile 2>> $curlogfile
         cp $tmpfile $full_file.xml
@@ -192,8 +192,7 @@ execEncPrintXmlDebugTest() {
     req_transforms="$3"
     req_key_data="$4"
     params1="$5"
-    outputTransform="$6"
-    crypto_config="$7"
+    crypto_config="$6"
     failures=0
     test_name="$filename (with --print-xml-debug)"
 
@@ -228,7 +227,7 @@ execEncPrintXmlDebugTest() {
         $xmlsec_app check-transforms $xmlsec_params --crypto-config $crypto_config $req_transforms >> $curlogfile 2>> $curlogfile
         res=$?
 
-        printCheckStatus $?
+        printCheckStatus $res
         if [ $res -ne 0 ]; then
             cat $curlogfile >> $logfile
             tearDownTest
@@ -242,7 +241,7 @@ execEncPrintXmlDebugTest() {
         echo "$extra_vars $xmlsec_app check-key-data $xmlsec_params --crypto-config $crypto_config $req_key_data" >> $curlogfile
         $xmlsec_app check-key-data $xmlsec_params --crypto-config $crypto_config $req_key_data >> $curlogfile 2>> $curlogfile
         res=$?
-        printCheckStatus $?
+        printCheckStatus $res
         if [ $res -ne 0 ]; then
             cat $curlogfile >> $logfile
             tearDownTest
@@ -258,8 +257,8 @@ execEncPrintXmlDebugTest() {
         $VALGRIND $xmlsec_app decrypt $xmlsec_params --print-xml-debug --crypto-config $crypto_config $params1 --output $tmpfile $full_file.xml > $tmpfile.3 2>> $curlogfile
         res=$?
 
-        printCheckStatus $?
-        if [ $? -ne 0 ]; then
+        printCheckStatus $res
+        if [ $res -ne 0 ]; then
             failures=`expr $failures + 1`
             cat $curlogfile >> $logfile
             cat $curlogfile >> $failedlogfile
@@ -276,7 +275,7 @@ execEncPrintXmlDebugTest() {
 
         res=$?
 
-        printCheckStatus $?
+        printCheckStatus $res
         if [ $res -ne 0 ]; then
             failures=`expr $failures + 1`
             cat $curlogfile >> $logfile
@@ -1969,7 +1968,7 @@ execEncTest $res_fail \
 #01-phaos-xmlenc-3/enc-element-aes256-ka-dh.xml
 
 
-echo "--------- AES-GCM tests include both positive and negative tests  ----------"
+echo "--------- AES-GCM tests include both positive and negative tests ----------"
 if [ -z "$XMLSEC_TEST_REPRODUCIBLE" ]; then
     echo "--- detailed log is written to  $logfile"
 fi
@@ -2000,7 +1999,7 @@ for aesgcm_k_l in $aesgcm_key_lengths ; do
                 # generate binary file out of base64
                 DECODE="-d"
                 if [ "`uname`" = "Darwin" ]; then
-		            DECODE="-D"
+                    DECODE="-D"
                 fi
                 cat "$topfolder/$base_test_name.data" | base64 $DECODE > $tmpfile.3
                 execEncTest "$res_success" \
@@ -2011,7 +2010,7 @@ for aesgcm_k_l in $aesgcm_key_lengths ; do
                     "--keys-file $topfolder/nist-aesgcm/keys-aes${aesgcm_k_l}-gcm.xml" \
                     "--keys-file $topfolder/nist-aesgcm/keys-aes${aesgcm_k_l}-gcm.xml --binary-data $tmpfile.3" \
                     "--keys-file $topfolder/nist-aesgcm/keys-aes${aesgcm_k_l}-gcm.xml" \
-		    "base64"
+                    "base64"
             fi
         done
     done

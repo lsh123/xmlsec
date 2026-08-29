@@ -41,7 +41,7 @@ docs-copy:
 	fi
 
 docs-manpages:
-	@if [ ! -f " $(XMLSEC1_MAN)" ]; then \
+	@if [ ! -f "$(XMLSEC1_MAN)" ]; then \
 		echo "-- Man page is not built yet, rebuilding ..."; \
 		$(MAKE) $(AM_MAKEFLAGS) -C $(abs_top_builddir)/man docs ; \
 	fi

@@ -97,11 +97,11 @@ execDSigTestWithCryptoConfig() {
         printf "    Checking required transforms                         "
         echo "$extra_vars $xmlsec_app check-transforms  --crypto-config $crypto_config $xmlsec_params $req_transforms" >> $curlogfile
         $xmlsec_app check-transforms $xmlsec_params  --crypto-config $crypto_config $req_transforms >> $curlogfile 2>> $curlogfile
-        printCheckStatus $?
         res=$?
+        printCheckStatus $res
         if [ $res -ne 0 ]; then
             cat $curlogfile >> $logfile
-	        tearDownTest
+            tearDownTest
             return
         fi
     fi
@@ -111,11 +111,11 @@ execDSigTestWithCryptoConfig() {
         printf "    Checking required key data                           "
         echo "$extra_vars $xmlsec_app check-key-data $xmlsec_params --crypto-config $crypto_config $req_key_data" >> $curlogfile
         $xmlsec_app check-key-data $xmlsec_params --crypto-config $crypto_config $req_key_data >> $curlogfile 2>> $curlogfile
-        printCheckStatus $?
         res=$?
+        printCheckStatus $res
         if [ $res -ne 0 ]; then
             cat $curlogfile >> $logfile
-	        tearDownTest
+            tearDownTest
             return
         fi
     fi
@@ -144,7 +144,7 @@ execDSigTestWithCryptoConfig() {
     fi
 
     # update existing signature if verification failed
-    if [  "z$XMLSEC_TEST_UPDATE_XML_ON_FAILURE" = "zyes" -a "z$xml_verification_failed" = "zyes" ] ; then
+    if [  "z$XMLSEC_TEST_UPDATE_XML_ON_FAILURE" = "zyes" -a "z$xml_verification_failed" = "zyes" -a -n "$params2" ] ; then
         printf "    Update existing signature                            "
         echo "cp $tmpfile $full_file.xml" >> $curlogfile 2>> $curlogfile
         cp $tmpfile $full_file.xml
@@ -216,7 +216,7 @@ execDSigPrintXmlDebugTest() {
         $xmlsec_app check-transforms $xmlsec_params --crypto-config $crypto_config $req_transforms >> $curlogfile 2>> $curlogfile
         res=$?
 
-        printCheckStatus $?
+        printCheckStatus $res
         if [ $res -ne 0 ]; then
             cat $curlogfile >> $logfile
             tearDownTest
@@ -231,7 +231,7 @@ execDSigPrintXmlDebugTest() {
         $xmlsec_app check-key-data $xmlsec_params --crypto-config $crypto_config $req_key_data >> $curlogfile 2>> $curlogfile
         res=$?
 
-        printCheckStatus $?
+        printCheckStatus $res
         if [ $res -ne 0 ]; then
             cat $curlogfile >> $logfile
             tearDownTest
@@ -265,7 +265,7 @@ execDSigPrintXmlDebugTest() {
 
         res=$?
 
-        printCheckStatus $?
+        printCheckStatus $res
         if [ $res -ne 0 ]; then
             failures=`expr $failures + 1`
             cat $curlogfile >> $logfile

@@ -104,6 +104,27 @@ def _inline_markup(node: ET.Element) -> str:
     return "".join(parts).strip()
 
 
+def _programlisting_to_text(elem: ET.Element) -> str:
+    """Extract the full text of a <programlisting> element.
+
+    Doxygen places inter-token text in element tails and marks spaces with
+    empty <sp/> elements, so a plain text dump (e.g. ET.tostring(method="text"))
+    loses every space.  Walk the tree collecting .text and .tail, rendering
+    <sp/> as a space.
+    """
+    parts: list[str] = []
+    if elem.text:
+        parts.append(elem.text)
+    for child in elem:
+        if child.tag == "sp":
+            parts.append(" ")
+        else:
+            parts.append(_programlisting_to_text(child))
+        if child.tail:
+            parts.append(child.tail)
+    return "".join(parts)
+
+
 def _para_to_md(para: ET.Element) -> str:
     """Convert a single <para> element (which may contain mixed content) to
     Markdown text.  Block-level children (parameterlist, simplesect) are
@@ -175,8 +196,8 @@ def _para_to_md(para: ET.Element) -> str:
             )
             parts.append("\n\n" + items_md)
         elif tag == "programlisting":
-            code = "".join(ET.tostring(l, encoding="unicode", method="text") for l in child)
-            parts.append(f"\n\n```c\n{code.rstrip()}\n```")
+            code = _programlisting_to_text(child)
+            parts.append(f"\n\n```c\n{code.strip()}\n```")
         elif tag in ("title", "heading"):
             pass  # skip internal headings
         else:
@@ -233,9 +254,9 @@ def _description_to_md(parent: ET.Element | None) -> str:
             if code:
                 paragraphs.append(f"```\n{code}\n```")
         elif child.tag == "programlisting":
-            code = "".join(ET.tostring(l, encoding="unicode", method="text") for l in child)
+            code = _programlisting_to_text(child)
             if code.strip():
-                paragraphs.append(f"```c\n{code.rstrip()}\n```")
+                paragraphs.append(f"```c\n{code.strip()}\n```")
         # other tags (itemizedlist at top level, etc.) — ignored for brevity
     return "\n\n".join(paragraphs)
 
@@ -423,6 +444,10 @@ def _render_enums(section: ET.Element) -> str:
                 ev_name = (ev.findtext("name") or "").strip()
                 ev_init = (ev.findtext("initializer") or "").strip()
                 ev_brief = _description_to_md(ev.find("briefdescription")).replace("\n", " ")
+                if not ev_brief:
+                    # Doxygen leaves enumvalue/briefdescription empty and puts the
+                    # /**< ... */ text in <detaileddescription> instead.
+                    ev_brief = _description_to_md(ev.find("detaileddescription")).replace("\n", " ")
                 lines.append(f"| `{ev_name}` | `{ev_init}` | {ev_brief} |")
             lines.append("")
         lines.append("---\n")

@@ -149,11 +149,11 @@ execKeysTestWithCryptoConfig() {
         printf "    Checking required key data                            "
         echo "$extra_vars $xmlsec_app check-key-data $xmlsec_params --crypto-config $crypto_config $req_key_data" >> $curlogfile
         $xmlsec_app check-key-data $xmlsec_params --crypto-config $crypto_config $req_key_data >> $curlogfile 2>> $curlogfile
-        printCheckStatus $?
         res=$?
+        printCheckStatus $res
         if [ $res -ne 0 ]; then
-	        cat $curlogfile >> $logfile
-	        tearDownTest
+            cat $curlogfile >> $logfile
+            tearDownTest
             return
         fi
     fi

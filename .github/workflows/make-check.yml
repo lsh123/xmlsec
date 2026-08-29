@@ -269,7 +269,6 @@ jobs:
           autoreconf -i -f ..
           ../configure --prefix=`cygpath -u "${GITHUB_WORKSPACE}/install.dir"` \
               --enable-werror --enable-pedantic \
-              --enable-werror --enable-pedantic \
               --enable-mscrypto --enable-mscng ${{ matrix.config_flags }} \
               --build="${{ matrix.arch }}-w64-mingw32" \
               --host="${{ matrix.arch }}-w64-mingw32"

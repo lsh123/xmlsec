@@ -1,2 +1,5 @@
 [libfuzzer]
+# xml.dict is not part of this repository. It is downloaded into $OUT by the
+# oss-fuzz build script (projects/xmlsec/build.sh in the google/oss-fuzz repo)
+# from https://raw.githubusercontent.com/mirrorer/afl/master/dictionaries/xml.dict
 dict = xml.dict

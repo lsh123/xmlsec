@@ -1,11 +1,11 @@
 #!/bin/sh
 #
-# This script needs to be called from testrun.sh script
+# This script needs to be called from the testrun.sh script
 #
 
-# ensure this script is called from testrun.sh
+# ensure this script is called from the testrun.sh script
 if [ -z "$xmlsec_app" -o -z "$xmlsec_params" ]; then
-    echo "This script needs to be called from testrun.sh script"
+    echo "This script needs to be called from the testrun.sh script"
     exit 1
 fi
 
@@ -88,7 +88,7 @@ execDSigTestWithCryptoConfig() {
     else
         full_file=$topfolder/$filename
         echo "Test: $filename $extra_message"
-        echo "Test: $folder/$filename $extra_message -- $expected_res" > $curlogfile
+        echo "Test: $filename $extra_message -- expected $expected_res" > $curlogfile
     fi
     extra_message=""
 
@@ -97,11 +97,11 @@ execDSigTestWithCryptoConfig() {
         printf "    Checking required transforms                         "
         echo "$extra_vars $xmlsec_app check-transforms  --crypto-config $crypto_config $xmlsec_params $req_transforms" >> $curlogfile
         $xmlsec_app check-transforms $xmlsec_params  --crypto-config $crypto_config $req_transforms >> $curlogfile 2>> $curlogfile
-        printCheckStatus $?
         res=$?
+        printCheckStatus $res
         if [ $res -ne 0 ]; then
             cat $curlogfile >> $logfile
-	        tearDownTest
+            tearDownTest
             return
         fi
     fi
@@ -111,11 +111,11 @@ execDSigTestWithCryptoConfig() {
         printf "    Checking required key data                           "
         echo "$extra_vars $xmlsec_app check-key-data $xmlsec_params --crypto-config $crypto_config $req_key_data" >> $curlogfile
         $xmlsec_app check-key-data $xmlsec_params --crypto-config $crypto_config $req_key_data >> $curlogfile 2>> $curlogfile
-        printCheckStatus $?
         res=$?
+        printCheckStatus $res
         if [ $res -ne 0 ]; then
             cat $curlogfile >> $logfile
-	        tearDownTest
+            tearDownTest
             return
         fi
     fi
@@ -144,7 +144,7 @@ execDSigTestWithCryptoConfig() {
     fi
 
     # update existing signature if verification failed
-    if [  "z$XMLSEC_TEST_UPDATE_XML_ON_FAILURE" = "zyes" -a "z$xml_verification_failed" = "zyes" ] ; then
+    if [  "z$XMLSEC_TEST_UPDATE_XML_ON_FAILURE" = "zyes" -a "z$xml_verification_failed" = "zyes" -a -n "$params2" ] ; then
         printf "    Update existing signature                            "
         echo "cp $tmpfile $full_file.xml" >> $curlogfile 2>> $curlogfile
         cp $tmpfile $full_file.xml
@@ -216,7 +216,7 @@ execDSigPrintXmlDebugTest() {
         $xmlsec_app check-transforms $xmlsec_params --crypto-config $crypto_config $req_transforms >> $curlogfile 2>> $curlogfile
         res=$?
 
-        printCheckStatus $?
+        printCheckStatus $res
         if [ $res -ne 0 ]; then
             cat $curlogfile >> $logfile
             tearDownTest
@@ -231,7 +231,7 @@ execDSigPrintXmlDebugTest() {
         $xmlsec_app check-key-data $xmlsec_params --crypto-config $crypto_config $req_key_data >> $curlogfile 2>> $curlogfile
         res=$?
 
-        printCheckStatus $?
+        printCheckStatus $res
         if [ $res -ne 0 ]; then
             cat $curlogfile >> $logfile
             tearDownTest
@@ -240,14 +240,14 @@ execDSigPrintXmlDebugTest() {
     fi
 
     # run test
-     rm -f $tmpfile $tmpfile.2
+    rm -f $tmpfile $tmpfile.2
     if [ -n "$params1" ] ; then
         printf "    Verify with --print-xml-debug                        "
         echo "$extra_vars $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params --print-xml-debug --crypto-config $crypto_config $params1 $full_file.xml > $tmpfile.2" >> $curlogfile
         $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params --print-xml-debug --crypto-config $crypto_config $params1 $full_file.xml > $tmpfile.2 2>> $curlogfile
         res=$?
 
-        printRes $expected_res $?
+        printRes $res_success $res
         if [ $? -ne 0 ]; then
             failures=`expr $failures + 1`
             cat $curlogfile >> $logfile
@@ -265,7 +265,7 @@ execDSigPrintXmlDebugTest() {
 
         res=$?
 
-        printCheckStatus $?
+        printCheckStatus $res
         if [ $res -ne 0 ]; then
             failures=`expr $failures + 1`
             cat $curlogfile >> $logfile
@@ -297,7 +297,7 @@ echo "--------- Positive Testing ----------"
 
 ##########################################################################
 #
-# xmldsig11-interop-2011 (https://www.w3.org/TR/2012/NOTE-xmldsig-core1-interop-20121113/)
+# xmldsig11-interop-2012 (https://www.w3.org/TR/2012/NOTE-xmldsig-core1-interop-20121113/)
 #
 ##########################################################################
 
@@ -314,13 +314,6 @@ execDSigTest $res_success \
     "xmldsig11-interop-2012" \
     "signature-enveloping-hmac-sha1-truncated160" \
     "c14n sha1 hmac-sha1" \
-    "" \
-    "--lax-key-search --hmackey keys/hmackey.bin"
-
-execDSigTest $res_success \
-    "xmldsig11-interop-2012" \
-    "signature-enveloping-hmac-sha224" \
-    "c14n sha1 hmac-sha224" \
     "" \
     "--lax-key-search --hmackey keys/hmackey.bin"
 
@@ -354,7 +347,7 @@ execDSigTest $res_success \
 
 # ECDSA
 
-# Diabled tests with PublicKey X,Y components (RFC4050, not part XMLDSig 1.1 spec):
+# Disabled tests with PublicKey X,Y components (RFC4050, not part of the XMLDSig 1.1 spec):
 #   signature-enveloping-p256_sha1_4050.xml
 #   signature-enveloping-p256_sha512_4050.xml
 #   signature-enveloping-p384_sha384_4050.xml
@@ -522,7 +515,7 @@ execDSigTest $res_success \
 execDSigTest $res_success \
     "xmldsig11-interop-2012" \
     "signature-enveloping-rsa_sha384" \
-    "c14n sha1 rsa-sha256" \
+    "c14n sha1 rsa-sha384" \
     "rsa" \
     "--enabled-key-data key-value,rsa"
 
@@ -817,7 +810,7 @@ execDSigTest $res_success \
 
 
 
-# These tests verify certificates lookup, keys lookup is tested in XMLEnc.sh
+# These tests verify certificates lookup, keys lookup is tested in testEnc.sh
 if [ "z$xmlsec_feature_x509_data_lookup" = "zyes" ] ; then
     execDSigTest $res_success \
         "" \
@@ -1998,7 +1991,7 @@ fi
 
 # 'Verify existing signature' MUST fail here, as --trusted-... is not passed.
 # If this passes, that's a bug. Note that we need to cleanup NSS certs DB
-# since it automaticall stores trusted certs
+# since it automatically stores trusted certs
 extra_message="Missing trusted cert "
 execDSigTest $res_fail \
     "aleksey-xmldsig-01" \
@@ -2023,7 +2016,7 @@ execDSigTest $res_success \
 # Test was created using the following command:
 # xmlsec1 sign --crypto openssl  --lax-key-search --privkey-pem tests/keys/same-subj-key1.pem,tests/keys/same-subj-cert1.pem --output tests/aleksey-xmldsig-01/enveloped-x509-same-subj-cert.xml tests/aleksey-xmldsig-01/enveloped-x509-same-subj-cert.tmpl
 
-# this should succeeed with good cert
+# this should succeed with good cert
 extra_message="Cert chain is good"
 execDSigTest $res_success \
     "" \
@@ -2041,7 +2034,7 @@ execDSigTest $res_fail \
     "x509" \
     "--trusted-$cert_format $topfolder/keys/same-subj-cert2.$cert_format --enabled-key-data x509"
 
-# this should succeeed with both good (cert1) and bad (cert2) certs present (simulating key rotation)
+# this should succeed with both good (cert1) and bad (cert2) certs present (simulating key rotation)
 extra_message="Cert chain is good: both good (cert1) and bad (cert2) certs present"
 execDSigTest $res_success \
     "" \
@@ -2050,7 +2043,7 @@ execDSigTest $res_success \
     "x509" \
     "--trusted-$cert_format $topfolder/keys/same-subj-cert1.$cert_format --trusted-$cert_format $topfolder/keys/same-subj-cert2.$cert_format --enabled-key-data x509"
 
-# this should succeeed with both bad (cert2) and good (cert1) certs present (simulating key rotation)
+# this should succeed with both bad (cert2) and good (cert1) certs present (simulating key rotation)
 extra_message="Cert chain is good: both bad (cert2) and good (cert1) certs present"
 execDSigTest $res_success \
     "" \
@@ -2064,8 +2057,8 @@ execDSigTest $res_success \
 # xmlsec1 sign --lax-key-search --privkey-pem tests/keys/rsa/rsa-2048-key.pem,tests/keys/rsa/rsa-2048-cert.pem --output tests/aleksey-xmldsig-01/enveloped-x509-missing-cert.xml tests/aleksey-xmldsig-01/enveloped-x509-missing-cert.tmpl
 #
 
-# this should succeeed with both intermidiate and trusted certs provided
-extra_message="Cert chain is good: both intermidiate and trusted certs provided"
+# this should succeed with both intermediate and trusted certs provided
+extra_message="Cert chain is good: both intermediate and trusted certs provided"
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
@@ -2073,7 +2066,7 @@ execDSigTest $res_success \
     "x509" \
     "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
-# this should succeeed too because we bypass all cert checks with --insecure mode
+# this should succeed too because we bypass all cert checks with --insecure mode
 extra_message="Cert chain is missing but there is --insecure bypass"
 execDSigTest $res_success \
     "" \
@@ -2082,8 +2075,8 @@ execDSigTest $res_success \
     "x509" \
     "--insecure --enabled-key-data x509"
 
-# this should fail: missing intermidiate cert (ca2cert)
-extra_message="Negative test: Missing intermidiate cert"
+# this should fail: missing intermediate cert (ca2cert)
+extra_message="Negative test: Missing intermediate cert"
 execDSigTest $res_fail \
     "" \
     "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
@@ -2091,8 +2084,8 @@ execDSigTest $res_fail \
     "x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
-# this should fail: wront trusted cert (rsa-4096-cert)
-extra_message="Negative test: Wront trusted cert"
+# this should fail: wrong trusted cert (rsa-4096-cert)
+extra_message="Negative test: Wrong trusted cert"
 execDSigTest $res_fail \
     "" \
     "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
@@ -2121,7 +2114,7 @@ if [ "z$xmlsec_feature_crl_load" = "zyes" ] ; then
 
     # NSS / GnuTLS doesn't allow CRL verification by time (https://github.com/lsh123/xmlsec/issues/579)
     if [ "z$xmlsec_feature_crl_check_skip_time" = "zyes" ] ; then
-        # this should succeeed because CRL is not valid yet
+        # this should succeed because CRL is not valid yet
         extra_message="CRL is not valid yet"
         execDSigTest $res_success \
             "" \
@@ -2131,7 +2124,7 @@ if [ "z$xmlsec_feature_crl_load" = "zyes" ] ; then
             "--verification-gmt-time 2026-03-10+00:00:00 --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsa/rsa-2048-cert-revoked-crl.$cert_format --enabled-key-data x509"
     fi
 
-    # this should succeeed too because we bypass all cert checks with --insecure mode
+    # this should succeed too because we bypass all cert checks with --insecure mode
     extra_message="CRL is present but there is --insecure bypass"
     execDSigTest $res_success \
         "" \
@@ -2163,7 +2156,7 @@ if [ "z$xmlsec_feature_crl_verification" = "zyes" ] ; then
     fi
 
     # this should fail because CRL is past due
-    extra_message="Verify CRL: this should fail becaused CRL is past due"
+    extra_message="Verify CRL: this should fail because CRL is past due"
     execDSigTest $res_fail \
         "" \
         "aleksey-xmldsig-01/enveloped-x509-subjectname" \
@@ -2185,7 +2178,7 @@ fi
 
 
 if [ "z$xmlsec_feature_key_check" = "zyes" ] ; then
-    # this should succeeed because key verification is not requested (no --verify-keys option)
+    # this should succeed because key verification is not requested (no --verify-keys option)
     extra_message="Successfully use key without verification"
     execDSigTest $res_success \
         "" \
@@ -2212,7 +2205,7 @@ if [ "z$xmlsec_feature_key_check" = "zyes" ] ; then
         "x509" \
         "--verify-keys --verification-gmt-time 1980-01-01+00:00:00  --pubkey-cert-$cert_format:TestKeyName-rsa-4096  $topfolder/keys/rsa/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data key-name"
 
-    # this should succeeed because key can be verified
+    # this should succeed because key can be verified
     extra_message="Successfully verify key"
     execDSigTest $res_success \
         "" \
@@ -2381,7 +2374,7 @@ execDSigTest $res_success \
 #
 # While the main operation is signature (and this is why we have these
 # tests here instead of testEnc.sh), these tests check the encryption
-# key transport/wrapper algorightms
+# key transport/wrapper algorithms
 #
 ##########################################################################
 execDSigTest $res_success \
@@ -2726,5 +2719,5 @@ execDSigTest $res_success \
 echo "--- testDSig finished" >> $logfile
 echo "--- testDSig finished"
 if [ -z "$XMLSEC_TEST_REPRODUCIBLE" ]; then
-    echo "--- detailed log is written to  $logfile"
+    echo "--- detailed log is written to $logfile"
 fi

@@ -1262,6 +1262,7 @@ GNUTLS_INCLUDE_MARKER="gnutls/gnutls.h"
 GNUTLS_LIB_MARKER="libgnutls$shrext"
 GNUTLS_CRYPTO_LIB="$XMLSEC_PACKAGE-gnutls"
 GNUTLS_LIBS_LIST="-lgnutls"
+GNUTLS_PACKAGE=gnutls
 
 XMLSEC_NO_GNUTLS="1"
 GNUTLS_INCLUDE_PATH=
@@ -1296,12 +1297,12 @@ dnl Priority 3: Guess with pkg_config
 if test "z$GNUTLS_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
     if test "z$GNUTLS_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(GNUTLS, gnutls >= $GNUTLS_MIN_VERSION,
-            [GNUTLS_FOUND=yes],
+            [GNUTLS_FOUND=yes GNUTLS_PACKAGE=gnutls],
             [GNUTLS_FOUND=no])
     fi
     if test "z$GNUTLS_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(GNUTLS, libgnutls >= $GNUTLS_MIN_VERSION,
-            [GNUTLS_FOUND=yes],
+            [GNUTLS_FOUND=yes GNUTLS_PACKAGE=libgnutls],
             [GNUTLS_FOUND=no])
     fi
 fi
@@ -1398,6 +1399,7 @@ AC_SUBST(GNUTLS_CFLAGS)
 AC_SUBST(GNUTLS_LIBS)
 AC_SUBST(GNUTLS_CRYPTO_LIB)
 AC_SUBST(GNUTLS_MIN_VERSION)
+AC_SUBST(GNUTLS_PACKAGE)
 
 
 dnl ==========================================================================
@@ -1569,6 +1571,7 @@ GCRYPT_INCLUDE_MARKER="gcrypt.h"
 GCRYPT_LIB_MARKER="libgcrypt$shrext"
 GCRYPT_CRYPTO_LIB="$XMLSEC_PACKAGE-gcrypt"
 GCRYPT_LIBS_LIST="-lgcrypt"
+GCRYPT_PACKAGE=libgcrypt
 
 XMLSEC_NO_GCRYPT="1"
 GCRYPT_VERSION=
@@ -1608,22 +1611,22 @@ dnl Priority 3: Guess with pkg_config
 if test "z$GCRYPT_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
     if test "z$GCRYPT_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(GCRYPT, gcrypt >= $GCRYPT_MIN_VERSION,
-            [GCRYPT_FOUND=yes],
+            [GCRYPT_FOUND=yes GCRYPT_PACKAGE=gcrypt],
             [GCRYPT_FOUND=no])
     fi
     if test "z$GCRYPT_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(GCRYPT, libgcrypt20 >= $GCRYPT_MIN_VERSION,
-            [GCRYPT_FOUND=yes],
+            [GCRYPT_FOUND=yes GCRYPT_PACKAGE=libgcrypt20],
             [GCRYPT_FOUND=no])
     fi
     if test "z$GCRYPT_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(GCRYPT, libgcrypt11 >= $GCRYPT_MIN_VERSION,
-            [GCRYPT_FOUND=yes],
+            [GCRYPT_FOUND=yes GCRYPT_PACKAGE=libgcrypt11],
             [GCRYPT_FOUND=no])
     fi
     if test "z$GCRYPT_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(GCRYPT, libgcrypt >= $GCRYPT_MIN_VERSION,
-            [GCRYPT_FOUND=yes],
+            [GCRYPT_FOUND=yes GCRYPT_PACKAGE=libgcrypt],
             [GCRYPT_FOUND=no])
     fi
 fi
@@ -1740,6 +1743,7 @@ AC_SUBST(GCRYPT_CFLAGS)
 AC_SUBST(GCRYPT_LIBS)
 AC_SUBST(GCRYPT_CRYPTO_LIB)
 AC_SUBST(GCRYPT_MIN_VERSION)
+AC_SUBST(GCRYPT_PACKAGE)
 
 
 dnl ==========================================================================

@@ -1,4 +1,4 @@
-# Makefile for xmlsec, specific for Windows, MSVC and NMAKE.
+# Makefile for xmlsec, specific to Windows, MSVC and NMAKE.
 #
 # Take a look at the beginning and modify the variables to suit your
 # environment.
@@ -29,14 +29,14 @@ XMLSEC_EXAMPLES = \
 #
 !IF "$(XMLSEC_DEFAULT_CRYPTO)" == "openssl"
 XMLSEC_CFLAGS = $(XMLSEC_CFLAGS) /D "XMLSEC_CRYPTO_OPENSSL" /D "XMLSEC_DEFAULT_CRYPTO=\"openssl\""
-XMLSEC_SOLIBS = libxmlsec-openssl.lib libeay32.lib wsock32.lib user32.lib gdi32.lib
-XMLSEC_ALIBS  = libxmlsec-openssl_a.lib libeay32.lib wsock32.lib user32.lib gdi32.lib
+XMLSEC_SOLIBS = libxmlsec-openssl.lib libcrypto.lib wsock32.lib user32.lib gdi32.lib
+XMLSEC_ALIBS  = libxmlsec-openssl_a.lib libcrypto.lib wsock32.lib user32.lib gdi32.lib
 !ENDIF
 
 !IF "$(XMLSEC_DEFAULT_CRYPTO)" == "nss"
 XMLSEC_CFLAGS = $(XMLSEC_CFLAGS) /D "XMLSEC_CRYPTO_NSS" /D "XMLSEC_DEFAULT_CRYPTO=\"nss\""
-XMLSEC_SOLIBS = libxmlsec-nss.lib nss3.lib nspr4.lib plds4.lib plc4.lib
-XMLSEC_ALIBS  = libxmlsec-nss_a.lib nss3.lib nspr4.lib plds4.lib plc4.lib
+XMLSEC_SOLIBS = libxmlsec-nss.lib smime3.lib ssl3.lib nss3.lib libnspr4.lib libplds4.lib libplc4.lib kernel32.lib user32.lib gdi32.lib
+XMLSEC_ALIBS  = libxmlsec-nss_a.lib smime3.lib ssl3.lib nss3.lib libnspr4_s.lib libplds4_s.lib libplc4_s.lib kernel32.lib user32.lib gdi32.lib
 !ENDIF
 
 !IF "$(XMLSEC_DEFAULT_CRYPTO)" == "mscrypto"
@@ -45,18 +45,20 @@ XMLSEC_SOLIBS = libxmlsec-mscrypto.lib user32.lib gdi32.lib crypt32.lib advapi32
 XMLSEC_ALIBS  = libxmlsec-mscrypto_a.lib user32.lib gdi32.lib crypt32.lib advapi32.lib
 !ENDIF
 
+!IF "$(XMLSEC_DEFAULT_CRYPTO)" == "mscng"
+XMLSEC_CFLAGS = $(XMLSEC_CFLAGS) /D "XMLSEC_CRYPTO_MSCNG" /D "XMLSEC_DEFAULT_CRYPTO=\"mscng\""
+XMLSEC_SOLIBS = libxmlsec-mscng.lib kernel32.lib user32.lib gdi32.lib Crypt32.lib Advapi32.lib Bcrypt.lib Ncrypt.lib
+XMLSEC_ALIBS  = libxmlsec-mscng_a.lib kernel32.lib user32.lib gdi32.lib Crypt32.lib Advapi32.lib Bcrypt.lib Ncrypt.lib
+!ENDIF
+
 !IF "$(XMLSEC_STATIC)" == "yes"
 XMLSEC_CFLAGS = $(XMLSEC_CFLAGS) /D "LIBXML_STATIC" /D "LIBXSLT_STATIC" /D "XMLSEC_STATIC"
 XMLSEC_LIBS   = $(XMLSEC_LIBS) $(XMLSEC_ALIBS) libxmlsec_a.lib \
-		libxml2_a.lib libxslt_a.lib libexslt_a.lib bcrypt.lib
+		libxml2s.lib libxslts.lib bcrypt.lib
 !ELSE
 XMLSEC_LIBS   = $(XMLSEC_LIBS) $(XMLSEC_SOLIBS) libxmlsec.lib libxml2.lib \
-		libxslt.lib libexslt.lib bcrypt.lib
+		libxslt.lib bcrypt.lib
 !ENDIF
-
-# The preprocessor and its options.
-CPP = cl.exe /EP
-CPPFLAGS = /nologo
 
 # The compiler and its options.
 CC = cl.exe
@@ -64,7 +66,7 @@ CFLAGS = /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /DWIN32_SOCKETS /W1 /MD $(X
 
 # The linker and its options.
 LD = link.exe
-LDFLAGS = /nologo $(XMLSEC_LIBS) wsock32.lib
+LDFLAGS = /nologo $(XMLSEC_LIBS)
 
 # Optimisation and debug symbols.
 !if "$(DEBUG)" == "1"
@@ -72,7 +74,7 @@ CFLAGS = $(CFLAGS) /D "_DEBUG" /Od /Z7
 LDFLAGS = $(LDFLAGS) /DEBUG
 !else
 CFLAGS = $(CFLAGS) /D "NDEBUG" /O2
-LDFLAGS = $(LDFLAGS) /OPT:NOWIN98
+LDFLAGS = $(LDFLAGS) /OPT:REF,ICF
 !endif
 
 all : $(XMLSEC_OBJS_DIR) $(XMLSEC_EXAMPLES)

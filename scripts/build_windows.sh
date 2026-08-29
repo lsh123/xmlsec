@@ -12,17 +12,22 @@
 # $ c:\cygwin64\bin\bash scripts\build_windows.sh cleanup-release
 # $ c:\cygwin64\bin\bash scripts\build_windows.sh cleanup-debug
 #
+
+# pin all library versions include xmlsec (so we can build rc builds or rebuild specific versions if needed)
 libxml2_version="2.15.3"
 libxslt_version="1.1.45"
 openssl_version="4.0.0"
 xmlsec_version="1.3.13-rc1"
 
-pwd=`pwd`
-script_dir=`dirname $0`
-work_dir=`cygpath "d:\\home\\aleksey\\dev"`
-top_install_dir_prefix="d:\\home\\aleksey\\distro"
-PERL_PATH="C:\\Strawberry\\perl\\bin"
-LOG_FILE=`cygpath "d:\\home\\aleksey\\tmp\\build-windows.log"`
+orig_pwd=$(pwd)
+script_dir=$(dirname "$0")
+
+
+# Build locations, overridable via environment variables.
+work_dir="${XMLSEC_BUILD_WORK_DIR:-$(cygpath "d:\\home\\aleksey\\dev")}"
+top_install_dir_prefix="${XMLSEC_DISTRO_PREFIX:-$(cygpath "d:\\home\\aleksey\\distro")}"
+PERL_PATH="${PERL_PATH:-C:\\Strawberry\\perl\\bin}"
+LOG_FILE="${XMLSEC_BUILD_LOG:-$(cygpath "d:\\home\\aleksey\\tmp\\build-windows.log")}"
 
 LIBXML2_LIBXSLT_CMAKE_BUILDDIR=builddir
 LIBXML2_LIBXSLT_CMAKE_ARCH="x64"
@@ -34,7 +39,7 @@ if [[ "$1" =~ '-release' ]] ; then
   top_install_dir="${top_install_dir_prefix}.release"
   LIBXML2_LIBXSLT_CMAKE_CONFIG=Release
   LIBXML2_LIBXSLT_CMAKE_RUNTIME="MultiThreadedDLL"
-  OPEENSL_XMLSEC_CONFIG="--release"
+  OPENSSL_XMLSEC_CONFIG="--release"
   XMLSEC_CONFIG_OPTIONS="debug=no memcheck=no cruntime=/MD"
   ZIP_POSTFIX=""
   echo "*** DETECTED RELEASE CONFIGURATION..."
@@ -42,7 +47,7 @@ elif [[ "$1" =~ '-debug' ]] ; then
   top_install_dir="${top_install_dir_prefix}.debug"
   LIBXML2_LIBXSLT_CMAKE_CONFIG=Debug
   LIBXML2_LIBXSLT_CMAKE_RUNTIME="MultiThreadedDebugDLL"
-  OPEENSL_XMLSEC_CONFIG="--debug"
+  OPENSSL_XMLSEC_CONFIG="--debug"
   XMLSEC_CONFIG_OPTIONS="debug=yes memcheck=yes cruntime=/MDd"
   ZIP_POSTFIX="-debug"
   echo "*** DETECTED DEBUG CONFIGURATION..."
@@ -58,7 +63,7 @@ openssl_install_dir="${top_install_dir}\openssl"
 xmlsec_install_dir="${top_install_dir}\xmlsec"
 
 zip_folders_and_files="libxml2 libxslt openssl xmlsec README.md"
-zip_output_file="${top_install_dir}\\xmlsec1-${xmlsec_version}-win64${ZIP_POSTFIX}.zip"
+zip_output_file="${top_install_dir}\xmlsec1-${xmlsec_version}-win64${ZIP_POSTFIX}.zip"
 
 function build_libxml2 {
   # Check whether the component is already built.
@@ -79,16 +84,16 @@ function build_libxml2 {
 
   if [ ! -f "${full_name}.tar.gz" ] ; then
     echo "*** Downloading ${full_name}..."
-    wget "${full_url}"
+    wget "${full_url}" || return 1
   else
     echo "*** File \"${full_name}.tar.gz\" already exists"
   fi
 
   echo "*** Extracting \"${full_name}\" archive..."
-  tar xvfz "${full_name}.tar.gz" 2>> "${LOG_FILE}"
+  tar xvfz "${full_name}.tar.gz" 2>> "${LOG_FILE}" || return 1
 
   echo "*** Configuring \"${full_name}\" ..."
-  cd "${full_name}"
+  cd "${full_name}" || return 1
   cmake -B "${LIBXML2_LIBXSLT_CMAKE_BUILDDIR}" -A "${LIBXML2_LIBXSLT_CMAKE_ARCH}" -G "${LIBXML2_LIBXSLT_CMAKE_GENERATOR}" \
 	  -D CMAKE_MSVC_RUNTIME_LIBRARY="${LIBXML2_LIBXSLT_CMAKE_RUNTIME}" \
 	  -D BUILD_SHARED_LIBS="${LIBXML2_LIBXSLT_CMAKE_SHARED_LIBS}" \
@@ -99,19 +104,19 @@ function build_libxml2 {
 	  -D LIBXML2_WITH_ZLIB=OFF \
     -D LIBXML2_WITH_TESTS=OFF
   if [ $? -ne 0 ]; then
-    exit $?
+    return $?
   fi
 
   echo "*** Building \"${full_name}\" ..."
   cmake --build "${LIBXML2_LIBXSLT_CMAKE_BUILDDIR}" --config "${LIBXML2_LIBXSLT_CMAKE_CONFIG}" >> "${LOG_FILE}"
   if [ $? -ne 0 ]; then
-    exit $?
+    return $?
   fi
 
   echo "*** Installing \"${full_name}\" ..."
   cmake --install "${LIBXML2_LIBXSLT_CMAKE_BUILDDIR}" --config "${LIBXML2_LIBXSLT_CMAKE_CONFIG}" >> "${LOG_FILE}"
   if [ $? -ne 0 ]; then
-    exit $?
+    return $?
   fi
 
   echo "*** Done with \"${full_name}\"!!!"
@@ -137,17 +142,17 @@ function build_libxslt {
 
   if [ ! -f "${full_name}.tar.gz" ] ; then
     echo "*** Downloading ${full_name}..."
-    wget "${full_url}"
+    wget "${full_url}" || return 1
   else
     echo "*** File \"${full_name}.tar.gz\" already exists"
   fi
 
   echo "*** Extracting \"${full_name}\" archive..."
-  tar xvfz "${full_name}.tar.gz" 2>> "${LOG_FILE}"
+  tar xvfz "${full_name}.tar.gz" 2>> "${LOG_FILE}" || return 1
 
   echo "*** Configuring \"${full_name}\" ..."
 
-  cd "${full_name}"
+  cd "${full_name}" || return 1
   cmake -B "${LIBXML2_LIBXSLT_CMAKE_BUILDDIR}" -A "${LIBXML2_LIBXSLT_CMAKE_ARCH}" -G "${LIBXML2_LIBXSLT_CMAKE_GENERATOR}" \
 	  -D CMAKE_MSVC_RUNTIME_LIBRARY="${LIBXML2_LIBXSLT_CMAKE_RUNTIME}" \
 	  -D BUILD_SHARED_LIBS="${LIBXML2_LIBXSLT_CMAKE_SHARED_LIBS}" \
@@ -156,19 +161,19 @@ function build_libxslt {
 	  -D LIBXSLT_WITH_PYTHON=OFF \
     -D LIBXSLT_WITH_TESTS=OFF
   if [ $? -ne 0 ]; then
-    exit $?
+    return $?
   fi
 
   echo "*** Building \"${full_name}\" ..."
   cmake --build "${LIBXML2_LIBXSLT_CMAKE_BUILDDIR}" --config "${LIBXML2_LIBXSLT_CMAKE_CONFIG}" >> "${LOG_FILE}"
   if [ $? -ne 0 ]; then
-    exit $?
+    return $?
   fi
 
   echo "*** Installing \"${full_name}\" ..."
   cmake --install "${LIBXML2_LIBXSLT_CMAKE_BUILDDIR}" --config "${LIBXML2_LIBXSLT_CMAKE_CONFIG}" >> "${LOG_FILE}"
   if [ $? -ne 0 ]; then
-    exit $?
+    return $?
   fi
 
   echo "*** Done with \"${full_name}\"!!!"
@@ -194,34 +199,35 @@ function build_openssl {
 
   if [ ! -f "${full_name}.tar.gz" ] ; then
     echo "*** Downloading ${full_name}..."
-    wget "${full_url}"
+    wget "${full_url}" || return 1
   else
     echo "*** File \"${full_name}.tar.gz\" already exists"
   fi
 
   echo "*** Extracting \"${full_name}\" archive..."
-  tar xvfz "${full_name}.tar.gz" 2>> "${LOG_FILE}"
+  tar xvfz "${full_name}.tar.gz" 2>> "${LOG_FILE}" || return 1
 
   echo "*** Configuring \"${full_name}\" ..."
   OLD_PATH="$PATH"
   PATH="$PATH;$PERL_PATH"
-  cd "${full_name}"
-  perl Configure no-unit-test --prefix="${openssl_install_dir}" ${OPEENSL_XMLSEC_CONFIG} VC-WIN64A-HYBRIDCRT
+  cd "${full_name}" || return 1
+  perl Configure no-unit-test --prefix="${openssl_install_dir}" ${OPENSSL_XMLSEC_CONFIG} VC-WIN64A-HYBRIDCRT
+  rc=$?
   PATH="$OLD_PATH"
-  if [ $? -ne 0 ]; then
-    exit $?
+  if [ $rc -ne 0 ]; then
+    return $rc
   fi
 
   echo "*** Building \"${full_name}\" ..."
   nmake >> "${LOG_FILE}"
   if [ $? -ne 0 ]; then
-    exit $?
+    return $?
   fi
 
   echo "*** Installing \"${full_name}\" ..."
   nmake install_sw >> "${LOG_FILE}"
   if [ $? -ne 0 ]; then
-    exit $?
+    return $?
   fi
 
   echo "*** Done with \"${full_name}\"!!!"
@@ -249,35 +255,35 @@ function build_xmlsec {
 
   if [ ! -f "${full_name}.tar.gz" ] ; then
     echo "*** Downloading ${full_name}..."
-    wget "${full_url}"
+    wget "${full_url}" || return 1
   else
     echo "*** File \"${full_name}.tar.gz\" already exists"
   fi
 
   echo "*** Extracting \"${full_name}\" archive..."
-  tar xvfz "${full_name}.tar.gz" 2>> "${LOG_FILE}"
+  tar xvfz "${full_name}.tar.gz" 2>> "${LOG_FILE}" || return 1
 
   echo "*** Configuring \"${full_name}\" ..."
-  cd "${full_name_without_rc}\win32"
+  cd "${full_name_without_rc}\win32" || return 1
   powershell -ExecutionPolicy Bypass -File configure.ps1 pedantic=yes static=no unicode=yes ${XMLSEC_CONFIG_OPTIONS}\
     xslt=yes crypto=openssl,mscng \
     prefix="${xmlsec_install_dir}" \
     include="${libxml2_install_dir}\include;${libxml2_install_dir}\include\libxml2;${libxslt_install_dir}\include;${openssl_install_dir}\include" \
     lib="${libxml2_install_dir}\lib;${libxslt_install_dir}\lib;${openssl_install_dir}\lib"
   if [ $? -ne 0 ]; then
-    exit $?
+    return $?
   fi
 
   echo "*** Building \"${full_name}\" ..."
   nmake >> "${LOG_FILE}"
   if [ $? -ne 0 ]; then
-    exit $?
+    return $?
   fi
 
   echo "*** Installing \"${full_name}\" ..."
   nmake install >> "${LOG_FILE}"
   if [ $? -ne 0 ]; then
-    exit $?
+    return $?
   fi
 
   echo "*** Done with \"${full_name}\"!!!"
@@ -286,27 +292,34 @@ function build_xmlsec {
 
 function create_readme {
   echo "*** Creating README..."
-  cd "${pwd}"
+  cd "${orig_pwd}" || return 1
   cat "${script_dir}\\README-WINDOWS.md.in" | sed "s/@libxml2_version@/${libxml2_version}/g" |  sed "s/@libxslt_version@/${libxslt_version}/g" |  sed "s/@openssl_version@/${openssl_version}/g" |  sed "s/@xmlsec_version@/${xmlsec_version}/g" > "${top_install_dir}\\README.md"
+  if [ $? -ne 0 ]; then
+    return $?
+  fi
   echo "*** Done with README!!!"
   return 0
 }
 
 function create_distro {
   echo "*** Creating zip file..."
-  cd "${top_install_dir}"
+  cd "${top_install_dir}" || return 1
   for ii in ${zip_folders_and_files} ; do
-    echo "*** Removing pdb files from ${ii}..."
-    rm -f ${ii}/bin/*.pdb ${ii}/bin/*/*.pdb ${ii}/lib/*.pdb  ${ii}/lib/*/*.pdb
+    if [ -d "${ii}" ] ; then
+      echo "*** Removing pdb files from ${ii}..."
+      rm -f ${ii}/bin/*.pdb ${ii}/bin/*/*.pdb ${ii}/lib/*.pdb  ${ii}/lib/*/*.pdb
+    fi
   done
   rm -f "${zip_output_file}"
   zip -r "${zip_output_file}" ${zip_folders_and_files} >> "${LOG_FILE}"
+  if [ $? -ne 0 ]; then
+    return $?
+  fi
   echo "*** Done with zip file: \"${zip_output_file}\""
   return 0
-
 }
 
-rm "${LOG_FILE}"
+rm -f "${LOG_FILE}"
 echo "*** LOG FILE: \"${LOG_FILE}\""
 
 if [[ "$1" =~ 'build-' ]] ; then
@@ -339,7 +352,12 @@ if [[ "$1" =~ 'build-' ]] ; then
   echo "*** Done with BUILD!!!"
 elif [[ "$1" =~ 'cleanup-' ]] ; then
   echo "*** CLEANUP (top dir: ${top_install_dir})..."
+  xmlsec_version_without_rc=$(echo "${xmlsec_version}" | sed 's/-rc.*//g' | sed 's/-preview.*//g')
   rm -rf "${libxml2_install_dir}" "${libxslt_install_dir}" "${openssl_install_dir}" "${xmlsec_install_dir}" "${top_install_dir}\\README.md"
+  rm -rf "${work_dir}\\libxml2-v${libxml2_version}" "${work_dir}\\libxml2-v${libxml2_version}.tar.gz" \
+    "${work_dir}\\libxslt-v${libxslt_version}" "${work_dir}\\libxslt-v${libxslt_version}.tar.gz" \
+    "${work_dir}\\openssl-${openssl_version}" "${work_dir}\\openssl-${openssl_version}.tar.gz" \
+    "${work_dir}\\xmlsec1-${xmlsec_version_without_rc}" "${work_dir}\\xmlsec1-${xmlsec_version}.tar.gz"
   ls -la "${top_install_dir}"
   echo "*** Done with CLEANUP!!!"
 else

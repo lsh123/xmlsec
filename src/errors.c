@@ -271,7 +271,12 @@ xmlSecError(const char* file, int line, const char* func,
         int ret;
 
         if(msg != NULL) {
+            /* Make coverity + C23 happy */
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 202311L
+            va_list va = {0};
+#else /* defined(__STDC_VERSION__) && __STDC_VERSION__ >= 202311L */
             va_list va;
+#endif /* defined(__STDC_VERSION__) && __STDC_VERSION__ >= 202311L */
 
             va_start(va, msg);
             ret = xmlStrVPrintf(error_msg, sizeof(error_msg), msg, va);

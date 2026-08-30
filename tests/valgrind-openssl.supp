@@ -16,6 +16,9 @@
 #  }
 
 ##----------------------------------------------------------------------##
+# The BN_*/bn_* suppressions below mirror the bignum entries from
+# upstream OpenSSL's own test/valgrind.supp and are kept broad on purpose.
+
 {
    OpenSSL BN_*(Cond)
    Memcheck:Cond
@@ -41,7 +44,7 @@
 }
 
 {
-   OpenSSL AES_encrypt(Value4)
+   OpenSSL AES_encrypt*/(Value4)
    Memcheck:Value4
    fun:AES_encrypt
    fun:AES_cbc_encrypt
@@ -63,16 +66,17 @@
 }
 
 {
-   EVP_DecryptFinal_ex
+   OpenSSL EVP_DecryptFinal_ex(Cond)
    Memcheck:Cond
    ...
    fun:EVP_DecryptFinal_ex
+   fun:EVP_CipherFinal_ex
    fun:xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock
    ...
 }
 
 {
-   ossl_provider_set_operation_bit->malloc
+   ossl_provider_set_operation_bit -> malloc
    Memcheck:Leak
    match-leak-kinds: reachable
    fun:malloc
@@ -80,7 +84,7 @@
    ...
 }
 {
-   ossl_provider_set_operation_bit->calloc
+   ossl_provider_set_operation_bit -> calloc
    Memcheck:Leak
    match-leak-kinds: reachable
    fun:calloc
@@ -88,7 +92,7 @@
    ...
 }
 {
-   ossl_provider_set_operation_bit->realloc
+   ossl_provider_set_operation_bit -> realloc
    Memcheck:Leak
    match-leak-kinds: reachable
    fun:realloc
@@ -96,7 +100,7 @@
    ...
 }
 {
-   OSSL_PROVIDER_try_load->malloc
+   OSSL_PROVIDER_try_load -> malloc
    Memcheck:Leak
    match-leak-kinds: reachable
    fun:malloc
@@ -106,7 +110,7 @@
    fun:main
 }
 {
-   OSSL_PROVIDER_try_load->realloc
+   OSSL_PROVIDER_try_load -> realloc
    Memcheck:Leak
    match-leak-kinds: reachable
    fun:realloc
@@ -116,7 +120,7 @@
    fun:main
 }
 {
-   OSSL_PROVIDER_try_load->calloc
+   OSSL_PROVIDER_try_load -> calloc
    Memcheck:Leak
    match-leak-kinds: reachable
    fun:calloc
@@ -126,7 +130,7 @@
    fun:main
 }
 {
-   OPENSSL_init_crypto->malloc
+   OPENSSL_init_crypto -> malloc
    Memcheck:Leak
    match-leak-kinds: reachable
    fun:malloc
@@ -136,7 +140,7 @@
    fun:main
 }
 {
-   OPENSSL_init_crypto->realloc
+   OPENSSL_init_crypto -> realloc
    Memcheck:Leak
    match-leak-kinds: reachable
    fun:realloc
@@ -146,7 +150,7 @@
    fun:main
 }
 {
-   OPENSSL_init_crypto->calloc
+   OPENSSL_init_crypto -> calloc
    Memcheck:Leak
    match-leak-kinds: reachable
    fun:calloc

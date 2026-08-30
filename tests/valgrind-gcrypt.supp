@@ -2,6 +2,12 @@
 #
 # Errors to suppress by default with GCrypt
 #
+# Note: several suppressions below reference non-exported libgcrypt symbols
+# (global_init, do_randomize, _gcry_rngcsprng_randomize, _gcry_mpi_randomize).
+# Valgrind can only resolve those when libgcrypt is built with a symbol table
+# or debug info; on a stripped distribution build they silently stop matching,
+# so reachable leaks from those paths may surface as unsuppressed reports.
+#
 # Format of this file is:
 # {
 #     name_of_suppression
@@ -68,6 +74,7 @@
    fun:malloc
    ...
    fun:_gcry_rngcsprng_randomize
+   ...
    fun:xmlSecGCryptGenerateRandom
    ...
    fun:main

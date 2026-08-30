@@ -1,5 +1,4 @@
 *~
-*.orig
 .deps/
 .libs/
 .cproject
@@ -15,6 +14,11 @@ missing
 .settings/
 m4/
 apps/xmlsec1
+apps/xmlsec_unit_tests
+apps/xmlsec_fuzzer
+apps/xmlsec_dsig_verify_fuzzer
+apps/xmlsec_keyinfo_fuzzer
+apps/xmlsec_keyload_fuzzer
 autom4te.cache/
 config.guess
 config.sub
@@ -26,6 +30,7 @@ config.status
 configure
 ltmain.sh
 stamp-h1
+.dirstamp
 xmlsec1-config
 xmlsec1-gcrypt.pc
 xmlsec1-gnutls.pc
@@ -37,6 +42,7 @@ xmlsec1Conf.sh
 Makefile.in
 Makefile
 docs/md/examples/*.md
+docs/xml/api/Doxyfile
 !examples/Makefile
 include/xmlsec/version.h
 libtool

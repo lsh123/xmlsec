@@ -136,6 +136,8 @@ Windows notes:
   - Ask the user if the existing test should be changed
 - DO NOT commit or stage changes unless explicitly asked
   - Ask the user before performing any write git operation
+- DO NOT build in the source tree
+  - Use build-openssl/, build-nss/, build-memcheck/, and other folders to do out-of-tree builds
 - DO NOT run tests manually
   - use 'make check' or (on windows) 'nmake check' commands (or its variations check-dsig, check-enc, etc)
 

@@ -168,6 +168,13 @@ test_buffer_make_temp_name(char* tmpName, size_t tmpNameSize, const char* suffix
     return(0);
 }
 
+static void
+test_buffer_remove_temp_file(const char* tmpName) {
+    if(remove(tmpName) != 0) {
+        testLog("Error: failed to remove temp file '%s'\n", tmpName);
+    }
+}
+
 /* ------------------------------------------------------------------ */
 /* Individual test functions                                           */
 /* ------------------------------------------------------------------ */
@@ -1468,6 +1475,7 @@ test_buffer_read_file(void) {
     char tmpName[160] = { '\0' };
     const xmlSecByte payload[] = { 0x00, 0x01, 0x02, 0xAB, 0xCD, 0xEF, 0xFF };
     FILE* f = NULL;
+    int fileCreated = 0;
 
     testStart("xmlSecBufferReadFile");
     test_buffer_reset_default_alloc_mode();
@@ -1488,6 +1496,7 @@ test_buffer_read_file(void) {
         testLog("Error: failed to create temp file '%s'\n", tmpName);
         goto done;
     }
+    fileCreated = 1;
     if(fwrite(payload, 1, sizeof(payload), f) != sizeof(payload)) {
         testLog("Error: failed to write temp file payload\n");
         goto done;
@@ -1524,7 +1533,9 @@ test_buffer_read_file(void) {
 
     xmlSecBufferDestroy(buf);
     buf = NULL;
-    remove(tmpName);
+    if(fileCreated) {
+        test_buffer_remove_temp_file(tmpName);
+    }
     testFinishedSuccess();
     return;
 
@@ -1535,7 +1546,9 @@ done:
     if(buf != NULL) {
         xmlSecBufferDestroy(buf);
     }
-    remove(tmpName);
+    if(fileCreated) {
+        test_buffer_remove_temp_file(tmpName);
+    }
     testFinishedFailure();
 }
 
@@ -1546,6 +1559,7 @@ test_buffer_debug_hex_dump(void) {
     const xmlSecByte data[] = { 0x00, 0x01, 0x7F, 0x80, 0xFF };
     FILE* f = NULL;
     char line[64];
+    int fileCreated = 0;
 
     testStart("xmlSecBufferDebugHexDump");
     test_buffer_reset_default_alloc_mode();
@@ -1575,6 +1589,7 @@ test_buffer_debug_hex_dump(void) {
         testLog("Error: failed to create hex dump temp file\n");
         goto done;
     }
+    fileCreated = 1;
 
     xmlSecBufferDebugHexDump(buf, f);
     fclose(f);
@@ -1604,7 +1619,9 @@ test_buffer_debug_hex_dump(void) {
 
     xmlSecBufferDestroy(buf);
     buf = NULL;
-    remove(tmpName);
+    if(fileCreated) {
+        test_buffer_remove_temp_file(tmpName);
+    }
     testFinishedSuccess();
     return;
 
@@ -1615,7 +1632,9 @@ done:
     if(buf != NULL) {
         xmlSecBufferDestroy(buf);
     }
-    remove(tmpName);
+    if(fileCreated) {
+        test_buffer_remove_temp_file(tmpName);
+    }
     testFinishedFailure();
 }
 

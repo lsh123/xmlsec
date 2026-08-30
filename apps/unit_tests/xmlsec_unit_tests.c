@@ -237,8 +237,13 @@ static void testLogFlush(void) {
 }
 
 void testLog(const char* fmt, ...) {
-    char buf[8192];
+    /* Make coverity + C23 happy */
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 202311L
+    va_list args = {0};
+#else /* defined(__STDC_VERSION__) && __STDC_VERSION__ >= 202311L */
     va_list args;
+#endif /* defined(__STDC_VERSION__) && __STDC_VERSION__ >= 202311L */
+    char buf[8192];
     int len;
     char* newBuf;
     size_t newCap;

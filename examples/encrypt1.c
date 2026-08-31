@@ -7,7 +7,7 @@
  */
 /**
  * @brief XML Security Library example: Encrypting data using a template file.
- * @details Encrypts binary data using a template file and a DES key from a binary file
+ * @details Encrypts binary data using a template file and a Triple DES key from a binary file
  *
  * Usage:
  *
@@ -213,7 +213,11 @@ encrypt_file(const char* tmpl_file, const char* key_file,
     }
 
     /* print encrypted data with the document to stdout */
-    xmlDocDump(stdout, doc);
+    if(xmlDocDump(stdout, doc) < 0) {
+        fprintf(stderr, "Error: failed to write the encrypted document to stdout\n");
+        goto done;
+    }
+    fprintf(stdout, "\n");
 
     /* success */
     res = 0;

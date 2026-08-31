@@ -204,15 +204,21 @@ decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file) {
     /* print decrypted data to stdout */
     if(encCtx->resultReplaced != 0) {
         fprintf(stdout, "Decrypted XML data:\n");
-        xmlDocDump(stdout, doc);
+        if(xmlDocDump(stdout, doc) < 0) {
+            fprintf(stderr, "Error: failed to write the decrypted document to stdout\n");
+            goto done;
+        }
     } else {
         fprintf(stdout, "Decrypted binary data (" XMLSEC_SIZE_FMT " bytes):\n",
             xmlSecBufferGetSize(encCtx->result));
         if(xmlSecBufferGetData(encCtx->result) != NULL) {
-            fwrite(xmlSecBufferGetData(encCtx->result),
-                  1,
-                  xmlSecBufferGetSize(encCtx->result),
-                  stdout);
+            if(fwrite(xmlSecBufferGetData(encCtx->result),
+                      1,
+                      xmlSecBufferGetSize(encCtx->result),
+                      stdout) != xmlSecBufferGetSize(encCtx->result)) {
+                fprintf(stderr, "Error: failed to write the decrypted data to stdout\n");
+                goto done;
+            }
         }
     }
     fprintf(stdout, "\n");
@@ -281,7 +287,7 @@ create_files_keys_mngr(void) {
 /******************************************************************************
  *
  * Files Keys Store: we assume that key's name (content of the
- * <dsig:KeyName/> element) is a name of the file with a key (in the
+ * <xenc:KeyName/> element) is a name of the file with a key (in the
  * current folder).
  * Attention: this is probably not a good solution for high traffic systems.
  *

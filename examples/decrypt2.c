@@ -31,11 +31,6 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 
-#ifndef XMLSEC_NO_XSLT
-#include <libxslt/xslt.h>
-#include <libxslt/security.h>
-#endif /* XMLSEC_NO_XSLT */
-
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/xmlenc.h>
@@ -48,9 +43,6 @@ int
 main(int argc, char **argv) {
     int xmlsec_initialized = 0;
     xmlSecKeysMngrPtr mngr = NULL;
-#ifndef XMLSEC_NO_XSLT
-    xsltSecurityPrefsPtr xsltSecPrefs = NULL;
-#endif /* XMLSEC_NO_XSLT */
     int res = -1;
 
     assert(argv);
@@ -64,19 +56,6 @@ main(int argc, char **argv) {
     /* Init LibXML2 */
     xmlInitParser();
     LIBXML_TEST_VERSION
-
-    /* Init LibXSLT */
-#ifndef XMLSEC_NO_XSLT
-    /* disable all XSLT file and network access */
-    xsltSecPrefs = xsltNewSecurityPrefs();
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_NETWORK,     xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_NETWORK,    xsltSecurityForbid);
-    xsltSetDefaultSecurityPrefs(xsltSecPrefs);
-#endif /* XMLSEC_NO_XSLT */
-
 
     /* Init XMLSec */
     if(xmlSecInit() < 0) {
@@ -142,11 +121,7 @@ done:
         xmlSecShutdown();
     }
 
-    /* shutdown LibXSLT / LibXML2 */
-#ifndef XMLSEC_NO_XSLT
-    xsltFreeSecurityPrefs(xsltSecPrefs);
-    xsltCleanupGlobals();
-#endif /* XMLSEC_NO_XSLT */
+    /* shutdown LibXML2 */
     xmlCleanupParser();
 
     return(res);
@@ -192,14 +167,14 @@ load_des_keys(char** files, int files_size) {
         /* load DES key */
         key = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, files[i]);
         if(key == NULL) {
-            fprintf(stderr,"Error: failed to load DES key from binary file \"%s\"\n", files[i]);
+            fprintf(stderr, "Error: failed to load DES key from binary file \"%s\"\n", files[i]);
             xmlSecKeysMngrDestroy(mngr);
             return(NULL);
         }
 
         /* set the key name to the file name; this is only an example */
         if(xmlSecKeySetName(key, BAD_CAST files[i]) < 0) {
-            fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", files[i]);
+            fprintf(stderr, "Error: failed to set key name for key from \"%s\"\n", files[i]);
             xmlSecKeyDestroy(key);
             xmlSecKeysMngrDestroy(mngr);
             return(NULL);
@@ -209,7 +184,7 @@ load_des_keys(char** files, int files_size) {
          * is responsible for destroying it
          */
         if(xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key) < 0) {
-            fprintf(stderr,"Error: failed to add key from \"%s\" to keys manager\n", files[i]);
+            fprintf(stderr, "Error: failed to add key from \"%s\" to keys manager\n", files[i]);
             xmlSecKeyDestroy(key);
             xmlSecKeysMngrDestroy(mngr);
             return(NULL);
@@ -254,13 +229,13 @@ decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file) {
     /* create encryption context */
     encCtx = xmlSecEncCtxCreate(mngr);
     if(encCtx == NULL) {
-        fprintf(stderr,"Error: failed to create encryption context\n");
+        fprintf(stderr, "Error: failed to create encryption context\n");
         goto done;
     }
 
     /* decrypt the data */
     if((xmlSecEncCtxDecrypt(encCtx, node) < 0) || (encCtx->result == NULL)) {
-        fprintf(stderr,"Error: decryption failed\n");
+        fprintf(stderr, "Error: decryption failed\n");
         goto done;
     }
 

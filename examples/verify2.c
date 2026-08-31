@@ -23,7 +23,6 @@
  * \endcode
  */
 #include <stdlib.h>
-#include <string.h>
 #include <assert.h>
 
 #include <libxml/tree.h>
@@ -192,14 +191,14 @@ load_keys(char** files, int files_size) {
         /* load key */
         key = xmlSecCryptoAppKeyLoadEx(files[i], xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
         if(key == NULL) {
-            fprintf(stderr,"Error: failed to load pem key from \"%s\"\n", files[i]);
+            fprintf(stderr, "Error: failed to load pem key from \"%s\"\n", files[i]);
             xmlSecKeysMngrDestroy(mngr);
             return(NULL);
         }
 
         /* set the key name to the file name; this is only an example */
         if(xmlSecKeySetName(key, BAD_CAST files[i]) < 0) {
-            fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", files[i]);
+            fprintf(stderr, "Error: failed to set key name for key from \"%s\"\n", files[i]);
             xmlSecKeyDestroy(key);
             xmlSecKeysMngrDestroy(mngr);
             return(NULL);
@@ -209,7 +208,7 @@ load_keys(char** files, int files_size) {
          * is responsible for destroying it
          */
         if(xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key) < 0) {
-            fprintf(stderr,"Error: failed to add key from \"%s\" to keys manager\n", files[i]);
+            fprintf(stderr, "Error: failed to add key from \"%s\" to keys manager\n", files[i]);
             xmlSecKeyDestroy(key);
             xmlSecKeysMngrDestroy(mngr);
             return(NULL);
@@ -236,7 +235,11 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
     assert(xml_file);
 
     /* load file */
+#if LIBXML_VERSION >= 21300
+    doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT | XML_PARSE_NO_XXE);
+#else /* LIBXML_VERSION >= 21300 */
     doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT);
+#endif /* LIBXML_VERSION >= 21300 */
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
         fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
         goto done;
@@ -252,13 +255,13 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
     /* create signature context */
     dsigCtx = xmlSecDSigCtxCreate(mngr);
     if(dsigCtx == NULL) {
-        fprintf(stderr,"Error: failed to create signature context\n");
+        fprintf(stderr, "Error: failed to create signature context\n");
         goto done;
     }
 
     /* Verify signature */
     if(xmlSecDSigCtxVerify(dsigCtx, node) < 0) {
-        fprintf(stderr,"Error: signature verification failed\n");
+        fprintf(stderr, "Error: signature verification failed\n");
         goto done;
     }
 
@@ -302,32 +305,33 @@ verify_signature_results(xmlSecDSigCtxPtr dsigCtx) {
 
     /* check that signature verification succeeded */
     if(dsigCtx->status != xmlSecDSigStatusSucceeded) {
-        fprintf(stderr,"Error: Signature verification result is not SUCCESS\n");
+        fprintf(stderr, "Error: Signature verification result is not SUCCESS\n");
         return(-1);
     }
 
     /* in this example we expect exactly ONE reference with URI="" and
     *  exactly ONE enveloped signature transform (i.e. the whole document is signed)*/
     if(xmlSecPtrListGetSize(&(dsigCtx->signedInfoReferences)) != 1) {
-        fprintf(stderr,"Error: Exactly one Reference is expected\n");
+        fprintf(stderr, "Error: Exactly one Reference is expected\n");
         return(-1);
     }
     dsigRefCtx = (xmlSecDSigReferenceCtxPtr)xmlSecPtrListGetItem(&(dsigCtx->signedInfoReferences), 0);
     if((dsigRefCtx == NULL) || (dsigRefCtx->status != xmlSecDSigStatusSucceeded)) {
-        fprintf(stderr,"Error: Reference verification result is not SUCCESS\n");
+        fprintf(stderr, "Error: Reference verification result is not SUCCESS\n");
         return(-1);
     }
 
-    /* check URI */
-    if(!xmlStrEqual(dsigRefCtx->uri, BAD_CAST "")) {
-        fprintf(stderr,"Error: Reference URI value doesn't match expected one\n");
+    /* check URI: a NULL URI (Reference without a URI attribute) means the whole document,
+     * which xmlsec treats the same as an empty URI */
+    if((dsigRefCtx->uri != NULL) && (!xmlStrEqual(dsigRefCtx->uri, BAD_CAST ""))) {
+        fprintf(stderr, "Error: Reference URI value doesn't match expected one\n");
         return(-1);
     }
 
     /* check transforms: we expect only one "enveloped signature" transform */
     transform = dsigRefCtx->transformCtx.first;
     if((transform == NULL) || (!xmlStrEqual(transform->id->name, xmlSecNameEnveloped))) {
-        fprintf(stderr,"Error: First Transform name '%s' doesn't match expected '%s'\n", (transform != NULL ? transform->id->name : BAD_CAST "NULL"), xmlSecNameEnveloped);
+        fprintf(stderr, "Error: First Transform name '%s' doesn't match expected '%s'\n", (transform != NULL ? transform->id->name : BAD_CAST "NULL"), xmlSecNameEnveloped);
         return(-1);
     }
 
@@ -335,7 +339,7 @@ verify_signature_results(xmlSecDSigCtxPtr dsigCtx) {
     transform = transform->next;
     while(transform != NULL) {
         if((transform->flags & XMLSEC_TRANSFORM_FLAGS_USER_SPECIFIED) != 0) {
-            fprintf(stderr,"Error: Found unexpected Transform name '%s'\n", transform->id->name);
+            fprintf(stderr, "Error: Found unexpected Transform name '%s'\n", transform->id->name);
             return(-1);
         }
         transform = transform->next;

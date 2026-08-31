@@ -48,7 +48,7 @@
 #include <xmlsec/templates.h>
 #include <xmlsec/crypto.h>
 
-xmlSecKeysMngrPtr load_rsa_keys(char* key_file);
+xmlSecKeysMngrPtr load_rsa_keys(const char* key_file);
 int encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name);
 
 int
@@ -168,7 +168,7 @@ done:
  * occurs.
  */
 xmlSecKeysMngrPtr
-load_rsa_keys(char* key_file) {
+load_rsa_keys(const char* key_file) {
     xmlSecKeysMngrPtr mngr;
     xmlSecKeyPtr key;
 
@@ -192,14 +192,14 @@ load_rsa_keys(char* key_file) {
     /* load public or private RSA key */
     key = xmlSecCryptoAppKeyLoadEx(key_file, xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
     if(key == NULL) {
-        fprintf(stderr,"Error: failed to load rsa key from file \"%s\"\n", key_file);
+        fprintf(stderr, "Error: failed to load rsa key from file \"%s\"\n", key_file);
         xmlSecKeysMngrDestroy(mngr);
         return(NULL);
     }
 
     /* set the key name to the file name; this is only an example */
     if(xmlSecKeySetName(key, BAD_CAST key_file) < 0) {
-        fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
+        fprintf(stderr, "Error: failed to set key name for key from \"%s\"\n", key_file);
         xmlSecKeyDestroy(key);
         xmlSecKeysMngrDestroy(mngr);
         return(NULL);
@@ -209,7 +209,7 @@ load_rsa_keys(char* key_file) {
      * for destroying key
      */
     if(xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key) < 0) {
-        fprintf(stderr,"Error: failed to add key from \"%s\" to keys manager\n", key_file);
+        fprintf(stderr, "Error: failed to add key from \"%s\" to keys manager\n", key_file);
         xmlSecKeyDestroy(key);
         xmlSecKeysMngrDestroy(mngr);
         return(NULL);
@@ -243,7 +243,7 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
 
     /* load XML file */
     doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT);
-    if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
+    if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)) {
         fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
         goto done;
     }
@@ -301,20 +301,20 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
     /* create encryption context */
     encCtx = xmlSecEncCtxCreate(mngr);
     if(encCtx == NULL) {
-        fprintf(stderr,"Error: failed to create encryption context\n");
+        fprintf(stderr, "Error: failed to create encryption context\n");
         goto done;
     }
 
     /* generate a Triple DES key */
     encCtx->encKey = xmlSecKeyGenerate(xmlSecKeyDataDesId, 192, xmlSecKeyDataTypeSession);
     if(encCtx->encKey == NULL) {
-        fprintf(stderr,"Error: failed to generate session des key\n");
+        fprintf(stderr, "Error: failed to generate session des key\n");
         goto done;
     }
 
     /* encrypt the data */
     if(xmlSecEncCtxXmlEncrypt(encCtx, encDataNode, xmlDocGetRootElement(doc)) < 0) {
-        fprintf(stderr,"Error: encryption failed\n");
+        fprintf(stderr, "Error: encryption failed\n");
         goto done;
     }
 
@@ -322,7 +322,10 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
     encDataNode = NULL;
 
     /* print encrypted data with document to stdout */
-    xmlDocDump(stdout, doc);
+    if(xmlDocDump(stdout, doc) < 0) {
+        fprintf(stderr, "Error: failed to write the encrypted document to stdout\n");
+        goto done;
+    }
 
     /* success */
     res = 0;

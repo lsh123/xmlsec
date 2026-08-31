@@ -135,13 +135,13 @@ main(int argc, char **argv) {
         fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
         goto done;
     }
+    xmlsec_initialized = 1;
 
     /* create keys manager and load trusted certificates */
     mngr = load_trusted_certs(&(argv[2]), argc - 2);
     if(mngr == NULL) {
         goto done;
     }
-    xmlsec_initialized = 1;
 
     /* verify file */
     if(verify_file(mngr, argv[1]) < 0) {
@@ -210,7 +210,7 @@ load_trusted_certs(char** files, int files_size) {
 
         /* load trusted cert */
         if(xmlSecCryptoAppKeysMngrCertLoad(mngr, files[i], xmlSecKeyDataFormatPem, xmlSecKeyDataTypeTrusted) < 0) {
-            fprintf(stderr,"Error: failed to load pem certificate from \"%s\"\n", files[i]);
+            fprintf(stderr, "Error: failed to load pem certificate from \"%s\"\n", files[i]);
             xmlSecKeysMngrDestroy(mngr);
             return(NULL);
         }
@@ -236,7 +236,11 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
     assert(xml_file);
 
     /* load file */
+#if LIBXML_VERSION >= 21300
+    doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT | XML_PARSE_NO_XXE);
+#else /* LIBXML_VERSION >= 21300 */
     doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT);
+#endif /* LIBXML_VERSION >= 21300 */
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
         fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
         goto done;
@@ -252,7 +256,7 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
     /* create signature context */
     dsigCtx = xmlSecDSigCtxCreate(mngr);
     if(dsigCtx == NULL) {
-        fprintf(stderr,"Error: failed to create signature context\n");
+        fprintf(stderr, "Error: failed to create signature context\n");
         goto done;
     }
 
@@ -265,7 +269,7 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
        (xmlSecDSigCtxEnableSignatureTransform(dsigCtx, xmlSecTransformSha1Id) < 0) ||
        (xmlSecDSigCtxEnableSignatureTransform(dsigCtx, xmlSecTransformRsaSha1Id) < 0)) {
 
-        fprintf(stderr,"Error: failed to limit allowed signature transforms\n");
+        fprintf(stderr, "Error: failed to limit allowed signature transforms\n");
         goto done;
     }
     if((xmlSecDSigCtxEnableReferenceTransform(dsigCtx, xmlSecTransformInclC14NId) < 0) ||
@@ -273,31 +277,23 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
        (xmlSecDSigCtxEnableReferenceTransform(dsigCtx, xmlSecTransformSha1Id) < 0) ||
        (xmlSecDSigCtxEnableReferenceTransform(dsigCtx, xmlSecTransformEnvelopedId) < 0)) {
 
-        fprintf(stderr,"Error: failed to limit allowed reference transforms\n");
+        fprintf(stderr, "Error: failed to limit allowed reference transforms\n");
         goto done;
     }
 
     /* in addition, limit possible key data to valid X509 certificates and key names */
     if(xmlSecPtrListAdd(&(dsigCtx->keyInfoReadCtx.enabledKeyData), BAD_CAST xmlSecKeyDataX509Id) < 0) {
-        fprintf(stderr,"Error: failed to limit allowed key data\n");
+        fprintf(stderr, "Error: failed to limit allowed key data\n");
         goto done;
     }
     if(xmlSecPtrListAdd(&(dsigCtx->keyInfoReadCtx.enabledKeyData), BAD_CAST xmlSecKeyDataNameId) < 0) {
-        fprintf(stderr,"Error: failed to limit allowed key data\n");
+        fprintf(stderr, "Error: failed to limit allowed key data\n");
         goto done;
     }
 
     /* Verify signature */
     if(xmlSecDSigCtxVerify(dsigCtx, node) < 0) {
-        fprintf(stderr,"Error: signature verification failed\n");
-        goto done;
-    }
-
-    /* check that we have only one Reference */
-    if((dsigCtx->status == xmlSecDSigStatusSucceeded) &&
-        (xmlSecPtrListGetSize(&(dsigCtx->signedInfoReferences)) != 1)) {
-
-        fprintf(stderr,"Error: only one reference is allowed\n");
+        fprintf(stderr, "Error: signature verification failed\n");
         goto done;
     }
 
@@ -341,32 +337,32 @@ verify_signature_results(xmlSecDSigCtxPtr dsigCtx) {
 
     /* check that signature verification succeeded */
     if(dsigCtx->status != xmlSecDSigStatusSucceeded) {
-        fprintf(stderr,"Error: Signature verification result is not SUCCESS\n");
+        fprintf(stderr, "Error: Signature verification result is not SUCCESS\n");
         return(-1);
     }
 
     /* in this example we expect exactly ONE reference with URI="" and
     *  exactly ONE enveloped signature transform (i.e. the whole document is signed)*/
     if(xmlSecPtrListGetSize(&(dsigCtx->signedInfoReferences)) != 1) {
-        fprintf(stderr,"Error: Exactly one Reference is expected\n");
+        fprintf(stderr, "Error: Exactly one Reference is expected\n");
         return(-1);
     }
     dsigRefCtx = (xmlSecDSigReferenceCtxPtr)xmlSecPtrListGetItem(&(dsigCtx->signedInfoReferences), 0);
     if((dsigRefCtx == NULL) || (dsigRefCtx->status != xmlSecDSigStatusSucceeded)) {
-        fprintf(stderr,"Error: Reference verification result is not SUCCESS\n");
+        fprintf(stderr, "Error: Reference verification result is not SUCCESS\n");
         return(-1);
     }
 
     /* check URI */
     if((dsigRefCtx->uri != NULL) && (!xmlStrEqual(dsigRefCtx->uri, BAD_CAST ""))) {
-        fprintf(stderr,"Error: Reference URI value doesn't match expected one\n");
+        fprintf(stderr, "Error: Reference URI value doesn't match expected one\n");
         return(-1);
     }
 
     /* check transforms: we expect only one "enveloped signature" transform */
     transform = dsigRefCtx->transformCtx.first;
     if((transform == NULL) || (!xmlStrEqual(transform->id->name, xmlSecNameEnveloped))) {
-        fprintf(stderr,"Error: First Transform name '%s' doesn't match expected '%s'\n", (transform != NULL ? transform->id->name : BAD_CAST "NULL"), xmlSecNameEnveloped);
+        fprintf(stderr, "Error: First Transform name '%s' doesn't match expected '%s'\n", (transform != NULL ? transform->id->name : BAD_CAST "NULL"), xmlSecNameEnveloped);
         return(-1);
     }
 
@@ -374,7 +370,7 @@ verify_signature_results(xmlSecDSigCtxPtr dsigCtx) {
     transform = transform->next;
     while(transform != NULL) {
         if((transform->flags & XMLSEC_TRANSFORM_FLAGS_USER_SPECIFIED) != 0) {
-            fprintf(stderr,"Error: Found unexpected Transform name '%s'\n", transform->id->name);
+            fprintf(stderr, "Error: Found unexpected Transform name '%s'\n", transform->id->name);
             return(-1);
         }
         transform = transform->next;

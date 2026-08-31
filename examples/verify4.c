@@ -73,20 +73,35 @@ main(int argc, char **argv) {
     xsltSecPrefs = xsltNewSecurityPrefs();
     if(xsltSecPrefs == NULL) {
         fprintf(stderr, "Error: failed to create the xslt security prefs\n");
-        goto xslt_cleanup;
+        goto done;
     }
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_NETWORK,     xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_NETWORK,    xsltSecurityForbid);
+    if(xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid) < 0) {
+        fprintf(stderr, "Error: failed to set XSLT security pref READ_FILE\n");
+        goto done;
+    }
+    if(xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid) < 0) {
+        fprintf(stderr, "Error: failed to set XSLT security pref WRITE_FILE\n");
+        goto done;
+    }
+    if(xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid) < 0) {
+        fprintf(stderr, "Error: failed to set XSLT security pref CREATE_DIRECTORY\n");
+        goto done;
+    }
+    if(xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_NETWORK,     xsltSecurityForbid) < 0) {
+        fprintf(stderr, "Error: failed to set XSLT security pref READ_NETWORK\n");
+        goto done;
+    }
+    if(xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_NETWORK,    xsltSecurityForbid) < 0) {
+        fprintf(stderr, "Error: failed to set XSLT security pref WRITE_NETWORK\n");
+        goto done;
+    }
     xsltSetDefaultSecurityPrefs(xsltSecPrefs);
 #endif /* XMLSEC_NO_XSLT */
 
     /* Init XMLSec */
     if(xmlSecInit() < 0) {
         fprintf(stderr, "Error: xmlsec initialization failed.\n");
-        goto xslt_cleanup;
+        goto done;
     }
 
     /* Check loaded library version */
@@ -149,7 +164,6 @@ done:
         xmlSecShutdown();
     }
 
-xslt_cleanup:
     /* Shutdown LibXSLT / LibXML2 */
 #ifndef XMLSEC_NO_XSLT
     xsltFreeSecurityPrefs(xsltSecPrefs);
@@ -227,7 +241,11 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* id_attr) {
     assert(id_attr);
 
     /* load file */
+#if LIBXML_VERSION >= 21300
+    doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT | XML_PARSE_NO_XXE);
+#else /* LIBXML_VERSION >= 21300 */
     doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT);
+#endif /* LIBXML_VERSION >= 21300 */
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
         fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
         goto done;

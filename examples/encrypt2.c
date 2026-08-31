@@ -7,7 +7,7 @@
  */
 /**
  * @brief XML Security Library example: Encrypting an XML file with a dynamically created template.
- * @details Encrypts an XML file using a dynamically created template and a DES key
+ * @details Encrypts an XML file using a dynamically created template and a Triple DES key
  * from a binary file.
  *
  * Usage:
@@ -36,11 +36,6 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 
-#ifndef XMLSEC_NO_XSLT
-#include <libxslt/xslt.h>
-#include <libxslt/security.h>
-#endif /* XMLSEC_NO_XSLT */
-
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/xmlenc.h>
@@ -53,9 +48,6 @@ xmlNodePtr create_encryption_template(xmlDocPtr doc);
 int
 main(int argc, char **argv) {
     int xmlsec_initialized = 0;
-#ifndef XMLSEC_NO_XSLT
-    xsltSecurityPrefsPtr xsltSecPrefs = NULL;
-#endif /* XMLSEC_NO_XSLT */
     int res = -1;
 
     assert(argv);
@@ -69,18 +61,6 @@ main(int argc, char **argv) {
     /* Init LibXML2 */
     xmlInitParser();
     LIBXML_TEST_VERSION
-
-    /* Init LibXSLT */
-#ifndef XMLSEC_NO_XSLT
-    /* disable all XSLT file and network access */
-    xsltSecPrefs = xsltNewSecurityPrefs();
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_NETWORK,     xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_NETWORK,    xsltSecurityForbid);
-    xsltSetDefaultSecurityPrefs(xsltSecPrefs);
-#endif /* XMLSEC_NO_XSLT */
 
     /* Init XMLSec */
     if(xmlSecInit() < 0) {
@@ -135,11 +115,7 @@ done:
         xmlSecShutdown();
     }
 
-    /* shutdown LibXSLT / LibXML2 */
-#ifndef XMLSEC_NO_XSLT
-    xsltFreeSecurityPrefs(xsltSecPrefs);
-    xsltCleanupGlobals();
-#endif /* XMLSEC_NO_XSLT */
+    /* shutdown LibXML2 */
     xmlCleanupParser();
 
     return(res);
@@ -209,7 +185,11 @@ encrypt_file(const char* xml_file, const char* key_file) {
     assert(key_file);
 
     /* load template */
+#if LIBXML_VERSION >= 21300
+    doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT | XML_PARSE_NO_XXE);
+#else /* LIBXML_VERSION >= 21300 */
     doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT);
+#endif /* LIBXML_VERSION >= 21300 */
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
         fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
         goto done;
@@ -218,7 +198,6 @@ encrypt_file(const char* xml_file, const char* key_file) {
     /* create encryption template */
     encDataNode = create_encryption_template(doc);
     if(encDataNode == NULL) {
-        fprintf(stderr,"Error: failed to create encryption template\n");
         goto done;
     }
 
@@ -229,7 +208,7 @@ encrypt_file(const char* xml_file, const char* key_file) {
         goto done;
     }
 
-    /* load DES key, assuming that there is no password */
+    /* load Triple DES key */
     encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
     if(encCtx->encKey == NULL) {
         fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);
@@ -252,7 +231,10 @@ encrypt_file(const char* xml_file, const char* key_file) {
     encDataNode = NULL;
 
     /* print encrypted data with document to stdout */
-    xmlDocDump(stdout, doc);
+    if(xmlDocDump(stdout, doc) < 0) {
+        fprintf(stderr, "Error: failed to write the encrypted document to stdout\n");
+        goto done;
+    }
 
     /* success */
     res = 0;

@@ -37,11 +37,6 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 
-#ifndef XMLSEC_NO_XSLT
-#include <libxslt/xslt.h>
-#include <libxslt/security.h>
-#endif /* XMLSEC_NO_XSLT */
-
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/xmldsig.h>
@@ -54,9 +49,6 @@ xmlNodePtr create_signature_template(xmlDocPtr doc);
 int
 main(int argc, char **argv) {
     int xmlsec_initialized = 0;
-#ifndef XMLSEC_NO_XSLT
-    xsltSecurityPrefsPtr xsltSecPrefs = NULL;
-#endif /* XMLSEC_NO_XSLT */
     int res = -1;
 
     assert(argv);
@@ -70,18 +62,6 @@ main(int argc, char **argv) {
     /* Init LibXML2 */
     xmlInitParser();
     LIBXML_TEST_VERSION
-
-    /* Init LibXSLT */
-#ifndef XMLSEC_NO_XSLT
-    /* disable all XSLT file and network access */
-    xsltSecPrefs = xsltNewSecurityPrefs();
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_NETWORK,     xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_NETWORK,    xsltSecurityForbid);
-    xsltSetDefaultSecurityPrefs(xsltSecPrefs);
-#endif /* XMLSEC_NO_XSLT */
 
     /* Init XMLSec */
     if(xmlSecInit() < 0) {
@@ -136,11 +116,7 @@ done:
         xmlSecShutdown();
     }
 
-    /* shutdown LibXSLT / LibXML2 */
-#ifndef XMLSEC_NO_XSLT
-    xsltFreeSecurityPrefs(xsltSecPrefs);
-    xsltCleanupGlobals();
-#endif /* XMLSEC_NO_XSLT */
+    /* shutdown LibXML2 */
     xmlCleanupParser();
 
     return(res);
@@ -152,7 +128,7 @@ done:
  * @return pointer to the dsig:Signature node or NULL if an error occurs.
  */
 xmlNodePtr
-create_signature_template(xmlDocPtr doc){
+create_signature_template(xmlDocPtr doc) {
     xmlNodePtr signNode = NULL;
     xmlNodePtr refNode = NULL;
     xmlNodePtr keyInfoNode = NULL;
@@ -221,7 +197,11 @@ sign_file(const char* xml_file, const char* key_file) {
 
 
     /* load doc file */
+#if LIBXML_VERSION >= 21300
+    doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT | XML_PARSE_NO_XXE);
+#else /* LIBXML_VERSION >= 21300 */
     doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT);
+#endif /* LIBXML_VERSION >= 21300 */
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
         fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
         goto done;

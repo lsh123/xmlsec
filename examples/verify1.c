@@ -45,10 +45,11 @@ int verify_signature_results(xmlSecDSigCtxPtr dsigCtx);
 
 int
 main(int argc, char **argv) {
-    int res = -1;
+    int xmlsec_initialized = 0;
 #ifndef XMLSEC_NO_XSLT
     xsltSecurityPrefsPtr xsltSecPrefs = NULL;
 #endif /* XMLSEC_NO_XSLT */
+    int res = -1;
 
     assert(argv);
 
@@ -77,7 +78,7 @@ main(int argc, char **argv) {
     /* Init XMLSec */
     if(xmlSecInit() < 0) {
         fprintf(stderr, "Error: xmlsec initialization failed.\n");
-        goto xslt_cleanup;
+        goto done;
     }
 
     /* Check loaded library version */
@@ -111,6 +112,7 @@ main(int argc, char **argv) {
         fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
         goto done;
     }
+    xmlsec_initialized = 1;
 
     if(verify_file(argv[1], argv[2]) < 0) {
         goto done;
@@ -120,16 +122,13 @@ main(int argc, char **argv) {
     res = 0;
 
 done:
-    /* shutdown xmlsec-crypto library */
-    xmlSecCryptoShutdown();
+    /* shutdown xmlsec-crypto library and xmlsec itself */
+    if (xmlsec_initialized != 0) {
+        xmlSecCryptoShutdown();
+        xmlSecCryptoAppShutdown();
+        xmlSecShutdown();
+    }
 
-    /* Shutdown crypto library */
-    xmlSecCryptoAppShutdown();
-
-    /* Shutdown XMLSec */
-    xmlSecShutdown();
-
-xslt_cleanup:
     /* shutdown LibXSLT / LibXML2 */
 #ifndef XMLSEC_NO_XSLT
     xsltFreeSecurityPrefs(xsltSecPrefs);
@@ -158,7 +157,11 @@ verify_file(const char* xml_file, const char* key_file) {
     assert(key_file);
 
     /* load file */
+#if LIBXML_VERSION >= 21300
+    doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT | XML_PARSE_NO_XXE);
+#else /* LIBXML_VERSION >= 21300 */
     doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT);
+#endif /* LIBXML_VERSION >= 21300 */
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
         fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
         goto done;

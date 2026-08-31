@@ -350,6 +350,10 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdate(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         if(blockSize > 1) {
             /* block cipher: we want to make sure we keep the last chunk in tmp buffer for padding check/removal on decryption */
             inBlocksSize = blockSize * (inSize / blockSize);
+            if(inBlocksSize == 0) {
+                /* wait for more data: we want to make sure we keep the last chunk in tmp buffer for padding check/removal on decryption */
+                return(0);
+            }
             if(inBlocksSize == inSize) {
                 inBlocksSize -= blockSize;
             }

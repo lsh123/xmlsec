@@ -326,7 +326,7 @@ extern "C" {
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
                     (const char*)(errorObject),             \
                     NULL,                                   \
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,        \
+                    XMLSEC_ERRORS_R_INVALID_SIZE,           \
                     "invalid size for '%s': actual=" XMLSEC_SIZE_FMT " is more than expected=" XMLSEC_SIZE_FMT, \
                     xmlSecErrorsSafeString(name),           \
                     (actual),                               \
@@ -345,7 +345,7 @@ extern "C" {
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
                     (const char*)(errorObject),             \
                     NULL,                                   \
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,        \
+                    XMLSEC_ERRORS_R_INVALID_SIZE,           \
                     "invalid size for '%s': actual=" XMLSEC_SIZE_FMT " is not a multiple of " XMLSEC_SIZE_FMT, \
                     xmlSecErrorsSafeString(name),           \
                     (actual),                               \

@@ -101,9 +101,6 @@ static xmlSecTransformKlass xmlSecXsltKlass = {
 };
 
 
-#define XMLSEC_XSLT_COPY_SEC_PREF(src, dst, pref) \
-    xsltSetSecurityPrefs((dst), (pref),  xsltGetSecurityPrefs((src), (pref)))
-
 static xsltSecurityPrefsPtr g_xslt_default_security_prefs = NULL;
 
 int xmlSecTransformXsltInitialize(void) {
@@ -138,6 +135,19 @@ void xmlSecTransformXsltShutdown(void) {
     }
 }
 
+static void
+xmlSecXsltCopySecPref(xsltSecurityPrefsPtr src, xsltSecurityPrefsPtr dst, xsltSecurityOption pref) {
+    xsltSecurityCheck check;
+
+    check = xsltGetSecurityPrefs(src, pref);
+    if(check == NULL) {
+        return;
+    }
+    if(xsltSetSecurityPrefs(dst, pref, check) < 0) {
+        xmlSecXsltError("xsltSetSecurityPrefs", NULL, NULL);
+    }
+}
+
 /**
  * @brief Sets the default XSLT security preferences.
  * @details Sets the new default security preferences. The xmlsec default security policy is
@@ -150,11 +160,11 @@ xmlSecTransformXsltSetDefaultSecurityPrefs(xsltSecurityPrefsPtr sec) {
     xmlSecAssert(g_xslt_default_security_prefs != NULL);
 
     /* copy prefs */
-    XMLSEC_XSLT_COPY_SEC_PREF(sec, g_xslt_default_security_prefs, XSLT_SECPREF_READ_FILE);
-    XMLSEC_XSLT_COPY_SEC_PREF(sec, g_xslt_default_security_prefs, XSLT_SECPREF_WRITE_FILE);
-    XMLSEC_XSLT_COPY_SEC_PREF(sec, g_xslt_default_security_prefs, XSLT_SECPREF_CREATE_DIRECTORY);
-    XMLSEC_XSLT_COPY_SEC_PREF(sec, g_xslt_default_security_prefs, XSLT_SECPREF_READ_NETWORK);
-    XMLSEC_XSLT_COPY_SEC_PREF(sec, g_xslt_default_security_prefs, XSLT_SECPREF_WRITE_NETWORK);
+    xmlSecXsltCopySecPref(sec, g_xslt_default_security_prefs, XSLT_SECPREF_READ_FILE);
+    xmlSecXsltCopySecPref(sec, g_xslt_default_security_prefs, XSLT_SECPREF_WRITE_FILE);
+    xmlSecXsltCopySecPref(sec, g_xslt_default_security_prefs, XSLT_SECPREF_CREATE_DIRECTORY);
+    xmlSecXsltCopySecPref(sec, g_xslt_default_security_prefs, XSLT_SECPREF_READ_NETWORK);
+    xmlSecXsltCopySecPref(sec, g_xslt_default_security_prefs, XSLT_SECPREF_WRITE_NETWORK);
 }
 
 /**
@@ -241,6 +251,7 @@ xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransfor
     const xmlChar* buf;
     xmlSecSize bufSize;
     int bufLen;
+    xsltSecurityPrefsPtr oldSec;
     int res = -1;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXsltId), -1);
@@ -276,7 +287,10 @@ xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransfor
     }
 
     /* pre-process stylesheet */
+    oldSec = xsltGetDefaultSecurityPrefs();
+    xsltSetDefaultSecurityPrefs(g_xslt_default_security_prefs);
     ctx->xslt = xsltParseStylesheetDoc(doc);
+    xsltSetDefaultSecurityPrefs(oldSec);
     if(ctx->xslt == NULL) {
         xmlSecXsltError("xsltParseStylesheetDoc", NULL, xmlSecTransformGetName(transform));
 

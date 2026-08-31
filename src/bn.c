@@ -451,6 +451,7 @@ xmlSecBnDiv(xmlSecBnPtr bn, int divider, int* mod) {
     unsigned long long dividerULL;
     xmlSecSize ii, size;
     xmlSecByte* data;
+    xmlSecByte ch;
     int ret;
 
     xmlSecAssert2(bn != NULL, -1);
@@ -490,6 +491,22 @@ xmlSecBnDiv(xmlSecBnPtr bn, int divider, int* mod) {
             return (-1);
         }
     }
+
+    /* keep the buffer a valid unsigned magnitude: prepend a 0x00 byte when the
+     * most significant bit is set so DER/ASN.1 INTEGER consumers read it as
+     * non-negative (re-read data/size since the buffer may have been reallocated) */
+    data = xmlSecBufferGetData(bn);
+    size = xmlSecBufferGetSize(bn);
+    if((size > 0) && (data != NULL) && (data[0] > 127)) {
+        ch = 0;
+        ret = xmlSecBufferPrepend(bn, &ch, 1);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecBufferPrepend(1)", NULL);
+            return (-1);
+        }
+    }
+
+    /* done */
     return(0);
 }
 

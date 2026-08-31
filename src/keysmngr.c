@@ -195,6 +195,10 @@ xmlSecKeysMngrAdoptDataStore(xmlSecKeysMngrPtr mngr, xmlSecKeyDataStorePtr store
     for(pos = 0; pos < size; ++pos) {
         tmp = (xmlSecKeyDataStorePtr)xmlSecPtrListGetItem(&(mngr->storesList), pos);
         if((tmp != NULL) && (tmp->id == store->id)) {
+            if(tmp == store) {
+                /* already adopted, nothing to do */
+                return(0);
+            }
             return(xmlSecPtrListSet(&(mngr->storesList), store, pos));
         }
     }

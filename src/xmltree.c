@@ -507,13 +507,15 @@ xmlSecEnsureEmptyChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns
     xmlSecAssert2(name != NULL, NULL);
 
     /* try to find an empty node first */
-    tmp = xmlSecFindNode(parent, name, ns);
+    tmp = xmlSecFindChild(parent, name, ns);
     while(tmp != NULL) {
-        cur = tmp;
-        if(xmlSecIsEmptyNode(cur) == 1) {
-            return(cur);
+        if(xmlSecIsEmptyNode(tmp) == 1) {
+            /* found! */
+            return(tmp);
         }
-        tmp = xmlSecFindSibling(cur->next, name, ns);
+        /* remember that we found this node */
+        cur = tmp;
+        tmp = xmlSecFindSibling(tmp->next, name, ns);
     }
 
     /* if not found then either add next or add at the end */

@@ -131,7 +131,7 @@ xmlSecErrorsShutdown(void) {
 /**
  * @brief Sets the errors callback function.
  * @details Sets the errors callback function to @p callback that will be called
- * every time an error occurs.
+ * every time an error occurs. If @p callback is NULL then the errors output will be supressed.
  *
  * Note that this function is not thread-safe (see the module notes).
  * @param callback the new errors callback function, or NULL to fall back to the default.
@@ -139,7 +139,7 @@ xmlSecErrorsShutdown(void) {
 void
 xmlSecErrorsSetCallback(xmlSecErrorsCallback callback) {
     xmlSecErrorsUserClbk = callback;
-    xmlSecErrorsClbkIsSetByUser =  1;
+    xmlSecErrorsClbkIsSetByUser = 1;
 }
 
 /**

@@ -249,6 +249,7 @@ XMLSEC_EXPORT int   xmlSecTransformChaCha20Poly1305ParamsWrite      (xmlNodePtr 
 
 /* RSA */
 #ifndef XMLSEC_NO_RSA
+#ifndef XMLSEC_NO_RSA_OAEP
 
 /* All OAEP params in one place */
 struct _xmlSecTransformRsaOaepParams {
@@ -264,6 +265,7 @@ XMLSEC_EXPORT void xmlSecTransformRsaOaepParamsFinalize     (xmlSecTransformRsaO
 XMLSEC_EXPORT int  xmlSecTransformRsaOaepParamsRead         (xmlSecTransformRsaOaepParamsPtr oaepParams,
                                                              xmlNodePtr node);
 
+#endif /* XMLSEC_NO_RSA_OAEP */
 #endif /* XMLSEC_NO_RSA */
 
 #endif /* __XMLSEC_TRANSFORMS_HELPERS_H__ */

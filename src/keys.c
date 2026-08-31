@@ -541,6 +541,10 @@ xmlSecKeyCopy(xmlSecKeyPtr keyDst, xmlSecKeyPtr keySrc) {
     xmlSecAssert2(keyDst != NULL, -1);
     xmlSecAssert2(keySrc != NULL, -1);
 
+    if(keyDst == keySrc) {
+        return(0);
+    }
+
     /* empty destination */
     xmlSecKeyEmpty(keyDst);
 

@@ -1196,6 +1196,20 @@ xmlSecEncCtxGenerateKey(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xmlSecKey
     return(key);
 }
 
+static xmlSecTransformOperation
+xmlSecEncCtxMapOperation(xmlSecTransformOperation operation) {
+    switch(operation) {
+        case xmlSecTransformOperationSign:
+        case xmlSecTransformOperationEncrypt:
+            return(xmlSecTransformOperationEncrypt);
+        case xmlSecTransformOperationVerify:
+        case xmlSecTransformOperationDecrypt:
+            return(xmlSecTransformOperationDecrypt);
+        default:
+            return(xmlSecTransformOperationNone);
+    }
+}
+
 /**
  * @brief Generates (derives) a key from the DerivedKey node.
  * @details Generates (derives) key from @p node (https://www.w3.org/TR/xmlenc-core1/#sec-DerivedKey):
@@ -1243,7 +1257,11 @@ xmlSecEncCtxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xm
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
       /* initialize context and add ID attributes to the list of known ids */
-    encCtx->operation = keyInfoCtx->operation;
+    encCtx->operation = xmlSecEncCtxMapOperation(keyInfoCtx->operation);
+    if(encCtx->operation == xmlSecTransformOperationNone) {
+        xmlSecInternalError2("invalid operation", NULL, "operation=%u", keyInfoCtx->operation);
+        goto done;
+    }
     xmlSecAddIDs(node->doc, node, xmlSecEncIds);
 
     /* first read the children */
@@ -1387,7 +1405,11 @@ xmlSecEncCtxAgreementMethodGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyI
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
       /* initialize context and add ID attributes to the list of known ids */
-    encCtx->operation = keyInfoCtx->operation;
+    encCtx->operation = xmlSecEncCtxMapOperation(keyInfoCtx->operation);
+    if(encCtx->operation == xmlSecTransformOperationNone) {
+        xmlSecInternalError2("invalid operation", NULL, "operation=%u", keyInfoCtx->operation);
+        return(NULL);
+    }
     xmlSecAddIDs(node->doc, node, xmlSecEncIds);
 
     /* the AgreementMethod node is the transform node itself */
@@ -1480,18 +1502,10 @@ xmlSecEncCtxEncapsulationMechanismGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyData
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
     /* initialize context and add ID attributes to the list of known ids */
-    switch(keyInfoCtx->operation) {
-        case xmlSecTransformOperationSign:
-        case xmlSecTransformOperationEncrypt:
-            encCtx->operation = xmlSecTransformOperationEncrypt;
-            break;
-        case xmlSecTransformOperationVerify:
-        case xmlSecTransformOperationDecrypt:
-            encCtx->operation = xmlSecTransformOperationDecrypt;
-            break;
-        default:
-            xmlSecInternalError2("invalid operation", NULL, "operation=%u", keyInfoCtx->operation);
-            return(NULL);
+    encCtx->operation = xmlSecEncCtxMapOperation(keyInfoCtx->operation);
+    if(encCtx->operation == xmlSecTransformOperationNone) {
+        xmlSecInternalError2("invalid operation", NULL, "operation=%u", keyInfoCtx->operation);
+        return(NULL);
     }
 
     /* the EncapsulationMechanism node is the transform node itself */

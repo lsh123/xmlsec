@@ -73,27 +73,27 @@ main(int argc, char **argv) {
     xsltSecPrefs = xsltNewSecurityPrefs();
     if(xsltSecPrefs == NULL) {
         fprintf(stderr, "Error: failed to create the xslt security prefs\n");
-        goto xslt_cleanup;
+        goto done;
     }
     if(xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid) < 0) {
         fprintf(stderr, "Error: failed to set XSLT security pref READ_FILE\n");
-        goto xslt_cleanup;
+        goto done;
     }
     if(xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid) < 0) {
         fprintf(stderr, "Error: failed to set XSLT security pref WRITE_FILE\n");
-        goto xslt_cleanup;
+        goto done;
     }
     if(xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid) < 0) {
         fprintf(stderr, "Error: failed to set XSLT security pref CREATE_DIRECTORY\n");
-        goto xslt_cleanup;
+        goto done;
     }
     if(xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_NETWORK,     xsltSecurityForbid) < 0) {
         fprintf(stderr, "Error: failed to set XSLT security pref READ_NETWORK\n");
-        goto xslt_cleanup;
+        goto done;
     }
     if(xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_NETWORK,    xsltSecurityForbid) < 0) {
         fprintf(stderr, "Error: failed to set XSLT security pref WRITE_NETWORK\n");
-        goto xslt_cleanup;
+        goto done;
     }
     xsltSetDefaultSecurityPrefs(xsltSecPrefs);
 #endif /* XMLSEC_NO_XSLT */
@@ -101,7 +101,7 @@ main(int argc, char **argv) {
     /* Init XMLSec */
     if(xmlSecInit() < 0) {
         fprintf(stderr, "Error: xmlsec initialization failed.\n");
-        goto xslt_cleanup;
+        goto done;
     }
 
     /* Check loaded library version */
@@ -164,7 +164,6 @@ done:
         xmlSecShutdown();
     }
 
-xslt_cleanup:
     /* Shutdown LibXSLT / LibXML2 */
 #ifndef XMLSEC_NO_XSLT
     xsltFreeSecurityPrefs(xsltSecPrefs);

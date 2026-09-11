@@ -39,8 +39,7 @@ static int
 xmlSecGCryptRsaExtractData(gcry_sexp_t s_data, const char* name, xmlSecBufferPtr out) {
     gcry_sexp_t s_tmp;
     const void *data;
-    size_t dataLen = 0;
-    xmlSecSize dataSize;
+    xmlSecSize dataSize = 0;
     int ret;
     int res = -1;
 
@@ -55,12 +54,11 @@ xmlSecGCryptRsaExtractData(gcry_sexp_t s_data, const char* name, xmlSecBufferPtr
         goto done;
     }
 
-    data = gcry_sexp_nth_data (s_tmp, 1, &dataLen);
+    data = gcry_sexp_nth_data (s_tmp, 1, &dataSize);
     if(data == NULL) {
         xmlSecGCryptError("gcry_sexp_nth_data()", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         goto done;
     }
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(dataLen, dataSize, goto done, NULL);
 
     ret = xmlSecBufferSetData(out, data, dataSize);
     if(ret != 0) {

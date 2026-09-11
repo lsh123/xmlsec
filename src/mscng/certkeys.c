@@ -925,7 +925,6 @@ xmlSecMSCngKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     BCRYPT_RSAKEY_BLOB* rsakey;
     BCRYPT_ALG_HANDLE hAlg = NULL;
     BCRYPT_KEY_HANDLE hKey = 0;
-    size_t size;
     NTSTATUS status;
     int ret;
 
@@ -943,8 +942,7 @@ xmlSecMSCngKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     /* turn the read data into a public key blob, as documented at
      * <https://msdn.microsoft.com/en-us/library/windows/desktop/aa375531(v=vs.85).aspx>:
      * need to write exponent and modulus after the struct */
-    size = sizeof(BCRYPT_RSAKEY_BLOB) + mSize + peSize;
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(size, blobBufferSize, goto done, xmlSecKeyDataKlassGetName(id));
+    blobBufferSize = sizeof(BCRYPT_RSAKEY_BLOB) + mSize + peSize;
 
     ret = xmlSecBufferInitialize(&blob, blobBufferSize);
     if (ret < 0) {

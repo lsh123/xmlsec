@@ -77,7 +77,7 @@ typedef void*                                   xmlSecPtr;
 /**
  * @brief Size of something.
  */
-typedef size_t xmlSecSize;
+typedef size_t                                  xmlSecSize;
 
 /**
  * @brief The minimum value of #xmlSecSize (0).
@@ -95,7 +95,7 @@ typedef size_t xmlSecSize;
 /**
  * @brief One byte.
  */
-typedef unsigned char xmlSecByte;
+typedef unsigned char                           xmlSecByte;
 
 /******************************************************************************
  *

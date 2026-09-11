@@ -594,7 +594,17 @@ xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf, xmlNodePtr node) {
 
     content = xmlSecGetNodeContentAndTrim(node);
     if(content == NULL) {
-        xmlSecInvalidNodeContentError(node, NULL, "empty");
+        xmlSecInternalError("xmlSecGetNodeContentAndTrim", NULL);
+        goto done;
+    }
+    if(xmlSecStrlen(content) == 0) {
+        /* empty string is valid base64 for zero-length data */
+        ret = xmlSecBufferSetSize(buf, 0);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecBufferSetSize", NULL);
+            goto done;
+        }
+        res = 0;
         goto done;
     }
 
@@ -639,12 +649,25 @@ done:
  */
 int
 xmlSecBufferBase64NodeContentWrite(xmlSecBufferPtr buf, xmlNodePtr node, int columns) {
+    xmlSecByte* data;
+    xmlSecSize size;
     xmlChar* content;
 
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
 
-    content = xmlSecBase64Encode(xmlSecBufferGetData(buf), xmlSecBufferGetSize(buf), columns);
+    data = xmlSecBufferGetData(buf);
+    size = xmlSecBufferGetSize(buf);
+    if((size > 0) && (data == NULL)) {
+        xmlSecInternalError("xmlSecBufferGetData", NULL);
+        return(-1);
+    }
+    if(size == 0) {
+        /* xmlSecBase64Encode() requires a non-NULL input pointer */
+        data = (xmlSecByte*)"";
+    }
+
+    content = xmlSecBase64Encode(data, size, columns);
     if(content == NULL) {
         xmlSecInternalError("xmlSecBase64Encode", NULL);
         return(-1);

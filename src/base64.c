@@ -838,12 +838,15 @@ xmlSecTransformBase64GetKlass(void) {
 void
 xmlSecTransformBase64SetLineSize(xmlSecTransformPtr transform, xmlSecSize lineSize) {
     xmlSecBase64CtxPtr ctx;
+    int lineSizeInt;
 
     xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecTransformBase64Id));
 
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(lineSize, lineSizeInt, return, transform);
+    xmlSecAssert(xmlSecBase64IsValidColumns(lineSizeInt));
+
     ctx = xmlSecBase64GetCtx(transform);
     xmlSecAssert(ctx != NULL);
-
     ctx->columns = lineSize;
 }
 

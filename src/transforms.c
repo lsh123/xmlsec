@@ -1221,6 +1221,23 @@ xmlSecTransformCtxXmlExecute(xmlSecTransformCtxPtr ctx, xmlSecNodeSetPtr nodes) 
     return(0);
 }
 
+static void
+xmlSecTransformCtxClearNodeRefs(xmlSecTransformCtxPtr ctx, xmlSecNodeSetPtr nodes) {
+    xmlSecTransformPtr transform;
+
+    xmlSecAssert(ctx != NULL);
+    xmlSecAssert(nodes != NULL);
+
+    for(transform = ctx->first; transform != NULL; transform = transform->next) {
+        if(transform->inNodes == nodes) {
+            transform->inNodes = NULL;
+        }
+        if(transform->outNodes == nodes) {
+            transform->outNodes = NULL;
+        }
+    }
+}
+
 /**
  * @brief Executes transforms chain in @p ctx.
  * @param ctx the pointer to transforms chain processing context.
@@ -1259,10 +1276,12 @@ xmlSecTransformCtxExecute(xmlSecTransformCtxPtr ctx, xmlDocPtr doc) {
         ret = xmlSecTransformCtxXmlExecute(ctx, nodes);
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformCtxXmlExecute", NULL);
+            xmlSecTransformCtxClearNodeRefs(ctx, nodes);
             xmlSecNodeSetDestroy(nodes);
             return(-1);
         }
-        /* TODO: don't destroy nodes here */
+
+        xmlSecTransformCtxClearNodeRefs(ctx, nodes);
         xmlSecNodeSetDestroy(nodes);
     } else {
         ret = xmlSecTransformCtxUriExecute(ctx, ctx->uri);

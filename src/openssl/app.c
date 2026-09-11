@@ -618,6 +618,10 @@ xmlSecOpenSSLAppEngineKeyLoad(const char *engineName, const char *engineKeyId,
             }
         }
     }
+    if(engine == NULL) {
+        xmlSecOpenSSLError("ENGINE_by_id", NULL);
+        goto done;
+    }
 
     if(ENGINE_ctrl_cmd(engine, "SET_USER_INTERFACE", 0, (void *)UI_null(), 0, 1) < 0) {
         xmlSecOpenSSLError("ENGINE_ctrl_cmd(SET_USER_INTERFACE)", NULL);

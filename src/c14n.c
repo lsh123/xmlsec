@@ -281,7 +281,8 @@ xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
 
 static int
 xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlSecPtrListPtr nsList,
-                           xmlOutputBufferPtr buf) {
+                            xmlOutputBufferPtr buf) {
+    const char* failedFunc;
     int ret;
 
     xmlSecAssert2(id != xmlSecTransformIdUnknown, -1);
@@ -290,6 +291,8 @@ xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlSecP
     xmlSecAssert2(nsList != NULL, -1);
     xmlSecAssert2(xmlSecPtrListCheckId(nsList, xmlSecStringListId), -1);
     xmlSecAssert2(buf != NULL, -1);
+
+    failedFunc = "xmlC14NExecute";
 
     /* execute c14n transform */
     if(id == xmlSecTransformInclC14NId) {
@@ -321,6 +324,7 @@ xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlSecP
                         (xmlC14NIsVisibleCallback)xmlSecNodeSetContains,
                         nodes, XML_C14N_EXCLUSIVE_1_0, (xmlChar**)(nsList->data), 1, buf);
     } else if(id == xmlSecTransformRemoveXmlTagsC14NId) {
+        failedFunc = "xmlSecNodeSetDumpTextNodes";
         ret = xmlSecNodeSetDumpTextNodes(nodes, buf);
     } else {
         /* shouldn't be possible to come here, actually */
@@ -330,7 +334,7 @@ xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlSecP
     }
 
     if(ret < 0) {
-        xmlSecXmlError("xmlC14NExecute", xmlSecTransformKlassGetName(id));
+        xmlSecXmlError(failedFunc, xmlSecTransformKlassGetName(id));
         return(-1);
     }
 

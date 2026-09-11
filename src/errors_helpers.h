@@ -119,7 +119,8 @@ extern "C" {
                     (const char*)(errorObject),             \
                     "xmlStrdup",                            \
                     XMLSEC_ERRORS_R_STRDUP_FAILED,          \
-                    "size=%d", xmlStrlen(str)               \
+                    "size=" XMLSEC_SIZE_T_FMT,              \
+                    (size_t)((str != NULL) ? xmlStrlen(str) : 0) \
         )
 
 /**
@@ -127,6 +128,10 @@ extern "C" {
  * @details Macro. The XMLSec library macro for reporting generic XML errors.
  * @param errorFunction the failed function.
  * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @note The reported error is the thread-local last libxml2 error
+ * (xmlGetLastError()); if the failing call did not set a new error
+ * (e.g. on out-of-memory), the reported code/message may come from
+ * an earlier, unrelated call in the same thread.
  */
 #define xmlSecXmlError(errorFunction, errorObject) \
     {                                                 \
@@ -149,6 +154,10 @@ extern "C" {
  * @param errorObject the error specific error object (e.g. transform, key data, etc).
  * @param msg the extra message.
  * @param param the extra message param.
+ * @note The reported error is the thread-local last libxml2 error
+ * (xmlGetLastError()); if the failing call did not set a new error
+ * (e.g. on out-of-memory), the reported code/message may come from
+ * an earlier, unrelated call in the same thread.
  */
 #define xmlSecXmlError2(errorFunction, errorObject, msg, param) \
     {                                                 \
@@ -212,10 +221,13 @@ extern "C" {
  * @brief Macro. Reports XSLT errors.
  * @details Macro. The XMLSec library macro for reporting XSLT errors.
  * @param errorFunction the failed function.
- * @param ctxt the parser context.
  * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @note The reported error is the thread-local last libxml2 error
+ * (xmlGetLastError()); if the failing call did not set a new error
+ * (e.g. on out-of-memory), the reported code/message may come from
+ * an earlier, unrelated call in the same thread.
  */
-#define xmlSecXsltError(errorFunction, ctxt, errorObject) \
+#define xmlSecXsltError(errorFunction, errorObject) \
     {                                                 \
         const xmlError * error = xmlGetLastError();        \
         int code = (error != NULL) ? error->code : 0; \

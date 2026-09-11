@@ -91,6 +91,7 @@ static const xmlSecErrorDescription xmlSecErrorsTable[XMLSEC_ERRORS_MAX_NUMBER +
   { XMLSEC_ERRORS_R_DSIG_NO_REFERENCES,         "Reference nodes are not found" },
   { XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE,     "Reference verification failed" },
   { XMLSEC_ERRORS_R_ASSERTION,                  "assertion" },
+  { XMLSEC_ERRORS_R_CAST_IMPOSSIBLE,            "cast from one type to another is impossible" },
   { 0,                                          NULL}
 };
 

@@ -443,7 +443,7 @@ xmlSecGnuTLSConcatKdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformConcatKdfId), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSKdfCtxSize), -1);
     xmlSecAssert2(node != NULL, -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecGnuTLSKdfGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
@@ -701,7 +701,7 @@ xmlSecGnuTLSPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformPbkdf2Id), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSKdfCtxSize), -1);
     xmlSecAssert2(node!= NULL, -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecGnuTLSKdfGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
@@ -878,7 +878,7 @@ xmlSecGnuTLSHkdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformHkdfId), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSKdfCtxSize), -1);
     xmlSecAssert2(node != NULL, -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecGnuTLSKdfGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);

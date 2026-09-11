@@ -236,7 +236,7 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last,
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWDes3Id), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWDes3Size), -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecOpenSSLKWDes3GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
@@ -261,7 +261,7 @@ xmlSecOpenSSLKWDes3Sha1(xmlSecTransformPtr transform XMLSEC_ATTRIBUTE_UNUSED,
                        const xmlSecByte * in, xmlSecSize inSize,
                        xmlSecByte * out, xmlSecSize outSize,
                        xmlSecSize * outWritten) {
-    UNREFERENCED_PARAMETER(transform);
+    XMLSEC_UNREFERENCED(transform);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize > 0, -1);
     xmlSecAssert2(out != NULL, -1);
@@ -288,7 +288,7 @@ xmlSecOpenSSLKWDes3Sha1(xmlSecTransformPtr transform XMLSEC_ATTRIBUTE_UNUSED,
     size_t outSizeT;
     int ret;
 
-    UNREFERENCED_PARAMETER(transform);
+    XMLSEC_UNREFERENCED(transform);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize > 0, -1);
     xmlSecAssert2(out != NULL, -1);
@@ -317,7 +317,7 @@ xmlSecOpenSSLKWDes3GenerateRandom(xmlSecTransformPtr transform XMLSEC_ATTRIBUTE_
                                  xmlSecSize * outWritten) {
     int ret;
 
-    UNREFERENCED_PARAMETER(transform);
+    XMLSEC_UNREFERENCED(transform);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize > 0, -1);
     xmlSecAssert2(outWritten != NULL, -1);

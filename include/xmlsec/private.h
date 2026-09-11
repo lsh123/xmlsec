@@ -32,10 +32,6 @@
 #endif /* HAVE_ANSIDECL_H */
 #endif /* __GNUC__ */
 
-/* This is needed for UNREFERENCED_PARAMETER */
-#if defined(XMLSEC_WINDOWS)
-#include <windows.h>
-#endif /* defined(XMLSEC_WINDOWS) */
 
 #ifdef __cplusplus
 extern "C" {
@@ -570,12 +566,12 @@ struct _xmlSecCryptoDLFunctions {
 #endif  /* XMLSEC_ATTRIBUTE_UNUSED */
 
 /**
- * @brief Macro used to signal unused function parameters
- * @param param the parameter without references.
+ * @brief Macro used to signal unused function parameters or unused variables.
+ * @param param the parameter or variable without references.
  */
-#ifndef UNREFERENCED_PARAMETER
-#define UNREFERENCED_PARAMETER(param)   ((void)(param))
-#endif /* UNREFERENCED_PARAMETER */
+#ifndef XMLSEC_UNREFERENCED
+#define XMLSEC_UNREFERENCED(param)   ((void)(param))
+#endif /* XMLSEC_UNREFERENCED */
 
 /******************************************************************************
  *

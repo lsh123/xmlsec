@@ -902,7 +902,7 @@ xmlSecGnuTLSChaCha20BlockCipherNodeRead(xmlSecTransformPtr transform, xmlNodePtr
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformChaCha20Id), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSBlockCipherSize), -1);
     xmlSecAssert2(node != NULL, -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecGnuTLSBlockCipherGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
@@ -936,7 +936,7 @@ xmlSecGnuTLSChaCha20BlockCipherNodeWrite(xmlSecTransformPtr transform, xmlNodePt
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformChaCha20Id), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSBlockCipherSize), -1);
     xmlSecAssert2(node != NULL, -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecGnuTLSBlockCipherGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);

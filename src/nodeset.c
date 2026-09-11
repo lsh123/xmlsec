@@ -321,9 +321,9 @@ xmlSecNodeSetAddList(xmlSecNodeSetPtr nset XMLSEC_ATTRIBUTE_UNUSED,
     xmlSecNodeSetPtr newNSet XMLSEC_ATTRIBUTE_UNUSED,
     xmlSecNodeSetOp op XMLSEC_ATTRIBUTE_UNUSED
 ) {
-    UNREFERENCED_PARAMETER(nset);
-    UNREFERENCED_PARAMETER(newNSet);
-    UNREFERENCED_PARAMETER(op);
+    XMLSEC_UNREFERENCED(nset);
+    XMLSEC_UNREFERENCED(newNSet);
+    XMLSEC_UNREFERENCED(op);
 
     xmlSecNotImplementedError("xmlSecNodeSetAddList is deprecated");
     return(NULL);
@@ -627,7 +627,7 @@ xmlSecNodeSetDumpTextNodesWalkCallback(xmlSecNodeSetPtr nset, xmlNodePtr cur,
     xmlSecAssert2(cur != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
 
-    UNREFERENCED_PARAMETER(parent);
+    XMLSEC_UNREFERENCED(parent);
 
     if(cur->type != XML_TEXT_NODE) {
         return(0);

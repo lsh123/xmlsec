@@ -481,7 +481,7 @@ xmlSecSimpleKeysStoreLoad_ex(xmlSecKeyStorePtr store, const char *uri,
     xmlSecAssert2(store != NULL, -1);
     xmlSecAssert2(uri != NULL, -1);
     xmlSecAssert2(adoptKeyFunc != NULL, -1);
-    UNREFERENCED_PARAMETER(keysMngr);
+    XMLSEC_UNREFERENCED(keysMngr);
 
     doc = xmlReadFile(uri, NULL, xmlSecParserGetDefaultOptions() | XML_PARSE_PEDANTIC);
     if(doc == NULL) {

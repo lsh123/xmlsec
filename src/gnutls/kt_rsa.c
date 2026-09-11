@@ -483,7 +483,7 @@ xmlSecGnuTLSRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     xmlSecAssert2(xmlSecGnuTLSRsaOaepCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSRsaOaepSize), -1);
     xmlSecAssert2(node != NULL, -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecGnuTLSRsaOaepGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
@@ -829,7 +829,7 @@ xmlSecGnuTLSRsaOaepExecute(xmlSecTransformPtr transform, int last,
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) ||
                   (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecGnuTLSRsaOaepGetCtx(transform);
     if(ctx == NULL) {

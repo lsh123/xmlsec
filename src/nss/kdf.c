@@ -351,7 +351,7 @@ xmlSecNssConcatKdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecNssTransformConcatKdfId), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKdfCtxSize), -1);
     xmlSecAssert2(node != NULL, -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecNssKdfGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
@@ -576,7 +576,7 @@ xmlSecNssPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecNssTransformPbkdf2Id), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKdfCtxSize), -1);
     xmlSecAssert2(node != NULL, -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecNssKdfGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
@@ -767,7 +767,7 @@ xmlSecNssHkdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecNssTransformHkdfId), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKdfCtxSize), -1);
     xmlSecAssert2(node != NULL, -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecNssKdfGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);

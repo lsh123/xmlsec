@@ -52,7 +52,7 @@ xmlSecMSCngKWDes3GenerateRandom(xmlSecTransformPtr transform XMLSEC_ATTRIBUTE_UN
     NTSTATUS status;
     DWORD dwOutSize;
 
-    UNREFERENCED_PARAMETER(transform);
+    XMLSEC_UNREFERENCED(transform);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize > 0, -1);
     xmlSecAssert2(outWritten != NULL, -1);
@@ -641,7 +641,7 @@ xmlSecMSCngKWDes3Execute(xmlSecTransformPtr transform, int last,
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecMSCngTransformKWDes3Id), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngKWDes3Size), -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecMSCngKWDes3GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);

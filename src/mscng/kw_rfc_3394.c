@@ -233,7 +233,7 @@ xmlSecMSCngKWAesExecute(xmlSecTransformPtr transform, int last,
 
     xmlSecAssert2(xmlSecMSCngKWAesCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngKWAesSize), -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecMSCngKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);

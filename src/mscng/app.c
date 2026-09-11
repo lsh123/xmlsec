@@ -207,7 +207,7 @@ xmlSecMSCngAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATTR
 
     xmlSecAssert2(filename != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
-    UNREFERENCED_PARAMETER(type);
+    XMLSEC_UNREFERENCED(type);
 
     switch(format) {
     case xmlSecKeyDataFormatPkcs12:
@@ -324,9 +324,9 @@ xmlSecMSCngAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecK
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(dataSize > 0, NULL);
     xmlSecAssert2(format == xmlSecKeyDataFormatCertDer, NULL);
-    UNREFERENCED_PARAMETER(pwd);
-    UNREFERENCED_PARAMETER(pwdCallback);
-    UNREFERENCED_PARAMETER(pwdCallbackCtx);
+    XMLSEC_UNREFERENCED(pwd);
+    XMLSEC_UNREFERENCED(pwdCallback);
+    XMLSEC_UNREFERENCED(pwdCallbackCtx);
 
     /* read cert and make a copy for keyCert */
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(dataSize, dwDataSize, goto done, NULL);
@@ -539,8 +539,8 @@ xmlSecKeyPtr
 xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const char *pwd,
                                void *pwdCallback,
                                void* pwdCallbackCtx) {
-    UNREFERENCED_PARAMETER(pwdCallback);
-    UNREFERENCED_PARAMETER(pwdCallbackCtx);
+    XMLSEC_UNREFERENCED(pwdCallback);
+    XMLSEC_UNREFERENCED(pwdCallbackCtx);
     CRYPT_DATA_BLOB pfx;
     xmlSecKeyPtr key = NULL;
     WCHAR* pwdWideChar = NULL;

@@ -229,7 +229,7 @@ xmlSecGnuTLSKWDes3Execute(xmlSecTransformPtr transform, int last,
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformKWDes3Id), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSKWDes3Size), -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecGnuTLSKWDes3GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);

@@ -131,7 +131,7 @@ xmlSecMSCryptoAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_A
 
     xmlSecAssert2(filename != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
-    UNREFERENCED_PARAMETER(type);
+    XMLSEC_UNREFERENCED(type);
 
     switch (format) {
     case xmlSecKeyDataFormatPkcs12:
@@ -201,9 +201,9 @@ xmlSecMSCryptoAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlS
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(dataSize > 0, NULL);
     xmlSecAssert2(format == xmlSecKeyDataFormatCertDer, NULL);
-    UNREFERENCED_PARAMETER(pwd);
-    UNREFERENCED_PARAMETER(pwdCallback);
-    UNREFERENCED_PARAMETER(pwdCallbackCtx);
+    XMLSEC_UNREFERENCED(pwd);
+    XMLSEC_UNREFERENCED(pwdCallback);
+    XMLSEC_UNREFERENCED(pwdCallbackCtx);
 
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(dataSize, dwDataSize, goto done, NULL);
     pCert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, data, dwDataSize);
@@ -505,8 +505,8 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(dataSize > 1, NULL);
     xmlSecAssert2(pwd != NULL, NULL);
-    UNREFERENCED_PARAMETER(pwdCallback);
-    UNREFERENCED_PARAMETER(pwdCallbackCtx);
+    XMLSEC_UNREFERENCED(pwdCallback);
+    XMLSEC_UNREFERENCED(pwdCallbackCtx);
 
     memset(&pfx, 0, sizeof(pfx));
     pfx.pbData = (BYTE *)data;

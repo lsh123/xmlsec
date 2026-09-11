@@ -221,7 +221,7 @@ xmlSecGCryptKWAesExecute(xmlSecTransformPtr transform, int last,
 
     xmlSecAssert2(xmlSecGCryptKWAesCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGCryptKWAesSize), -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecGCryptKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);

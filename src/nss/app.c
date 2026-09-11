@@ -318,7 +318,7 @@ xmlSecNssAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATTRIB
 
     xmlSecAssert2(filename != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
-    UNREFERENCED_PARAMETER(type);
+    XMLSEC_UNREFERENCED(type);
 
     /* read the file contents */
     memset(&secItem, 0, sizeof(secItem));

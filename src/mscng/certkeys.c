@@ -798,7 +798,7 @@ xmlSecMSCngKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataDsaId), -1);
     xmlSecAssert2(dsaValue != NULL, -1);
-    UNREFERENCED_PARAMETER(writePrivateKey);
+    XMLSEC_UNREFERENCED(writePrivateKey);
 
     ctx = xmlSecMSCngKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
@@ -832,7 +832,7 @@ xmlSecMSCngKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 static int
 xmlSecMSCngKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits,
         xmlSecKeyDataType type) {
-    UNREFERENCED_PARAMETER(type);
+    XMLSEC_UNREFERENCED(type);
     xmlSecMSCngKeyDataCtxPtr ctx;
     BCRYPT_ALG_HANDLE hAlg = 0;
     BCRYPT_KEY_HANDLE hKey = 0;
@@ -1060,7 +1060,7 @@ xmlSecMSCngKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataRsaId), -1);
     xmlSecAssert2(rsaValue != NULL, -1);
-    UNREFERENCED_PARAMETER(writePrivateKey);
+    XMLSEC_UNREFERENCED(writePrivateKey);
 
     ctx = xmlSecMSCngKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
@@ -1179,7 +1179,7 @@ xmlSecMSCngKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 static int
 xmlSecMSCngKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits,
         xmlSecKeyDataType type) {
-    UNREFERENCED_PARAMETER(type);
+    XMLSEC_UNREFERENCED(type);
     xmlSecMSCngKeyDataCtxPtr ctx;
     BCRYPT_ALG_HANDLE hAlg = 0;
     BCRYPT_KEY_HANDLE hKey = 0;
@@ -1594,7 +1594,7 @@ xmlSecMSCngKeyDataDhWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     xmlSecMSCngKeyDataCtxPtr ctx;
     int ret;
 
-    UNREFERENCED_PARAMETER(writePrivateKey);
+    XMLSEC_UNREFERENCED(writePrivateKey);
 
     xmlSecAssert2(id == xmlSecMSCngKeyDataDhId, -1);
     xmlSecAssert2(data != NULL, -1);

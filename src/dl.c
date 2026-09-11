@@ -402,7 +402,7 @@ xmlSecCryptoDLShutdown(void) {
         /* ignore error */
     }
 #else  /* XMLSEC_DL_LIBLTDL */
-    UNREFERENCED_PARAMETER(ret);
+    XMLSEC_UNREFERENCED(ret);
 #endif /* XMLSEC_DL_LIBLTDL */
 
     return(0);

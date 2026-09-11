@@ -135,7 +135,7 @@ xmlSecOpenSSLSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
 
     xmlSecAssert2(xmlSecOpenSSLSymKeyDataCheckId(data), -1);
     xmlSecAssert2(sizeBits > 0, -1);
-    UNREFERENCED_PARAMETER(type);
+    XMLSEC_UNREFERENCED(type);
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
     xmlSecAssert2(buffer != NULL, -1);

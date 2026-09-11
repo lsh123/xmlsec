@@ -1602,7 +1602,7 @@ xmlSecMSCngX509StoreFindCert_ex(xmlSecKeyDataStorePtr store, xmlChar* subjectNam
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCngX509StoreId), NULL);
-    UNREFERENCED_PARAMETER(keyInfoCtx);
+    XMLSEC_UNREFERENCED(keyInfoCtx);
 
     ctx = xmlSecMSCngX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, NULL);

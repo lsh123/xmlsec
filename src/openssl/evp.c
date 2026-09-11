@@ -1219,7 +1219,7 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId), -1);
     xmlSecAssert2(sizeBits > 0, -1);
-    UNREFERENCED_PARAMETER(type);
+    XMLSEC_UNREFERENCED(type);
 
     dsa = DSA_new();
     if(dsa == NULL) {
@@ -1426,7 +1426,7 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId), -1);
     xmlSecAssert2(sizeBits > 0, -1);
-    UNREFERENCED_PARAMETER(type);
+    XMLSEC_UNREFERENCED(type);
 
     /* step 1: generate DSA parameters (p, q, g) */
     pctx = EVP_PKEY_CTX_new_from_name(xmlSecOpenSSLGetLibCtx(), XMLSEC_OPENSSL_DSA_EVP_NAME, NULL);
@@ -1987,7 +1987,7 @@ xmlSecOpenSSLKeyDataDhGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSe
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDhId), -1);
     xmlSecAssert2(sizeBits > 0, -1);
-    UNREFERENCED_PARAMETER(type);
+    XMLSEC_UNREFERENCED(type);
 
     dh = DH_new();
     if(dh == NULL) {
@@ -2230,7 +2230,7 @@ xmlSecOpenSSLKeyDataDhGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSe
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDhId), -1);
     xmlSecAssert2(sizeBits > 0, -1);
-    UNREFERENCED_PARAMETER(type);
+    XMLSEC_UNREFERENCED(type);
 
     /* step 1: generate DH parameters (p, g) */
     pctx = EVP_PKEY_CTX_new_from_name(xmlSecOpenSSLGetLibCtx(), XMLSEC_OPENSSL_DH_EVP_NAME, NULL);
@@ -2433,7 +2433,7 @@ xmlSecOpenSSLKeyDataDhWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKey
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDhId), -1);
     xmlSecAssert2(dhValue != NULL, -1);
-    UNREFERENCED_PARAMETER(writePrivateKey);
+    XMLSEC_UNREFERENCED(writePrivateKey);
 
     /* first, get all values */
     ret = xmlSecOpenSSLKeyValueDhInitialize(&dhKeyValue);
@@ -3368,7 +3368,7 @@ xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId), -1);
     xmlSecAssert2(sizeBits > 0, -1);
-    UNREFERENCED_PARAMETER(type);
+    XMLSEC_UNREFERENCED(type);
 
     /* create publicExponent */
     publicExponent = BN_new();
@@ -3505,7 +3505,7 @@ xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId), -1);
     xmlSecAssert2(sizeBits > 0, -1);
-    UNREFERENCED_PARAMETER(type);
+    XMLSEC_UNREFERENCED(type);
 
     /* create publicExponent */
     publicExponent = BN_new();

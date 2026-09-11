@@ -163,7 +163,8 @@ xmlSecNodeSetCheckNodeOrParent(xmlNodeSetPtr nodes, xmlNodePtr node, xmlNodePtr 
             return(1);
         }
 
-        /* traverse up the tree, only element nodes can have children */
+        /* traverse up the tree, only element nodes can have children
+         * (we do not include the doc itself to avoid duplicates)*/
         if((parent != NULL) && (parent->type == XML_ELEMENT_NODE)) {
             node = parent;
             parent = parent->parent;
@@ -328,23 +329,80 @@ xmlSecNodeSetAddList(xmlSecNodeSetPtr nset XMLSEC_ATTRIBUTE_UNUSED,
     return(NULL);
 }
 
-/* checks if any of the node's ancestors is in the nodeset */
+/* checks if any of the walk roots is a strict ancestor of the node */
 static int
-xmlSecNodeSetContainsAncestor(xmlSecNodeSetPtr nset, xmlNodePtr node) {
+xmlSecNodeSetWalkRootIsAncestor(xmlNodeSetPtr roots, xmlNodePtr node) {
     xmlNodePtr cur;
-    int ret;
 
-    xmlSecAssert2(nset != NULL, 0);
+    xmlSecAssert2(roots != NULL, 0);
     xmlSecAssert2(node != NULL, 0);
 
     for(cur = xmlSecGetParent(node); (cur != NULL) && (cur->type != XML_NAMESPACE_DECL); cur = cur->parent) {
-        ret = xmlSecNodeSetContains(nset, cur, xmlSecGetParent(cur));
-        xmlSecAssert2(ret >= 0, 0);
-        if(ret == 1) {
+        if(xmlXPathNodeSetContains(roots, cur)) {
             return(1);
         }
     }
     return(0);
+}
+
+/*
+ * Returns the node list to use as the fast-path walk roots for @p nset, or
+ * NULL if the fast path cannot be used.
+ *
+ * The fast path walks the subtrees rooted at the returned nodes, so it is only
+ * valid when every node of the combined set is guaranteed to lie inside those
+ * subtrees:
+ *   - a single Normal/Tree/TreeWithoutComments set: its own nodes; or
+ *
+ *   - a combined set whose operations are all intersections: the nodes of the
+ *     first member that has a non-NULL node list. The intersection is a subset
+ *     of every member, so it is fully covered by that member's subtrees.
+ *     Members with a NULL node list (the whole document, e.g. the Normal input
+ *     set of a "#fragment" reference) are skipped.
+ */
+static xmlNodeSetPtr
+xmlSecNodeSetGetFastPathNodes(xmlSecNodeSetPtr nset) {
+    xmlSecNodeSetPtr cur;
+    xmlNodeSetPtr res = NULL;
+
+    xmlSecAssert2(nset != NULL, NULL);
+
+    /* a single set */
+    if(nset->next == nset) {
+        switch(nset->type) {
+        case xmlSecNodeSetNormal:
+        case xmlSecNodeSetTree:
+        case xmlSecNodeSetTreeWithoutComments:
+            return(nset->nodes);
+        default:
+            return(NULL);
+        }
+    }
+
+    /* an intersections only list of sets */
+    cur = nset;
+    do {
+        if(cur->op != xmlSecNodeSetIntersection) {
+            return(NULL);
+        }
+        /* use the first member that has a non-NULL node list; a NULL node list
+         * represents the whole document and provides no walk roots */
+        if((res == NULL) && (cur->nodes != NULL)) {
+            switch(cur->type) {
+            case xmlSecNodeSetNormal:
+            case xmlSecNodeSetTree:
+            case xmlSecNodeSetTreeWithoutComments:
+                res = cur->nodes;
+                break;
+            default:
+                break;
+            }
+        }
+        cur = cur->next;
+    } while(cur != nset);
+
+    /* done */
+    return(res);
 }
 
 /**
@@ -359,6 +417,7 @@ xmlSecNodeSetContainsAncestor(xmlSecNodeSetPtr nset, xmlNodePtr node) {
  */
 int
 xmlSecNodeSetWalk(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc, void* data) {
+    xmlNodeSetPtr fastPathNodes;
     xmlNodePtr cur;
     int ret = 0;
 
@@ -366,34 +425,35 @@ xmlSecNodeSetWalk(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc, voi
     xmlSecAssert2(nset->doc != NULL, -1);
     xmlSecAssert2(walkFunc != NULL, -1);
 
-    /* special cases */
-    if(nset->nodes != NULL) {
+
+    /* try fast path first if we can iterate through a subset of nodes  */
+    fastPathNodes = xmlSecNodeSetGetFastPathNodes(nset);
+    if(fastPathNodes != NULL) {
         int ii;
 
-        switch(nset->type) {
-        case xmlSecNodeSetNormal:
-        case xmlSecNodeSetTree:
-        case xmlSecNodeSetTreeWithoutComments:
-            for(ii = 0; (ret >= 0) && (ii < nset->nodes->nodeNr); ++ii) {
-                /* skip nodes whose ancestor is already in the set: that
-                 * ancestor's walk covers this node's entire subtree, so
-                 * starting a second walk here would visit the overlapping
-                 * nodes more than once */
-                if(xmlSecNodeSetContainsAncestor(nset, nset->nodes->nodeTab[ii])) {
-                    continue;
-                }
-                ret = xmlSecNodeSetWalkRecursive(nset, nset->nodes->nodeTab[ii], walkFunc, data);
-                if(ret < 0) {
-                    xmlSecInternalError("xmlSecNodeSetWalkRecursive", NULL);
-                    return(ret);
-                }
+        for(ii = 0; (ret >= 0) && (ii < fastPathNodes->nodeNr); ++ii) {
+            cur = fastPathNodes->nodeTab[ii];
+
+            /* skip nodes that are covered by an ancestor walk root: that
+             * ancestor's walk covers this node's entire subtree, so
+             * starting a second walk here would visit the overlapping
+             * nodes more than once. For a combined set the walk roots are
+             * the first member's nodes, which are not all part of the set,
+             * so the check must be against the walk roots rather than the
+             * set itself */
+            if(xmlSecNodeSetWalkRootIsAncestor(fastPathNodes, cur)) {
+                continue;
             }
-            return(ret);
-        default:
-            break;
+            ret = xmlSecNodeSetWalkRecursive(nset, cur, walkFunc, data);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecNodeSetWalkRecursive", NULL);
+                return(ret);
+            }
         }
+        return(ret);
     }
 
+    /* if we can't do fast path, fallback to slow path iterating through all doc nodes */
     for(cur = nset->doc->children; (cur != NULL) && (ret >= 0); cur = cur->next) {
         ret = xmlSecNodeSetWalkRecursive(nset, cur, walkFunc, data);
         if(ret < 0) {
@@ -605,8 +665,7 @@ xmlSecNodeSetDumpTextNodes(xmlSecNodeSetPtr nset, xmlOutputBufferPtr out) {
  */
 void
 xmlSecNodeSetDebugDump(xmlSecNodeSetPtr nset, FILE *output) {
-    int ii, len;
-    xmlNodePtr cur;
+    int len;
 
     xmlSecAssert(nset != NULL);
     xmlSecAssert(output != NULL);
@@ -640,26 +699,21 @@ xmlSecNodeSetDebugDump(xmlSecNodeSetPtr nset, FILE *output) {
         break;
     }
 
-    len = xmlXPathNodeSetGetLength(nset->nodes);
-    for(ii = 0; ii < len; ++ii) {
-        cur = xmlXPathNodeSetItem(nset->nodes, ii);
-        xmlSecAssert(cur != NULL);
-
-        if(cur->type != XML_NAMESPACE_DECL) {
-            fprintf(output, XMLSEC_ENUM_FMT ": %s\n",
-                XMLSEC_ENUM_CAST(cur->type),
-                (cur->name) ? cur->name : BAD_CAST "null");
-        } else {
-            xmlNsPtr ns = (xmlNsPtr)cur;
-            fprintf(output, XMLSEC_ENUM_FMT ": %s=%s (%s:%s)\n",
-                XMLSEC_ENUM_CAST(cur->type),
-                (ns->prefix) ? ns->prefix : BAD_CAST "null",
-                (ns->href) ? ns->href : BAD_CAST "null",
-                ((ns->next != NULL) &&
-                 ((xmlNodePtr)ns->next)->ns &&
-                 ((xmlNodePtr)ns->next)->ns->prefix) ?
-                 ((xmlNodePtr)ns->next)->ns->prefix : BAD_CAST "null",
-                (ns->next != NULL) ? ((xmlNodePtr)ns->next)->name : BAD_CAST "null");
-        }
+    switch(nset->op) {
+    case xmlSecNodeSetUnion:
+        fprintf(output, "  operation: xmlSecNodeSetUnion\n");
+        break;
+    case xmlSecNodeSetIntersection:
+        fprintf(output, "  operation: xmlSecNodeSetIntersection\n");
+        break;
+    case xmlSecNodeSetSubtraction:
+        fprintf(output, "  operation: xmlSecNodeSetSubtraction\n");
+        break;
+    default:
+        xmlSecUnsupportedEnumValueError("node set operation", nset->op, NULL);
+        break;
     }
+
+    len = xmlXPathNodeSetGetLength(nset->nodes);
+    fprintf(output, "  nodes: %d\n", len);
 }

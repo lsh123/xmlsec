@@ -21,7 +21,6 @@
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
 
-#include "keysdata_helpers.h"
 
 /* Internal helpers used by key-agreement and KEM code: read / write key info inside transforms */
 XMLSEC_EXPORT xmlSecKeyPtr  xmlSecTransformReadKeyInfoNode       (xmlSecKeyDataType keyType,

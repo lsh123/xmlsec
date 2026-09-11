@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <limits.h>
 
 #if !defined(_MSC_VER)
 #include <libgen.h>
@@ -3784,7 +3785,15 @@ xmlSecAppWriteResult(const char* inputFileName, const char* outputFileNameTmpl, 
         }
         /* xmlSaveFileTo closes the buffer */
     } else if((buffer != NULL) && (xmlSecBufferGetData(buffer) != NULL)) {
-        ret = xmlOutputBufferWrite(outBuffer, (int)xmlSecBufferGetSize(buffer), (const char*)xmlSecBufferGetData(buffer));
+        xmlSecSize bufSize;
+
+        bufSize = xmlSecBufferGetSize(buffer);
+        if(bufSize > (size_t)INT_MAX) {
+            fprintf(stderr, "Error: binary output size exceeds int limit\n");
+            (void)xmlOutputBufferClose(outBuffer);
+            return(-1);
+        }
+        ret = xmlOutputBufferWrite(outBuffer, (int)bufSize, (const char*)xmlSecBufferGetData(buffer));
         if (ret < 0) {
             fprintf(stderr, "Error: failed to write binary output\n");
             (void)xmlOutputBufferClose(outBuffer);

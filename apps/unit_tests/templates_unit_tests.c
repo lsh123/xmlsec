@@ -684,6 +684,7 @@ static void
 test_xmlSecTmplEncDataEnsureKeyInfo_adds_node(void) {
     xmlNodePtr encNode = NULL;
     xmlNodePtr keyInfoNode;
+    xmlNodePtr cipherDataNode;
 
     testStart("xmlSecTmplEncDataEnsureKeyInfo: adds KeyInfo before CipherData");
 
@@ -716,6 +717,22 @@ test_xmlSecTmplEncDataEnsureKeyInfo_adds_node(void) {
         testFinishedFailure();
         return;
     }
+
+    /* verify KeyInfo is inserted immediately before CipherData (ignore non-element nodes like whitespaces) */
+    cipherDataNode = xmlSecFindChild(encNode, xmlSecNodeCipherData, xmlSecEncNs);
+    if(cipherDataNode == NULL) {
+        testLog("Error: CipherData node not found\n");
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+    if(xmlSecGetNextElementNode(keyInfoNode->next) != cipherDataNode) {
+        testLog("Error: KeyInfo is not positioned before CipherData\n");
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+
     xmlFreeNode(encNode);
     testFinishedSuccess();
 }
@@ -1187,6 +1204,55 @@ test_xmlSecTmplTransformAddXPath2_filter_and_expression(void) {
         return;
     }
     xmlFree(content);
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTmplTransformAddXPath2_multiple_children(void) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr transformNode;
+    xmlNodePtr xpathNode;
+    int count = 0;
+
+    testStart("xmlSecTmplTransformAddXPath2: allows multiple XPath children");
+
+    transformNode = testCreateTransformNode(&doc);
+    if(transformNode == NULL) {
+        testLog("Error: failed to create Transform node\n");
+        testFinishedFailure();
+        return;
+    }
+
+    if(xmlSecTmplTransformAddXPath2(transformNode, BAD_CAST "intersect",
+        BAD_CAST "//first", NULL) != 0) {
+        testLog("Error: first xmlSecTmplTransformAddXPath2 call failed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    if(xmlSecTmplTransformAddXPath2(transformNode, BAD_CAST "union",
+        BAD_CAST "//second", NULL) != 0) {
+        testLog("Error: second xmlSecTmplTransformAddXPath2 call failed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    for(xpathNode = transformNode->children; xpathNode != NULL; xpathNode = xpathNode->next) {
+        if(xmlSecCheckNodeName(xpathNode, xmlSecNodeXPath, xmlSecXPath2Ns)) {
+            ++count;
+        }
+    }
+
+    if(count != 2) {
+        testLog("Error: expected 2 <xptr2:XPath> nodes, got '%d'\n", count);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
 
     xmlFreeDoc(doc);
     testFinishedSuccess();
@@ -3178,6 +3244,7 @@ test_templates(void) {
 
     testGroupStart("xmlSecTmplTransformAddXPath2");
     test_xmlSecTmplTransformAddXPath2_filter_and_expression();
+    test_xmlSecTmplTransformAddXPath2_multiple_children();
     if(testGroupFinished() != 1) { success = 0; }
 
     testGroupStart("xmlSecTmplTransformAddXPointer");

@@ -746,6 +746,116 @@ test_xmlSecNodeSetWalk_visits_nested_chain_once(void) {
 }
 
 static void
+test_xmlSecNodeSetWalk_combined_intersection_visits_each_node_once(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    xmlNodePtr a;
+    xmlNodePtr b;
+    xmlNodeSetPtr nodesA;
+    xmlNodeSetPtr nodesB;
+    xmlSecNodeSetPtr nset;
+    xmlSecNodeSetPtr tmp;
+    xmlSecNodeSetPtr tmpNset;
+    struct nodesetWalkStats stats;
+    int ret;
+
+    testStart("xmlSecNodeSetWalk visits each node once for a combined intersection set");
+
+    doc = nodesetTestParseDoc("<Root><A><B>text</B></A></Root>");
+    if(doc == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    root = xmlDocGetRootElement(doc);
+    a = nodesetTestFindChild(root, BAD_CAST "A");
+    b = (a != NULL) ? nodesetTestFindChild(a, BAD_CAST "B") : NULL;
+    if((root == NULL) || (a == NULL) || (b == NULL)) {
+        testLog("Error: failed to prepare combined intersection walk test data\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* first member: a Tree set containing both an ancestor (A) and a
+     * descendant (B) so that its walk roots overlap */
+    nodesA = xmlXPathNodeSetCreate(a);
+    if(nodesA == NULL) {
+        testLog("Error: failed to create XPath node set\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(xmlXPathNodeSetAdd(nodesA, b) < 0) {
+        testLog("Error: failed to add descendant to XPath node set\n");
+        xmlXPathFreeNodeSet(nodesA);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    nset = xmlSecNodeSetCreate(doc, nodesA, xmlSecNodeSetTree);
+    if(nset == NULL) {
+        testLog("Error: xmlSecNodeSetCreate failed\n");
+        xmlXPathFreeNodeSet(nodesA);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* second member: a Tree set containing only the descendant (B); the
+     * intersection is the subtree of B, a proper subset of the first member */
+    nodesB = xmlXPathNodeSetCreate(b);
+    if(nodesB == NULL) {
+        testLog("Error: failed to create XPath node set\n");
+        xmlSecNodeSetDestroy(nset);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    tmp = xmlSecNodeSetCreate(doc, nodesB, xmlSecNodeSetTree);
+    if(tmp == NULL) {
+        testLog("Error: xmlSecNodeSetCreate failed\n");
+        xmlXPathFreeNodeSet(nodesB);
+        xmlSecNodeSetDestroy(nset);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    tmpNset = xmlSecNodeSetAdd(nset, tmp, xmlSecNodeSetIntersection);
+    if(tmpNset == NULL) {
+        testLog("Error: xmlSecNodeSetAdd failed for intersection\n");
+        xmlSecNodeSetDestroy(nset);
+        xmlSecNodeSetDestroy(tmp);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    nset = tmpNset;
+
+    /* the intersection is the subtree of B (B and its text); A is not in the
+     * set. B and the text node must each be visited exactly once even though
+     * both A and B are walk roots of the first member */
+    memset(&stats, 0, sizeof(stats));
+    ret = xmlSecNodeSetWalk(nset, nodesetTestWalkStatsCallback, &stats);
+    if((ret < 0) || (stats.total != 2) || (stats.elements != 1) || (stats.text != 1)) {
+        testLog("Error: walk visited overlapping nodes more than once "
+            "(ret=%d total=%d elem=%d text=%d)\n",
+            ret, stats.total, stats.elements, stats.text);
+        xmlSecNodeSetDestroy(nset);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecNodeSetDestroy(nset);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
 test_xmlSecNodeSetAdd_union_head_is_absolute_set(void) {
     xmlDocPtr doc;
     xmlNodePtr root;
@@ -984,6 +1094,7 @@ test_nodeset(void) {
     test_xmlSecNodeSetWalk_normal_set_visits_each_node_once();
     test_xmlSecNodeSetWalk_skips_descendants_listed_before_ancestors();
     test_xmlSecNodeSetWalk_visits_nested_chain_once();
+    test_xmlSecNodeSetWalk_combined_intersection_visits_each_node_once();
     if(testGroupFinished() != 1) { success = 0; }
 
     testGroupStart("xmlSecNodeSetDumpTextNodes");

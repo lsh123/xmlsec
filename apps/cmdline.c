@@ -52,6 +52,10 @@ xmlSecAppCmdLineParamIsSet(xmlSecAppCmdLineParamPtr param) {
 
 const char*
 xmlSecAppCmdLineParamGetString(xmlSecAppCmdLineParamPtr param) {
+    if(param == NULL) {
+        fprintf(stderr, "Error: parameter is NULL.\n");
+        return(NULL);
+    }
     if(param->type != xmlSecAppCmdLineParamTypeString) {
         fprintf(stderr, "Error: parameter \"%s\" is not string.\n", param->fullName);
         return(NULL);
@@ -61,6 +65,10 @@ xmlSecAppCmdLineParamGetString(xmlSecAppCmdLineParamPtr param) {
 
 const char*
 xmlSecAppCmdLineParamGetStringList(xmlSecAppCmdLineParamPtr param) {
+    if(param == NULL) {
+        fprintf(stderr, "Error: parameter is NULL.\n");
+        return(NULL);
+    }
     if(param->type != xmlSecAppCmdLineParamTypeStringList) {
         fprintf(stderr, "Error: parameter \"%s\" is not string list.\n", param->fullName);
         return(NULL);
@@ -70,6 +78,10 @@ xmlSecAppCmdLineParamGetStringList(xmlSecAppCmdLineParamPtr param) {
 
 int
 xmlSecAppCmdLineParamGetInt(xmlSecAppCmdLineParamPtr param, int def) {
+    if(param == NULL) {
+        fprintf(stderr, "Error: parameter is NULL.\n");
+        return(def);
+    }
     if(param->type != xmlSecAppCmdLineParamTypeNumber) {
         fprintf(stderr, "Error: parameter \"%s\" is not integer.\n", param->fullName);
         return(def);
@@ -79,6 +91,10 @@ xmlSecAppCmdLineParamGetInt(xmlSecAppCmdLineParamPtr param, int def) {
 
 time_t
 xmlSecAppCmdLineParamGetTime(xmlSecAppCmdLineParamPtr param, time_t def) {
+    if(param == NULL) {
+        fprintf(stderr, "Error: parameter is NULL.\n");
+        return(def);
+    }
     if((param->type != xmlSecAppCmdLineParamTypeTime) && (param->type != xmlSecAppCmdLineParamTypeGmtTime)) {
         fprintf(stderr, "Error: parameter \"%s\" is not time.\n", param->fullName);
         return(def);
@@ -354,26 +370,26 @@ xmlSecAppGetGmtTime(struct tm* timeptr) {
     struct tm *tm1;
 
     if(timeptr == NULL) {
-        return(0);
+        return(-1);
     }
 
     /* t1 is gmt time "mapped" to localtime as-is */
     t1 = mktime(timeptr);
     if(t1 == -1) {
         fprintf(stderr, "Error: mktime(timeptr) failed.\n");
-        return(0);
+        return(-1);
     }
     tm1 = gmtime(&t1);
     if(tm1 == NULL) {
         fprintf(stderr, "Error: gmtime() failed for time=%lld.\n", (long long)t1);
-        return(0);
+        return(-1);
     }
 
     /* t2 is "mapped" gmt time converted to gmt */
     t2 = mktime(tm1);
     if(t2 == -1) {
         fprintf(stderr, "Error: mktime(tm1) failed.\n");
-        return(0);
+        return(-1);
     }
 
     /* shift t1 back by the (t2 - t1) delta */
@@ -408,17 +424,28 @@ static int
 xmlSecAppCmdLineTimeParamRead(const char* str, time_t* t, int is_gmt_time) {
     struct tm tm;
     int n;
+    int consumed = 0;
+    const char* rest;
 
     if((str == NULL) || (t == NULL)) {
         return(-1);
     }
     memset(&tm, 0, sizeof(tm));
     tm.tm_isdst = -1;
-    n = XMLSEC_SCANF(str, "%4d-%2d-%2d%*c%2d:%2d:%2d",
+    n = XMLSEC_SCANF(str, "%4d-%2d-%2d%*c%2d:%2d:%2d%n",
                         &tm.tm_year, &tm.tm_mon, &tm.tm_mday,
-                        &tm.tm_hour, &tm.tm_min, &tm.tm_sec);
+                        &tm.tm_hour, &tm.tm_min, &tm.tm_sec, &consumed);
     if(n != 6) {
         return(-1);
+    }
+
+    /* reject trailing garbage (trailing whitespace is allowed) */
+    rest = str + consumed;
+    while(*rest != '\0') {
+        if((*rest != ' ') && (*rest != '\t')) {
+            return(-1);
+        }
+        ++rest;
     }
 
     if((tm.tm_year < 1900)
@@ -437,6 +464,9 @@ xmlSecAppCmdLineTimeParamRead(const char* str, time_t* t, int is_gmt_time) {
         (*t) = XMLSEC_MKGMTIME(&tm);
     } else {
         (*t) = mktime(&tm);
+    }
+    if((*t) == (time_t)-1) {
+        return(-1);
     }
     return(0);
 }

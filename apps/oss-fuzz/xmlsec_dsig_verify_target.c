@@ -120,11 +120,13 @@ static int do_init(void) {
         /* Best effort: load embedded trusted cert. If it fails we keep going
          * with an (essentially empty) manager; the signature parsing surface
          * still runs. */
+#ifndef XMLSEC_NO_X509
         if (xmlSecOpenSSLAppKeysMngrCertLoadMemory(g_mngr,
             (const xmlSecByte*)pem, (xmlSecSize)off,
             xmlSecKeyDataFormatCertPem, xmlSecKeyDataTypeTrusted) < 0) {
             fprintf(stderr, "xmlsec_dsig_verify_target: failed to load the embedded trusted cert\n");
         }
+#endif /* XMLSEC_NO_X509 */
     }
 
     return 0;

@@ -258,8 +258,6 @@ test_xmlSecX509AttrValueStringRead(void) {
     test_xmlSecX509AttrValueStringRead_success("check escaped comma in value", "Foo\\,Bar,name=value", ',', 0, ",name=value", "Foo,Bar", XMLSEC_X509_VALUE_TYPE_UTF8_STRING);
     test_xmlSecX509AttrValueStringRead_success("check escaped comma inside quoted string", "\"Foo\\,Bar\",name=value", ',', 0, ",name=value", "Foo,Bar", XMLSEC_X509_VALUE_TYPE_UTF8_STRING);
     test_xmlSecX509AttrValueStringRead_success("check escaped double quote inside quoted string", "\"Foo\\\"Bar\",name=value", ',', 0, ",name=value", "Foo\"Bar", XMLSEC_X509_VALUE_TYPE_UTF8_STRING);
-    test_xmlSecX509AttrValueStringRead_success("check empty octet string", "#,name=value", ',', 0, ",name=value", "", XMLSEC_X509_VALUE_TYPE_OCTET_STRING);
-    test_xmlSecX509AttrValueStringRead_success("check empty octet string end of line", "#", ',', 0, "", "", XMLSEC_X509_VALUE_TYPE_OCTET_STRING);
 
     /* negative tests */
     test_xmlSecX509AttrValueStringRead_failure("check NULL", NULL, ',', 0);
@@ -269,6 +267,8 @@ test_xmlSecX509AttrValueStringRead(void) {
     test_xmlSecX509AttrValueStringRead_failure("check octet/hex with missing char end of line", "#4", ',', 0);
     test_xmlSecX509AttrValueStringRead_failure("check octet/hex with missing chars", "#4,name=value", ',', 0);
     test_xmlSecX509AttrValueStringRead_failure("check octet/hex with non-hex chars", "#4X,name=value", ',', 0);
+    test_xmlSecX509AttrValueStringRead_failure("check empty octet string", "#,name=value", ',', 0);
+    test_xmlSecX509AttrValueStringRead_failure("check empty octet string end of line", "#", ',', 0);
 
     /* done */
     return (testGroupFinished());

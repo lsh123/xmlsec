@@ -29,6 +29,8 @@
 #include "../keysdata_helpers.h"
 #include "../transform_helpers.h"
 
+#if !defined(XMLSEC_NO_EC) || !defined(XMLSEC_NO_DH) || !defined(XMLSEC_NO_XDH)
+
 
 /******************************************************************************
  *
@@ -400,8 +402,15 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
 
     /* Validate secret size matches expected value (if specified) */
     if((ctx->expected_secret_len != 0) && (secret_len != ctx->expected_secret_len)) {
+        char expectedLenStr[32];
+
+        ret = xmlStrPrintf(BAD_CAST expectedLenStr, sizeof(expectedLenStr), XMLSEC_SIZE_FMT, ctx->expected_secret_len);
+        if(ret < 0) {
+            xmlSecInternalError("xmlStrPrintf", NULL);
+            goto done;
+        }
         xmlSecInvalidSizeDataError("EVP_PKEY_derive secret size", secret_len,
-            "expected", NULL);
+            expectedLenStr, NULL);
         goto done;
     }
 
@@ -562,3 +571,5 @@ xmlSecOpenSSLTransformX448GetKlass(void) {
 }
 
 #endif /* XMLSEC_NO_XDH */
+
+#endif /* !defined(XMLSEC_NO_EC) || !defined(XMLSEC_NO_DH) || !defined(XMLSEC_NO_XDH) */

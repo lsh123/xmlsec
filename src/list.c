@@ -172,8 +172,8 @@ xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
     /* allocate memory */
     ret = xmlSecPtrListEnsureSize(dst, dst->use + src->use);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecPtrListEnsureSize", xmlSecPtrListGetName(src),
-            "size=" XMLSEC_SIZE_FMT, src->use);
+        xmlSecInternalError2("xmlSecPtrListEnsureSize", xmlSecPtrListGetName(dst),
+            "size=" XMLSEC_SIZE_FMT, dst->use + src->use);
         return(-1);
     }
 

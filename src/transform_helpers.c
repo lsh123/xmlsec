@@ -106,7 +106,7 @@ xmlSecTransformConcatKdfParamsReadsBitsAttr(xmlSecBufferPtr buf, xmlNodePtr node
 
     ret = xmlSecBufferRemoveHead(buf, 1);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferHexRead", NULL);
+        xmlSecInternalError("xmlSecBufferRemoveHead", NULL);
         return(-1);
     }
 
@@ -322,19 +322,19 @@ xmlSecTransformReadKeyInfoNode(xmlSecKeyDataType keyType, xmlNodePtr node,
      /* create keyinfo ctx */
     ret = xmlSecKeyInfoCtxInitialize(&keyInfoCtx, keysMngr);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyInfoCtxInitialize(recipient)", xmlSecNodeGetName(node));
+        xmlSecInternalError("xmlSecKeyInfoCtxInitialize", xmlSecNodeGetName(node));
         return(NULL);
     }
     ret = xmlSecKeyInfoCtxCopyUserPref(&keyInfoCtx, transformCtx->parentKeyInfoCtx);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref(recipient)", xmlSecNodeGetName(node));
+        xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref", xmlSecNodeGetName(node));
         goto done;
     }
     keyInfoCtx.mode = xmlSecKeyInfoModeRead;
 
     ret = xmlSecTransformSetKeyReq(transform, &(keyInfoCtx.keyReq));
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformSetKeyReq(originator)", xmlSecNodeGetName(node));
+        xmlSecInternalError("xmlSecTransformSetKeyReq", xmlSecNodeGetName(node));
         goto done;
     }
     keyInfoCtx.keyReq.keyType = keyType;
@@ -380,12 +380,12 @@ xmlSecTransformWriteKeyInfoNode(xmlSecKeyPtr key, xmlNodePtr node,
      /* create keyinfo ctx */
     ret = xmlSecKeyInfoCtxInitialize(&keyInfoCtx, NULL);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyInfoCtxInitialize(recipient)", xmlSecNodeGetName(node));
+        xmlSecInternalError("xmlSecKeyInfoCtxInitialize", xmlSecNodeGetName(node));
         return(-1);
     }
     ret = xmlSecKeyInfoCtxCopyUserPref(&keyInfoCtx, transformCtx->parentKeyInfoCtx);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref(recipient)", xmlSecNodeGetName(node));
+        xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref", xmlSecNodeGetName(node));
         goto done;
     }
     keyInfoCtx.mode = xmlSecKeyInfoModeWrite;
@@ -1261,7 +1261,7 @@ xmlSecTransformPbkdf2ParamsInitialize(xmlSecTransformPbkdf2ParamsPtr params) {
 
     ret = xmlSecBufferInitialize(&(params->salt), XMLSEC_TRANSFORM_PBKDF2_DEFAULT_BUF_SIZE);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferInitialize(bufAlgorithmID)", NULL);
+        xmlSecInternalError("xmlSecBufferInitialize(salt)", NULL);
         xmlSecTransformPbkdf2ParamsFinalize(params);
         return(-1);
     }

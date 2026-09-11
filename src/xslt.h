@@ -12,7 +12,7 @@
 #define __XMLSEC_XSLT_H__
 
 #ifndef XMLSEC_PRIVATE
-#error "xmlsec/private/xslt.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
+#error "xslt.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
 #endif /* XMLSEC_PRIVATE */
 
 #ifndef XMLSEC_NO_XSLT

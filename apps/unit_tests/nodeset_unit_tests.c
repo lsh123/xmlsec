@@ -862,9 +862,10 @@ test_xmlSecNodeSetAdd_union_after_intersection_keeps_base_set(void) {
     }
 
     /* build the list exactly like the xpath2 transform does:
-     * intersect A, then subtract B, then union C. Because each new
-     * element is inserted before the head, the final list (from the
-     * head) is A(Intersection) -> C(Union) -> B(Subtraction) */
+     * A is the Normal base set, then B is added with Subtraction,
+     * then C is added with Union. The evaluation order (the next
+     * traversal used by xmlSecNodeSetContains) is
+     * A(Normal) -> B(Subtraction) -> C(Union) */
     nodesA = xmlXPathNodeSetCreate(a);
     nodesB = xmlXPathNodeSetCreate(b);
     nodesC = xmlXPathNodeSetCreate(c);
@@ -935,7 +936,7 @@ test_xmlSecNodeSetAdd_union_after_intersection_keeps_base_set(void) {
 
     /* the expected set is (A union C) minus B: A and C are members,
      * B and D are not. A used to be lost because the Union element
-     * overwrote the base set established by the Intersection head */
+     * overwrote the Normal base set at the head */
     retA = xmlSecNodeSetContains(nset, a, root);
     retB = xmlSecNodeSetContains(nset, b, a);
     retC = xmlSecNodeSetContains(nset, c, b);

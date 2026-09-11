@@ -419,8 +419,15 @@ xmlSecNssKeyAgreementGenerateSecret(xmlSecNssKeyAgreementCtxPtr ctx,
     /* validate secret length */
     XMLSEC_SAFE_CAST_UINT_TO_SIZE(keyData->len, secretSize, goto done, NULL);
     if((ctx->expected_secret_len != 0) && (secretSize != ctx->expected_secret_len)) {
+        char expectedLenStr[32];
+
+        ret = xmlStrPrintf(BAD_CAST expectedLenStr, sizeof(expectedLenStr), XMLSEC_SIZE_FMT, ctx->expected_secret_len);
+        if(ret < 0) {
+            xmlSecInternalError("xmlStrPrintf", NULL);
+            goto done;
+        }
         xmlSecInvalidSizeDataError("PK11_GetKeyData secret size",
-            secretSize, "expected", NULL);
+            secretSize, expectedLenStr, NULL);
         goto done;
     }
 

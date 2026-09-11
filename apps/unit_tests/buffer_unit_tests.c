@@ -165,15 +165,22 @@ test_buffer_make_temp_name(char* tmpName, size_t tmpNameSize, const char* suffix
         return(-1);
     }
 #ifdef _MSC_VER
+    /* sprintf_s() returns the number of characters written on success and -1
+     * on failure, unlike snprintf() which returns the would-be length. */
     ret = sprintf_s(tmpName, tmpNameSize, "%s%sxmlsec_unit_tests_%ld_%d_%ld_%s",
         tmpDir, sep, now, pid, (long)ticks, suffix);
-#else
+    if(ret < 0) {
+        return(-1);
+    }
+#else /* _MSC_VER */
     ret = snprintf(tmpName, tmpNameSize, "%s%sxmlsec_unit_tests_%ld_%d_%ld_%s",
         tmpDir, sep, now, pid, (long)ticks, suffix);
-#endif
     if((ret < 0) || ((size_t)ret >= tmpNameSize)) {
         return(-1);
     }
+#endif /* _MSC_VER */
+
+    /* success */
     return(0);
 }
 

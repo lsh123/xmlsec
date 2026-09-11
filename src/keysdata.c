@@ -194,7 +194,7 @@ xmlSecKeyDataIdsRegisterDefault(void) {
     /* EXPERIMENTAL and should NOT be used in production */
  #ifndef XMLSEC_NO_MLKEM
     if(xmlSecKeyDataIdsRegisterDisabled(xmlSecKeyDataEncapsulationMechanismId) < 0) {
-        xmlSecInternalError("xmlSecKeyDataIdsRegister(xmlSecKeyDataEncapsulationMechanismId)", NULL);
+        xmlSecInternalError("xmlSecKeyDataIdsRegisterDisabled(xmlSecKeyDataEncapsulationMechanismId)", NULL);
         return(-1);
     }
 #endif /* XMLSEC_NO_MLKEM */
@@ -203,7 +203,7 @@ xmlSecKeyDataIdsRegisterDefault(void) {
 
     /* KeyValue key data should not be used in production w/o understanding of the security risks */
     if(xmlSecKeyDataIdsRegisterDisabled(xmlSecKeyDataValueId) < 0) {
-        xmlSecInternalError("xmlSecKeyDataIdsRegister(xmlSecKeyDataValueId)", NULL);
+        xmlSecInternalError("xmlSecKeyDataIdsRegisterDisabled(xmlSecKeyDataValueId)", NULL);
         return(-1);
     }
 

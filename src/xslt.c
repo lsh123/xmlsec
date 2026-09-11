@@ -270,7 +270,10 @@ xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransfor
     }
     cur = node->children;
     while(cur != NULL) {
-        xmlNodeDump(buffer, cur->doc, cur, 0, 0);
+        if(xmlNodeDump(buffer, cur->doc, cur, 0, 0) < 0) {
+            xmlSecXmlError("xmlNodeDump", xmlSecTransformGetName(transform));
+            goto done;
+        }
         cur = cur->next;
     }
 

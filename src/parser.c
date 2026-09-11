@@ -129,7 +129,7 @@ xmlSecParserFinalize(xmlSecTransformPtr transform) {
     if(ctx->parserCtx != NULL) {
         if(ctx->parserCtx->myDoc != NULL) {
             xmlFreeDoc(ctx->parserCtx->myDoc);
-        ctx->parserCtx->myDoc = NULL;
+            ctx->parserCtx->myDoc = NULL;
         }
         xmlFreeParserCtxt(ctx->parserCtx);
     }
@@ -551,11 +551,11 @@ xmlSecParsePrepareCtxt(xmlParserCtxtPtr ctxt) {
     /* required for c14n! */
     ctxt->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
     ctxt->replaceEntities = 1;
+    xmlCtxtUseOptions(ctxt, xmlSecParserGetDefaultOptions());
 #else  /* LIBXML_VERSION < 21300 */
     xmlCtxtSetOptions(ctxt, xmlSecParserGetDefaultOptions());
 #endif /* LIBXML_VERSION < 21300 */
 
-    xmlCtxtUseOptions(ctxt, xmlSecParserGetDefaultOptions());
 }
 
 

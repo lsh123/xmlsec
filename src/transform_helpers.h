@@ -83,7 +83,7 @@ XMLSEC_EXPORT int   xmlSecTransformKAMExecuteKdf            (xmlSecTransformKAMP
 #ifndef XMLSEC_NO_MLKEM
 /******************************************************************************
  *
- * Key Encapsulation Method (KEM) Transform: the tranform doesn't have any
+ * Key Encapsulation Method (KEM) Transform: the transform doesn't have any
  * additional parameters except the data in the xmlSecKeyDataKEM structure
  * (which is attached to the derived-key object and passed around
  * to avoid (potentially expensive) re-lookup of the keys).

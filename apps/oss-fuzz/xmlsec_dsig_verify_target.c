@@ -172,8 +172,6 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
      * local files. This is the critical no-network guard. */
     dsigCtx->enabledReferenceUris =
         xmlSecTransformUriTypeEmpty | xmlSecTransformUriTypeSameDocument;
-    dsigCtx->transformCtx.enabledUris =
-        xmlSecTransformUriTypeEmpty | xmlSecTransformUriTypeSameDocument;
     /* Also restrict key-info reference / retrieval-method processing so that
      * <RetrievalMethod>/<KeyInfoReference> cannot fetch remote or local data. */
     dsigCtx->keyInfoReadCtx.retrievalMethodCtx.enabledUris =

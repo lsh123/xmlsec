@@ -1049,7 +1049,7 @@ xmlSecIsEmptyNode(xmlNodePtr node) {
 
 /**
  * @brief Checks whether a string contains only whitespace.
- * @details Checks whether the @p str is empty (i.e. has only whitespaces children).
+ * @details Checks whether the @p str is empty (i.e. contains only whitespace characters).
  * @param str the string to check
  * @return 1 if @p str is empty, 0 otherwise or a negative value if an error occurs.
  */
@@ -1470,10 +1470,10 @@ xmlSecQName2IntegerNodeWrite(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr no
 
     cur = xmlSecAddChild(node, nodeName, nodeNs);
     if(cur == NULL) {
-        xmlSecInternalError3("xmlSecAddChild", NULL,
-                             "node=%s,intValue=%d",
-                             xmlSecErrorsSafeString(nodeName),
-                             intValue);
+xmlSecInternalError3("xmlSecAddChild", NULL,
+                     "nodeName=%s,intValue=%d",
+                     xmlSecErrorsSafeString(nodeName),
+                     intValue);
         xmlFree(qname);
         return(-1);
     }
@@ -1623,7 +1623,7 @@ xmlSecQName2IntegerDebugXmlDump(xmlSecQName2IntegerInfoConstPtr info, int intVal
 
     qnameInfo = xmlSecQName2IntegerGetInfo(info, intValue);
     if(qnameInfo != NULL) {
-        fprintf(output, "<%s value=\"%d\" href=\"%s\">%s<%s>\n", name, intValue,
+        fprintf(output, "<%s value=\"%d\" href=\"%s\">%s</%s>\n", name, intValue,
             (qnameInfo->qnameHref) ? qnameInfo->qnameHref : BAD_CAST NULL,
             (qnameInfo->qnameLocalPart) ? qnameInfo->qnameLocalPart : BAD_CAST NULL,
             name);
@@ -1691,8 +1691,8 @@ xmlSecQName2BitMaskGetBitMask(xmlSecQName2BitMaskInfoConstPtr info,
 
 /**
  * @brief Converts a QName string to a bit mask value.
- * @details Converts @p qname into integer in context of @p node.
- * @param info the qname<->integer mapping information.
+ * @details Converts @p qname into a bit mask value in context of @p node.
+ * @param info the qname<->bit mask mapping information.
  * @param node the pointer to node.
  * @param qname the qname string.
  * @param mask the pointer to result mask value.

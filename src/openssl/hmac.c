@@ -422,14 +422,14 @@ xmlSecOpenSSLHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     if(xmlSecBufferGetSize(buffer) == 0) {
         xmlSecInvalidZeroKeyDataSizeError(xmlSecTransformGetName(transform));
-       return(-1);
+        return(-1);
     }
     xmlSecAssert2(xmlSecBufferGetData(buffer) != NULL, -1);
 
     ret = xmlSecOpenSSLHmacSetKeyImpl(ctx, xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLHmacSetKeyImpl", xmlSecTransformGetName(transform));
-       return(-1);
+        return(-1);
     }
 
     /* success */

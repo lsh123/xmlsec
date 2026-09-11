@@ -170,7 +170,7 @@ xmlSecTransformMemBufExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferRemoveHead",
                                  xmlSecTransformGetName(transform),
-                                "size=" XMLSEC_SIZE_FMT, inSize);
+                                 "size=" XMLSEC_SIZE_FMT, inSize);
             return(-1);
         }
 

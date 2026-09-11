@@ -960,6 +960,9 @@ test_nodeset(void) {
 
     testGroupStart("xmlSecNodeSetCreate");
     test_xmlSecNodeSetCreate_destroy_doc_destroy();
+    if(testGroupFinished() != 1) { success = 0; }
+
+    testGroupStart("xmlSecNodeSetContains");
     test_xmlSecNodeSetContains_null_nodeset_allows_node();
     if(testGroupFinished() != 1) { success = 0; }
 
@@ -976,11 +979,14 @@ test_nodeset(void) {
 
     testGroupStart("xmlSecNodeSetWalk");
     test_xmlSecNodeSetWalk_visits_elements_attributes_and_namespaces();
-    test_xmlSecNodeSetDumpTextNodes_preserves_document_order();
     test_xmlSecNodeSetWalk_deduplicates_overlapping_subtrees();
     test_xmlSecNodeSetWalk_normal_set_visits_each_node_once();
     test_xmlSecNodeSetWalk_skips_descendants_listed_before_ancestors();
     test_xmlSecNodeSetWalk_visits_nested_chain_once();
+    if(testGroupFinished() != 1) { success = 0; }
+
+    testGroupStart("xmlSecNodeSetDumpTextNodes");
+    test_xmlSecNodeSetDumpTextNodes_preserves_document_order();
     if(testGroupFinished() != 1) { success = 0; }
 
     return(success);

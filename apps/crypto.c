@@ -8,10 +8,6 @@
 /**
  * @brief XML Security Library command line utility tools.
  */
-#if defined(_MSC_VER) && _MSC_VER < 1900
-#define snprintf _snprintf
-#endif
-
 #include <string.h>
 #include <stdlib.h>
 #include <errno.h>
@@ -228,6 +224,7 @@ xmlSecAppCryptoSimpleKeysMngrEngineKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
     xmlSecKeyInfoCtxPtr keyInfoCtx, int verifyKey
 ) {
     xmlSecKeyPtr key;
+    const char *file;
     int ret;
 
     xmlSecAssert2(mngr != NULL, -1);
@@ -256,7 +253,7 @@ xmlSecAppCryptoSimpleKeysMngrEngineKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
 
     /* load certs (if any) */
 #ifndef XMLSEC_NO_X509
-    for(const char *file = certFiles; (file[0] != '\0'); file += strlen(file) + 1) {
+    for(file = certFiles; (file[0] != '\0'); file += strlen(file) + 1) {
         ret = xmlSecCryptoAppKeyCertLoad(key, file, certFormat);
         if(ret < 0) {
             fprintf(stderr, "Error: xmlSecCryptoAppKeyCertLoad failed: file=%s\n",
@@ -268,7 +265,8 @@ xmlSecAppCryptoSimpleKeysMngrEngineKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
 #else /* XMLSEC_NO_X509 */
     UNREFERENCED_PARAMETER(certFormat);
 
-    if(certFiles[0] != '\0') {
+    file = certFiles;
+    if(file[0] != '\0') {
         fprintf(stderr, "Error: X509 support is disabled\n");
         xmlSecKeyDestroy(key);
         return(-1);
@@ -451,7 +449,7 @@ xmlSecAppCryptoKeyGenerate(const char* keyKlassAndSize, const char* name, xmlSec
 
     buf = (char*) xmlStrdup(BAD_CAST keyKlassAndSize);
     if(buf == NULL) {
-        fprintf(stderr, "Error: xmlSecStrdupError(keyKlassAndSize) failed\n");
+        fprintf(stderr, "Error: xmlStrdup(keyKlassAndSize) failed\n");
         return(NULL);
     }
 
@@ -483,8 +481,8 @@ xmlSecAppCryptoKeyGenerate(const char* keyKlassAndSize, const char* name, xmlSec
 
     key = xmlSecKeyGenerateByName(BAD_CAST buf, (xmlSecSize)size, type);
     if(key == NULL) {
-        fprintf(stderr, "Error: xmlSecKeyGenerateByName() failed: name=%s;size=%d;type=%u\n",
-                xmlSecErrorsSafeString(buf), size, type);
+        fprintf(stderr, "Error: xmlSecKeyGenerateByName() failed: name=%s;size=%d;type=%d\n",
+                xmlSecErrorsSafeString(buf), size, (int)type);
         xmlFree(buf);
         return(NULL);
     }

@@ -444,7 +444,7 @@ xmlSecKeyDataBinaryValueBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     value = xmlSecKeyGetValue(key);
     xmlSecAssert2(xmlSecKeyDataIsValid(value), -1);
 
-    buffer = xmlSecKeyDataBinaryValueGetBuffer(key->value);
+    buffer = xmlSecKeyDataBinaryValueGetBuffer(value);
     xmlSecAssert2(buffer != NULL, -1);
 
     (*bufSize) = xmlSecBufferGetSize(buffer);
@@ -2884,7 +2884,7 @@ xmlSecKeyDataKEMInitialize(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecKeyDataKEMSize), -1);
 
     kemData = (xmlSecKeyDataKEM*)data;
-    /* recipientKey is already NULL since xmlSecKeyDataCreate zeroes memory */
+    /* encapsulationKey is already NULL since xmlSecKeyDataCreate zeroes memory */
 
     ret = xmlSecBufferInitialize(&(kemData->ciphertext), XMLSEC_KEY_DATA_KEM_CIPHER_VALUE_INIT_BUF_SIZE);
     if(ret < 0) {

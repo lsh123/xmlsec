@@ -241,8 +241,7 @@ xmlSecTransformIdsRegisterDefault(void) {
  * @param type the expected URI type.
  * @param uri the uri for checking.
  *
- * @return 1 if @p uri matches @p type, 0 if not or a negative value
- * if an error occurs.
+ * @return 1 if @p uri matches @p type, 0 if not.
  */
 int
 xmlSecTransformUriTypeCheck(xmlSecTransformUriType type, const xmlChar* uri) {
@@ -937,7 +936,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
         goto done;
     }
 
-    /* do we have barename or full xpointer? */
+    /* do we have barename or full xpointer? and just to be sure check it's not null */
     xmlSecAssert2(xptr != NULL, -1);
     if((xmlStrncmp(xptr, BAD_CAST "#xpointer(", 10) == 0) || (xmlStrncmp(xptr, BAD_CAST "#xmlns(", 7) == 0)) {
         ++xptr;
@@ -982,7 +981,6 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformXPointerSetExpr", xmlSecTransformGetName(transform));
             goto done;
-
         }
     } else {
         /* Visa3D protocol doesn't follow XML/XPointer/XMLDSig specs

@@ -392,6 +392,7 @@ xmlSecKeyDataBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2(id->binWrite != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(bufSize != NULL, -1);
 
     return((id->binWrite)(id, key, buf, bufSize, keyInfoCtx));
 }

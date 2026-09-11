@@ -118,8 +118,8 @@ xmlSecTmplSignatureCreateNsPref(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
     xmlSetNs(signNode, ns);
 
     if(id != NULL) {
-        if(xmlSetProp(signNode, BAD_CAST "Id", id) == NULL) {
-            xmlSecXmlError2("xmlSetProp", NULL, "name=%s", xmlSecErrorsSafeString(BAD_CAST "Id"));
+        if(xmlSetProp(signNode, xmlSecAttrId, id) == NULL) {
+            xmlSecXmlError2("xmlSetProp", NULL, "name=%s", xmlSecErrorsSafeString(xmlSecAttrId));
             xmlFreeNode(signNode);
             return(NULL);
         }
@@ -372,8 +372,8 @@ xmlSecTmplSignatureAddObject(xmlNodePtr signNode, const xmlChar *id,
 }
 
 /**
- * @brief Gets the &lt;dsig:SignatureMethod/&gt; child of &lt;dsig:KeyInfo/&gt; node.
- * @details Gets pointer to &lt;dsig:SignatureMethod/&gt; child of &lt;dsig:KeyInfo/&gt; node.
+ * @brief Gets the &lt;dsig:SignatureMethod/&gt; child of &lt;dsig:SignedInfo/&gt; node.
+ * @details Gets pointer to &lt;dsig:SignatureMethod/&gt; child of &lt;dsig:SignedInfo/&gt; node.
  * @param signNode the pointer to <dsig:Signature /> node.
  *
  * @return pointer to <dsig:SignatureMethod /> node or NULL if an error occurs.
@@ -394,8 +394,8 @@ xmlSecTmplSignatureGetSignMethodNode(xmlNodePtr signNode) {
 }
 
 /**
- * @brief Gets the &lt;dsig:CanonicalizationMethod/&gt; child of &lt;dsig:KeyInfo/&gt; node.
- * @details Gets pointer to &lt;dsig:CanonicalizationMethod/&gt; child of &lt;dsig:KeyInfo/&gt; node.
+ * @brief Gets the &lt;dsig:CanonicalizationMethod/&gt; child of &lt;dsig:SignedInfo/&gt; node.
+ * @details Gets pointer to &lt;dsig:CanonicalizationMethod/&gt; child of &lt;dsig:SignedInfo/&gt; node.
  * @param signNode the pointer to <dsig:Signature /> node.
  *
  * @return pointer to <dsig:CanonicalizationMethod /> node or NULL if an error occurs.
@@ -1189,7 +1189,7 @@ xmlSecTmplKeyInfoAddRetrievalMethod(xmlNodePtr keyInfoNode, const xmlChar *uri,
  * @param retrMethodNode the pointer to &lt;dsig:RetrievalMethod/&gt; node.
  * @param transformId the transform id.
  *
- * @return the pointer to the newly created &lt;dsig:Transforms/&gt; node or
+ * @return the pointer to the newly created &lt;dsig:Transform/&gt; node or
  * NULL if an error occurs.
  */
 xmlNodePtr
@@ -1684,7 +1684,7 @@ xmlSecTmplTransformAddRsaMgf(xmlNodePtr transformNode,
 
     mgfNode = xmlSecAddChild(transformNode, xmlSecNodeRsaMGF, xmlSecEnc11Ns);
     if(mgfNode == NULL) {
-        xmlSecInternalError("xmlSecAddChild(xmlSecNodeRsaMgf)", NULL);
+        xmlSecInternalError("xmlSecAddChild(xmlSecNodeRsaMGF)", NULL);
         return(-1);
     }
 

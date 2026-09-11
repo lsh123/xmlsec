@@ -2261,7 +2261,7 @@ xmlSecOpenSSLX509NameReadCallback(
     xmlSecAssert2(nm != NULL, -1);
 
     switch(type) {
-    case XMLSEC_X509_VALUE_TYPE_UF8_STRING:
+    case XMLSEC_X509_VALUE_TYPE_UTF8_STRING:
         valueType = MBSTRING_UTF8 ;
         break;
     case XMLSEC_X509_VALUE_TYPE_OCTET_STRING:

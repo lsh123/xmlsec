@@ -8,8 +8,8 @@
 /**
  * @brief Internal XSLT helper functions.
  */
-#ifndef __XMLSEC_PRIVATE_XSLT_H__
-#define __XMLSEC_PRIVATE_XSLT_H__
+#ifndef __XMLSEC_XSLT_H__
+#define __XMLSEC_XSLT_H__
 
 #ifndef XMLSEC_PRIVATE
 #error "xmlsec/private/xslt.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
@@ -30,4 +30,4 @@ void xmlSecTransformXsltShutdown                             (void);
 
 #endif /* XMLSEC_NO_XSLT */
 
-#endif /* __XMLSEC_PRIVATE_XSLT_H__ */
+#endif /* __XMLSEC_XSLT_H__ */

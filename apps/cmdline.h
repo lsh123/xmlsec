@@ -64,12 +64,11 @@ int             xmlSecAppCmdLineParamsListParse         (xmlSecAppCmdLineParamPt
                                                          int pos);
 void            xmlSecAppCmdLineParamsListClean         (xmlSecAppCmdLineParamPtr* params);
 void            xmlSecAppCmdLineParamsListPrint         (xmlSecAppCmdLineParamPtr* params,
-                                                         xmlSecAppCmdLineParamTopic topic,
-                                                         FILE* output);
+                                                          xmlSecAppCmdLineParamTopic topics,
+                                                          FILE* output);
 
 struct _xmlSecAppCmdLineValue {
     xmlSecAppCmdLineParamPtr    param;
-    int                         pos;
     const char*                 paramNameValue;
     const char*                 strValue;
     const char*                 strListValue;
@@ -79,8 +78,7 @@ struct _xmlSecAppCmdLineValue {
 };
 
 
-xmlSecAppCmdLineValuePtr xmlSecAppCmdLineValueCreate    (xmlSecAppCmdLineParamPtr param,
-                                                         int pos);
+xmlSecAppCmdLineValuePtr xmlSecAppCmdLineValueCreate    (xmlSecAppCmdLineParamPtr param);
 void                     xmlSecAppCmdLineValueDestroy   (xmlSecAppCmdLineValuePtr value);
 
 
@@ -89,6 +87,3 @@ void                     xmlSecAppCmdLineValueDestroy   (xmlSecAppCmdLineValuePt
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_APPS_CMDLINE_H__ */
-
-
-

@@ -332,12 +332,15 @@ xmlSecNodeSetAddList(xmlSecNodeSetPtr nset XMLSEC_ATTRIBUTE_UNUSED,
 static int
 xmlSecNodeSetContainsAncestor(xmlSecNodeSetPtr nset, xmlNodePtr node) {
     xmlNodePtr cur;
+    int ret;
 
     xmlSecAssert2(nset != NULL, 0);
     xmlSecAssert2(node != NULL, 0);
 
     for(cur = xmlSecGetParent(node); (cur != NULL) && (cur->type != XML_NAMESPACE_DECL); cur = cur->parent) {
-        if(xmlSecNodeSetContains(nset, cur, xmlSecGetParent(cur)) == 1) {
+        ret = xmlSecNodeSetContains(nset, cur, xmlSecGetParent(cur));
+        xmlSecAssert2(ret >= 0, 0);
+        if(ret == 1) {
             return(1);
         }
     }
@@ -495,7 +498,7 @@ xmlSecNodeSetWalkRecursive(xmlSecNodeSetPtr nset, xmlNodePtr startNode, xmlSecNo
  *    all nodes in the @p parent subtree except comment nodes;
  *  - if @p withComments is not 0 and @p invert is not 0:
  *    all nodes in the @p doc except nodes in the @p parent subtree;
- *  - if @p withComments is 0 and @p invert is 0:
+ *  - if @p withComments is 0 and @p invert is not 0:
  *    all nodes in the @p doc except nodes in the @p parent subtree
  *    and comment nodes.
  * @param doc the pointer to an XML document.

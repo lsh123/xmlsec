@@ -50,7 +50,7 @@ xmlSecNoXxeExternalEntityLoader(const char *URL, const char *ID,
             xmlSecXmlError("xmlSecNoXxeExternalEntityLoader", NULL);
             return(NULL);
         }
-        return xmlSecDefaultExternalEntityLoader((const char *) URL, ID, ctxt);
+        return xmlSecDefaultExternalEntityLoader(URL, ID, ctxt);
     }
     xmlSecXmlError2("xmlSecNoXxeExternalEntityLoader", NULL,
                     "illegal external entity='%s'", xmlSecErrorsSafeString(URL));

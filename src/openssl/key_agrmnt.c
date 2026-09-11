@@ -41,7 +41,7 @@ typedef struct _xmlSecOpenSSLKeyAgreementCtx    xmlSecOpenSSLKeyAgreementCtx, *x
 struct _xmlSecOpenSSLKeyAgreementCtx {
     xmlSecTransformKAM params;
     xmlSecKeyDataId keyDataId;          /* Key data type (EC, DH, or XDH) */
-    size_t expected_secret_len;         /* Expected secret length (0 = dynamic) */
+    xmlSecSize expected_secret_len;     /* Expected secret length (0 = dynamic) */
 };
 
 /* Unified transform functions */
@@ -483,7 +483,7 @@ static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                  
 
 /******************************************************************************
  *
- * Ecdh key derivation algorithm
+ * Ecdh key agreement algorithm
  *
   *****************************************************************************/
 XMLSEC_OPENSSL_KEY_AGREEMENT_KLASS(Ecdh)
@@ -512,7 +512,7 @@ xmlSecOpenSSLTransformEcdhGetKlass(void) {
 
 /******************************************************************************
  *
- * Dh key derivation algorithm
+ * Dh key agreement algorithm
  *
   *****************************************************************************/
 XMLSEC_OPENSSL_KEY_AGREEMENT_KLASS_EX(Dh, xmlSecNameDhEs, xmlSecHrefDhEs)

@@ -12,9 +12,22 @@ static void ignore(void* ctx, const char* msg, ...) {
     (void)msg;
 }
 
+static int g_initialized = 0;
+
 int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
-    xmlSetGenericErrorFunc(NULL, &ignore);
-    xmlSecBufferPtr buf = xmlSecBufferCreate(size);
+    xmlSecBufferPtr buf;
+    xmlDocPtr doc;
+
+    if (!g_initialized) {
+        xmlSetGenericErrorFunc(NULL, &ignore);
+        g_initialized = 1;
+    }
+    /* A zero-size buffer never allocates data, so xmlSecBufferGetData() would
+     * return NULL; skip empty inputs like the sibling targets do. */
+    if (size == 0) {
+        return 0;
+    }
+    buf = xmlSecBufferCreate(size);
     if(buf == NULL) {
         return 0;
     }
@@ -22,10 +35,12 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
         xmlSecBufferDestroy(buf);
         return 0;
     }
-    xmlDocPtr doc = xmlSecParseMemory(xmlSecBufferGetData(buf),
+    doc = xmlSecParseMemory(xmlSecBufferGetData(buf),
             xmlSecBufferGetSize(buf), 0);
 
-    if (doc != NULL) xmlFreeDoc(doc);
+    if (doc != NULL) {
+        xmlFreeDoc(doc);
+    }
     xmlSecBufferDestroy(buf);
     return 0;
 }

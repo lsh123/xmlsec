@@ -796,9 +796,7 @@ xmlSecKWRfc3394Encode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transfor
     xmlSecSize NN, ii, jj, tt, outWritten2;
     int ret;
 
-    xmlSecAssert2(kwRfc3394Id != NULL, -1);
-    xmlSecAssert2(kwRfc3394Id->encrypt != NULL, -1);
-    xmlSecAssert2(kwRfc3394Id->decrypt != NULL, -1);
+    xmlSecAssert2(xmlSecKWRfc3394CheckId(kwRfc3394Id), -1);
     xmlSecAssert2(transform != NULL, -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize > 0, -1);
@@ -862,9 +860,7 @@ xmlSecKWRfc3394Decode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transfor
     xmlSecSize NN, ii, jj, tt, outWritten2;
     int ret;
 
-    xmlSecAssert2(kwRfc3394Id != NULL, -1);
-    xmlSecAssert2(kwRfc3394Id->encrypt != NULL, -1);
-    xmlSecAssert2(kwRfc3394Id->decrypt != NULL, -1);
+    xmlSecAssert2(xmlSecKWRfc3394CheckId(kwRfc3394Id), -1);
     xmlSecAssert2(transform != NULL, -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);

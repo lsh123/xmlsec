@@ -396,7 +396,7 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdate(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 
     /* just a double check */
     inSize = xmlSecBufferGetSize(in);
-    if(ctx->cbcMode != 0    ) {
+    if(ctx->cbcMode != 0) {
         if(blockSize > 1) {
             /* for block ciphers, the last block should remain in input for padding */
             xmlSecAssert2(inSize > 0, -1);
@@ -586,9 +586,6 @@ xmlSecOpenSSLEvpBlockCipherGCMCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     xmlSecByte* outBuf;
     xmlSecByte tag[XMLSEC_OPENSSL_AES_GCM_TAG_SIZE];
     int ret;
-
-    /* unreferenced parameter */
-    (void)transformCtx;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->cipher != NULL, -1);

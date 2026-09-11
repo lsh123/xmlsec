@@ -185,7 +185,7 @@ xmlSecOpenSSLKeyDataDEREncodedKeyValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr k
     consumed = data - (xmlSecBufferGetData(&buffer));
     XMLSEC_SAFE_CAST_PTRDIFF_TO_SIZE(consumed, consumedSize, goto done, xmlSecKeyDataKlassGetName(id));
     if(consumedSize < dataSize) {
-        xmlSecInvalidSizeDataError("Remaining bytes", (dataSize - consumedSize), "0 bytes",  NULL);
+        xmlSecInvalidSizeDataError("Remaining bytes", (dataSize - consumedSize), "0 bytes", NULL);
         goto done;
     }
 

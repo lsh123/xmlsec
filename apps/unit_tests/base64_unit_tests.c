@@ -8,9 +8,7 @@
 /**
  * @brief XML Security Library base64 encode/decode unit tests.
  */
-#include <stdlib.h>
 #include <string.h>
-#include <time.h>
 
 #include <libxml/tree.h>
 
@@ -18,15 +16,7 @@
 #include "xmlsec_unit_tests.h"
 #include <xmlsec/base64.h>
 
-/*
-XMLSEC_EXPORT xmlChar*           xmlSecBase64Encode             (const xmlSecByte* in,
-                                                                 xmlSecSize inSize,
-                                                                 int columns);
-XMLSEC_EXPORT int                xmlSecBase64Decode_ex          (const xmlChar* str,
-                                                                 xmlSecByte* out,
-                                                                 xmlSecSize outSize,
-                                                                 xmlSecSize* outWritten);
-*/
+
 static void
 test_base64_success(
     const char * name,
@@ -59,7 +49,7 @@ test_base64_success(
     }
 
     /* check results */
-    if(xmlStrcmp(encoded, (expected != NULL) ? BAD_CAST expected: BAD_CAST str) != 0) {
+    if(xmlStrcmp(encoded, (expected != NULL) ? BAD_CAST expected : BAD_CAST str) != 0) {
         testLog("Error: base64 encode returned '%s' (expected: '%s')\n", (const char*)encoded, (expected != NULL) ? expected : str);
         xmlFree(encoded);
         testFinishedFailure();
@@ -222,6 +212,61 @@ test_base64_empty_input(
 }
 
 static void
+test_base64_ctx_empty_update(
+    const char * name,
+    int encode
+) {
+    xmlSecBase64CtxPtr ctx;
+    xmlSecByte out[8];
+    xmlSecSize outSize = 0xAAAA;
+    int ret;
+
+    xmlSecAssert(name != NULL);
+
+    testStart(name);
+
+    ctx = xmlSecBase64CtxCreate(encode, 0);
+    if(ctx == NULL) {
+        testLog("Error: failed to create base64 context\n");
+        testFinishedFailure();
+        return;
+    }
+
+    memset(out, 0xAA, sizeof(out));
+    ret = xmlSecBase64CtxUpdate_ex(ctx, NULL, 0, out, sizeof(out), &outSize);
+    if(ret < 0) {
+        testLog("Error: base64 update with NULL/0 failed (encode=%d)\n", encode);
+        xmlSecBase64CtxDestroy(ctx);
+        testFinishedFailure();
+        return;
+    }
+    if(outSize != 0) {
+        testLog("Error: base64 update with NULL/0 returned size=%d (expected: 0)\n", (int)outSize);
+        xmlSecBase64CtxDestroy(ctx);
+        testFinishedFailure();
+        return;
+    }
+
+    outSize = 0xAAAA;
+    ret = xmlSecBase64CtxFinal_ex(ctx, out, sizeof(out), &outSize);
+    if(ret < 0) {
+        testLog("Error: base64 final after NULL/0 update failed (encode=%d)\n", encode);
+        xmlSecBase64CtxDestroy(ctx);
+        testFinishedFailure();
+        return;
+    }
+    if(outSize != 0) {
+        testLog("Error: base64 final after NULL/0 update returned size=%d (expected: 0)\n", (int)outSize);
+        xmlSecBase64CtxDestroy(ctx);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecBase64CtxDestroy(ctx);
+    testFinishedSuccess();
+}
+
+static void
 test_base64_encode_invalid_columns(
     const char * name,
     int columns
@@ -253,7 +298,7 @@ test_base64_decode_in_place(
     const char * expected,
     xmlSecSize expectedSize
 ) {
-    xmlChar* buf;
+    xmlChar * buf;
     xmlSecSize decodedSize = 0;
     int ret;
 
@@ -298,6 +343,8 @@ int test_base64(void) {
     /* empty input edge cases */
     test_base64_empty_input("check empty input (no line breaks)", 0);
     test_base64_empty_input("check empty input (with line breaks)", 10);
+    test_base64_ctx_empty_update("check empty incremental update encode", 1);
+    test_base64_ctx_empty_update("check empty incremental update decode", 0);
 
     /* positive tests */
     test_base64_success("check 1 char", "Rg==", 0, NULL);

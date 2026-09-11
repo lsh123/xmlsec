@@ -576,4 +576,9 @@ xmlSecOpenSSLTransformX448GetKlass(void) {
 
 #endif /* XMLSEC_NO_XDH */
 
+#else /* !defined(XMLSEC_NO_EC) || !defined(XMLSEC_NO_DH) || !defined(XMLSEC_NO_XDH) */
+
+/* ISO C forbids an empty translation unit */
+typedef int make_iso_compilers_happy;
+
 #endif /* !defined(XMLSEC_NO_EC) || !defined(XMLSEC_NO_DH) || !defined(XMLSEC_NO_XDH) */

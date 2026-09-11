@@ -721,5 +721,9 @@ xmlSecOpenSSLTransformHmacSha512GetKlass(void) {
 
 #endif /* XMLSEC_NO_SHA512 */
 
+#else /* XMLSEC_NO_HMAC */
+
+/* ISO C forbids an empty translation unit */
+typedef int make_iso_compilers_happy;
 
 #endif /* XMLSEC_NO_HMAC */

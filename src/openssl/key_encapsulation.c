@@ -562,4 +562,9 @@ xmlSecOpenSSLMLKEMProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr tr
     return(0);
 }
 
+#else /* XMLSEC_NO_MLKEM */
+
+/* ISO C forbids an empty translation unit */
+typedef int make_iso_compilers_happy;
+
 #endif /* XMLSEC_NO_MLKEM */

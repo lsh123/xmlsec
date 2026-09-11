@@ -688,5 +688,9 @@ xmlSecMSCngTransformRsaPkcs1GetKlass(void) {
 
 #endif /* XMLSEC_NO_RSA_PKCS15 */
 
+#else /* XMLSEC_NO_RSA */
+
+/* ISO C forbids an empty translation unit */
+typedef int make_iso_compilers_happy;
 
 #endif /* XMLSEC_NO_RSA */

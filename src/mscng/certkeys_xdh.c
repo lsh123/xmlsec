@@ -602,4 +602,9 @@ xmlSecMSCngKeyDataCertGetXdhPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE
     return(0);
 }
 
+#else /* XMLSEC_NO_XDH */
+
+/* ISO C forbids an empty translation unit */
+typedef int make_iso_compilers_happy;
+
 #endif /* XMLSEC_NO_XDH */

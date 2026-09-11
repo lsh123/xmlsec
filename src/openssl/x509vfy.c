@@ -2486,4 +2486,9 @@ xmlSecOpenSSLX509_NAME_ENTRY_cmp(const X509_NAME_ENTRY * const *a, const X509_NA
     return(OBJ_cmp(a_name, b_name));
 }
 
+#else /* XMLSEC_NO_X509 */
+
+/* ISO C forbids an empty translation unit */
+typedef int make_iso_compilers_happy;
+
 #endif /* XMLSEC_NO_X509 */

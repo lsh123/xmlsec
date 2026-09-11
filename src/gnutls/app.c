@@ -108,7 +108,7 @@ xmlSecGnuTLSAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATT
 
     xmlSecAssert2(filename != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
-    UNREFERENCED_PARAMETER(type);
+    XMLSEC_UNREFERENCED(type);
 
     /* read file into memory */
     ret = xmlSecBufferInitialize(&buffer, 4*1024);

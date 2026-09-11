@@ -232,7 +232,7 @@ xmlSecNssKWDes3Execute(xmlSecTransformPtr transform, int last,
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecNssTransformKWDes3Id), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKWDes3Size), -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecNssKWDes3GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
@@ -258,7 +258,7 @@ xmlSecNssKWDes3Sha1(xmlSecTransformPtr transform XMLSEC_ATTRIBUTE_UNUSED,
     unsigned int inLen, outLen;
     SECStatus status;
 
-    UNREFERENCED_PARAMETER(transform);
+    XMLSEC_UNREFERENCED(transform);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize > 0, -1);
     xmlSecAssert2(out != NULL, -1);
@@ -311,7 +311,7 @@ xmlSecNssKWDes3GenerateRandom(xmlSecTransformPtr transform XMLSEC_ATTRIBUTE_UNUS
     SECStatus status;
     int outLen;
 
-    UNREFERENCED_PARAMETER(transform);
+    XMLSEC_UNREFERENCED(transform);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize > 0, -1);
     xmlSecAssert2(outWritten != NULL, -1);

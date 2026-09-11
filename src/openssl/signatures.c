@@ -2523,7 +2523,7 @@ xmlSecOpenSSLTransformMLDSANodeRead(
 
     xmlSecAssert2(xmlSecOpenSSLEvpSignatureCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpSignatureSize), -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecOpenSSLEvpSignatureGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
@@ -2606,7 +2606,7 @@ xmlSecOpenSSLTransformSLHDSANodeRead(
 
     xmlSecAssert2(xmlSecOpenSSLEvpSignatureCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpSignatureSize), -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecOpenSSLEvpSignatureGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
@@ -2724,7 +2724,7 @@ xmlSecOpenSSLTransformEdDSANodeRead(
 
     xmlSecAssert2(xmlSecOpenSSLEvpSignatureCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpSignatureSize), -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecOpenSSLEvpSignatureGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);

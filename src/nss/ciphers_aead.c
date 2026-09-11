@@ -686,7 +686,7 @@ xmlSecNssAeadCipherNodeReadChaCha20Poly1305(xmlSecTransformPtr transform, xmlNod
     xmlSecAssert2(xmlSecNssAeadCipherCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssAeadCipherSize), -1);
     xmlSecAssert2(node != NULL, -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecNssAeadCipherGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
@@ -714,7 +714,7 @@ xmlSecNssAeadCipherNodeWriteChaCha20Poly1305(xmlSecTransformPtr transform, xmlNo
     xmlSecAssert2(xmlSecNssAeadCipherCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssAeadCipherSize), -1);
     xmlSecAssert2(node != NULL, -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecNssAeadCipherGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);

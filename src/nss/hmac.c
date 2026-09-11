@@ -206,7 +206,7 @@ xmlSecNssHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     xmlSecAssert2(xmlSecNssHmacCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssHmacSize), -1);
     xmlSecAssert2(node!= NULL, -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecNssHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
@@ -323,7 +323,7 @@ xmlSecNssHmacVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssHmacSize), -1);
     xmlSecAssert2(transform->status == xmlSecTransformStatusFinished, -1);
     xmlSecAssert2(data != NULL, -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecNssHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);

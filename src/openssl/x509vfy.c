@@ -181,7 +181,7 @@ xmlSecOpenSSLX509StoreFindCert_ex(xmlSecKeyDataStorePtr store,
     X509* res = NULL;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecOpenSSLX509StoreId), NULL);
-    UNREFERENCED_PARAMETER(keyInfoCtx);
+    XMLSEC_UNREFERENCED(keyInfoCtx);
 
     ctx = xmlSecOpenSSLX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, NULL);

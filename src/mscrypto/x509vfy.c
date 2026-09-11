@@ -156,7 +156,7 @@ xmlSecMSCryptoX509StoreFindCert_ex(xmlSecKeyDataStorePtr store, xmlChar* subject
     PCCERT_CONTEXT pCert = NULL;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCryptoX509StoreId), NULL);
-    UNREFERENCED_PARAMETER(keyInfoCtx);
+    XMLSEC_UNREFERENCED(keyInfoCtx);
 
     ctx = xmlSecMSCryptoX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, NULL);

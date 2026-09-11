@@ -253,7 +253,7 @@ xmlSecMSCryptoHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     xmlSecAssert2(xmlSecMSCryptoHmacCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoHmacSize), -1);
     xmlSecAssert2(node!= NULL, -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecMSCryptoHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
@@ -384,7 +384,7 @@ xmlSecMSCryptoHmacVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(transform->operation == xmlSecTransformOperationVerify, -1);
     xmlSecAssert2(transform->status == xmlSecTransformStatusFinished, -1);
     xmlSecAssert2(data != NULL, -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecMSCryptoHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);

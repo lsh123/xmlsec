@@ -160,7 +160,7 @@ xmlSecGCryptAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATT
 
     xmlSecAssert2(filename != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
-    UNREFERENCED_PARAMETER(type);
+    XMLSEC_UNREFERENCED(type);
 
     ret = xmlSecBufferInitialize(&buffer, 4*1024);
     if(ret < 0) {

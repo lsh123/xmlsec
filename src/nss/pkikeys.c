@@ -875,7 +875,7 @@ xmlSecNssKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataDsaId), -1);
     xmlSecAssert2(dsaValue != NULL, -1);
-    UNREFERENCED_PARAMETER(writePrivateKey);
+    XMLSEC_UNREFERENCED(writePrivateKey);
 
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
@@ -1117,7 +1117,7 @@ xmlSecNssKeyDataRsaWrite(xmlSecKeyDataId id,xmlSecKeyDataPtr data,
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataRsaId), -1);
     xmlSecAssert2(rsaValue != NULL, -1);
-    UNREFERENCED_PARAMETER(writePrivateKey);
+    XMLSEC_UNREFERENCED(writePrivateKey);
 
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);

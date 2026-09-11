@@ -206,7 +206,7 @@ xmlSecMSCryptoRsaPkcs1OaepExecute(xmlSecTransformPtr transform, int last,
     xmlSecAssert2(xmlSecMSCryptoRsaPkcs1OaepCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoRsaPkcs1OaepSize), -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecMSCryptoRsaPkcs1OaepGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
@@ -511,7 +511,7 @@ xmlSecMSCryptoRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     xmlSecAssert2(xmlSecMSCryptoRsaPkcs1OaepCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoRsaPkcs1OaepSize), -1);
     xmlSecAssert2(node != NULL, -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecMSCryptoRsaPkcs1OaepGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);

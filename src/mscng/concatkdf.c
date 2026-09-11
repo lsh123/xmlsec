@@ -254,7 +254,7 @@ xmlSecMSCngConcatKdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecMSCngTransformConcatKdfId), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngConcatKdfCtxSize), -1);
     xmlSecAssert2(node!= NULL, -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecMSCngConcatKdfGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);

@@ -20,9 +20,13 @@
 
 #include "crypto.h"
 
-#ifndef UNREFERENCED_PARAMETER
-#define UNREFERENCED_PARAMETER(param)   ((void)(param))
-#endif /* UNREFERENCED_PARAMETER */
+/**
+ * @brief Macro used to signal unused function parameters or unused variables (see xmlsec/private.h).
+ * @param param the parameter or variable without references.
+ */
+#ifndef XMLSEC_UNREFERENCED
+#define XMLSEC_UNREFERENCED(param)   ((void)(param))
+#endif /* XMLSEC_UNREFERENCED */
 
 int
 xmlSecAppCryptoInit(const char* config) {
@@ -92,8 +96,8 @@ xmlSecAppCryptoSimpleKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filena
 
 #else /* XMLSEC_NO_X509 */
 
-    UNREFERENCED_PARAMETER(format);
-    UNREFERENCED_PARAMETER(type);
+    XMLSEC_UNREFERENCED(format);
+    XMLSEC_UNREFERENCED(type);
 
     fprintf(stderr, "Error: X509 support is disabled\n");
     return(-1);
@@ -112,7 +116,7 @@ xmlSecAppCryptoSimpleKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filenam
 
 #else /* XMLSEC_NO_X509 */
 
-    UNREFERENCED_PARAMETER(format);
+    XMLSEC_UNREFERENCED(format);
     fprintf(stderr, "Error: X509 support is disabled\n");
     return(-1);
 
@@ -132,7 +136,7 @@ xmlSecAppCryptoSimpleKeysMngrCrlLoadAndVerify(xmlSecKeysMngrPtr mngr, const char
 
 #else /* XMLSEC_NO_X509 */
 
-    UNREFERENCED_PARAMETER(format);
+    XMLSEC_UNREFERENCED(format);
     fprintf(stderr, "Error: X509 support is disabled\n");
     return(-1);
 
@@ -263,7 +267,7 @@ xmlSecAppCryptoSimpleKeysMngrEngineKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
         }
     }
 #else /* XMLSEC_NO_X509 */
-    UNREFERENCED_PARAMETER(certFormat);
+    XMLSEC_UNREFERENCED(certFormat);
 
     file = certFiles;
     if(file[0] != '\0') {
@@ -357,9 +361,9 @@ xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *f
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    UNREFERENCED_PARAMETER(pwd);
-    UNREFERENCED_PARAMETER(name);
-    UNREFERENCED_PARAMETER(verifyKey);
+    XMLSEC_UNREFERENCED(pwd);
+    XMLSEC_UNREFERENCED(name);
+    XMLSEC_UNREFERENCED(verifyKey);
 
     fprintf(stderr, "Error: X509 support is disabled\n");
     return(-1);

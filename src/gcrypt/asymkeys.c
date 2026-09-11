@@ -1633,7 +1633,7 @@ xmlSecGCryptKeyDataEcGetSize(xmlSecKeyDataPtr data) {
     }
 
     curve = gcry_pk_get_curve(key, 0, &nbits);
-    UNREFERENCED_PARAMETER(curve);
+    XMLSEC_UNREFERENCED(curve);
     return(nbits);
 }
 

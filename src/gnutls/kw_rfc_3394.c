@@ -281,7 +281,7 @@ xmlSecGnuTLSKWRfc3394Execute(xmlSecTransformPtr transform, int last,
 
     xmlSecAssert2(xmlSecGnuTLSKWRfc3394CheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSKWRfc3394Size), -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecGnuTLSKWRfc3394GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);

@@ -288,7 +288,7 @@ xmlSecMSCryptoKWDes3Execute(xmlSecTransformPtr transform, int last,
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformKWDes3Id), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoKWDes3Size), -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecMSCryptoKWDes3GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);

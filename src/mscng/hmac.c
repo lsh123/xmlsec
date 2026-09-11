@@ -195,7 +195,7 @@ xmlSecMSCngHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     xmlSecAssert2(xmlSecMSCngHmacCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngHmacSize), -1);
     xmlSecAssert2(node!= NULL, -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecMSCngHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
@@ -332,7 +332,7 @@ xmlSecMSCngHmacVerify(xmlSecTransformPtr transform, const xmlSecByte* data,
     xmlSecAssert2(transform->status == xmlSecTransformStatusFinished, -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(dataSize > 0, -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecMSCngHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);

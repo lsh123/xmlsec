@@ -109,7 +109,7 @@ xmlSecMSCngSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits,
 
     xmlSecAssert2(xmlSecMSCngSymKeyDataCheckId(data), -1);
     xmlSecAssert2(sizeBits > 0, -1);
-    UNREFERENCED_PARAMETER(type);
+    XMLSEC_UNREFERENCED(type);
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
     xmlSecAssert2(buffer != NULL, -1);

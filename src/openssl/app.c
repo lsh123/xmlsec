@@ -591,9 +591,9 @@ xmlSecOpenSSLAppEngineKeyLoad(const char *engineName, const char *engineKeyId,
         goto done;
     }
 #else   /* XMLSEC_OPENSSL_NO_PWD_CALLBACK */
-    UNREFERENCED_PARAMETER(pwd);
-    UNREFERENCED_PARAMETER(pwdCallback);
-    UNREFERENCED_PARAMETER(pwdCallbackCtx);
+    XMLSEC_UNREFERENCED(pwd);
+    XMLSEC_UNREFERENCED(pwdCallback);
+    XMLSEC_UNREFERENCED(pwdCallbackCtx);
 
     ui_method = UI_OpenSSL();
     if(ui_method == NULL) {
@@ -706,13 +706,13 @@ done:
     return(key);
 
 #else /* !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES)) */
-    UNREFERENCED_PARAMETER(engineName);
-    UNREFERENCED_PARAMETER(engineKeyId);
-    UNREFERENCED_PARAMETER(type);
-    UNREFERENCED_PARAMETER(format);
-    UNREFERENCED_PARAMETER(pwd);
-    UNREFERENCED_PARAMETER(pwdCallback);
-    UNREFERENCED_PARAMETER(pwdCallbackCtx);
+    XMLSEC_UNREFERENCED(engineName);
+    XMLSEC_UNREFERENCED(engineKeyId);
+    XMLSEC_UNREFERENCED(type);
+    XMLSEC_UNREFERENCED(format);
+    XMLSEC_UNREFERENCED(pwd);
+    XMLSEC_UNREFERENCED(pwdCallback);
+    XMLSEC_UNREFERENCED(pwdCallbackCtx);
     xmlSecNotImplementedError("OpenSSL Engine interface is disabled during compilation");
     return (NULL);
 #endif /* !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES)) */
@@ -1078,10 +1078,10 @@ done:
 #else /* !defined(XMLSEC_OPENSSL_NO_STORE) && !defined(XMLSEC_NO_X509) */
 
     xmlSecAssert2(uri != NULL, NULL);
-    UNREFERENCED_PARAMETER(type);
-    UNREFERENCED_PARAMETER(pwd);
-    UNREFERENCED_PARAMETER(pwdCallback);
-    UNREFERENCED_PARAMETER(pwdCallbackCtx);
+    XMLSEC_UNREFERENCED(type);
+    XMLSEC_UNREFERENCED(pwd);
+    XMLSEC_UNREFERENCED(pwdCallback);
+    XMLSEC_UNREFERENCED(pwdCallbackCtx);
 
     xmlSecNotImplementedError("X509 or OpenSSL Stores support is disabled during compilation");
     return(NULL);
@@ -1390,8 +1390,8 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
     int ret;
 
     xmlSecAssert2(bio != NULL, NULL);
-    UNREFERENCED_PARAMETER(pwdCallback);
-    UNREFERENCED_PARAMETER(pwdCallbackCtx);
+    XMLSEC_UNREFERENCED(pwdCallback);
+    XMLSEC_UNREFERENCED(pwdCallbackCtx);
 
     pwdSize = (pwd != NULL) ? strlen(pwd) : 0;
     XMLSEC_SAFE_CAST_SIZE_T_TO_INT(pwdSize, pwdLen, return(NULL), NULL);
@@ -2237,7 +2237,7 @@ xmlSecOpenSSLDummyPasswordCallback(char *buf, int buflen,
     char* password;
     size_t passwordSize;
     int passwordLen;
-    UNREFERENCED_PARAMETER(verify);
+    XMLSEC_UNREFERENCED(verify);
 
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(buflen > 1, -1);

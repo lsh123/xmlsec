@@ -284,7 +284,7 @@ xmlSecOpenSSLHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     xmlSecAssert2(xmlSecOpenSSLHmacCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLHmacSize), -1);
     xmlSecAssert2(node!= NULL, -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecOpenSSLHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
@@ -449,7 +449,7 @@ xmlSecOpenSSLHmacVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(transform->operation == xmlSecTransformOperationVerify, -1);
     xmlSecAssert2(transform->status == xmlSecTransformStatusFinished, -1);
     xmlSecAssert2(data != NULL, -1);
-    UNREFERENCED_PARAMETER(transformCtx);
+    XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecOpenSSLHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);

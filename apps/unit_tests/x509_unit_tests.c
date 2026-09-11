@@ -261,7 +261,7 @@ test_xmlSecX509AttrValueStringRead(void) {
 
     /* negative tests */
     test_xmlSecX509AttrValueStringRead_failure("check NULL", NULL, ',', 0);
-    test_xmlSecX509AttrValueStringRead_failure("check bad escaping", "\"Foo\6XBar  ,name=value", ',', 0);
+    test_xmlSecX509AttrValueStringRead_failure("check bad escaping", "\"Foo\\6XBar  ,name=value", ',', 0);
     test_xmlSecX509AttrValueStringRead_failure("check missing closing quote", "\"Foo Bar  ,name=value", ',', 0);
     test_xmlSecX509AttrValueStringRead_failure("check output buffer too small", "FooBarFooBarFooBarFooBarFooBarFooBarFooBarFooBarFooBar=Value", ',', 0);
     test_xmlSecX509AttrValueStringRead_failure("check octet/hex with missing char end of line", "#4", ',', 0);
@@ -309,16 +309,17 @@ test_xmlSecX509NameReadCallback(
     if(strcpy_s((char*)nm->names[nm->pos], sizeof(nm->names[nm->pos]), (const char*)name) != 0) {
         return(-1);
     }
-    if(strcpy_s((char*)nm->values[nm->pos], sizeof(nm->values[nm->pos]), (const char*)value) != 0) {
-        return(-1);
-    }
 #else  /* defined(_MSC_VER) */
     strncpy((char*)nm->names[nm->pos], (const char*)name, sizeof(nm->names[nm->pos]));
     nm->names[nm->pos][sizeof(nm->names[nm->pos]) - 1] = '\0'; /* ensure \0 terminated */
-
-    strncpy((char*)nm->values[nm->pos], (const char*)value, sizeof(nm->values[nm->pos]));
-    nm->values[nm->pos][sizeof(nm->values[nm->pos]) - 1] = '\0'; /* ensure \0 terminated */
 #endif /* defined(_MSC_VER) */
+
+    /* copy the value byte-wise: it may be an octet string containing embedded NULs */
+    if(valueSize >= sizeof(nm->values[nm->pos])) {
+        return(-1);
+    }
+    memcpy(nm->values[nm->pos], value, (size_t)valueSize);
+    nm->values[nm->pos][valueSize] = '\0'; /* ensure \0 terminated for logging */
 
     nm->valueSizes[nm->pos] = valueSize;
     nm->types[nm->pos] = type;
@@ -367,13 +368,8 @@ test_xmlSecX509NameRead_success(
         testFinishedFailure();
         return;
     }
-    if(nms.pos > 0 && xmlStrcmp(nms.values[0], BAD_CAST value0) != 0) {
-        testLog("Error: xmlSecX509NameRead returned nms.values[0]='%s' (expected: '%s')\n", (const char*)nms.values[0], value0);
-        testFinishedFailure();
-        return;
-    }
-    if(nms.pos > 0 && (int)(nms.valueSizes[0]) != xmlStrlen(BAD_CAST value0)) {
-        testLog("Error: xmlSecX509NameRead returned nms.valueSizes[0]='%d' (expected: '%d')\n", (int)(nms.valueSizes[0]), xmlStrlen(BAD_CAST value0));
+    if(nms.pos > 0 && ((int)(nms.valueSizes[0]) != (int)xmlStrlen(BAD_CAST value0) || memcmp(nms.values[0], value0, (size_t)nms.valueSizes[0]) != 0)) {
+        testLog("Error: xmlSecX509NameRead returned nms.values[0] (size '%d') does not match expected '%s' (size '%d')\n", (int)(nms.valueSizes[0]), value0, (int)xmlStrlen(BAD_CAST value0));
         testFinishedFailure();
         return;
     }
@@ -387,13 +383,8 @@ test_xmlSecX509NameRead_success(
         testFinishedFailure();
         return;
     }
-    if(nms.pos > 1 && xmlStrcmp(nms.values[1], BAD_CAST value1) != 0) {
-        testLog("Error: xmlSecX509NameRead returned nms.values[1]='%s' (expected: '%s')\n", (const char*)nms.values[1], value1);
-        testFinishedFailure();
-        return;
-    }
-    if(nms.pos > 1 && (int)(nms.valueSizes[1]) != xmlStrlen(BAD_CAST value1)) {
-        testLog("Error: xmlSecX509NameRead returned nms.valueSizes[1]='%d' (expected: '%d')\n", (int)(nms.valueSizes[1]), xmlStrlen(BAD_CAST value1));
+    if(nms.pos > 1 && ((int)(nms.valueSizes[1]) != (int)xmlStrlen(BAD_CAST value1) || memcmp(nms.values[1], value1, (size_t)nms.valueSizes[1]) != 0)) {
+        testLog("Error: xmlSecX509NameRead returned nms.values[1] (size '%d') does not match expected '%s' (size '%d')\n", (int)(nms.valueSizes[1]), value1, (int)xmlStrlen(BAD_CAST value1));
         testFinishedFailure();
         return;
     }
@@ -479,13 +470,8 @@ test_xmlSecX509NameRead_multiple_pairs_success(
             testFinishedFailure();
             return;
         }
-        if(xmlStrcmp(nms.values[ii], BAD_CAST expectedValues[ii]) != 0) {
-            testLog("Error: xmlSecX509NameRead returned nms.values[%d]='%s' (expected: '%s')\n", ii, (const char*)nms.values[ii], expectedValues[ii]);
-            testFinishedFailure();
-            return;
-        }
-        if((int)(nms.valueSizes[ii]) != xmlStrlen(BAD_CAST expectedValues[ii])) {
-            testLog("Error: xmlSecX509NameRead returned nms.valueSizes[%d]='%d' (expected: '%d')\n", ii, (int)(nms.valueSizes[ii]), xmlStrlen(BAD_CAST expectedValues[ii]));
+        if(((int)(nms.valueSizes[ii]) != (int)xmlStrlen(BAD_CAST expectedValues[ii]) || memcmp(nms.values[ii], expectedValues[ii], (size_t)nms.valueSizes[ii]) != 0)) {
+            testLog("Error: xmlSecX509NameRead returned nms.values[%d] (size '%d') does not match expected '%s' (size '%d')\n", ii, (int)(nms.valueSizes[ii]), expectedValues[ii], (int)xmlStrlen(BAD_CAST expectedValues[ii]));
             testFinishedFailure();
             return;
         }
@@ -494,6 +480,54 @@ test_xmlSecX509NameRead_multiple_pairs_success(
             testFinishedFailure();
             return;
         }
+    }
+
+    /* DONE */
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecX509NameRead_octet_with_nul_success(void) {
+    test_X509Name nms;
+    /* octet string #46006F decodes to the bytes 'F', NUL, 'o' */
+    static const xmlSecByte expectedValue[] = { 0x46, 0x00, 0x6F };
+    int ret;
+
+    testStart("check octet string with embedded NUL");
+
+    memset(&nms, 0, sizeof(nms));
+    ret = xmlSecX509NameRead(BAD_CAST "Foo=#46006F", NULL, test_xmlSecX509NameReadCallback, &nms);
+    if(ret < 0) {
+        testLog("Error: xmlSecX509NameRead failed for 'Foo=#46006F'\n");
+        testFinishedFailure();
+        return;
+    }
+
+    /* check results */
+    if(nms.pos != 1) {
+        testLog("Error: xmlSecX509NameRead returned pos='%d' (expected: '1')\n", nms.pos);
+        testFinishedFailure();
+        return;
+    }
+    if(xmlStrcmp(nms.names[0], BAD_CAST "Foo") != 0) {
+        testLog("Error: xmlSecX509NameRead returned nms.names[0]='%s' (expected: 'Foo')\n", (const char*)nms.names[0]);
+        testFinishedFailure();
+        return;
+    }
+    if(nms.valueSizes[0] != sizeof(expectedValue)) {
+        testLog("Error: xmlSecX509NameRead returned nms.valueSizes[0]='%d' (expected: '%d')\n", (int)nms.valueSizes[0], (int)sizeof(expectedValue));
+        testFinishedFailure();
+        return;
+    }
+    if(memcmp(nms.values[0], expectedValue, sizeof(expectedValue)) != 0) {
+        testLog("Error: xmlSecX509NameRead returned unexpected nms.values[0] bytes (embedded NUL was truncated)\n");
+        testFinishedFailure();
+        return;
+    }
+    if(nms.types[0] != XMLSEC_X509_VALUE_TYPE_OCTET_STRING) {
+        testLog("Error: xmlSecX509NameRead returned nms.types[0]='%d' (expected: '%d')\n", nms.types[0], XMLSEC_X509_VALUE_TYPE_OCTET_STRING);
+        testFinishedFailure();
+        return;
     }
 
     /* DONE */
@@ -519,6 +553,7 @@ test_xmlSecX509NameRead(void) {
     test_xmlSecX509NameRead_success("check two values", "Foo=Bar,emailAddress=Value", NULL, 2, "Foo", "Bar", XMLSEC_X509_VALUE_TYPE_UTF8_STRING, "emailAddress", "Value", XMLSEC_X509_VALUE_TYPE_UTF8_STRING);
     test_xmlSecX509NameRead_success("check two values with empty value", "Foo=,emailAddress=Value", NULL, 2, "Foo", "", XMLSEC_X509_VALUE_TYPE_UTF8_STRING, "emailAddress", "Value", XMLSEC_X509_VALUE_TYPE_UTF8_STRING);
     test_xmlSecX509NameRead_success("check octet string", "Foo=Bar,emailAddress=#56616c7565", NULL, 2, "Foo", "Bar", XMLSEC_X509_VALUE_TYPE_UTF8_STRING, "emailAddress", "Value", XMLSEC_X509_VALUE_TYPE_OCTET_STRING);
+    test_xmlSecX509NameRead_octet_with_nul_success();
     test_xmlSecX509NameRead_success("check spaces", "Foo = Bar, emailAddress = Value", NULL, 2, "Foo", "Bar", XMLSEC_X509_VALUE_TYPE_UTF8_STRING, "emailAddress", "Value", XMLSEC_X509_VALUE_TYPE_UTF8_STRING);
     test_xmlSecX509NameRead_success("check end comma", "Foo=Bar,emailAddress=Value,", NULL, 2, "Foo", "Bar", XMLSEC_X509_VALUE_TYPE_UTF8_STRING, "emailAddress", "Value", XMLSEC_X509_VALUE_TYPE_UTF8_STRING);
     test_xmlSecX509NameRead_success("check email address", "Foo=Bar,E=Value,", test_X509NameReplacements, 2, "Foo", "Bar", XMLSEC_X509_VALUE_TYPE_UTF8_STRING, "emailAddress", "Value", XMLSEC_X509_VALUE_TYPE_UTF8_STRING);

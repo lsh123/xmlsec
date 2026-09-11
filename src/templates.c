@@ -1872,6 +1872,8 @@ xmlSecTmplTransformAddXPath2(xmlNodePtr transformNode, const xmlChar* type,
     xmlSecAssert2(type != NULL, -1);
     xmlSecAssert2(expression != NULL, -1);
 
+    /* XPath Filter 2.0 uses a sequence of one or more XPath children, so
+     * repeated calls must append a new node instead of rejecting duplicates. */
     xpathNode = xmlSecAddChild(transformNode, xmlSecNodeXPath, xmlSecXPath2Ns);
     if(xpathNode == NULL) {
         xmlSecInternalError("xmlSecAddChild(xmlSecNodeXPath)", NULL);

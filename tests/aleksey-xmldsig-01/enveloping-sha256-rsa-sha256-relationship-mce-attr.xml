@@ -3,7 +3,7 @@
   <SignedInfo>
     <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
     <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
-    <Reference URI="relationship/foreign-input.xml">
+    <Reference URI="relationship/mce-attr-input.xml">
       <Transforms>
         <Transform Algorithm="http://schemas.openxmlformats.org/package/2006/RelationshipTransform">
           <mdssi:RelationshipReference xmlns:mdssi="http://schemas.openxmlformats.org/package/2006/digital-signature" SourceId="rId1"/>
@@ -14,12 +14,12 @@
       <DigestValue>Mq3mDDWudLiaQFa1psBgLG+/en7p7r8re0MtlxnuiUI=</DigestValue>
     </Reference>
   </SignedInfo>
-  <SignatureValue>JJu5qmupZlGLgd9d7kgyfv2bof9E004vjn7QhqRB3SH0lZ13+r5KIWgrCSDTBm/U
-Pg34Uu0pQZa9U1+eRvo1tcE3uKqC8e9reDH95cvl9fzNBqoGjzrBkSEaVU5p2xZm
-TAa7NbzT4sXmUygB/g8+BEI5dE3uFhSy1H2SMHMblRWJw+rbjb86cXBqgMKESYj5
-HlCFrQG9wtl8ZZE2PjoMpicHO0usBesjilclhtyHWVygOUNiUTPx8HCHnir4H4QO
-kWp+oY3iNN0JS0xeDPnLxNnbuktAkw++t2UHaUBxUVn9Gs9zu2V24hRKiLl4dIew
-+dw+9Id+Q0NQCAaLtF10mg==</SignatureValue>
+  <SignatureValue>tqm0V872exSAqQcao5LIj6aeoVEoMz6mmh/yh6fb89tcrtRUHqYiZ+zTydwxiEMP
+P2KruOpNRNsDUl+Jj7UHhmb9DRqYdpoIwlDTwffRcuG8D+6L/TH+rC4nqDfPwWTF
+swp279ntjV0nPGD8kjgWuuk0+TBdSBlGDy88/AxuEo0AUuAjqX79qKcUvUcrBVY7
+H+9h440NpgzIjDlWwn6Ep19QT57kkASLD/wS7SZTm08aw1nbnxL4sa3K+V0PBUv3
+O7NNOyY6DBMWhv66bG+PBApsrZrKCN9xF+W+WTxIqfx3YrDcn8F5CGLWsHOWJ8Xo
+E5FuLmcoM6k5FyxuUf3QGw==</SignatureValue>
   <KeyInfo>
     <KeyName>TestKeyName-rsa-2048</KeyName>
     <X509Data>

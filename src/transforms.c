@@ -600,6 +600,7 @@ xmlSecTransformCtxCopyUserPref(xmlSecTransformCtxPtr dst, xmlSecTransformCtxPtr 
     dst->userData        = src->userData;
     dst->flags           = src->flags;
     dst->maxDepth        = src->maxDepth;
+    dst->binaryChunkSize = src->binaryChunkSize;
     dst->enabledUris     = src->enabledUris;
     dst->preExecCallback = src->preExecCallback;
 

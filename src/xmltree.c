@@ -1008,14 +1008,16 @@ xmlSecCreateTree(const xmlChar* rootNodeName, const xmlChar* rootNodeNs) {
     xmlDocSetRootElement(doc, root);
 
     /* and set root node namespace */
-    ns = xmlNewNs(root, rootNodeNs, NULL);
-    if(ns == NULL) {
-        xmlSecXmlError2("xmlNewNs", NULL,
-                        "ns=%s", xmlSecErrorsSafeString(rootNodeNs));
-        xmlFreeDoc(doc);
-        return(NULL);
+    if(rootNodeNs != NULL) {
+        ns = xmlNewNs(root, rootNodeNs, NULL);
+        if(ns == NULL) {
+            xmlSecXmlError2("xmlNewNs", NULL,
+                            "ns=%s", xmlSecErrorsSafeString(rootNodeNs));
+            xmlFreeDoc(doc);
+            return(NULL);
+        }
+        xmlSetNs(root, ns);
     }
-    xmlSetNs(root, ns);
 
     return(doc);
 }

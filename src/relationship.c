@@ -27,6 +27,9 @@
 
 #include "cast_helpers.h"
 
+#define xmlSecRelationshipMcNs          BAD_CAST "http://schemas.openxmlformats.org/markup-compatibility/2006"
+#define xmlSecRelationshipXmlNs         BAD_CAST "http://www.w3.org/XML/1998/namespace"
+
 
 /******************************************************************************
  *
@@ -86,6 +89,11 @@
  *     relationships XML schema, so in practice it'll never happen that the input document has e.g.
  *     characters, as the schema requires that the document has only XML elements and attributes,
  *     but no characters.
+ *
+ *   * Step 1 says that versioning instructions are processed with only the Relationships namespace
+ *     treated as known. In non-legacy mode we therefore serialize only elements in the Relationships
+ *     namespace plus unprefixed or built-in xml:* attributes; MCE attributes/elements and other
+ *     foreign-namespaced content are omitted from the canonical output.
  *
  *   * Step 2, point 4 talks about a SourceType value, but given that neither Microsoft Office, nor LibreOffice
  *     writes that theoretical attribute, the implementation doesn't handle it. If there is a real-world situation
@@ -307,10 +315,30 @@ xmlSecRelationshipCtxFindSourceId(xmlSecRelationshipCtxPtr ctx, const xmlChar* i
     return(0);
 }
 
+static int
+xmlSecTransformRelationshipIsOutputElement(xmlNodePtr cur) {
+    xmlSecAssert2(cur != NULL, 0);
+
+    return((cur->ns != NULL) &&
+           (cur->ns->href != NULL) &&
+           (xmlStrcmp(cur->ns->href, xmlSecRelationshipsNs) == 0));
+}
+
+static int
+xmlSecTransformRelationshipIsOutputAttr(xmlAttrPtr attr) {
+    xmlSecAssert2(attr != NULL, 0);
+
+    return((attr->ns == NULL) ||
+           ((attr->ns->href != NULL) &&
+            (xmlStrcmp(attr->ns->href, xmlSecRelationshipXmlNs) == 0)));
+}
+
 
 /*
- * This is step 2, point 4: if the input sourceId list doesn't contain the Id attribute of the current node,
- * then exclude it from the output, instead of processing it.
+ * Step 1 processes versioning instructions with only the Relationships namespace
+ * treated as known, so in non-legacy mode we drop any element outside that
+ * namespace before serialization. Step 2, point 4 then filters surviving
+ * Relationship elements by SourceId.
  */
 static int
 xmlSecTransformRelationshipProcessNode(xmlSecTransformPtr transform, xmlOutputBufferPtr buf, xmlNodePtr cur, unsigned int depth, xmlSecTransformCtxPtr transformCtx) {
@@ -325,11 +353,19 @@ xmlSecTransformRelationshipProcessNode(xmlSecTransformPtr transform, xmlOutputBu
     ctx = xmlSecRelationshipGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
+    if(((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_RELATIONSHIP_LEGACY) == 0) &&
+       !xmlSecTransformRelationshipIsOutputElement(cur)) {
+        return(0);
+    }
+
     if(xmlSecCheckNodeName(cur, xmlSecNodeRelationship, xmlSecRelationshipsNs)) {
         xmlChar* id = xmlGetProp(cur, xmlSecRelationshipAttrId);
         if(id == NULL) {
-            xmlSecXmlError2("xmlGetProp(xmlSecRelationshipAttrId)", xmlSecTransformGetName(transform), "name=%s", xmlSecRelationshipAttrId);
-            return(-1);
+            /* xmlGetProp() returns NULL both when the Id attribute is absent
+             * and when it cannot allocate the return value. Current behavior
+             * treats either case as "no usable Id", so per step 2, point 4
+             * the node is dropped instead of failing the transform. */
+            return(0);
         }
 
         ret = xmlSecRelationshipCtxFindSourceId(ctx, id);
@@ -543,49 +579,72 @@ xmlSecTransformRelationshipWriteProp(xmlOutputBufferPtr buf, const xmlChar * nam
 }
 
 /*
- * Writes a single namespace declaration, preserving the original prefix:
- *   default namespace  ->  xmlns="href"
- *   prefixed           ->  xmlns:prefix="href"
+ * Writes a single attribute to the output buffer using the attribute itself as
+ * the value source. In non-legacy mode the caller only passes attributes that
+ * survive Step 1 / Step 2 filtering, which means unprefixed attributes plus
+ * built-in xml:* attributes.
  */
 static int
-xmlSecTransformRelationshipWriteNsDecl(xmlOutputBufferPtr buf, xmlNsPtr ns) {
-    xmlChar* name;
-    xmlChar* tmp;
-    const xmlChar* href;
+xmlSecTransformRelationshipWriteAttribute(xmlSecTransformPtr transform, xmlOutputBufferPtr buf, xmlAttrPtr attr) {
+    xmlChar * value;
+    xmlChar * nameCopy = NULL;
+    const xmlChar * attrName;
+    size_t prefixLen;
+    size_t nameLen;
     int ret;
 
+    xmlSecAssert2(transform != NULL, -1);
     xmlSecAssert2(buf != NULL, -1);
-    xmlSecAssert2(ns != NULL, -1);
+    xmlSecAssert2(attr != NULL, -1);
 
-    href = (ns->href != NULL) ? ns->href : BAD_CAST "";
-    if(ns->prefix == NULL) {
-        return(xmlSecTransformRelationshipWriteProp(buf, BAD_CAST "xmlns", href));
+    /* get correct attribute name */
+    if((attr->ns != NULL) && (attr->ns->prefix != NULL)) {
+        prefixLen = strlen((const char*)attr->ns->prefix);
+        nameLen = strlen((const char*)attr->name);
+        nameCopy = xmlMalloc(prefixLen + nameLen + 2);
+        if(nameCopy == NULL) {
+            xmlSecXmlError("xmlMalloc", NULL);
+            return(-1);
+        }
+        memcpy(nameCopy, attr->ns->prefix, prefixLen);
+        nameCopy[prefixLen] = ':';
+        memcpy(nameCopy + prefixLen + 1, attr->name, nameLen);
+        nameCopy[prefixLen + nameLen + 1] = '\0';
+        attrName = nameCopy;
+    } else {
+        attrName = attr->name;
     }
 
-    name = xmlStrdup(BAD_CAST "xmlns:");
-    if(name == NULL) {
-        xmlSecXmlError("xmlStrdup", NULL);
+    /* xmlNodeListGetString returns NULL for both empty values and OOM;
+     * there is no way to distinguish the two cases. However, both are errors
+     */
+    value = xmlNodeListGetString(attr->doc, attr->children, 1);
+    if(value == NULL) {
+        xmlSecXmlError("xmlNodeListGetString", xmlSecTransformGetName(transform));
+        xmlFree(nameCopy);
         return(-1);
     }
-    tmp = xmlStrcat(name, ns->prefix);
-    if(tmp == NULL) {
-        xmlSecXmlError("xmlStrcat", NULL);
-        xmlFree(name);
+
+    /* finally write the attribute to the output */
+    ret = xmlSecTransformRelationshipWriteProp(buf, attrName, value);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformRelationshipWriteProp", xmlSecTransformGetName(transform));
+        xmlFree(nameCopy);
+        xmlFree(value);
         return(-1);
     }
-    name = tmp;
 
-    ret = xmlSecTransformRelationshipWriteProp(buf, name, href);
-    xmlFree(name);
-    return(ret);
+    xmlFree(nameCopy);
+    xmlFree(value);
+    return(0);
 }
-
 
 static int
 xmlSecTransformRelationshipProcessElementNode(xmlSecTransformPtr transform, xmlOutputBufferPtr buf, xmlNodePtr cur, unsigned int depth, xmlSecTransformCtxPtr transformCtx) {
     xmlAttrPtr attr;
     xmlNsPtr ns;
     int foundTargetMode = 0;
+    int relNsWritten = 0;
     int ret;
 
     xmlSecAssert2(transform != NULL, -1);
@@ -612,9 +671,15 @@ xmlSecTransformRelationshipProcessElementNode(xmlSecTransformPtr transform, xmlO
      * Write namespaces.
      *
      * Step 2, point 1: remove all namespace declarations except the Relationships namespace
-     * declaration. So we walk the declared namespaces and emit only the one(s) bound to the
-     * Relationships namespace, preserving the original prefix. Foreign namespace declarations
-     * (e.g. xmlns:foo="...") are dropped so they do not leak into the canonical output.
+    * declaration. Step 1 has already filtered out versioning instructions and
+    * foreign-namespaced content from the serialized output, so we emit only the
+    * namespace binding for Relationships itself here. Foreign namespace
+    * declarations (e.g. xmlns:foo="...") are dropped so they do not leak into
+    * the canonical output.
+     *
+     * Step 2, point 2: remove the Relationships namespace prefix, if it is present. Element
+     * names are written bare, so the Relationships namespace is bound as the default
+     * namespace (xmlns="...") for them to resolve into it.
      *
      * Legacy mode (XMLSEC_TRANSFORMCTX_FLAGS_RELATIONSHIP_LEGACY): restore the old behaviour
      * of writing a single unprefixed xmlns="..." declaration for the first declared namespace,
@@ -635,36 +700,44 @@ xmlSecTransformRelationshipProcessElementNode(xmlSecTransformPtr transform, xmlO
             if((ns->href == NULL) || (xmlStrcmp(ns->href, xmlSecRelationshipsNs) != 0)) {
                 continue;
             }
-            ret = xmlSecTransformRelationshipWriteNsDecl(buf, ns);
+            if(relNsWritten) {
+                /* The Relationships namespace is already emitted as the default
+                 * namespace; skip any further declarations bound to it. */
+                continue;
+            }
+            ret = xmlSecTransformRelationshipWriteProp(buf, BAD_CAST "xmlns", ns->href);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecTransformRelationshipWriteNsDecl",
+                xmlSecInternalError("xmlSecTransformRelationshipWriteProp(xmlns)",
                                     xmlSecTransformGetName(transform));
                 return(-1);
             }
+            relNsWritten = 1;
         }
     }
 
     /*
-     *  write attributes:
+     * Write attributes.
      *
-     *  This is step 3, point 6: add default value of TargetMode if there is no such attribute.
+     * This is step 3, point 6: add default value of TargetMode if there is no such attribute.
+     * Only the unprefixed TargetMode attribute counts as present; a namespaced one must not
+     * suppress the default.
      */
     for(attr = cur->properties; attr != NULL; attr = attr->next) {
-        xmlChar * value = xmlGetProp(cur, attr->name);
-
-        if(xmlStrcmp(attr->name, xmlSecRelationshipAttrTargetMode) == 0) {
+        if((attr->ns == NULL) && (xmlStrcmp(attr->name, xmlSecRelationshipAttrTargetMode) == 0)) {
             foundTargetMode = 1;
         }
 
-        ret = xmlSecTransformRelationshipWriteProp(buf, attr->name, value);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecTransformRelationshipWriteProp",
-                                xmlSecTransformGetName(transform));
-            xmlFree(value);
-            return(-1);
+        if(((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_RELATIONSHIP_LEGACY) == 0) &&
+           !xmlSecTransformRelationshipIsOutputAttr(attr)) {
+            continue;
         }
 
-        xmlFree(value);
+        ret = xmlSecTransformRelationshipWriteAttribute(transform, buf, attr);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecTransformRelationshipWriteAttribute",
+                                xmlSecTransformGetName(transform));
+            return(-1);
+        }
     }
 
     /*

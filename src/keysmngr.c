@@ -753,6 +753,7 @@ xmlSecSimpleKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSe
     xmlSecPtrListPtr list;
     xmlSecKeyPtr key;
     xmlSecSize pos, size;
+    int match;
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecSimpleKeysStoreId), NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
@@ -763,7 +764,15 @@ xmlSecSimpleKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSe
     size = xmlSecPtrListGetSize(list);
     for(pos = 0; pos < size; ++pos) {
         key = (xmlSecKeyPtr)xmlSecPtrListGetItem(list, pos);
-        if((key != NULL) && (xmlSecKeyMatch(key, name, &(keyInfoCtx->keyReq)) == 1)) {
+        if(key == NULL) {
+            continue;
+        }
+        match = xmlSecKeyMatch(key, name, &(keyInfoCtx->keyReq));
+        if(match < 0) {
+            xmlSecInternalError("xmlSecKeyMatch", xmlSecKeyGetName(key));
+            return(NULL);
+        }
+        if(match == 1) {
             return(xmlSecKeyDuplicate(key));
         }
     }

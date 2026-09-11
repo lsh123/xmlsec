@@ -11,6 +11,8 @@
  */
 #include "globals.h"
 
+#if !defined(XMLSEC_NO_DES) || !defined(XMLSEC_NO_AES) || !defined(XMLSEC_NO_CAMELLIA)
+
 #include <stdlib.h>
 #include <string.h>
 
@@ -935,3 +937,10 @@ xmlSecKWRfc3394Decode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transfor
 }
 
 #endif /* !XMLSEC_NO_AES || !XMLSEC_NO_CAMELLIA */
+
+#else /* !defined(XMLSEC_NO_DES) || !defined(XMLSEC_NO_AES) || !defined(XMLSEC_NO_CAMELLIA) */
+
+/* ISO C forbids an empty translation unit */
+typedef int make_iso_compilers_happy;
+
+#endif /* !defined(XMLSEC_NO_DES) || !defined(XMLSEC_NO_AES) || !defined(XMLSEC_NO_CAMELLIA) */

@@ -1595,4 +1595,10 @@ xmlSecEncCtxGetFailureReasonString(xmlSecEncFailureReason failureReason) {
         return "UNKNOWN";
     }
 }
+
+#else /* XMLSEC_NO_XMLENC */
+
+/* ISO C forbids an empty translation unit */
+typedef int make_iso_compilers_happy;
+
 #endif /* XMLSEC_NO_XMLENC */

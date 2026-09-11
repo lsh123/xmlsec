@@ -113,7 +113,7 @@ static int gXmlSecErrorsPrintCryptoLibraryLogOnExitIsEnabled = 0;
 
 /**
  * @brief Initializes the errors reporting.
- * @details Initializes the errors reporting. It is called from #xmlSecInit function.
+ * @details Initializes the errors reporting. It is called from #xmlSecInit function,
  * and applications must not call this function directly.
  */
 void
@@ -122,7 +122,7 @@ xmlSecErrorsInit(void) {
 
 /**
  * @brief Cleanups the errors reporting.
- * @details Cleanups the errors reporting. It is called from #xmlSecShutdown function.
+ * @details Cleanups the errors reporting. It is called from #xmlSecShutdown function,
  * and applications must not call this function directly.
  */
 void

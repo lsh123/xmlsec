@@ -462,8 +462,8 @@ xmlSecKeyDataDEREncodedKeyValueGetKlass(void) {
 /**
  * @brief The X509 certificates key data store klass.
  * @return pointer to X509 certificates key data store klass or NULL if
- * an error occurs (xmlsec-crypto library is not loaded or the raw X509
- * cert key data klass is not implemented).
+ * an error occurs (xmlsec-crypto library is not loaded or the X509
+ * certificates key data store klass is not implemented).
  */
 xmlSecKeyDataStoreId
 xmlSecX509StoreGetKlass(void) {
@@ -2190,12 +2190,12 @@ xmlSecCryptoAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename,
 /**
  * @brief Loads a certificate into the keys manager.
  * @details Reads cert from @p filename and adds to the list of trusted or known
- * untrusted certs in @p store.
+ * untrusted certs in @p mngr.
  * @param mngr the keys manager.
  * @param filename the certificate file.
  * @param format the certificate file format.
- * @param type the flag that indicates is the certificate in @p filename
- *                      trusted or not.
+ * @param type the flag that indicates whether the certificate in @p filename
+ *                      is trusted or not.
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -2213,12 +2213,12 @@ xmlSecCryptoAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
 /**
  * @brief Loads a certificate from memory into the keys manager.
  * @details Reads cert from binary buffer @p data and adds to the list of trusted or known
- * untrusted certs in @p store.
+ * untrusted certs in @p mngr.
  * @param mngr the keys manager.
  * @param data the certificate binary data.
  * @param dataSize the certificate binary data size.
  * @param format the certificate data format.
- * @param type the flag that indicates is the certificate trusted or not.
+ * @param type the flag that indicates whether the certificate is trusted or not.
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -2236,7 +2236,7 @@ xmlSecCryptoAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* 
 
 /**
  * @brief Loads CRLs from a file into the keys manager.
- * @details Reads crls from @p filename and adds to the list of crls in @p store.
+ * @details Reads crls from @p filename and adds to the list of crls in @p mngr.
  * @param mngr the keys manager.
  * @param filename the CRL file.
  * @param format the CRL file format.
@@ -2257,7 +2257,7 @@ xmlSecCryptoAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xml
 /**
  * @brief Loads and verifies a CRL into the keys manager.
  * @details Reads and verifies the CRL from @p filename.  If verification is successful, the CRL is added to
- * the keys manager @p store.
+ * the keys manager @p mngr.
  * @param mngr the keys manager.
  * @param filename the CRL file.
  * @param format the CRL file format.
@@ -2279,7 +2279,7 @@ xmlSecCryptoAppKeysMngrCrlLoadAndVerify(xmlSecKeysMngrPtr mngr, const char *file
 
 /**
  * @brief Loads CRLs from memory into the keys manager.
- * @details Reads crl from binary buffer @p data and adds to the list of crls in @p store.
+ * @details Reads crl from binary buffer @p data and adds to the list of crls in @p mngr.
  * @param mngr the keys manager.
  * @param data the CRL binary data.
  * @param dataSize the CRL binary data size.

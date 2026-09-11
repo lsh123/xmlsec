@@ -366,7 +366,7 @@ extern "C" {
 
 /**
  * @brief Macro. Reports "invalid size" errors (other).
- * @details Macro. The XMLSec library macro for reporting "invalid size" errors when we expect exact match.
+ * @details Macro. The XMLSec library macro for reporting "invalid size" errors with a free-form message.
  * @param msg the message about the error.
  * @param errorObject the error specific error object (e.g. transform, key data, etc).
  */
@@ -595,7 +595,7 @@ extern "C" {
 
 /**
  * @brief Macro. Reports invalid node errors.
- * @details Macro. The XMLSec library macro for reporting an invalid node errors.
+ * @details Macro. The XMLSec library macro for reporting invalid node errors.
  * @param actualNode the actual node.
  * @param expectedNodeName the expected node name.
  * @param errorObject the error specific error object (e.g. transform, key data, etc).
@@ -615,7 +615,7 @@ extern "C" {
 
 /**
  * @brief Macro. Reports invalid node content errors.
- * @details Macro. The XMLSec library macro for reporting an invalid node content errors.
+ * @details Macro. The XMLSec library macro for reporting invalid node content errors.
  * @param node the node.
  * @param errorObject the error specific error object (e.g. transform, key data, etc).
  * @param reason the reason why node content is invalid.
@@ -635,7 +635,7 @@ extern "C" {
 
 /**
  * @brief Macro. Reports invalid node content errors.
- * @details Macro. The XMLSec library macro for reporting an invalid node content errors.
+ * @details Macro. The XMLSec library macro for reporting invalid node content errors.
  * @param node the node.
  * @param errorObject the error specific error object (e.g. transform, key data, etc).
  * @param msg the extra message.
@@ -656,7 +656,7 @@ extern "C" {
 
 /**
  * @brief Macro. Reports invalid node content errors.
- * @details Macro. The XMLSec library macro for reporting an invalid node content errors.
+ * @details Macro. The XMLSec library macro for reporting invalid node content errors.
  * @param node the node.
  * @param errorObject the error specific error object (e.g. transform, key data, etc).
  * @param msg the extra message.
@@ -680,7 +680,7 @@ extern "C" {
 
 /**
  * @brief Macro. Reports invalid node attribute errors.
- * @details Macro. The XMLSec library macro for reporting an invalid node attribute errors.
+ * @details Macro. The XMLSec library macro for reporting invalid node attribute errors.
  * @param node the node.
  * @param attrName the attribute name.
  * @param errorObject the error specific error object (e.g. transform, key data, etc).
@@ -722,7 +722,7 @@ extern "C" {
 
 /**
  * @brief Macro. Reports unexpected node errors.
- * @details Macro. The XMLSec library macro for reporting an invalid node errors.
+ * @details Macro. The XMLSec library macro for reporting unexpected node errors.
  * @param node the node.
  * @param errorObject the error specific error object (e.g. transform, key data, etc).
  */
@@ -761,7 +761,7 @@ extern "C" {
 
 /**
  * @brief Macro. Reports invalid transform errors.
- * @details Macro. The XMLSec library macro for reporting an invalid transform errors.
+ * @details Macro. The XMLSec library macro for reporting invalid transform errors.
  * @param transform the transform.
  */
 #define xmlSecInvalidTransformError(transform) \
@@ -776,7 +776,7 @@ extern "C" {
 
 /**
  * @brief Macro. Reports invalid transform errors.
- * @details Macro. The XMLSec library macro for reporting an invalid transform errors.
+ * @details Macro. The XMLSec library macro for reporting invalid transform errors.
  * @param transform the transform.
  * @param msg the extra message.
  * @param param the extra message param.
@@ -793,7 +793,7 @@ extern "C" {
 
 /**
  * @brief Macro. Reports invalid transform errors.
- * @details Macro. The XMLSec library macro for reporting an invalid transform errors.
+ * @details Macro. The XMLSec library macro for reporting invalid transform errors.
  * @param transform the transform.
  * @param msg the extra message.
  * @param param1 the extra message param.
@@ -811,7 +811,7 @@ extern "C" {
 
 /**
  * @brief Macro. Reports invalid transform status errors.
- * @details Macro. The XMLSec library macro for reporting an invalid transform status errors.
+ * @details Macro. The XMLSec library macro for reporting invalid transform status errors.
  * @param transform the transform.
  */
 #define xmlSecInvalidTransformStatusError(transform)   \
@@ -827,7 +827,7 @@ extern "C" {
 
 /**
  * @brief Macro. Reports invalid transform status errors.
- * @details Macro. The XMLSec library macro for reporting an invalid transform status errors.
+ * @details Macro. The XMLSec library macro for reporting invalid transform status errors.
  * @param transform the transform.
  * @param msg the extra message.
  */
@@ -846,7 +846,6 @@ extern "C" {
 /**
  * @brief Macro. Reports invalid key data size errors.
  * @details Macro. The XMLSec library macro for reporting "invalid keydata size" errors.
- * @param name the name of the variable, parameter, etc.
  * @param actual the actual value.
  * @param expected the expected value(s).
  * @param errorObject the error specific error object (e.g. transform, key data, etc).
@@ -864,7 +863,6 @@ extern "C" {
 /**
  * @brief Macro. Reports invalid (zero) key data size errors.
  * @details Macro. The XMLSec library macro for reporting "invalid keydata size" errors.
- * @param name the name of the variable, parameter, etc.
  * @param errorObject the error specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecInvalidZeroKeyDataSizeError(errorObject) \
@@ -893,8 +891,8 @@ extern "C" {
                     NULL,                                   \
                     XMLSEC_ERRORS_R_CAST_IMPOSSIBLE,        \
                     "src-type=" #srcType "; src-val=" srcFmt  \
-                    ";dst-type=" #dstType "; dst-min=" dstFmt \
-                    ";dst-max=" dstFmt "",                  \
+                    "; dst-type=" #dstType "; dst-min=" dstFmt \
+                    "; dst-max=" dstFmt,                  \
                     (srcVal), (dstMinVal), (dstMaxVal)      \
         )
 

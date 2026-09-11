@@ -309,7 +309,7 @@ xmlSecBufferSetMaxSize(xmlSecBufferPtr buf, xmlSecSize size) {
 
 
     if((buf->flags & XMLSEC_BUFFER_FLAG_ALLOC_MODE_DOUBLE) != 0) {
-      if(size > ((XMLSEC_SIZE_MAX - 32) / 2)) {
+        if(size > ((XMLSEC_SIZE_MAX - 32) / 2)) {
             xmlSecInvalidSizeError("size", size, ((XMLSEC_SIZE_MAX - 32) / 2), NULL);
             return(-1);
         }
@@ -531,7 +531,6 @@ int
 xmlSecBufferReadFile(xmlSecBufferPtr buf, const char* filename) {
     xmlSecByte buffer[1024];
     FILE* f = NULL;
-    xmlSecSize size;
     size_t len;
     int ret;
     int res = -1;
@@ -542,7 +541,9 @@ xmlSecBufferReadFile(xmlSecBufferPtr buf, const char* filename) {
 #ifndef _MSC_VER
     f = fopen(filename, "rb");
 #else
-    fopen_s(&f, filename, "rb");
+    if(fopen_s(&f, filename, "rb") != 0) {
+        f = NULL;
+    }
 #endif /* _MSC_VER */
     if(f == NULL) {
         xmlSecIOError("fopen", filename, NULL);
@@ -556,8 +557,7 @@ xmlSecBufferReadFile(xmlSecBufferPtr buf, const char* filename) {
             goto done;
         }
 
-        XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(len, size, goto done, NULL);
-        ret = xmlSecBufferAppend(buf, buffer, size);
+        ret = xmlSecBufferAppend(buf, buffer, len);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferAppend", NULL, "size=" XMLSEC_SIZE_T_FMT, len);
             goto done;

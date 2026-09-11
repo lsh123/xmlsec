@@ -63,12 +63,15 @@ static int do_init(void) {
         return -1;
     }
     if (xmlSecCheckVersion() != 1) {
+        xmlSecShutdown();
         return -1;
     }
     if (xmlSecOpenSSLAppInit(NULL) < 0) {
+        xmlSecShutdown();
         return -1;
     }
     if (xmlSecOpenSSLInit() < 0) {
+        xmlSecShutdown();
         return -1;
     }
 

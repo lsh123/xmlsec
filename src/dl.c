@@ -175,7 +175,7 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
                         )
                     );
     if(getFunctions == NULL) {
-        xmlSecIOError("GetProcAddressA", lib->getFunctionsName, NULL);
+        xmlSecIOError("GetProcAddress", lib->getFunctionsName, NULL);
         xmlSecCryptoDLLibraryDestroy(lib);
         return(NULL);
     }
@@ -234,8 +234,8 @@ xmlSecCryptoDLLibraryDestroy(xmlSecCryptoDLLibraryPtr lib) {
             xmlSecIOError("FreeLibrary", NULL, NULL);
             /* ignore error */
         }
-        }
-#endif /* defined(XMLSEC_WINDOWS) && defined(XMLSEC_DL_WIN32)*/
+    }
+#endif /* defined(XMLSEC_WINDOWS) && defined(XMLSEC_DL_WIN32) */
 
     memset(lib, 0, sizeof(xmlSecCryptoDLLibrary));
     xmlFree(lib);
@@ -423,7 +423,7 @@ xmlSecCryptoDLLoadLibrary(const xmlChar* crypto) {
     int ret;
 
     /* if crypto is not specified, then used default */
-    functions = xmlSecCryptoDLGetLibraryFunctions((crypto != NULL ) ? crypto : xmlSecGetDefaultCrypto());
+    functions = xmlSecCryptoDLGetLibraryFunctions((crypto != NULL) ? crypto : xmlSecGetDefaultCrypto());
     if(functions == NULL) {
         xmlSecInternalError("xmlSecCryptoDLGetLibraryFunctions", NULL);
         return(-1);

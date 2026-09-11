@@ -247,9 +247,14 @@ xmlSecBase64CtxUpdate_ex(xmlSecBase64CtxPtr ctx, const xmlSecByte *in, xmlSecSiz
     int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2((in != NULL) || (inSize == 0), -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outWritten != NULL, -1);
+
+    if(inSize == 0) {
+        (*outWritten) = 0;
+        return(0);
+    }
 
     if(ctx->encode != 0) {
         ret = xmlSecBase64CtxEncode(ctx, in, inSize, &inRead, out, outSize, outWritten);
@@ -287,8 +292,9 @@ xmlSecBase64CtxFinal_ex(xmlSecBase64CtxPtr ctx, xmlSecByte *out, xmlSecSize outS
     if(ctx->encode != 0) {
         int ret;
 
-        /* the encode path always writes at least one byte (or fails), so it needs a non-empty buffer */
-        xmlSecAssert2(outSize > 0, -1);
+        /* the encode path writes at least one byte when there are pending input
+         * bytes (ctx->inPos != 0), so it needs a non-empty buffer in that case */
+        xmlSecAssert2((ctx->inPos == 0) || (outSize > 0), -1);
 
         ret = xmlSecBase64CtxEncodeFinal(ctx, out, outSize, outWritten);
         if(ret < 0) {
@@ -388,7 +394,7 @@ xmlSecBase64CtxDecodeByte(xmlSecBase64CtxPtr ctx, xmlSecByte inByte, xmlSecByte*
 
     if((ctx->finished != 0) && (ctx->inPos == 0)) {
         return(xmlSecBase64StatusDone);
-    } if(inByte == '=') {
+    } else if(inByte == '=') {
         ctx->finished = 1;
         if(ctx->inPos == 2) {
             ++ctx->inPos;
@@ -495,6 +501,12 @@ xmlSecBase64CtxEncodeFinal(xmlSecBase64CtxPtr ctx, xmlSecByte* outBuf, xmlSecSiz
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(outBuf != NULL, -1);
     xmlSecAssert2(outBufResSize != NULL, -1);
+
+    /* if there are no pending input bytes, nothing needs to be finalized */
+    if(ctx->inPos == 0) {
+        (*outBufResSize) = 0;
+        return(0);
+    }
 
     /* encode final bytes */
     for(outPos = 0; (outPos < outBufSize) && (status != xmlSecBase64StatusDone); ) {

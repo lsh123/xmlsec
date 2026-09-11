@@ -61,13 +61,13 @@
 
 
 static int      xmlSecOpenSSLDefaultPasswordCallback    (char *buf,
-                                                         int bufsiz,
-                                                         int verify,
-                                                         void *userdata);
+                                                          int buflen,
+                                                          int verify,
+                                                          void *userdata);
 static int      xmlSecOpenSSLDummyPasswordCallback      (char *buf,
-                                                         int buflen,
-                                                         int verify,
-                                                         void *userdata);
+                                                          int buflen,
+                                                          int verify,
+                                                          void *userdata);
 static xmlSecKeyPtr xmlSecOpenSSLAppEngineKeyLoad       (const char *engineName,
                                                          const char *engineKeyId,
                                                          xmlSecKeyDataType type,
@@ -756,12 +756,10 @@ xmlSecOpenSSLCreateKey(EVP_PKEY ** pKey,  X509 ** keyCert, STACK_OF(X509) ** cer
 
     /* try to get key name from x509 cert */
     if((*keyCert) != NULL) {
-        const unsigned char * name = NULL;
+        const unsigned char * name;
         int nameLen = 0;
 
-        if(name == NULL) {
-            name = X509_alias_get0((*keyCert), &nameLen);
-        }
+        name = X509_alias_get0((*keyCert), &nameLen);
         if(name == NULL) {
             name = X509_keyid_get0((*keyCert), &nameLen);
         }
@@ -959,6 +957,10 @@ xmlSecOpenSSLAppStoreKeyLoad(const char *uri, xmlSecKeyDataType type, const char
     while (!OSSL_STORE_eof(storeCtx)) {
         info = OSSL_STORE_load(storeCtx);
         if(info == NULL) {
+            if(ERR_peek_error() != 0) {
+                xmlSecOpenSSLError("OSSL_STORE_load", NULL);
+                goto done;
+            }
             break;
         }
 
@@ -1232,8 +1234,7 @@ xmlSecOpenSSLAppKeyCertLoadBIO(xmlSecKeyPtr key, BIO* bio, xmlSecKeyDataFormat f
         /* pKey might not be set yet */
         pKey = xmlSecOpenSSLKeyGetEvp(key);
         if(pKey != NULL) {
-            /* ignore errors here */
-            ret = xmlSecOpenSSLAppCheckCertMatchesKey(pKey,  cert);
+            ret = xmlSecOpenSSLAppCheckCertMatchesKey(pKey, cert);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecOpenSSLAppCheckCertMatchesKey", NULL);
                 goto done;
@@ -2229,7 +2230,7 @@ xmlSecOpenSSLDefaultPasswordCallback(char *buf, int buflen, int verify, void *us
 }
 
 static int
-xmlSecOpenSSLDummyPasswordCallback(char *buf, int bufLen,
+xmlSecOpenSSLDummyPasswordCallback(char *buf, int buflen,
                                    int verify XMLSEC_ATTRIBUTE_UNUSED,
                                    void *userdata) {
     xmlSecSize bufSize;
@@ -2239,7 +2240,7 @@ xmlSecOpenSSLDummyPasswordCallback(char *buf, int bufLen,
     UNREFERENCED_PARAMETER(verify);
 
     xmlSecAssert2(buf != NULL, -1);
-    xmlSecAssert2(bufLen > 1, -1);
+    xmlSecAssert2(buflen > 1, -1);
 
     password = (char*)userdata;
     if(password == NULL) {
@@ -2248,16 +2249,16 @@ xmlSecOpenSSLDummyPasswordCallback(char *buf, int bufLen,
 
     passwordSize = strlen(password);
     XMLSEC_SAFE_CAST_SIZE_T_TO_INT(passwordSize, passwordLen, return(-1), NULL);
-    if(passwordLen + 1 > bufLen) {
+    if(passwordLen + 1 > buflen) {
         return(-1);
     }
 
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(bufLen, bufSize, return(-1), NULL);
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(buflen, bufSize, return(-1), NULL);
 #if defined(_MSC_VER)
     strcpy_s(buf, bufSize, password);
 #else  /* defined(_MSC_VER) */
     strncpy(buf, password, bufSize);
-    buf[bufLen - 1] = '\0'; /* ensure \0 terminated */
+    buf[buflen - 1] = '\0'; /* ensure \0 terminated */
 #endif /* defined(_MSC_VER) */
 
     return (passwordLen);

@@ -6,12 +6,11 @@
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * @brief XML Security Library command line utility tools.
+ * @brief XML Security Library command line utility: crypto and keys manager helpers.
  */
 #ifndef __XMLSEC_APPS_CRYPTO_H__
 #define __XMLSEC_APPS_CRYPTO_H__
 
-#include <libxml/tree.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>

@@ -83,7 +83,7 @@ test_xmlSecIsEmptyString_nonempty(void) {
 }
 
 static void
-test_xmlSecIsEmptyString_mixed_whitespace(void) {
+test_xmlSecIsEmptyString_embedded_text(void) {
     testStart("xmlSecIsEmptyString: string with embedded text");
     if(xmlSecIsEmptyString(BAD_CAST " \t hello \t ") != 0) {
         testLog("Error: string with text was detected as empty\n");
@@ -2195,7 +2195,7 @@ test_xmltree(void) {
     test_xmlSecIsEmptyString_empty();
     test_xmlSecIsEmptyString_whitespace_only();
     test_xmlSecIsEmptyString_nonempty();
-    test_xmlSecIsEmptyString_mixed_whitespace();
+    test_xmlSecIsEmptyString_embedded_text();
     if(testGroupFinished() != 1) { success = 0; }
 
     testGroupStart("xmlSecGetNodeContentAndTrim");

@@ -6,7 +6,7 @@
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * @brief Internal global header used during compilation.
+ * @brief Internal header defining build-time macros.
  */
 
 #ifndef __XMLSEC_CORE_GLOBALS_H__
@@ -19,8 +19,13 @@
 #include "config.h"
 #endif /* HAVE_CONFIG_H */
 
+#ifndef IN_XMLSEC
 #define IN_XMLSEC
+#endif /* IN_XMLSEC */
+
+#ifndef XMLSEC_PRIVATE
 #define XMLSEC_PRIVATE
+#endif /* XMLSEC_PRIVATE */
 
 /* Include common error helper macros. */
 #include "errors_helpers.h"

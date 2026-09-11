@@ -168,7 +168,7 @@ static int      xmlSecOpenSSLKWRfc3394Execute                  (xmlSecTransformP
 
 
 
- /******************************************************************************
+/******************************************************************************
  *
  * Unified RFC 3394 KW transform class macro
  *
@@ -317,7 +317,7 @@ xmlSecOpenSSLKWRfc3394Finalize(xmlSecTransformPtr transform) {
 }
 
 static int
-xmlSecOpenSSLKWRfc3394SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
+xmlSecOpenSSLKWRfc3394SetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq) {
     xmlSecOpenSSLKWRfc3394CtxPtr ctx;
     int ret;
 
@@ -327,7 +327,7 @@ xmlSecOpenSSLKWRfc3394SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr k
     ctx = xmlSecOpenSSLKWRfc3394GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ret = xmlSecTransformKWRfc3394SetKeyReq(transform, &(ctx->parentCtx),keyReq);
+    ret = xmlSecTransformKWRfc3394SetKeyReq(transform, &(ctx->parentCtx), keyReq);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformKWRfc3394SetKeyReq", xmlSecTransformGetName(transform));
         return(-1);
@@ -386,7 +386,7 @@ xmlSecOpenSSLKWRfc3394Execute(xmlSecTransformPtr transform, int last,
 /* RFC 3394 specifies single-block (ECB) encryption. We use a CBC cipher with an
  * explicit all-zero IV so the behavior is well-defined and portable rather than
  * relying on OpenSSL's implicit zero-IV default for a NULL IV. */
-static unsigned char xmlSecOpenSSLKWRfc3394ZeroIv[XMLSEC_KW_RFC3394_BLOCK_SIZE] =
+static const unsigned char xmlSecOpenSSLKWRfc3394ZeroIv[XMLSEC_KW_RFC3394_BLOCK_SIZE] =
     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 static int

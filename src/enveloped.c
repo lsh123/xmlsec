@@ -96,10 +96,9 @@ xmlSecTransformEnvelopedGetKlass(void) {
 }
 
 static int
-xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, int last,
-                                 xmlSecTransformCtxPtr transformCtx) {
-    xmlNodePtr node;
-    xmlSecNodeSetPtr children;
+xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
+    xmlNodePtr signatureNode;
+    xmlSecNodeSetPtr signatureNodeChildren;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformEnvelopedId), -1);
     xmlSecAssert2(transform->hereNode != NULL, -1);
@@ -115,29 +114,28 @@ xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, int last,
     }
 
     /* find signature node and get all its children in the nodes set */
-    node = xmlSecFindParent(transform->hereNode, xmlSecNodeSignature, xmlSecDSigNs);
-    if(node == NULL) {
+    signatureNode = xmlSecFindParent(transform->hereNode, xmlSecNodeSignature, xmlSecDSigNs);
+    if(signatureNode == NULL) {
         xmlSecNodeNotFoundError("xmlSecFindParent", transform->hereNode,
                                 xmlSecNodeSignature,
                                 xmlSecTransformGetName(transform));
         return(-1);
     }
 
-    children = xmlSecNodeSetGetChildren(node->doc, node, 1, 1);
-    if(children == NULL) {
+    signatureNodeChildren = xmlSecNodeSetGetChildren(signatureNode->doc, signatureNode, 1, 1);
+    if(signatureNodeChildren == NULL) {
         xmlSecInternalError2("xmlSecNodeSetGetChildren",
                              xmlSecTransformGetName(transform),
                              "node=%s",
-                             xmlSecErrorsSafeString(xmlSecNodeGetName(node)));
+                             xmlSecErrorsSafeString(xmlSecNodeGetName(signatureNode)));
         return(-1);
     }
 
     /* intersect &lt;dsig:Signature/&gt; node children with input nodes (if exist) */
-    transform->outNodes = xmlSecNodeSetAdd(transform->inNodes, children, xmlSecNodeSetIntersection);
+    transform->outNodes = xmlSecNodeSetAdd(transform->inNodes, signatureNodeChildren, xmlSecNodeSetIntersection);
     if(transform->outNodes == NULL) {
-        xmlSecInternalError("xmlSecNodeSetAdd",
-                            xmlSecTransformGetName(transform));
-        xmlSecNodeSetDestroy(children);
+        xmlSecInternalError("xmlSecNodeSetAdd", xmlSecTransformGetName(transform));
+        xmlSecNodeSetDestroy(signatureNodeChildren);
         return(-1);
     }
 

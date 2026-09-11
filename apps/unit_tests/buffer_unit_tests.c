@@ -130,7 +130,7 @@ test_buffer_make_temp_name(char* tmpName, size_t tmpNameSize, const char* suffix
     size_t tmpDirLen;
     const char* sep;
     long now;
-    unsigned int ticks;
+    clock_t ticks;
 #ifdef _MSC_VER
     int pid = _getpid();
     int ret;
@@ -142,6 +142,9 @@ test_buffer_make_temp_name(char* tmpName, size_t tmpNameSize, const char* suffix
     xmlSecAssert2(tmpName != NULL, -1);
     xmlSecAssert2(tmpNameSize > 0, -1);
     xmlSecAssert2(suffix != NULL, -1);
+    if(pid < 0) {
+        return(-1);
+    }
 
     tmpDir = test_buffer_get_temp_dir();
     xmlSecAssert2(tmpDir != NULL, -1);
@@ -154,13 +157,19 @@ test_buffer_make_temp_name(char* tmpName, size_t tmpNameSize, const char* suffix
 #endif
 
     now = (long)time(NULL);
-    ticks = (unsigned int)clock();
+    if(now < 0) {
+        return(-1);
+    }
+    ticks = clock();
+    if(ticks == (clock_t)-1) {
+        return(-1);
+    }
 #ifdef _MSC_VER
-    ret = sprintf_s(tmpName, tmpNameSize, "%s%sxmlsec_unit_tests_%ld_%d_%u_%s",
-        tmpDir, sep, now, pid, ticks, suffix);
+    ret = sprintf_s(tmpName, tmpNameSize, "%s%sxmlsec_unit_tests_%ld_%d_%ld_%s",
+        tmpDir, sep, now, pid, (long)ticks, suffix);
 #else
-    ret = snprintf(tmpName, tmpNameSize, "%s%sxmlsec_unit_tests_%ld_%d_%u_%s",
-        tmpDir, sep, now, pid, ticks, suffix);
+    ret = snprintf(tmpName, tmpNameSize, "%s%sxmlsec_unit_tests_%ld_%d_%ld_%s",
+        tmpDir, sep, now, pid, (long)ticks, suffix);
 #endif
     if((ret < 0) || ((size_t)ret >= tmpNameSize)) {
         return(-1);
@@ -330,7 +339,7 @@ test_buffer_initialize_finalize(void) {
     xmlSecBufferFinalize(&buf);
 
     /* after finalize the struct should be fully reset */
-    if((buf.data != NULL) || (buf.size != 0) || (buf.maxSize != 0)) {
+    if((buf.data != NULL) || (buf.size != 0) || (buf.maxSize != 0) || (buf.flags != 0)) {
         testLog("Error: xmlSecBufferFinalize did not reset all fields\n");
         goto done_after_finalize;
     }
@@ -608,7 +617,7 @@ test_buffer_set_get_size(void) {
                 xmlSecBufferGetMaxSize(&buf), prevMax);
             goto done;
         }
-        /* bytes from new size to old size must be zeroed (ISSUE-2 fix) */
+        /* bytes from new size to old size must be zeroed */
         for(ii = 2; ii < sizeof(shrinkData); ++ii) {
             if(ptr[ii] != 0) {
                 testLog("Error: byte at offset " XMLSEC_SIZE_FMT " is 0x%02x after shrink, expected 0x00\n",
@@ -953,7 +962,7 @@ test_buffer_remove_head(void) {
         goto done;
     }
 
-    /* NOTE (ISSUE-1): removing more than the current size silently truncates
+    /* removing more than the current size silently truncates
      * to zero instead of returning an error.  We test that the function
      * at least succeeds and leaves size == 0. */
     ret = xmlSecBufferSetData(&buf, data, sizeof(data));
@@ -1042,7 +1051,7 @@ test_buffer_remove_tail(void) {
         goto done;
     }
 
-    /* NOTE (ISSUE-1): removing more than the current size silently truncates
+    /* removing more than the current size silently truncates
      * to zero instead of returning an error. */
     ret = xmlSecBufferSetData(&buf, data, sizeof(data));
     if(ret < 0) {
@@ -1486,7 +1495,7 @@ test_buffer_read_file(void) {
         return;
     }
 
-    /* write a known payload to a temp file in the current directory */
+    /* write a known payload to a temp file in the temp directory */
 #ifndef _MSC_VER
     f = fopen(tmpName, "wb");
 #else
@@ -1501,7 +1510,9 @@ test_buffer_read_file(void) {
         testLog("Error: failed to write temp file payload\n");
         goto done;
     }
-    fclose(f);
+    if(fclose(f) != 0) {
+        testLog("Error: failed to close temp file '%s'\n", tmpName);
+    }
     f = NULL;
 
     buf = xmlSecBufferCreate(0);
@@ -1541,7 +1552,9 @@ test_buffer_read_file(void) {
 
 done:
     if(f != NULL) {
-        fclose(f);
+        if(fclose(f) != 0) {
+            testLog("Error: failed to close temp file '%s'\n", tmpName);
+        }
     }
     if(buf != NULL) {
         xmlSecBufferDestroy(buf);
@@ -1592,7 +1605,9 @@ test_buffer_debug_hex_dump(void) {
     fileCreated = 1;
 
     xmlSecBufferDebugHexDump(buf, f);
-    fclose(f);
+    if(fclose(f) != 0) {
+        testLog("Error: failed to close hex dump temp file '%s'\n", tmpName);
+    }
     f = NULL;
 
 #ifndef _MSC_VER
@@ -1608,7 +1623,9 @@ test_buffer_debug_hex_dump(void) {
         testLog("Error: failed to read hex dump output\n");
         goto done;
     }
-    fclose(f);
+    if(fclose(f) != 0) {
+        testLog("Error: failed to close hex dump temp file '%s'\n", tmpName);
+    }
     f = NULL;
 
     /* 5 bytes (< 32) -> a single line of lowercase hex, no trailing newline */
@@ -1627,7 +1644,9 @@ test_buffer_debug_hex_dump(void) {
 
 done:
     if(f != NULL) {
-        fclose(f);
+        if(fclose(f) != 0) {
+            testLog("Error: failed to close hex dump temp file '%s'\n", tmpName);
+        }
     }
     if(buf != NULL) {
         xmlSecBufferDestroy(buf);
@@ -1675,7 +1694,9 @@ test_buffer_create_output_buffer(void) {
         testLog("Error: xmlOutputBufferWrite failed\n");
         goto done;
     }
-    xmlOutputBufferClose(out);
+    if(xmlOutputBufferClose(out) != 0) {
+        testLog("Error: xmlOutputBufferClose failed\n");
+    }
     out = NULL;
 
     if(xmlSecBufferGetSize(buf) != strlen(text)) {
@@ -1695,7 +1716,9 @@ test_buffer_create_output_buffer(void) {
 
 done:
     if(out != NULL) {
-        xmlOutputBufferClose(out);
+        if(xmlOutputBufferClose(out) != 0) {
+            testLog("Error: xmlOutputBufferClose failed\n");
+        }
     }
     if(buf != NULL) {
         xmlSecBufferDestroy(buf);

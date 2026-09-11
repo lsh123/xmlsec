@@ -11,9 +11,6 @@
  */
 #include "globals.h"
 
-#include <stdlib.h>
-#include <string.h>
-
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/keysmngr.h>
@@ -102,6 +99,7 @@ xmlSecOpenSSLKeysStoreFinalize(xmlSecKeyStorePtr store) {
     xmlSecAssert((simplekeystore != NULL) && (*simplekeystore != NULL));
 
     xmlSecKeyStoreDestroy(*simplekeystore);
+    *simplekeystore = NULL;
 }
 
 static xmlSecKeyPtr
@@ -136,7 +134,7 @@ xmlSecOpenSSLKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509
 
     keysList = xmlSecSimpleKeysStoreGetKeys(*simplekeystore);
     if(keysList == NULL) {
-        xmlSecInternalError("xmlSecSimpleKeysStoreGetKeys", NULL);
+        xmlSecInternalError("xmlSecSimpleKeysStoreGetKeys", xmlSecKeyStoreGetName(store));
         return(NULL);
     }
 
@@ -149,7 +147,7 @@ xmlSecOpenSSLKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509
     /* since not all key stores can return key owned by someone else, we need to duplicate the key */
     res = xmlSecKeyDuplicate(key);
     if(res == NULL) {
-        xmlSecInternalError("xmlSecKeyDuplicate", NULL);
+        xmlSecInternalError("xmlSecKeyDuplicate", xmlSecKeyStoreGetName(store));
         return(NULL);
     }
 

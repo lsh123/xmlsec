@@ -10,16 +10,10 @@
  */
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
 #include <stdarg.h>
-
-#if !defined(_MSC_VER)
-#include <libgen.h>
-#endif /* defined(_MSC_VER) */
 
 /* must be included before any other xmlsec header */
 #include "xmlsec_unit_tests.h"
-#include "../../src/x509_helpers.h"
 
 #include <libxml/parser.h>
 
@@ -36,7 +30,7 @@
 #include <crtdbg.h>
 #endif /*defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC) */
 
-/* per-test log buffer (defined after main; forward-declared here for use in main) */
+/* per-test log buffer */
 static char *  g_testLogBuffer;
 static size_t  g_testLogBufferLen;
 static size_t  g_testLogBufferCap;
@@ -331,7 +325,6 @@ void testStart(const char * name) {
     testsName = name;
     testsStarted += 1;
     testLogReset();
-    testLog("    %s ...\n", testsName);
     fprintf(stdout, "    %s ...\n", testsName);
 }
 

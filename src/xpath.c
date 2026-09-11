@@ -31,7 +31,7 @@
 /**
  * @brief Implements the XPath here() function.
  * @details The implementation of XPath "here()" function.
- * See xmlXPtrHereFunction() in xpointer.c. the only change is that
+ * See xmlXPtrHereFunction() in xpointer.c. The only change is that
  * we return NodeSet instead of NodeInterval.
  * @param ctxt the pointer to XPath context.
  * @param nargs the arguments number.
@@ -103,13 +103,6 @@ xmlSecXPathDataCreate(xmlSecXPathDataType type) {
     switch(data->type) {
     case xmlSecXPathDataTypeXPath:
     case xmlSecXPathDataTypeXPath2:
-        data->ctx = xmlXPathNewContext(NULL); /* we'll set doc in the context later */
-        if(data->ctx == NULL) {
-            xmlSecXmlError("xmlXPathNewContext", NULL);
-            xmlSecXPathDataDestroy(data);
-            return(NULL);
-        }
-        break;
     case xmlSecXPathDataTypeXPointer:
         data->ctx = xmlXPathNewContext(NULL); /* we'll set doc in the context later */
         if(data->ctx == NULL) {
@@ -927,7 +920,7 @@ static xmlSecTransformKlass xmlSecTransformVisa3DHackKlass = {
 /**
  * @brief Gets the Visa3DHack transform klass.
  * @details The Visa3DHack transform klass. The only reason why we need this
- * is Visa3D protocol. It doesn't follow XML/XPointer/XMLDSig specs and allows
+ * is the Visa3D protocol. It doesn't follow XML/XPointer/XMLDSig specs and allows
  * invalid XPointer expressions in the URI attribute. Since we couldn't evaluate
  * such expressions thru XPath/XPointer engine, we need to have this hack here.
  * @return Visa3DHack transform klass.
@@ -938,7 +931,7 @@ xmlSecTransformVisa3DHackGetKlass(void) {
 }
 
 /**
- * @brief Sets the ID value for an Visa3DHack @p transform.
+ * @brief Sets the ID value for a Visa3DHack @p transform.
  * @param transform the pointer to Visa3DHack transform.
  * @param id the ID value.
  * @return 0 on success or a negative value if an error occurs.

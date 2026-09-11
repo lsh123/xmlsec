@@ -949,6 +949,7 @@ test_xmlSecTmplEncDataEnsureCipherReference_idempotent(void) {
 static xmlNodePtr
 testCreateTransformNode(xmlDocPtr* doc) {
     xmlNodePtr transformNode;
+    xmlNsPtr ns;
 
     (*doc) = xmlNewDoc(BAD_CAST "1.0");
     if((*doc) == NULL) {
@@ -960,7 +961,14 @@ testCreateTransformNode(xmlDocPtr* doc) {
         (*doc) = NULL;
         return(NULL);
     }
-    xmlSetNs(transformNode, xmlNewNs(transformNode, xmlSecDSigNs, NULL));
+    ns = xmlNewNs(transformNode, xmlSecDSigNs, NULL);
+    if(ns == NULL) {
+        xmlFreeNode(transformNode);
+        xmlFreeDoc((*doc));
+        (*doc) = NULL;
+        return(NULL);
+    }
+    xmlSetNs(transformNode, ns);
     xmlDocSetRootElement((*doc), transformNode);
     return(transformNode);
 }
@@ -2227,6 +2235,7 @@ test_xmlSecTmplReferenceListAddDataReference_and_KeyReference(void) {
     xmlNodePtr refListNode;
     xmlNodePtr dataRefNode;
     xmlNodePtr keyRefNode;
+    xmlNsPtr ns;
     xmlChar* attr;
 
     testStart("xmlSecTmplReferenceListAdd*: adds DataReference and KeyReference");
@@ -2245,7 +2254,14 @@ test_xmlSecTmplReferenceListAddDataReference_and_KeyReference(void) {
         testFinishedFailure();
         return;
     }
-    xmlSetNs(encKeyNode, xmlNewNs(encKeyNode, xmlSecEncNs, NULL));
+    ns = xmlNewNs(encKeyNode, xmlSecEncNs, NULL);
+    if(ns == NULL) {
+        testLog("Error: failed to create namespace\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlSetNs(encKeyNode, ns);
     xmlDocSetRootElement(doc, encKeyNode);
 
     dataRefNode = xmlSecTmplReferenceListAddDataReference(encKeyNode, BAD_CAST "#data");

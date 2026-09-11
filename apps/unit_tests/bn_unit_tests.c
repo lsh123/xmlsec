@@ -467,6 +467,7 @@ test_xmlSecBnFromString_base2AndBase8_roundTrip(void) {
 static void
 test_xmlSecBnFromString_baseBoundsRejected(void) {
     xmlSecBn bn;
+    xmlChar* str;
     int ret;
 
     testStart("xmlSecBnFromString/xmlSecBnToString: base out of [2,16] is rejected");
@@ -497,14 +498,18 @@ test_xmlSecBnFromString_baseBoundsRejected(void) {
     }
 
     /* ToString enforces the same bounds */
-    if(xmlSecBnToString(&bn, 1) != NULL) {
+    str = xmlSecBnToString(&bn, 1);
+    if(str != NULL) {
         testLog("Error: xmlSecBnToString unexpectedly succeeded for base=1\n");
+        xmlFree(str);
         xmlSecBnFinalize(&bn);
         testFinishedFailure();
         return;
     }
-    if(xmlSecBnToString(&bn, 17) != NULL) {
+    str = xmlSecBnToString(&bn, 17);
+    if(str != NULL) {
         testLog("Error: xmlSecBnToString unexpectedly succeeded for base=17\n");
+        xmlFree(str);
         xmlSecBnFinalize(&bn);
         testFinishedFailure();
         return;

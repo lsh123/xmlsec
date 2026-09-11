@@ -750,7 +750,7 @@ test_xmlSecTransformChaCha20Poly1305ParamsRead_unexpected_extra_child(void) {
 
 /******************************************************************************
  * xmlSecTransformHmacWriteOutput
-   *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecTransformHmacWriteOutput_empty_full_bytes(void) {
     static const xmlSecByte hmac[3] = { 0x12, 0x34, 0xAB };

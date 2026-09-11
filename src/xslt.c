@@ -26,7 +26,6 @@
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
-#include <xmlsec/keys.h>
 #include <xmlsec/parser.h>
 #include <xmlsec/errors.h>
 #include "xslt.h"
@@ -235,7 +234,7 @@ xmlSecXsltFinalize(xmlSecTransformPtr transform) {
     if(ctx->parserCtx != NULL) {
         if(ctx->parserCtx->myDoc != NULL) {
             xmlFreeDoc(ctx->parserCtx->myDoc);
-        ctx->parserCtx->myDoc = NULL;
+            ctx->parserCtx->myDoc = NULL;
         }
         xmlFreeParserCtxt(ctx->parserCtx);
     }
@@ -372,7 +371,6 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
             return(-1);
         }
 
-        /* todo: check that document is well formed? */
         docIn = ctx->parserCtx->myDoc;
         ctx->parserCtx->myDoc = NULL;
 

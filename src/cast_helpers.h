@@ -28,9 +28,13 @@
 
  /******************************************************************************
   *
-  * Main macros to help with casting, we assume that LL and ULL are the largest
-  * possible types. All these macros assume that srcType is "bigger" than dstType.
-  *
+* Main macros to help with casting, we assume that LL and ULL are the largest
+ * possible types. All these macros assume that srcType is "bigger" than dstType.
+ *
+ * NOTE: errorAction MUST transfer control out of the block (e.g. return or goto),
+ * because the assignment (dstVal) = (dstType)(srcVal) executes unconditionally
+ * after the if-block.
+ *
    *****************************************************************************/
 #define XMLSEC_SAFE_CAST_MIN_MAX_CHECK(srcType, srcVal, srcFmt, dstType, dstVal, dstFmt, dstMin, dstMax, errorAction, errorObject) \
     if(((srcVal) < (srcType)(dstMin)) || ((srcVal) > (srcType)(dstMax))) {     \
@@ -119,7 +123,7 @@
 #else /* (SIZE_MAX > INT_MAX) */
 
 #define XMLSEC_SAFE_CAST_SIZE_T_TO_INT(srcVal, dstVal, errorAction, errorObject) \
-    (dstVal) = (srcVal);
+    (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */
 
 #endif /* (SIZE_MAX > INT_MAX) */
 
@@ -134,7 +138,7 @@
 #else /* (XMLSEC_SIZE_MAX > INT_MAX) */
 
 #define XMLSEC_SAFE_CAST_SIZE_TO_INT(srcVal, dstVal, errorAction, errorObject) \
-    (dstVal) = (srcVal);
+    (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */
 
 #endif /* (XMLSEC_SIZE_MAX > INT_MAX) */
 
@@ -178,7 +182,7 @@
 #else /* (SIZE_MAX > UINT_MAX) */
 
 #define XMLSEC_SAFE_CAST_SIZE_T_TO_UINT(srcVal, dstVal, errorAction, errorObject) \
-    (dstVal) = (srcVal);
+    (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */
 
 #endif /* (SIZE_MAX > UINT_MAX) */
 
@@ -193,7 +197,7 @@
 #else /* (XMLSEC_SIZE_MAX > UINT_MAX) */
 
 #define XMLSEC_SAFE_CAST_SIZE_TO_UINT(srcVal, dstVal, errorAction, errorObject) \
-    (dstVal) = (srcVal);
+    (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */
 
 #endif /* (XMLSEC_SIZE_MAX > UINT_MAX) */
 
@@ -214,7 +218,7 @@
 #else  /* UINT_MAX > LONG_MAX */
 
 #define XMLSEC_SAFE_CAST_UINT_TO_LONG(srcVal, dstVal, errorAction, errorObject) \
-    (dstVal) = (srcVal);
+    (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */
 
 #endif /* UINT_MAX > LONG_MAX */
 
@@ -230,7 +234,7 @@
 #else /* (SIZE_MAX > LONG_MAX) */
 
 #define XMLSEC_SAFE_CAST_SIZE_T_TO_LONG(srcVal, dstVal, errorAction, errorObject) \
-    (dstVal) = (srcVal);
+    (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */
 
 #endif /* (SIZE_MAX > LONG_MAX) */
 
@@ -246,7 +250,7 @@
 #else /* (XMLSEC_SIZE_MAX > LONG_MAX) */
 
 #define XMLSEC_SAFE_CAST_SIZE_TO_LONG(srcVal, dstVal, errorAction, errorObject) \
-    (dstVal) = (srcVal);
+    (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */
 
 #endif /* (XMLSEC_SIZE_MAX > LONG_MAX) */
 
@@ -267,7 +271,7 @@
 #else /* (XMLSEC_SIZE_MAX > ULONG_MAX) */
 
 #define XMLSEC_SAFE_CAST_SIZE_TO_ULONG(srcVal, dstVal, errorAction, errorObject) \
-    (dstVal) = (srcVal);
+    (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */
 
 #endif /* (XMLSEC_SIZE_MAX > ULONG_MAX) */
 
@@ -322,7 +326,7 @@
 #else /* (UINT_MAX > XMLSEC_SIZE_MAX) */
 
 #define XMLSEC_SAFE_CAST_UINT_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
-    (dstVal) = (srcVal);
+    (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */
 
 #endif /* (UINT_MAX > XMLSEC_SIZE_MAX) */
 
@@ -355,13 +359,13 @@
 #else /* (ULONG_MAX > XMLSEC_SIZE_MAX) */
 
 #define XMLSEC_SAFE_CAST_ULONG_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
-    (dstVal) = (srcVal);
+    (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */
 
 #endif /* (ULONG_MAX > XMLSEC_SIZE_MAX) */
 
 /* Safe cast with limits check: size_t -> xmlSecSize (same type) */
 #define XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
-    (dstVal) = (srcVal);
+    (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */
 
 
 /******************************************************************************

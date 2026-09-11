@@ -520,7 +520,7 @@ xmlSecDSigCtxProcessSignatureNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
         return(-1);
     }
 
-    /* now validated all the references and prepare transform */
+    /* process SignedInfo node and prepare transform */
     ret = xmlSecDSigCtxProcessSignedInfoNode(dsigCtx, signedInfoNode, &firstReferenceNode);
     if(ret < 0) {
         xmlSecInternalError("xmlSecDSigCtxProcessSignedInfoNode", NULL);
@@ -811,7 +811,6 @@ xmlSecDSigCtxProcessKeyInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     }
 
     /* ignore <dsig:KeyInfo /> if the key is already set */
-    /* todo: throw an error if key is set and node != NULL? */
     if((dsigCtx->signKey == NULL) && (dsigCtx->keyInfoReadCtx.keysMngr != NULL)
                         && (dsigCtx->keyInfoReadCtx.keysMngr->getKey != NULL)) {
         dsigCtx->signKey = (dsigCtx->keyInfoReadCtx.keysMngr->getKey)(node, &(dsigCtx->keyInfoReadCtx));
@@ -1340,7 +1339,6 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
     xmlSecAssert2(dsigRefCtx != NULL, -1);
     xmlSecAssert2(dsigRefCtx->dsigCtx != NULL, -1);
     xmlSecAssert2(dsigRefCtx->digestMethod == NULL, -1);
-    xmlSecAssert2(dsigRefCtx->digestMethod == NULL, -1);
     xmlSecAssert2(dsigRefCtx->preDigestMemBufMethod == NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(node->doc != NULL, -1);
@@ -1482,7 +1480,7 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
         /* set success status and we are done */
         dsigRefCtx->status = xmlSecDSigStatusSucceeded;
     } else {
-        /* verify SignatureValue node content */
+        /* verify DigestValue node content */
         ret = xmlSecTransformVerifyNodeContent(dsigRefCtx->digestMethod,
                             digestValueNode, transformCtx);
         if(ret < 0) {

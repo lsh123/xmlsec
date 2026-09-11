@@ -173,6 +173,7 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
 
     /* reset the buffer just in case */
     xmlSecBnZero(bn);
+    xmlSecAssert2(xmlSecBufferGetSize(bn) == 0, -1);
 
     /* The result size could not exceed the input string length
      * because each char fits inside a byte in all cases :)
@@ -182,11 +183,8 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
      * Finally, we can add one byte for the 00 prefix.
      */
     strSize = xmlSecStrlen(str);
-    if(strSize / 2 + 2 > XMLSEC_SIZE_MAX - xmlSecBufferGetSize(bn)) {
-        xmlSecInvalidSizeError("size", strSize, XMLSEC_SIZE_MAX, NULL);
-        return (-1);
-    }
-    size = xmlSecBufferGetSize(bn) + strSize / 2 + 1 + 1;
+    /* note that the bn was just cleared and has size 0 */
+    size = strSize / 2 + 1 + 1;
     ret = xmlSecBufferSetMaxSize(bn, size);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetMaxSize", NULL,
@@ -289,7 +287,7 @@ xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
         xmlSecBnFinalize(&bn2);
         return (NULL);
     }
-    len = 8 * size + 1 + 1;
+    len = 8 * size + 1;
     res = (xmlChar*)xmlMalloc(len + 1);
     if(res == NULL) {
         xmlSecMallocError(len + 1, NULL);

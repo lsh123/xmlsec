@@ -92,7 +92,7 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
         g_init_failed = (do_init() < 0);
         g_initialized = 1;
     }
-    if (g_init_failed || size < 2) {
+    if (g_init_failed || size < 1) {
         return 0;
     }
 

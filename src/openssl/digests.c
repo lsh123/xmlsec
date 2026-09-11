@@ -206,7 +206,7 @@ xmlSecOpenSSLEvpDigestSetGostDigestByName(xmlSecOpenSSLEvpDigestCtxPtr ctx, cons
         xmlSecOpenSSLEvpDigestFinalize(transform);                                      \
         return(-1);                                                                     \
     }
-#endif /*  !defined(XMLSEC_NO_GOST) || !defined(XMLSEC_NO_GOST2012) */
+#endif /* !defined(XMLSEC_NO_GOST) || !defined(XMLSEC_NO_GOST2012) */
 
 
 static int
@@ -727,7 +727,7 @@ xmlSecTransformId
 xmlSecOpenSSLTransformGostR3411_94GetKlass(void) {
     return(&xmlSecOpenSSLGostR3411_94Klass);
 }
-#endif /* XMLSEC_NO_GOST*/
+#endif /* XMLSEC_NO_GOST */
 
 #ifndef XMLSEC_NO_GOST2012
 

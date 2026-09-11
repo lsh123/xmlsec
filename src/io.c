@@ -38,7 +38,6 @@
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
-#include <xmlsec/keys.h>
 #include <xmlsec/io.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/xmltree.h>
@@ -167,8 +166,7 @@ xmlSecIOInit(void) {
 
 #ifndef XMLSEC_NO_HTTP
     xmlNanoHTTPInit();
-#endif /* #ifndef XMLSEC_NO_HTTP
- */
+#endif /* XMLSEC_NO_HTTP */
 
     ret = xmlSecIORegisterDefaultCallbacks();
     if(ret < 0) {
@@ -374,7 +372,7 @@ xmlSecIOFileRead(void* context, char* buffer, int len) {
 }
 
 static int
-xmlSecIOFilClose(void* context) {
+xmlSecIOFileClose(void* context) {
     FILE* fd = (FILE*)context;
     int ret;
 
@@ -402,7 +400,7 @@ xmlSecIORegisterDefaultCallbacks(void) {
         xmlSecIOFileMatch,
         xmlSecIOFileOpen,
         xmlSecIOFileRead,
-        xmlSecIOFilClose
+        xmlSecIOFileClose
     );
     if(ret < 0) {
         xmlSecInternalError("xmlSecIORegisterCallbacks(file)", NULL);
@@ -517,7 +515,7 @@ xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const xmlChar *uri) {
      * Go in reverse to give precedence to user defined handlers.
      * try with an unescaped version of the uri
      */
-    if(ctx->clbks == NULL) {
+    {
         char *unescaped;
 
         unescaped = xmlURIUnescapeString((char*)uri, 0, NULL);

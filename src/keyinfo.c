@@ -117,7 +117,7 @@ xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCtx
                 return(-1);
             }
         } else if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_UNKNOWN_CHILD) != 0) {
-            /* there is a laxi schema validation but application may
+            /* there is a lax schema validation but application may
              * desire to disable unknown nodes*/
             xmlSecUnexpectedNodeError(cur, NULL);
             return(-1);
@@ -179,7 +179,7 @@ xmlSecKeyInfoNodeWrite(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCt
                 return(-1);
             }
         } else if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_UNKNOWN_CHILD) != 0) {
-            /* laxi schema validation but application can disable it*/
+            /* lax schema validation but application can disable it*/
             xmlSecUnexpectedNodeError(cur, NULL);
             return(-1);
         }
@@ -280,7 +280,7 @@ xmlSecKeyInfoCtxInitialize(xmlSecKeyInfoCtxPtr keyInfoCtx, xmlSecKeysMngrPtr key
 #endif /* XMLSEC_NO_XMLENC */
 
 #ifndef XMLSEC_NO_X509
-    keyInfoCtx->certsVerificationDepth= 9;
+    keyInfoCtx->certsVerificationDepth = 9;
 #endif /* XMLSEC_NO_X509 */
 
     ret = xmlSecKeyReqInitialize(&(keyInfoCtx->keyReq));
@@ -387,6 +387,9 @@ xmlSecKeyInfoCtxCreateEncCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
                 return(-1);
             }
             break;
+        default:
+            /* xmlSecKeyInfoMode only has Read and Write values */
+            break;
     }
     keyInfoCtx->encCtx = tmp;
     tmp->keyInfoReadCtx.operation = keyInfoCtx->operation;
@@ -428,10 +431,10 @@ xmlSecKeyInfoCtxCopyUserPref(xmlSecKeyInfoCtxPtr dst, xmlSecKeyInfoCtxPtr src) {
     }
 
     /* &lt;dsig:RetrievalMethod/&gt; */
-    dst->maxRetrievalMethodLevel= src->maxRetrievalMethodLevel;
+    dst->maxRetrievalMethodLevel = src->maxRetrievalMethodLevel;
     ret = xmlSecTransformCtxCopyUserPref(&(dst->retrievalMethodCtx), &(src->retrievalMethodCtx));
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformCtxCopyUserPref(enabledKeyData)", NULL);
+        xmlSecInternalError("xmlSecTransformCtxCopyUserPref(retrievalMethodCtx)", NULL);
         return(-1);
     }
 
@@ -439,11 +442,11 @@ xmlSecKeyInfoCtxCopyUserPref(xmlSecKeyInfoCtxPtr dst, xmlSecKeyInfoCtxPtr src) {
     dst->maxKeyInfoReferenceLevel = src->maxKeyInfoReferenceLevel;
     ret = xmlSecTransformCtxCopyUserPref(&(dst->keyInfoReferenceCtx), &(src->keyInfoReferenceCtx));
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformCtxCopyUserPref(enabledKeyData)", NULL);
+        xmlSecInternalError("xmlSecTransformCtxCopyUserPref(keyInfoReferenceCtx)", NULL);
         return(-1);
     }
 
-    /* <enc:EncryptedContext /> */
+    /* <enc:EncryptedKey /> */
 #ifndef XMLSEC_NO_XMLENC
     if((src->encCtx != NULL) && (dst->encCtx != NULL)) {
         dst->encCtx->mode = xmlEncCtxModeEncryptedKey;
@@ -866,7 +869,7 @@ xmlSecKeyDataValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node,
             return(-1);
         }
     } else if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_KEYVALUE_STOP_ON_UNKNOWN_CHILD) != 0) {
-        /* laxi schema validation but application can disable it */
+        /* lax schema validation but application can disable it */
         xmlSecUnexpectedNodeError(cur, xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
@@ -1064,7 +1067,7 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
         }
     }
 
-    /* laxi schema validation but application can disable it */
+    /* lax schema validation but application can disable it */
     if(dataId == xmlSecKeyDataIdUnknown) {
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_UNKNOWN_HREF) != 0) {
             xmlSecInvalidNodeAttributeError(node, xmlSecAttrType, xmlSecKeyDataKlassGetName(id),
@@ -1214,7 +1217,7 @@ xmlSecKeyDataRetrievalMethodReadXmlResult(xmlSecKeyDataId typeId, xmlSecKeyPtr k
                             nodeName, nodeNs, xmlSecKeyDataUsageRetrievalMethodNodeXml);
     }
     if(dataId == xmlSecKeyDataIdUnknown) {
-        /* laxi schema validation but application can disable it */
+        /* lax schema validation but application can disable it */
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_UNKNOWN_CHILD) != 0) {
             xmlSecUnexpectedNodeError(cur, xmlSecKeyDataKlassGetName(typeId));
             xmlFreeDoc(doc);
@@ -1330,7 +1333,7 @@ static int                      xmlSecKeyDataKeyInfoReferenceReadXmlResult(xmlSe
  *
  * https://www.w3.org/TR/xmldsig-core1/#sec-KeyInfoReference
  *
- * @return the&lt;dsig11:KeyInfoReference/&gt; element processing key data klass.
+ * @return the &lt;dsig11:KeyInfoReference/&gt; element processing key data klass.
  */
 xmlSecKeyDataId
 xmlSecKeyDataKeyInfoReferenceGetKlass(void) {
@@ -1339,7 +1342,6 @@ xmlSecKeyDataKeyInfoReferenceGetKlass(void) {
 
 static int
 xmlSecKeyDataKeyInfoReferenceXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecKeyDataId dataId = xmlSecKeyDataIdUnknown;
     xmlChar *uri = NULL;
     xmlNodePtr cur;
     int res = -1;
@@ -1367,7 +1369,7 @@ xmlSecKeyDataKeyInfoReferenceXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNo
         goto done;
     }
 
-    /* destroy prev retrieval method context if any and set start URI */
+    /* destroy prev key info reference context if any and set start URI */
     xmlSecTransformCtxReset(&(keyInfoCtx->keyInfoReferenceCtx));
     ret = xmlSecTransformCtxSetUri(&(keyInfoCtx->keyInfoReferenceCtx), uri, node);
     if(ret < 0) {
@@ -1397,7 +1399,7 @@ xmlSecKeyDataKeyInfoReferenceXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNo
 
     /* The result of dereferencing a KeyInfoReference MUST be a KeyInfo element,
      * or an XML document with a KeyInfo element as the root */
-    ret = xmlSecKeyDataKeyInfoReferenceReadXmlResult(dataId, key,
+    ret = xmlSecKeyDataKeyInfoReferenceReadXmlResult(id, key,
                     xmlSecBufferGetData(keyInfoCtx->keyInfoReferenceCtx.result),
                     xmlSecBufferGetSize(keyInfoCtx->keyInfoReferenceCtx.result),
                     keyInfoCtx);
@@ -1737,7 +1739,7 @@ static xmlSecKeyDataKlass xmlSecKeyDataDerivedKeyKlass = {
 
 /**
  * @brief Gets the DerivedKey element key data klass.
- * @details The&lt;enc11:DerivedKey/&gt; element key data klass
+ * @details The &lt;enc11:DerivedKey/&gt; element key data klass
  * (https://www.w3.org/TR/xmlenc-core1/#sec-DerivedKey)
  *
  * The DerivedKey element is used to transport information about
@@ -1751,7 +1753,7 @@ static xmlSecKeyDataKlass xmlSecKeyDataDerivedKeyKlass = {
  * to the EncryptionMethod or SignatureMethod algorithm without
  * any additional processing.
  *
- * @return the&lt;enc11:DerivedKey/&gt; element processing key data klass.
+ * @return the &lt;enc11:DerivedKey/&gt; element processing key data klass.
  */
 xmlSecKeyDataId
 xmlSecKeyDataDerivedKeyGetKlass(void) {
@@ -2258,7 +2260,7 @@ xmlSecKeyDataEncapsulationMechanismXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key
     /* we should have kemKeyData in the key, pre-populate transformCtx */
     kemKeyData = xmlSecKeyGetData(key, xmlSecKeyDataKEMId);
     if(kemKeyData == NULL) {
-        xmlSecInternalError("xmlSecKeyGetDataById(kemKeyData)", xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecKeyGetData(kemKeyData)", xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
 

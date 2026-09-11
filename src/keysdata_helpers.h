@@ -84,7 +84,6 @@ XMLSEC_EXPORT void              xmlSecKeyDataBinaryValueDebugXmlDump    (xmlSecK
 
 #if !defined(XMLSEC_NO_EC)
 
-/* TODO: do we even need pub_x and pub_y? */
 typedef struct _xmlSecKeyValueEc {
     xmlChar* curve;
     xmlSecBuffer pubkey;
@@ -96,7 +95,7 @@ typedef struct _xmlSecKeyValueEc {
  * @brief Creates xmlSecKeyData from #ecValue.
  * @param id the key data data.
  * @param ecValue the pointer to input xmlSecKeyValueEc.
- * @return the poitner to xmlSecKeyData or NULL if an error occurs.
+ * @return the pointer to xmlSecKeyData or NULL if an error occurs.
  */
 typedef xmlSecKeyDataPtr       (*xmlSecKeyDataEcRead)                   (xmlSecKeyDataId id,
                                                                          xmlSecKeyValueEcPtr ecValue);
@@ -105,7 +104,7 @@ typedef xmlSecKeyDataPtr       (*xmlSecKeyDataEcRead)                   (xmlSecK
  * @brief Writes xmlSecKeyData to xmlSecKeyValueEc.
  * @param id the key data data.
  * @param data the pointer to input xmlSecKeyData.
- * @param c the pointer to input xmlSecKeyValueEc.
+ * @param ecValue the pointer to input xmlSecKeyValueEc.
  * @return 0 on success or a negative value if an error occurs.
  */
 typedef int                    (*xmlSecKeyDataEcWrite)                  (xmlSecKeyDataId id,
@@ -113,7 +112,7 @@ typedef int                    (*xmlSecKeyDataEcWrite)                  (xmlSecK
                                                                          xmlSecKeyValueEcPtr ecValue);
 
 
-XMLSEC_EXPORT int               xmlSecKeyDataEcPublicKeySplitComponents (xmlSecKeyValueEcPtr ecValue);
+XMLSEC_EXPORT int               xmlSecKeyDataEcPublicKeySplitComponents  (xmlSecKeyValueEcPtr ecValue);
 XMLSEC_EXPORT int               xmlSecKeyDataEcPublicKeyCombineComponents (xmlSecKeyValueEcPtr ecValue);
 
 
@@ -147,8 +146,8 @@ typedef struct _xmlSecKeyValueRsa {
 /**
  * @brief Creates xmlSecKeyData from #rsaValue.
  * @param id the key data data.
- * @param dsaValue the pointer to input xmlSecKeyValueRsa.
- * @return the poitner to xmlSecKeyData or NULL if an error occurs.
+ * @param rsaValue the pointer to input xmlSecKeyValueRsa.
+ * @return the pointer to xmlSecKeyData or NULL if an error occurs.
  */
 typedef xmlSecKeyDataPtr       (*xmlSecKeyDataRsaRead)                  (xmlSecKeyDataId id,
                                                                          xmlSecKeyValueRsaPtr rsaValue);
@@ -157,7 +156,7 @@ typedef xmlSecKeyDataPtr       (*xmlSecKeyDataRsaRead)                  (xmlSecK
  * @brief Writes xmlSecKeyData to xmlSecKeyValueRsa.
  * @param id the key data data.
  * @param data the pointer to input xmlSecKeyData.
- * @param dsaValue the pointer to input xmlSecKeyValueRsa.
+ * @param rsaValue the pointer to input xmlSecKeyValueRsa.
  * @param writePrivateKey the flag indicating if private key component should be output or not.
  * @return 0 on success or a negative value if an error occurs.
  */
@@ -200,7 +199,7 @@ typedef struct _xmlSecKeyValueDh {
  * @brief Creates xmlSecKeyData from #dhValue.
  * @param id the key data data.
  * @param dhValue the pointer to input xmlSecKeyValueDh.
- * @return the poitner to xmlSecKeyData or NULL if an error occurs.
+ * @return the pointer to xmlSecKeyData or NULL if an error occurs.
  */
 typedef xmlSecKeyDataPtr       (*xmlSecKeyDataDhRead)                  (xmlSecKeyDataId id,
                                                                          xmlSecKeyValueDhPtr dhValue);
@@ -251,7 +250,7 @@ typedef struct _xmlSecKeyValueDsa {
  * @brief Creates xmlSecKeyData from #dsaValue.
  * @param id the key data data.
  * @param dsaValue the pointer to input xmlSecKeyValueDsa.
- * @return the poitner to xmlSecKeyData or NULL if an error occurs.
+ * @return the pointer to xmlSecKeyData or NULL if an error occurs.
  */
 typedef xmlSecKeyDataPtr       (*xmlSecKeyDataDsaRead)                  (xmlSecKeyDataId id,
                                                                          xmlSecKeyValueDsaPtr dsaValue);
@@ -322,22 +321,13 @@ typedef struct _xmlSecKeyDataKEM {
     xmlSecBuffer    ciphertext;   /**< KEM ciphertext from/to enc:CipherData/enc:CipherValue */
 } xmlSecKeyDataKEM;
 
-#define xmlSecKeyDataKEMId \
-        xmlSecKeyDataKEMGetKlass()
+#define xmlSecKeyDataKEMId      xmlSecKeyDataKEMGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataKEMGetKlass         (void);
 XMLSEC_EXPORT xmlSecKeyPtr              xmlSecKeyDataKEMGetRecipientKey  (xmlSecKeyDataPtr data);
 XMLSEC_EXPORT xmlSecBufferPtr           xmlSecKeyDataKEMGetCiphertext    (xmlSecKeyDataPtr data);
 XMLSEC_EXPORT int                       xmlSecKeyDataKEMSetCiphertext    (xmlSecKeyDataPtr data,
-                                                                          const xmlSecByte* buf,
-                                                                          xmlSecSize bufSize);
-XMLSEC_EXPORT int                       xmlSecKeyDataKEMNodeRead         (xmlSecKeyDataPtr data,
-                                                                          xmlNodePtr node,
-                                                                          xmlSecTransformPtr kemTransform,
-                                                                          xmlSecTransformCtxPtr transformCtx);
-XMLSEC_EXPORT int                       xmlSecKeyDataKEMNodeWrite        (xmlSecKeyDataPtr data,
-                                                                          xmlNodePtr node,
-                                                                          xmlSecTransformPtr kemTransform,
-                                                                          xmlSecTransformCtxPtr transformCtx);
+                                                                           const xmlSecByte* buf,
+                                                                           xmlSecSize bufSize);
 
 #endif /* !defined(XMLSEC_NO_MLKEM) */
 

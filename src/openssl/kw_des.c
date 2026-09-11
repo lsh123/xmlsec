@@ -357,7 +357,7 @@ xmlSecOpenSSLKWDes3BlockEncrypt(xmlSecTransformPtr transform,
     xmlSecAssert2(xmlSecBufferGetSize(&(ctx->keyBuffer)) >= XMLSEC_KW_DES3_KEY_LENGTH, -1);
 
     ret = xmlSecOpenSSLKWDes3Encrypt(
-            xmlSecBufferGetData(&(ctx->keyBuffer)),XMLSEC_KW_DES3_KEY_LENGTH,
+            xmlSecBufferGetData(&(ctx->keyBuffer)), XMLSEC_KW_DES3_KEY_LENGTH,
             iv, XMLSEC_KW_DES3_IV_LENGTH,
             in, inSize,
             out, outSize, outWritten,

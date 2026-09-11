@@ -43,7 +43,7 @@ typedef int                    (*xmlSecKeyDataX509Read)                 (xmlSecK
 
 /**
  * @brief Writes the next X509 object (cert or crl) into x509Value.
- * @details If available, writes the next X509 object (cert or crl) into #x509Value.
+ * @details If available, writes the next X509 object (cert or crl) into @x509Value.
  * @param data the pointer to result xmlSecKeyData.
  * @param x509Value the pointer to result xmlSecKeyX509DataValue.
  * @param content the bitmask of what should be output to @x509Value.
@@ -70,9 +70,9 @@ XMLSEC_EXPORT int               xmlSecKeyDataX509XmlWrite               (xmlSecK
 
 
 #define XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES     20  /* RFC 5280: max 20-octet DER INTEGER content (positive value, MSB=0 => max ~159-bit) */
-#define XMLSEC_X509_MAX_SERIAL_NUMBER_CHARS     50  /* RFC 5280: 20 bytes can hold at most ceil(20 * log10(256)) = 49 decimal digits; */
+#define XMLSEC_X509_MAX_SERIAL_NUMBER_CHARS     50  /* RFC 5280: 20 bytes can hold at most ceil(20 * log10(256)) = 49 decimal digits, +1 for NUL terminator */
 
-#define XMLSEC_X509_VALUE_TYPE_UF8_STRING           0
+#define XMLSEC_X509_VALUE_TYPE_UTF8_STRING          0
 #define XMLSEC_X509_VALUE_TYPE_OCTET_STRING         1
 
 typedef int             (*xmlSecX509NameReadCallback)   (const xmlChar * name,
@@ -98,7 +98,7 @@ XMLSEC_EXPORT int       xmlSecX509EscapedStringRead      (const xmlChar **in,
                                                          xmlSecSize outSize,
                                                          xmlSecSize *outWritten,
                                                          xmlSecByte delim,
-                                                         int ingoreTrailingSpaces);
+                                                         int ignoreTrailingSpaces);
 
 XMLSEC_EXPORT int       xmlSecX509AttrValueStringRead    (const xmlChar **in,
                                                          xmlSecSize *inSize,
@@ -107,7 +107,7 @@ XMLSEC_EXPORT int       xmlSecX509AttrValueStringRead    (const xmlChar **in,
                                                          xmlSecSize *outWritten,
                                                          int *outType,
                                                          xmlSecByte delim,
-                                                         int ingoreTrailingSpaces);
+                                                         int ignoreTrailingSpaces);
 
 XMLSEC_EXPORT xmlChar*  xmlSecX509SerialNumberWrite      (const xmlSecByte *data,
                                                          xmlSecSize dataSize);

@@ -256,6 +256,7 @@ xmlSecTransformC14NPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
     transform->status = xmlSecTransformStatusFinished;
     return(0);
 }
+
 static int
 xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
                              xmlSecSize maxDataSize, xmlSecSize* dataSize,
@@ -396,7 +397,6 @@ static xmlSecTransformKlass xmlSecTransformInclC14NWithCommentsKlass = {
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
     xmlSecC14NSize,                             /* xmlSecSize objSize */
 
-    /* same as xmlSecTransformId */
     xmlSecNameC14NWithComments,                 /* const xmlChar* name; */
     xmlSecHrefC14NWithComments,                 /* const xmlChar* href; */
     xmlSecTransformUsageC14NMethod | xmlSecTransformUsageDSigTransform,
@@ -404,7 +404,7 @@ static xmlSecTransformKlass xmlSecTransformInclC14NWithCommentsKlass = {
 
     xmlSecTransformC14NInitialize,              /* xmlSecTransformInitializeMethod initialize; */
     xmlSecTransformC14NFinalize,                /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod read; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
     NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
@@ -485,7 +485,6 @@ static xmlSecTransformKlass xmlSecTransformInclC14N11WithCommentsKlass = {
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
     xmlSecC14NSize,                             /* xmlSecSize objSize */
 
-    /* same as xmlSecTransformId */
     xmlSecNameC14N11WithComments,               /* const xmlChar* name; */
     xmlSecHrefC14N11WithComments,               /* const xmlChar* href; */
     xmlSecTransformUsageC14NMethod | xmlSecTransformUsageDSigTransform,
@@ -493,7 +492,7 @@ static xmlSecTransformKlass xmlSecTransformInclC14N11WithCommentsKlass = {
 
     xmlSecTransformC14NInitialize,              /* xmlSecTransformInitializeMethod initialize; */
     xmlSecTransformC14NFinalize,                /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod read; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
     NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */

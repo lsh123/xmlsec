@@ -1214,7 +1214,7 @@ xmlSecKeyReadMemory(xmlSecKeyDataId dataId, const xmlSecByte* data, xmlSecSize d
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(dataSize > 0, NULL);
 
-    /* read file to buffer */
+    /* append memory to buffer */
     ret = xmlSecBufferInitialize(&buffer, 0);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize",

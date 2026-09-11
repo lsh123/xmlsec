@@ -90,7 +90,7 @@ xmlSecKeysMngrDestroy(xmlSecKeysMngrPtr mngr) {
 
 /**
  * @brief Looks up a key in the keys manager keys store.
- * @details Lookups key in the keys manager keys store. The caller is responsible
+ * @details Looks up key in the keys manager keys store. The caller is responsible
  * for destroying the returned key using #xmlSecKeyDestroy method.
  * @param mngr the pointer to keys manager.
  * @param name the desired key name.
@@ -116,7 +116,7 @@ xmlSecKeysMngrFindKey(xmlSecKeysMngrPtr mngr, const xmlChar* name, xmlSecKeyInfo
 
 /**
  * @brief Looks up a key by X.509 data in the keys manager keys store.
- * @details Lookups key in the keys manager keys store. The caller is responsible
+ * @details Looks up key in the keys manager keys store. The caller is responsible
  * for destroying the returned key using #xmlSecKeyDestroy method.
  * @param mngr the pointer to keys manager.
  * @param x509Data the X509 data to use for searching the keys.
@@ -209,7 +209,7 @@ xmlSecKeysMngrAdoptDataStore(xmlSecKeysMngrPtr mngr, xmlSecKeyDataStorePtr store
 
 /**
  * @brief Looks up a data store by klass in the keys manager.
- * @details Lookups the data store of given klass @p id in the keys manager.
+ * @details Looks up the data store of given klass @p id in the keys manager.
  * @param mngr the pointer to keys manager.
  * @param id the desired data store klass.
  *
@@ -298,7 +298,7 @@ xmlSecKeyStoreDestroy(xmlSecKeyStorePtr store) {
 
 /**
  * @brief Looks up a key in the store by name.
- * @details Lookups key in the store. The caller is responsible for destroying
+ * @details Looks up key in the store. The caller is responsible for destroying
  * the returned key using #xmlSecKeyDestroy method.
  * @param store the pointer to keys store.
  * @param name the desired key name.
@@ -319,7 +319,7 @@ xmlSecKeyStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKeyInf
 
 /**
  * @brief Looks up a key by X.509 data in the store.
- * @details Lookups key in the store. The caller is responsible for destroying
+ * @details Looks up key in the store. The caller is responsible for destroying
  * the returned key using #xmlSecKeyDestroy method.
  * @param store the pointer to keys store.
  * @param x509Data the X509 data to use for search.

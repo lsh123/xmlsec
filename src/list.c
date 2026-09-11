@@ -141,7 +141,6 @@ xmlSecPtrListEmpty(xmlSecPtrListPtr list) {
     if(list->max > 0) {
         xmlSecAssert(list->data != NULL);
 
-        memset(list->data, 0, sizeof(xmlSecPtr) * list->use);
         xmlFree(list->data);
     }
     list->max = list->use = 0;
@@ -255,7 +254,7 @@ xmlSecPtrListGetSize(xmlSecPtrListPtr list) {
  * @param list the pointer to list.
  * @param pos the item position.
  * @return the list item at position @p pos or NULL if @p pos is greater
- * than the number of items in the list or an error occurs.
+ * than or equal to the number of items in the list or an error occurs.
  */
 xmlSecPtr
 xmlSecPtrListGetItem(xmlSecPtrListPtr list, xmlSecSize pos) {
@@ -327,7 +326,6 @@ xmlSecPtrListInsert(xmlSecPtrListPtr list, xmlSecPtr item, xmlSecSize pos) {
     /* done */
     return(0);
 }
-
 
 /**
  * @brief Sets a list item at the given position.
@@ -410,12 +408,11 @@ xmlSecPtr
 xmlSecPtrListPopLast(xmlSecPtrListPtr list) {
     xmlSecAssert2(xmlSecPtrListIsValid(list), NULL);
 
-    if(list->use <= 0) {
+    if(list->use == 0) {
         return(NULL);
     }
     return(xmlSecPtrListRemoveAndReturn(list, list->use - 1));
 }
-
 
 /**
  * @brief Prints debug info about a list.

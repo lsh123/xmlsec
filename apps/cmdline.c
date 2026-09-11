@@ -8,10 +8,6 @@
 /**
  * @brief XML Security Library command line utility: command line parsing routines.
  */
-#if defined(_MSC_VER) && _MSC_VER < 1900
-#define snprintf _snprintf
-#endif
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -161,7 +157,7 @@ xmlSecAppCmdLineParamsListPrint(xmlSecAppCmdLineParamPtr* params,
 }
 
 xmlSecAppCmdLineValuePtr
-xmlSecAppCmdLineValueCreate(xmlSecAppCmdLineParamPtr param, int pos) {
+xmlSecAppCmdLineValueCreate(xmlSecAppCmdLineParamPtr param) {
     xmlSecAppCmdLineValuePtr value;
 
     assert(param != NULL);
@@ -174,7 +170,6 @@ xmlSecAppCmdLineValueCreate(xmlSecAppCmdLineParamPtr param, int pos) {
     memset(value, 0, sizeof(xmlSecAppCmdLineValue));
 
     value->param = param;
-    value->pos = pos;
     return(value);
 }
 
@@ -260,7 +255,7 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
     }
 
     /* create new value and add to the list */
-    value = xmlSecAppCmdLineValueCreate(param, pos);
+    value = xmlSecAppCmdLineValueCreate(param);
     if(value == NULL) {
         fprintf(stderr, "Error: failed to create value for parameter \"%s\".\n", argv[pos]);
         return(-1);
@@ -298,6 +293,7 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
                 return(-1);
             }
             value->strValue = argv[++pos];
+            /* we need +2 here to include \0 for the end of the string itself plus additional \0 to indicate end of the list */
             buf = (char*)malloc(strlen(value->strValue) + 2);
             if(buf == NULL) {
                 fprintf(stderr, "Error: failed to allocate memory (" XMLSEC_SIZE_T_FMT " bytes).\n",
@@ -355,7 +351,7 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
 static time_t
 xmlSecAppGetGmtTime(struct tm* timeptr) {
     time_t t1, t2;
-    struct tm * tm1;
+    struct tm *tm1;
 
     if(timeptr == NULL) {
         return(0);
@@ -364,7 +360,7 @@ xmlSecAppGetGmtTime(struct tm* timeptr) {
     /* t1 is gmt time "mapped" to localtime as-is */
     t1 = mktime(timeptr);
     if(t1 == -1) {
-        fprintf(stderr, "Error: mktime(timeptr) failed\n");
+        fprintf(stderr, "Error: mktime(timeptr) failed.\n");
         return(0);
     }
     tm1 = gmtime(&t1);
@@ -376,7 +372,7 @@ xmlSecAppGetGmtTime(struct tm* timeptr) {
     /* t2 is "mapped" gmt time converted to gmt */
     t2 = mktime(tm1);
     if(t2 == -1) {
-        fprintf(stderr, "Error: mktime(tm1) failed\n");
+        fprintf(stderr, "Error: mktime(tm1) failed.\n");
         return(0);
     }
 

@@ -280,7 +280,7 @@ xmlSecX509DataGetNodeContent(xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx, xm
             if(xmlSecIsEmptyNode(cur) == 1) {
                 content |= XMLSEC_X509DATA_CRL_NODE;
             } else {
-                content |= (XMLSEC_X509DATA_CRL_NODE << 16);
+                content |= (XMLSEC_X509DATA_CRL_NODE << XMLSEC_X509DATA_SHIFT_IF_NOT_EMPTY);
             }
         } else {
             /* todo: fail on unknown child node? */
@@ -292,14 +292,14 @@ xmlSecX509DataGetNodeContent(xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx, xm
 }
 
 /**
- * @brief DSA Key data  method for writing XML node.
+ * @brief X.509 key data method for writing XML node.
  * @param data the x509 key data.
  * @param node the pointer to data's value XML node.
  * @param keyInfoCtx the &lt;dsig:KeyInfo/&gt; node processing context.
  * @param base64LineSize the base64 max line size.
  * @param addLineBreaks the flag indicating if we need to add line breaks around base64 output.
  * @param writeFunc the pointer to the function that converts
- *                      xmlSecKeyData to  xmlSecKeyValueDsa.
+ *                      xmlSecKeyData to xmlSecKeyValue.
  * @param writeFuncContext the context passed to @p writeFunc.
  * @return 0 on success or a negative value if an error occurs.
  */
@@ -884,13 +884,13 @@ xmlSecKeyX509DataValueXmlWrite(xmlSecKeyX509DataValuePtr x509Value, xmlNodePtr n
  * @param outSize the size of the output string.
  * @param outWritten the number of characters written to the output string.
  * @param delim the delimiter (stop char).
- * @param ingoreTrailingSpaces the flag indicating if trailing spaces should not be copied to output.
+ * @param ignoreTrailingSpaces the flag indicating if trailing spaces should not be copied to output.
  * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
                         xmlSecByte *out, xmlSecSize outSize, xmlSecSize *outWritten,
-                        xmlSecByte delim, int ingoreTrailingSpaces
+                        xmlSecByte delim, int ignoreTrailingSpaces
 ) {
     xmlSecByte inCh, inFirstHex = 0;
     xmlSecSize ii, jj, nonSpaceJJ;
@@ -926,7 +926,7 @@ xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
                 ++jj;
 
                 /* remember position of last non-spaceChar */
-                if (ingoreTrailingSpaces && !isspace(inCh)) {
+                if (ignoreTrailingSpaces && !isspace(inCh)) {
                     nonSpaceJJ = jj;
                 }
             }
@@ -947,7 +947,7 @@ xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
                 ++jj;
 
                 /* remember position of last non-spaceChar */
-                if (ingoreTrailingSpaces && !isspace(inCh)) {
+                if (ignoreTrailingSpaces && !isspace(inCh)) {
                     nonSpaceJJ = jj;
                 }
              }
@@ -965,7 +965,7 @@ xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
                 ++jj;
 
                 /* remember position of last non-spaceChar */
-                if (ingoreTrailingSpaces && !isspace(inCh)) {
+                if (ignoreTrailingSpaces && !isspace(inCh)) {
                     nonSpaceJJ = jj;
                 }
             } else {
@@ -983,7 +983,7 @@ xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
     /* success */
     (*inSize) -= ii;
     (*in) += ii;
-    if (ingoreTrailingSpaces != 0) {
+    if (ignoreTrailingSpaces != 0) {
         (*outWritten) = nonSpaceJJ;
     } else {
         (*outWritten) = (jj);
@@ -1009,7 +1009,7 @@ xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
  * @param outWritten the number of characters written to the output string.
  * @param outType the type of string (UTF8 or octet).
  * @param delim the delimiter (stop char).
- * @param ingoreTrailingSpaces the flag indicating if trailing spaces should not be copied to output.
+ * @param ignoreTrailingSpaces the flag indicating if trailing spaces should not be copied to output.
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -1021,7 +1021,7 @@ xmlSecX509AttrValueStringRead(
     xmlSecSize *outWritten,
     int *outType,
     xmlSecByte delim,
-    int ingoreTrailingSpaces
+    int ignoreTrailingSpaces
 ) {
     int ret;
 
@@ -1037,7 +1037,7 @@ xmlSecX509AttrValueStringRead(
     if ((*inSize) == 0) {
         /* empty value */
         (*outWritten) = 0;
-        (*outType) = XMLSEC_X509_VALUE_TYPE_UF8_STRING;
+        (*outType) = XMLSEC_X509_VALUE_TYPE_UTF8_STRING;
     } else if((**in) == '\"') {
         /* read quoted string */
 
@@ -1045,12 +1045,12 @@ xmlSecX509AttrValueStringRead(
         ++(*in); --(*inSize);
 
         /* read string till next un-escaped quote */
-        ret = xmlSecX509EscapedStringRead(in, inSize, out, outSize, outWritten, '\"', ingoreTrailingSpaces);
+        ret = xmlSecX509EscapedStringRead(in, inSize, out, outSize, outWritten, '\"', ignoreTrailingSpaces);
         if(ret < 0) {
             xmlSecInternalError("xmlSecX509EscapedStringRead", NULL);
             return(-1);
         }
-        (*outType) = XMLSEC_X509_VALUE_TYPE_UF8_STRING;
+        (*outType) = XMLSEC_X509_VALUE_TYPE_UTF8_STRING;
 
         /* skip quote */
         if(((*inSize) <= 0) || ((**in) != '\"')) {
@@ -1060,7 +1060,7 @@ xmlSecX509AttrValueStringRead(
         ++(*in); --(*inSize);
 
         /* skip trailing spaces if needed */
-        if(ingoreTrailingSpaces != 0) {
+        if(ignoreTrailingSpaces != 0) {
             while(((*inSize) > 0) && isspace(**in)) {
                 ++(*in); --(*inSize);
             }
@@ -1098,19 +1098,19 @@ xmlSecX509AttrValueStringRead(
         (*outType) = XMLSEC_X509_VALUE_TYPE_OCTET_STRING;
 
         /* skip trailing spaces if needed */
-        if(ingoreTrailingSpaces != 0) {
+        if(ignoreTrailingSpaces != 0) {
             while(((*inSize) > 0) && isspace(**in)) {
                 ++(*in); --(*inSize);
             }
         }
     } else {
         /* read string */
-        ret = xmlSecX509EscapedStringRead(in, inSize, out, outSize, outWritten, delim, ingoreTrailingSpaces);
+        ret = xmlSecX509EscapedStringRead(in, inSize, out, outSize, outWritten, delim, ignoreTrailingSpaces);
         if(ret < 0) {
             xmlSecInternalError("xmlSecX509EscapedStringRead", NULL);
             return(-1);
         }
-        (*outType) = XMLSEC_X509_VALUE_TYPE_UF8_STRING;
+        (*outType) = XMLSEC_X509_VALUE_TYPE_UTF8_STRING;
     }
 
     /* success */

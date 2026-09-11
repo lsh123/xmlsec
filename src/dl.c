@@ -147,21 +147,26 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
 #if defined(XMLSEC_WINDOWS) && defined(XMLSEC_DL_WIN32)
 #if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
     lib->handle = LoadLibraryA((char*)lib->filename);
-#else
-    LPWSTR wcLibFilename = xmlSecWin32ConvertUtf8ToUnicode(lib->filename);
-    if(wcLibFilename == NULL) {
-        xmlSecIOError("xmlSecWin32ConvertUtf8ToTstr", lib->filename, NULL);
-        xmlSecCryptoDLLibraryDestroy(lib);
-        return(NULL);
-    }
-    lib->handle = LoadPackagedLibrary(wcLibFilename, 0);
-    xmlFree(wcLibFilename);
-#endif
     if(lib->handle == NULL) {
         xmlSecIOError("LoadLibraryA", lib->filename, NULL);
         xmlSecCryptoDLLibraryDestroy(lib);
         return(NULL);
     }
+#else
+    LPWSTR wcLibFilename = xmlSecWin32ConvertUtf8ToUnicode(lib->filename);
+    if(wcLibFilename == NULL) {
+        xmlSecIOError("xmlSecWin32ConvertUtf8ToUnicode", lib->filename, NULL);
+        xmlSecCryptoDLLibraryDestroy(lib);
+        return(NULL);
+    }
+    lib->handle = LoadPackagedLibrary(wcLibFilename, 0);
+    xmlFree(wcLibFilename);
+    if(lib->handle == NULL) {
+        xmlSecIOError("LoadPackagedLibrary", lib->filename, NULL);
+        xmlSecCryptoDLLibraryDestroy(lib);
+        return(NULL);
+    }
+#endif
 
     getFunctions = XMLSEC_PTR_TO_FUNC(xmlSecCryptoGetFunctionsCallback,
                         GetProcAddress(
@@ -381,6 +386,12 @@ int
 xmlSecCryptoDLShutdown(void) {
     int ret;
 
+    if(!xmlSecPtrListIsValid(&gXmlSecCryptoDLLibraries)) {
+        /* the dynamic loading engine was not initialized */
+        gXmlSecCryptoDLFunctions = NULL;
+        return(0);
+    }
+
     xmlSecPtrListFinalize(&gXmlSecCryptoDLLibraries);
     gXmlSecCryptoDLFunctions = NULL;
 
@@ -443,6 +454,11 @@ xmlSecCryptoDLGetLibraryFunctions(const xmlChar* crypto) {
 
     xmlSecAssert2(crypto != NULL, NULL);
 
+    if(!xmlSecPtrListIsValid(&gXmlSecCryptoDLLibraries)) {
+        xmlSecInternalError("xmlSecCryptoDL is not initialized", NULL);
+        return(NULL);
+    }
+
     ret = xmlSecCryptoDLLibrariesListFindByName(&gXmlSecCryptoDLLibraries, crypto, &pos);
     if(ret >= 0) {
         lib = (xmlSecCryptoDLLibraryPtr)xmlSecPtrListGetItem(&gXmlSecCryptoDLLibraries, pos);
@@ -486,9 +502,14 @@ xmlSecCryptoDLUnloadLibrary(const xmlChar* crypto) {
 
     xmlSecAssert2(crypto != NULL, -1);
 
+    if(!xmlSecPtrListIsValid(&gXmlSecCryptoDLLibraries)) {
+        xmlSecInternalError("xmlSecCryptoDL is not initialized", NULL);
+        return(-1);
+    }
+
     ret = xmlSecCryptoDLLibrariesListFindByName(&gXmlSecCryptoDLLibraries, crypto, &pos);
     if(ret < 0) {
-        /* todo: is it an error? */
+        /* the library is not loaded, nothing to unload */
         return(0);
     }
 

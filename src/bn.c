@@ -782,6 +782,9 @@ xmlSecBnGetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
         }
         xmlFree(content);
         break;
+    default:
+        xmlSecInvalidDataError("unsupported BN format", NULL);
+        return(-1);
     }
 
     if(reverse != 0) {
@@ -875,6 +878,10 @@ xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
 #endif /* LIBXML_VERSION >= 21300 */
         xmlFree(content);
         break;
+    default:
+        /* unreachable: format is validated above */
+        xmlSecInternalError("unsupported BN format", NULL);
+        return(-1);
     }
 
     if(addLineBreaks) {
@@ -911,7 +918,7 @@ xmlSecBnBlobSetNodeValue(const xmlSecByte* data, xmlSecSize dataSize,
     xmlSecBn bn;
     int ret;
 
-    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2((data != NULL) || (dataSize == 0), -1);
     xmlSecAssert2(cur != NULL, -1);
 
     ret = xmlSecBnInitialize(&bn, dataSize);

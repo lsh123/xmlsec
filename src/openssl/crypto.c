@@ -40,6 +40,10 @@ static void             xmlSecOpenSSLErrorsShutdown             (void);
 static xmlSecCryptoDLFunctionsPtr gXmlSecOpenSSLFunctions = NULL;
 static xmlChar* gXmlSecOpenSSLTrustedCertsFolder = NULL;
 
+#ifdef XMLSEC_OPENSSL_API_300
+static OSSL_LIB_CTX* gXmlSecOpenSSLLibCtx = NULL;
+#endif /* XMLSEC_OPENSSL_API_300 */
+
 #if !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR)
 
 #define XMLSEC_OPENSSL_ERRORS_FUNCTION                  0
@@ -553,6 +557,12 @@ xmlSecOpenSSLInit (void)  {
  */
 int
 xmlSecOpenSSLShutdown(void) {
+#ifdef XMLSEC_OPENSSL_API_300
+    /* drop the reference to the caller-owned library context so that
+     * it can be safely freed after shutdown */
+    gXmlSecOpenSSLLibCtx = NULL;
+#endif /* XMLSEC_OPENSSL_API_300 */
+
     xmlSecOpenSSLSetDefaultTrustedCertsFolder(NULL);
     xmlSecOpenSSLErrorsShutdown();
     return(0);
@@ -787,12 +797,11 @@ xmlSecOpenSSLGetDefaultTrustedCertsFolder(void) {
 
 #ifdef XMLSEC_OPENSSL_API_300
 
-static OSSL_LIB_CTX* gXmlSecOpenSSLLibCtx = NULL;
-
 /**
  * @brief Sets the OpenSSL library context used by xmlsec.
  * @details The caller retains ownership of @p libctx and must keep it alive for as long as
  * xmlsec uses it; freeing it while xmlsec still references it is a use-after-free.
+ * The reference is cleared by xmlSecOpenSSLShutdown().
  * @return 0 on success or a negative value if an error occurs.
  */
 int

@@ -9,8 +9,8 @@
  * @brief Internal global header used during compilation.
  */
 
-#ifndef __XMLSEC_GLOBALS_H__
-#define __XMLSEC_GLOBALS_H__
+#ifndef __XMLSEC_CORE_GLOBALS_H__
+#define __XMLSEC_CORE_GLOBALS_H__
 
 /**
  * Use autoconf defines if present.
@@ -25,4 +25,4 @@
 /* Include common error helper macros. */
 #include "errors_helpers.h"
 
-#endif /* __XMLSEC_GLOBALS_H__ */
+#endif /* __XMLSEC_CORE_GLOBALS_H__ */

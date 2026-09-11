@@ -50,7 +50,7 @@
     (dstVal) = (dstType)(srcVal);                                              \
 
 
-/* we assume that srcType_min <= dstType_min and dstType_max <= srcType_max */
+/* we assume that srcType_min <= dstType_min and srcType_max <= dstType_max */
 #define XMLSEC_SAFE_CAST_MIN_CHECK(srcType, srcVal, srcFmt, dstType, dstVal, dstFmt, dstMin, dstMax, errorAction, errorObject) \
     if((srcVal) < (srcType)(dstMin)) {                                         \
         xmlSecImpossibleCastError(srcType, (srcVal), srcFmt,                   \
@@ -208,7 +208,7 @@
 
 #define XMLSEC_SAFE_CAST_UINT_TO_LONG(srcVal, dstVal, errorAction, errorObject) \
     XMLSEC_SAFE_CAST_MAX_CHECK(unsigned int, (srcVal), "%u",                    \
-        int, (dstVal), "%ld", LONG_MIN, LONG_MAX,                               \
+        long, (dstVal), "%ld", LONG_MIN, LONG_MAX,                              \
         errorAction, (errorObject))
 
 #else  /* UINT_MAX > LONG_MAX */

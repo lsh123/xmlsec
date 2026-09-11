@@ -300,7 +300,6 @@ xmlSecGnuTLSAeadCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 static int
 xmlSecGnuTLSAeadCipherEncrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out) {
     xmlSecSize inSize, outSize;
-    size_t outSizeT;
     xmlSecByte *plaintext, *outData;
     const xmlSecByte *aadData;
     xmlSecSize aadSize;
@@ -345,20 +344,19 @@ xmlSecGnuTLSAeadCipherEncrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
 
         memcpy(outData, ctx->iv, ctx->ivSize);
         outData  = outData + ctx->ivSize;
-        outSizeT = outSize - ctx->ivSize;
+        outSize = outSize - ctx->ivSize;
 
         err = gnutls_aead_cipher_encrypt(ctx->cipher,
             ctx->iv, ctx->ivSize,
             aadData, aadSize,
             ctx->tagSize,
             plaintext, inSize,
-            outData, &outSizeT);
+            outData, &outSize);
         if(err != GNUTLS_E_SUCCESS) {
             xmlSecGnuTLSError("gnutls_aead_cipher_encrypt", err, NULL);
             return(-1);
         }
 
-        XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(outSizeT, outSize, return(-1), NULL);
         ret = xmlSecBufferSetSize(out, outSize + ctx->ivSize);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, (outSize + ctx->ivSize));
@@ -378,20 +376,18 @@ xmlSecGnuTLSAeadCipherEncrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
 
         outData  = xmlSecBufferGetData(out);
         xmlSecAssert2(outData != NULL, -1);
-        outSizeT = outSize;
 
         err = gnutls_aead_cipher_encrypt(ctx->cipher,
             ctx->iv, ctx->ivSize,
             aadData, aadSize,
             ctx->tagSize,
             plaintext, inSize,
-            outData, &outSizeT);
+            outData, &outSize);
         if(err != GNUTLS_E_SUCCESS) {
             xmlSecGnuTLSError("gnutls_aead_cipher_encrypt", err, NULL);
             return(-1);
         }
 
-        XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(outSizeT, outSize, return(-1), NULL);
         ret = xmlSecBufferSetSize(out, outSize);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, outSize);
@@ -406,7 +402,6 @@ xmlSecGnuTLSAeadCipherEncrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
 static int
 xmlSecGnuTLSAeadCipherDecrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out) {
     xmlSecSize inSize, outSize;
-    size_t outSizeT;
     xmlSecByte *iv, *ciphertext, *outData;
     const xmlSecByte *aadData;
     xmlSecSize aadSize;
@@ -438,14 +433,14 @@ xmlSecGnuTLSAeadCipherDecrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
         }
         outData = xmlSecBufferGetData(out);
         xmlSecAssert2(outData != NULL, -1);
-        outSizeT = inSize;
+        outSize = inSize;
 
         err = gnutls_aead_cipher_decrypt(ctx->cipher,
             iv, ctx->ivSize,
             aadData, aadSize,
             ctx->tagSize,
             ciphertext, inSize,
-            outData, &outSizeT);
+            outData, &outSize);
         if(err != GNUTLS_E_SUCCESS) {
             xmlSecGnuTLSError("gnutls_aead_cipher_decrypt", err, NULL);
             return(-1);
@@ -470,14 +465,14 @@ xmlSecGnuTLSAeadCipherDecrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
         }
         outData = xmlSecBufferGetData(out);
         xmlSecAssert2(outData != NULL, -1);
-        outSizeT = inSize;
+        outSize = inSize;
 
         err = gnutls_aead_cipher_decrypt(ctx->cipher,
             ctx->iv, ctx->ivSize,
             aadData, aadSize,
             ctx->tagSize,
             ciphertext, inSize,
-            outData, &outSizeT);
+            outData, &outSize);
         if(err != GNUTLS_E_SUCCESS) {
             xmlSecGnuTLSError("gnutls_aead_cipher_decrypt", err, NULL);
             return(-1);
@@ -485,7 +480,6 @@ xmlSecGnuTLSAeadCipherDecrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
     }
 
     /* set correct output size */
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(outSizeT, outSize, return(-1), NULL);
     ret = xmlSecBufferSetSize(out, outSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, outSize);

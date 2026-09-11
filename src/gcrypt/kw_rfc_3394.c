@@ -143,9 +143,9 @@ xmlSecGCryptKWAesInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-    ctx->mode           = GCRY_CIPHER_MODE_CBC;
-    ctx->flags          = GCRY_CIPHER_SECURE; /* we are paranoid */
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(blockSize, ctx->blockSize, return(-1), NULL);
+    ctx->mode     = GCRY_CIPHER_MODE_CBC;
+    ctx->flags    = GCRY_CIPHER_SECURE; /* we are paranoid */
+    ctx->blockSize = blockSize;
 
     return(0);
 }

@@ -2718,7 +2718,6 @@ xmlSecOpenSSLKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKey
     const xmlChar * curve_oid;
     xmlSecByte * pubkeyData;
     xmlSecSize pubkeySize;
-    size_t pubkeyLen;
     int nid;
     int ret;
 
@@ -2766,12 +2765,11 @@ xmlSecOpenSSLKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKey
     }
 
     /* the point is encoded as z||x||y, where z is the octet 0x04  */
-    pubkeyLen = EC_POINT_point2oct(group, pubkey, POINT_CONVERSION_UNCOMPRESSED, NULL, 0, NULL);
-    if(pubkeyLen <= 0) {
+    pubkeySize = EC_POINT_point2oct(group, pubkey, POINT_CONVERSION_UNCOMPRESSED, NULL, 0, NULL);
+    if(pubkeySize <= 0) {
         xmlSecOpenSSLError("EC_POINT_point2oct(1)",  xmlSecKeyDataGetName(data));
         return(-1);
     }
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(pubkeyLen, pubkeySize, return(-1), xmlSecKeyDataGetName(data));
 
     ret = xmlSecBufferSetSize(&(ecValue->pubkey), pubkeySize);
     if(ret < 0) {
@@ -2782,14 +2780,13 @@ xmlSecOpenSSLKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKey
     pubkeyData = xmlSecBufferGetData(&(ecValue->pubkey));
     xmlSecAssert2(pubkeyData != NULL, -1);
 
-    pubkeyLen = EC_POINT_point2oct(group, pubkey, POINT_CONVERSION_UNCOMPRESSED, pubkeyData, pubkeyLen, NULL);
-    if(pubkeyLen <= 0) {
+    pubkeySize = EC_POINT_point2oct(group, pubkey, POINT_CONVERSION_UNCOMPRESSED, pubkeyData, pubkeySize, NULL);
+    if(pubkeySize <= 0) {
         xmlSecOpenSSLError("EC_POINT_point2oct(2)",  xmlSecKeyDataGetName(data));
         return(-1);
     }
 
     /* just in case, reset the size again */
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(pubkeyLen, pubkeySize, return(-1), xmlSecKeyDataGetName(data));
     ret = xmlSecBufferSetSize(&(ecValue->pubkey), pubkeySize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL,
@@ -2931,7 +2928,6 @@ xmlSecOpenSSLKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKey
     char curve_name[128];
     size_t curve_name_len = 0;
     unsigned char *pubkey_data = NULL;
-    size_t pubkey_len = 0;
     xmlSecSize pubkey_size;
     int ret;
 
@@ -2966,14 +2962,13 @@ xmlSecOpenSSLKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKey
     }
 
     /* pubkey */
-    pubkey_len = EVP_PKEY_get1_encoded_public_key(pKey, &pubkey_data);
-    if(pubkey_len == 0) {
+    pubkey_size = EVP_PKEY_get1_encoded_public_key(pKey, &pubkey_data);
+    if(pubkey_size == 0) {
         xmlSecOpenSSLError("EVP_PKEY_get1_encoded_public_key", xmlSecKeyDataGetName(data));
         return(-1);
     }
     xmlSecAssert2(pubkey_data != NULL, -1);
 
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(pubkey_len, pubkey_size, return(-1), xmlSecKeyDataGetName(data));
     ret = xmlSecBufferSetData(&(ecValue->pubkey), pubkey_data, pubkey_size);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferSetData(pubkey)", xmlSecKeyDataGetName(data));

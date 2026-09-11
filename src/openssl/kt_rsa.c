@@ -273,7 +273,7 @@ xmlSecOpenSSLRsaPkcs1ProcessImpl(xmlSecOpenSSLRsaPkcs1CtxPtr ctx, const xmlSecBy
             return(-1);
         }
     }
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(outLen, (*outSize), return(-1), NULL);
+    (*outSize) = outLen;
 
     /* success */
     return(0);
@@ -960,7 +960,7 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
         }
     }
     /* success */
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(outSizeT, (*outSize), return(-1), NULL);
+    (*outSize) = outSizeT;
     return(0);
 
 }

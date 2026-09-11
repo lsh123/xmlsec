@@ -1254,7 +1254,6 @@ done:
 int
 xmlSecGnuTLSX509CertCompareSKI(gnutls_x509_crt_t cert, const xmlSecByte * ski, xmlSecSize skiSize) {
     xmlSecByte* buf = NULL;
-    size_t bufSizeT = 0;
     xmlSecSize bufSize;
     unsigned int critical = 0;
     int err;
@@ -1265,12 +1264,11 @@ xmlSecGnuTLSX509CertCompareSKI(gnutls_x509_crt_t cert, const xmlSecByte * ski, x
     xmlSecAssert2(skiSize > 0, -1);
 
     /* get ski size */
-    err = gnutls_x509_crt_get_subject_key_id(cert, NULL, &bufSizeT, &critical);
-    if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSizeT <= 0)) {
+    err = gnutls_x509_crt_get_subject_key_id(cert, NULL, &bufSize, &critical);
+    if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSize <= 0)) {
         xmlSecGnuTLSError("gnutls_x509_crt_get_subject_key_id", err, NULL);
         goto done;
     }
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(bufSizeT, bufSize, goto done, NULL);
 
     if(skiSize != bufSize) {
         /* doesn't match */
@@ -1279,14 +1277,14 @@ xmlSecGnuTLSX509CertCompareSKI(gnutls_x509_crt_t cert, const xmlSecByte * ski, x
     }
 
     /* allocate buffer */
-    buf = (xmlSecByte *)xmlMalloc(bufSizeT + 1);
+    buf = (xmlSecByte *)xmlMalloc(bufSize + 1);
     if(buf == NULL) {
-        xmlSecMallocError(bufSizeT + 1, NULL);
+        xmlSecMallocError(bufSize + 1, NULL);
         goto done;
     }
 
     /* write ski out */
-    err = gnutls_x509_crt_get_subject_key_id(cert, buf, &bufSizeT, &critical);
+    err = gnutls_x509_crt_get_subject_key_id(cert, buf, &bufSize, &critical);
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_x509_crt_get_subject_key_id", err, NULL);
         goto done;

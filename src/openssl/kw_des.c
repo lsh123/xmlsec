@@ -285,7 +285,6 @@ xmlSecOpenSSLKWDes3Sha1(xmlSecTransformPtr transform XMLSEC_ATTRIBUTE_UNUSED,
                        const xmlSecByte * in, xmlSecSize inSize,
                        xmlSecByte * out, xmlSecSize outSize,
                        xmlSecSize * outWritten) {
-    size_t outSizeT;
     int ret;
 
     XMLSEC_UNREFERENCED(transform);
@@ -295,16 +294,14 @@ xmlSecOpenSSLKWDes3Sha1(xmlSecTransformPtr transform XMLSEC_ATTRIBUTE_UNUSED,
     xmlSecAssert2(outSize >= SHA_DIGEST_LENGTH, -1);
     xmlSecAssert2(outWritten != NULL, -1);
 
-    outSizeT = outSize;
-    ret = EVP_Q_digest(xmlSecOpenSSLGetLibCtx(), OSSL_DIGEST_NAME_SHA1, NULL,
-                       in, inSize, out, &outSizeT);
+    (*outWritten) = outSize;
+    ret = EVP_Q_digest(xmlSecOpenSSLGetLibCtx(), OSSL_DIGEST_NAME_SHA1, NULL, in, inSize, out, outWritten);
     if(ret != 1) {
         xmlSecOpenSSLError("EVP_Q_digest(SHA1)", NULL);
         return(-1);
     }
 
     /* success */
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(outSizeT, (*outWritten), return(-1), NULL);
     return(0);
 }
 

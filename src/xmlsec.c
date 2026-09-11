@@ -232,13 +232,8 @@ xmlSecCheckVersionExt(int major, int minor, int subminor, xmlSecCheckVersionMode
  */
 xmlSecSize
 xmlSecStrlen(const xmlChar* str) {
-    size_t len;
-    xmlSecSize res;
-
     if (str == NULL) {
         return(0);
     }
-    len = strlen((const char*)str);
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(len, res, return(0), NULL);
-    return(res);
+    return(strlen((const char*)str));
 }

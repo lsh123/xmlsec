@@ -363,11 +363,6 @@
 
 #endif /* (ULONG_MAX > XMLSEC_SIZE_MAX) */
 
-/* Safe cast with limits check: size_t -> xmlSecSize (same type) */
-#define XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
-    (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */
-
-
 /******************************************************************************
  *
  *  Helpers to create child struct with context

@@ -1288,7 +1288,6 @@ xmlSecOpenSSLEvpSignatureSign(xmlSecTransformPtr transform, xmlSecTransformCtxPt
     EVP_PKEY_CTX *pKeyCtx = NULL;
     const xmlSecByte * dataToSign = NULL;
     xmlSecSize dataToSignSize = 0;
-    size_t signLen = 0;
     xmlSecSize signSize = 0;
     int ret;
     int res = -1;
@@ -1314,13 +1313,12 @@ xmlSecOpenSSLEvpSignatureSign(xmlSecTransformPtr transform, xmlSecTransformCtxPt
     }
 
     /* get output signature length */
-    ret = EVP_PKEY_sign(pKeyCtx, NULL, &signLen, dataToSign, dataToSignSize);
+    ret = EVP_PKEY_sign(pKeyCtx, NULL, &signSize, dataToSign, dataToSignSize);
     if(ret <= 0) {
         xmlSecOpenSSLError2("EVP_PKEY_sign", xmlSecTransformGetName(transform),
             "ret=%d", ret);
         goto done;
     }
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(signLen, signSize, goto done, xmlSecTransformGetName(transform));
 
     ret = xmlSecBufferSetMaxSize(out, signSize);
     if(ret < 0) {
@@ -1330,13 +1328,13 @@ xmlSecOpenSSLEvpSignatureSign(xmlSecTransformPtr transform, xmlSecTransformCtxPt
     }
 
     /* create signature */
-    ret = EVP_PKEY_sign(pKeyCtx, xmlSecBufferGetData(out), &signLen, dataToSign, dataToSignSize);
+    ret = EVP_PKEY_sign(pKeyCtx, xmlSecBufferGetData(out), &signSize, dataToSign, dataToSignSize);
     if(ret <= 0) {
         xmlSecOpenSSLError2("EVP_PKEY_sign", xmlSecTransformGetName(transform),
             "ret=%d", ret);
         goto done;
     }
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(signLen, signSize, goto done, xmlSecTransformGetName(transform));
+
     ret = xmlSecBufferSetSize(out, signSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", xmlSecTransformGetName(transform),

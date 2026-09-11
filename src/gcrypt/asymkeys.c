@@ -411,8 +411,7 @@ xmlSecGCryptSetSExpTokValue(const gcry_sexp_t sexp, const char * tok,
 {
     gcry_sexp_t val = NULL;
     gcry_mpi_t mpi = NULL;
-    xmlSecSize writtenSize;
-    size_t written = 0;
+    xmlSecSize writtenSize = 0;
     gcry_error_t err;
     int ret;
     int res = -1;
@@ -436,14 +435,13 @@ xmlSecGCryptSetSExpTokValue(const gcry_sexp_t sexp, const char * tok,
     }
 
     /* get the estimated size for output buffer */
-    written = 0;
-    err = gcry_mpi_print(GCRYMPI_FMT_USG, NULL, 0, &written, mpi);
-    if((err != GPG_ERR_NO_ERROR) || (written == 0)) {
+    writtenSize = 0;
+    err = gcry_mpi_print(GCRYMPI_FMT_USG, NULL, 0, &writtenSize, mpi);
+    if((err != GPG_ERR_NO_ERROR) || (writtenSize == 0)) {
         xmlSecGCryptError2("gcry_mpi_print", err, NULL,
                            "tok=%s", xmlSecErrorsSafeString(tok));
         goto done;
     }
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(written, writtenSize, goto done, NULL);
 
     /* allocate the output buffer */
     ret = xmlSecBufferSetMaxSize(buf, writtenSize + 1);
@@ -454,17 +452,16 @@ xmlSecGCryptSetSExpTokValue(const gcry_sexp_t sexp, const char * tok,
     }
 
     /* write to the buffer */
-    written = 0;
+    writtenSize = 0;
     err = gcry_mpi_print(GCRYMPI_FMT_USG,
             xmlSecBufferGetData(buf),
             xmlSecBufferGetMaxSize(buf),
-            &written, mpi);
-    if((err != GPG_ERR_NO_ERROR) || (written == 0)) {
+            &writtenSize, mpi);
+    if((err != GPG_ERR_NO_ERROR) || (writtenSize == 0)) {
         xmlSecGCryptError2("gcry_mpi_print", err, NULL,
                            "tok=%s", xmlSecErrorsSafeString(tok));
         goto done;
     }
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(written, writtenSize, goto done, NULL);
 
     ret = xmlSecBufferSetSize(buf, writtenSize);
     if(ret < 0) {

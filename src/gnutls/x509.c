@@ -908,8 +908,7 @@ xmlSecGnuTLSKeyDataX509Write(xmlSecKeyDataPtr data,  xmlSecKeyX509DataValuePtr x
 
 static int
 xmlSecGnuTLSX509CertSKIWrite(gnutls_x509_crt_t cert, xmlSecBufferPtr buf) {
-    size_t bufSizeT = 0;
-    xmlSecSize bufSize;
+    xmlSecSize bufSize = 0;
     xmlSecByte * bufData;
     unsigned int critical = 0;
     int ret;
@@ -919,12 +918,11 @@ xmlSecGnuTLSX509CertSKIWrite(gnutls_x509_crt_t cert, xmlSecBufferPtr buf) {
     xmlSecAssert2(buf != NULL, -1);
 
     /* get size */
-    err = gnutls_x509_crt_get_subject_key_id(cert, NULL, &bufSizeT, &critical);
-    if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSizeT <= 0)) {
+    err = gnutls_x509_crt_get_subject_key_id(cert, NULL, &bufSize, &critical);
+    if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSize <= 0)) {
         xmlSecGnuTLSError("gnutls_x509_crt_get_subject_key_id", err, NULL);
         return(-1);
     }
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(bufSizeT, bufSize, return(-1), NULL);
 
     /* allocate buffer */
     ret = xmlSecBufferSetSize(buf, bufSize);
@@ -937,7 +935,7 @@ xmlSecGnuTLSX509CertSKIWrite(gnutls_x509_crt_t cert, xmlSecBufferPtr buf) {
     xmlSecAssert2(bufData != NULL, -1);
 
     /* write it out */
-    err = gnutls_x509_crt_get_subject_key_id(cert, bufData, &bufSizeT, &critical);
+    err = gnutls_x509_crt_get_subject_key_id(cert, bufData, &bufSize, &critical);
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_x509_crt_get_subject_key_id", err, NULL);
         return(-1);

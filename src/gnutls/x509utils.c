@@ -322,8 +322,7 @@ int
 xmlSecGnuTLSX509DigestWrite(gnutls_x509_crt_t cert, const xmlChar* algorithm, xmlSecBufferPtr buf) {
     gnutls_digest_algorithm_t digestAlgo;
     xmlSecByte md[XMLSEC_GNUTLS_MAX_DIGEST_SIZE];
-    size_t mdLen = sizeof(md);
-    xmlSecSize mdSize;
+    xmlSecSize mdSize = sizeof(md);
     int err;
     int ret;
 
@@ -336,12 +335,11 @@ xmlSecGnuTLSX509DigestWrite(gnutls_x509_crt_t cert, const xmlChar* algorithm, xm
         return(-1);
     }
 
-    err = gnutls_x509_crt_get_fingerprint(cert, digestAlgo, md, &mdLen);
-    if((err != GNUTLS_E_SUCCESS) || (mdLen <= 0)) {
+    err = gnutls_x509_crt_get_fingerprint(cert, digestAlgo, md, &mdSize);
+    if((err != GNUTLS_E_SUCCESS) || (mdSize <= 0)) {
         xmlSecGnuTLSError("gnutls_x509_crt_get_fingerprint", err, NULL);
         return(-1);
     }
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(mdLen, mdSize, return(-1), NULL);
 
     ret = xmlSecBufferSetData(buf, md, mdSize);
     if(ret < 0) {
@@ -404,8 +402,7 @@ xmlSecGnuTLSX509CertRead(const xmlSecByte* buf, xmlSecSize size, xmlSecKeyDataFo
 
 int
 xmlSecGnuTLSX509CertDerWrite(gnutls_x509_crt_t cert, xmlSecBufferPtr buf) {
-    size_t bufSizeT = 0;
-    xmlSecSize bufSize;
+    xmlSecSize bufSize = 0;
     xmlSecByte * bufData;
     int ret;
     int err;
@@ -414,12 +411,11 @@ xmlSecGnuTLSX509CertDerWrite(gnutls_x509_crt_t cert, xmlSecBufferPtr buf) {
     xmlSecAssert2(buf != NULL, -1);
 
     /* get size */
-    err = gnutls_x509_crt_export(cert, GNUTLS_X509_FMT_DER, NULL, &bufSizeT);
-    if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSizeT <= 0)) {
+    err = gnutls_x509_crt_export(cert, GNUTLS_X509_FMT_DER, NULL, &bufSize);
+    if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSize <= 0)) {
         xmlSecGnuTLSError("gnutls_x509_crt_export(GNUTLS_X509_FMT_DER)", err, NULL);
         return(-1);
     }
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(bufSizeT, bufSize, return(-1), NULL);
 
     /* allocate buffer */
     ret = xmlSecBufferSetSize(buf, bufSize);
@@ -432,7 +428,7 @@ xmlSecGnuTLSX509CertDerWrite(gnutls_x509_crt_t cert, xmlSecBufferPtr buf) {
     xmlSecAssert2(bufData != NULL, -1);
 
     /* write it out */
-    err = gnutls_x509_crt_export(cert, GNUTLS_X509_FMT_DER, bufData, &bufSizeT);
+    err = gnutls_x509_crt_export(cert, GNUTLS_X509_FMT_DER, bufData, &bufSize);
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_x509_crt_export(GNUTLS_X509_FMT_DER)", err, NULL);
         return(-1);
@@ -939,8 +935,7 @@ xmlSecGnuTLSX509CrlRead(const xmlSecByte* buf, xmlSecSize size, xmlSecKeyDataFor
 
 int
 xmlSecGnuTLSX509CrlDerWrite(gnutls_x509_crl_t crl, xmlSecBufferPtr buf) {
-    size_t bufSizeT = 0;
-    xmlSecSize bufSize;
+    xmlSecSize bufSize = 0;
     xmlSecByte * bufData;
     int ret;
     int err;
@@ -949,12 +944,11 @@ xmlSecGnuTLSX509CrlDerWrite(gnutls_x509_crl_t crl, xmlSecBufferPtr buf) {
     xmlSecAssert2(buf != NULL, -1);
 
     /* get size */
-    err = gnutls_x509_crl_export(crl, GNUTLS_X509_FMT_DER, NULL, &bufSizeT);
-    if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSizeT <= 0)) {
+    err = gnutls_x509_crl_export(crl, GNUTLS_X509_FMT_DER, NULL, &bufSize);
+    if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSize <= 0)) {
         xmlSecGnuTLSError("gnutls_x509_crl_export(GNUTLS_X509_FMT_DER)", err, NULL);
         return(-1);
     }
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(bufSizeT, bufSize, return(-1), NULL);
 
     /* allocate buffer */
     ret = xmlSecBufferSetSize(buf, bufSize);
@@ -967,7 +961,7 @@ xmlSecGnuTLSX509CrlDerWrite(gnutls_x509_crl_t crl, xmlSecBufferPtr buf) {
     xmlSecAssert2(bufData != NULL, -1);
 
     /* write it out */
-    err = gnutls_x509_crl_export(crl,GNUTLS_X509_FMT_DER, bufData, &bufSizeT);
+    err = gnutls_x509_crl_export(crl,GNUTLS_X509_FMT_DER, bufData, &bufSize);
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_x509_crl_export(GNUTLS_X509_FMT_DER)", err, NULL);
         return(-1);

@@ -312,7 +312,6 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
     xmlSecKeyDataPtr myKeyValue, otherKeyValue;
     EVP_PKEY *myPrivKey;
     EVP_PKEY *otherPubKey;
-    size_t secret_len = 0;
     xmlSecByte * secretData;
     xmlSecSize secretSize;
     int ret;
@@ -394,14 +393,14 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
     }
 
     /* determine output buffer size */
-    ret = EVP_PKEY_derive(pKeyCtx, NULL, &secret_len);
-    if((ret != 1) || (secret_len == 0)) {
+    ret = EVP_PKEY_derive(pKeyCtx, NULL, &secretSize);
+    if((ret != 1) || (secretSize == 0)) {
         xmlSecOpenSSLError("EVP_PKEY_derive", NULL);
         goto done;
     }
 
     /* Validate secret size matches expected value (if specified) */
-    if((ctx->expected_secret_len != 0) && (secret_len != ctx->expected_secret_len)) {
+    if((ctx->expected_secret_len != 0) && (secretSize != ctx->expected_secret_len)) {
         char expectedLenStr[32];
 
         ret = xmlStrPrintf(BAD_CAST expectedLenStr, sizeof(expectedLenStr), XMLSEC_SIZE_FMT, ctx->expected_secret_len);
@@ -409,17 +408,14 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
             xmlSecInternalError("xmlStrPrintf", NULL);
             goto done;
         }
-        xmlSecInvalidSizeDataError("EVP_PKEY_derive secret size", secret_len,
-            expectedLenStr, NULL);
+        xmlSecInvalidSizeDataError("EVP_PKEY_derive secret size", secretSize, expectedLenStr, NULL);
         goto done;
     }
 
     /* allocate buffer */
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(secret_len, secretSize, goto done, NULL);
     ret = xmlSecBufferSetSize(secret, secretSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
-            "size=" XMLSEC_SIZE_FMT, secretSize);
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, secretSize);
         goto done;
     }
     secretData = xmlSecBufferGetData(secret);
@@ -429,10 +425,18 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
     }
 
     /* derive the shared secret */
-    ret = EVP_PKEY_derive(pKeyCtx, secretData, &secret_len);
-    if((ret != 1) || (secret_len == 0)) {
+    ret = EVP_PKEY_derive(pKeyCtx, secretData, &secretSize);
+    if((ret != 1) || (secretSize == 0)) {
         xmlSecOpenSSLError("EVP_PKEY_derive", NULL);
         /* Clear partial secret data on error */
+        xmlSecBufferEmpty(secret);
+        goto done;
+    }
+
+    /* set the size */
+    ret = xmlSecBufferSetSize(secret, secretSize);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, secretSize);
         xmlSecBufferEmpty(secret);
         goto done;
     }

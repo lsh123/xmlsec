@@ -59,6 +59,18 @@
 #include "cast_helpers.h"
 #include "keysdata_helpers.h"
 
+/* default limits */
+#define XMLSEC_KEYINFO_DEFAULT_MAX_REFERENCE_LEVEL          1
+#define XMLSEC_KEYINFO_DEFAULT_MAX_RETRIEVAL_METHOD_LEVEL   1
+
+#ifndef XMLSEC_NO_XMLENC
+#define XMLSEC_KEYINFO_DEFAULT_MAX_ENCRYPTED_KEY_LEVEL      1
+#endif /* XMLSEC_NO_XMLENC */
+
+#ifndef XMLSEC_NO_X509
+#define XMLSEC_KEYINFO_DEFAULT_MAX_CERT_VERIFICATION_DEPTH  9
+#endif /* XMLSEC_NO_X509 */
+
 /******************************************************************************
  *
  * High-level functions
@@ -261,14 +273,14 @@ xmlSecKeyInfoCtxInitialize(xmlSecKeyInfoCtxPtr keyInfoCtx, xmlSecKeysMngrPtr key
         return(-1);
     }
 
-    keyInfoCtx->maxRetrievalMethodLevel = 1;
+    keyInfoCtx->maxRetrievalMethodLevel = XMLSEC_KEYINFO_DEFAULT_MAX_RETRIEVAL_METHOD_LEVEL;
     ret = xmlSecTransformCtxInitialize(&(keyInfoCtx->retrievalMethodCtx));
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformCtxInitialize(retrievalMethodCtx)", NULL);
         return(-1);
     }
 
-    keyInfoCtx->maxKeyInfoReferenceLevel = 1;
+    keyInfoCtx->maxKeyInfoReferenceLevel = XMLSEC_KEYINFO_DEFAULT_MAX_REFERENCE_LEVEL;
     ret = xmlSecTransformCtxInitialize(&(keyInfoCtx->keyInfoReferenceCtx));
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformCtxInitialize(keyInfoReferenceCtx)", NULL);
@@ -276,11 +288,11 @@ xmlSecKeyInfoCtxInitialize(xmlSecKeyInfoCtxPtr keyInfoCtx, xmlSecKeysMngrPtr key
     }
 
 #ifndef XMLSEC_NO_XMLENC
-    keyInfoCtx->maxEncryptedKeyLevel = 1;
+    keyInfoCtx->maxEncryptedKeyLevel = XMLSEC_KEYINFO_DEFAULT_MAX_ENCRYPTED_KEY_LEVEL;
 #endif /* XMLSEC_NO_XMLENC */
 
 #ifndef XMLSEC_NO_X509
-    keyInfoCtx->certsVerificationDepth = 9;
+    keyInfoCtx->certsVerificationDepth = XMLSEC_KEYINFO_DEFAULT_MAX_CERT_VERIFICATION_DEPTH;
 #endif /* XMLSEC_NO_X509 */
 
     ret = xmlSecKeyReqInitialize(&(keyInfoCtx->keyReq));

@@ -1301,7 +1301,7 @@ xmlSecMSCryptoKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) 
     memcpy(modulusBlob, xmlSecBufferGetData(&(rsaValue->modulus)), mSize);
 
     /* public exponent */
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(sizeof(pubKey->pubexp), pubExpSize, goto done, NULL);
+    pubExpSize = sizeof(pubKey->pubexp);
     if (pubExpSize < peSize) {
         xmlSecInvalidSizeLessThanError("exponent size", pubExpSize, peSize, NULL);
         goto done;

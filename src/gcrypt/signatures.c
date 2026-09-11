@@ -724,7 +724,6 @@ xmlSecGCryptPkSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
 static int
 xmlSecGCryptAppendMpi(gcry_mpi_t a, xmlSecBufferPtr out, xmlSecSize min_size) {
     xmlSecSize outSize;
-    size_t written;
     xmlSecSize writtenSize;
     gpg_error_t err;
     int ret;
@@ -736,13 +735,12 @@ xmlSecGCryptAppendMpi(gcry_mpi_t a, xmlSecBufferPtr out, xmlSecSize min_size) {
     outSize = xmlSecBufferGetSize(out);
 
     /* figure out how much space we need */
-    written = 0;
-    err = gcry_mpi_print(GCRYMPI_FMT_USG, NULL, 0, &written, a);
-    if((err != GPG_ERR_NO_ERROR) || (written == 0)) {
+    writtenSize = 0;
+    err = gcry_mpi_print(GCRYMPI_FMT_USG, NULL, 0, &writtenSize, a);
+    if((err != GPG_ERR_NO_ERROR) || (writtenSize == 0)) {
         xmlSecGCryptError("gcry_mpi_print", err, NULL);
         return(-1);
     }
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(written, writtenSize, return(-1), NULL);
 
     /* add zeros at the beginning (if needed) */
     if((min_size > 0) && (writtenSize < min_size)) {
@@ -769,16 +767,15 @@ xmlSecGCryptAppendMpi(gcry_mpi_t a, xmlSecBufferPtr out, xmlSecSize min_size) {
     }
 
     /* write out */
-    written = 0;
+    writtenSize = 0;
     err = gcry_mpi_print(GCRYMPI_FMT_USG,
             xmlSecBufferGetData(out) + outSize,
             xmlSecBufferGetMaxSize(out) - outSize,
-            &written, a);
-    if((err != GPG_ERR_NO_ERROR) || (written == 0)) {
+            &writtenSize, a);
+    if((err != GPG_ERR_NO_ERROR) || (writtenSize == 0)) {
         xmlSecGCryptError("gcry_mpi_print", err, NULL);
         return(-1);
     }
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(written, writtenSize, return(-1), NULL);
 
     /* reset size */
     ret = xmlSecBufferSetSize(out, outSize + writtenSize);

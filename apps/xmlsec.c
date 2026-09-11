@@ -3035,11 +3035,11 @@ xmlSecAppInputOpenCallback(char const* filename) {
             f = fopen(value->strValue, "rb");
 #endif /* defined(_MSC_VER) */
             if(f == NULL) {
-                fprintf(stdout, "Error: can not open file \"%s\" for url \"%s\"\n", value->strValue, filename);
+                fprintf(stderr, "Error: can not open file \"%s\" for url \"%s\"\n", value->strValue, filename);
                 return(NULL);
             }
             if(g_printVerboseDebug != 0) {
-                fprintf(stdout, "Debug: opened file \"%s\" for url \"%s\"\n", value->strValue, filename);
+                fprintf(stderr, "Debug: opened file \"%s\" for url \"%s\"\n", value->strValue, filename);
             }
             return(f);
         }
@@ -3077,7 +3077,7 @@ static int xmlSecAppInputCloseCallback(void* context) {
         return(-1);
     }
     if(g_printVerboseDebug != 0) {
-        fprintf(stdout, "Debug: closed file\n");
+        fprintf(stderr, "Debug: closed file\n");
     }
     return(0);
 }
@@ -3275,7 +3275,7 @@ xmlSecAppXmlDataCreate(const char* filename, const xmlChar* defStartNodeName, co
 
         if(value->strValue == NULL) {
             fprintf(stderr, "Error: invalid value for option \"%s\".\n",
-                    idAttrParam.fullName);
+                    addIdAttrParam.fullName);
             xmlSecAppXmlDataDestroy(data);
             return(NULL);
         }

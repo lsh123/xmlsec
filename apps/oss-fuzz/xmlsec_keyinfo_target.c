@@ -8,13 +8,16 @@
  * first input.
  *
  * The code it drives is the largest cold area in the library: keysdata_helpers.c
- * (the KeyValue, X509Data and EncryptedKey structure readers), keyinfo.c,
- * x509_helpers.c and the OpenSSL key-data implementations.
+ * (the KeyValue and EncryptedKey structure readers), keyinfo.c and the OpenSSL
+ * key-data implementations.
  *
  * The keys manager is NULL on purpose. A manager only adds trusted-key lookup,
  * which needs key material this target does not supply, and it brings in
- * application-level initialisation that this target does not need. Structure
- * parsing, the part that reads attacker-supplied bytes, runs either way.
+ * application-level initialisation that this target does not need. The KeyValue
+ * and EncryptedKey structure readers, the part that reads attacker-supplied
+ * bytes, run either way. The X509Data reader is not reached: with a NULL keys
+ * manager xmlSecKeyDataX509XmlRead() fails before any <X509Data> child is
+ * parsed, so x509_helpers.c is not exercised by this target.
  *
  * External fetches are disabled, so the target stays offline.
  */
@@ -97,7 +100,7 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
         return 0;
     }
 
-    /* NONET and NOENT stop external fetches and entity expansion. */
+    /* NONET stops external fetches; NOENT enables general-entity substitution. */
     doc = xmlReadMemory((const char*)data, (int)size, "fuzz.xml", NULL,
                         XML_PARSE_NONET | XML_PARSE_NOENT);
     if (doc == NULL) {

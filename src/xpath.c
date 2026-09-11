@@ -219,9 +219,10 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
         data->ctx->xptr = 1;
         xmlXPathRegisterFunc(data->ctx, (xmlChar *)"here", xmlSecXPathHereFunction);
     } else {
-        /* clear any stale "here" node/function left over from a previous
-         * execution against another document */
+        /* clear any stale "here" node/function/xptr flag left over from a
+         * previous execution against another document */
         data->ctx->here = NULL;
+        data->ctx->xptr = 0;
         xmlXPathRegisterFunc(data->ctx, (xmlChar *)"here", NULL);
     }
 

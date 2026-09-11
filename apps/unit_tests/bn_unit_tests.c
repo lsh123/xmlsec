@@ -611,7 +611,7 @@ testBnAdd(xmlSecBn* bn, const char * hexStart, int delta, const char * hexExpect
 
     str = xmlSecBnToHexString(bn);
     if(!bnTestCheckString(str, hexExpected)) {
-        testLog("Error: xmlSecBnAdd result mismatch for start='%s' delta=%d, expected='%s', got='%s'\n", hexStart, delta, hexExpected, str);
+        testLog("Error: xmlSecBnAdd result mismatch for start='%s' delta=%d, expected='%s', got='%s'\n", hexStart, delta, hexExpected, xmlSecErrorsSafeString(str));
         xmlFree(str);
         return(-1);
     }
@@ -712,7 +712,7 @@ testBnMul(xmlSecBn* bn, const char * hexStart, int multiplier, const char * hexE
 
     str = xmlSecBnToHexString(bn);
     if(!bnTestCheckString(str, hexExpected)) {
-        testLog("Error: xmlSecBnMul result mismatch for start='%s' multiplier=%d, expected='%s', got='%s'\n", hexStart, multiplier, hexExpected, str);
+        testLog("Error: xmlSecBnMul result mismatch for start='%s' multiplier=%d, expected='%s', got='%s'\n", hexStart, multiplier, hexExpected, xmlSecErrorsSafeString(str));
         xmlFree(str);
         return(-1);
     }
@@ -1050,7 +1050,7 @@ testBnDiv(xmlSecBn* bn, const char * hexStart, int divider, const char * hexExpe
     str = xmlSecBnToHexString(bn);
     if(!bnTestCheckString(str, hexExpected)) {
         testLog("Error: xmlSecBnDiv result mismatch for start='%s' divider=%d, expected='%s', got='%s'\n",
-            hexStart, divider, hexExpected, str);
+            hexStart, divider, hexExpected, xmlSecErrorsSafeString(str));
         xmlFree(str);
         return(-1);
     }

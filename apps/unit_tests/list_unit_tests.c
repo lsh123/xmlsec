@@ -214,6 +214,7 @@ test_ptr_list_initialize_finalize(void) {
     xmlSecPtrList list;
     xmlSecListTestItem* item1 = NULL;
     xmlSecListTestItem* item2 = NULL;
+    xmlSecListTestItem* item = NULL;
     int ret;
 
     memset(&list, 0, sizeof(list));
@@ -252,11 +253,13 @@ test_ptr_list_initialize_finalize(void) {
         testLog("Error: unexpected list size, got=" XMLSEC_SIZE_FMT " expected=2\n", xmlSecPtrListGetSize(&list));
         goto done;
     }
-    if(((xmlSecListTestItem*)xmlSecPtrListGetItem(&list, 0))->value != 11) {
+    item = (xmlSecListTestItem*)xmlSecPtrListGetItem(&list, 0);
+    if((item == NULL) || (item->value != 11)) {
         testLog("Error: xmlSecPtrListGetItem returned unexpected first item\n");
         goto done;
     }
-    if(((xmlSecListTestItem*)xmlSecPtrListGetItem(&list, 1))->value != 22) {
+    item = (xmlSecListTestItem*)xmlSecPtrListGetItem(&list, 1);
+    if((item == NULL) || (item->value != 22)) {
         testLog("Error: xmlSecPtrListGetItem returned unexpected second item\n");
         goto done;
     }
@@ -442,7 +445,8 @@ test_ptr_list_set(void) {
         testLog("Error: xmlSecPtrListSet destroyed %d items instead of 1\n", g_listItemDestroyCount);
         goto done;
     }
-    if(((xmlSecListTestItem*)xmlSecPtrListGetItem(&list, 1))->value != 3) {
+    item3 = (xmlSecListTestItem*)xmlSecPtrListGetItem(&list, 1);
+    if((item3 == NULL) || (item3->value != 3)) {
         testLog("Error: xmlSecPtrListSet did not replace the target item\n");
         goto done;
     }

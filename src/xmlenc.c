@@ -179,6 +179,7 @@ xmlSecEncCtxReset(xmlSecEncCtxPtr encCtx) {
     encCtx->resultBase64Encoded = 0;
     encCtx->resultReplaced      = 0;
     encCtx->encMethod           = NULL;
+    encCtx->failureReason       = xmlSecEncFailureReasonUnknown;
 
     if (encCtx->replacedNodeList != NULL) {
         xmlFreeNodeList(encCtx->replacedNodeList);

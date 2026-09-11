@@ -479,7 +479,10 @@ xmlSecOpenSSLKWDes3Encrypt(const xmlSecByte* key, xmlSecSize keySize,
         goto done;
     }
 
-    EVP_CIPHER_CTX_set_padding(cipherCtx, 0);
+    if(EVP_CIPHER_CTX_set_padding(cipherCtx, 0) != 1) {
+        xmlSecOpenSSLError("EVP_CIPHER_CTX_set_padding", NULL);
+        goto done;
+    }
 
     XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, goto done, NULL);
     ret = EVP_CipherUpdate(cipherCtx, out, &updateLen, in, inLen);

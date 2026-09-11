@@ -802,7 +802,7 @@ xmlSecKeyX509DataValueXmlWrite(xmlSecKeyX509DataValuePtr x509Value, xmlNodePtr n
             xmlSecNodeX509CRL, xmlSecDSigNs,
             base64LineSize, addLineBreaks);
         if(child == NULL) {
-            xmlSecInternalError("xmlSecKeyX509DataValueXmlWriteBase64Blob(cert)", NULL);
+            xmlSecInternalError("xmlSecKeyX509DataValueXmlWriteBase64Blob(crl)", NULL);
             return(-1);
         }
     }
@@ -1076,6 +1076,12 @@ xmlSecX509AttrValueStringRead(
         /* skip sharp '#' */
         ++(*in); --(*inSize);
 
+        /* RFC 4514 requires at least one hex pair after '#' (SHARP 1*hexpair) */
+        if(((*inSize) <= 0) || !(xmlSecIsHex(**in))) {
+            xmlSecInvalidDataError("Expected at least one hex pair in octet string after '#'", NULL);
+            return(-1);
+        }
+
         /* process pair hex hex from input */
         while((jj < outSize) && ((*inSize) > 0) && (xmlSecIsHex(**in))) {
             /* we always expect pairs of hex digits*/
@@ -1170,7 +1176,7 @@ xmlSecX509NameRead(const xmlChar *str, xmlSecx509NameReplacements *replacements,
         /* read value */
         ret = xmlSecX509AttrValueStringRead(&str, &strSize, value, sizeof(value) - 1, &valueSize, &type, ',', 1);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecX509EscapedStringRead", NULL);
+            xmlSecInternalError("xmlSecX509AttrValueStringRead", NULL);
             return(-1);
         }
         xmlSecAssert2(valueSize < sizeof(value), -1);
@@ -1205,7 +1211,7 @@ xmlSecX509NameRead(const xmlChar *str, xmlSecx509NameReplacements *replacements,
         if((strSize > 0) && ((*str) == ',')) {
             ++str; --strSize;
         } else if (strSize > 0) {
-            xmlSecInvalidDataError("A quote ',' is expected between name and value pairs", NULL);
+            xmlSecInvalidDataError("A comma ',' is expected between name and value pairs", NULL);
             return(-1);
         }
     }

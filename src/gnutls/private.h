@@ -15,6 +15,20 @@
 #error "gnutls/private.h file contains private xmlsec-gnutls definitions and should not be used outside xmlsec or xmlsec-gnutls libraries"
 #endif /* XMLSEC_PRIVATE */
 
+
+#include <stdio.h>
+#include <stddef.h>
+
+#include <gnutls/gnutls.h>
+#include <gnutls/x509.h>
+
+#include <xmlsec/exports.h>
+#include <xmlsec/xmlsec.h>
+#include <xmlsec/buffer.h>
+#include <xmlsec/keys.h>
+#include <xmlsec/list.h>
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */

@@ -15,7 +15,6 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/errors.h>
-#include "../../src/cast_helpers.h"
 
 #ifdef __cplusplus
 extern "C" {

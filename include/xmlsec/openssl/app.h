@@ -21,7 +21,6 @@
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>
-#include <xmlsec/transforms.h>
 
 #ifdef __cplusplus
 extern "C" {

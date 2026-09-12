@@ -18,6 +18,7 @@
 
 #include <limits.h>
 #include <stdint.h>
+#include <xmlsec/xmlsec.h>
 #include "errors_helpers.h"
 
 /**

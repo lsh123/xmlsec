@@ -19,6 +19,13 @@
 #include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 
+#include <openssl/evp.h>
+#include <openssl/x509.h>
+#include <openssl/bio.h>
+#include <openssl/asn1.h>
+
+#include "openssl_compat.h"
+
 #include "../keysdata_helpers.h"
 
 

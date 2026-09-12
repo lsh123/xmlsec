@@ -15,6 +15,11 @@
 #error "gcrypt/asn1.h file contains private xmlsec-gcrypt definitions and should not be used outside xmlsec or xmlsec-gcrypt libraries"
 #endif /* XMLSEC_PRIVATE */
 
+
+#include <xmlsec/exports.h>
+#include <xmlsec/xmlsec.h>
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */

@@ -15,9 +15,6 @@
 #error "this file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-crypto libraries"
 #endif /* XMLSEC_PRIVATE */
 
-#include <libxml/tree.h>
-#include <libxml/xmlIO.h>
-
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/list.h>
 #include <xmlsec/keysdata.h>
@@ -25,13 +22,6 @@
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
-
-#ifdef __GNUC__
-#ifdef HAVE_ANSIDECL_H
-#include <ansidecl.h>
-#endif /* HAVE_ANSIDECL_H */
-#endif /* __GNUC__ */
-
 
 #ifdef __cplusplus
 extern "C" {

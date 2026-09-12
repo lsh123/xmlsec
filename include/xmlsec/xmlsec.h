@@ -16,6 +16,7 @@
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 #include <stdint.h>
+#include <stddef.h>
 
 #include <xmlsec/version.h>
 #include <xmlsec/exports.h>

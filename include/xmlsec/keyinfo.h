@@ -15,7 +15,10 @@
  * @{
  */
 
+#include <stdio.h>
+#ifndef XMLSEC_NO_X509
 #include <time.h>
+#endif /* XMLSEC_NO_X509 */
 
 #include <libxml/tree.h>
 

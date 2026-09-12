@@ -12,6 +12,9 @@
 #ifndef CRYPTOCOM_CSP_CALG_H
 #define CRYPTOCOM_CSP_CALG_H
 
+#include <windows.h>
+#include <wincrypt.h>
+
 #define ALG_TYPE_GR3410 (7 << 9)
 
 #define ALG_SID_MAGPRO_R3410_94         64

@@ -15,6 +15,8 @@
  * @{
  */
 
+#include <stdio.h>
+
 #include <libxml/tree.h>
 
 #include <xmlsec/exports.h>

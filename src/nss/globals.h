@@ -21,6 +21,9 @@
 #define IN_XMLSEC_CRYPTO
 #define XMLSEC_PRIVATE
 
+#include <nspr.h>
+#include <xmlsec/errors.h>
+
 /* Include common error helper macros. */
 #include "../errors_helpers.h"
 

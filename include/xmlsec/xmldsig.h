@@ -17,6 +17,8 @@
 
 #ifndef XMLSEC_NO_XMLDSIG
 
+#include <stdio.h>
+
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 

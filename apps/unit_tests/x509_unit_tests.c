@@ -15,6 +15,7 @@
 
 /* must be included before any other xmlsec header */
 #include "xmlsec_unit_tests.h"
+#include "../../src/cast_helpers.h"
 #include "../../src/x509_helpers.h"
 
 /******************************************************************************

@@ -15,9 +15,17 @@
 #error "mscrypto/private.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-mscrypto libraries"
 #endif /* XMLSEC_PRIVATE */
 
+#include <windows.h>
+#include <wincrypt.h>
+
 #if defined(__MINGW32__) && defined(XMLSEC_CUSTOM_CRYPT32)
 #  include "xmlsec-mingw.h"
 #endif
+
+#include <xmlsec/exports.h>
+#include <xmlsec/xmlsec.h>
+#include <xmlsec/keys.h>
+#include <xmlsec/keyinfo.h>
 
 #ifdef __cplusplus
 extern "C" {

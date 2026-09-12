@@ -62,15 +62,8 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngX509StoreAdoptCert        (xm
                                                                               PCCERT_CONTEXT cert,
                                                                               xmlSecKeyDataType type);
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngX509StoreAdoptCrl         (xmlSecKeyDataStorePtr store,
-                                                                              PCCRL_CONTEXT crl);
-/**
- * @brief Verifies a CRL against trusted certificates in the store.
- * @details Verifies @p crl signature against trusted certificates (falling back to untrusted intermediates) and checks its thisUpdate/nextUpdate validity window.
- * @param store the pointer to X509 key data store klass.
- * @param crl the pointer to CRL.
- * @param keyInfoCtx the pointer to key info context.
- * @return 1 if verified, 0 if not, or a negative value if an error occurs.
- */
+                                                                               PCCRL_CONTEXT crl);
+
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngX509StoreVerifyCrl        (xmlSecKeyDataStorePtr store,
                                                                               PCCRL_CONTEXT crl,
                                                                               xmlSecKeyInfoCtx* keyInfoCtx);
@@ -81,8 +74,8 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngX509StoreAdoptTrustedStore(xm
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngX509StoreAdoptUntrustedStore(xmlSecKeyDataStorePtr store,
                                                                                 HCERTSTORE untrustedStore);
 XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT     xmlSecMSCngX509StoreVerify           (xmlSecKeyDataStorePtr store,
-                                                                              HCERTSTORE certs,
-                                                                              xmlSecKeyInfoCtx* keyInfoCtx);
+                                                                               HCERTSTORE certs,
+                                                                               xmlSecKeyInfoCtx* keyInfoCtx);
 
 
 /******************************************************************************
@@ -104,8 +97,8 @@ XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED PCCERT_CONTEXT xmlSecMSCngX509StoreFindCe
                                                                                         xmlSecSize skiSize,
                                                                                         xmlSecKeyInfoCtx* keyInfoCtx);
 XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED PCCERT_CONTEXT xmlSecMSCngX509FindCertBySubject (HCERTSTORE store,
-                                                                                        LPTSTR wcSubject,
-                                                                                        DWORD dwCertEncodingType);
+                                                                                         LPTSTR wcSubject,
+                                                                                         DWORD dwCertEncodingType);
 
 #ifdef __cplusplus
 }

@@ -30,6 +30,7 @@ IMPORTS
   CertStrToNameW@28				= crypt32.CertStrToNameW
   CertVerifySubjectCertificateContext@12	= crypt32.CertVerifySubjectCertificateContext
   CryptAcquireCertificatePrivateKey@24		= crypt32.CryptAcquireCertificatePrivateKey
+  CryptDuplicateKey@16				= crypt32.CryptDuplicateKey
   CryptImportPublicKeyInfo@16			= crypt32.CryptImportPublicKeyInfo
   PFXImportCertStore@12				= crypt32.PFXImportCertStore
   PFXIsPFXBlob@4				= crypt32.PFXIsPFXBlob

@@ -49,14 +49,6 @@ typedef const struct _xmlSecKeyDataStoreKlass           xmlSecKeyDataStoreKlass;
  * @brief Pointer to #xmlSecKeyDataStoreKlass.
  */
 typedef const struct _xmlSecKeyDataStoreKlass           *xmlSecKeyDataStoreId;
-/**
- * @brief The key data list.
- */
-typedef struct _xmlSecKeyDataList                       xmlSecKeyDataList;
-/**
- * @brief Pointer to #xmlSecKeyDataList.
- */
-typedef struct _xmlSecKeyDataList                       *xmlSecKeyDataListPtr;
 
 /**
  * @brief The X.509 key data value.
@@ -609,7 +601,11 @@ XMLSEC_EXPORT void              xmlSecKeyDataStoreDestroy       (xmlSecKeyDataSt
  * @param store the pointer to store.
  */
 #define xmlSecKeyDataStoreIsValid(store) \
-        ((( store ) != NULL) && ((( store )->id) != NULL))
+        ((( store ) != NULL) && \
+         (( store )->id != NULL) && \
+         (( store )->id->klassSize >= sizeof(xmlSecKeyDataStoreKlass)) && \
+         (( store )->id->objSize >= sizeof(xmlSecKeyDataStore)) && \
+         (( store )->id->name != NULL))
 /**
  * @brief Macro. Returns 1 if @p store's id equals @p storeId.
  * @details Macro. Returns 1 if @p store is valid and @p store's id is equal to @p storeId.
@@ -692,6 +688,11 @@ struct _xmlSecKeyDataStoreKlass {
 #define xmlSecKeyDataStorePtrListId     xmlSecKeyDataStorePtrListGetKlass()
 XMLSEC_EXPORT xmlSecPtrListId   xmlSecKeyDataStorePtrListGetKlass       (void);
 
+/******************************************************************************
+ *
+ * Key import
+ *
+  *****************************************************************************/
 XMLSEC_EXPORT void xmlSecImportSetPersistKey                            (void);
 XMLSEC_EXPORT int xmlSecImportGetPersistKey                             (void);
 

@@ -67,14 +67,6 @@
 /*! GOST 34.10/11-94 digital signature algorithm CryptoPro LTD public key */
 #define szOID_MAGPRO_PUBKEY_SIGN_R3410_94_CP "1.2.643.2.2.20"
 
-/*! GostR3411-94-CryptoProParamSet */
-#define szOID_MAGPRO_PARAM_HASH_3411_94 "1.2.643.2.2.30.1"
-
-/*! GostR3410-94-CryptoPro-A-ParamSet */
-#define szOID_MAGPRO_PARAM_PK_CC_94 "1.2.643.2.2.32.2"
-
-
-#define szOID_CP_PARAM_R3411_94_DEF "1.2.643.2.2.30.1"
 #define szOID_CP_PARAM_R3411_94_1       "1.2.643.2.2.30.2"
 #define szOID_CP_PARAM_R3411_94_2       "1.2.643.2.2.30.3"
 #define szOID_CP_PARAM_R3411_94_3       "1.2.643.2.2.30.4"
@@ -88,7 +80,6 @@
 #define szOID_CP_PARAM_28147_89_6       "1.2.643.2.2.31.7"
 
 /* OID for Signature 1024 */
-#define szOID_CP_PARAM_PK_R3410_94_DEF  "1.2.643.2.2.32.2"
 #define szOID_CP_PARAM_PK_R3410_94_S1   "1.2.643.2.2.32.3"
 #define szOID_CP_PARAM_PK_R3410_94_S2   "1.2.643.2.2.32.4"
 #define szOID_CP_PARAM_PK_R3410_94_S3   "1.2.643.2.2.32.5"

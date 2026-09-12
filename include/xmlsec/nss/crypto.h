@@ -347,13 +347,15 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformDsaSha256GetKlass(void)
 /**
  * @brief The EC key klass.
  */
-#define xmlSecNssKeyDataEcId            xmlSecNssKeyDataEcGetKlass()
+#define xmlSecNssKeyDataEcId \
+        xmlSecNssKeyDataEcGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNssKeyDataEcGetKlass(void);
 
 /**
  * @brief The ECDH key agreement transform klass.
  */
-#define xmlSecNssTransformEcdhId        xmlSecNssTransformEcdhGetKlass()
+#define xmlSecNssTransformEcdhId \
+        xmlSecNssTransformEcdhGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecNssTransformEcdhGetKlass(void);
 
 #ifndef XMLSEC_NO_SHA1
@@ -361,7 +363,8 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecNssTransformEcdhGetKlass(void);
 /**
  * @brief The ECDSA SHA1 signature transform klass.
  */
-#define xmlSecNssTransformEcdsaSha1Id xmlSecNssTransformEcdsaSha1GetKlass()
+#define xmlSecNssTransformEcdsaSha1Id \
+        xmlSecNssTransformEcdsaSha1GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEcdsaSha1GetKlass(void);
 
 #endif /* XMLSEC_NO_SHA1 */
@@ -371,7 +374,8 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEcdsaSha1GetKlass(void)
 /**
  * @brief The ECDSA SHA2-224 signature transform klass.
  */
-#define xmlSecNssTransformEcdsaSha224Id xmlSecNssTransformEcdsaSha224GetKlass()
+#define xmlSecNssTransformEcdsaSha224Id \
+        xmlSecNssTransformEcdsaSha224GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEcdsaSha224GetKlass(void);
 
 #endif /* XMLSEC_NO_SHA224 */
@@ -381,7 +385,8 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEcdsaSha224GetKlass(voi
 /**
  * @brief The ECDSA SHA2-256 signature transform klass.
  */
-#define xmlSecNssTransformEcdsaSha256Id xmlSecNssTransformEcdsaSha256GetKlass()
+#define xmlSecNssTransformEcdsaSha256Id \
+        xmlSecNssTransformEcdsaSha256GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEcdsaSha256GetKlass(void);
 
 #endif /* XMLSEC_NO_SHA256 */
@@ -391,7 +396,8 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEcdsaSha256GetKlass(voi
 /**
  * @brief The ECDSA SHA2-384 signature transform klass.
  */
-#define xmlSecNssTransformEcdsaSha384Id xmlSecNssTransformEcdsaSha384GetKlass()
+#define xmlSecNssTransformEcdsaSha384Id \
+        xmlSecNssTransformEcdsaSha384GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEcdsaSha384GetKlass(void);
 
 #endif /* XMLSEC_NO_SHA384 */
@@ -401,7 +407,8 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEcdsaSha384GetKlass(voi
 /**
  * @brief The ECDSA SHA2-512 signature transform klass.
  */
-#define xmlSecNssTransformEcdsaSha512Id xmlSecNssTransformEcdsaSha512GetKlass()
+#define xmlSecNssTransformEcdsaSha512Id \
+        xmlSecNssTransformEcdsaSha512GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEcdsaSha512GetKlass(void);
 
 #endif /* XMLSEC_NO_SHA512 */
@@ -425,7 +432,8 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNssKeyDataEdDSAGetKlass(void);
 /**
  * @brief The EdDSA-Ed25519 signature transform klass.
  */
-#define xmlSecNssTransformEdDSAEd25519Id    xmlSecNssTransformEdDSAEd25519GetKlass()
+#define xmlSecNssTransformEdDSAEd25519Id \
+        xmlSecNssTransformEdDSAEd25519GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEdDSAEd25519GetKlass(void);
 #endif /* XMLSEC_NO_EDDSA */
 
@@ -440,13 +448,15 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEdDSAEd25519GetKlass(vo
 /**
  * @brief The XDH key klass (X25519 and X448).
  */
-#define xmlSecNssKeyDataXdhId           xmlSecNssKeyDataXdhGetKlass()
+#define xmlSecNssKeyDataXdhId \
+        xmlSecNssKeyDataXdhGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNssKeyDataXdhGetKlass(void);
 
 /**
  * @brief The X25519 key agreement transform klass.
  */
-#define xmlSecNssTransformX25519Id      xmlSecNssTransformX25519GetKlass()
+#define xmlSecNssTransformX25519Id \
+        xmlSecNssTransformX25519GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecNssTransformX25519GetKlass(void);
 
 #endif /* XMLSEC_NO_XDH */

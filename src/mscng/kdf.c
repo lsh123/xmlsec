@@ -585,7 +585,7 @@ xmlSecMSCngHkdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
     /* first (and only) node is required HKDFParams */
     cur = xmlSecGetNextElementNode(node->children);
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeHkdfParams, xmlSecXmldsig2021MoreNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeHkdfParams, xmlSecDSig2021MoreNs))) {
         xmlSecInvalidNodeError(cur, xmlSecNodeHkdfParams, NULL);
         return(-1);
     }

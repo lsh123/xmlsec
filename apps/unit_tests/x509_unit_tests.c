@@ -333,7 +333,7 @@ static void
 test_xmlSecX509NameRead_success(
     const char * name,
     const char * str,
-    xmlSecx509NameReplacements * replacements,
+    xmlSecX509NameReplacements * replacements,
     int expectedCount,
     const char * name0,
     const char * value0,
@@ -403,7 +403,7 @@ static void
 test_xmlSecX509NameRead_failure(
     const char * name,
     const char * str,
-    xmlSecx509NameReplacements *replacements,
+    xmlSecX509NameReplacements *replacements,
     int fail_callback
 ) {
     test_X509Name names;
@@ -432,7 +432,7 @@ static void
 test_xmlSecX509NameRead_multiple_pairs_success(
     const char * name,
     const char * str,
-    xmlSecx509NameReplacements * replacements,
+    xmlSecX509NameReplacements * replacements,
     int expectedCount,
     const char * const * expectedNames,
     const char * const * expectedValues,
@@ -536,7 +536,7 @@ test_xmlSecX509NameRead_octet_with_nul_success(void) {
 }
 
 
-static xmlSecx509NameReplacements test_X509NameReplacements[] = {
+static xmlSecX509NameReplacements test_X509NameReplacements[] = {
     { BAD_CAST "E", BAD_CAST "emailAddress"},
     { NULL, NULL }
 };

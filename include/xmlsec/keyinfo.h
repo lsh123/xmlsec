@@ -206,7 +206,9 @@ struct _xmlSecKeyInfoCtx {
     /* internal data */
     int                                 curRetrievalMethodLevel;  /**< the current &lt;dsig:RetrievalMethod/&gt; element processing level (see #maxRetrievalMethodLevel). */
     int                                 curKeyInfoReferenceLevel;  /**< the current &lt;dsig11:KeyInfoReference/&gt; element processing level (see #maxKeyInfoReferenceLevel). */
+#ifndef XMLSEC_NO_XMLENC
     int                                 curEncryptedKeyLevel;  /**< the current &lt;enc:EncryptedKey/&gt; or &lt;enc11:DerivedKey/&gt; element processing level (see #maxEncryptedKeyLevel). */
+#endif /* XMLSEC_NO_XMLENC */
     xmlSecTransformOperation            operation;  /**< the transform operation for this key info. */
     xmlSecKeyReq                        keyReq;  /**< the current key requirements. */
 

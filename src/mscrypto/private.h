@@ -107,7 +107,7 @@ BOOL               xmlSecMSCryptoImportPlainSessionBlob         (HCRYPTPROV hPro
   *****************************************************************************/
 #ifndef XMLSEC_NO_X509
 PCCERT_CONTEXT     xmlSecMSCryptoX509FindCertBySubject          (HCERTSTORE store,
-                                                                 const LPTSTR wcSubject,
+                                                                 LPCTSTR wcSubject,
                                                                  DWORD dwCertEncodingType);
 
 PCCERT_CONTEXT     xmlSecMSCryptoX509StoreFindCert              (xmlSecKeyDataStorePtr store,

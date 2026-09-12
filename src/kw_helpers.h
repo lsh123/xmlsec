@@ -17,6 +17,7 @@
 
 #include <xmlsec/exports.h>
 #include <xmlsec/transforms.h>
+#include "keysdata_helpers.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -126,8 +127,6 @@ XMLSEC_EXPORT int      xmlSecTransformKWDes3Execute             (xmlSecTransform
 #define XMLSEC_KW_RFC3394_IN_SIZE_MULTIPLY              ((xmlSecSize)8)
 #define XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE              ((xmlSecSize)8)
 #define XMLSEC_KW_RFC3394_BLOCK_SIZE                    ((xmlSecSize)16)
-
-#include "keysdata_helpers.h"
 
 typedef int  (*xmlSecKWRfc3394BlockEncryptMethod)       (xmlSecTransformPtr transform,
                                                          const xmlSecByte * in,

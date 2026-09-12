@@ -1325,46 +1325,46 @@ xmlSecGnuTLSDnAttrsFind(const xmlSecGnuTLSDnAttr * attrs,
 }
 
 int
-xmlSecGnuTLSDnAttrsEqual(const xmlSecGnuTLSDnAttr * ll, xmlSecSize llSize,
-                         const xmlSecGnuTLSDnAttr * rr, xmlSecSize rrSize)
+xmlSecGnuTLSDnAttrsEqual(const xmlSecGnuTLSDnAttr * left, xmlSecSize leftSize,
+                          const xmlSecGnuTLSDnAttr * right, xmlSecSize rightSize)
 {
-    xmlSecSize llNum = 0;
-    xmlSecSize rrNum = 0;
+    xmlSecSize leftNum = 0;
+    xmlSecSize rightNum = 0;
     const xmlSecGnuTLSDnAttr * tmp;
     xmlSecSize ii;
 
-    xmlSecAssert2(ll != NULL, -1);
-    xmlSecAssert2(llSize > 0, -1);
-    xmlSecAssert2(rr != NULL, -1);
-    xmlSecAssert2(rrSize > 0, -1);
+    xmlSecAssert2(left != NULL, -1);
+    xmlSecAssert2(leftSize > 0, -1);
+    xmlSecAssert2(right != NULL, -1);
+    xmlSecAssert2(rightSize > 0, -1);
 
     /* compare number of non-nullattributes */
-    for(ii = 0; ii < llSize; ++ii) {
-        if(ll[ii].key != NULL) {
-            ++llNum;
+    for(ii = 0; ii < leftSize; ++ii) {
+        if(left[ii].key != NULL) {
+            ++leftNum;
         }
     }
-    for(ii = 0; ii < rrSize; ++ii) {
-        if(rr[ii].key != NULL) {
-            ++rrNum;
+    for(ii = 0; ii < rightSize; ++ii) {
+        if(right[ii].key != NULL) {
+            ++rightNum;
         }
     }
-    if(llNum != rrNum) {
+    if(leftNum != rightNum) {
         return(0);
     }
 
-    /* make sure that all ll attrs are equal to rr attrs */
-    for(ii = 0; ii < llSize; ++ii) {
-        if(ll[ii].key == NULL) {
+    /* make sure that all left attrs are equal to right attrs */
+    for(ii = 0; ii < leftSize; ++ii) {
+        if(left[ii].key == NULL) {
             continue;
         }
 
-        tmp = xmlSecGnuTLSDnAttrsFind(rr, rrSize, ll[ii].key);
+        tmp = xmlSecGnuTLSDnAttrsFind(right, rightSize, left[ii].key);
         if(tmp == NULL) {
             return(0); /* attribute was not found */
         }
 
-        if(!xmlStrEqual(ll[ii].value, tmp->value)) {
+        if(!xmlStrEqual(left[ii].value, tmp->value)) {
             return(0); /* different values */
         }
     }

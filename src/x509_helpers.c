@@ -1134,7 +1134,7 @@ xmlSecX509AttrValueStringRead(
  * @return 0 on success or a negative value if an error occurs.
  */
 int
-xmlSecX509NameRead(const xmlChar *str, xmlSecx509NameReplacements *replacements, xmlSecX509NameReadCallback callback, void * context) {
+xmlSecX509NameRead(const xmlChar *str, xmlSecX509NameReplacements *replacements, xmlSecX509NameReadCallback callback, void * context) {
     xmlSecByte name[XMLSEC_X509_NAME_SIZE];
     xmlSecByte value[XMLSEC_X509_VALUE_SIZE];
     xmlSecSize strSize, nameSize, valueSize;
@@ -1185,7 +1185,7 @@ xmlSecX509NameRead(const xmlChar *str, xmlSecx509NameReplacements *replacements,
 
         /* handle replacements */
         if (replacements != NULL) {
-            for(xmlSecx509NameReplacements *cur = replacements; (cur->original != NULL) && (cur->replacement != NULL); ++cur) {
+            for(xmlSecX509NameReplacements *cur = replacements; (cur->original != NULL) && (cur->replacement != NULL); ++cur) {
                 if (xmlStrcmp(name, cur->original) != 0) {
                     continue;
                 }

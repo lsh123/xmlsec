@@ -150,7 +150,7 @@ typedef int                     (*xmlSecCryptoAppDefaultKeysMngrAdoptKeyMethod)
  * @param keyInfoCtx the key info context for verification.
  * @return 1 if key is verified, 0 otherwise, or a negative value if an error occurs.
  */
-typedef int                     (*xmlSecCryptoAppDefaultKeysMngVerifyKeyMethod)
+typedef int                     (*xmlSecCryptoAppDefaultKeysMngrVerifyKeyMethod)
                                                                         (xmlSecKeysMngrPtr mngr,
                                                                          xmlSecKeyPtr key,
                                                                          xmlSecKeyInfoCtxPtr keyInfoCtx);
@@ -526,7 +526,7 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoAppShutdownMethod                cryptoAppShutdown;  /**< the default crypto engine shutdown method. */
     xmlSecCryptoAppDefaultKeysMngrInitMethod     cryptoAppDefaultKeysMngrInit;  /**< the default keys manager init method. */
     xmlSecCryptoAppDefaultKeysMngrAdoptKeyMethod cryptoAppDefaultKeysMngrAdoptKey;  /**< the default keys manager adopt key method. */
-    xmlSecCryptoAppDefaultKeysMngVerifyKeyMethod cryptoAppDefaultKeysMngrVerifyKey;  /**< the default keys manager verify key method. */
+    xmlSecCryptoAppDefaultKeysMngrVerifyKeyMethod cryptoAppDefaultKeysMngrVerifyKey;  /**< the default keys manager verify key method. */
     xmlSecCryptoAppDefaultKeysMngrLoadMethod     cryptoAppDefaultKeysMngrLoad;  /**< the default keys manager load method. */
     xmlSecCryptoAppDefaultKeysMngrSaveMethod     cryptoAppDefaultKeysMngrSave;  /**< the default keys manager save method. */
     xmlSecCryptoAppKeysMngrCertLoadMethod        cryptoAppKeysMngrCertLoad;  /**< the default keys manager file cert load method. */
@@ -571,8 +571,10 @@ struct _xmlSecCryptoDLFunctions {
  *     warning: ISO C forbids conversion of object pointer to function
  *     pointer type
  *
- * The workaround is to declare a union that does the conversion. This is
- * guaranteed (ISO/IEC 9899:1990 "C89"/"C90") to match exactly.
+ * The workaround is to declare a union that does the conversion. Note that
+ * the C standard does not guarantee that object pointers and function
+ * pointers have the same representation, so this is technically undefined
+ * behavior; in practice it works on all supported platforms.
  *
   *****************************************************************************/
 

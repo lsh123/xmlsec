@@ -974,7 +974,7 @@ xmlSecMSCryptoCertStrToName(DWORD dwCertEncodingType, LPTSTR pszX500, DWORD dwSt
  * @return cert handle on success or NULL otherwise
  */
 PCCERT_CONTEXT
-xmlSecMSCryptoX509FindCertBySubject(HCERTSTORE store, const LPTSTR wcSubject, DWORD dwCertEncodingType) {
+xmlSecMSCryptoX509FindCertBySubject(HCERTSTORE store, LPCTSTR wcSubject, DWORD dwCertEncodingType) {
     PCCERT_CONTEXT res = NULL;
     CERT_NAME_BLOB cnb;
     BYTE* bdata;

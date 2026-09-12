@@ -24,6 +24,9 @@
 /* Include common error helper macros. */
 #include "../errors_helpers.h"
 
+/**
+ * @brief The maximum digest size (in bytes) supported by the GCrypt back-end.
+ */
 #define XMLSEC_GCRYPT_MAX_DIGEST_SIZE           256
 
 

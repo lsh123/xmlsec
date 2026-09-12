@@ -4325,7 +4325,7 @@ xmlSecOpenSSLKeyDataXdhGetEvp(xmlSecKeyDataPtr data) {
  *         determined or an error occurs.
  */
 const xmlChar*
-xmlSecOpenSslEvpGetProviderQuery(EVP_PKEY_CTX* pKeyCtx, xmlChar* buf, int bufSize) {
+xmlSecOpenSSLEvpGetProviderQuery(EVP_PKEY_CTX* pKeyCtx, xmlChar* buf, int bufSize) {
     EVP_PKEY *pKey;
     const OSSL_PROVIDER *keyProv;
     const char *provName;

@@ -11,7 +11,9 @@
 #ifndef XMLSEC_UNIT_TESTS_H
 #define XMLSEC_UNIT_TESTS_H
 
-#define XMLSEC_PRIVATE 1
+#ifndef XMLSEC_PRIVATE
+#define XMLSEC_PRIVATE
+#endif /* XMLSEC_PRIVATE */
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/errors.h>

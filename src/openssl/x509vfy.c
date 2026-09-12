@@ -2242,8 +2242,8 @@ xmlSecOpenSSLX509FindChildCert(STACK_OF(X509) *chain, X509 *cert) {
 
 static int
 xmlSecOpenSSLX509NameReadCallback(
-    const xmlChar * name,
-    const xmlChar * value,
+    const xmlSecByte * name,
+    const xmlSecByte * value,
     xmlSecSize valueSize,
     int type,
     void * context
@@ -2286,7 +2286,7 @@ xmlSecOpenSSLX509NameReadCallback(
 
 
 /* OpenSSL doesn't accept "E" so we need to replace it */
-static xmlSecx509NameReplacements xmlSecOpenSSLX509NameReplacements[]  = {
+static xmlSecX509NameReplacements xmlSecOpenSSLX509NameReplacements[]  = {
     { BAD_CAST "E", BAD_CAST  "emailAddress"},
     { BAD_CAST "SERIALNUMBER", BAD_CAST  "serialNumber"},
     { NULL, NULL }

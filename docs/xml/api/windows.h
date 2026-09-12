@@ -27,6 +27,7 @@ typedef const unsigned short* LPCWSTR;
 typedef unsigned long   DWORD;
 typedef unsigned char   BYTE;
 typedef unsigned char*  PBYTE;
+typedef unsigned char*  PUCHAR;
 typedef int             BOOL;
 typedef unsigned int    UINT;
 typedef unsigned long   ULONG;

@@ -134,6 +134,7 @@ xmlSecMSCryptoAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_A
     XMLSEC_UNREFERENCED(type);
 
     switch (format) {
+#ifndef XMLSEC_NO_X509
     case xmlSecKeyDataFormatPkcs12:
         key = xmlSecMSCryptoAppPkcs12Load(filename, pwd, pwdCallback, pwdCallbackCtx);
         if(key == NULL) {
@@ -141,6 +142,7 @@ xmlSecMSCryptoAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_A
             return(NULL);
         }
         break;
+#endif /* XMLSEC_NO_X509 */
     case xmlSecKeyDataFormatCertDer:
         ret = xmlSecBufferInitialize(&buffer, 0);
         if(ret < 0) {

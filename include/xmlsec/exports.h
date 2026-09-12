@@ -26,7 +26,7 @@ extern "C" {
 #define XMLSEC_WINDOWS 1
 #elif defined(__CYGWIN__)
 #define XMLSEC_WINDOWS 1
-#endif /* */
+#endif /* defined(WIN32) || defined(_WIN32) || defined(WINDOWS) || defined(_WINDOWS) */
 
 #endif /* !defined(XMLSEC_WINDOWS) */
 
@@ -92,7 +92,11 @@ extern "C" {
 #      endif
      /* if we compile libxmlsec-crypto itself: */
 #    elif defined(IN_XMLSEC_CRYPTO)
+#      if !defined(XMLSEC_STATIC)
+#        define XMLSEC_EXPORT_VAR __declspec(dllexport) extern
+#      else
 #        define XMLSEC_EXPORT_VAR extern
+#      endif
      /* if a client program includes this file: */
 #    else
 #      if !defined(XMLSEC_STATIC)
@@ -106,7 +110,7 @@ extern "C" {
 #  else /* defined(XMLSEC_WINDOWS) */
 #    define XMLSEC_EXPORT_VAR extern
 #  endif  /* defined(XMLSEC_WINDOWS) */
-#endif
+#endif /* !defined XMLSEC_EXPORT_VAR */
 
 #ifdef __cplusplus
 }

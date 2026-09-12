@@ -134,7 +134,7 @@ xmlSecMSCngCbcBlockCipherInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_DES */
 
     {
-        xmlSecInvalidTransformError(transform)
+        xmlSecInvalidTransformError(transform);
         return(-1);
     }
 

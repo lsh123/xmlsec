@@ -301,7 +301,7 @@ xmlSecOpenSSLSignatureLegacyInitialize(xmlSecTransformPtr transform) {
 
 
     if(1) {
-        xmlSecInvalidTransformError(transform)
+        xmlSecInvalidTransformError(transform);
         return(-1);
     }
 

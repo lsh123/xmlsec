@@ -429,14 +429,16 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
  * @param p the expression.
  */
 #define xmlSecAssert( p ) \
-        if(!( p ) ) { \
-            xmlSecError(XMLSEC_ERRORS_HERE, \
-                        NULL, \
-                        #p, \
-                        XMLSEC_ERRORS_R_ASSERTION, \
-                        XMLSEC_ERRORS_NO_MESSAGE); \
-            return; \
-        }
+        do { \
+            if(!( p ) ) { \
+                xmlSecError(XMLSEC_ERRORS_HERE, \
+                            NULL, \
+                            #p, \
+                            XMLSEC_ERRORS_R_ASSERTION, \
+                            XMLSEC_ERRORS_NO_MESSAGE); \
+                return; \
+            } \
+        } while(0)
 
 /**
  * @brief Macro. Verifies that @p is true and calls return(@p ret) otherwise.
@@ -444,14 +446,16 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
  * @param ret the return value.
  */
 #define xmlSecAssert2( p, ret ) \
-        if(!( p ) ) { \
-            xmlSecError(XMLSEC_ERRORS_HERE, \
-                        NULL, \
-                        #p, \
-                        XMLSEC_ERRORS_R_ASSERTION, \
-                        XMLSEC_ERRORS_NO_MESSAGE); \
-            return(ret); \
-        }
+        do { \
+            if(!( p ) ) { \
+                xmlSecError(XMLSEC_ERRORS_HERE, \
+                            NULL, \
+                            #p, \
+                            XMLSEC_ERRORS_R_ASSERTION, \
+                            XMLSEC_ERRORS_NO_MESSAGE); \
+                return(ret); \
+            } \
+        } while(0)
 
 
 #ifdef __cplusplus

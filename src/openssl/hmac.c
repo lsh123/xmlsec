@@ -218,7 +218,7 @@ xmlSecOpenSSLHmacInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_MD5 */
 
     {
-        xmlSecInvalidTransformError(transform)
+        xmlSecInvalidTransformError(transform);
         return(-1);
     }
 

@@ -153,7 +153,7 @@ xmlSecMSCngKdfInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_HKDF */
 
     {
-        xmlSecInvalidTransformError(transform)
+        xmlSecInvalidTransformError(transform);
         return(-1);
     }
 
@@ -881,7 +881,7 @@ xmlSecMSCngKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
 #endif /* XMLSEC_NO_HKDF */
 
         {
-            xmlSecInvalidTransformError(transform)
+            xmlSecInvalidTransformError(transform);
             return(-1);
         }
 

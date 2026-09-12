@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_BN_H__
-#define __XMLSEC_BN_H__
+#ifndef XMLSEC_BN_H
+#define XMLSEC_BN_H
 
 /**
  * @defgroup xmlsec_core_bn Big Numbers
@@ -106,4 +106,4 @@ XMLSEC_EXPORT int               xmlSecBnBlobSetNodeValue        (const xmlSecByt
 
 /** @} */ /** xmlsec_core_bn */
 
-#endif /* __XMLSEC_BN_H__ */
+#endif /* XMLSEC_BN_H */

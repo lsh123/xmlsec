@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_BUFFER_H__
-#define __XMLSEC_BUFFER_H__
+#ifndef XMLSEC_BUFFER_H
+#define XMLSEC_BUFFER_H
 
 /**
  * @defgroup xmlsec_core_buffer Dynamic Buffer
@@ -143,4 +143,4 @@ XMLSEC_EXPORT void              xmlSecMemCleanse                (void* data, siz
 
 /** @} */ /** xmlsec_core_buffer */
 
-#endif /* __XMLSEC_BUFFER_H__ */
+#endif /* XMLSEC_BUFFER_H */

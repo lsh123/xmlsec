@@ -9,8 +9,8 @@
  * @brief Internal helper macros for error reporting.
  */
 
-#ifndef __XMLSEC_ERROR_HELPERS_H__
-#define __XMLSEC_ERROR_HELPERS_H__
+#ifndef XMLSEC_ERRORS_HELPERS_H
+#define XMLSEC_ERRORS_HELPERS_H
 
 #ifndef XMLSEC_PRIVATE
 #error "errors_helpers.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-crypto libraries"
@@ -990,4 +990,4 @@ XMLSEC_EXPORT int   xmlSecErrorsPrintCryptoLibraryLogOnExitIsEnabled    (void);
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_ERROR_HELPERS_H__ */
+#endif /* XMLSEC_ERRORS_HELPERS_H */

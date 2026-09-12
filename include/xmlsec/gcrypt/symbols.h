@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_GCRYPT_SYMBOLS_H__
-#define __XMLSEC_GCRYPT_SYMBOLS_H__
+#ifndef XMLSEC_GCRYPT_SYMBOLS_H
+#define XMLSEC_GCRYPT_SYMBOLS_H
 /**
  * @brief GCrypt back-end function symbol mappings.
  */
@@ -148,4 +148,4 @@ extern "C" {
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_GCRYPT_SYMBOLS_H__ */
+#endif /* XMLSEC_GCRYPT_SYMBOLS_H */

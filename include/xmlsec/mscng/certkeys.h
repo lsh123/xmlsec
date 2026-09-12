@@ -6,8 +6,8 @@
  * Copyright (C) 2018-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
-#ifndef __XMLSEC_MSCNG_CERTKEYS_H__
-#define __XMLSEC_MSCNG_CERTKEYS_H__
+#ifndef XMLSEC_MSCNG_CERTKEYS_H
+#define XMLSEC_MSCNG_CERTKEYS_H
 
 /**
  * @defgroup xmlsec_mscng_certkeys MsCng Certificate Keys
@@ -41,4 +41,4 @@ XMLSEC_CRYPTO_EXPORT NCRYPT_KEY_HANDLE  xmlSecMSCngKeyDataGetPrivKey    (xmlSecK
 
 /** @} */ /** xmlsec_mscng_certkeys */
 
-#endif /* __XMLSEC_MSCNG_CERTKEYS_H__ */
+#endif /* XMLSEC_MSCNG_CERTKEYS_H */

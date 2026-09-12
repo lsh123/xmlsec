@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_OPENSSL_EVP_H__
-#define __XMLSEC_OPENSSL_EVP_H__
+#ifndef XMLSEC_OPENSSL_EVP_H
+#define XMLSEC_OPENSSL_EVP_H
 /**
  * @brief Key data helpers using the OpenSSL EVP interface.
  */
@@ -52,4 +52,4 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId             xmlSecOpenSSLKeyDataDEREncodedK
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_OPENSSL_EVP_H__ */
+#endif /* XMLSEC_OPENSSL_EVP_H */

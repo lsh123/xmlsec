@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_GNUTLS_CRYPTO_H__
-#define __XMLSEC_GNUTLS_CRYPTO_H__
+#ifndef XMLSEC_GNUTLS_CRYPTO_H
+#define XMLSEC_GNUTLS_CRYPTO_H
 
 /**
  * @defgroup xmlsec_gnutls XML Security Library for GnuTLS
@@ -1029,4 +1029,4 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId             xmlSecGnuTLSKeyDataDEREncodedKe
 
 /** @} */ /* xmlsec_gnutls_crypto */
 
-#endif /* __XMLSEC_GNUTLS_CRYPTO_H__ */
+#endif /* XMLSEC_GNUTLS_CRYPTO_H */

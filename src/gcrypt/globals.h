@@ -8,8 +8,8 @@
 /**
  * @brief Internal global header for GCrypt used during compilation.
  */
-#ifndef __XMLSEC_GLOBALS_H__
-#define __XMLSEC_GLOBALS_H__
+#ifndef XMLSEC_GCRYPT_GLOBALS_H
+#define XMLSEC_GCRYPT_GLOBALS_H
 
 /**
  * Use autoconf defines if present.
@@ -75,4 +75,4 @@
     }
 
 
-#endif /* ! __XMLSEC_GLOBALS_H__ */
+#endif /* XMLSEC_GCRYPT_GLOBALS_H */

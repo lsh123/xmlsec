@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_LIST_H__
-#define __XMLSEC_LIST_H__
+#ifndef XMLSEC_LIST_H
+#define XMLSEC_LIST_H
 
 /**
  * @defgroup xmlsec_core_list Generic List
@@ -179,4 +179,4 @@ XMLSEC_EXPORT xmlSecPtrListId   xmlSecStringListGetKlass        (void);
 
 /** @} */ /** xmlsec_core_list */
 
-#endif /* __XMLSEC_LIST_H__ */
+#endif /* XMLSEC_LIST_H */

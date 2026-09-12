@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_KEYSMNGR_H__
-#define __XMLSEC_KEYSMNGR_H__
+#ifndef XMLSEC_KEYSMNGR_H
+#define XMLSEC_KEYSMNGR_H
 
 /**
  * @defgroup xmlsec_core_keysmngr Keys Manager
@@ -269,4 +269,4 @@ XMLSEC_EXPORT xmlSecPtrListPtr          xmlSecSimpleKeysStoreGetKeys    (xmlSecK
 
 /** @} */ /** xmlsec_core_keysmngr */
 
-#endif /* __XMLSEC_KEYSMNGR_H__ */
+#endif /* XMLSEC_KEYSMNGR_H */

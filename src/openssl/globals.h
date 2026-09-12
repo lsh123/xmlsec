@@ -8,8 +8,8 @@
 /**
  * @brief Internal global header for OpenSSL used during compilation.
  */
-#ifndef __XMLSEC_GLOBALS_H__
-#define __XMLSEC_GLOBALS_H__
+#ifndef XMLSEC_OPENSSL_GLOBALS_H
+#define XMLSEC_OPENSSL_GLOBALS_H
 
 /**
  * Use autoconf defines if present.
@@ -105,4 +105,4 @@ typedef unsigned long xmlSecOpenSSLErrorType;
                     xmlSecErrorsSafeString(_openssl_error_buf) \
         );                                                  \
 
-#endif /* ! __XMLSEC_GLOBALS_H__ */
+#endif /* XMLSEC_OPENSSL_GLOBALS_H */

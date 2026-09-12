@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_H__
-#define __XMLSEC_H__
+#ifndef XMLSEC_H
+#define XMLSEC_H
 
 /**
  * @defgroup xmlsec_core XML Security Core Library
@@ -169,4 +169,4 @@ XMLSEC_EXPORT int       xmlSecCheckVersionExt   (int major,
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_H__ */
+#endif /* XMLSEC_H */

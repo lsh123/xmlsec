@@ -6,8 +6,8 @@
  * Copyright (C) 2003-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  */
-#ifndef __XMLSEC_MSCRYPTO_KEYSSTORE_H__
-#define __XMLSEC_MSCRYPTO_KEYSSTORE_H__
+#ifndef XMLSEC_MSCRYPTO_KEYSSTORE_H
+#define XMLSEC_MSCRYPTO_KEYSSTORE_H
 
 /**
  * @defgroup xmlsec_mscrypto_keysstore MsCrypto Keys Store
@@ -51,4 +51,4 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoKeysStoreSave     (xmlSecK
 
 /** @} */ /** xmlsec_mscrypto_keysstore */
 
-#endif /* __XMLSEC_MSCRYPTO_KEYSSTORE_H__ */
+#endif /* XMLSEC_MSCRYPTO_KEYSSTORE_H */

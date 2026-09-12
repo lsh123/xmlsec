@@ -9,8 +9,8 @@
 /**
  * @brief Internal global header for MSCng used during compilation.
  */
-#ifndef __XMLSEC_GLOBALS_H__
-#define __XMLSEC_GLOBALS_H__
+#ifndef XMLSEC_MSCNG_GLOBALS_H
+#define XMLSEC_MSCNG_GLOBALS_H
 
 /**
  * Use autoconf defines if present.
@@ -139,4 +139,4 @@
         );                                                     \
     }
 
-#endif /* ! __XMLSEC_GLOBALS_H__ */
+#endif /* XMLSEC_MSCNG_GLOBALS_H */

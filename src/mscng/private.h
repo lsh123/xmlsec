@@ -8,8 +8,8 @@
 /**
  * @brief Internal private header for MSCng.
  */
-#ifndef __XMLSEC_MSCNG_PRIVATE_H__
-#define __XMLSEC_MSCNG_PRIVATE_H__
+#ifndef XMLSEC_MSCNG_PRIVATE_H
+#define XMLSEC_MSCNG_PRIVATE_H
 
 #ifndef XMLSEC_PRIVATE
 #error "mscng/private.h file contains private xmlsec-mscng definitions and should not be used outside xmlsec or xmlsec-mscng libraries"
@@ -190,4 +190,4 @@ PCCRL_CONTEXT       xmlSecMSCngX509CrlDerRead                       (const xmlSe
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_MSCNG_PRIVATE_H__ */
+#endif /* XMLSEC_MSCNG_PRIVATE_H */

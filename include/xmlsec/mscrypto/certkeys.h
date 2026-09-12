@@ -6,8 +6,8 @@
  * Copyright (C) 2003-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  */
-#ifndef __XMLSEC_MSCRYPTO_CERTKEYS_H__
-#define __XMLSEC_MSCRYPTO_CERTKEYS_H__
+#ifndef XMLSEC_MSCRYPTO_CERTKEYS_H
+#define XMLSEC_MSCRYPTO_CERTKEYS_H
 
 /**
  * @defgroup xmlsec_mscrypto_certkeys MsCrypto Certificate Keys
@@ -45,4 +45,4 @@ XMLSEC_CRYPTO_EXPORT PCRYPT_KEY_PROV_INFO xmlSecMSCryptoKeyDataGetMSCryptoProvid
 
 /** @} */ /** xmlsec_mscrypto_certkeys */
 
-#endif /* __XMLSEC_MSCRYPTO_CERTKEYS_H__ */
+#endif /* XMLSEC_MSCRYPTO_CERTKEYS_H */

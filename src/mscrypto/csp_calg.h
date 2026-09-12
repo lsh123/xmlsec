@@ -9,8 +9,8 @@
 /**
  * @brief GOST cryptographic algorithm identifiers for MSCrypto.
  */
-#ifndef CRYPTOCOM_CSP_CALG_H
-#define CRYPTOCOM_CSP_CALG_H
+#ifndef XMLSEC_MSCRYPTO_CSP_CALG_H
+#define XMLSEC_MSCRYPTO_CSP_CALG_H
 
 #include <windows.h>
 #include <wincrypt.h>
@@ -104,4 +104,4 @@
 #define PP_SETUP_UI                     203
 
 
-#endif //CRYPTOCOM_CSP_CALG_H
+#endif /* XMLSEC_MSCRYPTO_CSP_CALG_H */

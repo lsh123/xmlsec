@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_STRINGS_H__
-#define __XMLSEC_STRINGS_H__
+#ifndef XMLSEC_STRINGS_H
+#define XMLSEC_STRINGS_H
 
 /**
  * @brief XMLDSig/XMLEnc string constants.
@@ -946,4 +946,4 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecStringLF[];
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_STRINGS_H__ */
+#endif /* XMLSEC_STRINGS_H */

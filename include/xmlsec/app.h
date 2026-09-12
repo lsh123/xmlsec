@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_APP_H__
-#define __XMLSEC_APP_H__
+#ifndef XMLSEC_APP_H
+#define XMLSEC_APP_H
 /**
  * @defgroup xmlsec_core_app Application Helper Functions
  * @ingroup xmlsec_core
@@ -719,4 +719,4 @@ XMLSEC_EXPORT void*                             xmlSecCryptoAppGetDefaultPwdCall
 
 /** @} */ /** xmlsec_core_app */
 
-#endif /* __XMLSEC_APP_H__ */
+#endif /* XMLSEC_APP_H */

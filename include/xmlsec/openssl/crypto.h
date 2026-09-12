@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_OPENSSL_CRYPTO_H__
-#define __XMLSEC_OPENSSL_CRYPTO_H__
+#ifndef XMLSEC_OPENSSL_CRYPTO_H
+#define XMLSEC_OPENSSL_CRYPTO_H
 
 /**
  * @defgroup xmlsec_openssl XML Security Library for OpenSSL
@@ -1485,4 +1485,4 @@ XMLSEC_CRYPTO_EXPORT void       xmlSecOpenSSLErrorsDefaultCallback      (const c
 
 /** @} */ /** xmlsec_openssl_crypto */
 
-#endif /* __XMLSEC_OPENSSL_CRYPTO_H__ */
+#endif /* XMLSEC_OPENSSL_CRYPTO_H */

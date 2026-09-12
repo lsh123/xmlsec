@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_PRIVATE_H__
-#define __XMLSEC_PRIVATE_H__
+#ifndef XMLSEC_PRIVATE_H
+#define XMLSEC_PRIVATE_H
 /**
  * @brief Internal declarations — do not use outside of xmlsec.
  */
@@ -685,4 +685,4 @@ struct _xmlSecCryptoDLFunctions {
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_PRIVATE_H__ */
+#endif /* XMLSEC_PRIVATE_H */

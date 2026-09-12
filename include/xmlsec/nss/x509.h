@@ -6,8 +6,8 @@
  * Copyright (C) 2003-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
-#ifndef __XMLSEC_NSS_X509_H__
-#define __XMLSEC_NSS_X509_H__
+#ifndef XMLSEC_NSS_X509_H
+#define XMLSEC_NSS_X509_H
 
 /**
  * @defgroup xmlsec_nss_x509 NSS X.509 Support
@@ -107,4 +107,4 @@ XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED CERTCertificate*  xmlSecNssX509StoreFindC
 
 /** @} */ /** xmlsec_nss_x509 */
 
-#endif /* __XMLSEC_NSS_X509_H__ */
+#endif /* XMLSEC_NSS_X509_H */

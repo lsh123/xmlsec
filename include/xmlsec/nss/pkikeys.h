@@ -6,8 +6,8 @@
  * Copyright (C) 2003-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
-#ifndef __XMLSEC_NSS_PKIKEYS_H__
-#define __XMLSEC_NSS_PKIKEYS_H__
+#ifndef XMLSEC_NSS_PKIKEYS_H
+#define XMLSEC_NSS_PKIKEYS_H
 
 /**
  * @defgroup xmlsec_nss_pkikeys NSS PKI Keys
@@ -44,4 +44,4 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecNssPKIKeyDataDuplicate    (xmlSecK
 
 /** @} */ /** xmlsec_nss_pkikeys */
 
-#endif /* __XMLSEC_NSS_PKIKEYS_H__ */
+#endif /* XMLSEC_NSS_PKIKEYS_H */

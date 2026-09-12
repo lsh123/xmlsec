@@ -8,8 +8,8 @@
 /**
  * @brief Internal private header for OpenSSL.
  */
-#ifndef __XMLSEC_OPENSSL_PRIVATE_H__
-#define __XMLSEC_OPENSSL_PRIVATE_H__
+#ifndef XMLSEC_OPENSSL_PRIVATE_H
+#define XMLSEC_OPENSSL_PRIVATE_H
 
 #ifndef XMLSEC_PRIVATE
 #error "openssl/private.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-openssl libraries"
@@ -120,4 +120,4 @@ const xmlChar* xmlSecOpenSslEvpGetProviderQuery                (EVP_PKEY_CTX* pK
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_OPENSSL_PRIVATE_H__ */
+#endif /* XMLSEC_OPENSSL_PRIVATE_H */

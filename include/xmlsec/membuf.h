@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_MEMBUF_H__
-#define __XMLSEC_MEMBUF_H__
+#ifndef XMLSEC_MEMBUF_H
+#define XMLSEC_MEMBUF_H
 
 /**
  * @defgroup xmlsec_core_membuf Memory Buffer Transform
@@ -45,4 +45,4 @@ XMLSEC_EXPORT xmlSecBufferPtr   xmlSecTransformMemBufGetBuffer          (xmlSecT
 
 /** @} */ /** xmlsec_core_membuf */
 
-#endif /* __XMLSEC_MEMBUF_H__ */
+#endif /* XMLSEC_MEMBUF_H */

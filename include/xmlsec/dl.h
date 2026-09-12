@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_DL_H__
-#define __XMLSEC_DL_H__
+#ifndef XMLSEC_DL_H
+#define XMLSEC_DL_H
 
 /**
  * @defgroup xmlsec_core_dl Dynamic Loading
@@ -69,4 +69,4 @@ XMLSEC_EXPORT xmlSecCryptoDLFunctionsPtr        xmlSecCryptoDLGetFunctions      
 
 /** @} */ /** xmlsec_core_dl */
 
-#endif /* __XMLSEC_DL_H__ */
+#endif /* XMLSEC_DL_H */

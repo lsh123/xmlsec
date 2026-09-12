@@ -8,8 +8,8 @@
 /**
  * @brief Internal ASN1 helper functions for GCrypt.
  */
-#ifndef __XMLSEC_GCRYPT_ASN1_H__
-#define __XMLSEC_GCRYPT_ASN1_H__
+#ifndef XMLSEC_GCRYPT_ASN1_H
+#define XMLSEC_GCRYPT_ASN1_H
 
 #ifndef XMLSEC_PRIVATE
 #error "gcrypt/asn1.h file contains private xmlsec-gcrypt definitions and should not be used outside xmlsec or xmlsec-gcrypt libraries"
@@ -43,4 +43,4 @@ xmlSecKeyDataPtr        xmlSecGCryptParseDer            (const xmlSecByte * der,
 #endif /* __cplusplus */
 
 
-#endif /* __XMLSEC_GCRYPT_ASN1_H__ */
+#endif /* XMLSEC_GCRYPT_ASN1_H */

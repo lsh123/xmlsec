@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_X509_H__
-#define __XMLSEC_X509_H__
+#ifndef XMLSEC_X509_H
+#define XMLSEC_X509_H
 
 #include <xmlsec/buffer.h>
 
@@ -29,4 +29,4 @@ struct _xmlSecKeyX509DataValue {
     xmlSecBuffer digest;  /**< the digest from &lt;dsig11:X509Digest/&gt; node. */
 };
 
-#endif /* __XMLSEC_X509_H__ */
+#endif /* XMLSEC_X509_H */

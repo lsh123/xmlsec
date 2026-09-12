@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_GCRYPT_CRYPTO_H__
-#define __XMLSEC_GCRYPT_CRYPTO_H__
+#ifndef XMLSEC_GCRYPT_CRYPTO_H
+#define XMLSEC_GCRYPT_CRYPTO_H
 
 /**
  * @defgroup xmlsec_gcrypt (DEPRECATED) XML Security Library for GCrypt
@@ -599,4 +599,4 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformRipemd160GetKlass(vo
 
 /** @} */ /** xmlsec_gcrypt_crypto */
 
-#endif /* __XMLSEC_GCRYPT_CRYPTO_H__ */
+#endif /* XMLSEC_GCRYPT_CRYPTO_H */

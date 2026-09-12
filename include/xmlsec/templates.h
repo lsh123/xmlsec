@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_TEMPLATES_H__
-#define __XMLSEC_TEMPLATES_H__
+#ifndef XMLSEC_TEMPLATES_H
+#define XMLSEC_TEMPLATES_H
 
 /**
  * @defgroup xmlsec_core_templates XML Templates
@@ -170,4 +170,4 @@ XMLSEC_EXPORT int       xmlSecTmplTransformAddXPointer          (xmlNodePtr tran
 
 /** @} */ /** xmlsec_core_templates */
 
-#endif /* __XMLSEC_TEMPLATES_H__ */
+#endif /* XMLSEC_TEMPLATES_H */

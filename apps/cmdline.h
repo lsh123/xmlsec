@@ -8,8 +8,8 @@
 /**
  * @brief XML Security Library command line utility: command line parsing routines.
  */
-#ifndef __XMLSEC_APPS_CMDLINE_H__
-#define __XMLSEC_APPS_CMDLINE_H__
+#ifndef XMLSEC_APPS_CMDLINE_H
+#define XMLSEC_APPS_CMDLINE_H
 
 #include <stdio.h>
 #include <time.h>
@@ -86,4 +86,4 @@ void                     xmlSecAppCmdLineValueDestroy   (xmlSecAppCmdLineValuePt
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_APPS_CMDLINE_H__ */
+#endif /* XMLSEC_APPS_CMDLINE_H */

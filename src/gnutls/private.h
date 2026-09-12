@@ -8,8 +8,8 @@
 /**
  * @brief Internal private header for GnuTLS.
  */
-#ifndef __XMLSEC_GNUTLS_PRIVATE_H__
-#define __XMLSEC_GNUTLS_PRIVATE_H__
+#ifndef XMLSEC_GNUTLS_PRIVATE_H
+#define XMLSEC_GNUTLS_PRIVATE_H
 
 #ifndef XMLSEC_PRIVATE
 #error "gnutls/private.h file contains private xmlsec-gnutls definitions and should not be used outside xmlsec or xmlsec-gnutls libraries"
@@ -215,4 +215,4 @@ int                     xmlSecGnuTLSDnAttrsParse                (const xmlChar *
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_GNUTLS_PRIVATE_H__ */
+#endif /* XMLSEC_GNUTLS_PRIVATE_H */

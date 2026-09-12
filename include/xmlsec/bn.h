@@ -37,7 +37,7 @@ typedef xmlSecBuffer                                            xmlSecBn;
 typedef xmlSecBn                                                *xmlSecBnPtr;
 
 /**
- * @brief The big numbers formats.
+ * @brief The big number formats.
  */
 typedef enum {
     xmlSecBnBase64,  /**< the base64 decoded binary blob. */

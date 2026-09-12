@@ -41,7 +41,7 @@ typedef enum {
 
 /**
  * @brief Use the exact memory allocation mode.
- * @details If this flag is set then the buffer uses the exact memory
+ * @details If this flag is specified then the buffer uses the exact memory
  * allocation mode (see #xmlSecAllocModeExact).
  */
 #define XMLSEC_BUFFER_FLAG_ALLOC_MODE_EXACT      0x0000
@@ -130,8 +130,8 @@ XMLSEC_EXPORT xmlOutputBufferPtr xmlSecBufferCreateOutputBuffer (xmlSecBufferPtr
  * Helpers
  */
 XMLSEC_EXPORT int               xmlSecMemEqual                  (const xmlSecByte* buf1,
-																 const xmlSecByte* buf2,
-																 xmlSecSize size);
+                                                                 const xmlSecByte* buf2,
+                                                                 xmlSecSize size);
 
 XMLSEC_EXPORT void              xmlSecMemCleanse                (void* data, size_t size);
 

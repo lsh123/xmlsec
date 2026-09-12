@@ -8,12 +8,12 @@
 /**
  * @brief Internal helper functions for transform implementations.
  */
-#ifndef __XMLSEC_TRANSFORMS_HELPERS_H__
-#define __XMLSEC_TRANSFORMS_HELPERS_H__
+#ifndef __XMLSEC_TRANSFORM_HELPERS_H__
+#define __XMLSEC_TRANSFORM_HELPERS_H__
 
 
 #ifndef XMLSEC_PRIVATE
-#error "transform_helpers.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
+#error "transform_helpers.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-crypto libraries"
 #endif /* XMLSEC_PRIVATE */
 
 #include <xmlsec/xmlsec.h>
@@ -267,4 +267,4 @@ XMLSEC_EXPORT int  xmlSecTransformRsaOaepParamsRead         (xmlSecTransformRsaO
 #endif /* XMLSEC_NO_RSA_OAEP */
 #endif /* XMLSEC_NO_RSA */
 
-#endif /* __XMLSEC_TRANSFORMS_HELPERS_H__ */
+#endif /* __XMLSEC_TRANSFORM_HELPERS_H__ */

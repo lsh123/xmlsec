@@ -12,7 +12,7 @@
 #define __XMLSEC_NSS_PRIVATE_H__
 
 #ifndef XMLSEC_PRIVATE
-#error "nss/private.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
+#error "nss/private.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-nss libraries"
 #endif /* XMLSEC_PRIVATE */
 
 

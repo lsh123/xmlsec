@@ -69,7 +69,7 @@
 #define KDF_GENERIC_PARAMETER               0x11
 #endif /* !defined(KDF_GENERIC_PARAMETER) */
 
-/* HKDF KDF parameters (KDF_HKDF_SALT is testing-only in the SDK) */
+/* HKDF KDF parameters */
 #if !defined(KDF_HKDF_SALT)
 #define KDF_HKDF_SALT                       0x13
 #endif /* !defined(KDF_HKDF_SALT) */

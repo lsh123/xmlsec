@@ -26,9 +26,9 @@
 
 /**
  * @brief Macro. Reports NSS crypto errors.
- * @details Macro. The XMLSec library macro for reporting NSS crypro errors.
+ * @details Macro. The XMLSec library macro for reporting NSS crypto errors.
  * @param errorFunction the failed function name.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecNssError(errorFunction, errorObject) \
     {                                                       \
@@ -44,9 +44,9 @@
 
 /**
  * @brief Macro. Reports NSS crypto errors.
- * @details Macro. The XMLSec library macro for reporting NSS crypro errors.
+ * @details Macro. The XMLSec library macro for reporting NSS crypto errors.
  * @param errorFunction the failed function name.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  * @param msg the extra message.
  * @param param the extra message param.
  */
@@ -66,9 +66,9 @@
 
 /**
  * @brief Macro. Reports NSS crypto errors.
- * @details Macro. The XMLSec library macro for reporting NSS crypro errors.
+ * @details Macro. The XMLSec library macro for reporting NSS crypto errors.
  * @param errorFunction the failed function name.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  * @param msg the extra message.
  * @param param1 the extra message param1.
  * @param param2 the extra message param2.

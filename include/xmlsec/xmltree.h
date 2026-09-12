@@ -135,7 +135,7 @@ XMLSEC_EXPORT int               xmlSecPrintXmlString    (FILE * fd,
 
 /**
  * @brief Returns 1 if the character is a hex digit.
- * @details Macro. Returns 1 if @c is a hex digit or 0 otherwise.
+ * @details Macro. Returns 1 if @p c is a hex digit or 0 otherwise.
  * @param c the character.
  */
 #define xmlSecIsHex(c) \
@@ -167,7 +167,7 @@ XMLSEC_EXPORT int               xmlSecPrintXmlString    (FILE * fd,
 
 /**
  * @brief Returns the hex value of a two-character pair.
- * @details Macro. Returns the hex value of the pair (@p c1 @p c2).
+ * @details Macro. Returns the hex value of the pair (@p ch1 @p ch2).
  * @param ch1 the first character,
  * @param ch2 the second character,
  */

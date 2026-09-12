@@ -314,21 +314,21 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformAes256GcmGetKlass(
 
 
 /**
- * @brief The AES 128 key wrap transform klass.
+ * @brief The AES128 key wrap transform klass.
  */
 #define xmlSecOpenSSLTransformKWAes128Id \
         xmlSecOpenSSLTransformKWAes128GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformKWAes128GetKlass(void);
 
 /**
- * @brief The AES 192 key wrap transform klass.
+ * @brief The AES192 key wrap transform klass.
  */
 #define xmlSecOpenSSLTransformKWAes192Id \
         xmlSecOpenSSLTransformKWAes192GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformKWAes192GetKlass(void);
 
 /**
- * @brief The AES 256 key wrap transform klass.
+ * @brief The AES256 key wrap transform klass.
  */
 #define xmlSecOpenSSLTransformKWAes256Id \
         xmlSecOpenSSLTransformKWAes256GetKlass()
@@ -373,21 +373,21 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformCamellia192CbcGetK
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformCamellia256CbcGetKlass(void);
 
 /**
- * @brief The Camellia 128 key wrap transform klass.
+ * @brief The Camellia128 key wrap transform klass.
  */
 #define xmlSecOpenSSLTransformKWCamellia128Id \
         xmlSecOpenSSLTransformKWCamellia128GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformKWCamellia128GetKlass(void);
 
 /**
- * @brief The Camellia 192 key wrap transform klass.
+ * @brief The Camellia192 key wrap transform klass.
  */
 #define xmlSecOpenSSLTransformKWCamellia192Id \
         xmlSecOpenSSLTransformKWCamellia192GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformKWCamellia192GetKlass(void);
 
 /**
- * @brief The Camellia 256 key wrap transform klass.
+ * @brief The Camellia256 key wrap transform klass.
  */
 #define xmlSecOpenSSLTransformKWCamellia256Id \
         xmlSecOpenSSLTransformKWCamellia256GetKlass()
@@ -445,21 +445,20 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataChaCha20Set     (xml
 #ifndef XMLSEC_NO_CONCATKDF
 
 /**
- * @brief The ConcatKDF key derivation key klass.
+ * @brief The ConcatKDF key data klass.
  */
 #define xmlSecOpenSSLKeyDataConcatKdfId \
         xmlSecOpenSSLKeyDataConcatKdfGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataConcatKdfGetKlass(void);
-XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataConcatKdfSet(xmlSecKeyDataPtr data,
-                                                                         const xmlSecByte* buf,
-                                                                         xmlSecSize bufSize);
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataConcatKdfSet     (xmlSecKeyDataPtr data,
+                                                                              const xmlSecByte* buf,
+                                                                              xmlSecSize bufSize);
 
 /**
  * @brief The ConcatKDF key derivation transform klass.
  */
 #define xmlSecOpenSSLTransformConcatKdfId \
         xmlSecOpenSSLTransformConcatKdfGetKlass()
-/** @brief The ConcatKDF key derivation transform klass. @return the ConcatKDF transform klass. */
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformConcatKdfGetKlass(void);
 
 #endif /* XMLSEC_NO_CONCATKDF */
@@ -691,7 +690,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformEcdhGetKlass(void);
  */
 #define xmlSecOpenSSLKeyDataGost2001Id \
         xmlSecOpenSSLKeyDataGost2001GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataGost2001GetKlass   (void);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataGost2001GetKlass(void);
 
 /**
  * @brief The GOSTR3411_94 digest transform klass.
@@ -701,8 +700,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataGost2001GetKlass   (
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformGostR3411_94GetKlass(void);
 
 /**
- * @brief The GOST-2001 GOSTR3411-94 signature transform klass.
- * @details The GOST2001 GOSTR3411_94 signature transform klass.
+ * @brief The GOST-2001 GOSTR3411_94 signature transform klass.
  */
 #define xmlSecOpenSSLTransformGost2001GostR3411_94Id \
         xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass()
@@ -714,7 +712,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformGost2001GostR3411_9
 #ifndef XMLSEC_NO_GOST2012
 /******************************************************************************
  *
- * GOST R 34.10-2012  transform
+ * GOST R 34.10-2012 keys and transforms
  *
   *****************************************************************************/
 
@@ -757,7 +755,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformGostR3410_2012GostR
  * @details The GOST R 34.11-2012 256 bit hash transform klass.
  */
 #define xmlSecOpenSSLTransformGostR3411_2012_256Id \
-    xmlSecOpenSSLTransformGostR3411_2012_256GetKlass()
+        xmlSecOpenSSLTransformGostR3411_2012_256GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformGostR3411_2012_256GetKlass(void);
 
 
@@ -766,7 +764,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformGostR3411_2012_256G
  * @details The GOST R 34.11-2012 512 bit hash transform klass.
  */
 #define xmlSecOpenSSLTransformGostR3411_2012_512Id \
-    xmlSecOpenSSLTransformGostR3411_2012_512GetKlass()
+        xmlSecOpenSSLTransformGostR3411_2012_512GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformGostR3411_2012_512GetKlass(void);
 
 #endif /* XMLSEC_NO_GOST2012 */
@@ -875,7 +873,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformMd5GetKlass(void);
 #ifndef XMLSEC_NO_PBKDF2
 
 /**
- * @brief The PBKDF2 key derivation key klass.
+ * @brief The PBKDF2 key data klass.
  */
 #define xmlSecOpenSSLKeyDataPbkdf2Id \
         xmlSecOpenSSLKeyDataPbkdf2GetKlass()
@@ -889,7 +887,6 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataPbkdf2Set(xmlSecKeyD
  */
 #define xmlSecOpenSSLTransformPbkdf2Id \
         xmlSecOpenSSLTransformPbkdf2GetKlass()
-/** @brief The PBKDF2 key derivation transform klass. @return the PBKDF2 transform klass. */
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformPbkdf2GetKlass(void);
 
 #endif /* XMLSEC_NO_PBKDF2 */
@@ -902,7 +899,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformPbkdf2GetKlass(void
 #ifndef XMLSEC_NO_HKDF
 
 /**
- * @brief The HKDF key derivation key klass.
+ * @brief The HKDF key data klass.
  */
 #define xmlSecOpenSSLKeyDataHkdfId \
         xmlSecOpenSSLKeyDataHkdfGetKlass()
@@ -916,7 +913,6 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataHkdfSet(xmlSecKeyDat
  */
 #define xmlSecOpenSSLTransformHkdfId \
         xmlSecOpenSSLTransformHkdfGetKlass()
-/** @brief The HKDF key derivation transform klass. @return the HKDF transform klass. */
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformHkdfGetKlass(void);
 
 #endif /* XMLSEC_NO_HKDF */
@@ -1131,7 +1127,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaPssSha3_512GetKl
 
 /******************************************************************************
  *
- * ML DSA key and transforms (EXPERIMENTAL)
+ * ML-DSA key and transforms (EXPERIMENTAL)
  *
   *****************************************************************************/
 #ifndef XMLSEC_NO_MLDSA

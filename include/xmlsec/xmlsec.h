@@ -70,7 +70,7 @@ typedef void*                                   xmlSecPtr;
 #define XMLSEC_SIZE_T_FMT                      "%llu"
 #elif defined(__MINGW32__)
 #define XMLSEC_SIZE_T_FMT                      "%lu"
-#else /*defined(__MINGW32__) */
+#else /* defined(__MINGW32__) */
 #define XMLSEC_SIZE_T_FMT                      "%zu"
 #endif /* defined(__MINGW32__) */
 
@@ -143,7 +143,7 @@ XMLSEC_EXPORT xmlSecSize                        xmlSecStrlen            (const x
 
 /**
  * @brief Checks if loaded library version is ABI compatible.
- * @details Macro. Returns 1 if the loaded xmlsec library version ABI compatible with
+ * @details Macro. Returns 1 if the loaded xmlsec library version is ABI compatible with
  * the one used to compile the caller, 0 if it does not.
  */
 #define xmlSecCheckVersion()    \

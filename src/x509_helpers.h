@@ -14,7 +14,7 @@
 #ifndef XMLSEC_NO_X509
 
 #ifndef XMLSEC_PRIVATE
-#error "x509_helpers.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
+#error "x509_helpers.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-crypto libraries"
 #endif /* XMLSEC_PRIVATE */
 
 #include <xmlsec/xmlsec.h>
@@ -32,7 +32,7 @@
  * @brief Reads a key from X509 data value.
  * @param data the pointer to X509 key data
  * @param x509Value the pointer to input xmlSecKeyX509DataValue.
- * @param keysMngr the pointer to @xmlSecKeysMngr.
+ * @param keysMngr the pointer to xmlSecKeysMngr.
  * @param flags the flags for certs processing.
  * @return 0 on success and a negative value otherwise.
  */
@@ -44,7 +44,7 @@ typedef int                    (*xmlSecKeyDataX509Read)                 (xmlSecK
 /**
  * @brief Writes the next X509 object (cert or crl) into x509Value.
  * @details If available, writes the next X509 object (cert or crl) into @x509Value.
- * @param data the pointer to result xmlSecKeyData.
+ * @param data the pointer to input xmlSecKeyData.
  * @param x509Value the pointer to result xmlSecKeyX509DataValue.
  * @param content the bitmask of what should be output to @x509Value.
  * @param context the writer function context.

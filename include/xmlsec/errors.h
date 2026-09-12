@@ -326,8 +326,8 @@ extern "C" {
  * @brief The errors reporting callback function.
  * @param file the error location file name (__FILE__ macro).
  * @param line the error location line number (__LINE__ macro).
- * @param func the error location function name (__func__ macro).
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param func the error location function name (__XMLSEC_FUNCTION__ macro).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  * @param errorSubject the error specific error subject.
  * @param reason the error code.
  * @param msg the additional error message.
@@ -364,7 +364,7 @@ XMLSEC_EXPORT void              xmlSecErrorsPrintCryptoLibraryLogOnExitSet      
 
 #if !defined(__XMLSEC_FUNCTION__)
 
-/* __FUNCTION__ is defined for MSC compiler < MS VS .NET 2003 */
+/* __FUNCTION__ is defined for MSC compiler >= MS VS .NET 2003 */
 #if defined(_MSC_VER) && (_MSC_VER >= 1300)
 #define __XMLSEC_FUNCTION__ __FUNCTION__
 

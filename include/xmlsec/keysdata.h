@@ -62,7 +62,7 @@ typedef struct _xmlSecKeyDataList                       *xmlSecKeyDataListPtr;
 typedef struct _xmlSecKeyX509DataValue                  xmlSecKeyX509DataValue;
 
 /**
- * @brief Pointer to xmlSecKeyX509DataValue.
+ * @brief Pointer to #xmlSecKeyX509DataValue.
  */
 typedef struct _xmlSecKeyX509DataValue                  *xmlSecKeyX509DataValuePtr;
 
@@ -170,7 +170,7 @@ typedef unsigned int                            xmlSecKeyDataType;
 #define xmlSecKeyDataTypeUnknown                        0x0000
 
 /**
- * @brief The key data type is unknown (same as unknown).
+ * @brief The key data type is none (same as unknown).
  * @details The key data type is unknown (same as #xmlSecKeyDataTypeUnknown).
  */
 #define xmlSecKeyDataTypeNone                           xmlSecKeyDataTypeUnknown
@@ -192,13 +192,13 @@ typedef unsigned int                            xmlSecKeyDataType;
 
 /**
  * @brief The key data contains a session (one-time) key.
- * @details The key data contain session key (one time key, not stored in keys manager).
+ * @details The key data contains a session key (one-time key, not stored in keys manager).
  */
 #define xmlSecKeyDataTypeSession                        0x0008
 
 /**
  * @brief The key data contains a permanent key.
- * @details The key data contain permanent key (stored in keys manager).
+ * @details The key data contains a permanent key (stored in keys manager).
  */
 #define xmlSecKeyDataTypePermanent                      0x0010
 
@@ -537,7 +537,7 @@ XMLSEC_EXPORT int               xmlSecKeyDataBinaryValueSetBuffer       (xmlSecK
  *
   *****************************************************************************/
 /**
- * @brief The key data klasses list klass id.
+ * @brief The key data list klass id.
  */
 #define xmlSecKeyDataListId     xmlSecKeyDataListGetKlass()
 XMLSEC_EXPORT xmlSecPtrListId   xmlSecKeyDataListGetKlass       (void);
@@ -548,7 +548,7 @@ XMLSEC_EXPORT xmlSecPtrListId   xmlSecKeyDataListGetKlass       (void);
  *
   *****************************************************************************/
 /**
- * @brief The key data list klass id.
+ * @brief The key data ids list klass id.
  */
 #define xmlSecKeyDataIdListId   xmlSecKeyDataIdListGetKlass()
 XMLSEC_EXPORT xmlSecPtrListId   xmlSecKeyDataIdListGetKlass     (void);

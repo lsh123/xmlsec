@@ -445,7 +445,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformEcdsaSha3_512GetKlas
 /**
  * @brief The GOST 2001 key klass.
  */
-#define xmlSecGnuTLSKeyDataGost2001Id   xmlSecGnuTLSKeyDataGost2001GetKlass     ()
+#define xmlSecGnuTLSKeyDataGost2001Id   xmlSecGnuTLSKeyDataGost2001GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGnuTLSKeyDataGost2001GetKlass     (void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataGost2001AdoptKey     (xmlSecKeyDataPtr data,
                                                                                  gnutls_pubkey_t pubkey,
@@ -462,7 +462,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformGostR3411_94GetKlass
 
 /**
  * @brief The GOST-2001 GOSTR3411_94 signature transform klass.
- * @details The GOST2001 GOSTR3411_94 signature transform klass.
  */
 #define xmlSecGnuTLSTransformGost2001GostR3411_94Id \
         xmlSecGnuTLSTransformGost2001GostR3411_94GetKlass()
@@ -503,20 +502,18 @@ XMLSEC_CRYPTO_EXPORT gnutls_privkey_t   xmlSecGnuTLSKeyDataGost2012_512GetPrivat
 
 
 /**
- * @brief The GOST R 34.11-2012/256 digest transform klass.
- * @details The GOST R 34.11-2012 256 bit digest transform klass.
+ * @brief The GOST R 34.11-2012 256 bit digest transform klass.
  */
 #define xmlSecGnuTLSTransformGostR3411_2012_256Id \
-    xmlSecGnuTLSTransformGostR3411_2012_256GetKlass()
+        xmlSecGnuTLSTransformGostR3411_2012_256GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformGostR3411_2012_256GetKlass(void);
 
 
 /**
- * @brief The GOST R 34.11-2012/512 digest transform klass.
- * @details The GOST R 34.11-2012 512 bit digest transform klass.
+ * @brief The GOST R 34.11-2012 512 bit digest transform klass.
  */
 #define xmlSecGnuTLSTransformGostR3411_2012_512Id \
-    xmlSecGnuTLSTransformGostR3411_2012_512GetKlass()
+        xmlSecGnuTLSTransformGostR3411_2012_512GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformGostR3411_2012_512GetKlass(void);
 
 

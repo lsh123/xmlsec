@@ -28,7 +28,7 @@ extern "C" {
 typedef struct _xmlSecNodeSet   xmlSecNodeSet, *xmlSecNodeSetPtr;
 
 /**
- * @brief The basic nodes sets types.
+ * @brief The basic node sets types.
  */
 typedef enum {
     xmlSecNodeSetNormal = 0,  /**< nodes set = nodes in the list. */
@@ -41,7 +41,7 @@ typedef enum {
 } xmlSecNodeSetType;
 
 /**
- * @brief The simple nodes sets operations.
+ * @brief The simple node sets operations.
  */
 typedef enum {
     xmlSecNodeSetIntersection = 0,  /**< intersection. */
@@ -67,11 +67,11 @@ struct _xmlSecNodeSet {
  * @brief Node walk callback, called once per node in the nodes set.
  * @details The callback function called once per each node in the nodes set.
  * @param nset the pointer to xmlSecNodeSet structure.
- * @param cur the pointer current XML node.
+ * @param cur the pointer to the current XML node.
  * @param parent the pointer to the @p cur parent node.
  * @param data the pointer to application specific data.
- * @return 0 on success or a negative value if an error occurs
- * a walk procedure should be interrupted.
+ * @return 0 on success, or a negative value if the walk procedure
+ * should be interrupted.
  */
 typedef int (*xmlSecNodeSetWalkCallback)                (xmlSecNodeSetPtr nset,
                                                          xmlNodePtr cur,

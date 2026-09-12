@@ -65,8 +65,8 @@ typedef enum {
   *****************************************************************************/
 
 /**
- * @brief If set, dsig:Manifests nodes will not be processed.
- * @details If this flag is set then &lt;dsig:Manifests/&gt; nodes will not be processed.
+ * @brief If set, dsig:Manifest nodes will not be processed.
+ * @details If this flag is set then &lt;dsig:Manifest/&gt; nodes will not be processed.
  */
 #define XMLSEC_DSIG_FLAGS_IGNORE_MANIFESTS                      0x00000001
 
@@ -122,7 +122,7 @@ typedef enum {
  */
 struct _xmlSecDSigCtx {
     /* these data user can set before performing the operation */
-    void*                       userData;  /**< the pointer to user data (xmlsec and xmlsec-crypto libraries never touches this). */
+    void*                       userData;  /**< the pointer to user data (xmlsec and xmlsec-crypto libraries never touch this). */
     unsigned int                flags;  /**< the XML Digital Signature processing flags. */
     unsigned int                flags2;  /**< reserved for future. */
     xmlSecKeyInfoCtx            keyInfoReadCtx;  /**< the reading key context. */
@@ -189,18 +189,18 @@ XMLSEC_EXPORT const char*       xmlSecDSigCtxGetFailureReasonString(xmlSecDSigFa
  * @details The possible &lt;dsig:Reference/&gt; node locations: in the &lt;dsig:SignedInfo/&gt;
  * node or in the &lt;dsig:Manifest/&gt; node.
  */
-typedef enum  {
+typedef enum {
     xmlSecDSigReferenceOriginSignedInfo,  /**< reference in &lt;dsig:SignedInfo/&gt; node. */
-    xmlSecDSigReferenceOriginManifest  /**< reference &lt;dsig:Manifest/&gt; node. */
+    xmlSecDSigReferenceOriginManifest  /**< reference in &lt;dsig:Manifest/&gt; node. */
 } xmlSecDSigReferenceOrigin;
 
 /**
  * @brief The dsig:Reference processing context.
  */
 struct _xmlSecDSigReferenceCtx {
-    void*                       userData;  /**< the pointer to user data (xmlsec and xmlsec-crypto libraries never touches this). */
+    void*                       userData;  /**< the pointer to user data (xmlsec and xmlsec-crypto libraries never touch this). */
     xmlSecDSigCtxPtr            dsigCtx;  /**< the pointer to "parent" &lt;dsig:Signature/&gt; processing context. */
-    xmlSecDSigReferenceOrigin   origin;  /**< the signature origin (&lt;dsig:SignedInfo/&gt; or &lt;dsig:Manifest/&gt;). */
+    xmlSecDSigReferenceOrigin   origin;  /**< the reference origin (&lt;dsig:SignedInfo/&gt; or &lt;dsig:Manifest/&gt;). */
     xmlSecTransformCtx          transformCtx;  /**< the reference processing transforms context. */
     xmlSecTransformPtr          digestMethod;  /**< the pointer to digest transform. */
 
@@ -211,7 +211,7 @@ struct _xmlSecDSigReferenceCtx {
     xmlChar*                    uri;  /**< the &lt;dsig:Reference/&gt; node URI attribute. */
     xmlChar*                    type;  /**< the &lt;dsig:Reference/&gt; node Type attribute. */
 
-     /* reserved for future */
+    /* reserved for future */
     void*                       reserved0;  /**< reserved for the future. */
     void*                       reserved1;  /**< reserved for the future. */
 };

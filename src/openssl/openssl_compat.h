@@ -30,7 +30,7 @@ int             xmlSecOpenSSLGenerateRandomBytes             (xmlSecByte* data, 
   *****************************************************************************/
 #if defined(OPENSSL_IS_BORINGSSL) || defined(OPENSSL_IS_AWSLC)
 
-/* Not implemented by LibreSSL (yet?) */
+/* Not implemented by BoringSSL/AWS-LC (yet?) */
 #define XMLSEC_OPENSSL_NO_ASN1_TIME_TO_TM   1
 #define XMLSEC_OPENSSL_NO_STORE             1
 #define XMLSEC_OPENSSL_NO_DEEP_COPY         1
@@ -60,7 +60,7 @@ int             xmlSecOpenSSLGenerateRandomBytes             (xmlSecByte* data, 
 /* BoringSSL redefines int->size_t or int->unsigned */
 #if defined(OPENSSL_IS_BORINGSSL) || defined(OPENSSL_IS_AWSLC)
 
-/* when BoringSSL replaced int with unisgned */
+/* when BoringSSL replaced int with unsigned */
 typedef unsigned xmlSecOpenSSLUInt;
 
 #define XMLSEC_OPENSSL_SAFE_CAST_UINT_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
@@ -87,9 +87,9 @@ typedef size_t xmlSecOpenSSLSizeT;
 #define XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_INT(srcVal, dstVal, errorAction, errorObject) \
        XMLSEC_SAFE_CAST_SIZE_T_TO_INT((srcVal), (dstVal), errorAction, (errorObject))
 
-#else /* defined(OPENSSL_IS_BORINGSSL) */
+#else /* defined(OPENSSL_IS_BORINGSSL) || defined(OPENSSL_IS_AWSLC) */
 
-/* when BoringSSL replaced int with unisgned */
+/* when BoringSSL replaced int with unsigned */
 typedef int xmlSecOpenSSLUInt;
 
 #define XMLSEC_OPENSSL_SAFE_CAST_UINT_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
@@ -114,9 +114,9 @@ typedef int xmlSecOpenSSLSizeT;
        XMLSEC_SAFE_CAST_INT_TO_UINT((srcVal), (dstVal), errorAction, (errorObject))
 
 #define XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_INT(srcVal, dstVal, errorAction, errorObject) \
-       (dstVal) = (srcVal)
+        (dstVal) = (srcVal)
 
-#endif /* defined(OPENSSL_IS_BORINGSSL) */
+#endif /* defined(OPENSSL_IS_BORINGSSL) || defined(OPENSSL_IS_AWSLC) */
 
 
 /******************************************************************************
@@ -151,13 +151,6 @@ typedef int xmlSecOpenSSLSizeT;
 #else   /* !defined(XMLSEC_OPENSSL_API_400) */
 #define XMLSEC_OPENSSL400_CONST  const
 #endif /* !defined(XMLSEC_OPENSSL_API_400) */
-
-/******************************************************************************
- *
- * OpenSSL 3.5.0 compatibility
- *
-  *****************************************************************************/
-
 
 /******************************************************************************
  *

@@ -25,7 +25,7 @@ extern "C" {
 #endif /* __cplusplus */
 
 /**
- * @brief A MSCng keys store klass id.
+ * @brief An MSCng keys store klass id.
  */
 #define xmlSecMSCngKeysStoreId xmlSecMSCngKeysStoreGetKlass()
 

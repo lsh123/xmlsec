@@ -39,7 +39,7 @@ XMLSEC_EXPORT int       xmlSecIORegisterCallbacks               (xmlInputMatchCa
  *
  * Input URI transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief The Input URI transform id.
  */

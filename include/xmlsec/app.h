@@ -17,7 +17,7 @@
 #ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
 
 #if !defined(IN_XMLSEC) && !defined(XMLSEC_CRYPTO_DYNAMIC_LOADING)
-#error To use dynamic crypto engines loading define XMLSEC_CRYPTO_DYNAMIC_LOADING
+#error To use dynamic crypto engine loading, define XMLSEC_CRYPTO_DYNAMIC_LOADING
 #endif /* !defined(IN_XMLSEC) && !defined(XMLSEC_CRYPTO_DYNAMIC_LOADING) */
 
 #include <libxml/tree.h>
@@ -150,7 +150,7 @@ XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataX509GetKlass(void);
 #define xmlSecKeyDataRawX509CertId              xmlSecKeyDataRawX509CertGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataRawX509CertGetKlass(void);
 /**
- * @brief The DEREncodedKeyValue data klass.
+ * @brief The DEREncodedKeyValue key klass.
  */
 #define xmlSecKeyDataDEREncodedKeyValueId       xmlSecKeyDataDEREncodedKeyValueGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataDEREncodedKeyValueGetKlass(void);
@@ -325,7 +325,7 @@ XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformEcdsaRipemd160Get
 /**
  * @brief The GOST2001-GOSTR3411_94 signature transform klass.
  */
-#define xmlSecTransformGost2001GostR3411_94Id           xmlSecTransformGost2001GostR3411_94GetKlass()
+#define xmlSecTransformGost2001GostR3411_94Id   xmlSecTransformGost2001GostR3411_94GetKlass()
 XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformGost2001GostR3411_94GetKlass(void);
 
 /**
@@ -346,7 +346,7 @@ XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformGostR3410_2012Gos
 #define xmlSecTransformHmacMd5Id                xmlSecTransformHmacMd5GetKlass()
 XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformHmacMd5GetKlass(void);
 /**
- * @brief The HMAC with RipeMD160 signature transform klass.
+ * @brief The HMAC with RIPEMD160 signature transform klass.
  */
 #define xmlSecTransformHmacRipemd160Id          xmlSecTransformHmacRipemd160GetKlass()
 XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformHmacRipemd160GetKlass(void);

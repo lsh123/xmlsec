@@ -40,9 +40,9 @@ void xmlSecMSCryptoGetErrorMessage      (DWORD dwError,
 
 /**
  * @brief Macro. Reports MSCrypto crypto errors.
- * @details Macro. The XMLSec library macro for reporting MSCrypto crypro errors.
+ * @details Macro. The XMLSec library macro for reporting MSCrypto crypto errors.
  * @param errorFunction the failed function name.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecMSCryptoError(errorFunction, errorObject)            \
     {                                                              \
@@ -62,9 +62,9 @@ void xmlSecMSCryptoGetErrorMessage      (DWORD dwError,
 
 /**
  * @brief Macro. Reports MSCrypto crypto errors.
- * @details Macro. The XMLSec library macro for reporting MSCrypto crypro errors.
+ * @details Macro. The XMLSec library macro for reporting MSCrypto crypto errors.
  * @param errorFunction the failed function name.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  * @param msg the extra message.
  * @param param the extra message param.
  */
@@ -87,9 +87,9 @@ void xmlSecMSCryptoGetErrorMessage      (DWORD dwError,
 
 /**
  * @brief Macro. Reports MSCrypto crypto errors.
- * @details Macro. The XMLSec library macro for reporting MSCrypto crypro errors.
+ * @details Macro. The XMLSec library macro for reporting MSCrypto crypto errors.
  * @param errorFunction the failed function name.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  * @param msg the extra message.
  * @param param1 the extra message param1.
  * @param param2 the extra message param2.

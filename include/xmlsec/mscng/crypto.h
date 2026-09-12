@@ -52,7 +52,7 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngKeysMngrInit      (xmlSecKeys
   *****************************************************************************/
 #ifndef XMLSEC_NO_CONCATKDF
 
- /**
+/**
  * @brief The ConcatKDF key klass.
  */
 #define xmlSecMSCngKeyDataConcatKdfId \
@@ -239,7 +239,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaOaepGetKlass(void)
 
 
 /**
- * @brief The RSA OAEP key transport transform klass.
+ * @brief The RSA OAEP-Enc11 key transport transform klass.
  * @details The RSA OAEP key transport transform klass (XMLEnc 1.1).
  */
 #define xmlSecMSCngTransformRsaOaepEnc11Id \

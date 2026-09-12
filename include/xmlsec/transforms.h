@@ -62,10 +62,10 @@ XMLSEC_EXPORT int               xmlSecTransformIdsRegister      (xmlSecTransform
  */
 typedef enum  {
     xmlSecTransformStatusNone = 0,  /**< the status unknown. */
-    xmlSecTransformStatusWorking,  /**< the transform is executed. */
+    xmlSecTransformStatusWorking,  /**< the transform is being executed. */
     xmlSecTransformStatusFinished,  /**< the transform finished */
     xmlSecTransformStatusOk,  /**< the transform succeeded. */
-    xmlSecTransformStatusFail  /**< the transform failed (an error occur). */
+    xmlSecTransformStatusFail  /**< the transform failed (an error occurred). */
 } xmlSecTransformStatus;
 
 /**
@@ -284,7 +284,7 @@ struct _xmlSecTransformCtx {
     void*                                       userData;  /**< the pointer to user data (xmlsec and xmlsec-crypto never touch this). */
     unsigned int                                flags;  /**< the bit mask flags to control transforms execution. */
     unsigned int                                maxDepth;  /**< the maximum depth for transforms (eg Relationship Transform) execution (if 0 then depth check is disabled). */
-    xmlSecSize                                  binaryChunkSize;  /**< the chunk of size for binary transforms processing. */
+    xmlSecSize                                  binaryChunkSize;  /**< the chunk size for binary transforms processing. */
     xmlSecTransformUriType                      enabledUris;  /**< the allowed transform data source uri types. */
     xmlSecPtrList                               enabledTransforms;  /**< the list of enabled transforms; if list is empty (default) then all registered transforms are enabled. */
     xmlSecTransformCtxPreExecuteCallback        preExecCallback;  /**< the callback called after preparing transform chain and right before actual data processing; application can use this callback to change transforms parameters, insert additional transforms in the chain or do additional validation (and abort transform execution if needed). */
@@ -616,7 +616,7 @@ typedef int             (*xmlSecTransformSetKeyMethod)          (xmlSecTransform
 /**
  * @brief The transform specific method to verify processing results.
  * @details The transform specific method to verify transform processing results
- * (used by digest and signature transforms). This method sets @p status
+ * (used by digest and signature transforms). This method sets the status
  * member of the xmlSecTransform structure to either #xmlSecTransformStatusOk
  * if verification succeeded or #xmlSecTransformStatusFail otherwise.
  * @param transform the pointer to transform object.
@@ -634,7 +634,7 @@ typedef int             (*xmlSecTransformVerifyMethod)          (xmlSecTransform
  * @details The transform specific method to process data from @p data and push
  * result to the next transform in the chain.
  * @param transform the pointer to transform object.
- * @param data the input binary data,
+ * @param data the input binary data.
  * @param dataSize the input data size.
  * @param final the flag: if set to 1 then it's the last
  *                              data chunk.
@@ -708,7 +708,7 @@ struct _xmlSecTransformKlass {
     xmlSecSize                          objSize;  /**< the transform object size. */
     const xmlChar*                      name;  /**< the transform's name. */
     const xmlChar*                      href;  /**< the transform's identification string (href). */
-    xmlSecTransformUsage                usage;  /**< the allowed transforms usages. */
+    xmlSecTransformUsage                usage;  /**< the allowed transform usages. */
 
     /* methods */
     xmlSecTransformInitializeMethod     initialize;  /**< the initialization method. */
@@ -728,7 +728,7 @@ struct _xmlSecTransformKlass {
     xmlSecTransformPopXmlMethod         popXml;  /**< the XML data "pop from chain" processing method. */
 
     /* low level method */
-    xmlSecTransformExecuteMethod        execute;  /**< the low level data processing method used  by default implementations of #pushBin, #popBin, #pushXml and #popXml. */
+    xmlSecTransformExecuteMethod        execute;  /**< the low level data processing method used by default implementations of #pushBin, #popBin, #pushXml and #popXml. */
 
     /* reserved for future */
     void*                               reserved0;  /**< reserved for the future. */

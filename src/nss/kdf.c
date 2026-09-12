@@ -774,7 +774,7 @@ xmlSecNssHkdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     xmlSecAssert2(ctx->kdfType == xmlSecNssKdfType_Hkdf, -1);
 
     cur = xmlSecGetNextElementNode(node->children);
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeHkdfParams, xmlSecXmldsig2021MoreNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeHkdfParams, xmlSecDSig2021MoreNs))) {
         xmlSecInvalidNodeError(cur, xmlSecNodeHkdfParams, NULL);
         return(-1);
     }

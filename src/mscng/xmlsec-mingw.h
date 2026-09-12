@@ -15,12 +15,16 @@
 #ifndef XMLSEC_MSCNG_XMLSEC_MINGW_H
 #define XMLSEC_MSCNG_XMLSEC_MINGW_H
 
+#ifndef XMLSEC_PRIVATE
+#error "xmlsec-mingw.h file contains private xmlsec definitions for mingw build and should not be used outside xmlsec or xmlsec-mscng libraries"
+#endif /* XMLSEC_PRIVATE */
+
 /* ---- bcrypt.h: algorithm identifiers ------------------------------------- */
 
 /* HKDF support requires Windows 10 1709+ (SDK 10.0.16299+) */
-#if !defined(BCRYPT_HKDF_ALGORITHM)
+#ifndef BCRYPT_HKDF_ALGORITHM
 #define BCRYPT_HKDF_ALGORITHM               L"HKDF"
-#endif /* !defined(BCRYPT_HKDF_ALGORITHM) */
+#endif /* BCRYPT_HKDF_ALGORITHM */
 
 /* SHA224 algorithm identifier is not defined in the Windows SDK bcrypt.h;
  * provide a fallback so the code compiles with all SDK versions. */
@@ -59,29 +63,29 @@
 /* ---- bcrypt.h: KDF parameter identifiers --------------------------------- */
 
 /* Mingw has old version of bcrypt.h file */
-#if !defined(KDF_SALT)
+#ifndef KDF_SALT
 #define KDF_SALT                            0xF
-#endif /* !defined(KDF_SALT) */
-#if !defined(KDF_ITERATION_COUNT)
+#endif /* KDF_SALT */
+#ifndef KDF_ITERATION_COUNT
 #define KDF_ITERATION_COUNT                 0x10
-#endif /* !defined(KDF_ITERATION_COUNT) */
-#if !defined(KDF_GENERIC_PARAMETER)
+#endif /* KDF_ITERATION_COUNT */
+#ifndef KDF_GENERIC_PARAMETER
 #define KDF_GENERIC_PARAMETER               0x11
-#endif /* !defined(KDF_GENERIC_PARAMETER) */
+#endif /* KDF_GENERIC_PARAMETER */
 
 /* HKDF KDF parameters */
-#if !defined(KDF_HKDF_SALT)
+#ifndef KDF_HKDF_SALT
 #define KDF_HKDF_SALT                       0x13
-#endif /* !defined(KDF_HKDF_SALT) */
-#if !defined(KDF_HKDF_INFO)
+#endif /* KDF_HKDF_SALT */
+#ifndef KDF_HKDF_INFO
 #define KDF_HKDF_INFO                       0x14
-#endif /* !defined(KDF_HKDF_INFO) */
-#if !defined(BCRYPT_HKDF_HASH_ALGORITHM)
+#endif /* KDF_HKDF_INFO */
+#ifndef BCRYPT_HKDF_HASH_ALGORITHM
 #define BCRYPT_HKDF_HASH_ALGORITHM          L"HkdfHashAlgorithm"
-#endif /* !defined(BCRYPT_HKDF_HASH_ALGORITHM) */
-#if !defined(BCRYPT_HKDF_SALT_AND_FINALIZE)
+#endif /* BCRYPT_HKDF_HASH_ALGORITHM */
+#ifndef BCRYPT_HKDF_SALT_AND_FINALIZE
 #define BCRYPT_HKDF_SALT_AND_FINALIZE       L"HkdfSaltAndFinalize"
-#endif /* !defined(BCRYPT_HKDF_SALT_AND_FINALIZE) */
+#endif /* BCRYPT_HKDF_SALT_AND_FINALIZE */
 
 /* ---- bcrypt.h: EC / ECDH key magic values -------------------------------- */
 
@@ -90,14 +94,9 @@
 #ifndef BCRYPT_ECDSA_PUBLIC_GENERIC_MAGIC
 #define BCRYPT_ECDSA_PUBLIC_GENERIC_MAGIC   0x50444345  /* ECDP */
 #endif /* BCRYPT_ECDSA_PUBLIC_GENERIC_MAGIC */
-#endif /* !XMLSEC_NO_EC */
+#endif /* XMLSEC_NO_EC */
 
-#ifndef XMLSEC_NO_XDH
-/* BCrypt curve name for Curve25519 (may be missing in older MinGW bcrypt.h) */
-#ifndef BCRYPT_ECC_CURVE_25519
-#define BCRYPT_ECC_CURVE_25519              L"curve25519"
-#endif /* BCRYPT_ECC_CURVE_25519 */
-
+#if !defined(XMLSEC_NO_EC) || !defined(XMLSEC_NO_XDH)
 /* Generic ECDH definitions (may be missing in older MinGW bcrypt.h) */
 #ifndef BCRYPT_ECDH_PUBLIC_GENERIC_MAGIC
 #define BCRYPT_ECDH_PUBLIC_GENERIC_MAGIC    0x504B4345  /* ECKP */
@@ -111,7 +110,14 @@
 #ifndef BCRYPT_ECC_CURVE_NAME
 #define BCRYPT_ECC_CURVE_NAME               L"ECCCurveName"
 #endif /* BCRYPT_ECC_CURVE_NAME */
-#endif /* !XMLSEC_NO_XDH */
+#endif /* !defined(XMLSEC_NO_EC) || !defined(XMLSEC_NO_XDH) */
+
+#ifndef XMLSEC_NO_XDH
+/* BCrypt curve name for Curve25519 (may be missing in older MinGW bcrypt.h) */
+#ifndef BCRYPT_ECC_CURVE_25519
+#define BCRYPT_ECC_CURVE_25519              L"curve25519"
+#endif /* BCRYPT_ECC_CURVE_25519 */
+#endif /* XMLSEC_NO_XDH */
 
 
 /* ---- bcrypt.h: DSA v2 feature detection ---------------------------------- */
@@ -137,13 +143,13 @@
 #ifndef szOID_X942_DH
 #define szOID_X942_DH                       "1.2.840.10046.2.1"
 #endif /* szOID_X942_DH */
-#endif /* !XMLSEC_NO_DH */
+#endif /* XMLSEC_NO_DH */
 
 #ifndef XMLSEC_NO_XDH
 /* OID for X25519 public/private key (RFC 8410, id-X25519; may be missing in older MinGW) */
 #ifndef szOID_X25519
 #define szOID_X25519                        "1.3.101.110"
 #endif /* szOID_X25519 */
-#endif /* !XMLSEC_NO_XDH */
+#endif /* XMLSEC_NO_XDH */
 
 #endif /* XMLSEC_MSCNG_XMLSEC_MINGW_H */

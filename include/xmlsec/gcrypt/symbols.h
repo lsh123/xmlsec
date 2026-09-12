@@ -46,7 +46,7 @@ extern "C" {
 
 /******************************************************************************
  *
- * Crypto transforms ids:
+ * Crypto transforms ids
  *
  * https://www.aleksey.com/xmlsec/xmldsig.html
  * https://www.aleksey.com/xmlsec/xmlenc.html

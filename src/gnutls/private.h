@@ -83,7 +83,6 @@ int                     xmlSecGnuTLSX509CertIsSelfSigned        (gnutls_x509_crt
 xmlChar *               xmlSecGnuTLSX509CertGetSubjectDN        (gnutls_x509_crt_t cert);
 xmlChar *               xmlSecGnuTLSX509CertGetIssuerDN         (gnutls_x509_crt_t cert);
 xmlChar *               xmlSecGnuTLSX509CertGetIssuerSerial     (gnutls_x509_crt_t cert);
-xmlChar *               xmlSecGnuTLSX509CertGetSKI              (gnutls_x509_crt_t cert);
 
 int                     xmlSecGnuTLSX509DigestWrite             (gnutls_x509_crt_t cert,
                                                                  const xmlChar* algorithm,
@@ -122,7 +121,7 @@ typedef struct _xmlSecGnuTLSX509FindCertCtx {
     xmlSecSize skiSize;
 
     const xmlSecByte * digestValue;     /* NOT OWNED */
-    size_t digestLen;
+    xmlSecSize digestLen;
     gnutls_digest_algorithm_t digestAlgo;
 } xmlSecGnuTLSX509FindCertCtx, *xmlSecGnuTLSX509FindCertCtxPtr;
 
@@ -166,8 +165,8 @@ void                    xmlSecGnuTLSX509CrlDebugXmlDump         (gnutls_x509_crl
  * Misc. utils/helpers
  *
   *****************************************************************************/
-int                     xmlSecGnuTLSX509DnsEqual                (const xmlChar * ll,
-                                                                 const xmlChar * rr);
+int                     xmlSecGnuTLSX509DnsEqual                (const xmlChar * left,
+                                                                  const xmlChar * right);
 int                     xmlSecGnuTLSX509CertCompareSKI          (gnutls_x509_crt_t cert,
                                                                  const xmlSecByte * ski,
                                                                   xmlSecSize skiSize);
@@ -202,10 +201,10 @@ void                    xmlSecGnuTLSDnAttrsDeinitialize         (xmlSecGnuTLSDnA
 const xmlSecGnuTLSDnAttr * xmlSecGnuTLSDnAttrsFind              (const xmlSecGnuTLSDnAttr * attrs,
                                                                  xmlSecSize attrsSize,
                                                                  const xmlChar * key);
-int                     xmlSecGnuTLSDnAttrsEqual                (const xmlSecGnuTLSDnAttr * ll,
-                                                                 xmlSecSize llSize,
-                                                                 const xmlSecGnuTLSDnAttr * rr,
-                                                                 xmlSecSize rrSize);
+int                     xmlSecGnuTLSDnAttrsEqual                (const xmlSecGnuTLSDnAttr * left,
+                                                                  xmlSecSize leftSize,
+                                                                  const xmlSecGnuTLSDnAttr * right,
+                                                                  xmlSecSize rightSize);
 int                     xmlSecGnuTLSDnAttrsParse                (const xmlChar * dn,
                                                                  xmlSecGnuTLSDnAttr * attrs,
                                                                  xmlSecSize attrsSize);

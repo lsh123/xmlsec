@@ -1101,7 +1101,7 @@ xmlSecOpenSSLEvpSignatureCreatePkeyCtx(xmlSecTransformPtr transform, xmlSecOpenS
 
         /* Fetch the signature implementation from the key's owning provider.
          * Otherwise, pass NULL to EVP_SIGNATURE_fetch to use the default provider. */
-        providerQuery = xmlSecOpenSslEvpGetProviderQuery(pKeyCtx, providerQueryBuffer, sizeof(providerQueryBuffer));
+        providerQuery = xmlSecOpenSSLEvpGetProviderQuery(pKeyCtx, providerQueryBuffer, sizeof(providerQueryBuffer));
         sigAlg = EVP_SIGNATURE_fetch(xmlSecOpenSSLGetLibCtx(), ctx->signatureName, (const char*)providerQuery);
         if(sigAlg == NULL) {
             xmlSecOpenSSLError2("EVP_SIGNATURE_fetch", xmlSecTransformGetName(transform),

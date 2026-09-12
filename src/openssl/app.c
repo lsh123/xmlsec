@@ -831,27 +831,31 @@ done:
 static int
 xmlSecOpenSSLAppCheckCertMatchesKey(EVP_PKEY * pKey,  X509 * cert) {
     EVP_PKEY * certKey;
+    int res;
 
     xmlSecAssert2(pKey != NULL, -1);
     xmlSecAssert2(cert != NULL, -1);
 
+#if defined(OPENSSL_IS_BORINGSSL)
+    certKey = X509_get_pubkey(cert);
+#else /* defined(OPENSSL_IS_BORINGSSL) */
     certKey = X509_get0_pubkey(cert);
+#endif /* defined(OPENSSL_IS_BORINGSSL) */
     if(certKey == NULL) {
         return(-1);
     }
 
 #ifndef XMLSEC_OPENSSL_API_300
-    if(EVP_PKEY_cmp(pKey, certKey) != 1) {
-        return(0);
-    }
+    res = (EVP_PKEY_cmp(pKey, certKey) == 1) ? 1 : 0;
 #else /* XMLSEC_OPENSSL_API_300 */
-    if(EVP_PKEY_eq(pKey, certKey) != 1) {
-        return(0);
-    }
+    res = (EVP_PKEY_eq(pKey, certKey) == 1) ? 1 : 0;
 #endif /* XMLSEC_OPENSSL_API_300 */
 
-    /* matches! */
-    return(1);
+#if defined(OPENSSL_IS_BORINGSSL)
+    EVP_PKEY_free(certKey);
+#endif /* defined(OPENSSL_IS_BORINGSSL) */
+
+    return(res);
 }
 
 #if !defined(XMLSEC_OPENSSL_NO_STORE)

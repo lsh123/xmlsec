@@ -30,11 +30,19 @@
 #include <bcrypt.h>
 #include <ncrypt.h>
 
+
+
+#ifndef IN_XMLSEC_CRYPTO
+#define IN_XMLSEC_CRYPTO
+#endif /* IN_XMLSEC_CRYPTO */
+
+#ifndef XMLSEC_PRIVATE
+#define XMLSEC_PRIVATE
+#endif /* XMLSEC_PRIVATE */
+
+
 /* Fallback definitions for symbols missing from older MinGW / Windows SDK headers. */
 #include "xmlsec-mingw.h"
-
-#define IN_XMLSEC_CRYPTO
-#define XMLSEC_PRIVATE
 
 /* Include common error helper macros. */
 #include "../errors_helpers.h"
@@ -46,7 +54,7 @@
  * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecMSCngLastError(errorFunction, errorObject) \
-    {                                                    \
+    do {                                                 \
         DWORD dwError = GetLastError();                  \
         xmlSecError(XMLSEC_ERRORS_HERE,                  \
                     (const char*)(errorObject),          \
@@ -55,27 +63,9 @@
                     "MSCng last error: 0x%08lx",         \
                     (dwError)                            \
         );                                               \
-    }
+    } while(0)
 
-/**
- * @brief The XMLSec library macro for reporting crypto errors from GetLastError().
- * @param errorFunction the failed function name.
- * @param errorObject the specific error object (e.g. transform, key data, etc).
- * @param msg the extra message.
- * @param param the extra message param.
- */
-#define xmlSecMSCngLastError2(errorFunction, errorObject, msg, param) \
-    {                                                    \
-        DWORD dwError = GetLastError();                  \
-        xmlSecError(XMLSEC_ERRORS_HERE,                  \
-                    (const char*)(errorObject),          \
-                    (errorFunction),                     \
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,       \
-                    msg  "; MSCng last error: 0x%08lx",  \
-                    (param),                             \
-                    (dwError)                            \
-        );                                               \
-    }
+
 
 /**
  * @brief Macro. Reports crypto errors from NTSTATUS.
@@ -85,15 +75,13 @@
  * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecMSCngNtError(errorFunction, errorObject, status) \
-    {                                                          \
         xmlSecError(XMLSEC_ERRORS_HERE,                        \
                     (const char*)(errorObject),                \
                     (errorFunction),                           \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,             \
                     "MSCng NTSTATUS: 0x%08lx",                 \
                     (unsigned long)(status)                    \
-        );                                                     \
-    }
+        )
 
 /**
  * @brief Macro. Reports crypto errors from NTSTATUS.
@@ -105,7 +93,6 @@
  * @param param the extra message param.
  */
 #define xmlSecMSCngNtError2(errorFunction, errorObject, status, msg, param) \
-    {                                                          \
         xmlSecError(XMLSEC_ERRORS_HERE,                        \
                     (const char*)(errorObject),                \
                     (errorFunction),                           \
@@ -113,8 +100,7 @@
                     msg "; MSCng NTSTATUS: 0x%08lx",           \
                     (param),                                   \
                     (unsigned long)(status)                    \
-        );                                                     \
-    }
+        )
 
 /**
  * @brief Macro. Reports crypto errors from NTSTATUS.
@@ -127,7 +113,6 @@
  * @param param2 the extra message param2.
  */
 #define xmlSecMSCngNtError3(errorFunction, errorObject, status, msg, param1, param2) \
-    {                                                          \
         xmlSecError(XMLSEC_ERRORS_HERE,                        \
                     (const char*)(errorObject),                \
                     (errorFunction),                           \
@@ -136,7 +121,7 @@
                     (param1),                                  \
                     (param2),                                  \
                     (unsigned long)(status)                    \
-        );                                                     \
-    }
+        )
+
 
 #endif /* XMLSEC_MSCNG_GLOBALS_H */

@@ -86,11 +86,14 @@ XMLSEC_EXPORT void              xmlSecKeyDataBinaryValueDebugXmlDump    (xmlSecK
 
 #if !defined(XMLSEC_NO_EC)
 
+/**
+ * @brief The EC key value.
+ */
 typedef struct _xmlSecKeyValueEc {
-    xmlChar* curve;
-    xmlSecBuffer pubkey;
-    xmlSecBuffer pub_x;
-    xmlSecBuffer pub_y;
+    xmlChar* curve;  /**< the curve name. */
+    xmlSecBuffer pubkey;  /**< the full public key (compressed or uncompressed). */
+    xmlSecBuffer pub_x;  /**< the public key X coordinate. */
+    xmlSecBuffer pub_y;  /**< the public key Y coordinate. */
 } xmlSecKeyValueEc, *xmlSecKeyValueEcPtr;
 
 /**
@@ -139,10 +142,13 @@ XMLSEC_EXPORT int               xmlSecKeyDataEcXmlWrite                 (xmlSecK
  * Helper functions to read/write RSA keys
  *
   *****************************************************************************/
+/**
+ * @brief The RSA key value.
+ */
 typedef struct _xmlSecKeyValueRsa {
-    xmlSecBuffer   modulus;
-    xmlSecBuffer   publicExponent;
-    xmlSecBuffer   privateExponent;
+    xmlSecBuffer   modulus;  /**< the RSA modulus. */
+    xmlSecBuffer   publicExponent;  /**< the RSA public exponent. */
+    xmlSecBuffer   privateExponent;  /**< the RSA private exponent. */
 } xmlSecKeyValueRsa, *xmlSecKeyValueRsaPtr;
 
 /**
@@ -188,13 +194,16 @@ XMLSEC_EXPORT int               xmlSecKeyDataRsaXmlWrite                (xmlSecK
  * Helper functions to read/write DH keys
  *
   *****************************************************************************/
+/**
+ * @brief The DH key value.
+ */
 typedef struct _xmlSecKeyValueDh {
-    xmlSecBuffer p;
-    xmlSecBuffer q;
-    xmlSecBuffer generator;
-    xmlSecBuffer public;
-    xmlSecBuffer seed;
-    xmlSecBuffer pgenCounter;
+    xmlSecBuffer p;  /**< the DH prime. */
+    xmlSecBuffer q;  /**< the DH subgroup order. */
+    xmlSecBuffer generator;  /**< the DH generator. */
+    xmlSecBuffer public;  /**< the DH public value. */
+    xmlSecBuffer seed;  /**< the DH seed. */
+    xmlSecBuffer pgenCounter;  /**< the DH pgen counter. */
 } xmlSecKeyValueDh, *xmlSecKeyValueDhPtr;
 
 /**
@@ -240,12 +249,15 @@ XMLSEC_EXPORT int               xmlSecKeyDataDhXmlWrite                 (xmlSecK
  * Helper functions to read/write DSA keys
  *
   *****************************************************************************/
+/**
+ * @brief The DSA key value.
+ */
 typedef struct _xmlSecKeyValueDsa {
-    xmlSecBuffer p;
-    xmlSecBuffer q;
-    xmlSecBuffer g;
-    xmlSecBuffer x;
-    xmlSecBuffer y;
+    xmlSecBuffer p;  /**< the DSA prime. */
+    xmlSecBuffer q;  /**< the DSA subgroup order. */
+    xmlSecBuffer g;  /**< the DSA generator. */
+    xmlSecBuffer x;  /**< the DSA private value. */
+    xmlSecBuffer y;  /**< the DSA public value. */
 } xmlSecKeyValueDsa, *xmlSecKeyValueDsaPtr;
 
 /**

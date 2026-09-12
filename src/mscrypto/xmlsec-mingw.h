@@ -7,7 +7,11 @@
  * Copyright (C) 2007,2010 Roumen Petrov.
  */
 /**
- * @brief Internal MinGW compatibility definitions for MSCrypto.
+ * @brief Fallback definitions for symbols missing from older MinGW / Windows SDK headers.
+ *
+ * This header must be included AFTER all Windows SDK headers (windows.h, wincrypt.h, ...)
+ * have been included.  It is included automatically from private.h, so individual source
+ * files need not include it directly.
  */
 
 #ifndef XMLSEC_MSCRYPTO_XMLSEC_MINGW_H
@@ -152,7 +156,7 @@
 
 
 /*structures/types*/
-typedef struct _PUBKEY {
+typedef struct _DSSPUBKEY {
         DWORD magic;
         DWORD bitlen;
 } DSSPUBKEY;

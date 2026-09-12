@@ -182,7 +182,8 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformDsaSha1GetKlass(void
 /**
  * @brief The EC key klass.
  */
-#define xmlSecGCryptKeyDataEcId         xmlSecGCryptKeyDataEcGetKlass()
+#define xmlSecGCryptKeyDataEcId \
+        xmlSecGCryptKeyDataEcGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGCryptKeyDataEcGetKlass          (void);
 /** @brief Deprecated: use xmlSecGCryptKeyDataEcGetKlass. Retained for source compatibility with the misspelled name released in 1.3.10. */
 #define xmlSecGCryptkeyDataEcGetKlass   xmlSecGCryptKeyDataEcGetKlass

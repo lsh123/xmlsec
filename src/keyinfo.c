@@ -343,7 +343,9 @@ xmlSecKeyInfoCtxReset(xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecTransformCtxReset(&(keyInfoCtx->keyInfoReferenceCtx));
     keyInfoCtx->curKeyInfoReferenceLevel = 0;
 
+#ifndef XMLSEC_NO_XMLENC
     keyInfoCtx->curEncryptedKeyLevel = 0;
+#endif /* XMLSEC_NO_XMLENC */
 
     keyInfoCtx->operation = xmlSecTransformOperationNone;
 
@@ -1240,7 +1242,7 @@ xmlSecKeyDataRetrievalMethodReadXmlResult(xmlSecKeyDataId typeId, xmlSecKeyPtr k
     } else if((typeId != xmlSecKeyDataIdUnknown) && (typeId != dataId) &&
               ((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_MISMATCH_HREF) != 0)) {
 
-        xmlSecOtherError2(XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH,
+        xmlSecOtherError2(XMLSEC_ERRORS_R_RETRIEVAL_TYPE_MISMATCH,
                           xmlSecKeyDataKlassGetName(dataId),
                           "typeId=%s", xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(typeId)));
         xmlFreeDoc(doc);

@@ -18,12 +18,21 @@
 #include "config.h"
 #endif /* HAVE_CONFIG_H */
 
+
+#ifndef IN_XMLSEC_CRYPTO
 #define IN_XMLSEC_CRYPTO
+#endif /* IN_XMLSEC_CRYPTO */
+
+#ifndef XMLSEC_PRIVATE
 #define XMLSEC_PRIVATE
+#endif /* XMLSEC_PRIVATE */
 
 /* Include common error helper macros. */
 #include "../errors_helpers.h"
 
+/**
+ * @brief The maximum digest size (in bytes) supported by the GCrypt back-end.
+ */
 #define XMLSEC_GCRYPT_MAX_DIGEST_SIZE           256
 
 

@@ -15,60 +15,15 @@
 #include <windows.h>
 #include <wincrypt.h>
 
-#define ALG_TYPE_GR3410 (7 << 9)
+#define ALG_SID_GR3411              30
 
-#define ALG_SID_MAGPRO_R3410_94         64
-#define ALG_SID_MAGPRO_R3410_94_EPHEM   65
-#define ALG_SID_MAGPRO_R3410_2001       66
-#define ALG_SID_MAGPRO_R3410_2001_EPHEM 67
-#define ALG_SID_MAGPRO_28147_89         68
-#define ALG_SID_GR3411                  30
-#define ALG_SID_G28147                  30
+#define ALG_SID_GR3411_2012_256     33
+#define ALG_SID_GR3411_2012_512     34
 
-#define ALG_SID_GR3411_2012_256         33
-#define ALG_SID_GR3411_2012_512         34
-
-#define ALG_SID_GR3410                  30
-#define ALG_SID_DH_EX_SF                30
-#define ALG_SID_DH_EX_EPHEM             31
-#define ALG_SID_PRO_AGREEDKEY_DH        33
-#define ALG_SID_PRO_SIMMETRYKEY         34
-#define ALG_SID_GR3410EL                35
-#define ALG_SID_DH_EL_SF                36
-#define ALG_SID_DH_EL_EPHEM             37
-
-#define CALG_MAGPRO_SIGN_R3410_94       (ALG_CLASS_SIGNATURE | ALG_TYPE_GR3410 | ALG_SID_MAGPRO_R3410_94)
-
-#define CALG_MAGPRO_SIGN_R3410_2001     (ALG_CLASS_SIGNATURE | ALG_TYPE_GR3410 | ALG_SID_MAGPRO_R3410_2001)
-
-#define CALG_MAGPRO_DH_R3410_94         (ALG_CLASS_KEY_EXCHANGE | ALG_TYPE_DH | ALG_SID_MAGPRO_R3410_94)
-
-#define CALG_MAGPRO_DH_R3410_2001       (ALG_CLASS_KEY_EXCHANGE | ALG_TYPE_DH | ALG_SID_MAGPRO_R3410_2001)
-
-#define CALG_MAGPRO_DH_R3410_94_EPHEM   (ALG_CLASS_KEY_EXCHANGE | ALG_TYPE_DH | ALG_SID_MAGPRO_R3410_94_EPHEM)
-
-#define CALG_MAGPRO_DH_R3410_2001_EPHEM (ALG_CLASS_KEY_EXCHANGE | ALG_TYPE_DH | ALG_SID_MAGPRO_R3410_2001_EPHEM)
-
-#define CALG_MAGPRO_HASH_R3411_94       (ALG_CLASS_HASH | ALG_TYPE_ANY | ALG_SID_GR3411)
-
-#define CALG_MAGPRO_HASH_28147_89       (ALG_CLASS_HASH | ALG_TYPE_ANY | ALG_SID_MAGPRO_28147_89)
+#define CALG_MAGPRO_HASH_R3411_94   (ALG_CLASS_HASH | ALG_TYPE_ANY | ALG_SID_GR3411)
 
 #define CALG_GR3411_2012_256        (ALG_CLASS_HASH | ALG_TYPE_ANY | ALG_SID_GR3411_2012_256)
 #define CALG_GR3411_2012_512        (ALG_CLASS_HASH | ALG_TYPE_ANY | ALG_SID_GR3411_2012_512)
-
-#define CALG_MAGPRO_ENCR_28147_89       (ALG_CLASS_DATA_ENCRYPT | ALG_TYPE_BLOCK | ALG_SID_G28147)
-
-#define CALG_GR3410                                             (ALG_CLASS_SIGNATURE | ALG_TYPE_GR3410 | ALG_SID_GR3410)
-
-#define CALG_GR3410EL                                   (ALG_CLASS_SIGNATURE | ALG_TYPE_GR3410 | ALG_SID_GR3410EL)
-
-#define CALG_DH_EX_SF                                   (ALG_CLASS_KEY_EXCHANGE | ALG_TYPE_DH | ALG_SID_DH_EX_SF)
-
-#define CALG_DH_EX_EPHEM                                (ALG_CLASS_KEY_EXCHANGE | ALG_TYPE_DH | ALG_SID_DH_EX_EPHEM)
-
-#define CALG_DH_EL_SF                                   (ALG_CLASS_KEY_EXCHANGE | ALG_TYPE_DH | ALG_SID_DH_EL_SF)
-
-#define CALG_DH_EL_EPHEM                                (ALG_CLASS_KEY_EXCHANGE | ALG_TYPE_DH | ALG_SID_DH_EL_EPHEM)
 
 #define PROV_MAGPRO_GOST            501
 #define MAGPRO_CSP_A                "MagPro CSP"
@@ -84,10 +39,10 @@
 #define PROV_GOST_2012_512          81
 #define CRYPTOPRO_CSP_A             "Crypto-Pro GOST R 34.10-2001 Cryptographic Service Provider"
 #define CRYPTOPRO_CSP_W             L"Crypto-Pro GOST R 34.10-2001 Cryptographic Service Provider"
-#define CRYPTOPRO_CSP_256_A             "Crypto-Pro GOST R 34.10-2012 Cryptographic Service Provider"
-#define CRYPTOPRO_CSP_256_W             L"Crypto-Pro GOST R 34.10-2012 Cryptographic Service Provider"
-#define CRYPTOPRO_CSP_512_A             "Crypto-Pro GOST R 34.10-2012 Strong Cryptographic Service Provider"
-#define CRYPTOPRO_CSP_512_W             L"Crypto-Pro GOST R 34.10-2012 Strong Cryptographic Service Provider"
+#define CRYPTOPRO_CSP_256_A         "Crypto-Pro GOST R 34.10-2012 Cryptographic Service Provider"
+#define CRYPTOPRO_CSP_256_W         L"Crypto-Pro GOST R 34.10-2012 Cryptographic Service Provider"
+#define CRYPTOPRO_CSP_512_A         "Crypto-Pro GOST R 34.10-2012 Strong Cryptographic Service Provider"
+#define CRYPTOPRO_CSP_512_W         L"Crypto-Pro GOST R 34.10-2012 Strong Cryptographic Service Provider"
 #ifdef UNICODE
 #define CRYPTOPRO_CSP CRYPTOPRO_CSP_W
 #define CRYPTOPRO_CSP_256 CRYPTOPRO_CSP_256_W
@@ -97,11 +52,5 @@
 #define CRYPTOPRO_CSP_256 CRYPTOPRO_CSP_256_A
 #define CRYPTOPRO_CSP_512 CRYPTOPRO_CSP_512_A
 #endif
-
-
-#define PP_RNGTYPE                      201
-#define PP_RNGSHARED            202
-#define PP_SETUP_UI                     203
-
 
 #endif /* XMLSEC_MSCRYPTO_CSP_CALG_H */

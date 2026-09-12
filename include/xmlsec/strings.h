@@ -34,7 +34,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecEnc11Ns[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPathNs[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPath2Ns[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPointerNs[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecXmldsig2021MoreNs[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecDSig2021MoreNs[];
 
 
 /******************************************************************************
@@ -228,11 +228,11 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNameConcatKdf[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefConcatKdf[];
 
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeConcatKDFParams[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeConcatKDFAttrAlgorithmID[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeConcatKDFAttrPartyUInfo[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeConcatKDFAttrPartyVInfo[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeConcatKDFAttrSuppPubInfo[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeConcatKDFAttrSuppPrivInfo[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrConcatKDFAlgorithmID[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrConcatKDFPartyUInfo[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrConcatKDFPartyVInfo[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrConcatKDFSuppPubInfo[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrConcatKDFSuppPrivInfo[];
 
 
 /******************************************************************************

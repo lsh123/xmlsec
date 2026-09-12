@@ -53,7 +53,7 @@ xmlSecUnitTestFindChild(xmlNodePtr node, const xmlChar* name) {
     xmlSecAssert2(name != NULL, NULL);
 
     for(cur = xmlSecGetNextElementNode(node->children); cur != NULL; cur = xmlSecGetNextElementNode(cur->next)) {
-        if(xmlSecCheckNodeName(cur, name, xmlSecXmldsig2021MoreNs)) {
+        if(xmlSecCheckNodeName(cur, name, xmlSecDSig2021MoreNs)) {
             return(cur);
         }
     }

@@ -20,6 +20,9 @@ DISTCLEANFILES = \
 EXTRA_DIST = \
 	Doxyfile.in \
 	doxygen_filter.py \
+	bcrypt.h \
+	ncrypt.h \
+	ntstatus.h \
 	wincrypt.h \
 	windows.h \
 	$(NULL)

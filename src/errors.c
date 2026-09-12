@@ -76,7 +76,7 @@ static const xmlSecErrorDescription xmlSecErrorsTable[XMLSEC_ERRORS_MAX_NUMBER +
   { XMLSEC_ERRORS_R_KEY_NOT_FOUND,              "key is not found" },
   { XMLSEC_ERRORS_R_KEYDATA_DISABLED,           "key data is disabled" },
   { XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL,       "maximum key retrieval level" },
-  { XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH,"key retrieval type mismatch" },
+  { XMLSEC_ERRORS_R_RETRIEVAL_TYPE_MISMATCH,"key retrieval type mismatch" },
   { XMLSEC_ERRORS_R_MAX_KEYINFOREFERENCE_LEVEL, "maximum KeyInfoReference level" },
   { XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL,           "maximum encrypted key level" },
   { XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,         "certificate verification failed" },

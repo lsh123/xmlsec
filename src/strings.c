@@ -30,7 +30,7 @@ const xmlChar xmlSecEnc11Ns[]                   = "http://www.w3.org/2009/xmlenc
 const xmlChar xmlSecXPathNs[]                   = "http://www.w3.org/TR/1999/REC-xpath-19991116";
 const xmlChar xmlSecXPath2Ns[]                  = "http://www.w3.org/2002/06/xmldsig-filter2";
 const xmlChar xmlSecXPointerNs[]                = "http://www.w3.org/2001/04/xmldsig-more/xptr";
-const xmlChar xmlSecXmldsig2021MoreNs[]         = "http://www.w3.org/2021/04/xmldsig-more#";
+const xmlChar xmlSecDSig2021MoreNs[]            = "http://www.w3.org/2021/04/xmldsig-more#";
 
 /******************************************************************************
  *
@@ -224,12 +224,12 @@ const xmlChar xmlSecNameConcatKdfKey[]          = "concatkdf";
 const xmlChar xmlSecNameConcatKdf[]             = "concatkdf";
 const xmlChar xmlSecHrefConcatKdf[]             = "http://www.w3.org/2009/xmlenc11#ConcatKDF";
 
-const xmlChar xmlSecNodeConcatKDFParams[]           = "ConcatKDFParams";
-const xmlChar xmlSecNodeConcatKDFAttrAlgorithmID[]  = "AlgorithmID";
-const xmlChar xmlSecNodeConcatKDFAttrPartyUInfo[]   = "PartyUInfo";
-const xmlChar xmlSecNodeConcatKDFAttrPartyVInfo[]   = "PartyVInfo";
-const xmlChar xmlSecNodeConcatKDFAttrSuppPubInfo[]  = "SuppPubInfo";
-const xmlChar xmlSecNodeConcatKDFAttrSuppPrivInfo[] = "SuppPrivInfo";
+const xmlChar xmlSecNodeConcatKDFParams[]       = "ConcatKDFParams";
+const xmlChar xmlSecAttrConcatKDFAlgorithmID[]  = "AlgorithmID";
+const xmlChar xmlSecAttrConcatKDFPartyUInfo[]   = "PartyUInfo";
+const xmlChar xmlSecAttrConcatKDFPartyVInfo[]   = "PartyVInfo";
+const xmlChar xmlSecAttrConcatKDFSuppPubInfo[]  = "SuppPubInfo";
+const xmlChar xmlSecAttrConcatKDFSuppPrivInfo[] = "SuppPrivInfo";
 
 /******************************************************************************
  *

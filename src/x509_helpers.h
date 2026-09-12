@@ -75,18 +75,18 @@ XMLSEC_EXPORT int               xmlSecKeyDataX509XmlWrite               (xmlSecK
 #define XMLSEC_X509_VALUE_TYPE_UTF8_STRING          0
 #define XMLSEC_X509_VALUE_TYPE_OCTET_STRING         1
 
-typedef int             (*xmlSecX509NameReadCallback)   (const xmlChar * name,
-                                                         const xmlChar * value,
-                                                         xmlSecSize valueSize,
-                                                         int type,
-                                                         void * context);
-typedef struct _xmlSecx509NameReplacements {
+typedef int             (*xmlSecX509NameReadCallback)   (const xmlSecByte * name,
+                                                          const xmlSecByte * value,
+                                                          xmlSecSize valueSize,
+                                                          int type,
+                                                          void * context);
+typedef struct _xmlSecX509NameReplacements {
     const xmlChar * original;
     const xmlChar * replacement;
-} xmlSecx509NameReplacements;
+} xmlSecX509NameReplacements;
 
 XMLSEC_EXPORT int       xmlSecX509NameRead              (const xmlChar *str,
-                                                         xmlSecx509NameReplacements *replacements,
+                                                         xmlSecX509NameReplacements *replacements,
                                                          xmlSecX509NameReadCallback callback,
                                                          void * context);
 

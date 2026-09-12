@@ -34,7 +34,7 @@
  *****************************************************************************/
 #include <openssl/opensslv.h>
 
-#if defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER >= 0x30900000L
+#if defined(LIBRESSL_VERSION_NUMBER)
 /* LibreSSL implements (most of) OpenSSL 1.1 API */
 #define XMLSEC_OPENSSL_API_111      1
 #elif OPENSSL_VERSION_NUMBER >= 0x40000000L
@@ -113,6 +113,10 @@
 #include <openssl/rsa.h>
 #include <openssl/evp.h>
 #endif /* XMLSEC_NO_RSA */
+
+#ifndef XMLSEC_NO_DH
+#include <openssl/evp.h>
+#endif /* XMLSEC_NO_DH */
 
 #ifndef XMLSEC_NO_MLDSA
 #include <openssl/evp.h>
@@ -234,6 +238,7 @@ XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateReadFileBio (const ch
 
 #ifdef OPENSSL_NO_ECX
 #define XMLSEC_NO_EDDSA       1
+#define XMLSEC_NO_XDH         1
 #endif /* OPENSSL_NO_ECX */
 
 #ifdef OPENSSL_NO_SHA1
@@ -573,7 +578,8 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformDhEsGetKlass(void);
 /**
  * @brief The EC key klass.
  */
-#define xmlSecOpenSSLKeyDataEcId        xmlSecOpenSSLKeyDataEcGetKlass()
+#define xmlSecOpenSSLKeyDataEcId \
+        xmlSecOpenSSLKeyDataEcGetKlass()
 
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataEcGetKlass      (void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataEcAdoptEvp      (xmlSecKeyDataPtr data,

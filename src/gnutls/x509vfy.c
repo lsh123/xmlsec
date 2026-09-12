@@ -717,9 +717,9 @@ done:
  */
 gnutls_x509_crt_t
 xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
-                            xmlSecPtrListPtr certs,
-                            xmlSecPtrListPtr crls,
-                            const xmlSecKeyInfoCtx* keyInfoCtx) {
+                             xmlSecPtrListPtr certs,
+                             xmlSecPtrListPtr crls,
+                             xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecGnuTLSX509StoreCtxPtr ctx;
     gnutls_x509_crt_t res = NULL;
     xmlSecSize certs_size = 0;
@@ -1198,40 +1198,40 @@ xmlSecGnuTLSX509StoreFinalize(xmlSecKeyDataStorePtr store) {
 #define XMLSEC_GNUTLS_DN_ATTRS_SIZE             1024
 
 int
-xmlSecGnuTLSX509DnsEqual(const xmlChar * ll, const xmlChar * rr) {
-    xmlSecGnuTLSDnAttr ll_attrs[XMLSEC_GNUTLS_DN_ATTRS_SIZE];
-    xmlSecGnuTLSDnAttr rr_attrs[XMLSEC_GNUTLS_DN_ATTRS_SIZE];
+xmlSecGnuTLSX509DnsEqual(const xmlChar * left, const xmlChar * right) {
+    xmlSecGnuTLSDnAttr left_attrs[XMLSEC_GNUTLS_DN_ATTRS_SIZE];
+    xmlSecGnuTLSDnAttr right_attrs[XMLSEC_GNUTLS_DN_ATTRS_SIZE];
     int ret;
     int res = -1;
 
-    xmlSecAssert2(ll != NULL, -1);
-    xmlSecAssert2(rr != NULL, -1);
+    xmlSecAssert2(left != NULL, -1);
+    xmlSecAssert2(right != NULL, -1);
 
     /* fast version first */
-    if(xmlStrEqual(ll, rr)) {
+    if(xmlStrEqual(left, right)) {
         return(1);
     }
 
     /* prepare */
-    xmlSecGnuTLSDnAttrsInitialize(ll_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
-    xmlSecGnuTLSDnAttrsInitialize(rr_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
+    xmlSecGnuTLSDnAttrsInitialize(left_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
+    xmlSecGnuTLSDnAttrsInitialize(right_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
 
     /* parse */
-    ret = xmlSecGnuTLSDnAttrsParse(ll, ll_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
+    ret = xmlSecGnuTLSDnAttrsParse(left, left_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecGnuTLSDnAttrsParse(ll)", NULL);
+        xmlSecInternalError("xmlSecGnuTLSDnAttrsParse(left)", NULL);
         goto done;
     }
 
-    ret = xmlSecGnuTLSDnAttrsParse(rr, rr_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
+    ret = xmlSecGnuTLSDnAttrsParse(right, right_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecGnuTLSDnAttrsParse(rr)", NULL);
+        xmlSecInternalError("xmlSecGnuTLSDnAttrsParse(right)", NULL);
         goto done;
     }
 
     /* compare */
-    ret = xmlSecGnuTLSDnAttrsEqual(ll_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE,
-                                   rr_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
+    ret = xmlSecGnuTLSDnAttrsEqual(left_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE,
+                                    right_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
     if(ret == 1) {
         res = 1;
     } else if(ret == 0) {
@@ -1242,8 +1242,8 @@ xmlSecGnuTLSX509DnsEqual(const xmlChar * ll, const xmlChar * rr) {
     }
 
 done:
-    xmlSecGnuTLSDnAttrsDeinitialize(ll_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
-    xmlSecGnuTLSDnAttrsDeinitialize(rr_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
+    xmlSecGnuTLSDnAttrsDeinitialize(left_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
+    xmlSecGnuTLSDnAttrsDeinitialize(right_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
     return(res);
 }
 

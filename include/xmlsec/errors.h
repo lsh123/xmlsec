@@ -228,7 +228,7 @@ extern "C" {
  * @brief Key data type mismatch in dsig:RetrievalMethod node.
  * @details The retrieved key data type does not match the one specified in the &lt;dsig:RetrievalMethod/&gt; node.
  */
-#define XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH     52
+#define XMLSEC_ERRORS_R_RETRIEVAL_TYPE_MISMATCH         52
 
 /**
  * @brief Max allowed KeyInfoReference level reached.

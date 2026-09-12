@@ -934,7 +934,7 @@ xmlSecMSCryptoX509StoreFinalize(xmlSecKeyDataStorePtr store) {
  * @return a pointer to newly allocated string or NULL if an error occurs.
  */
 static BYTE*
-xmlSecMSCryptoCertStrToName(DWORD dwCertEncodingType, LPTSTR pszX500, DWORD dwStrType, DWORD* len) {
+xmlSecMSCryptoCertStrToName(DWORD dwCertEncodingType, LPCTSTR pszX500, DWORD dwStrType, DWORD* len) {
     BYTE* str = NULL;
     LPCTSTR ppszError = NULL;
 

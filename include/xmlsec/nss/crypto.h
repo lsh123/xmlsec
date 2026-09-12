@@ -41,7 +41,7 @@
 #define XMLSEC_NO_MD5 1
 
 /**
- * XDH support requires public NSS KeyType values for Ed25519/X25519/X448.
+ * XDH support requires public NSS KeyType values for X25519/X448.
  * In particular, ecMontKey used by xmlsec was added in NSS 3.103.
  */
 #ifndef XMLSEC_NO_XDH
@@ -99,7 +99,7 @@ XMLSEC_CRYPTO_EXPORT void               xmlSecNssErrorsDefaultCallback  (const c
                                                                         int reason,
                                                                         const char* msg);
 
-XMLSEC_CRYPTO_EXPORT PK11SlotInfo * xmlSecNssGetInternalKeySlot(void);
+XMLSEC_CRYPTO_EXPORT PK11SlotInfo *     xmlSecNssGetInternalKeySlot     (void);
 
 /******************************************************************************
  *
@@ -161,21 +161,21 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecNssTransformAes256GcmGetKlass(void
 
 
 /**
- * @brief The AES 128 key wrap transform klass.
+ * @brief The AES128 key wrap transform klass.
  */
 #define xmlSecNssTransformKWAes128Id \
         xmlSecNssTransformKWAes128GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecNssTransformKWAes128GetKlass(void);
 
 /**
- * @brief The AES 192 key wrap transform klass.
+ * @brief The AES192 key wrap transform klass.
  */
 #define xmlSecNssTransformKWAes192Id \
         xmlSecNssTransformKWAes192GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecNssTransformKWAes192GetKlass(void);
 
 /**
- * @brief The AES 256 key wrap transform klass.
+ * @brief The AES256 key wrap transform klass.
  */
 #define xmlSecNssTransformKWAes256Id \
         xmlSecNssTransformKWAes256GetKlass()
@@ -548,7 +548,6 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecNssKeyDataPbkdf2Set       (xmlSecK
  */
 #define xmlSecNssTransformPbkdf2Id \
         xmlSecNssTransformPbkdf2GetKlass()
-/** @brief The PBKDF2 key derivation transform klass. @return the PBKDF2 transform klass. */
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformPbkdf2GetKlass(void);
 
 #endif /* XMLSEC_NO_PBKDF2 */
@@ -574,7 +573,6 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecNssKeyDataConcatKdfSet       (xmlS
  */
 #define xmlSecNssTransformConcatKdfId \
         xmlSecNssTransformConcatKdfGetKlass()
-/** @brief The ConcatKDF key derivation transform klass. @return the ConcatKDF transform klass. */
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformConcatKdfGetKlass(void);
 
 #endif /* XMLSEC_NO_CONCATKDF */
@@ -850,7 +848,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha3_512GetKlass(void);
  *
   *****************************************************************************/
 /**
- * @brief The Nss DEREncodedKeyValue data klass.
+ * @brief The Nss DEREncodedKeyValue key data klass.
  */
 #define xmlSecNssKeyDataDEREncodedKeyValueId    xmlSecNssKeyDataDEREncodedKeyValueGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId             xmlSecNssKeyDataDEREncodedKeyValueGetKlass(void);

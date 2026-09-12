@@ -12,7 +12,7 @@
 #define __XMLSEC_OPENSSL_PRIVATE_H__
 
 #ifndef XMLSEC_PRIVATE
-#error "openssl/private.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
+#error "openssl/private.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-openssl libraries"
 #endif /* XMLSEC_PRIVATE */
 
 
@@ -53,7 +53,7 @@ typedef struct _xmlSecOpenSSLX509FindCertCtx {
 
     const xmlSecByte * digestValue; /* NOT OWNED */
     unsigned int digestLen;
-    const EVP_MD* digestMd;
+    const EVP_MD * digestMd;
 } xmlSecOpenSSLX509FindCertCtx, *xmlSecOpenSSLX509FindCertCtxPtr;
 
 int             xmlSecOpenSSLX509FindCertCtxInitialize          (xmlSecOpenSSLX509FindCertCtxPtr ctx,
@@ -78,7 +78,7 @@ X509*           xmlSecOpenSSLX509StoreFindCertByValue           (xmlSecKeyDataSt
 xmlSecKeyPtr    xmlSecOpenSSLX509FindKeyByValue                 (xmlSecPtrListPtr keysList,
                                                                  xmlSecKeyX509DataValuePtr x509Value);
 
-const EVP_MD*   xmlSecOpenSSLX509GetDigestFromAlgorithm         (const xmlChar* href);
+const EVP_MD *  xmlSecOpenSSLX509GetDigestFromAlgorithm         (const xmlChar* href);
 
 
 
@@ -103,7 +103,7 @@ STACK_OF(X509_CRL)*    xmlSecOpenSSLKeyDataX509GetCrls          (xmlSecKeyDataPt
   *****************************************************************************/
 #if defined(XMLSEC_OPENSSL_API_350)
 
-const  xmlChar* xmlSecOpenSslEvpGetProviderQuery                (EVP_PKEY_CTX* pKeyCtx,
+const xmlChar* xmlSecOpenSslEvpGetProviderQuery                (EVP_PKEY_CTX* pKeyCtx,
                                                                  xmlChar* buf,
                                                                  int bufSize);
 

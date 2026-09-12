@@ -4,5 +4,5 @@
  */
 #ifndef __XMLSEC_DOXYGEN_WINCRYPT_H__
 #define __XMLSEC_DOXYGEN_WINCRYPT_H__
-/* All types covered by windows.h stub */
+/* Most types are covered by the windows.h stub; doxygen tolerates the few missing ones */
 #endif /* __XMLSEC_DOXYGEN_WINCRYPT_H__ */

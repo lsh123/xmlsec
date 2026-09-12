@@ -177,7 +177,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaSha1GetKlass(vo
  * @brief The RSA-SHA2-256 signature transform klass.
  */
 #define xmlSecMSCryptoTransformRsaSha256Id     \
-       xmlSecMSCryptoTransformRsaSha256GetKlass()
+        xmlSecMSCryptoTransformRsaSha256GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaSha256GetKlass(void);
 #endif /* XMLSEC_NO_SHA256 */
 
@@ -186,7 +186,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaSha256GetKlass(
  * @brief The RSA-SHA2-384 signature transform klass.
  */
 #define xmlSecMSCryptoTransformRsaSha384Id     \
-       xmlSecMSCryptoTransformRsaSha384GetKlass()
+        xmlSecMSCryptoTransformRsaSha384GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaSha384GetKlass(void);
 #endif /* XMLSEC_NO_SHA384 */
 
@@ -195,7 +195,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaSha384GetKlass(
  * @brief The RSA-SHA2-512 signature transform klass.
  */
 #define xmlSecMSCryptoTransformRsaSha512Id     \
-       xmlSecMSCryptoTransformRsaSha512GetKlass()
+        xmlSecMSCryptoTransformRsaSha512GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaSha512GetKlass(void);
 #endif /* XMLSEC_NO_SHA512 */
 
@@ -210,7 +210,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaPkcs1GetKlass(v
 
 #ifndef XMLSEC_NO_RSA_OAEP
 /**
- * @brief The RSA OAEP key transport klass (MSCrypto only).
+ * @brief The RSA OAEP key transport transform klass.
  * @details The RSA OAEP key transport transform klass. MSCrypto only supports SHA1 for digest and MGF1.
  */
 #define xmlSecMSCryptoTransformRsaOaepId \
@@ -261,7 +261,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformSha1GetKlass(void)
  * @brief The SHA2-256 digest transform klass.
  */
 #define xmlSecMSCryptoTransformSha256Id \
-       xmlSecMSCryptoTransformSha256GetKlass()
+        xmlSecMSCryptoTransformSha256GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformSha256GetKlass(void);
 #endif /* XMLSEC_NO_SHA256 */
 
@@ -276,7 +276,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformSha256GetKlass(voi
  * @brief The SHA2-384 digest transform klass.
  */
 #define xmlSecMSCryptoTransformSha384Id \
-       xmlSecMSCryptoTransformSha384GetKlass()
+        xmlSecMSCryptoTransformSha384GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformSha384GetKlass(void);
 #endif /* XMLSEC_NO_SHA384 */
 
@@ -291,7 +291,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformSha384GetKlass(voi
  * @brief The SHA2-512 digest transform klass.
  */
 #define xmlSecMSCryptoTransformSha512Id \
-       xmlSecMSCryptoTransformSha512GetKlass()
+        xmlSecMSCryptoTransformSha512GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformSha512GetKlass(void);
 #endif /* XMLSEC_NO_SHA512 */
 

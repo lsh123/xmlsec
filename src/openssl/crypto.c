@@ -691,7 +691,7 @@ xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
  * @param file the error location file name (__FILE__ macro).
  * @param line the error location line number (__LINE__ macro).
  * @param func the error location function name (__FUNCTION__ macro).
- * @param errorObject the error specific error object
+ * @param errorObject the specific error object
  * @param errorSubject the error specific error subject.
  * @param reason the error code.
  * @param msg the additional error message.

@@ -82,7 +82,6 @@ int     xmlSecAppCryptoSimpleKeysMngrKeyGenerate                (xmlSecKeysMngrP
                                                                  const char* keyKlassAndSize,
                                                                  const char* name);
 
-
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

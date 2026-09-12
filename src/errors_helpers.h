@@ -13,7 +13,7 @@
 #define __XMLSEC_ERROR_HELPERS_H__
 
 #ifndef XMLSEC_PRIVATE
-#error "errors_helpers.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
+#error "errors_helpers.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-crypto libraries"
 #endif /* XMLSEC_PRIVATE */
 
 #include <errno.h>
@@ -33,7 +33,7 @@ extern "C" {
  * @brief Macro. Reports internal XMLSec errors.
  * @details Macro. The XMLSec library macro for reporting internal XMLSec errors.
  * @param errorFunction the failed function name.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecInternalError(errorFunction, errorObject) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
@@ -47,7 +47,7 @@ extern "C" {
  * @brief Macro. Reports internal XMLSec errors.
  * @details Macro. The XMLSec library macro for reporting internal XMLSec errors.
  * @param errorFunction the failed function name.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  * @param msg the extra message.
  * @param param the extra message param.
  */
@@ -63,7 +63,7 @@ extern "C" {
  * @brief Macro. Reports internal XMLSec errors.
  * @details Macro. The XMLSec library macro for reporting internal XMLSec errors.
  * @param errorFunction the failed function name.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  * @param msg the extra message.
  * @param param1 the extra message param1.
  * @param param2 the extra message param2.
@@ -80,7 +80,7 @@ extern "C" {
  * @brief Macro. Reports internal XMLSec errors.
  * @details Macro. The XMLSec library macro for reporting internal XMLSec errors.
  * @param errorFunction the failed function name.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  * @param msg the extra message.
  * @param param1 the extra message param1.
  * @param param2 the extra message param2.
@@ -98,7 +98,7 @@ extern "C" {
  * @brief Macro. Reports xmlMalloc() errors.
  * @details Macro. The XMLSec library macro for reporting xmlMalloc() errors.
  * @param allocSize the failed allocation size.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecMallocError(allocSize, errorObject) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
@@ -112,7 +112,7 @@ extern "C" {
  * @brief Macro. Reports xmlStrdup() errors.
  * @details Macro. The XMLSec library macro for reporting xmlStrdup() errors.
  * @param str the failed string.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecStrdupError(str, errorObject) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
@@ -127,7 +127,7 @@ extern "C" {
  * @brief Macro. Reports generic XML errors.
  * @details Macro. The XMLSec library macro for reporting generic XML errors.
  * @param errorFunction the failed function.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  * @note The reported error is the thread-local last libxml2 error
  * (xmlGetLastError()); if the failing call did not set a new error
  * (e.g. on out-of-memory), the reported code/message may come from
@@ -151,7 +151,7 @@ extern "C" {
  * @brief Macro. Reports generic XML errors.
  * @details Macro. The XMLSec library macro for reporting generic XML errors.
  * @param errorFunction the failed function.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  * @param msg the extra message.
  * @param param the extra message param.
  * @note The reported error is the thread-local last libxml2 error
@@ -178,7 +178,7 @@ extern "C" {
  * @details Macro. The XMLSec library macro for reporting XML parser errors.
  * @param errorFunction the failed function.
  * @param ctxt the parser context.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecXmlParserError(errorFunction, ctxt, errorObject) \
     {                                                 \
@@ -199,7 +199,7 @@ extern "C" {
  * @details Macro. The XMLSec library macro for reporting XML parser errors.
  * @param errorFunction the failed function.
  * @param ctxt the parser context.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  * @param msg the extra message.
  * @param param the extra message param.
  */
@@ -221,7 +221,7 @@ extern "C" {
  * @brief Macro. Reports XSLT errors.
  * @details Macro. The XMLSec library macro for reporting XSLT errors.
  * @param errorFunction the failed function.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  * @note The reported error is the thread-local last libxml2 error
  * (xmlGetLastError()); if the failing call did not set a new error
  * (e.g. on out-of-memory), the reported code/message may come from
@@ -246,7 +246,7 @@ extern "C" {
  * @details Macro. The XMLSec library macro for reporting IO errors.
  * @param errorFunction the failed function.
  * @param name the filename, function name, uri, etc.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecIOError(errorFunction, name, errorObject) \
     {                                                 \
@@ -294,7 +294,7 @@ extern "C" {
  * @param name the name of the variable, parameter, etc.
  * @param actual the actual value.
  * @param expected the expected value.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecInvalidSizeError(name, actual, expected, errorObject) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
@@ -313,7 +313,7 @@ extern "C" {
  * @param name the name of the variable, parameter, etc.
  * @param actual the actual value.
  * @param expected the expected value.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecInvalidSizeLessThanError(name, actual, expected, errorObject) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
@@ -332,7 +332,7 @@ extern "C" {
  * @param name the name of the variable, parameter, etc.
  * @param actual the actual value.
  * @param expected the expected value.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecInvalidSizeMoreThanError(name, actual, expected, errorObject) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
@@ -351,7 +351,7 @@ extern "C" {
  * @param name the name of the variable, parameter, etc.
  * @param actual the actual value.
  * @param divider the expected divider.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecInvalidSizeNotMultipleOfError(name, actual, divider, errorObject) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
@@ -368,7 +368,7 @@ extern "C" {
  * @brief Macro. Reports "invalid size" errors (other).
  * @details Macro. The XMLSec library macro for reporting "invalid size" errors with a free-form message.
  * @param msg the message about the error.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecInvalidSizeOtherError(msg, errorObject) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
@@ -383,7 +383,7 @@ extern "C" {
  * @brief Macro. Reports "invalid data" errors.
  * @details Macro. The XMLSec library macro for reporting "invalid data" errors.
  * @param msg the msg with explanation.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecInvalidDataError(msg, errorObject) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
@@ -401,7 +401,7 @@ extern "C" {
  * @param name the name of the variable, parameter, etc.
  * @param actual the actual string value.
  * @param expected the expected value(s) as a string.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecInvalidStringDataError(name, actual, expected, errorObject) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
@@ -420,7 +420,7 @@ extern "C" {
  * @param name the name of the variable, parameter, etc.
  * @param actual the actual integer value.
  * @param expected the expected value(s) as a string.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecInvalidIntegerDataError(name, actual, expected, errorObject) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
@@ -441,7 +441,7 @@ extern "C" {
  * @param name2 the name of the second variable, parameter, etc.
  * @param actual2 the actual second integer value.
  * @param expected the expected value(s) as a string.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecInvalidIntegerDataError2(name1, actual1, name2, actual2, expected, errorObject) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
@@ -462,7 +462,7 @@ extern "C" {
  * @param name the name of the variable, parameter, etc.
  * @param actual the actual xmlSecSize value.
  * @param expected the expected value(s) as a string.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecInvalidSizeDataError(name, actual, expected, errorObject) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
@@ -483,7 +483,7 @@ extern "C" {
  * @param name2 the name of the second variable, parameter, etc.
  * @param actual2 the actual second xmlSecSize value.
  * @param expected the expected value(s) as a string.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecInvalidSizeDataError2(name1, actual1, name2, actual2, expected, errorObject) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
@@ -502,7 +502,7 @@ extern "C" {
  * @brief Macro. Reports "invalid type" errors.
  * @details Macro. The XMLSec library macro for reporting "invalid type" errors.
  * @param msg the msg with explanation.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecInvalidTypeError(msg, errorObject) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
@@ -519,7 +519,7 @@ extern "C" {
  * @param name the name of the variable, parameter, etc.
  * @param actual the actual value as a string.
  * @param expected the expected value(s) as a string.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecInvalidStringTypeError(name, actual, expected, errorObject) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
@@ -538,7 +538,7 @@ extern "C" {
  * @param name the name of the variable, parameter, etc.
  * @param actual the actual integer value.
  * @param expected the expected value(s) as a string.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecInvalidIntegerTypeError(name, actual, expected, errorObject) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
@@ -559,7 +559,7 @@ extern "C" {
  * @param name2 the name of the second variable, parameter, etc.
  * @param actual2 the actual second integer value.
  * @param expected the expected value(s) as a string.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecInvalidIntegerTypeError2(name1, actual1, name2, actual2, expected, errorObject) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
@@ -576,11 +576,11 @@ extern "C" {
 
 
 /**
- * @brief Macro. Reports "unsupported enum type" errors.
- * @details Macro. The XMLSec library macro for reporting "unsupported enum type" errors.
+ * @brief Macro. Reports "unsupported enum value" errors.
+ * @details Macro. The XMLSec library macro for reporting "unsupported enum value" errors.
  * @param name the name of the variable, parameter, etc.
  * @param actual the actual value.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecUnsupportedEnumValueError(name, actual, errorObject) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
@@ -598,7 +598,7 @@ extern "C" {
  * @details Macro. The XMLSec library macro for reporting invalid node errors.
  * @param actualNode the actual node.
  * @param expectedNodeName the expected node name.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecInvalidNodeError(actualNode, expectedNodeName, errorObject) \
     {                                                 \
@@ -617,7 +617,7 @@ extern "C" {
  * @brief Macro. Reports invalid node content errors.
  * @details Macro. The XMLSec library macro for reporting invalid node content errors.
  * @param node the node.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  * @param reason the reason why node content is invalid.
  */
 #define xmlSecInvalidNodeContentError(node, errorObject, reason) \
@@ -637,7 +637,7 @@ extern "C" {
  * @brief Macro. Reports invalid node content errors.
  * @details Macro. The XMLSec library macro for reporting invalid node content errors.
  * @param node the node.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  * @param msg the extra message.
  * @param param the extra message param.
  */
@@ -658,7 +658,7 @@ extern "C" {
  * @brief Macro. Reports invalid node content errors.
  * @details Macro. The XMLSec library macro for reporting invalid node content errors.
  * @param node the node.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  * @param msg the extra message.
  * @param param1 the extra message param1.
  * @param param2 the extra message param2.
@@ -683,8 +683,8 @@ extern "C" {
  * @details Macro. The XMLSec library macro for reporting invalid node attribute errors.
  * @param node the node.
  * @param attrName the attribute name.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
- * @param reason the reason why node content is invalid.
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
+ * @param reason the reason why the node attribute is invalid.
  */
 #define xmlSecInvalidNodeAttributeError(node, attrName, errorObject, reason) \
     {                                                 \
@@ -705,7 +705,7 @@ extern "C" {
  * @details Macro. The XMLSec library macro for reporting node already present errors.
  * @param parent the parent node.
  * @param nodeName the node name.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecNodeAlreadyPresentError(parent, nodeName, errorObject) \
     {                                                 \
@@ -724,7 +724,7 @@ extern "C" {
  * @brief Macro. Reports unexpected node errors.
  * @details Macro. The XMLSec library macro for reporting unexpected node errors.
  * @param node the node.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecUnexpectedNodeError(node, errorObject) \
     {                                                 \
@@ -744,7 +744,7 @@ extern "C" {
  * @param errorFunction the failed function.
  * @param startNode the search start node.
  * @param targetNodeName the expected child node name.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecNodeNotFoundError(errorFunction, startNode, targetNodeName, errorObject) \
     {                                                 \
@@ -796,8 +796,8 @@ extern "C" {
  * @details Macro. The XMLSec library macro for reporting invalid transform errors.
  * @param transform the transform.
  * @param msg the extra message.
- * @param param1 the extra message param.
- * @param param2 the extra message param.
+ * @param param1 the extra message param1.
+ * @param param2 the extra message param2.
  */
 #define xmlSecInvalidTransformError3(transform, msg, param1, param2) \
     {                                                 \
@@ -845,10 +845,10 @@ extern "C" {
 
 /**
  * @brief Macro. Reports invalid key data size errors.
- * @details Macro. The XMLSec library macro for reporting "invalid keydata size" errors.
+ * @details Macro. The XMLSec library macro for reporting "invalid key data size" errors.
  * @param actual the actual value.
  * @param expected the expected value(s).
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecInvalidKeyDataSizeError(actual, expected, errorObject) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
@@ -862,8 +862,8 @@ extern "C" {
 
 /**
  * @brief Macro. Reports invalid (zero) key data size errors.
- * @details Macro. The XMLSec library macro for reporting "invalid keydata size" errors.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @details Macro. The XMLSec library macro for reporting "invalid key data size" errors.
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecInvalidZeroKeyDataSizeError(errorObject) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
@@ -883,7 +883,7 @@ extern "C" {
  * @param dstMinVal the destination type min value.
  * @param dstMaxVal the destination type max value.
  * @param dstFmt the destination type printf format (e.g. "%lu").
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecImpossibleCastError(srcType, srcVal, srcFmt, dstType, dstMinVal, dstMaxVal, dstFmt, errorObject) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
@@ -900,7 +900,7 @@ extern "C" {
  * @brief Macro. Reports other XMLSec errors.
  * @details Macro. The XMLSec library macro for reporting other XMLSec errors.
  * @param code the error code.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  * @param details the error message.
  */
 #define xmlSecOtherError(code, errorObject, details) \
@@ -916,7 +916,7 @@ extern "C" {
  * @brief Macro. Reports other XMLSec errors.
  * @details Macro. The XMLSec library macro for reporting other XMLSec errors.
  * @param code the error code.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  * @param msg the extra message.
  * @param param the extra message param.
  */
@@ -932,10 +932,10 @@ extern "C" {
  * @brief Macro. Reports other XMLSec errors.
  * @details Macro. The XMLSec library macro for reporting other XMLSec errors.
  * @param code the error code.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  * @param msg the extra message.
- * @param param1 the extra message param.
- * @param param2 the extra message param.
+ * @param param1 the extra message param1.
+ * @param param2 the extra message param2.
  */
 #define xmlSecOtherError3(code, errorObject, msg, param1, param2) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
@@ -949,11 +949,11 @@ extern "C" {
  * @brief Macro. Reports other XMLSec errors.
  * @details Macro. The XMLSec library macro for reporting other XMLSec errors.
  * @param code the error code.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  * @param msg the extra message.
- * @param param1 the extra message param.
- * @param param2 the extra message param.
- * @param param3 the extra message param.
+ * @param param1 the extra message param1.
+ * @param param2 the extra message param2.
+ * @param param3 the extra message param3.
  */
 #define xmlSecOtherError4(code, errorObject, msg, param1, param2, param3) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
@@ -967,12 +967,12 @@ extern "C" {
  * @brief Macro. Reports other XMLSec errors.
  * @details Macro. The XMLSec library macro for reporting other XMLSec errors.
  * @param code the error code.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  * @param msg the extra message.
- * @param param1 the extra message param.
- * @param param2 the extra message param.
- * @param param3 the extra message param.
- * @param param4 the extra message param.
+ * @param param1 the extra message param1.
+ * @param param2 the extra message param2.
+ * @param param3 the extra message param3.
+ * @param param4 the extra message param4.
  */
 #define xmlSecOtherError5(code, errorObject, msg, param1, param2, param3, param4) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \

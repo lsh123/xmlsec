@@ -12,7 +12,7 @@
 #define __XMLSEC_MSCRYPTO_PRIVATE_H__
 
 #ifndef XMLSEC_PRIVATE
-#error "mscrypto/private.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
+#error "mscrypto/private.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-mscrypto libraries"
 #endif /* XMLSEC_PRIVATE */
 
 #if defined(__MINGW32__) && defined(XMLSEC_CUSTOM_CRYPT32)
@@ -40,7 +40,7 @@ int                ConvertEndianInPlace             (xmlSecByte * buf,
  *
   *****************************************************************************/
 
-/* We need to redefine both to ensure that we can pick the right one at runtime (instead of compile time) */
+/* Both ANSI and wide variants are defined; the correct one is selected at compile time based on UNICODE */
 #define XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE_A     "Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)"
 #define XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE_W     L"Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)"
 #ifdef UNICODE

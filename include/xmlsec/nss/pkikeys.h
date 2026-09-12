@@ -40,8 +40,6 @@ XMLSEC_CRYPTO_EXPORT KeyType            xmlSecNssPKIKeyDataGetKeyType   (xmlSecK
 XMLSEC_CRYPTO_EXPORT int                xmlSecNssPKIKeyDataDuplicate    (xmlSecKeyDataPtr dst,
                                                                          xmlSecKeyDataPtr src);
 
-
-
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

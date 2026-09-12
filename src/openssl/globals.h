@@ -42,9 +42,9 @@ typedef unsigned long xmlSecOpenSSLErrorType;
 
 /**
  * @brief Macro. Reports OpenSSL crypto errors.
- * @details Macro. The XMLSec library macro for reporting OpenSSL crypro errors.
+ * @details Macro. The XMLSec library macro for reporting OpenSSL crypto errors.
  * @param errorFunction the failed function name.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecOpenSSLError(errorFunction, errorObject)      \
     {                                                       \
@@ -63,9 +63,9 @@ typedef unsigned long xmlSecOpenSSLErrorType;
 
 /**
  * @brief Macro. Reports OpenSSL crypto errors.
- * @details Macro. The XMLSec library macro for reporting OpenSSL crypro errors.
+ * @details Macro. The XMLSec library macro for reporting OpenSSL crypto errors.
  * @param errorFunction the failed function name.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  * @param msg the extra message.
  * @param param the extra message param.
  */
@@ -84,9 +84,9 @@ typedef unsigned long xmlSecOpenSSLErrorType;
 
 /**
  * @brief Macro. Reports OpenSSL crypto errors.
- * @details Macro. The XMLSec library macro for reporting OpenSSL crypro errors.
+ * @details Macro. The XMLSec library macro for reporting OpenSSL crypto errors.
  * @param errorFunction the failed function name.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  * @param msg the extra message.
  * @param param1 the extra message param1.
  * @param param2 the extra message param2.

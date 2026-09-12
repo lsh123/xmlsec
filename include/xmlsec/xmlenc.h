@@ -55,7 +55,7 @@ typedef enum {
 
 /**
  * @brief If set, the replaced node will be returned in replacedNodeList.
- * @details If this flag is set, then the replaced node will be returned in the replacedNodeList
+ * @details If this flag is set, then the replaced node will be returned in the replacedNodeList.
  */
 #define XMLSEC_ENC_RETURN_REPLACED_NODE                 0x00000001
 
@@ -64,12 +64,12 @@ typedef enum {
  */
 struct _xmlSecEncCtx {
     /* these data user can set before performing the operation */
-    void*                       userData;  /**< the pointer to user data (xmlsec and xmlsec-crypto libraries never touches this). */
+    void*                       userData;  /**< the pointer to user data (xmlsec and xmlsec-crypto libraries never touch this). */
     unsigned int                flags;  /**< the XML Encryption processing flags. */
-    unsigned int                flags2;  /**< the XML Encryption processing flags. */
+    unsigned int                flags2;  /**< reserved for future. */
     xmlEncCtxMode               mode;  /**< the mode. */
     xmlSecKeyInfoCtx            keyInfoReadCtx;  /**< the reading key context. */
-    xmlSecKeyInfoCtx            keyInfoWriteCtx;  /**< the writing key context (not used for signature verification). */
+    xmlSecKeyInfoCtx            keyInfoWriteCtx;  /**< the writing key context (not used for decryption). */
     xmlSecTransformCtx          transformCtx;  /**< the transforms processing context. */
     xmlSecTransformId           defEncMethodId;  /**< the default encryption method (used if &lt;enc:EncryptionMethod/&gt; node is not present). */
 
@@ -78,7 +78,7 @@ struct _xmlSecEncCtx {
     xmlSecTransformOperation    operation;  /**< the operation: encrypt or decrypt. */
     xmlSecBufferPtr             result;  /**< the pointer to the encrypted/decrypted data buffer (valid after a successful encrypt/decrypt operation). */
     int                         resultBase64Encoded;  /**< the flag: if set then result in #result is base64 encoded. */
-    int                         resultReplaced;  /**< the flag: if set then resulted &lt;enc:EncryptedData/&gt; or &lt;enc:EncryptedKey/&gt; node is added to the document. */
+    int                         resultReplaced;  /**< the flag: if set then the original &lt;enc:EncryptedData/&gt; or &lt;enc:EncryptedKey/&gt; node was replaced. */
     xmlSecTransformPtr          encMethod;  /**< the pointer to encryption transform. */
     xmlSecEncFailureReason      failureReason;  /**< the detailed failure reason. */
 

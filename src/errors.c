@@ -174,7 +174,7 @@ xmlSecErrorsSetSystemCallback(xmlSecErrorsCallback callback) {
  * @param file the error location file name (__FILE__ macro).
  * @param line the error location line number (__LINE__ macro).
  * @param func the error location function name (__FUNCTION__ macro).
- * @param errorObject the error specific error object
+ * @param errorObject the specific error object
  * @param errorSubject the error specific error subject.
  * @param reason the error code.
  * @param msg the additional error message.
@@ -255,7 +255,7 @@ xmlSecErrorsGetMsg(xmlSecSize pos) {
  * @param file the error location filename (__FILE__).
  * @param line the error location line number (__LINE__).
  * @param func the error location function (__FUNCTION__).
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  * @param errorSubject the error specific error subject (e.g. failed function name).
  * @param reason the error code.
  * @param msg the error message in printf format.

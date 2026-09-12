@@ -33,7 +33,7 @@
  * @details Macro. The XMLSec library macro for reporting GnuTLS errors.
  * @param errorFunction the failed function name.
  * @param errCode the GnuTLS error code.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecGnuTLSError(errorFunction, errCode, errorObject)  \
     {                                                       \
@@ -53,7 +53,7 @@
  * @details Macro. The XMLSec library macro for reporting GnuTLS errors.
  * @param errorFunction the failed function name.
  * @param errCode the GnuTLS error code.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  * @param msg the extra message.
  * @param param the extra message param.
  */

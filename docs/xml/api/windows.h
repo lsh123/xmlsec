@@ -1,10 +1,11 @@
 /**
  * @file windows.h
- * @brief Stub Windows header for doxygen documentation generation on non-Windows platforms.
+ * @brief Stub Windows header for doxygen documentation generation.
  *
- * This file is only used when generating documentation with doxygen on Linux/macOS.
- * It provides minimal type stubs so the mscrypto/mscng headers can be parsed
- * without errors.
+ * This file is used when generating documentation with doxygen; the stub directory
+ * is listed first in INCLUDE_PATH, so it shadows the real <windows.h> on any platform.
+ * It provides minimal type stubs so the mscrypto/mscng headers and the core
+ * xmltree.h header can be parsed without errors.
  */
 #ifndef __XMLSEC_DOXYGEN_WINDOWS_H__
 #define __XMLSEC_DOXYGEN_WINDOWS_H__

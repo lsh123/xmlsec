@@ -67,14 +67,14 @@ typedef enum {
 
 /**
  * @brief Abort on unknown KeyName content.
- * @details If flags is set then we abort if an unknown key name
+ * @details If flag is set then we abort if an unknown key name
  * (content of <dsig:KeyName /> element) is found.
  */
 #define XMLSEC_KEYINFO_FLAGS_KEYNAME_STOP_ON_UNKNOWN            0x00000004
 
 /**
  * @brief Abort on unknown KeyValue child element.
- * @details If flags is set then we abort if an unknown <dsig:KeyValue />
+ * @details If flag is set then we abort if an unknown <dsig:KeyValue />
  * child is found.
  */
 #define XMLSEC_KEYINFO_FLAGS_KEYVALUE_STOP_ON_UNKNOWN_CHILD     0x00000008
@@ -95,7 +95,7 @@ typedef enum {
 
 /**
  * @brief Abort on unknown X509Data child element.
- * @details If flags is set then we abort if an unknown <dsig:X509Data />
+ * @details If flag is set then we abort if an unknown <dsig:X509Data />
  * child is found.
  */
 #define XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CHILD     0x00000100
@@ -146,7 +146,7 @@ typedef enum {
 
 /**
  * @brief Skip strict checking of certificates and CRLs.
- * @details If the flag is set then we'll skip strict checking of certs and CRLs
+ * @details If the flag is set then we'll skip strict checking of certs and CRLs.
  */
 #define XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS        0x00004000
 
@@ -161,7 +161,7 @@ typedef enum {
 
 /**
  * @brief Skip time checks of certificates and CRLs.
- * @details If the flag is set then we'll skip time checks of certs and CRLs
+ * @details If the flag is set then we'll skip time checks of certs and CRLs.
  */
 #define XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS          0x00010000
 
@@ -268,7 +268,7 @@ XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataAgreementMethodGetKlass(voi
 #define xmlSecKeyDataDerivedKeyId       xmlSecKeyDataDerivedKeyGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataDerivedKeyGetKlass(void);
 
- #ifndef XMLSEC_NO_MLKEM
+#ifndef XMLSEC_NO_MLKEM
 /**
  * @brief The as:EncapsulationMechanism processing class.
  */

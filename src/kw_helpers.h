@@ -6,13 +6,13 @@
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * @brief Internal helper functions for AES/DES key wrap implementations.
+ * @brief Internal helper functions for AES/DES/Camellia key wrap implementations.
  */
 #ifndef __XMLSEC_KW_HELPERS_H__
 #define __XMLSEC_KW_HELPERS_H__
 
 #ifndef XMLSEC_PRIVATE
-#error "kw_helpers.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
+#error "kw_helpers.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-crypto libraries"
 #endif /* XMLSEC_PRIVATE */
 
 #include <xmlsec/exports.h>
@@ -25,7 +25,7 @@ extern "C" {
 #ifndef XMLSEC_NO_DES
 /******************************************************************************
  *
- * KT DES
+ * KW DES
  *
   *****************************************************************************/
 #define XMLSEC_KW_DES3_KEY_LENGTH                   ((xmlSecSize)24)
@@ -130,17 +130,17 @@ XMLSEC_EXPORT int      xmlSecTransformKWDes3Execute             (xmlSecTransform
 #include "keysdata_helpers.h"
 
 typedef int  (*xmlSecKWRfc3394BlockEncryptMethod)       (xmlSecTransformPtr transform,
-                                                                   const xmlSecByte * in,
-                                                                   xmlSecSize inSize,
-                                                                   xmlSecByte * out,
-                                                                   xmlSecSize outSize,
-                                                                   xmlSecSize * outWritten);
+                                                         const xmlSecByte * in,
+                                                         xmlSecSize inSize,
+                                                         xmlSecByte * out,
+                                                         xmlSecSize outSize,
+                                                         xmlSecSize * outWritten);
 typedef int  (*xmlSecKWRfc3394BlockDecryptMethod)       (xmlSecTransformPtr transform,
-                                                                   const xmlSecByte * in,
-                                                                   xmlSecSize inSize,
-                                                                   xmlSecByte * out,
-                                                                   xmlSecSize outSize,
-                                                                   xmlSecSize * outWritten);
+                                                         const xmlSecByte * in,
+                                                         xmlSecSize inSize,
+                                                         xmlSecByte * out,
+                                                         xmlSecSize outSize,
+                                                         xmlSecSize * outWritten);
 
 
 struct _xmlSecKWRfc3394Klass {
@@ -179,21 +179,21 @@ struct _xmlSecTransformKWRfc3394Ctx {
 
 
 XMLSEC_EXPORT int       xmlSecTransformKWRfc3394Initialize  (xmlSecTransformPtr transform,
-                                                              xmlSecTransformKWRfc3394CtxPtr ctx,
-                                                              xmlSecKWRfc3394Id kwRfc3394Id,
-                                                              xmlSecKeyDataId keyId,
-                                                              xmlSecSize keyExpectedSize);
+                                                             xmlSecTransformKWRfc3394CtxPtr ctx,
+                                                             xmlSecKWRfc3394Id kwRfc3394Id,
+                                                             xmlSecKeyDataId keyId,
+                                                             xmlSecSize keyExpectedSize);
 XMLSEC_EXPORT void      xmlSecTransformKWRfc3394Finalize    (xmlSecTransformPtr transform,
-                                                              xmlSecTransformKWRfc3394CtxPtr ctx);
+                                                             xmlSecTransformKWRfc3394CtxPtr ctx);
 XMLSEC_EXPORT int       xmlSecTransformKWRfc3394SetKeyReq   (xmlSecTransformPtr transform,
-                                                              xmlSecTransformKWRfc3394CtxPtr ctx,
-                                                              xmlSecKeyReqPtr keyReq);
+                                                             xmlSecTransformKWRfc3394CtxPtr ctx,
+                                                             xmlSecKeyReqPtr keyReq);
 XMLSEC_EXPORT int       xmlSecTransformKWRfc3394SetKey      (xmlSecTransformPtr transform,
-                                                              xmlSecTransformKWRfc3394CtxPtr ctx,
-                                                              xmlSecKeyPtr key);
+                                                             xmlSecTransformKWRfc3394CtxPtr ctx,
+                                                             xmlSecKeyPtr key);
 XMLSEC_EXPORT int       xmlSecTransformKWRfc3394Execute     (xmlSecTransformPtr transform,
-                                                              xmlSecTransformKWRfc3394CtxPtr ctx,
-                                                              int last);
+                                                             xmlSecTransformKWRfc3394CtxPtr ctx,
+                                                             int last);
 
 #endif /* !XMLSEC_NO_AES || !XMLSEC_NO_CAMELLIA */
 

@@ -12,7 +12,7 @@
  */
 
 #ifndef XMLSEC_PRIVATE
-#error "this file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
+#error "this file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-crypto libraries"
 #endif /* XMLSEC_PRIVATE */
 
 #include <libxml/tree.h>
@@ -140,7 +140,7 @@ typedef int                     (*xmlSecCryptoAppDefaultKeysMngrInitMethod)
                                                                         (xmlSecKeysMngrPtr mngr);
 /**
  * @brief Adds a key to the keys manager.
- * @details Adds @p key to the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * @details Adds @p key to the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInitMethod
  * function.
  * @param mngr the pointer to keys manager.
  * @param key the pointer to key.
@@ -151,7 +151,7 @@ typedef int                     (*xmlSecCryptoAppDefaultKeysMngrAdoptKeyMethod)
                                                                          xmlSecKeyPtr key);
 /**
  * @brief Verifies a key with the keys manager.
- * @details Verifies @p key with the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * @details Verifies @p key with the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInitMethod
  * function:
  * - Checks that key certificate is present
  * - Checks that key certificate is valid
@@ -167,7 +167,7 @@ typedef int                     (*xmlSecCryptoAppDefaultKeysMngVerifyKeyMethod)
 /**
  * @brief Loads an XML keys file into the keys manager.
  * @details Loads XML keys file from @p uri to the keys manager @p mngr created
- * with #xmlSecCryptoAppDefaultKeysMngrInit function.
+ * with #xmlSecCryptoAppDefaultKeysMngrInitMethod function.
  * @param mngr the pointer to keys manager.
  * @param uri the uri.
  * @return 0 on success or a negative value otherwise.
@@ -273,7 +273,7 @@ typedef xmlSecKeyPtr            (*xmlSecCryptoAppKeyLoadMethod)         (const c
                                                                          void* pwdCallbackCtx);
 
 /**
- * @brief Reads a key from a file.
+ * @brief Reads a key of the expected type from a file.
  * @param filename the key filename.
  * @param type the expected key type.
  * @param format the key file format.
@@ -310,8 +310,8 @@ typedef xmlSecKeyPtr            (*xmlSecCryptoAppKeyLoadMemoryMethod)   (const x
 /**
  * @brief Reads a key and certificates from a PKCS12 file.
  * @details Reads a key and all associated certificates from the PKCS12 file.
- * For uniformity, call xmlSecCryptoAppKeyLoadEx instead of this function. Pass
- * in format=xmlSecKeyDataFormatPkcs12.
+ * For uniformity, use the xmlSecCryptoAppKeyLoadExMethod method instead of
+ * this one. Pass in format=xmlSecKeyDataFormatPkcs12.
  * @param filename the PKCS12 key filename.
  * @param pwd the PKCS12 file password.
  * @param pwdCallback the password callback.
@@ -325,8 +325,8 @@ typedef xmlSecKeyPtr            (*xmlSecCryptoAppPkcs12LoadMethod)      (const c
 /**
  * @brief Reads a key and certificates from PKCS12 binary data.
  * @details Reads a key and all associated certificates from the PKCS12 binary data.
- * For uniformity, call xmlSecCryptoAppKeyLoadEx instead of this function. Pass
- * in format=xmlSecKeyDataFormatPkcs12.
+ * For uniformity, use the xmlSecCryptoAppKeyLoadExMethod method instead of
+ * this one. Pass in format=xmlSecKeyDataFormatPkcs12.
  * @param data the pkcs12 data.
  * @param dataSize the pkcs12 data size.
  * @param pwd the PKCS12 data password.
@@ -575,8 +575,8 @@ struct _xmlSecCryptoDLFunctions {
 
 /******************************************************************************
  *
- * Helpers to convert from void* to function pointer, this silence
- * gcc warning
+ * Helpers to convert from void* to function pointer, this silences
+ * the gcc warning
  *
  *     warning: ISO C forbids conversion of object pointer to function
  *     pointer type
@@ -615,7 +615,7 @@ struct _xmlSecCryptoDLFunctions {
 /**
  * @brief Declares helper functions to convert function pointer to void*.
  * @details Macro declares helper functions to convert from function pointer to
- * "void *" pointer;
+ * "void *" pointer.
  * @param func_type the function type.
  */
 #define XMLSEC_FUNC_TO_PTR_IMPL(func_type) \
@@ -670,7 +670,7 @@ struct _xmlSecCryptoDLFunctions {
  */
 #define XMLSEC_X509DATA_DIGEST_NODE                             0x00000020
 
- /**
+/**
  * @brief Default set of nodes to write for an empty X509Data template.
  * @details Default set of nodes to write in case of empty
  * &lt;dsig:X509Data/&gt; node template.
@@ -681,7 +681,7 @@ struct _xmlSecCryptoDLFunctions {
 
 
 /**
-* @brief Shift bits if node present and not empty.
+* @brief The bit shift used to derive the "node present and not empty" flag bits from the node flags.
 */
 #define XMLSEC_X509DATA_SHIFT_IF_NOT_EMPTY                      16
 

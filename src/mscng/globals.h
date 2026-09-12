@@ -36,14 +36,14 @@
 #define IN_XMLSEC_CRYPTO
 #define XMLSEC_PRIVATE
 
- /* Include common error helper macros. */
+/* Include common error helper macros. */
 #include "../errors_helpers.h"
 
 
 /**
- * @brief The XMLSec library macro for reporting crypro errors from GetLastError().
+ * @brief The XMLSec library macro for reporting crypto errors from GetLastError().
  * @param errorFunction the failed function name.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecMSCngLastError(errorFunction, errorObject) \
     {                                                    \
@@ -52,18 +52,18 @@
                     (const char*)(errorObject),          \
                     (errorFunction),                     \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,       \
-                    "mscng last error: 0x%08lx",         \
+                    "MSCng last error: 0x%08lx",         \
                     (dwError)                            \
         );                                               \
     }
 
- /**
-  * @brief The XMLSec library macro for reporting crypro errors from GetLastError().
-  * @param errorFunction the failed function name.
-  * @param errorObject the error specific error object (e.g. transform, key data, etc).
-  * @param msg the extra message.
-  * @param param the extra message param.
-  */
+/**
+ * @brief The XMLSec library macro for reporting crypto errors from GetLastError().
+ * @param errorFunction the failed function name.
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
+ * @param msg the extra message.
+ * @param param the extra message param.
+ */
 #define xmlSecMSCngLastError2(errorFunction, errorObject, msg, param) \
     {                                                    \
         DWORD dwError = GetLastError();                  \
@@ -71,7 +71,7 @@
                     (const char*)(errorObject),          \
                     (errorFunction),                     \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,       \
-                    msg  "; mscng last error: 0x%08lx",  \
+                    msg  "; MSCng last error: 0x%08lx",  \
                     (param),                             \
                     (dwError)                            \
         );                                               \
@@ -79,10 +79,10 @@
 
 /**
  * @brief Macro. Reports crypto errors from NTSTATUS.
- * @details Macro. The XMLSec library macro for reporting crypro errors from NTSTATUS.
+ * @details Macro. The XMLSec library macro for reporting crypto errors from NTSTATUS.
  * See e.g. <http://errorco.de/win32/ntstatus-h/> to look up the matching define.
  * @param errorFunction the failed function name.
- * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecMSCngNtError(errorFunction, errorObject, status) \
     {                                                          \
@@ -95,15 +95,15 @@
         );                                                     \
     }
 
- /**
-  * @brief Macro. Reports crypto errors from NTSTATUS.
-  * @details Macro. The XMLSec library macro for reporting crypro errors from NTSTATUS.
-  * See e.g. <http://errorco.de/win32/ntstatus-h/> to look up the matching define.
-  * @param errorFunction the failed function name.
-  * @param errorObject the error specific error object (e.g. transform, key data, etc).
-  * @param msg the extra message.
-  * @param param the extra message param.
-  */
+/**
+ * @brief Macro. Reports crypto errors from NTSTATUS.
+ * @details Macro. The XMLSec library macro for reporting crypto errors from NTSTATUS.
+ * See e.g. <http://errorco.de/win32/ntstatus-h/> to look up the matching define.
+ * @param errorFunction the failed function name.
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
+ * @param msg the extra message.
+ * @param param the extra message param.
+ */
 #define xmlSecMSCngNtError2(errorFunction, errorObject, status, msg, param) \
     {                                                          \
         xmlSecError(XMLSEC_ERRORS_HERE,                        \
@@ -116,16 +116,16 @@
         );                                                     \
     }
 
-  /**
-   * @brief Macro. Reports crypto errors from NTSTATUS.
-   * @details Macro. The XMLSec library macro for reporting crypro errors from NTSTATUS.
-   * See e.g. <http://errorco.de/win32/ntstatus-h/> to look up the matching define.
-   * @param errorFunction the failed function name.
-   * @param errorObject the error specific error object (e.g. transform, key data, etc).
-   * @param msg the extra message.
-   * @param param1 the extra message param1.
-   * @param param2 the extra message param2.
-   */
+/**
+ * @brief Macro. Reports crypto errors from NTSTATUS.
+ * @details Macro. The XMLSec library macro for reporting crypto errors from NTSTATUS.
+ * See e.g. <http://errorco.de/win32/ntstatus-h/> to look up the matching define.
+ * @param errorFunction the failed function name.
+ * @param errorObject the specific error object (e.g. transform, key data, etc).
+ * @param msg the extra message.
+ * @param param1 the extra message param1.
+ * @param param2 the extra message param2.
+ */
 #define xmlSecMSCngNtError3(errorFunction, errorObject, status, msg, param1, param2) \
     {                                                          \
         xmlSecError(XMLSEC_ERRORS_HERE,                        \

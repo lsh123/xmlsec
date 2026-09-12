@@ -8,11 +8,11 @@
 /**
  * @brief Internal private header for MSCng.
  */
-#ifndef __XMLSEC_OPENSSL_PRIVATE_H__
-#define __XMLSEC_OPENSSL_PRIVATE_H__
+#ifndef __XMLSEC_MSCNG_PRIVATE_H__
+#define __XMLSEC_MSCNG_PRIVATE_H__
 
 #ifndef XMLSEC_PRIVATE
-#error "mscng/private.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
+#error "mscng/private.h file contains private xmlsec-mscng definitions and should not be used outside xmlsec or xmlsec-mscng libraries"
 #endif /* XMLSEC_PRIVATE */
 
 #include <xmlsec/exports.h>
@@ -56,7 +56,7 @@ int                xmlSecMSCngKeyDataAdoptKey                       (xmlSecKeyDa
 int                xmlSecMSCngKeyDataCertGetPubkey                  (PCERT_PUBLIC_KEY_INFO spki,
                                                                      BCRYPT_KEY_HANDLE* key);
 
-int                 xmlSecMSCngKeyDataAdoptBCryptPrivKey            (xmlSecKeyDataPtr data,
+int                xmlSecMSCngKeyDataAdoptBCryptPrivKey             (xmlSecKeyDataPtr data,
                                                                      BCRYPT_KEY_HANDLE hKey);
 BCRYPT_KEY_HANDLE    xmlSecMSCngKeyDataGetBCryptPrivKey             (xmlSecKeyDataPtr data);
 
@@ -76,21 +76,21 @@ int                xmlSecMSCngCreateDerForBcryptPubkey              (xmlSecKeyDa
 
 BCRYPT_KEY_HANDLE  xmlSecMSCngKeyDataXdhImportPublicKey             (const xmlSecByte* pubKeyBytes,
                                                                      DWORD pubKeyLen);
-int                xmlSecMSCngKeyDataDuplicateBCryptXdhPrivKey       (BCRYPT_KEY_HANDLE src,
+int                xmlSecMSCngKeyDataDuplicateBCryptXdhPrivKey      (BCRYPT_KEY_HANDLE src,
                                                                      BCRYPT_KEY_HANDLE* dst);
-xmlSecKeyDataPtr   xmlSecMSCngKeyDataXdhReadFromPkcs8Der             (const xmlSecByte* derData,
+xmlSecKeyDataPtr   xmlSecMSCngKeyDataXdhReadFromPkcs8Der            (const xmlSecByte* derData,
                                                                      DWORD derDataLen);
-int                xmlSecMSCngKeyDataCertGetXdhPubkey                (PCERT_PUBLIC_KEY_INFO spki,
+int                xmlSecMSCngKeyDataCertGetXdhPubkey               (PCERT_PUBLIC_KEY_INFO spki,
                                                                      BCRYPT_KEY_HANDLE* key);
 
 #endif /* XMLSEC_NO_XDH */
 
 #ifndef XMLSEC_NO_DH
 
-int                xmlSecMSCngKeyDataSetDhQ                        (xmlSecKeyDataPtr data,
+int                xmlSecMSCngKeyDataSetDhQ                         (xmlSecKeyDataPtr data,
                                                                      const xmlSecByte* q,
                                                                      DWORD qLen);
-int                xmlSecMSCngKeyDataDhEnsureValidAgreement        (xmlSecKeyDataPtr myData,
+int                xmlSecMSCngKeyDataDhEnsureValidAgreement         (xmlSecKeyDataPtr myData,
                                                                      xmlSecKeyDataPtr otherData);
 int                xmlSecMSCngKeyDataDuplicateBCryptDhPrivKey       (BCRYPT_KEY_HANDLE src,
                                                                      BCRYPT_KEY_HANDLE* dst);
@@ -126,7 +126,7 @@ xmlSecKeyDataPtr   xmlSecMSCngKeyDataDhReadFromPkcs8Der             (const xmlSe
 
 int                xmlSecMSCngKeyDataCertGetDsaPubkey               (PCERT_PUBLIC_KEY_INFO spki,
                                                                      BCRYPT_KEY_HANDLE* key);
-int                xmlSecMSCngDsaBuildSubjectPublicKeyInfoDer        (BCRYPT_KEY_HANDLE hKey,
+int                xmlSecMSCngDsaBuildSubjectPublicKeyInfoDer       (BCRYPT_KEY_HANDLE hKey,
                                                                      LPVOID* ppDer,
                                                                      DWORD* pcbDer);
 int                xmlSecMSCngIsDsaBcryptKey                        (BCRYPT_KEY_HANDLE hKey);
@@ -144,7 +144,7 @@ int                xmlSecMSCngKeyDataDsaPubkeyWrite                 (BCRYPT_KEY_
   *****************************************************************************/
 #ifndef XMLSEC_NO_X509
 
-int                 xmlSecMSCngX509StoreVerifyKey                    (xmlSecKeyDataStorePtr store,
+int                xmlSecMSCngX509StoreVerifyKey                    (xmlSecKeyDataStorePtr store,
                                                                      xmlSecKeyPtr key,
                                                                      xmlSecKeyInfoCtxPtr keyInfoCtx);
 
@@ -156,21 +156,21 @@ typedef struct _xmlSecMSCngX509FindCertCtx {
     LPTSTR wcIssuerName;
     xmlSecBnPtr issuerSerialBn;
 
-    const xmlSecByte * ski; /* NOT OWNED */
+    const xmlSecByte* ski; /* NOT OWNED */
     DWORD skiLen;
 
-    const xmlSecByte * digestValue; /* NOT OWNED */
+    const xmlSecByte* digestValue; /* NOT OWNED */
     DWORD digestLen;
     DWORD digestFindType; /* CERT_FIND_SHA1_HASH or CERT_FIND_SHA256_HASH */
 } xmlSecMSCngX509FindCertCtx, *xmlSecMSCngX509FindCertCtxPtr;
 
-int                 xmlSecMSCngX509FindCertCtxInitialize            (xmlSecMSCngX509FindCertCtxPtr ctx,
+int                xmlSecMSCngX509FindCertCtxInitialize             (xmlSecMSCngX509FindCertCtxPtr ctx,
                                                                      const xmlChar *subjectName,
                                                                      const xmlChar *issuerName,
                                                                      const xmlChar *issuerSerial,
-                                                                     const xmlSecByte * ski,
+                                                                     const xmlSecByte* ski,
                                                                      xmlSecSize skiSize);
-int                 xmlSecMSCngX509FindCertCtxInitializeFromValue   (xmlSecMSCngX509FindCertCtxPtr ctx,
+int                xmlSecMSCngX509FindCertCtxInitializeFromValue    (xmlSecMSCngX509FindCertCtxPtr ctx,
                                                                      xmlSecKeyX509DataValuePtr x509Value);
 void                xmlSecMSCngX509FindCertCtxFinalize              (xmlSecMSCngX509FindCertCtxPtr ctx);
 
@@ -190,4 +190,4 @@ PCCRL_CONTEXT       xmlSecMSCngX509CrlDerRead                       (const xmlSe
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_OPENSSL_PRIVATE_H__ */
+#endif /* __XMLSEC_MSCNG_PRIVATE_H__ */

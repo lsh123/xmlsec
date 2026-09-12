@@ -13,12 +13,12 @@
 
 #include <xmlsec/xmlsec.h>
 
-/* include nothing if we compile xmlsec library itself */
+/* include nothing if we compile the xmlsec or xmlsec-crypto library itself */
 #ifndef IN_XMLSEC
 #ifndef IN_XMLSEC_CRYPTO
 
 #if defined(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING)
-#error Dynamic loading for xmlsec-crypto libraries is disabled during library compilation
+#error Conflicting configuration: both XMLSEC_NO_CRYPTO_DYNAMIC_LOADING and XMLSEC_CRYPTO_DYNAMIC_LOADING are defined
 #endif /* defined(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING) */
 
 #ifdef XMLSEC_CRYPTO_DYNAMIC_LOADING

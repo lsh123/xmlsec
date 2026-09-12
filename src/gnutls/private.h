@@ -12,7 +12,7 @@
 #define __XMLSEC_GNUTLS_PRIVATE_H__
 
 #ifndef XMLSEC_PRIVATE
-#error "gnutls/private.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
+#error "gnutls/private.h file contains private xmlsec-gnutls definitions and should not be used outside xmlsec or xmlsec-gnutls libraries"
 #endif /* XMLSEC_PRIVATE */
 
 #ifdef __cplusplus
@@ -91,7 +91,7 @@ gnutls_x509_crt_t       xmlSecGnuTLSX509StoreFindCertByValue    (xmlSecKeyDataSt
 xmlSecKeyPtr            xmlSecGnuTLSX509FindKeyByValue          (xmlSecPtrListPtr keysList,
                                                                  xmlSecKeyX509DataValuePtr x509Value);
 
-gnutls_digest_algorithm_t  xmlSecGnuTLSX509GetDigestFromAlgorithm(const xmlChar* href);
+gnutls_digest_algorithm_t xmlSecGnuTLSX509GetDigestFromAlgorithm(const xmlChar * href);
 
 /******************************************************************************
  *
@@ -201,4 +201,4 @@ int                     xmlSecGnuTLSDnAttrsParse                (const xmlChar *
 }
 #endif /* __cplusplus */
 
-#endif /* ! __XMLSEC_GNUTLS_PRIVATE_H__ */
+#endif /* __XMLSEC_GNUTLS_PRIVATE_H__ */

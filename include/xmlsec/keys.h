@@ -184,7 +184,7 @@ XMLSEC_EXPORT xmlSecKeyDataPtr  xmlSecKeyGetValue       (xmlSecKeyPtr key);
 XMLSEC_EXPORT int               xmlSecKeySetValue       (xmlSecKeyPtr key,
                                                          xmlSecKeyDataPtr value);
 
-XMLSEC_EXPORT xmlSecSize         xmlSecKeyGetSize       (xmlSecKeyPtr key);
+XMLSEC_EXPORT xmlSecSize        xmlSecKeyGetSize        (xmlSecKeyPtr key);
 
 
 XMLSEC_EXPORT xmlSecKeyDataPtr  xmlSecKeyGetData        (xmlSecKeyPtr key,
@@ -195,9 +195,9 @@ XMLSEC_EXPORT int               xmlSecKeyAdoptData      (xmlSecKeyPtr key,
                                                          xmlSecKeyDataPtr data);
 
 XMLSEC_EXPORT void              xmlSecKeyDebugDump      (xmlSecKeyPtr key,
-                                                         FILE *output);
+                                                         FILE* output);
 XMLSEC_EXPORT void              xmlSecKeyDebugXmlDump   (xmlSecKeyPtr key,
-                                                         FILE *output);
+                                                         FILE* output);
 XMLSEC_EXPORT xmlSecKeyPtr      xmlSecKeyGenerate       (xmlSecKeyDataId dataId,
                                                          xmlSecSize sizeBits,
                                                          xmlSecKeyDataType type);

@@ -182,7 +182,7 @@ xmlSecGCryptDigestInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_SHA3 */
 
     if(1) {
-        xmlSecInvalidTransformError(transform)
+        xmlSecInvalidTransformError(transform);
         return(-1);
     }
 

@@ -45,20 +45,20 @@ void xmlSecMSCryptoGetErrorMessage      (DWORD dwError,
  * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecMSCryptoError(errorFunction, errorObject)            \
-    {                                                              \
-        DWORD dwLastError = GetLastError();                        \
-        xmlChar errBuf[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE];     \
-        xmlSecMSCryptoGetErrorMessage(dwLastError, errBuf, sizeof(errBuf)); \
+    do {                                                           \
+        DWORD _mscrypto_dwLastError = GetLastError();              \
+        xmlChar _mscrypto_errBuf[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE]; \
+        xmlSecMSCryptoGetErrorMessage(_mscrypto_dwLastError, _mscrypto_errBuf, sizeof(_mscrypto_errBuf)); \
         xmlSecError(XMLSEC_ERRORS_HERE,                            \
                     (const char*)(errorObject),                    \
                     (errorFunction),                               \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,                 \
                     "MSCrypto error: %lu (0x%08lx): %s", \
-                    (dwLastError),                                 \
-                    (dwLastError),                                 \
-                    errBuf                                         \
+                    (_mscrypto_dwLastError),                       \
+                    (_mscrypto_dwLastError),                       \
+                    _mscrypto_errBuf                               \
         );                                                         \
-    }
+    } while(0)
 
 /**
  * @brief Macro. Reports MSCrypto crypto errors.
@@ -69,21 +69,21 @@ void xmlSecMSCryptoGetErrorMessage      (DWORD dwError,
  * @param param the extra message param.
  */
 #define xmlSecMSCryptoError2(errorFunction, errorObject, msg, param) \
-    {                                                             \
-        DWORD dwLastError = GetLastError();                       \
-        xmlChar errBuf[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE];    \
-        xmlSecMSCryptoGetErrorMessage(dwLastError, errBuf, sizeof(errBuf)); \
-        xmlSecError(XMLSEC_ERRORS_HERE,                           \
-                    (const char*)(errorObject),                   \
-                    (errorFunction),                              \
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,                \
-                    msg "; MSCrypto error: %lu (0x%08lx): %s",    \
-                    (param),                                      \
-                    (dwLastError),                                \
-                    (dwLastError),                                \
-                    errBuf                                        \
-        );                                                        \
-    }
+    do {                                                             \
+        DWORD _mscrypto_dwLastError = GetLastError();                \
+        xmlChar _mscrypto_errBuf[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE]; \
+        xmlSecMSCryptoGetErrorMessage(_mscrypto_dwLastError, _mscrypto_errBuf, sizeof(_mscrypto_errBuf)); \
+        xmlSecError(XMLSEC_ERRORS_HERE,                              \
+                    (const char*)(errorObject),                      \
+                    (errorFunction),                                 \
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,                   \
+                    msg "; MSCrypto error: %lu (0x%08lx): %s",       \
+                    (param),                                         \
+                    (_mscrypto_dwLastError),                         \
+                    (_mscrypto_dwLastError),                         \
+                    _mscrypto_errBuf                                 \
+        );                                                           \
+    } while(0)
 
 /**
  * @brief Macro. Reports MSCrypto crypto errors.
@@ -95,21 +95,21 @@ void xmlSecMSCryptoGetErrorMessage      (DWORD dwError,
  * @param param2 the extra message param2.
  */
 #define xmlSecMSCryptoError3(errorFunction, errorObject, msg, param1, param2) \
-    {                                                             \
-        DWORD dwLastError = GetLastError();                       \
-        xmlChar errBuf[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE];    \
-        xmlSecMSCryptoGetErrorMessage(dwLastError, errBuf, sizeof(errBuf)); \
-        xmlSecError(XMLSEC_ERRORS_HERE,                           \
-                    (const char*)(errorObject),                   \
-                    (errorFunction),                              \
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,                \
-                    msg "; MSCrypto error: %lu (0x%08lx): %s",    \
-                    (param1),                                     \
-                    (param2),                                     \
-                    (dwLastError),                                \
-                    (dwLastError),                                \
-                    errBuf                                        \
-        );                                                        \
-    }
+    do {                                                                      \
+        DWORD _mscrypto_dwLastError = GetLastError();                        \
+        xmlChar _mscrypto_errBuf[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE];      \
+        xmlSecMSCryptoGetErrorMessage(_mscrypto_dwLastError, _mscrypto_errBuf, sizeof(_mscrypto_errBuf)); \
+        xmlSecError(XMLSEC_ERRORS_HERE,                                       \
+                    (const char*)(errorObject),                               \
+                    (errorFunction),                                          \
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,                            \
+                    msg "; MSCrypto error: %lu (0x%08lx): %s",                \
+                    (param1),                                                 \
+                    (param2),                                                 \
+                    (_mscrypto_dwLastError),                                  \
+                    (_mscrypto_dwLastError),                                  \
+                    _mscrypto_errBuf                                          \
+        );                                                                    \
+    } while(0)
 
 #endif /* XMLSEC_MSCRYPTO_GLOBALS_H */

@@ -207,7 +207,7 @@ xmlSecNssKWRfc3394Initialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_CAMELLIA */
 
     {
-        xmlSecInvalidTransformError(transform)
+        xmlSecInvalidTransformError(transform);
         return(-1);
     }
 

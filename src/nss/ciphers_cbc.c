@@ -479,7 +479,7 @@ xmlSecNssCbcCipherInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_CAMELLIA */
 
     if(1) {
-        xmlSecInvalidTransformError(transform)
+        xmlSecInvalidTransformError(transform);
         return(-1);
     }
 

@@ -123,7 +123,7 @@ xmlSecMSCryptoRsaPkcs1OaepInitialize(xmlSecTransformPtr transform) {
 
     /* not found */
     {
-        xmlSecInvalidTransformError(transform)
+        xmlSecInvalidTransformError(transform);
         return(-1);
     }
 

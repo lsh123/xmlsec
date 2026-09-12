@@ -34,16 +34,16 @@
  * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecNssError(errorFunction, errorObject) \
-    {                                                       \
-        PRInt32 error_code = PR_GetError();                 \
-        xmlSecError(XMLSEC_ERRORS_HERE,                     \
-                    (const char*)(errorObject),             \
-                    (errorFunction),                        \
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
-                    "NSS error: %ld",                       \
-                    (long)(error_code)                      \
-        );                                                  \
-    }
+    do {                                                      \
+        PRInt32 _nss_error_code = PR_GetError();              \
+        xmlSecError(XMLSEC_ERRORS_HERE,                       \
+                    (const char*)(errorObject),               \
+                    (errorFunction),                          \
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,            \
+                    "NSS error: %ld",                         \
+                    (long)(_nss_error_code)                   \
+        );                                                    \
+    } while(0)
 
 /**
  * @brief Macro. Reports NSS crypto errors.
@@ -54,17 +54,17 @@
  * @param param the extra message param.
  */
 #define xmlSecNssError2(errorFunction, errorObject, msg, param) \
-    {                                                       \
-        PRInt32 error_code = PR_GetError();                 \
-        xmlSecError(XMLSEC_ERRORS_HERE,                     \
-                    (const char*)(errorObject),             \
-                    (errorFunction),                        \
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
-                    msg "; NSS error: %ld",                 \
-                    (param),                                \
-                    (long)(error_code)                      \
-        );                                                  \
-    }
+    do {                                                          \
+        PRInt32 _nss_error_code = PR_GetError();                  \
+        xmlSecError(XMLSEC_ERRORS_HERE,                           \
+                    (const char*)(errorObject),                   \
+                    (errorFunction),                              \
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,                \
+                    msg "; NSS error: %ld",                       \
+                    (param),                                      \
+                    (long)(_nss_error_code)                       \
+        );                                                        \
+    } while(0)
 
 
 /**
@@ -77,17 +77,17 @@
  * @param param2 the extra message param2.
  */
 #define xmlSecNssError3(errorFunction, errorObject, msg, param1, param2) \
-    {                                                       \
-        PRInt32 error_code = PR_GetError();                 \
-        xmlSecError(XMLSEC_ERRORS_HERE,                     \
-                    (const char*)(errorObject),             \
-                    (errorFunction),                        \
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
-                    msg "; NSS error: %ld",                 \
-                    (param1),                               \
-                    (param2),                               \
-                    (long)(error_code)                      \
-        );                                                  \
-    }
+    do {                                                                   \
+        PRInt32 _nss_error_code = PR_GetError();                           \
+        xmlSecError(XMLSEC_ERRORS_HERE,                                    \
+                    (const char*)(errorObject),                            \
+                    (errorFunction),                                       \
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,                         \
+                    msg "; NSS error: %ld",                                \
+                    (param1),                                              \
+                    (param2),                                              \
+                    (long)(_nss_error_code)                                \
+        );                                                                 \
+    } while(0)
 
 #endif /* XMLSEC_NSS_GLOBALS_H */

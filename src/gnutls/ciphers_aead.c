@@ -197,7 +197,7 @@ xmlSecGnuTLSAeadCipherInitialize(xmlSecTransformPtr transform) {
 
     if(1) {
         xmlSecBufferFinalize(&ctx->aad);
-        xmlSecInvalidTransformError(transform)
+        xmlSecInvalidTransformError(transform);
         return(-1);
     }
 

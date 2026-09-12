@@ -411,7 +411,7 @@ xmlSecGCryptBlockCipherInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_AES */
 
     if(1) {
-        xmlSecInvalidTransformError(transform)
+        xmlSecInvalidTransformError(transform);
         return(-1);
     }
 

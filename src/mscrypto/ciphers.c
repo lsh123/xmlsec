@@ -454,7 +454,7 @@ xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_AES */
 
     {
-        xmlSecInvalidTransformError(transform)
+        xmlSecInvalidTransformError(transform);
         return(-1);
     }
 

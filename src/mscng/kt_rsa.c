@@ -289,7 +289,7 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         } else
 #endif /* XMLSEC_NO_RSA_OAEP */
         {
-            xmlSecInvalidTransformError(transform)
+            xmlSecInvalidTransformError(transform);
             return(-1);
         }
 
@@ -355,7 +355,7 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         } else
 #endif /* XMLSEC_NO_RSA_OAEP */
         {
-            xmlSecInvalidTransformError(transform)
+            xmlSecInvalidTransformError(transform);
             return(-1);
         }
 

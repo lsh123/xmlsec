@@ -491,7 +491,7 @@ xmlSecGCryptPkSignatureInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_EC */
 
     if(1) {
-        xmlSecInvalidTransformError(transform)
+        xmlSecInvalidTransformError(transform);
         return(-1);
     }
 

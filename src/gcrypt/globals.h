@@ -35,19 +35,19 @@
  * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecGCryptError(errorFunction, errCode, errorObject)  \
-    {                                                       \
-        const char* source = gcry_strsource((errCode));     \
-        const char* message = gcry_strerror((errCode));     \
-        xmlSecError(XMLSEC_ERRORS_HERE,                     \
-                    (const char*)(errorObject),             \
-                    (errorFunction),                        \
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
-                    "gcrypt error: %u: %s: %s",             \
-                    (errCode),                              \
-                    xmlSecErrorsSafeString(source),         \
-                    xmlSecErrorsSafeString(message)         \
-        );                                                  \
-    }
+    do {                                                        \
+        const char* _gcrypt_source = gcry_strsource((errCode)); \
+        const char* _gcrypt_message = gcry_strerror((errCode)); \
+        xmlSecError(XMLSEC_ERRORS_HERE,                         \
+                    (const char*)(errorObject),                 \
+                    (errorFunction),                            \
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,              \
+                    "gcrypt error: %u: %s: %s",                 \
+                    (errCode),                                  \
+                    xmlSecErrorsSafeString(_gcrypt_source),     \
+                    xmlSecErrorsSafeString(_gcrypt_message)     \
+        );                                                      \
+    } while(0)
 
 /**
  * @brief Macro. Reports GCrypt crypto errors.
@@ -59,20 +59,20 @@
  * @param param the extra message param.
  */
 #define xmlSecGCryptError2(errorFunction, errCode, errorObject, msg, param) \
-    {                                                       \
-        const char* source = gcry_strsource((errCode));     \
-        const char* message = gcry_strerror((errCode));     \
-        xmlSecError(XMLSEC_ERRORS_HERE,                     \
-                    (const char*)(errorObject),             \
-                    (errorFunction),                        \
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
-                    msg "; gcrypt error: %u: %s: %s",       \
-                    (param),                                \
-                    (errCode),                              \
-                    xmlSecErrorsSafeString(source),         \
-                    xmlSecErrorsSafeString(message)         \
-        );                                                  \
-    }
+    do {                                                                    \
+        const char* _gcrypt_source = gcry_strsource((errCode));             \
+        const char* _gcrypt_message = gcry_strerror((errCode));             \
+        xmlSecError(XMLSEC_ERRORS_HERE,                                     \
+                    (const char*)(errorObject),                             \
+                    (errorFunction),                                        \
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,                          \
+                    msg "; gcrypt error: %u: %s: %s",                       \
+                    (param),                                                \
+                    (errCode),                                              \
+                    xmlSecErrorsSafeString(_gcrypt_source),                 \
+                    xmlSecErrorsSafeString(_gcrypt_message)                 \
+        );                                                                  \
+    } while(0)
 
 
 #endif /* XMLSEC_GCRYPT_GLOBALS_H */

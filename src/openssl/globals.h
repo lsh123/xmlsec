@@ -47,7 +47,7 @@ typedef unsigned long xmlSecOpenSSLErrorType;
  * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecOpenSSLError(errorFunction, errorObject)      \
-    {                                                       \
+    do {                                                    \
         char _openssl_error_buf[XMLSEC_OPENSSL_ERROR_BUFFER_SIZE]; \
         xmlSecOpenSSLErrorType _openssl_error_code = ERR_peek_last_error(); \
         ERR_error_string_n(_openssl_error_code, _openssl_error_buf, sizeof(_openssl_error_buf)); \
@@ -58,7 +58,7 @@ typedef unsigned long xmlSecOpenSSLErrorType;
                     "openssl error: %s",                    \
                     xmlSecErrorsSafeString(_openssl_error_buf) \
         );                                                  \
-    }
+    } while(0)
 
 
 /**
@@ -70,6 +70,7 @@ typedef unsigned long xmlSecOpenSSLErrorType;
  * @param param the extra message param.
  */
 #define xmlSecOpenSSLError2(errorFunction, errorObject, msg, param) \
+    do {                                                            \
         char _openssl_error_buf[XMLSEC_OPENSSL_ERROR_BUFFER_SIZE];  \
         xmlSecOpenSSLErrorType _openssl_error_code = ERR_peek_last_error();  \
         ERR_error_string_n(_openssl_error_code, _openssl_error_buf, sizeof(_openssl_error_buf)); \
@@ -81,6 +82,7 @@ typedef unsigned long xmlSecOpenSSLErrorType;
                     (param),                                \
                     xmlSecErrorsSafeString(_openssl_error_buf) \
         );                                                  \
+    } while(0)
 
 /**
  * @brief Macro. Reports OpenSSL crypto errors.
@@ -92,6 +94,7 @@ typedef unsigned long xmlSecOpenSSLErrorType;
  * @param param2 the extra message param2.
  */
 #define xmlSecOpenSSLError3(errorFunction, errorObject, msg, param1, param2) \
+    do {                                                                    \
         char _openssl_error_buf[XMLSEC_OPENSSL_ERROR_BUFFER_SIZE];  \
         xmlSecOpenSSLErrorType _openssl_error_code = ERR_peek_last_error();  \
         ERR_error_string_n(_openssl_error_code, _openssl_error_buf, sizeof(_openssl_error_buf)); \
@@ -104,5 +107,6 @@ typedef unsigned long xmlSecOpenSSLErrorType;
                     (param2),                               \
                     xmlSecErrorsSafeString(_openssl_error_buf) \
         );                                                  \
+    } while(0)
 
 #endif /* XMLSEC_OPENSSL_GLOBALS_H */

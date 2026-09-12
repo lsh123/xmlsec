@@ -24,7 +24,12 @@
 /* Reverse @len bytes of @buf in-place (little-endian <-> big-endian conversion). */
 static inline void
 xmlSecMSCngReverseBytes(BYTE* buf, DWORD len) {
-    BYTE *lo = buf, *hi = buf + len - 1, tmp;
+    BYTE *lo, *hi, tmp;
+    if(len < 2) {
+        return;
+    }
+    lo = buf;
+    hi = buf + len - 1;
     while(lo < hi) {
         tmp = *lo; *lo++ = *hi; *hi-- = tmp;
     }

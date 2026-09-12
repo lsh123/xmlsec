@@ -231,7 +231,7 @@ xmlSecMSCryptoDigestInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_GOST2012*/
 
     {
-        xmlSecInvalidTransformError(transform)
+        xmlSecInvalidTransformError(transform);
         return(-1);
     }
 

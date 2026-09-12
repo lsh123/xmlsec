@@ -6,8 +6,8 @@
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
-#ifndef __XMLSEC_NSS_SYMBOLS_H__
-#define __XMLSEC_NSS_SYMBOLS_H__
+#ifndef XMLSEC_NSS_SYMBOLS_H
+#define XMLSEC_NSS_SYMBOLS_H
 /**
  * @brief NSS back-end function symbol mappings.
  */
@@ -180,4 +180,4 @@ extern "C" {
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_NSS_SYMBOLS_H__ */
+#endif /* XMLSEC_NSS_SYMBOLS_H */

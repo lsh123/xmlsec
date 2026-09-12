@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_TRANSFORMS_H__
-#define __XMLSEC_TRANSFORMS_H__
+#ifndef XMLSEC_TRANSFORMS_H
+#define XMLSEC_TRANSFORMS_H
 
 /**
  * @defgroup xmlsec_core_transforms Transforms Engine
@@ -920,4 +920,4 @@ XMLSEC_EXPORT void              xmlSecTransformHmacSetMinOutputBitsSize(xmlSecSi
 
 /** @} */ /** xmlsec_core_transforms */
 
-#endif /* __XMLSEC_TRANSFORMS_H__ */
+#endif /* XMLSEC_TRANSFORMS_H */

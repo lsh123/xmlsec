@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_BASE64_H__
-#define __XMLSEC_BASE64_H__
+#ifndef XMLSEC_BASE64_H
+#define XMLSEC_BASE64_H
 
 /**
  * @brief Base64 encoding/decoding functions.
@@ -75,4 +75,4 @@ XMLSEC_EXPORT int               xmlSecBase64DecodeInPlace       (xmlChar* str,
 
 /** @} */  /* xmlsec_core_base64 */
 
-#endif /* __XMLSEC_BASE64_H__ */
+#endif /* XMLSEC_BASE64_H */

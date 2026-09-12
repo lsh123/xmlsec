@@ -8,8 +8,8 @@
 /**
  * @brief Internal private header for MSCrypto.
  */
-#ifndef __XMLSEC_MSCRYPTO_PRIVATE_H__
-#define __XMLSEC_MSCRYPTO_PRIVATE_H__
+#ifndef XMLSEC_MSCRYPTO_PRIVATE_H
+#define XMLSEC_MSCRYPTO_PRIVATE_H
 
 #ifndef XMLSEC_PRIVATE
 #error "mscrypto/private.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-mscrypto libraries"
@@ -139,4 +139,4 @@ PCCERT_CONTEXT     xmlSecMSCryptoX509StoreVerify                (xmlSecKeyDataSt
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_MSCRYPTO_PRIVATE_H__ */
+#endif /* XMLSEC_MSCRYPTO_PRIVATE_H */

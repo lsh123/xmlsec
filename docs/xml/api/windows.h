@@ -7,8 +7,8 @@
  * It provides minimal type stubs so the mscrypto/mscng headers and the core
  * xmltree.h header can be parsed without errors.
  */
-#ifndef __XMLSEC_DOXYGEN_WINDOWS_H__
-#define __XMLSEC_DOXYGEN_WINDOWS_H__
+#ifndef XMLSEC_DOXYGEN_WINDOWS_H
+#define XMLSEC_DOXYGEN_WINDOWS_H
 
 typedef void*           HCERTSTORE;
 typedef void*           HCRYPTKEY;
@@ -34,4 +34,4 @@ typedef long            LONG;
 typedef void*           HANDLE;
 typedef void*           HMODULE;
 
-#endif /* __XMLSEC_DOXYGEN_WINDOWS_H__ */
+#endif /* XMLSEC_DOXYGEN_WINDOWS_H */

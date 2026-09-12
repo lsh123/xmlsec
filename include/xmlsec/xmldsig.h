@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_XMLDSIG_H__
-#define __XMLSEC_XMLDSIG_H__
+#ifndef XMLSEC_XMLDSIG_H
+#define XMLSEC_XMLDSIG_H
 
 /**
  * @defgroup xmlsec_core_xmldsig XML Digital Signatures
@@ -254,4 +254,4 @@ XMLSEC_EXPORT xmlSecPtrListId   xmlSecDSigReferenceCtxListGetKlass(void);
 
 /** @} */ /** xmlsec_core_xmldsig */
 
-#endif /* __XMLSEC_XMLDSIG_H__ */
+#endif /* XMLSEC_XMLDSIG_H */

@@ -12,8 +12,8 @@
  * bcrypt.h, ncrypt.h, ...) have been included.  It is included automatically from
  * globals.h, so individual source files need not include it directly.
  */
-#ifndef __XMLSEC_MSCNG_MINGW_H__
-#define __XMLSEC_MSCNG_MINGW_H__
+#ifndef XMLSEC_MSCNG_XMLSEC_MINGW_H
+#define XMLSEC_MSCNG_XMLSEC_MINGW_H
 
 /* ---- bcrypt.h: algorithm identifiers ------------------------------------- */
 
@@ -146,4 +146,4 @@
 #endif /* szOID_X25519 */
 #endif /* !XMLSEC_NO_XDH */
 
-#endif /* __XMLSEC_MSCNG_MINGW_H__ */
+#endif /* XMLSEC_MSCNG_XMLSEC_MINGW_H */

@@ -8,8 +8,8 @@
 /**
  * @brief Internal private header for NSS.
  */
-#ifndef __XMLSEC_NSS_PRIVATE_H__
-#define __XMLSEC_NSS_PRIVATE_H__
+#ifndef XMLSEC_NSS_PRIVATE_H
+#define XMLSEC_NSS_PRIVATE_H
 
 #ifndef XMLSEC_PRIVATE
 #error "nss/private.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-nss libraries"
@@ -28,7 +28,6 @@
 #endif /* XMLSEC_NO_X509 */
 
 #include "../keysdata_helpers.h"
-#include "private.h"
 
 
 #ifdef __cplusplus
@@ -130,4 +129,4 @@ xmlSecNssX509CrlNodePtr xmlSecNssKeyDataX509GetCrls     (xmlSecKeyDataPtr data);
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_NSS_PRIVATE_H__ */
+#endif /* XMLSEC_NSS_PRIVATE_H */

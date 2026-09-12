@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_GNUTLS_X509_H__
-#define __XMLSEC_GNUTLS_X509_H__
+#ifndef XMLSEC_GNUTLS_X509_H
+#define XMLSEC_GNUTLS_X509_H
 
 /**
  * @defgroup xmlsec_gnutls_x509 GnuTLS X.509 Support
@@ -104,4 +104,4 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSX509StoreAdoptCrl  (xmlSecKe
 
 /** @} */ /** xmlsec_gnutls_x509 */
 
-#endif /* __XMLSEC_GNUTLS_X509_H__ */
+#endif /* XMLSEC_GNUTLS_X509_H */

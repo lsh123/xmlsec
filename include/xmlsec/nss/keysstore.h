@@ -6,8 +6,8 @@
  * Copyright (C) 2003-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
-#ifndef __XMLSEC_NSS_KEYSSTORE_H__
-#define __XMLSEC_NSS_KEYSSTORE_H__
+#ifndef XMLSEC_NSS_KEYSSTORE_H
+#define XMLSEC_NSS_KEYSSTORE_H
 
 /**
  * @defgroup xmlsec_nss_keysstore NSS Keys Store
@@ -49,4 +49,4 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecNssKeysStoreSave          (xmlSecK
 
 /** @} */ /** xmlsec_nss_keysstore */
 
-#endif /* __XMLSEC_NSS_KEYSSTORE_H__ */
+#endif /* XMLSEC_NSS_KEYSSTORE_H */

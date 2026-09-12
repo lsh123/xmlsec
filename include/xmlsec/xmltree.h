@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_TREE_H__
-#define __XMLSEC_TREE_H__
+#ifndef XMLSEC_XMLTREE_H
+#define XMLSEC_XMLTREE_H
 
 /**
  * @defgroup xmlsec_core_xmltree XML Tree Utilities
@@ -339,4 +339,4 @@ XMLSEC_EXPORT LPTSTR             xmlSecWin32ConvertUtf8ToTstr     (const xmlChar
 
 /** @} */ /** xmlsec_core_xmltree */
 
-#endif /* __XMLSEC_TREE_H__ */
+#endif /* XMLSEC_XMLTREE_H */

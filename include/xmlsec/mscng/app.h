@@ -6,8 +6,8 @@
  * Copyright (C) 2018-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
-#ifndef __XMLSEC_MSCNG_APP_H__
-#define __XMLSEC_MSCNG_APP_H__
+#ifndef XMLSEC_MSCNG_APP_H
+#define XMLSEC_MSCNG_APP_H
 
 /**
  * @defgroup xmlsec_mscng_app MsCng Application Helpers
@@ -133,4 +133,4 @@ XMLSEC_CRYPTO_EXPORT void*      xmlSecMSCngAppGetDefaultPwdCallback  (void);
 
 /** @} */ /** xmlsec_mscng_app */
 
-#endif /* __XMLSEC_MSCNG_APP_H__ */
+#endif /* XMLSEC_MSCNG_APP_H */

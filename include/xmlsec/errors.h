@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_ERRORS_H__
-#define __XMLSEC_ERRORS_H__
+#ifndef XMLSEC_ERRORS_H
+#define XMLSEC_ERRORS_H
 
 /**
  * @defgroup xmlsec_core_errors Error Reporting
@@ -327,7 +327,7 @@ extern "C" {
  * @brief The errors reporting callback function.
  * @param file the error location file name (__FILE__ macro).
  * @param line the error location line number (__LINE__ macro).
- * @param func the error location function name (__XMLSEC_FUNCTION__ macro).
+ * @param func the error location function name (XMLSEC_FUNCTION macro).
  * @param errorObject the specific error object (e.g. transform, key data, etc).
  * @param errorSubject the error specific error subject.
  * @param reason the error code.
@@ -363,31 +363,31 @@ XMLSEC_EXPORT const char*       xmlSecErrorsGetMsg              (xmlSecSize pos)
 
 XMLSEC_EXPORT void              xmlSecErrorsPrintCryptoLibraryLogOnExitSet      (int enabled);
 
-#if !defined(__XMLSEC_FUNCTION__)
+#if !defined(XMLSEC_FUNCTION)
 
 /* __FUNCTION__ is defined for MSC compiler >= MS VS .NET 2003 */
 #if defined(_MSC_VER) && (_MSC_VER >= 1300)
-#define __XMLSEC_FUNCTION__ __FUNCTION__
+#define XMLSEC_FUNCTION __FUNCTION__
 
 /* and for GCC too */
 #elif defined(__GNUC__)
 /**
  * @brief The current function name (compiler-specific).
  */
-#define __XMLSEC_FUNCTION__ __func__
+#define XMLSEC_FUNCTION __func__
 
 /* fallback for __FUNCTION__ */
 #else
-#define __XMLSEC_FUNCTION__  ""
+#define XMLSEC_FUNCTION  ""
 #endif
 
-#endif /*!defined(__XMLSEC_FUNCTION__) */
+#endif /*!defined(XMLSEC_FUNCTION) */
 
 /**
  * @brief The macro specifying the error location (file, line, function) for xmlSecError().
  * @details The macro that specifies the location (file, line and function) for the xmlSecError() function.
  */
-#define XMLSEC_ERRORS_HERE                      __FILE__,__LINE__,__XMLSEC_FUNCTION__
+#define XMLSEC_ERRORS_HERE                      __FILE__,__LINE__,XMLSEC_FUNCTION
 #ifdef __GNUC__
 /**
  * @brief Printf-style format-string attribute for xmlSecError() (GCC/Clang only).
@@ -460,4 +460,4 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
 
 /** @} */ /** xmlsec_core_errors */
 
-#endif /* __XMLSEC_ERRORS_H__ */
+#endif /* XMLSEC_ERRORS_H */

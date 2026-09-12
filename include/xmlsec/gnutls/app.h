@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_GNUTLS_APP_H__
-#define __XMLSEC_GNUTLS_APP_H__
+#ifndef XMLSEC_GNUTLS_APP_H
+#define XMLSEC_GNUTLS_APP_H
 
 /**
  * @defgroup xmlsec_gnutls_app GnuTLS Application Helpers
@@ -117,4 +117,4 @@ XMLSEC_CRYPTO_EXPORT void*      xmlSecGnuTLSAppGetDefaultPwdCallback    (void);
 
 /** @} */ /** xmlsec_gnutls_app */
 
-#endif /* __XMLSEC_GNUTLS_APP_H__ */
+#endif /* XMLSEC_GNUTLS_APP_H */

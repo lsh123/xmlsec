@@ -8,8 +8,8 @@
 /**
  * @brief XML Security Library unit test helpers.
  */
-#ifndef __XMLSEC_UNIT_TESTS_H__
-#define __XMLSEC_UNIT_TESTS_H__
+#ifndef XMLSEC_UNIT_TESTS_H
+#define XMLSEC_UNIT_TESTS_H
 
 #define XMLSEC_PRIVATE 1
 
@@ -55,4 +55,4 @@ int test_templates(void);
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_UNIT_TESTS_H__ */
+#endif /* XMLSEC_UNIT_TESTS_H */

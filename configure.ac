@@ -257,10 +257,10 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([],
 	[ac_func_exists=no])
 if test "z$ac_func_exists" = "zyes" ; then
 	AC_MSG_RESULT([__func__])
-	XMLSEC_DEFINES="$XMLSEC_DEFINES -D__XMLSEC_FUNCTION__=__func__"
+	XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_FUNCTION=__func__"
 elif test "z$ac_function_exists" = "zyes" ; then
     AC_MSG_RESULT([__FUNCTION__])
-    XMLSEC_DEFINES="$XMLSEC_DEFINES -D__XMLSEC_FUNCTION__=__FUNCTION__"
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_FUNCTION=__FUNCTION__"
 else
     AC_MSG_RESULT("no")
 fi

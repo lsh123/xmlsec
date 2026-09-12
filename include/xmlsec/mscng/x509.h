@@ -6,8 +6,8 @@
  * Copyright (C) 2018-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
-#ifndef __XMLSEC_MSCNG_X509_H__
-#define __XMLSEC_MSCNG_X509_H__
+#ifndef XMLSEC_MSCNG_X509_H
+#define XMLSEC_MSCNG_X509_H
 
 /**
  * @defgroup xmlsec_mscng_x509 MsCng X.509 Support
@@ -115,4 +115,4 @@ XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED PCCERT_CONTEXT xmlSecMSCngX509FindCertByS
 
 /** @} */ /** xmlsec_mscng_x509 */
 
-#endif /* __XMLSEC_MSCNG_X509_H__ */
+#endif /* XMLSEC_MSCNG_X509_H */

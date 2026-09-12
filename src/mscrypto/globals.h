@@ -9,8 +9,8 @@
 /**
  * @brief Internal global header for MSCrypto used during compilation.
  */
-#ifndef __XMLSEC_GLOBALS_H__
-#define __XMLSEC_GLOBALS_H__
+#ifndef XMLSEC_MSCRYPTO_GLOBALS_H
+#define XMLSEC_MSCRYPTO_GLOBALS_H
 
 /**
  * Use autoconf defines if present.
@@ -112,4 +112,4 @@ void xmlSecMSCryptoGetErrorMessage      (DWORD dwError,
         );                                                        \
     }
 
-#endif /* ! __XMLSEC_GLOBALS_H__ */
+#endif /* XMLSEC_MSCRYPTO_GLOBALS_H */

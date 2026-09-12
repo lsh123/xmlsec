@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_KEYINFO_H__
-#define __XMLSEC_KEYINFO_H__
+#ifndef XMLSEC_KEYINFO_H
+#define XMLSEC_KEYINFO_H
 
 /**
  * @defgroup xmlsec_core_keyinfo KeyInfo Processing
@@ -287,4 +287,4 @@ XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataEncapsulationMechanismGetKl
 
 /** @} */ /** xmlsec_core_keyinfo */
 
-#endif /* __XMLSEC_KEYINFO_H__ */
+#endif /* XMLSEC_KEYINFO_H */

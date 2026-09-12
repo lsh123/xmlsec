@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_CRYPTO_H__
-#define __XMLSEC_CRYPTO_H__
+#ifndef XMLSEC_CRYPTO_H
+#define XMLSEC_CRYPTO_H
 /**
  * @brief Selects and includes the configured cryptographic back-end.
  */
@@ -70,4 +70,4 @@
 
 #endif /* IN_XMLSEC_CRYPTO */
 #endif /* IN_XMLSEC */
-#endif /* __XMLSEC_CRYPTO_H__ */
+#endif /* XMLSEC_CRYPTO_H */

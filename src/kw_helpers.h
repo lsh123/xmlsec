@@ -8,8 +8,8 @@
 /**
  * @brief Internal helper functions for AES/DES/Camellia key wrap implementations.
  */
-#ifndef __XMLSEC_KW_HELPERS_H__
-#define __XMLSEC_KW_HELPERS_H__
+#ifndef XMLSEC_KW_HELPERS_H
+#define XMLSEC_KW_HELPERS_H
 
 #ifndef XMLSEC_PRIVATE
 #error "kw_helpers.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-crypto libraries"
@@ -202,4 +202,4 @@ XMLSEC_EXPORT int       xmlSecTransformKWRfc3394Execute     (xmlSecTransformPtr 
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_KW_HELPERS_H__ */
+#endif /* XMLSEC_KW_HELPERS_H */

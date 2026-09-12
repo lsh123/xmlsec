@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2003-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_GNUTLS_KEYSSTORE_H__
-#define __XMLSEC_GNUTLS_KEYSSTORE_H__
+#ifndef XMLSEC_GNUTLS_KEYSSTORE_H
+#define XMLSEC_GNUTLS_KEYSSTORE_H
 
 /**
  * @defgroup xmlsec_gnutls_keysstore GnuTLS Keys Store
@@ -49,4 +49,4 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeysStoreSave     (xmlSecKey
 
 /** @} */ /** xmlsec_gnutls_keysstore */
 
-#endif /* __XMLSEC_GNUTLS_KEYSSTORE_H__ */
+#endif /* XMLSEC_GNUTLS_KEYSSTORE_H */

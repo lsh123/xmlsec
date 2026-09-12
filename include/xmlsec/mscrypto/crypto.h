@@ -6,8 +6,8 @@
  * Copyright (C) 2003-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  */
-#ifndef __XMLSEC_MSCRYPTO_CRYPTO_H__
-#define __XMLSEC_MSCRYPTO_CRYPTO_H__
+#ifndef XMLSEC_MSCRYPTO_CRYPTO_H
+#define XMLSEC_MSCRYPTO_CRYPTO_H
 
 /**
  * @defgroup xmlsec_mscrypto (DEPRECATED) XML Security Library for Microsoft CryptoAPI
@@ -497,4 +497,4 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformHmacSha512GetKlass
 
 /** @} */ /** xmlsec_mscrypto_crypto */
 
-#endif /* __XMLSEC_MSCRYPTO_CRYPTO_H__ */
+#endif /* XMLSEC_MSCRYPTO_CRYPTO_H */

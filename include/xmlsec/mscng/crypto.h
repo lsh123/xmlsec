@@ -6,8 +6,8 @@
  * Copyright (C) 2018-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
-#ifndef __XMLSEC_MSCNG_CRYPTO_H__
-#define __XMLSEC_MSCNG_CRYPTO_H__
+#ifndef XMLSEC_MSCNG_CRYPTO_H
+#define XMLSEC_MSCNG_CRYPTO_H
 
 /**
  * @defgroup xmlsec_mscng XML Security Library for Microsoft CNG
@@ -701,4 +701,4 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId             xmlSecMSCngKeyDataDEREncodedKey
 
 /** @} */ /** xmlsec_mscng_crypto */
 
-#endif /* __XMLSEC_MSCNG_CRYPTO_H__ */
+#endif /* XMLSEC_MSCNG_CRYPTO_H */

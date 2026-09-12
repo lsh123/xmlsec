@@ -6,8 +6,8 @@
  * Copyright (C) 2003-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  */
-#ifndef __XMLSEC_MSCRYPTO_X509_H__
-#define __XMLSEC_MSCRYPTO_X509_H__
+#ifndef XMLSEC_MSCRYPTO_X509_H
+#define XMLSEC_MSCRYPTO_X509_H
 
 /**
  * @defgroup xmlsec_mscrypto_x509 MsCrypto X.509 Support
@@ -93,4 +93,4 @@ XMLSEC_CRYPTO_EXPORT void               xmlSecMSCryptoX509StoreEnableSystemTrust
 
 /** @} */ /** xmlsec_mscrypto_x509 */
 
-#endif /* __XMLSEC_MSCRYPTO_X509_H__ */
+#endif /* XMLSEC_MSCRYPTO_X509_H */

@@ -6,8 +6,8 @@
  * Copyright (C) 2018-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
-#ifndef __XMLSEC_MSCNG_SYMBOLS_H__
-#define __XMLSEC_MSCNG_SYMBOLS_H__
+#ifndef XMLSEC_MSCNG_SYMBOLS_H
+#define XMLSEC_MSCNG_SYMBOLS_H
 /**
  * @brief MsCng back-end function symbol mappings.
  */
@@ -170,4 +170,4 @@ extern "C" {
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_MSCNG_SYMBOLS_H__ */
+#endif /* XMLSEC_MSCNG_SYMBOLS_H */

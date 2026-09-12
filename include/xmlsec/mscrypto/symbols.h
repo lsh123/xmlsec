@@ -6,8 +6,8 @@
  * Copyright (C) 2003-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  */
-#ifndef __XMLSEC_MSCRYPTO_SYMBOLS_H__
-#define __XMLSEC_MSCRYPTO_SYMBOLS_H__
+#ifndef XMLSEC_MSCRYPTO_SYMBOLS_H
+#define XMLSEC_MSCRYPTO_SYMBOLS_H
 /**
  * @brief MsCrypto back-end function symbol mappings.
  */
@@ -138,4 +138,4 @@ extern "C" {
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_MSCRYPTO_SYMBOLS_H__ */
+#endif /* XMLSEC_MSCRYPTO_SYMBOLS_H */

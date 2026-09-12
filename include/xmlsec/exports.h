@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_EXPORTS_H__
-#define __XMLSEC_EXPORTS_H__
+#ifndef XMLSEC_EXPORTS_H
+#define XMLSEC_EXPORTS_H
 /**
  * @brief Platform-specific symbol visibility and export macros.
  */
@@ -112,4 +112,4 @@ extern "C" {
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_EXPORTS_H__ */
+#endif /* XMLSEC_EXPORTS_H */

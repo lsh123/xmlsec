@@ -8,8 +8,8 @@
 /**
  * @brief Internal helper functions for X509 certificate processing.
  */
-#ifndef __XMLSEC_X509_HELPERS_H__
-#define __XMLSEC_X509_HELPERS_H__
+#ifndef XMLSEC_X509_HELPERS_H
+#define XMLSEC_X509_HELPERS_H
 
 #ifndef XMLSEC_NO_X509
 
@@ -119,4 +119,4 @@ XMLSEC_EXPORT int       xmlSecX509SerialNumberRead       (const xmlChar *str,
 
 #endif /* XMLSEC_NO_X509 */
 
-#endif /* __XMLSEC_X509_HELPERS_H__ */
+#endif /* XMLSEC_X509_HELPERS_H */

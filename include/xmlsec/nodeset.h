@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_NODESET_H__
-#define __XMLSEC_NODESET_H__
+#ifndef XMLSEC_NODESET_H
+#define XMLSEC_NODESET_H
 
 /**
  * @defgroup xmlsec_core_nodeset XML Node Sets
@@ -113,4 +113,4 @@ XMLSEC_EXPORT XMLSEC_DEPRECATED xmlSecNodeSetPtr  xmlSecNodeSetAddList(xmlSecNod
 
 /** @} */ /** xmlsec_core_nodeset */
 
-#endif /* __XMLSEC_NODESET_H__ */
+#endif /* XMLSEC_NODESET_H */

@@ -8,8 +8,8 @@
 /**
  * @brief XML Security Library command line utility: crypto and keys manager helpers.
  */
-#ifndef __XMLSEC_APPS_CRYPTO_H__
-#define __XMLSEC_APPS_CRYPTO_H__
+#ifndef XMLSEC_APPS_CRYPTO_H
+#define XMLSEC_APPS_CRYPTO_H
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -86,4 +86,4 @@ int     xmlSecAppCryptoSimpleKeysMngrKeyGenerate                (xmlSecKeysMngrP
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_APPS_CRYPTO_H__ */
+#endif /* XMLSEC_APPS_CRYPTO_H */

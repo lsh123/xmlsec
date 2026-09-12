@@ -8,8 +8,8 @@
 /**
  * @brief Internal type casting helper macros.
  */
-#ifndef __XMLSEC_CAST_HELPERS_H__
-#define __XMLSEC_CAST_HELPERS_H__
+#ifndef XMLSEC_CAST_HELPERS_H
+#define XMLSEC_CAST_HELPERS_H
 
 
 #ifndef XMLSEC_PRIVATE
@@ -426,4 +426,4 @@ static inline ctxType* xmlSec ## name ## GetCtx(baseType* obj) {                
 #define XMLSEC_KEY_STORE_SIZE(name) \
     XMLSEC_CHILD_STRUCT_SIZE(name, KeyStore)
 
-#endif /* __XMLSEC_CAST_HELPERS_H__ */
+#endif /* XMLSEC_CAST_HELPERS_H */

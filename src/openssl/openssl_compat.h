@@ -9,8 +9,8 @@
  * @brief Compatibility layer for various OpenSSL versions.
  */
 
-#ifndef __XMLSEC_OPENSSL_OPENSSL_COMPAT_H__
-#define __XMLSEC_OPENSSL_OPENSSL_COMPAT_H__
+#ifndef XMLSEC_OPENSSL_COMPAT_H
+#define XMLSEC_OPENSSL_COMPAT_H
 
 #include <openssl/crypto.h>
 #include <openssl/rand.h>
@@ -206,4 +206,4 @@ typedef int xmlSecOpenSSLSizeT;
 #endif /* XMLSEC_OPENSSL_API_300 */
 
 
-#endif /* __XMLSEC_OPENSSL_OPENSSL_COMPAT_H__ */
+#endif /* XMLSEC_OPENSSL_COMPAT_H */

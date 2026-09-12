@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_KEYSDATA_H__
-#define __XMLSEC_KEYSDATA_H__
+#ifndef XMLSEC_KEYSDATA_H
+#define XMLSEC_KEYSDATA_H
 
 /**
  * @defgroup xmlsec_core_keysdata Key Data
@@ -710,4 +710,4 @@ XMLSEC_EXPORT XMLSEC_DEPRECATED const xmlChar*    xmlSecKeyDataGetIdentifier    
 
 /** @} */ /** xmlsec_core_keysdata */
 
-#endif /* __XMLSEC_KEYSDATA_H__ */
+#endif /* XMLSEC_KEYSDATA_H */

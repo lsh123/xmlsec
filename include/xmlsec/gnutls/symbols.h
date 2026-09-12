@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_GNUTLS_SYMBOLS_H__
-#define __XMLSEC_GNUTLS_SYMBOLS_H__
+#ifndef XMLSEC_GNUTLS_SYMBOLS_H
+#define XMLSEC_GNUTLS_SYMBOLS_H
 /**
  * @brief GnuTLS back-end function symbol mappings.
  */
@@ -201,4 +201,4 @@ extern "C" {
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_GNUTLS_SYMBOLS_H__ */
+#endif /* XMLSEC_GNUTLS_SYMBOLS_H */

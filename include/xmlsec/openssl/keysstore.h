@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2003-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_OPENSSL_KEYSSTORE_H__
-#define __XMLSEC_OPENSSL_KEYSSTORE_H__
+#ifndef XMLSEC_OPENSSL_KEYSSTORE_H
+#define XMLSEC_OPENSSL_KEYSSTORE_H
 
 /**
  * @defgroup xmlsec_openssl_keysstore OpenSSL Keys Store
@@ -49,4 +49,4 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeysStoreSave    (xmlSecKey
 
 /** @} */ /** xmlsec_openssl_keysstore */
 
-#endif /* __XMLSEC_OPENSSL_KEYSSTORE_H__ */
+#endif /* XMLSEC_OPENSSL_KEYSSTORE_H */

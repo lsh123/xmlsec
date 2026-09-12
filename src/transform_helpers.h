@@ -8,8 +8,8 @@
 /**
  * @brief Internal helper functions for transform implementations.
  */
-#ifndef __XMLSEC_TRANSFORM_HELPERS_H__
-#define __XMLSEC_TRANSFORM_HELPERS_H__
+#ifndef XMLSEC_TRANSFORM_HELPERS_H
+#define XMLSEC_TRANSFORM_HELPERS_H
 
 
 #ifndef XMLSEC_PRIVATE
@@ -267,4 +267,4 @@ XMLSEC_EXPORT int  xmlSecTransformRsaOaepParamsRead         (xmlSecTransformRsaO
 #endif /* XMLSEC_NO_RSA_OAEP */
 #endif /* XMLSEC_NO_RSA */
 
-#endif /* __XMLSEC_TRANSFORM_HELPERS_H__ */
+#endif /* XMLSEC_TRANSFORM_HELPERS_H */

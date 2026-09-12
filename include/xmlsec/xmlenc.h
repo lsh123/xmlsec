@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_XMLENC_H__
-#define __XMLSEC_XMLENC_H__
+#ifndef XMLSEC_XMLENC_H
+#define XMLSEC_XMLENC_H
 
 /**
  * @defgroup xmlsec_core_xmlenc XML Encryption
@@ -161,4 +161,4 @@ XMLSEC_EXPORT const char*       xmlSecEncCtxGetFailureReasonString(xmlSecEncFail
 
 /** @} */ /** xmlsec_core_xmlenc */
 
-#endif /* __XMLSEC_XMLENC_H__ */
+#endif /* XMLSEC_XMLENC_H */

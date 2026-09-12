@@ -9,8 +9,8 @@
  * @brief Internal header defining build-time macros.
  */
 
-#ifndef __XMLSEC_CORE_GLOBALS_H__
-#define __XMLSEC_CORE_GLOBALS_H__
+#ifndef XMLSEC_CORE_GLOBALS_H
+#define XMLSEC_CORE_GLOBALS_H
 
 /**
  * Use autoconf defines if present.
@@ -30,4 +30,4 @@
 /* Include common error helper macros. */
 #include "errors_helpers.h"
 
-#endif /* __XMLSEC_CORE_GLOBALS_H__ */
+#endif /* XMLSEC_CORE_GLOBALS_H */

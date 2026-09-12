@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_PARSER_H__
-#define __XMLSEC_PARSER_H__
+#ifndef XMLSEC_PARSER_H
+#define XMLSEC_PARSER_H
 
 /**
  * @defgroup xmlsec_core_parser XML Parser
@@ -55,4 +55,4 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecTransformXmlParserGetKlass        (void);
 
 /** @} */ /** xmlsec_core_parser */
 
-#endif /* __XMLSEC_PARSER_H__ */
+#endif /* XMLSEC_PARSER_H */

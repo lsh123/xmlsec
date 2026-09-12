@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_OPENSSL_X509_H__
-#define __XMLSEC_OPENSSL_X509_H__
+#ifndef XMLSEC_OPENSSL_X509_H
+#define XMLSEC_OPENSSL_X509_H
 
 /**
  * @defgroup xmlsec_openssl_x509 OpenSSL X.509 Support
@@ -114,4 +114,4 @@ XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED X509* xmlSecOpenSSLX509StoreFindCert_ex(x
 
 /** @} */ /** xmlsec_openssl_x509 */
 
-#endif /* __XMLSEC_OPENSSL_X509_H__ */
+#endif /* XMLSEC_OPENSSL_X509_H */

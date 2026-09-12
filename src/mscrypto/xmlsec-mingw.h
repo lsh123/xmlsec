@@ -10,8 +10,8 @@
  * @brief Internal MinGW compatibility definitions for MSCrypto.
  */
 
-#ifndef __XMLSEC_MSCRYPTO_XMLSEC_MINGW_H__
-#define __XMLSEC_MSCRYPTO_XMLSEC_MINGW_H__
+#ifndef XMLSEC_MSCRYPTO_XMLSEC_MINGW_H
+#define XMLSEC_MSCRYPTO_XMLSEC_MINGW_H
 
 #ifndef XMLSEC_PRIVATE
 #error "xmlsec-mingw.h file contains private xmlsec definitions for mingw build and should not be used outside xmlsec or xmlsec-mscrypto libraries"
@@ -210,4 +210,4 @@ BOOL            WINAPI CryptDuplicateKey(HCRYPTKEY,DWORD*,DWORD,HCRYPTKEY*);
 BOOL            WINAPI CryptImportPublicKeyInfo(HCRYPTPROV,DWORD,PCERT_PUBLIC_KEY_INFO,HCRYPTKEY*);
 
 
-#endif /*ndef __XMLSEC_MSCRYPTO_XMLSEC_MINGW_H__*/
+#endif /* XMLSEC_MSCRYPTO_XMLSEC_MINGW_H */

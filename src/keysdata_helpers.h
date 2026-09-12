@@ -8,8 +8,8 @@
 /**
  * @brief Internal helper functions for key data implementations.
  */
-#ifndef __XMLSEC_KEYSDATA_HELPERS_H__
-#define __XMLSEC_KEYSDATA_HELPERS_H__
+#ifndef XMLSEC_KEYSDATA_HELPERS_H
+#define XMLSEC_KEYSDATA_HELPERS_H
 
 
 #ifndef XMLSEC_PRIVATE
@@ -333,4 +333,4 @@ XMLSEC_EXPORT int               xmlSecKeyDataKEMSetCiphertext   (xmlSecKeyDataPt
 
 #endif /* !defined(XMLSEC_NO_MLKEM) */
 
-#endif /* __XMLSEC_KEYSDATA_HELPERS_H__ */
+#endif /* XMLSEC_KEYSDATA_HELPERS_H */

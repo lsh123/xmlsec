@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_KEYS_H__
-#define __XMLSEC_KEYS_H__
+#ifndef XMLSEC_KEYS_H
+#define XMLSEC_KEYS_H
 
 /**
  * @defgroup xmlsec_core_keys Keys
@@ -257,4 +257,4 @@ XMLSEC_EXPORT xmlSecPtrListId   xmlSecKeyPtrListGetKlass                (void);
 
 /** @} */ /** xmlsec_core_keys */
 
-#endif /* __XMLSEC_KEYS_H__ */
+#endif /* XMLSEC_KEYS_H */

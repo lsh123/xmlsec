@@ -18,10 +18,16 @@
 #include "config.h"
 #endif /* HAVE_CONFIG_H */
 
-#define IN_XMLSEC_CRYPTO
-#define XMLSEC_PRIVATE
-
 #include <nspr.h>
+
+#ifndef IN_XMLSEC_CRYPTO
+#define IN_XMLSEC_CRYPTO
+#endif /* IN_XMLSEC_CRYPTO */
+
+#ifndef XMLSEC_PRIVATE
+#define XMLSEC_PRIVATE
+#endif /* XMLSEC_PRIVATE */
+
 #include <xmlsec/errors.h>
 
 /* Include common error helper macros. */

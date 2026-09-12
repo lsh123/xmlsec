@@ -30,11 +30,19 @@
 #include <bcrypt.h>
 #include <ncrypt.h>
 
+
+
+#ifndef IN_XMLSEC_CRYPTO
+#define IN_XMLSEC_CRYPTO
+#endif /* IN_XMLSEC_CRYPTO */
+
+#ifndef XMLSEC_PRIVATE
+#define XMLSEC_PRIVATE
+#endif /* XMLSEC_PRIVATE */
+
+
 /* Fallback definitions for symbols missing from older MinGW / Windows SDK headers. */
 #include "xmlsec-mingw.h"
-
-#define IN_XMLSEC_CRYPTO
-#define XMLSEC_PRIVATE
 
 /* Include common error helper macros. */
 #include "../errors_helpers.h"

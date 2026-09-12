@@ -801,7 +801,7 @@ xmlSecMSCngAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* d
                 data,
                 dwDataSize);
             if(pCert == NULL) {
-                xmlSecMSCngLastError("CertCreateCertificateContext", NULL)
+                xmlSecMSCngLastError("CertCreateCertificateContext", NULL);
                 return(-1);
             }
             break;

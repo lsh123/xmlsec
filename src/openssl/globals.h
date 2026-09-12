@@ -20,8 +20,14 @@
 
 #include <openssl/crypto.h>
 
+#ifndef IN_XMLSEC_CRYPTO
 #define IN_XMLSEC_CRYPTO
+#endif /* IN_XMLSEC_CRYPTO */
+
+#ifndef XMLSEC_PRIVATE
 #define XMLSEC_PRIVATE
+#endif /* XMLSEC_PRIVATE */
+
 
 /* Include common error helper macros. */
 #include "../errors_helpers.h"

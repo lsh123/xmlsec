@@ -128,6 +128,7 @@ extern "C" {
 #define xmlSecTransformRsaPssSha3_512Id         xmlSecMSCngTransformRsaPssSha3_512Id
 
 #define xmlSecTransformRsaPkcs1Id               xmlSecMSCngTransformRsaPkcs1Id
+
 #define xmlSecTransformRsaOaepId                xmlSecMSCngTransformRsaOaepId
 #define xmlSecTransformRsaOaepEnc11Id           xmlSecMSCngTransformRsaOaepEnc11Id
 

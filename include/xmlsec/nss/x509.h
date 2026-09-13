@@ -70,9 +70,9 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNssKeyDataRawX509CertGetKlass(void
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataStoreId xmlSecNssX509StoreGetKlass(void);
 
 
-XMLSEC_CRYPTO_EXPORT CERTCertificate*           xmlSecNssX509StoreVerify   (xmlSecKeyDataStorePtr store,
+XMLSEC_CRYPTO_EXPORT CERTCertificate*           xmlSecNssX509StoreVerify    (xmlSecKeyDataStorePtr store,
                                                                             CERTCertList* certs,
-                                                                            xmlSecKeyInfoCtx* keyInfoCtx);
+                                                                            xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_CRYPTO_EXPORT int                        xmlSecNssX509StoreAdoptCert (xmlSecKeyDataStorePtr store,
                                                                              CERTCertificate* cert,
                                                                              xmlSecKeyDataType type);
@@ -90,14 +90,14 @@ XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED CERTCertificate*  xmlSecNssX509StoreFindC
                                                                                  xmlChar *issuerName,
                                                                                  xmlChar *issuerSerial,
                                                                                  xmlChar *ski,
-                                                                                 xmlSecKeyInfoCtx* keyInfoCtx);
+                                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED CERTCertificate*  xmlSecNssX509StoreFindCert_ex   (xmlSecKeyDataStorePtr store,
                                                                                  xmlChar *subjectName,
                                                                                  xmlChar *issuerName,
                                                                                  xmlChar *issuerSerial,
                                                                                  xmlSecByte * ski,
                                                                                  xmlSecSize skiSize,
-                                                                                 xmlSecKeyInfoCtx* keyInfoCtx);
+                                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

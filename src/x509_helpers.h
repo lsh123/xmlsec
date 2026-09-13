@@ -21,6 +21,10 @@
 #include <xmlsec/keysdata.h>
 #include <xmlsec/x509.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 /******************************************************************************
  *
  * Helper functions to read/write X509 Keys
@@ -75,11 +79,11 @@ XMLSEC_EXPORT int               xmlSecKeyDataX509XmlWrite               (xmlSecK
 #define XMLSEC_X509_VALUE_TYPE_UTF8_STRING          0  /* the value is a string (empty, quoted, or plain) */
 #define XMLSEC_X509_VALUE_TYPE_OCTET_STRING         1  /* the value is a hex-encoded octet string (prefixed with '#') */
 
-typedef int             (*xmlSecX509NameReadCallback)   (const xmlSecByte * name,
-                                                          const xmlSecByte * value,
+typedef int             (*xmlSecX509NameReadCallback)   (const xmlSecByte* name,
+                                                          const xmlSecByte* value,
                                                           xmlSecSize valueSize,
                                                            int type,
-                                                           void *context);
+                                                          void* context);
 typedef struct _xmlSecX509NameReplacements {
     const xmlChar * original;
     const xmlChar * replacement;
@@ -116,6 +120,10 @@ XMLSEC_EXPORT int       xmlSecX509SerialNumberRead       (const xmlChar *str,
                                                          xmlSecByte *res,
                                                          xmlSecSize resSize,
                                                          xmlSecSize *written);
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* XMLSEC_NO_X509 */
 

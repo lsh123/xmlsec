@@ -173,49 +173,49 @@ typedef unsigned int                            xmlSecTransformUsage;
 /**
  * @brief Transforms usage is unknown or undefined.
  */
-#define xmlSecTransformUsageUnknown             0x0000
+#define xmlSecTransformUsageUnknown                     0x0000
 
 /**
  * @brief Transform usable in dsig:Transform.
  * @details Transform could be used in &lt;dsig:Transform/&gt;.
  */
-#define xmlSecTransformUsageDSigTransform       0x0001
+#define xmlSecTransformUsageDSigTransform               0x0001
 
 /**
  * @brief Transform usable in dsig:CanonicalizationMethod.
  * @details Transform could be used in &lt;dsig:CanonicalizationMethod/&gt;.
  */
-#define xmlSecTransformUsageC14NMethod          0x0002
+#define xmlSecTransformUsageC14NMethod                  0x0002
 
 /**
  * @brief Transform usable in dsig:DigestMethod.
  * @details Transform could be used in &lt;dsig:DigestMethod/&gt;.
  */
-#define xmlSecTransformUsageDigestMethod        0x0004
+#define xmlSecTransformUsageDigestMethod                0x0004
 
 /**
  * @brief Transform usable in dsig:SignatureMethod.
  * @details Transform could be used in &lt;dsig:SignatureMethod/&gt;.
  */
-#define xmlSecTransformUsageSignatureMethod     0x0008
+#define xmlSecTransformUsageSignatureMethod             0x0008
 
 /**
  * @brief Transform usable in enc:EncryptionMethod.
  * @details Transform could be used in &lt;enc:EncryptionMethod/&gt;.
  */
-#define xmlSecTransformUsageEncryptionMethod    0x0010
+#define xmlSecTransformUsageEncryptionMethod            0x0010
 
 /**
  * @brief Transform usable in enc11:KeyDerivationMethod.
  * @details Transform could be used in &lt;enc11:KeyDerivationMethod/&gt;.
  */
-#define xmlSecTransformUsageKeyDerivationMethod 0x0020
+#define xmlSecTransformUsageKeyDerivationMethod         0x0020
 
 /**
  * @brief Transform usable in enc11:AgreementMethod.
  * @details Transform could be used in &lt;enc11:AgreementMethod/&gt;.
  */
-#define xmlSecTransformUsageAgreementMethod 0x0040
+#define xmlSecTransformUsageAgreementMethod             0x0040
 
 /**
  * @brief Transform usable in as:EncapsulationMechanism.
@@ -223,12 +223,12 @@ typedef unsigned int                            xmlSecTransformUsage;
  * on encrypt it encapsulates a symmetric key and writes the ciphertext to CipherValue;
  * on decrypt it reads the CipherValue and decapsulates to recover the key.
  */
-#define xmlSecTransformUsageEncapsulationMechanism 0x0080
+#define xmlSecTransformUsageEncapsulationMechanism      0x0080
 
 /**
  * @brief Transform usable in any operation.
  */
-#define xmlSecTransformUsageAny                 0xFFFF
+#define xmlSecTransformUsageAny                         0xFFFF
 
 /******************************************************************************
  *
@@ -274,7 +274,7 @@ typedef int             (*xmlSecTransformCtxPreExecuteCallback)         (xmlSecT
  * This flag exists purely for backward compatibility with documents signed by older xmlsec
  * versions and is off by default.
  */
-#define XMLSEC_TRANSFORMCTX_FLAGS_RELATIONSHIP_LEGACY 0x00000004
+#define XMLSEC_TRANSFORMCTX_FLAGS_RELATIONSHIP_LEGACY           0x00000004
 
 
 /**

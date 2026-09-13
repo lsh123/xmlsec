@@ -47,9 +47,9 @@
  */
 #define xmlSecGCryptError(errorFunction, errCode, errorObject)              \
     do {                                                                    \
-        const gcry_err_code_t _gcrypt_errCode = (gcry_err_code_t)(errCode); \
-        const char* _gcrypt_source = gcry_strsource(_gcrypt_errCode);       \
-        const char* _gcrypt_message = gcry_strerror(_gcrypt_errCode);       \
+        const gcry_err_code_t _gcrypt_errCode = gcry_err_code(errCode);     \
+        const char* _gcrypt_source = gcry_strsource(errCode);               \
+        const char* _gcrypt_message = gcry_strerror(errCode);               \
         xmlSecError(XMLSEC_ERRORS_HERE,                                     \
                     (const char*)(errorObject),                             \
                     (errorFunction),                                        \
@@ -72,9 +72,9 @@
  */
 #define xmlSecGCryptError2(errorFunction, errCode, errorObject, msg, param) \
     do {                                                                    \
-        const gcry_err_code_t _gcrypt_errCode = (gcry_err_code_t)(errCode); \
-        const char* _gcrypt_source = gcry_strsource(_gcrypt_errCode);       \
-        const char* _gcrypt_message = gcry_strerror(_gcrypt_errCode);       \
+        const gcry_err_code_t _gcrypt_errCode = gcry_err_code(errCode);     \
+        const char* _gcrypt_source = gcry_strsource(errCode);               \
+        const char* _gcrypt_message = gcry_strerror(errCode);               \
         xmlSecError(XMLSEC_ERRORS_HERE,                                     \
                     (const char*)(errorObject),                             \
                     (errorFunction),                                        \

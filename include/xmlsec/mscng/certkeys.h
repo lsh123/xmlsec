@@ -32,8 +32,17 @@ extern "C" {
 
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr   xmlSecMSCngCertAdopt            (PCCERT_CONTEXT pCert,
                                                                          xmlSecKeyDataType type);
-XMLSEC_CRYPTO_EXPORT BCRYPT_KEY_HANDLE  xmlSecMSCngKeyDataGetPubKey     (xmlSecKeyDataPtr data);
-XMLSEC_CRYPTO_EXPORT NCRYPT_KEY_HANDLE  xmlSecMSCngKeyDataGetPrivKey    (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT BCRYPT_KEY_HANDLE  xmlSecMSCngKeyDataGetPubkey     (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT NCRYPT_KEY_HANDLE  xmlSecMSCngKeyDataGetPrivkey    (xmlSecKeyDataPtr data);
+
+/**
+ * @brief Deprecated alias for xmlSecMSCngKeyDataGetPubkey.
+ */
+#define xmlSecMSCngKeyDataGetPubKey  xmlSecMSCngKeyDataGetPubkey
+/**
+ * @brief Deprecated alias for xmlSecMSCngKeyDataGetPrivkey.
+ */
+#define xmlSecMSCngKeyDataGetPrivKey xmlSecMSCngKeyDataGetPrivkey
 
 #ifdef __cplusplus
 }

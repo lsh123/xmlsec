@@ -41,7 +41,7 @@
  * @brief Buffer size for MSCrypto error messages.
  * @details Macro. The buffer size for reporting MSCrypto errors.
  */
-#define XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE       4096
+#define XMLSEC_MSCRYPTO_ERROR_BUFFER_SIZE           1024
 
 void xmlSecMSCryptoGetErrorMessage      (DWORD dwError,
                                          xmlChar *out,
@@ -57,7 +57,7 @@ void xmlSecMSCryptoGetErrorMessage      (DWORD dwError,
 #define xmlSecMSCryptoError(errorFunction, errorObject)            \
     do {                                                           \
         DWORD _mscrypto_dwLastError = GetLastError();              \
-        xmlChar _mscrypto_errBuf[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE]; \
+        xmlChar _mscrypto_errBuf[XMLSEC_MSCRYPTO_ERROR_BUFFER_SIZE]; \
         xmlSecMSCryptoGetErrorMessage(_mscrypto_dwLastError, _mscrypto_errBuf, sizeof(_mscrypto_errBuf)); \
         xmlSecError(XMLSEC_ERRORS_HERE,                            \
                     (const char*)(errorObject),                    \
@@ -81,7 +81,7 @@ void xmlSecMSCryptoGetErrorMessage      (DWORD dwError,
 #define xmlSecMSCryptoError2(errorFunction, errorObject, msg, param) \
     do {                                                             \
         DWORD _mscrypto_dwLastError = GetLastError();                \
-        xmlChar _mscrypto_errBuf[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE]; \
+        xmlChar _mscrypto_errBuf[XMLSEC_MSCRYPTO_ERROR_BUFFER_SIZE]; \
         xmlSecMSCryptoGetErrorMessage(_mscrypto_dwLastError, _mscrypto_errBuf, sizeof(_mscrypto_errBuf)); \
         xmlSecError(XMLSEC_ERRORS_HERE,                              \
                     (const char*)(errorObject),                      \
@@ -107,7 +107,7 @@ void xmlSecMSCryptoGetErrorMessage      (DWORD dwError,
 #define xmlSecMSCryptoError3(errorFunction, errorObject, msg, param1, param2) \
     do {                                                                      \
         DWORD _mscrypto_dwLastError = GetLastError();                        \
-        xmlChar _mscrypto_errBuf[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE];      \
+        xmlChar _mscrypto_errBuf[XMLSEC_MSCRYPTO_ERROR_BUFFER_SIZE]; \
         xmlSecMSCryptoGetErrorMessage(_mscrypto_dwLastError, _mscrypto_errBuf, sizeof(_mscrypto_errBuf)); \
         xmlSecError(XMLSEC_ERRORS_HERE,                                       \
                     (const char*)(errorObject),                               \

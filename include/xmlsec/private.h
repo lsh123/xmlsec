@@ -244,6 +244,9 @@ typedef int                     (*xmlSecCryptoAppKeysMngrCrlLoadAndVerifyMethod)
 
 /**
  * @brief Reads a key from a file.
+ * @deprecated Use xmlSecCryptoAppKeyLoadExMethod instead. No crypto backend
+ * assigns this method, so it can never be invoked; it is retained only for
+ * ABI compatibility.
  * @param filename the key filename.
  * @param format the key file format.
  * @param pwd the key file password.
@@ -529,7 +532,7 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoAppKeysMngrCrlLoadMethod         cryptoAppKeysMngrCrlLoad;  /**< the default keys manager file crl load method. */
     xmlSecCryptoAppKeysMngrCrlLoadAndVerifyMethod cryptoAppKeysMngrCrlLoadAndVerify;  /**< the default keys manager file crl load and verify method. */
     xmlSecCryptoAppKeysMngrCrlLoadMemoryMethod   cryptoAppKeysMngrCrlLoadMemory;  /**< the default keys manager memory crl load method. */
-    xmlSecCryptoAppKeyLoadMethod                 cryptoAppKeyLoad;  /**< the key file load method. */
+    xmlSecCryptoAppKeyLoadMethod                 cryptoAppKeyLoad;  /**< DEPRECATED: the key file load method. Use cryptoAppKeyLoadEx instead. */
     xmlSecCryptoAppKeyLoadExMethod               cryptoAppKeyLoadEx;  /**< the key file load method (with expected key type). */
     xmlSecCryptoAppKeyLoadMemoryMethod           cryptoAppKeyLoadMemory;  /**< the memory key load method. */
     xmlSecCryptoAppPkcs12LoadMethod              cryptoAppPkcs12Load;  /**< the pkcs12 file load method. */

@@ -38,9 +38,19 @@ extern "C" {
  * @brief The xmlSecEncCtx mode.
  */
 typedef enum {
-    xmlEncCtxModeEncryptedData = 0,  /**< the &lt;enc:EncryptedData/&gt; element processing. */
-    xmlEncCtxModeEncryptedKey  /**< the &lt;enc:EncryptedKey/&gt; element processing. */
-} xmlEncCtxMode;
+    xmlSecEncCtxModeEncryptedData = 0,  /**< the &lt;enc:EncryptedData/&gt; element processing. */
+    xmlSecEncCtxModeEncryptedKey  /**< the &lt;enc:EncryptedKey/&gt; element processing. */
+} xmlSecEncCtxMode;
+
+/** @brief Deprecated. Use xmlSecEncCtxModeEncryptedData instead. */
+#define xmlEncCtxModeEncryptedData  xmlSecEncCtxModeEncryptedData
+
+/** @brief Deprecated. Use xmlSecEncCtxModeEncryptedKey instead. */
+#define xmlEncCtxModeEncryptedKey   xmlSecEncCtxModeEncryptedKey
+
+
+/** @brief Deprecated. Use xmlSecEncCtxMode instead. */
+#define xmlEncCtxMode               xmlSecEncCtxMode
 
 
 /**
@@ -59,7 +69,10 @@ typedef enum {
  * @brief If set, the replaced node will be returned in replacedNodeList.
  * @details If this flag is set, then the replaced node will be returned in the replacedNodeList.
  */
-#define XMLSEC_ENC_RETURN_REPLACED_NODE                 0x00000001
+#define XMLSEC_ENC_FLAGS_RETURN_REPLACED_NODE               0x00000001
+
+/** @brief Deprecated. Use XMLSEC_ENC_FLAGS_RETURN_REPLACED_NODE instead. */
+#define XMLSEC_ENC_RETURN_REPLACED_NODE                     XMLSEC_ENC_FLAGS_RETURN_REPLACED_NODE
 
 /**
  * @brief XML Encryption context.
@@ -69,7 +82,7 @@ struct _xmlSecEncCtx {
     void*                       userData;  /**< the pointer to user data (xmlsec and xmlsec-crypto libraries never touch this). */
     unsigned int                flags;  /**< the XML Encryption processing flags. */
     unsigned int                flags2;  /**< reserved for future. */
-    xmlEncCtxMode               mode;  /**< the mode. */
+    xmlSecEncCtxMode            mode;  /**< the mode. */
     xmlSecKeyInfoCtx            keyInfoReadCtx;  /**< the reading key context. */
     xmlSecKeyInfoCtx            keyInfoWriteCtx;  /**< the writing key context (not used for decryption). */
     xmlSecTransformCtx          transformCtx;  /**< the transforms processing context. */
@@ -98,7 +111,7 @@ struct _xmlSecEncCtx {
     xmlNodePtr                  keyInfoNode;  /**< the pointer to &lt;enc:KeyInfo/&gt; node. */
     xmlNodePtr                  cipherValueNode;  /**< the pointer to &lt;enc:CipherValue/&gt; node. */
 
-    xmlNodePtr                  replacedNodeList;  /**< the first node of the list of replaced nodes (populated when the #XMLSEC_ENC_RETURN_REPLACED_NODE flag is set). The library frees every node in the list when the context is reset or finalized (see #xmlSecEncCtxReset and #xmlSecEncCtxFinalize), so the application must not free the returned nodes itself and must consume them before resetting the context. */
+    xmlNodePtr                  replacedNodeList;  /**< the first node of the list of replaced nodes (populated when the #XMLSEC_ENC_FLAGS_RETURN_REPLACED_NODE flag is set). The library frees every node in the list when the context is reset or finalized (see #xmlSecEncCtxReset and #xmlSecEncCtxFinalize), so the application must not free the returned nodes itself and must consume them before resetting the context. */
     void*                       reserved1;  /**< reserved for the future. */
 };
 
@@ -119,7 +132,7 @@ XMLSEC_EXPORT int               xmlSecEncCtxXmlEncrypt          (xmlSecEncCtxPtr
                                                                  xmlNodePtr node);
 XMLSEC_EXPORT int               xmlSecEncCtxUriEncrypt          (xmlSecEncCtxPtr encCtx,
                                                                  xmlNodePtr tmpl,
-                                                                 const xmlChar *uri);
+                                                                 const xmlChar* uri);
 XMLSEC_EXPORT int               xmlSecEncCtxDecrypt             (xmlSecEncCtxPtr encCtx,
                                                                  xmlNodePtr node);
 XMLSEC_EXPORT xmlSecBufferPtr   xmlSecEncCtxDecryptToBuffer     (xmlSecEncCtxPtr encCtx,

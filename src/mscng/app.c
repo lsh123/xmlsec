@@ -195,8 +195,10 @@ xmlSecMSCngAppGetLocalMachineCertStoreName(void) {
  * @param type the expected key type.
  * @param format the key file format.
  * @param pwd the key file password.
- * @param pwdCallback the key password callback.
- * @param pwdCallbackCtx the user context for password callback.
+ * @param pwdCallback the key password callback. Not supported by the MSCng
+ * back-end and ignored; the password must be supplied via @p pwd.
+ * @param pwdCallbackCtx the user context for password callback. Not supported
+ * by the MSCng back-end and ignored.
  * @return pointer to the key or NULL if an error occurs.
  */
 
@@ -309,8 +311,10 @@ xmlSecMSCngAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATTR
  * @param dataSize the key binary data size.
  * @param format the key data format.
  * @param pwd the key data password.
- * @param pwdCallback the key password callback.
- * @param pwdCallbackCtx the user context for password callback.
+ * @param pwdCallback the key password callback. Not supported by the MSCng
+ * back-end and ignored; the password must be supplied via @p pwd.
+ * @param pwdCallbackCtx the user context for password callback. Not supported
+ * by the MSCng back-end and ignored.
  * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
@@ -463,8 +467,10 @@ xmlSecMSCngAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSec
  *
  * @param filename the PKCS12 key filename.
  * @param pwd the PKCS12 file password.
- * @param pwdCallback the password callback.
- * @param pwdCallbackCtx the user context for password callback.
+ * @param pwdCallback the password callback. Not supported by the MSCng
+ * back-end and ignored; the password must be supplied via @p pwd.
+ * @param pwdCallbackCtx the user context for password callback. Not supported
+ * by the MSCng back-end and ignored.
  * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
@@ -535,8 +541,10 @@ xmlSecMSCngIsPrivateKeyCert(PCCERT_CONTEXT cert, BOOL isPersistentKey) {
  * @param data the key binary data.
  * @param dataSize the key binary data size.
  * @param pwd the PKCS12 password.
- * @param pwdCallback the password callback.
- * @param pwdCallbackCtx the user context for password callback.
+ * @param pwdCallback the password callback. Not supported by the MSCng
+ * back-end and ignored; the password must be supplied via @p pwd.
+ * @param pwdCallbackCtx the user context for password callback. Not supported
+ * by the MSCng back-end and ignored.
  * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr

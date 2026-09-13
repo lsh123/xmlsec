@@ -254,7 +254,7 @@ xmlSecMSCngKeyAgreementGetPublicKey(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecKey
     xmlSecAssert2(hPrivKey != 0, 0);
 
     /* export bcrypt key */
-    hBCryptKey = xmlSecMSCngKeyDataGetPubKey(keyValue);
+    hBCryptKey = xmlSecMSCngKeyDataGetPubkey(keyValue);
     if (hBCryptKey == 0) {
         xmlSecInternalError("keyValue", NULL);
         goto done;
@@ -439,9 +439,9 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
             BCRYPT_SECRET_HANDLE hBCryptSecret = NULL;
             DWORD dwBCryptSecretLen = 0;
 
-            hOtherBCryptPubKey = xmlSecMSCngKeyDataGetPubKey(otherKeyValue);
+            hOtherBCryptPubKey = xmlSecMSCngKeyDataGetPubkey(otherKeyValue);
             if(hOtherBCryptPubKey == 0) {
-                xmlSecInternalError("xmlSecMSCngKeyDataGetPubKey(BCrypt DH)", NULL);
+                xmlSecInternalError("xmlSecMSCngKeyDataGetPubkey(BCrypt DH)", NULL);
                 goto done;
             }
 
@@ -513,9 +513,9 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
     }
 #endif /* !defined(XMLSEC_NO_DH) || !defined(XMLSEC_NO_XDH) */
 
-    hMyPrivKey = xmlSecMSCngKeyDataGetPrivKey(myKeyValue);
+    hMyPrivKey = xmlSecMSCngKeyDataGetPrivkey(myKeyValue);
     if (hMyPrivKey == 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataGetPrivKey", NULL);
+        xmlSecInternalError("xmlSecMSCngKeyDataGetPrivkey", NULL);
         return(-1);
     }
     /* pubkey is BCRYPT handle, we need to convert it to NCRYPT handle */

@@ -29,11 +29,18 @@ typedef unsigned long   DWORD;
 typedef unsigned char   BYTE;
 typedef unsigned char*  PBYTE;
 typedef unsigned char*  PUCHAR;
+typedef BYTE*           LPBYTE;
 typedef int             BOOL;
 typedef unsigned int    UINT;
 typedef unsigned long   ULONG;
 typedef long            LONG;
 typedef void*           HANDLE;
 typedef void*           HMODULE;
+
+typedef struct _FILETIME {
+    DWORD           dwLowDateTime;
+    DWORD           dwHighDateTime;
+} FILETIME;
+typedef FILETIME*       LPFILETIME;
 
 #endif /* XMLSEC_DOXYGEN_WINDOWS_H */

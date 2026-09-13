@@ -23,7 +23,6 @@
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
 #include <xmlsec/list.h>
-#include <xmlsec/x509.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -257,9 +256,9 @@ XMLSEC_EXPORT xmlSecKeyDataType xmlSecKeyDataGetType            (xmlSecKeyDataPt
 XMLSEC_EXPORT xmlSecSize        xmlSecKeyDataGetSize            (xmlSecKeyDataPtr data);
 
 XMLSEC_EXPORT void              xmlSecKeyDataDebugDump          (xmlSecKeyDataPtr data,
-                                                                 FILE *output);
+                                                                  FILE* output);
 XMLSEC_EXPORT void              xmlSecKeyDataDebugXmlDump       (xmlSecKeyDataPtr data,
-                                                                 FILE *output);
+                                                                  FILE* output);
 
 XMLSEC_EXPORT int               xmlSecKeyDataXmlRead            (xmlSecKeyDataId id,
                                                                  xmlSecKeyPtr key,
@@ -632,7 +631,7 @@ XMLSEC_EXPORT void              xmlSecKeyDataStoreDestroy       (xmlSecKeyDataSt
 /**
  * @brief The "unknown" id.
  */
-#define xmlSecKeyDataStoreIdUnknown                     NULL
+#define xmlSecKeyDataStoreIdUnknown                     ((xmlSecKeyDataStoreId)NULL)
 
 /**
  * @brief Key data store specific initialization method.

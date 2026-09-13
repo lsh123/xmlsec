@@ -47,12 +47,12 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoGenerateRandom    (xmlSecB
                                                                          xmlSecSize size);
 
 XMLSEC_CRYPTO_EXPORT void               xmlSecMSCryptoErrorsDefaultCallback (const char* file,
-                                                                        int line,
-                                                                        const char* func,
-                                                                        const char* errorObject,
-                                                                        const char* errorSubject,
-                                                                        int reason,
-                                                                        const char* msg);
+                                                                             int line,
+                                                                             const char* func,
+                                                                             const char* errorObject,
+                                                                             const char* errorSubject,
+                                                                             int reason,
+                                                                             const char* msg);
 
 /******************************************************************************
  *

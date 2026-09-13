@@ -21,6 +21,7 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/keysdata.h>
 #include <xmlsec/keyinfo.h>
+#include <xmlsec/x509.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -120,12 +121,19 @@ XMLSEC_EXPORT xmlSecKeyPtr      xmlSecKeyStoreFindKeyFromX509Data(xmlSecKeyStore
       xmlSecKeyStoreKlassGetName((store)->id) : NULL)
 
 /**
- * @brief Macro. Returns 1 if the store is not NULL and the store's id is not NULL.
- * @details Macro. Returns 1 if @p store is not NULL and @p store->id is not NULL or 0 otherwise.
+ * @brief Macro. Returns 1 if @p store is valid.
+ * @details Macro. Returns 1 if @p store is not NULL, @p store->id is not NULL,
+ * @p store->id->klassSize is at least sizeof(xmlSecKeyStoreKlass),
+ * @p store->id->objSize is at least sizeof(xmlSecKeyStore) and
+ * @p store->id->name is not NULL, or 0 otherwise.
  * @param store the pointer to the store.
  */
 #define xmlSecKeyStoreIsValid(store) \
-        ((( store ) != NULL) && ((( store )->id) != NULL))
+        ((( store ) != NULL) && \
+         (( store )->id != NULL) && \
+         (( store )->id->klassSize >= sizeof(xmlSecKeyStoreKlass)) && \
+         (( store )->id->objSize >= sizeof(xmlSecKeyStore)) && \
+         (( store )->id->name != NULL))
 /**
  * @brief Macro. Returns 1 if @p store is valid and @p store's id matches @p storeId.
  * @details Macro. Returns 1 if @p store is valid and @p store's id is equal to @p storeId.

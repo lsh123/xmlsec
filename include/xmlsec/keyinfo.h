@@ -69,8 +69,8 @@ typedef enum {
 #define XMLSEC_KEYINFO_FLAGS_STOP_ON_UNKNOWN_CHILD              0x00000002
 
 /**
- * @brief Abort on unknown KeyName content.
- * @details If flag is set then we abort if an unknown key name
+ * @brief DEPRECATED. Abort on unknown KeyName content.
+ * @details Deprecated, do not use. If flag is set then we abort if an unknown key name
  * (content of <dsig:KeyName /> element) is found.
  */
 #define XMLSEC_KEYINFO_FLAGS_KEYNAME_STOP_ON_UNKNOWN            0x00000004

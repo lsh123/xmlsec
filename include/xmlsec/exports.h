@@ -18,13 +18,9 @@ extern "C" {
 /* There are many variations of Windows */
 #if !defined(XMLSEC_WINDOWS)
 
-#if defined(WIN32) || defined(_WIN32) || defined(WINDOWS) || defined(_WINDOWS)
+#if defined(WIN32) || defined(_WIN32) || defined(__CYGWIN__) || defined(__MINGW32__) || defined(__MINGW64__)
 #define XMLSEC_WINDOWS 1
-#elif defined(__MINGW32__) || defined(__MINGW64__)
-#define XMLSEC_WINDOWS 1
-#elif defined(__CYGWIN__)
-#define XMLSEC_WINDOWS 1
-#endif /* defined(WIN32) || defined(_WIN32) || defined(WINDOWS) || defined(_WINDOWS) || defined(__MINGW32__) || defined(__MINGW64__) || defined(__CYGWIN__) */
+#endif /* defined(WIN32) || defined(_WIN32) */
 
 #endif /* !defined(XMLSEC_WINDOWS) */
 

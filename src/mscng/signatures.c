@@ -753,9 +753,9 @@ xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
     ctx = xmlSecMSCngSignatureGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    pubkey = xmlSecMSCngKeyDataGetPubKey(ctx->data);
+    pubkey = xmlSecMSCngKeyDataGetPubkey(ctx->data);
     if(pubkey == 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataGetPubKey", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecMSCngKeyDataGetPubkey", xmlSecTransformGetName(transform));
         goto done;
     }
 
@@ -914,9 +914,9 @@ xmlSecMSCngSignatureSign(
     xmlSecAssert2(outSize == 0, -1);
 
 
-    privkey = xmlSecMSCngKeyDataGetPrivKey(ctx->data);
+    privkey = xmlSecMSCngKeyDataGetPrivkey(ctx->data);
     if (privkey == 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataGetPrivKey", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecMSCngKeyDataGetPrivkey", xmlSecTransformGetName(transform));
         return(-1);
     }
 

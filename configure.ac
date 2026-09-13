@@ -823,7 +823,7 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
         AC_EGREP_CPP(greater-than-minvers, [
             #include <openssl/opensslv.h>
             #include <openssl/crypto.h>
-            #if OPENSSL_VERSION_NUMBER >= 0x10100010L
+            #if OPENSSL_VERSION_NUMBER >= 0x10101000L
             #ifdef OPENSSL_IS_AWSLC
             greater-than-minvers
             #endif
@@ -843,7 +843,7 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
         AC_EGREP_CPP(greater-than-minvers, [
             #include <openssl/opensslv.h>
             #include <openssl/crypto.h>
-            #if OPENSSL_VERSION_NUMBER >= 0x10100010L
+            #if OPENSSL_VERSION_NUMBER >= 0x10101000L
             #ifdef OPENSSL_IS_BORINGSSL
             greater-than-minvers
             #endif
@@ -890,7 +890,7 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
     if test "z$XMLSEC_OPENSSL_VERSION" = "z" ; then
         AC_EGREP_CPP(greater-than-minvers, [
             #include <openssl/opensslv.h>
-            #if OPENSSL_VERSION_NUMBER >= 0x10100010L
+            #if OPENSSL_VERSION_NUMBER >= 0x10101000L
             greater-than-minvers
             #endif
         ],[

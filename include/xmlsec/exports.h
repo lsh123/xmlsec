@@ -64,7 +64,7 @@ extern "C" {
  /* XMLSEC_CRYPTO_EXPORT macro should only be used in the xmlsec-<crypto> libraries */
 #if !defined XMLSEC_CRYPTO_EXPORT
 #  if defined(XMLSEC_WINDOWS)
-     /* if we compile libxmlsec itself: */
+     /* if we compile libxmlsec-<crypto> itself: */
 #    if defined(IN_XMLSEC_CRYPTO)
 #      if !defined(XMLSEC_STATIC)
 #        define XMLSEC_CRYPTO_EXPORT __declspec(dllexport)
@@ -91,7 +91,7 @@ extern "C" {
 #endif /* !defined XMLSEC_CRYPTO_EXPORT */
 
 
- /* XMLSEC_EXPORT_VAR macro should only be used in the "core" library */
+ /* XMLSEC_EXPORT_VAR macro should only be used in the "core" and xmlsec-<crypto> libraries */
 #if !defined XMLSEC_EXPORT_VAR
 #  if defined(XMLSEC_WINDOWS)
      /* if we compile libxmlsec itself: */

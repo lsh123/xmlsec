@@ -52,7 +52,7 @@ static int              xmlSecTmplNodeWriteNsList       (xmlNodePtr parentNode,
  *                      to ensure that all the children nodes have correct
  *                      pointer to XML document.
  * @param c14nMethodId the signature canonicalization method.
- * @param signMethodId the signature  method.
+ * @param signMethodId the signature method.
  * @param id the node id (may be NULL).
  *
  * @return the pointer to newly created &lt;dsig:Signature/&gt; node or NULL if an
@@ -79,7 +79,7 @@ xmlSecTmplSignatureCreate(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
  *                      to ensure that all the children nodes have correct
  *                      pointer to XML document.
  * @param c14nMethodId the signature canonicalization method.
- * @param signMethodId the signature  method.
+ * @param signMethodId the signature method.
  * @param id the node id (may be NULL).
  * @param nsPrefix the namespace prefix for the signature element (e.g. "dsig"), or NULL
  *
@@ -475,7 +475,7 @@ xmlSecTmplReferenceAddTransform(xmlNodePtr referenceNode, xmlSecTransformId tran
  * @details Adds &lt;dsig:SignatureProperties/&gt; node to the &lt;dsig:Object/&gt; node @p objectNode.
  * @param objectNode the  pointer to &lt;dsig:Object/&gt; node.
  * @param id the node id (may be NULL).
- * @param target the Target  (may be NULL).
+ * @param target the Target (may be NULL).
  *
  * @return the pointer to newly created &lt;dsig:SignatureProperties/&gt; node or NULL
  * if an error occurs.
@@ -569,7 +569,7 @@ xmlSecTmplManifestAddReference(xmlNodePtr manifestNode, xmlSecTransformId digest
 /**
  * @brief Creates a new &lt;enc:EncryptedData/&gt; node for encryption template.
  * @details Creates new <enc:EncryptedData /> node for encryption template.
- * @param doc the pointer to signature document or NULL; in the later
+ * @param doc the pointer to encryption document or NULL; in the second
  *                      case, application must later call xmlSetTreeDoc to ensure
  *                      that all the children nodes have correct pointer to XML document.
  * @param encMethodId the encryption method (may be NULL).
@@ -578,7 +578,7 @@ xmlSecTmplManifestAddReference(xmlNodePtr manifestNode, xmlSecTransformId digest
  * @param mimeType the MimeType attribute (optional)
  * @param encoding the Encoding attribute (optional)
  *
- * @return the pointer newly created  &lt;enc:EncryptedData/&gt; node or NULL
+ * @return the pointer to newly created  &lt;enc:EncryptedData/&gt; node or NULL
  * if an error occurs.
  */
 xmlNodePtr
@@ -1145,7 +1145,7 @@ xmlSecTmplKeyInfoAddX509Data(xmlNodePtr keyInfoNode) {
  * @details Adds &lt;dsig:RetrievalMethod/&gt; node to the &lt;dsig:KeyInfo/&gt; node @p keyInfoNode.
  * @param keyInfoNode the pointer to &lt;dsig:KeyInfo/&gt; node.
  * @param uri the URI attribute (optional).
- * @param type the Type attribute(optional).
+ * @param type the Type attribute (optional).
  *
  * @return the pointer to the newly created &lt;dsig:RetrievalMethod/&gt; node or
  * NULL if an error occurs.
@@ -1613,8 +1613,8 @@ xmlSecTmplTransformAddHmacOutputLength(xmlNodePtr transformNode, xmlSecSize bits
 }
 
 /**
- * @brief Creates a &lt;enc:OAEPParam/&gt; child node in the @p node.
- * @details Creates &lt;enc:OAEPParam/&gt; child node in the @p node.
+ * @brief Creates a &lt;enc:OAEPparams/&gt; child node in the @p transformNode.
+ * @details Creates &lt;enc:OAEPparams/&gt; child node in the @p transformNode.
  * @param transformNode the pointer to &lt;dsig:Transform/&gt; node.
  * @param buf the OAEP param buffer.
  * @param size the OAEP param buffer size.
@@ -1663,7 +1663,7 @@ xmlSecTmplTransformAddRsaOaepParam(xmlNodePtr transformNode, const xmlSecByte *b
 }
 
 /**
- * @brief Creates &lt;enc:MGF/&gt; child node in the @p node.
+ * @brief Creates &lt;enc11:MGF/&gt; child node in the @p transformNode.
  * @param transformNode the pointer to &lt;dsig:Transform/&gt; node.
  * @param algorithm MGF1 algorithm href.
  *
@@ -1699,8 +1699,8 @@ xmlSecTmplTransformAddRsaMgf(xmlNodePtr transformNode,
 }
 
 /**
- * @brief Creates a &lt;dsig:DigestMethod/&gt; child node in the @p node.
- * @details Creates &lt;dsig:DigestMethod/&gt; child node in the @p node.
+ * @brief Creates a &lt;dsig:DigestMethod/&gt; child node in the @p transformNode.
+ * @details Creates &lt;dsig:DigestMethod/&gt; child node in the @p transformNode.
  * @param transformNode the pointer to &lt;dsig:Transform/&gt; node.
  * @param algorithm digest algorithm href.
  *
@@ -1736,7 +1736,7 @@ xmlSecTmplTransformAddRsaDigest(xmlNodePtr transformNode, const xmlChar *algorit
 
 /**
  * @brief Writes an XSLT transform expression to the &lt;dsig:Transform/&gt; node.
- * @details Writes the XSLT transform expression to the @p node.
+ * @details Writes the XSLT transform expression to the @p transformNode.
  * @param transformNode the pointer to &lt;dsig:Transform/&gt; node.
  * @param xslt the XSLT transform expression.
  *
@@ -1769,7 +1769,7 @@ xmlSecTmplTransformAddXsltStylesheet(xmlNodePtr transformNode, const xmlChar *xs
 
 /**
  * @brief Adds inclusive namespaces to the ExcC14N transform node.
- * @details Adds "inclusive" namespaces to the ExcC14N transform node @p node.
+ * @details Adds "inclusive" namespaces to the ExcC14N transform node @p transformNode.
  * @param transformNode the pointer to &lt;dsig:Transform/&gt; node.
  * @param prefixList the white space delimited  list of namespace prefixes,
  *                      where "#default" indicates the default namespace
@@ -1810,7 +1810,7 @@ xmlSecTmplTransformAddC14NInclNamespaces(xmlNodePtr transformNode,
 /**
  * @brief Writes XPath transform information to the &lt;dsig:Transform/&gt; node.
  * @details Writes XPath transform information to the &lt;dsig:Transform/&gt; node
- * @p node.
+ * @p transformNode.
  * @param transformNode the pointer to the &lt;dsig:Transform/&gt; node.
  * @param expression the XPath expression.
  * @param nsList the NULL terminated list of namespace prefix/href pairs
@@ -1853,7 +1853,7 @@ xmlSecTmplTransformAddXPath(xmlNodePtr transformNode, const xmlChar *expression,
 /**
  * @brief Writes XPath2 transform information to the &lt;dsig:Transform/&gt; node.
  * @details Writes XPath2 transform information to the &lt;dsig:Transform/&gt; node
- * @p node.
+ * @p transformNode.
  * @param transformNode the pointer to the &lt;dsig:Transform/&gt; node.
  * @param type the XPath2 transform type ("union", "intersect" or "subtract").
  * @param expression the XPath expression.
@@ -1901,9 +1901,9 @@ xmlSecTmplTransformAddXPath2(xmlNodePtr transformNode, const xmlChar* type,
 /**
  * @brief Writes XPointer transform information to the &lt;dsig:Transform/&gt; node.
  * @details Writes XPointer transform information to the &lt;dsig:Transform/&gt; node
- * @p node.
+ * @p transformNode.
  * @param transformNode the pointer to the &lt;dsig:Transform/&gt; node.
- * @param expression the XPath expression.
+ * @param expression the XPointer expression.
  * @param nsList the NULL terminated list of namespace prefix/href pairs.
  *                      (optional).
  *

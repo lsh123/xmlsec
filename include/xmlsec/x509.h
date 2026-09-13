@@ -20,10 +20,11 @@
 /**
  * @brief The content of a child of X509Data node.
  * @details The content of a child of &lt;X509Data/&gt; node. Not all values will be set!
- * The structure (and its members) is allocated and freed by the library
- * (e.g. inside the xmlSecKeyX509Data* handling); there is no public
- * init/finalize API and the callers must not free the structure or its
- * members directly.
+ * The structure (and its members) are allocated and freed by the caller;
+ * a caller that builds a value for the public find APIs (e.g.
+ * #xmlSecKeysMngrFindKeyFromX509Data, #xmlSecKeyStoreFindKeyFromX509Data)
+ * owns the structure and all of its members (the buffers and the
+ * xmlChar* strings) and must free them.
  */
 struct _xmlSecKeyX509DataValue {
     xmlSecBuffer cert;  /**< the certificate from &lt;dsig:X509Certificate/&gt; node. */
@@ -46,7 +47,7 @@ struct _xmlSecKeyX509DataValue {
 typedef struct _xmlSecKeyX509DataValue                  xmlSecKeyX509DataValue;
 
 /**
- * @brief Pointer to #_xmlSecKeyX509DataValue.
+ * @brief Pointer to #xmlSecKeyX509DataValue.
  */
 typedef struct _xmlSecKeyX509DataValue                  *xmlSecKeyX509DataValuePtr;
 

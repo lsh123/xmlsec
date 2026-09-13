@@ -139,7 +139,7 @@ xmlSecDSigCtxInitialize(xmlSecDSigCtxPtr dsigCtx, xmlSecKeysMngrPtr keysMngr) {
     /* it's not wise to write private key :) */
     dsigCtx->keyInfoWriteCtx.keyReq.keyType = xmlSecKeyDataTypePublic;
 
-    /* initializes transforms dsigCtx */
+    /* initialize transforms dsigCtx */
     ret = xmlSecTransformCtxInitialize(&(dsigCtx->transformCtx));
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformCtxInitialize", NULL);
@@ -654,7 +654,7 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node, xm
         cur = xmlSecGetNextElementNode(cur->next);
     } else if(dsigCtx->defC14NMethodId != xmlSecTransformIdUnknown) {
         /* the dsig spec does require CanonicalizationMethod node
-         * to be present but in some case the application might decide to
+         * to be present but in some cases the application might decide to
          * minimize traffic */
         dsigCtx->c14nMethod = xmlSecTransformCtxCreateAndAppend(&(dsigCtx->transformCtx),
                                                               dsigCtx->defC14NMethodId);
@@ -696,7 +696,7 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node, xm
         cur = xmlSecGetNextElementNode(cur->next);
     } else if(dsigCtx->defSignMethodId != xmlSecTransformIdUnknown) {
         /* the dsig spec does require SignatureMethod node
-         * to be present but in some case the application might decide to
+         * to be present but in some cases the application might decide to
          * minimize traffic */
         dsigCtx->signMethod = xmlSecTransformCtxCreateAndAppend(&(dsigCtx->transformCtx), dsigCtx->defSignMethodId);
         if(dsigCtx->signMethod == NULL) {
@@ -905,8 +905,8 @@ xmlSecDSigCtxProcessObjectNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
  * is pointed to from SignedInfo, the digest over the Manifest itself will be
  * checked by the core result validation behavior. The digests within such
  * a Manifest are checked at the application's discretion. If a Manifest is
- * referenced from another Manifest, even the overall digest of this two level
- * deep Manifest might not be checked.
+ * referenced from another Manifest, even the overall digest of this two-level-deep
+ * Manifest might not be checked.
  *
  * Schema Definition:
  * @code{.xml}
@@ -1238,7 +1238,7 @@ xmlSecDSigReferenceCtxInitialize(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlSecDSi
     dsigRefCtx->dsigCtx = dsigCtx;
     dsigRefCtx->origin = origin;
 
-    /* initializes transforms dsigRefCtx */
+    /* initialize transforms dsigRefCtx */
     ret = xmlSecTransformCtxInitialize(&(dsigRefCtx->transformCtx));
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformCtxInitialize", NULL);
@@ -1401,7 +1401,7 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
         cur = xmlSecGetNextElementNode(cur->next);
     } else if(dsigRefCtx->dsigCtx->defDigestMethodId != xmlSecTransformIdUnknown) {
         /* the dsig spec does require DigestMethod node
-         * to be present but in some case the application might decide to
+         * to be present but in some cases the application might decide to
          * minimize traffic */
         dsigRefCtx->digestMethod = xmlSecTransformCtxCreateAndAppend(&(dsigRefCtx->transformCtx), dsigRefCtx->dsigCtx->defDigestMethodId);
         if(dsigRefCtx->digestMethod == NULL) {
@@ -1555,7 +1555,7 @@ xmlSecDSigReferenceCtxDebugDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* outp
 
 /**
  * @brief Prints debug information about the reference context in XML format.
- * @details Prints debug information about @p dsigRefCtx to @p output in output format.
+ * @details Prints debug information about @p dsigRefCtx to @p output in XML format.
  * @param dsigRefCtx the pointer to &lt;dsig:Reference/&gt; element processing context.
  * @param output the pointer to output FILE.
  */

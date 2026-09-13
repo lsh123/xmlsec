@@ -200,7 +200,7 @@ xmlSecIOShutdown(void) {
 
 /**
  * @brief Clears all input callbacks.
- * @details Clears the entire input callback table. this includes the
+ * @details Clears the entire input callback table. This includes the
  * compiled-in I/O.
  */
 void
@@ -210,12 +210,12 @@ xmlSecIOCleanupCallbacks(void) {
 
 /**
  * @brief Registers I/O callbacks for parser input.
- * @details Register a new set of I/O callback for handling parser input.
+ * @details Register a new set of I/O callbacks for handling parser input.
  * @param matchFunc the protocol match callback.
  * @param openFunc the open stream callback.
  * @param readFunc the read from stream callback.
  * @param closeFunc the close stream callback.
- * @return the 0 on success or a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecIORegisterCallbacks(xmlInputMatchCallback matchFunc,
@@ -254,10 +254,10 @@ xmlSecIOFileExtractFilename(char const* filename, char** out) {
     } else if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file:///", 8)) {
         escaped = &filename[7];
     } else if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file://", 7)) {
-        /* lots of generators seems too lazy to read RFC 1738 */
+        /* lots of generators seem too lazy to read RFC 1738 */
         escaped = &filename[6];
     } else if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file:/", 6)) {
-        /* lots of generators seems too lazy to read RFC 1738 */
+        /* lots of generators seem too lazy to read RFC 1738 */
         escaped = &filename[5];
     } else {
         (*out) = NULL;
@@ -470,7 +470,7 @@ static xmlSecTransformKlass xmlSecTransformInputURIKlass = {
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
     NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     NULL,                                       /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformInputURIPopBin,              /* xmlSecTransformPopBinMethod popBin; */
@@ -484,7 +484,7 @@ static xmlSecTransformKlass xmlSecTransformInputURIKlass = {
 
 /**
  * @brief Gets the input URI transform klass.
- * @details The input uri transform klass. Reads binary data from an uri.
+ * @details The input uri transform klass. Reads binary data from a URI.
  * @return input URI transform id.
  */
 xmlSecTransformId

@@ -43,9 +43,11 @@ typedef enum {
 
 /**
  * @brief Use the exact memory allocation mode.
- * @details The exact memory allocation mode (see #xmlSecAllocModeExact) is the
- * default and is used when the #XMLSEC_BUFFER_FLAG_ALLOC_MODE_DOUBLE flag is
- * not set; this flag is not actually set (its value is 0x0000).
+ * @details The double memory allocation mode (see #xmlSecAllocModeDouble) is
+ * the default; the exact memory allocation mode (see #xmlSecAllocModeExact)
+ * is used when the #XMLSEC_BUFFER_FLAG_ALLOC_MODE_DOUBLE flag is not set.
+ * This flag is not actually set (its value is 0x0000), so setting it has
+ * no observable effect.
  */
 #define XMLSEC_BUFFER_FLAG_ALLOC_MODE_EXACT      0x0000
 

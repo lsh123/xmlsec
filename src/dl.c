@@ -47,7 +47,7 @@
  *
  * loaded libraries list
  *
-  *****************************************************************************/
+******************************************************************************/
 typedef struct _xmlSecCryptoDLLibrary                                   xmlSecCryptoDLLibrary,
                                                                         *xmlSecCryptoDLLibraryPtr;
 struct _xmlSecCryptoDLLibrary {
@@ -342,7 +342,7 @@ xmlSecCryptoDLLibrariesListFindByName(xmlSecPtrListPtr list, const xmlChar* name
  *
  * Dynamic load functions
  *
-  *****************************************************************************/
+******************************************************************************/
 static xmlSecCryptoDLFunctionsPtr gXmlSecCryptoDLFunctions = NULL;
 static xmlSecPtrList gXmlSecCryptoDLLibraries;
 
@@ -378,7 +378,7 @@ xmlSecCryptoDLInit(void) {
 
 /**
  * @brief Shuts down the dynamic library loading engine.
- * @details Shutdowns dynamic loading engine. This is an internal function
+ * @details Shuts down dynamic loading engine. This is an internal function
  * and should not be called by application directly.
  * @return 0 on success or a negative value if an error occurs.
  */
@@ -422,7 +422,7 @@ xmlSecCryptoDLLoadLibrary(const xmlChar* crypto) {
     xmlSecCryptoDLFunctionsPtr functions;
     int ret;
 
-    /* if crypto is not specified, then used default */
+    /* if crypto is not specified, then use the default */
     functions = xmlSecCryptoDLGetLibraryFunctions((crypto != NULL) ? crypto : xmlSecGetDefaultCrypto());
     if(functions == NULL) {
         xmlSecInternalError("xmlSecCryptoDLGetLibraryFunctions", NULL);
@@ -487,8 +487,8 @@ xmlSecCryptoDLGetLibraryFunctions(const xmlChar* crypto) {
 
 /**
  * @brief Unloads a crypto library.
- * @details Unloads the xmlsec-$crypto library. All pointers to this library
- * functions tables became invalid. This function is NOT thread safe,
+ * @details Unloads the xmlsec-$crypto library. All pointers to this library's
+ * function tables become invalid. This function is NOT thread safe,
  * application MUST NOT call #xmlSecCryptoDLLoadLibrary, #xmlSecCryptoDLGetLibraryFunctions,
  * and #xmlSecCryptoDLUnloadLibrary functions from multiple threads.
  * @param crypto the desired crypto library name ("openssl", "nss", ...).
@@ -586,9 +586,9 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
 
     /******************************************************************************
      *
-     * Register keys
-     *
-      *****************************************************************************/
+      * Register keys
+      *
+    *****************************************************************************/
 
     /* raw key values should not be used in production w/o understanding of the security risks */
     XMLSEC_REGISTER_DISABLED_KEY_DATA(Aes);                  // keyDataAesGetKlass
@@ -621,9 +621,9 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
 
     /******************************************************************************
      *
-     * Register transforms
-     *
-      *****************************************************************************/
+      * Register transforms
+      *
+    *****************************************************************************/
     XMLSEC_REGISTER_TRANSFORM(Aes128Cbc);                           // transformAes128CbcGetKlass
     XMLSEC_REGISTER_TRANSFORM(Aes192Cbc);                           // transformAes192CbcGetKlass
     XMLSEC_REGISTER_TRANSFORM(Aes256Cbc);                           // transformAes256CbcGetKlass

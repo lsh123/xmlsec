@@ -11,7 +11,7 @@
 /**
  * @defgroup xmlsec_core_templates XML Templates
  * @ingroup xmlsec_core
- * @brief Functions for creating XMLDSig and XMLEnc XML template documents.
+ * @brief Functions for creating XMLDSig and XMLEnc XML template elements/nodes.
  * @{
  */
 

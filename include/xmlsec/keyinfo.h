@@ -126,9 +126,11 @@ typedef enum {
 #define XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT      0x00000800
 
 /**
- * @brief Stop when EncryptedKey element processing fails.
- * @details If the flag is set then we'll stop when <enc:EncryptedKey /> element
- * processing fails.
+ * @brief Stop when key recovery from an encrypted key element fails.
+ * @details If the flag is set then we'll stop when key recovery fails while
+ * processing <enc:EncryptedKey />, <enc11:DerivedKey />, <enc:AgreementMethod />
+ * or <as:EncapsulationMechanism /> elements. Other processing errors always
+ * cause an abort regardless of this flag.
  */
 #define XMLSEC_KEYINFO_FLAGS_ENCKEY_STOP_ON_FAILED_DECRYPTION   0x00001000
 
@@ -142,7 +144,7 @@ typedef enum {
 
 /**
  * @brief Stop when an empty node is found.
- * @details If the flag is set then we'll stop when we found an empty node.
+ * @details If the flag is set then we'll stop when we find an empty node.
  * Otherwise we just ignore it.
  */
 #define XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE                 0x00002000
@@ -178,7 +180,7 @@ struct _xmlSecKeyInfoCtx {
     xmlSecKeysMngrPtr                   keysMngr;  /**< the pointer to current keys manager. */
     xmlSecKeyInfoMode                   mode;  /**< do we read or write <dsig:KeyInfo /> element. */
     xmlSecPtrList                       enabledKeyData;  /**< the list of enabled #xmlSecKeyDataId (if list is empty then all data ids are enabled). */
-    int                                 base64LineSize;  /**< the max columns size for base64 encoding. */
+    int                                 base64LineSize;  /**< the maximum column size for base64 encoding. */
 
     /* RetrievalMethod */
     xmlSecTransformCtx                  retrievalMethodCtx;  /**< the transforms context for <dsig:RetrievalMethod /> element processing. */
@@ -197,7 +199,7 @@ struct _xmlSecKeyInfoCtx {
 #ifndef XMLSEC_NO_X509
     /* x509 certificates */
     time_t                              certsVerificationTime;  /**< the time to use for X509 certificates verification ("not valid before" and "not valid after" checks); if #certsVerificationTime is equal to 0 (default) then we verify certificates against the system's clock "now". */
-    int                                 certsVerificationDepth;  /**< the max certifications chain length (default is 9). */
+    int                                 certsVerificationDepth;  /**< the max certificate chain length (default is 9). */
 #endif /* XMLSEC_NO_X509 */
 
     /* DEPRECATED: PGP */
@@ -207,7 +209,7 @@ struct _xmlSecKeyInfoCtx {
     int                                 curRetrievalMethodLevel;  /**< the current &lt;dsig:RetrievalMethod/&gt; element processing level (see #maxRetrievalMethodLevel). */
     int                                 curKeyInfoReferenceLevel;  /**< the current &lt;dsig11:KeyInfoReference/&gt; element processing level (see #maxKeyInfoReferenceLevel). */
 #ifndef XMLSEC_NO_XMLENC
-    int                                 curEncryptedKeyLevel;  /**< the current &lt;enc:EncryptedKey/&gt; or &lt;enc11:DerivedKey/&gt; element processing level (see #maxEncryptedKeyLevel). */
+    int                                 curEncryptedKeyLevel;  /**< the current &lt;enc:EncryptedKey/&gt;, &lt;enc11:DerivedKey/&gt;, &lt;enc:AgreementMethod/&gt; or &lt;as:EncapsulationMechanism/&gt; element processing level (see #maxEncryptedKeyLevel). */
 #endif /* XMLSEC_NO_XMLENC */
     xmlSecTransformOperation            operation;  /**< the transform operation for this key info. */
     xmlSecKeyReq                        keyReq;  /**< the current key requirements. */

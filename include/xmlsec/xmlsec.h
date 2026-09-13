@@ -29,12 +29,12 @@ extern "C" {
 /**
  * @defgroup xmlsec_core_helpers XML Security Init/Shutdown
  * @ingroup xmlsec_core
- * @brief Library initialisation, shutdown, configuration, and other helper functions and macros.
+ * @brief Library initialization, shutdown, configuration, and other helper functions and macros.
  * @{
  */
 
 /**
- * @brief Marks function as deprecated.
+ * @brief Marks a function as deprecated.
  */
 #if !defined(XMLSEC_DEPRECATED)
 #  if !defined(IN_XMLSEC) && !defined(IN_XMLSEC_CRYPTO)

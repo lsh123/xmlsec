@@ -72,6 +72,7 @@
  * See e.g. <http://errorco.de/win32/ntstatus-h/> to look up the matching define.
  * @param errorFunction the failed function name.
  * @param errorObject the specific error object (e.g. transform, key data, etc).
+ * @param status the NTSTATUS error code.
  */
 #define xmlSecMSCngNtError(errorFunction, errorObject, status) \
     do {                                                       \
@@ -90,7 +91,8 @@
  * See e.g. <http://errorco.de/win32/ntstatus-h/> to look up the matching define.
  * @param errorFunction the failed function name.
  * @param errorObject the specific error object (e.g. transform, key data, etc).
- * @param msg the extra message.
+ * @param status the NTSTATUS error code.
+ * @param msg the extra message (must be a string literal, it is concatenated with the backend error suffix at compile time).
  * @param param the extra message param.
  */
 #define xmlSecMSCngNtError2(errorFunction, errorObject, status, msg, param) \
@@ -111,7 +113,8 @@
  * See e.g. <http://errorco.de/win32/ntstatus-h/> to look up the matching define.
  * @param errorFunction the failed function name.
  * @param errorObject the specific error object (e.g. transform, key data, etc).
- * @param msg the extra message.
+ * @param status the NTSTATUS error code.
+ * @param msg the extra message (must be a string literal, it is concatenated with the backend error suffix at compile time).
  * @param param1 the extra message param1.
  * @param param2 the extra message param2.
  */

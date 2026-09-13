@@ -2090,7 +2090,7 @@ xmlSecCryptoAppShutdown(void) {
 /**
  * @brief Initializes the keys manager with default stores.
  * @details Initializes @p mngr with simple keys store #xmlSecSimpleKeysStoreId
- * and a default crypto key data stores.
+ * and default crypto key data stores.
  * @param mngr the pointer to keys manager.
  * @return 0 on success or a negative value otherwise.
  */
@@ -2129,7 +2129,7 @@ xmlSecCryptoAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key)
  * @brief Verifies a key using the keys manager.
  * @details Verifies @p key with the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
  * function:
- * - Checks that key certificate is present
+ * - Checks that the key certificate is present
  * - Checks that key certificate is valid
  *
  * Adds @p key to the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
@@ -2170,7 +2170,7 @@ xmlSecCryptoAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
 }
 
 /**
- * @brief Saves keys from @p mngr to  XML keys file.
+ * @brief Saves keys from @p mngr to XML keys file.
  * @param mngr the pointer to keys manager.
  * @param filename the destination filename.
  * @param type the type of keys to save (public/private/symmetric).
@@ -2257,7 +2257,7 @@ xmlSecCryptoAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xml
 
 /**
  * @brief Loads and verifies a CRL into the keys manager.
- * @details Reads and verifies the CRL from @p filename.  If verification is successful, the CRL is added to
+ * @details Reads and verifies the CRL from @p filename. If verification is successful, the CRL is added to
  * the keys manager @p mngr.
  * @param mngr the keys manager.
  * @param filename the CRL file.
@@ -2280,7 +2280,7 @@ xmlSecCryptoAppKeysMngrCrlLoadAndVerify(xmlSecKeysMngrPtr mngr, const char *file
 
 /**
  * @brief Loads CRLs from memory into the keys manager.
- * @details Reads crl from binary buffer @p data and adds to the list of crls in @p mngr.
+ * @details Reads CRLs from binary buffer @p data and adds to the list of crls in @p mngr.
  * @param mngr the keys manager.
  * @param data the CRL binary data.
  * @param dataSize the CRL binary data size.

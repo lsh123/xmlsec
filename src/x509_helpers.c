@@ -186,7 +186,7 @@ xmlSecKeyDataX509XmlRead(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xmlNodePtr nod
             if(tmpKey != NULL) {
                 ret = xmlSecKeySwap(key, tmpKey);
                 if(ret < 0) {
-                    xmlSecInternalError("xmlSecKeysMngrFindKeyFromX509Data", NULL);
+                    xmlSecInternalError("xmlSecKeySwap", NULL);
                     xmlSecKeyDestroy(tmpKey);
                     goto done;
                 }
@@ -659,7 +659,7 @@ xmlSecKeyX509DataValueXmlRead(xmlSecKeyX509DataValuePtr x509Value, xmlNodePtr no
             return(-1);
         }
 
-        /* The&lt;dsig11:X509Digest/&gt; element contains a base64-encoded digest of a certificate. */
+        /* The <dsig11:X509Digest/> element contains a base64-encoded digest of a certificate. */
         ret = xmlSecKeyX509DataValueXmlReadBase64Blob(&(x509Value->digest), node, keyInfoCtx);
         if(ret < 0) {
             xmlSecInternalError("xmlSecKeyX509DataValueXmlReadBase64Blob(digest)", NULL);
@@ -975,7 +975,7 @@ xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
             break;
         default:
             /* This should not be possible: logical error! */
-            xmlSecInternalError2("", NULL, "invalid state=%d while parsing x509 name", state);
+            xmlSecInternalError2("xmlSecX509EscapedStringRead", NULL, "invalid state=%d while parsing x509 name", state);
             return(-1);
         }
     }
@@ -998,7 +998,7 @@ xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
  * three types:
  *   - string (eg 'abc')
  *   - quoted string (eg '"abc"')
- *   - hexstring (eg '@p A0B0')
+ *   - hexstring (eg '#A0B0')
  * The function parses the string in the @p in parameter until end of string or @p delim is encountered.
  * The @p in and @p inSize parameters are moved to the next character (e.g. delimiter if it was encountered
  * during parsing).
@@ -1084,7 +1084,7 @@ xmlSecX509AttrValueStringRead(
 
         /* process pair hex hex from input */
         while((jj < outSize) && ((*inSize) > 0) && (xmlSecIsHex(**in))) {
-            /* we always expect pairs of hex digits*/
+            /* we always expect pairs of hex digits */
             if((*inSize) < 2) {
                 xmlSecInvalidDataError("Expected two hex characters in octet string but got only one", NULL);
                 return(-1);

@@ -64,7 +64,7 @@ extern "C" {
 
 /**
  * @brief The feature is disabled during compilation.
- * @details The feature is disabled during compilation. Check './configure --help' for details on how to enable it.
+ * @details Check './configure --help' for the options that enable this feature.
  */
 #define XMLSEC_ERRORS_R_DISABLED                        8
 
@@ -205,7 +205,7 @@ extern "C" {
 #define XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST          43
 
 /**
- * @brief Invalid key size.
+ * @brief Invalid key data size.
  */
 #define XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE           44
 
@@ -220,7 +220,7 @@ extern "C" {
 #define XMLSEC_ERRORS_R_KEYDATA_DISABLED                46
 
 /**
- * @brief Max allowed retrievals level reached.
+ * @brief Maximum retrieval level reached.
  */
 #define XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL            51
 
@@ -281,12 +281,12 @@ extern "C" {
 #define XMLSEC_ERRORS_R_CRL_NOT_YET_VALID              78
 
 /**
- * @brief "Next update" verification failed.
+ * @brief "Next update" CRL verification failed.
  */
 #define XMLSEC_ERRORS_R_CRL_HAS_EXPIRED                79
 
 /**
- * @brief The &lt;dsig:Reference/&gt; nodes not found.
+ * @brief The &lt;dsig:Reference/&gt; nodes were not found.
  */
 #define XMLSEC_ERRORS_R_DSIG_NO_REFERENCES              81
 
@@ -376,7 +376,7 @@ XMLSEC_EXPORT void              xmlSecErrorsPrintCryptoLibraryLogOnExitSet      
  */
 #define XMLSEC_FUNCTION __func__
 
-/* fallback for __FUNCTION__ */
+/* fallback: empty string for other compilers */
 #else
 #define XMLSEC_FUNCTION  ""
 #endif
@@ -399,14 +399,14 @@ XMLSEC_EXPORT void              xmlSecErrorsPrintCryptoLibraryLogOnExitSet      
 #endif /* __GNUC__ */
 
 /**
- * @brief Macro. Returns @p str if it is not NULL or pointer to "NULL" otherwise.
+ * @brief Macro. Returns @p str if it is not NULL or a pointer to "NULL" otherwise.
  * @param str the string.
  */
 #define xmlSecErrorsSafeString(str) \
         (((str) != NULL) ? ((const char*)(str)) : (const char*)"NULL")
 
 /**
- * @brief Empty error message " ".
+ * @brief Placeholder/blank error message " ".
  */
 #define XMLSEC_ERRORS_NO_MESSAGE                " "
 

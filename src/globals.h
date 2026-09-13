@@ -6,7 +6,7 @@
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * @brief Internal header defining build-time macros.
+ * @brief Internal header defining the compile-time marker macros IN_XMLSEC and XMLSEC_PRIVATE and including the error-reporting helper macros.
  */
 
 #ifndef XMLSEC_CORE_GLOBALS_H

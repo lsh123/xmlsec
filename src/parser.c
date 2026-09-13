@@ -194,7 +194,6 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
             return(-1);
         }
 
-        /* todo: check that document is well formed? */
         transform->outNodes = xmlSecNodeSetCreate(ctx->parserCtx->myDoc, NULL, xmlSecNodeSetTree);
         if(transform->outNodes == NULL) {
             xmlSecInternalError("xmlSecNodeSetCreate", xmlSecTransformGetName(transform));
@@ -256,7 +255,7 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
 
     /* prepare parser context */
     if(transform->prev == NULL) {
-        xmlSecInvalidTransformError2(transform, "prev transform=\"%s\"", xmlSecErrorsSafeString(transform->prev));
+        xmlSecInvalidTransformError2(transform, "transform has no previous transform", NULL);
         return(-1);
     }
 

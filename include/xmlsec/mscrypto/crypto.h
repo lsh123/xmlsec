@@ -92,8 +92,8 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformDsaSha1GetKlass(vo
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCryptoKeyDataGost2001GetKlass(void);
 
 /**
- * @brief The GOST2001-GOSTR3411-94 transform klass.
- * @details The GOST2001 GOSTR3411_94 signature transform klass.
+ * @brief The GOST2001-GOSTR3411_94 signature transform klass.
+ * @details The GOST2001-GOSTR3411_94 signature transform klass.
  */
 #define xmlSecMSCryptoTransformGost2001GostR3411_94Id \
         xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass()
@@ -110,14 +110,14 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformGost2001GostR3411_
   *****************************************************************************/
 
 /**
- * @brief The GOST R 34.10-2012 256 key klass
+ * @brief The GOST R 34.10-2012 256 key klass.
  */
 #define xmlSecMSCryptoKeyDataGost2012_256Id \
         xmlSecMSCryptoKeyDataGost2012_256GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCryptoKeyDataGost2012_256GetKlass(void);
 
 /**
- * @brief The GOST R 34.10-2012 512 key klass
+ * @brief The GOST R 34.10-2012 512 key klass.
  */
 #define xmlSecMSCryptoKeyDataGost2012_512Id \
         xmlSecMSCryptoKeyDataGost2012_512GetKlass()
@@ -125,7 +125,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCryptoKeyDataGost2012_512GetKlas
 
 /**
  * @brief The GOST2012-256 signature transform klass.
- * @details The GOST R 34.10-2012 - GOST R 3411-2012 256 bit signature transform klass.
+ * @details The GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform klass.
  */
 #define xmlSecMSCryptoTransformGost2012_256Id \
         xmlSecMSCryptoTransformGost2012_256GetKlass()
@@ -133,7 +133,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformGost2012_256GetKla
 
 /**
  * @brief The GOST2012-512 signature transform klass.
- * @details The GOST R 34.10-2012 - GOST R 3411-2012 512 bit signature transform klass.
+ * @details The GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform klass.
  */
 #define xmlSecMSCryptoTransformGost2012_512Id \
         xmlSecMSCryptoTransformGost2012_512GetKlass()
@@ -436,7 +436,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformKWDes3GetKlass(voi
 #ifndef XMLSEC_NO_HMAC
 
 /**
- * @brief The HMAC key klass.
+ * @brief The HMAC key data klass.
  */
 #define xmlSecMSCryptoKeyDataHmacId \
         xmlSecMSCryptoKeyDataHmacGetKlass()

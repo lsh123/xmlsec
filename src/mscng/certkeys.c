@@ -338,6 +338,9 @@ xmlSecMSCngKeyDataFromAlgorithm(LPSTR pszObjId) {
  * @param pCert the pointer to cert.
  * @param type the expected key type.
  *
+ * The function takes ownership of the certificate context; the caller
+ * must not free it afterwards.
+ *
  * @return the newly created key data on success or NULL if an error occurs.
  * The returned key data must be destroyed by the caller.
  */

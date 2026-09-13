@@ -138,7 +138,7 @@ xmlSecTransformC14NNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSe
         if(list == NULL) {
             xmlSecInvalidNodeAttributeError(cur, xmlSecAttrPrefixList,
                                             xmlSecTransformGetName(transform),
-                                            "empty");
+                                            "missing");
             return(-1);
         }
 

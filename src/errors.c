@@ -95,8 +95,8 @@ static const xmlSecErrorDescription xmlSecErrorsTable[XMLSEC_ERRORS_MAX_NUMBER +
   { 0,                                          NULL}
 };
 
-/* We have system callback that can be set by the xmlsec-crypto library and user callback
- * that user can set. We always prioritize user callback if set.
+/* We have system callback that can be set by the xmlsec-crypto library and the user callback
+ * that the user can set. We always prioritize user callback if set.
  *
  * NOTE: The global state below (the callbacks, xmlSecPrintErrorMessages and
  * gXmlSecErrorsPrintCryptoLibraryLogOnExitIsEnabled) is plain mutable state that is read
@@ -132,10 +132,10 @@ xmlSecErrorsShutdown(void) {
 /**
  * @brief Sets the errors callback function.
  * @details Sets the errors callback function to @p callback that will be called
- * every time an error occurs. If @p callback is NULL then the errors output will be supressed.
+ * every time an error occurs. If @p callback is NULL then the errors output will be suppressed.
  *
  * Note that this function is not thread-safe (see the module notes).
- * @param callback the new errors callback function, or NULL to fall back to the default.
+ * @param callback the new errors callback function, or NULL to suppress error output.
  */
 void
 xmlSecErrorsSetCallback(xmlSecErrorsCallback callback) {
@@ -219,7 +219,7 @@ xmlSecErrorsDefaultCallbackEnableOutput(int enabled) {
 /**
  * @brief Gets the known error code at position @p pos.
  * @param pos the error position.
- * @return the known error code or 0 if @p pos is greater than
+ * @return the known error code or 0 if @p pos is greater than or equal to
  * total number of known error codes.
  */
 int
@@ -234,7 +234,7 @@ xmlSecErrorsGetCode(xmlSecSize pos) {
 /**
  * @brief Gets the known error message at position @p pos.
  * @param pos the error position.
- * @return the known error message or NULL if @p pos is greater than
+ * @return the known error message or NULL if @p pos is greater than or equal to
  * total number of known error codes.
  */
 const char*

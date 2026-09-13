@@ -48,7 +48,7 @@ XMLSEC_EXPORT void              xmlSecKeyDataDebugXmlDumpImpl   (xmlSecKeyDataPt
  */
 typedef struct _xmlSecKeyDataBinary {
     xmlSecKeyData  keyData;  /**< the key data (xmlSecKeyData). */
-    xmlSecBuffer   buffer;  /**< the key's binary (xmlSecBuffer). */
+    xmlSecBuffer   buffer;  /**< the key's binary value (xmlSecBuffer). */
 } xmlSecKeyDataBinary;
 
 /**
@@ -332,7 +332,7 @@ XMLSEC_EXPORT xmlSecKeyDataId   xmlSecKeyDataKAMGetKlass           (void);
 typedef struct _xmlSecKeyDataKEM {
     xmlSecKeyData   keyData;          /**< base key data (MUST be first) */
     xmlSecKeyPtr    encapsulationKey; /**< recipient public key (encrypt) or private key (decrypt) */
-    xmlSecBuffer    ciphertext;   /**< KEM ciphertext from/to enc:CipherData/enc:CipherValue */
+    xmlSecBuffer    ciphertext;          /**< KEM ciphertext from/to enc:CipherData/enc:CipherValue */
 } xmlSecKeyDataKEM;
 
 #define xmlSecKeyDataKEMId      xmlSecKeyDataKEMGetKlass()

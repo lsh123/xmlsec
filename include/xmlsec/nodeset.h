@@ -32,13 +32,13 @@ typedef struct _xmlSecNodeSet   xmlSecNodeSet, *xmlSecNodeSetPtr;
  * @brief The basic node set types.
  */
 typedef enum {
-    xmlSecNodeSetNormal = 0,  /**< nodes set = nodes in the list. */
-    xmlSecNodeSetInvert,  /**< nodes set = all document nodes minus nodes in the list. */
-    xmlSecNodeSetTree,  /**< nodes set = nodes in the list and all their subtrees. */
-    xmlSecNodeSetTreeWithoutComments,  /**< nodes set = nodes in the list and all their subtrees but no comment nodes. */
-    xmlSecNodeSetTreeInvert,  /**< nodes set = all document nodes minus nodes in the list and all their subtrees. */
-    xmlSecNodeSetTreeWithoutCommentsInvert,  /**< nodes set = all document nodes minus (nodes in the list and all their subtrees plus all comment nodes). */
-    xmlSecNodeSetList  /**< DEPRECATED: nodes set = all nodes in the children list of node sets. */
+    xmlSecNodeSetNormal = 0,  /**< node set = nodes in the list. */
+    xmlSecNodeSetInvert,  /**< node set = all document nodes minus nodes in the list. */
+    xmlSecNodeSetTree,  /**< node set = nodes in the list and all their subtrees. */
+    xmlSecNodeSetTreeWithoutComments,  /**< node set = nodes in the list and all their subtrees but no comment nodes. */
+    xmlSecNodeSetTreeInvert,  /**< node set = all document nodes minus nodes in the list and all their subtrees. */
+    xmlSecNodeSetTreeWithoutCommentsInvert,  /**< node set = all document nodes minus (nodes in the list and all their subtrees plus all comment nodes). */
+    xmlSecNodeSetList  /**< DEPRECATED: node set = all nodes in the children list of node sets. */
 } xmlSecNodeSetType;
 
 /**
@@ -51,28 +51,34 @@ typedef enum {
 } xmlSecNodeSetOp;
 
 /**
- * @brief The enhanced nodes set.
+ * @brief The enhanced node set.
+ * @details The node set adopts the node list and the document passed to
+ * #xmlSecNodeSetCreate: the caller must not free them. Node sets are linked
+ * into a chain via #next and #prev; #xmlSecNodeSetDestroy destroys the entire
+ * chain, frees each member's node list and, if #xmlSecNodeSetDocDestroy was
+ * called, frees the document. Destroying a member that is also reachable
+ * through a second pointer double-frees the chain.
  */
 struct _xmlSecNodeSet {
-    xmlNodeSetPtr       nodes;  /**< the nodes list. */
-    xmlDocPtr           doc;  /**< the parent XML document. */
+    xmlNodeSetPtr       nodes;  /**< the nodes list (adopted from the caller; NULL means the whole document). */
+    xmlDocPtr           doc;  /**< the parent XML document (adopted from the caller). */
     int                 destroyDoc;  /**< the flag: if set to 1 then @p doc will be destroyed when node set is destroyed. */
-    xmlSecNodeSetType   type;  /**< the nodes set type. */
+    xmlSecNodeSetType   type;  /**< the node set type. */
     xmlSecNodeSetOp     op;  /**< the operation type. */
-    xmlSecNodeSetPtr    next;  /**< the next nodes set. */
-    xmlSecNodeSetPtr    prev;  /**< the previous nodes set. */
+    xmlSecNodeSetPtr    next;  /**< the next node set. */
+    xmlSecNodeSetPtr    prev;  /**< the previous node set. */
     void*               reserved;  /**< the reserved pointer. DEPRECATED: the children list (valid only if type is equal to #xmlSecNodeSetList). */
 };
 
 /**
- * @brief Node walk callback, called once per node in the nodes set.
- * @details The callback function called once per node in the nodes set.
+ * @brief Node walk callback, called once per node in the node set.
+ * @details The callback function called once per node in the node set.
  * @param nset the pointer to xmlSecNodeSet structure.
  * @param cur the pointer to the current XML node.
  * @param parent the pointer to the parent node of @p cur.
  * @param data the pointer to application specific data.
- * @return 0 on success, or a negative value if the walk procedure
- * should be interrupted.
+ * @return a non-negative value to continue the walk, or a negative value
+ * if the walk procedure should be interrupted.
  */
 typedef int (*xmlSecNodeSetWalkCallback)                (xmlSecNodeSetPtr nset,
                                                          xmlNodePtr cur,

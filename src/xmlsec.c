@@ -62,7 +62,7 @@ xmlSecNoXxeExternalEntityLoader(const char *URL, const char *ID,
 
 /**
  * @brief Wrapper for xmlSetExternalEntityLoader.
- * @param entityLoader the new entity resolver function, or NULL to restore libxml2's default handler
+ * @param entityLoader the new entity resolver function, or NULL to restore the loader that was in effect when the library was initialized
  */
 void
 xmlSecSetExternalEntityLoader(xmlExternalEntityLoader entityLoader) {
@@ -79,8 +79,8 @@ xmlSecSetExternalEntityLoader(xmlExternalEntityLoader entityLoader) {
 
 /**
  * @brief Initializes XML Security Library.
- * @details Initializes XML Security Library. The depended libraries
- * (LibXML and LibXSLT) must be initialized before.
+ * @details Initializes XML Security Library. The dependent libraries
+ * (LibXML and LibXSLT) must be initialized before calling this function.
  *
  * Note: The application SHOULD NOT initialize the XML Security Library
  * more than once per process.
@@ -113,7 +113,7 @@ xmlSecInit(void) {
         return(-1);
     }
 
-    /* initialise safe external entity loader */
+    /* initialize safe external entity loader */
     if (!xmlSecDefaultExternalEntityLoader) {
         xmlSecDefaultExternalEntityLoader = xmlGetExternalEntityLoader();
     }
@@ -128,11 +128,11 @@ xmlSecInit(void) {
 }
 
 /**
- * @brief Clean ups the XML Security Library.
- * @details Clean ups the XML Security Library.
+ * @brief Cleans up the XML Security Library.
+ * @details Cleans up the XML Security Library.
  *
  * Note: Once this function has been called it might be
- * impossible to reinitialise the library correctly.
+ * impossible to reinitialize the library correctly.
  *
  * @return 0 on success or a negative value otherwise.
  */
@@ -194,7 +194,7 @@ xmlSecCheckVersionExt(int major, int minor, int subminor, xmlSecCheckVersionMode
     /* we always want to have a match for major version number */
     if(major != XMLSEC_VERSION_MAJOR) {
         xmlSecOtherError3(XMLSEC_ERRORS_R_INVALID_VERSION, NULL,
-                "expected major version=%d;real major version=%d",
+                "library major version=%d;required major version=%d",
                 XMLSEC_VERSION_MAJOR, major);
         return(0);
     }
@@ -203,7 +203,7 @@ xmlSecCheckVersionExt(int major, int minor, int subminor, xmlSecCheckVersionMode
     case xmlSecCheckVersionExactMatch:
         if((minor != XMLSEC_VERSION_MINOR) || (subminor != XMLSEC_VERSION_SUBMINOR)) {
             xmlSecOtherError5(XMLSEC_ERRORS_R_INVALID_VERSION, NULL,
-                    "mode=exact;expected minor version=%d;real minor version=%d;expected subminor version=%d;real subminor version=%d",
+                    "mode=exact;library minor version=%d;required minor version=%d;library subminor version=%d;required subminor version=%d",
                     XMLSEC_VERSION_MINOR, minor, XMLSEC_VERSION_SUBMINOR, subminor);
             return(0);
         }
@@ -212,7 +212,7 @@ xmlSecCheckVersionExt(int major, int minor, int subminor, xmlSecCheckVersionMode
         if((minor > XMLSEC_VERSION_MINOR) || ((minor == XMLSEC_VERSION_MINOR) &&
                 (subminor > XMLSEC_VERSION_SUBMINOR))) {
             xmlSecOtherError5(XMLSEC_ERRORS_R_INVALID_VERSION, NULL,
-                    "mode=abi compatible;expected minor version=%d;real minor version=%d;expected subminor version=%d;real subminor version=%d",
+                    "mode=abi compatible;library minor version=%d;required minor version=%d;library subminor version=%d;required subminor version=%d",
                     XMLSEC_VERSION_MINOR, minor, XMLSEC_VERSION_SUBMINOR, subminor);
             return(0);
         }

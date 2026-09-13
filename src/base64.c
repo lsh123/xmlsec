@@ -832,7 +832,7 @@ static xmlSecTransformKlass xmlSecBase64Klass = {
  * @details The Base64 transform klass (http://www.w3.org/TR/xmldsig-core/#sec-Base-64).
  * The normative specification for base64 decoding transforms is RFC 2045
  * (http://www.ietf.org/rfc/rfc2045.txt). The base64 Transform element has
- * no content. The input is decoded by the algorithms. This transform is
+ * no content. The input is decoded by the algorithm. This transform is
  * useful if an application needs to sign the raw data associated with
  * the encoded content of an element.
  * @return base64 transform id.

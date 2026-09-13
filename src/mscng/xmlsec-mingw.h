@@ -60,7 +60,7 @@
 
 /* ---- bcrypt.h: KDF parameter identifiers --------------------------------- */
 
-/* Mingw has old version of bcrypt.h file */
+/* MinGW has an old version of the bcrypt.h file */
 #ifndef KDF_SALT
 #define KDF_SALT                            0xF
 #endif /* KDF_SALT */
@@ -88,7 +88,7 @@
 /* ---- bcrypt.h: EC / ECDH key magic values -------------------------------- */
 
 #ifndef XMLSEC_NO_EC
-/* Mingw has old version of bcrypt.h file */
+/* MinGW has an old version of the bcrypt.h file */
 #ifndef BCRYPT_ECDSA_PUBLIC_GENERIC_MAGIC
 #define BCRYPT_ECDSA_PUBLIC_GENERIC_MAGIC   0x50444345  /* ECDP */
 #endif /* BCRYPT_ECDSA_PUBLIC_GENERIC_MAGIC */

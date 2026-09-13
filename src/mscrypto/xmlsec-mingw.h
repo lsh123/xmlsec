@@ -19,7 +19,7 @@
 #define XMLSEC_MSCRYPTO_XMLSEC_MINGW_H
 
 #ifndef XMLSEC_PRIVATE
-#error "xmlsec-mingw.h file contains private xmlsec definitions for mingw build and should not be used outside xmlsec or xmlsec-mscrypto libraries"
+#error "xmlsec-mingw.h file contains private xmlsec definitions for mingw build and should not be used outside the xmlsec or xmlsec-mscrypto libraries"
 #endif /* XMLSEC_PRIVATE */
 
 /* This header provides fallback definitions for symbols missing from older MinGW headers. */
@@ -143,7 +143,7 @@
 #endif
 
 
-/*structures/types*/
+/* structures/types */
 typedef struct _DSSPUBKEY {
         DWORD magic;
         DWORD bitlen;
@@ -168,7 +168,7 @@ typedef struct _PROV_ENUMALGS_EX {
 } PROV_ENUMALGS_EX;
 
 
-/*methods(functions)*/
+/* methods (functions) */
 DWORD           WINAPI CertGetPublicKeyLength(DWORD,PCERT_PUBLIC_KEY_INFO);
 
 BOOL            WINAPI CertStrToNameA(DWORD,LPCSTR,DWORD,void*,BYTE*,DWORD*,LPCSTR*);

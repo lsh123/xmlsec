@@ -66,7 +66,7 @@
  * @param errorFunction the failed function name.
  * @param errCode the GnuTLS error code.
  * @param errorObject the specific error object (e.g. transform, key data, etc).
- * @param msg the extra message.
+ * @param msg the extra message (must be a string literal, it is concatenated with the backend error suffix at compile time).
  * @param param the extra message param.
  */
 #define xmlSecGnuTLSError2(errorFunction, errCode, errorObject, msg, param) \

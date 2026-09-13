@@ -108,7 +108,7 @@ xmlSecNodeSetDestroy(xmlSecNodeSetPtr nset) {
 
 /**
  * @brief Marks node set to destroy the parent document.
- * @details Instructs node set to destroy nodes parent doc when node set is destroyed.
+ * @details Instructs node set to destroy the node's parent doc when node set is destroyed.
  * @param nset the pointer to node set.
  */
 void
@@ -411,7 +411,7 @@ xmlSecNodeSetGetFastPathNodes(xmlSecNodeSetPtr nset) {
  * If the @p walkFunc returns a negative value, then the walk procedure
  * is interrupted.
  * @param nset the pointer to node set.
- * @param walkFunc the callback functions.
+ * @param walkFunc the callback function.
  * @param data the application specific data passed to the @p walkFunc.
  * @return 0 on success or a negative value if an error occurs.
  */
@@ -453,7 +453,7 @@ xmlSecNodeSetWalk(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc, voi
         return(ret);
     }
 
-    /* if we can't do fast path, fallback to slow path iterating through all doc nodes */
+    /* if we can't do fast path, fall back to the slow path iterating through all doc nodes */
     for(cur = nset->doc->children; (cur != NULL) && (ret >= 0); cur = cur->next) {
         ret = xmlSecNodeSetWalkRecursive(nset, cur, walkFunc, data);
         if(ret < 0) {
@@ -563,7 +563,7 @@ xmlSecNodeSetWalkRecursive(xmlSecNodeSetPtr nset, xmlNodePtr startNode, xmlSecNo
  *    and comment nodes.
  * @param doc the pointer to an XML document.
  * @param parent the pointer to parent XML node or NULL if we want to include all document nodes.
- * @param withComments the flag include  comments or not.
+ * @param withComments the flag to include comments or not.
  * @param invert the "invert" flag.
  * @return pointer to the newly created xmlSecNodeSet structure
  * or NULL if an error occurs.

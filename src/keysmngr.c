@@ -242,7 +242,7 @@ xmlSecKeysMngrGetDataStore(xmlSecKeysMngrPtr mngr, xmlSecKeyDataStoreId id) {
   *****************************************************************************/
 /**
  * @brief Creates a new keys store of the specified klass.
- * @details Creates new store of the specified klass @p klass. Caller is responsible
+ * @details Creates new store of the specified klass @p id. Caller is responsible
  * for freeing the returned store by calling #xmlSecKeyStoreDestroy function.
  * @param id the key store klass.
  *
@@ -485,7 +485,7 @@ xmlSecSimpleKeysStoreLoad_ex(xmlSecKeyStorePtr store, const char *uri,
 
     doc = xmlReadFile(uri, NULL, xmlSecParserGetDefaultOptions() | XML_PARSE_PEDANTIC);
     if(doc == NULL) {
-        xmlSecXmlError2("xmlReadFile ", xmlSecKeyStoreGetName(store),
+        xmlSecXmlError2("xmlReadFile", xmlSecKeyStoreGetName(store),
                         "uri=%s", xmlSecErrorsSafeString(uri));
         return(-1);
     }

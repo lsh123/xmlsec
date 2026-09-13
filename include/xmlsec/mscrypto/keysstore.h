@@ -30,7 +30,7 @@ extern "C" {
  *
   *****************************************************************************/
 /**
- * @brief A MSCrypto keys store klass id.
+ * @brief An MSCrypto keys store klass id.
  */
 #define xmlSecMSCryptoKeysStoreId       xmlSecMSCryptoKeysStoreGetKlass()
 

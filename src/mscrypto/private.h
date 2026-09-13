@@ -20,7 +20,7 @@
 
 #if defined(__MINGW32__) && defined(XMLSEC_CUSTOM_CRYPT32)
 #  include "xmlsec-mingw.h"
-#endif
+#endif /* XMLSEC_CUSTOM_CRYPT32 */
 
 #include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
@@ -83,9 +83,9 @@ HCRYPTPROV         xmlSecMSCryptoFindProvider                   (const xmlSecMSC
  *
  * SymKey Util functions
  *
- * Low level helper routines for importing plain text keys in MS HKEY handle,
- * since MSCrypto API does not support import of plain text (session) keys
- * just like that. These functions are based upon MS kb article #228786
+ * Low level helper routines for importing plain text keys into an MS HKEY handle,
+ * since the MSCrypto API does not support importing plain text (session) keys
+ * directly. These functions are based upon MS kb article #228786
  * and "Base Provider Key BLOBs" article for priv key blob format.
  *
   *****************************************************************************/

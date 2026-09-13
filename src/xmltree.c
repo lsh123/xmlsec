@@ -60,7 +60,8 @@ xmlSecSetDefaultLineFeed(const xmlChar *linefeed)
 
 /**
  * @brief Reads and trims XML node content.
- * @details Reads @p cur node content and trims it (both sides).
+ * @details Reads @p cur node content and trims it (both sides). The returned
+ * string is newly allocated and must be freed by the caller with xmlFree.
  * @param cur the pointer to XML node.
  * @return trimmed node content or NULL if an error occurs.
  */
@@ -313,9 +314,9 @@ xmlSecFindNodeCallback(xmlNodePtr cur, void* data) {
 }
 
 /**
- * @brief Searches child nodes by name and namespace.
- * @details Searches all children of the @p parent node having given name and
- * namespace href.
+ * @brief Searches for a node by name and namespace.
+ * @details Searches the @p parent node, all of its following siblings, and
+ * their entire subtrees for a node having the given name and namespace href.
  * @param parent the pointer to XML node.
  * @param name the name.
  * @param ns the namespace href (may be NULL).
@@ -377,7 +378,7 @@ xmlSecGetNodeNsHref(const xmlNodePtr cur) {
  * @brief Checks if a node has the given name and namespace.
  * @details Checks that the node has a given name and a given namespace href.
  * @param cur the pointer to an XML node.
- * @param name the name,
+ * @param name the name.
  * @param ns the namespace href.
  * @return 1 if the node matches or 0 otherwise.
  */
@@ -1276,7 +1277,7 @@ xmlSecQName2IntegerGetInfo(xmlSecQName2IntegerInfoConstPtr info, int intValue) {
  * @param qnameHref the qname href value.
  * @param qnameLocalPart the qname local part value.
  * @param intValue the pointer to result integer value.
- * @return 0 on success or a negative value if an error occurs,
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecQName2IntegerGetInteger(xmlSecQName2IntegerInfoConstPtr info,
@@ -1306,7 +1307,7 @@ xmlSecQName2IntegerGetInteger(xmlSecQName2IntegerInfoConstPtr info,
  * @param node the pointer to node.
  * @param qname the qname string.
  * @param intValue the pointer to result integer value.
- * @return 0 on success or a negative value if an error occurs,
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecQName2IntegerGetIntegerFromString(xmlSecQName2IntegerInfoConstPtr info,
@@ -1375,11 +1376,11 @@ xmlSecQName2IntegerGetIntegerFromString(xmlSecQName2IntegerInfoConstPtr info,
 /**
  * @brief Creates a QName string from an integer value.
  * @details Creates qname string for @p intValue in context of given @p node. Caller
- * is responsible for freeing returned string with @p xmlFree.
+ * is responsible for freeing returned string with xmlFree().
  * @param info the qname<->integer mapping information.
  * @param node the pointer to node.
  * @param intValue the integer value.
- * @return pointer to newly allocated string on success or NULL if an error occurs,
+ * @return pointer to newly allocated string on success or NULL if an error occurs.
  */
 xmlChar*
 xmlSecQName2IntegerGetStringFromInteger(xmlSecQName2IntegerInfoConstPtr info,
@@ -1408,7 +1409,7 @@ xmlSecQName2IntegerGetStringFromInteger(xmlSecQName2IntegerInfoConstPtr info,
  * @param info the qname<->integer mapping information.
  * @param node the pointer to node.
  * @param intValue the pointer to result integer value.
- * @return 0 on success or a negative value if an error occurs,
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecQName2IntegerNodeRead(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr node, int* intValue) {
@@ -1448,7 +1449,7 @@ xmlSecQName2IntegerNodeRead(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr nod
  * @param nodeName the child node name.
  * @param nodeNs the child node namespace.
  * @param intValue the integer value.
- * @return 0 on success or a negative value if an error occurs,
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecQName2IntegerNodeWrite(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr node,
@@ -1502,7 +1503,7 @@ xmlSecInternalError3("xmlSecAddChild", NULL,
  * @param node the element node.
  * @param attrName the attribute name.
  * @param intValue the pointer to result integer value.
- * @return 0 on success or a negative value if an error occurs,
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecQName2IntegerAttributeRead(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr node,
@@ -1545,7 +1546,7 @@ xmlSecQName2IntegerAttributeRead(xmlSecQName2IntegerInfoConstPtr info, xmlNodePt
  * @param node the parent node.
  * @param attrName the name of attribute.
  * @param intValue the integer value.
- * @return 0 on success or a negative value if an error occurs,
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecQName2IntegerAttributeWrite(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr node,
@@ -1666,7 +1667,7 @@ xmlSecQName2BitMaskGetInfo(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitMask m
  * @param qnameHref the qname Href value.
  * @param qnameLocalPart the qname LocalPart value.
  * @param mask the pointer to result mask.
- * @return 0 on success or a negative value if an error occurs,
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecQName2BitMaskGetBitMask(xmlSecQName2BitMaskInfoConstPtr info,
@@ -1698,7 +1699,7 @@ xmlSecQName2BitMaskGetBitMask(xmlSecQName2BitMaskInfoConstPtr info,
  * @param node the pointer to node.
  * @param qname the qname string.
  * @param mask the pointer to result mask value.
- * @return 0 on success or a negative value if an error occurs,
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecQName2BitMaskGetBitMaskFromString(xmlSecQName2BitMaskInfoConstPtr info,
@@ -1743,7 +1744,7 @@ xmlSecQName2BitMaskGetBitMaskFromString(xmlSecQName2BitMaskInfoConstPtr info,
     }
     qnameHref = (ns != NULL) ? ns->href : BAD_CAST NULL;
 
-    /* and finally search for integer */
+    /* and finally search for mask */
     ret = xmlSecQName2BitMaskGetBitMask(info, qnameHref, qnameLocalPart, mask);
     if(ret < 0) {
         xmlSecInternalError4("xmlSecQName2BitMaskGetBitMask", NULL,
@@ -1768,10 +1769,10 @@ xmlSecQName2BitMaskGetBitMaskFromString(xmlSecQName2BitMaskInfoConstPtr info,
  * @brief Creates a QName string from a bit mask value.
  * @details Creates qname string for @p mask in context of given @p node. Caller
  * is responsible for freeing returned string with xmlFree.
- * @param info the qname<->integer mapping information.
+ * @param info the qname<->bit mask mapping information.
  * @param node the pointer to node.
  * @param mask the mask.
- * @return pointer to newly allocated string on success or NULL if an error occurs,
+ * @return pointer to newly allocated string on success or NULL if an error occurs.
  */
 xmlChar*
 xmlSecQName2BitMaskGetStringFromBitMask(xmlSecQName2BitMaskInfoConstPtr info,
@@ -1803,7 +1804,7 @@ xmlSecQName2BitMaskGetStringFromBitMask(xmlSecQName2BitMaskInfoConstPtr info,
  * @param stopOnUnknown if this flag is set then function exits if unknown
  *                      value was found.
  * @param mask the pointer to result mask.
- * @return 0 on success or a negative value if an error occurs,
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecQName2BitMaskNodesRead(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr* node,
@@ -1854,13 +1855,13 @@ xmlSecQName2BitMaskNodesRead(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr* n
 
 /**
  * @brief Writes bit mask values as QName child elements.
- * @details Writes <@p nodeNs:@p nodeName> elemnts with values from @p mask to @p node.
+ * @details Writes <@p nodeNs:@p nodeName> elements with values from @p mask to @p node.
  * @param info the qname<->bit mask mapping information.
  * @param node the parent element for mask nodes.
  * @param nodeName the mask nodes name.
  * @param nodeNs the mask nodes namespace.
  * @param mask the bit mask.
- * @return 0 on success or a negative value if an error occurs,
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecQName2BitMaskNodesWrite(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr node,

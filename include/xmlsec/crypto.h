@@ -8,7 +8,10 @@
 #ifndef XMLSEC_CRYPTO_H
 #define XMLSEC_CRYPTO_H
 /**
+ * @defgroup xmlsec_core_crypto Crypto Back-End Selection
+ * @ingroup xmlsec_core
  * @brief Selects and includes the configured cryptographic back-end.
+ * @{
  */
 
 #include <xmlsec/xmlsec.h>
@@ -70,4 +73,7 @@
 
 #endif /* IN_XMLSEC_CRYPTO */
 #endif /* IN_XMLSEC */
+
+/** @} */ /** xmlsec_core_crypto */
+
 #endif /* XMLSEC_CRYPTO_H */

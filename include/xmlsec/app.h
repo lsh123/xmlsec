@@ -676,7 +676,7 @@ XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformEdDSAEd448phGetKl
 
 
 /**
- * @brief The GOSTR3411_94 digest transform klass.
+ * @brief The GOST R 34.11-94 digest transform klass.
  * Returns #xmlSecTransformIdUnknown if the crypto engine is not loaded or the klass is not implemented.
  */
 #define xmlSecTransformGostR3411_94Id           xmlSecTransformGostR3411_94GetKlass()

@@ -40,7 +40,7 @@ XMLSEC_EXPORT int           xmlSecTransformWriteKeyInfoNode      (xmlSecKeyPtr k
 /******************************************************************************
  *
  * Key Agreement Method (KAM) Transform:
- * - The transform parameters (eg kdf transform) are stored in the
+ * - The transform parameters (e.g. kdf transform) are stored in the
  * xmlSecTransformKAM structure.
  * - Keys (originator and recipient) are stored in the xmlSecKeyDataKAM
  * structure which is attached to the derived-key object and passed around

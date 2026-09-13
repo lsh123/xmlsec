@@ -255,7 +255,8 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
 
     /* prepare parser context */
     if(transform->prev == NULL) {
-        xmlSecInvalidTransformError2(transform, "transform has no previous transform", NULL);
+        /* report status for debugging */
+        xmlSecInvalidTransformError2(transform, "transform has no previous transform: status=%d", (int)transform->status);
         return(-1);
     }
 

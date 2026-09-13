@@ -103,16 +103,16 @@ typedef struct _BCRYPT_KEY_DATA_BLOB {
 } BCRYPT_KEY_DATA_BLOB;
 
 typedef struct _BCRYPT_PKCS1_PADDING_INFO {
-    const void*     pszAlgId;
+    LPCWSTR         pszAlgId;
 } BCRYPT_PKCS1_PADDING_INFO;
 
 typedef struct _BCRYPT_PSS_PADDING_INFO {
-    const void*     pszAlgId;
+    LPCWSTR         pszAlgId;
     unsigned long   cbSalt;
 } BCRYPT_PSS_PADDING_INFO;
 
 typedef struct _BCRYPT_OAEP_PADDING_INFO {
-    const void*     pszAlgId;
+    LPCWSTR         pszAlgId;
     unsigned char*  pbLabel;
     unsigned long   cbLabel;
 } BCRYPT_OAEP_PADDING_INFO;

@@ -201,8 +201,6 @@ xmlSecMSCngAppGetLocalMachineCertStoreName(void) {
  * by the MSCng back-end and ignored.
  * @return pointer to the key or NULL if an error occurs.
  */
-
-
 xmlSecKeyPtr
 xmlSecMSCngAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED, xmlSecKeyDataFormat format,
     const char *pwd, void* pwdCallback, void* pwdCallbackCtx

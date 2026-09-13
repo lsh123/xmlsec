@@ -17,11 +17,23 @@
 #endif /* XMLSEC_PRIVATE */
 
 #include <errno.h>
+#include <libxml/parser.h>
+
 #include <xmlsec/exports.h>
+#include <xmlsec/errors.h>
+#include <xmlsec/xmlsec.h>
+#include <xmlsec/xmltree.h>
+#include <xmlsec/transforms.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
+
+/**
+ * Helpers for printing out enum values (mostly debugging).
+ */
+#define XMLSEC_ENUM_CAST(val)                ((int)(val))
+#define XMLSEC_ENUM_FMT                      "%d"
 
 /******************************************************************************
  *

@@ -23,6 +23,7 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/app.h>
+#include <xmlsec/dl.h>
 #include <xmlsec/list.h>
 #include <xmlsec/keysdata.h>
 #include <xmlsec/keys.h>

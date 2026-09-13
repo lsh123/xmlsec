@@ -16,6 +16,7 @@
  */
 
 #include <libxml/tree.h>
+#include <libxml/xmlIO.h>
 #include <libxml/xpath.h>
 
 #include <xmlsec/exports.h>

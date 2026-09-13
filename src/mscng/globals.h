@@ -42,6 +42,8 @@
 /* Fallback definitions for symbols missing from older MinGW / Windows SDK headers. */
 #include "xmlsec-mingw.h"
 
+#include <xmlsec/errors.h>
+
 /* Include common error helper macros. */
 #include "../errors_helpers.h"
 

@@ -17,6 +17,7 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/crypto.h>
 
 #include "crypto.h"
 

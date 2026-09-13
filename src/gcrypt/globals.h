@@ -18,6 +18,8 @@
 #include "config.h"
 #endif /* HAVE_CONFIG_H */
 
+#include <gcrypt.h>
+
 
 #ifndef IN_XMLSEC_CRYPTO
 #define IN_XMLSEC_CRYPTO

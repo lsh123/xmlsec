@@ -16,6 +16,7 @@
  */
 
 #include <stdint.h>
+#include <stdio.h>
 
 #include <libxml/tree.h>
 #include <libxml/xpath.h>

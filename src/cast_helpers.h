@@ -21,12 +21,6 @@
 #include <xmlsec/xmlsec.h>
 #include "errors_helpers.h"
 
-/**
- * Helpers for printing out enum values (mostly debugging).
- */
-#define XMLSEC_ENUM_CAST(val)                ((int)(val))
-#define XMLSEC_ENUM_FMT                      "%d"
-
 /******************************************************************************
  *
  * Main macros to help with casting. Each macro checks that the source value

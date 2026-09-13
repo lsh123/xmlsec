@@ -15,11 +15,12 @@
  * @{
  */
 
+#include <xmlsec/exports.h>
+
 #ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
 
 #include <libxml/tree.h>
 
-#include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keysdata.h>
 #include <xmlsec/keys.h>

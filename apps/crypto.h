@@ -15,7 +15,6 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/keysmngr.h>
-#include <xmlsec/crypto.h>
 
 #ifdef __cplusplus
 extern "C" {

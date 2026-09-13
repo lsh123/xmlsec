@@ -90,13 +90,13 @@
 #define szOID_CP_PARAM_PK_R3410_2001_E0  "1.2.643.2.2.36.0"
 #define szOID_CP_PARAM_PK_R3410_2001_E1  "1.2.643.2.2.36.1"
 
-/* CRYPT_PUBKEY_ALG_OID_GROUP_ID */
+/* CRYPT_PUBKEY_ALG_OID_GROUP_ID: Public Key OIDs (see https://datatracker.ietf.org/doc/html/rfc9215#name-public-key-identifiers)*/
 #define szOID_CP_GOST_R3410_12_256 "1.2.643.7.1.1.1.1"
 #define szOID_CP_GOST_R3410_12_512 "1.2.643.7.1.1.1.2"
 #define szOID_CP_DH_12_256 "1.2.643.7.1.1.6.1"
 #define szOID_CP_DH_12_512 "1.2.643.7.1.1.6.2"
 
-/* CRYPT_SIGN_ALG_OID_GROUP_ID */
+/* CRYPT_SIGN_ALG_OID_GROUP_ID: Signature Algorithms OIDs (see https://www.ietf.org/archive/id/draft-smyslov-ike2-gost-08.html#name-asn1-objects) */
 #define szOID_CP_GOST_R3411_12_256_R3410 "1.2.643.7.1.1.3.2"
 #define szOID_CP_GOST_R3411_12_512_R3410 "1.2.643.7.1.1.3.3"
 

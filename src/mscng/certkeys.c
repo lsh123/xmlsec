@@ -264,6 +264,8 @@ xmlSecMSCngKeyDataSetDhQ(xmlSecKeyDataPtr data, const xmlSecByte* q, DWORD qLen)
 }
 #endif /* XMLSEC_NO_DH */
 
+/* pszObjId is always ANSI (LPSTR) per CAPI design, even in UNICODE builds,
+ * and the szOID_* constants are ANSI literals; hence LPSTR and strcmp. */
 xmlSecKeyDataPtr
 xmlSecMSCngKeyDataFromAlgorithm(LPSTR pszObjId) {
     xmlSecKeyDataPtr data = NULL;

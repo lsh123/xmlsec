@@ -858,7 +858,7 @@ extern "C" {
                    NULL,                                    \
                    XMLSEC_ERRORS_R_INVALID_STATUS,          \
                    "transformStatus=" XMLSEC_ENUM_FMT "; msg=%s", \
-                   XMLSEC_ENUM_CAST((transform)->status),   \
+                   XMLSEC_ENUM_CAST((transform) != NULL ? (transform)->status : xmlSecTransformStatusNone),   \
                    (msg)                                    \
         )
 

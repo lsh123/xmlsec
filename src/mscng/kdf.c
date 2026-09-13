@@ -31,6 +31,13 @@
 #include "../keysdata_helpers.h"
 #include "../transform_helpers.h"
 
+
+/* SHA224 algorithm identifier is not defined in older MinGW headers;
+ * provide a fallback so the code compiles with all SDK versions. */
+#ifndef BCRYPT_SHA224_ALGORITHM
+#define BCRYPT_SHA224_ALGORITHM             L"SHA224"
+#endif /* BCRYPT_SHA224_ALGORITHM */
+
 /******************************************************************************
  *
  * Unified KDF transform context (used for both PBKDF2 and HKDF)

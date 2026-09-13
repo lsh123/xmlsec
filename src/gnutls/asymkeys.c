@@ -437,17 +437,6 @@ xmlSecGnuTLSAsymmetricKeyCreatePub(gnutls_pubkey_t pubkey) {
     return(key);
 }
 
-/**
- * @brief Creates XMLSec key from GnuTLS public key.
- * @details Creates XMLSec key from GnuTLS public key (deprecated, use xmlSecGnuTLSAsymmetricKeyCreatePub() instead).
- * @param pubkey the pointer to GnuTLS public key.
- * @return pointer to newly created key or NULL if an error occurs.
- */
-xmlSecKeyPtr
-xmlSecGCryptAsymetricKeyCreatePub(gnutls_pubkey_t pubkey) {
-    return(xmlSecGnuTLSAsymmetricKeyCreatePub(pubkey));
-}
-
 
 /**
  * @brief Creates XMLSec key from GnuTLS private key.
@@ -491,18 +480,6 @@ xmlSecGnuTLSAsymmetricKeyCreatePriv(gnutls_privkey_t privkey) {
 }
 
 /**
- * @brief Creates XMLSec key from GnuTLS private key.
- * @details Creates XMLSec key from GnuTLS private key (deprecated, use xmlSecGnuTLSAsymmetricKeyCreatePriv() instead).
- * @param privkey the pointer to GnuTLS private key.
- * @return pointer to newly created key or NULL if an error occurs.
- */
-xmlSecKeyPtr
-xmlSecGCryptAsymetricKeyCreatePriv(gnutls_privkey_t privkey) {
-    return(xmlSecGnuTLSAsymmetricKeyCreatePriv(privkey));
-}
-
-
-/**
  * @brief Gets GnuTLS public key from an XMLSec @p key.
  * @param key the pointer to XMLSec key.
  * @return GnuTLS public key on success or a NULL value otherwise.
@@ -520,17 +497,6 @@ xmlSecGnuTLSAsymmetricKeyGetPub(xmlSecKeyPtr key) {
     }
 
     return(xmlSecGnuTLSAsymKeyDataGetPublicKey(keyData));
-}
-
-/**
- * @brief Gets GnuTLS public key from an XMLSec @p key.
- * @details Gets GnuTLS public key from an XMLSec @p key (deprecated, use xmlSecGnuTLSAsymmetricKeyGetPub() instead).
- * @param key the pointer to XMLSec key.
- * @return GnuTLS public key on success or a NULL value otherwise.
- */
-gnutls_pubkey_t
-xmlSecGCryptAsymetricKeyGetPub(xmlSecKeyPtr key) {
-    return(xmlSecGnuTLSAsymmetricKeyGetPub(key));
 }
 
 /**
@@ -552,18 +518,6 @@ xmlSecGnuTLSAsymmetricKeyGetPriv(xmlSecKeyPtr key) {
 
     return(xmlSecGnuTLSAsymKeyDataGetPrivateKey(keyData));
 }
-
-/**
- * @brief Gets GnuTLS private key from an XMLSec @p key.
- * @details Gets GnuTLS private key from an XMLSec @p key (deprecated, use xmlSecGnuTLSAsymmetricKeyGetPriv() instead).
- * @param key the pointer to XMLSec key.
- * @return GnuTLS private key on success or a NULL value otherwise.
- */
-gnutls_privkey_t
-xmlSecGCryptAsymetricKeyGetPriv(xmlSecKeyPtr key) {
-    return(xmlSecGnuTLSAsymmetricKeyGetPriv(key));
-}
-
 
 #ifndef XMLSEC_NO_DSA
 /******************************************************************************

@@ -19,6 +19,9 @@
 #error "xmlsec-mingw.h file contains private xmlsec definitions for mingw build and should not be used outside the xmlsec or xmlsec-mscng libraries"
 #endif /* XMLSEC_PRIVATE */
 
+/* This header provides fallback definitions for symbols missing from older MinGW headers. */
+#if defined(__MINGW__) || defined(__MINGW32__) || defined(__MINGW64__)
+
 /* ---- bcrypt.h: algorithm identifiers ------------------------------------- */
 
 /* HKDF support requires Windows 10 1709+ (SDK 10.0.16299+) */
@@ -26,11 +29,6 @@
 #define BCRYPT_HKDF_ALGORITHM               L"HKDF"
 #endif /* BCRYPT_HKDF_ALGORITHM */
 
-/* SHA224 algorithm identifier is not defined in older MinGW headers;
- * provide a fallback so the code compiles with all SDK versions. */
-#ifndef BCRYPT_SHA224_ALGORITHM
-#define BCRYPT_SHA224_ALGORITHM             L"SHA224"
-#endif /* BCRYPT_SHA224_ALGORITHM */
 
 /* SHA3 algorithm identifiers: available in Windows SDK 10.0.22621+ (Windows 11 22H2).
  * Define fallback values so the code compiles with older SDK versions; the calls will fail
@@ -107,10 +105,12 @@
 #ifndef BCRYPT_ECDH_ALGORITHM
 #define BCRYPT_ECDH_ALGORITHM               L"ECDH"
 #endif /* BCRYPT_ECDH_ALGORITHM */
+#endif /* !defined(XMLSEC_NO_EC) || !defined(XMLSEC_NO_XDH) */
+
+/* Curve name property; used unconditionally by certkeys.c. */
 #ifndef BCRYPT_ECC_CURVE_NAME
 #define BCRYPT_ECC_CURVE_NAME               L"ECCCurveName"
 #endif /* BCRYPT_ECC_CURVE_NAME */
-#endif /* !defined(XMLSEC_NO_EC) || !defined(XMLSEC_NO_XDH) */
 
 #ifndef XMLSEC_NO_XDH
 /* BCrypt curve name for Curve25519 (may be missing in older MinGW bcrypt.h) */
@@ -119,15 +119,6 @@
 #endif /* BCRYPT_ECC_CURVE_25519 */
 #endif /* XMLSEC_NO_XDH */
 
-/* ---- bcrypt.h: DSA v2 feature detection ---------------------------------- */
-
-/* DSA v2 key blobs require newer bcrypt.h definitions. */
-#if defined(BCRYPT_DSA_PUBLIC_MAGIC_V2)
-#define XMLSEC_MSCNG_HAVE_DSA_V2            1
-#else
-#define XMLSEC_MSCNG_HAVE_DSA_V2            0
-#endif /* defined(BCRYPT_DSA_PUBLIC_MAGIC_V2) */
-
 /* ---- wincrypt.h ---------------------------------------------------------- */
 
 /* MinGW may ship older wincrypt.h that lacks CERT_FIND_SHA256_HASH */
@@ -135,20 +126,8 @@
 #define CERT_FIND_SHA256_HASH               (22 << 16)
 #endif /* CERT_FIND_SHA256_HASH */
 
-/* ---- wincrypt.h: OID fallbacks ------------------------------------------- */
 
-#ifndef XMLSEC_NO_DH
-/* OID for X942 Diffie-Hellman key agreement (may be missing in older MinGW wincrypt.h) */
-#ifndef szOID_X942_DH
-#define szOID_X942_DH                       "1.2.840.10046.2.1"
-#endif /* szOID_X942_DH */
-#endif /* XMLSEC_NO_DH */
 
-#ifndef XMLSEC_NO_XDH
-/* OID for X25519 public/private key (RFC 8410, id-X25519; may be missing in older MinGW) */
-#ifndef szOID_X25519
-#define szOID_X25519                        "1.3.101.110"
-#endif /* szOID_X25519 */
-#endif /* XMLSEC_NO_XDH */
+#endif /* defined(__MINGW__) || defined(__MINGW32__) || defined(__MINGW64__) */
 
 #endif /* XMLSEC_MSCNG_XMLSEC_MINGW_H */

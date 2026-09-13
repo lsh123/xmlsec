@@ -1406,7 +1406,7 @@ int main(int argc, const char **argv) {
     }
 
     /* parse command line */
-    pos = xmlSecAppCmdLineParamsListParse(parameters, cmdLineTopics, utf8_argv, argc, 2);
+    pos = xmlSecAppCmdLineParamsListParse(parameters, cmdLineTopics, argc, utf8_argv, 2);
     if(pos < 0) {
         fprintf(stderr, "Error: invalid parameters\n");
         xmlSecAppPrintUsage();

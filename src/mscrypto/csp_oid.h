@@ -20,10 +20,6 @@
 /*! GOST 34.10-2001 Diffie-Hellman algorithm Cryptocom LTD */
 #define szOID_MAGPRO_DH_R3410_2001 "1.2.643.2.9.1.3.2"
 
-#define szOID_MAGPRO_DH_R3410_94_EPHEM "1.2.643.2.9.1.3.1"
-
-#define szOID_MAGPRO_DH_R3410_2001_EPHEM "1.2.643.2.9.1.3.2"
-
 /*! GOST 34.10-94 digital signature algorithm Cryptocom LTD with digest */
 #define szOID_MAGPRO_SIGN_R3410_94 "1.2.643.2.9.1.3.3"
 

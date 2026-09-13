@@ -36,18 +36,20 @@ extern "C" {
 /**
  * @brief Marks function as deprecated.
  */
-#if !defined(IN_XMLSEC) && !defined(IN_XMLSEC_CRYPTO)
-#if defined(__GNUC__) || defined(__clang__)
-#define XMLSEC_DEPRECATED __attribute__((deprecated))
-#elif defined(_MSC_VER)
-#define XMLSEC_DEPRECATED __declspec(deprecated)
-#else /* defined(_MSC_VER) */
+#if !defined(XMLSEC_DEPRECATED)
+#  if !defined(IN_XMLSEC) && !defined(IN_XMLSEC_CRYPTO)
+#    if defined(__GNUC__) || defined(__clang__)
+#      define XMLSEC_DEPRECATED __attribute__((deprecated))
+#    elif defined(_MSC_VER)
+#      define XMLSEC_DEPRECATED __declspec(deprecated)
+#    else /* defined(_MSC_VER) */
 /* No deprecation attribute is available for this compiler; XMLSEC_DEPRECATED is a no-op. */
-#define XMLSEC_DEPRECATED
-#endif /* defined(_MSC_VER) */
-#else  /* !defined(IN_XMLSEC) && !defined(IN_XMLSEC_CRYPTO) */
-#define XMLSEC_DEPRECATED
-#endif /* !defined(IN_XMLSEC) && !defined(IN_XMLSEC_CRYPTO) */
+#      define XMLSEC_DEPRECATED
+#    endif /* defined(_MSC_VER) */
+#  else  /* !defined(IN_XMLSEC) && !defined(IN_XMLSEC_CRYPTO) */
+#    define XMLSEC_DEPRECATED
+#  endif /* !defined(IN_XMLSEC) && !defined(IN_XMLSEC_CRYPTO) */
+#endif /* !defined(XMLSEC_DEPRECATED) */
 
 /******************************************************************************
  *

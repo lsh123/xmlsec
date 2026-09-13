@@ -3,8 +3,8 @@
  *
  * This is free software; see the Copyright file in the source distribution for precise wording.
  *
+ * Copyright (C) 2003-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
- * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (c) 2005-2006 Cryptocom LTD (http://www.cryptocom.ru).
  */
 /**
@@ -395,17 +395,20 @@ done:
  *
  */
 void
-xmlSecMSCryptoGetErrorMessage(DWORD dwError, xmlChar * out, int outLen) {
+xmlSecMSCryptoGetErrorMessage(DWORD dwError, xmlChar * out, size_t outLen) {
 #ifndef UNICODE
     WCHAR errorTextW[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE];
 #endif /* UNICODE */
     LPTSTR errorText = NULL;
     DWORD dwRet;
     int ret;
+    int cbOutLen;
 
     xmlSecAssert(out != NULL);
     xmlSecAssert(outLen > 0);
     out[0] = '\0';
+
+    XMLSEC_SAFE_CAST_SIZE_T_TO_INT(outLen, cbOutLen, return, NULL);
 
     /* Use system message tables to retrieve error text, allocate buffer on local
        heap for error text, don't use any inserts/parameters */
@@ -423,7 +426,7 @@ xmlSecMSCryptoGetErrorMessage(DWORD dwError, xmlChar * out, int outLen) {
     }
 
 #ifdef UNICODE
-    ret = WideCharToMultiByte(CP_UTF8, 0, errorText, -1, (LPSTR)out, outLen, NULL, NULL);
+    ret = WideCharToMultiByte(CP_UTF8, 0, errorText, -1, (LPSTR)out, cbOutLen, NULL, NULL);
     if(ret <= 0) {
         goto done;
     }
@@ -432,7 +435,7 @@ xmlSecMSCryptoGetErrorMessage(DWORD dwError, xmlChar * out, int outLen) {
     if(ret <= 0) {
         goto done;
     }
-    ret = WideCharToMultiByte(CP_UTF8, 0, errorTextW, -1, (LPSTR)out, outLen, NULL, NULL);
+    ret = WideCharToMultiByte(CP_UTF8, 0, errorTextW, -1, (LPSTR)out, cbOutLen, NULL, NULL);
     if(ret <= 0) {
         goto done;
     }
@@ -559,7 +562,7 @@ xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
  *
   *****************************************************************************/
 int
-ConvertEndian(const xmlSecByte * src, xmlSecByte * dst, xmlSecSize size) {
+xmlSecMSCryptoConvertEndian(const xmlSecByte * src, xmlSecByte * dst, xmlSecSize size) {
     xmlSecByte * p;
 
     xmlSecAssert2(src != NULL, -1);
@@ -574,7 +577,7 @@ ConvertEndian(const xmlSecByte * src, xmlSecByte * dst, xmlSecSize size) {
 }
 
 int
-ConvertEndianInPlace(xmlSecByte * buf, xmlSecSize size) {
+xmlSecMSCryptoConvertEndianInPlace(xmlSecByte * buf, xmlSecSize size) {
     xmlSecByte * p;
     xmlSecByte ch;
 

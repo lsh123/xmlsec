@@ -39,15 +39,6 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppShutdown               (void);
 XMLSEC_CRYPTO_EXPORT LPCTSTR    xmlSecMSCngAppGetCurrentUserCertStoreName(void);
 XMLSEC_CRYPTO_EXPORT LPCTSTR    xmlSecMSCngAppGetLocalMachineCertStoreName(void);
 
-/**
- * @brief DEPRECATED. Gets the MSCng certs store name for the current user.
- * @details DEPRECATED. This is a backward compatibility macro that calls #xmlSecMSCngAppGetCurrentUserCertStoreName.
- *
- * @return the MSCng cert store name for the current user set by #xmlSecMSCngAppInit.
- */
-#define xmlSecMSCngAppGetCertStoreName() xmlSecMSCngAppGetCurrentUserCertStoreName()
-
-
 /******************************************************************************
  *
  * Keys Manager

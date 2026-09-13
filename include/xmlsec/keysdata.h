@@ -23,6 +23,7 @@
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
 #include <xmlsec/list.h>
+#include <xmlsec/x509.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -49,16 +50,6 @@ typedef const struct _xmlSecKeyDataStoreKlass           xmlSecKeyDataStoreKlass;
  * @brief Pointer to #xmlSecKeyDataStoreKlass.
  */
 typedef const struct _xmlSecKeyDataStoreKlass           *xmlSecKeyDataStoreId;
-
-/**
- * @brief The X.509 key data value.
- */
-typedef struct _xmlSecKeyX509DataValue                  xmlSecKeyX509DataValue;
-
-/**
- * @brief Pointer to #_xmlSecKeyX509DataValue.
- */
-typedef struct _xmlSecKeyX509DataValue                  *xmlSecKeyX509DataValuePtr;
 
 /******************************************************************************
  *

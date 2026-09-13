@@ -78,21 +78,6 @@ XMLSEC_CRYPTO_EXPORT gnutls_privkey_t   xmlSecGnuTLSAsymmetricKeyGetPriv        
 
 /******************************************************************************
  *
- * DEPRECATED
- *
-  *****************************************************************************/
-/** @brief Creates XMLSec key from GnuTLS public key @p pubkey (deprecated). @return pointer to created key or NULL on error. */
-XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED xmlSecKeyPtr    xmlSecGCryptAsymetricKeyCreatePub       (gnutls_pubkey_t pubkey);
-/** @brief Creates XMLSec key from GnuTLS private key @p privkey (deprecated). @return pointer to created key or NULL on error. */
-XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED xmlSecKeyPtr    xmlSecGCryptAsymetricKeyCreatePriv      (gnutls_privkey_t privkey);
-
-/** @brief Gets GnuTLS public key from XMLSec @p key (deprecated). @return GnuTLS public key or NULL on error. */
-XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED gnutls_pubkey_t xmlSecGCryptAsymetricKeyGetPub          (xmlSecKeyPtr key);
-/** @brief Gets GnuTLS private key from XMLSec @p key (deprecated). @return GnuTLS private key or NULL on error. */
-XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED gnutls_privkey_t xmlSecGCryptAsymetricKeyGetPriv         (xmlSecKeyPtr key);
-
-/******************************************************************************
- *
  * AES transforms
  *
   *****************************************************************************/

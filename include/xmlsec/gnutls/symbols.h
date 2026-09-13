@@ -39,24 +39,24 @@ extern "C" {
 #define xmlSecKeyDataAesId                      xmlSecGnuTLSKeyDataAesId
 #define xmlSecKeyDataCamelliaId                 xmlSecGnuTLSKeyDataCamelliaId
 #define xmlSecKeyDataChaCha20Id                 xmlSecGnuTLSKeyDataChaCha20Id
+#define xmlSecKeyDataConcatKdfId                xmlSecGnuTLSKeyDataConcatKdfId
+#define xmlSecKeyDataDEREncodedKeyValueId       xmlSecGnuTLSKeyDataDEREncodedKeyValueId
 #define xmlSecKeyDataDesId                      xmlSecGnuTLSKeyDataDesId
 #define xmlSecKeyDataDsaId                      xmlSecGnuTLSKeyDataDsaId
-#define xmlSecKeyDataEcdsaId                    xmlSecGnuTLSKeyDataEcId
 #define xmlSecKeyDataEcId                       xmlSecGnuTLSKeyDataEcId
+#define xmlSecKeyDataEcdsaId                    xmlSecGnuTLSKeyDataEcId
 #define xmlSecKeyDataEdDSAId                    xmlSecGnuTLSKeyDataEdDSAId
 #define xmlSecKeyDataGost2001Id                 xmlSecGnuTLSKeyDataGost2001Id
 #define xmlSecKeyDataGostR3410_2012_256Id       xmlSecGnuTLSKeyDataGost2012_256Id
 #define xmlSecKeyDataGostR3410_2012_512Id       xmlSecGnuTLSKeyDataGost2012_512Id
+#define xmlSecKeyDataHkdfId                     xmlSecGnuTLSKeyDataHkdfId
 #define xmlSecKeyDataHmacId                     xmlSecGnuTLSKeyDataHmacId
 #define xmlSecKeyDataMLDSAId                    xmlSecGnuTLSKeyDataMLDSAId
-#define xmlSecKeyDataConcatKdfId                xmlSecGnuTLSKeyDataConcatKdfId
-#define xmlSecKeyDataHkdfId                     xmlSecGnuTLSKeyDataHkdfId
 #define xmlSecKeyDataPbkdf2Id                   xmlSecGnuTLSKeyDataPbkdf2Id
-#define xmlSecKeyDataRsaId                      xmlSecGnuTLSKeyDataRsaId
-#define xmlSecKeyDataXdhId                      xmlSecGnuTLSKeyDataXdhId
-#define xmlSecKeyDataX509Id                     xmlSecGnuTLSKeyDataX509Id
 #define xmlSecKeyDataRawX509CertId              xmlSecGnuTLSKeyDataRawX509CertId
-#define xmlSecKeyDataDEREncodedKeyValueId       xmlSecGnuTLSKeyDataDEREncodedKeyValueId
+#define xmlSecKeyDataRsaId                      xmlSecGnuTLSKeyDataRsaId
+#define xmlSecKeyDataX509Id                     xmlSecGnuTLSKeyDataX509Id
+#define xmlSecKeyDataXdhId                      xmlSecGnuTLSKeyDataXdhId
 
 /******************************************************************************
  *

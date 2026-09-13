@@ -40,6 +40,16 @@ struct _xmlSecKeyX509DataValue {
     xmlSecBuffer digest;  /**< the digest from &lt;dsig11:X509Digest/&gt; node. */
 };
 
+/**
+ * @brief The X.509 key data value.
+ */
+typedef struct _xmlSecKeyX509DataValue                  xmlSecKeyX509DataValue;
+
+/**
+ * @brief Pointer to #_xmlSecKeyX509DataValue.
+ */
+typedef struct _xmlSecKeyX509DataValue                  *xmlSecKeyX509DataValuePtr;
+
 /** @} */ /** xmlsec_core_x509 */
 
 #endif /* XMLSEC_X509_H */

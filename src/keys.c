@@ -264,9 +264,9 @@ static xmlSecPtrListKlass xmlSecKeyUseWithPtrListKlass = {
 };
 
 /**
- * @brief The key data list klass.
+ * @brief The key use with list klass.
  *
- * @return pointer to the key data list klass.
+ * @return pointer to the key use with list klass.
  */
 xmlSecPtrListId
 xmlSecKeyUseWithPtrListGetKlass(void) {
@@ -341,7 +341,7 @@ xmlSecKeyReqReset(xmlSecKeyReqPtr keyReq) {
  * @param dst the pointer to destination object.
  * @param src the pointer to source object.
  *
- * @return 0 on success and a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecKeyReqCopy(xmlSecKeyReqPtr dst, xmlSecKeyReqPtr src) {

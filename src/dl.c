@@ -47,7 +47,7 @@
  *
  * loaded libraries list
  *
-  *****************************************************************************/
+******************************************************************************/
 typedef struct _xmlSecCryptoDLLibrary                                   xmlSecCryptoDLLibrary,
                                                                         *xmlSecCryptoDLLibraryPtr;
 struct _xmlSecCryptoDLLibrary {
@@ -342,14 +342,15 @@ xmlSecCryptoDLLibrariesListFindByName(xmlSecPtrListPtr list, const xmlChar* name
  *
  * Dynamic load functions
  *
-  *****************************************************************************/
+******************************************************************************/
 static xmlSecCryptoDLFunctionsPtr gXmlSecCryptoDLFunctions = NULL;
 static xmlSecPtrList gXmlSecCryptoDLLibraries;
 
 /**
  * @brief Initializes the dynamic library loading engine.
- * @details Initializes dynamic loading engine. This is an internal function
- * and should not be called by application directly.
+ * @details Initializes the dynamic library loading engine. This function is
+ * normally called by xmlSecAppInit() and should not be called by the
+ * application directly.
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -378,8 +379,9 @@ xmlSecCryptoDLInit(void) {
 
 /**
  * @brief Shuts down the dynamic library loading engine.
- * @details Shutdowns dynamic loading engine. This is an internal function
- * and should not be called by application directly.
+ * @details Shuts down the dynamic library loading engine. This function is
+ * normally called by xmlSecAppShutdown() and should not be called by the
+ * application directly.
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -409,12 +411,14 @@ xmlSecCryptoDLShutdown(void) {
 }
 
 /**
- * @brief Loads a crypto library.
- * @details Loads the xmlsec-$crypto library. This function is NOT thread safe,
- * application MUST NOT call #xmlSecCryptoDLLoadLibrary, #xmlSecCryptoDLGetLibraryFunctions,
- * and #xmlSecCryptoDLUnloadLibrary functions from multiple threads.
+ * @brief Loads a crypto library and sets it as the global crypto engine.
+ * @details Loads the xmlsec-$crypto library and sets its functions table as
+ * the global crypto functions table. If @p crypto is NULL then the default
+ * crypto engine is used. This function is NOT thread safe; the application
+ * MUST NOT call #xmlSecCryptoDLLoadLibrary, #xmlSecCryptoDLGetLibraryFunctions,
+ * and #xmlSecCryptoDLUnloadLibrary from multiple threads.
  * @param crypto the desired crypto library name ("openssl", "nss", ...). If NULL
- *                      then the default crypto engine will be used.
+ *               then the default crypto engine will be used.
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -422,7 +426,7 @@ xmlSecCryptoDLLoadLibrary(const xmlChar* crypto) {
     xmlSecCryptoDLFunctionsPtr functions;
     int ret;
 
-    /* if crypto is not specified, then used default */
+    /* if crypto is not specified, then use the default */
     functions = xmlSecCryptoDLGetLibraryFunctions((crypto != NULL) ? crypto : xmlSecGetDefaultCrypto());
     if(functions == NULL) {
         xmlSecInternalError("xmlSecCryptoDLGetLibraryFunctions", NULL);
@@ -439,10 +443,13 @@ xmlSecCryptoDLLoadLibrary(const xmlChar* crypto) {
 }
 
 /**
- * @brief Loads a crypto library and returns its function table.
- * @details Loads the xmlsec-$crypto library and gets global crypto functions/transforms/keys data/keys store
- * table. This function is NOT thread safe, application MUST NOT call #xmlSecCryptoDLLoadLibrary,
- * #xmlSecCryptoDLGetLibraryFunctions, and #xmlSecCryptoDLUnloadLibrary functions from multiple threads.
+ * @brief Loads a crypto library and returns its functions table.
+ * @details Loads the xmlsec-$crypto library and returns its global crypto
+ * functions/transforms/keys data/keys store table. The returned table pointer
+ * becomes invalid after #xmlSecCryptoDLUnloadLibrary is called for the same
+ * library. This function is NOT thread safe; the application MUST NOT call
+ * #xmlSecCryptoDLLoadLibrary, #xmlSecCryptoDLGetLibraryFunctions, and
+ * #xmlSecCryptoDLUnloadLibrary from multiple threads.
  * @param crypto the desired crypto library name ("openssl", "nss", ...).
  * @return the table or NULL if an error occurs.
  */
@@ -488,9 +495,10 @@ xmlSecCryptoDLGetLibraryFunctions(const xmlChar* crypto) {
 /**
  * @brief Unloads a crypto library.
  * @details Unloads the xmlsec-$crypto library. All pointers to this library
- * functions tables became invalid. This function is NOT thread safe,
- * application MUST NOT call #xmlSecCryptoDLLoadLibrary, #xmlSecCryptoDLGetLibraryFunctions,
- * and #xmlSecCryptoDLUnloadLibrary functions from multiple threads.
+ * functions tables become invalid. This function is NOT thread safe; the
+ * application MUST NOT call #xmlSecCryptoDLLoadLibrary,
+ * #xmlSecCryptoDLGetLibraryFunctions, and #xmlSecCryptoDLUnloadLibrary from
+ * multiple threads.
  * @param crypto the desired crypto library name ("openssl", "nss", ...).
  * @return 0 on success or a negative value if an error occurs.
  */
@@ -528,9 +536,10 @@ xmlSecCryptoDLUnloadLibrary(const xmlChar* crypto) {
 }
 
 /**
- * @brief Sets global crypto function table.
- * @details Sets global crypto functions/transforms/keys data/keys store table.
- * @param functions the new table
+ * @brief Sets the global crypto functions table.
+ * @details Sets the global crypto functions/transforms/keys data/keys store
+ * table.
+ * @param functions the new table.
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -543,8 +552,9 @@ xmlSecCryptoDLSetFunctions(xmlSecCryptoDLFunctionsPtr functions) {
 }
 
 /**
- * @brief Gets global crypto function table.
- * @details Gets global crypto functions/transforms/keys data/keys store table.
+ * @brief Gets the global crypto functions table.
+ * @details Gets the global crypto functions/transforms/keys data/keys store
+ * table.
  * @return the table.
  */
 xmlSecCryptoDLFunctionsPtr
@@ -586,9 +596,9 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
 
     /******************************************************************************
      *
-     * Register keys
-     *
-      *****************************************************************************/
+      * Register keys
+      *
+    *****************************************************************************/
 
     /* raw key values should not be used in production w/o understanding of the security risks */
     XMLSEC_REGISTER_DISABLED_KEY_DATA(Aes);                  // keyDataAesGetKlass
@@ -621,9 +631,9 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
 
     /******************************************************************************
      *
-     * Register transforms
-     *
-      *****************************************************************************/
+      * Register transforms
+      *
+    *****************************************************************************/
     XMLSEC_REGISTER_TRANSFORM(Aes128Cbc);                           // transformAes128CbcGetKlass
     XMLSEC_REGISTER_TRANSFORM(Aes192Cbc);                           // transformAes192CbcGetKlass
     XMLSEC_REGISTER_TRANSFORM(Aes256Cbc);                           // transformAes256CbcGetKlass

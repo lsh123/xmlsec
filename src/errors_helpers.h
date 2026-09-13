@@ -368,7 +368,7 @@ extern "C" {
                     (const char*)(errorObject),             \
                     NULL,                                   \
                     XMLSEC_ERRORS_R_INVALID_SIZE,           \
-                    "invalid size for '%s': actual=" XMLSEC_SIZE_FMT " is more than expected=" XMLSEC_SIZE_FMT, \
+                    "invalid size for '%s': actual=" XMLSEC_SIZE_FMT " is greater than expected=" XMLSEC_SIZE_FMT, \
                     xmlSecErrorsSafeString(name),           \
                     (actual),                               \
                     (expected)                              \
@@ -426,7 +426,7 @@ extern "C" {
 
 /**
  * @brief Macro. Reports "invalid data" errors for string values.
- * @details Macro. The XMLSec library macro for reporting "invalid data" errors for string.
+ * @details Macro. The XMLSec library macro for reporting "invalid data" errors for strings.
  * @param name the name of the variable, parameter, etc.
  * @param actual the actual string value.
  * @param expected the expected value(s) as a string.
@@ -544,7 +544,7 @@ extern "C" {
 
 /**
  * @brief Macro. Reports "invalid type" errors for string values.
- * @details Macro. The XMLSec library macro for reporting "invalid type" errors for string.
+ * @details Macro. The XMLSec library macro for reporting "invalid type" errors for strings.
  * @param name the name of the variable, parameter, etc.
  * @param actual the actual value as a string.
  * @param expected the expected value(s) as a string.

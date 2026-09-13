@@ -1539,7 +1539,7 @@ xmlSecKeyValueDhXmlWrite(xmlSecKeyValueDhPtr data, xmlNodePtr node, int base64Li
         }
         ret = xmlSecBufferBase64NodeContentWrite(&(data->generator), cur, base64LineSize);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(g)", NULL);
+            xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(generator)", NULL);
             return(-1);
         }
         if(addLineBreaks) {
@@ -1558,7 +1558,7 @@ xmlSecKeyValueDhXmlWrite(xmlSecKeyValueDhPtr data, xmlNodePtr node, int base64Li
     /* next is required Public node. */
     cur = xmlSecAddChild(node, xmlSecNodeDHPublic, xmlSecEncNs);
     if(cur == NULL) {
-        xmlSecInternalError("xmlSecAddChild(xmlSecNodeDHPublic)", NULL);
+        xmlSecInternalError("xmlSecAddChild(NodeDHPublic)", NULL);
         return(-1);
     }
     if(addLineBreaks) {
@@ -1584,7 +1584,7 @@ xmlSecKeyValueDhXmlWrite(xmlSecKeyValueDhPtr data, xmlNodePtr node, int base64Li
     }
     ret = xmlSecBufferBase64NodeContentWrite(&(data->public), cur, base64LineSize);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(xmlSecNodeDHPublic)", NULL);
+        xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(public)", NULL);
         return(-1);
     }
     if(addLineBreaks) {
@@ -1603,7 +1603,7 @@ xmlSecKeyValueDhXmlWrite(xmlSecKeyValueDhPtr data, xmlNodePtr node, int base64Li
     if(xmlSecBufferGetSize(&(data->seed)) > 0) {
         cur = xmlSecAddChild(node, xmlSecNodeDHSeed, xmlSecEncNs);
         if(cur == NULL) {
-            xmlSecInternalError("xmlSecAddChild(xmlSecNodeDHSeed)", NULL);
+            xmlSecInternalError("xmlSecAddChild(NodeDHSeed)", NULL);
             return(-1);
         }
         if(addLineBreaks) {
@@ -1629,7 +1629,7 @@ xmlSecKeyValueDhXmlWrite(xmlSecKeyValueDhPtr data, xmlNodePtr node, int base64Li
         }
         ret = xmlSecBufferBase64NodeContentWrite(&(data->seed), cur, base64LineSize);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(xmlSecNodeDHSeed)", NULL);
+            xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(seed)", NULL);
             return(-1);
         }
         if(addLineBreaks) {
@@ -1649,7 +1649,7 @@ xmlSecKeyValueDhXmlWrite(xmlSecKeyValueDhPtr data, xmlNodePtr node, int base64Li
     if(xmlSecBufferGetSize(&(data->pgenCounter)) > 0) {
         cur = xmlSecAddChild(node, xmlSecNodeDHPgenCounter, xmlSecEncNs);
         if(cur == NULL) {
-            xmlSecInternalError("xmlSecAddChild(xmlSecNodeDHPgenCounter)", NULL);
+            xmlSecInternalError("xmlSecAddChild(NodeDHPgenCounter)", NULL);
             return(-1);
         }
         if(addLineBreaks) {
@@ -1675,7 +1675,7 @@ xmlSecKeyValueDhXmlWrite(xmlSecKeyValueDhPtr data, xmlNodePtr node, int base64Li
         }
         ret = xmlSecBufferBase64NodeContentWrite(&(data->pgenCounter), cur, base64LineSize);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(xmlSecNodeDHPgenCounter)", NULL);
+            xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(pgenCounter)", NULL);
             return(-1);
         }
         if(addLineBreaks) {

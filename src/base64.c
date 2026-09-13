@@ -719,11 +719,11 @@ done:
 
 /**
  * @brief Decodes a base64 encoded string into the output buffer.
- * @details Decodes input base64 encoded string and puts result into
- * the output buffer.
- * @param str the input buffer with base64 encoded string
- * @param out the output buffer
- * @param outSize the output buffer size
+ * @details Decodes the base64 encoded string @p str into @p out. The input
+ * must be a NUL-terminated string.
+ * @param str the NUL-terminated base64 encoded string to decode.
+ * @param out the output buffer.
+ * @param outSize the size of the output buffer.
  * @param outWritten the pointer to store the number of bytes written into the output.
  * @return 0 on success and a negative value otherwise.
  */
@@ -772,9 +772,10 @@ done:
 }
 
 /**
- * @brief Decodes a base64 encoded string in-place.
- * @details Decodes input base64 encoded string from @p str "in-place" (i.e. puts results into @p str buffer).
- * @param str the input/output buffer
+ * @brief Decodes a base64 encoded string in place.
+ * @details Decodes the base64 encoded string @p str in place (i.e. puts the
+ * result into the @p str buffer). The input must be a NUL-terminated string.
+ * @param str the NUL-terminated base64 encoded string to decode in place.
  * @param outWritten the pointer to store the number of bytes written into the output.
  * @return 0 on success and a negative value otherwise.
  */
@@ -832,7 +833,7 @@ static xmlSecTransformKlass xmlSecBase64Klass = {
  * @details The Base64 transform klass (http://www.w3.org/TR/xmldsig-core/#sec-Base-64).
  * The normative specification for base64 decoding transforms is RFC 2045
  * (http://www.ietf.org/rfc/rfc2045.txt). The base64 Transform element has
- * no content. The input is decoded by the algorithms. This transform is
+ * no content. The input is decoded by the algorithm. This transform is
  * useful if an application needs to sign the raw data associated with
  * the encoded content of an element.
  * @return base64 transform id.

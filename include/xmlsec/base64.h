@@ -27,7 +27,9 @@ extern "C" {
 
 
 /**
- * @brief The default base64 encoded line size.
+ * @brief The initial default base64 encoded line size.
+ * @details The initial default base64 encoded line size; it can be changed
+ * at runtime with xmlSecBase64SetDefaultLineSize().
  */
 #define XMLSEC_BASE64_LINESIZE                          64
 

@@ -161,9 +161,9 @@ typedef int xmlSecOpenSSLSizeT;
  *
   *****************************************************************************/
 #if !defined(XMLSEC_OPENSSL_API_400)
-/* OpenSSL 4.0.0 or newer adds "const" in a few places */
 #define XMLSEC_OPENSSL400_CONST
 #else   /* !defined(XMLSEC_OPENSSL_API_400) */
+/* OpenSSL 4.0.0 or newer adds "const" in a few places */
 #define XMLSEC_OPENSSL400_CONST  const
 #endif /* !defined(XMLSEC_OPENSSL_API_400) */
 

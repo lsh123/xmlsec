@@ -430,7 +430,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEcdsaSha512GetKlass(voi
 #ifndef XMLSEC_NO_EDDSA
 
 /**
- * @brief The EdDSA key klass (Ed25519).
+ * @brief The EdDSA key klass (Ed25519 and Ed448).
  */
 #define xmlSecNssKeyDataEdDSAId \
         xmlSecNssKeyDataEdDSAGetKlass()
@@ -447,13 +447,13 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEdDSAEd25519GetKlass(vo
 
 /******************************************************************************
  *
- * XDH key agreement (X25519 and X448)
+ * XDH key agreement (X25519)
  *
   *****************************************************************************/
 #ifndef XMLSEC_NO_XDH
 
 /**
- * @brief The XDH key klass (X25519).
+ * @brief The XDH key klass (X25519 and X448, RFC 7748).
  */
 #define xmlSecNssKeyDataXdhId \
         xmlSecNssKeyDataXdhGetKlass()

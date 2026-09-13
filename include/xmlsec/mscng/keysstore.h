@@ -10,9 +10,9 @@
 #define XMLSEC_MSCNG_KEYSSTORE_H
 
 /**
- * @defgroup xmlsec_mscng_keysstore MsCng Keys Store
+ * @defgroup xmlsec_mscng_keysstore MSCng Keys Store
  * @ingroup xmlsec_mscng
- * @brief MsCng-specific key store implementation.
+ * @brief MSCng-specific key store implementation.
  * @{
  */
 

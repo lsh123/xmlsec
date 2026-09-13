@@ -56,7 +56,7 @@ static xmlSecTransformKlass xmlSecTransformMemBufKlass = {
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
     NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */

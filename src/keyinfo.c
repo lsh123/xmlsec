@@ -888,7 +888,7 @@ xmlSecKeyDataValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node,
         return(-1);
     }
 
-    /* &lt;dsig:KeyValue/&gt; might have only one node */
+    /* &lt;dsig:KeyValue/&gt; may have only one node */
     cur = xmlSecGetNextElementNode(cur->next);
     if(cur != NULL) {
         xmlSecUnexpectedNodeError(cur, xmlSecKeyDataKlassGetName(id));
@@ -1093,7 +1093,7 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
         goto done;
     }
 
-    /* destroy prev retrieval method context */
+    /* reset prev retrieval method context */
     xmlSecTransformCtxReset(&(keyInfoCtx->retrievalMethodCtx));
 
     /* set start URI and check that it is enabled */
@@ -1379,7 +1379,7 @@ xmlSecKeyDataKeyInfoReferenceXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNo
     /* uri attribute is required */
     uri = xmlGetProp(node, xmlSecAttrURI);
     if(uri == NULL) {
-        xmlSecInvalidNodeAttributeError(node, xmlSecAttrURI, xmlSecKeyDataKlassGetName(id), "empty");
+        xmlSecInvalidNodeAttributeError(node, xmlSecAttrURI, xmlSecKeyDataKlassGetName(id), "missing");
         goto done;
     }
 

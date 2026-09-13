@@ -58,7 +58,7 @@ typedef const struct _xmlSecKeyDataStoreKlass           *xmlSecKeyDataStoreId;
   *****************************************************************************/
 /**
  * @brief The key data usage bitmask.
- * @details The bits mask that determines possible keys data usage.
+ * @details The bitmask that determines possible key data usage.
  */
 typedef unsigned int                                    xmlSecKeyDataUsage;
 
@@ -75,32 +75,32 @@ typedef unsigned int                                    xmlSecKeyDataUsage;
 
 /**
  * @brief The key data can be written to a KeyInfo child.
- * @details The key data could be written to a <dsig:KeyInfo /> child.
+ * @details The key data could be written to a &lt;dsig:KeyInfo/&gt; child.
  */
 #define xmlSecKeyDataUsageKeyInfoNodeWrite              0x00002
 
 /**
  * @brief The key data can be read from a KeyValue child.
- * @details The key data could be read from a <dsig:KeyValue /> child.
+ * @details The key data could be read from a &lt;dsig:KeyValue/&gt; child.
  */
 #define xmlSecKeyDataUsageKeyValueNodeRead              0x00004
 
 /**
  * @brief The key data can be written to a KeyValue child.
- * @details The key data could be written to a <dsig:KeyValue /> child.
+ * @details The key data could be written to a &lt;dsig:KeyValue/&gt; child.
  */
 #define xmlSecKeyDataUsageKeyValueNodeWrite             0x00008
 
 /**
  * @brief The key data can be retrieved via RetrievalMethod in XML format.
- * @details The key data could be retrieved using <dsig:RetrievalMethod /> node
+ * @details The key data could be retrieved using &lt;dsig:RetrievalMethod/&gt; node
  * in XML format.
  */
 #define xmlSecKeyDataUsageRetrievalMethodNodeXml        0x00010
 
 /**
  * @brief The key data can be retrieved via RetrievalMethod in binary format.
- * @details The key data could be retrieved using <dsig:RetrievalMethod /> node
+ * @details The key data could be retrieved using &lt;dsig:RetrievalMethod/&gt; node
  * in binary format.
  */
 #define xmlSecKeyDataUsageRetrievalMethodNodeBin        0x00020
@@ -117,21 +117,21 @@ typedef unsigned int                                    xmlSecKeyDataUsage;
 
 /**
  * @brief The key data can be read and written from/to a KeyInfo child.
- * @details The key data could be read and written from/to a <dsig:KeyInfo /> child.
+ * @details The key data could be read and written from/to a &lt;dsig:KeyInfo/&gt; child.
  */
 #define xmlSecKeyDataUsageKeyInfoNode                   \
         (xmlSecKeyDataUsageKeyInfoNodeRead | xmlSecKeyDataUsageKeyInfoNodeWrite)
 
 /**
  * @brief The key data can be read and written from/to a KeyValue child.
- * @details The key data could be read and written from/to a <dsig:KeyValue /> child.
+ * @details The key data could be read and written from/to a &lt;dsig:KeyValue/&gt; child.
  */
 #define xmlSecKeyDataUsageKeyValueNode                  \
         (xmlSecKeyDataUsageKeyValueNodeRead | xmlSecKeyDataUsageKeyValueNodeWrite)
 
 /**
  * @brief The key data can be retrieved via RetrievalMethod in any format.
- * @details The key data could be retrieved using <dsig:RetrievalMethod /> node
+ * @details The key data could be retrieved using &lt;dsig:RetrievalMethod/&gt; node
  * in any format.
  */
 #define xmlSecKeyDataUsageRetrievalMethodNode           \
@@ -161,17 +161,17 @@ typedef unsigned int                            xmlSecKeyDataType;
 #define xmlSecKeyDataTypeNone                           xmlSecKeyDataTypeUnknown
 
 /**
- * @brief The key data contain a public key.
+ * @brief The key data contains a public key.
  */
 #define xmlSecKeyDataTypePublic                         0x0001
 
 /**
- * @brief The key data contain a private key.
+ * @brief The key data contains a private key.
  */
 #define xmlSecKeyDataTypePrivate                        0x0002
 
 /**
- * @brief The key data contain a symmetric key.
+ * @brief The key data contains a symmetric key.
  */
 #define xmlSecKeyDataTypeSymmetric                      0x0004
 
@@ -275,12 +275,12 @@ XMLSEC_EXPORT int               xmlSecKeyDataBinRead            (xmlSecKeyDataId
                                                                  const xmlSecByte* buf,
                                                                  xmlSecSize bufSize,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
+
 XMLSEC_EXPORT int               xmlSecKeyDataBinWrite           (xmlSecKeyDataId id,
                                                                  xmlSecKeyPtr key,
                                                                  xmlSecByte** buf,
                                                                  xmlSecSize* bufSize,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
-
 
 /**
  * @brief Macro. Returns the key data name.
@@ -411,9 +411,11 @@ typedef int                     (*xmlSecKeyDataBinReadMethod)   (xmlSecKeyDataId
 /**
  * @brief Key data specific method to write a binary buffer.
  * @details Key data specific method for writing binary buffer.
+ * On success, the method allocates the output buffer @p buf and the caller
+ * is responsible for freeing it.
  * @param id the data id.
  * @param key the key.
- * @param buf the output buffer.
+ * @param buf the output buffer (allocated by the method; the caller must free it).
  * @param bufSize the buffer size.
  * @param keyInfoCtx the &lt;dsig:KeyInfo/&gt; node processing context.
  * @return 0 on success or a negative value if an error occurs.
@@ -678,7 +680,7 @@ struct _xmlSecKeyDataStoreKlass {
  *
   *****************************************************************************/
 /**
- * @brief The data store list id (klass).
+ * @brief The key data store list id (klass).
  */
 #define xmlSecKeyDataStorePtrListId     xmlSecKeyDataStorePtrListGetKlass()
 XMLSEC_EXPORT xmlSecPtrListId   xmlSecKeyDataStorePtrListGetKlass       (void);

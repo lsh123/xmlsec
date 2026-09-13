@@ -73,22 +73,26 @@ typedef enum {
 #define XMLSEC_DSIG_FLAGS_IGNORE_MANIFESTS                      0x00000001
 
 /**
- * @brief If set, pre-digest buffer for SignedInfo References is stored in xmlSecDSigCtx.
- * @details If this flag is set then pre-digest buffer for &lt;dsig:Reference/&gt; child
- * of &lt;dsig:SignedInfo/&gt; element will be stored in xmlSecDSigCtx.
+ * @brief If set, the pre-digest buffer for SignedInfo References is stored per-Reference.
+ * @details If this flag is set then the pre-digest buffer for &lt;dsig:Reference/&gt; child
+ * of &lt;dsig:SignedInfo/&gt; element will be stored in the &lt;dsig:Reference/&gt; processing
+ * context (see the preDigestMemBufMethod field of #_xmlSecDSigReferenceCtx) and can be
+ * retrieved via #xmlSecDSigReferenceCtxGetPreDigestBuffer.
  */
 #define XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES           0x00000002
 
 /**
- * @brief If set, pre-digest buffer for Manifest References is stored in xmlSecDSigCtx.
- * @details If this flag is set then pre-digest buffer for &lt;dsig:Reference/&gt; child
- * of &lt;dsig:Manifest/&gt; element will be stored in xmlSecDSigCtx.
+ * @brief If set, the pre-digest buffer for Manifest References is stored per-Reference.
+ * @details If this flag is set then the pre-digest buffer for &lt;dsig:Reference/&gt; child
+ * of &lt;dsig:Manifest/&gt; element will be stored in the &lt;dsig:Reference/&gt; processing
+ * context (see the preDigestMemBufMethod field of #_xmlSecDSigReferenceCtx) and can be
+ * retrieved via #xmlSecDSigReferenceCtxGetPreDigestBuffer.
  */
 #define XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES             0x00000004
 
 /**
- * @brief If set, pre-signature buffer for SignedInfo is stored in xmlSecDSigCtx.
- * @details If this flag is set then pre-signature buffer for &lt;dsig:SignedInfo/&gt;
+ * @brief If set, the pre-signature buffer for SignedInfo is stored in xmlSecDSigCtx.
+ * @details If this flag is set then the pre-signature buffer for &lt;dsig:SignedInfo/&gt;
  * element processing will be stored in xmlSecDSigCtx.
  */
 #define XMLSEC_DSIG_FLAGS_STORE_SIGNATURE                       0x00000008
@@ -140,12 +144,12 @@ struct _xmlSecDSigCtx {
     /* these data are returned */
     xmlSecKeyPtr                signKey;  /**< the signature key; application may set #signKey before calling #xmlSecDSigCtxSign or #xmlSecDSigCtxVerify functions. The library takes ownership of the key and destroys it when the context is finalized/destroyed (see #xmlSecDSigCtxFinalize and #xmlSecDSigCtxDestroy). */
     xmlSecTransformOperation    operation;  /**< the operation: sign or verify. */
-    xmlSecBufferPtr             result;  /**< the pointer to signature (not valid for signature verification). */
+    xmlSecBufferPtr             result;  /**< the pointer to signature (not valid for signature verification). The buffer is owned by the context and freed when the context is finalized or destroyed, so the pointer becomes invalid after #xmlSecDSigCtxFinalize or #xmlSecDSigCtxDestroy. */
     xmlSecDSigStatus            status;  /**< the &lt;dsig:Signature/&gt; processing status. */
     xmlSecDSigFailureReason     failureReason;  /**< the detailed failure reason (if known); the application should check @p status first. */
     xmlSecTransformPtr          signMethod;  /**< the pointer to signature transform. */
     xmlSecTransformPtr          c14nMethod;  /**< the pointer to c14n transform. */
-    xmlSecTransformPtr          preSignMemBufMethod;  /**< the pointer to binary buffer right before signature (valid only if #XMLSEC_DSIG_FLAGS_STORE_SIGNATURE flag is set). */
+    xmlSecTransformPtr          preSignMemBufMethod;  /**< the pointer to binary buffer right before signature (valid only if #XMLSEC_DSIG_FLAGS_STORE_SIGNATURE flag is set). The buffer is owned by the context and freed when the context is finalized or destroyed, so the pointer becomes invalid after #xmlSecDSigCtxFinalize or #xmlSecDSigCtxDestroy. */
     xmlNodePtr                  signValueNode;  /**< the pointer to &lt;dsig:SignatureValue/&gt; node. */
     xmlChar*                    id;  /**< the pointer to Id attribute of &lt;dsig:Signature/&gt; node. */
     xmlSecPtrList               signedInfoReferences;  /**< the list of references in &lt;dsig:SignedInfo/&gt; node. */
@@ -208,7 +212,7 @@ struct _xmlSecDSigReferenceCtx {
 
     xmlSecBufferPtr             result;  /**< the pointer to digest result. */
     xmlSecDSigStatus            status;  /**< the reference processing status. */
-    xmlSecTransformPtr          preDigestMemBufMethod;  /**< the pointer to binary buffer right before digest (valid only if the #XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES flag is set for SignedInfo References or the #XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES flag is set for Manifest References). */
+    xmlSecTransformPtr          preDigestMemBufMethod;  /**< the pointer to binary buffer right before digest (valid only if the #XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES flag is set for SignedInfo References or the #XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES flag is set for Manifest References). The buffer is owned by the context and freed when the context is finalized or destroyed, so the pointer becomes invalid after #xmlSecDSigCtxFinalize or #xmlSecDSigCtxDestroy. */
     xmlChar*                    id;  /**< the &lt;dsig:Reference/&gt; node ID attribute. */
     xmlChar*                    uri;  /**< the &lt;dsig:Reference/&gt; node URI attribute. */
     xmlChar*                    type;  /**< the &lt;dsig:Reference/&gt; node Type attribute. */

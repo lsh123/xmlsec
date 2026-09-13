@@ -46,13 +46,13 @@ typedef enum {
 /**
  * @brief XML Encryption processing failure reason.
  * @details XML Encryption processing failure reason. The application should use the
- * returned value from the encrypt/decrypt functions to find out the operation status
- * first; on failure the specific reason is stored in the \ref _xmlSecEncCtx::failureReason
- * "failureReason" field of the context.
+ * returned value from the encrypt/decrypt functions to find out whether the operation
+ * succeeded or failed first; on failure the specific reason is stored in the
+ * failureReason field of #_xmlSecEncCtx.
  */
 typedef enum {
     xmlSecEncFailureReasonUnknown = 0,  /**< the failure reason is unknown. */
-    xmlSecEncFailureReasonKeyNotFound,  /**< the key not found. */
+    xmlSecEncFailureReasonKeyNotFound,  /**< the key is not found. */
 } xmlSecEncFailureReason;
 
 /**
@@ -65,7 +65,7 @@ typedef enum {
  * @brief XML Encryption context.
  */
 struct _xmlSecEncCtx {
-    /* these data user can set before performing the operation */
+    /* data the user can set before performing the operation */
     void*                       userData;  /**< the pointer to user data (xmlsec and xmlsec-crypto libraries never touch this). */
     unsigned int                flags;  /**< the XML Encryption processing flags. */
     unsigned int                flags2;  /**< reserved for future. */
@@ -79,7 +79,7 @@ struct _xmlSecEncCtx {
     xmlSecKeyPtr                encKey;  /**< the encryption key; application may set #encKey before calling encryption/decryption functions. The library takes ownership of the key and destroys it when the context is reset, finalized or destroyed (see #xmlSecEncCtxReset, #xmlSecEncCtxFinalize and #xmlSecEncCtxDestroy). */
     xmlSecTransformOperation    operation;  /**< the operation: encrypt or decrypt. */
     xmlSecBufferPtr             result;  /**< the pointer to the encrypted/decrypted data buffer (valid after a successful encrypt/decrypt operation). The buffer is owned by the context and freed when the context is reset or finalized, so the pointer returned by #xmlSecEncCtxDecryptToBuffer becomes invalid after #xmlSecEncCtxReset or #xmlSecEncCtxFinalize. */
-    int                         resultBase64Encoded;  /**< the flag: if set then result in #result is base64 encoded. */
+    int                         resultBase64Encoded;  /**< the flag: if set, then the result in #result is base64 encoded. */
     int                         resultReplaced;  /**< the flag: if set then the original &lt;enc:EncryptedData/&gt; or &lt;enc:EncryptedKey/&gt; node was replaced. */
     xmlSecTransformPtr          encMethod;  /**< the pointer to encryption transform. */
     xmlSecEncFailureReason      failureReason;  /**< the detailed failure reason. */
@@ -98,7 +98,7 @@ struct _xmlSecEncCtx {
     xmlNodePtr                  keyInfoNode;  /**< the pointer to &lt;enc:KeyInfo/&gt; node. */
     xmlNodePtr                  cipherValueNode;  /**< the pointer to &lt;enc:CipherValue/&gt; node. */
 
-    xmlNodePtr                  replacedNodeList;  /**< the first node of the list of replaced nodes (populated when the #XMLSEC_ENC_RETURN_REPLACED_NODE flag is set) */
+    xmlNodePtr                  replacedNodeList;  /**< the first node of the list of replaced nodes (populated when the #XMLSEC_ENC_RETURN_REPLACED_NODE flag is set). The library frees every node in the list when the context is reset or finalized (see #xmlSecEncCtxReset and #xmlSecEncCtxFinalize), so the application must not free the returned nodes itself and must consume them before resetting the context. */
     void*                       reserved1;  /**< reserved for the future. */
 };
 

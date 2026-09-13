@@ -66,7 +66,7 @@ XMLSEC_EXPORT xmlSecKeyDataStorePtr     xmlSecKeysMngrGetDataStore      (xmlSecK
  * @details Reads the &lt;dsig:KeyInfo/&gt; node @p keyInfoNode and extracts the key.
  * The caller is responsible for destroying the returned key using
  * #xmlSecKeyDestroy method.
- * @param keyInfoNode the pointer to &lt;dsig:KeyInfo/&gt; node.
+ * @param keyInfoNode the pointer to the &lt;dsig:KeyInfo/&gt; node.
  * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; node processing context.
  * @return the pointer to a key or NULL if the key is not found or an error occurs.
  */
@@ -79,7 +79,7 @@ typedef xmlSecKeyPtr    (*xmlSecGetKeyCallback)         (xmlNodePtr keyInfoNode,
 struct _xmlSecKeysMngr {
     xmlSecKeyStorePtr           keysStore;  /**< the key store (list of keys known to keys manager). */
     xmlSecPtrList               storesList;  /**< the list of key data stores known to keys manager. */
-    xmlSecGetKeyCallback        getKey;  /**< the callback used to read &lt;dsig:KeyInfo/&gt; node. */
+    xmlSecGetKeyCallback        getKey;  /**< the callback used to read the &lt;dsig:KeyInfo/&gt; node. */
 };
 
 
@@ -127,7 +127,7 @@ XMLSEC_EXPORT xmlSecKeyPtr      xmlSecKeyStoreFindKeyFromX509Data(xmlSecKeyStore
 #define xmlSecKeyStoreIsValid(store) \
         ((( store ) != NULL) && ((( store )->id) != NULL))
 /**
- * @brief Macro. Returns 1 if the store is valid and the store's id matches storeId.
+ * @brief Macro. Returns 1 if @p store is valid and @p store's id matches @p storeId.
  * @details Macro. Returns 1 if @p store is valid and @p store's id is equal to @p storeId.
  * @param store the pointer to the store.
  * @param storeId the store id.
@@ -137,8 +137,8 @@ XMLSEC_EXPORT xmlSecKeyPtr      xmlSecKeyStoreFindKeyFromX509Data(xmlSecKeyStore
         ((( store )->id) == ( storeId )))
 
 /**
- * @brief Macro. Returns 1 if store is valid and object size meets minimum.
- * @details Macro. Returns 1 if @p store is valid and @p store 's object has at least @p size bytes.
+ * @brief Macro. Returns 1 if @p store is valid and @p store's object has at least @p size bytes.
+ * @details Macro. Returns 1 if @p store is valid and @p store's object has at least @p size bytes.
  * @param store the pointer to store.
  * @param size the minimum size.
  */

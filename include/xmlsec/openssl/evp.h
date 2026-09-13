@@ -11,7 +11,7 @@
 /**
  * @defgroup xmlsec_openssl_evp OpenSSL EVP Helpers
  * @ingroup xmlsec_openssl
- * @brief Key data helpers using the OpenSSL EVP interface.
+ * @brief Key and key data helpers using the OpenSSL EVP interface.
  * @{
  */
 

@@ -65,7 +65,7 @@ static const xmlChar xmlSecBnRevLookupTable[XMLSEC_BN_REV_MAX] =
  * @details Creates a new BN object. Caller is responsible for destroying it
  * by calling #xmlSecBnDestroy function.
  * @param size the initial allocated BN size.
- * @return the newly BN or a NULL if an error occurs.
+ * @return the new BN or a NULL if an error occurs.
  */
 xmlSecBnPtr
 xmlSecBnCreate(xmlSecSize size) {
@@ -734,7 +734,7 @@ xmlSecBnCompareReverse(xmlSecBnPtr bn, const xmlSecByte* data, xmlSecSize dataSi
  * @param cur the pointer to an XML node.
  * @param format the BN format.
  * @param reverse if set then reverse read buffer after reading.
- * @return 0 on success and a negative values if an error occurs.
+ * @return 0 on success and a negative value if an error occurs.
  */
 int
 xmlSecBnGetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int reverse) {
@@ -801,8 +801,8 @@ xmlSecBnGetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
  * @param cur the pointer to an XML node.
  * @param format the BN format.
  * @param reverse the flag that indicates whether to reverse the buffer before writing.
- * @param addLineBreaks the flag; it is equal to 1 then linebreaks will be added before and after new buffer content.
- * @return 0 on success and a negative values if an error occurs.
+ * @param addLineBreaks the flag; if it is equal to 1 then linebreaks will be added before and after new buffer content.
+ * @return 0 on success and a negative value if an error occurs.
  */
 int
 xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int reverse, int addLineBreaks) {
@@ -877,7 +877,7 @@ xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
         xmlFree(content);
         break;
     default:
-        /* unreachable: format is validated above */
+        /* invalid format */
         xmlSecInternalError("unsupported BN format", NULL);
         return(-1);
     }
@@ -907,7 +907,7 @@ xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
  * @param addLineBreaks if the flag is equal to 1 then
  *              linebreaks will be added before and after
  *              new buffer content.
- * @return 0 on success and a negative values if an error occurs.
+ * @return 0 on success and a negative value if an error occurs.
  */
 int
 xmlSecBnBlobSetNodeValue(const xmlSecByte* data, xmlSecSize dataSize,

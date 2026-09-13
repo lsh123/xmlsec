@@ -64,7 +64,7 @@ XMLSEC_EXPORT int               xmlSecTransformIdsRegister      (xmlSecTransform
 typedef enum  {
     xmlSecTransformStatusNone = 0,  /**< the status is unknown. */
     xmlSecTransformStatusWorking,  /**< the transform is being executed. */
-    xmlSecTransformStatusFinished,  /**< the transform finished */
+    xmlSecTransformStatusFinished,  /**< the transform finished. */
     xmlSecTransformStatusOk,  /**< the transform succeeded. */
     xmlSecTransformStatusFail  /**< the transform failed (an error occurred). */
 } xmlSecTransformStatus;
@@ -156,7 +156,7 @@ typedef xmlSecByte                              xmlSecTransformDataType;
 #define xmlSecTransformDataTypeBin              0x0001
 
 /**
- * @brief The xml transform data.
+ * @brief The XML transform data.
  */
 #define xmlSecTransformDataTypeXml              0x0002
 
@@ -219,7 +219,7 @@ typedef unsigned int                            xmlSecTransformUsage;
 
 /**
  * @brief Transform usable in as:EncapsulationMechanism.
- * @details Transform is a KEM algorithm used in the &lt;as:EncapsulationMechanism/&gt; element:
+ * @details Transform could be used in &lt;as:EncapsulationMechanism/&gt; as a KEM algorithm:
  * on encrypt it encapsulates a symmetric key and writes the ciphertext to CipherValue;
  * on decrypt it reads the CipherValue and decapsulates to recover the key.
  */
@@ -240,8 +240,8 @@ typedef unsigned int                            xmlSecTransformUsage;
  * @details The callback called after creating transforms chain but before
  * starting data processing. Application can use this callback to
  * do additional transforms chain verification or modification and
- * aborting transforms execution (if necessary).
- * @param transformCtx the pointer to transform's context.
+ * abort transforms execution (if necessary).
+ * @param transformCtx the pointer to the transforms context.
  * @return 0 on success and a negative value otherwise (in this case,
  * transforms chain will not be executed and xmlsec processing stops).
  */
@@ -256,8 +256,8 @@ typedef int             (*xmlSecTransformCtxPreExecuteCallback)         (xmlSecT
 #define XMLSEC_TRANSFORMCTX_FLAGS_USE_VISA3D_HACK               0x00000001
 
 /**
- * @brief Support ASN1 encoded ECDSA signature values.
- * @details If this flag is set then ASN1 encoded ECDSA signature values will be
+ * @brief Support ASN1 encoded DSA/ECDSA signature values.
+ * @details If this flag is set then ASN1 encoded DSA/ECDSA signature values will be
  * used (see https://github.com/lsh123/xmlsec/issues/995).
  */
 #define XMLSEC_TRANSFORMCTX_FLAGS_SUPPORT_ASN1_SIGNATURE_VALUES 0x00000002
@@ -286,7 +286,7 @@ struct _xmlSecTransformCtx {
     unsigned int                                flags;  /**< the bit mask flags to control transforms execution. */
     unsigned int                                maxDepth;  /**< the maximum depth for transforms (eg Relationship Transform) execution (if 0 then depth check is disabled). */
     xmlSecSize                                  binaryChunkSize;  /**< the chunk size for binary transforms processing. */
-    xmlSecTransformUriType                      enabledUris;  /**< the allowed transform data source uri types. */
+    xmlSecTransformUriType                      enabledUris;  /**< the allowed transform data source uri types. By default only the Empty and SameDocument URI types are enabled; dereferencing local or remote URIs requires explicit opt-in. */
     xmlSecPtrList                               enabledTransforms;  /**< the list of enabled transforms; if list is empty (default) then all registered transforms are enabled. */
     xmlSecTransformCtxPreExecuteCallback        preExecCallback;  /**< the callback called after preparing transform chain and right before actual data processing; application can use this callback to change transforms parameters, insert additional transforms in the chain or do additional validation (and abort transform execution if needed). */
 
@@ -731,7 +731,7 @@ struct _xmlSecTransformKlass {
     /* low level method */
     xmlSecTransformExecuteMethod        execute;  /**< the low level data processing method used by default implementations of #pushBin, #popBin, #pushXml and #popXml. */
 
-    /* reserved for future */
+    /* reserved for the future */
     void*                               reserved0;  /**< reserved for the future. */
     void*                               reserved1;  /**< reserved for the future. */
 };

@@ -468,7 +468,7 @@ xmlSecTransformCtxCreate(void) {
     xmlSecTransformCtxPtr ctx;
     int ret;
 
-    /* Allocate a new xmlSecTransform and fill the fields. */
+    /* Allocate a new xmlSecTransformCtx and fill the fields. */
     ctx = (xmlSecTransformCtxPtr)xmlMalloc(sizeof(xmlSecTransformCtx));
     if(ctx == NULL) {
         xmlSecMallocError(sizeof(xmlSecTransformCtx), NULL);
@@ -717,7 +717,7 @@ xmlSecTransformCtxCreateAndAppend(xmlSecTransformCtxPtr ctx, xmlSecTransformId i
 
 /**
  * @brief Creates a transform and prepends it to the chain in @p ctx.
- * @details Creates new transform and connects it to the end of the chain of
+ * @details Creates new transform and connects it to the beginning of the chain of
  * transforms in the @p ctx (see #xmlSecTransformConnect function for details).
  * @param ctx the pointer to transforms chain processing context.
  * @param id the new transform klass.
@@ -971,7 +971,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
     if(useVisa3DHack == 0) {
         xmlSecTransformPtr transform;
 
-        /* we need to create XPonter transform to execute expr */
+        /* we need to create XPointer transform to execute expr */
         transform = xmlSecTransformCtxCreateAndPrepend(ctx, xmlSecTransformXPointerId);
         if(!xmlSecTransformIsValid(transform)) {
             xmlSecInternalError("xmlSecTransformCtxCreateAndPrepend(xmlSecTransformXPointerId)", NULL);
@@ -1257,7 +1257,10 @@ xmlSecTransformCtxExecute(xmlSecTransformCtxPtr ctx, xmlDocPtr doc) {
         xmlSecNodeSetPtr nodes;
 
         if((ctx->xptrExpr != NULL) && (xmlSecStrlen(ctx->xptrExpr) > 0)){
-            /* our xpointer transform takes care of providing correct nodes set */
+            /* we create the whole-tree node set here; in the general case the
+             * xpointer transform prepended to the chain takes care of providing
+             * the correct node set, while in the "#xpointer(/)" case no xpointer
+             * transform is created and the whole tree is the correct input */
             nodes = xmlSecNodeSetCreate(doc, NULL, xmlSecNodeSetNormal);
             if(nodes == NULL) {
                 xmlSecInternalError("xmlSecNodeSetCreate", NULL);
@@ -1937,7 +1940,7 @@ xmlSecTransformConnect(xmlSecTransformPtr left, xmlSecTransformPtr right,
     leftType = xmlSecTransformGetDataType(left, xmlSecTransformModePop, transformCtx);
     rightType = xmlSecTransformGetDataType(right, xmlSecTransformModePush, transformCtx);
 
-    /* happy case first: nothing need to be done */
+    /* happy case first: nothing needs to be done */
     if((((leftType & xmlSecTransformDataTypeBin) != 0) &&
         ((rightType & xmlSecTransformDataTypeBin) != 0)) ||
        (((leftType & xmlSecTransformDataTypeXml) != 0) &&
@@ -2280,7 +2283,7 @@ xmlSecTransformDefaultPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nod
         return(-1);
     }
 
-    /* push result to the next transform (if exist) */
+    /* push result to the next transform (if exists) */
     if(transform->next != NULL) {
         ret = xmlSecTransformPushXml(transform->next, transform->outNodes, transformCtx);
         if(ret < 0) {
@@ -2312,7 +2315,7 @@ xmlSecTransformDefaultPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nod
     xmlSecAssert2(transform->outNodes == NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
-    /* pop result from the prev transform (if exist) */
+    /* pop result from the prev transform (if exists) */
     if(transform->prev != NULL) {
         ret = xmlSecTransformPopXml(transform->prev, &(transform->inNodes), transformCtx);
         if(ret < 0) {
@@ -2387,7 +2390,7 @@ xmlSecTransformIdListFind(xmlSecPtrListPtr list, xmlSecTransformId transformId) 
 
 /**
  * @brief Looks up a transform klass by href and usage in the list.
- * @details Lookups data klass in the list with given @p href and @p usage in @p list.
+ * @details Looks up a transform klass in the list with given @p href and @p usage in @p list.
  * @param list the pointer to transform ids list.
  * @param href the desired transform klass href.
  * @param usage the desired transform usage.
@@ -2418,7 +2421,7 @@ xmlSecTransformIdListFindByHref(xmlSecPtrListPtr list, const xmlChar* href,
 
 /**
  * @brief Looks up a transform klass by name and usage in the list.
- * @details Lookups data klass in the list with given @p name and @p usage in @p list.
+ * @details Looks up a transform klass in the list with given @p name and @p usage in @p list.
  * @param list the pointer to transform ids list.
  * @param name the desired transform klass name.
  * @param usage the desired transform usage.
@@ -2450,7 +2453,7 @@ xmlSecTransformIdListFindByName(xmlSecPtrListPtr list, const xmlChar* name,
 
 /**
  * @brief Prints transform ids list debug information to @p output.
- * @details Prints binary transform debug information to @p output.
+ * @details Prints transform ids list debug information to @p output.
  * @param list the pointer to transform ids list.
  * @param output the pointer to output FILE.
  */
@@ -2479,7 +2482,7 @@ xmlSecTransformIdListDebugDump(xmlSecPtrListPtr list, FILE* output) {
 
 /**
  * @brief Prints transform ids list debug information to @p output in XML format.
- * @details Prints binary transform debug information to @p output in XML format.
+ * @details Prints transform ids list debug information to @p output in XML format.
  * @param list the pointer to transform ids list.
  * @param output the pointer to output FILE.
  */

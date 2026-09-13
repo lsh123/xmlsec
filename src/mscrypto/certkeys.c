@@ -655,6 +655,10 @@ xmlSecMSCryptoKeyDataGetMSCryptoKeySpec(xmlSecKeyDataPtr data) {
 /**
  * @brief Gets key provider info.
  * @param data the key data
+ *
+ * The returned buffer is allocated by the library and must be freed
+ * by the caller with xmlFree.
+ *
  * @return the key provider info.
  */
 PCRYPT_KEY_PROV_INFO
@@ -832,6 +836,8 @@ xmlSecMSCryptoKeyDataGetType(xmlSecKeyDataPtr data) {
  * @brief Duplicates the @p pCert.
  * @param pCert the pointer to cert.
  *
+ * The returned PCCERT_CONTEXT must be released by the caller with
+ * CertFreeCertificateContext.
  *
  * @return pointer to newly created PCCERT_CONTEXT object or
  * NULL if an error occurs.
@@ -855,6 +861,10 @@ PCCERT_CONTEXT xmlSecMSCryptoCertDup(PCCERT_CONTEXT pCert) {
  * @brief Creates key data value from the cert.
  * @param pCert the pointer to cert.
  * @param type the expected key type.
+ *
+ * The function takes ownership of the certificate context; the caller
+ * must not free it afterwards.
+ *
  * @return pointer to newly created xmlsec key or NULL if an error occurs.
  */
 xmlSecKeyDataPtr

@@ -98,7 +98,7 @@
  *   * Step 2, point 4 talks about a SourceType value, but given that neither Microsoft Office, nor LibreOffice
  *     writes that theoretical attribute, the implementation doesn't handle it. If there is a real-world situation
  *     when there will be such an input, then it'll be easy to add support for that. But I didn't want to clutter
- *     the current implementation with details that doesn't seem to be used in practice
+ *     the current implementation with details that don't seem to be used in practice
  *
  * xmlSecTransform + xmlSecRelationshipCtx
  *
@@ -234,7 +234,7 @@ xmlSecRelationshipReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSec
         /* which MUST have sourceId attribute */
         sourceId = xmlGetProp(cur, xmlSecRelationshipAttrSourceId);
         if(sourceId == NULL) {
-            xmlSecInvalidNodeAttributeError(cur, xmlSecRelationshipAttrSourceId, NULL, "empty");
+            xmlSecInvalidNodeAttributeError(cur, xmlSecRelationshipAttrSourceId, NULL, "missing");
             return(-1);
         }
 

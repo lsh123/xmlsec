@@ -11,7 +11,7 @@
 /**
  * @defgroup xmlsec_core_list Generic List
  * @ingroup xmlsec_core
- * @brief Generic doubly-linked list implementation.
+ * @brief Generic dynamic array (vector) of pointers.
  * @{
  */
 
@@ -93,14 +93,14 @@ XMLSEC_EXPORT void              xmlSecPtrListDebugXmlDump       (xmlSecPtrListPt
 
 /**
  * @brief Macro. Returns 1 if @p list is valid.
- * @details Macro. Returns 1 if @p list is not NULL and @p list->id is not NULL
+ * @details Macro. Returns 1 if @p list is not NULL and @p list->id is not NULL,
  * or 0 otherwise.
  * @param list the pointer to list.
  */
 #define xmlSecPtrListIsValid(list) \
         ((( list ) != NULL) && ((( list )->id) != NULL))
 /**
- * @brief Macro. Returns 1 if list is valid and list's id matches dataId.
+ * @brief Macro. Returns 1 if @p list's id equals @p dataId.
  * @details Macro. Returns 1 if @p list is valid and @p list's id is equal to @p dataId.
  * @param list the pointer to list.
  * @param dataId the list Id.
@@ -146,6 +146,10 @@ typedef void                    (*xmlSecPtrDebugDumpItemMethod) (xmlSecPtr ptr,
 
 /**
  * @brief List klass.
+ * @details If #duplicateItem is NULL then #xmlSecPtrListCopy shares the raw item
+ * pointers between the source and the destination lists. In that case, if
+ * #destroyItem is not NULL, finalizing both lists will free each shared item
+ * twice.
  */
 struct _xmlSecPtrListKlass {
     const xmlChar*                      name;  /**< the list klass name. */

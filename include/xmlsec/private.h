@@ -56,7 +56,6 @@ typedef int                     (*xmlSecCryptoKeysMngrInitMethod)       (xmlSecK
  * Errors
  *
   *****************************************************************************/
-
 XMLSEC_EXPORT void              xmlSecErrorsSetSystemCallback         (xmlSecErrorsCallback callback);
 
 /******************************************************************************
@@ -311,10 +310,10 @@ typedef xmlSecKeyPtr            (*xmlSecCryptoAppPkcs12LoadMethod)      (const c
 /**
  * @brief Reads a key and certificates from PKCS12 binary data.
  * @details Reads a key and all associated certificates from the PKCS12 binary data.
- * For uniformity, use the xmlSecCryptoAppKeyLoadExMethod method instead of
+ * For uniformity, use the xmlSecCryptoAppKeyLoadMemoryMethod method instead of
  * this one. Pass in format=xmlSecKeyDataFormatPkcs12.
- * @param data the pkcs12 data.
- * @param dataSize the pkcs12 data size.
+ * @param data the PKCS12 data.
+ * @param dataSize the PKCS12 data size.
  * @param pwd the PKCS12 data password.
  * @param pwdCallback the password callback.
  * @param pwdCallbackCtx the user context for password callback.
@@ -351,7 +350,7 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
                                                                          xmlSecSize dataSize,
                                                                          xmlSecKeyDataFormat format);
 /**
- * @brief The list of crypto engine functions and transform classes.
+ * @brief The list of crypto engine functions, key data and transform classes.
  * @details The list of crypto engine functions, key data and transform classes.
  */
 struct _xmlSecCryptoDLFunctions {
@@ -386,7 +385,7 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoKeyDataGetKlassMethod            keyDataDEREncodedKeyValueGetKlass;  /**< the method to get pointer to DER encoded key value key data klass. */
 
     /* Key data store ids */
-    xmlSecCryptoKeyDataStoreGetKlassMethod       x509StoreGetKlass;  /**< the method to get pointer to X509 key data store. */
+    xmlSecCryptoKeyDataStoreGetKlassMethod       x509StoreGetKlass;  /**< the method to get pointer to X509 key data store klass. */
 
     /* Crypto transforms ids */
     xmlSecCryptoTransformGetKlassMethod          transformAes128CbcGetKlass;  /**< the method to get pointer to AES 128 CBC encryption transform. */
@@ -488,7 +487,7 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod          transformRsaPssSha3_384GetKlass;  /**< the method to get pointer to RSA-PSS-SHA3-384 signature transform. */
     xmlSecCryptoTransformGetKlassMethod          transformRsaPssSha3_512GetKlass;  /**< the method to get pointer to RSA-PSS-SHA3-512 signature transform. */
 
-    xmlSecCryptoTransformGetKlassMethod          transformRsaPkcs1GetKlass;  /**< the method to get pointer to RSA-PKCS1_5 key transport transform. */
+    xmlSecCryptoTransformGetKlassMethod          transformRsaPkcs1GetKlass;  /**< the method to get pointer to RSA-PKCS1 key transport transform. */
     xmlSecCryptoTransformGetKlassMethod          transformRsaOaepGetKlass;  /**< the method to get pointer to RSA-OAEP key transport transform (XMLEnc 1.0). */
     xmlSecCryptoTransformGetKlassMethod          transformRsaOaepEnc11GetKlass;  /**< the method to get pointer to RSA-OAEP key transport transform (XMLEnc 1.1). */
 

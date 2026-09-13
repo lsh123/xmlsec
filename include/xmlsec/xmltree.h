@@ -34,7 +34,7 @@ extern "C" {
 
 /**
  * @brief Macro. Returns node's name.
- * @param node the pointer to node.
+ * @param node the pointer to the node.
  */
 #define xmlSecNodeGetName(node) \
     (((node)) ? ((const char*)((node)->name)) : NULL)
@@ -151,6 +151,8 @@ XMLSEC_EXPORT int               xmlSecPrintXmlString    (FILE * fd,
 
 /**
  * @brief Macro. Returns the hex value of the @p ch.
+ * @details Macro. Returns the hex value of the @p ch. Any character that is not a
+ * hex digit (0-9, a-f, A-F) silently yields 0.
  * @param ch the character.
  */
 #define xmlSecFromHex(ch)                                                       \
@@ -174,6 +176,8 @@ XMLSEC_EXPORT int               xmlSecPrintXmlString    (FILE * fd,
 
 /**
  * @brief Macro. Returns the hex character of the @p vv.
+ * @details Macro. Returns the hex character of the @p vv. Values outside the 0..15
+ * range yield 0 (NUL).
  * @param vv the value.
  */
 #define xmlSecToHex(vv)                                                 \
@@ -194,11 +198,13 @@ XMLSEC_EXPORT int               xmlSecPrintXmlString    (FILE * fd,
 
 /**
  * @brief QName <-> Integer conversion definition.
+ * @details The mapping array must be NULL-terminated (it must end with an entry
+ * whose qnameLocalPart is NULL).
  */
 typedef struct _xmlSecQName2IntegerInfo         xmlSecQName2IntegerInfo, *xmlSecQName2IntegerInfoPtr;
 struct _xmlSecQName2IntegerInfo {
     const xmlChar*      qnameHref;  /**< the QName href */
-    const xmlChar*      qnameLocalPart;  /**< the QName local */
+    const xmlChar*      qnameLocalPart;  /**< the QName local part */
     int                 intValue;  /**< the integer value */
 };
 
@@ -262,12 +268,14 @@ typedef unsigned int                                    xmlSecBitMask;
 
 /**
  * @brief QName <-> Bitmask conversion definition.
+ * @details The mapping array must be NULL-terminated (it must end with an entry
+ * whose qnameLocalPart is NULL).
  */
 typedef struct _xmlSecQName2BitMaskInfo         xmlSecQName2BitMaskInfo, *xmlSecQName2BitMaskInfoPtr;
 
 struct _xmlSecQName2BitMaskInfo {
     const xmlChar*      qnameHref;  /**< the QName href */
-    const xmlChar*      qnameLocalPart;  /**< the QName local */
+    const xmlChar*      qnameLocalPart;  /**< the QName local part */
     xmlSecBitMask       mask;  /**< the bitmask value */
 };
 

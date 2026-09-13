@@ -178,7 +178,7 @@ XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateMemBufBio   (const xm
 XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateReadFileBio (const char* path);
 /******************************************************************************
  *
- * What is supported by the openssl?
+ * What is supported by the OpenSSL build?
  *
   *****************************************************************************/
 #ifdef OPENSSL_NO_AES
@@ -267,7 +267,7 @@ XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateReadFileBio (const ch
   *****************************************************************************/
 #ifndef XMLSEC_NO_AES
 /**
- * @brief The AES key klass.
+ * @brief The AES key data klass.
  */
 #define xmlSecOpenSSLKeyDataAesId \
         xmlSecOpenSSLKeyDataAesGetKlass()
@@ -348,7 +348,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformKWAes256GetKlass(vo
   *****************************************************************************/
 #ifndef XMLSEC_NO_CAMELLIA
 /**
- * @brief The Camellia key klass.
+ * @brief The Camellia key data klass.
  */
 #define xmlSecOpenSSLKeyDataCamelliaId \
         xmlSecOpenSSLKeyDataCamelliaGetKlass()
@@ -476,7 +476,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformConcatKdfGetKlass(v
   *****************************************************************************/
 #ifndef XMLSEC_NO_DES
 /**
- * @brief The DES key klass.
+ * @brief The DES key data klass.
  */
 #define xmlSecOpenSSLKeyDataDesId \
         xmlSecOpenSSLKeyDataDesGetKlass()
@@ -508,7 +508,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformKWDes3GetKlass(void
 #ifndef XMLSEC_NO_DSA
 
 /**
- * @brief The DSA key klass.
+ * @brief The DSA key data klass.
  */
 #define xmlSecOpenSSLKeyDataDsaId \
         xmlSecOpenSSLKeyDataDsaGetKlass()
@@ -547,7 +547,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformDsaSha256GetKlass(v
 #ifndef XMLSEC_NO_DH
 
 /**
- * @brief The DH key klass.
+ * @brief The DH key data klass.
  */
 #define xmlSecOpenSSLKeyDataDhId \
         xmlSecOpenSSLKeyDataDhGetKlass()
@@ -576,7 +576,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformDhEsGetKlass(void);
 #ifndef XMLSEC_NO_EC
 
 /**
- * @brief The EC key klass.
+ * @brief The EC key data klass.
  */
 #define xmlSecOpenSSLKeyDataEcId \
         xmlSecOpenSSLKeyDataEcGetKlass()
@@ -740,7 +740,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataGostR3410_2012_512Ge
 
 /**
  * @brief The GOST-2012 256-bit signature transform klass.
- * @details The GOST R 34.10-2012 - GOST R 3411-2012 256 bit signature transform klass.
+ * @details The GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform klass.
  */
 #define xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_256Id \
         xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_256GetKlass()
@@ -749,7 +749,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformGostR3410_2012GostR
 
 /**
  * @brief The GOST-2012 512-bit signature transform klass.
- * @details The GOST R 34.10-2012 - GOST R 3411-2012 512 bit signature transform klass.
+ * @details The GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform klass.
  */
 #define xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_512Id \
         xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_512GetKlass()
@@ -757,7 +757,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformGostR3410_2012GostR
 
 
 /**
- * @brief The GOST R 34.11-2012/256 hash transform klass.
+ * @brief The GOST R 34.11-2012 256 bit hash transform klass.
  * @details The GOST R 34.11-2012 256 bit hash transform klass.
  */
 #define xmlSecOpenSSLTransformGostR3411_2012_256Id \
@@ -766,7 +766,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformGostR3411_2012_256G
 
 
 /**
- * @brief The GOST R 34.11-2012/512 hash transform klass.
+ * @brief The GOST R 34.11-2012 512 bit hash transform klass.
  * @details The GOST R 34.11-2012 512 bit hash transform klass.
  */
 #define xmlSecOpenSSLTransformGostR3411_2012_512Id \
@@ -783,7 +783,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformGostR3411_2012_512G
 #ifndef XMLSEC_NO_HMAC
 
 /**
- * @brief The HMAC key klass.
+ * @brief The HMAC key data klass.
  */
 #define xmlSecOpenSSLKeyDataHmacId \
         xmlSecOpenSSLKeyDataHmacGetKlass()
@@ -945,7 +945,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRipemd160GetKlass(v
 #ifndef XMLSEC_NO_RSA
 
 /**
- * @brief The RSA key klass.
+ * @brief The RSA key data klass.
  */
 #define xmlSecOpenSSLKeyDataRsaId \
         xmlSecOpenSSLKeyDataRsaGetKlass()

@@ -15,7 +15,7 @@
  */
 
 /**
- * @defgroup xmlsec_mscng_crypto MsCng Crypto Engine
+ * @defgroup xmlsec_mscng_crypto MSCng Crypto Engine
  * @ingroup xmlsec_mscng
  * @brief Cryptographic operations provided by the MsCng back-end.
  * @{
@@ -584,7 +584,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformSha512GetKlass(void);
 /******************************************************************************
  *
  * SHA3 transforms (SHA3-256, SHA3-384, SHA3-512 are natively supported
- * in Windows CNG; SHA3-224 is not and therefore not implemented here)
+ * in Windows CNG; SHA3-224 is not supported and therefore not implemented here)
  *
   *****************************************************************************/
 #ifndef XMLSEC_NO_SHA3

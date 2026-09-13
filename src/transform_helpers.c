@@ -1420,7 +1420,7 @@ xmlSecTransformPbkdf2ParamsRead(xmlSecTransformPbkdf2ParamsPtr params, xmlNodePt
     return(0);
 }
 
-#endif /* XMLSEC_NO_CONCATKDF */
+#endif /* XMLSEC_NO_PBKDF2 */
 
 
 #ifndef XMLSEC_NO_HKDF
@@ -1566,7 +1566,7 @@ xmlSecTransformChaCha20ParamsRead(xmlNodePtr node, xmlSecByte *iv, xmlSecSize iv
 
     ret = xmlSecBufferInitialize(&buf, XMLSEC_CHACHA20_IV_SIZE);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecGetNodeContentAsHex(Nonce)", NULL);
+        xmlSecInternalError("xmlSecBufferInitialize", NULL);
         return(-1);
     }
 
@@ -1740,7 +1740,7 @@ xmlSecTransformChaCha20Poly1305ParamsRead(xmlNodePtr node, xmlSecBufferPtr aad,
 
     ret = xmlSecBufferInitialize(&buf, XMLSEC_CHACHA20_NONCE_SIZE);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecGetNodeContentAsHex(Nonce)", NULL);
+        xmlSecInternalError("xmlSecBufferInitialize", NULL);
         return(-1);
     }
 
@@ -1895,8 +1895,8 @@ xmlSecTransformRsaOaepParamsFinalize(xmlSecTransformRsaOaepParamsPtr oaepParams)
  *      <OAEPparams>9lWu3Q==</OAEPparams>
  *      <xenc11:MGF Algorithm="http://www.w3.org/2001/04/xmlenc#MGF1withSHA1" />
  *      <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
- *  <EncryptionMethod>
-*/
+ *  </EncryptionMethod>
+ */
 int
 xmlSecTransformRsaOaepParamsRead(xmlSecTransformRsaOaepParamsPtr oaepParams, xmlNodePtr node) {
     xmlNodePtr cur;

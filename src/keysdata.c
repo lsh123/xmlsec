@@ -94,7 +94,7 @@ xmlSecKeyDataIdsInit(void) {
 
 /**
  * @brief Shuts down the key data klasses.
- * @details Shuts down the keys data klasses. This function is called from the
+ * @details Shuts down the key data klasses. This function is called from the
  * #xmlSecShutdown function and the application should not call it directly.
  */
 void
@@ -375,13 +375,14 @@ xmlSecKeyDataBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
 /**
  * @brief Writes key data from a key into a binary buffer.
- * @details Writes the key data of klass @p id from the @p key to a binary buffer @p buf.
+ * @details Writes the key data of klass @p id from the @p key to a binary buffer.
+ * On success, the library allocates the output buffer @p buf and the caller
+ * is responsible for freeing it.
  * @param id the data klass.
  * @param key the source key.
- * @param buf the output binary buffer.
+ * @param buf the output binary buffer (allocated by the library; the caller must free it).
  * @param bufSize the output buffer size.
  * @param keyInfoCtx the &lt;dsig:KeyInfo/&gt; node processing context.
- *
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -413,7 +414,7 @@ xmlSecKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits,
     xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
     xmlSecAssert2(data->id->generate != NULL, -1);
 
-    /* write data */
+    /* generate data */
     ret = data->id->generate(data, sizeBits, type);
     if(ret < 0) {
         xmlSecInternalError2("id->generate", xmlSecKeyDataGetName(data),
@@ -568,7 +569,7 @@ xmlSecKeyDataIdListFind(xmlSecPtrListPtr list, xmlSecKeyDataId dataId) {
  * @param nodeNs the desired key data klass XML node namespace.
  * @param usage the desired key data usage.
  *
- * @return key data klass is found and NULL otherwise.
+ * @return the key data klass if found and xmlSecKeyDataIdUnknown otherwise.
  */
 xmlSecKeyDataId
 xmlSecKeyDataIdListFindByNode(xmlSecPtrListPtr list, const xmlChar* nodeName,
@@ -602,7 +603,7 @@ xmlSecKeyDataIdListFindByNode(xmlSecPtrListPtr list, const xmlChar* nodeName,
  * @param href the desired key data klass href.
  * @param usage the desired key data usage.
  *
- * @return key data klass is found and NULL otherwise.
+ * @return the key data klass if found and xmlSecKeyDataIdUnknown otherwise.
  */
 xmlSecKeyDataId
 xmlSecKeyDataIdListFindByHref(xmlSecPtrListPtr list, const xmlChar* href,
@@ -634,7 +635,7 @@ xmlSecKeyDataIdListFindByHref(xmlSecPtrListPtr list, const xmlChar* href,
  * @param name the desired key data klass name.
  * @param usage the desired key data usage.
  *
- * @return key data klass is found and NULL otherwise.
+ * @return the key data klass if found and xmlSecKeyDataIdUnknown otherwise.
  */
 xmlSecKeyDataId
 xmlSecKeyDataIdListFindByName(xmlSecPtrListPtr list, const xmlChar* name,
@@ -661,7 +662,7 @@ xmlSecKeyDataIdListFindByName(xmlSecPtrListPtr list, const xmlChar* name,
 
 /**
  * @brief Prints key data ID list debug information.
- * @details Prints binary key data debug information to @p output.
+ * @details Prints key data ID list debug information to @p output.
  * @param list the pointer to key data ids list.
  * @param output the pointer to output FILE.
  */
@@ -690,7 +691,7 @@ xmlSecKeyDataIdListDebugDump(xmlSecPtrListPtr list, FILE* output) {
 
 /**
  * @brief Prints key data ID list debug information in XML format.
- * @details Prints binary key data debug information to @p output in XML format.
+ * @details Prints key data ID list debug information to @p output in XML format.
  * @param list the pointer to key data ids list.
  * @param output the pointer to output FILE.
  */

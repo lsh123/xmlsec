@@ -133,7 +133,7 @@ xmlSecEncCtxInitialize(xmlSecEncCtxPtr encCtx, xmlSecKeysMngrPtr keysMngr) {
         return(-1);
     }
 
-    /* initializes transforms encCtx */
+    /* initialize transforms encCtx */
     ret = xmlSecTransformCtxInitialize(&(encCtx->transformCtx));
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformCtxInitialize", NULL);
@@ -369,7 +369,7 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
     } else if((encCtx->type != NULL) && xmlStrEqual(encCtx->type, xmlSecTypeEncContent)) {
         xmlNodePtr cur;
 
-        /* get the content of the nodes childs */
+        /* get the content of the node's children */
         for(cur = node->children; cur != NULL; cur = cur->next) {
             xmlNodeDumpOutput(output, node->doc, cur, 0, 0, NULL);
         }
@@ -573,7 +573,7 @@ xmlSecEncCtxDecrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
  * @brief Decrypts @p node data to the result.
  * @param encCtx the pointer to encryption processing context.
  * @param node the pointer to &lt;enc:EncryptedData/&gt; node.
- * @return a buffer with key on success or NULL if an error occurs.
+ * @return a buffer with the decrypted data on success or NULL if an error occurs.
  */
 xmlSecBufferPtr
 xmlSecEncCtxDecryptToBuffer(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
@@ -1353,7 +1353,7 @@ xmlSecEncCtxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xm
         goto done;
     }
 
-    /* let's get the derive key! */
+    /* let's get the derived key! */
     key = xmlSecEncCtxGenerateKey(encCtx, keyId, keyInfoCtx);
     if(key == NULL) {
         xmlSecInternalError("xmlSecEncCtxGenerateKey", NULL);

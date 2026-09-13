@@ -355,7 +355,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefXDHKeyValue[];
 
 /******************************************************************************
  *
- * ECDSA signatures strings
+ * ECDSA signature strings
  *
   *****************************************************************************/
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEcdsaRipemd160[];
@@ -928,7 +928,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecRelationshipAttrTargetMode[];
 
 /******************************************************************************
  *
- * Xslt strings
+ * XSLT strings
  *
   *****************************************************************************/
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameXslt[];

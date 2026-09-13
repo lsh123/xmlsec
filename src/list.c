@@ -333,7 +333,7 @@ xmlSecPtrListInsert(xmlSecPtrListPtr list, xmlSecPtr item, xmlSecSize pos) {
  * is destroyed.
  * @param list the pointer to list.
  * @param item the item.
- * @param pos the pos.
+ * @param pos the position.
  * @return 0 on success or a negative value if an error occurs.
  */
 int

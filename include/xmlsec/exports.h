@@ -26,11 +26,11 @@ extern "C" {
 #define XMLSEC_WINDOWS 1
 #elif defined(__CYGWIN__)
 #define XMLSEC_WINDOWS 1
-#endif /* defined(WIN32) || defined(_WIN32) || defined(WINDOWS) || defined(_WINDOWS) */
+#endif /* defined(WIN32) || defined(_WIN32) || defined(WINDOWS) || defined(_WINDOWS) || defined(_MSC_VER) || defined(__MINGW32__) || defined(__MINGW64__) || defined(__CYGWIN__) */
 
 #endif /* !defined(XMLSEC_WINDOWS) */
 
-/* Now, the export fun begins. The following we must do for the
+/* Now, the export fun begins. The following must be done for the
    Windows platform. */
 
 #if !defined XMLSEC_EXPORT

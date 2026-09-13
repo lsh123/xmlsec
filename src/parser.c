@@ -342,8 +342,8 @@ typedef struct _xmlSecExtMemoryParserCtx {
 
 /**
  * @brief Loads an XML document from a file.
- * @details Loads XML Doc from file @p filename. We need a special version because of
- * c14n issue. The code is copied from xmlSAXParseFileWithData() function.
+ * @details Loads an XML document from the file @p filename. The caller owns
+ * the returned document and must free it with xmlFreeDoc().
  * @param filename the filename.
  * @return pointer to the loaded XML document or NULL if an error occurs.
  */
@@ -402,7 +402,8 @@ done:
 
 /**
  * @brief Loads an XML document from 3 memory chunks.
- * @details Loads XML Doc from 3 chunks of memory: @p prefix, @p buffer and @p postfix.
+ * @details Loads an XML document from 3 chunks of memory: @p prefix, @p buffer and @p postfix.
+ * The caller owns the returned document and must free it with xmlFreeDoc().
  * @param prefix the first part of the input.
  * @param prefixSize the size of the first part of the input.
  * @param buffer the second part of the input.
@@ -486,11 +487,11 @@ done:
 
 /**
  * @brief Loads an XML document from memory.
- * @details Loads XML Doc from memory. We need a special version because of
- * c14n issue. The code is copied from xmlSAXParseMemory() function.
+ * @details Loads an XML document from the memory @p buffer. The caller owns
+ * the returned document and must free it with xmlFreeDoc().
  * @param buffer the input buffer.
  * @param size the input buffer size.
- * @param recovery the flag.
+ * @param recovery the recovery flag.
  * @return pointer to the loaded XML document or NULL if an error occurs.
  */
 xmlDocPtr

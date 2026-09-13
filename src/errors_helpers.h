@@ -182,6 +182,11 @@ extern "C" {
  * @param errorFunction the failed function.
  * @param ctxt the parser context.
  * @param errorObject the specific error object (e.g. transform, key data, etc).
+ * @note The reported error is the last libxml2 error in the given
+ * parser context (xmlCtxtGetLastError(ctxt)); if the failing call
+ * did not set a new error (e.g. on out-of-memory), the reported
+ * code/message may come from an earlier, unrelated call in the
+ * same parser context.
  */
 #define xmlSecXmlParserError(errorFunction, ctxt, errorObject) \
     do {                                                    \
@@ -206,6 +211,11 @@ extern "C" {
  * @param errorObject the specific error object (e.g. transform, key data, etc).
  * @param msg the extra message.
  * @param param the extra message param.
+ * @note The reported error is the last libxml2 error in the given
+ * parser context (xmlCtxtGetLastError(ctxt)); if the failing call
+ * did not set a new error (e.g. on out-of-memory), the reported
+ * code/message may come from an earlier, unrelated call in the
+ * same parser context.
  */
 #define xmlSecXmlParserError2(errorFunction, ctxt, errorObject, msg, param) \
     do {                                                    \
@@ -297,7 +307,7 @@ extern "C" {
 
 /**
  * @brief Macro. Reports "invalid size" errors expecting exact match.
- * @details Macro. The XMLSec library macro for reporting "invalid size" errors when we expect exact match.
+ * @details Macro. The XMLSec library macro for reporting "invalid size" errors when we expect an exact match.
  * @param name the name of the variable, parameter, etc.
  * @param actual the actual value.
  * @param expected the expected value.
@@ -353,14 +363,14 @@ extern "C" {
         )
 
 /**
- * @brief Macro. Reports "invalid size" errors expecting a multiple of divider.
- * @details Macro. The XMLSec library macro for reporting "invalid size" errors when we expect the size to be a multiple of the divider.
+ * @brief Macro. Reports "invalid size" errors expecting a multiple of a divisor.
+ * @details Macro. The XMLSec library macro for reporting "invalid size" errors when we expect the size to be a multiple of the divisor.
  * @param name the name of the variable, parameter, etc.
  * @param actual the actual value.
- * @param divider the expected divider.
+ * @param divisor the expected divisor.
  * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
-#define xmlSecInvalidSizeNotMultipleOfError(name, actual, divider, errorObject) \
+#define xmlSecInvalidSizeNotMultipleOfError(name, actual, divisor, errorObject) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
                     (const char*)(errorObject),             \
                     NULL,                                   \
@@ -368,7 +378,7 @@ extern "C" {
                     "invalid size for '%s': actual=" XMLSEC_SIZE_FMT " is not a multiple of " XMLSEC_SIZE_FMT, \
                     xmlSecErrorsSafeString(name),           \
                     (actual),                               \
-                    (divider)                               \
+                    (divisor)                               \
         )
 
 /**
@@ -389,7 +399,7 @@ extern "C" {
 /**
  * @brief Macro. Reports "invalid data" errors.
  * @details Macro. The XMLSec library macro for reporting "invalid data" errors.
- * @param msg the msg with explanation.
+ * @param msg the message with explanation.
  * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecInvalidDataError(msg, errorObject) \
@@ -508,7 +518,7 @@ extern "C" {
 /**
  * @brief Macro. Reports "invalid type" errors.
  * @details Macro. The XMLSec library macro for reporting "invalid type" errors.
- * @param msg the msg with explanation.
+ * @param msg the message with explanation.
  * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecInvalidTypeError(msg, errorObject)            \

@@ -6,7 +6,7 @@
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * @brief XML Security Library unit test helpers.
+ * @brief XML Security Library unit test helpers and per-group test runners.
  */
 #ifndef XMLSEC_UNIT_TESTS_H
 #define XMLSEC_UNIT_TESTS_H

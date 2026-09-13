@@ -9,7 +9,7 @@
 #ifndef XMLSEC_MSCNG_SYMBOLS_H
 #define XMLSEC_MSCNG_SYMBOLS_H
 /**
- * @brief MsCng back-end function symbol mappings.
+ * @brief MSCng back-end function symbol mappings.
  */
 
 #if !defined(IN_XMLSEC) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING)

@@ -437,7 +437,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformEcdsaSha3_512GetKlas
 
 /******************************************************************************
  *
- * GOST 2001 key and transforms
+ * GOST 2001 keys and transforms
  *
   *****************************************************************************/
 #ifndef XMLSEC_NO_GOST
@@ -545,7 +545,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformGostR3410_2012GostR3
 #ifndef XMLSEC_NO_MLDSA
 
 /**
- * @brief The ML-DSA key klass (post-quantum, per FIPS 204).
+ * @brief The ML-DSA key klass.
  * @details The ML-DSA key klass (post-quantum signature algorithm per FIPS 204).
  */
 #define xmlSecGnuTLSKeyDataMLDSAId   xmlSecGnuTLSKeyDataMLDSAGetKlass()
@@ -679,7 +679,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformEcdhGetKlass(void);
 #ifndef XMLSEC_NO_CONCATKDF
 
 /**
- * @brief The ConcatKDF key klass.
+ * @brief The ConcatKDF key data klass.
  */
 #define xmlSecGnuTLSKeyDataConcatKdfId \
         xmlSecGnuTLSKeyDataConcatKdfGetKlass()
@@ -770,7 +770,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacSha512GetKlass(v
 #ifndef XMLSEC_NO_PBKDF2
 
 /**
- * @brief The PBKDF2 key klass.
+ * @brief The PBKDF2 key data klass.
  */
 #define xmlSecGnuTLSKeyDataPbkdf2Id \
         xmlSecGnuTLSKeyDataPbkdf2GetKlass()
@@ -796,7 +796,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformPbkdf2GetKlass(void)
 #ifndef XMLSEC_NO_HKDF
 
 /**
- * @brief The HKDF key klass.
+ * @brief The HKDF key data klass.
  */
 #define xmlSecGnuTLSKeyDataHkdfId \
         xmlSecGnuTLSKeyDataHkdfGetKlass()

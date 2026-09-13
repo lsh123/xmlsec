@@ -152,7 +152,7 @@ struct _xmlSecKWRfc3394Klass {
     void*                               reserved1;
 };
 typedef const struct _xmlSecKWRfc3394Klass          xmlSecKWRfc3394Klass,
-                                                     *xmlSecKWRfc3394Id;
+                                                    *xmlSecKWRfc3394Id;
 
 #define xmlSecKWRfc3394CheckId(id) \
     ( \

@@ -109,7 +109,7 @@ typedef xmlSecKeyDataPtr       (*xmlSecKeyDataEcRead)                   (xmlSecK
  * @brief Writes xmlSecKeyData to xmlSecKeyValueEc.
  * @param id the key data ID.
  * @param data the pointer to input xmlSecKeyData.
- * @param ecValue the pointer to input xmlSecKeyValueEc.
+ * @param ecValue the pointer to the xmlSecKeyValueEc value struct to be filled by the callback.
  * @return 0 on success or a negative value if an error occurs.
  */
 typedef int                    (*xmlSecKeyDataEcWrite)                  (xmlSecKeyDataId id,
@@ -164,7 +164,7 @@ typedef xmlSecKeyDataPtr       (*xmlSecKeyDataRsaRead)                  (xmlSecK
  * @brief Writes xmlSecKeyData to xmlSecKeyValueRsa.
  * @param id the key data ID.
  * @param data the pointer to input xmlSecKeyData.
- * @param rsaValue the pointer to input xmlSecKeyValueRsa.
+ * @param rsaValue the pointer to the xmlSecKeyValueRsa value struct to be filled by the callback.
  * @param writePrivateKey the flag indicating if private key component should be output or not.
  * @return 0 on success or a negative value if an error occurs.
  */
@@ -219,8 +219,8 @@ typedef xmlSecKeyDataPtr       (*xmlSecKeyDataDhRead)                   (xmlSecK
  * @brief Writes xmlSecKeyData to xmlSecKeyValueDh.
  * @param id the key data ID.
  * @param data the pointer to input xmlSecKeyData.
- * @param dhValue the pointer to input xmlSecKeyValueDh.
- * @param writePrivateKey the flag indicating if private key component should be output or not.
+ * @param dhValue the pointer to the xmlSecKeyValueDh value struct to be filled by the callback.
+ * @param writePrivateKey not used (the DH key value has no private components).
  * @return 0 on success or a negative value if an error occurs.
  */
 typedef int                    (*xmlSecKeyDataDhWrite)                  (xmlSecKeyDataId id,
@@ -273,7 +273,7 @@ typedef xmlSecKeyDataPtr       (*xmlSecKeyDataDsaRead)                  (xmlSecK
  * @brief Writes xmlSecKeyData to xmlSecKeyValueDsa.
  * @param id the key data ID.
  * @param data the pointer to input xmlSecKeyData.
- * @param dsaValue the pointer to input xmlSecKeyValueDsa.
+ * @param dsaValue the pointer to the xmlSecKeyValueDsa value struct to be filled by the callback.
  * @param writePrivateKey the flag indicating if private key component should be output or not.
  * @return 0 on success or a negative value if an error occurs.
  */
@@ -330,7 +330,7 @@ XMLSEC_EXPORT xmlSecKeyDataId   xmlSecKeyDataKAMGetKlass           (void);
 
  */
 typedef struct _xmlSecKeyDataKEM {
-    xmlSecKeyData   keyData;
+    xmlSecKeyData   keyData;          /**< base key data (MUST be first) */
     xmlSecKeyPtr    encapsulationKey; /**< recipient public key (encrypt) or private key (decrypt) */
     xmlSecBuffer    ciphertext;   /**< KEM ciphertext from/to enc:CipherData/enc:CipherValue */
 } xmlSecKeyDataKEM;

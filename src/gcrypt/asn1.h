@@ -24,6 +24,12 @@
 extern "C" {
 #endif /* __cplusplus */
 
+/**
+ * @brief The type of a DER-encoded key.
+ * @details Used by xmlSecGCryptParseDer() to specify the expected key type
+ * (public or private DSA, RSA, or EC key) or xmlSecGCryptDerKeyTypeAuto
+ * to detect the key type from the data.
+ */
 enum xmlSecGCryptDerKeyType {
     xmlSecGCryptDerKeyTypeAuto = 0,
     xmlSecGCryptDerKeyTypePublicDsa,

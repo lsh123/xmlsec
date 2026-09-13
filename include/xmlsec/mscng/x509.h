@@ -62,20 +62,20 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngX509StoreAdoptCert        (xm
                                                                               PCCERT_CONTEXT cert,
                                                                               xmlSecKeyDataType type);
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngX509StoreAdoptCrl         (xmlSecKeyDataStorePtr store,
-                                                                               PCCRL_CONTEXT crl);
+                                                                              PCCRL_CONTEXT crl);
 
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngX509StoreVerifyCrl        (xmlSecKeyDataStorePtr store,
                                                                               PCCRL_CONTEXT crl,
                                                                               xmlSecKeyInfoCtx* keyInfoCtx);
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngX509StoreAdoptKeyStore    (xmlSecKeyDataStorePtr store,
                                                                               HCERTSTORE keyStore);
-XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngX509StoreAdoptTrustedStore(xmlSecKeyDataStorePtr store,
-                                                                              HCERTSTORE trustedStore);
-XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngX509StoreAdoptUntrustedStore(xmlSecKeyDataStorePtr store,
-                                                                                HCERTSTORE untrustedStore);
+XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngX509StoreAdoptTrustedStore (xmlSecKeyDataStorePtr store,
+                                                                               HCERTSTORE trustedStore);
+XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngX509StoreAdoptUntrustedStore (xmlSecKeyDataStorePtr store,
+                                                                                 HCERTSTORE untrustedStore);
 XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT     xmlSecMSCngX509StoreVerify           (xmlSecKeyDataStorePtr store,
-                                                                               HCERTSTORE certs,
-                                                                               xmlSecKeyInfoCtx* keyInfoCtx);
+                                                                              HCERTSTORE certs,
+                                                                              xmlSecKeyInfoCtx* keyInfoCtx);
 
 
 /******************************************************************************

@@ -10,9 +10,9 @@
 #define XMLSEC_MSCRYPTO_X509_H
 
 /**
- * @defgroup xmlsec_mscrypto_x509 MsCrypto X.509 Support
+ * @defgroup xmlsec_mscrypto_x509 MSCrypto X.509 Support
  * @ingroup xmlsec_mscrypto
- * @brief X.509 certificate handling for the MsCrypto back-end.
+ * @brief X.509 certificate handling for the MSCrypto back-end.
  * @{
  */
 
@@ -37,6 +37,7 @@ extern "C" {
         xmlSecMSCryptoKeyDataX509GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCryptoKeyDataX509GetKlass(void);
 
+
 XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT     xmlSecMSCryptoKeyDataX509GetKeyCert     (xmlSecKeyDataPtr data);
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoKeyDataX509AdoptKeyCert   (xmlSecKeyDataPtr data,
                                                                                  PCCERT_CONTEXT cert);
@@ -45,7 +46,6 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoKeyDataX509AdoptCert      
 XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT     xmlSecMSCryptoKeyDataX509GetCert        (xmlSecKeyDataPtr data,
                                                                                  xmlSecSize pos);
 XMLSEC_CRYPTO_EXPORT xmlSecSize         xmlSecMSCryptoKeyDataX509GetCertsSize   (xmlSecKeyDataPtr data);
-
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoKeyDataX509AdoptCrl       (xmlSecKeyDataPtr data,
                                                                                  PCCRL_CONTEXT crl);
 XMLSEC_CRYPTO_EXPORT PCCRL_CONTEXT      xmlSecMSCryptoKeyDataX509GetCrl         (xmlSecKeyDataPtr data,
@@ -73,7 +73,6 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoX509StoreAdoptCert        
 
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoX509StoreAdoptKeyStore    (xmlSecKeyDataStorePtr store,
                                                                                  HCERTSTORE keyStore);
-
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoX509StoreAdoptTrustedStore(xmlSecKeyDataStorePtr store,
                                                                                  HCERTSTORE trustedStore);
 

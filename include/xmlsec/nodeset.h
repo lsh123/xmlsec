@@ -28,7 +28,7 @@ extern "C" {
 typedef struct _xmlSecNodeSet   xmlSecNodeSet, *xmlSecNodeSetPtr;
 
 /**
- * @brief The basic node sets types.
+ * @brief The basic node set types.
  */
 typedef enum {
     xmlSecNodeSetNormal = 0,  /**< nodes set = nodes in the list. */
@@ -37,11 +37,11 @@ typedef enum {
     xmlSecNodeSetTreeWithoutComments,  /**< nodes set = nodes in the list and all their subtrees but no comment nodes. */
     xmlSecNodeSetTreeInvert,  /**< nodes set = all document nodes minus nodes in the list and all their subtrees. */
     xmlSecNodeSetTreeWithoutCommentsInvert,  /**< nodes set = all document nodes minus (nodes in the list and all their subtrees plus all comment nodes). */
-    xmlSecNodeSetList  /**< DEPRECATED: nodes set = all nodes in the children list of nodes sets. */
+    xmlSecNodeSetList  /**< DEPRECATED: nodes set = all nodes in the children list of node sets. */
 } xmlSecNodeSetType;
 
 /**
- * @brief The simple node sets operations.
+ * @brief The simple node set operations.
  */
 typedef enum {
     xmlSecNodeSetIntersection = 0,  /**< intersection. */
@@ -60,15 +60,15 @@ struct _xmlSecNodeSet {
     xmlSecNodeSetOp     op;  /**< the operation type. */
     xmlSecNodeSetPtr    next;  /**< the next nodes set. */
     xmlSecNodeSetPtr    prev;  /**< the previous nodes set. */
-    void*               reserved;  /**< the reserved pointer. DEPRECATED: the children list (valid only if type equal to #xmlSecNodeSetList). */
+    void*               reserved;  /**< the reserved pointer. DEPRECATED: the children list (valid only if type is equal to #xmlSecNodeSetList). */
 };
 
 /**
  * @brief Node walk callback, called once per node in the nodes set.
- * @details The callback function called once per each node in the nodes set.
+ * @details The callback function called once per node in the nodes set.
  * @param nset the pointer to xmlSecNodeSet structure.
  * @param cur the pointer to the current XML node.
- * @param parent the pointer to the @p cur parent node.
+ * @param parent the pointer to the parent node of @p cur.
  * @param data the pointer to application specific data.
  * @return 0 on success, or a negative value if the walk procedure
  * should be interrupted.
@@ -97,7 +97,7 @@ XMLSEC_EXPORT int               xmlSecNodeSetWalk       (xmlSecNodeSetPtr nset,
                                                          xmlSecNodeSetWalkCallback walkFunc,
                                                          void* data);
 XMLSEC_EXPORT int               xmlSecNodeSetDumpTextNodes(xmlSecNodeSetPtr nset,
-                                                        xmlOutputBufferPtr out);
+                                                          xmlOutputBufferPtr out);
 XMLSEC_EXPORT void              xmlSecNodeSetDebugDump  (xmlSecNodeSetPtr nset,
                                                          FILE *output);
 

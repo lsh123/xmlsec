@@ -26,12 +26,12 @@
 extern "C" {
 #endif /* __cplusplus */
 
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr   xmlSecNssPKIAdoptKey           (SECKEYPrivateKey *privkey,
-                                                                        SECKEYPublicKey  *pubkey);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr   xmlSecNssPKIAdoptKey            (SECKEYPrivateKey *privkey,
+                                                                         SECKEYPublicKey  *pubkey);
 
-XMLSEC_CRYPTO_EXPORT SECKEYPublicKey*   xmlSecNssPKIKeyDataGetPubKey    (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT SECKEYPublicKey *  xmlSecNssPKIKeyDataGetPubKey    (xmlSecKeyDataPtr data);
 
-XMLSEC_CRYPTO_EXPORT SECKEYPrivateKey*  xmlSecNssPKIKeyDataGetPrivKey   (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT SECKEYPrivateKey * xmlSecNssPKIKeyDataGetPrivKey   (xmlSecKeyDataPtr data);
 
 XMLSEC_CRYPTO_EXPORT KeyType            xmlSecNssPKIKeyDataGetKeyType   (xmlSecKeyDataPtr data);
 

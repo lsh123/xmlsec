@@ -16,7 +16,7 @@
 #define XMLSEC_MSCNG_XMLSEC_MINGW_H
 
 #ifndef XMLSEC_PRIVATE
-#error "xmlsec-mingw.h file contains private xmlsec definitions for mingw build and should not be used outside xmlsec or xmlsec-mscng libraries"
+#error "xmlsec-mingw.h file contains private xmlsec definitions for mingw build and should not be used outside the xmlsec or xmlsec-mscng libraries"
 #endif /* XMLSEC_PRIVATE */
 
 /* ---- bcrypt.h: algorithm identifiers ------------------------------------- */
@@ -26,10 +26,10 @@
 #define BCRYPT_HKDF_ALGORITHM               L"HKDF"
 #endif /* BCRYPT_HKDF_ALGORITHM */
 
-/* SHA224 algorithm identifier is not defined in the Windows SDK bcrypt.h;
+/* SHA224 algorithm identifier is not defined in older MinGW headers;
  * provide a fallback so the code compiles with all SDK versions. */
 #ifndef BCRYPT_SHA224_ALGORITHM
-#define BCRYPT_SHA224_ALGORITHM L"SHA224"
+#define BCRYPT_SHA224_ALGORITHM             L"SHA224"
 #endif /* BCRYPT_SHA224_ALGORITHM */
 
 /* SHA3 algorithm identifiers: available in Windows SDK 10.0.22621+ (Windows 11 22H2).
@@ -118,7 +118,6 @@
 #define BCRYPT_ECC_CURVE_25519              L"curve25519"
 #endif /* BCRYPT_ECC_CURVE_25519 */
 #endif /* XMLSEC_NO_XDH */
-
 
 /* ---- bcrypt.h: DSA v2 feature detection ---------------------------------- */
 

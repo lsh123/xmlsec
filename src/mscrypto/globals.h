@@ -37,10 +37,14 @@
 #include "../errors_helpers.h"
 #include "../cast_helpers.h"
 
+/**
+ * @brief Buffer size for MSCrypto error messages.
+ * @details Macro. The buffer size for reporting MSCrypto errors.
+ */
 #define XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE       4096
 
 void xmlSecMSCryptoGetErrorMessage      (DWORD dwError,
-                                         xmlChar * out,
+                                         xmlChar *out,
                                          int outLen);
 
 

@@ -37,10 +37,10 @@ typedef struct _xmlSecPtrList                                   xmlSecPtrList,
                                                                 *xmlSecPtrListPtr;
 
 /**
- * @brief The pointers list.
+ * @brief The pointer list.
  */
 struct _xmlSecPtrList {
-    xmlSecPtrListId             id;  /**< the list items description. */
+    xmlSecPtrListId             id;  /**< the list klass. */
 
     xmlSecPtr*                  data;  /**< the list data. */
     xmlSecSize                  use;  /**< the current list size. */
@@ -92,8 +92,9 @@ XMLSEC_EXPORT void              xmlSecPtrListDebugXmlDump       (xmlSecPtrListPt
         (((list) != NULL) ? xmlSecPtrListKlassGetName((list)->id) : NULL)
 
 /**
- * @brief Macro. Returns 1 if list is not NULL and list->id is not NULL.
- * @details Macro. Returns 1 if @p list is not NULL and @p list->id is not NULL or 0 otherwise.
+ * @brief Macro. Returns 1 if @p list is valid.
+ * @details Macro. Returns 1 if @p list is not NULL and @p list->id is not NULL
+ * or 0 otherwise.
  * @param list the pointer to list.
  */
 #define xmlSecPtrListIsValid(list) \
@@ -151,7 +152,7 @@ struct _xmlSecPtrListKlass {
     xmlSecPtrDuplicateItemMethod        duplicateItem;  /**< the duplicate item method; requires destroyItem when not NULL. */
     xmlSecPtrDestroyItemMethod          destroyItem;  /**< the destroy item method for list-owned items, including duplicated items. */
     xmlSecPtrDebugDumpItemMethod        debugDumpItem;  /**< the debug dump item method. */
-    xmlSecPtrDebugDumpItemMethod        debugXmlDumpItem;  /**< the debug dump item in xml format method. */
+    xmlSecPtrDebugDumpItemMethod        debugXmlDumpItem;  /**< the method for printing debug item information in XML format. */
 };
 
 /**

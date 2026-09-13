@@ -118,7 +118,7 @@ XMLSEC_EXPORT xmlChar*          xmlSecGetQName          (xmlNodePtr node,
                                                          const xmlChar* local);
 
 /**
- * @brief for XML tree walk.
+ * @brief Callback invoked for XML tree walk.
  * @param cur the current XML node.
  * @param data the user data passed to the callback.
  * @return 1 to continue the walk, 0 to stop the walk, or a negative value to stop the walk with an error.
@@ -145,13 +145,13 @@ XMLSEC_EXPORT int               xmlSecPrintXmlString    (FILE * fd,
 /**
  * @brief Deprecated. Returns the hex value of a character.
  * @details Deprecated. Macro. Returns the hex value of the @p ch.
- * @param ch the character,
+ * @param ch the character.
  */
 #define xmlSecGetHex(ch)         xmlSecFromHex(ch)
 
 /**
  * @brief Macro. Returns the hex value of the @p ch.
- * @param ch the character,
+ * @param ch the character.
  */
 #define xmlSecFromHex(ch)                                                       \
         ((xmlSecByte)(                                                          \
@@ -167,14 +167,14 @@ XMLSEC_EXPORT int               xmlSecPrintXmlString    (FILE * fd,
 /**
  * @brief Returns the hex value of a two-character pair.
  * @details Macro. Returns the hex value of the pair (@p ch1 @p ch2).
- * @param ch1 the first character,
- * @param ch2 the second character,
+ * @param ch1 the first character.
+ * @param ch2 the second character.
  */
 #define xmlSecFromHex2(ch1, ch2)   ((xmlSecByte)((xmlSecFromHex(ch1) << 4) | (xmlSecFromHex(ch2))))
 
 /**
  * @brief Macro. Returns the hex character of the @p vv.
- * @param vv the value,
+ * @param vv the value.
  */
 #define xmlSecToHex(vv)                                                 \
         ((xmlChar)(                                                     \

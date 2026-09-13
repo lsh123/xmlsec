@@ -58,7 +58,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr   xmlSecOpenSSLX509CertGetKey             
  */
 #define xmlSecOpenSSLKeyDataRawX509CertId \
         xmlSecOpenSSLKeyDataRawX509CertGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataRawX509CertGetKlass(void);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataRawX509CertGetKlass (void);
 
 /**
  * @brief The OpenSSL X509 store klass.
@@ -70,22 +70,22 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataStoreId xmlSecOpenSSLX509StoreGetKlass(void);
 XMLSEC_CRYPTO_EXPORT X509*              xmlSecOpenSSLX509StoreVerify    (xmlSecKeyDataStorePtr store,
                                                                          STACK_OF(X509)* certs,
                                                                          STACK_OF(X509_CRL)* crls,
-                                                                         xmlSecKeyInfoCtx* keyInfoCtx);
+                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLX509StoreVerifyKey (xmlSecKeyDataStorePtr store,
                                                                          xmlSecKeyPtr key,
                                                                          xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLX509StoreVerifyCrl(xmlSecKeyDataStorePtr store,
-                                                                         X509_CRL* crl,
-                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
+                                                                        X509_CRL* crl,
+                                                                        xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLX509StoreAdoptCert (xmlSecKeyDataStorePtr store,
                                                                          X509* cert,
                                                                          xmlSecKeyDataType type);
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLX509StoreAdoptCrl  (xmlSecKeyDataStorePtr store,
                                                                          X509_CRL* crl);
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLX509StoreAddCertsPath(xmlSecKeyDataStorePtr store,
-                                                                         const char* path);
+                                                                           const char* path);
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLX509StoreAddCertsFile(xmlSecKeyDataStorePtr store,
-                                                                         const char* filename);
+                                                                           const char* filename);
 
 /******************************************************************************
  *
@@ -93,18 +93,18 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLX509StoreAddCertsFile(xmlSe
  *
   *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED X509* xmlSecOpenSSLX509StoreFindCert(xmlSecKeyDataStorePtr store,
-                                                                         xmlChar *subjectName,
-                                                                         xmlChar *issuerName,
-                                                                         xmlChar *issuerSerial,
-                                                                         xmlChar *ski,
-                                                                         xmlSecKeyInfoCtx* keyInfoCtx);
+                                                                            xmlChar* subjectName,
+                                                                            xmlChar* issuerName,
+                                                                            xmlChar* issuerSerial,
+                                                                            xmlChar* ski,
+                                                                            xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED X509* xmlSecOpenSSLX509StoreFindCert_ex(xmlSecKeyDataStorePtr store,
-                                                                         xmlChar *subjectName,
-                                                                         xmlChar *issuerName,
-                                                                         xmlChar *issuerSerial,
-                                                                         xmlSecByte * ski,
-                                                                         xmlSecSize skiSize,
-                                                                         xmlSecKeyInfoCtx* keyInfoCtx);
+                                                                               xmlChar* subjectName,
+                                                                               xmlChar* issuerName,
+                                                                               xmlChar* issuerSerial,
+                                                                               xmlSecByte* ski,
+                                                                               xmlSecSize skiSize,
+                                                                               xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 #ifdef __cplusplus
 }

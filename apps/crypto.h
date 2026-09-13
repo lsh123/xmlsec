@@ -32,7 +32,7 @@ xmlSecKeyPtr xmlSecAppCryptoKeyGenerate                         (const char* key
  *
  * Simple keys manager
  *
-  *****************************************************************************/
+*****************************************************************************/
 int     xmlSecAppCryptoSimpleKeysMngrInit                       (xmlSecKeysMngrPtr mngr);
 int     xmlSecAppCryptoSimpleKeysMngrLoad                       (xmlSecKeysMngrPtr mngr,
                                                                  const char* filename);

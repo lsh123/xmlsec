@@ -9,7 +9,7 @@
 #ifndef XMLSEC_MSCRYPTO_SYMBOLS_H
 #define XMLSEC_MSCRYPTO_SYMBOLS_H
 /**
- * @brief MsCrypto back-end function symbol mappings.
+ * @brief MSCrypto back-end function symbol mappings.
  */
 
 #if !defined(IN_XMLSEC) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING)

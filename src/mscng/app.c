@@ -163,10 +163,12 @@ xmlSecMSCngAppShutdown(void) {
 }
 
 /**
- * @brief Gets the MSCng certs store name for the current user.
- * @details Gets the MSCng certs store name for the current user set by #xmlSecMSCngAppInit function.
+ * @brief Gets the MSCng cert store name for the current user.
  *
- * @return the MSCng certs name for the current user used by xmlsec-mscng.
+ * @return the cert store name set by #xmlSecMSCngAppInit or NULL if it was
+ * not set. The returned string is owned by the library and is freed by
+ * #xmlSecMSCngAppShutdown; do not free it. Copy it before shutdown if it
+ * is needed afterwards.
  */
 LPCTSTR
 xmlSecMSCngAppGetCurrentUserCertStoreName(void) {
@@ -174,10 +176,12 @@ xmlSecMSCngAppGetCurrentUserCertStoreName(void) {
 }
 
 /**
- * @brief Gets the MSCng certs store name for the local machine.
- * @details Gets the MSCng certs store name for the local machine set by #xmlSecMSCngAppInit function.
+ * @brief Gets the MSCng cert store name for the local machine.
  *
- * @return the MSCng certs name for the local machine used by xmlsec-mscng.
+ * @return the cert store name set by #xmlSecMSCngAppInit or NULL if it was
+ * not set. The returned string is owned by the library and is freed by
+ * #xmlSecMSCngAppShutdown; do not free it. Copy it before shutdown if it
+ * is needed afterwards.
  */
 LPCTSTR
 xmlSecMSCngAppGetLocalMachineCertStoreName(void) {

@@ -1242,13 +1242,13 @@ xmlSecKeyReadMemory(xmlSecKeyDataId dataId, const xmlSecByte* data, xmlSecSize d
 }
 
 /**
- * @brief Reads a KeyInfo node and extracts the key.
+ * @brief Reads the &lt;dsig:KeyInfo/&gt; node and extracts the key.
  * @details Reads the &lt;dsig:KeyInfo/&gt; node @p keyInfoNode and extracts the key.
+ * The caller is responsible for destroying the returned key using
+ * #xmlSecKeyDestroy method.
  * @param keyInfoNode the pointer to &lt;dsig:KeyInfo/&gt; node.
  * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; node processing context.
- *
- * @return the pointer to key or NULL if the key is not found or
- * an error occurs.
+ * @return the pointer to a key or NULL if the key is not found or an error occurs.
  */
 xmlSecKeyPtr
 xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {

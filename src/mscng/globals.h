@@ -20,7 +20,7 @@
 #endif /* HAVE_CONFIG_H */
 
 /**
- * Add all windows headers in one place
+ * Add all Windows headers in one place.
  */
 #define WIN32_NO_STATUS
 #include <windows.h>
@@ -29,8 +29,6 @@
 #include <ntstatus.h>
 #include <bcrypt.h>
 #include <ncrypt.h>
-
-
 
 #ifndef IN_XMLSEC_CRYPTO
 #define IN_XMLSEC_CRYPTO
@@ -49,7 +47,8 @@
 
 
 /**
- * @brief The XMLSec library macro for reporting crypto errors from GetLastError().
+ * @brief Macro. Reports crypto errors from GetLastError().
+ * @details Macro. The XMLSec library macro for reporting crypto errors from GetLastError().
  * @param errorFunction the failed function name.
  * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
@@ -64,8 +63,6 @@
                     (dwError)                            \
         );                                               \
     } while(0)
-
-
 
 /**
  * @brief Macro. Reports crypto errors from NTSTATUS.

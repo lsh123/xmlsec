@@ -207,7 +207,7 @@ XMLSEC_EXPORT xmlSecKeyPtr      xmlSecKeyGenerateByName (const xmlChar* name,
 
 
 XMLSEC_EXPORT int               xmlSecKeyMatch          (xmlSecKeyPtr key,
-                                                         const xmlChar *name,
+                                                         const xmlChar* name,
                                                          xmlSecKeyReqPtr keyReq);
 
 XMLSEC_EXPORT xmlSecKeyPtr      xmlSecKeyReadBuffer     (xmlSecKeyDataId dataId,

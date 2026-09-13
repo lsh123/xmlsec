@@ -9,10 +9,9 @@
 #define XMLSEC_STRINGS_H
 
 /**
- * @defgroup xmlsec_core_strings String Constants
- * @ingroup xmlsec_core
  * @brief XMLDSig/XMLEnc string constants.
- * @{
+ * @details XMLDSig/XMLEnc string constants. These are internal XMLSec library constants
+ * and are specifically excluded from the external documentation.
  */
 
 #include <libxml/tree.h>
@@ -948,6 +947,5 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecStringLF[];
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_core_strings */
 
 #endif /* XMLSEC_STRINGS_H */

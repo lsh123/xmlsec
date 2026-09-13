@@ -99,6 +99,7 @@ PREDEFINED             = XMLSEC_EXPORT= \
                           XMLSEC_PRIVATE= \
                           XMLSEC_DEPRECATED= \
                           XMLSEC_ERRORS_PRINTF_ATTRIBUTE= \
+                          XMLSEC_OPENSSL_API_300= \
                           _WIN32=1 \
                           __GNUC__=1 \
                           XMLSEC_ATTRIBUTE_UNUSED=

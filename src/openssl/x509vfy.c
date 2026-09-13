@@ -133,7 +133,7 @@ xmlSecOpenSSLX509StoreGetKlass(void) {
 X509*
 xmlSecOpenSSLX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
                                 xmlChar *issuerName, xmlChar *issuerSerial,
-                                xmlChar *ski, xmlSecKeyInfoCtx* keyInfoCtx
+                                xmlChar *ski, xmlSecKeyInfoCtxPtr keyInfoCtx
 ) {
     if(ski != NULL) {
         xmlSecSize skiDecodedSize = 0;
@@ -172,7 +172,7 @@ xmlSecOpenSSLX509StoreFindCert_ex(xmlSecKeyDataStorePtr store,
     xmlChar *subjectName,
     xmlChar *issuerName, xmlChar *issuerSerial,
     xmlSecByte * ski, xmlSecSize skiSize,
-    xmlSecKeyInfoCtx* keyInfoCtx XMLSEC_ATTRIBUTE_UNUSED
+    xmlSecKeyInfoCtxPtr keyInfoCtx XMLSEC_ATTRIBUTE_UNUSED
 ) {
     xmlSecOpenSSLX509StoreCtxPtr ctx;
     xmlSecOpenSSLX509FindCertCtx findCertCtx;
@@ -901,7 +901,7 @@ xmlSecOpenSSLX509FilterCrlsByTime(STACK_OF(X509_CRL)* crls, xmlSecKeyInfoCtx* ke
  * @return a borrowed pointer to the first verified certificate, or NULL if an error occurs; the caller must NOT free it.
  */
 X509*
-xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs, STACK_OF(X509_CRL)* crls, xmlSecKeyInfoCtx* keyInfoCtx) {
+xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs, STACK_OF(X509_CRL)* crls, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecOpenSSLX509StoreCtxPtr ctx;
     STACK_OF(X509)* all_untrusted_certs = NULL;
     STACK_OF(X509_CRL)* verified_crls = NULL;

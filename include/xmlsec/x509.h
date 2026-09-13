@@ -47,7 +47,7 @@ struct _xmlSecKeyX509DataValue {
 typedef struct _xmlSecKeyX509DataValue                  xmlSecKeyX509DataValue;
 
 /**
- * @brief Pointer to #xmlSecKeyX509DataValue.
+ * @brief Pointer to #_xmlSecKeyX509DataValue.
  */
 typedef struct _xmlSecKeyX509DataValue                  *xmlSecKeyX509DataValuePtr;
 

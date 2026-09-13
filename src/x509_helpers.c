@@ -998,7 +998,7 @@ xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
  * three types:
  *   - string (eg 'abc')
  *   - quoted string (eg '"abc"')
- *   - hexstring (eg '#A0B0')
+ *   - hexstring (eg '\#A0B0')
  * The function parses the string in the @p in parameter until end of string or @p delim is encountered.
  * The @p in and @p inSize parameters are moved to the next character (e.g. delimiter if it was encountered
  * during parsing).

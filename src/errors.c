@@ -154,7 +154,6 @@ xmlSecErrorsClearCallback(void) {
     xmlSecErrorsClbkIsSetByUser = 0;
 }
 
-
 /**
  * @brief Sets the system errors callback function.
  * @details Sets the system errors callback function to @p callback that will be

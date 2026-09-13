@@ -375,13 +375,14 @@ xmlSecKeyDataBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
 /**
  * @brief Writes key data from a key into a binary buffer.
- * @details Writes the key data of klass @p id from the @p key to a binary buffer @p buf.
+ * @details Writes the key data of klass @p id from the @p key to a binary buffer.
+ * On success, the library allocates the output buffer @p buf and the caller
+ * is responsible for freeing it.
  * @param id the data klass.
  * @param key the source key.
- * @param buf the output binary buffer.
+ * @param buf the output binary buffer (allocated by the library; the caller must free it).
  * @param bufSize the output buffer size.
  * @param keyInfoCtx the &lt;dsig:KeyInfo/&gt; node processing context.
- *
  * @return 0 on success or a negative value if an error occurs.
  */
 int

@@ -64,28 +64,10 @@ XMLSEC_EXPORT int               xmlSecBase64CtxFinal_ex         (xmlSecBase64Ctx
 XMLSEC_EXPORT xmlChar*          xmlSecBase64Encode              (const xmlSecByte* in,
                                                                  xmlSecSize inSize,
                                                                  int columns);
-/**
- * @brief Decodes a base64 encoded string.
- * @details Decodes the base64 encoded string @p str into @p out. The input
- * must be a NUL-terminated string.
- * @param str the NUL-terminated base64 encoded string to decode.
- * @param out the output buffer.
- * @param outSize the size of the output buffer.
- * @param outWritten the number of bytes written to @p out.
- * @return 0 on success or a negative value if an error occurs.
- */
 XMLSEC_EXPORT int               xmlSecBase64Decode_ex           (const xmlChar* str,
                                                                  xmlSecByte* out,
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize* outWritten);
-/**
- * @brief Decodes a base64 encoded string in place.
- * @details Decodes the base64 encoded string @p str in place. The input
- * must be a NUL-terminated string.
- * @param str the NUL-terminated base64 encoded string to decode.
- * @param outWritten the number of bytes written to @p str.
- * @return 0 on success or a negative value if an error occurs.
- */
 XMLSEC_EXPORT int               xmlSecBase64DecodeInPlace       (xmlChar* str,
                                                                  xmlSecSize* outWritten);
 

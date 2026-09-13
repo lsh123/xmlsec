@@ -76,8 +76,8 @@ typedef enum {
  * @brief If set, the pre-digest buffer for SignedInfo References is stored per-Reference.
  * @details If this flag is set then the pre-digest buffer for &lt;dsig:Reference/&gt; child
  * of &lt;dsig:SignedInfo/&gt; element will be stored in the &lt;dsig:Reference/&gt; processing
- * context (see #xmlSecDSigReferenceCtx::preDigestMemBufMethod) and can be retrieved via
- * #xmlSecDSigReferenceCtxGetPreDigestBuffer.
+ * context (see the preDigestMemBufMethod field of #_xmlSecDSigReferenceCtx) and can be
+ * retrieved via #xmlSecDSigReferenceCtxGetPreDigestBuffer.
  */
 #define XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES           0x00000002
 
@@ -85,8 +85,8 @@ typedef enum {
  * @brief If set, the pre-digest buffer for Manifest References is stored per-Reference.
  * @details If this flag is set then the pre-digest buffer for &lt;dsig:Reference/&gt; child
  * of &lt;dsig:Manifest/&gt; element will be stored in the &lt;dsig:Reference/&gt; processing
- * context (see #xmlSecDSigReferenceCtx::preDigestMemBufMethod) and can be retrieved via
- * #xmlSecDSigReferenceCtxGetPreDigestBuffer.
+ * context (see the preDigestMemBufMethod field of #_xmlSecDSigReferenceCtx) and can be
+ * retrieved via #xmlSecDSigReferenceCtxGetPreDigestBuffer.
  */
 #define XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES             0x00000004
 

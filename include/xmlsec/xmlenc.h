@@ -48,7 +48,7 @@ typedef enum {
  * @details XML Encryption processing failure reason. The application should use the
  * returned value from the encrypt/decrypt functions to find out whether the operation
  * succeeded or failed first; on failure the specific reason is stored in the
- * #failureReason field of the context.
+ * failureReason field of #_xmlSecEncCtx.
  */
 typedef enum {
     xmlSecEncFailureReasonUnknown = 0,  /**< the failure reason is unknown. */

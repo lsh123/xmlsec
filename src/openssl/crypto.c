@@ -802,6 +802,7 @@ xmlSecOpenSSLGetDefaultTrustedCertsFolder(void) {
  * @details The caller retains ownership of @p libctx and must keep it alive for as long as
  * xmlsec uses it; freeing it while xmlsec still references it is a use-after-free.
  * The reference is cleared by xmlSecOpenSSLShutdown().
+ * @param libctx the context to be used by the XMLSec library (owned by the caller).
  * @return 0 on success or a negative value if an error occurs.
  */
 int

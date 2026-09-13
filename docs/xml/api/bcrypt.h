@@ -11,19 +11,31 @@ typedef void*           BCRYPT_HASH_HANDLE;
 typedef void*           BCRYPT_SECRET_HANDLE;
 
 typedef struct _BCRYPT_AUTHENTICATED_CIPHER_MODE_INFO {
-    unsigned long   cbTag;
+    unsigned long       cbSize;
+    unsigned long       dwInfoVersion;
+    unsigned char*      pbNonce;
+    unsigned long       cbNonce;
+    unsigned char*      pbAuthData;
+    unsigned long       cbAuthData;
+    unsigned char*      pbTag;
+    unsigned long       cbTag;
+    unsigned char*      pbMacContext;
+    unsigned long       cbMacContext;
+    unsigned long       cbAAD;
+    unsigned long long  cbData;
+    unsigned long       dwFlags;
 } BCRYPT_AUTHENTICATED_CIPHER_MODE_INFO;
 
 typedef struct _BCRYPT_AUTH_TAG_LENGTHS_STRUCT {
-    unsigned long   cbMinimum;
-    unsigned long   cbMaximum;
-    unsigned long   cbIncrement;
+    unsigned long   dwMinLength;
+    unsigned long   dwMaxLength;
+    unsigned long   dwIncrement;
 } BCRYPT_AUTH_TAG_LENGTHS_STRUCT;
 
 typedef struct _BCRYPT_KEY_LENGTHS_STRUCT {
-    unsigned long   cbMinimum;
-    unsigned long   cbMaximum;
-    unsigned long   cbIncrement;
+    unsigned long   dwMinLength;
+    unsigned long   dwMaxLength;
+    unsigned long   dwIncrement;
 } BCRYPT_KEY_LENGTHS_STRUCT;
 
 typedef struct _BCRYPT_DH_KEY_BLOB {
@@ -67,8 +79,12 @@ typedef struct _BCRYPT_ECCPUBLIC_BLOB {
 } BCRYPT_ECCPUBLIC_BLOB;
 
 typedef struct _BCRYPT_RSAKEY_BLOB {
-    unsigned long   dwMagic;
-    unsigned long   cbKey;
+    unsigned long   Magic;
+    unsigned long   BitLength;
+    unsigned long   cbPublicExp;
+    unsigned long   cbModulus;
+    unsigned long   cbPrime1;
+    unsigned long   cbPrime2;
 } BCRYPT_RSAKEY_BLOB;
 
 typedef struct _BCRYPT_RSAPUBLIC_BLOB {
@@ -86,13 +102,19 @@ typedef struct _BCRYPT_KEY_DATA_BLOB {
     BCRYPT_KEY_DATA_BLOB_HEADER   header;
 } BCRYPT_KEY_DATA_BLOB;
 
-typedef struct _BCRYPT_OAEP_PADDING_INFO {
+typedef struct _BCRYPT_PKCS1_PADDING_INFO {
     const void*     pszAlgId;
-} BCRYPT_OAEP_PADDING_INFO;
+} BCRYPT_PKCS1_PADDING_INFO;
 
 typedef struct _BCRYPT_PSS_PADDING_INFO {
     const void*     pszAlgId;
-    unsigned long   cbHashLength;
+    unsigned long   cbSalt;
 } BCRYPT_PSS_PADDING_INFO;
+
+typedef struct _BCRYPT_OAEP_PADDING_INFO {
+    const void*     pszAlgId;
+    unsigned char*  pbLabel;
+    unsigned long   cbLabel;
+} BCRYPT_OAEP_PADDING_INFO;
 
 #endif /* XMLSEC_DOXYGEN_BCRYPT_H */

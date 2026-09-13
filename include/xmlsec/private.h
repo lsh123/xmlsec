@@ -131,8 +131,7 @@ typedef int                     (*xmlSecCryptoAppDefaultKeysMngrInitMethod)
                                                                         (xmlSecKeysMngrPtr mngr);
 /**
  * @brief Adds a key to the keys manager.
- * @details Adds @p key to the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInitMethod
- * function.
+ * @details Adds @p key to the keys manager @p mngr.
  * @param mngr the pointer to keys manager.
  * @param key the pointer to key.
  * @return 0 on success or a negative value otherwise.
@@ -142,8 +141,7 @@ typedef int                     (*xmlSecCryptoAppDefaultKeysMngrAdoptKeyMethod)
                                                                          xmlSecKeyPtr key);
 /**
  * @brief Verifies a key with the keys manager.
- * @details Verifies @p key with the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInitMethod
- * function:
+ * @details Verifies @p key with the keys manager @p mngr:
  * - Checks that key certificate is present
  * - Checks that key certificate is valid
  * @param mngr the pointer to keys manager.
@@ -157,8 +155,7 @@ typedef int                     (*xmlSecCryptoAppDefaultKeysMngrVerifyKeyMethod)
                                                                          xmlSecKeyInfoCtxPtr keyInfoCtx);
 /**
  * @brief Loads an XML keys file into the keys manager.
- * @details Loads XML keys file from @p uri to the keys manager @p mngr created
- * with #xmlSecCryptoAppDefaultKeysMngrInitMethod function.
+ * @details Loads XML keys file from @p uri to the keys manager @p mngr.
  * @param mngr the pointer to keys manager.
  * @param uri the uri.
  * @return 0 on success or a negative value otherwise.

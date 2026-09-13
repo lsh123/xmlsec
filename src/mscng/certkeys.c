@@ -334,11 +334,12 @@ xmlSecMSCngKeyDataFromAlgorithm(LPSTR pszObjId) {
 }
 
 /**
- * @brief Gets the native MSCng public key from the key data.
- * @param data the key data to retrieve the public key from.
+ * @brief Creates key data value from the cert.
+ * @param pCert the pointer to cert.
+ * @param type the expected key type.
  *
- * @return the public key on success or 0 otherwise. The returned key is
- * owned by the key data; the caller must not destroy it.
+ * @return the newly created key data on success or NULL if an error occurs.
+ * The returned key data must be destroyed by the caller.
  */
 xmlSecKeyDataPtr
 xmlSecMSCngCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {

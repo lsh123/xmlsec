@@ -340,31 +340,31 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
 
 #ifndef XMLSEC_NO_MD5
     if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaMd5Id)) {
-        ConvertEndian(data, tmpBuf, dataSize);
+        xmlSecMSCryptoConvertEndian(data, tmpBuf, dataSize);
     } else
 #endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_SHA1
     if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha1Id)) {
-        ConvertEndian(data, tmpBuf, dataSize);
+        xmlSecMSCryptoConvertEndian(data, tmpBuf, dataSize);
     } else
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
     if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha256Id)) {
-        ConvertEndian(data, tmpBuf, dataSize);
+        xmlSecMSCryptoConvertEndian(data, tmpBuf, dataSize);
     } else
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
     if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha384Id)) {
-        ConvertEndian(data, tmpBuf, dataSize);
+        xmlSecMSCryptoConvertEndian(data, tmpBuf, dataSize);
     } else
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
     if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha512Id)) {
-        ConvertEndian(data, tmpBuf, dataSize);
+        xmlSecMSCryptoConvertEndian(data, tmpBuf, dataSize);
     } else
 #endif /* XMLSEC_NO_SHA512 */
 
@@ -372,21 +372,21 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
 
 #ifndef XMLSEC_NO_DSA
     if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformDsaSha1Id) && (dataSize == 40)) {
-        ConvertEndian(data, tmpBuf, 20);
-        ConvertEndian(data + 20, tmpBuf + 20, 20);
+        xmlSecMSCryptoConvertEndian(data, tmpBuf, 20);
+        xmlSecMSCryptoConvertEndian(data + 20, tmpBuf + 20, 20);
     } else
 #endif /*endif XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_GOST
     if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2001GostR3411_94Id)) {
-        ConvertEndian(data, tmpBuf, dataSize);
+        xmlSecMSCryptoConvertEndian(data, tmpBuf, dataSize);
     } else
 #endif /* XMLSEC_NO_GOST*/
 
 #ifndef XMLSEC_NO_GOST2012
     if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2012_256Id) ||
         xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2012_512Id)) {
-        ConvertEndian(data, tmpBuf, dataSize);
+        xmlSecMSCryptoConvertEndian(data, tmpBuf, dataSize);
     } else
 #endif /* XMLSEC_NO_GOST2012*/
 
@@ -596,31 +596,31 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
 
 #ifndef XMLSEC_NO_MD5
             if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaMd5Id)) {
-                ConvertEndian(tmpBuf, outBuf, outSize);
+                xmlSecMSCryptoConvertEndian(tmpBuf, outBuf, outSize);
             } else
 #endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_SHA1
             if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha1Id)) {
-                ConvertEndian(tmpBuf, outBuf, outSize);
+                xmlSecMSCryptoConvertEndian(tmpBuf, outBuf, outSize);
             } else
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
             if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha256Id)) {
-                ConvertEndian(tmpBuf, outBuf, outSize);
+                xmlSecMSCryptoConvertEndian(tmpBuf, outBuf, outSize);
             } else
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
             if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha384Id)) {
-                ConvertEndian(tmpBuf, outBuf, outSize);
+                xmlSecMSCryptoConvertEndian(tmpBuf, outBuf, outSize);
             } else
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
             if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha512Id)) {
-                ConvertEndian(tmpBuf, outBuf, outSize);
+                xmlSecMSCryptoConvertEndian(tmpBuf, outBuf, outSize);
             } else
 #endif /* XMLSEC_NO_SHA512 */
 
@@ -628,21 +628,21 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
 
 #ifndef XMLSEC_NO_DSA
             if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformDsaSha1Id) && (outSize == 40)) {
-                ConvertEndian(tmpBuf, outBuf, 20);
-                ConvertEndian(tmpBuf + 20, outBuf + 20, 20);
+                xmlSecMSCryptoConvertEndian(tmpBuf, outBuf, 20);
+                xmlSecMSCryptoConvertEndian(tmpBuf + 20, outBuf + 20, 20);
             } else
 #endif /* XMLSEC_NO_DSA*/
 
 #ifndef XMLSEC_NO_GOST
             if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2001GostR3411_94Id)) {
-                ConvertEndian(tmpBuf, outBuf, outSize);
+                xmlSecMSCryptoConvertEndian(tmpBuf, outBuf, outSize);
             } else
 #endif /* XMLSEC_NO_GOST*/
 
 #ifndef XMLSEC_NO_GOST2012
             if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2012_256Id) ||
                 xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2012_512Id)) {
-                ConvertEndian(tmpBuf, outBuf, outSize);
+                xmlSecMSCryptoConvertEndian(tmpBuf, outBuf, outSize);
             } else
 #endif /* XMLSEC_NO_GOST2012*/
 

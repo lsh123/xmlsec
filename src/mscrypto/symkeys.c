@@ -363,7 +363,7 @@ done:
 BOOL
 xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
                                      ALG_ID algId, LPBYTE pbKeyMaterial,
-                                     DWORD dwKeyMaterial, BOOL bCheckKeyLength,
+                                     DWORD dwKeyMaterialLen, BOOL bCheckKeyLength,
                                      HCRYPTKEY *hSessionKey) {
     ALG_ID dwPrivKeyAlg;
     LPBYTE keyBlob = NULL;
@@ -382,7 +382,7 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
     xmlSecAssert2(hProv != 0, FALSE);
     xmlSecAssert2(hPrivateKey != 0, FALSE);
     xmlSecAssert2(pbKeyMaterial != NULL, FALSE);
-    xmlSecAssert2(dwKeyMaterial > 0, FALSE);
+    xmlSecAssert2(dwKeyMaterialLen > 0, FALSE);
     xmlSecAssert2(hSessionKey != NULL, FALSE);
 
     /*  Double check to see if this provider supports this algorithm and key size */
@@ -420,13 +420,13 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
         hTempKey = 0;
 
         /* yell if key is too big */
-        if ((8 * dwKeyMaterial) > dwProvSessionKeySize) {
+        if ((8 * dwKeyMaterialLen) > dwProvSessionKeySize) {
             xmlSecMSCryptoError3("CryptGetKeyParam(KP_KEYLEN)", NULL,
-                "8*dwKeyMaterial=%lu; dwProvSessionKeySize=%lu", (8 * dwKeyMaterial), dwProvSessionKeySize);
+                "8*dwKeyMaterialLen=%lu; dwProvSessionKeySize=%lu", (8 * dwKeyMaterialLen), dwProvSessionKeySize);
             goto done;
         }
     } else {
-        dwProvSessionKeySize = dwKeyMaterial * 8;
+        dwProvSessionKeySize = dwKeyMaterialLen * 8;
     }
 
     /* Get private key's algorithm */
@@ -444,12 +444,12 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
     }
 
     /* 3 is for the first reserved byte after the key material and the 2 reserved bytes at the end. */
-    if(dwPublicKeySize / 8 < dwKeyMaterial + 3) {
+    if(dwPublicKeySize / 8 < dwKeyMaterialLen + 3) {
         xmlSecMSCryptoError3("CryptGetKeyParam(KP_KEYLEN)", NULL,
-            "dwKeyMaterial+3=%lu; dwPublicKeySize/8=%lu", (dwKeyMaterial + 3), (dwPublicKeySize / 8));
+            "dwKeyMaterialLen+3=%lu; dwPublicKeySize/8=%lu", (dwKeyMaterialLen + 3), (dwPublicKeySize / 8));
         goto done;
     }
-    rndBlobSize = dwPublicKeySize / 8 - (dwKeyMaterial + 3);
+    rndBlobSize = dwPublicKeySize / 8 - (dwKeyMaterialLen + 3);
 
     /* Simple key BLOBs, type SIMPLEBLOB, are used to store and transport session keys outside a CSP.
      * Base provider simple-key BLOBs are always encrypted with a key exchange public key. The pbData
@@ -484,10 +484,10 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
 
     /* Place the key material in reverse order */
     pbPtr                   = (BYTE*)(keyBlob + sizeof(PUBLICKEYSTRUC) + sizeof(ALG_ID));
-    for (n = 0; n < dwKeyMaterial; n++) {
-        pbPtr[n] = pbKeyMaterial[dwKeyMaterial - n - 1];
+    for (n = 0; n < dwKeyMaterialLen; n++) {
+        pbPtr[n] = pbKeyMaterial[dwKeyMaterialLen - n - 1];
     }
-    pbPtr += dwKeyMaterial;
+    pbPtr += dwKeyMaterialLen;
 
     /* skip reserved byte */
     pbPtr += 1;

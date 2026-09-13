@@ -124,7 +124,9 @@
 #else /* (SIZE_MAX > INT_MAX) */
 
 #define XMLSEC_SAFE_CAST_SIZE_T_TO_INT(srcVal, dstVal, errorAction, errorObject) \
-    (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */
+    do {                                                                        \
+        (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */ \
+    } while(0)
 
 #endif /* (SIZE_MAX > INT_MAX) */
 
@@ -139,7 +141,9 @@
 #else /* (XMLSEC_SIZE_MAX > INT_MAX) */
 
 #define XMLSEC_SAFE_CAST_SIZE_TO_INT(srcVal, dstVal, errorAction, errorObject) \
-    (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */
+    do {                                                                        \
+        (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */ \
+    } while(0)
 
 #endif /* (XMLSEC_SIZE_MAX > INT_MAX) */
 
@@ -156,11 +160,19 @@
         (dstVal) = (int)(srcVal);                                              \
     } while(0)                                                                 \
 
-/* Safe cast with limits check: ptrdiff_t -> xmlSecSize (xmlSecSize is non-negative, so the min bound is 0) */
-#define XMLSEC_SAFE_CAST_PTRDIFF_TO_SIZE(srcVal, dstVal, errorAction, errorObject)  \
-    XMLSEC_SAFE_CAST_MIN_CHECK(ptrdiff_t, (long long)(srcVal), "%lld",              \
-        xmlSecSize, (dstVal), XMLSEC_SIZE_FMT, (xmlSecSize)0, XMLSEC_SIZE_MAX,      \
-        errorAction, (errorObject))
+/* Safe cast with limits check: ptrdiff_t -> xmlSecSize (xmlSecSize is non-negative, so the min bound is 0).
+   Special case since ptrdiff_t is platform dependent and there is no good way to print it. Cast to long long
+   should be good enough and will only affect output in the logs. */
+#define XMLSEC_SAFE_CAST_PTRDIFF_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
+    do {                                                                        \
+        if((srcVal) < 0) {                                                       \
+            xmlSecImpossibleCastError(ptrdiff_t, (long long)(srcVal), "%lld",   \
+                xmlSecSize, XMLSEC_SIZE_MIN, XMLSEC_SIZE_MAX, XMLSEC_SIZE_FMT,  \
+                (errorObject));                                                 \
+            errorAction;                                                        \
+        }                                                                       \
+        (dstVal) = (xmlSecSize)(srcVal);                                        \
+    } while(0)
 
 
 /******************************************************************************
@@ -186,7 +198,9 @@
 #else /* (SIZE_MAX > UINT_MAX) */
 
 #define XMLSEC_SAFE_CAST_SIZE_T_TO_UINT(srcVal, dstVal, errorAction, errorObject) \
-    (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */
+    do {                                                                        \
+        (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */ \
+    } while(0)
 
 #endif /* (SIZE_MAX > UINT_MAX) */
 
@@ -201,7 +215,9 @@
 #else /* (XMLSEC_SIZE_MAX > UINT_MAX) */
 
 #define XMLSEC_SAFE_CAST_SIZE_TO_UINT(srcVal, dstVal, errorAction, errorObject) \
-    (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */
+    do {                                                                        \
+        (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */ \
+    } while(0)
 
 #endif /* (XMLSEC_SIZE_MAX > UINT_MAX) */
 
@@ -222,7 +238,9 @@
 #else  /* UINT_MAX > LONG_MAX */
 
 #define XMLSEC_SAFE_CAST_UINT_TO_LONG(srcVal, dstVal, errorAction, errorObject) \
-    (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */
+    do {                                                                        \
+        (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */ \
+    } while(0)
 
 #endif /* UINT_MAX > LONG_MAX */
 
@@ -238,7 +256,9 @@
 #else /* (SIZE_MAX > LONG_MAX) */
 
 #define XMLSEC_SAFE_CAST_SIZE_T_TO_LONG(srcVal, dstVal, errorAction, errorObject) \
-    (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */
+    do {                                                                        \
+        (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */ \
+    } while(0)
 
 #endif /* (SIZE_MAX > LONG_MAX) */
 
@@ -254,7 +274,9 @@
 #else /* (XMLSEC_SIZE_MAX > LONG_MAX) */
 
 #define XMLSEC_SAFE_CAST_SIZE_TO_LONG(srcVal, dstVal, errorAction, errorObject) \
-    (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */
+    do {                                                                        \
+        (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */ \
+    } while(0)
 
 #endif /* (XMLSEC_SIZE_MAX > LONG_MAX) */
 
@@ -275,7 +297,9 @@
 #else /* (XMLSEC_SIZE_MAX > ULONG_MAX) */
 
 #define XMLSEC_SAFE_CAST_SIZE_TO_ULONG(srcVal, dstVal, errorAction, errorObject) \
-    (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */
+    do {                                                                        \
+        (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */ \
+    } while(0)
 
 #endif /* (XMLSEC_SIZE_MAX > ULONG_MAX) */
 
@@ -330,7 +354,9 @@
 #else /* (UINT_MAX > XMLSEC_SIZE_MAX) */
 
 #define XMLSEC_SAFE_CAST_UINT_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
-    (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */
+    do {                                                                        \
+        (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */ \
+    } while(0)
 
 #endif /* (UINT_MAX > XMLSEC_SIZE_MAX) */
 
@@ -363,7 +389,9 @@
 #else /* (ULONG_MAX > XMLSEC_SIZE_MAX) */
 
 #define XMLSEC_SAFE_CAST_ULONG_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
-    (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */
+    do {                                                                        \
+        (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */ \
+    } while(0)
 
 #endif /* (ULONG_MAX > XMLSEC_SIZE_MAX) */
 

@@ -103,6 +103,9 @@ gnutls_x509_crt_t       xmlSecGnuTLSX509StoreFindCertByValue    (xmlSecKeyDataSt
                                                                  xmlSecKeyX509DataValuePtr x509Value);
 xmlSecKeyPtr            xmlSecGnuTLSX509FindKeyByValue          (xmlSecPtrListPtr keysList,
                                                                  xmlSecKeyX509DataValuePtr x509Value);
+int                     xmlSecGnuTLSX509StoreVerifyKey          (xmlSecKeyDataStorePtr store,
+                                                                 xmlSecKeyPtr key,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 gnutls_digest_algorithm_t xmlSecGnuTLSX509GetDigestFromAlgorithm(const xmlChar * href);
 
@@ -137,10 +140,6 @@ void       xmlSecGnuTLSX509FindCertCtxFinalize              (xmlSecGnuTLSX509Fin
 
 int        xmlSecGnuTLSX509FindCertCtxMatch                 (xmlSecGnuTLSX509FindCertCtxPtr ctx,
                                                              gnutls_x509_crt_t cert);
-
-int        xmlSecGnuTLSX509StoreVerifyKey                   (xmlSecKeyDataStorePtr store,
-                                                             xmlSecKeyPtr key,
-                                                             xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 /******************************************************************************
  *

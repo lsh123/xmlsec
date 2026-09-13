@@ -199,9 +199,9 @@ xmlSecMSCngKeyDataDEREncodedKeyValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr ke
     }
 
     /* build DER encoded subject public key info */
-    ret = xmlSecMSCngCreateDerForBcryptPubkey(keyData, &keyDer, &keyDerLen);
+    ret = xmlSecMSCngCreateDerForBCryptPubkey(keyData, &keyDer, &keyDerLen);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngCreateDerForBcryptPubkey", xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecMSCngCreateDerForBCryptPubkey", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 

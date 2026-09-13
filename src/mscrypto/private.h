@@ -36,10 +36,10 @@ extern "C" {
  * Utils
  *
   *****************************************************************************/
-int                ConvertEndian                                (const xmlSecByte * src,
+int                xmlSecMSCryptoConvertEndian                  (const xmlSecByte * src,
                                                                  xmlSecByte * dst,
                                                                  xmlSecSize size);
-int                ConvertEndianInPlace                         (xmlSecByte * buf,
+int                xmlSecMSCryptoConvertEndianInPlace           (xmlSecByte * buf,
                                                                  xmlSecSize size);
 
 /******************************************************************************
@@ -96,7 +96,7 @@ BOOL               xmlSecMSCryptoImportPlainSessionBlob         (HCRYPTPROV hPro
                                                                  HCRYPTKEY hPrivateKey,
                                                                  ALG_ID algId,
                                                                  LPBYTE pbKeyMaterial,
-                                                                 DWORD dwKeyMaterial,
+                                                                  DWORD dwKeyMaterialLen,
                                                                  BOOL bCheckKeyLength,
                                                                  HCRYPTKEY *hSessionKey);
 

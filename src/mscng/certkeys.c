@@ -2102,7 +2102,7 @@ done:
  * @return 0 on success or a negative value if an error occurs.
  */
 int
-xmlSecMSCngCreateDerForBcryptPubkey(xmlSecKeyDataPtr data, LPVOID* ppDer, DWORD* pcbDer) {
+xmlSecMSCngCreateDerForBCryptPubkey(xmlSecKeyDataPtr data, LPVOID* ppDer, DWORD* pcbDer) {
     BCRYPT_KEY_HANDLE hPubkey;
     PUCHAR pInfo = NULL;
     DWORD cbInfo = 0;

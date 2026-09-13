@@ -343,7 +343,7 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         /* The output of CryptEncrypt is in little-endian format, so we have to convert to
          * big-endian first.
          */
-        ConvertEndianInPlace(outBuf, outSize);
+        xmlSecMSCryptoConvertEndianInPlace(outBuf, outSize);
     } else {
         XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwOutLen, return(-1), xmlSecTransformGetName(transform));
 
@@ -352,7 +352,7 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
          */
         inBuf   = xmlSecBufferGetData(in);
         outBuf  = xmlSecBufferGetData(out);
-        ConvertEndian(inBuf, outBuf, inSize);
+        xmlSecMSCryptoConvertEndian(inBuf, outBuf, inSize);
 
         hKey = xmlSecMSCryptoKeyDataGetDecryptKey(ctx->data);
         if (0 == hKey) {

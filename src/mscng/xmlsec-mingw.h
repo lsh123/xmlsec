@@ -19,6 +19,9 @@
 #error "xmlsec-mingw.h file contains private xmlsec definitions for mingw build and should not be used outside the xmlsec or xmlsec-mscng libraries"
 #endif /* XMLSEC_PRIVATE */
 
+/* This header provides fallback definitions for symbols missing from older MinGW headers. */
+#if defined(__MINGW__) || defined(__MINGW32__) || defined(__MINGW64__)
+
 /* ---- bcrypt.h: algorithm identifiers ------------------------------------- */
 
 /* HKDF support requires Windows 10 1709+ (SDK 10.0.16299+) */
@@ -107,10 +110,12 @@
 #ifndef BCRYPT_ECDH_ALGORITHM
 #define BCRYPT_ECDH_ALGORITHM               L"ECDH"
 #endif /* BCRYPT_ECDH_ALGORITHM */
+#endif /* !defined(XMLSEC_NO_EC) || !defined(XMLSEC_NO_XDH) */
+
+/* Curve name property; used unconditionally by certkeys.c. */
 #ifndef BCRYPT_ECC_CURVE_NAME
 #define BCRYPT_ECC_CURVE_NAME               L"ECCCurveName"
 #endif /* BCRYPT_ECC_CURVE_NAME */
-#endif /* !defined(XMLSEC_NO_EC) || !defined(XMLSEC_NO_XDH) */
 
 #ifndef XMLSEC_NO_XDH
 /* BCrypt curve name for Curve25519 (may be missing in older MinGW bcrypt.h) */
@@ -150,5 +155,7 @@
 #define szOID_X25519                        "1.3.101.110"
 #endif /* szOID_X25519 */
 #endif /* XMLSEC_NO_XDH */
+
+#endif /* defined(__MINGW__) || defined(__MINGW32__) || defined(__MINGW64__) */
 
 #endif /* XMLSEC_MSCNG_XMLSEC_MINGW_H */

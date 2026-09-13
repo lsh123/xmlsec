@@ -74,13 +74,15 @@
  * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecMSCngNtError(errorFunction, errorObject, status) \
+    do {                                                       \
         xmlSecError(XMLSEC_ERRORS_HERE,                        \
                     (const char*)(errorObject),                \
                     (errorFunction),                           \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,             \
                     "MSCng NTSTATUS: 0x%08lx",                 \
                     (unsigned long)(status)                    \
-        )
+        );                                                     \
+    } while(0)
 
 /**
  * @brief Macro. Reports crypto errors from NTSTATUS.
@@ -92,6 +94,7 @@
  * @param param the extra message param.
  */
 #define xmlSecMSCngNtError2(errorFunction, errorObject, status, msg, param) \
+    do {                                                       \
         xmlSecError(XMLSEC_ERRORS_HERE,                        \
                     (const char*)(errorObject),                \
                     (errorFunction),                           \
@@ -99,7 +102,8 @@
                     msg "; MSCng NTSTATUS: 0x%08lx",           \
                     (param),                                   \
                     (unsigned long)(status)                    \
-        )
+        );                                                     \
+    } while(0)
 
 /**
  * @brief Macro. Reports crypto errors from NTSTATUS.
@@ -112,6 +116,7 @@
  * @param param2 the extra message param2.
  */
 #define xmlSecMSCngNtError3(errorFunction, errorObject, status, msg, param1, param2) \
+    do {                                                       \
         xmlSecError(XMLSEC_ERRORS_HERE,                        \
                     (const char*)(errorObject),                \
                     (errorFunction),                           \
@@ -120,7 +125,8 @@
                     (param1),                                  \
                     (param2),                                  \
                     (unsigned long)(status)                    \
-        )
+        );                                                     \
+    } while(0)
 
 
 #endif /* XMLSEC_MSCNG_GLOBALS_H */

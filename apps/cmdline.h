@@ -59,8 +59,8 @@ time_t          xmlSecAppCmdLineParamGetTime            (xmlSecAppCmdLineParamPt
 
 int             xmlSecAppCmdLineParamsListParse         (xmlSecAppCmdLineParamPtr* params,
                                                          xmlSecAppCmdLineParamTopic topics,
-                                                         const char** argv,
                                                          int argc,
+                                                         const char** argv,
                                                          int pos);
 void            xmlSecAppCmdLineParamsListClean         (xmlSecAppCmdLineParamPtr* params);
 void            xmlSecAppCmdLineParamsListPrint         (xmlSecAppCmdLineParamPtr* params,

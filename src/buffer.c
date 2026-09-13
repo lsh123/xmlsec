@@ -870,7 +870,7 @@ xmlSecMemEqual(const xmlSecByte* buf1, const xmlSecByte* buf2, xmlSecSize size) 
  * @param size the number of bytes to wipe.
  */
 void
-xmlSecMemCleanse(void* data, size_t size) {
+xmlSecMemCleanse(void* data, xmlSecSize size) {
     if((data == NULL) || (size == 0)) {
         return;
     }

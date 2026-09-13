@@ -626,9 +626,9 @@ xmlSecTransformKWRfc3394Execute(xmlSecTransformPtr transform, xmlSecTransformKWR
     if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
         /* just do nothing */
     } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
-        if((inSize % XMLSEC_KW_RFC3394_IN_SIZE_MULTIPLY) != 0) {
+        if((inSize % XMLSEC_KW_RFC3394_IN_SIZE_ALIGNMENT) != 0) {
             xmlSecInvalidSizeNotMultipleOfError("Input data",
-                inSize, XMLSEC_KW_RFC3394_IN_SIZE_MULTIPLY,
+                inSize, XMLSEC_KW_RFC3394_IN_SIZE_ALIGNMENT,
                 xmlSecTransformGetName(transform));
             return(-1);
         }

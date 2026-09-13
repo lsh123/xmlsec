@@ -56,7 +56,7 @@ SECOidTag   xmlSecNssGetDigestFromHref                  (const xmlChar* href);
 
 
 typedef struct _xmlSecNssX509FindCertCtx {
-    PRArenaPool *arena;
+    PLArenaPool *arena;
 
     CERTName* subjectName;
     SECItem* subjectNameItem;

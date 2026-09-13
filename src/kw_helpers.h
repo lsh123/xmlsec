@@ -124,7 +124,7 @@ XMLSEC_EXPORT int      xmlSecTransformKWDes3Execute             (xmlSecTransform
  * KW RFC 3394 (AES and Camellia)
  *
   *****************************************************************************/
-#define XMLSEC_KW_RFC3394_IN_SIZE_MULTIPLY              ((xmlSecSize)8)
+#define XMLSEC_KW_RFC3394_IN_SIZE_ALIGNMENT             ((xmlSecSize)8)
 #define XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE              ((xmlSecSize)8)
 #define XMLSEC_KW_RFC3394_BLOCK_SIZE                    ((xmlSecSize)16)
 

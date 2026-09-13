@@ -35,18 +35,34 @@ int             xmlSecOpenSSLGenerateRandomBytes             (xmlSecByte* data, 
 #define XMLSEC_OPENSSL_NO_STORE             1
 #define XMLSEC_OPENSSL_NO_DEEP_COPY         1
 
+#ifndef ENGINE_cleanup
 #define ENGINE_cleanup()                    {}
+#endif
 
+#ifndef RAND_priv_bytes
 #define RAND_priv_bytes(buf,len)            RAND_bytes((buf), (len))
-#define RAND_write_file(file)               (0)
+#endif
+#ifndef RAND_write_file
+#define RAND_write_file(file)               (1)
+#endif
 
+#ifndef EVP_PKEY_base_id
 #define EVP_PKEY_base_id(pkey)              EVP_PKEY_id(pkey)
+#endif
+#ifndef EVP_CipherFinal
 #define EVP_CipherFinal(ctx, out, out_len)  EVP_CipherFinal_ex((ctx), (out), (out_len))
+#endif
+#ifndef EVP_read_pw_string
 #define EVP_read_pw_string(buf, len, prompt, verify)     (-1)
+#endif
 
 /* simply return success */
+#ifndef sk_X509_reserve
 #define sk_X509_reserve(crts, num)          (1)
+#endif
+#ifndef sk_X509_CRL_reserve
 #define sk_X509_CRL_reserve(crls, num)      (1)
+#endif
 
 #endif /* defined(OPENSSL_IS_BORINGSSL) || defined(OPENSSL_IS_AWSLC) */
 
@@ -125,11 +141,17 @@ typedef int xmlSecOpenSSLSizeT;
 #define XMLSEC_OPENSSL_NO_PWD_CALLBACK      1
 #define XMLSEC_OPENSSL_NO_DEEP_COPY         1
 
+#ifndef RAND_priv_bytes
 #define RAND_priv_bytes(buf,len)            RAND_bytes((buf), (len))
+#endif
 
 /* simply return success */
+#ifndef sk_X509_reserve
 #define sk_X509_reserve(crts, num)          (1)
+#endif
+#ifndef sk_X509_CRL_reserve
 #define sk_X509_CRL_reserve(crls, num)      (1)
+#endif
 
 #endif /* defined(LIBRESSL_VERSION_NUMBER) */
 

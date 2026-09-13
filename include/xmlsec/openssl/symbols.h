@@ -40,12 +40,12 @@ extern "C" {
 #define xmlSecKeyDataCamelliaId                 xmlSecOpenSSLKeyDataCamelliaId
 #define xmlSecKeyDataChaCha20Id                 xmlSecOpenSSLKeyDataChaCha20Id
 #define xmlSecKeyDataConcatKdfId                xmlSecOpenSSLKeyDataConcatKdfId
+#define xmlSecKeyDataDEREncodedKeyValueId       xmlSecOpenSSLKeyDataDEREncodedKeyValueId
 #define xmlSecKeyDataDesId                      xmlSecOpenSSLKeyDataDesId
 #define xmlSecKeyDataDhId                       xmlSecOpenSSLKeyDataDhId
 #define xmlSecKeyDataDsaId                      xmlSecOpenSSLKeyDataDsaId
-#define xmlSecKeyDataDEREncodedKeyValueId       xmlSecOpenSSLKeyDataDEREncodedKeyValueId
-#define xmlSecKeyDataEcdsaId                    xmlSecOpenSSLKeyDataEcId
 #define xmlSecKeyDataEcId                       xmlSecOpenSSLKeyDataEcId
+#define xmlSecKeyDataEcdsaId                    xmlSecOpenSSLKeyDataEcId
 #define xmlSecKeyDataEdDSAId                    xmlSecOpenSSLKeyDataEdDSAId
 #define xmlSecKeyDataGost2001Id                 xmlSecOpenSSLKeyDataGost2001Id
 #define xmlSecKeyDataGostR3410_2012_256Id       xmlSecOpenSSLKeyDataGostR3410_2012_256Id
@@ -55,10 +55,10 @@ extern "C" {
 #define xmlSecKeyDataMLDSAId                    xmlSecOpenSSLKeyDataMLDSAId
 #define xmlSecKeyDataMLKEMId                    xmlSecOpenSSLKeyDataMLKEMId
 #define xmlSecKeyDataPbkdf2Id                   xmlSecOpenSSLKeyDataPbkdf2Id
+#define xmlSecKeyDataRawX509CertId              xmlSecOpenSSLKeyDataRawX509CertId
 #define xmlSecKeyDataRsaId                      xmlSecOpenSSLKeyDataRsaId
 #define xmlSecKeyDataSLHDSAId                   xmlSecOpenSSLKeyDataSLHDSAId
 #define xmlSecKeyDataX509Id                     xmlSecOpenSSLKeyDataX509Id
-#define xmlSecKeyDataRawX509CertId              xmlSecOpenSSLKeyDataRawX509CertId
 #define xmlSecKeyDataXdhId                      xmlSecOpenSSLKeyDataXdhId
 
 /******************************************************************************
@@ -155,8 +155,10 @@ extern "C" {
 
 #define xmlSecTransformRsaPkcs1Id               xmlSecOpenSSLTransformRsaPkcs1Id
 
+#ifndef XMLSEC_NO_RSA_OAEP
 #define xmlSecTransformRsaOaepId                xmlSecOpenSSLTransformRsaOaepId
 #define xmlSecTransformRsaOaepEnc11Id           xmlSecOpenSSLTransformRsaOaepEnc11Id
+#endif /* XMLSEC_NO_RSA_OAEP */
 
 #define xmlSecTransformSha1Id                   xmlSecOpenSSLTransformSha1Id
 

@@ -22,8 +22,8 @@
 #error "xmlsec-mingw.h file contains private xmlsec definitions for mingw build and should not be used outside xmlsec or xmlsec-mscrypto libraries"
 #endif /* XMLSEC_PRIVATE */
 
-
-/*defines*/
+/* This header provides fallback definitions for symbols missing from older MinGW headers. */
+#if defined(__MINGW__) || defined(__MINGW32__) || defined(__MINGW64__)
 
 #ifndef ALG_SID_HMAC
 #  define ALG_SID_HMAC          9
@@ -63,15 +63,6 @@
 #endif
 
 
-#ifndef CERT_CLOSE_STORE_FORCE_FLAG
-#  define CERT_CLOSE_STORE_FORCE_FLAG           1
-#endif
-
-#ifndef CERT_CLOSE_STORE_CHECK_FLAG
-#  define CERT_CLOSE_STORE_CHECK_FLAG           2
-#endif
-
-
 #ifndef CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG
 #  define CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG   1
 #endif
@@ -87,10 +78,6 @@
 
 #ifndef CERT_STORE_SIGNATURE_FLAG
 #  define CERT_STORE_SIGNATURE_FLAG             1
-#endif
-
-#ifndef CERT_STORE_TIME_VALIDITY_FLAG
-#  define CERT_STORE_TIME_VALIDITY_FLAG         2
 #endif
 
 #ifndef CERT_STORE_REVOCATION_FLAG
@@ -214,5 +201,6 @@ BOOL            WINAPI CryptAcquireCertificatePrivateKey(PCCERT_CONTEXT,DWORD,vo
 BOOL            WINAPI CryptDuplicateKey(HCRYPTKEY,DWORD*,DWORD,HCRYPTKEY*);
 BOOL            WINAPI CryptImportPublicKeyInfo(HCRYPTPROV,DWORD,PCERT_PUBLIC_KEY_INFO,HCRYPTKEY*);
 
+#endif /* defined(__MINGW__) || defined(__MINGW32__) || defined(__MINGW64__) */
 
 #endif /* XMLSEC_MSCRYPTO_XMLSEC_MINGW_H */

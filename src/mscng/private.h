@@ -23,6 +23,11 @@
 
 #include "../keysdata_helpers.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
+
 /* Reverse @len bytes of @buf in-place (little-endian <-> big-endian conversion). */
 static inline void
 xmlSecMSCngReverseBytes(BYTE* buf, DWORD len) {
@@ -45,10 +50,6 @@ xmlSecMSCngReverseCopy(BYTE* dst, const BYTE* src, DWORD len) {
         dst[ii] = src[len - 1 - ii];
     }
 }
-
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
 
 
  /******************************************************************************
@@ -75,7 +76,7 @@ xmlSecKeyDataPtr   xmlSecMSCngAppKeyReadPubKeyFromDer               (const xmlSe
                                                                      DWORD derDataLen);
 xmlSecKeyDataPtr   xmlSecMSCngAppKeyReadPrivKeyFromDer              (const xmlSecByte* data,
                                                                      DWORD dataSize);
-int                xmlSecMSCngCreateDerForBcryptPubkey              (xmlSecKeyDataPtr data,
+int                xmlSecMSCngCreateDerForBCryptPubkey              (xmlSecKeyDataPtr data,
                                                                      LPVOID* ppDer,
                                                                      DWORD* pcbDer);
 

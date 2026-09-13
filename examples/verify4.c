@@ -41,6 +41,7 @@
 #include <xmlsec/xmltree.h>
 #include <xmlsec/xmldsig.h>
 #include <xmlsec/crypto.h>
+#include <xmlsec/dl.h>
 
 xmlSecKeysMngrPtr load_trusted_certs(char** files, int files_size);
 int verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* id_attr);

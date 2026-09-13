@@ -42,6 +42,7 @@
 #include <xmlsec/xmltree.h>
 #include <xmlsec/xmlenc.h>
 #include <xmlsec/crypto.h>
+#include <xmlsec/dl.h>
 
 xmlSecKeyStoreId  files_keys_store_get_klass(void);
 xmlSecKeysMngrPtr create_files_keys_mngr(void);

@@ -47,6 +47,7 @@
 #include <xmlsec/xmlenc.h>
 #include <xmlsec/templates.h>
 #include <xmlsec/crypto.h>
+#include <xmlsec/dl.h>
 
 xmlSecKeysMngrPtr load_rsa_keys(const char* key_file);
 int encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name);

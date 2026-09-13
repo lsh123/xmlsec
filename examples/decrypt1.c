@@ -34,6 +34,7 @@
 #include <xmlsec/xmltree.h>
 #include <xmlsec/xmlenc.h>
 #include <xmlsec/crypto.h>
+#include <xmlsec/dl.h>
 
 int decrypt_file(const char* enc_file, const char* key_file);
 

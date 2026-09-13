@@ -35,6 +35,7 @@
 #include <xmlsec/xmltree.h>
 #include <xmlsec/xmlenc.h>
 #include <xmlsec/crypto.h>
+#include <xmlsec/dl.h>
 
 xmlSecKeysMngrPtr load_des_keys(char** files, int files_size);
 int decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file);

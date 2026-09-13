@@ -44,6 +44,7 @@
 #include <xmlsec/xmltree.h>
 #include <xmlsec/xmldsig.h>
 #include <xmlsec/crypto.h>
+#include <xmlsec/dl.h>
 
 int sign_file(const char* tmpl_file, const char* key_file);
 

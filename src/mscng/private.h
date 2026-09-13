@@ -80,20 +80,19 @@ int                xmlSecMSCngCreateDerForBCryptPubkey              (xmlSecKeyDa
                                                                      LPVOID* ppDer,
                                                                      DWORD* pcbDer);
 
-#ifndef XMLSEC_NO_XDH
 
-BCRYPT_KEY_HANDLE  xmlSecMSCngKeyDataXdhImportPublicKey             (const xmlSecByte* pubKeyBytes,
-                                                                     DWORD pubKeyLen);
-int                xmlSecMSCngKeyDataDuplicateBCryptXdhPrivKey      (BCRYPT_KEY_HANDLE src,
-                                                                     BCRYPT_KEY_HANDLE* dst);
-xmlSecKeyDataPtr   xmlSecMSCngKeyDataXdhReadFromPkcs8Der            (const xmlSecByte* derData,
-                                                                     DWORD derDataLen);
-int                xmlSecMSCngKeyDataCertGetXdhPubkey               (PCERT_PUBLIC_KEY_INFO spki,
-                                                                     BCRYPT_KEY_HANDLE* key);
-
-#endif /* XMLSEC_NO_XDH */
-
+/******************************************************************************
+ *
+ * DH Util functions
+ *
+  *****************************************************************************/
 #ifndef XMLSEC_NO_DH
+
+/* OID for X942 Diffie-Hellman key agreement (may be missing in older MinGW wincrypt.h) */
+#ifndef szOID_X942_DH
+#define szOID_X942_DH                       "1.2.840.10046.2.1"
+#endif /* szOID_X942_DH */
+
 
 int                xmlSecMSCngKeyDataSetDhQ                         (xmlSecKeyDataPtr data,
                                                                      const xmlSecByte* q,
@@ -125,6 +124,11 @@ xmlSecKeyDataPtr   xmlSecMSCngKeyDataDhReadFromPkcs8Der             (const xmlSe
                                                                      DWORD derDataLen);
 #endif /* XMLSEC_NO_DH */
 
+/******************************************************************************
+ *
+ * DSA Util functions
+ *
+  *****************************************************************************/
 #ifndef XMLSEC_NO_DSA
 
 #define XMLSEC_MSCNG_DSA_MAX_CBKEY_SIZE (512U)                      /*  4096 bits, which is 512 bytes */
@@ -144,6 +148,31 @@ int                xmlSecMSCngKeyDataDsaPubkeyWrite                 (BCRYPT_KEY_
                                                                      xmlSecKeyValueDsaPtr dsaValue);
 
 #endif /* XMLSEC_NO_DSA */
+
+/******************************************************************************
+ *
+ * XDH Util functions
+ *
+  *****************************************************************************/
+
+#ifndef XMLSEC_NO_XDH
+
+/* OID for X25519 public/private key (RFC 8410, id-X25519; may be missing in older MinGW) */
+#ifndef szOID_X25519
+#define szOID_X25519                        "1.3.101.110"
+#endif /* szOID_X25519 */
+
+BCRYPT_KEY_HANDLE  xmlSecMSCngKeyDataXdhImportPublicKey             (const xmlSecByte* pubKeyBytes,
+                                                                     DWORD pubKeyLen);
+int                xmlSecMSCngKeyDataDuplicateBCryptXdhPrivKey      (BCRYPT_KEY_HANDLE src,
+                                                                     BCRYPT_KEY_HANDLE* dst);
+xmlSecKeyDataPtr   xmlSecMSCngKeyDataXdhReadFromPkcs8Der            (const xmlSecByte* derData,
+                                                                     DWORD derDataLen);
+int                xmlSecMSCngKeyDataCertGetXdhPubkey               (PCERT_PUBLIC_KEY_INFO spki,
+                                                                     BCRYPT_KEY_HANDLE* key);
+
+#endif /* XMLSEC_NO_XDH */
+
 
 /******************************************************************************
  *

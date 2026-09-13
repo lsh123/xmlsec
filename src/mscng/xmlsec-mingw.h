@@ -135,21 +135,7 @@
 #define CERT_FIND_SHA256_HASH               (22 << 16)
 #endif /* CERT_FIND_SHA256_HASH */
 
-/* ---- wincrypt.h: OID fallbacks ------------------------------------------- */
 
-#ifndef XMLSEC_NO_DH
-/* OID for X942 Diffie-Hellman key agreement (may be missing in older MinGW wincrypt.h) */
-#ifndef szOID_X942_DH
-#define szOID_X942_DH                       "1.2.840.10046.2.1"
-#endif /* szOID_X942_DH */
-#endif /* XMLSEC_NO_DH */
-
-#ifndef XMLSEC_NO_XDH
-/* OID for X25519 public/private key (RFC 8410, id-X25519; may be missing in older MinGW) */
-#ifndef szOID_X25519
-#define szOID_X25519                        "1.3.101.110"
-#endif /* szOID_X25519 */
-#endif /* XMLSEC_NO_XDH */
 
 #endif /* defined(__MINGW__) || defined(__MINGW32__) || defined(__MINGW64__) */
 

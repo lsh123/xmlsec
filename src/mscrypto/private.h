@@ -96,7 +96,7 @@ BOOL               xmlSecMSCryptoImportPlainSessionBlob         (HCRYPTPROV hPro
                                                                  HCRYPTKEY hPrivateKey,
                                                                  ALG_ID algId,
                                                                  LPBYTE pbKeyMaterial,
-                                                                  DWORD dwKeyMaterialLen,
+                                                                 DWORD dwKeyMaterialLen,
                                                                  BOOL bCheckKeyLength,
                                                                  HCRYPTKEY *hSessionKey);
 

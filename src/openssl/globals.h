@@ -40,12 +40,12 @@
  */
 #define XMLSEC_OPENSSL_ERROR_BUFFER_SIZE                1024
 
-/** AWS-LC and OpenSSL use different types for the error code type */
-#ifdef OPENSSL_IS_AWSLC
+/** AWS-LC, BoringSSL and OpenSSL use different types for the error code type */
+#if defined(OPENSSL_IS_BORINGSSL) || defined(OPENSSL_IS_AWSLC)
 typedef uint32_t xmlSecOpenSSLErrorType;
-#else /* OPENSSL_IS_AWSLC */
+#else /* defined(OPENSSL_IS_BORINGSSL) || defined(OPENSSL_IS_AWSLC) */
 typedef unsigned long xmlSecOpenSSLErrorType;
-#endif /* OPENSSL_IS_AWSLC */
+#endif /* defined(OPENSSL_IS_BORINGSSL) || defined(OPENSSL_IS_AWSLC) */
 
 
 /**

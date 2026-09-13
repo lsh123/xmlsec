@@ -35,22 +35,12 @@ int             xmlSecOpenSSLGenerateRandomBytes             (xmlSecByte* data, 
 #define XMLSEC_OPENSSL_NO_STORE             1
 #define XMLSEC_OPENSSL_NO_DEEP_COPY         1
 
-#ifndef ENGINE_cleanup
-#define ENGINE_cleanup()                    {}
-#endif
-
 #ifndef RAND_priv_bytes
 #define RAND_priv_bytes(buf,len)            RAND_bytes((buf), (len))
-#endif
-#ifndef RAND_write_file
-#define RAND_write_file(file)               (1)
 #endif
 
 #ifndef EVP_PKEY_base_id
 #define EVP_PKEY_base_id(pkey)              EVP_PKEY_id(pkey)
-#endif
-#ifndef EVP_CipherFinal
-#define EVP_CipherFinal(ctx, out, out_len)  EVP_CipherFinal_ex((ctx), (out), (out_len))
 #endif
 #ifndef EVP_read_pw_string
 #define EVP_read_pw_string(buf, len, prompt, verify)     (-1)
@@ -178,9 +168,6 @@ typedef int xmlSecOpenSSLSizeT;
 #define PEM_read_bio_PrivateKey_ex(bp,x,cb,u,libctx,propq)          PEM_read_bio_PrivateKey((bp),(x),(cb),(u))
 #define PEM_read_bio_PUBKEY_ex(bp,x,cb,u,libctx,propq)              PEM_read_bio_PUBKEY((bp),(x),(cb),(u))
 #define d2i_PrivateKey_ex_bio(bp,a,libctx,propq)                    d2i_PrivateKey_bio((bp),(a))
-
-#define EVP_SignFinal_ex(ctx,md,s,pkey,libctx,propq)                EVP_SignFinal((ctx),(md),(s),(pkey))
-#define EVP_VerifyFinal_ex(ctx,sigbuf,siglen,pkey,libctx,propq)     EVP_VerifyFinal((ctx),(sigbuf),(siglen),(pkey))
 
 #define X509_new_ex(libctx,propq)                                   X509_new()
 #define X509_CRL_new_ex(libctx,propq)                               X509_CRL_new()

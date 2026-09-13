@@ -73,7 +73,7 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngX509StoreAdoptUntrustedStore 
                                                                                  HCERTSTORE untrustedStore);
 XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT     xmlSecMSCngX509StoreVerify           (xmlSecKeyDataStorePtr store,
                                                                               HCERTSTORE certs,
-                                                                              xmlSecKeyInfoCtx* keyInfoCtx);
+                                                                              xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 
 /******************************************************************************
@@ -86,14 +86,14 @@ XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED PCCERT_CONTEXT xmlSecMSCngX509StoreFindCe
                                                                                         xmlChar *issuerName,
                                                                                         xmlChar *issuerSerial,
                                                                                         xmlChar *ski,
-                                                                                        xmlSecKeyInfoCtx* keyInfoCtx);
+                                                                                        xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED PCCERT_CONTEXT xmlSecMSCngX509StoreFindCert_ex  (xmlSecKeyDataStorePtr store,
                                                                                         xmlChar* subjectName,
                                                                                         xmlChar* issuerName,
                                                                                         xmlChar* issuerSerial,
                                                                                         xmlSecByte* ski,
                                                                                         xmlSecSize skiSize,
-                                                                                        xmlSecKeyInfoCtx* keyInfoCtx);
+                                                                                        xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED PCCERT_CONTEXT xmlSecMSCngX509FindCertBySubject (HCERTSTORE store,
                                                                                          LPTSTR wcSubject,
                                                                                          DWORD dwCertEncodingType);

@@ -397,7 +397,7 @@ done:
 void
 xmlSecMSCryptoGetErrorMessage(DWORD dwError, xmlChar * out, size_t outLen) {
 #ifndef UNICODE
-    WCHAR errorTextW[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE];
+    WCHAR errorTextW[XMLSEC_MSCRYPTO_ERROR_BUFFER_SIZE];
 #endif /* UNICODE */
     LPTSTR errorText = NULL;
     DWORD dwRet;
@@ -431,7 +431,7 @@ xmlSecMSCryptoGetErrorMessage(DWORD dwError, xmlChar * out, size_t outLen) {
         goto done;
     }
 #else /* UNICODE */
-    ret = MultiByteToWideChar(CP_ACP, 0, errorText, -1, errorTextW, XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE);
+    ret = MultiByteToWideChar(CP_ACP, 0, errorText, -1, errorTextW, XMLSEC_MSCRYPTO_ERROR_BUFFER_SIZE);
     if(ret <= 0) {
         goto done;
     }

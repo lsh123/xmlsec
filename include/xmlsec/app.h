@@ -52,6 +52,18 @@ XMLSEC_EXPORT int                               xmlSecCryptoKeysMngrInit(xmlSecK
 #define xmlSecKeyDataAesId                      xmlSecKeyDataAesGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataAesGetKlass(void);
 /**
+ * @brief The Camellia key klass.
+ * Returns #xmlSecKeyDataIdUnknown if the crypto engine is not loaded or the klass is not implemented.
+ */
+#define xmlSecKeyDataCamelliaId                 xmlSecKeyDataCamelliaGetKlass()
+XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataCamelliaGetKlass(void);
+/**
+ * @brief The ChaCha20 key klass.
+ * Returns #xmlSecKeyDataIdUnknown if the crypto engine is not loaded or the klass is not implemented.
+ */
+#define xmlSecKeyDataChaCha20Id                 xmlSecKeyDataChaCha20GetKlass()
+XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataChaCha20GetKlass(void);
+/**
  * @brief The ConcatKDF key klass.
  * Returns #xmlSecKeyDataIdUnknown if the crypto engine is not loaded or the klass is not implemented.
  */
@@ -246,6 +258,54 @@ XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformKWAes192GetKlass(
  */
 #define xmlSecTransformKWAes256Id               xmlSecTransformKWAes256GetKlass()
 XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformKWAes256GetKlass(void);
+/**
+ * @brief The Camellia128 CBC cipher transform klass.
+ * Returns #xmlSecTransformIdUnknown if the crypto engine is not loaded or the klass is not implemented.
+ */
+#define xmlSecTransformCamellia128CbcId         xmlSecTransformCamellia128CbcGetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformCamellia128CbcGetKlass(void);
+/**
+ * @brief The Camellia192 CBC cipher transform klass.
+ * Returns #xmlSecTransformIdUnknown if the crypto engine is not loaded or the klass is not implemented.
+ */
+#define xmlSecTransformCamellia192CbcId         xmlSecTransformCamellia192CbcGetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformCamellia192CbcGetKlass(void);
+/**
+ * @brief The Camellia256 CBC cipher transform klass.
+ * Returns #xmlSecTransformIdUnknown if the crypto engine is not loaded or the klass is not implemented.
+ */
+#define xmlSecTransformCamellia256CbcId         xmlSecTransformCamellia256CbcGetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformCamellia256CbcGetKlass(void);
+/**
+ * @brief The Camellia128 key wrap transform klass.
+ * Returns #xmlSecTransformIdUnknown if the crypto engine is not loaded or the klass is not implemented.
+ */
+#define xmlSecTransformKWCamellia128Id          xmlSecTransformKWCamellia128GetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformKWCamellia128GetKlass(void);
+/**
+ * @brief The Camellia192 key wrap transform klass.
+ * Returns #xmlSecTransformIdUnknown if the crypto engine is not loaded or the klass is not implemented.
+ */
+#define xmlSecTransformKWCamellia192Id          xmlSecTransformKWCamellia192GetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformKWCamellia192GetKlass(void);
+/**
+ * @brief The Camellia256 key wrap transform klass.
+ * Returns #xmlSecTransformIdUnknown if the crypto engine is not loaded or the klass is not implemented.
+ */
+#define xmlSecTransformKWCamellia256Id          xmlSecTransformKWCamellia256GetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformKWCamellia256GetKlass(void);
+/**
+ * @brief The ChaCha20 stream cipher transform klass.
+ * Returns #xmlSecTransformIdUnknown if the crypto engine is not loaded or the klass is not implemented.
+ */
+#define xmlSecTransformChaCha20Id               xmlSecTransformChaCha20GetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformChaCha20GetKlass(void);
+/**
+ * @brief The ChaCha20-Poly1305 AEAD cipher transform klass.
+ * Returns #xmlSecTransformIdUnknown if the crypto engine is not loaded or the klass is not implemented.
+ */
+#define xmlSecTransformChaCha20Poly1305Id       xmlSecTransformChaCha20Poly1305GetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformChaCha20Poly1305GetKlass(void);
 /**
  * @brief The ConcatKDF key derivation transform klass.
  * Returns #xmlSecTransformIdUnknown if the crypto engine is not loaded or the klass is not implemented.

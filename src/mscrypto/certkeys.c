@@ -549,9 +549,9 @@ xmlSecMSCryptoKeyDataAdoptKey(xmlSecKeyDataPtr data,
 /**
  * @brief Native MSCrypto key retrieval from xmlsec keydata.
  * @param data the key data to retrieve the key from.
- * @param type type of key requested (public/private)
+ * @param type type of key requested (public/private); currently ignored, the key is returned regardless of the requested type.
  *
- * returned HKEY must not be destroyed by the caller.
+ * Returned HKEY must not be destroyed by the caller.
  *
  * @return HKEY on success or NULL otherwise.
  */
@@ -573,7 +573,7 @@ xmlSecMSCryptoKeyDataGetKey(xmlSecKeyDataPtr data, xmlSecKeyDataType type) {
  * @brief Native MSCrypto decrypt key retrieval from xmlsec keydata.
  * @param data the key data pointer
  *
- * returned HKEY must not be destroyed by the caller.
+ * Returned HKEY must not be destroyed by the caller.
  *
  * @return HKEY on success or NULL otherwise.
  */
@@ -599,7 +599,7 @@ xmlSecMSCryptoKeyDataGetDecryptKey(xmlSecKeyDataPtr data) {
  * @brief Native MSCrypto certificate retrieval from xmlsec keydata.
  * @param data the key data to retrieve certificate from.
  *
- * returned PCCERT_CONTEXT must not be released by the caller.
+ * Returned PCCERT_CONTEXT must not be released by the caller.
  *
  * @return PCCERT_CONTEXT on success or NULL otherwise.
  */

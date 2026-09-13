@@ -15,15 +15,27 @@
 #include <windows.h>
 #include <wincrypt.h>
 
-#define ALG_SID_GR3411              30
+#ifndef ALG_SID_GR3411
+#  define ALG_SID_GR3411              30
+#endif
 
-#define ALG_SID_GR3411_2012_256     33
-#define ALG_SID_GR3411_2012_512     34
+#ifndef ALG_SID_GR3411_2012_256
+#  define ALG_SID_GR3411_2012_256     33
+#endif
+
+#ifndef ALG_SID_GR3411_2012_512
+#  define ALG_SID_GR3411_2012_512     34
+#endif
 
 #define CALG_MAGPRO_HASH_R3411_94   (ALG_CLASS_HASH | ALG_TYPE_ANY | ALG_SID_GR3411)
 
-#define CALG_GR3411_2012_256        (ALG_CLASS_HASH | ALG_TYPE_ANY | ALG_SID_GR3411_2012_256)
-#define CALG_GR3411_2012_512        (ALG_CLASS_HASH | ALG_TYPE_ANY | ALG_SID_GR3411_2012_512)
+#ifndef CALG_GR3411_2012_256
+#  define CALG_GR3411_2012_256        (ALG_CLASS_HASH | ALG_TYPE_ANY | ALG_SID_GR3411_2012_256)
+#endif
+
+#ifndef CALG_GR3411_2012_512
+#  define CALG_GR3411_2012_512        (ALG_CLASS_HASH | ALG_TYPE_ANY | ALG_SID_GR3411_2012_512)
+#endif
 
 #define PROV_MAGPRO_GOST            501
 #define MAGPRO_CSP_A                "MagPro CSP"
@@ -34,9 +46,17 @@
 #define MAGPRO_CSP MAGPRO_CSP_A
 #endif
 
-#define PROV_CRYPTOPRO_GOST         75
-#define PROV_GOST_2012_256          80
-#define PROV_GOST_2012_512          81
+#ifndef PROV_CRYPTOPRO_GOST
+#  define PROV_CRYPTOPRO_GOST         75
+#endif
+
+#ifndef PROV_GOST_2012_256
+#  define PROV_GOST_2012_256          80
+#endif
+
+#ifndef PROV_GOST_2012_512
+#  define PROV_GOST_2012_512          81
+#endif
 #define CRYPTOPRO_CSP_A             "Crypto-Pro GOST R 34.10-2001 Cryptographic Service Provider"
 #define CRYPTOPRO_CSP_W             L"Crypto-Pro GOST R 34.10-2001 Cryptographic Service Provider"
 #define CRYPTOPRO_CSP_256_A         "Crypto-Pro GOST R 34.10-2012 Cryptographic Service Provider"

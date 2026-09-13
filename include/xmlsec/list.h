@@ -100,14 +100,14 @@ XMLSEC_EXPORT void              xmlSecPtrListDebugXmlDump       (xmlSecPtrListPt
 #define xmlSecPtrListIsValid(list) \
         ((( list ) != NULL) && ((( list )->id) != NULL))
 /**
- * @brief Macro. Returns 1 if @p list's id equals @p dataId.
- * @details Macro. Returns 1 if @p list is valid and @p list's id is equal to @p dataId.
+ * @brief Macro. Returns 1 if @p list's id equals @p listId.
+ * @details Macro. Returns 1 if @p list is valid and @p list's id is equal to @p listId.
  * @param list the pointer to list.
- * @param dataId the list Id.
+ * @param listId the list Id.
  */
-#define xmlSecPtrListCheckId(list, dataId) \
+#define xmlSecPtrListCheckId(list, listId) \
         (xmlSecPtrListIsValid(( list )) && \
-        ((( list )->id) == ( dataId )))
+        ((( list )->id) == ( listId )))
 
 
 /******************************************************************************

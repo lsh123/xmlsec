@@ -72,11 +72,8 @@
 #endif /* KDF_GENERIC_PARAMETER */
 
 /* HKDF KDF parameters */
-#ifndef KDF_HKDF_SALT
-#define KDF_HKDF_SALT                       0x13
-#endif /* KDF_HKDF_SALT */
 #ifndef KDF_HKDF_INFO
-#define KDF_HKDF_INFO                       0x14
+#define KDF_HKDF_INFO                       20
 #endif /* KDF_HKDF_INFO */
 #ifndef BCRYPT_HKDF_HASH_ALGORITHM
 #define BCRYPT_HKDF_HASH_ALGORITHM          L"HkdfHashAlgorithm"

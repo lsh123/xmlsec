@@ -15,6 +15,8 @@
  * @{
  */
 
+#include <stdio.h>
+
 #include <libxml/tree.h>
 #include <libxml/xmlIO.h>
 #include <libxml/xpath.h>
@@ -108,11 +110,9 @@ XMLSEC_EXPORT int               xmlSecNodeSetDumpTextNodes(xmlSecNodeSetPtr nset
 XMLSEC_EXPORT void              xmlSecNodeSetDebugDump  (xmlSecNodeSetPtr nset,
                                                          FILE *output);
 
-
 XMLSEC_EXPORT XMLSEC_DEPRECATED xmlSecNodeSetPtr  xmlSecNodeSetAddList(xmlSecNodeSetPtr nset,
-                                                         xmlSecNodeSetPtr newNSet,
-                                                         xmlSecNodeSetOp op);
-
+                                                          xmlSecNodeSetPtr newNSet,
+                                                          xmlSecNodeSetOp op);
 
 #ifdef __cplusplus
 }

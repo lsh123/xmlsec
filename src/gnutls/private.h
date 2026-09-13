@@ -17,7 +17,6 @@
 
 
 #include <stdio.h>
-#include <stddef.h>
 
 #include <gnutls/gnutls.h>
 #include <gnutls/x509.h>
@@ -27,6 +26,7 @@
 #include <xmlsec/buffer.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/list.h>
+#include <xmlsec/x509.h>
 
 
 #ifdef __cplusplus

@@ -233,9 +233,9 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         }
 
         /* get key */
-        hPubKey = xmlSecMSCngKeyDataGetPubKey(ctx->data);
+        hPubKey = xmlSecMSCngKeyDataGetPubkey(ctx->data);
         if (hPubKey == 0) {
-            xmlSecInternalError("xmlSecMSCngKeyDataGetPubKey",
+            xmlSecInternalError("xmlSecMSCngKeyDataGetPubkey",
                 xmlSecTransformGetName(transform));
             return (-1);
         }
@@ -302,9 +302,9 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         }
 
         /* get key */
-        hPrivKey = xmlSecMSCngKeyDataGetPrivKey(ctx->data);
+        hPrivKey = xmlSecMSCngKeyDataGetPrivkey(ctx->data);
         if (hPrivKey == 0) {
-            xmlSecInternalError("xmlSecMSCngKeyDataGetPrivKey",
+            xmlSecInternalError("xmlSecMSCngKeyDataGetPrivkey",
                 xmlSecTransformGetName(transform));
             return (-1);
         }

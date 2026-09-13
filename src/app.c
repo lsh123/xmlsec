@@ -120,6 +120,40 @@ xmlSecKeyDataAesGetKlass(void) {
 }
 
 /**
+ * @brief The Camellia key data klass.
+ * @return Camellia key data klass or NULL if an error occurs
+ * (xmlsec-crypto library is not loaded or the Camellia key data
+ * klass is not implemented).
+ */
+xmlSecKeyDataId
+xmlSecKeyDataCamelliaGetKlass(void) {
+    xmlSecCryptoDLFunctionsPtr functions = xmlSecCryptoDLGetFunctions();
+    if((functions == NULL) || (functions->keyDataCamelliaGetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "keyDataCamelliaGetKlass");
+        return(xmlSecKeyDataIdUnknown);
+    }
+
+    return(functions->keyDataCamelliaGetKlass());
+}
+
+/**
+ * @brief The ChaCha20 key data klass.
+ * @return ChaCha20 key data klass or NULL if an error occurs
+ * (xmlsec-crypto library is not loaded or the ChaCha20 key data
+ * klass is not implemented).
+ */
+xmlSecKeyDataId
+xmlSecKeyDataChaCha20GetKlass(void) {
+    xmlSecCryptoDLFunctionsPtr functions = xmlSecCryptoDLGetFunctions();
+    if((functions == NULL) || (functions->keyDataChaCha20GetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "keyDataChaCha20GetKlass");
+        return(xmlSecKeyDataIdUnknown);
+    }
+
+    return(functions->keyDataChaCha20GetKlass());
+}
+
+/**
  * @brief The ConcatKDF key data klass.
  * @return ConcatKDF key data klass or NULL if an error occurs
  * (xmlsec-crypto library is not loaded or the ConcatKDF key data
@@ -654,6 +688,142 @@ xmlSecTransformKWAes256GetKlass(void) {
     }
 
     return(functions->transformKWAes256GetKlass());
+}
+
+/**
+ * @brief Camellia 128 CBC encryption transform klass.
+ * @return pointer to Camellia 128 CBC encryption transform or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformCamellia128CbcGetKlass(void) {
+    xmlSecCryptoDLFunctionsPtr functions = xmlSecCryptoDLGetFunctions();
+    if((functions == NULL) || (functions->transformCamellia128CbcGetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "transformCamellia128CbcGetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(functions->transformCamellia128CbcGetKlass());
+}
+
+/**
+ * @brief Camellia 192 CBC encryption transform klass.
+ * @return pointer to Camellia 192 CBC encryption transform or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformCamellia192CbcGetKlass(void) {
+    xmlSecCryptoDLFunctionsPtr functions = xmlSecCryptoDLGetFunctions();
+    if((functions == NULL) || (functions->transformCamellia192CbcGetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "transformCamellia192CbcGetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(functions->transformCamellia192CbcGetKlass());
+}
+
+/**
+ * @brief Camellia 256 CBC encryption transform klass.
+ * @return pointer to Camellia 256 CBC encryption transform or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformCamellia256CbcGetKlass(void) {
+    xmlSecCryptoDLFunctionsPtr functions = xmlSecCryptoDLGetFunctions();
+    if((functions == NULL) || (functions->transformCamellia256CbcGetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "transformCamellia256CbcGetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(functions->transformCamellia256CbcGetKlass());
+}
+
+/**
+ * @brief Camellia 128 key wrapper transform klass.
+ * @return pointer to Camellia 128 key wrapper transform or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformKWCamellia128GetKlass(void) {
+    xmlSecCryptoDLFunctionsPtr functions = xmlSecCryptoDLGetFunctions();
+    if((functions == NULL) || (functions->transformKWCamellia128GetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "transformKWCamellia128GetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(functions->transformKWCamellia128GetKlass());
+}
+
+/**
+ * @brief Camellia 192 key wrapper transform klass.
+ * @return pointer to Camellia 192 key wrapper transform or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformKWCamellia192GetKlass(void) {
+    xmlSecCryptoDLFunctionsPtr functions = xmlSecCryptoDLGetFunctions();
+    if((functions == NULL) || (functions->transformKWCamellia192GetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "transformKWCamellia192GetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(functions->transformKWCamellia192GetKlass());
+}
+
+/**
+ * @brief Camellia 256 key wrapper transform klass.
+ * @return pointer to Camellia 256 key wrapper transform or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformKWCamellia256GetKlass(void) {
+    xmlSecCryptoDLFunctionsPtr functions = xmlSecCryptoDLGetFunctions();
+    if((functions == NULL) || (functions->transformKWCamellia256GetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "transformKWCamellia256GetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(functions->transformKWCamellia256GetKlass());
+}
+
+/**
+ * @brief ChaCha20 stream cipher encryption transform klass.
+ * @return pointer to ChaCha20 stream cipher encryption transform or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformChaCha20GetKlass(void) {
+    xmlSecCryptoDLFunctionsPtr functions = xmlSecCryptoDLGetFunctions();
+    if((functions == NULL) || (functions->transformChaCha20GetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "transformChaCha20GetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(functions->transformChaCha20GetKlass());
+}
+
+/**
+ * @brief ChaCha20-Poly1305 AEAD encryption transform klass.
+ * @return pointer to ChaCha20-Poly1305 AEAD encryption transform or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformChaCha20Poly1305GetKlass(void) {
+    xmlSecCryptoDLFunctionsPtr functions = xmlSecCryptoDLGetFunctions();
+    if((functions == NULL) || (functions->transformChaCha20Poly1305GetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "transformChaCha20Poly1305GetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(functions->transformChaCha20Poly1305GetKlass());
 }
 
 /**

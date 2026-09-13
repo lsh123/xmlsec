@@ -381,7 +381,7 @@ xmlSecKeyInfoCtxCreateEncCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
         xmlSecInternalError("xmlSecEncCtxCreate", NULL);
         return(-1);
     }
-    tmp->mode = xmlEncCtxModeEncryptedKey;
+    tmp->mode = xmlSecEncCtxModeEncryptedKey;
 
     /* copy user preferences from our current ctx */
     switch(keyInfoCtx->mode) {
@@ -463,7 +463,7 @@ xmlSecKeyInfoCtxCopyUserPref(xmlSecKeyInfoCtxPtr dst, xmlSecKeyInfoCtxPtr src) {
     /* <enc:EncryptedKey /> */
 #ifndef XMLSEC_NO_XMLENC
     if((src->encCtx != NULL) && (dst->encCtx != NULL)) {
-        dst->encCtx->mode = xmlEncCtxModeEncryptedKey;
+        dst->encCtx->mode = xmlSecEncCtxModeEncryptedKey;
         ret = xmlSecEncCtxCopyUserPref(dst->encCtx, src->encCtx);
         if(ret < 0) {
             xmlSecInternalError("xmlSecEncCtxCopyUserPref", NULL);

@@ -19,7 +19,6 @@
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>
-#include <xmlsec/transforms.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -51,25 +50,25 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppDefaultKeysMngrSave      (xmlSecK
                                                                          xmlSecKeyDataType type);
 #ifndef XMLSEC_NO_X509
 XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppKeysMngrCertLoad         (xmlSecKeysMngrPtr mngr,
-                                                                         const char *filename,
-                                                                         xmlSecKeyDataFormat format,
-                                                                         xmlSecKeyDataType type);
-XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppKeysMngrCrlLoad          (xmlSecKeysMngrPtr mngr,
-                                                                         const char *filename,
-                                                                         xmlSecKeyDataFormat format);
-XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppKeysMngrCrlLoadMemory    (xmlSecKeysMngrPtr mngr,
-                                                                         const xmlSecByte* data,
-                                                                         xmlSecSize dataSize,
-                                                                         xmlSecKeyDataFormat format);
-XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppKeysMngrCrlLoadAndVerify (xmlSecKeysMngrPtr mngr,
-                                                                         const char *filename,
-                                                                         xmlSecKeyDataFormat format,
-                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
+                                                                          const char *filename,
+                                                                          xmlSecKeyDataFormat format,
+                                                                          xmlSecKeyDataType type);
 XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppKeysMngrCertLoadMemory   (xmlSecKeysMngrPtr mngr,
-                                                                         const xmlSecByte* data,
-                                                                         xmlSecSize dataSize,
-                                                                         xmlSecKeyDataFormat format,
-                                                                         xmlSecKeyDataType type);
+                                                                          const xmlSecByte* data,
+                                                                          xmlSecSize dataSize,
+                                                                          xmlSecKeyDataFormat format,
+                                                                          xmlSecKeyDataType type);
+XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppKeysMngrCrlLoad          (xmlSecKeysMngrPtr mngr,
+                                                                          const char *filename,
+                                                                          xmlSecKeyDataFormat format);
+XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppKeysMngrCrlLoadMemory    (xmlSecKeysMngrPtr mngr,
+                                                                          const xmlSecByte* data,
+                                                                          xmlSecSize dataSize,
+                                                                          xmlSecKeyDataFormat format);
+XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppKeysMngrCrlLoadAndVerify (xmlSecKeysMngrPtr mngr,
+                                                                          const char *filename,
+                                                                          xmlSecKeyDataFormat format,
+                                                                          xmlSecKeyInfoCtxPtr keyInfoCtx);
 #endif /* XMLSEC_NO_X509 */
 
 

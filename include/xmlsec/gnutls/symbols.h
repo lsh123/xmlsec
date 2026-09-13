@@ -153,10 +153,8 @@ extern "C" {
 
 #define xmlSecTransformRsaPkcs1Id               xmlSecGnuTLSTransformRsaPkcs1Id
 
-#ifndef XMLSEC_NO_RSA_OAEP
 #define xmlSecTransformRsaOaepId                xmlSecGnuTLSTransformRsaOaepId
 #define xmlSecTransformRsaOaepEnc11Id           xmlSecGnuTLSTransformRsaOaepEnc11Id
-#endif /* XMLSEC_NO_RSA_OAEP */
 
 #define xmlSecTransformSha1Id                   xmlSecGnuTLSTransformSha1Id
 

@@ -376,7 +376,7 @@ xmlSecMSCngCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
  * @return key on success or 0 otherwise.
  */
 BCRYPT_KEY_HANDLE
-xmlSecMSCngKeyDataGetPubKey(xmlSecKeyDataPtr data) {
+xmlSecMSCngKeyDataGetPubkey(xmlSecKeyDataPtr data) {
     xmlSecMSCngKeyDataCtxPtr ctx;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), 0);
@@ -396,7 +396,7 @@ xmlSecMSCngKeyDataGetPubKey(xmlSecKeyDataPtr data) {
  * owned by the key data; the caller must not destroy it.
  */
 NCRYPT_KEY_HANDLE
-xmlSecMSCngKeyDataGetPrivKey(xmlSecKeyDataPtr data) {
+xmlSecMSCngKeyDataGetPrivkey(xmlSecKeyDataPtr data) {
     xmlSecMSCngKeyDataCtxPtr ctx;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), 0);
@@ -2116,9 +2116,9 @@ xmlSecMSCngCreateDerForBCryptPubkey(xmlSecKeyDataPtr data, LPVOID* ppDer, DWORD*
     xmlSecAssert2(ppDer != NULL, -1);
     xmlSecAssert2(pcbDer != NULL, -1);
 
-    hPubkey = xmlSecMSCngKeyDataGetPubKey(data);
+    hPubkey = xmlSecMSCngKeyDataGetPubkey(data);
     if(hPubkey == 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataGetPubKey", NULL);
+        xmlSecInternalError("xmlSecMSCngKeyDataGetPubkey", NULL);
         return(-1);
     }
 

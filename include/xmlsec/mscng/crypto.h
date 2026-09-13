@@ -33,8 +33,6 @@ extern "C" {
 
 XMLSEC_CRYPTO_EXPORT xmlSecCryptoDLFunctionsPtr xmlSecCryptoGetFunctions_mscng(void);
 
-XMLSEC_CRYPTO_EXPORT int xmlSecMSCngGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size);
-
 /******************************************************************************
  *
  * Init shutdown
@@ -44,6 +42,8 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngInit              (void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngShutdown          (void);
 
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngKeysMngrInit      (xmlSecKeysMngrPtr mngr);
+XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngGenerateRandom    (xmlSecBufferPtr buffer,
+                                                                      xmlSecSize size);
 
 /******************************************************************************
  *

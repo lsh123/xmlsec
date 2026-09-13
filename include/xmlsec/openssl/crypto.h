@@ -185,6 +185,14 @@ XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateReadFileBio (const ch
 #define XMLSEC_NO_AES       1
 #endif /* OPENSSL_NO_AES */
 
+#ifdef OPENSSL_NO_CAMELLIA
+#define XMLSEC_NO_CAMELLIA  1
+#endif /* OPENSSL_NO_CAMELLIA */
+
+#ifdef OPENSSL_NO_CHACHA
+#define XMLSEC_NO_CHACHA20  1
+#endif /* OPENSSL_NO_CHACHA */
+
 #ifdef OPENSSL_NO_KDF
 #define XMLSEC_NO_CONCATKDF  1
 #define XMLSEC_NO_PBKDF2     1

@@ -56,6 +56,7 @@ typedef int                     (*xmlSecCryptoKeysMngrInitMethod)       (xmlSecK
  * Errors
  *
   *****************************************************************************/
+
 XMLSEC_EXPORT void              xmlSecErrorsSetSystemCallback         (xmlSecErrorsCallback callback);
 
 /******************************************************************************
@@ -166,7 +167,7 @@ typedef int                     (*xmlSecCryptoAppDefaultKeysMngrLoadMethod)
                                                                         (xmlSecKeysMngrPtr mngr,
                                                                          const char* uri);
 /**
- * @brief Saves keys from @p mngr to  XML keys file.
+ * @brief Saves keys from @p mngr to XML keys file.
  * @param mngr the pointer to keys manager.
  * @param filename the destination filename.
  * @param type the type of keys to save (public/private/symmetric).
@@ -183,8 +184,7 @@ typedef int                     (*xmlSecCryptoAppDefaultKeysMngrSaveMethod)
  * @param mngr the keys manager.
  * @param filename the certificate file.
  * @param format the certificate file format.
- * @param type the flag that indicates is the certificate in @p filename
- *                      trusted or not.
+ * @param type the flag that indicates whether the certificate in @p filename is trusted or not.
  * @return 0 on success or a negative value otherwise.
  */
 typedef int                     (*xmlSecCryptoAppKeysMngrCertLoadMethod)(xmlSecKeysMngrPtr mngr,
@@ -199,8 +199,7 @@ typedef int                     (*xmlSecCryptoAppKeysMngrCertLoadMethod)(xmlSecK
  * @param data the certificate data.
  * @param dataSize the certificate data size.
  * @param format the certificate data format.
- * @param type the flag that indicates is the certificate in @p data
- *                      trusted or not.
+ * @param type the flag that indicates whether the certificate in @p data is trusted or not.
  * @return 0 on success or a negative value otherwise.
  */
 typedef int                     (*xmlSecCryptoAppKeysMngrCertLoadMemoryMethod)(xmlSecKeysMngrPtr mngr,
@@ -209,7 +208,7 @@ typedef int                     (*xmlSecCryptoAppKeysMngrCertLoadMemoryMethod)(x
                                                                          xmlSecKeyDataFormat format,
                                                                          xmlSecKeyDataType type);
 /**
- * @brief Reads CRLs from a file and adds to the keys manager.
+ * @brief Reads CRLs from a file and adds them to the keys manager.
  * @details Reads crls from @p filename and adds to the list of crls in @p mngr.
  * @param mngr the keys manager.
  * @param filename the CRL file.
@@ -220,7 +219,7 @@ typedef int                     (*xmlSecCryptoAppKeysMngrCrlLoadMethod)(xmlSecKe
                                                                          const char *filename,
                                                                          xmlSecKeyDataFormat format);
 /**
- * @brief Reads CRLs from memory and adds to the keys manager.
+ * @brief Reads CRLs from memory and adds them to the keys manager.
  * @details Reads crls from @p data and adds to the list of crls in @p mngr.
  * @param mngr the keys manager.
  * @param data the CRL data.
@@ -443,7 +442,7 @@ struct _xmlSecCryptoDLFunctions {
 
     xmlSecCryptoTransformGetKlassMethod          transformGost2001GostR3411_94GetKlass;  /**< the method to get pointer to GOST2001 transform. */
     xmlSecCryptoTransformGetKlassMethod          transformGostR3410_2012GostR3411_2012_256GetKlass;  /**< the method to get pointer to GOST R 34.10-2012 - GOST R 34.11-2012 256bit transform. */
-    xmlSecCryptoTransformGetKlassMethod          transformGostR3410_2012GostR3411_2012_512GetKlass;  /**< the method to get pointer to GOST R 34.10-2012 - GOST R 34.11_2012 512bit transform. */
+    xmlSecCryptoTransformGetKlassMethod          transformGostR3410_2012GostR3411_2012_512GetKlass;  /**< the method to get pointer to GOST R 34.10-2012 - GOST R 34.11-2012 512bit transform. */
 
     xmlSecCryptoTransformGetKlassMethod          transformGostR3411_94GetKlass;  /**< the method to get pointer to GOST R3411 transform. */
     xmlSecCryptoTransformGetKlassMethod          transformGostR3411_2012_256GetKlass;  /**< the method to get pointer to GOST R 34.11-2012 256 bit transform. */
@@ -469,7 +468,7 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod          transformMLKEM1024GetKlass;  /**< the method to get pointer to ML-KEM-1024 key transport transform. */
 
     xmlSecCryptoTransformGetKlassMethod          transformMd5GetKlass;  /**< the method to get pointer to MD5 digest transform. */
-    xmlSecCryptoTransformGetKlassMethod          transformPbkdf2GetKlass;  /**< the method to get pointer to Pbkdf2 KDF transform. */
+    xmlSecCryptoTransformGetKlassMethod          transformPbkdf2GetKlass;  /**< the method to get pointer to PBKDF2 KDF transform. */
     xmlSecCryptoTransformGetKlassMethod          transformRipemd160GetKlass;  /**< the method to get pointer to RIPEMD160 digest transform. */
 
     xmlSecCryptoTransformGetKlassMethod          transformRsaMd5GetKlass;  /**< the method to get pointer to RSA-MD5 signature transform. */
@@ -535,7 +534,7 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoAppKeysMngrCrlLoadAndVerifyMethod cryptoAppKeysMngrCrlLoadAndVerify;  /**< the default keys manager file crl load and verify method. */
     xmlSecCryptoAppKeysMngrCrlLoadMemoryMethod   cryptoAppKeysMngrCrlLoadMemory;  /**< the default keys manager memory crl load method. */
     xmlSecCryptoAppKeyLoadMethod                 cryptoAppKeyLoad;  /**< the key file load method. */
-    xmlSecCryptoAppKeyLoadExMethod               cryptoAppKeyLoadEx;  /**< the key file load method. */
+    xmlSecCryptoAppKeyLoadExMethod               cryptoAppKeyLoadEx;  /**< the key file load method (with expected key type). */
     xmlSecCryptoAppKeyLoadMemoryMethod           cryptoAppKeyLoadMemory;  /**< the memory key load method. */
     xmlSecCryptoAppPkcs12LoadMethod              cryptoAppPkcs12Load;  /**< the pkcs12 file load method. */
     xmlSecCryptoAppPkcs12LoadMemoryMethod        cryptoAppPkcs12LoadMemory;  /**< the memory pkcs12 load method. */

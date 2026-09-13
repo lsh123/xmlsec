@@ -26,7 +26,7 @@ extern "C" {
  *
  * Error codes
  *
-  *****************************************************************************/
+******************************************************************************/
 /**
  * @brief An XMLSec function failed.
  */
@@ -322,14 +322,14 @@ extern "C" {
  *
  * Error functions
  *
-  *****************************************************************************/
+******************************************************************************/
 /**
  * @brief The errors reporting callback function.
  * @param file the error location file name (__FILE__ macro).
  * @param line the error location line number (__LINE__ macro).
  * @param func the error location function name (XMLSEC_FUNCTION macro).
  * @param errorObject the specific error object (e.g. transform, key data, etc).
- * @param errorSubject the error specific error subject.
+ * @param errorSubject the specific error subject.
  * @param reason the error code.
  * @param msg the additional error message.
  */
@@ -423,7 +423,7 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
  *
  * Assertions
  *
-  *****************************************************************************/
+******************************************************************************/
 /**
  * @brief Macro. Verifies that @p is true and calls return() otherwise.
  * @param p the expression.

@@ -3,7 +3,7 @@
  *
  * This is free software; see the Copyright file in the source distribution for precise wording.
  *
- * Copyright (C) 2003-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 #ifndef XMLSEC_NSS_X509_H
@@ -44,16 +44,16 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecNssKeyDataX509AdoptKeyCert(xmlSecK
 
 XMLSEC_CRYPTO_EXPORT int                xmlSecNssKeyDataX509AdoptCert(xmlSecKeyDataPtr data,
                                                                          CERTCertificate* cert);
-XMLSEC_CRYPTO_EXPORT CERTCertificate*   xmlSecNssKeyDataX509GetCert     (xmlSecKeyDataPtr data,
+XMLSEC_CRYPTO_EXPORT CERTCertificate*   xmlSecNssKeyDataX509GetCert(xmlSecKeyDataPtr data,
                                                                          xmlSecSize pos);
 XMLSEC_CRYPTO_EXPORT xmlSecSize         xmlSecNssKeyDataX509GetCertsSize(xmlSecKeyDataPtr data);
 
 XMLSEC_CRYPTO_EXPORT int                xmlSecNssKeyDataX509AdoptCrl(xmlSecKeyDataPtr data,
                                                                          CERTSignedCrl* crl);
-XMLSEC_CRYPTO_EXPORT CERTSignedCrl*     xmlSecNssKeyDataX509GetCrl      (xmlSecKeyDataPtr data,
+XMLSEC_CRYPTO_EXPORT CERTSignedCrl*     xmlSecNssKeyDataX509GetCrl(xmlSecKeyDataPtr data,
                                                                          xmlSecSize pos);
 XMLSEC_CRYPTO_EXPORT xmlSecSize         xmlSecNssKeyDataX509GetCrlsSize(xmlSecKeyDataPtr data);
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr   xmlSecNssX509CertGetKey         (CERTCertificate* cert);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr   xmlSecNssX509CertGetKey(CERTCertificate* cert);
 
 
 /**

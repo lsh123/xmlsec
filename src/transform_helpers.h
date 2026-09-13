@@ -23,6 +23,10 @@
 
 
 /* Internal helpers used by key-agreement and KEM code: read / write key info inside transforms */
+/**
+ * @brief Reads the key from a key info node.
+ * @return the pointer to the key (the caller must call xmlSecKeyDestroy) or NULL on failure.
+ */
 XMLSEC_EXPORT xmlSecKeyPtr  xmlSecTransformReadKeyInfoNode       (xmlSecKeyDataType keyType,
                                                                   xmlNodePtr node,
                                                                   xmlSecTransformPtr transform,
@@ -47,13 +51,17 @@ XMLSEC_EXPORT int           xmlSecTransformWriteKeyInfoNode      (xmlSecKeyPtr k
  * @brief Key Agreement transform parameters.
  *
  * Contains the parsed key agreement parameters (excluding the originator / recipient
- * keys which are cached in the xmlSecKeyDataKAM structure). These are populated
- * during NodeRead and used during Execute and NodeWrite.
+ * keys which are cached in the xmlSecKeyDataKAM structure). The kdfKeyInfoCtx is
+ * initialized in xmlSecTransformKAMInitialize and the kdfTransform / memBufTransform
+ * are populated during xmlSecTransformKAMRead, then used during Execute and NodeWrite.
+ * Note that kdfTransform / memBufTransform are freed only in xmlSecTransformKAMFinalize,
+ * so the caller must call xmlSecTransformKAMFinalize on error (e.g. if
+ * xmlSecTransformKAMRead fails).
  */
 struct _xmlSecTransformKAM {
     xmlSecTransformPtr      kdfTransform;     /**< Key Derivation Function transform */
     xmlSecKeyInfoCtx        kdfKeyInfoCtx;    /**< Context for KDF key info */
-    xmlSecTransformPtr      memBufTransform;  /**< Memory buffer to collect KDF output */
+    xmlSecTransformPtr      memBufTransform;  /**< memBuf transform used to collect KDF output */
 };
 typedef struct _xmlSecTransformKAM                          xmlSecTransformKAM,
                                                             *xmlSecTransformKAMPtr;
@@ -96,7 +104,7 @@ XMLSEC_EXPORT int  xmlSecTransformKEMWrite                  (xmlNodePtr node,
                                                              xmlSecTransformPtr kemTransform,
                                                              xmlSecTransformCtxPtr transformCtx);
 
-#endif /* !defined(XMLSEC_NO_MLKEM) */
+#endif /* XMLSEC_NO_MLKEM */
 
 
 /* ConcatKDF */
@@ -133,13 +141,13 @@ XMLSEC_EXPORT int   xmlSecTransformConcatKdfParamsGetFixedInfo  (xmlSecTransform
 XMLSEC_EXPORT int xmlSecTransformHmacReadOutputBitsSize (xmlNodePtr node,
                                                          xmlSecSize defaultSize,
                                                          xmlSecSize* res);
-XMLSEC_EXPORT int xmlSecTransformHmacWriteOutput        (const xmlSecByte * hmac,
+XMLSEC_EXPORT int xmlSecTransformHmacWriteOutput        (const xmlSecByte *hmac,
                                                          xmlSecSize hmacSizeInBits,
                                                          xmlSecSize hmacMaxSizeInBytes,
                                                          xmlSecBufferPtr out);
 XMLSEC_EXPORT int xmlSecTransformHmacVerify             (const xmlSecByte* data,
                                                          xmlSecSize dataSize,
-                                                         const xmlSecByte * hmac,
+                                                         const xmlSecByte *hmac,
                                                          xmlSecSize hmacSizeInBits,
                                                          xmlSecSize hmacMaxSizeInBytes);
 

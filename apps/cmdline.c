@@ -63,6 +63,7 @@ xmlSecAppCmdLineParamGetString(xmlSecAppCmdLineParamPtr param) {
     return((param->value != NULL) ? param->value->strValue : NULL);
 }
 
+/**< Returns the value as a NUL-separated list of strings (with a terminating NUL). */
 const char*
 xmlSecAppCmdLineParamGetStringList(xmlSecAppCmdLineParamPtr param) {
     if(param == NULL) {

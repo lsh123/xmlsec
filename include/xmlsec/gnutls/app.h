@@ -79,11 +79,11 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSAppKeysMngrCrlLoadAndVerify (xmlSecK
  *
   *****************************************************************************/
 
-XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecGnuTLSAppKeyLoadEx             (const char *filename,
+XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecGnuTLSAppKeyLoadEx              (const char *filename,
                                                                          xmlSecKeyDataType type,
                                                                          xmlSecKeyDataFormat format,
                                                                          const char *pwd,
-                                                                         void *pwdCallback,
+                                                                         void* pwdCallback,
                                                                          void* pwdCallbackCtx);
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecGnuTLSAppKeyLoadMemory          (const xmlSecByte* data,
                                                                          xmlSecSize dataSize,

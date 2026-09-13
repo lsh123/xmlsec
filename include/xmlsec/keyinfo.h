@@ -91,7 +91,7 @@ typedef enum {
 
 /**
  * @brief Abort when href doesn't match actual key data type.
- * @details If flag is set then we abort if an href attribute <dsig:RetrievalMethod />
+ * @details If flag is set then we abort if an href attribute of <dsig:RetrievalMethod />
  * element does not match the real key data type.
  */
 #define XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_MISMATCH_HREF   0x00000020
@@ -130,7 +130,7 @@ typedef enum {
  * @details If the flag is set then we'll stop when <enc:EncryptedKey /> element
  * processing fails.
  */
-#define XMLSEC_KEYINFO_FLAGS_ENCKEY_STOP_ON_FAILED_DECRYPTION 0x00001000
+#define XMLSEC_KEYINFO_FLAGS_ENCKEY_STOP_ON_FAILED_DECRYPTION   0x00001000
 
 /**
  * @deprecated Use XMLSEC_KEYINFO_FLAGS_ENCKEY_STOP_ON_FAILED_DECRYPTION instead.

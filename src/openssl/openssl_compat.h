@@ -42,7 +42,7 @@ int             xmlSecOpenSSLGenerateRandomBytes             (xmlSecByte* data, 
 
 #define EVP_PKEY_base_id(pkey)              EVP_PKEY_id(pkey)
 #define EVP_CipherFinal(ctx, out, out_len)  EVP_CipherFinal_ex((ctx), (out), (out_len))
-#define EVP_read_pw_string(buf,len, prompt, verify)     (-1)
+#define EVP_read_pw_string(buf, len, prompt, verify)     (-1)
 
 /* simply return success */
 #define sk_X509_reserve(crts, num)          (1)
@@ -68,7 +68,7 @@ typedef unsigned xmlSecOpenSSLUInt;
 /* when BoringSSL replaced int with size_t */
 typedef size_t xmlSecOpenSSLSizeT;
 
-#define XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_SIZE(srcVal, dstVal, errorAction, errorObject)  \
+#define XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
        (dstVal) = (srcVal)
 
 #define XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_SIZE_T(srcVal, dstVal, errorAction, errorObject) \
@@ -82,7 +82,7 @@ typedef size_t xmlSecOpenSSLSizeT;
 
 #else /* defined(OPENSSL_IS_BORINGSSL) || defined(OPENSSL_IS_AWSLC) */
 
-/* when BoringSSL replaced int with unsigned */
+/* plain int type (no BoringSSL/AWS-LC redefinition) */
 typedef int xmlSecOpenSSLUInt;
 
 #define XMLSEC_OPENSSL_SAFE_CAST_UINT_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
@@ -94,7 +94,7 @@ typedef int xmlSecOpenSSLUInt;
 #define XMLSEC_OPENSSL_SAFE_CAST_UINT_TO_BYTE(srcVal, dstVal, errorAction, errorObject) \
        XMLSEC_SAFE_CAST_INT_TO_BYTE((srcVal), (dstVal), errorAction, (errorObject))
 
-/* when BoringSSL replaced int with size_t */
+/* plain int type (no BoringSSL/AWS-LC redefinition) */
 typedef int xmlSecOpenSSLSizeT;
 
 #define XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
@@ -176,7 +176,7 @@ typedef int xmlSecOpenSSLSizeT;
   *****************************************************************************/
 #ifndef XMLSEC_NO_GOST
 #define XMLSEC_OPENSSL_DIGEST_NAME_GOST94       "md_gost94"
-#endif /* XMLSEC_NO_GOST*/
+#endif /* XMLSEC_NO_GOST */
 
 #ifndef XMLSEC_NO_GOST2012
 #define XMLSEC_OPENSSL_DIGEST_NAME_GOST12_256   "md_gost12_256"

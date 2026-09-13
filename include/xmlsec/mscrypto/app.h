@@ -10,9 +10,9 @@
 #define XMLSEC_MSCRYPTO_APP_H
 
 /**
- * @defgroup xmlsec_mscrypto_app MsCrypto Application Helpers
+ * @defgroup xmlsec_mscrypto_app MSCrypto Application Helpers
  * @ingroup xmlsec_mscrypto
- * @brief High-level application helpers for the MsCrypto back-end.
+ * @brief High-level application helpers for the MSCrypto back-end.
  * @{
  */
 
@@ -63,11 +63,11 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppDefaultKeysMngrSymKeyLoad      
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppDefaultKeysMngrAdoptKeyStore   (xmlSecKeysMngrPtr mngr,
                                                                                  HCERTSTORE keyStore);
 
-XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppDefaultKeysMngrAdoptTrustedStore(xmlSecKeysMngrPtr mngr,
-                                                                                 HCERTSTORE trustedStore);
+XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppDefaultKeysMngrAdoptTrustedStore (xmlSecKeysMngrPtr mngr,
+                                                                                   HCERTSTORE trustedStore);
 
-XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppDefaultKeysMngrAdoptUntrustedStore(xmlSecKeysMngrPtr mngr,
-                                                                                 HCERTSTORE untrustedStore);
+XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppDefaultKeysMngrAdoptUntrustedStore (xmlSecKeysMngrPtr mngr,
+                                                                                     HCERTSTORE untrustedStore);
 
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppKeysMngrCertLoad               (xmlSecKeysMngrPtr mngr,
                                                                                  const char *filename,

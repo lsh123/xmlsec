@@ -97,10 +97,12 @@ xmlSecMSCryptoAppShutdown(void) {
 }
 
 /**
- * @brief Gets the MSCrypto certs store name.
- * @details Gets the MS Crypto certs store name set by #xmlSecMSCryptoAppInit function.
+ * @brief Gets the MSCrypto cert store name.
  *
- * @return the MS Crypto certs name used by xmlsec-mscrypto.
+ * @return the cert store name set by #xmlSecMSCryptoAppInit or NULL if it
+ * was not set. The returned string is owned by the library and is freed by
+ * #xmlSecMSCryptoAppShutdown; do not free it. Copy it before shutdown if it
+ * is needed afterwards.
  */
 LPCTSTR
 xmlSecMSCryptoAppGetCertStoreName(void) {

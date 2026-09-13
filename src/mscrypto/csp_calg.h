@@ -7,7 +7,7 @@
  * Copyright (c) 2005-2006 Cryptocom LTD (http://www.cryptocom.ru). All rights reserved.
  */
 /**
- * @brief GOST cryptographic algorithm identifiers for MSCrypto.
+ * @brief GOST cryptographic algorithm identifiers, CSP provider type IDs, and A/W CSP display-name macros for MSCrypto.
  */
 #ifndef XMLSEC_MSCRYPTO_CSP_CALG_H
 #define XMLSEC_MSCRYPTO_CSP_CALG_H

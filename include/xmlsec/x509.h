@@ -8,11 +8,22 @@
 #ifndef XMLSEC_X509_H
 #define XMLSEC_X509_H
 
+/**
+ * @defgroup xmlsec_core_x509 X509 Data
+ * @ingroup xmlsec_core
+ * @brief X509 data structures.
+ * @{
+ */
+
 #include <xmlsec/buffer.h>
 
 /**
  * @brief The content of a child of X509Data node.
  * @details The content of a child of &lt;X509Data/&gt; node. Not all values will be set!
+ * The structure (and its members) is allocated and freed by the library
+ * (e.g. inside the xmlSecKeyX509Data* handling); there is no public
+ * init/finalize API and the callers must not free the structure or its
+ * members directly.
  */
 struct _xmlSecKeyX509DataValue {
     xmlSecBuffer cert;  /**< the certificate from &lt;dsig:X509Certificate/&gt; node. */
@@ -28,5 +39,7 @@ struct _xmlSecKeyX509DataValue {
     xmlChar* digestAlgorithm;  /**< the digest algorithm URI from the Algorithm attribute of &lt;dsig11:X509Digest/&gt; node. */
     xmlSecBuffer digest;  /**< the digest from &lt;dsig11:X509Digest/&gt; node. */
 };
+
+/** @} */ /** xmlsec_core_x509 */
 
 #endif /* XMLSEC_X509_H */

@@ -157,9 +157,8 @@ xmlSecErrorsClearCallback(void) {
 
 /**
  * @brief Sets the system errors callback function.
- * @details Sets the system errors callback function to @p callback that will be called
- * every time an error occurs.
- * Note that this function is not thread-safe (see the module notes).
+ * @details Sets the system errors callback function to @p callback that will be
+ * called every time an error occurs.
  * @param callback the new system errors callback function.
  */
 void

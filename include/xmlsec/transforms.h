@@ -61,7 +61,7 @@ XMLSEC_EXPORT int               xmlSecTransformIdsRegister      (xmlSecTransform
  * @brief The transform execution status.
  */
 typedef enum  {
-    xmlSecTransformStatusNone = 0,  /**< the status unknown. */
+    xmlSecTransformStatusNone = 0,  /**< the status is unknown. */
     xmlSecTransformStatusWorking,  /**< the transform is being executed. */
     xmlSecTransformStatusFinished,  /**< the transform finished */
     xmlSecTransformStatusOk,  /**< the transform succeeded. */
@@ -225,7 +225,7 @@ typedef unsigned int                            xmlSecTransformUsage;
 #define xmlSecTransformUsageEncapsulationMechanism 0x0080
 
 /**
- * @brief Transform could be used for operation.
+ * @brief Transform usable in any operation.
  */
 #define xmlSecTransformUsageAny                 0xFFFF
 
@@ -377,7 +377,7 @@ XMLSEC_EXPORT int                       xmlSecTransformCtxExtraKeyDataAdopt     
  * @brief The transform structure.
  */
 struct _xmlSecTransform {
-    xmlSecTransformId                   id;  /**< the transform id (pointer to #xmlSecTransformId). */
+    xmlSecTransformId                   id;  /**< the transform id (pointer to the transform klass). */
     xmlSecTransformOperation            operation;  /**< the transform's operation. */
     xmlSecTransformStatus               status;  /**< the current status. */
     xmlNodePtr                          hereNode;  /**< the pointer to transform's <dsig:Transform /> node. */

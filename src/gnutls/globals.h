@@ -34,7 +34,10 @@
 #include <gnutls/gnutls.h>
 
 
-/** Max digest size */
+/**
+ * @brief Maximum digest size for the GnuTLS backend.
+ * @details The maximum digest size (in bytes) supported by the GnuTLS backend.
+ */
 #define XMLSEC_GNUTLS_MAX_DIGEST_SIZE 128
 
 /**
@@ -51,7 +54,7 @@
                     (const char*)(errorObject),             \
                     (errorFunction),                        \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
-                   "gnutls error: %d: %s",             \
+                    "gnutls error: %d: %s",              \
                     (errCode),                              \
                     xmlSecErrorsSafeString(message)     \
         );                                                  \
@@ -73,7 +76,7 @@
                     (const char*)(errorObject),             \
                     (errorFunction),                        \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
-                    msg  "; gnutls error: %d: %s",          \
+                    msg "; gnutls error: %d: %s",           \
                     (param),                                \
                     (errCode),                              \
                     xmlSecErrorsSafeString(message)         \

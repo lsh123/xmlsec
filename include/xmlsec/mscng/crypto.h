@@ -53,7 +53,7 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngKeysMngrInit      (xmlSecKeys
 #ifndef XMLSEC_NO_CONCATKDF
 
 /**
- * @brief The ConcatKDF key klass.
+ * @brief The ConcatKDF key data klass.
  */
 #define xmlSecMSCngKeyDataConcatKdfId \
         xmlSecMSCngKeyDataConcatKdfGetKlass()
@@ -260,7 +260,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaOaepEnc11GetKlass(
  * @brief The EC key klass.
  */
 #define xmlSecMSCngKeyDataEcId          xmlSecMSCngKeyDataEcGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCngKeyDataEcGetKlass(void);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCngKeyDataEcGetKlass(void);
 
 #ifndef XMLSEC_NO_SHA1
 /**
@@ -414,7 +414,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformKWDes3GetKlass(void);
 #ifndef XMLSEC_NO_HMAC
 
 /**
- * @brief The HMAC key klass.
+ * @brief The HMAC key data klass.
  */
 #define xmlSecMSCngKeyDataHmacId \
         xmlSecMSCngKeyDataHmacGetKlass()
@@ -489,7 +489,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformMd5GetKlass(void);
 #ifndef XMLSEC_NO_PBKDF2
 
 /**
- * @brief The PBKDF2 key klass.
+ * @brief The PBKDF2 key data klass.
  */
 #define xmlSecMSCngKeyDataPbkdf2Id \
         xmlSecMSCngKeyDataPbkdf2GetKlass()
@@ -511,7 +511,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformPbkdf2GetKlass(void);
 #ifndef XMLSEC_NO_HKDF
 
 /**
- * @brief The HKDF key klass.
+ * @brief The HKDF key data klass.
  */
 #define xmlSecMSCngKeyDataHkdfId \
         xmlSecMSCngKeyDataHkdfGetKlass()
@@ -621,49 +621,49 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformSha3_512GetKlass(void
  */
 #define xmlSecMSCngKeyDataAesId \
         xmlSecMSCngKeyDataAesGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCngKeyDataAesGetKlass(void);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCngKeyDataAesGetKlass(void);
 
 /**
  * @brief The AES128 CBC cipher transform klass.
  */
 #define xmlSecMSCngTransformAes128CbcId \
         xmlSecMSCngTransformAes128CbcGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCngTransformAes128CbcGetKlass(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformAes128CbcGetKlass(void);
 
 /**
  * @brief The AES192 CBC cipher transform klass.
  */
 #define xmlSecMSCngTransformAes192CbcId \
         xmlSecMSCngTransformAes192CbcGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCngTransformAes192CbcGetKlass(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformAes192CbcGetKlass(void);
 
 /**
  * @brief The AES256 CBC cipher transform klass.
  */
 #define xmlSecMSCngTransformAes256CbcId \
         xmlSecMSCngTransformAes256CbcGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCngTransformAes256CbcGetKlass(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformAes256CbcGetKlass(void);
 
 /**
  * @brief The AES128 GCM cipher transform klass.
  */
 #define xmlSecMSCngTransformAes128GcmId \
         xmlSecMSCngTransformAes128GcmGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCngTransformAes128GcmGetKlass(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformAes128GcmGetKlass(void);
 
 /**
  * @brief The AES192 GCM cipher transform klass.
  */
 #define xmlSecMSCngTransformAes192GcmId \
         xmlSecMSCngTransformAes192GcmGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCngTransformAes192GcmGetKlass(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformAes192GcmGetKlass(void);
 
 /**
  * @brief The AES256 GCM cipher transform klass.
  */
 #define xmlSecMSCngTransformAes256GcmId \
         xmlSecMSCngTransformAes256GcmGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCngTransformAes256GcmGetKlass(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformAes256GcmGetKlass(void);
 
 /**
  * @brief The AES 128 key wrap transform klass.
@@ -691,8 +691,8 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformKWAes256GetKlass(void
 /**
  * @brief The MSCng DEREncodedKeyValue data klass.
  */
-#define xmlSecMSCngKeyDataDEREncodedKeyValueId   xmlSecMSCngKeyDataDEREncodedKeyValueGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId             xmlSecMSCngKeyDataDEREncodedKeyValueGetKlass(void);
+#define xmlSecMSCngKeyDataDEREncodedKeyValueId xmlSecMSCngKeyDataDEREncodedKeyValueGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCngKeyDataDEREncodedKeyValueGetKlass(void);
 
 
 #ifdef __cplusplus

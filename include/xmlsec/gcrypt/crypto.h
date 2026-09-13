@@ -185,8 +185,10 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformDsaSha1GetKlass(void
 #define xmlSecGCryptKeyDataEcId \
         xmlSecGCryptKeyDataEcGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGCryptKeyDataEcGetKlass          (void);
+
 /** @brief Deprecated: use xmlSecGCryptKeyDataEcGetKlass. Retained for source compatibility with the misspelled name released in 1.3.10. */
 #define xmlSecGCryptkeyDataEcGetKlass   xmlSecGCryptKeyDataEcGetKlass
+
 XMLSEC_CRYPTO_EXPORT int                xmlSecGCryptKeyDataEcAdoptKey           (xmlSecKeyDataPtr data,
                                                                                  gcry_sexp_t ec_key);
 XMLSEC_CRYPTO_EXPORT int                xmlSecGCryptKeyDataEcAdoptKeyPair       (xmlSecKeyDataPtr data,
@@ -209,7 +211,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformEcdsaSha1GetKlass(vo
 /**
  * @brief The ECDSA-SHA2-256 signature transform klass.
  */
-#define xmlSecGCryptTransformEcdsaSha256Id       \
+#define xmlSecGCryptTransformEcdsaSha256Id \
         xmlSecGCryptTransformEcdsaSha256GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformEcdsaSha256GetKlass(void);
 #endif /* XMLSEC_NO_SHA256 */
@@ -218,7 +220,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformEcdsaSha256GetKlass(
 /**
  * @brief The ECDSA-SHA2-384 signature transform klass.
  */
-#define xmlSecGCryptTransformEcdsaSha384Id       \
+#define xmlSecGCryptTransformEcdsaSha384Id \
         xmlSecGCryptTransformEcdsaSha384GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformEcdsaSha384GetKlass(void);
 #endif /* XMLSEC_NO_SHA384 */
@@ -227,7 +229,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformEcdsaSha384GetKlass(
 /**
  * @brief The ECDSA-SHA2-512 signature transform klass.
  */
-#define xmlSecGCryptTransformEcdsaSha512Id       \
+#define xmlSecGCryptTransformEcdsaSha512Id \
         xmlSecGCryptTransformEcdsaSha512GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformEcdsaSha512GetKlass(void);
 #endif /* XMLSEC_NO_SHA512 */
@@ -237,21 +239,21 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformEcdsaSha512GetKlass(
 /**
  * @brief The ECDSA-SHA3-256 signature transform klass.
  */
-#define xmlSecGCryptTransformEcdsaSha3_256Id       \
+#define xmlSecGCryptTransformEcdsaSha3_256Id \
         xmlSecGCryptTransformEcdsaSha3_256GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformEcdsaSha3_256GetKlass(void);
 
 /**
  * @brief The ECDSA-SHA3-384 signature transform klass.
  */
-#define xmlSecGCryptTransformEcdsaSha3_384Id       \
+#define xmlSecGCryptTransformEcdsaSha3_384Id \
         xmlSecGCryptTransformEcdsaSha3_384GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformEcdsaSha3_384GetKlass(void);
 
 /**
  * @brief The ECDSA-SHA3-512 signature transform klass.
  */
-#define xmlSecGCryptTransformEcdsaSha3_512Id       \
+#define xmlSecGCryptTransformEcdsaSha3_512Id \
         xmlSecGCryptTransformEcdsaSha3_512GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformEcdsaSha3_512GetKlass(void);
 #endif /* XMLSEC_NO_SHA3 */
@@ -344,7 +346,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformHmacSha512GetKlass(v
  */
 #define xmlSecGCryptKeyDataRsaId \
         xmlSecGCryptKeyDataRsaGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGCryptKeyDataRsaGetKlass (void);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGCryptKeyDataRsaGetKlass          (void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecGCryptKeyDataRsaAdoptKey          (xmlSecKeyDataPtr data,
                                                                                  gcry_sexp_t rsa_key);
 XMLSEC_CRYPTO_EXPORT int                xmlSecGCryptKeyDataRsaAdoptKeyPair      (xmlSecKeyDataPtr data,
@@ -384,7 +386,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformRsaSha1GetKlass(void
 /**
  * @brief The RSA-SHA2-256 signature transform klass.
  */
-#define xmlSecGCryptTransformRsaSha256Id       \
+#define xmlSecGCryptTransformRsaSha256Id \
         xmlSecGCryptTransformRsaSha256GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformRsaSha256GetKlass(void);
 #endif /* XMLSEC_NO_SHA256 */
@@ -393,7 +395,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformRsaSha256GetKlass(vo
 /**
  * @brief The RSA-SHA2-384 signature transform klass.
  */
-#define xmlSecGCryptTransformRsaSha384Id       \
+#define xmlSecGCryptTransformRsaSha384Id \
         xmlSecGCryptTransformRsaSha384GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformRsaSha384GetKlass(void);
 #endif /* XMLSEC_NO_SHA384 */
@@ -402,7 +404,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformRsaSha384GetKlass(vo
 /**
  * @brief The RSA-SHA2-512 signature transform klass.
  */
-#define xmlSecGCryptTransformRsaSha512Id       \
+#define xmlSecGCryptTransformRsaSha512Id \
         xmlSecGCryptTransformRsaSha512GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformRsaSha512GetKlass(void);
 #endif /* XMLSEC_NO_SHA512 */
@@ -421,7 +423,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformRsaPssSha1GetKlass(v
 /**
  * @brief The RSA-PSS-SHA2-256 signature transform klass.
  */
-#define xmlSecGCryptTransformRsaPssSha256Id       \
+#define xmlSecGCryptTransformRsaPssSha256Id \
         xmlSecGCryptTransformRsaPssSha256GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformRsaPssSha256GetKlass(void);
 #endif /* XMLSEC_NO_SHA256 */
@@ -430,7 +432,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformRsaPssSha256GetKlass
 /**
  * @brief The RSA-PSS-SHA2-384 signature transform klass.
  */
-#define xmlSecGCryptTransformRsaPssSha384Id       \
+#define xmlSecGCryptTransformRsaPssSha384Id \
         xmlSecGCryptTransformRsaPssSha384GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformRsaPssSha384GetKlass(void);
 #endif /* XMLSEC_NO_SHA384 */
@@ -439,7 +441,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformRsaPssSha384GetKlass
 /**
  * @brief The RSA-PSS-SHA2-512 signature transform klass.
  */
-#define xmlSecGCryptTransformRsaPssSha512Id       \
+#define xmlSecGCryptTransformRsaPssSha512Id \
         xmlSecGCryptTransformRsaPssSha512GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformRsaPssSha512GetKlass(void);
 #endif /* XMLSEC_NO_SHA512 */
@@ -449,21 +451,21 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformRsaPssSha512GetKlass
 /**
  * @brief The RSA-PSS-SHA3-256 signature transform klass.
  */
-#define xmlSecGCryptTransformRsaPssSha3_256Id       \
+#define xmlSecGCryptTransformRsaPssSha3_256Id \
         xmlSecGCryptTransformRsaPssSha3_256GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformRsaPssSha3_256GetKlass(void);
 
 /**
  * @brief The RSA-PSS-SHA3-384 signature transform klass.
  */
-#define xmlSecGCryptTransformRsaPssSha3_384Id       \
+#define xmlSecGCryptTransformRsaPssSha3_384Id \
         xmlSecGCryptTransformRsaPssSha3_384GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformRsaPssSha3_384GetKlass(void);
 
 /**
  * @brief The RSA-PSS-SHA3-512 signature transform klass.
  */
-#define xmlSecGCryptTransformRsaPssSha3_512Id       \
+#define xmlSecGCryptTransformRsaPssSha3_512Id \
         xmlSecGCryptTransformRsaPssSha3_512GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformRsaPssSha3_512GetKlass(void);
 #endif /* XMLSEC_NO_SHA3 */
@@ -488,7 +490,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformRsaOaepGetKlass(void
 
 /**
  * @brief The RSA OAEP-Enc11 key transport transform klass.
- * @details The RSA OAEP key transport transform klass (XMLEnc 1.1).
+ * @details The RSA OAEP-Enc11 key transport transform klass (XMLEnc 1.1).
  */
 #define xmlSecGCryptTransformRsaOaepEnc11Id \
         xmlSecGCryptTransformRsaOaepEnc11GetKlass()

@@ -99,6 +99,13 @@ XMLSEC_CRYPTO_EXPORT void               xmlSecNssErrorsDefaultCallback  (const c
                                                                         int reason,
                                                                         const char* msg);
 
+/**
+ * @brief Gets the internal NSS key slot.
+ * @details Initializes the slot and logs in if needed.
+ * @return the internal key slot or NULL on failure. The caller
+ *         must free the returned slot with PK11_FreeSlot.
+ */
+
 XMLSEC_CRYPTO_EXPORT PK11SlotInfo *     xmlSecNssGetInternalKeySlot     (void);
 
 /******************************************************************************
@@ -423,7 +430,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEcdsaSha512GetKlass(voi
 #ifndef XMLSEC_NO_EDDSA
 
 /**
- * @brief The EdDSA key klass (Ed25519 and Ed448).
+ * @brief The EdDSA key klass (Ed25519).
  */
 #define xmlSecNssKeyDataEdDSAId \
         xmlSecNssKeyDataEdDSAGetKlass()
@@ -446,7 +453,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEdDSAEd25519GetKlass(vo
 #ifndef XMLSEC_NO_XDH
 
 /**
- * @brief The XDH key klass (X25519 and X448).
+ * @brief The XDH key klass (X25519).
  */
 #define xmlSecNssKeyDataXdhId \
         xmlSecNssKeyDataXdhGetKlass()
@@ -477,7 +484,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecNssTransformX25519GetKlass(void);
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNssKeyDataHmacGetKlass    (void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecNssKeyDataHmacSet         (xmlSecKeyDataPtr data,
                                                                          const xmlSecByte* buf,
-                                                                          xmlSecSize bufSize);
+                                                                         xmlSecSize bufSize);
 
 #ifndef XMLSEC_NO_RIPEMD160
 /**
@@ -576,8 +583,8 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformPbkdf2GetKlass(void);
         xmlSecNssKeyDataConcatKdfGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNssKeyDataConcatKdfGetKlass  (void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecNssKeyDataConcatKdfSet       (xmlSecKeyDataPtr data,
-                                                                             const xmlSecByte* buf,
-                                                                             xmlSecSize bufSize);
+                                                                            const xmlSecByte* buf,
+                                                                            xmlSecSize bufSize);
 /**
  * @brief The ConcatKDF key derivation transform klass.
  */
@@ -601,8 +608,8 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformConcatKdfGetKlass(void)
         xmlSecNssKeyDataHkdfGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNssKeyDataHkdfGetKlass      (void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecNssKeyDataHkdfSet           (xmlSecKeyDataPtr data,
-                                                                            const xmlSecByte* buf,
-                                                                            xmlSecSize bufSize);
+                                                                           const xmlSecByte* buf,
+                                                                           xmlSecSize bufSize);
 /**
  * @brief The HKDF key derivation transform klass.
  */

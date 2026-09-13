@@ -53,7 +53,7 @@ xmlSecSize              xmlSecGnuTLSAsymKeyDataGetSize          (xmlSecKeyDataPt
 
 /******************************************************************************
  *
- * X509 certs list
+ * x509 certs list
  *
   *****************************************************************************/
 #define xmlSecGnuTLSX509CrtListId   \
@@ -62,7 +62,7 @@ xmlSecPtrListId         xmlSecGnuTLSX509CrtListGetKlass         (void);
 
 /******************************************************************************
  *
- * X509 crls list
+ * x509 crls list
  *
   *****************************************************************************/
 #define xmlSecGnuTLSX509CrlListId   \
@@ -85,10 +85,10 @@ xmlChar *               xmlSecGnuTLSX509CertGetIssuerDN         (gnutls_x509_crt
 xmlChar *               xmlSecGnuTLSX509CertGetIssuerSerial     (gnutls_x509_crt_t cert);
 
 int                     xmlSecGnuTLSX509DigestWrite             (gnutls_x509_crt_t cert,
-                                                                 const xmlChar* algorithm,
+                                                                 const xmlChar * algorithm,
                                                                  xmlSecBufferPtr buf);
 
-gnutls_x509_crt_t       xmlSecGnuTLSX509CertRead                (const xmlSecByte* buf,
+gnutls_x509_crt_t       xmlSecGnuTLSX509CertRead                (const xmlSecByte * buf,
                                                                  xmlSecSize size,
                                                                  xmlSecKeyDataFormat format);
 int                     xmlSecGnuTLSX509CertDerWrite            (gnutls_x509_crt_t cert,
@@ -138,7 +138,7 @@ void       xmlSecGnuTLSX509FindCertCtxFinalize              (xmlSecGnuTLSX509Fin
 int        xmlSecGnuTLSX509FindCertCtxMatch                 (xmlSecGnuTLSX509FindCertCtxPtr ctx,
                                                              gnutls_x509_crt_t cert);
 
-int         xmlSecGnuTLSX509StoreVerifyKey                  (xmlSecKeyDataStorePtr store,
+int        xmlSecGnuTLSX509StoreVerifyKey                   (xmlSecKeyDataStorePtr store,
                                                              xmlSecKeyPtr key,
                                                              xmlSecKeyInfoCtxPtr keyInfoCtx);
 
@@ -149,7 +149,7 @@ int         xmlSecGnuTLSX509StoreVerifyKey                  (xmlSecKeyDataStoreP
   *****************************************************************************/
 gnutls_x509_crl_t       xmlSecGnuTLSX509CrlDup                  (gnutls_x509_crl_t src);
 xmlChar *               xmlSecGnuTLSX509CrlGetIssuerDN          (gnutls_x509_crl_t crl);
-gnutls_x509_crl_t       xmlSecGnuTLSX509CrlRead                 (const xmlSecByte* buf,
+gnutls_x509_crl_t       xmlSecGnuTLSX509CrlRead                 (const xmlSecByte * buf,
                                                                  xmlSecSize size,
                                                                  xmlSecKeyDataFormat format);
 int                     xmlSecGnuTLSX509CrlDerWrite             (gnutls_x509_crl_t crl,
@@ -176,7 +176,7 @@ int                     xmlSecGnuTLSX509CertCompareSKI          (gnutls_x509_crt
  * pkcs12 utils/helpers
  *
   *****************************************************************************/
-int                     xmlSecGnuTLSPkcs12LoadMemory            (const xmlSecByte* data,
+int                     xmlSecGnuTLSPkcs12LoadMemory            (const xmlSecByte * data,
                                                                  xmlSecSize dataSize,
                                                                  const char *pwd,
                                                                  gnutls_x509_privkey_t * priv_key,

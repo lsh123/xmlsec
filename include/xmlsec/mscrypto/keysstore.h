@@ -10,9 +10,9 @@
 #define XMLSEC_MSCRYPTO_KEYSSTORE_H
 
 /**
- * @defgroup xmlsec_mscrypto_keysstore MsCrypto Keys Store
+ * @defgroup xmlsec_mscrypto_keysstore MSCrypto Keys Store
  * @ingroup xmlsec_mscrypto
- * @brief MsCrypto-specific key store implementation.
+ * @brief MSCrypto-specific key store implementation.
  * @{
  */
 
@@ -33,6 +33,7 @@ extern "C" {
  * @brief A MSCrypto keys store klass id.
  */
 #define xmlSecMSCryptoKeysStoreId       xmlSecMSCryptoKeysStoreGetKlass()
+
 XMLSEC_CRYPTO_EXPORT xmlSecKeyStoreId   xmlSecMSCryptoKeysStoreGetKlass (void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoKeysStoreAdoptKey (xmlSecKeyStorePtr store,
                                                                          xmlSecKeyPtr key);

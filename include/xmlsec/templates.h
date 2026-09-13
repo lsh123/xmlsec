@@ -34,11 +34,11 @@ XMLSEC_EXPORT xmlNodePtr xmlSecTmplSignatureCreate              (xmlDocPtr doc,
                                                                  xmlSecTransformId c14nMethodId,
                                                                  xmlSecTransformId signMethodId,
                                                                  const xmlChar *id);
-XMLSEC_EXPORT xmlNodePtr xmlSecTmplSignatureCreateNsPref       (xmlDocPtr doc,
-                                                                xmlSecTransformId c14nMethodId,
-                                                                xmlSecTransformId signMethodId,
-                                                                const xmlChar *id,
-                                                                const xmlChar *nsPrefix);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplSignatureCreateNsPref        (xmlDocPtr doc,
+                                                                 xmlSecTransformId c14nMethodId,
+                                                                 xmlSecTransformId signMethodId,
+                                                                 const xmlChar *id,
+                                                                 const xmlChar *nsPrefix);
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplSignatureEnsureKeyInfo       (xmlNodePtr signNode,
                                                                  const xmlChar *id);
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplSignatureAddReference        (xmlNodePtr signNode,
@@ -107,7 +107,7 @@ XMLSEC_EXPORT xmlNodePtr xmlSecTmplReferenceListAddKeyReference (xmlNodePtr encN
  *
   *****************************************************************************/
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplKeyInfoAddKeyName            (xmlNodePtr keyInfoNode,
-                                                                 const xmlChar* name);
+                                                                 const xmlChar *name);
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplKeyInfoAddKeyValue           (xmlNodePtr keyInfoNode);
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplKeyInfoAddX509Data           (xmlNodePtr keyInfoNode);
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplKeyInfoAddRetrievalMethod    (xmlNodePtr keyInfoNode,
@@ -127,11 +127,11 @@ XMLSEC_EXPORT xmlNodePtr xmlSecTmplKeyInfoAddEncryptedKey       (xmlNodePtr keyI
  *
   *****************************************************************************/
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509DataAddIssuerSerial      (xmlNodePtr x509DataNode);
-XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509IssuerSerialAddIssuerName(xmlNodePtr x509IssuerSerialNode, const xmlChar* issuerName);
-XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509IssuerSerialAddSerialNumber(xmlNodePtr x509IssuerSerialNode, const xmlChar* serial);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509IssuerSerialAddIssuerName(xmlNodePtr x509IssuerSerialNode, const xmlChar *issuerName);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509IssuerSerialAddSerialNumber (xmlNodePtr x509IssuerSerialNode, const xmlChar *serial);
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509DataAddSubjectName       (xmlNodePtr x509DataNode);
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509DataAddSKI               (xmlNodePtr x509DataNode);
-XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509DataAddDigest            (xmlNodePtr x509DataNode, const xmlChar* digestAlgorithm);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509DataAddDigest            (xmlNodePtr x509DataNode, const xmlChar *digestAlgorithm);
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509DataAddCertificate       (xmlNodePtr x509DataNode);
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509DataAddCRL               (xmlNodePtr x509DataNode);
 
@@ -146,9 +146,9 @@ XMLSEC_EXPORT int       xmlSecTmplTransformAddRsaOaepParam      (xmlNodePtr tran
                                                                  const xmlSecByte *buf,
                                                                  xmlSecSize size);
 XMLSEC_EXPORT int       xmlSecTmplTransformAddRsaMgf            (xmlNodePtr transformNode,
-                                                                 const xmlChar* algorithm);
+                                                                 const xmlChar *algorithm);
 XMLSEC_EXPORT int       xmlSecTmplTransformAddRsaDigest         (xmlNodePtr transformNode,
-                                                                 const xmlChar* algorithm);
+                                                                 const xmlChar *algorithm);
 XMLSEC_EXPORT int       xmlSecTmplTransformAddXsltStylesheet    (xmlNodePtr transformNode,
                                                                  const xmlChar *xslt);
 XMLSEC_EXPORT int       xmlSecTmplTransformAddC14NInclNamespaces(xmlNodePtr transformNode,

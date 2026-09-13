@@ -39,7 +39,7 @@ typedef struct _xmlSecDSigReferenceCtx          xmlSecDSigReferenceCtx,
                                                 *xmlSecDSigReferenceCtxPtr;
 
 /**
- * @brief XML Digital signature processing status.
+ * @brief XML Digital Signature processing status.
  */
 typedef enum {
     xmlSecDSigStatusUnknown = 0,  /**< the status is unknown. */
@@ -48,15 +48,15 @@ typedef enum {
 } xmlSecDSigStatus;
 
 /**
- * @brief XML Digital signature processing failure reason.
- * @details XML Digital signature processing failure reason. The application should use
+ * @brief XML Digital Signature processing failure reason.
+ * @details XML Digital Signature processing failure reason. The application should use
  * #xmlSecDSigStatus to find out the operation status first.
  */
 typedef enum {
     xmlSecDSigFailureReasonUnknown = 0,  /**< the failure reason is unknown. */
     xmlSecDSigFailureReasonReference,  /**< the reference processing failure (e.g. digest doesn't match). */
     xmlSecDSigFailureReasonSignature,  /**< the signature processing failure (e.g. signature doesn't match). */
-    xmlSecDSigFailureReasonKeyNotFound,  /**< the key not found. */
+    xmlSecDSigFailureReasonKeyNotFound,  /**< the key is not found. */
 } xmlSecDSigFailureReason;
 
 
@@ -103,8 +103,8 @@ typedef enum {
 
 
 /**
- * @brief If set, use ASN1 encoded ECDSA signature values.
- * @details If this flag is set then ASN1 encoded ECDSA signature values will be
+ * @brief If set, use ASN1 encoded DSA/ECDSA signature values.
+ * @details If this flag is set then ASN1 encoded DSA/ECDSA signature values will be
  * used (see https://github.com/lsh123/xmlsec/issues/995).
  */
 #define XMLSEC_DSIG_FLAGS_USE_ASN1_SIGNATURE_VALUES             0x00000020
@@ -124,7 +124,7 @@ typedef enum {
  */
 struct _xmlSecDSigCtx {
     /* these data user can set before performing the operation */
-    void*                       userData;  /**< the pointer to user data (xmlsec and xmlsec-crypto libraries never touch this). */
+    void*                       userData;  /**< the pointer to user data (the library does not modify the pointed-to data; the pointer value is copied into each &lt;dsig:Reference/&gt; processing context and this field is zeroed when the context is finalized). */
     unsigned int                flags;  /**< the XML Digital Signature processing flags. */
     unsigned int                flags2;  /**< reserved for future. */
     xmlSecKeyInfoCtx            keyInfoReadCtx;  /**< the reading key context. */
@@ -201,7 +201,7 @@ typedef enum {
  */
 struct _xmlSecDSigReferenceCtx {
     void*                       userData;  /**< the pointer to user data (xmlsec and xmlsec-crypto libraries never touch this). */
-    xmlSecDSigCtxPtr            dsigCtx;  /**< the pointer to "parent" &lt;dsig:Signature/&gt; processing context. */
+    xmlSecDSigCtxPtr            dsigCtx;  /**< the pointer to "parent" &lt;dsig:Signature/&gt; processing context (the pointer is cleared when this context is finalized, see #xmlSecDSigReferenceCtxFinalize). */
     xmlSecDSigReferenceOrigin   origin;  /**< the reference origin (&lt;dsig:SignedInfo/&gt; or &lt;dsig:Manifest/&gt;). */
     xmlSecTransformCtx          transformCtx;  /**< the reference processing transforms context. */
     xmlSecTransformPtr          digestMethod;  /**< the pointer to digest transform. */

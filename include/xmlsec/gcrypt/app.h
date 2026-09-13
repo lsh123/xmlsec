@@ -41,7 +41,7 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppShutdown                 (void);
 XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppDefaultKeysMngrInit      (xmlSecKeysMngrPtr mngr);
 XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppDefaultKeysMngrAdoptKey  (xmlSecKeysMngrPtr mngr,
                                                                          xmlSecKeyPtr key);
-XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppDefaultKeysMngrVerifyKey(xmlSecKeysMngrPtr mngr,
+XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppDefaultKeysMngrVerifyKey (xmlSecKeysMngrPtr mngr,
                                                                          xmlSecKeyPtr key,
                                                                          xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppDefaultKeysMngrLoad      (xmlSecKeysMngrPtr mngr,
@@ -82,7 +82,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecGCryptAppKeyLoadEx              (const c
                                                                          xmlSecKeyDataType type,
                                                                          xmlSecKeyDataFormat format,
                                                                          const char *pwd,
-                                                                         void *pwdCallback,
+                                                                         void* pwdCallback,
                                                                          void* pwdCallbackCtx);
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecGCryptAppKeyLoadMemory          (const xmlSecByte* data,
                                                                          xmlSecSize dataSize,

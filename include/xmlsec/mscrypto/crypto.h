@@ -15,9 +15,9 @@
  */
 
 /**
- * @defgroup xmlsec_mscrypto_crypto MsCrypto Crypto Engine
+ * @defgroup xmlsec_mscrypto_crypto MSCrypto Crypto Engine
  * @ingroup xmlsec_mscrypto
- * @brief Cryptographic operations provided by the MsCrypto back-end.
+ * @brief Cryptographic operations provided by the MSCrypto back-end.
  * @{
  */
 
@@ -45,7 +45,7 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoKeysMngrInit      (xmlSecK
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoGenerateRandom    (xmlSecBufferPtr buffer,
                                                                          xmlSecSize size);
 
-XMLSEC_CRYPTO_EXPORT void               xmlSecMSCryptoErrorsDefaultCallback(const char* file,
+XMLSEC_CRYPTO_EXPORT void               xmlSecMSCryptoErrorsDefaultCallback (const char* file,
                                                                         int line,
                                                                         const char* func,
                                                                         const char* errorObject,
@@ -104,7 +104,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformGost2001GostR3411_
 
 /******************************************************************************
  *
- * GOST R 34.10-2012  transform
+ * GOST R 34.10-2012 transform
  *
   *****************************************************************************/
 
@@ -222,7 +222,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaOaepGetKlass(vo
 
 /******************************************************************************
  *
- * Md5 transforms
+ * MD5 transforms
  *
   *****************************************************************************/
 #ifndef XMLSEC_NO_MD5

@@ -24,20 +24,20 @@
 
 #define szOID_MAGPRO_DH_R3410_2001_EPHEM "1.2.643.2.9.1.3.2"
 
-/*! GOST 34.10/11-94 digital signature algorithm Cryptocom LTD with digest */
+/*! GOST 34.10-94 digital signature algorithm Cryptocom LTD with digest */
 #define szOID_MAGPRO_SIGN_R3410_94 "1.2.643.2.9.1.3.3"
 
 /*! GOST 34.10-2001 digital signature algorithm with digest */
 #define szOID_MAGPRO_SIGN_R3410_2001 "1.2.643.2.9.1.3.4"
 
-/*! GOST 28147-89 MAC algorithm Cryptocom LTD */
+/*! GOST 28147-89 based HASH algorithm Cryptocom LTD */
 #define szOID_MAGPRO_HASH_28147_89 "1.2.643.2.9.1.4.1"
 
 #define szOID_MAGPRO_PUBKEY_DH_R3410_94 "1.2.643.2.9.1.5.1"
 
 #define szOID_MAGPRO_PUBKEY_DH_R3410_2001 "1.2.643.2.9.1.5.2"
 
-/*! GOST 34.10/11-94 digital signature algorithm Cryptocom LTD */
+/*! GOST 34.10-94 digital signature algorithm Cryptocom LTD */
 #define szOID_MAGPRO_PUBKEY_SIGN_R3410_94 "1.2.643.2.9.1.5.3"
 
 /*! GOST 34.10-2001 digital signature algorithm */
@@ -55,7 +55,7 @@
 /*! GOST 34.10-2001 digital signature algorithm CryptoPro LTD */
 #define szOID_MAGPRO_SIGN_R3410_2001_CP "1.2.643.2.2.3"
 
-/*! GOST 34.10/11-94 digital signature algorithm CryptoPro LTD */
+/*! GOST 34.10-94 digital signature algorithm CryptoPro LTD */
 #define szOID_MAGPRO_SIGN_R3410_94_CP "1.2.643.2.2.4"
 
 /*! GOST 34.11-94 digest algorithm CryptoPro LTD */
@@ -64,33 +64,33 @@
 /*! GOST 34.10-2001 digital signature algorithm CryptoPro LTD public key */
 #define szOID_MAGPRO_PUBKEY_SIGN_R3410_2001_CP "1.2.643.2.2.19"
 
-/*! GOST 34.10/11-94 digital signature algorithm CryptoPro LTD public key */
+/*! GOST 34.10-94 digital signature algorithm CryptoPro LTD public key */
 #define szOID_MAGPRO_PUBKEY_SIGN_R3410_94_CP "1.2.643.2.2.20"
 
-#define szOID_CP_PARAM_R3411_94_1       "1.2.643.2.2.30.2"
-#define szOID_CP_PARAM_R3411_94_2       "1.2.643.2.2.30.3"
-#define szOID_CP_PARAM_R3411_94_3       "1.2.643.2.2.30.4"
+#define szOID_CP_PARAM_R3411_94_1 "1.2.643.2.2.30.2"
+#define szOID_CP_PARAM_R3411_94_2 "1.2.643.2.2.30.3"
+#define szOID_CP_PARAM_R3411_94_3 "1.2.643.2.2.30.4"
 
 #define szOID_CP_PARAM_28147_89_DEF "1.2.643.2.2.31.1"
-#define szOID_CP_PARAM_28147_89_1       "1.2.643.2.2.31.2"
-#define szOID_CP_PARAM_28147_89_2       "1.2.643.2.2.31.3"
-#define szOID_CP_PARAM_28147_89_3       "1.2.643.2.2.31.4"
-#define szOID_CP_PARAM_28147_89_4       "1.2.643.2.2.31.5"
-#define szOID_CP_PARAM_28147_89_5       "1.2.643.2.2.31.6"
-#define szOID_CP_PARAM_28147_89_6       "1.2.643.2.2.31.7"
+#define szOID_CP_PARAM_28147_89_1 "1.2.643.2.2.31.2"
+#define szOID_CP_PARAM_28147_89_2 "1.2.643.2.2.31.3"
+#define szOID_CP_PARAM_28147_89_3 "1.2.643.2.2.31.4"
+#define szOID_CP_PARAM_28147_89_4 "1.2.643.2.2.31.5"
+#define szOID_CP_PARAM_28147_89_5 "1.2.643.2.2.31.6"
+#define szOID_CP_PARAM_28147_89_6 "1.2.643.2.2.31.7"
 
 /* OID for Signature 1024 */
-#define szOID_CP_PARAM_PK_R3410_94_S1   "1.2.643.2.2.32.3"
-#define szOID_CP_PARAM_PK_R3410_94_S2   "1.2.643.2.2.32.4"
-#define szOID_CP_PARAM_PK_R3410_94_S3   "1.2.643.2.2.32.5"
+#define szOID_CP_PARAM_PK_R3410_94_S1 "1.2.643.2.2.32.3"
+#define szOID_CP_PARAM_PK_R3410_94_S2 "1.2.643.2.2.32.4"
+#define szOID_CP_PARAM_PK_R3410_94_S3 "1.2.643.2.2.32.5"
 /* OID for DH 1024 */
-#define szOID_CP_PARAM_PK_R3410_94_E1   "1.2.643.2.2.33.1"
-#define szOID_CP_PARAM_PK_R3410_94_E2   "1.2.643.2.2.33.2"
-#define szOID_CP_PARAM_PK_R3410_94_E3   "1.2.643.2.2.33.3"
+#define szOID_CP_PARAM_PK_R3410_94_E1 "1.2.643.2.2.33.1"
+#define szOID_CP_PARAM_PK_R3410_94_E2 "1.2.643.2.2.33.2"
+#define szOID_CP_PARAM_PK_R3410_94_E3 "1.2.643.2.2.33.3"
 
 #define szOID_CP_PARAM_PK_R3410_2001_DEF "1.2.643.2.2.35.1"
-#define szOID_CP_PARAM_PK_R3410_2001_S0  "1.2.643.2.2.35.2"
-#define szOID_CP_PARAM_PK_R3410_2001_S1  "1.2.643.2.2.35.3"
+#define szOID_CP_PARAM_PK_R3410_2001_S0 "1.2.643.2.2.35.2"
+#define szOID_CP_PARAM_PK_R3410_2001_S1 "1.2.643.2.2.35.3"
 #define szOID_CP_PARAM_PK_R3410_2001_E0  "1.2.643.2.2.36.0"
 #define szOID_CP_PARAM_PK_R3410_2001_E1  "1.2.643.2.2.36.1"
 

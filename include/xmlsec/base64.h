@@ -9,9 +9,9 @@
 #define XMLSEC_BASE64_H
 
 /**
- * @brief Base64 encoding/decoding functions.
  * @defgroup xmlsec_core_base64 Base64 Encode/Decode
  * @ingroup xmlsec_core
+ * @brief Base64 encoding/decoding functions.
  *
  * @{
  */
@@ -73,6 +73,6 @@ XMLSEC_EXPORT int               xmlSecBase64DecodeInPlace       (xmlChar* str,
 }
 #endif /* __cplusplus */
 
-/** @} */  /* xmlsec_core_base64 */
+/** @} */ /** xmlsec_core_base64 */
 
 #endif /* XMLSEC_BASE64_H */

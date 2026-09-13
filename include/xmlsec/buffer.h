@@ -43,8 +43,9 @@ typedef enum {
 
 /**
  * @brief Use the exact memory allocation mode.
- * @details If this flag is specified then the buffer uses the exact memory
- * allocation mode (see #xmlSecAllocModeExact).
+ * @details The exact memory allocation mode (see #xmlSecAllocModeExact) is the
+ * default and is used when the #XMLSEC_BUFFER_FLAG_ALLOC_MODE_DOUBLE flag is
+ * not set; this flag is not actually set (its value is 0x0000).
  */
 #define XMLSEC_BUFFER_FLAG_ALLOC_MODE_EXACT      0x0000
 
@@ -59,7 +60,9 @@ typedef enum {
  * @brief Wipe the buffer data with xmlSecMemCleanse() on release.
  * @details If this flag is set then the buffer data is wiped using
  * xmlSecMemCleanse() (which cannot be optimized away by the compiler)
- * instead of memset(0) when the buffer is released or resized.
+ * instead of memset(0) when the buffer is emptied, shrunk, or finalized;
+ * when the buffer is grown, the newly allocated area is always zeroed
+ * with memset(0), regardless of this flag.
  */
 #define XMLSEC_BUFFER_FLAG_SECURE                0x1000
 

@@ -45,8 +45,10 @@ typedef enum {
 
 /**
  * @brief XML Encryption processing failure reason.
- * @details XML Encryption processing failure reason. The application should use
- * the returned value from the encrypt/decrypt functions first.
+ * @details XML Encryption processing failure reason. The application should use the
+ * returned value from the encrypt/decrypt functions to find out the operation status
+ * first; on failure the specific reason is stored in the #failureReason field of the
+ * context.
  */
 typedef enum {
     xmlSecEncFailureReasonUnknown = 0,  /**< the failure reason is unknown. */
@@ -74,9 +76,9 @@ struct _xmlSecEncCtx {
     xmlSecTransformId           defEncMethodId;  /**< the default encryption method (used if &lt;enc:EncryptionMethod/&gt; node is not present). */
 
     /* these data are returned */
-    xmlSecKeyPtr                encKey;  /**< the encryption key; application may set #encKey before calling encryption/decryption functions. */
+    xmlSecKeyPtr                encKey;  /**< the encryption key; application may set #encKey before calling encryption/decryption functions. The library takes ownership of the key and destroys it when the context is reset, finalized or destroyed (see #xmlSecEncCtxReset, #xmlSecEncCtxFinalize and #xmlSecEncCtxDestroy). */
     xmlSecTransformOperation    operation;  /**< the operation: encrypt or decrypt. */
-    xmlSecBufferPtr             result;  /**< the pointer to the encrypted/decrypted data buffer (valid after a successful encrypt/decrypt operation). */
+    xmlSecBufferPtr             result;  /**< the pointer to the encrypted/decrypted data buffer (valid after a successful encrypt/decrypt operation). The buffer is owned by the context and freed when the context is reset or finalized, so the pointer returned by #xmlSecEncCtxDecryptToBuffer becomes invalid after #xmlSecEncCtxReset or #xmlSecEncCtxFinalize. */
     int                         resultBase64Encoded;  /**< the flag: if set then result in #result is base64 encoded. */
     int                         resultReplaced;  /**< the flag: if set then the original &lt;enc:EncryptedData/&gt; or &lt;enc:EncryptedKey/&gt; node was replaced. */
     xmlSecTransformPtr          encMethod;  /**< the pointer to encryption transform. */
@@ -133,25 +135,25 @@ XMLSEC_EXPORT xmlSecKeyPtr      xmlSecEncCtxDerivedKeyGenerate  (xmlSecEncCtxPtr
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 
-XMLSEC_EXPORT xmlSecKeyPtr      xmlSecEncCtxAgreementMethodGenerate(xmlSecEncCtxPtr encCtx,
-                                                                 xmlSecKeyDataId keyId,
-                                                                 xmlNodePtr node,
-                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
+XMLSEC_EXPORT xmlSecKeyPtr      xmlSecEncCtxAgreementMethodGenerate        (xmlSecEncCtxPtr encCtx,
+                                                                            xmlSecKeyDataId keyId,
+                                                                            xmlNodePtr node,
+                                                                            xmlSecKeyInfoCtxPtr keyInfoCtx);
 
-XMLSEC_EXPORT int               xmlSecEncCtxAgreementMethodXmlWrite(xmlSecEncCtxPtr encCtx,
-                                                                 xmlNodePtr node,
-                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
+XMLSEC_EXPORT int               xmlSecEncCtxAgreementMethodXmlWrite        (xmlSecEncCtxPtr encCtx,
+                                                                            xmlNodePtr node,
+                                                                            xmlSecKeyInfoCtxPtr keyInfoCtx);
 
-XMLSEC_EXPORT xmlSecKeyPtr      xmlSecEncCtxEncapsulationMechanismGenerate(xmlSecEncCtxPtr encCtx,
-                                                                 xmlSecKeyDataId keyId,
-                                                                 xmlNodePtr node,
-                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
+XMLSEC_EXPORT xmlSecKeyPtr      xmlSecEncCtxEncapsulationMechanismGenerate (xmlSecEncCtxPtr encCtx,
+                                                                            xmlSecKeyDataId keyId,
+                                                                            xmlNodePtr node,
+                                                                            xmlSecKeyInfoCtxPtr keyInfoCtx);
 
-XMLSEC_EXPORT int               xmlSecEncCtxEncapsulationMechanismXmlWrite(xmlSecEncCtxPtr encCtx,
-                                                                 xmlNodePtr node,
-                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
+XMLSEC_EXPORT int               xmlSecEncCtxEncapsulationMechanismXmlWrite (xmlSecEncCtxPtr encCtx,
+                                                                            xmlNodePtr node,
+                                                                            xmlSecKeyInfoCtxPtr keyInfoCtx);
 
-XMLSEC_EXPORT const char*       xmlSecEncCtxGetFailureReasonString(xmlSecEncFailureReason failureReason);
+XMLSEC_EXPORT const char*       xmlSecEncCtxGetFailureReasonString         (xmlSecEncFailureReason failureReason);
 
 #ifdef __cplusplus
 }

@@ -27,16 +27,16 @@
 #define XMLSEC_ENUM_CAST(val)                ((int)(val))
 #define XMLSEC_ENUM_FMT                      "%d"
 
- /******************************************************************************
-  *
-* Main macros to help with casting. Each macro checks that the source value
+/******************************************************************************
+ *
+ * Main macros to help with casting. Each macro checks that the source value
  * fits into the destination type's range before casting.
  *
  * NOTE: errorAction MUST transfer control out of the block (e.g. return or goto),
  * because the assignment (dstVal) = (dstType)(srcVal) executes unconditionally
  * after the if-block.
  *
-   *****************************************************************************/
+  *****************************************************************************/
 #define XMLSEC_SAFE_CAST_MIN_MAX_CHECK(srcType, srcVal, srcFmt, dstType, dstVal, dstFmt, dstMin, dstMax, errorAction, errorObject) \
     do {                                                                        \
         if(((srcVal) < (srcType)(dstMin)) || ((srcVal) > (srcType)(dstMax))) { \
@@ -149,7 +149,7 @@
 
 #endif /* (XMLSEC_SIZE_MAX > INT_MAX) */
 
- /* Safe cast with limits check: ptrdiff_t -> int. Special case since ptrdiff_t
+/* Safe cast with limits check: ptrdiff_t -> int. Special case since ptrdiff_t
   * is platform dependent and there is no good way to print it. Cast to long long
   * should be good enough and will only affect output in the logs. */
 #define XMLSEC_SAFE_CAST_PTRDIFF_TO_INT(srcVal, dstVal, errorAction, errorObject) \
@@ -162,6 +162,7 @@
         (dstVal) = (int)(srcVal);                                              \
     } while(0)                                                                 \
 
+/* Safe cast with limits check: ptrdiff_t -> xmlSecSize (xmlSecSize is non-negative, so the min bound is 0) */
 #define XMLSEC_SAFE_CAST_PTRDIFF_TO_SIZE(srcVal, dstVal, errorAction, errorObject)  \
     XMLSEC_SAFE_CAST_MIN_CHECK(ptrdiff_t, (long long)(srcVal), "%lld",              \
         xmlSecSize, (dstVal), XMLSEC_SIZE_FMT, (xmlSecSize)0, XMLSEC_SIZE_MAX,      \
@@ -216,7 +217,7 @@
  *
   *****************************************************************************/
 
- /* Safe cast with limits check: unsigned int -> long (unsigned int is non-negative, so only the max is checked) */
+/* Safe cast with limits check: unsigned int -> long (unsigned int is non-negative, so only the max is checked) */
 #if (UINT_MAX > LONG_MAX)
 
 #define XMLSEC_SAFE_CAST_UINT_TO_LONG(srcVal, dstVal, errorAction, errorObject) \
@@ -382,7 +383,6 @@ typedef struct _ ## xmlSec ## name ## postfix {                                 
     baseType base;                                                                 \
     ctxType ctx;                                                                   \
 } xmlSec ## name ## postfix;                                                       \
-                                                                                   \
 static inline ctxType* xmlSec ## name ## GetCtx(baseType* obj) {                   \
     if(checkSizeFunc(obj, sizeof(xmlSec ## name ## postfix))) {                    \
         return((ctxType *)(&( ((xmlSec ## name ## postfix *)obj)->ctx )));         \
@@ -416,7 +416,7 @@ static inline ctxType* xmlSec ## name ## GetCtx(baseType* obj) {                
 
 /******************************************************************************
  *
- *  Helpers to create key data store struct and cast to key store context
+ *  Helpers to create key data store struct and cast to key data store context
  *
   *****************************************************************************/
 #define XMLSEC_KEY_DATA_STORE_DECLARE(name, ctxType)  \

@@ -117,12 +117,12 @@ typedef unsigned int                                    xmlSecKeyDataUsage;
 /**
  * @brief The key data could be read from a file.
  */
-#define xmlSecKeyDataUsageReadFromFile                   0x00040
+#define xmlSecKeyDataUsageReadFromFile                  0x00040
 
 /**
  * @brief Any key data usage.
  */
-#define xmlSecKeyDataUsageAny                            0xFFFFF
+#define xmlSecKeyDataUsageAny                           0xFFFFF
 
 /**
  * @brief The key data can be read and written from/to a KeyInfo child.
@@ -301,8 +301,10 @@ XMLSEC_EXPORT int               xmlSecKeyDataBinWrite           (xmlSecKeyDataId
 
 /**
  * @brief Macro. Returns 1 if @p data is valid.
- * @details Macro. Returns 1 if @p data is not NULL and @p data->id is not NULL
- * or 0 otherwise.
+ * @details Macro. Returns 1 if @p data is not NULL, @p data->id is not NULL,
+ * @p data->id->klassSize is at least sizeof(xmlSecKeyDataKlass),
+ * @p data->id->objSize is at least sizeof(xmlSecKeyData) and @p data->id->name
+ * is not NULL, or 0 otherwise.
  * @param data the pointer to data.
  */
 #define xmlSecKeyDataIsValid(data) \
@@ -507,7 +509,7 @@ struct _xmlSecKeyDataKlass {
 
 /**
  * @brief Macro. Returns data klass name.
- * @param klass the data klass.
+ * @param klass the pointer to data klass.
  */
 #define xmlSecKeyDataKlassGetName(klass) \
         (((klass)) ? ((klass)->name) : NULL)
@@ -596,8 +598,10 @@ XMLSEC_EXPORT void              xmlSecKeyDataStoreDestroy       (xmlSecKeyDataSt
 
 /**
  * @brief Macro. Returns 1 if @p store is valid.
- * @details Macro. Returns 1 if @p store is not NULL and @p store->id is not NULL
- * or 0 otherwise.
+ * @details Macro. Returns 1 if @p store is not NULL, @p store->id is not NULL,
+ * @p store->id->klassSize is at least sizeof(xmlSecKeyDataStoreKlass),
+ * @p store->id->objSize is at least sizeof(xmlSecKeyDataStore) and
+ * @p store->id->name is not NULL, or 0 otherwise.
  * @param store the pointer to store.
  */
 #define xmlSecKeyDataStoreIsValid(store) \
@@ -618,7 +622,7 @@ XMLSEC_EXPORT void              xmlSecKeyDataStoreDestroy       (xmlSecKeyDataSt
 
 /**
  * @brief Macro. Returns 1 if @p store's object has at least @p size bytes.
- * @details Macro. Returns 1 if @p store is valid and @p store 's object has at least @p size bytes.
+ * @details Macro. Returns 1 if @p store is valid and @p store's object has at least @p size bytes.
  * @param store the pointer to store.
  * @param size the expected size.
  */
@@ -693,8 +697,8 @@ XMLSEC_EXPORT xmlSecPtrListId   xmlSecKeyDataStorePtrListGetKlass       (void);
  * Key import
  *
   *****************************************************************************/
-XMLSEC_EXPORT void xmlSecImportSetPersistKey                            (void);
-XMLSEC_EXPORT int xmlSecImportGetPersistKey                             (void);
+XMLSEC_EXPORT void              xmlSecImportSetPersistKey               (void);
+XMLSEC_EXPORT int               xmlSecImportGetPersistKey               (void);
 
 
 /******************************************************************************

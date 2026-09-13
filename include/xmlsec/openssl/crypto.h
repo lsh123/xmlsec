@@ -233,7 +233,7 @@ XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateReadFileBio (const ch
 #endif /* OPENSSL_NO_ML_KEM */
 
 #ifdef OPENSSL_NO_SLH_DSA
-#define XMLSEC_NO_SLHDSA      1
+#define XMLSEC_NO_SLHDSA 1
 #endif /* OPENSSL_NO_SLH_DSA */
 
 #ifdef OPENSSL_NO_ECX
@@ -271,7 +271,7 @@ XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateReadFileBio (const ch
  */
 #define xmlSecOpenSSLKeyDataAesId \
         xmlSecOpenSSLKeyDataAesGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataAesGetKlass (void);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataAesGetKlass(void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataAesSet      (xmlSecKeyDataPtr data,
                                                                          const xmlSecByte* buf,
                                                                          xmlSecSize bufSize);
@@ -280,42 +280,42 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataAesSet      (xmlSecK
  */
 #define xmlSecOpenSSLTransformAes128CbcId \
         xmlSecOpenSSLTransformAes128CbcGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformAes128CbcGetKlass(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformAes128CbcGetKlass(void);
 
 /**
  * @brief The AES192 CBC cipher transform klass.
  */
 #define xmlSecOpenSSLTransformAes192CbcId \
         xmlSecOpenSSLTransformAes192CbcGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformAes192CbcGetKlass(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformAes192CbcGetKlass(void);
 
 /**
  * @brief The AES256 CBC cipher transform klass.
  */
 #define xmlSecOpenSSLTransformAes256CbcId \
         xmlSecOpenSSLTransformAes256CbcGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformAes256CbcGetKlass(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformAes256CbcGetKlass(void);
 
 /**
  * @brief The AES128 GCM cipher transform klass.
  */
 #define xmlSecOpenSSLTransformAes128GcmId \
         xmlSecOpenSSLTransformAes128GcmGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformAes128GcmGetKlass(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformAes128GcmGetKlass(void);
 
 /**
  * @brief The AES192 GCM cipher transform klass.
  */
 #define xmlSecOpenSSLTransformAes192GcmId \
         xmlSecOpenSSLTransformAes192GcmGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformAes192GcmGetKlass(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformAes192GcmGetKlass(void);
 
 /**
  * @brief The AES256 GCM cipher transform klass.
  */
 #define xmlSecOpenSSLTransformAes256GcmId \
         xmlSecOpenSSLTransformAes256GcmGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformAes256GcmGetKlass(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformAes256GcmGetKlass(void);
 
 
 /**
@@ -323,21 +323,21 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformAes256GcmGetKlass(
  */
 #define xmlSecOpenSSLTransformKWAes128Id \
         xmlSecOpenSSLTransformKWAes128GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformKWAes128GetKlass(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformKWAes128GetKlass(void);
 
 /**
  * @brief The AES192 key wrap transform klass.
  */
 #define xmlSecOpenSSLTransformKWAes192Id \
         xmlSecOpenSSLTransformKWAes192GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformKWAes192GetKlass(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformKWAes192GetKlass(void);
 
 /**
  * @brief The AES256 key wrap transform klass.
  */
 #define xmlSecOpenSSLTransformKWAes256Id \
         xmlSecOpenSSLTransformKWAes256GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformKWAes256GetKlass(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformKWAes256GetKlass(void);
 
 #endif /* XMLSEC_NO_AES */
 
@@ -361,42 +361,42 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataCamelliaSet     (xml
  */
 #define xmlSecOpenSSLTransformCamellia128CbcId \
         xmlSecOpenSSLTransformCamellia128CbcGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformCamellia128CbcGetKlass(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformCamellia128CbcGetKlass(void);
 
 /**
  * @brief The Camellia192 CBC cipher transform klass.
  */
 #define xmlSecOpenSSLTransformCamellia192CbcId \
         xmlSecOpenSSLTransformCamellia192CbcGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformCamellia192CbcGetKlass(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformCamellia192CbcGetKlass(void);
 
 /**
  * @brief The Camellia256 CBC cipher transform klass.
  */
 #define xmlSecOpenSSLTransformCamellia256CbcId \
         xmlSecOpenSSLTransformCamellia256CbcGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformCamellia256CbcGetKlass(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformCamellia256CbcGetKlass(void);
 
 /**
  * @brief The Camellia128 key wrap transform klass.
  */
 #define xmlSecOpenSSLTransformKWCamellia128Id \
         xmlSecOpenSSLTransformKWCamellia128GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformKWCamellia128GetKlass(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformKWCamellia128GetKlass(void);
 
 /**
  * @brief The Camellia192 key wrap transform klass.
  */
 #define xmlSecOpenSSLTransformKWCamellia192Id \
         xmlSecOpenSSLTransformKWCamellia192GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformKWCamellia192GetKlass(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformKWCamellia192GetKlass(void);
 
 /**
  * @brief The Camellia256 key wrap transform klass.
  */
 #define xmlSecOpenSSLTransformKWCamellia256Id \
         xmlSecOpenSSLTransformKWCamellia256GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformKWCamellia256GetKlass(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformKWCamellia256GetKlass(void);
 
 #endif /* XMLSEC_NO_CAMELLIA */
 
@@ -412,14 +412,14 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformKWCamellia256GetKl
  */
 #define xmlSecOpenSSLTransformChaCha20Id \
         xmlSecOpenSSLTransformChaCha20GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformChaCha20GetKlass(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformChaCha20GetKlass(void);
 
 /**
  * @brief The ChaCha20-Poly1305 AEAD transform klass.
  */
 #define xmlSecOpenSSLTransformChaCha20Poly1305Id \
         xmlSecOpenSSLTransformChaCha20Poly1305GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformChaCha20Poly1305GetKlass(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformChaCha20Poly1305GetKlass(void);
 
 #endif /* XMLSEC_NO_CHACHA20 */
 
@@ -480,7 +480,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformConcatKdfGetKlass(v
  */
 #define xmlSecOpenSSLKeyDataDesId \
         xmlSecOpenSSLKeyDataDesGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataDesGetKlass (void);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataDesGetKlass(void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataDesSet      (xmlSecKeyDataPtr data,
                                                                          const xmlSecByte* buf,
                                                                          xmlSecSize bufSize);
@@ -512,7 +512,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformKWDes3GetKlass(void
  */
 #define xmlSecOpenSSLKeyDataDsaId \
         xmlSecOpenSSLKeyDataDsaGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataDsaGetKlass (void);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataDsaGetKlass(void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataDsaAdoptEvp (xmlSecKeyDataPtr data,
                                                                          EVP_PKEY* pKey);
 XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLKeyDataDsaGetEvp   (xmlSecKeyDataPtr data);
@@ -551,7 +551,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformDsaSha256GetKlass(v
  */
 #define xmlSecOpenSSLKeyDataDhId \
         xmlSecOpenSSLKeyDataDhGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataDhGetKlass (void);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataDhGetKlass(void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataDhAdoptEvp (xmlSecKeyDataPtr data,
                                                                          EVP_PKEY* pKey);
 XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLKeyDataDhGetEvp   (xmlSecKeyDataPtr data);
@@ -949,7 +949,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRipemd160GetKlass(v
  */
 #define xmlSecOpenSSLKeyDataRsaId \
         xmlSecOpenSSLKeyDataRsaGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataRsaGetKlass (void);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataRsaGetKlass(void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataRsaAdoptEvp (xmlSecKeyDataPtr data,
                                                                          EVP_PKEY* pKey);
 XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLKeyDataRsaGetEvp   (xmlSecKeyDataPtr data);
@@ -1143,7 +1143,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaPssSha3_512GetKl
  */
 #define xmlSecOpenSSLKeyDataMLDSAId \
         xmlSecOpenSSLKeyDataMLDSAGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataMLDSAGetKlass   (void);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataMLDSAGetKlass(void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataMLDSAAdoptEvp   (xmlSecKeyDataPtr data,
                                                                              EVP_PKEY* pKey);
 XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLKeyDataMLDSAGetEvp     (xmlSecKeyDataPtr data);
@@ -1188,7 +1188,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformMLDSA87GetKlass(voi
  */
 #define xmlSecOpenSSLKeyDataMLKEMId \
         xmlSecOpenSSLKeyDataMLKEMGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataMLKEMGetKlass   (void);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataMLKEMGetKlass(void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataMLKEMAdoptEvp   (xmlSecKeyDataPtr data,
                                                                              EVP_PKEY* pKey);
 XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLKeyDataMLKEMGetEvp     (xmlSecKeyDataPtr data);
@@ -1233,7 +1233,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformMLKEM1024GetKlass(v
  */
 #define xmlSecOpenSSLKeyDataSLHDSAId \
         xmlSecOpenSSLKeyDataSLHDSAGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataSLHDSAGetKlass   (void);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataSLHDSAGetKlass(void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataSLHDSAAdoptEvp   (xmlSecKeyDataPtr data,
                                                                              EVP_PKEY* pKey);
 XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLKeyDataSLHDSAGetEvp     (xmlSecKeyDataPtr data);
@@ -1292,7 +1292,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformSLHDSA_SHA2_256sGet
  */
 #define xmlSecOpenSSLKeyDataEdDSAId \
         xmlSecOpenSSLKeyDataEdDSAGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataEdDSAGetKlass   (void);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataEdDSAGetKlass(void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataEdDSAAdoptEvp   (xmlSecKeyDataPtr data,
                                                                              EVP_PKEY* pKey);
 XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLKeyDataEdDSAGetEvp     (xmlSecKeyDataPtr data);
@@ -1345,7 +1345,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformEdDSAEd448phGetKlas
  */
 #define xmlSecOpenSSLKeyDataXdhId \
         xmlSecOpenSSLKeyDataXdhGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataXdhGetKlass     (void);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataXdhGetKlass(void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataXdhAdoptEvp     (xmlSecKeyDataPtr data,
                                                                              EVP_PKEY* pKey);
 XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLKeyDataXdhGetEvp       (xmlSecKeyDataPtr data);

@@ -36,11 +36,11 @@ extern "C" {
  * Utils
  *
   *****************************************************************************/
-int                ConvertEndian                    (const xmlSecByte * src,
-                                                     xmlSecByte * dst,
-                                                     xmlSecSize size);
-int                ConvertEndianInPlace             (xmlSecByte * buf,
-                                                     xmlSecSize size);
+int                ConvertEndian                                (const xmlSecByte * src,
+                                                                 xmlSecByte * dst,
+                                                                 xmlSecSize size);
+int                ConvertEndianInPlace                         (xmlSecByte * buf,
+                                                                 xmlSecSize size);
 
 /******************************************************************************
  *
@@ -117,12 +117,12 @@ PCCERT_CONTEXT     xmlSecMSCryptoX509StoreFindCert              (xmlSecKeyDataSt
                                                                  xmlChar *ski,
                                                                  xmlSecKeyInfoCtx* keyInfoCtx);
 PCCERT_CONTEXT     xmlSecMSCryptoX509StoreFindCert_ex           (xmlSecKeyDataStorePtr store,
-                                                                xmlChar* subjectName,
-                                                                xmlChar* issuerName,
-                                                                xmlChar* issuerSerial,
-                                                                xmlSecByte* ski,
-                                                                xmlSecSize skiSize,
-                                                                xmlSecKeyInfoCtx* keyInfoCtx);
+                                                                 xmlChar *subjectName,
+                                                                 xmlChar *issuerName,
+                                                                 xmlChar *issuerSerial,
+                                                                 xmlSecByte* ski,
+                                                                 xmlSecSize skiSize,
+                                                                 xmlSecKeyInfoCtx* keyInfoCtx);
 
 xmlChar *          xmlSecMSCryptoX509GetNameString              (PCCERT_CONTEXT pCertContext,
                                                                  DWORD dwType,

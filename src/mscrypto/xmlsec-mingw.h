@@ -4,13 +4,14 @@
  * This is free software; see the Copyright file in the source distribution for precise wording.
  *
  * Copyright (C) 2007-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
- * Copyright (C) 2007,2010 Roumen Petrov.
+ * Copyright (C) 2007, 2010 Roumen Petrov.
  */
 /**
  * @brief Fallback definitions for symbols missing from older MinGW / Windows SDK headers.
  *
  * This header must be included AFTER all Windows SDK headers (windows.h, wincrypt.h, ...)
- * have been included.  It is included automatically from private.h, so individual source
+ * have been included.  It is included automatically from private.h only for 32-bit MinGW
+ * builds (when __MINGW32__ and XMLSEC_CUSTOM_CRYPT32 are defined), so individual source
  * files need not include it directly.
  */
 

@@ -16,12 +16,17 @@
 #endif /* XMLSEC_PRIVATE */
 
 
+#include <time.h>
+
 #include <nspr.h>
 #include <cert.h>
 #include <nss.h>
 
 #include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/list.h>
+#include <xmlsec/keys.h>
+#include <xmlsec/keyinfo.h>
 
 #ifndef XMLSEC_NO_X509
 #include <xmlsec/x509.h>

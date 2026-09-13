@@ -50,6 +50,7 @@
 #include <xmlsec/xmlenc.h>
 #include <xmlsec/parser.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/dl.h>
 
 #include "crypto.h"
 #include "cmdline.h"

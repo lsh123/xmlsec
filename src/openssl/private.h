@@ -16,8 +16,11 @@
 #endif /* XMLSEC_PRIVATE */
 
 
+#include <time.h>
+
 #include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/openssl/crypto.h>
 
 #include <openssl/evp.h>
 #include <openssl/x509.h>

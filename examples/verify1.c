@@ -39,6 +39,7 @@
 #include <xmlsec/xmltree.h>
 #include <xmlsec/xmldsig.h>
 #include <xmlsec/crypto.h>
+#include <xmlsec/dl.h>
 
 int verify_file(const char* xml_file, const char* key_file);
 int verify_signature_results(xmlSecDSigCtxPtr dsigCtx);

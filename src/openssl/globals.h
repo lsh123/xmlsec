@@ -18,6 +18,8 @@
 #include "config.h"
 #endif /* HAVE_CONFIG_H */
 
+#include <stdint.h>
+
 #include <openssl/crypto.h>
 
 #ifndef IN_XMLSEC_CRYPTO

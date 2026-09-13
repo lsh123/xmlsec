@@ -15,6 +15,8 @@
 #error "mscng/private.h file contains private xmlsec-mscng definitions and should not be used outside xmlsec or xmlsec-mscng libraries"
 #endif /* XMLSEC_PRIVATE */
 
+#include "globals.h"
+
 #include <xmlsec/exports.h>
 #include <xmlsec/bn.h>
 #include <xmlsec/xmlsec.h>

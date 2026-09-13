@@ -41,6 +41,7 @@
 #include <xmlsec/xmlenc.h>
 #include <xmlsec/templates.h>
 #include <xmlsec/crypto.h>
+#include <xmlsec/dl.h>
 
 int encrypt_file(const char* xml_file, const char* key_file);
 xmlNodePtr create_encryption_template(xmlDocPtr doc);

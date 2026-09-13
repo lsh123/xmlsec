@@ -44,6 +44,7 @@
 #include <xmlsec/xmltree.h>
 #include <xmlsec/xmlenc.h>
 #include <xmlsec/crypto.h>
+#include <xmlsec/dl.h>
 
 int encrypt_file(const char* tmpl_file, const char* key_file,
                  const unsigned char* data, size_t dataSize);

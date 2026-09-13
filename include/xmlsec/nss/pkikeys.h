@@ -18,6 +18,7 @@
 
 #include <nspr.h>
 #include <nss.h>
+#include <keyhi.h>
 
 #include <xmlsec/exports.h>
 #include <xmlsec/keys.h>

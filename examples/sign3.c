@@ -51,6 +51,7 @@
 #include <xmlsec/xmldsig.h>
 #include <xmlsec/templates.h>
 #include <xmlsec/crypto.h>
+#include <xmlsec/dl.h>
 
 int sign_file(const char* xml_file, const char* key_file, const char* cert_file);
 

@@ -23,6 +23,7 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/app.h>
+#include <xmlsec/dl.h>
 #include <xmlsec/io.h>
 #include <xmlsec/parser.h>
 #include <xmlsec/errors.h>

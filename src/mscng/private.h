@@ -131,6 +131,16 @@ xmlSecKeyDataPtr   xmlSecMSCngKeyDataDhReadFromPkcs8Der             (const xmlSe
   *****************************************************************************/
 #ifndef XMLSEC_NO_DSA
 
+/* ---- DSA v2 feature detection ---------------------------------- */
+
+/* DSA v2 key blobs require newer bcrypt.h definitions. */
+#if defined(BCRYPT_DSA_PUBLIC_MAGIC_V2)
+#define XMLSEC_MSCNG_HAVE_DSA_V2            1
+#else
+#define XMLSEC_MSCNG_HAVE_DSA_V2            0
+#endif /* defined(BCRYPT_DSA_PUBLIC_MAGIC_V2) */
+
+
 #define XMLSEC_MSCNG_DSA_MAX_CBKEY_SIZE (512U)                      /*  4096 bits, which is 512 bytes */
 #define XMLSEC_MSCNG_DSA_MAX_P_SIZE     (512U)                      /*  4096 bits, which is 512 bytes */
 #define XMLSEC_MSCNG_DSA_MAX_Q_SIZE     (20U)

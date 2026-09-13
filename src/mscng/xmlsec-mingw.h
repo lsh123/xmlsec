@@ -119,15 +119,6 @@
 #endif /* BCRYPT_ECC_CURVE_25519 */
 #endif /* XMLSEC_NO_XDH */
 
-/* ---- bcrypt.h: DSA v2 feature detection ---------------------------------- */
-
-/* DSA v2 key blobs require newer bcrypt.h definitions. */
-#if defined(BCRYPT_DSA_PUBLIC_MAGIC_V2)
-#define XMLSEC_MSCNG_HAVE_DSA_V2            1
-#else
-#define XMLSEC_MSCNG_HAVE_DSA_V2            0
-#endif /* defined(BCRYPT_DSA_PUBLIC_MAGIC_V2) */
-
 /* ---- wincrypt.h ---------------------------------------------------------- */
 
 /* MinGW may ship older wincrypt.h that lacks CERT_FIND_SHA256_HASH */

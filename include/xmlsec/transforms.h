@@ -919,6 +919,6 @@ XMLSEC_EXPORT void              xmlSecTransformHmacSetMinOutputBitsSize(xmlSecSi
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_core_transforms */
+/** @} */ /* xmlsec_core_transforms */
 
 #endif /* XMLSEC_TRANSFORMS_H */

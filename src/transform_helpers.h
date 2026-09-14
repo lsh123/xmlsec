@@ -21,6 +21,10 @@
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 
 /* Internal helpers used by key-agreement and KEM code: read / write key info inside transforms */
 /**
@@ -274,5 +278,9 @@ XMLSEC_EXPORT int  xmlSecTransformRsaOaepParamsRead         (xmlSecTransformRsaO
 
 #endif /* XMLSEC_NO_RSA_OAEP */
 #endif /* XMLSEC_NO_RSA */
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* XMLSEC_TRANSFORM_HELPERS_H */

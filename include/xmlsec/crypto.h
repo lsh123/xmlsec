@@ -74,6 +74,6 @@
 #endif /* IN_XMLSEC_CRYPTO */
 #endif /* IN_XMLSEC */
 
-/** @} */ /** xmlsec_core_crypto */
+/** @} */ /* xmlsec_core_crypto */
 
 #endif /* XMLSEC_CRYPTO_H */

@@ -23,7 +23,6 @@
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>
-#include <xmlsec/transforms.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -137,6 +136,6 @@ XMLSEC_CRYPTO_EXPORT void*              xmlSecNssAppGetDefaultPwdCallback(void);
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_nss_app */
+/** @} */ /* xmlsec_nss_app */
 
 #endif /* XMLSEC_NSS_APP_H */

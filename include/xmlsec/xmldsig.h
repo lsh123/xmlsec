@@ -170,10 +170,12 @@ XMLSEC_EXPORT int               xmlSecDSigCtxSign               (xmlSecDSigCtxPt
                                                                  xmlNodePtr tmpl);
 XMLSEC_EXPORT int               xmlSecDSigCtxVerify             (xmlSecDSigCtxPtr dsigCtx,
                                                                  xmlNodePtr node);
-XMLSEC_EXPORT int               xmlSecDSigCtxEnableReferenceTransform(xmlSecDSigCtxPtr dsigCtx,
-                                                                xmlSecTransformId transformId);
-XMLSEC_EXPORT int               xmlSecDSigCtxEnableSignatureTransform(xmlSecDSigCtxPtr dsigCtx,
-                                                                xmlSecTransformId transformId);
+XMLSEC_EXPORT int               xmlSecDSigCtxEnableReferenceTransform
+                                                                (xmlSecDSigCtxPtr dsigCtx,
+                                                                 xmlSecTransformId transformId);
+XMLSEC_EXPORT int               xmlSecDSigCtxEnableSignatureTransform
+                                                                (xmlSecDSigCtxPtr dsigCtx,
+                                                                 xmlSecTransformId transformId);
 XMLSEC_EXPORT xmlSecBufferPtr   xmlSecDSigCtxGetPreSignBuffer   (xmlSecDSigCtxPtr dsigCtx);
 XMLSEC_EXPORT void              xmlSecDSigCtxDebugDump          (xmlSecDSigCtxPtr dsigCtx,
                                                                  FILE* output);
@@ -212,7 +214,7 @@ struct _xmlSecDSigReferenceCtx {
 
     xmlSecBufferPtr             result;  /**< the pointer to digest result. */
     xmlSecDSigStatus            status;  /**< the reference processing status. */
-    xmlSecTransformPtr          preDigestMemBufMethod;  /**< the pointer to binary buffer right before digest (valid only if the #XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES flag is set for SignedInfo References or the #XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES flag is set for Manifest References). The buffer is owned by the context and freed when the context is finalized or destroyed, so the pointer becomes invalid after #xmlSecDSigCtxFinalize or #xmlSecDSigCtxDestroy. */
+    xmlSecTransformPtr          preDigestMemBufMethod;  /**< the pointer to binary buffer right before digest (valid only if the #XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES flag is set for SignedInfo References or the #XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES flag is set for Manifest References). The buffer is owned by the context and freed when the context is finalized or destroyed, so the pointer becomes invalid after #xmlSecDSigReferenceCtxFinalize or #xmlSecDSigReferenceCtxDestroy. */
     xmlChar*                    id;  /**< the &lt;dsig:Reference/&gt; node ID attribute. */
     xmlChar*                    uri;  /**< the &lt;dsig:Reference/&gt; node URI attribute. */
     xmlChar*                    type;  /**< the &lt;dsig:Reference/&gt; node Type attribute. */
@@ -256,6 +258,6 @@ XMLSEC_EXPORT xmlSecPtrListId   xmlSecDSigReferenceCtxListGetKlass(void);
 
 #endif /* XMLSEC_NO_XMLDSIG */
 
-/** @} */ /** xmlsec_core_xmldsig */
+/** @} */ /* xmlsec_core_xmldsig */
 
 #endif /* XMLSEC_XMLDSIG_H */

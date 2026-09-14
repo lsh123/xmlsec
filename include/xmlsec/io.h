@@ -54,6 +54,6 @@ XMLSEC_EXPORT int       xmlSecTransformInputURIClose            (xmlSecTransform
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_core_io */
+/** @} */ /* xmlsec_core_io */
 
 #endif /* XMLSEC_IO_H */

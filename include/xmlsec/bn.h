@@ -104,6 +104,6 @@ XMLSEC_EXPORT int               xmlSecBnBlobSetNodeValue        (const xmlSecByt
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_core_bn */
+/** @} */ /* xmlsec_core_bn */
 
 #endif /* XMLSEC_BN_H */

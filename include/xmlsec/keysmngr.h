@@ -277,6 +277,6 @@ XMLSEC_EXPORT xmlSecPtrListPtr          xmlSecSimpleKeysStoreGetKeys    (xmlSecK
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_core_keysmngr */
+/** @} */ /* xmlsec_core_keysmngr */
 
 #endif /* XMLSEC_KEYSMNGR_H */

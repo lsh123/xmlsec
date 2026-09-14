@@ -263,9 +263,9 @@ XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateReadFileBio (const ch
 #define XMLSEC_NO_SHA512    1
 #endif /* OPENSSL_NO_SHA512 */
 
-#if defined(OPENSSL_NO_X509) || defined(OPENSSL_NO_X509_VERIFY)
+#ifdef OPENSSL_NO_X509
 #define XMLSEC_NO_X509      1
-#endif /* defined(OPENSSL_NO_X509) || defined(OPENSSL_NO_X509_VERIFY) */
+#endif /* OPENSSL_NO_X509 */
 
 
 /******************************************************************************
@@ -1497,6 +1497,6 @@ XMLSEC_CRYPTO_EXPORT void       xmlSecOpenSSLErrorsDefaultCallback      (const c
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_openssl_crypto */
+/** @} */ /* xmlsec_openssl_crypto */
 
 #endif /* XMLSEC_OPENSSL_CRYPTO_H */

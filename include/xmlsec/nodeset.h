@@ -118,6 +118,6 @@ XMLSEC_EXPORT XMLSEC_DEPRECATED xmlSecNodeSetPtr  xmlSecNodeSetAddList(xmlSecNod
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_core_nodeset */
+/** @} */ /* xmlsec_core_nodeset */
 
 #endif /* XMLSEC_NODESET_H */

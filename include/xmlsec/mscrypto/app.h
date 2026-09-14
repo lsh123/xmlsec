@@ -10,19 +10,19 @@
 #define XMLSEC_MSCRYPTO_APP_H
 
 /**
- * @defgroup xmlsec_mscrypto_app MSCrypto Application Helpers
+ * @defgroup xmlsec_mscrypto_app (DEPRECATED) MSCrypto Application Helpers
  * @ingroup xmlsec_mscrypto
  * @brief High-level application helpers for the MSCrypto back-end.
  * @{
  */
 
+#include <windows.h>
+#include <wincrypt.h>
+
 #include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>
-
-#include <windows.h>
-#include <wincrypt.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -101,9 +101,9 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppKeysMngrCrlLoadAndVerify       
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCryptoAppKeyLoadEx            (const char *filename,
                                                                          xmlSecKeyDataType type,
                                                                          xmlSecKeyDataFormat format,
-                                                                         const char *pwd,
-                                                                         void *pwdCallback,
-                                                                         void* pwdCallbackCtx);
+                                                                          const char *pwd,
+                                                                          void* pwdCallback,
+                                                                          void* pwdCallbackCtx);
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCryptoAppKeyLoadMemory        (const xmlSecByte* data,
                                                                          xmlSecSize dataSize,
                                                                          xmlSecKeyDataFormat format,
@@ -134,6 +134,6 @@ XMLSEC_CRYPTO_EXPORT void*      xmlSecMSCryptoAppGetDefaultPwdCallback  (void);
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_mscrypto_app */
+/** @} */ /* xmlsec_mscrypto_app */
 
 #endif /* XMLSEC_MSCRYPTO_APP_H */

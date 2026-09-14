@@ -1185,7 +1185,7 @@ xmlSecMSCngX509StoreVerifyCrl(xmlSecKeyDataStorePtr store, PCCRL_CONTEXT crl,
  * @return pointer to the first verified certificate from @p certs.
  */
 PCCERT_CONTEXT
-xmlSecMSCngX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs, xmlSecKeyInfoCtx* keyInfoCtx) {
+xmlSecMSCngX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecMSCngX509StoreCtxPtr ctx;
     PCCERT_CONTEXT cert = NULL;
     int ret;
@@ -1555,7 +1555,7 @@ xmlSecMSCngX509GetFriendlyNameUtf8(PCCERT_CONTEXT cert) {
 PCCERT_CONTEXT
 xmlSecMSCngX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
                             xmlChar* issuerName, xmlChar* issuerSerial, xmlChar* ski,
-                            xmlSecKeyInfoCtx* keyInfoCtx) {
+                            xmlSecKeyInfoCtxPtr keyInfoCtx) {
     if (ski != NULL) {
         xmlSecSize skiDecodedSize = 0;
         int ret;
@@ -1595,7 +1595,7 @@ PCCERT_CONTEXT
 xmlSecMSCngX509StoreFindCert_ex(xmlSecKeyDataStorePtr store, xmlChar* subjectName,
                                 xmlChar* issuerName, xmlChar* issuerSerial,
                                 xmlSecByte* ski, xmlSecSize skiSize,
-                                xmlSecKeyInfoCtx* keyInfoCtx XMLSEC_ATTRIBUTE_UNUSED) {
+                                xmlSecKeyInfoCtxPtr keyInfoCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecMSCngX509FindCertCtx findCertCtx;
     xmlSecMSCngX509StoreCtxPtr ctx;
     PCCERT_CONTEXT cert = NULL;

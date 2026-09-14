@@ -20,7 +20,7 @@
 #endif /* XMLSEC_PRIVATE */
 
 /* This header provides fallback definitions for symbols missing from older MinGW headers. */
-#if defined(__MINGW__) || defined(__MINGW32__) || defined(__MINGW64__)
+#if defined(__MINGW32__) || defined(__MINGW64__)
 
 /* ---- bcrypt.h: algorithm identifiers ------------------------------------- */
 
@@ -53,7 +53,7 @@
 #define BCRYPT_PBKDF2_ALGORITHM             L"PBKDF2"
 #endif /* BCRYPT_PBKDF2_ALGORITHM */
 
-/* Mingw may ship an older bcrypt.h that lacks this KDF identifier. */
+/* MinGW may ship an older bcrypt.h that lacks this KDF identifier. */
 #ifndef BCRYPT_KDF_RAW_SECRET
 #define BCRYPT_KDF_RAW_SECRET               L"TRUNCATE"
 #endif /* BCRYPT_KDF_RAW_SECRET */
@@ -125,6 +125,6 @@
 
 
 
-#endif /* defined(__MINGW__) || defined(__MINGW32__) || defined(__MINGW64__) */
+#endif /* defined(__MINGW32__) || defined(__MINGW64__) */
 
 #endif /* XMLSEC_MSCNG_XMLSEC_MINGW_H */

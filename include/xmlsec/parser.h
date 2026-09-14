@@ -53,6 +53,6 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecTransformXmlParserGetKlass        (void);
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_core_parser */
+/** @} */ /* xmlsec_core_parser */
 
 #endif /* XMLSEC_PARSER_H */

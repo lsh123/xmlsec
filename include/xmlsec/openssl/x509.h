@@ -112,6 +112,6 @@ XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED X509* xmlSecOpenSSLX509StoreFindCert_ex(x
 
 #endif /* XMLSEC_NO_X509 */
 
-/** @} */ /** xmlsec_openssl_x509 */
+/** @} */ /* xmlsec_openssl_x509 */
 
 #endif /* XMLSEC_OPENSSL_X509_H */

@@ -312,7 +312,7 @@ extern "C" {
 #define XMLSEC_ERROR_R_CAST_IMPOSSIBLE                  XMLSEC_ERRORS_R_CAST_IMPOSSIBLE
 
 /**
- * @brief The maximum xmlsec errors number.
+ * @brief The maximum number of xmlsec errors.
  */
 #define XMLSEC_ERRORS_MAX_NUMBER                        256
 
@@ -462,6 +462,6 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_core_errors */
+/** @} */ /* xmlsec_core_errors */
 
 #endif /* XMLSEC_ERRORS_H */

@@ -113,9 +113,9 @@ STACK_OF(X509_CRL)*    xmlSecOpenSSLKeyDataX509GetCrls          (xmlSecKeyDataPt
   *****************************************************************************/
 #if defined(XMLSEC_OPENSSL_API_350)
 
-const xmlChar* xmlSecOpenSSLEvpGetProviderQuery                (EVP_PKEY_CTX* pKeyCtx,
-                                                                xmlChar* buf,
-                                                                int bufSize);
+const xmlChar*  xmlSecOpenSSLEvpGetProviderQuery                 (EVP_PKEY_CTX* pKeyCtx,
+                                                                  xmlChar* buf,
+                                                                  int bufSize);
 
 #endif /* defined(XMLSEC_OPENSSL_API_350) */
 

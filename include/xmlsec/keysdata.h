@@ -705,6 +705,6 @@ XMLSEC_EXPORT XMLSEC_DEPRECATED const xmlChar*    xmlSecKeyDataGetIdentifier    
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_core_keysdata */
+/** @} */ /* xmlsec_core_keysdata */
 
 #endif /* XMLSEC_KEYSDATA_H */

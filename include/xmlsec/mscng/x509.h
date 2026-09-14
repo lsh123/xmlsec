@@ -104,6 +104,6 @@ XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED PCCERT_CONTEXT xmlSecMSCngX509FindCertByS
 
 #endif /* XMLSEC_NO_X509 */
 
-/** @} */ /** xmlsec_mscng_x509 */
+/** @} */ /* xmlsec_mscng_x509 */
 
 #endif /* XMLSEC_MSCNG_X509_H */

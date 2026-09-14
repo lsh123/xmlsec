@@ -51,6 +51,6 @@ typedef struct _xmlSecKeyX509DataValue                  xmlSecKeyX509DataValue;
  */
 typedef struct _xmlSecKeyX509DataValue                  *xmlSecKeyX509DataValuePtr;
 
-/** @} */ /** xmlsec_core_x509 */
+/** @} */ /* xmlsec_core_x509 */
 
 #endif /* XMLSEC_X509_H */

@@ -41,6 +41,6 @@ XMLSEC_EXPORT xmlSecBufferPtr   xmlSecTransformMemBufGetBuffer          (xmlSecT
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_core_membuf */
+/** @} */ /* xmlsec_core_membuf */
 
 #endif /* XMLSEC_MEMBUF_H */

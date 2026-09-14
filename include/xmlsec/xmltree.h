@@ -345,6 +345,6 @@ XMLSEC_EXPORT LPTSTR             xmlSecWin32ConvertUtf8ToTstr     (const xmlChar
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_core_xmltree */
+/** @} */ /* xmlsec_core_xmltree */
 
 #endif /* XMLSEC_XMLTREE_H */

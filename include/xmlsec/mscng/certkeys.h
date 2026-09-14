@@ -48,6 +48,6 @@ XMLSEC_CRYPTO_EXPORT NCRYPT_KEY_HANDLE  xmlSecMSCngKeyDataGetPrivkey    (xmlSecK
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_mscng_certkeys */
+/** @} */ /* xmlsec_mscng_certkeys */
 
 #endif /* XMLSEC_MSCNG_CERTKEYS_H */

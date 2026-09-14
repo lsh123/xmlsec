@@ -699,6 +699,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCngKeyDataDEREncodedKeyValueGetKlas
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_mscng_crypto */
+/** @} */ /* xmlsec_mscng_crypto */
 
 #endif /* XMLSEC_MSCNG_CRYPTO_H */

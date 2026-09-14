@@ -69,6 +69,6 @@ XMLSEC_EXPORT xmlSecCryptoDLFunctionsPtr        xmlSecCryptoDLGetFunctions      
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_core_dl */
+/** @} */ /* xmlsec_core_dl */
 
 #endif /* XMLSEC_DL_H */

@@ -289,6 +289,6 @@ XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataEncapsulationMechanismGetKl
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_core_keyinfo */
+/** @} */ /* xmlsec_core_keyinfo */
 
 #endif /* XMLSEC_KEYINFO_H */

@@ -102,6 +102,6 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSX509StoreAdoptCrl  (xmlSecKe
 
 #endif /* XMLSEC_NO_X509 */
 
-/** @} */ /** xmlsec_gnutls_x509 */
+/** @} */ /* xmlsec_gnutls_x509 */
 
 #endif /* XMLSEC_GNUTLS_X509_H */

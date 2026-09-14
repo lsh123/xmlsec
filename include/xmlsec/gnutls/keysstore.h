@@ -47,6 +47,6 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeysStoreSave     (xmlSecKey
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_gnutls_keysstore */
+/** @} */ /* xmlsec_gnutls_keysstore */
 
 #endif /* XMLSEC_GNUTLS_KEYSSTORE_H */

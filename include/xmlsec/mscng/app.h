@@ -10,9 +10,9 @@
 #define XMLSEC_MSCNG_APP_H
 
 /**
- * @defgroup xmlsec_mscng_app MsCng Application Helpers
+ * @defgroup xmlsec_mscng_app MSCng Application Helpers
  * @ingroup xmlsec_mscng
- * @brief High-level application helpers for the MsCng back-end.
+ * @brief High-level application helpers for the MSCng back-end.
  * @{
  */
 
@@ -121,6 +121,6 @@ XMLSEC_CRYPTO_EXPORT void*      xmlSecMSCngAppGetDefaultPwdCallback  (void);
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_mscng_app */
+/** @} */ /* xmlsec_mscng_app */
 
 #endif /* XMLSEC_MSCNG_APP_H */

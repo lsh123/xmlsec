@@ -43,6 +43,6 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecNssPKIKeyDataDuplicate    (xmlSecK
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_nss_pkikeys */
+/** @} */ /* xmlsec_nss_pkikeys */
 
 #endif /* XMLSEC_NSS_PKIKEYS_H */

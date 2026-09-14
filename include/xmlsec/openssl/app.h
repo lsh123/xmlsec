@@ -147,6 +147,6 @@ XMLSEC_CRYPTO_EXPORT void*              xmlSecOpenSSLAppGetDefaultPwdCallback(vo
 }
 #endif /* __cplusplus */
 
-/** @} */
+/** @} */ /* xmlsec_openssl_app */
 
 #endif /* XMLSEC_OPENSSL_APP_H */

@@ -114,6 +114,6 @@ XMLSEC_CRYPTO_EXPORT void*      xmlSecGnuTLSAppGetDefaultPwdCallback    (void);
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_gnutls_app */
+/** @} */ /* xmlsec_gnutls_app */
 
 #endif /* XMLSEC_GNUTLS_APP_H */

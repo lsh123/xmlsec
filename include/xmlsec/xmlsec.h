@@ -5,8 +5,8 @@
  *
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef XMLSEC_H
-#define XMLSEC_H
+#ifndef XMLSEC_XMLSEC_H
+#define XMLSEC_XMLSEC_H
 
 /**
  * @defgroup xmlsec_core XML Security Core Library
@@ -136,7 +136,7 @@ XMLSEC_EXPORT xmlSecSize                        xmlSecStrlen            (const x
  *
  *****************************************************************************/
 /**
- * @brief Checks if loaded library version exactly matches.
+ * @brief Checks if the loaded library version exactly matches.
  * @details Macro. Returns 1 if the loaded xmlsec library version exactly matches
  * the one used to compile the caller, 0 if it does not.
  */
@@ -144,7 +144,7 @@ XMLSEC_EXPORT xmlSecSize                        xmlSecStrlen            (const x
     xmlSecCheckVersionExt(XMLSEC_VERSION_MAJOR, XMLSEC_VERSION_MINOR, XMLSEC_VERSION_SUBMINOR, xmlSecCheckVersionExactMatch)
 
 /**
- * @brief Checks if loaded library version is ABI compatible.
+ * @brief Checks if the loaded library version is ABI compatible.
  * @details Macro. Returns 1 if the loaded xmlsec library version is ABI compatible with
  * the one used to compile the caller, 0 if it does not.
  */
@@ -170,4 +170,4 @@ XMLSEC_EXPORT int       xmlSecCheckVersionExt   (int major,
 }
 #endif /* __cplusplus */
 
-#endif /* XMLSEC_H */
+#endif /* XMLSEC_XMLSEC_H */

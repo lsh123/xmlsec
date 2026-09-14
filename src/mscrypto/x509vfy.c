@@ -1284,6 +1284,16 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store, const xmlChar *subjectName,
             return(NULL);
         }
 
+        /* the certificate serial number is a DER INTEGER, which carries a leading
+         * 0x00 byte when the most significant bit is set; add it so the blob
+         * matches the serial number stored in the certificate */
+        ret = xmlSecBnPrependZeroIfMsbSet(&issuerSerialBn);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecBnPrependZeroIfMsbSet", NULL);
+            xmlSecBnFinalize(&issuerSerialBn);
+            return(NULL);
+        }
+
         /* I have no clue why at a sudden a swap is needed to
         * convert from lsb... This code is purely based upon
         * trial and error :( WK

@@ -78,6 +78,7 @@ XMLSEC_EXPORT int               xmlSecBnDiv                     (xmlSecBnPtr bn,
 XMLSEC_EXPORT int               xmlSecBnAdd                     (xmlSecBnPtr bn,
                                                                  int delta);
 XMLSEC_EXPORT int               xmlSecBnReverse                 (xmlSecBnPtr bn);
+XMLSEC_EXPORT int               xmlSecBnPrependZeroIfMsbSet     (xmlSecBnPtr bn);
 XMLSEC_EXPORT int               xmlSecBnCompare                 (xmlSecBnPtr bn,
                                                                  const xmlSecByte* data,
                                                                  xmlSecSize dataSize);

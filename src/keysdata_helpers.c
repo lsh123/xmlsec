@@ -149,22 +149,25 @@ xmlSecKeyDataBinaryValueFinalize(xmlSecKeyDataPtr data) {
  * @return 0 on success or a negative value otherwise.
  */
 int
-xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
-                                xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlChar* str = NULL;
     xmlSecKeyDataPtr data = NULL;
-    xmlSecKeyDataPtr existingData;
     xmlSecSize decodedSize;
     int ret;
     int res = -1;
 
     xmlSecAssert2(id != xmlSecKeyDataIdUnknown, -1);
     xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(xmlSecKeyGetValue(key) == NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     str = xmlSecGetNodeContentAndTrim(node);
     if(str == NULL) {
+        xmlSecInternalError("xmlSecGetNodeContentAndTrim", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+    if(str[0] == '\0') {
         xmlSecInvalidNodeContentError(node, xmlSecKeyDataKlassGetName(id), "empty");
         goto done;
     }
@@ -176,48 +179,6 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         xmlSecInternalError("xmlSecBase64Decode_ex", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
-
-    /* check do we have a key already; the returned pointer is owned by the
-     * key, do not store it in `data` (which the `done:` cleanup destroys). */
-    existingData = xmlSecKeyGetValue(key);
-    if(existingData != NULL) {
-        xmlSecBufferPtr buffer;
-
-        if(!xmlSecKeyDataCheckId(existingData, id)) {
-            xmlSecOtherError2(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST, xmlSecKeyDataGetName(existingData),
-                "id=%s", xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)));
-            goto done;
-        }
-
-        buffer = xmlSecKeyDataBinaryValueGetBuffer(existingData);
-        if(buffer != NULL) {
-            if(xmlSecBufferGetSize(buffer) != decodedSize) {
-                xmlSecOtherError3(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
-                    xmlSecKeyDataGetName(existingData),
-                    "cur-data-size=" XMLSEC_SIZE_FMT "; new-data-size=" XMLSEC_SIZE_FMT,
-                    xmlSecBufferGetSize(buffer), decodedSize);
-                goto done;
-            }
-            ret = xmlSecMemEqual(xmlSecBufferGetData(buffer), (const xmlSecByte*)str, decodedSize);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecMemEqual", xmlSecKeyDataGetName(existingData));
-                goto done;
-            }
-            if(ret == 0) {
-                xmlSecOtherError(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
-                    xmlSecKeyDataGetName(existingData),
-                    "key already has a different value");
-                goto done;
-            }
-
-            /* we already have exactly the same key */
-            res = 0;
-            goto done;
-        }
-
-        /* we have binary key value with empty buffer */
-    }
-
 
     data = xmlSecKeyDataCreate(id);
     if(data == NULL ) {
@@ -2004,18 +1965,16 @@ xmlSecKeyValueDsaXmlRead(xmlSecKeyValueDsaPtr data, xmlNodePtr node) {
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
+    /* the J, Seed and PgenCounter parameters are not used for key verification and are skipped */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSAJ, xmlSecDSigNs))) {
-        xmlSecNotImplementedError("DSA key value J parameter is not supported");
         cur = xmlSecGetNextElementNode(cur->next);
     }
 
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSASeed, xmlSecDSigNs))) {
-        xmlSecNotImplementedError("DSA key value seed parameter is not supported");
         cur = xmlSecGetNextElementNode(cur->next);
     }
 
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSAPgenCounter, xmlSecDSigNs))) {
-        xmlSecNotImplementedError("DSA key value PgenCounter parameter is not supported");
         cur = xmlSecGetNextElementNode(cur->next);
     }
 

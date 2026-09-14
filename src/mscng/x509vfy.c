@@ -1822,6 +1822,15 @@ xmlSecMSCngX509FindCertCtxInitialize(xmlSecMSCngX509FindCertCtxPtr ctx,
             xmlSecMSCngX509FindCertCtxFinalize(ctx);
             return(-1);
         }
+        /* the certificate serial number is a DER INTEGER, which carries a leading
+         * 0x00 byte when the most significant bit is set; add it so the blob
+         * matches the serial number stored in the certificate */
+        ret = xmlSecBnPrependZeroIfMsbSet(ctx->issuerSerialBn);
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecBnPrependZeroIfMsbSet(issuerSerial)", NULL);
+            xmlSecMSCngX509FindCertCtxFinalize(ctx);
+            return(-1);
+        }
         /* MS Windows wants this in the opposite order */
         ret = xmlSecBnReverse(ctx->issuerSerialBn);
         if (ret < 0) {

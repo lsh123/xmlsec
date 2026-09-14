@@ -1125,12 +1125,13 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
 
     /* finally get transforms results */
     ret = xmlSecTransformCtxExecute(&(keyInfoCtx->retrievalMethodCtx), node->doc);
-    if((ret < 0) ||
-       (keyInfoCtx->retrievalMethodCtx.result == NULL) ||
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformCtxExecute", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+    if((keyInfoCtx->retrievalMethodCtx.result == NULL) ||
        (xmlSecBufferGetData(keyInfoCtx->retrievalMethodCtx.result) == NULL)) {
-
-        xmlSecInternalError("xmlSecTransformCtxExecute",
-                            xmlSecKeyDataKlassGetName(id));
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_RESULT, xmlSecKeyDataKlassGetName(id), "transform result is empty");
         goto done;
     }
 
@@ -1398,13 +1399,14 @@ xmlSecKeyDataKeyInfoReferenceXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNo
 
     /* get transforms results */
     ret = xmlSecTransformCtxExecute(&(keyInfoCtx->keyInfoReferenceCtx), node->doc);
-    if(
-        (ret < 0) ||
-        (keyInfoCtx->keyInfoReferenceCtx.result == NULL) ||
-        (xmlSecBufferGetData(keyInfoCtx->keyInfoReferenceCtx.result) == NULL)
-    ) {
-
+    if(ret < 0) {
         xmlSecInternalError("xmlSecTransformCtxExecute", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+    if((keyInfoCtx->keyInfoReferenceCtx.result == NULL) ||
+       (xmlSecBufferGetData(keyInfoCtx->keyInfoReferenceCtx.result) == NULL)) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_RESULT, xmlSecKeyDataKlassGetName(id),
+            "transform result is empty");
         goto done;
     }
 
@@ -2271,7 +2273,7 @@ xmlSecKeyDataEncapsulationMechanismXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key
     /* we should have kemKeyData in the key, pre-populate transformCtx */
     kemKeyData = xmlSecKeyGetData(key, xmlSecKeyDataKEMId);
     if(kemKeyData == NULL) {
-        xmlSecInternalError("xmlSecKeyGetData(kemKeyData)", xmlSecKeyDataKlassGetName(id));
+        xmlSecOtherError(XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND, xmlSecKeyDataKlassGetName(id), "key has no KEM key data");
         return(-1);
     }
 

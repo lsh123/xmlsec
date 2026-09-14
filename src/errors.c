@@ -276,7 +276,7 @@ xmlSecError(const char* file, int line, const char* func,
 
             va_start(va, msg);
             ret = xmlStrVPrintf(error_msg, sizeof(error_msg), msg, va);
-            if(ret < 0) {
+            if((ret < 0) || (ret >= (int)sizeof(error_msg))) {
                 /* Can't really report an error from an error callback */
                 memcpy(error_msg, fatal_error, sizeof(fatal_error));
             }

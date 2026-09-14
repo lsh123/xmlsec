@@ -1451,6 +1451,8 @@ xmlSecTransformCreate(xmlSecTransformId id) {
 /**
  * @brief Destroys a transform object.
  * @details Destroys transform created with #xmlSecTransformCreate function.
+ * If the transform is part of a transforms chain context, then
+ * the caller is responsible for updating context pointers.
  * @param transform the pointer to transform.
  */
 void
@@ -1997,6 +1999,8 @@ xmlSecTransformConnect(xmlSecTransformPtr left, xmlSecTransformPtr right,
 
 /**
  * @brief Removes @p transform from the chain.
+ * @details If the transform is part of a transforms chain context, then
+ * the caller is responsible for updating context pointers.
  * @param transform the pointer to xmlSecTransform structure.
  */
 void

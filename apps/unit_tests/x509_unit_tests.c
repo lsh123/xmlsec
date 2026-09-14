@@ -123,15 +123,17 @@ test_xmlSecX509EscapedStringRead(void) {
     test_xmlSecX509EscapedStringRead_success("check \\<char> converted to <char>", "Fo\\o Bar=Value", '=', 0, "=Value", "Foo Bar");
     test_xmlSecX509EscapedStringRead_success("check \\XXX converted to <char>", "Fo\\6F Bar=Value", '=', 0, "=Value", "Foo Bar");
     test_xmlSecX509EscapedStringRead_success("check escaped delimiter '=' converted to '='", "Fo\\=o Bar=Value", '=', 0, "=Value", "Fo=o Bar");
-    test_xmlSecX509EscapedStringRead_success("check truncated escape at end of line (lone backslash)", "Foo\\", '=', 0, "", "Foo");
-    test_xmlSecX509EscapedStringRead_success("check truncated escape at end of line (lone backslash) without trailing spaces", "Foo\\", '=', 1, "", "Foo");
-    test_xmlSecX509EscapedStringRead_success("check truncated escape at end of line (backslash + one hex digit)", "Foo\\6", '=', 0, "", "Foo");
-    test_xmlSecX509EscapedStringRead_success("check truncated escape at end of line (backslash + one hex digit) without trailing spaces", "Foo\\6", '=', 1, "", "Foo");
+    test_xmlSecX509EscapedStringRead_success("check escaped hex pair at end of line", "Foo\\41", '=', 0, "", "FooA");
 
     /* negative tests */
     test_xmlSecX509EscapedStringRead_failure("check NULL", NULL, '=', 0);
     test_xmlSecX509EscapedStringRead_failure("check bad hex char", "Foo\\6XBar", '=', 0);
     test_xmlSecX509EscapedStringRead_failure("check output buffer too small", "FooBarFooBarFooBarFooBarFooBarFooBarFooBarFooBarFooBar=Value", '=', 0);
+    test_xmlSecX509EscapedStringRead_failure("check truncated escape at end of line (lone backslash)", "Foo\\", '=', 0);
+    test_xmlSecX509EscapedStringRead_failure("check truncated escape at end of line (lone backslash) without trailing spaces", "Foo\\", '=', 1);
+    test_xmlSecX509EscapedStringRead_failure("check truncated escape at end of line (backslash + one hex digit)", "Foo\\6", '=', 0);
+    test_xmlSecX509EscapedStringRead_failure("check truncated escape at end of line (backslash + one hex digit) without trailing spaces", "Foo\\6", '=', 1);
+    test_xmlSecX509EscapedStringRead_failure("check lone backslash", "\\", '=', 0);
 
     /* done */
     return (testGroupFinished());
@@ -270,6 +272,10 @@ test_xmlSecX509AttrValueStringRead(void) {
     test_xmlSecX509AttrValueStringRead_failure("check octet/hex with non-hex chars", "#4X,name=value", ',', 0);
     test_xmlSecX509AttrValueStringRead_failure("check empty octet string", "#,name=value", ',', 0);
     test_xmlSecX509AttrValueStringRead_failure("check empty octet string end of line", "#", ',', 0);
+    test_xmlSecX509AttrValueStringRead_failure("check truncated escape at end of line (lone backslash)", "Foo Bar\\", ',', 0);
+    test_xmlSecX509AttrValueStringRead_failure("check truncated escape at end of line (backslash + one hex digit)", "Foo Bar\\6", ',', 0);
+    test_xmlSecX509AttrValueStringRead_failure("check truncated escape in quoted string at end of line", "\"Foo Bar\\", ',', 0);
+    test_xmlSecX509AttrValueStringRead_failure("check escaped closing quote leaves quoted string unterminated", "\"Foo Bar\\\"", ',', 0);
 
     /* done */
     return (testGroupFinished());
@@ -558,6 +564,8 @@ test_xmlSecX509NameRead(void) {
     test_xmlSecX509NameRead_success("check spaces", "Foo = Bar, emailAddress = Value", NULL, 2, "Foo", "Bar", XMLSEC_X509_VALUE_TYPE_UTF8_STRING, "emailAddress", "Value", XMLSEC_X509_VALUE_TYPE_UTF8_STRING);
     test_xmlSecX509NameRead_success("check end comma", "Foo=Bar,emailAddress=Value,", NULL, 2, "Foo", "Bar", XMLSEC_X509_VALUE_TYPE_UTF8_STRING, "emailAddress", "Value", XMLSEC_X509_VALUE_TYPE_UTF8_STRING);
     test_xmlSecX509NameRead_success("check email address", "Foo=Bar,E=Value,", test_X509NameReplacements, 2, "Foo", "Bar", XMLSEC_X509_VALUE_TYPE_UTF8_STRING, "emailAddress", "Value", XMLSEC_X509_VALUE_TYPE_UTF8_STRING);
+    test_xmlSecX509NameRead_success("check escaped comma in name", "Foo\\,Bar=Baz", NULL, 1, "Foo,Bar", "Baz", XMLSEC_X509_VALUE_TYPE_UTF8_STRING, NULL, NULL, -1);
+    test_xmlSecX509NameRead_success("check escaped hex pair in value", "Foo=Bar\\41", NULL, 1, "Foo", "BarA", XMLSEC_X509_VALUE_TYPE_UTF8_STRING, NULL, NULL, -1);
 
     /* positive tests: more than two name/value pairs (verified for all pairs) */
     {
@@ -581,6 +589,9 @@ test_xmlSecX509NameRead(void) {
     test_xmlSecX509NameRead_failure("check bad value", "Foo=#1Q", NULL, 0);
     test_xmlSecX509NameRead_failure("check missing name value pair", "Foo=Bar,,", NULL, 0);
     test_xmlSecX509NameRead_failure("check bad callback", "Foo=Bar", NULL, 1);
+    test_xmlSecX509NameRead_failure("check truncated escape at end of line (lone backslash)", "Foo\\", NULL, 0);
+    test_xmlSecX509NameRead_failure("check truncated escape in value (lone backslash)", "Foo=Bar\\", NULL, 0);
+    test_xmlSecX509NameRead_failure("check truncated escape in value (backslash + one hex digit)", "Foo=Bar\\6", NULL, 0);
 
     /* done */
     return (testGroupFinished());

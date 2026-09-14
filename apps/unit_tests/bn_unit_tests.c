@@ -128,13 +128,13 @@ test_xmlSecBnCreateSetGetZero(void) {
  * string conversions
  *****************************************************************************/
 static void
-test_xmlSecBnFromHexString_roundTripWithPrefix(void) {
-    static const xmlSecByte expected[] = { 0x00, 0x80 };
+test_xmlSecBnFromHexString_msbNoPrefix(void) {
+    static const xmlSecByte expected[] = { 0x80 };
     xmlSecBn bn;
     xmlChar* str;
     int ret;
 
-    testStart("xmlSecBnFromHexString/xmlSecBnToHexString: preserve MSB sign prefix");
+    testStart("xmlSecBnFromHexString/xmlSecBnToHexString: no MSB sign prefix");
 
     ret = xmlSecBnInitialize(&bn, 0);
     if(ret < 0) {
@@ -326,13 +326,13 @@ test_xmlSecBnFromString_emptyAndWhitespaceBothZero(void) {
 }
 
 static void
-test_xmlSecBnAdd_mulProduceCanonicalPrefix(void) {
-    static const xmlSecByte expectedAdd[] = { 0x00, 0x80 };
-    static const xmlSecByte expectedMul[] = { 0x00, 0xFE };
+test_xmlSecBnAdd_mulMsbNoPrefix(void) {
+    static const xmlSecByte expectedAdd[] = { 0x80 };
+    static const xmlSecByte expectedMul[] = { 0xFE };
     xmlSecBn bn;
     int ret;
 
-    testStart("xmlSecBnAdd/xmlSecBnMul: produce canonical 0x00 prefix when MSB set");
+    testStart("xmlSecBnAdd/xmlSecBnMul: no 0x00 prefix when MSB set");
 
     ret = xmlSecBnInitialize(&bn, 0);
     if(ret < 0) {
@@ -341,7 +341,7 @@ test_xmlSecBnAdd_mulProduceCanonicalPrefix(void) {
         return;
     }
 
-    /* 0x7F + 1 = 0x80 (MSB set) must carry the 0x00 prefix */
+    /* 0x7F + 1 = 0x80 (MSB set) must not carry a 0x00 prefix */
     ret = xmlSecBnFromHexString(&bn, BAD_CAST "7F");
     if(ret < 0) {
         testLog("Error: xmlSecBnFromHexString failed for '7F'\n");
@@ -357,13 +357,13 @@ test_xmlSecBnAdd_mulProduceCanonicalPrefix(void) {
         return;
     }
     if(!bnTestCheckData(&bn, expectedAdd, sizeof(expectedAdd))) {
-        testLog("Error: 0x7F + 1 did not produce the canonical 0x00-prefixed form\n");
+        testLog("Error: 0x7F + 1 produced an unexpected 0x00 prefix\n");
         xmlSecBnFinalize(&bn);
         testFinishedFailure();
         return;
     }
 
-    /* 0x7F * 2 = 0xFE (MSB set) must carry the 0x00 prefix */
+    /* 0x7F * 2 = 0xFE (MSB set) must not carry a 0x00 prefix */
     ret = xmlSecBnFromHexString(&bn, BAD_CAST "7F");
     if(ret < 0) {
         testLog("Error: xmlSecBnFromHexString failed for '7F'\n");
@@ -379,7 +379,7 @@ test_xmlSecBnAdd_mulProduceCanonicalPrefix(void) {
         return;
     }
     if(!bnTestCheckData(&bn, expectedMul, sizeof(expectedMul))) {
-        testLog("Error: 0x7F * 2 did not produce the canonical 0x00-prefixed form\n");
+        testLog("Error: 0x7F * 2 produced an unexpected 0x00 prefix\n");
         xmlSecBnFinalize(&bn);
         testFinishedFailure();
         return;
@@ -805,7 +805,7 @@ static void
 test_xmlSecBnAdd_zeroResultAndTrimBoundaries(void) {
     static const xmlSecByte zero[] = { 0x00 };
     static const xmlSecByte plus127[] = { 0x7F };
-    static const xmlSecByte plus128[] = { 0x00, 0x80 };
+    static const xmlSecByte plus128[] = { 0x80 };
     xmlSecBn bn;
     int ret;
 
@@ -825,14 +825,14 @@ test_xmlSecBnAdd_zeroResultAndTrimBoundaries(void) {
         return;
     }
 
-    /* 0x80 - 1 = 127: the 0x00 sign prefix is trimmed away */
+    /* 0x80 - 1 = 127: leading zero bytes are trimmed away */
     if(testBnAddWithData(&bn, "80", -1, "7F", plus127, sizeof(plus127)) < 0) {
         xmlSecBnFinalize(&bn);
         testFinishedFailure();
         return;
     }
 
-    /* 0x81 - 1 = 128: the 0x00 sign prefix must be preserved */
+    /* 0x81 - 1 = 128: MSB set, no 0x00 prefix is added */
     if(testBnAddWithData(&bn, "81", -1, "80", plus128, sizeof(plus128)) < 0) {
         xmlSecBnFinalize(&bn);
         testFinishedFailure();
@@ -2385,7 +2385,7 @@ test_bn(void) {
     testGroupStart("bn");
 
     test_xmlSecBnCreateSetGetZero();
-    test_xmlSecBnFromHexString_roundTripWithPrefix();
+    test_xmlSecBnFromHexString_msbNoPrefix();
     test_xmlSecBnFromString_invalidCharFails();
     test_xmlSecBnFromString_signIsRejected();
     test_xmlSecBnFromString_replacesExistingValue();
@@ -2404,7 +2404,7 @@ test_bn(void) {
     test_xmlSecBnAdd_zeroDeltaIsNoop();
     test_xmlSecBnMul_updatesValue();
     test_xmlSecBnMul_largeMultiplier();
-    test_xmlSecBnAdd_mulProduceCanonicalPrefix();
+    test_xmlSecBnAdd_mulMsbNoPrefix();
     test_xmlSecBnMul_invalidMultiplierReturnsError();
     test_xmlSecBnDiv_updatesValue();
     test_xmlSecBnDiv_largeDivider();

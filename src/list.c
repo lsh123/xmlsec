@@ -227,6 +227,10 @@ xmlSecPtrListDuplicate(xmlSecPtrListPtr list) {
         return(NULL);
     }
 
+    /* preserve the source list allocation mode, the new list picked up the
+     * current global default instead */
+    newList->allocMode = list->allocMode;
+
     ret = xmlSecPtrListCopy(newList, list);
     if(ret < 0) {
         xmlSecInternalError("xmlSecPtrListCopy",

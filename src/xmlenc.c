@@ -1458,7 +1458,11 @@ xmlSecEncCtxAgreementMethodXmlWrite(xmlSecEncCtxPtr encCtx, xmlNodePtr node, xml
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
       /* initialize context and add ID attributes to the list of known ids */
-    encCtx->operation = keyInfoCtx->operation;
+    encCtx->operation = xmlSecEncCtxMapOperation(keyInfoCtx->operation);
+    if(encCtx->operation == xmlSecTransformOperationNone) {
+        xmlSecInternalError2("invalid operation", NULL, "operation=%u", keyInfoCtx->operation);
+        return(-1);
+    }
     xmlSecAddIDs(node->doc, node, xmlSecEncIds);
 
     /* the AgreementMethod node is the transform node itself */
@@ -1468,6 +1472,7 @@ xmlSecEncCtxAgreementMethodXmlWrite(xmlSecEncCtxPtr encCtx, xmlNodePtr node, xml
         xmlSecInternalError("xmlSecTransformCtxNodeRead", xmlSecNodeGetName(node));
         return(-1);
     }
+    encCtx->encMethod->operation = encCtx->operation;
 
     /* write */
     if(encCtx->encMethod->id->writeNode != NULL) {
@@ -1556,7 +1561,11 @@ xmlSecEncCtxEncapsulationMechanismXmlWrite(xmlSecEncCtxPtr encCtx, xmlNodePtr no
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     /* initialize context and add ID attributes to the list of known ids */
-    encCtx->operation = keyInfoCtx->operation;
+    encCtx->operation = xmlSecEncCtxMapOperation(keyInfoCtx->operation);
+    if(encCtx->operation == xmlSecTransformOperationNone) {
+        xmlSecInternalError2("invalid operation", NULL, "operation=%u", keyInfoCtx->operation);
+        return(-1);
+    }
     xmlSecAddIDs(node->doc, node, xmlSecEncIds);
 
     /* the EncapsulationMechanism node is the transform node itself */
@@ -1566,6 +1575,7 @@ xmlSecEncCtxEncapsulationMechanismXmlWrite(xmlSecEncCtxPtr encCtx, xmlNodePtr no
         xmlSecInternalError("xmlSecTransformCtxNodeRead", xmlSecNodeGetName(node));
         return(-1);
     }
+    encCtx->encMethod->operation = encCtx->operation;
 
     /* write */
     if(encCtx->encMethod->id->writeNode != NULL) {

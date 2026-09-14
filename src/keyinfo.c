@@ -917,7 +917,8 @@ xmlSecKeyDataValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node
         return(0);
     }
     if((xmlSecPtrListGetSize(&(keyInfoCtx->enabledKeyData)) > 0) &&
-        (xmlSecKeyDataIdListFind(&(keyInfoCtx->enabledKeyData), id) != 1)) {
+        (xmlSecKeyDataIdListFind(&(keyInfoCtx->enabledKeyData), key->value->id) != 1)
+    ) {
 
         /* we are not enabled to write out key data with this id */
         return(0);
@@ -1082,14 +1083,10 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
     }
 
     /* lax schema validation but application can disable it */
-    if(dataId == xmlSecKeyDataIdUnknown) {
-        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_UNKNOWN_HREF) != 0) {
-            xmlSecInvalidNodeAttributeError(node, xmlSecAttrType, xmlSecKeyDataKlassGetName(id),
-                "retrieval type is unknown");
-            goto done;
-        }
-
-        res = 0;
+    if((dataId == xmlSecKeyDataIdUnknown) &&
+       ((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_UNKNOWN_HREF) != 0)) {
+        xmlSecInvalidNodeAttributeError(node, xmlSecAttrType, xmlSecKeyDataKlassGetName(id),
+            "retrieval type is unknown");
         goto done;
     }
 

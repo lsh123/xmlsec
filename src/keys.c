@@ -775,6 +775,11 @@ int
 xmlSecKeySetValue(xmlSecKeyPtr key, xmlSecKeyDataPtr value) {
     xmlSecAssert2(key != NULL, -1);
 
+    /* do nothing if the same value is set again */
+    if(value == key->value) {
+        return(0);
+    }
+
     if(key->value != NULL) {
         xmlSecKeyDataDestroy(key->value);
         key->value = NULL;
@@ -893,6 +898,10 @@ xmlSecKeyAdoptData(xmlSecKeyPtr key, xmlSecKeyDataPtr data) {
 
     /* special cases */
     if(data->id == xmlSecKeyDataValueId) {
+        /* do nothing if the same value is adopted again */
+        if(data == key->value) {
+            return(0);
+        }
         if(key->value != NULL) {
             xmlSecKeyDataDestroy(key->value);
         }
@@ -913,6 +922,10 @@ xmlSecKeyAdoptData(xmlSecKeyPtr key, xmlSecKeyDataPtr data) {
     for(pos = 0; pos < size; ++pos) {
         tmp = (xmlSecKeyDataPtr)xmlSecPtrListGetItem(key->dataList, pos);
         if((tmp != NULL) && (tmp->id == data->id)) {
+            /* do nothing if the same data is already present */
+            if(tmp == data) {
+                return(0);
+            }
             return(xmlSecPtrListSet(key->dataList, data, pos));
         }
     }

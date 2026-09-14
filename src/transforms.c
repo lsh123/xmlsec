@@ -948,11 +948,17 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
         useVisa3DHack = 1;
     } else {
         xmlSecSize size;
-        int len;
+        int len, xptrLen, tmplLen;
 
         /* we need to add "xpointer(id('..')) because otherwise we have
          * problems with numeric ("111" and so on) and other "strange" ids */
-        len = xmlStrlen(BAD_CAST XMLSEC_TRANSFORM_XPOINTER_TMPL) + xmlStrlen(xptr) + 2;
+        tmplLen = xmlStrlen(BAD_CAST XMLSEC_TRANSFORM_XPOINTER_TMPL);
+        xptrLen = xmlStrlen(xptr);
+        if(xptrLen > (INT_MAX - tmplLen - 1)) {
+            xmlSecInvalidSizeError("size", (xmlSecSize)xptrLen, (xmlSecSize)(INT_MAX - tmplLen - 1), NULL);
+            goto done;
+        }
+        len = tmplLen + xptrLen + 1;
         XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(-1), NULL);
         buf = (xmlChar*)xmlMalloc(size * sizeof(xmlChar));
         if(buf == NULL) {
@@ -1433,6 +1439,9 @@ xmlSecTransformCreate(xmlSecTransformId id) {
        ((transform->id->usage & xmlSecTransformUsageAgreementMethod) != 0) ||
        ((transform->id->usage & xmlSecTransformUsageEncapsulationMechanism) != 0)
     ) {
+        /* the input (eg the shared secret fed into a KDF) and the output
+         * (the derived key) are both sensitive */
+        transform->inBuf.flags |= XMLSEC_BUFFER_FLAG_SECURE;
         transform->outBuf.flags |= XMLSEC_BUFFER_FLAG_SECURE;
     }
 

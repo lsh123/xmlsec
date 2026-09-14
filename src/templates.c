@@ -1780,12 +1780,16 @@ xmlSecTmplTransformAddXsltStylesheet(xmlNodePtr transformNode, const xmlChar *xs
 
     /* xsltRoot is now a child of transformNode; make sure its subtree points
      * at transformNode's document */
+#if LIBXML_VERSION < 21300
+    xmlSetTreeDoc(xsltRoot, transformNode->doc);
+#else  /* LIBXML_VERSION < 21300 */
     ret = xmlSetTreeDoc(xsltRoot, transformNode->doc);
     if(ret < 0) {
         xmlSecInternalError("xmlSetTreeDoc", NULL);
         xmlFreeDoc(xsltDoc);
         return(-1);
     }
+#endif /* LIBXML_VERSION < 21300 */
 
     /* success */
     xmlFreeDoc(xsltDoc);

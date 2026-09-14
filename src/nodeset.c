@@ -183,7 +183,7 @@ xmlSecNodeSetCheckNodeOrParent(xmlNodeSetPtr nodes, xmlNodePtr node, xmlNodePtr 
         }
 
         /* traverse up the tree, only element nodes can have children
-         * (we do not include the doc itself to avoid duplicates)*/
+         * (we explicitly do not include the doc itself to avoid duplicates) */
         if((parent != NULL) && (parent->type == XML_ELEMENT_NODE)) {
             node = parent;
             parent = parent->parent;
@@ -501,7 +501,7 @@ xmlSecNodeSetWalkRecursiveCallback(xmlNodePtr cur, void* data) {
     xmlSecAssert2(cur != NULL, -1);
 
     /* the node itself */
-    if(xmlSecNodeSetContains(ctx->nset, cur, parent)) {
+    if(xmlSecNodeSetContains(ctx->nset, cur, parent) == 1) {
         ret = ctx->walkFunc(ctx->nset, cur, parent, ctx->data);
         if(ret < 0) {
             return(-1);
@@ -516,7 +516,7 @@ xmlSecNodeSetWalkRecursiveCallback(xmlNodePtr cur, void* data) {
 
         attr = (xmlAttrPtr)cur->properties;
         while(attr != NULL) {
-            if(xmlSecNodeSetContains(ctx->nset, (xmlNodePtr)attr, cur)) {
+            if(xmlSecNodeSetContains(ctx->nset, (xmlNodePtr)attr, cur) == 1) {
                 ret = ctx->walkFunc(ctx->nset, (xmlNodePtr)attr, cur, ctx->data);
                 if(ret < 0) {
                     return(-1);
@@ -530,7 +530,7 @@ xmlSecNodeSetWalkRecursiveCallback(xmlNodePtr cur, void* data) {
             ns = node->nsDef;
             while(ns != NULL) {
                 tmp = xmlSearchNs(ctx->nset->doc, cur, ns->prefix);
-                if((tmp == ns) && xmlSecNodeSetContains(ctx->nset, (xmlNodePtr)ns, cur)) {
+                if((tmp == ns) && (xmlSecNodeSetContains(ctx->nset, (xmlNodePtr)ns, cur) == 1)) {
                     ret = ctx->walkFunc(ctx->nset, (xmlNodePtr)ns, cur, ctx->data);
                     if(ret < 0) {
                         return(-1);
@@ -718,19 +718,24 @@ xmlSecNodeSetDebugDump(xmlSecNodeSetPtr nset, FILE *output) {
         break;
     }
 
-    switch(nset->op) {
-    case xmlSecNodeSetUnion:
-        fprintf(output, "  operation: xmlSecNodeSetUnion\n");
-        break;
-    case xmlSecNodeSetIntersection:
-        fprintf(output, "  operation: xmlSecNodeSetIntersection\n");
-        break;
-    case xmlSecNodeSetSubtraction:
-        fprintf(output, "  operation: xmlSecNodeSetSubtraction\n");
-        break;
-    default:
-        xmlSecUnsupportedEnumValueError("node set operation", nset->op, NULL);
-        break;
+    if(nset->next == nset) {
+        /* a single set has no operation (the op field is only used for combined sets) */
+        fprintf(output, "  operation: (none)\n");
+    } else {
+        switch(nset->op) {
+        case xmlSecNodeSetUnion:
+            fprintf(output, "  operation: xmlSecNodeSetUnion\n");
+            break;
+        case xmlSecNodeSetIntersection:
+            fprintf(output, "  operation: xmlSecNodeSetIntersection\n");
+            break;
+        case xmlSecNodeSetSubtraction:
+            fprintf(output, "  operation: xmlSecNodeSetSubtraction\n");
+            break;
+        default:
+            xmlSecUnsupportedEnumValueError("node set operation", nset->op, NULL);
+            break;
+        }
     }
 
     len = xmlXPathNodeSetGetLength(nset->nodes);

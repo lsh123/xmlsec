@@ -980,6 +980,13 @@ xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
         }
     }
 
+    /* reject an incomplete trailing escape sequence (a trailing backslash or a backslash
+     * followed by a single hex digit) */
+    if((state == XMLSEC_X509_NAME_READ_STATE_AFTER_SLASH1) || (state == XMLSEC_X509_NAME_READ_STATE_AFTER_SLASH2)) {
+        xmlSecInvalidDataError("incomplete escape sequence at the end of the string", NULL);
+        return(-1);
+    }
+
     /* success */
     (*inSize) -= ii;
     (*in) += ii;

@@ -1286,8 +1286,7 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {
             return(NULL);
         }
 
-        if((xmlSecKeyGetValue(key) != NULL) &&
-           (xmlSecKeyMatch(key, NULL, &(keyInfoCtx->keyReq)) != 0)) {
+        if((xmlSecKeyGetValue(key) != NULL) && (xmlSecKeyMatch(key, NULL, &(keyInfoCtx->keyReq)) == 1)) {
             return(key);
         }
     }
@@ -1296,14 +1295,12 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     /* if we have keys manager, try to find any key that matches the required key (if lax key search is allowed) */
     if(((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_LAX_KEY_SEARCH) != 0) &&  (keyInfoCtx->keysMngr != NULL)) {
         key = xmlSecKeysMngrFindKey(keyInfoCtx->keysMngr, NULL, keyInfoCtx);
-        if(key == NULL) {
-            xmlSecInternalError("xmlSecKeysMngrFindKey", NULL);
-            return(NULL);
-        }
-        if(xmlSecKeyGetValue(key) != NULL) {
+        if((key != NULL) && (xmlSecKeyGetValue(key) != NULL)) {
             return(key);
         }
-        xmlSecKeyDestroy(key);
+        if(key != NULL) {
+            xmlSecKeyDestroy(key);
+        }
     }
 
     xmlSecOtherError(XMLSEC_ERRORS_R_KEY_NOT_FOUND, NULL, NULL);

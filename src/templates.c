@@ -381,16 +381,21 @@ xmlSecTmplSignatureAddObject(xmlNodePtr signNode, const xmlChar *id,
 xmlNodePtr
 xmlSecTmplSignatureGetSignMethodNode(xmlNodePtr signNode) {
     xmlNodePtr signedInfoNode;
+    xmlNodePtr res;
 
     xmlSecAssert2(signNode != NULL, NULL);
 
     signedInfoNode = xmlSecFindChild(signNode, xmlSecNodeSignedInfo, xmlSecDSigNs);
     if(signedInfoNode == NULL) {
-        xmlSecNodeNotFoundError("xmlSecFindChild", signNode,
-                                xmlSecNodeSignedInfo, NULL);
+        xmlSecNodeNotFoundError("xmlSecFindChild", signNode, xmlSecNodeSignedInfo, NULL);
         return(NULL);
     }
-    return(xmlSecFindChild(signedInfoNode, xmlSecNodeSignatureMethod, xmlSecDSigNs));
+    res = xmlSecFindChild(signedInfoNode, xmlSecNodeSignatureMethod, xmlSecDSigNs);
+    if(res == NULL) {
+        xmlSecNodeNotFoundError("xmlSecFindChild", signedInfoNode, xmlSecNodeSignatureMethod, NULL);
+        return(NULL);
+    }
+    return(res);
 }
 
 /**
@@ -403,16 +408,21 @@ xmlSecTmplSignatureGetSignMethodNode(xmlNodePtr signNode) {
 xmlNodePtr
 xmlSecTmplSignatureGetC14NMethodNode(xmlNodePtr signNode) {
     xmlNodePtr signedInfoNode;
+    xmlNodePtr res;
 
     xmlSecAssert2(signNode != NULL, NULL);
 
     signedInfoNode = xmlSecFindChild(signNode, xmlSecNodeSignedInfo, xmlSecDSigNs);
     if(signedInfoNode == NULL) {
-        xmlSecNodeNotFoundError("xmlSecFindChild", signNode,
-                                xmlSecNodeSignedInfo, NULL);
+        xmlSecNodeNotFoundError("xmlSecFindChild", signNode, xmlSecNodeSignedInfo, NULL);
         return(NULL);
     }
-    return(xmlSecFindChild(signedInfoNode, xmlSecNodeCanonicalizationMethod, xmlSecDSigNs));
+    res = xmlSecFindChild(signedInfoNode, xmlSecNodeCanonicalizationMethod, xmlSecDSigNs);
+    if(res == NULL) {
+        xmlSecNodeNotFoundError("xmlSecFindChild", signedInfoNode, xmlSecNodeCanonicalizationMethod, NULL);
+        return(NULL);
+    }
+    return(res);
 }
 
 /**
@@ -912,9 +922,16 @@ xmlSecTmplEncDataEnsureCipherReference(xmlNodePtr encNode, const xmlChar *uri) {
  */
 xmlNodePtr
 xmlSecTmplEncDataGetEncMethodNode(xmlNodePtr encNode) {
+    xmlNodePtr res;
+
     xmlSecAssert2(encNode != NULL, NULL);
 
-    return(xmlSecFindChild(encNode, xmlSecNodeEncryptionMethod, xmlSecEncNs));
+    res = xmlSecFindChild(encNode, xmlSecNodeEncryptionMethod, xmlSecEncNs);
+    if(res == NULL) {
+        xmlSecNodeNotFoundError("xmlSecFindChild", encNode, xmlSecNodeEncryptionMethod, NULL);
+        return(NULL);
+    }
+    return(res);
 }
 
 /**

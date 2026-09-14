@@ -648,7 +648,8 @@ done:
  */
 int
 xmlSecBufferBase64NodeContentWrite(xmlSecBufferPtr buf, xmlNodePtr node, int columns) {
-    xmlSecByte* data;
+    static const xmlSecByte empty[] = { 0 };
+    const xmlSecByte* data;
     xmlSecSize size;
     xmlChar* content;
 
@@ -661,12 +662,17 @@ xmlSecBufferBase64NodeContentWrite(xmlSecBufferPtr buf, xmlNodePtr node, int col
         xmlSecInternalError("xmlSecBufferGetData", NULL);
         return(-1);
     }
-    if(size == 0) {
-        /* xmlSecBase64Encode() requires a non-NULL input pointer */
-        data = (xmlSecByte*)"";
+    if(data == NULL) {
+        data = empty;
+        size = 0;
     }
 
-    content = xmlSecBase64Encode(data, size, columns);
+    /* xmlSecBase64Encode() requires a non-NULL input pointer */
+    content = xmlSecBase64Encode(
+        ((data != NULL) ? data : empty),
+        ((data != NULL) ? size : 0),
+        columns
+    );
     if(content == NULL) {
         xmlSecInternalError("xmlSecBase64Encode", NULL);
         return(-1);

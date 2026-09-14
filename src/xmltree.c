@@ -110,7 +110,7 @@ xmlSecGetNodeContentAsHex(const xmlNodePtr cur, xmlSecBufferPtr res) {
 
     content = xmlSecGetNodeContentAndTrim(cur);
     if(content == NULL) {
-        xmlSecInvalidNodeContentError(cur, NULL, "empty");
+        xmlSecInternalError("xmlSecGetNodeContentAndTrim", NULL);
         return(-1);
     }
 
@@ -1923,9 +1923,7 @@ xmlSecQName2BitMaskNodesRead(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr* n
             return(-1);
         }
         if((stopOnUnknown != 0) && (tmp == 0)) {
-            /* todo: better error */
-            xmlSecInternalError2("xmlSecQName2BitMaskGetBitMaskFromString", NULL,
-                                 "value=%s", xmlSecErrorsSafeString(content));
+            xmlSecInvalidNodeContentError(cur, NULL, "unknown value");
             xmlFree(content);
             return(-1);
         }

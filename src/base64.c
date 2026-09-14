@@ -542,7 +542,8 @@ xmlSecBase64CtxEncodeFinal(xmlSecBase64CtxPtr ctx, xmlSecByte* outBuf, xmlSecSiz
 static int
 xmlSecBase64CtxDecode(xmlSecBase64CtxPtr ctx,
                      const xmlSecByte* inBuf, xmlSecSize inBufSize, xmlSecSize* inBufResSize,
-                     xmlSecByte* outBuf, xmlSecSize outBufSize, xmlSecSize* outBufResSize) {
+                     xmlSecByte* outBuf, xmlSecSize outBufSize, xmlSecSize* outBufResSize
+) {
     xmlSecBase64Status status = xmlSecBase64StatusNext;
     xmlSecSize inPos, outPos;
     xmlSecByte nextByte;
@@ -566,19 +567,15 @@ xmlSecBase64CtxDecode(xmlSecBase64CtxPtr ctx,
                 ++outPos;
                 ++inPos;
                 break;
-            case xmlSecBase64StatusConsumeAndRepeat:
-                if(outPos >= outBufSize) {
-                    xmlSecInvalidSizeOtherError("output base64 buffer size is too small", NULL);
-                    return(-1);
-                }
-                outBuf[outPos] = nextByte;
-                ++outPos;
-                break;
             case xmlSecBase64StatusNext:
                 ++inPos;
                 break;
             case xmlSecBase64StatusDone:
                 break;
+            /* this is unreachable since xmlSecBase64CtxDecodeByte() never returns xmlSecBase64StatusConsumeAndRepeat */
+            case xmlSecBase64StatusConsumeAndRepeat:
+                xmlSecInternalError("xmlSecBase64CtxDecodeByte returned xmlSecBase64StatusConsumeAndRepeat", NULL);
+                return(-1);
             case xmlSecBase64StatusFailed:
                 xmlSecInternalError2("xmlSecBase64CtxDecodeByte", NULL, "status=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(status));
                 return(-1);

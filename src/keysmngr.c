@@ -396,6 +396,7 @@ xmlSecSimpleKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecSimpleKeysStoreId), -1);
     xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(xmlSecKeyIsValid(key), -1);
 
     list = xmlSecSimpleKeysStoreGetCtx(store);
     xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecKeyPtrListId), -1);

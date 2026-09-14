@@ -276,6 +276,7 @@ xmlSecDSigCtxSign(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr tmpl) {
     /* add ids for Signature nodes */
     dsigCtx->operation  = xmlSecTransformOperationSign;
     dsigCtx->status     = xmlSecDSigStatusUnknown;
+    dsigCtx->failureReason = xmlSecDSigFailureReasonUnknown;
     dsigCtx->keyInfoReadCtx.operation  = xmlSecTransformOperationSign;
     dsigCtx->keyInfoWriteCtx.operation = xmlSecTransformOperationSign;
     xmlSecAddIDs(tmpl->doc, tmpl, xmlSecDSigIds);
@@ -328,7 +329,7 @@ xmlSecDSigCtxSign(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr tmpl) {
  * @param dsigCtx the pointer to &lt;dsig:Signature/&gt; processing context.
  * @param node the pointer with &lt;dsig:Signature/&gt; node.
  * @return 0 on success (check @p status member of @p dsigCtx to get
- * signature verification result) or a negative value if an error occurs.
+ * the actual signature verification result) or a negative value if an error occurs.
  */
 int
 xmlSecDSigCtxVerify(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
@@ -341,6 +342,7 @@ xmlSecDSigCtxVerify(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     /* add ids for Signature nodes */
     dsigCtx->operation  = xmlSecTransformOperationVerify;
     dsigCtx->status     = xmlSecDSigStatusUnknown;
+    dsigCtx->failureReason = xmlSecDSigFailureReasonUnknown;
     dsigCtx->keyInfoReadCtx.operation  = xmlSecTransformOperationVerify;
     dsigCtx->keyInfoWriteCtx.operation = xmlSecTransformOperationVerify;
     xmlSecAddIDs(node->doc, node, xmlSecDSigIds);

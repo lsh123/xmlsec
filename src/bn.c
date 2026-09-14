@@ -161,7 +161,6 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
     int baseInt, nn;
     xmlSecSize ii, strSize, size;
     xmlSecByte ch;
-    xmlSecByte* data;
     int ret;
 
     xmlSecAssert2(bn != NULL, -1);
@@ -220,12 +219,9 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
         }
     }
 
-    /* prepend a 0x00 byte when the most significant bit is set (or the value
-     * is zero) so that the buffer stays a valid unsigned magnitude; this keeps
-     * the result compatible with DER/ASN.1 INTEGER consumers */
-    data = xmlSecBufferGetData(bn);
+    /* ensure the buffer is not empty for a zero value */
     size = xmlSecBufferGetSize(bn);
-    if(((size > 0) && (data != NULL) && (data[0] > 127)) || (size == 0))  {
+    if(size == 0) {
         ch = 0;
         ret = xmlSecBufferPrepend(bn, &ch, 1);
         if(ret < 0) {
@@ -416,20 +412,6 @@ xmlSecBnMul(xmlSecBnPtr bn, int multiplier) {
         }
     }
 
-    /* keep the buffer a valid unsigned magnitude: prepend a 0x00 byte when the
-     * most significant bit is set so DER/ASN.1 INTEGER consumers read it as
-     * non-negative (re-read data/size since prepends may have reallocated) */
-    data = xmlSecBufferGetData(bn);
-    ii = xmlSecBufferGetSize(bn);
-    if((ii > 0) && (data != NULL) && (data[0] > 127)) {
-        ch = 0;
-        ret = xmlSecBufferPrepend(bn, &ch, 1);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecBufferPrepend(1)", NULL);
-            return (-1);
-        }
-    }
-
     return(0);
 }
 
@@ -447,7 +429,6 @@ xmlSecBnDiv(xmlSecBnPtr bn, int divider, int* mod) {
     unsigned long long dividerULL;
     xmlSecSize ii, size;
     xmlSecByte* data;
-    xmlSecByte ch;
     int ret;
 
     xmlSecAssert2(bn != NULL, -1);
@@ -484,20 +465,6 @@ xmlSecBnDiv(xmlSecBnPtr bn, int divider, int* mod) {
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferRemoveHead", NULL,
                 "size=" XMLSEC_SIZE_FMT, ii);
-            return (-1);
-        }
-    }
-
-    /* keep the buffer a valid unsigned magnitude: prepend a 0x00 byte when the
-     * most significant bit is set so DER/ASN.1 INTEGER consumers read it as
-     * non-negative (re-read data/size since the buffer may have been reallocated) */
-    data = xmlSecBufferGetData(bn);
-    size = xmlSecBufferGetSize(bn);
-    if((size > 0) && (data != NULL) && (data[0] > 127)) {
-        ch = 0;
-        ret = xmlSecBufferPrepend(bn, &ch, 1);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecBufferPrepend(1)", NULL);
             return (-1);
         }
     }
@@ -550,20 +517,6 @@ xmlSecBnAdd(xmlSecBnPtr bn, int delta) {
                 return (-1);
             }
         }
-
-        /* keep the buffer a valid unsigned magnitude: prepend a 0x00 byte when
-         * the most significant bit is set so DER/ASN.1 INTEGER consumers read
-         * it as non-negative (re-read data/size since prepends may have reallocated) */
-        data = xmlSecBufferGetData(bn);
-        size = xmlSecBufferGetSize(bn);
-        if((size > 0) && (data != NULL) && (data[0] > 127)) {
-            ch = 0;
-            ret = xmlSecBufferPrepend(bn, &ch, 1);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecBufferPrepend(1)", NULL);
-                return (-1);
-            }
-        }
     } else {
         unsigned int absDelta;
 
@@ -595,13 +548,10 @@ xmlSecBnAdd(xmlSecBnPtr bn, int delta) {
             return (-1);
         }
 
-        /* trim leading zeros to keep the canonical form, but keep at least one
-         * byte and never expose a most-significant byte with its high bit set
-         * (that would be misread as negative); in that case the 0x00 prefix is
-         * kept so the buffer stays a valid unsigned magnitude */
+        /* trim leading zeros to keep the canonical form, keeping at least one byte */
         size = xmlSecBufferGetSize(bn);
         data = xmlSecBufferGetData(bn);
-        while((size > 1) && (data != NULL) && (data[0] == 0x00) && (data[1] < 0x80)) {
+        while((size > 1) && (data != NULL) && (data[0] == 0x00)) {
             ret = xmlSecBufferRemoveHead(bn, 1);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecBufferRemoveHead(1)", NULL);

@@ -52,6 +52,8 @@ struct _xmlSecCryptoDLLibrary {
     xmlChar*    getFunctionsName;
     xmlSecCryptoDLFunctionsPtr functions;
 
+    /* Only one of the handles will be enabled depending on the platform, if both are enabled
+     * then the library is not configured correctly */
 #ifdef XMLSEC_DL_LIBLTDL
     lt_dlhandle handle;
 #endif /* XMLSEC_DL_LIBLTDL */
@@ -620,7 +622,7 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
     XMLSEC_REGISTER_DISABLED_KEY_DATA(EdDSA);                       /* keyDataEdDSAGetKlass */
     XMLSEC_REGISTER_DISABLED_KEY_DATA(Xdh);                         /* keyDataXdhGetKlass */
 
-     /* DEREncodedKeyValue key data should not be used in production w/o understanding of the security risks */
+    /* DEREncodedKeyValue key data should not be used in production w/o understanding of the security risks */
     XMLSEC_REGISTER_DISABLED_KEY_DATA(DEREncodedKeyValue);          /* keyDataDEREncodedKeyValueGetKlass */
 
     XMLSEC_REGISTER_KEY_DATA(X509);                                 /* keyDataX509GetKlass */

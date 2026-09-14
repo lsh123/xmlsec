@@ -452,7 +452,6 @@ xmlSecTransformRelationshipProcessNodeList(xmlSecTransformPtr transform, xmlOutp
             }
         }
     }
-    xmlListSort(list);
 
     while(!xmlListEmpty(list)) {
         xmlLinkPtr link = xmlListFront(list);

@@ -337,8 +337,10 @@ xmlSecNssAeadCipherGetKey(xmlSecNssAeadCipherCtxPtr ctx, CK_ATTRIBUTE_TYPE opera
 
 static int
 xmlSecNssAeadCipherEncrypt(xmlSecNssAeadCipherCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out) {
+    static const xmlSecByte empty[] = { 0 };
     xmlSecSize inSize, outSize;
-    xmlSecByte *plaintext, *outData;
+    const xmlSecByte *plaintext;
+    xmlSecByte *outData;
     SECItem param = { siBuffer, NULL, 0 };
     PK11SymKey* symKey = NULL;
     unsigned int outputlen = 0, maxoutputlen, inputlen;
@@ -417,7 +419,9 @@ xmlSecNssAeadCipherEncrypt(xmlSecNssAeadCipherCtxPtr ctx, xmlSecBufferPtr in, xm
     /* encrypt */
     rv = PK11_Encrypt(symKey, ctx->mechanism, &param,
             outData, &outputlen, maxoutputlen,
-            plaintext != NULL ? plaintext : (xmlSecByte*)"", inputlen);
+            ((plaintext != NULL) ? plaintext : empty),
+            ((plaintext != NULL) ? inputlen : 0)
+        );
     if(rv != SECSuccess) {
         xmlSecNssError("PK11_Encrypt", NULL);
         PK11_FreeSymKey(symKey);

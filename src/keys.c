@@ -105,8 +105,6 @@ xmlSecKeyUseWithCreate(const xmlChar* application, const xmlChar* identifier) {
         xmlSecMallocError(sizeof(xmlSecKeyUseWith), NULL);
         return(NULL);
     }
-    memset(keyUseWith, 0, sizeof(xmlSecKeyUseWith));
-
     ret = xmlSecKeyUseWithInitialize(keyUseWith);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyUseWithInitialize", NULL);
@@ -330,7 +328,7 @@ xmlSecKeyReqReset(xmlSecKeyReqPtr keyReq) {
 
     xmlSecPtrListEmpty(&keyReq->keyUseWithList);
     keyReq->keyId       = NULL;
-    keyReq->keyType     = 0;
+    keyReq->keyType     = xmlSecKeyDataTypeUnknown;
     keyReq->keyUsage    = xmlSecKeyUsageAny;
     keyReq->keyBitsSize = 0;
 }
@@ -387,7 +385,7 @@ xmlSecKeyReqMatchKey(xmlSecKeyReqPtr keyReq, xmlSecKeyPtr key) {
     if((keyReq->keyType != xmlSecKeyDataTypeUnknown) && ((xmlSecKeyGetType(key) & keyReq->keyType) == 0)) {
         return(0);
     }
-    if((keyReq->keyUsage != xmlSecKeyDataUsageUnknown) && ((keyReq->keyUsage & key->usage) == 0)) {
+    if((keyReq->keyUsage != xmlSecKeyUsageUnknown) && ((keyReq->keyUsage & key->usage) == 0)) {
         return(0);
     }
 

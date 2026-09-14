@@ -27,7 +27,6 @@
 
 #include "cast_helpers.h"
 
-#define xmlSecRelationshipMcNs          BAD_CAST "http://schemas.openxmlformats.org/markup-compatibility/2006"
 #define xmlSecRelationshipXmlNs         BAD_CAST "http://www.w3.org/XML/1998/namespace"
 
 

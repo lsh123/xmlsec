@@ -17,9 +17,6 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
-#include <time.h>
-
-#include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/app.h>
@@ -339,6 +336,7 @@ xmlSecKeyDataPbkdf2GetKlass(void) {
 
     return(functions->keyDataPbkdf2GetKlass());
 }
+
 /**
  * @brief The RSA key data klass.
  * @return RSA key data klass or NULL if an error occurs
@@ -355,6 +353,7 @@ xmlSecKeyDataRsaGetKlass(void) {
 
     return(functions->keyDataRsaGetKlass());
 }
+
 /**
  * @brief The ML-DSA key data klass.
  * @return ML-DSA key data klass or NULL if an error occurs
@@ -371,6 +370,7 @@ xmlSecKeyDataMLDSAGetKlass(void) {
 
     return(functions->keyDataMLDSAGetKlass());
 }
+
 /**
  * @brief The ML-KEM key data klass.
  * @return ML-KEM key data klass or NULL if an error occurs
@@ -387,6 +387,7 @@ xmlSecKeyDataMLKEMGetKlass(void) {
 
     return(functions->keyDataMLKEMGetKlass());
 }
+
 /**
  * @brief The SLH-DSA key data klass.
  * @return SLH-DSA key data klass or NULL if an error occurs
@@ -574,8 +575,7 @@ xmlSecTransformAes256CbcGetKlass(void) {
  * implemented).
  */
 xmlSecTransformId
-xmlSecTransformAes128GcmGetKlass(void)
-{
+xmlSecTransformAes128GcmGetKlass(void) {
     xmlSecCryptoDLFunctionsPtr functions = xmlSecCryptoDLGetFunctions();
     if((functions == NULL) || (functions->transformAes128GcmGetKlass == NULL)) {
         xmlSecNotImplementedError2(missingMethodError, "transformAes128GcmGetKlass");
@@ -592,8 +592,7 @@ xmlSecTransformAes128GcmGetKlass(void)
  * implemented).
  */
 xmlSecTransformId
-xmlSecTransformAes192GcmGetKlass(void)
-{
+xmlSecTransformAes192GcmGetKlass(void) {
     xmlSecCryptoDLFunctionsPtr functions = xmlSecCryptoDLGetFunctions();
     if((functions == NULL) || (functions->transformAes192GcmGetKlass == NULL)) {
         xmlSecNotImplementedError2(missingMethodError, "transformAes192GcmGetKlass");
@@ -610,8 +609,7 @@ xmlSecTransformAes192GcmGetKlass(void)
  * implemented).
  */
 xmlSecTransformId
-xmlSecTransformAes256GcmGetKlass(void)
-{
+xmlSecTransformAes256GcmGetKlass(void) {
     xmlSecCryptoDLFunctionsPtr functions = xmlSecCryptoDLGetFunctions();
     if((functions == NULL) || (functions->transformAes256GcmGetKlass == NULL)) {
         xmlSecNotImplementedError2(missingMethodError, "transformAes256GcmGetKlass");
@@ -628,8 +626,7 @@ xmlSecTransformAes256GcmGetKlass(void)
  * implemented).
  */
 xmlSecTransformId
-xmlSecTransformConcatKdfGetKlass(void)
-{
+xmlSecTransformConcatKdfGetKlass(void) {
     xmlSecCryptoDLFunctionsPtr functions = xmlSecCryptoDLGetFunctions();
     if((functions == NULL) || (functions->transformConcatKdfGetKlass == NULL)) {
         xmlSecNotImplementedError2(missingMethodError, "transformConcatKdfGetKlass");
@@ -867,8 +864,7 @@ xmlSecTransformKWDes3GetKlass(void) {
  * implemented).
  */
 xmlSecTransformId
-xmlSecTransformDhEsGetKlass(void)
-{
+xmlSecTransformDhEsGetKlass(void) {
     xmlSecCryptoDLFunctionsPtr functions = xmlSecCryptoDLGetFunctions();
     if((functions == NULL) || (functions->transformDhEsGetKlass == NULL)) {
         xmlSecNotImplementedError2(missingMethodError, "transformDhEsGetKlass");
@@ -936,8 +932,7 @@ xmlSecTransformDsaSha256GetKlass(void) {
  * implemented).
  */
 xmlSecTransformId
-xmlSecTransformEcdhGetKlass(void)
-{
+xmlSecTransformEcdhGetKlass(void) {
     xmlSecCryptoDLFunctionsPtr functions = xmlSecCryptoDLGetFunctions();
     if((functions == NULL) || (functions->transformEcdhGetKlass == NULL)) {
         xmlSecNotImplementedError2(missingMethodError, "transformEcdhGetKlass");
@@ -954,8 +949,7 @@ xmlSecTransformEcdhGetKlass(void)
  * implemented).
  */
 xmlSecTransformId
-xmlSecTransformX25519GetKlass(void)
-{
+xmlSecTransformX25519GetKlass(void) {
     xmlSecCryptoDLFunctionsPtr functions = xmlSecCryptoDLGetFunctions();
     if((functions == NULL) || (functions->transformX25519GetKlass == NULL)) {
         xmlSecNotImplementedError2(missingMethodError, "transformX25519GetKlass");
@@ -972,8 +966,7 @@ xmlSecTransformX25519GetKlass(void)
  * implemented).
  */
 xmlSecTransformId
-xmlSecTransformX448GetKlass(void)
-{
+xmlSecTransformX448GetKlass(void) {
     xmlSecCryptoDLFunctionsPtr functions = xmlSecCryptoDLGetFunctions();
     if((functions == NULL) || (functions->transformX448GetKlass == NULL)) {
         xmlSecNotImplementedError2(missingMethodError, "transformX448GetKlass");
@@ -1449,6 +1442,7 @@ xmlSecTransformMLDSA87GetKlass(void) {
 
     return(functions->transformMLDSA87GetKlass());
 }
+
 /**
  * @brief The ML-KEM-512 key transport transform klass.
  * @return ML-KEM-512 key transport transform klass or NULL if an error
@@ -1499,6 +1493,7 @@ xmlSecTransformMLKEM1024GetKlass(void) {
 
     return(functions->transformMLKEM1024GetKlass());
 }
+
 /**
  * @brief PBKDF2 key derivation transform klass.
  * @return pointer to PBKDF2 key derivation transform or NULL if an error
@@ -1506,8 +1501,7 @@ xmlSecTransformMLKEM1024GetKlass(void) {
  * implemented).
  */
 xmlSecTransformId
-xmlSecTransformPbkdf2GetKlass(void)
-{
+xmlSecTransformPbkdf2GetKlass(void) {
     xmlSecCryptoDLFunctionsPtr functions = xmlSecCryptoDLGetFunctions();
     if((functions == NULL) || (functions->transformPbkdf2GetKlass == NULL)) {
         xmlSecNotImplementedError2(missingMethodError, "transformPbkdf2GetKlass");
@@ -2050,6 +2044,7 @@ xmlSecTransformGostR3411_2012_512GetKlass(void) {
 
     return(functions->transformGostR3411_2012_512GetKlass());
 }
+
 /**
  * @brief SHA-1 digest transform klass.
  * @return pointer to SHA-1 digest transform klass or NULL if an error

@@ -641,7 +641,7 @@ xmlSecBase64GetDecodeSize(xmlSecSize inSize) {
         ++blocks;
     }
 
-    if(blocks > ((XMLSEC_SIZE_MAX - 8)/ 3)) {
+    if(blocks > ((XMLSEC_SIZE_MAX - 8) / 3)) {
         return(0);
     }
     return(3 * blocks + 8);

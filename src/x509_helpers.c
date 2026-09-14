@@ -532,7 +532,7 @@ xmlSecKeyX509DataValueXmlReadString(xmlChar **str, xmlNodePtr node, xmlSecKeyInf
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     content = xmlSecGetNodeContentAndTrim(node);
-    if((content == NULL) || (xmlStrlen(content) <= 0)) {
+    if((content == NULL) || (xmlStrlen(content) == 0)) {
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
             xmlSecInvalidNodeContentError(node, NULL, "empty");
             goto done;
@@ -1159,6 +1159,10 @@ xmlSecX509NameRead(const xmlChar *str, xmlSecX509NameReplacements *replacements,
             return(-1);
         }
         xmlSecAssert2(nameSize < sizeof(name), -1);
+        if(nameSize == 0) {
+            xmlSecInvalidDataError("empty attribute name", NULL);
+            return(-1);
+        }
         name[nameSize] = '\0';
 
         /* expect and skip '=' */

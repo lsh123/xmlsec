@@ -213,7 +213,6 @@ const xmlChar xmlSecNsExcC14NWithComments[]     = "http://www.w3.org/2001/10/xml
 const xmlChar xmlSecNodeInclusiveNamespaces[]   = "InclusiveNamespaces";
 const xmlChar xmlSecAttrPrefixList[]            = "PrefixList";
 
-
 /******************************************************************************
  *
  * ConcatKDF strings
@@ -333,7 +332,6 @@ const xmlChar xmlSecHrefDsaSha1[]               = "http://www.w3.org/2000/09/xml
 const xmlChar xmlSecNameDsaSha256[]             = "dsa-sha256";
 const xmlChar xmlSecHrefDsaSha256[]             = "http://www.w3.org/2009/xmldsig11#dsa-sha256";
 
-
 /******************************************************************************
  *
  * EC key strings
@@ -438,7 +436,6 @@ const xmlChar xmlSecHrefMLDSA65[]             = XMLSEC_ALEKSEY_EXPERIMENTAL_2025
 const xmlChar xmlSecNameMLDSA87[]             = "ml-dsa-87";
 const xmlChar xmlSecHrefMLDSA87[]             = XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12 "ml-dsa-87";
 
-
 /******************************************************************************
  *
  * ML-KEM key strings
@@ -460,7 +457,6 @@ const xmlChar xmlSecHrefMLKEM768[]            = XMLSEC_ALEKSEY_EXPERIMENTAL_2025
 
 const xmlChar xmlSecNameMLKEM1024[]           = "ml-kem-1024";
 const xmlChar xmlSecHrefMLKEM1024[]           = XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12 "ml-kem-1024";
-
 
 /******************************************************************************
  *
@@ -496,7 +492,6 @@ const xmlChar xmlSecHrefSLHDSA_SHA2_256f[]    = XMLSEC_ALEKSEY_EXPERIMENTAL_2025
 const xmlChar xmlSecNameSLHDSA_SHA2_256s[]    = "slh-dsa-sha2-256s";
 const xmlChar xmlSecHrefSLHDSA_SHA2_256s[]    = XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12 "slh-dsa-sha2-256s";
 
-
 /******************************************************************************
  *
  * EdDSA key strings
@@ -527,7 +522,6 @@ const xmlChar xmlSecHrefEdDSAEd448[]          = "http://www.w3.org/2021/04/xmlds
 
 const xmlChar xmlSecNameEdDSAEd448ph[]        = "eddsa-ed448ph";
 const xmlChar xmlSecHrefEdDSAEd448ph[]        = "http://www.w3.org/2021/04/xmldsig-more#eddsa-ed448ph";
-
 
 /******************************************************************************
  *
@@ -573,7 +567,6 @@ const xmlChar xmlSecNameEncapsulationMechanism[]    = "encapsulation-mechanism";
 const xmlChar xmlSecNodeEncapsulationMechanism[]    = "EncapsulationMechanism";
 const xmlChar xmlSecHrefEncapsulationMechanism[]    = XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12 "EncapsulationMechanism";
 
-
 /******************************************************************************
  *
  * Enveloped transform strings
@@ -614,7 +607,6 @@ const xmlChar xmlSecHrefHmacSha384[]            = "http://www.w3.org/2001/04/xml
 const xmlChar xmlSecNameHmacSha512[]            = "hmac-sha512";
 const xmlChar xmlSecHrefHmacSha512[]            = "http://www.w3.org/2001/04/xmldsig-more#hmac-sha512";
 
-
 /******************************************************************************
  *
  * KeyInfoReference
@@ -622,7 +614,6 @@ const xmlChar xmlSecHrefHmacSha512[]            = "http://www.w3.org/2001/04/xml
   *****************************************************************************/
 const xmlChar xmlSecNameKeyInfoReference[]      = "key-info-reference";
 const xmlChar xmlSecNodeKeyInfoReference[]      = "KeyInfoReference";
-
 
 /******************************************************************************
  *
@@ -804,7 +795,6 @@ const xmlChar xmlSecHrefGostR3411_2012_256[]                  = "urn:ietf:params
 
 const xmlChar xmlSecNameGostR3411_2012_512[]                  = "gostr34112012-512";
 const xmlChar xmlSecHrefGostR3411_2012_512[]                  = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34112012-512";
-
 
 /******************************************************************************
  *

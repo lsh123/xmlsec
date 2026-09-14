@@ -912,7 +912,7 @@ xmlSecKeyDataValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node
     xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeWrite, -1);
 
     if(!xmlSecKeyDataIsValid(key->value) ||
-       !xmlSecKeyDataCheckUsage(key->value, xmlSecKeyDataUsageKeyValueNodeWrite)){
+       !xmlSecKeyDataCheckUsage(key->value, xmlSecKeyDataUsageKeyValueNodeWrite)) {
         /* nothing to write */
         return(0);
     }
@@ -1064,7 +1064,7 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
     /* check retrieval level */
     if(keyInfoCtx->curRetrievalMethodLevel >= keyInfoCtx->maxRetrievalMethodLevel) {
         xmlSecOtherError3(XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL, xmlSecKeyDataKlassGetName(id),
-            "cur=%d;max=%d",keyInfoCtx->curRetrievalMethodLevel, keyInfoCtx->maxRetrievalMethodLevel);
+            "cur=%d;max=%d", keyInfoCtx->curRetrievalMethodLevel, keyInfoCtx->maxRetrievalMethodLevel);
         return(-1);
     }
     ++keyInfoCtx->curRetrievalMethodLevel;
@@ -1371,7 +1371,7 @@ xmlSecKeyDataKeyInfoReferenceXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNo
     /* check retrieval level */
     if(keyInfoCtx->curKeyInfoReferenceLevel >= keyInfoCtx->maxKeyInfoReferenceLevel) {
         xmlSecOtherError3(XMLSEC_ERRORS_R_MAX_KEYINFOREFERENCE_LEVEL, xmlSecKeyDataKlassGetName(id),
-            "cur=%d;max=%d",keyInfoCtx->curKeyInfoReferenceLevel, keyInfoCtx->maxKeyInfoReferenceLevel);
+            "cur=%d;max=%d", keyInfoCtx->curKeyInfoReferenceLevel, keyInfoCtx->maxKeyInfoReferenceLevel);
         return(-1);
     }
     ++keyInfoCtx->curKeyInfoReferenceLevel;

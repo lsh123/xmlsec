@@ -1111,7 +1111,7 @@ xmlSecTransformCtxBinaryExecute(xmlSecTransformCtxPtr ctx,
     ret = xmlSecTransformPushBin(ctx->first, data, dataSize, 1, ctx);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecTransformPushBin", NULL,
-                             "dataSize=" XMLSEC_SIZE_FMT,  dataSize);
+                              "dataSize=" XMLSEC_SIZE_FMT, dataSize);
         return(-1);
     }
 
@@ -1347,7 +1347,7 @@ xmlSecTransformCtxDebugXmlDump(xmlSecTransformCtxPtr ctx, FILE* output) {
         XMLSEC_ENUM_CAST(ctx->status));
 
     fprintf(output, "<Flags>%08x</Flags>\n", ctx->flags);
-    fprintf(output, "<maxDepth>%u</maxDepth>\n", ctx->maxDepth);
+    fprintf(output, "<MaxDepth>%u</MaxDepth>\n", ctx->maxDepth);
     if(xmlSecPtrListGetSize(&(ctx->enabledTransforms)) > 0) {
         fprintf(output, "<EnabledTransforms>\n");
         xmlSecTransformIdListDebugXmlDump(&(ctx->enabledTransforms), output);
@@ -1889,7 +1889,7 @@ xmlSecTransformDebugXmlDump(xmlSecTransformPtr transform, FILE* output) {
     xmlSecAssert(output != NULL);
 
     fprintf(output, "<Transform name=\"");
-    xmlSecPrintXmlString(output,transform->id->name);
+    xmlSecPrintXmlString(output, transform->id->name);
     fprintf(output, "\" href=\"");
     xmlSecPrintXmlString(output, transform->id->href);
     fprintf(output, "\" />\n");

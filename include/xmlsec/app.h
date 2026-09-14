@@ -886,6 +886,6 @@ XMLSEC_EXPORT void*                             xmlSecCryptoAppGetDefaultPwdCall
 
 #endif /* XMLSEC_NO_CRYPTO_DYNAMIC_LOADING */
 
-/** @} */ /** xmlsec_core_app */
+/** @} */ /* xmlsec_core_app */
 
 #endif /* XMLSEC_APP_H */

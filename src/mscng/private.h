@@ -66,7 +66,7 @@ int                xmlSecMSCngKeyDataCertGetPubkey                  (PCERT_PUBLI
 
 int                xmlSecMSCngKeyDataAdoptBCryptPrivKey             (xmlSecKeyDataPtr data,
                                                                      BCRYPT_KEY_HANDLE hKey);
-BCRYPT_KEY_HANDLE    xmlSecMSCngKeyDataGetBCryptPrivKey             (xmlSecKeyDataPtr data);
+BCRYPT_KEY_HANDLE  xmlSecMSCngKeyDataGetBCryptPrivKey               (xmlSecKeyDataPtr data);
 
 
 xmlSecSize         xmlSecMSCngCertKeyDataGetSize                    (xmlSecKeyDataPtr data);
@@ -197,7 +197,7 @@ int                xmlSecMSCngX509StoreVerifyKey                    (xmlSecKeyDa
                                                                      xmlSecKeyPtr key,
                                                                      xmlSecKeyInfoCtxPtr keyInfoCtx);
 
-HCERTSTORE          xmlSecMSCngKeyDataX509GetCertStore              (xmlSecKeyDataPtr data);
+HCERTSTORE         xmlSecMSCngKeyDataX509GetCertStore               (xmlSecKeyDataPtr data);
 
 typedef struct _xmlSecMSCngX509FindCertCtx {
     LPTSTR wcSubjectName;
@@ -221,16 +221,16 @@ int                xmlSecMSCngX509FindCertCtxInitialize             (xmlSecMSCng
                                                                      xmlSecSize skiSize);
 int                xmlSecMSCngX509FindCertCtxInitializeFromValue    (xmlSecMSCngX509FindCertCtxPtr ctx,
                                                                      xmlSecKeyX509DataValuePtr x509Value);
-void                xmlSecMSCngX509FindCertCtxFinalize              (xmlSecMSCngX509FindCertCtxPtr ctx);
+void               xmlSecMSCngX509FindCertCtxFinalize               (xmlSecMSCngX509FindCertCtxPtr ctx);
 
-PCCERT_CONTEXT      xmlSecMSCngX509StoreFindCertByValue             (xmlSecKeyDataStorePtr store,
+PCCERT_CONTEXT     xmlSecMSCngX509StoreFindCertByValue              (xmlSecKeyDataStorePtr store,
                                                                      xmlSecKeyX509DataValuePtr x509Value);
-PCCERT_CONTEXT      xmlSecMSCngX509FindCert                         (HCERTSTORE store,
+PCCERT_CONTEXT     xmlSecMSCngX509FindCert                          (HCERTSTORE store,
                                                                      xmlSecMSCngX509FindCertCtxPtr findCertCtx);
 
-xmlChar*            xmlSecMSCngX509GetFriendlyNameUtf8              (PCCERT_CONTEXT cert);
-LPCWSTR             xmlSecMSCngX509GetFriendlyNameUnicode           (PCCERT_CONTEXT cert);
-PCCRL_CONTEXT       xmlSecMSCngX509CrlDerRead                       (const xmlSecByte* buf, xmlSecSize size);
+xmlChar*           xmlSecMSCngX509GetFriendlyNameUtf8               (PCCERT_CONTEXT cert);
+LPCWSTR            xmlSecMSCngX509GetFriendlyNameUnicode            (PCCERT_CONTEXT cert);
+PCCRL_CONTEXT      xmlSecMSCngX509CrlDerRead                        (const xmlSecByte* buf, xmlSecSize size);
 
 
 #endif /* XMLSEC_NO_X509 */

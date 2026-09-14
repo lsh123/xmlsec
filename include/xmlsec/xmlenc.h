@@ -174,6 +174,6 @@ XMLSEC_EXPORT const char*       xmlSecEncCtxGetFailureReasonString         (xmlS
 
 #endif /* XMLSEC_NO_XMLENC */
 
-/** @} */ /** xmlsec_core_xmlenc */
+/** @} */ /* xmlsec_core_xmlenc */
 
 #endif /* XMLSEC_XMLENC_H */

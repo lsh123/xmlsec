@@ -9,7 +9,7 @@
 #define XMLSEC_GCRYPT_APP_H
 
 /**
- * @defgroup xmlsec_gcrypt_app GCrypt Application Helpers
+ * @defgroup xmlsec_gcrypt_app (DEPRECATED) GCrypt Application Helpers
  * @ingroup xmlsec_gcrypt
  * @brief High-level application helpers for the GCrypt back-end.
  * @{
@@ -113,6 +113,6 @@ XMLSEC_CRYPTO_EXPORT void*      xmlSecGCryptAppGetDefaultPwdCallback    (void);
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_gcrypt_app */
+/** @} */ /* xmlsec_gcrypt_app */
 
 #endif /* XMLSEC_GCRYPT_APP_H */

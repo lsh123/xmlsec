@@ -50,6 +50,6 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoKeysStoreSave     (xmlSecK
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_mscrypto_keysstore */
+/** @} */ /* xmlsec_mscrypto_keysstore */
 
 #endif /* XMLSEC_MSCRYPTO_KEYSSTORE_H */

@@ -75,6 +75,6 @@ XMLSEC_EXPORT int               xmlSecBase64DecodeInPlace       (xmlChar* str,
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_core_base64 */
+/** @} */ /* xmlsec_core_base64 */
 
 #endif /* XMLSEC_BASE64_H */

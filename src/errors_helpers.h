@@ -6,7 +6,7 @@
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * @brief Internal helper macros for error reporting.
+ * @brief Internal helper macros and functions for error reporting.
  */
 
 #ifndef XMLSEC_ERRORS_HELPERS_H

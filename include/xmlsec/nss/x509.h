@@ -95,7 +95,7 @@ XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED CERTCertificate*  xmlSecNssX509StoreFindC
                                                                                  xmlChar *subjectName,
                                                                                  xmlChar *issuerName,
                                                                                  xmlChar *issuerSerial,
-                                                                                 xmlSecByte * ski,
+                                                                                 xmlSecByte *ski,
                                                                                  xmlSecSize skiSize,
                                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
 #ifdef __cplusplus
@@ -104,6 +104,6 @@ XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED CERTCertificate*  xmlSecNssX509StoreFindC
 
 #endif /* XMLSEC_NO_X509 */
 
-/** @} */ /** xmlsec_nss_x509 */
+/** @} */ /* xmlsec_nss_x509 */
 
 #endif /* XMLSEC_NSS_X509_H */

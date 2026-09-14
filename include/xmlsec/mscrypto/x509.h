@@ -89,6 +89,6 @@ XMLSEC_CRYPTO_EXPORT void               xmlSecMSCryptoX509StoreEnableSystemTrust
 
 #endif /* XMLSEC_NO_X509 */
 
-/** @} */ /** xmlsec_mscrypto_x509 */
+/** @} */ /* xmlsec_mscrypto_x509 */
 
 #endif /* XMLSEC_MSCRYPTO_X509_H */

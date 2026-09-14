@@ -47,18 +47,18 @@
  * @param errCode the GnuTLS error code.
  * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
-#define xmlSecGnuTLSError(errorFunction, errCode, errorObject)  \
-    do {                                                        \
-        const int _gnutls_errCode = (errCode);                  \
-        const char* message = gnutls_strerror(_gnutls_errCode); \
-        xmlSecError(XMLSEC_ERRORS_HERE,                         \
-                    (const char*)(errorObject),                 \
-                    (errorFunction),                            \
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,              \
-                    "gnutls error: %d: %s",                     \
-                    (_gnutls_errCode),                          \
-                    xmlSecErrorsSafeString(message)             \
-        );                                                      \
+#define xmlSecGnuTLSError(errorFunction, errCode, errorObject)             \
+    do {                                                                   \
+        const int _gnutls_errCode = (errCode);                             \
+        const char* _gnutls_message = gnutls_strerror(_gnutls_errCode);    \
+        xmlSecError(XMLSEC_ERRORS_HERE,                                    \
+                    (const char*)(errorObject),                            \
+                    (errorFunction),                                       \
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,                         \
+                    "gnutls error: %d: %s",                                \
+                    (_gnutls_errCode),                                     \
+                    xmlSecErrorsSafeString(_gnutls_message)                \
+        );                                                                 \
     } while(0)
 
 /**
@@ -73,7 +73,7 @@
 #define xmlSecGnuTLSError2(errorFunction, errCode, errorObject, msg, param) \
     do {                                                                    \
         const int _gnutls_errCode = (errCode);                              \
-        const char* message = gnutls_strerror(_gnutls_errCode);             \
+        const char* _gnutls_message = gnutls_strerror(_gnutls_errCode);     \
         xmlSecError(XMLSEC_ERRORS_HERE,                                     \
                     (const char*)(errorObject),                             \
                     (errorFunction),                                        \
@@ -81,7 +81,7 @@
                     msg "; gnutls error: %d: %s",                           \
                     (param),                                                \
                     (_gnutls_errCode),                                      \
-                    xmlSecErrorsSafeString(message)                         \
+                    xmlSecErrorsSafeString(_gnutls_message)                 \
         );                                                                  \
     } while(0)
 #endif /* XMLSEC_GNUTLS_GLOBALS_H */

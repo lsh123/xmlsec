@@ -182,6 +182,6 @@ XMLSEC_EXPORT xmlSecPtrListId   xmlSecStringListGetKlass        (void);
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_core_list */
+/** @} */ /* xmlsec_core_list */
 
 #endif /* XMLSEC_LIST_H */

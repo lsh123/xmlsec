@@ -31,7 +31,7 @@
 #define XMLSEC_PRIVATE
 #endif /* XMLSEC_PRIVATE */
 
-#include <xmlsec/xmlsec.h>
+#include <xmlsec/errors.h>
 
 /* Include common error helper macros. */
 #include "../errors_helpers.h"
@@ -63,7 +63,7 @@ void xmlSecMSCryptoGetErrorMessage      (DWORD dwError,
                     (const char*)(errorObject),                    \
                     (errorFunction),                               \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,                 \
-                    "MSCrypto error: %lu (0x%08lx): %s", \
+                    "MSCrypto error: %lu (0x%08lx): %s",          \
                     (_mscrypto_dwLastError),                       \
                     (_mscrypto_dwLastError),                       \
                     _mscrypto_errBuf                               \
@@ -107,7 +107,7 @@ void xmlSecMSCryptoGetErrorMessage      (DWORD dwError,
 #define xmlSecMSCryptoError3(errorFunction, errorObject, msg, param1, param2) \
     do {                                                                      \
         DWORD _mscrypto_dwLastError = GetLastError();                        \
-        xmlChar _mscrypto_errBuf[XMLSEC_MSCRYPTO_ERROR_BUFFER_SIZE]; \
+        xmlChar _mscrypto_errBuf[XMLSEC_MSCRYPTO_ERROR_BUFFER_SIZE];           \
         xmlSecMSCryptoGetErrorMessage(_mscrypto_dwLastError, _mscrypto_errBuf, sizeof(_mscrypto_errBuf)); \
         xmlSecError(XMLSEC_ERRORS_HERE,                                       \
                     (const char*)(errorObject),                               \

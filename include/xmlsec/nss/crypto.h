@@ -41,7 +41,7 @@
 #define XMLSEC_NO_MD5 1
 
 /**
- * XDH support requires public NSS KeyType values for X25519/X448.
+ * XDH support requires public NSS KeyType values for X25519.
  * In particular, ecMontKey used by xmlsec was added in NSS 3.103.
  */
 #ifndef XMLSEC_NO_XDH
@@ -430,7 +430,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEcdsaSha512GetKlass(voi
 #ifndef XMLSEC_NO_EDDSA
 
 /**
- * @brief The EdDSA key klass (Ed25519 and Ed448).
+ * @brief The EdDSA key klass (Ed25519).
  */
 #define xmlSecNssKeyDataEdDSAId \
         xmlSecNssKeyDataEdDSAGetKlass()
@@ -453,7 +453,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEdDSAEd25519GetKlass(vo
 #ifndef XMLSEC_NO_XDH
 
 /**
- * @brief The XDH key klass (X25519 and X448, RFC 7748).
+ * @brief The XDH key klass (X25519, RFC 7748).
  */
 #define xmlSecNssKeyDataXdhId \
         xmlSecNssKeyDataXdhGetKlass()
@@ -488,7 +488,7 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecNssKeyDataHmacSet         (xmlSecK
 
 #ifndef XMLSEC_NO_RIPEMD160
 /**
- * @brief The HMAC with RipeMD160 signature transform klass.
+ * @brief The HMAC with RIPEMD160 signature transform klass.
  */
 #define xmlSecNssTransformHmacRipemd160Id \
         xmlSecNssTransformHmacRipemd160GetKlass()
@@ -865,7 +865,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha3_512GetKlass(void);
  *
   *****************************************************************************/
 /**
- * @brief The Nss DEREncodedKeyValue key data klass.
+ * @brief The NSS DEREncodedKeyValue key data klass.
  */
 #define xmlSecNssKeyDataDEREncodedKeyValueId    xmlSecNssKeyDataDEREncodedKeyValueGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId             xmlSecNssKeyDataDEREncodedKeyValueGetKlass(void);
@@ -874,6 +874,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId             xmlSecNssKeyDataDEREncodedKeyVa
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_nss_crypto */
+/** @} */ /* xmlsec_nss_crypto */
 
 #endif /* XMLSEC_NSS_CRYPTO_H */

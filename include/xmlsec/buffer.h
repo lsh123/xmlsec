@@ -33,7 +33,7 @@ typedef struct _xmlSecBuffer                                    xmlSecBuffer,
 
 /**
  * @brief The memory allocation mode.
- * @details The memory allocation mode (used by xmlSecBuffer and xmlSecList).
+ * @details The memory allocation mode (used by xmlSecBuffer and xmlSecPtrList).
  */
 typedef enum {
     xmlSecAllocModeExact = 0,   /**< the memory allocation mode that minimizes total allocated memory size. */
@@ -146,6 +146,6 @@ XMLSEC_EXPORT void              xmlSecMemCleanse                (void* data, xml
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_core_buffer */
+/** @} */ /* xmlsec_core_buffer */
 
 #endif /* XMLSEC_BUFFER_H */

@@ -600,6 +600,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformRipemd160GetKlass(vo
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_gcrypt_crypto */
+/** @} */ /* xmlsec_gcrypt_crypto */
 
 #endif /* XMLSEC_GCRYPT_CRYPTO_H */

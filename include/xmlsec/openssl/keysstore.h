@@ -47,6 +47,6 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeysStoreSave    (xmlSecKey
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_openssl_keysstore */
+/** @} */ /* xmlsec_openssl_keysstore */
 
 #endif /* XMLSEC_OPENSSL_KEYSSTORE_H */

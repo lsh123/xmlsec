@@ -20,12 +20,13 @@ extern "C" {
 
 #if defined(WIN32) || defined(_WIN32) || defined(__CYGWIN__) || defined(__MINGW32__) || defined(__MINGW64__)
 #define XMLSEC_WINDOWS 1
-#endif /* defined(WIN32) || defined(_WIN32) */
+#endif /* defined(WIN32) || defined(_WIN32) || defined(__CYGWIN__) || defined(__MINGW32__) || defined(__MINGW64__) */
 
 #endif /* !defined(XMLSEC_WINDOWS) */
 
 /**
- * Now, the export fun begins. The following must be done for the Windows platform.
+ * The following must be done for the Windows platform to correctly
+ * export / import functions from the DLL.
  */
 
  /* XMLSEC_EXPORT macro should only be used in the "core" library */

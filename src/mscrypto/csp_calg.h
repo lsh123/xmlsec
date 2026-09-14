@@ -27,7 +27,9 @@
 #  define ALG_SID_GR3411_2012_512     34
 #endif
 
-#define CALG_MAGPRO_HASH_R3411_94   (ALG_CLASS_HASH | ALG_TYPE_ANY | ALG_SID_GR3411)
+#ifndef CALG_MAGPRO_HASH_R3411_94
+#  define CALG_MAGPRO_HASH_R3411_94   (ALG_CLASS_HASH | ALG_TYPE_ANY | ALG_SID_GR3411)
+#endif
 
 #ifndef CALG_GR3411_2012_256
 #  define CALG_GR3411_2012_256        (ALG_CLASS_HASH | ALG_TYPE_ANY | ALG_SID_GR3411_2012_256)
@@ -37,7 +39,9 @@
 #  define CALG_GR3411_2012_512        (ALG_CLASS_HASH | ALG_TYPE_ANY | ALG_SID_GR3411_2012_512)
 #endif
 
-#define PROV_MAGPRO_GOST            501
+#ifndef PROV_MAGPRO_GOST
+#  define PROV_MAGPRO_GOST            501
+#endif
 #define MAGPRO_CSP_A                "MagPro CSP"
 #define MAGPRO_CSP_W                L"MagPro CSP"
 #ifdef UNICODE

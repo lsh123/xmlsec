@@ -56,6 +56,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId             xmlSecOpenSSLKeyDataDEREncodedK
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_openssl_evp */
+/** @} */ /* xmlsec_openssl_evp */
 
 #endif /* XMLSEC_OPENSSL_EVP_H */

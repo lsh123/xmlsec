@@ -93,7 +93,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCryptoKeyDataGost2001GetKlass(vo
 
 /**
  * @brief The GOST2001-GOSTR3411_94 signature transform klass.
- * @details The GOST2001-GOSTR3411_94 signature transform klass.
  */
 #define xmlSecMSCryptoTransformGost2001GostR3411_94Id \
         xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass()
@@ -125,7 +124,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCryptoKeyDataGost2012_512GetKlas
 
 /**
  * @brief The GOST2012-256 signature transform klass.
- * @details The GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform klass.
+ * @details The GOST R 34.10-2012 - GOST R 34.11-2012 256-bit signature transform klass.
  */
 #define xmlSecMSCryptoTransformGost2012_256Id \
         xmlSecMSCryptoTransformGost2012_256GetKlass()
@@ -133,7 +132,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformGost2012_256GetKla
 
 /**
  * @brief The GOST2012-512 signature transform klass.
- * @details The GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform klass.
+ * @details The GOST R 34.10-2012 - GOST R 34.11-2012 512-bit signature transform klass.
  */
 #define xmlSecMSCryptoTransformGost2012_512Id \
         xmlSecMSCryptoTransformGost2012_512GetKlass()
@@ -496,6 +495,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformHmacSha512GetKlass
 }
 #endif /* __cplusplus */
 
-/** @} */ /** xmlsec_mscrypto_crypto */
+/** @} */ /* xmlsec_mscrypto_crypto */
 
 #endif /* XMLSEC_MSCRYPTO_CRYPTO_H */

@@ -53,17 +53,17 @@ int                xmlSecMSCryptoConvertEndianInPlace           (xmlSecByte * bu
 #define XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE_W     L"Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)"
 #ifdef UNICODE
 #define XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE_W
-#else
+#else /* UNICODE */
 #define XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE_A
-#endif
+#endif /* UNICODE */
 
 #define XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_A               "Microsoft Enhanced RSA and AES Cryptographic Provider"
 #define XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_W               L"Microsoft Enhanced RSA and AES Cryptographic Provider"
 #ifdef UNICODE
 #define XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_W
-#else
+#else /* UNICODE */
 #define XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_A
-#endif
+#endif /* UNICODE */
 
 /**
  * @brief Contains information for looking up provider from MS Crypto.
@@ -85,7 +85,7 @@ HCRYPTPROV         xmlSecMSCryptoFindProvider                   (const xmlSecMSC
  *
  * Low level helper routines for importing plain text keys into an MS HKEY handle,
  * since the MSCrypto API does not support importing plain text (session) keys
- * directly. These functions are based upon MS kb article #228786
+ * directly. These functions are based upon MS KB article # 228786
  * and "Base Provider Key BLOBs" article for priv key blob format.
  *
   *****************************************************************************/

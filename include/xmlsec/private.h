@@ -82,7 +82,8 @@ typedef xmlSecKeyDataId         (*xmlSecCryptoKeyDataGetKlassMethod)    (void);
  * (the xmlsec-crypto library is not loaded or this key data store klass is not
  * implemented).
  */
-typedef xmlSecKeyDataStoreId    (*xmlSecCryptoKeyDataStoreGetKlassMethod)(void);
+typedef xmlSecKeyDataStoreId    (*xmlSecCryptoKeyDataStoreGetKlassMethod)
+                                                                        (void);
 
 /******************************************************************************
  *
@@ -120,9 +121,11 @@ typedef int                     (*xmlSecCryptoAppInitMethod)            (const c
  */
 typedef int                     (*xmlSecCryptoAppShutdownMethod)        (void);
 /**
- * @brief Initializes the keys manager with a simple keys store.
- * @details Initializes @p mngr with the simple keys store #xmlSecSimpleKeysStoreId
- * and the default crypto key data stores.
+ * @brief Initializes the keys manager with a back-end specific keys store.
+ * @details Initializes @p mngr with the back-end specific keys store
+ * (e.g. #xmlSecOpenSSLKeysStoreId, #xmlSecNssKeysStoreId,
+ * #xmlSecGnuTLSKeysStoreId, #xmlSecMSCngKeysStoreId or
+ * #xmlSecMSCryptoKeysStoreId) and the default crypto key data stores.
  * @param mngr the pointer to keys manager.
  * @return 0 on success or a negative value otherwise.
  */
@@ -425,9 +428,6 @@ struct _xmlSecCryptoDLFunctions {
 
     xmlSecCryptoTransformGetKlassMethod          transformEcdhGetKlass;  /**< the method to get pointer to ECDH key agreement transform. */
 
-    xmlSecCryptoTransformGetKlassMethod          transformX448GetKlass;  /**< the method to get pointer to X448 key agreement transform. */
-    xmlSecCryptoTransformGetKlassMethod          transformX25519GetKlass;  /**< the method to get pointer to X25519 key agreement transform. */
-
     xmlSecCryptoTransformGetKlassMethod          transformEcdsaRipemd160GetKlass;  /**< the method to get pointer to ECDSA-RIPEMD160 signature transform. */
     xmlSecCryptoTransformGetKlassMethod          transformEcdsaSha1GetKlass;  /**< the method to get pointer to ECDSA-SHA1 signature transform. */
     xmlSecCryptoTransformGetKlassMethod          transformEcdsaSha224GetKlass;  /**< the method to get pointer to ECDSA-SHA2-224 signature transform. */
@@ -439,11 +439,11 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod          transformEcdsaSha3_384GetKlass;  /**< the method to get pointer to ECDSA-SHA3-384 signature transform. */
     xmlSecCryptoTransformGetKlassMethod          transformEcdsaSha3_512GetKlass;  /**< the method to get pointer to ECDSA-SHA3-512 signature transform. */
 
-    xmlSecCryptoTransformGetKlassMethod          transformGost2001GostR3411_94GetKlass;  /**< the method to get pointer to GOST2001 transform. */
+    xmlSecCryptoTransformGetKlassMethod          transformGost2001GostR3411_94GetKlass;  /**< the method to get pointer to GOST 2001 - GOST R 34.11-94 signature transform. */
     xmlSecCryptoTransformGetKlassMethod          transformGostR3410_2012GostR3411_2012_256GetKlass;  /**< the method to get pointer to GOST R 34.10-2012 - GOST R 34.11-2012 256bit transform. */
     xmlSecCryptoTransformGetKlassMethod          transformGostR3410_2012GostR3411_2012_512GetKlass;  /**< the method to get pointer to GOST R 34.10-2012 - GOST R 34.11-2012 512bit transform. */
 
-    xmlSecCryptoTransformGetKlassMethod          transformGostR3411_94GetKlass;  /**< the method to get pointer to GOST R3411 transform. */
+    xmlSecCryptoTransformGetKlassMethod          transformGostR3411_94GetKlass;  /**< the method to get pointer to GOST R 34.11-94 transform. */
     xmlSecCryptoTransformGetKlassMethod          transformGostR3411_2012_256GetKlass;  /**< the method to get pointer to GOST R 34.11-2012 256 bit transform. */
     xmlSecCryptoTransformGetKlassMethod          transformGostR3411_2012_512GetKlass;  /**< the method to get pointer to GOST R 34.11-2012 512 bit transform. */
 
@@ -518,6 +518,9 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod          transformSha3_256GetKlass;  /**< the method to get pointer to SHA3-256 digest transform. */
     xmlSecCryptoTransformGetKlassMethod          transformSha3_384GetKlass;  /**< the method to get pointer to SHA3-384 digest transform. */
     xmlSecCryptoTransformGetKlassMethod          transformSha3_512GetKlass;  /**< the method to get pointer to SHA3-512 digest transform. */
+
+    xmlSecCryptoTransformGetKlassMethod          transformX25519GetKlass;  /**< the method to get pointer to X25519 key agreement transform. */
+    xmlSecCryptoTransformGetKlassMethod          transformX448GetKlass;  /**< the method to get pointer to X448 key agreement transform. */
 
     /* High-level routines for the xmlsec command-line utility */
     xmlSecCryptoAppInitMethod                    cryptoAppInit;  /**< the default crypto engine initialization method. */
@@ -671,8 +674,8 @@ struct _xmlSecCryptoDLFunctions {
 
 
 /**
-* @brief The bit shift used to derive the "node present and not empty" flag bits from the node flags.
-*/
+ * @brief The bit shift used to derive the "node present and not empty" flag bits from the node flags.
+ */
 #define XMLSEC_X509DATA_SHIFT_IF_NOT_EMPTY                      16
 
 

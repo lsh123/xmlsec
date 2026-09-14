@@ -122,7 +122,7 @@ xmlSecNssX509StoreGetKlass(void) {
 CERTCertificate *
 xmlSecNssX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
                                 xmlChar *issuerName, xmlChar *issuerSerial,
-                                xmlChar *ski, xmlSecKeyInfoCtx* keyInfoCtx) {
+                                xmlChar *ski, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     if(ski != NULL) {
         xmlSecSize skiDecodedSize = 0;
         int ret;
@@ -163,7 +163,7 @@ CERTCertificate *
 xmlSecNssX509StoreFindCert_ex(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
                                 xmlChar *issuerName, xmlChar *issuerSerial,
                                  xmlSecByte * ski, xmlSecSize skiSize,
-                                 xmlSecKeyInfoCtx* keyInfoCtx XMLSEC_ATTRIBUTE_UNUSED) {
+                                 xmlSecKeyInfoCtxPtr keyInfoCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecNssX509StoreCtxPtr ctx;
     xmlSecNssX509FindCertCtx findCertCtx;
     CERTCertificate * cert;
@@ -535,7 +535,7 @@ xmlSecNssX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, xmlSe
  * @return pointer to the first verified certificate from @p certs.
  */
 CERTCertificate *
-xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs, xmlSecKeyInfoCtx* keyInfoCtx) {
+xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecNssX509StoreCtxPtr ctx;
     CERTCertListNode* cur;
     CERTCertList* good_certs = NULL;

@@ -41,20 +41,20 @@ extern "C" {
 #define xmlSecKeyDataAesId                      xmlSecNssKeyDataAesId
 #define xmlSecKeyDataCamelliaId                 xmlSecNssKeyDataCamelliaId
 #define xmlSecKeyDataChaCha20Id                 xmlSecNssKeyDataChaCha20Id
+#define xmlSecKeyDataConcatKdfId                xmlSecNssKeyDataConcatKdfId
+#define xmlSecKeyDataDEREncodedKeyValueId       xmlSecNssKeyDataDEREncodedKeyValueId
 #define xmlSecKeyDataDesId                      xmlSecNssKeyDataDesId
 #define xmlSecKeyDataDsaId                      xmlSecNssKeyDataDsaId
-#define xmlSecKeyDataEcdsaId                    xmlSecNssKeyDataEcId
 #define xmlSecKeyDataEcId                       xmlSecNssKeyDataEcId
+#define xmlSecKeyDataEcdsaId                    xmlSecNssKeyDataEcId
 #define xmlSecKeyDataEdDSAId                    xmlSecNssKeyDataEdDSAId
-#define xmlSecKeyDataXdhId                      xmlSecNssKeyDataXdhId
-#define xmlSecKeyDataHmacId                     xmlSecNssKeyDataHmacId
-#define xmlSecKeyDataConcatKdfId                xmlSecNssKeyDataConcatKdfId
 #define xmlSecKeyDataHkdfId                     xmlSecNssKeyDataHkdfId
+#define xmlSecKeyDataHmacId                     xmlSecNssKeyDataHmacId
 #define xmlSecKeyDataPbkdf2Id                   xmlSecNssKeyDataPbkdf2Id
+#define xmlSecKeyDataRawX509CertId              xmlSecNssKeyDataRawX509CertId
 #define xmlSecKeyDataRsaId                      xmlSecNssKeyDataRsaId
 #define xmlSecKeyDataX509Id                     xmlSecNssKeyDataX509Id
-#define xmlSecKeyDataRawX509CertId              xmlSecNssKeyDataRawX509CertId
-#define xmlSecKeyDataDEREncodedKeyValueId       xmlSecNssKeyDataDEREncodedKeyValueId
+#define xmlSecKeyDataXdhId                      xmlSecNssKeyDataXdhId
 
 /******************************************************************************
  *

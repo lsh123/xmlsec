@@ -1670,11 +1670,11 @@ xmlSecTmplTransformAddRsaOaepParam(xmlNodePtr transformNode, const xmlSecByte *b
  * @return 0 on success or a negative value if an error occurs.
  */
 int
-xmlSecTmplTransformAddRsaMgf(xmlNodePtr transformNode,
-                        const xmlChar *algorithm) {
+xmlSecTmplTransformAddRsaMgf(xmlNodePtr transformNode, const xmlChar *algorithm) {
     xmlNodePtr mgfNode;
 
     xmlSecAssert2(transformNode != NULL, -1);
+    xmlSecAssert2(algorithm != NULL, -1);
 
     mgfNode = xmlSecFindChild(transformNode, xmlSecNodeRsaMGF, xmlSecEnc11Ns);
     if(mgfNode != NULL) {
@@ -1711,6 +1711,7 @@ xmlSecTmplTransformAddRsaDigest(xmlNodePtr transformNode, const xmlChar *algorit
     xmlNodePtr digestNode;
 
     xmlSecAssert2(transformNode != NULL, -1);
+    xmlSecAssert2(algorithm != NULL, -1);
 
     digestNode = xmlSecFindChild(transformNode, xmlSecNodeDigestMethod, xmlSecDSigNs);
     if(digestNode != NULL) {

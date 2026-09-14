@@ -96,7 +96,6 @@ xmlSecNodeSetDestroy(xmlSecNodeSetPtr nset) {
             xmlSecAssert((destroyDoc == NULL) || (tmp->doc == destroyDoc));
             destroyDoc = tmp->doc; /* can't destroy here because other node sets can refer to it */
         }
-        memset(tmp, 0,  sizeof(xmlSecNodeSet));
         xmlFree(tmp);
     }
 
@@ -224,11 +223,11 @@ xmlSecNodeSetContainsNode(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr par
  * @param node the pointer to XML node to check.
  * @param parent the pointer to @p node parent node.
  * @return 1 if the @p node is in the nodes set @p nset, 0 if it is not
- * and a negative value if an error occurs.
+ * or if @p node is NULL, and a negative value if an error occurs.
  */
 int
 xmlSecNodeSetContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent) {
-    int status = 1;
+    int status;
     int first = 1;
     xmlSecNodeSetPtr curNset;
 

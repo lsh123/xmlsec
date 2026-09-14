@@ -32,6 +32,13 @@ extern "C" {
 typedef unsigned int                    xmlSecKeyUsage;
 
 /**
+ * xmlSecKeyUsageUnknown:
+ *
+ * Unknown key usage.
+ */
+#define xmlSecKeyUsageUnknown           0x00000000
+
+/**
  * @brief Key for signing.
  */
 #define xmlSecKeyUsageSign              0x00000001

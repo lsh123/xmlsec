@@ -802,7 +802,7 @@ xmlSecTransformKEMRead(xmlNodePtr node, xmlSecTransformPtr kemTransform, xmlSecT
         kemData->encapsulationKey = xmlSecTransformReadKeyInfoNode(keyType, cur, kemTransform, transformCtx);
         if(kemData->encapsulationKey == NULL) {
             xmlSecInternalError("xmlSecTransformReadKeyInfoNode(KeyInfo)", xmlSecNodeGetName(node));
-             return(-1);
+            return(-1);
         }
     }
     cur = xmlSecGetNextElementNode(cur->next);
@@ -1943,7 +1943,7 @@ xmlSecTransformRsaOaepParamsRead(xmlSecTransformRsaOaepParamsPtr oaepParams, xml
         } else {
             /* node not recognized */
             xmlSecUnexpectedNodeError(cur, NULL);
-                return(-1);
+            return(-1);
         }
 
         /* next node */

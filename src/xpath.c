@@ -160,7 +160,7 @@ xmlSecXPathDataRegisterNamespaces(xmlSecXPathDataPtr data, xmlNodePtr node) {
     for(cur = node; cur != NULL; cur = cur->parent) {
         for(ns = cur->nsDef; ns != NULL; ns = ns->next) {
             /* check that we have no other namespace with same prefix already */
-            if((ns->prefix != NULL) && (xmlXPathNsLookup(data->ctx, ns->prefix) == NULL)){
+            if((ns->prefix != NULL) && (xmlXPathNsLookup(data->ctx, ns->prefix) == NULL)) {
                 ret = xmlXPathRegisterNs(data->ctx, ns->prefix, ns->href);
                 if(ret != 0) {
                     xmlSecXmlError2("xmlXPathRegisterNs", NULL,
@@ -183,7 +183,7 @@ xmlSecXPathDataNodeRead(xmlSecXPathDataPtr data, xmlNodePtr node) {
     xmlSecAssert2(data->ctx != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
 
-    ret = xmlSecXPathDataRegisterNamespaces (data, node);
+    ret = xmlSecXPathDataRegisterNamespaces(data, node);
     if(ret < 0) {
         xmlSecInternalError("xmlSecXPathDataRegisterNamespaces", NULL);
         return(-1);
@@ -217,13 +217,19 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
     if(hereNode->doc == doc) {
         data->ctx->here = hereNode;
         data->ctx->xptr = 1;
-        xmlXPathRegisterFunc(data->ctx, (xmlChar *)"here", xmlSecXPathHereFunction);
+        if(xmlXPathRegisterFunc(data->ctx, (xmlChar *)"here", xmlSecXPathHereFunction) < 0) {
+            xmlSecXmlError("xmlXPathRegisterFunc", NULL);
+            return(NULL);
+        }
     } else {
         /* clear any stale "here" node/function/xptr flag left over from a
          * previous execution against another document */
         data->ctx->here = NULL;
         data->ctx->xptr = 0;
-        xmlXPathRegisterFunc(data->ctx, (xmlChar *)"here", NULL);
+        if(xmlXPathRegisterFunc(data->ctx, (xmlChar *)"here", NULL) < 0) {
+            xmlSecXmlError("xmlXPathRegisterFunc", NULL);
+            return(NULL);
+        }
     }
 
     /* execute xpath or xpointer expression */

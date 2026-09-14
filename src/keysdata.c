@@ -13,7 +13,6 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 
 #include <libxml/tree.h>
 
@@ -737,6 +736,7 @@ xmlSecKeyDataStoreCreate(xmlSecKeyDataStoreId id)  {
     int ret;
 
     xmlSecAssert2(id != NULL, NULL);
+    xmlSecAssert2(id->name != NULL, NULL);
     xmlSecAssert2(id->klassSize >= sizeof(xmlSecKeyDataStoreKlass), NULL);
     xmlSecAssert2(id->objSize >= sizeof(xmlSecKeyDataStore), NULL);
 

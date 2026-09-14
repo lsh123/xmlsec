@@ -203,7 +203,7 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
 
         nn = xmlSecBnLookupTable[ch];
         if((nn < 0) || (nn >= baseInt)) {
-            xmlSecInvalidIntegerDataError2("char", nn, "base", baseInt, "0 <= char < base", NULL);
+            xmlSecInvalidIntegerDataError2("char", ch, "base", baseInt, "0 <= char < base", NULL);
             return (-1);
         }
 
@@ -225,7 +225,7 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
      * the result compatible with DER/ASN.1 INTEGER consumers */
     data = xmlSecBufferGetData(bn);
     size = xmlSecBufferGetSize(bn);
-    if(((size > 0) && (data[0] > 127)) || (size == 0))  {
+    if(((size > 0) && (data != NULL) && (data[0] > 127)) || (size == 0))  {
         ch = 0;
         ret = xmlSecBufferPrepend(bn, &ch, 1);
         if(ret < 0) {
@@ -313,9 +313,7 @@ xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
         res[ii++] = '0';
     }
 
-    /* we might have '0' at the beginning, remove it but keep one zero */
-    for(len = ii; (len > 1) && (res[len - 1] == '0'); len--) {
-    }
+    len = ii;
     res[len] = '\0';
 
     /* swap the string because we wrote it in reverse order */

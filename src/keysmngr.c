@@ -515,7 +515,6 @@ xmlSecSimpleKeysStoreLoad_ex(xmlSecKeyStorePtr store, const char *uri,
         }
 
         keyInfoCtx.mode           = xmlSecKeyInfoModeRead;
-        keyInfoCtx.keysMngr       = NULL;
         keyInfoCtx.flags          = XMLSEC_KEYINFO_FLAGS_DONT_STOP_ON_KEY_FOUND |
                                     XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS;
         keyInfoCtx.keyReq.keyId   = xmlSecKeyDataIdUnknown;

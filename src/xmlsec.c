@@ -175,7 +175,8 @@ done:
  *
  * @return the default crypto engine ("openssl", "nss", etc.).
  */
-const xmlChar * xmlSecGetDefaultCrypto(void) {
+const xmlChar*
+xmlSecGetDefaultCrypto(void) {
     return BAD_CAST XMLSEC_DEFAULT_CRYPTO;
 }
 

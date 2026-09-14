@@ -11,10 +11,6 @@
  */
 #include "globals.h"
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-
 #include <libxml/tree.h>
 #include <libxml/c14n.h>
 
@@ -301,7 +297,7 @@ xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlSecP
                         (xmlC14NIsVisibleCallback)xmlSecNodeSetContains,
                         nodes, XML_C14N_1_0, NULL, 0, buf);
     } else if(id == xmlSecTransformInclC14NWithCommentsId) {
-         ret = xmlC14NExecute(nodes->doc,
+        ret = xmlC14NExecute(nodes->doc,
                         (xmlC14NIsVisibleCallback)xmlSecNodeSetContains,
                         nodes, XML_C14N_1_0, NULL, 1, buf);
     } else if(id == xmlSecTransformInclC14N11Id) {
@@ -309,7 +305,7 @@ xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlSecP
                         (xmlC14NIsVisibleCallback)xmlSecNodeSetContains,
                         nodes, XML_C14N_1_1, NULL, 0, buf);
     } else if(id == xmlSecTransformInclC14N11WithCommentsId) {
-         ret = xmlC14NExecute(nodes->doc,
+        ret = xmlC14NExecute(nodes->doc,
                         (xmlC14NIsVisibleCallback)xmlSecNodeSetContains,
                         nodes, XML_C14N_1_1, NULL, 1, buf);
     } else if(id == xmlSecTransformExclC14NId) {

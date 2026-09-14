@@ -204,6 +204,7 @@ xmlSecGetNodeContentAsSize(const xmlNodePtr cur, xmlSecSize defValue, xmlSecSize
         return(0);
     }
 
+    /* check both the value and the end pointer just in case */
     val = strtol((char*)content, &endptr, 10);
     if((val < 0) || (val == LONG_MAX) || (endptr == NULL)) {
         xmlSecInvalidNodeContentError(cur, NULL, "can't parse node content as size");
@@ -413,7 +414,11 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
             xmlSecXmlError("xmlNewText", NULL);
             return(NULL);
         }
-        xmlAddChild(parent, text);
+        if(xmlAddChild(parent, text) == NULL) {
+            xmlSecXmlError("xmlAddChild", NULL);
+            xmlFreeNode(text);
+            return(NULL);
+        }
     }
 
     cur = xmlNewChild(parent, NULL, name, NULL);
@@ -448,7 +453,13 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
         xmlFreeNode(cur);
         return(NULL);
     }
-    xmlAddChild(parent, text);
+    if(xmlAddChild(parent, text) == NULL) {
+        xmlSecXmlError("xmlAddChild", NULL);
+        xmlFreeNode(text);
+        xmlUnlinkNode(cur);
+        xmlFreeNode(cur);
+        return(NULL);
+    }
 
     return(cur);
 }
@@ -473,10 +484,17 @@ xmlSecAddChildNode(xmlNodePtr parent, xmlNodePtr child) {
             xmlSecXmlError("xmlNewText", NULL);
             return(NULL);
         }
-        xmlAddChild(parent, text);
+        if(xmlAddChild(parent, text) == NULL) {
+            xmlSecXmlError("xmlAddChild", NULL);
+            xmlFreeNode(text);
+            return(NULL);
+        }
     }
 
-    xmlAddChild(parent, child);
+    if(xmlAddChild(parent, child) == NULL) {
+        xmlSecXmlError("xmlAddChild", NULL);
+        return(NULL);
+    }
 
     /* TODO: add indents */
     text = xmlNewText(xmlSecGetDefaultLineFeed());
@@ -484,7 +502,11 @@ xmlSecAddChildNode(xmlNodePtr parent, xmlNodePtr child) {
         xmlSecXmlError("xmlNewText", NULL);
         return(NULL);
     }
-    xmlAddChild(parent, text);
+    if(xmlAddChild(parent, text) == NULL) {
+        xmlSecXmlError("xmlAddChild", NULL);
+        xmlFreeNode(text);
+        return(NULL);
+    }
 
     return(child);
 }
@@ -554,7 +576,11 @@ xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
         xmlSecXmlError("xmlNewNode", NULL);
         return(NULL);
     }
-    xmlAddNextSibling(node, cur);
+    if(xmlAddNextSibling(node, cur) == NULL) {
+        xmlSecXmlError("xmlAddNextSibling", NULL);
+        xmlFreeNode(cur);
+        return(NULL);
+    }
 
     /* namespaces support */
     if(ns != NULL) {
@@ -582,7 +608,13 @@ xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
         xmlFreeNode(cur);
         return(NULL);
     }
-    xmlAddNextSibling(node, text);
+    if(xmlAddNextSibling(node, text) == NULL) {
+        xmlSecXmlError("xmlAddNextSibling", NULL);
+        xmlFreeNode(text);
+        xmlUnlinkNode(cur);
+        xmlFreeNode(cur);
+        return(NULL);
+    }
 
     return(cur);
 }
@@ -608,7 +640,11 @@ xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
         xmlSecXmlError("xmlNewNode", NULL);
         return(NULL);
     }
-    xmlAddPrevSibling(node, cur);
+    if(xmlAddPrevSibling(node, cur) == NULL) {
+        xmlSecXmlError("xmlAddPrevSibling", NULL);
+        xmlFreeNode(cur);
+        return(NULL);
+    }
 
     /* namespaces support */
     if(ns != NULL) {
@@ -636,7 +672,13 @@ xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
         xmlFreeNode(cur);
         return(NULL);
     }
-    xmlAddPrevSibling(node, text);
+    if(xmlAddPrevSibling(node, text) == NULL) {
+        xmlSecXmlError("xmlAddPrevSibling", NULL);
+        xmlFreeNode(text);
+        xmlUnlinkNode(cur);
+        xmlFreeNode(cur);
+        return(NULL);
+    }
 
     return(cur);
 }
@@ -705,7 +747,11 @@ xmlSecReplaceNodeAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr* repl
     }
 
     if(restoreRoot != 0) {
-        xmlDocSetRootElement(oldNode->doc, newNode);
+        if(xmlDocSetRootElement(oldNode->doc, newNode) == NULL) {
+            xmlSecXmlError("xmlDocSetRootElement", NULL);
+            xmlFreeNode(oldNode);
+            return(-1);
+        }
     }
 
     /* return the old node if requested */
@@ -814,6 +860,8 @@ xmlSecReplaceNodeBufferAndReturn(xmlNodePtr node, const xmlSecByte *buffer, xmlS
 
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(node->parent != NULL, -1);
+    xmlSecAssert2(node->doc != NULL, -1);
+    xmlSecAssert2(buffer != NULL, -1);
 
     /* parse buffer in the context of node's parent */
     XMLSEC_SAFE_CAST_SIZE_TO_INT(size, len, return(-1), NULL);
@@ -830,7 +878,18 @@ xmlSecReplaceNodeBufferAndReturn(xmlNodePtr node, const xmlSecByte *buffer, xmlS
     /* add new nodes */
     while (results != NULL) {
         next = results->next;
-        xmlAddPrevSibling(node, results);
+        if(xmlAddPrevSibling(node, results) == NULL) {
+            xmlSecXmlError("xmlAddPrevSibling", NULL);
+            /* release the current node and all remaining parsed nodes */
+            xmlFreeNode(results);
+            results = next;
+            while(results != NULL) {
+                next = results->next;
+                xmlFreeNode(results);
+                results = next;
+            }
+            return(-1);
+        }
         results = next;
     }
 
@@ -924,7 +983,11 @@ xmlSecAddIDsCallback(xmlNodePtr cur, void* data) {
 
             tmp = xmlGetID(ctx->doc, name);
             if(tmp == NULL) {
-                xmlAddID(NULL, ctx->doc, name, attr);
+                if(xmlAddID(NULL, ctx->doc, name, attr) == NULL) {
+                    xmlSecXmlError("xmlAddID", NULL);
+                    xmlFree(name);
+                    return(-1);
+                }
             } else if(tmp != attr) {
                 xmlSecInvalidStringDataError("id", name, "unique id (id already defined)", NULL);
                 /* ignore error */
@@ -1161,6 +1224,8 @@ xmlSecDepthFirstTreeWalk(xmlNodePtr node, xmlSecTreeWalkCallback callback, void*
 int
 xmlSecPrintXmlString(FILE * fd, const xmlChar * str) {
     int res;
+
+    xmlSecAssert2(fd != NULL, -1);
 
     if(str != NULL) {
         xmlChar * encoded_str = NULL;
@@ -1473,10 +1538,10 @@ xmlSecQName2IntegerNodeWrite(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr no
 
     cur = xmlSecAddChild(node, nodeName, nodeNs);
     if(cur == NULL) {
-xmlSecInternalError3("xmlSecAddChild", NULL,
-                     "nodeName=%s,intValue=%d",
-                     xmlSecErrorsSafeString(nodeName),
-                     intValue);
+        xmlSecInternalError3("xmlSecAddChild", NULL,
+                             "nodeName=%s,intValue=%d",
+                             xmlSecErrorsSafeString(nodeName),
+                             intValue);
         xmlFree(qname);
         return(-1);
     }
@@ -1603,8 +1668,8 @@ xmlSecQName2IntegerDebugDump(xmlSecQName2IntegerInfoConstPtr info, int intValue,
     qnameInfo = xmlSecQName2IntegerGetInfo(info, intValue);
     if(qnameInfo != NULL) {
         fprintf(output, "== %s: %d (name=\"%s\", href=\"%s\")\n", name, intValue,
-            (qnameInfo->qnameLocalPart) ? qnameInfo->qnameLocalPart : BAD_CAST NULL,
-            (qnameInfo->qnameHref) ? qnameInfo->qnameHref : BAD_CAST NULL);
+            (qnameInfo->qnameLocalPart) ? qnameInfo->qnameLocalPart : BAD_CAST "",
+            (qnameInfo->qnameHref) ? qnameInfo->qnameHref : BAD_CAST "");
     }
 }
 
@@ -1627,8 +1692,8 @@ xmlSecQName2IntegerDebugXmlDump(xmlSecQName2IntegerInfoConstPtr info, int intVal
     qnameInfo = xmlSecQName2IntegerGetInfo(info, intValue);
     if(qnameInfo != NULL) {
         fprintf(output, "<%s value=\"%d\" href=\"%s\">%s</%s>\n", name, intValue,
-            (qnameInfo->qnameHref) ? qnameInfo->qnameHref : BAD_CAST NULL,
-            (qnameInfo->qnameLocalPart) ? qnameInfo->qnameLocalPart : BAD_CAST NULL,
+            (qnameInfo->qnameHref) ? qnameInfo->qnameHref : BAD_CAST "",
+            (qnameInfo->qnameLocalPart) ? qnameInfo->qnameLocalPart : BAD_CAST "",
             name);
     }
 }
@@ -1937,7 +2002,8 @@ xmlSecQName2BitMaskDebugDump(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitMask
         xmlSecAssert(info[ii].mask != 0);
 
         if((mask & info[ii].mask) != 0) {
-            fprintf(output, "name=\"%s\" (href=\"%s\"),", info[ii].qnameLocalPart, info[ii].qnameHref);
+            fprintf(output, "name=\"%s\" (href=\"%s\"),", info[ii].qnameLocalPart,
+                    (info[ii].qnameHref != NULL) ? info[ii].qnameHref : BAD_CAST "");
         }
     }
     fprintf(output, "\n");
@@ -1970,7 +2036,8 @@ xmlSecQName2BitMaskDebugXmlDump(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitM
 
         if((mask & info[ii].mask) != 0) {
             fprintf(output, "<%s href=\"%s\">%s</%s>\n", name,
-                    info[ii].qnameHref, info[ii].qnameLocalPart, name);
+                    (info[ii].qnameHref != NULL) ? info[ii].qnameHref : BAD_CAST "",
+                    info[ii].qnameLocalPart, name);
         }
     }
     fprintf(output, "</%sList>\n", name);

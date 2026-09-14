@@ -1341,6 +1341,10 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
     }
     xmlSecAssert2(keyInfoCtx->encCtx != NULL, -1);
 
+    /* setup current recursion levels for the read context */
+    keyInfoCtx->encCtx->keyInfoReadCtx.curRetrievalMethodLevel = keyInfoCtx->curRetrievalMethodLevel;
+    keyInfoCtx->encCtx->keyInfoReadCtx.curEncryptedKeyLevel = keyInfoCtx->curEncryptedKeyLevel;
+
     result = xmlSecEncCtxDecryptToBuffer(keyInfoCtx->encCtx, node);
     if((result == NULL) || (xmlSecBufferGetData(result) == NULL)) {
         /* We might have multiple EncryptedKey elements, encrypted

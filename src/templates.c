@@ -1572,6 +1572,9 @@ xmlSecTmplX509DataAddCRL(xmlNodePtr x509DataNode) {
  * @param transformNode the pointer to &lt;dsig:Transform/&gt; node
  * @param bitsLen the required length in bits
  *
+ * Note: in case of failure, the @p transformNode node might be left in an inconsistent
+ * state.
+ *
  * @return 0 on success and a negative value otherwise.
  */
 int
@@ -1618,6 +1621,9 @@ xmlSecTmplTransformAddHmacOutputLength(xmlNodePtr transformNode, xmlSecSize bits
  * @param transformNode the pointer to &lt;dsig:Transform/&gt; node.
  * @param buf the OAEP param buffer.
  * @param size the OAEP param buffer size.
+ *
+ * Note: if xmlNodeSetContent() fails, the (empty) child node is left attached
+ * to @p transformNode; a retry will then fail with "node already present".
  *
  * @return 0 on success or a negative value if an error occurs.
  */
@@ -1746,6 +1752,7 @@ xmlSecTmplTransformAddRsaDigest(xmlNodePtr transformNode, const xmlChar *algorit
 int
 xmlSecTmplTransformAddXsltStylesheet(xmlNodePtr transformNode, const xmlChar *xslt) {
     xmlDocPtr xsltDoc;
+    xmlNodePtr xsltRoot;
     int ret;
 
     xmlSecAssert2(transformNode != NULL, -1);
@@ -1757,13 +1764,34 @@ xmlSecTmplTransformAddXsltStylesheet(xmlNodePtr transformNode, const xmlChar *xs
         return(-1);
     }
 
-    ret = xmlSecReplaceContent(transformNode, xmlDocGetRootElement(xsltDoc));
+    xsltRoot = xmlDocGetRootElement(xsltDoc);
+    if(xsltRoot == NULL) {
+        xmlSecXmlError("xmlDocGetRootElement", NULL);
+        xmlFreeDoc(xsltDoc);
+        return(-1);
+    }
+
+    ret = xmlSecReplaceContent(transformNode, xsltRoot);
     if(ret < 0) {
         xmlSecInternalError("xmlSecReplaceContent", NULL);
         xmlFreeDoc(xsltDoc);
         return(-1);
     }
 
+    /* xsltRoot is now a child of transformNode; make sure its subtree points
+     * at transformNode's document */
+#if LIBXML_VERSION < 21300
+    xmlSetTreeDoc(xsltRoot, transformNode->doc);
+#else  /* LIBXML_VERSION < 21300 */
+    ret = xmlSetTreeDoc(xsltRoot, transformNode->doc);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSetTreeDoc", NULL);
+        xmlFreeDoc(xsltDoc);
+        return(-1);
+    }
+#endif /* LIBXML_VERSION < 21300 */
+
+    /* success */
     xmlFreeDoc(xsltDoc);
     return(0);
 }

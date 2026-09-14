@@ -127,6 +127,10 @@ xmlSecTransformMemBufFinalize(xmlSecTransformPtr transform) {
     xmlSecBufferFinalize(buffer);
 }
 
+/*
+ * Note: in case of failure, the transform state is undefined until
+ * the #xmlSecTransformDestroy function is called.
+ */
 static int
 xmlSecTransformMemBufExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecBufferPtr buffer;

@@ -64,6 +64,9 @@ xmlSecKeyDataIdsGetEnabled(void) {
  * @details Initializes the key data klasses. This function is called from the
  * #xmlSecInit function and the application should not call it directly.
  *
+ * Note: in case of failure the key data registry is left partially
+ * initialized and this state is not recoverable.
+ *
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -106,6 +109,10 @@ xmlSecKeyDataIdsShutdown(void) {
  * @brief Registers a key data klass in the global list (enabled).
  * @details Registers @p id in the global list of key data klasses and enable this key data.
  * @param id the key data klass.
+ *
+ * Note: if adding to the enabled list fails after the add to the "all" list
+ * succeeded, the klass is left half-registered (present in the "all" list but
+ * not in the "enabled" list).
  *
  * @return 0 on success or a negative value if an error occurs.
  */

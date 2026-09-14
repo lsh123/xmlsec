@@ -193,9 +193,12 @@ xmlSecTransformC14NNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSe
     return(0);
 }
 
+/*
+ * Note: in case of failure, the transform state is undefined until
+ * the #xmlSecTransformDestroy function is called.
+ */
 static int
-xmlSecTransformC14NPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
-                            xmlSecTransformCtxPtr transformCtx) {
+xmlSecTransformC14NPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes, xmlSecTransformCtxPtr transformCtx) {
     xmlOutputBufferPtr buf;
     int ret;
 

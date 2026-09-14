@@ -130,21 +130,41 @@ xmlSecNodeSetCheckNode(xmlNodeSetPtr nodes, xmlNodePtr node, xmlNodePtr parent) 
     if(node->type != XML_NAMESPACE_DECL) {
         return(xmlXPathNodeSetContains(nodes, node));
     } else {
-        xmlNs ns;
+        xmlNsPtr ns;
+        xmlNodePtr hostingNode;
+        int ii;
 
-        memcpy(&ns, node, sizeof(ns));
-
-        /* this is a libxml hack! check xpath.c for details */
+        /* the "hosting" element the namespace is in scope on (this is a libxml hack! check xpath.c for details) */
         if((parent != NULL) && (parent->type == XML_ATTRIBUTE_NODE)) {
-            ns.next = (xmlNsPtr)parent->parent;
+            hostingNode = parent->parent;
         } else {
-            ns.next = (xmlNsPtr)parent;
+            hostingNode = parent;
+        }
+        if(hostingNode == NULL) {
+            return(0);
         }
 
         /** If the input is an XPath node-set, then the node-set must explicitly
          * contain every node to be rendered to the canonical form.
          */
-        return(xmlXPathNodeSetContains(nodes, (xmlNodePtr)&ns));
+        /*
+         * libxml2 stores namespace nodes in XPath node sets as copies whose
+         * ->next field points at the hosting element; match on that plus the
+         * prefix. This is done manually (instead of relying on
+         * xmlXPathNodeSetContains) because older libxml2 versions compare
+         * namespace nodes by pointer only, which would never match.
+         */
+        for(ii = 0; ii < nodes->nodeNr; ii++) {
+            if(nodes->nodeTab[ii]->type != XML_NAMESPACE_DECL) {
+                continue;
+            }
+            ns = (xmlNsPtr)nodes->nodeTab[ii];
+            if((ns->next == (xmlNsPtr)hostingNode) &&
+               (xmlStrEqual(ns->prefix, ((xmlNsPtr)node)->prefix))) {
+                return(1);
+            }
+        }
+        return(0);
     }
 }
 

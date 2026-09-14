@@ -346,6 +346,9 @@ static xmlSecPtrList gXmlSecCryptoDLLibraries;
  * @details Initializes the dynamic library loading engine. This function is
  * normally called by xmlSecAppInit() and should not be called by the
  * application directly.
+ *
+ * Note: in case of failure the dynamic library loading engine is left partially
+ * initialized and this state is not recoverable.
  * @return 0 on success or a negative value if an error occurs.
  */
 int

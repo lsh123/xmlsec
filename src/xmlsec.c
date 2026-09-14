@@ -62,7 +62,8 @@ xmlSecNoXxeExternalEntityLoader(const char *URL, const char *ID,
 
 /**
  * @brief Wrapper for xmlSetExternalEntityLoader.
- * @param entityLoader the new entity resolver function, or NULL to restore the loader that was in effect when the library was initialized
+ * @param entityLoader the new entity resolver function, or NULL to restore the loader
+ * that was in effect when the library was initialized
  */
 void
 xmlSecSetExternalEntityLoader(xmlExternalEntityLoader entityLoader) {
@@ -84,6 +85,9 @@ xmlSecSetExternalEntityLoader(xmlExternalEntityLoader entityLoader) {
  *
  * Note: The application SHOULD NOT initialize the XML Security Library
  * more than once per process.
+ *
+ * Note: in case of failure the library is left partially
+ * initialized and this state is not recoverable.
  *
  * @return 0 on success or a negative value otherwise.
  */
@@ -124,6 +128,7 @@ xmlSecInit(void) {
     xmlSetExternalEntityLoader(xmlSecNoXxeExternalEntityLoader);
 #endif /* LIBXML_VERSION < 21300 */
 
+    /* success */
     return(0);
 }
 

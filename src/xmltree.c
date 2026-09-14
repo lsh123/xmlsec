@@ -468,6 +468,10 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
  * @brief Adds @p child node to the @p parent node.
  * @param parent the pointer to an XML node.
  * @param child the new node.
+ *
+ * Note: in case of failure, the @p parent node might be left in an inconsistent
+ * state.
+ *
  * @return pointer to the new node or NULL if an error occurs.
  */
 xmlNodePtr
@@ -715,6 +719,12 @@ xmlSecReplaceNode(xmlNodePtr node, xmlNodePtr newNode) {
  * @param node the current node.
  * @param newNode the new node.
  * @param replaced the replaced node, or release it if NULL is given
+ *
+ * Note: on error the document children of @p node are restored, but the
+ * document children of @p newNode are not; if xmlReplaceNode() fails before
+ * touching @p newNode and @p newNode is the root of its document, that
+ * document is left with a corrupted children list.
+ *
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -794,15 +804,16 @@ xmlSecReplaceContentAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr *r
         (*replaced) = tail = NULL;
         for(cur = node->children; (cur != NULL); cur = next) {
             next = cur->next;
-            if((*replaced) != NULL) {
-                /* cur is unlinked in this function */
-                xmlAddNextSibling(tail, cur);
-                tail = cur;
+            /* unlink cur and append it to the detached *replaced list;
+             * xmlUnlinkNode() does not merge text nodes, so cur stays valid */
+            xmlUnlinkNode(cur);
+            if(tail != NULL) {
+                tail->next = cur;
+                cur->prev = tail;
             } else {
-                /* this is the first node, (*replaced) is the head */
-                xmlUnlinkNode(cur);
-                (*replaced) = tail = cur;
-          }
+                (*replaced) = cur;
+            }
+            tail = cur;
         }
     } else {
         /* just delete the content */
@@ -1514,6 +1525,10 @@ xmlSecQName2IntegerNodeRead(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr nod
  * @param nodeName the child node name.
  * @param nodeNs the child node namespace.
  * @param intValue the integer value.
+ *
+ * Note: if xmlNodeSetContent() fails, the child node created by xmlSecAddChild()
+ * is left in the tree (not unlinked or freed).
+ *
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -1926,6 +1941,10 @@ xmlSecQName2BitMaskNodesRead(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr* n
  * @param nodeName the mask nodes name.
  * @param nodeNs the mask nodes namespace.
  * @param mask the bit mask.
+ *
+ * Note: if xmlNodeSetContent() fails, the child node created by xmlSecAddChild()
+ * is left in the tree (not unlinked or freed).
+ *
  * @return 0 on success or a negative value if an error occurs.
  */
 int

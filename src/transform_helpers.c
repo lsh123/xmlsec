@@ -464,6 +464,20 @@ xmlSecTransformKAMFinalize(xmlSecTransformKAMPtr params) {
     memset(params, 0, sizeof(*params));
 }
 
+/**
+ * @brief Reads an AgreementMethod element into @p params.
+ * @details Reads the KeyDerivationMethod, OriginatorKeyInfo and
+ * RecipientKeyInfo child elements of @p node and populates @p params.
+ * @param params the KAM transform parameters.
+ * @param node the AgreementMethod element.
+ * @param kamTransform the KAM transform.
+ * @param transformCtx the transform context.
+ *
+ * Note: in case of failure, the transform state is undefined until
+ * the #xmlSecTransformDestroy function is called.
+ *
+ * @return 0 on success or a negative value if an error occurs.
+ */
 int
 xmlSecTransformKAMRead(xmlSecTransformKAMPtr params, xmlNodePtr node, xmlSecTransformPtr kamTransform, xmlSecTransformCtxPtr transformCtx)
 {

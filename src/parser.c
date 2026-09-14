@@ -355,7 +355,6 @@ xmlSecParseFile(const char *filename) {
 
     xmlSecAssert2(filename != NULL, NULL);
 
-    xmlInitParser();
     ctxt = xmlCreateFileParserCtxt(filename);
     if (ctxt == NULL) {
         xmlSecXmlError2("xmlCreateFileParserCtxt", NULL, "filename=%s", xmlSecErrorsSafeString(filename));

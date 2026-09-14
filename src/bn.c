@@ -800,6 +800,11 @@ xmlSecBnGetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
  * @param format the BN format.
  * @param reverse the flag that indicates whether to reverse the buffer before writing.
  * @param addLineBreaks the flag; if it is equal to 1 then linebreaks will be added before and after new buffer content.
+ *
+ * Note: if @p reverse is non-zero the buffer is reversed in place before it is
+ * written; if a later step fails the BN is left reversed (the reversal is not
+ * undone on the error path).
+ *
  * @return 0 on success and a negative value if an error occurs.
  */
 int

@@ -879,7 +879,8 @@ xmlSecDSigCtxProcessObjectNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     xmlSecAssert2(dsigCtx->status == xmlSecDSigStatusUnknown, -1);
     xmlSecAssert2(node != NULL, -1);
 
-    /* we care about Manifest nodes only; ignore everything else */
+    /* We care about Manifest nodes only; ignore everything else. Per the XMLDSig DTD
+     * the Manifest node is a direct child of Object node, so only direct children are scanned. */
     cur = xmlSecGetNextElementNode(node->children);
     while(cur != NULL) {
         if(xmlSecCheckNodeName(cur, xmlSecNodeManifest, xmlSecDSigNs)) {

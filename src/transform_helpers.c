@@ -180,6 +180,7 @@ xmlSecTransformConcatKdfParamsRead(xmlSecTransformConcatKdfParamsPtr params, xml
     int ret;
 
     xmlSecAssert2(params != NULL, -1);
+    xmlSecAssert2(params->digestMethod == NULL, -1);
     xmlSecAssert2(node != NULL, -1);
 
     /* first (and only) node is required DigestMethod */

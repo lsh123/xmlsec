@@ -580,7 +580,7 @@ xmlSecTransformRelationshipWriteProp(xmlOutputBufferPtr buf, const xmlChar * nam
  */
 static int
 xmlSecTransformRelationshipWriteAttribute(xmlSecTransformPtr transform, xmlOutputBufferPtr buf, xmlAttrPtr attr) {
-    xmlChar * value;
+    xmlChar * value = NULL;
     xmlChar * nameCopy = NULL;
     const xmlChar * attrName;
     size_t prefixLen;
@@ -609,27 +609,39 @@ xmlSecTransformRelationshipWriteAttribute(xmlSecTransformPtr transform, xmlOutpu
         attrName = attr->name;
     }
 
-    /* xmlNodeListGetString returns NULL for both empty values and OOM;
-     * there is no way to distinguish the two cases. However, both are errors
+    /*
+     * Get the attribute value as raw (unescaped) text. The third argument to
+     * xmlNodeListGetString() is the "inLine" flag: when non-zero it returns the
+     * unescaped content, which xmlSecTransformRelationshipWriteProp() then
+     * escapes exactly once. An attribute without child nodes has an empty value
+     * (e.g. Target=""), so skip the call and serialize an empty string instead
+     * of failing.
      */
-    value = xmlNodeListGetString(attr->doc, attr->children, 1);
-    if(value == NULL) {
-        xmlSecXmlError("xmlNodeListGetString", xmlSecTransformGetName(transform));
-        xmlFree(nameCopy);
-        return(-1);
+    if(attr->children != NULL) {
+        value = xmlNodeListGetString(attr->doc, attr->children, 1);
+        if(value == NULL) {
+            xmlSecXmlError("xmlNodeListGetString", xmlSecTransformGetName(transform));
+            xmlFree(nameCopy);
+            return(-1);
+        }
     }
 
-    /* finally write the attribute to the output */
-    ret = xmlSecTransformRelationshipWriteProp(buf, attrName, value);
+    /* finally write the attribute to the output; an attribute without child
+     * nodes has an empty value, e.g. Target="" */
+    ret = xmlSecTransformRelationshipWriteProp(buf, attrName, (value != NULL) ? value : BAD_CAST "");
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformRelationshipWriteProp", xmlSecTransformGetName(transform));
         xmlFree(nameCopy);
-        xmlFree(value);
+        if(value != NULL) {
+            xmlFree(value);
+        }
         return(-1);
     }
 
     xmlFree(nameCopy);
-    xmlFree(value);
+    if(value != NULL) {
+        xmlFree(value);
+    }
     return(0);
 }
 

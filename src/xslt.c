@@ -250,7 +250,6 @@ xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransfor
     const xmlChar* buf;
     xmlSecSize bufSize;
     int bufLen;
-    xsltSecurityPrefsPtr oldSec;
     int res = -1;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXsltId), -1);
@@ -281,7 +280,7 @@ xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransfor
     buf = xmlBufferContent(buffer);
     bufLen = xmlBufferLength(buffer);
     XMLSEC_SAFE_CAST_INT_TO_SIZE(bufLen, bufSize, goto done, xmlSecTransformGetName(transform));
-    doc = xmlSecParseMemory(buf, bufSize, 1);
+    doc = xmlSecParseMemory(buf, bufSize, 0);
     if(doc == NULL) {
         xmlSecInternalError("xmlSecParseMemory",
                             xmlSecTransformGetName(transform));
@@ -289,10 +288,7 @@ xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransfor
     }
 
     /* pre-process stylesheet */
-    oldSec = xsltGetDefaultSecurityPrefs();
-    xsltSetDefaultSecurityPrefs(g_xslt_default_security_prefs);
     ctx->xslt = xsltParseStylesheetDoc(doc);
-    xsltSetDefaultSecurityPrefs(oldSec);
     if(ctx->xslt == NULL) {
         xmlSecXsltError("xsltParseStylesheetDoc", xmlSecTransformGetName(transform));
 
@@ -340,6 +336,10 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
 
         transform->status = xmlSecTransformStatusWorking;
     } else if(transform->status == xmlSecTransformStatusFinished) {
+        if((data != NULL) && (dataSize > 0)) {
+            xmlSecInvalidTransformStatusError2(transform, "data pushed after transform finished");
+            return(-1);
+        }
         return(0);
     } else if(transform->status != xmlSecTransformStatusWorking) {
         xmlSecInvalidTransformStatusError(transform);
@@ -490,7 +490,7 @@ xmlSecXslProcess(xmlSecXsltCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out) 
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(ctx != NULL, -1);
 
-    docIn = xmlSecParseMemory(xmlSecBufferGetData(in), xmlSecBufferGetSize(in), 1);
+    docIn = xmlSecParseMemory(xmlSecBufferGetData(in), xmlSecBufferGetSize(in), 0);
     if(docIn == NULL) {
         xmlSecInternalError("xmlSecParseMemory", NULL);
         goto done;

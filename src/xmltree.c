@@ -1289,9 +1289,15 @@ xmlSecGetQName(xmlNodePtr node, const xmlChar* href, const xmlChar* local) {
 
     if((ns != NULL) && (ns->prefix != NULL)) {
         xmlSecSize size;
-        int len;
+        int len, localLen, prefixLen;
 
-        len = xmlStrlen(local) + xmlStrlen(ns->prefix) + 4;
+        localLen = xmlStrlen(local);
+        prefixLen = xmlStrlen(ns->prefix);
+        if(localLen > (INT_MAX - prefixLen - 2)) {
+            xmlSecInvalidSizeError("size", (xmlSecSize)localLen, (xmlSecSize)(INT_MAX - prefixLen - 2), NULL);
+            return(NULL);
+        }
+        len = localLen + prefixLen + 2;
         XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(NULL), NULL);
 
         qname = (xmlChar *)xmlMalloc(size);

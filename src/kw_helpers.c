@@ -778,12 +778,13 @@ static const xmlSecByte xmlSecKWRfc3394MagicBlock[XMLSEC_KW_RFC3394_MAGIC_BLOCK_
  * (big-endian), as required by RFC 3394. Only the low byte is not enough: for
  * N >= 43 the counter t exceeds 255 and the high bytes must be mixed in too. */
 static void
-xmlSecKWRfc3394XorCounter(xmlSecByte* block, xmlSecSize counter) {
+xmlSecKWRfc3394XorCounter(xmlSecByte* block, uint64_t counter) {
     xmlSecSize ii;
 
     xmlSecAssert(block != NULL);
 
     for(ii = 0; ii < XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE; ++ii) {
+        /* the shift (up to 56) is well-defined */
         block[ii] ^= (xmlSecByte)(counter >> (8 * (XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE - 1 - ii)));
     }
 }
@@ -834,8 +835,7 @@ xmlSecKWRfc3394Encode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transfor
                 memcpy(block + 8, p, 8);
 
                 outWritten2 = 0;
-                ret = kwRfc3394Id->encrypt(transform, block, sizeof(block),
-                    block, sizeof(block), &outWritten2);
+                ret = kwRfc3394Id->encrypt(transform, block, sizeof(block), block, sizeof(block), &outWritten2);
                 if((ret < 0) || (outWritten2 != XMLSEC_KW_RFC3394_BLOCK_SIZE)) {
                     xmlSecInternalError2("kwRfc3394Id->encrypt", NULL,
                         "outWritten2=" XMLSEC_SIZE_FMT, outWritten2);

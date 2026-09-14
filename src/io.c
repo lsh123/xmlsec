@@ -585,6 +585,8 @@ xmlSecTransformInputURIClose(xmlSecTransformPtr transform) {
             xmlSecIOError("ctx->clbks->closecallback", xmlSecTransformGetName(transform), NULL);
             return(-1);
         }
+        /* only clear the handle after a successful close so that a failed
+         * close can be retried and the handle is not lost */
         ctx->clbksCtx = NULL;
         ctx->clbks = NULL;
     }
@@ -618,11 +620,11 @@ xmlSecTransformInputURIFinalize(xmlSecTransformPtr transform) {
 
     ret = xmlSecTransformInputURIClose(transform);
     if(ret < 0) {
+        /* the close failed; keep the handle so it is not silently lost */
         xmlSecInternalError2("xmlSecTransformInputURIClose",
                              xmlSecTransformGetName(transform),
                              "ret=%d", ret);
-        /* ignore the error */
-        /* return; */
+        return;
     }
 
     memset(ctx, 0, sizeof(xmlSecInputURICtx));

@@ -220,8 +220,7 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
 }
 
 static int
-xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
-                               xmlSecTransformCtxPtr transformCtx) {
+xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes, xmlSecTransformCtxPtr transformCtx) {
     xmlSecParserCtxPtr ctx;
     xmlParserInputBufferPtr buf;
     xmlParserInputPtr input;
@@ -245,8 +244,8 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
         /* just do nothing */
         break;
     case xmlSecTransformStatusFinished:
-        (*nodes) = NULL;
-        return(0);
+        xmlSecInvalidTransformStatusError2(transform, "data popped after transform finished");
+        return(-1);
     default:
         xmlSecInvalidTransformStatusError(transform);
         return(-1);
@@ -510,8 +509,25 @@ xmlSecParseMemory(const xmlSecByte *buffer, xmlSecSize size, int recovery) {
     }
     xmlSecParsePrepareCtxt(ctxt);
 
+    /* enable recovery mode */
+    if(recovery != 0) {
+#if LIBXML_VERSION < 21300
+        ctxt->recovery = 1;
+#else  /* LIBXML_VERSION < 21300 */
+        xmlCtxtSetOptions(ctxt, xmlSecParserGetDefaultOptions() | XML_PARSE_RECOVER);
+#endif /* LIBXML_VERSION < 21300 */
+    }
+
     ret = xmlParseDocument(ctxt);
     if(ret < 0) {
+        /* in recovery mode xmlParseDocument() returns -1 even when a (partial)
+         * document was recovered; accept the recovered document if present */
+        if((recovery != 0) && (ctxt->myDoc != NULL)) {
+            res = ctxt->myDoc;
+            ctxt->myDoc = NULL;
+            xmlFreeParserCtxt(ctxt);
+            return(res);
+        }
         xmlSecXmlParserError("xmlParseDocument", ctxt, NULL);
         if(ctxt->myDoc != NULL) {
             xmlFreeDoc(ctxt->myDoc);

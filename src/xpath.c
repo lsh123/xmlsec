@@ -213,23 +213,20 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
     /* do not forget to set the doc */
     data->ctx->doc = doc;
 
+    /* always register here(); not all libxml2 versions support unregistering with NULL */
+    if(xmlXPathRegisterFunc(data->ctx, (xmlChar *)"here", xmlSecXPathHereFunction) < 0) {
+        xmlSecXmlError("xmlXPathRegisterFunc", NULL);
+        return(NULL);
+    }
+
     /* here function works only on the same document */
     if(hereNode->doc == doc) {
         data->ctx->here = hereNode;
         data->ctx->xptr = 1;
-        if(xmlXPathRegisterFunc(data->ctx, (xmlChar *)"here", xmlSecXPathHereFunction) < 0) {
-            xmlSecXmlError("xmlXPathRegisterFunc", NULL);
-            return(NULL);
-        }
     } else {
-        /* clear any stale "here" node/function/xptr flag left over from a
-         * previous execution against another document */
+        /* clear any stale "here" node/xptr flag left over from a previous execution */
         data->ctx->here = NULL;
         data->ctx->xptr = 0;
-        if(xmlXPathRegisterFunc(data->ctx, (xmlChar *)"here", NULL) < 0) {
-            xmlSecXmlError("xmlXPathRegisterFunc", NULL);
-            return(NULL);
-        }
     }
 
     /* execute xpath or xpointer expression */
@@ -238,16 +235,14 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
     case xmlSecXPathDataTypeXPath2:
         xpathObj = xmlXPathEvalExpression(data->expr, data->ctx);
         if(xpathObj == NULL) {
-            xmlSecXmlError2("xmlXPathEvalExpression", NULL,
-                            "expr=%s", xmlSecErrorsSafeString(data->expr));
+            xmlSecXmlError2("xmlXPathEvalExpression", NULL,"expr=%s", xmlSecErrorsSafeString(data->expr));
             return(NULL);
         }
         break;
     case xmlSecXPathDataTypeXPointer:
         xpathObj = xmlXPtrEval(data->expr, data->ctx);
         if(xpathObj == NULL) {
-            xmlSecXmlError2("xmlXPtrEval", NULL,
-                            "expr=%s", xmlSecErrorsSafeString(data->expr));
+            xmlSecXmlError2("xmlXPtrEval", NULL, "expr=%s", xmlSecErrorsSafeString(data->expr));
             return(NULL);
         }
         break;

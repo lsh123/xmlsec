@@ -747,10 +747,10 @@ xmlSecReplaceNodeAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr* repl
     }
 
     if(restoreRoot != 0) {
-        if(xmlDocSetRootElement(oldNode->doc, newNode) == NULL) {
-            xmlSecXmlError("xmlDocSetRootElement", NULL);
-            xmlFreeNode(oldNode);
-            return(-1);
+        /* xmlDocSetRootElement returns the current root (if any)*/
+        xmlNodePtr oldRoot = xmlDocSetRootElement(oldNode->doc, newNode);
+        if (oldRoot != NULL) {
+            xmlFreeNode(oldRoot);
         }
     }
 

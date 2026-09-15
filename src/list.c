@@ -268,7 +268,6 @@ xmlSecPtrListGetItem(xmlSecPtrListPtr list, xmlSecSize pos) {
         return(NULL);
     }
     xmlSecAssert2(list->data != NULL, NULL);
-    xmlSecAssert2(pos < list->use, NULL);
 
     return(list->data[pos]);
 }

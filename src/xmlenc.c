@@ -286,7 +286,7 @@ xmlSecEncCtxBinaryEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl,
     xmlSecAssert2(tmpl != NULL, -1);
     xmlSecAssert2((data != NULL) || (dataSize == 0), -1);
 
-      /* initialize context and add ID attributes to the list of known ids */
+    /* initialize context and add ID attributes to the list of known ids */
     encCtx->operation = xmlSecTransformOperationEncrypt;
     xmlSecAddIDs(tmpl->doc, tmpl, xmlSecEncIds);
 
@@ -320,6 +320,10 @@ xmlSecEncCtxBinaryEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl,
  * @details Encrypts @p node according to template @p tmpl. If requested, @p node is replaced
  * with result &lt;enc:EncryptedData/&gt; node.
  *
+ * Note: on error, the state of the @p tmpl is undefined and the caller
+ * should not make any assumptions about it. The recommended way is to
+ * release it with xmlUnlinkNode(tmpl); xmlFreeNode(tmpl); immediately.
+ *
  * @param encCtx the pointer to &lt;enc:EncryptedData/&gt; processing context.
  * @param tmpl the pointer to &lt;enc:EncryptedData/&gt; template node.
  * @param node the pointer to node for encryption.
@@ -336,7 +340,7 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(node->doc != NULL, -1);
 
-      /* initialize context and add ID attributes to the list of known ids */
+    /* initialize context and add ID attributes to the list of known ids */
     encCtx->operation = xmlSecTransformOperationEncrypt;
     xmlSecAddIDs(tmpl->doc, tmpl, xmlSecEncIds);
 
@@ -402,15 +406,13 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
         if((encCtx->flags & XMLSEC_ENC_FLAGS_RETURN_REPLACED_NODE) != 0) {
             ret = xmlSecReplaceNodeAndReturn(node, tmpl, &(encCtx->replacedNodeList));
             if(ret < 0) {
-                xmlSecInternalError("xmlSecReplaceNodeAndReturn",
-                                    xmlSecNodeGetName(node));
+                xmlSecInternalError("xmlSecReplaceNodeAndReturn", xmlSecNodeGetName(node));
                 return(-1);
             }
         } else {
             ret = xmlSecReplaceNode(node, tmpl);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecReplaceNode",
-                                    xmlSecNodeGetName(node));
+                xmlSecInternalError("xmlSecReplaceNode", xmlSecNodeGetName(node));
                 return(-1);
             }
         }
@@ -420,15 +422,13 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
         if((encCtx->flags & XMLSEC_ENC_FLAGS_RETURN_REPLACED_NODE) != 0) {
             ret = xmlSecReplaceContentAndReturn(node, tmpl, &(encCtx->replacedNodeList));
             if(ret < 0) {
-                xmlSecInternalError("xmlSecReplaceContentAndReturn",
-                                    xmlSecNodeGetName(node));
+                xmlSecInternalError("xmlSecReplaceContentAndReturn", xmlSecNodeGetName(node));
                 return(-1);
             }
         } else {
             ret = xmlSecReplaceContent(node, tmpl);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecReplaceContent",
-                                    xmlSecNodeGetName(node));
+                xmlSecInternalError("xmlSecReplaceContent", xmlSecNodeGetName(node));
                 return(-1);
             }
         }
@@ -460,7 +460,7 @@ xmlSecEncCtxUriEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, const xmlChar* u
     xmlSecAssert2(tmpl != NULL, -1);
     xmlSecAssert2(uri != NULL, -1);
 
-      /* initialize context and add ID attributes to the list of known ids */
+    /* initialize context and add ID attributes to the list of known ids */
     encCtx->operation = xmlSecTransformOperationEncrypt;
     xmlSecAddIDs(tmpl->doc, tmpl, xmlSecEncIds);
 
@@ -528,14 +528,14 @@ xmlSecEncCtxDecrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     if((encCtx->type != NULL) && xmlStrEqual(encCtx->type, xmlSecTypeEncElement)) {
         /* check if we need to return the replaced node */
         if((encCtx->flags & XMLSEC_ENC_FLAGS_RETURN_REPLACED_NODE) != 0) {
-            ret = xmlSecReplaceNodeBufferAndReturn(node, xmlSecBufferGetData(buffer),  xmlSecBufferGetSize(buffer), &(encCtx->replacedNodeList));
+            ret = xmlSecReplaceNodeBufferAndReturn(node, xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer), &(encCtx->replacedNodeList));
             if(ret < 0) {
                 xmlSecInternalError("xmlSecReplaceNodeBufferAndReturn",
                                     xmlSecNodeGetName(node));
                 return(-1);
             }
         } else {
-            ret = xmlSecReplaceNodeBuffer(node, xmlSecBufferGetData(buffer),  xmlSecBufferGetSize(buffer));
+            ret = xmlSecReplaceNodeBuffer(node, xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer));
             if(ret < 0) {
                 xmlSecInternalError("xmlSecReplaceNodeBuffer",
                                     xmlSecNodeGetName(node));
@@ -585,7 +585,7 @@ xmlSecEncCtxDecryptToBuffer(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     xmlSecAssert2(encCtx->result == NULL, NULL);
     xmlSecAssert2(node != NULL, NULL);
 
-      /* initialize context and add ID attributes to the list of known ids */
+    /* initialize context and add ID attributes to the list of known ids */
     encCtx->operation = xmlSecTransformOperationDecrypt;
     xmlSecAddIDs(node->doc, node, xmlSecEncIds);
 
@@ -1257,7 +1257,7 @@ xmlSecEncCtxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xm
     xmlSecAssert2(node != NULL, NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
-      /* initialize context and add ID attributes to the list of known ids */
+    /* initialize context and add ID attributes to the list of known ids */
     encCtx->operation = xmlSecEncCtxMapOperation(keyInfoCtx->operation);
     if(encCtx->operation == xmlSecTransformOperationNone) {
         xmlSecInternalError2("invalid operation", NULL, "operation=%u", keyInfoCtx->operation);
@@ -1405,7 +1405,7 @@ xmlSecEncCtxAgreementMethodGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyI
     xmlSecAssert2(node != NULL, NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
-      /* initialize context and add ID attributes to the list of known ids */
+    /* initialize context and add ID attributes to the list of known ids */
     encCtx->operation = xmlSecEncCtxMapOperation(keyInfoCtx->operation);
     if(encCtx->operation == xmlSecTransformOperationNone) {
         xmlSecInternalError2("invalid operation", NULL, "operation=%u", keyInfoCtx->operation);
@@ -1457,7 +1457,7 @@ xmlSecEncCtxAgreementMethodXmlWrite(xmlSecEncCtxPtr encCtx, xmlNodePtr node, xml
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-      /* initialize context and add ID attributes to the list of known ids */
+    /* initialize context and add ID attributes to the list of known ids */
     encCtx->operation = xmlSecEncCtxMapOperation(keyInfoCtx->operation);
     if(encCtx->operation == xmlSecTransformOperationNone) {
         xmlSecInternalError2("invalid operation", NULL, "operation=%u", keyInfoCtx->operation);

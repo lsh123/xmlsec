@@ -904,7 +904,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
 
     /* do we have barename or full xpointer? */
     xptr = xmlStrchr(uri, '#');
-    if(xptr == NULL){
+    if(xptr == NULL) {
         ctx->uri = xmlStrdup(uri);
         if(ctx->uri == NULL) {
             xmlSecStrdupError(uri, NULL);
@@ -1262,7 +1262,7 @@ xmlSecTransformCtxExecute(xmlSecTransformCtxPtr ctx, xmlDocPtr doc) {
     if((ctx->uri == NULL) || (xmlSecStrlen(ctx->uri) == 0)) {
         xmlSecNodeSetPtr nodes;
 
-        if((ctx->xptrExpr != NULL) && (xmlSecStrlen(ctx->xptrExpr) > 0)){
+        if((ctx->xptrExpr != NULL) && (xmlSecStrlen(ctx->xptrExpr) > 0)) {
             /* we create the whole-tree node set here; in the general case the
              * xpointer transform prepended to the chain takes care of providing
              * the correct node set, while in the "#xpointer(/)" case no xpointer
@@ -2149,7 +2149,7 @@ xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, const xmlSecByte* da
         }
 
         /* remove data anyway */
-        if(outSize > 0){
+        if(outSize > 0) {
             ret = xmlSecBufferRemoveHead(&(transform->outBuf), outSize);
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform),
@@ -2378,11 +2378,11 @@ xmlSecTransformIdListGetKlass(void) {
 }
 
 /**
- * @brief Lookups @p dataId in @p list.
+ * @brief Lookups @p transformId in @p list.
  * @param list the pointer to transform ids list.
  * @param transformId the transform klass.
  *
- * @return 1 if @p dataId is found in the @p list, 0 if not and a negative
+ * @return 1 if @p transformId is found in the @p list, 0 if not and a negative
  * value if an error occurs.
  */
 int
@@ -2408,7 +2408,7 @@ xmlSecTransformIdListFind(xmlSecPtrListPtr list, xmlSecTransformId transformId) 
  * @param href the desired transform klass href.
  * @param usage the desired transform usage.
  *
- * @return transform klass is found and NULL otherwise.
+ * @return the transform klass if found or xmlSecTransformIdUnknown otherwise.
  */
 xmlSecTransformId
 xmlSecTransformIdListFindByHref(xmlSecPtrListPtr list, const xmlChar* href,
@@ -2439,7 +2439,7 @@ xmlSecTransformIdListFindByHref(xmlSecPtrListPtr list, const xmlChar* href,
  * @param name the desired transform klass name.
  * @param usage the desired transform usage.
  *
- * @return transform klass is found and NULL otherwise.
+ * @return the transform klass if found or xmlSecTransformIdUnknown otherwise.
  */
 xmlSecTransformId
 xmlSecTransformIdListFindByName(xmlSecPtrListPtr list, const xmlChar* name,

@@ -462,7 +462,7 @@ xmlSecSimpleKeysStoreEnableAllKeyData(xmlSecKeyInfoCtxPtr keyInfoCtx) {
  * @param store the pointer to simple keys store.
  * @param uri the filename.
  * @param keysMngr the pointer to associated keys manager.
- * @param adoptKeyFunc the callback to add the key to keys manager.
+ * @param adoptKeyFunc the callback to add the key to the keys store.
  *
  * @return 0 on success or a negative value if an error occurs.
  */

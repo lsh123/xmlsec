@@ -214,7 +214,7 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
 
         ret = xmlSecBnAdd(bn, nn);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBnAdd", NULL, "base=" XMLSEC_SIZE_FMT, base);
+            xmlSecInternalError2("xmlSecBnAdd", NULL, "delta=%d", nn);
             return (-1);
         }
     }
@@ -225,7 +225,7 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
         ch = 0;
         ret = xmlSecBufferPrepend(bn, &ch, 1);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferPrepend", NULL, "base=" XMLSEC_SIZE_FMT, base);
+            xmlSecInternalError("xmlSecBufferPrepend(1)", NULL);
             return (-1);
         }
     }

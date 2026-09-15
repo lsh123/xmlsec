@@ -319,7 +319,7 @@ xmlSecIOFileOpen(char const* filename) {
         }
         err = _wfopen_s(&fd, wpath, L"rb");
         if ((err != 0) || (fd == NULL)) {
-            xmlSecInternalError("_wfopen_s", NULL);
+            xmlSecIOError("_wfopen_s", filename, NULL);
             xmlFree(wpath);
             xmlFree(tmp);
             return(NULL);
@@ -331,7 +331,7 @@ xmlSecIOFileOpen(char const* filename) {
         errno_t err;
         err = fopen_s(&fd, filename, "rb");
         if ((err != 0) || (fd == NULL)) {
-            xmlSecInternalError("fopen_s", NULL);
+            xmlSecIOError("fopen_s", filename, NULL);
             xmlFree(tmp);
             return(NULL);
         }
@@ -339,7 +339,7 @@ xmlSecIOFileOpen(char const* filename) {
 #else /* defined(XMLSEC_WINDOWS) && defined(UNICODE) */
     fd = fopen(filename, "rb");
     if (fd == NULL) {
-        xmlSecInternalError("fopen", NULL);
+        xmlSecIOError("fopen", filename, NULL);
         xmlFree(tmp);
         return(NULL);
     }
@@ -515,7 +515,7 @@ xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const xmlChar *uri) {
     xmlSecAssert2(ctx->clbksCtx == NULL, -1);
 
     /*
-     * Try to find one of the input accept method accepting that scheme
+     * Try to find one of the input accept methods accepting that scheme
      * Go in reverse to give precedence to user defined handlers.
      * try with an unescaped version of the uri
      */

@@ -964,7 +964,7 @@ xmlSecTmplCipherReferenceAddTransform(xmlNodePtr cipherReferenceNode,
         }
     }
 
-    res = xmlSecAddChild(transformsNode,  xmlSecNodeTransform, xmlSecDSigNs);
+    res = xmlSecAddChild(transformsNode, xmlSecNodeTransform, xmlSecDSigNs);
     if(res == NULL) {
         xmlSecInternalError("xmlSecAddChild(xmlSecNodeTransform)", NULL);
         return(NULL);
@@ -1011,7 +1011,7 @@ xmlSecTmplReferenceListAddDataReference(xmlNodePtr encNode, const xmlChar *uri) 
         }
     }
 
-    res = xmlSecAddChild(refListNode,  xmlSecNodeDataReference, xmlSecEncNs);
+    res = xmlSecAddChild(refListNode, xmlSecNodeDataReference, xmlSecEncNs);
     if(res == NULL) {
         xmlSecInternalError("xmlSecAddChild(xmlSecNodeDataReference)", NULL);
         return(NULL);
@@ -1053,7 +1053,7 @@ xmlSecTmplReferenceListAddKeyReference(xmlNodePtr encNode, const xmlChar *uri) {
         }
     }
 
-    res = xmlSecAddChild(refListNode,  xmlSecNodeKeyReference, xmlSecEncNs);
+    res = xmlSecAddChild(refListNode, xmlSecNodeKeyReference, xmlSecEncNs);
     if(res == NULL) {
         xmlSecInternalError("xmlSecAddChild(xmlSecNodeKeyReference)", NULL);
         return(NULL);
@@ -1227,7 +1227,7 @@ xmlSecTmplRetrievalMethodAddTransform(xmlNodePtr retrMethodNode, xmlSecTransform
         }
     }
 
-    res = xmlSecAddChild(transformsNode,  xmlSecNodeTransform, xmlSecDSigNs);
+    res = xmlSecAddChild(transformsNode, xmlSecNodeTransform, xmlSecDSigNs);
     if(res == NULL) {
         xmlSecInternalError("xmlSecAddChild(xmlSecNodeTransform)", NULL);
         return(NULL);
@@ -1336,7 +1336,7 @@ xmlSecTmplX509DataAddIssuerSerial(xmlNodePtr x509DataNode) {
         return(NULL);
     }
 
-    return (cur);
+    return(cur);
 }
 
 /**
@@ -1443,7 +1443,7 @@ xmlSecTmplX509DataAddSubjectName(xmlNodePtr x509DataNode) {
         return(NULL);
     }
 
-    return (cur);
+    return(cur);
 }
 
 /**
@@ -1473,7 +1473,7 @@ xmlSecTmplX509DataAddSKI(xmlNodePtr x509DataNode) {
         return(NULL);
     }
 
-    return (cur);
+    return(cur);
 }
 
 /**
@@ -1512,7 +1512,7 @@ xmlSecTmplX509DataAddDigest(xmlNodePtr x509DataNode, const xmlChar* digestAlgori
         return(NULL);
     }
 
-    return (cur);
+    return(cur);
 }
 
 
@@ -1543,7 +1543,7 @@ xmlSecTmplX509DataAddCertificate(xmlNodePtr x509DataNode) {
         return(NULL);
     }
 
-    return (cur);
+    return(cur);
 }
 
 /**
@@ -1573,7 +1573,7 @@ xmlSecTmplX509DataAddCRL(xmlNodePtr x509DataNode) {
         return(NULL);
     }
 
-    return (cur);
+    return(cur);
 }
 
 /******************************************************************************
@@ -1615,9 +1615,15 @@ xmlSecTmplTransformAddHmacOutputLength(xmlNodePtr transformNode, xmlSecSize bits
     }
 
 #if defined(_MSC_VER)
-    sprintf_s(buf, sizeof(buf), XMLSEC_SIZE_FMT, bitsLen);
+    if(sprintf_s(buf, sizeof(buf), XMLSEC_SIZE_FMT, bitsLen) < 0) {
+        xmlSecInternalError("sprintf_s", NULL);
+        return(-1);
+    }
 #else  /* defined(_MSC_VER) */
-    sprintf(buf, XMLSEC_SIZE_FMT, bitsLen);
+    if(sprintf(buf, XMLSEC_SIZE_FMT, bitsLen) >= (int)sizeof(buf)) {
+        xmlSecInternalError("sprintf", NULL);
+        return(-1);
+    }
 #endif /* defined(_MSC_VER) */
 
 #if LIBXML_VERSION >= 21300
@@ -1639,8 +1645,9 @@ xmlSecTmplTransformAddHmacOutputLength(xmlNodePtr transformNode, xmlSecSize bits
  * @param buf the OAEP param buffer.
  * @param size the OAEP param buffer size.
  *
- * Note: if xmlNodeSetContent() fails, the (empty) child node is left attached
- * to @p transformNode; a retry will then fail with "node already present".
+ * Note: if xmlSecBase64Encode() or xmlNodeSetContent() fails, the (empty)
+ * child node is left attached to @p transformNode; a retry will then fail
+ * with "node already present".
  *
  * @return 0 on success or a negative value if an error occurs.
  */
@@ -1791,6 +1798,8 @@ xmlSecTmplTransformAddXsltStylesheet(xmlNodePtr transformNode, const xmlChar *xs
     ret = xmlSecReplaceContent(transformNode, xsltRoot);
     if(ret < 0) {
         xmlSecInternalError("xmlSecReplaceContent", NULL);
+        xmlUnlinkNode(xsltRoot);
+        xmlFreeNode(xsltRoot);
         xmlFreeDoc(xsltDoc);
         return(-1);
     }
@@ -1856,17 +1865,19 @@ xmlSecTmplTransformAddC14NInclNamespaces(xmlNodePtr transformNode,
 /**
  * @brief Writes XPath transform information to the &lt;dsig:Transform/&gt; node.
  * @details Writes XPath transform information to the &lt;dsig:Transform/&gt; node
+ *
+ * Note: if xmlSecTmplNodeWriteNsList() fails, the child node (with content
+ * already set and possibly partial namespaces) is left attached to
+ * @p transformNode; a retry will then fail with "node already present".
+ *
  * @p transformNode.
  * @param transformNode the pointer to the &lt;dsig:Transform/&gt; node.
  * @param expression the XPath expression.
- * @param nsList the NULL terminated list of namespace prefix/href pairs
- *                      (optional).
- *
+ * @param nsList the NULL terminated list of namespace prefix/href pairs (optional).
  * @return 0 for success or a negative value otherwise.
  */
 int
-xmlSecTmplTransformAddXPath(xmlNodePtr transformNode, const xmlChar *expression,
-                         const xmlChar **nsList) {
+xmlSecTmplTransformAddXPath(xmlNodePtr transformNode, const xmlChar *expression, const xmlChar **nsList) {
     xmlNodePtr xpathNode;
     int ret;
 
@@ -1899,13 +1910,16 @@ xmlSecTmplTransformAddXPath(xmlNodePtr transformNode, const xmlChar *expression,
 /**
  * @brief Writes XPath2 transform information to the &lt;dsig:Transform/&gt; node.
  * @details Writes XPath2 transform information to the &lt;dsig:Transform/&gt; node
+ *
+ * Note: if xmlSecTmplNodeWriteNsList() fails, the child node (with content
+ * already set and possibly partial namespaces) is left attached to
+ * @p transformNode.
+ *
  * @p transformNode.
  * @param transformNode the pointer to the &lt;dsig:Transform/&gt; node.
  * @param type the XPath2 transform type ("union", "intersect" or "subtract").
  * @param expression the XPath expression.
- * @param nsList the NULL terminated list of namespace prefix/href pairs.
- *                      (optional).
- *
+ * @param nsList the NULL terminated list of namespace prefix/href pairs (optional).
  * @return 0 for success or a negative value otherwise.
  */
 int
@@ -1947,22 +1961,24 @@ xmlSecTmplTransformAddXPath2(xmlNodePtr transformNode, const xmlChar* type,
 /**
  * @brief Writes XPointer transform information to the &lt;dsig:Transform/&gt; node.
  * @details Writes XPointer transform information to the &lt;dsig:Transform/&gt; node
+ *
+ * Note: if xmlSecTmplNodeWriteNsList() fails, the child node (with content
+ * already set and possibly partial namespaces) is left attached to
+ * @p transformNode; a retry will then fail with "node already present".
+ *
  * @p transformNode.
  * @param transformNode the pointer to the &lt;dsig:Transform/&gt; node.
  * @param expression the XPointer expression.
- * @param nsList the NULL terminated list of namespace prefix/href pairs.
- *                      (optional).
- *
+ * @param nsList the NULL terminated list of namespace prefix/href pairs (optional).
  * @return 0 for success or a negative value otherwise.
  */
 int
-xmlSecTmplTransformAddXPointer(xmlNodePtr transformNode, const xmlChar *expression,
-                         const xmlChar **nsList) {
+xmlSecTmplTransformAddXPointer(xmlNodePtr transformNode, const xmlChar *expression, const xmlChar **nsList) {
     xmlNodePtr xpointerNode;
     int ret;
 
-    xmlSecAssert2(expression != NULL, -1);
     xmlSecAssert2(transformNode != NULL, -1);
+    xmlSecAssert2(expression != NULL, -1);
 
     xpointerNode = xmlSecFindChild(transformNode, xmlSecNodeXPointer, xmlSecXPointerNs);
     if(xpointerNode != NULL) {

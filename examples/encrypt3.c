@@ -339,6 +339,7 @@ done:
     }
 
     if(encDataNode != NULL) {
+        xmlUnlinkNode(encDataNode);
         xmlFreeNode(encDataNode);
     }
 

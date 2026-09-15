@@ -17,6 +17,7 @@
 #include <libxml/tree.h>
 #include <libxml/xpointer.h>
 #include <libxml/c14n.h>
+#include <libxml/list.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
@@ -777,7 +778,7 @@ xmlSecTransformRelationshipProcessElementNode(xmlSecTransformPtr transform, xmlO
     /* write closing node */
     ret = xmlOutputBufferWriteString(buf, "</");
     if(ret < 0) {
-        xmlSecXmlError("xmlOutputBufferWriteString",xmlSecTransformGetName(transform));
+        xmlSecXmlError("xmlOutputBufferWriteString", xmlSecTransformGetName(transform));
         return(-1);
     }
     ret = xmlOutputBufferWriteString(buf, (const char *)cur->name);

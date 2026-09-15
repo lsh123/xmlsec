@@ -107,7 +107,7 @@ xmlSecKeyDataIdsShutdown(void) {
 
 /**
  * @brief Registers a key data klass in the global list (enabled).
- * @details Registers @p id in the global list of key data klasses and enable this key data.
+ * @details Registers @p id in the global list of key data klasses and enables this key data.
  * @param id the key data klass.
  *
  * Note: if adding to the enabled list fails after the add to the "all" list
@@ -139,7 +139,7 @@ xmlSecKeyDataIdsRegister(xmlSecKeyDataId id) {
 
 /**
  * @brief Registers a key data klass in the global list (disabled).
- * @details Registers @p id in the global list of key data klasses but DO NOT enable this key data.
+ * @details Registers @p id in the global list of key data klasses but does NOT enable this key data.
  * @param id the key data klass.
  *
  * @return 0 on success or a negative value if an error occurs.
@@ -822,7 +822,8 @@ xmlSecKeyDataStorePtrListGetKlass(void) {
  * function to clear it back to 0.
  *
  */
-void xmlSecImportSetPersistKey(void) {
+void
+xmlSecImportSetPersistKey(void) {
     xmlSecImportPersistKey = 1;
 }
 
@@ -836,6 +837,7 @@ void xmlSecImportSetPersistKey(void) {
  *
  * @return 1 if keys should be imported into persistent storage and 0 otherwise.
  */
-int xmlSecImportGetPersistKey(void) {
-    return xmlSecImportPersistKey;
+int
+xmlSecImportGetPersistKey(void) {
+    return(xmlSecImportPersistKey);
 }

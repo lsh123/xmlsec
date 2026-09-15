@@ -722,7 +722,7 @@ xmlSecKeyDataNameXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, 
     oldName = xmlSecKeyGetName(key);
     if(oldName != NULL) {
         if(!xmlStrEqual(oldName, newName)) {
-            xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_KEY_DATA, xmlSecKeyDataKlassGetName(id), "key name is already specified");
+            xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_KEY_DATA, xmlSecKeyDataKlassGetName(id), "key name mismatch");
             xmlFree(newName);
             return(-1);
         }
@@ -1103,7 +1103,7 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
         goto done;
     }
 
-    /* the only one node is optional Transforms node */
+    /* the only child node is the optional Transforms node */
     cur = xmlSecGetNextElementNode(node->children);
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeTransforms, xmlSecDSigNs))) {
         ret = xmlSecTransformCtxNodesListRead(&(keyInfoCtx->retrievalMethodCtx),
@@ -1693,7 +1693,7 @@ xmlSecKeyDataEncryptedKeyXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodeP
 done:
     if(keyBuf != NULL) {
         xmlSecMemCleanse(keyBuf, keySize);
-        xmlFree(keyBuf); keyBuf = NULL;
+        xmlFree(keyBuf);
     }
     return(res);
 }
@@ -2093,10 +2093,10 @@ xmlSecKeyDataAgreementMethodXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNo
 
 /******************************************************************************
  *
- * <as:EncapsulationMechanism/> processing
+ * &lt;as:EncapsulationMechanism/&gt; processing
  *
   *****************************************************************************/
- #ifndef XMLSEC_NO_MLKEM
+#ifndef XMLSEC_NO_MLKEM
 
 static int      xmlSecKeyDataEncapsulationMechanismXmlRead  (xmlSecKeyDataId id,
                                                              xmlSecKeyPtr key,

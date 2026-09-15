@@ -2024,14 +2024,12 @@ xmlSecAppEncryptFile(const char* inputFileName, const char* outputFileNameTmpl) 
     /* parse doc and find template node */
     doc = xmlSecParseFile(inputFileName);
     if(doc == NULL) {
-        fprintf(stderr, "Error: failed to parse xml file \"%s\"\n",
-                inputFileName);
+        fprintf(stderr, "Error: failed to parse xml file \"%s\"\n", inputFileName);
         goto done;
     }
     startTmplNode = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
     if(startTmplNode == NULL) {
-        fprintf(stderr, "Error: failed to find default node with name=\"%s\"\n",
-                xmlSecNodeEncryptedData);
+        fprintf(stderr, "Error: failed to find default node with name=\"%s\"\n", xmlSecNodeEncryptedData);
         goto done;
     }
 
@@ -2039,8 +2037,7 @@ xmlSecAppEncryptFile(const char* inputFileName, const char* outputFileNameTmpl) 
         /* encrypt */
         start_time = clock();
         if(xmlSecEncCtxUriEncrypt(&encCtx, startTmplNode, BAD_CAST xmlSecAppCmdLineParamGetString(&binaryDataParam)) < 0) {
-            fprintf(stderr, "Error: failed to encrypt file \"%s\"\n",
-                    xmlSecAppCmdLineParamGetString(&binaryDataParam));
+            fprintf(stderr, "Error: failed to encrypt file \"%s\"\n", xmlSecAppCmdLineParamGetString(&binaryDataParam));
             goto done;
         }
         g_totalTime += clock() - start_time;
@@ -2048,16 +2045,16 @@ xmlSecAppEncryptFile(const char* inputFileName, const char* outputFileNameTmpl) 
         /* parse file and select node for encryption */
         data = xmlSecAppXmlDataCreate(xmlSecAppCmdLineParamGetString(&xmlDataParam), NULL, NULL);
         if(data == NULL) {
-            fprintf(stderr, "Error: failed to load file \"%s\"\n",
-                    xmlSecAppCmdLineParamGetString(&xmlDataParam));
+            fprintf(stderr, "Error: failed to load file \"%s\"\n", xmlSecAppCmdLineParamGetString(&xmlDataParam));
             goto done;
         }
 
         /* encrypt */
         start_time = clock();
         if(xmlSecEncCtxXmlEncrypt(&encCtx, startTmplNode, data->startNode) < 0) {
-            fprintf(stderr, "Error: failed to encrypt xml file \"%s\"\n",
-                    xmlSecAppCmdLineParamGetString(&xmlDataParam));
+            fprintf(stderr, "Error: failed to encrypt xml file \"%s\"\n", xmlSecAppCmdLineParamGetString(&xmlDataParam));
+            xmlUnlinkNode(startTmplNode);
+            xmlFreeNode(startTmplNode);
             goto done;
         }
         g_totalTime += clock() - start_time;

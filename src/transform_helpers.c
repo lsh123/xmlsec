@@ -73,7 +73,7 @@ xmlSecTransformConcatKdfParamsReadsBitsAttr(xmlSecBufferPtr buf, xmlNodePtr node
     int ret;
 
     xmlSecAssert2(buf != NULL, -1);
-    xmlSecAssert2(node!= NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(attrName != NULL, -1);
 
     attrValue = xmlGetProp(node, attrName);
@@ -93,7 +93,6 @@ xmlSecTransformConcatKdfParamsReadsBitsAttr(xmlSecBufferPtr buf, xmlNodePtr node
     data = xmlSecBufferGetData(buf);
     size = xmlSecBufferGetSize(buf);
     if((data == NULL) || (size <= 0)) {
-        /* xmlSecInvalidSizeDataError("size", size, "at least one byte is expected", NULL); */
         /* ignore empty buffer */
         return(0);
     }
@@ -198,7 +197,7 @@ xmlSecTransformConcatKdfParamsRead(xmlSecTransformConcatKdfParamsPtr params, xml
 
     /* if we have something else then it's an error */
     if(cur != NULL) {
-        xmlSecUnexpectedNodeError(cur,  NULL);
+        xmlSecUnexpectedNodeError(cur, NULL);
         return(-1);
     }
 
@@ -320,7 +319,7 @@ xmlSecTransformReadKeyInfoNode(xmlSecKeyDataType keyType, xmlNodePtr node,
     xmlSecAssert2(keysMngr != NULL, NULL);
     xmlSecAssert2(keysMngr->getKey != NULL, NULL);
 
-     /* create keyinfo ctx */
+    /* create keyinfo ctx */
     ret = xmlSecKeyInfoCtxInitialize(&keyInfoCtx, keysMngr);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyInfoCtxInitialize", xmlSecNodeGetName(node));
@@ -378,7 +377,7 @@ xmlSecTransformWriteKeyInfoNode(xmlSecKeyPtr key, xmlNodePtr node,
     xmlSecAssert2(transformCtx->parentKeyInfoCtx != NULL, -1);
 
 
-     /* create keyinfo ctx */
+    /* create keyinfo ctx */
     ret = xmlSecKeyInfoCtxInitialize(&keyInfoCtx, NULL);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyInfoCtxInitialize", xmlSecNodeGetName(node));
@@ -524,7 +523,7 @@ xmlSecTransformKAMRead(xmlSecTransformKAMPtr params, xmlNodePtr node, xmlSecTran
         return(-1);
     }
     params->kdfTransform = xmlSecTransformNodeRead(cur, xmlSecTransformUsageKeyDerivationMethod, transformCtx);
-    if(params->kdfTransform  == NULL) {
+    if(params->kdfTransform == NULL) {
         xmlSecInternalError("xmlSecTransformNodeRead", xmlSecNodeGetName(node));
         return(-1);
     }
@@ -567,14 +566,14 @@ xmlSecTransformKAMRead(xmlSecTransformKAMPtr params, xmlNodePtr node, xmlSecTran
 
     /* if there is something left, then it's an error */
     if(cur != NULL) {
-        xmlSecUnexpectedNodeError(cur,  NULL);
+        xmlSecUnexpectedNodeError(cur, NULL);
         return(-1);
     }
 
     /* append MemBuf transform after kdf transform to collect results */
     params->memBufTransform = xmlSecTransformCreate(xmlSecTransformMemBufId);
-    if(!xmlSecTransformIsValid(params->memBufTransform )) {
-        xmlSecInternalError("xmlSecTransformCreate(MemBufId)",  xmlSecNodeGetName(node));
+    if(!xmlSecTransformIsValid(params->memBufTransform)) {
+        xmlSecInternalError("xmlSecTransformCreate(MemBufId)", xmlSecNodeGetName(node));
         return(-1);
     }
     params->kdfTransform->next = params->memBufTransform;
@@ -646,7 +645,7 @@ xmlSecTransformKAMWrite(xmlSecTransformKAMPtr params, xmlNodePtr node, xmlSecTra
 
     /* if there is something left, then it's an error */
     if(cur != NULL) {
-        xmlSecUnexpectedNodeError(cur,  NULL);
+        xmlSecUnexpectedNodeError(cur, NULL);
         goto done;
     }
 
@@ -1147,7 +1146,7 @@ xmlSecTransformMLDSAReadContextString(xmlNodePtr node, xmlSecBufferPtr res) {
         /* ensure length is not exceeded */
         if (xmlSecBufferGetSize(res) > XMLSEC_MLDSA_MAX_SIZE) {
             xmlSecInvalidNodeContentError3(cur, NULL,
-                "MLDSA context string length=" XMLSEC_SIZE_FMT " exceeds max expected length =" XMLSEC_SIZE_FMT,
+                "MLDSA context string length=" XMLSEC_SIZE_FMT " exceeds max expected length=" XMLSEC_SIZE_FMT,
                 xmlSecBufferGetSize(res), XMLSEC_MLDSA_MAX_SIZE);
             return(-1);
         }
@@ -1195,7 +1194,7 @@ xmlSecTransformSLHDSAReadContextString(xmlNodePtr node, xmlSecBufferPtr res) {
         /* ensure length is not exceeded */
         if (xmlSecBufferGetSize(res) > XMLSEC_SLHDSA_MAX_SIZE) {
             xmlSecInvalidNodeContentError3(cur, NULL,
-                "SLHDSA context string length=" XMLSEC_SIZE_FMT " exceeds max expected length =" XMLSEC_SIZE_FMT,
+                "SLHDSA context string length=" XMLSEC_SIZE_FMT " exceeds max expected length=" XMLSEC_SIZE_FMT,
                 xmlSecBufferGetSize(res), XMLSEC_SLHDSA_MAX_SIZE);
             return(-1);
         }
@@ -1243,7 +1242,7 @@ xmlSecTransformEdDSAReadContextString(xmlNodePtr node, xmlSecBufferPtr res) {
         /* ensure length is not exceeded */
         if (xmlSecBufferGetSize(res) > XMLSEC_EDDSA_MAX_SIZE) {
             xmlSecInvalidNodeContentError3(cur, NULL,
-                "EdDSA context string length=" XMLSEC_SIZE_FMT " exceeds max expected length =" XMLSEC_SIZE_FMT,
+                "EdDSA context string length=" XMLSEC_SIZE_FMT " exceeds max expected length=" XMLSEC_SIZE_FMT,
                 xmlSecBufferGetSize(res), XMLSEC_EDDSA_MAX_SIZE);
             return(-1);
         }
@@ -1343,7 +1342,7 @@ xmlSecTransformPbkdf2ParamsReadSalt(xmlSecTransformPbkdf2ParamsPtr params, xmlNo
     xmlSecAssert2(params != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
 
-    /* first and only node is required Salt / Specified (Salt / OtherSource is not supported)*/
+    /* first and only node is required Salt / Specified (Salt / OtherSource is not supported) */
     cur  = xmlSecGetNextElementNode(node->children);
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodePbkdf2SaltSpecified, xmlSecEnc11Ns))) {
         xmlSecInvalidNodeError(cur, xmlSecNodePbkdf2SaltSpecified, NULL);
@@ -1358,7 +1357,7 @@ xmlSecTransformPbkdf2ParamsReadSalt(xmlSecTransformPbkdf2ParamsPtr params, xmlNo
     /* if we have something else then it's an error */
     cur = xmlSecGetNextElementNode(cur->next);
     if(cur != NULL) {
-        xmlSecUnexpectedNodeError(cur,  NULL);
+        xmlSecUnexpectedNodeError(cur, NULL);
         return(-1);
     }
 
@@ -1427,7 +1426,7 @@ xmlSecTransformPbkdf2ParamsRead(xmlSecTransformPbkdf2ParamsPtr params, xmlNodePt
     /* if we have something else then it's an error */
     cur = xmlSecGetNextElementNode(cur->next);
     if(cur != NULL) {
-        xmlSecUnexpectedNodeError(cur,  NULL);
+        xmlSecUnexpectedNodeError(cur, NULL);
         return(-1);
     }
 
@@ -1587,7 +1586,7 @@ xmlSecTransformChaCha20ParamsRead(xmlNodePtr node, xmlSecByte *iv, xmlSecSize iv
 
     /* first optional Nonce node (12 bytes, hex-encoded) */
     cur = xmlSecGetNextElementNode(node->children);
-    if((cur != NULL) && (xmlSecCheckNodeName(cur,  xmlSecNodeChaCha20Nonce, xmlSecDSig2021MoreNs))) {
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeChaCha20Nonce, xmlSecDSig2021MoreNs))) {
         ret = xmlSecGetNodeContentAsHex(cur, &buf);
         if(ret < 0) {
             xmlSecInternalError("xmlSecGetNodeContentAsHex(Nonce)", NULL);
@@ -1658,10 +1657,10 @@ xmlSecTransformChaCha20ParamsWrite(xmlNodePtr node, const xmlSecByte *iv, xmlSec
 
     /* add nonce node if needed */
     cur = xmlSecGetNextElementNode(node->children);
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur,  xmlSecNodeChaCha20Nonce, xmlSecDSig2021MoreNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeChaCha20Nonce, xmlSecDSig2021MoreNs))) {
         xmlNodePtr nonceNode;
 
-         /* add nonce node */
+        /* add nonce node */
         if (cur != NULL) {
             nonceNode = xmlSecAddPrevSibling(cur, xmlSecNodeChaCha20Nonce, xmlSecDSig2021MoreNs);
         } else {
@@ -1674,7 +1673,7 @@ xmlSecTransformChaCha20ParamsWrite(xmlNodePtr node, const xmlSecByte *iv, xmlSec
         cur = nonceNode;
     }
     xmlSecAssert2(cur != NULL, -1);
-    xmlSecAssert2(xmlSecCheckNodeName(cur,  xmlSecNodeChaCha20Nonce, xmlSecDSig2021MoreNs), -1);
+    xmlSecAssert2(xmlSecCheckNodeName(cur, xmlSecNodeChaCha20Nonce, xmlSecDSig2021MoreNs), -1);
 
     /* set nonce content */
     ret = xmlSecSetNodeContentAsHex(cur, iv + XMLSEC_CHACHA20_COUNTER_SIZE, XMLSEC_CHACHA20_NONCE_SIZE);
@@ -1685,10 +1684,10 @@ xmlSecTransformChaCha20ParamsWrite(xmlNodePtr node, const xmlSecByte *iv, xmlSec
 
     /* add counter node if needed */
     cur = xmlSecGetNextElementNode(cur->next);
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur,  xmlSecNodeChaCha20Counter, xmlSecDSig2021MoreNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeChaCha20Counter, xmlSecDSig2021MoreNs))) {
         xmlNodePtr counterNode;
 
-         /* add counter node */
+        /* add counter node */
         if (cur != NULL) {
             counterNode = xmlSecAddPrevSibling(cur, xmlSecNodeChaCha20Counter, xmlSecDSig2021MoreNs);
         } else {
@@ -1701,7 +1700,7 @@ xmlSecTransformChaCha20ParamsWrite(xmlNodePtr node, const xmlSecByte *iv, xmlSec
         cur = counterNode;
     }
     xmlSecAssert2(cur != NULL, -1);
-    xmlSecAssert2(xmlSecCheckNodeName(cur,  xmlSecNodeChaCha20Counter, xmlSecDSig2021MoreNs), -1);
+    xmlSecAssert2(xmlSecCheckNodeName(cur, xmlSecNodeChaCha20Counter, xmlSecDSig2021MoreNs), -1);
 
     /* set counter content */
     ret = xmlSecSetNodeContentAsHex(cur, iv, XMLSEC_CHACHA20_COUNTER_SIZE);
@@ -1827,10 +1826,10 @@ xmlSecTransformChaCha20Poly1305ParamsWrite(xmlNodePtr node, const xmlSecByte *iv
 
     /* add nonce node if needed */
     cur = xmlSecGetNextElementNode(node->children);
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur,  xmlSecNodeChaCha20Nonce, xmlSecDSig2021MoreNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeChaCha20Nonce, xmlSecDSig2021MoreNs))) {
         xmlNodePtr nonceNode;
 
-         /* add nonce node */
+        /* add nonce node */
         if (cur != NULL) {
             nonceNode = xmlSecAddPrevSibling(cur, xmlSecNodeChaCha20Nonce, xmlSecDSig2021MoreNs);
         } else {
@@ -1843,7 +1842,7 @@ xmlSecTransformChaCha20Poly1305ParamsWrite(xmlNodePtr node, const xmlSecByte *iv
         cur = nonceNode;
     }
     xmlSecAssert2(cur != NULL, -1);
-    xmlSecAssert2(xmlSecCheckNodeName(cur,  xmlSecNodeChaCha20Nonce, xmlSecDSig2021MoreNs), -1);
+    xmlSecAssert2(xmlSecCheckNodeName(cur, xmlSecNodeChaCha20Nonce, xmlSecDSig2021MoreNs), -1);
 
     /* set nonce content */
     ret = xmlSecSetNodeContentAsHex(cur, iv, XMLSEC_CHACHA20_NONCE_SIZE);

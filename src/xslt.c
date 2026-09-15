@@ -450,7 +450,7 @@ xmlSecXsltExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr 
         /* just do nothing */
         xmlSecAssert2(outSize == 0, -1);
 
-    } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
+    } else if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
         xmlSecAssert2(outSize == 0, -1);
 
         ret = xmlSecXslProcess(ctx, in, out);
@@ -555,7 +555,7 @@ xmlSecXsApplyStylesheet(xmlSecXsltCtxPtr ctx, xmlDocPtr doc) {
 
     /* set security prefs (fail closed: never run without a security policy) */
     if(g_xslt_default_security_prefs == NULL) {
-        xmlSecXsltError("xsltSetCtxtSecurityPrefs", NULL);
+        xmlSecInternalError("default security preferences are not initialized", NULL);
         goto done;
     }
     ret = xsltSetCtxtSecurityPrefs(g_xslt_default_security_prefs, xsltCtx);
@@ -574,7 +574,7 @@ done:
     if(xsltCtx != NULL) {
         xsltFreeTransformContext(xsltCtx);
     }
-    return res;
+    return(res);
 }
 
 #else /* XMLSEC_NO_XSLT */

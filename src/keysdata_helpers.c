@@ -131,7 +131,7 @@ xmlSecKeyDataBinaryValueFinalize(xmlSecKeyDataPtr data) {
     xmlSecAssert(xmlSecKeyDataIsValid(data));
     xmlSecAssert(xmlSecKeyDataCheckSize(data, xmlSecKeyDataBinarySize));
 
-    /* initialize buffer */
+    /* finalize buffer */
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
     xmlSecAssert(buffer != NULL);
 
@@ -176,7 +176,7 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr
     decodedSize = 0;
     ret = xmlSecBase64DecodeInPlace(str, &decodedSize);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBase64Decode_ex", xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecBase64DecodeInPlace", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
@@ -295,50 +295,10 @@ xmlSecKeyDataBinaryValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     xmlSecAssert2(id != xmlSecKeyDataIdUnknown, -1);
     xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(xmlSecKeyGetValue(key) == NULL, -1);
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(bufSize > 0, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
-
-    /* check do we have a key already */
-    data = xmlSecKeyGetValue(key);
-    if(data != NULL) {
-        xmlSecBufferPtr buffer;
-
-        if(!xmlSecKeyDataCheckId(data, id)) {
-            xmlSecOtherError2(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
-                              xmlSecKeyDataGetName(data),
-                              "id=%s",
-                              xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)));
-            return(-1);
-        }
-
-        buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
-        if(buffer != NULL) {
-            if(xmlSecBufferGetSize(buffer) != bufSize) {
-                xmlSecOtherError3(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
-                    xmlSecKeyDataGetName(data),
-                    "cur-data-size=" XMLSEC_SIZE_FMT "; new-data-size=" XMLSEC_SIZE_FMT,
-                    xmlSecBufferGetSize(buffer), bufSize);
-                return(-1);
-            }
-            ret = xmlSecMemEqual(xmlSecBufferGetData(buffer), buf, bufSize);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecMemEqual", xmlSecKeyDataGetName(data));
-                return(-1);
-            }
-            if(ret == 0) {
-                xmlSecOtherError(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
-                    xmlSecKeyDataGetName(data),
-                    "key already has a different value");
-                return(-1);
-            }
-
-            /* we already have exactly the same key */
-            return(0);
-        }
-
-        /* we have binary key value with empty buffer */
-    }
 
     data = xmlSecKeyDataCreate(id);
     if(data == NULL ) {

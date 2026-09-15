@@ -160,7 +160,7 @@ xmlSecDSigCtxInitialize(xmlSecDSigCtxPtr dsigCtx, xmlSecKeysMngrPtr keysMngr) {
         return(ret);
     }
 
-    dsigCtx->enabledReferenceUris =  xmlSecTransformUriTypeEmpty | xmlSecTransformUriTypeSameDocument;
+    dsigCtx->enabledReferenceUris = xmlSecTransformUriTypeEmpty | xmlSecTransformUriTypeSameDocument;
     return(0);
 }
 
@@ -245,7 +245,7 @@ xmlSecDSigCtxEnableSignatureTransform(xmlSecDSigCtxPtr dsigCtx, xmlSecTransformI
  * #XMLSEC_DSIG_FLAGS_STORE_SIGNATURE context flag is set.
  *
  * @param dsigCtx the pointer to &lt;dsig:Signature/&gt; processing context.
- * @return 0 on success or a negative value if an error occurs.
+ * @return the pointer to the pre-signature buffer or NULL if an error occurs.
  */
 xmlSecBufferPtr
 xmlSecDSigCtxGetPreSignBuffer(xmlSecDSigCtxPtr dsigCtx) {
@@ -1351,7 +1351,7 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
     /* read attributes first */
     dsigRefCtx->uri = xmlGetProp(node, xmlSecAttrURI);
     dsigRefCtx->id  = xmlGetProp(node, xmlSecAttrId);
-    dsigRefCtx->type= xmlGetProp(node, xmlSecAttrType);
+    dsigRefCtx->type = xmlGetProp(node, xmlSecAttrType);
 
     /* set start URI (and check that it is enabled!) */
     ret = xmlSecTransformCtxSetUri(transformCtx, dsigRefCtx->uri, node);
@@ -1539,20 +1539,20 @@ xmlSecDSigReferenceCtxDebugDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* outp
         xmlSecTransformDebugDump(dsigRefCtx->digestMethod, output);
     }
 
-    if((xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx) != NULL) &&
-       (xmlSecBufferGetData(xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx)) != NULL)) {
-
-        fprintf(output, "== PreDigest data - start buffer:\n");
-        xmlSecBufferDebugHexDump(xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx), output);
-        fprintf(output, "\n== PreDigest data - end buffer\n");
-    }
-
     if((dsigRefCtx->result != NULL) &&
        (xmlSecBufferGetData(dsigRefCtx->result) != NULL)) {
 
         fprintf(output, "== Result - start buffer:\n");
         xmlSecBufferDebugHexDump(dsigRefCtx->result, output);
         fprintf(output, "\n== Result - end buffer\n");
+    }
+
+    if((xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx) != NULL) &&
+       (xmlSecBufferGetData(xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx)) != NULL)) {
+
+        fprintf(output, "== PreDigest data - start buffer:\n");
+        xmlSecBufferDebugHexDump(xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx), output);
+        fprintf(output, "\n== PreDigest data - end buffer\n");
     }
 }
 

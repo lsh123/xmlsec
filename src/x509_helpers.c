@@ -667,7 +667,7 @@ xmlSecKeyX509DataValueXmlRead(xmlSecKeyX509DataValuePtr x509Value, xmlNodePtr no
         }
 
     } else if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CHILD) != 0) {
-        /* laxi schema validation: ignore unknown nodes */
+        /* strict schema validation: reject unknown nodes (they are ignored when the flag is not set) */
         xmlSecUnexpectedNodeError(node, NULL);
         return(-1);
     }
@@ -696,7 +696,7 @@ xmlSecKeyX509DataValueXmlWriteBase64Blob(xmlSecBufferPtr buf, xmlNodePtr node,
 
     child = xmlSecEnsureEmptyChild(node, nodeName, nodeNs);
     if(child == NULL) {
-        xmlSecInternalError2("xmlSecEnsureEmptyChild()", NULL, "nodeName=%s", xmlSecErrorsSafeString(nodeName));
+        xmlSecInternalError2("xmlSecEnsureEmptyChild", NULL, "nodeName=%s", xmlSecErrorsSafeString(nodeName));
         goto done;
     }
 
@@ -759,8 +759,7 @@ xmlSecKeyX509DataValueXmlWriteString(const xmlChar* content, xmlNodePtr node,
 
     cur = xmlSecEnsureEmptyChild(node, nodeName, nodeNs);
     if(cur == NULL) {
-        xmlSecInternalError2("xmlSecEnsureEmptyChild()", NULL,
-            "nodeName=%s", xmlSecErrorsSafeString(nodeName));
+        xmlSecInternalError2("xmlSecEnsureEmptyChild", NULL, "nodeName=%s", xmlSecErrorsSafeString(nodeName));
         return(-1);
     }
 
@@ -1218,7 +1217,7 @@ xmlSecX509NameRead(const xmlChar *str, xmlSecX509NameReplacements *replacements,
             return(-1);
         }
 
-        /* we expect either end of string or quote separating name / value pairs */
+        /* we expect either end of string or comma separating name / value pairs */
         if((strSize > 0) && ((*str) == ',')) {
             ++str; --strSize;
         } else if (strSize > 0) {

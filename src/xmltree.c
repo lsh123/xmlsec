@@ -704,6 +704,11 @@ xmlSecGetNextElementNode(xmlNodePtr cur) {
 /**
  * @brief Swaps a node with a new node in the XML tree.
  * @details Swaps the @p node and @p newNode in the XML tree.
+ *
+ * Note: on error, the state of the @p newNode is undefined and the caller
+ * should not make any assumptions about it. The recommended way is to
+ * release it with xmlUnlinkNode(newNode); xmlFreeNode(newNode); immediately.
+ *
  * @param node the current node.
  * @param newNode the new node.
  * @return 0 on success or a negative value if an error occurs.
@@ -716,15 +721,14 @@ xmlSecReplaceNode(xmlNodePtr node, xmlNodePtr newNode) {
 /**
  * @brief Swaps a node with another and optionally returns the replaced node.
  * @details Swaps the @p node and @p newNode in the XML tree.
+ *
+ * Note: on error, the state of the @p newNode is undefined and the caller
+ * should not make any assumptions about it. The recommended way is to
+ * release it with xmlUnlinkNode(newNode); xmlFreeNode(newNode); immediately.
+ *
  * @param node the current node.
  * @param newNode the new node.
  * @param replaced the replaced node, or release it if NULL is given
- *
- * Note: on error the document children of @p node are restored, but the
- * document children of @p newNode are not; if xmlReplaceNode() fails before
- * touching @p newNode and @p newNode is the root of its document, that
- * document is left with a corrupted children list.
- *
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -776,17 +780,29 @@ xmlSecReplaceNodeAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr* repl
 
 /**
  * @brief Swaps the content of @p node and @p newNode.
+ * @details Swaps the content of @p node and @p newNode.
+ *
+ * Note: on error, the state of the @p newNode is undefined and the caller
+ * should not make any assumptions about it. The recommended way is to
+ * release it with xmlUnlinkNode(newNode); xmlFreeNode(newNode); immediately.
+ *
  * @param node the current node.
  * @param newNode the new node.
  * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecReplaceContent(xmlNodePtr node, xmlNodePtr newNode) {
-     return xmlSecReplaceContentAndReturn(node, newNode, NULL);
+    return xmlSecReplaceContentAndReturn(node, newNode, NULL);
 }
 
 /**
  * @brief Swaps the content of @p node and @p newNode, optionally returning replaced nodes.
+ * @details Swaps the content of @p node and @p newNode, optionally returning replaced nodes.
+ *
+ * Note: on error, the state of the @p newNode is undefined and the caller
+ * should not make any assumptions about it. The recommended way is to
+ * release it with xmlUnlinkNode(newNode); xmlFreeNode(newNode); immediately.
+ *
  * @param node the current node.
  * @param newNode the new node.
  * @param replaced the replaced nodes, or release them if NULL is given
@@ -830,7 +846,10 @@ xmlSecReplaceContentAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr *r
 
     /* swap nodes */
     xmlUnlinkNode(newNode);
-    xmlAddChildList(node, newNode);
+    if(xmlAddChildList(node, newNode) == NULL) {
+        xmlSecXmlError("xmlAddChildList", node);
+        return(-1);
+    }
 
     return(0);
 }
@@ -1230,7 +1249,7 @@ xmlSecDepthFirstTreeWalk(xmlNodePtr node, xmlSecTreeWalkCallback callback, void*
  * @details Encodes the @p str (e.g. replaces '&' with '&amp;') and writes it to @p fd.
  * @param fd the file descriptor to write the XML string to
  * @param str the string
- * @return the number of bytes transmitted or a negative value if an error occurs.
+ * @return the number of characters written or a negative value if an error occurs.
  */
 int
 xmlSecPrintXmlString(FILE * fd, const xmlChar * str) {
@@ -1970,15 +1989,13 @@ xmlSecQName2BitMaskNodesWrite(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr n
 
             qname = xmlSecGetQName(node, info[ii].qnameHref, info[ii].qnameLocalPart);
             if(qname == NULL) {
-                xmlSecXmlError2("xmlSecGetQName", NULL,
-                                "node=%s", xmlSecErrorsSafeString(nodeName));
+                xmlSecXmlError2("xmlSecGetQName", NULL, "nodeName=%s", xmlSecErrorsSafeString(nodeName));
                 return(-1);
             }
 
             cur = xmlSecAddChild(node, nodeName, nodeNs);
             if(cur == NULL) {
-                xmlSecXmlError2("xmlSecAddChild", NULL,
-                                "node=%s", xmlSecErrorsSafeString(nodeName));
+                xmlSecXmlError2("xmlSecAddChild", NULL, "nodeName=%s", xmlSecErrorsSafeString(nodeName));
                 xmlFree(qname);
                 return(-1);
             }
@@ -2092,7 +2109,7 @@ xmlSecWin32ConvertUtf8ToUnicode(const xmlChar* str) {
     if(ret <= 0) {
         return(NULL);
     }
-    len = ret + 1;
+    len = ret;
     XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(NULL), NULL);
 
     /* allocate buffer */
@@ -2132,7 +2149,7 @@ xmlSecWin32ConvertUnicodeToUtf8(LPCWSTR str) {
     if(ret <= 0) {
         return(NULL);
     }
-    len = ret + 1;
+    len = ret;
     XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(NULL), NULL);
 
     /* allocate buffer */
@@ -2172,7 +2189,7 @@ xmlSecWin32ConvertLocaleToUnicode(const char* str) {
     if(ret <= 0) {
         return(NULL);
     }
-    len = ret + 1;
+    len = ret;
     XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(NULL), NULL);
 
     /* allocate buffer */
@@ -2219,7 +2236,7 @@ xmlSecWin32ConvertLocaleToUtf8(const char * str) {
         xmlFree(strW);
         return(NULL);
     }
-    len = ret + 1;
+    len = ret;
     XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(NULL), NULL);
 
     /* allocate buffer */
@@ -2269,7 +2286,7 @@ xmlSecWin32ConvertUtf8ToLocale(const xmlChar* str) {
         xmlFree(strW);
         return(NULL);
     }
-    len = ret + 1;
+    len = ret;
     XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(NULL), NULL);
 
     /* allocate buffer */

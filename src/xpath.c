@@ -235,7 +235,7 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
     case xmlSecXPathDataTypeXPath2:
         xpathObj = xmlXPathEvalExpression(data->expr, data->ctx);
         if(xpathObj == NULL) {
-            xmlSecXmlError2("xmlXPathEvalExpression", NULL,"expr=%s", xmlSecErrorsSafeString(data->expr));
+            xmlSecXmlError2("xmlXPathEvalExpression", NULL, "expr=%s", xmlSecErrorsSafeString(data->expr));
             return(NULL);
         }
         break;
@@ -552,9 +552,9 @@ xmlSecTransformXPathNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
     }
     ret = xmlStrPrintf(tmp, totalLen, XMLSEC_TRANSFORM_XPATH_TMPL, (char*)data->expr);
     if(ret < 0) {
-       xmlSecXmlError("xmlStrPrintf", xmlSecTransformGetName(transform));
-       xmlFree(tmp);
-       return(-1);
+        xmlSecXmlError("xmlStrPrintf", xmlSecTransformGetName(transform));
+        xmlFree(tmp);
+        return(-1);
     }
     xmlFree(data->expr);
     data->expr = tmp;

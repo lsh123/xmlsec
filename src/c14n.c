@@ -49,7 +49,7 @@ XMLSEC_TRANSFORM_DECLARE(C14N, xmlSecPtrList)
 
 #define xmlSecTransformExclC14NCheckId(transform) \
     (xmlSecTransformCheckId((transform), xmlSecTransformExclC14NId) || \
-     xmlSecTransformCheckId((transform), xmlSecTransformExclC14NWithCommentsId) )
+     xmlSecTransformCheckId((transform), xmlSecTransformExclC14NWithCommentsId))
 
 
 static int              xmlSecTransformC14NInitialize   (xmlSecTransformPtr transform);

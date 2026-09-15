@@ -58,7 +58,7 @@ xmlSecNodeSetCreate(xmlDocPtr doc, xmlNodeSetPtr nodes, xmlSecNodeSetType type) 
         xmlSecMallocError(sizeof(xmlSecNodeSet), NULL);
         return(NULL);
     }
-    memset(nset, 0,  sizeof(xmlSecNodeSet));
+    memset(nset, 0, sizeof(xmlSecNodeSet));
 
     nset->doc   = doc;
     nset->nodes = nodes;
@@ -445,7 +445,7 @@ xmlSecNodeSetWalk(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc, voi
     xmlSecAssert2(walkFunc != NULL, -1);
 
 
-    /* try fast path first if we can iterate through a subset of nodes  */
+    /* try fast path first if we can iterate through a subset of nodes */
     fastPathNodes = xmlSecNodeSetGetFastPathNodes(nset);
     if(fastPathNodes != NULL) {
         int ii;

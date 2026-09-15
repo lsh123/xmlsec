@@ -41,12 +41,12 @@ static int      xmlSecKWDes3Encode                             (xmlSecKWDes3Id k
                                                                 xmlSecByte* out,
                                                                 xmlSecSize outSize,
                                                                 xmlSecSize* outWritten);
-static int      xmlSecKWDes3Decode                              (xmlSecKWDes3Id kwDes3Id,
-                                                                 xmlSecTransformPtr transform,
-                                                                 const xmlSecByte* in,
-                                                                 xmlSecSize inSize,
-                                                                 xmlSecByte* out,
-                                                                 xmlSecSize outSize,
+static int      xmlSecKWDes3Decode                             (xmlSecKWDes3Id kwDes3Id,
+                                                                xmlSecTransformPtr transform,
+                                                                const xmlSecByte* in,
+                                                                xmlSecSize inSize,
+                                                                xmlSecByte* out,
+                                                                xmlSecSize outSize,
                                                                 xmlSecSize* outWritten);
 static int      xmlSecKWDes3BufferReverse                       (xmlSecByte *buf,
                                                                  xmlSecSize size);
@@ -162,7 +162,7 @@ xmlSecTransformKWDes3Execute(xmlSecTransformPtr transform, xmlSecTransformKWDes3
 
     if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
         /* just do nothing */
-    } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
+    } else if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
         if((inSize % XMLSEC_KW_DES3_BLOCK_LENGTH) != 0) {
             xmlSecInvalidSizeNotMultipleOfError("Input data",
                                 inSize, XMLSEC_KW_DES3_BLOCK_LENGTH,
@@ -290,7 +290,7 @@ static xmlSecByte xmlSecKWDes3Iv[XMLSEC_KW_DES3_IV_LENGTH] = {
     0x4a, 0xdd, 0xa2, 0x2c, 0x79, 0xe8, 0x21, 0x05
 };
 
-int
+static int
 xmlSecKWDes3Encode(xmlSecKWDes3Id kwDes3Id, xmlSecTransformPtr transform,
                   const xmlSecByte *in, xmlSecSize inSize,
                   xmlSecByte *out, xmlSecSize outSize,
@@ -375,7 +375,7 @@ xmlSecKWDes3Encode(xmlSecKWDes3Id kwDes3Id, xmlSecTransformPtr transform,
     return(0);
 }
 
-int
+static int
 xmlSecKWDes3Decode(xmlSecKWDes3Id kwDes3Id, xmlSecTransformPtr transform,
                   const xmlSecByte *in, xmlSecSize inSize,
                   xmlSecByte *out, xmlSecSize outSize,
@@ -625,7 +625,7 @@ xmlSecTransformKWRfc3394Execute(xmlSecTransformPtr transform, xmlSecTransformKWR
 
     if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
         /* just do nothing */
-    } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
+    } else if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
         if((inSize % XMLSEC_KW_RFC3394_IN_SIZE_ALIGNMENT) != 0) {
             xmlSecInvalidSizeNotMultipleOfError("Input data",
                 inSize, XMLSEC_KW_RFC3394_IN_SIZE_ALIGNMENT,
@@ -789,7 +789,7 @@ xmlSecKWRfc3394XorCounter(xmlSecByte* block, uint64_t counter) {
     }
 }
 
-int
+static int
 xmlSecKWRfc3394Encode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transform,
                   const xmlSecByte *in, xmlSecSize inSize,
                   xmlSecByte *out, xmlSecSize outSize,
@@ -852,7 +852,7 @@ xmlSecKWRfc3394Encode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transfor
     return(0);
 }
 
-int
+static int
 xmlSecKWRfc3394Decode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transform,
                   const xmlSecByte *in, xmlSecSize inSize,
                   xmlSecByte *out, xmlSecSize outSize,

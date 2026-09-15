@@ -81,10 +81,10 @@ static xmlSecTransformKlass xmlSecParserKlass = {
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformValidateMethod validate; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecParserPushBin,                /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecParserPushBin,                        /* xmlSecTransformPushBinMethod pushBin; */
     NULL,                                       /* xmlSecTransformPopBinMethod popBin; */
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    xmlSecParserPopXml,         /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecParserPopXml,                         /* xmlSecTransformPopXmlMethod popXml; */
     NULL,                                       /* xmlSecTransformExecuteMethod execute; */
 
     NULL,                                       /* void* reserved0; */
@@ -204,7 +204,7 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         xmlSecNodeSetDocDestroy(transform->outNodes); /* this node set "owns" the doc pointer */
         ctx->parserCtx->myDoc = NULL;
 
-        /* push result to the next transform (if exist) */
+        /* push result to the next transform (if it exists) */
         if(transform->next != NULL) {
             ret = xmlSecTransformPushXml(transform->next, transform->outNodes, transformCtx);
             if(ret < 0) {
@@ -361,7 +361,6 @@ xmlSecParseFile(const char *filename) {
     }
     xmlSecParsePrepareCtxt(ctxt);
 
-    /* todo: set directories from current doc? */
     if (ctxt->directory == NULL) {
         ctxt->directory = xmlParserGetDirectory(filename);
         if(ctxt->directory == NULL) {
@@ -377,8 +376,8 @@ xmlSecParseFile(const char *filename) {
     }
 
     if(!ctxt->wellFormed) {
-       xmlSecInternalError("document is not well formed", NULL);
-       goto done;
+        xmlSecInternalError("document is not well formed", NULL);
+        goto done;
     }
 
     /* success */

@@ -98,7 +98,7 @@ xmlSecTransformEnvelopedGetKlass(void) {
 static int
 xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlNodePtr signatureNode;
-    xmlSecNodeSetPtr signatureNodeChildren;
+    xmlSecNodeSetPtr nodesExceptSignature;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformEnvelopedId), -1);
     xmlSecAssert2(transform->hereNode != NULL, -1);
@@ -113,7 +113,7 @@ xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, int last, xmlSecTr
         return(-1);
     }
 
-    /* find signature node and get all its children in the nodes set */
+    /* find signature node and get all document nodes except the signature subtree in the nodes set */
     signatureNode = xmlSecFindParent(transform->hereNode, xmlSecNodeSignature, xmlSecDSigNs);
     if(signatureNode == NULL) {
         xmlSecNodeNotFoundError("xmlSecFindParent", transform->hereNode,
@@ -122,8 +122,8 @@ xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, int last, xmlSecTr
         return(-1);
     }
 
-    signatureNodeChildren = xmlSecNodeSetGetChildren(signatureNode->doc, signatureNode, 1, 1);
-    if(signatureNodeChildren == NULL) {
+    nodesExceptSignature = xmlSecNodeSetGetChildren(signatureNode->doc, signatureNode, 1, 1);
+    if(nodesExceptSignature == NULL) {
         xmlSecInternalError2("xmlSecNodeSetGetChildren",
                              xmlSecTransformGetName(transform),
                              "node=%s",
@@ -131,11 +131,11 @@ xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, int last, xmlSecTr
         return(-1);
     }
 
-    /* intersect &lt;dsig:Signature/&gt; node children with input nodes (if exist) */
-    transform->outNodes = xmlSecNodeSetAdd(transform->inNodes, signatureNodeChildren, xmlSecNodeSetIntersection);
+    /* intersect all document nodes except the &lt;dsig:Signature/&gt; subtree with input nodes (if exist) */
+    transform->outNodes = xmlSecNodeSetAdd(transform->inNodes, nodesExceptSignature, xmlSecNodeSetIntersection);
     if(transform->outNodes == NULL) {
         xmlSecInternalError("xmlSecNodeSetAdd", xmlSecTransformGetName(transform));
-        xmlSecNodeSetDestroy(signatureNodeChildren);
+        xmlSecNodeSetDestroy(nodesExceptSignature);
         return(-1);
     }
 

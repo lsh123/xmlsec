@@ -662,10 +662,6 @@ xmlSecBufferBase64NodeContentWrite(xmlSecBufferPtr buf, xmlNodePtr node, int col
         xmlSecInternalError("xmlSecBufferGetData", NULL);
         return(-1);
     }
-    if(data == NULL) {
-        data = empty;
-        size = 0;
-    }
 
     /* xmlSecBase64Encode() requires a non-NULL input pointer */
     content = xmlSecBase64Encode(

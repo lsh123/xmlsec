@@ -562,7 +562,7 @@ const xmlChar xmlSecNodeRecipientKeyInfo[]      = "RecipientKeyInfo";
  * EncapsulationMechanism
  *
   *****************************************************************************/
-const xmlChar xmlSecExperimental202512Ns[]          = XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12 "";
+const xmlChar xmlSecExperimental202512Ns[]          = XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12;
 const xmlChar xmlSecNameEncapsulationMechanism[]    = "encapsulation-mechanism";
 const xmlChar xmlSecNodeEncapsulationMechanism[]    = "EncapsulationMechanism";
 const xmlChar xmlSecHrefEncapsulationMechanism[]    = XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12 "EncapsulationMechanism";

@@ -1222,8 +1222,8 @@ xmlSecTransformRsaOaepEnc11GetKlass(void) {
 
 
 /**
- * @brief GOSTR3411_94 digest transform klass.
- * @return pointer to GOSTR3411_94 digest transform klass or NULL if an error
+ * @brief GOST R 34.11-94 digest transform klass.
+ * @return pointer to GOST R 34.11-94 digest transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -2296,9 +2296,6 @@ xmlSecCryptoAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key)
  * function:
  * - Checks that the key certificate is present
  * - Checks that key certificate is valid
- *
- * Adds @p key to the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
- * function.
  * @param mngr the pointer to keys manager.
  * @param key the pointer to key.
  * @param keyInfoCtx the key info context for verification.
@@ -2492,8 +2489,8 @@ xmlSecCryptoAppKeyLoadEx(const char *filename, xmlSecKeyDataType type, xmlSecKey
  * @brief Reads a key from the memory buffer.
  * @param data the binary key data.
  * @param dataSize the size of binary key.
- * @param format the key file format.
- * @param pwd the key file password.
+ * @param format the key data format.
+ * @param pwd the key password.
  * @param pwdCallback the key password callback.
  * @param pwdCallbackCtx the user context for password callback.
  * @return pointer to the key or NULL if an error occurs.
@@ -2540,7 +2537,7 @@ xmlSecCryptoAppPkcs12Load(const char* filename, const char* pwd, void* pwdCallba
  * in format=xmlSecKeyDataFormatPkcs12.
  * @param data the PKCS12 binary data.
  * @param dataSize the PKCS12 binary data size.
- * @param pwd the PKCS12 file password.
+ * @param pwd the PKCS12 password.
  * @param pwdCallback the password callback.
  * @param pwdCallbackCtx the user context for password callback.
  * @return pointer to the key or NULL if an error occurs.
@@ -2560,7 +2557,7 @@ xmlSecCryptoAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
 
 /**
  * @brief Loads a certificate and adds it to a key.
- * @details Reads the certificate from @p filename and adds it to key.
+ * @details Reads the certificate from @p filename and adds it to the key.
  * @param key the pointer to key.
  * @param filename the certificate filename.
  * @param format the certificate file format.
@@ -2579,7 +2576,7 @@ xmlSecCryptoAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyData
 
 /**
  * @brief Loads a certificate from memory and adds it to a key.
- * @details Reads the certificate from memory buffer and adds it to key.
+ * @details Reads the certificate from memory buffer and adds it to the key.
  * @param key the pointer to key.
  * @param data the certificate binary data.
  * @param dataSize the certificate binary data size.

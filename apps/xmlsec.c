@@ -780,6 +780,21 @@ static xmlSecAppCmdLineParam urlMapParam = {
     NULL
 };
 
+#ifndef XMLSEC_NO_XMLENC
+static xmlSecAppCmdLineParam maxEncryptedKeyLevelParam = {
+    xmlSecAppCmdLineTopicDSigCommon |
+    xmlSecAppCmdLineTopicEncCommon,
+    "--max-encrypted-key-level",
+    NULL,
+    "--max-encrypted-key-level <level>"
+    "\n\tsets the max depth level when processing encrypted keys, key agreements, etc."
+    "\n\tto <level>; default is 1",
+    xmlSecAppCmdLineParamTypeNumber,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};
+#endif /* XMLSEC_NO_XMLENC */
+
 
 /******************************************************************************
  *
@@ -1141,6 +1156,9 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &nodeXPathParam,
     &idAttrParam,
     &addIdAttrParam,
+#ifndef XMLSEC_NO_XMLENC
+    &maxEncryptedKeyLevelParam,
+#endif /* XMLSEC_NO_XMLENC */
 
     /* Keys Manager params */
     &enabledKeyDataParam,
@@ -2269,6 +2287,17 @@ xmlSecAppPrepareKeyInfoCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
     if(xmlSecAppCmdLineParamIsSet(&laxKeySearchParam)) {
         keyInfoCtx->flags |= XMLSEC_KEYINFO_FLAGS_LAX_KEY_SEARCH;
     }
+
+#ifndef XMLSEC_NO_XMLENC
+    if(xmlSecAppCmdLineParamIsSet(&maxEncryptedKeyLevelParam)) {
+        int level = xmlSecAppCmdLineParamGetInt(&maxEncryptedKeyLevelParam, 1);
+        if(level < 1) {
+            fprintf(stderr, "Error: max encrypted key level should be greater than zero\n");
+            return(-1);
+        }
+        keyInfoCtx->maxEncryptedKeyLevel = level;
+    }
+#endif /* XMLSEC_NO_XMLENC */
 
     /* read enabled key data list */
     for(value = enabledKeyDataParam.value; value != NULL; value = value->next) {

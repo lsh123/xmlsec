@@ -25,6 +25,9 @@ see the Copyright file in the distribution for details.
   `--enabled-key-info-reference-uris`, etc. parameters for XMLSec command line tool if local or remote URIs
     usage is required (or set corresponding flag in the `xmlSecDSigCtx` and `xmlSecEncCtx` structs in your
     application code).
+  - (xmlsec-core, **not backward compatible**) Enforced restrictions on max depth when processing encrypted keys,
+    key agreements, etc. Use the new `--max-encrypted-key-level` option to control the maximum depth level for
+    these use cases. (default is 1).
   - (xmlsec-openssl) Added checks to enforce full consumption of parsed DER objects.
   - (xmlsec-mscng) Added support for using both current user and local machine certificates store for verifying
     the certificates.

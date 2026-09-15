@@ -169,7 +169,7 @@ xmlSecErrorsSetSystemCallback(xmlSecErrorsCallback callback) {
  * @param line the error location line number (__LINE__ macro).
  * @param func the error location function name (__FUNCTION__ macro).
  * @param errorObject the specific error object
- * @param errorSubject the error specific error subject.
+ * @param errorSubject the specific error subject.
  * @param reason the error code.
  * @param msg the additional error message.
  */
@@ -181,7 +181,8 @@ xmlSecErrorsDefaultCallback(const char* file, int line, const char* func,
         const char* error_msg = NULL;
         xmlSecSize ii;
 
-        for(ii = 0; (ii < (sizeof(xmlSecErrorsTable) / sizeof(xmlSecErrorsTable[0]))) && (xmlSecErrorsGetMsg(ii) != NULL); ++ii) {
+        /* find the error message (if any) */
+        for(ii = 0; ii < (sizeof(xmlSecErrorsTable) / sizeof(xmlSecErrorsTable[0])); ++ii) {
             if(xmlSecErrorsGetCode(ii) == reason) {
                 error_msg = xmlSecErrorsGetMsg(ii);
                 break;

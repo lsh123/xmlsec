@@ -123,7 +123,7 @@ xmlSecInit(void) {
     }
 
     /* new parser option XML_PARSE_NO_XXE available since 2.13.0 and is
-     * set as default options for parsers */
+     * set as a default option for parsers */
 #if LIBXML_VERSION < 21300
     xmlSetExternalEntityLoader(xmlSecNoXxeExternalEntityLoader);
 #endif /* LIBXML_VERSION < 21300 */

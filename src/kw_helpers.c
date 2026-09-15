@@ -396,6 +396,16 @@ xmlSecKWDes3Decode(xmlSecKWDes3Id kwDes3Id, xmlSecTransformPtr transform,
     xmlSecAssert2(outSize >= inSize, -1);
     xmlSecAssert2(outWritten != NULL, -1);
 
+    /* the unwrapped key is at least 16 bytes (a 128-bit DES key), so the input
+     * must be at least the key plus the 8-byte IV and the 8-byte key checksum
+     * (CKS); reject smaller inputs which would otherwise "unwrap" to a key
+     * shorter than 16 bytes */
+    if(inSize < 2 * (XMLSEC_KW_DES3_IV_LENGTH + XMLSEC_KW_DES3_BLOCK_LENGTH)) {
+        xmlSecInvalidSizeLessThanError("Input data", inSize,
+            2 * (XMLSEC_KW_DES3_IV_LENGTH + XMLSEC_KW_DES3_BLOCK_LENGTH), NULL);
+        return(-1);
+    }
+
     /* step 2: first decryption with static IV, result is TEMP3 */
     tmp = xmlSecBufferCreate(inSize);
     if(tmp == NULL) {
@@ -916,7 +926,8 @@ xmlSecKWRfc3394Decode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transfor
             }
         }
     }
-    /* do not keep data in memory */
+    /* wipe the local temporary block used during unwrapping; the unwrapped
+     * key itself is delivered in the output buffer */
     xmlSecMemCleanse(block, sizeof(block));
 
     /* check the output */

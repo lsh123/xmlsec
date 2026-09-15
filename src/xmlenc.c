@@ -1315,7 +1315,7 @@ xmlSecEncCtxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xm
         cur = xmlSecGetNextElementNode(cur->next);
     }
 
-      /* fourth node is optional MasterKeyName */
+    /* fourth node is optional MasterKeyName */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeMasterKeyName, xmlSecEnc11Ns))) {
         masterKeyName = xmlSecGetNodeContentAndTrim(cur);
         if(masterKeyName == NULL) {

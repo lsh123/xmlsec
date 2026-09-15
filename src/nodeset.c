@@ -365,6 +365,28 @@ xmlSecNodeSetWalkRootIsAncestor(xmlNodeSetPtr roots, xmlNodePtr node) {
 }
 
 /*
+ * Checks if the node set contains any namespace nodes.
+ *
+ * Namespace nodes in an XPath node set are copies (see libxml2's
+ * xmlXPathNodeSetDupNs) rather than the actual namespace nodes from the
+ * document tree, so they must not be used as fast-path walk roots: the fast
+ * path would report the copies while the slow path reports the document nodes.
+ */
+static int
+xmlSecNodeSetContainsNamespaceNode(xmlNodeSetPtr nodes) {
+    int ii;
+
+    xmlSecAssert2(nodes != NULL, 0);
+
+    for(ii = 0; ii < nodes->nodeNr; ++ii) {
+        if(nodes->nodeTab[ii]->type == XML_NAMESPACE_DECL) {
+            return(1);
+        }
+    }
+    return(0);
+}
+
+/*
  * Returns the node list to use as the fast-path walk roots for @p nset, or
  * NULL if the fast path cannot be used.
  *
@@ -378,6 +400,9 @@ xmlSecNodeSetWalkRootIsAncestor(xmlNodeSetPtr roots, xmlNodePtr node) {
  *     of every member, so it is fully covered by that member's subtrees.
  *     Members with a NULL node list (the whole document, e.g. the Normal input
  *     set of a "#fragment" reference) are skipped.
+ *
+ * The fast path is also disabled when the candidate node set contains namespace
+ * nodes, see xmlSecNodeSetContainsNamespaceNode.
  */
 static xmlNodeSetPtr
 xmlSecNodeSetGetFastPathNodes(xmlSecNodeSetPtr nset) {
@@ -392,6 +417,10 @@ xmlSecNodeSetGetFastPathNodes(xmlSecNodeSetPtr nset) {
         case xmlSecNodeSetNormal:
         case xmlSecNodeSetTree:
         case xmlSecNodeSetTreeWithoutComments:
+            /* the fast path must not use namespace node copies as walk roots */
+            if((nset->nodes != NULL) && xmlSecNodeSetContainsNamespaceNode(nset->nodes)) {
+                return(NULL);
+            }
             return(nset->nodes);
         default:
             return(NULL);
@@ -419,6 +448,11 @@ xmlSecNodeSetGetFastPathNodes(xmlSecNodeSetPtr nset) {
         }
         cur = cur->next;
     } while(cur != nset);
+
+    /* the fast path must not use namespace node copies as walk roots */
+    if((res != NULL) && xmlSecNodeSetContainsNamespaceNode(res)) {
+        return(NULL);
+    }
 
     /* done */
     return(res);

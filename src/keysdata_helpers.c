@@ -719,7 +719,7 @@ xmlSecKeyValueEcFinalize(xmlSecKeyValueEcPtr data) {
  *     conversion without point compression is REQUIRED.
  *  2/ Base64 encode the octet string resulting from the conversion in Step 1.
  */
-#define XMLSEC_ECKEYVALYU_ECPOINT_MAGIC_BYTE        0x04
+#define XMLSEC_ECKEYVALUE_ECPOINT_MAGIC_BYTE        0x04
 
 int
 xmlSecKeyDataEcPublicKeySplitComponents (xmlSecKeyValueEcPtr ecValue) {
@@ -736,7 +736,7 @@ xmlSecKeyDataEcPublicKeySplitComponents (xmlSecKeyValueEcPtr ecValue) {
         xmlSecInvalidSizeDataError("PublicKey", size, "ECPoint data should have an odd size > 1", NULL);
         return(-1);
     }
-    if(data[0] != XMLSEC_ECKEYVALYU_ECPOINT_MAGIC_BYTE) {
+    if(data[0] != XMLSEC_ECKEYVALUE_ECPOINT_MAGIC_BYTE) {
         xmlSecInvalidDataError("PublicKey must start from a magic number", NULL);
         return(-1);
     }
@@ -799,7 +799,7 @@ xmlSecKeyDataEcPublicKeyCombineComponents (xmlSecKeyValueEcPtr ecValue) {
 
     /*  <magic byte> || x || y,  prepend 0s if needed */
     memset(data, 0, size);
-    data[0] = XMLSEC_ECKEYVALYU_ECPOINT_MAGIC_BYTE;
+    data[0] = XMLSEC_ECKEYVALUE_ECPOINT_MAGIC_BYTE;
     memcpy(data + 1 + sizeKey - sizeX, dataX, sizeX);
     memcpy(data + 1 + sizeKey + sizeKey - sizeY, dataY, sizeY);
 
@@ -1951,14 +1951,17 @@ xmlSecKeyValueDsaXmlRead(xmlSecKeyValueDsaPtr data, xmlNodePtr node) {
 
     /* the J, Seed and PgenCounter parameters are not used for key verification and are skipped */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSAJ, xmlSecDSigNs))) {
+        /* intentionally ignored */
         cur = xmlSecGetNextElementNode(cur->next);
     }
 
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSASeed, xmlSecDSigNs))) {
+        /* intentionally ignored */
         cur = xmlSecGetNextElementNode(cur->next);
     }
 
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSAPgenCounter, xmlSecDSigNs))) {
+        /* intentionally ignored */
         cur = xmlSecGetNextElementNode(cur->next);
     }
 

@@ -489,6 +489,11 @@ xmlSecXslProcess(xmlSecXsltCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out) 
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(ctx != NULL, -1);
 
+    if(xmlSecBufferIsEmpty(in)) {
+        xmlSecInvalidDataError("empty input", NULL);
+        return(-1);
+    }
+
     docIn = xmlSecParseMemory(xmlSecBufferGetData(in), xmlSecBufferGetSize(in), 0);
     if(docIn == NULL) {
         xmlSecInternalError("xmlSecParseMemory", NULL);

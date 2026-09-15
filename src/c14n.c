@@ -312,13 +312,13 @@ xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlSecP
                         (xmlC14NIsVisibleCallback)xmlSecNodeSetContains,
                         nodes, XML_C14N_1_1, NULL, 1, buf);
     } else if(id == xmlSecTransformExclC14NId) {
-        /* we are using a semi-hack here: we know that xmlSecPtrList keeps
+        /* HACK: we are using a semi-hack here: we know that xmlSecPtrList keeps
          * all pointers in the big array */
         ret = xmlC14NExecute(nodes->doc,
                         (xmlC14NIsVisibleCallback)xmlSecNodeSetContains,
                         nodes, XML_C14N_EXCLUSIVE_1_0, (xmlChar**)(nsList->data), 0, buf);
     } else if(id == xmlSecTransformExclC14NWithCommentsId) {
-        /* we are using a semi-hack here: we know that xmlSecPtrList keeps
+        /* HACK: we are using a semi-hack here: we know that xmlSecPtrList keeps
          * all pointers in the big array */
         ret = xmlC14NExecute(nodes->doc,
                         (xmlC14NIsVisibleCallback)xmlSecNodeSetContains,

@@ -779,7 +779,14 @@ xmlSecSimpleKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSe
             return(NULL);
         }
         if(match == 1) {
-            return(xmlSecKeyDuplicate(key));
+            xmlSecKeyPtr res;
+
+            res = xmlSecKeyDuplicate(key);
+            if(res == NULL) {
+                xmlSecInternalError("xmlSecKeyDuplicate", xmlSecKeyStoreGetName(store));
+                return(NULL);
+            }
+            return(res);
         }
     }
     return(NULL);

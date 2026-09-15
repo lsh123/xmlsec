@@ -338,8 +338,7 @@ xmlSecXPathDataListExecute(xmlSecPtrListPtr dataList, xmlDocPtr doc,
 
         tmp2 = xmlSecNodeSetAdd(res, tmp, data->nodeSetOp);
         if(tmp2 == NULL) {
-            xmlSecInternalError2("xmlSecNodeSetAdd", NULL,
-                "nodeSetOp=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(data->nodeSetOp));
+            xmlSecInternalError2("xmlSecNodeSetAdd", NULL, "nodeSetOp=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(data->nodeSetOp));
             if((res != NULL) && (res != nodes)) {
                 xmlSecNodeSetDestroy(res);
             }

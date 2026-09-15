@@ -146,3 +146,4 @@ Windows notes:
 - xmlSecAssert, xmlSecAssert2, etc. are executed in both release and debug builds.
 - Functions are documented in .c files and headers are minimal.
 - Algorithm / feature specific code is wrapped in guards (eg "#ifndef XMLSEC_NO_AES" ... #endif /* XMLSEC_NO_AES */")
+- `xmlStrlen()` (libxml2) returns `int`, not `size_t`.

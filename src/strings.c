@@ -6,7 +6,7 @@
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * @brief The strings constants.
+ * @brief The string constants.
  */
 #include "globals.h"
 

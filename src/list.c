@@ -167,6 +167,11 @@ xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
     xmlSecAssert2(xmlSecPtrListIsValid(src), -1);
     xmlSecAssert2(dst->id == src->id, -1);
 
+    if(dst == src) {
+        /* copying a list to itself is a no-op */
+        return(0);
+    }
+
     initialUse = dst->use;
 
     /* allocate memory */
@@ -344,6 +349,11 @@ xmlSecPtrListSet(xmlSecPtrListPtr list, xmlSecPtr item, xmlSecSize pos) {
     xmlSecAssert2(xmlSecPtrListIsValid(list), -1);
     xmlSecAssert2(list->data != NULL, -1);
     xmlSecAssert2(pos < list->use, -1);
+
+    if(item == list->data[pos]) {
+        /* setting an item to the value it already holds is a no-op */
+        return(0);
+    }
 
     if((list->id->destroyItem != NULL) && (list->data[pos] != NULL)) {
         list->id->destroyItem(list->data[pos]);

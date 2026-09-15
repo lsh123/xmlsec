@@ -66,8 +66,8 @@ struct _xmlSecCryptoDLLibrary {
 static xmlSecCryptoDLLibraryPtr xmlSecCryptoDLLibraryCreate             (const xmlChar* name);
 static void                     xmlSecCryptoDLLibraryDestroy            (xmlSecCryptoDLLibraryPtr lib);
 static xmlSecCryptoDLLibraryPtr xmlSecCryptoDLLibraryDuplicate          (xmlSecCryptoDLLibraryPtr lib);
-static xmlChar*                 xmlSecCryptoDLLibraryConstructFilename  (const xmlChar* name);
-static xmlChar*                 xmlSecCryptoDLLibraryConstructGetFunctionsName(const xmlChar* name);
+static xmlChar*                 xmlSecCryptoDLLibraryConstructFilename          (const xmlChar* name);
+static xmlChar*                 xmlSecCryptoDLLibraryConstructGetFunctionsName  (const xmlChar* name);
 
 
 static xmlSecPtrListKlass xmlSecCryptoDLLibrariesListKlass = {
@@ -494,7 +494,7 @@ xmlSecCryptoDLGetLibraryFunctions(const xmlChar* crypto) {
 
 /**
  * @brief Unloads a crypto library.
- * @details Unloads the xmlsec-$crypto library. All pointers to this library
+ * @details Unloads the xmlsec-$crypto library. All pointers to this library's
  * functions tables become invalid. This function is NOT thread safe; the
  * application MUST NOT call #xmlSecCryptoDLLoadLibrary,
  * #xmlSecCryptoDLGetLibraryFunctions, and #xmlSecCryptoDLUnloadLibrary from

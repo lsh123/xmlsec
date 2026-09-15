@@ -779,7 +779,7 @@ done:
 int
 xmlSecBase64DecodeInPlace(xmlChar* str, xmlSecSize* outWritten) {
     xmlSecAssert2(str != NULL, -1);
-    return(xmlSecBase64Decode_ex(str, (xmlSecByte*)str, xmlSecStrlen(str) + 1,outWritten));
+    return(xmlSecBase64Decode_ex(str, (xmlSecByte*)str, xmlSecStrlen(str) + 1, outWritten));
 }
 
 /******************************************************************************

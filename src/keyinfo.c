@@ -1366,7 +1366,7 @@ xmlSecKeyDataKeyInfoReferenceXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNo
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeRead, -1);
 
-    /* check retrieval level */
+    /* check key info reference level */
     if(keyInfoCtx->curKeyInfoReferenceLevel >= keyInfoCtx->maxKeyInfoReferenceLevel) {
         xmlSecOtherError3(XMLSEC_ERRORS_R_MAX_KEYINFOREFERENCE_LEVEL, xmlSecKeyDataKlassGetName(id),
             "cur=%d;max=%d", keyInfoCtx->curKeyInfoReferenceLevel, keyInfoCtx->maxKeyInfoReferenceLevel);

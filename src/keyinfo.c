@@ -1600,10 +1600,13 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
     }
     xmlSecAssert2(keyInfoCtx->encCtx != NULL, -1);
 
+    /* setup current recursion levels for the read context */
+    keyInfoCtx->encCtx->keyInfoReadCtx.curKeyInfoReferenceLevel = keyInfoCtx->curKeyInfoReferenceLevel;
+    keyInfoCtx->encCtx->keyInfoReadCtx.curRetrievalMethodLevel = keyInfoCtx->curRetrievalMethodLevel;
+    keyInfoCtx->encCtx->keyInfoReadCtx.curEncryptedKeyLevel = keyInfoCtx->curEncryptedKeyLevel + 1;
+
     /* decrypt */
-    ++keyInfoCtx->curEncryptedKeyLevel;
     result = xmlSecEncCtxDecryptToBuffer(keyInfoCtx->encCtx, node);
-    --keyInfoCtx->curEncryptedKeyLevel;
     if((result == NULL) || (xmlSecBufferGetData(result) == NULL)) {
         /* We might have multiple EncryptedKey elements, encrypted
          * for different recipients but application can enforce
@@ -1803,10 +1806,13 @@ xmlSecKeyDataDerivedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr 
     }
     xmlSecAssert2(keyInfoCtx->encCtx != NULL, -1);
 
-    ++keyInfoCtx->curEncryptedKeyLevel;
-    generatedKey = xmlSecEncCtxDerivedKeyGenerate(keyInfoCtx->encCtx, keyInfoCtx->keyReq.keyId, node, keyInfoCtx);
-    --keyInfoCtx->curEncryptedKeyLevel;
+    /* setup current recursion levels for the read context */
+    keyInfoCtx->encCtx->keyInfoReadCtx.curKeyInfoReferenceLevel = keyInfoCtx->curKeyInfoReferenceLevel;
+    keyInfoCtx->encCtx->keyInfoReadCtx.curRetrievalMethodLevel = keyInfoCtx->curRetrievalMethodLevel;
+    keyInfoCtx->encCtx->keyInfoReadCtx.curEncryptedKeyLevel = keyInfoCtx->curEncryptedKeyLevel + 1;
 
+    /* generate derived key */
+    generatedKey = xmlSecEncCtxDerivedKeyGenerate(keyInfoCtx->encCtx, keyInfoCtx->keyReq.keyId, node, keyInfoCtx);
     if(generatedKey == NULL) {
         /* We might have multiple DerivedKey elements, encrypted
          * for different recipients but application can enforce
@@ -1960,10 +1966,13 @@ xmlSecKeyDataAgreementMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
     }
     xmlSecAssert2(keyInfoCtx->encCtx != NULL, -1);
 
-    ++keyInfoCtx->curEncryptedKeyLevel;
-    generatedKey = xmlSecEncCtxAgreementMethodGenerate(keyInfoCtx->encCtx, keyInfoCtx->keyReq.keyId, node, keyInfoCtx);
-    --keyInfoCtx->curEncryptedKeyLevel;
+    /* setup current recursion levels for the read context */
+    keyInfoCtx->encCtx->keyInfoReadCtx.curKeyInfoReferenceLevel = keyInfoCtx->curKeyInfoReferenceLevel;
+    keyInfoCtx->encCtx->keyInfoReadCtx.curRetrievalMethodLevel = keyInfoCtx->curRetrievalMethodLevel;
+    keyInfoCtx->encCtx->keyInfoReadCtx.curEncryptedKeyLevel = keyInfoCtx->curEncryptedKeyLevel + 1;
 
+    /* generate key agreement key */
+    generatedKey = xmlSecEncCtxAgreementMethodGenerate(keyInfoCtx->encCtx, keyInfoCtx->keyReq.keyId, node, keyInfoCtx);
     if(generatedKey == NULL) {
         /* We might have multiple AgreementMethod elements, encrypted
          * for different recipients but application can enforce
@@ -2066,10 +2075,13 @@ xmlSecKeyDataAgreementMethodXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNo
         /* kamKeyDataDup is now owned by the transform context */
     }
 
-    ++keyInfoCtx->curEncryptedKeyLevel;
-    ret = xmlSecEncCtxAgreementMethodXmlWrite(keyInfoCtx->encCtx, node, keyInfoCtx);
-    --keyInfoCtx->curEncryptedKeyLevel;
+    /* setup current recursion levels for the write context */
+    keyInfoCtx->encCtx->keyInfoWriteCtx.curKeyInfoReferenceLevel = keyInfoCtx->curKeyInfoReferenceLevel;
+    keyInfoCtx->encCtx->keyInfoWriteCtx.curRetrievalMethodLevel = keyInfoCtx->curRetrievalMethodLevel;
+    keyInfoCtx->encCtx->keyInfoWriteCtx.curEncryptedKeyLevel = keyInfoCtx->curEncryptedKeyLevel + 1;
 
+    /* write the agreement method */
+    ret = xmlSecEncCtxAgreementMethodXmlWrite(keyInfoCtx->encCtx, node, keyInfoCtx);
     if(ret < 0) {
         xmlSecInternalError("xmlSecEncCtxAgreementMethodXmlWrite", xmlSecKeyDataKlassGetName(id));
         return(-1);
@@ -2183,10 +2195,13 @@ xmlSecKeyDataEncapsulationMechanismXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     }
     xmlSecAssert2(keyInfoCtx->encCtx != NULL, -1);
 
-    ++keyInfoCtx->curEncryptedKeyLevel;
-    generatedKey = xmlSecEncCtxEncapsulationMechanismGenerate(keyInfoCtx->encCtx, keyInfoCtx->keyReq.keyId, node, keyInfoCtx);
-    --keyInfoCtx->curEncryptedKeyLevel;
+    /* setup current recursion levels for the read context */
+    keyInfoCtx->encCtx->keyInfoReadCtx.curKeyInfoReferenceLevel = keyInfoCtx->curKeyInfoReferenceLevel;
+    keyInfoCtx->encCtx->keyInfoReadCtx.curRetrievalMethodLevel = keyInfoCtx->curRetrievalMethodLevel;
+    keyInfoCtx->encCtx->keyInfoReadCtx.curEncryptedKeyLevel = keyInfoCtx->curEncryptedKeyLevel + 1;
 
+    /* generate EM key */
+    generatedKey = xmlSecEncCtxEncapsulationMechanismGenerate(keyInfoCtx->encCtx, keyInfoCtx->keyReq.keyId, node, keyInfoCtx);
     if(generatedKey == NULL) {
         /* We might have multiple EncapsulationMechanism elements, each encapsulating
          * for different recipients; the application can enforce correct decapsulation key.
@@ -2290,10 +2305,13 @@ xmlSecKeyDataEncapsulationMechanismXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key
     }
     /* kemKeyDataDup is now owned by the transform context */
 
-    ++keyInfoCtx->curEncryptedKeyLevel;
-    ret = xmlSecEncCtxEncapsulationMechanismXmlWrite(keyInfoCtx->encCtx, node, keyInfoCtx);
-    --keyInfoCtx->curEncryptedKeyLevel;
+    /* setup current recursion levels for the write context */
+    keyInfoCtx->encCtx->keyInfoWriteCtx.curKeyInfoReferenceLevel = keyInfoCtx->curKeyInfoReferenceLevel;
+    keyInfoCtx->encCtx->keyInfoWriteCtx.curRetrievalMethodLevel = keyInfoCtx->curRetrievalMethodLevel;
+    keyInfoCtx->encCtx->keyInfoWriteCtx.curEncryptedKeyLevel = keyInfoCtx->curEncryptedKeyLevel + 1;
 
+    /* write the encapsulation mechanism */
+    ret = xmlSecEncCtxEncapsulationMechanismXmlWrite(keyInfoCtx->encCtx, node, keyInfoCtx);
     if(ret < 0) {
         xmlSecInternalError("xmlSecEncCtxEncapsulationMechanismXmlWrite", xmlSecKeyDataKlassGetName(id));
         return(-1);

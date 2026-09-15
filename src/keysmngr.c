@@ -154,6 +154,10 @@ xmlSecKeysMngrAdoptKeysStore(xmlSecKeysMngrPtr mngr, xmlSecKeyStorePtr store) {
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(xmlSecKeyStoreIsValid(store), -1);
 
+    if(mngr->keysStore == store) {
+        /* already adopted, nothing to do */
+        return(0);
+    }
     if(mngr->keysStore != NULL) {
         xmlSecKeyStoreDestroy(mngr->keysStore);
     }

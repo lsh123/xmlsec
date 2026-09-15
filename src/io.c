@@ -565,6 +565,8 @@ xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const xmlChar *uri) {
 /**
  * @brief Closes the given @p transform.
  * @details Closes the given @p transform and frees up resources.
+ * Note: in case of failure, the transform may be left in an inconsistent state and
+ * the resources may not be properly released.
  * @param transform the pointer to IO transform.
  * @return 0 on success or a negative value otherwise.
  */
@@ -585,8 +587,6 @@ xmlSecTransformInputURIClose(xmlSecTransformPtr transform) {
             xmlSecIOError("ctx->clbks->closecallback", xmlSecTransformGetName(transform), NULL);
             return(-1);
         }
-        /* only clear the handle after a successful close so that a failed
-         * close can be retried and the handle is not lost */
         ctx->clbksCtx = NULL;
         ctx->clbks = NULL;
     }
@@ -608,6 +608,8 @@ xmlSecTransformInputURIInitialize(xmlSecTransformPtr transform) {
     return(0);
 }
 
+/* Note: in case of xmlSecTransformInputURIClose failure, the resources may not
+ * be properly released. */
 static void
 xmlSecTransformInputURIFinalize(xmlSecTransformPtr transform) {
     xmlSecInputURICtxPtr ctx;

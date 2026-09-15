@@ -231,10 +231,16 @@ xmlSecRelationshipReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSec
             continue;
         }
 
-        /* which MUST have sourceId attribute */
+        /* which MUST have sourceId attribute. xmlGetProp() returns NULL both when the
+         * attribute is absent and when it cannot allocate the return value, so check
+         * for presence first to report the correct error. */
+        if(!xmlHasProp(cur, xmlSecRelationshipAttrSourceId)) {
+            xmlSecInvalidNodeAttributeError(cur, xmlSecRelationshipAttrSourceId, NULL, "missing");
+            return(-1);
+        }
         sourceId = xmlGetProp(cur, xmlSecRelationshipAttrSourceId);
         if(sourceId == NULL) {
-            xmlSecInvalidNodeAttributeError(cur, xmlSecRelationshipAttrSourceId, NULL, "missing");
+            xmlSecXmlError("xmlGetProp", xmlSecTransformGetName(transform));
             return(-1);
         }
 
@@ -803,6 +809,23 @@ xmlSecTransformRelationshipExecute(xmlSecTransformPtr transform, xmlOutputBuffer
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(doc != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
+
+    /*
+     * In non-legacy mode the top-level content must be in the Relationships namespace;
+     * otherwise the whole document would be silently dropped and the transform would
+     * produce empty output. Fail explicitly instead.
+     */
+    if((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_RELATIONSHIP_LEGACY) == 0) {
+        xmlNodePtr top;
+        for(top = doc->children; top != NULL; top = top->next) {
+            if((top->type == XML_ELEMENT_NODE) &&
+               !xmlSecTransformRelationshipIsOutputElement(top)) {
+                xmlSecInvalidNodeContentError(top, xmlSecTransformGetName(transform),
+                    "top-level node is not in the Relationships namespace");
+                return(-1);
+            }
+        }
+    }
 
     if(doc->children != NULL) {
         ret = xmlSecTransformRelationshipProcessNodeList(transform, buf, doc->children, 0, transformCtx);

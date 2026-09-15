@@ -904,10 +904,6 @@ xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
     ii = jj = nonSpaceJJ = 0;
     while ((ii < (*inSize)) && (state != XMLSEC_X509_NAME_READ_STATE_DELIMETER)) {
         inCh = (*in)[ii];
-        if (jj >= outSize) {
-            xmlSecInvalidSizeOtherError("output buffer is too small", NULL);
-            return(-1);
-        }
 
         switch(state) {
         case XMLSEC_X509_NAME_READ_STATE_NORMAL:
@@ -920,6 +916,10 @@ xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
                 ++ii;
             } else {
                 /* copy char and move to next */
+                if (jj >= outSize) {
+                    xmlSecInvalidSizeOtherError("output buffer is too small", NULL);
+                    return(-1);
+                }
                 out[jj] = inCh;
                 ++ii;
                 ++jj;
@@ -941,6 +941,10 @@ xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
                 state = XMLSEC_X509_NAME_READ_STATE_NORMAL;
 
                 /* copy char and move to next */
+                if (jj >= outSize) {
+                    xmlSecInvalidSizeOtherError("output buffer is too small", NULL);
+                    return(-1);
+                }
                 out[jj] = inCh;
                 ++ii;
                 ++jj;
@@ -959,6 +963,10 @@ xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
                 inFirstHex = 0;
 
                 /* copy char and move to next */
+                if (jj >= outSize) {
+                    xmlSecInvalidSizeOtherError("output buffer is too small", NULL);
+                    return(-1);
+                }
                 out[jj] = inCh;
                 ++ii;
                 ++jj;
@@ -1379,6 +1387,12 @@ xmlSecX509SerialNumberRead(const xmlChar *str, xmlSecByte *res, xmlSecSize resSi
     if(str[0] == '\0') {
         xmlSecInternalError("empty integer string", NULL);
         return(-1);
+    }
+
+    /* Skip leading zeros: they do not change the value, so a number padded with
+     * leading zeros must not be rejected by the length check below */
+    while((str[0] == '0') && (str[1] != '\0')) {
+        ++str;
     }
 
     /* XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES bytes can hold at most

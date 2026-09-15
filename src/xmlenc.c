@@ -1513,6 +1513,7 @@ xmlSecEncCtxEncapsulationMechanismGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyData
         xmlSecInternalError2("invalid operation", NULL, "operation=%u", keyInfoCtx->operation);
         return(NULL);
     }
+    xmlSecAddIDs(node->doc, node, xmlSecEncIds);
 
     /* the EncapsulationMechanism node is the transform node itself */
     encCtx->transformCtx.parentKeyInfoCtx = keyInfoCtx;

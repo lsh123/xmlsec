@@ -845,6 +845,9 @@ xmlSecReplaceContentAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr *r
     }
 
     /* swap nodes */
+    if((newNode->doc != NULL) && (newNode->doc->children == newNode)) {
+        newNode->doc->children = newNode->next;
+    }
     xmlUnlinkNode(newNode);
     if(xmlAddChildList(node, newNode) == NULL) {
         xmlSecXmlError("xmlAddChildList", node);
@@ -947,7 +950,6 @@ xmlSecReplaceNodeBufferAndReturn(xmlNodePtr node, const xmlSecByte *buffer, xmlS
 int
 xmlSecNodeEncodeAndSetContent(xmlNodePtr node, const xmlChar * buffer) {
     xmlSecAssert2(node != NULL, -1);
-    xmlSecAssert2(node->doc != NULL, -1);
 
     if(buffer != NULL) {
         xmlChar * tmp;
@@ -1055,7 +1057,7 @@ xmlSecAddIDs(xmlDocPtr doc, xmlNodePtr node, const xmlChar** ids) {
             xmlSecInternalError("xmlSecDepthFirstTreeWalk", NULL);
             return;
         }
-    } else if(node == NULL) {
+    } else if((node == NULL) || (node->type == XML_DOCUMENT_NODE)) {
         for(cur = doc->children; cur != NULL; cur = cur->next) {
             if(cur->type != XML_ELEMENT_NODE) {
                 continue;
@@ -1133,6 +1135,7 @@ xmlSecIsEmptyNode(xmlNodePtr node) {
         return(0);
     }
 
+    /* xmlNodeGetContent may return NULL if there are no children nodes or content */
     content = xmlNodeGetContent(node);
     if(content == NULL) {
         return(1);
@@ -1923,6 +1926,7 @@ xmlSecQName2BitMaskNodesRead(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr* n
     xmlSecAssert2(info != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(mask != NULL, -1);
+    xmlSecAssert2(nodeName != NULL, -1);
 
     (*mask) = 0;
     cur = (*node);

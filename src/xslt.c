@@ -477,7 +477,6 @@ xmlSecXsltExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr 
     return(0);
 }
 
-/* TODO: create PopBin method instead */
 static int
 xmlSecXslProcess(xmlSecXsltCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out) {
     xmlDocPtr docIn = NULL;

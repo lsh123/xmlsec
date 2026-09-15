@@ -1020,6 +1020,8 @@ xmlSecTransformHmacReadOutputBitsSize(xmlNodePtr node, xmlSecSize defaultSize, x
         }
 
         cur = xmlSecGetNextElementNode(cur->next);
+    } else {
+        (*res) = defaultSize;
     }
 
     /* no other nodes expected */

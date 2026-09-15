@@ -1228,7 +1228,7 @@ xmlSecTransformCtxXmlExecute(xmlSecTransformCtxPtr ctx, xmlSecNodeSetPtr nodes) 
     return(0);
 }
 
-static void
+void
 xmlSecTransformCtxClearNodeRefs(xmlSecTransformCtxPtr ctx, xmlSecNodeSetPtr nodes) {
     xmlSecTransformPtr transform;
 

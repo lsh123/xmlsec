@@ -26,16 +26,21 @@ extern "C" {
 #endif /* __cplusplus */
 
 
+/* Internal helper to clear transform references to the nodeset */
+void                        xmlSecTransformCtxClearNodeRefs     (xmlSecTransformCtxPtr ctx,
+                                                                 xmlSecNodeSetPtr nodes);
+
+
 /* Internal helpers used by key-agreement and KEM code: read / write key info inside transforms */
 /**
  * @brief Reads the key from a key info node.
  * @return the pointer to the key (the caller must call xmlSecKeyDestroy) or NULL on failure.
  */
-XMLSEC_EXPORT xmlSecKeyPtr  xmlSecTransformReadKeyInfoNode       (xmlSecKeyDataType keyType,
+xmlSecKeyPtr                xmlSecTransformReadKeyInfoNode       (xmlSecKeyDataType keyType,
                                                                   xmlNodePtr node,
                                                                   xmlSecTransformPtr transform,
                                                                   xmlSecTransformCtxPtr transformCtx);
-XMLSEC_EXPORT int           xmlSecTransformWriteKeyInfoNode      (xmlSecKeyPtr key,
+int                         xmlSecTransformWriteKeyInfoNode      (xmlSecKeyPtr key,
                                                                   xmlNodePtr node,
                                                                   xmlSecTransformPtr transform,
                                                                   xmlSecTransformCtxPtr transformCtx);

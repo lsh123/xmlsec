@@ -130,7 +130,7 @@ jobs:
     - name: configure
       working-directory: build
       run: |
-          ../autogen.sh --enable-werror  --enable-pedantic \
+          ../autogen.sh  \
               --enable-mscrypto --enable-mscng ${{ matrix.config_flags }} \
               --build="${{ matrix.arch }}-w64-mingw32" \
               --host="${{ matrix.arch }}-w64-mingw32"

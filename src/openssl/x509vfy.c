@@ -1040,8 +1040,8 @@ xmlSecOpenSSLX509NameRead(const xmlChar *str) {
         }
 
         nameSize = 0;
-        ret = xmlSecOpenSSLX509NameStringRead(&str, &strSize,
-            name, sizeof(name), &nameSize, '=', 0);
+        /* ensure there is enough space in the output buffer for \0 */
+        ret = xmlSecOpenSSLX509NameStringRead(&str, &strSize, name, sizeof(name) - 1, &nameSize, '=', 0);
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLX509NameStringRead", NULL);
             goto done;
@@ -1061,8 +1061,9 @@ xmlSecOpenSSLX509NameRead(const xmlChar *str) {
             ++str; --strSize;
             if((*str) == '\"') {
                 ++str; --strSize;
-                ret = xmlSecOpenSSLX509NameStringRead(&str, &strSize,
-                    value, sizeof(value), &valueSize, '"', 1);
+
+                /* ensure there is enough space in the output buffer for \0 */
+                ret = xmlSecOpenSSLX509NameStringRead(&str, &strSize, value, sizeof(value) - 1, &valueSize, '"', 1);
                 if(ret < 0) {
                     xmlSecInternalError("xmlSecOpenSSLX509NameStringRead", NULL);
                     goto done;
@@ -1092,8 +1093,8 @@ xmlSecOpenSSLX509NameRead(const xmlChar *str) {
                 xmlSecNotImplementedError("reading octect values is not implemented yet");
                 goto done;
             } else {
-                ret = xmlSecOpenSSLX509NameStringRead(&str, &strSize,
-                                        value, sizeof(value), &valueSize, ',', 1);
+                /* ensure there is enough space in the output buffer for \0 */
+                ret = xmlSecOpenSSLX509NameStringRead(&str, &strSize, value, sizeof(value) - 1, &valueSize, ',', 1);
                 if(ret < 0) {
                     xmlSecInternalError("xmlSecOpenSSLX509NameStringRead", NULL);
                     goto done;

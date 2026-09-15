@@ -33,7 +33,7 @@ struct _xmlSecErrorDescription {
     const char*         errorMsg;
 };
 
-static const xmlSecErrorDescription xmlSecErrorsTable[XMLSEC_ERRORS_MAX_NUMBER + 1] = {
+static const xmlSecErrorDescription xmlSecErrorsTable[] = {
   { XMLSEC_ERRORS_R_XMLSEC_FAILED,              "xmlsec library function failed" },
   { XMLSEC_ERRORS_R_MALLOC_FAILED,              "malloc function failed" },
   { XMLSEC_ERRORS_R_STRDUP_FAILED,              "strdup function failed" },
@@ -89,7 +89,6 @@ static const xmlSecErrorDescription xmlSecErrorsTable[XMLSEC_ERRORS_MAX_NUMBER +
   { XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE,     "Reference verification failed" },
   { XMLSEC_ERRORS_R_ASSERTION,                  "assertion" },
   { XMLSEC_ERRORS_R_CAST_IMPOSSIBLE,            "cast from one type to another is impossible" },
-  { 0,                                          NULL}
 };
 
 /* We have system callback that can be set by the xmlsec-crypto library and the user callback
@@ -180,11 +179,11 @@ xmlSecErrorsDefaultCallback(const char* file, int line, const char* func,
                             int reason, const char* msg) {
     if(xmlSecPrintErrorMessages) {
         const char* error_msg = NULL;
-        xmlSecSize i;
+        xmlSecSize ii;
 
-        for(i = 0; (i < XMLSEC_ERRORS_MAX_NUMBER) && (xmlSecErrorsGetMsg(i) != NULL); ++i) {
-            if(xmlSecErrorsGetCode(i) == reason) {
-                error_msg = xmlSecErrorsGetMsg(i);
+        for(ii = 0; (ii < (sizeof(xmlSecErrorsTable) / sizeof(xmlSecErrorsTable[0]))) && (xmlSecErrorsGetMsg(ii) != NULL); ++ii) {
+            if(xmlSecErrorsGetCode(ii) == reason) {
+                error_msg = xmlSecErrorsGetMsg(ii);
                 break;
             }
         }

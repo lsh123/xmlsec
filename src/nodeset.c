@@ -426,7 +426,11 @@ xmlSecNodeSetGetFastPathNodes(xmlSecNodeSetPtr nset) {
 
 /**
  * @brief Walks all nodes in a set calling a callback function.
- * @details Calls the function @p walkFunc once per each node in the nodes set @p nset.
+ * @details Calls the function @p walkFunc for each node in the nodes set @p nset.
+ * Element and attribute nodes are reported once each. Namespace nodes, however,
+ * are reported once per descendant element in which they are in scope (the walk
+ * revisits the namespace declarations along each element's ancestor chain), so a
+ * namespace declared on a common ancestor may be reported more than once.
  * If the @p walkFunc returns a negative value, then the walk procedure
  * is interrupted.
  * @param nset the pointer to node set.

@@ -2070,7 +2070,12 @@ xmlSecTransformDefaultGetDataType(xmlSecTransformPtr transform, xmlSecTransformM
 /**
  * @brief Processes binary data via execute method and pushes results.
  * @details Process binary @p data by calling transform's execute method and pushes
- * results to next transform.
+ * results to next transform. When @p transform is the last in the chain (i.e. its
+ * next transform is NULL), the produced output is consumed (removed from the
+ * transform's output buffer) instead of being pushed; this is required for the
+ * processing loop to terminate. A transform that uses this method as the last one
+ * in a chain must therefore store its results elsewhere (e.g. in a dedicated
+ * buffer, as the membuf transform does).
  * @param transform the pointer to transform object.
  * @param data the input binary data,
  * @param dataSize the input data size.

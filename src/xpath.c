@@ -688,15 +688,15 @@ xmlSecTransformXPath2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xml
         cur = xmlSecGetNextElementNode(cur->next);
     }
 
-    /* check that we have at least one XPath node */
-    if(xmlSecPtrListGetSize(dataList) == 0) {
-        xmlSecInvalidNodeContentError(node, xmlSecTransformGetName(transform), "empty");
-        return(-1);
-    }
-
     /* check that we have nothing else */
     if(cur != NULL) {
         xmlSecUnexpectedNodeError(cur, xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
+    /* check that we have at least one XPath node */
+    if(xmlSecPtrListGetSize(dataList) == 0) {
+        xmlSecInvalidNodeContentError(node, xmlSecTransformGetName(transform), "empty");
         return(-1);
     }
     return(0);

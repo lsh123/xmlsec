@@ -46,15 +46,15 @@ static OSSL_LIB_CTX* gXmlSecOpenSSLLibCtx = NULL;
 
 #if !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR)
 
-#define XMLSEC_OPENSSL_ERRORS_FUNCTION                  0
-
+#define XMLSEC_OPENSSL_ERRORS_FUNCTION              0
+#define XMLSEC_OPENSSL_ERRORS_MAX_NUMBER            1024
 static int gXmlSecOpenSSLErrorsLib = 0;
 static char gXmlSecOpenSSLErrorsLibName[] = "xmlsec lib";
 static char gXmlSecOpenSSLErrorsDefault[] = "xmlsec routines";
 
 static ERR_STRING_DATA xmlSecOpenSSLStrLib[2];
 static ERR_STRING_DATA xmlSecOpenSSLStrDefReason[2];
-static ERR_STRING_DATA xmlSecOpenSSLStrReasons[XMLSEC_ERRORS_MAX_NUMBER + 1];
+static ERR_STRING_DATA xmlSecOpenSSLStrReasons[XMLSEC_OPENSSL_ERRORS_MAX_NUMBER + 1];
 #endif /* !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR) */
 
 /**
@@ -732,7 +732,7 @@ xmlSecOpenSSLErrorsInit(void) {
 
     /* initialize reasons array */
     memset(xmlSecOpenSSLStrReasons, 0, sizeof(xmlSecOpenSSLStrReasons));
-    for(pos = 0; (pos < XMLSEC_ERRORS_MAX_NUMBER) && (xmlSecErrorsGetMsg(pos) != NULL); ++pos) {
+    for(pos = 0; (pos < XMLSEC_OPENSSL_ERRORS_MAX_NUMBER) && (xmlSecErrorsGetMsg(pos) != NULL); ++pos) {
         xmlSecOpenSSLStrReasons[pos].error  = ERR_PACK(gXmlSecOpenSSLErrorsLib, XMLSEC_OPENSSL_ERRORS_FUNCTION, xmlSecErrorsGetCode(pos));
         xmlSecOpenSSLStrReasons[pos].string = xmlSecErrorsGetMsg(pos);
     }

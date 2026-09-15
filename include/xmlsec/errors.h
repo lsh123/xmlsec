@@ -311,11 +311,6 @@ extern "C" {
  */
 #define XMLSEC_ERROR_R_CAST_IMPOSSIBLE                  XMLSEC_ERRORS_R_CAST_IMPOSSIBLE
 
-/**
- * @brief The maximum number of xmlsec errors.
- */
-#define XMLSEC_ERRORS_MAX_NUMBER                        256
-
 
 
 /******************************************************************************

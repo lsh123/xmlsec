@@ -855,7 +855,7 @@ xmlSecKeyValueEcXmlRead(xmlSecKeyValueEcPtr data, xmlNodePtr node) {
         return(-1);
     }
     data->curve = xmlGetProp(cur, xmlSecAttrURI);
-    if(data->curve == NULL) {
+    if((data->curve == NULL) || (data->curve[0] == '\0')) {
         xmlSecInvalidNodeAttributeError(cur, xmlSecAttrURI, NULL, "empty");
         return(-1);
     }
@@ -894,6 +894,42 @@ xmlSecKeyValueEcXmlRead(xmlSecKeyValueEcPtr data, xmlNodePtr node) {
     return(0);
 }
 
+static xmlChar *
+xmlSecKeyValueEcAddOidPrefix(const xmlChar * curve) {
+    int curveLen, oidPrefixLen, totalLen;
+    xmlSecSize size;
+    xmlChar * res;
+    int ret;
+
+    xmlSecAssert2(curve != NULL, NULL);
+
+    oidPrefixLen = xmlStrlen(XMLSEC_KEYVALUE_EC_OID_PREFIX);
+    curveLen = xmlStrlen(curve);
+    if(curveLen > (INT_MAX - oidPrefixLen - 1)) {
+        xmlSecInternalError("curve name too long", NULL);
+        return(NULL);
+    }
+
+    totalLen = oidPrefixLen + curveLen + 1;
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(totalLen, size, return(NULL), NULL);
+
+    res = (xmlChar *)xmlMalloc(size);
+    if(res == NULL) {
+        xmlSecMallocError(size, NULL);
+        return(NULL);
+    }
+
+    ret = xmlStrPrintf(res, totalLen, "%s%s", XMLSEC_KEYVALUE_EC_OID_PREFIX, curve);
+    if(ret < 0) {
+        xmlSecXmlError("xmlStrPrintf", NULL);
+        xmlFree(res);
+        return(NULL);
+    }
+
+    /* success */
+    return(res);
+}
+
 static int
 xmlSecKeyValueEcXmlWrite(xmlSecKeyValueEcPtr data, xmlNodePtr node,  int base64LineSize, int addLineBreaks) {
     xmlNodePtr cur;
@@ -911,36 +947,24 @@ xmlSecKeyValueEcXmlWrite(xmlSecKeyValueEcPtr data, xmlNodePtr node,  int base64L
     }
     /* add the oid prefix if needed */
     if((xmlStrncmp(data->curve, XMLSEC_KEYVALUE_EC_OID_PREFIX, xmlStrlen(XMLSEC_KEYVALUE_EC_OID_PREFIX)) != 0)) {
-        xmlSecSize size;
         xmlChar * curve;
-        int len;
 
-        len = xmlStrlen(XMLSEC_KEYVALUE_EC_OID_PREFIX) + xmlStrlen(data->curve) + 1;
-        XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(-1), NULL);
-
-        curve = (xmlChar *)xmlMalloc(size);
+        curve = xmlSecKeyValueEcAddOidPrefix(data->curve);
         if(curve == NULL) {
-            xmlSecMallocError(size, NULL);
+            xmlSecInternalError("xmlSecKeyValueEcAddOidPrefix", NULL);
             xmlUnlinkNode(cur);
             xmlFreeNode(cur);
             return(-1);
         }
 
-        ret = xmlStrPrintf(curve, len, "%s%s", XMLSEC_KEYVALUE_EC_OID_PREFIX, data->curve);
-        if(ret < 0) {
-            xmlSecXmlError("xmlStrPrintf", NULL);
-            xmlFree(curve);
-            xmlUnlinkNode(cur);
-            xmlFreeNode(cur);
-            return(-1);
-        }
         if(xmlSetProp(cur, xmlSecAttrURI, curve) == NULL) {
             xmlSecXmlError2("xmlSetProp", NULL, "name=%s", xmlSecErrorsSafeString(xmlSecAttrURI));
-            xmlFree(curve);
             xmlUnlinkNode(cur);
             xmlFreeNode(cur);
+            xmlFree(curve);
             return(-1);
         }
+
         xmlFree(curve);
     } else {
         if(xmlSetProp(cur, xmlSecAttrURI, data->curve) == NULL) {

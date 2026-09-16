@@ -650,7 +650,6 @@ xmlSecOpenSSLGenerateRandomBytes(xmlSecByte* buffer, xmlSecSize size) {
 
     /* done */
     return(0);
-
 }
 
 #endif /* XMLSEC_OPENSSL_API_300 */
@@ -692,7 +691,7 @@ xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
  * @param line the error location line number (__LINE__ macro).
  * @param func the error location function name (__FUNCTION__ macro).
  * @param errorObject the specific error object
- * @param errorSubject the error specific error subject.
+ * @param errorSubject the specific error subject.
  * @param reason the error code.
  * @param msg the additional error message.
  *
@@ -788,7 +787,7 @@ xmlSecOpenSSLSetDefaultTrustedCertsFolder(const xmlChar* path) {
 
 /**
  * @brief Gets the default trusted certs folder.
- * @return the default trusted cert folder.
+ * @return the default trusted certs folder.
  */
 const xmlChar*
 xmlSecOpenSSLGetDefaultTrustedCertsFolder(void) {

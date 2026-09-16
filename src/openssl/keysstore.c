@@ -55,7 +55,7 @@ static xmlSecKeyStoreKlass xmlSecOpenSSLKeysStoreKlass = {
     xmlSecOpenSSLKeysStoreInitialize,           /* xmlSecKeyStoreInitializeMethod initialize; */
     xmlSecOpenSSLKeysStoreFinalize,             /* xmlSecKeyStoreFinalizeMethod finalize; */
     xmlSecOpenSSLKeysStoreFindKey,              /* xmlSecKeyStoreFindKeyMethod findKey; */
-    xmlSecOpenSSLKeysStoreFindKeyFromX509Data, /* xmlSecKeyStoreFindKeyFromX509DataMethod findKeyFromX509Data; */
+    xmlSecOpenSSLKeysStoreFindKeyFromX509Data,  /* xmlSecKeyStoreFindKeyFromX509DataMethod findKeyFromX509Data; */
 
     /* reserved for the future */
     NULL,                                   /* void* reserved0; */

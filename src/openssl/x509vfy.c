@@ -376,7 +376,7 @@ xmlSecOpenSSLX509StoreVerifyAndCopyCrls(X509_STORE* xst, X509_STORE_CTX* xsc, ST
             /* crl failed verification */
             continue;
         }
-        /* don'tduplicate or up_ref the crl since we own
+        /* don't duplicate or up_ref the crl since we own
          * pointer to it */
         num2 = sk_X509_CRL_push(verified_crls, crl);
         if(num2 <= 0) {
@@ -537,7 +537,13 @@ xmlSecOpenSSLX509StoreFindBestCrl(XMLSEC_OPENSSL400_CONST X509_NAME *cert_issuer
         }
 
         /* is this CRL from same issuer? */
-        if(xmlSecOpenSSLX509NamesCompare(crl_issuer, cert_issuer) != 0) {
+        ret = xmlSecOpenSSLX509NamesCompare(crl_issuer, cert_issuer);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecOpenSSLX509NamesCompare", NULL);
+            return(-1);
+        }
+        if(ret != 0) {
+            /* not the same issuer */
             continue;
         }
 
@@ -681,10 +687,6 @@ xmlSecOpenSSLX509StoreSetCtx(X509_STORE_CTX* xsc, xmlSecKeyInfoCtx* keyInfoCtx) 
     xmlSecAssert2(xsc != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    if(keyInfoCtx->certsVerificationTime > 0) {
-        X509_STORE_CTX_set_time(xsc, 0, keyInfoCtx->certsVerificationTime);
-    }
-
     /* set verification params: we verify CRLs manually because OpenSSL fails cert verification if there is no CRL */
     vpm = X509_VERIFY_PARAM_new();
     if(vpm == NULL) {
@@ -725,7 +727,7 @@ xmlSecOpenSSLX509StoreVerifyCert(X509_STORE* xst, X509_STORE_CTX* xsc, X509* cer
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    /* init contenxt and set verification params from keyinfo ctx*/
+    /* init context and set verification params from keyinfo ctx*/
     ret = X509_STORE_CTX_init(xsc, xst, cert, untrusted);
     if(ret != 1) {
         xmlSecOpenSSLError("X509_STORE_CTX_init", NULL);
@@ -923,7 +925,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs,
     /* reuse xsc for both crls and certs verification */
     xsc = X509_STORE_CTX_new_ex(xmlSecOpenSSLGetLibCtx(), NULL);
     if(xsc == NULL) {
-        xmlSecOpenSSLError("X509_STORE_CTX_new", xmlSecKeyDataStoreGetName(store));
+        xmlSecOpenSSLError("X509_STORE_CTX_new_ex", xmlSecKeyDataStoreGetName(store));
         goto done;
     }
 
@@ -1016,7 +1018,7 @@ done:
 }
 
 /**
- * @brief Verifies @p key with the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * @brief Verifies @p key with the keys manager @p mngr created with #xmlSecOpenSSLAppDefaultKeysMngrInit
  * @param store the pointer to X509 key data store klass.
  * @param key the pointer to key.
  * @param keyInfoCtx the key info context for verification.
@@ -1025,7 +1027,7 @@ done:
  * - Checks that key certificate is present
  * - Checks that key certificate is valid
  *
- * Adds @p key to the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * Adds @p key to the keys manager @p mngr created with #xmlSecOpenSSLAppDefaultKeysMngrInit
  * function.
  *
  * @return 1 if key is verified, 0 otherwise, or a negative value if an error occurs.
@@ -1078,7 +1080,7 @@ xmlSecOpenSSLX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, x
     /* reuse xsc for both crls and certs verification */
     xsc = X509_STORE_CTX_new_ex(xmlSecOpenSSLGetLibCtx(), NULL);
     if(xsc == NULL) {
-        xmlSecOpenSSLError("X509_STORE_CTX_new", xmlSecKeyDataStoreGetName(store));
+        xmlSecOpenSSLError("X509_STORE_CTX_new_ex", xmlSecKeyDataStoreGetName(store));
         goto done;
     }
 
@@ -1171,7 +1173,7 @@ xmlSecOpenSSLX509StoreVerifyCrl(xmlSecKeyDataStorePtr store, X509_CRL* crl,
     /* Create store context */
     xsc = X509_STORE_CTX_new_ex(xmlSecOpenSSLGetLibCtx(), NULL);
     if(xsc == NULL) {
-        xmlSecOpenSSLError("X509_STORE_CTX_new", xmlSecKeyDataStoreGetName(store));
+        xmlSecOpenSSLError("X509_STORE_CTX_new_ex", xmlSecKeyDataStoreGetName(store));
         goto done;
     }
 
@@ -1366,7 +1368,7 @@ xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {
 
     ret = X509_STORE_set_default_paths_ex(ctx->xst, xmlSecOpenSSLGetLibCtx(), NULL);
     if(ret != 1) {
-        xmlSecOpenSSLError("X509_STORE_set_default_paths",
+        xmlSecOpenSSLError("X509_STORE_set_default_paths_ex",
                            xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
@@ -2312,7 +2314,7 @@ xmlSecOpenSSLX509NameRead(const xmlChar *str) {
         return(NULL);
     }
 
-    /* succcess */
+    /* success */
     return(nm);
 }
 

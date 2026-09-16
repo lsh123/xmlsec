@@ -411,7 +411,7 @@ xmlSecOpenSSLRsaPkcs1Execute(xmlSecTransformPtr transform, int last,
 
     if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
         /* just do nothing */
-    } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
+    } else if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
         ret = xmlSecOpenSSLRsaPkcs1Process(transform);
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLRsaPkcs1Process",
@@ -464,7 +464,7 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-    /* the encoded size is equal to the keys size so we could not
+    /* the encoded size is equal to the key size so we could not
      * process more than that */
     if((encrypt != 0) && (inSize >= ctx->keySize)) {
         xmlSecInvalidSizeLessThanError("Input data", inSize, ctx->keySize,
@@ -760,13 +760,13 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
 
         /*
          * the private decrypt w/o padding adds '0's at the beginning.
-         * it's not clear for me can I simply skip all '0's from the
-          * beginning so I have to do decode it back to BIGNUM and dump
+         * it's not clear to me if I can simply skip all '0's from the
+         * beginning so I have to decode it back to BIGNUM and dump
          * buffer again
          */
         bn = BN_new();
         if(bn == NULL) {
-            xmlSecOpenSSLError("BN_new()", NULL);
+            xmlSecOpenSSLError("BN_new", NULL);
             return(-1);
         }
 
@@ -791,7 +791,7 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
             oaepLabel, oaepLabelLen,
             ctx->md, ctx->mgf1md);
         if(ret < 0) {
-            xmlSecOpenSSLError("RSA_padding_check_PKCS1_OAEP_mgf1",  NULL);
+            xmlSecOpenSSLError("RSA_padding_check_PKCS1_OAEP_mgf1", NULL);
             return(-1);
         }
 
@@ -848,7 +848,7 @@ xmlSecOpenSSLRsaOaepSetKeyImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, EVP_PKEY* pKey,
 
     ret = EVP_PKEY_CTX_set_rsa_padding(ctx->pKeyCtx, RSA_PKCS1_OAEP_PADDING);
     if (ret <= 0) {
-         xmlSecOpenSSLError("EVP_PKEY_CTX_set_rsa_padding", NULL);
+        xmlSecOpenSSLError("EVP_PKEY_CTX_set_rsa_padding", NULL);
         EVP_PKEY_CTX_free(ctx->pKeyCtx);
         ctx->pKeyCtx = NULL;
         return(-1);
@@ -1276,7 +1276,7 @@ xmlSecOpenSSLRsaOaepExecute(xmlSecTransformPtr transform, int last,
 
     if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
         /* just do nothing */
-    } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
+    } else if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
         ret = xmlSecOpenSSLRsaOaepProcess(transform);
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLRsaOaepProcess",
@@ -1317,7 +1317,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform) {
     outSize = xmlSecBufferGetSize(out);
     xmlSecAssert2(outSize == 0, -1);
 
-    /* the encoded size is equal to the keys size so we could not
+    /* the encoded size is equal to the key size so we could not
      * process more than that */
     if (transform->operation == xmlSecTransformOperationEncrypt) {
         encrypt = 1;

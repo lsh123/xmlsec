@@ -36,11 +36,10 @@
 
 #include "../cast_helpers.h"
 #include "../transform_helpers.h"
-#include "openssl_compat.h"
 #include "private.h"
 
 /*
- * The ECDSA signature were added to EVP interface in 3.0.0
+ * The ECDSA signature was added to EVP interface in 3.0.0
  * https://www.openssl.org/docs/manmaster/man7/EVP_SIGNATURE-ECDSA.html
  *
  * OpenSSL 1.1.x implementation is in src/openssl/signatures_legacy.c
@@ -550,8 +549,9 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaSha1Id)) {
         XMLSEC_OPENSSL_EVP_SIGNATURE_SET_DIGEST(transform, ctx, EVP_sha1(), OSSL_DIGEST_NAME_SHA1);
-        ctx->keyId      = xmlSecOpenSSLKeyDataRsaId;
-        ctx->rsaPadding = RSA_PKCS1_PADDING;
+        ctx->keyId           = xmlSecOpenSSLKeyDataRsaId;
+        ctx->signatureFormat = xmlSecOpenSSLEvpSignatureFormat_DoNothing;
+        ctx->rsaPadding      = RSA_PKCS1_PADDING;
     } else
 #endif /* XMLSEC_NO_SHA1 */
 
@@ -778,7 +778,7 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
      *
       *****************************************************************************/
 #ifndef XMLSEC_NO_MLDSA
-    /* ML-DSA uses hard coded  SHAKE-128 and SHAKE-256 so no need to have digest here */
+    /* ML-DSA uses hard coded SHAKE-128 and SHAKE-256 so no need to have digest here */
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformMLDSA44Id)) {
         ctx->keyId           = xmlSecOpenSSLKeyDataMLDSAId;
         ctx->signatureFormat = xmlSecOpenSSLEvpSignatureFormat_DoNothing;
@@ -1350,7 +1350,7 @@ xmlSecOpenSSLEvpSignatureSign(xmlSecTransformPtr transform, xmlSecTransformCtxPt
 
     case xmlSecOpenSSLEvpSignatureFormat_Dsa:
 #ifndef XMLSEC_NO_DSA
-        /* convert XMLDSig data to the format expected by OpenSSL */
+        /* convert OpenSSL data to the format expected by XMLDSig */
         ret =  xmlSecOpenSSLEvpSignatureDsa_OpenSSL2XmlDSig(transform->id, out);
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLEvpSignatureDsa_OpenSSL2XmlDSig", xmlSecTransformGetName(transform));
@@ -1364,7 +1364,7 @@ xmlSecOpenSSLEvpSignatureSign(xmlSecTransformPtr transform, xmlSecTransformCtxPt
 
     case xmlSecOpenSSLEvpSignatureFormat_Ecdsa:
 #ifndef XMLSEC_NO_EC
-        /* convert XMLDSig data to the format expected by OpenSSL */
+        /* convert OpenSSL data to the format expected by XMLDSig */
         ret =  xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig(transformCtx, ctx->keySizeBits, out);
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig", xmlSecTransformGetName(transform));
@@ -1833,7 +1833,7 @@ xmlSecOpenSSLTransformRsaPssSha3_512GetKlass(void) {
  * DSA EVP
  *
  * https://www.w3.org/TR/xmldsig-core1/#sec-DSA
- * The output of the DSA algorithm consists of a pair of integers usually referred by the pair (r, s).
+ * The output of the DSA algorithm consists of a pair of integers usually referred to as the pair (r, s).
  * DSA-SHA1: Integer to octet-stream conversion must be done according to the I2OSP operation defined
  *           in the RFC 3447 [PKCS1] specification with a l parameter equal to 20
  * DSA-SHA256: The pairs (2048, 256) and (3072, 256) correspond to the algorithm DSAwithSHA256
@@ -2092,7 +2092,7 @@ xmlSecOpenSSLTransformDsaSha256GetKlass(void) {
  * https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA
  *
  * The output of the ECDSA algorithm consists of a pair of integers usually
- * referred by the pair (r, s). The signature value consists of the base64
+ * referred to as the pair (r, s). The signature value consists of the base64
  * encoding of the concatenation of two octet-streams that respectively result
  * from the octet-encoding of the values r and s in that order. Integer to
  * octet-stream conversion must be done according to the I2OSP operation defined

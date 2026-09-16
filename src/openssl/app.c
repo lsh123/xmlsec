@@ -30,7 +30,7 @@
 
 #include "openssl_compat.h"
 
-/* Windows overwrites X509_NAME and other things that break openssl */
+/* Windows overrides X509_NAME and other things that break openssl */
 #include <openssl/evp.h>
 #include <openssl/rand.h>
 #include <openssl/pem.h>
@@ -480,7 +480,7 @@ xmlSecOpenSSLAppKeyLoadBIO(
             XMLSEC_OPENSSL_POP_LIB_CTX();
         }
         if(pKey == NULL) {
-            xmlSecOpenSSLError("d2i_PrivateKey_bio and d2i_PUBKEY_bio", NULL);
+            xmlSecOpenSSLError("d2i_PrivateKey_ex_bio and d2i_PUBKEY_bio", NULL);
             return(NULL);
         }
         break;
@@ -1431,7 +1431,7 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
      * corresponding certificate to "*cert" and any additional certificates
      * to "*ca".
      *
-     * In reality, the function sometime returns in the "ca" the certificates
+     * In reality, the function sometimes returns in the "ca" the certificates
      * including the one it is already returned in "cert". We will sort this out
      * in the xmlSecOpenSSLKeyDataX509AdoptKeyCert() and xmlSecOpenSSLKeyDataX509AdoptCert()
      * functions.
@@ -2033,12 +2033,12 @@ xmlSecOpenSSLAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key
 
 /**
  * @brief Verifies @p key using the keys manager.
- * @details Verifies @p key with the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * @details Verifies @p key with the keys manager @p mngr created with #xmlSecOpenSSLAppDefaultKeysMngrInit
  * function:
  * - Checks that key certificate is present
  * - Checks that key certificate is valid
  *
- * Adds @p key to the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * Adds @p key to the keys manager @p mngr created with #xmlSecOpenSSLAppDefaultKeysMngrInit
  * function.
  *
  * @param mngr the pointer to keys manager.

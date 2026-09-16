@@ -25,7 +25,6 @@
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/x509.h>
-#include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
 #include <openssl/pem.h>
 #include <xmlsec/private.h>
@@ -44,7 +43,7 @@
 
 #if defined(OPENSSL_IS_BORINGSSL) || defined(OPENSSL_IS_AWSLC)
 #include <openssl/mem.h>
-#endif /* OPENSSL_IS_BORINGSSL */
+#endif /* OPENSSL_IS_BORINGSSL || OPENSSL_IS_AWSLC */
 
 #include "../cast_helpers.h"
 #include "../x509_helpers.h"
@@ -65,7 +64,7 @@ static int              xmlSecOpenSSLVerifyAndAdoptX509KeyData  (xmlSecKeyPtr ke
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
 static X509*            xmlSecOpenSSLX509CertDerRead            (const xmlSecByte* buf,
                                                                  xmlSecSize size);
-static X509_CRL*        xmlSecOpenSSLX509CrlDerRead             (xmlSecByte* buf,
+static X509_CRL*        xmlSecOpenSSLX509CrlDerRead             (const xmlSecByte* buf,
                                                                  xmlSecSize size);
 static void             xmlSecOpenSSLX509CertDebugDump          (X509* cert,
                                                                  FILE* output);
@@ -291,7 +290,7 @@ xmlSecOpenSSLKeyDataX509AdoptCert(xmlSecKeyDataPtr data, X509* cert) {
     ctx = xmlSecOpenSSLX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
-    /* pkcs12 files sometime have key cert twice: as the key cert and as the cert in the chain,
+    /* pkcs12 files sometimes have key cert twice: as the key cert and as the cert in the chain,
      * if this ever change -- fix xmlSecOpenSSLCreateKey that relies on this check */
     if((ctx->keyCert != NULL) && ((ctx->keyCert == cert) || (X509_cmp(ctx->keyCert, cert) == 0))) {
         X509_free(cert); /* caller expects data to own the cert on success. */
@@ -656,7 +655,7 @@ xmlSecOpenSSLKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr
         xmlSecKeyDataDestroy(data);
         return(0);
     }
-    data = NULL; /* owned by data now */
+    data = NULL; /* owned by key now */
 
     /* success */
     return(0);
@@ -1471,7 +1470,7 @@ xmlSecOpenSSLX509Asn1TimeToTime(const ASN1_TIME * t, time_t * res) {
     } else {
         xmlSecAssert2(t->length > 14, -1);
 
-        tm.tm_year = g2(t->data) * 100 + g2(t->data + 2);
+        tm.tm_year = g2(t->data) * 100 + g2(t->data + 2) - 1900;
         tm.tm_mon  = g2(t->data + 4) - 1;
         tm.tm_mday = g2(t->data + 6);
         tm.tm_hour = g2(t->data + 8);
@@ -1767,7 +1766,7 @@ done:
 }
 
 static X509_CRL*
-xmlSecOpenSSLX509CrlDerRead(xmlSecByte* buf, xmlSecSize size) {
+xmlSecOpenSSLX509CrlDerRead(const xmlSecByte* buf, xmlSecSize size) {
     X509_CRL *crl = NULL;
     X509_CRL *res = NULL;
     BIO *bio = NULL;
@@ -1994,7 +1993,7 @@ xmlSecOpenSSLKeyDataRawX509CertBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         xmlSecKeyDataDestroy(data);
         return(0);
     }
-    data = NULL; /* owned by data now */
+    data = NULL; /* owned by key now */
 
     /* success */
     return(0);

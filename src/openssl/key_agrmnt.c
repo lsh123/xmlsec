@@ -258,7 +258,7 @@ xmlSecOpenSSLKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecT
         }
         secret.flags |= XMLSEC_BUFFER_FLAG_SECURE;
 
-        /* Step 1: derive shared secret (keyOriginator required) */
+        /* Step 1: derive shared secret */
         kamKeyData = xmlSecTransformCtxExtraKeyDataGet(transformCtx, xmlSecKeyDataKAMId);
         if(kamKeyData == NULL) {
             xmlSecInternalError("xmlSecTransformCtxExtraKeyDataGet", xmlSecTransformGetName(transform));
@@ -275,7 +275,7 @@ xmlSecOpenSSLKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecT
             return(-1);
         }
 
-        /* step 2: generate key with kdf from secret */
+        /* Step 2: generate key with KDF from secret */
         ret = xmlSecTransformKAMExecuteKdf(&(ctx->params), transform->operation, &secret, out,
             transform->expectedOutputSize, transformCtx);
         if(ret < 0) {
@@ -433,7 +433,7 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
         goto done;
     }
 
-    /* set the size */
+    /* set the size again just in case */
     ret = xmlSecBufferSetSize(secret, secretSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, secretSize);

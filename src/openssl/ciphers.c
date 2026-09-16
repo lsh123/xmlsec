@@ -31,9 +31,9 @@
 #include "../keysdata_helpers.h"
 #include "../transform_helpers.h"
 
-#define XMLSEC_OPENSSL_EVP_CIPHER_PAD_SIZE    (2 * EVP_MAX_BLOCK_LENGTH)
-#define XMLSEC_OPENSSL_AES_GCM_NONCE_SIZE     12
-#define XMLSEC_OPENSSL_AES_GCM_TAG_SIZE       16
+#define XMLSEC_OPENSSL_EVP_CIPHER_PAD_SIZE  (2 * EVP_MAX_BLOCK_LENGTH)
+#define XMLSEC_OPENSSL_GCM_TAG_SIZE         16
+#define XMLSEC_OPENSSL_AES_GCM_NONCE_SIZE   12
 
 
 /******************************************************************************
@@ -120,7 +120,7 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
             /* generate random iv */
             ret = xmlSecOpenSSLGenerateRandomBytes(ctx->iv + ctx->ivRandomOffset, ivSize - ctx->ivRandomOffset);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecOpenSSLGenerateRandom", cipherName);
+                xmlSecInternalError("xmlSecOpenSSLGenerateRandomBytes", cipherName);
                 return(-1);
             }
 
@@ -280,7 +280,7 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
             xmlSecAssert2(tagData != NULL, -1);
             if(!EVP_CIPHER_CTX_encrypting(ctx->cipherCtx)) {
                 ret = EVP_CIPHER_CTX_ctrl(ctx->cipherCtx, EVP_CTRL_GCM_SET_TAG,
-                    XMLSEC_OPENSSL_AES_GCM_TAG_SIZE, tagData);
+                    XMLSEC_OPENSSL_GCM_TAG_SIZE, tagData);
                 if(ret != 1) {
                     xmlSecOpenSSLError("EVP_CIPHER_CTX_ctrl", cipherName);
                     return(-1);
@@ -298,7 +298,7 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
             xmlSecAssert2(tagData != NULL, -1);
             if(EVP_CIPHER_CTX_encrypting(ctx->cipherCtx)) {
                 ret = EVP_CIPHER_CTX_ctrl(ctx->cipherCtx, EVP_CTRL_GCM_GET_TAG,
-                    XMLSEC_OPENSSL_AES_GCM_TAG_SIZE, tagData);
+                    XMLSEC_OPENSSL_GCM_TAG_SIZE, tagData);
                 if(ret != 1) {
                     xmlSecOpenSSLError("EVP_CIPHER_CTX_ctrl", cipherName);
                     return(-1);
@@ -364,7 +364,7 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdate(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         }
     } else {
         /* GCM mode: we want to keep the last bytes in input until the Final() call to verify the tag */
-        if(inSize <= XMLSEC_OPENSSL_AES_GCM_TAG_SIZE) {
+        if(inSize <= XMLSEC_OPENSSL_GCM_TAG_SIZE) {
             /* In GCM mode during decryption the last 16 bytes of the buffer are the tag.
              * Make sure there are always at least 16 bytes left over until we know we're
              * processing the last buffer */
@@ -372,7 +372,7 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdate(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         }
 
         /* ensure we keep the last 16 bytes around until the Final() call */
-        inBlocksSize = blockSize * ((inSize - XMLSEC_OPENSSL_AES_GCM_TAG_SIZE) / blockSize);
+        inBlocksSize = blockSize * ((inSize - XMLSEC_OPENSSL_GCM_TAG_SIZE) / blockSize);
     }
     if(inBlocksSize == 0) {
         return(0);
@@ -510,7 +510,7 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
             XMLSEC_OPENSSL_SAFE_CAST_UINT_TO_SIZE(padLen, size, return(-1), NULL);
             ret = xmlSecOpenSSLGenerateRandomBytes(ctx->pad + inLen, size - 1);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecOpenSSLGenerateRandom", cipherName);
+                xmlSecInternalError("xmlSecOpenSSLGenerateRandomBytes", cipherName);
                 return(-1);
             }
         }
@@ -529,7 +529,7 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     } else {
         xmlSecSize padSize;
 
-        /* update the last one block with padding */
+        /* update the last block with padding */
         ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, inBuf, inSize, out, cipherName, 1, NULL); /* final */
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock", cipherName);
@@ -584,7 +584,7 @@ xmlSecOpenSSLEvpBlockCipherGCMCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     xmlSecSize inSize, outSize;
     xmlSecByte* inBuf;
     xmlSecByte* outBuf;
-    xmlSecByte tag[XMLSEC_OPENSSL_AES_GCM_TAG_SIZE];
+    xmlSecByte tag[XMLSEC_OPENSSL_GCM_TAG_SIZE];
     int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
@@ -608,25 +608,25 @@ xmlSecOpenSSLEvpBlockCipherGCMCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 
         /* get the tag and add to the output */
         outSize = xmlSecBufferGetSize(out);
-        ret = xmlSecBufferSetMaxSize(out, outSize + XMLSEC_OPENSSL_AES_GCM_TAG_SIZE);
+        ret = xmlSecBufferSetMaxSize(out, outSize + XMLSEC_OPENSSL_GCM_TAG_SIZE);
         if(ret < 0) {
             xmlSecInternalError("xmlSecBufferSetMaxSize", cipherName);
             return(-1);
         }
         outBuf = xmlSecBufferGetData(out) + outSize;
-        memcpy(outBuf, tag, XMLSEC_OPENSSL_AES_GCM_TAG_SIZE);
-        ret = xmlSecBufferSetSize(out, outSize + XMLSEC_OPENSSL_AES_GCM_TAG_SIZE);
+        memcpy(outBuf, tag, XMLSEC_OPENSSL_GCM_TAG_SIZE);
+        ret = xmlSecBufferSetSize(out, outSize + XMLSEC_OPENSSL_GCM_TAG_SIZE);
         if(ret < 0) {
             xmlSecInternalError("xmlSecBufferSetSize", cipherName);
             return(-1);
         }
     } else {
         /* There must be at least 16 bytes in the buffer - the tag and anything left over */
-        xmlSecAssert2(inSize >= XMLSEC_OPENSSL_AES_GCM_TAG_SIZE, -1);
+        xmlSecAssert2(inSize >= XMLSEC_OPENSSL_GCM_TAG_SIZE, -1);
 
         /* extract the tag */
-        memcpy(tag, inBuf + inSize - XMLSEC_OPENSSL_AES_GCM_TAG_SIZE, XMLSEC_OPENSSL_AES_GCM_TAG_SIZE);
-        ret = xmlSecBufferRemoveTail(in, XMLSEC_OPENSSL_AES_GCM_TAG_SIZE);
+        memcpy(tag, inBuf + inSize - XMLSEC_OPENSSL_GCM_TAG_SIZE, XMLSEC_OPENSSL_GCM_TAG_SIZE);
+        ret = xmlSecBufferRemoveTail(in, XMLSEC_OPENSSL_GCM_TAG_SIZE);
         if(ret < 0) {
             xmlSecInternalError("xmlSecBufferRemoveTail", cipherName);
             return(-1);

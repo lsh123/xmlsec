@@ -533,7 +533,7 @@ xmlSecOpenSSLConcatKdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
         goto done;
     }
 
-    /* set fixedinfo from params and save in the context, params just holds a pointer  */
+    /* set fixedinfo from params and save in the context, params just holds a pointer */
     ret = xmlSecTransformConcatKdfParamsGetFixedInfo(&params, &(ctx->buffer));
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformConcatKdfParamsGetFixedInfo", xmlSecTransformGetName(transform));
@@ -707,7 +707,7 @@ xmlSecOpenSSLPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
     ret = xmlSecTransformPbkdf2ParamsInitialize(&params);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformPbkdf2ParamsInitialize", NULL);
+        xmlSecInternalError("xmlSecTransformPbkdf2ParamsInitialize", xmlSecTransformGetName(transform));
         goto done;
     }
     paramsInitialized = 1;
@@ -720,8 +720,8 @@ xmlSecOpenSSLPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     }
     ret = xmlSecTransformPbkdf2ParamsRead(&params, cur);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformPbkdf2ParamsRead", NULL);
-       goto done;
+        xmlSecInternalError("xmlSecTransformPbkdf2ParamsRead", xmlSecTransformGetName(transform));
+        goto done;
     }
 
     /* if we have something else then it's an error */
@@ -904,7 +904,7 @@ xmlSecOpenSSLHkdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
     ret = xmlSecTransformHkdfParamsInitialize(&params);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformHkdfParamsInitialize", NULL);
+        xmlSecInternalError("xmlSecTransformHkdfParamsInitialize", xmlSecTransformGetName(transform));
         goto done;
     }
     paramsInitialized = 1;
@@ -917,14 +917,7 @@ xmlSecOpenSSLHkdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     }
     ret = xmlSecTransformHkdfParamsRead(&params, cur);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformHkdfParamsRead", NULL);
-        goto done;
-    }
-
-    /* set PRF digest (required) */
-    ret = xmlSecOpenSSLHkdfSetDigestNameFromHref(ctx, params.prfAlgorithmHref);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLHkdfSetDigestNameFromHref", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecTransformHkdfParamsRead", xmlSecTransformGetName(transform));
         goto done;
     }
 
@@ -932,6 +925,13 @@ xmlSecOpenSSLHkdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     cur = xmlSecGetNextElementNode(cur->next);
     if(cur != NULL) {
         xmlSecUnexpectedNodeError(cur, NULL);
+        goto done;
+    }
+
+    /* set PRF digest (required) */
+    ret = xmlSecOpenSSLHkdfSetDigestNameFromHref(ctx, params.prfAlgorithmHref);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLHkdfSetDigestNameFromHref", xmlSecTransformGetName(transform));
         goto done;
     }
 

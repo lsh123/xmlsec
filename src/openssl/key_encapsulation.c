@@ -257,15 +257,11 @@ xmlSecOpenSSLMLKEMWriteNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSe
 static int
 xmlSecOpenSSLMLKEMExecute(xmlSecTransformPtr transform, int last,
                           xmlSecTransformCtxPtr transformCtx) {
-    xmlSecOpenSSLMLKEMCtxPtr ctx;
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLMLKEMSize), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) ||
                   (transform->operation == xmlSecTransformOperationDecrypt), -1);
-
-    ctx = xmlSecOpenSSLMLKEMGetCtx(transform);
-    xmlSecAssert2(ctx != NULL, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
         transform->status = xmlSecTransformStatusWorking;

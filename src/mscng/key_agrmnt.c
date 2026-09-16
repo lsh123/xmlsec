@@ -377,7 +377,6 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
     DWORD dwSecretLen = 0;
     xmlSecByte * secretData;
     xmlSecSize secretSize;
-    xmlSecByte* start, * end;
     NTSTATUS status;
     int ret;
     int res = -1;
@@ -491,21 +490,15 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
                 goto done;
             }
 
-            /* CNG returns the raw shared secret in a byte order that differs from the
-             * standard representation ConcatKDF / other backends expect, so reverse it
-             * to produce Z. This applies to all key-agreement types (DH/ECDH/X25519)
-             * and is verified by the X25519 round-trip test. */
-            {
-                xmlSecByte* pStart = secretData;
-                xmlSecByte* pEnd = secretData + secretSize - 1;
-                while(pStart < pEnd) {
-                    xmlSecByte tmp = *pStart;
-                    *pStart = *pEnd;
-                    *pEnd = tmp;
-                    pStart++;
-                    pEnd--;
-                }
-            }
+            /* CNG returns the raw shared secret as the byte-reverse of the standard
+             * wire format, so reverse it to produce Z in the standard representation
+             * that ConcatKDF / other backends expect. This applies to all key-agreement
+             * types (DH/ECDH/X25519): for X25519 BCryptDeriveKey(BCRYPT_KDF_RAW_SECRET)
+             * returns big-endian (byte-reverse of the little-endian RFC 7748/8410 wire
+             * format), and for DH it returns little-endian (byte-reverse of the
+             * big-endian wire format). Verified with known-answer tests against the
+             * Python cryptography library. */
+            xmlSecMSCngReverseBytes(secretData, dwBCryptSecretLen);
 
             res = 0;
             goto done;
@@ -516,13 +509,13 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
     hMyPrivKey = xmlSecMSCngKeyDataGetPrivkey(myKeyValue);
     if (hMyPrivKey == 0) {
         xmlSecInternalError("xmlSecMSCngKeyDataGetPrivkey", NULL);
-        return(-1);
+        goto done;
     }
     /* pubkey is BCRYPT handle, we need to convert it to NCRYPT handle */
     hOtherPubKey = xmlSecMSCngKeyAgreementGetPublicKey(ctx, otherKeyValue, hMyPrivKey);
     if (hOtherPubKey == 0) {
         xmlSecInternalError("xmlSecMSCngKeyAgreementGetPublicKey", NULL);
-        return(-1);
+        goto done;
     }
 
     status = NCryptSecretAgreement(hMyPrivKey, hOtherPubKey, &hSecret, NCRYPT_SILENT_FLAG);
@@ -579,17 +572,13 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
         goto done;
     }
 
-    /* the raw secret comes back in CNG's native byte order; swap it to the standard
-     * representation ConcatKDF / other backends expect (required for all key types). */
-    start = secretData;
-    end = secretData + dwSecretLen - 1;
-    while (start < end) {
-        xmlSecByte tmp = *end;
-        *end = *start;
-        *start = tmp;
-        start++;
-        end--;
-    }
+    /* the raw secret comes back as the byte-reverse of the standard wire format
+     * (CNG's native byte order); swap it to the standard representation ConcatKDF /
+     * other backends expect. This is required for all key types: for X25519 CNG
+     * returns big-endian (byte-reverse of the little-endian RFC 7748/8410 wire format)
+     * and for DH it returns little-endian (byte-reverse of the big-endian wire format).
+     * Verified with known-answer tests against the Python cryptography library. */
+    xmlSecMSCngReverseBytes(secretData, dwSecretLen);
 
     /* success */
     res = 0;

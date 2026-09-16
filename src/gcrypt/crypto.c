@@ -292,7 +292,7 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
     gXmlSecGCryptFunctions->cryptoAppKeyCertLoad                = xmlSecGCryptAppKeyCertLoad;
 #endif /* XMLSEC_NO_X509 */
     gXmlSecGCryptFunctions->cryptoAppKeyLoadEx                  = xmlSecGCryptAppKeyLoadEx;
-    gXmlSecGCryptFunctions->cryptoAppDefaultPwdCallback         = (void*)xmlSecGCryptAppGetDefaultPwdCallback();
+    gXmlSecGCryptFunctions->cryptoAppDefaultPwdCallback         = xmlSecGCryptAppGetDefaultPwdCallback();
 
     return(gXmlSecGCryptFunctions);
 }

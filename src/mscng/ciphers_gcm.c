@@ -261,6 +261,7 @@ xmlSecMSCngGcmBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
     keyData = xmlSecBufferGetData(keyBuffer);
     xmlSecAssert2(keyData != NULL, -1);
 
+    /* the key buffer can be longer if it came from ConcatKDF for example */
     if(xmlSecBufferGetSize(keyBuffer) < ctx->keySize) {
         xmlSecInvalidKeyDataSizeError(xmlSecBufferGetSize(keyBuffer), ctx->keySize, xmlSecTransformGetName(transform));
         goto done;
@@ -420,6 +421,7 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
         xmlSecMSCngNtError("BCryptGetProperty", cipherName, status);
         return(-1);
     }
+    xmlSecAssert2(bytesRead == sizeof(authTagLengths), -1);
 
     if (ctx->authInfo.pbMacContext == NULL) {
         ctx->authInfo.pbMacContext = xmlMalloc(authTagLengths.dwMaxLength);
@@ -502,13 +504,13 @@ xmlSecMSCngGcmBlockCipherCtxUpdate(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
-    inBuf = xmlSecBufferGetData(in);
-    xmlSecAssert2(inBuf != NULL, -1);
-
     XMLSEC_SAFE_CAST_ULONG_TO_SIZE(ctx->dwBlockLen, blockSize, return(-1), cipherName);
     if(xmlSecBufferGetSize(in) < blockSize) {
         return 0;
     }
+
+    inBuf = xmlSecBufferGetData(in);
+    xmlSecAssert2(inBuf != NULL, -1);
 
     if(encrypt) {
         /* Round to the block size. We will finalize this later */
@@ -617,6 +619,7 @@ xmlSecMSCngGcmBlockCipherCtxFinal(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
     DWORD dwInSize, dwOutSize, dwCLen;
     NTSTATUS status;
     int ret;
+    static xmlSecByte dummy = 0;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->ctxInitialized != 0, -1);
@@ -645,6 +648,9 @@ xmlSecMSCngGcmBlockCipherCtxFinal(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
         XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inBufSize, dwInSize, return(-1), cipherName);
         outBuf = xmlSecBufferGetData(out) + outBufSize;
         dwOutSize = dwInSize;
+        if((dwInSize == 0) && (inBuf == NULL)) {
+            inBuf = &dummy;
+        }
 
         status = BCryptEncrypt(ctx->hKey,
             inBuf,
@@ -704,6 +710,9 @@ xmlSecMSCngGcmBlockCipherCtxFinal(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
         XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inBufSize, dwInSize, return(-1), cipherName);
         outBuf = xmlSecBufferGetData(out) + outBufSize;
         dwOutSize = dwInSize;
+        if((dwOutSize == 0) && (outBuf == NULL)) {
+            outBuf = &dummy;
+        }
 
         status = BCryptDecrypt(ctx->hKey,
             inBuf,

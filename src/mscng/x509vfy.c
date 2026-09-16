@@ -675,6 +675,25 @@ struct xmlSecMSCngX509StoreVerifyCertificateChainStep {
     BOOL freeCert;
 };
 #define XMLSEC_MSCNG_X509_STORE_VERIFY_CERTIFICATE_CHAIN_STEP_SIZE 32
+#define XMLSEC_MSCNG_X509_STORE_VERIFY_CERTIFICATE_CHAIN_MAX_DEPTH 1000
+#define XMLSEC_MSCNG_X509_CERT_HASH_SIZE 20
+
+/* Returns the SHA1 hash of @pCert in @pHash. Returns 0 on success, -1 on error. */
+static int
+xmlSecMSCngX509GetCertHash(PCCERT_CONTEXT pCert, BYTE* pHash, DWORD* hashSize) {
+    BOOL ret;
+
+    xmlSecAssert2(pCert != NULL, -1);
+    xmlSecAssert2(pHash != NULL, -1);
+    xmlSecAssert2(hashSize != NULL, -1);
+
+    ret = CertGetCertificateContextProperty(pCert, CERT_HASH_PROP_ID, pHash, hashSize);
+    if((ret == FALSE) || (*hashSize != (DWORD)XMLSEC_MSCNG_X509_CERT_HASH_SIZE)) {
+        xmlSecMSCngLastError("CertGetCertificateContextProperty(CERT_HASH_PROP_ID)", NULL);
+        return(-1);
+    }
+    return(0);
+}
 
 /**
  * @brief Verifies @p cert against the trusted store.
@@ -692,6 +711,10 @@ xmlSecMSCngX509StoreVerifyCertificateChain(PCCERT_CONTEXT cert, FILETIME* time,
 ) {
     struct xmlSecMSCngX509StoreVerifyCertificateChainStep * queue = NULL;
     xmlSecSize queueSize = 0, queueMaxSize = 0;
+    BYTE seenHashes[XMLSEC_MSCNG_X509_STORE_VERIFY_CERTIFICATE_CHAIN_MAX_DEPTH][XMLSEC_MSCNG_X509_CERT_HASH_SIZE];
+    xmlSecSize seenSize = 0;
+    BYTE hash[XMLSEC_MSCNG_X509_CERT_HASH_SIZE];
+    DWORD hashSize;
     PCCERT_CONTEXT currentCert = NULL;
     BOOL freeCurrentCert = FALSE;
     int res = -1;
@@ -715,10 +738,47 @@ xmlSecMSCngX509StoreVerifyCertificateChain(PCCERT_CONTEXT cert, FILETIME* time,
 
     while(queueSize > 0) {
         PCCERT_CONTEXT issuerCert = NULL;
+        xmlSecSize ii;
+        BOOL alreadySeen = FALSE;
 
         currentCert = queue[queueSize - 1].cert;
         freeCurrentCert = queue[queueSize - 1].freeCert;
         --queueSize;
+
+        /* limit the chain depth to avoid excessive work on crafted inputs */
+        if(seenSize >= XMLSEC_MSCNG_X509_STORE_VERIFY_CERTIFICATE_CHAIN_MAX_DEPTH) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL,
+                "certificate chain is too deep");
+            goto done;
+        }
+
+        /* cycle detection: make sure we have not seen this certificate before */
+        hashSize = sizeof(hash);
+        ret = xmlSecMSCngX509GetCertHash(currentCert, hash, &hashSize);
+        if((ret < 0) || (hashSize != XMLSEC_MSCNG_X509_CERT_HASH_SIZE)) {
+            xmlSecInternalError("xmlSecMSCngX509GetCertHash", NULL);
+            goto done;
+        }
+        for(ii = 0; ii < seenSize; ++ii) {
+            if(memcmp(&seenHashes[ii], hash, XMLSEC_MSCNG_X509_CERT_HASH_SIZE) == 0) {
+                alreadySeen = TRUE;
+                break;
+            }
+        }
+        if(alreadySeen) {
+            /* The same certificate can be reached through multiple stores/branches;
+             * we only need to process each cert once. */
+            if(freeCurrentCert == TRUE) {
+                CertFreeCertificateContext(currentCert);
+            }
+            currentCert = NULL;
+            freeCurrentCert = FALSE;
+            continue;
+        }
+
+        /* remember this certificate */
+        memcpy(&seenHashes[seenSize], hash, XMLSEC_MSCNG_X509_CERT_HASH_SIZE);
+        ++seenSize;
 
         /* check certificate itself */
         ret = xmlSecMSCngX509StoreVerifyCertificateItself(currentCert, time, trustedStore, certStore);
@@ -887,7 +947,11 @@ done:
         CertFreeCertificateChain(pChainContext);
     }
     if(chainStore != NULL) {
-        CertCloseStore(chainStore, 0);
+        ret = CertCloseStore(chainStore, 0);
+        if(ret == FALSE) {
+            xmlSecMSCngLastError("CertCloseStore", NULL);
+            /* ignore error */
+        }
     }
     return (res);
 }
@@ -942,6 +1006,10 @@ xmlSecMSCngX509StoreVerifyCertificate(xmlSecMSCngX509StoreCtxPtr ctx, PCCERT_CON
     }
 
     time = xmlSecMSCngX509StoreGetVerificationTime(keyInfoCtx, &timeContainer);
+    if(time == NULL) {
+        /* time checks are skipped only when explicitly requested */
+        xmlSecAssert2((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS) != 0, -1);
+    }
 
     /* check certificate revocation against externally loaded CRLs */
     if(ctx->crlMemStore != NULL) {
@@ -1067,8 +1135,14 @@ xmlSecMSCngX509StoreVerifyCrl(xmlSecKeyDataStorePtr store, PCCRL_CONTEXT crl,
 
     ctx = xmlSecMSCngX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->trusted != NULL, -1);
+    xmlSecAssert2(ctx->untrusted != NULL, -1);
 
     time = xmlSecMSCngX509StoreGetVerificationTime(keyInfoCtx, &timeContainer);
+    if(time == NULL) {
+        /* time checks are skipped only when explicitly requested */
+        xmlSecAssert2((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS) != 0, -1);
+    }
 
     /* find the issuer certificate in the trusted store and verify the CRL signature */
     issuerCert = CertFindCertificateInStore(ctx->trusted,

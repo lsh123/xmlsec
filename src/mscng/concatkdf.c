@@ -31,11 +31,17 @@
 #include "../keysdata_helpers.h"
 #include "../transform_helpers.h"
 
+/* SHA224 algorithm identifier is not defined in older MinGW headers;
+ * provide a fallback so the code compiles with all SDK versions. */
+#ifndef BCRYPT_SHA224_ALGORITHM
+#define BCRYPT_SHA224_ALGORITHM             L"SHA224"
+#endif /* BCRYPT_SHA224_ALGORITHM */
+
 /******************************************************************************
  *
  * ConcatKDF transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #define XMLSEC_MSCNG_KDF_DEFAULT_BUF_SIZE 64
 
 typedef struct _xmlSecMSCngConcatKdfCtx    xmlSecMSCngConcatKdfCtx, *xmlSecMSCngConcatKdfCtxPtr;
@@ -204,6 +210,12 @@ xmlSecMSCngConcatKdfGetDigestFromHref(const xmlChar* href) {
         return(BCRYPT_SHA1_ALGORITHM);
     } else
 #endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+    if(xmlStrcmp(href, xmlSecHrefSha224) == 0) {
+        return(BCRYPT_SHA224_ALGORITHM);
+    } else
+#endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA256
     if(xmlStrcmp(href, xmlSecHrefSha256) == 0) {

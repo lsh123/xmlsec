@@ -2595,9 +2595,10 @@ xmlSecCryptoAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSe
  */
 void*
 xmlSecCryptoAppGetDefaultPwdCallback(void) {
+    /* default password callback can be NULL */
     xmlSecCryptoDLFunctionsPtr functions = xmlSecCryptoDLGetFunctions();
-    if((functions == NULL) || (functions->cryptoAppDefaultPwdCallback == NULL)) {
-        xmlSecNotImplementedError2(missingMethodError, "cryptoAppDefaultPwdCallback");
+    if(functions == NULL)  {
+        xmlSecInternalError("xmlSecCryptoDLGetFunctions", NULL);
         return(NULL);
     }
 

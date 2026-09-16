@@ -691,6 +691,7 @@ xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, cons
         if (ret < 0) {
             xmlSecInternalError("xmlSecKeySetName", NULL);
             xmlSecKeyDestroy(key);
+            key = NULL;
             goto cleanup;
         }
     }
@@ -793,6 +794,7 @@ xmlSecMSCngAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* d
 
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(dataSize > 0, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
     x509Store = xmlSecKeysMngrGetDataStore(mngr, xmlSecMSCngX509StoreId);
@@ -805,6 +807,7 @@ xmlSecMSCngAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* d
 
     switch (format) {
         case xmlSecKeyDataFormatDer:
+        case xmlSecKeyDataFormatCertDer:
             pCert = CertCreateCertificateContext(
                 X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
                 data,

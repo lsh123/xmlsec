@@ -446,10 +446,8 @@ static void xmlSecMSCngSignatureFinalize(xmlSecTransformPtr transform) {
         xmlSecKeyDataDestroy(ctx->data);
     }
 
-    // Cleanup follows the sample-code order from
-    // https://msdn.microsoft.com/en-us/library/windows/desktop/aa376217(v=vs.85).aspx:
-    // close the algorithm provider, destroy the hash, then free the hash object and buffer.
-
+    /* Close the algorithm provider, destroy the hash, then free the hash object and buffer. */
+    
     if(ctx->hHashAlg != 0) {
         BCryptCloseAlgorithmProvider(ctx->hHashAlg, 0);
     }
@@ -619,8 +617,9 @@ xmlSecMSCngSignatureFixBrokenJava(xmlSecMSCngSignatureCtxPtr ctx,
     return(0);
 }
 
+/* Reverse @size bytes of @buf in-place (little-endian <-> big-endian conversion). */
 static void
-ConvertEndianInPlace(xmlSecByte* buf, xmlSecSize size) {
+xmlSecMSCngConvertEndianInPlace(xmlSecByte* buf, xmlSecSize size) {
     xmlSecByte* start;
     xmlSecByte* end;
 
@@ -713,10 +712,10 @@ xmlSecMSCngSignatureFixBrokenASN1(xmlSecMSCngSignatureCtxPtr ctx,
 
     /* r and s are in little-endian order */
     memcpy(res, eccSignature->r.pbData, eccSignature->r.cbData);
-    ConvertEndianInPlace(res, halfSize);
+    xmlSecMSCngConvertEndianInPlace(res, halfSize);
 
     memcpy(res + halfSize, eccSignature->s.pbData, eccSignature->s.cbData);
-    ConvertEndianInPlace(res + halfSize, halfSize);
+    xmlSecMSCngConvertEndianInPlace(res + halfSize, halfSize);
 
     /* success */
     (*out) = res;
@@ -768,7 +767,8 @@ xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
         pssPaddingInfo.pszAlgId = ctx->pszHashAlgId;
         pssPaddingInfo.cbSalt = ctx->dwRsaPssSaltSize;
         pPaddingInfo = &pssPaddingInfo;
-    } else if ((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_SUPPORT_ASN1_SIGNATURE_VALUES) != 0) {
+    } else if ((ctx->keyId == xmlSecMSCngKeyDataEcId) &&
+            ((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_SUPPORT_ASN1_SIGNATURE_VALUES) != 0)) {
         /* however some implementations (e.g. Java) just put ASN1 structure in the signature
          * https://github.com/lsh123/xmlsec/issues/995 */
         ret = xmlSecMSCngSignatureFixBrokenASN1(ctx, data, dataSize, (const xmlSecByte**)&fixedData, &fixedDataSize);
@@ -856,8 +856,8 @@ xmlSecMSCngSignatureConvertToASN1(xmlSecMSCngSignatureCtxPtr ctx, xmlSecBufferPt
     xmlSecAssert2(dataSize > 0, -1);
     xmlSecAssert2((dataSize % 2) == 0, -1);
 
-    ConvertEndianInPlace(data, halfSize);
-    ConvertEndianInPlace(data + halfSize, halfSize);
+    xmlSecMSCngConvertEndianInPlace(data, halfSize);
+    xmlSecMSCngConvertEndianInPlace(data + halfSize, halfSize);
 
     /* encode */
     eccSignature.r.cbData = (DWORD)halfSize;
@@ -971,7 +971,9 @@ xmlSecMSCngSignatureSign(
         return(-1);
     }
 
-    if ((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_SUPPORT_ASN1_SIGNATURE_VALUES) != 0) {
+    if ((ctx->keyId == xmlSecMSCngKeyDataEcId) &&
+            ((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_SUPPORT_ASN1_SIGNATURE_VALUES) != 0)
+    ) {
         /* however some implementations (e.g. Java) just put ASN1 structure in the signature
          * https://github.com/lsh123/xmlsec/issues/995 */
         ret = xmlSecMSCngSignatureConvertToASN1(ctx, &(transform->outBuf));

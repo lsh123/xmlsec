@@ -82,6 +82,10 @@ xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoGetFunctions_mscng(void) {
     static xmlSecCryptoDLFunctions functions;
 
+    if(gXmlSecMSCngFunctions != NULL) {
+        return(gXmlSecMSCngFunctions);
+    }
+
     /* DSA-SHA256 requires Windows 8 / Windows Server 2012+. */
 #if !defined(XMLSEC_NO_DSA) && !defined(XMLSEC_NO_SHA256)
     int isDsaSha256Supported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_DSA_ALGORITHM, 2048, NULL);
@@ -117,10 +121,6 @@ xmlSecCryptoGetFunctions_mscng(void) {
 #ifndef XMLSEC_NO_XDH
     int isX25519Supported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_ECDH_ALGORITHM, 0, BCRYPT_ECC_CURVE_25519);
 #endif /* XMLSEC_NO_XDH */
-
-    if(gXmlSecMSCngFunctions != NULL) {
-        return(gXmlSecMSCngFunctions);
-    }
 
     memset(&functions, 0, sizeof(functions));
     gXmlSecMSCngFunctions = &functions;
@@ -179,13 +179,13 @@ xmlSecCryptoGetFunctions_mscng(void) {
 
 #ifndef XMLSEC_NO_PBKDF2
     if(isPbkdf2Supported != 0) {
-        gXmlSecMSCngFunctions->keyDataPbkdf2GetKlass = xmlSecMSCngKeyDataPbkdf2GetKlass;
+        gXmlSecMSCngFunctions->keyDataPbkdf2GetKlass    = xmlSecMSCngKeyDataPbkdf2GetKlass;
     }
 #endif /* XMLSEC_NO_PBKDF2 */
 
 #ifndef XMLSEC_NO_HKDF
     if(isHkdfSupported != 0) {
-        gXmlSecMSCngFunctions->keyDataHkdfGetKlass = xmlSecMSCngKeyDataHkdfGetKlass;
+        gXmlSecMSCngFunctions->keyDataHkdfGetKlass      = xmlSecMSCngKeyDataHkdfGetKlass;
     }
 #endif /* XMLSEC_NO_HKDF */
 
@@ -231,7 +231,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
     /* ConcatKDF */
 #ifndef XMLSEC_NO_CONCATKDF
     if(isConcatKdfSupported != 0) {
-        gXmlSecMSCngFunctions->transformConcatKdfGetKlass = xmlSecMSCngTransformConcatKdfGetKlass;
+        gXmlSecMSCngFunctions->transformConcatKdfGetKlass       = xmlSecMSCngTransformConcatKdfGetKlass;
     }
 #endif /* XMLSEC_NO_CONCATKDF */
 
@@ -250,7 +250,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
 
 #ifndef XMLSEC_NO_SHA256
     if(isDsaSha256Supported != 0) {
-        gXmlSecMSCngFunctions->transformDsaSha256GetKlass           = xmlSecMSCngTransformDsaSha256GetKlass;
+        gXmlSecMSCngFunctions->transformDsaSha256GetKlass       = xmlSecMSCngTransformDsaSha256GetKlass;
     }
 #endif /* XMLSEC_NO_SHA256 */
 
@@ -290,13 +290,13 @@ xmlSecCryptoGetFunctions_mscng(void) {
     /* DH-ES */
 #ifndef XMLSEC_NO_DH
     if(isDhSupported != 0) {
-        gXmlSecMSCngFunctions->transformDhEsGetKlass     = xmlSecMSCngTransformDhEsGetKlass;
+        gXmlSecMSCngFunctions->transformDhEsGetKlass            = xmlSecMSCngTransformDhEsGetKlass;
     }
 #endif /* XMLSEC_NO_DH */
 
 #ifndef XMLSEC_NO_XDH
     if(isX25519Supported != 0) {
-        gXmlSecMSCngFunctions->transformX25519GetKlass   = xmlSecMSCngTransformX25519GetKlass;
+        gXmlSecMSCngFunctions->transformX25519GetKlass          = xmlSecMSCngTransformX25519GetKlass;
     }
 #endif /* XMLSEC_NO_XDH */
 
@@ -364,26 +364,26 @@ xmlSecCryptoGetFunctions_mscng(void) {
 
 
 #ifndef XMLSEC_NO_SHA1
-    gXmlSecMSCngFunctions->transformRsaPssSha1GetKlass = xmlSecMSCngTransformRsaPssSha1GetKlass;
+    gXmlSecMSCngFunctions->transformRsaPssSha1GetKlass          = xmlSecMSCngTransformRsaPssSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
-    gXmlSecMSCngFunctions->transformRsaPssSha256GetKlass = xmlSecMSCngTransformRsaPssSha256GetKlass;
+    gXmlSecMSCngFunctions->transformRsaPssSha256GetKlass        = xmlSecMSCngTransformRsaPssSha256GetKlass;
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
-    gXmlSecMSCngFunctions->transformRsaPssSha384GetKlass = xmlSecMSCngTransformRsaPssSha384GetKlass;
+    gXmlSecMSCngFunctions->transformRsaPssSha384GetKlass        = xmlSecMSCngTransformRsaPssSha384GetKlass;
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
-    gXmlSecMSCngFunctions->transformRsaPssSha512GetKlass = xmlSecMSCngTransformRsaPssSha512GetKlass;
+    gXmlSecMSCngFunctions->transformRsaPssSha512GetKlass        = xmlSecMSCngTransformRsaPssSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
 #ifndef XMLSEC_NO_SHA3
     if(isSha3Supported != 0) {
-        gXmlSecMSCngFunctions->transformRsaPssSha3_256GetKlass = xmlSecMSCngTransformRsaPssSha3_256GetKlass;
-        gXmlSecMSCngFunctions->transformRsaPssSha3_384GetKlass = xmlSecMSCngTransformRsaPssSha3_384GetKlass;
-        gXmlSecMSCngFunctions->transformRsaPssSha3_512GetKlass = xmlSecMSCngTransformRsaPssSha3_512GetKlass;
+        gXmlSecMSCngFunctions->transformRsaPssSha3_256GetKlass  = xmlSecMSCngTransformRsaPssSha3_256GetKlass;
+        gXmlSecMSCngFunctions->transformRsaPssSha3_384GetKlass  = xmlSecMSCngTransformRsaPssSha3_384GetKlass;
+        gXmlSecMSCngFunctions->transformRsaPssSha3_512GetKlass  = xmlSecMSCngTransformRsaPssSha3_512GetKlass;
     }
 #endif /* XMLSEC_NO_SHA3 */
 
@@ -418,9 +418,9 @@ xmlSecCryptoGetFunctions_mscng(void) {
 
 #ifndef XMLSEC_NO_SHA3
     if(isSha3Supported != 0) {
-        gXmlSecMSCngFunctions->transformSha3_256GetKlass            = xmlSecMSCngTransformSha3_256GetKlass;
-        gXmlSecMSCngFunctions->transformSha3_384GetKlass            = xmlSecMSCngTransformSha3_384GetKlass;
-        gXmlSecMSCngFunctions->transformSha3_512GetKlass            = xmlSecMSCngTransformSha3_512GetKlass;
+        gXmlSecMSCngFunctions->transformSha3_256GetKlass        = xmlSecMSCngTransformSha3_256GetKlass;
+        gXmlSecMSCngFunctions->transformSha3_384GetKlass        = xmlSecMSCngTransformSha3_384GetKlass;
+        gXmlSecMSCngFunctions->transformSha3_512GetKlass        = xmlSecMSCngTransformSha3_512GetKlass;
     }
 #endif /* XMLSEC_NO_SHA3 */
 
@@ -449,7 +449,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
 #endif /* XMLSEC_NO_X509 */
     gXmlSecMSCngFunctions->cryptoAppKeyLoadEx                   = xmlSecMSCngAppKeyLoadEx;
     gXmlSecMSCngFunctions->cryptoAppKeyLoadMemory               = xmlSecMSCngAppKeyLoadMemory;
-    gXmlSecMSCngFunctions->cryptoAppDefaultPwdCallback          = (void*)xmlSecMSCngAppGetDefaultPwdCallback();
+    gXmlSecMSCngFunctions->cryptoAppDefaultPwdCallback          = xmlSecMSCngAppGetDefaultPwdCallback();
 
     return(gXmlSecMSCngFunctions);
 }

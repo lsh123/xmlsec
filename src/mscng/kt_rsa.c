@@ -266,6 +266,14 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
             BCRYPT_OAEP_PADDING_INFO paddingInfo;
             xmlSecSize oaepParamsSize;
 
+            if (ctx->pszDigestAlgId == NULL) {
+#ifndef XMLSEC_NO_SHA1
+                ctx->pszDigestAlgId = BCRYPT_SHA1_ALGORITHM;
+#else  /* XMLSEC_NO_SHA1 */
+                xmlSecOtherError(XMLSEC_ERRORS_R_DISABLED, NULL, "No OAEP digest algorithm is specified and the default SHA1 digest is disabled");
+                return(-1);
+#endif /* XMLSEC_NO_SHA1 */
+            }
             paddingInfo.pszAlgId = ctx->pszDigestAlgId;
             paddingInfo.pbLabel = xmlSecBufferGetData(&(ctx->oaepParams));
 
@@ -333,6 +341,14 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
             BCRYPT_OAEP_PADDING_INFO paddingInfo;
             xmlSecSize oaepParamsSize;
 
+            if (ctx->pszDigestAlgId == NULL) {
+#ifndef XMLSEC_NO_SHA1
+                ctx->pszDigestAlgId = BCRYPT_SHA1_ALGORITHM;
+#else  /* XMLSEC_NO_SHA1 */
+                xmlSecOtherError(XMLSEC_ERRORS_R_DISABLED, NULL, "No OAEP digest algorithm is specified and the default SHA1 digest is disabled");
+                return(-1);
+#endif /* XMLSEC_NO_SHA1 */
+            }
             paddingInfo.pszAlgId = ctx->pszDigestAlgId;
             paddingInfo.pbLabel = xmlSecBufferGetData(&(ctx->oaepParams));
 
@@ -419,6 +435,7 @@ xmlSecMSCngRsaPkcs1OaepExecute(xmlSecTransformPtr transform, int last,
     return(0);
 }
 
+#ifndef XMLSEC_NO_RSA_OAEP
 static int
 xmlSecMSCngRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
                            xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
@@ -566,7 +583,6 @@ xmlSecMSCngRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     return(0);
 }
 
-#ifndef XMLSEC_NO_RSA_OAEP
 static xmlSecTransformKlass xmlSecMSCngRsaOaepKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */

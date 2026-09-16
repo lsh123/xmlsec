@@ -319,7 +319,7 @@ xmlSecMSCngKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
     xmlSecAssert2(xmlSecMSCngKWAesCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngKWAesSize), -1);
     xmlSecAssert2(in != NULL, -1);
-    xmlSecAssert2(inSize >= XMLSEC_KW_RFC3394_BLOCK_SIZE, -1);
+    xmlSecAssert2(inSize == XMLSEC_KW_RFC3394_BLOCK_SIZE, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= inSize, -1);
     xmlSecAssert2(outWritten != NULL, -1);
@@ -363,6 +363,7 @@ xmlSecMSCngKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
         xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
         goto done;
     }
+    xmlSecAssert2(cbData == sizeof(DWORD), -1);
 
     pbKeyObject = xmlMalloc(cbKeyObject);
     if (pbKeyObject == NULL) {
@@ -467,7 +468,7 @@ xmlSecMSCngKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
     xmlSecAssert2(xmlSecMSCngKWAesCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngKWAesSize), -1);
     xmlSecAssert2(in != NULL, -1);
-    xmlSecAssert2(inSize >= XMLSEC_KW_RFC3394_BLOCK_SIZE, -1);
+    xmlSecAssert2(inSize == XMLSEC_KW_RFC3394_BLOCK_SIZE, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= inSize, -1);
     xmlSecAssert2(outWritten != NULL, -1);
@@ -511,6 +512,7 @@ xmlSecMSCngKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
         xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
         goto done;
     }
+    xmlSecAssert2(cbData == sizeof(DWORD), -1);
 
     pbKeyObject = xmlMalloc(cbKeyObject);
     if (pbKeyObject == NULL) {

@@ -259,7 +259,7 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
 #endif /* XMLSEC_NO_X509 */
     gXmlSecMSCryptoFunctions->cryptoAppKeyLoadEx                = xmlSecMSCryptoAppKeyLoadEx;
     gXmlSecMSCryptoFunctions->cryptoAppKeyLoadMemory            = xmlSecMSCryptoAppKeyLoadMemory;
-    gXmlSecMSCryptoFunctions->cryptoAppDefaultPwdCallback       = (void*)xmlSecMSCryptoAppGetDefaultPwdCallback();
+    gXmlSecMSCryptoFunctions->cryptoAppDefaultPwdCallback       = xmlSecMSCryptoAppGetDefaultPwdCallback();
 
     return(gXmlSecMSCryptoFunctions);
 }

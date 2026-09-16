@@ -251,6 +251,7 @@ xmlSecMSCngCbcBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
     keyData = xmlSecBufferGetData(keyBuffer);
     xmlSecAssert2(keyData != NULL, -1);
 
+    /* the key buffer can be longer if it came from ConcatKDF for example */
     if(xmlSecBufferGetSize(keyBuffer) < ctx->keySize) {
         xmlSecInvalidKeyDataSizeError(xmlSecBufferGetSize(keyBuffer), ctx->keySize, xmlSecTransformGetName(transform));
         goto done;
@@ -286,8 +287,14 @@ xmlSecMSCngCbcBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
     blob.flags |= XMLSEC_BUFFER_FLAG_SECURE;
     bufInitialized = 1;
 
-    xmlSecBufferSetSize(&blob, blobSize);
+    ret = xmlSecBufferSetSize(&blob, blobSize);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferSetSize", xmlSecTransformGetName(transform),
+            "size=" XMLSEC_SIZE_FMT, blobSize);
+        goto done;
+    }
     blobData = xmlSecBufferGetData(&blob);
+    xmlSecAssert2(blobData != NULL, -1);
 
     blobHeader = (BCRYPT_KEY_DATA_BLOB_HEADER*)blobData;
     blobHeader->dwMagic = BCRYPT_KEY_DATA_BLOB_MAGIC;
@@ -359,6 +366,9 @@ xmlSecMSCngCbcBlockCipherCtxInit(xmlSecMSCngCbcBlockCipherCtxPtr ctx,
     ctx->cbIV = ctx->dwBlockLen;
     XMLSEC_SAFE_CAST_ULONG_TO_SIZE(ctx->dwBlockLen, blockSize, return(-1), cipherName);
 
+    /* ctx->pbIV is a persistent IV buffer: it is initialized here and then updated
+     * in place by CNG to the last ciphertext block after each BCryptEncrypt/
+     * BCryptDecrypt call, so the CBC chain is maintained across calls. */
     if (encrypt) {
         unsigned char* iv;
         xmlSecSize outSize;
@@ -475,6 +485,15 @@ xmlSecMSCngCbcBlockCipherCtxUpdate(xmlSecMSCngCbcBlockCipherCtxPtr ctx,
     dwCLen = 0;
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwInSize, return(-1), cipherName);
     dwOutSize = dwInSize;
+
+    /* ctx->pbIV is the persistent CBC IV buffer shared across all calls. CNG's
+     * BCryptEncrypt/BCryptDecrypt update it in place to the last ciphertext block
+     * after each call (they are not stateless), so passing the same buffer to every
+     * call keeps the CBC chain correct across multiple CtxUpdate/CtxFinal calls; no
+     * manual IV update is needed. Verified against OpenSSL with scratch programs
+     * (win32/tmp/cbc_iv_test*.c): a two-block CBC round-trip produces standard
+     * ciphertext matching OpenSSL's output, and the IV buffer holds the last
+     * ciphertext block after each call. */
     if(encrypt) {
         status = BCryptEncrypt(ctx->hKey,
             inBuf,
@@ -620,6 +639,9 @@ xmlSecMSCngCbcBlockCipherCtxFinal(xmlSecMSCngCbcBlockCipherCtxPtr ctx,
 
     dwCLen = 0;
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwInSize, return(-1), cipherName);
+
+    /* ctx->pbIV still holds the last ciphertext block from the previous call(s)
+     * (CNG updates it in place), so the final block chains correctly. */
     if(encrypt) {
         XMLSEC_SAFE_CAST_SIZE_TO_ULONG((inSize + blockSize), dwOutSize, return(-1), cipherName);
         status = BCryptEncrypt(ctx->hKey,
@@ -669,7 +691,10 @@ xmlSecMSCngCbcBlockCipherCtxFinal(xmlSecMSCngCbcBlockCipherCtxPtr ctx,
     }
 
     if(encrypt == 0) {
-        /* check padding */
+        /* check padding: only the final padding byte is range-checked; the remaining
+         * padding-1 bytes are not verified to equal the padding length as PKCS#5/PKCS#7
+         * requires. This is a project-wide design choice, consistent with all other
+         * backends (mscrypto/ciphers.c, nss/ciphers_cbc.c, gcrypt/ciphers.c). */
         if((outBuf[blockSize - 1] == 0) || (inSize < outBuf[blockSize - 1])) {
             xmlSecInvalidSizeLessThanError("Input data padding", inSize, outBuf[blockSize - 1], cipherName);
             return(-1);

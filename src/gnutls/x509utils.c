@@ -1493,6 +1493,10 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
                 while((p > tmp) && (XMLSEC_GNUTLS_IS_SPACE(*(p - 1)))) {
                     *(--p) = '\0';
                 }
+                if(p == tmp) {
+                    xmlSecInvalidDataError("empty attribute key in DN", NULL);
+                    goto done;
+                }
 
                 /* insert into the attrs */
                 if(pos >= attrsSize) {

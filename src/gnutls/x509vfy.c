@@ -1036,7 +1036,7 @@ xmlSecGnuTLSX509StoreVerifyCrlSignature(xmlSecGnuTLSX509StoreCtxPtr ctx, gnutls_
     ret = xmlSecGnuTLSX509GetVerificationFlags(keyInfoCtx, &flags);
     if (ret < 0) {
         xmlSecInternalError("xmlSecGnuTLSX509GetVerificationFlags", NULL);
-        return(-1);
+        goto done;
     }
 
     err = gnutls_x509_crl_verify(crl, &issuer_cert, 1, flags, &verify_result);
@@ -1052,8 +1052,17 @@ xmlSecGnuTLSX509StoreVerifyCrlSignature(xmlSecGnuTLSX509StoreCtxPtr ctx, gnutls_
      * ignore the time-based failure flags here.
      */
     if(keyInfoCtx->certsVerificationTime > 0) {
-        verify_result &= ~(unsigned int)(GNUTLS_CERT_REVOCATION_DATA_ISSUED_IN_FUTURE |
-                                         GNUTLS_CERT_REVOCATION_DATA_SUPERSEDED);
+        const unsigned int ignored_verify_result =
+            (unsigned int)(GNUTLS_CERT_REVOCATION_DATA_ISSUED_IN_FUTURE |
+                           GNUTLS_CERT_REVOCATION_DATA_SUPERSEDED);
+        if((verify_result & ignored_verify_result) != 0) {
+            /*
+             * gnutls_x509_crl_verify() also sets GNUTLS_CERT_INVALID when any
+             * specific status flag is present. If we want to ignore all specific
+             * flags above, then GNUTLS_CERT_INVALID must be ignored too.
+             */
+            verify_result &= ~(ignored_verify_result | (unsigned int)GNUTLS_CERT_INVALID);
+        }
     }
 
     /* Check if verification failed (ignoring allowed failures like insecure algorithms) */

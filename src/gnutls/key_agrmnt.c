@@ -366,6 +366,11 @@ xmlSecGnuTLSKeyAgreementGenerateSecret(xmlSecGnuTLSKeyAgreementCtxPtr ctx, xmlSe
             goto done;
         }
 
+        if(!xmlSecKeyDataCheckId(otherKeyValue, xmlSecGnuTLSKeyDataEcId)) {
+            xmlSecInvalidDataError("other key is not EC key data", NULL);
+            goto done;
+        }
+
         otherPubKey = xmlSecGnuTLSKeyDataEcGetPublicKey(otherKeyValue);
         if(otherPubKey == NULL) {
             xmlSecInternalError("xmlSecGnuTLSKeyDataEcGetPublicKey", NULL);
@@ -378,6 +383,11 @@ xmlSecGnuTLSKeyAgreementGenerateSecret(xmlSecGnuTLSKeyAgreementCtxPtr ctx, xmlSe
         myPrivKey = xmlSecGnuTLSKeyDataXdhGetPrivateKey(myKeyValue);
         if(myPrivKey == NULL) {
             xmlSecInternalError("xmlSecGnuTLSKeyDataXdhGetPrivateKey", NULL);
+            goto done;
+        }
+
+        if(!xmlSecKeyDataCheckId(otherKeyValue, xmlSecGnuTLSKeyDataXdhId)) {
+            xmlSecInvalidDataError("other key is not XDH key data", NULL);
             goto done;
         }
 

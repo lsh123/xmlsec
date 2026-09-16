@@ -292,6 +292,7 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_DSA */
 
     /*  ECDSA */
+#ifndef XMLSEC_NO_EC
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEcdsaSha1Id)) {
         ctx->keyId      = xmlSecGnuTLSKeyDataEcId;
@@ -373,6 +374,7 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->getPrivKey = xmlSecGnuTLSKeyDataEcGetPrivateKey;
     } else
 #endif /* XMLSEC_NO_SHA3 */
+#endif /* XMLSEC_NO_EC */
 
     /*  GOST 2001  */
 #ifndef XMLSEC_NO_GOST
@@ -778,7 +780,14 @@ xmlSecGnuTLSReadDerLength(const xmlSecByte * data, xmlSecSize dataSize, xmlSecSi
         return(-1);
     } else {
         xmlSecSize length = 0;
-        for(xmlSecSize count = cc & 0x7f; count; count--) {
+        xmlSecSize count = cc & 0x7f;
+
+        /* a length that fits in xmlSecSize needs at most
+           sizeof(xmlSecSize) bytes */
+        if(count > sizeof(xmlSecSize)) {
+            return(-1);
+        }
+        for(; count; count--) {
             XMLSEC_GNUTLS_GET_BYTE(data, dataSize, ii, cc);
             length <<= 8;
             length |= (cc & 0xff);
@@ -925,6 +934,7 @@ done:
 */
 static int
 xmlSecGnuTLSSignatureGetDerHalfSize(gnutls_sign_algorithm_t algo, xmlSecSize keySize, xmlSecSize * res) {
+    xmlSecAssert2(keySize > 0, -1);
     xmlSecAssert2(res != NULL, -1);
 
     switch(algo) {
@@ -935,6 +945,7 @@ xmlSecGnuTLSSignatureGetDerHalfSize(gnutls_sign_algorithm_t algo, xmlSecSize key
         break;
     case GNUTLS_SIGN_DSA_SHA256:
         (*res) = XMLSEC_GNUTLS_SIGNATURE_DSA_SHA256_HALF_LEN;
+
         break;
 #endif /* XMLSEC_NO_DSA */
 

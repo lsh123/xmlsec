@@ -547,6 +547,12 @@ xmlSecGnuTLSConcatKdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen, x
     pos = 0;
     counterVal = 1;
     while(pos < outLen) {
+        /* detect counter wrap: counters start at 1 and must not wrap (NIST SP 800-56A) */
+        if(counterVal == 0) {
+            xmlSecInternalError("ConcatKDF counter overflow", NULL);
+            return(-1);
+        }
+
         /* encode counter as 4-byte big-endian */
         counter[0] = (xmlSecByte)((counterVal >> 24) & 0xFF);
         counter[1] = (xmlSecByte)((counterVal >> 16) & 0xFF);

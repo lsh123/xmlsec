@@ -165,7 +165,7 @@ xmlSecGnuTLSHmacInitialize(xmlSecTransformPtr transform) {
         xmlSecGnuTLSError("gnutls_hmac_get_len", 0, NULL);
         return(-1);
     }
-    xmlSecAssert2(hmacSize < XMLSEC_TRANSFORM_HMAC_MAX_OUTPUT_SIZE, -1);
+    xmlSecAssert2(hmacSize <= XMLSEC_TRANSFORM_HMAC_MAX_OUTPUT_SIZE, -1);
     ctx->hmacSizeInBits = 8 * hmacSize;
 
     /* done */
@@ -267,6 +267,7 @@ xmlSecGnuTLSHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         return(-1);
     }
 
+    xmlSecAssert2(xmlSecBufferGetData(keyBuf) != NULL, -1);
     err = gnutls_hmac_init(&(ctx->hmac), ctx->hmacAlgo, xmlSecBufferGetData(keyBuf), keySize);
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_hmac_init", err, NULL);

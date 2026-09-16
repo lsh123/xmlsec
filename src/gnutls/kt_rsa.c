@@ -542,7 +542,9 @@ xmlSecGnuTLSRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     } else
 #endif /* XMLSEC_NO_SHA512 */
 #ifndef XMLSEC_NO_SHA3
-    if(xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha3_256) == 0) {
+    if(xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha3_224) == 0) {
+        digestAlg = GNUTLS_DIG_SHA3_224;
+    } else if(xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha3_256) == 0) {
         digestAlg = GNUTLS_DIG_SHA3_256;
     } else if(xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha3_384) == 0) {
         digestAlg = GNUTLS_DIG_SHA3_384;
@@ -562,7 +564,14 @@ xmlSecGnuTLSRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
      * If an MGF1 algorithm is specified, verify it matches the OAEP digest. */
     if(oaepParams.mgf1DigestAlgorithm == NULL) {
         /* no MGF1 specified: default to SHA-1 per XMLEnc 1.0 */
+#ifndef XMLSEC_NO_SHA1
         mgf1DigestAlg = GNUTLS_DIG_SHA1;
+#else  /* XMLSEC_NO_SHA1 */
+        xmlSecOtherError(XMLSEC_ERRORS_R_DISABLED, NULL,
+            "No MGF1 digest algorithm is specified and the default SHA1 digest is disabled");
+        xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
+        return(-1);
+#endif /* XMLSEC_NO_SHA1 */
     } else
 #ifndef XMLSEC_NO_SHA1
     if(xmlStrcmp(oaepParams.mgf1DigestAlgorithm, xmlSecHrefMgf1Sha1) == 0) {

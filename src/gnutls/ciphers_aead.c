@@ -298,7 +298,8 @@ xmlSecGnuTLSAeadCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 }
 
 static int
-xmlSecGnuTLSAeadCipherEncrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out) {
+xmlSecGnuTLSAeadCipherEncrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out,
+    const xmlChar* transformName) {
     xmlSecSize inSize, outSize;
     xmlSecByte *plaintext, *outData;
     const xmlSecByte *aadData;
@@ -320,7 +321,7 @@ xmlSecGnuTLSAeadCipherEncrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
         xmlSecAssert2(ctx->ivSize <= sizeof(ctx->iv), -1);
         err = gnutls_rnd(GNUTLS_RND_KEY, ctx->iv, ctx->ivSize);
         if(err != GNUTLS_E_SUCCESS) {
-            xmlSecGnuTLSError("gnutls_rnd", err, NULL);
+            xmlSecGnuTLSError("gnutls_rnd", err, transformName);
             return(-1);
         }
         ctx->ivInitialized = 1;
@@ -334,7 +335,7 @@ xmlSecGnuTLSAeadCipherEncrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
         outSize = ctx->ivSize + inSize + ctx->tagSize + 2 * XMLSEC_GNUTLS_AEAD_CIPHER_MAX_BLOCK_SIZE;
         ret = xmlSecBufferSetMaxSize(out, outSize);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferSetMaxSize", NULL, "size=" XMLSEC_SIZE_FMT, outSize);
+            xmlSecInternalError2("xmlSecBufferSetMaxSize", transformName, "size=" XMLSEC_SIZE_FMT, outSize);
             return(-1);
         }
 
@@ -353,13 +354,13 @@ xmlSecGnuTLSAeadCipherEncrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
             plaintext, inSize,
             outData, &outSize);
         if(err != GNUTLS_E_SUCCESS) {
-            xmlSecGnuTLSError("gnutls_aead_cipher_encrypt", err, NULL);
+            xmlSecGnuTLSError("gnutls_aead_cipher_encrypt", err, transformName);
             return(-1);
         }
 
         ret = xmlSecBufferSetSize(out, outSize + ctx->ivSize);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, (outSize + ctx->ivSize));
+            xmlSecInternalError2("xmlSecBufferSetSize", transformName, "size=" XMLSEC_SIZE_FMT, (outSize + ctx->ivSize));
             return(-1);
         }
     } else {
@@ -367,10 +368,10 @@ xmlSecGnuTLSAeadCipherEncrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
         xmlSecAssert2(ctx->ivInitialized != 0, -1);
         xmlSecAssert2(plaintext != NULL || inSize == 0, -1);
 
-        outSize = inSize + ctx->tagSize + 32;
+        outSize = inSize + ctx->tagSize + XMLSEC_GNUTLS_AEAD_CIPHER_MAX_BLOCK_SIZE;
         ret = xmlSecBufferSetMaxSize(out, outSize);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferSetMaxSize", NULL, "size=" XMLSEC_SIZE_FMT, outSize);
+            xmlSecInternalError2("xmlSecBufferSetMaxSize", transformName, "size=" XMLSEC_SIZE_FMT, outSize);
             return(-1);
         }
 
@@ -384,13 +385,13 @@ xmlSecGnuTLSAeadCipherEncrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
             plaintext, inSize,
             outData, &outSize);
         if(err != GNUTLS_E_SUCCESS) {
-            xmlSecGnuTLSError("gnutls_aead_cipher_encrypt", err, NULL);
+            xmlSecGnuTLSError("gnutls_aead_cipher_encrypt", err, transformName);
             return(-1);
         }
 
         ret = xmlSecBufferSetSize(out, outSize);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, outSize);
+            xmlSecInternalError2("xmlSecBufferSetSize", transformName, "size=" XMLSEC_SIZE_FMT, outSize);
             return(-1);
         }
     }
@@ -400,7 +401,8 @@ xmlSecGnuTLSAeadCipherEncrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
 }
 
 static int
-xmlSecGnuTLSAeadCipherDecrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out) {
+xmlSecGnuTLSAeadCipherDecrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out,
+    const xmlChar* transformName) {
     xmlSecSize inSize, outSize;
     xmlSecByte *iv, *ciphertext, *outData;
     const xmlSecByte *aadData;
@@ -419,7 +421,7 @@ xmlSecGnuTLSAeadCipherDecrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
 
     if(ctx->isIvPrepended) {
         /* AES-GCM mode: IV is prepended to the input ciphertext */
-        xmlSecAssert2(inSize > ctx->ivSize, -1);
+        xmlSecAssert2(inSize >= ctx->ivSize + ctx->tagSize, -1);
 
         iv = xmlSecBufferGetData(in);
         xmlSecAssert2(iv != NULL, -1);
@@ -428,7 +430,7 @@ xmlSecGnuTLSAeadCipherDecrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
 
         ret = xmlSecBufferSetMaxSize(out, inSize);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferSetMaxSize", NULL, "size=" XMLSEC_SIZE_FMT, inSize);
+            xmlSecInternalError2("xmlSecBufferSetMaxSize", transformName, "size=" XMLSEC_SIZE_FMT, inSize);
             return(-1);
         }
         outData = xmlSecBufferGetData(out);
@@ -442,7 +444,7 @@ xmlSecGnuTLSAeadCipherDecrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
             ciphertext, inSize,
             outData, &outSize);
         if(err != GNUTLS_E_SUCCESS) {
-            xmlSecGnuTLSError("gnutls_aead_cipher_decrypt", err, NULL);
+            xmlSecGnuTLSError("gnutls_aead_cipher_decrypt", err, transformName);
             return(-1);
         }
     } else {
@@ -459,7 +461,7 @@ xmlSecGnuTLSAeadCipherDecrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
 
         ret = xmlSecBufferSetMaxSize(out, inSize);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferSetMaxSize", NULL, "size=" XMLSEC_SIZE_FMT, inSize);
+            xmlSecInternalError2("xmlSecBufferSetMaxSize", transformName, "size=" XMLSEC_SIZE_FMT, inSize);
             return(-1);
         }
         outData = xmlSecBufferGetData(out);
@@ -473,7 +475,7 @@ xmlSecGnuTLSAeadCipherDecrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
             ciphertext, inSize,
             outData, &outSize);
         if(err != GNUTLS_E_SUCCESS) {
-            xmlSecGnuTLSError("gnutls_aead_cipher_decrypt", err, NULL);
+            xmlSecGnuTLSError("gnutls_aead_cipher_decrypt", err, transformName);
             return(-1);
         }
     }
@@ -481,7 +483,7 @@ xmlSecGnuTLSAeadCipherDecrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
     /* set correct output size */
     ret = xmlSecBufferSetSize(out, outSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, outSize);
+        xmlSecInternalError2("xmlSecBufferSetSize", transformName, "size=" XMLSEC_SIZE_FMT, outSize);
         return(-1);
     }
 
@@ -516,13 +518,13 @@ xmlSecGnuTLSAeadCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTran
     }
     if((transform->status == xmlSecTransformStatusWorking) && (last == 1)) {
         if (transform->operation == xmlSecTransformOperationEncrypt) {
-            ret = xmlSecGnuTLSAeadCipherEncrypt(ctx, in, out);
+            ret = xmlSecGnuTLSAeadCipherEncrypt(ctx, in, out, xmlSecTransformGetName(transform));
             if(ret < 0) {
                 xmlSecInternalError("xmlSecGnuTLSAeadCipherEncrypt", xmlSecTransformGetName(transform));
                 return(-1);
             }
         } else {
-            ret = xmlSecGnuTLSAeadCipherDecrypt(ctx, in, out);
+            ret = xmlSecGnuTLSAeadCipherDecrypt(ctx, in, out, xmlSecTransformGetName(transform));
             if(ret < 0) {
                 xmlSecInternalError("xmlSecGnuTLSAeadCipherDecrypt", xmlSecTransformGetName(transform));
                 return(-1);

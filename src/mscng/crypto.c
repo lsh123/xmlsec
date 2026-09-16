@@ -76,7 +76,7 @@ xmlSecMSCngIsAlgorithmSupported(LPCWSTR pszAlgId, DWORD dwMinLength, LPCWSTR cur
 
 /**
  * @brief Gets the pointer to xmlsec-mscng functions table.
- * @return the xmlsec-mscng functions table or NULL if an error occurs.
+ * @return the xmlsec-mscng functions table.
  */
 xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoGetFunctions_mscng(void) {
@@ -158,7 +158,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
 #endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_EC
-    gXmlSecMSCngFunctions->keyDataEcGetKlass             = xmlSecMSCngKeyDataEcGetKlass;
+    gXmlSecMSCngFunctions->keyDataEcGetKlass            = xmlSecMSCngKeyDataEcGetKlass;
 #endif /* XMLSEC_NO_EC */
 
 #ifndef XMLSEC_NO_DH
@@ -248,11 +248,11 @@ xmlSecCryptoGetFunctions_mscng(void) {
     gXmlSecMSCngFunctions->transformDsaSha1GetKlass             = xmlSecMSCngTransformDsaSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
 
-#if !defined(XMLSEC_NO_DSA) && !defined(XMLSEC_NO_SHA256)
+#ifndef XMLSEC_NO_SHA256
     if(isDsaSha256Supported != 0) {
         gXmlSecMSCngFunctions->transformDsaSha256GetKlass           = xmlSecMSCngTransformDsaSha256GetKlass;
     }
-#endif /* !defined(XMLSEC_NO_DSA) && !defined(XMLSEC_NO_SHA256) */
+#endif /* XMLSEC_NO_SHA256 */
 
 #endif /* XMLSEC_NO_DSA */
 
@@ -402,7 +402,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
     gXmlSecMSCngFunctions->transformMd5GetKlass                = xmlSecMSCngTransformMd5GetKlass;
 #endif /* XMLSEC_NO_MD5 */
 
-    /* SHA1 */
+    /* SHA */
 #ifndef XMLSEC_NO_SHA1
     gXmlSecMSCngFunctions->transformSha1GetKlass                = xmlSecMSCngTransformSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
@@ -504,7 +504,7 @@ xmlSecMSCngGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
 
     ret = xmlSecBufferSetSize(buffer, size);
     if(ret < 0) {
-    xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, size);
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, size);
         return(-1);
     }
 

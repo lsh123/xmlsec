@@ -200,10 +200,10 @@ xmlSecMSCngKeyDataCertGetDsaPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE
         offset += pSize;
         /* y: right-align */
         memcpy(blobData + offset + (pSize - ySize), pYBlob->pbData, ySize);
-    #else /* XMLSEC_MSCNG_HAVE_DSA_V2 */
+#else /* XMLSEC_MSCNG_HAVE_DSA_V2 */
         xmlSecNotImplementedError("DSA keys with q > 20 bytes require newer Windows SDK bcrypt definitions");
         goto done;
-    #endif /* XMLSEC_MSCNG_HAVE_DSA_V2 */
+#endif /* XMLSEC_MSCNG_HAVE_DSA_V2 */
     }
 
     /* Open DSA algorithm provider and import the key blob */
@@ -388,7 +388,6 @@ xmlSecMSCngIsDsaBcryptKey(BCRYPT_KEY_HANDLE hKey) {
     if(ntstatus != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptGetProperty", NULL, ntstatus);
         return(-1);
-
     }
     return ((wcsncmp(algName, BCRYPT_DSA_ALGORITHM, wcslen(BCRYPT_DSA_ALGORITHM)) == 0) ? 1 : 0);
 }
@@ -518,7 +517,7 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         memset(blobData + offset, 0xFF, qBlobSize);
         offset += qBlobSize;
 
-        /*  q (fixed 32-byte field, right-aligned)  */
+        /*  q (qBlobSize-byte field, right-aligned)  */
         memcpy(blobData + offset + (qBlobSize - qSize), xmlSecBufferGetData(&(dsaValue->q)), qSize);
         offset += qBlobSize;
 
@@ -534,8 +533,8 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         memcpy(blobData + offset + (pSize - ySize), xmlSecBufferGetData(&(dsaValue->y)), ySize);
         offset += pSize; /* ySize <= pSize */
 #else /* XMLSEC_MSCNG_HAVE_DSA_V2 */
-    xmlSecNotImplementedError("DSA keys with q > 20 bytes require newer Windows SDK bcrypt definitions");
-    goto done;
+        xmlSecNotImplementedError("DSA keys with q > 20 bytes require newer Windows SDK bcrypt definitions");
+        goto done;
 #endif /* XMLSEC_MSCNG_HAVE_DSA_V2 */
     }
 
@@ -619,7 +618,7 @@ xmlSecMSCngDsaStripLeadingZeros(const xmlSecByte* data, xmlSecSize size, xmlSecS
 }
 
 int
-xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey,  xmlSecKeyValueDsaPtr dsaValue) {
+xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDsaPtr dsaValue) {
     NTSTATUS status;
     xmlSecBuffer buf;
     int bufInitialized = 0;
@@ -634,7 +633,7 @@ xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey,  xmlSecKeyValueDsaPtr
     xmlSecAssert2(pubkey != NULL, -1);
     xmlSecAssert2(dsaValue != NULL, -1);
 
-    /* turn ctx->pubkey into dsakey */
+    /* turn pubkey into dsakey */
     status = BCryptExportKey(pubkey,
         NULL,
         BCRYPT_DSA_PUBLIC_BLOB,
@@ -642,7 +641,7 @@ xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey,  xmlSecKeyValueDsaPtr
         0,
         &bufLen,
         0);
-    if ((status != STATUS_SUCCESS) || (bufLen <= 0)) {
+    if ((status != STATUS_SUCCESS) || (bufLen == 0)) {
         xmlSecMSCngNtError2("BCryptExportKey", NULL, status, "bufLen=%lu", bufLen);
         goto done;
     }
@@ -664,14 +663,14 @@ xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey,  xmlSecKeyValueDsaPtr
         bufLen,
         &bufLen,
         0);
-    if ((status != STATUS_SUCCESS) || (bufLen <= 0)) {
+    if ((status != STATUS_SUCCESS) || (bufLen == 0)) {
         xmlSecMSCngNtError2("BCryptExportKey", NULL, status, "bufLen=%lu", bufLen);
         goto done;
     }
 
     /* check minimum blob size and detect V1 vs V2 by magic */
     if (bufLen < sizeof(BCRYPT_DSA_KEY_BLOB)) {
-        xmlSecMSCngNtError2("BCRYPT_DSA_KEY_BLOB", NULL, STATUS_SUCCESS, "dwBlobLen=%lu", bufLen);
+        xmlSecInvalidSizeLessThanError("BCryptExportKey(V1) blob size", (xmlSecSize)bufLen, (xmlSecSize)sizeof(BCRYPT_DSA_KEY_BLOB), NULL);
         goto done;
     }
     dsakey = (BCRYPT_DSA_KEY_BLOB*)bufData;
@@ -706,7 +705,7 @@ xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey,  xmlSecKeyValueDsaPtr
         stripped = xmlSecMSCngDsaStripLeadingZeros(bufData, dsakey->cbKey, &strippedSize);
         ret = xmlSecBufferSetData(&(dsaValue->g), stripped, strippedSize);
         if (ret < 0) {
-            xmlSecInternalError2("xmlSecBufferSetData(g)", NULL,"keyLen=%lu", dsakey->cbKey);
+            xmlSecInternalError2("xmlSecBufferSetData(g)", NULL, "keyLen=%lu", dsakey->cbKey);
             goto done;
         }
         bufData += dsakey->cbKey;
@@ -728,7 +727,7 @@ xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey,  xmlSecKeyValueDsaPtr
         BCRYPT_DSA_KEY_BLOB_V2* dsakey2v;
         xmlSecByte* v2Data;
         if (bufLen < sizeof(BCRYPT_DSA_KEY_BLOB_V2)) {
-            xmlSecMSCngNtError2("BCRYPT_DSA_KEY_BLOB_V2", NULL, STATUS_SUCCESS, "dwBlobLen=%lu", bufLen);
+            xmlSecInvalidSizeLessThanError("BCryptExportKey(V2) blob size", (xmlSecSize)bufLen, (xmlSecSize)sizeof(BCRYPT_DSA_KEY_BLOB_V2), NULL);
             goto done;
         }
         dsakey2v = (BCRYPT_DSA_KEY_BLOB_V2*)bufData;

@@ -546,8 +546,8 @@ xmlSecMSCngRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
         xmlSecInvalidTransformError3(transform,
             "for mscng, rsa/oaep mgf1 algorithm=\"%s\" must be the same as digest algorithm=\"%s\"",
-            xmlSecErrorsSafeString(digestAlg),
-            xmlSecErrorsSafeString(mgf1Alg));
+            xmlSecErrorsSafeString(mgf1Alg),
+            xmlSecErrorsSafeString(digestAlg));
         if (digestAlg != NULL) {
             xmlFree(digestAlg);
         }

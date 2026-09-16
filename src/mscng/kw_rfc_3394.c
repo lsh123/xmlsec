@@ -8,7 +8,7 @@
  */
 /**
  * @addtogroup xmlsec_mscng_crypto
- * @brief AES/Camellia Key Transport (RFC 3394) implementation for MSCng.
+ * @brief AES Key Transport (RFC 3394) implementation for MSCng.
  */
 #include "globals.h"
 

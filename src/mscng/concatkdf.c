@@ -60,18 +60,16 @@ static int      xmlSecMSCngConcatKdfNodeRead            (xmlSecTransformPtr tran
                                                          xmlNodePtr node,
                                                          xmlSecTransformCtxPtr transformCtx);
 
-static int      xmlSecMSCngConcatKdfExecute              (xmlSecTransformPtr transform,
-                                                          int last,
-                                                          xmlSecTransformCtxPtr transformCtx);
+static int      xmlSecMSCngConcatKdfExecute             (xmlSecTransformPtr transform,
+                                                         int last,
+                                                         xmlSecTransformCtxPtr transformCtx);
 
 
 static int
 xmlSecMSCngConcatKdfCheckId(xmlSecTransformPtr transform) {
-#ifndef XMLSEC_NO_CONCATKDF
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformConcatKdfId)) {
         return(1);
     }
-#endif /* XMLSEC_NO_CONCATKDF */
 
     /* not found */
     return(0);
@@ -135,7 +133,7 @@ xmlSecMSCngConcatKdfFinalize(xmlSecTransformPtr transform) {
 
 
 static int
-xmlSecMSCngConcatKdfSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
+xmlSecMSCngConcatKdfSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq) {
     xmlSecAssert2(xmlSecMSCngConcatKdfCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngConcatKdfCtxSize), -1);
     xmlSecAssert2(keyReq != NULL, -1);
@@ -187,7 +185,7 @@ xmlSecMSCngConcatKdfSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     return(0);
 }
 
-/* convert algorithm href to MSCng mac algo */
+/* convert digest href to MSCng hash algo */
 static LPCWSTR
 xmlSecMSCngConcatKdfGetDigestFromHref(const xmlChar* href) {
     /* use SHA256 by default */
@@ -253,7 +251,7 @@ xmlSecMSCngConcatKdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecMSCngTransformConcatKdfId), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngConcatKdfCtxSize), -1);
-    xmlSecAssert2(node!= NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
     XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecMSCngConcatKdfGetCtx(transform);
@@ -274,7 +272,7 @@ xmlSecMSCngConcatKdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     /* if we have something else then it's an error */
     cur = xmlSecGetNextElementNode(cur->next);
     if(cur != NULL) {
-        xmlSecUnexpectedNodeError(cur,  NULL);
+        xmlSecUnexpectedNodeError(cur, NULL);
         return(-1);
     }
 
@@ -298,7 +296,7 @@ xmlSecMSCngConcatKdfPerformKeyDerivation(
 ) {
     NTSTATUS status;
     BCRYPT_ALG_HANDLE hKdfAlg = NULL;
-    BCRYPT_KEY_HANDLE hKey= NULL;
+    BCRYPT_KEY_HANDLE hKey = NULL;
     DWORD cbResultLength = 0;
     BCryptBuffer paramBufferCONCATKDF[2];
     BCryptBufferDesc paramsCONCATKDF;

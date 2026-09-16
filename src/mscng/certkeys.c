@@ -446,7 +446,7 @@ xmlSecMSCngCertKeyDataFinalize(xmlSecKeyDataPtr data) {
     if((ctx->privkey != 0) && (ctx->privkeyNeedsFree == TRUE)) {
         status = NCryptFreeObject(ctx->privkey);
         if(status != STATUS_SUCCESS) {
-            xmlSecMSCngNtError("BCryptDestroyKey", NULL, status);
+            xmlSecMSCngNtError("NCryptFreeObject", NULL, status);
             /* ignore error */
         }
     }
@@ -941,7 +941,7 @@ xmlSecMSCngKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     xmlSecAssert2(xmlSecBufferGetData(&(rsaValue->modulus)) != NULL, NULL);
     xmlSecAssert2(xmlSecBufferGetData(&(rsaValue->publicExponent)) != NULL, NULL);
 
-    /* don'treverse blobs as both the XML and CNG works with big-endian */
+    /* don't reverse blobs as both the XML and CNG works with big-endian */
     mSize = xmlSecBufferGetSize(&(rsaValue->modulus));
     peSize = xmlSecBufferGetSize(&(rsaValue->publicExponent));
     xmlSecAssert2(mSize > 0, NULL);
@@ -1154,7 +1154,7 @@ xmlSecMSCngKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
 
     /* next is PrivateExponent node: not supported in MSCrypto */
 
-    /* don'treverse blobs as both the XML and CNG works with big-endian */
+    /* don't reverse blobs as both the XML and CNG works with big-endian */
     /* success */
     res = 0;
 
@@ -1340,9 +1340,9 @@ xmlSecMSCngKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
     pubkeySize -= 1;
 
     /* turn the read data into a public key blob, as documented at
-     * https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/ns-bcrypt-bcrypt_ecckey_blob>
+     * https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/ns-bcrypt-bcrypt_ecckey_blob
      *
-     * don'treverse blobs as both the XML and CNG works with big-endian
+     * don't reverse blobs as both the XML and CNG works with big-endian
      *
      */
     offset = sizeof(BCRYPT_ECCKEY_BLOB);
@@ -1538,7 +1538,7 @@ xmlSecMSCngKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyVa
         goto done;
     }
 
-    /* don'treverse blobs as both the XML and CNG works with big-endian */
+    /* don't reverse blobs as both the XML and CNG works with big-endian */
 
     /* success */
     res = 0;
@@ -2134,7 +2134,7 @@ xmlSecMSCngCreateDerForBCryptPubkey(xmlSecKeyDataPtr data, LPVOID* ppDer, DWORD*
         return(-1);
     }
     if(ret == 1) {
-         return xmlSecMSCngDsaBuildSubjectPublicKeyInfoDer(hPubkey, ppDer, pcbDer);
+        return(xmlSecMSCngDsaBuildSubjectPublicKeyInfoDer(hPubkey, ppDer, pcbDer));
     }
 
 #endif /* XMLSEC_NO_DSA */

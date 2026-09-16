@@ -454,7 +454,7 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
             xmlSecMSCngNtError("BCryptGenRandom", cipherName, status);
             return(-1);
         }
-        /* copy the nonce into the padding info */
+        /* copy the nonce into the auth info */
         memcpy(ctx->authInfo.pbNonce, bufferPtr, xmlSecMSCngAesGcmNonceLengthInBytes);
 
     } else {

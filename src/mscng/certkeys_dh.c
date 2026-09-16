@@ -53,7 +53,7 @@ xmlSecMSCngKeyDataDuplicateBCryptDhPrivKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HAN
     }
     status = BCryptExportKey(src, NULL, BCRYPT_DH_PRIVATE_BLOB, pbPrivBlob, cbPrivBlob, &cbPrivBlob, 0);
     if(status != STATUS_SUCCESS) {
-        xmlSecMSCngNtError("BCryptExportKey2(DH priv)", NULL, status);
+        xmlSecMSCngNtError("BCryptExportKey(DH priv data)", NULL, status);
         xmlSecMemCleanse(pbPrivBlob, cbPrivBlob);
         xmlFree(pbPrivBlob);
         return(-1);
@@ -133,7 +133,7 @@ xmlSecMSCngDerDecodeInteger(const xmlSecByte* p, const xmlSecByte* end, DWORD* p
 }
 
 /* Parse DH AlgorithmIdentifier parameters: SEQUENCE { INTEGER p, INTEGER g [, INTEGER q] }
- * On success sets output pointers and lengths for p and g (big-endian, no sign byte). */
+ * On success sets output pointers and lengths for p, g, and optional q (big-endian, no sign byte). */
 int
 xmlSecMSCngDhParseDhParameters(const xmlSecByte* params, DWORD paramsLen,
     const xmlSecByte** ppP, DWORD* pPLen,
@@ -431,7 +431,8 @@ xmlSecMSCngKeyDataDhPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDhPtr dh
     }
     dhkey = (BCRYPT_DH_KEY_BLOB*)bufData;
     if (dhkey->dwMagic != BCRYPT_DH_PUBLIC_MAGIC) {
-        xmlSecNotImplementedError2("Unexpected DH blob magic: 0x%08lX", (unsigned long)dhkey->dwMagic);
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
+            "Unexpected DH blob magic: 0x%08lX", (unsigned long)dhkey->dwMagic);
         goto done;
     }
     bufData += sizeof(BCRYPT_DH_KEY_BLOB);

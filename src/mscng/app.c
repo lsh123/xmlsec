@@ -297,7 +297,6 @@ xmlSecMSCngAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATTR
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
             "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
         return(NULL);
-        break;
     }
 
     return(key);
@@ -779,7 +778,7 @@ xmlSecMSCngAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
  * @param mngr the pointer to keys manager.
  * @param data the certificate data.
  * @param dataSize the certificate data size.
- * @param format the certificate format (PEM or DER).
+ * @param format the certificate format (DER).
  * @param type the certificate type (trusted/untrusted).
  * @return 0 on success or a negative value otherwise.
  */
@@ -915,7 +914,7 @@ xmlSecMSCngReadCrlFromBuffer(const xmlSecByte* data, xmlSecSize dataSize,
  *
  * @param mngr the keys manager.
  * @param filename the CRL filename.
- * @param format the CRL format (PEM or DER).
+ * @param format the CRL format (DER).
  * @param keyInfoCtx the key info context for verification parameters.
  * @return 0 on success or a negative value otherwise.
  */
@@ -989,7 +988,7 @@ done:
  * @param mngr the pointer to keys manager.
  * @param data the CRL data.
  * @param dataSize the CRL data size.
- * @param format the CRL format (PEM or DER).
+ * @param format the CRL format (DER).
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -1109,9 +1108,6 @@ xmlSecMSCngAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) 
  * function:
  * - Checks that key certificate is present
  * - Checks that key certificate is valid
- *
- * Adds @p key to the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
- * function.
  *
  * @param mngr the pointer to keys manager.
  * @param key the pointer to key.

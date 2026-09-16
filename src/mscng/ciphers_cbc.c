@@ -159,8 +159,6 @@ xmlSecMSCngCbcBlockCipherInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-    ctx->ctxInitialized = 0;
-
     return(0);
 }
 

@@ -31,7 +31,7 @@
 #include "../transform_helpers.h"
 
 
-/* XMLSEC_GNUTLS_BLOCK_CIPHER_MAX_IV_SIZE must be greater or equal than XMLSEC_CHACHA20_IV_SIZE */
+/* XMLSEC_GNUTLS_BLOCK_CIPHER_MAX_IV_SIZE must be greater than or equal to XMLSEC_CHACHA20_IV_SIZE */
 #define XMLSEC_GNUTLS_BLOCK_CIPHER_MAX_IV_SIZE                32
 #define XMLSEC_GNUTLS_BLOCK_CIPHER_MAX_BLOCK_SIZE             32
 #define XMLSEC_GNUTLS_BLOCK_CIPHER_PAD_SIZE                   (2 * XMLSEC_GNUTLS_BLOCK_CIPHER_MAX_BLOCK_SIZE)
@@ -127,7 +127,7 @@ xmlSecGnuTLSBlockCipherCtxInit(xmlSecGnuTLSBlockCipherCtxPtr ctx, xmlSecBufferPt
             return(-1);
         }
 
-        /* read iv from the output */
+        /* read iv from the input */
         if(ctx->isIvPrepended != 0) {
             /* Block cipher: read IV from the beginning of the ciphertext stream */
             if(xmlSecBufferGetSize(in) < ctx->ivSize) {
@@ -191,13 +191,13 @@ xmlSecGnuTLSBlockCipherCtxUpdateBlock(xmlSecGnuTLSBlockCipherCtxPtr ctx, const x
     if(encrypt) {
         err = gnutls_cipher_encrypt2(ctx->cipher, in, inSize, outBuf, inSize);
         if(err != GNUTLS_E_SUCCESS) {
-            xmlSecGnuTLSError("gnutls_cipher_encrypt2", err,  xmlSecErrorsSafeString(cipherName));
+            xmlSecGnuTLSError("gnutls_cipher_encrypt2", err, xmlSecErrorsSafeString(cipherName));
             return(-1);
         }
     } else {
         err = gnutls_cipher_decrypt2(ctx->cipher, in, inSize, outBuf, inSize);
         if(err != GNUTLS_E_SUCCESS) {
-            xmlSecGnuTLSError("gnutls_cipher_decrypt2", err,  xmlSecErrorsSafeString(cipherName));
+            xmlSecGnuTLSError("gnutls_cipher_decrypt2", err, xmlSecErrorsSafeString(cipherName));
             return(-1);
         }
     }
@@ -242,14 +242,14 @@ xmlSecGnuTLSBlockCipherCtxUpdate(xmlSecGnuTLSBlockCipherCtxPtr ctx, xmlSecBuffer
 
     ret = xmlSecGnuTLSBlockCipherCtxUpdateBlock(ctx, inBuf, inBlocksSize, out, encrypt, cipherName);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecGnuTLSBlockCipherCtxUpdateBlock",  xmlSecErrorsSafeString(cipherName));
+        xmlSecInternalError("xmlSecGnuTLSBlockCipherCtxUpdateBlock", xmlSecErrorsSafeString(cipherName));
         return(-1);
     }
 
     /* remove the processed block from input */
     ret = xmlSecBufferRemoveHead(in, inBlocksSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferRemoveHead",  xmlSecErrorsSafeString(cipherName),
+        xmlSecInternalError2("xmlSecBufferRemoveHead", xmlSecErrorsSafeString(cipherName),
             "size=" XMLSEC_SIZE_FMT, inBlocksSize);
         return(-1);
     }
@@ -724,7 +724,7 @@ xmlSecGnuTLSBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTra
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(in) == 0, -1);
     } else if(transform->status == xmlSecTransformStatusNone) {
-        /* the only way we can get here is if there is no enough data in the input */
+        /* the only way we can get here is if there is not enough data in the input */
         xmlSecAssert2(last == 0, -1);
     } else {
         xmlSecInvalidTransformStatusError(transform);

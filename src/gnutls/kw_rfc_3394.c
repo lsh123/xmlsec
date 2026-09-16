@@ -194,13 +194,13 @@ xmlSecGnuTLSKWRfc3394Initialize(xmlSecTransformPtr transform) {
 
     /* get and check block / iv sizes */
     ctx->blockSize = gnutls_cipher_get_block_size(ctx->algorithm);
-    if((ctx->blockSize <= 0) || (ctx->blockSize > XMLSEC_KW_RFC3394_BLOCK_SIZE)) {
+    if((ctx->blockSize == 0) || (ctx->blockSize > XMLSEC_KW_RFC3394_BLOCK_SIZE)) {
         xmlSecGnuTLSError2("gnutls_cipher_get_block_size", 0, NULL, "blockSize=" XMLSEC_SIZE_FMT, ctx->blockSize);
         xmlSecGnuTLSKWRfc3394Finalize(transform);
         return(-1);
     }
     ctx->ivSize = gnutls_cipher_get_iv_size(ctx->algorithm);
-    if((ctx->ivSize <= 0) || (ctx->ivSize > XMLSEC_KW_RFC3394_BLOCK_SIZE)) {
+    if((ctx->ivSize == 0) || (ctx->ivSize > XMLSEC_KW_RFC3394_BLOCK_SIZE)) {
         xmlSecGnuTLSError2("gnutls_cipher_get_iv_size", 0, NULL, "ivSize=" XMLSEC_SIZE_FMT, ctx->ivSize);
         xmlSecGnuTLSKWRfc3394Finalize(transform);
         return(-1);
@@ -236,7 +236,7 @@ xmlSecGnuTLSKWRfc3394Finalize(xmlSecTransformPtr transform) {
 }
 
 static int
-xmlSecGnuTLSKWRfc3394SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
+xmlSecGnuTLSKWRfc3394SetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq) {
     xmlSecGnuTLSKWRfc3394CtxPtr ctx;
     int ret;
 
@@ -246,7 +246,7 @@ xmlSecGnuTLSKWRfc3394SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr ke
     ctx = xmlSecGnuTLSKWRfc3394GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ret = xmlSecTransformKWRfc3394SetKeyReq(transform, &(ctx->parentCtx),keyReq);
+    ret = xmlSecTransformKWRfc3394SetKeyReq(transform, &(ctx->parentCtx), keyReq);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformKWRfc3394SetKeyReq", xmlSecTransformGetName(transform));
         return(-1);
@@ -362,7 +362,7 @@ xmlSecGnuTLSKWRfc3394BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte
 
     err = gnutls_cipher_encrypt2(ctx->cipher, in, inSize, out, outSize);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_cipher_encrypt2", err,  xmlSecTransformGetName(transform));
+        xmlSecGnuTLSError("gnutls_cipher_encrypt2", err, xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -375,7 +375,7 @@ static int
 xmlSecGnuTLSKWRfc3394BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSecSize inSize,
     xmlSecByte * out, xmlSecSize outSize, xmlSecSize * outWritten)
 {
-   xmlSecGnuTLSKWRfc3394CtxPtr ctx;
+    xmlSecGnuTLSKWRfc3394CtxPtr ctx;
     int err;
     int ret;
 
@@ -407,7 +407,7 @@ xmlSecGnuTLSKWRfc3394BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte
 
     err = gnutls_cipher_decrypt2(ctx->cipher, in, inSize, out, outSize);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_cipher_decrypt2", err,  xmlSecTransformGetName(transform));
+        xmlSecGnuTLSError("gnutls_cipher_decrypt2", err, xmlSecTransformGetName(transform));
         return(-1);
     }
 

@@ -709,7 +709,7 @@ xmlSecGnuTLSToDer(const gnutls_datum_t* src, gnutls_datum_t* dst, xmlSecSize siz
         size = src->size / 2;
     } else if((src->size > 2 * size) && (src->size % 2 == 0)) {
         /* however some implementations (e.g. Java) add leading zeros:
-         * https://github.com/lsh123/xmlsec/issues/941*/
+         * https://github.com/lsh123/xmlsec/issues/941 */
         size = src->size / 2;
     } else {
         xmlSecInternalError3("Invalid signature size", NULL,
@@ -774,7 +774,7 @@ xmlSecGnuTLSReadDerLength(const xmlSecByte * data, xmlSecSize dataSize, xmlSecSi
         /* indefinite length not supported */
         return(-1);
     } else if (cc == 0xff) {
-        /* forbidden length value.  */
+        /* forbidden length value. */
         return(-1);
     } else {
         xmlSecSize length = 0;

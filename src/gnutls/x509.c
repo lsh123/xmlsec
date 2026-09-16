@@ -222,7 +222,7 @@ xmlSecGnuTLSKeyDataX509AddCertInternal(xmlSecGnuTLSX509DataCtxPtr ctx, gnutls_x5
         if((cert == cert2) || (gnutls_x509_crt_equals(cert, cert2) != 0)) {
             ret = xmlSecPtrListRemove(&(ctx->certsList), ii);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecPtrListRemove()", NULL);
+                xmlSecInternalError("xmlSecPtrListRemove(ii)", NULL);
                 return(-1);
             }
             break;
@@ -300,7 +300,7 @@ xmlSecGnuTLSKeyDataX509AdoptCert(xmlSecKeyDataPtr data, gnutls_x509_crt_t cert) 
     ctx = xmlSecGnuTLSX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
-    /* pkcs12 files sometime have key cert twice: as the key cert and as the cert in the chain */
+    /* pkcs12 files sometimes have key cert twice: as the key cert and as the cert in the chain */
     if((ctx->keyCert != NULL) && ((cert == ctx->keyCert) || (gnutls_x509_crt_equals(cert, ctx->keyCert) != 0))) {
         gnutls_x509_crt_deinit(cert); /* caller expects data to own the cert on success. */
         return(0);
@@ -831,7 +831,7 @@ xmlSecGnuTLSKeyDataX509Write(xmlSecKeyDataPtr data,  xmlSecKeyX509DataValuePtr x
         if (XMLSEC_X509DATA_HAS_EMPTY_NODE(content, XMLSEC_X509DATA_SKI_NODE)) {
             ret = xmlSecGnuTLSX509CertSKIWrite(cert, &(x509Value->ski));
             if(ret < 0) {
-                xmlSecInternalError2("xmlSecGnuTLSX509SKIWrite",
+                xmlSecInternalError2("xmlSecGnuTLSX509CertSKIWrite",
                     xmlSecKeyDataGetName(data),
                     "pos=" XMLSEC_SIZE_FMT, ctx->crtPos);
                 return(-1);

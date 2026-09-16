@@ -196,7 +196,7 @@ xmlSecGnuTLSX509CertDup(gnutls_x509_crt_t src) {
 }
 
 
-/* returns 1 if self signed; 0 - if not; <0 on error*/
+/* returns 1 if self signed; 0 - if not */
 int
 xmlSecGnuTLSX509CertIsSelfSigned(gnutls_x509_crt_t cert) {
     unsigned ret;
@@ -607,7 +607,7 @@ xmlSecGnuTLSX509MatchBySubjectName(gnutls_x509_crt_t cert, const xmlChar* subjec
 }
 
 static int
-xmlSecGnuTLSX509MatchByIssuer(gnutls_x509_crt_t cert,  const xmlChar* issuerName, const xmlChar* issuerSerial) {
+xmlSecGnuTLSX509MatchByIssuer(gnutls_x509_crt_t cert, const xmlChar* issuerName, const xmlChar* issuerSerial) {
     xmlChar* certIssuerSerial;
     xmlChar* certIssuerName;
     int ret;
@@ -961,7 +961,7 @@ xmlSecGnuTLSX509CrlDerWrite(gnutls_x509_crl_t crl, xmlSecBufferPtr buf) {
     xmlSecAssert2(bufData != NULL, -1);
 
     /* write it out */
-    err = gnutls_x509_crl_export(crl,GNUTLS_X509_FMT_DER, bufData, &bufSize);
+    err = gnutls_x509_crl_export(crl, GNUTLS_X509_FMT_DER, bufData, &bufSize);
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_x509_crl_export(GNUTLS_X509_FMT_DER)", err, NULL);
         return(-1);
@@ -1028,7 +1028,7 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const 
     xmlSecAssert2(dataSize > 0, -1);
     xmlSecAssert2(priv_key != NULL, -1);
     xmlSecAssert2((*priv_key) == NULL, -1);
-    xmlSecAssert2(key_cert!= NULL, -1);
+    xmlSecAssert2(key_cert != NULL, -1);
     xmlSecAssert2((*key_cert) == NULL, -1);
     xmlSecAssert2(certsList != NULL, -1);
     xmlSecAssert2(keyName != NULL, -1);
@@ -1338,7 +1338,7 @@ xmlSecGnuTLSDnAttrsEqual(const xmlSecGnuTLSDnAttr * left, xmlSecSize leftSize,
     xmlSecAssert2(right != NULL, -1);
     xmlSecAssert2(rightSize > 0, -1);
 
-    /* compare number of non-nullattributes */
+    /* compare number of non-null attributes */
     for(ii = 0; ii < leftSize; ++ii) {
         if(left[ii].key != NULL) {
             ++leftNum;

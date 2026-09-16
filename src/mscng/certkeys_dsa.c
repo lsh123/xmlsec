@@ -670,7 +670,7 @@ xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDsaPtr 
 
     /* check minimum blob size and detect V1 vs V2 by magic */
     if (bufLen < sizeof(BCRYPT_DSA_KEY_BLOB)) {
-        xmlSecInvalidSizeLessThanError("BCryptExportKey(V1) blob size", bufLen, sizeof(BCRYPT_DSA_KEY_BLOB), NULL);
+        xmlSecInvalidSizeLessThanError("BCryptExportKey(V1) blob size", (xmlSecSize)bufLen, (xmlSecSize)sizeof(BCRYPT_DSA_KEY_BLOB), NULL);
         goto done;
     }
     dsakey = (BCRYPT_DSA_KEY_BLOB*)bufData;
@@ -727,7 +727,7 @@ xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDsaPtr 
         BCRYPT_DSA_KEY_BLOB_V2* dsakey2v;
         xmlSecByte* v2Data;
         if (bufLen < sizeof(BCRYPT_DSA_KEY_BLOB_V2)) {
-            xmlSecInvalidSizeLessThanError("BCryptExportKey(V2) blob size", bufLen, sizeof(BCRYPT_DSA_KEY_BLOB_V2), NULL);
+            xmlSecInvalidSizeLessThanError("BCryptExportKey(V2) blob size", (xmlSecSize)bufLen, (xmlSecSize)sizeof(BCRYPT_DSA_KEY_BLOB_V2), NULL);
             goto done;
         }
         dsakey2v = (BCRYPT_DSA_KEY_BLOB_V2*)bufData;

@@ -292,7 +292,9 @@ xmlSecTransformCtxGetDefaultBinaryChunkSize(void) {
 void
 xmlSecTransformCtxSetDefaultBinaryChunkSize(xmlSecSize binaryChunkSize) {
     xmlSecAssert(binaryChunkSize > 0);
-    g_xmlSecTransformCtxDefaultBinaryChunkSize = binaryChunkSize;
+    if(binaryChunkSize > 0) {
+        g_xmlSecTransformCtxDefaultBinaryChunkSize = binaryChunkSize;
+    }
 }
 
 
@@ -870,7 +872,7 @@ xmlSecTransformCtxNodesListRead(xmlSecTransformCtxPtr ctx, xmlNodePtr node, xmlS
  * @param ctx the pointer to transforms chain processing context.
  * @param uri the URI.
  * @param hereNode the pointer to "here" node required by some
- *                      XML transforms (may be NULL).
+ *                      XML transforms (must not be NULL).
  *
  * @return 0 on success or a negative value otherwise.
  */
@@ -950,7 +952,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
         xmlSecSize size;
         int len, xptrLen, tmplLen;
 
-        /* we need to add "xpointer(id('..')) because otherwise we have
+        /* we need to add "xpointer(id('..'))" because otherwise we have
          * problems with numeric ("111" and so on) and other "strange" ids */
         tmplLen = xmlStrlen(BAD_CAST XMLSEC_TRANSFORM_XPOINTER_TMPL);
         xptrLen = xmlStrlen(xptr);
@@ -1166,7 +1168,7 @@ xmlSecTransformCtxUriExecute(xmlSecTransformCtxPtr ctx, const xmlChar* uri) {
     }
 
     /* Now we have a choice: we either can push from first transform or pop
-     * from last. Our C14N transforms prefers push, so push data!
+     * from last. Our C14N transforms prefer push, so push data!
      */
     ret = xmlSecTransformPump(uriTransform, uriTransform->next, ctx);
     if(ret < 0) {
@@ -1213,7 +1215,7 @@ xmlSecTransformCtxXmlExecute(xmlSecTransformCtxPtr ctx, xmlSecNodeSetPtr nodes) 
         return(-1);
     }
 
-    /* it's better to do push than pop because all XML transform
+    /* it's better to do push than pop because all XML transforms
      * just don't care and c14n likes push more than pop */
     ret = xmlSecTransformPushXml(ctx->first, nodes, ctx);
     if(ret < 0) {
@@ -1226,7 +1228,7 @@ xmlSecTransformCtxXmlExecute(xmlSecTransformCtxPtr ctx, xmlSecNodeSetPtr nodes) 
     return(0);
 }
 
-static void
+void
 xmlSecTransformCtxClearNodeRefs(xmlSecTransformCtxPtr ctx, xmlSecNodeSetPtr nodes) {
     xmlSecTransformPtr transform;
 

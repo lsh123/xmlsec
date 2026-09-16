@@ -13,15 +13,9 @@
 
 #ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdarg.h>
-#include <string.h>
-
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/app.h>
 #include <xmlsec/dl.h>
-#include <xmlsec/list.h>
 #include <xmlsec/keysdata.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>
@@ -2580,7 +2574,7 @@ xmlSecCryptoAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyData
  * @param key the pointer to key.
  * @param data the certificate binary data.
  * @param dataSize the certificate binary data size.
- * @param format the certificate file format.
+ * @param format the certificate data format.
  * @return 0 on success or a negative value otherwise.
  */
 int

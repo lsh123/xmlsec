@@ -219,7 +219,7 @@ xmlSecKeyUseWithDebugDump(xmlSecKeyUseWithPtr keyUseWith, FILE* output) {
     xmlSecAssert(keyUseWith != NULL);
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== KeyUseWith: application=\"%s\",identifier=\"%s\"\n",
+    fprintf(output, "=== KeyUseWith: application=\"%s\", identifier=\"%s\"\n",
                 (keyUseWith->application) ? keyUseWith->application : BAD_CAST "",
                 (keyUseWith->identifier) ? keyUseWith->identifier : BAD_CAST "");
 }
@@ -298,7 +298,6 @@ xmlSecKeyReqInitialize(xmlSecKeyReqPtr keyReq) {
         xmlSecInternalError("xmlSecPtrListInitialize", NULL);
         return(-1);
     }
-
 
     return(0);
 }
@@ -917,7 +916,6 @@ xmlSecKeyAdoptData(xmlSecKeyPtr key, xmlSecKeyDataPtr data) {
         }
     }
 
-
     size = xmlSecPtrListGetSize(key->dataList);
     for(pos = 0; pos < size; ++pos) {
         tmp = (xmlSecKeyDataPtr)xmlSecPtrListGetItem(key->dataList, pos);
@@ -941,13 +939,15 @@ xmlSecKeyAdoptData(xmlSecKeyPtr key, xmlSecKeyDataPtr data) {
  */
 void
 xmlSecKeyDebugDump(xmlSecKeyPtr key, FILE *output) {
-    xmlSecAssert(xmlSecKeyIsValid(key));
+    xmlSecAssert(key != NULL);
     xmlSecAssert(output != NULL);
 
     fprintf(output, "== KEY\n");
-    fprintf(output, "=== method: %s\n",
-            (key->value->id->dataNodeName != NULL) ?
-            (char*)(key->value->id->dataNodeName) : "NULL");
+    if(key->value != NULL) {
+        fprintf(output, "=== method: %s\n",
+                (key->value->id->dataNodeName != NULL) ?
+                (char*)(key->value->id->dataNodeName) : "NULL");
+    }
 
     fprintf(output, "=== key type: ");
     if((xmlSecKeyGetType(key) & xmlSecKeyDataTypeSymmetric) != 0) {
@@ -986,14 +986,16 @@ xmlSecKeyDebugDump(xmlSecKeyPtr key, FILE *output) {
  */
 void
 xmlSecKeyDebugXmlDump(xmlSecKeyPtr key, FILE *output) {
-    xmlSecAssert(xmlSecKeyIsValid(key));
+    xmlSecAssert(key != NULL);
     xmlSecAssert(output != NULL);
 
     fprintf(output, "<KeyInfo>\n");
 
-    fprintf(output, "<KeyMethod>");
-    xmlSecPrintXmlString(output, key->value->id->dataNodeName);
-    fprintf(output, "</KeyMethod>\n");
+    if(key->value != NULL) {
+        fprintf(output, "<KeyMethod>");
+        xmlSecPrintXmlString(output, key->value->id->dataNodeName);
+        fprintf(output, "</KeyMethod>\n");
+    }
 
     fprintf(output, "<KeyType>");
     if((xmlSecKeyGetType(key) & xmlSecKeyDataTypeSymmetric) != 0) {
@@ -1293,7 +1295,7 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyDestroy(key);
 
     /* if we have keys manager, try to find any key that matches the required key (if lax key search is allowed) */
-    if(((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_LAX_KEY_SEARCH) != 0) &&  (keyInfoCtx->keysMngr != NULL)) {
+    if(((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_LAX_KEY_SEARCH) != 0) && (keyInfoCtx->keysMngr != NULL)) {
         key = xmlSecKeysMngrFindKey(keyInfoCtx->keysMngr, NULL, keyInfoCtx);
         if((key != NULL) && (xmlSecKeyGetValue(key) != NULL)) {
             return(key);

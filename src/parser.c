@@ -330,15 +330,6 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes, xmlSec
  * XML Parser functions
  *
   *****************************************************************************/
-typedef struct _xmlSecExtMemoryParserCtx {
-    const xmlSecByte    *prefix;
-    xmlSecSize                  prefixSize;
-    const xmlSecByte    *buffer;
-    xmlSecSize                  bufferSize;
-    const xmlSecByte    *postfix;
-    xmlSecSize                  postfixSize;
-} xmlSecExtMemoryParserCtx, *xmlSecExtMemoryParserCtxPtr;
-
 /**
  * @brief Loads an XML document from a file.
  * @details Loads an XML document from the file @p filename. The caller owns

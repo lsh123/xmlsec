@@ -66,7 +66,7 @@
  * TODO: only bit aligned bit strings are supported (https://github.com/lsh123/xmlsec/issues/514)
  */
 static int
-xmlSecTransformConcatKdfParamsReadsBitsAttr(xmlSecBufferPtr buf, xmlNodePtr node, const xmlChar* attrName) {
+xmlSecTransformConcatKdfParamsReadBitsAttr(xmlSecBufferPtr buf, xmlNodePtr node, const xmlChar* attrName) {
     xmlChar * attrValue;
     xmlSecByte* data;
     xmlSecSize size;
@@ -202,29 +202,29 @@ xmlSecTransformConcatKdfParamsRead(xmlSecTransformConcatKdfParamsPtr params, xml
     }
 
     /* now read all attributes */
-    ret = xmlSecTransformConcatKdfParamsReadsBitsAttr(&(params->bufAlgorithmID), node, xmlSecAttrConcatKDFAlgorithmID);
+    ret = xmlSecTransformConcatKdfParamsReadBitsAttr(&(params->bufAlgorithmID), node, xmlSecAttrConcatKDFAlgorithmID);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformConcatKdfParamsReadsBitsAttr(AlgorithmID)", NULL);
+        xmlSecInternalError("xmlSecTransformConcatKdfParamsReadBitsAttr(AlgorithmID)", NULL);
         return(-1);
     }
-    ret = xmlSecTransformConcatKdfParamsReadsBitsAttr(&(params->bufPartyUInfo), node, xmlSecAttrConcatKDFPartyUInfo);
+    ret = xmlSecTransformConcatKdfParamsReadBitsAttr(&(params->bufPartyUInfo), node, xmlSecAttrConcatKDFPartyUInfo);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformConcatKdfParamsReadsBitsAttr(PartyUInfo)", NULL);
+        xmlSecInternalError("xmlSecTransformConcatKdfParamsReadBitsAttr(PartyUInfo)", NULL);
         return(-1);
     }
-    ret = xmlSecTransformConcatKdfParamsReadsBitsAttr(&(params->bufPartyVInfo), node, xmlSecAttrConcatKDFPartyVInfo);
+    ret = xmlSecTransformConcatKdfParamsReadBitsAttr(&(params->bufPartyVInfo), node, xmlSecAttrConcatKDFPartyVInfo);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformConcatKdfParamsReadsBitsAttr(PartyVInfo)", NULL);
+        xmlSecInternalError("xmlSecTransformConcatKdfParamsReadBitsAttr(PartyVInfo)", NULL);
         return(-1);
     }
-    ret = xmlSecTransformConcatKdfParamsReadsBitsAttr(&(params->bufSuppPubInfo), node, xmlSecAttrConcatKDFSuppPubInfo);
+    ret = xmlSecTransformConcatKdfParamsReadBitsAttr(&(params->bufSuppPubInfo), node, xmlSecAttrConcatKDFSuppPubInfo);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformConcatKdfParamsReadsBitsAttr(SuppPubInfo)", NULL);
+        xmlSecInternalError("xmlSecTransformConcatKdfParamsReadBitsAttr(SuppPubInfo)", NULL);
         return(-1);
     }
-    ret = xmlSecTransformConcatKdfParamsReadsBitsAttr(&(params->bufSuppPrivInfo), node, xmlSecAttrConcatKDFSuppPrivInfo);
+    ret = xmlSecTransformConcatKdfParamsReadBitsAttr(&(params->bufSuppPrivInfo), node, xmlSecAttrConcatKDFSuppPrivInfo);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformConcatKdfParamsReadsBitsAttr(SuppPrivInfo)", NULL);
+        xmlSecInternalError("xmlSecTransformConcatKdfParamsReadBitsAttr(SuppPrivInfo)", NULL);
         return(-1);
     }
 
@@ -534,7 +534,7 @@ xmlSecTransformKAMRead(xmlSecTransformKAMPtr params, xmlNodePtr node, xmlSecTran
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
-    /* next node is required OriginatorKeyInfo (we need public key) */
+    /* next node is required OriginatorKeyInfo (originator key: private for encrypt, public for decrypt) */
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeOriginatorKeyInfo, xmlSecEncNs))) {
         xmlSecInvalidNodeError(cur, xmlSecNodeOriginatorKeyInfo, NULL);
         return(-1);
@@ -549,7 +549,7 @@ xmlSecTransformKAMRead(xmlSecTransformKAMPtr params, xmlNodePtr node, xmlSecTran
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
-    /* next node is required RecipientKeyInfo (we need private key) */
+    /* next node is required RecipientKeyInfo (recipient key: public for encrypt, private for decrypt) */
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeRecipientKeyInfo, xmlSecEncNs))) {
         xmlSecInvalidNodeError(cur, xmlSecNodeRecipientKeyInfo, NULL);
         return(-1);
@@ -834,7 +834,7 @@ xmlSecTransformKEMRead(xmlNodePtr node, xmlSecTransformPtr kemTransform, xmlSecT
         /* find CipherValue inside CipherData */
         cipherValueNode = xmlSecGetNextElementNode(cur->children);
         if((cipherValueNode == NULL) || (!xmlSecCheckNodeName(cipherValueNode, xmlSecNodeCipherValue, xmlSecEncNs))) {
-            xmlSecInvalidNodeError(cipherValueNode, xmlSecNodeCipherValue, xmlSecNodeGetName(node));
+            xmlSecInvalidNodeError(cipherValueNode, xmlSecNodeCipherValue, NULL);
             return(-1);
         }
 
@@ -905,7 +905,7 @@ xmlSecTransformKEMWrite(xmlNodePtr node, xmlSecTransformPtr kemTransform, xmlSec
 
         cipherValueNode = xmlSecGetNextElementNode(cur->children);
         if((cipherValueNode == NULL) || (!xmlSecCheckNodeName(cipherValueNode, xmlSecNodeCipherValue, xmlSecEncNs))) {
-            xmlSecInvalidNodeError(cipherValueNode, xmlSecNodeCipherValue, xmlSecNodeGetName(node));
+            xmlSecInvalidNodeError(cipherValueNode, xmlSecNodeCipherValue, NULL);
             return(-1);
         }
 

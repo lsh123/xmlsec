@@ -198,7 +198,7 @@ xmlSecKeyDataIdsRegisterDefault(void) {
         return(-1);
     }
     /* EXPERIMENTAL and should NOT be used in production */
- #ifndef XMLSEC_NO_MLKEM
+#ifndef XMLSEC_NO_MLKEM
     if(xmlSecKeyDataIdsRegisterDisabled(xmlSecKeyDataEncapsulationMechanismId) < 0) {
         xmlSecInternalError("xmlSecKeyDataIdsRegisterDisabled(xmlSecKeyDataEncapsulationMechanismId)", NULL);
         return(-1);
@@ -543,7 +543,7 @@ xmlSecKeyDataIdListGetKlass(void) {
 }
 
 /**
- * @brief Lookups @p dataId in @p list.
+ * @brief Looks up @p dataId in @p list.
  * @param list the pointer to key data ids list.
  * @param dataId the key data klass.
  *
@@ -568,7 +568,7 @@ xmlSecKeyDataIdListFind(xmlSecPtrListPtr list, xmlSecKeyDataId dataId) {
 
 /**
  * @brief Looks up a key data klass by XML node name, namespace, and usage.
- * @details Lookups data klass in the list with given @p nodeName, @p nodeNs and
+ * @details Looks up data klass in the list with given @p nodeName, @p nodeNs and
  * @p usage in the @p list.
  * @param list the pointer to key data ids list.
  * @param nodeName the desired key data klass XML node name.
@@ -604,7 +604,7 @@ xmlSecKeyDataIdListFindByNode(xmlSecPtrListPtr list, const xmlChar* nodeName,
 
 /**
  * @brief Looks up a key data klass by href and usage.
- * @details Lookups data klass in the list with given @p href and @p usage in @p list.
+ * @details Looks up data klass in the list with given @p href and @p usage in @p list.
  * @param list the pointer to key data ids list.
  * @param href the desired key data klass href.
  * @param usage the desired key data usage.
@@ -636,7 +636,7 @@ xmlSecKeyDataIdListFindByHref(xmlSecPtrListPtr list, const xmlChar* href,
 
 /**
  * @brief Looks up a key data klass by name and usage.
- * @details Lookups data klass in the list with given @p name and @p usage in @p list.
+ * @details Looks up data klass in the list with given @p name and @p usage in @p list.
  * @param list the pointer to key data ids list.
  * @param name the desired key data klass name.
  * @param usage the desired key data usage.

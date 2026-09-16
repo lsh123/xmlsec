@@ -34,7 +34,7 @@
 #define XMLSEC_X509_NAME_READ_STATE_NORMAL          0
 #define XMLSEC_X509_NAME_READ_STATE_AFTER_SLASH1    1
 #define XMLSEC_X509_NAME_READ_STATE_AFTER_SLASH2    2
-#define XMLSEC_X509_NAME_READ_STATE_DELIMETER       3
+#define XMLSEC_X509_NAME_READ_STATE_DELIMITER       3
 
 /******************************************************************************
  *
@@ -902,14 +902,14 @@ xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
     xmlSecAssert2(outWritten != NULL, -1);
 
     ii = jj = nonSpaceJJ = 0;
-    while ((ii < (*inSize)) && (state != XMLSEC_X509_NAME_READ_STATE_DELIMETER)) {
+    while ((ii < (*inSize)) && (state != XMLSEC_X509_NAME_READ_STATE_DELIMITER)) {
         inCh = (*in)[ii];
 
         switch(state) {
         case XMLSEC_X509_NAME_READ_STATE_NORMAL:
             if (inCh == delim) {
                 /* stop */
-                state = XMLSEC_X509_NAME_READ_STATE_DELIMETER;
+                state = XMLSEC_X509_NAME_READ_STATE_DELIMITER;
             } else if (inCh == '\\') {
                   /* do not update output, move to next char */
                 state = XMLSEC_X509_NAME_READ_STATE_AFTER_SLASH1;
@@ -1113,6 +1113,13 @@ xmlSecX509AttrValueStringRead(
             /* convert and save to output */
             out[jj] = xmlSecFromHex2(hex1, hex2);
             ++jj;
+        }
+
+        /* fail if the output buffer was exhausted while hex digits are still
+         * left in the input (the value would be truncated) */
+        if((jj >= outSize) && ((*inSize) > 0) && (xmlSecIsHex(**in))) {
+            xmlSecInvalidSizeOtherError("output buffer is too small", NULL);
+            return(-1);
         }
         (*outWritten) = jj;
         (*outType) = XMLSEC_X509_VALUE_TYPE_OCTET_STRING;

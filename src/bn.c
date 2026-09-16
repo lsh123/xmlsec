@@ -279,7 +279,7 @@ xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
      *      len = 8 * <bn size>
      */
     if(size > (XMLSEC_SIZE_MAX - 2) / 8) {
-        xmlSecInvalidSizeError("size", size, (XMLSEC_SIZE_MAX - 2) / 8, NULL);
+        xmlSecInvalidSizeMoreThanError("size", size, (XMLSEC_SIZE_MAX - 2) / 8, NULL);
         xmlSecBnFinalize(&bn2);
         return (NULL);
     }
@@ -631,11 +631,11 @@ xmlSecBnCompare(xmlSecBnPtr bn, const xmlSecByte* data, xmlSecSize dataSize) {
     bnSize = xmlSecBnGetSize(bn);
 
     /* skip zeros in the beginning */
-    while((dataSize > 0) && (data != 0) && (data[0] == 0)) {
+    while((dataSize > 0) && (data != NULL) && (data[0] == 0)) {
         ++data;
         --dataSize;
     }
-    while((bnSize > 0) && (bnData != 0) && (bnData[0] == 0)) {
+    while((bnSize > 0) && (bnData != NULL) && (bnData[0] == 0)) {
         ++bnData;
         --bnSize;
     }
@@ -679,10 +679,10 @@ xmlSecBnCompareReverse(xmlSecBnPtr bn, const xmlSecByte* data, xmlSecSize dataSi
     bnSize = xmlSecBnGetSize(bn);
 
     /* skip zeros in the beginning */
-    while((dataSize > 0) && (data != 0) && (data[dataSize - 1] == 0)) {
+    while((dataSize > 0) && (data != NULL) && (data[dataSize - 1] == 0)) {
         --dataSize;
     }
-    while((bnSize > 0) && (bnData != 0) && (bnData[0] == 0)) {
+    while((bnSize > 0) && (bnData != NULL) && (bnData[0] == 0)) {
         ++bnData;
         --bnSize;
     }
@@ -869,7 +869,7 @@ xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
         break;
     default:
         /* invalid format */
-        xmlSecInternalError("unsupported BN format", NULL);
+        xmlSecInvalidDataError("unsupported BN format", NULL);
         return(-1);
     }
 

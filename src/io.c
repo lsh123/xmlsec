@@ -553,8 +553,8 @@ xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const xmlChar *uri) {
     }
 
     if((ctx->clbks == NULL) || (ctx->clbksCtx == NULL)) {
-        xmlSecInternalError2("ctx->clbks->opencallback", xmlSecTransformGetName(transform),
-                            "uri=%s", xmlSecErrorsSafeString(uri));
+        xmlSecInternalError2("open callback", xmlSecTransformGetName(transform),
+                             "uri=%s", xmlSecErrorsSafeString(uri));
         return(-1);
     }
 
@@ -587,9 +587,9 @@ xmlSecTransformInputURIClose(xmlSecTransformPtr transform) {
             xmlSecIOError("ctx->clbks->closecallback", xmlSecTransformGetName(transform), NULL);
             return(-1);
         }
-        ctx->clbksCtx = NULL;
-        ctx->clbks = NULL;
     }
+    ctx->clbksCtx = NULL;
+    ctx->clbks = NULL;
 
     /* done */
     return(0);

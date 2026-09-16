@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <errno.h>
 
 #include <libxml/tree.h>
 #include <libxml/valid.h>
@@ -81,9 +82,11 @@ xmlSecGetNodeContentAndTrim(const xmlNodePtr cur) {
     while(((*bb) != '\0') && isspace(*bb)) { ++bb; }
 
     /* rtrim */
-    ee = bb + xmlStrlen(bb) - 1;
-    while((bb <= ee) && isspace(*ee)) { --ee; }
-    *(ee + 1) = '\0';
+    if((*bb) != '\0') {
+        ee = bb + xmlStrlen(bb) - 1;
+        while((bb <= ee) && isspace(*ee)) { --ee; }
+        *(ee + 1) = '\0';
+    }
 
     /* move string to the beginning */
     if(content != bb) {
@@ -192,10 +195,17 @@ xmlSecGetNodeContentAsSize(const xmlNodePtr cur, xmlSecSize defValue, xmlSecSize
     xmlSecAssert2(cur != NULL, -1);
     xmlSecAssert2(res != NULL, -1);
 
-    content = xmlSecGetNodeContentAndTrim(cur);
-    if(content == NULL) {
+    /* a node without children has no content: use the default value */
+    if(cur->children == NULL) {
         (*res) = defValue;
         return(0);
+    }
+
+    content = xmlSecGetNodeContentAndTrim(cur);
+    if(content == NULL) {
+        /* the node has content, so a NULL return indicates an error */
+        xmlSecInternalError("xmlSecGetNodeContentAndTrim", NULL);
+        return(-1);
     }
     if(xmlStrlen(content) == 0) {
         /* empty or whitespace-only content: use the default value */
@@ -204,9 +214,10 @@ xmlSecGetNodeContentAsSize(const xmlNodePtr cur, xmlSecSize defValue, xmlSecSize
         return(0);
     }
 
-    /* check both the value and the end pointer just in case */
+    /* check for negative values and overflow */
+    errno = 0;
     val = strtol((char*)content, &endptr, 10);
-    if((val < 0) || (val == LONG_MAX) || (endptr == NULL)) {
+    if((val < 0) || (errno == ERANGE)) {
         xmlSecInvalidNodeContentError(cur, NULL, "can't parse node content as size");
         xmlFree(content);
         return(-1);

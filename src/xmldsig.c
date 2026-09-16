@@ -32,6 +32,7 @@
 #include <xmlsec/errors.h>
 
 #include "cast_helpers.h"
+#include "transform_helpers.h"
 
 /******************************************************************************
  *
@@ -584,9 +585,12 @@ xmlSecDSigCtxProcessSignatureNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
         ret = xmlSecTransformCtxXmlExecute(&(dsigCtx->transformCtx), nodeset);
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformCtxXmlExecute", NULL);
+            xmlSecTransformCtxClearNodeRefs(&(dsigCtx->transformCtx), nodeset);
             xmlSecNodeSetDestroy(nodeset);
             return(-1);
         }
+
+        xmlSecTransformCtxClearNodeRefs(&(dsigCtx->transformCtx), nodeset);
         xmlSecNodeSetDestroy(nodeset);
     } else {
         xmlSecNotImplementedError("Binary c14n transforms are not supported");

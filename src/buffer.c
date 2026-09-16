@@ -10,7 +10,7 @@
  * @brief Binary memory buffer functions.
  */
 
-/* Required for xmlSecMemCleanse when compiled with --enable-pedantic (ie with -std=c99 or -std=c23) (also see configure.ac) */
+/* Required for xmlSecMemCleanse when compiled with --enable-pedantic (i.e. with -std=c99 or -std=c23) (also see configure.ac) */
 #if defined(__GNUC__) && !defined(_GNU_SOURCE)
 #define _GNU_SOURCE
 #endif
@@ -765,6 +765,7 @@ xmlSecBufferDebugHexDump(xmlSecBufferPtr buf, FILE* output) {
     size = xmlSecBufferGetSize(buf);
 
     for(ii = 0; ii < size; ++ii) {
+        xmlSecAssert(data != NULL);
         fprintf(output, "%02x", data[ii]);
         if((ii + 1) % 32 == 0) {
             fprintf(output, "\n");

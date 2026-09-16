@@ -374,9 +374,9 @@ xmlSecTmplSignatureAddObject(xmlNodePtr signNode, const xmlChar *id,
 /**
  * @brief Gets the &lt;dsig:SignatureMethod/&gt; child of &lt;dsig:SignedInfo/&gt; node.
  * @details Gets pointer to &lt;dsig:SignatureMethod/&gt; child of &lt;dsig:SignedInfo/&gt; node.
- * @param signNode the pointer to <dsig:Signature /> node.
+ * @param signNode the pointer to &lt;dsig:Signature /&gt; node.
  *
- * @return pointer to <dsig:SignatureMethod /> node or NULL if an error occurs.
+ * @return pointer to &lt;dsig:SignatureMethod /&gt; node or NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecTmplSignatureGetSignMethodNode(xmlNodePtr signNode) {
@@ -401,9 +401,9 @@ xmlSecTmplSignatureGetSignMethodNode(xmlNodePtr signNode) {
 /**
  * @brief Gets the &lt;dsig:CanonicalizationMethod/&gt; child of &lt;dsig:SignedInfo/&gt; node.
  * @details Gets pointer to &lt;dsig:CanonicalizationMethod/&gt; child of &lt;dsig:SignedInfo/&gt; node.
- * @param signNode the pointer to <dsig:Signature /> node.
+ * @param signNode the pointer to &lt;dsig:Signature /&gt; node.
  *
- * @return pointer to <dsig:CanonicalizationMethod /> node or NULL if an error occurs.
+ * @return pointer to &lt;dsig:CanonicalizationMethod /&gt; node or NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecTmplSignatureGetC14NMethodNode(xmlNodePtr signNode) {
@@ -530,7 +530,7 @@ xmlSecTmplObjectAddSignProperties(xmlNodePtr objectNode, const xmlChar *id, cons
  * if an error occurs.
  */
 xmlNodePtr
-xmlSecTmplObjectAddManifest(xmlNodePtr objectNode,  const xmlChar *id) {
+xmlSecTmplObjectAddManifest(xmlNodePtr objectNode, const xmlChar *id) {
     xmlNodePtr res;
 
     xmlSecAssert2(objectNode != NULL, NULL);
@@ -578,7 +578,7 @@ xmlSecTmplManifestAddReference(xmlNodePtr manifestNode, xmlSecTransformId digest
   *****************************************************************************/
 /**
  * @brief Creates a new &lt;enc:EncryptedData/&gt; node for encryption template.
- * @details Creates new <enc:EncryptedData /> node for encryption template.
+ * @details Creates new &lt;enc:EncryptedData /&gt; node for encryption template.
  * @param doc the pointer to encryption document or NULL; in the second
  *                      case, application must later call xmlSetTreeDoc to ensure
  *                      that all the children nodes have correct pointer to XML document.
@@ -916,9 +916,9 @@ xmlSecTmplEncDataEnsureCipherReference(xmlNodePtr encNode, const xmlChar *uri) {
 
 /**
  * @brief Gets pointer to &lt;enc:EncryptionMethod/&gt; node.
- * @param encNode the pointer to <enc:EncryptedData /> node.
+ * @param encNode the pointer to &lt;enc:EncryptedData /&gt; node.
  *
- * @return pointer to <enc:EncryptionMethod /> node or NULL if an error occurs.
+ * @return pointer to &lt;enc:EncryptionMethod /&gt; node or NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecTmplEncDataGetEncMethodNode(xmlNodePtr encNode) {
@@ -1870,7 +1870,6 @@ xmlSecTmplTransformAddC14NInclNamespaces(xmlNodePtr transformNode,
  * already set and possibly partial namespaces) is left attached to
  * @p transformNode; a retry will then fail with "node already present".
  *
- * @p transformNode.
  * @param transformNode the pointer to the &lt;dsig:Transform/&gt; node.
  * @param expression the XPath expression.
  * @param nsList the NULL terminated list of namespace prefix/href pairs (optional).
@@ -1915,7 +1914,6 @@ xmlSecTmplTransformAddXPath(xmlNodePtr transformNode, const xmlChar *expression,
  * already set and possibly partial namespaces) is left attached to
  * @p transformNode.
  *
- * @p transformNode.
  * @param transformNode the pointer to the &lt;dsig:Transform/&gt; node.
  * @param type the XPath2 transform type ("union", "intersect" or "subtract").
  * @param expression the XPath expression.
@@ -1934,9 +1932,9 @@ xmlSecTmplTransformAddXPath2(xmlNodePtr transformNode, const xmlChar* type,
 
     /* XPath Filter 2.0 uses a sequence of one or more XPath children, so
      * repeated calls must append a new node instead of rejecting duplicates. */
-    xpathNode = xmlSecAddChild(transformNode, xmlSecNodeXPath, xmlSecXPath2Ns);
+    xpathNode = xmlSecAddChild(transformNode, xmlSecNodeXPath2, xmlSecXPath2Ns);
     if(xpathNode == NULL) {
-        xmlSecInternalError("xmlSecAddChild(xmlSecNodeXPath)", NULL);
+        xmlSecInternalError("xmlSecAddChild(xmlSecNodeXPath2)", NULL);
         return(-1);
     }
 
@@ -1966,7 +1964,6 @@ xmlSecTmplTransformAddXPath2(xmlNodePtr transformNode, const xmlChar* type,
  * already set and possibly partial namespaces) is left attached to
  * @p transformNode; a retry will then fail with "node already present".
  *
- * @p transformNode.
  * @param transformNode the pointer to the &lt;dsig:Transform/&gt; node.
  * @param expression the XPointer expression.
  * @param nsList the NULL terminated list of namespace prefix/href pairs (optional).

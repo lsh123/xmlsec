@@ -9,7 +9,6 @@
 /**
  * @addtogroup xmlsec_mscng_x509
  * @brief X509 certificates implementation for MSCng.
- * X509 certificates implementation for MSCng.
  */
 #include "globals.h"
 

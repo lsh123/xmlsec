@@ -37,7 +37,7 @@
 
 /******************************************************************************
  *
- * ECDH KeyAgreement context.
+ * KeyAgreement context.
  * - XMLEnc spec: https://www.w3.org/TR/xmlenc-core1/#sec-ECDH-ES
  *
   *****************************************************************************/
@@ -45,12 +45,12 @@
 typedef struct _xmlSecMSCngKeyAgreementCtx    xmlSecMSCngKeyAgreementCtx, *xmlSecMSCngKeyAgreementCtxPtr;
 struct _xmlSecMSCngKeyAgreementCtx {
     xmlSecTransformKAM params;
-    xmlSecKeyDataId keyDataId;          /* Key data type (EC or DH) */
+    xmlSecKeyDataId keyDataId;          /* Key data type (EC, DH, or XDH) */
 };
 
 /******************************************************************************
  *
- * ECDH KeyAgreement transforms
+ * KeyAgreement transforms
  *
   *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MSCngKeyAgreement, xmlSecMSCngKeyAgreementCtx)
@@ -188,7 +188,7 @@ xmlSecMSCngKeyAgreementSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngKeyAgreementSize), -1);
     xmlSecAssert2(key != NULL, -1);
 
-    /* key agreement uses two keys from ctxTransform->extraKeyData (KAM key data) */
+    /* key agreement uses two keys from transformCtx->extraKeyData (KAM key data) */
     return(0);
 }
 
@@ -199,7 +199,7 @@ xmlSecMSCngKeyAgreementNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, x
 
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngKeyAgreementSize), -1);
-    xmlSecAssert2(node!= NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
     ctx = xmlSecMSCngKeyAgreementGetCtx(transform);
@@ -222,7 +222,7 @@ xmlSecMSCngKeyAgreementNodeWrite(xmlSecTransformPtr transform, xmlNodePtr node, 
 
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngKeyAgreementSize), -1);
-    xmlSecAssert2(node!= NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
     ctx = xmlSecMSCngKeyAgreementGetCtx(transform);
@@ -256,7 +256,7 @@ xmlSecMSCngKeyAgreementGetPublicKey(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecKey
     /* export bcrypt key */
     hBCryptKey = xmlSecMSCngKeyDataGetPubkey(keyValue);
     if (hBCryptKey == 0) {
-        xmlSecInternalError("keyValue", NULL);
+        xmlSecInternalError("xmlSecMSCngKeyDataGetPubkey", NULL);
         goto done;
     }
     status = BCryptExportKey(hBCryptKey,
@@ -441,7 +441,7 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
 
             hOtherBCryptPubKey = xmlSecMSCngKeyDataGetPubkey(otherKeyValue);
             if(hOtherBCryptPubKey == 0) {
-                xmlSecInternalError("xmlSecMSCngKeyDataGetPubkey(BCrypt DH)", NULL);
+                xmlSecInternalError("xmlSecMSCngKeyDataGetPubkey(BCrypt)", NULL);
                 goto done;
             }
 
@@ -462,7 +462,7 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
             XMLSEC_SAFE_CAST_UINT_TO_SIZE(dwBCryptSecretLen, secretSize, { BCryptDestroySecret(hBCryptSecret); goto done; }, NULL);
             ret = xmlSecBufferSetSize(secret, secretSize);
             if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferSetSize(BCrypt DH)", NULL,
+                xmlSecInternalError2("xmlSecBufferSetSize(BCrypt)", NULL,
                     "size=" XMLSEC_SIZE_FMT, secretSize);
                 BCryptDestroySecret(hBCryptSecret);
                 goto done;
@@ -486,7 +486,7 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
             XMLSEC_SAFE_CAST_UINT_TO_SIZE(dwBCryptSecretLen, secretSize, goto done, NULL);
             ret = xmlSecBufferSetSize(secret, secretSize);
             if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferSetSize2(BCrypt DH)", NULL,
+                xmlSecInternalError2("xmlSecBufferSetSize2(BCrypt)", NULL,
                     "size=" XMLSEC_SIZE_FMT, secretSize);
                 goto done;
             }
@@ -639,7 +639,7 @@ xmlSecMSCngKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTra
         }
         secret.flags |= XMLSEC_BUFFER_FLAG_SECURE;
 
-        /* step 1: generate secret with ecdh */
+        /* step 1: generate secret with key agreement */
         kamKeyData = xmlSecTransformCtxExtraKeyDataGet(transformCtx, xmlSecKeyDataKAMId);
         if(kamKeyData == NULL) {
             xmlSecInternalError("xmlSecTransformCtxExtraKeyDataGet", xmlSecTransformGetName(transform));

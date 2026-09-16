@@ -49,7 +49,7 @@
  * machine and current user system stores for the given store name (e.g. "MY").
  * Current user is added at priority 2 and therefore searched first; local
  * machine is added at priority 1 and searched second.
- * Opening either individual store is treated as a soft failure – a warning is
+ * Opening either individual store is treated as a soft failure - a warning is
  * logged but the other store is still tried.  Returns 0 on success or -1 if
  * neither store could be opened.
  *
@@ -71,7 +71,7 @@ xmlSecMSCngCertStoreCtxInitialize(xmlSecMSCngCertStoreCtx* ctx, LPCTSTR localMac
 
     memset(ctx, 0, sizeof(xmlSecMSCngCertStoreCtx));
 
-    /* collection store – aggregates the two physical stores */
+    /* collection store - aggregates the two physical stores */
     ctx->hCollection = CertOpenStore(CERT_STORE_PROV_COLLECTION, 0, 0, 0, NULL);
     if(ctx->hCollection == NULL) {
         xmlSecMSCngLastError("CertOpenStore(CERT_STORE_PROV_COLLECTION)", NULL);
@@ -92,7 +92,7 @@ xmlSecMSCngCertStoreCtxInitialize(xmlSecMSCngCertStoreCtx* ctx, LPCTSTR localMac
             CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG, 1);
         if(ret == FALSE) {
             xmlSecMSCngLastError("CertAddStoreToCollection(LocalMachine)", NULL);
-            /* non-fatal – continue without local machine store */
+            /* non-fatal - continue without local machine store */
             CertCloseStore(ctx->hLocalMachine, 0);
             ctx->hLocalMachine = NULL;
         }
@@ -155,7 +155,7 @@ xmlSecMSCngCertStoreCtxFinalize(xmlSecMSCngCertStoreCtx* ctx) {
  * MSCng Keys Store. Uses Simple Keys Store under the hood
  *
   *****************************************************************************/
- typedef struct _xmlSecMSCngKeysStoreCtx {
+typedef struct _xmlSecMSCngKeysStoreCtx {
     xmlSecKeyStorePtr       simpleKeyStore;
     xmlSecMSCngCertStoreCtx certStoreCtx;
 } xmlSecMSCngKeysStoreCtx;

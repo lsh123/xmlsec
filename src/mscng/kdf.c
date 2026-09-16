@@ -264,7 +264,7 @@ xmlSecMSCngKdfSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
   *****************************************************************************/
 #ifndef XMLSEC_NO_PBKDF2
 
-/* convert PRF algorithm href to MSCng mac algo */
+/* convert PRF algorithm href to MSCng hash algo */
 static LPCWSTR
 xmlSecMSCngPbkdf2GetMacFromHref(const xmlChar* href) {
     /* use SHA256 by default */
@@ -324,7 +324,7 @@ xmlSecMSCngPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecMSCngTransformPbkdf2Id), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngKdfCtxSize), -1);
-    xmlSecAssert2(node!= NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
     XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecMSCngKdfGetCtx(transform);
@@ -345,7 +345,7 @@ xmlSecMSCngPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     /* if we have something else then it's an error */
     cur = xmlSecGetNextElementNode(cur->next);
     if(cur != NULL) {
-        xmlSecUnexpectedNodeError(cur,  NULL);
+        xmlSecUnexpectedNodeError(cur, NULL);
         return(-1);
     }
 
@@ -370,7 +370,7 @@ xmlSecMSCngPbkdf2PerformKeyDerivation(
 ) {
     NTSTATUS status;
     BCRYPT_ALG_HANDLE hKdfAlg = NULL;
-    BCRYPT_KEY_HANDLE hKey= NULL;
+    BCRYPT_KEY_HANDLE hKey = NULL;
     DWORD cbResultLength = 0;
     BCryptBuffer paramBufferPBKDF2[3];
     BCryptBufferDesc paramsPBKDF2;

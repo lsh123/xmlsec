@@ -152,7 +152,7 @@ xmlSecMSCngKeyDataDuplicateBCryptXdhPrivKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HA
 
     status = BCryptImportKeyPair(hAlg, NULL, BCRYPT_ECCPRIVATE_BLOB, &hKey, pbPrivBlob, cbPrivBlob, 0);
     BCryptCloseAlgorithmProvider(hAlg, 0);
-    memset(pbPrivBlob, 0, cbPrivBlob);
+    xmlSecMemCleanse(pbPrivBlob, cbPrivBlob);
     xmlFree(pbPrivBlob);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptImportKeyPair(X25519 priv dup)", NULL, status);
@@ -210,12 +210,12 @@ xmlSecMSCngXdhBuildPrivBlobAndImport(BCRYPT_ALG_HANDLE hAlg, const xmlSecByte* p
     pHdr = (BCRYPT_ECCKEY_BLOB*)pb;
     pHdr->dwMagic = BCRYPT_ECDH_PRIVATE_GENERIC_MAGIC;
     pHdr->cbKey = XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE;
-    
-    /* u-cord:  base point u=9 (LE) as placeholder for u-coord */
-    pb[sizeof(BCRYPT_ECCKEY_BLOB)] = 0x09; /* */
+
+    /* u-coord: base point u=9 (LE) as placeholder for u-coord */
+    pb[sizeof(BCRYPT_ECCKEY_BLOB)] = 0x09;
     /* v-coord (offset 40) stays zero (unused for Montgomery curve) */
     /* private scalar d */
-    memcpy(pb + sizeof(BCRYPT_ECCKEY_BLOB) + 2 * XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE, pScalar, XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE); 
+    memcpy(pb + sizeof(BCRYPT_ECCKEY_BLOB) + 2 * XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE, pScalar, XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE);
 
     /* Import private key with a placeholder public key (base point u=9); skip public
      * key validation so BCrypt accepts the blob.
@@ -276,11 +276,11 @@ xmlSecMSCngXdhDerivePubKeyU(BCRYPT_ALG_HANDLE hAlg, BCRYPT_KEY_HANDLE hPrivKeyTe
 
     /* Build the Curve25519 base point (u=9 in little-endian: first byte 0x09, rest 0x00). */
     memset(basePointBlob, 0, sizeof(basePointBlob));
-    
+
     /* header */
     pHdr = (BCRYPT_ECCKEY_BLOB*)basePointBlob;
     pHdr->dwMagic = BCRYPT_ECDH_PUBLIC_GENERIC_MAGIC;
-    pHdr->cbKey = 32;
+    pHdr->cbKey = XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE;
 
     /* base point u = 9 (little-endian); v stays zero */
     basePointBlob[sizeof(BCRYPT_ECCKEY_BLOB)] = 0x09;
@@ -338,7 +338,7 @@ xmlSecMSCngXdhDerivePubKeyU(BCRYPT_ALG_HANDLE hAlg, BCRYPT_KEY_HANDLE hPrivKeyTe
 done:
     if(hSelfSecret != NULL) {
         BCryptDestroySecret(hSelfSecret);
-    }    
+    }
     if(hBasePoint != NULL) {
         BCryptDestroyKey(hBasePoint);
     }
@@ -440,7 +440,7 @@ xmlSecMSCngKeyDataXdhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLe
     }
     /* Must be X25519 OID "1.3.101.110" */
     if(pki->Algorithm.pszObjId == NULL || strcmp(pki->Algorithm.pszObjId, szOID_X25519) != 0) {
-        goto done;  /* not an X25519 key – silent fail */
+        goto done;  /* not an X25519 key - silent fail */
     }
 
     /* PrivateKey field (RFC 8410): outer OCTET STRING wraps inner CurvePrivateKey ::= OCTET STRING */

@@ -139,7 +139,7 @@ xmlSecMSCngX509StoreFinalize(xmlSecKeyDataStorePtr store) {
         if(ret == FALSE) {
             xmlSecMSCngLastError("CertCloseStore", xmlSecKeyDataStoreGetName(store));
             /* ignore error */
-         }
+        }
     }
 
     if(ctx->crlMemStore != NULL) {
@@ -173,7 +173,7 @@ xmlSecMSCngX509StoreAdoptKeyStore(xmlSecKeyDataStorePtr store, HCERTSTORE keySto
 
     ret = CertAddStoreToCollection(ctx->trusted, keyStore, CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG, 2);
     if(ret != TRUE) {
-    xmlSecMSCngLastError("CertAddStoreToCollection",
+        xmlSecMSCngLastError("CertAddStoreToCollection",
             xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
@@ -194,13 +194,13 @@ xmlSecMSCngX509StoreAdoptTrustedStore(xmlSecKeyDataStorePtr store, HCERTSTORE tr
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCngX509StoreId), -1);
-    xmlSecAssert2( trustedStore != NULL, -1);
+    xmlSecAssert2(trustedStore != NULL, -1);
 
     ctx = xmlSecMSCngX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->trusted != NULL, -1);
 
-    ret = CertAddStoreToCollection(ctx->trusted , trustedStore , CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG , 3);
+    ret = CertAddStoreToCollection(ctx->trusted, trustedStore, CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG, 3);
     if(ret == FALSE) {
         xmlSecMSCngLastError("CertAddStoreToCollection",
             xmlSecKeyDataStoreGetName(store));
@@ -211,8 +211,8 @@ xmlSecMSCngX509StoreAdoptTrustedStore(xmlSecKeyDataStorePtr store, HCERTSTORE tr
 }
 
 /**
- * @brief Adds @p trustedStore to the untrusted certs list.
- * @details Adds @p trustedStore to the list of untrusted certs stores.
+ * @brief Adds @p untrustedStore to the untrusted certs list.
+ * @details Adds @p untrustedStore to the list of untrusted certs stores.
  * @param store the pointer to X509 key data store klass.
  * @param untrustedStore the pointer to certs store.
  * @return 0 on success or a negative value if an error occurs.
@@ -229,7 +229,7 @@ xmlSecMSCngX509StoreAdoptUntrustedStore(xmlSecKeyDataStorePtr store, HCERTSTORE 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->untrusted != NULL, -1);
 
-    ret = CertAddStoreToCollection(ctx->untrusted, untrustedStore, CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG , 2);
+    ret = CertAddStoreToCollection(ctx->untrusted, untrustedStore, CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG, 2);
     if(ret == FALSE) {
         xmlSecMSCngLastError("CertAddStoreToCollection",
             xmlSecKeyDataStoreGetName(store));
@@ -566,9 +566,6 @@ xmlSecMSCngX509StoreContainsCert(HCERTSTORE store, CERT_NAME_BLOB* name,
         CertFreeCertificateContext(storeCert);
         return(1);
     }
-
-    /* no luck */
-    return (0);
 }
 
 static int
@@ -578,16 +575,12 @@ xmlSecMSCngVerifyCertTime(PCCERT_CONTEXT cert, LPFILETIME time) {
     xmlSecAssert2(time != NULL, -1);
 
     if(CompareFileTime(&(cert->pCertInfo->NotBefore), time) == 1) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-            NULL,
-            "CompareFileTime");
+        xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL, "certificate not yet valid");
         return(-1);
     }
 
     if(CompareFileTime(&(cert->pCertInfo->NotAfter), time) == -1) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-            NULL,
-            "CompareFileTime");
+        xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL, "certificate expired");
         return(-1);
     }
 
@@ -985,7 +978,7 @@ xmlSecMSCngX509StoreVerifyCertificate(xmlSecMSCngX509StoreCtxPtr ctx, PCCERT_CON
 }
 
 /**
- * @brief Verifies @p key with the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * @brief Verifies @p key.
  * @param store the pointer to X509 key data store klass.
  * @param key the pointer to key.
  * @param keyInfoCtx the key info context for verification.
@@ -993,9 +986,6 @@ xmlSecMSCngX509StoreVerifyCertificate(xmlSecMSCngX509StoreCtxPtr ctx, PCCERT_CON
  * function:
  * - Checks that key certificate is present
  * - Checks that key certificate is valid
- *
- * Adds @p key to the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
- * function.
  *
  * @return 1 if key is verified, 0 otherwise, or a negative value if an error occurs.
  */
@@ -1026,7 +1016,7 @@ xmlSecMSCngX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, xml
         return(0); /* key cannot be verified w/o key cert */
     }
     certStore = xmlSecMSCngKeyDataX509GetCertStore(x509Data);
-    if (certStore == 0) {
+    if (certStore == NULL) {
         xmlSecInternalError("xmlSecMSCngKeyDataX509GetCertStore", xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
@@ -1045,7 +1035,7 @@ xmlSecMSCngX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, xml
 }
 
 /**
- * @brief Verifies @p crl by checking:
+ * @brief Verifies @p crl.
  * @param store the pointer to X509 key data store klass.
  * @param crl the CRL to verify.
  * @param keyInfoCtx the key info context for verification parameters.

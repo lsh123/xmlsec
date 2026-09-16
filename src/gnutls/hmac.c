@@ -161,7 +161,7 @@ xmlSecGnuTLSHmacInitialize(xmlSecTransformPtr transform) {
 
     /* check hash output size */
     hmacSize = gnutls_hmac_get_len(ctx->hmacAlgo);
-    if(hmacSize <= 0) {
+    if(hmacSize == 0) {
         xmlSecGnuTLSError("gnutls_hmac_get_len", 0, NULL);
         return(-1);
     }
@@ -215,7 +215,7 @@ xmlSecGnuTLSHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
 
 static int
-xmlSecGnuTLSHmacSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
+xmlSecGnuTLSHmacSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq) {
     xmlSecGnuTLSHmacCtxPtr ctx;
 
     xmlSecAssert2(xmlSecGnuTLSHmacCheckId(transform), -1);
@@ -226,8 +226,8 @@ xmlSecGnuTLSHmacSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq)
     ctx = xmlSecGnuTLSHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    keyReq->keyId  = xmlSecGnuTLSKeyDataHmacId;
-    keyReq->keyType= xmlSecKeyDataTypeSymmetric;
+    keyReq->keyId = xmlSecGnuTLSKeyDataHmacId;
+    keyReq->keyType = xmlSecKeyDataTypeSymmetric;
     if(transform->operation == xmlSecTransformOperationSign) {
         keyReq->keyUsage = xmlSecKeyUsageSign;
     } else {
@@ -410,7 +410,7 @@ static xmlSecTransformKlass xmlSecGnuTLSHmac ## name ## Klass = {               
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */  \
     xmlSecGnuTLSHmacSetKeyReq,                  /* xmlSecTransformSetKeyReqMethod setKeyReq; */  \
     xmlSecGnuTLSHmacSetKey,                     /* xmlSecTransformSetKeyMethod setKey; */        \
-    xmlSecGnuTLSHmacVerify,                     /* xmlSecTransformValidateMethod validate; */    \
+    xmlSecGnuTLSHmacVerify,                     /* xmlSecTransformVerifyMethod verify; */        \
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */ \
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */      \
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */        \

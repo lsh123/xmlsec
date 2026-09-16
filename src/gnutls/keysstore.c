@@ -12,12 +12,7 @@
  */
 #include "globals.h"
 
-#include <stdlib.h>
-#include <string.h>
-
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/buffer.h>
-#include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/private.h>
@@ -122,8 +117,8 @@ xmlSecGnuTLSKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 }
 
 static xmlSecKeyPtr
-xmlSecGnuTLSKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509DataValuePtr x509Data, xmlSecKeyInfoCtxPtr keyInfoCtx
-) {
+xmlSecGnuTLSKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509DataValuePtr x509Data,
+                                          xmlSecKeyInfoCtxPtr keyInfoCtx) {
 #ifndef XMLSEC_NO_X509
     xmlSecKeyStorePtr* simplekeystore;
     xmlSecPtrListPtr keysList;
@@ -138,7 +133,7 @@ xmlSecGnuTLSKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509D
 
     keysList = xmlSecSimpleKeysStoreGetKeys(*simplekeystore);
     if(keysList == NULL) {
-        xmlSecInternalError("xmlSecSimpleKeysStoreGetKeys", NULL);
+        xmlSecInternalError("xmlSecSimpleKeysStoreGetKeys", xmlSecKeyStoreGetName(store));
         return(NULL);
     }
 
@@ -151,7 +146,7 @@ xmlSecGnuTLSKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509D
     /* since not all key stores can return key owned by someone else, we need to duplicate the key */
     res = xmlSecKeyDuplicate(key);
     if(res == NULL) {
-        xmlSecInternalError("xmlSecKeyDuplicate", NULL);
+        xmlSecInternalError("xmlSecKeyDuplicate", xmlSecKeyStoreGetName(store));
         return(NULL);
     }
 
@@ -189,7 +184,7 @@ xmlSecGnuTLSKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
 /**
  * @brief Reads keys from an XML file.
  * @param store the pointer to GnuTLS keys store.
- * @param uri the filename.
+ * @param uri the URI.
  * @param keysMngr the pointer to associated keys manager.
  * @return 0 on success or a negative value if an error occurs.
  */

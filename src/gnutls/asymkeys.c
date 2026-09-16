@@ -46,7 +46,7 @@ struct _xmlSecGnuTLSAsymKeyDataCtx {
 
 /******************************************************************************
  *
- * GnuTLS asym key data (dsa/rsa/ec)
+ * GnuTLS asym key data (dsa/rsa/ec/gost/ml-dsa/eddsa/xdh)
  *
   *****************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(GnuTLSAsymKeyData, xmlSecGnuTLSAsymKeyDataCtx)
@@ -138,7 +138,7 @@ xmlSecGnuTLSAsymKeyDataFinalize(xmlSecKeyDataPtr data) {
         gnutls_pubkey_deinit(ctx->pubkey);
     }
     if(ctx->privkey != NULL) {
-        gnutls_privkey_deinit (ctx->privkey);
+        gnutls_privkey_deinit(ctx->privkey);
     }
     memset(ctx, 0, sizeof(xmlSecGnuTLSAsymKeyDataCtx));
 }
@@ -653,7 +653,7 @@ xmlSecGnuTLSKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     xmlSecKeyDataPtr data = NULL;
     xmlSecKeyDataPtr res = NULL;
     xmlSecSize size;
-	gnutls_datum_t p, q, g, y;
+    gnutls_datum_t p, q, g, y;
     gnutls_privkey_t privkey = NULL;
     gnutls_pubkey_t pubkey = NULL;
     int err;
@@ -665,23 +665,23 @@ xmlSecGnuTLSKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     /* p */
     size = xmlSecBufferGetSize(&(dsaValue->p));
     p.data = xmlSecBufferGetData(&(dsaValue->p));
-    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, p.size,  goto done, xmlSecKeyDataKlassGetName(id));
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, p.size, goto done, xmlSecKeyDataKlassGetName(id));
 
     /* q */
     size = xmlSecBufferGetSize(&(dsaValue->q));
     q.data = xmlSecBufferGetData(&(dsaValue->q));
-    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, q.size,  goto done, xmlSecKeyDataKlassGetName(id));
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, q.size, goto done, xmlSecKeyDataKlassGetName(id));
 
     /* g */
     size = xmlSecBufferGetSize(&(dsaValue->g));
     g.data = xmlSecBufferGetData(&(dsaValue->g));
-    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, g.size,  goto done, xmlSecKeyDataKlassGetName(id));
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, g.size, goto done, xmlSecKeyDataKlassGetName(id));
 
     /* y */
 
     size = xmlSecBufferGetSize(&(dsaValue->y));
     y.data = xmlSecBufferGetData(&(dsaValue->y));
-    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, y.size,  goto done, xmlSecKeyDataKlassGetName(id));
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, y.size, goto done, xmlSecKeyDataKlassGetName(id));
 
     /* x (only for private key) */
     size = xmlSecBufferGetSize(&(dsaValue->x));
@@ -719,7 +719,7 @@ xmlSecGnuTLSKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
 
     /* create key data */
     data = xmlSecKeyDataCreate(id);
-    if(data == NULL ) {
+    if(data == NULL) {
         xmlSecInternalError("xmlSecKeyDataCreate", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
@@ -757,7 +757,7 @@ xmlSecGnuTLSKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
 {
     gnutls_privkey_t privkey = NULL;
     gnutls_pubkey_t pubkey = NULL;
-	gnutls_datum_t p = { NULL, 0 };
+    gnutls_datum_t p = { NULL, 0 };
     gnutls_datum_t q = { NULL, 0 };
     gnutls_datum_t g = { NULL, 0 };
     gnutls_datum_t y = { NULL, 0 };
@@ -776,7 +776,7 @@ xmlSecGnuTLSKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     pubkey = xmlSecGnuTLSKeyDataDsaGetPublicKey(data);
     if(privkey != NULL) {
         err = gnutls_privkey_export_dsa_raw2(privkey,
-			       &p, &q, &g, &y, &x,
+                   &p, &q, &g, &y, &x,
                    GNUTLS_EXPORT_FLAG_NO_LZ);
         if(err != GNUTLS_E_SUCCESS) {
             xmlSecGnuTLSError("gnutls_privkey_export_dsa_raw2", err, xmlSecKeyDataKlassGetName(id));
@@ -784,14 +784,14 @@ xmlSecGnuTLSKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         }
     } else if(pubkey != NULL) {
         err = gnutls_pubkey_export_dsa_raw2(pubkey,
-			       &p, &q, &g, &y,
+                   &p, &q, &g, &y,
                    GNUTLS_EXPORT_FLAG_NO_LZ);
         if(err != GNUTLS_E_SUCCESS) {
             xmlSecGnuTLSError("gnutls_pubkey_export_dsa_raw2", err, xmlSecKeyDataKlassGetName(id));
             goto done;
         }
     } else {
-        xmlSecInternalError("Neither private or public keys are available", xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("Neither private nor public keys are available", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
@@ -997,7 +997,7 @@ xmlSecGnuTLSKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
     xmlSecKeyDataPtr res = NULL;
     xmlSecSize size;
     gnutls_ecc_curve_t curve;
-	gnutls_datum_t pub_x, pub_y;
+    gnutls_datum_t pub_x, pub_y;
     gnutls_pubkey_t pubkey = NULL;
     int err;
     int ret;
@@ -1009,7 +1009,7 @@ xmlSecGnuTLSKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
     /* we need individual public key components x and y */
     ret = xmlSecKeyDataEcPublicKeySplitComponents(ecValue);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyDataEcPublicKeySplitComponents",  xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecKeyDataEcPublicKeySplitComponents", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
@@ -1023,12 +1023,12 @@ xmlSecGnuTLSKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
     /* pub: x  */
     size = xmlSecBufferGetSize(&(ecValue->pub_x));
     pub_x.data = xmlSecBufferGetData(&(ecValue->pub_x));
-    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, pub_x.size,  goto done, xmlSecKeyDataKlassGetName(id));
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, pub_x.size, goto done, xmlSecKeyDataKlassGetName(id));
 
     /* pub: y  */
     size = xmlSecBufferGetSize(&(ecValue->pub_y));
     pub_y.data = xmlSecBufferGetData(&(ecValue->pub_y));
-    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, pub_y.size,  goto done, xmlSecKeyDataKlassGetName(id));
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, pub_y.size, goto done, xmlSecKeyDataKlassGetName(id));
 
     /* pub key */
     err = gnutls_pubkey_init(&pubkey);
@@ -1045,7 +1045,7 @@ xmlSecGnuTLSKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
 
     /* create key data */
     data = xmlSecKeyDataCreate(id);
-    if(data == NULL ) {
+    if(data == NULL) {
         xmlSecInternalError("xmlSecKeyDataCreate", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
@@ -1078,7 +1078,7 @@ xmlSecGnuTLSKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyV
     gnutls_privkey_t privkey = NULL;
     gnutls_pubkey_t pubkey = NULL;
     gnutls_ecc_curve_t curve = GNUTLS_ECC_CURVE_INVALID;
-	gnutls_datum_t pub_x = { NULL, 0 };
+    gnutls_datum_t pub_x = { NULL, 0 };
     gnutls_datum_t pub_y = { NULL, 0 };
     const char * curve_oid;
     int ret;
@@ -1103,14 +1103,14 @@ xmlSecGnuTLSKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyV
         }
     } else if(pubkey != NULL) {
         err = gnutls_pubkey_export_ecc_raw2(pubkey,
-			       &curve, &pub_x, &pub_y,
+                   &curve, &pub_x, &pub_y,
                    GNUTLS_EXPORT_FLAG_NO_LZ);
         if(err != GNUTLS_E_SUCCESS) {
             xmlSecGnuTLSError("gnutls_pubkey_export_ecc_raw2", err, xmlSecKeyDataKlassGetName(id));
             goto done;
         }
     } else {
-        xmlSecInternalError("Neither private or public keys are available", xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("Neither private nor public keys are available", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
@@ -1154,7 +1154,7 @@ xmlSecGnuTLSKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyV
 
     ret = xmlSecKeyDataEcPublicKeyCombineComponents(ecValue);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyDataEcPublicKeyCombineComponents",  xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecKeyDataEcPublicKeyCombineComponents", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
@@ -1304,7 +1304,7 @@ xmlSecGnuTLSKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     xmlSecKeyDataPtr data = NULL;
     xmlSecKeyDataPtr res = NULL;
     xmlSecSize size;
-	gnutls_datum_t modulus, publicExponent;
+    gnutls_datum_t modulus, publicExponent;
     gnutls_pubkey_t pubkey = NULL;
     int err;
     int ret;
@@ -1315,12 +1315,12 @@ xmlSecGnuTLSKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     /* modulus */
     size = xmlSecBufferGetSize(&(rsaValue->modulus));
     modulus.data = xmlSecBufferGetData(&(rsaValue->modulus));
-    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, modulus.size,  goto done, xmlSecKeyDataKlassGetName(id));
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, modulus.size, goto done, xmlSecKeyDataKlassGetName(id));
 
     /* publicExponent */
     size = xmlSecBufferGetSize(&(rsaValue->publicExponent));
     publicExponent.data = xmlSecBufferGetData(&(rsaValue->publicExponent));
-    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, publicExponent.size,  goto done, xmlSecKeyDataKlassGetName(id));
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, publicExponent.size, goto done, xmlSecKeyDataKlassGetName(id));
 
     /* privateExponent (only for private key) */
     size = xmlSecBufferGetSize(&(rsaValue->privateExponent));
@@ -1347,7 +1347,7 @@ xmlSecGnuTLSKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
 
     /* create key data */
     data = xmlSecKeyDataCreate(id);
-    if(data == NULL ) {
+    if(data == NULL) {
         xmlSecInternalError("xmlSecKeyDataCreate", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
@@ -1376,11 +1376,11 @@ done:
 
 static int
 xmlSecGnuTLSKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
-    xmlSecKeyValueRsaPtr rsaValue, int writePrivateKey)
+    xmlSecKeyValueRsaPtr rsaValue, int writePrivateKey XMLSEC_ATTRIBUTE_UNUSED)
 {
     gnutls_privkey_t privkey = NULL;
     gnutls_pubkey_t pubkey = NULL;
-	gnutls_datum_t modulus = { NULL, 0 };
+    gnutls_datum_t modulus = { NULL, 0 };
     gnutls_datum_t publicExponent = { NULL, 0 };
     gnutls_datum_t privateExponent = { NULL, 0 };
     int ret;
@@ -1420,7 +1420,7 @@ xmlSecGnuTLSKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
             goto done;
         }
     } else {
-        xmlSecInternalError("Neither private or public keys are available", xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("Neither private nor public keys are available", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
@@ -1444,11 +1444,6 @@ xmlSecGnuTLSKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferAppend(publicExponent)", xmlSecKeyDataKlassGetName(id));
         goto done;
-    }
-
-    /* GnuTLS doesn't support private exponent */
-    if((writePrivateKey != 0) && (privkey != NULL)) {
-        /* do nothing */
     }
 
     /* success */
@@ -1758,11 +1753,8 @@ xmlSecGnuTLSKeyDataMLDSAGetPrivateKey(xmlSecKeyDataPtr data) {
 }
 
 /**
- * @brief Gets ML-DSA key (k, l) value: 44 corresponds to (4,4),
+ * @brief Gets ML-DSA key (k, l) value: 44 corresponds to (4,4), 65 to (6,5) or 87 to (8,7).
  * @param data the pointer to ML-DSA key data.
- *
- * 65 to (6,5) or 87 to (8,7).
- *
  * @return 44, 65, or 87 on success or a negative value otherwise.
  */
 int

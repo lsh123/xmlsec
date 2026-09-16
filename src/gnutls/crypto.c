@@ -445,7 +445,7 @@ xmlSecCryptoGetFunctions_gnutls(void) {
  * @return 0 on success or a negative value otherwise.
  */
 int
-xmlSecGnuTLSInit (void)  {
+xmlSecGnuTLSInit(void) {
     /* Check loaded xmlsec library version */
     if(xmlSecCheckVersionExact() != 1) {
         xmlSecInternalError("xmlSecCheckVersionExact", NULL);

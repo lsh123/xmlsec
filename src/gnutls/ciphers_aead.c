@@ -67,7 +67,7 @@ struct _xmlSecGnuTLSAeadCipherCtx {
     xmlSecSize                  tagSize;         /* authentication tag size */
     int                         isIvPrepended;   /* 1: IV prepended to ciphertext (AES-GCM), 0: IV in XML node (ChaCha20-Poly1305) */
     xmlSecBuffer                aad;             /* additional authenticated data (for isIvPrepended=0) */
-    xmlSecByte                  iv[XMLSEC_GNUTLS_AEAD_CIPHER_MAX_IV_SIZE]; /* IV/nonce when isIvPrepended=0 */
+    xmlSecByte                  iv[XMLSEC_GNUTLS_AEAD_CIPHER_MAX_IV_SIZE]; /* IV/nonce (used for both AES-GCM and ChaCha20-Poly1305) */
     int                         ivInitialized;   /* 1 if iv[] has been set */
 };
 
@@ -363,7 +363,7 @@ xmlSecGnuTLSAeadCipherEncrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
             return(-1);
         }
     } else {
-        /* ChaCha20-Poly1305 mode: IV/nonce already in ctx->iv[], set by Execute */
+        /* ChaCha20-Poly1305 mode: IV/nonce in ctx->iv[] is randomly generated above or pre-set from XML params */
         xmlSecAssert2(ctx->ivInitialized != 0, -1);
         xmlSecAssert2(plaintext != NULL || inSize == 0, -1);
 
@@ -452,7 +452,6 @@ xmlSecGnuTLSAeadCipherDecrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
         }
 
         /* ChaCha20-Poly1305 mode: IV/nonce already in ctx->iv[], set by readNode */
-        xmlSecAssert2(ctx->ivInitialized != 0, -1);
         xmlSecAssert2(inSize >= ctx->tagSize, -1);
 
         ciphertext = xmlSecBufferGetData(in);
@@ -539,7 +538,7 @@ xmlSecGnuTLSAeadCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTran
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(in) == 0, -1);
     } else if(transform->status == xmlSecTransformStatusNone) {
-        /* the only way we can get here is if there is no enough data in the input */
+        /* the only way we can get here is if there is not enough data in the input */
         xmlSecAssert2(last == 0, -1);
     } else {
         xmlSecInvalidTransformStatusError(transform);

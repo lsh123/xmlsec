@@ -234,7 +234,7 @@ xmlSecGnuTLSX509CheckCrtsTime(const gnutls_x509_crt_t * cert_list, xmlSecSize ce
 
         ret = xmlSecGnuTLSX509CheckCrtTime(cert, ts);
         if(ret < 0) {
-            xmlSecInternalError("", NULL);
+            xmlSecInternalError("xmlSecGnuTLSX509CheckCrtTime", NULL);
             return(-1);
         } else if(ret == 0) {
             /* cert not valid yet or expired */
@@ -344,7 +344,7 @@ xmlSecGnuTLSX509StoreGetCrls(xmlSecKeyDataStorePtr store, xmlSecGnuTLSX509StoreC
         ++res_pos;
     }
     for(ii = 0; ii < ctx_crls_size; ++ii, ++res_pos) {
-        res[res_pos] =  xmlSecPtrListGetItem(&(ctx->crls), ii);
+        res[res_pos] = xmlSecPtrListGetItem(&(ctx->crls), ii);
         if(res[res_pos] == NULL) {
             xmlSecInternalError("xmlSecPtrListGetItem(crls)", NULL);
             xmlFree(res);
@@ -627,7 +627,7 @@ xmlSecGnuTLSX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, xm
         res = 0; /* key cannot be verified w/o key cert */
         goto done;
     }
-    key_cert =  xmlSecGnuTLSKeyDataX509GetKeyCert(x509Data);
+    key_cert = xmlSecGnuTLSKeyDataX509GetKeyCert(x509Data);
     if(key_cert == NULL) {
         xmlSecInternalError("xmlSecGnuTLSKeyDataX509GetKeyCert", xmlSecKeyDataStoreGetName(store));
         res = 0; /* key cannot be verified w/o key cert */
@@ -646,13 +646,13 @@ xmlSecGnuTLSX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, xm
 
     /* get trusted certs and crls lists */
     ret = xmlSecGnuTLSX509StoreGetTrustedCerts(ctx, &trusted, &trusted_size);
-    if(ret< 0) {
+    if(ret < 0) {
         xmlSecInternalError("xmlSecGnuTLSX509StoreGetTrustedCerts", xmlSecKeyDataStoreGetName(store));
         goto done;
     }
 
     ret = xmlSecGnuTLSX509StoreGetCrls(store, ctx, key_crls, keyInfoCtx, &crls, &crls_size);
-    if(ret< 0) {
+    if(ret < 0) {
         xmlSecInternalError("xmlSecGnuTLSX509StoreGetCrls", xmlSecKeyDataStoreGetName(store));
         goto done;
     }
@@ -670,7 +670,7 @@ xmlSecGnuTLSX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, xm
     /* build the chain */
     ret = xmlSecGnuTLSX509StoreGetCertsChain(ctx, key_cert, key_certs, certs_chain, certs_chain_size, &certs_chain_cur_size);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecPtrListGetItem(certs)", xmlSecKeyDataStoreGetName(store));
+        xmlSecInternalError("xmlSecGnuTLSX509StoreGetCertsChain", xmlSecKeyDataStoreGetName(store));
         goto done;
     }
 
@@ -748,12 +748,12 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
 
     /* get trusted certs and crls lists */
     ret = xmlSecGnuTLSX509StoreGetTrustedCerts(ctx, &trusted, &trusted_size);
-    if(ret< 0) {
+    if(ret < 0) {
         xmlSecInternalError("xmlSecGnuTLSX509StoreGetTrustedCerts", xmlSecKeyDataStoreGetName(store));
         goto done;
     }
     ret = xmlSecGnuTLSX509StoreGetCrls(store, ctx, crls, keyInfoCtx, &all_crls, &all_crls_size);
-    if(ret< 0) {
+    if(ret < 0) {
         xmlSecInternalError("xmlSecGnuTLSX509StoreGetCrls", xmlSecKeyDataStoreGetName(store));
         goto done;
     }
@@ -788,7 +788,7 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
             /* build the chain */
             ret = xmlSecGnuTLSX509StoreGetCertsChain(ctx, cert, certs, certs_chain, certs_chain_size, &certs_chain_cur_size);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecPtrListGetItem(certs)", xmlSecKeyDataStoreGetName(store));
+                xmlSecInternalError("xmlSecGnuTLSX509StoreGetCertsChain", xmlSecKeyDataStoreGetName(store));
                 goto done;
             }
         } else if (certs_size == 1) {
@@ -890,7 +890,7 @@ xmlSecGnuTLSX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, gnutls_x509_crl_t crl
     ctx = xmlSecGnuTLSX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, -1);
 
-   ret = xmlSecPtrListAdd(&(ctx->crls), crl);
+    ret = xmlSecPtrListAdd(&(ctx->crls), crl);
     if(ret < 0) {
         xmlSecInternalError("xmlSecPtrListAdd(crls)", xmlSecKeyDataStoreGetName(store));
         return(-1);
@@ -1052,8 +1052,19 @@ xmlSecGnuTLSX509StoreVerifyCrlSignature(xmlSecGnuTLSX509StoreCtxPtr ctx, gnutls_
      * ignore the time-based failure flags here.
      */
     if(keyInfoCtx->certsVerificationTime > 0) {
-        verify_result &= ~(unsigned int)(GNUTLS_CERT_REVOCATION_DATA_ISSUED_IN_FUTURE |
-                                         GNUTLS_CERT_REVOCATION_DATA_SUPERSEDED);
+        unsigned int ignored_verify_result =
+            (unsigned int)(GNUTLS_CERT_REVOCATION_DATA_ISSUED_IN_FUTURE |
+                           GNUTLS_CERT_REVOCATION_DATA_SUPERSEDED);
+
+        verify_result &= ~ignored_verify_result;
+        if((verify_result & (~(unsigned int)GNUTLS_CERT_INVALID)) == 0) {
+            /*
+             * gnutls_x509_crl_verify() also sets GNUTLS_CERT_INVALID when any
+             * specific status flag is present. If we ignored all remaining
+             * specific flags above, then GNUTLS_CERT_INVALID must be ignored too.
+             */
+            verify_result &= ~(unsigned int)GNUTLS_CERT_INVALID;
+        }
     }
 
     /* Check if verification failed (ignoring allowed failures like insecure algorithms) */

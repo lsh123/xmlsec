@@ -282,7 +282,7 @@ xmlSecGnuTLSAppCheckCertMatchesKey(xmlSecKeyPtr key,  gnutls_x509_crt_t cert) {
         goto done;
     }
 
-    /* get certs's pubkey and its der encoding */
+    /* get cert's pubkey and its der encoding */
     err = gnutls_pubkey_init(&cert_pubkey);
     if (err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_pubkey_init", err, NULL);
@@ -479,7 +479,7 @@ xmlSecGnuTLSAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     err = gnutls_privkey_import_x509(privkey, x509_privkey, GNUTLS_PRIVKEY_IMPORT_AUTO_RELEASE);
     if (err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_privkey_import_x509", err, NULL);
-       goto done;
+        goto done;
     }
     x509_privkey = NULL; /* owned by privkey now */
 
@@ -623,19 +623,19 @@ xmlSecGnuTLSAppPemDerPubKeyLoadMemory(const gnutls_datum_t * datum, gnutls_x509_
 
     xmlSecAssert2(datum != NULL, NULL);
 
-	err = gnutls_pubkey_init(&pubkey);
-	if(err < 0) {
+    err = gnutls_pubkey_init(&pubkey);
+    if(err < 0) {
         xmlSecGnuTLSError("gnutls_pubkey_init", err, NULL);
         return(NULL);
-	}
+    }
 
-	/* Convert our raw public-key to a gnutls_pubkey_t structure */
-	err = gnutls_pubkey_import(pubkey, datum, fmt);
-	if(err < 0) {
+    /* Convert our raw public-key to a gnutls_pubkey_t structure */
+    err = gnutls_pubkey_import(pubkey, datum, fmt);
+    if(err < 0) {
         xmlSecGnuTLSError("gnutls_pubkey_import", err, NULL);
         gnutls_pubkey_deinit(pubkey);
         return(NULL);
-	}
+    }
 
     /* done! */
     return(pubkey);
@@ -755,7 +755,7 @@ xmlSecGnuTLSAppKeyFromCertLoadMemory(const xmlSecByte* data, xmlSecSize dataSize
     xmlSecAssert2(dataSize > 0, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
-    /* read cert  */
+    /* read cert */
     cert = xmlSecGnuTLSX509CertRead(data, dataSize, format);
     if(cert == NULL) {
         xmlSecInternalError("xmlSecGnuTLSX509CertRead", NULL);
@@ -870,7 +870,7 @@ xmlSecGnuTLSAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr,
 /**
  * @brief Reads cert from buffer and adds to the key store.
  * @details Reads cert from binary buffer @p data and adds to the list of trusted or known
- * untrusted certs in @p store.
+ * untrusted certs in @p mngr.
  *
  * @param mngr the keys manager.
  * @param data the certificate binary data.
@@ -896,7 +896,7 @@ xmlSecGnuTLSAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr,
 
     x509Store = xmlSecKeysMngrGetDataStore(mngr, xmlSecGnuTLSX509StoreId);
     if(x509Store == NULL) {
-        xmlSecInternalError("xmlSecKeysMngrGetDataStore(StoreId)", NULL);
+        xmlSecInternalError("xmlSecKeysMngrGetDataStore(xmlSecGnuTLSX509StoreId)", NULL);
         return(-1);
     }
 
@@ -1055,8 +1055,7 @@ done:
 
 /**
  * @brief Reads CRL from buffer and adds to the key store.
- * @details Reads CRL from binary buffer @p data and adds to the list of trusted or known
- * untrusted CRL in @p store.
+ * @details Reads CRL from binary buffer @p data and adds to the list of CRLs in @p mngr.
  *
  * @param mngr the keys manager.
  * @param data the CRL binary data.
@@ -1079,7 +1078,7 @@ xmlSecGnuTLSAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr,
 
     x509Store = xmlSecKeysMngrGetDataStore(mngr, xmlSecGnuTLSX509StoreId);
     if(x509Store == NULL) {
-        xmlSecInternalError("xmlSecKeysMngrGetDataStore(StoreId)", NULL);
+        xmlSecInternalError("xmlSecKeysMngrGetDataStore(xmlSecGnuTLSX509StoreId)", NULL);
         return(-1);
     }
 
@@ -1178,13 +1177,10 @@ xmlSecGnuTLSAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key)
 
 /**
  * @brief Verifies @p key using the keys manager.
- * @details Verifies @p key with the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * @details Verifies @p key with the keys manager @p mngr created with #xmlSecGnuTLSAppDefaultKeysMngrInit
  * function:
  * - Checks that key certificate is present
  * - Checks that key certificate is valid
- *
- * Adds @p key to the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
- * function.
  *
  * @param mngr the pointer to keys manager.
  * @param key the pointer to key.

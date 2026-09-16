@@ -11,10 +11,10 @@
  */
 #include "globals.h"
 
+#include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <ctype.h>
 
 #include <gnutls/gnutls.h>
 #include <gnutls/abstract.h>
@@ -269,7 +269,7 @@ xmlSecGnuTLSKdfFinalize(xmlSecTransformPtr transform) {
 
 
 static int
-xmlSecGnuTLSKdfSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
+xmlSecGnuTLSKdfSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq) {
     xmlSecGnuTLSKdfCtxPtr ctx;
 
     xmlSecAssert2(xmlSecGnuTLSKdfCheckId(transform), -1);
@@ -465,7 +465,7 @@ xmlSecGnuTLSConcatKdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     /* if we have something else then it's an error */
     cur = xmlSecGetNextElementNode(cur->next);
     if(cur != NULL) {
-        xmlSecUnexpectedNodeError(cur,  NULL);
+        xmlSecUnexpectedNodeError(cur, NULL);
         return(-1);
     }
 
@@ -700,7 +700,7 @@ xmlSecGnuTLSPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformPbkdf2Id), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSKdfCtxSize), -1);
-    xmlSecAssert2(node!= NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
     XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecGnuTLSKdfGetCtx(transform);
@@ -722,7 +722,7 @@ xmlSecGnuTLSPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     /* if we have something else then it's an error */
     cur = xmlSecGetNextElementNode(cur->next);
     if(cur != NULL) {
-        xmlSecUnexpectedNodeError(cur,  NULL);
+        xmlSecUnexpectedNodeError(cur, NULL);
         return(-1);
     }
 
@@ -1107,7 +1107,7 @@ xmlSecGnuTLSKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
         xmlSecSize expectedOutputSize;
 
         /* verify output size */
-        if(transform->expectedOutputSize <= 0) {
+        if(transform->expectedOutputSize == 0) {
             xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL, "KDF output key size is not specified");
             return(-1);
         }

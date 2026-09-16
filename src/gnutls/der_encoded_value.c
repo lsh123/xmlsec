@@ -159,20 +159,20 @@ xmlSecGnuTLSKeyDataDEREncodedKeyValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr ke
     }
 
     /* read pubkey */
-	err = gnutls_pubkey_init(&pubkey);
-	if(err < 0) {
+    err = gnutls_pubkey_init(&pubkey);
+    if(err < 0) {
         xmlSecGnuTLSError("gnutls_pubkey_init", err, xmlSecKeyDataKlassGetName(id));
         goto done;
-	}
+    }
 
     datum.data = (xmlSecByte*)data; /* for const */
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, datum.size, goto done, xmlSecKeyDataKlassGetName(id));
 
-	err = gnutls_pubkey_import(pubkey, &datum, GNUTLS_X509_FMT_DER);
-	if(err != GNUTLS_E_SUCCESS) {
+    err = gnutls_pubkey_import(pubkey, &datum, GNUTLS_X509_FMT_DER);
+    if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_pubkey_import", err, xmlSecKeyDataKlassGetName(id));
         goto done;
-	}
+    }
 
     /* add to key */
     keyData = xmlSecGnuTLSAsymKeyDataCreate(pubkey, NULL);

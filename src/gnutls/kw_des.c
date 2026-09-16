@@ -7,7 +7,7 @@
  */
 /**
  * @addtogroup xmlsec_gnutls_crypto
- * @brief DES Key Transport transforms implementation for GnuTLS.
+ * @brief DES Key Wrap transforms implementation for GnuTLS.
  */
 #ifndef XMLSEC_NO_DES
 #include "globals.h"
@@ -380,9 +380,9 @@ xmlSecGnuTLSKWDes3Encrypt(const xmlSecByte* key, xmlSecSize keySize,
     int err;
 
     xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(keySize >= XMLSEC_KW_DES3_KEY_LENGTH, -1);
+    xmlSecAssert2(keySize == XMLSEC_KW_DES3_KEY_LENGTH, -1);
     xmlSecAssert2(iv != NULL, -1);
-    xmlSecAssert2(ivSize >= XMLSEC_KW_DES3_IV_LENGTH, -1);
+    xmlSecAssert2(ivSize == XMLSEC_KW_DES3_IV_LENGTH, -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize > 0, -1);
     xmlSecAssert2((inSize % XMLSEC_KW_DES3_BLOCK_LENGTH) == 0, -1);

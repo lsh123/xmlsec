@@ -7,7 +7,7 @@
  */
 /**
  * @addtogroup xmlsec_gnutls_crypto
- * @brief AES/Camellia Key Transport (RFC 3394) implementation for GnuTLS.
+ * @brief AES/Camellia Key Wrap (RFC 3394) implementation for GnuTLS.
  */
 #if !defined(XMLSEC_NO_AES) || !defined(XMLSEC_NO_CAMELLIA)
 #include "globals.h"

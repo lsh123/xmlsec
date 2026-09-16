@@ -133,6 +133,10 @@ xmlSecGnuTLSSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSe
 
     xmlSecAssert2(xmlSecGnuTLSSymKeyDataCheckId(data), -1);
     xmlSecAssert2(sizeBits > 0, -1);
+    if(sizeBits > (XMLSEC_SIZE_MAX - 7)) {
+        xmlSecInvalidSizeMoreThanError("sizeBits", sizeBits, (XMLSEC_SIZE_MAX - 7), NULL);
+        return(-1);
+    }
     XMLSEC_UNREFERENCED(type);
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);

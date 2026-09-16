@@ -56,12 +56,16 @@ xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoGetFunctions_gnutls(void) {
     static xmlSecCryptoDLFunctions functions;
 #ifndef XMLSEC_NO_MLDSA
-    int isMlDSASupported = xmlSecGnuTLSIsMlDSASupported();
+    int isMlDSASupported;
 #endif /* XMLSEC_NO_MLDSA */
 
     if(gXmlSecGnuTLSFunctions != NULL) {
         return(gXmlSecGnuTLSFunctions);
     }
+
+#ifndef XMLSEC_NO_MLDSA
+    isMlDSASupported = xmlSecGnuTLSIsMlDSASupported();
+#endif /* XMLSEC_NO_MLDSA */
 
     memset(&functions, 0, sizeof(functions));
     gXmlSecGnuTLSFunctions = &functions;

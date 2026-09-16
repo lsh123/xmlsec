@@ -104,12 +104,45 @@ xmlSecMSCngKeyDataDEREncodedKeyValueGetKlass(void) {
     return(&xmlSecMSCngKeyDataDEREncodedKeyValueKlass);
 }
 
+/* Read the top-level DER TLV (a SEQUENCE) starting at @p p (bounded by @p end).
+ * Returns a pointer just past the end of the TLV, or NULL on error. */
+static const xmlSecByte*
+xmlSecMSCngDerReadTopLevelTlv(const xmlSecByte* p, const xmlSecByte* end) {
+    DWORD len;
+
+    if(p >= end || *p != 0x30 /* SEQUENCE */) {
+        return(NULL);
+    }
+    p++;
+    if(p >= end) {
+        return(NULL);
+    }
+    if(*p & 0x80) {
+        BYTE nBytes = (*p) & 0x7F;
+        p++;
+        if(nBytes == 0 || nBytes > 4 || p + nBytes > end) {
+            return(NULL);
+        }
+        len = 0;
+        while(nBytes-- > 0) {
+            len = (len << 8) | (*p++);
+        }
+    } else {
+        len = *p++;
+    }
+    if(len > (size_t)(end - p)) {
+        return(NULL);
+    }
+    return(p + len);
+}
+
 static int
 xmlSecMSCngKeyDataDEREncodedKeyValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecBuffer buffer;
     const xmlSecByte* data;
     xmlSecSize dataSize;
     DWORD dataLen;
+    const xmlSecByte* tlvEnd;
     xmlSecKeyDataPtr keyData = NULL;
     xmlNodePtr cur;
     int res = -1;
@@ -154,6 +187,17 @@ xmlSecMSCngKeyDataDEREncodedKeyValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key
     keyData = xmlSecMSCngAppKeyReadPubKeyFromDer(data, dataLen);
     if(keyData == NULL) {
         xmlSecInternalError("xmlSecMSCngAppKeyReadPubKeyFromDer", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
+    /* verify the DER parser consumed the entire buffer (no trailing bytes) */
+    tlvEnd = xmlSecMSCngDerReadTopLevelTlv(data, data + dataSize);
+    if(tlvEnd == NULL) {
+        xmlSecInternalError("xmlSecMSCngDerReadTopLevelTlv", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+    if(tlvEnd != data + dataSize) {
+        xmlSecInvalidSizeDataError("Remaining bytes", (xmlSecSize)(data + dataSize - tlvEnd), "0 bytes", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 

@@ -730,6 +730,10 @@ xmlSecMSCngCertKeyDataGetSize(xmlSecKeyDataPtr data) {
         xmlSecAssert2(ctx->cert->pCertInfo != NULL, 0);
         length = CertGetPublicKeyLength(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
             &ctx->cert->pCertInfo->SubjectPublicKeyInfo);
+        if(length == 0) {
+            xmlSecMSCngLastError("CertGetPublicKeyLength", NULL);
+            return(0);
+        }
     } else if(ctx->pubkey != 0) {
         DWORD lenlen = sizeof(length);
         status = BCryptGetProperty(ctx->pubkey,
@@ -849,8 +853,8 @@ xmlSecMSCngKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits,
     int ret;
     int res = -1;
 
-    xmlSecAssert2(xmlSecKeyDataIsValid(data), xmlSecKeyDataTypeUnknown);
-    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCngKeyDataSize), xmlSecKeyDataTypeUnknown);
+    xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCngKeyDataSize), -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataDsaId), -1);
     xmlSecAssert2(sizeBits > 0, -1);
 
@@ -1194,8 +1198,8 @@ xmlSecMSCngKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits,
     int ret;
     int res = -1;
 
-    xmlSecAssert2(xmlSecKeyDataIsValid(data), xmlSecKeyDataTypeUnknown);
-    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCngKeyDataSize), xmlSecKeyDataTypeUnknown);
+    xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCngKeyDataSize), -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataRsaId), -1);
     xmlSecAssert2(sizeBits > 0, -1);
 
@@ -1370,6 +1374,10 @@ xmlSecMSCngKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
     if ((blobType == NULL) || (eckey->dwMagic == 0)) {
         xmlSecInternalError2("xmlSecMSCngKeyDataEcGetTypeAndMagicFromOid", xmlSecKeyDataKlassGetName(id),
             "curve=%s", xmlSecErrorsSafeString(ecValue->curve));
+        goto done;
+    }
+    if((pubkeySize % 2) != 0) {
+        xmlSecInvalidSizeNotMultipleOfError("EC public key size", pubkeySize, (xmlSecSize)2, xmlSecKeyDataKlassGetName(id));
         goto done;
     }
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(pubkeySize / 2, eckey->cbKey, goto done, xmlSecKeyDataKlassGetName(id));
@@ -1592,6 +1600,10 @@ xmlSecMSCngKeyDataEcGetKlass(void) {
  *
   *****************************************************************************/
 #ifndef XMLSEC_NO_DH
+
+/* Maximum DH prime (P) size in bytes. CNG DH keys are at most a few KB; this bound
+ * is far above any real key and prevents DWORD overflow in the cbKey * 3 blob size. */
+#define XMLSEC_MSCNG_DH_MAX_P_SIZE (0x10000U)
 
 static int
 xmlSecMSCngKeyDataDhWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
@@ -2127,6 +2139,15 @@ xmlSecMSCngCreateDerForBCryptPubkey(xmlSecKeyDataPtr data, LPVOID* ppDer, DWORD*
     *ppDer = NULL;
     *pcbDer = 0;
 
+#ifndef XMLSEC_NO_XDH
+    /* CryptExportPublicKeyInfoFromBCryptKeyHandle does not support the X25519 OID and
+     * would emit an incorrect (generic EC) SPKI, so reject XDH keys explicitly. */
+    if(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataXdhId)) {
+        xmlSecNotImplementedError("MSCNG doesn't support DER export of X25519 (XDH) public keys");
+        return(-1);
+    }
+#endif /* XMLSEC_NO_XDH */
+
 #ifndef XMLSEC_NO_DSA
     ret = xmlSecMSCngIsDsaBcryptKey(hPubkey);
     if(ret < 0) {
@@ -2285,6 +2306,10 @@ xmlSecMSCngAppKeyReadPubKeyFromDer(const xmlSecByte* derData, DWORD derDataLen) 
         }
 
         cbKey = pPLen;
+        if(cbKey > XMLSEC_MSCNG_DH_MAX_P_SIZE) {
+            xmlSecInvalidSizeMoreThanError("DH P size", (xmlSecSize)cbKey, (xmlSecSize)XMLSEC_MSCNG_DH_MAX_P_SIZE, NULL);
+            goto done;
+        }
         cbPubBlob = sizeof(BCRYPT_DH_KEY_BLOB) + cbKey * 3;
         pbPubBlob = (PUCHAR)xmlMalloc(cbPubBlob);
         if(pbPubBlob == NULL) {

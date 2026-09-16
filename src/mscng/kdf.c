@@ -635,6 +635,9 @@ xmlSecMSCngHkdfPerformKeyDerivation(
     ULONG hashAlgoLen;
     BCryptBuffer paramBuffer[1];
     BCryptBufferDesc paramsHKDF;
+    PBYTE pbSaltToUse = pbSalt;
+    ULONG cbSaltToUse = cbSalt;
+    PBYTE pbZeroSalt = NULL;
     int res = -1;
 
     xmlSecAssert2(pszHashAlgo != NULL, -1);
@@ -681,12 +684,50 @@ xmlSecMSCngHkdfPerformKeyDerivation(
         goto done;
     }
 
-    /* set salt and finalize the key (salt is optional; NULL/0 means no salt) */
+    /* reject inconsistent salt input */
+    if((pbSalt == NULL) && (cbSalt > 0)) {
+        xmlSecInvalidSizeError("HKDF salt size with NULL salt buffer",
+            (xmlSecSize)cbSalt, (xmlSecSize)0, NULL);
+        goto done;
+    }
+
+    /* if no salt is provided, use a zero-filled salt of HashLen bytes
+     * (per RFC 5869 section 2.2) */
+    if((pbSalt == NULL) || (cbSalt == 0)) {
+        BCRYPT_ALG_HANDLE hHashAlg = NULL;
+        DWORD hashLen = 0;
+        DWORD propLen = 0;
+
+        status = BCryptOpenAlgorithmProvider(&hHashAlg, pszHashAlgo, NULL, 0);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptOpenAlgorithmProvider(hash)", NULL, status);
+            goto done;
+        }
+        status = BCryptGetProperty(hHashAlg, BCRYPT_HASH_LENGTH,
+            (PBYTE)&hashLen, sizeof(hashLen), &propLen, 0);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptGetProperty(BCRYPT_HASH_LENGTH)", NULL, status);
+            BCryptCloseAlgorithmProvider(hHashAlg, 0);
+            goto done;
+        }
+        BCryptCloseAlgorithmProvider(hHashAlg, 0);
+
+        pbZeroSalt = (PBYTE)xmlMalloc(hashLen);
+        if(pbZeroSalt == NULL) {
+            xmlSecMallocError(hashLen, NULL);
+            goto done;
+        }
+        memset(pbZeroSalt, 0, hashLen);
+        pbSaltToUse = pbZeroSalt;
+        cbSaltToUse = hashLen;
+    }
+
+    /* set salt and finalize the key */
     status = BCryptSetProperty(
         hKey,
         BCRYPT_HKDF_SALT_AND_FINALIZE,
-        pbSalt,         /* may be NULL */
-        cbSalt,         /* may be 0 */
+        pbSaltToUse,
+        cbSaltToUse,
         0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptSetProperty(BCRYPT_HKDF_SALT_AND_FINALIZE)", NULL, status);
@@ -728,6 +769,9 @@ xmlSecMSCngHkdfPerformKeyDerivation(
     res = 0;
 
 done:
+    if(pbZeroSalt != NULL) {
+        xmlFree(pbZeroSalt);
+    }
     if(NULL != hKey) {
         BCryptDestroyKey(hKey);
     }

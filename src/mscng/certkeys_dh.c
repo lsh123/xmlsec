@@ -105,7 +105,7 @@ xmlSecMSCngDerReadTlv(const xmlSecByte* p, const xmlSecByte* end, BYTE expectedT
     } else {
         len = *p++;
     }
-    if(p + len > end) {
+    if(len > (size_t)(end - p)) {
         return(NULL);
     }
     *pLen = len;
@@ -128,11 +128,12 @@ xmlSecMSCngDerDecodeInteger(const xmlSecByte* p, const xmlSecByte* end, DWORD* p
         val++;
         len--;
     }
+
     *pLen = len;
     return(val);
 }
 
-/* Parse DH AlgorithmIdentifier parameters: SEQUENCE { INTEGER p, INTEGER g [, INTEGER q] }
+/* Parse Windows DH AlgorithmIdentifier parameters: SEQUENCE { INTEGER p, INTEGER g [, INTEGER q] }
  * On success sets output pointers and lengths for p, g, and optional q (big-endian, no sign byte). */
 int
 xmlSecMSCngDhParseDhParameters(const xmlSecByte* params, DWORD paramsLen,
@@ -194,7 +195,6 @@ xmlSecMSCngDhParseDhParameters(const xmlSecByte* params, DWORD paramsLen,
             xmlSecInternalError("xmlSecMSCngDerDecodeInteger(Q)", NULL);
             return(-1);
         }
-
         next = xmlSecMSCngDerReadTlv(next, end, 0x02 /* INTEGER */, &tlvLen);
         if(next == NULL) {
             xmlSecInternalError("xmlSecMSCngDerReadTlv(Q)", NULL);
@@ -596,8 +596,9 @@ done:
 /**
  * @brief Derives the DH public value Y = G^X mod P and writes it into the private blob.
  * @details Performs a self-agreement between the (placeholder) private key and a public key whose
- *          Y is set to G, which computes G^X mod P. The result (little-endian from BCrypt) is reversed
- *          to big-endian and written right-aligned into slot 2 (the Y field) of the private blob.
+ *          Y is set to G, which computes G^X mod P. The result (little-endian from BCrypt, i.e. the
+ *          byte-reverse of the big-endian wire format) is reversed to big-endian and written
+ *          right-aligned into slot 2 (the Y field) of the private blob.
  * @param hAlg open DH algorithm provider.
  * @param hPrivKey imported (placeholder) DH private key handle.
  * @param pbPrivBlob the BCRYPT_DH_PRIVATE_BLOB whose Y field is updated in place.
@@ -653,7 +654,7 @@ xmlSecMSCngDhDerivePubKeyY(BCRYPT_ALG_HANDLE hAlg, BCRYPT_KEY_HANDLE hPrivKey, P
         goto done;
     }
 
-    /* Get Y = G^X mod P (little-endian from BCrypt) */
+    /* Get Y = G^X mod P (little-endian from BCrypt, i.e. the byte-reverse of the big-endian wire format) */
     status = BCryptDeriveKey(hSelfSecret, BCRYPT_KDF_RAW_SECRET, NULL, NULL, 0, &cbY, 0);
     if((status != STATUS_SUCCESS) || (cbY == 0)) {
         xmlSecMSCngNtError("BCryptDeriveKey(Y size)", NULL, status);
@@ -672,7 +673,7 @@ xmlSecMSCngDhDerivePubKeyY(BCRYPT_ALG_HANDLE hAlg, BCRYPT_KEY_HANDLE hPrivKey, P
         goto done;
     }
 
-    /* BCrypt returns little-endian; reverse to big-endian */
+    /* BCrypt returns Y in little-endian (byte-reverse of the big-endian wire format); reverse to big-endian */
     xmlSecMSCngReverseBytes(pbYtmp, cbY);
     
     /* success */

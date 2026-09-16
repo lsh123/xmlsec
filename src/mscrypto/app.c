@@ -557,7 +557,7 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
         dwDataLen = sizeof(dwData);
         dwData = 0;
         /* Find the certificate that has the private key */
-        if((keyData == NULL) && (TRUE == CertGetCertificateContextProperty(pCert, CERT_KEY_SPEC_PROP_ID, &dwData, &dwDataLen)) && (dwData > 0)) {
+        if((keyData == NULL) && (TRUE == CertGetCertificateContextProperty(pCert, CERT_KEY_SPEC_PROP_ID, &dwData, &dwDataLen))) {
             tmpcert = CertDuplicateCertificateContext(pCert);
             if(tmpcert == NULL) {
                 xmlSecMSCryptoError("CertDuplicateCertificateContext",

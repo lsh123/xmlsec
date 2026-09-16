@@ -46,13 +46,14 @@ XMLSEC_TRANSFORM_DECLARE(MSCngKWDes3, xmlSecMSCngKWDes3Ctx)
 #define xmlSecMSCngKWDes3Size XMLSEC_TRANSFORM_SIZE(MSCngKWDes3)
 
 static int
-xmlSecMSCngKWDes3GenerateRandom(xmlSecTransformPtr transform XMLSEC_ATTRIBUTE_UNUSED, xmlSecByte * out,
+xmlSecMSCngKWDes3GenerateRandom(xmlSecTransformPtr transform, xmlSecByte * out,
         xmlSecSize outSize, xmlSecSize* outWritten)
 {
     NTSTATUS status;
     DWORD dwOutSize;
 
-    XMLSEC_UNREFERENCED(transform);
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecMSCngTransformKWDes3Id), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngKWDes3Size), -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize > 0, -1);
     xmlSecAssert2(outWritten != NULL, -1);
@@ -117,6 +118,7 @@ xmlSecMSCngKWDes3Sha1(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSe
         xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
         goto done;
     }
+    xmlSecAssert2(cbData == sizeof(DWORD), -1);
 
     pbHashObject = (PBYTE)xmlMalloc(cbHashObject);
     if(pbHashObject == NULL) {
@@ -134,6 +136,7 @@ xmlSecMSCngKWDes3Sha1(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSe
         xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
         goto done;
     }
+    xmlSecAssert2(cbData == sizeof(DWORD), -1);
 
     if(outSize < cbHash) {
         xmlSecInvalidSizeLessThanError("outSize", outSize, (xmlSecSize)cbHash, NULL);
@@ -220,6 +223,7 @@ xmlSecMSCngKWDes3BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     DWORD dwBlobSize, dwInSize, dwIvSize, dwOutSize;
     DWORD dwBlockLen, dwBlockLenLen;
     xmlSecBuffer ivCopy;
+    int ivCopyInitialized = 0;
     int ret;
     int res = -1;
 
@@ -266,6 +270,7 @@ xmlSecMSCngKWDes3BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
         goto done;
     }
+    xmlSecAssert2(cbData == sizeof(DWORD), -1);
 
     pbKeyObject = xmlMalloc(cbKeyObject);
     if(pbKeyObject == NULL) {
@@ -322,6 +327,7 @@ xmlSecMSCngKWDes3BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
         goto done;
     }
+    xmlSecAssert2(dwBlockLenLen == sizeof(dwBlockLen), -1);
     XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwBlockLen, blockLen, goto done, NULL);
 
     if(ivSize < blockLen) {
@@ -336,6 +342,7 @@ xmlSecMSCngKWDes3BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
             "size=" XMLSEC_SIZE_FMT, ivSize);
         goto done;
     }
+    ivCopyInitialized = 1;
 
     memcpy(xmlSecBufferGetData(&ivCopy), iv, ivSize);
 
@@ -361,7 +368,9 @@ xmlSecMSCngKWDes3BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     res = 0;
 
 done:
-    xmlSecBufferFinalize(&ivCopy);
+    if (ivCopyInitialized != 0) {
+        xmlSecBufferFinalize(&ivCopy);
+    }
 
     if (hKey != NULL) {
         BCryptDestroyKey(hKey);
@@ -398,6 +407,8 @@ xmlSecMSCngKWDes3BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     DWORD dwBlobSize, dwInSize, dwIvSize, dwOutSize;
     NTSTATUS status;
     DWORD dwBlockLen, dwBlockLenLen;
+    xmlSecBuffer ivCopy;
+    int ivCopyInitialized = 0;
     int ret;
     int res = -1;
 
@@ -444,6 +455,7 @@ xmlSecMSCngKWDes3BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
         goto done;
     }
+    xmlSecAssert2(cbData == sizeof(DWORD), -1);
 
     pbKeyObject = xmlMalloc(cbKeyObject);
     if(pbKeyObject == NULL) {
@@ -500,12 +512,24 @@ xmlSecMSCngKWDes3BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
         goto done;
     }
+    xmlSecAssert2(dwBlockLenLen == sizeof(dwBlockLen), -1);
     XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwBlockLen, blockLen, goto done, NULL);
 
     if(ivSize < blockLen) {
         xmlSecInvalidSizeLessThanError("ivSize", ivSize, blockLen, NULL);
         goto done;
     }
+
+    /* caller handles iv manually, so let CNG work on a copy */
+    ret = xmlSecBufferInitialize(&ivCopy, ivSize);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferInitialize", NULL,
+            "size=" XMLSEC_SIZE_FMT, ivSize);
+        goto done;
+    }
+    ivCopyInitialized = 1;
+
+    memcpy(xmlSecBufferGetData(&ivCopy), iv, ivSize);
 
     cbData = 0;
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwInSize, goto done, NULL);
@@ -516,7 +540,7 @@ xmlSecMSCngKWDes3BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         (PUCHAR)in,
         dwInSize,
         NULL,
-        (PUCHAR)iv,
+        xmlSecBufferGetData(&ivCopy),
         dwIvSize,
         out,
         dwOutSize,
@@ -530,6 +554,10 @@ xmlSecMSCngKWDes3BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     res = 0;
 
 done:
+    if (ivCopyInitialized != 0) {
+        xmlSecBufferFinalize(&ivCopy);
+    }
+
     if (hKey != NULL) {
         BCryptDestroyKey(hKey);
     }

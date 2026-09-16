@@ -398,7 +398,7 @@ xmlSecCryptoGetFunctions_nss(void) {
 #endif /* XMLSEC_NO_X509 */
     gXmlSecNssFunctions->cryptoAppKeyLoadEx             = xmlSecNssAppKeyLoadEx;
     gXmlSecNssFunctions->cryptoAppKeyLoadMemory         = xmlSecNssAppKeyLoadMemory;
-    gXmlSecNssFunctions->cryptoAppDefaultPwdCallback    = (void*)xmlSecNssAppGetDefaultPwdCallback();
+    gXmlSecNssFunctions->cryptoAppDefaultPwdCallback    = xmlSecNssAppGetDefaultPwdCallback;
 
     return(gXmlSecNssFunctions);
 }

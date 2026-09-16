@@ -449,7 +449,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
 #endif /* XMLSEC_NO_X509 */
     gXmlSecMSCngFunctions->cryptoAppKeyLoadEx                   = xmlSecMSCngAppKeyLoadEx;
     gXmlSecMSCngFunctions->cryptoAppKeyLoadMemory               = xmlSecMSCngAppKeyLoadMemory;
-    gXmlSecMSCngFunctions->cryptoAppDefaultPwdCallback          = xmlSecMSCngAppGetDefaultPwdCallback;
+    gXmlSecMSCngFunctions->cryptoAppDefaultPwdCallback          = xmlSecMSCngAppGetDefaultPwdCallback();
 
     return(gXmlSecMSCngFunctions);
 }

@@ -10,7 +10,7 @@
  * @brief Legacy signatures implementation for OpenSSL.
  */
 /*
- * The ECDSA signature were added to EVP interface in 3.0.0
+ * The ECDSA signatures were added to the EVP interface in 3.0.0
  * https://www.openssl.org/docs/manmaster/man7/EVP_SIGNATURE-ECDSA.html
  *
  * OpenSSL 3.x implementation is in src/openssl/signatures.c
@@ -529,10 +529,9 @@ xmlSecOpenSSLSignatureLegacyExecute(xmlSecTransformPtr transform, int last, xmlS
  *
  * ECDSA EVP
  *
- * NIST-IR-7802 (TMSAD) specifies ECDSA signature packing not supported by
- * OpenSSL so we created our own EVP_MD.
- *
- * http://csrc.nist.gov/publications/PubsNISTIRs.html#NIST-IR-7802
+ * The digest is computed with the standard EVP_MD functions and the signature
+ * is generated/verified by calling ECDSA_do_sign()/ECDSA_do_verify() directly
+ * on the digest.
  *
  * The ECDSA algorithm signature is a pair of integers referred to as (r, s).
  * The &lt;dsig:SignatureValue/&gt; consists of the base64 [RFC2045] encoding of the

@@ -11,10 +11,7 @@
  */
 #include "globals.h"
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
-#include <ctype.h>
 
 #include <openssl/hmac.h>
 
@@ -283,7 +280,7 @@ xmlSecOpenSSLHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
     xmlSecAssert2(xmlSecOpenSSLHmacCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLHmacSize), -1);
-    xmlSecAssert2(node!= NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
     XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecOpenSSLHmacGetCtx(transform);
@@ -301,7 +298,7 @@ xmlSecOpenSSLHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 }
 
 static int
-xmlSecOpenSSLHmacSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
+xmlSecOpenSSLHmacSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq) {
     xmlSecAssert2(xmlSecOpenSSLHmacCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationSign)
                || (transform->operation == xmlSecTransformOperationVerify), -1);
@@ -496,7 +493,7 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
     xmlSecAssert2(ctx->ctxInitialized != 0, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
-        /* we should be already initialized when we set key */
+        /* we should already be initialized when we set key */
         transform->status = xmlSecTransformStatusWorking;
     }
 

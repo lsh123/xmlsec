@@ -451,7 +451,7 @@ xmlSecOpenSSLEvpKeyDataGetType(xmlSecKeyDataPtr data) {
 #if !defined(OPENSSL_NO_ENGINE)
     if (EVP_PKEY_get0_engine(pKey) != NULL) {
         /* there is no way to determine if a key is public or private when
-         * key is stored on HSM (engine or provder) so we assume it is private
+         * key is stored on HSM (engine or provider) so we assume it is private
          * (see https://github.com/lsh123/xmlsec/issues/588)
          */
         return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
@@ -560,7 +560,7 @@ xmlSecOpenSSLEvpKeyDataGetType(xmlSecKeyDataPtr data) {
 
     default:
         {
-            /* for other keys we don't have a good way to get the key size, so return 0 */
+            /* for other keys we don't have a good way to get the key type, so return 0 */
             xmlSecOpenSSLError2("EVP_PKEY_base_id", xmlSecKeyDataGetName(data),
                 "unsupported evp key type=%d", EVP_PKEY_base_id(pKey));
             return(xmlSecKeyDataTypeUnknown);
@@ -632,7 +632,7 @@ xmlSecOpenSSLEvpKeyDup(EVP_PKEY* pKey) {
 
 #ifdef XMLSEC_OPENSSL_API_300
 
-/* newer implementation don't have id because they use EVP_KEYMGMT */
+/* newer implementations don't have id because they use EVP_KEYMGMT */
 static int
 xmlSecOpenSSLEvpKeyGetId(EVP_PKEY *pKey) {
     const char * typeName;
@@ -1066,7 +1066,7 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
 #ifndef XMLSEC_OPENSSL_API_300
 
-/* on success, the ownership of @p dsa is transfered to @p data,
+/* on success, the ownership of @p dsa is transferred to @p data,
  * on error, the caller is still responsible for destroying it
  */
 static int
@@ -1517,7 +1517,7 @@ done:
 
 #endif /* XMLSEC_OPENSSL_API_300 */
 
-xmlSecKeyDataPtr
+static xmlSecKeyDataPtr
 xmlSecOpenSSLKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     xmlSecKeyDataPtr data = NULL;
     xmlSecKeyDataPtr res = NULL;
@@ -1582,7 +1582,7 @@ xmlSecOpenSSLKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
 
     ret = xmlSecOpenSSLKeyDataDsaSetValue(data, &dsaKeyValue);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataDsaSetValue()",
+        xmlSecInternalError("xmlSecOpenSSLKeyDataDsaSetValue",
             xmlSecKeyDataKlassGetName(id));
         goto done;
     }
@@ -1835,7 +1835,7 @@ xmlSecOpenSSLKeyDataDhXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
 #ifndef XMLSEC_OPENSSL_API_300
 
-/* on success, the ownership of @p dh is transfered to @p data,
+/* on success, the ownership of @p dh is transferred to @p data,
  * on error, the caller is still responsible for destroying it
  */
 static int
@@ -2325,7 +2325,7 @@ done:
 #endif /* XMLSEC_OPENSSL_API_300 */
 
 
-xmlSecKeyDataPtr
+static xmlSecKeyDataPtr
 xmlSecOpenSSLKeyDataDhRead(xmlSecKeyDataId id, xmlSecKeyValueDhPtr dhValue) {
     xmlSecKeyDataPtr data = NULL;
     xmlSecKeyDataPtr res = NULL;
@@ -2404,7 +2404,7 @@ xmlSecOpenSSLKeyDataDhRead(xmlSecKeyDataId id, xmlSecKeyValueDhPtr dhValue) {
 
     ret = xmlSecOpenSSLKeyDataDhSetValue(data, &dhKeyValue);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataDhSetValue()",
+        xmlSecInternalError("xmlSecOpenSSLKeyDataDhSetValue",
             xmlSecKeyDataKlassGetName(id));
         goto done;
     }
@@ -2667,7 +2667,7 @@ xmlSecOpenSSLKeyDataEcGetEcKey(xmlSecKeyDataPtr data) {
     return((pKey != NULL) ? EVP_PKEY_get0_EC_KEY(pKey) : NULL);
 }
 
-/* on success, the ownership of @p ecKey is transfered to @p data,
+/* on success, the ownership of @p ecKey is transferred to @p data,
  * on error, the caller is still responsible for destroying it
  */
 static int
@@ -2703,7 +2703,8 @@ xmlSecOpenSSLKeyDataEcSetEcKey(xmlSecKeyDataPtr data,  EC_KEY* ecKey) {
     }
     /* data owns pKey now */
 
-    /* success: data -> pKey owns ecKey now */
+    /* success: EVP_PKEY_set1_EC_KEY copied ecKey into pKey, so the caller
+     * still owns ecKey and frees it below */
     EC_KEY_free(ecKey);
     return(0);
 }
@@ -2943,7 +2944,7 @@ xmlSecOpenSSLKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKey
     /* curve name first */
     ret = EVP_PKEY_get_utf8_string_param(pKey, OSSL_PKEY_PARAM_GROUP_NAME,
             curve_name, sizeof(curve_name), &curve_name_len);
-    if((ret != 1) || (curve_name_len <= 0) || (curve_name_len >= sizeof(curve_name))) {
+    if((ret != 1) || (curve_name_len == 0) || (curve_name_len >= sizeof(curve_name))) {
         xmlSecOpenSSLError("EVP_PKEY_get_utf8_string_param(GROUP_NAME)", xmlSecKeyDataGetName(data));
         return(-1);
     }
@@ -3080,7 +3081,7 @@ xmlSecOpenSSLKeyDataEcXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
         xmlSecOpenSSLKeyDataEcWrite));
 }
 
-xmlSecKeyDataPtr
+static xmlSecKeyDataPtr
 xmlSecOpenSSLKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
     xmlSecKeyDataPtr data = NULL;
     xmlSecKeyDataPtr res = NULL;
@@ -3099,7 +3100,7 @@ xmlSecOpenSSLKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
 
     ret = xmlSecOpenSSLKeyDataEcSetValue(data, ecValue->curve, &(ecValue->pubkey));
     if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataEcSetValue()", xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecOpenSSLKeyDataEcSetValue", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
@@ -3301,7 +3302,7 @@ xmlSecOpenSSLKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
 #ifndef XMLSEC_OPENSSL_API_300
 
-/* on success, the ownership of @p rsa is transfered to @p data,
+/* on success, the ownership of @p rsa is transferred to @p data,
  * on error, the caller is still responsible for destroying it
  */
 static int
@@ -3605,7 +3606,7 @@ xmlSecOpenSSLKeyDataRsaGetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueRsaP
     xmlSecAssert2(rsaKeyValue != NULL, -1);
 
     pKey = xmlSecOpenSSLKeyDataRsaGetEvp(data);
-    xmlSecAssert2(pKey != NULL, xmlSecKeyDataTypeUnknown);
+    xmlSecAssert2(pKey != NULL, -1);
 
     ret = EVP_PKEY_get_bn_param(pKey, OSSL_PKEY_PARAM_RSA_N, &(rsaKeyValue->n));
     if((ret != 1) || (rsaKeyValue->n == NULL)) {
@@ -3761,7 +3762,7 @@ xmlSecOpenSSLKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
         /* d */
         ret = xmlSecOpenSSLGetBNValue(&(rsaValue->privateExponent), &(rsaKeyValue.d));
         if(ret < 0) {
-            xmlSecInternalError("xmlSecOpenSSLGetBNValue(x)",
+            xmlSecInternalError("xmlSecOpenSSLGetBNValue(d)",
                 xmlSecKeyDataKlassGetName(id));
             goto done;
         }
@@ -3775,7 +3776,7 @@ xmlSecOpenSSLKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
 
     ret = xmlSecOpenSSLKeyDataRsaSetValue(data, &rsaKeyValue);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataRsaSetValue()",
+        xmlSecInternalError("xmlSecOpenSSLKeyDataRsaSetValue",
             xmlSecKeyDataKlassGetName(id));
         goto done;
     }
@@ -3902,7 +3903,6 @@ xmlSecOpenSSLKeyDataGostR3410_2012_256GetKlass(void) {
  * GOST R 34.10-2012 512 bit xml key representation processing
  *
   *****************************************************************************/
-\
 
 XMLSEC_OPENSSL_EVP_KEY_KLASS(GostR3410_2012_512, GostR3410_2012_512)
 
@@ -3966,9 +3966,8 @@ xmlSecOpenSSLKeyDataMLDSAAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
 
 /**
  * @brief Gets ML-DSA key (k, l) value: 44 corresponds to (4,4),
- * @param data the pointer to MLDSA key data.
- *
  * 65 to (6,5) or 87 to (8,7).
+ * @param data the pointer to MLDSA key data.
  *
  * @return 44, 65, or 87 on success or a negative value
  * otherwise.
@@ -3990,7 +3989,7 @@ xmlSecOpenSSLKeyDataMLDSAGetKL(xmlSecKeyDataPtr data) {
     case EVP_PKEY_ML_DSA_87:
         return 87;
     default:
-        xmlSecInvalidIntegerTypeError("evp key type", EVP_PKEY_base_id(pKey),
+        xmlSecInvalidIntegerTypeError("evp key type", xmlSecOpenSSLEvpKeyGetId(pKey),
                 "unsupported evp key type", NULL);
         return(-1);
     }
@@ -4147,7 +4146,7 @@ xmlSecOpenSSLKeyDataMLKEMGetKL(xmlSecKeyDataPtr data) {
     case NID_ML_KEM_1024:
         return 1024;
     default:
-        xmlSecInvalidIntegerTypeError("evp key type", EVP_PKEY_base_id(pKey),
+        xmlSecInvalidIntegerTypeError("evp key type", xmlSecOpenSSLEvpKeyGetId(pKey),
                 "unsupported evp key type", NULL);
         return(-1);
     }

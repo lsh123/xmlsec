@@ -191,7 +191,7 @@ xmlSecOpenSSLEvpDigestSetGostDigestByName(xmlSecOpenSSLEvpDigestCtxPtr ctx, cons
     xmlSecAssert2(digestName != NULL, -1);
 
     ctx->digest = (EVP_MD*)EVP_get_digestbyname(digestName);
-    if (ctx->digest == NULL) {
+    if(ctx->digest == NULL) {
         xmlSecOpenSSLError2("EVP_get_digestbyname", NULL, "digestName=%s", xmlSecErrorsSafeString(digestName));
         return(-1);
     }

@@ -704,7 +704,6 @@ xmlSecGnuTLSKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 static int
 xmlSecGnuTLSKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x509Value,
                              xmlSecKeysMngrPtr keysMngr, unsigned int flags) {
-    xmlSecKeyDataStorePtr x509Store;
     gnutls_x509_crt_t cert = NULL;
     gnutls_x509_crl_t crl = NULL;
     int ret;
@@ -714,12 +713,6 @@ xmlSecGnuTLSKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x50
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataX509Id), -1);
     xmlSecAssert2(x509Value != NULL, -1);
     xmlSecAssert2(keysMngr != NULL, -1);
-
-    x509Store = xmlSecKeysMngrGetDataStore(keysMngr, xmlSecGnuTLSX509StoreId);
-    if(x509Store == NULL) {
-        xmlSecInternalError("xmlSecKeysMngrGetDataStore", xmlSecKeyDataGetName(data));
-        goto done;
-    }
 
     if(xmlSecBufferGetSize(&(x509Value->cert)) > 0) {
         cert = xmlSecGnuTLSX509CertRead(xmlSecBufferGetData(&(x509Value->cert)),
@@ -741,8 +734,15 @@ xmlSecGnuTLSKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x50
 
     /* if there is no cert in the X509Data node then try to find one */
     if(cert == NULL) {
+        xmlSecKeyDataStorePtr x509Store;
         gnutls_x509_crt_t storeCert = NULL;
         int stopOnUnknownCert = 0;
+
+        x509Store = xmlSecKeysMngrGetDataStore(keysMngr, xmlSecGnuTLSX509StoreId);
+        if(x509Store == NULL) {
+            xmlSecInternalError("xmlSecKeysMngrGetDataStore", xmlSecKeyDataGetName(data));
+            goto done;
+        }
 
         /* determine what to do */
         if((flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT) != 0) {

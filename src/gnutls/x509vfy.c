@@ -117,9 +117,7 @@ xmlSecGnuTLSX509StoreFindCertByValue(xmlSecKeyDataStorePtr store, xmlSecKeyX509D
         return(NULL);
     }
 
-    if(res == NULL) {
-        res = xmlSecGnuTLSX509FindCert(&(ctx->certsTrusted), &findCertCtx);
-    }
+    res = xmlSecGnuTLSX509FindCert(&(ctx->certsTrusted), &findCertCtx);
     if(res == NULL) {
         res = xmlSecGnuTLSX509FindCert(&(ctx->certsUntrusted), &findCertCtx);
     }
@@ -912,8 +910,15 @@ xmlSecGnuTLSX509StoreVerifyCrlTimeValidity(gnutls_x509_crl_t crl, xmlSecKeyInfoC
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     /* Get verification time */
-    verification_time = (keyInfoCtx->certsVerificationTime > 0) ?
-                        keyInfoCtx->certsVerificationTime : time(NULL);
+    if(keyInfoCtx->certsVerificationTime > 0) {
+        verification_time = keyInfoCtx->certsVerificationTime;
+    } else {
+        verification_time = time(NULL);
+        if(verification_time == (time_t)-1) {
+            xmlSecInternalError("time", storeName);
+            return(-1);
+        }
+    }
 
     /* Verify this_update */
     this_update = gnutls_x509_crl_get_this_update(crl);
@@ -1035,7 +1040,7 @@ xmlSecGnuTLSX509StoreVerifyCrlSignature(xmlSecGnuTLSX509StoreCtxPtr ctx, gnutls_
 
     ret = xmlSecGnuTLSX509GetVerificationFlags(keyInfoCtx, &flags);
     if (ret < 0) {
-        xmlSecInternalError("xmlSecGnuTLSX509GetVerificationFlags", NULL);
+        xmlSecInternalError("xmlSecGnuTLSX509GetVerificationFlags", storeName);
         goto done;
     }
 

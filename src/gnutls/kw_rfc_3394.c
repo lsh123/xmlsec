@@ -121,6 +121,8 @@ static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                   
 
 static int
 xmlSecGnuTLSKWRfc3394CheckId(xmlSecTransformPtr transform) {
+    xmlSecAssert2(transform != NULL, 0);
+
 #ifndef XMLSEC_NO_AES
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformKWAes128Id) ||
        xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformKWAes192Id) ||
@@ -293,6 +295,7 @@ xmlSecGnuTLSKWRfc3394Execute(xmlSecTransformPtr transform, int last,
     }
     return(0);
 }
+
 static unsigned char g_zero_iv[XMLSEC_KW_RFC3394_BLOCK_SIZE] =
     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
@@ -434,7 +437,6 @@ xmlSecGnuTLSTransformKWAes128GetKlass(void) {
 }
 
 XMLSEC_GNUTLS_KW_RFC3394_KLASS(KWAes192)
-
 
 /**
  * @brief The AES-192 key wrapper transform klass.

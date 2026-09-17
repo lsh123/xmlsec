@@ -275,6 +275,13 @@ xmlSecGnuTLSBlockCipherCtxFinal(xmlSecGnuTLSBlockCipherCtxPtr ctx, xmlSecBufferP
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
 
+    /* ensure the buffer has enough space so that inBuf is non-NULL even for empty input */
+    ret = xmlSecBufferSetMaxSize(in, ctx->blockSize);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferSetMaxSize", xmlSecErrorsSafeString(cipherName),
+            "size=" XMLSEC_SIZE_FMT, ctx->blockSize);
+        return(-1);
+    }
     inBuf = xmlSecBufferGetData(in);
     xmlSecAssert2(inBuf != NULL, -1);
     inSize = xmlSecBufferGetSize(in);
@@ -531,7 +538,7 @@ xmlSecGnuTLSBlockCipherInitialize(xmlSecTransformPtr transform) {
     if (ctx->blockSize  == 0) {
         ctx->blockSize = gnutls_cipher_get_block_size(ctx->algorithm);
         if(ctx->blockSize <= 0) {
-            xmlSecGnuTLSError("gnutls_cipher_get_block_size", 0, NULL);
+            xmlSecGnuTLSError2("gnutls_cipher_get_block_size", 0, NULL, "blockSize=" XMLSEC_SIZE_FMT, ctx->blockSize);
             return(-1);
         }
     }
@@ -540,7 +547,7 @@ xmlSecGnuTLSBlockCipherInitialize(xmlSecTransformPtr transform) {
     if (ctx->ivSize == 0) {
         ctx->ivSize = gnutls_cipher_get_iv_size(ctx->algorithm);
         if(ctx->ivSize <= 0) {
-            xmlSecGnuTLSError("gnutls_cipher_get_iv_size", 0, NULL);
+            xmlSecGnuTLSError2("gnutls_cipher_get_iv_size", 0, NULL, "ivSize=" XMLSEC_SIZE_FMT, ctx->ivSize);
             return(-1);
         }
         xmlSecAssert2(ctx->ivSize < XMLSEC_GNUTLS_BLOCK_CIPHER_MAX_IV_SIZE, -1);

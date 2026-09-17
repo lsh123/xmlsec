@@ -11,8 +11,6 @@
  */
 #include "globals.h"
 
-#include <string.h>
-
 #include <gnutls/abstract.h>
 #include <gnutls/gnutls.h>
 #include <gnutls/x509.h>

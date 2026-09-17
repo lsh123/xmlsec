@@ -19,6 +19,7 @@
 #include <gnutls/crypto.h>
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/buffer.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
@@ -196,7 +197,7 @@ xmlSecGnuTLSHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
     xmlSecAssert2(xmlSecGnuTLSHmacCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSHmacSize), -1);
-    xmlSecAssert2(node!= NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
     XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecGnuTLSHmacGetCtx(transform);
@@ -392,6 +393,9 @@ xmlSecGnuTLSHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
     if(transform->status == xmlSecTransformStatusFinished) {
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
+    } else if(transform->status != xmlSecTransformStatusWorking) {
+        xmlSecInvalidTransformStatusError(transform);
+        return(-1);
     }
 
     return(0);

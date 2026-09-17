@@ -62,8 +62,65 @@ static int              xmlSecGnuTLSAsymKeyDataGenerate         (xmlSecKeyDataPt
                                                                  gnutls_pk_algorithm_t algo,
                                                                  xmlSecSize key_size);
 static int              xmlSecGnuTLSAsymKeyDataDuplicate        (xmlSecKeyDataPtr dst,
-                                                                 xmlSecKeyDataPtr src);
+                                                                  xmlSecKeyDataPtr src);
 
+static int              xmlSecGnuTLSAsymKeyDataIsValidId        (xmlSecKeyDataId id);
+
+static int
+xmlSecGnuTLSAsymKeyDataIsValidId(xmlSecKeyDataId id) {
+#ifndef XMLSEC_NO_DSA
+    if(id == xmlSecGnuTLSKeyDataDsaId) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_DSA */
+
+#ifndef XMLSEC_NO_EC
+    if(id == xmlSecGnuTLSKeyDataEcId) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_EC */
+
+#ifndef XMLSEC_NO_RSA
+    if(id == xmlSecGnuTLSKeyDataRsaId) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_RSA */
+
+#ifndef XMLSEC_NO_GOST
+    if(id == xmlSecGnuTLSKeyDataGost2001Id) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_GOST */
+
+#ifndef XMLSEC_NO_GOST2012
+    if(id == xmlSecGnuTLSKeyDataGost2012_256Id) {
+        return(1);
+    }
+    if(id == xmlSecGnuTLSKeyDataGost2012_512Id) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_GOST2012 */
+
+#ifndef XMLSEC_NO_MLDSA
+    if(id == xmlSecGnuTLSKeyDataMLDSAId) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_MLDSA */
+
+#ifndef XMLSEC_NO_EDDSA
+    if(id == xmlSecGnuTLSKeyDataEdDSAId) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_EDDSA */
+
+#ifndef XMLSEC_NO_XDH
+    if(id == xmlSecGnuTLSKeyDataXdhId) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_XDH */
+
+    return(0);
+}
 
 /* Helper macro to define the asymmetric key data klass */
 #define XMLSEC_GNUTLS_ASYMKEY_KLASS_EX(klassName, keyName,  href, usage, dataNodeName, dataNodeNs, generate, xmlRead, xmlWrite)     \
@@ -114,7 +171,7 @@ xmlSecGnuTLSAsymKeyDataInitialize(xmlSecKeyDataPtr data) {
     xmlSecGnuTLSAsymKeyDataCtxPtr ctx;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecGnuTLSAsymKeyDataSize), -1);
+    xmlSecAssert2(xmlSecGnuTLSAsymKeyDataIsValidId(data->id), -1);
 
     ctx = xmlSecGnuTLSAsymKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
@@ -129,7 +186,7 @@ xmlSecGnuTLSAsymKeyDataFinalize(xmlSecKeyDataPtr data) {
     xmlSecGnuTLSAsymKeyDataCtxPtr ctx;
 
     xmlSecAssert(xmlSecKeyDataIsValid(data));
-    xmlSecAssert(xmlSecKeyDataCheckSize(data, xmlSecGnuTLSAsymKeyDataSize));
+    xmlSecAssert(xmlSecGnuTLSAsymKeyDataIsValidId(data->id));
 
     ctx = xmlSecGnuTLSAsymKeyDataGetCtx(data);
     xmlSecAssert(ctx != NULL);
@@ -149,7 +206,7 @@ xmlSecGnuTLSAsymKeyDataAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, g
     int err;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecGnuTLSAsymKeyDataSize), -1);
+    xmlSecAssert2(xmlSecGnuTLSAsymKeyDataIsValidId(data->id), -1);
 
     ctx = xmlSecGnuTLSAsymKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
@@ -198,7 +255,7 @@ xmlSecGnuTLSAsymKeyDataGenerate(xmlSecKeyDataPtr data, gnutls_pk_algorithm_t alg
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecGnuTLSAsymKeyDataSize), -1);
+    xmlSecAssert2(xmlSecGnuTLSAsymKeyDataIsValidId(data->id), -1);
     xmlSecAssert2(algo != GNUTLS_PK_UNKNOWN, -1);
 
     ctx = xmlSecGnuTLSAsymKeyDataGetCtx(data);
@@ -238,9 +295,9 @@ xmlSecGnuTLSAsymKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     int err;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(dst), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckSize(dst, xmlSecGnuTLSAsymKeyDataSize), -1);
+    xmlSecAssert2(xmlSecGnuTLSAsymKeyDataIsValidId(dst->id), -1);
     xmlSecAssert2(xmlSecKeyDataIsValid(src), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckSize(src, xmlSecGnuTLSAsymKeyDataSize), -1);
+    xmlSecAssert2(xmlSecGnuTLSAsymKeyDataIsValidId(src->id), -1);
 
     ctxDst = xmlSecGnuTLSAsymKeyDataGetCtx(dst);
     xmlSecAssert2(ctxDst != NULL, -1);
@@ -311,7 +368,7 @@ xmlSecGnuTLSAsymKeyDataGetPublicKey(xmlSecKeyDataPtr data) {
     xmlSecGnuTLSAsymKeyDataCtxPtr ctx;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), NULL);
-    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecGnuTLSAsymKeyDataSize), NULL);
+    xmlSecAssert2(xmlSecGnuTLSAsymKeyDataIsValidId(data->id), NULL);
 
     ctx = xmlSecGnuTLSAsymKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, NULL);
@@ -324,7 +381,7 @@ xmlSecGnuTLSAsymKeyDataGetPrivateKey(xmlSecKeyDataPtr data) {
     xmlSecGnuTLSAsymKeyDataCtxPtr ctx;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), NULL);
-    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecGnuTLSAsymKeyDataSize), NULL);
+    xmlSecAssert2(xmlSecGnuTLSAsymKeyDataIsValidId(data->id), NULL);
 
     ctx = xmlSecGnuTLSAsymKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, NULL);
@@ -337,7 +394,7 @@ xmlSecGnuTLSAsymKeyDataGetType(xmlSecKeyDataPtr data) {
     xmlSecGnuTLSAsymKeyDataCtxPtr ctx;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), xmlSecKeyDataTypeUnknown);
-    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecGnuTLSAsymKeyDataSize), xmlSecKeyDataTypeUnknown);
+    xmlSecAssert2(xmlSecGnuTLSAsymKeyDataIsValidId(data->id), xmlSecKeyDataTypeUnknown);
 
     ctx = xmlSecGnuTLSAsymKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, xmlSecKeyDataTypeUnknown);
@@ -361,7 +418,7 @@ xmlSecGnuTLSAsymKeyDataGetSize(xmlSecKeyDataPtr data) {
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), 0);
-    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecGnuTLSAsymKeyDataSize), 0);
+    xmlSecAssert2(xmlSecGnuTLSAsymKeyDataIsValidId(data->id), 0);
 
     ctx = xmlSecGnuTLSAsymKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, 0);
@@ -1376,7 +1433,7 @@ done:
 
 static int
 xmlSecGnuTLSKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
-    xmlSecKeyValueRsaPtr rsaValue, int writePrivateKey XMLSEC_ATTRIBUTE_UNUSED)
+    xmlSecKeyValueRsaPtr rsaValue, int writePrivateKey)
 {
     gnutls_privkey_t privkey = NULL;
     gnutls_pubkey_t pubkey = NULL;
@@ -1444,6 +1501,19 @@ xmlSecGnuTLSKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferAppend(publicExponent)", xmlSecKeyDataKlassGetName(id));
         goto done;
+    }
+
+    /* privateExponent (only if available and requested) */
+    if((writePrivateKey != 0) && (privkey != NULL)) {
+        if((privateExponent.data == NULL) || (privateExponent.size <= 0)) {
+            xmlSecInternalError("RSA privateExponent parameter is NULL", xmlSecKeyDataKlassGetName(id));
+            goto done;
+        }
+        ret = xmlSecBufferAppend(&(rsaValue->privateExponent), privateExponent.data, privateExponent.size);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecBufferAppend(privateExponent)", xmlSecKeyDataKlassGetName(id));
+            goto done;
+        }
     }
 
     /* success */
@@ -1711,6 +1781,10 @@ xmlSecGnuTLSKeyDataMLDSAAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, 
     /* verify key type */
     if(pubkey != NULL) {
         ret = gnutls_pubkey_get_pk_algorithm(pubkey, NULL);
+        if(ret < 0) {
+            xmlSecGnuTLSError("gnutls_pubkey_get_pk_algorithm", ret, NULL);
+            return(-1);
+        }
         if((ret != GNUTLS_PK_MLDSA44) && (ret != GNUTLS_PK_MLDSA65) && (ret != GNUTLS_PK_MLDSA87)) {
             xmlSecInternalError2("Invalid pubkey algorithm", NULL, "type=%d", ret);
             return(-1);
@@ -1718,6 +1792,10 @@ xmlSecGnuTLSKeyDataMLDSAAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, 
     }
     if(privkey != NULL) {
         ret = gnutls_privkey_get_pk_algorithm(privkey, NULL);
+        if(ret < 0) {
+            xmlSecGnuTLSError("gnutls_privkey_get_pk_algorithm", ret, NULL);
+            return(-1);
+        }
         if((ret != GNUTLS_PK_MLDSA44) && (ret != GNUTLS_PK_MLDSA65) && (ret != GNUTLS_PK_MLDSA87)) {
             xmlSecInternalError2("Invalid privkey algorithm", NULL, "type=%d", ret);
             return(-1);
@@ -1978,10 +2056,20 @@ xmlSecGnuTLSAsymKeyDataCreate(gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) 
 
     /* if we have 2 keys, figure out if algo is the same */
     if(pubkey != NULL) {
-        pubkey_algo = gnutls_pubkey_get_pk_algorithm(pubkey, NULL);
+        ret = gnutls_pubkey_get_pk_algorithm(pubkey, NULL);
+        if(ret < 0) {
+            xmlSecGnuTLSError("gnutls_pubkey_get_pk_algorithm", ret, NULL);
+            return(NULL);
+        }
+        pubkey_algo = ret;
     }
     if(privkey != NULL) {
-        privkey_algo = gnutls_privkey_get_pk_algorithm(privkey, NULL);
+        ret = gnutls_privkey_get_pk_algorithm(privkey, NULL);
+        if(ret < 0) {
+            xmlSecGnuTLSError("gnutls_privkey_get_pk_algorithm", ret, NULL);
+            return(NULL);
+        }
+        privkey_algo = ret;
     }
     if(pubkey_algo == GNUTLS_PK_UNKNOWN) {
         algo = privkey_algo;

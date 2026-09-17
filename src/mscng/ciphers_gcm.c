@@ -298,8 +298,14 @@ xmlSecMSCngGcmBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
     blob.flags |= XMLSEC_BUFFER_FLAG_SECURE;
     bufInitialized = 1;
 
-    xmlSecBufferSetSize(&blob, blobSize);
+    ret = xmlSecBufferSetSize(&blob, blobSize);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferSetSize", xmlSecTransformGetName(transform),
+            "size=" XMLSEC_SIZE_FMT, blobSize);
+        goto done;
+    }
     blobData = xmlSecBufferGetData(&blob);
+    xmlSecAssert2(blobData != NULL, -1);
 
     blobHeader = (BCRYPT_KEY_DATA_BLOB_HEADER*)blobData;
     blobHeader->dwMagic = BCRYPT_KEY_DATA_BLOB_MAGIC;

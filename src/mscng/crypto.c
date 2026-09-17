@@ -86,11 +86,13 @@ xmlSecCryptoGetFunctions_mscng(void) {
         return(gXmlSecMSCngFunctions);
     }
 
-    /* DSA-SHA256 requires Windows 8 / Windows Server 2012+. */
+    /* DSA-SHA256 requires Windows 8 / Windows Server 2012+.
+     * Note: Windows 7 is not supported by xmlsec, so the probe does not
+     * need to account for the Windows 7 CNG DSA provider, which might
+     * report a 2048-bit maximum key length and make the probe pass. */
 #if !defined(XMLSEC_NO_DSA) && !defined(XMLSEC_NO_SHA256)
     int isDsaSha256Supported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_DSA_ALGORITHM, 2048, NULL);
 #endif /* !defined(XMLSEC_NO_DSA) && !defined(XMLSEC_NO_SHA256) */
-
 
     /* ConcatKDF (SP800-56A) requires Windows 8 / Windows Server 2012+. */
 #ifndef XMLSEC_NO_CONCATKDF
@@ -107,7 +109,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
     int isHkdfSupported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_HKDF_ALGORITHM, 0, NULL);
 #endif /* XMLSEC_NO_HKDF */
 
-/* SHA3 support requires Windows 11 24H2+ or Windows Server 2025. */
+    /* SHA3 support requires Windows 11 24H2+ or Windows Server 2025. */
 #ifndef XMLSEC_NO_SHA3
     int isSha3Supported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_SHA3_256_ALGORITHM, 0, NULL);
 #endif /* XMLSEC_NO_SHA3 */
@@ -347,43 +349,42 @@ xmlSecCryptoGetFunctions_mscng(void) {
 #endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_SHA1
-    gXmlSecMSCngFunctions->transformRsaSha1GetKlass             = xmlSecMSCngTransformRsaSha1GetKlass;
+    gXmlSecMSCngFunctions->transformRsaSha1GetKlass            = xmlSecMSCngTransformRsaSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
-    gXmlSecMSCngFunctions->transformRsaSha256GetKlass       = xmlSecMSCngTransformRsaSha256GetKlass;
+    gXmlSecMSCngFunctions->transformRsaSha256GetKlass          = xmlSecMSCngTransformRsaSha256GetKlass;
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
-    gXmlSecMSCngFunctions->transformRsaSha384GetKlass       = xmlSecMSCngTransformRsaSha384GetKlass;
+    gXmlSecMSCngFunctions->transformRsaSha384GetKlass          = xmlSecMSCngTransformRsaSha384GetKlass;
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
-    gXmlSecMSCngFunctions->transformRsaSha512GetKlass       = xmlSecMSCngTransformRsaSha512GetKlass;
+    gXmlSecMSCngFunctions->transformRsaSha512GetKlass          = xmlSecMSCngTransformRsaSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
-
 #ifndef XMLSEC_NO_SHA1
-    gXmlSecMSCngFunctions->transformRsaPssSha1GetKlass          = xmlSecMSCngTransformRsaPssSha1GetKlass;
+    gXmlSecMSCngFunctions->transformRsaPssSha1GetKlass         = xmlSecMSCngTransformRsaPssSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
-    gXmlSecMSCngFunctions->transformRsaPssSha256GetKlass        = xmlSecMSCngTransformRsaPssSha256GetKlass;
+    gXmlSecMSCngFunctions->transformRsaPssSha256GetKlass       = xmlSecMSCngTransformRsaPssSha256GetKlass;
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
-    gXmlSecMSCngFunctions->transformRsaPssSha384GetKlass        = xmlSecMSCngTransformRsaPssSha384GetKlass;
+    gXmlSecMSCngFunctions->transformRsaPssSha384GetKlass       = xmlSecMSCngTransformRsaPssSha384GetKlass;
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
-    gXmlSecMSCngFunctions->transformRsaPssSha512GetKlass        = xmlSecMSCngTransformRsaPssSha512GetKlass;
+    gXmlSecMSCngFunctions->transformRsaPssSha512GetKlass       = xmlSecMSCngTransformRsaPssSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
 #ifndef XMLSEC_NO_SHA3
     if(isSha3Supported != 0) {
-        gXmlSecMSCngFunctions->transformRsaPssSha3_256GetKlass  = xmlSecMSCngTransformRsaPssSha3_256GetKlass;
-        gXmlSecMSCngFunctions->transformRsaPssSha3_384GetKlass  = xmlSecMSCngTransformRsaPssSha3_384GetKlass;
-        gXmlSecMSCngFunctions->transformRsaPssSha3_512GetKlass  = xmlSecMSCngTransformRsaPssSha3_512GetKlass;
+        gXmlSecMSCngFunctions->transformRsaPssSha3_256GetKlass = xmlSecMSCngTransformRsaPssSha3_256GetKlass;
+        gXmlSecMSCngFunctions->transformRsaPssSha3_384GetKlass = xmlSecMSCngTransformRsaPssSha3_384GetKlass;
+        gXmlSecMSCngFunctions->transformRsaPssSha3_512GetKlass = xmlSecMSCngTransformRsaPssSha3_512GetKlass;
     }
 #endif /* XMLSEC_NO_SHA3 */
 
@@ -461,7 +462,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
  * @return 0 on success or a negative value otherwise.
  */
 int
-xmlSecMSCngInit (void)  {
+xmlSecMSCngInit(void) {
     /* Check loaded xmlsec library version */
     if(xmlSecCheckVersionExact() != 1) {
         xmlSecInternalError("xmlSecCheckVersionExact", NULL);

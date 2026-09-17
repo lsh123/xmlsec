@@ -40,6 +40,7 @@ struct _xmlSecMSCngCbcBlockCipherCtx {
     PBYTE pbIV;
     ULONG cbIV;
     PBYTE pbKeyObject;
+    DWORD dwKeyObjectLength;
     DWORD dwBlockLen;
     xmlSecKeyDataId keyId;
     xmlSecSize keySize;
@@ -180,6 +181,9 @@ xmlSecMSCngCbcBlockCipherFinalize(xmlSecTransformPtr transform) {
         BCryptDestroyKey(ctx->hKey);
     }
 
+    if((ctx->pbKeyObject != NULL) && (ctx->dwKeyObjectLength > 0)) {
+        xmlSecMemCleanse(ctx->pbKeyObject, ctx->dwKeyObjectLength);
+    }
     if(ctx->pbKeyObject != NULL) {
         xmlFree(ctx->pbKeyObject);
     }
@@ -275,6 +279,7 @@ xmlSecMSCngCbcBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
         xmlSecMallocError(dwKeyObjectLength, xmlSecTransformGetName(transform));
         goto done;
     }
+    ctx->dwKeyObjectLength = dwKeyObjectLength;
 
     /* prefix the key with a BCRYPT_KEY_DATA_BLOB_HEADER */
     blobSize = sizeof(BCRYPT_KEY_DATA_BLOB_HEADER) + ctx->keySize;
@@ -395,10 +400,10 @@ xmlSecMSCngCbcBlockCipherCtxInit(xmlSecMSCngCbcBlockCipherCtxPtr ctx,
 
         if (ctx->pbIV == NULL) {
             ctx->pbIV = xmlMalloc(blockSize);
-        }
-        if (ctx->pbIV == NULL) {
-            xmlSecMallocError(blockSize, cipherName);
-            return(-1);
+            if (ctx->pbIV == NULL) {
+                xmlSecMallocError(blockSize, cipherName);
+                return(-1);
+            }
         }
 
         memcpy(ctx->pbIV, iv, blockSize);
@@ -414,10 +419,10 @@ xmlSecMSCngCbcBlockCipherCtxInit(xmlSecMSCngCbcBlockCipherCtxPtr ctx,
         /* set iv */
         if (ctx->pbIV == NULL) {
             ctx->pbIV = xmlMalloc(blockSize);
-        }
-        if (ctx->pbIV == NULL) {
-            xmlSecMallocError(blockSize, cipherName);
-            return(-1);
+            if (ctx->pbIV == NULL) {
+                xmlSecMallocError(blockSize, cipherName);
+                return(-1);
+            }
         }
         memcpy(ctx->pbIV, xmlSecBufferGetData(in), blockSize);
 
@@ -458,18 +463,22 @@ xmlSecMSCngCbcBlockCipherCtxUpdate(xmlSecMSCngCbcBlockCipherCtxPtr ctx,
     outSize = xmlSecBufferGetSize(out);
 
     XMLSEC_SAFE_CAST_ULONG_TO_SIZE(ctx->dwBlockLen, blockSize, return(-1), cipherName);
-    if(inSize < blockSize) {
-        return(0);
-    }
+
 
     if(encrypt) {
         inBlocks = inSize / blockSize;
     } else {
         /* we want to have the last block in the input buffer
         * for padding check */
+        if(inSize < 1) {
+            return(0);
+        }
         inBlocks = (inSize - 1) / blockSize;
     }
     inSize = inBlocks * blockSize;
+    if(inSize == 0) {
+        return(0);
+    }
 
     /* we write out the input size plus maybe one block */
     ret = xmlSecBufferSetMaxSize(out, outSize + inSize + blockSize);
@@ -579,9 +588,6 @@ xmlSecMSCngCbcBlockCipherCtxFinal(xmlSecMSCngCbcBlockCipherCtxPtr ctx,
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
-
-    /* unreferenced parameter */
-    (void)transformCtx;
 
     inSize = xmlSecBufferGetSize(in);
     outSize = xmlSecBufferGetSize(out);

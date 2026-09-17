@@ -244,7 +244,9 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
         }
 
         while (1) {
-           pCertCtxIter = CertEnumCertificatesInStore(hStoreHandle, pCertCtxIter);
+            /* CertEnumCertificatesInStore automatically frees the previous certificate context (see
+             * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcertificatesinstore) */
+            pCertCtxIter = CertEnumCertificatesInStore(hStoreHandle, pCertCtxIter);
             if(pCertCtxIter == NULL) {
                 break;
             }

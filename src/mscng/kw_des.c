@@ -18,10 +18,8 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
-#include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
-#include <xmlsec/bn.h>
 #include <xmlsec/private.h>
 
 #include <xmlsec/mscng/crypto.h>

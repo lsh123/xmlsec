@@ -265,6 +265,8 @@ xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name, xmlSe
         while (1) {
             LPCWSTR lpwFriendlyName;
 
+            /*CertEnumCertificatesInStore automatically frees the previous certificate context (see
+             * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcertificatesinstore) */
             pCertCtxIter = CertEnumCertificatesInStore(ctx->certStoreCtx.hCollection, pCertCtxIter);
             if(pCertCtxIter == NULL) {
                 break;

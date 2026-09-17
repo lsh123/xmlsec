@@ -310,8 +310,8 @@ xmlSecMSCngHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     } else if (ctx->dgstSizeInBits > ((xmlSecSize)ctx->hashLength * 8)) {
         /* reject oversized values: they would cause out-of-bounds reads when
            the truncated digest buffer is accessed in verify/sign paths */
-        xmlSecInvalidSizeLessThanError("HMAC digest size (bits)",
-            ((xmlSecSize)ctx->hashLength * 8), ctx->dgstSizeInBits,
+        xmlSecInvalidSizeMoreThanError("HMAC digest size (bits)",
+            ctx->dgstSizeInBits, ((xmlSecSize)ctx->hashLength * 8),
             xmlSecTransformGetName(transform));
         return(-1);
     }

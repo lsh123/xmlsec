@@ -28,6 +28,8 @@
 
 #ifndef XMLSEC_NO_XDH
 
+#define XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE 32
+
 /**
  * @brief Imports an X25519 public key into a BCrypt handle.
  * @details Imports a raw 32-byte Curve25519 u-coordinate as a BCrypt X25519 public key handle.
@@ -45,12 +47,12 @@ xmlSecMSCngKeyDataXdhImportPublicKey(const xmlSecByte* pubKeyBytes, DWORD pubKey
     NTSTATUS status;
 
     xmlSecAssert2(pubKeyBytes != NULL, 0);
-    xmlSecAssert2(pubKeyLen == 32, 0);
+    xmlSecAssert2(pubKeyLen == XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE, 0);
 
     /* Allocate BCRYPT_ECCKEY_BLOB header + u-coord (32) + v-coord (32) = 72 bytes.
      * BCrypt X25519 public blobs use the 2*cbKey layout (u, v) matching BCryptExportKey output.
      * The v-coordinate is unused for Montgomery curves and stays zero. */
-    cbBlob = sizeof(BCRYPT_ECCKEY_BLOB) + 64;   /* header + u(32) + v(32) */
+    cbBlob = sizeof(BCRYPT_ECCKEY_BLOB) + (2 * XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE);   /* header + u(32) + v(32) */
     pbBlob = (PUCHAR)xmlMalloc(cbBlob);
     if(pbBlob == NULL) {
         xmlSecMallocError(cbBlob, NULL);
@@ -60,10 +62,10 @@ xmlSecMSCngKeyDataXdhImportPublicKey(const xmlSecByte* pubKeyBytes, DWORD pubKey
 
     pBlob = (BCRYPT_ECCKEY_BLOB*)pbBlob;
     pBlob->dwMagic = BCRYPT_ECDH_PUBLIC_GENERIC_MAGIC;
-    pBlob->cbKey = 32;
+    pBlob->cbKey = XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE;
     /* BCRYPT_ECCPUBLIC_BLOB stores the u-coordinate in the same byte order as the
      * standard X25519 wire format (little-endian per RFC 7748/8410).  Copy as-is. */
-    memcpy(pbBlob + sizeof(BCRYPT_ECCKEY_BLOB), pubKeyBytes, 32); /* u-coord at offset 8; v stays zero */
+    memcpy(pbBlob + sizeof(BCRYPT_ECCKEY_BLOB), pubKeyBytes, XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE); /* u-coord at offset 8; v stays zero */
 
     /* Open ECDH algorithm provider and set Curve25519 */
     status = BCryptOpenAlgorithmProvider(&hAlg, BCRYPT_ECDH_ALGORITHM, NULL, 0);
@@ -161,8 +163,6 @@ xmlSecMSCngKeyDataDuplicateBCryptXdhPrivKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HA
     *dst = hKey;
     return(0);
 }
-
-#define XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE 32
 
 /**
  * @brief Builds a BCRYPT_ECCPRIVATE_BLOB for an X25519 key and imports it with a placeholder public key.

@@ -213,6 +213,8 @@ xmlSecMSCryptoCheckRevocation(HCERTSTORE hStore, PCCERT_CONTEXT pCert) {
     xmlSecAssert2(pCert != NULL, FALSE);
     xmlSecAssert2(hStore != NULL, FALSE);
 
+    /* CertEnumCRLsInStore automatically frees the previous CRL context (see
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcrlsinstore) */
     while((pCrl = CertEnumCRLsInStore(hStore, pCrl)) != NULL) {
         if (CertFindCertificateInCRL(pCert, pCrl, 0, NULL, &pCrlEntry) && (pCrlEntry != NULL)) {
             xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL,
@@ -591,6 +593,8 @@ xmlSecMSCryptoX509StoreConstructCertsChain(xmlSecKeyDataStorePtr store, PCCERT_C
 
     /* try the certificates in the keys manager */
     if(!res) {
+        /* CertEnumCertificatesInStore automatically frees the previous certificate context (see
+         * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcertificatesinstore) */
         tempCert = CertEnumCertificatesInStore(ctx->trusted, NULL);
         if(tempCert) {
             CertFreeCertificateContext(tempCert);
@@ -623,6 +627,8 @@ xmlSecMSCryptoX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs,
     xmlSecAssert2(certs != NULL, NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
+    /* CertEnumCertificatesInStore automatically frees the previous certificate context (see
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcertificatesinstore) */
     while((cert = CertEnumCertificatesInStore(certs, cert)) != NULL){
         PCCERT_CONTEXT nextCert = NULL;
         unsigned char selected = 1;

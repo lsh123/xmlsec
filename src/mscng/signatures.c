@@ -485,10 +485,15 @@ static int xmlSecMSCngSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr
     value = xmlSecKeyGetValue(key);
     xmlSecAssert2(value != NULL, -1);
 
+    /* free previous value (if any) */
+    if(ctx->data != NULL) {
+        xmlSecKeyDataDestroy(ctx->data);
+        ctx->data = NULL;
+    }
+
     ctx->data = xmlSecKeyDataDuplicate(value);
     if(ctx->data == NULL) {
-        xmlSecInternalError("xmlSecKeyDataDuplicate",
-                            xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecKeyDataDuplicate", xmlSecTransformGetName(transform));
         return(-1);
     }
 

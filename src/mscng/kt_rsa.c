@@ -30,6 +30,12 @@
 #include "../cast_helpers.h"
 #include "../transform_helpers.h"
 
+/* SHA224 algorithm identifier is not defined in older MinGW headers;
+ * provide a fallback so the code compiles with all SDK versions. */
+#ifndef BCRYPT_SHA224_ALGORITHM
+#define BCRYPT_SHA224_ALGORITHM             L"SHA224"
+#endif /* BCRYPT_SHA224_ALGORITHM */
+
 /******************************************************************************
  *
  * Internal MSCNG RSA PKCS1 CTX
@@ -490,6 +496,12 @@ xmlSecMSCngRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     } else
 #endif /* XMLSEC_NO_SHA1 */
 
+#ifndef XMLSEC_NO_SHA224
+    if (xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha224) == 0) {
+        ctx->pszDigestAlgId = BCRYPT_SHA224_ALGORITHM;
+    } else
+#endif /* XMLSEC_NO_SHA224 */
+
 #ifndef XMLSEC_NO_SHA256
     if (xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha256) == 0) {
         ctx->pszDigestAlgId = BCRYPT_SHA256_ALGORITHM;
@@ -530,6 +542,12 @@ xmlSecMSCngRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
         mgf1AlgId = BCRYPT_SHA1_ALGORITHM;
     } else
 #endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+    if (xmlStrcmp(oaepParams.mgf1DigestAlgorithm, xmlSecHrefMgf1Sha224) == 0) {
+        mgf1AlgId = BCRYPT_SHA224_ALGORITHM;
+    } else
+#endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA256
     if (xmlStrcmp(oaepParams.mgf1DigestAlgorithm, xmlSecHrefMgf1Sha256) == 0) {

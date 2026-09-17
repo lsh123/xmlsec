@@ -19,7 +19,6 @@
 #include <xmlsec/private.h>
 #include <xmlsec/xmltree.h>
 
-#include <xmlsec/mscng/certkeys.h>
 #include <xmlsec/mscng/crypto.h>
 
 #include "../cast_helpers.h"
@@ -121,6 +120,12 @@ xmlSecMSCngDerReadTopLevelTlv(const xmlSecByte* p, const xmlSecByte* end) {
         BYTE nBytes = (*p) & 0x7F;
         p++;
         if(nBytes == 0 || nBytes > 4 || p + nBytes > end) {
+            return(NULL);
+        }
+        /* strict DER requires minimal length encoding: the first length
+         * byte must be non-zero, and the long form is only used when the
+         * length does not fit in a single byte */
+        if((*p == 0x00) || (nBytes == 1 && (*p < 0x80))) {
             return(NULL);
         }
         len = 0;

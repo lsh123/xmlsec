@@ -105,7 +105,9 @@ xmlSecMSCngKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     dstCtx = xmlSecMSCngX509DataGetCtx(dst);
     xmlSecAssert2(dstCtx != NULL, -1);
 
-    /* duplicate the certificate store */
+    /* duplicate the certificate store: CertEnumCertificatesInStore automatically frees the previous certificate context (see
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcertificatesinstore)
+     */
     while((srcCert = CertEnumCertificatesInStore(srcCtx->hMemStore, srcCert)) != NULL) {
         dstCert = CertDuplicateCertificateContext(srcCert);
         if(dstCert == NULL) {
@@ -135,7 +137,8 @@ xmlSecMSCngKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
         dstCert = NULL; /* owned by dst now */
     }
 
-    /* duplicate the CRLs */
+    /* duplicate the CRLs: CertEnumCRLsInStore automatically frees the previous CRL context (see
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcrlsinstore) */
     while((srcCrl = CertEnumCRLsInStore(srcCtx->hMemStore, srcCrl)) != NULL) {
         dstCrl = CertDuplicateCRLContext(srcCrl);
         if(dstCrl == NULL) {
@@ -345,15 +348,19 @@ xmlSecMSCngX509CrlDerRead(const xmlSecByte* buf, xmlSecSize size) {
  */
 static int
 xmlSecMSCngX509CertGetTime(FILETIME in, time_t* out) {
+    LONGLONG result;
+
     xmlSecAssert2(out != NULL, -1);
 
-    *out = in.dwHighDateTime;
-    *out <<= 32;
-    *out |= in.dwLowDateTime;
+    result = in.dwHighDateTime;
+    result = (result) << 32;
+    result |= in.dwLowDateTime;
     /* 100 nanoseconds -> seconds */
-    *out /= 10000000;
+    result /= 10000000;
     /* 1601-01-01 epoch -> 1970-01-01 epoch */
-    *out -= 11644473600;
+    result -= 11644473600;
+
+    (*out) = (time_t)result;
 
     return(0);
 }
@@ -461,15 +468,7 @@ xmlSecMSCngVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xm
 
     /* copy cert not before / not after times from the cert */
     ret = xmlSecMSCngX509CertGetTime(ctx->keyCert->pCertInfo->NotBefore, &(key->notValidBefore));
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngX509CertGetTime", xmlSecKeyDataGetName(data));
-        return(-1);
-    }
     ret = xmlSecMSCngX509CertGetTime(ctx->keyCert->pCertInfo->NotAfter, &(key->notValidAfter));
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngX509CertGetTime", xmlSecKeyDataGetName(data));
-        return(-1);
-    }
 
     /* THIS MUST BE THE LAST THING WE DO: add data to the key
      * if we do it sooner and fail later then both the caller and the key will free data
@@ -834,6 +833,8 @@ xmlSecMSCngKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x50
 
     /* try to get and write the next cert if available */
     if (ctx->doneCrts == 0) {
+        /* CertEnumCertificatesInStore automatically frees the previous certificate context (see
+         * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcertificatesinstore) */
         ctx->crt = CertEnumCertificatesInStore(ctx->store, ctx->crt);
         if (ctx->crt != NULL) {
             if (XMLSEC_X509DATA_HAS_EMPTY_NODE(content, XMLSEC_X509DATA_CERTIFICATE_NODE)) {
@@ -895,9 +896,11 @@ xmlSecMSCngKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x50
 
     /* try to get and write the next crl if available */
     if (ctx->doneCrls == 0) {
+        /* CertEnumCRLsInStore automatically frees the previous CRL context (see
+         * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcrlsinstore) */
         ctx->crl = CertEnumCRLsInStore(ctx->store, ctx->crl);
         if (ctx->crl != NULL) {
-            if ((content & XMLSEC_X509DATA_CRL_NODE) != 0) {
+            if (XMLSEC_X509DATA_HAS_EMPTY_NODE(content, XMLSEC_X509DATA_CRL_NODE)) {
                 xmlSecAssert2(ctx->crl->pbCrlEncoded != NULL, -1);
                 xmlSecAssert2(ctx->crl->cbCrlEncoded > 0, -1);
 
@@ -1064,6 +1067,8 @@ xmlSecMSCngKeyDataX509DebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(ctx != NULL);
 
     fprintf(output, "=== X509 Data:\n");
+    /* CertEnumCertificatesInStore automatically frees the previous certificate context (see
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcertificatesinstore) */
     while((cert = CertEnumCertificatesInStore(ctx->hMemStore, cert)) != NULL) {
         if((ctx->keyCert != NULL) && (CertCompareCertificate(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
                 cert->pCertInfo, ctx->keyCert->pCertInfo) == TRUE)) {
@@ -1088,6 +1093,8 @@ xmlSecMSCngKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(ctx != NULL);
 
     fprintf(output, "<X509Data>\n");
+    /* CertEnumCertificatesInStore automatically frees the previous certificate context (see
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcertificatesinstore) */
     while((cert = CertEnumCertificatesInStore(ctx->hMemStore, cert)) != NULL) {
         if((ctx->keyCert != NULL) && (CertCompareCertificate(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
                 cert->pCertInfo, ctx->keyCert->pCertInfo) == TRUE)) {

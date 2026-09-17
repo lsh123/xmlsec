@@ -191,12 +191,14 @@ xmlSecGnuTLSX509CheckCrtTime(const gnutls_x509_crt_t cert, time_t ts) {
     /* get expiration times */
     notValidBefore = gnutls_x509_crt_get_activation_time(cert);
     if(notValidBefore == (time_t)-1) {
-        xmlSecGnuTLSError("gnutls_x509_crt_get_activation_time", GNUTLS_E_SUCCESS, NULL);
+        xmlSecInternalError("gnutls_x509_crt_get_activation_time (failed to get certificate activation time)",
+            NULL);
         return(-1);
     }
     notValidAfter = gnutls_x509_crt_get_expiration_time(cert);
     if(notValidAfter == (time_t)-1) {
-        xmlSecGnuTLSError("gnutls_x509_crt_get_expiration_time", GNUTLS_E_SUCCESS, NULL);
+        xmlSecInternalError("gnutls_x509_crt_get_expiration_time (failed to get certificate expiration time)",
+            NULL);
         return(-1);
     }
 
@@ -584,18 +586,13 @@ xmlSecGnuTLSX509StoreVerifyCert(xmlSecGnuTLSX509StoreCtxPtr ctx,
 }
 
 /**
- * @brief Verifies @p key with the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * @brief Verifies @p key.
+ * @details Checks that the key's X509 data contains a key certificate and verifies
+ * that certificate (using the other certificates and CRLs from the key's X509 data)
+ * against the trusted certificates and CRLs in the store.
  * @param store the pointer to X509 key data store klass.
  * @param key the pointer to key.
  * @param keyInfoCtx the key info context for verification.
- *
- * function:
- * - Checks that key certificate is present
- * - Checks that key certificate is valid
- *
- * Adds @p key to the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
- * function.
- *
  * @return 1 if key is verified, 0 otherwise, or a negative value if an error occurs.
  */
 int
@@ -927,7 +924,8 @@ xmlSecGnuTLSX509StoreVerifyCrlTimeValidity(gnutls_x509_crl_t crl, xmlSecKeyInfoC
     /* Verify this_update */
     this_update = gnutls_x509_crl_get_this_update(crl);
     if(this_update == (time_t)-1) {
-        xmlSecGnuTLSError("gnutls_x509_crl_get_this_update", GNUTLS_E_SUCCESS, storeName);
+        xmlSecInternalError("gnutls_x509_crl_get_this_update (failed to get CRL thisUpdate time)",
+            storeName);
         return(-1);
     }
 
@@ -1074,7 +1072,7 @@ xmlSecGnuTLSX509StoreVerifyCrlSignature(xmlSecGnuTLSX509StoreCtxPtr ctx, gnutls_
         }
     }
 
-    /* Check if verification failed (ignoring allowed failures like insecure algorithms) */
+    /* Check if verification failed */
     if(verify_result != 0) {
         /* CRL verification failed - get issuer DN for error message */
         if(issuer_dn == NULL) {
@@ -1217,8 +1215,8 @@ xmlSecGnuTLSX509StoreFinalize(xmlSecKeyDataStorePtr store) {
 
 int
 xmlSecGnuTLSX509DnsEqual(const xmlChar * left, const xmlChar * right) {
-    xmlSecGnuTLSDnAttr left_attrs[XMLSEC_GNUTLS_DN_ATTRS_SIZE];
-    xmlSecGnuTLSDnAttr right_attrs[XMLSEC_GNUTLS_DN_ATTRS_SIZE];
+    xmlSecGnuTLSDnAttr * left_attrs = NULL;
+    xmlSecGnuTLSDnAttr * right_attrs = NULL;
     int ret;
     int res = -1;
 
@@ -1231,7 +1229,18 @@ xmlSecGnuTLSX509DnsEqual(const xmlChar * left, const xmlChar * right) {
     }
 
     /* prepare */
+    left_attrs = (xmlSecGnuTLSDnAttr *)xmlMalloc(XMLSEC_GNUTLS_DN_ATTRS_SIZE * sizeof(xmlSecGnuTLSDnAttr));
+    if(left_attrs == NULL) {
+        xmlSecMallocError(XMLSEC_GNUTLS_DN_ATTRS_SIZE * sizeof(xmlSecGnuTLSDnAttr), NULL);
+        goto done;
+    }
     xmlSecGnuTLSDnAttrsInitialize(left_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
+
+    right_attrs = (xmlSecGnuTLSDnAttr *)xmlMalloc(XMLSEC_GNUTLS_DN_ATTRS_SIZE * sizeof(xmlSecGnuTLSDnAttr));
+    if(right_attrs == NULL) {
+        xmlSecMallocError(XMLSEC_GNUTLS_DN_ATTRS_SIZE * sizeof(xmlSecGnuTLSDnAttr), NULL);
+        goto done;
+    }
     xmlSecGnuTLSDnAttrsInitialize(right_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
 
     /* parse */
@@ -1260,8 +1269,14 @@ xmlSecGnuTLSX509DnsEqual(const xmlChar * left, const xmlChar * right) {
     }
 
 done:
-    xmlSecGnuTLSDnAttrsDeinitialize(left_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
-    xmlSecGnuTLSDnAttrsDeinitialize(right_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
+    if(left_attrs != NULL) {
+        xmlSecGnuTLSDnAttrsDeinitialize(left_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
+        xmlFree(left_attrs);
+    }
+    if(right_attrs != NULL) {
+        xmlSecGnuTLSDnAttrsDeinitialize(right_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
+        xmlFree(right_attrs);
+    }
     return(res);
 }
 
@@ -1283,7 +1298,11 @@ xmlSecGnuTLSX509CertCompareSKI(gnutls_x509_crt_t cert, const xmlSecByte * ski, x
 
     /* get ski size */
     err = gnutls_x509_crt_get_subject_key_id(cert, NULL, &bufSize, &critical);
-    if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSize <= 0)) {
+    if(err == GNUTLS_E_REQUESTED_DATA_NOT_AVAILABLE) {
+        /* no SKI extension in the certificate, no match */
+        res = 1;
+        goto done;
+    } else if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSize <= 0)) {
         xmlSecGnuTLSError("gnutls_x509_crt_get_subject_key_id", err, NULL);
         goto done;
     }
@@ -1295,9 +1314,9 @@ xmlSecGnuTLSX509CertCompareSKI(gnutls_x509_crt_t cert, const xmlSecByte * ski, x
     }
 
     /* allocate buffer */
-    buf = (xmlSecByte *)xmlMalloc(bufSize + 1);
+    buf = (xmlSecByte *)xmlMalloc(bufSize);
     if(buf == NULL) {
-        xmlSecMallocError(bufSize + 1, NULL);
+        xmlSecMallocError(bufSize, NULL);
         goto done;
     }
 
@@ -1446,7 +1465,7 @@ xmlSecGnuTLSX509FindSignerCert(xmlSecPtrListPtr certs, gnutls_x509_crt_t cert) {
         }
 
         /* are we done? */
-        if((xmlSecGnuTLSX509DnsEqual(issuer, subject) == 1)) {
+        if(xmlSecGnuTLSX509DnsEqual(issuer, subject) == 1) {
             res = tmp;
         }
         xmlFree(subject);

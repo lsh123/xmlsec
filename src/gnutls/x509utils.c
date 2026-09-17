@@ -13,12 +13,8 @@
 
 #ifndef XMLSEC_NO_X509
 
-#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <ctype.h>
-#include <errno.h>
-#include <time.h>
 
 #include <gnutls/gnutls.h>
 #include <gnutls/abstract.h>
@@ -659,7 +655,6 @@ xmlSecGnuTLSX509MatchBySki(gnutls_x509_crt_t cert, const xmlSecByte* ski, xmlSec
         return(0);
     }
 
-    /* TODO: get rid of xmlSecGnuTLSX509CertCompareSKI */
     /* returns 0 if matched */
     ret = xmlSecGnuTLSX509CertCompareSKI(cert, ski, skiSize);
     if(ret < 0) {
@@ -1051,11 +1046,20 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const 
         goto done;
     }
 
-    /* verify */
-    err = gnutls_pkcs12_verify_mac(pkcs12, pwd);
-    if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_pkcs12_verify_mac", err, NULL);
+    /* verify the MAC; macData is OPTIONAL per RFC 7292, so skip
+     * verification if the pkcs12 object does not contain a MAC */
+    err = gnutls_pkcs12_mac_info(pkcs12, NULL, NULL, NULL, NULL, NULL);
+    if(err == GNUTLS_E_INVALID_REQUEST) {
+        /* no MAC in the pkcs12 object, nothing to verify */
+    } else if(err != GNUTLS_E_SUCCESS) {
+        xmlSecGnuTLSError("gnutls_pkcs12_mac_info", err, NULL);
         goto done;
+    } else {
+        err = gnutls_pkcs12_verify_mac(pkcs12, pwd);
+        if(err != GNUTLS_E_SUCCESS) {
+            xmlSecGnuTLSError("gnutls_pkcs12_verify_mac", err, NULL);
+            goto done;
+        }
     }
 
     /* scan the pkcs structure and find the first private key */
@@ -1233,8 +1237,9 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const 
             cert_id_size = sizeof(cert_id);
             err = gnutls_x509_crt_get_key_id(tmp, 0, cert_id, &cert_id_size);
             if(err != GNUTLS_E_SUCCESS) {
+                /* can't get the key id of this certificate, skip it */
                 xmlSecGnuTLSError("gnutls_x509_crt_get_key_id", err, NULL);
-                goto done;
+                continue;
             }
 
             /* if key ids match, then this is THE key cert!!! */

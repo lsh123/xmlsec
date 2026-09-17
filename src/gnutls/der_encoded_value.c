@@ -224,7 +224,7 @@ xmlSecGnuTLSKeyDataDEREncodedKeyValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr k
 
     /* encode it */
     err = gnutls_pubkey_export2(pubkey, GNUTLS_X509_FMT_DER, &datum);
-	if((err != GNUTLS_E_SUCCESS) || (datum.data == NULL) || (datum.size <= 0)) {
+    if((err != GNUTLS_E_SUCCESS) || (datum.data == NULL)) {
         xmlSecGnuTLSError("gnutls_pubkey_export2", err, xmlSecKeyDataKlassGetName(id));
         goto done;
     }

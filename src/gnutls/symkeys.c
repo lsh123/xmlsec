@@ -245,7 +245,7 @@ static xmlSecKeyDataKlass xmlSecGnuTLSKeyData ## klassName ## Klass = {         
     dataNodeNs,                                 /* const xmlChar* dataNodeNs; */                                    \
                                                                                                                     \
     /* constructors/destructor */                                                                                   \
-    xmlSecGnuTLSSymKeyDataInitialize,           /* xmlSecKeyDataInitializeMethod initialize; */                     \
+    xmlSecGnuTLSSymKeyDataInitialize,           /* xmlSecKeyDataInitMethod initialize; */                           \
     xmlSecGnuTLSSymKeyDataDuplicate,            /* xmlSecKeyDataDuplicateMethod duplicate; */                       \
     xmlSecGnuTLSSymKeyDataFinalize,             /* xmlSecKeyDataFinalizeMethod finalize; */                         \
     xmlSecGnuTLSSymKeyDataGenerate,             /* xmlSecKeyDataGenerateMethod generate; */                         \

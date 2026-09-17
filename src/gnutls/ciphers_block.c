@@ -55,7 +55,7 @@ struct _xmlSecGnuTLSBlockCipherCtx {
 
     gnutls_cipher_hd_t          cipher;
     int                         ctxInitialized;
-    int                         ivInitialized;  /* for stream ciphers: 1 if IV was pre-set from XML params */
+    int                         ivInitialized;  /* 1 if IV is set (pre-set from XML params, read from input, or randomly generated) */
     xmlSecByte                  iv[XMLSEC_GNUTLS_BLOCK_CIPHER_MAX_IV_SIZE];
     xmlSecByte                  pad[XMLSEC_GNUTLS_BLOCK_CIPHER_PAD_SIZE];
 };
@@ -538,7 +538,7 @@ xmlSecGnuTLSBlockCipherInitialize(xmlSecTransformPtr transform) {
     if (ctx->blockSize  == 0) {
         ctx->blockSize = gnutls_cipher_get_block_size(ctx->algorithm);
         if(ctx->blockSize <= 0) {
-            xmlSecGnuTLSError2("gnutls_cipher_get_block_size", 0, NULL, "blockSize=" XMLSEC_SIZE_FMT, ctx->blockSize);
+            xmlSecInternalError2("gnutls_cipher_get_block_size", xmlSecTransformGetName(transform), "blockSize=" XMLSEC_SIZE_FMT, ctx->blockSize);
             return(-1);
         }
     }
@@ -547,7 +547,7 @@ xmlSecGnuTLSBlockCipherInitialize(xmlSecTransformPtr transform) {
     if (ctx->ivSize == 0) {
         ctx->ivSize = gnutls_cipher_get_iv_size(ctx->algorithm);
         if(ctx->ivSize <= 0) {
-            xmlSecGnuTLSError2("gnutls_cipher_get_iv_size", 0, NULL, "ivSize=" XMLSEC_SIZE_FMT, ctx->ivSize);
+            xmlSecInternalError2("gnutls_cipher_get_iv_size", xmlSecTransformGetName(transform), "ivSize=" XMLSEC_SIZE_FMT, ctx->ivSize);
             return(-1);
         }
         xmlSecAssert2(ctx->ivSize < XMLSEC_GNUTLS_BLOCK_CIPHER_MAX_IV_SIZE, -1);

@@ -126,8 +126,8 @@ xmlSecGnuTLSAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATT
     data = xmlSecBufferGetData(&buffer);
     dataSize = xmlSecBufferGetSize(&buffer);
     if((data == NULL) || (dataSize <= 0)) {
-        xmlSecInternalError2("xmlSecBufferReadFile", NULL,
-            "filename=%s", xmlSecErrorsSafeString(filename));
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
+            "file %s is empty", xmlSecErrorsSafeString(filename));
         xmlSecBufferFinalize(&buffer);
         return(NULL);
     }
@@ -277,8 +277,12 @@ xmlSecGnuTLSAppCheckCertMatchesKey(xmlSecKeyPtr key,  gnutls_x509_crt_t cert) {
         goto done;
     }
     err = gnutls_pubkey_export2(pubkey, GNUTLS_X509_FMT_DER, &der_pubkey);
-    if((err != GNUTLS_E_SUCCESS) || (der_pubkey.data == NULL)) {
+    if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_pubkey_export2", err, NULL);
+        goto done;
+    }
+    if((der_pubkey.data == NULL) || (der_pubkey.size <= 0)) {
+        xmlSecInternalError("gnutls_pubkey_export2 returned no data", NULL);
         goto done;
     }
 
@@ -295,8 +299,12 @@ xmlSecGnuTLSAppCheckCertMatchesKey(xmlSecKeyPtr key,  gnutls_x509_crt_t cert) {
         goto done;
     }
     err = gnutls_pubkey_export2(cert_pubkey, GNUTLS_X509_FMT_DER, &der_cert_pubkey);
-    if((err != GNUTLS_E_SUCCESS) || (der_cert_pubkey.data == NULL)) {
+    if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_pubkey_export2", err, NULL);
+        goto done;
+    }
+    if((der_cert_pubkey.data == NULL) || (der_cert_pubkey.size <= 0)) {
+        xmlSecInternalError("gnutls_pubkey_export2 returned no data", NULL);
         goto done;
     }
 
@@ -426,7 +434,7 @@ xmlSecGnuTLSAppPkcs12Load(const char *filename,
 /**
  * @brief Reads key and certs from PKCS12 memory buffer.
  * @details Reads a key and all associated certificates from the PKCS12 data in the memory buffer.
- * For uniformity, call xmlSecGnuTLSAppKeyLoadMemory instead of this function. Pass
+ * For uniformity, call #xmlSecGnuTLSAppKeyLoadMemory instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
  * @param data the PKCS12 binary data.

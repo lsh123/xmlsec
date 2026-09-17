@@ -493,7 +493,7 @@ xmlSecGnuTLSKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 
         x509Store = xmlSecKeyDataStoreCreate(xmlSecGnuTLSX509StoreId);
         if(x509Store == NULL) {
-            xmlSecInternalError("xmlSecKeyDataStoreCreate(StoreId)", NULL);
+            xmlSecInternalError("xmlSecKeyDataStoreCreate(xmlSecGnuTLSX509StoreId)", NULL);
             return(-1);
         }
 

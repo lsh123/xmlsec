@@ -59,7 +59,7 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     int isMlDSASupported;
 #endif /* XMLSEC_NO_MLDSA */
 
-    if(gXmlSecGnuTLSFunctions != NULL) {
+    if (gXmlSecGnuTLSFunctions != NULL) {
         return(gXmlSecGnuTLSFunctions);
     }
 

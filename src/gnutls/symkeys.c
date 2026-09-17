@@ -232,49 +232,50 @@ xmlSecGnuTLSSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
 }
 
 /* Helper macros to define the sym key data klass */
-#define XMLSEC_GNUTLS_SYMKEY_KLASS_EX(klassName, keyName, href, usage, dataNodeName, dataNodeNs)                  \
-static xmlSecKeyDataKlass xmlSecGnuTLSKeyData ## klassName ## Klass = {                                           \
-    sizeof(xmlSecKeyDataKlass),                 /* xmlSecSize klassSize */                                        \
-    xmlSecKeyDataBinarySize,                    /* xmlSecSize objSize */                                          \
-                                                                                                                   \
-    /* data */                                                                                                     \
-    keyName,                                    /* const xmlChar* name; */                                        \
-    usage,                                      /* xmlSecKeyDataUsage usage; */                                   \
-    href,                                       /* const xmlChar* href; */                                        \
-    dataNodeName,                               /* const xmlChar* dataNodeName; */                                \
-    dataNodeNs,                                 /* const xmlChar* dataNodeNs; */                                  \
-                                                                                                                   \
-    /* constructors/destructor */                                                                                  \
-    xmlSecGnuTLSSymKeyDataInitialize,           /* xmlSecKeyDataInitializeMethod initialize; */                   \
-    xmlSecGnuTLSSymKeyDataDuplicate,            /* xmlSecKeyDataDuplicateMethod duplicate; */                     \
-    xmlSecGnuTLSSymKeyDataFinalize,             /* xmlSecKeyDataFinalizeMethod finalize; */                       \
-    xmlSecGnuTLSSymKeyDataGenerate,             /* xmlSecKeyDataGenerateMethod generate; */                       \
-                                                                                                                   \
-    /* get info */                                                                                                 \
-    xmlSecGnuTLSSymKeyDataGetType,              /* xmlSecKeyDataGetTypeMethod getType; */                         \
-    xmlSecGnuTLSSymKeyDataGetSize,              /* xmlSecKeyDataGetSizeMethod getSize; */                         \
-    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */        \
-                                                                                                                   \
-    /* read/write */                                                                                               \
-    xmlSecGnuTLSSymKeyDataXmlRead,              /* xmlSecKeyDataXmlReadMethod xmlRead; */                         \
-    xmlSecGnuTLSSymKeyDataXmlWrite,             /* xmlSecKeyDataXmlWriteMethod xmlWrite; */                       \
-    xmlSecGnuTLSSymKeyDataBinRead,              /* xmlSecKeyDataBinReadMethod binRead; */                         \
-    xmlSecGnuTLSSymKeyDataBinWrite,             /* xmlSecKeyDataBinWriteMethod binWrite; */                       \
-                                                                                                                   \
-    /* debug */                                                                                                    \
-    xmlSecGnuTLSSymKeyDataDebugDump,            /* xmlSecKeyDataDebugDumpMethod debugDump; */                     \
-    xmlSecGnuTLSSymKeyDataDebugXmlDump,         /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */                  \
-                                                                                                                   \
-    /* reserved for the future */                                                                                  \
-    NULL,                                       /* void* reserved0; */                                            \
-    NULL,                                       /* void* reserved1; */                                            \
+#define XMLSEC_GNUTLS_SYMKEY_KLASS_EX(klassName, keyName, href, usage, dataNodeName, dataNodeNs, xmlRead, xmlWrite) \
+static xmlSecKeyDataKlass xmlSecGnuTLSKeyData ## klassName ## Klass = {                                             \
+    sizeof(xmlSecKeyDataKlass),                 /* xmlSecSize klassSize */                                          \
+    xmlSecKeyDataBinarySize,                    /* xmlSecSize objSize */                                            \
+                                                                                                                    \
+    /* data */                                                                                                      \
+    keyName,                                    /* const xmlChar* name; */                                          \
+    usage,                                      /* xmlSecKeyDataUsage usage; */                                     \
+    href,                                       /* const xmlChar* href; */                                          \
+    dataNodeName,                               /* const xmlChar* dataNodeName; */                                  \
+    dataNodeNs,                                 /* const xmlChar* dataNodeNs; */                                    \
+                                                                                                                    \
+    /* constructors/destructor */                                                                                   \
+    xmlSecGnuTLSSymKeyDataInitialize,           /* xmlSecKeyDataInitializeMethod initialize; */                     \
+    xmlSecGnuTLSSymKeyDataDuplicate,            /* xmlSecKeyDataDuplicateMethod duplicate; */                       \
+    xmlSecGnuTLSSymKeyDataFinalize,             /* xmlSecKeyDataFinalizeMethod finalize; */                         \
+    xmlSecGnuTLSSymKeyDataGenerate,             /* xmlSecKeyDataGenerateMethod generate; */                         \
+                                                                                                                    \
+    /* get info */                                                                                                  \
+    xmlSecGnuTLSSymKeyDataGetType,              /* xmlSecKeyDataGetTypeMethod getType; */                           \
+    xmlSecGnuTLSSymKeyDataGetSize,              /* xmlSecKeyDataGetSizeMethod getSize; */                           \
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */          \
+                                                                                                                    \
+    /* read/write */                                                                                                \
+    xmlRead,                                    /* xmlSecKeyDataXmlReadMethod xmlRead; */                           \
+    xmlWrite,                                   /* xmlSecKeyDataXmlWriteMethod xmlWrite; */                         \
+    xmlSecGnuTLSSymKeyDataBinRead,              /* xmlSecKeyDataBinReadMethod binRead; */                           \
+    xmlSecGnuTLSSymKeyDataBinWrite,             /* xmlSecKeyDataBinWriteMethod binWrite; */                         \
+                                                                                                                    \
+    /* debug */                                                                                                     \
+    xmlSecGnuTLSSymKeyDataDebugDump,            /* xmlSecKeyDataDebugDumpMethod debugDump; */                       \
+    xmlSecGnuTLSSymKeyDataDebugXmlDump,         /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */                    \
+                                                                                                                    \
+    /* reserved for the future */                                                                                   \
+    NULL,                                       /* void* reserved0; */                                              \
+    NULL,                                       /* void* reserved1; */                                              \
 };
 
-#define XMLSEC_GNUTLS_SYMKEY_KLASS(klassName, xmlName)                                                            \
-    XMLSEC_GNUTLS_SYMKEY_KLASS_EX(klassName, xmlSecName ## xmlName ## KeyValue,                                   \
-        xmlSecHref ## xmlName ## KeyValue,                                                                         \
+#define XMLSEC_GNUTLS_SYMKEY_KLASS(klassName, xmlName)                                                              \
+    XMLSEC_GNUTLS_SYMKEY_KLASS_EX(klassName, xmlSecName ## xmlName ## KeyValue,                                     \
+        xmlSecHref ## xmlName ## KeyValue,                                                                          \
         xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml, \
-        xmlSecNode ## xmlName ## KeyValue, xmlSecNs)
+        xmlSecNode ## xmlName ## KeyValue, xmlSecNs,                                                                \
+        xmlSecGnuTLSSymKeyDataXmlRead, xmlSecGnuTLSSymKeyDataXmlWrite)
 
 #ifndef XMLSEC_NO_AES
 /******************************************************************************
@@ -445,7 +446,7 @@ xmlSecGnuTLSKeyDataHmacSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecS
  * PBKDF2 key klass
  *
   *****************************************************************************/
-XMLSEC_GNUTLS_SYMKEY_KLASS_EX(Pbkdf2, xmlSecNamePbkdf2, xmlSecHrefPbkdf2, xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml, NULL, NULL)
+XMLSEC_GNUTLS_SYMKEY_KLASS_EX(Pbkdf2, xmlSecNamePbkdf2, xmlSecHrefPbkdf2, xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml, NULL, NULL, NULL, NULL)
 
 /**
  * @brief The PBKDF2 key data klass.
@@ -486,7 +487,7 @@ xmlSecGnuTLSKeyDataPbkdf2Set(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSe
  * ConcatKDF key klass
  *
   *****************************************************************************/
-XMLSEC_GNUTLS_SYMKEY_KLASS_EX(ConcatKdf, xmlSecNameConcatKdf, xmlSecHrefConcatKdf, xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml, NULL, NULL)
+XMLSEC_GNUTLS_SYMKEY_KLASS_EX(ConcatKdf, xmlSecNameConcatKdf, xmlSecHrefConcatKdf, xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml, NULL, NULL, NULL, NULL)
 
 /**
  * @brief The ConcatKDF key data klass.
@@ -527,7 +528,7 @@ xmlSecGnuTLSKeyDataConcatKdfSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xm
  * HKDF key klass
  *
   *****************************************************************************/
-XMLSEC_GNUTLS_SYMKEY_KLASS_EX(Hkdf, xmlSecNameHkdf, xmlSecHrefHkdf, xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml, NULL, NULL)
+XMLSEC_GNUTLS_SYMKEY_KLASS_EX(Hkdf, xmlSecNameHkdf, xmlSecHrefHkdf, xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml, NULL, NULL, NULL, NULL)
 
 /**
  * @brief The HKDF key data klass.

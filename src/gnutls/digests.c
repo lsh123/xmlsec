@@ -340,11 +340,14 @@ xmlSecGnuTLSDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
         /* get hash */
         gnutls_hash_output(ctx->hash, ctx->dgst);
 
-        ret = xmlSecBufferAppend(out, ctx->dgst, ctx->dgstSize);
-        if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferAppend", xmlSecTransformGetName(transform),
-                "size=" XMLSEC_SIZE_FMT, ctx->dgstSize);
-            return(-1);
+        /* write results if needed */
+        if(transform->operation == xmlSecTransformOperationSign) {
+            ret = xmlSecBufferAppend(out, ctx->dgst, ctx->dgstSize);
+            if(ret < 0) {
+                xmlSecInternalError2("xmlSecBufferAppend", xmlSecTransformGetName(transform),
+                    "size=" XMLSEC_SIZE_FMT, ctx->dgstSize);
+                return(-1);
+            }
         }
         transform->status = xmlSecTransformStatusFinished;
     }

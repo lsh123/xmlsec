@@ -379,12 +379,12 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
     /*  GOST 2001  */
 #ifndef XMLSEC_NO_GOST
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformGost2001GostR3411_94Id)) {
-        ctx->keyId      = xmlSecGnuTLSKeyDataGost2001Id;
-        ctx->dgstAlgo   = GNUTLS_DIG_GOSTR_94;
-        ctx->signAlgo   = GNUTLS_SIGN_GOST_94;
+        ctx->keyId       = xmlSecGnuTLSKeyDataGost2001Id;
+        ctx->dgstAlgo    = GNUTLS_DIG_GOSTR_94;
+        ctx->signAlgo    = GNUTLS_SIGN_GOST_94;
         ctx->verifyFlags = GNUTLS_VERIFY_ALLOW_BROKEN;
-        ctx->getPubKey  = xmlSecGnuTLSKeyDataGost2001GetPublicKey;
-        ctx->getPrivKey = xmlSecGnuTLSKeyDataGost2001GetPrivateKey;
+        ctx->getPubKey   = xmlSecGnuTLSKeyDataGost2001GetPublicKey;
+        ctx->getPrivKey  = xmlSecGnuTLSKeyDataGost2001GetPrivateKey;
     } else
 #endif /* XMLSEC_NO_GOST */
 
@@ -397,7 +397,6 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->getPubKey  = xmlSecGnuTLSKeyDataGost2012_256GetPublicKey;
         ctx->getPrivKey = xmlSecGnuTLSKeyDataGost2012_256GetPrivateKey;
     } else
-
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_512Id)) {
         ctx->keyId      = xmlSecGnuTLSKeyDataGost2012_512Id;
         ctx->dgstAlgo   = GNUTLS_DIG_STREEBOG_512;
@@ -544,7 +543,7 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
 
     /* create hash (skip for algorithms that don't use separate digest like ML-DSA) */
     if(ctx->dgstAlgo != GNUTLS_DIG_UNKNOWN) {
-        err =  gnutls_hash_init(&(ctx->hash), ctx->dgstAlgo);
+        err = gnutls_hash_init(&(ctx->hash), ctx->dgstAlgo);
         if(err != GNUTLS_E_SUCCESS) {
             xmlSecGnuTLSError("gnutls_hash_init", err, NULL);
             return(-1);
@@ -610,7 +609,7 @@ xmlSecGnuTLSSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 }
 
 static int
-xmlSecGnuTLSSignatureSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
+xmlSecGnuTLSSignatureSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq) {
     xmlSecGnuTLSSignatureCtxPtr ctx;
 
     xmlSecAssert2(xmlSecGnuTLSSignatureCheckId(transform), -1);

@@ -212,12 +212,14 @@ xmlSecGnuTLSKdfInitialize(xmlSecTransformPtr transform) {
             xmlSecGnuTLSKdfFinalize(transform);
             return(-1);
         }
+        ctx->u.hkdf.salt.flags |= XMLSEC_BUFFER_FLAG_SECURE;
         ret = xmlSecBufferInitialize(&(ctx->u.hkdf.info), 0);
         if(ret < 0) {
             xmlSecInternalError("xmlSecBufferInitialize(info)", NULL);
             xmlSecGnuTLSKdfFinalize(transform);
             return(-1);
         }
+        ctx->u.hkdf.info.flags |= XMLSEC_BUFFER_FLAG_SECURE;
         ret = xmlSecTransformHkdfParamsInitialize(&(ctx->u.hkdf.params));
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformHkdfParamsInitialize", NULL);

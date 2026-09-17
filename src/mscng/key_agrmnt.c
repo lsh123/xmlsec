@@ -141,7 +141,7 @@ xmlSecMSCngKeyAgreementInitialize(xmlSecTransformPtr transform) {
 
     ret = xmlSecTransformKAMInitialize(&(ctx->params));
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformKAMInitialize", NULL);
+        xmlSecInternalError("xmlSecTransformKAMInitialize", xmlSecTransformGetName(transform));
         xmlSecMSCngKeyAgreementFinalize(transform);
         return(-1);
     }
@@ -207,7 +207,7 @@ xmlSecMSCngKeyAgreementNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, x
 
     ret = xmlSecTransformKAMRead(&(ctx->params), node, transform, transformCtx);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformKAMRead", NULL);
+        xmlSecInternalError("xmlSecTransformKAMRead", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -230,7 +230,7 @@ xmlSecMSCngKeyAgreementNodeWrite(xmlSecTransformPtr transform, xmlNodePtr node, 
 
     ret = xmlSecTransformKAMWrite(&(ctx->params), node, transform, transformCtx);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformKAMWrite", NULL);
+        xmlSecInternalError("xmlSecTransformKAMWrite", xmlSecTransformGetName(transform));
         return(-1);
     }
 

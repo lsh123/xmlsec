@@ -454,6 +454,8 @@ xmlSecMSCngCheckRevocation(HCERTSTORE store, PCCERT_CONTEXT cert, LPFILETIME tim
     xmlSecAssert2(store != NULL, -1);
     xmlSecAssert2(cert != NULL, -1);
 
+    /* CertEnumCRLsInStore automatically frees the previous CRL context (see
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcrlsinstore) */
     while((crlCtx = CertEnumCRLsInStore(store, crlCtx)) != NULL) {
         isCrlTimeValid = xmlSecMSCngX509StoreIsCrlTimeValid(crlCtx, time);
         if(isCrlTimeValid < 0) {
@@ -619,7 +621,7 @@ xmlSecMSCngX509StoreVerifyCertificateItself(PCCERT_CONTEXT cert, FILETIME* time,
     if(ret < 0) {
         xmlSecInternalError("xmlSecMSCngX509StoreContainsCert", NULL);
         return(-1);
-    } else  if(ret == 1) {
+    } else if(ret == 1) {
         /* success */
         return(1);
     }
@@ -629,7 +631,7 @@ xmlSecMSCngX509StoreVerifyCertificateItself(PCCERT_CONTEXT cert, FILETIME* time,
     if(ret < 0) {
         xmlSecInternalError("xmlSecMSCngX509StoreContainsCert", NULL);
         return(-1);
-    } else  if(ret == 1) {
+    } else if(ret == 1) {
         /* success */
         return(1);
     }
@@ -722,6 +724,7 @@ xmlSecMSCngX509StoreVerifyCertificateChain(PCCERT_CONTEXT cert, FILETIME* time,
 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(trustedStore != NULL, -1);
+    xmlSecAssert2(untrustedStore != NULL, -1);
     xmlSecAssert2(certStore != NULL, -1);
 
     /* setup queue */
@@ -1023,7 +1026,7 @@ xmlSecMSCngX509StoreVerifyCertificate(xmlSecMSCngX509StoreCtxPtr ctx, PCCERT_CON
     /* verify based on the own trusted certificates */
     ret = xmlSecMSCngX509StoreVerifyCertificateChain(cert, time,
         ctx->trusted, ctx->untrusted, certStore);
-    if(ret < 0){
+    if(ret < 0) {
         xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateChain", NULL);
         return(-1);
     } else if(ret == 1) {
@@ -1261,6 +1264,8 @@ xmlSecMSCngX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs, xmlSec
     ctx = xmlSecMSCngX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, NULL);
 
+    /* CertEnumCertificatesInStore automatically frees the previous certificate context (see
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcertificatesinstore) */
     while((cert = CertEnumCertificatesInStore(certs, cert)) != NULL) {
         PCCERT_CONTEXT foundCert = NULL;
         int skip = 0;
@@ -1552,7 +1557,7 @@ xmlSecMSCngX509GetFriendlyNameUnicode(PCCERT_CONTEXT cert) {
         CERT_FRIENDLY_NAME_PROP_ID,
         NULL, &dwPropSize);
     if (ret != TRUE) {
-        /* name might not exists */
+        /* name might not exist */
         return(NULL);
     }
 
@@ -1586,7 +1591,7 @@ xmlSecMSCngX509GetFriendlyNameUtf8(PCCERT_CONTEXT cert) {
 
     str = xmlSecMSCngX509GetFriendlyNameUnicode(cert);
     if (str == NULL) {
-        /* name might not exists */
+        /* name might not exist */
         return(NULL);
     }
 

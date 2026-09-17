@@ -131,7 +131,11 @@ xmlSecMSCngKeyDataCertGetDsaPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE
     }
 
     qBlobSize = (qSize <= XMLSEC_MSCNG_DSA_MAX_Q_SIZE) ? XMLSEC_MSCNG_DSA_MAX_Q_SIZE : qSize;
-    if((pSize <= 128) && (qBlobSize == XMLSEC_MSCNG_DSA_MAX_Q_SIZE)) {
+    if((pSize <= XMLSEC_MSCNG_DSA_V1_MAX_P_SIZE) && (qBlobSize != XMLSEC_MSCNG_DSA_MAX_Q_SIZE)) {
+        xmlSecInvalidDataError("DSA key with p <= 1024 bits and q > 20 bytes is not supported", NULL);
+        goto done;
+    }
+    if((pSize <= XMLSEC_MSCNG_DSA_V1_MAX_P_SIZE) && (qBlobSize == XMLSEC_MSCNG_DSA_MAX_Q_SIZE)) {
         /* V1: BCRYPT_DSA_KEY_BLOB for keys up to 1024-bit (128 bytes)
          * layout: header + p[cbKey] + g[cbKey] + y[cbKey] */
         if(pSize > XMLSEC_MSCNG_DSA_MAX_P_SIZE) {
@@ -182,7 +186,7 @@ xmlSecMSCngKeyDataCertGetDsaPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE
         dsakey2 = (BCRYPT_DSA_KEY_BLOB_V2*)blobData;
         dsakey2->dwMagic = BCRYPT_DSA_PUBLIC_MAGIC_V2;
         dsakey2->cbKey = pSize;
-        dsakey2->hashAlgorithm = DSA_HASH_ALGORITHM_SHA256;
+        dsakey2->hashAlgorithm = (qBlobSize == XMLSEC_MSCNG_DSA_V2_Q_SIZE) ? DSA_HASH_ALGORITHM_SHA256 : DSA_HASH_ALGORITHM_SHA1;
         dsakey2->standardVersion = DSA_FIPS186_3;
         dsakey2->cbSeedLength = qBlobSize;
         dsakey2->cbGroupSize = qBlobSize;
@@ -454,8 +458,12 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     xmlSecAssert2(ySize <= pSize, NULL);
 
     qBlobSize = (qSize <= XMLSEC_MSCNG_DSA_MAX_Q_SIZE) ? XMLSEC_MSCNG_DSA_MAX_Q_SIZE : qSize;
+    if((pSize <= XMLSEC_MSCNG_DSA_V1_MAX_P_SIZE) && (qBlobSize != XMLSEC_MSCNG_DSA_MAX_Q_SIZE)) {
+        xmlSecInvalidDataError("DSA key with p <= 1024 bits and q > 20 bytes is not supported", NULL);
+        goto done;
+    }
 
-    if((pSize <= 128) && (qBlobSize == XMLSEC_MSCNG_DSA_MAX_Q_SIZE)) {
+    if((pSize <= XMLSEC_MSCNG_DSA_V1_MAX_P_SIZE) && (qBlobSize == XMLSEC_MSCNG_DSA_MAX_Q_SIZE)) {
         /* V1: BCRYPT_DSA_KEY_BLOB for keys up to 1024-bit (q up to 20 bytes),
          * layout: header + p[cbKey] + g[cbKey] + y[cbKey] */
         offset = sizeof(BCRYPT_DSA_KEY_BLOB);
@@ -489,7 +497,7 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     memset(xmlSecBufferGetData(&blob), 0, blobSize); /* ensure all gaps are zero-padded */
 
     blobData = xmlSecBufferGetData(&blob);
-    if((pSize <= 128) && (qBlobSize == XMLSEC_MSCNG_DSA_MAX_Q_SIZE)) {
+    if((pSize <= XMLSEC_MSCNG_DSA_V1_MAX_P_SIZE) && (qBlobSize == XMLSEC_MSCNG_DSA_MAX_Q_SIZE)) {
         /* V1: BCRYPT_DSA_KEY_BLOB */
         dsakey = (BCRYPT_DSA_KEY_BLOB*)blobData;
         dsakey->dwMagic = BCRYPT_DSA_PUBLIC_MAGIC;
@@ -521,7 +529,7 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         dsakey2 = (BCRYPT_DSA_KEY_BLOB_V2*)blobData;
         dsakey2->dwMagic = BCRYPT_DSA_PUBLIC_MAGIC_V2;
         XMLSEC_SAFE_CAST_SIZE_TO_UINT(pSize, dsakey2->cbKey, goto done, NULL);
-        dsakey2->hashAlgorithm = DSA_HASH_ALGORITHM_SHA256;
+        dsakey2->hashAlgorithm = (qBlobSize == XMLSEC_MSCNG_DSA_V2_Q_SIZE) ? DSA_HASH_ALGORITHM_SHA256 : DSA_HASH_ALGORITHM_SHA1;
         dsakey2->standardVersion = DSA_FIPS186_3;
         XMLSEC_SAFE_CAST_SIZE_TO_UINT(qBlobSize, dwQLen, goto done, NULL);
         dsakey2->cbSeedLength = dwQLen;
@@ -741,10 +749,6 @@ xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDsaPtr 
         /* V2: BCRYPT_DSA_KEY_BLOB_V2 + seed[cbSeedLength] + q[cbGroupSize] + p[cbKey] + g[cbKey] + y[cbKey] */
         BCRYPT_DSA_KEY_BLOB_V2* dsakey2v;
         xmlSecByte* v2Data;
-        if (bufLen < sizeof(BCRYPT_DSA_KEY_BLOB_V2)) {
-            xmlSecInvalidSizeLessThanError("BCryptExportKey(V2) blob size", (xmlSecSize)bufLen, (xmlSecSize)sizeof(BCRYPT_DSA_KEY_BLOB_V2), NULL);
-            goto done;
-        }
         dsakey2v = (BCRYPT_DSA_KEY_BLOB_V2*)bufData;
         if((dsakey2v->cbKey > XMLSEC_MSCNG_DSA_MAX_CBKEY_SIZE) || (bufLen < (sizeof(BCRYPT_DSA_KEY_BLOB_V2) + dsakey2v->cbSeedLength + dsakey2v->cbGroupSize + 3 * dsakey2v->cbKey))) {
             xmlSecMSCngNtError3("BCryptExportKey(V2)", NULL, STATUS_SUCCESS, "dwBlobLen: %lu; keyLen: %lu", bufLen, dsakey2v->cbKey);

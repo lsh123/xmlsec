@@ -12,19 +12,15 @@
  */
 #include "globals.h"
 
-#include <string.h>
-
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
-#include <xmlsec/bn.h>
 #include <xmlsec/private.h>
 
 #include <xmlsec/mscng/crypto.h>
 
-#include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
 
 #define xmlSecMSCngSymKeyDataCheckId(data) \
@@ -103,12 +99,15 @@ xmlSecMSCngSymKeyDataFinalize(xmlSecKeyDataPtr data) {
 }
 
 static int
-xmlSecMSCngSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits,
-        xmlSecKeyDataType type) {
+xmlSecMSCngSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type) {
     xmlSecBufferPtr buffer;
 
     xmlSecAssert2(xmlSecMSCngSymKeyDataCheckId(data), -1);
     xmlSecAssert2(sizeBits > 0, -1);
+    if(sizeBits > (XMLSEC_SIZE_MAX - 7)) {
+        xmlSecInvalidSizeMoreThanError("sizeBits", sizeBits, (XMLSEC_SIZE_MAX - 7), NULL);
+        return(-1);
+    }
     XMLSEC_UNREFERENCED(type);
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
@@ -265,8 +264,8 @@ xmlSecMSCngKeyDataAesGetKlass(void) {
 XMLSEC_MSCNG_SYMKEY(ConcatKdf, xmlSecNameConcatKdf, xmlSecHrefConcatKdf)
 
 /**
- * @brief The ConcatKdf key data klass.
- * @return ConcatKdf key data klass.
+ * @brief The ConcatKDF key data klass.
+ * @return ConcatKDF key data klass.
  */
 xmlSecKeyDataId
 xmlSecMSCngKeyDataConcatKdfGetKlass(void) {

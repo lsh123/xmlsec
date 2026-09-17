@@ -146,6 +146,7 @@ xmlSecKeyDataPtr   xmlSecMSCngKeyDataDhReadFromPkcs8Der             (const xmlSe
 #define XMLSEC_MSCNG_DSA_MAX_P_SIZE     (512U)                      /*  4096 bits, which is 512 bytes */
 #define XMLSEC_MSCNG_DSA_MAX_Q_SIZE     (20U)
 #define XMLSEC_MSCNG_DSA_V2_Q_SIZE      (32U)
+#define XMLSEC_MSCNG_DSA_V1_MAX_P_SIZE  (128U)                      /*  1024 bits, which is 128 bytes */
 
 int                xmlSecMSCngKeyDataCertGetDsaPubkey               (PCERT_PUBLIC_KEY_INFO spki,
                                                                      BCRYPT_KEY_HANDLE* key);

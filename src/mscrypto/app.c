@@ -549,6 +549,8 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
     }
 
     while (1) {
+        /* CertEnumCertificatesInStore automatically frees the previous certificate context (see
+         * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcertificatesinstore) */
         pCert = CertEnumCertificatesInStore(hCertStore, pCert);
         if(pCert == NULL) {
             break;

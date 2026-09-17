@@ -266,6 +266,8 @@ xmlSecMSCryptoKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
     xmlSecAssert2(ctx->hMemStore != 0, NULL);
     xmlSecAssert2(ctx->numCerts > pos, NULL);
 
+    /* CertEnumCertificatesInStore automatically frees the previous certificate context (see
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcertificatesinstore) */
     pCert = CertEnumCertificatesInStore(ctx->hMemStore, pCert);
     while ((pCert != NULL) && (pos > 0)) {
       pCert = CertEnumCertificatesInStore(ctx->hMemStore, pCert);
@@ -340,6 +342,8 @@ xmlSecMSCryptoKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {
     xmlSecAssert2(ctx->hMemStore != 0, NULL);
     xmlSecAssert2(ctx->numCrls > pos, NULL);
 
+    /* CertEnumCRLsInStore automatically frees the previous CRL context (see
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcrlsinstore) */
     pCRL = CertEnumCRLsInStore(ctx->hMemStore, pCRL);
     while ((pCRL != NULL) && (pos > 0)) {
       pCRL = CertEnumCRLsInStore(ctx->hMemStore, pCRL);

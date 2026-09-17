@@ -603,7 +603,8 @@ xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, cons
         goto cleanup;
     }
 
-    /* enumerate over certificates in the store */
+    /* enumerate over certificates in the store: CertEnumCertificatesInStore automatically frees the previous certificate context (see
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcertificatesinstore) */
     while((cert = CertEnumCertificatesInStore(certStore, cert)) != NULL) {
         /* multiple private keys, use the first one */
         if ((privKeyData == NULL) && (xmlSecMSCngIsPrivateKeyCert(cert, xmlSecImportGetPersistKey()) == TRUE)) {

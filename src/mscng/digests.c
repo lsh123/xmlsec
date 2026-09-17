@@ -309,6 +309,7 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
         }
 
         /* allocate the hash object on the heap */
+        xmlSecAssert2(ctx->pbHashObject == NULL, -1);
         ctx->pbHashObject = (PBYTE)xmlMalloc(cbHashObject);
         if(ctx->pbHashObject == NULL) {
             xmlSecMallocError(cbHashObject, NULL);
@@ -329,6 +330,7 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
         }
 
         /* allocate the hash buffer on the heap */
+        xmlSecAssert2(ctx->pbHash == NULL, -1);
         ctx->pbHash = (PBYTE)xmlMalloc(ctx->cbHash);
         if(ctx->pbHash == NULL) {
             xmlSecMallocError(ctx->cbHash, NULL);
@@ -336,6 +338,7 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
         }
 
         /* create the hash */
+        xmlSecAssert2(ctx->hHash == NULL, -1);
         status = BCryptCreateHash(
             ctx->hAlg,
             &ctx->hHash,

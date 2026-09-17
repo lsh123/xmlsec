@@ -39,7 +39,7 @@ struct _xmlSecMSCngKeyDataCtx {
     NCRYPT_KEY_HANDLE privkey;
     BCRYPT_KEY_HANDLE pubkey;
     BOOL privkeyNeedsFree;
-    BCRYPT_KEY_HANDLE bcryptPrivkey; /* BCrypt DH private key (loaded from DER/PKCS8) */
+    BCRYPT_KEY_HANDLE bcryptPrivkey; /* BCrypt DH/XDH private key (loaded from DER/PKCS8) */
     xmlSecBuffer dhQ;
 };
 
@@ -97,7 +97,7 @@ xmlSecMSCngKeyDataCertGetPrivkey(PCCERT_CONTEXT cert, NCRYPT_KEY_HANDLE* key, BO
     res = CertGetCertificateContextProperty(cert, CERT_KEY_CONTEXT_PROP_ID, &ckc, &dwCkcLen);
     if (res && (ckc.hNCryptKey != 0)) {
         (*key) = ckc.hNCryptKey;
-        (*needsFree) = FALSE; /* this key doesnt need NCryptFreeObject */
+        (*needsFree) = FALSE; /* this key doesn't need NCryptFreeObject */
         return(0);
     }
 
@@ -1156,7 +1156,7 @@ xmlSecMSCngKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     }
     bufData += rsakey->cbModulus;
 
-    /* next is PrivateExponent node: not supported in MSCrypto */
+    /* next is PrivateExponent node: not supported in MSCng */
 
     /* don't reverse blobs as both the XML and CNG works with big-endian */
     /* success */
@@ -1899,8 +1899,8 @@ xmlSecMSCngDhValidatePublicSubgroup(xmlSecBufferPtr p, xmlSecBufferPtr g,
     xmlSecAssert2(xmlSecBufferGetSize(q) > 0, -1);
 
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(xmlSecBufferGetSize(p), cbKey, return(-1), NULL);
-    if(cbKey > XMLSEC_MSCNG_DSA_MAX_P_SIZE) {
-        xmlSecInvalidSizeMoreThanError("DH P size", (xmlSecSize)cbKey, (xmlSecSize)XMLSEC_MSCNG_DSA_MAX_P_SIZE, NULL);
+    if(cbKey > XMLSEC_MSCNG_DH_MAX_P_SIZE) {
+        xmlSecInvalidSizeMoreThanError("DH P size", (xmlSecSize)cbKey, (xmlSecSize)XMLSEC_MSCNG_DH_MAX_P_SIZE, NULL);
         goto done;
     }
     cbPrivBlob = (DWORD)sizeof(BCRYPT_DH_KEY_BLOB) + cbKey * 4U;

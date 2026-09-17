@@ -13,13 +13,9 @@
 
 #include "globals.h"
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
-#include <ctype.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/base64.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/xmltree.h>

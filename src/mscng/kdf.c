@@ -16,7 +16,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <ctype.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/base64.h>
@@ -266,7 +265,7 @@ xmlSecMSCngKdfSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
 /* convert PRF algorithm href to MSCng hash algo */
 static LPCWSTR
-xmlSecMSCngPbkdf2GetMacFromHref(const xmlChar* href) {
+xmlSecMSCngPbkdf2GetHashAlgoFromHref(const xmlChar* href) {
     /* use SHA256 by default */
     if(href == NULL) {
 #ifndef XMLSEC_NO_SHA256
@@ -349,10 +348,10 @@ xmlSecMSCngPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
         return(-1);
     }
 
-    /* set mac */
-    ctx->pszAlgId = xmlSecMSCngPbkdf2GetMacFromHref(ctx->pbkdf2Params.prfAlgorithmHref);
+    /* set hash algorithm */
+    ctx->pszAlgId = xmlSecMSCngPbkdf2GetHashAlgoFromHref(ctx->pbkdf2Params.prfAlgorithmHref);
     if(ctx->pszAlgId == NULL) {
-        xmlSecInternalError("xmlSecMSCngPbkdf2GetMacFromHref", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecMSCngPbkdf2GetHashAlgoFromHref", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -526,7 +525,7 @@ xmlSecMSCngPbkdf2Derive(xmlSecMSCngKdfCtxPtr ctx, xmlSecBufferPtr out) {
 
 /* convert PRF algorithm href to MSCng hash algo */
 static LPCWSTR
-xmlSecMSCngHkdfGetMacFromHref(const xmlChar* href) {
+xmlSecMSCngHkdfGetHashAlgoFromHref(const xmlChar* href) {
     /* use SHA256 by default */
     if(href == NULL) {
 #ifndef XMLSEC_NO_SHA256
@@ -610,9 +609,9 @@ xmlSecMSCngHkdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     }
 
     /* set hash algorithm */
-    ctx->pszAlgId = xmlSecMSCngHkdfGetMacFromHref(ctx->hkdfParams.prfAlgorithmHref);
+    ctx->pszAlgId = xmlSecMSCngHkdfGetHashAlgoFromHref(ctx->hkdfParams.prfAlgorithmHref);
     if(ctx->pszAlgId == NULL) {
-        xmlSecInternalError("xmlSecMSCngHkdfGetMacFromHref", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecMSCngHkdfGetHashAlgoFromHref", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -731,6 +730,13 @@ xmlSecMSCngHkdfPerformKeyDerivation(
         0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptSetProperty(BCRYPT_HKDF_SALT_AND_FINALIZE)", NULL, status);
+        goto done;
+    }
+
+    /* reject inconsistent info input */
+    if((pbInfo == NULL) && (cbInfo > 0)) {
+        xmlSecInvalidSizeError("HKDF info size with NULL info buffer",
+            (xmlSecSize)cbInfo, (xmlSecSize)0, NULL);
         goto done;
     }
 

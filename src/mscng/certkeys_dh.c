@@ -67,7 +67,7 @@ xmlSecMSCngKeyDataDuplicateBCryptDhPrivKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HAN
     }
     status = BCryptImportKeyPair(hDhAlg, NULL, BCRYPT_DH_PRIVATE_BLOB, &hDhAlgKey, pbPrivBlob, cbPrivBlob, 0);
     BCryptCloseAlgorithmProvider(hDhAlg, 0);
-    memset(pbPrivBlob, 0, cbPrivBlob);
+    xmlSecMemCleanse(pbPrivBlob, cbPrivBlob);
     xmlFree(pbPrivBlob);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptImportKeyPair(DH priv dup)", NULL, status);
@@ -121,6 +121,10 @@ xmlSecMSCngDerDecodeInteger(const xmlSecByte* p, const xmlSecByte* end, DWORD* p
 
     val = xmlSecMSCngDerReadTlv(p, end, 0x02 /* INTEGER */, &len);
     if(val == NULL || len == 0) {
+        return(NULL);
+    }
+    /* Reject negative integers (high bit of the first content byte set). */
+    if((*val & 0x80) != 0) {
         return(NULL);
     }
     /* skip optional leading zero (sign byte) */

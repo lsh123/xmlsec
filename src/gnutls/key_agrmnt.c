@@ -13,10 +13,7 @@
 
 #include "globals.h"
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
-#include <ctype.h>
 
 #include <gnutls/gnutls.h>
 #include <gnutls/abstract.h>
@@ -71,6 +68,7 @@ static int              xmlSecGnuTLSKeyAgreementExecute         (xmlSecTransform
 /* Helper functions */
 static int              xmlSecGnuTLSKeyAgreementGenerateSecret  (xmlSecGnuTLSKeyAgreementCtxPtr ctx,
                                                                   xmlSecTransformOperation operation,
+                                                                  xmlSecTransformPtr transform,
                                                                   xmlSecKeyDataPtr kamKeyData,
                                                                   xmlSecBufferPtr secret);
 /******************************************************************************
@@ -257,7 +255,7 @@ xmlSecGnuTLSKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTr
     } else if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
         xmlSecBuffer secret;
 
-        ret = xmlSecBufferInitialize(&secret, 64);
+        ret = xmlSecBufferInitialize(&secret, 128); /* greater than the max possible size (66 bytes for ECDH P-521) */
         if(ret < 0) {
             xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
             return(-1);
@@ -271,7 +269,7 @@ xmlSecGnuTLSKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTr
             xmlSecBufferFinalize(&secret);
             return(-1);
         }
-        ret = xmlSecGnuTLSKeyAgreementGenerateSecret(ctx, transform->operation, kamKeyData, &secret);
+        ret = xmlSecGnuTLSKeyAgreementGenerateSecret(ctx, transform->operation, transform, kamKeyData, &secret);
         if(ret < 0) {
             xmlSecInternalError("xmlSecGnuTLSKeyAgreementGenerateSecret", xmlSecTransformGetName(transform));
             xmlSecBufferEmpty(&secret);
@@ -308,7 +306,7 @@ xmlSecGnuTLSKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTr
 /* Derive shared secret using gnutls_privkey_derive_secret */
 static int
 xmlSecGnuTLSKeyAgreementGenerateSecret(xmlSecGnuTLSKeyAgreementCtxPtr ctx, xmlSecTransformOperation operation,
-    xmlSecKeyDataPtr kamKeyData, xmlSecBufferPtr secret
+    xmlSecTransformPtr transform, xmlSecKeyDataPtr kamKeyData, xmlSecBufferPtr secret
 ) {
     xmlSecKeyDataKAM* kamData;
     xmlSecKeyDataPtr myKeyValue, otherKeyValue;
@@ -323,6 +321,7 @@ xmlSecGnuTLSKeyAgreementGenerateSecret(xmlSecGnuTLSKeyAgreementCtxPtr ctx, xmlSe
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(kamKeyData != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(kamKeyData, xmlSecKeyDataKAMId), -1);
+    xmlSecAssert2(transform != NULL, -1);
     xmlSecAssert2(secret != NULL, -1);
 
     kamData = (xmlSecKeyDataKAM*)kamKeyData;
@@ -360,6 +359,13 @@ xmlSecGnuTLSKeyAgreementGenerateSecret(xmlSecGnuTLSKeyAgreementCtxPtr ctx, xmlSe
     /* get the GnuTLS key handles based on key data type */
 #ifndef XMLSEC_NO_EC
     if(xmlSecKeyDataCheckId(myKeyValue, xmlSecGnuTLSKeyDataEcId)) {
+        if(!xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEcdhId)) {
+            xmlSecInvalidTransformError2(transform,
+                "key data \"%s\" is not compatible with this key agreement transform",
+                xmlSecErrorsSafeString(xmlSecKeyDataGetName(myKeyValue)));
+            goto done;
+        }
+
         myPrivKey = xmlSecGnuTLSKeyDataEcGetPrivateKey(myKeyValue);
         if(myPrivKey == NULL) {
             xmlSecInternalError("xmlSecGnuTLSKeyDataEcGetPrivateKey", NULL);
@@ -380,6 +386,14 @@ xmlSecGnuTLSKeyAgreementGenerateSecret(xmlSecGnuTLSKeyAgreementCtxPtr ctx, xmlSe
 #endif /* XMLSEC_NO_EC */
 #ifndef XMLSEC_NO_XDH
     if(xmlSecKeyDataCheckId(myKeyValue, xmlSecGnuTLSKeyDataXdhId)) {
+        if(!(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformX25519Id) ||
+             xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformX448Id))) {
+            xmlSecInvalidTransformError2(transform,
+                "key data \"%s\" is not compatible with this key agreement transform",
+                xmlSecErrorsSafeString(xmlSecKeyDataGetName(myKeyValue)));
+            goto done;
+        }
+
         myPrivKey = xmlSecGnuTLSKeyDataXdhGetPrivateKey(myKeyValue);
         if(myPrivKey == NULL) {
             xmlSecInternalError("xmlSecGnuTLSKeyDataXdhGetPrivateKey", NULL);
@@ -405,8 +419,12 @@ xmlSecGnuTLSKeyAgreementGenerateSecret(xmlSecGnuTLSKeyAgreementCtxPtr ctx, xmlSe
 
     /* derive shared secret; GnuTLS allocates secretDatum.data */
     err = gnutls_privkey_derive_secret(myPrivKey, otherPubKey, NULL, &secretDatum, 0);
-    if((err != GNUTLS_E_SUCCESS) || (secretDatum.data == NULL) || (secretDatum.size == 0)) {
+    if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_privkey_derive_secret", err, NULL);
+        goto done;
+    }
+    if((secretDatum.data == NULL) || (secretDatum.size == 0)) {
+        xmlSecInternalError("gnutls_privkey_derive_secret returned no data", NULL);
         goto done;
     }
 

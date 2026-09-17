@@ -14,11 +14,8 @@
 
 #ifndef XMLSEC_NO_X509
 
-#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <ctype.h>
-#include <errno.h>
 #include <time.h>
 
 #include <gnutls/gnutls.h>
@@ -609,9 +606,10 @@ xmlSecGnuTLSKeyDataX509DebugDump(xmlSecKeyDataPtr data, FILE* output) {
         }
     }
 
-    /* other certs */
+    /* other certs (key cert, if present, is the first one and already dumped above) */
     size = xmlSecGnuTLSKeyDataX509GetCertsSize(data);
-    for(pos = 0; pos < size; ++pos) {
+    pos = (xmlSecGnuTLSKeyDataX509GetKeyCert(data) != NULL) ? 1 : 0;
+    for(; pos < size; ++pos) {
         gnutls_x509_crt_t cert;
 
         cert = xmlSecGnuTLSKeyDataX509GetCert(data, pos);
@@ -663,9 +661,10 @@ xmlSecGnuTLSKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
         }
     }
 
-    /* other certs */
+    /* other certs (key cert, if present, is the first one and already dumped above) */
     size = xmlSecGnuTLSKeyDataX509GetCertsSize(data);
-    for(pos = 0; pos < size; ++pos) {
+    pos = (xmlSecGnuTLSKeyDataX509GetKeyCert(data) != NULL) ? 1 : 0;
+    for(; pos < size; ++pos) {
         gnutls_x509_crt_t cert;
 
         cert = xmlSecGnuTLSKeyDataX509GetCert(data, pos);
@@ -887,7 +886,7 @@ xmlSecGnuTLSKeyDataX509Write(xmlSecKeyDataPtr data,  xmlSecKeyX509DataValuePtr x
             return(-1);
         }
 
-        if((content & XMLSEC_X509DATA_CRL_NODE) != 0) {
+        if (XMLSEC_X509DATA_HAS_EMPTY_NODE(content, XMLSEC_X509DATA_CRL_NODE)) {
             ret = xmlSecGnuTLSX509CrlDerWrite(crl, &(x509Value->crl));
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecGnuTLSX509CrlDerWrite",
@@ -963,7 +962,7 @@ xmlSecGnuTLSKVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->keyCert == NULL, -1);
 
-    if( (xmlSecPtrListGetSize(&(ctx->certsList)) <= 0) || (xmlSecKeyGetValue(key) != NULL)) {
+    if((xmlSecPtrListGetSize(&(ctx->certsList)) == 0) || (xmlSecKeyGetValue(key) != NULL)) {
         /* no certs or key was already found -> nothing to do (this shouldn't really happen) */
         return(0);
     }
@@ -1022,12 +1021,14 @@ xmlSecGnuTLSKVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, 
     /* copy cert not before / not after times from the cert */
     key->notValidBefore = gnutls_x509_crt_get_activation_time(ctx->keyCert);
     if(key->notValidBefore == (time_t)-1) {
-        xmlSecGnuTLSError("gnutls_x509_crt_get_activation_time", GNUTLS_E_SUCCESS, xmlSecKeyDataGetName(data));
+        xmlSecInternalError("gnutls_x509_crt_get_activation_time (failed to get certificate activation time)",
+            xmlSecKeyDataGetName(data));
         return(-1);
     }
     key->notValidAfter = gnutls_x509_crt_get_expiration_time(ctx->keyCert);
     if(key->notValidAfter == (time_t)-1) {
-        xmlSecGnuTLSError("gnutls_x509_crt_get_expiration_time", GNUTLS_E_SUCCESS, xmlSecKeyDataGetName(data));
+        xmlSecInternalError("gnutls_x509_crt_get_expiration_time (failed to get certificate expiration time)",
+            xmlSecKeyDataGetName(data));
         return(-1);
     }
 

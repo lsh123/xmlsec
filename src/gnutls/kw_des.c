@@ -75,16 +75,16 @@ static xmlSecKWDes3Klass xmlSecGnuTLSKWDes3ImplKlass = {
     NULL,                                   /* void*                               reserved1; */
 };
 
-static int      xmlSecGnuTLSKWDes3Encrypt                      (const xmlSecByte *key,
-                                                                 xmlSecSize keySize,
-                                                                 const xmlSecByte *iv,
-                                                                 xmlSecSize ivSize,
-                                                                 const xmlSecByte *in,
-                                                                 xmlSecSize inSize,
-                                                                 xmlSecByte *out,
-                                                                 xmlSecSize outSize,
-                                                                 xmlSecSize * outWritten,
-                                                                 int enc);
+static int      xmlSecGnuTLSKWDes3Encrypt                       (const xmlSecByte * key,
+                                                                xmlSecSize keySize,
+                                                                const xmlSecByte * iv,
+                                                                xmlSecSize ivSize,
+                                                                const xmlSecByte * in,
+                                                                xmlSecSize inSize,
+                                                                xmlSecByte * out,
+                                                                xmlSecSize outSize,
+                                                                xmlSecSize * outWritten,
+                                                                int enc);
 
 
 /******************************************************************************
@@ -184,7 +184,7 @@ xmlSecGnuTLSKWDes3Finalize(xmlSecTransformPtr transform) {
 }
 
 static int
-xmlSecGnuTLSKWDes3SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
+xmlSecGnuTLSKWDes3SetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq) {
     xmlSecGnuTLSKWDes3CtxPtr ctx;
     int ret;
 
@@ -371,9 +371,11 @@ xmlSecGnuTLSKWDes3BlockDecrypt(xmlSecTransformPtr transform,
 }
 
 static int
-xmlSecGnuTLSKWDes3Encrypt(const xmlSecByte* key, xmlSecSize keySize,
-    const xmlSecByte* iv, xmlSecSize ivSize, const xmlSecByte* in, xmlSecSize inSize,
-    xmlSecByte* out, xmlSecSize outSize, xmlSecSize* outWritten, int enc)
+xmlSecGnuTLSKWDes3Encrypt(const xmlSecByte * key, xmlSecSize keySize,
+                          const xmlSecByte * iv, xmlSecSize ivSize,
+                          const xmlSecByte * in, xmlSecSize inSize,
+                          xmlSecByte * out, xmlSecSize outSize,
+                          xmlSecSize * outWritten, int enc)
 {
     gnutls_cipher_hd_t cipher;
     gnutls_datum_t gnutlsKey, gnutlsIv;

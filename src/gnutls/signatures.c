@@ -28,7 +28,7 @@
 #include "../cast_helpers.h"
 
 /* https://www.w3.org/TR/xmldsig-core1/#sec-DSA
- * The output of the DSA algorithm consists of a pair of integers usually referred by the pair (r, s).
+ * The output of the DSA algorithm consists of a pair of integers usually referred to by the pair (r, s).
  * DSA-SHA1: Integer to octet-stream conversion must be done according to the I2OSP operation defined
  *           in the RFC 3447 [PKCS1] specification with a l parameter equal to 20
  * DSA-SHA256: The pairs (2048, 256) and (3072, 256) correspond to the algorithm DSAwithSHA256
@@ -599,6 +599,13 @@ xmlSecGnuTLSSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     value = xmlSecKeyGetValue(key);
     xmlSecAssert2(value != NULL, -1);
 
+    /* delete old data if any */
+    if(ctx->keyData != NULL) {
+        xmlSecKeyDataDestroy(ctx->keyData);
+        ctx->keyData = NULL;
+    }
+
+    /* duplicate new key data */
     ctx->keyData = xmlSecKeyDataDuplicate(value);
     if(ctx->keyData == NULL) {
         xmlSecInternalError("xmlSecKeyDataDuplicate", xmlSecTransformGetName(transform));
@@ -635,7 +642,7 @@ xmlSecGnuTLSSignatureSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr key
 /*
  * https://www.w3.org/TR/xmldsig-core1/#sec-DSA
  *
- * The output of the DSA algorithm consists of a pair of integers usually referred by the pair (r, s).
+ * The output of the DSA algorithm consists of a pair of integers usually referred to by the pair (r, s).
  * The signature value consists of the base64 encoding of the concatenation of two octet-streams that
  * respectively result from the octet-encoding of the values r and s in that order. Integer to octet-stream
  * conversion must be done according to the I2OSP operation defined in the RFC 3447 [PKCS1] specification
@@ -643,7 +650,7 @@ xmlSecGnuTLSSignatureSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr key
  *
  * https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA
  *
- * The output of the ECDSA algorithm consists of a pair of integers usually referred by the pair (r, s).
+ * The output of the ECDSA algorithm consists of a pair of integers usually referred to by the pair (r, s).
  * The signature value consists of the base64 encoding of the concatenation of two octet-streams that respectively
  * result from the octet-encoding of the values r and s in that order. Integer to octet-stream conversion must
  * be done according to the I2OSP operation defined in the RFC 3447 [PKCS1] specification with the l parameter equal
@@ -944,7 +951,6 @@ xmlSecGnuTLSSignatureGetDerHalfSize(gnutls_sign_algorithm_t algo, xmlSecSize key
         break;
     case GNUTLS_SIGN_DSA_SHA256:
         (*res) = XMLSEC_GNUTLS_SIGNATURE_DSA_SHA256_HALF_LEN;
-
         break;
 #endif /* XMLSEC_NO_DSA */
 
@@ -1376,7 +1382,7 @@ xmlSecGnuTLSTransformDsaSha256GetKlass(void) {
 /*
  * https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA
  *
- * The output of the ECDSA algorithm consists of a pair of integers usually referred by the pair (r, s).
+ * The output of the ECDSA algorithm consists of a pair of integers usually referred to by the pair (r, s).
  * The signature value consists of the base64 encoding of the concatenation of two octet-streams that respectively
  * result from the octet-encoding of the values r and s in that order. Integer to octet-stream conversion must
  * be done according to the I2OSP operation defined in the RFC 3447 [PKCS1] specification with the l parameter equal
@@ -1564,7 +1570,6 @@ XMLSEC_GNUTLS_SIGNATURE_KLASS(Gost2001GostR3411_94)
 
 /**
  * @brief GOST2001 GOSTR3411_94 signature transform klass.
- * @details The GOST2001 GOSTR3411_94 signature transform klass.
  * @return GOST2001 GOSTR3411_94 signature transform klass.
  */
 xmlSecTransformId

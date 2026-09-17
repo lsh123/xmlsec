@@ -327,6 +327,8 @@ xmlSecGnuTLSAsymKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
         err = gnutls_pubkey_import(ctxDst->pubkey, &pubkey, GNUTLS_X509_FMT_DER);
         if (err != GNUTLS_E_SUCCESS) {
             xmlSecGnuTLSError("gnutls_pubkey_import", err, NULL);
+            gnutls_pubkey_deinit(ctxDst->pubkey);
+            ctxDst->pubkey = NULL;
             gnutls_free(pubkey.data);
             return(-1);
         }
@@ -353,6 +355,8 @@ xmlSecGnuTLSAsymKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
         err = gnutls_privkey_import_x509(ctxDst->privkey, x509_privkey, GNUTLS_PRIVKEY_IMPORT_AUTO_RELEASE);
         if (err != GNUTLS_E_SUCCESS) {
             xmlSecGnuTLSError("gnutls_privkey_import_x509", err, NULL);
+            gnutls_privkey_deinit(ctxDst->privkey);
+            ctxDst->privkey = NULL;
             gnutls_x509_privkey_deinit(x509_privkey);
             return(-1);
         }
@@ -479,13 +483,9 @@ xmlSecGnuTLSAsymmetricKeyCreatePub(gnutls_pubkey_t pubkey) {
         return(NULL);
     }
 
-    /* this call should never fail, otherwise we might
-     * "double free" pubkey (it's owned by keyData and then caller)
-     */
     ret = xmlSecKeySetValue(key, keyData);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeySetValue", NULL);
-        xmlSecKeyDataDestroy(keyData);
         xmlSecKeyDestroy(key);
         return(NULL);
     }
@@ -521,13 +521,9 @@ xmlSecGnuTLSAsymmetricKeyCreatePriv(gnutls_privkey_t privkey) {
         return(NULL);
     }
 
-    /* this call should never fail, otherwise we might
-     * "double free" privkey (it's owned by keyData and then caller)
-     */
     ret = xmlSecKeySetValue(key, keyData);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeySetValue", NULL);
-        xmlSecKeyDataDestroy(keyData);
         xmlSecKeyDestroy(key);
         return(NULL);
     }
@@ -637,6 +633,10 @@ xmlSecGnuTLSKeyDataDsaAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gn
     /* verify key type */
     if(pubkey != NULL) {
         ret = gnutls_pubkey_get_pk_algorithm(pubkey, NULL);
+        if(ret < 0) {
+            xmlSecGnuTLSError("gnutls_pubkey_get_pk_algorithm", ret, NULL);
+            return(-1);
+        }
         if(ret != GNUTLS_PK_DSA) {
             xmlSecInternalError2("Invalid pubkey algorithm", NULL, "type=%d", ret);
             return(-1);
@@ -644,6 +644,10 @@ xmlSecGnuTLSKeyDataDsaAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gn
     }
     if(privkey != NULL) {
         ret = gnutls_privkey_get_pk_algorithm(privkey, NULL);
+        if(ret < 0) {
+            xmlSecGnuTLSError("gnutls_privkey_get_pk_algorithm", ret, NULL);
+            return(-1);
+        }
         if(ret != GNUTLS_PK_DSA) {
             xmlSecInternalError2("Invalid privkey algorithm", NULL, "type=%d", ret);
             return(-1);
@@ -943,6 +947,9 @@ done:
  *
   *****************************************************************************/
 
+static int              xmlSecGnuTLSKeyDataEcGenerate           (xmlSecKeyDataPtr data,
+                                                                 xmlSecSize sizeBits,
+                                                                 xmlSecKeyDataType type);
 static int              xmlSecGnuTLSKeyDataEcXmlRead            (xmlSecKeyDataId id,
                                                                  xmlSecKeyPtr key,
                                                                  xmlNodePtr node,
@@ -961,7 +968,7 @@ static int              xmlSecGnuTLSKeyDataEcWrite              (xmlSecKeyDataId
 XMLSEC_GNUTLS_ASYMKEY_KLASS_EX(Ec, xmlSecNameECKeyValue, xmlSecHrefECKeyValue,
     xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
     xmlSecNodeECKeyValue, xmlSecDSig11Ns,
-    NULL, xmlSecGnuTLSKeyDataEcXmlRead, xmlSecGnuTLSKeyDataEcXmlWrite)
+    xmlSecGnuTLSKeyDataEcGenerate, xmlSecGnuTLSKeyDataEcXmlRead, xmlSecGnuTLSKeyDataEcXmlWrite)
 
 /**
  * @brief The GnuTLS EC key data klass.
@@ -989,6 +996,10 @@ xmlSecGnuTLSKeyDataEcAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnu
     /* verify key type */
     if(pubkey != NULL) {
         ret = gnutls_pubkey_get_pk_algorithm(pubkey, NULL);
+        if(ret < 0) {
+            xmlSecGnuTLSError("gnutls_pubkey_get_pk_algorithm", ret, NULL);
+            return(-1);
+        }
         if(ret != GNUTLS_PK_ECDSA) {
             xmlSecInternalError2("Invalid pubkey algorithm", NULL, "type=%d", ret);
             return(-1);
@@ -996,6 +1007,10 @@ xmlSecGnuTLSKeyDataEcAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnu
     }
     if(privkey != NULL) {
         ret = gnutls_privkey_get_pk_algorithm(privkey, NULL);
+        if(ret < 0) {
+            xmlSecGnuTLSError("gnutls_privkey_get_pk_algorithm", ret, NULL);
+            return(-1);
+        }
         if(ret != GNUTLS_PK_ECDSA) {
             xmlSecInternalError2("Invalid privkey algorithm", NULL, "type=%d", ret);
             return(-1);
@@ -1026,6 +1041,14 @@ gnutls_privkey_t
 xmlSecGnuTLSKeyDataEcGetPrivateKey(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEcId), NULL);
     return xmlSecGnuTLSAsymKeyDataGetPrivateKey(data);
+}
+
+static int
+xmlSecGnuTLSKeyDataEcGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEcId), -1);
+    xmlSecAssert2(sizeBits > 0, -1);
+
+    return xmlSecGnuTLSAsymKeyDataGenerate(data, GNUTLS_PK_ECDSA, sizeBits);
 }
 
 static int
@@ -1290,6 +1313,10 @@ xmlSecGnuTLSKeyDataRsaAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gn
     /* verify key type */
     if(pubkey != NULL) {
         ret = gnutls_pubkey_get_pk_algorithm(pubkey, NULL);
+        if(ret < 0) {
+            xmlSecGnuTLSError("gnutls_pubkey_get_pk_algorithm", ret, NULL);
+            return(-1);
+        }
         if(ret != GNUTLS_PK_RSA) {
             xmlSecInternalError2("Invalid pubkey algorithm", NULL, "type=%d", ret);
             return(-1);
@@ -1297,6 +1324,10 @@ xmlSecGnuTLSKeyDataRsaAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gn
     }
     if(privkey != NULL) {
         ret = gnutls_privkey_get_pk_algorithm(privkey, NULL);
+        if(ret < 0) {
+            xmlSecGnuTLSError("gnutls_privkey_get_pk_algorithm", ret, NULL);
+            return(-1);
+        }
         if(ret != GNUTLS_PK_RSA) {
             xmlSecInternalError2("Invalid privkey algorithm", NULL, "type=%d", ret);
             return(-1);
@@ -1551,6 +1582,10 @@ xmlSecGnuTLSKeyDataGostAdoptKey(int algo, xmlSecKeyDataPtr data, gnutls_pubkey_t
     /* verify key type */
     if(pubkey != NULL) {
         ret = gnutls_pubkey_get_pk_algorithm(pubkey, NULL);
+        if(ret < 0) {
+            xmlSecGnuTLSError("gnutls_pubkey_get_pk_algorithm", ret, NULL);
+            return(-1);
+        }
         if(ret != algo) {
             xmlSecInternalError2("Invalid pubkey algorithm", NULL, "type=%d", ret);
             return(-1);
@@ -1558,6 +1593,10 @@ xmlSecGnuTLSKeyDataGostAdoptKey(int algo, xmlSecKeyDataPtr data, gnutls_pubkey_t
     }
     if(privkey != NULL) {
         ret = gnutls_privkey_get_pk_algorithm(privkey, NULL);
+        if(ret < 0) {
+            xmlSecGnuTLSError("gnutls_privkey_get_pk_algorithm", ret, NULL);
+            return(-1);
+        }
         if(ret != algo) {
             xmlSecInternalError2("Invalid privkey algorithm", NULL, "type=%d", ret);
             return(-1);
@@ -1860,7 +1899,7 @@ xmlSecGnuTLSKeyDataMLDSAGetKL(xmlSecKeyDataPtr data) {
             return 87;
         default:
             xmlSecInvalidIntegerTypeError("pubkey algorithm", algo,
-                    "unsupported ML-DSA algorithm", NULL);
+                    "44, 65 or 87", NULL);
             return(-1);
         }
     }
@@ -1882,7 +1921,7 @@ xmlSecGnuTLSKeyDataMLDSAGetKL(xmlSecKeyDataPtr data) {
             return 87;
         default:
             xmlSecInvalidIntegerTypeError("privkey algorithm", algo,
-                    "unsupported ML-DSA algorithm", NULL);
+                    "44, 65 or 87", NULL);
             return(-1);
         }
     }
@@ -1929,6 +1968,10 @@ xmlSecGnuTLSKeyDataEdDSAAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, 
     /* verify key type */
     if(pubkey != NULL) {
         ret = gnutls_pubkey_get_pk_algorithm(pubkey, NULL);
+        if(ret < 0) {
+            xmlSecGnuTLSError("gnutls_pubkey_get_pk_algorithm", ret, NULL);
+            return(-1);
+        }
         if((ret != GNUTLS_PK_EDDSA_ED25519) && (ret != GNUTLS_PK_EDDSA_ED448)) {
             xmlSecInternalError2("Invalid pubkey algorithm", NULL, "type=%d", ret);
             return(-1);
@@ -1936,6 +1979,10 @@ xmlSecGnuTLSKeyDataEdDSAAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, 
     }
     if(privkey != NULL) {
         ret = gnutls_privkey_get_pk_algorithm(privkey, NULL);
+        if(ret < 0) {
+            xmlSecGnuTLSError("gnutls_privkey_get_pk_algorithm", ret, NULL);
+            return(-1);
+        }
         if((ret != GNUTLS_PK_EDDSA_ED25519) && (ret != GNUTLS_PK_EDDSA_ED448)) {
             xmlSecInternalError2("Invalid privkey algorithm", NULL, "type=%d", ret);
             return(-1);
@@ -2007,6 +2054,10 @@ xmlSecGnuTLSKeyDataXdhAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gn
     /* verify key type */
     if(pubkey != NULL) {
         ret = gnutls_pubkey_get_pk_algorithm(pubkey, NULL);
+        if(ret < 0) {
+            xmlSecGnuTLSError("gnutls_pubkey_get_pk_algorithm", ret, NULL);
+            return(-1);
+        }
         if((ret != GNUTLS_PK_ECDH_X25519) && (ret != GNUTLS_PK_ECDH_X448)) {
             xmlSecInternalError2("Invalid pubkey algorithm", NULL, "type=%d", ret);
             return(-1);
@@ -2014,6 +2065,10 @@ xmlSecGnuTLSKeyDataXdhAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gn
     }
     if(privkey != NULL) {
         ret = gnutls_privkey_get_pk_algorithm(privkey, NULL);
+        if(ret < 0) {
+            xmlSecGnuTLSError("gnutls_privkey_get_pk_algorithm", ret, NULL);
+            return(-1);
+        }
         if((ret != GNUTLS_PK_ECDH_X25519) && (ret != GNUTLS_PK_ECDH_X448)) {
             xmlSecInternalError2("Invalid privkey algorithm", NULL, "type=%d", ret);
             return(-1);
@@ -2185,7 +2240,7 @@ xmlSecGnuTLSAsymKeyDataCreate(gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) 
 
         break;
 
-   case GNUTLS_PK_GOST_12_512:
+    case GNUTLS_PK_GOST_12_512:
         keyData = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataGost2012_512Id);
         if(keyData == NULL) {
             xmlSecInternalError("xmlSecKeyDataCreate(2012_512Id)", NULL);

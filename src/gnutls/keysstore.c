@@ -41,8 +41,8 @@ static xmlSecKeyPtr             xmlSecGnuTLSKeysStoreFindKey       (xmlSecKeySto
                                                                      xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 static xmlSecKeyPtr            xmlSecGnuTLSKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store,
-                                                                 xmlSecKeyX509DataValuePtr x509Data,
-                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
+                                                                        xmlSecKeyX509DataValuePtr x509Data,
+                                                                        xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 static xmlSecKeyStoreKlass xmlSecGnuTLSKeysStoreKlass = {
     sizeof(xmlSecKeyStoreKlass),
@@ -55,7 +55,7 @@ static xmlSecKeyStoreKlass xmlSecGnuTLSKeysStoreKlass = {
     xmlSecGnuTLSKeysStoreInitialize,           /* xmlSecKeyStoreInitializeMethod initialize; */
     xmlSecGnuTLSKeysStoreFinalize,             /* xmlSecKeyStoreFinalizeMethod finalize; */
     xmlSecGnuTLSKeysStoreFindKey,              /* xmlSecKeyStoreFindKeyMethod findKey; */
-    xmlSecGnuTLSKeysStoreFindKeyFromX509Data, /* xmlSecKeyStoreFindKeyFromX509DataMethod findKeyFromX509Data; */
+    xmlSecGnuTLSKeysStoreFindKeyFromX509Data,  /* xmlSecKeyStoreFindKeyFromX509DataMethod findKeyFromX509Data; */
 
     /* reserved for the future */
     NULL,                                   /* void* reserved0; */

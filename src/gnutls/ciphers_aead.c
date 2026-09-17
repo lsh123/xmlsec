@@ -35,7 +35,7 @@
  * For the purposes of this specification, AES-GCM shall be used with
  * a 96 bit Initialization Vector (IV) and a 128 bit Authentication Tag (T).
  */
-#define XMLSEC_GNUTLS_AEAD_CIPHER_MAX_BLOCK_SIZE             32
+#define XMLSEC_GNUTLS_AEAD_CIPHER_OUTPUT_SLACK               32
 #define XMLSEC_GNUTLS_AEAD_CIPHER_GCM_IV_SIZE                12
 #define XMLSEC_GNUTLS_AEAD_CIPHER_GCM_TAG_SIZE               16
 
@@ -304,6 +304,7 @@ xmlSecGnuTLSAeadCipherEncrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
     xmlSecByte *plaintext, *outData;
     const xmlSecByte *aadData;
     xmlSecSize aadSize;
+    xmlSecByte emptyAad = 0;
     int ret;
     int err;
 
@@ -316,6 +317,9 @@ xmlSecGnuTLSAeadCipherEncrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
     plaintext = xmlSecBufferGetData(in);
     aadData   = xmlSecBufferGetData(&ctx->aad);
     aadSize   = xmlSecBufferGetSize(&ctx->aad);
+    if((aadSize == 0) && (aadData == NULL)) {
+        aadData = &emptyAad;
+    }
 
     if(!ctx->ivInitialized) {
         xmlSecAssert2(ctx->ivSize <= sizeof(ctx->iv), -1);
@@ -332,7 +336,7 @@ xmlSecGnuTLSAeadCipherEncrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
         xmlSecAssert2(plaintext != NULL || inSize == 0, -1);
 
         /* output = IV + ciphertext + tag + extra room */
-        outSize = ctx->ivSize + inSize + ctx->tagSize + 2 * XMLSEC_GNUTLS_AEAD_CIPHER_MAX_BLOCK_SIZE;
+        outSize = ctx->ivSize + inSize + ctx->tagSize + 2 * XMLSEC_GNUTLS_AEAD_CIPHER_OUTPUT_SLACK;
         ret = xmlSecBufferSetMaxSize(out, outSize);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetMaxSize", transformName, "size=" XMLSEC_SIZE_FMT, outSize);
@@ -368,7 +372,7 @@ xmlSecGnuTLSAeadCipherEncrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
         xmlSecAssert2(ctx->ivInitialized != 0, -1);
         xmlSecAssert2(plaintext != NULL || inSize == 0, -1);
 
-        outSize = inSize + ctx->tagSize + XMLSEC_GNUTLS_AEAD_CIPHER_MAX_BLOCK_SIZE;
+        outSize = inSize + ctx->tagSize + XMLSEC_GNUTLS_AEAD_CIPHER_OUTPUT_SLACK;
         ret = xmlSecBufferSetMaxSize(out, outSize);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetMaxSize", transformName, "size=" XMLSEC_SIZE_FMT, outSize);
@@ -407,6 +411,7 @@ xmlSecGnuTLSAeadCipherDecrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
     xmlSecByte *iv, *ciphertext, *outData;
     const xmlSecByte *aadData;
     xmlSecSize aadSize;
+    xmlSecByte emptyAad = 0;
     int ret;
     int err;
 
@@ -418,6 +423,9 @@ xmlSecGnuTLSAeadCipherDecrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
     inSize  = xmlSecBufferGetSize(in);
     aadData = xmlSecBufferGetData(&ctx->aad);
     aadSize = xmlSecBufferGetSize(&ctx->aad);
+    if((aadSize == 0) && (aadData == NULL)) {
+        aadData = &emptyAad;
+    }
 
     if(ctx->isIvPrepended) {
         /* AES-GCM mode: IV is prepended to the input ciphertext */

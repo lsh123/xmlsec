@@ -520,7 +520,7 @@ xmlSecGnuTLSConcatKdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen,
     /* get hash output length */
     hashLen = (xmlSecSize)gnutls_hash_get_len(ctx->u.concatKdf.dgstAlgo);
     if(hashLen == 0) {
-        xmlSecGnuTLSError("gnutls_hash_get_len", GNUTLS_E_SUCCESS, NULL);
+        xmlSecInternalError2("gnutls_hash_get_len", NULL, "hashLen=" XMLSEC_SIZE_FMT, hashLen);
         return(-1);
     }
     if(hashLen > XMLSEC_GNUTLS_KDF_MAX_HASH_SIZE) {
@@ -998,7 +998,7 @@ xmlSecGnuTLSHkdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen,
     /* get PRK length for this MAC */
     prkLen = (xmlSecSize)gnutls_hmac_get_len(ctx->u.hkdf.mac);
     if(prkLen == 0) {
-        xmlSecGnuTLSError("gnutls_hmac_get_len", GNUTLS_E_SUCCESS, transformName);
+        xmlSecInternalError2("gnutls_hmac_get_len", transformName, "prkLen=" XMLSEC_SIZE_FMT, prkLen);
         return(-1);
     }
 
@@ -1120,7 +1120,7 @@ xmlSecGnuTLSKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
 #ifndef XMLSEC_NO_PBKDF2
         } else if(ctx->kdfType == xmlSecGnuTLSKdfType_Pbkdf2) {
             /* PBKDF2 may have keyLength in params, verify it matches */
-            if((ctx->u.pbkdf2.params.keyLength > 0) && (ctx->u.pbkdf2.params.keyLength != expectedOutputSize)){
+            if((ctx->u.pbkdf2.params.keyLength > 0) && (ctx->u.pbkdf2.params.keyLength != expectedOutputSize)) {
                 xmlSecInvalidSizeError("Output kdf size doesn't match expected",
                     expectedOutputSize, ctx->u.pbkdf2.params.keyLength, xmlSecTransformGetName(transform));
                 return(-1);
@@ -1137,7 +1137,7 @@ xmlSecGnuTLSKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
 #ifndef XMLSEC_NO_HKDF
         } else if(ctx->kdfType == xmlSecGnuTLSKdfType_Hkdf) {
             /* HKDF may have keyLength in params, verify it matches */
-            if((ctx->u.hkdf.params.keyLength > 0) && (ctx->u.hkdf.params.keyLength != expectedOutputSize)){
+            if((ctx->u.hkdf.params.keyLength > 0) && (ctx->u.hkdf.params.keyLength != expectedOutputSize)) {
                 xmlSecInvalidSizeError("Output kdf size doesn't match expected",
                     expectedOutputSize, ctx->u.hkdf.params.keyLength, xmlSecTransformGetName(transform));
                 return(-1);

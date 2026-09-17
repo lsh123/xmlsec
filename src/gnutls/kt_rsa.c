@@ -53,15 +53,17 @@ struct _xmlSecGnuTLSKeyTransportCtx {
 XMLSEC_TRANSFORM_DECLARE(GnuTLSKeyTransport, xmlSecGnuTLSKeyTransportCtx)
 #define xmlSecGnuTLSKeyTransportSize XMLSEC_TRANSFORM_SIZE(GnuTLSKeyTransport)
 
+#ifndef XMLSEC_NO_RSA_PKCS15
+
 static int      xmlSecGnuTLSKeyTransportInitialize      (xmlSecTransformPtr transform);
 static void     xmlSecGnuTLSKeyTransportFinalize        (xmlSecTransformPtr transform);
 static int      xmlSecGnuTLSKeyTransportSetKeyReq       (xmlSecTransformPtr transform,
-                                                         xmlSecKeyReqPtr keyReq);
+                                                          xmlSecKeyReqPtr keyReq);
 static int      xmlSecGnuTLSKeyTransportSetKey          (xmlSecTransformPtr transform,
-                                                         xmlSecKeyPtr key);
+                                                          xmlSecKeyPtr key);
 static int      xmlSecGnuTLSKeyTransportExecute         (xmlSecTransformPtr transform,
-                                                         int last,
-                                                         xmlSecTransformCtxPtr transformCtx);
+                                                          int last,
+                                                          xmlSecTransformCtxPtr transformCtx);
 
 static int
 xmlSecGnuTLSKeyTransportCheckId(xmlSecTransformPtr transform) {
@@ -176,6 +178,8 @@ xmlSecGnuTLSKeyTransportEncrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
     gnutls_pubkey_t pubkey;
     gnutls_datum_t plaintext;
     gnutls_datum_t encrypted = { NULL, 0 };
+    xmlSecSize keySize;
+    xmlSecSize maxPlaintextSize;
     xmlSecSize inSize;
     int ret;
     int err;
@@ -195,6 +199,19 @@ xmlSecGnuTLSKeyTransportEncrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
         return(-1);
     }
 
+    /* check that the input fits into the key
+     * (PKCS#1 v1.5: the maximum plaintext size is the key size - 11) */
+    keySize = (xmlSecKeyDataGetSize(ctx->keyData) + 7) / 8;
+    if(keySize <= 11) {
+        xmlSecInternalError("xmlSecKeyDataGetSize", NULL);
+        return(-1);
+    }
+    maxPlaintextSize = keySize - 11;
+    if(inSize > maxPlaintextSize) {
+        xmlSecInvalidSizeMoreThanError("Input data", inSize, maxPlaintextSize, NULL);
+        return(-1);
+    }
+
     /* encrypt: gnutls_pubkey_encrypt_data only supports PKCS 1.5 padding */
     plaintext.data = xmlSecBufferGetData(inBuf);
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(inSize, plaintext.size, return(-1), NULL);
@@ -207,7 +224,7 @@ xmlSecGnuTLSKeyTransportEncrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
         return(-1);
     }
 
-    /* output size expected the same as key size */
+    /* append the ciphertext (the size is equal to the key size) */
     ret = xmlSecBufferAppend(outBuf, encrypted.data, encrypted.size);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferAppend", NULL);
@@ -225,6 +242,7 @@ xmlSecGnuTLSKeyTransportDecrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
     gnutls_privkey_t privkey;
     gnutls_datum_t ciphertext;
     gnutls_datum_t plaintext = { NULL, 0 };
+    xmlSecSize keySize;
     xmlSecSize inSize;
     int ret;
     int err;
@@ -241,6 +259,17 @@ xmlSecGnuTLSKeyTransportDecrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
     privkey = xmlSecGnuTLSKeyDataRsaGetPrivateKey(ctx->keyData);
     if(privkey == NULL) {
         xmlSecInternalError("xmlSecGnuTLSKeyDataRsaGetPrivateKey", NULL);
+        return(-1);
+    }
+
+    /* check that the ciphertext size matches the key size */
+    keySize = (xmlSecKeyDataGetSize(ctx->keyData) + 7) / 8;
+    if(keySize <= 0) {
+        xmlSecInternalError("xmlSecKeyDataGetSize", NULL);
+        return(-1);
+    }
+    if(inSize != keySize) {
+        xmlSecInvalidSizeError("Input data", inSize, keySize, NULL);
         return(-1);
     }
 
@@ -343,8 +372,6 @@ xmlSecGnuTLSKeyTransportExecute(xmlSecTransformPtr transform, int last,
 
     return(0);
 }
-
-#ifndef XMLSEC_NO_RSA_PKCS15
 
 static xmlSecTransformKlass xmlSecGnuTLSRsaPkcs1Klass = {
     /* klass/object sizes */
@@ -685,6 +712,9 @@ xmlSecGnuTLSRsaOaepEncrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx, xmlSecBufferPtr inBuf,
     gnutls_datum_t label;
     xmlSecByte *labelData;
     xmlSecSize labelSize;
+    xmlSecSize keySize;
+    xmlSecSize hashLen;
+    xmlSecSize maxPlaintextSize;
     xmlSecSize inSize;
     int ret;
     int err;
@@ -704,6 +734,25 @@ xmlSecGnuTLSRsaOaepEncrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx, xmlSecBufferPtr inBuf,
     /* plaintext */
     inSize = xmlSecBufferGetSize(inBuf);
     xmlSecAssert2(inSize > 0, -1);
+
+    /* check that the input fits into the key
+     * (OAEP: the maximum plaintext size is the key size - 2 * hash size - 2) */
+    keySize = (xmlSecKeyDataGetSize(ctx->keyData) + 7) / 8;
+    if(keySize <= 0) {
+        xmlSecInternalError("xmlSecKeyDataGetSize", NULL);
+        return(-1);
+    }
+    hashLen = (xmlSecSize)gnutls_hash_get_len(ctx->digestAlg);
+    if(keySize <= (2 * hashLen + 2)) {
+        xmlSecInternalError("the key size is too small for the OAEP digest", NULL);
+        return(-1);
+    }
+    maxPlaintextSize = keySize - (2 * hashLen + 2);
+    if(inSize > maxPlaintextSize) {
+        xmlSecInvalidSizeMoreThanError("Input data", inSize, maxPlaintextSize, NULL);
+        return(-1);
+    }
+
     plaintext.data = xmlSecBufferGetData(inBuf);
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(inSize, plaintext.size, return(-1), NULL);
 
@@ -771,6 +820,7 @@ xmlSecGnuTLSRsaOaepDecrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx, xmlSecBufferPtr inBuf,
     gnutls_datum_t label;
     xmlSecByte *labelData;
     xmlSecSize labelSize;
+    xmlSecSize keySize;
     xmlSecSize inSize;
     int ret;
     int err;
@@ -787,9 +837,20 @@ xmlSecGnuTLSRsaOaepDecrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx, xmlSecBufferPtr inBuf,
         return(-1);
     }
 
-    /* cipher text */
+    /* ciphertext */
     inSize = xmlSecBufferGetSize(inBuf);
     xmlSecAssert2(inSize > 0, -1);
+
+    /* check that the ciphertext size matches the key size */
+    keySize = (xmlSecKeyDataGetSize(ctx->keyData) + 7) / 8;
+    if(keySize <= 0) {
+        xmlSecInternalError("xmlSecKeyDataGetSize", NULL);
+        return(-1);
+    }
+    if(inSize != keySize) {
+        xmlSecInvalidSizeError("Input data", inSize, keySize, NULL);
+        return(-1);
+    }
 
     ciphertext.data = xmlSecBufferGetData(inBuf);
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(inSize, ciphertext.size, return(-1), NULL);

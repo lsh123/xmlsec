@@ -1079,6 +1079,24 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const 
             goto done;
         }
 
+        /* get the element count first; an empty bag (0 elements) is
+         * harmless and skipped (per RFC 7292 a SafeContents holds at
+         * least one SafeBag, so this can only happen with malformed
+         * input). Checking the count first also avoids calling
+         * gnutls_pkcs12_bag_get_type(bag, 0) on a bag that has no
+         * elements. */
+        elements_in_bag = gnutls_pkcs12_bag_get_count(bag);
+        if(elements_in_bag < 0) {
+            xmlSecGnuTLSError("gnutls_pkcs12_bag_get_count", elements_in_bag, NULL);
+            goto done;
+        }
+        if(elements_in_bag == 0) {
+            /* nothing to do with an empty bag */
+            gnutls_pkcs12_bag_deinit(bag);
+            bag = NULL;
+            continue;
+        }
+
         /* check if we need to decrypt the bag */
         bag_type = gnutls_pkcs12_bag_get_type(bag, 0);
         if(bag_type < 0) {
@@ -1091,14 +1109,15 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const 
                 xmlSecGnuTLSError("gnutls_pkcs12_bag_decrypt", err, NULL);
                 goto done;
             }
+            /* the element count changes after decryption */
+            elements_in_bag = gnutls_pkcs12_bag_get_count(bag);
+            if(elements_in_bag < 0) {
+                xmlSecGnuTLSError("gnutls_pkcs12_bag_get_count", elements_in_bag, NULL);
+                goto done;
+            }
         }
 
         /* scan elements in bag */
-        elements_in_bag = gnutls_pkcs12_bag_get_count(bag);
-        if(elements_in_bag < 0) {
-            xmlSecGnuTLSError("gnutls_pkcs12_bag_get_count", elements_in_bag, NULL);
-            goto done;
-        }
         XMLSEC_SAFE_CAST_INT_TO_UINT(elements_in_bag, num, goto done, NULL);
         for(ii = 0; ii < num; ++ii) {
             bag_type = gnutls_pkcs12_bag_get_type(bag, ii);

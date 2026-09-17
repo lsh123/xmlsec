@@ -273,7 +273,7 @@ xmlSecGnuTLSAppCheckCertMatchesKey(xmlSecKeyPtr key,  gnutls_x509_crt_t cert) {
     }
     pubkey = xmlSecGnuTLSAsymKeyDataGetPublicKey(keyData);
     if(pubkey == NULL) {
-        xmlSecInternalError("xmlSecGnuTLSAsymKeyDataGetPublicKey", NULL);
+        res = 0; /* no pubkey -> no match */
         goto done;
     }
     err = gnutls_pubkey_export2(pubkey, GNUTLS_X509_FMT_DER, &der_pubkey);
@@ -524,7 +524,9 @@ xmlSecGnuTLSAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
         while(xmlSecPtrListGetSize(&certsList) > 0) {
             gnutls_x509_crt_t cert = xmlSecPtrListRemoveAndReturn(&certsList, 0);
             if(cert == NULL) {
-                continue;
+                /* there should be no NULL certificates in the list */
+                xmlSecInternalError("xmlSecPtrListRemoveAndReturn", NULL);
+                goto done;
             }
 
             ret = xmlSecGnuTLSKeyDataX509AdoptCert(x509Data, cert);

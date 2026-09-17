@@ -375,16 +375,8 @@ static int      xmlSecGnuTLSConcatKdfNodeRead           (xmlSecTransformPtr tran
 /* convert DigestMethod href to GnuTLS digest algo */
 static gnutls_digest_algorithm_t
 xmlSecGnuTLSConcatKdfGetDigestFromHref(const xmlChar* href) {
-    /* use SHA256 by default */
-    if(href == NULL) {
-#ifndef XMLSEC_NO_SHA256
-        return(GNUTLS_DIG_SHA256);
-#else  /* XMLSEC_NO_SHA256 */
-        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
-            "SHA256 is disabled; href=%s", xmlSecErrorsSafeString(href));
-        return(GNUTLS_DIG_UNKNOWN);
-#endif /* XMLSEC_NO_SHA256 */
-    } else
+    /* xmlSecTransformConcatKdfParamsRead requires a non-NULL DigestMethod href */
+    xmlSecAssert2(href != NULL, GNUTLS_DIG_UNKNOWN);
 
 #ifndef XMLSEC_NO_SHA1
     if(xmlStrcmp(href, xmlSecHrefSha1) == 0) {
@@ -491,7 +483,8 @@ xmlSecGnuTLSConcatKdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
 /* SP 800-56A single-step KDF: H(counter || Z || OtherInfo) */
 static int
-xmlSecGnuTLSConcatKdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen, xmlSecBufferPtr out) {
+xmlSecGnuTLSConcatKdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen,
+                                 xmlSecBufferPtr out, const xmlChar* transformName) {
     xmlSecByte * keyData;
     xmlSecSize keySize;
     xmlSecByte * fixedInfoData;
@@ -516,7 +509,7 @@ xmlSecGnuTLSConcatKdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen, x
     keyData = xmlSecBufferGetData(&(ctx->key));
     keySize = xmlSecBufferGetSize(&(ctx->key));
     if((keyData == NULL) || (keySize == 0)) {
-        xmlSecInvalidZeroKeyDataSizeError(NULL);
+        xmlSecInvalidZeroKeyDataSizeError(transformName);
         return(-1);
     }
 
@@ -651,16 +644,8 @@ static int      xmlSecGnuTLSPbkdf2NodeRead              (xmlSecTransformPtr tran
 /* convert PRF algorithm href to GnuTLS mac algo */
 static gnutls_mac_algorithm_t
 xmlSecGnuTLSPbkdf2GetMacFromHref(const xmlChar* href) {
-    /* use SHA256 by default */
-    if(href == NULL) {
-#ifndef XMLSEC_NO_SHA256
-        return(GNUTLS_MAC_SHA256);
-#else  /* XMLSEC_NO_SHA256 */
-        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
-            "SHA256 is disabled; href=%s", xmlSecErrorsSafeString(href));
-        return(GNUTLS_MAC_UNKNOWN);
-#endif /* XMLSEC_NO_SHA256 */
-    } else
+    /* xmlSecTransformPbkdf2ParamsRead requires a non-NULL PRF href */
+    xmlSecAssert2(href != NULL, GNUTLS_MAC_UNKNOWN);
 
 #ifndef XMLSEC_NO_SHA1
     if(xmlStrcmp(href, xmlSecHrefHmacSha1) == 0) {
@@ -833,11 +818,8 @@ static int      xmlSecGnuTLSHkdfNodeRead                (xmlSecTransformPtr tran
 /* convert PRF algorithm href to GnuTLS mac algo */
 static gnutls_mac_algorithm_t
 xmlSecGnuTLSHkdfGetMacFromHref(const xmlChar* href) {
-    /* PRF is required for HKDF */
-    if(href == NULL) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL, "HKDF PRF algorithm is required");
-        return(GNUTLS_MAC_UNKNOWN);
-    } else
+    /* xmlSecTransformHkdfParamsRead requires a non-NULL PRF href */
+    xmlSecAssert2(href != NULL, GNUTLS_MAC_UNKNOWN);
 
 #ifndef XMLSEC_NO_SHA1
     if(xmlStrcmp(href, xmlSecHrefHmacSha1) == 0) {
@@ -946,7 +928,8 @@ xmlSecGnuTLSHkdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 }
 
 static int
-xmlSecGnuTLSHkdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen, xmlSecBufferPtr out) {
+xmlSecGnuTLSHkdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen,
+                            xmlSecBufferPtr out, const xmlChar* transformName) {
     xmlSecByte * keyData;
     xmlSecSize keySize;
     xmlSecByte * saltData;
@@ -972,19 +955,19 @@ xmlSecGnuTLSHkdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen, xmlSec
     keyData = xmlSecBufferGetData(&(ctx->key));
     keySize = xmlSecBufferGetSize(&(ctx->key));
     if((keyData == NULL) || (keySize == 0)) {
-        xmlSecInvalidZeroKeyDataSizeError(NULL);
+        xmlSecInvalidZeroKeyDataSizeError(transformName);
         return(-1);
     }
 
     /* prepare key datum */
-    XMLSEC_SAFE_CAST_SIZE_TO_UINT(keySize, keyDatum.size, return(-1), NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(keySize, keyDatum.size, return(-1), transformName);
     keyDatum.data = keyData;
 
     /* get salt (optional) */
     saltData = xmlSecBufferGetData(&(ctx->u.hkdf.salt));
     saltSize = xmlSecBufferGetSize(&(ctx->u.hkdf.salt));
     if((saltData != NULL) && (saltSize > 0)) {
-        XMLSEC_SAFE_CAST_SIZE_TO_UINT(saltSize, saltDatum.size, return(-1), NULL);
+        XMLSEC_SAFE_CAST_SIZE_TO_UINT(saltSize, saltDatum.size, return(-1), transformName);
         saltDatum.data = saltData;
     } else {
         saltDatum.data = NULL;
@@ -995,7 +978,7 @@ xmlSecGnuTLSHkdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen, xmlSec
     infoData = xmlSecBufferGetData(&(ctx->u.hkdf.info));
     infoSize = xmlSecBufferGetSize(&(ctx->u.hkdf.info));
     if((infoData != NULL) && (infoSize > 0)) {
-        XMLSEC_SAFE_CAST_SIZE_TO_UINT(infoSize, infoDatum.size, return(-1), NULL);
+        XMLSEC_SAFE_CAST_SIZE_TO_UINT(infoSize, infoDatum.size, return(-1), transformName);
         infoDatum.data = infoData;
     } else {
         infoDatum.data = NULL;
@@ -1005,7 +988,7 @@ xmlSecGnuTLSHkdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen, xmlSec
     /* allocate output buffer */
     ret = xmlSecBufferSetSize(out, outLen);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
+        xmlSecInternalError2("xmlSecBufferSetSize", transformName,
             "size=" XMLSEC_SIZE_FMT, outLen);
         return(-1);
     }
@@ -1015,7 +998,7 @@ xmlSecGnuTLSHkdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen, xmlSec
     /* get PRK length for this MAC */
     prkLen = (xmlSecSize)gnutls_hmac_get_len(ctx->u.hkdf.mac);
     if(prkLen == 0) {
-        xmlSecGnuTLSError("gnutls_hmac_get_len", GNUTLS_E_SUCCESS, NULL);
+        xmlSecGnuTLSError("gnutls_hmac_get_len", GNUTLS_E_SUCCESS, transformName);
         return(-1);
     }
 
@@ -1030,7 +1013,7 @@ xmlSecGnuTLSHkdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen, xmlSec
      * gnutls_hkdf_extract(mac, key, salt, output) */
     err = gnutls_hkdf_extract(ctx->u.hkdf.mac, &keyDatum, &saltDatum, prk);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_hkdf_extract", err, NULL);
+        xmlSecGnuTLSError("gnutls_hkdf_extract", err, transformName);
         xmlSecMemCleanse(prk, prkLen);
         xmlFree(prk);
         return(-1);
@@ -1040,13 +1023,13 @@ xmlSecGnuTLSHkdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen, xmlSec
      * gnutls_hkdf_expand(mac, key, info, output, length) */
     {
         gnutls_datum_t prkDatum;
-        XMLSEC_SAFE_CAST_SIZE_TO_UINT(prkLen, prkDatum.size, xmlSecMemCleanse(prk, prkLen); xmlFree(prk); return(-1), NULL);
+        XMLSEC_SAFE_CAST_SIZE_TO_UINT(prkLen, prkDatum.size, xmlSecMemCleanse(prk, prkLen); xmlFree(prk); return(-1), transformName);
         prkDatum.data = prk;
         err = gnutls_hkdf_expand(ctx->u.hkdf.mac, &prkDatum, &infoDatum, outData, outLen);
     }
 
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_hkdf_expand", err, NULL);
+        xmlSecGnuTLSError("gnutls_hkdf_expand", err, transformName);
         xmlSecMemCleanse(prk, prkLen);
         xmlFree(prk);
         return(-1);
@@ -1126,7 +1109,8 @@ xmlSecGnuTLSKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
         if(0) {
 #ifndef XMLSEC_NO_CONCATKDF
         } else if(ctx->kdfType == xmlSecGnuTLSKdfType_ConcatKdf) {
-            ret = xmlSecGnuTLSConcatKdfGenerateKey(ctx, expectedOutputSize, out);
+            ret = xmlSecGnuTLSConcatKdfGenerateKey(ctx, expectedOutputSize, out,
+                                                  xmlSecTransformGetName(transform));
             if(ret < 0) {
                 xmlSecInternalError("xmlSecGnuTLSConcatKdfGenerateKey", xmlSecTransformGetName(transform));
                 return(-1);
@@ -1159,7 +1143,8 @@ xmlSecGnuTLSKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
                 return(-1);
             }
 
-            ret = xmlSecGnuTLSHkdfGenerateKey(ctx, expectedOutputSize, out);
+            ret = xmlSecGnuTLSHkdfGenerateKey(ctx, expectedOutputSize, out,
+                                             xmlSecTransformGetName(transform));
             if(ret < 0) {
                 xmlSecInternalError("xmlSecGnuTLSHkdfGenerateKey", xmlSecTransformGetName(transform));
                 return(-1);

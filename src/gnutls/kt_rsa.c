@@ -677,12 +677,12 @@ xmlSecGnuTLSRsaOaepSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 }
 
 static int
-xmlSecGnuTLSRsaOaepEncrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx,
-                            xmlSecBufferPtr inBuf, xmlSecBufferPtr outBuf) {
+xmlSecGnuTLSRsaOaepEncrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx, xmlSecBufferPtr inBuf, xmlSecBufferPtr outBuf) {
     gnutls_pubkey_t pubkey;
-    gnutls_x509_spki_t spki = NULL;
     gnutls_datum_t plaintext;
+    gnutls_x509_spki_t spki = NULL;
     gnutls_datum_t encrypted = { NULL, 0 };
+    gnutls_datum_t label;
     xmlSecByte *labelData;
     xmlSecSize labelSize;
     xmlSecSize inSize;
@@ -694,37 +694,43 @@ xmlSecGnuTLSRsaOaepEncrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx,
     xmlSecAssert2(inBuf != NULL, -1);
     xmlSecAssert2(outBuf != NULL, -1);
 
-    inSize = xmlSecBufferGetSize(inBuf);
-    xmlSecAssert2(inSize > 0, -1);
-
+    /* public key */
     pubkey = xmlSecGnuTLSKeyDataRsaGetPublicKey(ctx->keyData);
     if(pubkey == NULL) {
         xmlSecInternalError("xmlSecGnuTLSKeyDataRsaGetPublicKey", NULL);
         return(-1);
     }
 
+    /* plaintext */
+    inSize = xmlSecBufferGetSize(inBuf);
+    xmlSecAssert2(inSize > 0, -1);
+    plaintext.data = xmlSecBufferGetData(inBuf);
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(inSize, plaintext.size, return(-1), NULL);
+
+    /* OAEP label (RFC 8017). A NULL label selects the empty label (the
+     * default). */
+    labelData = xmlSecBufferGetData(&(ctx->oaepParams));
+    labelSize = xmlSecBufferGetSize(&(ctx->oaepParams));
+    xmlSecAssert2((labelData != NULL) || (labelSize == 0), -1);
+
+    label.data = labelData;
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(labelSize, label.size, return(-1), NULL);
+
+    /* initialize SPKI structure */
     err = gnutls_x509_spki_init(&spki);
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_x509_spki_init", err, NULL);
         return(-1);
     }
 
-    labelData = xmlSecBufferGetData(&(ctx->oaepParams));
-    labelSize = xmlSecBufferGetSize(&(ctx->oaepParams));
-    if((labelData != NULL) && (labelSize > 0)) {
-        gnutls_datum_t label;
-        label.data = labelData;
-        XMLSEC_SAFE_CAST_SIZE_TO_UINT(labelSize, label.size, gnutls_x509_spki_deinit(spki); return(-1), NULL);
-        err = gnutls_x509_spki_set_rsa_oaep_params(spki, ctx->digestAlg, &label);
-    } else {
-        err = gnutls_x509_spki_set_rsa_oaep_params(spki, ctx->digestAlg, NULL);
-    }
+    err = gnutls_x509_spki_set_rsa_oaep_params(spki, ctx->digestAlg, &label);
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_x509_spki_set_rsa_oaep_params", err, NULL);
         gnutls_x509_spki_deinit(spki);
         return(-1);
     }
 
+    /* configure public key */
     err = gnutls_pubkey_set_spki(pubkey, spki, 0);
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_pubkey_set_spki", err, NULL);
@@ -732,32 +738,37 @@ xmlSecGnuTLSRsaOaepEncrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx,
         return(-1);
     }
 
-    plaintext.data = xmlSecBufferGetData(inBuf);
-    XMLSEC_SAFE_CAST_SIZE_TO_UINT(inSize, plaintext.size, gnutls_x509_spki_deinit(spki); return(-1), NULL);
-
+    /* encrypt */
     err = gnutls_pubkey_encrypt_data(pubkey, 0, &plaintext, &encrypted);
-    gnutls_x509_spki_deinit(spki);
     if((err != GNUTLS_E_SUCCESS) || (encrypted.data == NULL)) {
         xmlSecGnuTLSError("gnutls_pubkey_encrypt_data", err, NULL);
+        gnutls_x509_spki_deinit(spki);
         return(-1);
     }
 
+    /* set output buffer (ciphertext) */
     ret = xmlSecBufferAppend(outBuf, encrypted.data, encrypted.size);
-    gnutls_free(encrypted.data);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferAppend", NULL);
+        gnutls_x509_spki_deinit(spki);
+        gnutls_free(encrypted.data);
         return(-1);
     }
+
+    /* cleanup */
+    gnutls_x509_spki_deinit(spki);
+    gnutls_free(encrypted.data);
+
     return(0);
 }
 
 static int
-xmlSecGnuTLSRsaOaepDecrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx,
-                            xmlSecBufferPtr inBuf, xmlSecBufferPtr outBuf) {
+xmlSecGnuTLSRsaOaepDecrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx, xmlSecBufferPtr inBuf, xmlSecBufferPtr outBuf) {
     gnutls_privkey_t privkey;
-    gnutls_x509_spki_t spki = NULL;
     gnutls_datum_t ciphertext;
+    gnutls_x509_spki_t spki = NULL;
     gnutls_datum_t plaintext = { NULL, 0 };
+    gnutls_datum_t label;
     xmlSecByte *labelData;
     xmlSecSize labelSize;
     xmlSecSize inSize;
@@ -769,37 +780,44 @@ xmlSecGnuTLSRsaOaepDecrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx,
     xmlSecAssert2(inBuf != NULL, -1);
     xmlSecAssert2(outBuf != NULL, -1);
 
-    inSize = xmlSecBufferGetSize(inBuf);
-    xmlSecAssert2(inSize > 0, -1);
-
+    /* private key */
     privkey = xmlSecGnuTLSKeyDataRsaGetPrivateKey(ctx->keyData);
     if(privkey == NULL) {
         xmlSecInternalError("xmlSecGnuTLSKeyDataRsaGetPrivateKey", NULL);
         return(-1);
     }
 
+    /* cipher text */
+    inSize = xmlSecBufferGetSize(inBuf);
+    xmlSecAssert2(inSize > 0, -1);
+
+    ciphertext.data = xmlSecBufferGetData(inBuf);
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(inSize, ciphertext.size, return(-1), NULL);
+
+    /* OAEP label (RFC 8017). A NULL label selects the empty label (the
+     * default). */
+    labelData = xmlSecBufferGetData(&(ctx->oaepParams));
+    labelSize = xmlSecBufferGetSize(&(ctx->oaepParams));
+    xmlSecAssert2((labelData != NULL) || (labelSize == 0), -1);
+
+    label.data = labelData;
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(labelSize, label.size, return(-1), NULL);
+
+    /* initialize SPKI structure */
     err = gnutls_x509_spki_init(&spki);
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_x509_spki_init", err, NULL);
         return(-1);
     }
 
-    labelData = xmlSecBufferGetData(&(ctx->oaepParams));
-    labelSize = xmlSecBufferGetSize(&(ctx->oaepParams));
-    if((labelData != NULL) && (labelSize > 0)) {
-        gnutls_datum_t label;
-        label.data = labelData;
-        XMLSEC_SAFE_CAST_SIZE_TO_UINT(labelSize, label.size, gnutls_x509_spki_deinit(spki); return(-1), NULL);
-        err = gnutls_x509_spki_set_rsa_oaep_params(spki, ctx->digestAlg, &label);
-    } else {
-        err = gnutls_x509_spki_set_rsa_oaep_params(spki, ctx->digestAlg, NULL);
-    }
+    err = gnutls_x509_spki_set_rsa_oaep_params(spki, ctx->digestAlg, &label);
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_x509_spki_set_rsa_oaep_params", err, NULL);
         gnutls_x509_spki_deinit(spki);
         return(-1);
     }
 
+    /* configure private key */
     err = gnutls_privkey_set_spki(privkey, spki, 0);
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_privkey_set_spki", err, NULL);
@@ -807,23 +825,28 @@ xmlSecGnuTLSRsaOaepDecrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx,
         return(-1);
     }
 
-    ciphertext.data = xmlSecBufferGetData(inBuf);
-    XMLSEC_SAFE_CAST_SIZE_TO_UINT(inSize, ciphertext.size, gnutls_x509_spki_deinit(spki); return(-1), NULL);
-
+    /* decrypt */
     err = gnutls_privkey_decrypt_data(privkey, 0, &ciphertext, &plaintext);
-    gnutls_x509_spki_deinit(spki);
     if((err != GNUTLS_E_SUCCESS) || (plaintext.data == NULL)) {
         xmlSecGnuTLSError("gnutls_privkey_decrypt_data", err, NULL);
+        gnutls_x509_spki_deinit(spki);
         return(-1);
     }
 
+    /* set output buffer (plaintext) */
     ret = xmlSecBufferAppend(outBuf, plaintext.data, plaintext.size);
     xmlSecMemCleanse(plaintext.data, plaintext.size);
-    gnutls_free(plaintext.data);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferAppend", NULL);
+        gnutls_x509_spki_deinit(spki);
+        gnutls_free(plaintext.data);
         return(-1);
     }
+
+    /* cleanup */
+    gnutls_x509_spki_deinit(spki);
+    gnutls_free(plaintext.data);
+
     return(0);
 }
 

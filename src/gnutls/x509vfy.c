@@ -386,8 +386,12 @@ xmlSecGnuTLSX509StoreGetCertsChain(xmlSecGnuTLSX509StoreCtxPtr ctx, gnutls_x509_
     }
 
     /* construct the chain starting at cert_to_verify */
-    for(cert = cert_to_verify, ii = 0; ((cert != NULL) && (ii < certs_chain_max_size)); ++ii) {
+    for(cert = cert_to_verify, ii = 0; ((cert != NULL) && (ii < certs_chain_max_size)); ) {
         certs_chain[ii] = cert;
+        /* count the cert we just stored: increment before deciding whether
+         * to stop, so a chain that ends at a self-signed cert (or any cert
+         * we store) is counted in certs_chain_cur_size */
+        ++ii;
 
         /* find the cert that signed this one */
         tmp = xmlSecGnuTLSX509FindSignerCert(extra_certs, cert);

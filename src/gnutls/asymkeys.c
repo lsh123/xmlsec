@@ -1847,6 +1847,10 @@ xmlSecGnuTLSKeyDataMLDSAGetKL(xmlSecKeyDataPtr data) {
     pubkey = xmlSecGnuTLSKeyDataMLDSAGetPublicKey(data);
     if(pubkey != NULL) {
         algo = gnutls_pubkey_get_pk_algorithm(pubkey, NULL);
+        if(algo < 0) {
+            xmlSecGnuTLSError("gnutls_pubkey_get_pk_algorithm", algo, NULL);
+            return(-1);
+        }
         switch(algo) {
         case GNUTLS_PK_MLDSA44:
             return 44;
@@ -1865,6 +1869,10 @@ xmlSecGnuTLSKeyDataMLDSAGetKL(xmlSecKeyDataPtr data) {
     privkey = xmlSecGnuTLSKeyDataMLDSAGetPrivateKey(data);
     if(privkey != NULL) {
         algo = gnutls_privkey_get_pk_algorithm(privkey, NULL);
+        if(algo < 0) {
+            xmlSecGnuTLSError("gnutls_privkey_get_pk_algorithm", algo, NULL);
+            return(-1);
+        }
         switch(algo) {
         case GNUTLS_PK_MLDSA44:
             return 44;

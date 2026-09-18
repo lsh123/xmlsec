@@ -33,6 +33,8 @@
 #include "../keysdata_helpers.h"
 #include "../transform_helpers.h"
 
+#if !defined(XMLSEC_NO_PBKDF2) || !defined(XMLSEC_NO_CONCATKDF) || !defined(XMLSEC_NO_HKDF)
+
 
 /******************************************************************************
  *
@@ -701,7 +703,7 @@ xmlSecGnuTLSPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     xmlSecAssert2(ctx->kdfType == xmlSecGnuTLSKdfType_Pbkdf2, -1);
 
     /* first (and only) node is required Pbkdf2Params */
-    cur  = xmlSecGetNextElementNode(node->children);
+    cur = xmlSecGetNextElementNode(node->children);
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodePbkdf2Params, xmlSecEnc11Ns))) {
         xmlSecInvalidNodeError(cur, xmlSecNodePbkdf2Params, NULL);
         return(-1);
@@ -731,7 +733,11 @@ xmlSecGnuTLSPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 }
 
 static int
-xmlSecGnuTLSPbkdf2GenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecBufferPtr out) {
+xmlSecGnuTLSPbkdf2GenerateKey(
+    xmlSecGnuTLSKdfCtxPtr ctx,
+    xmlSecBufferPtr out,
+    const xmlChar* transformName
+) {
     xmlSecSize size;
     xmlSecByte * outData;
     unsigned iterCount;
@@ -757,18 +763,22 @@ xmlSecGnuTLSPbkdf2GenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecBufferPtr out) {
 
     /* prep params */
     size = xmlSecBufferGetSize(&(ctx->key));
-    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, key.size, return(-1), NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, key.size, return(-1), transformName);
     key.data = xmlSecBufferGetData(&(ctx->key));
-    xmlSecAssert2(key.data != NULL, -1);
-    xmlSecAssert2(key.size > 0, -1);
+    if((key.data == NULL) || (key.size == 0)) {
+        xmlSecInvalidZeroKeyDataSizeError(transformName);
+        return(-1);
+    }
 
     size = xmlSecBufferGetSize(&(ctx->u.pbkdf2.params.salt));
-    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, salt.size, return(-1), NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, salt.size, return(-1), transformName);
     salt.data = xmlSecBufferGetData(&(ctx->u.pbkdf2.params.salt));
-    xmlSecAssert2(salt.data != NULL, -1);
-    xmlSecAssert2(salt.size > 0, -1);
+    if((salt.data == NULL) || (salt.size == 0)) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_SIZE, transformName, "PBKDF2 salt is empty");
+        return(-1);
+    }
 
-    XMLSEC_SAFE_CAST_SIZE_TO_UINT(ctx->u.pbkdf2.params.iterationCount, iterCount, return(-1), NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(ctx->u.pbkdf2.params.iterationCount, iterCount, return(-1), transformName);
     xmlSecAssert2(iterCount > 0, -1);
 
     /* do the work! */
@@ -1127,7 +1137,8 @@ xmlSecGnuTLSKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
             }
             ctx->u.pbkdf2.params.keyLength = expectedOutputSize;
 
-            ret = xmlSecGnuTLSPbkdf2GenerateKey(ctx, out);
+            ret = xmlSecGnuTLSPbkdf2GenerateKey(ctx, out,
+                                               xmlSecTransformGetName(transform));
             if(ret < 0) {
                 xmlSecInternalError("xmlSecGnuTLSPbkdf2GenerateKey", xmlSecTransformGetName(transform));
                 return(-1);
@@ -1167,3 +1178,9 @@ xmlSecGnuTLSKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
 
     return(0);
 }
+
+#else
+
+typedef int make_iso_compilers_happy;
+
+#endif /* !defined(XMLSEC_NO_PBKDF2) || !defined(XMLSEC_NO_CONCATKDF) || !defined(XMLSEC_NO_HKDF) */

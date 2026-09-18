@@ -67,12 +67,9 @@ static int      xmlSecGnuTLSKeyTransportExecute         (xmlSecTransformPtr tran
 
 static int
 xmlSecGnuTLSKeyTransportCheckId(xmlSecTransformPtr transform) {
-
-#ifndef XMLSEC_NO_RSA_PKCS15
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformRsaPkcs1Id)) {
         return(1);
     }
-#endif /* XMLSEC_NO_RSA_PKCS15 */
 
     /* not found */
     return(0);
@@ -91,11 +88,9 @@ xmlSecGnuTLSKeyTransportInitialize(xmlSecTransformPtr transform) {
     /* initialize context */
     memset(ctx, 0, sizeof(xmlSecGnuTLSKeyTransportCtx));
 
-#ifndef XMLSEC_NO_RSA_PKCS15
     if(transform->id == xmlSecGnuTLSTransformRsaPkcs1Id) {
         ctx->keyId = xmlSecGnuTLSKeyDataRsaId;
     } else
-#endif /* XMLSEC_NO_RSA_PKCS15 */
 
     /* not found */
     {
@@ -203,7 +198,7 @@ xmlSecGnuTLSKeyTransportEncrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
      * (PKCS#1 v1.5: the maximum plaintext size is the key size - 11) */
     keySize = (xmlSecKeyDataGetSize(ctx->keyData) + 7) / 8;
     if(keySize <= 11) {
-        xmlSecInternalError("xmlSecKeyDataGetSize", NULL);
+        xmlSecInternalError("the key size is too small for the PKCS#1 v1.5 padding", NULL);
         return(-1);
     }
     maxPlaintextSize = keySize - 11;
@@ -569,17 +564,6 @@ xmlSecGnuTLSRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
         digestAlg = GNUTLS_DIG_SHA512;
     } else
 #endif /* XMLSEC_NO_SHA512 */
-#ifndef XMLSEC_NO_SHA3
-    if(xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha3_224) == 0) {
-        digestAlg = GNUTLS_DIG_SHA3_224;
-    } else if(xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha3_256) == 0) {
-        digestAlg = GNUTLS_DIG_SHA3_256;
-    } else if(xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha3_384) == 0) {
-        digestAlg = GNUTLS_DIG_SHA3_384;
-    } else if(xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha3_512) == 0) {
-        digestAlg = GNUTLS_DIG_SHA3_512;
-    } else
-#endif /* XMLSEC_NO_SHA3 */
     {
         xmlSecInvalidTransformError2(transform,
             "digest algorithm=\"%s\" is not supported for rsa/oaep",

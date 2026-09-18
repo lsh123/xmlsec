@@ -525,7 +525,7 @@ xmlSecGnuTLSBlockCipherInitialize(xmlSecTransformPtr transform) {
         ctx->blockSize      = 1;
         ctx->ivSize         = XMLSEC_CHACHA20_IV_SIZE;
         ctx->isIvPrepended  = 0;
-        ctx->accumulateAll  = 1;  /* GnuTLS ChaCha20: keystream resets on each encrypt2/decrypt2 call */
+        ctx->accumulateAll  = 1;  /* GnuTLS 3.8.12: the ChaCha20 keystream is continuous across encrypt2/decrypt2 calls on the same handle, so the transform must accumulate all input before encrypting */
     } else
 #endif /* XMLSEC_NO_CHACHA20 */
 

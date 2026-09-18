@@ -43,7 +43,7 @@
  * X509 utility functions
  *
   *****************************************************************************/
-static int              xmlSecGnuTLSKVerifyAndAdoptX509KeyData  (xmlSecKeyPtr key,
+static int              xmlSecGnuTLSVerifyAndAdoptX509KeyData  (xmlSecKeyPtr key,
                                                                  xmlSecKeyDataPtr data,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
 
@@ -216,7 +216,7 @@ xmlSecGnuTLSKeyDataX509AddCertInternal(xmlSecGnuTLSX509DataCtxPtr ctx, gnutls_x5
         if(cert2 == NULL) {
             continue;
         }
-        if((cert == cert2) || (gnutls_x509_crt_equals(cert, cert2) != 0)) {
+        if((cert == cert2) || (gnutls_x509_crt_equals(cert, cert2) == 1)) {
             ret = xmlSecPtrListRemove(&(ctx->certsList), ii);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecPtrListRemove(ii)", NULL);
@@ -264,7 +264,7 @@ xmlSecGnuTLSKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, gnutls_x509_crt_t cer
     xmlSecAssert2(ctx != NULL, -1);
 
     /* check if for some reasons same cert is used */
-    if((ctx->keyCert != NULL) && ((cert == ctx->keyCert) || (gnutls_x509_crt_equals(cert, ctx->keyCert) != 0))) {
+    if((ctx->keyCert != NULL) && ((cert == ctx->keyCert) || (gnutls_x509_crt_equals(cert, ctx->keyCert) == 1))) {
         gnutls_x509_crt_deinit(cert);  /* caller expects data to own the cert on success. */
         return(0);
     }
@@ -298,7 +298,7 @@ xmlSecGnuTLSKeyDataX509AdoptCert(xmlSecKeyDataPtr data, gnutls_x509_crt_t cert) 
     xmlSecAssert2(ctx != NULL, -1);
 
     /* pkcs12 files sometimes have key cert twice: as the key cert and as the cert in the chain */
-    if((ctx->keyCert != NULL) && ((cert == ctx->keyCert) || (gnutls_x509_crt_equals(cert, ctx->keyCert) != 0))) {
+    if((ctx->keyCert != NULL) && ((cert == ctx->keyCert) || (gnutls_x509_crt_equals(cert, ctx->keyCert) == 1))) {
         gnutls_x509_crt_deinit(cert); /* caller expects data to own the cert on success. */
         return(0);
     }
@@ -533,9 +533,9 @@ xmlSecGnuTLSKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     }
 
     /* if not, then try to extract the key from certificates */
-    ret = xmlSecGnuTLSKVerifyAndAdoptX509KeyData(key, data, keyInfoCtx);
+    ret = xmlSecGnuTLSVerifyAndAdoptX509KeyData(key, data, keyInfoCtx);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecGnuTLSKVerifyAndAdoptX509KeyData", xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecGnuTLSVerifyAndAdoptX509KeyData", xmlSecKeyDataKlassGetName(id));
         xmlSecKeyDataDestroy(data);
         return(-1);
     } else if(ret != 1) {
@@ -635,7 +635,7 @@ xmlSecGnuTLSKeyDataX509DebugDump(xmlSecKeyDataPtr data, FILE* output) {
                                  "pos=" XMLSEC_SIZE_FMT, pos);
             return;
         }
-        fprintf(output, "==== Crl:\n");
+        fprintf(output, "==== CRL:\n");
         xmlSecGnuTLSX509CrlDebugDump(crl, output);
     }
 }
@@ -945,7 +945,11 @@ xmlSecGnuTLSX509CertSKIWrite(gnutls_x509_crt_t cert, xmlSecBufferPtr buf) {
 }
 
 static int
-xmlSecGnuTLSKVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data,  xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecGnuTLSVerifyAndAdoptX509KeyData(
+    xmlSecKeyPtr key,
+    xmlSecKeyDataPtr data,
+    xmlSecKeyInfoCtxPtr keyInfoCtx
+) {
     xmlSecGnuTLSX509DataCtxPtr ctx;
     xmlSecKeyDataStorePtr x509Store;
     gnutls_x509_crt_t cert;
@@ -1179,9 +1183,9 @@ xmlSecGnuTLSKeyDataRawX509CertBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     }
     cert = NULL; /* owned by data now */
 
-    ret = xmlSecGnuTLSKVerifyAndAdoptX509KeyData(key, data, keyInfoCtx);
+    ret = xmlSecGnuTLSVerifyAndAdoptX509KeyData(key, data, keyInfoCtx);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecGnuTLSKVerifyAndAdoptX509KeyData", xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecGnuTLSVerifyAndAdoptX509KeyData", xmlSecKeyDataKlassGetName(id));
         xmlSecKeyDataDestroy(data);
         return(-1);
     } else if(ret != 1) {

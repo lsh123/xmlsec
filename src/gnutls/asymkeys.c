@@ -64,9 +64,7 @@ static int              xmlSecGnuTLSAsymKeyDataGenerate         (xmlSecKeyDataPt
 static int              xmlSecGnuTLSAsymKeyDataDuplicate        (xmlSecKeyDataPtr dst,
                                                                   xmlSecKeyDataPtr src);
 
-static int              xmlSecGnuTLSAsymKeyDataIsValidId        (xmlSecKeyDataId id);
-
-static int
+int
 xmlSecGnuTLSAsymKeyDataIsValidId(xmlSecKeyDataId id) {
 #ifndef XMLSEC_NO_DSA
     if(id == xmlSecGnuTLSKeyDataDsaId) {
@@ -433,7 +431,7 @@ xmlSecGnuTLSAsymKeyDataGetSize(xmlSecKeyDataPtr data) {
             xmlSecGnuTLSError("gnutls_pubkey_get_pk_algorithm", ret, NULL);
             return(0);
         }
-        XMLSEC_SAFE_CAST_UINT_TO_SIZE(bits, res, return(-1), NULL);
+        XMLSEC_SAFE_CAST_UINT_TO_SIZE(bits, res, return(0), NULL);
         return(res);
     }
 
@@ -443,7 +441,7 @@ xmlSecGnuTLSAsymKeyDataGetSize(xmlSecKeyDataPtr data) {
             xmlSecGnuTLSError("gnutls_privkey_get_pk_algorithm", ret, NULL);
             return(0);
         }
-        XMLSEC_SAFE_CAST_UINT_TO_SIZE(bits, res, return(-1), NULL);
+        XMLSEC_SAFE_CAST_UINT_TO_SIZE(bits, res, return(0), NULL);
         return(res);
     }
 
@@ -739,7 +737,6 @@ xmlSecGnuTLSKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, g.size, goto done, xmlSecKeyDataKlassGetName(id));
 
     /* y */
-
     size = xmlSecBufferGetSize(&(dsaValue->y));
     y.data = xmlSecBufferGetData(&(dsaValue->y));
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, y.size, goto done, xmlSecKeyDataKlassGetName(id));
@@ -1095,7 +1092,7 @@ xmlSecGnuTLSKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
 
     curve = gnutls_oid_to_ecc_curve((const char*)ecValue->curve);
     if(curve == GNUTLS_ECC_CURVE_INVALID) {
-        xmlSecGnuTLSError2("gnutls_oid_to_ecc_curve", GNUTLS_E_SUCCESS, xmlSecKeyDataKlassGetName(id),
+        xmlSecInternalError2("gnutls_oid_to_ecc_curve", xmlSecKeyDataKlassGetName(id),
             "curve oid=%s", xmlSecErrorsSafeString(ecValue->curve));
         goto done;
     }
@@ -1201,7 +1198,7 @@ xmlSecGnuTLSKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyV
     }
     curve_oid = gnutls_ecc_curve_get_oid(curve);
     if(curve_oid == NULL) {
-        xmlSecGnuTLSError("gnutls_ecc_curve_get_oid", GNUTLS_E_SUCCESS, xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("gnutls_ecc_curve_get_oid", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
     ecValue->curve = xmlStrdup(BAD_CAST curve_oid);
@@ -1413,7 +1410,7 @@ xmlSecGnuTLSKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     /* privateExponent (only for private key) */
     size = xmlSecBufferGetSize(&(rsaValue->privateExponent));
     if(size > 0) {
-        xmlSecGnuTLSError("GnuTLS doesn't support reading private keys from RSAKeyValue", GNUTLS_E_SUCCESS, xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("GnuTLS doesn't support reading private keys from RSAKeyValue", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 

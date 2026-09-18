@@ -48,6 +48,7 @@ gnutls_pubkey_t         xmlSecGnuTLSAsymKeyDataGetPublicKey     (xmlSecKeyDataPt
 gnutls_privkey_t        xmlSecGnuTLSAsymKeyDataGetPrivateKey    (xmlSecKeyDataPtr data);
 xmlSecKeyDataType       xmlSecGnuTLSAsymKeyDataGetType          (xmlSecKeyDataPtr data);
 xmlSecSize              xmlSecGnuTLSAsymKeyDataGetSize          (xmlSecKeyDataPtr data);
+int                     xmlSecGnuTLSAsymKeyDataIsValidId        (xmlSecKeyDataId id);
 
 #ifndef XMLSEC_NO_X509
 

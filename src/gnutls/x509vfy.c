@@ -16,7 +16,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <ctype.h>
 #include <errno.h>
 
 #include <xmlsec/xmlsec.h>
@@ -288,7 +287,10 @@ xmlSecGnuTLSX509StoreGetTrustedCerts(xmlSecGnuTLSX509StoreCtxPtr ctx,
 
 
 static int
-xmlSecGnuTLSX509StoreGetCrls(xmlSecKeyDataStorePtr store, xmlSecGnuTLSX509StoreCtxPtr ctx, xmlSecPtrListPtr extra_crls,
+xmlSecGnuTLSX509StoreGetCrls(
+    xmlSecKeyDataStorePtr store,
+    xmlSecGnuTLSX509StoreCtxPtr ctx,
+    xmlSecPtrListPtr extra_crls,
     const xmlSecKeyInfoCtx* keyInfoCtx,
     gnutls_x509_crl_t** crls, xmlSecSize* crls_size
 ) {
@@ -331,7 +333,7 @@ xmlSecGnuTLSX509StoreGetCrls(xmlSecKeyDataStorePtr store, xmlSecGnuTLSX509StoreC
         }
 
         /* verify caller-supplied crl (time + signature); drop it if it fails */
-        ret = xmlSecGnuTLSX509StoreVerifyCrl(store, crl, (xmlSecKeyInfoCtxPtr)keyInfoCtx);
+        ret = xmlSecGnuTLSX509StoreVerifyCrl(store, crl, keyInfoCtx);
         if(ret < 0) {
             xmlSecInternalError("xmlSecGnuTLSX509StoreVerifyCrl", NULL);
             xmlFree(res);
@@ -658,12 +660,10 @@ xmlSecGnuTLSX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, xm
 
     /* prepare buffer for the certs chain */
     certs_chain_size = xmlSecPtrListGetSize(key_certs) + xmlSecPtrListGetSize(&(ctx->certsUntrusted)) + 1;
-    if(certs_chain_size > 0) {
-        certs_chain = (gnutls_x509_crt_t *)xmlMalloc(sizeof(gnutls_x509_crt_t) * certs_chain_size);
-        if(certs_chain == NULL) {
-            xmlSecMallocError(sizeof(gnutls_x509_crt_t) * certs_chain_size, xmlSecKeyDataStoreGetName(store));
-            goto done;
-        }
+    certs_chain = (gnutls_x509_crt_t *)xmlMalloc(sizeof(gnutls_x509_crt_t) * certs_chain_size);
+    if(certs_chain == NULL) {
+        xmlSecMallocError(sizeof(gnutls_x509_crt_t) * certs_chain_size, xmlSecKeyDataStoreGetName(store));
+        goto done;
     }
 
     /* build the chain */
@@ -759,12 +759,10 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
 
     /* prepare buffer for the certs chain */
     certs_chain_size = certs_size + xmlSecPtrListGetSize(&(ctx->certsUntrusted)) + 1;
-    if(certs_chain_size > 0) {
-        certs_chain = (gnutls_x509_crt_t *)xmlMalloc(sizeof(gnutls_x509_crt_t) * certs_chain_size);
-        if(certs_chain == NULL) {
-            xmlSecMallocError(sizeof(gnutls_x509_crt_t) * certs_chain_size, xmlSecKeyDataStoreGetName(store));
-            goto done;
-        }
+    certs_chain = (gnutls_x509_crt_t *)xmlMalloc(sizeof(gnutls_x509_crt_t) * certs_chain_size);
+    if(certs_chain == NULL) {
+        xmlSecMallocError(sizeof(gnutls_x509_crt_t) * certs_chain_size, xmlSecKeyDataStoreGetName(store));
+        goto done;
     }
 
     /* we are going to build all possible cert chains and try to verify them */
@@ -901,7 +899,9 @@ xmlSecGnuTLSX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, gnutls_x509_crl_t crl
 
 /* Verify CRL time validity: 1 if valid, 0 if not valid, < 0 if error */
 static int
-xmlSecGnuTLSX509StoreVerifyCrlTimeValidity(gnutls_x509_crl_t crl, xmlSecKeyInfoCtxPtr keyInfoCtx,
+xmlSecGnuTLSX509StoreVerifyCrlTimeValidity(
+    gnutls_x509_crl_t crl,
+    const xmlSecKeyInfoCtx* keyInfoCtx,
     const xmlChar* storeName
 ) {
     time_t this_update, next_update, verification_time;
@@ -944,7 +944,10 @@ xmlSecGnuTLSX509StoreVerifyCrlTimeValidity(gnutls_x509_crl_t crl, xmlSecKeyInfoC
         return(0);
     }
 
-    /* Verify next_update */
+    /* Verify next_update
+     * gnutls_x509_crl_get_next_update() returns (time_t)-1 both on error and when the
+     * nextUpdate field is absent; a missing nextUpdate means the CRL has no expiration
+     * (RFC 5280), so the expiration check is skipped in that case. */
     next_update = gnutls_x509_crl_get_next_update(crl);
     if(next_update != (time_t)-1) {
         if(next_update < verification_time) {
@@ -969,8 +972,11 @@ xmlSecGnuTLSX509StoreVerifyCrlTimeValidity(gnutls_x509_crl_t crl, xmlSecKeyInfoC
 
 /* Verify CRL signature: 1 if verified, 0 if not verified, < 0 if error */
 static int
-xmlSecGnuTLSX509StoreVerifyCrlSignature(xmlSecGnuTLSX509StoreCtxPtr ctx, gnutls_x509_crl_t crl,
-    xmlSecKeyInfoCtxPtr keyInfoCtx, const xmlChar* storeName
+xmlSecGnuTLSX509StoreVerifyCrlSignature(
+    xmlSecGnuTLSX509StoreCtxPtr ctx,
+    gnutls_x509_crl_t crl,
+    const xmlSecKeyInfoCtx* keyInfoCtx,
+    const xmlChar* storeName
 ) {
     gnutls_x509_crt_t issuer_cert = NULL;
     xmlChar *issuer_dn = NULL;
@@ -1100,19 +1106,17 @@ done:
 }
 
 /**
- * @brief Verifies @p crl by checking:
+ * @brief Verifies @p crl by checking its time validity (thisUpdate/nextUpdate) first, then the CRL signature.
  * @param store the pointer to X509 key data store klass.
  * @param crl the CRL to verify.
  * @param keyInfoCtx the key info context for verification parameters.
- *
- * 1. Signature is valid (signed by issuer cert in store)
- * 2. thisUpdate <= verification_time <= nextUpdate
- *
  * @return 1 if verified, 0 if not verified, or a negative value on error.
  */
 int
-xmlSecGnuTLSX509StoreVerifyCrl(xmlSecKeyDataStorePtr store, gnutls_x509_crl_t crl,
-    xmlSecKeyInfoCtxPtr keyInfoCtx
+xmlSecGnuTLSX509StoreVerifyCrl(
+    xmlSecKeyDataStorePtr store,
+    gnutls_x509_crl_t crl,
+    const xmlSecKeyInfoCtx* keyInfoCtx
 ) {
     xmlSecGnuTLSX509StoreCtxPtr ctx;
     int ret;
@@ -1282,7 +1286,7 @@ done:
 
 
 /**
- * @brief Returns 0 if SKI matches, 1 if SKI doesn't match and a negative value if an error occurs.
+ * @brief Returns 0 if SKI matches, 1 if SKI doesn't match, and a negative value if an error occurs.
  */
 int
 xmlSecGnuTLSX509CertCompareSKI(gnutls_x509_crt_t cert, const xmlSecByte * ski, xmlSecSize skiSize) {

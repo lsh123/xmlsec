@@ -298,8 +298,13 @@ xmlSecGnuTLSAeadCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 }
 
 static int
-xmlSecGnuTLSAeadCipherEncrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out,
-    const xmlChar* transformName) {
+xmlSecGnuTLSAeadCipherEncrypt(
+    xmlSecGnuTLSAeadCipherCtxPtr ctx,
+    xmlSecBufferPtr in,
+    xmlSecBufferPtr out,
+    const xmlChar* transformName
+) {
+    static const xmlSecByte empty[] = { 0 };
     xmlSecSize inSize, outSize;
     xmlSecByte *plaintext, *outData;
     const xmlSecByte *aadData;
@@ -355,7 +360,8 @@ xmlSecGnuTLSAeadCipherEncrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
             ctx->iv, ctx->ivSize,
             aadData, aadSize,
             ctx->tagSize,
-            plaintext, inSize,
+            ((plaintext != NULL) ? plaintext : empty),
+            ((plaintext != NULL) ? inSize : 0),
             outData, &outSize);
         if(err != GNUTLS_E_SUCCESS) {
             xmlSecGnuTLSError("gnutls_aead_cipher_encrypt", err, transformName);
@@ -386,7 +392,8 @@ xmlSecGnuTLSAeadCipherEncrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
             ctx->iv, ctx->ivSize,
             aadData, aadSize,
             ctx->tagSize,
-            plaintext, inSize,
+            ((plaintext != NULL) ? plaintext : empty),
+            ((plaintext != NULL) ? inSize : 0),
             outData, &outSize);
         if(err != GNUTLS_E_SUCCESS) {
             xmlSecGnuTLSError("gnutls_aead_cipher_encrypt", err, transformName);
@@ -465,7 +472,7 @@ xmlSecGnuTLSAeadCipherDecrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
         xmlSecAssert2(inSize >= ctx->tagSize, -1);
 
         ciphertext = xmlSecBufferGetData(in);
-        xmlSecAssert2(ciphertext != NULL || inSize == 0, -1);
+        xmlSecAssert2(ciphertext != NULL, -1);
 
         ret = xmlSecBufferSetMaxSize(out, inSize);
         if(ret < 0) {

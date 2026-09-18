@@ -541,19 +541,20 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
+    /* create buffer */
+    if(xmlSecBufferInitialize(&(ctx->preSignBuffer), 0) < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(preSignBuffer)", xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
     /* create hash (skip for algorithms that don't use separate digest like ML-DSA) */
     if(ctx->dgstAlgo != GNUTLS_DIG_UNKNOWN) {
         err = gnutls_hash_init(&(ctx->hash), ctx->dgstAlgo);
         if(err != GNUTLS_E_SUCCESS) {
             xmlSecGnuTLSError("gnutls_hash_init", err, NULL);
+            xmlSecBufferFinalize(&(ctx->preSignBuffer));
             return(-1);
         }
-    }
-
-    /* create buffer */
-    if(xmlSecBufferInitialize(&(ctx->preSignBuffer), 0) < 0) {
-        xmlSecInternalError("xmlSecBufferInitialize(preSignBuffer)", xmlSecTransformGetName(transform));
-        return(-1);
     }
 
     /* done */
@@ -1052,6 +1053,7 @@ xmlSecGnuTLSSignatureVerify(
     xmlSecAssert2(transformCtx != NULL, -1);
 
     ctx = xmlSecGnuTLSSignatureGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->keyData != NULL, -1);
     xmlSecAssert2(ctx->getPubKey != NULL, -1);
 

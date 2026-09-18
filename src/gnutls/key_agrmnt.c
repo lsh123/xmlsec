@@ -277,7 +277,7 @@ xmlSecGnuTLSKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTr
             return(-1);
         }
 
-        /* Step 2: derive output key with KDF (ConcatKDF) */
+        /* Step 2: derive output key with the KDF specified by the KeyDerivationMethod element */
         ret = xmlSecTransformKAMExecuteKdf(&(ctx->params), transform->operation, &secret, out,
             transform->expectedOutputSize, transformCtx);
         if(ret < 0) {

@@ -83,6 +83,7 @@ xmlSecGnuTLSAppInit(const char* config XMLSEC_ATTRIBUTE_UNUSED) {
 int
 xmlSecGnuTLSAppShutdown(void) {
     gnutls_global_deinit();
+
     return(0);
 }
 
@@ -157,9 +158,14 @@ xmlSecGnuTLSAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATT
  * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
-xmlSecGnuTLSAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,  xmlSecKeyDataFormat format,
-    const char *pwd, void* pwdCallback, void* pwdCallbackCtx)
-{
+xmlSecGnuTLSAppKeyLoadMemory(
+    const xmlSecByte* data,
+    xmlSecSize dataSize,
+    xmlSecKeyDataFormat format,
+    const char *pwd,
+    void* pwdCallback,
+    void* pwdCallbackCtx
+) {
     xmlSecKeyPtr key;
 
     xmlSecAssert2(data != NULL, NULL);
@@ -269,6 +275,10 @@ xmlSecGnuTLSAppCheckCertMatchesKey(xmlSecKeyPtr key,  gnutls_x509_crt_t cert) {
     keyData = xmlSecKeyGetValue(key);
     if(keyData == NULL) {
         res = 0; /* no key -> no match */
+        goto done;
+    }
+    if(!xmlSecGnuTLSAsymKeyDataIsValidId(keyData->id)) {
+        res = 0; /* not GnuTLS asymmetric key data -> no match */
         goto done;
     }
     pubkey = xmlSecGnuTLSAsymKeyDataGetPublicKey(keyData);
@@ -825,7 +835,7 @@ done:
 /**
  * @brief Reads a cert from a file and adds to the key store.
  * @details Reads cert from @p filename and adds to the list of trusted or known
- * untrusted certs in @p store.
+ * untrusted certs in @p mngr.
  *
  * @param mngr the keys manager.
  * @param filename the certificate file.
@@ -928,7 +938,7 @@ xmlSecGnuTLSAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr,
 
 /**
  * @brief Reads CRLs from a file and adds to the store.
- * @details Reads crls from @p filename and adds to the list of crls in @p store.
+ * @details Reads crls from @p filename and adds to the list of crls in @p mngr.
  *
  * @param mngr the keys manager.
  * @param filename the CRL file.

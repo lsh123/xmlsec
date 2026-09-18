@@ -7,8 +7,7 @@
  */
 /**
  * @addtogroup xmlsec_gnutls_keysstore
- * @brief Keys store implementation for GNUTLS.
- * GnuTLS keys store that uses Simple Keys Store under the hood.
+ * @brief GnuTLS keys store that uses Simple Keys Store under the hood.
  */
 #include "globals.h"
 
@@ -28,7 +27,7 @@
  *
  * GnuTLS Keys Store. Uses Simple Keys Store under the hood
  *
- * xmlSecKeyStore +  xmlSecKeyStorePtr(Simple Keys Store ptr)
+ * xmlSecKeyStore + xmlSecKeyStorePtr(Simple Keys Store ptr)
  *
   *****************************************************************************/
 XMLSEC_KEY_STORE_DECLARE(GnuTLSKeysStore, xmlSecKeyStorePtr)
@@ -143,7 +142,7 @@ xmlSecGnuTLSKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509D
         return(NULL);
     }
 
-    /* since not all key stores can return key owned by someone else, we need to duplicate the key */
+    /* since not all key stores can return a key owned by someone else, we need to duplicate the key */
     res = xmlSecKeyDuplicate(key);
     if(res == NULL) {
         xmlSecInternalError("xmlSecKeyDuplicate", xmlSecKeyStoreGetName(store));
@@ -184,7 +183,7 @@ xmlSecGnuTLSKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
 /**
  * @brief Reads keys from an XML file.
  * @param store the pointer to GnuTLS keys store.
- * @param uri the URI.
+ * @param uri the filename.
  * @param keysMngr the pointer to associated keys manager.
  * @return 0 on success or a negative value if an error occurs.
  */

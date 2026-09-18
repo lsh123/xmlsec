@@ -484,7 +484,7 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
         ret = xmlSecBufferRemoveHead(in, xmlSecMSCngAesGcmNonceLengthInBytes);
         if (ret < 0) {
             xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName,
-                "size=" XMLSEC_SIZE_FMT, xmlSecMSCngAesGcmNonceLengthInBytes);
+                "size=" XMLSEC_SIZE_FMT, (xmlSecSize)xmlSecMSCngAesGcmNonceLengthInBytes);
             return(-1);
         }
     }
@@ -700,7 +700,7 @@ xmlSecMSCngGcmBlockCipherCtxFinal(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
         ret = xmlSecBufferRemoveTail(in, xmlSecMSCngAesGcmTagLengthInBytes);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferRemoveTail", cipherName,
-                "size=" XMLSEC_SIZE_FMT, xmlSecMSCngAesGcmTagLengthInBytes);
+                "size=" XMLSEC_SIZE_FMT, (xmlSecSize)xmlSecMSCngAesGcmTagLengthInBytes);
             return(-1);
         }
         inBuf = xmlSecBufferGetData(in);

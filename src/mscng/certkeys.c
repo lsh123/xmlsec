@@ -521,15 +521,15 @@ xmlSecMSCngCertKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     }
 
     if(dstCtx->cert != NULL) {
-        /* avoid BCryptDuplicateKey() here as that works for symmetric keys only */
+        /* re-derive the public key from the certificate SPKI (the certificate is the source of truth) */
         ret = xmlSecMSCngKeyDataCertGetPubkey(&(dstCtx->cert->pCertInfo->SubjectPublicKeyInfo), &dstCtx->pubkey);
         if(ret < 0) {
             xmlSecInternalError("xmlSecMSCngKeyDataCertGetPubkey", NULL);
             return(-1);
         }
     } else if(srcCtx->pubkey != NULL) {
-        /* BCryptDuplicateKey() works with symmetric keys only, so go with
-         * export + import instead */
+        /* re-import the public key under a fresh algorithm provider; the algorithm
+         * is determined from the exported blob magic */
         status = BCryptExportKey(srcCtx->pubkey,
             NULL,
             BCRYPT_PUBLIC_KEY_BLOB,
@@ -2170,7 +2170,7 @@ xmlSecMSCngCreateDerForBCryptPubkey(xmlSecKeyDataPtr data, LPVOID* ppDer, DWORD*
         &cbInfo
     );
     if((status != TRUE) || (cbInfo <= 0)) {
-        xmlSecMSCngNtError("CryptExportPublicKeyInfoFromBCryptKeyHandle", NULL, STATUS_SUCCESS);
+        xmlSecMSCngLastError("CryptExportPublicKeyInfoFromBCryptKeyHandle", NULL);
         goto done;
     }
 
@@ -2190,7 +2190,7 @@ xmlSecMSCngCreateDerForBCryptPubkey(xmlSecKeyDataPtr data, LPVOID* ppDer, DWORD*
         &cbInfo
     );
     if((status != TRUE) || (cbInfo <= 0)) {
-        xmlSecMSCngNtError("CryptExportPublicKeyInfoFromBCryptKeyHandle", NULL, STATUS_SUCCESS);
+        xmlSecMSCngLastError("CryptExportPublicKeyInfoFromBCryptKeyHandle", NULL);
         goto done;
     }
 
@@ -2204,7 +2204,7 @@ xmlSecMSCngCreateDerForBCryptPubkey(xmlSecKeyDataPtr data, LPVOID* ppDer, DWORD*
         pcbDer
     );
     if((status != TRUE) || (*ppDer == NULL) || (*pcbDer <= 0)) {
-        xmlSecMSCngNtError("CryptEncodeObjectEx", NULL, STATUS_SUCCESS);
+        xmlSecMSCngLastError("CryptEncodeObjectEx", NULL);
         goto done;
     }
 
@@ -2443,7 +2443,7 @@ xmlSecMSCngAppKeyReadPrivKeyFromDer(const xmlSecByte* data, DWORD dataSize) {
     }
 #endif /* XMLSEC_NO_XDH */
 
-    xmlSecNotImplementedError("Only DH and XDH private keys are supported in DER format");
+    xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "Failed to read a DH or XDH private key from DER format");
     return(NULL);
 }
 

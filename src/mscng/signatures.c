@@ -442,7 +442,7 @@ static void xmlSecMSCngSignatureFinalize(xmlSecTransformPtr transform) {
     ctx = xmlSecMSCngSignatureGetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
-    if(ctx->data != NULL)  {
+    if(ctx->data != NULL) {
         xmlSecKeyDataDestroy(ctx->data);
     }
 
@@ -675,7 +675,7 @@ xmlSecMSCngSignatureFixBrokenASN1(xmlSecMSCngSignatureCtxPtr ctx,
     }
     halfSize = (keySize + 7) / 8;
 
-    /* parse asn1 structure */
+    /* parse asn1 structure, see https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-cert_ecc_signature */
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, dataLen, return(-1), NULL);
     status = CryptDecodeObjectEx(
         X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,

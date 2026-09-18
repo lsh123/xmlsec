@@ -214,6 +214,7 @@ xmlSecMSCngAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATTR
     XMLSEC_UNREFERENCED(type);
 
     switch(format) {
+#ifndef XMLSEC_NO_X509
     case xmlSecKeyDataFormatPkcs12:
         key = xmlSecMSCngAppPkcs12Load(filename, pwd, pwdCallback,
             pwdCallbackCtx);
@@ -222,6 +223,7 @@ xmlSecMSCngAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATTR
             return(NULL);
         }
         break;
+#endif /* XMLSEC_NO_X509 */
     case xmlSecKeyDataFormatCertDer:
         ret = xmlSecBufferInitialize(&buffer, 0);
         if(ret < 0) {
@@ -235,6 +237,13 @@ xmlSecMSCngAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATTR
                 "filename=%s", xmlSecErrorsSafeString(filename));
             xmlSecBufferFinalize(&buffer);
             return (NULL);
+        }
+
+        if(xmlSecBufferGetData(&buffer) == NULL) {
+            xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
+                "empty file: %s", xmlSecErrorsSafeString(filename));
+            xmlSecBufferFinalize(&buffer);
+            return(NULL);
         }
 
         key = xmlSecMSCngAppKeyLoadMemory(xmlSecBufferGetData(&buffer),
@@ -317,6 +326,7 @@ xmlSecMSCngAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATTR
 xmlSecKeyPtr
 xmlSecMSCngAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format,
                             const char *pwd, void* pwdCallback, void* pwdCallbackCtx) {
+#ifndef XMLSEC_NO_X509
     PCCERT_CONTEXT pCert = NULL;
     PCCERT_CONTEXT pKeyCert = NULL;
     xmlSecKeyDataPtr x509Data = NULL;
@@ -410,6 +420,19 @@ done:
     }
 
     return(res);
+#else  /* XMLSEC_NO_X509 */
+
+    xmlSecAssert2(data != NULL, NULL);
+    xmlSecAssert2(dataSize > 0, NULL);
+    xmlSecAssert2(format == xmlSecKeyDataFormatCertDer, NULL);
+    XMLSEC_UNREFERENCED(pwd);
+    XMLSEC_UNREFERENCED(pwdCallback);
+    XMLSEC_UNREFERENCED(pwdCallbackCtx);
+
+    xmlSecNotImplementedError("X509 support is disabled during compilation");
+    return(NULL);
+
+#endif /* XMLSEC_NO_X509 */
 }
 
 
@@ -759,6 +782,13 @@ xmlSecMSCngAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
         return(-1);
     }
 
+    if(xmlSecBufferGetData(&buffer) == NULL) {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
+            "empty file: %s", xmlSecErrorsSafeString(filename));
+        xmlSecBufferFinalize(&buffer);
+        return(-1);
+    }
+
     ret = xmlSecMSCngAppKeysMngrCertLoadMemory(mngr, xmlSecBufferGetData(&buffer),
         xmlSecBufferGetSize(&buffer), format, type);
     if(ret < 0) {
@@ -867,6 +897,13 @@ xmlSecMSCngAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlS
         return(-1);
     }
 
+    if(xmlSecBufferGetData(&buffer) == NULL) {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
+            "empty file: %s", xmlSecErrorsSafeString(filename));
+        xmlSecBufferFinalize(&buffer);
+        return(-1);
+    }
+
     ret = xmlSecMSCngAppKeysMngrCrlLoadMemory(mngr, xmlSecBufferGetData(&buffer),
         xmlSecBufferGetSize(&buffer), format);
     if(ret < 0) {
@@ -951,6 +988,11 @@ xmlSecMSCngAppKeysMngrCrlLoadAndVerify(xmlSecKeysMngrPtr mngr, const char *filen
     ret = xmlSecBufferReadFile(&buffer, filename);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferReadFile", NULL, "filename=%s", xmlSecErrorsSafeString(filename));
+        goto done;
+    }
+
+    if(xmlSecBufferGetData(&buffer) == NULL) {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "empty file: %s", xmlSecErrorsSafeString(filename));
         goto done;
     }
 
@@ -1108,7 +1150,7 @@ xmlSecMSCngAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) 
 
 /**
  * @brief Verifies @p key using the keys manager.
- * @details Verifies @p key with the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * @details Verifies @p key with the keys manager @p mngr created with #xmlSecMSCngAppDefaultKeysMngrInit
  * function:
  * - Checks that key certificate is present
  * - Checks that key certificate is valid

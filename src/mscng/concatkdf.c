@@ -317,15 +317,22 @@ xmlSecMSCngConcatKdfPerformKeyDerivation(
     xmlSecAssert2(pbOut != NULL, -1);
     xmlSecAssert2(cbOut > 0, -1);
 
-    paramBufferCONCATKDF[0].cbBuffer = cbFixedInfo;
-    paramBufferCONCATKDF[0].BufferType = KDF_GENERIC_PARAMETER;
-    paramBufferCONCATKDF[0].pvBuffer = pbFixedInfo;
-    paramBufferCONCATKDF[1].cbBuffer = ((ULONG)wcslen(pszHashAlgo) + 1) * sizeof(WCHAR);
-    paramBufferCONCATKDF[1].BufferType = KDF_HASH_ALGORITHM;
-    paramBufferCONCATKDF[1].pvBuffer = (LPWSTR)pszHashAlgo;
-
+    /* build params: fixedInfo (optional) and hash algorithm */
     paramsCONCATKDF.ulVersion = BCRYPTBUFFER_VERSION;
-    paramsCONCATKDF.cBuffers = 2;
+    if((pbFixedInfo != NULL) && (cbFixedInfo > 0)) {
+        paramBufferCONCATKDF[0].cbBuffer = cbFixedInfo;
+        paramBufferCONCATKDF[0].BufferType = KDF_GENERIC_PARAMETER;
+        paramBufferCONCATKDF[0].pvBuffer = pbFixedInfo;
+        paramBufferCONCATKDF[1].cbBuffer = ((ULONG)wcslen(pszHashAlgo) + 1) * sizeof(WCHAR);
+        paramBufferCONCATKDF[1].BufferType = KDF_HASH_ALGORITHM;
+        paramBufferCONCATKDF[1].pvBuffer = (LPWSTR)pszHashAlgo;
+        paramsCONCATKDF.cBuffers = 2;
+    } else {
+        paramBufferCONCATKDF[0].cbBuffer = ((ULONG)wcslen(pszHashAlgo) + 1) * sizeof(WCHAR);
+        paramBufferCONCATKDF[0].BufferType = KDF_HASH_ALGORITHM;
+        paramBufferCONCATKDF[0].pvBuffer = (LPWSTR)pszHashAlgo;
+        paramsCONCATKDF.cBuffers = 1;
+    }
     paramsCONCATKDF.pBuffers = paramBufferCONCATKDF;
 
     /* get algo provider */
@@ -417,7 +424,12 @@ xmlSecMSCngConcatKdfDerive(xmlSecMSCngConcatKdfCtxPtr ctx, xmlSecBufferPtr out, 
     /* fixedInfo is optional per NIST SP 800-56A and may be empty */
     fixedInfoData = xmlSecBufferGetData(&(ctx->fixedInfo));
     fixedInfoSize = xmlSecBufferGetSize(&(ctx->fixedInfo));
-    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(fixedInfoSize, fixedInfoLen, return(-1), NULL);
+    if((fixedInfoData != NULL) && (fixedInfoSize > 0)) {
+        XMLSEC_SAFE_CAST_SIZE_TO_ULONG(fixedInfoSize, fixedInfoLen, return(-1), NULL);
+    } else {
+        fixedInfoData = NULL;
+        fixedInfoLen = 0;
+    }
 
     /* allocate output buffer */
     ret = xmlSecBufferSetSize(out, outSize);

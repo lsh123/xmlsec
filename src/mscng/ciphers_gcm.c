@@ -403,9 +403,9 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
     /* Need some working buffers */
     XMLSEC_SAFE_CAST_ULONG_TO_SIZE(ctx->dwBlockLen, blockSize, return(-1), cipherName);
 
-    /* Note: for GCM the nonce is carried in authInfo.pbNonce (see above);
-     * this block-sized IV buffer is a vestigial allocation carried over from
-     * the CBC implementation and is not the GCM nonce. */
+    /* Allocate the IV buffer passed to BCryptEncrypt/BCryptDecrypt. For GCM the
+     * actual nonce is carried in authInfo.pbNonce, but BCrypt still requires a
+     * non-NULL pbIV buffer to be supplied. */
     if (ctx->pbIV == NULL) {
         ctx->pbIV = xmlMalloc(blockSize);
         if (ctx->pbIV == NULL) {
@@ -605,10 +605,10 @@ xmlSecMSCngGcmBlockCipherCtxUpdate(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
     }
 
     /* remove the processed data from input */
-    ret = xmlSecBufferRemoveHead(in, outSize2);
+    ret = xmlSecBufferRemoveHead(in, inSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName,
-            "size=" XMLSEC_SIZE_FMT, outSize2);
+            "size=" XMLSEC_SIZE_FMT, inSize);
         return(-1);
     }
 

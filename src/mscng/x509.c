@@ -40,7 +40,7 @@ typedef struct _xmlSecMSCngX509DataCtx xmlSecMSCngX509DataCtx,
 
 struct _xmlSecMSCngX509DataCtx {
     HCERTSTORE hMemStore;
-    PCCERT_CONTEXT keyCert; /* owned by hMemStore */
+    PCCERT_CONTEXT keyCert; /* owned by ctx; freed in finalize */
 };
 
 XMLSEC_KEY_DATA_DECLARE(MSCngX509Data, xmlSecMSCngX509DataCtx)
@@ -76,6 +76,11 @@ xmlSecMSCngKeyDataX509Finalize(xmlSecKeyDataPtr data) {
 
     ctx = xmlSecMSCngX509DataGetCtx(data);
     xmlSecAssert(ctx != NULL);
+
+    if (ctx->keyCert != NULL) {
+        CertFreeCertificateContext(ctx->keyCert);
+        ctx->keyCert = NULL;
+    }
 
     if (ctx->hMemStore != 0) {
         if (!CertCloseStore(ctx->hMemStore, 0)) {
@@ -117,7 +122,7 @@ xmlSecMSCngKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
         }
 
         /* ensure to handle keyCert */
-        if (srcCert == srcCtx->keyCert) {
+        if ((srcCtx->keyCert != NULL) && (srcCtx->keyCert->pCertInfo != NULL) && (srcCert->pCertInfo != NULL) && (CertCompareCertificate(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, srcCert->pCertInfo, srcCtx->keyCert->pCertInfo) == TRUE)) {
             ret = xmlSecMSCngKeyDataX509AdoptKeyCert(dst, dstCert);
             if (ret < 0) {
                 xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptKeyCert", NULL);
@@ -227,14 +232,22 @@ xmlSecMSCngKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
     }
     xmlSecAssert2(ctx->keyCert == NULL, -1);
 
-    ret = xmlSecMSCngKeyDataX509AddCertInternal(ctx, cert);
-    if (ret < 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataX509AddCertInternal", xmlSecKeyDataGetName(data));
+    /* keep a separate owned reference to the key certificate; AddCertInternal
+     * takes ownership of (and frees) cert, so ctx->keyCert must be a duplicate. */
+    ctx->keyCert = CertDuplicateCertificateContext(cert);
+    if (ctx->keyCert == NULL) {
+        xmlSecMSCngLastError("CertDuplicateCertificateContext", NULL);
         return(-1);
     }
 
-    /* cert is now owned by data, we can't fail or there will be a double free */
-    ctx->keyCert = cert;
+    ret = xmlSecMSCngKeyDataX509AddCertInternal(ctx, cert);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataX509AddCertInternal", xmlSecKeyDataGetName(data));
+        CertFreeCertificateContext(ctx->keyCert);
+        ctx->keyCert = NULL;
+        return(-1);
+    }
+
     return(0);
 }
 
@@ -602,6 +615,7 @@ xmlSecMSCngKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     if (ret < 0) {
         xmlSecInternalError("xmlSecMSCngVerifyAndAdoptX509KeyData", xmlSecKeyDataKlassGetName(id));
         xmlSecKeyDataDestroy(data);
+        return(-1);
     } else if (ret != 1) {
         /* no errors but key was not found and data was not adopted */
         xmlSecKeyDataDestroy(data);
@@ -708,7 +722,7 @@ xmlSecMSCngX509SKIWrite(PCCERT_CONTEXT cert, xmlSecBufferPtr buf) {
     /* First check if the SKI extension actually exists, otherwise we get a SHA1 hash of the cert */
     pCertExt = CertFindExtension(szOID_SUBJECT_KEY_IDENTIFIER, cert->pCertInfo->cExtension, cert->pCertInfo->rgExtension);
     if (pCertExt == NULL) {
-        xmlSecMSCngLastError("CertFindExtension", NULL);
+        /* no SKI extension: nothing to write */
         return (0);
     }
 

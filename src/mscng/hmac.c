@@ -58,7 +58,7 @@ static xmlSecTransformKlass xmlSecMSCng ## name ## Klass = {                    
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */     \
     xmlSecMSCngHmacSetKeyReq,                   /* xmlSecTransformSetKeyReqMethod setKeyReq; */     \
     xmlSecMSCngHmacSetKey,                      /* xmlSecTransformSetKeyMethod setKey; */           \
-    xmlSecMSCngHmacVerify,                      /* xmlSecTransformValidateMethod validate; */       \
+    xmlSecMSCngHmacVerify,                      /* xmlSecTransformVerifyMethod verify; */           \
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */ \
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */         \
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */           \
@@ -321,8 +321,12 @@ xmlSecMSCngHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 }
 
 static int
-xmlSecMSCngHmacVerify(xmlSecTransformPtr transform, const xmlSecByte* data,
-        xmlSecSize dataSize, xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
+xmlSecMSCngHmacVerify(
+    xmlSecTransformPtr transform,
+    const xmlSecByte* data,
+    xmlSecSize dataSize,
+    xmlSecTransformCtxPtr transformCtx
+) {
     xmlSecMSCngHmacCtxPtr ctx;
     int ret;
 
@@ -332,7 +336,7 @@ xmlSecMSCngHmacVerify(xmlSecTransformPtr transform, const xmlSecByte* data,
     xmlSecAssert2(transform->status == xmlSecTransformStatusFinished, -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(dataSize > 0, -1);
-    XMLSEC_UNREFERENCED(transformCtx);
+    xmlSecAssert2(transformCtx != NULL, -1);
 
     ctx = xmlSecMSCngHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);

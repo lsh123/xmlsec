@@ -14,11 +14,9 @@
 #include "globals.h"
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/base64.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/xmltree.h>
@@ -259,16 +257,8 @@ xmlSecMSCngKdfSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 /* convert PRF algorithm href to MSCng hash algo */
 static LPCWSTR
 xmlSecMSCngKdfGetHashAlgoFromHref(const xmlChar* href) {
-    /* use SHA256 by default */
-    if(href == NULL) {
-#ifndef XMLSEC_NO_SHA256
-        return(BCRYPT_SHA256_ALGORITHM);
-#else  /* XMLSEC_NO_SHA256 */
-        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
-            "SHA256 is disabled; href=%s", xmlSecErrorsSafeString(href));
-        return(NULL);
-#endif /* XMLSEC_NO_SHA256 */
-    } else
+    /* xmlSecTransformPbkdf2ParamsRead and xmlSecTransformHkdfParamsRead require a non-NULL PRF href */
+    xmlSecAssert2(href != NULL, NULL);
 
 #ifndef XMLSEC_NO_SHA1
     if(xmlStrcmp(href, xmlSecHrefHmacSha1) == 0) {

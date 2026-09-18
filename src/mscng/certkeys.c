@@ -357,7 +357,7 @@ xmlSecMSCngCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
 
     data = xmlSecMSCngKeyDataFromAlgorithm(pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId);
     if (data == NULL) {
-        xmlSecInternalError("xmlSecMSCngKeyDataAdoptCert", NULL);
+        xmlSecInternalError("xmlSecMSCngKeyDataFromAlgorithm", NULL);
         return(NULL);
     }
 
@@ -1601,10 +1601,6 @@ xmlSecMSCngKeyDataEcGetKlass(void) {
   *****************************************************************************/
 #ifndef XMLSEC_NO_DH
 
-/* Maximum DH prime (P) size in bytes. CNG DH keys are at most a few KB; this bound
- * is far above any real key and prevents DWORD overflow in the cbKey * 3 blob size. */
-#define XMLSEC_MSCNG_DH_MAX_P_SIZE (0x10000U)
-
 static int
 xmlSecMSCngKeyDataDhWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
                         xmlSecKeyValueDhPtr dhValue,
@@ -2428,7 +2424,7 @@ xmlSecMSCngAppKeyReadPrivKeyFromDer(const xmlSecByte* data, DWORD dataSize) {
     xmlSecAssert2(dataSize > 0, NULL);
 
 #ifndef XMLSEC_NO_DH
-{
+    {
         xmlSecKeyDataPtr res;
         res = xmlSecMSCngKeyDataDhReadFromPkcs8Der(data, dataSize);
         if(res != NULL) { return(res); }
@@ -2443,7 +2439,15 @@ xmlSecMSCngAppKeyReadPrivKeyFromDer(const xmlSecByte* data, DWORD dataSize) {
     }
 #endif /* XMLSEC_NO_XDH */
 
+#if defined(XMLSEC_NO_DH) && defined(XMLSEC_NO_XDH)
     xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "Failed to read a DH or XDH private key from DER format");
+#elif defined(XMLSEC_NO_DH)
+    xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "Failed to read an XDH private key from DER format");
+#elif defined(XMLSEC_NO_XDH)
+    xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "Failed to read a DH private key from DER format");
+#else
+    xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "Failed to read a DH or XDH private key from DER format");
+#endif
     return(NULL);
 }
 

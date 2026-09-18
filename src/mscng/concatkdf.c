@@ -190,16 +190,8 @@ xmlSecMSCngConcatKdfSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 /* convert digest href to MSCng hash algo */
 static LPCWSTR
 xmlSecMSCngConcatKdfGetDigestFromHref(const xmlChar* href) {
-    /* use SHA256 by default */
-    if(href == NULL) {
-#ifndef XMLSEC_NO_SHA256
-        return(BCRYPT_SHA256_ALGORITHM);
-#else  /* XMLSEC_NO_SHA256 */
-        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
-            "SHA256 is disabled; href=%s", xmlSecErrorsSafeString(href));
-        return(NULL);
-#endif /* XMLSEC_NO_SHA256 */
-    } else
+    /* xmlSecTransformConcatKdfParamsRead requires a non-NULL DigestMethod href */
+    xmlSecAssert2(href != NULL, NULL);
 
 #ifndef XMLSEC_NO_SHA1
     if(xmlStrcmp(href, xmlSecHrefSha1) == 0) {
@@ -373,7 +365,7 @@ xmlSecMSCngConcatKdfPerformKeyDerivation(
         goto done;
     }
     if (cbResultLength != cbOut) {
-        xmlSecInvalidSizeError("Derived key length doesn't match requested",
+        xmlSecInvalidSizeError("Derived key length doesn't match the requested",
             (xmlSecSize)cbResultLength, (xmlSecSize)cbOut, NULL);
         goto done;
     }

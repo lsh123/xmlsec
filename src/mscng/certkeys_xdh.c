@@ -115,6 +115,8 @@ xmlSecMSCngKeyDataDuplicateBCryptXdhPrivKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HA
     xmlSecAssert2(src != NULL, -1);
     xmlSecAssert2(dst != NULL, -1);
 
+    *dst = NULL;
+
     /* export X25519 private key blob */
     status = BCryptExportKey(src, NULL, BCRYPT_ECCPRIVATE_BLOB, NULL, 0, &cbPrivBlob, 0);
     if(status != STATUS_SUCCESS) {
@@ -499,7 +501,7 @@ xmlSecMSCngKeyDataXdhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLe
      * wire format, matching the public-import path above), but BCryptDeriveKey returned
      * it in big-endian (byte-reverse of the wire format).  Reverse to match the blob's
      * little-endian representation. */
-    xmlSecMSCngReverseCopy(pbPrivBlob + sizeof(BCRYPT_ECCKEY_BLOB), pubKeyU, 32);
+    xmlSecMSCngReverseCopy(pbPrivBlob + sizeof(BCRYPT_ECCKEY_BLOB), pubKeyU, XMLSEC_MSCNG_XDH_CBKEY_SIZE);
 
     /* Re-import with the correct public key */
     status = BCryptImportKeyPair(
@@ -580,6 +582,7 @@ xmlSecMSCngKeyDataCertGetXdhPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE
     xmlSecAssert2(spki != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
 
+    (*key) = NULL;
     if((spki->PublicKey.cbData == 0) || (spki->PublicKey.pbData == NULL)) {
         xmlSecInternalError("X25519 SPKI: PublicKey empty", NULL);
         return(-1);
@@ -590,17 +593,17 @@ xmlSecMSCngKeyDataCertGetXdhPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE
 
     /* The SPKI BIT STRING content (decoded by CryptDecodeObjectEx) may or may not
      * include the DER unused-bits prefix byte (0x00).  Skip it when present. */
-    if((keyBytesLen > 32) && (pKeyBytes[0] == 0x00)) {
+    if((keyBytesLen > XMLSEC_MSCNG_XDH_CBKEY_SIZE) && (pKeyBytes[0] == 0x00)) {
         pKeyBytes++;
         keyBytesLen--;
     }
-    if(keyBytesLen != 32) {
+    if(keyBytesLen != XMLSEC_MSCNG_XDH_CBKEY_SIZE) {
         xmlSecInternalError2("X25519 SPKI: PublicKey wrong size", NULL,
             "size=%u", (unsigned)keyBytesLen);
         return(-1);
     }
 
-    *key = xmlSecMSCngKeyDataXdhImportPublicKey(pKeyBytes, 32);
+    *key = xmlSecMSCngKeyDataXdhImportPublicKey(pKeyBytes, XMLSEC_MSCNG_XDH_CBKEY_SIZE);
     if(*key == NULL) {
         xmlSecInternalError("xmlSecMSCngKeyDataXdhImportPublicKey", NULL);
         return(-1);

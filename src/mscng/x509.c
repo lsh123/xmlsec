@@ -405,7 +405,7 @@ xmlSecMSCngVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xm
         return(0);
     }
 
-    /* lets find a cert we can verify */
+    /* let's find a cert we can verify */
     x509Store = xmlSecKeysMngrGetDataStore(keyInfoCtx->keysMngr, xmlSecMSCngX509StoreId);
     if(x509Store == NULL) {
         xmlSecInternalError("xmlSecKeysMngrGetDataStore", xmlSecKeyDataGetName(data));
@@ -481,7 +481,15 @@ xmlSecMSCngVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xm
 
     /* copy cert not before / not after times from the cert */
     ret = xmlSecMSCngX509CertGetTime(ctx->keyCert->pCertInfo->NotBefore, &(key->notValidBefore));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngX509CertGetTime", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
     ret = xmlSecMSCngX509CertGetTime(ctx->keyCert->pCertInfo->NotAfter, &(key->notValidAfter));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngX509CertGetTime", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
 
     /* THIS MUST BE THE LAST THING WE DO: add data to the key
      * if we do it sooner and fail later then both the caller and the key will free data

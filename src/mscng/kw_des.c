@@ -8,7 +8,7 @@
  */
 /**
  * @addtogroup xmlsec_mscng_crypto
- * @brief DES Key Transport transforms implementation for MSCng.
+ * @brief DES Key Wrap transforms implementation for MSCng.
  */
 #include "globals.h"
 
@@ -222,6 +222,7 @@ xmlSecMSCngKWDes3BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     DWORD dwBlockLen, dwBlockLenLen;
     xmlSecBuffer ivCopy;
     int ivCopyInitialized = 0;
+    int blobInitialized = 0;
     int ret;
     int res = -1;
 
@@ -245,6 +246,7 @@ xmlSecMSCngKWDes3BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         xmlSecInternalError("xmlSecBufferInitialize", NULL);
         goto done;
     }
+    blobInitialized = 1;
     blob.flags |= XMLSEC_BUFFER_FLAG_SECURE;
 
     status = BCryptOpenAlgorithmProvider(
@@ -254,6 +256,16 @@ xmlSecMSCngKWDes3BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptOpenAlgorithmProvider", NULL, status);
+        goto done;
+    }
+
+    status = BCryptSetProperty(hAlg,
+        BCRYPT_CHAINING_MODE,
+        (PUCHAR)BCRYPT_CHAIN_MODE_CBC,
+        sizeof(BCRYPT_CHAIN_MODE_CBC),
+        0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptSetProperty", NULL, status);
         goto done;
     }
 
@@ -362,6 +374,11 @@ xmlSecMSCngKWDes3BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         xmlSecMSCngNtError("BCryptEncrypt", NULL, status);
         goto done;
     }
+    if(cbData != dwInSize) {
+        xmlSecInternalError2("BCryptEncrypt output size", NULL,
+            "size=" XMLSEC_SIZE_FMT, (xmlSecSize)cbData);
+        goto done;
+    }
     XMLSEC_SAFE_CAST_ULONG_TO_SIZE(cbData, (*outWritten), goto done, NULL);
     res = 0;
 
@@ -374,7 +391,9 @@ done:
         BCryptDestroyKey(hKey);
     }
 
-    xmlSecBufferFinalize(&blob);
+    if (blobInitialized != 0) {
+        xmlSecBufferFinalize(&blob);
+    }
 
     if (pbKeyObject != NULL) {
         xmlSecMemCleanse(pbKeyObject, cbKeyObject);
@@ -407,6 +426,7 @@ xmlSecMSCngKWDes3BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     DWORD dwBlockLen, dwBlockLenLen;
     xmlSecBuffer ivCopy;
     int ivCopyInitialized = 0;
+    int blobInitialized = 0;
     int ret;
     int res = -1;
 
@@ -430,6 +450,7 @@ xmlSecMSCngKWDes3BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         xmlSecInternalError("xmlSecBufferInitialize", NULL);
         goto done;
     }
+    blobInitialized = 1;
     blob.flags |= XMLSEC_BUFFER_FLAG_SECURE;
 
     status = BCryptOpenAlgorithmProvider(
@@ -439,6 +460,16 @@ xmlSecMSCngKWDes3BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptOpenAlgorithmProvider", NULL, status);
+        goto done;
+    }
+
+    status = BCryptSetProperty(hAlg,
+        BCRYPT_CHAINING_MODE,
+        (PUCHAR)BCRYPT_CHAIN_MODE_CBC,
+        sizeof(BCRYPT_CHAIN_MODE_CBC),
+        0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptSetProperty", NULL, status);
         goto done;
     }
 
@@ -548,6 +579,11 @@ xmlSecMSCngKWDes3BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         xmlSecMSCngNtError("BCryptDecrypt", NULL, status);
         goto done;
     }
+    if(cbData != dwInSize) {
+        xmlSecInternalError2("BCryptDecrypt output size", NULL,
+            "size=" XMLSEC_SIZE_FMT, (xmlSecSize)cbData);
+        goto done;
+    }
     XMLSEC_SAFE_CAST_ULONG_TO_SIZE(cbData, (*outWritten), goto done, NULL);
     res = 0;
 
@@ -560,7 +596,9 @@ done:
         BCryptDestroyKey(hKey);
     }
 
-    xmlSecBufferFinalize(&blob);
+    if (blobInitialized != 0) {
+        xmlSecBufferFinalize(&blob);
+    }
 
     if (pbKeyObject != NULL) {
         xmlSecMemCleanse(pbKeyObject, cbKeyObject);

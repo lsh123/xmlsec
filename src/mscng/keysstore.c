@@ -15,15 +15,13 @@
 #include <string.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/bn.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
-#include <xmlsec/transforms.h>
 #include <xmlsec/xmltree.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/mscng/app.h>
-#include <xmlsec/mscng/crypto.h>
 #include <xmlsec/mscng/keysstore.h>
 #include <xmlsec/mscng/certkeys.h>
 #include <xmlsec/mscng/x509.h>
@@ -49,7 +47,12 @@
  * Helper: open a CERT_STORE_PROV_COLLECTION aggregating both the local
  * machine and current user system stores for the given store name (e.g. "MY").
  * Current user is added at priority 2 and therefore searched first; local
- * machine is added at priority 1 and searched second.
+ * machine is added at priority 1 and searched second. Per the
+ * CertAddStoreToCollection() documentation, dwPriority sets the store's
+ * priority level (zero is the lowest and is appended last) and the priority
+ * levels determine the search order, so the higher value (2) is searched
+ * before the lower one (1):
+ * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddstoretocollection
  * Opening either individual store is treated as a soft failure - a warning is
  * logged but the other store is still tried.  Returns 0 on success or -1 if
  * neither store could be opened.
@@ -221,6 +224,7 @@ xmlSecMSCngKeysStoreFinalize(xmlSecKeyStorePtr store) {
 
 static PCCERT_CONTEXT
 xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+#ifndef XMLSEC_NO_X509
     xmlSecMSCngKeysStoreCtx* ctx;
     PCCERT_CONTEXT cert = NULL;
     LPTSTR lptName = NULL;
@@ -260,7 +264,6 @@ xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name, xmlSe
             goto done;
         }
 
-        /* find cert based on friendly name */
         while (1) {
             LPCWSTR lpwFriendlyName;
 
@@ -308,11 +311,19 @@ done:
     }
 
     return(cert);
+#else  /* XMLSEC_NO_X509 */
+    /* X509-based certificate lookup is unavailable when X509 support is disabled */
+    XMLSEC_UNREFERENCED(store);
+    XMLSEC_UNREFERENCED(name);
+    XMLSEC_UNREFERENCED(keyInfoCtx);
+    return(NULL);
+#endif /* XMLSEC_NO_X509 */
 }
 
 
 static int
 xmlSecMSCngKeysStoreAddCertDataToKey(xmlSecKeyPtr key, PCCERT_CONTEXT cert) {
+#ifndef XMLSEC_NO_X509
     xmlSecKeyDataPtr x509Data = NULL;
     PCCERT_CONTEXT certTmp = NULL;
     int ret;
@@ -351,10 +362,16 @@ xmlSecMSCngKeysStoreAddCertDataToKey(xmlSecKeyPtr key, PCCERT_CONTEXT cert) {
         return(-1);
     }
     x509Data = NULL; /* owned by key */
-
     /* success */
     return(0);
+#else  /* XMLSEC_NO_X509 */
+    /* X509-based key data is unavailable when X509 support is disabled */
+    XMLSEC_UNREFERENCED(key);
+    XMLSEC_UNREFERENCED(cert);
+    return(-1);
+#endif /* XMLSEC_NO_X509 */
 }
+
 
 static int
 xmlSecMSCngKeysStoreSetKeyValueFromCert(xmlSecKeyPtr key, PCCERT_CONTEXT cert, xmlSecKeyReqPtr keyReq) {
@@ -541,6 +558,10 @@ xmlSecMSCngKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509Da
     xmlSecMSCngX509FindCertCtxFinalize(&findCertCtx);
     return(key);
 #else  /* XMLSEC_NO_X509 */
+    /* X509-based key lookup is unavailable when X509 support is disabled */
+    XMLSEC_UNREFERENCED(store);
+    XMLSEC_UNREFERENCED(x509Data);
+    XMLSEC_UNREFERENCED(keyInfoCtx);
     return(NULL);
 #endif /* XMLSEC_NO_X509 */
 }

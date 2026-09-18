@@ -37,10 +37,9 @@ xmlSecMSCngSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
 #endif /* XMLSEC_NO_AES */
 
 #ifndef XMLSEC_NO_CONCATKDF
-    if (klass == xmlSecMSCngKeyDataConcatKdfId) {
+    if(klass == xmlSecMSCngKeyDataConcatKdfId) {
         return(1);
-    }
-    else
+    } else
 #endif /* XMLSEC_NO_CONCATKDF */
 
 
@@ -57,17 +56,15 @@ xmlSecMSCngSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
 #endif /* XMLSEC_NO_HMAC */
 
 #ifndef XMLSEC_NO_PBKDF2
-    if (klass == xmlSecMSCngKeyDataPbkdf2Id) {
+    if(klass == xmlSecMSCngKeyDataPbkdf2Id) {
         return(1);
-    }
-    else
+    } else
 #endif /* XMLSEC_NO_PBKDF2 */
 
 #ifndef XMLSEC_NO_HKDF
-    if (klass == xmlSecMSCngKeyDataHkdfId) {
+    if(klass == xmlSecMSCngKeyDataHkdfId) {
         return(1);
-    }
-    else
+    } else
 #endif /* XMLSEC_NO_HKDF */
 
     {

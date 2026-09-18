@@ -28,7 +28,7 @@
 
 #ifndef XMLSEC_NO_XDH
 
-#define XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE 32
+#define XMLSEC_MSCNG_XDH_CBKEY_SIZE 32
 
 /**
  * @brief Imports an X25519 public key into a BCrypt handle.
@@ -47,12 +47,12 @@ xmlSecMSCngKeyDataXdhImportPublicKey(const xmlSecByte* pubKeyBytes, DWORD pubKey
     NTSTATUS status;
 
     xmlSecAssert2(pubKeyBytes != NULL, 0);
-    xmlSecAssert2(pubKeyLen == XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE, 0);
+    xmlSecAssert2(pubKeyLen == XMLSEC_MSCNG_XDH_CBKEY_SIZE, 0);
 
     /* Allocate BCRYPT_ECCKEY_BLOB header + u-coord (32) + v-coord (32) = 72 bytes.
      * BCrypt X25519 public blobs use the 2*cbKey layout (u, v) matching BCryptExportKey output.
      * The v-coordinate is unused for Montgomery curves and stays zero. */
-    cbBlob = sizeof(BCRYPT_ECCKEY_BLOB) + (2 * XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE);   /* header + u(32) + v(32) */
+    cbBlob = sizeof(BCRYPT_ECCKEY_BLOB) + (2 * XMLSEC_MSCNG_XDH_CBKEY_SIZE);   /* header + u(32) + v(32) */
     pbBlob = (PUCHAR)xmlMalloc(cbBlob);
     if(pbBlob == NULL) {
         xmlSecMallocError(cbBlob, NULL);
@@ -62,10 +62,10 @@ xmlSecMSCngKeyDataXdhImportPublicKey(const xmlSecByte* pubKeyBytes, DWORD pubKey
 
     pBlob = (BCRYPT_ECCKEY_BLOB*)pbBlob;
     pBlob->dwMagic = BCRYPT_ECDH_PUBLIC_GENERIC_MAGIC;
-    pBlob->cbKey = XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE;
+    pBlob->cbKey = XMLSEC_MSCNG_XDH_CBKEY_SIZE;
     /* BCRYPT_ECCPUBLIC_BLOB stores the u-coordinate in the same byte order as the
      * standard X25519 wire format (little-endian per RFC 7748/8410).  Copy as-is. */
-    memcpy(pbBlob + sizeof(BCRYPT_ECCKEY_BLOB), pubKeyBytes, XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE); /* u-coord at offset 8; v stays zero */
+    memcpy(pbBlob + sizeof(BCRYPT_ECCKEY_BLOB), pubKeyBytes, XMLSEC_MSCNG_XDH_CBKEY_SIZE); /* u-coord at offset 8; v stays zero */
 
     /* Open ECDH algorithm provider and set Curve25519 */
     status = BCryptOpenAlgorithmProvider(&hAlg, BCRYPT_ECDH_ALGORITHM, NULL, 0);
@@ -198,7 +198,7 @@ xmlSecMSCngXdhBuildPrivBlobAndImport(BCRYPT_ALG_HANDLE hAlg, const xmlSecByte* p
      * Montgomery curve and v is unused (kept as zero).  The correct public key u-coordinate is
      * derived and filled in before the final re-import; BCRYPT_NO_KEY_VALIDATION lets BCrypt accept
      * any placeholder public key for the temporary first import. */
-    cb = sizeof(BCRYPT_ECCKEY_BLOB) + 3 * XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE;   /* header + u(32) + v(32) + d(32) */
+    cb = sizeof(BCRYPT_ECCKEY_BLOB) + 3 * XMLSEC_MSCNG_XDH_CBKEY_SIZE;   /* header + u(32) + v(32) + d(32) */
     pb = (PUCHAR)xmlMalloc(cb);
     if(pb == NULL) {
         xmlSecMallocError(cb, NULL);
@@ -209,13 +209,13 @@ xmlSecMSCngXdhBuildPrivBlobAndImport(BCRYPT_ALG_HANDLE hAlg, const xmlSecByte* p
     /* header */
     pHdr = (BCRYPT_ECCKEY_BLOB*)pb;
     pHdr->dwMagic = BCRYPT_ECDH_PRIVATE_GENERIC_MAGIC;
-    pHdr->cbKey = XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE;
+    pHdr->cbKey = XMLSEC_MSCNG_XDH_CBKEY_SIZE;
 
     /* u-coord: base point u=9 (LE) as placeholder for u-coord */
     pb[sizeof(BCRYPT_ECCKEY_BLOB)] = 0x09;
     /* v-coord (offset 40) stays zero (unused for Montgomery curve) */
     /* private scalar d */
-    memcpy(pb + sizeof(BCRYPT_ECCKEY_BLOB) + 2 * XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE, pScalar, XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE);
+    memcpy(pb + sizeof(BCRYPT_ECCKEY_BLOB) + 2 * XMLSEC_MSCNG_XDH_CBKEY_SIZE, pScalar, XMLSEC_MSCNG_XDH_CBKEY_SIZE);
 
     /* Import private key with a placeholder public key (base point u=9); skip public
      * key validation so BCrypt accepts the blob.
@@ -266,7 +266,7 @@ xmlSecMSCngXdhDerivePubKeyU(BCRYPT_ALG_HANDLE hAlg, BCRYPT_KEY_HANDLE hPrivKeyTe
     BCRYPT_KEY_HANDLE hBasePoint = NULL;
     BCRYPT_SECRET_HANDLE hSelfSecret = NULL;
     BCRYPT_ECCKEY_BLOB* pHdr;
-    xmlSecByte basePointBlob[sizeof(BCRYPT_ECCKEY_BLOB) + 2 * XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE]; /* header + u(32) + v(32) */
+    xmlSecByte basePointBlob[sizeof(BCRYPT_ECCKEY_BLOB) + 2 * XMLSEC_MSCNG_XDH_CBKEY_SIZE]; /* header + u(32) + v(32) */
     DWORD cbDerived = 0;
     NTSTATUS status;
     int res = -1;
@@ -274,7 +274,7 @@ xmlSecMSCngXdhDerivePubKeyU(BCRYPT_ALG_HANDLE hAlg, BCRYPT_KEY_HANDLE hPrivKeyTe
     xmlSecAssert2(hAlg != NULL, -1);
     xmlSecAssert2(hPrivKeyTemp != NULL, -1);
     xmlSecAssert2(pubKeyU != NULL, -1);
-    xmlSecAssert2(pubKeyULen == XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE, -1);
+    xmlSecAssert2(pubKeyULen == XMLSEC_MSCNG_XDH_CBKEY_SIZE, -1);
 
     /* Build the Curve25519 base point (u=9 in little-endian: first byte 0x09, rest 0x00). */
     memset(basePointBlob, 0, sizeof(basePointBlob));
@@ -282,7 +282,7 @@ xmlSecMSCngXdhDerivePubKeyU(BCRYPT_ALG_HANDLE hAlg, BCRYPT_KEY_HANDLE hPrivKeyTe
     /* header */
     pHdr = (BCRYPT_ECCKEY_BLOB*)basePointBlob;
     pHdr->dwMagic = BCRYPT_ECDH_PUBLIC_GENERIC_MAGIC;
-    pHdr->cbKey = XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE;
+    pHdr->cbKey = XMLSEC_MSCNG_XDH_CBKEY_SIZE;
 
     /* base point u = 9 (little-endian); v stays zero */
     basePointBlob[sizeof(BCRYPT_ECCKEY_BLOB)] = 0x09;
@@ -423,7 +423,7 @@ xmlSecMSCngKeyDataXdhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLe
     BCRYPT_KEY_HANDLE hPubKey = NULL;
     PUCHAR pbPrivBlob = NULL;
     DWORD cbPrivBlob = 0;
-    xmlSecByte pubKeyU[XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE];             /* derived public key u-coordinate (LE) */
+    xmlSecByte pubKeyU[XMLSEC_MSCNG_XDH_CBKEY_SIZE];             /* derived public key u-coordinate (BE) */
     NTSTATUS status;
     int ret;
 
@@ -452,8 +452,8 @@ xmlSecMSCngKeyDataXdhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLe
     if(pki->PrivateKey.cbData < 2 ||
        pki->PrivateKey.pbData == NULL ||
        pki->PrivateKey.pbData[0] != 0x04 /* OCTET STRING */ ||
-       pki->PrivateKey.pbData[1] != XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE   /* length */ ||
-       pki->PrivateKey.cbData < (XMLSEC_MSCNG_XDH_PRIV_CBKEY_SIZE + 2)
+       pki->PrivateKey.pbData[1] != XMLSEC_MSCNG_XDH_CBKEY_SIZE   /* length */ ||
+        pki->PrivateKey.cbData != (XMLSEC_MSCNG_XDH_CBKEY_SIZE + 2)
     ) {
         xmlSecInternalError("X25519 PKCS8: malformed or non-32-byte CurvePrivateKey", NULL);
         goto done;
@@ -588,8 +588,8 @@ xmlSecMSCngKeyDataCertGetXdhPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE
     pKeyBytes   = spki->PublicKey.pbData;
     keyBytesLen = spki->PublicKey.cbData;
 
-    /* CertCreateCertificateContext may or may not include the DER BIT STRING
-     * unused-bits prefix byte (0x00).  Skip it when present. */
+    /* The SPKI BIT STRING content (decoded by CryptDecodeObjectEx) may or may not
+     * include the DER unused-bits prefix byte (0x00).  Skip it when present. */
     if((keyBytesLen > 32) && (pKeyBytes[0] == 0x00)) {
         pKeyBytes++;
         keyBytesLen--;

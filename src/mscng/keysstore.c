@@ -34,9 +34,10 @@
 #define XMLSEC_MSCNG_APP_DEFAULT_CURRENT_USER_CERT_STORE_NAME   TEXT("MY")
 #define XMLSEC_MSCNG_APP_DEFAULT_LOCAL_MACHINE_CERT_STORE_NAME  TEXT("ROOT")
 
-/* CERT_STORE_PROV_SYSTEM is always CERT_STORE_PROV_SYSTEM_W and unconditionally
- * expects wchar_t* for pvPara.  In a non-Unicode (ANSI) build LPCTSTR is char*,
- * so use the TCHAR-correct variant to avoid silently passing the wrong type. */
+/* CERT_STORE_PROV_SYSTEM is a TCHAR-based macro: it expands to
+ * CERT_STORE_PROV_SYSTEM_W in Unicode builds and CERT_STORE_PROV_SYSTEM_A in
+ * ANSI builds.  In a non-Unicode (ANSI) build LPCTSTR is char*, so select the
+ * TCHAR-correct variant explicitly to avoid silently passing the wrong type. */
 #ifdef UNICODE
 #define XMLSEC_MSCNG_CERT_STORE_PROV_SYSTEM CERT_STORE_PROV_SYSTEM_W
 #else  /* UNICODE */
@@ -242,12 +243,10 @@ xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name, xmlSe
     }
 
     /* find cert based on subject */
-    if (cert == NULL) {
-        cert = xmlSecMSCngX509FindCertBySubject(
-            ctx->certStoreCtx.hCollection,
-            lptName,
-            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING);
-    }
+    cert = xmlSecMSCngX509FindCertBySubject(
+        ctx->certStoreCtx.hCollection,
+        lptName,
+        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING);
 
     /* find cert based on friendly name */
     if(cert == NULL) {
@@ -278,16 +277,16 @@ xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name, xmlSe
             }
 
             if(lstrcmpW(lpwName, lpwFriendlyName) == 0) {
-              cert = pCertCtxIter;
-              xmlFree((void*)lpwFriendlyName);
-              break;
+                cert = pCertCtxIter;
+                xmlFree((void*)lpwFriendlyName);
+                break;
             }
 
             xmlFree((void*)lpwFriendlyName);
         }
     }
 
-    /* find cert based on part of the name */
+    /* find cert based on the full subject string (case-insensitive) */
     if(cert == NULL) {
         cert = CertFindCertificateInStore(
             ctx->certStoreCtx.hCollection,
@@ -342,7 +341,7 @@ xmlSecMSCngKeysStoreAddCertDataToKey(xmlSecKeyPtr key, PCCERT_CONTEXT cert) {
         xmlSecKeyDataDestroy(x509Data);
         return(-1);
     }
-    certTmp = NULL; /* owned by x509Data*/
+    certTmp = NULL; /* owned by x509Data */
 
     /* lastly, add x509 data to the key */
     ret = xmlSecKeyAdoptData(key, x509Data);
@@ -389,7 +388,7 @@ xmlSecMSCngKeysStoreSetKeyValueFromCert(xmlSecKeyPtr key, PCCERT_CONTEXT cert, x
         xmlSecKeyDataDestroy(keyValue);
         return(-1);
     }
-    keyValue = NULL; /* owned by key  now */
+    keyValue = NULL; /* owned by key now */
 
     /* success */
     return(0);

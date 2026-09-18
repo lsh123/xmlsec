@@ -950,7 +950,7 @@ done:
         CertFreeCertificateChain(pChainContext);
     }
     if(chainStore != NULL) {
-        ret = CertCloseStore(chainStore, 0);
+        ret = CertCloseStore(chainStore, XMLSEC_CLOSE_STORE_FLAG);
         if(ret == FALSE) {
             xmlSecMSCngLastError("CertCloseStore", NULL);
             /* ignore error */
@@ -1470,6 +1470,7 @@ xmlSecMSCngX509FindCertByIssuerNameAndSerial(HCERTSTORE store, LPTSTR wcIssuerNa
         }
     }
 
+    /* just in case, make sure to cleanup */
     if (bdata != NULL) {
         xmlFree(bdata);
     }
@@ -1750,7 +1751,7 @@ xmlSecMSCngX509FindCertBySubject(HCERTSTORE store, LPTSTR wcSubject,
         DWORD dwCertEncodingType) {
     PCCERT_CONTEXT res = NULL;
     CERT_NAME_BLOB cnb;
-    BYTE* bdata;
+    BYTE* bdata = NULL;
     DWORD len;
 
     xmlSecAssert2(store != NULL, NULL);
@@ -1773,6 +1774,7 @@ xmlSecMSCngX509FindCertBySubject(HCERTSTORE store, LPTSTR wcSubject,
                         &cnb,
                         NULL);
             xmlFree(bdata);
+            bdata = NULL;
         }
     }
 
@@ -1793,6 +1795,7 @@ xmlSecMSCngX509FindCertBySubject(HCERTSTORE store, LPTSTR wcSubject,
                         &cnb,
                         NULL);
             xmlFree(bdata);
+            bdata = NULL;
         }
     }
 
@@ -1813,6 +1816,7 @@ xmlSecMSCngX509FindCertBySubject(HCERTSTORE store, LPTSTR wcSubject,
                         &cnb,
                         NULL);
             xmlFree(bdata);
+            bdata = NULL;
         }
     }
 
@@ -1833,9 +1837,14 @@ xmlSecMSCngX509FindCertBySubject(HCERTSTORE store, LPTSTR wcSubject,
                         &cnb,
                         NULL);
             xmlFree(bdata);
+            bdata = NULL;
         }
     }
 
+    /* just in case, make sure to cleanup */
+    if (bdata != NULL) {
+        xmlFree(bdata);
+    }
     return(res);
 }
 

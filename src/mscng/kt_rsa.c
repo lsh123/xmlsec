@@ -181,7 +181,7 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
     DWORD dwInSize, dwOutSize, dwOutLen;
     xmlSecByte * outBuf;
     xmlSecByte * inBuf;
-    SECURITY_STATUS securityStatus;
+    NTSTATUS securityStatus;
     NTSTATUS status;
     int ret;
 
@@ -286,6 +286,7 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
             oaepParamsSize = xmlSecBufferGetSize(&(ctx->oaepParams));
             XMLSEC_SAFE_CAST_SIZE_TO_ULONG(oaepParamsSize, paddingInfo.cbLabel, return(-1), xmlSecTransformGetName(transform));
 
+            /* see https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/nf-bcrypt-bcryptencrypt */
             status = BCryptEncrypt(hPubKey,
                 inBuf,
                 dwInSize,
@@ -334,7 +335,7 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
                 dwOutSize,
                 &dwOutLen,
                 NCRYPT_PAD_PKCS1_FLAG);
-            if(securityStatus != ERROR_SUCCESS) {
+            if(securityStatus != STATUS_SUCCESS) {
                 xmlSecMSCngNtError("NCryptDecrypt",
                     xmlSecTransformGetName(transform), securityStatus);
                 return(-1);
@@ -369,7 +370,7 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
                 dwOutSize,
                 &dwOutLen,
                 NCRYPT_PAD_OAEP_FLAG);
-            if(securityStatus != ERROR_SUCCESS) {
+            if(securityStatus != STATUS_SUCCESS) {
                 xmlSecMSCngNtError("NCryptDecrypt",
                     xmlSecTransformGetName(transform), securityStatus);
                 return(-1);

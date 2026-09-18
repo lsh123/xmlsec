@@ -195,12 +195,12 @@ static void xmlSecMSCngDigestFinalize(xmlSecTransformPtr transform) {
     ctx = xmlSecMSCngDigestGetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
-    if(ctx->hAlg != 0) {
-        BCryptCloseAlgorithmProvider(ctx->hAlg, 0);
-    }
-
     if(ctx->hHash != 0) {
         BCryptDestroyHash(ctx->hHash);
+    }
+
+    if(ctx->hAlg != 0) {
+        BCryptCloseAlgorithmProvider(ctx->hAlg, 0);
     }
 
     if(ctx->pbHashObject != NULL) {

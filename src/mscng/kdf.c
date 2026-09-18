@@ -256,16 +256,9 @@ xmlSecMSCngKdfSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 }
 
 
-/******************************************************************************
- *
- * PBKDF2 specific functions
- *
-  *****************************************************************************/
-#ifndef XMLSEC_NO_PBKDF2
-
 /* convert PRF algorithm href to MSCng hash algo */
 static LPCWSTR
-xmlSecMSCngPbkdf2GetHashAlgoFromHref(const xmlChar* href) {
+xmlSecMSCngKdfGetHashAlgoFromHref(const xmlChar* href) {
     /* use SHA256 by default */
     if(href == NULL) {
 #ifndef XMLSEC_NO_SHA256
@@ -314,6 +307,14 @@ xmlSecMSCngPbkdf2GetHashAlgoFromHref(const xmlChar* href) {
     }
 }
 
+
+/******************************************************************************
+ *
+ * PBKDF2 specific functions
+ *
+  *****************************************************************************/
+#ifndef XMLSEC_NO_PBKDF2
+
 static int
 xmlSecMSCngPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
                           xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
@@ -349,9 +350,9 @@ xmlSecMSCngPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     }
 
     /* set hash algorithm */
-    ctx->pszAlgId = xmlSecMSCngPbkdf2GetHashAlgoFromHref(ctx->pbkdf2Params.prfAlgorithmHref);
+    ctx->pszAlgId = xmlSecMSCngKdfGetHashAlgoFromHref(ctx->pbkdf2Params.prfAlgorithmHref);
     if(ctx->pszAlgId == NULL) {
-        xmlSecInternalError("xmlSecMSCngPbkdf2GetHashAlgoFromHref", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecMSCngKdfGetHashAlgoFromHref", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -387,6 +388,8 @@ xmlSecMSCngPbkdf2PerformKeyDerivation(
     paramBufferPBKDF2[0].cbBuffer = cbSalt;
     paramBufferPBKDF2[0].BufferType = KDF_SALT;
     paramBufferPBKDF2[0].pvBuffer = pbSalt;
+    /* The buffer is a KDF parameter that contains the ULONGLONG to use as the Iteration Count
+     * parameter to PBKDF2 (https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/ns-bcrypt-bcryptbuffer) */
     paramBufferPBKDF2[1].cbBuffer = sizeof(cbIterationCount);
     paramBufferPBKDF2[1].BufferType = KDF_ITERATION_COUNT;
     paramBufferPBKDF2[1].pvBuffer = (PBYTE)&cbIterationCount;
@@ -523,57 +526,6 @@ xmlSecMSCngPbkdf2Derive(xmlSecMSCngKdfCtxPtr ctx, xmlSecBufferPtr out) {
   *****************************************************************************/
 #ifndef XMLSEC_NO_HKDF
 
-/* convert PRF algorithm href to MSCng hash algo */
-static LPCWSTR
-xmlSecMSCngHkdfGetHashAlgoFromHref(const xmlChar* href) {
-    /* use SHA256 by default */
-    if(href == NULL) {
-#ifndef XMLSEC_NO_SHA256
-        return(BCRYPT_SHA256_ALGORITHM);
-#else  /* XMLSEC_NO_SHA256 */
-        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
-            "SHA256 is disabled; href=%s", xmlSecErrorsSafeString(href));
-        return(NULL);
-#endif /* XMLSEC_NO_SHA256 */
-    } else
-
-#ifndef XMLSEC_NO_SHA1
-    if(xmlStrcmp(href, xmlSecHrefHmacSha1) == 0) {
-        return(BCRYPT_SHA1_ALGORITHM);
-    } else
-#endif /* XMLSEC_NO_SHA1 */
-
-#ifndef XMLSEC_NO_SHA224
-    if(xmlStrcmp(href, xmlSecHrefHmacSha224) == 0) {
-        return(BCRYPT_SHA224_ALGORITHM);
-    } else
-#endif /* XMLSEC_NO_SHA224 */
-
-#ifndef XMLSEC_NO_SHA256
-    if(xmlStrcmp(href, xmlSecHrefHmacSha256) == 0) {
-        return(BCRYPT_SHA256_ALGORITHM);
-    } else
-#endif /* XMLSEC_NO_SHA256 */
-
-#ifndef XMLSEC_NO_SHA384
-    if(xmlStrcmp(href, xmlSecHrefHmacSha384) == 0) {
-        return(BCRYPT_SHA384_ALGORITHM);
-    } else
-#endif /* XMLSEC_NO_SHA384 */
-
-#ifndef XMLSEC_NO_SHA512
-    if(xmlStrcmp(href, xmlSecHrefHmacSha512) == 0) {
-        return(BCRYPT_SHA512_ALGORITHM);
-    } else
-#endif /* XMLSEC_NO_SHA512 */
-
-    {
-        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
-            "href=%s", xmlSecErrorsSafeString(href));
-        return(NULL);
-    }
-}
-
 static int
 xmlSecMSCngHkdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
                         xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
@@ -609,9 +561,9 @@ xmlSecMSCngHkdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     }
 
     /* set hash algorithm */
-    ctx->pszAlgId = xmlSecMSCngHkdfGetHashAlgoFromHref(ctx->hkdfParams.prfAlgorithmHref);
+    ctx->pszAlgId = xmlSecMSCngKdfGetHashAlgoFromHref(ctx->hkdfParams.prfAlgorithmHref);
     if(ctx->pszAlgId == NULL) {
-        xmlSecInternalError("xmlSecMSCngHkdfGetHashAlgoFromHref", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecMSCngKdfGetHashAlgoFromHref", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -904,7 +856,7 @@ xmlSecMSCngKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
 
 #ifndef XMLSEC_NO_PBKDF2
         if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformPbkdf2Id)) {
-            if((ctx->pbkdf2Params.keyLength > 0) && (ctx->pbkdf2Params.keyLength != transform->expectedOutputSize)){
+            if((ctx->pbkdf2Params.keyLength > 0) && (ctx->pbkdf2Params.keyLength != transform->expectedOutputSize)) {
                 xmlSecInvalidSizeError("Output KDF size doesn't match the expected",
                     transform->expectedOutputSize, ctx->pbkdf2Params.keyLength, xmlSecTransformGetName(transform));
                 return(-1);
@@ -922,7 +874,7 @@ xmlSecMSCngKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
 
 #ifndef XMLSEC_NO_HKDF
         if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformHkdfId)) {
-            if((ctx->hkdfParams.keyLength > 0) && (ctx->hkdfParams.keyLength != transform->expectedOutputSize)){
+            if((ctx->hkdfParams.keyLength > 0) && (ctx->hkdfParams.keyLength != transform->expectedOutputSize)) {
                 xmlSecInvalidSizeError("Output KDF size doesn't match the expected",
                     transform->expectedOutputSize, ctx->hkdfParams.keyLength, xmlSecTransformGetName(transform));
                 return(-1);

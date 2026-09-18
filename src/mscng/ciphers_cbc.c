@@ -697,10 +697,9 @@ xmlSecMSCngCbcBlockCipherCtxFinal(xmlSecMSCngCbcBlockCipherCtxPtr ctx,
     }
 
     if(encrypt == 0) {
-        /* check padding: only the final padding byte is range-checked; the remaining
-         * padding-1 bytes are not verified to equal the padding length as PKCS#5/PKCS#7
-         * requires. This is a project-wide design choice, consistent with all other
-         * backends (mscrypto/ciphers.c, nss/ciphers_cbc.c, gcrypt/ciphers.c). */
+        /* check padding: only the final padding byte is range-checked since
+         * the XML Encryption spec (https://www.w3.org/TR/xmlenc-core1/#sec-Padding)
+         * doesn't follow PKCS#5/PKCS#7  padding. */
         if((outBuf[blockSize - 1] == 0) || (inSize < outBuf[blockSize - 1])) {
             xmlSecInvalidSizeLessThanError("Input data padding", inSize, outBuf[blockSize - 1], cipherName);
             return(-1);

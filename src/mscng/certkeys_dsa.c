@@ -138,10 +138,6 @@ xmlSecMSCngKeyDataCertGetDsaPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE
     if((pSize <= XMLSEC_MSCNG_DSA_V1_MAX_P_SIZE) && (qBlobSize == XMLSEC_MSCNG_DSA_MAX_Q_SIZE)) {
         /* V1: BCRYPT_DSA_KEY_BLOB for keys up to 1024-bit (128 bytes)
          * layout: header + p[cbKey] + g[cbKey] + y[cbKey] */
-        if(pSize > XMLSEC_MSCNG_DSA_MAX_P_SIZE) {
-            xmlSecInvalidSizeMoreThanError("DSA P size", (xmlSecSize)pSize, (xmlSecSize)XMLSEC_MSCNG_DSA_MAX_P_SIZE, NULL);
-            goto done;
-        }
         blobSize = (DWORD)sizeof(BCRYPT_DSA_KEY_BLOB) + pSize * 3U;
         blobData = (BYTE*)LocalAlloc(LMEM_ZEROINIT, blobSize);
         if(blobData == NULL) {
@@ -169,10 +165,6 @@ xmlSecMSCngKeyDataCertGetDsaPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE
 #if XMLSEC_MSCNG_HAVE_DSA_V2
         /* V2: BCRYPT_DSA_KEY_BLOB_V2 for keys > 1024-bit (2048/3072-bit)
          * layout: header + seed[cbGroupSize] + q[cbGroupSize] + p[cbKey] + g[cbKey] + y[cbKey] */
-        if(qBlobSize > XMLSEC_MSCNG_DSA_V2_Q_SIZE) {
-            xmlSecInvalidSizeMoreThanError("DSA Q size", (xmlSecSize)qBlobSize, (xmlSecSize)XMLSEC_MSCNG_DSA_V2_Q_SIZE, NULL);
-            goto done;
-        }
         if(pSize > XMLSEC_MSCNG_DSA_MAX_P_SIZE) {
             xmlSecInvalidSizeMoreThanError("DSA P size", (xmlSecSize)pSize, (xmlSecSize)XMLSEC_MSCNG_DSA_MAX_P_SIZE, NULL);
             goto done;
@@ -186,6 +178,7 @@ xmlSecMSCngKeyDataCertGetDsaPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE
         dsakey2 = (BCRYPT_DSA_KEY_BLOB_V2*)blobData;
         dsakey2->dwMagic = BCRYPT_DSA_PUBLIC_MAGIC_V2;
         dsakey2->cbKey = pSize;
+        /* XML Digital Signature (https://www.w3.org/2008/xmlsec/Drafts/xmldsig-core-11/#sec-DSA) doesn't support DSAwithSHA224 */
         dsakey2->hashAlgorithm = (qBlobSize == XMLSEC_MSCNG_DSA_V2_Q_SIZE) ? DSA_HASH_ALGORITHM_SHA256 : DSA_HASH_ALGORITHM_SHA1;
         dsakey2->standardVersion = DSA_FIPS186_3;
         dsakey2->cbSeedLength = qBlobSize;
@@ -529,6 +522,7 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         dsakey2 = (BCRYPT_DSA_KEY_BLOB_V2*)blobData;
         dsakey2->dwMagic = BCRYPT_DSA_PUBLIC_MAGIC_V2;
         XMLSEC_SAFE_CAST_SIZE_TO_UINT(pSize, dsakey2->cbKey, goto done, NULL);
+        /* XML Digital Signature (https://www.w3.org/2008/xmlsec/Drafts/xmldsig-core-11/#sec-DSA) doesn't support DSAwithSHA224 */
         dsakey2->hashAlgorithm = (qBlobSize == XMLSEC_MSCNG_DSA_V2_Q_SIZE) ? DSA_HASH_ALGORITHM_SHA256 : DSA_HASH_ALGORITHM_SHA1;
         dsakey2->standardVersion = DSA_FIPS186_3;
         XMLSEC_SAFE_CAST_SIZE_TO_UINT(qBlobSize, dwQLen, goto done, NULL);
@@ -720,7 +714,7 @@ xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDsaPtr 
         stripped = xmlSecMSCngDsaStripLeadingZeros((const xmlSecByte*)dsakey->q, sizeof(dsakey->q), &strippedSize);
         ret = xmlSecBufferSetData(&(dsaValue->q), stripped, strippedSize);
         if (ret < 0) {
-            xmlSecInternalError2("xmlSecBufferSetData(q)", NULL, "keyLen=%lu", dsakey->cbKey);
+            xmlSecInternalError2("xmlSecBufferSetData(q)", NULL, "qLen=%lu", (unsigned long)sizeof(dsakey->q));
             goto done;
         }
 

@@ -981,7 +981,7 @@ xmlSecMSCngUnixTimeToFileTime(time_t in, LPFILETIME out) {
 
 /**
  * @brief Verifies @p cert.
- * @param ctx the pointer to X509 certificate context store klass.
+ * @param ctx the pointer to the X509 store data context.
  * @param cert the certificate to verify.
  * @param certStore the untrusted certificates stack.
  * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
@@ -1358,7 +1358,7 @@ xmlSecMSCngCertStrToName(DWORD dwCertEncodingType, LPTSTR pszX500, DWORD dwStrTy
         xmlSecMallocError(sizeof(TCHAR) * ((*len) + 1), NULL);
         return(NULL);
     }
-    memset(str, 0, (*len) + 1);
+    memset(str, 0, sizeof(TCHAR) * ((*len) + 1));
 
     if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType,
                         NULL, str, len, NULL)) {
@@ -1373,7 +1373,7 @@ xmlSecMSCngCertStrToName(DWORD dwCertEncodingType, LPTSTR pszX500, DWORD dwStrTy
 static PCCERT_CONTEXT
 xmlSecMSCngX509FindCertByIssuerNameAndSerial(HCERTSTORE store, LPTSTR wcIssuerName, xmlSecBnPtr issuerSerialBn, DWORD dwCertEncodingType) {
     PCCERT_CONTEXT res = NULL;
-    CERT_INFO certInfo;
+    CERT_INFO certInfo = {0};
     BYTE* bdata = NULL;
     xmlSecSize issuerSerialSize;
     DWORD len;

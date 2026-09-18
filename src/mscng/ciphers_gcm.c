@@ -483,7 +483,8 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
         /* remove nonce from input */
         ret = xmlSecBufferRemoveHead(in, xmlSecMSCngAesGcmNonceLengthInBytes);
         if (ret < 0) {
-            xmlSecInternalError("xmlSecBufferRemoveHead(xmlSecMSCngAesGcmNonceLengthInBytes)", cipherName);
+            xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName,
+                "size=" XMLSEC_SIZE_FMT, (xmlSecSize)xmlSecMSCngAesGcmNonceLengthInBytes);
             return(-1);
         }
     }
@@ -561,7 +562,7 @@ xmlSecMSCngGcmBlockCipherCtxUpdate(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
             return(-1);
         }
 
-        /* check if we really have encrypted the numbers of bytes that we
+        /* check if we really have encrypted the number of bytes that we
         * requested */
         if(outLen != inLen) {
             xmlSecInternalError3("BCryptEncrypt", cipherName,
@@ -586,7 +587,7 @@ xmlSecMSCngGcmBlockCipherCtxUpdate(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
             return(-1);
         }
 
-        /* check if we really have decrypted the numbers of bytes that we
+        /* check if we really have decrypted the number of bytes that we
         * requested */
         if(outLen != inLen) {
             xmlSecInternalError3("BCryptDecrypt", cipherName,
@@ -674,7 +675,7 @@ xmlSecMSCngGcmBlockCipherCtxFinal(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
             return(-1);
         }
 
-        /* check if we really have encrypted the numbers of bytes that we
+        /* check if we really have encrypted the number of bytes that we
         * requested */
         if(dwCLen != dwInSize) {
             xmlSecInternalError3("BCryptEncrypt", cipherName,
@@ -698,7 +699,8 @@ xmlSecMSCngGcmBlockCipherCtxFinal(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
         /* remove the tag from the buffer */
         ret = xmlSecBufferRemoveTail(in, xmlSecMSCngAesGcmTagLengthInBytes);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecBufferRemoveTail(xmlSecMSCngAesGcmTagLengthInBytes)", cipherName);
+            xmlSecInternalError2("xmlSecBufferRemoveTail", cipherName,
+                "size=" XMLSEC_SIZE_FMT, (xmlSecSize)xmlSecMSCngAesGcmTagLengthInBytes);
             return(-1);
         }
         inBuf = xmlSecBufferGetData(in);
@@ -736,7 +738,7 @@ xmlSecMSCngGcmBlockCipherCtxFinal(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
             return(-1);
         }
 
-        /* check if we really have decrypted the numbers of bytes that we
+        /* check if we really have decrypted the number of bytes that we
         * requested */
         if(dwCLen != dwInSize) {
             xmlSecInternalError3("BCryptDecrypt", cipherName,

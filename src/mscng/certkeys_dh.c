@@ -146,6 +146,7 @@ xmlSecMSCngDhParseDhParameters(const xmlSecByte* params, DWORD paramsLen,
     const xmlSecByte** ppQ, DWORD* pQLen)
 {
     const xmlSecByte* end = params + paramsLen;
+    const xmlSecByte* paramsEnd = end;
     const xmlSecByte* seq;
     const xmlSecByte* next;
     DWORD seqLen;
@@ -168,6 +169,10 @@ xmlSecMSCngDhParseDhParameters(const xmlSecByte* params, DWORD paramsLen,
         return(-1);
     }
     end = seq + seqLen;
+    if(end < paramsEnd) {
+        xmlSecInvalidSizeError("DH parameters trailing bytes", (xmlSecSize)(paramsEnd - end), (xmlSecSize)0, NULL);
+        return(-1);
+    }
 
     *ppP = xmlSecMSCngDerDecodeInteger(seq, end, pPLen);
     if(*ppP == NULL) {
@@ -208,7 +213,7 @@ xmlSecMSCngDhParseDhParameters(const xmlSecByte* params, DWORD paramsLen,
     }
 
     if(next != end) {
-        xmlSecInvalidSizeError("DH parameters trailing bytes", (xmlSecSize)0, (xmlSecSize)(end - next), NULL);
+        xmlSecInvalidSizeError("DH parameters trailing bytes", (xmlSecSize)(end - next), (xmlSecSize)0, NULL);
         return(-1);
     }
     return(0);
@@ -536,11 +541,8 @@ xmlSecMSCngDhBuildPrivBlobAndImport(BCRYPT_ALG_HANDLE hAlg,
 
     /* p is the largest DH value, so its length is used as the key size */
     cbKey = pPLen;
-    if(cbKey > ((((DWORD)~0U) - sizeof(BCRYPT_DH_KEY_BLOB)) / 4)) {
-        xmlSecInvalidSizeError("DH key size too large",
-            (xmlSecSize)cbKey,
-            (xmlSecSize)((((DWORD)~0U) - sizeof(BCRYPT_DH_KEY_BLOB)) / 4),
-            NULL);
+    if(cbKey > XMLSEC_MSCNG_DH_MAX_P_SIZE) {
+        xmlSecInvalidSizeMoreThanError("DH P size", (xmlSecSize)cbKey, (xmlSecSize)XMLSEC_MSCNG_DH_MAX_P_SIZE, NULL);
         goto done;
     }
 
@@ -837,7 +839,11 @@ xmlSecMSCngKeyDataDhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLen
         xmlSecInternalError("DH PKCS8: failed to parse private key INTEGER X", NULL);
         goto done;
     }
-   
+
+    /* Note: the private exponent X is not range-validated here (no check that
+     * 1 <= X <= P-2). Degenerate values (X=0 or X=1) produce a degenerate
+     * public key (Y=1 or Y=G); a peer-side public-key check (Y >= 2) catches
+     * Y=1 at key-agreement time. */
     /* Open DH algorithm provider (shared by all steps below) */
     status = BCryptOpenAlgorithmProvider(&hAlg, BCRYPT_DH_ALGORITHM, NULL, 0);
     if(status != STATUS_SUCCESS) {

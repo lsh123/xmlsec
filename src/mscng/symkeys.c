@@ -42,7 +42,6 @@ xmlSecMSCngSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
     } else
 #endif /* XMLSEC_NO_CONCATKDF */
 
-
 #ifndef XMLSEC_NO_DES
     if(klass == xmlSecMSCngKeyDataDesId) {
         return(1);

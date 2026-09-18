@@ -531,10 +531,11 @@ xmlSecMSCngGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
  */
 int
 xmlSecMSCngKeysMngrInit(xmlSecKeysMngrPtr mngr) {
+#ifndef XMLSEC_NO_X509
     int ret;
+
     xmlSecAssert2(mngr != NULL, -1);
 
-#ifndef XMLSEC_NO_X509
     /* create x509 store if needed */
     if(xmlSecKeysMngrGetDataStore(mngr, xmlSecMSCngX509StoreId) == NULL) {
         xmlSecKeyDataStorePtr x509Store;
@@ -552,7 +553,12 @@ xmlSecMSCngKeysMngrInit(xmlSecKeysMngrPtr mngr) {
             return(-1);
         }
     }
+#else /* XMLSEC_NO_X509 */
+    xmlSecAssert2(mngr != NULL, -1);
+
+    /* do nothing */
 #endif /* XMLSEC_NO_X509 */
 
+    /* done */
     return(0);
 }

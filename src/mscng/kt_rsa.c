@@ -170,6 +170,21 @@ xmlSecMSCngRsaPkcs1OaepSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     return(0);
 }
 
+#ifndef XMLSEC_NO_RSA_OAEP
+static int
+xmlSecMSCngRsaPkcs1OaepEnsureDefaultDigest(xmlSecMSCngRsaPkcs1OaepCtxPtr ctx) {
+    if (ctx->pszDigestAlgId == NULL) {
+#ifndef XMLSEC_NO_SHA1
+        ctx->pszDigestAlgId = BCRYPT_SHA1_ALGORITHM;
+#else  /* XMLSEC_NO_SHA1 */
+        xmlSecOtherError(XMLSEC_ERRORS_R_DISABLED, NULL, "No OAEP digest algorithm is specified and the default SHA1 digest is disabled");
+        return(-1);
+#endif /* XMLSEC_NO_SHA1 */
+    }
+    return(0);
+}
+#endif /* XMLSEC_NO_RSA_OAEP */
+
 static int
 xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
     xmlSecMSCngRsaPkcs1OaepCtxPtr ctx;
@@ -272,13 +287,9 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
             BCRYPT_OAEP_PADDING_INFO paddingInfo;
             xmlSecSize oaepParamsSize;
 
-            if (ctx->pszDigestAlgId == NULL) {
-#ifndef XMLSEC_NO_SHA1
-                ctx->pszDigestAlgId = BCRYPT_SHA1_ALGORITHM;
-#else  /* XMLSEC_NO_SHA1 */
-                xmlSecOtherError(XMLSEC_ERRORS_R_DISABLED, NULL, "No OAEP digest algorithm is specified and the default SHA1 digest is disabled");
+            ret = xmlSecMSCngRsaPkcs1OaepEnsureDefaultDigest(ctx);
+            if (ret < 0) {
                 return(-1);
-#endif /* XMLSEC_NO_SHA1 */
             }
             paddingInfo.pszAlgId = ctx->pszDigestAlgId;
             paddingInfo.pbLabel = xmlSecBufferGetData(&(ctx->oaepParams));
@@ -348,13 +359,9 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
             BCRYPT_OAEP_PADDING_INFO paddingInfo;
             xmlSecSize oaepParamsSize;
 
-            if (ctx->pszDigestAlgId == NULL) {
-#ifndef XMLSEC_NO_SHA1
-                ctx->pszDigestAlgId = BCRYPT_SHA1_ALGORITHM;
-#else  /* XMLSEC_NO_SHA1 */
-                xmlSecOtherError(XMLSEC_ERRORS_R_DISABLED, NULL, "No OAEP digest algorithm is specified and the default SHA1 digest is disabled");
+            ret = xmlSecMSCngRsaPkcs1OaepEnsureDefaultDigest(ctx);
+            if (ret < 0) {
                 return(-1);
-#endif /* XMLSEC_NO_SHA1 */
             }
             paddingInfo.pszAlgId = ctx->pszDigestAlgId;
             paddingInfo.pbLabel = xmlSecBufferGetData(&(ctx->oaepParams));

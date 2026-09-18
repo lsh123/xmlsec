@@ -273,6 +273,13 @@ xmlSecMSCngAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATTR
             xmlSecBufferFinalize(&buffer);
             return(NULL);
         }
+
+        if(xmlSecBufferGetData(&buffer) == NULL) {
+            xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
+                "empty file: %s", xmlSecErrorsSafeString(filename));
+            xmlSecBufferFinalize(&buffer);
+            return(NULL);
+        }
         bufSize = xmlSecBufferGetSize(&buffer);
         XMLSEC_SAFE_CAST_SIZE_TO_ULONG(bufSize, dwDataSize, {xmlSecBufferFinalize(&buffer); return(NULL);}, NULL);
 
@@ -682,7 +689,7 @@ xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, cons
 
     /* at this point we should have a private key */
     if(privKeyData == NULL) {
-        xmlSecInternalError("privKeyData is NULL", NULL);
+        xmlSecInternalError("private key not found in PKCS12 file", NULL);
         goto cleanup;
     }
 

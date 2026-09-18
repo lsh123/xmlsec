@@ -30,7 +30,7 @@
   * DSA
   *
   * https://www.w3.org/TR/xmldsig-core1/#sec-DSA
-  * The output of the DSA algorithm consists of a pair of integers usually referred by the pair (r, s).
+   * The output of the DSA algorithm consists of a pair of integers usually referred to as the pair (r, s).
   * DSA-SHA1: Integer to octet-stream conversion must be done according to the I2OSP operation defined
   *           in the RFC 3447 [PKCS1] specification with a l parameter equal to 20
   * DSA-SHA256: The pairs (2048, 256) and (3072, 256) correspond to the algorithm DSAwithSHA256
@@ -435,6 +435,7 @@ static int xmlSecMSCngSignatureInitialize(xmlSecTransformPtr transform) {
 
 static void xmlSecMSCngSignatureFinalize(xmlSecTransformPtr transform) {
     xmlSecMSCngSignatureCtxPtr ctx;
+    NTSTATUS status;
 
     xmlSecAssert(xmlSecMSCngSignatureCheckId(transform));
     xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecMSCngSignatureSize));
@@ -446,14 +447,20 @@ static void xmlSecMSCngSignatureFinalize(xmlSecTransformPtr transform) {
         xmlSecKeyDataDestroy(ctx->data);
     }
 
-    /* Close the algorithm provider, destroy the hash, then free the hash object and buffer. */
+    /* Destroy the hash, close the algorithm provider, then free the hash object and buffer. */
     
-    if(ctx->hHashAlg != 0) {
-        BCryptCloseAlgorithmProvider(ctx->hHashAlg, 0);
+    if(ctx->hHash != 0) {
+        status = BCryptDestroyHash(ctx->hHash);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptDestroyHash", NULL, status);
+        }
     }
 
-    if(ctx->hHash != 0) {
-        BCryptDestroyHash(ctx->hHash);
+    if(ctx->hHashAlg != 0) {
+        status = BCryptCloseAlgorithmProvider(ctx->hHashAlg, 0);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptCloseAlgorithmProvider", NULL, status);
+        }
     }
 
     if(ctx->pbHashObject != NULL) {
@@ -527,7 +534,7 @@ static int xmlSecMSCngSignatureSetKeyReq(xmlSecTransformPtr transform,  xmlSecKe
 * https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA
 *
  * The output of the ECDSA algorithm consists of a pair of integers usually
- * referred by the pair (r, s). The signature value consists of the base64
+ * referred to as the pair (r, s). The signature value consists of the base64
  * encoding of the concatenation of two octet-streams that respectively result
  * from the octet-encoding of the values r and s in that order. Integer to
  * octet-stream conversion must be done according to the I2OSP operation defined

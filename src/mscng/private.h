@@ -88,6 +88,10 @@ int                xmlSecMSCngCreateDerForBCryptPubkey              (xmlSecKeyDa
   *****************************************************************************/
 #ifndef XMLSEC_NO_DH
 
+/* Maximum DH prime (P) size in bytes. CNG DH keys are at most a few KB; this bound
+ * is far above any real key and prevents DWORD overflow in the cbKey * 3 blob size. */
+#define XMLSEC_MSCNG_DH_MAX_P_SIZE (0x10000U)
+
 /* OID for X942 Diffie-Hellman key agreement; always ANSI LPSTR per CAPI design,
  * even in UNICODE builds. */
 #ifndef szOID_X942_DH

@@ -298,8 +298,8 @@ xmlSecX509DataGetNodeContent(xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx, xm
  * @param keyInfoCtx the &lt;dsig:KeyInfo/&gt; node processing context.
  * @param base64LineSize the base64 max line size.
  * @param addLineBreaks the flag indicating if we need to add line breaks around base64 output.
- * @param writeFunc the pointer to the function that converts
- *                      xmlSecKeyData to xmlSecKeyValue.
+ * @param writeFunc the pointer to the function that writes the next X509 object
+ *                      (cert or CRL) into xmlSecKeyX509DataValue.
  * @param writeFuncContext the context passed to @p writeFunc.
  * @return 0 on success or a negative value if an error occurs.
  */
@@ -571,7 +571,7 @@ xmlSecKeyX509DataValueXmlReadIssuerSerial(xmlSecKeyX509DataValuePtr x509Value, x
     cur = xmlSecGetNextElementNode(node->children);
     if(cur == NULL) {
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
-            xmlSecNodeNotFoundError("xmlSecGetNextElementNode", node, NULL, NULL);
+            xmlSecNodeNotFoundError("xmlSecGetNextElementNode", node, xmlSecNodeX509IssuerName, NULL);
             return(-1);
         }
         return(0);

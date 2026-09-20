@@ -503,8 +503,8 @@ static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                   
 XMLSEC_GNUTLS_KEY_AGREEMENT_KLASS(Ecdh)
 
 /**
- * @brief The ECDH-ES key agreement transform klass.
- * @return the ECDH-ES key agreement transform klass.
+ * @brief The ECDH key agreement transform klass.
+ * @return the ECDH key agreement transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformEcdhGetKlass(void) {

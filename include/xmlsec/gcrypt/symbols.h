@@ -39,8 +39,8 @@ extern "C" {
 #define xmlSecKeyDataAesId                      xmlSecGCryptKeyDataAesId
 #define xmlSecKeyDataDesId                      xmlSecGCryptKeyDataDesId
 #define xmlSecKeyDataDsaId                      xmlSecGCryptKeyDataDsaId
-#define xmlSecKeyDataEcdsaId                    xmlSecGCryptKeyDataEcId
 #define xmlSecKeyDataEcId                       xmlSecGCryptKeyDataEcId
+#define xmlSecKeyDataEcdsaId                    xmlSecGCryptKeyDataEcId
 #define xmlSecKeyDataHmacId                     xmlSecGCryptKeyDataHmacId
 #define xmlSecKeyDataRsaId                      xmlSecGCryptKeyDataRsaId
 
@@ -130,17 +130,23 @@ extern "C" {
 #define xmlSecCryptoAppDefaultKeysMngrVerifyKey xmlSecGCryptAppDefaultKeysMngrVerifyKey
 #define xmlSecCryptoAppDefaultKeysMngrLoad      xmlSecGCryptAppDefaultKeysMngrLoad
 #define xmlSecCryptoAppDefaultKeysMngrSave      xmlSecGCryptAppDefaultKeysMngrSave
+#ifndef XMLSEC_NO_X509
 #define xmlSecCryptoAppKeysMngrCertLoad         xmlSecGCryptAppKeysMngrCertLoad
 #define xmlSecCryptoAppKeysMngrCertLoadMemory   xmlSecGCryptAppKeysMngrCertLoadMemory
 #define xmlSecCryptoAppKeysMngrCrlLoad          xmlSecGCryptAppKeysMngrCrlLoad
 #define xmlSecCryptoAppKeysMngrCrlLoadMemory    xmlSecGCryptAppKeysMngrCrlLoadMemory
 #define xmlSecCryptoAppKeysMngrCrlLoadAndVerify xmlSecGCryptAppKeysMngrCrlLoadAndVerify
+#endif /* XMLSEC_NO_X509 */
 #define xmlSecCryptoAppKeyLoadEx                xmlSecGCryptAppKeyLoadEx
+#ifndef XMLSEC_NO_X509
 #define xmlSecCryptoAppPkcs12Load               xmlSecGCryptAppPkcs12Load
 #define xmlSecCryptoAppKeyCertLoad              xmlSecGCryptAppKeyCertLoad
+#endif /* XMLSEC_NO_X509 */
 #define xmlSecCryptoAppKeyLoadMemory            xmlSecGCryptAppKeyLoadMemory
+#ifndef XMLSEC_NO_X509
 #define xmlSecCryptoAppPkcs12LoadMemory         xmlSecGCryptAppPkcs12LoadMemory
 #define xmlSecCryptoAppKeyCertLoadMemory        xmlSecGCryptAppKeyCertLoadMemory
+#endif /* XMLSEC_NO_X509 */
 #define xmlSecCryptoAppGetDefaultPwdCallback    xmlSecGCryptAppGetDefaultPwdCallback
 
 #endif /* XMLSEC_CRYPTO_GCRYPT */

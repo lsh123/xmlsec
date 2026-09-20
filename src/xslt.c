@@ -66,10 +66,10 @@ static int              xmlSecXsltPushBin                       (xmlSecTransform
 static int              xmlSecXsltExecute                       (xmlSecTransformPtr transform,
                                                                  int last,
                                                                  xmlSecTransformCtxPtr transformCtx);
-static int              xmlSecXslProcess                        (xmlSecXsltCtxPtr ctx,
+static int              xmlSecXsltProcess                       (xmlSecXsltCtxPtr ctx,
                                                                  xmlSecBufferPtr in,
                                                                  xmlSecBufferPtr out);
-static xmlDocPtr        xmlSecXsApplyStylesheet                 (xmlSecXsltCtxPtr ctx,
+static xmlDocPtr        xmlSecXsltApplyStylesheet               (xmlSecXsltCtxPtr ctx,
                                                                  xmlDocPtr doc);
 
 static xmlSecTransformKlass xmlSecXsltKlass = {
@@ -377,9 +377,9 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         docIn = ctx->parserCtx->myDoc;
         ctx->parserCtx->myDoc = NULL;
 
-        docOut = xmlSecXsApplyStylesheet(ctx, docIn);
+        docOut = xmlSecXsltApplyStylesheet(ctx, docIn);
         if(docOut == NULL) {
-            xmlSecInternalError("xmlSecXsApplyStylesheet", xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecXsltApplyStylesheet", xmlSecTransformGetName(transform));
             xmlFreeDoc(docIn);
             return(-1);
         }
@@ -453,9 +453,9 @@ xmlSecXsltExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr 
     } else if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
         xmlSecAssert2(outSize == 0, -1);
 
-        ret = xmlSecXslProcess(ctx, in, out);
+        ret = xmlSecXsltProcess(ctx, in, out);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecXslProcess", xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecXsltProcess", xmlSecTransformGetName(transform));
             return(-1);
         }
 
@@ -478,7 +478,7 @@ xmlSecXsltExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr 
 }
 
 static int
-xmlSecXslProcess(xmlSecXsltCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out) {
+xmlSecXsltProcess(xmlSecXsltCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out) {
     xmlDocPtr docIn = NULL;
     xmlDocPtr docOut = NULL;
     xmlOutputBufferPtr output = NULL;
@@ -500,9 +500,9 @@ xmlSecXslProcess(xmlSecXsltCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out) 
         goto done;
     }
 
-    docOut = xmlSecXsApplyStylesheet(ctx, docIn);
+    docOut = xmlSecXsltApplyStylesheet(ctx, docIn);
     if(docOut == NULL) {
-        xmlSecInternalError("xmlSecXsApplyStylesheet", NULL);
+        xmlSecInternalError("xmlSecXsltApplyStylesheet", NULL);
         goto done;
     }
 
@@ -542,7 +542,7 @@ done:
 
 
 static xmlDocPtr
-xmlSecXsApplyStylesheet(xmlSecXsltCtxPtr ctx, xmlDocPtr doc) {
+xmlSecXsltApplyStylesheet(xmlSecXsltCtxPtr ctx, xmlDocPtr doc) {
     xsltTransformContextPtr xsltCtx = NULL;
     xmlDocPtr res = NULL;
     int ret;

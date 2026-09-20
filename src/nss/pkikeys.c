@@ -512,7 +512,7 @@ static xmlSecKeyDataKlass xmlSecNssKeyData ## lcname ## Klass = {               
     xmlSecNode ## ucname ## KeyValue,           /* const xmlChar* dataNodeName; */               \
     ns,                                         /* const xmlChar* dataNodeNs; */                 \
     /* constructors/destructor */                                                                \
-    xmlSecNssPKIKeyDataInitialize,              /* xmlSecKeyDataInitializeMethod initialize; */  \
+    xmlSecNssPKIKeyDataInitialize,              /* xmlSecKeyDataInitMethod initialize; */  \
     xmlSecNssPKIKeyDataDuplicate,               /* xmlSecKeyDataDuplicateMethod duplicate; */    \
     xmlSecNssPKIKeyDataFinalize,                /* xmlSecKeyDataFinalizeMethod finalize; */      \
     generate,                                   /* xmlSecKeyDataGenerateMethod generate; */      \
@@ -1516,7 +1516,7 @@ static xmlSecKeyDataKlass xmlSecNssKeyData ## lcname ## Klass = {               
     NULL,                                       /* const xmlChar* dataNodeName; */        \
     NULL,                                       /* const xmlChar* dataNodeNs; */          \
     /* constructors/destructor */                                                         \
-    xmlSecNssPKIKeyDataInitialize,              /* xmlSecKeyDataInitializeMethod initialize; */ \
+    xmlSecNssPKIKeyDataInitialize,              /* xmlSecKeyDataInitMethod initialize; */ \
     xmlSecNssPKIKeyDataDuplicate,               /* xmlSecKeyDataDuplicateMethod duplicate; */   \
     xmlSecNssPKIKeyDataFinalize,                /* xmlSecKeyDataFinalizeMethod finalize; */      \
     generate,                                   /* xmlSecKeyDataGenerateMethod generate; */      \
@@ -1570,7 +1570,7 @@ static xmlSecKeyDataKlass xmlSecNssKeyData ## lcname ## Klass = {               
     NULL,                                       /* const xmlChar* dataNodeName; */        \
     NULL,                                       /* const xmlChar* dataNodeNs; */          \
     /* constructors/destructor */                                                         \
-    xmlSecNssPKIKeyDataInitialize,              /* xmlSecKeyDataInitializeMethod initialize; */ \
+    xmlSecNssPKIKeyDataInitialize,              /* xmlSecKeyDataInitMethod initialize; */ \
     xmlSecNssPKIKeyDataDuplicate,               /* xmlSecKeyDataDuplicateMethod duplicate; */   \
     xmlSecNssPKIKeyDataFinalize,                /* xmlSecKeyDataFinalizeMethod finalize; */      \
     generate,                                   /* xmlSecKeyDataGenerateMethod generate; */      \

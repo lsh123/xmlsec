@@ -962,7 +962,6 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
     /* success */
     (*outSize) = outSizeT;
     return(0);
-
 }
 #endif /* XMLSEC_OPENSSL_API_300 */
 

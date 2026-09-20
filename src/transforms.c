@@ -939,7 +939,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
         goto done;
     }
 
-    /* do we have barename or full xpointer? and just to be sure check it's not null */
+    /* just to be sure check it's not null */
     xmlSecAssert2(xptr != NULL, -1);
     if((xmlStrncmp(xptr, BAD_CAST "#xpointer(", 10) == 0) || (xmlStrncmp(xptr, BAD_CAST "#xmlns(", 7) == 0)) {
         ++xptr;
@@ -1129,7 +1129,7 @@ xmlSecTransformCtxBinaryExecute(xmlSecTransformCtxPtr ctx,
 
 /**
  * @brief Processes binary data from URI using transforms chain in @p ctx.
- * @details Process binary data from the URI using transforms chain in @p ctx.
+ * @details Process binary data from the URI using the transforms chain in @p ctx.
  * @param ctx the pointer to transforms chain processing context.
  * @param uri the URI.
  *
@@ -1192,7 +1192,7 @@ xmlSecTransformCtxUriExecute(xmlSecTransformCtxPtr ctx, const xmlChar* uri) {
 
 /**
  * @brief Processes nodes using transforms chain in @p ctx.
- * @details Process @p nodes using transforms in the transforms chain in @p ctx.
+ * @details Process @p nodes using the transforms chain in @p ctx.
  * @param ctx the pointer to transforms chain processing context.
  * @param nodes the input node set.
  *

@@ -20,7 +20,6 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
-#include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/parser.h>
 #include <xmlsec/errors.h>
@@ -79,7 +78,7 @@ static xmlSecTransformKlass xmlSecParserKlass = {
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
     NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecParserPushBin,                        /* xmlSecTransformPushBinMethod pushBin; */
     NULL,                                       /* xmlSecTransformPopBinMethod popBin; */

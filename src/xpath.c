@@ -11,7 +11,6 @@
  */
 #include "globals.h"
 
-#include <stdlib.h>
 #include <string.h>
 
 #include <libxml/tree.h>
@@ -21,7 +20,6 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
-#include <xmlsec/keys.h>
 #include <xmlsec/list.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
@@ -473,7 +471,7 @@ static xmlSecTransformKlass xmlSecTransformXPathKlass = {
  * @details The XPath transform evaluates given XPath expression and
  * intersects the result with the previous nodes set. See
  * http://www.w3.org/TR/xmldsig-core/#sec-XPath for more details.
- * @return XPath transform id.
+ * @return XPath transform klass.
  */
 xmlSecTransformId
 xmlSecTransformXPathGetKlass(void) {

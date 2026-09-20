@@ -148,7 +148,7 @@ xmlSecOpenSSLEvpDigestCheckId(xmlSecTransformPtr transform) {
 /* small helper macro to reduce clutter in the code */
 #ifndef XMLSEC_OPENSSL_API_300
 #define XMLSEC_OPENSSL_EVP_DIGEST_SETUP(transform, ctx, digestVal, digestName) \
-    (ctx)->digest = (EVP_MD*)(digestVal);
+    (ctx)->digest = (EVP_MD*)(digestVal)
 
 #else /* XMLSEC_OPENSSL_API_300 */
 
@@ -181,7 +181,7 @@ xmlSecOpenSSLEvpDigestSetDigestByName(xmlSecOpenSSLEvpDigestCtxPtr ctx, const ch
 
 #if !defined(XMLSEC_NO_GOST) || !defined(XMLSEC_NO_GOST2012)
 
-/* Not all algorithms have been converted to the new providers design (e.g. GOST) */
+/* Not all algorithms have been converted to the new provider design (e.g. GOST) */
 /* TODO: EVP_get_digestbyname() is deprecated in OpenSSL 3.0. Replace with EVP_MD_fetch()
  * once GOST algorithms become available as OpenSSL providers. */
 static int

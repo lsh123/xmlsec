@@ -836,10 +836,11 @@ done:
     return(res);
 }
 
-/* Filters a CRL stack by time validity, returning a new stack that contains
- * only CRLs that are currently valid (thisUpdate <= verification_time <= nextUpdate).
+/* Filters a CRL stack by time validity, storing in *out_crls a new stack that
+ * contains only CRLs that are currently valid (thisUpdate <= verification_time <= nextUpdate).
  * Does NOT re-verify CRL signatures — store CRLs are already trusted.
- * Returns NULL if the input stack is NULL/empty or on allocation failure.
+ * Returns 0 on success and -1 on failure.
+ * Sets *out_crls to NULL if the input stack is NULL/empty.
  * The returned stack does not own the CRL pointers.
  */
 static int
@@ -1018,19 +1019,16 @@ done:
 }
 
 /**
- * @brief Verifies @p key with the keys manager @p mngr created with #xmlSecOpenSSLAppDefaultKeysMngrInit
- * @param store the pointer to X509 key data store klass.
- * @param key the pointer to key.
- * @param keyInfoCtx the key info context for verification.
+ * @brief Verifies @p key against the X509 store.
+ * @param store the pointer to the X509 key data store.
+ * @param key the pointer to the key.
+ * @param keyInfoCtx the pointer to the &lt;dsig:KeyInfo/&gt; element processing context.
  *
- * function:
- * - Checks that key certificate is present
- * - Checks that key certificate is valid
+ * The function:
+ * - Checks that the key certificate is present
+ * - Checks that the key certificate is valid
  *
- * Adds @p key to the keys manager @p mngr created with #xmlSecOpenSSLAppDefaultKeysMngrInit
- * function.
- *
- * @return 1 if key is verified, 0 otherwise, or a negative value if an error occurs.
+ * @return 1 if the key is verified, 0 otherwise, or a negative value if an error occurs.
  */
 int
 xmlSecOpenSSLX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, xmlSecKeyInfoCtxPtr keyInfoCtx) {
@@ -1063,7 +1061,7 @@ xmlSecOpenSSLX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, x
     }
     keyCert =  xmlSecOpenSSLKeyDataX509GetKeyCert(x509Data);
     if(keyCert == NULL) {
-        xmlSecInternalError("key certificate is required", xmlSecKeyDataStoreGetName(store));
+        xmlSecInternalError("xmlSecOpenSSLKeyDataX509GetKeyCert", xmlSecKeyDataStoreGetName(store));
         res = 0; /* verification failed */
         goto done;
     }
@@ -1378,7 +1376,7 @@ xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {
     if(lookup == NULL) {
         xmlSecOpenSSLError("X509_STORE_add_lookup",
                            xmlSecKeyDataStoreGetName(store));
-         return(-1);
+        return(-1);
     }
 
     path = xmlSecOpenSSLGetDefaultTrustedCertsFolder();
@@ -1418,7 +1416,7 @@ xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {
                            xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
-    X509_VERIFY_PARAM_set_depth(ctx->vpm, 9); /* the default cert verification path in openssl */
+    X509_VERIFY_PARAM_set_depth(ctx->vpm, 9); /* the default maximum cert verification depth in xmlsec (see XMLSEC_KEYINFO_DEFAULT_MAX_CERT_VERIFICATION_DEPTH) */
     X509_STORE_set1_param(ctx->xst, ctx->vpm);
 
 
@@ -1707,7 +1705,7 @@ xmlSecOpenSSLX509VerifyCRLSignature(X509_STORE* xst, X509_STORE_CTX* xsc, STACK_
     } else if(ret == 0) {
         char issuer[256];
 
-        /* cert was not verified */
+        /* the CRL signature was not verified */
         xmlSecOpenSSLX509NameToString(X509_CRL_get_issuer(crl), issuer, sizeof(issuer));
         xmlSecOtherError2(XMLSEC_ERRORS_R_CRL_VERIFY_FAILED, NULL, "issuer=%s", issuer);
 

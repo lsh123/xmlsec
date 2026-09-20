@@ -252,7 +252,7 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyData ## name ## Klass = {             
     ns,                                         /* const xmlChar* dataNodeNs; */                     \
                                                                                                      \
     /* constructors/destructor */                                                                    \
-    xmlSecOpenSSLSymKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */      \
+    xmlSecOpenSSLSymKeyDataInitialize,          /* xmlSecKeyDataInitMethod initialize; */      \
     xmlSecOpenSSLSymKeyDataDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */        \
     xmlSecOpenSSLSymKeyDataFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */          \
     xmlSecOpenSSLSymKeyDataGenerate,            /* xmlSecKeyDataGenerateMethod generate; */          \

@@ -737,7 +737,7 @@ xmlSecKeyDataEcPublicKeySplitComponents (xmlSecKeyValueEcPtr ecValue) {
         return(-1);
     }
     if(data[0] != XMLSEC_ECKEYVALUE_ECPOINT_MAGIC_BYTE) {
-        xmlSecInvalidDataError("PublicKey must start from a magic number", NULL);
+        xmlSecInvalidDataError("PublicKey must start with a magic number", NULL);
         return(-1);
     }
     ++data;
@@ -1921,7 +1921,7 @@ xmlSecKeyValueDsaXmlRead(xmlSecKeyValueDsaPtr data, xmlNodePtr node) {
 
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSAX, xmlSecDSigNs))) {
         /* next is X node. It is REQUIRED for private key but
-         * we are not sure exactly what do we read */
+         * we are not sure exactly what we are reading */
         ret = xmlSecBufferBase64NodeContentRead(&(data->x), cur);
         if(ret < 0) {
             xmlSecInternalError("xmlSecBufferBase64NodeContentRead(x)", NULL);
@@ -2461,7 +2461,7 @@ xmlSecKeyValueRsaXmlRead(xmlSecKeyValueRsaPtr data, xmlNodePtr node) {
     cur = xmlSecGetNextElementNode(cur->next);
 
     /* next is PrivateExponent node. It is REQUIRED for private key but
-    * we are not sure exactly what are we reading */
+     * we are not sure exactly what we are reading */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeRSAPrivateExponent, xmlSecDSigNs))) {
         ret = xmlSecBufferBase64NodeContentRead(&(data->privateExponent), cur);
         if(ret < 0) {
@@ -2662,7 +2662,7 @@ static xmlSecKeyDataKlass xmlSecKeyDataKAMKlass = {
     NULL,                               /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    xmlSecKeyDataKAMInitialize,    /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecKeyDataKAMInitialize,    /* xmlSecKeyDataInitMethod initialize; */
     xmlSecKeyDataKAMDuplicate,     /* xmlSecKeyDataDuplicateMethod duplicate; */
     xmlSecKeyDataKAMFinalize,      /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL,                               /* xmlSecKeyDataGenerateMethod generate; */
@@ -2796,7 +2796,7 @@ static xmlSecKeyDataKlass xmlSecKeyDataKEMKlass = {
     NULL,                                   /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    xmlSecKeyDataKEMInitialize,             /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecKeyDataKEMInitialize,             /* xmlSecKeyDataInitMethod initialize; */
     xmlSecKeyDataKEMDuplicate,              /* xmlSecKeyDataDuplicateMethod duplicate; */
     xmlSecKeyDataKEMFinalize,               /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL,                                   /* xmlSecKeyDataGenerateMethod generate; */
@@ -2945,5 +2945,5 @@ xmlSecKeyDataKEMSetCiphertext(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlS
     return(xmlSecBufferSetData(&(((xmlSecKeyDataKEM*)data)->ciphertext), buf, bufSize));
 }
 
-#endif /* XMLSEC_NO_MLKEM */
+#endif /* !defined(XMLSEC_NO_MLKEM) */
 

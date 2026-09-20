@@ -26,6 +26,7 @@
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
 #include <xmlsec/keys.h>
+#include <xmlsec/keysdata.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>

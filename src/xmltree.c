@@ -1995,7 +1995,7 @@ xmlSecQName2BitMaskNodesWrite(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr n
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(nodeName != NULL, -1);
 
-    for(ii = 0; (mask != 0) && (info[ii].qnameLocalPart != NULL); ii++) {
+    for(ii = 0; info[ii].qnameLocalPart != NULL; ii++) {
         xmlSecAssert2(info[ii].mask != 0, -1);
 
         if((mask & info[ii].mask) != 0) {
@@ -2053,7 +2053,7 @@ xmlSecQName2BitMaskDebugDump(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitMask
     }
 
     fprintf(output, "== %s (0x%08x): ", name, mask);
-    for(ii = 0; (mask != 0) && (info[ii].qnameLocalPart != NULL); ii++) {
+    for(ii = 0; info[ii].qnameLocalPart != NULL; ii++) {
         xmlSecAssert(info[ii].mask != 0);
 
         if((mask & info[ii].mask) != 0) {
@@ -2086,7 +2086,7 @@ xmlSecQName2BitMaskDebugXmlDump(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitM
     }
 
     fprintf(output, "<%sList>\n", name);
-    for(ii = 0; (mask != 0) && (info[ii].qnameLocalPart != NULL); ii++) {
+    for(ii = 0; info[ii].qnameLocalPart != NULL; ii++) {
         xmlSecAssert(info[ii].mask != 0);
 
         if((mask & info[ii].mask) != 0) {
@@ -2246,7 +2246,7 @@ xmlSecWin32ConvertLocaleToUtf8(const char * str) {
     }
 
     /* call WideCharToMultiByte first to get the buffer size */
-    ret = WideCharToMultiByte(CP_ACP, 0, strW, -1, NULL, 0, NULL, NULL);
+    ret = WideCharToMultiByte(CP_UTF8, 0, strW, -1, NULL, 0, NULL, NULL);
     if(ret <= 0) {
         xmlFree(strW);
         return(NULL);
@@ -2263,7 +2263,7 @@ xmlSecWin32ConvertLocaleToUtf8(const char * str) {
     }
 
     /* convert */
-    ret = WideCharToMultiByte(CP_ACP, 0, strW, -1, (LPSTR)res, len, NULL, NULL);
+    ret = WideCharToMultiByte(CP_UTF8, 0, strW, -1, (LPSTR)res, len, NULL, NULL);
     if(ret <= 0) {
         xmlFree(strW);
         xmlFree(res);

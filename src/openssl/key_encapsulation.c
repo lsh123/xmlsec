@@ -13,12 +13,12 @@
  * &lt;as:EncapsulationMechanism/&gt; element.
  *
  *  - Encrypt (encapsulate):
- *      1. readNode: parse ds:KeyInfo -> recipient public key
+ *      1. readNode: parse enc:KeyInfo -> recipient public key
  *      2. execute: encapsulate(pubkey) -> (kem_ct, ss); ss -> outBuf; ct -> params.ciphertext
  *      3. writeNode: write ct from params.ciphertext to enc:CipherData/enc:CipherValue
  *
  *  - Decrypt (decapsulate):
- *      1. readNode: parse ds:KeyInfo -> recipient private key;
+ *      1. readNode: parse enc:KeyInfo -> recipient private key;
  *                   parse enc:CipherData/enc:CipherValue -> params.ciphertext
  *      2. execute: decapsulate(privkey, kem_ct) -> ss; ss -> outBuf (becomes CEK)
  */

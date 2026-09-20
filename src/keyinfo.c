@@ -613,7 +613,7 @@ static xmlSecKeyDataKlass xmlSecKeyDataNameKlass = {
     xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    NULL,                                       /* xmlSecKeyDataInitializeMethod initialize; */
+    NULL,                                       /* xmlSecKeyDataInitMethod initialize; */
     NULL,                                       /* xmlSecKeyDataDuplicateMethod duplicate; */
     NULL,                                       /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
@@ -796,7 +796,7 @@ static xmlSecKeyDataKlass xmlSecKeyDataValueKlass = {
     xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    NULL,                                       /* xmlSecKeyDataInitializeMethod initialize; */
+    NULL,                                       /* xmlSecKeyDataInitMethod initialize; */
     NULL,                                       /* xmlSecKeyDataDuplicateMethod duplicate; */
     NULL,                                       /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
@@ -993,7 +993,7 @@ static xmlSecKeyDataKlass xmlSecKeyDataRetrievalMethodKlass = {
     xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    NULL,                                       /* xmlSecKeyDataInitializeMethod initialize; */
+    NULL,                                       /* xmlSecKeyDataInitMethod initialize; */
     NULL,                                       /* xmlSecKeyDataDuplicateMethod duplicate; */
     NULL,                                       /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
@@ -1265,7 +1265,7 @@ xmlSecKeyDataRetrievalMethodReadXmlResult(xmlSecKeyDataId typeId, xmlSecKeyPtr k
 
 /******************************************************************************
  *
- *&lt;dsig11:KeyInfoReference/&gt; element processing
+ * &lt;dsig11:KeyInfoReference/&gt; element processing
  *
   *****************************************************************************/
 static int                      xmlSecKeyDataKeyInfoReferenceXmlRead(xmlSecKeyDataId id,
@@ -1291,7 +1291,7 @@ static xmlSecKeyDataKlass xmlSecKeyDataKeyInfoReferenceKlass = {
     xmlSecDSig11Ns,                             /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    NULL,                                       /* xmlSecKeyDataInitializeMethod initialize; */
+    NULL,                                       /* xmlSecKeyDataInitMethod initialize; */
     NULL,                                       /* xmlSecKeyDataDuplicateMethod duplicate; */
     NULL,                                       /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
@@ -1525,7 +1525,7 @@ static xmlSecKeyDataKlass xmlSecKeyDataEncryptedKeyKlass = {
     xmlSecEncNs,                                /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    NULL,                                       /* xmlSecKeyDataInitializeMethod initialize; */
+    NULL,                                       /* xmlSecKeyDataInitMethod initialize; */
     NULL,                                       /* xmlSecKeyDataDuplicateMethod duplicate; */
     NULL,                                       /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
@@ -1701,7 +1701,7 @@ done:
 
 /******************************************************************************
  *
- *&lt;enc11:DerivedKey/&gt; element processing
+ * &lt;enc11:DerivedKey/&gt; element processing
  *
   *****************************************************************************/
 static int      xmlSecKeyDataDerivedKeyXmlRead          (xmlSecKeyDataId id,
@@ -1728,7 +1728,7 @@ static xmlSecKeyDataKlass xmlSecKeyDataDerivedKeyKlass = {
     xmlSecEnc11Ns,                              /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    NULL,                                       /* xmlSecKeyDataInitializeMethod initialize; */
+    NULL,                                       /* xmlSecKeyDataInitMethod initialize; */
     NULL,                                       /* xmlSecKeyDataDuplicateMethod duplicate; */
     NULL,                                       /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
@@ -1814,7 +1814,7 @@ xmlSecKeyDataDerivedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr 
     /* generate derived key */
     generatedKey = xmlSecEncCtxDerivedKeyGenerate(keyInfoCtx->encCtx, keyInfoCtx->keyReq.keyId, node, keyInfoCtx);
     if(generatedKey == NULL) {
-        /* We might have multiple DerivedKey elements, encrypted
+        /* We might have multiple DerivedKey elements, derived
          * for different recipients but application can enforce
          * correct enc key.
          */
@@ -1891,7 +1891,7 @@ static xmlSecKeyDataKlass xmlSecKeyDataAgreementMethodKlass = {
     xmlSecEncNs,                                /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    NULL,                                       /* xmlSecKeyDataInitializeMethod initialize; */
+    NULL,                                       /* xmlSecKeyDataInitMethod initialize; */
     NULL,                                       /* xmlSecKeyDataDuplicateMethod duplicate; */
     NULL,                                       /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
@@ -1974,7 +1974,7 @@ xmlSecKeyDataAgreementMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
     /* generate key agreement key */
     generatedKey = xmlSecEncCtxAgreementMethodGenerate(keyInfoCtx->encCtx, keyInfoCtx->keyReq.keyId, node, keyInfoCtx);
     if(generatedKey == NULL) {
-        /* We might have multiple AgreementMethod elements, encrypted
+        /* We might have multiple AgreementMethod elements, agreed
          * for different recipients but application can enforce
          * correct enc key.
          */
@@ -2121,7 +2121,7 @@ static xmlSecKeyDataKlass xmlSecKeyDataEncapsulationMechanismKlass = {
     xmlSecExperimental202512Ns,                 /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    NULL,                                       /* xmlSecKeyDataInitializeMethod initialize; */
+    NULL,                                       /* xmlSecKeyDataInitMethod initialize; */
     NULL,                                       /* xmlSecKeyDataDuplicateMethod duplicate; */
     NULL,                                       /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */

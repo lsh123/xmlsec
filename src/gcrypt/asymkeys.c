@@ -602,7 +602,7 @@ static xmlSecKeyDataKlass xmlSecGCryptKeyDataDsaKlass = {
     xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    xmlSecGCryptKeyDataDsaInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecGCryptKeyDataDsaInitialize,          /* xmlSecKeyDataInitMethod initialize; */
     xmlSecGCryptKeyDataDsaDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
     xmlSecGCryptKeyDataDsaFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
     xmlSecGCryptKeyDataDsaGenerate,            /* xmlSecKeyDataGenerateMethod generate; */
@@ -1093,7 +1093,7 @@ static xmlSecKeyDataKlass xmlSecGCryptKeyDataRsaKlass = {
     xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    xmlSecGCryptKeyDataRsaInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecGCryptKeyDataRsaInitialize,          /* xmlSecKeyDataInitMethod initialize; */
     xmlSecGCryptKeyDataRsaDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
     xmlSecGCryptKeyDataRsaFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
     xmlSecGCryptKeyDataRsaGenerate,            /* xmlSecKeyDataGenerateMethod generate; */
@@ -1497,7 +1497,7 @@ static xmlSecKeyDataKlass xmlSecGCryptKeyDataEcKlass = {
     xmlSecDSig11Ns,                             /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    xmlSecGCryptKeyDataEcInitialize,            /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecGCryptKeyDataEcInitialize,            /* xmlSecKeyDataInitMethod initialize; */
     xmlSecGCryptKeyDataEcDuplicate,             /* xmlSecKeyDataDuplicateMethod duplicate; */
     xmlSecGCryptKeyDataEcFinalize,              /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */

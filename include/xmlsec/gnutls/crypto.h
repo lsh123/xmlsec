@@ -648,7 +648,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformX448GetKlass(void);
 #ifndef XMLSEC_NO_EC
 
 /**
- * @brief The ECDH-ES key agreement transform klass.
+ * @brief The ECDH key agreement transform klass.
  */
 #define xmlSecGnuTLSTransformEcdhId  \
         xmlSecGnuTLSTransformEcdhGetKlass()

@@ -7,7 +7,7 @@
  */
 /**
  * @addtogroup xmlsec_openssl_crypto
- * @brief AES/Camellia Key Transport (RFC 3394) implementation for OpenSSL.
+ * @brief AES/Camellia Key Wrap (RFC 3394) implementation for OpenSSL.
  */
 #include "globals.h"
 
@@ -602,7 +602,7 @@ xmlSecOpenSSLKWAesEncryptDecrypt(xmlSecOpenSSLKWRfc3394CtxPtr ctx, const xmlSecB
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize == XMLSEC_KW_RFC3394_BLOCK_SIZE, -1);
     xmlSecAssert2(out != NULL, -1);
-    xmlSecAssert2(outSize >= AES_BLOCK_SIZE, -1);
+    xmlSecAssert2(outSize >= XMLSEC_KW_RFC3394_BLOCK_SIZE, -1);
     xmlSecAssert2(outWritten != NULL, -1);
 
     keyData = xmlSecBufferGetData(&(ctx->parentCtx.keyBuffer));

@@ -346,7 +346,7 @@ static xmlSecPtrList gXmlSecCryptoDLLibraries;
 /**
  * @brief Initializes the dynamic library loading engine.
  * @details Initializes the dynamic library loading engine. This function is
- * normally called by xmlSecAppInit() and should not be called by the
+ * normally called by xmlSecInit() and should not be called by the
  * application directly.
  *
  * Note: in case of failure the dynamic library loading engine is left partially
@@ -380,7 +380,7 @@ xmlSecCryptoDLInit(void) {
 /**
  * @brief Shuts down the dynamic library loading engine.
  * @details Shuts down the dynamic library loading engine. This function is
- * normally called by xmlSecAppShutdown() and should not be called by the
+ * normally called by xmlSecShutdown() and should not be called by the
  * application directly.
  * @return 0 on success or a negative value if an error occurs.
  */

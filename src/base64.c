@@ -18,7 +18,6 @@
 #include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
@@ -201,7 +200,7 @@ xmlSecBase64CtxDestroy(xmlSecBase64CtxPtr ctx) {
 
 /**
  * @brief Initializes new base64 context.
- * @param ctx the pointer to xmlSecBase64Ctx structure,
+ * @param ctx the pointer to xmlSecBase64Ctx structure.
  * @param encode the encode/decode flag (1 - encode, 0 - decode)
  * @param columns the max line length; use 0 for no line breaks or a value greater than 1.
  * @return 0 on success and a negative value otherwise.
@@ -220,7 +219,7 @@ xmlSecBase64CtxInitialize(xmlSecBase64CtxPtr ctx, int encode, int columns) {
 
 /**
  * @brief Frees all the resources allocated by @p ctx.
- * @param ctx the pointer to xmlSecBase64Ctx structure,
+ * @param ctx the pointer to xmlSecBase64Ctx structure.
  */
 void
 xmlSecBase64CtxFinalize(xmlSecBase64CtxPtr ctx) {
@@ -813,7 +812,7 @@ static xmlSecTransformKlass xmlSecBase64Klass = {
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
     NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */

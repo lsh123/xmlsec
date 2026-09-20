@@ -720,8 +720,7 @@ xmlSecMSCryptoAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
  * @param data the binary certificate.
  * @param dataSize size of binary certificate (data)
  * @param format the certificate file format.
- * @param type the flag that indicates is the certificate in @p filename
- *                      trusted or not.
+ * @param type the flag that indicates is the certificate in @p data trusted or not.
  * @return 0 on success or a negative value otherwise.
  */
 int

@@ -68,7 +68,7 @@ static const xmlSecErrorDescription xmlSecErrorsTable[] = {
   { XMLSEC_ERRORS_R_INVALID_ALGORITHM,          "invalid or unsupported algorithm" },
   { XMLSEC_ERRORS_R_INVALID_KEY_DATA,           "invalid key data" },
   { XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND,         "key data is not found" },
-  { XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,     "key data already exist" },
+   { XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,     "key data already exists" },
   { XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE,      "invalid key data size" },
   { XMLSEC_ERRORS_R_KEY_NOT_FOUND,              "key is not found" },
   { XMLSEC_ERRORS_R_KEYDATA_DISABLED,           "key data is disabled" },
@@ -251,7 +251,7 @@ xmlSecErrorsGetMsg(xmlSecSize pos) {
  * @param line the error location line number (__LINE__).
  * @param func the error location function (__FUNCTION__).
  * @param errorObject the specific error object (e.g. transform, key data, etc).
- * @param errorSubject the error specific error subject (e.g. failed function name).
+ * @param errorSubject the specific error subject (e.g. failed function name).
  * @param reason the error code.
  * @param msg the error message in printf format.
  * @param ... the parameters for the @p msg.

@@ -135,7 +135,7 @@ typedef struct _xmlSecKeyReq                    xmlSecKeyReq, *xmlSecKeyReqPtr;
  * @brief The key requirements information.
  */
 struct _xmlSecKeyReq {
-    xmlSecKeyDataId             keyId;  /**< the desired key value klass. */
+    xmlSecKeyDataId             keyId;  /**< the desired key data value klass. */
     xmlSecKeyDataType           keyType;  /**< the desired key type. */
     xmlSecKeyUsage              keyUsage;  /**< the desired key usage. */
     xmlSecSize                  keyBitsSize;  /**< the desired key size (in bits!). */

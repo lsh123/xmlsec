@@ -14,8 +14,6 @@
 #include <string.h>
 
 #include <openssl/evp.h>
-#include <openssl/rand.h>
-#include <openssl/x509.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/base64.h>
@@ -611,9 +609,9 @@ xmlSecOpenSSLEvpKeyDataGetType(xmlSecKeyDataPtr data) {
  *
   *****************************************************************************/
 /**
- * @brief Duplicates @p pKey.
+ * @brief Increments the reference count of @p pKey.
  * @param pKey the pointer to EVP_PKEY.
- * @return a new EVP_PKEY that the caller owns and must free with EVP_PKEY_free(), or NULL if an error occurs.
+ * @return the same EVP_PKEY with its reference count incremented, or NULL if an error occurs.
  */
 EVP_PKEY*
 xmlSecOpenSSLEvpKeyDup(EVP_PKEY* pKey) {
@@ -708,7 +706,7 @@ xmlSecOpenSSLEvpKeyGetKeyDataId(EVP_PKEY *pKey) {
 
 #ifndef XMLSEC_NO_DSA
     case EVP_PKEY_DSA:
-       return (xmlSecOpenSSLKeyDataDsaId);
+        return (xmlSecOpenSSLKeyDataDsaId);
 #endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_EC
@@ -778,10 +776,10 @@ xmlSecOpenSSLEvpKeyGetKeyDataId(EVP_PKEY *pKey) {
 }
 
 /**
- * @brief Creates xmlsec key object from OpenSSL key object.
- * @details On success, ownership of @p pKey transfers to the returned key; on failure the caller retains ownership.
+ * @brief Creates xmlsec key data object from OpenSSL key object.
+ * @details On success, ownership of @p pKey transfers to the returned key data; on failure the caller retains ownership.
  * @param pKey the pointer to EVP_PKEY.
- * @return pointer to newly created xmlsec key or NULL if an error occurs.
+ * @return pointer to the newly created xmlsec key data or NULL if an error occurs.
  */
 xmlSecKeyDataPtr
 xmlSecOpenSSLEvpKeyAdopt(EVP_PKEY *pKey) {
@@ -797,7 +795,7 @@ xmlSecOpenSSLEvpKeyAdopt(EVP_PKEY *pKey) {
         return(NULL);
     }
 
-     data = xmlSecKeyDataCreate(id);
+    data = xmlSecKeyDataCreate(id);
     if(data == NULL) {
         xmlSecInternalError("xmlSecKeyDataCreate", NULL);
         return(NULL);
@@ -829,7 +827,7 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyData ## klassName ## Klass = {        
     dataNodeNs,                                 /* const xmlChar* dataNodeNs; */                            \
                                                                                                             \
     /* constructors/destructor */                                                                           \
-    xmlSecOpenSSLEvpKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */             \
+    xmlSecOpenSSLEvpKeyDataInitialize,          /* xmlSecKeyDataInitMethod initialize; */             \
     xmlSecOpenSSLEvpKeyDataDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */               \
     xmlSecOpenSSLEvpKeyDataFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */                 \
     generate,                                   /* xmlSecKeyDataGenerateMethod generate; */                 \
@@ -1126,7 +1124,7 @@ xmlSecOpenSSLKeyDataDsaGetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDsaP
     xmlSecAssert2(dsaKeyValue != NULL, -1);
 
     /* ensure the values are not getting free'd */
-    dsaKeyValue->notOwner =  1;
+    dsaKeyValue->notOwner = 1;
 
     dsa = xmlSecOpenSSLKeyDataDsaGetDsa(data);
     if(dsa == NULL) {
@@ -1296,7 +1294,7 @@ xmlSecOpenSSLKeyDataDsaGetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDsaP
     }
     ret = EVP_PKEY_get_bn_param(pKey, OSSL_PKEY_PARAM_PRIV_KEY, &(dsaKeyValue->priv_key));
     if((ret != 1) || (dsaKeyValue->priv_key == NULL)) {
-       /* ignore the error -- public key doesn't have private component */
+        /* ignore the error -- public key doesn't have private component */
     }
 
     /* success */
@@ -1868,7 +1866,7 @@ xmlSecOpenSSLKeyDataDhAdoptDh(xmlSecKeyDataPtr data, DH* dh) {
         EVP_PKEY_free(pKey);
         return(-1);
     }
-    /* data owns pKey now*/
+    /* data owns pKey now */
 
     /* success: data->pKey owns dh now */
     return(0);
@@ -2703,8 +2701,8 @@ xmlSecOpenSSLKeyDataEcSetEcKey(xmlSecKeyDataPtr data,  EC_KEY* ecKey) {
     }
     /* data owns pKey now */
 
-    /* success: EVP_PKEY_set1_EC_KEY copied ecKey into pKey, so the caller
-     * still owns ecKey and frees it below */
+    /* success: EVP_PKEY_set1_EC_KEY copied ecKey into pKey, so this function
+     * owns ecKey and frees it below */
     EC_KEY_free(ecKey);
     return(0);
 }
@@ -2872,7 +2870,7 @@ xmlSecOpenSSLKeyDataEcSetValue(xmlSecKeyDataPtr data, const xmlChar* curveOid, x
         xmlSecInternalError("xmlSecOpenSSLKeyDataEcSetEcKey", xmlSecKeyDataGetName(data));
         goto done;
     }
-    eckey = NULL; /* data owns eckey now */
+    eckey = NULL; /* data holds a copy of eckey now */
 
     /* success */
     res = 0;
@@ -2884,7 +2882,7 @@ done:
     if(group != NULL) {
         EC_GROUP_free(group);
     }
-    if(eckey!= NULL) {
+    if(eckey != NULL) {
         EC_KEY_free(eckey);
     }
     return(res);
@@ -3422,7 +3420,7 @@ xmlSecOpenSSLKeyDataRsaGetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueRsaP
     xmlSecAssert2(rsaKeyValue != NULL, -1);
 
     /* ensure the values are not getting free'd */
-    rsaKeyValue->notOwner =  1;
+    rsaKeyValue->notOwner = 1;
 
     rsa = xmlSecOpenSSLKeyDataRsaGetRsa(data);
     if(rsa == NULL) {
@@ -3611,12 +3609,12 @@ xmlSecOpenSSLKeyDataRsaGetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueRsaP
     ret = EVP_PKEY_get_bn_param(pKey, OSSL_PKEY_PARAM_RSA_N, &(rsaKeyValue->n));
     if((ret != 1) || (rsaKeyValue->n == NULL)) {
         xmlSecOpenSSLError("EVP_PKEY_get_bn_param(n)", xmlSecKeyDataGetName(data));
-       return(-1);
+        return(-1);
     }
     ret = EVP_PKEY_get_bn_param(pKey, OSSL_PKEY_PARAM_RSA_E, &(rsaKeyValue->e));
     if((ret != 1) || (rsaKeyValue->e == NULL)) {
         xmlSecOpenSSLError("EVP_PKEY_get_bn_param(e)", xmlSecKeyDataGetName(data));
-       return(-1);
+        return(-1);
     }
     ret = EVP_PKEY_get_bn_param(pKey, OSSL_PKEY_PARAM_RSA_D, &(rsaKeyValue->d));
     if((ret != 1) || (rsaKeyValue->d == NULL)) {

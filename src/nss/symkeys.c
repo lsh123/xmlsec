@@ -243,7 +243,7 @@ static xmlSecKeyDataKlass xmlSecNss ## name ## Klass = {                        
     keyNodeNs,                              /* const xmlChar* dataNodeNs; */                             \
                                                                                                          \
     /* constructors/destructor */                                                                        \
-    xmlSecNssSymKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */              \
+    xmlSecNssSymKeyDataInitialize,          /* xmlSecKeyDataInitMethod initialize; */              \
     xmlSecNssSymKeyDataDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */                \
     xmlSecNssSymKeyDataFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */                  \
     xmlSecNssSymKeyDataGenerate,            /* xmlSecKeyDataGenerateMethod generate; */                  \

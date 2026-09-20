@@ -12,20 +12,15 @@
  */
 #include "globals.h"
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 
 #include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
-#include <xmlsec/app.h>
 #include <xmlsec/dl.h>
 #include <xmlsec/io.h>
-#include <xmlsec/parser.h>
 #include <xmlsec/errors.h>
 
 #include "cast_helpers.h"

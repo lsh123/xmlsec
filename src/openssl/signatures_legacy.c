@@ -576,7 +576,7 @@ xmlSecOpenSSLSignatureLegacyEcdsaSignatureHalfLen(EVP_PKEY* pKey) {
     }
     signHalfLen = BN_num_bytes(order);
     if(signHalfLen <= 0) {
-        xmlSecOpenSSLError("BN_num_bytes", NULL);
+        xmlSecInternalError("curve order size is 0", NULL);
         goto done;
     }
 
@@ -882,12 +882,12 @@ xmlSecOpenSSLSignatureLegacyEcdsa_XmlDSigToOpenSSL(
 
         rr = BN_bin2bn(signData, signHalfLen, NULL);
         if(rr == NULL) {
-            xmlSecOpenSSLError("BN_bin2bn(sig->r)", NULL);
+            xmlSecOpenSSLError("BN_bin2bn(signData)", NULL);
             goto done;
         }
         ss = BN_bin2bn(signData + signHalfLen, signHalfLen, NULL);
         if(ss == NULL) {
-            xmlSecOpenSSLError("BN_bin2bn(sig->s)", NULL);
+            xmlSecOpenSSLError("BN_bin2bn(signData + signHalfLen)", NULL);
             goto done;
         }
 

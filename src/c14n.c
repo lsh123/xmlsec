@@ -15,7 +15,6 @@
 #include <libxml/c14n.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/keys.h>
 #include <xmlsec/list.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/xmltree.h>
@@ -362,7 +361,7 @@ static xmlSecTransformKlass xmlSecTransformInclC14NKlass = {
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
     NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     NULL,                                       /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformC14NPopBin,                  /* xmlSecTransformPopBinMethod popBin; */
@@ -407,7 +406,7 @@ static xmlSecTransformKlass xmlSecTransformInclC14NWithCommentsKlass = {
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
     NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     NULL,                                       /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformC14NPopBin,                  /* xmlSecTransformPopBinMethod popBin; */
@@ -452,7 +451,7 @@ static xmlSecTransformKlass xmlSecTransformInclC14N11Klass = {
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
     NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     NULL,                                       /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformC14NPopBin,                  /* xmlSecTransformPopBinMethod popBin; */
@@ -495,7 +494,7 @@ static xmlSecTransformKlass xmlSecTransformInclC14N11WithCommentsKlass = {
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
     NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     NULL,                                       /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformC14NPopBin,                  /* xmlSecTransformPopBinMethod popBin; */
@@ -539,7 +538,7 @@ static xmlSecTransformKlass xmlSecTransformExclC14NKlass = {
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
     NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     NULL,                                       /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformC14NPopBin,                  /* xmlSecTransformPopBinMethod popBin; */
@@ -583,7 +582,7 @@ static xmlSecTransformKlass xmlSecTransformExclC14NWithCommentsKlass = {
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
     NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     NULL,                                       /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformC14NPopBin,                  /* xmlSecTransformPopBinMethod popBin; */
@@ -627,7 +626,7 @@ static xmlSecTransformKlass xmlSecTransformRemoveXmlTagsC14NKlass = {
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
     NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     NULL,                                       /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformC14NPopBin,                  /* xmlSecTransformPopBinMethod popBin; */

@@ -7,7 +7,7 @@
  */
 /**
  * @addtogroup xmlsec_core_app
- * @brief Crypto-engine independent application support functions.
+ * @brief High-level helper functions for application integration.
  */
 #include "globals.h"
 
@@ -52,7 +52,7 @@ xmlSecCryptoInit(void) {
 }
 
 /**
- * @brief XMLSec library specific crypto engine shutdown.
+ * @brief Shuts down the XMLSec crypto engine.
  * @details XMLSec library specific crypto engine shutdown.
  *
  * Note: Once this function has been called it might be
@@ -73,7 +73,7 @@ xmlSecCryptoShutdown(void) {
 
 /**
  * @brief Adds crypto key data stores to the keys manager.
- * @details Adds crypto specific key data stores in keys manager.
+ * @details Adds crypto specific key data stores to the keys manager.
  * @param mngr the pointer to keys manager.
  * @return 0 on success or a negative value otherwise.
  */
@@ -452,7 +452,7 @@ xmlSecKeyDataX509GetKlass(void) {
 
 /**
  * @brief The raw X509 cert key data klass.
- * @return raw x509 cert key data klass or NULL if an error occurs
+ * @return raw X509 cert key data klass or NULL if an error occurs
  * (xmlsec-crypto library is not loaded or the raw X509 cert key data
  * klass is not implemented).
  */
@@ -2598,7 +2598,7 @@ xmlSecCryptoAppGetDefaultPwdCallback(void) {
     /* default password callback can be NULL */
     xmlSecCryptoDLFunctionsPtr functions = xmlSecCryptoDLGetFunctions();
     if(functions == NULL)  {
-        xmlSecInternalError("xmlSecCryptoDLGetFunctions", NULL);
+        xmlSecNotImplementedError2(missingMethodError, "cryptoAppDefaultPwdCallback");
         return(NULL);
     }
 

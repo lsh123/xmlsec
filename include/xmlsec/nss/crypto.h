@@ -453,7 +453,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEdDSAEd25519GetKlass(vo
 #ifndef XMLSEC_NO_XDH
 
 /**
- * @brief The XDH key klass (X25519, RFC 7748).
+ * @brief The XDH key klass (X25519 and X448).
  */
 #define xmlSecNssKeyDataXdhId \
         xmlSecNssKeyDataXdhGetKlass()

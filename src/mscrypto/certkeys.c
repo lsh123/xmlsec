@@ -1027,7 +1027,7 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataRsaKlass = {
     xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    xmlSecMSCryptoKeyDataRsaInitialize,         /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecMSCryptoKeyDataRsaInitialize,         /* xmlSecKeyDataInitMethod initialize; */
     xmlSecMSCryptoKeyDataRsaDuplicate,          /* xmlSecKeyDataDuplicateMethod duplicate; */
     xmlSecMSCryptoKeyDataRsaFinalize,           /* xmlSecKeyDataFinalizeMethod finalize; */
     xmlSecMSCryptoKeyDataRsaGenerate,           /* xmlSecKeyDataGenerateMethod generate; */
@@ -1618,7 +1618,7 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataDsaKlass = {
     xmlSecDSigNs,                       /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    xmlSecMSCryptoKeyDataDsaInitialize, /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecMSCryptoKeyDataDsaInitialize, /* xmlSecKeyDataInitMethod initialize; */
     xmlSecMSCryptoKeyDataDsaDuplicate,  /* xmlSecKeyDataDuplicateMethod duplicate; */
     xmlSecMSCryptoKeyDataDsaFinalize,   /* xmlSecKeyDataFinalizeMethod finalize; */
     xmlSecMSCryptoKeyDataDsaGenerate,   /* xmlSecKeyDataGenerateMethod generate; */
@@ -2204,7 +2204,7 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataGost2001Klass = {
     xmlSecDSigNs,                       /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    xmlSecMSCryptoKeyDataGost2001Initialize,    /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecMSCryptoKeyDataGost2001Initialize,    /* xmlSecKeyDataInitMethod initialize; */
     xmlSecMSCryptoKeyDataGost2001Duplicate,     /* xmlSecKeyDataDuplicateMethod duplicate; */
     xmlSecMSCryptoKeyDataGost2001Finalize,      /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL, /* xmlSecMSCryptoKeyDataGost2001Generate,*/   /* xmlSecKeyDataGenerateMethod generate; */
@@ -2361,7 +2361,7 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataGost2012_256Klass = {
     xmlSecDSigNs,                       /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    xmlSecMSCryptoKeyDataGost2012_256Initialize,    /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecMSCryptoKeyDataGost2012_256Initialize,    /* xmlSecKeyDataInitMethod initialize; */
     xmlSecMSCryptoKeyDataGost2012_256Duplicate,     /* xmlSecKeyDataDuplicateMethod duplicate; */
     xmlSecMSCryptoKeyDataGost2012_256Finalize,      /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL, /* xmlSecMSCryptoKeyDataGost2001Generate,*/   /* xmlSecKeyDataGenerateMethod generate; */
@@ -2513,7 +2513,7 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataGost2012_512Klass = {
     xmlSecDSigNs,                       /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    xmlSecMSCryptoKeyDataGost2012_512Initialize,    /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecMSCryptoKeyDataGost2012_512Initialize,    /* xmlSecKeyDataInitMethod initialize; */
     xmlSecMSCryptoKeyDataGost2012_512Duplicate,     /* xmlSecKeyDataDuplicateMethod duplicate; */
     xmlSecMSCryptoKeyDataGost2012_512Finalize,      /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL, /* xmlSecMSCryptoKeyDataGost2001Generate,*/   /* xmlSecKeyDataGenerateMethod generate; */

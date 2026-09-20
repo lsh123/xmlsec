@@ -888,7 +888,6 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->signatureFormat = xmlSecOpenSSLEvpSignatureFormat_DoNothing;
         ctx->rsaPadding      = RSA_PKCS1_PADDING;
     } else
-
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_512Id)) {
         XMLSEC_OPENSSL_EVP_SIGNATURE_SET_GOST_DIGEST(transform, ctx, XMLSEC_OPENSSL_DIGEST_NAME_GOST12_512);
         ctx->keyId           = xmlSecOpenSSLKeyDataGostR3410_2012_512Id;
@@ -1929,7 +1928,7 @@ xmlSecOpenSSLEvpSignatureDsa_XmlDSig2OpenSSL(const xmlSecTransformId transformId
     }
     ret = DSA_SIG_set0(sig, rr, ss);
     if(ret == 0) {
-        xmlSecOpenSSLError("DSA_SIG_set0()", NULL);
+        xmlSecOpenSSLError("DSA_SIG_set0", NULL);
         goto done;
     }
     rr = NULL; /* owned by sig now */
@@ -2000,7 +1999,7 @@ xmlSecOpenSSLEvpSignatureDsa_OpenSSL2XmlDSig(const xmlSecTransformId transformId
     consumed = buf - xmlSecBufferGetData(data);
     XMLSEC_SAFE_CAST_PTRDIFF_TO_SIZE(consumed, consumedSize, goto done, NULL);
     if(consumedSize < bufSize) {
-        xmlSecInvalidSizeDataError("Remaining bytes", (bufSize - consumedSize), "0 bytes",  NULL);
+        xmlSecInvalidSizeDataError("Remaining bytes", (bufSize - consumedSize), "0 bytes", NULL);
         goto done;
     }
 
@@ -2126,7 +2125,7 @@ xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL_WithASN1(const xmlSecByte * data,
 
     sig = d2i_ECDSA_SIG(NULL, &signData, dataLen);
     if (sig == NULL) {
-        xmlSecOpenSSLError("d2i_ECDSA_SIG()", NULL);
+        xmlSecOpenSSLError("d2i_ECDSA_SIG", NULL);
         goto done;
     }
 
@@ -2134,13 +2133,13 @@ xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL_WithASN1(const xmlSecByte * data,
     consumed = signData - data;
     XMLSEC_SAFE_CAST_PTRDIFF_TO_SIZE(consumed, consumedSize, goto done, NULL);
     if(consumedSize < dataSize) {
-        xmlSecInvalidSizeDataError("Remaining bytes", (dataSize - consumedSize), "0 bytes",  NULL);
+        xmlSecInvalidSizeDataError("Remaining bytes", (dataSize - consumedSize), "0 bytes", NULL);
         goto done;
     }
 
     ret = i2d_ECDSA_SIG(sig, out); /* ret is size of signature on success */
     if (ret < 0) {
-        xmlSecOpenSSLError("i2d_ECDSA_SIG()", NULL);
+        xmlSecOpenSSLError("i2d_ECDSA_SIG", NULL);
         goto done;
     }
 
@@ -2230,7 +2229,7 @@ xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(
     }
     ret = ECDSA_SIG_set0(sig, rr, ss);
     if(ret == 0) {
-        xmlSecOpenSSLError("ECDSA_SIG_set0()", NULL);
+        xmlSecOpenSSLError("ECDSA_SIG_set0", NULL);
         goto done;
     }
     rr = NULL; /* owned by sig now */
@@ -2304,7 +2303,7 @@ xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig(xmlSecTransformCtxPtr transformCt
     consumed = buf - xmlSecBufferGetData(data);
     XMLSEC_SAFE_CAST_PTRDIFF_TO_SIZE(consumed, consumedSize, goto done, NULL);
     if(consumedSize < bufSize) {
-        xmlSecInvalidSizeDataError("Remaining bytes", (bufSize - consumedSize), "0 bytes",  NULL);
+        xmlSecInvalidSizeDataError("Remaining bytes", (bufSize - consumedSize), "0 bytes", NULL);
         goto done;
     }
 
@@ -2530,13 +2529,13 @@ xmlSecOpenSSLTransformMLDSANodeRead(
     /* set max size to make sure we have non-NULL buffer for OpenSSL params */
     ctx->contextString = xmlSecBufferCreate(XMLSEC_MLDSA_MAX_SIZE);
     if (ctx->contextString == NULL) {
-        xmlSecInternalError("xmlSecBufferCreate()",  xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecBufferCreate()", xmlSecTransformGetName(transform));
         return(-1);
     }
 
     ret = xmlSecTransformMLDSAReadContextString(node, ctx->contextString);
     if (ret < 0) {
-        xmlSecInternalError("xmlSecTransformMLDSAReadContextString()",  xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecTransformMLDSAReadContextString()", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -2613,13 +2612,13 @@ xmlSecOpenSSLTransformSLHDSANodeRead(
     /* set max size to make sure we have non-NULL buffer for OpenSSL params */
     ctx->contextString = xmlSecBufferCreate(XMLSEC_SLHDSA_MAX_SIZE);
     if (ctx->contextString == NULL) {
-        xmlSecInternalError("xmlSecBufferCreate()",  xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecBufferCreate()", xmlSecTransformGetName(transform));
         return(-1);
     }
 
     ret = xmlSecTransformSLHDSAReadContextString(node, ctx->contextString);
     if (ret < 0) {
-        xmlSecInternalError("xmlSecTransformSLHDSAReadContextString()",  xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecTransformSLHDSAReadContextString()", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -2731,13 +2730,13 @@ xmlSecOpenSSLTransformEdDSANodeRead(
     /* set max size to make sure we have non-NULL buffer for OpenSSL params */
     ctx->contextString = xmlSecBufferCreate(XMLSEC_EDDSA_MAX_SIZE);
     if (ctx->contextString == NULL) {
-        xmlSecInternalError("xmlSecBufferCreate()",  xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecBufferCreate()", xmlSecTransformGetName(transform));
         return(-1);
     }
 
     ret = xmlSecTransformEdDSAReadContextString(node, ctx->contextString);
     if (ret < 0) {
-        xmlSecInternalError("xmlSecTransformEdDSAReadContextString()",  xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecTransformEdDSAReadContextString()", xmlSecTransformGetName(transform));
         return(-1);
     }
 

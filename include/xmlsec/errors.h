@@ -273,17 +273,17 @@ extern "C" {
 /**
  * @brief CRL verification failed.
  */
-#define XMLSEC_ERRORS_R_CRL_VERIFY_FAILED              77
+#define XMLSEC_ERRORS_R_CRL_VERIFY_FAILED               77
 
 /**
  * @brief "Last update" CRL verification failed.
  */
-#define XMLSEC_ERRORS_R_CRL_NOT_YET_VALID              78
+#define XMLSEC_ERRORS_R_CRL_NOT_YET_VALID               78
 
 /**
  * @brief "Next update" CRL verification failed.
  */
-#define XMLSEC_ERRORS_R_CRL_HAS_EXPIRED                79
+#define XMLSEC_ERRORS_R_CRL_HAS_EXPIRED                 79
 
 /**
  * @brief The &lt;dsig:Reference/&gt; nodes were not found.

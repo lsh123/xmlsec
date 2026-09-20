@@ -113,7 +113,6 @@ typedef unsigned int                            xmlSecTransformUriType;
 
 /**
  * @brief The same-document ("#...") non-empty URI type.
- * @details The same document ("#...") but not empty ("") URI type.
  */
 #define xmlSecTransformUriTypeSameDocument      0x0002
 
@@ -396,7 +395,7 @@ struct _xmlSecTransform {
     xmlSecNodeSetPtr                    outNodes;  /**< the output XML nodes. */
 
     /* used for some transform (e.g. KDF) to determine the desired output size */
-    xmlSecSize                          expectedOutputSize;  /**< the expected transform output size (used for key wraps). */
+    xmlSecSize                          expectedOutputSize;  /**< the expected transform output size (e.g. for KDF transforms). */
 
     /* transform flags (use uintptr_t to ensure struct size stays the same) */
     uintptr_t                           flags;  /**< the transform flags (eg user specified vs inserted by XMLSec). */
@@ -787,7 +786,6 @@ XMLSEC_EXPORT void              xmlSecTransformBase64SetLineSize        (xmlSecT
                                                                          xmlSecSize lineSize);
 /**
  * @brief The inclusive C14N without comments transform klass.
- * @details The regular (inclusive) C14N without comments transform klass.
  */
 #define xmlSecTransformInclC14NId \
         xmlSecTransformInclC14NGetKlass()
@@ -795,7 +793,6 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecTransformInclC14NGetKlass         (void);
 
 /**
  * @brief The inclusive C14N with comments transform klass.
- * @details The regular (inclusive) C14N with comments transform klass.
  */
 #define xmlSecTransformInclC14NWithCommentsId \
         xmlSecTransformInclC14NWithCommentsGetKlass()
@@ -803,7 +800,6 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecTransformInclC14NWithCommentsGetKlass(void
 
 /**
  * @brief The inclusive C14N 1.1 without comments transform klass.
- * @details The regular (inclusive) C14N 1.1 without comments transform klass.
  */
 #define xmlSecTransformInclC14N11Id \
         xmlSecTransformInclC14N11GetKlass()
@@ -811,15 +807,13 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecTransformInclC14N11GetKlass       (void);
 
 /**
  * @brief The inclusive C14N 1.1 with comments transform klass.
- * @details The regular (inclusive) C14N 1.1 with comments transform klass.
  */
 #define xmlSecTransformInclC14N11WithCommentsId \
         xmlSecTransformInclC14N11WithCommentsGetKlass()
 XMLSEC_EXPORT xmlSecTransformId xmlSecTransformInclC14N11WithCommentsGetKlass(void);
 
 /**
- * @brief The exclusive C14N without comments transform.
- * @details The exclusive C14N without comments transform klass.
+ * @brief The exclusive C14N without comments transform klass.
  */
 #define xmlSecTransformExclC14NId \
         xmlSecTransformExclC14NGetKlass()

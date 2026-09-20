@@ -160,8 +160,9 @@ xmlSecGnuTLSKeyDataX509GetKlass(void) {
  * @param data the pointer to X509 key data.
  *
  *
- * @return the key's certificate or NULL if key data was not used for key
- * extraction or an error occurs.
+ * @return a borrowed pointer to the key's certificate, or NULL if key data
+ * was not used for key extraction or an error occurs; the caller must NOT
+ * free it.
  */
 gnutls_x509_crt_t
 xmlSecGnuTLSKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
@@ -219,7 +220,7 @@ xmlSecGnuTLSKeyDataX509AddCertInternal(xmlSecGnuTLSX509DataCtxPtr ctx, gnutls_x5
         if((cert == cert2) || (gnutls_x509_crt_equals(cert, cert2) == 1)) {
             ret = xmlSecPtrListRemove(&(ctx->certsList), ii);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecPtrListRemove(ii)", NULL);
+                xmlSecInternalError("xmlSecPtrListRemove(certsList)", NULL);
                 return(-1);
             }
             break;
@@ -247,7 +248,9 @@ xmlSecGnuTLSKeyDataX509AddCertInternal(xmlSecGnuTLSX509DataCtxPtr ctx, gnutls_x5
 
 /**
  * @brief Adds certificate to the X509 key data and sets it as the key's
- * certificate in @p data. On success, the @p data owns the cert.
+ * certificate in @p data.
+ * @details On success, ownership of @p cert transfers to xmlsec; on failure
+ * the caller retains ownership.
  * @param data the pointer to X509 key data.
  * @param cert the pointer to GnuTLS X509 certificate.
  * @return 0 on success or a negative value if an error occurs.
@@ -265,7 +268,9 @@ xmlSecGnuTLSKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, gnutls_x509_crt_t cer
 
     /* check if for some reasons same cert is used */
     if((ctx->keyCert != NULL) && ((cert == ctx->keyCert) || (gnutls_x509_crt_equals(cert, ctx->keyCert) == 1))) {
-        gnutls_x509_crt_deinit(cert);  /* caller expects data to own the cert on success. */
+        if(cert != ctx->keyCert) {
+            gnutls_x509_crt_deinit(cert); /* the list owns ctx->keyCert; the caller expects data to own the cert on success. */
+        }
         return(0);
     }
     xmlSecAssert2(ctx->keyCert == NULL, -1);
@@ -283,6 +288,7 @@ xmlSecGnuTLSKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, gnutls_x509_crt_t cer
 
 /**
  * @brief Adds certificate to the X509 key data.
+ * @details On success, ownership of @p cert transfers to xmlsec; on failure the caller retains ownership.
  * @param data the pointer to X509 key data.
  * @param cert the pointer to GnuTLS X509 certificate.
  * @return 0 on success or a negative value if an error occurs.
@@ -299,7 +305,9 @@ xmlSecGnuTLSKeyDataX509AdoptCert(xmlSecKeyDataPtr data, gnutls_x509_crt_t cert) 
 
     /* pkcs12 files sometimes have key cert twice: as the key cert and as the cert in the chain */
     if((ctx->keyCert != NULL) && ((cert == ctx->keyCert) || (gnutls_x509_crt_equals(cert, ctx->keyCert) == 1))) {
-        gnutls_x509_crt_deinit(cert); /* caller expects data to own the cert on success. */
+        if(cert != ctx->keyCert) {
+            gnutls_x509_crt_deinit(cert); /* the list owns ctx->keyCert; the caller expects data to own the cert on success. */
+        }
         return(0);
     }
     return(xmlSecGnuTLSKeyDataX509AddCertInternal(ctx, cert, 0)); /* not a key cert */
@@ -311,8 +319,9 @@ xmlSecGnuTLSKeyDataX509AdoptCert(xmlSecKeyDataPtr data, gnutls_x509_crt_t cert) 
  * @param pos the desired certificate position.
  *
  *
- * @return the pointer to certificate or NULL if @p pos is larger than the
- * number of certificates in @p data or an error occurs.
+ * @return a borrowed pointer to the certificate, or NULL if @p pos is larger
+ * than the number of certificates in @p data or an error occurs; the caller
+ * must NOT free it.
  */
 gnutls_x509_crt_t
 xmlSecGnuTLSKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
@@ -1052,7 +1061,8 @@ xmlSecGnuTLSVerifyAndAdoptX509KeyData(
 /**
  * @brief Extracts public key from the @p cert.
  * @param cert the certificate.
- * @return public key value or NULL if an error occurs.
+ * @return a new key data that the caller owns and must destroy with
+ * xmlSecKeyDataDestroy(), or NULL if an error occurs.
  */
 xmlSecKeyDataPtr
 xmlSecGnuTLSX509CertGetKey(gnutls_x509_crt_t cert) {

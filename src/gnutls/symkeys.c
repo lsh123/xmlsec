@@ -24,7 +24,6 @@
 
 #include <xmlsec/gnutls/crypto.h>
 
-
 #include "../keysdata_helpers.h"
 
 /******************************************************************************
@@ -59,7 +58,7 @@ static int      xmlSecGnuTLSSymKeyDataGenerate         (xmlSecKeyDataPtr data,
                                                          xmlSecKeyDataType type);
 
 static xmlSecKeyDataType xmlSecGnuTLSSymKeyDataGetType (xmlSecKeyDataPtr data);
-static xmlSecSize       xmlSecGnuTLSSymKeyDataGetSize          (xmlSecKeyDataPtr data);
+static xmlSecSize       xmlSecGnuTLSSymKeyDataGetSize  (xmlSecKeyDataPtr data);
 static void     xmlSecGnuTLSSymKeyDataDebugDump        (xmlSecKeyDataPtr data,
                                                          FILE* output);
 static void     xmlSecGnuTLSSymKeyDataDebugXmlDump     (xmlSecKeyDataPtr data,

@@ -61,25 +61,33 @@ struct _xmlSecGnuTLSKdfCtx {
     xmlSecBuffer key;
 
     /* KDF-specific data */
+#if !defined(XMLSEC_NO_CONCATKDF) || !defined(XMLSEC_NO_PBKDF2) || !defined(XMLSEC_NO_HKDF)
     union {
+#ifndef XMLSEC_NO_CONCATKDF
         struct {
             xmlSecTransformConcatKdfParams params;
             gnutls_digest_algorithm_t dgstAlgo;
             xmlSecBuffer fixedInfo;     /* pre-computed FixedInfo (OtherInfo) */
         } concatKdf;
+#endif /* XMLSEC_NO_CONCATKDF */
 
+#ifndef XMLSEC_NO_PBKDF2
         struct {
             xmlSecTransformPbkdf2Params params;
             gnutls_mac_algorithm_t mac;
         } pbkdf2;
+#endif /* XMLSEC_NO_PBKDF2 */
 
+#ifndef XMLSEC_NO_HKDF
         struct {
             xmlSecTransformHkdfParams params;
             gnutls_mac_algorithm_t mac;
             xmlSecBuffer salt;
             xmlSecBuffer info;
         } hkdf;
+#endif /* XMLSEC_NO_HKDF */
     } u;
+#endif /* !defined(XMLSEC_NO_CONCATKDF) || !defined(XMLSEC_NO_PBKDF2) || !defined(XMLSEC_NO_HKDF) */
 };
 XMLSEC_TRANSFORM_DECLARE(GnuTLSKdf, xmlSecGnuTLSKdfCtx)
 #define xmlSecGnuTLSKdfCtxSize XMLSEC_TRANSFORM_SIZE(GnuTLSKdf)
@@ -500,6 +508,7 @@ xmlSecGnuTLSConcatKdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen,
     gnutls_hash_hd_t hash;
     int err;
     int ret;
+    int res = -1;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->kdfType == xmlSecGnuTLSKdfType_ConcatKdf, -1);
@@ -547,7 +556,7 @@ xmlSecGnuTLSConcatKdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen,
         /* detect counter wrap: counters start at 1 and must not wrap (NIST SP 800-56A) */
         if(counterVal == 0) {
             xmlSecInternalError("ConcatKDF counter overflow", NULL);
-            return(-1);
+            goto done;
         }
 
         /* encode counter as 4-byte big-endian */
@@ -560,7 +569,7 @@ xmlSecGnuTLSConcatKdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen,
         err = gnutls_hash_init(&hash, ctx->u.concatKdf.dgstAlgo);
         if(err != GNUTLS_E_SUCCESS) {
             xmlSecGnuTLSError("gnutls_hash_init", err, NULL);
-            return(-1);
+            goto done;
         }
 
         /* hash: counter || Z || OtherInfo */
@@ -568,14 +577,14 @@ xmlSecGnuTLSConcatKdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen,
         if(err != GNUTLS_E_SUCCESS) {
             xmlSecGnuTLSError("gnutls_hash(counter)", err, NULL);
             gnutls_hash_deinit(hash, NULL);
-            return(-1);
+            goto done;
         }
 
         err = gnutls_hash(hash, keyData, keySize);
         if(err != GNUTLS_E_SUCCESS) {
             xmlSecGnuTLSError("gnutls_hash(Z)", err, NULL);
             gnutls_hash_deinit(hash, NULL);
-            return(-1);
+            goto done;
         }
 
         if((fixedInfoData != NULL) && (fixedInfoSize > 0)) {
@@ -583,7 +592,7 @@ xmlSecGnuTLSConcatKdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen,
             if(err != GNUTLS_E_SUCCESS) {
                 xmlSecGnuTLSError("gnutls_hash(OtherInfo)", err, NULL);
                 gnutls_hash_deinit(hash, NULL);
-                return(-1);
+                goto done;
             }
         }
 
@@ -603,11 +612,13 @@ xmlSecGnuTLSConcatKdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen,
         counterVal++;
     }
 
+    /* success */
+    res = 0;
+
+done:
     /* securely wipe sensitive data from stack */
     xmlSecMemCleanse(hashBuf, sizeof(hashBuf));
-
-    /* success */
-    return(0);
+    return(res);
 }
 
 /******************************************************************************

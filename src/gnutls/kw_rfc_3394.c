@@ -93,7 +93,7 @@ static int      xmlSecGnuTLSKWRfc3394Execute                   (xmlSecTransformP
                                                                 int last,
                                                                 xmlSecTransformCtxPtr transformCtx);
 
-/* Helper macros to define the transform klass */
+/* Helper macro to define the transform klass */
 #define XMLSEC_GNUTLS_KW_RFC3394_KLASS(name)                                                            \
 static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                                           \
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
@@ -296,7 +296,7 @@ xmlSecGnuTLSKWRfc3394Execute(xmlSecTransformPtr transform, int last,
     return(0);
 }
 
-static unsigned char g_zero_iv[XMLSEC_KW_RFC3394_BLOCK_SIZE] =
+static unsigned char xmlSecGnuTLSKWRfc3394ZeroIv[XMLSEC_KW_RFC3394_BLOCK_SIZE] =
     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 static int
@@ -361,7 +361,7 @@ xmlSecGnuTLSKWRfc3394BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte
     xmlSecAssert2(ctx->cipher != NULL, -1);
 
     /* always reset to zero IV for each block */
-    gnutls_cipher_set_iv(ctx->cipher, g_zero_iv, ctx->ivSize);
+    gnutls_cipher_set_iv(ctx->cipher, xmlSecGnuTLSKWRfc3394ZeroIv, ctx->ivSize);
 
     err = gnutls_cipher_encrypt2(ctx->cipher, in, inSize, out, outSize);
     if(err != GNUTLS_E_SUCCESS) {
@@ -406,7 +406,7 @@ xmlSecGnuTLSKWRfc3394BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte
     xmlSecAssert2(ctx->cipher != NULL, -1);
 
     /* always reset to zero IV for each block */
-    gnutls_cipher_set_iv(ctx->cipher, g_zero_iv, ctx->ivSize);
+    gnutls_cipher_set_iv(ctx->cipher, xmlSecGnuTLSKWRfc3394ZeroIv, ctx->ivSize);
 
     err = gnutls_cipher_decrypt2(ctx->cipher, in, inSize, out, outSize);
     if(err != GNUTLS_E_SUCCESS) {

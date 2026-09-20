@@ -40,12 +40,12 @@
 #define XMLSEC_GNUTLS_AEAD_CIPHER_GCM_TAG_SIZE               16
 
 
-#ifndef MAX
-#define MAX(a, b) (((a) > (b)) ? (a) : (b))
-#endif /* MAX */
+#ifndef XMLSEC_GNUTLS_AEAD_MAX
+#define XMLSEC_GNUTLS_AEAD_MAX(a, b) (((a) > (b)) ? (a) : (b))
+#endif /* XMLSEC_GNUTLS_AEAD_MAX */
 
 #ifndef XMLSEC_NO_CHACHA20
-#define XMLSEC_GNUTLS_AEAD_CIPHER_MAX_IV_SIZE           (MAX(XMLSEC_GNUTLS_AEAD_CIPHER_GCM_IV_SIZE, XMLSEC_CHACHA20_NONCE_SIZE))
+#define XMLSEC_GNUTLS_AEAD_CIPHER_MAX_IV_SIZE           (XMLSEC_GNUTLS_AEAD_MAX(XMLSEC_GNUTLS_AEAD_CIPHER_GCM_IV_SIZE, XMLSEC_CHACHA20_NONCE_SIZE))
 #else /* XMLSEC_NO_CHACHA20 */
 #define XMLSEC_GNUTLS_AEAD_CIPHER_MAX_IV_SIZE           (XMLSEC_GNUTLS_AEAD_CIPHER_GCM_IV_SIZE)
 #endif /* XMLSEC_NO_CHACHA20 */
@@ -436,7 +436,10 @@ xmlSecGnuTLSAeadCipherDecrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
 
     if(ctx->isIvPrepended) {
         /* AES-GCM mode: IV is prepended to the input ciphertext */
-        xmlSecAssert2(inSize >= ctx->ivSize + ctx->tagSize, -1);
+        if(inSize < ctx->ivSize + ctx->tagSize) {
+            xmlSecInvalidDataError("ciphertext too short", transformName);
+            return(-1);
+        }
 
         iv = xmlSecBufferGetData(in);
         xmlSecAssert2(iv != NULL, -1);
@@ -469,7 +472,10 @@ xmlSecGnuTLSAeadCipherDecrypt(xmlSecGnuTLSAeadCipherCtxPtr ctx, xmlSecBufferPtr 
         }
 
         /* ChaCha20-Poly1305 mode: IV/nonce already in ctx->iv[], set by readNode */
-        xmlSecAssert2(inSize >= ctx->tagSize, -1);
+        if(inSize < ctx->tagSize) {
+            xmlSecInvalidDataError("ciphertext too short", transformName);
+            return(-1);
+        }
 
         ciphertext = xmlSecBufferGetData(in);
         xmlSecAssert2(ciphertext != NULL, -1);

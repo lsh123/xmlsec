@@ -214,7 +214,7 @@ xmlSecGnuTLSDigestInitialize(xmlSecTransformPtr transform) {
 
     /* check hash output size */
     ctx->dgstSize = gnutls_hash_get_len(ctx->dgstAlgo);
-    if (ctx->dgstSize > XMLSEC_GNUTLS_MAX_DIGEST_SIZE) {
+    if((ctx->dgstSize == 0) || (ctx->dgstSize > XMLSEC_GNUTLS_MAX_DIGEST_SIZE)) {
         xmlSecInternalError("gnutls_hash_get_len", xmlSecTransformGetName(transform));
         return(-1);
     }
@@ -222,7 +222,7 @@ xmlSecGnuTLSDigestInitialize(xmlSecTransformPtr transform) {
     /* create hash */
     err = gnutls_hash_init(&(ctx->hash), ctx->dgstAlgo);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_hash_init", err, NULL);
+        xmlSecGnuTLSError("gnutls_hash_init", err, xmlSecTransformGetName(transform));
         return(-1);
     }
 

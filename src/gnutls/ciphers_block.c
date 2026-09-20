@@ -236,6 +236,10 @@ xmlSecGnuTLSBlockCipherCtxUpdate(xmlSecGnuTLSBlockCipherCtxPtr ctx, xmlSecBuffer
         xmlSecAssert2(inBlocksSize >= ctx->blockSize, -1);
         inBlocksSize -= ctx->blockSize; /* ensure we keep the last block around for Final() call to add/check/remove padding */
     }
+    if(inBlocksSize == 0) {
+        /* nothing to process: the single block is kept in the input for the Final() call */
+        return(0);
+    }
 
     inBuf = xmlSecBufferGetData(in);
     xmlSecAssert2(inBuf != NULL, -1);
@@ -348,7 +352,7 @@ xmlSecGnuTLSBlockCipherCtxFinal(xmlSecGnuTLSBlockCipherCtxPtr ctx, xmlSecBufferP
             return(-1);
         }
     } else {
-        /* update the last one block with padding */
+        /* update the last block with padding */
         if(inSize < ctx->blockSize) {
             xmlSecInvalidDataError("not enough data to decrypt the last block", xmlSecErrorsSafeString(cipherName));
             return(-1);
@@ -525,7 +529,7 @@ xmlSecGnuTLSBlockCipherInitialize(xmlSecTransformPtr transform) {
         ctx->blockSize      = 1;
         ctx->ivSize         = XMLSEC_CHACHA20_IV_SIZE;
         ctx->isIvPrepended  = 0;
-        ctx->accumulateAll  = 1;  /* GnuTLS 3.8.12: the ChaCha20 keystream is continuous across encrypt2/decrypt2 calls on the same handle, so the transform must accumulate all input before encrypting */
+        ctx->accumulateAll  = 1;  /* GnuTLS 3.8 does not maintain the ChaCha20 keystream state across encrypt2/decrypt2 calls on the same handle (only the first call produces correct output), so all input must be accumulated and processed in a single call */
     } else
 #endif /* XMLSEC_NO_CHACHA20 */
 
@@ -677,8 +681,9 @@ xmlSecGnuTLSBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTra
     }
     if(transform->status == xmlSecTransformStatusWorking) {
         if(ctx->accumulateAll) {
-            /* Stream cipher (e.g. ChaCha20): GnuTLS resets keystream on each encrypt2/decrypt2 call,
-             * so ALL data must be processed in a single call. Accumulate until last=1. */
+            /* Stream cipher (e.g. ChaCha20): GnuTLS does not maintain the ChaCha20 keystream state across encrypt2/decrypt2 calls
+             * (only the first call on a handle produces correct output), so ALL data must be processed in a single call.
+             * Accumulate until last=1. */
             if(last == 0) {
                 return(0);
             }

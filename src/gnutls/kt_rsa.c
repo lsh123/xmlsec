@@ -198,7 +198,8 @@ xmlSecGnuTLSKeyTransportEncrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
      * (PKCS#1 v1.5: the maximum plaintext size is the key size - 11) */
     keySize = (xmlSecKeyDataGetSize(ctx->keyData) + 7) / 8;
     if(keySize <= 11) {
-        xmlSecInternalError("the key size is too small for the PKCS#1 v1.5 padding", NULL);
+        xmlSecInternalError2("xmlSecGnuTLSKeyTransportEncrypt", NULL,
+            "key size is too small for the PKCS#1 v1.5 padding: keySize=" XMLSEC_SIZE_FMT, keySize);
         return(-1);
     }
     maxPlaintextSize = keySize - 11;
@@ -575,15 +576,8 @@ xmlSecGnuTLSRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     /* GnuTLS uses the same digest for both OAEP hash and MGF1 hash.
      * If an MGF1 algorithm is specified, verify it matches the OAEP digest. */
     if(oaepParams.mgf1DigestAlgorithm == NULL) {
-        /* no MGF1 specified: default to SHA-1 per XMLEnc 1.0 */
-#ifndef XMLSEC_NO_SHA1
-        mgf1DigestAlg = GNUTLS_DIG_SHA1;
-#else  /* XMLSEC_NO_SHA1 */
-        xmlSecOtherError(XMLSEC_ERRORS_R_DISABLED, NULL,
-            "No MGF1 digest algorithm is specified and the default SHA1 digest is disabled");
-        xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
-        return(-1);
-#endif /* XMLSEC_NO_SHA1 */
+        /* no MGF1 specified: default to the OAEP digest per XMLEnc 1.1 */
+        mgf1DigestAlg = digestAlg;
     } else
 #ifndef XMLSEC_NO_SHA1
     if(xmlStrcmp(oaepParams.mgf1DigestAlgorithm, xmlSecHrefMgf1Sha1) == 0) {
@@ -620,10 +614,11 @@ xmlSecGnuTLSRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
     /* GnuTLS limitation: MGF1 digest must equal the OAEP digest */
     if(mgf1DigestAlg != digestAlg) {
-        xmlSecInvalidTransformError2(transform,
+        xmlSecInvalidTransformError3(transform,
             "GnuTLS does not support different MGF1 and OAEP digests: "
-            "mgf1=\"%s\" differs from oaep digest",
-            xmlSecErrorsSafeString(oaepParams.mgf1DigestAlgorithm));
+            "mgf1=\"%s\" differs from oaep digest \"%s\"",
+            xmlSecErrorsSafeString(oaepParams.mgf1DigestAlgorithm),
+            xmlSecErrorsSafeString(oaepParams.digestAlgorithm));
         xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
         return(-1);
     }
@@ -728,7 +723,8 @@ xmlSecGnuTLSRsaOaepEncrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx, xmlSecBufferPtr inBuf,
     }
     hashLen = (xmlSecSize)gnutls_hash_get_len(ctx->digestAlg);
     if(keySize <= (2 * hashLen + 2)) {
-        xmlSecInternalError("the key size is too small for the OAEP digest", NULL);
+        xmlSecInternalError2("xmlSecGnuTLSRsaOaepEncrypt", NULL,
+            "key size is too small for the OAEP digest: keySize=" XMLSEC_SIZE_FMT, keySize);
         return(-1);
     }
     maxPlaintextSize = keySize - (2 * hashLen + 2);

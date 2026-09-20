@@ -667,7 +667,7 @@ xmlSecGnuTLSSignatureSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr key
 #define XMLSEC_GNUTLS_ASN1_TAG_INTEGER  0x02
 
 #define XMLSEC_GNUTLS_GET_SIZE_OF_SIZE(size, sizeOfSize) \
-    if((size) <= 0x78) {                                 \
+    if((size) <= 0x7F) {                                 \
         (sizeOfSize) = 1;                                \
     } else if((size) <= 0xFF) {                          \
         (sizeOfSize) = 2;                                \
@@ -680,7 +680,7 @@ xmlSecGnuTLSSignatureSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr key
 
 
 #define XMLSEC_GNUTLS_PUT_LENGTH(pp, size)               \
-    if((size) <= 0x78) {                                 \
+    if((size) <= 0x7F) {                                 \
         (*(pp)++) = (xmlSecByte)(size);                  \
     } else if((size) <= 0xFF) {                          \
         (*(pp)++) = (xmlSecByte)(0x81);                  \
@@ -721,8 +721,8 @@ xmlSecGnuTLSToDer(const gnutls_datum_t* src, gnutls_datum_t* dst, xmlSecSize siz
          * https://github.com/lsh123/xmlsec/issues/941 */
         size = src->size / 2;
     } else {
-        xmlSecInternalError3("Invalid signature size", NULL,
-            "actual=%u; expected=" XMLSEC_SIZE_FMT, src->size, 2 * size);
+        xmlSecInternalError3("xmlSecGnuTLSToDer", NULL,
+            "invalid signature size: actual=%u; expected=" XMLSEC_SIZE_FMT, src->size, 2 * size);
         return(-1);
     }
 
@@ -730,7 +730,7 @@ xmlSecGnuTLSToDer(const gnutls_datum_t* src, gnutls_datum_t* dst, xmlSecSize siz
     seqSize = 2 * (size + sizeOfSize + 1); /* 2 integers: 2 * (int tag + int len + int val)*/
 
     XMLSEC_GNUTLS_GET_SIZE_OF_SIZE(seqSize, sizeOfSeqSize);
-    length = 1 + sizeOfSeqSize + seqSize; /* sequence: sqn tag + sqn len + sqn val */
+    length = 1 + sizeOfSeqSize + seqSize; /* sequence: seq tag + seq len + seq val */
 
     /* allocate memory */
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(length, dst->size, return(-1), NULL);

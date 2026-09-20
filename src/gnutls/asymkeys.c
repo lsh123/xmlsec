@@ -1097,12 +1097,12 @@ xmlSecGnuTLSKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
         goto done;
     }
 
-    /* pub: x  */
+    /* pub: x */
     size = xmlSecBufferGetSize(&(ecValue->pub_x));
     pub_x.data = xmlSecBufferGetData(&(ecValue->pub_x));
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, pub_x.size, goto done, xmlSecKeyDataKlassGetName(id));
 
-    /* pub: y  */
+    /* pub: y */
     size = xmlSecBufferGetSize(&(ecValue->pub_y));
     pub_y.data = xmlSecBufferGetData(&(ecValue->pub_y));
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, pub_y.size, goto done, xmlSecKeyDataKlassGetName(id));
@@ -1364,6 +1364,7 @@ xmlSecGnuTLSKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSe
 
     return xmlSecGnuTLSAsymKeyDataGenerate(data, GNUTLS_PK_RSA, sizeBits);
 }
+
 static int
 xmlSecGnuTLSKeyDataRsaXmlRead(xmlSecKeyDataId id,
                               xmlSecKeyPtr key,
@@ -1410,7 +1411,10 @@ xmlSecGnuTLSKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     /* privateExponent (only for private key) */
     size = xmlSecBufferGetSize(&(rsaValue->privateExponent));
     if(size > 0) {
-        xmlSecInternalError("GnuTLS doesn't support reading private keys from RSAKeyValue", xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError2("xmlSecGnuTLSKeyDataRsaRead", NULL,
+            "private RSA keys are not supported: GnuTLS requires the RSA CRT parameters "
+            "(%s), which are not available in the RSAKeyValue format",
+            "Prime1 and Prime2");
         goto done;
     }
 
@@ -2187,7 +2191,7 @@ xmlSecGnuTLSAsymKeyDataCreate(gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) 
     case GNUTLS_PK_ECDSA:
         keyData = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataEcId);
         if(keyData == NULL) {
-            xmlSecInternalError("xmlSecKeyDataCreate(EcdsaId)", NULL);
+            xmlSecInternalError("xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataEcId)", NULL);
             return(NULL);
         }
 

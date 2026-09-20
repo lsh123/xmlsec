@@ -1008,6 +1008,7 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const 
     gnutls_x509_privkey_t * priv_key, gnutls_x509_crt_t * key_cert, xmlSecPtrListPtr certsList,
     xmlChar ** keyName
 ) {
+    static const char empty[] = "";
     gnutls_pkcs12_t pkcs12 = NULL;
     gnutls_pkcs12_bag_t bag = NULL;
     gnutls_x509_crt_t cert = NULL;
@@ -1018,6 +1019,7 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const 
     int idx;
     int err;
     int ret;
+    const char * safePwd;
 
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(dataSize > 0, -1);
@@ -1030,6 +1032,13 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const 
     xmlSecAssert2((*keyName) == NULL, -1);
 
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, dataLen, return(-1), NULL);
+
+    /* GnuTLS >= 3.8 calls strlen() on the password in the PBMAC1 (RFC 7292)
+     * MAC verification path (and in the bag decryption / encrypted key import
+     * paths), so a NULL password must be normalized to an empty string, which
+     * is the conventional "no password" value (the OpenSSL backend treats a
+     * NULL password as an empty password). */
+    safePwd = (pwd != NULL) ? pwd : empty;
 
     /* read pkcs12 in internal structure */
     err = gnutls_pkcs12_init(&pkcs12);
@@ -1055,7 +1064,7 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const 
         xmlSecGnuTLSError("gnutls_pkcs12_mac_info", err, NULL);
         goto done;
     } else {
-        err = gnutls_pkcs12_verify_mac(pkcs12, pwd);
+        err = gnutls_pkcs12_verify_mac(pkcs12, safePwd);
         if(err != GNUTLS_E_SUCCESS) {
             xmlSecGnuTLSError("gnutls_pkcs12_verify_mac", err, NULL);
             goto done;
@@ -1108,7 +1117,7 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const 
             goto done;
         }
         if(bag_type == GNUTLS_BAG_ENCRYPTED) {
-            err = gnutls_pkcs12_bag_decrypt(bag, pwd);
+            err = gnutls_pkcs12_bag_decrypt(bag, safePwd);
             if(err != GNUTLS_E_SUCCESS) {
                 xmlSecGnuTLSError("gnutls_pkcs12_bag_decrypt", err, NULL);
                 goto done;
@@ -1149,7 +1158,7 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const 
 
                     err = gnutls_x509_privkey_import_pkcs8((*priv_key),
                                 &datum, GNUTLS_X509_FMT_DER,
-                                pwd,
+                                safePwd,
                                 (bag_type == GNUTLS_BAG_PKCS8_KEY) ? GNUTLS_PKCS_PLAIN : 0);
                     if(err != GNUTLS_E_SUCCESS) {
                         xmlSecGnuTLSError("gnutls_x509_privkey_import_pkcs8", err, NULL);
@@ -1267,7 +1276,7 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const 
     res = 0;
 
 done:
-    if((res < 0) && (*priv_key != NULL)) {
+    if((res < 0) && ((*priv_key) != NULL)) {
         gnutls_x509_privkey_deinit(*priv_key);
         *priv_key = NULL;
     }

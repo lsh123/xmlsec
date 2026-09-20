@@ -86,6 +86,10 @@ static int              xmlSecGnuTLSX509StoreVerifyCert                 (xmlSecG
                                                                          gnutls_x509_crl_t* crls,
                                                                          xmlSecSize crls_size,
                                                                          const xmlSecKeyInfoCtx* keyInfoCtx);
+static int              xmlSecGnuTLSX509StoreVerifyCrlInternal          (xmlSecKeyDataStorePtr store,
+                                                                         gnutls_x509_crl_t crl,
+                                                                         xmlSecPtrListPtr extra_certs,
+                                                                         const xmlSecKeyInfoCtx* keyInfoCtx);
 
 
 /**
@@ -291,6 +295,7 @@ xmlSecGnuTLSX509StoreGetCrls(
     xmlSecKeyDataStorePtr store,
     xmlSecGnuTLSX509StoreCtxPtr ctx,
     xmlSecPtrListPtr extra_crls,
+    xmlSecPtrListPtr extra_certs,
     const xmlSecKeyInfoCtx* keyInfoCtx,
     gnutls_x509_crl_t** crls, xmlSecSize* crls_size
 ) {
@@ -302,6 +307,7 @@ xmlSecGnuTLSX509StoreGetCrls(
     xmlSecAssert2(store != NULL, -1);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(extra_crls != NULL, -1);
+    xmlSecAssert2(extra_certs != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(crls != NULL, -1);
     xmlSecAssert2(crls_size != NULL, -1);
@@ -333,9 +339,9 @@ xmlSecGnuTLSX509StoreGetCrls(
         }
 
         /* verify caller-supplied crl (time + signature); drop it if it fails */
-        ret = xmlSecGnuTLSX509StoreVerifyCrl(store, crl, keyInfoCtx);
+        ret = xmlSecGnuTLSX509StoreVerifyCrlInternal(store, crl, extra_certs, keyInfoCtx);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecGnuTLSX509StoreVerifyCrl", NULL);
+            xmlSecInternalError("xmlSecGnuTLSX509StoreVerifyCrlInternal", NULL);
             xmlFree(res);
             return(-1);
         } else if(ret != 1) {
@@ -652,7 +658,7 @@ xmlSecGnuTLSX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, xm
         goto done;
     }
 
-    ret = xmlSecGnuTLSX509StoreGetCrls(store, ctx, key_crls, keyInfoCtx, &crls, &crls_size);
+    ret = xmlSecGnuTLSX509StoreGetCrls(store, ctx, key_crls, key_certs, keyInfoCtx, &crls, &crls_size);
     if(ret < 0) {
         xmlSecInternalError("xmlSecGnuTLSX509StoreGetCrls", xmlSecKeyDataStoreGetName(store));
         goto done;
@@ -751,7 +757,7 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
         xmlSecInternalError("xmlSecGnuTLSX509StoreGetTrustedCerts", xmlSecKeyDataStoreGetName(store));
         goto done;
     }
-    ret = xmlSecGnuTLSX509StoreGetCrls(store, ctx, crls, keyInfoCtx, &all_crls, &all_crls_size);
+    ret = xmlSecGnuTLSX509StoreGetCrls(store, ctx, crls, certs, keyInfoCtx, &all_crls, &all_crls_size);
     if(ret < 0) {
         xmlSecInternalError("xmlSecGnuTLSX509StoreGetCrls", xmlSecKeyDataStoreGetName(store));
         goto done;
@@ -970,18 +976,78 @@ xmlSecGnuTLSX509StoreVerifyCrlTimeValidity(
     return(1);
 }
 
+/*
+ * Find the certificate in @p certs that issued @p crl (checked with
+ * gnutls_x509_crl_check_issuer). If @p verify_issuer is non-zero, a found
+ * certificate is only accepted when its own chain verifies via
+ * xmlSecGnuTLSX509StoreVerifyIssuerCert.
+ *
+ * Returns: 1 if an issuer cert is found (stored in @p issuer_cert), 0 if no
+ * cert in @p certs issued @p crl, < 0 on error.
+ */
+static int
+xmlSecGnuTLSX509StoreFindCrlIssuerCert(
+    xmlSecGnuTLSX509StoreCtxPtr ctx,
+    xmlSecPtrListPtr certs,
+    gnutls_x509_crl_t crl,
+    int verify_issuer,
+    const xmlSecKeyInfoCtx* keyInfoCtx,
+    const xmlChar* storeName,
+    gnutls_x509_crt_t* issuer_cert
+) {
+    xmlSecSize certs_size, ii;
+    gnutls_x509_crt_t cert;
+    unsigned int is_issuer;
+    int ret;
+
+    xmlSecAssert2(certs != NULL, -1);
+    xmlSecAssert2(crl != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(issuer_cert != NULL, -1);
+
+    certs_size = xmlSecPtrListGetSize(certs);
+    for(ii = 0; ii < certs_size; ++ii) {
+        cert = xmlSecPtrListGetItem(certs, ii);
+
+        if(cert == NULL) {
+            continue;
+        }
+
+        is_issuer = gnutls_x509_crl_check_issuer(crl, cert);
+        if(is_issuer == 0) {
+            continue;
+        }
+
+        if(verify_issuer != 0) {
+            /* the issuer cert's chain must verify before the cert can be used */
+            ret = xmlSecGnuTLSX509StoreVerifyIssuerCert(ctx, cert, keyInfoCtx);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecGnuTLSX509StoreVerifyIssuerCert", storeName);
+                return(-1);
+            } else if(ret != 1) {
+                continue;
+            }
+        }
+
+        (*issuer_cert) = cert;
+        return(1);
+    }
+
+    return(0);
+}
+
 /* Verify CRL signature: 1 if verified, 0 if not verified, < 0 if error */
 static int
 xmlSecGnuTLSX509StoreVerifyCrlSignature(
     xmlSecGnuTLSX509StoreCtxPtr ctx,
     gnutls_x509_crl_t crl,
+    xmlSecPtrListPtr extra_certs,
     const xmlSecKeyInfoCtx* keyInfoCtx,
     const xmlChar* storeName
 ) {
     gnutls_x509_crt_t issuer_cert = NULL;
     xmlChar *issuer_dn = NULL;
     unsigned int verify_result = 0;
-    xmlSecSize ii, trusted_size, untrusted_size;
     unsigned int flags = 0;
     int err;
     int res = -1;
@@ -991,50 +1057,38 @@ xmlSecGnuTLSX509StoreVerifyCrlSignature(
     xmlSecAssert2(crl != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    /* Find the issuer certificate using gnutls_x509_crl_check_issuer - search trusted certs first */
-    trusted_size = xmlSecPtrListGetSize(&(ctx->certsTrusted));
-    for(ii = 0; ii < trusted_size; ++ii) {
-        gnutls_x509_crt_t cert = xmlSecPtrListGetItem(&(ctx->certsTrusted), ii);
-        unsigned int is_issuer;
-
-        if(cert == NULL) {
-            continue;
-        }
-
-        is_issuer = gnutls_x509_crl_check_issuer(crl, cert);
-        if(is_issuer != 0) {
-            issuer_cert = cert;
-            break;
+    /* Find the issuer certificate: search trusted certs first (no need to verify trusted issuer certs). */
+    if(issuer_cert == NULL) {
+        ret = xmlSecGnuTLSX509StoreFindCrlIssuerCert(ctx, &(ctx->certsTrusted), crl, 0,
+            keyInfoCtx, storeName, &issuer_cert);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGnuTLSX509StoreFindCrlIssuerCert(trusted)", storeName);
+            goto done;
         }
     }
 
-    /* If not found in trusted, search untrusted */
+    /* Then untrusted certs and make sure their chain verifies. */
     if(issuer_cert == NULL) {
-        untrusted_size = xmlSecPtrListGetSize(&(ctx->certsUntrusted));
-        for(ii = 0; ii < untrusted_size; ++ii) {
-            gnutls_x509_crt_t cert = xmlSecPtrListGetItem(&(ctx->certsUntrusted), ii);
-            unsigned int is_issuer;
+        ret = xmlSecGnuTLSX509StoreFindCrlIssuerCert(ctx, &(ctx->certsUntrusted), crl, 1,
+            keyInfoCtx, storeName, &issuer_cert);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGnuTLSX509StoreFindCrlIssuerCert(untrusted)", storeName);
+            goto done;
+        }
+    }
 
-            if(cert == NULL) {
-                continue;
-            }
-
-            is_issuer = gnutls_x509_crl_check_issuer(crl, cert);
-            if(is_issuer != 0) {
-                ret = xmlSecGnuTLSX509StoreVerifyIssuerCert(ctx, cert, keyInfoCtx);
-                if(ret < 0) {
-                    xmlSecInternalError("xmlSecGnuTLSX509StoreVerifyIssuerCert", storeName);
-                    goto done;
-                } else if(ret == 1) {
-                    issuer_cert = cert;
-                    break;
-                }
-            }
+    /* And finally caller-supplied (e.g. KeyInfo) certs and make sure their chain verifies. */
+    if((issuer_cert == NULL) && (extra_certs != NULL)) {
+        ret = xmlSecGnuTLSX509StoreFindCrlIssuerCert(ctx, extra_certs, crl, 1,
+            keyInfoCtx, storeName, &issuer_cert);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGnuTLSX509StoreFindCrlIssuerCert(extra_certs)", storeName);
+            goto done;
         }
     }
 
     if(issuer_cert == NULL) {
-        /* Get issuer DN for error message */
+        /* Try to get issuer DN for error message */
         issuer_dn = xmlSecGnuTLSX509CrlGetIssuerDN(crl);
         if(issuer_dn != NULL) {
             xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_NOT_FOUND, storeName,
@@ -1080,7 +1134,7 @@ xmlSecGnuTLSX509StoreVerifyCrlSignature(
 
     /* Check if verification failed */
     if(verify_result != 0) {
-        /* CRL verification failed - get issuer DN for error message */
+        /* CRL verification failed - try to get issuer DN for error message */
         if(issuer_dn == NULL) {
             issuer_dn = xmlSecGnuTLSX509CrlGetIssuerDN(crl);
         }
@@ -1118,6 +1172,18 @@ xmlSecGnuTLSX509StoreVerifyCrl(
     gnutls_x509_crl_t crl,
     const xmlSecKeyInfoCtx* keyInfoCtx
 ) {
+    return(xmlSecGnuTLSX509StoreVerifyCrlInternal(store, crl, NULL, keyInfoCtx));
+}
+
+/* Verifies a CRL (time validity first, then signature), searching @p extra_certs
+ * for the CRL issuer: 1 if verified, 0 if not verified, < 0 if error */
+static int
+xmlSecGnuTLSX509StoreVerifyCrlInternal(
+    xmlSecKeyDataStorePtr store,
+    gnutls_x509_crl_t crl,
+    xmlSecPtrListPtr extra_certs,
+    const xmlSecKeyInfoCtx* keyInfoCtx
+) {
     xmlSecGnuTLSX509StoreCtxPtr ctx;
     int ret;
 
@@ -1144,7 +1210,7 @@ xmlSecGnuTLSX509StoreVerifyCrl(
     }
 
     /* Verify CRL signature (slower check) */
-    ret = xmlSecGnuTLSX509StoreVerifyCrlSignature(ctx, crl, keyInfoCtx, xmlSecKeyDataStoreGetName(store));
+    ret = xmlSecGnuTLSX509StoreVerifyCrlSignature(ctx, crl, extra_certs, keyInfoCtx, xmlSecKeyDataStoreGetName(store));
     if(ret < 0) {
         xmlSecInternalError("xmlSecGnuTLSX509StoreVerifyCrlSignature", xmlSecKeyDataStoreGetName(store));
         return(-1);
@@ -1380,7 +1446,7 @@ xmlSecGnuTLSX509FindCert(xmlSecPtrListPtr certs, xmlSecGnuTLSX509FindCertCtxPtr 
     return(NULL);
 }
 
-/* signed cert has issuer dn equal to our's subject dn */
+/* signed cert has issuer dn equal to our subject dn */
 static gnutls_x509_crt_t
 xmlSecGnuTLSX509FindSignedCert(xmlSecPtrListPtr certs, gnutls_x509_crt_t cert) {
     gnutls_x509_crt_t res = NULL;
@@ -1410,6 +1476,11 @@ xmlSecGnuTLSX509FindSignedCert(xmlSecPtrListPtr certs, gnutls_x509_crt_t cert) {
             goto done;
         }
 
+        if(tmp == cert) {
+            /* same cert, skip for self-issued certs */
+            continue;
+        }
+
         issuer = xmlSecGnuTLSX509CertGetIssuerDN(tmp);
         if(issuer == NULL) {
             xmlSecInternalError2("xmlSecGnuTLSX509CertGetIssuerDN", NULL,
@@ -1431,7 +1502,7 @@ done:
     return(res);
 }
 
-/* signer cert has subject dn equal to our's issuer dn */
+/* signer cert has subject dn equal to our issuer dn */
 static gnutls_x509_crt_t
 xmlSecGnuTLSX509FindSignerCert(xmlSecPtrListPtr certs, gnutls_x509_crt_t cert) {
     gnutls_x509_crt_t res = NULL;

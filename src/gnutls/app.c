@@ -364,14 +364,28 @@ xmlSecGnuTLSAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSe
     int isKeyCert = 0;
     int ret;
     int res = -1;
+    xmlSecKeyDataFormat certFormat;
 
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(dataSize > 0, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
+    /* adjust cert format if needed */
+    switch(format) {
+    case xmlSecKeyDataFormatPkcs8Pem:
+        certFormat = xmlSecKeyDataFormatPem;
+        break;
+    case xmlSecKeyDataFormatPkcs8Der:
+        certFormat = xmlSecKeyDataFormatDer;
+        break;
+    default:
+        certFormat = format;
+        break;
+    }
+
     /* read cert */
-    cert = xmlSecGnuTLSX509CertRead(data, dataSize, format);
+    cert = xmlSecGnuTLSX509CertRead(data, dataSize, certFormat);
     if(cert == NULL) {
         xmlSecInternalError("xmlSecGnuTLSX509CertRead", NULL);
         goto done;
@@ -712,6 +726,7 @@ xmlSecGnuTLSAppPkcs8KeyLoadMemory(const xmlSecByte * data, xmlSecSize dataSize, 
     xmlSecKeyPtr key = NULL;
     gnutls_datum_t datum;
     int err;
+    const char * safePwd;
 
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(dataSize > 0, NULL);
@@ -719,17 +734,29 @@ xmlSecGnuTLSAppPkcs8KeyLoadMemory(const xmlSecByte * data, xmlSecSize dataSize, 
     datum.data = (xmlSecByte*)data; /* for const */
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, datum.size, return(NULL), NULL);
 
+    /* GnuTLS >= 3.8 calls strlen() on the password in the encrypted key
+     * import path, so a NULL password must be normalized to an empty string,
+     * which is the conventional "no password" value (the OpenSSL backend
+     * treats a NULL password as an empty password). */
+    safePwd = (pwd != NULL) ? pwd : "";
+
     /* read the private key from pkcs8 */
     err = gnutls_x509_privkey_init(&x509_privkey);
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_x509_privkey_init", err, NULL);
         return(NULL);
     }
-    err = gnutls_x509_privkey_import_pkcs8(x509_privkey, &datum, fmt, pwd, 0);
+    /* unencrypted PKCS#8 keys are imported with GNUTLS_PKCS_PLAIN; if that
+     * fails the key is retried as an encrypted PKCS#8 key using the provided
+     * password */
+    err = gnutls_x509_privkey_import_pkcs8(x509_privkey, &datum, fmt, safePwd, GNUTLS_PKCS_PLAIN);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_x509_privkey_import_pkcs8", err, NULL);
-        gnutls_x509_privkey_deinit(x509_privkey);
-        return(NULL);
+        err = gnutls_x509_privkey_import_pkcs8(x509_privkey, &datum, fmt, safePwd, 0);
+        if(err != GNUTLS_E_SUCCESS) {
+            xmlSecGnuTLSError("gnutls_x509_privkey_import_pkcs8", err, NULL);
+            gnutls_x509_privkey_deinit(x509_privkey);
+            return(NULL);
+        }
     }
 
     /* create privkey from x509 privkey */
@@ -908,11 +935,25 @@ xmlSecGnuTLSAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr,
     xmlSecKeyDataStorePtr x509Store;
     gnutls_x509_crt_t cert;
     int ret;
+    xmlSecKeyDataFormat certFormat;
 
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(dataSize > 0, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
+
+    /* adjust cert format if needed */
+    switch(format) {
+    case xmlSecKeyDataFormatPkcs8Pem:
+        certFormat = xmlSecKeyDataFormatPem;
+        break;
+    case xmlSecKeyDataFormatPkcs8Der:
+        certFormat = xmlSecKeyDataFormatDer;
+        break;
+    default:
+        certFormat = format;
+        break;
+    }
 
     x509Store = xmlSecKeysMngrGetDataStore(mngr, xmlSecGnuTLSX509StoreId);
     if(x509Store == NULL) {
@@ -920,7 +961,7 @@ xmlSecGnuTLSAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr,
         return(-1);
     }
 
-    cert = xmlSecGnuTLSX509CertRead(data, dataSize, format);
+    cert = xmlSecGnuTLSX509CertRead(data, dataSize, certFormat);
     if(cert == NULL) {
         xmlSecInternalError("xmlSecGnuTLSX509CertRead", NULL);
         return(-1);

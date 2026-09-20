@@ -102,11 +102,63 @@ static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataDEREncodedKeyValueKlass = {
  *      </complexType>
  * @endcode
  *
- * @return the &lt;dsig11:DEREncodedKeyValue/&gt;element processing key data klass.
+ * @return the &lt;dsig11:DEREncodedKeyValue/&gt; element processing key data klass.
  */
 xmlSecKeyDataId
 xmlSecGnuTLSKeyDataDEREncodedKeyValueGetKlass(void) {
     return(&xmlSecGnuTLSKeyDataDEREncodedKeyValueKlass);
+}
+
+/**
+ * @brief Checks that the data consists of a single complete DER TLV
+ * (tag, length and value) with no leading or trailing bytes.
+ * @param data the pointer to the data.
+ * @param dataSize the size of the data.
+ * @return 1 if the data is a single complete DER TLV or 0 otherwise.
+ */
+static int
+xmlSecGnuTLSDerSingleTlvCheck(const xmlSecByte* data, xmlSecSize dataSize) {
+    xmlSecSize pos = 0;
+    xmlSecSize length = 0;
+    xmlSecSize numLenBytes;
+    xmlSecSize ii;
+
+    xmlSecAssert2(data != NULL, 0);
+
+    /* tag: at least one tag byte and at least one length byte are required */
+    if(dataSize < 2) {
+        return(0);
+    }
+    pos = 1; /* skip the tag */
+
+    /* length */
+    if(data[pos] < 0x80) {
+        length = data[pos];
+        pos += 1;
+    } else if(data[pos] == 0x80) {
+        /* indefinite length is not allowed in DER */
+        return(0);
+    } else {
+        numLenBytes = data[pos] & 0x7F;
+        if((numLenBytes > 4) || ((pos + numLenBytes + 1) > dataSize)) {
+            return(0);
+        }
+        if(data[pos + 1] == 0) {
+            /* non-minimal length encoding */
+            return(0);
+        }
+        for(ii = 0; ii < numLenBytes; ++ii) {
+            length = (length << 8) | data[pos + 1 + ii];
+        }
+        pos += 1 + numLenBytes;
+    }
+
+    /* value: must consume the rest of the data exactly */
+    if((length > dataSize) || ((pos + length) != dataSize)) {
+        return(0);
+    }
+
+    return(1);
 }
 
 static int
@@ -166,6 +218,13 @@ xmlSecGnuTLSKeyDataDEREncodedKeyValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr ke
     datum.data = (xmlSecByte*)data; /* for const */
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, datum.size, goto done, xmlSecKeyDataKlassGetName(id));
 
+    /* check that the data is a single complete DER TLV: GnuTLS does not
+     * report extra trailing bytes, so the size is validated explicitly */
+    if(xmlSecGnuTLSDerSingleTlvCheck(data, dataSize) == 0) {
+        xmlSecInvalidDataError("invalid DER encoded value: expected a single complete DER TLV", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
     err = gnutls_pubkey_import(pubkey, &datum, GNUTLS_X509_FMT_DER);
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_pubkey_import", err, xmlSecKeyDataKlassGetName(id));
@@ -224,8 +283,12 @@ xmlSecGnuTLSKeyDataDEREncodedKeyValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr k
 
     /* encode it */
     err = gnutls_pubkey_export2(pubkey, GNUTLS_X509_FMT_DER, &datum);
-    if((err != GNUTLS_E_SUCCESS) || (datum.data == NULL)) {
+    if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_pubkey_export2", err, xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+    if(datum.data == NULL) {
+        xmlSecInternalError("gnutls_pubkey_export2", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 

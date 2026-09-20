@@ -35,11 +35,17 @@ static xmlSecCryptoDLFunctionsPtr gXmlSecGnuTLSFunctions = NULL;
 static int
 xmlSecGnuTLSIsMlDSASupported(void)
 {
-    const gnutls_pk_algorithm_t *list = gnutls_pk_list();
-    for (int i = 0; list[i] != 0; i++) {
-        if (list[i] == GNUTLS_PK_MLDSA44 ||
-            list[i] == GNUTLS_PK_MLDSA65 ||
-            list[i] == GNUTLS_PK_MLDSA87
+    const gnutls_pk_algorithm_t *list;
+    int ii;
+
+    list = gnutls_pk_list();
+    if(list == NULL) {
+        return 0;
+    }
+    for(ii = 0; list[ii] != 0; ii++) {
+        if (list[ii] == GNUTLS_PK_MLDSA44 ||
+            list[ii] == GNUTLS_PK_MLDSA65 ||
+            list[ii] == GNUTLS_PK_MLDSA87
         ) {
             return 1;
         }

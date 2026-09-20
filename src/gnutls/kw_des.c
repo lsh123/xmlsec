@@ -180,7 +180,7 @@ xmlSecGnuTLSKWDes3Finalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     xmlSecTransformKWDes3Finalize(transform, ctx);
-    memset(ctx, 0, sizeof(xmlSecGnuTLSKWDes3Ctx));
+    gnutls_memset(ctx, 0, sizeof(xmlSecGnuTLSKWDes3Ctx));
 }
 
 static int
@@ -283,7 +283,7 @@ xmlSecGnuTLSKWDes3GenerateRandom(xmlSecTransformPtr transform,
     xmlSecAssert2(outSize > 0, -1);
     xmlSecAssert2(outWritten != NULL, -1);
 
-    err = gnutls_rnd(GNUTLS_RND_RANDOM, out, outSize);
+    err = gnutls_rnd(GNUTLS_RND_KEY, out, outSize);
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_rnd", err, xmlSecTransformGetName(transform));
         return(-1);

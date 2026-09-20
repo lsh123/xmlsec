@@ -272,10 +272,9 @@ xmlSecGnuTLSHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     err = gnutls_hmac_init(&(ctx->hmac), ctx->hmacAlgo, xmlSecBufferGetData(keyBuf), keySize);
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_hmac_init", err, xmlSecTransformGetName(transform));
-        if(ctx->hmac != NULL) {
-            gnutls_hmac_deinit(ctx->hmac, NULL);
-            ctx->hmac = NULL;
-        }
+        /* Do not call gnutls_hmac_deinit() on init failure: GnuTLS may leave a
+         * partially initialized non-NULL handle, and calling deinit on it crashes. */
+        ctx->hmac = NULL;
         return(-1);
     }
 

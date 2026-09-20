@@ -799,7 +799,7 @@ xmlSecTransformKEMRead(xmlNodePtr node, xmlSecTransformPtr kemTransform, xmlSecT
             keyType = xmlSecKeyDataTypePrivate;
             break;
         default:
-            xmlSecInternalError2("invalid operation", NULL, "operation=%d", transformCtx->parentKeyInfoCtx->operation);
+            xmlSecInternalError2("invalid operation", NULL, "operation=%d", (int)transformCtx->parentKeyInfoCtx->operation);
             return(-1);
     }
 

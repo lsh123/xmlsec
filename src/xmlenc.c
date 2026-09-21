@@ -760,11 +760,8 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
         return(-1);
     }
 
-    /* TODO: KeyInfo node != NULL and encKey != NULL */
-    if((encCtx->encKey == NULL) && (encCtx->keyInfoReadCtx.keysMngr != NULL)
-                        && (encCtx->keyInfoReadCtx.keysMngr->getKey != NULL)) {
-        encCtx->encKey = (encCtx->keyInfoReadCtx.keysMngr->getKey)(encCtx->keyInfoNode,
-                                                             &(encCtx->keyInfoReadCtx));
+    if((encCtx->encKey == NULL) && (encCtx->keyInfoReadCtx.keysMngr != NULL) && (encCtx->keyInfoReadCtx.keysMngr->getKey != NULL)) {
+        encCtx->encKey = (encCtx->keyInfoReadCtx.keysMngr->getKey)(encCtx->keyInfoNode, &(encCtx->keyInfoReadCtx));
     }
 
     /* check that we have exactly what we want */

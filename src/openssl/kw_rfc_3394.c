@@ -128,6 +128,7 @@ struct _xmlSecOpenSSLKWRfc3394Ctx {
 #ifdef XMLSEC_OPENSSL_API_300
     const char*  cipherName;
     EVP_CIPHER*  cipher;
+    EVP_CIPHER_CTX* cctx;
 #else /* !XMLSEC_OPENSSL_API_300 */
     xmlSecOpenSSLKWRfc3394EncryptDecryptFunc encryptDecrypt;
 #endif /* XMLSEC_OPENSSL_API_300 */
@@ -307,6 +308,9 @@ xmlSecOpenSSLKWRfc3394Finalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
 #ifdef XMLSEC_OPENSSL_API_300
+    if(ctx->cctx != NULL) {
+        EVP_CIPHER_CTX_free(ctx->cctx);
+    }
     if(ctx->cipher != NULL) {
         EVP_CIPHER_free(ctx->cipher);
     }
@@ -395,7 +399,6 @@ xmlSecOpenSSLKWRfc3394EncryptDecrypt(xmlSecOpenSSLKWRfc3394CtxPtr ctx, const xml
                                 int encrypt) {
     xmlSecByte* keyData;
     xmlSecSize keySize;
-    EVP_CIPHER_CTX* cctx = NULL;
     int nOut, inLen, outLen, totalLen;
     int ret;
     int res = -1;
@@ -414,34 +417,37 @@ xmlSecOpenSSLKWRfc3394EncryptDecrypt(xmlSecOpenSSLKWRfc3394CtxPtr ctx, const xml
     xmlSecAssert2(keySize > 0, -1);
     xmlSecAssert2(keySize == ctx->parentCtx.keyExpectedSize, -1);
 
-    cctx = EVP_CIPHER_CTX_new();
-    if (cctx == NULL) {
-        xmlSecOpenSSLError("EVP_CIPHER_CTX_new", NULL);
-        goto done;
+    /* use a cached cipher context if available */
+    if(ctx->cctx == NULL) {
+        ctx->cctx = EVP_CIPHER_CTX_new();
+        if(ctx->cctx == NULL) {
+            xmlSecOpenSSLError("EVP_CIPHER_CTX_new", NULL);
+            goto done;
+        }
     }
 
-    ret = EVP_CipherInit_ex2(cctx, ctx->cipher, keyData,
+    ret = EVP_CipherInit_ex2(ctx->cctx, ctx->cipher, keyData,
         xmlSecOpenSSLKWRfc3394ZeroIv, ((encrypt != 0) ? 1 : 0), NULL);
     if (ret != 1) {
         xmlSecOpenSSLError("EVP_CipherInit_ex2", NULL);
         goto done;
     }
 
-    ret = EVP_CIPHER_CTX_set_padding(cctx, 0);
+    ret = EVP_CIPHER_CTX_set_padding(ctx->cctx, 0);
     if (ret != 1) {
         xmlSecOpenSSLError("EVP_CIPHER_CTX_set_padding", NULL);
         goto done;
     }
 
     XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, goto done, NULL);
-    ret = EVP_CipherUpdate(cctx, out, &nOut, in, inLen);
+    ret = EVP_CipherUpdate(ctx->cctx, out, &nOut, in, inLen);
     if (ret != 1) {
         xmlSecOpenSSLError("EVP_CipherUpdate", NULL);
         goto done;
     }
 
     outLen = nOut;
-    ret = EVP_CipherFinal_ex(cctx, out + outLen, &nOut);
+    ret = EVP_CipherFinal_ex(ctx->cctx, out + outLen, &nOut);
     if (ret != 1) {
         xmlSecOpenSSLError("EVP_CipherFinal_ex", NULL);
         goto done;
@@ -453,9 +459,6 @@ xmlSecOpenSSLKWRfc3394EncryptDecrypt(xmlSecOpenSSLKWRfc3394CtxPtr ctx, const xml
     res = 0;
 
 done:
-    if(cctx != NULL) {
-        EVP_CIPHER_CTX_free(cctx);
-    }
     return(res);
 }
 

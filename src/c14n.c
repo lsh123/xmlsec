@@ -311,12 +311,28 @@ xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlSecP
                         (xmlC14NIsVisibleCallback)xmlSecNodeSetContains,
                         nodes, XML_C14N_1_1, NULL, 1, buf);
     } else if(id == xmlSecTransformExclC14NId) {
+        /* LibXML2 expects the list of inclusive namespace prefixes ended with a NULL,
+         * we will add a NULL to the list to ensure it is properly terminated */
+        ret = xmlSecPtrListAdd(nsList, NULL);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecPtrListAdd", NULL);
+            return(-1);
+        }
+
         /* HACK: we are using a semi-hack here: we know that xmlSecPtrList keeps
          * all pointers in the big array */
         ret = xmlC14NExecute(nodes->doc,
                         (xmlC14NIsVisibleCallback)xmlSecNodeSetContains,
                         nodes, XML_C14N_EXCLUSIVE_1_0, (xmlChar**)(nsList->data), 0, buf);
     } else if(id == xmlSecTransformExclC14NWithCommentsId) {
+        /* LibXML2 expects the list of inclusive namespace prefixes ended with a NULL,
+         * we will add a NULL to the list to ensure it is properly terminated */
+        ret = xmlSecPtrListAdd(nsList, NULL);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecPtrListAdd", NULL);
+            return(-1);
+        }
+
         /* HACK: we are using a semi-hack here: we know that xmlSecPtrList keeps
          * all pointers in the big array */
         ret = xmlC14NExecute(nodes->doc,

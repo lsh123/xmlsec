@@ -1646,11 +1646,18 @@ xmlSecKeyDataEncryptedKeyXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodeP
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeWrite, -1);
 
+    /* check the enc level */
+    if(keyInfoCtx->curEncryptedKeyLevel >= keyInfoCtx->maxEncryptedKeyLevel) {
+        xmlSecOtherError3(XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL, xmlSecKeyDataKlassGetName(id),
+            "cur=%d;max=%d", keyInfoCtx->curEncryptedKeyLevel, keyInfoCtx->maxEncryptedKeyLevel);
+        return(-1);
+    }
+
     /* dump key to a binary buffer */
     ret = xmlSecKeyInfoCtxInitialize(&keyInfoCtx2, NULL);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyInfoCtxInitialize",
-                            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecKeyInfoCtxInitialize", xmlSecKeyDataKlassGetName(id));
+        xmlSecKeyInfoCtxFinalize(&keyInfoCtx2);
         goto done;
     }
 
@@ -1681,6 +1688,11 @@ xmlSecKeyDataEncryptedKeyXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodeP
         }
     }
     xmlSecAssert2(keyInfoCtx->encCtx != NULL, -1);
+
+    /* setup current recursion levels for the write context */
+    keyInfoCtx->encCtx->keyInfoWriteCtx.curKeyInfoReferenceLevel = keyInfoCtx->curKeyInfoReferenceLevel;
+    keyInfoCtx->encCtx->keyInfoWriteCtx.curRetrievalMethodLevel = keyInfoCtx->curRetrievalMethodLevel;
+    keyInfoCtx->encCtx->keyInfoWriteCtx.curEncryptedKeyLevel = keyInfoCtx->curEncryptedKeyLevel + 1;
 
     /* encrypt */
     ret = xmlSecEncCtxBinaryEncrypt(keyInfoCtx->encCtx, node, keyBuf, keySize);

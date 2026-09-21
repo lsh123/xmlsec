@@ -817,8 +817,7 @@ xmlSecDSigCtxProcessKeyInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     }
 
     /* ignore <dsig:KeyInfo /> if the key is already set */
-    if((dsigCtx->signKey == NULL) && (dsigCtx->keyInfoReadCtx.keysMngr != NULL)
-                        && (dsigCtx->keyInfoReadCtx.keysMngr->getKey != NULL)) {
+    if((dsigCtx->signKey == NULL) && (dsigCtx->keyInfoReadCtx.keysMngr != NULL) && (dsigCtx->keyInfoReadCtx.keysMngr->getKey != NULL)) {
         dsigCtx->signKey = (dsigCtx->keyInfoReadCtx.keysMngr->getKey)(node, &(dsigCtx->keyInfoReadCtx));
     }
 
@@ -934,6 +933,7 @@ xmlSecDSigCtxProcessObjectNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
 static int
 xmlSecDSigCtxProcessManifestNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     xmlSecDSigReferenceCtxPtr dsigRefCtx;
+    xmlSecSize refNodesCount = 0;
     xmlNodePtr cur;
     int ret;
 
@@ -944,7 +944,7 @@ xmlSecDSigCtxProcessManifestNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     /* calculate references */
     cur = xmlSecGetNextElementNode(node->children);
     while((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeReference, xmlSecDSigNs))) {
-        /* create reference */
+        /* create reference context */
         dsigRefCtx = xmlSecDSigReferenceCtxCreate(dsigCtx, xmlSecDSigReferenceOriginManifest);
         if(dsigRefCtx == NULL) {
             xmlSecInternalError("xmlSecDSigReferenceCtxCreate", NULL);
@@ -962,14 +962,21 @@ xmlSecDSigCtxProcessManifestNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
         /* process */
         ret = xmlSecDSigReferenceCtxProcessNode(dsigRefCtx, cur);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecDSigReferenceCtxProcessNode",
-                                xmlSecNodeGetName(cur));
+            xmlSecInternalError("xmlSecDSigReferenceCtxProcessNode", NULL);
             return(-1);
         }
+
+        ++refNodesCount;
 
         /* we don't care if Reference processing failed because
          * it's Manifest node */
         cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    /* check that we have at least one Reference */
+    if(refNodesCount == 0) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_DSIG_NO_REFERENCES, NULL, NULL);
+        return(-1);
     }
 
     /* we should have nothing else here */

@@ -3450,6 +3450,8 @@ xmlSecOpenSSLKeyDataRsaSetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueRsaP
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId), -1);
     xmlSecAssert2(rsaKeyValue != NULL, -1);
+    xmlSecAssert2(rsaKeyValue->e != NULL, -1);
+    xmlSecAssert2(rsaKeyValue->n != NULL, -1);
 
     rsa = RSA_new();
     if(rsa == NULL) {
@@ -3637,6 +3639,8 @@ xmlSecOpenSSLKeyDataRsaSetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueRsaP
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId), -1);
     xmlSecAssert2(rsaKeyValue != NULL, -1);
+    xmlSecAssert2(rsaKeyValue->e != NULL, -1);
+    xmlSecAssert2(rsaKeyValue->n != NULL, -1);
 
     param_bld = OSSL_PARAM_BLD_new();
     if(param_bld == NULL) {

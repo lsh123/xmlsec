@@ -389,6 +389,7 @@ xmlSecOpenSSLAppKeyLoadMemory(
     xmlSecKeyPtr key;
 
     xmlSecAssert2(data != NULL, NULL);
+    xmlSecAssert2(dataSize > 0, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
     /* this would be a read only BIO, cast from const is ok */
@@ -1155,6 +1156,7 @@ xmlSecOpenSSLAppKeyCertLoadMemory(
 
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(dataSize > 0, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
     /* this would be a read only BIO, cast from const is ok */
@@ -1339,6 +1341,7 @@ xmlSecOpenSSLAppPkcs12LoadMemory(
     xmlSecKeyPtr key;
 
     xmlSecAssert2(data != NULL, NULL);
+    xmlSecAssert2(dataSize > 0, NULL);
 
     /* this would be a read only BIO, cast from const is ok */
     bio = xmlSecOpenSSLCreateMemBufBio((void*)data, dataSize);
@@ -1409,7 +1412,7 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
     }
 
     XMLSEC_OPENSSL_PUSH_LIB_CTX(goto done);
-    ret = PKCS12_verify_mac(p12, pwd, pwdLen);
+    ret = PKCS12_verify_mac(p12, pwd, ((pwd != NULL) ? pwdLen : 0));
     XMLSEC_OPENSSL_POP_LIB_CTX();
     if(ret != 1) {
         xmlSecOpenSSLError("PKCS12_verify_mac", NULL);
@@ -1836,6 +1839,7 @@ xmlSecOpenSSLAppKeysMngrCrlLoadAndVerify(xmlSecKeysMngrPtr mngr, const char *fil
 
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     /* Get X509 store from keys manager */

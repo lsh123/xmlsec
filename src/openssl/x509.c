@@ -1466,6 +1466,7 @@ xmlSecOpenSSLX509Asn1TimeToTime(const ASN1_TIME * t, time_t * res) {
         }
         tm.tm_isdst = -1;
     } else {
+        int offStart = 14;
         xmlSecAssert2(t->length > 14, -1);
 
         tm.tm_year = g2(t->data) * 100 + g2(t->data + 2) - 1900;
@@ -1474,13 +1475,22 @@ xmlSecOpenSSLX509Asn1TimeToTime(const ASN1_TIME * t, time_t * res) {
         tm.tm_hour = g2(t->data + 8);
         tm.tm_min  = g2(t->data + 10);
         tm.tm_sec  = g2(t->data + 12);
-        if(t->data[14] == 'Z') {
+        if(t->data[14] == '.') {
+            /* skip fractional seconds */
+            offStart = 15;
+            while((offStart < t->length) && ((t->data[offStart] >= '0') && (t->data[offStart] <= '9'))) {
+                offStart++;
+            }
+        }
+
+        xmlSecAssert2(offStart < t->length, -1);
+        if(t->data[offStart] == 'Z') {
             offset = 0;
         } else {
-            xmlSecAssert2(t->length > 18, -1);
+            xmlSecAssert2(t->length > (offStart + 4), -1);
 
-            offset = g2(t->data + 15) * 60 + g2(t->data + 17);
-            if(t->data[14] == '-') {
+            offset = g2(t->data + offStart + 1) * 60 + g2(t->data + offStart + 3);
+            if(t->data[offStart] == '-') {
                 offset = -offset;
             }
         }

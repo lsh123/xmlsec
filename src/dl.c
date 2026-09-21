@@ -87,6 +87,48 @@ typedef xmlSecCryptoDLFunctionsPtr xmlSecCryptoGetFunctionsCallback(void);
 /* conversion from ptr to func "the right way" */
 XMLSEC_PTR_TO_FUNC_IMPL(xmlSecCryptoGetFunctionsCallback)
 
+#ifdef XMLSEC_DL_LIBLTDL
+/**
+ * @brief Macro. Reports a libltdl error.
+ * @details Macro. Reports a dynamic library loading error on libltdl-based
+ * platforms, including the OS-level error message from lt_dlerror().
+ * @param errorFunction the failed function name.
+ * @param name the library filename or the symbol name.
+ */
+#define xmlSecDLErrorLibLTDL(errorFunction, name) \
+    do {                                          \
+        const char* _xmlsec_ltDlError = lt_dlerror(); \
+        xmlSecError(XMLSEC_ERRORS_HERE,           \
+                    NULL,                        \
+                    (errorFunction),             \
+                    XMLSEC_ERRORS_R_IO_FAILED,   \
+                    "name=\"%s\"; lt_dlerror: %s", \
+                    xmlSecErrorsSafeString(name), \
+                    xmlSecErrorsSafeString(_xmlsec_ltDlError)); \
+    } while(0)
+#endif /* XMLSEC_DL_LIBLTDL */
+
+#if defined(XMLSEC_WINDOWS) && defined(XMLSEC_DL_WIN32)
+/**
+ * @brief Macro. Reports a Win32 error.
+ * @details Macro. Reports a dynamic library loading error on Windows platforms,
+ * including the OS-level error code from GetLastError().
+ * @param errorFunction the failed function name.
+ * @param name the library filename or the function name.
+ */
+#define xmlSecDLErrorWin32(errorFunction, name) \
+    do {                                        \
+        DWORD _xmlsec_lastError = GetLastError(); \
+        xmlSecError(XMLSEC_ERRORS_HERE,         \
+                    NULL,                      \
+                    (errorFunction),           \
+                    XMLSEC_ERRORS_R_IO_FAILED, \
+                    "name=\"%s\"; lasterror=0x%08lx", \
+                    xmlSecErrorsSafeString(name), \
+                    (unsigned long)(_xmlsec_lastError)); \
+    } while(0)
+#endif /* defined(XMLSEC_WINDOWS) && defined(XMLSEC_DL_WIN32) */
+
 
 static xmlSecCryptoDLLibraryPtr
 xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
@@ -127,7 +169,7 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
 #ifdef XMLSEC_DL_LIBLTDL
     lib->handle = lt_dlopenext((char*)lib->filename);
     if(lib->handle == NULL) {
-        xmlSecIOError("lt_dlopenext", lib->filename, NULL);
+        xmlSecDLErrorLibLTDL("lt_dlopenext", lib->filename);
         xmlSecCryptoDLLibraryDestroy(lib);
         return(NULL);
     }
@@ -136,7 +178,7 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
                         lt_dlsym(lib->handle, (char*)lib->getFunctionsName)
                     );
     if(getFunctions == NULL) {
-        xmlSecIOError("lt_dlsym", lib->getFunctionsName, NULL);
+        xmlSecDLErrorLibLTDL("lt_dlsym", lib->getFunctionsName);
         xmlSecCryptoDLLibraryDestroy(lib);
         return(NULL);
     }
@@ -146,7 +188,7 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
 #if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
     lib->handle = LoadLibraryA((char*)lib->filename);
     if(lib->handle == NULL) {
-        xmlSecIOError("LoadLibraryA", lib->filename, NULL);
+        xmlSecDLErrorWin32("LoadLibraryA", lib->filename);
         xmlSecCryptoDLLibraryDestroy(lib);
         return(NULL);
     }
@@ -160,7 +202,7 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
     lib->handle = LoadPackagedLibrary(wcLibFilename, 0);
     xmlFree(wcLibFilename);
     if(lib->handle == NULL) {
-        xmlSecIOError("LoadPackagedLibrary", lib->filename, NULL);
+        xmlSecDLErrorWin32("LoadPackagedLibrary", lib->filename);
         xmlSecCryptoDLLibraryDestroy(lib);
         return(NULL);
     }
@@ -173,7 +215,7 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
                         )
                     );
     if(getFunctions == NULL) {
-        xmlSecIOError("GetProcAddress", lib->getFunctionsName, NULL);
+        xmlSecDLErrorWin32("GetProcAddress", lib->getFunctionsName);
         xmlSecCryptoDLLibraryDestroy(lib);
         return(NULL);
     }

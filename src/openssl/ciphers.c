@@ -211,7 +211,6 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     xmlSecByte* outBuf;
     xmlSecSize outSize, outSize2, blockSize;
     xmlSecOpenSSLUInt blockLen;
-    int inLen;
     int outLen = 0;
     int ret;
 
@@ -220,7 +219,7 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     xmlSecAssert2(ctx->cipherCtx != NULL, -1);
     xmlSecAssert2(ctx->keyInitialized != 0, -1);
     xmlSecAssert2(ctx->ctxInitialized != 0, -1);
-    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2((in != NULL) || (inSize == 0), -1);
     xmlSecAssert2(out != NULL, -1);
 
     if (ctx->cbcMode != 0) {
@@ -264,13 +263,17 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     outBuf  = xmlSecBufferGetData(out) + outSize;
 
     /* encrypt/decrypt */
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, return(-1), cipherName);
-    ret = EVP_CipherUpdate(ctx->cipherCtx, outBuf, &outLen, in, inLen);
-    if(ret != 1) {
-        xmlSecOpenSSLError("EVP_CipherUpdate", cipherName);
-        return(-1);
+    if(in != NULL) {
+        int inLen;
+
+        XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, return(-1), cipherName);
+        ret = EVP_CipherUpdate(ctx->cipherCtx, outBuf, &outLen, in, inLen);
+        if(ret != 1) {
+            xmlSecOpenSSLError("EVP_CipherUpdate", cipherName);
+            return(-1);
+        }
+        xmlSecAssert2(outLen == inLen, -1);
     }
-    xmlSecAssert2(outLen == inLen, -1);
 
     /* finalize transform if needed */
     if(final != 0) {
@@ -596,8 +599,8 @@ xmlSecOpenSSLEvpBlockCipherGCMCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
-    inSize = xmlSecBufferGetSize(in);
     inBuf = xmlSecBufferGetData(in);
+    inSize = xmlSecBufferGetSize(in);
 
     if(EVP_CIPHER_CTX_encrypting(ctx->cipherCtx)) {
         ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, inBuf, inSize, out, cipherName, 1, tag); /* final */

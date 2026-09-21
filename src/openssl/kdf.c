@@ -157,7 +157,7 @@ xmlSecOpenSSLKdfInitialize(xmlSecTransformPtr transform) {
 
     /* create EVP KDF context */
     xmlSecAssert2(ctx->kdfName != NULL, -1);
-    kdf = EVP_KDF_fetch(NULL, ctx->kdfName, NULL);
+    kdf = EVP_KDF_fetch(xmlSecOpenSSLGetLibCtx(), ctx->kdfName, NULL);
     if(kdf == NULL) {
         xmlSecOpenSSLError2("EVP_KDF_fetch", NULL, "kdf=%s", xmlSecErrorsSafeString(ctx->kdfName));
         xmlSecOpenSSLKdfFinalize(transform);

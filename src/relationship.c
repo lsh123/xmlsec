@@ -842,6 +842,7 @@ xmlSecTransformRelationshipPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPt
     xmlSecRelationshipCtxPtr ctx;
     int ret;
 
+    xmlSecAssert2(transform != NULL, -1);
     xmlSecAssert2(nodes != NULL, -1);
     xmlSecAssert2(nodes->doc != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);

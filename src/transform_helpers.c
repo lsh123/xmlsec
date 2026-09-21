@@ -799,11 +799,7 @@ xmlSecTransformKEMRead(xmlNodePtr node, xmlSecTransformPtr kemTransform, xmlSecT
             keyType = xmlSecKeyDataTypePrivate;
             break;
         default:
-<<<<<<< HEAD
             xmlSecInternalError2("invalid operation", NULL, "operation=%d", (int)transformCtx->parentKeyInfoCtx->operation);
-=======
-            xmlSecInternalError2("invalid operation", NULL, "operation=%d", transformCtx->parentKeyInfoCtx->operation);
->>>>>>> fd225c02 (Fix nitpicks accross the codebase)
             return(-1);
     }
 
@@ -993,8 +989,8 @@ xmlSecTransformHmacReadOutputBitsSize(xmlNodePtr node, xmlSecSize defaultSize, x
         xmlSecSize maxSize;
         int ret;
 
-        ret = xmlSecGetNodeContentAsSize(cur, defaultSize, res);
-        if (ret != 0) {
+        ret = xmlSecGetNodeContentAsSize(cur, 0, res);
+        if ((ret != 0) || (*res == 0)) {
             xmlSecInternalError("xmlSecGetNodeContentAsSize(HMACOutputLength)", NULL);
             return(-1);
         }
@@ -1492,6 +1488,7 @@ xmlSecTransformHkdfParamsRead(xmlSecTransformHkdfParamsPtr params, xmlNodePtr no
     int ret;
 
     xmlSecAssert2(params != NULL, -1);
+    xmlSecAssert2(params->prfAlgorithmHref == NULL, -1);
     xmlSecAssert2(node != NULL, -1);
 
     /* iterate over child nodes */
@@ -1531,8 +1528,8 @@ xmlSecTransformHkdfParamsRead(xmlSecTransformHkdfParamsPtr params, xmlNodePtr no
 
     /* optional: KeyLength */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeHkdfKeyLength, xmlSecDSig2021MoreNs))) {
-        ret = xmlSecGetNodeContentAsSize(cur, 1, &(params->keyLength));
-        if(ret < 0) {
+        ret = xmlSecGetNodeContentAsSize(cur, 0, &(params->keyLength));
+        if((ret < 0) || (params->keyLength == 0)) {
             xmlSecInternalError("xmlSecGetNodeContentAsSize(KeyLength)", NULL);
             return(-1);
         }
@@ -1931,6 +1928,11 @@ xmlSecTransformRsaOaepParamsRead(xmlSecTransformRsaOaepParamsPtr oaepParams, xml
     cur = xmlSecGetNextElementNode(node->children);
     while (cur != NULL) {
         if (xmlSecCheckNodeName(cur, xmlSecNodeRsaOAEPparams, xmlSecEncNs)) {
+            if (xmlSecBufferGetSize(&(oaepParams->oaepParams)) != 0) {
+                xmlSecInvalidNodeError(cur, NULL, "OAEPparams already set");
+                return(-1);
+            }
+
             ret = xmlSecBufferBase64NodeContentRead(&(oaepParams->oaepParams), cur);
             if (ret < 0) {
                 xmlSecInternalError("xmlSecBufferBase64NodeContentRead", NULL);

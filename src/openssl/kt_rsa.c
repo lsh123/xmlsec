@@ -767,13 +767,14 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
         bn = BN_new();
         if(bn == NULL) {
             xmlSecOpenSSLError("BN_new", NULL);
+            OPENSSL_cleanse(outBuf, (*outSize));
             return(-1);
         }
 
         if(BN_bin2bn(outBuf, outLen, bn) == NULL) {
-            xmlSecOpenSSLError2("BN_bin2bn", NULL,
-                "size=%d", outLen);
+            xmlSecOpenSSLError2("BN_bin2bn", NULL, "size=%d", outLen);
             BN_clear_free(bn);
+            OPENSSL_cleanse(outBuf, (*outSize));
             return(-1);
         }
 
@@ -781,6 +782,7 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
         if(ret <= 0) {
             xmlSecOpenSSLError("BN_bn2bin", NULL);
             BN_clear_free(bn);
+            OPENSSL_cleanse(outBuf, (*outSize));
             return(-1);
         }
         outLen = ret;
@@ -792,6 +794,7 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
             ctx->md, ctx->mgf1md);
         if(ret < 0) {
             xmlSecOpenSSLError("RSA_padding_check_PKCS1_OAEP_mgf1", NULL);
+            OPENSSL_cleanse(outBuf, (*outSize));
             return(-1);
         }
 

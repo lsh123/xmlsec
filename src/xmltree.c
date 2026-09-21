@@ -72,6 +72,8 @@ xmlSecGetNodeContentAndTrim(const xmlNodePtr cur) {
     xmlChar * bb;
     xmlChar * ee;
 
+    xmlSecAssert2(cur != NULL, NULL);
+
     content = xmlNodeGetContent(cur);
     if(content == NULL) {
         return(NULL);
@@ -201,11 +203,12 @@ xmlSecGetNodeContentAsSize(const xmlNodePtr cur, xmlSecSize defValue, xmlSecSize
         return(0);
     }
 
+    /* Get the content of the node and trim whitespace, the function returns NULL on error or
+     * if the node has no content. Assume no content and return the default value. */
     content = xmlSecGetNodeContentAndTrim(cur);
     if(content == NULL) {
-        /* the node has content, so a NULL return indicates an error */
-        xmlSecInternalError("xmlSecGetNodeContentAndTrim", NULL);
-        return(-1);
+        (*res) = defValue;
+        return(0);
     }
     if(xmlStrlen(content) == 0) {
         /* empty or whitespace-only content: use the default value */

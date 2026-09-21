@@ -869,10 +869,12 @@ xmlSecTransformCtxNodesListRead(xmlSecTransformCtxPtr ctx, xmlNodePtr node, xmlS
  * (and its applications) modify this node-set to include the element plus
  * all descendants including namespaces and attributes -- but not comments.
  *
+ * Note: in case of failure, the transform context state is undefined until
+ * one of the #xmlSecTransformCtxDestroy or #xmlSecTransformCtxFinalize functions is called.
+ *
  * @param ctx the pointer to transforms chain processing context.
  * @param uri the URI.
- * @param hereNode the pointer to "here" node required by some
- *                      XML transforms (must not be NULL).
+ * @param hereNode the pointer to "here" node required by some XML transforms (must not be NULL).
  *
  * @return 0 on success or a negative value otherwise.
  */
@@ -1583,11 +1585,10 @@ xmlSecTransformPump(xmlSecTransformPtr left, xmlSecTransformPtr right, xmlSecTra
     leftType = xmlSecTransformGetDataType(left, xmlSecTransformModePop, transformCtx);
     rightType = xmlSecTransformGetDataType(right, xmlSecTransformModePush, transformCtx);
 
-    if(((leftType & xmlSecTransformDataTypeXml) != 0) &&
-       ((rightType & xmlSecTransformDataTypeXml) != 0)) {
-
+    if(((leftType & xmlSecTransformDataTypeXml) != 0) && ((rightType & xmlSecTransformDataTypeXml) != 0)) {
        xmlSecNodeSetPtr nodes = NULL;
 
+       /* left transform owns nodes in the outNodes pointer */
        ret = xmlSecTransformPopXml(left, &nodes, transformCtx);
        if(ret < 0) {
             xmlSecInternalError("xmlSecTransformPopXml",
@@ -1601,8 +1602,7 @@ xmlSecTransformPump(xmlSecTransformPtr left, xmlSecTransformPtr right, xmlSecTra
                                 xmlSecTransformGetName(right));
             return(-1);
        }
-    }  else if(((leftType & xmlSecTransformDataTypeBin) != 0) &&
-               ((rightType & xmlSecTransformDataTypeBin) != 0)) {
+    }  else if(((leftType & xmlSecTransformDataTypeBin) != 0) && ((rightType & xmlSecTransformDataTypeBin) != 0)) {
         xmlSecByte* buf;
         int final = 0;
 

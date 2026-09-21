@@ -56,7 +56,8 @@ static X509*            xmlSecOpenSSLX509FindChildCert                  (STACK_O
 static X509_NAME*       xmlSecOpenSSLX509NameRead                       (const xmlChar *str);
 
 static int              xmlSecOpenSSLX509NamesCompare                   (XMLSEC_OPENSSL400_CONST X509_NAME *a,
-                                                                         XMLSEC_OPENSSL400_CONST X509_NAME *b);
+                                                                         XMLSEC_OPENSSL400_CONST X509_NAME *b,
+                                                                         int* comparisonResult);
 static STACK_OF(X509_NAME_ENTRY)*  xmlSecOpenSSLX509_NAME_ENTRIES_copy  (XMLSEC_OPENSSL400_CONST X509_NAME *a);
 static int              xmlSecOpenSSLX509_NAME_ENTRIES_cmp              (STACK_OF(X509_NAME_ENTRY) * a,
                                                                          STACK_OF(X509_NAME_ENTRY) * b);
@@ -517,13 +518,13 @@ xmlSecOpenSSLX509StoreFindBestCrl(XMLSEC_OPENSSL400_CONST X509_NAME *cert_issuer
     const ASN1_TIME * lastUpdate;
     time_t resLastUpdateTime = 0;
     xmlSecOpenSSLSizeT ii, num;
+    int comparisonResult;
     int ret;
 
     xmlSecAssert2(cert_issuer != NULL, -1);
     xmlSecAssert2(crls != NULL, -1);
     xmlSecAssert2(res != NULL, -1);
     xmlSecAssert2((*res) == NULL, -1);
-
 
     num = sk_X509_CRL_num(crls);
     for(ii = 0; ii < num; ++ii) {
@@ -537,12 +538,13 @@ xmlSecOpenSSLX509StoreFindBestCrl(XMLSEC_OPENSSL400_CONST X509_NAME *cert_issuer
         }
 
         /* is this CRL from same issuer? */
-        ret = xmlSecOpenSSLX509NamesCompare(crl_issuer, cert_issuer);
+        comparisonResult = 0;
+        ret = xmlSecOpenSSLX509NamesCompare(crl_issuer, cert_issuer, &comparisonResult);
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLX509NamesCompare", NULL);
             return(-1);
         }
-        if(ret != 0) {
+        if(comparisonResult != 0) {
             /* not the same issuer */
             continue;
         }
@@ -1689,6 +1691,7 @@ xmlSecOpenSSLX509VerifyCRLSignature(X509_STORE* xst, X509_STORE_CTX* xsc, STACK_
         char issuer[256];
         xmlSecOpenSSLX509NameToString(X509_CRL_get_issuer(crl), issuer, sizeof(issuer));
         xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_NOT_FOUND, NULL, "issuer=%s", issuer);
+        res = 0; /* not verified */
         goto done;
     }
 
@@ -1865,7 +1868,7 @@ xmlSecOpenSSLX509FindCertCtxInitializeFromValue(xmlSecOpenSSLX509FindCertCtxPtr 
 
         ctx->digestValue = xmlSecBufferGetData(&(x509Value->digest));
         digestSize = xmlSecBufferGetSize(&(x509Value->digest));
-        XMLSEC_SAFE_CAST_SIZE_TO_UINT(digestSize, ctx->digestLen, return(-1), NULL);
+        XMLSEC_SAFE_CAST_SIZE_TO_UINT(digestSize, ctx->digestLen, xmlSecOpenSSLX509FindCertCtxFinalize(ctx);return(-1), NULL);
 
         ctx->digestMd = xmlSecOpenSSLX509GetDigestFromAlgorithm(x509Value->digestAlgorithm);
         if(ctx->digestMd == NULL) {
@@ -1900,6 +1903,7 @@ void xmlSecOpenSSLX509FindCertCtxFinalize(xmlSecOpenSSLX509FindCertCtxPtr ctx) {
 static int
 xmlSecOpenSSLX509MatchBySubjectName(X509* cert, XMLSEC_OPENSSL400_CONST X509_NAME* subjectName) {
     XMLSEC_OPENSSL400_CONST X509_NAME * certSubjectName;
+    int comparisonResult = 0;
     int ret;
 
     xmlSecAssert2(cert != NULL, -1);
@@ -1913,20 +1917,22 @@ xmlSecOpenSSLX509MatchBySubjectName(X509* cert, XMLSEC_OPENSSL400_CONST X509_NAM
         return(0);
     }
 
-    /* returns 0 if equal */
-    ret = xmlSecOpenSSLX509NamesCompare(subjectName, certSubjectName);
-    if(ret != 0) {
-        return(0);
+    ret = xmlSecOpenSSLX509NamesCompare(subjectName, certSubjectName, &comparisonResult);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLX509NamesCompare", NULL);
+        return(-1);
     }
 
-    /* success */
-    return(1);
+    /* done */
+    return((comparisonResult == 0) ? 1 : 0);
 }
 
 static int
 xmlSecOpenSSLX509MatchByIssuer(X509* cert, XMLSEC_OPENSSL400_CONST X509_NAME* issuerName, ASN1_INTEGER* issuerSerial) {
     ASN1_INTEGER* certSerial;
     XMLSEC_OPENSSL400_CONST X509_NAME* certName;
+    int comparisonResult = 0;
+    int ret;
 
     xmlSecAssert2(cert != NULL, -1);
 
@@ -1939,12 +1945,18 @@ xmlSecOpenSSLX509MatchByIssuer(X509* cert, XMLSEC_OPENSSL400_CONST X509_NAME* is
         return(0);
     }
     certName = X509_get_issuer_name(cert);
-    if((certName == NULL) || (xmlSecOpenSSLX509NamesCompare(certName, issuerName) != 0)) {
+    if(certName == NULL) {
         return(0);
     }
 
-    /* success */
-    return(1);
+    ret = xmlSecOpenSSLX509NamesCompare(certName, issuerName, &comparisonResult);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLX509NamesCompare", NULL);
+        return(-1);
+    }
+
+    /* done */
+    return ((comparisonResult == 0) ? 1 : 0);
 }
 
 static int
@@ -2391,16 +2403,28 @@ int xmlSecOpenSSLX509_NAME_ENTRIES_cmp(STACK_OF(X509_NAME_ENTRY)* a,  STACK_OF(X
  * @brief We have to sort X509_NAME entries to get correct results.
  * This is ugly but OpenSSL does not support it
  *
- * Returns 0 if equal
+ * Returns 0 if comparison succeeded and the res contains the result, or a negative value otherwise
  */
 static int
-xmlSecOpenSSLX509NamesCompare(XMLSEC_OPENSSL400_CONST X509_NAME *a, XMLSEC_OPENSSL400_CONST X509_NAME *b) {
+xmlSecOpenSSLX509NamesCompare(XMLSEC_OPENSSL400_CONST X509_NAME *a, XMLSEC_OPENSSL400_CONST X509_NAME *b, int *comparisonResult) {
     STACK_OF(X509_NAME_ENTRY) *a1 = NULL;
     STACK_OF(X509_NAME_ENTRY) *b1 = NULL;
-    int ret;
 
+    xmlSecAssert2(comparisonResult != NULL, -1);
+
+    /* simple case */
+    if((a == NULL) && (b != NULL)) {
+        (*comparisonResult) = -1;
+        return(0);
+    } else if((a != NULL) && (b == NULL)) {
+        (*comparisonResult) = 1;
+        return(0);
+    } else if((a == NULL) && (b == NULL)) {
+        (*comparisonResult) = 0;
+        return(0);
+    }
     xmlSecAssert2(a != NULL, -1);
-    xmlSecAssert2(b != NULL, 1);
+    xmlSecAssert2(b != NULL, -1);
 
     a1 = xmlSecOpenSSLX509_NAME_ENTRIES_copy(a);
     if(a1 == NULL) {
@@ -2421,12 +2445,12 @@ xmlSecOpenSSLX509NamesCompare(XMLSEC_OPENSSL400_CONST X509_NAME *a, XMLSEC_OPENS
     sk_X509_NAME_ENTRY_sort(b1);
 
     /* actually compare, returns 0 if equal */
-    ret = xmlSecOpenSSLX509_NAME_ENTRIES_cmp(a1, b1);
+    (*comparisonResult) = xmlSecOpenSSLX509_NAME_ENTRIES_cmp(a1, b1);
 
     /* cleanup */
     sk_X509_NAME_ENTRY_pop_free(a1, X509_NAME_ENTRY_free);
     sk_X509_NAME_ENTRY_pop_free(b1, X509_NAME_ENTRY_free);
-    return(ret);
+    return(0);
 }
 
 /* returns 0 if equal */

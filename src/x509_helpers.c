@@ -531,6 +531,7 @@ xmlSecKeyX509DataValueXmlReadString(xmlChar **str, xmlNodePtr node, xmlSecKeyInf
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
+    /* trim the string before checking if it is empty */
     content = xmlSecGetNodeContentAndTrim(node);
     if((content == NULL) || (xmlStrlen(content) == 0)) {
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {

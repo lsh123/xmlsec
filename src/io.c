@@ -241,6 +241,7 @@ xmlSecIORegisterCallbacks(xmlInputMatchCallback matchFunc,
     return(0);
 }
 
+#ifndef XMLSEC_NO_FILES
 /** File IO **/
 static int
 xmlSecIOFileExtractFilename(char const* filename, char** out) {
@@ -385,6 +386,7 @@ xmlSecIOFileClose(void* context) {
     }
     return(0);
 }
+#endif /* XMLSEC_NO_FILES */
 
 /**
  * @brief Registers the default compiled-in I/O handlers.

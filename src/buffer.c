@@ -208,7 +208,7 @@ xmlSecBufferGetData(xmlSecBufferPtr buf) {
 /**
  * @brief Sets the value of the buffer to @p data.
  * @param buf the pointer to buffer object.
- * @param data the data.
+ * @param data the data (can be NULL).
  * @param size the data size.
  * @return 0 on success or a negative value if an error occurs.
  */
@@ -217,21 +217,19 @@ xmlSecBufferSetData(xmlSecBufferPtr buf, const xmlSecByte* data, xmlSecSize size
     int ret;
 
     xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2((data != NULL) || (size == 0), -1);
 
     xmlSecBufferEmpty(buf);
-    if(size > 0) {
-        xmlSecAssert2(data != NULL, -1);
-
+    if((data != NULL) && (size > 0)) {
         ret = xmlSecBufferSetMaxSize(buf, size);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetMaxSize", NULL, "size=" XMLSEC_SIZE_FMT, size);
             return(-1);
         }
-
         memcpy(buf->data, data, size);
     }
 
-    buf->size = size;
+    buf->size = (data != NULL) ? size : 0;
     return(0);
 }
 

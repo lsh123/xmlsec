@@ -968,8 +968,6 @@ xmlSecDSigCtxProcessManifestNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
 
         ++refNodesCount;
 
-        /* we don't care if Reference processing failed because
-         * it's Manifest node */
         cur = xmlSecGetNextElementNode(cur->next);
     }
 

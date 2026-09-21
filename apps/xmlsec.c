@@ -3792,20 +3792,29 @@ xmlSecAppWriteResult(const char* inputFileName, const char* outputFileNameTmpl, 
             return(-1);
         }
         /* xmlSaveFileTo closes the buffer */
-    } else if((buffer != NULL) && (xmlSecBufferGetData(buffer) != NULL)) {
+    } else if(buffer != NULL) {
         xmlSecSize bufSize;
+        const xmlSecByte* bufData;
 
+        bufData = xmlSecBufferGetData(buffer);
         bufSize = xmlSecBufferGetSize(buffer);
+        if((bufData == NULL) && (bufSize != 0)) {
+            fprintf(stderr, "Error: buffer data is NULL but buffer size is not zero\n");
+            (void)xmlOutputBufferClose(outBuffer);
+            return(-1);
+        }
         if(bufSize > (size_t)INT_MAX) {
             fprintf(stderr, "Error: binary output size exceeds int limit\n");
             (void)xmlOutputBufferClose(outBuffer);
             return(-1);
         }
-        ret = xmlOutputBufferWrite(outBuffer, (int)bufSize, (const char*)xmlSecBufferGetData(buffer));
-        if (ret < 0) {
-            fprintf(stderr, "Error: failed to write binary output\n");
-            (void)xmlOutputBufferClose(outBuffer);
-            return(-1);
+        if(bufData != NULL) {
+            ret = xmlOutputBufferWrite(outBuffer, (int)bufSize, (const char*)bufData);
+            if (ret < 0) {
+                fprintf(stderr, "Error: failed to write binary output\n");
+                (void)xmlOutputBufferClose(outBuffer);
+                return(-1);
+            }
         }
         (void)xmlOutputBufferClose(outBuffer);
     } else {

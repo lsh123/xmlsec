@@ -38,7 +38,7 @@
 
 /******************************************************************************
  *
- * Internal MSCNG RSA PKCS1 CTX
+ * Internal MSCNG RSA PKCS1/OAEP CTX
  *
   *****************************************************************************/
 typedef struct _xmlSecMSCngRsaPkcs1OaepCtx xmlSecMSCngRsaPkcs1OaepCtx, *xmlSecMSCngRsaPkcs1OaepCtxPtr;

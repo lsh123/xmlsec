@@ -840,7 +840,7 @@ xmlSecMSCngKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
     } else if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
         /* verify params */
         if(transform->expectedOutputSize <= 0) {
-            xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL, "KDF output key size is not specified");
+            xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_SIZE, NULL, "KDF output key size is not specified");
             return(-1);
         }
 

@@ -629,26 +629,6 @@ xmlSecMSCngSignatureFixBrokenJava(xmlSecMSCngSignatureCtxPtr ctx,
     return(0);
 }
 
-/* Reverse @size bytes of @buf in-place (little-endian <-> big-endian conversion). */
-static void
-xmlSecMSCngConvertEndianInPlace(xmlSecByte* buf, xmlSecSize size) {
-    xmlSecByte* start;
-    xmlSecByte* end;
-
-    xmlSecAssert(buf != NULL);
-    xmlSecAssert(size > 0);
-
-    start = buf;
-    end = buf + size - 1;
-    while (start < end) {
-        xmlSecByte tmp = *end;
-        *end = *start;
-        *start = tmp;
-        start++;
-        end--;
-    }
-}
-
 static int
 xmlSecMSCngSignatureFixBrokenASN1(xmlSecMSCngSignatureCtxPtr ctx,
     const xmlSecByte* data, xmlSecSize dataSize,
@@ -656,6 +636,7 @@ xmlSecMSCngSignatureFixBrokenASN1(xmlSecMSCngSignatureCtxPtr ctx,
 ) {
     xmlSecSize keySize;
     xmlSecSize halfSize;
+    DWORD dwHalfSize;
     PCERT_ECC_SIGNATURE eccSignature = NULL;
     DWORD eccSignatureLen = 0;
     DWORD dataLen;
@@ -681,6 +662,7 @@ xmlSecMSCngSignatureFixBrokenASN1(xmlSecMSCngSignatureCtxPtr ctx,
         return(-1);
     }
     halfSize = (keySize + 7) / 8;
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(halfSize, dwHalfSize, return(-1), NULL);
 
     /* parse asn1 structure, see https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-cert_ecc_signature */
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, dataLen, return(-1), NULL);
@@ -696,6 +678,9 @@ xmlSecMSCngSignatureFixBrokenASN1(xmlSecMSCngSignatureCtxPtr ctx,
     );
     if ((status != TRUE) || (eccSignature == NULL) || (eccSignatureLen <= 0)) {
         xmlSecMSCngLastError("CryptDecodeObjectEx(X509_ECC_SIGNATURE)", NULL);
+        if(eccSignature != NULL) {
+            LocalFree(eccSignature);
+        }
         return(-1);
     }
 
@@ -724,10 +709,10 @@ xmlSecMSCngSignatureFixBrokenASN1(xmlSecMSCngSignatureCtxPtr ctx,
 
     /* r and s are in little-endian order */
     memcpy(res, eccSignature->r.pbData, eccSignature->r.cbData);
-    xmlSecMSCngConvertEndianInPlace(res, halfSize);
+    xmlSecMSCngReverseBytes(res, dwHalfSize);
 
     memcpy(res + halfSize, eccSignature->s.pbData, eccSignature->s.cbData);
-    xmlSecMSCngConvertEndianInPlace(res + halfSize, halfSize);
+    xmlSecMSCngReverseBytes(res + halfSize, dwHalfSize);
 
     /* success */
     (*out) = res;
@@ -847,6 +832,7 @@ xmlSecMSCngSignatureConvertToASN1(xmlSecMSCngSignatureCtxPtr ctx, xmlSecBufferPt
     xmlSecSize dataSize, halfSize;
     CERT_ECC_SIGNATURE eccSignature;
     xmlSecByte* encodedData = NULL;
+    DWORD dwHalfSize;
     DWORD encodedDataSize = 0;
     BOOL status;
     int ret;
@@ -868,13 +854,14 @@ xmlSecMSCngSignatureConvertToASN1(xmlSecMSCngSignatureCtxPtr ctx, xmlSecBufferPt
     xmlSecAssert2(dataSize > 0, -1);
     xmlSecAssert2((dataSize % 2) == 0, -1);
 
-    xmlSecMSCngConvertEndianInPlace(data, halfSize);
-    xmlSecMSCngConvertEndianInPlace(data + halfSize, halfSize);
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(halfSize, dwHalfSize, return(-1), NULL);
+    xmlSecMSCngReverseBytes(data, dwHalfSize);
+    xmlSecMSCngReverseBytes(data + halfSize, dwHalfSize);
 
     /* encode */
-    eccSignature.r.cbData = (DWORD)halfSize;
+    eccSignature.r.cbData = dwHalfSize;
     eccSignature.r.pbData = data;
-    eccSignature.s.cbData = (DWORD)halfSize;
+    eccSignature.s.cbData = dwHalfSize;
     eccSignature.s.pbData = data + halfSize;
 
     status = CryptEncodeObjectEx(

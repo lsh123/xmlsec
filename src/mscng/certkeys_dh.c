@@ -302,6 +302,12 @@ xmlSecMSCngKeyDataDhRead(xmlSecKeyDataId id, xmlSecKeyValueDhPtr dhValue) {
     xmlSecAssert2(gSize <= pSize, NULL);
     xmlSecAssert2(publicSize <= pSize, NULL);
 
+    /* bound pSize so that the blob size (offset + pSize * 3) cannot wrap on 32-bit builds */
+    if(pSize > XMLSEC_MSCNG_DH_MAX_P_SIZE) {
+        xmlSecInvalidSizeMoreThanError("DH P size", pSize, (xmlSecSize)XMLSEC_MSCNG_DH_MAX_P_SIZE, NULL);
+        goto done;
+    }
+
     /* BCrypt DH key blob:
      * BCRYPT_DH_KEY_BLOB header (dwMagic + cbKey)
      * followed by: P[cbKey] + G[cbKey] + Public[cbKey]
@@ -929,6 +935,8 @@ done:
         xmlFree(pbPrivBlob);
     }
     if(pki != NULL) {
+        /* LocalFree also frees pki->Algorithm.pszObjId: CryptDecodeObjectEx
+         * (CRYPT_DECODE_ALLOC_FLAG) allocates it inside the pki block */
         LocalFree(pki);
     }
     if(data != NULL) {

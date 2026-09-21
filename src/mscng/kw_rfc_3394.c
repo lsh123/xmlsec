@@ -29,7 +29,7 @@
 
  /******************************************************************************
   *
-  * AES KW implementation
+  * AES KW forward declarations
   *
    *****************************************************************************/
 static int        xmlSecMSCngKWAesBlockEncrypt              (xmlSecTransformPtr transform,

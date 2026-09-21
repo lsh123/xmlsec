@@ -529,7 +529,7 @@ xmlSecMSCngCbcBlockCipherCtxUpdate(xmlSecMSCngCbcBlockCipherCtxPtr ctx,
             return(-1);
         }
 
-        /* check if we really have encrypted the numbers of bytes that we
+        /* check if we really have encrypted the number of bytes that we
         * requested */
         if(dwCLen != dwInSize) {
             xmlSecInternalError3("BCryptEncrypt", cipherName,
@@ -552,7 +552,7 @@ xmlSecMSCngCbcBlockCipherCtxUpdate(xmlSecMSCngCbcBlockCipherCtxPtr ctx,
             return(-1);
         }
 
-        /* check if we really have decrypted the numbers of bytes that we
+        /* check if we really have decrypted the number of bytes that we
         * requested */
         if(dwCLen != dwInSize) {
             xmlSecInternalError3("BCryptDecrypt", cipherName,
@@ -680,10 +680,11 @@ xmlSecMSCngCbcBlockCipherCtxFinal(xmlSecMSCngCbcBlockCipherCtxPtr ctx,
             return(-1);
         }
 
-        /* check if we really have encrypted the numbers of bytes that we
+        /* check if we really have encrypted the number of bytes that we
          * requested */
         if(dwCLen != inSize) {
-            xmlSecInternalError2("BCryptEncrypt", cipherName, "size=%lu", dwCLen);
+            xmlSecInternalError3("BCryptEncrypt", cipherName,
+                "inLen=%lu; outLen=%lu", dwInSize, dwCLen);
             return(-1);
         }
     } else {
@@ -703,10 +704,11 @@ xmlSecMSCngCbcBlockCipherCtxFinal(xmlSecMSCngCbcBlockCipherCtxPtr ctx,
             return(-1);
         }
 
-        /* check if we really have decrypted the numbers of bytes that we
+        /* check if we really have decrypted the number of bytes that we
          * requested */
         if(dwCLen != inSize) {
-            xmlSecInternalError2("BCryptDecrypt", cipherName, "size=%lu", dwCLen);
+            xmlSecInternalError3("BCryptDecrypt", cipherName,
+                "inLen=%lu; outLen=%lu", dwInSize, dwCLen);
             return(-1);
         }
     }

@@ -225,7 +225,7 @@ xmlSecMSCngKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
     ctx = xmlSecMSCngX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
-    /* check if for some reasons same cert is used */
+    /* check if the same cert is used for some reason */
     if ((ctx->keyCert != NULL) && (CertCompareCertificate(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, cert->pCertInfo, ctx->keyCert->pCertInfo) == TRUE)) {
         CertFreeCertificateContext(cert);  /* caller expects data to own the cert on success. */
         return(0);
@@ -991,7 +991,7 @@ xmlSecMSCngX509CertDebugDump(PCCERT_CONTEXT cert, FILE* output) {
     xmlChar* subject = NULL;
     xmlChar* issuer = NULL;
     PCRYPT_INTEGER_BLOB sn;
-    DWORD i;
+    DWORD ii;
 
     xmlSecAssert(cert != NULL);
     xmlSecAssert(output != NULL);
@@ -1014,13 +1014,13 @@ xmlSecMSCngX509CertDebugDump(PCCERT_CONTEXT cert, FILE* output) {
     }
     fprintf(output, "==== Issuer Name: %s\n", issuer);
 
-    /* serial number */
+    /* serial number (CRYPT_INTEGER_BLOB is little-endian; print in big-endian X.509 order) */
     sn = &(cert->pCertInfo->SerialNumber);
-    for(i = 0; i < sn->cbData; i++) {
-        if(i != sn->cbData - 1) {
-            fprintf(output, "%02x:", sn->pbData[i]);
+    for(ii = sn->cbData; ii > 0; ii--) {
+        if(ii != 1) {
+            fprintf(output, "%02x:", sn->pbData[ii - 1]);
         } else {
-            fprintf(output, "%02x", sn->pbData[i]);
+            fprintf(output, "%02x", sn->pbData[ii - 1]);
         }
     }
     fprintf(output, "\n");
@@ -1035,7 +1035,7 @@ xmlSecMSCngX509CertDebugXmlDump(PCCERT_CONTEXT cert, FILE* output) {
     xmlChar* subject = NULL;
     xmlChar* issuer = NULL;
     PCRYPT_INTEGER_BLOB sn;
-    DWORD i;
+    DWORD ii;
 
     xmlSecAssert(cert != NULL);
     xmlSecAssert(output != NULL);
@@ -1060,14 +1060,14 @@ xmlSecMSCngX509CertDebugXmlDump(PCCERT_CONTEXT cert, FILE* output) {
     xmlSecPrintXmlString(output, issuer);
     fprintf(output, "</IssuerName>\n");
 
-    /* serial number */
+    /* serial number (CRYPT_INTEGER_BLOB is little-endian; print in big-endian X.509 order) */
     fprintf(output, "<SerialNumber>");
     sn = &(cert->pCertInfo->SerialNumber);
-    for(i = 0; i < sn->cbData; i++) {
-        if(i != sn->cbData - 1) {
-            fprintf(output, "%02x:", sn->pbData[i]);
+    for(ii = sn->cbData; ii > 0; ii--) {
+        if(ii != 1) {
+            fprintf(output, "%02x:", sn->pbData[ii - 1]);
         } else {
-            fprintf(output, "%02x", sn->pbData[i]);
+            fprintf(output, "%02x", sn->pbData[ii - 1]);
         }
     }
     fprintf(output, "</SerialNumber>\n");

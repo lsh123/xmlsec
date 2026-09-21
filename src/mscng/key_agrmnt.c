@@ -497,14 +497,14 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
                 goto done;
             }
 
-            /* CNG returns the raw shared secret as the byte-reverse of the standard
+            /* CNG returns the raw shared secret as the byte reversal of the standard
              * wire format, so reverse it to produce Z in the standard representation
              * that ConcatKDF / other backends expect. This applies to all key-agreement
              * types (DH/ECDH/X25519): the X25519 wire format per RFC 7748/8410 is
              * little-endian, so CNG returns it big-endian (byte-reversed) and we reverse
              * it to the standard little-endian wire format; for DH it returns
-             * little-endian (byte-reverse of the big-endian wire format). Verified with
-             * known-answer tests against the Python cryptography library. */
+             * little-endian (the byte reversal of the big-endian wire format). Verified
+             * with known-answer tests against the Python cryptography library. */
             xmlSecMSCngReverseBytes(secretData, dwBCryptSecretLen);
 
             res = 0;
@@ -580,12 +580,12 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
         goto done;
     }
 
-    /* the raw secret comes back as the byte-reverse of the standard wire format
+    /* the raw secret comes back as the byte reversal of the standard wire format
      * (CNG's native byte order); swap it to the standard representation ConcatKDF /
      * other backends expect. This is required for all key types: the X25519 wire
      * format per RFC 7748/8410 is little-endian, so CNG returns it big-endian
      * (byte-reversed) and we reverse it to the standard little-endian wire format,
-     * and for DH it returns little-endian (byte-reverse of the big-endian wire
+     * and for DH it returns little-endian (the byte reversal of the big-endian wire
      * format). Verified with known-answer tests against the Python cryptography
      * library. */
     xmlSecMSCngReverseBytes(secretData, dwSecretLen);
@@ -636,6 +636,9 @@ xmlSecMSCngKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
             return(-1);
         }
+        /* the SECURE flag only selects the wipe method used when the buffer is finalized;
+         * it is safe to set after xmlSecBufferInitialize since no secret data has been
+         * written to the buffer at this point */
         secret.flags |= XMLSEC_BUFFER_FLAG_SECURE;
 
         /* step 1: generate secret with key agreement */

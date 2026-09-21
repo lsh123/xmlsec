@@ -331,7 +331,7 @@ xmlSecMSCngKeysStoreAddCertDataToKey(xmlSecKeyPtr key, PCCERT_CONTEXT cert) {
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(cert != NULL, -1);
 
-    /* create x509 data  */
+    /* create x509 data */
     x509Data = xmlSecKeyDataCreate(xmlSecMSCngKeyDataX509Id);
     if (x509Data == NULL) {
         xmlSecInternalError("xmlSecKeyDataCreate", NULL);
@@ -585,8 +585,8 @@ static xmlSecKeyStoreKlass xmlSecMSCngKeysStoreKlass = {
 };
 
 /**
- * @brief The MSCng list based keys store klass.
- * @return MSCng list based keys store klass.
+ * @brief The MSCng keys store klass.
+ * @return MSCng keys store klass.
  */
 xmlSecKeyStoreId
 xmlSecMSCngKeysStoreGetKlass(void) {
@@ -595,7 +595,7 @@ xmlSecMSCngKeysStoreGetKlass(void) {
 
 /**
  * @brief Adds @p key to the @p store.
- * @param store the pointer to MSCng keys store.
+ * @param store the pointer to the MSCng keys store.
  * @param key the pointer to key.
  * @return 0 on success or a negative value if an error occurs.
  */
@@ -616,7 +616,7 @@ xmlSecMSCngKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
 
 /**
  * @brief Reads keys from an XML file.
- * @param store the pointer to MSCng keys store.
+ * @param store the pointer to the MSCng keys store.
  * @param uri the filename.
  * @param keysMngr the pointer to associated keys manager.
  * @return 0 on success or a negative value if an error occurs.
@@ -628,7 +628,7 @@ xmlSecMSCngKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri, xmlSecKeysMng
 
 /**
  * @brief Writes keys from @p store to an XML file.
- * @param store the pointer to MSCng keys store.
+ * @param store the pointer to the MSCng keys store.
  * @param filename the filename.
  * @param type the saved keys type (public, private, ...).
  * @return 0 on success or a negative value if an error occurs.

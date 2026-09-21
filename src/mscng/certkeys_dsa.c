@@ -180,7 +180,7 @@ xmlSecMSCngKeyDataCertGetDsaPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE
         dsakey2 = (BCRYPT_DSA_KEY_BLOB_V2*)blobData;
         dsakey2->dwMagic = BCRYPT_DSA_PUBLIC_MAGIC_V2;
         dsakey2->cbKey = pSize;
-        /* XML Digital Signature https://www.w3.org/TR/xmldsig-core1/#sec-DSA) doesn't support DSAwithSHA224 */
+        /* XML Digital Signature (https://www.w3.org/TR/xmldsig-core1/#sec-DSA) doesn't support DSAwithSHA224 */
         dsakey2->hashAlgorithm = (qBlobSize == XMLSEC_MSCNG_DSA_V2_Q_SIZE) ? DSA_HASH_ALGORITHM_SHA256 : DSA_HASH_ALGORITHM_SHA1;
         dsakey2->standardVersion = DSA_FIPS186_3;
         dsakey2->cbSeedLength = qBlobSize;
@@ -294,7 +294,7 @@ xmlSecMSCngDsaBuildSubjectPublicKeyInfoDer(BCRYPT_KEY_HANDLE hKey, LPVOID* ppDer
     if(hdr->dwMagic == BCRYPT_DSA_PUBLIC_MAGIC) {
         /* V1: header + p[cbKey] + g[cbKey] + y[cbKey], q fixed 20 bytes in header */
         if((hdr->cbKey > XMLSEC_MSCNG_DSA_MAX_CBKEY_SIZE) || (blobLen < (sizeof(BCRYPT_DSA_KEY_BLOB) + 3 * hdr->cbKey))) {
-            xmlSecOtherError3(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "DSA V1 blob size mismatch: dwBlobLen=%lu; keyLen=%lu", blobLen, hdr->cbKey);
+            xmlSecOtherError3(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "DSA V1 blob size mismatch: blobLen=%lu; keyLen=%lu", blobLen, hdr->cbKey);
             goto done;
         }
         BYTE* d = blobData + sizeof(BCRYPT_DSA_KEY_BLOB);
@@ -305,10 +305,13 @@ xmlSecMSCngDsaBuildSubjectPublicKeyInfoDer(BCRYPT_KEY_HANDLE hKey, LPVOID* ppDer
     }
 #if XMLSEC_MSCNG_HAVE_DSA_V2
     else if(hdr->dwMagic == BCRYPT_DSA_PUBLIC_MAGIC_V2) {
-        /* V2: header + seed[cbSeedLength] + q[cbGroupSize] + p[cbKey] + g[cbKey] + y[cbKey] */
+        /* V2: header + seed[cbSeedLength] + q[cbGroupSize] + p[cbKey] + g[cbKey] + y[cbKey].
+         * The blob was produced by BCryptExportKey above (size query followed by an export
+         * into a buffer of exactly the reported size), so the header fields are consistent
+         * with blobLen and the DWORD size sum in the check below cannot wrap. */
         BCRYPT_DSA_KEY_BLOB_V2* h2 = (BCRYPT_DSA_KEY_BLOB_V2*)blobData;
         if((h2->cbKey > XMLSEC_MSCNG_DSA_MAX_CBKEY_SIZE) || (blobLen < (sizeof(BCRYPT_DSA_KEY_BLOB_V2) + h2->cbSeedLength + h2->cbGroupSize + 3 * h2->cbKey))) {
-            xmlSecOtherError3(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "DSA V2 blob size mismatch: dwBlobLen=%lu; keyLen=%lu", blobLen, h2->cbKey);
+            xmlSecOtherError3(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "DSA V2 blob size mismatch: blobLen=%lu; keyLen=%lu", blobLen, h2->cbKey);
             goto done;
         }
         BYTE* d = blobData + sizeof(BCRYPT_DSA_KEY_BLOB_V2);
@@ -394,7 +397,7 @@ xmlSecMSCngIsDsaBcryptKey(BCRYPT_KEY_HANDLE hKey) {
 
     xmlSecAssert2(hKey != 0, -1);
 
-    ntstatus = BCryptGetProperty(hKey, BCRYPT_ALGORITHM_NAME, (PUCHAR)algName, sizeof(algName) - sizeof(WCHAR), &algNameLen, 0);
+    ntstatus = BCryptGetProperty(hKey, BCRYPT_ALGORITHM_NAME, (PUCHAR)algName, sizeof(algName), &algNameLen, 0);
     if(ntstatus != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptGetProperty", NULL, ntstatus);
         return(-1);
@@ -697,7 +700,7 @@ xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDsaPtr 
     if(dsakey->dwMagic == BCRYPT_DSA_PUBLIC_MAGIC) {
         /* V1: BCRYPT_DSA_KEY_BLOB + p[cbKey] + g[cbKey] + y[cbKey], q in header */
         if((dsakey->cbKey > XMLSEC_MSCNG_DSA_MAX_CBKEY_SIZE) || (bufLen < (sizeof(BCRYPT_DSA_KEY_BLOB) + 3 * dsakey->cbKey))) {
-            xmlSecOtherError3(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "DSA V1 blob size mismatch: dwBlobLen=%lu; keyLen=%lu", bufLen, dsakey->cbKey);
+            xmlSecOtherError3(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "DSA V1 blob size mismatch: bufLen=%lu; keyLen=%lu", bufLen, dsakey->cbKey);
             goto done;
         }
         bufData += sizeof(BCRYPT_DSA_KEY_BLOB);
@@ -739,12 +742,15 @@ xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDsaPtr 
     }
 #if XMLSEC_MSCNG_HAVE_DSA_V2
     else if(dsakey->dwMagic == BCRYPT_DSA_PUBLIC_MAGIC_V2) {
-        /* V2: BCRYPT_DSA_KEY_BLOB_V2 + seed[cbSeedLength] + q[cbGroupSize] + p[cbKey] + g[cbKey] + y[cbKey] */
+        /* V2: BCRYPT_DSA_KEY_BLOB_V2 + seed[cbSeedLength] + q[cbGroupSize] + p[cbKey] + g[cbKey] + y[cbKey].
+         * The blob was produced by BCryptExportKey above (size query followed by an export
+         * into a buffer of exactly the reported size), so the header fields are consistent
+         * with bufLen and the DWORD size sum in the check below cannot wrap. */
         BCRYPT_DSA_KEY_BLOB_V2* dsakey2v;
         xmlSecByte* v2Data;
         dsakey2v = (BCRYPT_DSA_KEY_BLOB_V2*)bufData;
         if((dsakey2v->cbKey > XMLSEC_MSCNG_DSA_MAX_CBKEY_SIZE) || (bufLen < (sizeof(BCRYPT_DSA_KEY_BLOB_V2) + dsakey2v->cbSeedLength + dsakey2v->cbGroupSize + 3 * dsakey2v->cbKey))) {
-            xmlSecOtherError3(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "DSA V2 blob size mismatch: dwBlobLen=%lu; keyLen=%lu", bufLen, dsakey2v->cbKey);
+            xmlSecOtherError3(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "DSA V2 blob size mismatch: bufLen=%lu; keyLen=%lu", bufLen, dsakey2v->cbKey);
             goto done;
         }
         v2Data = bufData + sizeof(BCRYPT_DSA_KEY_BLOB_V2);

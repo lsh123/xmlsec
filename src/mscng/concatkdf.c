@@ -276,7 +276,7 @@ xmlSecMSCngConcatKdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
         return(-1);
     }
 
-    /* set mac */
+    /* set the hash algorithm ID */
     ctx->pszAlgId = xmlSecMSCngConcatKdfGetDigestFromHref(ctx->params.digestMethod);
     if(ctx->pszAlgId == NULL) {
         xmlSecInternalError("xmlSecMSCngConcatKdfGetDigestFromHref", xmlSecTransformGetName(transform));

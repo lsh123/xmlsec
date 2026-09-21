@@ -769,7 +769,7 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyData ## klassName ## Klass = {          
     dataNodeNs,                                 /* const xmlChar* dataNodeNs; */                         \
                                                                                                          \
     /* constructors/destructor */                                                                        \
-    xmlSecMSCngCertKeyDataInitialize,           /* xmlSecKeyDataInitializeMethod initialize; */          \
+    xmlSecMSCngCertKeyDataInitialize,           /* xmlSecKeyDataInitMethod initialize; */          \
     xmlSecMSCngCertKeyDataDuplicate,            /* xmlSecKeyDataDuplicateMethod duplicate; */            \
     xmlSecMSCngCertKeyDataFinalize,             /* xmlSecKeyDataFinalizeMethod finalize; */              \
     generate,                                   /* xmlSecKeyDataGenerateMethod generate; */              \

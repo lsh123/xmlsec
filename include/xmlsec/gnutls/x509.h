@@ -80,7 +80,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGnuTLSKeyDataRawX509CertGetKlass  
  */
 #define xmlSecGnuTLSX509StoreId \
         xmlSecGnuTLSX509StoreGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataStoreId xmlSecGnuTLSX509StoreGetKlass (void);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataStoreId xmlSecGnuTLSX509StoreGetKlass         (void);
 
 XMLSEC_CRYPTO_EXPORT gnutls_x509_crt_t  xmlSecGnuTLSX509StoreVerify     (xmlSecKeyDataStorePtr store,
                                                                           xmlSecPtrListPtr certs,
@@ -89,10 +89,10 @@ XMLSEC_CRYPTO_EXPORT gnutls_x509_crt_t  xmlSecGnuTLSX509StoreVerify     (xmlSecK
 XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSX509StoreAdoptCert  (xmlSecKeyDataStorePtr store,
                                                                          gnutls_x509_crt_t cert,
                                                                          xmlSecKeyDataType type);
-XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSX509StoreVerifyCrl (xmlSecKeyDataStorePtr store,
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSX509StoreVerifyCrl  (xmlSecKeyDataStorePtr store,
                                                                          gnutls_x509_crl_t crl,
-                                                                         const xmlSecKeyInfoCtx* keyInfoCtx);
-XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSX509StoreAdoptCrl  (xmlSecKeyDataStorePtr store,
+                                                                         xmlSecKeyInfoCtx* keyInfoCtx);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSX509StoreAdoptCrl   (xmlSecKeyDataStorePtr store,
                                                                          gnutls_x509_crl_t crl);
 
 

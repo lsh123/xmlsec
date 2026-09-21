@@ -69,7 +69,7 @@ typedef enum {
 #define XMLSEC_KEYINFO_FLAGS_STOP_ON_UNKNOWN_CHILD              0x00000002
 
 /**
- * @brief DEPRECATED. Abort on unknown KeyName content.
+ * @brief Deprecated. Abort on unknown KeyName content.
  * @details Deprecated, do not use. If flag is set then we abort if an unknown key name
  * (content of <dsig:KeyName /> element) is found.
  */
@@ -135,8 +135,8 @@ typedef enum {
 #define XMLSEC_KEYINFO_FLAGS_ENCKEY_STOP_ON_FAILED_DECRYPTION   0x00001000
 
 /**
- * @deprecated Use XMLSEC_KEYINFO_FLAGS_ENCKEY_STOP_ON_FAILED_DECRYPTION instead.
- * The old name ("DONT_STOP") contradicted the actual behavior (set = stop); it is
+ * @brief Deprecated. Use XMLSEC_KEYINFO_FLAGS_ENCKEY_STOP_ON_FAILED_DECRYPTION instead.
+ * @details Deprecated,  do not use. The old name ("DONT_STOP") contradicted the actual behavior (set = stop); it is
  * kept only for source compatibility and maps to the same value.
  */
 #define XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION \
@@ -198,7 +198,7 @@ struct _xmlSecKeyInfoCtx {
 
 #ifndef XMLSEC_NO_X509
     /* x509 certificates */
-    time_t                              certsVerificationTime;  /**< the time to use for X509 certificates verification ("not valid before" and "not valid after" checks); if #certsVerificationTime is equal to 0 (default) then we verify certificates against the system's clock "now". */
+    time_t                              certsVerificationTime;  /**< the time to use for X509 certificates verification ("not valid before" and "not valid after" checks); if equal to 0 (default) then we verify certificates against the system's clock "now". */
     int                                 certsVerificationDepth;  /**< the max certificate chain length (default is 9). */
 #endif /* XMLSEC_NO_X509 */
 

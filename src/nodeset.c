@@ -42,7 +42,7 @@ static int      xmlSecNodeSetWalkRecursive              (xmlSecNodeSetPtr nset,
 
 /**
  * @brief Creates a new nodes set.
- * @details Creates new nodes set. Caller is responsible for freeing returned object
+ * @details Creates a new nodes set. Caller is responsible for freeing returned object
  * by calling #xmlSecNodeSetDestroy function.
  * @param doc the pointer to parent XML document.
  * @param nodes the list of nodes.

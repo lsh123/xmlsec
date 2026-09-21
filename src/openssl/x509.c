@@ -15,8 +15,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <ctype.h>
-#include <errno.h>
 #include <time.h>
 
 #include <xmlsec/xmlsec.h>
@@ -141,7 +139,7 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataX509Klass = {
     xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    xmlSecOpenSSLKeyDataX509Initialize,         /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecOpenSSLKeyDataX509Initialize,         /* xmlSecKeyDataInitMethod initialize; */
     xmlSecOpenSSLKeyDataX509Duplicate,          /* xmlSecKeyDataDuplicateMethod duplicate; */
     xmlSecOpenSSLKeyDataX509Finalize,           /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
@@ -506,7 +504,7 @@ xmlSecOpenSSLKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     xmlSecAssert2(ctxDst->certsList == NULL, -1);
     xmlSecAssert2(ctxDst->crlsList == NULL, -1);
 
-    /* crts */
+    /* certs */
     if(ctxSrc->certsList != NULL) {
 #ifndef XMLSEC_OPENSSL_NO_DEEP_COPY
 #ifndef XMLSEC_OPENSSL_API_300
@@ -1186,14 +1184,14 @@ done:
 }
 
 static xmlChar*
-xmlSecOpenSSLASN1IntegerWrite(ASN1_INTEGER *asni) {
+xmlSecOpenSSLASN1IntegerWrite(ASN1_INTEGER *asn1) {
     xmlChar *res = NULL;
     BIGNUM *bn;
     char *p;
 
-    xmlSecAssert2(asni != NULL, NULL);
+    xmlSecAssert2(asn1 != NULL, NULL);
 
-    bn = ASN1_INTEGER_to_BN(asni, NULL);
+    bn = ASN1_INTEGER_to_BN(asn1, NULL);
     if(bn == NULL) {
         xmlSecOpenSSLError("ASN1_INTEGER_to_BN", NULL);
         return(NULL);
@@ -1209,8 +1207,8 @@ xmlSecOpenSSLASN1IntegerWrite(ASN1_INTEGER *asni) {
     bn = NULL;
 
     /* OpenSSL and LibXML2 can have different memory callbacks, i.e.
-       when data is allocated in OpenSSL should be freed with OpenSSL
-       method, not with LibXML2 method.
+       when the data is allocated by OpenSSL it should be freed with the
+       OpenSSL method, not with the LibXML2 method.
      */
     res = xmlCharStrdup(p);
     if(res == NULL) {
@@ -1696,7 +1694,7 @@ xmlSecOpenSSLX509CrlLoadBIO(BIO* bio, xmlSecKeyDataFormat format) {
         goto done;
     }
 
-    /* read the cert */
+    /* read the CRL */
     switch(format) {
     case xmlSecKeyDataFormatPem:
     case xmlSecKeyDataFormatCertPem:
@@ -1913,7 +1911,7 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataRawX509CertKlass = {
     xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    NULL,                                       /* xmlSecKeyDataInitializeMethod initialize; */
+    NULL,                                       /* xmlSecKeyDataInitMethod initialize; */
     NULL,                                       /* xmlSecKeyDataDuplicateMethod duplicate; */
     NULL,                                       /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */

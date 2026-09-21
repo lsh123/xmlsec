@@ -6,7 +6,7 @@
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * @brief The string constants.
+ * @brief String constants.
  */
 #include "globals.h"
 
@@ -164,6 +164,7 @@ const xmlChar xmlSecHrefKWCamellia256[]         = "http://www.w3.org/2001/04/xml
  * ChaCha20 strings
  *
   *****************************************************************************/
+#ifndef XMLSEC_NO_CHACHA20
 const xmlChar xmlSecNameChaCha20[]              = "chacha20";
 const xmlChar xmlSecHrefChaCha20[]              = "http://www.w3.org/2021/04/xmldsig-more#chacha20";
 const xmlChar xmlSecNodeChaCha20Nonce[]         = "Nonce";
@@ -175,6 +176,7 @@ const xmlChar xmlSecHrefChaCha20KeyValue[]      = "http://www.aleksey.com/xmlsec
 const xmlChar xmlSecNameChaCha20Poly1305[]      = "chacha20-poly1305";
 const xmlChar xmlSecHrefChaCha20Poly1305[]      = "http://www.w3.org/2021/04/xmldsig-more#chacha20poly1305";
 const xmlChar xmlSecNodeChaCha20Poly1305AAD[]   = "AAD";
+#endif /* XMLSEC_NO_CHACHA20 */
 
 /******************************************************************************
  *

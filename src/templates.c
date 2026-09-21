@@ -374,9 +374,9 @@ xmlSecTmplSignatureAddObject(xmlNodePtr signNode, const xmlChar *id,
 /**
  * @brief Gets the &lt;dsig:SignatureMethod/&gt; child of &lt;dsig:SignedInfo/&gt; node.
  * @details Gets pointer to &lt;dsig:SignatureMethod/&gt; child of &lt;dsig:SignedInfo/&gt; node.
- * @param signNode the pointer to &lt;dsig:Signature /&gt; node.
+ * @param signNode the pointer to &lt;dsig:Signature/&gt; node.
  *
- * @return pointer to &lt;dsig:SignatureMethod /&gt; node or NULL if an error occurs.
+ * @return pointer to &lt;dsig:SignatureMethod/&gt; node or NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecTmplSignatureGetSignMethodNode(xmlNodePtr signNode) {
@@ -401,9 +401,9 @@ xmlSecTmplSignatureGetSignMethodNode(xmlNodePtr signNode) {
 /**
  * @brief Gets the &lt;dsig:CanonicalizationMethod/&gt; child of &lt;dsig:SignedInfo/&gt; node.
  * @details Gets pointer to &lt;dsig:CanonicalizationMethod/&gt; child of &lt;dsig:SignedInfo/&gt; node.
- * @param signNode the pointer to &lt;dsig:Signature /&gt; node.
+ * @param signNode the pointer to &lt;dsig:Signature/&gt; node.
  *
- * @return pointer to &lt;dsig:CanonicalizationMethod /&gt; node or NULL if an error occurs.
+ * @return pointer to &lt;dsig:CanonicalizationMethod/&gt; node or NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecTmplSignatureGetC14NMethodNode(xmlNodePtr signNode) {
@@ -578,7 +578,7 @@ xmlSecTmplManifestAddReference(xmlNodePtr manifestNode, xmlSecTransformId digest
   *****************************************************************************/
 /**
  * @brief Creates a new &lt;enc:EncryptedData/&gt; node for encryption template.
- * @details Creates new &lt;enc:EncryptedData /&gt; node for encryption template.
+ * @details Creates new &lt;enc:EncryptedData/&gt; node for encryption template.
  * @param doc the pointer to encryption document or NULL; in the second
  *                      case, application must later call xmlSetTreeDoc to ensure
  *                      that all the children nodes have correct pointer to XML document.
@@ -588,7 +588,7 @@ xmlSecTmplManifestAddReference(xmlNodePtr manifestNode, xmlSecTransformId digest
  * @param mimeType the MimeType attribute (optional)
  * @param encoding the Encoding attribute (optional)
  *
- * @return the pointer to newly created  &lt;enc:EncryptedData/&gt; node or NULL
+ * @return the pointer to newly created &lt;enc:EncryptedData/&gt; node or NULL
  * if an error occurs.
  */
 xmlNodePtr
@@ -916,9 +916,9 @@ xmlSecTmplEncDataEnsureCipherReference(xmlNodePtr encNode, const xmlChar *uri) {
 
 /**
  * @brief Gets pointer to &lt;enc:EncryptionMethod/&gt; node.
- * @param encNode the pointer to &lt;enc:EncryptedData /&gt; node.
+ * @param encNode the pointer to &lt;enc:EncryptedData/&gt; node.
  *
- * @return pointer to &lt;enc:EncryptionMethod /&gt; node or NULL if an error occurs.
+ * @return pointer to &lt;enc:EncryptionMethod/&gt; node or NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecTmplEncDataGetEncMethodNode(xmlNodePtr encNode) {
@@ -1620,8 +1620,8 @@ xmlSecTmplTransformAddHmacOutputLength(xmlNodePtr transformNode, xmlSecSize bits
         return(-1);
     }
 #else  /* defined(_MSC_VER) */
-    if(sprintf(buf, XMLSEC_SIZE_FMT, bitsLen) >= (int)sizeof(buf)) {
-        xmlSecInternalError("sprintf", NULL);
+    if(snprintf(buf, sizeof(buf), XMLSEC_SIZE_FMT, bitsLen) >= (int)sizeof(buf)) {
+        xmlSecInternalError("snprintf", NULL);
         return(-1);
     }
 #endif /* defined(_MSC_VER) */

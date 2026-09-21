@@ -371,6 +371,7 @@ xmlSecBnToDecString(xmlSecBnPtr bn) {
 
 /**
  * @brief Multiplies @p bn with @p multiplier.
+ * @details @p multiplier must be a positive value.
  * @param bn the pointer to BN.
  * @param multiplier the multiplier.
  * @return 0 on success or a negative value if an error occurs.
@@ -418,6 +419,7 @@ xmlSecBnMul(xmlSecBnPtr bn, int multiplier) {
 /**
  * @brief Divides @p bn by @p divider.
  * @details Divides @p bn by @p divider and places modulus into @p mod.
+ * @p divider must be a positive value.
  * @param bn the pointer to BN.
  * @param divider the divider
  * @param mod the pointer for modulus result.
@@ -720,7 +722,7 @@ xmlSecBnCompareReverse(xmlSecBnPtr bn, const xmlSecByte* data, xmlSecSize dataSi
  * @param cur the pointer to an XML node.
  * @param format the BN format.
  * @param reverse if set then reverse read buffer after reading.
- * @return 0 on success and a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecBnGetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int reverse) {
@@ -793,7 +795,7 @@ xmlSecBnGetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
  * written; if a later step fails the BN is left reversed (the reversal is not
  * undone on the error path).
  *
- * @return 0 on success and a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int reverse, int addLineBreaks) {
@@ -898,7 +900,7 @@ xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
  * @param addLineBreaks if the flag is equal to 1 then
  *              linebreaks will be added before and after
  *              new buffer content.
- * @return 0 on success and a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecBnBlobSetNodeValue(const xmlSecByte* data, xmlSecSize dataSize,

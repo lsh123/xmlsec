@@ -63,7 +63,7 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataDEREncodedKeyValueKlass = {
     xmlSecDSig11Ns,                             /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    NULL,                                       /* xmlSecKeyDataInitializeMethod initialize; */
+    NULL,                                       /* xmlSecKeyDataInitMethod initialize; */
     NULL,                                       /* xmlSecKeyDataDuplicateMethod duplicate; */
     NULL,                                       /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
@@ -107,7 +107,7 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataDEREncodedKeyValueKlass = {
  *      </complexType>
  * @endcode
  *
- * @return the &lt;dsig11:DEREncodedKeyValue/&gt;element processing key data klass.
+ * @return the &lt;dsig11:DEREncodedKeyValue/&gt; element processing key data klass.
  */
 xmlSecKeyDataId
 xmlSecOpenSSLKeyDataDEREncodedKeyValueGetKlass(void) {

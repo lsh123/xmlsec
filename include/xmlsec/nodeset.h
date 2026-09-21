@@ -73,9 +73,9 @@ struct _xmlSecNodeSet {
 };
 
 /**
- * @brief Node walk callback, called once per node in the node set.
- * @details The callback function called once per node in the node set.
- * @param nset the pointer to xmlSecNodeSet structure.
+ * @brief Node walk callback, called once per node in the node set (namespace nodes once per descendant element).
+ * @details The callback function called once per node in the node set (namespace nodes once per descendant element).
+ * @param nset the pointer to the xmlSecNodeSet structure.
  * @param cur the pointer to the current XML node.
  * @param parent the pointer to the parent node of @p cur.
  * @param data the pointer to application specific data.

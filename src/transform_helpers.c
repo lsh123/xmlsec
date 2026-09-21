@@ -752,7 +752,7 @@ done:
  * Note that CipherReference node is not currently supported
  *
  * @code{.xml}
- *  <as:EncapsulationMechanism xmlns:as="XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12"Algorithm="some uri">
+ *  <as:EncapsulationMechanism xmlns:as="XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12" Algorithm="some uri">
  *      <ds:KeyInfo/>
  *      <enc:CipherData>
  *          <enc:CipherValue/>
@@ -799,7 +799,7 @@ xmlSecTransformKEMRead(xmlNodePtr node, xmlSecTransformPtr kemTransform, xmlSecT
             keyType = xmlSecKeyDataTypePrivate;
             break;
         default:
-            xmlSecInternalError2("invalid operation", NULL, "operation=%u", transformCtx->parentKeyInfoCtx->operation);
+            xmlSecInternalError2("invalid operation", NULL, "operation=%d", (int)transformCtx->parentKeyInfoCtx->operation);
             return(-1);
     }
 

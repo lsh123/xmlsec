@@ -23,7 +23,6 @@
 #include <xmlsec/errors.h>
 
 #include "kw_helpers.h"
-#include "cast_helpers.h"
 #include "keysdata_helpers.h"
 
 #ifndef XMLSEC_NO_DES
@@ -366,7 +365,7 @@ xmlSecKWDes3Encode(xmlSecKWDes3Id kwDes3Id, xmlSecTransformPtr transform,
         return(-1);
     }
     if(tmpSize != outWritten2) {
-        xmlSecInvalidSizeError("kwDes3Id->encrypt", tmpSize, outWritten2, NULL);
+        xmlSecInvalidSizeError("kwDes3Id->encrypt", outWritten2, tmpSize, NULL);
         return(-1);
     }
     (*outWritten) = outWritten2;

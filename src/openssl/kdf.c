@@ -35,11 +35,12 @@
 
 #include <openssl/kdf.h>
 #include <openssl/core_names.h>
+#include <openssl/obj_mac.h>
 #include <openssl/param_build.h>
 
 /******************************************************************************
  *
- * Internal KDF CTX FOR OpenSSL 3.0 or newer (https://www.openssl.org/docs/man3.0/man3/EVP_KDF_CTX_new.html)
+ * Internal KDF CTX for OpenSSL 3.0 or newer (https://www.openssl.org/docs/man3.0/man3/EVP_KDF_CTX_new.html)
  *
   *****************************************************************************/
 

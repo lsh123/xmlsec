@@ -28,7 +28,7 @@
  *
  * OpenSSL Keys Store. Uses Simple Keys Store under the hood
  *
- * xmlSecKeyStore +  xmlSecKeyStorePtr(Simple Keys Store ptr)
+ * xmlSecKeyStore + xmlSecKeyStorePtr(Simple Keys Store ptr)
  *
   *****************************************************************************/
 XMLSEC_KEY_STORE_DECLARE(OpenSSLKeysStore, xmlSecKeyStorePtr)

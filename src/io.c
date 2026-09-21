@@ -497,8 +497,9 @@ xmlSecTransformInputURIGetKlass(void) {
  * @param transform the pointer to IO transform.
  * @param uri the URL to open.
  *
- * Note: in case of failure, the transform state is undefined until
- * the #xmlSecTransformDestroy function is called.
+ * Note: in case of failure, the transform is left in a well-defined
+ * (unopened) state and the #xmlSecTransformInputURIClose and
+ * #xmlSecTransformInputURIFinalize functions can be called safely.
  *
  * @return 0 on success or a negative value otherwise.
  */

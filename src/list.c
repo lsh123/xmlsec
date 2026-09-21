@@ -121,7 +121,7 @@ xmlSecPtrListFinalize(xmlSecPtrListPtr list) {
 }
 
 /**
- * @brief Remove all items from @p list (if any).
+ * @brief Removes all items from @p list (if any).
  * @param list the pointer to list.
  */
 void
@@ -302,7 +302,9 @@ xmlSecPtrListAdd(xmlSecPtrListPtr list, xmlSecPtr item) {
 
 /**
  * @brief Inserts an item at the given position.
- * @details Inserts @p item at the position @p pos in the @p list.
+ * @details Inserts @p item at the position @p pos in the @p list. If @p pos
+ * is greater than or equal to the number of items in the @p list, the item
+ * is appended at the end of the list.
  * @param list the pointer to list.
  * @param item the item.
  * @param pos the position to insert at.

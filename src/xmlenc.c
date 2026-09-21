@@ -105,7 +105,7 @@ xmlSecEncCtxSetDefaults(xmlSecEncCtxPtr encCtx) {
 /**
  * @brief Initializes an enc:EncryptedData processing context.
  * @details Initializes &lt;enc:EncryptedData/&gt; element processing context.
- * The caller is responsible for cleaning up returned object by calling
+ * The caller is responsible for cleaning it up by calling
  * #xmlSecEncCtxFinalize function.
  *
  * @param encCtx the pointer to &lt;enc:EncryptedData/&gt; processing context.
@@ -229,7 +229,7 @@ xmlSecEncCtxReset(xmlSecEncCtxPtr encCtx) {
 
 /**
  * @brief Copies user preferences from src to dst context.
- * @details Copies user preference from @p src context to @p dst.
+ * @details Copies user preferences from @p src context to @p dst context.
  * @param dst the pointer to destination context.
  * @param src the pointer to source context.
  * @return 0 on success or a negative value if an error occurs.
@@ -616,7 +616,7 @@ xmlSecEncCtxDecryptToBuffer(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
         }
     }
 
-    /* success  */
+    /* success */
     res = encCtx->result = encCtx->transformCtx.result;
     xmlSecAssert2(encCtx->result != NULL, NULL);
 
@@ -722,7 +722,7 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 
     /* if there is something left, then it's an error */
     if(cur != NULL) {
-        xmlSecUnexpectedNodeError(cur,  NULL);
+        xmlSecUnexpectedNodeError(cur, NULL);
         return(-1);
     }
 
@@ -864,7 +864,7 @@ xmlSecEncCtxCipherDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 
     cur = xmlSecGetNextElementNode(node->children);
 
-    /* we either have CipherValue or CipherReference node  */
+    /* we either have CipherValue or CipherReference node */
     xmlSecAssert2(encCtx->cipherValueNode == NULL, -1);
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeCipherValue, xmlSecEncNs))) {
         /* don't need data from CipherData node when we are encrypting */
@@ -899,7 +899,7 @@ xmlSecEncCtxCipherDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     }
 
     if(cur != NULL) {
-        xmlSecUnexpectedNodeError(cur,  NULL);
+        xmlSecUnexpectedNodeError(cur, NULL);
         return(-1);
     }
     return(0);
@@ -940,7 +940,7 @@ xmlSecEncCtxCipherReferenceNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 
     /* if there is something left, then it's an error */
     if(cur != NULL) {
-        xmlSecUnexpectedNodeError(cur,  NULL);
+        xmlSecUnexpectedNodeError(cur, NULL);
         return(-1);
     }
     return(0);
@@ -986,7 +986,6 @@ xmlSecEncCtxDebugDump(xmlSecEncCtxPtr encCtx, FILE* output) {
 
     fprintf(output, "== Status: %s\n",
             (encCtx->resultReplaced) ? "replaced" : "not-replaced" );
-
 
     fprintf(output, "== flags: 0x%08x\n", encCtx->flags);
     fprintf(output, "== flags2: 0x%08x\n", encCtx->flags2);
@@ -1328,7 +1327,7 @@ xmlSecEncCtxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xm
 
     /* if there is something left, then it's an error */
     if(cur != NULL) {
-        xmlSecUnexpectedNodeError(cur,  NULL);
+        xmlSecUnexpectedNodeError(cur, NULL);
         goto done;
     }
 

@@ -75,7 +75,6 @@ XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT     xmlSecMSCngX509StoreVerify           (xm
                                                                               HCERTSTORE certs,
                                                                               xmlSecKeyInfoCtxPtr keyInfoCtx);
 
-
 /******************************************************************************
  *
  * DEPRECATED

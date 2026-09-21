@@ -22,8 +22,6 @@
 #include <xmlsec/private.h>
 #include <xmlsec/transforms.h>
 
-#include <openssl/x509.h>
-#include <openssl/evp.h>
 #include <openssl/rand.h>
 
 #include <xmlsec/openssl/app.h>
@@ -844,6 +842,7 @@ xmlSecOpenSSLCreateMemBio(void) {
 
 /**
  * @brief Creates a memory-buffer BIO over @p buf.
+ * @details Note that the BIO does not copy the data, so @p buf must remain valid for the lifetime of the BIO.
  * @param buf the data
  * @param bufSize the data size
  * @return a new BIO that the caller owns and must free with BIO_free().

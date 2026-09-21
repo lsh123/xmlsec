@@ -764,8 +764,8 @@ xmlSecMSCryptoX509StoreAdoptTrustedStore (xmlSecKeyDataStorePtr store, HCERTSTOR
 }
 
 /**
- * @brief Adds @p trustedStore to the untrusted certs list.
- * @details Adds @p trustedStore to the list of un-trusted certs stores.
+ * @brief Adds @p untrustedStore to the untrusted certs list.
+ * @details Adds @p untrustedStore to the list of untrusted certs stores.
  * @param store the pointer to X509 key data store klass.
  * @param untrustedStore the pointer to certs store.
  * @return 0 on success or a negative value if an error occurs.

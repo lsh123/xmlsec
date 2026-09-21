@@ -42,9 +42,9 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppShutdown            (void);
  *
   *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppDefaultKeysMngrInit (xmlSecKeysMngrPtr mngr);
-XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr,
+XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppDefaultKeysMngrAdoptKey (xmlSecKeysMngrPtr mngr,
                                                                          xmlSecKeyPtr key);
-XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppDefaultKeysMngrVerifyKey(xmlSecKeysMngrPtr mngr,
+XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppDefaultKeysMngrVerifyKey (xmlSecKeysMngrPtr mngr,
                                                                          xmlSecKeyPtr key,
                                                                          xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppDefaultKeysMngrLoad (xmlSecKeysMngrPtr mngr,
@@ -57,12 +57,12 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppKeysMngrCertLoad    (xmlSecK
                                                                          const char *filename,
                                                                          xmlSecKeyDataFormat format,
                                                                          xmlSecKeyDataType type);
-XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr,
+XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppKeysMngrCertLoadMemory (xmlSecKeysMngrPtr mngr,
                                                                          const xmlSecByte *data,
                                                                          xmlSecSize dataSize,
                                                                          xmlSecKeyDataFormat format,
                                                                          xmlSecKeyDataType type);
-XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppKeysMngrCertLoadSECItem(xmlSecKeysMngrPtr mngr,
+XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppKeysMngrCertLoadSECItem (xmlSecKeysMngrPtr mngr,
                                                                          SECItem* secItem,
                                                                          xmlSecKeyDataFormat format,
                                                                          xmlSecKeyDataType type);
@@ -70,16 +70,15 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppKeysMngrCertLoadSECItem(xmlS
 XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppKeysMngrCrlLoad     (xmlSecKeysMngrPtr mngr,
                                                                          const char *filename,
                                                                          xmlSecKeyDataFormat format);
-XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr,
+XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppKeysMngrCrlLoadMemory (xmlSecKeysMngrPtr mngr,
                                                                          const xmlSecByte *data,
                                                                          xmlSecSize dataSize,
                                                                          xmlSecKeyDataFormat format);
-XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppKeysMngrCrlLoadAndVerify(xmlSecKeysMngrPtr mngr,
+XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppKeysMngrCrlLoadAndVerify (xmlSecKeysMngrPtr mngr,
                                                                          const char *filename,
                                                                          xmlSecKeyDataFormat format,
                                                                          xmlSecKeyInfoCtxPtr keyInfoCtx);
 #endif /* XMLSEC_NO_X509 */
-
 
 /******************************************************************************
  *
@@ -127,10 +126,10 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppKeyCertLoadMemory   (xmlSecK
 XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppKeyCertLoadSECItem  (xmlSecKeyPtr key,
                                                                          SECItem* secItem,
                                                                          xmlSecKeyDataFormat format);
-XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr       xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem,
+XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr       xmlSecNssAppKeyFromCertLoadSECItem (SECItem* secItem,
                                                                          xmlSecKeyDataFormat format);
 #endif /* XMLSEC_NO_X509 */
-XMLSEC_CRYPTO_EXPORT void*              xmlSecNssAppGetDefaultPwdCallback(void);
+XMLSEC_CRYPTO_EXPORT void*              xmlSecNssAppGetDefaultPwdCallback (void);
 
 #ifdef __cplusplus
 }

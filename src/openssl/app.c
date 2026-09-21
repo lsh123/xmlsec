@@ -45,7 +45,7 @@
 
 #if !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC)
 #include <openssl/ui.h>
-#endif /* OPENSSL_IS_BORINGSSL */
+#endif /* !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC) */
 
 #ifndef XMLSEC_OPENSSL_NO_STORE
 #include <openssl/store.h>
@@ -145,11 +145,11 @@ xmlSecOpenSSLAppInit(const char* config) {
 
 #if !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC)
     opts |= OPENSSL_INIT_ASYNC;
-#endif /* !defined(OPENSSL_IS_BORINGSSL) */
+#endif /* !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC) */
 
 #if !defined(OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_AWSLC)
     opts |= OPENSSL_INIT_ENGINE_ALL_BUILTIN;
-#endif /* !defined(OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_API_300) */
+#endif /* !defined(OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_AWSLC) */
 
     ret = OPENSSL_init_crypto(opts, NULL);
     if(ret != 1) {
@@ -209,10 +209,10 @@ xmlSecOpenSSLAppCheckMemoryBioConsumed(BIO* bio, xmlSecKeyDataFormat format) {
     case xmlSecKeyDataFormatDer:
     case xmlSecKeyDataFormatPkcs8Der:
     case xmlSecKeyDataFormatPkcs12:
-    case  xmlSecKeyDataFormatCertDer:
+    case xmlSecKeyDataFormatCertDer:
         /* DER formats are binary and should consume all data */
         if(BIO_ctrl_pending(bio) > 0) {
-            xmlSecInvalidSizeDataError("Remaining in buffer bytes", BIO_ctrl_pending(bio), "0 bytes",  NULL);
+            xmlSecInvalidSizeDataError("Remaining in buffer bytes", BIO_ctrl_pending(bio), "0 bytes", NULL);
             return (0);
         }
         return (1);
@@ -243,7 +243,7 @@ xmlSecOpenSSLAppCheckFileBioConsumed(BIO* bio, xmlSecKeyDataFormat format) {
     case xmlSecKeyDataFormatDer:
     case xmlSecKeyDataFormatPkcs8Der:
     case xmlSecKeyDataFormatPkcs12:
-    case  xmlSecKeyDataFormatCertDer:
+    case xmlSecKeyDataFormatCertDer:
         /* DER formats are binary and should consume all data */
         current_pos = BIO_tell(bio);
         if(current_pos < 0) {
@@ -253,7 +253,7 @@ xmlSecOpenSSLAppCheckFileBioConsumed(BIO* bio, xmlSecKeyDataFormat format) {
         do {
             bytes_read = BIO_read(bio, buffer, sizeof(buffer));
             if (bytes_read == 1) {
-                xmlSecInvalidDataError("Remaining unprocessed data in file",  NULL);
+                xmlSecInvalidDataError("Remaining unprocessed data in file", NULL);
                 if(BIO_seek(bio, current_pos) < 0) {
                     xmlSecOpenSSLError("BIO_seek", NULL);
                     return(-1);
@@ -269,7 +269,7 @@ xmlSecOpenSSLAppCheckFileBioConsumed(BIO* bio, xmlSecKeyDataFormat format) {
             return(-1);
         }
         if(BIO_eof(bio) != 1) {
-            xmlSecInvalidDataError("Remaining unprocessed data in file",  NULL);
+            xmlSecInvalidDataError("Remaining unprocessed data in file", NULL);
             return(0);
         }
 
@@ -350,7 +350,7 @@ xmlSecOpenSSLAppKeyLoadEx(const char *filename, xmlSecKeyDataType type, xmlSecKe
             return(NULL);
         }
 
-        key = xmlSecOpenSSLAppKeyLoadBIO (bio, format, pwd, pwdCallback, pwdCallbackCtx);
+        key = xmlSecOpenSSLAppKeyLoadBIO(bio, format, pwd, pwdCallback, pwdCallbackCtx);
         if(key == NULL) {
             xmlSecInternalError2("xmlSecOpenSSLAppKeyLoadBIO", NULL, "filename=%s", xmlSecErrorsSafeString(filename));
             BIO_free_all(bio);
@@ -398,7 +398,7 @@ xmlSecOpenSSLAppKeyLoadMemory(
         return(NULL);
     }
 
-    key = xmlSecOpenSSLAppKeyLoadBIO (bio, format, pwd, pwdCallback, pwdCallbackCtx);
+    key = xmlSecOpenSSLAppKeyLoadBIO(bio, format, pwd, pwdCallback, pwdCallbackCtx);
     if(key == NULL) {
         xmlSecInternalError("xmlSecOpenSSLAppKeyLoadBIO", NULL);
         BIO_free_all(bio);
@@ -1060,7 +1060,7 @@ done:
         EVP_PKEY_free(pPubKey);
     }
     if(pKey != NULL) {
-         EVP_PKEY_free(pKey);
+        EVP_PKEY_free(pKey);
     }
     if(keyCert != NULL) {
         X509_free(keyCert);
@@ -1532,7 +1532,7 @@ done:
         xmlSecKeyDataDestroy(keyData);
     }
     if(cert != NULL) {
-         X509_free(cert);
+        X509_free(cert);
     }
     return(res);
 }
@@ -1683,7 +1683,7 @@ xmlSecOpenSSLAppKeysMngrCertLoadBIO(xmlSecKeysMngrPtr mngr, BIO* bio, xmlSecKeyD
  *
  * @param mngr the keys manager.
  * @param filename the CRL file.
- * @param format the CRL file format..
+ * @param format the CRL file format.
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -2037,9 +2037,6 @@ xmlSecOpenSSLAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key
  * function:
  * - Checks that key certificate is present
  * - Checks that key certificate is valid
- *
- * Adds @p key to the keys manager @p mngr created with #xmlSecOpenSSLAppDefaultKeysMngrInit
- * function.
  *
  * @param mngr the pointer to keys manager.
  * @param key the pointer to key.

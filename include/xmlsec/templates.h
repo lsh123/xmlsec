@@ -157,7 +157,7 @@ XMLSEC_EXPORT int       xmlSecTmplTransformAddXPath             (xmlNodePtr tran
                                                                  const xmlChar *expression,
                                                                  const xmlChar **nsList);
 XMLSEC_EXPORT int       xmlSecTmplTransformAddXPath2            (xmlNodePtr transformNode,
-                                                                  const xmlChar *type,
+                                                                 const xmlChar *type,
                                                                  const xmlChar *expression,
                                                                  const xmlChar **nsList);
 XMLSEC_EXPORT int       xmlSecTmplTransformAddXPointer          (xmlNodePtr transformNode,

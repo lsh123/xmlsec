@@ -46,12 +46,6 @@ XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLEvpKeyDup          (EVP_PKE
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr   xmlSecOpenSSLEvpKeyAdopt        (EVP_PKEY* pKey);
 
 
-/**
- * @brief The OpenSSL DEREncodedKeyValue data klass.
- */
-#define xmlSecOpenSSLKeyDataDEREncodedKeyValueId xmlSecOpenSSLKeyDataDEREncodedKeyValueGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId             xmlSecOpenSSLKeyDataDEREncodedKeyValueGetKlass(void);
-
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

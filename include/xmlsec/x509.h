@@ -18,8 +18,8 @@
 #include <xmlsec/buffer.h>
 
 /**
- * @brief The content of a child of X509Data node.
- * @details The content of a child of &lt;X509Data/&gt; node. Not all values will be set!
+ * @brief The content of a child of an &lt;X509Data&gt; node.
+ * @details Not all values will be set!
  * The structure (and its members) are allocated and freed by the caller;
  * a caller that builds a value for the public find APIs (e.g.
  * #xmlSecKeysMngrFindKeyFromX509Data, #xmlSecKeyStoreFindKeyFromX509Data)
@@ -27,18 +27,18 @@
  * xmlChar* strings) and must free them.
  */
 struct _xmlSecKeyX509DataValue {
-    xmlSecBuffer cert;  /**< the certificate from &lt;dsig:X509Certificate/&gt; node. */
-    xmlSecBuffer crl;  /**< the crl from &lt;dsig:X509CRL/&gt; node. */
+    xmlSecBuffer cert;  /**< the certificate from the &lt;dsig:X509Certificate/&gt; node. */
+    xmlSecBuffer crl;  /**< the crl from the &lt;dsig:X509CRL/&gt; node. */
 
-    xmlSecBuffer ski;  /**< the ski from &lt;dsig:X509SKI/&gt; node. */
+    xmlSecBuffer ski;  /**< the ski from the &lt;dsig:X509SKI/&gt; node. */
 
-    xmlChar* subject;  /**< the subject name from &lt;dsig:X509SubjectName/&gt; node. */
+    xmlChar* subject;  /**< the subject name from the &lt;dsig:X509SubjectName/&gt; node. */
 
-    xmlChar* issuerName;  /**< the issuer name from &lt;dsig:X509IssuerName/&gt; node. */
-    xmlChar* issuerSerial;  /**< the serial number from &lt;dsig:X509SerialNumber/&gt; node. */
+    xmlChar* issuerName;  /**< the issuer name from the &lt;dsig:X509IssuerName/&gt; node. */
+    xmlChar* issuerSerial;  /**< the serial number from the &lt;dsig:X509SerialNumber/&gt; node. */
 
-    xmlChar* digestAlgorithm;  /**< the digest algorithm URI from the Algorithm attribute of &lt;dsig11:X509Digest/&gt; node. */
-    xmlSecBuffer digest;  /**< the digest from &lt;dsig11:X509Digest/&gt; node. */
+    xmlChar* digestAlgorithm;  /**< the digest algorithm URI from the Algorithm attribute of the &lt;dsig11:X509Digest/&gt; node. */
+    xmlSecBuffer digest;  /**< the digest from the &lt;dsig11:X509Digest/&gt; node. */
 };
 
 /**
@@ -47,7 +47,7 @@ struct _xmlSecKeyX509DataValue {
 typedef struct _xmlSecKeyX509DataValue                  xmlSecKeyX509DataValue;
 
 /**
- * @brief Pointer to #_xmlSecKeyX509DataValue.
+ * @brief Pointer to #xmlSecKeyX509DataValue.
  */
 typedef struct _xmlSecKeyX509DataValue                  *xmlSecKeyX509DataValuePtr;
 

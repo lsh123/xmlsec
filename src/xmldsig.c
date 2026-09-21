@@ -137,7 +137,7 @@ xmlSecDSigCtxInitialize(xmlSecDSigCtxPtr dsigCtx, xmlSecKeysMngrPtr keysMngr) {
         return(-1);
     }
     dsigCtx->keyInfoWriteCtx.mode = xmlSecKeyInfoModeWrite;
-    /* it's not wise to write private key :) */
+    /* it's not wise to write a private key :) */
     dsigCtx->keyInfoWriteCtx.keyReq.keyType = xmlSecKeyDataTypePublic;
 
     /* initialize transforms dsigCtx */
@@ -243,7 +243,7 @@ xmlSecDSigCtxEnableSignatureTransform(xmlSecDSigCtxPtr dsigCtx, xmlSecTransformI
  * @brief Gets the pre-signature buffer for the SignedInfo element.
  * @details Gets pointer to the buffer with serialized &lt;dsig:SignedInfo/&gt; element
  * just before signature calculation (valid if and only if
- * #XMLSEC_DSIG_FLAGS_STORE_SIGNATURE context flag is set.
+ * #XMLSEC_DSIG_FLAGS_STORE_SIGNATURE context flag is set).
  *
  * @param dsigCtx the pointer to &lt;dsig:Signature/&gt; processing context.
  * @return the pointer to the pre-signature buffer or NULL if an error occurs.
@@ -659,7 +659,7 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node, xm
         /* the C14N node was consumed; move to the next element */
         cur = xmlSecGetNextElementNode(cur->next);
     } else if(dsigCtx->defC14NMethodId != xmlSecTransformIdUnknown) {
-        /* the dsig spec does require CanonicalizationMethod node
+        /* the dsig spec does require the CanonicalizationMethod node
          * to be present but in some cases the application might decide to
          * minimize traffic */
         dsigCtx->c14nMethod = xmlSecTransformCtxCreateAndAppend(&(dsigCtx->transformCtx),
@@ -701,7 +701,7 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node, xm
         }
         cur = xmlSecGetNextElementNode(cur->next);
     } else if(dsigCtx->defSignMethodId != xmlSecTransformIdUnknown) {
-        /* the dsig spec does require SignatureMethod node
+        /* the dsig spec does require the SignatureMethod node
          * to be present but in some cases the application might decide to
          * minimize traffic */
         dsigCtx->signMethod = xmlSecTransformCtxCreateAndAppend(&(dsigCtx->transformCtx), dsigCtx->defSignMethodId);
@@ -790,7 +790,7 @@ xmlSecDSigCtxProcessReferences(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr firstReferen
             return(-1);
         }
 
-        /* bail out if next Reference processing failed */
+        /* bail out if the current Reference processing failed */
         if(dsigRefCtx->status != xmlSecDSigStatusSucceeded) {
             xmlSecDSigCtxMarkAsFailed(dsigCtx, xmlSecDSigFailureReasonReference);
             return(0);
@@ -1407,7 +1407,7 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
 
         cur = xmlSecGetNextElementNode(cur->next);
     } else if(dsigRefCtx->dsigCtx->defDigestMethodId != xmlSecTransformIdUnknown) {
-        /* the dsig spec does require DigestMethod node
+        /* the dsig spec does require the DigestMethod node
          * to be present but in some cases the application might decide to
          * minimize traffic */
         dsigRefCtx->digestMethod = xmlSecTransformCtxCreateAndAppend(&(dsigRefCtx->transformCtx), dsigRefCtx->dsigCtx->defDigestMethodId);

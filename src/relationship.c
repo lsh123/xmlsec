@@ -15,13 +15,10 @@
 #include <string.h>
 
 #include <libxml/tree.h>
-#include <libxml/xpointer.h>
-#include <libxml/c14n.h>
 #include <libxml/list.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
-#include <xmlsec/keys.h>
 #include <xmlsec/list.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
@@ -148,7 +145,7 @@ static xmlSecTransformKlass xmlSecRelationshipKlass = {
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
     NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     NULL,                                       /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformRelationshipPopBin,          /* xmlSecTransformPopBinMethod popBin; */

@@ -1170,7 +1170,7 @@ int
 xmlSecGnuTLSX509StoreVerifyCrl(
     xmlSecKeyDataStorePtr store,
     gnutls_x509_crl_t crl,
-    const xmlSecKeyInfoCtx* keyInfoCtx
+    xmlSecKeyInfoCtx* keyInfoCtx
 ) {
     return(xmlSecGnuTLSX509StoreVerifyCrlInternal(store, crl, NULL, keyInfoCtx));
 }

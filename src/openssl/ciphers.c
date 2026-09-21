@@ -146,7 +146,7 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
                 return(0);
             }
 
-            /* copy iv to our buffer*/
+            /* copy iv to our buffer */
             xmlSecAssert2(xmlSecBufferGetData(in) != NULL, -1);
             memcpy(ctx->iv, xmlSecBufferGetData(in), ivSize);
 

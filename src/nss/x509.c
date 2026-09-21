@@ -140,7 +140,7 @@ static xmlSecKeyDataKlass xmlSecNssKeyDataX509Klass = {
     xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    xmlSecNssKeyDataX509Initialize,             /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecNssKeyDataX509Initialize,             /* xmlSecKeyDataInitMethod initialize; */
     xmlSecNssKeyDataX509Duplicate,              /* xmlSecKeyDataDuplicateMethod duplicate; */
     xmlSecNssKeyDataX509Finalize,               /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
@@ -1433,7 +1433,7 @@ static xmlSecKeyDataKlass xmlSecNssKeyDataRawX509CertKlass = {
     xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    NULL,                                       /* xmlSecKeyDataInitializeMethod initialize; */
+    NULL,                                       /* xmlSecKeyDataInitMethod initialize; */
     NULL,                                       /* xmlSecKeyDataDuplicateMethod duplicate; */
     NULL,                                       /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */

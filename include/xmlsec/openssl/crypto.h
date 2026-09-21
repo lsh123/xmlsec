@@ -27,13 +27,15 @@
 #include <xmlsec/dl.h>
 
 /* \cond Exclude from Doxygen */
+
+#include <openssl/opensslv.h>
+#include <openssl/bio.h>
+
 /******************************************************************************
  *
  * What version of the OpenSSL API do we have? (also see configure.ac)
  *
  *****************************************************************************/
-#include <openssl/opensslv.h>
-
 #if defined(LIBRESSL_VERSION_NUMBER)
 /* LibreSSL implements (most of) OpenSSL 1.1 API */
 #define XMLSEC_OPENSSL_API_111      1
@@ -207,9 +209,9 @@ XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateReadFileBio (const ch
 #define XMLSEC_NO_DSA       1
 #endif /* OPENSSL_NO_DSA */
 
-#ifdef OPENSSL_NO_ECDSA
+#ifdef OPENSSL_NO_EC
 #define XMLSEC_NO_EC     1
-#endif /* OPENSSL_NO_ECDSA */
+#endif /* OPENSSL_NO_EC */
 
 #ifdef OPENSSL_NO_GOST
 #define XMLSEC_NO_GOST      1
@@ -574,6 +576,19 @@ XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLKeyDataDhGetEvp   (xmlSecKe
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformDhEsGetKlass(void);
 
 #endif /* XMLSEC_NO_DH */
+
+/******************************************************************************
+ *
+ * DEREncodedKeyValue data klass.
+ *
+  *****************************************************************************/
+
+/**
+ * @brief The OpenSSL DEREncodedKeyValue data klass.
+ */
+#define xmlSecOpenSSLKeyDataDEREncodedKeyValueId \
+xmlSecOpenSSLKeyDataDEREncodedKeyValueGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecOpenSSLKeyDataDEREncodedKeyValueGetKlass(void);
 
 
 /******************************************************************************

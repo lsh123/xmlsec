@@ -493,7 +493,11 @@ xmlSecMSCngKeyDataXdhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLe
     }
 
     /* Destroy the temp key (had wrong public key) and re-import with correct public key */
-    BCryptDestroyKey(hPrivKeyTemp);
+    status = BCryptDestroyKey(hPrivKeyTemp);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptDestroyKey(X25519 PKCS8 temp)", NULL, status);
+        goto done;
+    }
     hPrivKeyTemp = NULL;
 
     /* Write the correct public key u-coordinate into the blob.
@@ -566,6 +570,8 @@ done:
         xmlFree(pbPrivBlob);
     }
     if(pki != NULL) {
+        /* LocalFree also frees pki->Algorithm.pszObjId: CryptDecodeObjectEx
+         * (CRYPT_DECODE_ALLOC_FLAG) allocates it inside the pki block */
         LocalFree(pki);
     }
     if(data != NULL) {

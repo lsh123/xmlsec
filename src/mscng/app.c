@@ -202,7 +202,7 @@ xmlSecMSCngAppGetLocalMachineCertStoreName(void) {
  * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
-xmlSecMSCngAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED, xmlSecKeyDataFormat format,
+xmlSecMSCngAppKeyLoadEx(const char *filename, xmlSecKeyDataType type, xmlSecKeyDataFormat format,
     const char *pwd, void* pwdCallback, void* pwdCallbackCtx
 ) {
     xmlSecBuffer buffer;
@@ -527,7 +527,7 @@ xmlSecMSCngAppPkcs12Load(const char *filename,
 
     data = xmlSecBufferGetData(&buffer);
     if(data == NULL) {
-        xmlSecInternalError("xmlSecBufferGetData", NULL);
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "empty file: %s", xmlSecErrorsSafeString(filename));
         xmlSecBufferFinalize(&buffer);
         return(NULL);
     }
@@ -689,7 +689,7 @@ xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, cons
 
     /* at this point we should have a private key */
     if(privKeyData == NULL) {
-        xmlSecInternalError("private key not found in PKCS12 file", NULL);
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "private key not found in PKCS12 file");
         goto cleanup;
     }
 
@@ -861,7 +861,6 @@ xmlSecMSCngAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* d
             return(-1);
     }
 
-    xmlSecAssert2(pCert != NULL, -1);
     ret = xmlSecMSCngX509StoreAdoptCert(x509Store, pCert, type);
     if(ret < 0) {
         xmlSecInternalError("xmlSecMSCngX509StoreAdoptCert", NULL);
@@ -1067,7 +1066,6 @@ xmlSecMSCngAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* da
         return(-1);
     }
 
-    xmlSecAssert2(pCrl != NULL, -1);
     ret = xmlSecMSCngX509StoreAdoptCrl(x509Store, pCrl);
     if(ret < 0) {
         xmlSecInternalError("xmlSecMSCngX509StoreAdoptCrl", NULL);

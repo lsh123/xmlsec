@@ -150,8 +150,6 @@ xmlSecMSCngGcmBlockCipherInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-    ctx->ctxInitialized = 0;
-
     return(0);
 }
 
@@ -543,6 +541,9 @@ xmlSecMSCngGcmBlockCipherCtxUpdate(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
         return(-1);
     }
 
+    /* the xmlSecBufferSetMaxSize call above guarantees the output buffer is allocated
+     * whenever inSize > 0; in the decryption path inSize is at least one block (early
+     * return above), so outBuf is a valid pointer for BCryptDecrypt */
     outBuf = xmlSecBufferGetData(out) + outSize;
     outLen = 0;
     if(encrypt) {
@@ -718,6 +719,8 @@ xmlSecMSCngGcmBlockCipherCtxFinal(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
         XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inBufSize, dwInSize, return(-1), cipherName);
         outBuf = xmlSecBufferGetData(out) + outBufSize;
         dwOutSize = dwInSize;
+        /* outBuf is valid when inBufSize > 0 (the SetMaxSize call above allocated the
+         * buffer); BCryptDecrypt requires a non-NULL pointer even for zero-length input */
         if((dwOutSize == 0) && (outBuf == NULL)) {
             outBuf = &dummy;
         }
@@ -837,9 +840,6 @@ xmlSecMSCngGcmBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecT
     } else if(transform->status == xmlSecTransformStatusFinished) {
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(in) == 0, -1);
-    } else if(transform->status == xmlSecTransformStatusNone) {
-        /* the only way we can get here is if there is not enough data in the input */
-        xmlSecAssert2(last == 0, -1);
     } else {
         xmlSecInvalidTransformStatusError(transform);
         return(-1);

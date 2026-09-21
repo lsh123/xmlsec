@@ -340,7 +340,7 @@ xmlSecMSCngKeyDataFromAlgorithm(LPSTR pszObjId) {
  * @param pCert the pointer to cert.
  * @param type the expected key type.
  *
- * The function takes ownership of the certificate context; the caller
+ * @details On success, the function takes ownership of the certificate context; the caller
  * must not free it afterwards.
  *
  * @return the newly created key data on success or NULL if an error occurs.
@@ -972,7 +972,8 @@ xmlSecMSCngKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     }
     blobData = xmlSecBufferGetData(&blob);
     xmlSecAssert2(blobData != NULL, NULL);
-    memset(blobData, 0, blobBufferSize); // ensure all padding with 0s work
+    /* zero out the buffer so that all padding bytes are 0 */
+    memset(blobData, 0, blobBufferSize);
 
     rsakey = (BCRYPT_RSAKEY_BLOB*)blobData;
     rsakey->Magic = BCRYPT_RSAPUBLIC_MAGIC;
@@ -990,8 +991,8 @@ xmlSecMSCngKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     memcpy(blobData + offset, xmlSecBufferGetData(&(rsaValue->modulus)), mSize);
     offset += mSize;
 
-    /* PrivateExponent is REQUIRED for private key but MSCng does not support it,
-     * so we just ignore it */
+    /* PrivateExponent is REQUIRED for the private key but MSCng does not
+     * support it, so we just ignore it */
 
     /* Now that we have the blob, import */
     status = BCryptOpenAlgorithmProvider(
@@ -1366,7 +1367,8 @@ xmlSecMSCngKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
             "size=" XMLSEC_SIZE_FMT, blobSize);
         goto done;
     }
-    memset(xmlSecBufferGetData(&blob), 0, blobSize); // ensure all padding with 0s work
+    /* zero out the buffer so that all padding bytes are 0 */
+    memset(xmlSecBufferGetData(&blob), 0, blobSize);
 
     blobData = xmlSecBufferGetData(&blob);
     eckey = (BCRYPT_ECCKEY_BLOB*)blobData;
@@ -1976,6 +1978,8 @@ xmlSecMSCngDhValidatePublicSubgroup(xmlSecBufferPtr p, xmlSecBufferPtr g,
         goto done;
     }
 
+    /* BCryptDeriveKey with BCRYPT_KDF_RAW_SECRET returns the DH shared secret in
+     * little-endian (LSB-first) order, so the value 1 is 0x01 followed by zero bytes */
     if(pbSecret[0] != 0x01) {
         xmlSecInvalidDataError("DH public key is not in the expected subgroup", NULL);
         goto done;

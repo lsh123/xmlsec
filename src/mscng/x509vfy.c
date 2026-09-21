@@ -875,11 +875,74 @@ done:
     return(res);
 }
 
+/* Trust status bits caused only by certificate/CRL time validity checks. */
+#define XMLSEC_MSCNG_X509_CHAIN_TIME_ERROR_FLAGS \
+    (CERT_TRUST_IS_NOT_TIME_VALID | CERT_TRUST_IS_NOT_TIME_NESTED | CERT_TRUST_CTL_IS_NOT_TIME_VALID)
+
+/**
+ * @brief Verifies @p cert's chain using CertGetCertificateChain() at the given time.
+ * @param cert the certificate to verify
+ * @param time the time to verify at; if NULL then CertGetCertificateChain()
+ * uses the current system time
+ * @param chainStore the store with the additional (untrusted and document) certificates
+ * @param ignoredErrorStatus trust-status bits to ignore when evaluating the
+ * resulting chain status
+ * @return 1 on success (chain verified), 0 if the chain can't be verified, or a negative value if an error occurs.
+ */
+static int
+xmlSecMSCngX509StoreVerifyCertChainAtTime(PCCERT_CONTEXT cert, FILETIME* time, HCERTSTORE chainStore, DWORD ignoredErrorStatus) {
+    PCCERT_CHAIN_CONTEXT pChainContext = NULL;
+    CERT_CHAIN_PARA chainPara;
+    DWORD errorStatus;
+    int res = -1;
+    int ret;
+
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(chainStore != NULL, -1);
+
+    /* initialize data structures */
+    memset(&chainPara, 0, sizeof(CERT_CHAIN_PARA));
+    chainPara.cbSize = sizeof(CERT_CHAIN_PARA);
+
+    /* build a chain using CertGetCertificateChain and the certificate retrieved */
+    ret = CertGetCertificateChain(NULL, cert, time, chainStore, &chainPara,
+        CERT_CHAIN_REVOCATION_CHECK_CHAIN, NULL, &pChainContext);
+    if(ret == FALSE) {
+        xmlSecMSCngLastError("CertGetCertificateChain", NULL);
+        return(-1);
+    }
+
+    if (pChainContext->TrustStatus.dwErrorStatus == CERT_TRUST_REVOCATION_STATUS_UNKNOWN) {
+        CertFreeCertificateChain(pChainContext);
+        pChainContext = NULL;
+        ret = CertGetCertificateChain(NULL, cert, time, chainStore, &chainPara,
+            CERT_CHAIN_REVOCATION_CHECK_CHAIN_EXCLUDE_ROOT, NULL,
+            &pChainContext);
+        if(ret == FALSE) {
+            xmlSecMSCngLastError("CertGetCertificateChain", NULL);
+            return(-1);
+        }
+    }
+
+    errorStatus = pChainContext->TrustStatus.dwErrorStatus & (~ignoredErrorStatus);
+    if(errorStatus == CERT_TRUST_NO_ERROR) {
+        /* success: verified */
+        res = 1;
+    } else {
+        /* not verified */
+        res = 0;
+    }
+
+    CertFreeCertificateChain(pChainContext);
+    return(res);
+}
+
 /**
  * @brief Verifies @p cert against system trusted certs.
  * @details Verifies @p cert based on system trusted certificates.
  * @param cert the certificate we check
- * @param time pointer to FILETIME that we are interested in (can be NULL, don't check certificate notBefore/notAfter)
+ * @param time pointer to FILETIME that we are interested in; if NULL then the
+ * caller requested to skip certificate/CRL time checks
  * @param untrustedStore untrusted certificates added via API
  * @param docStore untrusted certificates/CRLs extracted from a document
  * @param crlStore CRLs store (can be NULL)
@@ -889,17 +952,12 @@ static int
 xmlSecMSCngX509StoreVerifyCertificateSystem(PCCERT_CONTEXT cert, FILETIME* time,
     HCERTSTORE untrustedStore, HCERTSTORE docStore, HCERTSTORE crlStore
 ) {
-    PCCERT_CHAIN_CONTEXT pChainContext = NULL;
-    CERT_CHAIN_PARA chainPara;
     HCERTSTORE chainStore = NULL;
+    DWORD ignoredErrorStatus = 0;
     int res = -1;
     int ret;
 
     xmlSecAssert2(cert != NULL, -1);
-
-    /* initialize data structures */
-    memset(&chainPara, 0, sizeof(CERT_CHAIN_PARA));
-    chainPara.cbSize = sizeof(CERT_CHAIN_PARA);
 
     /* create additional store for CertGetCertificateChain() */
     chainStore = CertOpenStore(CERT_STORE_PROV_COLLECTION, 0, 0, 0, NULL);
@@ -934,39 +992,23 @@ xmlSecMSCngX509StoreVerifyCertificateSystem(PCCERT_CONTEXT cert, FILETIME* time,
         }
     }
 
-    /* build a chain using CertGetCertificateChain
-     and the certificate retrieved */
-    ret = CertGetCertificateChain(NULL, cert, time, chainStore, &chainPara,
-        CERT_CHAIN_REVOCATION_CHECK_CHAIN, NULL, &pChainContext);
-    if(ret == FALSE) {
-        xmlSecMSCngLastError("CertGetCertificateChain", NULL);
+    if(time == NULL) {
+        /* The caller explicitly requested to skip certificate/CRL time checks.
+         * CertGetCertificateChain() will still evaluate the chain at the current
+         * system time, so ignore only the time-related trust status bits. */
+        ignoredErrorStatus = XMLSEC_MSCNG_X509_CHAIN_TIME_ERROR_FLAGS;
+    }
+
+    /* verify the chain at the requested time
+     * (CertGetCertificateChain() uses the current system time when time is NULL) */
+    ret = xmlSecMSCngX509StoreVerifyCertChainAtTime(cert, time, chainStore, ignoredErrorStatus);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertChainAtTime", NULL);
         goto done;
     }
-
-    if (pChainContext->TrustStatus.dwErrorStatus == CERT_TRUST_REVOCATION_STATUS_UNKNOWN) {
-        CertFreeCertificateChain(pChainContext);
-        pChainContext = NULL;
-        ret = CertGetCertificateChain(NULL, cert, time, chainStore, &chainPara,
-            CERT_CHAIN_REVOCATION_CHECK_CHAIN_EXCLUDE_ROOT, NULL,
-            &pChainContext);
-        if(ret == FALSE) {
-            xmlSecMSCngLastError("CertGetCertificateChain", NULL);
-            goto done;
-        }
-    }
-
-    if(pChainContext->TrustStatus.dwErrorStatus == CERT_TRUST_NO_ERROR) {
-        /* success: verified */
-        res = 1;
-    } else {
-        /* not verified */
-        res = 0;
-    }
+    res = ret;
 
 done:
-    if(pChainContext != NULL) {
-        CertFreeCertificateChain(pChainContext);
-    }
     if(chainStore != NULL) {
         ret = CertCloseStore(chainStore, XMLSEC_CLOSE_STORE_FLAG);
         if(ret == FALSE) {
@@ -1033,7 +1075,7 @@ xmlSecMSCngX509StoreVerifyCertificate(xmlSecMSCngX509StoreCtxPtr ctx, PCCERT_CON
     }
 
     /* verify based on the own trusted certificates */
-    ret = xmlSecMSCngX509StoreVerifyCertificateChain(cert,  time,ctx->trusted, ctx->untrusted, certStore, ctx->crlMemStore);
+    ret = xmlSecMSCngX509StoreVerifyCertificateChain(cert, time, ctx->trusted, ctx->untrusted, certStore, ctx->crlMemStore);
     if(ret < 0) {
         xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateChain", NULL);
         return(-1);
@@ -1042,7 +1084,7 @@ xmlSecMSCngX509StoreVerifyCertificate(xmlSecMSCngX509StoreCtxPtr ctx, PCCERT_CON
         return(1);
     }
 
-    /* verify based on the system certificates */
+    /* verify based on the system certificates (if time == NULL: skip time checks) */
     ret = xmlSecMSCngX509StoreVerifyCertificateSystem(cert, time, ctx->untrusted, certStore, ctx->crlMemStore);
     if (ret < 0) {
         xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateSystem", NULL);

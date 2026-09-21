@@ -720,7 +720,7 @@ xmlSecMSCngASN1IntegerWrite(PCRYPT_INTEGER_BLOB num) {
 static int
 xmlSecMSCngX509SKIWrite(PCCERT_CONTEXT cert, xmlSecBufferPtr buf) {
     PCERT_EXTENSION pCertExt;
-    DWORD dwSize;
+    DWORD dwSize = 0;
     BOOL rv;
     int ret;
 

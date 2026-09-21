@@ -415,6 +415,9 @@ xmlSecMSCngKeyDataDhPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDhPtr dh
     int ret;
     int res = -1;
 
+    xmlSecAssert2(pubkey != NULL, -1);
+    xmlSecAssert2(dhValue != NULL, -1);
+
     /* export public key as DH public blob */
     status = BCryptExportKey(pubkey, NULL, BCRYPT_DH_PUBLIC_BLOB, NULL, 0, &bufLen, 0);
     if ((status != STATUS_SUCCESS) || (bufLen <= 0)) {

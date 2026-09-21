@@ -40,6 +40,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/io.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/private.h>
 #include <xmlsec/xmltree.h>
 
 #include "cast_helpers.h"
@@ -427,6 +428,8 @@ xmlSecIORegisterDefaultCallbacks(void) {
         return(-1);
     }
 #endif /* XMLSEC_NO_FTP */
+
+    XMLSEC_UNREFERENCED(ret);
 
     /* done */
     return(0);

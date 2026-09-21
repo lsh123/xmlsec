@@ -250,20 +250,24 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
             return(-1);
         }
     } else {
+        /* ensure we add at least one block size worth of space */
+        xmlSecSize extraSize = (inSize > blockSize) ? inSize : blockSize;
+
         /* prepare: ensure we have enough space */
-        ret = xmlSecBufferSetMaxSize(out, outSize + inSize);
+        ret = xmlSecBufferSetMaxSize(out, outSize + extraSize);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetMaxSize",
                 xmlSecErrorsSafeString(cipherName),
-                "size=" XMLSEC_SIZE_FMT, (outSize + inSize));
+                "size=" XMLSEC_SIZE_FMT, (outSize + extraSize));
             return(-1);
         }
     }
 
     outBuf  = xmlSecBufferGetData(out) + outSize;
+    xmlSecAssert2(outBuf != NULL, -1);
 
     /* encrypt/decrypt */
-    if(in != NULL) {
+    if((in != NULL) && (inSize > 0)) {
         int inLen;
 
         XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, return(-1), cipherName);

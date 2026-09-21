@@ -1117,6 +1117,15 @@ execEncTest $res_success \
 
 execEncTest $res_success \
     "" \
+    "aleksey-xmlenc-01/enc-aes128gcm-empty-data" \
+    "aes128-gcm" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml" \
+    "--keys-file $topfolder/keys/keys.xml --binary-data $topfolder/aleksey-xmlenc-01/enc-aes128gcm-empty-data.data" \
+    "--keys-file $topfolder/keys/keys.xml"
+
+execEncTest $res_success \
+    "" \
     "aleksey-xmlenc-01/enc-camellia128cbc-keyname" \
     "camellia128-cbc" \
     "" \

@@ -12,8 +12,6 @@
 #include "globals.h"
 
 #include <stdint.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 
 #include <pk11pub.h>
@@ -442,6 +440,12 @@ xmlSecNssConcatKdfGenerateKey(xmlSecNssKdfCtxPtr ctx, xmlSecSize outLen, xmlSecB
     pos = 0;
     counterVal = 1;
     while(pos < outLen) {
+        /* detect counter wrap: counters start at 1 and must not wrap (NIST SP 800-56A) */
+        if(counterVal == 0) {
+            xmlSecInternalError("ConcatKDF counter overflow", NULL);
+            return(-1);
+        }
+
         counter[0] = (xmlSecByte)((counterVal >> 24) & 0xFF);
         counter[1] = (xmlSecByte)((counterVal >> 16) & 0xFF);
         counter[2] = (xmlSecByte)((counterVal >> 8) & 0xFF);
@@ -519,16 +523,6 @@ xmlSecNssConcatKdfGenerateKey(xmlSecNssKdfCtxPtr ctx, xmlSecSize outLen, xmlSecB
 #ifndef XMLSEC_NO_PBKDF2
 static SECOidTag
 xmlSecNssPbkdf2GetMacFromHref(const xmlChar* href) {
-    if(href == NULL) {
-#ifndef XMLSEC_NO_SHA256
-        return(SEC_OID_HMAC_SHA256);
-#else  /* XMLSEC_NO_SHA256 */
-        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
-            "SHA256 is disabled; href=%s", xmlSecErrorsSafeString(href));
-        return(SEC_OID_UNKNOWN);
-#endif /* XMLSEC_NO_SHA256 */
-    } else
-
 #ifndef XMLSEC_NO_SHA1
     if(xmlStrcmp(href, xmlSecHrefHmacSha1) == 0) {
         return(SEC_OID_HMAC_SHA1);

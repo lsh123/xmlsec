@@ -636,6 +636,10 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     xmlSecAssert2((encCtx->operation == xmlSecTransformOperationEncrypt) || (encCtx->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(node != NULL, -1);
 
+    /* track the EncryptedData/EncryptedKey node being processed */
+    xmlSecAssert2(encCtx->encDataNode == NULL, -1);
+    encCtx->encDataNode = node;
+
     switch(encCtx->mode) {
         case xmlSecEncCtxModeEncryptedData:
             if(!xmlSecCheckNodeName(node, xmlSecNodeEncryptedData, xmlSecEncNs)) {

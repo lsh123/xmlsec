@@ -748,8 +748,8 @@ xmlSecReplaceNode(xmlNodePtr node, xmlNodePtr newNode) {
 int
 xmlSecReplaceNodeAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr* replaced) {
     xmlNodePtr oldNode;
-    int restoreRoot = 0;
     xmlNodePtr origNodeDocChildren = NULL;
+    xmlNodePtr origNewNodeDocChildren = NULL;
 
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(newNode != NULL, -1);
@@ -758,23 +758,26 @@ xmlSecReplaceNodeAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr* repl
     if((node->doc != NULL) && (node->doc->children == node)) {
         origNodeDocChildren = node->doc->children;
         node->doc->children = node->next;
-        restoreRoot = 1;
     }
     if((newNode->doc != NULL) && (newNode->doc->children == newNode)) {
+        origNewNodeDocChildren = newNode->doc->children;
         newNode->doc->children = newNode->next;
     }
 
     oldNode = xmlReplaceNode(node, newNode);
     if(oldNode == NULL) {
         /* restore the document children we mutated above so the tree is not left corrupted */
-        if(restoreRoot != 0) {
+        if(origNodeDocChildren != NULL) {
             node->doc->children = origNodeDocChildren;
+        }
+        if(origNewNodeDocChildren != NULL) {
+            newNode->doc->children = origNewNodeDocChildren;
         }
         xmlSecXmlError("xmlReplaceNode", NULL);
         return(-1);
     }
 
-    if(restoreRoot != 0) {
+    if(origNodeDocChildren != NULL) {
         /* xmlDocSetRootElement returns the current root (if any)*/
         xmlNodePtr oldRoot = xmlDocSetRootElement(oldNode->doc, newNode);
         if (oldRoot != NULL) {

@@ -379,7 +379,7 @@ xmlSecNssDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
 
             XMLSEC_SAFE_CAST_SIZE_TO_UINT(inSize, inLen, return(-1), xmlSecTransformGetName(transform));
             rv = PK11_DigestOp(ctx->digestCtx, xmlSecBufferGetData(in), inLen);
-            if (rv != SECSuccess) {
+            if(rv != SECSuccess) {
                 xmlSecNssError("PK11_DigestOp", xmlSecTransformGetName(transform));
                 return(-1);
             }
@@ -401,7 +401,7 @@ xmlSecNssDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
                 return(-1);
             }
             xmlSecAssert2(dgstSize > 0, -1);
-            ctx->dgstSize =dgstSize;
+            ctx->dgstSize = dgstSize;
 
             if(transform->operation == xmlSecTransformOperationSign) {
                 ret = xmlSecBufferAppend(out, ctx->dgst, ctx->dgstSize);
@@ -477,7 +477,6 @@ xmlSecNssTransformSha256GetKlass(void) {
     return(&xmlSecNssSha256Klass);
 }
 #endif /* XMLSEC_NO_SHA256 */
-
 
 #ifndef XMLSEC_NO_SHA384
 /******************************************************************************

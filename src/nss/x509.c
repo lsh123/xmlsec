@@ -1179,8 +1179,12 @@ xmlSecNssX509CertReadCallback(void *arg, SECItem **certs, int numcerts) {
     xmlSecAssert2(result->arena != NULL, SECFailure);
     xmlSecAssert2(numcerts > 0, SECFailure);
     xmlSecAssert2(certs != NULL, SECFailure);
-    xmlSecAssert2((*certs) != NULL, SECFailure);
+    xmlSecAssert2(certs[0] != NULL, SECFailure);
 
+    if(result->cert.data != NULL) {
+        /* we are going to get the first cert and ignore the rest. */
+        return(SECSuccess);
+    }
     return SECITEM_CopyItem(result->arena, &(result->cert), *certs);
 }
 
@@ -1203,6 +1207,8 @@ xmlSecNssX509CertPemRead(CERTCertDBHandle *handle, xmlSecByte* buf, xmlSecSize s
         xmlSecNssError("PORT_NewArena", NULL);
         return(NULL);
     }
+    memset(&(result.cert), 0, sizeof(result.cert));
+    result.cert.type = siBuffer;
 
     rv = CERT_DecodeCertPackage((char*)buf, len, xmlSecNssX509CertReadCallback, (void *)(&result));
     if(rv != SECSuccess) {

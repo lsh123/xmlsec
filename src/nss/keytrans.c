@@ -175,6 +175,7 @@ xmlSecNssKeyTransportFinalize(xmlSecTransformPtr transform) {
     }
 
     if(context->material != NULL) {
+        xmlSecMemCleanse(xmlSecBufferGetData(context->material), xmlSecBufferGetSize(context->material));
         xmlSecBufferDestroy(context->material);
         context->material = NULL;
     }
@@ -267,6 +268,7 @@ xmlSecNssKeyTransportCtxInit(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr in
     xmlSecAssert2(transformCtx != NULL, -1);
 
     if(ctx->material != NULL) {
+        xmlSecMemCleanse(xmlSecBufferGetData(ctx->material), xmlSecBufferGetSize(ctx->material));
         xmlSecBufferDestroy(ctx->material);
         ctx->material = NULL;
     }
@@ -288,7 +290,7 @@ xmlSecNssKeyTransportCtxInit(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr in
         XMLSEC_SAFE_CAST_INT_TO_SIZE(blockLen, blockSize, return(-1), NULL);
     } else {
         xmlSecOtherError(XMLSEC_ERRORS_R_KEY_NOT_FOUND, NULL,
-            "neither public or private keys are set");
+            "neither public nor private keys are set");
         return(-1);
     }
 
@@ -363,10 +365,15 @@ xmlSecNssKeyTransportSetOaepParams(xmlSecNssKeyTransportCtxPtr ctx, CK_RSA_PKCS_
 #endif /* XMLSEC_NO_RSA_OAEP */
 
 static PK11SymKey*
-xmlSecNssKeyTransportLoadSymKeyUsingPublicKeySlot(xmlSecNssKeyTransportCtxPtr ctx, SECItem* oriskv) {
+xmlSecNssKeyTransportLoadSymKeyUsingPublicKeySlot(
+    xmlSecNssKeyTransportCtxPtr ctx,
+    SECItem* oriskv,
+    PK11SlotInfo** outSlot,
+    CK_OBJECT_HANDLE* outImportedPubKey
+) {
     PK11SlotInfo* slot = NULL;
     PK11SymKey* symKey = NULL;
-    CK_OBJECT_HANDLE id;
+    CK_OBJECT_HANDLE id = CK_INVALID_HANDLE;
 
     xmlSecAssert2(ctx != NULL, NULL);
     xmlSecAssert2(ctx->pubkey != NULL, NULL);
@@ -382,8 +389,7 @@ xmlSecNssKeyTransportLoadSymKeyUsingPublicKeySlot(xmlSecNssKeyTransportCtxPtr ct
         id = PK11_ImportPublicKey(slot, ctx->pubkey, PR_FALSE);
         if(id == CK_INVALID_HANDLE) {
             xmlSecNssError("PK11_ImportPublicKey", NULL);
-            PK11_FreeSlot(slot);
-            return(NULL);
+            goto done;
         }
     }
 
@@ -397,11 +403,29 @@ xmlSecNssKeyTransportLoadSymKeyUsingPublicKeySlot(xmlSecNssKeyTransportCtxPtr ct
         NULL);
     if(symKey == NULL) {
         xmlSecNssError("PK11_ImportSymKey", NULL);
-        PK11_FreeSlot(slot);
-        return(NULL);
+        goto done;
     }
 
-    PK11_FreeSlot(slot);
+    /* success: the imported public key must remain valid while the caller wraps
+     * the symmetric key, so the caller takes ownership of both the slot and the
+     * imported public key object */
+    (*outSlot) = slot;
+    (*outImportedPubKey) = id;
+    slot = NULL;
+    id = CK_INVALID_HANDLE;
+
+done:
+    if(id != CK_INVALID_HANDLE) {
+        SECStatus rv;
+
+        rv = PK11_DestroyObject(slot, id);
+        if(rv != SECSuccess) {
+            xmlSecNssError("PK11_DestroyObject", NULL);
+        }
+    }
+    if(slot != NULL) {
+        PK11_FreeSlot(slot);
+    }
     return(symKey);
 }
 
@@ -409,6 +433,8 @@ static int
 xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out,
                               int encrypt, xmlSecTransformCtxPtr transformCtx) {
     PK11SymKey* symKey = NULL;
+    PK11SlotInfo* slot = NULL;
+    CK_OBJECT_HANDLE importedPubKey = CK_INVALID_HANDLE;
     SECItem oriskv = { siBuffer, NULL, 0 };
     xmlSecSize blockSize, materialSize, resultSize;
     unsigned int resultLen;
@@ -458,7 +484,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
         XMLSEC_SAFE_CAST_INT_TO_SIZE(blockLen, blockSize, return(-1), NULL);
     } else {
         xmlSecOtherError(XMLSEC_ERRORS_R_KEY_NOT_FOUND, NULL,
-                         "neither public or private keys are set");
+                         "neither public nor private keys are set");
         return(-1);
     }
 
@@ -478,7 +504,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
         SECItem wrpskv = { siBuffer, NULL, 0 };
 
         /* Create template symmetric key from material if needed */
-        symKey = xmlSecNssKeyTransportLoadSymKeyUsingPublicKeySlot(ctx, &oriskv);
+        symKey = xmlSecNssKeyTransportLoadSymKeyUsingPublicKeySlot(ctx, &oriskv, &slot, &importedPubKey);
         if (symKey == NULL) {
             xmlSecInternalError("xmlSecNssKeyTransportLoadSymKeyUsingPublicKeySlot", NULL);
             goto done;
@@ -590,7 +616,17 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
     res = 0;
 
 done:
-    /* cleanup*/
+    /* cleanup */
+    if(importedPubKey != CK_INVALID_HANDLE) {
+        rv = PK11_DestroyObject(slot, importedPubKey);
+        if(rv != SECSuccess) {
+            xmlSecNssError("PK11_DestroyObject", NULL);
+        }
+    }
+    if(slot != NULL) {
+        PK11_FreeSlot(slot);
+    }
+    xmlSecMemCleanse(xmlSecBufferGetData(result), xmlSecBufferGetSize(result));
     xmlSecBufferDestroy(result);
     if(symKey != NULL) {
         PK11_FreeSymKey(symKey);

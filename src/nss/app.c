@@ -23,9 +23,6 @@
 #include <pk11pub.h>
 #include <pkcs12.h>
 #include <p12plcy.h>
-/*
-#include <ssl.h>
-*/
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -99,28 +96,10 @@ xmlSecNssAppInit(const char* config) {
                          "fipsSlotDescription", "fipsPrivateSlotDescription",
                          0, 0);
 
-    /* setup for PKCS12, report errors but do not fail since older algos might have been disabled */
+    /* setup for PKCS12, only 3DES is explicitly enabled for compatibility with older
+     * PKCS#12 files; report errors but do not fail since the cipher might have been
+     * disabled by NSS policy */
     PORT_SetUCS2_ASCIIConversionFunction(xmlSecNssAppAscii2UCS2Conv);
-    rv = SEC_PKCS12EnableCipher(PKCS12_RC4_40, 1);
-    if(rv != SECSuccess) {
-        xmlSecNssError("SEC_PKCS12EnableCipher(PKCS12_RC4_40)", NULL);
-    }
-    rv = SEC_PKCS12EnableCipher(PKCS12_RC4_128, 1);
-    if(rv != SECSuccess) {
-        xmlSecNssError("SEC_PKCS12EnableCipher(PKCS12_RC4_128)", NULL);
-    }
-    rv = SEC_PKCS12EnableCipher(PKCS12_RC2_CBC_40, 1);
-    if(rv != SECSuccess) {
-        xmlSecNssError("SEC_PKCS12EnableCipher(PKCS12_RC2_CBC_40)", NULL);
-    }
-    rv = SEC_PKCS12EnableCipher(PKCS12_RC2_CBC_128, 1);
-    if(rv != SECSuccess) {
-        xmlSecNssError("SEC_PKCS12EnableCipher(PKCS12_RC2_CBC_128)", NULL);
-    }
-    rv = SEC_PKCS12EnableCipher(PKCS12_DES_56, 1);
-    if(rv != SECSuccess) {
-        xmlSecNssError("SEC_PKCS12EnableCipher(PKCS12_DES_56)", NULL);
-    }
     rv = SEC_PKCS12EnableCipher(PKCS12_DES_EDE3_168, 1);
     if(rv != SECSuccess) {
         xmlSecNssError("SEC_PKCS12EnableCipher(PKCS12_DES_EDE3_168)", NULL);
@@ -157,9 +136,6 @@ xmlSecNssAppInit(const char* config) {
 int
 xmlSecNssAppShutdown(void) {
     SECStatus rv;
-/*
-    SSL_ClearSessionCache();
-*/
     PK11_LogoutAll();
     rv = NSS_Shutdown();
     if(rv != SECSuccess) {
@@ -225,8 +201,10 @@ xmlSecNssAppReadSECItem(SECItem *contents, const char *fn) {
         goto done;
     }
 
-    numBytes = PR_Read(file, contents->data, info.size);
-    if (numBytes != info.size) {
+    numBytes = PR_Read(file, contents->data, (PRInt32)ulen);
+    if (numBytes != (PRInt32)ulen) {
+        xmlSecNssError2("PR_Read", NULL,
+                        "filename=%s", xmlSecErrorsSafeString(fn));
         SECITEM_FreeItem(contents, PR_FALSE);
         goto done;
     }
@@ -557,7 +535,7 @@ xmlSecNssAppCheckCertMatchesKey(xmlSecKeyPtr key,  CERTCertificate * cert) {
         goto done;
     }
 
-    /* get certs's pubkey and its der encoding */
+    /* get cert's pubkey and its der encoding */
     cert_pubkey = CERT_ExtractPublicKey(cert);
     if (cert_pubkey == NULL) {
         xmlSecNssError("CERT_ExtractPublicKey", NULL);
@@ -651,7 +629,7 @@ xmlSecNssAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSecSi
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    /* read the file contents */
+    /* build the SECItem from the in-memory data */
     memset(&secItem, 0, sizeof(secItem));
     ret = xmlSecNssAppCreateSECItem(&secItem, data, dataSize);
     if(ret < 0) {
@@ -1400,7 +1378,7 @@ xmlSecNssAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlSec
         SEC_DestroyCrl(crl);
         return(-1);
     }
-    crl = NULL; /* owned by x509data now */
+    crl = NULL; /* owned by x509Store now */
 
     /* done */
     return(0);
@@ -1446,7 +1424,8 @@ xmlSecNssAppKeysMngrCrlLoadAndVerify(xmlSecKeysMngrPtr mngr, const char *filenam
         goto done;
     }
 
-    /* Read CRL from memory - do NOT skip verification checks */
+    /* Read CRL from memory. Strict import-time checks are skipped on purpose because
+     * the CRL is verified explicitly below via xmlSecNssX509StoreVerifyCrl. */
     switch(format) {
     case xmlSecKeyDataFormatDer:
         crl = xmlSecNssX509CrlDerRead(secItem.data, secItem.len, XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS);
@@ -1555,7 +1534,7 @@ xmlSecNssAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data
         SEC_DestroyCrl(crl);
         return(-1);
     }
-    crl = NULL; /* owned by x509data now */
+    crl = NULL; /* owned by x509Store now */
 
     /* done */
     return(0);
@@ -1640,12 +1619,12 @@ xmlSecNssAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
 
 /**
  * @brief Verifies @p key using the keys manager.
- * @details Verifies @p key with the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * @details Verifies @p key with the keys manager @p mngr created with #xmlSecNssAppDefaultKeysMngrInit
  * function:
  * - Checks that key certificate is present
  * - Checks that key certificate is valid
  *
- * Adds @p key to the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * Adds @p key to the keys manager @p mngr created with #xmlSecNssAppDefaultKeysMngrInit
  * function.
  *
  * @param mngr the pointer to keys manager.

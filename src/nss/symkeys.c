@@ -58,12 +58,12 @@ static int      xmlSecNssSymKeyDataGenerate             (xmlSecKeyDataPtr data,
                                                          xmlSecKeyDataType type);
 
 static xmlSecKeyDataType xmlSecNssSymKeyDataGetType     (xmlSecKeyDataPtr data);
-static xmlSecSize       xmlSecNssSymKeyDataGetSize              (xmlSecKeyDataPtr data);
-static void     xmlSecNssSymKeyDataDebugDump    (xmlSecKeyDataPtr data,
+static xmlSecSize       xmlSecNssSymKeyDataGetSize      (xmlSecKeyDataPtr data);
+static void     xmlSecNssSymKeyDataDebugDump            (xmlSecKeyDataPtr data,
                                                          FILE* output);
-static void     xmlSecNssSymKeyDataDebugXmlDump (xmlSecKeyDataPtr data,
+static void     xmlSecNssSymKeyDataDebugXmlDump         (xmlSecKeyDataPtr data,
                                                          FILE* output);
-static int      xmlSecNssSymKeyDataKlassCheck   (xmlSecKeyDataKlass* klass);
+static int      xmlSecNssSymKeyDataKlassCheck           (xmlSecKeyDataKlass* klass);
 
 #define xmlSecNssSymKeyDataCheckId(data) \
     (xmlSecKeyDataIsValid((data)) && \

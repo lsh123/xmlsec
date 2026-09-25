@@ -204,9 +204,9 @@ done:
 static int
 xmlSecNssKeyDataDEREncodedKeyValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyDataPtr keyData;
-    SECKEYPublicKey* pubkey = NULL;
-    SECItem* secItem = NULL;
-    xmlChar* content = NULL;
+    SECKEYPublicKey *pubkey = NULL;
+    SECItem *secItem = NULL;
+    xmlChar *content = NULL;
     int res = -1;
 
     xmlSecAssert2(id == xmlSecNssKeyDataDEREncodedKeyValueId, -1);

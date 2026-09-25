@@ -43,7 +43,7 @@
 
 /******************************************************************************
  *
- * Internal Nss AEAD cipher CTX (GCM, ChaCha20-Poly1305)
+ * Internal NSS AEAD cipher CTX (GCM, ChaCha20-Poly1305)
  *
   *****************************************************************************/
 typedef struct _xmlSecNssAeadCipherCtx           xmlSecNssAeadCipherCtx,
@@ -102,7 +102,7 @@ static int      xmlSecNssAeadCipherExecute       (xmlSecTransformPtr transform,
 static int      xmlSecNssAeadCipherCheckId       (xmlSecTransformPtr transform);
 
 
-/* Helper macro to define the AES GCM transform klass */
+/* Helper macro to define the AES GCM / ChaCha20-Poly1305 transform klass */
 #define XMLSEC_NSS_CIPHER_AEAD_KLASS_EX(name, nodeRead, nodeWrite)                                          \
 static xmlSecTransformKlass xmlSecNss ## name ## Klass = {                                                  \
     /* klass/object sizes */                                                                                \
@@ -338,7 +338,7 @@ xmlSecNssAeadCipherGetKey(xmlSecNssAeadCipherCtxPtr ctx, CK_ATTRIBUTE_TYPE opera
 static int
 xmlSecNssAeadCipherEncrypt(xmlSecNssAeadCipherCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out) {
     static const xmlSecByte empty[] = { 0 };
-    xmlSecSize inSize, outSize;
+    xmlSecSize inSize, outSize, finalSize;
     const xmlSecByte *plaintext;
     xmlSecByte *outData;
     SECItem param = { siBuffer, NULL, 0 };
@@ -433,13 +433,14 @@ xmlSecNssAeadCipherEncrypt(xmlSecNssAeadCipherCtxPtr ctx, xmlSecBufferPtr in, xm
     XMLSEC_SAFE_CAST_UINT_TO_SIZE(outputlen, outSize, return(-1), NULL);
     if(ctx->isIvPrepended) {
         /* GCM: IV was prepended to output */
-        ret = xmlSecBufferSetSize(out, outSize + sizeof(ctx->iv));
+        finalSize = outSize + sizeof(ctx->iv);
     } else {
         /* IV is in XML transform node, output is just ciphertext+tag */
-        ret = xmlSecBufferSetSize(out, outSize);
+        finalSize = outSize;
     }
+    ret = xmlSecBufferSetSize(out, finalSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, outSize);
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, finalSize);
         return(-1);
     }
 
@@ -469,9 +470,12 @@ xmlSecNssAeadCipherDecrypt(xmlSecNssAeadCipherCtxPtr ctx, xmlSecBufferPtr in, xm
     /* Handle IV/Nonce differently for GCM (prepended) vs ChaCha20-Poly1305 (in XML) */
     if(ctx->isIvPrepended) {
         /* GCM: iv is prepended to input */
+        if(inSize < (sizeof(ctx->iv) + XMLSEC_NSS_AEAD_CIPHER_TAG_SIZE)) {
+            xmlSecInvalidDataError("ciphertext too short", NULL);
+            return(-1);
+        }
         inData = xmlSecBufferGetData(in);
         xmlSecAssert2(inData != NULL, -1);
-        xmlSecAssert2(inSize >= sizeof(ctx->iv), -1);
         memcpy(ctx->iv, inData, sizeof(ctx->iv));
         inData += sizeof(ctx->iv);
         inSize -= sizeof(ctx->iv);
@@ -479,6 +483,10 @@ xmlSecNssAeadCipherDecrypt(xmlSecNssAeadCipherCtxPtr ctx, xmlSecBufferPtr in, xm
         /* IV is in XML transform node (nonce was read in NodeRead), input is just ciphertext+tag */
         if(!ctx->ivInitialized) {
             xmlSecInvalidDataError("IV is expected to be in XML transform node", NULL);
+            return(-1);
+        }
+        if(inSize < XMLSEC_NSS_AEAD_CIPHER_TAG_SIZE) {
+            xmlSecInvalidDataError("ciphertext too short", NULL);
             return(-1);
         }
         inData = xmlSecBufferGetData(in);
@@ -696,7 +704,7 @@ xmlSecNssAeadCipherNodeReadChaCha20Poly1305(xmlSecTransformPtr transform, xmlNod
     xmlSecAssert2(ctx != NULL, -1);
 
     ret = xmlSecTransformChaCha20Poly1305ParamsRead(node, &(ctx->aad), ctx->iv, sizeof(ctx->iv), &ivSize, &noncePresent);
-    if((ret < 0) || (ivSize != XMLSEC_CHACHA20_NONCE_SIZE)) {
+    if(ret < 0) {
         xmlSecInternalError("xmlSecTransformChaCha20Poly1305ParamsRead", xmlSecTransformGetName(transform));
         return(-1);
     }

@@ -224,7 +224,7 @@ xmlSecNssHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
 
 static int
-xmlSecNssHmacSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
+xmlSecNssHmacSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq) {
     xmlSecNssHmacCtxPtr ctx;
 
     xmlSecAssert2(xmlSecNssHmacCheckId(transform), -1);
@@ -252,8 +252,8 @@ xmlSecNssHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecKeyDataPtr value;
     xmlSecBufferPtr buffer;
     xmlSecSize bufferSize;
-    SECItem keyItem = { siBuffer, NULL, 0 };
-    SECItem ignore = { siBuffer, NULL, 0 };
+    SECItem keyItem;
+    SECItem ignore;
     PK11SlotInfo* slot;
     PK11SymKey* symKey;
 
@@ -279,10 +279,13 @@ xmlSecNssHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         return(-1);
     }
 
-    memset(&ignore, 0, sizeof(ignore));
     memset(&keyItem, 0, sizeof(keyItem));
+    keyItem.type = siBuffer;
     keyItem.data = xmlSecBufferGetData(buffer);
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(bufferSize, keyItem.len, return(-1), xmlSecTransformGetName(transform));
+
+    memset(&ignore, 0, sizeof(ignore));
+    ignore.type = siBuffer;
 
     slot = PK11_GetBestSlot(ctx->digestType, NULL);
     if(slot == NULL) {
@@ -457,7 +460,7 @@ static xmlSecTransformKlass xmlSecNssHmac ## name ## Klass = {                  
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */         \
     xmlSecNssHmacSetKeyReq,                     /* xmlSecTransformSetKeyReqMethod setKeyReq; */         \
     xmlSecNssHmacSetKey,                        /* xmlSecTransformSetKeyMethod setKey; */               \
-    xmlSecNssHmacVerify,                        /* xmlSecTransformValidateMethod validate; */           \
+    xmlSecNssHmacVerify,                        /* xmlSecTransformVerifyMethod verify; */               \
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \

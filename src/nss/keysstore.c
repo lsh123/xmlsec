@@ -18,17 +18,12 @@
  */
 #include "globals.h"
 
-#include <stdlib.h>
-#include <string.h>
-
 #include <nss.h>
 #include <cert.h>
 #include <pk11pub.h>
 #include <keyhi.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/buffer.h>
-#include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/private.h>
@@ -170,6 +165,7 @@ xmlSecNssKeysStoreFinalize(xmlSecKeyStorePtr store) {
     xmlSecAssert((ss != NULL) && (*ss != NULL));
 
     xmlSecKeyStoreDestroy(*ss);
+    *ss = NULL;
 }
 
 static xmlSecKeyPtr

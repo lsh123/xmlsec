@@ -69,11 +69,14 @@ static int      xmlSecNssCbcCipherCtxFinal              (xmlSecNssCbcCipherCtxPt
                                                          const xmlChar* cipherName,
                                                          xmlSecTransformCtxPtr transformCtx);
 static int
-xmlSecNssCbcCipherCtxInit(xmlSecNssCbcCipherCtxPtr ctx,
-    xmlSecBufferPtr in, xmlSecBufferPtr out,
-    int encrypt, const xmlChar* cipherName,
-    xmlSecTransformCtxPtr transformCtx)
-{
+xmlSecNssCbcCipherCtxInit(
+    xmlSecNssCbcCipherCtxPtr ctx,
+    xmlSecBufferPtr in,
+    xmlSecBufferPtr out,
+    int encrypt,
+    const xmlChar* cipherName,
+    xmlSecTransformCtxPtr transformCtx
+) {
     SECItem keyItem = { siBuffer, NULL, 0 };
     SECItem ivItem = { siBuffer, NULL, 0 };
     PK11SlotInfo* slot;
@@ -147,7 +150,7 @@ xmlSecNssCbcCipherCtxInit(xmlSecNssCbcCipherCtxPtr ctx,
     }
 
     symKey = PK11_ImportSymKey(slot, ctx->cipher, PK11_OriginDerive,
-                               CKA_ENCRYPT, &keyItem, NULL);
+        (encrypt != 0) ? CKA_ENCRYPT : CKA_DECRYPT, &keyItem, NULL);
     if(symKey == NULL) {
         xmlSecNssError("PK11_ImportSymKey", cipherName);
         PK11_FreeSlot(slot);
@@ -155,8 +158,7 @@ xmlSecNssCbcCipherCtxInit(xmlSecNssCbcCipherCtxPtr ctx,
     }
 
     ctx->cipherCtx = PK11_CreateContextBySymKey(ctx->cipher,
-                        (encrypt) ? CKA_ENCRYPT : CKA_DECRYPT,
-                        symKey, &ivItem);
+        (encrypt != 0) ? CKA_ENCRYPT : CKA_DECRYPT, symKey, &ivItem);
     if(ctx->cipherCtx == NULL) {
         xmlSecNssError("PK11_CreateContextBySymKey", cipherName);
         PK11_FreeSymKey(symKey);
@@ -346,7 +348,11 @@ xmlSecNssCbcCipherCtxFinal(xmlSecNssCbcCipherCtxPtr ctx,
 
         /* check padding */
         padding = (xmlSecSize)outBuf[blockLen - 1];
-        if((padding == 0) || (outSize2 < padding)) {
+        if(padding == 0) {
+            xmlSecInvalidDataError("invalid padding value (0)", cipherName);
+            return(-1);
+        }
+        if(outSize2 < padding) {
             xmlSecInvalidSizeLessThanError("Input data padding",
                     inSize, padding, cipherName);
             return(-1);

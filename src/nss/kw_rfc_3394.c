@@ -8,7 +8,7 @@
  */
 /**
  * @addtogroup xmlsec_nss_crypto
- * @brief AES/Camellia Key Transport (RFC 3394) implementation for NSS.
+ * @brief AES/Camellia Key Wrap (RFC 3394) implementation for NSS.
  */
 #include "globals.h"
 
@@ -84,7 +84,7 @@ struct _xmlSecNssKWRfc3394Ctx {
 static int              xmlSecNssKWRfc3394EnsureKey     (xmlSecNssKWRfc3394CtxPtr ctx,
                                                          xmlSecKeyDataId keyId,
                                                          int enc);
-static int              xmlSecNssRfc3394CipherOp        (PK11SymKey *symKey,
+static int              xmlSecNssKWRfc3394CipherOp      (PK11SymKey *symKey,
                                                          CK_MECHANISM_TYPE cipherMech,
                                                          const xmlSecByte *in,
                                                          xmlSecByte *out,
@@ -278,6 +278,14 @@ xmlSecNssKWRfc3394SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         xmlSecInternalError("xmlSecTransformKWRfc3394SetKey", xmlSecTransformGetName(transform));
         return(-1);
     }
+
+    /* the cached symmetric key was created with the previous key material;
+       release it so it is re-created with the new key on the next block operation */
+    if(ctx->symKey != NULL) {
+        PK11_FreeSymKey(ctx->symKey);
+        ctx->symKey = NULL;
+    }
+
     return(0);
 }
 
@@ -330,9 +338,9 @@ xmlSecNssKWRfc3394BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * 
     xmlSecAssert2(ctx->symKey != NULL, -1);
 
     /* one block */
-    ret = xmlSecNssRfc3394CipherOp(ctx->symKey, ctx->cipherMech, in, out, 1); /* encrypt */
+    ret = xmlSecNssKWRfc3394CipherOp(ctx->symKey, ctx->cipherMech, in, out, 1); /* encrypt */
     if(ret < 0) {
-        xmlSecInternalError("xmlSecNssRfc3394CipherOp", NULL);
+        xmlSecInternalError("xmlSecNssKWRfc3394CipherOp", NULL);
         return(-1);
     }
     (*outWritten) = XMLSEC_KW_RFC3394_BLOCK_SIZE;
@@ -367,9 +375,9 @@ xmlSecNssKWRfc3394BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * 
     xmlSecAssert2(ctx->symKey != NULL, -1);
 
     /* one block */
-    ret = xmlSecNssRfc3394CipherOp(ctx->symKey, ctx->cipherMech, in, out, 0); /* decrypt */
+    ret = xmlSecNssKWRfc3394CipherOp(ctx->symKey, ctx->cipherMech, in, out, 0); /* decrypt */
     if(ret < 0) {
-        xmlSecInternalError("xmlSecNssRfc3394CipherOp", NULL);
+        xmlSecInternalError("xmlSecNssKWRfc3394CipherOp", NULL);
         return(-1);
     }
     (*outWritten) = XMLSEC_KW_RFC3394_BLOCK_SIZE;
@@ -425,7 +433,7 @@ done:
 
 /* encrypt/decrypt a block (XMLSEC_KW_RFC3394_BLOCK_SIZE), in and out can overlap */
 static int
-xmlSecNssRfc3394CipherOp(PK11SymKey *symKey, CK_MECHANISM_TYPE cipherMech, const xmlSecByte *in, xmlSecByte *out, int enc) {
+xmlSecNssKWRfc3394CipherOp(PK11SymKey *symKey, CK_MECHANISM_TYPE cipherMech, const xmlSecByte *in, xmlSecByte *out, int enc) {
     SECItem*           secParam = NULL;
     PK11Context*       ctxt = NULL;
     SECStatus          rv;

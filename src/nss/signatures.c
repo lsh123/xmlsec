@@ -632,7 +632,7 @@ xmlSecNssSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
                 NULL,
                 NULL);
             if (ctx->u.vfy.vfyctx == NULL) {
-                xmlSecNssError("VFY_CreateContext", xmlSecTransformGetName(transform));
+                xmlSecNssError("VFY_CreateContextWithAlgorithmID", xmlSecTransformGetName(transform));
                 return(-1);
             }
         } else {
@@ -939,6 +939,7 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 
                 /* Allocate signature buffer */
                 memset(&signature, 0, sizeof(signature));
+                signature.type = siBuffer;
                 signature.data = (unsigned char *)PORT_Alloc(sigLen);
                 if (signature.data == NULL) {
                     xmlSecNssError2("PORT_Alloc", xmlSecTransformGetName(transform),

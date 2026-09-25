@@ -324,10 +324,10 @@ xmlSecNssPKIKeyDataGetPubKey(xmlSecKeyDataPtr data) {
  * @return pointer to SECKEYPrivateKey or NULL if an error occurs.
  * Caller is responsible for freeing the key when done
  */
-SECKEYPrivateKey*
+SECKEYPrivateKey *
 xmlSecNssPKIKeyDataGetPrivKey(xmlSecKeyDataPtr data) {
     xmlSecNssPKIKeyDataCtxPtr ctx;
-    SECKEYPrivateKey* ret;
+    SECKEYPrivateKey *ret;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), NULL);
     xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecNssPKIKeyDataSize), NULL);
@@ -821,7 +821,8 @@ xmlSecNssKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         goto done;
     }
 
-    /* create key */
+    /* create key: the returned handle is just an integer for the position
+     * of the imported key in the slot and doesn't need to be "freed" manually */
     handle = PK11_ImportPublicKey(slot, pubkey, PR_FALSE);
     if(handle == CK_INVALID_HANDLE) {
         xmlSecNssError("PK11_ImportPublicKey",
@@ -885,24 +886,21 @@ xmlSecNssKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     /* p */
     ret = xmlSecNssSetBigNumValue(&(ctx->pubkey->u.dsa.params.prime), &(dsaValue->p));
     if(ret < 0) {
-        xmlSecInternalError("xmlSecNssNodeSetBigNumValue(p)",
-                            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecNssSetBigNumValue(p)", xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
 
     /* q */
     ret = xmlSecNssSetBigNumValue(&(ctx->pubkey->u.dsa.params.subPrime), &(dsaValue->q));
     if(ret < 0) {
-        xmlSecInternalError("xmlSecNssNodeSetBigNumValue(q)",
-                            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecNssSetBigNumValue(q)", xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
 
     /* g */
     ret = xmlSecNssSetBigNumValue(&(ctx->pubkey->u.dsa.params.base), &(dsaValue->g));
     if(ret < 0) {
-        xmlSecInternalError("xmlSecNssNodeSetBigNumValue(g)",
-                            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecNssSetBigNumValue(g)", xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
 
@@ -911,8 +909,7 @@ xmlSecNssKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     /* y */
     ret = xmlSecNssSetBigNumValue(&(ctx->pubkey->u.dsa.publicValue), &(dsaValue->y));
     if(ret < 0) {
-        xmlSecInternalError("xmlSecNssNodeSetBigNumValue(y)",
-                            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecNssSetBigNumValue(y)", xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
 
@@ -1053,16 +1050,14 @@ xmlSecNssKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     /* Modulus */
     ret = xmlSecNssGetBigNumValue(&(rsaValue->modulus), pubkey->arena, &(pubkey->u.rsa.modulus));
     if(ret < 0) {
-        xmlSecInternalError("xmlSecNssGetBigNumValue(Modulus)",
-                            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecNssGetBigNumValue(Modulus)", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
     /* Exponent */
     ret = xmlSecNssGetBigNumValue(&(rsaValue->publicExponent), pubkey->arena, &(pubkey->u.rsa.publicExponent));
     if(ret < 0) {
-        xmlSecInternalError("xmlSecNssGetBigNumValue(Exponent)",
-                            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecNssGetBigNumValue(Exponent)", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
@@ -1071,17 +1066,13 @@ xmlSecNssKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     /* create key */
     data = xmlSecKeyDataCreate(id);
     if(data == NULL) {
-        xmlSecInternalError("xmlSecKeyDataCreate",
-                            xmlSecKeyDataKlassGetName(id));
-        ret = -1;
+        xmlSecInternalError("xmlSecKeyDataCreate", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
     ret = xmlSecNssPKIKeyDataAdoptKey(data, NULL, pubkey);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecNssPKIKeyDataAdoptKey",
-                            xmlSecKeyDataKlassGetName(id));
-        xmlSecKeyDataDestroy(data);
+        xmlSecInternalError("xmlSecNssPKIKeyDataAdoptKey", xmlSecKeyDataGetName(data));
         goto done;
     }
     pubkey = NULL; /* owned by data now */
@@ -1091,16 +1082,16 @@ xmlSecNssKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     data = NULL;
 
 done:
-    if (slot != 0) {
+    if (slot != NULL) {
         PK11_FreeSlot(slot);
     }
     if(arena != NULL) {
         PORT_FreeArena(arena, PR_FALSE);
     }
-    if (pubkey != 0) {
+    if (pubkey != NULL) {
         SECKEY_DestroyPublicKey(pubkey);
     }
-    if (data != 0) {
+    if (data != NULL) {
         xmlSecKeyDataDestroy(data);
     }
     return(res);
@@ -1127,16 +1118,14 @@ xmlSecNssKeyDataRsaWrite(xmlSecKeyDataId id,xmlSecKeyDataPtr data,
     /* Modulus */
     ret = xmlSecNssSetBigNumValue(&(ctx->pubkey->u.rsa.modulus), &(rsaValue->modulus));
     if(ret < 0) {
-        xmlSecInternalError("xmlSecNssNodeSetBigNumValue(Modulus)",
-                            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecNssSetBigNumValue(Modulus)", xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
 
     /* Exponent */
     ret = xmlSecNssSetBigNumValue(&(ctx->pubkey->u.rsa.publicExponent), &(rsaValue->publicExponent));
     if(ret < 0) {
-        xmlSecInternalError("xmlSecNssNodeSetBigNumValue(Exponent)",
-                            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecNssSetBigNumValue(Exponent)", xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
 
@@ -1429,6 +1418,8 @@ xmlSecNssKeyDataEcGetOidTag(const SECKEYECParams *params)
     SECOidData *oidData = NULL;
 
     xmlSecAssert2(params != NULL, SEC_OID_UNKNOWN);
+    xmlSecAssert2(params->data != NULL, SEC_OID_UNKNOWN);
+
 
     /*
      * params->data needs to contain the ASN encoding of an object ID (OID)
@@ -1487,7 +1478,7 @@ xmlSecNssKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyValu
     /* publicValue */
     ret = xmlSecNssSetBigNumValue(&(ctx->pubkey->u.ec.publicValue), &(ecValue->pubkey));
     if(ret < 0) {
-        xmlSecInternalError("xmlSecNssNodeSetBigNumValue(p)", xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecNssSetBigNumValue(publicValue)", xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
 

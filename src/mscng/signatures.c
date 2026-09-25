@@ -25,16 +25,16 @@
 #include "../cast_helpers.h"
 #include "private.h"
 
- /******************************************************************************
-  *
-  * DSA
-  *
-  * https://www.w3.org/TR/xmldsig-core1/#sec-DSA
-   * The output of the DSA algorithm consists of a pair of integers usually referred to as the pair (r, s).
-  * DSA-SHA1: Integer to octet-stream conversion must be done according to the I2OSP operation defined
-  *           in the RFC 3447 [PKCS1] specification with a l parameter equal to 20
-  * DSA-SHA256: The pairs (2048, 256) and (3072, 256) correspond to the algorithm DSAwithSHA256
-   *****************************************************************************/
+/******************************************************************************
+ *
+ * DSA
+ *
+ * https://www.w3.org/TR/xmldsig-core1/#sec-DSA
+ * The output of the DSA algorithm consists of a pair of integers usually referred to as the pair (r, s).
+ * DSA-SHA1: Integer to octet-stream conversion must be done according to the I2OSP operation defined
+ *           in the RFC 3447 [PKCS1] specification with a l parameter equal to 20
+ * DSA-SHA256: The pairs (2048, 256) and (3072, 256) correspond to the algorithm DSAwithSHA256
+  *****************************************************************************/
 #define XMLSEC_MSCNG_SIGNATURE_DSA_SHA1_HALF_LEN              20
 #define XMLSEC_MSCNG_SIGNATURE_DSA_SHA256_HALF_LEN            (256 / 8)
 
@@ -531,8 +531,8 @@ static int xmlSecMSCngSignatureSetKeyReq(xmlSecTransformPtr transform,  xmlSecKe
 }
 
 /*
-* https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA
-*
+ * https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA
+ *
  * The output of the ECDSA algorithm consists of a pair of integers usually
  * referred to as the pair (r, s). The signature value consists of the base64
  * encoding of the concatenation of two octet-streams that respectively result
@@ -561,7 +561,7 @@ xmlSecMSCngSignatureFixBrokenJava(xmlSecMSCngSignatureCtxPtr ctx,
     if (ctx->keyId == xmlSecMSCngKeyDataDsaId) {
         halfSize = ctx->signatureHalfSize;
     } else if (ctx->keyId == xmlSecMSCngKeyDataEcId) {
-        keySize = xmlSecMSCngCertKeyDataGetSize(ctx->data);
+        keySize = xmlSecMSCngCertKeyDataGetSizeInBits(ctx->data);
         if (keySize <= 0) {
             xmlSecInternalError("xmlSecMSCngCertKeyDataGetSize", NULL);
             return(-1);
@@ -656,7 +656,7 @@ xmlSecMSCngSignatureFixBrokenASN1(xmlSecMSCngSignatureCtxPtr ctx,
     }
 
     /* get half signature size */
-    keySize = xmlSecMSCngCertKeyDataGetSize(ctx->data);
+    keySize = xmlSecMSCngCertKeyDataGetSizeInBits(ctx->data);
     if (keySize <= 0) {
         xmlSecInternalError("xmlSecMSCngCertKeyDataGetSize", NULL);
         return(-1);
@@ -919,7 +919,11 @@ xmlSecMSCngSignatureSign(
         return(-1);
     }
 
-    /* calculate the length of the signature */
+    /* calculate the length of the signature; this size probe passes
+     * pPaddingInfo=NULL and dwFlags=0 on purpose - NCryptSignHash only needs
+     * the hash to report the signature size, and the real call below supplies
+     * the explicit padding (RSA requires explicit padding, otherwise
+     * STATUS_INVALID_PARAMETER is returned) */
     status = NCryptSignHash(
         privkey,
         NULL,
@@ -973,7 +977,8 @@ xmlSecMSCngSignatureSign(
     if ((ctx->keyId == xmlSecMSCngKeyDataEcId) &&
             ((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_SUPPORT_ASN1_SIGNATURE_VALUES) != 0)
     ) {
-        /* however some implementations (e.g. Java) just put ASN1 structure in the signature
+        /* some implementations (e.g. Java) expect the signature value to be
+         * an ASN1 structure, so convert the raw r||s output to ASN1 DER
          * https://github.com/lsh123/xmlsec/issues/995 */
         ret = xmlSecMSCngSignatureConvertToASN1(ctx, &(transform->outBuf));
         if (ret < 0) {

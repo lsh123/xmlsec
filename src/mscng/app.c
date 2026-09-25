@@ -192,7 +192,7 @@ xmlSecMSCngAppGetLocalMachineCertStoreName(void) {
 /**
  * @brief Reads a key from a file.
  * @param filename the key filename.
- * @param type the expected key type.
+ * @param type the expected key type. Not used by the MSCng back-end and ignored.
  * @param format the key file format.
  * @param pwd the key file password.
  * @param pwdCallback the key password callback. Not supported by the MSCng
@@ -396,7 +396,7 @@ xmlSecMSCngAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecK
         xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptKeyCert", NULL);
         goto done;
     }
-    pKeyCert = NULL; /* owned by x509Data data now */
+    pKeyCert = NULL; /* owned by x509Data now */
 
     ret = xmlSecKeyAdoptData(key, x509Data);
     if(ret < 0) {
@@ -592,7 +592,7 @@ xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, cons
     int ret;
 
     xmlSecAssert2(data != NULL, NULL);
-    xmlSecAssert2(dataSize > 1, NULL);
+    xmlSecAssert2(dataSize > 0, NULL);
     xmlSecAssert2(pwd != NULL, NULL);
 
     memset(&pfx, 0, sizeof(pfx));
@@ -728,9 +728,6 @@ xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, cons
     }
 
 cleanup:
-    if(certStore != NULL) {
-        CertCloseStore(certStore, 0);
-    }
     if(pwdWideChar != NULL) {
         xmlFree(pwdWideChar);
     }
@@ -749,6 +746,9 @@ cleanup:
     if(certDuplicate != NULL) {
         CertFreeCertificateContext(certDuplicate);
     }
+    if(certStore != NULL) {
+        CertCloseStore(certStore, 0);
+    }
     return(key);
 }
 
@@ -760,8 +760,8 @@ cleanup:
  * @param mngr the keys manager.
  * @param filename the certificate file.
  * @param format the certificate file format.
- * @param type the flag that indicates is the certificate in @p filename
- *                      trusted or not.
+ * @param type the flag that indicates if the certificate in @p filename
+ *                      is trusted or not.
  * @return 0 on success or a negative value otherwise.
  */
 int

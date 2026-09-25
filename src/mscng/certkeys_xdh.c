@@ -232,7 +232,7 @@ xmlSecMSCngXdhBuildPrivBlobAndImport(BCRYPT_ALG_HANDLE hAlg, const xmlSecByte* p
         BCRYPT_NO_KEY_VALIDATION
     );
     if(status != STATUS_SUCCESS) {
-        xmlSecMSCngNtError("BCryptImportKeyPair(X25519 priv PKCS8, no-validate)", NULL, status);
+        xmlSecMSCngNtError("BCryptImportKeyPair(X25519 priv, no-validate)", NULL, status);
         goto done;
     }
 
@@ -373,6 +373,9 @@ xmlSecMSCngXdhImportPubKeyHandle(BCRYPT_ALG_HANDLE hAlg, BCRYPT_KEY_HANDLE hPriv
     xmlSecAssert2(hAlg != NULL, -1);
     xmlSecAssert2(hPrivKey != NULL, -1);
     xmlSecAssert2(hPubKey != NULL, -1);
+
+    /* just to make sure */
+    (*hPubKey) = NULL;
 
     status = BCryptExportKey(hPrivKey, NULL, BCRYPT_ECCPUBLIC_BLOB, NULL, 0, &cbPubBlob, 0);
     if(status != STATUS_SUCCESS) {

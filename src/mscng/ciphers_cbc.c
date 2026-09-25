@@ -509,10 +509,9 @@ xmlSecMSCngCbcBlockCipherCtxUpdate(xmlSecMSCngCbcBlockCipherCtxPtr ctx,
      * BCryptEncrypt/BCryptDecrypt update it in place to the last ciphertext block
      * after each call (they are not stateless), so passing the same buffer to every
      * call keeps the CBC chain correct across multiple CtxUpdate/CtxFinal calls; no
-     * manual IV update is needed. Verified against OpenSSL with scratch programs
-     * (win32/tmp/cbc_iv_test*.c): a two-block CBC round-trip produces standard
-     * ciphertext matching OpenSSL's output, and the IV buffer holds the last
-     * ciphertext block after each call. */
+     * manual IV update is needed. Verified against OpenSSL: a two-block CBC
+     * round-trip produces standard ciphertext matching OpenSSL's output, and
+     * the IV buffer holds the last ciphertext block after each call. */
     if(encrypt) {
         status = BCryptEncrypt(ctx->hKey,
             inBuf,
@@ -717,7 +716,11 @@ xmlSecMSCngCbcBlockCipherCtxFinal(xmlSecMSCngCbcBlockCipherCtxPtr ctx,
         /* check padding: only the final padding byte is range-checked since
          * the XML Encryption spec (https://www.w3.org/TR/xmlenc-core1/#sec-Padding)
          * doesn't follow PKCS#5/PKCS#7  padding. */
-        if((outBuf[blockSize - 1] == 0) || (inSize < outBuf[blockSize - 1])) {
+        if(outBuf[blockSize - 1] == 0) {
+            xmlSecInvalidSizeOtherError("Input data padding is zero", cipherName);
+            return(-1);
+        }
+        if(inSize < outBuf[blockSize - 1]) {
             xmlSecInvalidSizeLessThanError("Input data padding", inSize, outBuf[blockSize - 1], cipherName);
             return(-1);
         }

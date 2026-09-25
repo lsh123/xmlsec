@@ -867,8 +867,7 @@ done:
  * @param mngr the keys manager.
  * @param filename the certificate file.
  * @param format the certificate file format.
- * @param type the flag that indicates is the certificate in @p filename
- *                      trusted or not.
+ * @param type the flag that indicates if the certificate in @p filename is trusted or not.
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -923,15 +922,17 @@ xmlSecGnuTLSAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr,
  * @param data the certificate binary data.
  * @param dataSize the certificate binary data size.
  * @param format the certificate file format.
- * @param type the flag that indicates is the certificate trusted or not.
+ * @param type the flag that indicates if the certificate trusted or not.
  * @return 0 on success or a negative value otherwise.
  */
 int
-xmlSecGnuTLSAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr,
-                                      const xmlSecByte* data,
-                                      xmlSecSize dataSize,
-                                      xmlSecKeyDataFormat format,
-                                      xmlSecKeyDataType type) {
+xmlSecGnuTLSAppKeysMngrCertLoadMemory(
+    xmlSecKeysMngrPtr mngr,
+    const xmlSecByte* data,
+    xmlSecSize dataSize,
+    xmlSecKeyDataFormat format,
+    xmlSecKeyDataType type
+) {
     xmlSecKeyDataStorePtr x509Store;
     gnutls_x509_crt_t cert;
     int ret;

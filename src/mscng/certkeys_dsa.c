@@ -166,7 +166,7 @@ xmlSecMSCngKeyDataCertGetDsaPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE
     } else {
 #if XMLSEC_MSCNG_HAVE_DSA_V2
         /* V2: BCRYPT_DSA_KEY_BLOB_V2 for keys > 1024-bit (2048/3072-bit)
-         * layout: header + seed[cbGroupSize] + q[cbGroupSize] + p[cbKey] + g[cbKey] + y[cbKey] */
+         * layout: header + seed[cbSeedLength] + q[cbGroupSize] + p[cbKey] + g[cbKey] + y[cbKey] */
         if(pSize > XMLSEC_MSCNG_DSA_MAX_P_SIZE) {
             xmlSecInvalidSizeMoreThanError("DSA P size", (xmlSecSize)pSize, (xmlSecSize)XMLSEC_MSCNG_DSA_MAX_P_SIZE, NULL);
             goto done;
@@ -715,7 +715,7 @@ xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDsaPtr 
         bufData += dsakey->cbKey;
 
         /* q (in header, fixed 20 bytes) */
-        xmlSecAssert2(sizeof(dsakey->q) <= XMLSEC_MSCNG_DSA_MAX_Q_SIZE, -1);
+        xmlSecAssert2(sizeof(dsakey->q) == XMLSEC_MSCNG_DSA_MAX_Q_SIZE, -1);
         stripped = xmlSecMSCngDsaStripLeadingZeros((const xmlSecByte*)dsakey->q, sizeof(dsakey->q), &strippedSize);
         ret = xmlSecBufferSetData(&(dsaValue->q), stripped, strippedSize);
         if (ret < 0) {

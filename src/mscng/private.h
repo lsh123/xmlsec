@@ -69,7 +69,7 @@ int                xmlSecMSCngKeyDataAdoptBCryptPrivKey             (xmlSecKeyDa
 BCRYPT_KEY_HANDLE  xmlSecMSCngKeyDataGetBCryptPrivKey               (xmlSecKeyDataPtr data);
 
 
-xmlSecSize         xmlSecMSCngCertKeyDataGetSize                    (xmlSecKeyDataPtr data);
+xmlSecSize         xmlSecMSCngCertKeyDataGetSizeInBits              (xmlSecKeyDataPtr data);
 
 
 xmlSecKeyDataPtr   xmlSecMSCngAppKeyReadPubKeyFromDer               (const xmlSecByte* derData,

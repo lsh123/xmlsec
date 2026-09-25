@@ -173,6 +173,8 @@ xmlSecMSCngRsaPkcs1OaepSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 #ifndef XMLSEC_NO_RSA_OAEP
 static int
 xmlSecMSCngRsaPkcs1OaepEnsureDefaultDigest(xmlSecMSCngRsaPkcs1OaepCtxPtr ctx) {
+    /* SHA1 is the XML Encryption spec default when no OAEP digest is
+     * specified; matches the behavior of the other backends. */
     if (ctx->pszDigestAlgId == NULL) {
 #ifndef XMLSEC_NO_SHA1
         ctx->pszDigestAlgId = BCRYPT_SHA1_ALGORITHM;
@@ -482,7 +484,8 @@ xmlSecMSCngRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
         return(-1);
     }
 
-    /* digest algorithm */
+    /* digest algorithm (SHA1 is the XML Encryption spec default when none is
+     * specified; matches the behavior of the other backends) */
     if (oaepParams.digestAlgorithm == NULL) {
 #ifndef XMLSEC_NO_SHA1
         ctx->pszDigestAlgId = BCRYPT_SHA1_ALGORITHM;

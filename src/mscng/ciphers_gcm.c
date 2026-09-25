@@ -8,7 +8,7 @@
  */
 /**
  * @addtogroup xmlsec_mscng_crypto
- * @brief GCM Ciphers transforms implementation for MSCng.
+ * @brief GCM cipher transforms implementation for MSCng.
  */
 #include "globals.h"
 
@@ -19,7 +19,6 @@
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
-#include <xmlsec/bn.h>
 
 #include <xmlsec/mscng/crypto.h>
 
@@ -402,8 +401,10 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
     XMLSEC_SAFE_CAST_ULONG_TO_SIZE(ctx->dwBlockLen, blockSize, return(-1), cipherName);
 
     /* Allocate the IV buffer passed to BCryptEncrypt/BCryptDecrypt. For GCM the
-     * actual nonce is carried in authInfo.pbNonce, but BCrypt still requires a
-     * non-NULL pbIV buffer to be supplied. */
+     * actual nonce is carried in authInfo.pbNonce, and CNG's GCM implementation
+     * takes the nonce from there (verified empirically: the computed tag matches
+     * a reference AES-GCM implementation that uses the same pbNonce); BCrypt
+     * only requires a non-NULL pbIV buffer to be supplied. */
     if (ctx->pbIV == NULL) {
         ctx->pbIV = xmlMalloc(blockSize);
         if (ctx->pbIV == NULL) {

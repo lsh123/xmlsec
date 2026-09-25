@@ -110,6 +110,11 @@ xmlSecMSCngX509StoreFinalize(xmlSecKeyDataStorePtr store) {
     ctx = xmlSecMSCngX509StoreGetCtx(store);
     xmlSecAssert(ctx != NULL);
 
+    /* The collection stores (ctx->trusted, ctx->untrusted) and their member
+     * stores are independent: closing a collection does not close its members
+     * (per the CertCloseStore() documentation), so each member store is closed
+     * explicitly. XMLSEC_CLOSE_STORE_FLAG is CERT_CLOSE_STORE_CHECK_FLAG (0),
+     * never the FORCE variant. */
     if(ctx->trusted != NULL) {
         ret = CertCloseStore(ctx->trusted, XMLSEC_CLOSE_STORE_FLAG);
         if(ret == FALSE) {
@@ -491,8 +496,9 @@ xmlSecMSCngCheckRevocation(HCERTSTORE store, PCCERT_CONTEXT cert, LPFILETIME tim
     return(1);
 }
 
-/* this function does NOT check for time validity (see xmlSecMSCngVerifyCertTime)
-*  returns <0 if there is an error; 0 if verification failed and >0 if verification succeeded */
+/* this function does NOT check for time validity (see
+ * xmlSecMSCngX509StoreVerifyCertificateValidityAndRevocation)
+ * returns <0 if there is an error; 0 if verification failed and >0 if verification succeeded */
 static int
 xmlSecMSCngX509StoreVerifySubject(PCCERT_CONTEXT cert, PCCERT_CONTEXT issuerCert) {
     DWORD flags;
@@ -532,10 +538,8 @@ xmlSecMSCngX509StoreVerifySubject(PCCERT_CONTEXT cert, PCCERT_CONTEXT issuerCert
  * @param store the certificate store
  * @param name the name of the subject or issuer to find
  * @param cert the certificate
- *
- *
-     * @return 1 or 0 if find does or does not succeed, or a negative value if an
-     * error occurs.
+ * @return 1 or 0 if find does or does not succeed, or a negative value if an
+ * error occurs.
  */
 static int
 xmlSecMSCngX509StoreContainsCert(HCERTSTORE store, CERT_NAME_BLOB* name, PCCERT_CONTEXT cert)
@@ -573,41 +577,30 @@ xmlSecMSCngX509StoreContainsCert(HCERTSTORE store, CERT_NAME_BLOB* name, PCCERT_
     }
 }
 
-static int
-xmlSecMSCngVerifyCertTime(PCCERT_CONTEXT cert, LPFILETIME time) {
-    xmlSecAssert2(cert != NULL, -1);
-    xmlSecAssert2(cert->pCertInfo != NULL, -1);
-    xmlSecAssert2(time != NULL, -1);
-
-    if(CompareFileTime(&(cert->pCertInfo->NotBefore), time) == 1) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL, "certificate not yet valid");
-        return(-1);
-    }
-
-    if(CompareFileTime(&(cert->pCertInfo->NotAfter), time) == -1) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL, "certificate expired");
-        return(-1);
-    }
-
-    return(0);
-}
-
 /* returns 1 if verified, 0 if not, or a negative value if an error occurs */
 static int
-xmlSecMSCngX509StoreVerifyCertificateItself(PCCERT_CONTEXT cert, FILETIME* time, HCERTSTORE trustedStore, HCERTSTORE certStore, HCERTSTORE crlStore)
-{
+xmlSecMSCngX509StoreVerifyCertificateValidityAndRevocation(
+    PCCERT_CONTEXT cert,
+    FILETIME* time,
+    HCERTSTORE certStore,
+    HCERTSTORE crlStore
+) {
     int ret;
 
     xmlSecAssert2(cert != NULL, -1);
-    xmlSecAssert2(trustedStore != NULL, -1);
+    xmlSecAssert2(cert->pCertInfo != NULL, -1);
     xmlSecAssert2(certStore != NULL, -1);
 
     /* if time is specified, check certificate notBefore/notAfter */
     if (time != NULL) {
-        ret = xmlSecMSCngVerifyCertTime(cert, time);
-        if (ret < 0) {
-            xmlSecInternalError("xmlSecMSCngVerifyCertTime", NULL);
-            return(-1);
+        if(CompareFileTime(&(cert->pCertInfo->NotBefore), time) == 1) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL, "certificate not yet valid");
+            return(0);
+        }
+
+        if(CompareFileTime(&(cert->pCertInfo->NotAfter), time) == -1) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL, "certificate expired");
+            return(0);
         }
     }
 
@@ -620,7 +613,6 @@ xmlSecMSCngX509StoreVerifyCertificateItself(PCCERT_CONTEXT cert, FILETIME* time,
         /* certificate is revoked */
         return(0);
     }
-
     if(crlStore != NULL) {
         ret = xmlSecMSCngCheckRevocation(crlStore, cert, time);
         if(ret < 0) {
@@ -631,6 +623,19 @@ xmlSecMSCngX509StoreVerifyCertificateItself(PCCERT_CONTEXT cert, FILETIME* time,
             return(0);
         }
     }
+
+    /* success */
+    return(1);
+}
+
+/* returns 1 if verified, 0 if not, or a negative value if an error occurs */
+static int
+xmlSecMSCngX509StoreVerifyCertificateTrust(PCCERT_CONTEXT cert, HCERTSTORE trustedStore)
+{
+    int ret;
+
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(trustedStore != NULL, -1);
 
     /* does trustedStore contain cert directly? */
     ret = xmlSecMSCngX509StoreContainsCert(trustedStore, &(cert->pCertInfo->Subject), cert);
@@ -656,6 +661,9 @@ xmlSecMSCngX509StoreVerifyCertificateItself(PCCERT_CONTEXT cert, FILETIME* time,
     return(0);
 }
 
+
+
+/* returns 1 if verified, 0 if not, or a negative value if an error occurs */
 static PCCERT_CONTEXT
 xmlSecMSCngX509StoreFindIssuer(HCERTSTORE store, PCCERT_CONTEXT cert) {
     PCCERT_CONTEXT issuerCert = NULL;
@@ -696,7 +704,7 @@ struct xmlSecMSCngX509StoreVerifyCertificateChainStep {
 #define XMLSEC_MSCNG_X509_STORE_VERIFY_CERTIFICATE_CHAIN_MAX_DEPTH 1000
 #define XMLSEC_MSCNG_X509_CERT_HASH_SIZE 20
 
-/* Returns the SHA1 hash of @pCert in @pHash. Returns 0 on success, -1 on error. */
+/* Returns the SHA1 hash of @p pCert in @p pHash. Returns 0 on success, -1 on error. */
 static int
 xmlSecMSCngX509GetCertHash(PCCERT_CONTEXT pCert, BYTE* pHash, DWORD* hashSize) {
     BOOL ret;
@@ -802,15 +810,26 @@ xmlSecMSCngX509StoreVerifyCertificateChain(PCCERT_CONTEXT cert, FILETIME* time,
         ++seenSize;
 
         /* check certificate itself */
-        ret = xmlSecMSCngX509StoreVerifyCertificateItself(currentCert, time, trustedStore, certStore, crlStore);
+        ret = xmlSecMSCngX509StoreVerifyCertificateValidityAndRevocation(currentCert, time, certStore, crlStore);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateItself", NULL);
+            xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateValidityAndRevocation", NULL);
+            goto done;
+        } else if (ret != 1) {
+            /* the certificate failed verification (e.g. expired or revoked),
+             * stop the chain verification process immediately */
+            res = 0;
+            goto done;
+        }
+        ret = xmlSecMSCngX509StoreVerifyCertificateTrust(currentCert, trustedStore);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateTrust", NULL);
             goto done;
         } else if (ret == 1) {
             /* success */
             res = 1;
             goto done;
         }
+        /* the certificate is valid but not trusted, continue with the chain */
 
         /* is cert self-signed? no recursion in that case */
         if(CertCompareCertificateName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
@@ -842,7 +861,12 @@ xmlSecMSCngX509StoreVerifyCertificateChain(PCCERT_CONTEXT cert, FILETIME* time,
             /* try issuer in untrustedStore */
             issuerCert = xmlSecMSCngX509StoreFindIssuer(untrustedStore, currentCert);
             if(issuerCert != NULL) {
-                xmlSecAssert2(queueSize < queueMaxSize, -1);
+                if(queueSize >= queueMaxSize) {
+                    /* can't happen: the queue was resized above to fit two more entries */
+                    CertFreeCertificateContext(issuerCert);
+                    xmlSecInternalError("queue is full", NULL);
+                    goto done;
+                }
                 queue[queueSize].cert = issuerCert;
                 queue[queueSize].freeCert = TRUE;
                 ++queueSize;

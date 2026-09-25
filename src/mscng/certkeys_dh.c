@@ -316,7 +316,7 @@ xmlSecMSCngKeyDataDhRead(xmlSecKeyDataId id, xmlSecKeyValueDhPtr dhValue) {
     blobSize = offset + pSize * 3;
 
     ret = xmlSecBufferInitialize(&blob, blobSize);
-    if (ret < 0) {
+    if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferInitialize", NULL,
             "size=" XMLSEC_SIZE_FMT, blobSize);
         goto done;
@@ -324,7 +324,7 @@ xmlSecMSCngKeyDataDhRead(xmlSecKeyDataId id, xmlSecKeyValueDhPtr dhValue) {
     blobInitialized = 1;
 
     ret = xmlSecBufferSetSize(&blob, blobSize);
-    if (ret < 0) {
+    if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL,
             "size=" XMLSEC_SIZE_FMT, blobSize);
         goto done;
@@ -350,26 +350,26 @@ xmlSecMSCngKeyDataDhRead(xmlSecKeyDataId id, xmlSecKeyValueDhPtr dhValue) {
 
     /* import the key blob */
     status = BCryptOpenAlgorithmProvider(&hAlg, BCRYPT_DH_ALGORITHM, NULL, 0);
-    if (status != STATUS_SUCCESS) {
+    if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptOpenAlgorithmProvider", NULL, status);
         goto done;
     }
 
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(blobSize, dwBlobSize, goto done, NULL);
     status = BCryptImportKeyPair(hAlg, NULL, BCRYPT_DH_PUBLIC_BLOB, &hKey, blobData, dwBlobSize, 0);
-    if (status != STATUS_SUCCESS) {
+    if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptImportKeyPair", NULL, status);
         goto done;
     }
 
     data = xmlSecKeyDataCreate(id);
-    if (data == NULL) {
+    if(data == NULL) {
         xmlSecInternalError("xmlSecKeyDataCreate", NULL);
         goto done;
     }
 
     ret = xmlSecMSCngKeyDataAdoptKey(data, hKey);
-    if (ret < 0) {
+    if(ret < 0) {
         xmlSecInternalError("xmlSecMSCngKeyDataAdoptKey", xmlSecKeyDataGetName(data));
         goto done;
     }
@@ -389,16 +389,16 @@ xmlSecMSCngKeyDataDhRead(xmlSecKeyDataId id, xmlSecKeyValueDhPtr dhValue) {
     data = NULL;
 
 done:
-    if (data != NULL) {
+    if(data != NULL) {
         xmlSecKeyDataDestroy(data);
     }
-    if (hAlg != 0) {
+    if(hAlg != 0) {
         BCryptCloseAlgorithmProvider(hAlg, 0);
     }
-    if (hKey != 0) {
+    if(hKey != 0) {
         BCryptDestroyKey(hKey);
     }
-    if (blobInitialized != 0) {
+    if(blobInitialized != 0) {
         xmlSecBufferFinalize(&blob);
     }
     return(res);
@@ -420,14 +420,14 @@ xmlSecMSCngKeyDataDhPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDhPtr dh
 
     /* export public key as DH public blob */
     status = BCryptExportKey(pubkey, NULL, BCRYPT_DH_PUBLIC_BLOB, NULL, 0, &bufLen, 0);
-    if ((status != STATUS_SUCCESS) || (bufLen <= 0)) {
+    if((status != STATUS_SUCCESS) || (bufLen <= 0)) {
         xmlSecMSCngNtError2("BCryptExportKey", NULL,
             status, "bufLen=%lu", bufLen);
         goto done;
     }
 
     ret = xmlSecBufferInitialize(&buf, bufLen);
-    if (ret < 0) {
+    if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferInitialize", NULL, "size=%lu", bufLen);
         goto done;
     }
@@ -437,25 +437,25 @@ xmlSecMSCngKeyDataDhPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDhPtr dh
     xmlSecAssert2(bufData != NULL, -1);
 
     status = BCryptExportKey(pubkey, NULL, BCRYPT_DH_PUBLIC_BLOB, bufData, bufLen, &bufLen, 0);
-    if ((status != STATUS_SUCCESS) || (bufLen <= 0)) {
+    if((status != STATUS_SUCCESS) || (bufLen <= 0)) {
         xmlSecMSCngNtError2("BCryptExportKey", NULL, status, "bufLen=%lu", bufLen);
         goto done;
     }
 
     /* parse blob: header + P[cbKey] + G[cbKey] + Public[cbKey] */
-    if (bufLen < sizeof(BCRYPT_DH_KEY_BLOB)) {
-        xmlSecMSCngNtError2("BCryptExportKey size check", NULL, STATUS_SUCCESS, "bufLen=%lu", bufLen);
+    if(bufLen < sizeof(BCRYPT_DH_KEY_BLOB)) {
+        xmlSecInvalidSizeLessThanError("BCryptExportKey blob size", (xmlSecSize)bufLen, (xmlSecSize)sizeof(BCRYPT_DH_KEY_BLOB), NULL);
         goto done;
     }
     dhkey = (BCRYPT_DH_KEY_BLOB*)bufData;
-    if (dhkey->dwMagic != BCRYPT_DH_PUBLIC_MAGIC) {
+    if(dhkey->dwMagic != BCRYPT_DH_PUBLIC_MAGIC) {
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
             "Unexpected DH blob magic: 0x%08lX", (unsigned long)dhkey->dwMagic);
         goto done;
     }
     bufData += sizeof(BCRYPT_DH_KEY_BLOB);
     bufLen  -= (DWORD)sizeof(BCRYPT_DH_KEY_BLOB);
-    if (bufLen != 3 * dhkey->cbKey) {
+    if(bufLen != 3 * dhkey->cbKey) {
         xmlSecMSCngNtError3("BCRYPT_DH_KEY_BLOB size mismatch", NULL, STATUS_SUCCESS, "bufLen=%lu, cbKey=%lu", bufLen, dhkey->cbKey);
         goto done;
     }
@@ -464,7 +464,7 @@ xmlSecMSCngKeyDataDhPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDhPtr dh
 
     /* P */
     ret = xmlSecBufferSetData(&(dhValue->p), bufData, dhkey->cbKey);
-    if (ret < 0) {
+    if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetData(p)", NULL, "cbKey=%lu", dhkey->cbKey);
         goto done;
     }
@@ -472,7 +472,7 @@ xmlSecMSCngKeyDataDhPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDhPtr dh
 
     /* G */
     ret = xmlSecBufferSetData(&(dhValue->generator), bufData, dhkey->cbKey);
-    if (ret < 0) {
+    if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetData(generator)", NULL, "cbKey=%lu", dhkey->cbKey);
         goto done;
     }
@@ -485,7 +485,7 @@ xmlSecMSCngKeyDataDhPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDhPtr dh
 
     /* Public */
     ret = xmlSecBufferSetData(&(dhValue->public), bufData, dhkey->cbKey);
-    if (ret < 0) {
+    if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetData(public)", NULL, "cbKey=%lu", dhkey->cbKey);
         goto done;
     }
@@ -501,7 +501,7 @@ xmlSecMSCngKeyDataDhPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDhPtr dh
     res = 0;
 
 done:
-    if (bufInitialized != 0) {
+    if(bufInitialized != 0) {
         xmlSecBufferFinalize(&buf);
     }
     return(res);
@@ -530,7 +530,7 @@ xmlSecMSCngDhBuildPrivBlobAndImport(BCRYPT_ALG_HANDLE hAlg,
     const xmlSecByte* pP, DWORD pPLen,
     const xmlSecByte* pG, DWORD pGLen,
     const xmlSecByte* pX, DWORD pXLen,
-    PUCHAR* pbPrivBlob, DWORD* cbPrivBlob, 
+    PUCHAR* pbPrivBlob, DWORD* cbPrivBlob,
     BCRYPT_KEY_HANDLE* hPrivKey
 ) {
     DWORD cbKey;
@@ -651,12 +651,12 @@ xmlSecMSCngDhDerivePubKeyY(BCRYPT_ALG_HANDLE hAlg, BCRYPT_KEY_HANDLE hPrivKey, P
     dhGPub = (BCRYPT_DH_KEY_BLOB*)pbGPubBlob;
     dhGPub->dwMagic = BCRYPT_DH_PUBLIC_MAGIC;
     dhGPub->cbKey = cbKey;
-    
+
     /* P and G same as our key; Y = G (the generator itself) */
     memcpy(pbGPubBlob + sizeof(BCRYPT_DH_KEY_BLOB),              pbPrivBlob + sizeof(BCRYPT_DH_KEY_BLOB),         cbKey); /* P */
     memcpy(pbGPubBlob + sizeof(BCRYPT_DH_KEY_BLOB) + cbKey,      pbPrivBlob + sizeof(BCRYPT_DH_KEY_BLOB) + cbKey, cbKey); /* G */
     memcpy(pbGPubBlob + sizeof(BCRYPT_DH_KEY_BLOB) + cbKey * 2,  pbPrivBlob + sizeof(BCRYPT_DH_KEY_BLOB) + cbKey, cbKey); /* Y = G */
-    
+
     status = BCryptImportKeyPair(hAlg, NULL, BCRYPT_DH_PUBLIC_BLOB, &hGPubKey, pbGPubBlob, cbGPubBlob, 0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptImportKeyPair(DH G pub)", NULL, status);
@@ -680,7 +680,7 @@ xmlSecMSCngDhDerivePubKeyY(BCRYPT_ALG_HANDLE hAlg, BCRYPT_KEY_HANDLE hPrivKey, P
     /* derive into Y field of the private blob (right-aligned) */
     pbY = pbPrivBlob + sizeof(BCRYPT_DH_KEY_BLOB) + cbKey * 2;
     memset(pbY, 0, cbKey);
-    
+
     pbYtmp = pbY + cbKey - cbY;
     status = BCryptDeriveKey(hSelfSecret, BCRYPT_KDF_RAW_SECRET, NULL, pbYtmp, cbY, &cbY, 0);
     if(status != STATUS_SUCCESS) {
@@ -738,8 +738,7 @@ xmlSecMSCngDhImportPubKeyHandle(BCRYPT_ALG_HANDLE hAlg, PUCHAR pbPrivBlob, BCRYP
         goto done;
     }
     memset(pbPubBlob, 0, cbPubBlob);
-    
-    
+
     /* header */
     dhPub = (BCRYPT_DH_KEY_BLOB*)pbPubBlob;
     dhPub->dwMagic = BCRYPT_DH_PUBLIC_MAGIC;
@@ -914,10 +913,12 @@ xmlSecMSCngKeyDataDhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLen
     }
     hPrivKey = NULL; /* owned by data */
 
-    ret = xmlSecMSCngKeyDataSetDhQ(data, pQ, pQLen);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataSetDhQ", NULL);
-        goto done;
+    if((pQ != NULL) && (pQLen > 0)) {
+        ret = xmlSecMSCngKeyDataSetDhQ(data, pQ, pQLen);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecMSCngKeyDataSetDhQ", NULL);
+            goto done;
+        }
     }
 
     res = data;

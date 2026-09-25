@@ -8,7 +8,7 @@
  */
 /**
  * @addtogroup xmlsec_nss_crypto
- * @brief DES Key Transport transforms implementation for NSS.
+ * @brief DES Key Wrap transforms implementation for NSS.
  */
 #include "globals.h"
 

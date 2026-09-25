@@ -251,6 +251,7 @@ xmlSecNssHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecNssHmacCtxPtr ctx;
     xmlSecKeyDataPtr value;
     xmlSecBufferPtr buffer;
+    xmlSecByte* bufferData;
     xmlSecSize bufferSize;
     SECItem keyItem;
     SECItem ignore;
@@ -273,15 +274,16 @@ xmlSecNssHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     buffer = xmlSecKeyDataBinaryValueGetBuffer(value);
     xmlSecAssert2(buffer != NULL, -1);
 
+    bufferData = xmlSecBufferGetData(buffer);
     bufferSize = xmlSecBufferGetSize(buffer);
-    if(bufferSize <= 0) {
+    if((bufferData == NULL) || (bufferSize <= 0)) {
         xmlSecInvalidZeroKeyDataSizeError(xmlSecTransformGetName(transform));
         return(-1);
     }
 
     memset(&keyItem, 0, sizeof(keyItem));
     keyItem.type = siBuffer;
-    keyItem.data = xmlSecBufferGetData(buffer);
+    keyItem.data = bufferData;
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(bufferSize, keyItem.len, return(-1), xmlSecTransformGetName(transform));
 
     memset(&ignore, 0, sizeof(ignore));

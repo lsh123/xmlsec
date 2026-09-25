@@ -184,7 +184,7 @@ xmlSecNssKeyAgreementSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKeyAgreementSize), -1);
     xmlSecAssert2(key != NULL, -1);
 
-    /* key agreement uses two keys from ctxTransform->extraKeyData (KAM key data) */
+    /* key agreement uses two keys from transformCtx->extraKeyData (KAM key data) */
     return(0);
 }
 

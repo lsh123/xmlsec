@@ -58,10 +58,9 @@ struct _xmlSecNssX509StoreCtx {
      *          https://bugzilla.mozilla.org/show_bug.cgi?id=211051
      *    we use this list to perform search ourselves.
      */
-
     CERTCertList* certsList; /* just keeping a reference to destroy later */
-
     xmlSecNssX509CrlNodePtr crlsList;
+    CERTCertDBHandle *certDb;
 };
 
 /******************************************************************************
@@ -107,7 +106,7 @@ xmlSecNssX509StoreGetKlass(void) {
 
 /**
  * @brief Searches @p store for a certificate that matches given criteria.
- * @param store the pointer to X509 key data store klass.
+ * @param store the pointer to X509 key data store.
  * @param subjectName the desired certificate name.
  * @param issuerName the desired certificate issuer name.
  * @param issuerSerial the desired certificate issuer serial number.
@@ -146,7 +145,7 @@ xmlSecNssX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
 
 /**
  * @brief Deprecated. Searches @p store for a certificate that matches given criteria.
- * @param store the pointer to X509 key data store klass.
+ * @param store the pointer to X509 key data store.
  * @param subjectName the desired certificate name.
  * @param issuerName the desired certificate issuer name.
  * @param issuerSerial the desired certificate issuer serial number.
@@ -159,10 +158,14 @@ xmlSecNssX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
  * or an error occurs.
  */
 CERTCertificate *
-xmlSecNssX509StoreFindCert_ex(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
-                                xmlChar *issuerName, xmlChar *issuerSerial,
-                                 xmlSecByte * ski, xmlSecSize skiSize,
-                                 xmlSecKeyInfoCtxPtr keyInfoCtx XMLSEC_ATTRIBUTE_UNUSED) {
+xmlSecNssX509StoreFindCert_ex(
+    xmlSecKeyDataStorePtr store,
+    xmlChar *subjectName,
+    xmlChar *issuerName,
+    xmlChar *issuerSerial,
+    xmlSecByte * ski, xmlSecSize skiSize,
+    xmlSecKeyInfoCtxPtr keyInfoCtx XMLSEC_ATTRIBUTE_UNUSED
+) {
     xmlSecNssX509StoreCtxPtr ctx;
     xmlSecNssX509FindCertCtx findCertCtx;
     CERTCertificate * cert;
@@ -174,10 +177,12 @@ xmlSecNssX509StoreFindCert_ex(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
 
     ctx = xmlSecNssX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, NULL);
+    xmlSecAssert2(ctx->certDb != NULL, NULL);
 
     /* ctx->certsList CAN be NULL since we are searching NSSDB as well */
 
     ret = xmlSecNssX509FindCertCtxInitialize(&findCertCtx,
+            ctx->certDb,
             subjectName,
             issuerName, issuerSerial,
             ski, skiSize);
@@ -207,10 +212,11 @@ xmlSecNssX509StoreFindCertByValue(xmlSecKeyDataStorePtr store, xmlSecKeyX509Data
 
     ctx = xmlSecNssX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, NULL);
+    xmlSecAssert2(ctx->certDb != NULL, NULL);
 
     /* ctx->certsList CAN be NULL since we are searching NSSDB as well */
 
-    ret = xmlSecNssX509FindCertCtxInitializeFromValue(&findCertCtx, x509Value);
+    ret = xmlSecNssX509FindCertCtxInitializeFromValue(&findCertCtx, ctx->certDb, x509Value);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssX509FindCertCtxInitializeFromValue", NULL);
         xmlSecNssX509FindCertCtxFinalize(&findCertCtx);
@@ -395,6 +401,9 @@ xmlSecNssX509StoreFindChildCert(CERTCertificate* cert, CERTCertList* certs) {
     xmlSecAssert2(certs != NULL, NULL);
 
     for (cur = CERT_LIST_HEAD(certs); !CERT_LIST_END(cur, certs); cur = CERT_LIST_NEXT(cur)) {
+        if(cur->cert == NULL) {
+            continue;
+        }
         /* allow self signed certs */
         if(cur->cert == cert) {
             continue;
@@ -478,7 +487,7 @@ xmlSecNssX509StoreVerifyCert(CERTCertDBHandle *handle, CERTCertificate* cert, xm
 
 /**
  * @brief Verifies @p key against the X509 store.
- * @param store the pointer to X509 key data store klass.
+ * @param store the pointer to X509 key data store.
  * @param key the pointer to key.
  * @param keyInfoCtx the key info context for verification.
  *
@@ -501,6 +510,7 @@ xmlSecNssX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, xmlSe
 
     ctx = xmlSecNssX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->certDb != NULL, -1);
 
     /* retrieve X509 data and get key cert, other certs and crls */
     x509Data = xmlSecKeyGetData(key, xmlSecNssKeyDataX509Id);
@@ -514,7 +524,7 @@ xmlSecNssX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, xmlSe
         return(0); /* key cannot be verified w/o key cert */
     }
 
-    ret = xmlSecNssX509StoreVerifyCert(CERT_GetDefaultCertDB(), key_cert, keyInfoCtx);
+    ret = xmlSecNssX509StoreVerifyCert(ctx->certDb, key_cert, keyInfoCtx);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssX509StoreVerifyCert", xmlSecKeyDataStoreGetName(store));
         return(-1);
@@ -528,7 +538,7 @@ xmlSecNssX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, xmlSe
 
 /**
  * @brief Verifies @p certs list.
- * @param store the pointer to X509 key data store klass.
+ * @param store the pointer to X509 key data store.
  * @param certs the untrusted certificates stack.
  * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  * @return pointer to the first verified certificate from @p certs.
@@ -548,7 +558,7 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs, xmlSe
 
     ctx = xmlSecNssX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, NULL);
-
+    xmlSecAssert2(ctx->certDb != NULL, NULL);
 
     /* do we need to verify anything at all? */
     if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) != 0) {
@@ -573,7 +583,7 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs, xmlSe
             continue;
         }
 
-        ret = xmlSecNssX509StoreVerifyCert(CERT_GetDefaultCertDB(), cert, keyInfoCtx);
+        ret = xmlSecNssX509StoreVerifyCert(ctx->certDb, cert, keyInfoCtx);
         if(ret < 0) {
             xmlSecInternalError("xmlSecNssX509StoreVerifyCert", xmlSecKeyDataStoreGetName(store));
             continue; /* ignore all errors and try other certs */
@@ -602,7 +612,7 @@ done:
 /**
  * @brief Adds cert to the trusted or untrusted store.
  * @details Adds trusted (root) or untrusted certificate to the store.
- * @param store the pointer to X509 key data store klass.
+ * @param store the pointer to X509 key data store.
  * @param cert the pointer to NSS X509 certificate.
  * @param type the certificate type (trusted/untrusted).
  * @return 0 on success or a negative value if an error occurs.
@@ -617,6 +627,26 @@ xmlSecNssX509StoreAdoptCert(xmlSecKeyDataStorePtr store, CERTCertificate* cert, 
 
     ctx = xmlSecNssX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->certDb != NULL, -1);
+
+    if(type == xmlSecKeyDataTypeTrusted) {
+        SECStatus status;
+
+        /* if requested, mark the certificate as trusted; this is done before
+         * adding the cert to the list so that on failure the caller can still
+         * safely free the cert (the store does not hold a reference to it yet) */
+        CERTCertTrust trust;
+        status = CERT_DecodeTrustString(&trust, "TCu,Cu,Tu");
+        if(status != SECSuccess) {
+            xmlSecNssError("CERT_DecodeTrustString", xmlSecKeyDataStoreGetName(store));
+            return(-1);
+        }
+        status = CERT_ChangeCertTrust(ctx->certDb, cert, &trust);
+        if(status != SECSuccess) {
+            xmlSecNssError("CERT_ChangeCertTrust", xmlSecKeyDataStoreGetName(store));
+            return(-1);
+        }
+    }
 
     if(ctx->certsList == NULL) {
         ctx->certsList = CERT_NewCertList();
@@ -632,30 +662,19 @@ xmlSecNssX509StoreAdoptCert(xmlSecKeyDataStorePtr store, CERTCertificate* cert, 
         return(-1);
     }
 
-    if(type == xmlSecKeyDataTypeTrusted) {
-        SECStatus status;
-
-        /* if requested, mark the certificate as trusted */
-        CERTCertTrust trust;
-        status = CERT_DecodeTrustString(&trust, "TCu,Cu,Tu");
-        if(status != SECSuccess) {
-            xmlSecNssError("CERT_DecodeTrustString", xmlSecKeyDataStoreGetName(store));
-            return(-1);
-        }
-        status = CERT_ChangeCertTrust(CERT_GetDefaultCertDB(), cert, &trust);
-        if(status != SECSuccess) {
-            xmlSecNssError("CERT_ChangeCertTrust", xmlSecKeyDataStoreGetName(store));
-            return(-1);
-        }
-    }
-
+    /* success */
     return(0);
 }
 
 
 /**
  * @brief Adds CRL to the store.
- * @param store the pointer to X509 key data store klass.
+ * @details The store's revocation checking (xmlSecNssX509StoreVerify) only
+ * validates the CRL time range, not its signature. CRLs added here are assumed
+ * to have been verified beforehand; use xmlSecNssX509StoreVerifyCrl() to verify
+ * a CRL's signature and validity period before adopting it, otherwise a forged
+ * CRL could influence revocation decisions.
+ * @param store the pointer to X509 key data store.
  * @param crl the pointer to NSS X509 CRL.
  * @return 0 on success or a negative value if an error occurs.
  */
@@ -685,6 +704,7 @@ xmlSecNssX509VerifyCRLTimeValidity(CERTSignedCrl* crl, xmlSecKeyInfoCtxPtr keyIn
     PRTime thisUpdate = 0;
     PRTime nextUpdate = 0;
     time_t verification_ts;
+    SECStatus rv;
 
     xmlSecAssert2(crl != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
@@ -699,31 +719,27 @@ xmlSecNssX509VerifyCRLTimeValidity(CERTSignedCrl* crl, xmlSecKeyInfoCtxPtr keyIn
     /* Convert time_t to PRTime (microseconds since epoch) */
     verification_time = ((PRTime)verification_ts) * PR_USEC_PER_SEC;
 
-    /* thisUpdate is a required field in a CRL (RFC 5280) */
+    /* Get thisUpdate: thisUpdate is a required field in a CRL (RFC 5280) */
     if(crl->crl.lastUpdate.data == NULL) {
         xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "CRL is missing the thisUpdate (lastUpdate) field");
         return(-1);
     }
-
-    /* Get thisUpdate */
-    if(crl->crl.lastUpdate.data != NULL) {
-        SECStatus rv = DER_DecodeTimeChoice(&thisUpdate, &(crl->crl.lastUpdate));
-        if(rv != SECSuccess) {
-            xmlSecNssError("DER_DecodeTimeChoice(thisUpdate)", NULL);
-            return(-1);
-        }
-
-        /* Verify thisUpdate <= verification_time */
-        if(thisUpdate > verification_time) {
-            /* CRL not yet valid */
-            xmlSecOtherError(XMLSEC_ERRORS_R_CRL_NOT_YET_VALID, NULL, NULL);
-            return(0);
-        }
+    rv = DER_DecodeTimeChoice(&thisUpdate, &(crl->crl.lastUpdate));
+    if(rv != SECSuccess) {
+        xmlSecNssError("DER_DecodeTimeChoice(thisUpdate)", NULL);
+        return(-1);
     }
 
-    /* Get nextUpdate */
+    /* Verify thisUpdate <= verification_time */
+    if(thisUpdate > verification_time) {
+        /* CRL not yet valid */
+        xmlSecOtherError(XMLSEC_ERRORS_R_CRL_NOT_YET_VALID, NULL, NULL);
+        return(0);
+    }
+
+    /* Get nextUpdate if present */
     if(crl->crl.nextUpdate.data != NULL) {
-        SECStatus rv = DER_DecodeTimeChoice(&nextUpdate, &(crl->crl.nextUpdate));
+        rv = DER_DecodeTimeChoice(&nextUpdate, &(crl->crl.nextUpdate));
         if(rv != SECSuccess) {
             xmlSecNssError("DER_DecodeTimeChoice(nextUpdate)", NULL);
             return(-1);
@@ -751,6 +767,7 @@ xmlSecNssX509VerifyCRLSignature(xmlSecNssX509StoreCtxPtr ctx, CERTSignedCrl* crl
     int res = -1;
 
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->certDb != NULL, -1);
     xmlSecAssert2(crl != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
@@ -772,7 +789,7 @@ xmlSecNssX509VerifyCRLSignature(xmlSecNssX509StoreCtxPtr ctx, CERTSignedCrl* crl
 
         /* If not found in store, try to find in NSS database */
         if(issuer_cert == NULL) {
-            issuer_cert = CERT_FindCertByName(CERT_GetDefaultCertDB(), &(crl->crl.derName));
+            issuer_cert = CERT_FindCertByName(ctx->certDb, &(crl->crl.derName));
         }
     }
     if(issuer_cert == NULL) {
@@ -782,7 +799,7 @@ xmlSecNssX509VerifyCRLSignature(xmlSecNssX509StoreCtxPtr ctx, CERTSignedCrl* crl
 
     /* the issuer cert must be verified itself (chain and validity) before it
      * can be used to verify the CRL signature */
-    ret = xmlSecNssX509StoreVerifyCert(CERT_GetDefaultCertDB(), issuer_cert, keyInfoCtx);
+    ret = xmlSecNssX509StoreVerifyCert(ctx->certDb, issuer_cert, keyInfoCtx);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssX509StoreVerifyCert", NULL);
         goto done;
@@ -816,7 +833,7 @@ done:
 
 /**
  * @brief Verifies @p crl by checking its signature and validity period.
- * @param store the pointer to X509 key data store klass.
+ * @param store the pointer to X509 key data store.
  * @param crl the CRL to verify.
  * @param keyInfoCtx the key info context for verification parameters.
  *
@@ -878,6 +895,13 @@ xmlSecNssX509StoreInitialize(xmlSecKeyDataStorePtr store) {
 
     memset(ctx, 0, sizeof(xmlSecNssX509StoreCtx));
 
+    ctx->certDb = CERT_GetDefaultCertDB();
+    if(ctx->certDb == NULL) {
+        xmlSecInternalError("CERT_GetDefaultCertDB", xmlSecKeyDataStoreGetName(store));
+        return(-1);
+    }
+
+    /* success */
     return(0);
 }
 
@@ -942,12 +966,12 @@ xmlSecNssGetCertName(const xmlChar * name) {
 
 static CERTCertificate*
 xmlSecNssX509FindCert(CERTCertList* certsList, xmlSecNssX509FindCertCtxPtr findCertCtx) {
-    CERTCertDBHandle * certDb;
     CERTCertificate * cert = NULL;
     int ret;
 
     /* certsList can be NULL */
     xmlSecAssert2(findCertCtx != NULL, NULL);
+    xmlSecAssert2(findCertCtx->certDb != NULL, NULL);
 
     /* try to search in our list - NSS doesn't update it's cache correctly
      * when new certs are added https://bugzilla.mozilla.org/show_bug.cgi?id=211051
@@ -957,9 +981,12 @@ xmlSecNssX509FindCert(CERTCertList* certsList, xmlSecNssX509FindCertCtxPtr findC
 
         for(curCertNode = CERT_LIST_HEAD(certsList);
             (cert == NULL) && !CERT_LIST_END(curCertNode, certsList) &&
-            (curCertNode != NULL) && (curCertNode->cert != NULL);
+            (curCertNode != NULL);
             curCertNode = CERT_LIST_NEXT(curCertNode)
         ) {
+            if(curCertNode->cert == NULL) {
+                continue;
+            }
             ret = xmlSecNssX509FindCertCtxMatch(findCertCtx, curCertNode->cert);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecNssX509FindCertCtxMatch", NULL);
@@ -976,25 +1003,20 @@ xmlSecNssX509FindCert(CERTCertList* certsList, xmlSecNssX509FindCertCtxPtr findC
     }
 
     /* search in the NSS DB */
-    certDb = CERT_GetDefaultCertDB();
-    if(certDb == NULL) {
-        xmlSecNssError("CERT_GetDefaultCertDB", NULL);
-        return(NULL);
-    }
 
     /* search by subject name if available */
     if ((cert == NULL) && (findCertCtx->subjectNameItem != NULL)) {
-        cert = CERT_FindCertByName(certDb, findCertCtx->subjectNameItem);
+        cert = CERT_FindCertByName(findCertCtx->certDb, findCertCtx->subjectNameItem);
     }
 
     /* search by issuer name+serial if available */
     if((cert == NULL) && (findCertCtx->issuerAndSNInitialized == 1)) {
-        cert = CERT_FindCertByIssuerAndSN(certDb, &(findCertCtx->issuerAndSN));
+        cert = CERT_FindCertByIssuerAndSN(findCertCtx->certDb, &(findCertCtx->issuerAndSN));
     }
 
     /* search by SKI if available */
     if((cert == NULL) && (findCertCtx->skiItem.data != NULL) && (findCertCtx->skiItem.len > 0)) {
-        cert = CERT_FindCertBySubjectKeyID(certDb, &(findCertCtx->skiItem));
+        cert = CERT_FindCertBySubjectKeyID(findCertCtx->certDb, &(findCertCtx->skiItem));
     }
 
     /* done */
@@ -1002,16 +1024,17 @@ xmlSecNssX509FindCert(CERTCertList* certsList, xmlSecNssX509FindCertCtxPtr findC
 }
 
 xmlSecKeyPtr
-xmlSecNssX509FindKeyByValue(xmlSecPtrListPtr keysList, xmlSecKeyX509DataValuePtr x509Value) {
+xmlSecNssX509FindKeyByValue(CERTCertDBHandle *certDb, xmlSecPtrListPtr keysList, xmlSecKeyX509DataValuePtr x509Value) {
     xmlSecNssX509FindCertCtx findCertCtx;
     xmlSecSize keysListSize, ii;
     xmlSecKeyPtr res = NULL;
     int ret;
 
+    xmlSecAssert2(certDb != NULL, NULL);
     xmlSecAssert2(keysList != NULL, NULL);
     xmlSecAssert2(x509Value != NULL, NULL);
 
-    ret = xmlSecNssX509FindCertCtxInitializeFromValue(&findCertCtx, x509Value);
+    ret = xmlSecNssX509FindCertCtxInitializeFromValue(&findCertCtx, certDb, x509Value);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssX509FindCertCtxInitializeFromValue", NULL);
         xmlSecNssX509FindCertCtxFinalize(&findCertCtx);
@@ -1091,7 +1114,9 @@ xmlSecNssX509SerialNumberRead(const xmlChar *str, SECItem *res, PLArenaPool *are
     return(0);
 }
 
-int xmlSecNssX509FindCertCtxInitialize(xmlSecNssX509FindCertCtxPtr ctx,
+int xmlSecNssX509FindCertCtxInitialize(
+    xmlSecNssX509FindCertCtxPtr ctx,
+    CERTCertDBHandle *certDb,
     const xmlChar *subjectName,
     const xmlChar *issuerName, const xmlChar *issuerSerial,
     xmlSecByte * ski, xmlSecSize skiSize
@@ -1099,8 +1124,10 @@ int xmlSecNssX509FindCertCtxInitialize(xmlSecNssX509FindCertCtxPtr ctx,
     int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(certDb != NULL, -1);
 
     memset(ctx, 0, sizeof(*ctx));
+    ctx->certDb = certDb;
 
     /* ski (easy first) */
     if((ski != NULL) && (skiSize > 0)) {
@@ -1170,13 +1197,19 @@ int xmlSecNssX509FindCertCtxInitialize(xmlSecNssX509FindCertCtxPtr ctx,
 }
 
 int
-xmlSecNssX509FindCertCtxInitializeFromValue(xmlSecNssX509FindCertCtxPtr ctx, xmlSecKeyX509DataValuePtr x509Value) {
+xmlSecNssX509FindCertCtxInitializeFromValue(
+    xmlSecNssX509FindCertCtxPtr ctx,
+    CERTCertDBHandle *certDb,
+    xmlSecKeyX509DataValuePtr x509Value
+) {
     int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(certDb != NULL, -1);
     xmlSecAssert2(x509Value != NULL, -1);
 
     ret = xmlSecNssX509FindCertCtxInitialize(ctx,
+                certDb,
                 x509Value->subject,
                 x509Value->issuerName, x509Value->issuerSerial,
                 xmlSecBufferGetData(&(x509Value->ski)), xmlSecBufferGetSize(&(x509Value->ski))

@@ -155,7 +155,11 @@ xmlSecNssKeyDataDEREncodedKeyValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, 
         goto done;
     }
 
-    /* read pubkey */
+    /* read pubkey. SECKEY_DecodeDERSubjectPublicKeyInfo() rejects trailing
+     * bytes (it decodes via SEC_QuickDERDecodeItem(), which fails with
+     * SEC_ERROR_EXTRA_INPUT if any input bytes remain unconsumed), so no
+     * explicit single-TLV/consumed-length check is needed here -- unlike the
+     * GnuTLS backend, whose decoder ignores trailing bytes. */
     secItem.data = data;
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, secItem.len, goto done, xmlSecKeyDataKlassGetName(id));
     spki = SECKEY_DecodeDERSubjectPublicKeyInfo(&secItem);

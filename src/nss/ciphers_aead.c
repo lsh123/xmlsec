@@ -623,6 +623,7 @@ xmlSecNssAeadCipherCtxSetupParamsGcm(xmlSecNssAeadCipherCtxPtr ctx, SECItem* par
 
     param->data  = (unsigned char *)&(ctx->gcm);
     param->len   = sizeof(ctx->gcm);
+    param->type  = siBuffer;
 
     return(0);
 }
@@ -674,6 +675,12 @@ xmlSecNssAeadCipherCtxSetupParamsChaCha20Poly1305(xmlSecNssAeadCipherCtxPtr ctx,
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(param != NULL, -1);
 
+    /* pAAD is NULL (with ulAADLen == 0) when the AAD buffer is empty, i.e. the
+     * XML carries no AAD. This is the correct value for NSS: the softoken
+     * requires (pAAD == NULL) == (ulAADLen == 0) and copies the AAD only under
+     * `if (pAAD)`, so a NULL pointer with zero length is the expected empty case.
+     * Do not substitute a non-NULL empty byte here (unlike the GnuTLS backend),
+     * as that would violate the NSS invariant. */
     ctx->nssChachaPolyParams.pNonce      = ctx->iv;
     ctx->nssChachaPolyParams.ulNonceLen  = XMLSEC_CHACHA20_NONCE_SIZE;
     ctx->nssChachaPolyParams.pAAD        = xmlSecBufferGetData(&(ctx->aad));
@@ -702,9 +709,10 @@ xmlSecNssAeadCipherNodeReadChaCha20Poly1305(xmlSecTransformPtr transform, xmlNod
 
     ctx = xmlSecNssAeadCipherGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->ivInitialized == 0, -1);
 
     ret = xmlSecTransformChaCha20Poly1305ParamsRead(node, &(ctx->aad), ctx->iv, sizeof(ctx->iv), &ivSize, &noncePresent);
-    if(ret < 0) {
+    if((ret < 0) || (ivSize != XMLSEC_CHACHA20_NONCE_SIZE)) {
         xmlSecInternalError("xmlSecTransformChaCha20Poly1305ParamsRead", xmlSecTransformGetName(transform));
         return(-1);
     }

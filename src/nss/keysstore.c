@@ -229,8 +229,12 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
         if (keyReq->keyType & xmlSecKeyDataTypePrivate) {
             privkey = PK11_FindKeyByAnyCert(cert, NULL);
             if (privkey == NULL) {
-                xmlSecNssError("PK11_FindKeyByAnyCert", NULL);
-                goto done;
+                /* no private key found; if a public key was requested and
+                 * extracted, fall back to a public-only key instead of failing */
+                if(((keyReq->keyType & xmlSecKeyDataTypePublic) == 0) || (pubkey == NULL)) {
+                    xmlSecNssError("PK11_FindKeyByAnyCert", NULL);
+                    goto done;
+                }
             }
         }
 
@@ -318,6 +322,7 @@ xmlSecNssKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509Data
     xmlSecKeyStorePtr* simplekeystore;
     xmlSecPtrListPtr keysList;
     xmlSecKeyPtr key, res;
+    CERTCertDBHandle *certDb;
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecNssKeysStoreId), NULL);
     xmlSecAssert2(x509Data != NULL, NULL);
@@ -332,7 +337,13 @@ xmlSecNssKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509Data
         return(NULL);
     }
 
-    key = xmlSecNssX509FindKeyByValue(keysList, x509Data);
+    certDb = CERT_GetDefaultCertDB();
+    if(certDb == NULL) {
+        xmlSecInternalError("CERT_GetDefaultCertDB", NULL);
+        return(NULL);
+    }
+
+    key = xmlSecNssX509FindKeyByValue(certDb, keysList, x509Data);
     if(key == NULL) {
         /* not found */
         return(NULL);

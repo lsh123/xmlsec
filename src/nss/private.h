@@ -56,6 +56,7 @@ SECOidTag   xmlSecNssGetDigestFromHref                  (const xmlChar* href);
 
 
 typedef struct _xmlSecNssX509FindCertCtx {
+    CERTCertDBHandle *certDb;
     PLArenaPool *arena;
 
     CERTName* subjectName;
@@ -74,12 +75,14 @@ typedef struct _xmlSecNssX509FindCertCtx {
 } xmlSecNssX509FindCertCtx, *xmlSecNssX509FindCertCtxPtr;
 
 int        xmlSecNssX509FindCertCtxInitialize           (xmlSecNssX509FindCertCtxPtr ctx,
+                                                         CERTCertDBHandle *certDb,
                                                          const xmlChar *subjectName,
                                                          const xmlChar *issuerName,
                                                          const xmlChar *issuerSerial,
                                                          xmlSecByte * ski,
                                                          xmlSecSize skiSize);
 int        xmlSecNssX509FindCertCtxInitializeFromValue  (xmlSecNssX509FindCertCtxPtr ctx,
+                                                         CERTCertDBHandle *certDb,
                                                          xmlSecKeyX509DataValuePtr x509Value);
 void       xmlSecNssX509FindCertCtxFinalize             (xmlSecNssX509FindCertCtxPtr ctx);
 
@@ -88,7 +91,8 @@ int        xmlSecNssX509FindCertCtxMatch                (xmlSecNssX509FindCertCt
 
 CERTCertificate * xmlSecNssX509StoreFindCertByValue     (xmlSecKeyDataStorePtr store,
                                                          xmlSecKeyX509DataValuePtr x509Value);
-xmlSecKeyPtr xmlSecNssX509FindKeyByValue                (xmlSecPtrListPtr keysList,
+xmlSecKeyPtr xmlSecNssX509FindKeyByValue                (CERTCertDBHandle *certDb,
+                                                         xmlSecPtrListPtr keysList,
                                                          xmlSecKeyX509DataValuePtr x509Value);
 
 int         xmlSecNssX509StoreVerifyKey                 (xmlSecKeyDataStorePtr store,

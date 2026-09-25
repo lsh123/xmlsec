@@ -492,7 +492,7 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
             XMLSEC_SAFE_CAST_UINT_TO_SIZE(dwBCryptSecretLen, secretSize, goto done, NULL);
             ret = xmlSecBufferSetSize(secret, secretSize);
             if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferSetSize2(BCrypt)", NULL,
+                xmlSecInternalError2("xmlSecBufferSetSize(BCrypt)", NULL,
                     "size=" XMLSEC_SIZE_FMT, secretSize);
                 goto done;
             }

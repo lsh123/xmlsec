@@ -29,6 +29,11 @@
 #include "../cast_helpers.h"
 #include "private.h"
 
+/* Default system store names, used when the crypto config does not specify
+ * any: "MY" (current user) holds personal certificates/keys, and "ROOT"
+ * (local machine) exposes the system trust anchors without configuration.
+ * Both values can be overridden via the crypto config; machine personal
+ * certificates (LM\MY) require such an override. */
 #define XMLSEC_MSCNG_APP_DEFAULT_CURRENT_USER_CERT_STORE_NAME   TEXT("MY")
 #define XMLSEC_MSCNG_APP_DEFAULT_LOCAL_MACHINE_CERT_STORE_NAME  TEXT("ROOT")
 
@@ -53,6 +58,7 @@
  * levels determine the search order, so the higher value (2) is searched
  * before the lower one (1):
  * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddstoretocollection
+ * (empirically verified: the higher-priority store is searched first)
  * Opening either individual store is treated as a soft failure - a warning is
  * logged but the other store is still tried.  Returns 0 on success or -1 if
  * neither store could be opened.

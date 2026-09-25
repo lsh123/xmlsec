@@ -2351,8 +2351,7 @@ xmlSecCryptoAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename,
  * @param mngr the keys manager.
  * @param filename the certificate file.
  * @param format the certificate file format.
- * @param type the flag that indicates whether the certificate in @p filename
- *                      is trusted or not.
+ * @param type the flag that indicates if the certificate in @p filename is trusted or not.
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -2375,7 +2374,7 @@ xmlSecCryptoAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
  * @param data the certificate binary data.
  * @param dataSize the certificate binary data size.
  * @param format the certificate data format.
- * @param type the flag that indicates whether the certificate is trusted or not.
+ * @param type the flag that indicates if the certificate is trusted or not.
  * @return 0 on success or a negative value otherwise.
  */
 int

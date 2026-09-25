@@ -255,7 +255,7 @@ xmlSecMSCngKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
  * @brief Adds a certificate to @p data.
  * @details Adds @p cert to @p data as a certificate. On success, @p data owns the @p cert.
  * @param data the pointer to key data.
- * @param cert the pointer to certificates.
+ * @param cert the pointer to the certificate.
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -306,10 +306,8 @@ xmlSecMSCngKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, PCCRL_CONTEXT crl) {
 /**
  * @brief Gets the certificate from which the key was extracted.
  * @param data the pointer to X509 key data.
- *
- *
  * @return the key's certificate or NULL if key data was not used for key
- * extraction or an error occurs.
+ * extraction.
  */
 PCCERT_CONTEXT
 xmlSecMSCngKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
@@ -323,6 +321,12 @@ xmlSecMSCngKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
     return(ctx->keyCert);
 }
 
+/**
+ * @brief Gets the certificate store for the X509 key data.
+ * @param data the pointer to X509 key data.
+ * @return the pointer to the certificate store that contains the X509 key
+ * data certificates or NULL on failure.
+ */
 HCERTSTORE
 xmlSecMSCngKeyDataX509GetCertStore(xmlSecKeyDataPtr data) {
     xmlSecMSCngX509DataCtxPtr ctx;
@@ -336,6 +340,9 @@ xmlSecMSCngKeyDataX509GetCertStore(xmlSecKeyDataPtr data) {
 }
 
 
+/**
+ * @brief The MSCng reader for the binary (DER-encoded) X509 CRL content.
+ */
 PCCRL_CONTEXT
 xmlSecMSCngX509CrlDerRead(const xmlSecByte* buf, xmlSecSize size) {
     PCCRL_CONTEXT crl = NULL;
@@ -762,10 +769,13 @@ xmlSecMSCngX509SKIWrite(PCCERT_CONTEXT cert, xmlSecBufferPtr buf) {
 }
 
 #define XMLSEC_MSCNG_SHA1_DIGEST_SIZE 20
+#define XMLSEC_MSCNG_SHA256_DIGEST_SIZE 32
 
 static int
 xmlSecMSCngX509DigestWrite(PCCERT_CONTEXT cert, const xmlChar* algorithm, xmlSecBufferPtr buf) {
-    xmlSecByte md[XMLSEC_MSCNG_SHA1_DIGEST_SIZE];
+    DWORD certHashPropId;
+    DWORD digestSize;
+    xmlSecByte md[XMLSEC_MSCNG_SHA256_DIGEST_SIZE];
     DWORD mdLen = sizeof(md);
     BOOL status;
     int ret;
@@ -773,18 +783,21 @@ xmlSecMSCngX509DigestWrite(PCCERT_CONTEXT cert, const xmlChar* algorithm, xmlSec
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(buf != NULL, -1);
 
-    /* only SHA1 algorithm is currently supported */
-    if (xmlStrcmp(algorithm, xmlSecHrefSha1) != 0) {
+    /* SHA1 and SHA256 algorithms are currently supported */
+    if (xmlStrcmp(algorithm, xmlSecHrefSha1) == 0) {
+        certHashPropId = CERT_SHA1_HASH_PROP_ID;
+        digestSize = XMLSEC_MSCNG_SHA1_DIGEST_SIZE;
+    } else if (xmlStrcmp(algorithm, xmlSecHrefSha256) == 0) {
+        certHashPropId = CERT_SHA256_HASH_PROP_ID;
+        digestSize = XMLSEC_MSCNG_SHA256_DIGEST_SIZE;
+    } else {
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
             "href=%s", xmlSecErrorsSafeString(algorithm));
         return(-1);
     }
 
-    status = CertGetCertificateContextProperty(cert,
-        CERT_SHA1_HASH_PROP_ID,
-        md,
-        &mdLen);
-    if ((!status) || (mdLen != sizeof(md))) {
+    status = CertGetCertificateContextProperty(cert, certHashPropId, md, &mdLen);
+    if ((!status) || (mdLen != digestSize)) {
         xmlSecMSCngLastError("CertGetCertificateContextProperty", NULL);
         return(-1);
     }
@@ -811,7 +824,7 @@ typedef struct _xmlSecMSCngKeyDataX509WriteContext {
 static int
 xmlSecMSCngKeyDataX509WriteContextInitialize(xmlSecMSCngKeyDataX509WriteContext* ctx, HCERTSTORE store) {
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(store != 0, -1);
+    xmlSecAssert2(store != NULL, -1);
 
     memset(ctx, 0, sizeof(xmlSecMSCngKeyDataX509WriteContext));
     ctx->store = store;
@@ -996,6 +1009,10 @@ xmlSecMSCngX509CertDebugDump(PCCERT_CONTEXT cert, FILE* output) {
     xmlSecAssert(cert != NULL);
     xmlSecAssert(output != NULL);
 
+    if(cert->pCertInfo == NULL) {
+        return;
+    }
+
     fprintf(output, "=== X509 Certificate\n");
 
     /* subject */
@@ -1016,6 +1033,7 @@ xmlSecMSCngX509CertDebugDump(PCCERT_CONTEXT cert, FILE* output) {
 
     /* serial number (CRYPT_INTEGER_BLOB is little-endian; print in big-endian X.509 order) */
     sn = &(cert->pCertInfo->SerialNumber);
+    fprintf(output, "==== Serial Number: ");
     for(ii = sn->cbData; ii > 0; ii--) {
         if(ii != 1) {
             fprintf(output, "%02x:", sn->pbData[ii - 1]);
@@ -1039,6 +1057,10 @@ xmlSecMSCngX509CertDebugXmlDump(PCCERT_CONTEXT cert, FILE* output) {
 
     xmlSecAssert(cert != NULL);
     xmlSecAssert(output != NULL);
+
+    if(cert->pCertInfo == NULL) {
+        return;
+    }
 
     /* subject */
     subject = xmlSecMSCngX509NameWrite(&(cert->pCertInfo->Subject));

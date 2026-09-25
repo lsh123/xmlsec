@@ -123,8 +123,8 @@ xmlSecMSCngKeyDataCertGetPrivkey(PCCERT_CONTEXT cert, NCRYPT_KEY_HANDLE* key, BO
     }
 
 
-    /* no luck */
-    xmlSecMSCngLastError("CertGetCertificateContextProperty(): cert doesn't have private key", NULL);
+    /* no luck: the certificate doesn't have a private key */
+    xmlSecOtherError(XMLSEC_ERRORS_R_KEY_NOT_FOUND, NULL, "the certificate doesn't have a private key");
     return(-1);
 }
 
@@ -714,7 +714,7 @@ xmlSecMSCngCertKeyDataGetType(xmlSecKeyDataPtr data) {
 }
 
 xmlSecSize
-xmlSecMSCngCertKeyDataGetSize(xmlSecKeyDataPtr data) {
+xmlSecMSCngCertKeyDataGetSizeInBits(xmlSecKeyDataPtr data) {
     NTSTATUS status;
     xmlSecMSCngKeyDataCtxPtr ctx;
     DWORD length = 0;
@@ -728,6 +728,8 @@ xmlSecMSCngCertKeyDataGetSize(xmlSecKeyDataPtr data) {
 
     if(ctx->cert != NULL) {
         xmlSecAssert2(ctx->cert->pCertInfo != NULL, 0);
+        /* Returns the length of the public/private keys in bits
+         * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certgetpublickeylength */
         length = CertGetPublicKeyLength(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
             &ctx->cert->pCertInfo->SubjectPublicKeyInfo);
         if(length == 0) {
@@ -736,6 +738,8 @@ xmlSecMSCngCertKeyDataGetSize(xmlSecKeyDataPtr data) {
         }
     } else if(ctx->pubkey != 0) {
         DWORD lenlen = sizeof(length);
+        /* Returns the  number of bits in the key
+         * https://learn.microsoft.com/en-us/windows/win32/seccng/cng-property-identifiers */
         status = BCryptGetProperty(ctx->pubkey,
             BCRYPT_KEY_STRENGTH,
             (PUCHAR)&length,
@@ -776,7 +780,7 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyData ## klassName ## Klass = {          
                                                                                                          \
     /* get info */                                                                                       \
     xmlSecMSCngCertKeyDataGetType,              /* xmlSecKeyDataGetTypeMethod getType; */                \
-    xmlSecMSCngCertKeyDataGetSize,              /* xmlSecKeyDataGetSizeMethod getSize; */                \
+    xmlSecMSCngCertKeyDataGetSizeInBits,        /* xmlSecKeyDataGetSizeMethod getSize; */                \
     NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */ \
                                                                                                          \
     /* read/write */                                                                                     \
@@ -991,16 +995,13 @@ xmlSecMSCngKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     memcpy(blobData + offset, xmlSecBufferGetData(&(rsaValue->modulus)), mSize);
     offset += mSize;
 
-    /* PrivateExponent is REQUIRED for the private key but MSCng does not
-     * support it, so we just ignore it */
-
     /* Now that we have the blob, import */
     status = BCryptOpenAlgorithmProvider(
         &hAlg,
         BCRYPT_RSA_ALGORITHM,
         NULL,
         0);
-    if (status != STATUS_SUCCESS) {
+    if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptOpenAlgorithmProvider", xmlSecKeyDataKlassGetName(id), status);
         goto done;
     }
@@ -1272,7 +1273,7 @@ xmlSecMSCngKeyDataRsaGetKlass(void) {
 #ifndef XMLSEC_NO_EC
 typedef struct _xmlSecMSCngKeyDataEccCurveNameAndMagic {
     ULONG magic;
-    LPCWSTR blobType;
+    LPCWSTR algId;
     xmlChar oid[128];
 } xmlSecMSCngKeyDataEccCurveNameAndMagic;
 
@@ -1308,7 +1309,7 @@ xmlSecMSCngKeyDataEcGetTypeAndMagicFromOid(const xmlChar* oid, ULONG * magic) {
     for (xmlSecSize ii = 0; ii < size; ++ii) {
         if (xmlStrcmp(oid, g_xmlSecMSCngKeyDataEccCurveNameAndMagic[ii].oid) == 0) {
             (*magic) = g_xmlSecMSCngKeyDataEccCurveNameAndMagic[ii].magic;
-            return(g_xmlSecMSCngKeyDataEccCurveNameAndMagic[ii].blobType);
+            return(g_xmlSecMSCngKeyDataEccCurveNameAndMagic[ii].algId);
         }
     }
     return(0);
@@ -1336,7 +1337,7 @@ xmlSecMSCngKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
     xmlSecAssert2(ecValue != NULL, NULL);
     xmlSecAssert2(ecValue->curve != NULL, NULL);
 
-    /* first byte in ecValue->pubkey is the magical byte, we don't need it */
+    /* first byte in ecValue->pubkey is the magic byte, we don't need it */
     pubkeyData = xmlSecBufferGetData(&(ecValue->pubkey));
     pubkeySize = xmlSecBufferGetSize(&(ecValue->pubkey));
     xmlSecAssert2(pubkeyData != NULL, NULL);
@@ -1910,6 +1911,10 @@ xmlSecMSCngDhValidatePublicSubgroup(xmlSecBufferPtr p, xmlSecBufferPtr g,
     }
     memset(pbPrivBlob, 0, cbPrivBlob);
 
+    /* BCRYPT_DH_PRIVATE_BLOB layout is P, G, Y, X; the self-agreement below
+     * uses q as the private exponent, so the shared secret is the peer's
+     * public key raised to q mod p, which is 1 only if the peer's public
+     * key belongs to the subgroup */
     dhPriv = (BCRYPT_DH_KEY_BLOB*)pbPrivBlob;
     dhPriv->dwMagic = BCRYPT_DH_PRIVATE_MAGIC;
     dhPriv->cbKey = cbKey;
@@ -1935,7 +1940,7 @@ xmlSecMSCngDhValidatePublicSubgroup(xmlSecBufferPtr p, xmlSecBufferPtr g,
     ret = xmlSecMSCngDhBlobCopy(pbPrivBlob + sizeof(BCRYPT_DH_KEY_BLOB) + cbKey * 3, cbKey,
         xmlSecBufferGetData(q), xmlSecBufferGetSize(q));
     if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngDhBlobCopy(Q)", NULL);
+        xmlSecInternalError("xmlSecMSCngDhBlobCopy(X)", NULL);
         goto done;
     }
 
@@ -2443,11 +2448,9 @@ xmlSecMSCngAppKeyReadPrivKeyFromDer(const xmlSecByte* data, DWORD dataSize) {
     }
 #endif /* XMLSEC_NO_XDH */
 
-#if defined(XMLSEC_NO_DH) && defined(XMLSEC_NO_XDH)
-    xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "Failed to read a DH or XDH private key from DER format");
-#elif defined(XMLSEC_NO_DH)
+#if defined(XMLSEC_NO_DH) && !defined(XMLSEC_NO_XDH)
     xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "Failed to read an XDH private key from DER format");
-#elif defined(XMLSEC_NO_XDH)
+#elif defined(XMLSEC_NO_XDH) && !defined(XMLSEC_NO_DH)
     xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "Failed to read a DH private key from DER format");
 #else
     xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "Failed to read a DH or XDH private key from DER format");

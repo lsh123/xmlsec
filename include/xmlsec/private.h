@@ -183,7 +183,7 @@ typedef int                     (*xmlSecCryptoAppDefaultKeysMngrSaveMethod)
  * @param mngr the keys manager.
  * @param filename the certificate file.
  * @param format the certificate file format.
- * @param type the flag that indicates whether the certificate in @p filename is trusted or not.
+ * @param type the flag that indicates if the certificate in @p filename is trusted or not.
  * @return 0 on success or a negative value otherwise.
  */
 typedef int                     (*xmlSecCryptoAppKeysMngrCertLoadMethod)(xmlSecKeysMngrPtr mngr,
@@ -198,7 +198,7 @@ typedef int                     (*xmlSecCryptoAppKeysMngrCertLoadMethod)(xmlSecK
  * @param data the certificate data.
  * @param dataSize the certificate data size.
  * @param format the certificate data format.
- * @param type the flag that indicates whether the certificate in @p data is trusted or not.
+ * @param type the flag that indicates if the certificate in @p data is trusted or not.
  * @return 0 on success or a negative value otherwise.
  */
 typedef int                     (*xmlSecCryptoAppKeysMngrCertLoadMemoryMethod)(xmlSecKeysMngrPtr mngr,

@@ -429,7 +429,7 @@ xmlSecMSCngPbkdf2PerformKeyDerivation(
         goto done;
     }
     if (cbResultLength != cbOut) {
-        xmlSecInvalidSizeError("Derived key length doesn't match the requested",
+        xmlSecInvalidSizeError("Derived key length doesn't match the requested length",
             (xmlSecSize)cbResultLength, (xmlSecSize)cbOut, NULL);
         goto done;
     }
@@ -474,6 +474,9 @@ xmlSecMSCngPbkdf2Derive(xmlSecMSCngKdfCtxPtr ctx, xmlSecBufferPtr out) {
 
     saltData = xmlSecBufferGetData(&(ctx->pbkdf2Params.salt));
     saltSize = xmlSecBufferGetSize(&(ctx->pbkdf2Params.salt));
+    /* The core param reader (xmlSecTransformPbkdf2ParamsReadSalt) rejects a
+     * missing or empty <enc:Salt> with an error before reaching here, so the
+     * non-empty-salt asserts below only guard an unreachable state. */
     xmlSecAssert2(saltData != NULL, -1);
     xmlSecAssert2(saltSize > 0, -1);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(saltSize, saltLen, return(-1), NULL);
@@ -633,7 +636,11 @@ xmlSecMSCngHkdfPerformKeyDerivation(
     }
 
     /* if no salt is provided, use a zero-filled salt of HashLen bytes
-     * (per RFC 5869 section 2.2) */
+     * (per RFC 5869 section 2.2); the core param reader yields an empty salt
+     * for both a missing and an empty <enc:Salt> element, so both cases reach
+     * this branch. Salts longer than HashLen are passed to CNG as-is: CNG
+     * normalizes them internally per the RFC (verified empirically: the output
+     * matches a reference HKDF implementation for a salt longer than HashLen). */
     if((pbSalt == NULL) || (cbSalt == 0)) {
         BCRYPT_ALG_HANDLE hHashAlg = NULL;
         DWORD hashLen = 0;
@@ -708,7 +715,7 @@ xmlSecMSCngHkdfPerformKeyDerivation(
         goto done;
     }
     if(cbResultLength != cbOut) {
-        xmlSecInvalidSizeError("Derived key length doesn't match the requested",
+        xmlSecInvalidSizeError("Derived key length doesn't match the requested length",
             (xmlSecSize)cbResultLength, (xmlSecSize)cbOut, NULL);
         goto done;
     }
@@ -847,7 +854,7 @@ xmlSecMSCngKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
 #ifndef XMLSEC_NO_PBKDF2
         if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformPbkdf2Id)) {
             if((ctx->pbkdf2Params.keyLength > 0) && (ctx->pbkdf2Params.keyLength != transform->expectedOutputSize)) {
-                xmlSecInvalidSizeError("Output KDF size doesn't match the expected",
+                xmlSecInvalidSizeError("Output KDF size doesn't match the expected size",
                     transform->expectedOutputSize, ctx->pbkdf2Params.keyLength, xmlSecTransformGetName(transform));
                 return(-1);
             }
@@ -865,7 +872,7 @@ xmlSecMSCngKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
 #ifndef XMLSEC_NO_HKDF
         if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformHkdfId)) {
             if((ctx->hkdfParams.keyLength > 0) && (ctx->hkdfParams.keyLength != transform->expectedOutputSize)) {
-                xmlSecInvalidSizeError("Output KDF size doesn't match the expected",
+                xmlSecInvalidSizeError("Output KDF size doesn't match the expected size",
                     transform->expectedOutputSize, ctx->hkdfParams.keyLength, xmlSecTransformGetName(transform));
                 return(-1);
             }
@@ -906,11 +913,6 @@ xmlSecMSCngKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
   *****************************************************************************/
 #ifndef XMLSEC_NO_PBKDF2
 
-/******************************************************************************
- *
- * PBKDF2 key derivation algorithm
- *
-  *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCngPbkdf2Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),                   /* xmlSecSize klassSize */
@@ -958,11 +960,6 @@ xmlSecMSCngTransformPbkdf2GetKlass(void) {
   *****************************************************************************/
 #ifndef XMLSEC_NO_HKDF
 
-/******************************************************************************
- *
- * HKDF key derivation algorithm
- *
-  *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCngHkdfKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),                   /* xmlSecSize klassSize */

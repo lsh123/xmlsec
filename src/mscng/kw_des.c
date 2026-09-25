@@ -307,6 +307,11 @@ xmlSecMSCngKWDes3BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     memcpy(xmlSecBufferGetData(&blob) + sizeof(BCRYPT_KEY_DATA_BLOB_HEADER),
         xmlSecBufferGetData(&ctx->keyBuffer), keySize);
 
+    /* cbDescriptor is intentionally left unset (0): the blob buffer is grown
+     * via xmlSecBufferSetSize(), which zeroes the newly allocated region, so a
+     * raw (descriptorless) key blob header with cbDescriptor == 0 is
+     * guaranteed. */
+
     blobSize = xmlSecBufferGetSize(&blob);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(blobSize, dwBlobSize, goto done, NULL);
 
@@ -340,8 +345,11 @@ xmlSecMSCngKWDes3BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     xmlSecAssert2(dwBlockLenLen == sizeof(dwBlockLen), -1);
     XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwBlockLen, blockLen, goto done, NULL);
 
-    if(ivSize < blockLen) {
-        xmlSecInvalidSizeLessThanError("ivSize", ivSize, blockLen, NULL);
+    /* CNG requires the IV to be exactly the block length; reject any other
+     * size (this also guarantees that dwIvSize, cast from ivSize below, equals
+     * blockLen) */
+    if(ivSize != blockLen) {
+        xmlSecInvalidSizeError("ivSize", ivSize, blockLen, NULL);
         goto done;
     }
 
@@ -511,6 +519,11 @@ xmlSecMSCngKWDes3BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     memcpy(xmlSecBufferGetData(&blob) + sizeof(BCRYPT_KEY_DATA_BLOB_HEADER),
         xmlSecBufferGetData(&ctx->keyBuffer), keySize);
 
+    /* cbDescriptor is intentionally left unset (0): the blob buffer is grown
+     * via xmlSecBufferSetSize(), which zeroes the newly allocated region, so a
+     * raw (descriptorless) key blob header with cbDescriptor == 0 is
+     * guaranteed. */
+
     blobSize = xmlSecBufferGetSize(&blob);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(blobSize, dwBlobSize, goto done, NULL);
 
@@ -544,8 +557,11 @@ xmlSecMSCngKWDes3BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     xmlSecAssert2(dwBlockLenLen == sizeof(dwBlockLen), -1);
     XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwBlockLen, blockLen, goto done, NULL);
 
-    if(ivSize < blockLen) {
-        xmlSecInvalidSizeLessThanError("ivSize", ivSize, blockLen, NULL);
+    /* CNG requires the IV to be exactly the block length; reject any other
+     * size (this also guarantees that dwIvSize, cast from ivSize below, equals
+     * blockLen) */
+    if(ivSize != blockLen) {
+        xmlSecInvalidSizeError("ivSize", ivSize, blockLen, NULL);
         goto done;
     }
 

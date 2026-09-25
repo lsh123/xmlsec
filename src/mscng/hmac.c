@@ -281,17 +281,21 @@ xmlSecMSCngHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptGetProperty", xmlSecTransformGetName(transform), status);
-        return(-1);
+        goto done;
     }
 
     ctx->hash = (PBYTE)xmlMalloc(ctx->hashLength);
     if(ctx->hash == NULL) {
         xmlSecMallocError(ctx->hashLength, NULL);
-        return(-1);
+        goto done;
     }
 
     bufSize = xmlSecBufferGetSize(buffer);
-    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(bufSize, dwBufSize, return(-1), xmlSecTransformGetName(transform));
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(bufSize, dwBufSize, goto done, xmlSecTransformGetName(transform));
+
+    /* The key is passed to CNG as-is, even if it is longer than the hash's
+     * block size: CNG normalizes such keys per RFC 2104 internally (verified
+     * empirically: the digest matches a reference implementation). */
     status = BCryptCreateHash(ctx->hAlg,
         &ctx->hHash,
         NULL,
@@ -301,7 +305,7 @@ xmlSecMSCngHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptCreateHash", xmlSecTransformGetName(transform), status);
-        return(-1);
+        goto done;
     }
 
     if (ctx->dgstSizeInBits == 0) {
@@ -313,11 +317,25 @@ xmlSecMSCngHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         xmlSecInvalidSizeMoreThanError("HMAC digest size (bits)",
             ctx->dgstSizeInBits, ((xmlSecSize)ctx->hashLength * 8),
             xmlSecTransformGetName(transform));
-        return(-1);
+        goto done;
     }
 
     ctx->initialized = 1;
     return(0);
+
+done:
+    if(ctx->hash != NULL) {
+        xmlSecMemCleanse(ctx->hash, ctx->hashLength);
+        xmlFree(ctx->hash);
+    }
+    if(ctx->hHash != NULL) {
+        BCryptDestroyHash(ctx->hHash);
+    }
+    if(ctx->hAlg != NULL) {
+        BCryptCloseAlgorithmProvider(ctx->hAlg, 0);
+    }
+    memset(ctx, 0, sizeof(xmlSecMSCngHmacCtx));
+    return(-1);
 }
 
 static int

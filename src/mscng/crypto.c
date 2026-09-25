@@ -165,13 +165,13 @@ xmlSecCryptoGetFunctions_mscng(void) {
 
 #ifndef XMLSEC_NO_DH
     if(isDhSupported != 0) {
-        gXmlSecMSCngFunctions->keyDataDhGetKlass         = xmlSecMSCngKeyDataDhGetKlass;
+        gXmlSecMSCngFunctions->keyDataDhGetKlass        = xmlSecMSCngKeyDataDhGetKlass;
     }
 #endif /* XMLSEC_NO_DH */
 
 #ifndef XMLSEC_NO_XDH
     if(isX25519Supported != 0) {
-        gXmlSecMSCngFunctions->keyDataXdhGetKlass        = xmlSecMSCngKeyDataXdhGetKlass;
+        gXmlSecMSCngFunctions->keyDataXdhGetKlass       = xmlSecMSCngKeyDataXdhGetKlass;
     }
 #endif /* XMLSEC_NO_XDH */
 
@@ -208,7 +208,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
      *
       *****************************************************************************/
 #ifndef XMLSEC_NO_X509
-    gXmlSecMSCngFunctions->x509StoreGetKlass           = xmlSecMSCngX509StoreGetKlass;
+    gXmlSecMSCngFunctions->x509StoreGetKlass            = xmlSecMSCngX509StoreGetKlass;
 #endif /* XMLSEC_NO_X509 */
 
     /******************************************************************************
@@ -279,9 +279,9 @@ xmlSecCryptoGetFunctions_mscng(void) {
 
 #ifndef XMLSEC_NO_SHA3
     if(isSha3Supported != 0) {
-        gXmlSecMSCngFunctions->transformEcdsaSha3_256GetKlass       = xmlSecMSCngTransformEcdsaSha3_256GetKlass;
-        gXmlSecMSCngFunctions->transformEcdsaSha3_384GetKlass       = xmlSecMSCngTransformEcdsaSha3_384GetKlass;
-        gXmlSecMSCngFunctions->transformEcdsaSha3_512GetKlass       = xmlSecMSCngTransformEcdsaSha3_512GetKlass;
+        gXmlSecMSCngFunctions->transformEcdsaSha3_256GetKlass   = xmlSecMSCngTransformEcdsaSha3_256GetKlass;
+        gXmlSecMSCngFunctions->transformEcdsaSha3_384GetKlass   = xmlSecMSCngTransformEcdsaSha3_384GetKlass;
+        gXmlSecMSCngFunctions->transformEcdsaSha3_512GetKlass   = xmlSecMSCngTransformEcdsaSha3_512GetKlass;
     }
 #endif /* XMLSEC_NO_SHA3 */
 
@@ -345,46 +345,46 @@ xmlSecCryptoGetFunctions_mscng(void) {
 #ifndef XMLSEC_NO_RSA
 
 #ifndef XMLSEC_NO_MD5
-    gXmlSecMSCngFunctions->transformRsaMd5GetKlass             = xmlSecMSCngTransformRsaMd5GetKlass;
+    gXmlSecMSCngFunctions->transformRsaMd5GetKlass              = xmlSecMSCngTransformRsaMd5GetKlass;
 #endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_SHA1
-    gXmlSecMSCngFunctions->transformRsaSha1GetKlass            = xmlSecMSCngTransformRsaSha1GetKlass;
+    gXmlSecMSCngFunctions->transformRsaSha1GetKlass             = xmlSecMSCngTransformRsaSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
-    gXmlSecMSCngFunctions->transformRsaSha256GetKlass          = xmlSecMSCngTransformRsaSha256GetKlass;
+    gXmlSecMSCngFunctions->transformRsaSha256GetKlass           = xmlSecMSCngTransformRsaSha256GetKlass;
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
-    gXmlSecMSCngFunctions->transformRsaSha384GetKlass          = xmlSecMSCngTransformRsaSha384GetKlass;
+    gXmlSecMSCngFunctions->transformRsaSha384GetKlass           = xmlSecMSCngTransformRsaSha384GetKlass;
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
-    gXmlSecMSCngFunctions->transformRsaSha512GetKlass          = xmlSecMSCngTransformRsaSha512GetKlass;
+    gXmlSecMSCngFunctions->transformRsaSha512GetKlass           = xmlSecMSCngTransformRsaSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
 #ifndef XMLSEC_NO_SHA1
-    gXmlSecMSCngFunctions->transformRsaPssSha1GetKlass         = xmlSecMSCngTransformRsaPssSha1GetKlass;
+    gXmlSecMSCngFunctions->transformRsaPssSha1GetKlass          = xmlSecMSCngTransformRsaPssSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
-    gXmlSecMSCngFunctions->transformRsaPssSha256GetKlass       = xmlSecMSCngTransformRsaPssSha256GetKlass;
+    gXmlSecMSCngFunctions->transformRsaPssSha256GetKlass        = xmlSecMSCngTransformRsaPssSha256GetKlass;
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
-    gXmlSecMSCngFunctions->transformRsaPssSha384GetKlass       = xmlSecMSCngTransformRsaPssSha384GetKlass;
+    gXmlSecMSCngFunctions->transformRsaPssSha384GetKlass        = xmlSecMSCngTransformRsaPssSha384GetKlass;
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
-    gXmlSecMSCngFunctions->transformRsaPssSha512GetKlass       = xmlSecMSCngTransformRsaPssSha512GetKlass;
+    gXmlSecMSCngFunctions->transformRsaPssSha512GetKlass        = xmlSecMSCngTransformRsaPssSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
 #ifndef XMLSEC_NO_SHA3
     if(isSha3Supported != 0) {
-        gXmlSecMSCngFunctions->transformRsaPssSha3_256GetKlass = xmlSecMSCngTransformRsaPssSha3_256GetKlass;
-        gXmlSecMSCngFunctions->transformRsaPssSha3_384GetKlass = xmlSecMSCngTransformRsaPssSha3_384GetKlass;
-        gXmlSecMSCngFunctions->transformRsaPssSha3_512GetKlass = xmlSecMSCngTransformRsaPssSha3_512GetKlass;
+        gXmlSecMSCngFunctions->transformRsaPssSha3_256GetKlass  = xmlSecMSCngTransformRsaPssSha3_256GetKlass;
+        gXmlSecMSCngFunctions->transformRsaPssSha3_384GetKlass  = xmlSecMSCngTransformRsaPssSha3_384GetKlass;
+        gXmlSecMSCngFunctions->transformRsaPssSha3_512GetKlass  = xmlSecMSCngTransformRsaPssSha3_512GetKlass;
     }
 #endif /* XMLSEC_NO_SHA3 */
 
@@ -400,7 +400,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
 #endif /* XMLSEC_NO_RSA */
 
 #ifndef XMLSEC_NO_MD5
-    gXmlSecMSCngFunctions->transformMd5GetKlass                = xmlSecMSCngTransformMd5GetKlass;
+    gXmlSecMSCngFunctions->transformMd5GetKlass                 = xmlSecMSCngTransformMd5GetKlass;
 #endif /* XMLSEC_NO_MD5 */
 
     /* SHA */
@@ -483,7 +483,9 @@ xmlSecMSCngInit(void) {
  */
 int
 xmlSecMSCngShutdown(void) {
-    /* TODO: if necessary, do additional shutdown here */
+    /* Nothing to do: the klasses registered by xmlSecMSCngInit() are not
+     * unregistered here; none of the backends unregisters klasses on shutdown,
+     * so registration is process-lifetime by design. */
     return(0);
 }
 

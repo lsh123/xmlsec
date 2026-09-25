@@ -1548,8 +1548,7 @@ done:
  * @param mngr the keys manager.
  * @param filename the certificate file.
  * @param format the certificate file format.
- * @param type the flag that indicates is the certificate in @p filename
- *                      trusted or not.
+ * @param type the flag that indicates if the certificate in @p filename is trusted or not.
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -1593,7 +1592,7 @@ xmlSecOpenSSLAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename, x
  * @param data the certificate binary data.
  * @param dataSize the certificate binary data size.
  * @param format the certificate file format.
- * @param type the flag that indicates is the certificate trusted or not.
+ * @param type the flag that indicates if the certificate in @p data is trusted or not.
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -1644,7 +1643,7 @@ xmlSecOpenSSLAppKeysMngrCertLoadMemory(
  * @param mngr the keys manager.
  * @param bio the certificate BIO.
  * @param format the certificate file format.
- * @param type the flag that indicates is the certificate trusted or not.
+ * @param type the flag that indicates if the certificate in @p bio is trusted or not.
  * @return 0 on success or a negative value otherwise.
  */
 int

@@ -194,6 +194,8 @@ static void xmlSecMSCngDigestFinalize(xmlSecTransformPtr transform) {
     ctx = xmlSecMSCngDigestGetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
+    /* NTSTATUS is intentionally ignored: failures at finalization time are not
+     * recoverable and cannot be reported from a void finalize method */
     if(ctx->hHash != 0) {
         BCryptDestroyHash(ctx->hHash);
     }
@@ -283,6 +285,11 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
     xmlSecAssert2(ctx != NULL, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
+        /* Note: the error paths below may leave hAlg/pbHashObject/pbHash
+         * partially acquired on purpose; xmlSecTransformDestroy() invokes this
+         * klass's finalize() unconditionally when the transform is destroyed,
+         * and it releases any of these resources. */
+
         /* open an algorithm handle */
         status = BCryptOpenAlgorithmProvider(
             &ctx->hAlg,

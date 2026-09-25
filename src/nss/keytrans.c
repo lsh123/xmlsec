@@ -555,7 +555,9 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
 
         /* pay attention to mechanism */
         if(ctx->cipher == CKM_RSA_PKCS) {
-            symKey = PK11_PubUnwrapSymKey(ctx->prikey, &oriskv, CKM_RSA_PKCS, CKA_UNWRAP, 0);
+            /* target is the mechanism of the unwrapped symmetric key, which is
+             * unknown here, so pass CKM_GENERIC_SECRET_KEY_GEN */
+            symKey = PK11_PubUnwrapSymKey(ctx->prikey, &oriskv, CKM_GENERIC_SECRET_KEY_GEN, CKA_UNWRAP, 0);
             if(symKey == NULL) {
                 xmlSecNssError("PK11_PubUnwrapSymKey", NULL);
                 goto done;

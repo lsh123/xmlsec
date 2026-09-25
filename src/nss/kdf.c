@@ -95,7 +95,8 @@ static int      xmlSecNssConcatKdfNodeRead                (xmlSecTransformPtr tr
                                                            xmlSecTransformCtxPtr transformCtx);
 static int      xmlSecNssConcatKdfGenerateKey             (xmlSecNssKdfCtxPtr ctx,
                                                            xmlSecSize outLen,
-                                                           xmlSecBufferPtr out);
+                                                           xmlSecBufferPtr out,
+                                                           const xmlChar* transformName);
 #endif /* XMLSEC_NO_CONCATKDF */
 
 #ifndef XMLSEC_NO_PBKDF2
@@ -112,7 +113,8 @@ static int      xmlSecNssHkdfNodeRead                     (xmlSecTransformPtr tr
                                                            xmlSecTransformCtxPtr transformCtx);
 static int      xmlSecNssHkdfGenerateKey                  (xmlSecNssKdfCtxPtr ctx,
                                                            xmlSecSize outLen,
-                                                           xmlSecBufferPtr out);
+                                                           xmlSecBufferPtr out,
+                                                           const xmlChar* transformName);
 #endif /* XMLSEC_NO_HKDF */
 
 static int
@@ -389,7 +391,8 @@ xmlSecNssConcatKdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 }
 
 static int
-xmlSecNssConcatKdfGenerateKey(xmlSecNssKdfCtxPtr ctx, xmlSecSize outLen, xmlSecBufferPtr out) {
+xmlSecNssConcatKdfGenerateKey(xmlSecNssKdfCtxPtr ctx, xmlSecSize outLen, xmlSecBufferPtr out,
+    const xmlChar* transformName) {
     xmlSecByte* keyData;
     xmlSecSize keySize;
     xmlSecByte* fixedInfoData;
@@ -405,6 +408,7 @@ xmlSecNssConcatKdfGenerateKey(xmlSecNssKdfCtxPtr ctx, xmlSecSize outLen, xmlSecB
     PK11Context* hashCtx;
     SECStatus rv;
     int ret;
+    int res = -1;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->kdfType == xmlSecNssKdfType_ConcatKdf, -1);
@@ -415,7 +419,7 @@ xmlSecNssConcatKdfGenerateKey(xmlSecNssKdfCtxPtr ctx, xmlSecSize outLen, xmlSecB
     keyData = xmlSecBufferGetData(&(ctx->key));
     keySize = xmlSecBufferGetSize(&(ctx->key));
     if((keyData == NULL) || (keySize == 0)) {
-        xmlSecInvalidZeroKeyDataSizeError(NULL);
+        xmlSecInvalidZeroKeyDataSizeError(transformName);
         return(-1);
     }
 
@@ -443,7 +447,7 @@ xmlSecNssConcatKdfGenerateKey(xmlSecNssKdfCtxPtr ctx, xmlSecSize outLen, xmlSecB
         /* detect counter wrap: counters start at 1 and must not wrap (NIST SP 800-56A) */
         if(counterVal == 0) {
             xmlSecInternalError("ConcatKDF counter overflow", NULL);
-            return(-1);
+            goto done;
         }
 
         counter[0] = (xmlSecByte)((counterVal >> 24) & 0xFF);
@@ -454,42 +458,42 @@ xmlSecNssConcatKdfGenerateKey(xmlSecNssKdfCtxPtr ctx, xmlSecSize outLen, xmlSecB
         hashCtx = PK11_CreateDigestContext(oidData->offset);
         if(hashCtx == NULL) {
             xmlSecNssError("PK11_CreateDigestContext", NULL);
-            return(-1);
+            goto done;
         }
 
         rv = PK11_DigestBegin(hashCtx);
         if(rv != SECSuccess) {
             xmlSecNssError("PK11_DigestBegin", NULL);
             PK11_DestroyContext(hashCtx, PR_TRUE);
-            return(-1);
+            goto done;
         }
 
         rv = PK11_DigestOp(hashCtx, counter, 4);
         if(rv != SECSuccess) {
             xmlSecNssError("PK11_DigestOp(counter)", NULL);
             PK11_DestroyContext(hashCtx, PR_TRUE);
-            return(-1);
+            goto done;
         }
 
         XMLSEC_SAFE_CAST_SIZE_TO_UINT(keySize, keyLen,
-            PK11_DestroyContext(hashCtx, PR_TRUE); return(-1), NULL);
+            PK11_DestroyContext(hashCtx, PR_TRUE); goto done, NULL);
         rv = PK11_DigestOp(hashCtx, keyData, keyLen);
         if(rv != SECSuccess) {
             xmlSecNssError("PK11_DigestOp(Z)", NULL);
             PK11_DestroyContext(hashCtx, PR_TRUE);
-            return(-1);
+            goto done;
         }
 
         if((fixedInfoData != NULL) && (fixedInfoSize > 0)) {
             unsigned int fixedInfoLen;
 
             XMLSEC_SAFE_CAST_SIZE_TO_UINT(fixedInfoSize, fixedInfoLen,
-                PK11_DestroyContext(hashCtx, PR_TRUE); return(-1), NULL);
+                PK11_DestroyContext(hashCtx, PR_TRUE); goto done, NULL);
             rv = PK11_DigestOp(hashCtx, fixedInfoData, fixedInfoLen);
             if(rv != SECSuccess) {
                 xmlSecNssError("PK11_DigestOp(OtherInfo)", NULL);
                 PK11_DestroyContext(hashCtx, PR_TRUE);
-                return(-1);
+                goto done;
             }
         }
 
@@ -498,7 +502,7 @@ xmlSecNssConcatKdfGenerateKey(xmlSecNssKdfCtxPtr ctx, xmlSecSize outLen, xmlSecB
         PK11_DestroyContext(hashCtx, PR_TRUE);
         if(rv != SECSuccess) {
             xmlSecNssError("PK11_DigestFinal", NULL);
-            return(-1);
+            goto done;
         }
 
         {
@@ -515,8 +519,12 @@ xmlSecNssConcatKdfGenerateKey(xmlSecNssKdfCtxPtr ctx, xmlSecSize outLen, xmlSecB
         counterVal++;
     }
 
+    /* success */
+    res = 0;
+
+done:
     xmlSecMemCleanse(hashBuf, sizeof(hashBuf));
-    return(0);
+    return(res);
 }
 #endif /* XMLSEC_NO_CONCATKDF */
 
@@ -815,7 +823,8 @@ xmlSecNssHkdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 }
 
 static int
-xmlSecNssHkdfGenerateKey(xmlSecNssKdfCtxPtr ctx, xmlSecSize outLen, xmlSecBufferPtr out) {
+xmlSecNssHkdfGenerateKey(xmlSecNssKdfCtxPtr ctx, xmlSecSize outLen, xmlSecBufferPtr out,
+    const xmlChar* transformName) {
     SECItem ikmItem = { siBuffer, NULL, 0 };
     SECItem paramsItem = { siBuffer, NULL, 0 };
     CK_HKDF_PARAMS params;
@@ -844,7 +853,7 @@ xmlSecNssHkdfGenerateKey(xmlSecNssKdfCtxPtr ctx, xmlSecSize outLen, xmlSecBuffer
     keyData = xmlSecBufferGetData(&(ctx->key));
     keySize = xmlSecBufferGetSize(&(ctx->key));
     if((keyData == NULL) || (keySize == 0)) {
-        xmlSecInvalidZeroKeyDataSizeError(NULL);
+        xmlSecInvalidZeroKeyDataSizeError(transformName);
         return(-1);
     }
 
@@ -889,7 +898,7 @@ xmlSecNssHkdfGenerateKey(xmlSecNssKdfCtxPtr ctx, xmlSecSize outLen, xmlSecBuffer
         goto done;
     }
 
-    ikm = PK11_ImportDataKey(slot, CKM_HKDF_DERIVE, PK11_OriginUnwrap, CKA_DERIVE, &ikmItem, NULL);
+    ikm = PK11_ImportDataKey(slot, CKM_HKDF_DATA, PK11_OriginUnwrap, CKA_DERIVE, &ikmItem, NULL);
     if(ikm == NULL) {
         xmlSecNssError("PK11_ImportDataKey", NULL);
         goto done;
@@ -982,7 +991,8 @@ xmlSecNssKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
         if(0) {
 #ifndef XMLSEC_NO_CONCATKDF
         } else if(ctx->kdfType == xmlSecNssKdfType_ConcatKdf) {
-            ret = xmlSecNssConcatKdfGenerateKey(ctx, transform->expectedOutputSize, out);
+            ret = xmlSecNssConcatKdfGenerateKey(ctx, transform->expectedOutputSize, out,
+                xmlSecTransformGetName(transform));
             if(ret < 0) {
                 xmlSecInternalError("xmlSecNssConcatKdfGenerateKey", xmlSecTransformGetName(transform));
                 return(-1);
@@ -1018,7 +1028,8 @@ xmlSecNssKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
             }
             ctx->u.hkdf.params.keyLength = transform->expectedOutputSize;
 
-            ret = xmlSecNssHkdfGenerateKey(ctx, transform->expectedOutputSize, out);
+            ret = xmlSecNssHkdfGenerateKey(ctx, transform->expectedOutputSize, out,
+                xmlSecTransformGetName(transform));
             if(ret < 0) {
                 xmlSecInternalError("xmlSecNssHkdfGenerateKey", xmlSecTransformGetName(transform));
                 return(-1);

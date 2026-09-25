@@ -326,7 +326,7 @@ xmlSecNssSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->alg           = SEC_OID_PKCS1_RSA_PSS_SIGNATURE;
         ctx->pssHashAlgTag = SEC_OID_SHA1;
         ctx->pssMaskAlgTag = SEC_OID_SHA1;
-        ctx->pssSaltLength = HASH_ResultLenByOidTag(SEC_OID_SHA1); /*  The default salt length is the length of the hash function */
+        ctx->pssSaltLength = HASH_ResultLenByOidTag(SEC_OID_SHA1); /* The default salt length is the length of the hash function */
 
     } else
 #endif /* XMLSEC_NO_SHA1 */
@@ -337,7 +337,7 @@ xmlSecNssSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->alg           = SEC_OID_PKCS1_RSA_PSS_SIGNATURE;
         ctx->pssHashAlgTag = SEC_OID_SHA224;
         ctx->pssMaskAlgTag = SEC_OID_SHA224;
-        ctx->pssSaltLength = HASH_ResultLenByOidTag(SEC_OID_SHA224); /*  The default salt length is the length of the hash function */
+        ctx->pssSaltLength = HASH_ResultLenByOidTag(SEC_OID_SHA224); /* The default salt length is the length of the hash function */
 
     } else
 #endif /* XMLSEC_NO_SHA224 */
@@ -348,7 +348,7 @@ xmlSecNssSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->alg           = SEC_OID_PKCS1_RSA_PSS_SIGNATURE;
         ctx->pssHashAlgTag = SEC_OID_SHA256;
         ctx->pssMaskAlgTag = SEC_OID_SHA256;
-        ctx->pssSaltLength = HASH_ResultLenByOidTag(SEC_OID_SHA256); /*  The default salt length is the length of the hash function */
+        ctx->pssSaltLength = HASH_ResultLenByOidTag(SEC_OID_SHA256); /* The default salt length is the length of the hash function */
 
     } else
 #endif /* XMLSEC_NO_SHA256 */
@@ -359,7 +359,7 @@ xmlSecNssSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->alg           = SEC_OID_PKCS1_RSA_PSS_SIGNATURE;
         ctx->pssHashAlgTag = SEC_OID_SHA384;
         ctx->pssMaskAlgTag = SEC_OID_SHA384;
-        ctx->pssSaltLength = HASH_ResultLenByOidTag(SEC_OID_SHA384); /*  The default salt length is the length of the hash function */
+        ctx->pssSaltLength = HASH_ResultLenByOidTag(SEC_OID_SHA384); /* The default salt length is the length of the hash function */
 
     } else
 #endif /* XMLSEC_NO_SHA384 */
@@ -370,7 +370,7 @@ xmlSecNssSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->alg           = SEC_OID_PKCS1_RSA_PSS_SIGNATURE;
         ctx->pssHashAlgTag = SEC_OID_SHA512;
         ctx->pssMaskAlgTag = SEC_OID_SHA512;
-        ctx->pssSaltLength = HASH_ResultLenByOidTag(SEC_OID_SHA512); /*  The default salt length is the length of the hash function */
+        ctx->pssSaltLength = HASH_ResultLenByOidTag(SEC_OID_SHA512); /* The default salt length is the length of the hash function */
 
     } else
 #endif /* XMLSEC_NO_SHA512 */
@@ -732,6 +732,12 @@ xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
         XMLSEC_SAFE_CAST_SIZE_TO_UINT(eddsaDataSize, dataItem.len, return(-1), xmlSecTransformGetName(transform));
 
         dataItem.data = xmlSecBufferGetData(&(ctx->eddsaData));
+        if((dataItem.len == 0) && (dataItem.data == NULL)) {
+            /* empty message: use a valid empty buffer to avoid passing a NULL
+             * data pointer to NSS */
+            static const xmlSecByte emptyData = 0;
+            dataItem.data = (unsigned char *)&emptyData;
+        }
 
         status = PK11_Verify(ctx->u.vfy.pubkey, &signature, &dataItem, NULL);
     } else if(xmlSecNssSignatureAlgorithmEncoded(transformCtx, ctx->alg)) {
@@ -739,7 +745,6 @@ xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
         SECItem   signatureDer = { siBuffer, NULL, 0 };
         SECStatus statusDer;
 
-        memset(&signatureDer, 0, sizeof(signatureDer));
         statusDer = DSAU_EncodeDerSigWithLen(&signatureDer, &signature, signature.len);
         if(statusDer != SECSuccess) {
             xmlSecNssError("DSAU_EncodeDerSigWithLen",
@@ -791,12 +796,12 @@ xmlSecNssSignatureDecode(xmlSecNssSignatureCtxPtr ctx, SECItem* signature) {
             return(NULL);
         }
         break;
-     case SEC_OID_NIST_DSA_SIGNATURE_WITH_SHA256_DIGEST:
-     case SEC_OID_ANSIX962_ECDSA_SHA1_SIGNATURE:
-     case SEC_OID_ANSIX962_ECDSA_SHA224_SIGNATURE:
-     case SEC_OID_ANSIX962_ECDSA_SHA256_SIGNATURE:
-     case SEC_OID_ANSIX962_ECDSA_SHA384_SIGNATURE:
-     case SEC_OID_ANSIX962_ECDSA_SHA512_SIGNATURE:
+    case SEC_OID_NIST_DSA_SIGNATURE_WITH_SHA256_DIGEST:
+    case SEC_OID_ANSIX962_ECDSA_SHA1_SIGNATURE:
+    case SEC_OID_ANSIX962_ECDSA_SHA224_SIGNATURE:
+    case SEC_OID_ANSIX962_ECDSA_SHA256_SIGNATURE:
+    case SEC_OID_ANSIX962_ECDSA_SHA384_SIGNATURE:
+    case SEC_OID_ANSIX962_ECDSA_SHA512_SIGNATURE:
         /* In these cases the signature length depends on the key parameters. */
         signatureLen = PK11_SignatureLen(ctx->u.sig.privkey);
         if(signatureLen < 1) {
@@ -928,6 +933,12 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                 XMLSEC_SAFE_CAST_SIZE_TO_UINT(eddsaDataSize, dataItem.len, return(-1), xmlSecTransformGetName(transform));
 
                 dataItem.data = xmlSecBufferGetData(&(ctx->eddsaData));
+                if((dataItem.len == 0) && (dataItem.data == NULL)) {
+                    /* empty message: use a valid empty buffer to avoid passing a
+                     * NULL data pointer to NSS */
+                    static const xmlSecByte emptyData = 0;
+                    dataItem.data = (unsigned char *)&emptyData;
+                }
 
                 /* Get signature length */
                 signatureLen = PK11_SignatureLen(ctx->u.sig.privkey);

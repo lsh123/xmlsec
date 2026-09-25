@@ -392,6 +392,7 @@ xmlSecNssAppKeyLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format,
         break;
 #endif /* XMLSEC_NO_X509 */
     case xmlSecKeyDataFormatDer:
+    case xmlSecKeyDataFormatPkcs8Der:
         key = xmlSecNssAppDerKeyLoadSECItem(secItem);
         if(key == NULL) {
             xmlSecInternalError("xmlSecNssAppDerKeyLoadSECItem", NULL);
@@ -659,6 +660,7 @@ xmlSecNssAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSecSi
  */
 int
 xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyDataFormat format) {
+    CERTCertDBHandle *certDb;
     CERTCertificate *cert = NULL;
     xmlSecKeyDataPtr x509Data;
     int isKeyCert = 0;
@@ -672,12 +674,18 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
     xmlSecAssert2(secItem->len > 0, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
+    certDb = CERT_GetDefaultCertDB();
+    if(certDb == NULL) {
+        xmlSecInternalError("CERT_GetDefaultCertDB", NULL);
+        goto done;
+    }
+
     /* read cert */
     switch(format) {
     case xmlSecKeyDataFormatPkcs8Der:
     case xmlSecKeyDataFormatDer:
     case xmlSecKeyDataFormatCertDer:
-        cert = xmlSecNssX509CertDerRead(CERT_GetDefaultCertDB(), secItem->data, secItem->len);
+        cert = xmlSecNssX509CertDerRead(certDb, secItem->data, secItem->len);
         if(cert == NULL) {
             xmlSecInternalError2("xmlSecNssX509CertDerRead", NULL,
                 "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
@@ -686,7 +694,7 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
         break;
     case xmlSecKeyDataFormatPem:
     case xmlSecKeyDataFormatCertPem:
-        cert = xmlSecNssX509CertPemRead(CERT_GetDefaultCertDB(), secItem->data, secItem->len);
+        cert = xmlSecNssX509CertPemRead(certDb, secItem->data, secItem->len);
         if(cert == NULL) {
             xmlSecInternalError2("xmlSecNssX509CertPemRead", NULL,
                 "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
@@ -995,7 +1003,7 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
         /* private key not found in PKCS12 file */
         xmlSecInternalError("xmlSecNssAppPkcs12Load(private key)", NULL);
         goto done;
-     }
+    }
 
     /* create key and set key value and x509 data into it */
     key = xmlSecKeyCreate();
@@ -1051,7 +1059,7 @@ done:
     if (p12ctx) {
         SEC_PKCS12DecoderFinish(p12ctx);
     }
-    SECITEM_FreeItem(&uc2_pwditem, PR_FALSE);
+    SECITEM_ZfreeItem(&uc2_pwditem, PR_FALSE);
     if (slot) {
         PK11_FreeSlot(slot);
     }
@@ -1082,6 +1090,7 @@ done:
  */
 xmlSecKeyPtr
 xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format) {
+    CERTCertDBHandle *certDb;
     xmlSecKeyPtr key = NULL;
     xmlSecKeyDataPtr keyData = NULL;
     xmlSecKeyDataPtr certData;
@@ -1095,10 +1104,16 @@ xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format)
     xmlSecAssert2(secItem->len > 0, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
+    certDb = CERT_GetDefaultCertDB();
+    if(certDb == NULL) {
+        xmlSecInternalError("CERT_GetDefaultCertDB", NULL);
+        goto done;
+    }
+
     /* load cert */
     switch(format) {
     case xmlSecKeyDataFormatCertDer:
-        cert = xmlSecNssX509CertDerRead(CERT_GetDefaultCertDB(), secItem->data, secItem->len);
+        cert = xmlSecNssX509CertDerRead(certDb, secItem->data, secItem->len);
         if(cert == NULL) {
             xmlSecInternalError2("xmlSecNssX509CertDerRead", NULL,
                 "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
@@ -1106,7 +1121,7 @@ xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format)
         }
         break;
     case xmlSecKeyDataFormatCertPem:
-        cert = xmlSecNssX509CertPemRead(CERT_GetDefaultCertDB(), secItem->data, secItem->len);
+        cert = xmlSecNssX509CertPemRead(certDb, secItem->data, secItem->len);
         if(cert == NULL) {
             xmlSecInternalError2("xmlSecNssX509CertPemRead", NULL,
                 "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
@@ -1216,7 +1231,7 @@ xmlSecNssAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
  * untrusted certs in @p store.
  *
  * @param mngr the pointer to keys manager.
- * @param data the certificatedata.
+ * @param data the certificate data.
  * @param dataSize the certificate data size.
  * @param format the certificate format (PEM or DER).
  * @param type the certificate type (trusted/untrusted).
@@ -1263,9 +1278,13 @@ xmlSecNssAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* dat
  * @return 0 on success or a negative value otherwise.
  */
 int
-xmlSecNssAppKeysMngrCertLoadSECItem(xmlSecKeysMngrPtr mngr, SECItem* secItem,
-                             xmlSecKeyDataFormat format,
-                             xmlSecKeyDataType type) {
+xmlSecNssAppKeysMngrCertLoadSECItem(
+    xmlSecKeysMngrPtr mngr,
+    SECItem* secItem,
+    xmlSecKeyDataFormat format,
+    xmlSecKeyDataType type
+) {
+    CERTCertDBHandle *certDb;
     xmlSecKeyDataStorePtr x509Store;
     CERTCertificate* cert;
     int ret;
@@ -1283,10 +1302,16 @@ xmlSecNssAppKeysMngrCertLoadSECItem(xmlSecKeysMngrPtr mngr, SECItem* secItem,
         return(-1);
     }
 
+    certDb = CERT_GetDefaultCertDB();
+    if(certDb == NULL) {
+        xmlSecInternalError("CERT_GetDefaultCertDB", NULL);
+        return(-1);
+    }
+
     switch(format) {
     case xmlSecKeyDataFormatDer:
     case xmlSecKeyDataFormatCertDer:
-        cert = xmlSecNssX509CertDerRead(CERT_GetDefaultCertDB(), secItem->data, secItem->len);
+        cert = xmlSecNssX509CertDerRead(certDb, secItem->data, secItem->len);
         if(cert == NULL) {
             xmlSecInternalError2("xmlSecNssX509CertDerRead", NULL,
                 "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
@@ -1295,7 +1320,7 @@ xmlSecNssAppKeysMngrCertLoadSECItem(xmlSecKeysMngrPtr mngr, SECItem* secItem,
         break;
     case xmlSecKeyDataFormatPem:
     case xmlSecKeyDataFormatCertPem:
-        cert = xmlSecNssX509CertPemRead(CERT_GetDefaultCertDB(), secItem->data, secItem->len);
+        cert = xmlSecNssX509CertPemRead(certDb, secItem->data, secItem->len);
         if(cert == NULL) {
             xmlSecInternalError2("xmlSecNssX509CertPemRead", NULL,
                 "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
@@ -1347,7 +1372,7 @@ xmlSecNssAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlSec
     /* read the file contents */
     memset(&secItem, 0, sizeof(secItem));
     ret = xmlSecNssAppReadSECItem(&secItem, filename);
-    if((ret < 0) || (secItem.type != siBuffer) ||(secItem.data == NULL) || (secItem.len <= 0)) {
+    if((ret < 0) || (secItem.type != siBuffer) || (secItem.data == NULL) || (secItem.len <= 0)) {
         xmlSecInternalError("xmlSecNssAppReadSECItem", NULL);
         return(-1);
     }
@@ -1418,7 +1443,7 @@ xmlSecNssAppKeysMngrCrlLoadAndVerify(xmlSecKeysMngrPtr mngr, const char *filenam
     /* Load CRL from file ONCE */
     memset(&secItem, 0, sizeof(secItem));
     ret = xmlSecNssAppReadSECItem(&secItem, filename);
-    if((ret < 0) || (secItem.type != siBuffer) ||(secItem.data == NULL) || (secItem.len <= 0)) {
+    if((ret < 0) || (secItem.type != siBuffer) || (secItem.data == NULL) || (secItem.len <= 0)) {
         xmlSecInternalError2("xmlSecNssAppReadSECItem", NULL,
             "filename=%s", xmlSecErrorsSafeString(filename));
         goto done;

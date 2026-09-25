@@ -334,7 +334,7 @@ xmlSecNssKeyDataX509AdoptCert(xmlSecKeyDataPtr data, CERTCertificate* cert) {
     ctx = xmlSecNssX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
-   /* pkcs12 files sometime have key cert twice: as the key cert and as the cert in the chain */
+   /* pkcs12 files sometimes have key cert twice: as the key cert and as the cert in the chain */
     if((ctx->keyCert != NULL) && ((ctx->keyCert == cert) || (CERT_CompareCerts(cert, ctx->keyCert) == PR_TRUE))) {
         CERT_DestroyCertificate(cert); /* caller expects data to own the cert on success. */
         return(0);
@@ -519,7 +519,7 @@ xmlSecNssKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     xmlSecAssert2(ctxDst->certsList == NULL, -1);
     xmlSecAssert2(ctxDst->crlsList == NULL, -1);
 
-    /* crts */
+    /* certs */
     if(ctxSrc->certsList != NULL) {
         CERTCertListNode* cur;
         CERTCertificate* cert;
@@ -608,7 +608,7 @@ xmlSecNssKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         xmlSecKeyDataDestroy(data);
         return(0);
     }
-    data = NULL; /* owned by data now */
+    data = NULL; /* owned by key now */
 
     /* success */
     return(0);
@@ -720,8 +720,13 @@ xmlSecNssKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 
 /* xmlSecKeyDataX509Read: 0 on success and a negative value otherwise */
 static int
-xmlSecNssKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x509Value,
-                         xmlSecKeysMngrPtr keysMngr, unsigned int flags) {
+xmlSecNssKeyDataX509Read(
+    xmlSecKeyDataPtr data,
+    xmlSecKeyX509DataValuePtr x509Value,
+    xmlSecKeysMngrPtr keysMngr,
+    unsigned int flags
+) {
+    CERTCertDBHandle *certDb;
     CERTCertificate* cert = NULL;
     CERTSignedCrl* crl = NULL;
     int ret;
@@ -732,9 +737,15 @@ xmlSecNssKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x509Va
     xmlSecAssert2(x509Value != NULL, -1);
     xmlSecAssert2(keysMngr != NULL, -1);
 
+    certDb = CERT_GetDefaultCertDB();
+    if(certDb == NULL) {
+        xmlSecInternalError("CERT_GetDefaultCertDB", xmlSecKeyDataGetName(data));
+        goto done;
+    }
+
     /* read CRT or CRL */
     if(xmlSecBufferGetSize(&(x509Value->cert)) > 0) {
-        cert = xmlSecNssX509CertDerRead(CERT_GetDefaultCertDB(),
+        cert = xmlSecNssX509CertDerRead(certDb,
             xmlSecBufferGetData(&(x509Value->cert)),
             xmlSecBufferGetSize(&(x509Value->cert))
         );
@@ -932,7 +943,7 @@ xmlSecNssKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x509V
 
 /* returns 1 if cert was found and verified and also data was adopted, 0 if not, or negative value if an error occurs */
 static int
-xmlSecNssVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data,  xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecNssVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecNssX509DataCtxPtr ctx;
     xmlSecKeyDataStorePtr x509Store;
     xmlSecKeyDataPtr keyValue;
@@ -1408,9 +1419,18 @@ xmlSecNssX509CrlListAdoptCrl(xmlSecNssX509CrlNodePtr * head, CERTSignedCrl* crl)
     }
 
     memset(crlnode, 0, sizeof(xmlSecNssX509CrlNode));
-    crlnode->next = (*head);
     crlnode->crl = crl;
-    (*head) = crlnode;
+
+    /* append to the tail to preserve the order in which the CRLs are read */
+    if((*head) == NULL) {
+        (*head) = crlnode;
+    } else {
+        xmlSecNssX509CrlNodePtr cur = (*head);
+        while(cur->next != NULL) {
+            cur = cur->next;
+        }
+        cur->next = crlnode;
+    }
     return(0);
 }
 
@@ -1474,9 +1494,13 @@ xmlSecNssKeyDataRawX509CertGetKlass(void) {
 }
 
 static int
-xmlSecNssKeyDataRawX509CertBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
-                                    const xmlSecByte* buf, xmlSecSize bufSize,
-                                    xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecNssKeyDataRawX509CertBinRead(
+    xmlSecKeyDataId id,
+    xmlSecKeyPtr key,
+    const xmlSecByte* buf, xmlSecSize bufSize,
+    xmlSecKeyInfoCtxPtr keyInfoCtx
+) {
+    CERTCertDBHandle *certDb;
     xmlSecKeyDataPtr data;
     CERTCertificate* cert;
     int ret;
@@ -1487,7 +1511,13 @@ xmlSecNssKeyDataRawX509CertBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2(bufSize > 0, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    cert = xmlSecNssX509CertDerRead(CERT_GetDefaultCertDB(), (xmlSecByte*)buf, bufSize);
+    certDb = CERT_GetDefaultCertDB();
+    if(certDb == NULL) {
+        xmlSecInternalError("CERT_GetDefaultCertDB", NULL);
+        return(-1);
+    }
+
+    cert = xmlSecNssX509CertDerRead(certDb, (xmlSecByte*)buf, bufSize);
     if(cert == NULL) {
         xmlSecInternalError("xmlSecNssX509CertDerRead", NULL);
         return(-1);
@@ -1519,7 +1549,7 @@ xmlSecNssKeyDataRawX509CertBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         xmlSecKeyDataDestroy(data);
         return(0);
     }
-    data = NULL; /* owned by data now */
+    data = NULL; /* owned by key now */
 
     /* success */
     return(0);

@@ -61,8 +61,8 @@ static xmlSecSize        xmlSecNssPKIKeyDataGetSize     (xmlSecKeyDataPtr data);
 
 
 
-static void             xmlSecNSSPKIKeyDataCtxFree      (xmlSecNssPKIKeyDataCtxPtr ctx);
-static int              xmlSecNSSPKIKeyDataCtxDup       (xmlSecNssPKIKeyDataCtxPtr ctxDst,
+static void             xmlSecNssPKIKeyDataCtxFree      (xmlSecNssPKIKeyDataCtxPtr ctx);
+static int              xmlSecNssPKIKeyDataCtxDup       (xmlSecNssPKIKeyDataCtxPtr ctxDst,
                                                          xmlSecNssPKIKeyDataCtxPtr ctxSrc);
 static int              xmlSecNssPKIKeyDataAdoptKey     (xmlSecKeyDataPtr data,
                                                          SECKEYPrivateKey *privkey,
@@ -95,13 +95,13 @@ xmlSecNssPKIKeyDataFinalize(xmlSecKeyDataPtr data) {
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
     xmlSecAssert(ctx != NULL);
 
-    xmlSecNSSPKIKeyDataCtxFree(ctx);
+    xmlSecNssPKIKeyDataCtxFree(ctx);
     memset(ctx, 0, sizeof(xmlSecNssPKIKeyDataCtx));
 }
 
 
 static void
-xmlSecNSSPKIKeyDataCtxFree(xmlSecNssPKIKeyDataCtxPtr ctx)
+xmlSecNssPKIKeyDataCtxFree(xmlSecNssPKIKeyDataCtxPtr ctx)
 {
     xmlSecAssert(ctx != NULL);
     if (ctx->privkey != NULL) {
@@ -118,10 +118,10 @@ xmlSecNSSPKIKeyDataCtxFree(xmlSecNssPKIKeyDataCtxPtr ctx)
 }
 
 static int
-xmlSecNSSPKIKeyDataCtxDup(xmlSecNssPKIKeyDataCtxPtr ctxDst,
+xmlSecNssPKIKeyDataCtxDup(xmlSecNssPKIKeyDataCtxPtr ctxDst,
                           xmlSecNssPKIKeyDataCtxPtr ctxSrc)
 {
-    xmlSecNSSPKIKeyDataCtxFree(ctxDst);
+    xmlSecNssPKIKeyDataCtxFree(ctxDst);
     if (ctxSrc->privkey != NULL) {
         ctxDst->privkey = SECKEY_CopyPrivateKey(ctxSrc->privkey);
         if(ctxDst->privkey == NULL) {
@@ -313,6 +313,9 @@ xmlSecNssPKIKeyDataGetPubKey(xmlSecKeyDataPtr data) {
     xmlSecAssert2(ctx->pubkey != NULL, NULL);
 
     ret = SECKEY_CopyPublicKey(ctx->pubkey);
+    if(ret == NULL) {
+        xmlSecNssError("SECKEY_CopyPublicKey", NULL);
+    }
     return(ret);
 }
 
@@ -337,6 +340,9 @@ xmlSecNssPKIKeyDataGetPrivKey(xmlSecKeyDataPtr data) {
     xmlSecAssert2(ctx->privkey != NULL, NULL);
 
     ret = SECKEY_CopyPrivateKey(ctx->privkey);
+    if(ret == NULL) {
+        xmlSecNssError("SECKEY_CopyPrivateKey", NULL);
+    }
     return(ret);
 }
 
@@ -389,8 +395,8 @@ xmlSecNssPKIKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     ctxSrc = xmlSecNssPKIKeyDataGetCtx(src);
     xmlSecAssert2(ctxSrc != NULL, -1);
 
-    if (xmlSecNSSPKIKeyDataCtxDup(ctxDst, ctxSrc) != 0) {
-        xmlSecInternalError("xmlSecNSSPKIKeyDataCtxDup",
+    if (xmlSecNssPKIKeyDataCtxDup(ctxDst, ctxSrc) != 0) {
+        xmlSecInternalError("xmlSecNssPKIKeyDataCtxDup",
                             xmlSecKeyDataGetName(dst));
         return(-1);
     }
@@ -423,7 +429,10 @@ xmlSecNssPKIKeyDataGetSize(xmlSecKeyDataPtr data) {
 
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, 0);
-    xmlSecAssert2(ctx->pubkey != NULL, 0);
+
+    if(ctx->pubkey == NULL) {
+        return(0);
+    }
 
     switch(SECKEY_GetPublicKeyType(ctx->pubkey)) {
     case dsaKey:

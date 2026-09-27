@@ -21,6 +21,24 @@
 #include <gcrypt.h>
 
 
+/**
+ * @brief The SHA3 (Keccak) digest algorithms (GCRY_MD_SHA3_*) are only
+ * available in libgcrypt 1.8.0 and later.
+ */
+#if GCRYPT_VERSION_NUMBER >= 0x010800
+#define XMLSEC_GCRYPT_HAS_SHA3 1
+#endif /* GCRYPT_VERSION_NUMBER >= 0x010800 */
+
+/*
+ * If SHA3 is enabled by the build but the gcrypt version does not provide the
+ * GCRY_MD_SHA3_* constants, treat SHA3 as disabled so the existing
+ * XMLSEC_NO_SHA3 guards exclude the SHA3 code paths.
+ */
+#if !defined(XMLSEC_NO_SHA3) && !defined(XMLSEC_GCRYPT_HAS_SHA3)
+#define XMLSEC_NO_SHA3 1
+#endif /* !XMLSEC_NO_SHA3 && !XMLSEC_GCRYPT_HAS_SHA3 */
+
+
 #ifndef IN_XMLSEC_CRYPTO
 #define IN_XMLSEC_CRYPTO
 #endif /* IN_XMLSEC_CRYPTO */

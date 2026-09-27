@@ -70,7 +70,7 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
 #endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_EC
-    gXmlSecGCryptFunctions->keyDataEcGetKlass        = xmlSecGCryptKeyDataEcGetKlass;
+    gXmlSecGCryptFunctions->keyDataEcGetKlass           = xmlSecGCryptKeyDataEcGetKlass;
 #endif /* XMLSEC_NO_EC */
 
 #ifndef XMLSEC_NO_HMAC
@@ -123,19 +123,19 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
 #ifndef XMLSEC_NO_EC
 
 #ifndef XMLSEC_NO_SHA1
-    gXmlSecGCryptFunctions->transformEcdsaSha1GetKlass        = xmlSecGCryptTransformEcdsaSha1GetKlass;
+    gXmlSecGCryptFunctions->transformEcdsaSha1GetKlass          = xmlSecGCryptTransformEcdsaSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
-    gXmlSecGCryptFunctions->transformEcdsaSha256GetKlass      = xmlSecGCryptTransformEcdsaSha256GetKlass;
+    gXmlSecGCryptFunctions->transformEcdsaSha256GetKlass        = xmlSecGCryptTransformEcdsaSha256GetKlass;
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
-    gXmlSecGCryptFunctions->transformEcdsaSha384GetKlass      = xmlSecGCryptTransformEcdsaSha384GetKlass;
+    gXmlSecGCryptFunctions->transformEcdsaSha384GetKlass        = xmlSecGCryptTransformEcdsaSha384GetKlass;
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
-    gXmlSecGCryptFunctions->transformEcdsaSha512GetKlass      = xmlSecGCryptTransformEcdsaSha512GetKlass;
+    gXmlSecGCryptFunctions->transformEcdsaSha512GetKlass        = xmlSecGCryptTransformEcdsaSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
 
@@ -285,13 +285,17 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
     gXmlSecGCryptFunctions->cryptoAppDefaultKeysMngrSave        = xmlSecGCryptAppDefaultKeysMngrSave;
 #ifndef XMLSEC_NO_X509
     gXmlSecGCryptFunctions->cryptoAppKeysMngrCertLoad           = xmlSecGCryptAppKeysMngrCertLoad;
+    gXmlSecGCryptFunctions->cryptoAppKeysMngrCertLoadMemory     = xmlSecGCryptAppKeysMngrCertLoadMemory;
     gXmlSecGCryptFunctions->cryptoAppKeysMngrCrlLoad            = xmlSecGCryptAppKeysMngrCrlLoad;
     gXmlSecGCryptFunctions->cryptoAppKeysMngrCrlLoadMemory      = xmlSecGCryptAppKeysMngrCrlLoadMemory;
     gXmlSecGCryptFunctions->cryptoAppKeysMngrCrlLoadAndVerify   = xmlSecGCryptAppKeysMngrCrlLoadAndVerify;
     gXmlSecGCryptFunctions->cryptoAppPkcs12Load                 = xmlSecGCryptAppPkcs12Load;
+    gXmlSecGCryptFunctions->cryptoAppPkcs12LoadMemory           = xmlSecGCryptAppPkcs12LoadMemory;
     gXmlSecGCryptFunctions->cryptoAppKeyCertLoad                = xmlSecGCryptAppKeyCertLoad;
+    gXmlSecGCryptFunctions->cryptoAppKeyCertLoadMemory          = xmlSecGCryptAppKeyCertLoadMemory;
 #endif /* XMLSEC_NO_X509 */
     gXmlSecGCryptFunctions->cryptoAppKeyLoadEx                  = xmlSecGCryptAppKeyLoadEx;
+    gXmlSecGCryptFunctions->cryptoAppKeyLoadMemory              = xmlSecGCryptAppKeyLoadMemory;
     gXmlSecGCryptFunctions->cryptoAppDefaultPwdCallback         = xmlSecGCryptAppGetDefaultPwdCallback();
 
     return(gXmlSecGCryptFunctions);
@@ -330,8 +334,9 @@ xmlSecGCryptShutdown(void) {
 }
 
 /**
- * @brief Adds GCrypt specific key data stores.
- * @details Adds GCrypt specific key data stores in keys manager.
+ * @brief Initializes the GCrypt specific parts of the keys manager.
+ * @details The GCrypt backend does not add any key data stores to the keys manager;
+ * this function only validates the keys manager.
  * @param mngr the pointer to keys manager.
  * @return 0 on success or a negative value otherwise.
  */

@@ -56,7 +56,7 @@ enum
   TAG_ENUMERATED = 10,
   TAG_EMBEDDED_PDV = 11,
   TAG_UTF8_STRING = 12,
-  TAG_REALTIVE_OID = 13,
+  TAG_RELATIVE_OID = 13,
   TAG_SEQUENCE = 16,
   TAG_SET = 17,
   TAG_NUMERIC_STRING = 18,
@@ -221,7 +221,7 @@ xmlSecGCryptAsn1GetCurveFromObjectId(xmlSecGCryptAsn1ObjectId objectid) {
 static int
 xmlSecGCryptAsn1IsECKey(xmlSecGCryptAsn1ObjectId * objectids, xmlSecSize objectids_num) {
     const char* ecCurve = NULL;
-    xmlSecAssert2(objectids != NULL, xmlSecGCryptDerKeyTypeAuto);
+    xmlSecAssert2(objectids != NULL, 0);
 
     /* EC key should have the curve object id */
     for(xmlSecSize ii = 0; (ii < objectids_num) && (ecCurve == NULL); ++ii) {
@@ -424,7 +424,9 @@ xmlSecGCryptAsn1GuessKeyType(gcry_mpi_t * integers, xmlSecSize integers_num, xml
 
     /* EC key should have the curve object id */
     if(xmlSecGCryptAsn1IsECKey(objectids, objectids_num) != 0) {
-        if(integers_num >= XMLSEC_GCRYPT_ASN1_EDCSA_PRIV_NUM) {
+        if(integers_num > XMLSEC_GCRYPT_ASN1_EDCSA_PUB_NUM) {
+            /* 2 or more integers: a private key (version + d, with or without the
+             * optional [1] publicKey). A public key has exactly one integer (q). */
             return(xmlSecGCryptDerKeyTypePrivateEc);
         } else if(integers_num >= XMLSEC_GCRYPT_ASN1_EDCSA_PUB_NUM) {
             return(xmlSecGCryptDerKeyTypePublicEc);
@@ -700,8 +702,12 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
             goto done;
         }
         if(integers_num < XMLSEC_GCRYPT_ASN1_EDCSA_PRIV_NUM) {
-            xmlSecInvalidSizeError("Private EC key params",
-                (xmlSecSize)integers_num, (xmlSecSize)XMLSEC_GCRYPT_ASN1_EDCSA_PRIV_NUM, NULL);
+            if(integers_num == XMLSEC_GCRYPT_ASN1_EDCSA_PRIV_NUM - 1) {
+                xmlSecInvalidDataError("EC private key is missing the optional [1] publicKey field; re-encode the key to include the public point", NULL);
+            } else {
+                xmlSecInvalidSizeError("Private EC key params",
+                    (xmlSecSize)integers_num, (xmlSecSize)XMLSEC_GCRYPT_ASN1_EDCSA_PRIV_NUM, NULL);
+            }
             goto done;
         }
 

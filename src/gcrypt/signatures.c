@@ -647,8 +647,6 @@ xmlSecGCryptPkSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
     inSize = xmlSecBufferGetSize(in);
     outSize = xmlSecBufferGetSize(out);
 
-    ctx = xmlSecGCryptPkSignatureGetCtx(transform);
-    xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->key_data != NULL, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
@@ -675,12 +673,17 @@ xmlSecGCryptPkSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
         /* generate digest and signature */
         if(last != 0) {
             xmlSecByte* buf;
+            gcry_error_t err;
 
             /* get the final digest */
-            gcry_md_final(ctx->digestCtx);
+            err = gcry_md_final(ctx->digestCtx);
+            if(err != GPG_ERR_NO_ERROR) {
+                xmlSecGCryptError("gcry_md_final", err, xmlSecTransformGetName(transform));
+                return(-1);
+            }
             buf = gcry_md_read(ctx->digestCtx, ctx->digest);
             if(buf == NULL) {
-                xmlSecGCryptError("gcry_md_read", (gcry_error_t)GPG_ERR_NO_ERROR, xmlSecTransformGetName(transform));
+                xmlSecInternalError("gcry_md_read", xmlSecTransformGetName(transform));
                 return(-1);
             }
 
@@ -814,7 +817,11 @@ xmlSecGCryptAppendMpi(gcry_mpi_t a, xmlSecBufferPtr out, xmlSecSize min_size) {
  *
  * <SignatureValue>i6watmQQQ1y3GB+VsWq5fJKzQcBB4jRfH1bfJFj0JtFVtLotttzYyA==</SignatureValue>
  *
-  *****************************************************************************/
+ * The DSA signature components (r and s) are each fixed at 20 bytes (160 bits),
+ * matching the 160-bit q of the legacy 1024-bit DSA / DSA-SHA1 algorithm. This
+ * backend does not support larger DSA keys (e.g. 2048-bit with a 256-bit q).
+ *
+ *****************************************************************************/
 #define XMLSEC_GCRYPT_DSA_SIG_SIZE  20
 
 static int
@@ -1124,8 +1131,8 @@ xmlSecGCryptTransformDsaSha1GetKlass(void) {
   *****************************************************************************/
 static int
 xmlSecGCryptRsaPkcs1Sign(int digest, xmlSecKeyDataPtr key_data,
-                           const xmlSecByte* dgst, xmlSecSize dgstSize,
-                           xmlSecBufferPtr out) {
+                            const xmlSecByte* dgst, xmlSecSize dgstSize,
+                            xmlSecBufferPtr out) {
     gcry_sexp_t s_data = NULL;
     gcry_mpi_t m_sig = NULL;
     gcry_sexp_t s_sig = NULL;
@@ -1135,6 +1142,8 @@ xmlSecGCryptRsaPkcs1Sign(int digest, xmlSecKeyDataPtr key_data,
     int dgstLen;
     int ret;
     int res = -1;
+    const char* algo_name;
+    xmlSecSize keySize;
 
     xmlSecAssert2(key_data != NULL, -1);
     xmlSecAssert2(dgst != NULL, -1);
@@ -1144,11 +1153,20 @@ xmlSecGCryptRsaPkcs1Sign(int digest, xmlSecKeyDataPtr key_data,
     s_key = xmlSecGCryptKeyDataRsaGetPrivateKey(key_data);
     xmlSecAssert2(s_key != NULL, -1);
 
+    keySize = (xmlSecKeyDataGetSize(key_data) + 7) / 8;
+    xmlSecAssert2(keySize > 0, -1);
+
     /* get the current digest */
     XMLSEC_SAFE_CAST_SIZE_TO_INT(dgstSize, dgstLen, return(-1), NULL);
+    algo_name = gcry_md_algo_name(digest);
+    if(algo_name == NULL) {
+        xmlSecGCryptError2("gcry_md_algo_name", (gpg_error_t)GPG_ERR_NO_ERROR, NULL,
+            "digest=%d", digest);
+        goto done;
+    }
     err = gcry_sexp_build (&s_data, NULL,
                            "(data (flags pkcs1)(hash %s %b))",
-                           gcry_md_algo_name(digest),
+                           algo_name,
                            dgstLen, dgst);
     if((err != GPG_ERR_NO_ERROR) || (s_data == NULL)) {
         xmlSecGCryptError("gcry_sexp_build(data)", err, NULL);
@@ -1194,7 +1212,7 @@ xmlSecGCryptRsaPkcs1Sign(int digest, xmlSecKeyDataPtr key_data,
     }
 
     /* write out */
-    ret = xmlSecGCryptAppendMpi(m_sig, out, 0);
+    ret = xmlSecGCryptAppendMpi(m_sig, out, keySize);
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptAppendMpi", NULL);
         goto done;
@@ -1220,8 +1238,8 @@ done:
 
 static int
 xmlSecGCryptRsaPkcs1Verify(int digest, xmlSecKeyDataPtr key_data,
-                             const xmlSecByte* dgst, xmlSecSize dgstSize,
-                             const xmlSecByte* data, xmlSecSize dataSize) {
+                              const xmlSecByte* dgst, xmlSecSize dgstSize,
+                              const xmlSecByte* data, xmlSecSize dataSize) {
     gcry_sexp_t s_data = NULL;
     gcry_mpi_t m_sig = NULL;
     gcry_sexp_t s_sig = NULL;
@@ -1229,6 +1247,7 @@ xmlSecGCryptRsaPkcs1Verify(int digest, xmlSecKeyDataPtr key_data,
     gpg_error_t err;
     int dgstLen;
     int res = -1;
+    const char* algo_name;
 
     xmlSecAssert2(key_data != NULL, -1);
     xmlSecAssert2(dgst != NULL, -1);
@@ -1241,9 +1260,15 @@ xmlSecGCryptRsaPkcs1Verify(int digest, xmlSecKeyDataPtr key_data,
 
     /* get the current digest */
     XMLSEC_SAFE_CAST_SIZE_TO_INT(dgstSize, dgstLen, return(-1), NULL);
+    algo_name = gcry_md_algo_name(digest);
+    if(algo_name == NULL) {
+        xmlSecGCryptError2("gcry_md_algo_name", (gpg_error_t)GPG_ERR_NO_ERROR, NULL,
+            "digest=%d", digest);
+        goto done;
+    }
     err = gcry_sexp_build (&s_data, NULL,
                            "(data (flags pkcs1)(hash %s %b))",
-                           gcry_md_algo_name(digest),
+                           algo_name,
                            dgstLen, dgst);
     if((err != GPG_ERR_NO_ERROR) || (s_data == NULL)) {
         xmlSecGCryptError("gcry_sexp_build(data)", err, NULL);
@@ -1292,15 +1317,15 @@ done:
     return(res);
 }
 
-/******************************************************************************pkcs1************************
+/******************************************************************************
  *
  * RSA-PSS
  *
   *****************************************************************************/
 static int
 xmlSecGCryptRsaPssSign(int digest, xmlSecKeyDataPtr key_data,
-                       const xmlSecByte* dgst, xmlSecSize dgstSize,
-                       xmlSecBufferPtr out)
+                        const xmlSecByte* dgst, xmlSecSize dgstSize,
+                        xmlSecBufferPtr out)
 {
     gcry_sexp_t s_data = NULL;
     gcry_mpi_t m_sig = NULL;
@@ -1311,6 +1336,8 @@ xmlSecGCryptRsaPssSign(int digest, xmlSecKeyDataPtr key_data,
     int dgstLen;
     int ret;
     int res = -1;
+    const char* algo_name;
+    xmlSecSize keySize;
 
     xmlSecAssert2(key_data != NULL, -1);
     xmlSecAssert2(dgst != NULL, -1);
@@ -1320,14 +1347,23 @@ xmlSecGCryptRsaPssSign(int digest, xmlSecKeyDataPtr key_data,
     s_key = xmlSecGCryptKeyDataRsaGetPrivateKey(key_data);
     xmlSecAssert2(s_key != NULL, -1);
 
+    keySize = (xmlSecKeyDataGetSize(key_data) + 7) / 8;
+    xmlSecAssert2(keySize > 0, -1);
+
     /* get the current digest */
     XMLSEC_SAFE_CAST_SIZE_TO_INT(dgstSize, dgstLen, return(-1), NULL);
+    algo_name = gcry_md_algo_name(digest);
+    if(algo_name == NULL) {
+        xmlSecGCryptError2("gcry_md_algo_name", (gpg_error_t)GPG_ERR_NO_ERROR, NULL,
+            "digest=%d", digest);
+        goto done;
+    }
     err = gcry_sexp_build (&s_data, NULL,
                            "(data (flags pss)"
-                            "(salt-length %u)"
-                            "(hash %s %b))",
+                             "(salt-length %u)"
+                             "(hash %s %b))",
                            dgstLen,  /* The default salt length is the length of the hash function */
-                           gcry_md_algo_name(digest),
+                           algo_name,
                            dgstLen, dgst);
     if((err != GPG_ERR_NO_ERROR) || (s_data == NULL)) {
         xmlSecGCryptError("gcry_sexp_build(data)", err, NULL);
@@ -1373,7 +1409,7 @@ xmlSecGCryptRsaPssSign(int digest, xmlSecKeyDataPtr key_data,
     }
 
     /* write out */
-    ret = xmlSecGCryptAppendMpi(m_sig, out, 0);
+    ret = xmlSecGCryptAppendMpi(m_sig, out, keySize);
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptAppendMpi", NULL);
         goto done;
@@ -1399,8 +1435,8 @@ done:
 
 static int
 xmlSecGCryptRsaPssVerify(int digest, xmlSecKeyDataPtr key_data,
-                             const xmlSecByte* dgst, xmlSecSize dgstSize,
-                             const xmlSecByte* data, xmlSecSize dataSize) {
+                              const xmlSecByte* dgst, xmlSecSize dgstSize,
+                              const xmlSecByte* data, xmlSecSize dataSize) {
     gcry_sexp_t s_data = NULL;
     gcry_mpi_t m_sig = NULL;
     gcry_sexp_t s_sig = NULL;
@@ -1408,6 +1444,7 @@ xmlSecGCryptRsaPssVerify(int digest, xmlSecKeyDataPtr key_data,
     gpg_error_t err;
     int dgstLen;
     int res = -1;
+    const char* algo_name;
 
     xmlSecAssert2(key_data != NULL, -1);
     xmlSecAssert2(dgst != NULL, -1);
@@ -1420,12 +1457,18 @@ xmlSecGCryptRsaPssVerify(int digest, xmlSecKeyDataPtr key_data,
 
     /* get the current digest */
     XMLSEC_SAFE_CAST_SIZE_TO_INT(dgstSize, dgstLen, return(-1), NULL);
+    algo_name = gcry_md_algo_name(digest);
+    if(algo_name == NULL) {
+        xmlSecGCryptError2("gcry_md_algo_name", (gpg_error_t)GPG_ERR_NO_ERROR, NULL,
+            "digest=%d", digest);
+        goto done;
+    }
     err = gcry_sexp_build (&s_data, NULL,
                            "(data (flags pss)"
                            "(salt-length %u)"
                            "(hash %s %b))",
                            dgstLen,  /* The default salt length is the length of the hash function */
-                           gcry_md_algo_name(digest),
+                           algo_name,
                            dgstLen, dgst);
     if((err != GPG_ERR_NO_ERROR) || (s_data == NULL)) {
         xmlSecGCryptError("gcry_sexp_build(data)", err, NULL);

@@ -41,7 +41,7 @@ xmlSecGCryptAppInit(const char* config XMLSEC_ATTRIBUTE_UNUSED) {
     gcry_error_t err;
     /* Secure memory initialisation based on documentation from:
          http://www.gnupg.org/documentation/manuals/gcrypt/Initializing-the-library.html
-       NOTE sample code don't check gcry_control(...) return code
+        NOTE sample code doesn't check gcry_control(...) return code
 
        All flags from:
          http://www.gnupg.org/documentation/manuals/gcrypt/Controlling-the-library.html
@@ -68,10 +68,10 @@ Noteworthy changes in version 1.4.3 (2008-09-18)
     /* Version check should be the very first call because it
        makes sure that important subsystems are initialized. */
 
-    /* NOTE configure.in defines GCRYPT_MIN_VERSION */
-    if (!gcry_check_version (GCRYPT_MIN_VERSION)) {
-        xmlSecGCryptError2("gcry_check_version", (gcry_error_t)GPG_ERR_NO_ERROR, NULL,
-                           "min_version=%s", GCRYPT_MIN_VERSION);
+    /* NOTE configure.ac defines GCRYPT_MIN_VERSION */
+    if (!gcry_check_version(GCRYPT_MIN_VERSION)) {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_CRYPTO_FAILED, NULL,
+                          "gcry_check_version failed; min_version=%s", GCRYPT_MIN_VERSION);
         return(-1);
     }
 
@@ -332,7 +332,7 @@ xmlSecGCryptAppPkcs12Load(const char *filename,
 /**
  * @brief GCrypt does not support X509 certificates.
  * @details Reads a key and all associated certificates from the PKCS12 data in the memory buffer.
- * For uniformity, call xmlSecGCryptAppKeyLoadMemory instead of this function. Pass
+ * For uniformity, call #xmlSecGCryptAppKeyLoadMemory instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
  * @param data the PKCS12 binary data.
@@ -427,7 +427,7 @@ xmlSecGCryptAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr,
  *
  * @param mngr the keys manager.
  * @param filename the CRL filename.
- * @param format the CRL format (PEM or DER).
+ * @param format the CRL file format.
  * @param keyInfoCtx the key info context for verification parameters.
  * @return 0 on success or a negative value otherwise.
  */
@@ -548,12 +548,12 @@ xmlSecGCryptAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key)
 
 /**
  * @brief Verifies @p key using the keys manager.
- * @details Verifies @p key with the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * @details Verifies @p key with the keys manager @p mngr created with #xmlSecGCryptAppDefaultKeysMngrInit
  * function:
  * - Checks that key certificate is present
  * - Checks that key certificate is valid
  *
- * Adds @p key to the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * Adds @p key to the keys manager @p mngr created with #xmlSecGCryptAppDefaultKeysMngrInit
  * function.
  *
  * @param mngr the pointer to keys manager.

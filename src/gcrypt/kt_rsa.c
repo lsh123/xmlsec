@@ -398,7 +398,7 @@ xmlSecGCryptRsaPkcs1Decrypt(xmlSecGCryptRsaPkcs1CtxPtr ctx, xmlSecBufferPtr in, 
             "(rsa (a %b)))",
             inLen, xmlSecBufferGetData(in));
     if((err != GPG_ERR_NO_ERROR) || (s_encrypted_data == NULL)) {
-        xmlSecGCryptError("gcry_sexp_build(data)", err, NULL);
+        xmlSecGCryptError("gcry_sexp_build(enc-val)", err, NULL);
         goto done;
     }
 
@@ -454,7 +454,7 @@ xmlSecGCryptRsaPkcs1Execute(xmlSecTransformPtr transform, int last,
 
     if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
         /* just do nothing */
-    } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
+    } else if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
         if (transform->operation == xmlSecTransformOperationEncrypt) {
             ret = xmlSecGCryptRsaPkcs1Encrypt(ctx, &(transform->inBuf), &(transform->outBuf));
             if(ret != 0) {
@@ -627,6 +627,11 @@ xmlSecGCryptRsaOaepInitialize(xmlSecTransformPtr transform) {
 
     memset(ctx, 0, sizeof(xmlSecGCryptRsaOaepCtx));
 
+#ifndef XMLSEC_NO_SHA1
+    /* default digest algorithm (overridden by NodeRead if specified) */
+    ctx->hashAlg = XMLSEC_GCRYPT_RSA_OAEP_HASH_SHA1;
+#endif /* XMLSEC_NO_SHA1 */
+
     ret = xmlSecBufferInitialize(&(ctx->oaepParams), 0);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
@@ -737,13 +742,8 @@ xmlSecGCryptRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
     /* mgf1 algorithm */
     if (oaepParams.mgf1DigestAlgorithm == NULL) {
-#ifndef XMLSEC_NO_SHA1
-        mgf1Alg = XMLSEC_GCRYPT_RSA_OAEP_HASH_SHA1;
-#else  /* XMLSEC_NO_SHA1 */
-        xmlSecOtherError(XMLSEC_ERRORS_R_DISABLED, NULL, "No OAEP mgf1 digest algorithm is specified and the default SHA1 digest is disabled");
-        xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
-        return(-1);
-#endif /* XMLSEC_NO_SHA1 */
+        /* per XMLEnc, an unspecified MGF1 defaults to the OAEP digest algorithm */
+        mgf1Alg = ctx->hashAlg;
     } else
 #ifndef XMLSEC_NO_SHA1
     if (xmlStrcmp(oaepParams.mgf1DigestAlgorithm, xmlSecHrefMgf1Sha1) == 0) {
@@ -785,7 +785,7 @@ xmlSecGCryptRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     /* GCrypt only supports *same* algorithms for digest and mgf1 */
     if ((mgf1Alg != NULL) && (ctx->hashAlg != NULL) && (strcmp(ctx->hashAlg, mgf1Alg) != 0)) {
         xmlSecInvalidTransformError3(transform,
-            "for gcrypt/gnutls, rsa/oaep mgf1 algorithm=\"%s\" must be the same as digest algorithm=\"%s\"",
+            "for gcrypt, rsa/oaep mgf1 algorithm=\"%s\" must be the same as digest algorithm=\"%s\"",
             xmlSecErrorsSafeString(mgf1Alg),
             xmlSecErrorsSafeString(ctx->hashAlg));
         xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
@@ -872,7 +872,7 @@ xmlSecGCryptRsaOaepEncrypt(xmlSecGCryptRsaOaepCtxPtr ctx, xmlSecBufferPtr in, xm
     inSize = xmlSecBufferGetSize(in);
     XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, return(-1), NULL);
 
-    oaepParamSize =  xmlSecBufferGetSize(&(ctx->oaepParams));
+    oaepParamSize = xmlSecBufferGetSize(&(ctx->oaepParams));
     XMLSEC_SAFE_CAST_SIZE_TO_INT(oaepParamSize, oaepParamLen, return(-1), NULL);
 
     if(oaepParamLen > 0) {
@@ -944,7 +944,7 @@ xmlSecGCryptRsaOaepDecrypt(xmlSecGCryptRsaOaepCtxPtr ctx, xmlSecBufferPtr in, xm
     inSize = xmlSecBufferGetSize(in);
     XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, return(-1), NULL);
 
-    oaepParamSize =  xmlSecBufferGetSize(&(ctx->oaepParams));
+    oaepParamSize = xmlSecBufferGetSize(&(ctx->oaepParams));
     XMLSEC_SAFE_CAST_SIZE_TO_INT(oaepParamSize, oaepParamLen, return(-1), NULL);
 
     if(oaepParamLen > 0) {
@@ -963,7 +963,7 @@ xmlSecGCryptRsaOaepDecrypt(xmlSecGCryptRsaOaepCtxPtr ctx, xmlSecBufferPtr in, xm
                 inLen, xmlSecBufferGetData(in));
     }
     if((err != GPG_ERR_NO_ERROR) || (s_encrypted_data == NULL)) {
-        xmlSecGCryptError("gcry_sexp_build(data)", err, NULL);
+        xmlSecGCryptError("gcry_sexp_build(enc-val)", err, NULL);
         goto done;
     }
 
@@ -1019,7 +1019,7 @@ xmlSecGCryptRsaOaepExecute(xmlSecTransformPtr transform, int last,
 
     if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
         /* just do nothing */
-    } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
+    } else if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
         if (transform->operation == xmlSecTransformOperationEncrypt) {
             ret = xmlSecGCryptRsaOaepEncrypt(ctx, &(transform->inBuf), &(transform->outBuf));
             if(ret != 0) {

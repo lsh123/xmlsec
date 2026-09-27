@@ -1157,8 +1157,7 @@ xmlSecTransformCtxUriExecute(xmlSecTransformCtxPtr ctx, const xmlChar* uri) {
 
     ret = xmlSecTransformInputURIOpen(uriTransform, uri);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecTransformInputURIOpen", NULL,
-                            "uri=%s", xmlSecErrorsSafeString(uri));
+        xmlSecInternalError2("xmlSecTransformInputURIOpen", NULL, "uri=%s", xmlSecErrorsSafeString(uri));
         return(-1);
     }
 

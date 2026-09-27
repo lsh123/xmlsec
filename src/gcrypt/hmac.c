@@ -112,9 +112,6 @@ xmlSecGCryptHmacCheckId(xmlSecTransformPtr transform) {
     {
         return(0);
     }
-
-    /* just in case */
-    return(0);
 }
 
 
@@ -234,7 +231,7 @@ xmlSecGCryptHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
 
 static int
-xmlSecGCryptHmacSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
+xmlSecGCryptHmacSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq) {
     xmlSecGCryptHmacCtxPtr ctx;
 
     xmlSecAssert2(xmlSecGCryptHmacCheckId(transform), -1);
@@ -282,6 +279,7 @@ xmlSecGCryptHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         xmlSecInvalidZeroKeyDataSizeError(xmlSecTransformGetName(transform));
         return(-1);
     }
+    xmlSecAssert2(xmlSecBufferGetData(buffer) != NULL, -1);
 
     err = gcry_md_setkey(ctx->digestCtx, xmlSecBufferGetData(buffer),
                         xmlSecBufferGetSize(buffer));
@@ -368,13 +366,17 @@ xmlSecGCryptHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
         }
         if(last) {
             xmlSecSize dgstSize;
+            gcry_error_t err;
 
             /* get the final digest */
-            gcry_md_final(ctx->digestCtx);
+            err = gcry_md_final(ctx->digestCtx);
+            if(err != GPG_ERR_NO_ERROR) {
+                xmlSecGCryptError("gcry_md_final", err, xmlSecTransformGetName(transform));
+                return(-1);
+            }
             dgst = gcry_md_read(ctx->digestCtx, ctx->digest);
             if(dgst == NULL) {
-                xmlSecGCryptError("gcry_md_read", (gcry_error_t)GPG_ERR_NO_ERROR,
-                                  xmlSecTransformGetName(transform));
+                xmlSecInternalError("gcry_md_read", xmlSecTransformGetName(transform));
                 return(-1);
             }
             dgstSize = gcry_md_get_algo_dlen(ctx->digest);
@@ -437,7 +439,7 @@ static xmlSecTransformKlass xmlSecGCryptHmacSha1Klass = {
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecGCryptHmacSetKeyReq,                  /* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecGCryptHmacSetKey,                     /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecGCryptHmacVerify,                     /* xmlSecTransformValidateMethod validate; */
+    xmlSecGCryptHmacVerify,                     /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
@@ -480,7 +482,7 @@ static xmlSecTransformKlass xmlSecGCryptHmacSha256Klass = {
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecGCryptHmacSetKeyReq,                  /* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecGCryptHmacSetKey,                     /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecGCryptHmacVerify,                     /* xmlSecTransformValidateMethod validate; */
+    xmlSecGCryptHmacVerify,                     /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
@@ -523,7 +525,7 @@ static xmlSecTransformKlass xmlSecGCryptHmacSha384Klass = {
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecGCryptHmacSetKeyReq,                  /* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecGCryptHmacSetKey,                     /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecGCryptHmacVerify,                     /* xmlSecTransformValidateMethod validate; */
+    xmlSecGCryptHmacVerify,                     /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
@@ -566,7 +568,7 @@ static xmlSecTransformKlass xmlSecGCryptHmacSha512Klass = {
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecGCryptHmacSetKeyReq,                  /* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecGCryptHmacSetKey,                     /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecGCryptHmacVerify,                     /* xmlSecTransformValidateMethod validate; */
+    xmlSecGCryptHmacVerify,                     /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
@@ -610,7 +612,7 @@ static xmlSecTransformKlass xmlSecGCryptHmacRipemd160Klass = {
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecGCryptHmacSetKeyReq,                  /* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecGCryptHmacSetKey,                     /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecGCryptHmacVerify,                     /* xmlSecTransformValidateMethod validate; */
+    xmlSecGCryptHmacVerify,                     /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
@@ -653,7 +655,7 @@ static xmlSecTransformKlass xmlSecGCryptHmacMd5Klass = {
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecGCryptHmacSetKeyReq,                  /* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecGCryptHmacSetKey,                     /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecGCryptHmacVerify,                     /* xmlSecTransformValidateMethod validate; */
+    xmlSecGCryptHmacVerify,                     /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */

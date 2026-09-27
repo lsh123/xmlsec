@@ -172,7 +172,7 @@ xmlSecGCryptBlockCipherCtxUpdate(xmlSecGCryptBlockCipherCtxPtr ctx,
     }
     inSize = inBlocks * blockSize;
 
-    /* we write out the input size plus may be one block */
+    /* we write out the input size plus maybe one block */
     ret = xmlSecBufferSetMaxSize(out, outSize + inSize + blockSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetMaxSize", cipherName,

@@ -503,8 +503,8 @@ xmlSecTransformInputURIGetKlass(void) {
  * @param uri the URL to open.
  *
  * Note: in case of failure, the transform is left in a well-defined
- * (unopened) state and the #xmlSecTransformInputURIClose and
- * #xmlSecTransformInputURIFinalize functions can be called safely.
+ * (unopened) state and the #xmlSecTransformInputURIClose function
+ * must be called to close the transform.
  *
  * @return 0 on success or a negative value otherwise.
  */

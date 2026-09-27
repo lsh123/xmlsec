@@ -143,8 +143,7 @@ static int                      xmlSecKeyX509DataValueXmlWrite              (xml
  * @param data the X509 key data.
  * @param node the pointer to data's value XML node.
  * @param keyInfoCtx the &lt;dsig:KeyInfo/&gt; node processing context.
- * @param readFunc the pointer to the function that converts
- *                      xmlSecKeyX509DataValue to xmlSecKeyData.
+ * @param readFunc the pointer to the function that converts xmlSecKeyX509DataValue to xmlSecKeyData.
  * @return 0 on success or a negative value if an error occurs.
  */
 int

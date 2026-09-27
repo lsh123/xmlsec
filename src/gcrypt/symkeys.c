@@ -136,7 +136,7 @@ xmlSecGCryptSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSe
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
     xmlSecAssert2(buffer != NULL, -1);
 
-    return(xmlSecGCryptGenerateRandom(buffer, (sizeBits + 7) / 8));
+    return(xmlSecGCryptGenerateRandom(buffer, (sizeBits - 1) / 8 + 1));
 }
 
 static xmlSecKeyDataType

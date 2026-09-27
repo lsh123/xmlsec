@@ -7,7 +7,7 @@
  */
 /**
  * @addtogroup xmlsec_gcrypt_crypto
- * @brief AES Key Transport (RFC 3394) implementation for GCrypt.
+ * @brief AES Key Wrap (RFC 3394) implementation for GCrypt.
  */
 #ifndef XMLSEC_NO_AES
 #include "globals.h"
@@ -137,11 +137,7 @@ xmlSecGCryptKWAesInitialize(xmlSecTransformPtr transform) {
     }
 
     blockSize = gcry_cipher_get_algo_blklen(ctx->cipher);
-    if(blockSize <= 0) {
-        xmlSecGCryptError("gcry_cipher_get_algo_blklen", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
-        xmlSecGCryptKWAesFinalize(transform);
-        return(-1);
-    }
+    xmlSecAssert2(blockSize > 0, -1);
 
     ctx->mode     = GCRY_CIPHER_MODE_CBC;
     ctx->flags    = GCRY_CIPHER_SECURE; /* we are paranoid */
@@ -169,7 +165,7 @@ xmlSecGCryptKWAesFinalize(xmlSecTransformPtr transform) {
 }
 
 static int
-xmlSecGCryptKWAesSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
+xmlSecGCryptKWAesSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq) {
     xmlSecGCryptKWAesCtxPtr ctx;
     int ret;
 
@@ -179,7 +175,7 @@ xmlSecGCryptKWAesSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq
     ctx = xmlSecGCryptKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ret = xmlSecTransformKWRfc3394SetKeyReq(transform, &(ctx->parentCtx),keyReq);
+    ret = xmlSecTransformKWRfc3394SetKeyReq(transform, &(ctx->parentCtx), keyReq);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformKWRfc3394SetKeyReq", xmlSecTransformGetName(transform));
         return(-1);

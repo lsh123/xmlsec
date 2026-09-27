@@ -128,7 +128,7 @@ static xmlSecTransformKlass xmlSecGCryptKWDes3Klass = {
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecGCryptKWDes3SetKeyReq,                /* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecGCryptKWDes3SetKey,                   /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
@@ -286,7 +286,7 @@ xmlSecGCryptKWDes3Sha1(xmlSecTransformPtr transform,
 
     outBuf = gcry_md_read(digestCtx, GCRY_MD_SHA1);
     if(outBuf == NULL) {
-        xmlSecGCryptError("gcry_md_read", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
+        xmlSecInternalError("gcry_md_read", NULL);
         gcry_md_close(digestCtx);
         return(-1);
     }

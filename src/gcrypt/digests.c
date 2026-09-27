@@ -231,7 +231,7 @@ xmlSecGCryptDigestVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(ctx->dgstSize > 0, -1);
 
     if(dataSize != ctx->dgstSize) {
-        xmlSecInvalidSizeError("Input data",
+        xmlSecInvalidSizeError("Digest",
                 dataSize, ctx->dgstSize, xmlSecTransformGetName(transform));
         transform->status = xmlSecTransformStatusFail;
         return(0);
@@ -293,13 +293,19 @@ xmlSecGCryptDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
         }
         if(last != 0) {
             xmlSecByte* buf;
+            gcry_error_t err;
 
             /* get the final digest */
-            gcry_md_final(ctx->digestCtx);
+            err = gcry_md_final(ctx->digestCtx);
+            if(err != GPG_ERR_NO_ERROR) {
+                xmlSecGCryptError("gcry_md_final", err,
+                                  xmlSecTransformGetName(transform));
+                return(-1);
+            }
             buf = gcry_md_read(ctx->digestCtx, ctx->digest);
             if(buf == NULL) {
-                xmlSecGCryptError("gcry_md_read", (gcry_error_t)GPG_ERR_NO_ERROR,
-                                  xmlSecTransformGetName(transform));
+                xmlSecInternalError("gcry_md_read",
+                                    xmlSecTransformGetName(transform));
                 return(-1);
             }
 

@@ -88,7 +88,10 @@ xmlSecMSCngCertStoreCtxInitialize(xmlSecMSCngCertStoreCtx* ctx, LPCTSTR localMac
         return(-1);
     }
 
-    /* local machine store (soft failure: may require elevation) */
+    /* local machine store (soft failure: may require elevation).
+     * CERT_STORE_OPEN_EXISTING_FLAG makes CertOpenStore fail if the named store does not
+     * exist, so an absent store is tolerated here (the collection degrades gracefully).
+     * See https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certopenstore */
     ctx->hLocalMachine = CertOpenStore(
         XMLSEC_MSCNG_CERT_STORE_PROV_SYSTEM,
         0,
@@ -264,7 +267,11 @@ xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name, xmlSe
     cert = xmlSecMSCngX509FindCert(ctx->certStoreCtx.hCollection, &findCertCtx);
     xmlSecMSCngX509FindCertCtxFinalize(&findCertCtx);
 
-    /* find cert based on friendly name */
+    /* find cert based on friendly name. This is an O(N) enumeration over the collection
+     * store: a targeted CertFindCertificateInStore() match is not possible because
+     * CERT_FIND_PROPERTY is an existence check (pvFindPara is a DWORD PROP_ID), not a
+     * value match on the friendly-name string.
+     * See https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-cert_find_property */
     if(cert == NULL) {
         PCCERT_CONTEXT pCertCtxIter = NULL;
 

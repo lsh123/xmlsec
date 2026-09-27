@@ -293,8 +293,9 @@ xmlSecMSCngHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(bufSize, dwBufSize, goto done, xmlSecTransformGetName(transform));
 
     /* The key is passed to CNG as-is, even if it is longer than the hash's
-     * block size: CNG normalizes such keys per RFC 2104 internally (verified
-     * empirically: the digest matches a reference implementation). */
+     * block size: CNG normalizes such keys per RFC 2104 internally (hashing the
+     * over-long key), verified empirically (the digest matches a reference
+     * implementation). See https://www.rfc-editor.org/rfc/rfc2104 */
     status = BCryptCreateHash(ctx->hAlg,
         &ctx->hHash,
         NULL,

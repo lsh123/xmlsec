@@ -86,10 +86,10 @@ xmlSecCryptoGetFunctions_mscng(void) {
         return(gXmlSecMSCngFunctions);
     }
 
-    /* DSA-SHA256 requires Windows 8 / Windows Server 2012+.
-     * Note: Windows 7 is not supported by xmlsec, so the probe does not
-     * need to account for the Windows 7 CNG DSA provider, which might
-     * report a 2048-bit maximum key length and make the probe pass. */
+    /* DSA-SHA256 requires Windows 8 / Windows Server 2012+. The probe requests a
+     * 2048-bit DSA key, which the CNG DSA provider supports only on Windows 8+; on
+     * older systems the provider's maximum key length is smaller, so the probe fails.
+     * (xmlsec does not support Windows 7, so no Win7-specific handling is required.) */
 #if !defined(XMLSEC_NO_DSA) && !defined(XMLSEC_NO_SHA256)
     int isDsaSha256Supported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_DSA_ALGORITHM, 2048, NULL);
 #endif /* !defined(XMLSEC_NO_DSA) && !defined(XMLSEC_NO_SHA256) */
@@ -124,6 +124,10 @@ xmlSecCryptoGetFunctions_mscng(void) {
     int isX25519Supported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_ECDH_ALGORITHM, 0, BCRYPT_ECC_CURVE_25519);
 #endif /* XMLSEC_NO_XDH */
 
+    /* Publish the (zeroed) table before populating it. This matches the pattern used by
+     * every other backend: the table is filled during one-time initialization, and xmlsec
+     * initialization is not re-entrant, so a concurrent first-time caller cannot observe
+     * a partially populated table in practice. */
     memset(&functions, 0, sizeof(functions));
     gXmlSecMSCngFunctions = &functions;
 

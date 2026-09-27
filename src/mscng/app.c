@@ -283,7 +283,11 @@ xmlSecMSCngAppKeyLoadEx(const char *filename, xmlSecKeyDataType type, xmlSecKeyD
         bufSize = xmlSecBufferGetSize(&buffer);
         XMLSEC_SAFE_CAST_SIZE_TO_ULONG(bufSize, dwDataSize, {xmlSecBufferFinalize(&buffer); return(NULL);}, NULL);
 
-        /* try to read private key first and if no luck, try public key */
+        /* Try to read private key first and if no luck, try public key
+         * 
+         * Note: xmlSecMSCngAppKeyReadPrivKeyFromDer() only supports DH and X25519 PKCS#8
+         * private keys; other private key types (RSA/EC/DSA) are not supported in DER form
+         * by this backend. Public-key DER files are handled by xmlSecMSCngAppKeyReadPubKeyFromDer(). */
         keyData = xmlSecMSCngAppKeyReadPrivKeyFromDer(xmlSecBufferGetData(&buffer), dwDataSize);
         if(keyData == NULL) {
             keyData = xmlSecMSCngAppKeyReadPubKeyFromDer(xmlSecBufferGetData(&buffer), dwDataSize);
@@ -635,6 +639,11 @@ xmlSecMSCngIsPrivateKeyCert(PCCERT_CONTEXT cert, BOOL isPersistentKey) {
     } else {
         CERT_KEY_CONTEXT ckc;
         DWORD dwDataLen = sizeof(ckc);
+        /* Only the presence of CERT_KEY_CONTEXT_PROP_ID is checked here; the CNG key
+         * context it points to is validated later by xmlSecMSCngKeyDataCertGetPrivkey()
+         * (which requires ckc.hNCryptKey != 0). A CAPI-only context cannot arise from the
+         * CNG PKCS12 import used by this backend.
+         * See https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-cert_context_property_id */
         return CertGetCertificateContextProperty(cert, CERT_KEY_CONTEXT_PROP_ID, &ckc, &dwDataLen);
     }
 }

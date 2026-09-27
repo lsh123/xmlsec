@@ -446,7 +446,7 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
         if(bufferSize > XMLSEC_SIZE_MAX - xmlSecMSCngAesGcmNonceLengthInBytes) {
             xmlSecInternalError3("xmlSecBufferSetSize", cipherName,
                 "bufferSize=" XMLSEC_SIZE_FMT "; nonceSize=" XMLSEC_SIZE_FMT,
-                bufferSize, xmlSecMSCngAesGcmNonceLengthInBytes);
+                bufferSize, (xmlSecSize)xmlSecMSCngAesGcmNonceLengthInBytes);
             return(-1);
         }
         ret = xmlSecBufferSetSize(out, bufferSize + xmlSecMSCngAesGcmNonceLengthInBytes);
@@ -531,7 +531,11 @@ xmlSecMSCngGcmBlockCipherCtxUpdate(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
          * to come, but we don't know how much. The spec tells us that
          * the tag is the last 16 bytes of the data when decrypting, so to make sure
          * we don't try to decrypt it, we leave at least 16 bytes in the buffer
-         * until we know we're processing the last one */
+         * until we know we're processing the last one.
+         * The subtraction below cannot underflow: for AES-GCM blockSize is always 16
+         * (the AES block size reported by BCRYPT_BLOCK_LENGTH), and the guard above
+         * (xmlSecBufferGetSize(in) < blockSize) already ensures the buffer is at least
+         * blockSize bytes. See https://www.w3.org/TR/xmlenc-core1/#sec-AES-GCM */
         inSize = ((xmlSecBufferGetSize(in) - xmlSecMSCngAesGcmTagLengthInBytes) / blockSize) * blockSize;
         if (inSize < blockSize) {
             return 0;

@@ -690,7 +690,11 @@ xmlSecMSCngDhDerivePubKeyY(BCRYPT_ALG_HANDLE hAlg, BCRYPT_KEY_HANDLE hPrivKey, P
         goto done;
     }
 
-    /* BCrypt returns Y in little-endian (byte-reverse of the big-endian wire format); reverse to big-endian */
+    /* BCrypt returns the DH secret in little-endian (byte-reverse of the big-endian wire
+     * format); reverse to big-endian. This matches the KAT-verified convention used
+     * throughout the backend (see key_agrmnt.c and certkeys.c) and the BCryptDeriveKey
+     * raw-secret layout.
+     * See https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/nf-bcrypt-bcryptderivekey */
     xmlSecMSCngReverseBytes(pbYtmp, cbY);
     
     /* success */

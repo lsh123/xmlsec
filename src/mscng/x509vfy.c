@@ -553,6 +553,8 @@ xmlSecMSCngX509StoreContainsCert(HCERTSTORE store, CERT_NAME_BLOB* name, PCCERT_
     xmlSecAssert2(cert != NULL, -1);
 
     while (TRUE) {
+        /* storeCert will be released in the next CertFindCertificateInStore() call
+         * (see https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certfindcertificateinstore) */        
         storeCert = CertFindCertificateInStore(store,
             X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
             0,
@@ -566,10 +568,10 @@ xmlSecMSCngX509StoreContainsCert(HCERTSTORE store, CERT_NAME_BLOB* name, PCCERT_
         ret = xmlSecMSCngX509StoreVerifySubject(cert, storeCert);
         if (ret < 0) {
             xmlSecInternalError("xmlSecMSCngX509StoreVerifySubject", NULL);
-            continue; /* storeCert will be released in the next CertFindCertificateInStore() call */
+            continue;
         } else if (ret == 0) {
             xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL, "xmlSecMSCngX509StoreVerifySubject");
-            continue; /* storeCert will be released in the next CertFindCertificateInStore() call */
+            continue;
         }
 
         /* success */
@@ -1243,7 +1245,8 @@ xmlSecMSCngX509StoreVerifyCrl(xmlSecKeyDataStorePtr store, PCCRL_CONTEXT crl,
             issuerCert = NULL;
             break;
         }
-        /* try next matching cert; CertFindCertificateInStore frees issuerCert */
+        /* try next matching cert; CertFindCertificateInStore frees issuerCert
+         * (see https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certfindcertificateinstore) */
         issuerCert = CertFindCertificateInStore(ctx->trusted,
             X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
             0,
@@ -1282,7 +1285,8 @@ xmlSecMSCngX509StoreVerifyCrl(xmlSecKeyDataStorePtr store, PCCRL_CONTEXT crl,
                     break;
                 }
             }
-            /* try next matching cert; CertFindCertificateInStore frees issuerCert */
+            /* try next matching cert; CertFindCertificateInStore frees issuerCert
+             * (see https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certfindcertificateinstore) */
             issuerCert = CertFindCertificateInStore(ctx->untrusted,
                 X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
                 0,
@@ -1431,8 +1435,13 @@ xmlSecMSCngCertStrToName(DWORD dwCertEncodingType, LPTSTR pszX500, DWORD dwStrTy
     xmlSecAssert2(pszX500 != NULL, NULL);
     xmlSecAssert2(len != NULL, NULL);
 
-    if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType,
-                        NULL, NULL, len, &ppszError)) {
+    /* CertStrToName's pcbEncoded out-parameter is a byte count (not a TCHAR count), per
+     * the SDK SAL annotation _Out_writes_bytes_to_opt_(*pcbEncoded, *pcbEncoded). So the
+     * callers can assign *len directly to CERT_NAME_BLOB.cbData / CERT_INFO.Issuer.cbData
+     * (both byte counts), even in a Unicode build where sizeof(TCHAR) == 2; the buffer
+     * below is sized as sizeof(TCHAR) * (*len + 1), which is always >= *len + 1 bytes.
+     * See https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certstrtoname */
+    if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType, NULL, NULL, len, &ppszError)) {
         /* this might not be an error, string might just not exist */
         return(NULL);
     }

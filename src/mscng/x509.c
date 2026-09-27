@@ -187,25 +187,6 @@ xmlSecMSCngX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
     return(cert);
 }
 
-static int
-xmlSecMSCngKeyDataX509AddCertInternal(xmlSecMSCngX509DataCtxPtr ctx, PCCERT_CONTEXT cert) {
-    xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(cert != NULL, -1);
-
-    if (!CertAddCertificateContextToStore(ctx->hMemStore,
-        cert,
-        CERT_STORE_ADD_ALWAYS,
-        NULL
-    )) {
-        xmlSecMSCngLastError("CertAddCertificateContextToStore", NULL);
-        return(-1);
-    }
-
-    /* caller expects data to own the cert on success. */
-    CertFreeCertificateContext(cert);
-    return(0);
-}
-
 /**
  * @brief Adds certificate to the X509 key data and sets it as the key's
  * certificate in @p data. On success, the @p data owns the cert.
@@ -217,37 +198,40 @@ xmlSecMSCngKeyDataX509AddCertInternal(xmlSecMSCngX509DataCtxPtr ctx, PCCERT_CONT
 int
 xmlSecMSCngKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
     xmlSecMSCngX509DataCtxPtr ctx;
-    int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataX509Id), -1);
     xmlSecAssert2(cert != NULL, -1);
 
     ctx = xmlSecMSCngX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->hMemStore != 0, -1);
 
     /* check if the same cert is used for some reason */
     if ((ctx->keyCert != NULL) && (CertCompareCertificate(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, cert->pCertInfo, ctx->keyCert->pCertInfo) == TRUE)) {
         CertFreeCertificateContext(cert);  /* caller expects data to own the cert on success. */
         return(0);
     }
-    xmlSecAssert2(ctx->keyCert == NULL, -1);
-
-    /* keep a separate owned reference to the key certificate; AddCertInternal
-     * takes ownership of (and frees) cert, so ctx->keyCert must be a duplicate. */
+    /* replace the existing key certificate, duplicate to ensure the private key is copied */
+    if(ctx->keyCert != NULL) {
+        CertFreeCertificateContext(ctx->keyCert);
+        ctx->keyCert = NULL;
+    }
     ctx->keyCert = CertDuplicateCertificateContext(cert);
     if (ctx->keyCert == NULL) {
         xmlSecMSCngLastError("CertDuplicateCertificateContext", NULL);
         return(-1);
     }
 
-    ret = xmlSecMSCngKeyDataX509AddCertInternal(ctx, cert);
-    if (ret < 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataX509AddCertInternal", xmlSecKeyDataGetName(data));
+    /* CertAddCertificateContextToStore will NOT create a duplicate cert if NULL is passed as the last parameter */
+    if (!CertAddCertificateContextToStore(ctx->hMemStore, cert, CERT_STORE_ADD_USE_EXISTING,  NULL)) {
+        xmlSecMSCngLastError("CertAddCertificateContextToStore", NULL);
         CertFreeCertificateContext(ctx->keyCert);
-        ctx->keyCert = NULL;
+        ctx->keyCert = NULL;        
         return(-1);
     }
 
+    /* caller expects data to own the cert on success. */
+    CertFreeCertificateContext(cert);
     return(0);
 }
 
@@ -274,7 +258,16 @@ xmlSecMSCngKeyDataX509AdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
         CertFreeCertificateContext(cert); /* caller expects data to own the cert on success. */
         return(0);
     }
-    return(xmlSecMSCngKeyDataX509AddCertInternal(ctx, cert));
+
+    /* CertAddCertificateContextToStore will NOT create a duplicate cert if NULL is passed as the last parameter */
+    if (!CertAddCertificateContextToStore(ctx->hMemStore, cert, CERT_STORE_ADD_USE_EXISTING, NULL)) {
+        xmlSecMSCngLastError("CertAddCertificateContextToStore", NULL);
+        return(-1);
+    }
+
+    /* caller expects data to own the cert on success. */
+    CertFreeCertificateContext(cert);
+    return(0);
 }
 
 /**
@@ -393,7 +386,6 @@ xmlSecMSCngVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xm
     xmlSecKeyDataPtr keyValue;
     PCCERT_CONTEXT cert;
     PCCERT_CONTEXT certCopy;
-    PCCERT_CONTEXT keyCert;
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataX509Id), -1);
@@ -429,22 +421,14 @@ xmlSecMSCngVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xm
     }
 
     /* set cert into the x509 data, we don't know if the cert is already in KeyData or not
-     * so assume we need to add it again.
-     */
-    keyCert = CertDuplicateCertificateContext(cert);
-    if(keyCert == NULL) {
-        xmlSecMSCngLastError("CertDuplicateCertificateContext", xmlSecKeyDataGetName(data));
+     * so assume we need to add it again. */
+    ret = xmlSecMSCngKeyDataX509AdoptKeyCert(data, cert);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptKeyCert", xmlSecKeyDataGetName(data));
         CertFreeCertificateContext(cert);
         return(-1);
     }
-    CertFreeCertificateContext(cert);
-    ret = xmlSecMSCngKeyDataX509AdoptKeyCert(data, keyCert);
-    if (ret < 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptKeyCert", xmlSecKeyDataGetName(data));
-        CertFreeCertificateContext(keyCert);
-        return(-1);
-    }
-    cert = keyCert = NULL; /* we should be using ctx->keyCert for everything */
+    cert = NULL; /* we should be using ctx->keyCert for everything */
 
     /* extract key from cert (need to copy the certificate, so it can be adopted according to the key value data) */
     certCopy = CertDuplicateCertificateContext(ctx->keyCert);
@@ -648,7 +632,7 @@ xmlSecMSCngX509NameWrite(PCERT_NAME_BLOB nm) {
     xmlChar *res = NULL;
     DWORD csz;
 
-
+    xmlSecAssert2(nm != NULL, NULL);
     xmlSecAssert2(nm->pbData != NULL, NULL);
     xmlSecAssert2(nm->cbData > 0, NULL);
 

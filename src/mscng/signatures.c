@@ -448,7 +448,6 @@ static void xmlSecMSCngSignatureFinalize(xmlSecTransformPtr transform) {
     }
 
     /* Destroy the hash, close the algorithm provider, then free the hash object and buffer. */
-    
     if(ctx->hHash != 0) {
         status = BCryptDestroyHash(ctx->hHash);
         if(status != STATUS_SUCCESS) {
@@ -563,7 +562,7 @@ xmlSecMSCngSignatureFixBrokenJava(xmlSecMSCngSignatureCtxPtr ctx,
     } else if (ctx->keyId == xmlSecMSCngKeyDataEcId) {
         keySize = xmlSecMSCngCertKeyDataGetSizeInBits(ctx->data);
         if (keySize <= 0) {
-            xmlSecInternalError("xmlSecMSCngCertKeyDataGetSize", NULL);
+            xmlSecInternalError("xmlSecMSCngCertKeyDataGetSizeInBits", NULL);
             return(-1);
         }
         halfSize = (keySize + 7) / 8;
@@ -1004,6 +1003,12 @@ xmlSecMSCngSignatureStartHash(
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->pszHashAlgId != NULL, -1);
 
+    /* Note: the error paths below may leave hHashAlg/pbHashObject/pbHash
+     * partially acquired on purpose; xmlSecTransformDestroy() invokes this
+     * klass's finalize() unconditionally when the transform is destroyed,
+     * and it releases any of these resources. */
+    xmlSecAssert2(ctx->hHashAlg == 0, -1);
+
     /* open an algorithm handle */
     status = BCryptOpenAlgorithmProvider(
         &ctx->hHashAlg,
@@ -1031,6 +1036,7 @@ xmlSecMSCngSignatureStartHash(
     }
 
     /* allocate the hash object on the heap */
+    xmlSecAssert2(ctx->pbHashObject == NULL, -1);
     ctx->pbHashObject = (PBYTE)xmlMalloc(cbHashObject);
     if (ctx->pbHashObject == NULL) {
         xmlSecMallocError(cbHashObject, NULL);
@@ -1051,6 +1057,7 @@ xmlSecMSCngSignatureStartHash(
     }
 
     /* allocate the hash buffer on the heap */
+    xmlSecAssert2(ctx->pbHash == NULL, -1);
     ctx->pbHash = (PBYTE)xmlMalloc(ctx->cbHash);
     if (ctx->pbHash == NULL) {
         xmlSecMallocError(ctx->cbHash, NULL);
@@ -1058,6 +1065,7 @@ xmlSecMSCngSignatureStartHash(
     }
 
     /* create the hash */
+    xmlSecAssert2(ctx->hHash == 0, -1);
     status = BCryptCreateHash(
         ctx->hHashAlg,
         &ctx->hHash,

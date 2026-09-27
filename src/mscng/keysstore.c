@@ -59,8 +59,8 @@
  * before the lower one (1):
  * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddstoretocollection
  * (empirically verified: the higher-priority store is searched first)
- * Opening either individual store is treated as a soft failure - a warning is
- * logged but the other store is still tried.  Returns 0 on success or -1 if
+  * Opening either individual store is treated as a soft failure - an error is
+  * logged but the other store is still tried.  Returns 0 on success or -1 if
  * neither store could be opened.
  *
   *****************************************************************************/
@@ -130,7 +130,7 @@ xmlSecMSCngCertStoreCtxInitialize(xmlSecMSCngCertStoreCtx* ctx, LPCTSTR localMac
 
     /* fail only if both individual stores are unavailable */
     if(ctx->hLocalMachine == NULL && ctx->hCurrentUser == NULL) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
+        xmlSecOtherError(XMLSEC_ERRORS_R_CRYPTO_FAILED, NULL,
             "neither LocalMachine nor CurrentUser store could be opened");
         CertCloseStore(ctx->hCollection, 0);
         ctx->hCollection = NULL;
@@ -232,9 +232,11 @@ static PCCERT_CONTEXT
 xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKeyInfoCtxPtr keyInfoCtx) {
 #ifndef XMLSEC_NO_X509
     xmlSecMSCngKeysStoreCtx* ctx;
+    xmlSecMSCngX509FindCertCtx findCertCtx;
     PCCERT_CONTEXT cert = NULL;
     LPTSTR lptName = NULL;
     LPWSTR lpwName = NULL;
+    int ret;
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCngKeysStoreId), NULL);
     xmlSecAssert2(name != NULL, NULL);
@@ -253,10 +255,14 @@ xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name, xmlSe
     }
 
     /* find cert based on subject */
-    cert = xmlSecMSCngX509FindCertBySubject(
-        ctx->certStoreCtx.hCollection,
-        lptName,
-        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING);
+    ret = xmlSecMSCngX509FindCertCtxInitialize(&findCertCtx, name, NULL, NULL, NULL, 0);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngX509FindCertCtxInitialize", xmlSecKeyStoreGetName(store));
+        xmlSecMSCngX509FindCertCtxFinalize(&findCertCtx);
+        goto done;
+    }
+    cert = xmlSecMSCngX509FindCert(ctx->certStoreCtx.hCollection, &findCertCtx);
+    xmlSecMSCngX509FindCertCtxFinalize(&findCertCtx);
 
     /* find cert based on friendly name */
     if(cert == NULL) {

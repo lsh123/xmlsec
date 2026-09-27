@@ -27,8 +27,8 @@
 #include "../keysdata_helpers.h"
 #include "../transform_helpers.h"
 
-/* SHA224 algorithm identifier is not defined in older MinGW headers;
- * provide a fallback so the code compiles with all SDK versions. */
+/* SHA224 algorithm identifier is not defined in the Windows SDK bcrypt.h;
+ * provide a fallback so the code compiles. */
 #ifndef BCRYPT_SHA224_ALGORITHM
 #define BCRYPT_SHA224_ALGORITHM             L"SHA224"
 #endif /* BCRYPT_SHA224_ALGORITHM */
@@ -365,7 +365,7 @@ xmlSecMSCngConcatKdfPerformKeyDerivation(
         goto done;
     }
     if (cbResultLength != cbOut) {
-        xmlSecInvalidSizeError("Derived key length doesn't match the requested",
+        xmlSecInvalidSizeError("Derived key length doesn't match the requested length",
             (xmlSecSize)cbResultLength, (xmlSecSize)cbOut, NULL);
         goto done;
     }
@@ -523,7 +523,7 @@ static xmlSecTransformKlass xmlSecMSCngConcatKdfKlass = {
     NULL,                                           /* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecMSCngConcatKdfSetKeyReq,                    /* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecMSCngConcatKdfSetKey,                       /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                           /* xmlSecTransformValidateMethod validate; */
+    NULL,                                           /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,              /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,                  /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,                   /* xmlSecTransformPopBinMethod popBin; */

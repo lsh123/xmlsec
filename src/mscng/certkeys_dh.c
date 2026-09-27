@@ -40,6 +40,8 @@ xmlSecMSCngKeyDataDuplicateBCryptDhPrivKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HAN
     xmlSecAssert2(src != NULL, -1);
     xmlSecAssert2(dst != NULL, -1);
 
+    *dst = NULL;
+
     /* export DH private key blob */
     status = BCryptExportKey(src, NULL, BCRYPT_DH_PRIVATE_BLOB, NULL, 0, &cbPrivBlob, 0);
     if(status != STATUS_SUCCESS) {
@@ -112,8 +114,8 @@ xmlSecMSCngDerReadTlv(const xmlSecByte* p, const xmlSecByte* end, BYTE expectedT
     return(p);
 }
 
-/* Parse DER INTEGER → strip leading sign byte if present.
- * Returns pointer to big-endian integer bytes (inside src buffer), sets *pLen. */
+/* Parse a DER INTEGER, stripping the leading sign byte if present.
+ * Returns a pointer to the big-endian integer bytes (inside the source buffer) and sets *pLen. */
 const xmlSecByte*
 xmlSecMSCngDerDecodeInteger(const xmlSecByte* p, const xmlSecByte* end, DWORD* pLen) {
     const xmlSecByte* val;
@@ -456,7 +458,7 @@ xmlSecMSCngKeyDataDhPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDhPtr dh
     bufData += sizeof(BCRYPT_DH_KEY_BLOB);
     bufLen  -= (DWORD)sizeof(BCRYPT_DH_KEY_BLOB);
     if(bufLen != 3 * dhkey->cbKey) {
-        xmlSecMSCngNtError3("BCRYPT_DH_KEY_BLOB size mismatch", NULL, STATUS_SUCCESS, "bufLen=%lu, cbKey=%lu", bufLen, dhkey->cbKey);
+        xmlSecOtherError3(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "BCRYPT_DH_KEY_BLOB size mismatch: bufLen=%lu, cbKey=%lu", bufLen, dhkey->cbKey);
         goto done;
     }
 
@@ -744,7 +746,7 @@ xmlSecMSCngDhImportPubKeyHandle(BCRYPT_ALG_HANDLE hAlg, PUCHAR pbPrivBlob, BCRYP
     dhPub->dwMagic = BCRYPT_DH_PUBLIC_MAGIC;
     dhPub->cbKey = cbKey;
 
-    /* copy P, G, Y (slots 0, 1, 2) from the private blob — Y is now correct */
+    /* copy P, G, Y (slots 0, 1, 2) from the private blob (Y is now correct) */
     memcpy(pbPubBlob + sizeof(BCRYPT_DH_KEY_BLOB), pbPrivBlob + sizeof(BCRYPT_DH_KEY_BLOB), cbKey * 3);
 
     status = BCryptImportKeyPair(hAlg, NULL, BCRYPT_DH_PUBLIC_BLOB, hPubKey, pbPubBlob, cbPubBlob, 0);
@@ -812,9 +814,9 @@ xmlSecMSCngKeyDataDhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLen
         xmlSecInternalError("CryptDecodeObjectEx returned NULL", NULL);
         goto done;
     }
-    /* Validate OID — must be X9.42 DH */
+    /* Validate the OID; it must be X9.42 DH */
     if(pki->Algorithm.pszObjId == NULL || strcmp(pki->Algorithm.pszObjId, szOID_X942_DH) != 0) {
-        /* Not a DH key — silently fail so caller can try other formats */
+        /* Not a DH key, silently fail so the caller can try other formats */
         goto done;
     }
     if(pki->Algorithm.Parameters.cbData == 0 || pki->Algorithm.Parameters.pbData == NULL) {

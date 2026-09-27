@@ -12,12 +12,9 @@
 #include "globals.h"
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
-#include <ctype.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/base64.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/membuf.h>
@@ -90,7 +87,7 @@ static xmlSecTransformKlass xmlSecMSCng ## name ## Klass = {                    
     xmlSecMSCngKeyAgreementNodeWrite,           /* xmlSecTransformNodeWriteMethod writeNode; */                \
     xmlSecMSCngKeyAgreementSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */                \
     xmlSecMSCngKeyAgreementSetKey,              /* xmlSecTransformSetKeyMethod setKey; */                      \
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */                  \
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */                      \
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */            \
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                    \
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                      \

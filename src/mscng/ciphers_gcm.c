@@ -16,7 +16,6 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
-#include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
 
@@ -64,7 +63,7 @@ static xmlSecTransformKlass xmlSecMSCng ## name  ## Klass = {                   
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */     \
     xmlSecMSCngGcmBlockCipherSetKeyReq,         /* xmlSecTransformSetKeyMethod setKeyReq; */        \
     xmlSecMSCngGcmBlockCipherSetKey,            /* xmlSecTransformSetKeyMethod setKey; */           \
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */       \
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */           \
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */ \
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */         \
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */           \
@@ -415,7 +414,7 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
     ctx->cbIV = ctx->dwBlockLen;
     memset(ctx->pbIV, 0, blockSize);
 
-    /* Setup an empty MAC context if we're chaining calls */
+    /* Set up an empty MAC context; the chaining flag is set unconditionally */
     status = BCryptGetProperty(ctx->hAlg,
         BCRYPT_AUTH_TAG_LENGTH,
         (PUCHAR)&authTagLengths,
@@ -444,6 +443,12 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
         /* allocate space for nonce in the output buffer - it is 96 bits for GCM mode */
         /* See http://www.w3.org/TR/xmlenc-core1/#sec-AES-GCM */
         bufferSize = xmlSecBufferGetSize(out);
+        if(bufferSize > XMLSEC_SIZE_MAX - xmlSecMSCngAesGcmNonceLengthInBytes) {
+            xmlSecInternalError3("xmlSecBufferSetSize", cipherName,
+                "bufferSize=" XMLSEC_SIZE_FMT "; nonceSize=" XMLSEC_SIZE_FMT,
+                bufferSize, xmlSecMSCngAesGcmNonceLengthInBytes);
+            return(-1);
+        }
         ret = xmlSecBufferSetSize(out, bufferSize + xmlSecMSCngAesGcmNonceLengthInBytes);
         if (ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetSize", cipherName,
@@ -535,6 +540,11 @@ xmlSecMSCngGcmBlockCipherCtxUpdate(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, inLen, return(-1), cipherName);
 
     outSize = xmlSecBufferGetSize(out);
+    if(outSize > XMLSEC_SIZE_MAX - inSize) {
+        xmlSecInternalError3("xmlSecBufferSetMaxSize", cipherName,
+            "outSize=" XMLSEC_SIZE_FMT "; inSize=" XMLSEC_SIZE_FMT, outSize, inSize);
+        return(-1);
+    }
     ret = xmlSecBufferSetMaxSize(out, outSize + inSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetMaxSize", cipherName,
@@ -646,6 +656,12 @@ xmlSecMSCngGcmBlockCipherCtxFinal(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
         xmlSecSize outMaxSize;
 
         /* new out buf size: old out buf size + same as in buf size + space for the tag */
+        if((inBufSize > XMLSEC_SIZE_MAX - xmlSecMSCngAesGcmTagLengthInBytes) ||
+           (outBufSize > XMLSEC_SIZE_MAX - inBufSize - xmlSecMSCngAesGcmTagLengthInBytes)) {
+            xmlSecInternalError3("xmlSecBufferSetMaxSize", cipherName,
+                "outBufSize=" XMLSEC_SIZE_FMT "; inBufSize=" XMLSEC_SIZE_FMT, outBufSize, inBufSize);
+            return(-1);
+        }
         outMaxSize = outBufSize + inBufSize + xmlSecMSCngAesGcmTagLengthInBytes;
         ret = xmlSecBufferSetMaxSize(out, outMaxSize);
         if(ret < 0) {
@@ -709,6 +725,11 @@ xmlSecMSCngGcmBlockCipherCtxFinal(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
         inBufSize = xmlSecBufferGetSize(in);
 
         /* new out max size = old out size + in size (w/o tag) */
+        if(outBufSize > XMLSEC_SIZE_MAX - inBufSize) {
+            xmlSecInternalError3("xmlSecBufferSetMaxSize", cipherName,
+                "outBufSize=" XMLSEC_SIZE_FMT "; inBufSize=" XMLSEC_SIZE_FMT, outBufSize, inBufSize);
+            return(-1);
+        }
         outMaxSize = outBufSize + inBufSize;
         ret = xmlSecBufferSetMaxSize(out, outMaxSize);
         if(ret < 0) {

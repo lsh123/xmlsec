@@ -40,7 +40,13 @@
 static xmlSecCryptoDLFunctionsPtr  gXmlSecNssFunctions = NULL;
 
 
-/* checks if a given algorithm is enabled in NSS */
+/*
+ * Checks if a given algorithm is enabled in NSS.
+ *
+ * NSS security policy flags are per-purpose (SSL, PKCS12, S/MIME, signature)
+ * and there is no generic "encryption" flag, so NSS_USE_ALG_IN_ANY_SIGNATURE
+ * is used as the closest available proxy for symmetric encryption algorithms.
+ */
 static int
 xmlSecNssCryptoCheckAlgorithm(SECOidTag alg) {
     PRUint32 policyFlags = 0;
@@ -50,7 +56,7 @@ xmlSecNssCryptoCheckAlgorithm(SECOidTag alg) {
     if (rv == SECFailure) {
         return(0);
     }
-    if((policyFlags & NSS_USE_ALG_IN_ANY_SIGNATURE) == 0) {
+    if ((policyFlags & NSS_USE_ALG_IN_ANY_SIGNATURE) == 0) {
         return(0);
     }
     return(1);
@@ -75,7 +81,7 @@ xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoGetFunctions_nss(void) {
     static xmlSecCryptoDLFunctions functions;
 
-    if(gXmlSecNssFunctions != NULL) {
+    if (gXmlSecNssFunctions != NULL) {
         return(gXmlSecNssFunctions);
     }
 
@@ -139,6 +145,14 @@ xmlSecCryptoGetFunctions_nss(void) {
 #ifndef XMLSEC_NO_RSA
     gXmlSecNssFunctions->keyDataRsaGetKlass             = xmlSecNssKeyDataRsaGetKlass;
 #endif /* XMLSEC_NO_RSA */
+
+#ifndef XMLSEC_NO_EDDSA
+    gXmlSecNssFunctions->keyDataEdDSAGetKlass           = xmlSecNssKeyDataEdDSAGetKlass;
+#endif /* XMLSEC_NO_EDDSA */
+
+#ifndef XMLSEC_NO_XDH
+    gXmlSecNssFunctions->keyDataXdhGetKlass             = xmlSecNssKeyDataXdhGetKlass;
+#endif /* XMLSEC_NO_XDH */
 
 #ifndef XMLSEC_NO_X509
     gXmlSecNssFunctions->keyDataX509GetKlass            = xmlSecNssKeyDataX509GetKlass;
@@ -240,13 +254,11 @@ xmlSecCryptoGetFunctions_nss(void) {
 
     /* EdDSA */
 #ifndef XMLSEC_NO_EDDSA
-    gXmlSecNssFunctions->keyDataEdDSAGetKlass   = xmlSecNssKeyDataEdDSAGetKlass;
     gXmlSecNssFunctions->transformEdDSAEd25519GetKlass = xmlSecNssTransformEdDSAEd25519GetKlass;
 #endif /* XMLSEC_NO_EDDSA */
 
     /* XDH */
 #ifndef XMLSEC_NO_XDH
-    gXmlSecNssFunctions->keyDataXdhGetKlass      = xmlSecNssKeyDataXdhGetKlass;
     gXmlSecNssFunctions->transformX25519GetKlass = xmlSecNssTransformX25519GetKlass;
 #endif /* XMLSEC_NO_XDH */
 
@@ -387,9 +399,9 @@ xmlSecCryptoGetFunctions_nss(void) {
     gXmlSecNssFunctions->cryptoAppDefaultKeysMngrSave   = xmlSecNssAppDefaultKeysMngrSave;
 #ifndef XMLSEC_NO_X509
     gXmlSecNssFunctions->cryptoAppKeysMngrCertLoad      = xmlSecNssAppKeysMngrCertLoad;
-    gXmlSecNssFunctions->cryptoAppKeysMngrCertLoadMemory= xmlSecNssAppKeysMngrCertLoadMemory;
+    gXmlSecNssFunctions->cryptoAppKeysMngrCertLoadMemory = xmlSecNssAppKeysMngrCertLoadMemory;
     gXmlSecNssFunctions->cryptoAppKeysMngrCrlLoad       = xmlSecNssAppKeysMngrCrlLoad;
-    gXmlSecNssFunctions->cryptoAppKeysMngrCrlLoadAndVerify= xmlSecNssAppKeysMngrCrlLoadAndVerify;
+    gXmlSecNssFunctions->cryptoAppKeysMngrCrlLoadAndVerify = xmlSecNssAppKeysMngrCrlLoadAndVerify;
     gXmlSecNssFunctions->cryptoAppKeysMngrCrlLoadMemory = xmlSecNssAppKeysMngrCrlLoadMemory;
     gXmlSecNssFunctions->cryptoAppPkcs12Load            = xmlSecNssAppPkcs12Load;
     gXmlSecNssFunctions->cryptoAppPkcs12LoadMemory      = xmlSecNssAppPkcs12LoadMemory;
@@ -489,6 +501,15 @@ xmlSecNssUpdateAvailableCryptoTransforms(xmlSecCryptoDLFunctionsPtr functions) {
     }
 #endif /* XMLSEC_NO_DES */
 
+    /****** CHACHA20 ******/
+#ifndef XMLSEC_NO_CHACHA20
+    /*
+     * NSS has no OID for ChaCha20-Poly1305, so its availability cannot be
+     * checked against the NSS security policy; the transform is left
+     * registered and will fail at runtime if the mechanism is unsupported.
+     */
+#endif /* XMLSEC_NO_CHACHA20 */
+
     /****** DSA ******/
 #ifndef XMLSEC_NO_DSA
 
@@ -508,7 +529,12 @@ xmlSecNssUpdateAvailableCryptoTransforms(xmlSecCryptoDLFunctionsPtr functions) {
 
     /****** XDH ******/
 #ifndef XMLSEC_NO_XDH
-    if(xmlSecNssCryptoCheckMechanism(CKM_ECDH1_DERIVE) == 0) {
+    /*
+     * NSS has no X25519-specific OID, so the ECDH-derive mechanism (which
+     * maps to the ECDSA OID) is used as the closest available proxy for the
+     * NSS security policy check.
+     */
+    if (xmlSecNssCryptoCheckMechanism(CKM_ECDH1_DERIVE) == 0) {
         functions->transformX25519GetKlass = NULL;
     }
 #endif /* XMLSEC_NO_XDH */
@@ -565,9 +591,11 @@ xmlSecNssUpdateAvailableCryptoTransforms(xmlSecCryptoDLFunctionsPtr functions) {
 #ifndef XMLSEC_NO_HMAC
 
 #ifndef XMLSEC_NO_RIPEMD160
-    if (xmlSecNssCryptoCheckMechanism(CKM_RIPEMD160_HMAC) == 0) {
-        functions->transformHmacRipemd160GetKlass = NULL;
-    }
+    /*
+     * The NSS softoken does not support RipeMD160 and there is no OID
+     * mapping for CKM_RIPEMD160_HMAC, so this transform is never available.
+     */
+    functions->transformHmacRipemd160GetKlass = NULL;
 #endif /* XMLSEC_NO_RIPEMD160 */
 
 #ifndef XMLSEC_NO_SHA1
@@ -730,19 +758,19 @@ xmlSecNssUpdateAvailableCryptoTransforms(xmlSecCryptoDLFunctionsPtr functions) {
 int
 xmlSecNssInit (void)  {
     /* Check loaded xmlsec library version */
-    if(xmlSecCheckVersionExact() != 1) {
+    if (xmlSecCheckVersionExact() != 1) {
         xmlSecInternalError("xmlSecCheckVersionExact", NULL);
         return(-1);
     }
 
-    /* set default errors callback for xmlsec to us */
+    /* set default errors callback for xmlsec to use NSS specific callback */
     xmlSecErrorsSetSystemCallback(xmlSecNssErrorsDefaultCallback);
 
     /* update the available algos based on NSS configs */
     xmlSecNssUpdateAvailableCryptoTransforms(xmlSecCryptoGetFunctions_nss());
 
     /* register our klasses */
-    if(xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(xmlSecCryptoGetFunctions_nss()) < 0) {
+    if (xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(xmlSecCryptoGetFunctions_nss()) < 0) {
         xmlSecInternalError("xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms", NULL);
         return(-1);
     }
@@ -775,11 +803,11 @@ xmlSecNssKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     xmlSecAssert2(mngr != NULL, -1);
 
     /* create x509 store if needed */
-    if(xmlSecKeysMngrGetDataStore(mngr, xmlSecNssX509StoreId) == NULL) {
+    if (xmlSecKeysMngrGetDataStore(mngr, xmlSecNssX509StoreId) == NULL) {
         xmlSecKeyDataStorePtr x509Store;
 
         x509Store = xmlSecKeyDataStoreCreate(xmlSecNssX509StoreId);
-        if(x509Store == NULL) {
+        if (x509Store == NULL) {
             xmlSecInternalError("xmlSecKeyDataStoreCreate(xmlSecNssX509StoreId)", NULL);
             return(-1);
         }
@@ -827,7 +855,7 @@ xmlSecNssGetInternalKeySlot(void)
         }
     }
 
-    if(PK11_IsLoggedIn(slot, NULL) != PR_TRUE) {
+    if (PK11_IsLoggedIn(slot, NULL) != PR_TRUE) {
         rv = PK11_Authenticate(slot, PR_TRUE, NULL);
         if (rv != SECSuccess) {
             xmlSecNssError2("PK11_Authenticate", NULL,

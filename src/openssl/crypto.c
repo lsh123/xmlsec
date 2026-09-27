@@ -740,7 +740,7 @@ xmlSecOpenSSLErrorsInit(void) {
     ERR_load_strings(gXmlSecOpenSSLErrorsLib, xmlSecOpenSSLStrReasons);
 #endif /* !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR) */
 
-    /* and set default errors callback for xmlsec to us */
+    /* and set default errors callback for xmlsec to use OpenSSL specific callback */
     xmlSecErrorsSetSystemCallback(xmlSecOpenSSLErrorsDefaultCallback);
 
     return(0);

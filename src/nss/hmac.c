@@ -253,7 +253,7 @@ xmlSecNssHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecBufferPtr buffer;
     xmlSecByte* bufferData;
     xmlSecSize bufferSize;
-    SECItem keyItem;
+    SECItem keyItem = { siBuffer, NULL, 0 };
     SECItem ignore;
     PK11SlotInfo* slot;
     PK11SymKey* symKey;
@@ -281,8 +281,6 @@ xmlSecNssHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         return(-1);
     }
 
-    memset(&keyItem, 0, sizeof(keyItem));
-    keyItem.type = siBuffer;
     keyItem.data = bufferData;
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(bufferSize, keyItem.len, return(-1), xmlSecTransformGetName(transform));
 

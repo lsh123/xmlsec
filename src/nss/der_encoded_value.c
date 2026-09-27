@@ -11,7 +11,6 @@
  */
 #include "globals.h"
 
-#include <pk11pub.h>
 #include <keyhi.h>
 
 #include <xmlsec/xmlsec.h>

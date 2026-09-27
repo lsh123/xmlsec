@@ -435,11 +435,18 @@ xmlSecNssPKIKeyDataGetSize(xmlSecKeyDataPtr data) {
     }
 
     switch(SECKEY_GetPublicKeyType(ctx->pubkey)) {
+#ifndef XMLSEC_NO_DSA
     case dsaKey:
+        return(8 * SECKEY_PublicKeyStrength(ctx->pubkey));
+#endif /* XMLSEC_NO_DSA */
+#ifndef XMLSEC_NO_RSA
     case rsaKey:
         return(8 * SECKEY_PublicKeyStrength(ctx->pubkey));
+#endif /* XMLSEC_NO_RSA */
+#ifndef XMLSEC_NO_EC
     case ecKey:
         return(SECKEY_PublicKeyStrengthInBits(ctx->pubkey));
+#endif /* XMLSEC_NO_EC */
 #ifndef XMLSEC_NO_EDDSA
     case edKey:
         return(SECKEY_PublicKeyStrengthInBits(ctx->pubkey));
@@ -615,7 +622,7 @@ static xmlSecKeyDataKlass xmlSecNssKeyData ## lcname ## Klass = {               
  * To support reading/writing private keys an X element is added (before Y).
  *
  * The current implementation does not support Seed and PgenCounter!
- * by this the P, Q and G are *required*!
+ * As a result, P, Q and G are *required*!
  *
   *****************************************************************************/
 static int              xmlSecNssKeyDataDsaXmlRead      (xmlSecKeyDataId id,
@@ -1404,14 +1411,14 @@ xmlSecNssKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
     data = NULL;
 
 done:
-    if (pubkey != NULL) {
-        SECKEY_DestroyPublicKey(pubkey);
+    if (slot != NULL) {
+        PK11_FreeSlot(slot);
     }
     if (arena != NULL) {
         PORT_FreeArena(arena, PR_FALSE);
     }
-    if (slot != NULL) {
-        PK11_FreeSlot(slot);
+    if (pubkey != NULL) {
+        SECKEY_DestroyPublicKey(pubkey);
     }
     if (data != NULL) {
         xmlSecKeyDataDestroy(data);

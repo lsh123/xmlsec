@@ -778,7 +778,7 @@ xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
     return(0);
 }
 
-/* This creates a signature which is ASN1 encoded */
+/* This decodes a DER-encoded signature into its raw (unencoded) form */
 static SECItem*
 xmlSecNssSignatureDecode(xmlSecNssSignatureCtxPtr ctx, SECItem* signature) {
     int signatureLen;
@@ -1026,7 +1026,7 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 
 
     if((transform->status == xmlSecTransformStatusWorking) || (transform->status == xmlSecTransformStatusFinished)) {
-            /* the only way we can get here is if there is no input */
+        /* the input buffer must be empty at this point */
         xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
         xmlSecInvalidTransformStatusError(transform);

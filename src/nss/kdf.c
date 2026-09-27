@@ -751,7 +751,6 @@ xmlSecNssHkdfGetHashMechFromHref(const xmlChar* href) {
     } else
 #endif /* XMLSEC_NO_SHA512 */
 
-
     {
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
             "href=%s", xmlSecErrorsSafeString(href));

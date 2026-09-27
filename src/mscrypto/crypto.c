@@ -277,7 +277,7 @@ xmlSecMSCryptoInit (void)  {
         return(-1);
     }
 
-    /* set default errors callback for xmlsec to us */
+    /* set default errors callback for xmlsec to use MSCrypto specific callback */
     xmlSecErrorsSetSystemCallback(xmlSecMSCryptoErrorsDefaultCallback);
 
     /* register our klasses */

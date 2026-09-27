@@ -86,11 +86,11 @@ xmlSecNssKeyTransportCheckId(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_RSA_OAEP
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformRsaOaepId)) {
-        return (1);
+        return(1);
     }
 
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformRsaOaepEnc11Id)) {
-        return (1);
+        return(1);
     }
 #endif /* XMLSEC_NO_RSA_OAEP */
 #endif /* XMLSEC_NO_RSA */
@@ -275,7 +275,7 @@ xmlSecNssKeyTransportCtxInit(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr in
 
     if(ctx->pubkey != NULL) {
         blockSize = SECKEY_PublicKeyStrength(ctx->pubkey);
-        if(blockSize <= 0) {
+        if(blockSize == 0) {
             xmlSecNssError("SECKEY_PublicKeyStrength", NULL);
             return(-1);
         }
@@ -469,7 +469,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
     /* from now on we will wrap or unwrap the key */
     if(ctx->pubkey != NULL) {
         blockSize = SECKEY_PublicKeyStrength(ctx->pubkey);
-        if(blockSize <= 0) {
+        if(blockSize == 0) {
             xmlSecNssError("SECKEY_PublicKeyStrength", NULL);
             return(-1);
         }
@@ -763,7 +763,7 @@ static xmlSecTransformKlass xmlSecNssRsaOaepKlass = {
 
     xmlSecNssKeyTransportInitialize,            /* xmlSecTransformInitializeMethod initialize; */
     xmlSecNssKeyTransportFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecNssRsaOaepNodeRead,                 /* xmlSecTransformNodeReadMethod readNode; */
+    xmlSecNssRsaOaepNodeRead,                   /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecNssKeyTransportSetKeyReq,             /* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecNssKeyTransportSetKey,                /* xmlSecTransformSetKeyMethod setKey; */

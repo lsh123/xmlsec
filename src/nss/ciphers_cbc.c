@@ -31,7 +31,6 @@
 
 #define XMLSEC_NSS_CBC_CIPHER_MAX_KEY_SIZE         32
 #define XMLSEC_NSS_CBC_CIPHER_MAX_IV_SIZE          32
-#define XMLSEC_NSS_CBC_CIPHER_MAX_BLOCK_SIZE       32
 
 /******************************************************************************
  *
@@ -135,11 +134,9 @@ xmlSecNssCbcCipherCtxInit(
         }
     }
 
-    memset(&keyItem, 0, sizeof(keyItem));
     keyItem.data = ctx->key;
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(ctx->keySize, keyItem.len, return(-1), NULL);
 
-    memset(&ivItem, 0, sizeof(ivItem));
     ivItem.data = ctx->iv;
     XMLSEC_SAFE_CAST_INT_TO_UINT(ivLen, ivItem.len, return(-1), NULL);
 

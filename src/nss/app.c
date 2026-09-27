@@ -193,7 +193,17 @@ xmlSecNssAppReadSECItem(SECItem *contents, const char *fn) {
                         "filename=%s", xmlSecErrorsSafeString(fn));
         goto done;
     }
-    XMLSEC_SAFE_CAST_INT_TO_UINT(info.size, ulen, goto done, NULL);
+    /*
+     * info.size is PROffset32 (int) in this NSPR; ensure it is non-negative
+     * before casting to unsigned int (the limit for a single PR_Read call and
+     * for the SECItem.len field).
+     */
+    if (info.size < 0) {
+        xmlSecNssError2("PR_GetOpenFileInfo", NULL,
+                        "filename=%s", xmlSecErrorsSafeString(fn));
+        goto done;
+    }
+    ulen = (unsigned int)info.size;
 
     contents->data = 0;
     if (!SECITEM_AllocItem(NULL, contents, ulen)) {
@@ -233,7 +243,6 @@ xmlSecNssAppAscii2UCS2Conv(PRBool toUnicode,
         return (PR_FALSE);
     }
 
-    memset(&it, 0, sizeof(it));
     it.data = inBuf;
     it.len = inBufLen;
 
@@ -251,7 +260,7 @@ xmlSecNssAppNicknameCollisionCallback(SECItem *old_nick XMLSEC_ATTRIBUTE_UNUSED,
     char *nick = NULL;
     SECItem *ret_nick = NULL;
 
-    if((cancel  == NULL) || (cert == NULL)) {
+    if((cancel == NULL) || (cert == NULL)) {
         xmlSecNssError("cert is missing", NULL);
         return(NULL);
     }
@@ -506,6 +515,7 @@ done:
     return (retval);
 }
 
+#ifndef XMLSEC_NO_X509
 /* returns 1 if matches, 0 if not, or a negative value on error */
 static int
 xmlSecNssAppCheckCertMatchesKey(xmlSecKeyPtr key,  CERTCertificate * cert) {
@@ -573,7 +583,6 @@ done:
     return(res);
 }
 
-#ifndef XMLSEC_NO_X509
 /**
  * @brief Reads the certificate from a file and adds to key.
  * @details Reads the certificate from @p filename and adds it to key.
@@ -676,13 +685,12 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
 
     certDb = CERT_GetDefaultCertDB();
     if(certDb == NULL) {
-        xmlSecInternalError("CERT_GetDefaultCertDB", NULL);
+        xmlSecNssError("CERT_GetDefaultCertDB", NULL);
         goto done;
     }
 
     /* read cert */
     switch(format) {
-    case xmlSecKeyDataFormatPkcs8Der:
     case xmlSecKeyDataFormatDer:
     case xmlSecKeyDataFormatCertDer:
         cert = xmlSecNssX509CertDerRead(certDb, secItem->data, secItem->len);
@@ -1106,7 +1114,7 @@ xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format)
 
     certDb = CERT_GetDefaultCertDB();
     if(certDb == NULL) {
-        xmlSecInternalError("CERT_GetDefaultCertDB", NULL);
+        xmlSecNssError("CERT_GetDefaultCertDB", NULL);
         goto done;
     }
 
@@ -1304,7 +1312,7 @@ xmlSecNssAppKeysMngrCertLoadSECItem(
 
     certDb = CERT_GetDefaultCertDB();
     if(certDb == NULL) {
-        xmlSecInternalError("CERT_GetDefaultCertDB", NULL);
+        xmlSecNssError("CERT_GetDefaultCertDB", NULL);
         return(-1);
     }
 

@@ -483,7 +483,11 @@ xmlSecMSCngCheckRevocation(HCERTSTORE store, PCCERT_CONTEXT cert, LPFILETIME tim
             NULL,
             &crlEntry);
         if(ret == 0) {
-            continue;
+            /* CertFindCertificateInCRL returns FALSE only on a genuine failure (not when
+             * the cert is simply not listed), so fail closed instead of skipping the CRL. */
+            xmlSecMSCngLastError("CertFindCertificateInCRL", NULL);
+            CertFreeCRLContext(crlCtx);
+            return(-1);
         }
         if(crlEntry == NULL) {
             continue;

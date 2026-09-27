@@ -111,7 +111,7 @@ static void             xmlSecNssKeyDataX509DebugDump   (xmlSecKeyDataPtr data,
 static void             xmlSecNssKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data,
                                                          FILE* output);
 
-typedef struct _xmlSecNssKeyDataX509Context {
+typedef struct _xmlSecNssDataX509Context {
     xmlSecSize crtPos;
     xmlSecSize crtSize;
     xmlSecSize crlPos;
@@ -300,7 +300,7 @@ xmlSecNssKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, CERTCertificate* cert) {
     ctx = xmlSecNssX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
-    /* check if for some reasons same cert is used */
+    /* check if for some reason the same cert is used */
     if((ctx->keyCert != NULL) && ((ctx->keyCert == cert) || (CERT_CompareCerts(cert, ctx->keyCert) == PR_TRUE))) {
         CERT_DestroyCertificate(cert);  /* caller expects data to own the cert on success. */
         return(0);
@@ -739,7 +739,7 @@ xmlSecNssKeyDataX509Read(
 
     certDb = CERT_GetDefaultCertDB();
     if(certDb == NULL) {
-        xmlSecInternalError("CERT_GetDefaultCertDB", xmlSecKeyDataGetName(data));
+        xmlSecNssError("CERT_GetDefaultCertDB", xmlSecKeyDataGetName(data));
         goto done;
     }
 
@@ -922,7 +922,7 @@ xmlSecNssKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x509V
             return(-1);
         }
 
-        if((content & XMLSEC_X509DATA_CRL_NODE) != 0) {
+        if(XMLSEC_X509DATA_HAS_EMPTY_NODE(content, XMLSEC_X509DATA_CRL_NODE)) {
             ret = xmlSecNssX509SECItemWrite(crl->derCrl, &(x509Value->crl));
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecNssX509SECItemWrite(crl)",
@@ -1513,7 +1513,7 @@ xmlSecNssKeyDataRawX509CertBinRead(
 
     certDb = CERT_GetDefaultCertDB();
     if(certDb == NULL) {
-        xmlSecInternalError("CERT_GetDefaultCertDB", NULL);
+        xmlSecNssError("CERT_GetDefaultCertDB", NULL);
         return(-1);
     }
 

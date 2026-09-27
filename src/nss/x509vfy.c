@@ -54,7 +54,7 @@ struct _xmlSecNssX509StoreCtx {
      *
      * 1) Just keeping a reference to destroy later.
      *
-     * 2) NSS doesn't update it's cache correctly when new certs are added
+      * 2) NSS doesn't update its cache correctly when new certs are added
      *          https://bugzilla.mozilla.org/show_bug.cgi?id=211051
      *    we use this list to perform search ourselves.
      */
@@ -361,13 +361,13 @@ xmlSecNssX509StoreRemoveRevokedCerts(xmlSecNssX509StoreCtxPtr x509StoreCtx, CERT
 
         ret = xmlSecNssX509StoreFindBestCrl(x509StoreCtx, cur->cert, &crl, keyInfoCtx);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecNssX509StoreFindBestCrl",  NULL);
+            xmlSecInternalError("xmlSecNssX509StoreFindBestCrl", NULL);
             return(-1);
         }
         if(crl != NULL) {
             ret = xmlSecNssX509StoreCheckIfCertIsRevoked(cur->cert, crl, keyInfoCtx);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecNssX509StoreCheckIfCertIsRevoked",  NULL);
+                xmlSecInternalError("xmlSecNssX509StoreCheckIfCertIsRevoked", NULL);
                 return(-1);
             } else if(ret != 0) {
                 /* cert was revoked */
@@ -404,8 +404,12 @@ xmlSecNssX509StoreFindChildCert(CERTCertificate* cert, CERTCertList* certs) {
         if(cur->cert == NULL) {
             continue;
         }
-        /* allow self signed certs */
+        /* allow self signed certs: skip the cert itself, whether it is the
+         * same object or a duplicate with identical DER */
         if(cur->cert == cert) {
+            continue;
+        }
+        if(SECITEM_CompareItem(&(cur->cert->derCert), &(cert->derCert)) == SECEqual) {
             continue;
         }
         if (SECITEM_CompareItem(&(cur->cert->derIssuer), &(cert->derSubject)) == SECEqual) {
@@ -429,7 +433,7 @@ xmlSecNssX509StoreGetVerificationTime(xmlSecKeyInfoCtx* keyInfoCtx) {
 
 /* returns 1 if verified, 0 if not verified, and a value < 0 if an error occurs */
 static int
-xmlSecNssX509StoreVerifyCert(CERTCertDBHandle *handle, CERTCertificate* cert, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecNssX509StoreVerifyCert(CERTCertDBHandle *handle, CERTCertificate* cert, xmlSecKeyInfoCtxPtr keyInfoCtx, SECCertUsage usage) {
     int64 verificationTime;
     SECStatus status;
     PRErrorCode err;
@@ -449,7 +453,7 @@ xmlSecNssX509StoreVerifyCert(CERTCertDBHandle *handle, CERTCertificate* cert, xm
     /* it's important to set the usage here, otherwise no real verification
      * is performed. */
     status = CERT_VerifyCertificate(handle, cert, PR_TRUE,
-                certificateUsageEmailSigner,
+                usage,
                 verificationTime , NULL, NULL, NULL);
     if(status == SECSuccess) {
         return(1);
@@ -524,7 +528,7 @@ xmlSecNssX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, xmlSe
         return(0); /* key cannot be verified w/o key cert */
     }
 
-    ret = xmlSecNssX509StoreVerifyCert(ctx->certDb, key_cert, keyInfoCtx);
+    ret = xmlSecNssX509StoreVerifyCert(ctx->certDb, key_cert, keyInfoCtx, certificateUsageEmailSigner);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssX509StoreVerifyCert", xmlSecKeyDataStoreGetName(store));
         return(-1);
@@ -567,7 +571,7 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs, xmlSe
         /* look through the certs and remove all revoked certs */
         ret = xmlSecNssX509StoreRemoveRevokedCerts(ctx, certs, &good_certs, keyInfoCtx);
         if((ret < 0) || (good_certs == NULL)) {
-            xmlSecInternalError("xmlSecNssX509StoreRemoveRevokedCerts",  xmlSecKeyDataStoreGetName(store));
+            xmlSecInternalError("xmlSecNssX509StoreRemoveRevokedCerts", xmlSecKeyDataStoreGetName(store));
             goto done;
         }
     }
@@ -583,7 +587,7 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs, xmlSe
             continue;
         }
 
-        ret = xmlSecNssX509StoreVerifyCert(ctx->certDb, cert, keyInfoCtx);
+        ret = xmlSecNssX509StoreVerifyCert(ctx->certDb, cert, keyInfoCtx, certificateUsageEmailSigner);
         if(ret < 0) {
             xmlSecInternalError("xmlSecNssX509StoreVerifyCert", xmlSecKeyDataStoreGetName(store));
             continue; /* ignore all errors and try other certs */
@@ -703,7 +707,6 @@ xmlSecNssX509VerifyCRLTimeValidity(CERTSignedCrl* crl, xmlSecKeyInfoCtxPtr keyIn
     PRTime verification_time;
     PRTime thisUpdate = 0;
     PRTime nextUpdate = 0;
-    time_t verification_ts;
     SECStatus rv;
 
     xmlSecAssert2(crl != NULL, -1);
@@ -711,13 +714,11 @@ xmlSecNssX509VerifyCRLTimeValidity(CERTSignedCrl* crl, xmlSecKeyInfoCtxPtr keyIn
 
     /* Get verification time */
     if(keyInfoCtx->certsVerificationTime > 0) {
-        verification_ts = keyInfoCtx->certsVerificationTime;
+        /* convert the time since epoch in seconds to microseconds */
+        verification_time = (PRTime)keyInfoCtx->certsVerificationTime * PR_USEC_PER_SEC;
     } else {
-        verification_ts = time(NULL);
+        verification_time = PR_Now();
     }
-
-    /* Convert time_t to PRTime (microseconds since epoch) */
-    verification_time = ((PRTime)verification_ts) * PR_USEC_PER_SEC;
 
     /* Get thisUpdate: thisUpdate is a required field in a CRL (RFC 5280) */
     if(crl->crl.lastUpdate.data == NULL) {
@@ -798,8 +799,9 @@ xmlSecNssX509VerifyCRLSignature(xmlSecNssX509StoreCtxPtr ctx, CERTSignedCrl* crl
     }
 
     /* the issuer cert must be verified itself (chain and validity) before it
-     * can be used to verify the CRL signature */
-    ret = xmlSecNssX509StoreVerifyCert(ctx->certDb, issuer_cert, keyInfoCtx);
+     * can be used to verify the CRL signature; it is a CA cert, so use a CA
+     * usage rather than the email-signer usage used for end-entity certs */
+    ret = xmlSecNssX509StoreVerifyCert(ctx->certDb, issuer_cert, keyInfoCtx, certificateUsageVerifyCA);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssX509StoreVerifyCert", NULL);
         goto done;
@@ -897,7 +899,7 @@ xmlSecNssX509StoreInitialize(xmlSecKeyDataStorePtr store) {
 
     ctx->certDb = CERT_GetDefaultCertDB();
     if(ctx->certDb == NULL) {
-        xmlSecInternalError("CERT_GetDefaultCertDB", xmlSecKeyDataStoreGetName(store));
+        xmlSecNssError("CERT_GetDefaultCertDB", xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
 
@@ -973,7 +975,7 @@ xmlSecNssX509FindCert(CERTCertList* certsList, xmlSecNssX509FindCertCtxPtr findC
     xmlSecAssert2(findCertCtx != NULL, NULL);
     xmlSecAssert2(findCertCtx->certDb != NULL, NULL);
 
-    /* try to search in our list - NSS doesn't update it's cache correctly
+    /* try to search in our list - NSS doesn't update its cache correctly
      * when new certs are added https://bugzilla.mozilla.org/show_bug.cgi?id=211051
      */
     if(certsList != NULL) {

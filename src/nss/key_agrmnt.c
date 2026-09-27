@@ -224,7 +224,6 @@ xmlSecNssKeyAgreementNodeWrite(xmlSecTransformPtr transform, xmlNodePtr node, xm
     ctx = xmlSecNssKeyAgreementGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-
     ret = xmlSecTransformKAMWrite(&(ctx->params), node, transform, transformCtx);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformKAMWrite", xmlSecTransformGetName(transform));
@@ -371,7 +370,9 @@ xmlSecNssKeyAgreementGenerateSecret(xmlSecNssKeyAgreementCtxPtr ctx,
 
     /* derive shared secret via PKCS#11 CKM_ECDH1_DERIVE; NSS routes this to the
      * correct ECDH operation for both regular EC and Montgomery-curve (X25519)
-     * keys based on the key type, not the mechanism alone. */
+     * keys based on the key type, not the mechanism alone. Note: routing of
+     * ecMontKey (X25519) keys through this path requires a recent NSS (added
+     * after 3.102); on older NSS the X25519 key agreement fails at runtime. */
     symKey = PK11_PubDeriveWithKDF(
         myPrivKey, otherPubKey,
         PR_FALSE,       /* isSender: not relevant for ECDH-type */

@@ -445,14 +445,14 @@ xmlSecNssTransformSha1GetKlass(void) {
 #ifndef XMLSEC_NO_SHA224
 /******************************************************************************
  *
- * SHA2-224 digest transforms
+ * SHA-224 digest transforms
  *
   *****************************************************************************/
 XMLSEC_NSS_DIGEST_KLASS(Sha224)
 
 /**
- * @brief SHA2-224 digest transform klass.
- * @return pointer to SHA2-224 digest transform klass.
+ * @brief SHA-224 digest transform klass.
+ * @return pointer to SHA-224 digest transform klass.
  */
 xmlSecTransformId
 xmlSecNssTransformSha224GetKlass(void) {
@@ -463,14 +463,14 @@ xmlSecNssTransformSha224GetKlass(void) {
 #ifndef XMLSEC_NO_SHA256
 /******************************************************************************
  *
- * SHA2-256 digest transforms
+ * SHA-256 digest transforms
  *
   *****************************************************************************/
 XMLSEC_NSS_DIGEST_KLASS(Sha256)
 
 /**
- * @brief SHA2-256 digest transform klass.
- * @return pointer to SHA2-256 digest transform klass.
+ * @brief SHA-256 digest transform klass.
+ * @return pointer to SHA-256 digest transform klass.
  */
 xmlSecTransformId
 xmlSecNssTransformSha256GetKlass(void) {
@@ -481,14 +481,14 @@ xmlSecNssTransformSha256GetKlass(void) {
 #ifndef XMLSEC_NO_SHA384
 /******************************************************************************
  *
- * SHA2-384 digest transforms
+ * SHA-384 digest transforms
  *
   *****************************************************************************/
 XMLSEC_NSS_DIGEST_KLASS(Sha384)
 
 /**
- * @brief SHA2-384 digest transform klass.
- * @return pointer to SHA2-384 digest transform klass.
+ * @brief SHA-384 digest transform klass.
+ * @return pointer to SHA-384 digest transform klass.
  */
 xmlSecTransformId
 xmlSecNssTransformSha384GetKlass(void) {
@@ -499,14 +499,14 @@ xmlSecNssTransformSha384GetKlass(void) {
 #ifndef XMLSEC_NO_SHA512
 /******************************************************************************
  *
- * SHA2-512 digest transforms
+ * SHA-512 digest transforms
  *
   *****************************************************************************/
 XMLSEC_NSS_DIGEST_KLASS(Sha512)
 
 /**
- * @brief SHA2-512 digest transform klass.
- * @return pointer to SHA2-512 digest transform klass.
+ * @brief SHA-512 digest transform klass.
+ * @return pointer to SHA-512 digest transform klass.
  */
 xmlSecTransformId
 xmlSecNssTransformSha512GetKlass(void) {

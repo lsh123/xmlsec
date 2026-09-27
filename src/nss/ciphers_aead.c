@@ -593,7 +593,7 @@ xmlSecNssAeadCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTransfo
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(in) == 0, -1);
     } else if(transform->status == xmlSecTransformStatusNone) {
-        /* the only way we can get here is if there is no enough data in the input */
+        /* the only way we can get here is if there is not enough data in the input */
         xmlSecAssert2(last == 0, -1);
     } else {
         xmlSecInvalidTransformStatusError(transform);

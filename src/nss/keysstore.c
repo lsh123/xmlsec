@@ -11,7 +11,7 @@
  * @brief Keys store implementation for NSS.
  * @details Nss keys store that uses Simple Keys Store under the hood.
  * Uses the NSS DB as a backing store for finding keys, but the NSS DB is
- * not written to by the keys store. So, if store->findkey is done and the key is
+ * not written to by the keys store. So, if store->findKey is done and the key is
  * not found in the simple keys store, the NSS DB is looked up. If store is called
  * to adopt a key, that key is not written to the NSS DB. Thus, the NSS DB can be
  * used to pre-load keys and becomes an alternate source of keys for xmlsec
@@ -40,7 +40,7 @@
  *
  * Nss Keys Store. Uses Simple Keys Store under the hood
  *
- * xmlSecKeyStore +  xmlSecKeyStorePtr(Simple Keys Store ptr)
+ * xmlSecKeyStore + xmlSecKeyStorePtr(Simple Keys Store ptr)
  *
   *****************************************************************************/
 XMLSEC_KEY_STORE_DECLARE(NssKeysStore, xmlSecKeyStorePtr)
@@ -333,13 +333,13 @@ xmlSecNssKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509Data
 
     keysList = xmlSecSimpleKeysStoreGetKeys(*simplekeystore);
     if(keysList == NULL) {
-        xmlSecInternalError("xmlSecSimpleKeysStoreGetKeys", NULL);
+        xmlSecInternalError("xmlSecSimpleKeysStoreGetKeys", xmlSecKeyStoreGetName(store));
         return(NULL);
     }
 
     certDb = CERT_GetDefaultCertDB();
     if(certDb == NULL) {
-        xmlSecInternalError("CERT_GetDefaultCertDB", NULL);
+        xmlSecNssError("CERT_GetDefaultCertDB", NULL);
         return(NULL);
     }
 
@@ -349,10 +349,10 @@ xmlSecNssKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509Data
         return(NULL);
     }
 
-    /* since not all key stores can return key owned by someone else, we need to duplicate the key */
+    /* since not all key stores can return a key owned by someone else, we need to duplicate the key */
     res = xmlSecKeyDuplicate(key);
     if(res == NULL) {
-        xmlSecInternalError("xmlSecKeyDuplicate", NULL);
+        xmlSecInternalError("xmlSecKeyDuplicate", xmlSecKeyStoreGetName(store));
         return(NULL);
     }
 

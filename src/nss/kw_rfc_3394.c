@@ -402,6 +402,7 @@ xmlSecNssKWRfc3394EnsureKey(xmlSecNssKWRfc3394CtxPtr ctx, xmlSecKeyDataId keyId,
 
     keyData = xmlSecBufferGetData(&(ctx->parentCtx.keyBuffer));
     keySize = xmlSecBufferGetSize(&(ctx->parentCtx.keyBuffer));
+    xmlSecAssert2(keyData != NULL, -1);
     xmlSecAssert2(keySize > 0, -1);
     xmlSecAssert2(keySize == ctx->parentCtx.keyExpectedSize, -1);
 

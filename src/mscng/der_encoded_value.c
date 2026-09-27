@@ -187,7 +187,11 @@ xmlSecMSCngKeyDataDEREncodedKeyValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key
         goto done;
     }
 
-    /* read key from DER (SPKI public key) */
+    /* read key from DER (SPKI public key). The top-level TLV is strictly validated above;
+     * the inner content is decoded by CAPI's CryptDecodeObjectEx (a standard, well-tested
+     * component), which is BER-tolerant. Any leniency in the inner encoding has no
+     * practical security impact because the resulting key is still valid.
+     * See https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptdecodeobjectex */
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(dataSize, dataLen, goto done, xmlSecKeyDataKlassGetName(id));
     keyData = xmlSecMSCngAppKeyReadPubKeyFromDer(data, dataLen);
     if(keyData == NULL) {

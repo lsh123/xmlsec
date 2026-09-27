@@ -165,7 +165,7 @@ xmlSecMSCngKeyDataCertGetDsaPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE
         memcpy(blobData + offset + (pSize - ySize), pYBlob->pbData, ySize);
     } else {
 #if XMLSEC_MSCNG_HAVE_DSA_V2
-        /* V2: BCRYPT_DSA_KEY_BLOB_V2 for keys > 1024-bit (2048/3072-bit)
+        /* V2: BCRYPT_DSA_KEY_BLOB_V2 for keys > 1024-bit (up to 4096-bit)
          * layout: header + seed[cbSeedLength] + q[cbGroupSize] + p[cbKey] + g[cbKey] + y[cbKey] */
         if(pSize > XMLSEC_MSCNG_DSA_MAX_P_SIZE) {
             xmlSecInvalidSizeMoreThanError("DSA P size", (xmlSecSize)pSize, (xmlSecSize)XMLSEC_MSCNG_DSA_MAX_P_SIZE, NULL);
@@ -203,7 +203,7 @@ xmlSecMSCngKeyDataCertGetDsaPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE
         /* y: right-align */
         memcpy(blobData + offset + (pSize - ySize), pYBlob->pbData, ySize);
 #else /* XMLSEC_MSCNG_HAVE_DSA_V2 */
-        xmlSecNotImplementedError("DSA keys with q > 20 bytes require newer Windows SDK bcrypt definitions");
+        xmlSecNotImplementedError("DSA keys with p > 1024 bits require newer Windows SDK bcrypt definitions");
         goto done;
 #endif /* XMLSEC_MSCNG_HAVE_DSA_V2 */
     }
@@ -323,8 +323,8 @@ xmlSecMSCngDsaBuildSubjectPublicKeyInfoDer(BCRYPT_KEY_HANDLE hKey, LPVOID* ppDer
     }
 #endif /* XMLSEC_MSCNG_HAVE_DSA_V2 */
     else {
-        xmlSecNotImplementedError2("Unexpected DSA blob magic: 0x%08lX",
-            (unsigned long)hdr->dwMagic);
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
+            "Unexpected DSA blob magic: 0x%08lX", (unsigned long)hdr->dwMagic);
         goto done;
     }
 
@@ -439,8 +439,8 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     xmlSecAssert2(ySize > 0, NULL);
 
     /* turn the read data into a public key blob.
-     * We support both V1 (BCRYPT_DSA_KEY_BLOB, q up to 20 bytes, keys up to 1024-bit)
-     * and V2 (BCRYPT_DSA_KEY_BLOB_V2, q up to 32 bytes, keys up to 3072-bit).
+      * We support both V1 (BCRYPT_DSA_KEY_BLOB, q up to 20 bytes, keys up to 1024-bit)
+      * and V2 (BCRYPT_DSA_KEY_BLOB_V2, q up to 32 bytes, keys up to 4096-bit).
      * Both use BCRYPT_DSA_ALGORITHM and BCRYPT_DSA_PUBLIC_BLOB; the magic field
      * distinguishes them.
      */
@@ -468,12 +468,12 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         blobSize = offset + pSize * 3;
     } else {
 #if XMLSEC_MSCNG_HAVE_DSA_V2
-        /* V2: BCRYPT_DSA_KEY_BLOB_V2 for larger keys (2048/3072-bit),
+        /* V2: BCRYPT_DSA_KEY_BLOB_V2 for larger keys (up to 4096-bit),
          * layout: header + seed[cbSeedLength] + q[cbGroupSize] + p[cbKey] + g[cbKey] + y[cbKey] */
         offset = sizeof(BCRYPT_DSA_KEY_BLOB_V2);
         blobSize = offset + qBlobSize + qBlobSize + pSize * 3; /* seed + q + p + g + y */
 #else /* XMLSEC_MSCNG_HAVE_DSA_V2 */
-        xmlSecNotImplementedError("DSA keys with q > 20 bytes require newer Windows SDK bcrypt definitions");
+        xmlSecNotImplementedError("DSA keys with p > 1024 bits require newer Windows SDK bcrypt definitions");
         goto done;
 #endif /* XMLSEC_MSCNG_HAVE_DSA_V2 */
     }
@@ -520,7 +520,7 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         offset += pSize; /* ySize <= pSize */
     } else {
 #if XMLSEC_MSCNG_HAVE_DSA_V2
-        /* V2: BCRYPT_DSA_KEY_BLOB_V2 for 2048/3072-bit keys */
+        /* V2: BCRYPT_DSA_KEY_BLOB_V2 for keys > 1024-bit (up to 4096-bit) */
         DWORD dwQLen;
         BCRYPT_DSA_KEY_BLOB_V2* dsakey2;
 
@@ -555,7 +555,7 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         memcpy(blobData + offset + (pSize - ySize), xmlSecBufferGetData(&(dsaValue->y)), ySize);
         offset += pSize; /* ySize <= pSize */
 #else /* XMLSEC_MSCNG_HAVE_DSA_V2 */
-        xmlSecNotImplementedError("DSA keys with q > 20 bytes require newer Windows SDK bcrypt definitions");
+        xmlSecNotImplementedError("DSA keys with p > 1024 bits require newer Windows SDK bcrypt definitions");
         goto done;
 #endif /* XMLSEC_MSCNG_HAVE_DSA_V2 */
     }
@@ -792,7 +792,8 @@ xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDsaPtr 
     }
 #endif /* XMLSEC_MSCNG_HAVE_DSA_V2 */
     else {
-        xmlSecNotImplementedError2("Unexpected DSA blob magic: 0x%08lX", (unsigned long)dsakey->dwMagic);
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
+            "Unexpected DSA blob magic: 0x%08lX", (unsigned long)dsakey->dwMagic);
         goto done;
     }
 

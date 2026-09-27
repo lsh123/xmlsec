@@ -283,7 +283,11 @@ xmlSecMSCngAppKeyLoadEx(const char *filename, xmlSecKeyDataType type, xmlSecKeyD
         bufSize = xmlSecBufferGetSize(&buffer);
         XMLSEC_SAFE_CAST_SIZE_TO_ULONG(bufSize, dwDataSize, {xmlSecBufferFinalize(&buffer); return(NULL);}, NULL);
 
-        /* try to read private key first and if no luck, try public key */
+        /* Try to read private key first and if no luck, try public key
+         * 
+         * Note: xmlSecMSCngAppKeyReadPrivKeyFromDer() only supports DH and X25519 PKCS#8
+         * private keys; other private key types (RSA/EC/DSA) are not supported in DER form
+         * by this backend. Public-key DER files are handled by xmlSecMSCngAppKeyReadPubKeyFromDer(). */
         keyData = xmlSecMSCngAppKeyReadPrivKeyFromDer(xmlSecBufferGetData(&buffer), dwDataSize);
         if(keyData == NULL) {
             keyData = xmlSecMSCngAppKeyReadPubKeyFromDer(xmlSecBufferGetData(&buffer), dwDataSize);
@@ -455,13 +459,38 @@ done:
  */
 int
 xmlSecMSCngAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
-                          xmlSecKeyDataFormat format) {
+                           xmlSecKeyDataFormat format) {
+    xmlSecBuffer buffer;
+    int ret;
+
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    xmlSecNotImplementedError("MSCNG doesn't support loading X509 certificates at runtime");
-    return(-1);
+    ret = xmlSecBufferInitialize(&buffer, 0);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize", NULL);
+        return(-1);
+    }
+
+    ret = xmlSecBufferReadFile(&buffer, filename);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferReadFile", NULL,
+            "filename=%s", xmlSecErrorsSafeString(filename));
+        xmlSecBufferFinalize(&buffer);
+        return(-1);
+    }
+
+    ret = xmlSecMSCngAppKeyCertLoadMemory(key, xmlSecBufferGetData(&buffer),
+            xmlSecBufferGetSize(&buffer), format);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngAppKeyCertLoadMemory", NULL);
+        xmlSecBufferFinalize(&buffer);
+        return(-1);
+    }
+
+    xmlSecBufferFinalize(&buffer);
+    return(0);
 }
 
 /**
@@ -477,13 +506,68 @@ xmlSecMSCngAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
 int
 xmlSecMSCngAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSecSize dataSize,
                                 xmlSecKeyDataFormat format) {
+    PCCERT_CONTEXT pCert = NULL;
+    PCCERT_CONTEXT pKeyCert = NULL;
+    xmlSecKeyDataPtr kdata;
+    DWORD dwDataSize;
+    int ret;
+
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(dataSize > 0, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    xmlSecNotImplementedError("MSCNG doesn't support loading X509 certificates at runtime");
-    return(-1);
+    kdata = xmlSecKeyEnsureData(key, xmlSecMSCngKeyDataX509Id);
+    if(kdata == NULL) {
+        xmlSecInternalError("xmlSecKeyEnsureData(xmlSecMSCngKeyDataX509Id)", NULL);
+        return(-1);
+    }
+
+    /* For now only DER certificates are supported */
+    switch(format) {
+    case xmlSecKeyDataFormatDer:
+    case xmlSecKeyDataFormatCertDer:
+        XMLSEC_SAFE_CAST_SIZE_TO_ULONG(dataSize, dwDataSize, return(-1), NULL);
+
+        /* read cert and make a copy for key cert */
+        pCert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, data, dwDataSize);
+        if(pCert == NULL) {
+            xmlSecMSCngLastError("CertCreateCertificateContext", xmlSecKeyDataGetName(kdata));
+            return(-1);
+        }
+        pKeyCert = CertDuplicateCertificateContext(pCert);
+        if(pKeyCert == NULL) {
+            xmlSecMSCngLastError("CertDuplicateCertificateContext", xmlSecKeyDataGetName(kdata));
+            CertFreeCertificateContext(pCert);
+            return(-1);
+        }
+
+        /* add cert and key cert */
+        ret = xmlSecMSCngKeyDataX509AdoptCert(kdata, pCert);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCert", xmlSecKeyDataGetName(kdata));
+            CertFreeCertificateContext(pCert);
+            CertFreeCertificateContext(pKeyCert);
+            return(-1);
+        }
+        pCert = NULL; /* owned by kdata */
+
+        ret = xmlSecMSCngKeyDataX509AdoptKeyCert(kdata, pKeyCert);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptKeyCert", xmlSecKeyDataGetName(kdata));
+            CertFreeCertificateContext(pKeyCert);
+            return(-1);
+        }
+        pKeyCert = NULL; /* owned by kdata */
+
+        break;
+    default:
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, xmlSecKeyDataGetName(kdata),
+            "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
+        return(-1);
+    }
+
+    return(0);
 }
 
 /**
@@ -555,6 +639,11 @@ xmlSecMSCngIsPrivateKeyCert(PCCERT_CONTEXT cert, BOOL isPersistentKey) {
     } else {
         CERT_KEY_CONTEXT ckc;
         DWORD dwDataLen = sizeof(ckc);
+        /* Only the presence of CERT_KEY_CONTEXT_PROP_ID is checked here; the CNG key
+         * context it points to is validated later by xmlSecMSCngKeyDataCertGetPrivkey()
+         * (which requires ckc.hNCryptKey != 0). A CAPI-only context cannot arise from the
+         * CNG PKCS12 import used by this backend.
+         * See https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-cert_context_property_id */
         return CertGetCertificateContextProperty(cert, CERT_KEY_CONTEXT_PROP_ID, &ckc, &dwDataLen);
     }
 }

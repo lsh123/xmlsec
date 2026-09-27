@@ -288,7 +288,9 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
         /* Note: the error paths below may leave hAlg/pbHashObject/pbHash
          * partially acquired on purpose; xmlSecTransformDestroy() invokes this
          * klass's finalize() unconditionally when the transform is destroyed,
-         * and it releases any of these resources. */
+         * and it releases any of these resources. The xmlsec transform framework
+         * does not re-invoke execute() after a failure, so the handle is never
+         * re-opened (and thus never leaked) on a retry. */
 
         /* open an algorithm handle */
         status = BCryptOpenAlgorithmProvider(

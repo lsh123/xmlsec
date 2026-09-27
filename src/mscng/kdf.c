@@ -13,7 +13,6 @@
 
 #include "globals.h"
 
-#include <stdlib.h>
 #include <string.h>
 
 #include <xmlsec/xmlsec.h>
@@ -29,8 +28,8 @@
 #include "../transform_helpers.h"
 
 
-/* SHA224 algorithm identifier is not defined in older MinGW headers;
- * provide a fallback so the code compiles with all SDK versions. */
+/* SHA224 algorithm identifier is not defined in the Windows SDK bcrypt.h;
+ * provide a fallback so the code compiles. */
 #ifndef BCRYPT_SHA224_ALGORITHM
 #define BCRYPT_SHA224_ALGORITHM             L"SHA224"
 #endif /* BCRYPT_SHA224_ALGORITHM */
@@ -340,9 +339,9 @@ xmlSecMSCngPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     }
 
     /* set hash algorithm */
+    /* the helper reports the invalid algorithm href itself */
     ctx->pszAlgId = xmlSecMSCngKdfGetHashAlgoFromHref(ctx->pbkdf2Params.prfAlgorithmHref);
     if(ctx->pszAlgId == NULL) {
-        xmlSecInternalError("xmlSecMSCngKdfGetHashAlgoFromHref", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -554,6 +553,7 @@ xmlSecMSCngHkdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     }
 
     /* set hash algorithm */
+    /* the helper reports the invalid algorithm href itself */
     ctx->pszAlgId = xmlSecMSCngKdfGetHashAlgoFromHref(ctx->hkdfParams.prfAlgorithmHref);
     if(ctx->pszAlgId == NULL) {
         xmlSecInternalError("xmlSecMSCngKdfGetHashAlgoFromHref", xmlSecTransformGetName(transform));
@@ -929,7 +929,7 @@ static xmlSecTransformKlass xmlSecMSCngPbkdf2Klass = {
     NULL,                                           /* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecMSCngKdfSetKeyReq,                        /* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecMSCngKdfSetKey,                           /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                           /* xmlSecTransformValidateMethod validate; */
+    NULL,                                           /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,              /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,                  /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,                   /* xmlSecTransformPopBinMethod popBin; */
@@ -976,7 +976,7 @@ static xmlSecTransformKlass xmlSecMSCngHkdfKlass = {
     NULL,                                           /* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecMSCngKdfSetKeyReq,                        /* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecMSCngKdfSetKey,                           /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                           /* xmlSecTransformValidateMethod validate; */
+    NULL,                                           /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,              /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,                  /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,                   /* xmlSecTransformPopBinMethod popBin; */

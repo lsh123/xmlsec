@@ -738,7 +738,7 @@ xmlSecMSCngCertKeyDataGetSizeInBits(xmlSecKeyDataPtr data) {
         }
     } else if(ctx->pubkey != 0) {
         DWORD lenlen = sizeof(length);
-        /* Returns the  number of bits in the key
+        /* Returns the number of bits in the key
          * https://learn.microsoft.com/en-us/windows/win32/seccng/cng-property-identifiers */
         status = BCryptGetProperty(ctx->pubkey,
             BCRYPT_KEY_STRENGTH,
@@ -822,7 +822,7 @@ xmlSecMSCngKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
 
     ret = xmlSecMSCngKeyDataDsaPubkeyWrite(ctx->pubkey, dsaValue);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataDsaPubkeyWrite", xmlSecKeyDataGetName(data));
+        xmlSecInternalError("xmlSecMSCngKeyDataDsaPubkeyWrite", xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
     return(0);
@@ -949,7 +949,7 @@ xmlSecMSCngKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     xmlSecAssert2(xmlSecBufferGetData(&(rsaValue->modulus)) != NULL, NULL);
     xmlSecAssert2(xmlSecBufferGetData(&(rsaValue->publicExponent)) != NULL, NULL);
 
-    /* don't reverse blobs as both the XML and CNG works with big-endian */
+    /* don't reverse blobs as both the XML and CNG work with big-endian */
     mSize = xmlSecBufferGetSize(&(rsaValue->modulus));
     peSize = xmlSecBufferGetSize(&(rsaValue->publicExponent));
     xmlSecAssert2(mSize > 0, NULL);
@@ -1160,7 +1160,7 @@ xmlSecMSCngKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
 
     /* next is PrivateExponent node: not supported in MSCng */
 
-    /* don't reverse blobs as both the XML and CNG works with big-endian */
+    /* don't reverse blobs as both the XML and CNG work with big-endian */
     /* success */
     res = 0;
 
@@ -1348,7 +1348,7 @@ xmlSecMSCngKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
     /* turn the read data into a public key blob, as documented at
      * https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/ns-bcrypt-bcrypt_ecckey_blob
      *
-     * don't reverse blobs as both the XML and CNG works with big-endian
+     * don't reverse blobs as both the XML and CNG work with big-endian
      *
      */
     offset = sizeof(BCRYPT_ECCKEY_BLOB);
@@ -1549,7 +1549,7 @@ xmlSecMSCngKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyVa
         goto done;
     }
 
-    /* don't reverse blobs as both the XML and CNG works with big-endian */
+    /* don't reverse blobs as both the XML and CNG work with big-endian */
 
     /* success */
     res = 0;
@@ -2423,39 +2423,54 @@ done:
  * @param data DER-encoded PKCS8 PrivateKeyInfo blob.
  * @param dataSize length of @p data.
  *
- * Currently only DH private keys are supported.
+ * Currently only DH and XDH (X25519) private keys are supported.
  *
  * @return new key data or NULL on failure.
  */
 xmlSecKeyDataPtr
 xmlSecMSCngAppKeyReadPrivKeyFromDer(const xmlSecByte* data, DWORD dataSize) {
+    xmlSecKeyDataPtr res = NULL;
+    CRYPT_PRIVATE_KEY_INFO* pki = NULL;
+    DWORD pkiLen = 0;
+
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(dataSize > 0, NULL);
 
+    /* Decode the PKCS8 PrivateKeyInfo once so that we can dispatch on the OID. */
+    if(!CryptDecodeObjectEx(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+            PKCS_PRIVATE_KEY_INFO,
+            data, dataSize,
+            CRYPT_DECODE_ALLOC_FLAG | CRYPT_DECODE_NOCOPY_FLAG,
+            NULL, &pki, &pkiLen)) {
+        xmlSecMSCngLastError("CryptDecodeObjectEx(PKCS8)", NULL);
+        goto done;
+    }
+    if(pki == NULL || pki->Algorithm.pszObjId == NULL) {
+        xmlSecInternalError("CryptDecodeObjectEx returned NULL or no OID", NULL);
+        goto done;
+    }
+
+    if(strcmp(pki->Algorithm.pszObjId, szOID_X942_DH) == 0) {
 #ifndef XMLSEC_NO_DH
-    {
-        xmlSecKeyDataPtr res;
         res = xmlSecMSCngKeyDataDhReadFromPkcs8Der(data, dataSize);
-        if(res != NULL) { return(res); }
-    }
+#else /* XMLSEC_NO_DH */
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "DH private keys are not supported in this build");
 #endif /* XMLSEC_NO_DH */
-
+    } else if(strcmp(pki->Algorithm.pszObjId, szOID_X25519) == 0) {
 #ifndef XMLSEC_NO_XDH
-    {
-        xmlSecKeyDataPtr res;
         res = xmlSecMSCngKeyDataXdhReadFromPkcs8Der(data, dataSize);
-        if(res != NULL) { return(res); }
-    }
+#else /* XMLSEC_NO_XDH */
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "XDH private keys are not supported in this build");
 #endif /* XMLSEC_NO_XDH */
+    } else {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "Unsupported private key algorithm: %s", pki->Algorithm.pszObjId);
+    }
 
-#if defined(XMLSEC_NO_DH) && !defined(XMLSEC_NO_XDH)
-    xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "Failed to read an XDH private key from DER format");
-#elif defined(XMLSEC_NO_XDH) && !defined(XMLSEC_NO_DH)
-    xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "Failed to read a DH private key from DER format");
-#else
-    xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "Failed to read a DH or XDH private key from DER format");
-#endif
-    return(NULL);
+done:
+    if(pki != NULL) {
+        LocalFree(pki);
+    }
+    return(res);
 }
 
 /******************************************************************************

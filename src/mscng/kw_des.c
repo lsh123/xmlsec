@@ -748,7 +748,7 @@ static xmlSecTransformKlass xmlSecMSCngKWDes3Klass = {
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecMSCngKWDes3SetKeyReq,                 /* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecMSCngKWDes3SetKey,                    /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */

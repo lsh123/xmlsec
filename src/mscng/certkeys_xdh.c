@@ -89,7 +89,11 @@ xmlSecMSCngKeyDataXdhImportPublicKey(const xmlSecByte* pubKeyBytes, DWORD pubKey
 
 done:
     if(hAlg != NULL) {
-        BCryptCloseAlgorithmProvider(hAlg, 0);
+        status = BCryptCloseAlgorithmProvider(hAlg, 0);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptCloseAlgorithmProvider", NULL, status);
+            /* ignore error */
+        }
     }
     if(pbBlob != NULL) {
         xmlFree(pbBlob);
@@ -148,14 +152,25 @@ xmlSecMSCngKeyDataDuplicateBCryptXdhPrivKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HA
         (PUCHAR)BCRYPT_ECC_CURVE_25519, sizeof(BCRYPT_ECC_CURVE_25519), 0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptSetProperty(curve25519 priv dup)", NULL, status);
-        BCryptCloseAlgorithmProvider(hAlg, 0);
+        status = BCryptCloseAlgorithmProvider(hAlg, 0);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptCloseAlgorithmProvider", NULL, status);
+            /* ignore error */
+        }
         xmlSecMemCleanse(pbPrivBlob, cbPrivBlob);
         xmlFree(pbPrivBlob);
         return(-1);
     }
 
     status = BCryptImportKeyPair(hAlg, NULL, BCRYPT_ECCPRIVATE_BLOB, &hKey, pbPrivBlob, cbPrivBlob, 0);
-    BCryptCloseAlgorithmProvider(hAlg, 0);
+    {
+        NTSTATUS closeStatus;
+        closeStatus = BCryptCloseAlgorithmProvider(hAlg, 0);
+        if(closeStatus != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptCloseAlgorithmProvider", NULL, closeStatus);
+            /* ignore error */
+        }
+    }
     xmlSecMemCleanse(pbPrivBlob, cbPrivBlob);
     xmlFree(pbPrivBlob);
     if(status != STATUS_SUCCESS) {
@@ -557,16 +572,32 @@ xmlSecMSCngKeyDataXdhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLe
 
 done:
     if(hPrivKeyTemp != NULL) {
-        BCryptDestroyKey(hPrivKeyTemp);
+        status = BCryptDestroyKey(hPrivKeyTemp);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptDestroyKey(hPrivKeyTemp)", NULL, status);
+            /* ignore error */
+        }
     }
     if(hPrivKey != NULL) {
-        BCryptDestroyKey(hPrivKey);
+        status = BCryptDestroyKey(hPrivKey);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptDestroyKey(hPrivKey)", NULL, status);
+            /* ignore error */
+        }
     }
     if(hPubKey != NULL) {
-        BCryptDestroyKey(hPubKey);
+        status = BCryptDestroyKey(hPubKey);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptDestroyKey(hPubKey)", NULL, status);
+            /* ignore error */
+        }
     }
     if(hAlg != NULL) {
-        BCryptCloseAlgorithmProvider(hAlg, 0);
+        status = BCryptCloseAlgorithmProvider(hAlg, 0);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptCloseAlgorithmProvider", NULL, status);
+            /* ignore error */
+        }
     }
     if(pbPrivBlob != NULL) {
         xmlSecMemCleanse(pbPrivBlob, cbPrivBlob);

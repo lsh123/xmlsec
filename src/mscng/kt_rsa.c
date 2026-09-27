@@ -30,8 +30,8 @@
 #include "../cast_helpers.h"
 #include "../transform_helpers.h"
 
-/* SHA224 algorithm identifier is not defined in older MinGW headers;
- * provide a fallback so the code compiles with all SDK versions. */
+/* SHA224 algorithm identifier is not defined in the Windows SDK bcrypt.h;
+ * provide a fallback so the code compiles. */
 #ifndef BCRYPT_SHA224_ALGORITHM
 #define BCRYPT_SHA224_ALGORITHM             L"SHA224"
 #endif /* BCRYPT_SHA224_ALGORITHM */
@@ -221,7 +221,9 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
     xmlSecAssert2(outSize == 0, -1);
 
     /* the encoded size is equal to the key's size so we could not
-     * process more than that */
+     * process more than that. For encryption no inSize > 0 check is needed: in the
+     * xmlsec framework the RSA transform input is always a hash or key (never empty),
+     * and decryption is guarded by the inSize != keySize check below. */
     if((transform->operation == xmlSecTransformOperationEncrypt) && (inSize >= keySize)) {
         xmlSecInvalidSizeLessThanError("Input data", inSize, keySize,
             xmlSecTransformGetName(transform));
@@ -627,7 +629,7 @@ static xmlSecTransformKlass xmlSecMSCngRsaOaepKlass = {
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecMSCngRsaPkcs1OaepSetKeyReq,           /* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecMSCngRsaPkcs1OaepSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
@@ -665,7 +667,7 @@ static xmlSecTransformKlass xmlSecMSCngRsaOaepEnc11Klass = {
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecMSCngRsaPkcs1OaepSetKeyReq,           /* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecMSCngRsaPkcs1OaepSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
@@ -710,7 +712,7 @@ static xmlSecTransformKlass xmlSecMSCngRsaPkcs1Klass = {
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecMSCngRsaPkcs1OaepSetKeyReq,           /* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecMSCngRsaPkcs1OaepSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */

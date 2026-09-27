@@ -8,7 +8,7 @@
  */
 /**
  * @addtogroup xmlsec_mscng_crypto
- * @brief CBC Ciphers transforms implementation for MSCng.
+ * @brief CBC cipher transforms implementation for MSCng.
  */
 #include "globals.h"
 
@@ -18,7 +18,6 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
-#include <xmlsec/bn.h>
 
 #include <xmlsec/mscng/crypto.h>
 
@@ -63,7 +62,7 @@ static xmlSecTransformKlass xmlSecMSCng ## name ## Klass = {                    
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */     \
     xmlSecMSCngCbcBlockCipherSetKeyReq,         /* xmlSecTransformSetKeyMethod setKeyReq; */        \
     xmlSecMSCngCbcBlockCipherSetKey,            /* xmlSecTransformSetKeyMethod setKey; */           \
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */       \
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */           \
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */ \
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */         \
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */           \
@@ -414,7 +413,7 @@ xmlSecMSCngCbcBlockCipherCtxInit(xmlSecMSCngCbcBlockCipherCtxPtr ctx,
     }
     else {
         /* if we don't have enough data, exit and hope that
-        * we'll have iv next time */
+         * we'll have iv next time */
         if (xmlSecBufferGetSize(in) < blockSize) {
             return(0);
         }
@@ -436,7 +435,6 @@ xmlSecMSCngCbcBlockCipherCtxInit(xmlSecMSCngCbcBlockCipherCtxPtr ctx,
             xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName,
                 "size=" XMLSEC_SIZE_FMT, blockSize);
             return(-1);
-
         }
     }
 
@@ -804,7 +802,6 @@ xmlSecMSCngCbcBlockCipherExecute(xmlSecTransformPtr transform, int last,
         if(last) {
             ret = xmlSecMSCngCbcBlockCipherCtxFinal(ctx, in, out, encrypt,
                 xmlSecTransformGetName(transform), transformCtx);
-
             if(ret < 0) {
                 xmlSecInternalError("xmlSecMSCngCbcBlockCipherCtxFinal",
                     xmlSecTransformGetName(transform));

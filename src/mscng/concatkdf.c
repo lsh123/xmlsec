@@ -27,8 +27,8 @@
 #include "../keysdata_helpers.h"
 #include "../transform_helpers.h"
 
-/* SHA224 algorithm identifier is not defined in older MinGW headers;
- * provide a fallback so the code compiles with all SDK versions. */
+/* SHA224 algorithm identifier is not defined in the Windows SDK bcrypt.h;
+ * provide a fallback so the code compiles. */
 #ifndef BCRYPT_SHA224_ALGORITHM
 #define BCRYPT_SHA224_ALGORITHM             L"SHA224"
 #endif /* BCRYPT_SHA224_ALGORITHM */
@@ -300,6 +300,7 @@ xmlSecMSCngConcatKdfPerformKeyDerivation(
     DWORD cbResultLength = 0;
     BCryptBuffer paramBufferCONCATKDF[2];
     BCryptBufferDesc paramsCONCATKDF;
+    static const BYTE dummyFixedInfo = 0; /* valid pointer for an empty KDF_GENERIC_PARAMETER buffer */
     int res = -1;
 
     xmlSecAssert2(pszHashAlgo != NULL, -1);
@@ -309,22 +310,18 @@ xmlSecMSCngConcatKdfPerformKeyDerivation(
     xmlSecAssert2(pbOut != NULL, -1);
     xmlSecAssert2(cbOut > 0, -1);
 
-    /* build params: fixedInfo (optional) and hash algorithm */
+    /* build params: fixedInfo (the packed KDF_GENERIC_PARAMETER) and hash algorithm.
+     * Per the SDK, KDF_ALGORITHMID, KDF_PARTYUINFO and KDF_PARTYVINFO are required for
+     * BCRYPT_SP80056A_CONCAT_ALGORITHM, so the KDF_GENERIC_PARAMETER buffer is always
+     * provided; when the FixedInfo is empty it is a zero-length buffer. */
     paramsCONCATKDF.ulVersion = BCRYPTBUFFER_VERSION;
-    if((pbFixedInfo != NULL) && (cbFixedInfo > 0)) {
-        paramBufferCONCATKDF[0].cbBuffer = cbFixedInfo;
-        paramBufferCONCATKDF[0].BufferType = KDF_GENERIC_PARAMETER;
-        paramBufferCONCATKDF[0].pvBuffer = pbFixedInfo;
-        paramBufferCONCATKDF[1].cbBuffer = ((ULONG)wcslen(pszHashAlgo) + 1) * sizeof(WCHAR);
-        paramBufferCONCATKDF[1].BufferType = KDF_HASH_ALGORITHM;
-        paramBufferCONCATKDF[1].pvBuffer = (LPWSTR)pszHashAlgo;
-        paramsCONCATKDF.cBuffers = 2;
-    } else {
-        paramBufferCONCATKDF[0].cbBuffer = ((ULONG)wcslen(pszHashAlgo) + 1) * sizeof(WCHAR);
-        paramBufferCONCATKDF[0].BufferType = KDF_HASH_ALGORITHM;
-        paramBufferCONCATKDF[0].pvBuffer = (LPWSTR)pszHashAlgo;
-        paramsCONCATKDF.cBuffers = 1;
-    }
+    paramBufferCONCATKDF[0].cbBuffer = cbFixedInfo;
+    paramBufferCONCATKDF[0].BufferType = KDF_GENERIC_PARAMETER;
+    paramBufferCONCATKDF[0].pvBuffer = (cbFixedInfo > 0) ? (PVOID)pbFixedInfo : (PVOID)&dummyFixedInfo;
+    paramBufferCONCATKDF[1].cbBuffer = ((ULONG)wcslen(pszHashAlgo) + 1) * sizeof(WCHAR);
+    paramBufferCONCATKDF[1].BufferType = KDF_HASH_ALGORITHM;
+    paramBufferCONCATKDF[1].pvBuffer = (LPWSTR)pszHashAlgo;
+    paramsCONCATKDF.cBuffers = 2;
     paramsCONCATKDF.pBuffers = paramBufferCONCATKDF;
 
     /* get algo provider */
@@ -365,7 +362,7 @@ xmlSecMSCngConcatKdfPerformKeyDerivation(
         goto done;
     }
     if (cbResultLength != cbOut) {
-        xmlSecInvalidSizeError("Derived key length doesn't match the requested",
+        xmlSecInvalidSizeError("Derived key length doesn't match the requested length",
             (xmlSecSize)cbResultLength, (xmlSecSize)cbOut, NULL);
         goto done;
     }
@@ -523,7 +520,7 @@ static xmlSecTransformKlass xmlSecMSCngConcatKdfKlass = {
     NULL,                                           /* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecMSCngConcatKdfSetKeyReq,                    /* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecMSCngConcatKdfSetKey,                       /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                           /* xmlSecTransformValidateMethod validate; */
+    NULL,                                           /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,              /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,                  /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,                   /* xmlSecTransformPopBinMethod popBin; */

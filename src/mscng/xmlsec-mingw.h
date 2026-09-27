@@ -30,7 +30,7 @@
 #endif /* BCRYPT_HKDF_ALGORITHM */
 
 
-/* SHA3 algorithm identifiers: available in Windows SDK 10.0.22621+ (Windows 11 22H2).
+/* SHA3 algorithm identifiers: available in Windows SDK 10.0.26100+ (Windows 11 24H2).
  * Define fallback values so the code compiles with older SDK versions; the calls will fail
  * at runtime on systems that do not support these algorithms. */
 #ifndef BCRYPT_SHA3_256_ALGORITHM
@@ -53,7 +53,8 @@
 #define BCRYPT_PBKDF2_ALGORITHM             L"PBKDF2"
 #endif /* BCRYPT_PBKDF2_ALGORITHM */
 
-/* MinGW may ship an older bcrypt.h that lacks this KDF identifier. */
+/* MinGW may ship an older bcrypt.h that lacks this KDF identifier.
+ * L"TRUNCATE" matches the Windows SDK bcrypt.h (10.0.26100.0). */
 #ifndef BCRYPT_KDF_RAW_SECRET
 #define BCRYPT_KDF_RAW_SECRET               L"TRUNCATE"
 #endif /* BCRYPT_KDF_RAW_SECRET */
@@ -92,7 +93,10 @@
 #endif /* XMLSEC_NO_EC */
 
 #if !defined(XMLSEC_NO_EC) || !defined(XMLSEC_NO_XDH)
-/* Generic ECDH definitions (may be missing in older MinGW bcrypt.h) */
+/* Generic ECDH definitions (may be missing in older MinGW bcrypt.h).
+ * Verified against the Windows SDK bcrypt.h (10.0.26100.0): BCRYPT_ECDH_PUBLIC_GENERIC_MAGIC
+ * is 0x504B4345 ('ECKP') and BCRYPT_ECDH_PRIVATE_GENERIC_MAGIC is 0x564B4345 ('ECKV').
+ * See https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/ */
 #ifndef BCRYPT_ECDH_PUBLIC_GENERIC_MAGIC
 #define BCRYPT_ECDH_PUBLIC_GENERIC_MAGIC    0x504B4345  /* ECKP */
 #endif /* BCRYPT_ECDH_PUBLIC_GENERIC_MAGIC */

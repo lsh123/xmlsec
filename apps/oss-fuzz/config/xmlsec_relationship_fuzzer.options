@@ -1,0 +1,3 @@
+[libfuzzer]
+# xml.dict is downloaded by the OSS-Fuzz xmlsec build script.
+dict = xml.dict

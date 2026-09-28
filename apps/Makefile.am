@@ -155,6 +155,37 @@ xmlsec_fuzzer_DEPENDENCIES = \
 	$(XMLSEC_LIBS) \
 	$(NULL)
 
+# xmlsec OPC Relationship Transform fuzzer
+noinst_PROGRAMS += xmlsec_relationship_fuzzer
+
+xmlsec_relationship_fuzzer_SOURCES = \
+	oss-fuzz/xmlsec_relationship_target.c \
+	oss-fuzz/standalone_fuzz_runner.c \
+	$(NULL)
+
+xmlsec_relationship_fuzzer_CFLAGS = \
+	-DPACKAGE=\"@PACKAGE@\" \
+	-I../include \
+	-I$(top_srcdir)/include \
+	$(XMLSEC_DEFINES) \
+	$(LIBXML_CFLAGS) \
+	$(NULL)
+
+xmlsec_relationship_fuzzer_LDFLAGS = \
+	@XMLSEC_STATIC_BINARIES@ \
+	@XMLSEC_EXTRA_LDFLAGS@ \
+	@XMLSEC_APP_EXTRA_LDFLAGS@ \
+	$(NULL)
+
+xmlsec_relationship_fuzzer_LDADD = \
+	$(LIBXML_LIBS) \
+	$(XMLSEC_LIBS) \
+	$(NULL)
+
+xmlsec_relationship_fuzzer_DEPENDENCIES = \
+	$(XMLSEC_LIBS) \
+	$(NULL)
+
 # xmlsec DSig-verify fuzzer (OSS-Fuzz harness — OpenSSL only)
 if !XMLSEC_NO_OPENSSL
 noinst_PROGRAMS += xmlsec_dsig_verify_fuzzer

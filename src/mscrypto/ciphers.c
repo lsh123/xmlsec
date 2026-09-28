@@ -303,7 +303,7 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     if(encrypt) {
         DWORD dwBufLen;
 
-        /* Pass Final=FALSE to CryptEncrypt since padding is handled manually above and MSCrypto's own padding must be skipped. */
+        /* Padding is handled manually above; pass NULL as pszDataDesc and 0 as dwFlags to CryptEncrypt. */
         XMLSEC_SAFE_CAST_SIZE_TO_ULONG((inSize + blockSize), dwBufLen, return(-1), cipherName);
         if(!CryptEncrypt(ctx->cryptKey, 0, FALSE, 0, outBuf, &dwCLen, dwBufLen)) {
             xmlSecMSCryptoError("CryptEncrypt", cipherName);
@@ -323,13 +323,16 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     }
 
     if(encrypt == 0) {
+        xmlSecSize padLen;
+
         /* check padding */
-        if((outBuf[blockSize - 1] == 0) || (inSize < outBuf[blockSize - 1])) {
+        padLen = outBuf[blockSize - 1];
+        if((padLen == 0) || (inSize < padLen)) {
             xmlSecInvalidSizeLessThanError("Input data padding",
-                    inSize, outBuf[blockSize - 1], cipherName);
+                    inSize, padLen, cipherName);
             return(-1);
         }
-        outSize += inSize - outBuf[blockSize - 1];
+        outSize += inSize - padLen;
     } else {
         outSize += inSize;
     }

@@ -507,7 +507,7 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
     DWORD dwDataLen;
 
     xmlSecAssert2(data != NULL, NULL);
-    xmlSecAssert2(dataSize > 1, NULL);
+    xmlSecAssert2(dataSize > 0, NULL);
     xmlSecAssert2(pwd != NULL, NULL);
     XMLSEC_UNREFERENCED(pwdCallback);
     XMLSEC_UNREFERENCED(pwdCallbackCtx);
@@ -928,7 +928,7 @@ xmlSecMSCryptoAppDefaultKeysMngrAdoptUntrustedStore(xmlSecKeysMngrPtr mngr, HCER
 
 /**
  * @brief Initializes the default key manager for MSCrypto.
- * @details Initializes @p mngr with simple keys store #xmlSecSimpleKeysStoreId
+ * @details Initializes @p mngr with keys store #xmlSecMSCryptoKeysStoreId
  * and a default MSCrypto crypto key data stores.
  *
  * @param mngr the pointer to keys manager.
@@ -1003,12 +1003,12 @@ xmlSecMSCryptoAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr ke
 
 /**
  * @brief Verifies @p key using the keys manager.
- * @details Verifies @p key with the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * @details Verifies @p key with the keys manager @p mngr created with #xmlSecMSCryptoAppDefaultKeysMngrInit
  * function:
  * - Checks that key certificate is present
  * - Checks that key certificate is valid
  *
- * Adds @p key to the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * Adds @p key to the keys manager @p mngr created with #xmlSecMSCryptoAppDefaultKeysMngrInit
  * function.
  *
  * @param mngr the pointer to keys manager.

@@ -243,6 +243,7 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
     xmlSecSize keySize;
     int ret;
     HCRYPTKEY hKey = 0;
+    HCRYPTKEY hTmpKey = 0;
     DWORD dwInLen;
     DWORD dwBufLen;
     DWORD dwOutLen;
@@ -303,7 +304,9 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
 
         XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwInLen, return(-1), xmlSecTransformGetName(transform));
         XMLSEC_SAFE_CAST_SIZE_TO_ULONG(outSize, dwBufLen, return(-1), xmlSecTransformGetName(transform));
-        if (0 == (hKey = xmlSecMSCryptoKeyDataGetKey(ctx->data, xmlSecKeyDataTypePublic))) {
+        
+        hKey = xmlSecMSCryptoKeyDataGetKey(ctx->data, xmlSecKeyDataTypePublic);
+        if (0 == hKey) {
             xmlSecInternalError("xmlSecMSCryptoKeyDataGetKey", xmlSecTransformGetName(transform));
             return (-1);
         }
@@ -313,11 +316,8 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
 
 
 #ifndef XMLSEC_NO_RSA_OAEP
-        /* set OAEP parameter for the key
-         *
-         * aleksey: I don't understand how this would work in multi-threaded
-         * environment or when key can be re-used multiple times
-         */
+        /* Set the OAEP parameter on a temporary duplicate key, when available,
+         * so the original key is not modified. */
         if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaOaepId) && xmlSecBufferGetSize(&(ctx->oaepParams)) > 0) {
             xmlSecSize oaepParamsSize;
             CRYPT_DATA_BLOB oaepParams;
@@ -327,17 +327,33 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
 
             oaepParamsSize = xmlSecBufferGetSize(&(ctx->oaepParams));
             XMLSEC_SAFE_CAST_SIZE_TO_ULONG(oaepParamsSize, oaepParams.cbData, return(-1), xmlSecTransformGetName(transform));
-            if (!CryptSetKeyParam(hKey, KP_OAEP_PARAMS, (const BYTE*)&oaepParams, 0)) {
+            if (!CryptDuplicateKey(hKey, NULL, 0, &hTmpKey)) {
+                xmlSecMSCryptoError("CryptDuplicateKey", xmlSecTransformGetName(transform));
+                return (-1);
+            }
+            if (!CryptSetKeyParam(hTmpKey, KP_OAEP_PARAMS, (const BYTE*)&oaepParams, 0)) {
                 xmlSecMSCryptoError("CryptSetKeyParam", xmlSecTransformGetName(transform));
+                if (hTmpKey != 0) {
+                    CryptDestroyKey(hTmpKey);
+                    hTmpKey = 0;
+                }
                 return (-1);
             }
         }
 #endif /* XMLSEC_NO_RSA_OAEP */
 
         /* encrypt */
-        if (!CryptEncrypt(hKey, 0, TRUE, ctx->dwFlags, outBuf, &dwInLen, dwBufLen)) {
+        if (!CryptEncrypt(((hTmpKey != 0) ? hTmpKey : hKey), 0, TRUE, ctx->dwFlags, outBuf, &dwInLen, dwBufLen)) {
             xmlSecMSCryptoError("CryptEncrypt", xmlSecTransformGetName(transform));
+            if (hTmpKey != 0) {
+                CryptDestroyKey(hTmpKey);
+                hTmpKey = 0;
+            }
             return (-1);
+        }
+        if (hTmpKey != 0) {
+            CryptDestroyKey(hTmpKey);
+            hTmpKey = 0;
         }
 
         /* The output of CryptEncrypt is in little-endian format, so we have to convert to
@@ -361,11 +377,8 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         }
 
 #ifndef XMLSEC_NO_RSA_OAEP
-        /* set OAEP parameter for the key
-         *
-         * aleksey: I don't understand how this would work in multi-threaded
-         * environment or when key can be re-used multiple times
-         */
+        /* Set the OAEP parameter on a temporary duplicate key, when available,
+         * so the original key is not modified. */
         if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaOaepId) && xmlSecBufferGetSize(&(ctx->oaepParams)) > 0) {
             xmlSecSize oaepParamsSize;
             CRYPT_DATA_BLOB oaepParams;
@@ -374,19 +387,41 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
             oaepParams.pbData = xmlSecBufferGetData(&(ctx->oaepParams));
 
             oaepParamsSize = xmlSecBufferGetSize(&(ctx->oaepParams));
-            XMLSEC_SAFE_CAST_SIZE_TO_ULONG(oaepParamsSize, oaepParams.cbData, return(-1), xmlSecTransformGetName(transform));
-            if (!CryptSetKeyParam(hKey, KP_OAEP_PARAMS, (const BYTE*)&oaepParams, 0)) {
+            XMLSEC_SAFE_CAST_SIZE_TO_ULONG(oaepParamsSize, oaepParams.cbData, { CryptDestroyKey(hKey); return(-1); }, xmlSecTransformGetName(transform));
+            if (!CryptDuplicateKey(hKey, NULL, 0, &hTmpKey)) {
+                xmlSecMSCryptoError("CryptDuplicateKey", xmlSecTransformGetName(transform));
+                CryptDestroyKey(hKey);
+                return (-1);
+            }
+            if (!CryptSetKeyParam(hTmpKey, KP_OAEP_PARAMS, (const BYTE*)&oaepParams, 0)) {
                 xmlSecMSCryptoError("CryptSetKeyParam", xmlSecTransformGetName(transform));
+                if (hTmpKey != 0) {
+                    CryptDestroyKey(hTmpKey);
+                    hTmpKey = 0;
+                }
+                CryptDestroyKey(hKey);
                 return (-1);
             }
         }
 #endif /* XMLSEC_NO_RSA_OAEP */
 
         /* decrypt */
-        if (!CryptDecrypt(hKey, 0, TRUE, ctx->dwFlags, outBuf, &dwOutLen)) {
+        if (!CryptDecrypt(((hTmpKey != 0) ? hTmpKey : hKey), 0, TRUE, ctx->dwFlags, outBuf, &dwOutLen)) {
             xmlSecMSCryptoError("CryptDecrypt", xmlSecTransformGetName(transform));
+            if (hTmpKey != 0) {
+                CryptDestroyKey(hTmpKey);
+                hTmpKey = 0;
+            }
+            CryptDestroyKey(hKey);
             return(-1);
         }
+        if (hTmpKey != 0) {
+            CryptDestroyKey(hTmpKey);
+            hTmpKey = 0;
+        }
+        /* hKey comes from CryptGetUserKey and must be destroyed by the caller */
+        CryptDestroyKey(hKey);
+        hKey = 0;
 
         outSize = dwOutLen;
     }

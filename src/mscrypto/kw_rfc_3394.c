@@ -8,7 +8,7 @@
  */
 /**
  * @addtogroup xmlsec_mscrypto_crypto
- * @brief AES Key Transport (RFC 3394) implementation for MSCrypto.
+ * @brief AES Key Wrap (RFC 3394) implementation for MSCrypto.
  */
 #include "globals.h"
 
@@ -171,7 +171,7 @@ xmlSecMSCryptoKWAesInitialize(xmlSecTransformPtr transform) {
 
     /* Create dummy key to be able to import plain session keys */
     if (!xmlSecMSCryptoCreatePrivateExponentOneKey(ctx->cryptProvider, &(ctx->pubPrivKey))) {
-        xmlSecInternalError("xmlSecMSCryptoCreatePrivateExponentOneKey",
+        xmlSecMSCryptoError("xmlSecMSCryptoCreatePrivateExponentOneKey",
                              xmlSecTransformGetName(transform));
         xmlSecMSCryptoKWAesFinalize(transform);
         return(-1);
@@ -297,8 +297,8 @@ xmlSecMSCryptoKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte *
     xmlSecAssert2(keySize == ctx->parentCtx.keyExpectedSize, -1);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(keySize, dwKeySize, goto done, NULL);
 
-    /* Import this key and get an HCRYPTKEY handle, we do it again and again
-       to ensure we don't go into CBC mode */
+    /* Import this key and get an HCRYPTKEY handle. We do it again and again
+       to obtain a fresh session key per call (AES KW runs in ECB mode) */
     if (!xmlSecMSCryptoImportPlainSessionBlob(ctx->cryptProvider,
         ctx->pubPrivKey,
         ctx->algorithmIdentifier,
@@ -367,8 +367,8 @@ xmlSecMSCryptoKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte *
     xmlSecAssert2(keySize == ctx->parentCtx.keyExpectedSize, -1);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(keySize, dwKeySize, goto done, NULL);
 
-    /* Import this key and get an HCRYPTKEY handle, we do it again and again
-       to ensure we don't go into CBC mode */
+    /* Import this key and get an HCRYPTKEY handle. We do it again and again
+       to obtain a fresh session key per call (AES KW runs in ECB mode) */
     if (!xmlSecMSCryptoImportPlainSessionBlob(ctx->cryptProvider,
         ctx->pubPrivKey,
         ctx->algorithmIdentifier,

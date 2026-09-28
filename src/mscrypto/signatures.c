@@ -119,7 +119,7 @@ static int xmlSecMSCryptoSignatureCheckId(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2001GostR3411_94Id)) {
         return(1);
     } else
-#endif /* XMLSEC_NO_GOST*/
+#endif /* XMLSEC_NO_GOST */
 
 #ifndef XMLSEC_NO_GOST2012
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2012_256Id)) {
@@ -128,7 +128,7 @@ static int xmlSecMSCryptoSignatureCheckId(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2012_512Id)) {
         return(1);
     } else
-#endif /* XMLSEC_NO_GOST2012*/
+#endif /* XMLSEC_NO_GOST2012 */
 
 
     /* not found */
@@ -200,7 +200,7 @@ static int xmlSecMSCryptoSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->digestAlgId    = CALG_MAGPRO_HASH_R3411_94;
         ctx->keyId          = xmlSecMSCryptoKeyDataGost2001Id;
     } else
-#endif /* XMLSEC_NO_GOST*/
+#endif /* XMLSEC_NO_GOST */
 
 #ifndef XMLSEC_NO_GOST2012
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2012_256Id)) {
@@ -211,7 +211,7 @@ static int xmlSecMSCryptoSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->digestAlgId    = CALG_GR3411_2012_512;
         ctx->keyId          = xmlSecMSCryptoKeyDataGost2012_512Id;
     } else
-#endif /* XMLSEC_NO_GOST2012*/
+#endif /* XMLSEC_NO_GOST2012 */
 
     /* not found */
     {
@@ -375,20 +375,20 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
         xmlSecMSCryptoConvertEndian(data, tmpBuf, 20);
         xmlSecMSCryptoConvertEndian(data + 20, tmpBuf + 20, 20);
     } else
-#endif /*endif XMLSEC_NO_DSA */
+#endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_GOST
     if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2001GostR3411_94Id)) {
         xmlSecMSCryptoConvertEndian(data, tmpBuf, dataSize);
     } else
-#endif /* XMLSEC_NO_GOST*/
+#endif /* XMLSEC_NO_GOST */
 
 #ifndef XMLSEC_NO_GOST2012
     if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2012_256Id) ||
         xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2012_512Id)) {
         xmlSecMSCryptoConvertEndian(data, tmpBuf, dataSize);
     } else
-#endif /* XMLSEC_NO_GOST2012*/
+#endif /* XMLSEC_NO_GOST2012 */
 
     {
         xmlSecInvalidTypeError("Invalid signature algorithm", xmlSecTransformGetName(transform));
@@ -403,8 +403,9 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
 
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(dataSize, dwDataSize, goto done, xmlSecTransformGetName(transform));
     if (!CryptVerifySignature(ctx->mscHash, tmpBuf, dwDataSize, hKey, NULL, 0)) {
+        /* CryptoAPI sets the last error to an NTE_* code, so compare against it directly. */
         dwError = GetLastError();
-        if (NTE_BAD_SIGNATURE == HRESULT_FROM_WIN32(dwError)) {
+        if (NTE_BAD_SIGNATURE == dwError) {
             xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH, xmlSecTransformGetName(transform),
                 "CryptVerifySignature: signature verification failed");
             transform->status = xmlSecTransformStatusFail;
@@ -556,7 +557,12 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
         xmlSecAssert2(outSize == 0, -1);
 
         if(transform->operation == xmlSecTransformOperationSign) {
+            xmlSecAssert2(ctx->data != NULL, -1);
             dwKeySpec = xmlSecMSCryptoKeyDataGetMSCryptoKeySpec(ctx->data);
+            if((dwKeySpec != AT_SIGNATURE) && (dwKeySpec != AT_KEYEXCHANGE)) {
+                xmlSecUnsupportedEnumValueError("dwKeySpec", dwKeySpec, xmlSecTransformGetName(transform));
+                return(-1);
+            }
             if (!CryptSignHash(ctx->mscHash, dwKeySpec, NULL, 0, NULL, &dwSigLen)) {
                 xmlSecMSCryptoError("CryptSignHash", NULL);
                 return(-1);
@@ -624,27 +630,27 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             } else
 #endif /* XMLSEC_NO_SHA512 */
 
-#endif /* XMLSEC_NO_RSA*/
+#endif /* XMLSEC_NO_RSA */
 
 #ifndef XMLSEC_NO_DSA
             if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformDsaSha1Id) && (outSize == 40)) {
                 xmlSecMSCryptoConvertEndian(tmpBuf, outBuf, 20);
                 xmlSecMSCryptoConvertEndian(tmpBuf + 20, outBuf + 20, 20);
             } else
-#endif /* XMLSEC_NO_DSA*/
+#endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_GOST
             if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2001GostR3411_94Id)) {
                 xmlSecMSCryptoConvertEndian(tmpBuf, outBuf, outSize);
             } else
-#endif /* XMLSEC_NO_GOST*/
+#endif /* XMLSEC_NO_GOST */
 
 #ifndef XMLSEC_NO_GOST2012
             if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2012_256Id) ||
                 xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2012_512Id)) {
                 xmlSecMSCryptoConvertEndian(tmpBuf, outBuf, outSize);
             } else
-#endif /* XMLSEC_NO_GOST2012*/
+#endif /* XMLSEC_NO_GOST2012 */
 
             {
                 /* We shouldn't get at this place */
@@ -977,7 +983,7 @@ xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass(void) {
     return(&xmlSecMSCryptoGost2001GostR3411_94Klass);
 }
 
-#endif /* XMLSEC_NO_GOST*/
+#endif /* XMLSEC_NO_GOST */
 
 
 #ifndef XMLSEC_NO_GOST2012
@@ -1066,4 +1072,4 @@ xmlSecMSCryptoTransformGost2012_512GetKlass(void) {
     return(&xmlSecMSCryptoGost2012_512Klass);
 }
 
-#endif /* XMLSEC_NO_GOST2012*/
+#endif /* XMLSEC_NO_GOST2012 */

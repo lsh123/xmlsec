@@ -9,7 +9,6 @@
 /**
  * @addtogroup xmlsec_mscrypto_x509
  * @brief X509 certificates implementation for Microsoft Crypto API.
- * X509 certificates implementation for Microsoft Crypto API.
  */
 #include "globals.h"
 
@@ -210,7 +209,7 @@ xmlSecMSCryptoKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert
 
     if(ctx->keyCert != NULL) {
         CertFreeCertificateContext(ctx->keyCert);
-        ctx->keyCert = 0;
+        ctx->keyCert = NULL;
     }
     ctx->keyCert = cert;
 
@@ -270,8 +269,8 @@ xmlSecMSCryptoKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
      * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcertificatesinstore) */
     pCert = CertEnumCertificatesInStore(ctx->hMemStore, pCert);
     while ((pCert != NULL) && (pos > 0)) {
-      pCert = CertEnumCertificatesInStore(ctx->hMemStore, pCert);
-      pos--;
+        pCert = CertEnumCertificatesInStore(ctx->hMemStore, pCert);
+        pos--;
     }
 
     return(pCert);
@@ -346,8 +345,8 @@ xmlSecMSCryptoKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {
      * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcrlsinstore) */
     pCRL = CertEnumCRLsInStore(ctx->hMemStore, pCRL);
     while ((pCRL != NULL) && (pos > 0)) {
-      pCRL = CertEnumCRLsInStore(ctx->hMemStore, pCRL);
-      pos--;
+        pCRL = CertEnumCRLsInStore(ctx->hMemStore, pCRL);
+        pos--;
     }
 
     return(pCRL);
@@ -505,7 +504,7 @@ xmlSecMSCryptoKeyDataX509Finalize(xmlSecKeyDataPtr data) {
     if (ctx->hMemStore != 0) {
         if (!CertCloseStore(ctx->hMemStore, 0)) {
             xmlSecInternalError("CertCloseStore", NULL);
-            return;
+            /* ignore error */
         }
     }
 
@@ -871,7 +870,7 @@ xmlSecMSCryptoKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr 
             return(-1);
         }
 
-        if ((content & XMLSEC_X509DATA_CRL_NODE) != 0) {
+        if (XMLSEC_X509DATA_HAS_EMPTY_NODE(content, XMLSEC_X509DATA_CRL_NODE)) {
             ret = xmlSecBufferSetData(&(x509Value->crl), crl->pbCrlEncoded, crl->cbCrlEncoded);
             if (ret < 0) {
                 xmlSecInternalError3("xmlSecBufferSetData",
@@ -1152,8 +1151,7 @@ xmlSecMSCryptoX509SKIWrite(PCCERT_CONTEXT cert, xmlSecBufferPtr buf) {
     /* First check if the SKI extension actually exists, otherwise we get a SHA1 hash of the cert */
     pCertExt = CertFindExtension(szOID_SUBJECT_KEY_IDENTIFIER, cert->pCertInfo->cExtension, cert->pCertInfo->rgExtension);
     if (pCertExt == NULL) {
-        xmlSecMSCryptoError("CertFindExtension", NULL);
-        return (0);
+        return(0);
     }
 
     rv = CertGetCertificateContextProperty(cert, CERT_KEY_IDENTIFIER_PROP_ID, NULL, &dwSize);
@@ -1211,13 +1209,14 @@ xmlSecMSCryptoX509CertDebugDump(PCCERT_CONTEXT cert, FILE* output) {
     }
     fprintf(output, "==== Issuer Name: %s\n", issuer);
 
-    /* serial number */
+    /* serial number (CRYPT_INTEGER_BLOB is little-endian; print in big-endian X.509 order) */
     sn = &(cert->pCertInfo->SerialNumber);
-    for (i = 0; i < sn->cbData; i++) {
-        if (i != sn->cbData - 1) {
-            fprintf(output, "%02x:", sn->pbData[i]);
+    fprintf(output, "==== Serial Number: ");
+    for (i = sn->cbData; i > 0; i--) {
+        if (i != 1) {
+            fprintf(output, "%02x:", sn->pbData[i - 1]);
         } else {
-            fprintf(output, "%02x", sn->pbData[i]);
+            fprintf(output, "%02x", sn->pbData[i - 1]);
         }
     }
     fprintf(output, "\n");
@@ -1258,14 +1257,14 @@ xmlSecMSCryptoX509CertDebugXmlDump(PCCERT_CONTEXT cert, FILE* output) {
     xmlSecPrintXmlString(output, BAD_CAST issuer);
     fprintf(output, "</IssuerName>\n");
 
-    /* serial */
+    /* serial number (CRYPT_INTEGER_BLOB is little-endian; print in big-endian X.509 order) */
     fprintf(output, "<SerialNumber>");
     sn = &(cert->pCertInfo->SerialNumber);
-    for (i = 0; i < sn->cbData; i++) {
-        if (i != sn->cbData - 1) {
-            fprintf(output, "%02x:", sn->pbData[i]);
+    for (i = sn->cbData; i > 0; i--) {
+        if (i != 1) {
+            fprintf(output, "%02x:", sn->pbData[i - 1]);
         } else {
-            fprintf(output, "%02x", sn->pbData[i]);
+            fprintf(output, "%02x", sn->pbData[i - 1]);
         }
     }
     fprintf(output, "</SerialNumber>\n");

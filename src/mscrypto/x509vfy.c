@@ -209,6 +209,7 @@ static BOOL
 xmlSecMSCryptoCheckRevocation(HCERTSTORE hStore, PCCERT_CONTEXT pCert) {
     PCCRL_CONTEXT pCrl = NULL;
     PCRL_ENTRY pCrlEntry = NULL;
+    BOOL ret;
 
     xmlSecAssert2(pCert != NULL, FALSE);
     xmlSecAssert2(hStore != NULL, FALSE);
@@ -216,12 +217,22 @@ xmlSecMSCryptoCheckRevocation(HCERTSTORE hStore, PCCERT_CONTEXT pCert) {
     /* CertEnumCRLsInStore automatically frees the previous CRL context (see
      * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcrlsinstore) */
     while((pCrl = CertEnumCRLsInStore(hStore, pCrl)) != NULL) {
-        if (CertFindCertificateInCRL(pCert, pCrl, 0, NULL, &pCrlEntry) && (pCrlEntry != NULL)) {
-            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL,
-                             "CertFindCertificateInCRL: cert found in crl list");
+        /* pCrlEntry will point to the entry for the certificate in the CRL if it exists, it doesn't need
+         * to be freed manually (see https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certfindcertificateincrl) */
+        ret = CertFindCertificateInCRL(pCert, pCrl, 0, NULL, &pCrlEntry);
+        if (ret == FALSE) {
+            /* CertFindCertificateInCRL returns FALSE only on a genuine failure (not when
+             * the cert is simply not listed), so fail closed instead of skipping the CRL. */
+            xmlSecMSCryptoError("CertFindCertificateInCRL", NULL);
             CertFreeCRLContext(pCrl);
             return(FALSE);
         }
+        if (pCrlEntry != NULL) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL, "CertFindCertificateInCRL: cert found in crl list");
+            CertFreeCRLContext(pCrl);
+            return(FALSE);
+        }
+        /* cert is not listed in this CRL, continue to the next CRL */
     }
 
     return(TRUE);
@@ -304,7 +315,7 @@ end:
 
 
 
-/* this function does NOT check for time validity (see xmlSecMSCngVerifyCertTime)
+/* this function does NOT check for time validity (see xmlSecMSCryptoVerifyCertTime)
 *  returns <0 if there is an error; 0 if verification failed and >0 if verification succeeded */
 static int
 xmlSecMSCryptoX509StoreVerifySubject(PCCERT_CONTEXT cert, PCCERT_CONTEXT issuerCert) {
@@ -350,6 +361,8 @@ xmlSecMSCryptoX509StoreContainsCert(HCERTSTORE store, CERT_NAME_BLOB* name, PCCE
     xmlSecAssert2(cert != NULL, -1);
 
     while (TRUE) {
+        /* CertFindCertificateInStore automatically frees the previous certificate context (see
+         * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certfindcertificateinstore) */
         storeCert = CertFindCertificateInStore(store,
             X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
             0,
@@ -363,11 +376,11 @@ xmlSecMSCryptoX509StoreContainsCert(HCERTSTORE store, CERT_NAME_BLOB* name, PCCE
         ret = xmlSecMSCryptoX509StoreVerifySubject(cert, storeCert);
         if (ret < 0) {
             xmlSecInternalError("xmlSecMSCryptoX509StoreVerifySubject", NULL);
-            continue; /* storeCert will be released in the next CertFindCertificateInStore() call */
+            continue;
         } else if (ret == 0) {
             xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL,
                 "xmlSecMSCryptoX509StoreVerifySubject");
-            continue; /* storeCert will be released in the next CertFindCertificateInStore() call */
+            continue;
         }
 
         /* success */
@@ -413,6 +426,25 @@ struct xmlSecMSCryptoBuildCertChainStep {
     BOOL freeCert;
 };
 #define XMLSEC_MSCRYPTO_BUILD_CERT_CHAIN_STEP_SIZE 32
+#define XMLSEC_MSCRYPTO_BUILD_CERT_CHAIN_MAX_DEPTH 1000
+#define XMLSEC_MSCRYPTO_X509_CERT_HASH_SIZE 20
+
+/* Returns the SHA1 hash of @p pCert in @p pHash. Returns 0 on success, -1 on error. */
+static int
+xmlSecMSCryptoX509GetCertHash(PCCERT_CONTEXT pCert, BYTE* pHash, DWORD* hashSize) {
+    BOOL ret;
+
+    xmlSecAssert2(pCert != NULL, -1);
+    xmlSecAssert2(pHash != NULL, -1);
+    xmlSecAssert2(hashSize != NULL, -1);
+
+    ret = CertGetCertificateContextProperty(pCert, CERT_HASH_PROP_ID, pHash, hashSize);
+    if((ret == FALSE) || (*hashSize != (DWORD)XMLSEC_MSCRYPTO_X509_CERT_HASH_SIZE)) {
+        xmlSecMSCryptoError("CertGetCertificateContextProperty(CERT_HASH_PROP_ID)", NULL);
+        return(-1);
+    }
+    return(0);
+}
 
 /**
  * @brief Builds certificates chain manually.
@@ -430,6 +462,10 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT theCert, LPFILETIME pfTime,
         xmlSecKeyDataStorePtr store) {
     struct xmlSecMSCryptoBuildCertChainStep * queue = NULL;
     xmlSecSize queueSize = 0, queueMaxSize = 0;
+    BYTE seenHashes[XMLSEC_MSCRYPTO_BUILD_CERT_CHAIN_MAX_DEPTH][XMLSEC_MSCRYPTO_X509_CERT_HASH_SIZE];
+    xmlSecSize seenSize = 0;
+    BYTE hash[XMLSEC_MSCRYPTO_X509_CERT_HASH_SIZE];
+    DWORD hashSize;
     PCCERT_CONTEXT currentCert = NULL;
     BOOL freeCurrentCert = FALSE;
     BOOL res = FALSE;
@@ -458,10 +494,48 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT theCert, LPFILETIME pfTime,
 
     while(queueSize > 0) {
         PCCERT_CONTEXT issuerCert = NULL;
+        xmlSecSize ii;
+        BOOL alreadySeen = FALSE;
 
         currentCert = queue[queueSize - 1].cert;
         freeCurrentCert = queue[queueSize - 1].freeCert;
         --queueSize;
+
+        /* limit the chain depth to avoid excessive work on crafted inputs */
+        if(seenSize >= XMLSEC_MSCRYPTO_BUILD_CERT_CHAIN_MAX_DEPTH) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+                xmlSecKeyDataStoreGetName(store),
+                "certificate chain is too deep");
+            goto done;
+        }
+
+        /* cycle detection: make sure we have not seen this certificate before */
+        hashSize = sizeof(hash);
+        ret = xmlSecMSCryptoX509GetCertHash(currentCert, hash, &hashSize);
+        if((ret < 0) || (hashSize != XMLSEC_MSCRYPTO_X509_CERT_HASH_SIZE)) {
+            xmlSecInternalError("xmlSecMSCryptoX509GetCertHash", NULL);
+            goto done;
+        }
+        for(ii = 0; ii < seenSize; ++ii) {
+            if(memcmp(&seenHashes[ii], hash, XMLSEC_MSCRYPTO_X509_CERT_HASH_SIZE) == 0) {
+                alreadySeen = TRUE;
+                break;
+            }
+        }
+        if(alreadySeen) {
+            /* The same certificate can be reached through multiple stores/branches;
+             * we only need to process each cert once. */
+            if(freeCurrentCert == TRUE) {
+                CertFreeCertificateContext(currentCert);
+            }
+            currentCert = NULL;
+            freeCurrentCert = FALSE;
+            continue;
+        }
+
+        /* remember this certificate */
+        memcpy(&seenHashes[seenSize], hash, XMLSEC_MSCRYPTO_X509_CERT_HASH_SIZE);
+        ++seenSize;
 
         /* check certificate validity and revocation */
         if (!xmlSecMSCryptoVerifyCertTime(currentCert, pfTime)) {
@@ -638,6 +712,8 @@ xmlSecMSCryptoX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs,
         /* if cert is the issuer of any other cert in the list, then it is
           * to be skipped except a case of a self-signed cert*/
         do {
+            /* CertFindCertificateInStore automatically frees the previous certificate context (see
+             * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certfindcertificateinstore) */
             nextCert = CertFindCertificateInStore(certs,
                     X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
                     0,
@@ -654,8 +730,8 @@ xmlSecMSCryptoX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs,
         }
 
         if(selected == 1) {
-        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) != 0
-               || xmlSecMSCryptoX509StoreConstructCertsChain(store, cert, certs, keyInfoCtx)) {
+            if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) != 0
+                    || xmlSecMSCryptoX509StoreConstructCertsChain(store, cert, certs, keyInfoCtx)) {
                 return(cert);
             }
         }
@@ -694,10 +770,8 @@ xmlSecMSCryptoX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCe
         return(-1);
     }
 
-    /* TODO: The context to be added here is not duplicated first,
-    * hopefully this will not lead to errors when closing the store
-    * and freeing the mem for all the context in the store.
-    */
+    /* CertAddCertificateContextToStore copies the certificate into the store,
+     * so the input context can be freed after a successful add. */
     xmlSecAssert2(certStore != NULL, -1);
     if (!CertAddCertificateContextToStore(certStore, pCert, CERT_STORE_ADD_ALWAYS, NULL)) {
         xmlSecMSCryptoError("CertAddCertificateContextToStore",
@@ -958,7 +1032,7 @@ xmlSecMSCryptoCertStrToName(DWORD dwCertEncodingType, LPCTSTR pszX500, DWORD dwS
         xmlSecMallocError(sizeof(TCHAR) * ((*len) + 1), NULL);
         return(NULL);
     }
-    memset(str, 0, (*len) + 1);
+    memset(str, 0, sizeof(TCHAR) * ((*len) + 1));
 
     if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType,
                         NULL, str, len, NULL)) {
@@ -1089,7 +1163,7 @@ xmlSecMSCryptoX509FindCertByIssuer(HCERTSTORE store, const LPTSTR wcIssuer,
 
     PCCERT_CONTEXT res = NULL;
     xmlSecSize size;
-    CERT_INFO certInfo;
+    CERT_INFO certInfo = {0};
     BYTE* bdata;
     DWORD len;
 
@@ -1207,6 +1281,8 @@ xmlSecMSCryptoX509GetCertName(const xmlChar * name) {
         return(NULL);
     }
     while( (p = (xmlChar*)xmlStrstr(name2, BAD_CAST "emailAddress=")) != NULL) {
+        /* replace the 13-char "emailAddress=" with a 13-char dummy so the DN length is
+         * preserved; MSCrypto does not support the emailAddress attribute. */
         memcpy(p, "           E=", 13);
     }
 

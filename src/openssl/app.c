@@ -180,15 +180,20 @@ error:
  */
 int
 xmlSecOpenSSLAppShutdown(void) {
+    fprintf(stderr, "[shutdown-debug] xmlSecOpenSSLAppShutdown: enter\n");
     /* debug only feature, should not be used in production, on windows OpenSSL is not happy about FILE* */
 #if !defined(_MSC_VER)
     if(xmlSecErrorsPrintCryptoLibraryLogOnExitIsEnabled() == 1) {
+        fprintf(stderr, "[shutdown-debug] xmlSecOpenSSLAppShutdown: before ERR_print_errors_fp\n");
         ERR_print_errors_fp(stderr);
+        fprintf(stderr, "[shutdown-debug] xmlSecOpenSSLAppShutdown: after ERR_print_errors_fp\n");
     }
 #endif /* _MSC_VER */
 
     /* OpenSSL 1.1.0+ does not require explicit cleanup but this fixes valgrind errors */
+    fprintf(stderr, "[shutdown-debug] xmlSecOpenSSLAppShutdown: before OPENSSL_cleanup\n");
     OPENSSL_cleanup();
+    fprintf(stderr, "[shutdown-debug] xmlSecOpenSSLAppShutdown: after OPENSSL_cleanup\n");
 
     /* done */
     return(0);

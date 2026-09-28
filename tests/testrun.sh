@@ -119,7 +119,11 @@ if [ \$res -gt 128 ]; then
                     Darwin)
                         if command -v lldb >/dev/null 2>&1; then
                             echo "--- re-running the crashed command under lldb to get a backtrace"
-                            lldb -b -o run -o "thread backtrace all" -- "\$XMLSEC_APP_DEBUG" "\$@" 2>&1
+                            # If the PC lands in an unmapped page the backtrace cannot be unwound,
+                            # so also dump the registers (x30 = link register = return address of the
+                            # caller that made the bad jump, x29 = frame pointer) and the image/memory
+                            # maps (to see which dylib was unloaded / where the faulting address was).
+                            lldb -b -o run -o "thread backtrace all" -o "register read" -o "image list -wide" -o "memory map" -- "\$XMLSEC_APP_DEBUG" "\$@" 2>&1
                         else
                             echo "--- lldb not found; look for a crash report in ~/Library/Logs/DiagnosticReports"
                         fi

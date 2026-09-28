@@ -1356,6 +1356,14 @@ static _CrtMemState g_memStateAfterInit;
 static int g_memStateAfterInitSet = 0;
 #endif /* defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC) */
 
+/* Temporary debug helper: prints a marker from an atexit handler so we can tell
+ * whether the process reached the exit phase (atexit handlers / stdio flush)
+ * or crashed earlier in the shutdown path. Remove once the crash is diagnosed. */
+static void
+xmlSecAppAtexitDebugMarker(void) {
+    fprintf(stderr, "[shutdown-debug] atexit: handler ran (process reached exit phase)\n");
+}
+
 #if defined(XMLSEC_WINDOWS) && defined(UNICODE)
 int wmain(int argc, wchar_t *argv[]) {
 #else /* defined(XMLSEC_WINDOWS) && defined(UNICODE) */
@@ -1514,6 +1522,10 @@ done:
         fprintf(stderr, "No memory leaks detected\n");
     }
 #endif /*  defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC) */
+
+    /* Temporary debug: register an atexit marker to detect exit-phase crashes.
+     * Remove once the crash is diagnosed. */
+    (void)atexit(xmlSecAppAtexitDebugMarker);
 
     return(res);
 }
@@ -1732,11 +1744,16 @@ xmlSecAppExecute(xmlSecAppCommand command, const char** utf8_argv, int argc) {
     res = 0;
 
 done:
+    fprintf(stderr, "[shutdown-debug] xmlSecAppExecute: entering done, res=%d\n", res);
     if(g_keysManager != NULL) {
+        fprintf(stderr, "[shutdown-debug] xmlSecAppExecute: before xmlSecKeysMngrDestroy\n");
         xmlSecKeysMngrDestroy(g_keysManager);
         g_keysManager = NULL;
+        fprintf(stderr, "[shutdown-debug] xmlSecAppExecute: after xmlSecKeysMngrDestroy\n");
     }
+    fprintf(stderr, "[shutdown-debug] xmlSecAppExecute: before xmlSecAppShutdown\n");
     xmlSecAppShutdown();
+    fprintf(stderr, "[shutdown-debug] xmlSecAppExecute: after xmlSecAppShutdown\n");
     return(res);
 }
 
@@ -3168,23 +3185,30 @@ xmlSecAppShutdown(void) {
     if(initialized == 0) {
         return;
     }
+    fprintf(stderr, "[shutdown-debug] xmlSecAppShutdown: enter\n");
 
     /* Shutdown Crypto */
+    fprintf(stderr, "[shutdown-debug] xmlSecAppShutdown: before xmlSecAppCryptoShutdown\n");
     if(xmlSecAppCryptoShutdown() < 0) {
         fprintf(stderr, "Error: xmlsec crypto shutdown failed.\n");
     }
+    fprintf(stderr, "[shutdown-debug] xmlSecAppShutdown: after xmlSecAppCryptoShutdown\n");
 
     /* Shutdown xmlsec */
+    fprintf(stderr, "[shutdown-debug] xmlSecAppShutdown: before xmlSecShutdown\n");
     if(xmlSecShutdown() < 0) {
         fprintf(stderr, "Error: xmlsec shutdown failed.\n");
     }
+    fprintf(stderr, "[shutdown-debug] xmlSecAppShutdown: after xmlSecShutdown\n");
 
     /* shutdown LibXSLT / LibXML2 */
+    fprintf(stderr, "[shutdown-debug] xmlSecAppShutdown: before xslt/xml cleanup\n");
 #ifndef XMLSEC_NO_XSLT
     xsltFreeSecurityPrefs(xsltSecPrefs);
     xsltCleanupGlobals();
 #endif /* XMLSEC_NO_XSLT */
     xmlCleanupParser();
+    fprintf(stderr, "[shutdown-debug] xmlSecAppShutdown: done\n");
 }
 
 static xmlSecAppXmlDataPtr

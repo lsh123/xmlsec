@@ -7,7 +7,7 @@
  */
 /**
  * @addtogroup xmlsec_mscrypto_crypto
- * @brief DES Key Transport transforms implementation for MSCrypto.
+ * @brief DES Key Wrap transforms implementation for MSCrypto.
  */
 #ifndef XMLSEC_NO_DES
 #include "globals.h"
@@ -125,7 +125,7 @@ static xmlSecTransformKlass xmlSecMSCryptoKWDes3Klass = {
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecMSCryptoKWDes3SetKeyReq,              /* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecMSCryptoKWDes3SetKey,                 /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */

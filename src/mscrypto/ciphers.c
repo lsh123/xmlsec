@@ -199,7 +199,9 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
             return(-1);
         }
     } else {
-        if (!CryptDecrypt(ctx->cryptKey, 0, FALSE, 0, outBuf, &dwCLen)) {
+        /* inSize can be 0 when the input holds exactly one block: it is
+         * kept for the padding check in CtxFinal, so skip the call */
+        if ((inSize > 0) && !CryptDecrypt(ctx->cryptKey, 0, FALSE, 0, outBuf, &dwCLen)) {
             xmlSecMSCryptoError("CryptDecrypt", cipherName);
             return(-1);
         }
@@ -303,7 +305,7 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     if(encrypt) {
         DWORD dwBufLen;
 
-        /* Padding is handled manually above; pass NULL as pszDataDesc and 0 as dwFlags to CryptEncrypt. */
+        /* Padding is handled manually above; pass fFinal=FALSE and dwFlags=0 so the provider does not add its own padding. */
         XMLSEC_SAFE_CAST_SIZE_TO_ULONG((inSize + blockSize), dwBufLen, return(-1), cipherName);
         if(!CryptEncrypt(ctx->cryptKey, 0, FALSE, 0, outBuf, &dwCLen, dwBufLen)) {
             xmlSecMSCryptoError("CryptEncrypt", cipherName);
@@ -775,8 +777,8 @@ xmlSecMSCryptoTransformAes256CbcGetKlass(void) {
 #ifndef XMLSEC_NO_DES
 static xmlSecTransformKlass xmlSecMSCryptoDes3CbcKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),       /* size_t klassSize */
-    xmlSecMSCryptoBlockCipherSize,      /* size_t objSize */
+    sizeof(xmlSecTransformKlass),       /* xmlSecSize klassSize */
+    xmlSecMSCryptoBlockCipherSize,      /* xmlSecSize objSize */
 
     xmlSecNameDes3Cbc,                  /* const xmlChar* name; */
     xmlSecHrefDes3Cbc,                  /* const xmlChar* href; */

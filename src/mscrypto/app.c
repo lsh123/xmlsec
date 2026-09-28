@@ -840,26 +840,25 @@ xmlSecMSCryptoAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte*
  * @return 0 on success or a negative value if an error occurs.
  */
 int
-xmlSecMSCryptoAppDefaultKeysMngrAdoptKeyStore(xmlSecKeysMngrPtr mngr, HCERTSTORE keyStore)
-{
-        xmlSecKeyDataStorePtr x509Store ;
+xmlSecMSCryptoAppDefaultKeysMngrAdoptKeyStore(xmlSecKeysMngrPtr mngr, HCERTSTORE keyStore) {
+    xmlSecKeyDataStorePtr x509Store;
 
-        xmlSecAssert2( mngr != NULL, -1 ) ;
-        xmlSecAssert2( keyStore != NULL, -1 ) ;
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(keyStore != NULL, -1);
 
-    x509Store = xmlSecKeysMngrGetDataStore( mngr, xmlSecMSCryptoX509StoreId) ;
-        if( x509Store == NULL ) {
-            xmlSecInternalError("xmlSecKeysMngrGetDataStore(xmlSecMSCryptoX509StoreId)", NULL);
-            return(-1) ;
-        }
+    x509Store = xmlSecKeysMngrGetDataStore(mngr, xmlSecMSCryptoX509StoreId);
+    if(x509Store == NULL) {
+        xmlSecInternalError("xmlSecKeysMngrGetDataStore(xmlSecMSCryptoX509StoreId)", NULL);
+        return(-1);
+    }
 
-        if( xmlSecMSCryptoX509StoreAdoptKeyStore( x509Store, keyStore ) < 0 ) {
-            xmlSecInternalError("xmlSecMSCryptoX509StoreAdoptKeyStore",
-                                xmlSecKeyDataStoreGetName(x509Store));
-            return(-1) ;
-        }
+    if(xmlSecMSCryptoX509StoreAdoptKeyStore(x509Store, keyStore) < 0) {
+        xmlSecInternalError("xmlSecMSCryptoX509StoreAdoptKeyStore",
+                            xmlSecKeyDataStoreGetName(x509Store));
+        return(-1);
+    }
 
-        return (0) ;
+    return(0);
 }
 
 /**
@@ -871,26 +870,25 @@ xmlSecMSCryptoAppDefaultKeysMngrAdoptKeyStore(xmlSecKeysMngrPtr mngr, HCERTSTORE
  * @return 0 on success or a negative value if an error occurs.
  */
 int
-xmlSecMSCryptoAppDefaultKeysMngrAdoptTrustedStore(xmlSecKeysMngrPtr mngr, HCERTSTORE trustedStore)
-{
-        xmlSecKeyDataStorePtr x509Store ;
+xmlSecMSCryptoAppDefaultKeysMngrAdoptTrustedStore(xmlSecKeysMngrPtr mngr, HCERTSTORE trustedStore) {
+    xmlSecKeyDataStorePtr x509Store;
 
-        xmlSecAssert2( mngr != NULL, -1 ) ;
-        xmlSecAssert2( trustedStore != NULL, -1 ) ;
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(trustedStore != NULL, -1);
 
-    x509Store = xmlSecKeysMngrGetDataStore( mngr, xmlSecMSCryptoX509StoreId ) ;
-        if( x509Store == NULL ) {
-            xmlSecInternalError("xmlSecKeysMngrGetDataStore", NULL);
-            return(-1) ;
-        }
+    x509Store = xmlSecKeysMngrGetDataStore(mngr, xmlSecMSCryptoX509StoreId);
+    if(x509Store == NULL) {
+        xmlSecInternalError("xmlSecKeysMngrGetDataStore", NULL);
+        return(-1);
+    }
 
-        if( xmlSecMSCryptoX509StoreAdoptTrustedStore( x509Store, trustedStore ) < 0 ) {
-            xmlSecInternalError("xmlSecMSCryptoX509StoreAdoptTrustedStore",
-                                xmlSecKeyDataStoreGetName(x509Store));
-            return(-1) ;
-        }
+    if(xmlSecMSCryptoX509StoreAdoptTrustedStore(x509Store, trustedStore) < 0) {
+        xmlSecInternalError("xmlSecMSCryptoX509StoreAdoptTrustedStore",
+                            xmlSecKeyDataStoreGetName(x509Store));
+        return(-1);
+    }
 
-        return(0);
+    return(0);
 }
 
 /**
@@ -902,14 +900,13 @@ xmlSecMSCryptoAppDefaultKeysMngrAdoptTrustedStore(xmlSecKeysMngrPtr mngr, HCERTS
  * @return 0 on success or a negative value if an error occurs.
  */
 int
-xmlSecMSCryptoAppDefaultKeysMngrAdoptUntrustedStore(xmlSecKeysMngrPtr mngr, HCERTSTORE untrustedStore)
-{
-        xmlSecKeyDataStorePtr x509Store ;
+xmlSecMSCryptoAppDefaultKeysMngrAdoptUntrustedStore(xmlSecKeysMngrPtr mngr, HCERTSTORE untrustedStore) {
+    xmlSecKeyDataStorePtr x509Store;
 
-        xmlSecAssert2( mngr != NULL, -1 ) ;
-        xmlSecAssert2( untrustedStore != NULL, -1 ) ;
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(untrustedStore != NULL, -1);
 
-    x509Store = xmlSecKeysMngrGetDataStore( mngr, xmlSecMSCryptoX509StoreId);
+    x509Store = xmlSecKeysMngrGetDataStore(mngr, xmlSecMSCryptoX509StoreId);
     if(x509Store == NULL) {
         xmlSecInternalError("xmlSecKeysMngrGetDataStore", NULL);
         return(-1);
@@ -921,7 +918,7 @@ xmlSecMSCryptoAppDefaultKeysMngrAdoptUntrustedStore(xmlSecKeysMngrPtr mngr, HCER
         return(-1);
     }
 
-    return(0) ;
+    return(0);
 }
 
 #endif /* XMLSEC_NO_X509 */
@@ -1007,9 +1004,6 @@ xmlSecMSCryptoAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr ke
  * function:
  * - Checks that key certificate is present
  * - Checks that key certificate is valid
- *
- * Adds @p key to the keys manager @p mngr created with #xmlSecMSCryptoAppDefaultKeysMngrInit
- * function.
  *
  * @param mngr the pointer to keys manager.
  * @param key the pointer to key.

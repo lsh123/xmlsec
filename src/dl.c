@@ -253,13 +253,29 @@ xmlSecCryptoDLLibraryDestroy(xmlSecCryptoDLLibraryPtr lib) {
         xmlFree(lib->getFunctionsName);
     }
 
-    /* Intentionally do NOT close the library handle (lt_dlclose / FreeLibrary)
-     * here. Closing the dynamically loaded crypto backend cascades the unload
-     * to the underlying crypto library (e.g. libcrypto) on macOS when only the
-     * backend references it. That leaves the crypto library's atexit handlers
-     * (e.g. OpenSSL's OPENSSL_cleanup) with dangling pointers and crashes the
-     * process at exit. The OS reclaims the library at exit anyway, so leaving
-     * it loaded is safe. */
+#ifdef XMLSEC_DL_LIBLTDL
+    if(lib->handle != NULL) {
+        int ret;
+
+        ret = lt_dlclose(lib->handle);
+        if(ret != 0) {
+            xmlSecIOError("lt_dlclose", NULL, NULL);
+            /* ignore error */
+        }
+    }
+#endif /* XMLSEC_DL_LIBLTDL */
+
+#if defined(XMLSEC_WINDOWS) && defined(XMLSEC_DL_WIN32)
+    if(lib->handle != NULL) {
+        BOOL res;
+
+        res = FreeLibrary(lib->handle);
+        if(!res) {
+            xmlSecIOError("FreeLibrary", NULL, NULL);
+            /* ignore error */
+        }
+    }
+#endif /* defined(XMLSEC_WINDOWS) && defined(XMLSEC_DL_WIN32) */
 
     xmlFree(lib);
 }
@@ -412,6 +428,8 @@ xmlSecCryptoDLInit(void) {
  */
 int
 xmlSecCryptoDLShutdown(void) {
+    int ret;
+
     if(!xmlSecPtrListIsValid(&gXmlSecCryptoDLLibraries)) {
         /* the dynamic loading engine was not initialized */
         gXmlSecCryptoDLFunctions = NULL;
@@ -421,13 +439,15 @@ xmlSecCryptoDLShutdown(void) {
     xmlSecPtrListFinalize(&gXmlSecCryptoDLLibraries);
     gXmlSecCryptoDLFunctions = NULL;
 
-    /* Intentionally do NOT call lt_dlexit() here. lt_dlexit() dlclose()s the
-     * dynamically loaded crypto backend, and on macOS dyld cascades the unload
-     * to the underlying crypto library (e.g. libcrypto) when only the backend
-     * references it. That leaves the crypto library's atexit handlers (e.g.
-     * OpenSSL's OPENSSL_cleanup) with dangling pointers and crashes the process
-     * at exit. The OS reclaims the library at exit anyway, so leaving it loaded
-     * is safe. */
+#ifdef XMLSEC_DL_LIBLTDL
+    ret = lt_dlexit();
+    if(ret != 0) {
+        xmlSecIOError("lt_dlexit", NULL, NULL);
+        /* ignore error */
+    }
+#else  /* XMLSEC_DL_LIBLTDL */
+    XMLSEC_UNREFERENCED(ret);
+#endif /* XMLSEC_DL_LIBLTDL */
 
     return(0);
 }

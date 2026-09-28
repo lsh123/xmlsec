@@ -50,10 +50,11 @@ A typical signature verification process includes the following steps:
  * @details Verifies XML signature in #xml_file using public key from #key_file.
  * @param xml_file the signed XML file name.
  * @param key_file the PEM public key file name.
+ * @param key_name the name to assign to the key (used to match the signature KeyName).
  * @return 0 on success or a negative value if an error occurs.
  */
 int
-verify_file(const char* xml_file, const char* key_file) {
+verify_file(const char* xml_file, const char* key_file, const char* key_name) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
     xmlSecDSigCtxPtr dsigCtx = NULL;
@@ -61,6 +62,7 @@ verify_file(const char* xml_file, const char* key_file) {
 
     assert(xml_file);
     assert(key_file);
+    assert(key_name);
 
     /* load file */
     doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT);
@@ -90,8 +92,8 @@ verify_file(const char* xml_file, const char* key_file) {
         goto done;
     }
 
-    /* set the key name to the file name; this is only an example */
-    if(xmlSecKeySetName(dsigCtx->signKey, BAD_CAST key_file) < 0) {
+    /* set the key name */
+    if(xmlSecKeySetName(dsigCtx->signKey, BAD_CAST key_name) < 0) {
         fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
         goto done;
     }

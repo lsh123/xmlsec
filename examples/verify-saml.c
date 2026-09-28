@@ -13,7 +13,7 @@
  * as required by the SAML specification.
  *
  * This example was developed and tested with OpenSSL crypto library. The
- * certificates management policies for another crypto library may break it.
+ * certificate management policies for another crypto library may break it.
  *
  * Usage:
  *
@@ -236,7 +236,8 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
     assert(mngr);
     assert(xml_file);
 
-    /* load file */
+    /* load file: LIBXML_VERSION encodes major*10000+minor*100+micro,
+     * so 21300 is libxml2 2.13.0, where XML_PARSE_NO_XXE was introduced. */
 #if LIBXML_VERSION >= 21300
     doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT | XML_PARSE_NO_XXE);
 #else /* LIBXML_VERSION >= 21300 */

@@ -7,19 +7,22 @@
  */
 /**
  * @brief XML Security Library example: Verifying a file using a keys manager.
- * @details Verifies a file using a keys manager.
+ * @details Verifies a file using a keys manager and public keys from PEM files.
  *
  * Usage:
  *
  * \code{.sh}
- *      verify2 <signed-file> <public-pem-key1> [<public-pem-key2> [...]]
+ *      verify2 <signed-file> <public-pem-key1> <key1-name> [<public-pem-key2> <key2-name> ...]
  * \endcode
+ *
+ * Each public key file must be followed by the name to assign to that key
+ * (used to match the signature KeyName).
  *
  * Example:
  *
  * \code{.sh}
- *      ./verify2 sign1-res.xml rsapub.pem
- *      ./verify2 sign2-res.xml rsapub.pem
+ *      ./verify2 sign1-res.xml rsapub.pem test-key-name
+ *      ./verify2 sign2-res.xml rsapub.pem test-key-name
  * \endcode
  */
 #include <stdlib.h>
@@ -47,6 +50,7 @@ int verify_signature_results(xmlSecDSigCtxPtr dsigCtx);
 int
 main(int argc, char **argv) {
     int xmlsec_initialized = 0;
+    int key_files_size;
 #ifndef XMLSEC_NO_XSLT
     xsltSecurityPrefsPtr xsltSecPrefs = NULL;
 #endif /* XMLSEC_NO_XSLT */
@@ -56,11 +60,14 @@ main(int argc, char **argv) {
 
     assert(argv);
 
-    if(argc < 3) {
+    if((argc < 4) || (((argc - 2) % 2) != 0)) {
         fprintf(stderr, "Error: wrong number of arguments.\n");
-        fprintf(stderr, "Usage: %s <xml-file> <key-file1> [<key-file2> [...]]\n", argv[0]);
+        fprintf(stderr, "Usage: %s <xml-file> <key-file1> <key1-name> [<key-file2> <key2-name> ...]\n", argv[0]);
         return(1);
     }
+
+    /* the arguments after the xml file are pairs of <key-file> <key-name> */
+    key_files_size = (argc - 2) / 2;
 
     /* Init LibXML2 */
     xmlInitParser();
@@ -118,7 +125,7 @@ main(int argc, char **argv) {
     xmlsec_initialized = 1;
 
     /* create keys manager and load keys */
-    mngr = load_keys(&(argv[2]), argc - 2);
+    mngr = load_keys(&(argv[2]), key_files_size);
     if(mngr == NULL) {
         goto done;
     }
@@ -155,10 +162,11 @@ done:
 /**
  * @brief Creates a keys manager and loads PEM keys from files.
  * @details Creates a simple keys manager and loads the PEM keys from #files into it.
- * The caller is responsible for destroying the returned keys manager using
+ * The #files array contains pairs of <key-file> <key-name>; the caller is
+ * responsible for destroying the returned keys manager using
  * #xmlSecKeysMngrDestroy.
- * @param files the list of filenames.
- * @param files_size the number of filenames in #files.
+ * @param files the list of <key-file> <key-name> pairs.
+ * @param files_size the number of <key-file> <key-name> pairs in #files.
  * @return the pointer to newly created keys manager or NULL if an error
  * occurs.
  */
@@ -187,19 +195,22 @@ load_keys(char** files, int files_size) {
     }
 
     for(i = 0; i < files_size; ++i) {
-        assert(files[i]);
+        const char* file = files[i * 2];
+        const char* name = files[i * 2 + 1];
+        assert(file);
+        assert(name);
 
         /* load key */
-        key = xmlSecCryptoAppKeyLoadEx(files[i], xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
+        key = xmlSecCryptoAppKeyLoadEx(file, xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
         if(key == NULL) {
-            fprintf(stderr, "Error: failed to load pem key from \"%s\"\n", files[i]);
+            fprintf(stderr, "Error: failed to load pem key from \"%s\"\n", file);
             xmlSecKeysMngrDestroy(mngr);
             return(NULL);
         }
 
-        /* set the key name to the file name; this is only an example */
-        if(xmlSecKeySetName(key, BAD_CAST files[i]) < 0) {
-            fprintf(stderr, "Error: failed to set key name for key from \"%s\"\n", files[i]);
+        /* set the key name */
+        if(xmlSecKeySetName(key, BAD_CAST name) < 0) {
+            fprintf(stderr, "Error: failed to set key name for key from \"%s\"\n", file);
             xmlSecKeyDestroy(key);
             xmlSecKeysMngrDestroy(mngr);
             return(NULL);
@@ -209,7 +220,7 @@ load_keys(char** files, int files_size) {
          * is responsible for destroying it
          */
         if(xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key) < 0) {
-            fprintf(stderr, "Error: failed to add key from \"%s\" to keys manager\n", files[i]);
+            fprintf(stderr, "Error: failed to add key from \"%s\" to keys manager\n", file);
             xmlSecKeyDestroy(key);
             xmlSecKeysMngrDestroy(mngr);
             return(NULL);

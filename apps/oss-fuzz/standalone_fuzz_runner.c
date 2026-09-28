@@ -18,16 +18,26 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+#ifndef _MSC_VER
 #include <sys/types.h>
+#endif /* _MSC_VER */
 
 #if defined(_WIN32) && defined(UNICODE)
 #include <wchar.h>
+/* Prototype for the Windows Unicode entry point; satisfies -Wmissing-prototypes
+ * on MinGW, which (unlike MSVC) does not treat wmain as a built-in entry point. */
+int wmain(int argc, wchar_t* argv[]);
 #endif /* defined(_WIN32) && defined(UNICODE) */
 
 /* Declared by the fuzzer harness (xmlsec_target.c / xmlsec_dsig_verify_target.c /
-   xmlsec_keyload_target.c / xmlsec_keyinfo_target.c). */
+   xmlsec_keyload_target.c / xmlsec_keyinfo_target.c / xmlsec_enc_target.c). */
 extern int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size);
 
+/* The UNICODE branch uses fwprintf() with the %hs conversion (a Microsoft
+ * extension). That path is only reached in the _WIN32 && UNICODE configuration;
+ * the primary Windows target is MSVC, which supports %hs. The MinGW+UNICODE
+ * combination is a secondary target and this only affects the formatting of
+ * non-critical error messages, so the portability risk is accepted. */
 #if defined(_WIN32) && defined(UNICODE)
 #define FUZZER_ERROR(msg, param) \
     fwprintf(stderr, L"standalone_fuzz_runner: %hs '%ls'\n", (msg), (param))
@@ -35,10 +45,6 @@ extern int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size);
 #define FUZZER_ERROR(msg, param) \
     fprintf(stderr, "standalone_fuzz_runner: %s '%s'\n", (msg), (param))
 #endif /* defined(_WIN32) && defined(UNICODE) */
-
-#if defined(_WIN32) && defined(UNICODE) && defined(__MINGW32__)
-int wmain(int argc, wchar_t* argv[]);
-#endif /* defined(_WIN32) && defined(UNICODE) && defined(__MINGW32__) */
 
 #if defined(_MSC_VER) && defined(_WIN32)
 typedef __int64 fuzzer_file_offset_t;
@@ -58,7 +64,7 @@ static void fuzzer_close_file(FILE* f) {
 
 
 #if defined(_WIN32) && defined(UNICODE)
-int wmain(int argc, wchar_t *argv[]) {
+int wmain(int argc, wchar_t* argv[]) {
 #else /* defined(_WIN32) && defined(UNICODE) */
 int main(int argc, const char **argv) {
 #endif /* defined(_WIN32) && defined(UNICODE) */

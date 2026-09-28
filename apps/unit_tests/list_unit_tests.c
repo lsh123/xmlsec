@@ -406,6 +406,7 @@ test_ptr_list_set(void) {
     xmlSecListTestItem* item1 = NULL;
     xmlSecListTestItem* item2 = NULL;
     xmlSecListTestItem* item3 = NULL;
+    xmlSecListTestItem* remaining = NULL;
 
     memset(&list, 0, sizeof(list));
 
@@ -445,8 +446,8 @@ test_ptr_list_set(void) {
         testLog("Error: xmlSecPtrListSet destroyed %d items instead of 1\n", g_listItemDestroyCount);
         goto done;
     }
-    item3 = (xmlSecListTestItem*)xmlSecPtrListGetItem(&list, 1);
-    if((item3 == NULL) || (item3->value != 3)) {
+    remaining = (xmlSecListTestItem*)xmlSecPtrListGetItem(&list, 1);
+    if((remaining == NULL) || (remaining->value != 3)) {
         testLog("Error: xmlSecPtrListSet did not replace the target item\n");
         goto done;
     }

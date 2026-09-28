@@ -256,6 +256,10 @@ void testLog(const char* fmt, ...) {
     if (g_testLogBufferLen + (size_t)len + 1 > g_testLogBufferCap) {
         newCap = g_testLogBufferLen + (size_t)len + 1 + 4096;
         newBuf = (char*)realloc(g_testLogBuffer, newCap);
+        /* On realloc failure the original buffer remains valid (realloc only
+         * frees the old block on success), so returning is safe; the message is
+         * dropped only under OOM, and falling back to fprintf() would bypass the
+         * test-log buffer used for pass/fail verification. */
         if (newBuf == NULL) return;
         g_testLogBuffer = newBuf;
         g_testLogBufferCap = newCap;

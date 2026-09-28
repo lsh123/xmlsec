@@ -6,10 +6,10 @@
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * @brief XML Security Library example: Verifying a file signed with X509 certificate
- * @details Verifies a file signed with X509 certificate.
+ * @brief XML Security Library example: Verifying a file signed with an X509 certificate
+ * @details Verifies a file signed with an X509 certificate.
  *
- * This example was developed and tested with OpenSSL crypto library. The
+ * This example was developed and tested with the OpenSSL crypto library. The
  * certificates management policies for another crypto library may break it.
  *
  * Usage:
@@ -72,6 +72,10 @@ main(int argc, char **argv) {
 #ifndef XMLSEC_NO_XSLT
     /* disable all XSLT file and network access */
     xsltSecPrefs = xsltNewSecurityPrefs();
+    if(xsltSecPrefs == NULL) {
+        fprintf(stderr, "Error: failed to create the xslt security prefs\n");
+        goto done;
+    }
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid);
@@ -192,7 +196,7 @@ load_trusted_certs(char** files, int files_size) {
 
         /* load trusted cert */
         if(xmlSecCryptoAppKeysMngrCertLoad(mngr, files[ii], xmlSecKeyDataFormatPem, xmlSecKeyDataTypeTrusted) < 0) {
-            fprintf(stderr,"Error: failed to load pem certificate from \"%s\"\n", files[ii]);
+            fprintf(stderr, "Error: failed to load pem certificate from \"%s\"\n", files[ii]);
             xmlSecKeysMngrDestroy(mngr);
             return(NULL);
         }
@@ -238,13 +242,13 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
     /* create signature context */
     dsigCtx = xmlSecDSigCtxCreate(mngr);
     if(dsigCtx == NULL) {
-        fprintf(stderr,"Error: failed to create signature context\n");
+        fprintf(stderr, "Error: failed to create signature context\n");
         goto done;
     }
 
     /* Verify signature */
     if(xmlSecDSigCtxVerify(dsigCtx, node) < 0) {
-        fprintf(stderr,"Error: signature verification failed\n");
+        fprintf(stderr, "Error: signature verification failed\n");
         goto done;
     }
 
@@ -287,33 +291,33 @@ verify_signature_results(xmlSecDSigCtxPtr dsigCtx) {
 
     /* check that signature verification succeeded */
     if(dsigCtx->status != xmlSecDSigStatusSucceeded) {
-        fprintf(stderr,"Error: Signature verification result is not SUCCESS\n");
+        fprintf(stderr, "Error: Signature verification result is not SUCCESS\n");
         return(-1);
     }
 
     /* in this example we expect exactly ONE reference with URI="" and
     *  exactly ONE enveloped signature transform (i.e. the whole document is signed)*/
     if(xmlSecPtrListGetSize(&(dsigCtx->signedInfoReferences)) != 1) {
-        fprintf(stderr,"Error: Exactly one Reference is expected\n");
+        fprintf(stderr, "Error: Exactly one Reference is expected\n");
         return(-1);
     }
     dsigRefCtx = (xmlSecDSigReferenceCtxPtr)xmlSecPtrListGetItem(&(dsigCtx->signedInfoReferences), 0);
     if((dsigRefCtx == NULL) || (dsigRefCtx->status != xmlSecDSigStatusSucceeded)) {
-        fprintf(stderr,"Error: Reference verification result is not SUCCESS\n");
+        fprintf(stderr, "Error: Reference verification result is not SUCCESS\n");
         return(-1);
     }
 
     /* check URI: a NULL URI (Reference without a URI attribute) means the whole document,
      * which xmlsec treats the same as an empty URI */
     if((dsigRefCtx->uri != NULL) && (!xmlStrEqual(dsigRefCtx->uri, BAD_CAST ""))) {
-        fprintf(stderr,"Error: Reference URI value doesn't match expected one\n");
+        fprintf(stderr, "Error: Reference URI value doesn't match expected one\n");
         return(-1);
     }
 
     /* check transforms: we expect only one "enveloped signature" transform */
     transform = dsigRefCtx->transformCtx.first;
     if((transform == NULL) || (!xmlStrEqual(transform->id->name, xmlSecNameEnveloped))) {
-        fprintf(stderr,"Error: First Transform name '%s' doesn't match expected '%s'\n", (transform != NULL ? transform->id->name : BAD_CAST "NULL"), xmlSecNameEnveloped);
+        fprintf(stderr, "Error: First Transform name '%s' doesn't match expected '%s'\n", (transform != NULL ? transform->id->name : BAD_CAST "NULL"), xmlSecNameEnveloped);
         return(-1);
     }
 
@@ -321,7 +325,7 @@ verify_signature_results(xmlSecDSigCtxPtr dsigCtx) {
     transform = transform->next;
     while(transform != NULL) {
         if((transform->flags & XMLSEC_TRANSFORM_FLAGS_USER_SPECIFIED) != 0) {
-            fprintf(stderr,"Error: Found unexpected Transform name '%s'\n", transform->id->name);
+            fprintf(stderr, "Error: Found unexpected Transform name '%s'\n", transform->id->name);
             return(-1);
         }
         transform = transform->next;

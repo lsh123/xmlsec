@@ -1807,7 +1807,7 @@ test_xmlSecGetNextElementNode_skips_text(void) {
     }
     root = xmlDocGetRootElement(doc);
 
-    /* build: <Root>sometext<Elem/></Root> */
+    /* build: <Root>some text<Elem/></Root> */
     textNode = xmlNewText(BAD_CAST "some text");
     if(textNode == NULL) {
         testLog("Error: failed to create text node\n");

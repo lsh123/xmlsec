@@ -110,7 +110,7 @@ static int do_init(void) {
         int i;
         for (i = 0; i < G_CERT_NLINES; ++i) {
             size_t len = strlen(g_cert_lines[i]);
-            if (off + len + 1 >= sizeof(pem)) {
+            if (off + len + 1 > sizeof(pem)) {
                 break;
             }
             memcpy(pem + off, g_cert_lines[i], len);

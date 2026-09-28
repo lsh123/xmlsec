@@ -8,7 +8,7 @@
 /**
  * @brief XML Security Library example: Encrypting an XML file with a session key and a dynamically created template.
  * @details Encrypts an XML file using a dynamically created template and a session
- * DES key (encrypted with an RSA key).
+ * Triple DES key (encrypted with an RSA key).
  *
  * Usage:
  *
@@ -77,6 +77,10 @@ main(int argc, char **argv) {
 #ifndef XMLSEC_NO_XSLT
     /* disable all XSLT file and network access */
     xsltSecPrefs = xsltNewSecurityPrefs();
+    if(xsltSecPrefs == NULL) {
+        fprintf(stderr, "Error: failed to create the xslt security prefs\n");
+        goto done;
+    }
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid);
@@ -220,8 +224,8 @@ load_rsa_keys(const char* key_file) {
 }
 
 /**
- * @brief Encrypts an XML file using a session DES key and RSA key transport.
- * @details Encrypts #xml_file using a dynamically created template, a session DES key,
+ * @brief Encrypts an XML file using a session Triple DES key and RSA key transport.
+ * @details Encrypts #xml_file using a dynamically created template, a session Triple DES key,
  * and an RSA key from the keys manager.
  * @param mngr the pointer to keys manager.
  * @param xml_file the XML file name.
@@ -243,7 +247,11 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
     assert(key_name);
 
     /* load XML file */
+#if LIBXML_VERSION >= 21300
+    doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT | XML_PARSE_NO_XXE);
+#else /* LIBXML_VERSION >= 21300 */
     doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT);
+#endif /* LIBXML_VERSION >= 21300 */
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)) {
         fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
         goto done;

@@ -137,7 +137,6 @@ static const char helpCheckTransforms[] =
 #define xmlSecAppCmdLineTopicEncCommon          0x0010
 #define xmlSecAppCmdLineTopicEncEncrypt         0x0020
 #define xmlSecAppCmdLineTopicEncDecrypt         0x0040
-/* #define UNUSED         0x0080 */
 #define xmlSecAppCmdLineTopicKeysMngr           0x1000
 #define xmlSecAppCmdLineTopicX509Certs          0x2000
 #define xmlSecAppCmdLineTopicVersion            0x4000
@@ -273,7 +272,7 @@ static xmlSecAppCmdLineParam genKeyParam = {
     "\n\tgenerate new <keyKlass> key of <keySize> bits size,"
     "\n\tset the key name to <name> and add the result to keys"
     "\n\tmanager (for example, \"--gen:MyKeyName rsa-1024\" generates"
-    "\n\ta new 1024 bits RSA key and sets it's name to \"MyKeyName\")",
+    "\n\ta new 1024 bits RSA key and sets its name to \"MyKeyName\")",
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
     NULL
@@ -392,7 +391,7 @@ static xmlSecAppCmdLineParam pubkeyOpensslStoreParam = {
     "--pubkey-openssl-store",
     NULL,
     "--pubkey-openssl-store[:<name>] <uri>"
-    "\n\tload pubkey key and certs through OpenSSL ossl_store interface (e.g. from HSM)",
+    "\n\tload public key and certs through OpenSSL ossl_store interface (e.g. from HSM)",
     xmlSecAppCmdLineParamTypeStringList,
     xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
     NULL
@@ -563,7 +562,7 @@ static xmlSecAppCmdLineParam enabledRetrievalMethodUrisParam = {
     NULL,
     "--enabled-retrieval-method-uris <list>"
     "\n\tcomma separated list of the following values:"
-    "\n\t\"empty\", \"same-doc\", \"local\",\"remote\" to restrict possible URI"
+    "\n\t\"empty\", \"same-doc\", \"local\", \"remote\" to restrict possible URI"
     "\n\tattribute values for the <dsig:RetrievalMethod> element.",
     xmlSecAppCmdLineParamTypeStringList,
     xmlSecAppCmdLineParamFlagNone,
@@ -576,7 +575,7 @@ static xmlSecAppCmdLineParam enabledKeyInfoReferenceUrisParam = {
     NULL,
     "--enabled-key-info-reference-uris <list>"
     "\n\tcomma separated list of the following values:"
-    "\n\t\"empty\", \"same-doc\", \"local\",\"remote\" to restrict possible URI"
+    "\n\t\"empty\", \"same-doc\", \"local\", \"remote\" to restrict possible URI"
     "\n\tattribute values for the <dsig11:KeyInfoReference> element.",
     xmlSecAppCmdLineParamTypeStringList,
     xmlSecAppCmdLineParamFlagNone,
@@ -645,7 +644,7 @@ static xmlSecAppCmdLineParam outputParam = {
     "-o",
     "--output <filename>"
     "\n\twrite result document to file <filename>; the <filename> can"
-    "\n\tbe a template and include '{inputfile}' which will be repaced"
+    "\n\tbe a template and include '{inputfile}' which will be replaced"
     "\n\twith the input filename",
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagNone,
@@ -843,7 +842,7 @@ static xmlSecAppCmdLineParam enabledRefUrisParam = {
     NULL,
     "--enabled-reference-uris <list>"
     "\n\tcomma separated list of the following values:"
-    "\n\t\"empty\", \"same-doc\", \"local\",\"remote\" to restrict possible URI"
+    "\n\t\"empty\", \"same-doc\", \"local\", \"remote\" to restrict possible URI"
     "\n\tattribute values for the <dsig:Reference> element",
     xmlSecAppCmdLineParamTypeStringList,
     xmlSecAppCmdLineParamFlagNone,
@@ -905,7 +904,7 @@ static xmlSecAppCmdLineParam enabledCipherRefUrisParam = {
     NULL,
     "--enabled-cipher-reference-uris <list>"
     "\n\tcomma separated list of the following values:"
-    "\n\t\"empty\", \"same-doc\", \"local\",\"remote\" to restrict possible URI"
+    "\n\t\"empty\", \"same-doc\", \"local\", \"remote\" to restrict possible URI"
     "\n\tattribute values for the <enc:CipherReference> element",
     xmlSecAppCmdLineParamTypeStringList,
     xmlSecAppCmdLineParamFlagNone,
@@ -1058,7 +1057,7 @@ static xmlSecAppCmdLineParam verificationTimeParam = {
     NULL,
     "--verification-time <time>"
     "\n\tthe local time in \"YYYY-MM-DD HH:MM:SS\" format"
-    "\n\tused certificates verification",
+    "\n\tused for certificates verification",
     xmlSecAppCmdLineParamTypeTime,
     xmlSecAppCmdLineParamFlagNone,
     NULL
@@ -1070,7 +1069,7 @@ static xmlSecAppCmdLineParam verificationGmtTimeParam = {
     NULL,
     "--verification-gmt-time <time>"
     "\n\tthe GMT time in \"YYYY-MM-DD HH:MM:SS\" format"
-    "\n\tused certificates verification",
+    "\n\tused for certificates verification",
     xmlSecAppCmdLineParamTypeGmtTime,
     xmlSecAppCmdLineParamFlagNone,
     NULL
@@ -1081,7 +1080,7 @@ static xmlSecAppCmdLineParam X509SkipTimeChecksParam = {
     "--X509-skip-time-checks",
     NULL,
     "--X509-skip-time-checks"
-    "\n\tskip time checking of X509 certificates and CLRs",
+    "\n\tskip time checking of X509 certificates and CRLs",
     xmlSecAppCmdLineParamTypeFlag,
     xmlSecAppCmdLineParamFlagNone,
     NULL
@@ -1283,10 +1282,10 @@ static void                     xmlSecAppXmlDataDestroy         (xmlSecAppXmlDat
 
 static xmlSecAppCommand         xmlSecAppParseCommand           (const char* cmd,
                                                                  int level,
-                                                                 xmlSecAppCmdLineParamTopic* topics,
+                                                                 xmlSecAppCmdLineTopic* topics,
                                                                  xmlSecAppCommand* subCommand);
 static void                     xmlSecAppPrintHelp              (xmlSecAppCommand command,
-                                                                 xmlSecAppCmdLineParamTopic topics);
+                                                                 xmlSecAppCmdLineTopic topics);
 #define                         xmlSecAppPrintUsage()           xmlSecAppPrintHelp(xmlSecAppCommandUnknown, 0)
 static int                      xmlSecAppInit                   (void);
 static void                     xmlSecAppShutdown               (void);
@@ -1367,7 +1366,7 @@ int main(int argc, const char **argv) {
     int ii;
 #endif /* defined(XMLSEC_WINDOWS) */
     const char** utf8_argv = NULL; /* TODO: this should be xmlChar** but it will break things downstream */
-    xmlSecAppCmdLineParamTopic cmdLineTopics;
+    xmlSecAppCmdLineTopic cmdLineTopics;
     xmlSecAppCommand command, subCommand;
     int pos;
     int res = 1;
@@ -1842,7 +1841,7 @@ xmlSecAppVerifyFile(const char* inputFileName) {
         goto done;
     }
 
-    /* sign */
+    /* verify */
     start_time = clock();
     if(xmlSecDSigCtxVerify(&dsigCtx, data->startNode) < 0) {
         /* caller will print the error */
@@ -3147,7 +3146,7 @@ xmlSecAppInit(void) {
 #if !defined(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING)
     if(xmlSecCryptoDLLoadLibrary(BAD_CAST g_xmlSecCryptoLibrary) < 0) {
         fprintf(stderr, "Error: unable to load xmlsec-%s library. Make sure that you have\n"
-                        "this it installed, check shared libraries path (LD_LIBRARY_PATH)\n"
+                        "it installed, check shared libraries path (LD_LIBRARY_PATH)\n"
                         "environment variable or use \"--crypto\" option to specify different\n"
                         "crypto engine.\n",
                         ((g_xmlSecCryptoLibrary != NULL) ? BAD_CAST g_xmlSecCryptoLibrary : xmlSecGetDefaultCrypto())
@@ -3429,7 +3428,7 @@ xmlSecAppXmlDataDestroy(xmlSecAppXmlDataPtr data) {
 }
 
 static xmlSecAppCommand
-xmlSecAppParseCommand(const char* cmd, int level, xmlSecAppCmdLineParamTopic* cmdLineTopics, xmlSecAppCommand* subCommand) {
+xmlSecAppParseCommand(const char* cmd, int level, xmlSecAppCmdLineTopic* cmdLineTopics, xmlSecAppCommand* subCommand) {
     if(subCommand != NULL) {
         (*subCommand) = xmlSecAppCommandUnknown;
     }
@@ -3553,7 +3552,7 @@ xmlSecAppParseCommand(const char* cmd, int level, xmlSecAppCmdLineParamTopic* cm
 }
 
 static void
-xmlSecAppPrintHelp(xmlSecAppCommand command, xmlSecAppCmdLineParamTopic topics) {
+xmlSecAppPrintHelp(xmlSecAppCommand command, xmlSecAppCmdLineTopic topics) {
     switch(command) {
     case xmlSecAppCommandUnknown:
     fprintf(stderr, "Unknown command\n");
@@ -3740,7 +3739,7 @@ xmlSecAppGetOutputFilename(const char* inputFileName, const char* outputFileName
 #if !defined(_MSC_VER)
     tmp = strcat(res, outputFileNameTmplPointer);
     if(tmp == NULL) {
-        fprintf(stderr, "Error: failed to append  output template suffix\n");
+        fprintf(stderr, "Error: failed to append output template suffix\n");
         goto done;
     }
 #else /* !defined(_MSC_VER) */
@@ -3853,8 +3852,8 @@ xmlSecAppAddIDAttrCallback(xmlNodePtr cur, void* data) {
         return(1);
     }
 
-    /* if nsHref is set then it also should match */
-    if((ctx->nsHref != NULL) && (cur->ns != NULL) && (!xmlStrEqual(ctx->nsHref, cur->ns->href))) {
+    /* if nsHref is set then the node must have exactly that namespace */
+    if((ctx->nsHref != NULL) && ((cur->ns == NULL) || (!xmlStrEqual(ctx->nsHref, cur->ns->href)))) {
         return(1);
     }
 

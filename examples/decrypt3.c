@@ -8,7 +8,7 @@
 /**
  * @brief XML Security Library example: Decrypting an encrypted file using a custom keys manager.
  * @details Decrypts encrypted XML file using a custom files based keys manager.
- * We assume that key's name in <dsig:KeyName/> element is just
+ * We assume that key's name in <xenc:KeyName/> element is just
  * key's file name in the current folder.
  *
  * Usage:
@@ -175,7 +175,7 @@ decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file) {
     assert(mngr);
     assert(enc_file);
 
-    /* load template */
+    /* load encrypted file */
     doc = xmlReadFile(enc_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
         fprintf(stderr, "Error: unable to parse file \"%s\"\n", enc_file);

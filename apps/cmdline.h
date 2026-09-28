@@ -22,7 +22,7 @@ typedef struct _xmlSecAppCmdLineParam           xmlSecAppCmdLineParam,
                                                 *xmlSecAppCmdLineParamPtr;
 typedef struct _xmlSecAppCmdLineValue           xmlSecAppCmdLineValue,
                                                 *xmlSecAppCmdLineValuePtr;
-typedef unsigned int                            xmlSecAppCmdLineParamTopic;
+typedef unsigned int                            xmlSecAppCmdLineTopic;
 
 #define xmlSecAppCmdLineParamFlagNone                   0x0000
 #define xmlSecAppCmdLineParamFlagParamNameValue         0x0001
@@ -40,7 +40,7 @@ typedef enum {
 } xmlSecAppCmdLineParamType;
 
 struct _xmlSecAppCmdLineParam {
-    xmlSecAppCmdLineParamTopic  topics;
+    xmlSecAppCmdLineTopic       topics;
     const char*                 fullName;
     const char*                 shortName;
     const char*                 help;
@@ -57,14 +57,18 @@ int             xmlSecAppCmdLineParamGetInt             (xmlSecAppCmdLineParamPt
 time_t          xmlSecAppCmdLineParamGetTime            (xmlSecAppCmdLineParamPtr param,
                                                          time_t def);
 
+/*
+ * The 'params' argument of the xmlSecAppCmdLineParamsList*() functions below
+ * must be a NULL-terminated array of parameter pointers.
+ */
 int             xmlSecAppCmdLineParamsListParse         (xmlSecAppCmdLineParamPtr* params,
-                                                         xmlSecAppCmdLineParamTopic topics,
-                                                         int argc,
-                                                         const char** argv,
-                                                         int pos);
+                                                          xmlSecAppCmdLineTopic topics,
+                                                          int argc,
+                                                          const char** argv,
+                                                          int pos);
 void            xmlSecAppCmdLineParamsListClean         (xmlSecAppCmdLineParamPtr* params);
 void            xmlSecAppCmdLineParamsListPrint         (xmlSecAppCmdLineParamPtr* params,
-                                                          xmlSecAppCmdLineParamTopic topics,
+                                                           xmlSecAppCmdLineTopic topics,
                                                           FILE* output);
 
 struct _xmlSecAppCmdLineValue {

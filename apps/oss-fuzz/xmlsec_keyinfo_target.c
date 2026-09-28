@@ -13,7 +13,7 @@
  *
  * The keys manager is NULL on purpose. A manager only adds trusted-key lookup,
  * which needs key material this target does not supply, and it brings in
- * application-level initialisation that this target does not need. The KeyValue
+ * application-level initialization that this target does not need. The KeyValue
  * and EncryptedKey structure readers, the part that reads attacker-supplied
  * bytes, run either way. The X509Data reader is not reached: with a NULL keys
  * manager xmlSecKeyDataX509XmlRead() fails before any <X509Data> child is

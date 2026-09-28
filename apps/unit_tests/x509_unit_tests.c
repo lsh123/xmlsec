@@ -91,10 +91,15 @@ test_xmlSecX509EscapedStringRead_failure(
 
     testStart(name);
 
-    len = xmlStrlen(BAD_CAST str);
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return, NULL);
-    inStr = BAD_CAST str;
-    inSize = size;
+    if(str != NULL) {
+        len = xmlStrlen(BAD_CAST str);
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return, NULL);
+        inStr = BAD_CAST str;
+        inSize = size;
+    } else {
+        inStr = NULL;
+        inSize = 0;
+    }
     outSize = 0;
 
     ret = xmlSecX509EscapedStringRead(&inStr, &inSize, out, sizeof(out) - 1, &outSize, (xmlChar)delim, ignoreTrailingSpaces);
@@ -220,10 +225,15 @@ test_xmlSecX509AttrValueStringRead_failure(
 
     testStart(name);
 
-    len = xmlStrlen(BAD_CAST str);
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return, NULL);
-    inStr = BAD_CAST str;
-    inSize = size;
+    if(str != NULL) {
+        len = xmlStrlen(BAD_CAST str);
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return, NULL);
+        inStr = BAD_CAST str;
+        inSize = size;
+    } else {
+        inStr = NULL;
+        inSize = 0;
+    }
     outSize = 0;
 
     ret = xmlSecX509AttrValueStringRead(&inStr, &inSize, out, sizeof(out) - 1, &outSize, &type, (xmlChar)delim, ignoreTrailingSpaces);
@@ -850,7 +860,7 @@ test_xmlSecX509SerialNumberRead(void) {
 }
 
 /******************************************************************************
- * xmlSecKeyDataX509XmlRead
+ * test_xmlSecKeyDataX509XmlRead
  *****************************************************************************/
 static void
 test_xmlSecKeyDataX509XmlRead_null_key_fails(void) {

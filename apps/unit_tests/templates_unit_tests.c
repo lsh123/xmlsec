@@ -514,6 +514,7 @@ test_xmlSecTmplEncDataCreate_structure(void) {
     xmlNodePtr methodNode;
     xmlNodePtr cipherDataNode;
     xmlChar* algo;
+    xmlChar* attr;
 
     testStart("xmlSecTmplEncDataCreate: creates correct EncryptedData structure");
 
@@ -564,15 +565,15 @@ test_xmlSecTmplEncDataCreate_structure(void) {
     }
 
     /* check Id attribute is set */
-    algo = xmlGetProp(encNode, xmlSecAttrId);
-    if(algo == NULL || xmlStrcmp(algo, BAD_CAST "enc1") != 0) {
-        testLog("Error: expected Id='enc1', got '%s'\n", algo ? (char*)algo : "NULL");
-        xmlFree(algo);
+    attr = xmlGetProp(encNode, xmlSecAttrId);
+    if(attr == NULL || xmlStrcmp(attr, BAD_CAST "enc1") != 0) {
+        testLog("Error: expected Id='enc1', got '%s'\n", attr ? (char*)attr : "NULL");
+        xmlFree(attr);
         xmlFreeNode(encNode);
         testFinishedFailure();
         return;
     }
-    xmlFree(algo);
+    xmlFree(attr);
 
     xmlFreeNode(encNode);
     testFinishedSuccess();
@@ -2099,7 +2100,7 @@ test_xmlSecTmplEncDataEnsureEncProperties_and_AddEncProperty(void) {
     xmlNodePtr propNode;
     xmlChar* attr;
 
-    testStart("xmlSecTmplEncDataAddEncProperty: adds EncryptionProperties with EncryptionProperty");
+    testStart("xmlSecTmplEncDataEnsureEncProperties/xmlSecTmplEncDataAddEncProperty: adds EncryptionProperties with EncryptionProperty");
 
     encNode = xmlSecTmplEncDataCreate(NULL, xmlSecTransformExclC14NId,
         NULL, NULL, NULL, NULL);
@@ -2952,7 +2953,7 @@ test_xmlSecTmplTransformAddRsaOaepParam(void) {
     xmlChar* content;
     const xmlSecByte buf[] = { 0x01, 0x02, 0x03 };
 
-    testStart("xmlSecTmplTransformAddRsaOaepParam: adds base64-encoded OAEPParam");
+    testStart("xmlSecTmplTransformAddRsaOaepParam: adds base64-encoded OAEPparams");
 
     transformNode = testCreateTransformNode(&doc);
     if(transformNode == NULL) {
@@ -2970,7 +2971,7 @@ test_xmlSecTmplTransformAddRsaOaepParam(void) {
 
     oaepNode = xmlSecFindChild(transformNode, xmlSecNodeRsaOAEPparams, xmlSecEncNs);
     if(oaepNode == NULL) {
-        testLog("Error: <enc:OAEPParam> not found\n");
+        testLog("Error: <enc:OAEPparams> not found\n");
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
@@ -2978,7 +2979,7 @@ test_xmlSecTmplTransformAddRsaOaepParam(void) {
     content = xmlNodeGetContent(oaepNode);
     /* base64 of {0x01, 0x02, 0x03} is "AQID" */
     if(content == NULL || xmlStrcmp(content, BAD_CAST "AQID") != 0) {
-        testLog("Error: expected OAEPParam content 'AQID', got '%s'\n",
+        testLog("Error: expected OAEPparams content 'AQID', got '%s'\n",
                 content ? (char*)content : "NULL");
         xmlFree(content);
         xmlFreeDoc(doc);

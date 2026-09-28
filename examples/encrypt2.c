@@ -168,8 +168,8 @@ done:
 }
 
 /**
- * @brief Encrypts an XML file using a dynamically created template and DES key.
- * @details Encrypts #xml_file using a dynamically created template and the DES key
+ * @brief Encrypts an XML file using a dynamically created template and Triple DES key.
+ * @details Encrypts #xml_file using a dynamically created template and the Triple DES key
  * from #key_file.
  * @param xml_file the XML file name.
  * @param key_file the Triple DES key file.
@@ -185,7 +185,7 @@ encrypt_file(const char* xml_file, const char* key_file) {
     assert(xml_file);
     assert(key_file);
 
-    /* load template */
+    /* load XML file */
 #if LIBXML_VERSION >= 21300
     doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT | XML_PARSE_NO_XXE);
 #else /* LIBXML_VERSION >= 21300 */

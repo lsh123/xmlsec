@@ -12,19 +12,20 @@
  * Usage:
  *
  * \code{.sh}
- *      ./sign1 <xml-tmpl> <pem-key>
+ *      ./sign1 <xml-tmpl> <pem-key> [key-name]
  * \endcode
  *
  * Example:
  *
  * \code{.sh}
- *      ./sign1 sign1-tmpl.xml rsakey.pem > sign1-res.xml
+ *      ./sign1 sign1-tmpl.xml rsakey.pem test-key-name > sign1-res.xml
  * \endcode
  *
- * The resulting signature can be validated using the verify1 example:
+ * The resulting signature can be validated using the verify1 example with the
+ * public key file:
  *
  * \code{.sh}
- *      ./verify1 sign1-res.xml rsapub.pem
+ *      ./verify1 sign1-res.xml rsapub.pem test-key-name
  * \endcode
  */
 #include <stdlib.h>
@@ -46,21 +47,22 @@
 #include <xmlsec/crypto.h>
 #include <xmlsec/dl.h>
 
-int sign_file(const char* tmpl_file, const char* key_file);
+int sign_file(const char* tmpl_file, const char* key_file, const char* key_name);
 
 int
 main(int argc, char **argv) {
     int xmlsec_initialized = 0;
     int res = -1;
+    const char* key_name;
 #ifndef XMLSEC_NO_XSLT
     xsltSecurityPrefsPtr xsltSecPrefs = NULL;
 #endif /* XMLSEC_NO_XSLT */
 
     assert(argv);
 
-    if(argc != 3) {
+    if((argc != 3) && (argc != 4)) {
         fprintf(stderr, "Error: wrong number of arguments.\n");
-        fprintf(stderr, "Usage: %s <tmpl-file> <key-file>\n", argv[0]);
+        fprintf(stderr, "Usage: %s <tmpl-file> <key-file> [key-name]\n", argv[0]);
         return(1);
     }
 
@@ -124,8 +126,11 @@ main(int argc, char **argv) {
     xmlsec_initialized = 1;
 
 
+    /* use the key name from the command line, or default to the key file name */
+    key_name = (argc == 4) ? argv[3] : argv[2];
+
     /* sign file */
-    if(sign_file(argv[1], argv[2]) < 0) {
+    if(sign_file(argv[1], argv[2], key_name) < 0) {
         goto done;
     }
 
@@ -156,10 +161,11 @@ done:
  * @details Signs the #tmpl_file using a private key from #key_file.
  * @param tmpl_file the signature template file name.
  * @param key_file the PEM private key file name.
+ * @param key_name the name to assign to the key (used in the signature KeyName).
  * @return 0 on success or a negative value if an error occurs.
  */
 int
-sign_file(const char* tmpl_file, const char* key_file) {
+sign_file(const char* tmpl_file, const char* key_file, const char* key_name) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
     xmlSecDSigCtxPtr dsigCtx = NULL;
@@ -167,6 +173,7 @@ sign_file(const char* tmpl_file, const char* key_file) {
 
     assert(tmpl_file);
     assert(key_file);
+    assert(key_name);
 
     /* load template */
 #if LIBXML_VERSION >= 21300
@@ -205,8 +212,8 @@ sign_file(const char* tmpl_file, const char* key_file) {
         goto done;
     }
 
-    /* set the key name to the file name; this is only an example */
-    if(xmlSecKeySetName(dsigCtx->signKey, BAD_CAST key_file) < 0) {
+    /* set the key name */
+    if(xmlSecKeySetName(dsigCtx->signKey, BAD_CAST key_name) < 0) {
         fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
         goto done;
     }

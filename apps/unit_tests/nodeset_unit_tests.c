@@ -129,6 +129,8 @@ test_xmlSecNodeSetCreate_destroy_doc_destroy(void) {
         testFinishedFailure();
         return;
     }
+    /* xmlDocSetRootElement() returns the previous root element, not an error
+     * code, so there is no error condition to check here. */
     xmlDocSetRootElement(doc, root);
 
     nodes = xmlXPathNodeSetCreate(root);
@@ -482,7 +484,7 @@ test_xmlSecNodeSetWalk_deduplicates_overlapping_subtrees(void) {
     root = xmlDocGetRootElement(doc);
     child = nodesetTestFindChild(root, BAD_CAST "Child");
     if((root == NULL) || (child == NULL)) {
-        testLog("Error: failed to prepare walk dedup test data\n");
+        testLog("Error: failed to prepare walk overlapping-subtrees test data\n");
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
@@ -517,7 +519,7 @@ test_xmlSecNodeSetWalk_deduplicates_overlapping_subtrees(void) {
     memset(&stats, 0, sizeof(stats));
     ret = xmlSecNodeSetWalk(nset, nodesetTestWalkStatsCallback, &stats);
     if((ret < 0) || (stats.total != 3) || (stats.elements != 2) || (stats.text != 1)) {
-        testLog("Error: walk visited overlapping nodes more than once "
+        testLog("Error: walk did not visit each node exactly once "
             "(ret=%d total=%d elem=%d text=%d)\n",
             ret, stats.total, stats.elements, stats.text);
         xmlSecNodeSetDestroy(nset);
@@ -552,7 +554,7 @@ test_xmlSecNodeSetWalk_normal_set_visits_each_node_once(void) {
     root = xmlDocGetRootElement(doc);
     child = nodesetTestFindChild(root, BAD_CAST "Child");
     if((root == NULL) || (child == NULL)) {
-        testLog("Error: failed to prepare walk dedup test data\n");
+        testLog("Error: failed to prepare walk Normal-set test data\n");
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
@@ -588,7 +590,7 @@ test_xmlSecNodeSetWalk_normal_set_visits_each_node_once(void) {
     memset(&stats, 0, sizeof(stats));
     ret = xmlSecNodeSetWalk(nset, nodesetTestWalkStatsCallback, &stats);
     if((ret < 0) || (stats.total != 2) || (stats.elements != 2) || (stats.text != 0)) {
-        testLog("Error: walk visited overlapping nodes more than once "
+        testLog("Error: walk did not visit each node exactly once "
             "(ret=%d total=%d elem=%d text=%d)\n",
             ret, stats.total, stats.elements, stats.text);
         xmlSecNodeSetDestroy(nset);
@@ -623,7 +625,7 @@ test_xmlSecNodeSetWalk_skips_descendants_listed_before_ancestors(void) {
     root = xmlDocGetRootElement(doc);
     child = nodesetTestFindChild(root, BAD_CAST "Child");
     if((root == NULL) || (child == NULL)) {
-        testLog("Error: failed to prepare walk dedup test data\n");
+        testLog("Error: failed to prepare walk descendant-first test data\n");
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
@@ -659,7 +661,7 @@ test_xmlSecNodeSetWalk_skips_descendants_listed_before_ancestors(void) {
     memset(&stats, 0, sizeof(stats));
     ret = xmlSecNodeSetWalk(nset, nodesetTestWalkStatsCallback, &stats);
     if((ret < 0) || (stats.total != 3) || (stats.elements != 2) || (stats.text != 1)) {
-        testLog("Error: walk visited overlapping nodes more than once "
+        testLog("Error: walk did not visit each node exactly once "
             "(ret=%d total=%d elem=%d text=%d)\n",
             ret, stats.total, stats.elements, stats.text);
         xmlSecNodeSetDestroy(nset);
@@ -696,7 +698,7 @@ test_xmlSecNodeSetWalk_visits_nested_chain_once(void) {
     b = nodesetTestFindChild(a, BAD_CAST "B");
     c = (b != NULL) ? nodesetTestFindChild(b, BAD_CAST "C") : NULL;
     if((a == NULL) || (b == NULL) || (c == NULL)) {
-        testLog("Error: failed to prepare walk dedup test data\n");
+        testLog("Error: failed to prepare walk nested-chain test data\n");
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
@@ -731,7 +733,7 @@ test_xmlSecNodeSetWalk_visits_nested_chain_once(void) {
     memset(&stats, 0, sizeof(stats));
     ret = xmlSecNodeSetWalk(nset, nodesetTestWalkStatsCallback, &stats);
     if((ret < 0) || (stats.total != 4) || (stats.elements != 3) || (stats.text != 1)) {
-        testLog("Error: walk visited overlapping nodes more than once "
+        testLog("Error: walk did not visit each node exactly once "
             "(ret=%d total=%d elem=%d text=%d)\n",
             ret, stats.total, stats.elements, stats.text);
         xmlSecNodeSetDestroy(nset);
@@ -841,7 +843,7 @@ test_xmlSecNodeSetWalk_combined_intersection_visits_each_node_once(void) {
     memset(&stats, 0, sizeof(stats));
     ret = xmlSecNodeSetWalk(nset, nodesetTestWalkStatsCallback, &stats);
     if((ret < 0) || (stats.total != 2) || (stats.elements != 1) || (stats.text != 1)) {
-        testLog("Error: walk visited overlapping nodes more than once "
+        testLog("Error: walk did not visit each node exactly once "
             "(ret=%d total=%d elem=%d text=%d)\n",
             ret, stats.total, stats.elements, stats.text);
         xmlSecNodeSetDestroy(nset);

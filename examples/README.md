@@ -4,13 +4,13 @@ This folder contains XML Security Library examples.
 
 ## Building examples
 
-### Unixes
+### Unix
 Just run the usual `make` command (assuming that xmlsec, libxml2, libxslt and
 all other required libraries are already installed).
 
 ### Windows
 - Add paths to include and library files for xmlsec, libxml2, libxslt and
-openssl or nss to the environment variables INCLUDE and LIB.
+openssl, nss or mscrypto to the environment variables INCLUDE and LIB.
 - Edit `Makefile.w32` file and specify correct crypto engine (openssl, nss
 or mscrypto). You can also specify necessary include and library paths
 or change from static linking to using DLLs.
@@ -28,19 +28,19 @@ Files:
 ```
 sign1.c             The source code
 sign1-tmpl.xml      The template file for sign1 example
-sign1-res.xml       The result of processing sign1_tmpl.xml by sign1.c
+sign1-res.xml       The result of processing sign1-tmpl.xml by sign1.c
 ```
 
 To run this example:
 
 ```
-./sign1 sign1-tmpl.xml rsakey.pem
+./sign1 sign1-tmpl.xml rsakey.pem test-key-name
 ```
 
-To sign a template file with `xmlsec1` command line utility (use `xmlsec` on Windows).
-Note that in this example we set KeyName to be the same as the filename of the private key:
+To sign a template file with the `xmlsec1` command line utility (use `xmlsec` on Windows).
+Note that in this example we set KeyName to "test-key-name":
 ```
-xmlsec1 sign --privkey:rsakey.pem rsakey.pem --output sign1-res.xml sign1-tmpl.xml
+xmlsec1 sign --privkey:test-key-name rsakey.pem --output sign1-res.xml sign1-tmpl.xml
 ```
 
 ### sign2: signing a file with a dynamically created template
@@ -54,7 +54,7 @@ sign2-res.xml       The result of signing sign2-doc.xml by sign2.c
 
 To run this example:
 ```
-./sign2 sign2-doc.xml rsakey.pem
+./sign2 sign2-doc.xml rsakey.pem test-key-name
 ```
 
 ### sign3: signing a file with a dynamically created template and an X509 certificate
@@ -94,8 +94,8 @@ verify1.c           The source code
 
 To run this example:
 ```
-./verify1 sign1-res.xml rsapub.pem
-./verify1 sign2-res.xml rsapub.pem
+./verify1 sign1-res.xml rsapub.pem test-key-name
+./verify1 sign2-res.xml rsapub.pem test-key-name
 ```
 
 ### verify2: verifying a signed document using keys manager
@@ -107,15 +107,15 @@ verify2.c           The source code
 
 To run this example:
 ```
-./verify2 sign1-res.xml rsapub.pem
-./verify2 sign2-res.xml rsapub.pem
+./verify2 sign1-res.xml rsapub.pem test-key-name
+./verify2 sign2-res.xml rsapub.pem test-key-name
 ```
 
-To verify a signed document with `xmlsec1` command line utility (use `xmlsec` on Windows).
-Note that in this example we set KeyName to be the same as the filename of the private key:
+To verify a signed document with the `xmlsec1` command line utility (use `xmlsec` on Windows).
+Note that in this example we set KeyName to "test-key-name":
 ```
-xmlsec1 verify --pubkey:rsakey.pem rsapub.pem sign1-res.xml
-xmlsec1 verify --pubkey:rsakey.pem rsapub.pem sign2-res.xml
+xmlsec1 verify --pubkey:test-key-name rsapub.pem sign1-res.xml
+xmlsec1 verify --pubkey:test-key-name rsapub.pem sign2-res.xml
 ```
 
 ### verify3: verifying an enveloped signature using X509 certificate
@@ -130,11 +130,16 @@ To run this example:
 ./verify3 sign3-res.xml ca2cert.pem cacert.pem
 ```
 
-To verify a signed document using X509 certificate with `xmlsec1` command line
+To verify a signed document using X509 certificate with the `xmlsec1` command line
 utility (use `xmlsec` on Windows):
 ```
 xmlsec1 verify --untrusted ca2cert.pem --trusted cacert.pem sign3-res.xml
 ```
+
+Note: `ca2cert.pem` is the intermediate certificate (passed as `--untrusted`) and
+`cacert.pem` is the root (passed as `--trusted`), a standard trust-chain setup.
+The verify3.c example instead loads both certificates as trusted, a simplification;
+the two are intentionally different.
 
 ### verify4: verifying a signature over a node using X509 certificate
 
@@ -148,10 +153,10 @@ To run this example:
 ./verify4 sign4-res.xml "data" ca2cert.pem cacert.pem
 ```
 
-To verify a signed document using X509 certificate with `xmlsec1` command line
+To verify a signed document using X509 certificate with the `xmlsec1` command line
 utility (use `xmlsec` on Windows):
 ```
-xmlsec1 verify --add-id-attr ID  --untrusted ca2cert.pem --trusted cacert.pem sign4-res.xml
+xmlsec1 verify --add-id-attr ID --untrusted ca2cert.pem --trusted cacert.pem sign4-res.xml
 ```
 
 ### verify-saml: verifying a simple SAML response using X509 certificate
@@ -168,7 +173,7 @@ To run this example:
 ./verify-saml verify-saml-res.xml ca2cert.pem cacert.pem
 ```
 
-To verify a signed SAML response using X509 certificate with `xmlsec1` command line
+To verify a signed SAML response using X509 certificate with the `xmlsec1` command line
 utility (use `xmlsec` on Windows):
 ```
 xmlsec1 verify --trusted ca2cert.pem --trusted cacert.pem verify-saml-res.xml
@@ -188,7 +193,7 @@ To run this example:
 ./encrypt1 encrypt1-tmpl.xml deskey.bin
 ```
 
-To encrypt binary data with a template file with `xmlsec1` command line
+To encrypt binary data with a template file with the `xmlsec1` command line
 utility (use `xmlsec` on Windows). Note that in this example we set KeyName to be
 the same as the filename of the key:
 ```
@@ -250,7 +255,7 @@ To run this example:
 ./decrypt2 encrypt2-res.xml deskey.bin
 ```
 
-To decrypt binary data with `xmlsec1` command line utility (use `xmlsec` on Windows).
+To decrypt binary data with the `xmlsec1` command line utility (use `xmlsec` on Windows).
 Note that in this example we set KeyName to be the same as the filename of the
 (private) key:
 ```

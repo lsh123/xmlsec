@@ -52,26 +52,32 @@ endif
 
 all: $(PROGRAMS)
 
+# each example program is built from its single .c source of the same name
+%: %.c
+	$(CC) $(CFLAGS) -o $@ $< $(LDLIBS)
+
 clean:
 	rm -rf $(PROGRAMS) *.o
 
 check: check-sign check-verify check-enc check-dec
 
+# Do not redirect ouput to overwrite the result files
 check-sign: $(PROGRAMS_SIGN)
-	./sign1    sign1-tmpl.xml    rsakey.pem
-	./sign2    sign2-doc.xml     rsakey.pem
+	./sign1    sign1-tmpl.xml    rsakey.pem test-key-name
+	./sign2    sign2-doc.xml     rsakey.pem test-key-name
 	./sign3    sign3-doc.xml     rsakey.pem rsacert.pem
 	./sign4    sign4-doc.xml "data" rsakey.pem rsacert.pem
 
 check-verify: check-sign $(PROGRAMS_VERIFY)
-	./verify1  sign1-res.xml     rsapub.pem
-	./verify1  sign2-res.xml     rsapub.pem
-	./verify2  sign1-res.xml     rsakey.pem
-	./verify2  sign2-res.xml     rsakey.pem
+	./verify1  sign1-res.xml     rsapub.pem test-key-name
+	./verify1  sign2-res.xml     rsapub.pem test-key-name
+	./verify2  sign1-res.xml     rsapub.pem test-key-name
+	./verify2  sign2-res.xml     rsapub.pem test-key-name
 	./verify3  sign3-res.xml     ca2cert.pem cacert.pem
 	./verify4  sign4-res.xml "data" ca2cert.pem cacert.pem
 	./verify-saml verify-saml-res.xml ca2cert.pem cacert.pem
 
+# Do not redirect ouput to overwrite the result files
 check-enc: $(PROGRAMS_ENC)
 	./encrypt1 encrypt1-tmpl.xml deskey.bin
 	./encrypt2 encrypt2-doc.xml  deskey.bin

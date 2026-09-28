@@ -317,7 +317,10 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_RSA_OAEP
         /* Set the OAEP parameter on a temporary duplicate key, when available,
-         * so the original key is not modified. */
+         * so the original key is not modified. The raw OAEP label is passed to
+         * KP_OAEP_PARAMS (a CAPI/wincrypt parameter that expects the label L,
+         * not its hash H(L); the provider computes H(L) internally).
+         * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptsetkeyparam */
         if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaOaepId) && xmlSecBufferGetSize(&(ctx->oaepParams)) > 0) {
             xmlSecSize oaepParamsSize;
             CRYPT_DATA_BLOB oaepParams;
@@ -378,7 +381,10 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_RSA_OAEP
         /* Set the OAEP parameter on a temporary duplicate key, when available,
-         * so the original key is not modified. */
+         * so the original key is not modified. The raw OAEP label is passed to
+         * KP_OAEP_PARAMS (a CAPI/wincrypt parameter that expects the label L,
+         * not its hash H(L); the provider computes H(L) internally).
+         * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptsetkeyparam */
         if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaOaepId) && xmlSecBufferGetSize(&(ctx->oaepParams)) > 0) {
             xmlSecSize oaepParamsSize;
             CRYPT_DATA_BLOB oaepParams;

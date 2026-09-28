@@ -12,8 +12,6 @@
 #ifndef XMLSEC_NO_HMAC
 #include "globals.h"
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 
 #include <xmlsec/xmlsec.h>
@@ -329,7 +327,7 @@ xmlSecMSCryptoHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
      *
      * HACK!!! HACK!!! HACK!!!
      *
-     * Using CALG_RC2 instead of CALG_HMAC for the key algorithm so we don't want to check key length
+      * Using CALG_RC2 instead of CALG_HMAC for the key algorithm so that we don't have to check the key length
      */
     if (!xmlSecMSCryptoImportPlainSessionBlob(ctx->provider,
         ctx->pubPrivKey,
@@ -476,6 +474,15 @@ xmlSecMSCryptoHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
             if(ctx->dgstSizeInBits == 0) {
                 ctx->dgstSizeInBits = ctx->dgstSize * 8; /* no dgst size specified, use all we have */
             }
+
+            /* HMACOutputLength can only truncate the digest, not extend it past the bytes we have */
+            if(XMLSEC_TRANSFORM_HMAC_BITS_TO_BYTES(ctx->dgstSizeInBits) > ctx->dgstSize) {
+                xmlSecInvalidSizeMoreThanError("HMAC output length",
+                    XMLSEC_TRANSFORM_HMAC_BITS_TO_BYTES(ctx->dgstSizeInBits), ctx->dgstSize,
+                    xmlSecTransformGetName(transform));
+                return(-1);
+            }
+
             if (transform->operation == xmlSecTransformOperationSign) {
                 ret = xmlSecTransformHmacWriteOutput(ctx->dgst, ctx->dgstSizeInBits, ctx->dgstSize, out);
                 if (ret < 0) {

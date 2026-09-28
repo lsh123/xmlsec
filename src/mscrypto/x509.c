@@ -1009,11 +1009,7 @@ xmlSecMSCryptoX509CertGetTime(FILETIME t, time_t* res) {
     result = (result) << 32;
     result |= t.dwLowDateTime;
     result /= 10000;    /* Convert from 100 nano-sec periods to seconds. */
-#if defined(__MINGW32__)
     result -= 11644473600000LL;  /* Convert from Windows epoch to Unix epoch */
-#else
-    result -= 11644473600000;  /* Convert from Windows epoch to Unix epoch */
-#endif
 
     (*res) = (time_t)result;
 
@@ -1062,7 +1058,7 @@ xmlSecMSCryptoX509NameWrite(PCERT_NAME_BLOB nm) {
     xmlChar *res = NULL;
     DWORD csz;
 
-
+    xmlSecAssert2(nm != NULL, NULL);
     xmlSecAssert2(nm->pbData != NULL, NULL);
     xmlSecAssert2(nm->cbData > 0, NULL);
 
@@ -1148,7 +1144,7 @@ xmlSecMSCryptoX509SKIWrite(PCCERT_CONTEXT cert, xmlSecBufferPtr buf) {
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(buf != NULL, -1);
 
-    /* First check if the SKI extension actually exists, otherwise we get a SHA1 hash of the cert */
+    /* First check if the SKI extension actually exists, otherwise we get the SHA-1 hash of the public key */
     pCertExt = CertFindExtension(szOID_SUBJECT_KEY_IDENTIFIER, cert->pCertInfo->cExtension, cert->pCertInfo->rgExtension);
     if (pCertExt == NULL) {
         return(0);

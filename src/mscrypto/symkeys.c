@@ -432,14 +432,14 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
     /* Get private key's algorithm */
     dwSize = sizeof(ALG_ID);
     if(!CryptGetKeyParam(hPrivateKey, KP_ALGID, (LPBYTE)&dwPrivKeyAlg, &dwSize, 0)) {
-        xmlSecMSCryptoError2("CryptGetKeyParam(KP_ALGID)", NULL, "algId=%u", algId);
+        xmlSecMSCryptoError2("CryptGetKeyParam(hPrivateKey, KP_ALGID)", NULL, "session key algId=%u", algId);
         goto done;
     }
 
     /* Get private key's length in bits */
     dwSize = sizeof(dwPublicKeySize);
     if(!CryptGetKeyParam(hPrivateKey, KP_KEYLEN, (LPBYTE)&dwPublicKeySize, &dwSize, 0)) {
-        xmlSecMSCryptoError2("CryptGetKeyParam(KP_KEYLEN)", NULL, "algId=%u", algId);
+        xmlSecMSCryptoError2("CryptGetKeyParam(hPrivateKey, KP_KEYLEN)", NULL, "session key algId=%u", algId);
         goto done;
     }
 

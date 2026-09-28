@@ -537,19 +537,31 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT theCert, LPFILETIME pfTime,
         memcpy(&seenHashes[seenSize], hash, XMLSEC_MSCRYPTO_X509_CERT_HASH_SIZE);
         ++seenSize;
 
-        /* check certificate validity and revocation */
+        /* check certificate validity and revocation; an expired/revoked cert
+         * cannot be part of a valid chain, so skip this branch (and its issuer)
+         * and continue searching the other branches in the queue */
         if (!xmlSecMSCryptoVerifyCertTime(currentCert, pfTime)) {
             xmlSecOtherError(XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
                 xmlSecKeyDataStoreGetName(store),
                 "certificate expired");
-            goto done;
+            if(freeCurrentCert == TRUE) {
+                CertFreeCertificateContext(currentCert);
+            }
+            currentCert = NULL;
+            freeCurrentCert = FALSE;
+            continue;
         }
 
         if (!xmlSecMSCryptoCheckRevocation(certs, currentCert)) {
             xmlSecOtherError(XMLSEC_ERRORS_R_CRL_VERIFY_FAILED,
                 xmlSecKeyDataStoreGetName(store),
                 "certificate revoked");
-            goto done;
+            if(freeCurrentCert == TRUE) {
+                CertFreeCertificateContext(currentCert);
+            }
+            currentCert = NULL;
+            freeCurrentCert = FALSE;
+            continue;
         }
 
         /* does trustedStore contain cert directly? */
@@ -661,7 +673,9 @@ xmlSecMSCryptoX509StoreConstructCertsChain(xmlSecKeyDataStorePtr store, PCCERT_C
         /* convert the time to FILETIME */
         xmlSecMSCryptoUnixTimeToFileTime(keyInfoCtx->certsVerificationTime, &fTime);
     } else {
-        /* Defaults to current time */
+        /* Defaults to current time. GetSystemTimeAsFileTime effectively never
+         * fails, so its return value is not checked.
+         * https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getsystemtimeasfiletime */
         GetSystemTimeAsFileTime(&fTime);
     }
 
@@ -801,6 +815,8 @@ xmlSecMSCryptoX509StoreAdoptKeyStore (xmlSecKeyDataStorePtr store, HCERTSTORE ke
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->trusted != NULL, -1);
 
+    /* 4th arg is dwPriority (not dwReserved); the non-zero value is intentional.
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddstoretocollection */
     if(!CertAddStoreToCollection ( ctx->trusted , keyStore , CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG , 2)) {
         xmlSecMSCryptoError("CertAddStoreToCollection",
                             xmlSecKeyDataStoreGetName(store));
@@ -828,6 +844,8 @@ xmlSecMSCryptoX509StoreAdoptTrustedStore (xmlSecKeyDataStorePtr store, HCERTSTOR
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->trusted != NULL, -1);
 
+    /* 4th arg is dwPriority (not dwReserved); the non-zero value is intentional.
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddstoretocollection */
     if( !CertAddStoreToCollection ( ctx->trusted , trustedStore , CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG , 3 ) ) {
         xmlSecMSCryptoError("CertAddStoreToCollection",
                             xmlSecKeyDataStoreGetName(store));
@@ -855,6 +873,8 @@ xmlSecMSCryptoX509StoreAdoptUntrustedStore (xmlSecKeyDataStorePtr store, HCERTST
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->untrusted != NULL, -1);
 
+    /* 4th arg is dwPriority (not dwReserved); the non-zero value is intentional.
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddstoretocollection */
     if( !CertAddStoreToCollection ( ctx->untrusted , untrustedStore , CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG , 2 ) ) {
         xmlSecMSCryptoError("CertAddStoreToCollection",
                             xmlSecKeyDataStoreGetName(store));
@@ -878,6 +898,8 @@ xmlSecMSCryptoX509StoreEnableSystemTrustedCerts (xmlSecKeyDataStorePtr store, in
 
     ctx = xmlSecMSCryptoX509StoreGetCtx(store);
     xmlSecAssert(ctx != NULL);
+    /* ctx->untrusted is asserted because the flag set below gates
+     * xmlSecBuildChainUsingWinapi(), which consumes ctx->untrusted. */
     xmlSecAssert(ctx->untrusted != NULL);
 
     /* it is other way around to make default value 0 mimic old behaviour */
@@ -904,8 +926,7 @@ xmlSecMSCryptoX509StoreInitialize(xmlSecKeyDataStorePtr store) {
                    0,
                    NULL);
     if(ctx->trusted == NULL) {
-        xmlSecMSCryptoError("CertOpenStore",
-                            xmlSecKeyDataStoreGetName(store));
+        xmlSecMSCryptoError("CertOpenStore", xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
 
@@ -916,17 +937,17 @@ xmlSecMSCryptoX509StoreInitialize(xmlSecKeyDataStorePtr store) {
                    CERT_STORE_CREATE_NEW_FLAG,
                    NULL);
     if(hTrustedMemStore == NULL) {
-        xmlSecMSCryptoError("CertOpenStore",
-                            xmlSecKeyDataStoreGetName(store));
+        xmlSecMSCryptoError("CertOpenStore", xmlSecKeyDataStoreGetName(store));
         CertCloseStore(ctx->trusted, 0);
         ctx->trusted = NULL ;
         return(-1);
     }
 
     /* add the memory trusted certs store to trusted certs store collection */
+    /* 4th arg is dwPriority (not dwReserved); the non-zero value is intentional.
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddstoretocollection */
     if( !CertAddStoreToCollection( ctx->trusted, hTrustedMemStore, CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG, 1 ) ) {
-        xmlSecMSCryptoError("CertAddStoreToCollection",
-                            xmlSecKeyDataStoreGetName(store));
+        xmlSecMSCryptoError("CertAddStoreToCollection", xmlSecKeyDataStoreGetName(store));
         CertCloseStore(ctx->trusted, 0);
         CertCloseStore(hTrustedMemStore, 0);
         ctx->trusted = NULL ;
@@ -941,8 +962,7 @@ xmlSecMSCryptoX509StoreInitialize(xmlSecKeyDataStorePtr store) {
                    0,
                    NULL);
     if(ctx->untrusted == NULL) {
-        xmlSecMSCryptoError("CertOpenStore",
-                            xmlSecKeyDataStoreGetName(store));
+        xmlSecMSCryptoError("CertOpenStore", xmlSecKeyDataStoreGetName(store));
         CertCloseStore(ctx->trusted, 0);
         ctx->trusted = NULL ;
         return(-1);
@@ -955,8 +975,7 @@ xmlSecMSCryptoX509StoreInitialize(xmlSecKeyDataStorePtr store) {
                    CERT_STORE_CREATE_NEW_FLAG,
                    NULL);
     if(hUntrustedMemStore == NULL) {
-        xmlSecMSCryptoError("CertOpenStore",
-                            xmlSecKeyDataStoreGetName(store));
+        xmlSecMSCryptoError("CertOpenStore", xmlSecKeyDataStoreGetName(store));
         CertCloseStore(ctx->trusted, 0);
         CertCloseStore(ctx->untrusted, 0);
         ctx->trusted = NULL ;
@@ -964,10 +983,11 @@ xmlSecMSCryptoX509StoreInitialize(xmlSecKeyDataStorePtr store) {
         return(-1);
     }
 
-    /* add the memory trusted certs store to untrusted certs store collection */
+    /* add the memory untrusted certs store to untrusted certs store collection */
+    /* 4th arg is dwPriority (not dwReserved); the non-zero value is intentional.
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddstoretocollection */
     if( !CertAddStoreToCollection( ctx->untrusted, hUntrustedMemStore, CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG, 1 ) ) {
-        xmlSecMSCryptoError("CertAddStoreToCollection",
-                            xmlSecKeyDataStoreGetName(store));
+        xmlSecMSCryptoError("CertAddStoreToCollection", xmlSecKeyDataStoreGetName(store));
         CertCloseStore(ctx->untrusted, 0);
         CertCloseStore(ctx->trusted, 0);
         CertCloseStore(hUntrustedMemStore, 0);
@@ -1153,7 +1173,7 @@ xmlSecMSCryptoX509FindCertBySubject(HCERTSTORE store, LPCTSTR wcSubject, DWORD d
  * @details Searches for a cert with given @p issuer in the @p store
  * @param store the pointer to certs store
  * @param wcIssuer the cert issuer (Unicode)
- * @param issuerSerialBn the cert issuer serial
+ * @param issuerSerialBn the serial number of the cert being searched
  * @param dwCertEncodingType the cert encoding type
  * @return cert handle on success or NULL otherwise
  */
@@ -1176,6 +1196,12 @@ xmlSecMSCryptoX509FindCertByIssuer(HCERTSTORE store, const LPTSTR wcIssuer,
 
     size = xmlSecBnGetSize(issuerSerialBn);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(size, certInfo.SerialNumber.cbData, return(NULL), NULL);
+
+    /* certInfo.Issuer + certInfo.SerialNumber are matched below via
+     * CERT_FIND_SUBJECT_CERT: with a CERT_INFO in pvFindPara this flag matches
+     * a cert whose issuer and serial number equal certInfo.Issuer and
+     * certInfo.SerialNumber (there is no CERT_FIND_ISSUER_CERT).
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certfindcertificateinstore */
 
     /* CASE 1: UTF8, DN */
     if (NULL == res) {

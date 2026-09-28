@@ -175,7 +175,7 @@ jobs:
           HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install automake
           HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install pkg-config libtool
           HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install libxml2 libxslt
-          HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install openssl nspr nss gnutls libgcrypt
+          HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install openssl@3 nspr nss gnutls libgcrypt
     - uses: actions/checkout@v4
     - name: create-build-dirs
       run: |
@@ -188,7 +188,7 @@ jobs:
       run: |
           autoreconf -i -f ..
           ../configure --prefix=${GITHUB_WORKSPACE}/install.dir --enable-werror --enable-pedantic \
-            --with-openssl=`brew --prefix openssl` \
+            --with-openssl=`brew --prefix openssl@3` \
             --without-nss \
             --with-gnutls=`brew --prefix gnutls` \
             --with-gcrypt=`brew --prefix libgcrypt` \
@@ -200,8 +200,8 @@ jobs:
     - name: make check
       working-directory: build.dir
       run: |
-          export PATH=`brew --prefix openssl`/bin:$PATH
-          export LD_LIBRARY_PATH=`brew --prefix openssl`/lib:$LD_LIBRARY_PATH
+          export PATH=`brew --prefix openssl@3`/bin:$PATH
+          export LD_LIBRARY_PATH=`brew --prefix openssl@3`/lib:$LD_LIBRARY_PATH
           export LD_LIBRARY_PATH=`brew --prefix nspr`/lib:$LD_LIBRARY_PATH
           export LD_LIBRARY_PATH=`brew --prefix nss`/lib:$LD_LIBRARY_PATH
           export LD_LIBRARY_PATH=`brew --prefix libgcrypt`/lib:$LD_LIBRARY_PATH

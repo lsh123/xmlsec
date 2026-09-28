@@ -139,23 +139,15 @@ xmlSecInit(void) {
 int
 xmlSecShutdown(void) {
     int res = -1;
-    fprintf(stderr, "[shutdown-debug] xmlSecShutdown: enter\n");
 
-    fprintf(stderr, "[shutdown-debug] xmlSecShutdown: before xmlSecTransformIdsShutdown\n");
     xmlSecTransformIdsShutdown();
-    fprintf(stderr, "[shutdown-debug] xmlSecShutdown: after xmlSecTransformIdsShutdown\n");
-
-    fprintf(stderr, "[shutdown-debug] xmlSecShutdown: before xmlSecKeyDataIdsShutdown\n");
     xmlSecKeyDataIdsShutdown();
-    fprintf(stderr, "[shutdown-debug] xmlSecShutdown: after xmlSecKeyDataIdsShutdown\n");
 
 #ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
-    fprintf(stderr, "[shutdown-debug] xmlSecShutdown: before xmlSecCryptoDLShutdown (dlclose)\n");
     if(xmlSecCryptoDLShutdown() < 0) {
         xmlSecInternalError("xmlSecCryptoDLShutdown", NULL);
         goto done;
     }
-    fprintf(stderr, "[shutdown-debug] xmlSecShutdown: after xmlSecCryptoDLShutdown (dlclose)\n");
 #endif /* XMLSEC_NO_CRYPTO_DYNAMIC_LOADING */
 
     /* success */
@@ -172,13 +164,8 @@ done:
     }
 #endif /* LIBXML_VERSION < 21300 */
 
-    fprintf(stderr, "[shutdown-debug] xmlSecShutdown: before xmlSecIOShutdown\n");
     xmlSecIOShutdown();
-    fprintf(stderr, "[shutdown-debug] xmlSecShutdown: after xmlSecIOShutdown\n");
-
-    fprintf(stderr, "[shutdown-debug] xmlSecShutdown: before xmlSecErrorsShutdown\n");
     xmlSecErrorsShutdown();
-    fprintf(stderr, "[shutdown-debug] xmlSecShutdown: done\n");
     return(res);
 }
 

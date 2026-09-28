@@ -49,21 +49,16 @@ xmlSecAppCryptoInit(const char* config) {
 int
 xmlSecAppCryptoShutdown(void) {
     int ret = 0;
-    fprintf(stderr, "[shutdown-debug] xmlSecAppCryptoShutdown: enter\n");
 
-    fprintf(stderr, "[shutdown-debug] xmlSecAppCryptoShutdown: before xmlSecCryptoShutdown\n");
     if(xmlSecCryptoShutdown() < 0) {
         fprintf(stderr, "Error: xmlSecCryptoShutdown failed\n");
         ret = -1;
     }
-    fprintf(stderr, "[shutdown-debug] xmlSecAppCryptoShutdown: after xmlSecCryptoShutdown\n");
 
-    fprintf(stderr, "[shutdown-debug] xmlSecAppCryptoShutdown: before xmlSecCryptoAppShutdown\n");
     if(xmlSecCryptoAppShutdown() < 0) {
         fprintf(stderr, "Error: xmlSecCryptoAppShutdown failed\n");
         ret = -1;
     }
-    fprintf(stderr, "[shutdown-debug] xmlSecAppCryptoShutdown: after xmlSecCryptoAppShutdown\n");
     return(ret);
 }
 

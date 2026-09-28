@@ -507,7 +507,7 @@ xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
         /* CryptoAPI sets the last error to an NTE_* code, so compare against it directly. */
         dwLastError = GetLastError();
         switch(dwLastError) {
-        case NTE_BAD_KEYSET:
+        case (DWORD)NTE_BAD_KEYSET:
             /* This error can indicate that a newly installed provider
              * does not have a usable key container yet. It needs to be
              * created, and then we have to try again CryptAcquireContext.
@@ -524,7 +524,7 @@ xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
             }
             break;
 
-        case NTE_EXISTS:
+        case (DWORD)NTE_EXISTS:
             /* If we can, try our container */
             if(bUseXmlSecContainer == TRUE) {
                 ret = CryptAcquireContext(&res,

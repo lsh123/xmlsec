@@ -110,7 +110,7 @@ int main(int argc, const char **argv) {
     }
     if(argc == 2) {
 #if defined(XMLSEC_WINDOWS) && defined(UNICODE)
-        wcstombsRet = wcstombs_s(testGroupFilterBuf, sizeof(testGroupFilterBuf), argv[1], sizeof(testGroupFilterBuf) - 1);
+        wcstombsRet = wcstombs_s(NULL, testGroupFilterBuf, sizeof(testGroupFilterBuf), argv[1], sizeof(testGroupFilterBuf) - 1);
         if(wcstombsRet != 0) {
             fprintf(stderr, "Error: failed to convert the test group filter name\n");
             goto done;

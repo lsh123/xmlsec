@@ -405,7 +405,7 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
     if (!CryptVerifySignature(ctx->mscHash, tmpBuf, dwDataSize, hKey, NULL, 0)) {
         /* CryptoAPI sets the last error to an NTE_* code, so compare against it directly. */
         dwError = GetLastError();
-        if (NTE_BAD_SIGNATURE == dwError) {
+        if (((DWORD)NTE_BAD_SIGNATURE) == dwError) {
             xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH, xmlSecTransformGetName(transform),
                 "CryptVerifySignature: signature verification failed");
             transform->status = xmlSecTransformStatusFail;

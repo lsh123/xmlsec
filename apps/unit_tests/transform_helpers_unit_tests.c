@@ -8,7 +8,6 @@
 /**
  * @brief XML Security Library transform helpers unit tests.
  */
-#include <stdlib.h>
 #include <string.h>
 
 #include <libxml/parser.h>

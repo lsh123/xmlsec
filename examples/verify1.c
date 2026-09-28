@@ -6,24 +6,23 @@
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * @brief XML Security Library example: Verifying a file using a single key.
- * @details Verifies a file using a key from a PEM file.
+ * @brief XML Security Library example: Verifying a file using a single public key.
+ * @details Verifies a file using a public key from a PEM file.
  *
  * Usage:
  *
  * \code{.sh}
- *      verify1 <signed-file> <pem-key>
+ *      verify1 <signed-file> <public-pem-key> [key-name]
  * \endcode
  *
  * Example:
  *
  * \code{.sh}
- *      ./verify1 sign1-res.xml rsapub.pem
- *      ./verify1 sign2-res.xml rsapub.pem
+ *      ./verify1 sign1-res.xml rsapub.pem test-key-name
+ *      ./verify1 sign2-res.xml rsapub.pem test-key-name
  * \endcode
  */
 #include <stdlib.h>
-#include <string.h>
 #include <assert.h>
 
 #include <libxml/tree.h>
@@ -41,12 +40,13 @@
 #include <xmlsec/crypto.h>
 #include <xmlsec/dl.h>
 
-int verify_file(const char* xml_file, const char* key_file);
+int verify_file(const char* xml_file, const char* key_file, const char* key_name);
 int verify_signature_results(xmlSecDSigCtxPtr dsigCtx);
 
 int
 main(int argc, char **argv) {
     int xmlsec_initialized = 0;
+    const char* key_name;
 #ifndef XMLSEC_NO_XSLT
     xsltSecurityPrefsPtr xsltSecPrefs = NULL;
 #endif /* XMLSEC_NO_XSLT */
@@ -54,9 +54,9 @@ main(int argc, char **argv) {
 
     assert(argv);
 
-    if(argc != 3) {
+    if((argc != 3) && (argc != 4)) {
         fprintf(stderr, "Error: wrong number of arguments.\n");
-        fprintf(stderr, "Usage: %s <xml-file> <key-file>\n", argv[0]);
+        fprintf(stderr, "Usage: %s <xml-file> <key-file> [key-name]\n", argv[0]);
         return(1);
     }
 
@@ -115,7 +115,10 @@ main(int argc, char **argv) {
     }
     xmlsec_initialized = 1;
 
-    if(verify_file(argv[1], argv[2]) < 0) {
+    /* use the key name from the command line, or default to the key file name */
+    key_name = (argc == 4) ? argv[3] : argv[2];
+
+    if(verify_file(argv[1], argv[2], key_name) < 0) {
         goto done;
     }
 
@@ -145,10 +148,11 @@ done:
  * @details Verifies the XML signature in #xml_file using the public key from #key_file.
  * @param xml_file the signed XML file name.
  * @param key_file the PEM public key file name.
+ * @param key_name the name to assign to the key (used to match the signature KeyName).
  * @return 0 on success or a negative value if an error occurs.
  */
 int
-verify_file(const char* xml_file, const char* key_file) {
+verify_file(const char* xml_file, const char* key_file, const char* key_name) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
     xmlSecDSigCtxPtr dsigCtx = NULL;
@@ -156,6 +160,7 @@ verify_file(const char* xml_file, const char* key_file) {
 
     assert(xml_file);
     assert(key_file);
+    assert(key_name);
 
     /* load file */
 #if LIBXML_VERSION >= 21300
@@ -194,8 +199,8 @@ verify_file(const char* xml_file, const char* key_file) {
         goto done;
     }
 
-    /* set the key name to the file name; this is only an example */
-    if(xmlSecKeySetName(dsigCtx->signKey, BAD_CAST key_file) < 0) {
+    /* set the key name */
+    if(xmlSecKeySetName(dsigCtx->signKey, BAD_CAST key_name) < 0) {
         fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
         goto done;
     }
@@ -261,8 +266,9 @@ verify_signature_results(xmlSecDSigCtxPtr dsigCtx) {
         return(-1);
     }
 
-    /* check URI */
-    if(!xmlStrEqual(dsigRefCtx->uri, BAD_CAST "")) {
+    /* check URI: a NULL URI (Reference without a URI attribute) means the whole document,
+     * which xmlsec treats the same as an empty URI */
+    if((dsigRefCtx->uri != NULL) && (!xmlStrEqual(dsigRefCtx->uri, BAD_CAST ""))) {
         fprintf(stderr,"Error: Reference URI value doesn't match expected one\n");
         return(-1);
     }

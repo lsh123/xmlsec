@@ -149,26 +149,26 @@ decrypt_file(const char* enc_file, const char* key_file) {
     /* create encryption context, we don't need keys manager in this example */
     encCtx = xmlSecEncCtxCreate(NULL);
     if(encCtx == NULL) {
-        fprintf(stderr,"Error: failed to create encryption context\n");
+        fprintf(stderr, "Error: failed to create encryption context\n");
         goto done;
     }
 
     /* load DES key */
     encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
     if(encCtx->encKey == NULL) {
-        fprintf(stderr,"Error: failed to load DES key from binary file \"%s\"\n", key_file);
+        fprintf(stderr, "Error: failed to load DES key from binary file \"%s\"\n", key_file);
         goto done;
     }
 
     /* set the key name to the file name; this is only an example */
     if(xmlSecKeySetName(encCtx->encKey, BAD_CAST key_file) < 0) {
-        fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
+        fprintf(stderr, "Error: failed to set key name for key from \"%s\"\n", key_file);
         goto done;
     }
 
     /* decrypt the data */
     if((xmlSecEncCtxDecrypt(encCtx, node) < 0) || (encCtx->result == NULL)) {
-        fprintf(stderr,"Error: decryption failed\n");
+        fprintf(stderr, "Error: decryption failed\n");
         goto done;
     }
 

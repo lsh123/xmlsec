@@ -36,7 +36,6 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size);
 #define FUZZ_KEY_PWD "secret123"
 
 static const xmlSecKeyDataFormat g_formats[] = {
-    xmlSecKeyDataFormatBinary,
     xmlSecKeyDataFormatPem,
     xmlSecKeyDataFormatDer,
     xmlSecKeyDataFormatPkcs8Pem,
@@ -70,12 +69,16 @@ static int do_init(void) {
         return -1;
     }
     if (xmlSecCheckVersion() != 1) {
+        xmlSecShutdown();
         return -1;
     }
     if (xmlSecOpenSSLAppInit(NULL) < 0) {
+        xmlSecShutdown();
         return -1;
     }
     if (xmlSecOpenSSLInit() < 0) {
+        xmlSecOpenSSLAppShutdown();
+        xmlSecShutdown();
         return -1;
     }
 
@@ -92,7 +95,7 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
         g_init_failed = (do_init() < 0);
         g_initialized = 1;
     }
-    if (g_init_failed || size < 1) {
+    if (g_init_failed || size < 2) {
         return 0;
     }
 

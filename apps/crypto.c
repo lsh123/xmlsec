@@ -384,14 +384,14 @@ xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(xmlSecKeysMngrPtr mngr, const char* k
     /* find requested data */
     dataId = xmlSecKeyDataIdListFindByName(xmlSecKeyDataIdsGet(), BAD_CAST keyKlass, xmlSecKeyDataUsageReadFromFile);
     if(dataId == xmlSecKeyDataIdUnknown) {
-        fprintf(stderr, "Error: xmlSecKeyDataIdListFindByName failed keyKlass=%s\n",
+        fprintf(stderr, "Error: xmlSecKeyDataIdListFindByName failed: keyKlass=%s\n",
                 xmlSecErrorsSafeString(keyKlass));
         return(-1);
     }
 
     key = xmlSecKeyReadBinaryFile(dataId, filename);
     if(key == NULL) {
-        fprintf(stderr, "Error: xmlSecKeyReadBinaryFile failed filename=%s\n",
+        fprintf(stderr, "Error: xmlSecKeyReadBinaryFile failed: filename=%s\n",
                 xmlSecErrorsSafeString(filename));
         return(-1);
     }
@@ -426,8 +426,8 @@ xmlSecAppCryptoSimpleKeysMngrKeyGenerate(xmlSecKeysMngrPtr mngr, const char* key
 
     key = xmlSecAppCryptoKeyGenerate(keyKlassAndSize, name, xmlSecKeyDataTypePermanent);
     if(key == NULL) {
-        fprintf(stderr, "Error: xmlSecAppCryptoKeyGenerate failed: name=%s\n",
-                xmlSecErrorsSafeString(name));
+        fprintf(stderr, "Error: xmlSecAppCryptoKeyGenerate failed: keyKlassAndSize=%s\n",
+                xmlSecErrorsSafeString(keyKlassAndSize));
         return(-1);
     }
 

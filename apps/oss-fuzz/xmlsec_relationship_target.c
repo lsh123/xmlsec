@@ -45,7 +45,12 @@ static void ignore_xmlsec_error(const char* file, int line, const char* func,
 
 static int do_init(void) {
     xmlInitParser();
-    if (xmlSecInit() < 0 || xmlSecCheckVersion() != 1) {
+
+    if (xmlSecInit() < 0) {
+        return -1;
+    }
+    if (xmlSecCheckVersion() != 1) {
+        xmlSecShutdown();
         return -1;
     }
 

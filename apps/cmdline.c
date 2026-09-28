@@ -23,7 +23,7 @@ static int                      xmlSecAppCmdLineMatchParam      (const char* arg
                                                                  const char* paramName,
                                                                  int canHaveNameString);
 static xmlSecAppCmdLineParamPtr xmlSecAppCmdLineParamsListFind  (xmlSecAppCmdLineParamPtr* params,
-                                                                 xmlSecAppCmdLineParamTopic topics,
+                                                                 xmlSecAppCmdLineTopic topics,
                                                                  const char* name);
 static int                      xmlSecAppCmdLineParamRead       (xmlSecAppCmdLineParamPtr param,
                                                                  const char** argv,
@@ -105,7 +105,7 @@ xmlSecAppCmdLineParamGetTime(xmlSecAppCmdLineParamPtr param, time_t def) {
 
 int
 xmlSecAppCmdLineParamsListParse(xmlSecAppCmdLineParamPtr* params,
-                                xmlSecAppCmdLineParamTopic topics,
+                                xmlSecAppCmdLineTopic topics,
                                 int argc, const char** argv, int pos) {
     xmlSecAppCmdLineParamPtr param;
     int ii;
@@ -159,7 +159,7 @@ xmlSecAppCmdLineParamsListClean(xmlSecAppCmdLineParamPtr* params) {
 
 void
 xmlSecAppCmdLineParamsListPrint(xmlSecAppCmdLineParamPtr* params,
-                                xmlSecAppCmdLineParamTopic topics,
+                                xmlSecAppCmdLineTopic topics,
                                 FILE* output) {
     size_t i;
 
@@ -222,7 +222,7 @@ xmlSecAppCmdLineMatchParam(const char* argvParam, const char* paramName,
 }
 
 static xmlSecAppCmdLineParamPtr
-xmlSecAppCmdLineParamsListFind(xmlSecAppCmdLineParamPtr* params, xmlSecAppCmdLineParamTopic topics,
+xmlSecAppCmdLineParamsListFind(xmlSecAppCmdLineParamPtr* params, xmlSecAppCmdLineTopic topics,
                                 const char* name) {
     size_t i;
     int canHaveNameString;
@@ -367,34 +367,34 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
 #if !defined(_MSC_VER)
 static time_t
 xmlSecAppGetGmtTime(struct tm* timeptr) {
-    time_t t1, t2;
-    struct tm *tm1;
+    long year, month, day;
+    long era, yoe, doy, doe, days, secs;
 
     if(timeptr == NULL) {
         return(-1);
     }
 
-    /* t1 is gmt time "mapped" to localtime as-is */
-    t1 = mktime(timeptr);
-    if(t1 == -1) {
-        fprintf(stderr, "Error: mktime(timeptr) failed.\n");
-        return(-1);
-    }
-    tm1 = gmtime(&t1);
-    if(tm1 == NULL) {
-        fprintf(stderr, "Error: gmtime() failed for time=%lld.\n", (long long)t1);
-        return(-1);
-    }
+    /* Compute the GMT time_t directly from the civil date, independent of the
+     * local timezone. The previous mktime()/gmtime()/mktime() round-trip was
+     * off by the DST delta (1 hour) for times that fall in the local DST
+     * period, because gmtime() sets tm_isdst=0 and the second mktime() then
+     * forces the standard-time offset. */
+    year  = timeptr->tm_year + 1900;
+    month = timeptr->tm_mon + 1;
+    day   = timeptr->tm_mday;
 
-    /* t2 is "mapped" gmt time converted to gmt */
-    t2 = mktime(tm1);
-    if(t2 == -1) {
-        fprintf(stderr, "Error: mktime(tm1) failed.\n");
-        return(-1);
-    }
+    year -= (month <= 2) ? 1 : 0;
+    era   = (year >= 0) ? year / 400 : (year - 399) / 400;
+    yoe   = year - era * 400;
+    doy   = (153 * (month + ((month > 2) ? -3 : 9)) + 2) / 5 + day - 1;
+    doe   = yoe * 365 + yoe / 4 - yoe / 100 + doy;
+    days  = era * 146097 + doe - 719468;
 
-    /* shift t1 back by the (t2 - t1) delta */
-    return(t1 - (t2 - t1));
+    secs  = days * 86400
+          + (long)timeptr->tm_hour * 3600
+          + (long)timeptr->tm_min * 60
+          + timeptr->tm_sec;
+    return((time_t)secs);
 }
 #endif /* !defined(_MSC_VER) */
 
@@ -419,6 +419,21 @@ xmlSecAppCmdLineIntParamRead(const char* str, int* value) {
 
     (*value) = (int)v;
     return(0);
+}
+
+static int
+xmlSecAppIsValidDate(int year, int month, int day) {
+    static const int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    int maxDay;
+
+    if((month < 1) || (month > 12)) {
+        return(0);
+    }
+    maxDay = daysInMonth[month - 1];
+    if((month == 2) && (((year % 4) == 0) && (((year % 100) != 0) || ((year % 400) == 0)))) {
+        maxDay = 29;
+    }
+    return((day >= 1) && (day <= maxDay));
 }
 
 static int
@@ -455,6 +470,12 @@ xmlSecAppCmdLineTimeParamRead(const char* str, time_t* t, int is_gmt_time) {
       || (tm.tm_hour < 0) || (tm.tm_hour > 23)
       || (tm.tm_min  < 0) || (tm.tm_min  > 59)
       || (tm.tm_sec  < 0) || (tm.tm_sec  > 61)) {
+        return(-1);
+    }
+
+    /* reject invalid calendar dates (e.g. "2020-02-30") that the field
+     * range checks above would otherwise let mktime() silently normalize */
+    if(xmlSecAppIsValidDate(tm.tm_year, tm.tm_mon, tm.tm_mday) == 0) {
         return(-1);
     }
 

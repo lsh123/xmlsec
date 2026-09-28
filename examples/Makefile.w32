@@ -41,8 +41,8 @@ XMLSEC_ALIBS  = libxmlsec-nss_a.lib smime3.lib ssl3.lib nss3.lib libnspr4_s.lib 
 
 !IF "$(XMLSEC_DEFAULT_CRYPTO)" == "mscrypto"
 XMLSEC_CFLAGS = $(XMLSEC_CFLAGS) /D "XMLSEC_CRYPTO_MSCRYPTO" /D "XMLSEC_DEFAULT_CRYPTO=\"mscrypto\""
-XMLSEC_SOLIBS = libxmlsec-mscrypto.lib user32.lib gdi32.lib crypt32.lib advapi32.lib
-XMLSEC_ALIBS  = libxmlsec-mscrypto_a.lib user32.lib gdi32.lib crypt32.lib advapi32.lib
+XMLSEC_SOLIBS = libxmlsec-mscrypto.lib user32.lib gdi32.lib Crypt32.lib Advapi32.lib
+XMLSEC_ALIBS  = libxmlsec-mscrypto_a.lib user32.lib gdi32.lib Crypt32.lib Advapi32.lib
 !ENDIF
 
 !IF "$(XMLSEC_DEFAULT_CRYPTO)" == "mscng"
@@ -62,20 +62,20 @@ XMLSEC_LIBS   = $(XMLSEC_LIBS) $(XMLSEC_SOLIBS) libxmlsec.lib libxml2.lib \
 
 # The compiler and its options.
 CC = cl.exe
-CFLAGS = /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /DWIN32_SOCKETS /W1 /MD $(XMLSEC_CFLAGS)
+CFLAGS = /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "WIN32_SOCKETS" /W1 /MD $(XMLSEC_CFLAGS)
 
 # The linker and its options.
 LD = link.exe
 LDFLAGS = /nologo $(XMLSEC_LIBS)
 
 # Optimisation and debug symbols.
-!if "$(DEBUG)" == "1"
+!IF "$(DEBUG)" == "1"
 CFLAGS = $(CFLAGS) /D "_DEBUG" /Od /Z7
 LDFLAGS = $(LDFLAGS) /DEBUG
-!else
+!ELSE
 CFLAGS = $(CFLAGS) /D "NDEBUG" /O2
 LDFLAGS = $(LDFLAGS) /OPT:REF,ICF
-!endif
+!ENDIF
 
 all : $(XMLSEC_OBJS_DIR) $(XMLSEC_EXAMPLES)
 

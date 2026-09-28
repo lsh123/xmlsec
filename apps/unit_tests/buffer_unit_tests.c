@@ -1704,6 +1704,10 @@ test_buffer_create_output_buffer(void) {
     if(xmlOutputBufferClose(out) != 0) {
         testLog("Error: xmlOutputBufferClose failed\n");
     }
+    /* A failed xmlOutputBufferClose() still frees the output buffer (libxml2
+     * behavior), so clearing `out` is safe: no leak, and the done: path will not
+     * double-close it. We do not goto done here because the size/content checks
+     * below are the real verification -- if the failed close lost data, they fail. */
     out = NULL;
 
     if(xmlSecBufferGetSize(buf) != strlen(text)) {

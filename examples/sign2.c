@@ -14,19 +14,20 @@
  * Usage:
  *
  * \code{.sh}
- *      sign2 <xml-doc> <pem-key>
+ *      sign2 <xml-doc> <pem-key> [key-name]
  * \endcode
  *
  * Example:
  *
  * \code{.sh}
- *      ./sign2 sign2-doc.xml rsakey.pem > sign2-res.xml
+ *      ./sign2 sign2-doc.xml rsakey.pem test-key-name > sign2-res.xml
  * \endcode
  *
- * The resulting signature can be validated using the verify1 example:
+ * The resulting signature can be validated using the verify1 example with the
+ * public key file:
  *
  * \code{.sh}
- *      ./verify1 sign2-res.xml rsapub.pem
+ *      ./verify1 sign2-res.xml rsapub.pem test-key-name
  * \endcode
  */
 #include <stdlib.h>
@@ -44,19 +45,20 @@
 #include <xmlsec/crypto.h>
 #include <xmlsec/dl.h>
 
-int sign_file(const char* xml_file, const char* key_file);
+int sign_file(const char* xml_file, const char* key_file, const char* key_name);
 xmlNodePtr create_signature_template(xmlDocPtr doc);
 
 int
 main(int argc, char **argv) {
     int xmlsec_initialized = 0;
     int res = -1;
+    const char* key_name;
 
     assert(argv);
 
-    if(argc != 3) {
+    if((argc != 3) && (argc != 4)) {
         fprintf(stderr, "Error: wrong number of arguments.\n");
-        fprintf(stderr, "Usage: %s <xml-file> <key-file>\n", argv[0]);
+        fprintf(stderr, "Usage: %s <xml-file> <key-file> [key-name]\n", argv[0]);
         return(1);
     }
 
@@ -103,8 +105,11 @@ main(int argc, char **argv) {
     }
     xmlsec_initialized = 1;
 
+    /* use the key name from the command line, or default to the key file name */
+    key_name = (argc == 4) ? argv[3] : argv[2];
+
     /* sign file */
-    if(sign_file(argv[1], argv[2]) < 0) {
+    if(sign_file(argv[1], argv[2], key_name) < 0) {
         goto done;
     }
     res = 0; /* success */
@@ -184,10 +189,11 @@ create_signature_template(xmlDocPtr doc) {
  * dynamically created enveloped signature template.
  * @param xml_file the XML file name.
  * @param key_file the PEM private key file name.
+ * @param key_name the name to assign to the key (used in the signature KeyName).
  * @return 0 on success or a negative value if an error occurs.
  */
 int
-sign_file(const char* xml_file, const char* key_file) {
+sign_file(const char* xml_file, const char* key_file, const char* key_name) {
     xmlDocPtr doc = NULL;
     xmlNodePtr signNode = NULL;
     xmlSecDSigCtxPtr dsigCtx = NULL;
@@ -195,6 +201,7 @@ sign_file(const char* xml_file, const char* key_file) {
 
     assert(xml_file);
     assert(key_file);
+    assert(key_name);
 
 
     /* load doc file */
@@ -233,8 +240,8 @@ sign_file(const char* xml_file, const char* key_file) {
         goto done;
     }
 
-    /* set the key name to the file name; this is only an example */
-    if(xmlSecKeySetName(dsigCtx->signKey, BAD_CAST key_file) < 0) {
+    /* set the key name */
+    if(xmlSecKeySetName(dsigCtx->signKey, BAD_CAST key_name) < 0) {
         fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
         goto done;
     }

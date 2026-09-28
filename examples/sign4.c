@@ -11,7 +11,7 @@
  * an X509 certificate. The signature has one reference using the "ID" attribute
  * of the node to be signed. The key certificate is written in the <dsig:X509Data/> node.
  *
- * This example was developed and tested with OpenSSL crypto library. The
+ * This example was developed and tested with the OpenSSL crypto library. The
  * certificates management policies for another crypto library may break it.
  *
  * Usage:
@@ -78,6 +78,10 @@ main(int argc, char **argv) {
 #ifndef XMLSEC_NO_XSLT
     /* disable all XSLT file and network access */
     xsltSecPrefs = xsltNewSecurityPrefs();
+    if(xsltSecPrefs == NULL) {
+        fprintf(stderr, "Error: failed to create the xslt security prefs\n");
+        goto done;
+    }
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid);

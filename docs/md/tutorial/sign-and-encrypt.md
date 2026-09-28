@@ -48,10 +48,11 @@ A typical signature process includes the following steps:
  * @details Signs the #tmpl_file using a private key from #key_file.
  * @param tmpl_file the signature template file name.
  * @param key_file the PEM private key file name.
+ * @param key_name the name to assign to the key (used in the signature KeyName).
  * @return 0 on success or a negative value if an error occurs.
  */
 int
-sign_file(const char* tmpl_file, const char* key_file) {
+sign_file(const char* tmpl_file, const char* key_file, const char* key_name) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
     xmlSecDSigCtxPtr dsigCtx = NULL;
@@ -59,6 +60,7 @@ sign_file(const char* tmpl_file, const char* key_file) {
 
     assert(tmpl_file);
     assert(key_file);
+    assert(key_name);
 
     /* load template */
     doc = xmlReadFile(tmpl_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT);
@@ -93,8 +95,8 @@ sign_file(const char* tmpl_file, const char* key_file) {
         goto done;
     }
 
-    /* set the key name to the file name; this is only an example */
-    if(xmlSecKeySetName(dsigCtx->signKey, BAD_CAST key_file) < 0) {
+    /* set the key name */
+    if(xmlSecKeySetName(dsigCtx->signKey, BAD_CAST key_name) < 0) {
         fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
         goto done;
     }

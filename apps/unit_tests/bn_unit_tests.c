@@ -898,7 +898,7 @@ test_xmlSecBnAdd_intMinDelta(void) {
         return;
     }
 
-    /* valid: 0xFFFFFFFF - INT_MIN == 0xFFFFFFFF - 2^31 == 0x7FFFFFFF */
+    /* valid: 0xFFFFFFFF + INT_MIN == 0xFFFFFFFF - 2^31 == 0x7FFFFFFF */
     ret = xmlSecBnFromHexString(&bn, BAD_CAST "FFFFFFFF");
     if(ret < 0) {
         testLog("Error: xmlSecBnFromHexString failed for 'FFFFFFFF'\n");
@@ -923,7 +923,7 @@ test_xmlSecBnAdd_intMinDelta(void) {
     }
     xmlFree(str);
 
-    /* underflow: 0x7FFFFFFF < 2^31, so 0x7FFFFFFF - INT_MIN must be rejected */
+    /* underflow: 0x7FFFFFFF < 2^31, so 0x7FFFFFFF + INT_MIN must be rejected */
     ret = xmlSecBnFromHexString(&bn, BAD_CAST "7FFFFFFF");
     if(ret < 0) {
         testLog("Error: xmlSecBnFromHexString failed for '7FFFFFFF'\n");

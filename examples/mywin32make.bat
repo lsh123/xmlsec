@@ -17,4 +17,4 @@ IF DEFINED LIB SET LIB=%XMLSEC_LIB%;%LIB% ELSE SET LIB=%XMLSEC_LIB%
 
 cd /d "%~dp0"
 nmake -f Makefile.w32 %*
-if errorlevel 1 (echo Build failed. & exit /b %ERRORLEVEL%)
+IF ERRORLEVEL 1 (echo Build failed. & exit /b %ERRORLEVEL%)

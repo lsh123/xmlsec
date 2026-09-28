@@ -110,7 +110,7 @@ int main(int argc, const char **argv) {
     }
     if(argc == 2) {
 #if defined(XMLSEC_WINDOWS) && defined(UNICODE)
-        wcstombsRet = wcstombs_s(NULL, testGroupFilterBuf, sizeof(testGroupFilterBuf), argv[1], sizeof(testGroupFilterBuf) - 1);
+        wcstombsRet = wcstombs_s(testGroupFilterBuf, sizeof(testGroupFilterBuf), argv[1], sizeof(testGroupFilterBuf) - 1);
         if(wcstombsRet != 0) {
             fprintf(stderr, "Error: failed to convert the test group filter name\n");
             goto done;
@@ -256,6 +256,10 @@ void testLog(const char* fmt, ...) {
     if (g_testLogBufferLen + (size_t)len + 1 > g_testLogBufferCap) {
         newCap = g_testLogBufferLen + (size_t)len + 1 + 4096;
         newBuf = (char*)realloc(g_testLogBuffer, newCap);
+        /* On realloc failure the original buffer remains valid (realloc only
+         * frees the old block on success), so returning is safe; the message is
+         * dropped only under OOM, and falling back to fprintf() would bypass the
+         * test-log buffer used for pass/fail verification. */
         if (newBuf == NULL) return;
         g_testLogBuffer = newBuf;
         g_testLogBufferCap = newCap;

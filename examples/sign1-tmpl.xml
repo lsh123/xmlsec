@@ -20,7 +20,7 @@ XML Security Library example: Simple signature template file for sign1 example.
     </SignedInfo>
     <SignatureValue/>
     <KeyInfo>
-      <KeyName>rsakey.pem</KeyName>
+      <KeyName></KeyName>
     </KeyInfo>
   </Signature>
 </Envelope>

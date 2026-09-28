@@ -110,6 +110,7 @@ check-unit-tests: $(UNIT_TEST_APP)
 if !XMLSEC_NO_OPENSSL
 FUZZ_TARGETS = \
 	$(ABS_BUILDDIR)/apps/xmlsec_fuzzer$(EXEEXT) \
+	$(ABS_BUILDDIR)/apps/xmlsec_relationship_fuzzer$(EXEEXT) \
 	$(ABS_BUILDDIR)/apps/xmlsec_dsig_verify_fuzzer$(EXEEXT) \
 	$(ABS_BUILDDIR)/apps/xmlsec_keyinfo_fuzzer$(EXEEXT) \
 	$(ABS_BUILDDIR)/apps/xmlsec_keyload_fuzzer$(EXEEXT) \
@@ -117,6 +118,7 @@ FUZZ_TARGETS = \
 else
 FUZZ_TARGETS = \
 	$(ABS_BUILDDIR)/apps/xmlsec_fuzzer$(EXEEXT) \
+	$(ABS_BUILDDIR)/apps/xmlsec_relationship_fuzzer$(EXEEXT) \
 	$(NULL)
 endif
 

@@ -76,7 +76,7 @@ static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Sha1[] = {
     { MS_DEF_PROV,                                      PROV_RSA_FULL },
     { NULL, 0 }
 };
-#endif /* XMLSEC_NO_SHA1*/
+#endif /* XMLSEC_NO_SHA1 */
 
 static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Sha2[] = {
     { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV,                PROV_RSA_AES},
@@ -91,7 +91,7 @@ static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Md5[] = {
     { MS_DEF_PROV,                                      PROV_RSA_FULL },
     { NULL, 0 }
 };
-#endif /* XMLSEC_NO_MD5*/
+#endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_GOST
 static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Gost[] = {
@@ -99,7 +99,7 @@ static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Gost[] = {
     { CRYPTOPRO_CSP,                                    PROV_CRYPTOPRO_GOST },
     { NULL, 0 }
 };
-#endif /* XMLSEC_NO_GOST*/
+#endif /* XMLSEC_NO_GOST */
 
 #ifndef XMLSEC_NO_GOST2012
 static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Gost2012_256[] = {
@@ -111,7 +111,7 @@ static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Gost2012_512[] = {
     { CRYPTOPRO_CSP_512,                                PROV_GOST_2012_512 },
     { NULL, 0 }
 };
-#endif /* XMLSEC_NO_GOST2012*/
+#endif /* XMLSEC_NO_GOST2012 */
 
 static int
 xmlSecMSCryptoDigestCheckId(xmlSecTransformPtr transform) {
@@ -150,7 +150,7 @@ xmlSecMSCryptoDigestCheckId(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGostR3411_94Id)) {
         return(1);
     }
-#endif /* XMLSEC_NO_GOST*/
+#endif /* XMLSEC_NO_GOST */
 
 #ifndef XMLSEC_NO_GOST2012
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGostR3411_2012_256Id)) {
@@ -159,7 +159,7 @@ xmlSecMSCryptoDigestCheckId(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGostR3411_2012_512Id)) {
         return(1);
     }
-#endif /* XMLSEC_NO_GOST2012*/
+#endif /* XMLSEC_NO_GOST2012 */
 
     return(0);
 }
@@ -217,7 +217,7 @@ xmlSecMSCryptoDigestInitialize(xmlSecTransformPtr transform) {
         ctx->alg_id = CALG_MAGPRO_HASH_R3411_94;
         ctx->providers = xmlSecMSCryptoProviderInfo_Gost;
     } else
-#endif /* XMLSEC_NO_GOST*/
+#endif /* XMLSEC_NO_GOST */
 
 #ifndef XMLSEC_NO_GOST2012
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGostR3411_2012_256Id)) {
@@ -228,7 +228,7 @@ xmlSecMSCryptoDigestInitialize(xmlSecTransformPtr transform) {
         ctx->alg_id = CALG_GR3411_2012_512;
         ctx->providers = xmlSecMSCryptoProviderInfo_Gost2012_512;
     } else
-#endif /* XMLSEC_NO_GOST2012*/
+#endif /* XMLSEC_NO_GOST2012 */
 
     {
         xmlSecInvalidTransformError(transform);

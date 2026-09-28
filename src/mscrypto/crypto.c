@@ -92,12 +92,12 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
 
 #ifndef XMLSEC_NO_GOST
     gXmlSecMSCryptoFunctions->keyDataGost2001GetKlass           = xmlSecMSCryptoKeyDataGost2001GetKlass;
-#endif /* XMLSEC_NO_GOST*/
+#endif /* XMLSEC_NO_GOST */
 
 #ifndef XMLSEC_NO_GOST2012
     gXmlSecMSCryptoFunctions->keyDataGostR3410_2012_256GetKlass = xmlSecMSCryptoKeyDataGost2012_256GetKlass;
     gXmlSecMSCryptoFunctions->keyDataGostR3410_2012_512GetKlass = xmlSecMSCryptoKeyDataGost2012_512GetKlass;
-#endif /* XMLSEC_NO_GOST2012*/
+#endif /* XMLSEC_NO_GOST2012 */
 
 #ifndef XMLSEC_NO_X509
     gXmlSecMSCryptoFunctions->keyDataX509GetKlass               = xmlSecMSCryptoKeyDataX509GetKlass;
@@ -504,10 +504,10 @@ xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
             return (res);
         }
 
-        /* check errors */
+        /* CryptoAPI sets the last error to an NTE_* code, so compare against it directly. */
         dwLastError = GetLastError();
-        switch(HRESULT_FROM_WIN32(dwLastError)) {
-        case NTE_BAD_KEYSET:
+        switch(dwLastError) {
+        case (DWORD)NTE_BAD_KEYSET:
             /* This error can indicate that a newly installed provider
              * does not have a usable key container yet. It needs to be
              * created, and then we have to try again CryptAcquireContext.
@@ -524,7 +524,7 @@ xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
             }
             break;
 
-        case NTE_EXISTS:
+        case (DWORD)NTE_EXISTS:
             /* If we can, try our container */
             if(bUseXmlSecContainer == TRUE) {
                 ret = CryptAcquireContext(&res,
@@ -561,6 +561,14 @@ xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
  * Utils
  *
   *****************************************************************************/
+/**
+ * @brief Reverses the byte order of @p src into @p dst.
+ * @details Copies @p size bytes from @p src to @p dst in reversed order.
+ * @param src the source buffer.
+ * @param dst the destination buffer.
+ * @param size the number of bytes to reverse.
+ * @return 0 on success or a negative value otherwise.
+ */
 int
 xmlSecMSCryptoConvertEndian(const xmlSecByte * src, xmlSecByte * dst, xmlSecSize size) {
     xmlSecByte * p;
@@ -576,6 +584,13 @@ xmlSecMSCryptoConvertEndian(const xmlSecByte * src, xmlSecByte * dst, xmlSecSize
     return (0);
 }
 
+/**
+ * @brief Reverses the byte order of @p buf in place.
+ * @details Byte-swaps the first @p size bytes of @p buf in place.
+ * @param buf the buffer to reverse in place.
+ * @param size the number of bytes to reverse.
+ * @return 0 on success or a negative value otherwise.
+ */
 int
 xmlSecMSCryptoConvertEndianInPlace(xmlSecByte * buf, xmlSecSize size) {
     xmlSecByte * p;

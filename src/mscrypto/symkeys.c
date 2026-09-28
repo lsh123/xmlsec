@@ -191,13 +191,13 @@ xmlSecMSCryptoSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
 
 #ifndef XMLSEC_NO_AES
     if(klass == xmlSecMSCryptoKeyDataAesId) {
-                return(1);
+        return(1);
     } else
 #endif /* XMLSEC_NO_AES */
 
 #ifndef XMLSEC_NO_HMAC
     if(klass == xmlSecMSCryptoKeyDataHmacId) {
-                return(1);
+        return(1);
     } else
 #endif /* XMLSEC_NO_HMAC */
 
@@ -333,8 +333,8 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
     /* Skip coefficient */
     ptr += bitLen / 16;
 
-    /* Convert privateExponent to 1 */
-    for (n = 0; n < (bitLen / 16); n++) {
+    /* Convert privateExponent to 1 (the field is bitLen/8 bytes long) */
+    for (n = 0; n < (bitLen / 8); n++) {
         if (n == 0) ptr[n] = 1;
         else ptr[n] = 0;
     }
@@ -497,7 +497,10 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
         xmlSecMSCryptoError2("CryptGenRandom", NULL, "rndBlobSize=%lu", rndBlobSize);
         goto done;
     }
-    /* aleksey: why are we doing this? */
+
+    /* Workaround: MSCrypto's simple-blob import can corrupt the imported
+     * key if the random padding area contains zero bytes, so replace any
+     * zeros with 0x01. */
     for (n = 0; n < rndBlobSize; n++) {
         if (pbPtr[n] == 0) pbPtr[n] = 1;
     }
@@ -626,7 +629,7 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataDesKlass = {
     /* get info */
     xmlSecMSCryptoSymKeyDataGetType,            /* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecMSCryptoSymKeyDataGetSize,            /* xmlSecKeyDataGetSizeMethod getSize; */
-        NULL,                                   /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecMSCryptoSymKeyDataXmlRead,            /* xmlSecKeyDataXmlReadMethod xmlRead; */
@@ -680,7 +683,7 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataHmacKlass = {
     /* get info */
     xmlSecMSCryptoSymKeyDataGetType,            /* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecMSCryptoSymKeyDataGetSize,            /* xmlSecKeyDataGetSizeMethod getSize; */
-        NULL,                                   /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecMSCryptoSymKeyDataXmlRead,            /* xmlSecKeyDataXmlReadMethod xmlRead; */

@@ -148,6 +148,7 @@ xmlSecMSCryptoKeysStoreInitialize(xmlSecKeyStorePtr store) {
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCryptoKeysStoreId), -1);
 
     ss = xmlSecMSCryptoKeysStoreGetCtx(store);
+    xmlSecAssert2(ss != NULL, -1);
     xmlSecAssert2((*ss == NULL), -1);
 
     *ss = xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId);
@@ -167,9 +168,14 @@ xmlSecMSCryptoKeysStoreFinalize(xmlSecKeyStorePtr store) {
     xmlSecAssert(xmlSecKeyStoreCheckId(store, xmlSecMSCryptoKeysStoreId));
 
     ss = xmlSecMSCryptoKeysStoreGetCtx(store);
-    xmlSecAssert((ss != NULL) && (*ss != NULL));
+    xmlSecAssert(ss != NULL);
 
-    xmlSecKeyStoreDestroy(*ss);
+    /* (*ss) may be NULL if Initialize failed (e.g. OOM in xmlSecKeyStoreCreate);
+     * xmlSecKeyStoreCreate still calls finalize in that case, so guard against it. */
+    if((*ss) != NULL) {
+        xmlSecKeyStoreDestroy(*ss);
+        (*ss) = NULL;
+    }
 }
 
 static PCCERT_CONTEXT
@@ -178,7 +184,7 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
     LPCTSTR storeName;
     HCERTSTORE hStoreHandle = NULL;
     PCCERT_CONTEXT pCertContext = NULL;
-    LPTSTR wcName = NULL;
+    LPTSTR tstrName = NULL;
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCryptoKeysStoreId), NULL);
     xmlSecAssert2(name != NULL, NULL);
@@ -207,9 +213,9 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
         return(NULL);
     }
 
-    /* convert name to unicode */
-    wcName = xmlSecWin32ConvertUtf8ToTstr(name);
-    if(wcName == NULL) {
+    /* convert name to TSTR */
+    tstrName = xmlSecWin32ConvertUtf8ToTstr(name);
+    if(tstrName == NULL) {
         xmlSecInternalError("xmlSecWin32ConvertUtf8ToTstr(name)",
                             xmlSecKeyStoreGetName(store));
         CertCloseStore(hStoreHandle, 0);
@@ -220,7 +226,7 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
     if(NULL == pCertContext) {
         pCertContext = xmlSecMSCryptoX509FindCertBySubject(
             hStoreHandle,
-            wcName,
+            tstrName,
             X509_ASN_ENCODING | PKCS_7_ASN_ENCODING);
     }
 
@@ -238,7 +244,7 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
         if (lpwName == NULL) {
             xmlSecInternalError("xmlSecWin32ConvertUtf8ToUnicode(name)",
                                 xmlSecKeyStoreGetName(store));
-            xmlFree(wcName);
+            xmlFree(tstrName);
             CertCloseStore(hStoreHandle, 0);
             return(NULL);
         }
@@ -262,7 +268,7 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
             if(pbFriendlyName == NULL) {
                 xmlSecMallocError(dwPropSize, xmlSecKeyStoreGetName(store));
                 xmlFree(lpwName);
-                xmlFree(wcName);
+                xmlFree(tstrName);
                 CertCloseStore(hStoreHandle, 0);
                 CertFreeCertificateContext(pCertCtxIter);
                 return(NULL);
@@ -297,7 +303,7 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
             X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
             0,
             CERT_FIND_SUBJECT_STR,
-            wcName,
+            tstrName,
             NULL);
     }
 
@@ -314,7 +320,7 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
 
     /* todo: is it a right idea to close store if we have a handle to
      * a cert in this store? */
-    xmlFree(wcName);
+    xmlFree(tstrName);
     CertCloseStore(hStoreHandle, 0);
     return(pCertContext);
 }
@@ -367,8 +373,7 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
         /* set cert in x509 data */
         x509Data = xmlSecKeyDataCreate(xmlSecMSCryptoKeyDataX509Id);
         if(x509Data == NULL) {
-            xmlSecInternalError("xmlSecKeyDataCreate",
-                                xmlSecKeyDataGetName(x509Data));
+            xmlSecInternalError("xmlSecKeyDataCreate", NULL);
             goto done;
         }
 

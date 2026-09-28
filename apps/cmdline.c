@@ -367,8 +367,9 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
 #if !defined(_MSC_VER)
 static time_t
 xmlSecAppGetGmtTime(struct tm* timeptr) {
-    long year, month, day;
-    long era, yoe, doy, doe, days, secs;
+    long long year, month, day;
+    long long era, yoe, doy, doe, days, secs;
+    time_t res;
 
     if(timeptr == NULL) {
         return(-1);
@@ -390,11 +391,15 @@ xmlSecAppGetGmtTime(struct tm* timeptr) {
     doe   = yoe * 365 + yoe / 4 - yoe / 100 + doy;
     days  = era * 146097 + doe - 719468;
 
-    secs  = days * 86400
-          + (long)timeptr->tm_hour * 3600
-          + (long)timeptr->tm_min * 60
+    secs  = days * 86400LL
+          + (long long)timeptr->tm_hour * 3600LL
+          + (long long)timeptr->tm_min * 60LL
           + timeptr->tm_sec;
-    return((time_t)secs);
+    res = (time_t)secs;
+    if(((long long)res) != secs) {
+        return(-1);
+    }
+    return(res);
 }
 #endif /* !defined(_MSC_VER) */
 

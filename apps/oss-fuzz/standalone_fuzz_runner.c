@@ -24,6 +24,9 @@
 
 #if defined(_WIN32) && defined(UNICODE)
 #include <wchar.h>
+/* Prototype for the Windows Unicode entry point; satisfies -Wmissing-prototypes
+ * on MinGW, which (unlike MSVC) does not treat wmain as a built-in entry point. */
+int wmain(int argc, wchar_t* argv[]);
 #endif /* defined(_WIN32) && defined(UNICODE) */
 
 /* Declared by the fuzzer harness (xmlsec_target.c / xmlsec_dsig_verify_target.c /

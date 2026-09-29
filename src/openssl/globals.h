@@ -21,6 +21,7 @@
 #include <stdint.h>
 
 #include <openssl/crypto.h>
+#include <openssl/err.h>
 
 #ifndef IN_XMLSEC_CRYPTO
 #define IN_XMLSEC_CRYPTO

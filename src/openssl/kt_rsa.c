@@ -749,6 +749,7 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
     } else {
         /* decrypt */
         BIGNUM * bn;
+        xmlSecSize outResSize;
         int outLen;
 
         ret = RSA_private_decrypt(inLen, inBuf, outBuf, rsa, RSA_NO_PADDING);
@@ -797,9 +798,19 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
             OPENSSL_cleanse(outBuf, (*outSize));
             return(-1);
         }
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outResSize, return(-1), NULL);
+
+        /*
+         * cleanse the tail of the output buffer that held the raw
+         * OAEP-encoded message; only the first 'ret' bytes contain the
+         * recovered plaintext
+         */
+        if((*outSize) > outResSize) {
+            OPENSSL_cleanse(outBuf + outResSize, ((*outSize) - outResSize));
+        }
 
         /* success */
-        XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, (*outSize), return(-1), NULL);
+        (*outSize) = outResSize;
     }
 
     /* success */

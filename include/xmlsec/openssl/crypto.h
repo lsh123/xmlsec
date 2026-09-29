@@ -61,12 +61,21 @@
  *
 *****************************************************************************/
 #if defined(OPENSSL_IS_BORINGSSL) || defined(OPENSSL_IS_AWSLC)
+/*
+ * BoringSSL and AWS-LC do not provide a usable opensslconf.h, so the
+ * OPENSSL_NO_* capability mappings below are not available for them and the
+ * missing features have to be listed here explicitly (their opensslconf.h
+ * defines OPENSSL_NO_CAMELLIA, OPENSSL_NO_GOST and OPENSSL_NO_RMD160).
+ */
 #define XMLSEC_NO_RSA_OAEP              1
 #define XMLSEC_NO_DH                    1
 #define XMLSEC_NO_DSA                   1
 #define XMLSEC_NO_SHA3                  1
 #define XMLSEC_NO_CAMELLIA              1
 #define XMLSEC_NO_CHACHA20              1
+#define XMLSEC_NO_GOST                  1
+#define XMLSEC_NO_GOST2012              1
+#define XMLSEC_NO_RIPEMD160             1
 #endif /* defined(OPENSSL_IS_BORINGSSL) || defined(OPENSSL_IS_AWSLC) */
 
 #if defined(LIBRESSL_VERSION_NUMBER)
@@ -204,6 +213,10 @@ XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateReadFileBio (const ch
 #ifdef OPENSSL_NO_DES
 #define XMLSEC_NO_DES       1
 #endif /* OPENSSL_NO_DES */
+
+#ifdef OPENSSL_NO_DH
+#define XMLSEC_NO_DH        1
+#endif /* OPENSSL_NO_DH */
 
 #ifdef OPENSSL_NO_DSA
 #define XMLSEC_NO_DSA       1

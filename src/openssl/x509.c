@@ -254,9 +254,15 @@ xmlSecOpenSSLKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, X509* cert) {
 
 
     /* check if for some reasons same cert is used */
-    if((ctx->keyCert != NULL) && ((cert == ctx->keyCert) || (X509_cmp(cert, ctx->keyCert) == 0))) {
-        X509_free(cert);  /* caller expects data to own the cert on success. */
-        return(0);
+    if(ctx->keyCert != NULL) {
+        if(cert == ctx->keyCert) {
+            X509_free(cert);  /* caller expects data to own the cert on success, this is required for refcounted objects. */
+            return(0);
+        }
+        if(X509_cmp(cert, ctx->keyCert) == 0) {
+            X509_free(cert);  /* caller expects data to own the cert on success. */
+            return(0);
+        }
     }
     xmlSecAssert2(ctx->keyCert == NULL, -1);
 
@@ -1420,6 +1426,15 @@ xmlSecOpenSSLX509Asn1TimeToTime(const ASN1_TIME * t, time_t * res) {
     }
 
     (*res) = timegm(&tm);
+    if((*res) == (time_t)-1) {
+        /*
+         * timegm() returns (time_t)-1 on failure. A (time_t)-1 is also a valid
+         * time (1969-12-31 23:59:59 UTC), but a certificate date is never in
+         * 1969, so treat it as a conversion error.
+         */
+        xmlSecOpenSSLError("timegm", NULL);
+        return(-1);
+    }
     return (0);
 }
 
@@ -1429,6 +1444,7 @@ int
 xmlSecOpenSSLX509Asn1TimeToTime(const ASN1_TIME * t, time_t * res) {
     struct tm tm;
     int offset;
+    time_t utcTime;
 
     xmlSecAssert2(t != NULL, -1);
     xmlSecAssert2(res != NULL, -1);
@@ -1498,7 +1514,32 @@ xmlSecOpenSSLX509Asn1TimeToTime(const ASN1_TIME * t, time_t * res) {
     }
 #undef g2
 
-    (*res) = (timegm(&tm) - offset * 60);
+    /*
+     * validate the parsed fields; out-of-range values make timegm() fail and
+     * that failure is not reliably detectable from its return value on all
+     * platforms (e.g. Windows)
+     */
+    if((tm.tm_mon < 0) || (tm.tm_mon > 11) ||
+       (tm.tm_mday < 1) || (tm.tm_mday > 31) ||
+       (tm.tm_hour < 0) || (tm.tm_hour > 23) ||
+       (tm.tm_min < 0) || (tm.tm_min > 59) ||
+       (tm.tm_sec < 0) || (tm.tm_sec > 61)
+    ) {
+        xmlSecOpenSSLError("invalid ASN1_TIME fields", NULL);
+        return(-1);
+    }
+
+    utcTime = timegm(&tm);
+    if(utcTime == (time_t)-1) {
+        /*
+         * timegm() returns (time_t)-1 on failure. A (time_t)-1 is also a valid
+         * time (1969-12-31 23:59:59 UTC), but a certificate date is never in
+         * 1969, so treat it as a conversion error.
+         */
+        xmlSecOpenSSLError("timegm", NULL);
+        return(-1);
+    }
+    (*res) = utcTime - (time_t)(offset * 60);
     return (0);
 }
 #endif /* XMLSEC_OPENSSL_NO_ASN1_TIME_TO_TM */
@@ -1511,6 +1552,8 @@ xmlSecOpenSSLVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, 
     xmlSecKeyDataPtr keyValue;
     X509* cert;
     X509* keyCert;
+    time_t origNotValidBefore;
+    time_t origNotValidAfter;
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), -1);
@@ -1570,6 +1613,15 @@ xmlSecOpenSSLVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, 
         xmlSecKeyDataDestroy(keyValue);
         return(-1);
     }
+    /*
+     * from this point on we mutate the caller's key (set its value and validity
+     * times). save the original validity times so we can restore the key if a
+     * later step fails; the key value is guaranteed to be NULL here (see the
+     * check at the beginning of this function)
+     */
+    origNotValidBefore = key->notValidBefore;
+    origNotValidAfter = key->notValidAfter;
+
     ret = xmlSecKeySetValue(key, keyValue);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeySetValue", xmlSecKeyDataGetName(data));
@@ -1583,7 +1635,7 @@ xmlSecOpenSSLVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, 
         ret = xmlSecOpenSSLX509Asn1TimeToTime(X509_get0_notBefore(ctx->keyCert), &(key->notValidBefore));
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLX509Asn1TimeToTime(notValidBefore)", xmlSecKeyDataGetName(data));
-            return(-1);
+            goto restore;
         }
     } else {
         key->notValidBefore = 0;
@@ -1592,7 +1644,7 @@ xmlSecOpenSSLVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, 
         ret = xmlSecOpenSSLX509Asn1TimeToTime(X509_get0_notAfter(ctx->keyCert), &(key->notValidAfter));
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLX509Asn1TimeToTime(notValidAfter)", xmlSecKeyDataGetName(data));
-            return(-1);
+            goto restore;
         }
     } else {
         key->notValidAfter = 0;
@@ -1604,11 +1656,22 @@ xmlSecOpenSSLVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, 
     ret = xmlSecKeyAdoptData(key, data);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyAdoptData", xmlSecKeyDataGetName(data));
-        return(-1);
+        goto restore;
     }
 
     /* success: cert found and data was adopted */
     return(1);
+
+restore:
+    /* restore the key to its original state */
+    ret = xmlSecKeySetValue(key, NULL);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeySetValue", xmlSecKeyDataGetName(data));
+        /* continue restoring the original state even if setting the value to NULL failed */
+    }
+    key->notValidBefore = origNotValidBefore;
+    key->notValidAfter = origNotValidAfter;
+    return(-1);
 }
 
 /**

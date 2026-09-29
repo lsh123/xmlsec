@@ -67,6 +67,7 @@ struct _xmlSecOpenSSLKdfCtx {
 
     xmlSecBuffer buffer;
     xmlSecBuffer buffer2;
+    xmlSecBuffer keyBuffer;
     unsigned int param1;
 };
 XMLSEC_TRANSFORM_DECLARE(OpenSSLKdf, xmlSecOpenSSLKdfCtx)
@@ -190,6 +191,14 @@ xmlSecOpenSSLKdfInitialize(xmlSecTransformPtr transform) {
     }
     ctx->buffer2.flags |= XMLSEC_BUFFER_FLAG_SECURE;
 
+    ret = xmlSecBufferInitialize(&(ctx->keyBuffer), 0);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(keyBuffer)", NULL);
+        xmlSecOpenSSLKdfFinalize(transform);
+        return(-1);
+    }
+    ctx->keyBuffer.flags |= XMLSEC_BUFFER_FLAG_SECURE;
+
     /* done */
     return(0);
 }
@@ -218,6 +227,7 @@ xmlSecOpenSSLKdfFinalize(xmlSecTransformPtr transform) {
 
     xmlSecBufferFinalize(&(ctx->buffer));
     xmlSecBufferFinalize(&(ctx->buffer2));
+    xmlSecBufferFinalize(&(ctx->keyBuffer));
 
     OPENSSL_cleanse(ctx, sizeof(xmlSecOpenSSLKdfCtx));
 }
@@ -247,6 +257,7 @@ xmlSecOpenSSLKdfSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecBufferPtr buffer;
     xmlSecByte * keyData;
     xmlSecSize keySize;
+    int ret;
 
     xmlSecAssert2(xmlSecOpenSSLKdfCheckId(transform), -1);
     xmlSecAssert2(((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt)), -1);
@@ -272,6 +283,16 @@ xmlSecOpenSSLKdfSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         xmlSecInvalidZeroKeyDataSizeError(xmlSecTransformGetName(transform));
         return(-1);
     }
+
+    /* copy the key into a ctx-owned buffer so the OSSL_PARAM pointer remains
+     * valid until EVP_KDF_derive() is called */
+    ret = xmlSecBufferSetData(&(ctx->keyBuffer), keyData, keySize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferSetData(key)", xmlSecTransformGetName(transform));
+        return(-1);
+    }
+    keyData = xmlSecBufferGetData(&(ctx->keyBuffer));
+    xmlSecAssert2(keyData != NULL, -1);
 
     /* set key */
     if(ctx->paramsPos >= XMLSEC_OPENSSL_KDF_MAX_PARAMS) {

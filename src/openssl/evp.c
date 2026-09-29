@@ -336,6 +336,7 @@ xmlSecOpenSSLEvpKeyDataGetKeySize(xmlSecKeyDataPtr data) {
 #endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_DH
+    case EVP_PKEY_DH:
     case EVP_PKEY_DHX:
         {
             DH* dh = NULL;
@@ -502,6 +503,7 @@ xmlSecOpenSSLEvpKeyDataGetType(xmlSecKeyDataPtr data) {
 #endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_DH
+    case EVP_PKEY_DH:
     case EVP_PKEY_DHX:
         {
             DH* dh = NULL;
@@ -700,6 +702,7 @@ xmlSecOpenSSLEvpKeyGetKeyDataId(EVP_PKEY *pKey) {
 
     switch(xmlSecOpenSSLEvpKeyGetId(pKey)) {
 #ifndef XMLSEC_NO_DH
+    case EVP_PKEY_DH:
     case EVP_PKEY_DHX:
         return (xmlSecOpenSSLKeyDataDhId);
 #endif /* XMLSEC_NO_DH */
@@ -1710,6 +1713,8 @@ typedef struct _xmlSecOpenSSLKeyValueDh {
  *
  * The DH key type uses PKCS#3 format which saves p and g, but not the 'q' value. The DHX key
  * type uses X9.42 format which saves the value of 'q' and this must be used for FIPS186-4.
+ * Keys in both formats are accepted; the 'DHX' name is used to create new keys because it
+ * supports the 'q' value.
  */
 #define XMLSEC_OPENSSL_DH_EVP_NAME              "DHX"
 
@@ -1795,7 +1800,11 @@ int
 xmlSecOpenSSLKeyDataDhAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDhId), -1);
     xmlSecAssert2(pKey != NULL, -1);
-    xmlSecAssert2(EVP_PKEY_base_id(pKey) == EVP_PKEY_DHX, -1);
+    /*
+     * DH keys can have two types: EVP_PKEY_DH (PKCS#3 form, no 'q' value) and
+     * EVP_PKEY_DHX (X9.42 form, with 'q' value).
+     */
+    xmlSecAssert2((EVP_PKEY_base_id(pKey) == EVP_PKEY_DH) || (EVP_PKEY_base_id(pKey) == EVP_PKEY_DHX), -1);
 
     return(xmlSecOpenSSLEvpKeyDataAdoptEvp(data, pKey));
 }
@@ -1879,7 +1888,7 @@ xmlSecOpenSSLKeyDataDhGetDh(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDhId), NULL);
 
     pKey = xmlSecOpenSSLKeyDataDhGetEvp(data);
-    xmlSecAssert2((pKey == NULL) || (EVP_PKEY_base_id(pKey) == EVP_PKEY_DHX), NULL);
+    xmlSecAssert2((pKey == NULL) || (EVP_PKEY_base_id(pKey) == EVP_PKEY_DH) || (EVP_PKEY_base_id(pKey) == EVP_PKEY_DHX), NULL);
 
     return((pKey != NULL) ? EVP_PKEY_get0_DH(pKey) : NULL);
 }
@@ -2046,8 +2055,7 @@ xmlSecOpenSSLKeyDataDhGetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDhPtr
     }
     ret = EVP_PKEY_get_bn_param(pKey, OSSL_PKEY_PARAM_FFC_Q, &(dhKeyValue->q));
     if((ret != 1) || (dhKeyValue->q == NULL)) {
-        xmlSecOpenSSLError("EVP_PKEY_get_bn_param(q)", xmlSecKeyDataGetName(data));
-        return(-1);
+        /* ignore the error since q is optional for DH keys in the PKCS#3 form */
     }
     ret = EVP_PKEY_get_bn_param(pKey, OSSL_PKEY_PARAM_FFC_G, &(dhKeyValue->generator));
     if((ret != 1) || (dhKeyValue->generator == NULL)) {
@@ -2839,6 +2847,7 @@ xmlSecOpenSSLKeyDataEcSetValue(xmlSecKeyDataPtr data, const xmlChar* curveOid, x
         xmlSecOpenSSLError("EC_POINT_new",  xmlSecKeyDataGetName(data));
         goto done;
     }
+    /* EC_POINT_oct2point() validates that the point is on the curve */
     ret = EC_POINT_oct2point(group, point, pubkeyData, pubkeySize, NULL);
     if(ret != 1) {
         xmlSecOpenSSLError("EC_POINT_oct2point",  xmlSecKeyDataGetName(data));

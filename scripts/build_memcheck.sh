@@ -22,12 +22,11 @@ parallel_jobs=${PARALLEL_JOBS:-12}
 tmp_folder=${TMPFOLDER:-/tmp}
 
 echo "============== Starting memcheck for ${crypto} using source root '${top_dir}'"
-cd "$top_dir"
 rm -rf "${tmp_folder}"/xmlsec-test*
 if [ -f Makefile ]; then
     make distclean
 fi
-autoreconf -i -f
-./configure --enable-development --enable-legacy-features --with-default-crypto=${crypto} "$@"
+autoreconf -i -f "${top_dir}"
+${top_dir}/configure --enable-development --enable-legacy-features --with-default-crypto=${crypto} "$@"
 make -j${parallel_jobs}
 make memcheck-crypto-${crypto}

@@ -1377,31 +1377,29 @@ xmlSecOpenSSLAppPkcs12LoadMemory(
  * in format=xmlSecKeyDataFormatPkcs12.
  *
  * @param bio the PKCS12 key bio.
- * @param pwd the PKCS12 file password.
- * @param pwdCallback the password callback.
+ * @param pwd the PKCS12 file password. If NULL, the password is obtained
+ *        from the password callback.
+ * @param pwdCallback the password callback, used when pwd is NULL.
  * @param pwdCallbackCtx the user context for password callback.
  * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
-                           void* pwdCallback XMLSEC_ATTRIBUTE_UNUSED,
-                           void* pwdCallbackCtx XMLSEC_ATTRIBUTE_UNUSED) {
+                            void* pwdCallback,
+                            void* pwdCallbackCtx) {
 
     PKCS12 *p12 = NULL;
     EVP_PKEY * pKey = NULL;
     X509 * keyCert = NULL;
     STACK_OF(X509) * chain = NULL;
     xmlSecKeyPtr res = NULL;
+    pem_password_cb* pwdCb = NULL;
+    char pwdBuf[2048];
     size_t pwdSize;
     int pwdLen;
     int ret;
 
     xmlSecAssert2(bio != NULL, NULL);
-    XMLSEC_UNREFERENCED(pwdCallback);
-    XMLSEC_UNREFERENCED(pwdCallbackCtx);
-
-    pwdSize = (pwd != NULL) ? strlen(pwd) : 0;
-    XMLSEC_SAFE_CAST_SIZE_T_TO_INT(pwdSize, pwdLen, return(NULL), NULL);
 
     XMLSEC_OPENSSL_PUSH_LIB_CTX(goto done);
     p12 = d2i_PKCS12_bio(bio, NULL);
@@ -1410,6 +1408,24 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
         xmlSecOpenSSLError("d2i_PKCS12_bio", NULL);
         goto done;
     }
+
+    /*
+     * If the password is not given explicitly, try to obtain it
+     * from the password callback.
+     */
+    if((pwd == NULL) && (pwdCallback != NULL)) {
+        pwdCb = XMLSEC_PTR_TO_FUNC(pem_password_cb, pwdCallback);
+        ret = pwdCb(pwdBuf, (int)sizeof(pwdBuf), 0, pwdCallbackCtx);
+        if((ret < 0) || (ret >= (int)sizeof(pwdBuf))) {
+            xmlSecOpenSSLError("pwdCallback", NULL);
+            goto done;
+        }
+        pwdBuf[ret] = '\0';
+        pwd = pwdBuf;
+    }
+
+    pwdSize = (pwd != NULL) ? strlen(pwd) : 0;
+    XMLSEC_SAFE_CAST_SIZE_T_TO_INT(pwdSize, pwdLen, goto done, NULL);
 
     XMLSEC_OPENSSL_PUSH_LIB_CTX(goto done);
     ret = PKCS12_verify_mac(p12, pwd, ((pwd != NULL) ? pwdLen : 0));
@@ -1450,6 +1466,7 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
     /* success! */
 
 done:
+    OPENSSL_cleanse(pwdBuf, sizeof(pwdBuf));
     if(chain != NULL) {
         sk_X509_pop_free(chain, X509_free);
     }

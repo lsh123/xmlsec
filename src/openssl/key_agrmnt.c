@@ -385,6 +385,11 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
         xmlSecOpenSSLError("EVP_PKEY_derive_init", NULL);
         goto done;
     }
+    /*
+     * EVP_PKEY_derive_set_peer() validates the peer key: it checks that the peer
+     * has the same key type and matching parameters (OpenSSL < 3.0), and performs
+     * a public key check (OpenSSL 3.0+).
+     */
     ret = EVP_PKEY_derive_set_peer(pKeyCtx, otherPubKey);
     if(ret != 1) {
         xmlSecOpenSSLError("EVP_PKEY_derive_set_peer", NULL);

@@ -1047,7 +1047,7 @@ xmlSecTransformHmacWriteOutput(const xmlSecByte * hmac, xmlSecSize hmacSizeInBit
     xmlSecAssert2(hmacSizeInBits > 0, -1);
     xmlSecAssert2(out != NULL, -1);
 
-    hmacSize = (hmacSizeInBits + 7) / 8;
+    hmacSize = XMLSEC_BITS_TO_BYTES(hmacSizeInBits);
     xmlSecAssert2(hmacSize > 0, -1);
     xmlSecAssert2(hmacSize <= hmacMaxSizeInBytes, -1);
 
@@ -1086,7 +1086,7 @@ xmlSecTransformHmacVerify(const xmlSecByte* data, xmlSecSize dataSize,
     xmlSecAssert2(hmac != NULL, -1);
     xmlSecAssert2(hmacSizeInBits > 0, -1);
 
-    hmacSize = (hmacSizeInBits + 7) / 8;
+    hmacSize = XMLSEC_BITS_TO_BYTES(hmacSizeInBits);
     xmlSecAssert2(hmacSize > 0, -1);
     xmlSecAssert2(hmacSize <= hmacMaxSizeInBytes, -1);
 

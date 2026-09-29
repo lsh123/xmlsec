@@ -209,7 +209,7 @@ xmlSecGnuTLSHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
             xmlSecTransformGetName(transform));
         return(-1);
     }
-    xmlSecAssert2(XMLSEC_TRANSFORM_HMAC_BITS_TO_BYTES(ctx->hmacSizeInBits) <= XMLSEC_TRANSFORM_HMAC_MAX_OUTPUT_SIZE, -1);
+    xmlSecAssert2(XMLSEC_BITS_TO_BYTES(ctx->hmacSizeInBits) <= XMLSEC_TRANSFORM_HMAC_MAX_OUTPUT_SIZE, -1);
 
     return(0);
 }
@@ -370,9 +370,9 @@ xmlSecGnuTLSHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
         /* HMACOutputLength can only truncate the digest, not extend it past the bytes we have */
         {
             xmlSecSize dgstSize = (xmlSecSize)gnutls_hmac_get_len(ctx->hmacAlgo);
-            if(XMLSEC_TRANSFORM_HMAC_BITS_TO_BYTES(ctx->hmacSizeInBits) > dgstSize) {
+            if(XMLSEC_BITS_TO_BYTES(ctx->hmacSizeInBits) > dgstSize) {
                 xmlSecInvalidSizeMoreThanError("HMAC output length",
-                    XMLSEC_TRANSFORM_HMAC_BITS_TO_BYTES(ctx->hmacSizeInBits), dgstSize,
+                    XMLSEC_BITS_TO_BYTES(ctx->hmacSizeInBits), dgstSize,
                     xmlSecTransformGetName(transform));
                 return(-1);
             }

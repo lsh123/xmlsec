@@ -24,6 +24,7 @@
 
 #include <xmlsec/gnutls/crypto.h>
 
+#include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
 
 /******************************************************************************
@@ -129,6 +130,7 @@ xmlSecGnuTLSSymKeyDataBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 static int
 xmlSecGnuTLSSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecBufferPtr buffer;
+    xmlSecSize sizeBytes;
 
     xmlSecAssert2(xmlSecGnuTLSSymKeyDataCheckId(data), -1);
     xmlSecAssert2(sizeBits > 0, -1);
@@ -141,7 +143,9 @@ xmlSecGnuTLSSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSe
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
     xmlSecAssert2(buffer != NULL, -1);
 
-    return(xmlSecGnuTLSGenerateRandom(buffer, (sizeBits + 7) / 8));
+    sizeBytes = XMLSEC_BITS_TO_BYTES(sizeBits);
+    xmlSecAssert2(sizeBytes > 0, -1);
+    return(xmlSecGnuTLSGenerateRandom(buffer, sizeBytes));
 }
 
 static xmlSecKeyDataType

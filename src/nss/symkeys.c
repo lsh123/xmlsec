@@ -24,6 +24,7 @@
 
 #include <xmlsec/nss/crypto.h>
 
+#include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
 
 /******************************************************************************
@@ -129,6 +130,7 @@ xmlSecNssSymKeyDataBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 static int
 xmlSecNssSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecBufferPtr buffer;
+    xmlSecSize sizeBytes;
 
     xmlSecAssert2(xmlSecNssSymKeyDataCheckId(data), -1);
     xmlSecAssert2(sizeBits > 0, -1);
@@ -136,7 +138,10 @@ xmlSecNssSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKe
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
     xmlSecAssert2(buffer != NULL, -1);
 
-    return(xmlSecNssGenerateRandom(buffer, (sizeBits + 7) / 8));
+    sizeBytes = XMLSEC_BITS_TO_BYTES(sizeBits);
+    xmlSecAssert2(sizeBytes > 0, -1);
+
+    return(xmlSecNssGenerateRandom(buffer, sizeBytes));
 }
 
 static xmlSecKeyDataType

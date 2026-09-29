@@ -970,7 +970,7 @@ xmlSecGnuTLSSignatureGetDerHalfSize(gnutls_sign_algorithm_t algo, xmlSecSize key
             xmlSecInvalidSizeDataError("keySize", keySize, "EC key size", NULL);
             return(-1);
         }
-        (*res) = (keySize + 7) / 8;
+        (*res) = XMLSEC_BITS_TO_BYTES(keySize);
         break;
 #endif /* XMLSEC_NO_EC */
 

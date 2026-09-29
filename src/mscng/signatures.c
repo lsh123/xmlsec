@@ -565,7 +565,7 @@ xmlSecMSCngSignatureFixBrokenJava(xmlSecMSCngSignatureCtxPtr ctx,
             xmlSecInternalError("xmlSecMSCngCertKeyDataGetSizeInBits", NULL);
             return(-1);
         }
-        halfSize = (keySize + 7) / 8;
+        halfSize = XMLSEC_BITS_TO_BYTES(keySize);
     } else {
         /* nothing to do: this only applies to DSA and ECDSA signatures */
         return(0);
@@ -660,7 +660,9 @@ xmlSecMSCngSignatureFixBrokenASN1(xmlSecMSCngSignatureCtxPtr ctx,
         xmlSecInternalError("xmlSecMSCngCertKeyDataGetSize", NULL);
         return(-1);
     }
-    halfSize = (keySize + 7) / 8;
+
+    halfSize = XMLSEC_BITS_TO_BYTES(keySize);
+    xmlSecAssert2(halfSize > 0, -1);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(halfSize, dwHalfSize, return(-1), NULL);
 
     /* parse asn1 structure, see https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-cert_ecc_signature */

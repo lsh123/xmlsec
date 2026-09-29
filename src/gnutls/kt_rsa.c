@@ -196,7 +196,8 @@ xmlSecGnuTLSKeyTransportEncrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
 
     /* check that the input fits into the key
      * (PKCS#1 v1.5: the maximum plaintext size is the key size - 11) */
-    keySize = (xmlSecKeyDataGetSize(ctx->keyData) + 7) / 8;
+    keySize = xmlSecKeyDataGetSize(ctx->keyData);
+    keySize = XMLSEC_BITS_TO_BYTES(keySize);
     if(keySize <= 11) {
         xmlSecInternalError2("xmlSecGnuTLSKeyTransportEncrypt", NULL,
             "key size is too small for the PKCS#1 v1.5 padding: keySize=" XMLSEC_SIZE_FMT, keySize);
@@ -259,7 +260,8 @@ xmlSecGnuTLSKeyTransportDecrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
     }
 
     /* check that the ciphertext size matches the key size */
-    keySize = (xmlSecKeyDataGetSize(ctx->keyData) + 7) / 8;
+    keySize = xmlSecKeyDataGetSize(ctx->keyData);
+    keySize = XMLSEC_BITS_TO_BYTES(keySize);
     if(keySize <= 0) {
         xmlSecInternalError("xmlSecKeyDataGetSize", NULL);
         return(-1);
@@ -716,7 +718,8 @@ xmlSecGnuTLSRsaOaepEncrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx, xmlSecBufferPtr inBuf,
 
     /* check that the input fits into the key
      * (OAEP: the maximum plaintext size is the key size - 2 * hash size - 2) */
-    keySize = (xmlSecKeyDataGetSize(ctx->keyData) + 7) / 8;
+    keySize = xmlSecKeyDataGetSize(ctx->keyData);
+    keySize = XMLSEC_BITS_TO_BYTES(keySize);
     if(keySize <= 0) {
         xmlSecInternalError("xmlSecKeyDataGetSize", NULL);
         return(-1);
@@ -822,7 +825,8 @@ xmlSecGnuTLSRsaOaepDecrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx, xmlSecBufferPtr inBuf,
     xmlSecAssert2(inSize > 0, -1);
 
     /* check that the ciphertext size matches the key size */
-    keySize = (xmlSecKeyDataGetSize(ctx->keyData) + 7) / 8;
+    keySize = xmlSecKeyDataGetSize(ctx->keyData);
+    keySize = XMLSEC_BITS_TO_BYTES(keySize);
     if(keySize <= 0) {
         xmlSecInternalError("xmlSecKeyDataGetSize", NULL);
         return(-1);

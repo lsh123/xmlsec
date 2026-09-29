@@ -2163,6 +2163,7 @@ xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(
     unsigned char ** out,
     int * outLen
 ) {
+    xmlSecSize keySizeBytes;
     ECDSA_SIG* sig = NULL;
     BIGNUM* rr = NULL;
     BIGNUM* ss = NULL;
@@ -2189,7 +2190,9 @@ xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(
     }
 
     /* get half of signature size in bytes */
-    XMLSEC_SAFE_CAST_SIZE_TO_INT((keySizeBits + 7) / 8, signHalfLen, goto done, NULL);
+    keySizeBytes = XMLSEC_BITS_TO_BYTES(keySizeBits);
+    xmlSecAssert2(keySizeBytes > 0, -1);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(keySizeBytes, signHalfLen, goto done, NULL);
 
     /* check size: we expect the r and s to be the same size and match the size of
      * the key (RFC 6931) */
@@ -2262,6 +2265,7 @@ done:
 
 static int
 xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig(xmlSecTransformCtxPtr transformCtx, xmlSecSize keySizeBits, xmlSecBufferPtr data) {
+    xmlSecSize keySizeBytes;
     xmlSecByte * buf;
     xmlSecSize bufSize;
     int bufLen, signHalfLen, rLen, sLen;
@@ -2289,7 +2293,9 @@ xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig(xmlSecTransformCtxPtr transformCt
     xmlSecAssert2(bufSize > 0, -1);
 
     /* get half of signature size in bytes */
-    XMLSEC_SAFE_CAST_SIZE_TO_INT((keySizeBits + 7) / 8, signHalfLen, goto done, NULL);
+    keySizeBytes = XMLSEC_BITS_TO_BYTES(keySizeBits);
+    xmlSecAssert2(keySizeBytes > 0, -1);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(keySizeBytes, signHalfLen, goto done, NULL);
 
     /* extract signature */
     XMLSEC_SAFE_CAST_SIZE_TO_INT(bufSize, bufLen, goto done, NULL);

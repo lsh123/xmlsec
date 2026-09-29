@@ -292,7 +292,7 @@ xmlSecOpenSSLHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
             xmlSecTransformGetName(transform));
         return(-1);
     }
-    xmlSecAssert2(XMLSEC_TRANSFORM_HMAC_BITS_TO_BYTES(ctx->dgstSizeInBits) <= XMLSEC_TRANSFORM_HMAC_MAX_OUTPUT_SIZE, -1);
+    xmlSecAssert2(XMLSEC_BITS_TO_BYTES(ctx->dgstSizeInBits) <= XMLSEC_TRANSFORM_HMAC_MAX_OUTPUT_SIZE, -1);
 
     return(0);
 }
@@ -453,7 +453,7 @@ xmlSecOpenSSLHmacVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(ctx->dgstSizeInBits > 0, -1);
 
     /* defensive bounds check: ensure the digest fits in the fixed-size buffer */
-    if(XMLSEC_TRANSFORM_HMAC_BITS_TO_BYTES(ctx->dgstSizeInBits) > EVP_MAX_MD_SIZE) {
+    if(XMLSEC_BITS_TO_BYTES(ctx->dgstSizeInBits) > EVP_MAX_MD_SIZE) {
         xmlSecInternalError("xmlSecOpenSSLHmacVerify: hmac size is too long", xmlSecTransformGetName(transform));
         return(-1);
     }
@@ -461,7 +461,7 @@ xmlSecOpenSSLHmacVerify(xmlSecTransformPtr transform,
     /* the digest to verify must not be empty */
     if(dataSize <= 0) {
         xmlSecInvalidSizeError("HMAC digest", dataSize,
-                               XMLSEC_TRANSFORM_HMAC_BITS_TO_BYTES(ctx->dgstSizeInBits),
+                               XMLSEC_BITS_TO_BYTES(ctx->dgstSizeInBits),
                                xmlSecTransformGetName(transform));
         return(-1);
     }
@@ -568,9 +568,9 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
             }
 
             /* HMACOutputLength can only truncate the digest, not extend it past the bytes we have */
-            if(XMLSEC_TRANSFORM_HMAC_BITS_TO_BYTES(ctx->dgstSizeInBits) > dgstSize) {
+            if(XMLSEC_BITS_TO_BYTES(ctx->dgstSizeInBits) > dgstSize) {
                 xmlSecInvalidSizeMoreThanError("HMAC output length",
-                    XMLSEC_TRANSFORM_HMAC_BITS_TO_BYTES(ctx->dgstSizeInBits), dgstSize,
+                    XMLSEC_BITS_TO_BYTES(ctx->dgstSizeInBits), dgstSize,
                     xmlSecTransformGetName(transform));
                 return(-1);
             }

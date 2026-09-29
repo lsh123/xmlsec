@@ -1249,6 +1249,7 @@ xmlSecGCryptRsaPkcs1Verify(int digest, xmlSecKeyDataPtr key_data,
     int dgstLen;
     int res = -1;
     const char* algo_name;
+    xmlSecSize keySize;
 
     xmlSecAssert2(key_data != NULL, -1);
     xmlSecAssert2(dgst != NULL, -1);
@@ -1258,6 +1259,17 @@ xmlSecGCryptRsaPkcs1Verify(int digest, xmlSecKeyDataPtr key_data,
 
     s_key = xmlSecGCryptKeyDataRsaGetPublicKey(key_data);
     xmlSecAssert2(s_key != NULL, -1);
+
+    keySize = xmlSecKeyDataGetSize(key_data);
+    keySize = XMLSEC_BITS_TO_BYTES(keySize);
+    xmlSecAssert2(keySize > 0, -1);
+
+    /* check signature size: an RSA signature is exactly the size of the modulus */
+    if(dataSize != keySize) {
+        xmlSecInternalError3("Invalid signature size", NULL,
+            "actual=" XMLSEC_SIZE_FMT "; expected=" XMLSEC_SIZE_FMT, dataSize, keySize);
+        goto done;
+    }
 
     /* get the current digest */
     XMLSEC_SAFE_CAST_SIZE_TO_INT(dgstSize, dgstLen, return(-1), NULL);
@@ -1447,6 +1459,7 @@ xmlSecGCryptRsaPssVerify(int digest, xmlSecKeyDataPtr key_data,
     int dgstLen;
     int res = -1;
     const char* algo_name;
+    xmlSecSize keySize;
 
     xmlSecAssert2(key_data != NULL, -1);
     xmlSecAssert2(dgst != NULL, -1);
@@ -1456,6 +1469,17 @@ xmlSecGCryptRsaPssVerify(int digest, xmlSecKeyDataPtr key_data,
 
     s_key = xmlSecGCryptKeyDataRsaGetPublicKey(key_data);
     xmlSecAssert2(s_key != NULL, -1);
+
+    keySize = xmlSecKeyDataGetSize(key_data);
+    keySize = XMLSEC_BITS_TO_BYTES(keySize);
+    xmlSecAssert2(keySize > 0, -1);
+
+    /* check signature size: an RSA signature is exactly the size of the modulus */
+    if(dataSize != keySize) {
+        xmlSecInternalError3("Invalid signature size", NULL,
+            "actual=" XMLSEC_SIZE_FMT "; expected=" XMLSEC_SIZE_FMT, dataSize, keySize);
+        goto done;
+    }
 
     /* get the current digest */
     XMLSEC_SAFE_CAST_SIZE_TO_INT(dgstSize, dgstLen, return(-1), NULL);

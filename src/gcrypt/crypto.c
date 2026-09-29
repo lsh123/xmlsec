@@ -309,6 +309,13 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
  */
 int
 xmlSecGCryptInit (void)  {
+    /* Note: this function does not perform explicit libgcrypt initialization
+     * (no gcry_check_version/gcry_control/gcry_init). The full libgcrypt
+     * initialization is performed by xmlSecGCryptAppInit (src/gcrypt/app.c),
+     * which the application invokes through xmlSecCryptoAppInit before calling
+     * xmlSecInit. Applications that skip the app-init step rely on libgcrypt's
+     * self-initialization, which was added in libgcrypt 1.4.3. */
+
     /* Check loaded xmlsec library version */
     if(xmlSecCheckVersionExact() != 1) {
         xmlSecInternalError("xmlSecCheckVersionExact", NULL);

@@ -172,7 +172,11 @@ xmlSecGCryptBlockCipherCtxUpdate(xmlSecGCryptBlockCipherCtxPtr ctx,
     }
     inSize = inBlocks * blockSize;
 
-    /* we write out the input size plus maybe one block */
+    /* we write out the input size plus maybe one block.
+     *
+     * The size_t sum (outSize + inSize + blockSize) could in principle wrap on a
+     * 32-bit build, but only for multi-gigabyte buffers, which is not a realistic
+     * input size for XML Security processing; this matches the other backends. */
     ret = xmlSecBufferSetMaxSize(out, outSize + inSize + blockSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetMaxSize", cipherName,
@@ -269,7 +273,9 @@ xmlSecGCryptBlockCipherCtxFinal(xmlSecGCryptBlockCipherCtxPtr ctx,
         }
     }
 
-    /* process last block */
+    /* process last block. The size_t sum (outSize + 2 * blockSize) could in
+     * principle wrap on a 32-bit build, but only for multi-gigabyte buffers,
+     * which is not a realistic input size. */
     ret = xmlSecBufferSetMaxSize(out, outSize + 2 * blockSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetMaxSize", cipherName,
@@ -297,7 +303,10 @@ xmlSecGCryptBlockCipherCtxFinal(xmlSecGCryptBlockCipherCtxPtr ctx,
     if(encrypt == 0) {
         xmlSecSize padding;
 
-        /* check padding */
+        /* check padding.
+         *
+         * Only the padding length carried in the last byte is validated (it must be
+         * non-zero and not exceed the block size). See XML Encryption specification for details. */
         padding = (xmlSecSize)outBuf[blockLen - 1];
         if((padding == 0) || (inSize < padding)) {
             xmlSecInvalidSizeLessThanError("Input data padding",

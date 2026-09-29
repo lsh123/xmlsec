@@ -205,10 +205,19 @@ xmlSecGnuTLSAsymKeyDataAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, g
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
     xmlSecAssert2(xmlSecGnuTLSAsymKeyDataIsValidId(data->id), -1);
-    xmlSecAssert2((pubkey != NULL) || (privkey != NULL), -1);
 
     ctx = xmlSecGnuTLSAsymKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
+
+    /* deinit if anything */
+    if(ctx->pubkey != NULL) {
+        gnutls_pubkey_deinit(ctx->pubkey);
+        ctx->pubkey = NULL;
+    }
+    if(ctx->privkey != NULL) {
+        gnutls_privkey_deinit(ctx->privkey);
+        ctx->privkey = NULL;
+    }
 
     /* if pubkey is not available, try to extract it from privkey */
     if((pubkey == NULL) && (privkey != NULL)) {
@@ -226,18 +235,10 @@ xmlSecGnuTLSAsymKeyDataAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, g
         }
     }
 
-    /* release the old keys only after the new keys are confirmed, so that
-     * a failure above leaves the existing keys intact */
-    if(ctx->pubkey != NULL) {
-        gnutls_pubkey_deinit(ctx->pubkey);
-    }
-    if(ctx->privkey != NULL) {
-        gnutls_privkey_deinit(ctx->privkey);
-    }
-
     /* set new keys */
     ctx->pubkey = pubkey;
     ctx->privkey = privkey;
+
 
     /* done */
     return(0);
@@ -1410,10 +1411,6 @@ xmlSecGnuTLSKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     /* privateExponent (only for private key) */
     size = xmlSecBufferGetSize(&(rsaValue->privateExponent));
     if(size > 0) {
-        /* GnuTLS requires the RSA CRT parameters (p, q) to import a private
-         * key, and they cannot be derived from (modulus, e, d) alone. As a
-         * result, a private RSA key written by xmlSecGnuTLSKeyDataRsaWrite
-         * (which emits privateExponent) cannot be read back by this function. */
         xmlSecInternalError2("xmlSecGnuTLSKeyDataRsaRead", NULL,
             "private RSA keys are not supported: GnuTLS requires the RSA CRT parameters "
             "(%s), which are not available in the RSAKeyValue format",

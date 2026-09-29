@@ -217,7 +217,7 @@ xmlSecGnuTLSKeyDataX509AddCertInternal(xmlSecGnuTLSX509DataCtxPtr ctx, gnutls_x5
         if(cert2 == NULL) {
             continue;
         }
-        if(gnutls_x509_crt_equals(cert, cert2) == 1) {
+        if((cert == cert2) || (gnutls_x509_crt_equals(cert, cert2) == 1)) {
             ret = xmlSecPtrListRemove(&(ctx->certsList), ii);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecPtrListRemove(certsList)", NULL);

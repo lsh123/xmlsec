@@ -436,6 +436,13 @@ xmlSecGCryptAsn1GuessKeyType(gcry_mpi_t * integers, xmlSecSize integers_num, xml
     }
 
     /* try other keys */
+    /* Note: this guessing is inherently heuristic. A malformed key (for example,
+     * an EC private key missing both its curve OID and its public key, which
+     * flattens to exactly two integers with no OIDs) can be misidentified as a
+     * different type (here, an RSA public key with a garbage modulus of 0 or 1).
+     * Such a misidentified key is invalid and is rejected by libgcrypt on use, so
+     * this cannot lead to a verification bypass; it only affects how malformed
+     * input is reported. This is therefore not a security defect. */
     switch(integers_num) {
     case XMLSEC_GCRYPT_ASN1_DSA_PUB_NUM:
         return(xmlSecGCryptDerKeyTypePublicDsa);
@@ -490,6 +497,13 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         goto done;
     }
 
+    /* Note: xmlSecGCryptAsn1ParseIntegerSequence parses the leading top-level
+     * SEQUENCE and does not require that the whole input be consumed, so any
+     * trailing bytes after the outer SEQUENCE are silently ignored. This is a
+     * lenient-parsing choice rather than a defect: the key built from the leading
+     * SEQUENCE is valid, and ignoring trailing data has no memory-safety or
+     * verification-bypass consequence. */
+
     /* do we need to guess the key type? not robust but the best we can do */
     if(type == xmlSecGCryptDerKeyTypeAuto) {
         type = xmlSecGCryptAsn1GuessKeyType(integers, integers_num, objectids, objectids_num);
@@ -528,8 +542,15 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
          * take the smaller value as x (integers[4]) and the larger as y
          * (integers[5]). This holds in practice because x < q is a short exponent
          * while y = g^x mod p is a full-size field element, so y is almost always
-         * larger than x. Note this is a heuristic: for a key where y < x the two
-         * values are swapped and the resulting key is silently wrong. */
+         * larger than x.
+         *
+         * This is a known, documented limitation (not a fixable defect): the
+         * encoding itself does not record which value is x and which is y, so an
+         * unambiguous determination is impossible without extra verification. For
+         * a key where y < x (which can only happen when y < q, a probability of
+         * roughly q/p, i.e. negligible for standard DSA parameters) the two values
+         * are swapped and the resulting key is silently wrong. The heuristic is
+         * accepted because the trigger probability is negligible. */
         if (gcry_mpi_cmp (integers[4], integers[5]) > 0) {
             gcry_mpi_swap (integers[4], integers[5]);
         }

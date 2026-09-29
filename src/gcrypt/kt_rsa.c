@@ -742,8 +742,14 @@ xmlSecGCryptRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
     /* mgf1 algorithm */
     if (oaepParams.mgf1DigestAlgorithm == NULL) {
-        /* per XMLEnc, an unspecified MGF1 defaults to the OAEP digest algorithm */
-        mgf1Alg = ctx->hashAlg;
+        /* per the XML Encryption specification an unspecified MGF1 defaults to MGF1-SHA1 */
+#ifndef XMLSEC_NO_SHA1
+        mgf1Alg = XMLSEC_GCRYPT_RSA_OAEP_HASH_SHA1;
+#else  /* XMLSEC_NO_SHA1 */
+        xmlSecOtherError(XMLSEC_ERRORS_R_DISABLED, NULL, "No OAEP mgf1 digest algorithm is specified and the default SHA1 MGF1 is disabled");
+        xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
+        return(-1);
+#endif /* XMLSEC_NO_SHA1 */
     } else
 #ifndef XMLSEC_NO_SHA1
     if (xmlStrcmp(oaepParams.mgf1DigestAlgorithm, xmlSecHrefMgf1Sha1) == 0) {
@@ -868,6 +874,16 @@ xmlSecGCryptRsaOaepEncrypt(xmlSecGCryptRsaOaepCtxPtr ctx, xmlSecBufferPtr in, xm
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
 
+    /* the digest algorithm must have been set either by
+     * xmlSecGCryptRsaOaepNodeRead or by the default in
+     * xmlSecGCryptRsaOaepInitialize; a NULL value means the default SHA-1
+     * digest is disabled and no explicit digest was specified */
+    if(ctx->hashAlg == NULL) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_DISABLED, NULL,
+            "OAEP digest algorithm is not set and the default SHA1 digest is disabled");
+        return(-1);
+    }
+
     /* setup plain text data */
     inSize = xmlSecBufferGetSize(in);
     XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, return(-1), NULL);
@@ -939,6 +955,16 @@ xmlSecGCryptRsaOaepDecrypt(xmlSecGCryptRsaOaepCtxPtr ctx, xmlSecBufferPtr in, xm
     xmlSecAssert2(ctx->keyData != NULL, -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
+
+    /* the digest algorithm must have been set either by
+     * xmlSecGCryptRsaOaepNodeRead or by the default in
+     * xmlSecGCryptRsaOaepInitialize; a NULL value means the default SHA-1
+     * digest is disabled and no explicit digest was specified */
+    if(ctx->hashAlg == NULL) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_DISABLED, NULL,
+            "OAEP digest algorithm is not set and the default SHA1 digest is disabled");
+        return(-1);
+    }
 
     /* setup encrypted data */
     inSize = xmlSecBufferGetSize(in);

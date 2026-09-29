@@ -396,6 +396,32 @@ done:
 }
 
 /**
+ * @brief Checks that a GCrypt key S-expression is of the expected algorithm type.
+ * @param key the pointer to the GCrypt key S-expression (public key, private key, or key pair).
+ * @param alg the expected algorithm token ("dsa", "rsa", or "ecdsa").
+ * @return 0 if the key is of the expected type or -1 otherwise.
+ */
+static int
+xmlSecGCryptAsymKeyDataCheckKeyAlg(gcry_sexp_t key, const char* alg) {
+    gcry_sexp_t tok;
+
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(alg != NULL, -1);
+
+    /* the algorithm token (dsa/rsa/ecdsa) is present in the public-key,
+       private-key and key-pair S-expressions alike, so its presence
+       unambiguously identifies the key type */
+    tok = gcry_sexp_find_token(key, alg, 0);
+    if(tok == NULL) {
+        return(-1);
+    }
+    gcry_sexp_release(tok);
+
+    /* success */
+    return(0);
+}
+
+/**
  * @brief Converts MPI to CryptoBinary string
  * @param sexp the sexp
  * @param tok the token
@@ -647,6 +673,11 @@ xmlSecGCryptKeyDataDsaAdoptKey(xmlSecKeyDataPtr data, gcry_sexp_t dsa_key) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataDsaId), -1);
     xmlSecAssert2(dsa_key != NULL, -1);
 
+    if(xmlSecGCryptAsymKeyDataCheckKeyAlg(dsa_key, "dsa") < 0) {
+        xmlSecInvalidDataError("the provided key is not a DSA key", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+
     return xmlSecGCryptAsymKeyDataAdoptKey(data, dsa_key);
 }
 
@@ -662,6 +693,15 @@ int
 xmlSecGCryptKeyDataDsaAdoptKeyPair(xmlSecKeyDataPtr data, gcry_sexp_t pub_key, gcry_sexp_t priv_key) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataDsaId), -1);
     xmlSecAssert2(pub_key != NULL, -1);
+
+    if(xmlSecGCryptAsymKeyDataCheckKeyAlg(pub_key, "dsa") < 0) {
+        xmlSecInvalidDataError("the provided key is not a DSA key", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+    if((priv_key != NULL) && (xmlSecGCryptAsymKeyDataCheckKeyAlg(priv_key, "dsa") < 0)) {
+        xmlSecInvalidDataError("the provided key is not a DSA key", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
 
     return xmlSecGCryptAsymKeyDataAdoptKeyPair(data, pub_key, priv_key);
 }
@@ -1148,6 +1188,11 @@ xmlSecGCryptKeyDataRsaAdoptKey(xmlSecKeyDataPtr data, gcry_sexp_t rsa_key) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataRsaId), -1);
     xmlSecAssert2(rsa_key != NULL, -1);
 
+    if(xmlSecGCryptAsymKeyDataCheckKeyAlg(rsa_key, "rsa") < 0) {
+        xmlSecInvalidDataError("the provided key is not an RSA key", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+
     return xmlSecGCryptAsymKeyDataAdoptKey(data, rsa_key);
 }
 
@@ -1163,6 +1208,15 @@ int
 xmlSecGCryptKeyDataRsaAdoptKeyPair(xmlSecKeyDataPtr data, gcry_sexp_t pub_key, gcry_sexp_t priv_key) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataRsaId), -1);
     xmlSecAssert2(pub_key != NULL, -1);
+
+    if(xmlSecGCryptAsymKeyDataCheckKeyAlg(pub_key, "rsa") < 0) {
+        xmlSecInvalidDataError("the provided key is not an RSA key", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+    if((priv_key != NULL) && (xmlSecGCryptAsymKeyDataCheckKeyAlg(priv_key, "rsa") < 0)) {
+        xmlSecInvalidDataError("the provided key is not an RSA key", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
 
     return xmlSecGCryptAsymKeyDataAdoptKeyPair(data, pub_key, priv_key);
 }
@@ -1559,6 +1613,12 @@ int
 xmlSecGCryptKeyDataEcAdoptKey(xmlSecKeyDataPtr data, gcry_sexp_t ec_key) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcId), -1);
     xmlSecAssert2(ec_key != NULL, -1);
+
+    if(xmlSecGCryptAsymKeyDataCheckKeyAlg(ec_key, "ecdsa") < 0) {
+        xmlSecInvalidDataError("the provided key is not an EC key", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+
     return(xmlSecGCryptAsymKeyDataAdoptKey(data, ec_key));
 }
 
@@ -1573,6 +1633,16 @@ int
 xmlSecGCryptKeyDataEcAdoptKeyPair(xmlSecKeyDataPtr data, gcry_sexp_t pub_key, gcry_sexp_t priv_key) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcId), -1);
     xmlSecAssert2(pub_key != NULL, -1);
+
+    if(xmlSecGCryptAsymKeyDataCheckKeyAlg(pub_key, "ecdsa") < 0) {
+        xmlSecInvalidDataError("the provided key is not an EC key", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+    if((priv_key != NULL) && (xmlSecGCryptAsymKeyDataCheckKeyAlg(priv_key, "ecdsa") < 0)) {
+        xmlSecInvalidDataError("the provided key is not an EC key", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+
     return(xmlSecGCryptAsymKeyDataAdoptKeyPair(data, pub_key, priv_key));
 }
 
@@ -1753,6 +1823,10 @@ xmlSecGCryptKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
     }
 
     /* pubkey */
+    if(xmlSecBufferGetSize(&(ecValue->pubkey)) == 0) {
+        xmlSecInvalidZeroKeyDataSizeError(xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
     err = gcry_mpi_scan(&pubkey, GCRYMPI_FMT_USG,
         xmlSecBufferGetData(&(ecValue->pubkey)), xmlSecBufferGetSize(&(ecValue->pubkey)),
         NULL);

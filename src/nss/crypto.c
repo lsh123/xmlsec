@@ -75,6 +75,11 @@ xmlSecNssCryptoCheckMechanism(CK_MECHANISM_TYPE type) {
 
 /**
  * @brief Gets the pointer to xmlsec-nss functions table.
+ * @details This one-time initialization is not protected by a lock, so a
+ * concurrent first-time caller could observe a partially populated table.
+ * This matches the pattern used by all backends and only matters if this
+ * function is invoked from multiple threads before the library is fully
+ * initialized (the normal single-threaded init path is unaffected).
  * @return the xmlsec-nss functions table or NULL if an error occurs.
  */
 xmlSecCryptoDLFunctionsPtr
@@ -420,11 +425,14 @@ xmlSecNssUpdateAvailableCryptoTransforms(xmlSecCryptoDLFunctionsPtr functions) {
     SECStatus rv;
     xmlSecAssert(functions != NULL);
 
-    /* in theory NSS should be already initialized but just in case */
+    /* in theory NSS should be already initialized but just in case; if this
+     * fails we still proceed with the per-algorithm checks below. Those rely
+     * on NSS_GetAlgorithmPolicy() (which is independent of the OID table
+     * initialized here) and disable any algorithm whose policy cannot be
+     * resolved, so we do not leave the transforms enabled unchecked. */
     rv = SECOID_Init();
     if (rv != SECSuccess) {
         xmlSecNssError("SECOID_Init", NULL);
-        return;
     }
 
     /****** AES ******/

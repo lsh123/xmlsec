@@ -128,9 +128,20 @@ xmlSecNssKeyTransportInitialize(xmlSecTransformPtr transform) {
     if(transform->id == xmlSecNssTransformRsaOaepId) {
         context->cipher = CKM_RSA_PKCS_OAEP;
         context->keyId = xmlSecNssKeyDataRsaId;
+        /* default to the SHA-1 digest and MGF1 prescribed by the XML
+         * Encryption spec; xmlSecNssRsaOaepNodeRead overrides these when an
+         * explicit digest is provided */
+#ifndef XMLSEC_NO_SHA1
+        context->oaepHashAlg = CKM_SHA_1;
+        context->oaepMgf = CKG_MGF1_SHA1;
+#endif /* XMLSEC_NO_SHA1 */
     } else if(transform->id == xmlSecNssTransformRsaOaepEnc11Id) {
         context->cipher = CKM_RSA_PKCS_OAEP;
         context->keyId = xmlSecNssKeyDataRsaId;
+#ifndef XMLSEC_NO_SHA1
+        context->oaepHashAlg = CKM_SHA_1;
+        context->oaepMgf = CKG_MGF1_SHA1;
+#endif /* XMLSEC_NO_SHA1 */
     } else
 #endif /* XMLSEC_NO_RSA_OAEP */
 
@@ -351,6 +362,16 @@ xmlSecNssKeyTransportSetOaepParams(xmlSecNssKeyTransportCtxPtr ctx, CK_RSA_PKCS_
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(oaepParams != NULL, -1);
+
+    /* the digest algorithm must have been set either by
+     * xmlSecNssRsaOaepNodeRead or by the defaults in
+     * xmlSecNssKeyTransportInitialize; a zero value means the default SHA-1
+     * digest is disabled and no explicit digest was specified */
+    if(ctx->oaepHashAlg == 0) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_DISABLED, NULL,
+            "OAEP digest algorithm is not set and the default SHA1 digest is disabled");
+        return(-1);
+    }
 
     oaepParams->hashAlg = ctx->oaepHashAlg;
     oaepParams->mgf     = ctx->oaepMgf ;
@@ -576,7 +597,9 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
                 goto done;
             }
 
-            symKey = PK11_PubUnwrapSymKeyWithMechanism(ctx->prikey, CKM_RSA_PKCS_OAEP, &param, &oriskv, 0, CKA_UNWRAP, 0);
+            /* target is the mechanism of the unwrapped symmetric key, which is
+             * unknown here, so pass CKM_GENERIC_SECRET_KEY_GEN */
+            symKey = PK11_PubUnwrapSymKeyWithMechanism(ctx->prikey, CKM_RSA_PKCS_OAEP, &param, &oriskv, CKM_GENERIC_SECRET_KEY_GEN, CKA_UNWRAP, 0);
             if(symKey == NULL) {
                 xmlSecNssError("PK11_PubUnwrapSymKeyWithMechanism", NULL);
                 goto done;

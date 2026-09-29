@@ -73,6 +73,12 @@ struct _xmlSecNssAeadCipherCtx {
     int                     isIvPrepended;  /* iv is prepended to encrypted data or not */
     xmlSecBuffer            aad;
 
+    /*
+     * The NSS APIs used by these AEAD ciphers (CK_GCM_PARAMS_V3,
+     * CKM_AES_GCM, CKM_CHACHA20_POLY1305 and
+     * CK_SALSA20_CHACHA20_POLY1305_PARAMS) have been part of the public
+     * NSS header (lib/util/pkcs11t.h) since at least NSS 3.91.
+     */
 #ifndef XMLSEC_NO_AES
     CK_GCM_PARAMS_V3 gcm;
 #endif /* XMLSEC_NO_AES */

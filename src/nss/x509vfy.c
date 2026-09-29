@@ -431,6 +431,70 @@ xmlSecNssX509StoreGetVerificationTime(xmlSecKeyInfoCtx* keyInfoCtx) {
     }
 }
 
+/* Checks every certificate in the chain resolved from @p cert (the leaf up to
+ * the root, including intermediate certificates that NSS pulled from the
+ * certificate database during chain building) against the store's CRLs.
+ * Returns 1 if none of the certificates is revoked, 0 if any of them is
+ * revoked, and a negative value if an error occurs. */
+static int
+xmlSecNssX509StoreVerifyChainAgainstCrls(xmlSecNssX509StoreCtxPtr x509StoreCtx, CERTCertificate* cert, xmlSecKeyInfoCtx* keyInfoCtx) {
+    CERTCertList* chain = NULL;
+    CERTSignedCrl* crl;
+    int ret;
+    CERTCertListNode* node;
+    int64 verificationTime;
+    int res = 1;
+
+    xmlSecAssert2(x509StoreCtx != NULL, -1);
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    /* no CRLs in the store, nothing to check */
+    if(x509StoreCtx->crlsList == NULL) {
+        return(1);
+    }
+
+    verificationTime = xmlSecNssX509StoreGetVerificationTime(keyInfoCtx);
+
+    chain = CERT_GetCertChainFromCert(cert, verificationTime, certificateUsageEmailSigner);
+    if(chain == NULL) {
+        xmlSecNssError("CERT_GetCertChainFromCert", NULL);
+        return(-1);
+    }
+
+    for(node = CERT_LIST_HEAD(chain); !CERT_LIST_END(node, chain); node = CERT_LIST_NEXT(node)) {
+        if(node->cert == NULL) {
+            continue;
+        }
+
+        crl = NULL; /* just in case */
+        ret = xmlSecNssX509StoreFindBestCrl(x509StoreCtx, node->cert, &crl, keyInfoCtx);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecNssX509StoreFindBestCrl", NULL);
+            res = -1;
+            goto done;
+        }
+        if(crl == NULL) {
+            continue; /* no CRL found for this certificate */
+        }
+
+        ret = xmlSecNssX509StoreCheckIfCertIsRevoked(node->cert, crl, keyInfoCtx);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecNssX509StoreCheckIfCertIsRevoked", NULL);
+            res = -1;
+            goto done;
+        } else if(ret != 0) {
+            /* a certificate in the chain was revoked */
+            res = 0;
+            goto done;
+        }
+    }
+
+done:
+    CERT_DestroyCertList(chain);
+    return(res);
+}
+
 /* returns 1 if verified, 0 if not verified, and a value < 0 if an error occurs */
 static int
 xmlSecNssX509StoreVerifyCert(CERTCertDBHandle *handle, CERTCertificate* cert, xmlSecKeyInfoCtxPtr keyInfoCtx, SECCertUsage usage) {
@@ -536,6 +600,17 @@ xmlSecNssX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, xmlSe
         return(0); /* cert verification failed*/
     }
 
+    /* make sure no certificate in the resolved chain (including intermediate
+     * certificates that NSS pulled from the certificate database) is revoked
+     * by a store CRL */
+    ret = xmlSecNssX509StoreVerifyChainAgainstCrls(ctx, key_cert, keyInfoCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNssX509StoreVerifyChainAgainstCrls", xmlSecKeyDataStoreGetName(store));
+        return(-1);
+    } else if(ret != 1) {
+        return(0); /* a certificate in the chain was revoked */
+    }
+
     /* success */
     return(1);
 }
@@ -593,6 +668,18 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs, xmlSe
             continue; /* ignore all errors and try other certs */
         } else if(ret != 1) {
             continue; /* ignore all errors and try other certs */
+        }
+
+        /* the revocation check above only covered the caller-supplied certs;
+         * make sure no certificate in the resolved chain (including
+         * intermediate certificates that NSS pulled from the certificate
+         * database) is revoked by a store CRL */
+        ret = xmlSecNssX509StoreVerifyChainAgainstCrls(ctx, cert, keyInfoCtx);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecNssX509StoreVerifyChainAgainstCrls", xmlSecKeyDataStoreGetName(store));
+            continue; /* ignore all errors and try other certs */
+        } else if(ret != 1) {
+            continue; /* a certificate in the chain was revoked */
         }
 
         /* DONE! */
@@ -800,8 +887,11 @@ xmlSecNssX509VerifyCRLSignature(xmlSecNssX509StoreCtxPtr ctx, CERTSignedCrl* crl
 
     /* the issuer cert must be verified itself (chain and validity) before it
      * can be used to verify the CRL signature; it is a CA cert, so use a CA
-     * usage rather than the email-signer usage used for end-entity certs */
-    ret = xmlSecNssX509StoreVerifyCert(ctx->certDb, issuer_cert, keyInfoCtx, certificateUsageVerifyCA);
+     * usage that actually verifies the cert chain. certificateUsageVerifyCA
+     * must not be used here: NSS skips the key-usage, trust-anchor and chain
+     * checks for that usage and only runs the time-validity check, which would
+     * defeat this verification. */
+    ret = xmlSecNssX509StoreVerifyCert(ctx->certDb, issuer_cert, keyInfoCtx, certificateUsageSSLCA);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssX509StoreVerifyCert", NULL);
         goto done;

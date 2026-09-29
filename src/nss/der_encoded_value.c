@@ -224,6 +224,10 @@ xmlSecNssKeyDataDEREncodedKeyValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
         xmlSecInternalError("xmlSecKeyGetValue", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
+    /* keyData is always an NSS PKI key data object: the key value for this
+     * key data type is set to a PKI key (via xmlSecNssPKIAdoptKey) during key
+     * loading, so the size check performed by xmlSecNssPKIKeyDataGetPubKey is
+     * sufficient to validate it */
     pubkey = xmlSecNssPKIKeyDataGetPubKey(keyData);
     if(pubkey == NULL) {
         xmlSecInternalError("xmlSecNssPKIKeyDataGetPubKey", xmlSecKeyDataKlassGetName(id));

@@ -265,6 +265,20 @@ xmlSecNssAppNicknameCollisionCallback(SECItem *old_nick XMLSEC_ATTRIBUTE_UNUSED,
         return(NULL);
     }
 
+    /*
+     * NSS's sec_pkcs12_validate_cert_nickname() (lib/pkcs12/p12d.c) loops
+     * until the nickname returned by this callback no longer collides with
+     * an existing certificate nickname. This callback is safe with respect
+     * to that loop: CERT_MakeCANickname() (lib/certdb/certdb.c) itself
+     * appends a " #N" suffix until the nickname is free in the certificate
+     * database, and NSS checks for collisions against the same default
+     * certificate database (sec_pkcs12_certs_for_nickname_exist() calls
+     * PK11_TraverseCertsForNicknameInSlot() on the internal slot, see
+     * lib/pk11wrap/pk11cert.c). Hence the returned nickname never collides
+     * and the loop always terminates; even if a certificate with the same
+     * nickname were added concurrently, the callback would simply be
+     * invoked again and produce a new, collision-free nickname.
+     */
     nick = CERT_MakeCANickname(cert);
     if (!nick) {
         xmlSecNssError("CERT_MakeCANickname", NULL);
@@ -940,6 +954,32 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
         goto done;
     }
 
+    /*
+     * NOTE: from this point on, the private key and the certificates from
+     * the PKCS12 file have been persisted into the NSS token and
+     * certificate database. NSS installs them permanently:
+     * sec_pkcs12_add_key() calls PK11_ImportPrivateKeyInfo() /
+     * PK11_ImportEncryptedPrivateKeyInfo() with isPerm=PR_TRUE, and
+     * sec_pkcs12_add_cert() calls PK11_ImportCertForKeyToSlot() /
+     * CERT_ImportCerts() with isPerm=PR_TRUE (see lib/pkcs12/p12d.c in the
+     * NSS source), and SEC_PKCS12DecoderFinish() only frees the decoder's
+     * internal memory; it does not remove the imported objects.
+     *
+     * If any step below fails, this function returns NULL but the imported
+     * key material remains in the NSS database. No rollback is performed
+     * because the imported objects cannot be identified unambiguously
+     * without a pre-import snapshot of the token/cert database: when the
+     * same file is imported a second time, PK11_ImportCert() rejects the
+     * already present certificate with SEC_ERROR_REUSED_ISSUER_AND_SERIAL
+     * while CERT_ImportCerts() silently ignores that failure (see
+     * lib/certdb/certdb.c and lib/certdb/stanpcertdb.c in the NSS source),
+     * and PK11_FindKeyByAnyCert() may return a pre-existing key with the
+     * same public key. Deleting such pre-existing objects would destroy the
+     * user's existing key material, which is worse than leaving the
+     * orphaned import behind. This matches NSS's non-transactional PKCS12
+     * import design.
+     */
+
     certlist = SEC_PKCS12DecoderGetCerts(p12ctx);
     if (certlist == NULL) {
         xmlSecNssError("SEC_PKCS12DecoderGetCerts", NULL);
@@ -956,16 +996,8 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
         cert = head->cert;
         privkey = PK11_FindKeyByAnyCert(cert, NULL);
 
-        if (privkey != NULL) {
-            if (keyValueData != NULL) {
-                /* we already found a private key.
-                 * assume the first private key we find is THE ONE
-                 */
-                SECKEY_DestroyPrivateKey(privkey);
-                privkey = NULL;
-                continue;
-            }
-
+        if((privkey != NULL) && (keyValueData == NULL)) {
+            /* we found THE private key: the first private key we find is THE ONE */
             pubkey = CERT_ExtractPublicKey(cert);
             if (pubkey == NULL) {
                 xmlSecNssError("CERT_ExtractPublicKey", NULL);
@@ -993,6 +1025,20 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
             }
             tmpcert = NULL; /* owned by x509Data now */
         } else {
+            if(privkey != NULL) {
+                /* we already found a private key.
+                 * assume the first private key we find is THE ONE
+                 */
+                SECKEY_DestroyPrivateKey(privkey);
+                privkey = NULL;
+            }
+
+            /* add the cert to the x509 data as a regular cert: either this
+             * cert has no private key, or its private key was not used
+             * because the first private key already won; in both cases the
+             * cert itself is still kept so that no cert from the file is
+             * dropped
+             */
             tmpcert = CERT_DupCertificate(cert);
             if(tmpcert == NULL) {
                 xmlSecNssError("CERT_DupCertificate", NULL);

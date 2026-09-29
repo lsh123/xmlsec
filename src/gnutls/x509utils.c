@@ -1323,11 +1323,30 @@ xmlSecGnuTLSDnAttrsDeinitialize(xmlSecGnuTLSDnAttr * attrs, xmlSecSize attrsSize
     memset(attrs, 0, attrsSize * sizeof(xmlSecGnuTLSDnAttr));
 }
 
+static int
+xmlSecGnuTLSDnAttrKeyMatch(const xmlChar * key1, const xmlChar * key2) {
+    /* simple case */
+    if(xmlStrcasecmp(key1, key2) == 0) {
+        return(1);
+    }
+
+    /* special case for emailAddress (as usual) */
+    if((xmlStrcasecmp(key1, BAD_CAST "emailAddress") == 0) &&
+       (xmlStrcasecmp(key2, BAD_CAST "email") == 0))
+    {
+        return(1);
+    }
+    if((xmlStrcasecmp(key1, BAD_CAST "email") == 0) &&
+       (xmlStrcasecmp(key2, BAD_CAST "emailAddress") == 0))
+    {
+        return(1);
+    }
+
+    return(0);
+}
+
 const xmlSecGnuTLSDnAttr *
-xmlSecGnuTLSDnAttrsFind(const xmlSecGnuTLSDnAttr * attrs,
-                         xmlSecSize attrsSize,
-                         const xmlChar * key)
-{
+xmlSecGnuTLSDnAttrsFind(const xmlSecGnuTLSDnAttr * attrs, xmlSecSize attrsSize, const xmlChar * key) {
     xmlSecSize ii;
 
     xmlSecAssert2(attrs != NULL, NULL);
@@ -1335,20 +1354,7 @@ xmlSecGnuTLSDnAttrsFind(const xmlSecGnuTLSDnAttr * attrs,
     xmlSecAssert2(key != NULL, NULL);
 
     for(ii = 0; ii < attrsSize; ++ii) {
-        /* simple case */
-        if(xmlStrcasecmp(key, attrs[ii].key) == 0) {
-            return(&(attrs[ii]));
-        }
-
-        /* special case for emailAddress (as usual) */
-        if((xmlStrcasecmp(key, BAD_CAST "emailAddress") == 0) &&
-           (xmlStrcasecmp(attrs[ii].key, BAD_CAST "email") == 0))
-        {
-            return(&(attrs[ii]));
-        }
-        if((xmlStrcasecmp(key, BAD_CAST "email") == 0) &&
-           (xmlStrcasecmp(attrs[ii].key, BAD_CAST "emailAddress") == 0))
-        {
+        if((attrs[ii].key != NULL) && xmlSecGnuTLSDnAttrKeyMatch(key, attrs[ii].key)) {
             return(&(attrs[ii]));
         }
     }
@@ -1363,8 +1369,10 @@ xmlSecGnuTLSDnAttrsEqual(const xmlSecGnuTLSDnAttr * left, xmlSecSize leftSize,
 {
     xmlSecSize leftNum = 0;
     xmlSecSize rightNum = 0;
-    const xmlSecGnuTLSDnAttr * tmp;
+    int * rightUsed = NULL;
     xmlSecSize ii;
+    xmlSecSize jj;
+    int res = -1;
 
     xmlSecAssert2(left != NULL, -1);
     xmlSecAssert2(leftSize > 0, -1);
@@ -1386,24 +1394,48 @@ xmlSecGnuTLSDnAttrsEqual(const xmlSecGnuTLSDnAttr * left, xmlSecSize leftSize,
         return(0);
     }
 
-    /* make sure that all left attrs are equal to right attrs */
-    for(ii = 0; ii < leftSize; ++ii) {
+    rightUsed = (int *)xmlMalloc(sizeof(int) * rightSize);
+    if(rightUsed == NULL) {
+        xmlSecMallocError(sizeof(int) * rightSize, NULL);
+        goto done;
+    }
+    memset(rightUsed, 0, sizeof(int) * rightSize);
+
+    /* make sure that each left attr matches a unique right attr with the
+     * same key and value; a right attr may be matched at most once, so
+     * duplicate keys are compared positionally as well */
+    for(ii = 0; (ii < leftSize) && (res == -1); ++ii) {
         if(left[ii].key == NULL) {
             continue;
         }
 
-        tmp = xmlSecGnuTLSDnAttrsFind(right, rightSize, left[ii].key);
-        if(tmp == NULL) {
-            return(0); /* attribute was not found */
+        for(jj = 0; (jj < rightSize) && (res == -1); ++jj) {
+            if((right[jj].key == NULL) || (rightUsed[jj] != 0)) {
+                continue;
+            }
+            if(!xmlSecGnuTLSDnAttrKeyMatch(left[ii].key, right[jj].key)) {
+                continue;
+            }
+            if(!xmlStrEqual(left[ii].value, right[jj].value)) {
+                continue;
+            }
+            rightUsed[jj] = 1;
+            break;
         }
-
-        if(!xmlStrEqual(left[ii].value, tmp->value)) {
-            return(0); /* different values */
+        if(jj == rightSize) {
+            res = 0; /* no matching right attribute */
+            goto done;
         }
     }
 
-    /* good!!! */
-    return(1);
+    /* success */
+    res = 1;
+
+done:
+    if(rightUsed != NULL) {
+        xmlFree(rightUsed);
+    }
+    return(res);
 }
 
 /*

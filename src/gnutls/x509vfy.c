@@ -577,7 +577,9 @@ xmlSecGnuTLSX509StoreVerifyCert(xmlSecGnuTLSX509StoreCtxPtr ctx,
     }
 
     /* gnutls doesn't allow to specify "verification" timestamp so
-     *  we have to do it ourselves */
+     * we have to do it ourselves; GNUTLS_VERIFY_DISABLE_TIME_CHECKS makes
+     * gnutls skip the time checks for the trusted certs as well, so they
+     * have to be checked here too */
     if(keyInfoCtx->certsVerificationTime > 0) {
         ret = xmlSecGnuTLSX509CheckCrtsTime(certs_chain, certs_chain_size, keyInfoCtx->certsVerificationTime);
         if(ret < 0) {
@@ -586,6 +588,16 @@ xmlSecGnuTLSX509StoreVerifyCert(xmlSecGnuTLSX509StoreCtxPtr ctx,
         }
         if(ret != 1) {
             return(0);
+        }
+        if(trusted_size > 0) {
+            ret = xmlSecGnuTLSX509CheckCrtsTime(trusted, trusted_size, keyInfoCtx->certsVerificationTime);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecGnuTLSX509CheckCrtsTime(trusted)", NULL);
+                return(-1);
+            }
+            if(ret != 1) {
+                return(0);
+            }
         }
     }
 

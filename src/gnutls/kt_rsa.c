@@ -470,7 +470,9 @@ xmlSecGnuTLSRsaOaepInitialize(xmlSecTransformPtr transform) {
     memset(ctx, 0, sizeof(xmlSecGnuTLSRsaOaepCtx));
 
     ctx->keyId      = xmlSecGnuTLSKeyDataRsaId;
+#ifndef XMLSEC_NO_SHA1
     ctx->digestAlg  = GNUTLS_DIG_SHA1; /* default per XMLEnc spec */
+#endif /* XMLSEC_NO_SHA1 */
 
     ret = xmlSecBufferInitialize(&(ctx->oaepParams), 0);
     if(ret < 0) {
@@ -913,6 +915,12 @@ xmlSecGnuTLSRsaOaepExecute(xmlSecTransformPtr transform, int last,
     ctx = xmlSecGnuTLSRsaOaepGetCtx(transform);
     if(ctx == NULL) {
         xmlSecInternalError("xmlSecGnuTLSRsaOaepGetCtx", xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
+    if(ctx->digestAlg == GNUTLS_DIG_UNKNOWN) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_DISABLED, NULL,
+            "No OAEP digest algorithm is specified and the default SHA1 digest is disabled");
         return(-1);
     }
 

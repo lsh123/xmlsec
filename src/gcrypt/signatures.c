@@ -1153,7 +1153,8 @@ xmlSecGCryptRsaPkcs1Sign(int digest, xmlSecKeyDataPtr key_data,
     s_key = xmlSecGCryptKeyDataRsaGetPrivateKey(key_data);
     xmlSecAssert2(s_key != NULL, -1);
 
-    keySize = (xmlSecKeyDataGetSize(key_data) + 7) / 8;
+    keySize = xmlSecKeyDataGetSize(key_data);
+    keySize = XMLSEC_BITS_TO_BYTES(keySize);
     xmlSecAssert2(keySize > 0, -1);
 
     /* get the current digest */
@@ -1347,7 +1348,8 @@ xmlSecGCryptRsaPssSign(int digest, xmlSecKeyDataPtr key_data,
     s_key = xmlSecGCryptKeyDataRsaGetPrivateKey(key_data);
     xmlSecAssert2(s_key != NULL, -1);
 
-    keySize = (xmlSecKeyDataGetSize(key_data) + 7) / 8;
+    keySize = xmlSecKeyDataGetSize(key_data);
+    keySize = XMLSEC_BITS_TO_BYTES(keySize);
     xmlSecAssert2(keySize > 0, -1);
 
     /* get the current digest */
@@ -2131,7 +2133,7 @@ xmlSecGCryptEcdsaSign(int digest, xmlSecKeyDataPtr key_data,
     xmlSecAssert2(s_key != NULL, -1);
 
     keySize = xmlSecKeyDataGetSize(key_data);
-    keySize = (keySize + 7) / 8;
+    keySize = XMLSEC_BITS_TO_BYTES(keySize);
     xmlSecAssert2(keySize > 0, -1);
 
     algo_name = gcry_md_algo_name(digest);
@@ -2276,7 +2278,7 @@ xmlSecGCryptEcdsaVerify(int digest, xmlSecKeyDataPtr key_data,
     xmlSecAssert2(s_key != NULL, -1);
 
     keySize = xmlSecKeyDataGetSize(key_data);
-    keySize = (keySize + 7) / 8;
+    keySize = XMLSEC_BITS_TO_BYTES(keySize);
     xmlSecAssert2(keySize > 0, -1);
 
     /* check signature size */

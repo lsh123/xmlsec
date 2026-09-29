@@ -145,7 +145,6 @@ XMLSEC_EXPORT int   xmlSecTransformConcatKdfParamsGetFixedInfo  (xmlSecTransform
 /* max HMAC output size in bytes */
 #define XMLSEC_TRANSFORM_HMAC_MAX_OUTPUT_SIZE       128U
 
-#define XMLSEC_TRANSFORM_HMAC_BITS_TO_BYTES(bits)   (((bits) + 7) / 8)
 
 XMLSEC_EXPORT int xmlSecTransformHmacReadOutputBitsSize (xmlNodePtr node,
                                                          xmlSecSize defaultSize,

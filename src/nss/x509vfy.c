@@ -59,6 +59,7 @@ struct _xmlSecNssX509StoreCtx {
      */
 
     CERTCertList* certsList; /* just keeping a reference to destroy later */
+    CERTCertDBHandle *certDb;
 };
 
 /****************************************************************************
@@ -105,7 +106,8 @@ static CERTCertificate*         xmlSecNssX509FindCert(CERTCertList* certsList,
                                                       const xmlChar *issuerName,
                                                       const xmlChar *issuerSerial,
                                                       xmlSecByte * ski,
-                                                      xmlSecSize skiSize);
+                                                      xmlSecSize skiSize,
+                                                      CERTCertDBHandle *certDb);
 
 
 /**
@@ -187,10 +189,11 @@ xmlSecNssX509StoreFindCert_ex(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
 
     ctx = xmlSecNssX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, NULL);
+    xmlSecAssert2(ctx->certDb != NULL, NULL);
 
     return xmlSecNssX509FindCert(ctx->certsList, subjectName,
         issuerName, issuerSerial,
-        ski, skiSize);
+        ski, skiSize, ctx->certDb);
 }
 
 
@@ -223,6 +226,7 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs,
 
     ctx = xmlSecNssX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, NULL);
+    xmlSecAssert2(ctx->certDb != NULL, NULL);
 
     if(keyInfoCtx->certsVerificationTime > 0) {
         /* convert the time since epoch in seconds to microseconds */
@@ -263,7 +267,7 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs,
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) == 0) {
             /* it's important to set the usage here, otherwise no real verification
              * is performed. */
-            status = CERT_VerifyCertificate(CERT_GetDefaultCertDB(),
+            status = CERT_VerifyCertificate(ctx->certDb,
                                             cert, PR_FALSE,
                                             certificateUsageEmailSigner,
                                             timeboundary , NULL, NULL, NULL);
@@ -334,6 +338,7 @@ xmlSecNssX509StoreAdoptCert(xmlSecKeyDataStorePtr store, CERTCertificate* cert, 
 
     ctx = xmlSecNssX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->certDb != NULL, -1);
 
     if(ctx->certsList == NULL) {
         ctx->certsList = CERT_NewCertList();
@@ -359,7 +364,7 @@ xmlSecNssX509StoreAdoptCert(xmlSecKeyDataStorePtr store, CERTCertificate* cert, 
             xmlSecNssError("CERT_DecodeTrustString", xmlSecKeyDataStoreGetName(store));
             return(-1);
         }
-        CERT_ChangeCertTrust(CERT_GetDefaultCertDB(), cert, &trust);
+        status = CERT_ChangeCertTrust(ctx->certDb, cert, &trust);
         if(status != SECSuccess) {
             xmlSecNssError("CERT_ChangeCertTrust", xmlSecKeyDataStoreGetName(store));
             return(-1);
@@ -379,6 +384,13 @@ xmlSecNssX509StoreInitialize(xmlSecKeyDataStorePtr store) {
 
     memset(ctx, 0, sizeof(xmlSecNssX509StoreCtx));
 
+    ctx->certDb = CERT_GetDefaultCertDB();
+    if(ctx->certDb == NULL) {
+        xmlSecNssError("CERT_GetDefaultCertDB", xmlSecKeyDataStoreGetName(store));
+        return(-1);
+    }
+
+    /* success */
     return(0);
 }
 
@@ -453,7 +465,8 @@ xmlSecNssGetCertName(const xmlChar * name) {
 static CERTCertificate*
 xmlSecNssX509FindCert(CERTCertList* certsList, const xmlChar *subjectName,
                       const xmlChar *issuerName, const xmlChar *issuerSerial,
-                      xmlSecByte * ski, xmlSecSize skiSize) {
+                      xmlSecByte * ski, xmlSecSize skiSize,
+                      CERTCertDBHandle *certDb) {
     CERTCertificate *cert = NULL;
     CERTName *name = NULL;
     SECItem *nameitem = NULL;
@@ -462,6 +475,8 @@ xmlSecNssX509FindCert(CERTCertList* certsList, const xmlChar *subjectName,
     SECStatus status;
     PRArenaPool *arena = NULL;
     int rv;
+
+    xmlSecAssert2(certDb != NULL, NULL);
 
     /* certsList can be NULL */
 
@@ -490,7 +505,7 @@ xmlSecNssX509FindCert(CERTCertList* certsList, const xmlChar *subjectName,
             goto done;
         }
 
-        cert = CERT_FindCertByName(CERT_GetDefaultCertDB(), nameitem);
+        cert = CERT_FindCertByName(certDb, nameitem);
     }
 
     /* search by issuer name+serial if available */
@@ -540,7 +555,7 @@ xmlSecNssX509FindCert(CERTCertList* certsList, const xmlChar *subjectName,
             goto done;
         }
 
-        cert = CERT_FindCertByIssuerAndSN(CERT_GetDefaultCertDB(), &issuerAndSN);
+        cert = CERT_FindCertByIssuerAndSN(certDb, &issuerAndSN);
         SECITEM_FreeItem(&issuerAndSN.serialNumber, PR_FALSE);
     }
 
@@ -552,7 +567,7 @@ xmlSecNssX509FindCert(CERTCertList* certsList, const xmlChar *subjectName,
         subjKeyID.data = ski;
         XMLSEC_SAFE_CAST_SIZE_TO_UINT(skiSize, subjKeyID.len, goto done, NULL);
 
-        cert = CERT_FindCertBySubjectKeyID(CERT_GetDefaultCertDB(),
+        cert = CERT_FindCertBySubjectKeyID(certDb,
                                            &subjKeyID);
 
         /* try to search in our list - NSS doesn't update it's cache correctly

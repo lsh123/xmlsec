@@ -20,6 +20,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <limits.h>
 
 #include <libxml/tree.h>
 
@@ -581,9 +582,10 @@ xmlSecBnDiv(xmlSecBnPtr bn, int divider, int* mod) {
  */
 int
 xmlSecBnAdd(xmlSecBnPtr bn, int delta) {
-    int over, tmp;
+    unsigned int over, byteDelta;
+    unsigned int tmp;
     xmlSecByte* data;
-    xmlSecSize ii;
+    xmlSecSize ii, size;
     xmlSecByte ch;
     int ret;
 
@@ -595,10 +597,10 @@ xmlSecBnAdd(xmlSecBnPtr bn, int delta) {
 
     data = xmlSecBufferGetData(bn);
     if(delta > 0) {
-        for(over = delta, ii = xmlSecBufferGetSize(bn); (ii > 0) && (over > 0) ;) {
+        for(over = (unsigned int)delta, ii = xmlSecBufferGetSize(bn); (ii > 0) && (over > 0) ;) {
             xmlSecAssert2(data != NULL, -1);
             tmp      = data[--ii];
-            over    += tmp;
+            over    += (unsigned int)tmp;
             data[ii] = (xmlSecByte)(over % 256);
             over     = over / 256;
         }
@@ -614,16 +616,47 @@ xmlSecBnAdd(xmlSecBnPtr bn, int delta) {
             }
         }
     } else {
-        for(over = -delta, ii = xmlSecBufferGetSize(bn); (ii > 0) && (over > 0);) {
+        unsigned int absDelta;
+
+        /* avoid undefined behavior from negating INT_MIN */
+        absDelta = (delta == INT_MIN) ? (((unsigned int)INT_MAX) + 1U) : (unsigned int)(-delta);
+
+        size = xmlSecBufferGetSize(bn);
+
+        /* subtract |delta| from the least significant bytes; a borrow that runs
+         * past the most significant byte (over still non-zero when ii reaches 0)
+         * means the value was smaller than |delta|, i.e. the result would go below
+         * zero which is not representable for an unsigned BN */
+        over = absDelta;
+        for(ii = size; (ii > 0) && (over > 0);) {
             xmlSecAssert2(data != NULL, -1);
             tmp = data[--ii];
-            if(tmp < over) {
-                data[ii] = 0;
-                over = (over - tmp) / 256;
+            byteDelta = over % 256;
+            over = over / 256;
+            if(tmp < byteDelta) {
+                data[ii] = (xmlSecByte)((tmp + 256U) - byteDelta);
+                ++over;
             } else {
-                data[ii] = (xmlSecByte)(tmp - over);
-                over = 0;
+                data[ii] = (xmlSecByte)(tmp - byteDelta);
             }
+        }
+
+        if(over > 0) {
+            xmlSecInvalidIntegerDataError("delta", delta, "value >= |delta| (result must not go below zero)", NULL);
+            return (-1);
+        }
+
+        /* trim leading zeros to keep the canonical form, keeping at least one byte */
+        size = xmlSecBufferGetSize(bn);
+        data = xmlSecBufferGetData(bn);
+        while((size > 1) && (data != NULL) && (data[0] == 0x00)) {
+            ret = xmlSecBufferRemoveHead(bn, 1);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecBufferRemoveHead(1)", NULL);
+                return (-1);
+            }
+            size = xmlSecBufferGetSize(bn);
+            data = xmlSecBufferGetData(bn);
         }
     }
     return(0);

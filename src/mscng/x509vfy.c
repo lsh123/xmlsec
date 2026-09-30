@@ -501,12 +501,77 @@ xmlSecMSCngVerifyCertTime(PCCERT_CONTEXT cert, LPFILETIME time) {
     return(0);
 }
 
+static PCCERT_CONTEXT
+xmlSecMSCngX509StoreFindIssuer(HCERTSTORE store, PCCERT_CONTEXT cert,
+    xmlSecKeyDataStorePtr keyDataStore) {
+    PCCERT_CONTEXT issuerCert = NULL;
+    int ret;
+
+    xmlSecAssert2(store != NULL, NULL);
+    xmlSecAssert2(cert != NULL, NULL);
+    xmlSecAssert2(keyDataStore != NULL, NULL);
+
+    while (TRUE) {
+        /* CertFindCertificateInStore automatically frees the previous certificate context (see
+         * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certfindcertificateinstore) */
+        issuerCert = CertFindCertificateInStore(store,
+            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+            0,
+            CERT_FIND_SUBJECT_NAME,
+            &(cert->pCertInfo->Issuer),
+            issuerCert);
+        if (issuerCert == NULL) {
+            return(NULL);
+        }
+
+        ret = xmlSecMSCngX509StoreVerifySubject(cert, issuerCert);
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecMSCngX509StoreVerifySubject", NULL);
+            continue;
+        } else if (ret == 0) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+                xmlSecKeyDataStoreGetName(keyDataStore),
+                "xmlSecMSCngX509StoreVerifySubject");
+            continue;
+        }
+
+        /* success */
+        return(issuerCert);
+    }
+}
+
+struct xmlSecMSCngX509StoreVerifyCertificateChainStep {
+    PCCERT_CONTEXT cert;
+    BOOL freeCert;
+};
+#define XMLSEC_MSCNG_X509_STORE_VERIFY_CERTIFICATE_CHAIN_STEP_SIZE 32
+#define XMLSEC_MSCNG_X509_STORE_VERIFY_CERTIFICATE_CHAIN_MAX_DEPTH 100
+#define XMLSEC_MSCNG_X509_CERT_HASH_SIZE 20
+
+/* Returns the SHA1 hash of @p pCert in @p pHash. Returns 0 on success, -1 on error. */
+static int
+xmlSecMSCngX509GetCertHash(PCCERT_CONTEXT pCert, BYTE* pHash, DWORD* hashSize) {
+    BOOL ret;
+
+    xmlSecAssert2(pCert != NULL, -1);
+    xmlSecAssert2(pHash != NULL, -1);
+    xmlSecAssert2(hashSize != NULL, -1);
+
+    ret = CertGetCertificateContextProperty(pCert, CERT_HASH_PROP_ID, pHash, hashSize);
+    if((ret == FALSE) || (*hashSize != (DWORD)XMLSEC_MSCNG_X509_CERT_HASH_SIZE)) {
+        xmlSecMSCngLastError("CertGetCertificateContextProperty(CERT_HASH_PROP_ID)", NULL);
+        return(-1);
+    }
+    return(0);
+}
+
 /**
  * xmlSecMSCngX509StoreVerifyCertificateOwn:
  * @cert: the certificate to verify.
  * @time: pointer to FILETIME that we are interested in
  * @trustedStore: trusted certificates added via xmlSecMSCngX509StoreAdoptCert().
- * @certStore: the untrusted certificates stack.
+ * @untrustedStore: the untrusted certificates stack.
+ * @certStore: the certificates stack from the document.
  * @store: key data store, name used for error reporting only.
  *
  * Verifies @cert based on trustedStore (ignoring system trusted certificates).
@@ -517,7 +582,15 @@ static int
 xmlSecMSCngX509StoreVerifyCertificateOwn(PCCERT_CONTEXT cert,
         FILETIME* time, HCERTSTORE trustedStore, HCERTSTORE untrustedStore, HCERTSTORE certStore,
         xmlSecKeyDataStorePtr store) {
-    PCCERT_CONTEXT issuerCert = NULL;
+    struct xmlSecMSCngX509StoreVerifyCertificateChainStep * queue = NULL;
+    xmlSecSize queueSize = 0, queueMaxSize = 0;
+    BYTE seenHashes[XMLSEC_MSCNG_X509_STORE_VERIFY_CERTIFICATE_CHAIN_MAX_DEPTH][XMLSEC_MSCNG_X509_CERT_HASH_SIZE];
+    xmlSecSize seenSize = 0;
+    BYTE hash[XMLSEC_MSCNG_X509_CERT_HASH_SIZE];
+    DWORD hashSize;
+    PCCERT_CONTEXT currentCert = NULL;
+    BOOL freeCurrentCert = FALSE;
+    int res = -1;
     int ret;
 
     xmlSecAssert2(cert != NULL, -1);
@@ -525,120 +598,172 @@ xmlSecMSCngX509StoreVerifyCertificateOwn(PCCERT_CONTEXT cert,
     xmlSecAssert2(certStore != NULL, -1);
     xmlSecAssert2(store != NULL, -1);
 
-    /* check certificate validity and revokation */
-    ret = xmlSecMSCngVerifyCertTime(cert, time);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngVerifyCertTime",
-            xmlSecKeyDataStoreGetName(store));
+    /* setup queue */
+    queue = (struct xmlSecMSCngX509StoreVerifyCertificateChainStep*)xmlMalloc(
+        sizeof(struct xmlSecMSCngX509StoreVerifyCertificateChainStep) * XMLSEC_MSCNG_X509_STORE_VERIFY_CERTIFICATE_CHAIN_STEP_SIZE);
+    if(queue == NULL) {
+        xmlSecMallocError(
+            sizeof(struct xmlSecMSCngX509StoreVerifyCertificateChainStep) * XMLSEC_MSCNG_X509_STORE_VERIFY_CERTIFICATE_CHAIN_STEP_SIZE, NULL);
         return(-1);
     }
+    queueMaxSize = XMLSEC_MSCNG_X509_STORE_VERIFY_CERTIFICATE_CHAIN_STEP_SIZE;
 
-    ret = xmlSecMSCngCheckRevocation(certStore, cert);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngCheckRevocation",
-            xmlSecKeyDataStoreGetName(store));
-        return(-1);
-    }
+    queue[0].cert = cert;
+    queue[0].freeCert = FALSE;
+    queueSize = 1;
 
-    /* does trustedStore contain cert directly? */
-    ret = xmlSecMSCngX509StoreContainsCert(trustedStore,
-        &(cert->pCertInfo->Subject), cert);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngX509StoreContainsCert",
-            xmlSecKeyDataStoreGetName(store));
-        return(-1);
-    } else if(ret == 1) {
-        /* success */
-        return(0);
-    }
+    while(queueSize > 0) {
+        PCCERT_CONTEXT issuerCert = NULL;
+        xmlSecSize ii;
+        BOOL alreadySeen = FALSE;
 
-    /* does trustedStore contain the issuer cert? */
-    ret = xmlSecMSCngX509StoreContainsCert(trustedStore,
-        &(cert->pCertInfo->Issuer), cert);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngX509StoreContainsCert",
-            xmlSecKeyDataStoreGetName(store));
-        return(-1);
-    } else if(ret == 1) {
-        /* success */
-        return(0);
-    }
+        currentCert = queue[queueSize - 1].cert;
+        freeCurrentCert = queue[queueSize - 1].freeCert;
+        --queueSize;
 
-    /* is cert self-signed? no recursion in that case */
-    if(CertCompareCertificateName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-            &(cert->pCertInfo->Subject),
-            &(cert->pCertInfo->Issuer))) {
-        /* not verified */
-        return(-1);
-    }
-
-    /* the same checks recursively for the issuer cert in certStore */
-    issuerCert = CertFindCertificateInStore(certStore,
-        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-        0,
-        CERT_FIND_SUBJECT_NAME,
-        &(cert->pCertInfo->Issuer),
-        NULL);
-    if(issuerCert != NULL) {
-        ret = xmlSecMSCngX509StoreVerifySubject(cert, issuerCert);
-        if (ret < 0) {
-            xmlSecInternalError("xmlSecMSCngX509StoreVerifySubject", NULL);
-            CertFreeCertificateContext(issuerCert);
-            return(-1);
-        }
-        else if (ret == 0) {
+        /* limit the chain depth to avoid excessive work on crafted inputs */
+        if(seenSize >= XMLSEC_MSCNG_X509_STORE_VERIFY_CERTIFICATE_CHAIN_MAX_DEPTH) {
             xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-                NULL,
-                "xmlSecMSCngX509StoreVerifySubject");
-            CertFreeCertificateContext(issuerCert);
-            return(-1);
+                xmlSecKeyDataStoreGetName(store),
+                "certificate chain is too deep");
+            goto done;
         }
 
-        ret = xmlSecMSCngX509StoreVerifyCertificateOwn(issuerCert, time,
-            trustedStore, untrustedStore, certStore, store);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateOwn", xmlSecKeyDataStoreGetName(store));
-            CertFreeCertificateContext(issuerCert);
-            return(-1);
+        /* cycle detection: make sure we have not seen this certificate before */
+        hashSize = sizeof(hash);
+        ret = xmlSecMSCngX509GetCertHash(currentCert, hash, &hashSize);
+        if((ret < 0) || (hashSize != XMLSEC_MSCNG_X509_CERT_HASH_SIZE)) {
+            xmlSecInternalError("xmlSecMSCngX509GetCertHash", NULL);
+            goto done;
         }
-        CertFreeCertificateContext(issuerCert);
-        return(0);
+        for(ii = 0; ii < seenSize; ++ii) {
+            if(memcmp(&seenHashes[ii], hash, XMLSEC_MSCNG_X509_CERT_HASH_SIZE) == 0) {
+                alreadySeen = TRUE;
+                break;
+            }
+        }
+        if(alreadySeen) {
+            /* The same certificate can be reached through multiple stores/branches;
+             * we only need to process each cert once. */
+            if(freeCurrentCert == TRUE) {
+                CertFreeCertificateContext(currentCert);
+            }
+            currentCert = NULL;
+            freeCurrentCert = FALSE;
+            continue;
+        }
+
+        /* remember this certificate */
+        memcpy(&seenHashes[seenSize], hash, XMLSEC_MSCNG_X509_CERT_HASH_SIZE);
+        ++seenSize;
+
+        /* check certificate validity and revokation */
+        ret = xmlSecMSCngVerifyCertTime(currentCert, time);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecMSCngVerifyCertTime",
+                xmlSecKeyDataStoreGetName(store));
+            goto done;
+        }
+
+        ret = xmlSecMSCngCheckRevocation(certStore, currentCert);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecMSCngCheckRevocation",
+                xmlSecKeyDataStoreGetName(store));
+            goto done;
+        }
+
+        /* does trustedStore contain cert directly? */
+        ret = xmlSecMSCngX509StoreContainsCert(trustedStore,
+            &(currentCert->pCertInfo->Subject), currentCert);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecMSCngX509StoreContainsCert",
+                xmlSecKeyDataStoreGetName(store));
+            goto done;
+        } else if(ret == 1) {
+            /* success */
+            res = 0;
+            goto done;
+        }
+
+        /* does trustedStore contain the issuer cert? */
+        ret = xmlSecMSCngX509StoreContainsCert(trustedStore,
+            &(currentCert->pCertInfo->Issuer), currentCert);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecMSCngX509StoreContainsCert",
+                xmlSecKeyDataStoreGetName(store));
+            goto done;
+        } else if(ret == 1) {
+            /* success */
+            res = 0;
+            goto done;
+        }
+
+        /* is cert self-signed? no further chain building in that case */
+        if(CertCompareCertificateName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+            &(currentCert->pCertInfo->Subject),
+            &(currentCert->pCertInfo->Issuer)) == FALSE
+        ) {
+            /* we need space for at most 2 certificates */
+            if(queueSize + 2 > queueMaxSize) {
+                struct xmlSecMSCngX509StoreVerifyCertificateChainStep * newQueue;
+                xmlSecSize newQueueMaxSize = queueMaxSize + XMLSEC_MSCNG_X509_STORE_VERIFY_CERTIFICATE_CHAIN_STEP_SIZE;
+
+                newQueue = (struct xmlSecMSCngX509StoreVerifyCertificateChainStep*)xmlRealloc(queue,
+                    sizeof(struct xmlSecMSCngX509StoreVerifyCertificateChainStep) * newQueueMaxSize);
+                if(newQueue == NULL) {
+                    xmlSecMallocError(
+                        sizeof(struct xmlSecMSCngX509StoreVerifyCertificateChainStep) * newQueueMaxSize, NULL);
+                    goto done;
+                }
+                queue = newQueue;
+                queueMaxSize = newQueueMaxSize;
+            }
+
+            /* try the issuer cert in certStore */
+            issuerCert = xmlSecMSCngX509StoreFindIssuer(certStore, currentCert, store);
+            if(issuerCert != NULL) {
+                queue[queueSize].cert = issuerCert;
+                queue[queueSize].freeCert = TRUE;
+                ++queueSize;
+            }
+
+            /* try the issuer cert in untrustedStore */
+            issuerCert = xmlSecMSCngX509StoreFindIssuer(untrustedStore, currentCert, store);
+            if(issuerCert != NULL) {
+                if(queueSize >= queueMaxSize) {
+                    /* can't happen: the queue was resized above to fit two more entries */
+                    CertFreeCertificateContext(issuerCert);
+                    xmlSecInternalError("queue is full", NULL);
+                    goto done;
+                }
+                queue[queueSize].cert = issuerCert;
+                queue[queueSize].freeCert = TRUE;
+                ++queueSize;
+            }
+        }
+
+        if(freeCurrentCert == TRUE) {
+            CertFreeCertificateContext(currentCert);
+        }
+        currentCert = NULL;
+        freeCurrentCert = FALSE;
     }
 
-    /* the same checks recursively for the issuer cert in untrustedStore */
-    issuerCert = CertFindCertificateInStore(untrustedStore,
-        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-        0,
-        CERT_FIND_SUBJECT_NAME,
-        &(cert->pCertInfo->Issuer),
-        NULL);
-    if(issuerCert != NULL) {
-        ret = xmlSecMSCngX509StoreVerifySubject(cert, issuerCert);
-        if (ret < 0) {
-            xmlSecInternalError("xmlSecMSCngX509StoreVerifySubject", NULL);
-            CertFreeCertificateContext(issuerCert);
-            return(-1);
-        }
-        else if (ret == 0) {
-            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-                NULL,
-                "xmlSecMSCngX509StoreVerifySubject");
-            CertFreeCertificateContext(issuerCert);
-            return(-1);
-        }
-
-        ret = xmlSecMSCngX509StoreVerifyCertificateOwn(issuerCert, time,
-            trustedStore, untrustedStore, certStore, store);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateOwn", xmlSecKeyDataStoreGetName(store));
-            CertFreeCertificateContext(issuerCert);
-            return(-1);
-        }
-        CertFreeCertificateContext(issuerCert);
-        return(0);
+    /* not verified */
+done:
+    if((currentCert != NULL) && (freeCurrentCert == TRUE)) {
+        CertFreeCertificateContext(currentCert);
     }
-
-    return(-1);
+    if(queue != NULL) {
+        xmlSecSize ii;
+        for(ii = 0; ii < queueSize; ++ii) {
+            if((queue[ii].cert != NULL) && (queue[ii].freeCert == TRUE)) {
+                CertFreeCertificateContext(queue[ii].cert);
+            }
+        }
+        xmlFree(queue);
+    }
+    return(res);
 }
 
 /**

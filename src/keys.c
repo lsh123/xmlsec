@@ -163,7 +163,7 @@ xmlSecKeyUseWithDuplicate(xmlSecKeyUseWithPtr keyUseWith) {
     ret = xmlSecKeyUseWithCopy(newKeyUseWith, keyUseWith);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyUseWithCopy", NULL);
-        xmlSecKeyUseWithDestroy(keyUseWith);
+        xmlSecKeyUseWithDestroy(newKeyUseWith);
         return(NULL);
     }
 

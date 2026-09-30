@@ -865,7 +865,7 @@ xmlSecSoap12AddFaultSubcode(xmlNodePtr faultNode, const xmlChar* subCodeHref, co
     }
 
     /* set result qname in Value node */
-    xmlNodeSetContent(cur, qname);
+    xmlNodeSetContent(valueNode, qname);
     if(qname != subCodeName) {
         xmlFree(qname);
     }

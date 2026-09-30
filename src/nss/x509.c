@@ -66,7 +66,8 @@ static int              xmlSecNssKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr
 
 static int              xmlSecNssX509SECItemWrite               (SECItem * secItem,
                                                                  xmlSecBufferPtr buf);
-static CERTCertificate* xmlSecNssX509CertDerRead                (xmlSecByte* buf,
+static CERTCertificate* xmlSecNssX509CertDerRead                (CERTCertDBHandle *handle,
+                                                                 xmlSecByte* buf,
                                                                  xmlSecSize size);
 static CERTSignedCrl*   xmlSecNssX509CrlDerRead                 (xmlSecByte* buf,
                                                                  xmlSecSize size,
@@ -714,6 +715,7 @@ xmlSecNssKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 static int
 xmlSecNssKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Value,
                          xmlSecKeysMngrPtr keysMngr, unsigned int flags) {
+    CERTCertDBHandle *certDb;
     xmlSecKeyDataStorePtr x509Store;
     CERTCertificate* cert = NULL;
     CERTSignedCrl* crl = NULL;
@@ -725,6 +727,12 @@ xmlSecNssKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Value,
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataX509Id), -1);
     xmlSecAssert2(x509Value != NULL, -1);
     xmlSecAssert2(keysMngr != NULL, -1);
+
+    certDb = CERT_GetDefaultCertDB();
+    if(certDb == NULL) {
+        xmlSecNssError("CERT_GetDefaultCertDB", xmlSecKeyDataGetName(data));
+        goto done;
+    }
 
     x509Store = xmlSecKeysMngrGetDataStore(keysMngr, xmlSecNssX509StoreId);
     if(x509Store == NULL) {
@@ -738,7 +746,8 @@ xmlSecNssKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Value,
     }
 
     if(xmlSecBufferGetSize(&(x509Value->cert)) > 0) {
-        cert = xmlSecNssX509CertDerRead(xmlSecBufferGetData(&(x509Value->cert)),
+        cert = xmlSecNssX509CertDerRead(certDb,
+            xmlSecBufferGetData(&(x509Value->cert)),
             xmlSecBufferGetSize(&(x509Value->cert)));
         if(cert == NULL) {
             xmlSecInternalError("xmlSecNssX509CertDerRead", xmlSecKeyDataGetName(data));
@@ -1084,10 +1093,11 @@ xmlSecNssX509SECItemWrite(SECItem* secItem, xmlSecBufferPtr buf) {
 }
 
 static CERTCertificate*
-xmlSecNssX509CertDerRead(xmlSecByte* buf, xmlSecSize size) {
+xmlSecNssX509CertDerRead(CERTCertDBHandle *handle, xmlSecByte* buf, xmlSecSize size) {
     CERTCertificate *cert;
     SECItem  derCert;
 
+    xmlSecAssert2(handle != NULL, NULL);
     xmlSecAssert2(buf != NULL, NULL);
     xmlSecAssert2(size > 0, NULL);
 
@@ -1095,7 +1105,7 @@ xmlSecNssX509CertDerRead(xmlSecByte* buf, xmlSecSize size) {
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, derCert.len, return(NULL), NULL);
 
     /* decode cert and import to temporary cert db */
-    cert = __CERT_NewTempCertificate(CERT_GetDefaultCertDB(), &derCert,
+    cert = __CERT_NewTempCertificate(handle, &derCert,
                                      NULL, PR_FALSE, PR_TRUE);
     if(cert == NULL) {
         xmlSecNssError("__CERT_NewTempCertificate", NULL);
@@ -1321,6 +1331,7 @@ static int
 xmlSecNssKeyDataRawX509CertBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                                     const xmlSecByte* buf, xmlSecSize bufSize,
                                     xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    CERTCertDBHandle *certDb;
     xmlSecKeyDataPtr data;
     CERTCertificate* cert;
     int ret;
@@ -1331,7 +1342,13 @@ xmlSecNssKeyDataRawX509CertBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2(bufSize > 0, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    cert = xmlSecNssX509CertDerRead((xmlSecByte*)buf, bufSize);
+    certDb = CERT_GetDefaultCertDB();
+    if(certDb == NULL) {
+        xmlSecNssError("CERT_GetDefaultCertDB", NULL);
+        return(-1);
+    }
+
+    cert = xmlSecNssX509CertDerRead(certDb, (xmlSecByte*)buf, bufSize);
     if(cert == NULL) {
         xmlSecInternalError("xmlSecNssX509CertDerRead", NULL);
         return(-1);

@@ -34,7 +34,7 @@ jobs:
     - name: configure
       working-directory: build
       run: |
-          ../autogen.sh --enable-werror --enable-pedantic \
+          ../autogen.sh --enable-werror \
               ${{ matrix.config_flags }}
     - name: make
       working-directory: build
@@ -70,7 +70,7 @@ jobs:
     - name: configure
       working-directory: build
       run: |
-          ../autogen.sh --enable-werror --enable-pedantic  \
+          ../autogen.sh --enable-werror \
               --without-gcrypt --without-gnutls \
               ${{ matrix.config_flags }}
     - name: make
@@ -164,7 +164,7 @@ jobs:
     env:
       VISUAL_STUDIO_ROOT: "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise"
       INSTALL_FOLDER: c:\install.dir
-      LIBS_VERSION: 1.3.3
+      LIBS_VERSION: 1.3.12
     steps:
     - name: create-dirs
       run: |

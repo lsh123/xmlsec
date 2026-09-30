@@ -231,6 +231,12 @@ extern "C" {
 #define XMLSEC_ERRORS_R_RETRIEVAL_TYPE_MISMATCH         52
 
 /**
+ * @brief Key data type mismatch in dsig:RetrievalMethod node.
+ * DEPRECATED. Use #XMLSEC_ERRORS_R_RETRIEVAL_TYPE_MISMATCH instead.
+ */
+#define XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH     XMLSEC_ERRORS_R_RETRIEVAL_TYPE_MISMATCH
+
+/**
  * @brief Max allowed KeyInfoReference level reached.
  */
 #define XMLSEC_ERRORS_R_MAX_KEYINFOREFERENCE_LEVEL      53
@@ -311,6 +317,11 @@ extern "C" {
  */
 #define XMLSEC_ERROR_R_CAST_IMPOSSIBLE                  XMLSEC_ERRORS_R_CAST_IMPOSSIBLE
 
+/**
+ * @brief The maximum xmlsec errors number.
+ * DEPRECATED. No longer used by the library; provided for source compatibility with xmlsec 1.3.12 and earlier.
+ */
+#define XMLSEC_ERRORS_MAX_NUMBER                        256
 
 
 /******************************************************************************
@@ -377,6 +388,12 @@ XMLSEC_EXPORT void              xmlSecErrorsPrintCryptoLibraryLogOnExitSet      
 #endif
 
 #endif /*!defined(XMLSEC_FUNCTION) */
+
+/**
+ * @brief The current function name (compiler-specific).
+ * DEPRECATED. Use #XMLSEC_FUNCTION instead.
+ */
+#define __XMLSEC_FUNCTION__                     XMLSEC_FUNCTION
 
 /**
  * @brief The macro specifying the error location (file, line, function) for xmlSecError().

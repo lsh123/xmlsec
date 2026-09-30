@@ -28,6 +28,8 @@ see the Copyright file in the distribution for details.
   - (xmlsec-core, **not backward compatible**) Enforced restrictions on max depth when processing encrypted keys,
     key agreements, etc. Use the new `--max-encrypted-key-level` option to control the maximum depth level for
     these use cases. (default is 1).
+  - (xmlsec-core, **not backward compatible**) Include files have been cleaned up to remove unnecessary includes,
+    fix circular dependencies, etc.
   - (xmlsec-openssl) Added checks to enforce full consumption of parsed DER objects.
   - (xmlsec-mscng) Added support for using both current user and local machine certificates store for verifying
     the certificates.

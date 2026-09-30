@@ -734,10 +734,12 @@ done:
  * @return pointer to the first verified certificate from @p certs.
  */
 gnutls_x509_crt_t
-xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
-                             xmlSecPtrListPtr certs,
-                             xmlSecPtrListPtr crls,
-                             xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecGnuTLSX509StoreVerify(
+    xmlSecKeyDataStorePtr store,
+    xmlSecPtrListPtr certs,
+    xmlSecPtrListPtr crls,
+    const xmlSecKeyInfoCtx* keyInfoCtx
+) {
     xmlSecGnuTLSX509StoreCtxPtr ctx;
     gnutls_x509_crt_t res = NULL;
     xmlSecSize certs_size = 0;

@@ -78,6 +78,29 @@ XMLSEC_CRYPTO_EXPORT gnutls_privkey_t   xmlSecGnuTLSAsymmetricKeyGetPriv        
 
 /******************************************************************************
  *
+ * DEPRECATED
+ *
+  *****************************************************************************/
+/**
+ * @brief Deprecated alias for xmlSecGnuTLSAsymmetricKeyCreatePub.
+ */
+#define xmlSecGCryptAsymetricKeyCreatePub  xmlSecGnuTLSAsymmetricKeyCreatePub
+/**
+ * @brief Deprecated alias for xmlSecGnuTLSAsymmetricKeyCreatePriv.
+ */
+#define xmlSecGCryptAsymetricKeyCreatePriv  xmlSecGnuTLSAsymmetricKeyCreatePriv
+
+/**
+ * @brief Deprecated alias for xmlSecGnuTLSAsymmetricKeyGetPub.
+ */
+#define xmlSecGCryptAsymetricKeyGetPub  xmlSecGnuTLSAsymmetricKeyGetPub
+/**
+ * @brief Deprecated alias for xmlSecGnuTLSAsymmetricKeyGetPriv.
+ */
+#define xmlSecGCryptAsymetricKeyGetPriv  xmlSecGnuTLSAsymmetricKeyGetPriv
+
+/******************************************************************************
+ *
  * AES transforms
  *
   *****************************************************************************/

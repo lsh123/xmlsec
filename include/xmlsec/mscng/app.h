@@ -46,6 +46,11 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppShutdown               (void);
 XMLSEC_CRYPTO_EXPORT LPCTSTR    xmlSecMSCngAppGetCurrentUserCertStoreName(void);
 XMLSEC_CRYPTO_EXPORT LPCTSTR    xmlSecMSCngAppGetLocalMachineCertStoreName(void);
 
+/**
+ * @brief Deprecated alias for xmlSecMSCngAppGetLocalMachineCertStoreName.
+ */
+#define xmlSecMSCngAppGetCertStoreName  xmlSecMSCngAppGetLocalMachineCertStoreName
+
 /******************************************************************************
  *
  * Keys Manager

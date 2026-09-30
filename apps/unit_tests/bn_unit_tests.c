@@ -76,7 +76,9 @@ bnTestCreateDoc(const xmlChar* rootName) {
         return(NULL);
     }
 
-    xmlDocSetRootElement(doc, root);
+    /* xmlDocSetRootElement() returns the previous root element, not an error
+     * code, so there is no error condition to check here. */
+    (void)xmlDocSetRootElement(doc, root);
     return(doc);
 }
 

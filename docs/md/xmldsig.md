@@ -47,7 +47,7 @@ XML Security library supports the following features as defined in
 | [XPath Filter 2.0](https://www.w3.org/TR/2002/REC-xmldsig-filter2-20021108/) | Recommended | Yes |
 | [Enveloped Signature Transform](https://www.w3.org/TR/xmldsig-core1/#sec-EnvelopedSignature) | Required | Yes |
 | [XSLT Transform](https://www.w3.org/TR/xmldsig-core1/#sec-XSLT) | Optional | Yes [(6)](#xslt) |
-| [Decryption Transform](https://www.w3.org/TR/xmlenc-decrypt/) | Optional | Yes |
+| [Decryption Transform](https://www.w3.org/TR/xmlenc-decrypt/) | Optional | No |
 | [XPointer Transform](https://www.ietf.org/rfc/rfc9231.html#section-2.5.1) | Optional | Yes |
 
 ### XMLSec Cryptographic Libraries features
@@ -68,7 +68,7 @@ XML Security library supports the following features as defined in
 | GOST-R3411-94 | Optional | Yes [(3)](#openssl-gost) | No | Yes | No | Yes [(4)](#mscrypto-gost) | No |
 | GOST-R3411-2012 (256 bit) | Optional | Yes [(3)](#openssl-gost) | No | Yes | No | Yes [(4)](#mscrypto-gost) | No |
 | GOST-R3411-2012 (512 bit) | Optional | Yes [(3)](#openssl-gost) | No | Yes | No | Yes [(4)](#mscrypto-gost) | No |
-| [MD5](https://www.ietf.org/rfc/rfc9231.html#section-2.1.1) | DEPRECATED | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) |
+| [MD5](https://www.ietf.org/rfc/rfc9231.html#section-2.1.1) | DEPRECATED | Yes [(1)](#feature-disabled) | No | No | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) |
 | **Message Authentication Codes** | | | | | | | |
 | [HMAC-SHA1](https://www.w3.org/TR/xmldsig-core1/#sec-HMAC) | Required (use is DISCOURAGED) | Yes | Yes | Yes | Yes | Yes | Yes |
 | [HMAC-SHA2-224](https://www.w3.org/TR/xmldsig-core1/#sec-HMAC) | Optional | Yes | Yes | Yes | No | No | No |
@@ -76,7 +76,7 @@ XML Security library supports the following features as defined in
 | [HMAC-SHA2-384](https://www.w3.org/TR/xmldsig-core1/#sec-HMAC) | Recommended | Yes | Yes | Yes | Yes | Yes | Yes |
 | [HMAC-SHA2-512](https://www.w3.org/TR/xmldsig-core1/#sec-HMAC) | Recommended | Yes | Yes | Yes | Yes | Yes | Yes |
 | [HMAC-RIPEMD160](https://www.ietf.org/rfc/rfc9231.html#section-2.2.3) | DEPRECATED | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | No | No | No | Yes [(1)](#feature-disabled) |
-| [HMAC-MD5](https://www.ietf.org/rfc/rfc9231.html#section-2.2.1) | DEPRECATED | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | No | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) |
+| [HMAC-MD5](https://www.ietf.org/rfc/rfc9231.html#section-2.2.1) | DEPRECATED | Yes [(1)](#feature-disabled) | No | No | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) |
 | **Signatures** | | | | | | | |
 | [DSA-SHA1](https://www.w3.org/TR/xmldsig-core1/#sec-DSA) | Required (use is DISCOURAGED for signature generation) | Yes | Yes | Yes | Yes | Yes | Yes |
 | [DSA-SHA256](https://www.w3.org/TR/xmldsig-core1/#sec-DSA) | Optional | Yes | Yes | Yes | Yes | No | No |
@@ -86,7 +86,7 @@ XML Security library supports the following features as defined in
 | [PKCS1 RSA-SHA2-384](https://www.w3.org/TR/xmldsig-core1/#sec-PKCS1) | Optional | Yes | Yes | Yes | Yes | Yes | Yes |
 | [PKCS1 RSA-SHA2-512](https://www.w3.org/TR/xmldsig-core1/#sec-PKCS1) | Optional | Yes | Yes | Yes | Yes | Yes | Yes |
 | [PKCS1 RSA-RIPEMD160](https://www.ietf.org/rfc/rfc9231.html#section-2.3.5) | DEPRECATED | Yes [(1)](#feature-disabled) | No | No | No | No | Yes [(1)](#feature-disabled) |
-| [PKCS1 RSA-MD5](https://www.ietf.org/rfc/rfc9231.html#section-2.3.1) | DEPRECATED | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | No | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) |
+| [PKCS1 RSA-MD5](https://www.ietf.org/rfc/rfc9231.html#section-2.3.1) | DEPRECATED | Yes [(1)](#feature-disabled) | No | No | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) |
 | [ECDSA-RIPEMD160](https://www.ietf.org/rfc/rfc9231.html#section-2.3.6) | DEPRECATED | Yes [(1)](#feature-disabled) | No | No | No | No | No |
 | [ECDSA-SHA1](https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA) | Optional (use is DISCOURAGED) | Yes | Yes | Yes | Yes | No | Yes |
 | [ECDSA-SHA2-224](https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA) | Optional | Yes | Yes | Yes | No | No | No |

@@ -53,8 +53,8 @@ XML Security library supports the following features as defined in
 | [HKDF](https://www.w3.org/2021/04/xmldsig-more#hkdf) | Optional | Yes [(3)](#openssl3-required) | Yes | Yes | Yes [(5)](#new-windows-required) | No | No |
 | **Key Transport** | | | | | | | |
 | [RSA PKCS1 v1.5](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-1_5) | Optional | Yes | Yes | Yes | Yes | Yes | Yes |
-| [RSA-OAEP with MGF1-SHA1](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Required | Yes | Yes | Yes [(2)](#rsa-oaep-same-algo) | Yes [(2)](#rsa-oaep-same-algo) | Yes [(2)](#rsa-oaep-same-algo) | Yes [(2)](#rsa-oaep-same-algo) |
-| [RSA-OAEP with MGF1-SHA224](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Optional | Yes | Yes | Yes [(2)](#rsa-oaep-same-algo) | No | No | Yes [(2)](#rsa-oaep-same-algo) |
+| [RSA-OAEP with MGF1-SHA1](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Required | Yes | Yes | No | Yes [(2)](#rsa-oaep-same-algo) | Yes [(2)](#rsa-oaep-same-algo) | Yes [(2)](#rsa-oaep-same-algo) |
+| [RSA-OAEP with MGF1-SHA224](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Optional | Yes | Yes | No | Yes [(2)](#rsa-oaep-same-algo) | No | Yes [(2)](#rsa-oaep-same-algo) |
 | [RSA-OAEP with MGF1-SHA256](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Optional | Yes | Yes | Yes [(2)](#rsa-oaep-same-algo) | Yes [(2)](#rsa-oaep-same-algo) | No | Yes [(2)](#rsa-oaep-same-algo) |
 | [RSA-OAEP with MGF1-SHA384](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Optional | Yes | Yes | Yes [(2)](#rsa-oaep-same-algo) | Yes [(2)](#rsa-oaep-same-algo) | No | Yes [(2)](#rsa-oaep-same-algo) |
 | [RSA-OAEP with MGF1-SHA512](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Optional | Yes | Yes | Yes [(2)](#rsa-oaep-same-algo) | Yes [(2)](#rsa-oaep-same-algo) | No | Yes [(2)](#rsa-oaep-same-algo) |

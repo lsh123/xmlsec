@@ -37,6 +37,9 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecXPath2Ns[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPointerNs[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecDSig2021MoreNs[];
 
+/** @brief Deprecated. Use xmlSecDSig2021MoreNs instead. */
+#define xmlSecXmldsig2021MoreNs  xmlSecDSig2021MoreNs
+
 
 /******************************************************************************
  *
@@ -236,6 +239,21 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrConcatKDFPartyUInfo[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrConcatKDFPartyVInfo[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrConcatKDFSuppPubInfo[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrConcatKDFSuppPrivInfo[];
+
+/** @brief Deprecated. Use xmlSecAttrConcatKDFAlgorithmID instead. */
+#define xmlSecNodeConcatKDFAttrAlgorithmID  xmlSecAttrConcatKDFAlgorithmID
+
+/** @brief Deprecated. Use xmlSecAttrConcatKDFPartyUInfo instead. */
+#define xmlSecNodeConcatKDFAttrPartyUInfo   xmlSecAttrConcatKDFPartyUInfo
+
+/** @brief Deprecated. Use xmlSecAttrConcatKDFPartyVInfo instead. */
+#define xmlSecNodeConcatKDFAttrPartyVInfo   xmlSecAttrConcatKDFPartyVInfo
+
+/** @brief Deprecated. Use xmlSecAttrConcatKDFSuppPubInfo instead. */
+#define xmlSecNodeConcatKDFAttrSuppPubInfo  xmlSecAttrConcatKDFSuppPubInfo
+
+/** @brief Deprecated. Use xmlSecAttrConcatKDFSuppPrivInfo instead. */
+#define xmlSecNodeConcatKDFAttrSuppPrivInfo xmlSecAttrConcatKDFSuppPrivInfo
 
 
 /******************************************************************************

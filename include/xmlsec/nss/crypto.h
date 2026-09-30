@@ -359,6 +359,11 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformDsaSha256GetKlass(void)
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNssKeyDataEcGetKlass(void);
 
 /**
+ * @brief Deprecated alias for xmlSecNssKeyDataEcGetKlass.
+ */
+#define xmlSecNsskeyDataEcGetKlass  xmlSecNssKeyDataEcGetKlass
+
+/**
  * @brief The ECDH key agreement transform klass.
  */
 #define xmlSecNssTransformEcdhId \

@@ -28,6 +28,18 @@ extern "C" {
 #endif /* __cplusplus */
 
 /**
+ * @brief Stack of X509 certificates.
+ * DEPRECATED. Use STACK_OF(X509) directly.
+ */
+#define XMLSEC_STACK_OF_X509            STACK_OF(X509)
+
+/**
+ * @brief Stack of X509 CRLs.
+ * DEPRECATED. Use STACK_OF(X509_CRL) directly.
+ */
+#define XMLSEC_STACK_OF_X509_CRL        STACK_OF(X509_CRL)
+
+/**
  * @brief The OpenSSL X509 data klass.
  */
 #define xmlSecOpenSSLKeyDataX509Id \

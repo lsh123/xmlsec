@@ -164,12 +164,30 @@ def fix_md_links(content, source_folder, image_dest_prefix="images/"):
     return "".join(segments)
 
 
+# Image file extensions that are copied into the wiki. Non-image files (e.g. a
+# source "diagrams.sxd") are skipped.
+IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".bmp"}
+
+
+def _is_image_file(path):
+    """Return True if the file has a known image extension."""
+    return os.path.splitext(path)[1].lower() in IMAGE_EXTENSIONS
+
+
 def collect_images(md_folder):
     """
-    List image files stored in the images/ subfolders of md_folder.
-    Returns a list of absolute image paths.
+    List image files stored in a top-level images/ directory and in the
+    images/ subfolders of md_folder. Returns a list of absolute image paths.
     """
     images = []
+    # Top-level images/ directory (for images referenced by top-level pages).
+    top_images_path = os.path.join(md_folder, "images")
+    if os.path.isdir(top_images_path):
+        for img in os.listdir(top_images_path):
+            img_path = os.path.join(top_images_path, img)
+            if os.path.isfile(img_path) and _is_image_file(img_path):
+                images.append(img_path)
+    # Subfolder images/ directories.
     for subfolder in os.listdir(md_folder):
         subfolder_path = os.path.join(md_folder, subfolder)
         if not os.path.isdir(subfolder_path):
@@ -178,7 +196,7 @@ def collect_images(md_folder):
         if os.path.isdir(images_path):
             for img in os.listdir(images_path):
                 img_path = os.path.join(images_path, img)
-                if os.path.isfile(img_path):
+                if os.path.isfile(img_path) and _is_image_file(img_path):
                     images.append(img_path)
     return images
 
@@ -225,10 +243,12 @@ def main():
     print(f"Temporary build directory: {tmp_dir}")
 
     try:
-        # Run autogen.sh from srcdir inside tmp_dir
+        # Run autogen.sh from srcdir inside tmp_dir. Only the docs target is
+        # needed (it does not depend on the compiled library), so skip the full
+        # library build to keep generation fast and avoid failing on unrelated
+        # build components or crypto-backend dependencies.
         print("\n--- Running autogen.sh ---")
-        jobs = os.cpu_count() or 2
-        build_cmd = f"{shlex.quote(autogen_sh)} && make -j{jobs} && make -C docs docs"
+        build_cmd = f"{shlex.quote(autogen_sh)} && make -C docs docs"
         run_command(
             build_cmd,
             cwd=tmp_dir,

@@ -104,6 +104,13 @@ if XMLSEC_APPS
 
 check: check-all check-fuzz check-info
 
+# Build the command line tool and the unit tests on demand so the check-* /
+# memcheck / perfcheck targets can be run directly in a fresh build dir,
+# before a full 'make' has built the subdirectories. The whole project is
+# built (not just apps/) so the library dependencies in src/ are available.
+$(TEST_APP) $(UNIT_TEST_APP):
+	$(MAKE) $(AM_MAKEFLAGS) all
+
 check-unit-tests: $(UNIT_TEST_APP)
 	@($(PRECHECK_COMMANDS) && $(ABS_BUILDDIR)/$(UNIT_TEST_APP))
 

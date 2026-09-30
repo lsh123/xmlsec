@@ -10,6 +10,7 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include <time.h>
 #include <string.h>
 #include <assert.h>
@@ -36,10 +37,8 @@ static int                      xmlSecAppCmdLineTimeParamRead   (const char* str
                                                                   int is_gmt_time);
 
 #if defined(_MSC_VER)
-#define XMLSEC_SCANF     sscanf_s
 #define XMLSEC_MKGMTIME  _mkgmtime
 #else /* defined(_MSC_VER) */
-#define XMLSEC_SCANF      sscanf
 #define XMLSEC_MKGMTIME  xmlSecAppGetGmtTime
 
 static time_t                   xmlSecAppGetGmtTime             (struct tm* timeptr);
@@ -441,51 +440,123 @@ xmlSecAppIsValidDate(int year, int month, int day) {
     return((day >= 1) && (day <= maxDay));
 }
 
+/**
+ * Reads 1 to maxDigits digits from *pp, advancing *pp past them.
+ * Returns the numeric value, or -1 if no digit is present.
+ */
+static int
+xmlSecAppCmdLineParseDigits(const char** pp, int maxDigits) {
+    int value = 0;
+    int count = 0;
+    const char* p = *pp;
+
+    while((count < maxDigits) && (*p >= '0') && (*p <= '9')) {
+        value = (value * 10) + (*p - '0');
+        p++;
+        count++;
+    }
+    if(count == 0) {
+        return(-1);
+    }
+    *pp = p;
+    return(value);
+}
+
 static int
 xmlSecAppCmdLineTimeParamRead(const char* str, time_t* t, int is_gmt_time) {
     struct tm tm;
-    int n;
-    int consumed = 0;
-    const char* rest;
+    int year, month, day, hour, minute, second;
+    const char* p;
 
     if((str == NULL) || (t == NULL)) {
         return(-1);
     }
     memset(&tm, 0, sizeof(tm));
     tm.tm_isdst = -1;
-    n = XMLSEC_SCANF(str, "%4d-%2d-%2d%*c%2d:%2d:%2d%n",
-                        &tm.tm_year, &tm.tm_mon, &tm.tm_mday,
-                        &tm.tm_hour, &tm.tm_min, &tm.tm_sec, &consumed);
-    if(n != 6) {
+
+    /* Parse the documented "YYYY-MM-DD HH:MM:SS" format. The date and time
+     * parts are separated by a single character (any character, e.g. a space,
+     * 'T', or '+'), followed by optional whitespace. Parsing is done manually
+     * (rather than with sscanf("%n")) so that it behaves identically on MSVC,
+     * where sscanf_s does not support the %n specifier. */
+    p = str;
+
+    year = xmlSecAppCmdLineParseDigits(&p, 4);
+    if((year < 0) || (*p != '-')) {
+        return(-1);
+    }
+    p++;
+
+    month = xmlSecAppCmdLineParseDigits(&p, 2);
+    if((month < 0) || (*p != '-')) {
+        return(-1);
+    }
+    p++;
+
+    day = xmlSecAppCmdLineParseDigits(&p, 2);
+    if(day < 0) {
         return(-1);
     }
 
-    /* reject trailing garbage (trailing whitespace is allowed) */
-    rest = str + consumed;
-    while(*rest != '\0') {
-        if((*rest != ' ') && (*rest != '\t')) {
-            return(-1);
-        }
-        ++rest;
+    /* Skip exactly one separator character between the date and the time,
+     * matching the original sscanf "%*c" (which accepts any single character,
+     * e.g. a space, 'T', or '+'), then any additional leading whitespace. */
+    if(*p == '\0') {
+        return(-1);
+    }
+    p++;
+    while(isspace((unsigned char)*p)) {
+        p++;
     }
 
-    if((tm.tm_year < 1900)
-      || (tm.tm_mon  < 1) || (tm.tm_mon  > 12)
-      || (tm.tm_mday < 1) || (tm.tm_mday > 31)
-      || (tm.tm_hour < 0) || (tm.tm_hour > 23)
-      || (tm.tm_min  < 0) || (tm.tm_min  > 59)
-      || (tm.tm_sec  < 0) || (tm.tm_sec  > 61)) {
+    hour = xmlSecAppCmdLineParseDigits(&p, 2);
+    if((hour < 0) || (*p != ':')) {
+        return(-1);
+    }
+    p++;
+
+    minute = xmlSecAppCmdLineParseDigits(&p, 2);
+    if((minute < 0) || (*p != ':')) {
+        return(-1);
+    }
+    p++;
+
+    second = xmlSecAppCmdLineParseDigits(&p, 2);
+    if(second < 0) {
+        return(-1);
+    }
+
+    /* reject trailing garbage (trailing whitespaces are allowed) */
+    while(isspace((unsigned char)*p)) {
+        p++;
+    }
+    if((*p) != '\0') {
+        return(-1);
+    }
+
+    /* check values for basic validity */
+    if((year < 1900)
+      || (month  < 1) || (month  > 12)
+      || (day    < 1) || (day    > 31)
+      || (hour   < 0) || (hour   > 23)
+      || (minute < 0) || (minute > 59)
+      || (second < 0) || (second > 61)
+    ) {
         return(-1);
     }
 
     /* reject invalid calendar dates (e.g. "2020-02-30") that the field
      * range checks above would otherwise let mktime() silently normalize */
-    if(xmlSecAppIsValidDate(tm.tm_year, tm.tm_mon, tm.tm_mday) == 0) {
+    if(xmlSecAppIsValidDate(year, month, day) == 0) {
         return(-1);
     }
 
-    tm.tm_year -= 1900; /* tm relative format year */
-    tm.tm_mon  -= 1; /* tm relative format month */
+    tm.tm_year = year - 1900; /* tm relative format year */
+    tm.tm_mon  = month - 1; /* tm relative format month */
+    tm.tm_mday = day;
+    tm.tm_hour = hour;
+    tm.tm_min  = minute;
+    tm.tm_sec  = second;
 
     if(is_gmt_time != 0) {
         (*t) = XMLSEC_MKGMTIME(&tm);

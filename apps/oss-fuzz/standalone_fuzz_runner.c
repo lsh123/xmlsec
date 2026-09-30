@@ -117,6 +117,15 @@ int main(int argc, const char **argv) {
             fuzzer_close_file(f);
             continue;
         }
+        /* On 32-bit builds the file offset is 64-bit but size_t is 32-bit;
+         * reject files that would not fit in size_t to avoid silent truncation
+         * of the input size. The sizeof() guard keeps the SIZE_MAX cast valid
+         * (it is only evaluated when the offset type is wider than size_t). */
+        if (sizeof(fuzzer_file_offset_t) > sizeof(size_t) && len > (fuzzer_file_offset_t)SIZE_MAX) {
+            FUZZER_ERROR("file is too large", argv[i]);
+            fuzzer_close_file(f);
+            continue;
+        }
         rewind(f);
 
         /* Allocate at least one byte so that zero-length inputs still get a

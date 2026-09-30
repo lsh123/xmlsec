@@ -98,17 +98,23 @@ test_base64_decode_exact_size(
     const char * expected,
     xmlSecSize expectedSize
 ) {
-    xmlSecByte decoded[256];
+    xmlSecByte decoded[257];
     xmlSecSize decodedSize = 0;
+    xmlSecSize i;
     int ret;
 
     xmlSecAssert(name != NULL);
     xmlSecAssert(str != NULL);
     xmlSecAssert(expected != NULL);
-    xmlSecAssert(expectedSize <= sizeof(decoded));
+    /* Keep at least one canary byte past the declared buffer size. */
+    xmlSecAssert(expectedSize < sizeof(decoded));
 
     testStart(name);
 
+    /* Fill the decode target with 0xAA and the remainder with a canary (0xBB)
+     * so any write past the declared buffer size (expectedSize) is detected,
+     * even though the backing array is larger. */
+    memset(decoded, 0xBB, sizeof(decoded));
     memset(decoded, 0xAA, expectedSize);
     ret = xmlSecBase64Decode_ex(BAD_CAST str, decoded, expectedSize, &decodedSize);
     if(ret < 0) {
@@ -116,6 +122,17 @@ test_base64_decode_exact_size(
             (int)expectedSize, str);
         testFinishedFailure();
         return;
+    }
+
+    /* The function must not write past the declared buffer size; the canary
+     * bytes beyond expectedSize must remain untouched. */
+    for (i = expectedSize; i < sizeof(decoded); i++) {
+        if (decoded[i] != 0xBB) {
+            testLog("Error: base64 decode wrote past the exactly-sized buffer (%d bytes) for '%s'\n",
+                (int)expectedSize, str);
+            testFinishedFailure();
+            return;
+        }
     }
 
     if(decodedSize != expectedSize) {

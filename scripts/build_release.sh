@@ -39,6 +39,9 @@ cd "$build_root"
 echo "============== Checking out the module '$git_uri'"
 git clone "$git_uri"
 cd xmlsec
+# Remember the commit the tarball will be built from, so we can later verify
+# that the local repository (where the release tags are created) matches it.
+clone_commit=$(git rev-parse HEAD)
 find . -name .git -exec rm -rf {} +
 
 ac_version=`awk -F'[][]' '/^AC_INIT/ {print $4; exit}' configure.ac`
@@ -62,6 +65,14 @@ echo "============== Signing tar file"
 gpg --output "${sig_file}" --detach-sig "${tar_file}"
 
 echo "============== Creating local tags for release ${full_version}"
+# Verify the local repository (where the tags are created) is at the same
+# commit as the clone that was actually built; otherwise the tag would point
+# to a different source than the packaged tarball.
+local_commit=$(git rev-parse HEAD)
+if [ "$clone_commit" != "$local_commit" ]; then
+    echo "ERROR: local repository commit ($local_commit) does not match the built clone ($clone_commit); refusing to tag"
+    exit 1
+fi
 git tag -a "${full_version}" -f -m "XMLSec release ${full_version}"
 git tag -a "xmlsec_${git_version_tag}" -f -m "XMLSec release ${full_version}"
 echo "RUN MANUALLY: git push --follow-tags"

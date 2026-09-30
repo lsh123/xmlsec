@@ -719,7 +719,7 @@ xmlSecMSCngCbcBlockCipherCtxFinal(xmlSecMSCngCbcBlockCipherCtxPtr ctx,
             return(-1);
         }
         if(inSize < outBuf[blockSize - 1]) {
-            xmlSecInvalidSizeLessThanError("Input data padding", inSize, outBuf[blockSize - 1], cipherName);
+            xmlSecInvalidSizeLessThanError("Input data padding", inSize, (xmlSecSize)(outBuf[blockSize - 1]), cipherName);
             return(-1);
         }
         outSize += (inSize - outBuf[blockSize - 1]);

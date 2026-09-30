@@ -57,10 +57,20 @@ else
 fi
 
 # things that depend on the release vs debug build
-libxml2_install_dir="${top_install_dir}\libxml2"
-libxslt_install_dir="${top_install_dir}\libxslt"
-openssl_install_dir="${top_install_dir}\openssl"
-xmlsec_install_dir="${top_install_dir}\xmlsec"
+libxml2_install_dir="${top_install_dir}/libxml2"
+libxslt_install_dir="${top_install_dir}/libxslt"
+openssl_install_dir="${top_install_dir}/openssl"
+xmlsec_install_dir="${top_install_dir}/xmlsec"
+
+# Windows-style (mixed, e.g. "D:\...") paths for the native tools (cmake/perl/
+# nmake/powershell). Native tools interpret a leading "/cygdrive/..." as a
+# drive-relative path, so the POSIX paths above must be converted with cygpath
+# before being passed to them.
+libxml2_install_dir_win=$(cygpath -m "${libxml2_install_dir}")
+libxslt_install_dir_win=$(cygpath -m "${libxslt_install_dir}")
+openssl_install_dir_win=$(cygpath -m "${openssl_install_dir}")
+xmlsec_install_dir_win=$(cygpath -m "${xmlsec_install_dir}")
+top_install_dir_win=$(cygpath -m "${top_install_dir}")
 
 zip_folders_and_files="libxml2 libxslt openssl xmlsec README.md"
 zip_output_file="${top_install_dir}\xmlsec1-${xmlsec_version}-win64${ZIP_POSTFIX}.zip"
@@ -79,7 +89,7 @@ function build_libxml2 {
   fi
 
   # Build it.
-  cd "${work_dir}"
+  cd "${work_dir}" || return 1
   rm -rf "${work_dir}\\${full_name}" "${libxml2_install_dir}"
 
   if [ ! -f "${full_name}.tar.gz" ] ; then
@@ -97,8 +107,8 @@ function build_libxml2 {
   cmake -B "${LIBXML2_LIBXSLT_CMAKE_BUILDDIR}" -A "${LIBXML2_LIBXSLT_CMAKE_ARCH}" -G "${LIBXML2_LIBXSLT_CMAKE_GENERATOR}" \
 	  -D CMAKE_MSVC_RUNTIME_LIBRARY="${LIBXML2_LIBXSLT_CMAKE_RUNTIME}" \
 	  -D BUILD_SHARED_LIBS="${LIBXML2_LIBXSLT_CMAKE_SHARED_LIBS}" \
-	  -D CMAKE_PREFIX_PATH="${top_install_dir}" \
-	  -D CMAKE_INSTALL_PREFIX="${libxml2_install_dir}" \
+	  -D CMAKE_PREFIX_PATH="${top_install_dir_win}" \
+	  -D CMAKE_INSTALL_PREFIX="${libxml2_install_dir_win}" \
 	  -D LIBXML2_WITH_ICONV=OFF \
 	  -D LIBXML2_WITH_PYTHON=OFF \
 	  -D LIBXML2_WITH_ZLIB=OFF \
@@ -137,7 +147,7 @@ function build_libxslt {
   fi
 
   # Build it.
-  cd "${work_dir}"
+  cd "${work_dir}" || return 1
   rm -rf "${work_dir}\\${full_name}" "${libxslt_install_dir}"
 
   if [ ! -f "${full_name}.tar.gz" ] ; then
@@ -156,8 +166,8 @@ function build_libxslt {
   cmake -B "${LIBXML2_LIBXSLT_CMAKE_BUILDDIR}" -A "${LIBXML2_LIBXSLT_CMAKE_ARCH}" -G "${LIBXML2_LIBXSLT_CMAKE_GENERATOR}" \
 	  -D CMAKE_MSVC_RUNTIME_LIBRARY="${LIBXML2_LIBXSLT_CMAKE_RUNTIME}" \
 	  -D BUILD_SHARED_LIBS="${LIBXML2_LIBXSLT_CMAKE_SHARED_LIBS}" \
-	  -D CMAKE_PREFIX_PATH="${top_install_dir}" \
-	  -D CMAKE_INSTALL_PREFIX="${libxslt_install_dir}" \
+	  -D CMAKE_PREFIX_PATH="${libxml2_install_dir_win}" \
+	  -D CMAKE_INSTALL_PREFIX="${libxslt_install_dir_win}" \
 	  -D LIBXSLT_WITH_PYTHON=OFF \
     -D LIBXSLT_WITH_TESTS=OFF
   if [ $? -ne 0 ]; then
@@ -194,7 +204,7 @@ function build_openssl {
   fi
 
   # Build it.
-  cd "${work_dir}"
+  cd "${work_dir}" || return 1
   rm -rf "${work_dir}\\${full_name}" "${openssl_install_dir}"
 
   if [ ! -f "${full_name}.tar.gz" ] ; then
@@ -211,7 +221,7 @@ function build_openssl {
   OLD_PATH="$PATH"
   PATH="$PATH;$PERL_PATH"
   cd "${full_name}" || return 1
-  perl Configure no-unit-test --prefix="${openssl_install_dir}" ${OPENSSL_XMLSEC_CONFIG} VC-WIN64A-HYBRIDCRT
+  perl Configure no-unit-test --prefix="${openssl_install_dir_win}" ${OPENSSL_XMLSEC_CONFIG} VC-WIN64A-HYBRIDCRT
   rc=$?
   PATH="$OLD_PATH"
   if [ $rc -ne 0 ]; then
@@ -250,7 +260,7 @@ function build_xmlsec {
   fi
 
   # Build it.
-  cd "${work_dir}"
+  cd "${work_dir}" || return 1
   rm -rf "${work_dir}\\${full_name_without_rc}" "${xmlsec_install_dir}"
 
   if [ ! -f "${full_name}.tar.gz" ] ; then
@@ -267,9 +277,9 @@ function build_xmlsec {
   cd "${full_name_without_rc}\win32" || return 1
   powershell -ExecutionPolicy Bypass -File configure.ps1 pedantic=yes static=no unicode=yes ${XMLSEC_CONFIG_OPTIONS}\
     xslt=yes crypto=openssl,mscng \
-    prefix="${xmlsec_install_dir}" \
-    include="${libxml2_install_dir}\include;${libxml2_install_dir}\include\libxml2;${libxslt_install_dir}\include;${openssl_install_dir}\include" \
-    lib="${libxml2_install_dir}\lib;${libxslt_install_dir}\lib;${openssl_install_dir}\lib"
+    prefix="${xmlsec_install_dir_win}" \
+    include="${libxml2_install_dir_win}\include;${libxml2_install_dir_win}\include\libxml2;${libxslt_install_dir_win}\include;${openssl_install_dir_win}\include" \
+    lib="${libxml2_install_dir_win}\lib;${libxslt_install_dir_win}\lib;${openssl_install_dir_win}\lib"
   if [ $? -ne 0 ]; then
     return $?
   fi
@@ -293,9 +303,14 @@ function build_xmlsec {
 function create_readme {
   echo "*** Creating README..."
   cd "${orig_pwd}" || return 1
-  cat "${script_dir}\\README-WINDOWS.md.in" | sed "s/@libxml2_version@/${libxml2_version}/g" |  sed "s/@libxslt_version@/${libxslt_version}/g" |  sed "s/@openssl_version@/${openssl_version}/g" |  sed "s/@xmlsec_version@/${xmlsec_version}/g" > "${top_install_dir}\\README.md"
-  if [ $? -ne 0 ]; then
-    return $?
+  cat "${script_dir}\\README-WINDOWS.md.in" | \
+    sed "s/@libxml2_version@/${libxml2_version}/g" | \
+    sed "s/@libxslt_version@/${libxslt_version}/g" | \
+    sed "s/@openssl_version@/${openssl_version}/g" | \
+    sed "s/@xmlsec_version@/${xmlsec_version}/g" > "${top_install_dir}\\README.md"
+  rc=$?
+  if [ $rc -ne 0 ]; then
+    return $rc
   fi
   echo "*** Done with README!!!"
   return 0
@@ -319,6 +334,9 @@ function create_distro {
   return 0
 }
 
+# Ensure the log file's directory exists; otherwise the first ">> ${LOG_FILE}"
+# redirection would fail and abort the build with a misleading error.
+mkdir -p "$(dirname "${LOG_FILE}")" || { echo "Error: failed to create log directory for \"${LOG_FILE}\""; exit 1; }
 rm -f "${LOG_FILE}"
 echo "*** LOG FILE: \"${LOG_FILE}\""
 

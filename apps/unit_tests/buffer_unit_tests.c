@@ -1489,6 +1489,7 @@ static void
 test_buffer_read_file(void) {
     xmlSecBufferPtr buf = NULL;
     char tmpName[160] = { '\0' };
+    char tmpNameMissing[160] = { '\0' };
     const xmlSecByte payload[] = { 0x00, 0x01, 0x02, 0xAB, 0xCD, 0xEF, 0xFF };
     FILE* f = NULL;
     int fileCreated = 0;
@@ -1498,6 +1499,13 @@ test_buffer_read_file(void) {
 
     if(test_buffer_make_temp_name(tmpName, sizeof(tmpName), "readfile_tmp.bin") < 0) {
         testLog("Error: failed to build temp file name\n");
+        testFinishedFailure();
+        return;
+    }
+    /* A name under the temp dir that is intentionally never created, for the
+     * missing-file negative test (avoids a CWD-relative hardcoded name). */
+    if(test_buffer_make_temp_name(tmpNameMissing, sizeof(tmpNameMissing), "readfile_missing.bin") < 0) {
+        testLog("Error: failed to build missing-file temp name\n");
         testFinishedFailure();
         return;
     }
@@ -1544,7 +1552,7 @@ test_buffer_read_file(void) {
     }
 
     /* a missing file must be rejected */
-    if(xmlSecBufferReadFile(buf, "xmlsec_unit_tests_no_such_file_xyz.bin") >= 0) {
+    if(xmlSecBufferReadFile(buf, tmpNameMissing) >= 0) {
         testLog("Error: xmlSecBufferReadFile should fail for a missing file\n");
         goto done;
     }

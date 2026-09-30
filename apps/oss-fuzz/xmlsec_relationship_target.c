@@ -59,9 +59,19 @@ static int do_init(void) {
     return 0;
 }
 
-static xmlNodePtr find_relationships(xmlNodePtr node) {
+/* Maximum recursion depth for find_relationships(). libxml2 caps element
+ * nesting at xmlParserMaxDepth (256 in normal mode; this target does not use
+ * XML_PARSE_HUGE), so a valid input can never reach this bound. It exists as
+ * a defense-in-depth cap so the recursion cannot exhaust the stack even if
+ * the parser depth limit were raised or absent. */
+#define RELATIONSHIPS_MAX_DEPTH 10000
+
+static xmlNodePtr find_relationships(xmlNodePtr node, int depth) {
     xmlNodePtr cur;
 
+    if (depth >= RELATIONSHIPS_MAX_DEPTH) {
+        return NULL;
+    }
     for (cur = node; cur != NULL; cur = cur->next) {
         if (cur->type == XML_ELEMENT_NODE && cur->ns != NULL &&
             cur->ns->href != NULL &&
@@ -69,7 +79,7 @@ static xmlNodePtr find_relationships(xmlNodePtr node) {
             return cur;
         }
         if (cur->children != NULL) {
-            xmlNodePtr found = find_relationships(cur->children);
+            xmlNodePtr found = find_relationships(cur->children, depth + 1);
             if (found != NULL) {
                 return found;
             }
@@ -103,7 +113,7 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
     }
 
     transform_node = xmlSecFindNode(root, xmlSecNodeTransform, xmlSecDSigNs);
-    relationships_node = find_relationships(root);
+    relationships_node = find_relationships(root, 0);
     if (transform_node == NULL || relationships_node == NULL) {
         goto done;
     }

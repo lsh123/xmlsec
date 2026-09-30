@@ -255,13 +255,7 @@ xmlSecGetNodeContentAsSize(const xmlNodePtr cur, xmlSecSize defValue, xmlSecSize
     xmlFree(content);
 
     /* check that the value fits into xmlSecSize */
-    if(val > (unsigned long long int)SIZE_MAX) {
-        xmlSecInvalidNodeContentError(cur, NULL, "can't parse node content as size (value too large)");
-        return(-1);
-    }
-
-    /* success */
-    (*res) = (xmlSecSize)val;
+    XMLSEC_SAFE_CAST_ULLONG_TO_SIZE(val, (*res), return(-1), NULL);
     return(0);
 }
 

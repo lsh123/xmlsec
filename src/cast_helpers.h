@@ -396,6 +396,23 @@
 
 #endif /* (ULONG_MAX > XMLSEC_SIZE_MAX) */
 
+/* Safe cast with limits check: unsigned long long -> xmlSecSize (unsigned long long is non-negative, so only the max is checked) */
+#if (ULLONG_MAX > XMLSEC_SIZE_MAX)
+
+#define XMLSEC_SAFE_CAST_ULLONG_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
+    XMLSEC_SAFE_CAST_MAX_CHECK(unsigned long long, (srcVal), "%llu",             \
+        xmlSecSize, (dstVal), XMLSEC_SIZE_FMT, XMLSEC_SIZE_MIN, XMLSEC_SIZE_MAX, \
+        errorAction, (errorObject))
+
+#else /* (ULLONG_MAX > XMLSEC_SIZE_MAX) */
+
+#define XMLSEC_SAFE_CAST_ULLONG_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
+    do {                                                                        \
+        (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */ \
+    } while(0)
+
+#endif /* (ULLONG_MAX > XMLSEC_SIZE_MAX) */
+
 
 /******************************************************************************
  *

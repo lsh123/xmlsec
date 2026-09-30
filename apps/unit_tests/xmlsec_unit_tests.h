@@ -42,6 +42,7 @@ int test_xmlsec(void);
 int test_base64(void);
 int test_bn(void);
 int test_buffer(void);
+int test_cast_helpers(void);
 int test_list(void);
 int test_transform_helpers(void);
 int test_xmlSecX509EscapedStringRead(void);

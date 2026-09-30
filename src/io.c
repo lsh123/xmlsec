@@ -628,7 +628,9 @@ xmlSecTransformInputURIFinalize(xmlSecTransformPtr transform) {
 
     ret = xmlSecTransformInputURIClose(transform);
     if(ret < 0) {
-        /* the close failed; keep the handle so it is not silently lost */
+        /* the close failed; the underlying resource (e.g. an open file handle)
+         * is owned by the application's open callback and remains open, the
+         * application must handle the failed close itself */
         xmlSecInternalError2("xmlSecTransformInputURIClose",
                              xmlSecTransformGetName(transform),
                              "ret=%d", ret);

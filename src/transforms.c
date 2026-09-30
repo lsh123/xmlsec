@@ -1587,20 +1587,24 @@ xmlSecTransformPump(xmlSecTransformPtr left, xmlSecTransformPtr right, xmlSecTra
     if(((leftType & xmlSecTransformDataTypeXml) != 0) && ((rightType & xmlSecTransformDataTypeXml) != 0)) {
        xmlSecNodeSetPtr nodes = NULL;
 
-       /* left transform owns nodes in the outNodes pointer */
-       ret = xmlSecTransformPopXml(left, &nodes, transformCtx);
-       if(ret < 0) {
-            xmlSecInternalError("xmlSecTransformPopXml",
-                                xmlSecTransformGetName(left));
-            return(-1);
-       }
+        /* left transform owns nodes in the outNodes pointer */
+        ret = xmlSecTransformPopXml(left, &nodes, transformCtx);
+        if(ret < 0) {
+             xmlSecInternalError("xmlSecTransformPopXml", xmlSecTransformGetName(left));
+             return(-1);
+        }
+        if(nodes == NULL) {
+             xmlSecInternalError2("xmlSecTransformPopXml", NULL,
+                                 "left transform \"%s\" returned no nodes",
+                                 xmlSecErrorsSafeString(xmlSecTransformGetName(left)));
+             return(-1);
+        }
 
-       ret = xmlSecTransformPushXml(right, nodes, transformCtx);
-       if(ret < 0) {
-            xmlSecInternalError("xmlSecTransformPushXml",
-                                xmlSecTransformGetName(right));
+        ret = xmlSecTransformPushXml(right, nodes, transformCtx);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecTransformPushXml", xmlSecTransformGetName(right));
             return(-1);
-       }
+        }
     }  else if(((leftType & xmlSecTransformDataTypeBin) != 0) && ((rightType & xmlSecTransformDataTypeBin) != 0)) {
         xmlSecByte* buf;
         int final = 0;

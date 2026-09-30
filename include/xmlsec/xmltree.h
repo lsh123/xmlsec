@@ -180,12 +180,12 @@ XMLSEC_EXPORT int               xmlSecPrintXmlString    (FILE * fd,
  * range yield 0 (NUL).
  * @param vv the value.
  */
-#define xmlSecToHex(vv)                                                 \
-        ((xmlChar)(                                                     \
-            ((0 <= (vv)) && ((vv) <= 9)) ? (vv) + '0' :                 \
-                (                                                       \
-                    ((10 <= (vv)) && ((vv) <= 15)) ? (vv) + 'A' : 0     \
-                )                                                       \
+#define xmlSecToHex(vv)                                                     \
+        ((xmlChar)(                                                         \
+            ((0 <= (vv)) && ((vv) <= 9)) ? (vv) + '0' :                     \
+                (                                                           \
+                    ((10 <= (vv)) && ((vv) <= 15)) ? (vv) + 'A' - 10 : 0    \
+                )                                                           \
         ))
 
 

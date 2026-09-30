@@ -160,6 +160,8 @@
     } while(0)                                                                 \
 
 /* Safe cast with limits check: ptrdiff_t -> xmlSecSize (xmlSecSize is non-negative, so the min bound is 0).
+   Only the lower bound is checked: on all supported platforms ptrdiff_t and size_t (xmlSecSize) have the
+   same width, so any non-negative ptrdiff_t always fits into xmlSecSize and the upper bound would be unreachable.
    Special case since ptrdiff_t is platform dependent and there is no good way to print it. Cast to long long
    should be good enough and will only affect output in the logs. */
 #define XMLSEC_SAFE_CAST_PTRDIFF_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \

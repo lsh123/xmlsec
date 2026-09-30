@@ -153,6 +153,15 @@ xmlSecNodeSetCheckNode(xmlNodeSetPtr nodes, xmlNodePtr node, xmlNodePtr parent) 
          * prefix. This is done manually (instead of relying on
          * xmlXPathNodeSetContains) because older libxml2 versions compare
          * namespace nodes by pointer only, which would never match.
+         *
+         * Matching on (hosting element, prefix) without comparing the
+         * namespace URI is sufficient: an element can have at most one
+         * namespace declaration per prefix (XML well-formedness forbids
+         * duplicate namespace prefixes on the same element), and libxml2
+         * enforces this both in the parser (a duplicate declaration on the
+         * same element is rejected) and in xmlNewNs() (a duplicate prefix
+         * on the same node is rejected), so two declarations with the same
+         * prefix but different URIs cannot exist on one element.
          */
         for(ii = 0; ii < nodes->nodeNr; ii++) {
             if(nodes->nodeTab[ii]->type != XML_NAMESPACE_DECL) {
@@ -717,65 +726,78 @@ xmlSecNodeSetDumpTextNodes(xmlSecNodeSetPtr nset, xmlOutputBufferPtr out) {
 }
 /**
  * @brief Prints information about @p nset to the @p output.
+ * @details Prints the type, operation, and node count of each set in the
+ * circular list starting from @p nset. The first set defines the base and
+ * has no operation; each following set carries the operation that combines
+ * it with the previous ones.
  * @param nset the pointer to node set.
  * @param output the pointer to output FILE.
  */
 void
 xmlSecNodeSetDebugDump(xmlSecNodeSetPtr nset, FILE *output) {
     int len;
+    xmlSecNodeSetPtr curNset;
 
     xmlSecAssert(nset != NULL);
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "== Nodes set ");
-    switch(nset->type) {
-    case xmlSecNodeSetNormal:
-        fprintf(output, "(xmlSecNodeSetNormal)\n");
-        break;
-    case xmlSecNodeSetInvert:
-        fprintf(output, "(xmlSecNodeSetInvert)\n");
-        break;
-    case xmlSecNodeSetTree:
-        fprintf(output, "(xmlSecNodeSetTree)\n");
-        break;
-    case xmlSecNodeSetTreeWithoutComments:
-        fprintf(output, "(xmlSecNodeSetTreeWithoutComments)\n");
-        break;
-    case xmlSecNodeSetTreeInvert:
-        fprintf(output, "(xmlSecNodeSetTreeInvert)\n");
-        break;
-    case xmlSecNodeSetTreeWithoutCommentsInvert:
-        fprintf(output, "(xmlSecNodeSetTreeWithoutCommentsInvert)\n");
-        break;
-    case xmlSecNodeSetList:
-        xmlSecNotImplementedError("xmlSecNodeSetList is deprecated");
-        fprintf(output, "(xmlSecNodeSetList)\n");
-        break;
-    default:
-        xmlSecUnsupportedEnumValueError("node set type", nset->type, NULL);
-        break;
-    }
+    fprintf(output, "== Nodes set\n");
 
-    if(nset->next == nset) {
-        /* a single set has no operation (the op field is only used for combined sets) */
-        fprintf(output, "  operation: (none)\n");
-    } else {
-        switch(nset->op) {
-        case xmlSecNodeSetUnion:
-            fprintf(output, "  operation: xmlSecNodeSetUnion\n");
+    /* the sets are linked in a circular list; walk all of them */
+    curNset = nset;
+    do {
+        switch(curNset->type) {
+        case xmlSecNodeSetNormal:
+            fprintf(output, "  type: (xmlSecNodeSetNormal)\n");
             break;
-        case xmlSecNodeSetIntersection:
-            fprintf(output, "  operation: xmlSecNodeSetIntersection\n");
+        case xmlSecNodeSetInvert:
+            fprintf(output, "  type: (xmlSecNodeSetInvert)\n");
             break;
-        case xmlSecNodeSetSubtraction:
-            fprintf(output, "  operation: xmlSecNodeSetSubtraction\n");
+        case xmlSecNodeSetTree:
+            fprintf(output, "  type: (xmlSecNodeSetTree)\n");
+            break;
+        case xmlSecNodeSetTreeWithoutComments:
+            fprintf(output, "  type: (xmlSecNodeSetTreeWithoutComments)\n");
+            break;
+        case xmlSecNodeSetTreeInvert:
+            fprintf(output, "  type: (xmlSecNodeSetTreeInvert)\n");
+            break;
+        case xmlSecNodeSetTreeWithoutCommentsInvert:
+            fprintf(output, "  type: (xmlSecNodeSetTreeWithoutCommentsInvert)\n");
+            break;
+        case xmlSecNodeSetList:
+            xmlSecNotImplementedError("xmlSecNodeSetList is deprecated");
+            fprintf(output, "  type: (xmlSecNodeSetList)\n");
             break;
         default:
-            xmlSecUnsupportedEnumValueError("node set operation", nset->op, NULL);
+            xmlSecUnsupportedEnumValueError("node set type", curNset->type, NULL);
             break;
         }
-    }
 
-    len = xmlXPathNodeSetGetLength(nset->nodes);
-    fprintf(output, "  nodes: %d\n", len);
+        if(curNset == nset) {
+            /* the first set has no operation (the op field is only used for combined sets) */
+            fprintf(output, "  operation: (none)\n");
+        } else {
+            switch(curNset->op) {
+            case xmlSecNodeSetUnion:
+                fprintf(output, "  operation: xmlSecNodeSetUnion\n");
+                break;
+            case xmlSecNodeSetIntersection:
+                fprintf(output, "  operation: xmlSecNodeSetIntersection\n");
+                break;
+            case xmlSecNodeSetSubtraction:
+                fprintf(output, "  operation: xmlSecNodeSetSubtraction\n");
+                break;
+            default:
+                xmlSecUnsupportedEnumValueError("node set operation", curNset->op, NULL);
+                break;
+            }
+        }
+
+        len = xmlXPathNodeSetGetLength(curNset->nodes);
+        fprintf(output, "  nodes: %d\n", len);
+
+        curNset = curNset->next;
+        xmlSecAssert(curNset != NULL);
+    } while(curNset != nset);
 }

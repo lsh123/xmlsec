@@ -747,6 +747,8 @@ xmlSecTmplEncDataEnsureEncProperties(xmlNodePtr encNode, const xmlChar *id) {
     /* Find or create node */
     res = xmlSecFindChild(encNode, xmlSecNodeEncryptionProperties, xmlSecEncNs);
     if(res == NULL) {
+        /* Per the XML-Enc schema (https://www.w3.org/TR/xmlenc-core/#sec-EncryptedType),
+         * the EncryptionProperties node follows CipherData, so append it as the last child. */
         res = xmlSecAddChild(encNode, xmlSecNodeEncryptionProperties, xmlSecEncNs);
         if(res == NULL) {
             xmlSecInternalError("xmlSecAddChild(xmlSecNodeEncryptionProperties)", NULL);
@@ -986,6 +988,42 @@ xmlSecTmplCipherReferenceAddTransform(xmlNodePtr cipherReferenceNode,
  * &lt;enc:EncryptedKey/&gt; node
  *
   *****************************************************************************/
+static xmlNodePtr
+xmlSecTmplEncDataEnsureReferenceList(xmlNodePtr encNode) {
+    xmlNodePtr refListNode;
+    xmlNodePtr nextSiblingNode;
+
+    xmlSecAssert2(encNode != NULL, NULL);
+
+    refListNode = xmlSecFindChild(encNode, xmlSecNodeReferenceList, xmlSecEncNs);
+    if(refListNode != NULL) {
+        return(refListNode);
+    }
+
+    /* Per the XML-Enc schema (https://www.w3.org/TR/xmlenc-core/#sec-EncryptedType
+     * and https://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey),
+     * the ReferenceList node follows EncryptedType and precedes CarriedKeyName. */
+    nextSiblingNode = xmlSecFindChild(encNode, xmlSecNodeCarriedKeyName, xmlSecEncNs);
+
+    /* Add the ReferenceList node before CarriedKeyName if present,
+     * otherwise append as the last child. */
+    if(nextSiblingNode != NULL) {
+        refListNode = xmlSecAddPrevSibling(nextSiblingNode, xmlSecNodeReferenceList, xmlSecEncNs);
+        if(refListNode == NULL) {
+            xmlSecInternalError("xmlSecAddPrevSibling(xmlSecNodeReferenceList)", NULL);
+            return(NULL);
+        }
+    } else {
+        refListNode = xmlSecAddChild(encNode, xmlSecNodeReferenceList, xmlSecEncNs);
+        if(refListNode == NULL) {
+            xmlSecInternalError("xmlSecAddChild(xmlSecNodeReferenceList)", NULL);
+            return(NULL);
+        }
+    }
+
+    /* done */
+    return(refListNode);
+}
 
 /**
  * @brief Adds a &lt;enc:DataReference/&gt; node to the &lt;enc:EncryptedKey/&gt; node.
@@ -1002,13 +1040,10 @@ xmlSecTmplReferenceListAddDataReference(xmlNodePtr encNode, const xmlChar *uri) 
 
     xmlSecAssert2(encNode != NULL, NULL);
 
-    refListNode = xmlSecFindChild(encNode, xmlSecNodeReferenceList, xmlSecEncNs);
+    refListNode = xmlSecTmplEncDataEnsureReferenceList(encNode);
     if(refListNode == NULL) {
-        refListNode = xmlSecAddChild(encNode, xmlSecNodeReferenceList, xmlSecEncNs);
-        if(refListNode == NULL) {
-            xmlSecInternalError("xmlSecAddChild(xmlSecNodeReferenceList)", NULL);
-            return(NULL);
-        }
+        xmlSecInternalError("xmlSecTmplEncDataEnsureReferenceList", NULL);
+        return(NULL);
     }
 
     res = xmlSecAddChild(refListNode, xmlSecNodeDataReference, xmlSecEncNs);
@@ -1044,13 +1079,10 @@ xmlSecTmplReferenceListAddKeyReference(xmlNodePtr encNode, const xmlChar *uri) {
 
     xmlSecAssert2(encNode != NULL, NULL);
 
-    refListNode = xmlSecFindChild(encNode, xmlSecNodeReferenceList, xmlSecEncNs);
+    refListNode = xmlSecTmplEncDataEnsureReferenceList(encNode);
     if(refListNode == NULL) {
-        refListNode = xmlSecAddChild(encNode, xmlSecNodeReferenceList, xmlSecEncNs);
-        if(refListNode == NULL) {
-            xmlSecInternalError("xmlSecAddChild(xmlSecNodeReferenceList)", NULL);
-            return(NULL);
-        }
+        xmlSecInternalError("xmlSecTmplEncDataEnsureReferenceList", NULL);
+        return(NULL);
     }
 
     res = xmlSecAddChild(refListNode, xmlSecNodeKeyReference, xmlSecEncNs);

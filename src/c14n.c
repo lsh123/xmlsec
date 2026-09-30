@@ -224,15 +224,13 @@ xmlSecTransformC14NPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
     if(transform->next != NULL) {
         buf = xmlSecTransformCreateOutputBuffer(transform->next, transformCtx);
         if(buf == NULL) {
-            xmlSecInternalError("xmlSecTransformCreateOutputBuffer",
-                                xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecTransformCreateOutputBuffer", xmlSecTransformGetName(transform));
             return(-1);
         }
     } else {
         buf = xmlSecBufferCreateOutputBuffer(&(transform->outBuf));
         if(buf == NULL) {
-            xmlSecInternalError("xmlSecBufferCreateOutputBuffer",
-                                xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecBufferCreateOutputBuffer", xmlSecTransformGetName(transform));
             return(-1);
         }
     }
@@ -240,8 +238,11 @@ xmlSecTransformC14NPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
     ret = xmlSecTransformC14NExecute(transform->id, nodes,
             xmlSecC14NGetCtx(transform), buf);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformC14NExecute",
-                            xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecTransformC14NExecute", xmlSecTransformGetName(transform));
+        /* the buffer must be closed to release it (the IO buffer is only
+         * freed by its close callback). The close pushes the partial data
+         * into the next transform, which is harmless here: the whole
+         * operation is aborted and the produced data is discarded */
         (void)xmlOutputBufferClose(buf);
         return(-1);
     }

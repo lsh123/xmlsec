@@ -192,7 +192,12 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
     }
 
     /* parse the unsigned number; a sign character is not a valid digit and
-     * will be rejected by the lookup table check below */
+     * will be rejected by the lookup table check below.
+     *
+     * Note: each digit is processed with one multiply and one add, so the
+     * total cost is quadratic in the number of digits. This is acceptable:
+     * the inputs are short (e.g. key sizes, serial numbers) and the simple
+     * schoolbook algorithm avoids pulling in a full bignum parser. */
     ii = 0;
     while(ii < strSize) {
         ch = str[ii++];

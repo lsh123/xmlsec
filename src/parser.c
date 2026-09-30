@@ -579,6 +579,22 @@ xmlSecParsePrepareCtxt(xmlParserCtxtPtr ctxt) {
  * Misc:
  * XML_PARSE_NODICT: do not reuse the context dictionary (to avoid problems with moving nodes around)
  * XML_PARSE_HUGE: relax any hardcoded limit from the parser (to enable parsing of XML documents with large text nodes)
+ *
+ * Note: for libxml2 < 2.13 (which lacks XML_PARSE_NO_XXE), XXE is mitigated by
+ * the custom external entity loader installed by xmlSecInit() (see xmlsec.c,
+ * xmlSecNoXxeExternalEntityLoader), not by XML_PARSE_NONET alone. libxml2
+ * routes every external entity/DTD load through the process-wide loader set by
+ * xmlSetExternalEntityLoader() (xmlLoadExternalEntity() in xmlIO.c), and that
+ * loader denies any load that happens while a document is being parsed:
+ * libxml2 assigns input_id >= 2 to every input other than the initial document
+ * (the initial input is created via xmlNewInputStream() which does
+ * "input->id = ctxt->input_id++", and the file-parse initial document is loaded
+ * the same way), while the custom loader only allows input_id == 1. As a
+ * result file://, https:// and any other external entities/DTDs cannot be
+ * loaded. XML_PARSE_NONET is kept as a secondary defense; note that in
+ * libxml2 2.12.x it only blocks http:// and ftp:// (via
+ * xmlNoNetExternalEntityLoader in xmlIO.c), so by itself it would not stop
+ * file:// or https:// external entity loads.
  */
 #if LIBXML_VERSION < 21300
 static int g_xmlsec_parser_default_options = XML_PARSE_NONET | XML_PARSE_NOENT | XML_PARSE_DTDLOAD | XML_PARSE_DTDATTR | XML_PARSE_NODICT | XML_PARSE_HUGE;

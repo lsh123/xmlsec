@@ -120,7 +120,9 @@ if test "z$build_with_gcc" = "zyes" ; then
     if test "z$gcc_major_ver" = "z" ; then gcc_major_ver=0 ; fi
 fi
 if test "z$build_with_clang" = "zyes" ; then
-    clang_major_ver=`$CC --version 2>/dev/null | head -1 | $SED 's/.*version \([0-9]*\)\..*/\1/'`
+    dnl Note: the square brackets are doubled because m4 treats
+    dnl a single bracket pair as a quote and strips it from output.
+    clang_major_ver=`$CC --version 2>/dev/null | head -1 | $SED 's/.*version \([[0-9]]*\)\..*/\1/'`
     if test "z$clang_major_ver" = "z" ; then clang_major_ver=0 ; fi
 fi
 
@@ -2743,6 +2745,102 @@ elif test "z$build_with_clang" = "zyes" ; then
     AC_MSG_RESULT([yes])
 else
     AC_MSG_RESULT([disabled (unsupported compiler)])
+fi
+
+dnl ==========================================================================
+dnl Security hardening flags (GCC/Clang only, enabled by default)
+dnl
+dnl Flags are applied only when the compiler version and the target
+dnl architecture support them:
+dnl   - -fstack-protector-strong   GCC >= 5 (added in 4.9), Clang >= 6
+dnl   - -fPIE / -pie               GCC >= 5 (added in 4.9), Clang >= 5,
+dnl                                 GNU ld; not supported on Windows (PE
+dnl                                 images use DYNAMICBASE instead of PIE)
+dnl   - -fcf-protection=full       GCC >= 8, Clang >= 7; x86_64 GNU/Linux
+dnl                                 targets only (Intel Control-flow
+dnl                                 Enforcement Technology)
+dnl   - -fstack-clash-protection   GCC >= 8, Clang >= 11; x86 targets only
+dnl   - -D_FORTIFY_SOURCE=2        GNU/Linux (glibc) only and requires -O1
+dnl                                 or higher in CFLAGS
+dnl   - -Wl,-z,relro -Wl,-z,now    GNU ld only (not supported on Windows)
+dnl ==========================================================================
+AC_MSG_CHECKING(for hardening flags)
+AC_ARG_ENABLE([hardening], [AS_HELP_STRING([--enable-hardening],[enable hardening compilation and linking flags (yes)])])
+if test "z$enable_hardening" = "zno" ; then
+    AC_MSG_RESULT([disabled])
+elif test "z$build_with_gcc" != "zyes" -a "z$build_with_clang" != "zyes" ; then
+    AC_MSG_RESULT([disabled (unsupported compiler)])
+else
+    dnl -fstack-protector-strong:
+    dnl   GCC: added in 4.9 (require major >= 5 to avoid minor-version checks)
+    dnl   Clang: added in 3.1 (require major >= 6 to be conservative)
+    if test "z$build_with_gcc" = "zyes" -a "$gcc_major_ver" -ge 5 ; then
+        CFLAGS="$CFLAGS -fstack-protector-strong"
+    elif test "z$build_with_clang" = "zyes" -a "$clang_major_ver" -ge 6 ; then
+        CFLAGS="$CFLAGS -fstack-protector-strong"
+    fi
+
+    dnl -fPIE: compile all objects as position-independent executable code.
+    dnl Not supported on Windows (PE images are ASLR-ready via DYNAMICBASE).
+    dnl   GCC: -fPIE added in 4.9 (require major >= 5 to avoid minor-version checks)
+    dnl   Clang: supported since early versions (require major >= 5)
+    if test "z$build_on_windows" != "zyes" ; then
+        if test "z$build_with_gcc" = "zyes" -a "$gcc_major_ver" -ge 5 ; then
+            CFLAGS="$CFLAGS -fPIE"
+        elif test "z$build_with_clang" = "zyes" -a "$clang_major_ver" -ge 5 ; then
+            CFLAGS="$CFLAGS -fPIE"
+        fi
+    fi
+
+    dnl -fcf-protection=full: Intel Control-flow Enforcement Technology (CET).
+    dnl   GCC: added in 8 (x86_64 GNU/Linux targets only)
+    dnl   Clang: added in 7 (x86 targets)
+    case "$host_cpu" in
+        x86_64*)
+            if test "z$build_on_linux" = "zyes" ; then
+                if test "z$build_with_gcc" = "zyes" -a "$gcc_major_ver" -ge 8 ; then
+                    CFLAGS="$CFLAGS -fcf-protection=full"
+                elif test "z$build_with_clang" = "zyes" -a "$clang_major_ver" -ge 7 ; then
+                    CFLAGS="$CFLAGS -fcf-protection=full"
+                fi
+            fi
+            ;;
+    esac
+
+    dnl -fstack-clash-protection:
+    dnl   GCC: added in 8 (x86 targets; AArch64 support was added in 9)
+    dnl   Clang: added in 11 (x86 targets)
+    case "$host_cpu" in
+        x86_64*|i?86)
+            if test "z$build_with_gcc" = "zyes" -a "$gcc_major_ver" -ge 8 ; then
+                CFLAGS="$CFLAGS -fstack-clash-protection"
+            elif test "z$build_with_clang" = "zyes" -a "$clang_major_ver" -ge 11 ; then
+                CFLAGS="$CFLAGS -fstack-clash-protection"
+            fi
+            ;;
+    esac
+
+    dnl -D_FORTIFY_SOURCE=2: glibc compile- and run-time checks for unsafe
+    dnl libc usage. It is only effective when compiling with -O1 or higher,
+    dnl so enable it only if CFLAGS already contain an optimization flag.
+    if test "z$build_on_linux" = "zyes" ; then
+        case " $CFLAGS " in
+            *" -O1 "*|*" -O2 "*|*" -O3 "*|*" -Os "*|*" -Ofast "*|*" -Oz "*)
+                CFLAGS="$CFLAGS -D_FORTIFY_SOURCE=2"
+                ;;
+        esac
+    fi
+
+    dnl -pie: link the executables as position-independent executables.
+    dnl -Wl,-z,relro: mark the GOT and other relocation tables as read-only.
+    dnl -Wl,-z,now: perform all relocations at load time (BIND_NOW).
+    dnl GNU ld only (required for -pie); not supported on Windows (PE linker).
+    if test "z$build_on_windows" != "zyes" -a "z$with_gnu_ld" = "zyes" ; then
+        LDFLAGS="$LDFLAGS -pie"
+        LDFLAGS="$LDFLAGS -Wl,-z,relro -Wl,-z,now"
+    fi
+
+    AC_MSG_RESULT([yes])
 fi
 
 dnl ==========================================================================

@@ -106,6 +106,23 @@
         int, (dstVal), "%d", INT_MIN, INT_MAX,                                 \
         errorAction, (errorObject))
 
+/* Safe cast with limits check: unsigned long long -> int (unsigned long long is non-negative, so only the max is checked) */
+#if (ULLONG_MAX > INT_MAX)
+
+#define XMLSEC_SAFE_CAST_ULLONG_TO_INT(srcVal, dstVal, errorAction, errorObject) \
+    XMLSEC_SAFE_CAST_MAX_CHECK(unsigned long long, (srcVal), "%llu",             \
+        int, (dstVal), "%d", INT_MIN, INT_MAX,                                   \
+        errorAction, (errorObject))
+
+#else /* (ULLONG_MAX > INT_MAX) */
+
+#define XMLSEC_SAFE_CAST_ULLONG_TO_INT(srcVal, dstVal, errorAction, errorObject) \
+    do {                                                                        \
+        (dstVal) = (srcVal); /* errorAction/errorObject unused: cast always fits */ \
+    } while(0)
+
+#endif /* (ULLONG_MAX > INT_MAX) */
+
 /* Safe cast with limits check: long -> int (checks both min and max) */
 #define XMLSEC_SAFE_CAST_LONG_TO_INT(srcVal, dstVal, errorAction, errorObject) \
     XMLSEC_SAFE_CAST_MIN_MAX_CHECK(long, (srcVal), "%ld",                      \

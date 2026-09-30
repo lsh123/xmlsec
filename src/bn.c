@@ -457,7 +457,7 @@ xmlSecBnDiv(xmlSecBnPtr bn, int divider, int* mod) {
         data[ii] = (xmlSecByte)(over / dividerULL);
         over     = over % dividerULL;
     }
-    (*mod) = (int)over;
+    XMLSEC_SAFE_CAST_ULLONG_TO_INT(over, (*mod), return(-1), NULL);
 
     /* remove leading zeros */
     for(ii = 0; ii < size; ii++) {

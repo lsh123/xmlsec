@@ -194,16 +194,11 @@ xmlSecNssAppReadSECItem(SECItem *contents, const char *fn) {
         goto done;
     }
     /*
-     * info.size is PROffset32 (int) in this NSPR; ensure it is non-negative
-     * before casting to unsigned int (the limit for a single PR_Read call and
-     * for the SECItem.len field).
+     * info.size is PROffset32 (int) in this NSPR; check that it fits into
+     * unsigned int (the limit for a single PR_Read call and for the
+     * SECItem.len field).
      */
-    if (info.size < 0) {
-        xmlSecNssError2("PR_GetOpenFileInfo", NULL,
-                        "filename=%s", xmlSecErrorsSafeString(fn));
-        goto done;
-    }
-    ulen = (unsigned int)info.size;
+    XMLSEC_SAFE_CAST_INT_TO_UINT(info.size, ulen, goto done, NULL);
 
     contents->data = 0;
     if (!SECITEM_AllocItem(NULL, contents, ulen)) {

@@ -374,8 +374,11 @@ xmlSecOpenSSLX509StoreVerifyAndCopyCrls(X509_STORE* xst, X509_STORE_CTX* xsc, ST
             sk_X509_CRL_free(verified_crls);
             return(-1);
         } else if (ret != 1) {
-            /* crl failed verification */
-            continue;
+            /* crl failed verification: this is a hard failure because we expect CRLs to be valid */
+            xmlSecOtherError(XMLSEC_ERRORS_R_CRL_VERIFY_FAILED, NULL,
+                "xmlSecOpenSSLX509VerifyCRL");
+            sk_X509_CRL_free(verified_crls);
+            return(-1);
         }
         /* don't duplicate or up_ref the crl since we own
          * pointer to it */
@@ -480,7 +483,6 @@ xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked(X509 * cert, STACK_OF(X509_REVOKE
             /* ret > 0: revocationDate is later than the verification time */
             if (ret > 0) {
                 XMLSEC_OPENSSL400_CONST X509_NAME *issuer;
-                char issuer_name[256];
                 time_t ts;
 
                 /* revocationDate > certsVerificationTime, we are good */
@@ -491,9 +493,12 @@ xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked(X509 * cert, STACK_OF(X509_REVOKE
                 }
                 issuer = X509_get_issuer_name(cert);
                 if(issuer != NULL) {
-                    xmlSecOpenSSLX509NameToString(issuer, issuer_name, sizeof(issuer_name));
+                    char issuer_name[256];
+                    ret = xmlSecOpenSSLX509NameToString(issuer, issuer_name, sizeof(issuer_name));
                     xmlSecOtherError3(XMLSEC_ERRORS_R_CRL_NOT_YET_VALID, NULL,
-                        "issuer=%s; revocationDate=%lf", issuer_name, (double)ts);
+                        "issuer=%s; revocationDate=%lf",
+                        ((ret >= 0) ? issuer_name : "unknown"),
+                        (double)ts);
                 } else {
                     xmlSecOtherError2(XMLSEC_ERRORS_R_CRL_NOT_YET_VALID, NULL,
                         "revocationDate=%lf", (double)ts);
@@ -637,11 +642,15 @@ xmlSecOpenSSLX509StoreVerifyCertAgainstCrls(STACK_OF(X509_CRL) *crls, X509* cert
         return(-1);
     } else if(ret != 1) {
         char subject[256], issuer[256];
+        int retSubject, retIssuer;
 
         /* cert is revoked, fail */
-        xmlSecOpenSSLX509NameToString(X509_get_subject_name(cert), subject, sizeof(subject));
-        xmlSecOpenSSLX509NameToString(X509_get_issuer_name(cert), issuer, sizeof(issuer));
-        xmlSecOtherError3(XMLSEC_ERRORS_R_CERT_REVOKED, NULL, "subject=%s; issuer=%s", subject, issuer);
+        retSubject = xmlSecOpenSSLX509NameToString(X509_get_subject_name(cert), subject, sizeof(subject));
+        retIssuer = xmlSecOpenSSLX509NameToString(X509_get_issuer_name(cert), issuer, sizeof(issuer));
+        xmlSecOtherError3(XMLSEC_ERRORS_R_CERT_REVOKED, NULL,
+                "subject=%s; issuer=%s",
+                ((retSubject >= 0) ? subject : "unknown"),
+                ((retIssuer >= 0) ? issuer : "unknown"));
         return(0);
     }
 
@@ -764,33 +773,46 @@ xmlSecOpenSSLX509StoreVerifyCert(X509_STORE* xst, X509_STORE_CTX* xsc, X509* cer
         if((err != 0) && (err_cert != NULL)) {
             const char* err_msg;
             char subject[256], issuer[256];
+            int retSubject, retIssuer;
 
-            xmlSecOpenSSLX509NameToString(X509_get_subject_name(err_cert), subject, sizeof(subject));
-            xmlSecOpenSSLX509NameToString(X509_get_issuer_name(err_cert), issuer, sizeof(issuer));
+            retSubject = xmlSecOpenSSLX509NameToString(X509_get_subject_name(err_cert), subject, sizeof(subject));
+            retIssuer = xmlSecOpenSSLX509NameToString(X509_get_issuer_name(err_cert), issuer, sizeof(issuer));
             err_msg = X509_verify_cert_error_string(err);
 
             switch (err) {
             case X509_V_ERR_UNABLE_TO_GET_ISSUER_CERT:
                 xmlSecOtherError5(XMLSEC_ERRORS_R_CERT_ISSUER_FAILED, NULL,
-                                "subject=%s; issuer=%s; err=%d; msg=%s",
-                                subject, issuer, err, xmlSecErrorsSafeString(err_msg));
+                    "subject=%s; issuer=%s; err=%d; msg=%s",
+                    ((retSubject >= 0) ? subject : "unknown"),
+                    ((retIssuer >= 0) ? issuer : "unknown"),
+                    err,
+                    xmlSecErrorsSafeString(err_msg));
                 break;
             case X509_V_ERR_CERT_NOT_YET_VALID:
             case X509_V_ERR_ERROR_IN_CERT_NOT_BEFORE_FIELD:
                 xmlSecOtherError5(XMLSEC_ERRORS_R_CERT_NOT_YET_VALID, NULL,
-                                "subject=%s; issuer=%s; err=%d; msg=%s",
-                                subject, issuer, err, xmlSecErrorsSafeString(err_msg));
+                    "subject=%s; issuer=%s; err=%d; msg=%s",
+                    ((retSubject >= 0) ? subject : "unknown"),
+                    ((retIssuer >= 0) ? issuer : "unknown"),
+                    err,
+                    xmlSecErrorsSafeString(err_msg));
                 break;
             case X509_V_ERR_CERT_HAS_EXPIRED:
             case X509_V_ERR_ERROR_IN_CERT_NOT_AFTER_FIELD:
                 xmlSecOtherError5(XMLSEC_ERRORS_R_CERT_HAS_EXPIRED, NULL,
-                                "subject=%s; issuer=%s; err=%d; msg=%s",
-                                subject, issuer, err, xmlSecErrorsSafeString(err_msg));
+                    "subject=%s; issuer=%s; err=%d; msg=%s",
+                    ((retSubject >= 0) ? subject : "unknown"),
+                    ((retIssuer >= 0) ? issuer : "unknown"),
+                    err,
+                    xmlSecErrorsSafeString(err_msg));
                 break;
             default:
                 xmlSecOtherError5(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL,
-                                "subject=%s; issuer=%s; err=%d; msg=%s",
-                                subject, issuer, err, xmlSecErrorsSafeString(err_msg));
+                    "subject=%s; issuer=%s; err=%d; msg=%s",
+                    ((retSubject >= 0) ? subject : "unknown"),
+                    ((retIssuer >= 0) ? issuer : "unknown"),
+                    err,
+                    xmlSecErrorsSafeString(err_msg));
                 break;
             }
         } else if(err != 0) {
@@ -1652,9 +1674,10 @@ xmlSecOpenSSLX509VerifyCRLTimeValidity(X509_CRL *crl, xmlSecKeyInfoCtx* keyInfoC
         if(ret > 0) {
             /* thisUpdate > verification_time: CRL not yet valid */
             char issuer[256];
-            xmlSecOpenSSLX509NameToString(X509_CRL_get_issuer(crl), issuer, sizeof(issuer));
+
+            ret = xmlSecOpenSSLX509NameToString(X509_CRL_get_issuer(crl), issuer, sizeof(issuer));
             xmlSecOtherError2(XMLSEC_ERRORS_R_CRL_NOT_YET_VALID, NULL,
-                            "issuer=%s", issuer);
+                "issuer=%s", ((ret >= 0) ? issuer : "unknown"));
             return(0);
         }
     }
@@ -1669,8 +1692,10 @@ xmlSecOpenSSLX509VerifyCRLTimeValidity(X509_CRL *crl, xmlSecKeyInfoCtx* keyInfoC
         if(ret == 0) {
             /* nextUpdate is before or equal to verification_time: CRL expired */
             char issuer[256];
-            xmlSecOpenSSLX509NameToString(X509_CRL_get_issuer(crl), issuer, sizeof(issuer));
-            xmlSecOtherError2(XMLSEC_ERRORS_R_CRL_HAS_EXPIRED, NULL, "issuer=%s", issuer);
+
+            ret = xmlSecOpenSSLX509NameToString(X509_CRL_get_issuer(crl), issuer, sizeof(issuer));
+            xmlSecOtherError2(XMLSEC_ERRORS_R_CRL_HAS_EXPIRED, NULL,
+                "issuer=%s", ((ret >= 0) ? issuer : "unknown"));
             return(0);
         }
     }
@@ -1695,8 +1720,11 @@ xmlSecOpenSSLX509VerifyCRLSignature(X509_STORE* xst, X509_STORE_CTX* xsc, STACK_
     issuer_cert = xmlSecOpenSSLX509FindIssuer(X509_CRL_get_issuer(crl), xst, xsc, untrusted, keyInfoCtx);
     if(issuer_cert == NULL) {
         char issuer[256];
-        xmlSecOpenSSLX509NameToString(X509_CRL_get_issuer(crl), issuer, sizeof(issuer));
-        xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_NOT_FOUND, NULL, "issuer=%s", issuer);
+
+        ret = xmlSecOpenSSLX509NameToString(X509_CRL_get_issuer(crl), issuer, sizeof(issuer));
+
+        xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_NOT_FOUND, NULL,
+            "issuer=%s", ((ret >= 0) ? issuer : "unknown"));
         res = 0; /* not verified */
         goto done;
     }
@@ -1715,8 +1743,9 @@ xmlSecOpenSSLX509VerifyCRLSignature(X509_STORE* xst, X509_STORE_CTX* xsc, STACK_
         char issuer[256];
 
         /* the CRL signature was not verified */
-        xmlSecOpenSSLX509NameToString(X509_CRL_get_issuer(crl), issuer, sizeof(issuer));
-        xmlSecOtherError2(XMLSEC_ERRORS_R_CRL_VERIFY_FAILED, NULL, "issuer=%s", issuer);
+        ret = xmlSecOpenSSLX509NameToString(X509_CRL_get_issuer(crl), issuer, sizeof(issuer));
+        xmlSecOtherError2(XMLSEC_ERRORS_R_CRL_VERIFY_FAILED, NULL,
+            "issuer=%s", ((ret >= 0) ? issuer : "unknown"));
 
         /* not verified */
         res = 0;

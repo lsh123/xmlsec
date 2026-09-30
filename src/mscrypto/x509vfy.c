@@ -431,7 +431,7 @@ struct xmlSecMSCryptoBuildCertChainStep {
     BOOL freeCert;
 };
 #define XMLSEC_MSCRYPTO_BUILD_CERT_CHAIN_STEP_SIZE 32
-#define XMLSEC_MSCRYPTO_BUILD_CERT_CHAIN_MAX_DEPTH 1000
+#define XMLSEC_MSCRYPTO_BUILD_CERT_CHAIN_MAX_DEPTH 100
 #define XMLSEC_MSCRYPTO_X509_CERT_HASH_SIZE 20
 
 /* Returns the SHA1 hash of @p pCert in @p pHash. Returns 0 on success, -1 on error. */

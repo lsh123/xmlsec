@@ -338,15 +338,16 @@ xmlSecGnuTLSX509StoreGetCrls(
             return(-1);
         }
 
-        /* verify caller-supplied crl (time + signature); drop it if it fails */
+        /* verify caller-supplied crl (time + signature); fail closed if it fails */
         ret = xmlSecGnuTLSX509StoreVerifyCrlInternal(store, crl, extra_certs, keyInfoCtx);
         if(ret < 0) {
             xmlSecInternalError("xmlSecGnuTLSX509StoreVerifyCrlInternal", NULL);
             xmlFree(res);
             return(-1);
         } else if(ret != 1) {
-            /* crl failed verification, drop it */
-            continue;
+            /* crl failed verification: this is a hard failure because we expect CRLs to be valid */
+            xmlFree(res);
+            return(-1);
         }
         res[res_pos] = crl;
         ++res_pos;

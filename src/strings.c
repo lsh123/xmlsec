@@ -323,6 +323,8 @@ const xmlChar xmlSecNodeDSAP[]                  = "P";
 const xmlChar xmlSecNodeDSAQ[]                  = "Q";
 const xmlChar xmlSecNodeDSAG[]                  = "G";
 const xmlChar xmlSecNodeDSAJ[]                  = "J";
+/* DSA X node is proprietary extension by XMLSec library and uses xmlSecNs namespace.
+ * DEPRECATED and will be removed in the future. */
 const xmlChar xmlSecNodeDSAX[]                  = "X";
 const xmlChar xmlSecNodeDSAY[]                  = "Y";
 const xmlChar xmlSecNodeDSASeed[]               = "Seed";
@@ -707,6 +709,8 @@ const xmlChar xmlSecNodeRSAKeyValue[]           = "RSAKeyValue";
 const xmlChar xmlSecHrefRSAKeyValue[]           = "http://www.w3.org/2000/09/xmldsig#RSAKeyValue";
 const xmlChar xmlSecNodeRSAModulus[]            = "Modulus";
 const xmlChar xmlSecNodeRSAExponent[]           = "Exponent";
+/* PrivateExponent node is proprietary extension by XMLSec library and uses xmlSecNs namespace.
+ * DEPRECATED and will be removed in the future. */
 const xmlChar xmlSecNodeRSAPrivateExponent[]    = "PrivateExponent";
 
 const xmlChar xmlSecNameRsaMd5[]                = "rsa-md5";

@@ -368,7 +368,9 @@ failed:
 
 static void
 test_safe_cast_long_to_int(void) {
+#if (LONG_MIN < INT_MIN) || (LONG_MAX > INT_MAX)
     long src;
+#endif /* (LONG_MIN < INT_MIN) || (LONG_MAX > INT_MAX) */
     int dst = 0;
     int ret;
 

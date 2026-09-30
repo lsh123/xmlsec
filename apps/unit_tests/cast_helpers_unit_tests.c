@@ -59,6 +59,12 @@ castTestUlongToInt(unsigned long src, int* dst) {
 }
 
 static int
+castTestUlongLongToInt(unsigned long long src, int* dst) {
+    XMLSEC_SAFE_CAST_ULLONG_TO_INT(src, (*dst), return(-1), NULL);
+    return(0);
+}
+
+static int
 castTestLongToInt(long src, int* dst) {
     XMLSEC_SAFE_CAST_LONG_TO_INT(src, (*dst), return(-1), NULL);
     return(0);
@@ -358,6 +364,44 @@ test_safe_cast_ulong_to_int(void) {
         testLog("Error: value INT_MAX+1 (above the destination max) was not rejected\n");
         goto failed;
     }
+
+    testFinishedSuccess();
+    return;
+
+failed:
+    testFinishedFailure();
+}
+
+static void
+test_safe_cast_ulonglong_to_int(void) {
+    int dst = 0;
+    int ret;
+
+    testStart("XMLSEC_SAFE_CAST_ULLONG_TO_INT");
+
+    /* valid values: min and max */
+    ret = castTestUlongLongToInt(0, &dst);
+    if((ret != 0) || (dst != 0)) {
+        testLog("Error: valid value 0 was rejected or mis-cast\n");
+        goto failed;
+    }
+    ret = castTestUlongLongToInt((unsigned long long)INT_MAX, &dst);
+    if((ret != 0) || (dst != INT_MAX)) {
+        testLog("Error: valid value INT_MAX was rejected or mis-cast\n");
+        goto failed;
+    }
+
+    /* out-of-range values must be rejected and leave dst unmodified (only
+     * testable when unsigned long long is wider than int so that the value
+     * is representable) */
+#if (ULLONG_MAX > INT_MAX)
+    dst = 0;
+    ret = castTestUlongLongToInt(((unsigned long long)INT_MAX) + 1ULL, &dst);
+    if((ret == 0) || (dst != 0)) {
+        testLog("Error: value INT_MAX+1 (above the destination max) was not rejected\n");
+        goto failed;
+    }
+#endif /* (ULLONG_MAX > INT_MAX) */
 
     testFinishedSuccess();
     return;
@@ -1200,6 +1244,7 @@ test_cast_helpers(void) {
     /* to int */
     test_safe_cast_uint_to_int();
     test_safe_cast_ulong_to_int();
+    test_safe_cast_ulonglong_to_int();
     test_safe_cast_long_to_int();
     test_safe_cast_size_t_to_int();
     test_safe_cast_size_to_int();

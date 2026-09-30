@@ -1877,47 +1877,77 @@ done:
     return(res);
 }
 
-void
+int
 xmlSecOpenSSLX509NameToString(XMLSEC_OPENSSL400_CONST X509_NAME* name, char* buf, int bufLen) {
-    BIO* mem;
+    BIO* mem = NULL;
     char* data = NULL;
     long len;
+    size_t lenSize;
+    int res = -1;
 
-    if(buf == NULL || bufLen <= 0) {
-        return;
-    }
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(bufLen > 0, -1);
+
     buf[0] = '\0';
     if(name == NULL) {
-        return;
+        /* no name: leave buf empty */
+        return(0);
     }
+
     mem = BIO_new(BIO_s_mem());
     if(mem == NULL) {
-        return;
+        xmlSecOpenSSLError("BIO_new", NULL);
+        goto done;
     }
-    X509_NAME_print_ex(mem, name, 0, XN_FLAG_RFC2253);
+    if(X509_NAME_print_ex(mem, name, 0, XN_FLAG_RFC2253) <= 0) {
+        xmlSecOpenSSLError("X509_NAME_print_ex", NULL);
+        goto done;
+    }
     len = BIO_get_mem_data(mem, &data);
-    if(data != NULL && len > 0) {
-        if(len > bufLen - 1) {
-            len = bufLen - 1;
-        }
-        memcpy(buf, data, (size_t)len);
-        buf[len] = '\0';
+    if((data == NULL) || (len <= 0)) {
+        xmlSecOpenSSLError("BIO_get_mem_data", NULL);
+        goto done;
     }
-    BIO_free(mem);
+
+    /* truncate the name if needed */
+    if(len > bufLen - 1) {
+        len = bufLen - 1;
+    }
+    XMLSEC_SAFE_CAST_LONG_TO_SIZE(len, lenSize, goto done, NULL);
+    memcpy(buf, data, lenSize);
+    buf[len] = '\0';
+
+    /* success */
+    res = 0;
+
+done:
+    if(mem != NULL) {
+        BIO_free(mem);
+    }
+    return(res);
 }
 
 static void
 xmlSecOpenSSLX509CertDebugDump(X509* cert, FILE* output) {
     char buf[1024];
     BIGNUM *bn = NULL;
+    int ret;
 
     xmlSecAssert(cert != NULL);
     xmlSecAssert(output != NULL);
 
-    xmlSecOpenSSLX509NameToString(X509_get_subject_name(cert), buf, sizeof(buf));
-    fprintf(output, "==== Subject Name: %s\n", buf);
-    xmlSecOpenSSLX509NameToString(X509_get_issuer_name(cert), buf, sizeof(buf));
-    fprintf(output, "==== Issuer Name: %s\n", buf);
+    ret = xmlSecOpenSSLX509NameToString(X509_get_subject_name(cert), buf, sizeof(buf));
+    if(ret >= 0) {
+        fprintf(output, "==== Subject Name: %s\n", buf);
+    } else {
+        fprintf(output, "==== Subject Name: unknown\n");
+    }
+    ret = xmlSecOpenSSLX509NameToString(X509_get_issuer_name(cert), buf, sizeof(buf));
+    if(ret >= 0) {
+        fprintf(output, "==== Issuer Name: %s\n", buf);
+    } else {
+        fprintf(output, "==== Issuer Name: unknown\n");
+    }
     fprintf(output, "==== Issuer Serial: ");
     bn = ASN1_INTEGER_to_BN(X509_get_serialNumber(cert),NULL);
     if(bn != NULL) {
@@ -1934,19 +1964,24 @@ static void
 xmlSecOpenSSLX509CertDebugXmlDump(X509* cert, FILE* output) {
     char buf[1024];
     BIGNUM *bn = NULL;
+    int ret;
 
     xmlSecAssert(cert != NULL);
     xmlSecAssert(output != NULL);
 
     fprintf(output, "<SubjectName>");
-    xmlSecOpenSSLX509NameToString(X509_get_subject_name(cert), buf, sizeof(buf));
-    xmlSecPrintXmlString(output, BAD_CAST buf);
+    ret = xmlSecOpenSSLX509NameToString(X509_get_subject_name(cert), buf, sizeof(buf));
+    if(ret >= 0) {
+        xmlSecPrintXmlString(output, BAD_CAST buf);
+    }
     fprintf(output, "</SubjectName>\n");
 
 
     fprintf(output, "<IssuerName>");
-    xmlSecOpenSSLX509NameToString(X509_get_issuer_name(cert), buf, sizeof(buf));
-    xmlSecPrintXmlString(output, BAD_CAST buf);
+    ret = xmlSecOpenSSLX509NameToString(X509_get_issuer_name(cert), buf, sizeof(buf));
+    if(ret >= 0) {
+        xmlSecPrintXmlString(output, BAD_CAST buf);
+    }
     fprintf(output, "</IssuerName>\n");
 
     fprintf(output, "<SerialNumber>");

@@ -707,7 +707,7 @@ xmlSecOpenSSLSignatureLegacyEcdsa_OpenSSLToXmlDsig(
             xmlSecOpenSSLError("i2d_ECDSA_SIG", NULL);
             return(-1);
         }
-        outSize = (xmlSecSize)ret;
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outSize, return(-1), NULL);
 
         ret = xmlSecBufferSetData(out, outData, outSize);
         if(ret < 0) {

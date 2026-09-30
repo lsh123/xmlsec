@@ -558,7 +558,7 @@ xmlSecMSCngX509StoreContainsCert(HCERTSTORE store, CERT_NAME_BLOB* name, PCCERT_
 
     while (TRUE) {
         /* storeCert will be released in the next CertFindCertificateInStore() call
-         * (see https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certfindcertificateinstore) */        
+         * (see https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certfindcertificateinstore) */
         storeCert = CertFindCertificateInStore(store,
             X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
             0,
@@ -708,7 +708,7 @@ struct xmlSecMSCngX509StoreVerifyCertificateChainStep {
     BOOL freeCert;
 };
 #define XMLSEC_MSCNG_X509_STORE_VERIFY_CERTIFICATE_CHAIN_STEP_SIZE 32
-#define XMLSEC_MSCNG_X509_STORE_VERIFY_CERTIFICATE_CHAIN_MAX_DEPTH 1000
+#define XMLSEC_MSCNG_X509_STORE_VERIFY_CERTIFICATE_CHAIN_MAX_DEPTH 100
 #define XMLSEC_MSCNG_X509_CERT_HASH_SIZE 20
 
 /* Returns the SHA1 hash of @p pCert in @p pHash. Returns 0 on success, -1 on error. */

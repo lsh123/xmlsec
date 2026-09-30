@@ -70,8 +70,10 @@ xmlSecMSCngAppParseConfig(const char* config, LPTSTR* pCurrentUserStoreName, LPT
         }
     } else {
         /* two-part format: <current-user>:<local-machine> */
-        size_t currentUserLen = (size_t)(colonPos - config);
+        xmlSecSize currentUserLen;
         const char* localMachinePart = colonPos + 1;
+
+        XMLSEC_SAFE_CAST_PTRDIFF_TO_SIZE((colonPos - config), currentUserLen, return(-1), NULL);
 
         if(currentUserLen > 0) {
             char* tmp = (char*)xmlMalloc(currentUserLen + 1);
@@ -284,7 +286,7 @@ xmlSecMSCngAppKeyLoadEx(const char *filename, xmlSecKeyDataType type, xmlSecKeyD
         XMLSEC_SAFE_CAST_SIZE_TO_ULONG(bufSize, dwDataSize, {xmlSecBufferFinalize(&buffer); return(NULL);}, NULL);
 
         /* Try to read private key first and if no luck, try public key
-         * 
+         *
          * Note: xmlSecMSCngAppKeyReadPrivKeyFromDer() only supports DH and X25519 PKCS#8
          * private keys; other private key types (RSA/EC/DSA) are not supported in DER form
          * by this backend. Public-key DER files are handled by xmlSecMSCngAppKeyReadPubKeyFromDer(). */

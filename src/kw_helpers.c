@@ -320,6 +320,9 @@ xmlSecKWDes3Encode(xmlSecKWDes3Id kwDes3Id, xmlSecTransformPtr transform,
     memcpy(out, in, inSize);
     memcpy(out + inSize, sha1, XMLSEC_KW_DES3_BLOCK_LENGTH);
 
+    /* the key checksum (sha1) is not needed anymore; wipe it from the stack */
+    xmlSecMemCleanse(sha1, sizeof(sha1));
+
     /* step 4: generate random iv */
     outWritten2 = 0;
     ret = kwDes3Id->generateRandom(transform, iv, sizeof(iv), &outWritten2);
@@ -480,6 +483,8 @@ xmlSecKWDes3Decode(xmlSecKWDes3Id kwDes3Id, xmlSecTransformPtr transform,
     res = 0;
 
 done:
+    /* the key checksum (sha1) is not needed anymore; wipe it from the stack */
+    xmlSecMemCleanse(sha1, sizeof(sha1));
     if(tmp != NULL) {
         xmlSecBufferDestroy(tmp);
     }

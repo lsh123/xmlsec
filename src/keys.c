@@ -378,8 +378,10 @@ xmlSecKeyReqCopy(xmlSecKeyReqPtr dst, xmlSecKeyReqPtr src) {
  */
 int
 xmlSecKeyReqMatchKey(xmlSecKeyReqPtr keyReq, xmlSecKeyPtr key) {
+    xmlSecKeyDataPtr value;
+
     xmlSecAssert2(keyReq != NULL, -1);
-    xmlSecAssert2(xmlSecKeyIsValid(key), -1);
+    xmlSecAssert2(key != NULL, -1);
 
     if((keyReq->keyType != xmlSecKeyDataTypeUnknown) && ((xmlSecKeyGetType(key) & keyReq->keyType) == 0)) {
         return(0);
@@ -388,7 +390,16 @@ xmlSecKeyReqMatchKey(xmlSecKeyReqPtr keyReq, xmlSecKeyPtr key) {
         return(0);
     }
 
-    return(xmlSecKeyReqMatchKeyValue(keyReq, xmlSecKeyGetValue(key)));
+    value = xmlSecKeyGetValue(key);
+    if(value == NULL) {
+        /* a key without a value can never match the requirements; report it
+         * as a non-match (0) rather than an error (-1) so that key store
+         * searches can skip such keys instead of aborting */
+        return(0);
+    }
+    xmlSecAssert2(xmlSecKeyDataIsValid(value), -1);
+
+    return(xmlSecKeyReqMatchKeyValue(keyReq, value));
 }
 
 /**
@@ -646,7 +657,7 @@ xmlSecKeyDuplicate(xmlSecKeyPtr key) {
  */
 int
 xmlSecKeyMatch(xmlSecKeyPtr key, const xmlChar *name, xmlSecKeyReqPtr keyReq) {
-    xmlSecAssert2(xmlSecKeyIsValid(key), -1);
+    xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(keyReq != NULL, -1);
 
     if((name != NULL) && (!xmlStrEqual(xmlSecKeyGetName(key), name))) {

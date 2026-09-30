@@ -106,6 +106,31 @@ XMLSEC_PTR_TO_FUNC_IMPL(xmlSecCryptoGetFunctionsCallback)
                     xmlSecErrorsSafeString(name), \
                     xmlSecErrorsSafeString(_xmlsec_ltDlError)); \
     } while(0)
+
+static xmlSecCryptoGetFunctionsCallback *
+xmlSecCryptoOpenLibraryAndGetFunctions(xmlSecCryptoDLLibraryPtr lib)  {
+    void *getFunctionsPtr;
+
+    xmlSecAssert2(lib != NULL, NULL);
+    xmlSecAssert2(lib->filename != NULL, NULL);
+    xmlSecAssert2(lib->getFunctionsName != NULL, NULL);
+    xmlSecAssert2(lib->handle == NULL, NULL);
+
+    lib->handle = lt_dlopenext((char*)lib->filename);
+    if(lib->handle == NULL) {
+        xmlSecDLErrorLibLTDL("lt_dlopenext", lib->filename);
+        return(NULL);
+    }
+
+    getFunctionsPtr = lt_dlsym(lib->handle, (char*)lib->getFunctionsName);
+    if(getFunctionsPtr == NULL) {
+        xmlSecDLErrorLibLTDL("lt_dlsym", lib->getFunctionsName);
+        return(NULL);
+    }
+
+    return(XMLSEC_PTR_TO_FUNC(xmlSecCryptoGetFunctionsCallback, getFunctionsPtr));
+}
+
 #endif /* XMLSEC_DL_LIBLTDL */
 
 #if defined(XMLSEC_WINDOWS) && defined(XMLSEC_DL_WIN32)
@@ -127,6 +152,51 @@ XMLSEC_PTR_TO_FUNC_IMPL(xmlSecCryptoGetFunctionsCallback)
                     xmlSecErrorsSafeString(name), \
                     (unsigned long)(_xmlsec_lastError)); \
     } while(0)
+
+static xmlSecCryptoGetFunctionsCallback *
+xmlSecCryptoOpenLibraryAndGetFunctions(xmlSecCryptoDLLibraryPtr lib)  {
+    LPWSTR wcLibFilename;
+    void *getFunctionsPtr;
+
+    xmlSecAssert2(lib != NULL, NULL);
+    xmlSecAssert2(lib->filename != NULL, NULL);
+    xmlSecAssert2(lib->getFunctionsName != NULL, NULL);
+    xmlSecAssert2(lib->handle == NULL, NULL);
+
+    wcLibFilename = xmlSecWin32ConvertUtf8ToUnicode(lib->filename);
+    if(wcLibFilename == NULL) {
+        xmlSecIOError("xmlSecWin32ConvertUtf8ToUnicode", lib->filename, NULL);
+        return(NULL);
+    }
+
+#if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
+    lib->handle = LoadLibraryW(wcLibFilename);
+    if(lib->handle == NULL) {
+        xmlSecDLErrorWin32("LoadLibraryW", lib->filename);
+        xmlFree(wcLibFilename);
+        return(NULL);
+    }
+#else /* !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)*/
+    lib->handle = LoadPackagedLibrary(wcLibFilename, 0);
+    if(lib->handle == NULL) {
+        xmlSecDLErrorWin32("LoadPackagedLibrary", lib->filename);
+        xmlFree(wcLibFilename);
+        return(NULL);
+    }
+#endif /* !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP) */
+
+    /* library name is not needed anymore */
+    xmlFree(wcLibFilename);
+
+    /* get function pointer */
+    getFunctionsPtr = GetProcAddress(lib->handle, (const char*)lib->getFunctionsName);
+    if(getFunctionsPtr == NULL) {
+        xmlSecDLErrorWin32("GetProcAddress", lib->getFunctionsName);
+        return(NULL);
+    }
+
+    return(XMLSEC_PTR_TO_FUNC(xmlSecCryptoGetFunctionsCallback, getFunctionsPtr));
+}
 #endif /* defined(XMLSEC_WINDOWS) && defined(XMLSEC_DL_WIN32) */
 
 
@@ -166,60 +236,14 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
         return(NULL);
     }
 
-#ifdef XMLSEC_DL_LIBLTDL
-    lib->handle = lt_dlopenext((char*)lib->filename);
-    if(lib->handle == NULL) {
-        xmlSecDLErrorLibLTDL("lt_dlopenext", lib->filename);
-        xmlSecCryptoDLLibraryDestroy(lib);
-        return(NULL);
-    }
-
-    getFunctions = XMLSEC_PTR_TO_FUNC(xmlSecCryptoGetFunctionsCallback,
-                        lt_dlsym(lib->handle, (char*)lib->getFunctionsName)
-                    );
+    /* if compiler can't find xmlSecCryptoOpenLibraryAndGetFunctions() here then
+     * the library is miscconfigured. */
+    getFunctions = xmlSecCryptoOpenLibraryAndGetFunctions(lib);
     if(getFunctions == NULL) {
-        xmlSecDLErrorLibLTDL("lt_dlsym", lib->getFunctionsName);
+        xmlSecInternalError("xmlSecCryptoOpenLibraryAndGetFunctions", NULL);
         xmlSecCryptoDLLibraryDestroy(lib);
         return(NULL);
     }
-#endif /* XMLSEC_DL_LIBLTDL */
-
-#if defined(XMLSEC_WINDOWS) && defined(XMLSEC_DL_WIN32)
-#if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
-    lib->handle = LoadLibraryA((char*)lib->filename);
-    if(lib->handle == NULL) {
-        xmlSecDLErrorWin32("LoadLibraryA", lib->filename);
-        xmlSecCryptoDLLibraryDestroy(lib);
-        return(NULL);
-    }
-#else
-    LPWSTR wcLibFilename = xmlSecWin32ConvertUtf8ToUnicode(lib->filename);
-    if(wcLibFilename == NULL) {
-        xmlSecIOError("xmlSecWin32ConvertUtf8ToUnicode", lib->filename, NULL);
-        xmlSecCryptoDLLibraryDestroy(lib);
-        return(NULL);
-    }
-    lib->handle = LoadPackagedLibrary(wcLibFilename, 0);
-    xmlFree(wcLibFilename);
-    if(lib->handle == NULL) {
-        xmlSecDLErrorWin32("LoadPackagedLibrary", lib->filename);
-        xmlSecCryptoDLLibraryDestroy(lib);
-        return(NULL);
-    }
-#endif
-
-    getFunctions = XMLSEC_PTR_TO_FUNC(xmlSecCryptoGetFunctionsCallback,
-                        GetProcAddress(
-                            lib->handle,
-                            (const char*)lib->getFunctionsName
-                        )
-                    );
-    if(getFunctions == NULL) {
-        xmlSecDLErrorWin32("GetProcAddress", lib->getFunctionsName);
-        xmlSecCryptoDLLibraryDestroy(lib);
-        return(NULL);
-    }
-#endif /* defined(XMLSEC_WINDOWS) && defined(XMLSEC_DL_WIN32) */
 
     if(getFunctions == NULL) {
         xmlSecInternalError("invalid configuration: no way to load library", NULL);
@@ -391,8 +415,10 @@ static xmlSecPtrList gXmlSecCryptoDLLibraries;
  * normally called by xmlSecInit() and should not be called by the
  * application directly.
  *
- * Note: in case of failure the dynamic library loading engine is left partially
- * initialized and this state is not recoverable.
+ * Note: in case of failure the dynamic library loading engine is left
+ * partially initialized. The state is recoverable: call #xmlSecCryptoDLShutdown
+ * and then retry #xmlSecCryptoDLInit (the library list is empty at this point,
+ * so re-initialization is safe).
  * @return 0 on success or a negative value if an error occurs.
  */
 int

@@ -287,7 +287,8 @@ xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransfor
         goto done;
     }
 
-    /* pre-process stylesheet */
+    /* pre-process stylesheet: the application is responsible for initializing LibXSLT
+     * including configuration of security preferences via xsltSetDefaultSecurityPrefs */
     ctx->xslt = xsltParseStylesheetDoc(doc);
     if(ctx->xslt == NULL) {
         xmlSecXsltError("xsltParseStylesheetDoc", xmlSecTransformGetName(transform));

@@ -253,6 +253,11 @@ xmlSecKeyDataBinaryValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     buffer = xmlSecKeyDataBinaryValueGetBuffer(value);
     xmlSecAssert2(buffer != NULL, -1);
 
+    if(xmlSecBufferGetSize(buffer) == 0) {
+        xmlSecInvalidZeroKeyDataSizeError(xmlSecKeyDataKlassGetName(id));
+        return(-1);
+    }
+
     str = xmlSecBase64Encode(xmlSecBufferGetData(buffer),
                              xmlSecBufferGetSize(buffer),
                              keyInfoCtx->base64LineSize);

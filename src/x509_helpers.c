@@ -1211,12 +1211,12 @@ xmlSecX509NameRead(const xmlChar *str, xmlSecX509NameReplacements *replacements,
         /* handle replacements */
         if (replacements != NULL) {
             for(xmlSecX509NameReplacements *cur = replacements; (cur->original != NULL) && (cur->replacement != NULL); ++cur) {
-                if (xmlStrcmp(name, cur->original) != 0) {
+                if (xmlStrcmp(BAD_CAST name, cur->original) != 0) {
                     continue;
                 }
 
                 /* found replacement */
-                ret = xmlStrPrintf(name, sizeof(name), "%s", cur->replacement);
+                ret = xmlStrPrintf(BAD_CAST name, sizeof(name), "%s", cur->replacement);
                 if(ret < 0) {
                     xmlSecInternalError("xmlStrPrintf()", NULL);
                     return(-1);

@@ -191,7 +191,8 @@ xmlSecSetNodeContentAsHex(xmlNodePtr node, const xmlSecByte* data, xmlSecSize si
 int
 xmlSecGetNodeContentAsSize(const xmlNodePtr cur, xmlSecSize defValue, xmlSecSize* res) {
     xmlChar *content;
-    long int val;
+    xmlChar *start;
+    unsigned long long int val;
     char* endptr = NULL;
 
     xmlSecAssert2(cur != NULL, -1);
@@ -210,18 +211,34 @@ xmlSecGetNodeContentAsSize(const xmlNodePtr cur, xmlSecSize defValue, xmlSecSize
         (*res) = defValue;
         return(0);
     }
-    if(xmlStrlen(content) == 0) {
+
+    /* skip whitespaces at the beginning (the content is already trimmed by
+     * xmlSecGetNodeContentAndTrim(), this is defensive) */
+    start = content;
+    while(isspace((*start))) {
+        ++start;
+    }
+    if((*start) == '\0') {
         /* empty or whitespace-only content: use the default value */
         xmlFree(content);
         (*res) = defValue;
         return(0);
     }
 
-    /* check for negative values and overflow */
+    /* reject negative values */
+    if(*start == '-') {
+        xmlSecInvalidNodeContentError(cur, NULL, "can't parse node content as size (negative value)");
+        xmlFree(content);
+        return(-1);
+    }
+
+    /* parse as an unsigned 64-bit value and check for overflow; using an unsigned
+     * conversion allows values that exceed LONG_MAX on platforms where long is
+     * narrower than size_t (e.g. LLP64/Windows 64-bit) */
     errno = 0;
-    val = strtol((char*)content, &endptr, 10);
-    if((val < 0) || (errno == ERANGE)) {
-        xmlSecInvalidNodeContentError(cur, NULL, "can't parse node content as size");
+    val = strtoull((char*)start, &endptr, 10);
+    if(errno == ERANGE) {
+        xmlSecInvalidNodeContentError(cur, NULL, "can't parse node content as size (value out of range)");
         xmlFree(content);
         return(-1);
     }
@@ -230,15 +247,21 @@ xmlSecGetNodeContentAsSize(const xmlNodePtr cur, xmlSecSize defValue, xmlSecSize
     while(isspace((unsigned char)(*endptr))) {
         ++endptr;
     }
-    if((content + xmlStrlen(content)) != BAD_CAST endptr) {
+    if((*endptr) != '\0') {
         xmlSecInvalidNodeContentError(cur, NULL, "can't parse node content as size (extra characters at the end)");
         xmlFree(content);
         return(-1);
     }
     xmlFree(content);
 
+    /* check that the value fits into xmlSecSize */
+    if(val > (unsigned long long int)SIZE_MAX) {
+        xmlSecInvalidNodeContentError(cur, NULL, "can't parse node content as size (value too large)");
+        return(-1);
+    }
+
     /* success */
-    XMLSEC_SAFE_CAST_LONG_TO_SIZE(val, (*res), return(-1), NULL);
+    (*res) = (xmlSecSize)val;
     return(0);
 }
 

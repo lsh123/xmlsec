@@ -79,7 +79,11 @@ xmlSecSetExternalEntityLoader(xmlExternalEntityLoader entityLoader) {
  * (LibXML and LibXSLT) must be initialized before calling this function.
  *
  * Note: The application SHOULD NOT initialize the XML Security Library
- * more than once per process.
+ * more than once per process. Re-initialization is not supported: a second
+ * call re-runs the sub-initialization routines, which re-initialize the
+ * global lists (IO callbacks, key data, transforms) and orphan the
+ * first-generation data (the dynamically allocated xmlSecIOCallbacks
+ * structs are never freed), resulting in a bounded one-time memory leak.
  *
  * Note: in case of failure the library is left partially
  * initialized and this state is not recoverable.

@@ -31,6 +31,10 @@ static xmlSecSize gInitialSize = 64;
 /**
  * @brief Sets the default allocation mode and initial list size.
  * @details Sets new default allocation mode and minimal initial list size.
+ * Note: @p defAllocMode is not validated here (consistent with
+ * #xmlSecBufferSetDefaultAllocMode); an invalid value is rejected with an
+ * error when a list actually grows (the allocation mode is validated at
+ * use time).
  * @param defAllocMode the new default memory allocation mode.
  * @param defInitialSize the new default minimal initial size.
  */

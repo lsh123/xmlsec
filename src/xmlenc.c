@@ -366,7 +366,9 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
         return(-1);
     }
 
-    /* push data thru */
+    /* push data thru; note that xmlNodeDumpOutput() returns void in libxml2, so there is no
+     * return value to check here; a serialization failure is recorded in the output buffer
+     * and reported by xmlOutputBufferClose() below */
     if((encCtx->type != NULL) && xmlStrEqual(encCtx->type, xmlSecTypeEncElement)) {
         /* get the content of the node */
         xmlNodeDumpOutput(output, node->doc, node, 0, 0, NULL);
@@ -508,7 +510,10 @@ xmlSecEncCtxUriEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, const xmlChar* u
  */
 int
 xmlSecEncCtxDecrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
+    static const xmlSecByte empty[] = {0};
     xmlSecBufferPtr buffer;
+    const xmlSecByte * bufferData;
+    xmlSecSize bufferSize;
     int ret;
 
     xmlSecAssert2(encCtx != NULL, -1);
@@ -521,6 +526,15 @@ xmlSecEncCtxDecrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
         return(-1);
     }
 
+    /* Note: xmlSecBufferGetData() returns NULL for an empty buffer and the
+     * xmlSecReplaceNodeBuffer*() helpers reject a NULL buffer via an assert */
+    bufferData = xmlSecBufferGetData(buffer);
+    bufferSize = xmlSecBufferGetSize(buffer);
+    if(bufferData == NULL) {
+        bufferData = empty;
+        bufferSize = 0;
+    }
+
     /* replace original node if requested.
      * Note: a NULL type (no Type attribute) is intentionally left unreplaced so the
      * caller can treat the decrypted result as a raw buffer (e.g. binary data); the
@@ -528,17 +542,15 @@ xmlSecEncCtxDecrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     if((encCtx->type != NULL) && xmlStrEqual(encCtx->type, xmlSecTypeEncElement)) {
         /* check if we need to return the replaced node */
         if((encCtx->flags & XMLSEC_ENC_FLAGS_RETURN_REPLACED_NODE) != 0) {
-            ret = xmlSecReplaceNodeBufferAndReturn(node, xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer), &(encCtx->replacedNodeList));
+            ret = xmlSecReplaceNodeBufferAndReturn(node, bufferData, bufferSize, &(encCtx->replacedNodeList));
             if(ret < 0) {
-                xmlSecInternalError("xmlSecReplaceNodeBufferAndReturn",
-                                    xmlSecNodeGetName(node));
+                xmlSecInternalError("xmlSecReplaceNodeBufferAndReturn", xmlSecNodeGetName(node));
                 return(-1);
             }
         } else {
-            ret = xmlSecReplaceNodeBuffer(node, xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer));
+            ret = xmlSecReplaceNodeBuffer(node, bufferData, bufferSize);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecReplaceNodeBuffer",
-                                    xmlSecNodeGetName(node));
+                xmlSecInternalError("xmlSecReplaceNodeBuffer", xmlSecNodeGetName(node));
                 return(-1);
             }
         }
@@ -549,17 +561,15 @@ xmlSecEncCtxDecrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 
         /* check if we need to return the replaced node */
         if((encCtx->flags & XMLSEC_ENC_FLAGS_RETURN_REPLACED_NODE) != 0) {
-            ret = xmlSecReplaceNodeBufferAndReturn(node, xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer), &(encCtx->replacedNodeList));
+            ret = xmlSecReplaceNodeBufferAndReturn(node, bufferData, bufferSize, &(encCtx->replacedNodeList));
             if(ret < 0) {
-                xmlSecInternalError("xmlSecReplaceNodeBufferAndReturn",
-                                    xmlSecNodeGetName(node));
+                xmlSecInternalError("xmlSecReplaceNodeBufferAndReturn", xmlSecNodeGetName(node));
                 return(-1);
             }
         } else {
-            ret = xmlSecReplaceNodeBuffer(node, xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer));
+            ret = xmlSecReplaceNodeBuffer(node, bufferData, bufferSize);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecReplaceNodeBuffer",
-                                    xmlSecNodeGetName(node));
+                xmlSecInternalError("xmlSecReplaceNodeBuffer", xmlSecNodeGetName(node));
                 return(-1);
             }
         }

@@ -927,5 +927,5 @@ const xmlChar xmlSecHrefXslt[]                  = "http://www.w3.org/TR/1999/REC
  *
   *****************************************************************************/
 const xmlChar xmlSecStringEmpty[]               = "";
-const xmlChar xmlSecStringCR[]                  = "\n";
+const xmlChar xmlSecStringCR[]                  = "\n"; /* this is backward compatible with previous definition */
 const xmlChar xmlSecStringLF[]                  = "\n";

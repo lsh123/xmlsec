@@ -926,69 +926,69 @@ xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr
 
             ctx->keyCert = CertDuplicateCertificateContext(cert);
             if(ctx->keyCert == NULL) {
-                    xmlSecMSCryptoError("CertDuplicateCertificateContext",
-                                        xmlSecKeyDataGetName(data));
-                    CertFreeCertificateContext(cert);
-                    return(-1);
+                xmlSecMSCryptoError("CertDuplicateCertificateContext",
+                                    xmlSecKeyDataGetName(data));
+                CertFreeCertificateContext(cert);
+                return(-1);
             }
             CertFreeCertificateContext(cert);
 
-                /* search key according to KeyReq */
-                pCert = CertDuplicateCertificateContext( ctx->keyCert ) ;
-                if( pCert == NULL ) {
-                    xmlSecMSCryptoError("CertDuplicateCertificateContext",
+            /* search key according to KeyReq */
+            pCert = CertDuplicateCertificateContext(ctx->keyCert);
+            if(pCert == NULL) {
+                xmlSecMSCryptoError("CertDuplicateCertificateContext",
+                                    xmlSecKeyDataGetName(data));
+                return(-1);
+            }
+
+            if((keyInfoCtx->keyReq.keyType & xmlSecKeyDataTypePrivate) == xmlSecKeyDataTypePrivate) {
+                keyValue = xmlSecMSCryptoCertAdopt(pCert, xmlSecKeyDataTypePrivate);
+                if(keyValue == NULL) {
+                    xmlSecInternalError("xmlSecMSCryptoCertAdopt",
                                         xmlSecKeyDataGetName(data));
+                    CertFreeCertificateContext(pCert);
                     return(-1);
                 }
-
-                if( ( keyInfoCtx->keyReq.keyType & xmlSecKeyDataTypePrivate ) == xmlSecKeyDataTypePrivate ) {
-                        keyValue = xmlSecMSCryptoCertAdopt( pCert, xmlSecKeyDataTypePrivate ) ;
-                        if(keyValue == NULL) {
-                                xmlSecInternalError("xmlSecMSCryptoCertAdopt",
-                                                    xmlSecKeyDataGetName(data));
-                                CertFreeCertificateContext( pCert ) ;
-                                return(-1);
-                        }
-                        pCert = NULL ;
-                } else {
-                        keyValue = xmlSecMSCryptoCertAdopt( pCert, xmlSecKeyDataTypePublic ) ;
-                        if(keyValue == NULL) {
-                                xmlSecInternalError("xmlSecMSCryptoCertAdopt",
-                                                    xmlSecKeyDataGetName(data));
-                                CertFreeCertificateContext( pCert ) ;
-                                return(-1);
-                        }
-                        pCert = NULL ;
+                pCert = NULL;
+            } else {
+                keyValue = xmlSecMSCryptoCertAdopt(pCert, xmlSecKeyDataTypePublic);
+                if(keyValue == NULL) {
+                    xmlSecInternalError("xmlSecMSCryptoCertAdopt",
+                                        xmlSecKeyDataGetName(data));
+                    CertFreeCertificateContext(pCert);
+                    return(-1);
                 }
+                pCert = NULL;
+            }
 
             /* verify that the key matches our expectations */
             if(xmlSecKeyReqMatchKeyValue(&(keyInfoCtx->keyReq), keyValue) != 1) {
-                    xmlSecInternalError("xmlSecKeyReqMatchKeyValue",
-                                        xmlSecKeyDataGetName(data));
-                    xmlSecKeyDataDestroy(keyValue);
-                    return(-1);
+                xmlSecInternalError("xmlSecKeyReqMatchKeyValue",
+                                    xmlSecKeyDataGetName(data));
+                xmlSecKeyDataDestroy(keyValue);
+                return(-1);
             }
 
             ret = xmlSecKeySetValue(key, keyValue);
             if(ret < 0) {
-                    xmlSecInternalError("xmlSecKeySetValue",
-                                        xmlSecKeyDataGetName(data));
-                    xmlSecKeyDataDestroy(keyValue);
-                    return(-1);
+                xmlSecInternalError("xmlSecKeySetValue",
+                                    xmlSecKeyDataGetName(data));
+                xmlSecKeyDataDestroy(keyValue);
+                return(-1);
             }
 
             ret = xmlSecMSCryptoX509CertGetTime(ctx->keyCert->pCertInfo->NotBefore, &(key->notValidBefore));
             if(ret < 0) {
-                    xmlSecInternalError("xmlSecMSCryptoX509CertGetTime(notValidBefore)",
-                                        xmlSecKeyDataGetName(data));
-                    return(-1);
+                xmlSecInternalError("xmlSecMSCryptoX509CertGetTime(notValidBefore)",
+                                    xmlSecKeyDataGetName(data));
+                return(-1);
             }
 
             ret = xmlSecMSCryptoX509CertGetTime(ctx->keyCert->pCertInfo->NotAfter, &(key->notValidAfter));
             if(ret < 0) {
-                    xmlSecInternalError("xmlSecMSCryptoX509CertGetTime(notValidAfter)",
-                                        xmlSecKeyDataGetName(data));
-                    return(-1);
+                xmlSecInternalError("xmlSecMSCryptoX509CertGetTime(notValidAfter)",
+                                    xmlSecKeyDataGetName(data));
+                return(-1);
             }
         } else if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT) != 0) {
             xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_FOUND,
@@ -1008,8 +1008,10 @@ xmlSecMSCryptoX509CertGetTime(FILETIME t, time_t* res) {
     result = t.dwHighDateTime;
     result = (result) << 32;
     result |= t.dwLowDateTime;
-    result /= 10000;    /* Convert from 100 nano-sec periods to seconds. */
-    result -= 11644473600000LL;  /* Convert from Windows epoch to Unix epoch */
+    /* 100 nanoseconds -> seconds */
+    result /= 10000000;
+    /* 1601-01-01 epoch -> 1970-01-01 epoch */
+    result -= 11644473600;
 
     (*res) = (time_t)result;
 
@@ -1137,7 +1139,7 @@ xmlSecMSCryptoASN1IntegerWrite(PCRYPT_INTEGER_BLOB num) {
 static int
 xmlSecMSCryptoX509SKIWrite(PCCERT_CONTEXT cert, xmlSecBufferPtr buf) {
     PCERT_EXTENSION pCertExt;
-    DWORD dwSize;
+    DWORD dwSize = 0;
     BOOL rv;
     int ret;
 
@@ -1185,6 +1187,7 @@ xmlSecMSCryptoX509CertDebugDump(PCCERT_CONTEXT cert, FILE* output) {
     xmlChar * issuer = NULL;
 
     xmlSecAssert(cert != NULL);
+    xmlSecAssert(cert->pCertInfo != NULL);
     xmlSecAssert(output != NULL);
 
     fprintf(output, "=== X509 Certificate\n");
@@ -1225,12 +1228,12 @@ done:
 
 static void
 xmlSecMSCryptoX509CertDebugXmlDump(PCCERT_CONTEXT cert, FILE* output) {
-    PCRYPT_INTEGER_BLOB sn;
-    unsigned int i;
     xmlChar * subject = NULL;
     xmlChar * issuer = NULL;
+    xmlChar * serial = NULL;
 
     xmlSecAssert(cert != NULL);
+    xmlSecAssert(cert->pCertInfo != NULL);
     xmlSecAssert(output != NULL);
 
     /* subject */
@@ -1253,21 +1256,20 @@ xmlSecMSCryptoX509CertDebugXmlDump(PCCERT_CONTEXT cert, FILE* output) {
     xmlSecPrintXmlString(output, BAD_CAST issuer);
     fprintf(output, "</IssuerName>\n");
 
-    /* serial number (CRYPT_INTEGER_BLOB is little-endian; print in big-endian X.509 order) */
-    fprintf(output, "<SerialNumber>");
-    sn = &(cert->pCertInfo->SerialNumber);
-    for (i = sn->cbData; i > 0; i--) {
-        if (i != 1) {
-            fprintf(output, "%02x:", sn->pbData[i - 1]);
-        } else {
-            fprintf(output, "%02x", sn->pbData[i - 1]);
-        }
+    /* serial number (decimal, same format as the XML writer) */
+    serial = xmlSecMSCryptoASN1IntegerWrite(&(cert->pCertInfo->SerialNumber));
+    if(serial == NULL) {
+        xmlSecInternalError("xmlSecMSCryptoASN1IntegerWrite(serial)", NULL);
+        goto done;
     }
+    fprintf(output, "<SerialNumber>");
+    xmlSecPrintXmlString(output, BAD_CAST serial);
     fprintf(output, "</SerialNumber>\n");
 
 done:
     xmlFree(subject);
     xmlFree(issuer);
+    xmlFree(serial);
 }
 
 

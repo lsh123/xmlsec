@@ -184,6 +184,9 @@ xmlSecGCryptAsymKeyDataAdoptKey(xmlSecKeyDataPtr data, gcry_sexp_t key_pair) {
     pub_key = NULL; /* data owns it now */
     priv_key = NULL; /* data owns it now */
 
+    /* Adopt functions assume ownership on success thus the caller would expect this to be released */
+    gcry_sexp_release(key_pair);
+
     /* success */
     res = 0;
 
@@ -390,6 +393,35 @@ done:
         xmlFree(buf);
     }
     return (res);
+}
+
+/**
+ * xmlSecGCryptAsymKeyDataCheckKeyAlg:
+ * @key:              the pointer to the GCrypt key S-expression (public key, private key, or key pair).
+ * @alg:              the expected algorithm token ("dsa" or "rsa").
+ *
+ * Checks that a GCrypt key S-expression is of the expected algorithm type.
+ *
+ * Returns: 0 if the key is of the expected type or -1 otherwise.
+ */
+static int
+xmlSecGCryptAsymKeyDataCheckKeyAlg(gcry_sexp_t key, const char* alg) {
+    gcry_sexp_t tok;
+
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(alg != NULL, -1);
+
+    /* the algorithm token (dsa/rsa) is present in the public-key,
+       private-key and key-pair S-expressions alike, so its presence
+       unambiguously identifies the key type */
+    tok = gcry_sexp_find_token(key, alg, 0);
+    if(tok == NULL) {
+        return(-1);
+    }
+    gcry_sexp_release(tok);
+
+    /* success */
+    return(0);
 }
 
 /**
@@ -656,6 +688,11 @@ xmlSecGCryptKeyDataDsaAdoptKey(xmlSecKeyDataPtr data, gcry_sexp_t dsa_key) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataDsaId), -1);
     xmlSecAssert2(dsa_key != NULL, -1);
 
+    if(xmlSecGCryptAsymKeyDataCheckKeyAlg(dsa_key, "dsa") < 0) {
+        xmlSecInvalidDataError("the provided key is not a DSA key", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+
     return xmlSecGCryptAsymKeyDataAdoptKey(data, dsa_key);
 }
 
@@ -674,6 +711,15 @@ int
 xmlSecGCryptKeyDataDsaAdoptKeyPair(xmlSecKeyDataPtr data, gcry_sexp_t pub_key, gcry_sexp_t priv_key) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataDsaId), -1);
     xmlSecAssert2(pub_key != NULL, -1);
+
+    if(xmlSecGCryptAsymKeyDataCheckKeyAlg(pub_key, "dsa") < 0) {
+        xmlSecInvalidDataError("the provided key is not a DSA key", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+    if((priv_key != NULL) && (xmlSecGCryptAsymKeyDataCheckKeyAlg(priv_key, "dsa") < 0)) {
+        xmlSecInvalidDataError("the provided key is not a DSA key", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
 
     return xmlSecGCryptAsymKeyDataAdoptKeyPair(data, pub_key, priv_key);
 }
@@ -858,12 +904,6 @@ xmlSecGCryptKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     }
 
     /* todo: add support for J , seed, pgencounter */
-
-    /* Convert from OpenSSL parameter ordering to the OpenPGP order. */
-    /* First check that x < y; if not swap x and y  */
-    if((x != NULL) && (gcry_mpi_cmp (x, y) > 0)) {
-        gcry_mpi_swap (x, y);
-    }
 
     /* construct pub/priv key pairs */
     err = gcry_sexp_build(&pub_key, NULL,
@@ -1170,6 +1210,11 @@ xmlSecGCryptKeyDataRsaAdoptKey(xmlSecKeyDataPtr data, gcry_sexp_t rsa_key) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataRsaId), -1);
     xmlSecAssert2(rsa_key != NULL, -1);
 
+    if(xmlSecGCryptAsymKeyDataCheckKeyAlg(rsa_key, "rsa") < 0) {
+        xmlSecInvalidDataError("the provided key is not an RSA key", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+
     return xmlSecGCryptAsymKeyDataAdoptKey(data, rsa_key);
 }
 
@@ -1188,6 +1233,15 @@ int
 xmlSecGCryptKeyDataRsaAdoptKeyPair(xmlSecKeyDataPtr data, gcry_sexp_t pub_key, gcry_sexp_t priv_key) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataRsaId), -1);
     xmlSecAssert2(pub_key != NULL, -1);
+
+    if(xmlSecGCryptAsymKeyDataCheckKeyAlg(pub_key, "rsa") < 0) {
+        xmlSecInvalidDataError("the provided key is not an RSA key", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+    if((priv_key != NULL) && (xmlSecGCryptAsymKeyDataCheckKeyAlg(priv_key, "rsa") < 0)) {
+        xmlSecInvalidDataError("the provided key is not an RSA key", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
 
     return xmlSecGCryptAsymKeyDataAdoptKeyPair(data, pub_key, priv_key);
 }

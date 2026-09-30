@@ -592,6 +592,10 @@ xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
     xmlSecAssert2(providers != NULL, 0);
 
     for(ii = 0; (res == 0) && (providers[ii].providerName != NULL) && (providers[ii].providerType != 0); ++ii) {
+        /* CryptAcquireContext is not documented to zero *phProv on failure, so
+         * reset it before each attempt to keep the loop condition correct. */
+        res = 0;
+
         /* first try */
         ret = CryptAcquireContext(&res,
                     pszContainer,
@@ -602,16 +606,17 @@ xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
             return (res);
         }
 
-        /* check errors */
+        /* CryptoAPI sets the last error to an NTE_* code, so compare against it directly. */
         dwLastError = GetLastError();
-        switch(HRESULT_FROM_WIN32(dwLastError)) {
-        case NTE_BAD_KEYSET:
+        switch(dwLastError) {
+        case (DWORD)NTE_BAD_KEYSET:
             /* This error can indicate that a newly installed provider
              * does not have a usable key container yet. It needs to be
              * created, and then we have to try again CryptAcquireContext.
              * This is also referenced in
              * http://www.microsoft.com/mind/0697/crypto.asp (inituser)
              */
+            res = 0;
             ret = CryptAcquireContext(&res,
                         pszContainer,
                         providers[ii].providerName,
@@ -622,9 +627,13 @@ xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
             }
             break;
 
-        case NTE_EXISTS:
+        case (DWORD)NTE_EXISTS:
+            /* All current callers pass CRYPT_VERIFYCONTEXT, so no persistent key
+             * container is created or accessed; this branch only applies to
+             * future callers that request a persistent container. */
             /* If we can, try our container */
             if(bUseXmlSecContainer == TRUE) {
+                res = 0;
                 ret = CryptAcquireContext(&res,
                             XMLSEC_CONTAINER_NAME,
                             providers[ii].providerName,

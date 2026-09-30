@@ -513,6 +513,13 @@ xmlSecNssX509FindCert(CERTCertList* certsList, const xmlChar *subjectName,
         CERTIssuerAndSN issuerAndSN;
         PRUint64 issuerSN = 0;
 
+        /* free the subject name allocated above, if any, before
+           re-assigning name to the issuer name */
+        if(name != NULL) {
+            CERT_DestroyName(name);
+            name = NULL;
+        }
+
         name = xmlSecNssGetCertName(issuerName);
         if (name == NULL) {
             xmlSecInternalError2("xmlSecNssGetCertName", NULL,

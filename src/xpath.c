@@ -223,11 +223,20 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
     /* do not forget to set the doc */
     data->ctx->doc = doc;
 
+    /* always register here(); not all libxml2 versions support unregistering with NULL */
+    if(xmlXPathRegisterFunc(data->ctx, (xmlChar *)"here", xmlSecXPathHereFunction) < 0) {
+        xmlSecXmlError("xmlXPathRegisterFunc", NULL);
+        return(NULL);
+    }
+
     /* here function works only on the same document */
     if(hereNode->doc == doc) {
-        xmlXPathRegisterFunc(data->ctx, (xmlChar *)"here", xmlSecXPathHereFunction);
         data->ctx->here = hereNode;
         data->ctx->xptr = 1;
+    } else {
+        /* clear any stale "here" node/xptr flag left over from a previous execution */
+        data->ctx->here = NULL;
+        data->ctx->xptr = 0;
     }
 
     /* execute xpath or xpointer expression */

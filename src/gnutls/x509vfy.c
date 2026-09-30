@@ -427,6 +427,10 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
                 if (tmp == NULL) {
                     tmp = xmlSecGnuTLSX509FindSignerCert(&(ctx->certsUntrusted), cert2);
                 }
+                if (tmp == cert2) {
+                    /* self-issued cert: stop the chain to avoid an infinite self-loop */
+                    break;
+                }
                 cert2 = tmp;
             }
         } else if (certs_size == 1) {
@@ -1082,7 +1086,11 @@ xmlSecGnuTLSX509CertCompareSKI(gnutls_x509_crt_t cert, const xmlSecByte * ski, x
 
     /* get ski size */
     err = gnutls_x509_crt_get_subject_key_id(cert, NULL, &bufSizeT, &critical);
-    if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSizeT <= 0)) {
+    if(err == GNUTLS_E_REQUESTED_DATA_NOT_AVAILABLE) {
+        /* no SKI extension in the certificate, no match */
+        res = 1;
+        goto done;
+    } else if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSizeT <= 0)) {
         xmlSecGnuTLSError("gnutls_x509_crt_get_subject_key_id", err, NULL);
         goto done;
     }
@@ -1238,6 +1246,11 @@ xmlSecGnuTLSX509FindSignedCert(xmlSecPtrListPtr certs, gnutls_x509_crt_t cert) {
             xmlSecInternalError2("xmlSecPtrListGetItem", NULL,
                 "pos=" XMLSEC_SIZE_FMT, ii);
             goto done;
+        }
+
+        if(tmp == cert) {
+            /* same cert, skip for self-issued certs */
+            continue;
         }
 
         issuer = xmlSecGnuTLSX509CertGetIssuerDN(tmp);

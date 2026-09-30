@@ -902,8 +902,9 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
             cert_id_size = sizeof(cert_id);
             err = gnutls_x509_crt_get_key_id(tmp, 0, cert_id, &cert_id_size);
             if(err != GNUTLS_E_SUCCESS) {
+                /* can't get the key id of this certificate, skip it */
                 xmlSecGnuTLSError("gnutls_x509_crt_get_key_id", err, NULL);
-                goto done;
+                continue;
             }
 
             /* if key ids match, then this is THE key cert!!! */
@@ -931,6 +932,10 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     res = 0;
 
 done:
+    if((res < 0) && ((*priv_key) != NULL)) {
+        gnutls_x509_privkey_deinit(*priv_key);
+        *priv_key = NULL;
+    }
     if(cert != NULL) {
         gnutls_x509_crt_deinit(cert);
     }

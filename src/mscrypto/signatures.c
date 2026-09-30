@@ -22,7 +22,7 @@
 
 #include <windows.h>
 #include <wincrypt.h>
-#ifndef XMLSEC_NO_GOST
+#if !defined(XMLSEC_NO_GOST) || !defined(XMLSEC_NO_GOST2012)
 #include "csp_calg.h"
 #endif
 
@@ -53,6 +53,7 @@ struct _xmlSecMSCryptoSignatureCtx {
     HCRYPTHASH          mscHash;
     ALG_ID              digestAlgId;
     xmlSecKeyDataId     keyId;
+    HCRYPTPROV          hFallbackProv;  /* fallback provider acquired when default provider can't create hash */
 };
 
 /******************************************************************************
@@ -241,6 +242,10 @@ static void xmlSecMSCryptoSignatureFinalize(xmlSecTransformPtr transform) {
         CryptDestroyHash(ctx->mscHash);
     }
 
+    if (ctx->hFallbackProv != 0) {
+        CryptReleaseContext(ctx->hFallbackProv, 0);
+    }
+
     if (ctx->data != NULL)  {
         xmlSecKeyDataDestroy(ctx->data);
         ctx->data = NULL;
@@ -266,6 +271,12 @@ static int xmlSecMSCryptoSignatureSetKey(xmlSecTransformPtr transform, xmlSecKey
 
     value = xmlSecKeyGetValue(key);
     xmlSecAssert2(value != NULL, -1);
+
+    /* free previous value (if any) */
+    if(ctx->data != NULL) {
+        xmlSecKeyDataDestroy(ctx->data);
+        ctx->data = NULL;
+    }
 
     ctx->data = xmlSecKeyDataDuplicate(value);
     if(ctx->data == NULL) {
@@ -435,6 +446,7 @@ static int
 xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecMSCryptoSignatureCtxPtr ctx;
     HCRYPTPROV hProv;
+    HCRYPTPROV hFallbackProv = 0;
     DWORD dwKeySpec;
     xmlSecBufferPtr in, out;
     xmlSecSize inSize, outSize;
@@ -482,43 +494,38 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
                 return(-1);
             }
 
-            if(!CryptReleaseContext(hProv, 0)) {
-                xmlSecMSCryptoError("CryptReleaseContext", NULL);
-                return(-1);
-            }
-            hProv = (HCRYPTPROV)0;
-
-            if(!CryptAcquireContextW(&hProv,
+            if(!CryptAcquireContextW(&hFallbackProv,
                 pProviderInfo->pwszContainerName,
                 pProviderInfo->pwszProvName,
                 pProviderInfo->dwProvType,
                 0)) {
 
                 xmlSecMSCryptoError("CryptAcquireContext", NULL);
+                free(pProviderInfo);
                 return(-1);
             }
 
-            bOk = CryptCreateHash(hProv, ctx->digestAlgId, 0, 0, &(ctx->mscHash));
+            bOk = CryptCreateHash(hFallbackProv, ctx->digestAlgId, 0, 0, &(ctx->mscHash));
         }
 
         //Last try it with PROV_RSA_AES provider type.
         if(!bOk) {
-            if (!CryptReleaseContext(hProv, 0)) {
-                xmlSecMSCryptoError("CryptReleaseContext", NULL);
-                return(-1);
+            if (hFallbackProv != 0) {
+                CryptReleaseContext(hFallbackProv, 0);
+                hFallbackProv = 0;
             }
-            hProv = (HCRYPTPROV)0;
 
-            if(!CryptAcquireContextW(&hProv,
+            if(!CryptAcquireContextW(&hFallbackProv,
                 pProviderInfo->pwszContainerName,
                 NULL,
                 PROV_RSA_AES,
                 0)) {
                 xmlSecMSCryptoError("CryptAcquireContext", NULL);
+                free(pProviderInfo);
                 return(-1);
             }
 
-            bOk = CryptCreateHash(hProv, ctx->digestAlgId, 0, 0, &(ctx->mscHash));
+            bOk = CryptCreateHash(hFallbackProv, ctx->digestAlgId, 0, 0, &(ctx->mscHash));
         }
 
         if(pProviderInfo != NULL) {
@@ -526,9 +533,14 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
         }
 
         if(!bOk) {
+            if (hFallbackProv != 0) {
+                CryptReleaseContext(hFallbackProv, 0);
+            }
             xmlSecMSCryptoError("CryptCreateHash", NULL);
             return(-1);
         }
+
+        ctx->hFallbackProv = hFallbackProv;
 
         transform->status = xmlSecTransformStatusWorking;
     }

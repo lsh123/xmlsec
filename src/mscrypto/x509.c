@@ -338,6 +338,7 @@ xmlSecMSCryptoKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, PCCRL_CONTEXT crl) {
                             xmlSecKeyDataGetName(data));
         return(-1);
     }
+    CertFreeCRLContext(crl);
     ctx->numCrls++;
 
     return(0);
@@ -446,6 +447,7 @@ xmlSecMSCryptoKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
         if(certDst == NULL) {
             xmlSecMSCryptoError("CertDuplicateCertificateContext",
                                 xmlSecKeyDataGetName(dst));
+            CertFreeCertificateContext(certSrc);
             return(-1);
         }
 
@@ -453,9 +455,11 @@ xmlSecMSCryptoKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
         if(ret < 0) {
             xmlSecInternalError("xmlSecMSCryptoKeyDataX509AdoptCert",
                                 xmlSecKeyDataGetName(dst));
+            CertFreeCertificateContext(certSrc);
             CertFreeCertificateContext(certDst);
             return(-1);
         }
+        CertFreeCertificateContext(certSrc);
     }
 
     /* copy crls */
@@ -473,6 +477,7 @@ xmlSecMSCryptoKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
         if(crlDst == NULL) {
             xmlSecMSCryptoError("CertDuplicateCRLContext",
                                 xmlSecKeyDataGetName(dst));
+            CertFreeCRLContext(crlSrc);
             return(-1);
         }
 
@@ -480,9 +485,11 @@ xmlSecMSCryptoKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
         if(ret < 0) {
             xmlSecInternalError("xmlSecMSCryptoKeyDataX509AdoptCrl",
                                 xmlSecKeyDataGetName(dst));
+            CertFreeCRLContext(crlSrc);
             CertFreeCRLContext(crlDst);
             return(-1);
         }
+        CertFreeCRLContext(crlSrc);
     }
 
     /* copy key cert if exist */
@@ -641,6 +648,7 @@ xmlSecMSCryptoKeyDataX509DebugDump(xmlSecKeyDataPtr data, FILE* output) {
         }
         fprintf(output, "==== Certificate:\n");
         xmlSecMSCryptoX509CertDebugDump(cert, output);
+        CertFreeCertificateContext(cert);
     }
 
     /* we don't print out crls */
@@ -674,6 +682,7 @@ xmlSecMSCryptoKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
         fprintf(output, "<Certificate>\n");
         xmlSecMSCryptoX509CertDebugXmlDump(cert, output);
         fprintf(output, "</Certificate>\n");
+        CertFreeCertificateContext(cert);
     }
 
     /* we don't print out crls */
@@ -819,6 +828,7 @@ xmlSecMSCryptoKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509
                     xmlSecKeyDataGetName(data),
                     "pos=" XMLSEC_SIZE_FMT "; certSize=%lu",
                     ctx->crtPos, cert->cbCertEncoded);
+                CertFreeCertificateContext(cert);
                 return(-1);
             }
         }
@@ -828,6 +838,7 @@ xmlSecMSCryptoKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509
                 xmlSecInternalError2("xmlSecMSCryptoX509SKIWrite",
                     xmlSecKeyDataGetName(data),
                     "pos=" XMLSEC_SIZE_FMT, ctx->crtPos);
+                CertFreeCertificateContext(cert);
                 return(-1);
             }
         }
@@ -840,6 +851,7 @@ xmlSecMSCryptoKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509
                 xmlSecInternalError2("xmlSecMSCryptoX509NameWrite(subject)",
                     xmlSecKeyDataGetName(data),
                     "pos=" XMLSEC_SIZE_FMT, ctx->crtPos);
+                CertFreeCertificateContext(cert);
                 return(-1);
             }
         }
@@ -853,6 +865,7 @@ xmlSecMSCryptoKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509
                 xmlSecInternalError2("xmlSecMSCryptoX509NameWrite(issuer name)",
                     xmlSecKeyDataGetName(data),
                     "pos=" XMLSEC_SIZE_FMT, ctx->crtPos);
+                CertFreeCertificateContext(cert);
                 return(-1);
             }
             x509Value->issuerSerial = xmlSecMSCryptoASN1IntegerWrite(&(cert->pCertInfo->SerialNumber));
@@ -860,9 +873,11 @@ xmlSecMSCryptoKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509
                 xmlSecInternalError2("xmlSecMSCryptoASN1IntegerWrite(issuer serial))",
                     xmlSecKeyDataGetName(data),
                     "pos=" XMLSEC_SIZE_FMT, ctx->crtPos);
+                CertFreeCertificateContext(cert);
                 return(-1);
             }
         }
+        CertFreeCertificateContext(cert);
         ++ctx->crtPos;
     }
     else if (ctx->crlPos < ctx->crlSize) {
@@ -882,9 +897,11 @@ xmlSecMSCryptoKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509
                     xmlSecKeyDataGetName(data),
                     "pos=" XMLSEC_SIZE_FMT "; crlSize=%lu",
                     ctx->crlPos, crl->cbCrlEncoded);
+                CertFreeCRLContext(crl);
                 return(-1);
             }
         }
+        CertFreeCRLContext(crl);
         ++ctx->crlPos;
     }
     else {
@@ -931,8 +948,10 @@ xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr
             if(ctx->keyCert == NULL) {
                     xmlSecMSCryptoError("CertDuplicateCertificateContext",
                                         xmlSecKeyDataGetName(data));
+                    CertFreeCertificateContext(cert);
                     return(-1);
             }
+            CertFreeCertificateContext(cert);
 
                 /* search key according to KeyReq */
                 pCert = CertDuplicateCertificateContext( ctx->keyCert ) ;
@@ -1009,12 +1028,10 @@ xmlSecMSCryptoX509CertGetTime(FILETIME t, time_t* res) {
     result = t.dwHighDateTime;
     result = (result) << 32;
     result |= t.dwLowDateTime;
-    result /= 10000;    /* Convert from 100 nano-sec periods to seconds. */
-#if defined(__MINGW32__)
-    result -= 11644473600000LL;  /* Convert from Windows epoch to Unix epoch */
-#else
-    result -= 11644473600000;  /* Convert from Windows epoch to Unix epoch */
-#endif
+    /* 100 nanoseconds -> seconds */
+    result /= 10000000;
+    /* 1601-01-01 epoch -> 1970-01-01 epoch */
+    result -= 11644473600;
 
     (*res) = (time_t)result;
 

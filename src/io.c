@@ -526,6 +526,10 @@ xmlSecTransformInputURIGetKlass(void) {
  *
  * Opens the given @uri for reading.
  *
+ * Note: in case of failure, the transform is left in a well-defined
+ * (unopened) state and the #xmlSecTransformInputURIClose function
+ * must be called to close the transform.
+ *
  * Returns: 0 on success or a negative value otherwise.
  */
 int
@@ -545,14 +549,18 @@ xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const xmlChar *uri) {
      * Go in reverse to give precedence to user defined handlers.
      * try with an unescaped version of the uri
      */
-    if(ctx->clbks == NULL) {
+    {
         char *unescaped;
 
         unescaped = xmlURIUnescapeString((char*)uri, 0, NULL);
         if (unescaped != NULL) {
             ctx->clbks = xmlSecIOCallbackPtrListFind(&xmlSecAllIOCallbacks, unescaped);
             if(ctx->clbks != NULL) {
-                ctx->clbksCtx = ctx->clbks->opencallback(unescaped);
+                if(ctx->clbks->opencallback != NULL) {
+                    ctx->clbksCtx = ctx->clbks->opencallback(unescaped);
+                } else {
+                    ctx->clbksCtx = NULL;
+                }
             }
             xmlFree(unescaped);
         }
@@ -560,12 +568,17 @@ xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const xmlChar *uri) {
 
     /*
      * If this failed try with a non-escaped uri this may be a strange
-     * filename
+     * filename. Gate on clbksCtx (not clbks) so that a callback found via the
+     * unescaped URI whose opencallback returned NULL still gets a raw-URI retry.
      */
-    if (ctx->clbks == NULL) {
+    if (ctx->clbksCtx == NULL) {
         ctx->clbks = xmlSecIOCallbackPtrListFind(&xmlSecAllIOCallbacks, (char*)uri);
         if(ctx->clbks != NULL) {
-            ctx->clbksCtx = ctx->clbks->opencallback((char*)uri);
+            if(ctx->clbks->opencallback != NULL) {
+                ctx->clbksCtx = ctx->clbks->opencallback((char*)uri);
+            } else {
+                ctx->clbksCtx = NULL;
+            }
         }
     }
 
@@ -599,9 +612,9 @@ xmlSecTransformInputURIClose(xmlSecTransformPtr transform) {
     /* close if still open and mark as closed */
     if((ctx->clbksCtx != NULL) && (ctx->clbks != NULL) && (ctx->clbks->closecallback != NULL)) {
         (ctx->clbks->closecallback)(ctx->clbksCtx);
-        ctx->clbksCtx = NULL;
-        ctx->clbks = NULL;
     }
+    ctx->clbksCtx = NULL;
+    ctx->clbks = NULL;
 
     /* done */
     return(0);

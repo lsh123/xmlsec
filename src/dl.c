@@ -392,6 +392,7 @@ xmlSecCryptoDLShutdown(void) {
     int ret;
 
     xmlSecPtrListFinalize(&gXmlSecCryptoDLLibraries);
+    gXmlSecCryptoDLFunctions = NULL;
 
 #ifdef XMLSEC_DL_LIBLTDL
     ret = lt_dlexit ();

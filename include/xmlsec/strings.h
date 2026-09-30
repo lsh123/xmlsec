@@ -197,6 +197,8 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDSAP[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDSAQ[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDSAG[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDSAJ[];
+/* DSA X node is proprietary extension by XMLSec library and uses xmlSecNs namespace.
+ * DEPRECATED and will be removed in the future. */
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDSAX[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDSAY[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDSASeed[];

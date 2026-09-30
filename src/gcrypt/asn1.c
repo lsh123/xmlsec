@@ -129,8 +129,15 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, unsigned long *buflen, stru
     tag       = (c & 0x1f);
 
     if (tag == 0x1f) {
+        int num_tag_bytes = 0;
+
         tag = 0;
         do {
+            /* Bound the number of continuation bytes so 'tag <<= 7' cannot shift
+             * past the width of 'unsigned long' (undefined behavior). */
+            if(num_tag_bytes >= 4) {
+                return(-1); /* Tag too long.  */
+            }
             tag <<= 7;
             if (length <= 0) {
                 return(-1); /* Premature EOF.  */
@@ -139,6 +146,7 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, unsigned long *buflen, stru
             length--;
             ti->nhdr++;
             tag |= (c & 0x7f);
+            num_tag_bytes++;
         } while ( (c & 0x80) );
     }
     ti->tag = tag;
@@ -160,6 +168,12 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, unsigned long *buflen, stru
     } else {
         unsigned long len = 0;
         int count = c & 0x7f;
+
+        /* DER requires minimal length encoding; more than 4 length bytes is not
+         * needed for any real data and would shift past the width of 'unsigned long' (UB). */
+        if(count > 4) {
+            return -1; /* Invalid length encoding.  */
+        }
 
         for (; count; count--) {
             len <<= 8;

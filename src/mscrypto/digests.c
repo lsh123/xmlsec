@@ -20,7 +20,7 @@
 #include <string.h>
 #include <windows.h>
 #include <wincrypt.h>
-#ifndef XMLSEC_NO_GOST
+#if !defined(XMLSEC_NO_GOST) || !defined(XMLSEC_NO_GOST2012)
 #include "csp_calg.h"
 #endif
 

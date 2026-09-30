@@ -492,7 +492,8 @@ xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, cons
 
         ret = CertGetCertificateContextProperty(cert, CERT_KEY_SPEC_PROP_ID,
             &dwData, &dwDataLen);
-        if(ret == TRUE) {
+        /* multiple private keys, use the first one */
+        if((privKeyData == NULL) && (ret == TRUE)) {
             /* adopt private key */
             certDuplicate = CertDuplicateCertificateContext(cert);
             if(certDuplicate == NULL) {

@@ -176,11 +176,19 @@ xmlSecPtrListEmpty(xmlSecPtrListPtr list) {
 int
 xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
     xmlSecSize i;
+    xmlSecSize initialUse;
     int ret;
 
     xmlSecAssert2(xmlSecPtrListIsValid(dst), -1);
     xmlSecAssert2(xmlSecPtrListIsValid(src), -1);
     xmlSecAssert2(dst->id == src->id, -1);
+
+    if(dst == src) {
+        /* copying a list to itself is a no-op */
+        return(0);
+    }
+
+    initialUse = dst->use;
 
     /* allocate memory */
     ret = xmlSecPtrListEnsureSize(dst, dst->use + src->use);
@@ -198,6 +206,18 @@ xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
         if((dst->id->duplicateItem != NULL) && (src->data[i] != NULL)) {
             dst->data[dst->use] = dst->id->duplicateItem(src->data[i]);
             if(dst->data[dst->use] == NULL) {
+                xmlSecSize pos;
+
+                if(dst->id->destroyItem != NULL) {
+                    for(pos = initialUse; pos < dst->use; ++pos) {
+                        xmlSecAssert2(dst->data != NULL, -1);
+                        if(dst->data[pos] != NULL) {
+                            dst->id->destroyItem(dst->data[pos]);
+                            dst->data[pos] = NULL;
+                        }
+                    }
+                }
+                dst->use = initialUse;
                 xmlSecInternalError("duplicateItem", xmlSecPtrListGetName(src));
                 return(-1);
             }
@@ -264,13 +284,16 @@ xmlSecPtrListGetSize(xmlSecPtrListPtr list) {
  * Gets item from the list.
  *
  * Returns: the list item at position @pos or NULL if @pos is greater
- * than the number of items in the list or an error occurs.
+ * than or equal to the number of items in the list or an error occurs.
  */
 xmlSecPtr
 xmlSecPtrListGetItem(xmlSecPtrListPtr list, xmlSecSize pos) {
     xmlSecAssert2(xmlSecPtrListIsValid(list), NULL);
+
+    if(pos >= list->use) {
+        return(NULL);
+    }
     xmlSecAssert2(list->data != NULL, NULL);
-    xmlSecAssert2(pos < list->use, NULL);
 
     return(list->data[pos]);
 }
@@ -317,6 +340,11 @@ xmlSecPtrListSet(xmlSecPtrListPtr list, xmlSecPtr item, xmlSecSize pos) {
     xmlSecAssert2(xmlSecPtrListIsValid(list), -1);
     xmlSecAssert2(list->data != NULL, -1);
     xmlSecAssert2(pos < list->use, -1);
+
+    if(item == list->data[pos]) {
+        /* setting an item to the value it already holds is a no-op */
+        return(0);
+    }
 
     if((list->id->destroyItem != NULL) && (list->data[pos] != NULL)) {
         list->id->destroyItem(list->data[pos]);

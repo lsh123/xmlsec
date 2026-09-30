@@ -227,6 +227,8 @@ const xmlChar xmlSecNodeDSAP[]                  = "P";
 const xmlChar xmlSecNodeDSAQ[]                  = "Q";
 const xmlChar xmlSecNodeDSAG[]                  = "G";
 const xmlChar xmlSecNodeDSAJ[]                  = "J";
+/* DSA X node is proprietary extension by XMLSec library and uses xmlSecNs namespace.
+ * DEPRECATED and will be removed in the future. */
 const xmlChar xmlSecNodeDSAX[]                  = "X";
 const xmlChar xmlSecNodeDSAY[]                  = "Y";
 const xmlChar xmlSecNodeDSASeed[]               = "Seed";

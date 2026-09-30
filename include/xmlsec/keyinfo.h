@@ -133,12 +133,25 @@ typedef enum {
 #define XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT      0x00000800
 
 /**
+ * XMLSEC_KEYINFO_FLAGS_ENCKEY_STOP_ON_FAILED_DECRYPTION:
+ *
+ * If the flag is set then we'll stop when key recovery fails while
+ * processing <enc:EncryptedKey />, <enc11:DerivedKey />,
+ * <enc:AgreementMethod /> or <as:EncapsulationMechanism /> elements.
+ * Other processing errors always cause an abort regardless of this flag.
+ */
+#define XMLSEC_KEYINFO_FLAGS_ENCKEY_STOP_ON_FAILED_DECRYPTION   0x00001000
+
+/**
  * XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION:
  *
- * If the flag is set then we'll stop when <enc:EncryptedKey /> element
- * processing fails.
+ * Deprecated, do not use. The old name ("DONT_STOP") contradicted the
+ * actual behavior (set = stop); it is kept only for source compatibility
+ * and maps to the same value. Use
+ * XMLSEC_KEYINFO_FLAGS_ENCKEY_STOP_ON_FAILED_DECRYPTION instead.
  */
-#define XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION 0x00001000
+#define XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION \
+    XMLSEC_KEYINFO_FLAGS_ENCKEY_STOP_ON_FAILED_DECRYPTION
 
 /**
  * XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE:

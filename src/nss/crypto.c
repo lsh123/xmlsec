@@ -366,6 +366,7 @@ xmlSecNssKeysMngrInit(xmlSecKeysMngrPtr mngr) {
  * Gets internal NSS key slot.
  *
  * Returns: internal key slot and initializes it if needed.
+ *          The caller must free the returned slot with PK11_FreeSlot.
  */
 PK11SlotInfo *
 xmlSecNssGetInternalKeySlot()
@@ -383,6 +384,7 @@ xmlSecNssGetInternalKeySlot()
         rv = PK11_InitPin(slot, NULL, NULL);
         if (rv != SECSuccess) {
             xmlSecNssError("PK11_InitPin", NULL);
+            PK11_FreeSlot(slot);
             return NULL;
         }
     }
@@ -392,6 +394,7 @@ xmlSecNssGetInternalKeySlot()
         if (rv != SECSuccess) {
             xmlSecNssError2("PK11_Authenticate", NULL,
                             "token=%s", xmlSecErrorsSafeString(PK11_GetTokenName(slot)));
+            PK11_FreeSlot(slot);
             return NULL;
         }
     }

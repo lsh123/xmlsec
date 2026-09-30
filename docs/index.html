@@ -68,6 +68,25 @@ see the Copyright file in the distribution  for details.<br><br></p>
 <p><b>News</b></p>
 <ul>
     <li>
+        October 8 2026<br>
+        The legacy <a href="download.html">XML Security Library 1.2.43</a> release includes the following changes:
+        <ul>
+            <li>(xmlsec-build) Raised minimum supported OpenSSL version to 1.1.0 and fail-fast on unsupported legacy OpenSSL/LibreSSL versions.</li>
+            <li>(xmlsec-core) Added attribute values escaping in the Relationship transform.</li>
+            <li>(xmlsec-core) Hardened XML parser defaults for XXE mitigation across libxml2 versions.</li>
+            <li>(xmlsec-core) Added stronger overflow and conversion safety checks.</li>
+            <li>(xmlsec-core) Fixed multiple memory/resource issues on error paths.</li>
+            <li>(xmlsec-openssl) Improved X.509/CRL verification flow with verification-time-aware revocation checks and stricter CRL validity handling.</li>
+            <li>(xmlsec-gnutls) Prevented certificate-chain self-loop cases and improved SKI comparison behavior when SKI extension is absent.</li>
+            <li>(xmlsec-nss) Fixed certificate lookup memory handling in issuer/serial resolution paths.</li>
+            <li>(xmlsec-mscng) Added stronger CRL signature/time validation logic and recursion guards in revocation verification.</li>
+            <li>(xmlsec-mscrypto) Changed CRL lookup behavior to fail closed on API errors during revocation checks.</li>
+
+            <li>Several other small fixes (see <a href="https://github.com/lsh123/xmlsec/commits/xmlsec-1_2_x">more details</a>).</li>
+        </ul>
+    </li>
+    <br>
+    <li>
         June 16 2025<br>
         The legacy <a href="download.html">XML Security Library 1.2.42</a> release includes the following changes:
         <ul>

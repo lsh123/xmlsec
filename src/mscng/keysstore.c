@@ -85,6 +85,7 @@ xmlSecMSCngKeysStoreFinalize(xmlSecKeyStorePtr store) {
 static PCCERT_CONTEXT
 xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
         xmlSecKeyInfoCtxPtr keyInfoCtx) {
+#ifndef XMLSEC_NO_X509
     LPCTSTR storeName;
     HCERTSTORE hStore = NULL;
     PCCERT_CONTEXT pCertContext = NULL;
@@ -127,7 +128,18 @@ xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
         DWORD dwPropSize;
         PBYTE pbFriendlyName;
         PCCERT_CONTEXT pCertCtxIter = NULL;
+        LPWSTR lpwName;
 
+
+        /* convert name to unicode */
+        lpwName = xmlSecWin32ConvertUtf8ToUnicode(name);
+        if(lpwName == NULL) {
+            xmlSecInternalError("xmlSecWin32ConvertUtf8ToUnicode(name)",
+                                xmlSecKeyStoreGetName(store));
+            xmlFree(wcName);
+            CertCloseStore(hStore, 0);
+            return(NULL);
+        }
 
         while (1) {
             pCertCtxIter = CertEnumCertificatesInStore(hStore, pCertCtxIter);
@@ -145,8 +157,10 @@ xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
             pbFriendlyName = xmlMalloc(dwPropSize);
             if(pbFriendlyName == NULL) {
                 xmlSecMallocError(dwPropSize, xmlSecKeyStoreGetName(store));
+                xmlFree(lpwName);
                 xmlFree(wcName);
                 CertCloseStore(hStore, 0);
+                CertFreeCertificateContext(pCertCtxIter);
                 return(NULL);
             }
 
@@ -159,7 +173,7 @@ xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
                 continue;
             }
 
-            if(lstrcmp(wcName, (LPCTSTR)pbFriendlyName) == 0) {
+            if(lstrcmpW(lpwName, (LPCWSTR)pbFriendlyName) == 0) {
               pCertContext = pCertCtxIter;
               xmlFree(pbFriendlyName);
               break;
@@ -167,6 +181,8 @@ xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
 
             xmlFree(pbFriendlyName);
         }
+
+        xmlFree(lpwName);
     }
 
     if(pCertContext == NULL) {
@@ -187,6 +203,13 @@ xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
     CertCloseStore(hStore, 0);
 
     return(pCertContext);
+#else  /* XMLSEC_NO_X509 */
+    /* X509-based certificate lookup is unavailable when X509 support is disabled */
+    (void)store;
+    (void)name;
+    (void)keyInfoCtx;
+    return(NULL);
+#endif /* XMLSEC_NO_X509 */
 }
 
 static xmlSecKeyPtr
@@ -224,6 +247,7 @@ xmlSecMSCngKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
         goto done;
     }
 
+#ifndef XMLSEC_NO_X509
     pCertContext = xmlSecMSCngKeysStoreFindCert(store, name, keyInfoCtx);
     if(pCertContext == NULL) {
         goto done;
@@ -236,21 +260,6 @@ xmlSecMSCngKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
             xmlSecKeyDataGetName(x509Data));
         goto done;
     }
-
-    pDuplicatedCertContext = CertDuplicateCertificateContext(pCertContext);
-    if(pDuplicatedCertContext == NULL) {
-        xmlSecMSCngLastError("CertDuplicateCertificateContext",
-            xmlSecKeyDataGetName(x509Data));
-        goto done;
-    }
-
-    ret = xmlSecMSCngKeyDataX509AdoptCert(x509Data, pDuplicatedCertContext);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCert",
-            xmlSecKeyDataGetName(x509Data));
-        goto done;
-    }
-    pDuplicatedCertContext = NULL;
 
     pDuplicatedCertContext = CertDuplicateCertificateContext(pCertContext);
     if(pDuplicatedCertContext == NULL) {
@@ -309,6 +318,11 @@ xmlSecMSCngKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
         res = key;
         key = NULL;
     }
+#else  /* XMLSEC_NO_X509 */
+    /* X509-based OS certificate store lookup is unavailable when X509 support
+     * is disabled */
+    (void)ret;
+#endif /* XMLSEC_NO_X509 */
 
 done:
     if(pCertContext != NULL) {

@@ -529,8 +529,25 @@ xmlSecParseMemory(const xmlSecByte *buffer, xmlSecSize size, int recovery) {
     }
     xmlSecParsePrepareCtxt(ctxt);
 
+    /* enable recovery mode */
+    if(recovery != 0) {
+#if LIBXML_VERSION < 21300
+        ctxt->recovery = 1;
+#else  /* LIBXML_VERSION < 21300 */
+        xmlCtxtSetOptions(ctxt, xmlSecParserGetDefaultOptions() | XML_PARSE_RECOVER);
+#endif /* LIBXML_VERSION < 21300 */
+    }
+
     ret = xmlParseDocument(ctxt);
     if(ret < 0) {
+        /* in recovery mode xmlParseDocument() returns -1 even when a (partial)
+         * document was recovered; accept the recovered document if present */
+        if((recovery != 0) && (ctxt->myDoc != NULL)) {
+            res = ctxt->myDoc;
+            ctxt->myDoc = NULL;
+            xmlFreeParserCtxt(ctxt);
+            return(res);
+        }
         xmlSecXmlParserError("xmlParseDocument", ctxt, NULL);
         if(ctxt->myDoc != NULL) {
             xmlFreeDoc(ctxt->myDoc);
@@ -567,19 +584,41 @@ void
 xmlSecParsePrepareCtxt(xmlParserCtxtPtr ctxt) {
     xmlSecAssert(ctxt != NULL);
 
+#if LIBXML_VERSION < 21300
     /* required for c14n! */
     ctxt->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
     ctxt->replaceEntities = 1;
-
     xmlCtxtUseOptions(ctxt, xmlSecParserGetDefaultOptions());
+#else  /* LIBXML_VERSION < 21300 */
+    xmlCtxtSetOptions(ctxt, xmlSecParserGetDefaultOptions());
+#endif /* LIBXML_VERSION < 21300 */
 }
 
 /*
- * XML_PARSE_NONET  to support c14n
- * XML_PARSE_NODICT to avoid problems with moving nodes around
- * XML_PARSE_HUGE   to enable parsing of XML documents with large text nodes
+ * To block network access and loading of external entities:
+ * - XML_PARSE_NO_XXE: disable loading of external content (available >= 2.13.0),
+ *   it disables XML_PARSE_DTDLOAD | XML_PARSE_DTDATTR but we keep those in defaults
+ *   to make it work if XML_PARSE_NO_XXE is disabled (e.g. with --xxe option)
+ * - XML_PARSE_NONET: forbid network access
+ *
+ * To support c14n:
+ * - XML_PARSE_NOENT: substitute entities
+ * - XML_PARSE_DTDLOAD: load the external subset (disabled with XML_PARSE_NO_XXE)
+ * - XML_PARSE_DTDATTR: default DTD attributes (disabled with XML_PARSE_NO_XXE)
+ *
+ * Misc:
+ * XML_PARSE_NODICT: do not reuse the context dictionary (to avoid problems with moving nodes around)
+ * XML_PARSE_HUGE: relax any hardcoded limit from the parser (to enable parsing of XML documents with large text nodes)
+ *
+ * Note: for libxml2 < 2.13 (which lacks XML_PARSE_NO_XXE), XXE is mitigated by
+ * the custom external entity loader installed by xmlSecInit() (see xmlsec.c,
+ * xmlSecNoXxeExternalEntityLoader), not by XML_PARSE_NONET alone.
  */
-static int g_xmlsec_parser_default_options = XML_PARSE_NONET | XML_PARSE_NODICT | XML_PARSE_HUGE;
+#if LIBXML_VERSION < 21300
+static int g_xmlsec_parser_default_options = XML_PARSE_NONET | XML_PARSE_NOENT | XML_PARSE_DTDLOAD | XML_PARSE_DTDATTR | XML_PARSE_NODICT | XML_PARSE_HUGE;
+#else  /* LIBXML_VERSION < 21300 */
+static int g_xmlsec_parser_default_options = XML_PARSE_NO_XXE | XML_PARSE_NONET | XML_PARSE_NOENT | XML_PARSE_DTDLOAD | XML_PARSE_DTDATTR | XML_PARSE_NODICT | XML_PARSE_HUGE;
+#endif /* LIBXML_VERSION < 21300 */
 
 /**
  * xmlSecParserGetDefaultOptions:

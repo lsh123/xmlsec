@@ -386,6 +386,65 @@ xmlSecTransformRelationshipProcessNodeList(xmlSecTransformPtr transform, xmlOutp
     return(0);
 }
 
+/*
+ * Writes an attribute value, escaping the XML special characters (&, <, >, ") so that the
+ * generated document stays well-formed. Without this, a Target value containing e.g. '&' or '"'
+ * would produce invalid XML that fails to re-parse ("EntityRef: expecting ';'").
+ */
+static int
+xmlSecTransformRelationshipWriteEscapedValue(xmlOutputBufferPtr buf, const xmlChar* value) {
+    xmlChar* escaped;
+    xmlChar* dst;
+    const xmlChar* src;
+    size_t len;
+    int ret;
+
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(value != NULL, -1);
+
+    /* Worst case every character expands to "&quot;" (6 bytes). */
+    len = strlen((const char*)value);
+    if(len > (size_t)((XMLSEC_SIZE_MAX - 1) / 6)) {
+        xmlSecInvalidSizeError("value", (xmlSecSize)len, (xmlSecSize)((XMLSEC_SIZE_MAX - 1) / 6), NULL);
+        return(-1);
+    }
+    escaped = xmlMalloc(len * 6 + 1);
+    if(escaped == NULL) {
+        xmlSecXmlError("xmlMalloc", NULL);
+        return(-1);
+    }
+
+    dst = escaped;
+    for(src = value; *src != '\0'; ++src) {
+        switch(*src) {
+        case '&':
+            memcpy(dst, "&amp;", 5);
+            dst += 5;
+            break;
+        case '<':
+            memcpy(dst, "&lt;", 4);
+            dst += 4;
+            break;
+        case '>':
+            memcpy(dst, "&gt;", 4);
+            dst += 4;
+            break;
+        case '"':
+            memcpy(dst, "&quot;", 6);
+            dst += 6;
+            break;
+        default:
+            *dst++ = *src;
+            break;
+        }
+    }
+    *dst = '\0';
+
+    ret = xmlOutputBufferWriteString(buf, (const char*)escaped);
+    xmlFree(escaped);
+    return(ret);
+}
+
 static int
 xmlSecTransformRelationshipWriteProp(xmlOutputBufferPtr buf, const xmlChar * name, const xmlChar * value) {
     int ret;
@@ -411,9 +470,9 @@ xmlSecTransformRelationshipWriteProp(xmlOutputBufferPtr buf, const xmlChar * nam
             xmlSecXmlError("xmlOutputBufferWriteString", NULL);
             return(-1);
         }
-        ret = xmlOutputBufferWriteString(buf, (const char*) value);
+        ret = xmlSecTransformRelationshipWriteEscapedValue(buf, value);
         if(ret < 0) {
-            xmlSecXmlError("xmlOutputBufferWriteString", NULL);
+            xmlSecXmlError("xmlSecTransformRelationshipWriteEscapedValue", NULL);
             return(-1);
         }
         ret = xmlOutputBufferWriteString(buf, "\"");
@@ -627,91 +686,20 @@ xmlSecTransformRelationshipPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPt
 
 static int
 xmlSecTransformRelationshipPopBin(xmlSecTransformPtr transform, xmlSecByte* data, xmlSecSize maxDataSize, xmlSecSize* dataSize, xmlSecTransformCtxPtr transformCtx) {
-    xmlSecBufferPtr out;
-    int ret;
-
-    xmlSecAssert2(data != NULL, -1);
-    xmlSecAssert2(dataSize != NULL, -1);
-    xmlSecAssert2(transformCtx != NULL, -1);
-
-    out = &(transform->outBuf);
-    if(transform->status == xmlSecTransformStatusNone) {
-       xmlOutputBufferPtr buf;
-
-       xmlSecAssert2(transform->inNodes == NULL, -1);
-
-       if(transform->prev == NULL) {
-           (*dataSize) = 0;
-           transform->status = xmlSecTransformStatusFinished;
-           return(0);
-       }
-
-       /* get xml data from previous transform */
-       ret = xmlSecTransformPopXml(transform->prev, &(transform->inNodes), transformCtx);
-       if(ret < 0) {
-           xmlSecInternalError("xmlSecTransformPopXml",
-                               xmlSecTransformGetName(transform));
-           return(-1);
-       }
-
-       /* dump everything to internal buffer */
-       buf = xmlSecBufferCreateOutputBuffer(out);
-       if(buf == NULL) {
-           xmlSecInternalError("xmlSecBufferCreateOutputBuffer",
-                               xmlSecTransformGetName(transform));
-           return(-1);
-       }
-
-       ret = xmlC14NExecute(transform->inNodes->doc, (xmlC14NIsVisibleCallback)xmlSecNodeSetContains, transform->inNodes, XML_C14N_1_0, NULL, 0, buf);
-       if(ret < 0) {
-            xmlSecInternalError("xmlC14NExecute",
-                                xmlSecTransformGetName(transform));
-           (void)xmlOutputBufferClose(buf);
-           return(-1);
-       }
-
-       ret = xmlOutputBufferClose(buf);
-       if(ret < 0) {
-           xmlSecXmlError("xmlOutputBufferClose", xmlSecTransformGetName(transform));
-           return(-1);
-       }
-       transform->status = xmlSecTransformStatusWorking;
-    }
-
-    if(transform->status == xmlSecTransformStatusWorking) {
-       xmlSecSize outSize;
-
-       /* return chunk after chunk */
-       outSize = xmlSecBufferGetSize(out);
-       if(outSize > maxDataSize) {
-           outSize = maxDataSize;
-       }
-       if(outSize > XMLSEC_TRANSFORM_BINARY_CHUNK) {
-           outSize = XMLSEC_TRANSFORM_BINARY_CHUNK;
-       }
-       if(outSize > 0) {
-           xmlSecAssert2(xmlSecBufferGetData(out), -1);
-
-           memcpy(data, xmlSecBufferGetData(out), outSize);
-           ret = xmlSecBufferRemoveHead(out, outSize);
-           if(ret < 0) {
-               xmlSecInternalError2("xmlSecBufferRemoveHead",
-                                    xmlSecTransformGetName(transform),
-                                    "size=" XMLSEC_SIZE_FMT, outSize);
-               return(-1);
-           }
-       } else if(xmlSecBufferGetSize(out) == 0) {
-           transform->status = xmlSecTransformStatusFinished;
-       }
-       (*dataSize) = outSize;
-    } else if(transform->status == xmlSecTransformStatusFinished) {
-       /* the only way we can get here is if there is no output */
-       xmlSecAssert2(xmlSecBufferGetSize(out) == 0, -1);
-       (*dataSize) = 0;
-    } else {
-       xmlSecInvalidTransfromStatusError(transform);
-       return(-1);
-    }
-
-    return(0);
+    /*
+     * Intentionally unimplemented. The xmlsec1 sign/verify and encrypt/decrypt flows drive
+     * the transform chain in push mode only: a parser is inserted before this transform (to
+     * turn the input bytes into XML) and its PushXml serializes the result and writes it
+     * straight into the following transform, so the pull-style PopBin entry point is never
+     * reached. The popBin method pointer is kept set solely so that data-type negotiation
+     * (xmlSecTransformConnect) still reports a "Bin" output and inserts the required parser
+     * after this transform; if it is ever invoked we fail loudly rather than produce output.
+     */
+    (void)transform;
+    (void)data;
+    (void)maxDataSize;
+    (void)dataSize;
+    (void)transformCtx;
+    xmlSecNotImplementedError("xmlSecTransformRelationshipPopBin");
+    return(-1);
 }

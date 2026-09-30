@@ -22,7 +22,7 @@
 #include <windows.h>
 #include <wincrypt.h>
 
-#ifndef XMLSEC_NO_GOST
+#if !defined(XMLSEC_NO_GOST) || !defined(XMLSEC_NO_GOST2012)
 #include "csp_oid.h"
 #include "csp_calg.h"
 #endif
@@ -1166,7 +1166,7 @@ xmlSecMSCryptoKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits,
     }
 
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(sizeBits, dwSize, goto done, xmlSecKeyDataGetName(data));
-    dwKeySpec = AT_KEYEXCHANGE | AT_SIGNATURE;
+    dwKeySpec = AT_SIGNATURE;
     dwSize = ((dwSize << 16) | CRYPT_EXPORTABLE);
     if (!CryptGenKey(hProv, CALG_RSA_SIGN, dwSize, &hKey)) {
         xmlSecMSCryptoError("CryptGenKey", xmlSecKeyDataGetName(data));
@@ -1363,7 +1363,7 @@ xmlSecMSCryptoKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) 
     data = NULL;
 
 done:
-    if (hProv == 0) {
+    if (hProv != 0) {
         CryptReleaseContext(hProv, 0);
     }
     if (hKey != 0) {

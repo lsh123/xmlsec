@@ -42,23 +42,6 @@ typedef enum {
 
 
 /**
- * @brief Use the exact memory allocation mode.
- * @details The double memory allocation mode (see #xmlSecAllocModeDouble) is
- * the default; the exact memory allocation mode (see #xmlSecAllocModeExact)
- * is used when the #XMLSEC_BUFFER_FLAG_ALLOC_MODE_DOUBLE flag is not set.
- * This flag is not actually set (its value is 0x0000), so setting it has
- * no observable effect.
- */
-#define XMLSEC_BUFFER_FLAG_ALLOC_MODE_EXACT      0x0000
-
-/**
- * @brief Use the double memory allocation mode.
- * @details If this flag is set then the buffer uses the double memory
- * allocation mode (see #xmlSecAllocModeDouble).
- */
-#define XMLSEC_BUFFER_FLAG_ALLOC_MODE_DOUBLE     0x0001
-
-/**
  * @brief Wipe the buffer data with xmlSecMemCleanse() on release.
  * @details If this flag is set then the buffer data is wiped using
  * xmlSecMemCleanse() (which cannot be optimized away by the compiler)
@@ -66,7 +49,7 @@ typedef enum {
  * when the buffer is grown, the newly allocated area is always zeroed
  * with memset(0), regardless of this flag.
  */
-#define XMLSEC_BUFFER_FLAG_SECURE                0x1000
+#define XMLSEC_BUFFER_FLAG_SECURE                0x0001
 
 /******************************************************************************
  *
@@ -81,6 +64,7 @@ struct _xmlSecBuffer {
     xmlSecByte*         data;  /**< the pointer to buffer data. */
     xmlSecSize          size;  /**< the current data size. */
     xmlSecSize          maxSize;  /**< the max data size (allocated buffer size). */
+    xmlSecAllocMode     allocMode;  /**< the memory allocation mode. */
     int                 flags;  /**< the buffer behavior flags. */
 };
 

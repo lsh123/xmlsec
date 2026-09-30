@@ -633,6 +633,16 @@ xmlSecMSCngIsPrivateKeyCert(PCCERT_CONTEXT cert, BOOL isPersistentKey) {
     xmlSecAssert2(cert != NULL, FALSE);
 
     if (isPersistentKey) {
+        /* CERT_KEY_SPEC_PROP_ID is a derived property: it returns the key spec from
+         * CERT_KEY_CONTEXT_PROP_ID if that property exists, otherwise from
+         * CERT_KEY_PROV_INFO_PROP_ID
+         * (https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certgetcertificatecontextproperty).
+         * Hence it is set for a certificate with an associated private key whether or not
+         * the key is persistent, and the key handle itself is resolved later by
+         * xmlSecMSCngKeyDataCertGetPrivkey(). Verified on Windows 11 (build 26200) with a
+         * PKCS12_ALWAYS_CNG_KSP import: CERT_KEY_SPEC_PROP_ID is TRUE for both a persistent
+         * key (dwKeySpec=AT_KEYEXCHANGE) and a PKCS12_NO_PERSIST_KEY import
+         * (dwKeySpec=CERT_NCRYPT_KEY_SPEC, CERT_KEY_CONTEXT_PROP_ID set). */
         DWORD dwData = 0;
         DWORD dwDataLen = sizeof(dwData);
         return(CertGetCertificateContextProperty(cert, CERT_KEY_SPEC_PROP_ID, &dwData, &dwDataLen));

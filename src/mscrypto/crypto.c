@@ -396,10 +396,7 @@ done:
  */
 void
 xmlSecMSCryptoGetErrorMessage(DWORD dwError, xmlChar * out, size_t outLen) {
-#ifndef UNICODE
-    WCHAR errorTextW[XMLSEC_MSCRYPTO_ERROR_BUFFER_SIZE];
-#endif /* UNICODE */
-    LPTSTR errorText = NULL;
+    LPWSTR errorTextW = NULL;
     DWORD dwRet;
     int ret;
     int cbOutLen;
@@ -410,40 +407,29 @@ xmlSecMSCryptoGetErrorMessage(DWORD dwError, xmlChar * out, size_t outLen) {
 
     XMLSEC_SAFE_CAST_SIZE_T_TO_INT(outLen, cbOutLen, return, NULL);
 
-    /* Use system message tables to retrieve error text, allocate buffer on local
-       heap for error text, don't use any inserts/parameters */
-    dwRet = FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM
+    /* Use system message tables to retrieve error text, allocate the buffer on
+       the local heap, don't use any inserts/parameters */
+    dwRet = FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM
                       | FORMAT_MESSAGE_ALLOCATE_BUFFER
                       | FORMAT_MESSAGE_IGNORE_INSERTS,
                       NULL,
                       dwError,
                       MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), /* Default language */
-                      (LPTSTR)&errorText,
+                      (LPWSTR)&errorTextW,
                       0,
                       NULL);
-    if((dwRet <= 0) || (errorText == NULL)) {
+    if((dwRet <= 0) || (errorTextW == NULL)) {
         goto done;
     }
 
-#ifdef UNICODE
-    ret = WideCharToMultiByte(CP_UTF8, 0, errorText, -1, (LPSTR)out, cbOutLen, NULL, NULL);
-    if(ret <= 0) {
-        goto done;
-    }
-#else /* UNICODE */
-    ret = MultiByteToWideChar(CP_ACP, 0, errorText, -1, errorTextW, XMLSEC_MSCRYPTO_ERROR_BUFFER_SIZE);
-    if(ret <= 0) {
-        goto done;
-    }
     ret = WideCharToMultiByte(CP_UTF8, 0, errorTextW, -1, (LPSTR)out, cbOutLen, NULL, NULL);
     if(ret <= 0) {
         goto done;
     }
-#endif /* UNICODE */
 
 done:
-    if(errorText != NULL) {
-        LocalFree(errorText);
+    if(errorTextW != NULL) {
+        LocalFree(errorTextW);
     }
     return;
 }
@@ -494,6 +480,10 @@ xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
     xmlSecAssert2(providers != NULL, 0);
 
     for(ii = 0; (res == 0) && (providers[ii].providerName != NULL) && (providers[ii].providerType != 0); ++ii) {
+        /* CryptAcquireContext is not documented to zero *phProv on failure, so
+         * reset it before each attempt to keep the loop condition correct. */
+        res = 0;
+
         /* first try */
         ret = CryptAcquireContext(&res,
                     pszContainer,
@@ -514,6 +504,7 @@ xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
              * This is also referenced in
              * http://www.microsoft.com/mind/0697/crypto.asp (inituser)
              */
+            res = 0;
             ret = CryptAcquireContext(&res,
                         pszContainer,
                         providers[ii].providerName,
@@ -525,8 +516,12 @@ xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
             break;
 
         case (DWORD)NTE_EXISTS:
+            /* All current callers pass CRYPT_VERIFYCONTEXT, so no persistent key
+             * container is created or accessed; this branch only applies to
+             * future callers that request a persistent container. */
             /* If we can, try our container */
             if(bUseXmlSecContainer == TRUE) {
+                res = 0;
                 ret = CryptAcquireContext(&res,
                             XMLSEC_CONTAINER_NAME,
                             providers[ii].providerName,

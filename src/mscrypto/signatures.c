@@ -64,10 +64,13 @@ static int      xmlSecMSCryptoSignatureSetKeyReq        (xmlSecTransformPtr tran
                                                          xmlSecKeyReqPtr keyReq);
 static int      xmlSecMSCryptoSignatureSetKey           (xmlSecTransformPtr transform,
                                                          xmlSecKeyPtr key);
+static int      xmlSecMSCryptoSignatureGetExpectedSize  (xmlSecTransformPtr transform,
+                                                          HCRYPTKEY hKey,
+                                                          xmlSecSize* expectedSize);
 static int      xmlSecMSCryptoSignatureVerify           (xmlSecTransformPtr transform,
-                                                         const xmlSecByte* data,
-                                                         xmlSecSize dataSize,
-                                                         xmlSecTransformCtxPtr transformCtx);
+                                                          const xmlSecByte* data,
+                                                          xmlSecSize dataSize,
+                                                          xmlSecTransformCtxPtr transformCtx);
 static int      xmlSecMSCryptoSignatureExecute          (xmlSecTransformPtr transform,
                                                          int last,
                                                          xmlSecTransformCtxPtr transformCtx);
@@ -304,6 +307,86 @@ static int xmlSecMSCryptoSignatureSetKeyReq(xmlSecTransformPtr transform,  xmlSe
     return(0);
 }
 
+/*
+ * Returns the expected signature size (in bytes) for the given transform:
+ * the RSA key modulus size, 40 for DSA, 64 for GOST R 34.10-2001 and
+ * GOST R 34.10-2012 (256-bit), and 128 for GOST R 34.10-2012 (512-bit).
+ * Returns 1 on success, 0 if the transform id is not recognized, and
+ * a negative value on error.
+ */
+static int xmlSecMSCryptoSignatureGetExpectedSize(xmlSecTransformPtr transform,
+                                                  HCRYPTKEY hKey,
+                                                  xmlSecSize* expectedSize) {
+    DWORD dwKeyLen;
+    DWORD dwKeyLenSize;
+#ifndef XMLSEC_NO_RSA
+    int isRsaTransform = 0;
+#endif /* XMLSEC_NO_RSA */
+
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(hKey != 0, -1);
+    xmlSecAssert2(expectedSize != NULL, -1);
+
+#ifndef XMLSEC_NO_RSA
+#ifndef XMLSEC_NO_MD5
+    isRsaTransform = isRsaTransform ||
+        xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaMd5Id);
+#endif /* XMLSEC_NO_MD5 */
+#ifndef XMLSEC_NO_SHA1
+    isRsaTransform = isRsaTransform ||
+        xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha1Id);
+#endif /* XMLSEC_NO_SHA1 */
+#ifndef XMLSEC_NO_SHA256
+    isRsaTransform = isRsaTransform ||
+        xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha256Id);
+#endif /* XMLSEC_NO_SHA256 */
+#ifndef XMLSEC_NO_SHA384
+    isRsaTransform = isRsaTransform ||
+        xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha384Id);
+#endif /* XMLSEC_NO_SHA384 */
+#ifndef XMLSEC_NO_SHA512
+    isRsaTransform = isRsaTransform ||
+        xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha512Id);
+#endif /* XMLSEC_NO_SHA512 */
+    if (isRsaTransform) {
+        dwKeyLenSize = sizeof(dwKeyLen);
+        if(!CryptGetKeyParam(hKey, KP_KEYLEN, (BYTE*)&dwKeyLen, &dwKeyLenSize, 0)) {
+            xmlSecMSCryptoError("CryptGetKeyParam", xmlSecTransformGetName(transform));
+            return(-1);
+        }
+        *expectedSize = (xmlSecSize)(dwKeyLen / 8);
+        return(1);
+    }
+#endif /* XMLSEC_NO_RSA */
+
+#ifndef XMLSEC_NO_DSA
+    if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformDsaSha1Id)) {
+        *expectedSize = 40;
+        return(1);
+    }
+#endif /* XMLSEC_NO_DSA */
+
+#ifndef XMLSEC_NO_GOST
+    if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2001GostR3411_94Id)) {
+        *expectedSize = 64;
+        return(1);
+    }
+#endif /* XMLSEC_NO_GOST */
+
+#ifndef XMLSEC_NO_GOST2012
+    if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2012_256Id)) {
+        *expectedSize = 64;
+        return(1);
+    }
+    if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2012_512Id)) {
+        *expectedSize = 128;
+        return(1);
+    }
+#endif /* XMLSEC_NO_GOST2012 */
+
+    return(0);
+}
+
 static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
                                          const xmlSecByte* data,
                                          xmlSecSize dataSize,
@@ -313,6 +396,7 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
     int tmp_buf_initialized = 0;
     xmlSecByte *tmpBuf;
     HCRYPTKEY hKey;
+    xmlSecSize expectedSize = 0;
     DWORD dwDataSize;
     DWORD dwError;
     int ret;
@@ -329,6 +413,30 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
     ctx = xmlSecMSCryptoSignatureGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
+    hKey = xmlSecMSCryptoKeyDataGetKey(ctx->data, xmlSecKeyDataTypePublic);
+    if (hKey == 0) {
+        xmlSecInternalError("xmlSecMSCryptoKeyDataGetKey", xmlSecTransformGetName(transform));
+        goto done;
+    }
+
+    /* Validate the signature size against the expected size for the algorithm
+     * before passing it to the CSP. */
+    ret = xmlSecMSCryptoSignatureGetExpectedSize(transform, hKey, &expectedSize);
+    if(ret < 0) {
+        goto done;
+    }
+    if(ret == 0) {
+        xmlSecInvalidTypeError("Invalid signature algorithm", xmlSecTransformGetName(transform));
+        goto done;
+    }
+    if(dataSize != expectedSize) {
+        xmlSecInvalidSizeError("Signature", dataSize, expectedSize,
+            xmlSecTransformGetName(transform));
+        transform->status = xmlSecTransformStatusFail;
+        res = 0;
+        goto done;
+    }
+    
     ret = xmlSecBufferInitialize(&tmp, dataSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferInitialize", xmlSecTransformGetName(transform),
@@ -384,12 +492,19 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
 #endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_GOST
+    /* The CAPI GOST R 34.10-2001 signature blob is the byte-reversed RFC 4491
+     * octet string, i.e. r in little-endian followed by s in little-endian,
+     * so reversing the whole buffer (rather than each integer half) restores
+     * the s-first big-endian order of the XML signature value. */
     if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2001GostR3411_94Id)) {
         xmlSecMSCryptoConvertEndian(data, tmpBuf, dataSize);
     } else
 #endif /* XMLSEC_NO_GOST */
 
 #ifndef XMLSEC_NO_GOST2012
+    /* Same convention as GOST R 34.10-2001: the CAPI signature blob is the
+     * byte-reversed RFC 9215 octet string, so the whole-buffer reversal
+     * restores the s-first big-endian order of the XML signature value. */
     if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2012_256Id) ||
         xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2012_512Id)) {
         xmlSecMSCryptoConvertEndian(data, tmpBuf, dataSize);
@@ -398,12 +513,6 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
 
     {
         xmlSecInvalidTypeError("Invalid signature algorithm", xmlSecTransformGetName(transform));
-        goto done;
-    }
-
-    hKey = xmlSecMSCryptoKeyDataGetKey(ctx->data, xmlSecKeyDataTypePublic);
-    if (hKey == 0) {
-        xmlSecInternalError("xmlSecMSCryptoKeyDataGetKey", xmlSecTransformGetName(transform));
         goto done;
     }
 
@@ -646,12 +755,19 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
 #endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_GOST
+            /* The CAPI GOST R 34.10-2001 signature blob is the byte-reversed RFC 4491
+             * octet string, i.e. r in little-endian followed by s in little-endian,
+             * so reversing the whole buffer (rather than each integer half) produces
+             * the s-first big-endian order of the XML signature value. */
             if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2001GostR3411_94Id)) {
                 xmlSecMSCryptoConvertEndian(tmpBuf, outBuf, outSize);
             } else
 #endif /* XMLSEC_NO_GOST */
 
 #ifndef XMLSEC_NO_GOST2012
+            /* Same convention as GOST R 34.10-2001: the CAPI signature blob is the
+             * byte-reversed RFC 9215 octet string, so the whole-buffer reversal
+             * produces the s-first big-endian order of the XML signature value. */
             if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2012_256Id) ||
                 xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2012_512Id)) {
                 xmlSecMSCryptoConvertEndian(tmpBuf, outBuf, outSize);

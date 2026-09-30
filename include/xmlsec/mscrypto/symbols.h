@@ -98,6 +98,19 @@ extern "C" {
 #define xmlSecTransformSha512Id                 xmlSecMSCryptoTransformSha512Id
 
 #define xmlSecTransformGost2001GostR3411_94Id               xmlSecMSCryptoTransformGost2001GostR3411_94Id
+
+/*
+ * Note: xmlSecTransformGost2012_256Id / xmlSecTransformGost2012_512Id are
+ * aliases for the MSCrypto GOST R 34.10-2012 *signature* transforms
+ * (GOST R 34.10-2012 - GOST R 34.11-2012 256/512-bit signatures), i.e. the
+ * same klasses as xmlSecTransformGostR3410_2012GostR3411_2012_256Id /
+ * xmlSecTransformGostR3410_2012GostR3411_2012_512Id below. They are NOT the
+ * GOST R 34.11-2012 256/512-bit *digest* transforms (those are
+ * xmlSecTransformGostR3411_2012_256Id / xmlSecTransformGostR3411_2012_512Id).
+ * The aliases are kept for backward compatibility (removing them would break
+ * existing consumers) and are not part of the other backends' symbol lists
+ * (see openssl/symbols.h and gnutls/symbols.h).
+ */
 #define xmlSecTransformGost2012_256Id                       xmlSecMSCryptoTransformGost2012_256Id
 #define xmlSecTransformGost2012_512Id                       xmlSecMSCryptoTransformGost2012_512Id
 #define xmlSecTransformGostR3410_2012GostR3411_2012_256Id   xmlSecMSCryptoTransformGost2012_256Id

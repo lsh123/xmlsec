@@ -433,6 +433,10 @@ xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlS
         HCRYPTPROV hProv = 0;
         BOOL fCallerFreeProv = FALSE;
 
+        /* The Windows SDK (wincrypt.h) declares the key-spec output parameter
+         * as DWORD* (not DWORD_PTR*), so passing &(ctx->dwKeySpec) (a DWORD)
+         * is the correct, SDK-conformant usage and no 8-byte store occurs on
+         * 64-bit Windows; the project's MinGW header matches the SDK. */
         if (!CryptAcquireCertificatePrivateKey(pCert,
                     CRYPT_ACQUIRE_COMPARE_KEY_FLAG,
                     NULL,

@@ -352,6 +352,9 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
         if(inSize > 0) {
             DWORD dwInSize;
 
+            /* CryptHashData takes a DWORD size, so the cast is checked: an
+             * input larger than 4 GB is rejected with an error instead of
+             * being truncated or overflowing. */
             XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwInSize, return(-1), xmlSecTransformGetName(transform));
             ret = CryptHashData(ctx->mscHash, xmlSecBufferGetData(in), dwInSize, 0);
             if(ret == 0) {
@@ -379,6 +382,11 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
                 return(-1);
             }
             xmlSecAssert2(retLen > 0, -1);
+            if(retLen > MSCRYPTO_MAX_HASH_SIZE) {
+                xmlSecInternalError2("CryptGetHashParam(HP_HASHVAL)", xmlSecTransformGetName(transform),
+                    "retLen=" XMLSEC_SIZE_FMT, retLen);
+                return(-1);
+            }
             XMLSEC_SAFE_CAST_ULONG_TO_SIZE(retLen, ctx->dgstSize, return(-1), xmlSecTransformGetName(transform));
 
             /* copy result to output */

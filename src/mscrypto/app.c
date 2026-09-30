@@ -159,6 +159,11 @@ xmlSecMSCryptoAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_A
             xmlSecBufferFinalize(&buffer);
             return (NULL);
         }
+        if(xmlSecBufferGetData(&buffer) == NULL) {
+            xmlSecInvalidDataError("data buffer is empty", NULL);
+            xmlSecBufferFinalize(&buffer);
+            return(NULL);
+        }
 
         key = xmlSecMSCryptoAppKeyLoadMemory(xmlSecBufferGetData(&buffer),
                                         xmlSecBufferGetSize(&buffer), format,
@@ -330,6 +335,11 @@ xmlSecMSCryptoAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
                              "filename=%s", xmlSecErrorsSafeString(filename));
         xmlSecBufferFinalize(&buffer);
         return (-1);
+    }
+    if(xmlSecBufferGetData(&buffer) == NULL) {
+        xmlSecInvalidDataError("data buffer is empty", NULL);
+        xmlSecBufferFinalize(&buffer);
+        return(-1);
     }
 
     ret = xmlSecMSCryptoAppKeyCertLoadMemory(key, xmlSecBufferGetData(&buffer),
@@ -549,8 +559,10 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
     }
 
     while (1) {
-        /* CertEnumCertificatesInStore automatically frees the previous certificate context (see
-         * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcertificatesinstore) */
+        /* CertEnumCertificatesInStore automatically frees the previous certificate context
+         * (see https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcertificatesinstore).
+         * A NULL return value indicates the end of the enumeration; no other failure mode is
+         * documented for this function. */
         pCert = CertEnumCertificatesInStore(hCertStore, pCert);
         if(pCert == NULL) {
             break;
@@ -695,6 +707,11 @@ xmlSecMSCryptoAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
                              "filename=%s", xmlSecErrorsSafeString(filename));
         xmlSecBufferFinalize(&buffer);
         return (-1);
+    }
+    if(xmlSecBufferGetData(&buffer) == NULL) {
+        xmlSecInvalidDataError("data buffer is empty", NULL);
+        xmlSecBufferFinalize(&buffer);
+        return(-1);
     }
 
     ret = xmlSecMSCryptoAppKeysMngrCertLoadMemory(mngr, xmlSecBufferGetData(&buffer),

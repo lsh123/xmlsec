@@ -571,6 +571,9 @@ xmlSecMSCngKeyDataXdhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLe
     data = NULL;
 
 done:
+    /* Retry-on-failure, not a double-destroy: hPrivKeyTemp is only non-NULL here if the
+     * earlier BCryptDestroyKey(hPrivKeyTemp) failed (on success it is set to NULL above),
+     * in which case the handle is still valid and this is a legitimate retry. */
     if(hPrivKeyTemp != NULL) {
         status = BCryptDestroyKey(hPrivKeyTemp);
         if(status != STATUS_SUCCESS) {

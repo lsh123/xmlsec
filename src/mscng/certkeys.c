@@ -410,6 +410,73 @@ xmlSecMSCngKeyDataGetPrivkey(xmlSecKeyDataPtr data) {
     return(ctx->privkey);
 }
 
+/**
+ * @brief Imports the private key material of a BCrypt key pair as a new NCRYPT key.
+ * @param hKey the BCrypt key pair handle that contains the private key material.
+ * @param hNcryptKey receives the new NCRYPT key handle; the caller must free it
+ * with NCryptFreeObject() when it is no longer needed.
+ *
+ * @return 0 on success or a negative value otherwise.
+ */
+static int
+xmlSecMSCngKeyDataImportNcryptPrivkey(BCRYPT_KEY_HANDLE hKey, NCRYPT_KEY_HANDLE* hNcryptKey) {
+    NCRYPT_PROV_HANDLE hProv = 0;
+    PUCHAR pbBlob = NULL;
+    DWORD cbBlob = 0;
+    NTSTATUS status;
+    int res = -1;
+
+    xmlSecAssert2(hKey != NULL, -1);
+    xmlSecAssert2(hNcryptKey != NULL, -1);
+    *hNcryptKey = 0;
+
+    /* export the private key blob; the first call queries the size */
+    status = BCryptExportKey(hKey, NULL, BCRYPT_PRIVATE_KEY_BLOB, NULL, 0, &cbBlob, 0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptExportKey(size)", NULL, status);
+        goto done;
+    }
+
+    pbBlob = (PUCHAR)xmlMalloc(cbBlob);
+    if(pbBlob == NULL) {
+        xmlSecMallocError(cbBlob, NULL);
+        goto done;
+    }
+
+    status = BCryptExportKey(hKey, NULL, BCRYPT_PRIVATE_KEY_BLOB, pbBlob, cbBlob, &cbBlob, 0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptExportKey", NULL, status);
+        goto done;
+    }
+
+    status = NCryptOpenStorageProvider(&hProv, MS_KEY_STORAGE_PROVIDER, 0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("NCryptOpenStorageProvider", NULL, status);
+        goto done;
+    }
+
+    status = NCryptImportKey(hProv, 0, BCRYPT_PRIVATE_KEY_BLOB, NULL, hNcryptKey, pbBlob, cbBlob, 0);
+    if((status != STATUS_SUCCESS) || (*hNcryptKey == 0)) {
+        xmlSecMSCngNtError("NCryptImportKey", NULL, status);
+        goto done;
+    }
+
+    /* success */
+    res = 0;
+
+done:
+    if(pbBlob != NULL) {
+        /* the blob contains the private key material */
+        xmlSecMemCleanse(pbBlob, cbBlob);
+        xmlFree(pbBlob);
+    }
+    if(hProv != 0) {
+        NCryptFreeObject(hProv);
+    }
+
+    return(res);
+}
+
 static int
 xmlSecMSCngCertKeyDataInitialize(xmlSecKeyDataPtr data) {
     xmlSecMSCngKeyDataCtxPtr ctx;
@@ -513,10 +580,23 @@ xmlSecMSCngCertKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     }
 
     if(srcCtx->privkey != 0) {
-        ret = xmlSecMSCngKeyDataCertGetPrivkey(dstCtx->cert, &dstCtx->privkey, &dstCtx->privkeyNeedsFree);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecMSCngKeyDataCertGetPrivkey", NULL);
-            return(-1);
+        if(srcCtx->cert != NULL) {
+            ret = xmlSecMSCngKeyDataCertGetPrivkey(dstCtx->cert, &dstCtx->privkey, &dstCtx->privkeyNeedsFree);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecMSCngKeyDataCertGetPrivkey", NULL);
+                return(-1);
+            }
+        } else {
+            /* a key without a certificate can only have a private key if it was
+             * generated, in which case the BCrypt key pair (srcCtx->pubkey)
+             * contains the private key material; re-import it as a new NCRYPT key */
+            xmlSecAssert2(srcCtx->pubkey != NULL, -1);
+            ret = xmlSecMSCngKeyDataImportNcryptPrivkey(srcCtx->pubkey, &dstCtx->privkey);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecMSCngKeyDataImportNcryptPrivkey", NULL);
+                return(-1);
+            }
+            dstCtx->privkeyNeedsFree = TRUE;
         }
     }
 
@@ -895,6 +975,16 @@ xmlSecMSCngKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits,
     }
     hKey = 0;
 
+    /* the generated key pair contains the private key material; import it
+     * as a new NCRYPT key so that the key can be used for signing */
+    ret = xmlSecMSCngKeyDataImportNcryptPrivkey(ctx->pubkey, &ctx->privkey);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataImportNcryptPrivkey",
+            xmlSecKeyDataGetName(data));
+        goto done;
+    }
+    ctx->privkeyNeedsFree = TRUE;
+
     /* success */
     res = 0;
 
@@ -1239,6 +1329,16 @@ xmlSecMSCngKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits,
     }
     /* hKey is owned by data now */
     hKey = 0;
+
+    /* the generated key pair contains the private key material; import it
+     * as a new NCRYPT key so that the key can be used for signing */
+    ret = xmlSecMSCngKeyDataImportNcryptPrivkey(ctx->pubkey, &ctx->privkey);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataImportNcryptPrivkey",
+            xmlSecKeyDataGetName(data));
+        goto done;
+    }
+    ctx->privkeyNeedsFree = TRUE;
 
     /* success */
     res = 0;

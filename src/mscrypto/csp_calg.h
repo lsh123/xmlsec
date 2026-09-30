@@ -15,6 +15,9 @@
 #include <windows.h>
 #include <wincrypt.h>
 
+/* The Windows SDK does not define the GOST R 34.11 algorithm identifiers below,
+ * so the #ifndef fallbacks always apply; the values follow the CryptoPro CSP
+ * documentation. */
 #ifndef ALG_SID_GR3411
 #  define ALG_SID_GR3411              30
 #endif
@@ -39,6 +42,9 @@
 #  define CALG_GR3411_2012_512        (ALG_CLASS_HASH | ALG_TYPE_ANY | ALG_SID_GR3411_2012_512)
 #endif
 
+/* Vendor-specific CSP provider type IDs from the CryptoPro documentation; the
+ * Windows SDK does not define them. A mismatch with an installed CSP only makes
+ * CryptAcquireContext fail (GOST disabled), it cannot select a different provider. */
 #ifndef PROV_MAGPRO_GOST
 #  define PROV_MAGPRO_GOST            501
 #endif

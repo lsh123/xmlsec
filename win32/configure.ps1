@@ -58,6 +58,8 @@ $script:withIconv = 0
 $script:withFTP = 0
 $script:withHTTP = 0
 $script:withGost = 0
+# RSA PKCS#1.5 key transport is enabled by default to match the autotools
+# build (configure.ac: --enable-rsa-pkcs15 is enabled by default).
 $script:withRsaPkcs15 = 1
 $script:withLegacyFeatures = 0
 

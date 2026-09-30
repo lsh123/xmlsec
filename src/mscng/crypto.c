@@ -86,10 +86,16 @@ xmlSecCryptoGetFunctions_mscng(void) {
         return(gXmlSecMSCngFunctions);
     }
 
-    /* DSA-SHA256 requires Windows 8 / Windows Server 2012+. The probe requests a
-     * 2048-bit DSA key, which the CNG DSA provider supports only on Windows 8+; on
-     * older systems the provider's maximum key length is smaller, so the probe fails.
-     * (xmlsec does not support Windows 7, so no Win7-specific handling is required.) */
+    /* DSA-SHA256 requires Windows 8 / Windows Server 2012+. Per FIPS 186-4 a 256-bit
+     * (SHA-256) DSA hash is only valid with 2048- or 3072-bit keys (1024-bit DSA pairs
+     * with SHA-1 only), so DSA-SHA256 is usable only when the CNG DSA provider supports
+     * 2048-bit keys; the probe detects that via the provider's maximum key length
+     * (>= 2048). The CNG DSA provider exists only on Windows 8+ (BCryptOpenAlgorithmProvider
+     * fails on older systems) and supports up to 3072 bits there, so the probe passes
+     * exactly when DSA-SHA256 works. Verified on Windows 11 (build 26200): the maximum
+     * key length is 3072, a 2048-bit key signs a SHA-256 hash, and a 1024-bit key rejects
+     * a SHA-256 hash with STATUS_INVALID_PARAMETER. (xmlsec does not support Windows 7,
+     * so no Win7-specific handling is required.) */
 #if !defined(XMLSEC_NO_DSA) && !defined(XMLSEC_NO_SHA256)
     int isDsaSha256Supported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_DSA_ALGORITHM, 2048, NULL);
 #endif /* !defined(XMLSEC_NO_DSA) && !defined(XMLSEC_NO_SHA256) */

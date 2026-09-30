@@ -34,6 +34,8 @@ see the Copyright file in the distribution for details.
   - (xmlsec-mscng) Enforced HMAC length checks similar to other crypto backends.
   - (xmlsec-windows) Added `apps` option to `configure.ps1` to control whether the command-line binaries in
     the `apps/` folder are built (default: `yes`).
+  - (xmlsec-windows) Added `hardening` option to `configure.ps1` to enable security hardening flags
+    (`/guard:cf`, `/DYNAMICBASE`, and `/NXCOMPAT`) in the MSVC build (default: `yes`).
   - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/xmlsec_1_3_13)).
 
 - **June 23, 2026**

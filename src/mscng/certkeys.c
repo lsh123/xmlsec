@@ -48,6 +48,7 @@ struct _xmlSecMSCngKeyDataCtx {
     PCCERT_CONTEXT cert;
     NCRYPT_KEY_HANDLE privkey;
     BCRYPT_KEY_HANDLE pubkey;
+    BOOL privkeyNeedsFree;
 };
 
 XMLSEC_KEY_DATA_DECLARE(MSCngKeyData, xmlSecMSCngKeyDataCtx)
@@ -73,11 +74,13 @@ xmlSecMSCngKeyDataCertGetPubkey(PCCERT_CONTEXT cert, BCRYPT_KEY_HANDLE* key) {
 }
 
 static int
-xmlSecMSCngKeyDataCertGetPrivkey(PCCERT_CONTEXT cert, NCRYPT_KEY_HANDLE* key) {
+xmlSecMSCngKeyDataCertGetPrivkey(PCCERT_CONTEXT cert, NCRYPT_KEY_HANDLE* key,
+    BOOL* needsFree) {
     int ret;
 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(needsFree != NULL, -1);
 
     DWORD keySpec = 0;
     BOOL callerFree = FALSE;
@@ -93,6 +96,8 @@ xmlSecMSCngKeyDataCertGetPrivkey(PCCERT_CONTEXT cert, NCRYPT_KEY_HANDLE* key) {
         xmlSecMSCngLastError("CryptAcquireCertificatePrivateKey", NULL);
         return(-1);
     }
+
+    (*needsFree) = callerFree;
 
     return(0);
 }
@@ -125,15 +130,17 @@ xmlSecMSCngKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert, xmlSecKe
 
     /* acquire the CNG key handle from the certificate */
     if((type & xmlSecKeyDataTypePrivate) != 0) {
-        NCRYPT_KEY_HANDLE hPrivKey;
+        NCRYPT_KEY_HANDLE hPrivKey = 0;
+        BOOL needsFree = TRUE;
 
-        ret = xmlSecMSCngKeyDataCertGetPrivkey(cert, &hPrivKey);
+        ret = xmlSecMSCngKeyDataCertGetPrivkey(cert, &hPrivKey, &needsFree);
         if(ret < 0) {
             xmlSecInternalError("xmlSecMSCngKeyDataCertGetPrivkey", NULL);
             return(-1);
         }
 
         ctx->privkey = hPrivKey;
+        ctx->privkeyNeedsFree = needsFree;
     }
 
     ret = xmlSecMSCngKeyDataCertGetPubkey(cert, &hPubKey);
@@ -301,7 +308,7 @@ xmlSecMSCngKeyDataFinalize(xmlSecKeyDataPtr data) {
     ctx = xmlSecMSCngKeyDataGetCtx(data);
     xmlSecAssert(ctx != NULL);
 
-    if(ctx->privkey != 0) {
+    if((ctx->privkey != 0) && (ctx->privkeyNeedsFree == TRUE)) {
         status = NCryptFreeObject(ctx->privkey);
         if(status != STATUS_SUCCESS) {
             xmlSecMSCngNtError("BCryptDestroyKey", NULL, status);
@@ -358,7 +365,8 @@ xmlSecMSCngKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     }
 
     if(srcCtx->privkey != 0) {
-        ret = xmlSecMSCngKeyDataCertGetPrivkey(dstCtx->cert, &dstCtx->privkey);
+        ret = xmlSecMSCngKeyDataCertGetPrivkey(dstCtx->cert, &dstCtx->privkey,
+            &dstCtx->privkeyNeedsFree);
         if(ret < 0) {
             xmlSecInternalError("xmlSecMSCngKeyDataCertGetPrivkey", NULL);
             return(-1);

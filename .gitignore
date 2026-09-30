@@ -68,4 +68,5 @@ docs/api/*.bak
 docs/api/*.types
 docs/api/sgml.stamp
 docs/html.stamp
+build-all/
 

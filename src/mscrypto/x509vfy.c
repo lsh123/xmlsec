@@ -395,9 +395,73 @@ xmlSecMSCryptoX509StoreContainsCert(HCERTSTORE store, CERT_NAME_BLOB* name,
 }
 
 
+static PCCERT_CONTEXT
+xmlSecMSCryptoX509StoreFindIssuer(HCERTSTORE store, PCCERT_CONTEXT cert,
+    xmlSecKeyDataStorePtr keyDataStore) {
+    PCCERT_CONTEXT issuerCert = NULL;
+    int ret;
+
+    xmlSecAssert2(store != NULL, NULL);
+    xmlSecAssert2(cert != NULL, NULL);
+    xmlSecAssert2(keyDataStore != NULL, NULL);
+
+    while (TRUE) {
+        /* CertFindCertificateInStore automatically frees the previous certificate context (see
+         * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certfindcertificateinstore) */
+        issuerCert = CertFindCertificateInStore(store,
+            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+            0,
+            CERT_FIND_SUBJECT_NAME,
+            &(cert->pCertInfo->Issuer),
+            issuerCert);
+        if (issuerCert == NULL) {
+            return(NULL);
+        }
+
+        ret = xmlSecMSCryptoX509StoreVerifySubject(keyDataStore, cert, issuerCert);
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecMSCryptoX509StoreVerifySubject", NULL);
+            continue;
+        } else if (ret == 0) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+                xmlSecKeyDataStoreGetName(keyDataStore),
+                "xmlSecMSCryptoX509StoreVerifySubject");
+            continue;
+        }
+
+        /* success */
+        return(issuerCert);
+    }
+}
+
+struct xmlSecMSCryptoBuildCertChainStep {
+    PCCERT_CONTEXT cert;
+    BOOL freeCert;
+};
+#define XMLSEC_MSCRYPTO_BUILD_CERT_CHAIN_STEP_SIZE 32
+#define XMLSEC_MSCRYPTO_BUILD_CERT_CHAIN_MAX_DEPTH 100
+#define XMLSEC_MSCRYPTO_X509_CERT_HASH_SIZE 20
+
+/* Returns the SHA1 hash of @p pCert in @p pHash. Returns 0 on success, -1 on error. */
+static int
+xmlSecMSCryptoX509GetCertHash(PCCERT_CONTEXT pCert, BYTE* pHash, DWORD* hashSize) {
+    BOOL ret;
+
+    xmlSecAssert2(pCert != NULL, -1);
+    xmlSecAssert2(pHash != NULL, -1);
+    xmlSecAssert2(hashSize != NULL, -1);
+
+    ret = CertGetCertificateContextProperty(pCert, CERT_HASH_PROP_ID, pHash, hashSize);
+    if((ret == FALSE) || (*hashSize != (DWORD)XMLSEC_MSCRYPTO_X509_CERT_HASH_SIZE)) {
+        xmlSecMSCryptoError("CertGetCertificateContextProperty(CERT_HASH_PROP_ID)", NULL);
+        return(-1);
+    }
+    return(0);
+}
+
 /**
  * xmlSecMSCryptoBuildCertChainManually:
- * @cert: the certificate we check
+ * @theCert: the certificate we check
  * @pfTime: pointer to FILETIME that we are interested in
  * @store_trusted: trusted certificates added via API
  * @store_untrusted: untrusted certificates added via API
@@ -409,125 +473,199 @@ xmlSecMSCryptoX509StoreContainsCert(HCERTSTORE store, CERT_NAME_BLOB* name,
  * Returns: TRUE on success or FALSE otherwise.
  */
 static BOOL
-xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT cert, LPFILETIME pfTime,
+xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT theCert, LPFILETIME pfTime,
         HCERTSTORE store_trusted, HCERTSTORE store_untrusted, HCERTSTORE certs,
         xmlSecKeyDataStorePtr store) {
-    PCCERT_CONTEXT issuerCert = NULL;
+    struct xmlSecMSCryptoBuildCertChainStep * queue = NULL;
+    xmlSecSize queueSize = 0, queueMaxSize = 0;
+    BYTE seenHashes[XMLSEC_MSCRYPTO_BUILD_CERT_CHAIN_MAX_DEPTH][XMLSEC_MSCRYPTO_X509_CERT_HASH_SIZE];
+    xmlSecSize seenSize = 0;
+    BYTE hash[XMLSEC_MSCRYPTO_X509_CERT_HASH_SIZE];
+    DWORD hashSize;
+    PCCERT_CONTEXT currentCert = NULL;
+    BOOL freeCurrentCert = FALSE;
+    BOOL res = FALSE;
     int ret;
 
-    /* check certificate validity and revokation */
-    if (!xmlSecMSCryptoVerifyCertTime(cert, pfTime)) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
-            xmlSecKeyDataStoreGetName(store),
-            "certificate expired");
+    xmlSecAssert2(theCert != NULL, FALSE);
+    xmlSecAssert2(pfTime != NULL, FALSE);
+    xmlSecAssert2(store_trusted != NULL, FALSE);
+    xmlSecAssert2(store_untrusted != NULL, FALSE);
+    xmlSecAssert2(certs != NULL, FALSE);
+    xmlSecAssert2(store != NULL, FALSE);
+
+    /* setup queue */
+    queue = (struct xmlSecMSCryptoBuildCertChainStep*)xmlMalloc(
+        sizeof(struct xmlSecMSCryptoBuildCertChainStep) * XMLSEC_MSCRYPTO_BUILD_CERT_CHAIN_STEP_SIZE);
+    if(queue == NULL) {
+        xmlSecMallocError(
+            sizeof(struct xmlSecMSCryptoBuildCertChainStep) * XMLSEC_MSCRYPTO_BUILD_CERT_CHAIN_STEP_SIZE, NULL);
         return(FALSE);
     }
+    queueMaxSize = XMLSEC_MSCRYPTO_BUILD_CERT_CHAIN_STEP_SIZE;
 
-    if (!xmlSecMSCryptoCheckRevocation(certs, cert)) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_CRL_VERIFY_FAILED,
-            xmlSecKeyDataStoreGetName(store),
-            "certificate revoked");;
-        return(FALSE);
-    }
+    queue[0].cert = theCert;
+    queue[0].freeCert = FALSE;
+    queueSize = 1;
 
-    /* does trustedStore contain cert directly? */
-    ret = xmlSecMSCryptoX509StoreContainsCert(store_trusted,
-        &(cert->pCertInfo->Subject), cert, store);
-    if (ret < 0) {
-        xmlSecInternalError("xmlSecMSCryptoX509StoreContainsCert", NULL);
-        return(FALSE);
-    } else if (ret == 1) {
-        /* success */
-        return(TRUE);
-    }
+    while(queueSize > 0) {
+        PCCERT_CONTEXT issuerCert = NULL;
+        xmlSecSize ii;
+        BOOL alreadySeen = FALSE;
 
-    /* does trustedStore contain the issuer cert? */
-    ret = xmlSecMSCryptoX509StoreContainsCert(store_trusted,
-        &(cert->pCertInfo->Issuer), cert, store);
-    if (ret < 0) {
-        xmlSecInternalError("xmlSecMSCryptoX509StoreContainsCert", NULL);
-        return(FALSE);
-    } else if (ret == 1) {
-        /* success */
-        return(TRUE);
-    }
+        currentCert = queue[queueSize - 1].cert;
+        freeCurrentCert = queue[queueSize - 1].freeCert;
+        --queueSize;
 
-    /* is cert self-signed? no recursion in that case */
-    if (CertCompareCertificateName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-        &(cert->pCertInfo->Subject),
-        &(cert->pCertInfo->Issuer))) {
-        /* not verified */
-        return(FALSE);
-    }
-
-    /* try the untrusted certs in the chain */
-    issuerCert = CertFindCertificateInStore(certs,
-                X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-                0,
-                CERT_FIND_SUBJECT_NAME,
-                &(cert->pCertInfo->Issuer),
-                NULL);
-    if(issuerCert != NULL) {
-        ret = xmlSecMSCryptoX509StoreVerifySubject(store, cert, issuerCert);
-        if (ret < 0) {
-            xmlSecInternalError("xmlSecMSCryptoX509StoreVerifySubject", NULL);
-            CertFreeCertificateContext(issuerCert);
-            return(FALSE);
-        }
-        else if (ret == 0) {
+        /* limit the chain depth to avoid excessive work on crafted inputs */
+        if(seenSize >= XMLSEC_MSCRYPTO_BUILD_CERT_CHAIN_MAX_DEPTH) {
             xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-                NULL,
-                "xmlSecMSCryptoX509StoreVerifySubject");
-            CertFreeCertificateContext(issuerCert);
-            return(FALSE);
+                xmlSecKeyDataStoreGetName(store),
+                "certificate chain is too deep");
+            goto done;
         }
 
-        if (!xmlSecMSCryptoBuildCertChainManually(issuerCert, pfTime, store_trusted, store_untrusted, certs, store)) {
-            xmlSecInternalError("xmlSecMSCryptoBuildCertChainManually", NULL);
-            CertFreeCertificateContext(issuerCert);
-            return(FALSE);
+        /* cycle detection: make sure we have not seen this certificate before */
+        hashSize = sizeof(hash);
+        ret = xmlSecMSCryptoX509GetCertHash(currentCert, hash, &hashSize);
+        if((ret < 0) || (hashSize != XMLSEC_MSCRYPTO_X509_CERT_HASH_SIZE)) {
+            xmlSecInternalError("xmlSecMSCryptoX509GetCertHash", NULL);
+            goto done;
+        }
+        for(ii = 0; ii < seenSize; ++ii) {
+            if(memcmp(&seenHashes[ii], hash, XMLSEC_MSCRYPTO_X509_CERT_HASH_SIZE) == 0) {
+                alreadySeen = TRUE;
+                break;
+            }
+        }
+        if(alreadySeen) {
+            /* The same certificate can be reached through multiple stores/branches;
+             * we only need to process each cert once. */
+            if(freeCurrentCert == TRUE) {
+                CertFreeCertificateContext(currentCert);
+            }
+            currentCert = NULL;
+            freeCurrentCert = FALSE;
+            continue;
         }
 
-        /* success */
-        CertFreeCertificateContext(issuerCert);
-        return(TRUE);
-    }
+        /* remember this certificate */
+        memcpy(&seenHashes[seenSize], hash, XMLSEC_MSCRYPTO_X509_CERT_HASH_SIZE);
+        ++seenSize;
 
-    /* try the untrusted certs in the store */
-    issuerCert = CertFindCertificateInStore(store_untrusted,
-                X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-                0,
-                CERT_FIND_SUBJECT_NAME,
-                &(cert->pCertInfo->Issuer),
-                NULL);
-    if(issuerCert != NULL) {
-        ret = xmlSecMSCryptoX509StoreVerifySubject(store, cert, issuerCert);
+        /* check certificate validity and revocation; an expired/revoked cert
+         * cannot be part of a valid chain, so skip this branch (and its issuer)
+         * and continue searching the other branches in the queue */
+        if (!xmlSecMSCryptoVerifyCertTime(currentCert, pfTime)) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
+                xmlSecKeyDataStoreGetName(store),
+                "certificate expired");
+            if(freeCurrentCert == TRUE) {
+                CertFreeCertificateContext(currentCert);
+            }
+            currentCert = NULL;
+            freeCurrentCert = FALSE;
+            continue;
+        }
+
+        if (!xmlSecMSCryptoCheckRevocation(certs, currentCert)) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_CRL_VERIFY_FAILED,
+                xmlSecKeyDataStoreGetName(store),
+                "certificate revoked");
+            if(freeCurrentCert == TRUE) {
+                CertFreeCertificateContext(currentCert);
+            }
+            currentCert = NULL;
+            freeCurrentCert = FALSE;
+            continue;
+        }
+
+        /* does trustedStore contain cert directly? */
+        ret = xmlSecMSCryptoX509StoreContainsCert(store_trusted,
+            &(currentCert->pCertInfo->Subject), currentCert, store);
         if (ret < 0) {
-            xmlSecInternalError("xmlSecMSCryptoX509StoreVerifySubject", NULL);
-            CertFreeCertificateContext(issuerCert);
-            return(FALSE);
-        }
-        else if (ret == 0) {
-            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-                NULL,
-                "xmlSecMSCryptoX509StoreVerifySubject");
-            CertFreeCertificateContext(issuerCert);
-            return(FALSE);
+            xmlSecInternalError("xmlSecMSCryptoX509StoreContainsCert", NULL);
+            goto done;
+        } else if (ret == 1) {
+            /* success */
+            res = TRUE;
+            goto done;
         }
 
-        if (!xmlSecMSCryptoBuildCertChainManually(issuerCert, pfTime, store_trusted, store_untrusted, certs, store)) {
-            xmlSecInternalError("xmlSecMSCryptoBuildCertChainManually", NULL);
-            CertFreeCertificateContext(issuerCert);
-            return(FALSE);
+        /* does trustedStore contain the issuer cert? */
+        ret = xmlSecMSCryptoX509StoreContainsCert(store_trusted,
+            &(currentCert->pCertInfo->Issuer), currentCert, store);
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecMSCryptoX509StoreContainsCert", NULL);
+            goto done;
+        } else if (ret == 1) {
+            /* success */
+            res = TRUE;
+            goto done;
         }
 
-        /* success */
-        CertFreeCertificateContext(issuerCert);
-        return(TRUE);
+        /* is cert self-signed? no further chain building in that case */
+        if (CertCompareCertificateName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+            &(currentCert->pCertInfo->Subject),
+            &(currentCert->pCertInfo->Issuer)) == FALSE
+        ) {
+            /* we need space for at most 2 certificates */
+            if(queueSize + 2 > queueMaxSize) {
+                struct xmlSecMSCryptoBuildCertChainStep * newQueue;
+                xmlSecSize newQueueMaxSize = queueMaxSize + XMLSEC_MSCRYPTO_BUILD_CERT_CHAIN_STEP_SIZE;
+
+                newQueue = (struct xmlSecMSCryptoBuildCertChainStep*)xmlRealloc(queue,
+                    sizeof(struct xmlSecMSCryptoBuildCertChainStep) * newQueueMaxSize);
+                if(newQueue == NULL) {
+                    xmlSecMallocError(
+                        sizeof(struct xmlSecMSCryptoBuildCertChainStep) * newQueueMaxSize, NULL);
+                    goto done;
+                }
+                queue = newQueue;
+                queueMaxSize = newQueueMaxSize;
+            }
+
+            /* try the untrusted certs in the chain */
+            issuerCert = xmlSecMSCryptoX509StoreFindIssuer(certs, currentCert, store);
+            if(issuerCert != NULL) {
+                xmlSecAssert2(queueSize < queueMaxSize, FALSE);
+                queue[queueSize].cert = issuerCert;
+                queue[queueSize].freeCert = TRUE;
+                ++queueSize;
+            }
+
+            /* try the untrusted certs in the store */
+            issuerCert = xmlSecMSCryptoX509StoreFindIssuer(store_untrusted, currentCert, store);
+            if(issuerCert != NULL) {
+                xmlSecAssert2(queueSize < queueMaxSize, FALSE);
+                queue[queueSize].cert = issuerCert;
+                queue[queueSize].freeCert = TRUE;
+                ++queueSize;
+            }
+        }
+
+        if(freeCurrentCert == TRUE) {
+            CertFreeCertificateContext(currentCert);
+        }
+        currentCert = NULL;
+        freeCurrentCert = FALSE;
     }
 
-    /* no luck */
-    return(FALSE);
+    /* not verified */
+done:
+    if((currentCert != NULL) && (freeCurrentCert == TRUE)) {
+        CertFreeCertificateContext(currentCert);
+    }
+    if(queue != NULL) {
+        xmlSecSize ii;
+        for(ii = 0; ii < queueSize; ++ii) {
+            if((queue[ii].cert != NULL) && (queue[ii].freeCert == TRUE)) {
+                CertFreeCertificateContext(queue[ii].cert);
+            }
+        }
+        xmlFree(queue);
+    }
+    return(res);
 }
 
 static BOOL

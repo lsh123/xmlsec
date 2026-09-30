@@ -255,6 +255,9 @@ xmlSecMSCngHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         BCRYPT_ALG_HANDLE_HMAC_FLAG);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptOpenAlgorithmProvider", xmlSecTransformGetName(transform), status);
+        /* the out-handle is not guaranteed to be zeroed on failure; reset it so
+         * finalize() does not attempt to close an indeterminate handle */
+        ctx->hAlg = NULL;
         return(-1);
     }
 
@@ -266,17 +269,17 @@ xmlSecMSCngHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptGetProperty", xmlSecTransformGetName(transform), status);
-        return(-1);
+        goto done;
     }
 
     ctx->hash = (PBYTE)xmlMalloc(ctx->hashLength);
     if(ctx->hash == NULL) {
         xmlSecMallocError(ctx->hashLength, NULL);
-        return(-1);
+        goto done;
     }
 
     bufSize = xmlSecBufferGetSize(buffer);
-    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(bufSize, dwBufSize, return(-1), xmlSecTransformGetName(transform));
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(bufSize, dwBufSize, goto done, xmlSecTransformGetName(transform));
     status = BCryptCreateHash(ctx->hAlg,
         &ctx->hHash,
         NULL,
@@ -286,16 +289,36 @@ xmlSecMSCngHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptCreateHash", xmlSecTransformGetName(transform), status);
-        return(-1);
+        goto done;
     }
 
     if (ctx->dgstSize == 0) {
         /* no custom value is requested, then default to the full length */
         ctx->dgstSize = ctx->hashLength * 8;
+    } else if (ctx->dgstSize > ((xmlSecSize)ctx->hashLength * 8)) {
+        /* reject oversized values: they would cause out-of-bounds reads when
+           the truncated digest buffer is accessed in verify/sign paths */
+        xmlSecInvalidSizeMoreThanError("HMAC digest size (bits)",
+            ctx->dgstSize, ((xmlSecSize)ctx->hashLength * 8),
+            xmlSecTransformGetName(transform));
+        goto done;
     }
 
     ctx->initialized = 1;
     return(0);
+
+done:
+    if(ctx->hash != NULL) {
+        xmlFree(ctx->hash);
+    }
+    if(ctx->hHash != NULL) {
+        BCryptDestroyHash(ctx->hHash);
+    }
+    if(ctx->hAlg != NULL) {
+        BCryptCloseAlgorithmProvider(ctx->hAlg, 0);
+    }
+    memset(ctx, 0, sizeof(xmlSecMSCngHmacCtx));
+    return(-1);
 }
 
 static int

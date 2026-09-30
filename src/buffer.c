@@ -19,6 +19,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdint.h>
 
 #include <libxml/tree.h>
 
@@ -282,9 +283,17 @@ xmlSecBufferSetMaxSize(xmlSecBufferPtr buf, xmlSecSize size) {
 
     switch(buf->allocMode) {
         case xmlSecAllocModeExact:
+            if(size > XMLSEC_SIZE_MAX - 8) {
+                xmlSecInvalidSizeMoreThanError("size", size, (XMLSEC_SIZE_MAX - 8), NULL);
+                return(-1);
+            }
             newSize = size + 8;
             break;
         case xmlSecAllocModeDouble:
+            if(size > ((XMLSEC_SIZE_MAX - 32) / 2)) {
+                xmlSecInvalidSizeMoreThanError("size", size, ((XMLSEC_SIZE_MAX - 32) / 2), NULL);
+                return(-1);
+            }
             newSize = 2 * size + 32;
             break;
     }

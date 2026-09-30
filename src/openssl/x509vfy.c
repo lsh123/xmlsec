@@ -271,7 +271,11 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
             if(ret == 1) {
                 ++ii;
             } else if(ret == 0) {
-                (void)sk_X509_CRL_delete(verified_crls, ii);
+                /* crl failed verification: this is a hard failure because we expect CRLs to be valid */
+                xmlSecOtherError(XMLSEC_ERRORS_R_CRL_VERIFY_FAILED,
+                                 xmlSecKeyDataStoreGetName(store),
+                                 "xmlSecOpenSSLX509VerifyCRL");
+                goto done;
             } else {
                 xmlSecInternalError("xmlSecOpenSSLX509VerifyCRL", xmlSecKeyDataStoreGetName(store));
                 goto done;

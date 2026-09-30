@@ -340,8 +340,8 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
     /* Skip coefficient */
     ptr += bitLen / 16;
 
-    /* Convert privateExponent to 1 */
-    for (n = 0; n < (bitLen / 16); n++) {
+    /* Convert privateExponent to 1 (the field is bitLen/8 bytes long) */
+    for (n = 0; n < (bitLen / 8); n++) {
         if (n == 0) ptr[n] = 1;
         else ptr[n] = 0;
     }

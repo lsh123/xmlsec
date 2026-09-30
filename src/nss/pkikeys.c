@@ -147,41 +147,56 @@ xmlSecNssPKIKeyDataAdoptKey(xmlSecKeyDataPtr data,
                             SECKEYPublicKey  *pubkey)
 {
     xmlSecNssPKIKeyDataCtxPtr ctx;
+    SECKEYPublicKey *pubkey2 = NULL;
     KeyType pubType = nullKey;
     KeyType priType = nullKey;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
     xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecNssPKIKeyDataSize), -1);
 
-    if(privkey != NULL) {
-        priType = SECKEY_GetPrivateKeyType(privkey);
-    }
-
-    if(pubkey != NULL) {
-        pubType = SECKEY_GetPublicKeyType(pubkey);
-    }
-
-    if(priType != nullKey && pubType != nullKey) {
-        if(pubType != priType) {
-            xmlSecNssError3("SECKEY_GetPrivateKeyType/SECKEY_GetPublicKeyType", NULL,
-                "pubType=%u; priType=%u", pubType, priType);
-            return -1;
-        }
-    }
-
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
-    if (ctx->privkey) {
+    /* get public key if needed from private */
+    if ((pubkey == NULL) && (privkey != NULL)) {
+        pubkey2 = SECKEY_ConvertToPublicKey(privkey);
+        if(pubkey2 == NULL) {
+            xmlSecNssError("SECKEY_ConvertToPublicKey", NULL);
+            return(-1);
+        }
+    }
+
+    /* ensure key types match */
+    if (privkey != NULL) {
+        priType = SECKEY_GetPrivateKeyType(privkey);
+    }
+
+    if (pubkey != NULL) {
+        pubType = SECKEY_GetPublicKeyType(pubkey);
+    } else if (pubkey2 != NULL) {
+        pubType = SECKEY_GetPublicKeyType(pubkey2);
+    }
+    if ((priType != nullKey) && (pubType != priType)) {
+        xmlSecNssError3("SECKEY_GetPrivateKeyType/SECKEY_GetPublicKeyType", NULL,
+            "pubType=%u; priType=%u", pubType, priType);
+        if (pubkey2 != NULL) {
+            SECKEY_DestroyPublicKey(pubkey2);
+        }
+        return(-1);
+    }
+
+    /* destroy old keys (if needed) and set new ones */
+    if (ctx->privkey != NULL) {
         SECKEY_DestroyPrivateKey(ctx->privkey);
     }
     ctx->privkey = privkey;
 
-    if (ctx->pubkey) {
+    if (ctx->pubkey != NULL) {
         SECKEY_DestroyPublicKey(ctx->pubkey);
     }
-    ctx->pubkey = pubkey;
+    ctx->pubkey = (pubkey != NULL) ? pubkey : pubkey2;
 
+    /* done */
     return(0);
 }
 
@@ -325,7 +340,7 @@ xmlSecNssPKIKeyDataGetPrivKey(xmlSecKeyDataPtr data) {
 KeyType
 xmlSecNssPKIKeyDataGetKeyType(xmlSecKeyDataPtr data) {
     xmlSecNssPKIKeyDataCtxPtr ctx;
-    KeyType kt;
+    KeyType kt = nullKey;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), nullKey);
     xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecNssPKIKeyDataSize), nullKey);
@@ -335,7 +350,7 @@ xmlSecNssPKIKeyDataGetKeyType(xmlSecKeyDataPtr data) {
 
     if (ctx->pubkey != NULL) {
         kt = SECKEY_GetPublicKeyType(ctx->pubkey);
-    } else {
+    } else if (ctx->privkey != NULL) {
         kt = SECKEY_GetPrivateKeyType(ctx->privkey);
     }
     return(kt);
@@ -718,6 +733,9 @@ xmlSecNssKeyDataDsaGetType(xmlSecKeyDataPtr data) {
 
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, xmlSecKeyDataTypeUnknown);
+    if (ctx->pubkey == NULL) {
+        return(xmlSecKeyDataTypeUnknown);
+    }
     xmlSecAssert2(SECKEY_GetPublicKeyType(ctx->pubkey) == dsaKey, xmlSecKeyDataTypeUnknown);
 
     if (ctx->privkey != NULL) {
@@ -737,7 +755,9 @@ xmlSecNssKeyDataDsaGetSize(xmlSecKeyDataPtr data) {
 
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, 0);
-    xmlSecAssert2(ctx->pubkey != NULL, 0);
+    if (ctx->pubkey == NULL) {
+        return(0);
+    }
     xmlSecAssert2(SECKEY_GetPublicKeyType(ctx->pubkey) == dsaKey, 0);
 
     return(8 * SECKEY_PublicKeyStrength(ctx->pubkey));
@@ -891,6 +911,7 @@ xmlSecNssKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
 
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->pubkey != NULL, -1);
     xmlSecAssert2(SECKEY_GetPublicKeyType(ctx->pubkey) == dsaKey, -1);
 
     /*** p ***/
@@ -1104,7 +1125,10 @@ xmlSecNssKeyDataRsaGetType(xmlSecKeyDataPtr data) {
 
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, xmlSecKeyDataTypeUnknown);
-    xmlSecAssert2(ctx->pubkey == NULL || SECKEY_GetPublicKeyType(ctx->pubkey) == rsaKey, xmlSecKeyDataTypeUnknown);
+    if (ctx->pubkey == NULL) {
+        return(xmlSecKeyDataTypeUnknown);
+    }
+    xmlSecAssert2(SECKEY_GetPublicKeyType(ctx->pubkey) == rsaKey, xmlSecKeyDataTypeUnknown);
 
     if (ctx->privkey != NULL) {
         return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
@@ -1123,7 +1147,9 @@ xmlSecNssKeyDataRsaGetSize(xmlSecKeyDataPtr data) {
 
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, 0);
-    xmlSecAssert2(ctx->pubkey != NULL, 0);
+    if (ctx->pubkey == NULL) {
+        return(0);
+    }
     xmlSecAssert2(SECKEY_GetPublicKeyType(ctx->pubkey) == rsaKey, 0);
 
     return(8 * SECKEY_PublicKeyStrength(ctx->pubkey));
@@ -1252,6 +1278,7 @@ xmlSecNssKeyDataRsaWrite(xmlSecKeyDataId id,xmlSecKeyDataPtr data,
 
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->pubkey != NULL, -1);
     xmlSecAssert2(SECKEY_GetPublicKeyType(ctx->pubkey) == rsaKey, -1);
 
     /*** Modulus ***/
@@ -1431,7 +1458,10 @@ xmlSecNssKeyDataEcdsaGetType(xmlSecKeyDataPtr data) {
 
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, xmlSecKeyDataTypeUnknown);
-    xmlSecAssert2(ctx->pubkey == NULL || SECKEY_GetPublicKeyType(ctx->pubkey) == ecKey, xmlSecKeyDataTypeUnknown);
+    if (ctx->pubkey == NULL) {
+        return(xmlSecKeyDataTypeUnknown);
+    }
+    xmlSecAssert2(SECKEY_GetPublicKeyType(ctx->pubkey) == ecKey, xmlSecKeyDataTypeUnknown);
 
     if (ctx->privkey != NULL) {
         return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
@@ -1448,7 +1478,9 @@ xmlSecNssKeyDataEcdsaGetSize(xmlSecKeyDataPtr data) {
 
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, 0);
-    xmlSecAssert2(ctx->pubkey != NULL, 0);
+    if (ctx->pubkey == NULL) {
+        return(0);
+    }
     xmlSecAssert2(SECKEY_GetPublicKeyType(ctx->pubkey) == ecKey, 0);
 
     return(SECKEY_SignatureLen(ctx->pubkey));

@@ -638,6 +638,7 @@ xmlSecMSCngSignatureFixBrokenASN1(xmlSecMSCngSignatureCtxPtr ctx,
     DWORD dwHalfSize;
     PCERT_ECC_SIGNATURE eccSignature = NULL;
     DWORD eccSignatureLen = 0;
+    DWORD encodedLen = 0;
     DWORD dataLen;
     BOOL status;
     xmlSecByte* res;
@@ -695,6 +696,31 @@ xmlSecMSCngSignatureFixBrokenASN1(xmlSecMSCngSignatureCtxPtr ctx,
     if ((eccSignature->s.cbData <= 0) || (halfSize < eccSignature->s.cbData)) {
         xmlSecInternalError3("xmlSecMSCngSignatureFixBrokenASN1", NULL,
             "halfSize=" XMLSEC_SIZE_FMT "; eccSignature->s.cbData=" XMLSEC_SIZE_FMT, halfSize, (xmlSecSize)eccSignature->s.cbData);
+        LocalFree(eccSignature);
+        return(-1);
+    }
+
+    /* CryptDecodeObjectEx() tolerates trailing bytes after the DER structure, so
+     * re-encode the parsed r/s and require the size to match the input exactly;
+     * otherwise a SignatureValue with garbage appended after a valid
+     * ECDSA-Sig-Value would be accepted. */
+    status = CryptEncodeObjectEx(
+        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+        X509_ECC_SIGNATURE,
+        eccSignature,
+        0,
+        NULL,
+        NULL,
+        &encodedLen
+    );
+    if (status != TRUE) {
+        xmlSecMSCngLastError("CryptEncodeObjectEx(X509_ECC_SIGNATURE)", NULL);
+        LocalFree(eccSignature);
+        return(-1);
+    }
+    if (encodedLen != dataLen) {
+        xmlSecInternalError3("xmlSecMSCngSignatureFixBrokenASN1", NULL,
+            "expectedSignLen=" XMLSEC_SIZE_FMT "; actualSignLen=" XMLSEC_SIZE_FMT, (xmlSecSize)encodedLen, (xmlSecSize)dataLen);
         LocalFree(eccSignature);
         return(-1);
     }

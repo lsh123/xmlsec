@@ -221,8 +221,10 @@ xmlSecMSCryptoCheckRevocation(HCERTSTORE hStore, PCCERT_CONTEXT pCert) {
          * to be freed manually (see https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certfindcertificateincrl) */
         ret = CertFindCertificateInCRL(pCert, pCrl, 0, NULL, &pCrlEntry);
         if (ret == FALSE) {
-            /* CertFindCertificateInCRL returns FALSE only on a genuine failure (not when
-             * the cert is simply not listed), so fail closed instead of skipping the CRL. */
+            /* Per MSDN, CertFindCertificateInCRL returns TRUE when the CRL was searched
+             * (with pCrlEntry set to NULL if the cert is not listed) and FALSE only when
+             * the search could not be performed, so fail closed instead of skipping the
+             * CRL. */
             xmlSecMSCryptoError("CertFindCertificateInCRL", NULL);
             CertFreeCRLContext(pCrl);
             return(FALSE);
@@ -397,28 +399,31 @@ xmlSecMSCryptoX509StoreFindIssuer(HCERTSTORE store, PCCERT_CONTEXT cert) {
     xmlSecAssert2(store != NULL, NULL);
     xmlSecAssert2(cert != NULL, NULL);
 
-    issuerCert = CertFindCertificateInStore(store,
-        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-        0,
-        CERT_FIND_SUBJECT_NAME,
-        &(cert->pCertInfo->Issuer),
-        NULL);
-    if(issuerCert == NULL) {
-        return(NULL);
-    }
+    while (TRUE) {
+        /* CertFindCertificateInStore automatically frees the previous certificate context (see
+         * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certfindcertificateinstore) */
+        issuerCert = CertFindCertificateInStore(store,
+            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+            0,
+            CERT_FIND_SUBJECT_NAME,
+            &(cert->pCertInfo->Issuer),
+            issuerCert);
+        if (issuerCert == NULL) {
+            return(NULL);
+        }
 
-    ret = xmlSecMSCryptoX509StoreVerifySubject(cert, issuerCert);
-    if (ret < 0) {
-        xmlSecInternalError("xmlSecMSCryptoX509StoreVerifySubject", NULL);
-        CertFreeCertificateContext(issuerCert);
-        return(NULL);
-    } else if (ret == 0) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL, "xmlSecMSCryptoX509StoreVerifySubject");
-        CertFreeCertificateContext(issuerCert);
-        return(NULL);
-    }
+        ret = xmlSecMSCryptoX509StoreVerifySubject(cert, issuerCert);
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecMSCryptoX509StoreVerifySubject", NULL);
+            continue;
+        } else if (ret == 0) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL, "xmlSecMSCryptoX509StoreVerifySubject");
+            continue;
+        }
 
-    return(issuerCert);
+        /* success */
+        return(issuerCert);
+    }
 }
 
 struct xmlSecMSCryptoBuildCertChainStep {

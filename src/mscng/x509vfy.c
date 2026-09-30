@@ -943,7 +943,10 @@ xmlSecMSCngX509StoreVerifyCertChainAtTime(PCCERT_CONTEXT cert, FILETIME* time, H
         return(-1);
     }
 
-    if (pChainContext->TrustStatus.dwErrorStatus == CERT_TRUST_REVOCATION_STATUS_UNKNOWN) {
+    /* retry excluding the root if the revocation status is unknown; the
+     * unknown bit may be combined with other ignorable bits, so use a mask
+     * rather than an exact equality to avoid skipping the retry */
+    if((pChainContext->TrustStatus.dwErrorStatus & CERT_TRUST_REVOCATION_STATUS_UNKNOWN) != 0) {
         CertFreeCertificateChain(pChainContext);
         pChainContext = NULL;
         ret = CertGetCertificateChain(NULL, cert, time, chainStore, &chainPara,

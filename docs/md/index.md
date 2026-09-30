@@ -30,15 +30,16 @@ see the Copyright file in the distribution for details.
     these use cases. (default is 1).
   - (xmlsec-core, **not backward compatible**) Include files have been cleaned up to remove unnecessary includes,
     fix circular dependencies, etc.
+  - (xmlsec-build, **not backward compatible**) Added `--enable-hardening` option to `configure` script and
+    `hardening` option to `configure.ps1` script to enable security hardening flags on GCC, Clang, and MSVC
+    when the compiler version and the target architecture support it (default: `yes`).
   - (xmlsec-openssl) Added checks to enforce full consumption of parsed DER objects.
   - (xmlsec-mscng) Added support for using both current user and local machine certificates store for verifying
     the certificates.
   - (xmlsec-mscng) Enforced HMAC length checks similar to other crypto backends.
   - (xmlsec-windows) Added `apps` option to `configure.ps1` to control whether the command-line binaries in
     the `apps/` folder are built (default: `yes`).
-  - (xmlsec-windows) Added `hardening` option to `configure.ps1` to enable security hardening flags
-    (`/guard:cf`, `/DYNAMICBASE`, and `/NXCOMPAT`) in the MSVC build (default: `yes`).
-  - Several other small fixes (see [more details](https://github.com/lsh123/xmlsec/commits/xmlsec_1_3_13)).
+  - Many other small fixes (see [commit log](https://github.com/lsh123/xmlsec/commits/xmlsec_1_3_13) for more details).
 
 - **June 23, 2026**
   The [XML Security Library 1.3.12](download.md) release includes the following changes:

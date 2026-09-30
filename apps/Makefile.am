@@ -97,6 +97,7 @@ xmlsec_unit_tests_SOURCES = \
 	unit_tests/base64_unit_tests.c \
 	unit_tests/bn_unit_tests.c \
 	unit_tests/buffer_unit_tests.c \
+	unit_tests/cast_helpers_unit_tests.c \
 	unit_tests/list_unit_tests.c \
 	unit_tests/nodeset_unit_tests.c \
 	unit_tests/transform_helpers_unit_tests.c \

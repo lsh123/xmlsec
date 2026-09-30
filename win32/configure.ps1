@@ -68,6 +68,7 @@ $script:buildUnicode = 1
 $script:buildDebug = 0
 $script:buildWithMemcheck = "no"
 $script:buildPedantic = 1
+$script:buildHardening = 1
 $script:buildCc = "cl.exe"
 $script:buildCflags = ""
 $script:buildStatic = 1
@@ -120,6 +121,7 @@ function Show-Usage {
     Write-Host "  memcheck:                 Build unoptimised debug executables with memcheck reporting (default: '$($script:buildWithMemcheck)')"
     Write-Host "                            with possible options: 'yes'/'leaks', 'asan', or 'no'."
     Write-Host "  pedantic:                 Build with more warnings enabled (default: '$(if ($script:buildPedantic) { 'yes' } else { 'no' })')"
+    Write-Host "  hardening:                Build with security hardening flags: /guard:cf, /DYNAMICBASE, and /NXCOMPAT (default: '$(if ($script:buildHardening) { 'yes' } else { 'no' })')"
     Write-Host "  cc:                       Build with the specified compiler (default: '$($script:buildCc)')"
     Write-Host "  cflags:                   Build with the specified compiler flags (default: '$($script:buildCflags)')"
     Write-Host "  static:                   Build static xmlsec libraries (default: '$(if ($script:buildStatic) { 'yes' } else { 'no' })')"
@@ -221,6 +223,7 @@ function DiscoverVersion {
     $lines += "DEBUG=$(if ($script:buildDebug) { '1' } else { '0' })"
     $lines += "MEMCHECK=$($script:buildWithMemcheck)"
     $lines += "PEDANTIC=$(if ($script:buildPedantic) { '1' } else { '0' })"
+    $lines += "HARDENING=$(if ($script:buildHardening) { '1' } else { '0' })"
     $lines += "CC=$($script:buildCc)"
     $lines += "CFLAGS=$($script:buildCflags)"
     $lines += "STATIC=$(if ($script:buildStatic) { '1' } else { '0' })"
@@ -336,6 +339,7 @@ for ($i = 0; ($i -lt $args.Count) -and ($script:errorFlag -eq 0); $i++) {
                 }
             }
             "pedantic"            { $script:buildPedantic = StrToBool $val "pedantic" }
+            "hardening"           { $script:buildHardening = StrToBool $val "hardening" }
             "cc"                  { $script:buildCc = $val }
             "cflags"              { $script:buildCflags = $val }
             "static"              { $script:buildStatic = StrToBool $val "static" }
@@ -470,6 +474,7 @@ Write-Host ""
 Write-Host "Win32 build configuration"
 Write-Host "-------------------------"
 Write-Host "           Pedantic: $(BoolToStr $script:buildPedantic)"
+Write-Host "          Hardening: $(BoolToStr $script:buildHardening)"
 Write-Host "         C compiler: $($script:buildCc)"
 Write-Host "   C compiler flags: $($script:buildCflags)"
 Write-Host "   C-Runtime option: $($script:cruntime)"

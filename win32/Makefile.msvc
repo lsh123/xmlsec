@@ -45,6 +45,7 @@ AUTOCONF = .\configure.txt
 #STATIC = 0
 #WITH_APPS = 1
 #PEDANTIC = 1
+#HARDENING = 1
 #PREFIX = . # set this to the right value.
 #BINPREFIX = $(PREFIX)\bin
 #INCPREFIX = $(PREFIX)\include
@@ -499,6 +500,11 @@ CFLAGS = $(CFLAGS) /W4 /WX
 CFLAGS = $(CFLAGS) /W1
 !endif
 
+# Security hardening: Control Flow Guard.
+!if "$(HARDENING)" == "1"
+CFLAGS = $(CFLAGS) /guard:cf
+!endif
+
 # C4127: conditional expression is constant
 #     this generates a false warning inside asserts
 # C4130: '!=': logical operation on address of string constant:
@@ -578,6 +584,11 @@ ALIBS 		    = libxml2s.lib $(LIBS)
 
 !if "$(PEDANTIC)" == "1"
 LDFLAGS = $(LDFLAGS) /WX
+!endif
+
+# Security hardening: Control Flow Guard, ASLR, and DEP.
+!if "$(HARDENING)" == "1"
+LDFLAGS = $(LDFLAGS) /guard:cf /DYNAMICBASE /NXCOMPAT
 !endif
 
 # Enable memcheck.

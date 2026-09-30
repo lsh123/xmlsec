@@ -1924,7 +1924,9 @@ xmlSecKeyValueDsaXmlRead(xmlSecKeyValueDsaPtr data, xmlNodePtr node) {
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSAX, xmlSecDSigNs))) {
+    /* DSA X node is proprietary extension by XMLSec library and uses xmlSecNs namespace.
+    * DEPRECATED and will be removed in the future. */
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSAX, xmlSecNs))) {
         /* next is X node. It is REQUIRED for private key but
          * we are not sure exactly what we are reading */
         ret = xmlSecBufferBase64NodeContentRead(&(data->x), cur);
@@ -2120,9 +2122,11 @@ xmlSecKeyValueDsaXmlWrite(xmlSecKeyValueDsaPtr data, xmlNodePtr node,
 #endif /* LIBXML_VERSION >= 21300 */
     }
 
-    /* next is X node: write it ONLY for private keys and ONLY if it is requested */
+    /* next is X node: write it ONLY for private keys and ONLY if it is requested.
+     * DSA X node is proprietary extension by XMLSec library and uses xmlSecNs namespace.
+     * DEPRECATED and will be removed in the future. */
     if((writePrivateKey != 0) && (xmlSecBufferGetSize(&(data->x)) > 0)) {
-        cur = xmlSecAddChild(node, xmlSecNodeDSAX, xmlSecDSigNs);
+        cur = xmlSecAddChild(node, xmlSecNodeDSAX, xmlSecNs);
         if(cur == NULL) {
             xmlSecInternalError("xmlSecAddChild(NodeDSAX)", NULL);
             return(-1);
@@ -2466,8 +2470,10 @@ xmlSecKeyValueRsaXmlRead(xmlSecKeyValueRsaPtr data, xmlNodePtr node) {
     cur = xmlSecGetNextElementNode(cur->next);
 
     /* next is PrivateExponent node. It is REQUIRED for private key but
-     * we are not sure exactly what we are reading */
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeRSAPrivateExponent, xmlSecDSigNs))) {
+     * we are not sure exactly what we are reading.
+     * PrivateExponent node is proprietary extension by XMLSec library and uses xmlSecNs namespace.
+     * DEPRECATED and will be removed in the future. */
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeRSAPrivateExponent, xmlSecNs))) {
         ret = xmlSecBufferBase64NodeContentRead(&(data->privateExponent), cur);
         if(ret < 0) {
             xmlSecInternalError("xmlSecBufferBase64NodeContentRead(privateExponent)", NULL);
@@ -2589,9 +2595,11 @@ xmlSecKeyValueRsaXmlWrite(xmlSecKeyValueRsaPtr data, xmlNodePtr node,
 #endif /* LIBXML_VERSION >= 21300 */
     }
 
-    /* next is PrivateExponent node: write it ONLY for private keys and ONLY if it is requested */
+    /* next is PrivateExponent node: write it ONLY for private keys and ONLY if it is requested
+     * PrivateExponent node is proprietary extension by XMLSec library and uses xmlSecNs namespace.
+     * DEPRECATED and will be removed in the future. */
     if((writePrivateKey != 0) && (xmlSecBufferGetSize(&(data->privateExponent)) > 0)) {
-        cur = xmlSecAddChild(node, xmlSecNodeRSAPrivateExponent, xmlSecDSigNs);
+        cur = xmlSecAddChild(node, xmlSecNodeRSAPrivateExponent, xmlSecNs);
         if(cur == NULL) {
             xmlSecInternalError("xmlSecAddChild(PrivateExponent)", NULL);
             return(-1);

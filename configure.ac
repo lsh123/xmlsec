@@ -862,7 +862,7 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
     if test "z$XMLSEC_OPENSSL_VERSION" = "z" ; then
         AC_EGREP_CPP(greater-than-minvers, [
             #include <openssl/opensslv.h>
-            #if OPENSSL_VERSION_NUMBER >= 0x40000000L
+            #if !defined(LIBRESSL_VERSION_NUMBER) && OPENSSL_VERSION_NUMBER >= 0x40000000L
             greater-than-minvers
             #endif
         ],[
@@ -876,7 +876,7 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
     if test "z$XMLSEC_OPENSSL_VERSION" = "z" ; then
         AC_EGREP_CPP(greater-than-minvers, [
             #include <openssl/opensslv.h>
-            #if OPENSSL_VERSION_NUMBER >= 0x30000000L
+            #if !defined(LIBRESSL_VERSION_NUMBER) && OPENSSL_VERSION_NUMBER >= 0x30000000L
             greater-than-minvers
             #endif
         ],[
@@ -890,7 +890,7 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
     if test "z$XMLSEC_OPENSSL_VERSION" = "z" ; then
         AC_EGREP_CPP(greater-than-minvers, [
             #include <openssl/opensslv.h>
-            #if OPENSSL_VERSION_NUMBER >= 0x10101000L
+            #if !defined(LIBRESSL_VERSION_NUMBER) && OPENSSL_VERSION_NUMBER >= 0x10101000L
             greater-than-minvers
             #endif
         ],[
@@ -1284,7 +1284,7 @@ if test "z$GNUTLS_FOUND" = "zno" -a "z$with_gnutls" != "z" -a "z$with_gnutls" !=
         GNUTLS_FOUND="yes"
         AC_MSG_RESULT([yes])
     else
-        AC_MSG_ERROR([not found: "$with_gnutls/bin/$GNUTLS_CONFIG" tool, or "$with_gnutls/include/$GNUTLS_INCLUDE_MARKER" and/or "$with_gnutls/lib/$GNUTLS_LIB_MARKER"])
+        AC_MSG_ERROR([not found: "$with_gnutls/include/$GNUTLS_INCLUDE_MARKER" and/or "$with_gnutls/lib/$GNUTLS_LIB_MARKER"])
     fi
 fi
 

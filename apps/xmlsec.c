@@ -1450,6 +1450,14 @@ int main(int argc, const char **argv) {
                 goto done;
             }
             break;
+        case xmlSecAppCommandCheckKeyData:
+        case xmlSecAppCommandCheckTransforms:
+            if(pos >= argc) {
+                fprintf(stderr, "Error: at least one <name> parameter is required for this command\n");
+                xmlSecAppPrintUsage();
+                goto done;
+            }
+            break;
         default:
             break;
     }
@@ -1725,7 +1733,7 @@ xmlSecAppExecute(xmlSecAppCommand command, const char** utf8_argv, int argc) {
 
         g_repeats = xmlSecAppCmdLineParamGetInt(&repeatParam, 1);
         msecs = (1000 * (long double)g_totalTime) / (long double)CLOCKS_PER_SEC;
-        fprintf(stderr, "Executed %d tests in %.2Lf msec\n", g_repeats, msecs);
+        fprintf(stderr, "Executed %d tests in %.2f msec\n", g_repeats, (double)msecs);
     }
 
     /* success! */
@@ -1961,6 +1969,10 @@ xmlSecAppPrepareDSigCtx(xmlSecDSigCtxPtr dsigCtx) {
         int minHmacOutLen =  (int)xmlSecTransformHmacGetMinOutputBitsSize();
 
         minHmacOutLen = xmlSecAppCmdLineParamGetInt(&hmacMinOutputLenParam, minHmacOutLen);
+        if(minHmacOutLen < 0) {
+            fprintf(stderr, "Error: hmac min output length should be greater than or equal to zero\n");
+            return(-1);
+        }
         xmlSecTransformHmacSetMinOutputBitsSize((xmlSecSize)minHmacOutLen);
     }
 #endif  /* XMLSEC_NO_HMAC */
@@ -2020,7 +2032,10 @@ xmlSecAppEncryptFile(const char* inputFileName, const char* outputFileNameTmpl) 
         goto done;
     }
 
-    /* parse doc and find template node */
+    /* parse the template and find the <EncryptedData> node to fill. The
+     * --node-id/--node-name/--node-xpath options select the node in the
+     * --xml-data file (handled below), not the template node, so the template
+     * always uses the default <EncryptedData> node. */
     doc = xmlSecParseFile(inputFileName);
     if(doc == NULL) {
         fprintf(stderr, "Error: failed to parse xml file \"%s\"\n", inputFileName);
@@ -2270,7 +2285,12 @@ xmlSecAppPrepareKeyInfoCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
         keyInfoCtx->flags |= XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS;
     }
     if(xmlSecAppCmdLineParamIsSet(&depthParam)) {
-        keyInfoCtx->certsVerificationDepth = xmlSecAppCmdLineParamGetInt(&depthParam, 0);
+        int depth = xmlSecAppCmdLineParamGetInt(&depthParam, 0);
+        if(depth < 0) {
+            fprintf(stderr, "Error: certificate verification depth should be greater than or equal to zero\n");
+            return(-1);
+        }
+        keyInfoCtx->certsVerificationDepth = depth;
     }
     if(xmlSecAppCmdLineParamIsSet(&X509SkipStrictChecksParam)) {
         keyInfoCtx->flags |= XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS;
@@ -3876,7 +3896,11 @@ xmlSecAppAddIDAttrCallback(xmlNodePtr cur, void* data) {
     /* check that we don't have same ID already */
     tmpAttr = xmlGetID(cur->doc, id);
     if(tmpAttr == NULL) {
-        xmlAddID(NULL, cur->doc, id, attr);
+        if(xmlAddID(NULL, cur->doc, id, attr) == NULL) {
+            fprintf(stderr, "Error: failed to register ID attribute \"%s\"\n", id);
+            xmlFree(id);
+            return(-1);
+        }
     } else if(tmpAttr != attr) {
         fprintf(stderr, "Error: duplicate ID attribute \"%s\"\n", id);
         xmlFree(id);

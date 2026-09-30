@@ -193,7 +193,8 @@ test_xmlSecTransformChaCha20ParamsWrite_roundtrip(void) {
     xmlFree(counterContent);
 
     ret = xmlSecTransformChaCha20ParamsRead(node, ivRoundTrip, sizeof(ivRoundTrip), &ivSize, &noncePresent);
-    if((ret < 0) || (ivSize != XMLSEC_CHACHA20_IV_SIZE) || (memcmp(ivRoundTrip, iv, sizeof(iv)) != 0)) {
+    if((ret < 0) || (ivSize != XMLSEC_CHACHA20_IV_SIZE) || (noncePresent != 1) ||
+       (memcmp(ivRoundTrip, iv, sizeof(iv)) != 0)) {
         testLog("Error: ChaCha20 params write did not round-trip through strict read\n");
         xmlFreeDoc(doc);
         testFinishedFailure();

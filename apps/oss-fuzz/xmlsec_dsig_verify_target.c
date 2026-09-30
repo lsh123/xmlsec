@@ -80,12 +80,16 @@ static int do_init(void) {
         return -1;
     }
     if (xmlSecCheckVersion() != 1) {
+        xmlSecShutdown();
         return -1;
     }
     if (xmlSecOpenSSLAppInit(NULL) < 0) {
+        xmlSecShutdown();
         return -1;
     }
     if (xmlSecOpenSSLInit() < 0) {
+        xmlSecOpenSSLAppShutdown();
+        xmlSecShutdown();
         return -1;
     }
 
@@ -96,11 +100,17 @@ static int do_init(void) {
     /* Build a keys manager once and load the fixed trusted cert into it. */
     g_mngr = xmlSecKeysMngrCreate();
     if (g_mngr == NULL) {
+        xmlSecOpenSSLShutdown();
+        xmlSecOpenSSLAppShutdown();
+        xmlSecShutdown();
         return -1;
     }
     if (xmlSecOpenSSLAppDefaultKeysMngrInit(g_mngr) < 0) {
         xmlSecKeysMngrDestroy(g_mngr);
         g_mngr = NULL;
+        xmlSecOpenSSLShutdown();
+        xmlSecOpenSSLAppShutdown();
+        xmlSecShutdown();
         return -1;
     }
     /* Re-assemble the PEM cert (with real newline characters) into a buffer. */

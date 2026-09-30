@@ -334,7 +334,7 @@ void testStart(const char * name) {
 
 void testFinishedSuccess(void) {
     if(g_testGroupSkip) { return; }
-    fprintf(stdout, "    %s     OK\n", testsName);
+    fprintf(stdout, "    %s     OK\n", testsName != NULL ? testsName : "(no test name)");
     testLogReset();
     testsFinishedSuccess += 1;
     testsName = NULL;
@@ -342,7 +342,7 @@ void testFinishedSuccess(void) {
 
 void testFinishedFailure(void) {
     if(g_testGroupSkip) { return; }
-    fprintf(stdout, "    %s     FAILED\n", testsName);
+    fprintf(stdout, "    %s     FAILED\n", testsName != NULL ? testsName : "(no test name)");
     testLogFlush();
     testsFinishedFailed += 1;
     testsName = NULL;

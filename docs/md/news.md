@@ -28,7 +28,8 @@
   - The minimum supported versions for dependencies are now: LibXML2 >= 2.9.13 (February 19, 2022),
     LibXSLT >= 1.1.35 (February 16, 2022), OpenSSL >= 3.0.13 (January 30, 2024), LibreSSL >= 3.9.0 (March 9, 2024),
     NSS >= 3.91 (June 26, 2023), NSPR >= 4.34.1 (June 26, 2023), GnuTLS >= 3.8.3 (January 1, 2024).
-  - (xmlsec-core) Disabled all key value data for all key types by default (use `--enabled-key-data` flag to re-enable if needed).
+  - (xmlsec-core) Disabled all raw key value data for all key types by default, extending the 1.3.3 default that disabled the
+    KeyValue and DEREncodedKeyValue nodes (use `--enabled-key-data` flag to re-enable if needed).
   - (xmlsec-core) Added `--enable-asn1-signatures-hack` option to allow generation / verification of ASN1 signature values.
   - (xmlsec-core) Added `--verify-crls` option to verify CRLs when loading from command line.
   - (xmlsec-openssl) Added support for EdDSA signature algorithm; XDH (X25519 and X448) key agreement algorithms;
@@ -438,7 +439,7 @@
   Changes in [XML Security Library 1.2.14](download.md) release:
   - XML Security Library is switched from built-in LTDL library to the system
     LTDL library on Linux/Unix and native calls on Windows to fix a
-    [security issue](https://bugzilla.redhat.com/show_bug.cgi?id=CVE-2009-3736) in LTDL.
+    [security issue (CVE-2009-3736)](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2009-3736) in LTDL.
   - Fixed minor bugs (see [commits log](https://github.com/lsh123/xmlsec/commits/master) for complete list).
 
 - **September 12, 2009**

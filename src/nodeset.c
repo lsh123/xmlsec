@@ -162,6 +162,15 @@ xmlSecNodeSetCheckNode(xmlNodeSetPtr nodes, xmlNodePtr node, xmlNodePtr parent) 
          * same element is rejected) and in xmlNewNs() (a duplicate prefix
          * on the same node is rejected), so two declarations with the same
          * prefix but different URIs cannot exist on one element.
+         *
+         * Limitation: because the namespace URI is not compared, a shadowed
+         * same-prefix namespace on an ancestor, when checked with a
+         * descendant (shadowing) element as the hosting context, can
+         * incorrectly match the descendant's own same-prefix declaration
+         * (different URI). The internal walk avoids this via the
+         * closest-declaration check (xmlSearchNs) in
+         * xmlSecNodeSetWalkRecursiveCallback; it only manifests on direct
+         * xmlSecNodeSetContains() calls (e.g. the C14N visibility callback).
          */
         for(ii = 0; ii < nodes->nodeNr; ii++) {
             if(nodes->nodeTab[ii]->type != XML_NAMESPACE_DECL) {

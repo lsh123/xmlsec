@@ -426,8 +426,16 @@ xmlSecOpenSSLKWRfc3394EncryptDecrypt(xmlSecOpenSSLKWRfc3394CtxPtr ctx, const xml
         }
     }
 
-    ret = EVP_CipherInit_ex2(ctx->cctx, ctx->cipher, keyData,
-        xmlSecOpenSSLKWRfc3394ZeroIv, ((encrypt != 0) ? 1 : 0), NULL);
+    /* EVP_CipherInit_ex2() is the OpenSSL 3.0+ variant of EVP_CipherInit_ex() with an
+     * OSSL_PARAM params array as its 6th argument (NULL here) */
+    ret = EVP_CipherInit_ex2(
+        ctx->cctx,
+        ctx->cipher,
+        keyData,
+        xmlSecOpenSSLKWRfc3394ZeroIv,
+        ((encrypt != 0) ? 1 : 0),
+        NULL
+    );
     if (ret != 1) {
         xmlSecOpenSSLError("EVP_CipherInit_ex2", NULL);
         goto done;

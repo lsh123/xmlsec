@@ -25,7 +25,7 @@ licensing then feel free to send these questions to the
 
 See XML Security Library [download page](http://www.aleksey.com/xmlsec/).
 
-### 2.2. How to compile xmlsec? 
+### 2.2. How to compile xmlsec?
 
 See  XML Security Library [installation guide](tutorial/install.md)
 
@@ -159,16 +159,17 @@ There might be multiple reasons for the "key cannot be found" error:
   parameter in your application.
   For example, `--enabled-key-data rsa,key-value,x509` will populate an `<RSAKeyValue>` element (and keep
   `<X509Data>` enabled) when the template contains matching `<KeyValue/>` and `<X509Data/>` placeholders.
-  **THIS IS NOT SECURE AND NOT RECOMMENDED.**
+  **THIS OPTION IS NOT SECURE AND IT IS NOT RECOMMENDED FOR PRODUCTION USE CASES.**
 
 - **Key is not referenced in KeyInfo node (or this node is not included).** If a key is not referenced in the XML file then it
   creates a potential security risk because the key is no longer coupled with signature (the `KeyInfo` node is signed
-  during the XML signature process and its integrity is validated during XML signature verification). Yet, in some use cases not
+  during the XML signature process and its integrity is validated during XML signature verification only if it is
+  covered by a `Reference` in the `SignedInfo` element, for example via a `KeyInfoReference`). Yet, in some use cases not
   using the `KeyInfo` node to specify the key can be appropriate. If you verify that this does not present a security
   concern for your application, then you can enable "lax" key search mode by using `--lax-key-search` option for the
   [xmlsec command line utility](xmlsec-man.md), or by setting `keyInfoCtx->flags |= XMLSEC_KEYINFO_FLAGS_LAX_KEY_SEARCH;`
   flag in your application.
-  **THIS IS NOT SECURE AND NOT RECOMMENDED.**
+  **THIS OPTION IS NOT SECURE AND IT IS NOT RECOMMENDED FOR PRODUCTION USE CASES.**
 
 - **Certificate cannot be verified.** See the next [question 3.6](#section_3_6) in this FAQ.
 
@@ -194,13 +195,15 @@ There might be several reasons why XML Security Library cannot verify a certific
   application, then you can re-enable these algorithms (and also skip some other strict certificate verification
   checks) by using the `--X509-skip-strict-checks` option for the [xmlsec command line utility](xmlsec-man.md),
   or by setting `keyInfoCtx->flags |= XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS;` flag in your application.
-  **THIS IS NOT SECURE AND NOT RECOMMENDED.**
+  Note that this option is only honored by the GnuTLS backend; other backends (for example, OpenSSL) ignore it and
+  the underlying cryptographic library may still reject such certificates.
+  **THIS OPTION IS NOT SECURE AND IT IS NOT RECOMMENDED FOR PRODUCTION USE CASES.**
 
 - Lastly, you can use the `--insecure` option for the [xmlsec command line utility](xmlsec-man.md),
   or set `keyInfoCtx->flags |= XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS;` flag in your application to
   completely disable the certificates verification. Disabling certificate verification creates a security risk because
   there is no mechanism to verify the key origin (and for example, this enables to create "fake" signatures).
-  **THIS IS NOT SECURE AND NOT RECOMMENDED.**
+  **THIS OPTION IS NOT SECURE AND IT IS NOT RECOMMENDED FOR PRODUCTION USE CASES.**
 
 ### 3.7. I really like the XML Security Library but it is based on OpenSSL and I have to use another crypto library in my application. Can you write code to support my crypto library?
 

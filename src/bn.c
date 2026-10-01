@@ -622,6 +622,48 @@ xmlSecBnReverse(xmlSecBnPtr bn) {
 }
 
 /**
+ * xmlSecBnPrependZeroIfMsbSet:
+ * @bn:         the pointer to BN.
+ *
+ * Prepends a 0x00 byte to @bn if the most significant bit of the first
+ * byte is set, making the buffer a valid DER/ASN.1 INTEGER encoding of
+ * a non-negative value. If the most significant bit is not set (or the
+ * buffer is empty), the buffer is left unchanged.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecBnPrependZeroIfMsbSet(xmlSecBnPtr bn) {
+    xmlSecByte* data;
+    xmlSecByte ch = 0;
+    xmlSecSize size;
+    int ret;
+
+    xmlSecAssert2(bn != NULL, -1);
+
+    size = xmlSecBufferGetSize(bn);
+    if(size == 0) {
+        /* nothing to do for an empty buffer */
+        return(0);
+    }
+
+    data = xmlSecBufferGetData(bn);
+    xmlSecAssert2(data != NULL, -1);
+    if(data[0] < 0x80) {
+        /* the most significant bit is not set, nothing to do */
+        return(0);
+    }
+
+    ret = xmlSecBufferPrepend(bn, &ch, 1);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferPrepend(1)", NULL);
+        return(-1);
+    }
+
+    return(0);
+}
+
+/**
  * xmlSecBnCompare:
  * @bn:         the pointer to BN.
  * @data:       the data to compare BN to.

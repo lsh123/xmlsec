@@ -312,7 +312,11 @@ xmlSecGnuTLSKeyDataRsaAdoptPrivateKey(xmlSecKeyDataPtr data, gnutls_x509_privkey
     /* First check that p < q; if not swap p and q and recompute u.  */
     if (gcry_mpi_cmp(mpis[3], mpis[4]) > 0) {
         gcry_mpi_swap(mpis[3], mpis[4]);
-        gcry_mpi_invm(mpis[5], mpis[3], mpis[4]);
+        if(!gcry_mpi_invm(mpis[5], mpis[3], mpis[4])) {
+            xmlSecGnuTLSGCryptError("gcry_mpi_invm", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
+            xmlSecGnuTLSDestroyMpis(mpis, sizeof(mpis)/sizeof(mpis[0]));
+            return(-1);
+        }
     }
 
     /* build expressions */

@@ -1238,7 +1238,6 @@ xmlSecNssKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssPKIKeyDataAdoptKey",
                             xmlSecKeyDataKlassGetName(id));
-        xmlSecKeyDataDestroy(data);
         goto done;
     }
     pubkey = NULL; /* owned by data now */

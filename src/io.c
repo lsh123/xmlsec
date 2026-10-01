@@ -603,6 +603,7 @@ xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const xmlChar *uri) {
 int
 xmlSecTransformInputURIClose(xmlSecTransformPtr transform) {
     xmlSecInputURICtxPtr ctx;
+    int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformInputURIId), -1);
 
@@ -611,7 +612,14 @@ xmlSecTransformInputURIClose(xmlSecTransformPtr transform) {
 
     /* close if still open and mark as closed */
     if((ctx->clbksCtx != NULL) && (ctx->clbks != NULL) && (ctx->clbks->closecallback != NULL)) {
-        (ctx->clbks->closecallback)(ctx->clbksCtx);
+        ret = (ctx->clbks->closecallback)(ctx->clbksCtx);
+        if(ret != 0) {
+            xmlSecIOError("ctx->clbks->closecallback", xmlSecTransformGetName(transform), NULL);
+            /* mark as closed to prevent a second close attempt on finalize */
+            ctx->clbksCtx = NULL;
+            ctx->clbks = NULL;
+            return(-1);
+        }
     }
     ctx->clbksCtx = NULL;
     ctx->clbks = NULL;

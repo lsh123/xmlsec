@@ -893,8 +893,8 @@ xmlSecMSCngKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits,
     int ret;
     int res = -1;
 
-    xmlSecAssert2(xmlSecKeyDataIsValid(data), xmlSecKeyDataTypeUnknown);
-    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCngKeyDataSize), xmlSecKeyDataTypeUnknown);
+    xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCngKeyDataSize), -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataDsaId), -1);
     xmlSecAssert2(sizeBits > 0, -1);
 
@@ -1296,6 +1296,10 @@ xmlSecMSCngKeyDataGetSize(xmlSecKeyDataPtr data) {
         xmlSecAssert2(ctx->cert->pCertInfo != NULL, 0);
         length = CertGetPublicKeyLength(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
             &ctx->cert->pCertInfo->SubjectPublicKeyInfo);
+        if(length == 0) {
+            xmlSecMSCngLastError("CertGetPublicKeyLength", NULL);
+            return(0);
+        }
     } else if(ctx->pubkey != 0) {
         DWORD lenlen = sizeof(length);
         status = BCryptGetProperty(ctx->pubkey,
@@ -1372,8 +1376,8 @@ xmlSecMSCngKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits,
     int ret;
     int res = -1;
 
-    xmlSecAssert2(xmlSecKeyDataIsValid(data), xmlSecKeyDataTypeUnknown);
-    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCngKeyDataSize), xmlSecKeyDataTypeUnknown);
+    xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCngKeyDataSize), -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataRsaId), -1);
     xmlSecAssert2(sizeBits > 0, -1);
 

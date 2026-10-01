@@ -566,7 +566,11 @@ xmlSecOpenSSLEvpBlockCipherGCMCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         /* extract the tag */
         memcpy(tag, inBuf + inSize - XMLSEC_OPENSSL_AES_GCM_TAG_SIZE,
             XMLSEC_OPENSSL_AES_GCM_TAG_SIZE);
-        xmlSecBufferRemoveTail(in, XMLSEC_OPENSSL_AES_GCM_TAG_SIZE);
+        ret = xmlSecBufferRemoveTail(in, XMLSEC_OPENSSL_AES_GCM_TAG_SIZE);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecBufferRemoveTail", cipherName);
+            return(-1);
+        }
 
         inBuf = xmlSecBufferGetData(in);
         inSize = xmlSecBufferGetSize(in);

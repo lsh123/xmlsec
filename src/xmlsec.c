@@ -228,6 +228,9 @@ xmlSecCheckVersionExt(int major, int minor, int subminor, xmlSecCheckVersionMode
             return(0);
         }
         break;
+    default:
+        xmlSecUnsupportedEnumValueError("mode", mode, NULL);
+        return(0);
     }
 
     return(1);

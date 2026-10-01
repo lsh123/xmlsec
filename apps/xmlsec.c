@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <limits.h>
 
 #if defined(_MSC_VER) && _MSC_VER < 1900
 #define snprintf _snprintf
@@ -18,6 +19,7 @@
 #include <libxml/parser.h>
 #include <libxml/xpath.h>
 #include <libxml/xpathInternals.h>
+#include <libxml/xmlIO.h>
 
 #ifndef XMLSEC_NO_XSLT
 #include <libxslt/xslt.h>
@@ -1316,16 +1318,9 @@ xmlSecAppSignFile(const char* filename) {
     total_time += clock() - start_time;
 
     if(repeats <= 1) {
-        FILE* f;
-
-        f = xmlSecAppOpenFile(xmlSecAppCmdLineParamGetString(&outputParam));
-        if(f == NULL) {
-            fprintf(stderr,"Error: failed to open output file \"%s\"\n",
-                    xmlSecAppCmdLineParamGetString(&outputParam));
+        if(xmlSecAppWriteResult(data->doc, NULL) < 0) {
             goto done;
         }
-        xmlDocDump(f, data->doc);
-        xmlSecAppCloseFile(f);
     }
 
     res = 0;
@@ -1368,7 +1363,7 @@ xmlSecAppVerifyFile(const char* filename) {
         goto done;
     }
 
-    /* sign */
+    /* verify */
     start_time = clock();
     if(xmlSecDSigCtxVerify(&dsigCtx, data->startNode) < 0) {
         fprintf(stderr,"Error: signature failed \n");
@@ -1376,29 +1371,14 @@ xmlSecAppVerifyFile(const char* filename) {
     }
     total_time += clock() - start_time;
 
-    if((repeats <= 1) && (dsigCtx.status != xmlSecDSigStatusSucceeded)){
+    if((repeats <= 1) && (dsigCtx.status != xmlSecDSigStatusSucceeded)) {
         /* return an error if signature does not match */
         goto done;
     }
 
-    if(repeats <= 1) {
-        FILE* f;
-
-        /*
-         * Note: the output file must be opened before the "done:" label.
-         * Otherwise a failed open would "goto done" and re-enter this block,
-         * retrying the same failing open forever.
-         */
-        f = xmlSecAppOpenFile(xmlSecAppCmdLineParamGetString(&outputParam));
-        if(f == NULL) {
-            fprintf(stderr,"Error: failed to open output file \"%s\"\n",
-                    xmlSecAppCmdLineParamGetString(&outputParam));
-            goto done;
-        }
-        xmlSecAppCloseFile(f);
-    }
-
+    /* success */
     res = 0;
+
 done:
     /* print debug info if requested */
     if(repeats <= 1) {
@@ -1549,16 +1529,9 @@ xmlSecAppSignTmpl(void) {
     total_time += clock() - start_time;
 
     if(repeats <= 1) {
-        FILE* f;
-
-        f = xmlSecAppOpenFile(xmlSecAppCmdLineParamGetString(&outputParam));
-        if(f == NULL) {
-            fprintf(stderr,"Error: failed to open output file \"%s\"\n",
-                    xmlSecAppCmdLineParamGetString(&outputParam));
+        if(xmlSecAppWriteResult(doc, NULL) < 0) {
             goto done;
         }
-        xmlDocDump(f, doc);
-        xmlSecAppCloseFile(f);
     }
 
     res = 0;
@@ -3073,21 +3046,67 @@ xmlSecAppCloseFile(FILE* file) {
 static int
 xmlSecAppWriteResult(xmlDocPtr doc, xmlSecBufferPtr buffer) {
     FILE* f;
+    xmlOutputBufferPtr outBuffer;
+    int ret;
 
     f = xmlSecAppOpenFile(xmlSecAppCmdLineParamGetString(&outputParam));
     if(f == NULL) {
         return(-1);
     }
-    if(doc != NULL) {
-        xmlDocDump(f, doc);
-    } else if((buffer != NULL) && (xmlSecBufferGetData(buffer) != NULL)) {
-        (void)fwrite(xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer), 1, f);
-    } else {
-        fprintf(stderr, "Error: both result doc and result buffer are null\n");
+
+    outBuffer = xmlOutputBufferCreateFile(f, NULL);
+    if(outBuffer == NULL) {
+        fprintf(stderr, "Error: failed to create output buffer\n");
         xmlSecAppCloseFile(f);
         return(-1);
     }
-    xmlSecAppCloseFile(f);
+
+    /* dump output */
+    if(doc != NULL) {
+        ret = xmlSaveFileTo(outBuffer, doc, (const char*)doc->encoding);
+        if (ret < 0) {
+            fprintf(stderr, "Error: failed to write xml output\n");
+            /* xmlSaveFileTo closes the buffer and the file */
+            return(-1);
+        }
+        /* xmlSaveFileTo closes the buffer and the file */
+    } else if(buffer != NULL) {
+        xmlSecSize bufSize;
+        const xmlSecByte* bufData;
+
+        bufData = xmlSecBufferGetData(buffer);
+        bufSize = xmlSecBufferGetSize(buffer);
+        if((bufData == NULL) && (bufSize != 0)) {
+            fprintf(stderr, "Error: buffer data is NULL but buffer size is not zero\n");
+            /* xmlOutputBufferClose closes the file */
+            (void)xmlOutputBufferClose(outBuffer);
+            return(-1);
+        }
+        if(bufSize > (size_t)INT_MAX) {
+            fprintf(stderr, "Error: binary output size exceeds int limit\n");
+            /* xmlOutputBufferClose closes the file */
+            (void)xmlOutputBufferClose(outBuffer);
+            return(-1);
+        }
+        if(bufData != NULL) {
+            ret = xmlOutputBufferWrite(outBuffer, (int)bufSize, (const char*)bufData);
+            if (ret < 0) {
+                /* xmlOutputBufferClose closes the file */
+                fprintf(stderr, "Error: failed to write binary output\n");
+                (void)xmlOutputBufferClose(outBuffer);
+                return(-1);
+            }
+        }
+        /* xmlOutputBufferClose closes the file */
+        (void)xmlOutputBufferClose(outBuffer);
+    } else {
+        fprintf(stderr, "Error: both result doc and result buffer are null\n");
+        /* xmlOutputBufferClose closes the file */
+        (void)xmlOutputBufferClose(outBuffer);
+        return(-1);
+    }
+
+    /* done */
     return(0);
 }
 

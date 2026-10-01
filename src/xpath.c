@@ -267,17 +267,19 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
         return(NULL);
     }
 
-    /* sometime LibXML2 returns an empty nodeset or just NULL, we want
-    to reserve NULL for our own purposes so we simply create an empty
-    node set here */
+    /* A Reference URI must resolve to a node set; if the expression did not
+     * evaluate to a node set (e.g. it evaluated to a boolean, number, or
+     * string), report an error instead of silently substituting an empty node
+     * set, which would cause a legitimate reference to resolve to nothing.
+     * Note that libxml2 returns an (empty) node set for expressions that match
+     * no nodes, so a NULL nodesetval here means the result was not a node set
+     * at all. */
     if(xpathObj->nodesetval == NULL) {
-        xpathObj->nodesetval = xmlXPathNodeSetCreate(NULL);
-        if(xpathObj->nodesetval == NULL) {
-            xmlXPathFreeObject(xpathObj);
-            xmlSecXmlError2("xmlXPathNodeSetCreate", NULL,
-                            "expr=%s", xmlSecErrorsSafeString(data->expr));
-            return(NULL);
-        }
+        xmlSecInternalError2("xmlSecXPathDataExecute", NULL,
+                            "expression did not evaluate to a node set, expr=%s",
+                            xmlSecErrorsSafeString(data->expr));
+        xmlXPathFreeObject(xpathObj);
+        return(NULL);
     }
 
     nodes = xmlSecNodeSetCreate(doc, xpathObj->nodesetval, data->nodeSetType);

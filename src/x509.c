@@ -51,7 +51,7 @@ xmlSecX509DataGetNodeContent (xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlNodePtr cur;
     int content = 0;
 
-    xmlSecAssert2(node != NULL, 0);
+    xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     /* determine the current node content */

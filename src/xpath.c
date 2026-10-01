@@ -223,14 +223,18 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
     /* do not forget to set the doc */
     data->ctx->doc = doc;
 
-    /* always register here(); not all libxml2 versions support unregistering with NULL */
-    if(xmlXPathRegisterFunc(data->ctx, (xmlChar *)"here", xmlSecXPathHereFunction) < 0) {
-        xmlSecXmlError("xmlXPathRegisterFunc", NULL);
-        return(NULL);
-    }
-
     /* here function works only on the same document */
     if(hereNode->doc == doc) {
+        /* always register our "here()" function so that it is used for the
+        * expression evaluation. It may be already registered, e.g. by
+        * xmlXPtrNewContext() in libxml2 < 2.14, in which case the registration
+        * would fail. So unregister it first. We don't check the result of the
+        * unregister call since the function may not be registered yet. */
+        xmlXPathRegisterFunc(data->ctx, (xmlChar *)"here", NULL);
+        if(xmlXPathRegisterFunc(data->ctx, (xmlChar *)"here", xmlSecXPathHereFunction) < 0) {
+            xmlSecXmlError("xmlXPathRegisterFunc", NULL);
+            return(NULL);
+        }
         data->ctx->here = hereNode;
         data->ctx->xptr = 1;
     } else {

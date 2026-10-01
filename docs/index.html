@@ -71,12 +71,16 @@ see the Copyright file in the distribution  for details.<br><br></p>
         October 8 2026<br>
         The legacy <a href="download.html">XML Security Library 1.2.43</a> release includes the following changes:
         <ul>
+            <li>(xmlsec-core <b>**not backward compatible**</b>) Restricted the default enabled reference and transform URIs to empty
+                and same document URIs only. Use `--enabled-reference-uris`, `--enabled-retrieval-method-uris`, etc. parameters
+                for XMLSec command line tool if local or remote URIs usage is required (or set corresponding flag in the
+                `xmlSecDSigCtx` and `xmlSecEncCtx` structs in your application code).</li>
+            <li>(xmlsec-core <b>**not backward compatible**</b>) Removed support for negative values in BN string conversion/parsing
+                helpers; values are now treated as unsigned magnitudes.</li>
             <li>(xmlsec-build <b>**not backward compatible**</b>) Raised minimum supported OpenSSL version to 1.1.0 and fail-fast
                 on unsupported legacy OpenSSL/LibreSSL versions.</li>
             <li>(xmlsec-build <b>**not backward compatible**</b>) Added '-std=c23' compiler flag for building the library on compilers
                 that support it or '-std=c99' otherwise (this flag was only enabled with --enable-pedantic builds in the past).</li>
-            <li>(xmlsec-core <b>**not backward compatible**</b>) Removed support for negative values in BN string conversion/parsing
-                helpers; values are now treated as unsigned magnitudes.</li>
             <li>(xmlsec-core <b>**not backward compatible**</b>) Added attribute values escaping in the Relationship transform.</li>
             <li>(xmlsec-core) Hardened XML parser defaults for XXE mitigation across libxml2 versions.</li>
             <li>(xmlsec-core) Added stronger overflow and conversion safety checks.</li>

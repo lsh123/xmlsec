@@ -349,7 +349,9 @@ xmlSecTransformCtxInitialize(xmlSecTransformCtxPtr ctx) {
         return(-1);
     }
 
-    ctx->enabledUris = xmlSecTransformUriTypeAny;
+    /* Allow only empty and same-document URIs. Applications needing remote/local dereference
+    can explicitly opt in. */
+    ctx->enabledUris = xmlSecTransformUriTypeEmpty | xmlSecTransformUriTypeSameDocument;
     return(0);
 }
 

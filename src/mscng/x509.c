@@ -447,7 +447,7 @@ xmlSecMSCngKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Valu
         crl = xmlSecMSCngX509CrlDerRead(xmlSecBufferGetData(&(x509Value->crl)),
             xmlSecBufferGetSize(&(x509Value->crl)));
         if (crl == NULL) {
-            xmlSecInternalError("xmlSecMSCngX509CertDerRead", xmlSecKeyDataGetName(data));
+            xmlSecInternalError("xmlSecMSCngX509CrlDerRead", xmlSecKeyDataGetName(data));
             goto done;
         }
     }

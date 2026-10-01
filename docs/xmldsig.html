@@ -285,7 +285,7 @@ function (can be used to implement enveloped signature)</td>
 </tr>
 <tr>
 <td style="width: 40%;" align="left" valign="top">
-<a href="http://www.w3.org/TR/xml-exc-c14n">Exlusive Canonical XML 1.0</a>
+<a href="http://www.w3.org/TR/xml-exc-c14n">Exclusive Canonical XML 1.0</a>
 </td>
                   <td valign="top">Y</td>
                   <td valign="top">Y</td>
@@ -341,7 +341,7 @@ Algorithms (<a href="http://www.ietf.org/rfc/rfc4051.txt">RFC 4051</a>)</h4>
                   <td valign="top">Y</td>
                   <td valign="top">N</td>
                   <td valign="top">N</td>
-                  <td valign="top">N</td>
+                  <td valign="top">Y</td>
                   <td valign="top">N</td>
                   <td valign="top">N</td>
 </tr>
@@ -386,7 +386,7 @@ Algorithms (<a href="http://www.ietf.org/rfc/rfc4051.txt">RFC 4051</a>)</h4>
                   <td valign="top">Y</td>
                   <td valign="top">N</td>
                   <td valign="top">N</td>
-                  <td valign="top">N</td>
+                  <td valign="top">Y</td>
                   <td valign="top">N</td>
                   <td valign="top">N</td>
 </tr>
@@ -440,7 +440,7 @@ Algorithms (<a href="http://www.ietf.org/rfc/rfc4051.txt">RFC 4051</a>)</h4>
                   <td valign="top">Y</td>
                   <td valign="top">N</td>
                   <td valign="top">N</td>
-                  <td valign="top">N</td>
+                  <td valign="top">Y</td>
                   <td valign="top">N</td>
                   <td valign="top">N</td>
 </tr>
@@ -494,7 +494,7 @@ Algorithms (<a href="http://www.ietf.org/rfc/rfc4051.txt">RFC 4051</a>)</h4>
                   <td valign="top">Y</td>
                   <td valign="top">N</td>
                   <td valign="top">N</td>
-                  <td valign="top">N</td>
+                  <td valign="top">Y</td>
                   <td valign="top">N</td>
                   <td valign="top">Y</td>
 </tr>
@@ -675,27 +675,66 @@ Algorithms (<a href="http://www.ietf.org/rfc/rfc4051.txt">RFC 4051</a>)</h4>
 </tr>
 <tr>
 <td style="vertical-align: top; width: 40%;">GOST94 digests</td>
+                  <td valign="top">Y<a href="#gost-openssl"><sup>(3)</sup></a></td>
                   <td valign="top">N</td>
                   <td valign="top">N</td>
                   <td valign="top">N</td>
-                  <td valign="top">N</td>
-                  <td valign="top">Y<a href="#gost-mscrypto"><sup>(2)</sup></a>
+                  <td valign="top">Y<a href="#gost-mscrypto"><sup>(2)</sup></a></td>
                   <td valign="top">N</td>
 </tr>
 <tr>
 <td style="vertical-align: top; width: 40%;">GOST2001 signatures</td>
+                  <td valign="top">Y<a href="#gost-openssl"><sup>(3)</sup></a></td>
                   <td valign="top">N</td>
                   <td valign="top">N</td>
                   <td valign="top">N</td>
+                  <td valign="top">Y<a href="#gost-mscrypto"><sup>(2)</sup></a></td>
                   <td valign="top">N</td>
-                  <td valign="top">Y<a href="#gost-mscrypto"><sup>(2)</sup></a>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 40%;">GOST-2012 (256 bit) digests</td>
+                  <td valign="top">Y<a href="#gost-openssl"><sup>(3)</sup></a></td>
+                  <td valign="top">N</td>
+                  <td valign="top">N</td>
+                  <td valign="top">N</td>
+                  <td valign="top">Y<a href="#gost-mscrypto"><sup>(2)</sup></a></td>
+                  <td valign="top">N</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 40%;">GOST-2012 (512 bit) digests</td>
+                  <td valign="top">Y<a href="#gost-openssl"><sup>(3)</sup></a></td>
+                  <td valign="top">N</td>
+                  <td valign="top">N</td>
+                  <td valign="top">N</td>
+                  <td valign="top">Y<a href="#gost-mscrypto"><sup>(2)</sup></a></td>
+                  <td valign="top">N</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 40%;">GOST-2012 (256 bit) signatures</td>
+                  <td valign="top">Y<a href="#gost-openssl"><sup>(3)</sup></a></td>
+                  <td valign="top">N</td>
+                  <td valign="top">N</td>
+                  <td valign="top">N</td>
+                  <td valign="top">Y<a href="#gost-mscrypto"><sup>(2)</sup></a></td>
+                  <td valign="top">N</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 40%;">GOST-2012 (512 bit) signatures</td>
+                  <td valign="top">Y<a href="#gost-openssl"><sup>(3)</sup></a></td>
+                  <td valign="top">N</td>
+                  <td valign="top">N</td>
+                  <td valign="top">N</td>
+                  <td valign="top">Y<a href="#gost-mscrypto"><sup>(2)</sup></a></td>
                   <td valign="top">N</td>
 </tr>
 </tbody></table>
 <br><br><a name="dsa-sha1"></a><sup>(1)</sup> Defining <a href="http://www.w3.org/TR/xmldsig-core/#sec-DSAKeyValue"> DSA key</a>
 with Seed and PgenCounter is not supported.
 <br><a name="gost-mscrypto"></a><sup>(2)</sup> Requires install of a CSP 
-providing these algorithms.<br><p>Test vectors (from <a href="http://www.w3.org/Signature/2001/04/05-xmldsig-interop.html">IETF/W3C
+providing these algorithms.
+<br><a name="gost-openssl"></a><sup>(3)</sup> Requires install of a GOST-capable OpenSSL
+engine and the corresponding build options to be enabled
+(<code>--enable-gost</code> for GOST94/2001 and <code>--enable-gost2012</code> for GOST-2012).<br><p>Test vectors (from <a href="http://www.w3.org/Signature/2001/04/05-xmldsig-interop.html">IETF/W3C
 XML Signature WG: XML Signature Interoperability page</a>): <br><a href="http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2002AprJun/att-0016/01-merlin-xmldsig-twenty-three.tar.gz">merlin-xmldsig-twenty-three.tar.gz</a>
             <br><a href="http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2001AprJun/att-00%2033/01-merlin-xmldsig-sixteen.tar.gz">merlin-xmldsig-sixteen.tar.gz</a>
 (features, deprecated)<br><a href="http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2001JanMar/att-0155/04-merlin-xmldsig-fifteen.tar.gz">merlin-xmldsig-fifteen.tar.gz</a>

@@ -538,8 +538,10 @@ xmlSecMSCryptoKWDes3BlockDecrypt(xmlSecTransformPtr transform,
         keyBuf,
         dwKeyBufSize,
         TRUE,
-        &cryptKey))  {
+        &cryptKey)
+    )  {
 
+        xmlSecInternalError("xmlSecMSCryptoImportPlainSessionBlob", NULL);
         goto done;
     }
     xmlSecAssert2(cryptKey != 0, -1);
@@ -570,7 +572,7 @@ xmlSecMSCryptoKWDes3BlockDecrypt(xmlSecTransformPtr transform,
 
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwCLen, goto done, NULL);
     if(!CryptDecrypt(cryptKey, 0, FALSE, 0, out, &dwCLen)) {
-        xmlSecMSCryptoError("CryptEncrypt", NULL);
+        xmlSecMSCryptoError("CryptDecrypt", NULL);
         goto done;
     }
 

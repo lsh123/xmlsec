@@ -57,6 +57,10 @@
             <li>(xmlsec-core) Hardened XML parser defaults for XXE mitigation across libxml2 versions.</li>
             <li>(xmlsec-core) Added stronger overflow and conversion safety checks.</li>
             <li>(xmlsec-core) Fixed multiple memory/resource issues on error paths.</li>
+            <li>(xmlsec-core) Enforced the max nesting depth when processing EncryptedKey elements (default is 1);
+                documents with deeper nested EncryptedKey structures will now fail to decrypt. Use the
+                `--max-encrypted-key-level &lt;level&gt;` option in the xmlsec command line tool (or set
+                `xmlSecKeyInfoCtx->maxEncryptedKeyLevel` in your application code) to adjust the limit.</li>
             <li>(xmlsec-openssl) Improved X.509/CRL verification flow with verification-time-aware revocation checks and stricter CRL validity handling.</li>
             <li>(xmlsec-gnutls) Prevented certificate-chain self-loop cases and improved SKI comparison behavior when SKI extension is absent.</li>
             <li>(xmlsec-nss) Fixed certificate lookup memory handling in issuer/serial resolution paths.</li>

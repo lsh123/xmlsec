@@ -380,7 +380,14 @@ extern "C" {
  *
  * Impossible to cast from one type to another.
  */
-#define XMLSEC_ERROR_R_CAST_IMPOSSIBLE                  101
+#define XMLSEC_ERRORS_R_CAST_IMPOSSIBLE                 101
+
+/**
+ * XMLSEC_ERROR_R_CAST_IMPOSSIBLE:
+ *
+ * DEPRECATED. Use #XMLSEC_ERRORS_R_CAST_IMPOSSIBLE instead.
+ */
+#define XMLSEC_ERROR_R_CAST_IMPOSSIBLE                  XMLSEC_ERRORS_R_CAST_IMPOSSIBLE
 
 /**
  * XMLSEC_ERRORS_MAX_NUMBER:

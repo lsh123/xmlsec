@@ -207,8 +207,10 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
             return(-1);
         }
     } else {
-        if (!CryptDecrypt(ctx->cryptKey, 0, FALSE, 0, outBuf, &dwCLen)) {
-            xmlSecMSCryptoError("CryptSetKeyDecrypt", cipherName);
+        /* inSize can be 0 when the input holds exactly one block: it is
+         * kept for the padding check in CtxFinal, so skip the call */
+        if ((inSize > 0) && !CryptDecrypt(ctx->cryptKey, 0, FALSE, 0, outBuf, &dwCLen)) {
+            xmlSecMSCryptoError("CryptDecrypt", cipherName);
             return(-1);
         }
     }
@@ -332,13 +334,16 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     }
 
     if(encrypt == 0) {
+        xmlSecSize padLen;
+
         /* check padding */
-        if(inSize < outBuf[blockSize - 1]) {
+        padLen = outBuf[blockSize - 1];
+        if((padLen == 0) || (inSize < padLen)) {
             xmlSecInvalidSizeLessThanError("Input data padding",
-                    inSize, outBuf[blockSize - 1], cipherName);
+                    inSize, padLen, cipherName);
             return(-1);
         }
-        outSize += inSize - outBuf[blockSize - 1];
+        outSize += inSize - padLen;
     } else {
         outSize += inSize;
     }

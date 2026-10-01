@@ -386,7 +386,7 @@ xmlSecEnsureEmptyChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns
     xmlSecAssert2(name != NULL, NULL);
 
     /* try to find an empty node first */
-    tmp = xmlSecFindNode(parent, name, ns);
+    tmp = xmlSecFindChild(parent, name, ns);
     while(tmp != NULL) {
         cur = tmp;
         if(xmlSecIsEmptyNode(cur) == 1) {

@@ -168,6 +168,7 @@ xmlSecMSCryptoKeysStoreInitialize(xmlSecKeyStorePtr store) {
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCryptoKeysStoreId), -1);
 
     ss = xmlSecMSCryptoKeysStoreGetCtx(store);
+    xmlSecAssert2(ss != NULL, -1);
     xmlSecAssert2((*ss == NULL), -1);
 
     *ss = xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId);
@@ -187,9 +188,14 @@ xmlSecMSCryptoKeysStoreFinalize(xmlSecKeyStorePtr store) {
     xmlSecAssert(xmlSecKeyStoreCheckId(store, xmlSecMSCryptoKeysStoreId));
 
     ss = xmlSecMSCryptoKeysStoreGetCtx(store);
-    xmlSecAssert((ss != NULL) && (*ss != NULL));
+    xmlSecAssert(ss != NULL);
 
-    xmlSecKeyStoreDestroy(*ss);
+    /* (*ss) may be NULL if Initialize failed (e.g. OOM in xmlSecKeyStoreCreate);
+     * xmlSecKeyStoreCreate still calls finalize in that case, so guard against it. */
+    if((*ss) != NULL) {
+        xmlSecKeyStoreDestroy(*ss);
+        (*ss) = NULL;
+    }
 }
 
 static PCCERT_CONTEXT
@@ -228,21 +234,33 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
     }
 
     /* first attempt: try to find the cert with a full blown subject dn */
+#ifndef XMLSEC_NO_X509
     if(NULL == pCertContext) {
         pCertContext = xmlSecMSCryptoX509FindCertBySubject(
             hStoreHandle,
             wcName,
             X509_ASN_ENCODING | PKCS_7_ASN_ENCODING);
     }
+#endif /* XMLSEC_NO_X509 */
 
     /*
-     * Try ro find certificate with name="Friendly Name"
+     * Try to find certificate with name="Friendly Name"
      */
     if (NULL == pCertContext) {
         DWORD dwPropSize;
         PBYTE pbFriendlyName;
         PCCERT_CONTEXT pCertCtxIter = NULL;
+        LPWSTR lpwName;
 
+        /* convert name to unicode */
+        lpwName = xmlSecWin32ConvertUtf8ToUnicode(name);
+        if (lpwName == NULL) {
+            xmlSecInternalError("xmlSecWin32ConvertUtf8ToUnicode(name)",
+                                xmlSecKeyStoreGetName(store));
+            xmlFree(wcName);
+            CertCloseStore(hStoreHandle, 0);
+            return(NULL);
+        }
 
         while (1) {
            pCertCtxIter = CertEnumCertificatesInStore(hStoreHandle, pCertCtxIter);
@@ -260,8 +278,10 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
             pbFriendlyName = xmlMalloc(dwPropSize);
             if(pbFriendlyName == NULL) {
                 xmlSecMallocError(dwPropSize, xmlSecKeyStoreGetName(store));
+                xmlFree(lpwName);
                 xmlFree(wcName);
                 CertCloseStore(hStoreHandle, 0);
+                CertFreeCertificateContext(pCertCtxIter);
                 return(NULL);
             }
 
@@ -274,13 +294,16 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
             }
 
             /* Compare FriendlyName to name */
-            if (!lstrcmp(wcName, (LPCTSTR)pbFriendlyName)) {
+            if (lstrcmpW(lpwName, (LPCWSTR)pbFriendlyName) == 0) {
               pCertContext = pCertCtxIter;
+              pCertCtxIter = NULL; /* just in case */
               xmlFree(pbFriendlyName);
               break;
             }
             xmlFree(pbFriendlyName);
         }
+
+        xmlFree(lpwName);
     }
 
     /* We don't give up easily, now try to find cert with part of the name
@@ -358,11 +381,11 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
             goto done;
         }
 
+#ifndef XMLSEC_NO_X509
         /* set cert in x509 data */
         x509Data = xmlSecKeyDataCreate(xmlSecMSCryptoKeyDataX509Id);
         if(x509Data == NULL) {
-            xmlSecInternalError("xmlSecKeyDataCreate",
-                                xmlSecKeyDataGetName(x509Data));
+            xmlSecInternalError("xmlSecKeyDataCreate", NULL);
             goto done;
         }
 
@@ -395,6 +418,7 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
             goto done;
         }
         pCertContext2 = NULL;
+#endif /* XMLSEC_NO_X509 */
 
         /* set cert in key data */
         data = xmlSecMSCryptoCertAdopt(pCertContext, keyReq->keyType);
@@ -419,6 +443,7 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
         }
         data = NULL;
 
+#ifndef XMLSEC_NO_X509
         ret = xmlSecKeyAdoptData(key, x509Data);
         if (ret < 0) {
             xmlSecInternalError("xmlSecKeyAdoptData",
@@ -426,6 +451,7 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
             goto done;
         }
         x509Data = NULL;
+#endif /* XMLSEC_NO_X509 */
 
         /* Set the name of the key to the given name */
         ret = xmlSecKeySetName(key, name);

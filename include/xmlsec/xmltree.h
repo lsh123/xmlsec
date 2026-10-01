@@ -244,8 +244,8 @@ XMLSEC_EXPORT xmlSecQName2BitMaskInfoConstPtr xmlSecQName2BitMaskGetInfo
                                                                 (xmlSecQName2BitMaskInfoConstPtr info,
                                                                  xmlSecBitMask mask);
 XMLSEC_EXPORT int               xmlSecQName2BitMaskGetBitMask   (xmlSecQName2BitMaskInfoConstPtr info,
-                                                                 const xmlChar* qnameLocalPart,
                                                                  const xmlChar* qnameHref,
+                                                                 const xmlChar* qnameLocalPart,
                                                                  xmlSecBitMask* mask);
 XMLSEC_EXPORT int               xmlSecQName2BitMaskNodesRead    (xmlSecQName2BitMaskInfoConstPtr info,
                                                                  xmlNodePtr* node,

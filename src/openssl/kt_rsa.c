@@ -260,12 +260,16 @@ xmlSecOpenSSLRsaPkcs1SetKeyImpl(xmlSecOpenSSLRsaPkcs1CtxPtr ctx, EVP_PKEY* pKey,
         ret = EVP_PKEY_encrypt_init(ctx->pKeyCtx);
         if (ret <= 0) {
             xmlSecOpenSSLError("EVP_PKEY_encrypt_init", NULL);
+            EVP_PKEY_CTX_free(ctx->pKeyCtx);
+            ctx->pKeyCtx = NULL;
             return (-1);
         }
     } else {
         ret = EVP_PKEY_decrypt_init(ctx->pKeyCtx);
         if (ret <= 0) {
             xmlSecOpenSSLError("EVP_PKEY_decrypt_init", NULL);
+            EVP_PKEY_CTX_free(ctx->pKeyCtx);
+            ctx->pKeyCtx = NULL;
             return (-1);
         }
     }
@@ -273,6 +277,8 @@ xmlSecOpenSSLRsaPkcs1SetKeyImpl(xmlSecOpenSSLRsaPkcs1CtxPtr ctx, EVP_PKEY* pKey,
     ret = EVP_PKEY_CTX_set_rsa_padding(ctx->pKeyCtx, RSA_PKCS1_PADDING);
     if (ret <= 0) {
         xmlSecOpenSSLError("EVP_PKEY_CTX_set_rsa_padding", NULL);
+        EVP_PKEY_CTX_free(ctx->pKeyCtx);
+        ctx->pKeyCtx = NULL;
         return (-1);
     }
 
@@ -819,12 +825,16 @@ xmlSecOpenSSLRsaOaepSetKeyImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, EVP_PKEY* pKey,
         ret = EVP_PKEY_encrypt_init(ctx->pKeyCtx);
         if (ret <= 0) {
             xmlSecOpenSSLError("EVP_PKEY_encrypt_init", NULL);
+            EVP_PKEY_CTX_free(ctx->pKeyCtx);
+            ctx->pKeyCtx = NULL;
             return (-1);
         }
     } else {
         ret = EVP_PKEY_decrypt_init(ctx->pKeyCtx);
         if (ret <= 0) {
             xmlSecOpenSSLError("EVP_PKEY_decrypt_init", NULL);
+            EVP_PKEY_CTX_free(ctx->pKeyCtx);
+            ctx->pKeyCtx = NULL;
             return (-1);
         }
     }
@@ -832,6 +842,8 @@ xmlSecOpenSSLRsaOaepSetKeyImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, EVP_PKEY* pKey,
     ret = EVP_PKEY_CTX_set_rsa_padding(ctx->pKeyCtx, RSA_PKCS1_OAEP_PADDING);
     if (ret <= 0) {
          xmlSecOpenSSLError("EVP_PKEY_CTX_set_rsa_padding", NULL);
+        EVP_PKEY_CTX_free(ctx->pKeyCtx);
+        ctx->pKeyCtx = NULL;
         return(-1);
     }
 

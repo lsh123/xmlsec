@@ -479,7 +479,7 @@ xmlSecBnToDecString(xmlSecBnPtr bn) {
 int
 xmlSecBnMul(xmlSecBnPtr bn, int multiplier) {
     xmlSecByte* data;
-    int over;
+    unsigned long long over;
     xmlSecSize ii;
     xmlSecByte ch;
     int ret;
@@ -497,7 +497,7 @@ xmlSecBnMul(xmlSecBnPtr bn, int multiplier) {
     while(ii > 0) {
         xmlSecAssert2(data != NULL, -1);
 
-        over     = over + multiplier * data[--ii];
+        over     = over + (unsigned long long)multiplier * data[--ii];
         data[ii] = (xmlSecByte)(over % 256);
         over     = over / 256;
     }
@@ -528,7 +528,8 @@ xmlSecBnMul(xmlSecBnPtr bn, int multiplier) {
  */
 int
 xmlSecBnDiv(xmlSecBnPtr bn, int divider, int* mod) {
-    int over;
+    unsigned long long over;
+    unsigned long long dividerULL;
     xmlSecSize ii, size;
     xmlSecByte* data;
     int ret;
@@ -538,8 +539,10 @@ xmlSecBnDiv(xmlSecBnPtr bn, int divider, int* mod) {
     xmlSecAssert2(mod != NULL, -1);
 
     if(divider == 1) {
+        (*mod) = 0;
         return(0);
     }
+    dividerULL = (unsigned long long)divider;
 
     data = xmlSecBufferGetData(bn);
     size = xmlSecBufferGetSize(bn);
@@ -547,10 +550,11 @@ xmlSecBnDiv(xmlSecBnPtr bn, int divider, int* mod) {
         xmlSecAssert2(data != NULL, -1);
 
         over     = over * 256 + data[ii];
-        data[ii] = (xmlSecByte)(over / divider);
-        over     = over % divider;
+        data[ii] = (xmlSecByte)(over / dividerULL);
+        over     = over % dividerULL;
     }
-    (*mod) = over;
+    /* over < divider <= INT_MAX, the cast is safe */
+    (*mod) = (int)over;
 
     /* remove leading zeros */
     for(ii = 0; ii < size; ii++) {
@@ -715,7 +719,7 @@ xmlSecBnCompare(xmlSecBnPtr bn, const xmlSecByte* data, xmlSecSize dataSize) {
     } else if(bnSize < dataSize) {
         return(-1);
     } else if(bnSize > dataSize) {
-        return(-1);
+        return(1);
     }
 
     xmlSecAssert2(bnData != NULL, -1);
@@ -765,7 +769,7 @@ xmlSecBnCompareReverse(xmlSecBnPtr bn, const xmlSecByte* data, xmlSecSize dataSi
     } else if(bnSize < dataSize) {
         return(-1);
     } else if(bnSize > dataSize) {
-        return(-1);
+        return(1);
     }
 
     xmlSecAssert2(bnData != NULL, -1);

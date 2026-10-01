@@ -980,6 +980,7 @@ xmlSecOpenSSLX509NameWrite(X509_NAME* nm) {
     xmlChar* res = NULL;
     BIO *mem = NULL;
     xmlChar* buf = NULL;
+    long memBufSize;
     xmlSecSize sizeBuf;
     int lenBuf, lenRead;
     int ret;
@@ -1003,12 +1004,13 @@ xmlSecOpenSSLX509NameWrite(X509_NAME* nm) {
         goto done;
     }
 
-    lenBuf = BIO_pending(mem);
-    if(lenBuf <= 0) {
+    memBufSize = BIO_pending(mem);
+    if(memBufSize <= 0) {
         xmlSecOpenSSLError("BIO_pending", NULL);
         goto done;
     }
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(lenBuf, sizeBuf, goto done, NULL);
+    XMLSEC_SAFE_CAST_LONG_TO_SIZE(memBufSize, sizeBuf, goto done, NULL);
+    XMLSEC_SAFE_CAST_LONG_TO_INT(memBufSize, lenBuf, goto done, NULL);
 
     buf = (xmlChar *)xmlMalloc(sizeBuf + 1);
     if(buf == NULL) {

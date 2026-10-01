@@ -285,15 +285,19 @@ xmlSecMSCngX509CrlDerRead(xmlSecByte* buf, xmlSecSize size) {
  */
 static int
 xmlSecMSCngX509CertGetTime(FILETIME in, time_t* out) {
+    LONGLONG result;
+
     xmlSecAssert2(out != NULL, -1);
 
-    *out = in.dwHighDateTime;
-    *out <<= 32;
-    *out |= in.dwLowDateTime;
+    result = in.dwHighDateTime;
+    result = (result) << 32;
+    result |= in.dwLowDateTime;
     /* 100 nanoseconds -> seconds */
-    *out /= 10000;
+    result /= 10000000;
     /* 1601-01-01 epoch -> 1970-01-01 epoch */
-    *out -= 11644473600000;
+    result -= 11644473600;
+
+    (*out) = (time_t)result;
 
     return(0);
 }
@@ -303,7 +307,6 @@ xmlSecMSCngKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data,
     xmlSecKeyPtr key, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecMSCngX509DataCtxPtr ctx;
     xmlSecKeyDataStorePtr store;
-    PCCERT_CONTEXT cert;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataX509Id), -1);
     xmlSecAssert2(key != NULL, -1);
@@ -329,18 +332,13 @@ xmlSecMSCngKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data,
         return(-1);
     }
 
-    cert = xmlSecMSCngX509StoreVerify(store, ctx->hMemStore, keyInfoCtx);
-    if(cert != NULL) {
-        int ret;
+    /* the cert will be owned by ctx (xmlSecMSCngX509StoreVerify returns cert
+     * that must be freed) */
+    ctx->cert = xmlSecMSCngX509StoreVerify(store, ctx->hMemStore, keyInfoCtx);
+    if(ctx->cert != NULL) {
         PCCERT_CONTEXT certCopy;
         xmlSecKeyDataPtr keyValue = NULL;
-
-        ctx->cert = CertDuplicateCertificateContext(cert);
-        if(ctx->cert == NULL) {
-            xmlSecMSCngLastError("CertDuplicateCertificateContext",
-                xmlSecKeyDataGetName(data));
-            return(-1);
-        }
+        int ret;
 
         /* copy the certificate, so it can be adopted according to the key data
          * type */
@@ -356,6 +354,7 @@ xmlSecMSCngKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data,
             if(keyValue == NULL) {
                 xmlSecInternalError("xmlSecMSCngCertAdopt",
                     xmlSecKeyDataGetName(data));
+                CertFreeCertificateContext(certCopy);
                 return(-1);
             }
         } else if((keyInfoCtx->keyReq.keyType & xmlSecKeyDataTypePublic) != 0) {
@@ -363,9 +362,11 @@ xmlSecMSCngKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data,
             if(keyValue == NULL) {
                 xmlSecInternalError("xmlSecMSCngCertAdopt",
                     xmlSecKeyDataGetName(data));
+                CertFreeCertificateContext(certCopy);
                 return(-1);
             }
         }
+        certCopy = NULL; /* owned by keyValue now */
 
         /* verify that keyValue matches the key requirements */
         if(xmlSecKeyReqMatchKeyValue(&(keyInfoCtx->keyReq), keyValue) != 1) {

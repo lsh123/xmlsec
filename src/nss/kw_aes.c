@@ -325,6 +325,14 @@ xmlSecNssKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         xmlSecInternalError("xmlSecTransformKWAesSetKey", xmlSecTransformGetName(transform));
         return(-1);
     }
+
+    /* the cached symmetric key was created with the previous key material;
+       release it so it is re-created with the new key on the next block operation */
+    if(ctx->aesKey != NULL) {
+        PK11_FreeSymKey(ctx->aesKey);
+        ctx->aesKey = NULL;
+    }
+
     return(0);
 }
 
@@ -409,7 +417,7 @@ xmlSecNSSKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * in, 
     xmlSecAssert2(ctx != NULL, -1);
 
     /* create key if needed */
-    ret = xmlSecNSSKWAesEnsureKey(ctx, 1); /* encrypt */
+    ret = xmlSecNSSKWAesEnsureKey(ctx, 0); /* decrypt */
     if(ret < 0) {
         xmlSecInternalError("xmlSecNSSKWAesEnsureKey", NULL);
         return(-1);

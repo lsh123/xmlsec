@@ -46,7 +46,6 @@
 #define X509_CRL_get0_nextUpdate(crl)      X509_CRL_get_nextUpdate((crl))
 #define X509_get0_notBefore(x509)          X509_get_notBefore((x509))
 #define X509_get0_notAfter(x509)           X509_get_notAfter((x509))
-#define X509_STORE_CTX_get_by_subject      X509_STORE_get_by_subject
 #define X509_REVOKED_get0_serialNumber(r)  (((r) != NULL) ? ((r)->serialNumber) : (ASN1_INTEGER *)NULL)
 #define X509_OBJECT_new()                  (calloc(1, sizeof(X509_OBJECT)))
 #define X509_OBJECT_free(x)                { X509_OBJECT_free_contents(x); free(x); }
@@ -112,7 +111,6 @@ static inline int xmlSecOpenSSLCompatRand(unsigned char *buf, xmlSecSize size) {
 #define EVP_CipherFinal(ctx, out, out_len) EVP_CipherFinal_ex(ctx, out, out_len)
 #define EVP_read_pw_string(...)             (-1)
 
-#define X509_STORE_CTX_get_by_subject      X509_STORE_get_by_subject
 #define X509_OBJECT_new()                  (calloc(1, sizeof(X509_OBJECT)))
 #define X509_OBJECT_free(x)                { X509_OBJECT_free_contents(x); free(x); }
 
@@ -128,7 +126,6 @@ static inline int xmlSecOpenSSLCompatRand(unsigned char *buf, xmlSecSize size) {
 #define EVP_CIPHER_CTX_encrypting(x)       ((x)->encrypt)
 
 /* X509 stuff */
-#define X509_STORE_CTX_get_by_subject      X509_STORE_get_by_subject
 #define X509_OBJECT_new()                  (calloc(1, sizeof(X509_OBJECT)))
 #define X509_OBJECT_free(x)                { X509_OBJECT_free_contents(x); free(x); }
 #endif /* defined(LIBRESSL_VERSION_NUMBER) && (LIBRESSL_VERSION_NUMBER < 0x30500000L) && defined(XMLSEC_OPENSSL_API_110) */

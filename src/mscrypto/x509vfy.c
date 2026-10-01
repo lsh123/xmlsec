@@ -221,16 +221,33 @@ static BOOL
 xmlSecMSCryptoCheckRevocation(HCERTSTORE hStore, PCCERT_CONTEXT pCert) {
     PCCRL_CONTEXT pCrl = NULL;
     PCRL_ENTRY pCrlEntry = NULL;
+    BOOL ret;
 
     xmlSecAssert2(pCert != NULL, FALSE);
     xmlSecAssert2(hStore != NULL, FALSE);
 
+    /* CertEnumCRLsInStore automatically frees the previous CRL context (see
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcrlsinstore) */
     while((pCrl = CertEnumCRLsInStore(hStore, pCrl)) != NULL) {
-        if (CertFindCertificateInCRL(pCert, pCrl, 0, NULL, &pCrlEntry) && (pCrlEntry != NULL)) {
-            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL,
-                             "CertFindCertificateInCRL: cert found in crl list");
+        /* pCrlEntry will point to the entry for the certificate in the CRL if it exists, it doesn't need
+         * to be freed manually (see https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certfindcertificateincrl) */
+        ret = CertFindCertificateInCRL(pCert, pCrl, 0, NULL, &pCrlEntry);
+        if(ret == FALSE) {
+            /* Per MSDN, CertFindCertificateInCRL returns TRUE when the CRL was searched
+             * (with pCrlEntry set to NULL if the cert is not listed) and FALSE only when
+             * the search could not be performed, so fail closed instead of skipping the
+             * CRL. */
+            xmlSecMSCryptoError("CertFindCertificateInCRL", NULL);
+            CertFreeCRLContext(pCrl);
             return(FALSE);
         }
+        if(pCrlEntry != NULL) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL,
+                             "CertFindCertificateInCRL: cert found in crl list");
+            CertFreeCRLContext(pCrl);
+            return(FALSE);
+        }
+        /* cert is not listed in this CRL, continue to the next CRL */
     }
 
     return(TRUE);

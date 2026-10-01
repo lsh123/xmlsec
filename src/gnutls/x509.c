@@ -1028,6 +1028,7 @@ xmlSecGnuTLSX509CertGetKey(gnutls_x509_crt_t cert) {
             err = gnutls_x509_crt_get_pk_rsa_raw(cert, &m, &e);
             if(err != GNUTLS_E_SUCCESS) {
                 xmlSecGnuTLSError("gnutls_x509_crt_get_pk_rsa_raw", err, NULL);
+                xmlSecKeyDataDestroy(data);
                 return(NULL);
             }
 
@@ -1036,6 +1037,7 @@ xmlSecGnuTLSX509CertGetKey(gnutls_x509_crt_t cert) {
                 xmlSecInternalError("xmlSecGnuTLSKeyDataRsaAdoptPublicKey", NULL);
                 gnutls_free(m.data);
                 gnutls_free(e.data);
+                xmlSecKeyDataDestroy(data);
                 return(NULL);
             }
             /* m and e are owned by data now */
@@ -1057,6 +1059,7 @@ xmlSecGnuTLSX509CertGetKey(gnutls_x509_crt_t cert) {
             err = gnutls_x509_crt_get_pk_dsa_raw(cert, &p, &q, &g, &y);
             if(err != GNUTLS_E_SUCCESS) {
                 xmlSecGnuTLSError("gnutls_x509_crt_get_pk_dsa_raw", err, NULL);
+                xmlSecKeyDataDestroy(data);
                 return(NULL);
             }
 
@@ -1067,6 +1070,7 @@ xmlSecGnuTLSX509CertGetKey(gnutls_x509_crt_t cert) {
                 gnutls_free(q.data);
                 gnutls_free(g.data);
                 gnutls_free(y.data);
+                xmlSecKeyDataDestroy(data);
                 return(NULL);
             }
             /* p, q, g and y are owned by data now */

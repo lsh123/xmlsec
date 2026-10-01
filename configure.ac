@@ -1,10 +1,10 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT([xmlsec1],[1.2.42],[http://www.aleksey.com/xmlsec])
+AC_INIT([xmlsec1],[1.2.43],[http://www.aleksey.com/xmlsec])
 
 XMLSEC_PACKAGE=xmlsec1
 XMLSEC_VERSION_MAJOR=1
 XMLSEC_VERSION_MINOR=2
-XMLSEC_VERSION_SUBMINOR=42
+XMLSEC_VERSION_SUBMINOR=43
 XMLSEC_VERSION="$XMLSEC_VERSION_MAJOR.$XMLSEC_VERSION_MINOR.$XMLSEC_VERSION_SUBMINOR"
 XMLSEC_VERSION_INFO=`echo $XMLSEC_VERSION | awk -F. '{ printf "%d:%d:%d", $1+$2, $3, $2 }'`
 XMLSEC_VERSION_SAFE=`echo $XMLSEC_VERSION | sed 's/\./_/g'`
@@ -661,7 +661,7 @@ XMLSEC_CRYPTO_DISABLED_LIST=""
 dnl ==========================================================================
 dnl OpenSSL
 dnl ==========================================================================
-OPENSSL_MIN_VERSION="1.0.0"
+OPENSSL_MIN_VERSION="1.1.0"
 OPENSSL_INCLUDE_DIR="$COMMON_INCLUDE_DIR /usr/local/ssl/include"
 OPENSSL_LIB_DIR="$COMMON_LIB_DIR /usr/local/ssl/lib /usr/local/ssl/lib64"
 OPENSSL_CRYPTO_LIB="$XMLSEC_PACKAGE-openssl"

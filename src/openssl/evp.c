@@ -1070,9 +1070,19 @@ xmlSecOpenSSLKeyDataDsaGetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDsaP
        /* ignore the error -- public key doesn't have private component */
     }
 
-    /* TODO: implement check for private key on a token (similar to keys on ENGINE) */
-    /* https://github.com/openssl/openssl/issues/9467 */
-    dsaKeyValue->externalPrivKey = 1;
+    if(dsaKeyValue->priv_key == NULL) {
+        /*
+        * !!! HACK !!! Also see RSA key
+        * We assume here that engine *always* has private key.
+        * This might be incorrect but it seems that there is no
+        * way to ask engine if given key is private or not.
+        */
+#if !defined(OPENSSL_NO_ENGINE)
+        if(EVP_PKEY_get0_engine(pKey) != NULL) {
+            dsaKeyValue->externalPrivKey = 1;
+        }
+#endif /* !defined(OPENSSL_NO_ENGINE) */
+    }
 
     /* success */
     return(0);
@@ -1125,11 +1135,13 @@ xmlSecOpenSSLKeyDataDsaSetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDsaP
             xmlSecKeyDataGetName(data));
         goto done;
     }
-    ret = OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_PRIV_KEY, dsaKeyValue->priv_key);
-    if(ret != 1) {
-        xmlSecOpenSSLError("OSSL_PARAM_BLD_push_BN(priv_key)",
-            xmlSecKeyDataGetName(data));
-        goto done;
+    if(dsaKeyValue->priv_key != NULL) {
+        ret = OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_PRIV_KEY, dsaKeyValue->priv_key);
+        if(ret != 1) {
+            xmlSecOpenSSLError("OSSL_PARAM_BLD_push_BN(priv_key)",
+                xmlSecKeyDataGetName(data));
+            goto done;
+        }
     }
 
     params = OSSL_PARAM_BLD_to_param(param_bld);
@@ -1151,7 +1163,11 @@ xmlSecOpenSSLKeyDataDsaSetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDsaP
             xmlSecKeyDataGetName(data));
         goto done;
     }
-    ret = EVP_PKEY_fromdata(ctx, &pKey, EVP_PKEY_KEYPAIR, params);
+    /*
+     * If the private key is not present, import only the public key.
+     * Importing a keypair with an empty private key parameter fails.
+     */
+    ret = EVP_PKEY_fromdata(ctx, &pKey, (dsaKeyValue->priv_key != NULL) ? EVP_PKEY_KEYPAIR : EVP_PKEY_PUBLIC_KEY, params);
     if(ret <= 0) {
         xmlSecOpenSSLError("EVP_PKEY_fromdata",
             xmlSecKeyDataGetName(data));
@@ -2506,9 +2522,19 @@ xmlSecOpenSSLKeyDataRsaGetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueRsaP
         /* ignore the error since public keys don't have private component */
     }
 
-    /* TODO: implement check for private key on a token (similar to keys on ENGINE) */
-    /* https://github.com/openssl/openssl/issues/9467 */
-    rsaKeyValue->externalPrivKey = 1;
+    if(rsaKeyValue->d == NULL) {
+        /*
+        * !!! HACK !!! Also see DSA key
+        * We assume here that engine *always* has private key.
+        * This might be incorrect but it seems that there is no
+        * way to ask engine if given key is private or not.
+        */
+#if !defined(OPENSSL_NO_ENGINE)
+        if(EVP_PKEY_get0_engine(pKey) != NULL) {
+            rsaKeyValue->externalPrivKey = 1;
+        }
+#endif /* !defined(OPENSSL_NO_ENGINE) */
+    }
 
     /* success */
     return(0);
@@ -2545,11 +2571,13 @@ xmlSecOpenSSLKeyDataRsaSetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueRsaP
             xmlSecKeyDataGetName(data));
         goto done;
     }
-    ret = OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_RSA_D, rsaKeyValue->d);
-    if(ret != 1) {
-        xmlSecOpenSSLError("OSSL_PARAM_BLD_push_BN(d)",
-            xmlSecKeyDataGetName(data));
-        goto done;
+    if(rsaKeyValue->d != NULL) {
+        ret = OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_RSA_D, rsaKeyValue->d);
+        if(ret != 1) {
+            xmlSecOpenSSLError("OSSL_PARAM_BLD_push_BN(d)",
+                xmlSecKeyDataGetName(data));
+            goto done;
+        }
     }
 
     params = OSSL_PARAM_BLD_to_param(param_bld);
@@ -2571,7 +2599,11 @@ xmlSecOpenSSLKeyDataRsaSetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueRsaP
             xmlSecKeyDataGetName(data));
         goto done;
     }
-    ret = EVP_PKEY_fromdata(ctx, &pKey, EVP_PKEY_KEYPAIR, params);
+    /*
+     * If the private key is not present, import only the public key.
+     * Importing a keypair with an empty private key parameter fails.
+     */
+    ret = EVP_PKEY_fromdata(ctx, &pKey, (rsaKeyValue->d != NULL) ? EVP_PKEY_KEYPAIR : EVP_PKEY_PUBLIC_KEY, params);
     if(ret <= 0) {
         xmlSecOpenSSLError("EVP_PKEY_fromdata",
             xmlSecKeyDataGetName(data));

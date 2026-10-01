@@ -1033,7 +1033,7 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
     if(keyInfoCtx->curRetrievalMethodLevel >= keyInfoCtx->maxRetrievalMethodLevel) {
         xmlSecOtherError3(XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL, xmlSecKeyDataKlassGetName(id),
             "cur=%d;max=%d",keyInfoCtx->curEncryptedKeyLevel, keyInfoCtx->maxEncryptedKeyLevel);
-        goto done;
+        return(-1);
     }
     ++keyInfoCtx->curRetrievalMethodLevel;
 
@@ -1130,10 +1130,10 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
             goto done;
         }
     }
-    --keyInfoCtx->curRetrievalMethodLevel;
 
     res = 0;
 done:
+    --keyInfoCtx->curRetrievalMethodLevel;
     if(uri != NULL) {
         xmlFree(uri);
     }
@@ -1202,7 +1202,7 @@ xmlSecKeyDataRetrievalMethodReadXmlResult(xmlSecKeyDataId typeId, xmlSecKeyPtr k
         xmlFreeDoc(doc);
 
         /* laxi schema validation but application can disable it */
-        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_KEYVALUE_STOP_ON_UNKNOWN_CHILD) != 0) {
+        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_UNKNOWN_CHILD) != 0) {
             xmlSecUnexpectedNodeError(cur, xmlSecKeyDataKlassGetName(typeId));
             return(-1);
         }

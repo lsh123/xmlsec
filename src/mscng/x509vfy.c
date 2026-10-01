@@ -53,6 +53,13 @@ static PCCERT_CONTEXT xmlSecMSCngX509FindCertByIssuerNameAndSerial        (HCERT
                                                                            const xmlChar* issuerName,
                                                                            const xmlChar* issuerSerial);
 
+static int              xmlSecMSCngX509StoreVerifyCertificateOwn   (PCCERT_CONTEXT cert,
+                                                                    FILETIME* time,
+                                                                    HCERTSTORE trustedStore,
+                                                                    HCERTSTORE untrustedStore,
+                                                                    HCERTSTORE certStore,
+                                                                    xmlSecKeyDataStorePtr store);
+
 static void
 xmlSecMSCngX509StoreFinalize(xmlSecKeyDataStorePtr store) {
     xmlSecMSCngX509StoreCtxPtr ctx;
@@ -354,31 +361,241 @@ xmlSecMSCngX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCert,
 }
 
 /**
+ * xmlSecMSCngX509StoreIsCrlTimeValid:
+ * @crlCtx: the CRL context.
+ * @time: the time to check against (FILETIME); if NULL the time check is
+ * skipped.
+ *
+ * Checks whether @crlCtx is valid at @time (thisUpdate <= time <=
+ * nextUpdate). A zero nextUpdate means the CRL is valid until it is
+ * reissued.
+ *
+ * Returns: 1 if the CRL is time valid, 0 if it is not, or a negative value
+ * if an error occurs.
+ */
+static int
+xmlSecMSCngX509StoreIsCrlTimeValid(PCCRL_CONTEXT crlCtx, LPFILETIME time) {
+    xmlSecAssert2(crlCtx != NULL, -1);
+    xmlSecAssert2(crlCtx->pCrlInfo != NULL, -1);
+
+    if(time == NULL) {
+        return(1);
+    }
+
+    if(CompareFileTime(time, &(crlCtx->pCrlInfo->ThisUpdate)) < 0) {
+        return(0);
+    }
+
+    if((crlCtx->pCrlInfo->NextUpdate.dwLowDateTime != 0) ||
+            (crlCtx->pCrlInfo->NextUpdate.dwHighDateTime != 0)) {
+        if(CompareFileTime(time, &(crlCtx->pCrlInfo->NextUpdate)) > 0) {
+            return(0);
+        }
+    }
+
+    return(1);
+}
+
+/* depth counter for xmlSecMSCngX509StoreVerifyCrl; used to break the
+ * VerifyCrl -> VerifyCertificateOwn -> CheckRevocation -> VerifyCrl recursion */
+static int xmlSecMSCngX509StoreVerifyCrlDepth = 0;
+
+/**
+ * xmlSecMSCngX509StoreVerifyCrl:
+ * @store: the pointer to X509 key data store klass.
+ * @crl: the CRL to verify.
+ * @time: the time used for verification (can be NULL to skip time checks).
+ * @certStore: the store that may contain the intermediate certificates and
+ * CRLs (e.g. the store with the certificates from the document).
+ *
+ * Verifies the @crl signature against the trusted or untrusted store
+ * certificates.
+ *
+ * Returns: 1 if verified, 0 if not verified (or if the function is re-entered
+ * while a CRL is already being verified), or a negative value if an error
+ * occurs.
+ */
+static int
+xmlSecMSCngX509StoreVerifyCrl(xmlSecKeyDataStorePtr store, PCCRL_CONTEXT crl,
+        LPFILETIME time, HCERTSTORE certStore) {
+    xmlSecMSCngX509StoreCtxPtr ctx;
+    PCCERT_CONTEXT issuerCert = NULL;
+    BOOL verified = FALSE;
+    BOOL issuerFound = FALSE;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCngX509StoreId), -1);
+    xmlSecAssert2(crl != NULL, -1);
+    xmlSecAssert2(crl->pCrlInfo != NULL, -1);
+    xmlSecAssert2(certStore != NULL, -1);
+
+    /* prevent unbounded recursion: verifying the CRL issuer certificate (via
+     * xmlSecMSCngX509StoreVerifyCertificateOwn) re-enters
+     * xmlSecMSCngCheckRevocation, which calls this function again. On re-entry
+     * report the CRL as unverified so that the revocation check of the issuer
+     * certificate is skipped instead of recursing indefinitely. */
+    if(xmlSecMSCngX509StoreVerifyCrlDepth > 0) {
+        return(0);
+    }
+    ++xmlSecMSCngX509StoreVerifyCrlDepth;
+
+    ctx = xmlSecMSCngX509StoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->trusted != NULL, -1);
+    xmlSecAssert2(ctx->untrusted != NULL, -1);
+
+    /* find the issuer certificate in the trusted store and verify the CRL signature */
+    issuerCert = CertFindCertificateInStore(ctx->trusted,
+        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+        0,
+        CERT_FIND_SUBJECT_NAME,
+        &(crl->pCrlInfo->Issuer),
+        NULL);
+    while(issuerCert != NULL) {
+        issuerFound = TRUE;
+        verified = CryptVerifyCertificateSignatureEx(
+            (HCRYPTPROV_LEGACY)NULL,
+            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+            CRYPT_VERIFY_CERT_SIGN_SUBJECT_CRL, (void*)crl,
+            CRYPT_VERIFY_CERT_SIGN_ISSUER_CERT, (void*)issuerCert,
+            0, NULL);
+        if(verified == TRUE) {
+            CertFreeCertificateContext(issuerCert);
+            issuerCert = NULL;
+            break;
+        }
+        /* try next matching cert; CertFindCertificateInStore frees issuerCert
+         * (see https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certfindcertificateinstore) */
+        issuerCert = CertFindCertificateInStore(ctx->trusted,
+            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+            0,
+            CERT_FIND_SUBJECT_NAME,
+            &(crl->pCrlInfo->Issuer),
+            issuerCert);
+    }
+
+    /* if not verified via the trusted store, also search the untrusted store
+     * (e.g. intermediate CAs) */
+    if(verified == FALSE) {
+        issuerCert = CertFindCertificateInStore(ctx->untrusted,
+            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+            0,
+            CERT_FIND_SUBJECT_NAME,
+            &(crl->pCrlInfo->Issuer),
+            NULL);
+        while(issuerCert != NULL) {
+            issuerFound = TRUE;
+            if(CryptVerifyCertificateSignatureEx(
+                    (HCRYPTPROV_LEGACY)NULL,
+                    X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                    CRYPT_VERIFY_CERT_SIGN_SUBJECT_CRL, (void*)crl,
+                    CRYPT_VERIFY_CERT_SIGN_ISSUER_CERT, (void*)issuerCert,
+                    0, NULL) == TRUE) {
+                /* verify that the issuer cert itself chains to a trusted root */
+                ret = xmlSecMSCngX509StoreVerifyCertificateOwn(issuerCert,
+                    time, ctx->trusted, ctx->untrusted, certStore, store);
+                if(ret < 0) {
+                    xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateOwn", NULL);
+                    CertFreeCertificateContext(issuerCert);
+                    ret = -1;
+                    goto done;
+                }
+                if(ret == 0) {
+                    verified = TRUE;
+                    CertFreeCertificateContext(issuerCert);
+                    issuerCert = NULL;
+                    break;
+                }
+            }
+            /* try next matching cert; CertFindCertificateInStore frees issuerCert
+             * (see https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certfindcertificateinstore) */
+            issuerCert = CertFindCertificateInStore(ctx->untrusted,
+                X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                0,
+                CERT_FIND_SUBJECT_NAME,
+                &(crl->pCrlInfo->Issuer),
+                issuerCert);
+        }
+    }
+
+    if(verified == FALSE) {
+        if(issuerFound) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+                xmlSecKeyDataStoreGetName(store),
+                "CRL signature verification failed");
+        } else {
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_FOUND,
+                xmlSecKeyDataStoreGetName(store),
+                "CRL issuer certificate not found in the trusted or untrusted stores");
+        }
+        ret = 0;
+    } else {
+        /* done, the CRL signature is valid; CRL time validity is checked by the
+         * caller (xmlSecMSCngCheckRevocation) */
+        ret = 1;
+    }
+
+done:
+    --xmlSecMSCngX509StoreVerifyCrlDepth;
+    return(ret);
+}
+
+/**
  * xmlSecMSCngCheckRevocation:
  * @store: may contain a CRL
  * @cert: the certificate that is revoked (or not)
+ * @time: the time to check the CRL validity at (can be NULL)
+ * @keyDataStore: the X509 key data store, used to verify the CRL signature
  *
- * Checks if @cert is in the CRL of @store.
+ * Checks if @cert is in a valid CRL of @store.
  *
- * Returns: 0 on success or a negative value if an errors occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 static int
-xmlSecMSCngCheckRevocation(HCERTSTORE store, PCCERT_CONTEXT cert) {
+xmlSecMSCngCheckRevocation(HCERTSTORE store, PCCERT_CONTEXT cert,
+        LPFILETIME time, xmlSecKeyDataStorePtr keyDataStore) {
     PCCRL_CONTEXT crlCtx = NULL;
     PCRL_ENTRY crlEntry = NULL;
+    int isCrlTimeValid;
     int ret;
 
     xmlSecAssert2(store != NULL, -1);
     xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(keyDataStore != NULL, -1);
 
+    /* CertEnumCRLsInStore automatically frees the previous CRL context (see
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcrlsinstore) */
     while((crlCtx = CertEnumCRLsInStore(store, crlCtx)) != NULL) {
+        isCrlTimeValid = xmlSecMSCngX509StoreIsCrlTimeValid(crlCtx, time);
+        if(isCrlTimeValid < 0) {
+            xmlSecInternalError("xmlSecMSCngX509StoreIsCrlTimeValid", NULL);
+            CertFreeCRLContext(crlCtx);
+            return(-1);
+        } else if(isCrlTimeValid == 0) {
+            continue;
+        }
+
+        /* verify the CRL signature; skip CRLs that cannot be verified */
+        ret = xmlSecMSCngX509StoreVerifyCrl(keyDataStore, crlCtx, time, store);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecMSCngX509StoreVerifyCrl", NULL);
+            CertFreeCRLContext(crlCtx);
+            return(-1);
+        } else if(ret == 0) {
+            continue;
+        }
+
         ret = CertFindCertificateInCRL(cert,
             crlCtx,
             0,
             NULL,
             &crlEntry);
         if(ret == 0) {
-            continue;
+            /* CertFindCertificateInCRL returns FALSE only on a genuine failure (not when
+             * the cert is simply not listed), so fail closed instead of skipping the CRL. */
+            xmlSecMSCngLastError("CertFindCertificateInCRL", NULL);
+            CertFreeCRLContext(crlCtx);
+            return(-1);
         }
         if(crlEntry == NULL) {
             continue;
@@ -386,6 +603,7 @@ xmlSecMSCngCheckRevocation(HCERTSTORE store, PCCERT_CONTEXT cert) {
 
         xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL,
             "cert found in CRL");
+        CertFreeCRLContext(crlCtx);
         return(-1);
     }
 
@@ -665,7 +883,7 @@ xmlSecMSCngX509StoreVerifyCertificateOwn(PCCERT_CONTEXT cert,
             goto done;
         }
 
-        ret = xmlSecMSCngCheckRevocation(certStore, currentCert);
+        ret = xmlSecMSCngCheckRevocation(certStore, currentCert, time, store);
         if(ret < 0) {
             xmlSecInternalError("xmlSecMSCngCheckRevocation",
                 xmlSecKeyDataStoreGetName(store));
@@ -1228,11 +1446,11 @@ xmlSecMSCngX509FindCert(HCERTSTORE store, xmlChar* subjectName,
         xmlFree(wcSubjectName);
     }
 
-    if(issuerName != NULL && issuerSerial != NULL) {
+    if((cert == NULL) && (issuerName != NULL) && (issuerSerial != NULL)) {
         cert = xmlSecMSCngX509FindCertByIssuerNameAndSerial(store, issuerName, issuerSerial);
     }
 
-    if((ski != NULL) && (skiSize > 0)) {
+    if((cert == NULL) && (ski != NULL) && (skiSize > 0)) {
         cert = xmlSecMSCngX509FindCertBySki(store, ski, skiSize);
     }
 

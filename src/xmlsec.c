@@ -32,14 +32,16 @@
 
 #include "cast_helpers.h"
 
-/*
- * Custom external entity handler, denies all files except the initial
- * document we're parsing (input_id == 1)
- */
 /* default external entity loader, pointer saved during xmlInit */
 static xmlExternalEntityLoader
 xmlSecDefaultExternalEntityLoader = NULL;
 
+/* new parser option XML_PARSE_NO_XXE available since 2.13.0 */
+#if LIBXML_VERSION < 21300
+/*
+ * Custom external entity handler, denies all files except the initial
+ * document we're parsing (input_id == 1)
+ */
 /*
  * xmlSecNoXxeExternalEntityLoader:
  * @URL:        the URL for the entity to load
@@ -56,12 +58,17 @@ xmlSecNoXxeExternalEntityLoader(const char *URL, const char *ID,
         return(NULL);
     }
     if (ctxt->input_id == 1) {
+        if (xmlSecDefaultExternalEntityLoader == NULL) {
+            xmlSecXmlError("xmlSecNoXxeExternalEntityLoader", NULL);
+            return(NULL);
+        }
         return xmlSecDefaultExternalEntityLoader((const char *) URL, ID, ctxt);
     }
     xmlSecXmlError2("xmlSecNoXxeExternalEntityLoader", NULL,
                     "illegal external entity='%s'", xmlSecErrorsSafeString(URL));
     return(NULL);
 }
+#endif /* LIBXML_VERSION < 21300 */
 
 /*
  * xmlSecSetExternalEntityLoader:
@@ -90,7 +97,11 @@ xmlSecSetExternalEntityLoader(xmlExternalEntityLoader entityLoader) {
 int
 xmlSecInit(void) {
     xmlSecErrorsInit();
-    xmlSecIOInit();
+
+    if(xmlSecIOInit() < 0) {
+        xmlSecInternalError("xmlSecIOInit", NULL);
+        return(-1);
+    }
 
 #ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
     if(xmlSecCryptoDLInit() < 0) {
@@ -113,7 +124,12 @@ xmlSecInit(void) {
     if (!xmlSecDefaultExternalEntityLoader) {
         xmlSecDefaultExternalEntityLoader = xmlGetExternalEntityLoader();
     }
+
+    /* new parser option XML_PARSE_NO_XXE available since 2.13.0 and is
+     * set as a default option for parsers */
+#if LIBXML_VERSION < 21300
     xmlSetExternalEntityLoader(xmlSecNoXxeExternalEntityLoader);
+#endif /* LIBXML_VERSION < 21300 */
 
 
     /* we use rand() function to generate id attributes */
@@ -148,6 +164,13 @@ xmlSecShutdown(void) {
 #ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
 done:
 #endif /* XMLSEC_NO_CRYPTO_DYNAMIC_LOADING */
+
+#if LIBXML_VERSION < 21300
+    /* restore the original external entity loader */
+    if (xmlSecDefaultExternalEntityLoader != NULL) {
+        xmlSetExternalEntityLoader(xmlSecDefaultExternalEntityLoader);
+    }
+#endif /* LIBXML_VERSION < 21300 */
 
     xmlSecIOShutdown();
     xmlSecErrorsShutdown();

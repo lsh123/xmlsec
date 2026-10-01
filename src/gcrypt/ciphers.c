@@ -302,13 +302,22 @@ xmlSecGCryptBlockCipherCtxFinal(xmlSecGCryptBlockCipherCtxPtr ctx,
     }
 
     if(encrypt == 0) {
-        /* check padding */
-        if(inSize < outBuf[blockSize - 1]) {
+        xmlSecSize padding;
+
+        /* check padding.
+         *
+         * Only the padding length carried in the last byte is validated (it must be
+         * non-zero and not exceed the block size); the remaining padding bytes are not
+         * checked for equality and the check is not constant-time. This simplified
+         * validation is a deliberate project-wide design choice, matching the OpenSSL
+         * backend. See XML Encryption specification for details. */
+        padding = (xmlSecSize)outBuf[blockSize - 1];
+        if((padding == 0) || (inSize < padding)) {
             xmlSecInvalidSizeLessThanError("Input data padding",
-                    inSize, outBuf[blockSize - 1], cipherName);
+                    inSize, padding, cipherName);
             return(-1);
         }
-        outSize2 = inSize - outBuf[blockSize - 1];
+        outSize2 = inSize - padding;
     } else {
         outSize2 = inSize;
     }

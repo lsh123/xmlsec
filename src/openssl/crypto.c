@@ -42,6 +42,10 @@ static void             xmlSecOpenSSLErrorsShutdown             (void);
 static xmlSecCryptoDLFunctionsPtr gXmlSecOpenSSLFunctions = NULL;
 static xmlChar* gXmlSecOpenSSLTrustedCertsFolder = NULL;
 
+#ifdef XMLSEC_OPENSSL_API_300
+static OSSL_LIB_CTX* gXmlSecOpenSSLLibCtx = NULL;
+#endif /* XMLSEC_OPENSSL_API_300 */
+
 #if !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_NO_ERR)
 
 #define XMLSEC_OPENSSL_ERRORS_FUNCTION                  0
@@ -373,6 +377,12 @@ xmlSecOpenSSLInit (void)  {
  */
 int
 xmlSecOpenSSLShutdown(void) {
+#ifdef XMLSEC_OPENSSL_API_300
+    /* drop the reference to the caller-owned library context so that
+     * it can be safely freed after shutdown */
+    gXmlSecOpenSSLLibCtx = NULL;
+#endif /* XMLSEC_OPENSSL_API_300 */
+
     xmlSecOpenSSLSetDefaultTrustedCertsFolder(NULL);
     xmlSecOpenSSLErrorsShutdown();
     return(0);
@@ -565,8 +575,6 @@ xmlSecOpenSSLGetDefaultTrustedCertsFolder(void) {
 }
 
 #ifdef XMLSEC_OPENSSL_API_300
-
-static OSSL_LIB_CTX* gXmlSecOpenSSLLibCtx = NULL;
 
 /**
  * xmlSecOpenSSLSetLibCtx:

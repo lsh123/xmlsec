@@ -1397,6 +1397,12 @@ xmlSecTransformPump(xmlSecTransformPtr left, xmlSecTransformPtr right, xmlSecTra
                                 xmlSecTransformGetName(left));
             return(-1);
        }
+       if(nodes == NULL) {
+            xmlSecInternalError2("xmlSecTransformPopXml", NULL,
+                                "left transform \"%s\" returned no nodes",
+                                xmlSecErrorsSafeString(xmlSecTransformGetName(left)));
+            return(-1);
+       }
 
        ret = xmlSecTransformPushXml(right, nodes, transformCtx);
        if(ret < 0) {
@@ -1429,6 +1435,7 @@ xmlSecTransformPump(xmlSecTransformPtr left, xmlSecTransformPtr right, xmlSecTra
         xmlSecInvalidTransfromError2(left,
                     "transforms input/output data formats do not match, right transform=\"%s\"",
                     xmlSecErrorsSafeString(xmlSecTransformGetName(right)));
+        return(-1);
     }
     return(0);
 }
@@ -2562,6 +2569,7 @@ xmlSecTransformIOBufferClose(xmlSecTransformIOBufferPtr buffer) {
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformPushBin",
                                 xmlSecTransformGetName(buffer->transform));
+            xmlSecTransformIOBufferDestroy(buffer);
             return(-1);
         }
     }

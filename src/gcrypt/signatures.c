@@ -909,12 +909,17 @@ xmlSecGCryptRsaPkcs1PkSign(int digest, xmlSecKeyDataPtr key_data,
     int dgstLen;
     int ret;
     int res = -1;
+    xmlSecSize keySize;
 
     xmlSecAssert2(key_data != NULL, -1);
     xmlSecAssert2(xmlSecGCryptKeyDataRsaGetPrivateKey(key_data) != NULL, -1);
     xmlSecAssert2(dgst != NULL, -1);
     xmlSecAssert2(dgstSize > 0, -1);
     xmlSecAssert2(out != NULL, -1);
+
+    keySize = xmlSecKeyDataGetSize(key_data);
+    keySize = (keySize + 7) / 8;
+    xmlSecAssert2(keySize > 0, -1);
 
     /* get the current digest */
     XMLSEC_SAFE_CAST_SIZE_TO_INT(dgstSize, dgstLen, return(-1), xmlSecGCryptKeyDataRsaGetPrivateKey(key_data));
@@ -965,8 +970,9 @@ xmlSecGCryptRsaPkcs1PkSign(int digest, xmlSecKeyDataPtr key_data,
         goto done;
     }
 
-    /* write out */
-    ret = xmlSecGCryptAppendMpi(m_sig, out, 0);
+    /* write out, padded to the modulus size (an RSA signature is exactly
+       the size of the modulus) */
+    ret = xmlSecGCryptAppendMpi(m_sig, out, keySize);
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptAppendMpi", NULL);
         goto done;
@@ -1000,6 +1006,7 @@ xmlSecGCryptRsaPkcs1PkVerify(int digest, xmlSecKeyDataPtr key_data,
     gpg_error_t err;
     int dgstLen;
     int res = -1;
+    xmlSecSize keySize;
 
     xmlSecAssert2(key_data != NULL, -1);
     xmlSecAssert2(xmlSecGCryptKeyDataRsaGetPublicKey(key_data) != NULL, -1);
@@ -1007,6 +1014,17 @@ xmlSecGCryptRsaPkcs1PkVerify(int digest, xmlSecKeyDataPtr key_data,
     xmlSecAssert2(dgstSize > 0, -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(dataSize > 0, -1);
+
+    keySize = xmlSecKeyDataGetSize(key_data);
+    keySize = (keySize + 7) / 8;
+    xmlSecAssert2(keySize > 0, -1);
+
+    /* check signature size: an RSA signature is exactly the size of the modulus */
+    if(dataSize != keySize) {
+        xmlSecInternalError3("Invalid signature size", NULL,
+            "actual=" XMLSEC_SIZE_FMT "; expected=" XMLSEC_SIZE_FMT, dataSize, keySize);
+        goto done;
+    }
 
     /* get the current digest */
     XMLSEC_SAFE_CAST_SIZE_TO_INT(dgstSize, dgstLen, return(-1), NULL);

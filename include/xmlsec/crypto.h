@@ -51,6 +51,7 @@
 #ifdef XMLSEC_CRYPTO_GNUTLS
 #include <xmlsec/gnutls/app.h>
 #include <xmlsec/gnutls/crypto.h>
+#include <xmlsec/gnutls/x509.h>
 #include <xmlsec/gnutls/symbols.h>
 #else /* XMLSEC_CRYPTO_GNUTLS */
 #ifdef XMLSEC_CRYPTO_GCRYPT

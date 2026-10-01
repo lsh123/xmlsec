@@ -1381,14 +1381,14 @@ xmlSecAppVerifyFile(const char* filename) {
         goto done;
     }
 
-    res = 0;
-done:
-    /* print debug info if requested */
     if(repeats <= 1) {
-        xmlSecDSigReferenceCtxPtr dsigRefCtx;
-        xmlSecSize good, i, size;
         FILE* f;
 
+        /*
+         * Note: the output file must be opened before the "done:" label.
+         * Otherwise a failed open would "goto done" and re-enter this block,
+         * retrying the same failing open forever.
+         */
         f = xmlSecAppOpenFile(xmlSecAppCmdLineParamGetString(&outputParam));
         if(f == NULL) {
             fprintf(stderr,"Error: failed to open output file \"%s\"\n",
@@ -1396,6 +1396,14 @@ done:
             goto done;
         }
         xmlSecAppCloseFile(f);
+    }
+
+    res = 0;
+done:
+    /* print debug info if requested */
+    if(repeats <= 1) {
+        xmlSecDSigReferenceCtxPtr dsigRefCtx;
+        xmlSecSize good, i, size;
 
         switch(dsigCtx.status) {
             case xmlSecDSigStatusUnknown:
@@ -1415,7 +1423,7 @@ done:
             dsigRefCtx = (xmlSecDSigReferenceCtxPtr)xmlSecPtrListGetItem(&(dsigCtx.signedInfoReferences), i);
             if(dsigRefCtx == NULL) {
                 fprintf(stderr,"Error: reference ctx is null\n");
-                goto done;
+                goto done2;
             }
             if(dsigRefCtx->status == xmlSecDSigStatusSucceeded) {
                 ++good;
@@ -1429,7 +1437,7 @@ done:
             dsigRefCtx = (xmlSecDSigReferenceCtxPtr)xmlSecPtrListGetItem(&(dsigCtx.manifestReferences), i);
             if(dsigRefCtx == NULL) {
                 fprintf(stderr,"Error: reference ctx is null\n");
-                goto done;
+                goto done2;
             }
             if(dsigRefCtx->status == xmlSecDSigStatusSucceeded) {
                 ++good;
@@ -1440,6 +1448,8 @@ done:
 
         xmlSecAppPrintDSigCtx(&dsigCtx);
     }
+
+done2:
     xmlSecDSigCtxFinalize(&dsigCtx);
     if(data != NULL) {
         xmlSecAppXmlDataDestroy(data);

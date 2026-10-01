@@ -161,7 +161,7 @@ xmlSecNssKeysStoreInitialize(xmlSecKeyStorePtr store) {
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecNssKeysStoreId), -1);
 
     ss = xmlSecNssKeysStoreGetCtx(store);
-    xmlSecAssert2(((ss == NULL) || (*ss == NULL)), -1);
+    xmlSecAssert2(((ss != NULL) && (*ss == NULL)), -1);
 
     *ss = xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId);
     if(*ss == NULL) {
@@ -257,7 +257,7 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
         key = xmlSecKeyCreate();
         if (key == NULL) {
             xmlSecInternalError("xmlSecKeyCreate", NULL);
-            return (NULL);
+            goto done;
         }
 
         x509Data = xmlSecKeyDataCreate(xmlSecNssKeyDataX509Id);

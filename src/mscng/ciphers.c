@@ -1005,7 +1005,13 @@ xmlSecMSCngCBCBlockCipherCtxFinal(xmlSecMSCngBlockCipherCtxPtr ctx,
     }
 
     if(encrypt == 0) {
-        /* check padding */
+        /* check padding: only the final padding byte is range-checked since
+         * the XML Encryption spec (https://www.w3.org/TR/xmlenc-core1/#sec-Padding)
+         * doesn't follow PKCS#5/PKCS#7  padding. */
+        if(outBuf[blockSize - 1] == 0) {
+            xmlSecInvalidSizeOtherError("Input data padding is zero", cipherName);
+            return(-1);
+        }
         if(inSize < outBuf[blockSize - 1]) {
             xmlSecInvalidSizeLessThanError("Input data padding", inSize, outBuf[blockSize - 1], cipherName);
             return(-1);
@@ -1044,6 +1050,7 @@ xmlSecMSCngGCMBlockCipherCtxFinal(xmlSecMSCngBlockCipherCtxPtr ctx,
     DWORD dwInSize, dwOutSize, dwCLen;
     int ret;
     NTSTATUS status;
+    static xmlSecByte dummy = 0;
 
     /* unreferenced parameter */
     (void)transformCtx;
@@ -1069,6 +1076,10 @@ xmlSecMSCngGCMBlockCipherCtxFinal(xmlSecMSCngBlockCipherCtxPtr ctx,
         XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inBufSize, dwInSize, return(-1), cipherName);
         outBuf = xmlSecBufferGetData(out) + outBufSize;
         dwOutSize = dwInSize;
+        /* BCryptEncrypt requires a non-NULL pointer even for zero-length input */
+        if((dwInSize == 0) && (inBuf == NULL)) {
+            inBuf = &dummy;
+        }
 
         status = BCryptEncrypt(ctx->hKey,
             inBuf,
@@ -1128,6 +1139,10 @@ xmlSecMSCngGCMBlockCipherCtxFinal(xmlSecMSCngBlockCipherCtxPtr ctx,
         XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inBufSize, dwInSize, return(-1), cipherName);
         outBuf = xmlSecBufferGetData(out) + outBufSize;
         dwOutSize = dwInSize;
+        /* BCryptDecrypt requires a non-NULL pointer even for zero-length input */
+        if((dwOutSize == 0) && (outBuf == NULL)) {
+            outBuf = &dummy;
+        }
 
         status = BCryptDecrypt(ctx->hKey,
             inBuf,

@@ -524,7 +524,10 @@ xmlSecEncCtxUriEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, const xmlChar *u
  */
 int
 xmlSecEncCtxDecrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
+    static const xmlSecByte empty[] = {0};
     xmlSecBufferPtr buffer;
+    const xmlSecByte* bufferData;
+    xmlSecSize bufferSize;
     int ret;
 
     xmlSecAssert2(encCtx != NULL, -1);
@@ -537,18 +540,27 @@ xmlSecEncCtxDecrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
         return(-1);
     }
 
+    /* Note: xmlSecBufferGetData() returns NULL for an empty buffer and the
+     * xmlSecReplaceNodeBuffer*() helpers reject a NULL buffer via an assert */
+    bufferData = xmlSecBufferGetData(buffer);
+    bufferSize = xmlSecBufferGetSize(buffer);
+    if(bufferData == NULL) {
+        bufferData = empty;
+        bufferSize = 0;
+    }
+
     /* replace original node if requested */
     if((encCtx->type != NULL) && xmlStrEqual(encCtx->type, xmlSecTypeEncElement)) {
         /* check if we need to return the replaced node */
         if((encCtx->flags & XMLSEC_ENC_RETURN_REPLACED_NODE) != 0) {
-                ret = xmlSecReplaceNodeBufferAndReturn(node, xmlSecBufferGetData(buffer),  xmlSecBufferGetSize(buffer), &(encCtx->replacedNodeList));
+                ret = xmlSecReplaceNodeBufferAndReturn(node, bufferData,  bufferSize, &(encCtx->replacedNodeList));
                 if(ret < 0) {
                     xmlSecInternalError("xmlSecReplaceNodeBufferAndReturn",
                                         xmlSecNodeGetName(node));
                     return(-1);
                 }
         } else {
-                ret = xmlSecReplaceNodeBuffer(node, xmlSecBufferGetData(buffer),  xmlSecBufferGetSize(buffer));
+                ret = xmlSecReplaceNodeBuffer(node, bufferData,  bufferSize);
                 if(ret < 0) {
                     xmlSecInternalError("xmlSecReplaceNodeBuffer",
                                         xmlSecNodeGetName(node));
@@ -562,14 +574,14 @@ xmlSecEncCtxDecrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 
         /* check if we need to return the replaced node */
         if((encCtx->flags & XMLSEC_ENC_RETURN_REPLACED_NODE) != 0) {
-                ret = xmlSecReplaceNodeBufferAndReturn(node, xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer), &(encCtx->replacedNodeList));
+                ret = xmlSecReplaceNodeBufferAndReturn(node, bufferData, bufferSize, &(encCtx->replacedNodeList));
                 if(ret < 0) {
                     xmlSecInternalError("xmlSecReplaceNodeBufferAndReturn",
                                         xmlSecNodeGetName(node));
                     return(-1);
                 }
         } else {
-            ret = xmlSecReplaceNodeBuffer(node, xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer));
+            ret = xmlSecReplaceNodeBuffer(node, bufferData, bufferSize);
                 if(ret < 0) {
                     xmlSecInternalError("xmlSecReplaceNodeBuffer",
                                         xmlSecNodeGetName(node));
@@ -888,6 +900,11 @@ xmlSecEncCtxCipherDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
             }
         }
         cur = xmlSecGetNextElementNode(cur->next);
+    } else if(cur == NULL) {
+        /* the XML-Enc schema requires CipherData to contain either a CipherValue
+         * or a CipherReference child; an empty CipherData is invalid */
+        xmlSecInvalidDataError("CipherData node must contain either a CipherValue or a CipherReference node", NULL);
+        return(-1);
     }
 
     if(cur != NULL) {

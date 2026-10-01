@@ -342,6 +342,10 @@ xmlSecBufferAppend(xmlSecBufferPtr buf, const xmlSecByte* data, xmlSecSize size)
 
     if(size > 0) {
         xmlSecAssert2(data != NULL, -1);
+        if(buf->size > XMLSEC_SIZE_MAX - size) {
+            xmlSecInvalidSizeError("size", size, (XMLSEC_SIZE_MAX - buf->size), NULL);
+            return(-1);
+        }
 
         ret = xmlSecBufferSetMaxSize(buf, buf->size + size);
         if(ret < 0) {
@@ -375,6 +379,10 @@ xmlSecBufferPrepend(xmlSecBufferPtr buf, const xmlSecByte* data, xmlSecSize size
 
     if(size > 0) {
         xmlSecAssert2(data != NULL, -1);
+        if(buf->size > XMLSEC_SIZE_MAX - size) {
+            xmlSecInvalidSizeError("size", size, (XMLSEC_SIZE_MAX - buf->size), NULL);
+            return(-1);
+        }
 
         ret = xmlSecBufferSetMaxSize(buf, buf->size + size);
         if(ret < 0) {

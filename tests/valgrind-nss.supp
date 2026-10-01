@@ -16,72 +16,13 @@
 #  }
 
 ##----------------------------------------------------------------------##
-{
-   NSS memcmp/prng_RandomUpdate(Cond)
-   Memcheck:Cond
-   fun:memcmp
-   fun:prng_RandomUpdate
-}
-
-{
-   NSS alg_fips*/prng_RandomUpdate(Cond)
-   Memcheck:Cond
-   fun:alg_fips*
-   fun:prng_RandomUpdate
-}
-
-{
-   NSS sec_asn1d_parse_leaf/SEC_ASN1*(Cond)
-   Memcheck:Cond
-   fun:sec_asn1d*
-   fun:SEC_ASN1*
-}
-
-{
-   NSS DES_Do1Block(Value4)
-   Memcheck:Value4
-   fun:DES_Do1Block
-   fun:DES_EDE*
-}
-
-{
-   NSS memcmp/prng(Value4)
-   Memcheck:Value4
-   fun:memcmp
-   fun:*prng*
-}
-
-{
-   NSS *memset/SECITEM*(Value4)
-   Memcheck:Value4
-   fun:*mem*
-   fun:*SECITEM*
-}
-
-{
-   NSS *FreeArena*(Cond)
-   Memcheck:Cond
-   fun:*Arena*
-   fun:*Arena*
-}
-
-{
-   NSS rijndael*(Value4)
-   Memcheck:Value4
-   fun:rijndael*
-}
-
-{
-   NSS_InitReadWrite -> malloc (definite)
-   Memcheck:Leak
-   match-leak-kinds: definite
-   fun:malloc
-   ...
-   fun:NSS_InitReadWrite
-   ...
-   fun:main
-}
-
+#
+# NSS keeps one-time initialisation state (crypto module setup,
+# PKCS#11 token configuration) in process-global variables until exit.
+# The allocations are made during NSS_InitReadWrite /
+# PK11_ConfigurePKCS11 and are not released by any public API, so they
+# show up as a "still reachable" residual in every xmlsec1 invocation.
+#
 {
    NSS_InitReadWrite -> malloc (reachable)
    Memcheck:Leak

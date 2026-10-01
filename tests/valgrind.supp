@@ -1,0 +1,52 @@
+##----------------------------------------------------------------------##
+#
+# Errors and leaks to suppress by default, common to all crypto backends
+#
+# The entries in this file target defects in third-party libraries
+# that trigger independently of the crypto backend in use. They are
+# loaded in addition to the per-backend suppression files
+# (valgrind-openssl.supp, valgrind-nss.supp, valgrind-gcrypt.supp,
+# valgrind-gnutls.supp).
+#
+# Format of this file is:
+# {
+#     name_of_suppression
+#     kind: one of Param Value1 Value2 Value4 Value8
+#                   Free Addr1 Addr2 Addr4 Addr8
+#                   Cond (previously known as Value0)
+#     (if Param: name of system call param, if Free: name of free-ing fn)
+#     caller0 name, or /name/of/so/file.so
+#     caller1 name, or ditto
+#     (optionally: caller2 name)
+#     (optionally: caller3 name)
+#  }
+
+##----------------------------------------------------------------------##
+
+##
+## libxml2: the catalog resolve cache is never released
+##
+## When a non-local (e.g. http://) URI is resolved through the default
+## entity loader, libxml2 lazily creates a global URI-to-location
+## resolve cache (the static variable xmlCatalogResolveCache in
+## catalog.c). The hash table and the cached key strings are kept
+## allocated until process exit: neither xmlCatalogCleanup() nor
+## xmlCleanupParser() releases the cache (verified with libxml2 2.15.2),
+## and no public API is provided to do so.
+##
+## As a result, every xmlsec1 invocation that resolves a non-local URI
+## reports a small "still reachable" residual at exit (732-737 bytes in
+## 4 blocks: the hash structure, the hash table and the cached key
+## strings). The cache is intentionally retained by libxml2 to speed up
+## repeated URI resolutions, so this is not an xmlsec1 leak; the
+## residual is suppressed here.
+{
+   xmlCreateURLParserCtxt -> xmlACatalogResolveURI -> malloc
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   ...
+   fun:xmlACatalogResolveURI
+   ...
+   fun:xmlCreateURLParserCtxt
+}

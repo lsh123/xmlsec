@@ -51,16 +51,15 @@ fi
 #
 # Valgrind
 #
+valgrind_suppression="--suppressions=$topfolder/valgrind.supp"
 if [ "z$crypto" = "zopenssl" ] ; then
-    valgrind_suppression="--suppressions=$topfolder/valgrind-openssl.supp"
+    valgrind_suppression="$valgrind_suppression --suppressions=$topfolder/valgrind-openssl.supp"
 elif [ "z$crypto" = "znss" ] ; then
-    valgrind_suppression="--suppressions=$topfolder/valgrind-nss.supp"
+    valgrind_suppression="$valgrind_suppression --suppressions=$topfolder/valgrind-nss.supp"
 elif [ "z$crypto" = "zgcrypt" ] ; then
-    valgrind_suppression="--suppressions=$topfolder/valgrind-gcrypt.supp"
+    valgrind_suppression="$valgrind_suppression --suppressions=$topfolder/valgrind-gcrypt.supp"
 elif [ "z$crypto" = "zgnutls" ] ; then
-    valgrind_suppression="--suppressions=$topfolder/valgrind-gnutls.supp"
-else
-    valgrind_suppression=""
+    valgrind_suppression="$valgrind_suppression --suppressions=$topfolder/valgrind-gnutls.supp"
 fi
 
 valgrind_options="--leak-check=full --show-reachable=yes --num-callers=32 --track-origins=yes -s"

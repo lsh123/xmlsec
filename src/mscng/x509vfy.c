@@ -1437,7 +1437,6 @@ xmlSecMSCngX509GetCertName(const xmlChar* name) {
 static BYTE*
 xmlSecMSCngCertStrToName(DWORD dwCertEncodingType, LPTSTR pszX500, DWORD dwStrType, DWORD* len) {
     BYTE* str = NULL;
-    LPCTSTR ppszError = NULL;
 
     xmlSecAssert2(pszX500 != NULL, NULL);
     xmlSecAssert2(len != NULL, NULL);
@@ -1448,7 +1447,7 @@ xmlSecMSCngCertStrToName(DWORD dwCertEncodingType, LPTSTR pszX500, DWORD dwStrTy
      * (both byte counts), even in a Unicode build where sizeof(TCHAR) == 2; the buffer
      * below is sized as sizeof(TCHAR) * (*len + 1), which is always >= *len + 1 bytes.
      * See https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certstrtoname */
-    if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType, NULL, NULL, len, &ppszError)) {
+    if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType, NULL, NULL, len, NULL)) {
         /* this might not be an error, string might just not exist */
         return(NULL);
     }
@@ -1460,8 +1459,7 @@ xmlSecMSCngCertStrToName(DWORD dwCertEncodingType, LPTSTR pszX500, DWORD dwStrTy
     }
     memset(str, 0, sizeof(TCHAR) * ((*len) + 1));
 
-    if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType,
-                        NULL, str, len, NULL)) {
+    if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType, NULL, str, len, NULL)) {
         xmlSecMSCngLastError("CertStrToName", NULL);
         xmlFree(str);
         return(NULL);

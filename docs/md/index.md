@@ -15,28 +15,39 @@ see the Copyright file in the distribution for details.
 
 ## News
 
-- **TBD**
+- **October 27, 2026**
   The [XML Security Library 1.3.13](download.md) release includes the following changes:
   - (xmlsec-core, **not backward compatible**) Fixed several issues with Relationship transform handling.
-    To restore the old (broken) behaviour, use `--relationship-legacy` flag (or set corresponding flag in
-    the `xmlSecDSigCtx` structs in your application code).
+    To restore the old (broken) behaviour, use `--relationship-legacy` flag (or set the
+    `XMLSEC_DSIG_FLAGS_RELATIONSHIP_LEGACY` flag in the `xmlSecDSigCtx` struct in your application code).
   - (xmlsec-core, **not backward compatible**) Restricted the default enabled reference and transform URIs
     to empty and same document URIs only. Use  `--enabled-reference-uris`, `--enabled-retrieval-method-uris`,
   `--enabled-key-info-reference-uris`, etc. parameters for XMLSec command line tool if local or remote URIs
     usage is required (or set corresponding flag in the `xmlSecDSigCtx` and `xmlSecEncCtx` structs in your
-    application code).
+    application code). The `any` value is now accepted by these options to enable all URI types.
   - (xmlsec-core, **not backward compatible**) Enforced restrictions on max depth when processing encrypted keys,
     key agreements, etc. Use the new `--max-encrypted-key-level` option to control the maximum depth level for
     these use cases. (default is 1).
   - (xmlsec-core, **not backward compatible**) Include files have been cleaned up to remove unnecessary includes,
     fix circular dependencies, etc.
+  - (xmlsec-core, **not backward compatible**) Removed support for negative values in BN string conversion/parsing helpers;
+    values are now treated as unsigned magnitudes.
+  - (xmlsec-build, **not backward compatible**) Added '-std=c23' compiler flag for building the library
+    on compilers that support it or '-std=c99' otherwise (this flag was only enabled with --enable-pedantic builds
+    in the past).
+  - (xmlsec-openssl, xmlsec-nss, xmlsec-gnutls, xmlsec-mscng, xmlsec-mscrypto, xmlsec-gcrypt,
+    **not backward compatible**) Reject zero-length CBC padding blocks in all CBC finalization paths.
+  - (xmlsec-mscng) Added support for using both current user and local machine certificates store for verifying
+    the certificates (new `xmlSecMSCngAppGetCurrentUserCertStoreName()` / `xmlSecMSCngAppGetLocalMachineCertStoreName()`
+    APIs; `xmlSecMSCngAppGetCertStoreName` is now a deprecated alias).
+  - (xmlsec-nss) Hardened CRL verification: CRLs without `thisUpdate` / `nextUpdate` are rejected, and the CRL
+    issuer certificate is chain-verified with CA usage.
   - (xmlsec-build, **not backward compatible**) Added `--enable-hardening` option to `configure` script and
     `hardening` option to `configure.ps1` script to enable security hardening flags on GCC, Clang, and MSVC
     when the compiler version and the target architecture support it (default: `yes`).
-  - (xmlsec-openssl) Added checks to enforce full consumption of parsed DER objects.
-  - (xmlsec-mscng) Added support for using both current user and local machine certificates store for verifying
-    the certificates.
-  - (xmlsec-mscng) Enforced HMAC length checks similar to other crypto backends.
+  - (xmlsec-build) Deprecated the `--enable-secure-memset` option (memory cleansing is now always built in with
+    the new `xmlSecMemCleanse()` function) and removed the test-only `--enable-skm` option; the fuzz targets in
+    `apps/oss-fuzz/` are now built and run by `make check` / `nmake check` by default.
   - (xmlsec-windows) Added `apps` option to `configure.ps1` to control whether the command-line binaries in
     the `apps/` folder are built (default: `yes`).
   - Many other small fixes (see [commit log](https://github.com/lsh123/xmlsec/commits/xmlsec_1_3_13) for more details).

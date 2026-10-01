@@ -1233,13 +1233,11 @@ xmlSecMSCngX509GetCertName(const xmlChar* name) {
 static BYTE*
 xmlSecMSCngCertStrToName(DWORD dwCertEncodingType, LPTSTR pszX500, DWORD dwStrType, DWORD* len) {
     BYTE* str = NULL;
-    LPCTSTR ppszError = NULL;
 
     xmlSecAssert2(pszX500 != NULL, NULL);
     xmlSecAssert2(len != NULL, NULL);
 
-    if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType,
-                        NULL, NULL, len, &ppszError)) {
+    if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType, NULL, NULL, len, NULL)) {
         /* this might not be an error, string might just not exist */
         return(NULL);
     }
@@ -1251,8 +1249,7 @@ xmlSecMSCngCertStrToName(DWORD dwCertEncodingType, LPTSTR pszX500, DWORD dwStrTy
     }
     memset(str, 0, (*len) + 1);
 
-    if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType,
-                        NULL, str, len, NULL)) {
+    if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType, NULL, str, len, NULL)) {
         xmlSecMSCngLastError("CertStrToName", NULL);
         xmlFree(str);
         return(NULL);

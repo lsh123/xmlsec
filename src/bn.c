@@ -825,6 +825,9 @@ xmlSecBnGetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
         }
         xmlFree(content);
         break;
+    default:
+        xmlSecInvalidDataError("unsupported BN format", NULL);
+        return(-1);
     }
 
     if(reverse != 0) {
@@ -897,6 +900,10 @@ xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
         xmlNodeSetContent(cur, content);
         xmlFree(content);
         break;
+    default:
+        /* invalid format */
+        xmlSecInvalidDataError("unsupported BN format", NULL);
+        return(-1);
     }
 
     if(addLineBreaks) {

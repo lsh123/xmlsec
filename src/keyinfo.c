@@ -639,6 +639,7 @@ xmlSecKeyDataNameGetKlass(void) {
 static int
 xmlSecKeyDataNameXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlChar* newName;
+    const xmlChar* oldName;
     int ret;
 
     xmlSecAssert2(id == xmlSecKeyDataNameId, -1);
@@ -687,29 +688,32 @@ xmlSecKeyDataNameXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, 
                 xmlFree(newName);
                 return(-1);
             }
-        }
-        /* TODO: record the key names we tried */
-    } else {
-        const xmlChar* oldName;
 
-        /* if we already have a keyname, make sure that it matches or set it */
-        oldName = xmlSecKeyGetName(key);
-        if(oldName != NULL) {
-            if(!xmlStrEqual(oldName, newName)) {
-                xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_KEY_DATA,
-                                 xmlSecKeyDataKlassGetName(id),
-                                 "key name is already specified");
-                xmlFree(newName);
-                return(-1);
-            }
-        } else {
-            ret = xmlSecKeySetName(key, newName);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecKeySetName",
-                                    xmlSecKeyDataKlassGetName(id));
-                xmlFree(newName);
-                return(-1);
-            }
+            /* done */
+            xmlFree(newName);
+            return(0);
+        }
+        /* key not found in the manager; fall through to set the name anyway */
+        /* TODO: record the key names we tried */
+    }
+
+    /* if we already have a keyname, make sure that it matches or set it */
+    oldName = xmlSecKeyGetName(key);
+    if(oldName != NULL) {
+        if(!xmlStrEqual(oldName, newName)) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_KEY_DATA,
+                             xmlSecKeyDataKlassGetName(id),
+                             "key name is already specified");
+            xmlFree(newName);
+            return(-1);
+        }
+    } else {
+        ret = xmlSecKeySetName(key, newName);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecKeySetName",
+                                xmlSecKeyDataKlassGetName(id));
+            xmlFree(newName);
+            return(-1);
         }
     }
 

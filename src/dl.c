@@ -391,6 +391,12 @@ int
 xmlSecCryptoDLShutdown(void) {
     int ret;
 
+    if(!xmlSecPtrListIsValid(&gXmlSecCryptoDLLibraries)) {
+        /* the dynamic loading engine was not initialized */
+        gXmlSecCryptoDLFunctions = NULL;
+        return(0);
+    }
+
     xmlSecPtrListFinalize(&gXmlSecCryptoDLLibraries);
     gXmlSecCryptoDLFunctions = NULL;
 

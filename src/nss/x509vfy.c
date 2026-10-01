@@ -340,6 +340,25 @@ xmlSecNssX509StoreAdoptCert(xmlSecKeyDataStorePtr store, CERTCertificate* cert, 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->certDb != NULL, -1);
 
+    if(type == xmlSecKeyDataTypeTrusted) {
+        SECStatus status;
+
+        /* if requested, mark the certificate as trusted; this is done before
+         * adding the cert to the list so that on failure the caller can still
+         * safely free the cert (the store does not hold a reference to it yet) */
+        CERTCertTrust trust;
+        status = CERT_DecodeTrustString(&trust, "TCu,Cu,Tu");
+        if(status != SECSuccess) {
+            xmlSecNssError("CERT_DecodeTrustString", xmlSecKeyDataStoreGetName(store));
+            return(-1);
+        }
+        status = CERT_ChangeCertTrust(ctx->certDb, cert, &trust);
+        if(status != SECSuccess) {
+            xmlSecNssError("CERT_ChangeCertTrust", xmlSecKeyDataStoreGetName(store));
+            return(-1);
+        }
+    }
+
     if(ctx->certsList == NULL) {
         ctx->certsList = CERT_NewCertList();
         if(ctx->certsList == NULL) {
@@ -352,23 +371,6 @@ xmlSecNssX509StoreAdoptCert(xmlSecKeyDataStorePtr store, CERTCertificate* cert, 
     if(ret != SECSuccess) {
         xmlSecNssError("CERT_AddCertToListTail", xmlSecKeyDataStoreGetName(store));
         return(-1);
-    }
-
-    if(type == xmlSecKeyDataTypeTrusted) {
-        SECStatus status;
-
-        /* if requested, mark the certificate as trusted */
-        CERTCertTrust trust;
-        status = CERT_DecodeTrustString(&trust, "TCu,Cu,Tu");
-        if(status != SECSuccess) {
-            xmlSecNssError("CERT_DecodeTrustString", xmlSecKeyDataStoreGetName(store));
-            return(-1);
-        }
-        status = CERT_ChangeCertTrust(ctx->certDb, cert, &trust);
-        if(status != SECSuccess) {
-            xmlSecNssError("CERT_ChangeCertTrust", xmlSecKeyDataStoreGetName(store));
-            return(-1);
-        }
     }
 
     return(0);

@@ -265,7 +265,13 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
 
     /* the encoded size is equal to the keys size so we could not
      * process more than that */
-    if((transform->operation == xmlSecTransformOperationEncrypt) && (inSize >= keySize)) {
+    if((transform->operation == xmlSecTransformOperationEncrypt) && (inSize == 0)) {
+        /* zero-length encrypt is not supported (matches the decrypt path,
+         * which rejects any input size != keySize) */
+        xmlSecInvalidDataError("zero-length OAEP encrypt input",
+            xmlSecTransformGetName(transform));
+        return(-1);
+    } else if((transform->operation == xmlSecTransformOperationEncrypt) && (inSize >= keySize)) {
         xmlSecInvalidSizeLessThanError("Input data", inSize, keySize,
             xmlSecTransformGetName(transform));
         return(-1);

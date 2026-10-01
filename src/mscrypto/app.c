@@ -1036,8 +1036,8 @@ xmlSecMSCryptoAppDefaultKeysMngrPrivateKeyLoad(xmlSecKeysMngrPtr mngr, HCRYPTKEY
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(hKey != 0, -1);
 
-    /* TODO */
-    return(0);
+    xmlSecNotImplementedError("MSCrypto doesn't support loading private keys at runtime");
+    return(-1);
 }
 
 /**
@@ -1054,8 +1054,8 @@ xmlSecMSCryptoAppDefaultKeysMngrPublicKeyLoad(xmlSecKeysMngrPtr mngr, HCRYPTKEY 
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(hKey != 0, -1);
 
-    /* TODO */
-    return(0);
+    xmlSecNotImplementedError("MSCrypto doesn't support loading public keys at runtime");
+    return(-1);
 }
 
 /**
@@ -1072,8 +1072,8 @@ xmlSecMSCryptoAppDefaultKeysMngrSymKeyLoad(xmlSecKeysMngrPtr mngr, HCRYPTKEY hKe
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(hKey != 0, -1);
 
-    /* TODO */
-    return(0);
+    xmlSecNotImplementedError("MSCrypto doesn't support loading symmetric keys at runtime");
+    return(-1);
 }
 
 /**

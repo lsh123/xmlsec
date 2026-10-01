@@ -1608,7 +1608,12 @@ xmlSecTmplTransformAddC14NInclNamespaces(xmlNodePtr transformNode,
         return(-1);
     }
 
-    xmlSetProp(cur, xmlSecAttrPrefixList, prefixList);
+    if(xmlSetProp(cur, xmlSecAttrPrefixList, prefixList) == NULL) {
+        xmlSecXmlError2("xmlSetProp", NULL, "name=%s", xmlSecErrorsSafeString(xmlSecAttrPrefixList));
+        xmlUnlinkNode(cur);
+        xmlFreeNode(cur);
+        return(-1);
+    }
     return(0);
 }
 

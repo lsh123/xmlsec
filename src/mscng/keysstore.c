@@ -113,7 +113,10 @@ xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
     if(wcName == NULL) {
         xmlSecInternalError("xmlSecWin32ConvertUtf8ToTstr(name)",
                             xmlSecKeyStoreGetName(store));
-        CertCloseStore(hStore, 0);
+        if(!CertCloseStore(hStore, 0)) {
+            xmlSecMSCngLastError("CertCloseStore",
+                                 xmlSecKeyStoreGetName(store));
+        }
         return(NULL);
     }
 
@@ -137,7 +140,10 @@ xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
             xmlSecInternalError("xmlSecWin32ConvertUtf8ToUnicode(name)",
                                 xmlSecKeyStoreGetName(store));
             xmlFree(wcName);
-            CertCloseStore(hStore, 0);
+            if(!CertCloseStore(hStore, 0)) {
+                xmlSecMSCngLastError("CertCloseStore",
+                                     xmlSecKeyStoreGetName(store));
+            }
             return(NULL);
         }
 
@@ -159,7 +165,10 @@ xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
                 xmlSecMallocError(dwPropSize, xmlSecKeyStoreGetName(store));
                 xmlFree(lpwName);
                 xmlFree(wcName);
-                CertCloseStore(hStore, 0);
+                if(!CertCloseStore(hStore, 0)) {
+                    xmlSecMSCngLastError("CertCloseStore",
+                                         xmlSecKeyStoreGetName(store));
+                }
                 CertFreeCertificateContext(pCertCtxIter);
                 return(NULL);
             }
@@ -200,7 +209,10 @@ xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
     xmlFree(wcName);
     /* dwFlags=0 means close the store with memory remaining allocated for
      * contexts that have not been freed */
-    CertCloseStore(hStore, 0);
+    if(!CertCloseStore(hStore, 0)) {
+        xmlSecMSCngLastError("CertCloseStore",
+                             xmlSecKeyStoreGetName(store));
+    }
 
     return(pCertContext);
 #else  /* XMLSEC_NO_X509 */

@@ -683,34 +683,6 @@ typedef struct _xmlSecMSCngKeyDataX5099WriteContext {
 } xmlSecMSCngKeyDataX5099WriteContext;
 
 static int
-xmlSecMSCngKeyDataX5099WriteContextInitialize(xmlSecMSCngKeyDataX5099WriteContext* ctx, HCERTSTORE store) {
-    xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(store != NULL, -1);
-
-    memset(ctx, 0, sizeof(xmlSecMSCngKeyDataX5099WriteContext));
-    ctx->store = store;
-
-    return(0);
-}
-
-static void
-xmlSecMSCngKeyDataX5099WriteContextFinalize(xmlSecMSCngKeyDataX5099WriteContext* ctx) {
-    xmlSecAssert(ctx != NULL);
-
-    if(ctx->crt != NULL) {
-        CertFreeCertificateContext(ctx->crt);
-        ctx->crt = NULL;
-    }
-    if(ctx->crl != NULL) {
-        CertFreeCRLContext(ctx->crl);
-        ctx->crl = NULL;
-    }
-    ctx->store = 0;
-    ctx->doneCrts = 0;
-    ctx->doneCrls = 0;
-}
-
-static int
 xmlSecMSCngKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Value,
                             int content, void* context) {
     xmlSecMSCngKeyDataX5099WriteContext* ctx;
@@ -827,11 +799,10 @@ xmlSecMSCngKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2(x509DataCtx != NULL, -1);
 
     /* setup context */
-    ret = xmlSecMSCngKeyDataX5099WriteContextInitialize(&context, x509DataCtx->hMemStore);
-    if (ret < 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataX5099WriteContextInitialize", xmlSecKeyDataKlassGetName(id));
-        return(-1);
-    }
+    context.store = x509DataCtx->hMemStore;
+    context.crt = NULL;
+    context.crl = NULL;
+    context.doneCrts = context.doneCrls = 0;
 
     ret = xmlSecKeyDataX509XmlWrite(data, node, keyInfoCtx,
         xmlSecBase64GetDefaultLineSize(), 1, /* add line breaks */
@@ -839,12 +810,10 @@ xmlSecMSCngKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     if (ret < 0) {
         xmlSecInternalError("xmlSecKeyDataX509XmlWrite",
             xmlSecKeyDataKlassGetName(id));
-        xmlSecMSCngKeyDataX5099WriteContextFinalize(&context);
         return(-1);
     }
 
     /* success */
-    xmlSecMSCngKeyDataX5099WriteContextFinalize(&context);
     return(0);
 }
 

@@ -225,11 +225,11 @@ jobs:
       matrix:
         include:
           # default build
-          - msystem: MINGW64
+          - msystem: UCRT64
             arch: x86_64
             config_flags: --enable-mscng --enable-mscrypto --without-openssl --without-nss --without-gnutls --without-gcrypt
           # no unicode static build for mscng
-          - msystem: MINGW64
+          - msystem: UCRT64
             arch: x86_64
             config_flags: --enable-static --enable-static-linking --enable-unicode=no --enable-mscng --without-openssl --without-nss --without-gnutls --without-gcrypt --disable-mscrypto
     defaults:

@@ -42,6 +42,10 @@ AC_CONFIG_HEADERS([config.h])
 # to make
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
+dnl save the user-provided CFLAGS so we can detect an explicit -std= later
+dnl and not override it with our own choice of the C standard
+XMLSEC_CFLAGS_USER="$CFLAGS"
+
 dnl
 dnl Check the environment
 dnl
@@ -2711,13 +2715,6 @@ elif test "z$build_with_gcc" = "zyes" ; then
         CFLAGS="$CFLAGS -Wformat-overflow=2"
     fi
 
-    dnl GCC >= 14: --std=c23 (added in GCC 14)
-    if test "$gcc_major_ver" -ge 14 ; then
-        CFLAGS="$CFLAGS -std=c23"
-    else
-        CFLAGS="$CFLAGS -std=c99"
-    fi
-
     AC_MSG_RESULT([yes])
 elif test "z$build_with_clang" = "zyes" ; then
     dnl Flags supported since Clang 3.x (always available in any modern Clang)
@@ -2735,17 +2732,43 @@ elif test "z$build_with_clang" = "zyes" ; then
         CFLAGS="$CFLAGS -Wdouble-promotion -Wnull-dereference"
     fi
 
-    dnl Clang >= 18: --std=c23 (added in Clang 18)
-    if test "$clang_major_ver" -ge 18 ; then
-        CFLAGS="$CFLAGS -std=c23"
-    else
-        CFLAGS="$CFLAGS -std=c99"
-    fi
-
     AC_MSG_RESULT([yes])
 else
     AC_MSG_RESULT([disabled (unsupported compiler)])
 fi
+
+dnl ==========================================================================
+dnl C standard: use C23 if the compiler (recent GCC or Clang) supports it.
+dnl C23 provides memset_explicit() which xmlSecMemCleanse() prefers for
+dnl secure zeroing of sensitive data.
+dnl ==========================================================================
+AC_MSG_CHECKING([for C23 support])
+case " $XMLSEC_CFLAGS_USER " in
+    *" -std="*)
+        AC_MSG_RESULT([no (custom -std= in CFLAGS)])
+        ;;
+    *)
+        XMLSEC_CFLAGS_SAVE="$CFLAGS"
+        CFLAGS="$CFLAGS -std=c23"
+        AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+            #if !defined(__STDC_VERSION__) || __STDC_VERSION__ < 202311L
+            #error "the compiler does not support C23"
+            #endif
+        ]],[[
+            /* compiled as C23 */
+        ]])],
+            [XMLSEC_USE_C23="yes"],
+            [XMLSEC_USE_C23="no"])
+        CFLAGS="$XMLSEC_CFLAGS_SAVE"
+        if test "z$XMLSEC_USE_C23" = "zyes" ; then
+            CFLAGS="$CFLAGS -std=c23"
+            AC_MSG_RESULT([yes])
+        else
+            CFLAGS="$CFLAGS -std=c99"
+            AC_MSG_RESULT([no (use -std=c99)])
+        fi
+        ;;
+esac
 
 dnl ==========================================================================
 dnl Security hardening flags (GCC/Clang only, enabled by default)
@@ -2844,7 +2867,7 @@ else
 fi
 
 dnl ==========================================================================
-dnl Secure memset (DEPREACTED in favor or true secure wipe -- see xmlSecMemCleanse)
+dnl Secure memset (DEPRECATED in favor of true secure wipe -- see xmlSecMemCleanse)
 dnl ==========================================================================
 AC_MSG_CHECKING(for secure memset)
 AC_ARG_ENABLE([secure-memset], [AS_HELP_STRING([--enable-secure-memset],[enable secure memset compilation flags (DEPRECATED, yes)])])

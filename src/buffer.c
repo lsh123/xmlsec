@@ -10,10 +10,10 @@
  * @brief Binary memory buffer functions.
  */
 
-/* Required for xmlSecMemCleanse when compiled with --enable-pedantic (i.e. with -std=c99 or -std=c23) (also see configure.ac) */
+/* Required for xmlSecMemCleanse when compiled with -std=c99 or -std=c23 (also see configure.ac) */
 #if defined(__GNUC__) && !defined(_GNU_SOURCE)
 #define _GNU_SOURCE
-#endif
+#endif /* defined(__GNUC__) && !defined(_GNU_SOURCE) */
 
 #include "globals.h"
 

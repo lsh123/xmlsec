@@ -1041,13 +1041,11 @@ xmlSecMSCryptoX509StoreFinalize(xmlSecKeyDataStorePtr store) {
 static BYTE*
 xmlSecMSCryptoCertStrToName(DWORD dwCertEncodingType, LPCTSTR pszX500, DWORD dwStrType, DWORD* len) {
     BYTE* str = NULL;
-    LPCTSTR ppszError = NULL;
 
     xmlSecAssert2(pszX500 != NULL, NULL);
     xmlSecAssert2(len != NULL, NULL);
 
-    if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType,
-                        NULL, NULL, len, &ppszError)) {
+    if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType, NULL, NULL, len, NULL)) {
         /* this might not be an error, string might just not exist */
         return(NULL);
     }
@@ -1059,8 +1057,7 @@ xmlSecMSCryptoCertStrToName(DWORD dwCertEncodingType, LPCTSTR pszX500, DWORD dwS
     }
     memset(str, 0, sizeof(TCHAR) * ((*len) + 1));
 
-    if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType,
-                        NULL, str, len, NULL)) {
+    if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType, NULL, str, len, NULL)) {
         xmlSecMSCryptoError("CertStrToName", NULL);
         xmlFree(str);
         return(NULL);

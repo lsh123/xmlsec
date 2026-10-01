@@ -491,6 +491,7 @@ xmlSecOpenSSLHmacVerify(xmlSecTransformPtr transform,
     ctx = xmlSecOpenSSLHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->dgstSize > 0, -1);
+    xmlSecAssert2(dataSize > 0, -1);
 
     /* compare the digest size in bytes */
     if(dataSize != ((ctx->dgstSize + 7) / 8)){

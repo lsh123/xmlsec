@@ -366,9 +366,10 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
             oaepParams.pbData = xmlSecBufferGetData(&(ctx->oaepParams));
 
             oaepParamsSize = xmlSecBufferGetSize(&(ctx->oaepParams));
-            XMLSEC_SAFE_CAST_SIZE_TO_ULONG(oaepParamsSize, oaepParams.cbData, return(-1), xmlSecTransformGetName(transform));
+            XMLSEC_SAFE_CAST_SIZE_TO_ULONG(oaepParamsSize, oaepParams.cbData, { CryptDestroyKey(hKey); return(-1); }, xmlSecTransformGetName(transform));
             if (!CryptSetKeyParam(hKey, KP_OAEP_PARAMS, (const BYTE*)&oaepParams, 0)) {
                 xmlSecMSCryptoError("CryptSetKeyParam", xmlSecTransformGetName(transform));
+                CryptDestroyKey(hKey);
                 return (-1);
             }
         }
@@ -376,8 +377,13 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         /* decrypt */
         if (!CryptDecrypt(hKey, 0, TRUE, ctx->dwFlags, outBuf, &dwOutLen)) {
             xmlSecMSCryptoError("CryptDecrypt", xmlSecTransformGetName(transform));
+            CryptDestroyKey(hKey);
             return(-1);
         }
+
+        /* hKey comes from CryptGetUserKey and must be destroyed by the caller */
+        CryptDestroyKey(hKey);
+        hKey = 0;
 
         outSize = dwOutLen;
     }

@@ -80,11 +80,23 @@ xmlSecNssNodeGetBigNumValue(PRArenaPool *arena, const xmlNodePtr cur,
 
     if (a == NULL) {
         rv = SECITEM_AllocItem(arena, NULL, ulen);
+        if(rv == NULL) {
+            xmlSecInternalError2("SECITEM_AllocItem", NULL,
+                "size=%u", ulen);
+            goto done;
+        }
     } else {
         rv = a;
         xmlSecAssert2(rv->data == NULL, NULL);
         rv->len = ulen;
         rv->data = PORT_ArenaZAlloc(arena, ulen);
+        if(rv->data == NULL) {
+            xmlSecInternalError2("PORT_ArenaZAlloc", NULL,
+                "size=%u", ulen);
+            rv->len = 0;
+            rv = NULL;
+            goto done;
+        }
     }
     PORT_Memcpy(rv->data, xmlSecBufferGetData(&buf), ulen);
 

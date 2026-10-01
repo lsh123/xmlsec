@@ -2,8 +2,10 @@
 *.orig
 .deps/
 .libs/
-.cproject
-.project
+.cproject/
+.project/
+.vs/
+.vscode/
 compile
 clean
 depcomp
@@ -56,11 +58,15 @@ src/openssl/Makefile
 win32/apps_a.int/
 win32/binaries/
 win32/configure.txt
+win32/apps.int/
 win32/libxmlsec.int/
 win32/libxmlsec_a.int/
 win32/libxmlsec_mscrypto.int/
 win32/libxmlsec_mscrypto_a.int/
+win32/libxmlsec_mscng.int/
+win32/libxmlsec_mscng_a.int/
 win32/tmp
+win32/*.pdb
 docs/api/code
 docs/api/sgml.tmp
 docs/api/xmlsec-*.txt
@@ -68,5 +74,5 @@ docs/api/*.bak
 docs/api/*.types
 docs/api/sgml.stamp
 docs/html.stamp
-build-all/
+build-*/
 

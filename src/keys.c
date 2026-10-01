@@ -897,7 +897,8 @@ xmlSecKeyDebugDump(xmlSecKeyPtr key, FILE *output) {
 
     fprintf(output, "== KEY\n");
     fprintf(output, "=== method: %s\n",
-            (key->value->id->dataNodeName != NULL) ?
+            ((key->value != NULL) && (key->value->id != NULL) &&
+             (key->value->id->dataNodeName != NULL)) ?
             (char*)(key->value->id->dataNodeName) : "NULL");
 
     fprintf(output, "=== key type: ");
@@ -944,7 +945,10 @@ xmlSecKeyDebugXmlDump(xmlSecKeyPtr key, FILE *output) {
     fprintf(output, "<KeyInfo>\n");
 
     fprintf(output, "<KeyMethod>");
-    xmlSecPrintXmlString(output, key->value->id->dataNodeName);
+    /* xmlSecPrintXmlString() prints "NULL" for a NULL string */
+    xmlSecPrintXmlString(output,
+            ((key->value != NULL) && (key->value->id != NULL)) ?
+            key->value->id->dataNodeName : NULL);
     fprintf(output, "</KeyMethod>\n");
 
     fprintf(output, "<KeyType>");

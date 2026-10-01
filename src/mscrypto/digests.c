@@ -373,6 +373,11 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
                 return(-1);
             }
             xmlSecAssert2(retLen > 0, -1);
+            if(retLen > MSCRYPTO_MAX_HASH_SIZE) {
+                xmlSecInternalError2("CryptGetHashParam(HP_HASHVAL)", xmlSecTransformGetName(transform),
+                    "retLen=" XMLSEC_SIZE_FMT, (xmlSecSize)retLen);
+                return(-1);
+            }
             XMLSEC_SAFE_CAST_ULONG_TO_SIZE(retLen, ctx->dgstSize, return(-1), xmlSecTransformGetName(transform));
 
             /* copy result to output */

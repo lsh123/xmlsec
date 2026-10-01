@@ -368,10 +368,12 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
             goto done;
         } else if(ret == 0) {
             const char* err_msg;
-            char subject[256], issuer[256];
+            char subject[256] = "(unknown)", issuer[256] = "(unknown)";
 
-            X509_NAME_oneline(X509_get_subject_name(err_cert), subject, sizeof(subject));
-            X509_NAME_oneline(X509_get_issuer_name(err_cert), issuer, sizeof(issuer));
+            if(err_cert != NULL) {
+                X509_NAME_oneline(X509_get_subject_name(err_cert), subject, sizeof(subject));
+                X509_NAME_oneline(X509_get_issuer_name(err_cert), issuer, sizeof(issuer));
+            }
             err_msg = X509_verify_cert_error_string(err);
 
             xmlSecOtherError5(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,

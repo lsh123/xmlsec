@@ -604,10 +604,10 @@ xmlSecNodeSetDebugDump(xmlSecNodeSetPtr nset, FILE *output) {
                 XMLSEC_ENUM_CAST(cur->type),
                 (ns->prefix) ? ns->prefix : BAD_CAST "null",
                 (ns->href) ? ns->href : BAD_CAST "null",
-                (((xmlNodePtr)ns->next)->ns &&
+                (ns->next != NULL && ((xmlNodePtr)ns->next)->ns &&
                  ((xmlNodePtr)ns->next)->ns->prefix) ?
-                  ((xmlNodePtr)ns->next)->ns->prefix : BAD_CAST "null",
-                ((xmlNodePtr)ns->next)->name);
+                   ((xmlNodePtr)ns->next)->ns->prefix : BAD_CAST "null",
+                (ns->next != NULL) ? ((xmlNodePtr)ns->next)->name : BAD_CAST "null");
         }
     }
 }

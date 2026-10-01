@@ -156,12 +156,14 @@ static void xmlSecMSCngDigestFinalize(xmlSecTransformPtr transform) {
     ctx = xmlSecMSCngDigestGetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
-    if(ctx->hAlg != 0) {
-        BCryptCloseAlgorithmProvider(ctx->hAlg, 0);
-    }
-
+    /* NTSTATUS is intentionally ignored: failures at finalization time are not
+     * recoverable and cannot be reported from a void finalize method */
     if(ctx->hHash != 0) {
         BCryptDestroyHash(ctx->hHash);
+    }
+
+    if(ctx->hAlg != 0) {
+        BCryptCloseAlgorithmProvider(ctx->hAlg, 0);
     }
 
     if(ctx->pbHashObject != NULL) {
@@ -239,6 +241,13 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
     xmlSecAssert2(ctx != NULL, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
+        /* Note: the error paths below may leave hAlg/pbHashObject/pbHash
+         * partially acquired on purpose; xmlSecTransformDestroy() invokes this
+         * klass's finalize() unconditionally when the transform is destroyed,
+         * and it releases any of these resources. The xmlsec transform framework
+         * does not re-invoke execute() after a failure, so the handle is never
+         * re-opened (and thus never leaked) on a retry. */
+
         /* open an algorithm handle */
         status = BCryptOpenAlgorithmProvider(
             &ctx->hAlg,
@@ -264,6 +273,7 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
         }
 
         /* allocate the hash object on the heap */
+        xmlSecAssert2(ctx->pbHashObject == NULL, -1);
         ctx->pbHashObject = (PBYTE)xmlMalloc(cbHashObject);
         if(ctx->pbHashObject == NULL) {
             xmlSecMallocError(cbHashObject, NULL);
@@ -284,6 +294,7 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
         }
 
         /* allocate the hash buffer on the heap */
+        xmlSecAssert2(ctx->pbHash == NULL, -1);
         ctx->pbHash = (PBYTE)xmlMalloc(ctx->cbHash);
         if(ctx->pbHash == NULL) {
             xmlSecMallocError(ctx->cbHash, NULL);
@@ -291,6 +302,7 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
         }
 
         /* create the hash */
+        xmlSecAssert2(ctx->hHash == NULL, -1);
         status = BCryptCreateHash(
             ctx->hAlg,
             &ctx->hHash,

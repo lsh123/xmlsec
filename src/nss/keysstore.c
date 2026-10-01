@@ -195,6 +195,7 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
     CERTCertificate *cert = NULL;
     SECKEYPublicKey *pubkey = NULL;
     SECKEYPrivateKey *privkey = NULL;
+    CERTCertDBHandle *certDb = NULL;
     xmlSecKeyDataPtr data = NULL;
     xmlSecKeyDataPtr x509Data = NULL;
     int ret;
@@ -225,7 +226,13 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
     keyReq = &(keyInfoCtx->keyReq);
     if (keyReq->keyType &
         (xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate)) {
-        cert = CERT_FindCertByNickname (CERT_GetDefaultCertDB(), (char *)name);
+        certDb = CERT_GetDefaultCertDB();
+        if (certDb == NULL) {
+            xmlSecNssError("CERT_GetDefaultCertDB", NULL);
+            goto done;
+        }
+
+        cert = CERT_FindCertByNickname (certDb, (char *)name);
         if (cert == NULL) {
             goto done;
         }

@@ -2017,6 +2017,13 @@ xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
             inSize = xmlSecBufferGetSize(&(transform->inBuf));
             chunkSize = XMLSEC_TRANSFORM_BINARY_CHUNK;
 
+            /* guard against an integer overflow in "inSize + chunkSize" */
+            if(inSize > (XMLSEC_SIZE_MAX - chunkSize)) {
+                xmlSecInvalidSizeMoreThanError("inSize", inSize,
+                    (XMLSEC_SIZE_MAX - chunkSize), xmlSecTransformGetName(transform));
+                return(-1);
+            }
+
             /* ensure that we have space for at least one data chunk */
             ret = xmlSecBufferSetMaxSize(&(transform->inBuf), inSize + chunkSize);
             if(ret < 0) {

@@ -1018,6 +1018,12 @@ xmlSecTransformVisa3DHackExecute(xmlSecTransformPtr transform, int last,
     xmlSecAssert2(idPtr != NULL, -1);
     xmlSecAssert2((*idPtr) != NULL, -1);
 
+    /* if there are no input nodes we must have a "here" node to get the
+     * document from (in the normal flow inNodes is always set) */
+    if(transform->inNodes == NULL) {
+        xmlSecAssert2(transform->hereNode != NULL, -1);
+    }
+
     doc = (transform->inNodes != NULL) ? transform->inNodes->doc : transform->hereNode->doc;
     xmlSecAssert2(doc != NULL, -1);
 

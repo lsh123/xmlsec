@@ -292,25 +292,25 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs,
             xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_ISSUER_FAILED,
                 xmlSecKeyDataStoreGetName(store),
                 "subject=\"%s\"; reason=the issuer's cert is expired/invalid or not found",
-                xmlSecErrorsSafeString(cert->subjectName));
+                xmlSecErrorsSafeString(cert != NULL ? cert->subjectName : NULL));
             break;
         case SEC_ERROR_EXPIRED_CERTIFICATE:
             xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
                 xmlSecKeyDataStoreGetName(store),
                 "subject=\"%s\"; reason=expired",
-                xmlSecErrorsSafeString(cert->subjectName));
+                xmlSecErrorsSafeString(cert != NULL ? cert->subjectName : NULL));
             break;
         case SEC_ERROR_REVOKED_CERTIFICATE:
             xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_REVOKED,
                 xmlSecKeyDataStoreGetName(store),
                 "subject=\"%s\"; reason=revoked",
-                xmlSecErrorsSafeString(cert->subjectName));
+                xmlSecErrorsSafeString(cert != NULL ? cert->subjectName : NULL));
             break;
         default:
             xmlSecOtherError3(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
                 xmlSecKeyDataStoreGetName(store),
                 "subject=\"%s\"; reason=%d",
-                xmlSecErrorsSafeString(cert->subjectName),
+                xmlSecErrorsSafeString(cert != NULL ? cert->subjectName : NULL),
                 err);
             break;
     }

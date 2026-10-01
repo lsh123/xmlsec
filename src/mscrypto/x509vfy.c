@@ -816,10 +816,8 @@ xmlSecMSCryptoX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCe
         return(-1);
     }
 
-    /* TODO: The context to be added here is not duplicated first,
-    * hopefully this will not lead to errors when closing the store
-    * and freeing the mem for all the context in the store.
-    */
+    /* CertAddCertificateContextToStore copies the certificate into the store,
+     * so the input context can be freed after a successful add. */
     xmlSecAssert2(certStore != NULL, -1);
     if (!CertAddCertificateContextToStore(certStore, pCert, CERT_STORE_ADD_ALWAYS, NULL)) {
         xmlSecMSCryptoError("CertAddCertificateContextToStore",
@@ -827,6 +825,8 @@ xmlSecMSCryptoX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCe
         return(-1);
     }
 
+    /* caller expects the store to own pCert on success */
+    CertFreeCertificateContext(pCert);
     return(0);
 }
 
@@ -1073,13 +1073,11 @@ xmlSecMSCryptoX509StoreFinalize(xmlSecKeyDataStorePtr store) {
 static BYTE*
 xmlSecMSCryptoCertStrToName(DWORD dwCertEncodingType, LPTSTR pszX500, DWORD dwStrType, DWORD* len) {
     BYTE* str = NULL;
-    LPCTSTR ppszError = NULL;
 
     xmlSecAssert2(pszX500 != NULL, NULL);
     xmlSecAssert2(len != NULL, NULL);
 
-    if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType,
-                        NULL, NULL, len, &ppszError)) {
+    if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType, NULL, NULL, len, NULL)) {
         /* this might not be an error, string might just not exist */
         return(NULL);
     }
@@ -1091,8 +1089,7 @@ xmlSecMSCryptoCertStrToName(DWORD dwCertEncodingType, LPTSTR pszX500, DWORD dwSt
     }
     memset(str, 0, (*len) + 1);
 
-    if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType,
-                        NULL, str, len, NULL)) {
+    if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType, NULL, str, len, NULL)) {
         xmlSecMSCryptoError("CertStrToName", NULL);
         xmlFree(str);
         return(NULL);

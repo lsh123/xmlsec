@@ -290,7 +290,11 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
             xmlSecXmlError("xmlNewText", NULL);
             return(NULL);
         }
-        xmlAddChild(parent, text);
+        if(xmlAddChild(parent, text) == NULL) {
+            xmlSecXmlError("xmlAddChild", NULL);
+            xmlFreeNode(text);
+            return(NULL);
+        }
     }
 
     cur = xmlNewChild(parent, NULL, name, NULL);
@@ -309,6 +313,8 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
             nsPtr = xmlNewNs(cur, ns, NULL);
             if(nsPtr == NULL) {
                 xmlSecXmlError("xmlNewNs", NULL);
+                xmlUnlinkNode(cur);
+                xmlFreeNode(cur);
                 return(NULL);
             }
         }
@@ -319,9 +325,17 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
     text = xmlNewText(xmlSecGetDefaultLineFeed());
     if(text == NULL) {
         xmlSecXmlError("xmlNewText", NULL);
+        xmlUnlinkNode(cur);
+        xmlFreeNode(cur);
         return(NULL);
     }
-    xmlAddChild(parent, text);
+    if(xmlAddChild(parent, text) == NULL) {
+        xmlSecXmlError("xmlAddChild", NULL);
+        xmlFreeNode(text);
+        xmlUnlinkNode(cur);
+        xmlFreeNode(cur);
+        return(NULL);
+    }
 
     return(cur);
 }
@@ -432,7 +446,11 @@ xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
         xmlSecXmlError("xmlNewNode", NULL);
         return(NULL);
     }
-    xmlAddNextSibling(node, cur);
+    if(xmlAddNextSibling(node, cur) == NULL) {
+        xmlSecXmlError("xmlAddNextSibling", NULL);
+        xmlFreeNode(cur);
+        return(NULL);
+    }
 
     /* namespaces support */
     if(ns != NULL) {
@@ -442,6 +460,12 @@ xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
         nsPtr = xmlSearchNsByHref(cur->doc, cur, ns);
         if((nsPtr == NULL) || (xmlSearchNs(cur->doc, cur, nsPtr->prefix) != nsPtr)) {
             nsPtr = xmlNewNs(cur, ns, NULL);
+            if(nsPtr == NULL) {
+                xmlSecXmlError("xmlNewNs", NULL);
+                xmlUnlinkNode(cur);
+                xmlFreeNode(cur);
+                return(NULL);
+            }
         }
         xmlSetNs(cur, nsPtr);
     }
@@ -450,9 +474,17 @@ xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
     text = xmlNewText(xmlSecGetDefaultLineFeed());
     if(text == NULL) {
         xmlSecXmlError("xmlNewText", NULL);
+        xmlUnlinkNode(cur);
+        xmlFreeNode(cur);
         return(NULL);
     }
-    xmlAddNextSibling(node, text);
+    if(xmlAddNextSibling(node, text) == NULL) {
+        xmlSecXmlError("xmlAddNextSibling", NULL);
+        xmlFreeNode(text);
+        xmlUnlinkNode(cur);
+        xmlFreeNode(cur);
+        return(NULL);
+    }
 
     return(cur);
 }
@@ -480,7 +512,11 @@ xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
         xmlSecXmlError("xmlNewNode", NULL);
         return(NULL);
     }
-    xmlAddPrevSibling(node, cur);
+    if(xmlAddPrevSibling(node, cur) == NULL) {
+        xmlSecXmlError("xmlAddPrevSibling", NULL);
+        xmlFreeNode(cur);
+        return(NULL);
+    }
 
     /* namespaces support */
     if(ns != NULL) {
@@ -490,6 +526,12 @@ xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
         nsPtr = xmlSearchNsByHref(cur->doc, cur, ns);
         if((nsPtr == NULL) || (xmlSearchNs(cur->doc, cur, nsPtr->prefix) != nsPtr)) {
             nsPtr = xmlNewNs(cur, ns, NULL);
+            if(nsPtr == NULL) {
+                xmlSecXmlError("xmlNewNs", NULL);
+                xmlUnlinkNode(cur);
+                xmlFreeNode(cur);
+                return(NULL);
+            }
         }
         xmlSetNs(cur, nsPtr);
     }
@@ -498,9 +540,17 @@ xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
     text = xmlNewText(xmlSecGetDefaultLineFeed());
     if(text == NULL) {
         xmlSecXmlError("xmlNewText", NULL);
+        xmlUnlinkNode(cur);
+        xmlFreeNode(cur);
         return(NULL);
     }
-    xmlAddPrevSibling(node, text);
+    if(xmlAddPrevSibling(node, text) == NULL) {
+        xmlSecXmlError("xmlAddPrevSibling", NULL);
+        xmlFreeNode(text);
+        xmlUnlinkNode(cur);
+        xmlFreeNode(cur);
+        return(NULL);
+    }
 
     return(cur);
 }
@@ -542,38 +592,37 @@ xmlSecReplaceNode(xmlNodePtr node, xmlNodePtr newNode) {
  * @newNode:            the new node.
  * @replaced:           the replaced node, or release it if NULL is given
  *
- * Swaps the @node and @newNode in the XML tree.
+ * Swaps the @node and @newNode in the XML tree. Both the old
+ * and the new node must have the same node type.
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecReplaceNodeAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr* replaced) {
     xmlNodePtr oldNode;
-    int restoreRoot = 0;
 
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(newNode != NULL, -1);
+    xmlSecAssert2(node != newNode, -1);
+    xmlSecAssert2(node->type == newNode->type, -1);
 
-    /* fix documents children if necessary first */
-    if((node->doc != NULL) && (node->doc->children == node)) {
-        node->doc->children = node->next;
-        restoreRoot = 1;
-    }
-    if((newNode->doc != NULL) && (newNode->doc->children == newNode)) {
-        newNode->doc->children = newNode->next;
-    }
-
-    oldNode = xmlReplaceNode(node, newNode);
-    if(oldNode == NULL) {
-        xmlSecXmlError("xmlReplaceNode", NULL);
-        return(-1);
-    }
-
-    if(restoreRoot != 0) {
-        xmlDocSetRootElement(oldNode->doc, newNode);
+    if((node->doc != NULL) && (xmlDocGetRootElement(node->doc) == node)) {
+        /* Handle Root node */
+        oldNode = xmlDocSetRootElement(node->doc, newNode);
+        if(oldNode == NULL) {
+            xmlSecXmlError("xmlDocSetRootElement", NULL);
+            return(-1);
+        }
+    } else {
+        /* Handle generic structural replacement */
+        oldNode = xmlReplaceNode(node, newNode);
+        if(oldNode == NULL) {
+            xmlSecXmlError("xmlReplaceNode", NULL);
+            return(-1);
+        }
     }
 
-    /* return the old node if requested */
+    /* Return or free the unlinked node */
     if(replaced != NULL) {
         (*replaced) = oldNode;
     } else {
@@ -636,7 +685,12 @@ xmlSecReplaceContentAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr *r
 
     /* swap nodes */
     xmlUnlinkNode(newNode);
-    xmlAddChildList(node, newNode);
+    if(xmlAddChildList(node, newNode) == NULL) {
+        /* xmlAddChildList() did not take ownership of the node on
+         * failure; the caller is responsible for releasing it */
+        xmlSecXmlError("xmlAddChildList", node);
+        return(-1);
+    }
 
     return(0);
 }

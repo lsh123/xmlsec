@@ -402,10 +402,7 @@ done:
  */
 void
 xmlSecMSCryptoGetErrorMessage(DWORD dwError, xmlChar * out, int outLen) {
-#ifndef UNICODE
-    WCHAR errorTextW[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE];
-#endif /* UNICODE */
-    LPTSTR errorText = NULL;
+    LPWSTR errorTextW = NULL;
     DWORD dwRet;
     int ret;
 
@@ -415,38 +412,27 @@ xmlSecMSCryptoGetErrorMessage(DWORD dwError, xmlChar * out, int outLen) {
 
     /* Use system message tables to retrieve error text, allocate buffer on local
        heap for error text, don't use any inserts/parameters */
-    dwRet = FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM
+    dwRet = FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM
                       | FORMAT_MESSAGE_ALLOCATE_BUFFER
                       | FORMAT_MESSAGE_IGNORE_INSERTS,
                       NULL,
                       dwError,
                       MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), /* Default language */
-                      (LPTSTR)&errorText,
+                      (LPWSTR)&errorTextW,
                       0,
                       NULL);
-    if((dwRet <= 0) || (errorText == NULL)) {
+    if((dwRet <= 0) || (errorTextW == NULL)) {
         goto done;
     }
 
-#ifdef UNICODE
-    ret = WideCharToMultiByte(CP_UTF8, 0, errorText, -1, (LPSTR)out, outLen, NULL, NULL);
-    if(ret <= 0) {
-        goto done;
-    }
-#else /* UNICODE */
-    ret = MultiByteToWideChar(CP_ACP, 0, errorText, -1, errorTextW, XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE);
-    if(ret <= 0) {
-        goto done;
-    }
     ret = WideCharToMultiByte(CP_UTF8, 0, errorTextW, -1, (LPSTR)out, outLen, NULL, NULL);
     if(ret <= 0) {
         goto done;
     }
-#endif /* UNICODE */
 
 done:
-    if(errorText != NULL) {
-        LocalFree(errorText);
+    if(errorTextW != NULL) {
+        LocalFree(errorTextW);
     }
     return;
 }

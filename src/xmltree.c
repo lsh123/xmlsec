@@ -734,7 +734,8 @@ xmlSecGetNextElementNode(xmlNodePtr cur) {
 
 /**
  * @brief Swaps a node with a new node in the XML tree.
- * @details Swaps the @p node and @p newNode in the XML tree.
+ * @details Swaps the @p node and @p newNode in the XML tree. Both the old
+ * and the new node must have the same node type.
  *
  * Note: on error, the state of the @p newNode is undefined and the caller
  * should not make any assumptions about it. The recommended way is to
@@ -751,8 +752,8 @@ xmlSecReplaceNode(xmlNodePtr node, xmlNodePtr newNode) {
 
 /**
  * @brief Swaps a node with another and optionally returns the replaced node.
- * @details Swaps the @p node and @p newNode in the XML tree (the both old and new
- * nodes should have same type).
+ * @details Swaps the @p node and @p newNode in the XML tree. Both the old
+ * and the new node must have the same node type.
  *
  * Note: on error, the state of the @p newNode is undefined and the caller
  * should not make any assumptions about it. The recommended way is to
@@ -779,24 +780,12 @@ xmlSecReplaceNodeAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr* repl
             xmlSecXmlError("xmlDocSetRootElement", NULL);
             return(-1);
         }
-
-        /* Ensure document tracking transfers to children if newNode has a subtree */
-        xmlSetTreeDoc(newNode, node->doc);
     } else {
         /* Handle generic structural replacement */
         oldNode = xmlReplaceNode(node, newNode);
-        if((oldNode == NULL)) {
+        if(oldNode == NULL) {
             xmlSecXmlError("xmlReplaceNode", NULL);
             return(-1);
-        }
-
-        /* Fix doc->children manually ONLY if replacing a non-element top level node
-         * (like a top-level Comment or Processing Instruction) */
-        if((node->doc != NULL) && (node->doc->children == node)) {
-            node->doc->children = newNode;
-        }
-        if((node->doc != NULL) && (node->doc->last == node)) {
-            node->doc->last = newNode;
         }
     }
 

@@ -1865,7 +1865,6 @@ xmlSecAppVerifyFile(const char* inputFileName) {
     res = 0;
 
 done:
-
     fprintf(stderr, "Verification status: %s\n", xmlSecDSigCtxGetStatusString(dsigCtx.status));
     if((dsigCtx.status == xmlSecDSigStatusInvalid) && (dsigCtx.failureReason != xmlSecDSigFailureReasonUnknown)) {
         fprintf(stderr, "Failure reason: %s\n", xmlSecDSigCtxGetFailureReasonString(dsigCtx.failureReason));
@@ -1882,7 +1881,7 @@ done:
             dsigRefCtx = (xmlSecDSigReferenceCtxPtr)xmlSecPtrListGetItem(&(dsigCtx.signedInfoReferences), i);
             if(dsigRefCtx == NULL) {
                 fprintf(stderr,"Error: reference ctx is null\n");
-                goto done;
+                goto done2;
             }
             if(dsigRefCtx->status == xmlSecDSigStatusSucceeded) {
                 ++good;
@@ -1896,7 +1895,7 @@ done:
             dsigRefCtx = (xmlSecDSigReferenceCtxPtr)xmlSecPtrListGetItem(&(dsigCtx.manifestReferences), i);
             if(dsigRefCtx == NULL) {
                 fprintf(stderr,"Error: reference ctx is null\n");
-                goto done;
+                goto done2;
             }
             if(dsigRefCtx->status == xmlSecDSigStatusSucceeded) {
                 ++good;
@@ -1907,6 +1906,8 @@ done:
 
         xmlSecAppPrintDSigCtx(&dsigCtx);
     }
+
+done2:
     xmlSecDSigCtxFinalize(&dsigCtx);
     if(data != NULL) {
         xmlSecAppXmlDataDestroy(data);

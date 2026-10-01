@@ -816,10 +816,8 @@ xmlSecMSCryptoX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCe
         return(-1);
     }
 
-    /* TODO: The context to be added here is not duplicated first,
-    * hopefully this will not lead to errors when closing the store
-    * and freeing the mem for all the context in the store.
-    */
+    /* CertAddCertificateContextToStore copies the certificate into the store,
+     * so the input context can be freed after a successful add. */
     xmlSecAssert2(certStore != NULL, -1);
     if (!CertAddCertificateContextToStore(certStore, pCert, CERT_STORE_ADD_ALWAYS, NULL)) {
         xmlSecMSCryptoError("CertAddCertificateContextToStore",
@@ -827,6 +825,8 @@ xmlSecMSCryptoX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCe
         return(-1);
     }
 
+    /* caller expects the store to own pCert on success */
+    CertFreeCertificateContext(pCert);
     return(0);
 }
 

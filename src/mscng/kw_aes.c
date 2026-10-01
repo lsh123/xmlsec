@@ -375,6 +375,7 @@ xmlSecMSCngKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
     xmlSecBuffer blob;
     int blob_initialized = 0;
     BCRYPT_KEY_DATA_BLOB_HEADER* blobHeader;
+    xmlSecByte* blobData;
     xmlSecSize blobHeaderSize, blobSize;
     xmlSecByte* keyData;
     xmlSecSize keySize;
@@ -428,6 +429,10 @@ xmlSecMSCngKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
         xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
         goto done;
     }
+    if (cbData != sizeof(DWORD)) {
+        xmlSecInternalError("BCryptGetProperty", NULL);
+        goto done;
+    }
 
     pbKeyObject = xmlMalloc(cbKeyObject);
     if (pbKeyObject == NULL) {
@@ -444,12 +449,14 @@ xmlSecMSCngKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
         goto done;
     }
 
-    blobHeader = (BCRYPT_KEY_DATA_BLOB_HEADER*)xmlSecBufferGetData(&blob);
+    blobData = xmlSecBufferGetData(&blob);
+    xmlSecAssert2(blobData != NULL, -1);
+    blobHeader = (BCRYPT_KEY_DATA_BLOB_HEADER*)blobData;
     blobHeader->dwMagic = BCRYPT_KEY_DATA_BLOB_MAGIC;
     blobHeader->dwVersion = BCRYPT_KEY_DATA_BLOB_VERSION1;
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(keySize, blobHeader->cbKeyData, goto done, NULL);
 
-    memcpy(xmlSecBufferGetData(&blob) + sizeof(BCRYPT_KEY_DATA_BLOB_HEADER),
+    memcpy(blobData + sizeof(BCRYPT_KEY_DATA_BLOB_HEADER),
         keyData, keySize);
 
     blobSize = xmlSecBufferGetSize(&blob);
@@ -462,7 +469,7 @@ xmlSecMSCngKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
         &hKey,
         pbKeyObject,
         cbKeyObject,
-        xmlSecBufferGetData(&blob),
+        blobData,
         dwBlobSize,
         0);
     if (status != STATUS_SUCCESS) {
@@ -525,6 +532,7 @@ xmlSecMSCngKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
     xmlSecBuffer blob;
     int blob_initialized = 0;
     BCRYPT_KEY_DATA_BLOB_HEADER* blobHeader;
+    xmlSecByte* blobData;
     xmlSecSize blobHeaderSize, blobSize;
     xmlSecByte* keyData;
     xmlSecSize keySize;
@@ -578,6 +586,10 @@ xmlSecMSCngKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
         xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
         goto done;
     }
+    if (cbData != sizeof(DWORD)) {
+        xmlSecInternalError("BCryptGetProperty", NULL);
+        goto done;
+    }
 
     pbKeyObject = xmlMalloc(cbKeyObject);
     if (pbKeyObject == NULL) {
@@ -594,12 +606,14 @@ xmlSecMSCngKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
         goto done;
     }
 
-    blobHeader = (BCRYPT_KEY_DATA_BLOB_HEADER*)xmlSecBufferGetData(&blob);
+    blobData = xmlSecBufferGetData(&blob);
+    xmlSecAssert2(blobData != NULL, -1);
+    blobHeader = (BCRYPT_KEY_DATA_BLOB_HEADER*)blobData;
     blobHeader->dwMagic = BCRYPT_KEY_DATA_BLOB_MAGIC;
     blobHeader->dwVersion = BCRYPT_KEY_DATA_BLOB_VERSION1;
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(keySize, blobHeader->cbKeyData, goto done, NULL);
 
-    memcpy(xmlSecBufferGetData(&blob) + sizeof(BCRYPT_KEY_DATA_BLOB_HEADER),
+    memcpy(blobData + sizeof(BCRYPT_KEY_DATA_BLOB_HEADER),
         keyData, keySize);
 
     blobSize = xmlSecBufferGetSize(&blob);
@@ -612,7 +626,7 @@ xmlSecMSCngKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
         &hKey,
         pbKeyObject,
         cbKeyObject,
-        xmlSecBufferGetData(&blob),
+        blobData,
         dwBlobSize,
         0);
     if (status != STATUS_SUCCESS) {

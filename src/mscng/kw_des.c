@@ -63,7 +63,8 @@ xmlSecMSCngKWDes3GenerateRandom(xmlSecTransformPtr transform XMLSEC_ATTRIBUTE_UN
     NTSTATUS status;
     DWORD dwOutSize;
 
-    UNREFERENCED_PARAMETER(transform);
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecMSCngTransformKWDes3Id), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngKWDes3Size), -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize > 0, -1);
     xmlSecAssert2(outWritten != NULL, -1);
@@ -128,6 +129,7 @@ xmlSecMSCngKWDes3Sha1(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSe
         xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
         goto done;
     }
+    xmlSecAssert2(cbData == sizeof(DWORD), -1);
 
     pbHashObject = (PBYTE)xmlMalloc(cbHashObject);
     if(pbHashObject == NULL) {
@@ -143,6 +145,12 @@ xmlSecMSCngKWDes3Sha1(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSe
         0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
+        goto done;
+    }
+    xmlSecAssert2(cbData == sizeof(DWORD), -1);
+
+    if(outSize < cbHash) {
+        xmlSecInvalidSizeLessThanError("outSize", outSize, (xmlSecSize)cbHash, NULL);
         goto done;
     }
 
@@ -184,7 +192,7 @@ xmlSecMSCngKWDes3Sha1(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSe
         xmlSecMSCngNtError("BCryptFinishHash", NULL, status);
         goto done;
     }
-    memcpy(out, pbHash, outSize);
+    memcpy(out, pbHash, cbHash);
     XMLSEC_SAFE_CAST_ULONG_TO_SIZE(cbHash, (*outWritten), goto done, NULL);
     res = 0;
 
@@ -220,7 +228,7 @@ xmlSecMSCngKWDes3BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     DWORD cbKeyObject;
     xmlSecBuffer blob;
     BCRYPT_KEY_DATA_BLOB_HEADER* blobHeader;
-    xmlSecSize blobHeaderSize, blobSizeInBits;
+    xmlSecSize blobHeaderSize, blockLen;
     NTSTATUS status;
     xmlSecSize keySize, blobSize;
     DWORD dwBlobSize, dwInSize, dwIvSize, dwOutSize;
@@ -271,6 +279,7 @@ xmlSecMSCngKWDes3BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
         goto done;
     }
+    xmlSecAssert2(cbData == sizeof(DWORD), -1);
 
     pbKeyObject = xmlMalloc(cbKeyObject);
     if(pbKeyObject == NULL) {
@@ -327,10 +336,14 @@ xmlSecMSCngKWDes3BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
         goto done;
     }
-    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwBlockLen, blobSizeInBits, goto done, NULL);
+    xmlSecAssert2(dwBlockLenLen == sizeof(dwBlockLen), -1);
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwBlockLen, blockLen, goto done, NULL);
 
-    if(ivSize < blobSizeInBits / 8) {
-        xmlSecInvalidSizeLessThanError("ivSize", ivSize, blobSizeInBits / 8, NULL);
+    /* CNG requires the IV to be exactly the block length; reject any other
+     * size (this also guarantees that dwIvSize, cast from ivSize below, equals
+     * blockLen) */
+    if(ivSize != blockLen) {
+        xmlSecInvalidSizeError("ivSize", ivSize, blockLen, NULL);
         goto done;
     }
 
@@ -365,6 +378,11 @@ xmlSecMSCngKWDes3BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptEncrypt", NULL, status);
+        goto done;
+    }
+    if(cbData != dwInSize) {
+        xmlSecInternalError2("BCryptEncrypt output size", NULL,
+            "size=" XMLSEC_SIZE_FMT, (xmlSecSize)cbData);
         goto done;
     }
     XMLSEC_SAFE_CAST_ULONG_TO_SIZE(cbData, (*outWritten), goto done, NULL);
@@ -402,7 +420,7 @@ xmlSecMSCngKWDes3BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     DWORD cbKeyObject;
     xmlSecBuffer blob;
     BCRYPT_KEY_DATA_BLOB_HEADER* blobHeader;
-    xmlSecSize blobHeaderSize, blobSizeInBits;
+    xmlSecSize blobHeaderSize, blockLen;
     xmlSecSize keySize, blobSize;
     DWORD dwBlobSize, dwInSize, dwIvSize, dwOutSize;
     NTSTATUS status;
@@ -452,6 +470,7 @@ xmlSecMSCngKWDes3BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
         goto done;
     }
+    xmlSecAssert2(cbData == sizeof(DWORD), -1);
 
     pbKeyObject = xmlMalloc(cbKeyObject);
     if(pbKeyObject == NULL) {
@@ -508,10 +527,14 @@ xmlSecMSCngKWDes3BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
         goto done;
     }
-    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwBlockLen, blobSizeInBits, goto done, NULL);
+    xmlSecAssert2(dwBlockLenLen == sizeof(dwBlockLen), -1);
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwBlockLen, blockLen, goto done, NULL);
 
-    if(ivSize < blobSizeInBits / 8) {
-        xmlSecInvalidSizeLessThanError("ivSize", ivSize, blobSizeInBits / 8, NULL);
+    /* CNG requires the IV to be exactly the block length; reject any other
+     * size (this also guarantees that dwIvSize, cast from ivSize below, equals
+     * blockLen) */
+    if(ivSize != blockLen) {
+        xmlSecInvalidSizeError("ivSize", ivSize, blockLen, NULL);
         goto done;
     }
 
@@ -537,6 +560,11 @@ xmlSecMSCngKWDes3BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptDecrypt", NULL, status);
+        goto done;
+    }
+    if(cbData != dwInSize) {
+        xmlSecInternalError2("BCryptDecrypt output size", NULL,
+            "size=" XMLSEC_SIZE_FMT, (xmlSecSize)cbData);
         goto done;
     }
     XMLSEC_SAFE_CAST_ULONG_TO_SIZE(cbData, (*outWritten), goto done, NULL);

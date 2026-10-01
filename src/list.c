@@ -188,6 +188,15 @@ xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
         return(0);
     }
 
+    /*
+     * If the klass destroys its items but does not support duplicating
+     * them, raw pointer sharing would leave both lists owning the same
+     * items, so both would destroy them at finalize (double free).
+     * Klasses with destroyItem == NULL hold non-owned pointers (e.g.
+     * static ids) and are safe to share.
+     */
+    xmlSecAssert2((dst->id->duplicateItem != NULL) || (dst->id->destroyItem == NULL), -1);
+
     initialUse = dst->use;
 
     /* allocate memory */

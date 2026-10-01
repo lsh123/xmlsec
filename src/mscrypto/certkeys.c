@@ -463,6 +463,9 @@ xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlS
         ret = xmlSecMSCryptoKeyDataCtxSetProvider(ctx, hProv, fCallerFreeProv);
         if(ret != 0) {
             xmlSecInternalError("xmlSecMSCryptoKeyDataCtxSetProvider", NULL);
+            if(fCallerFreeProv) {
+                CryptReleaseContext(hProv, 0);
+            }
             return(-1);
         }
     } else if((type & xmlSecKeyDataTypePublic) != 0){
@@ -476,6 +479,7 @@ xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlS
         ret = xmlSecMSCryptoKeyDataCtxSetProvider(ctx, hProv, TRUE);
         if(ret != 0) {
             xmlSecInternalError("xmlSecMSCryptoKeyDataCtxSetProvider", NULL);
+            CryptReleaseContext(hProv, 0);
             return(-1);
         }
         ctx->dwKeySpec = 0;
@@ -502,6 +506,7 @@ xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlS
     ret = xmlSecMSCryptoKeyDataCtxSetKey(ctx, hKey);
     if(ret != 0) {
         xmlSecInternalError("xmlSecMSCryptoKeyDataCtxSetKey", NULL);
+        CryptDestroyKey(hKey);
         return(-1);
     }
     ret = xmlSecMSCryptoKeyDataCtxSetCert(ctx, pCert);
@@ -538,6 +543,17 @@ xmlSecMSCryptoKeyDataAdoptKey(xmlSecKeyDataPtr data,
     ret = xmlSecMSCryptoKeyDataCtxSetKey(ctx, hKey);
     if(ret != 0) {
         xmlSecInternalError("xmlSecMSCryptoKeyDataCtxSetKey", NULL);
+        /* SetKey failed before ownership of hKey was transferred; detach the
+         * provider from ctx without releasing the caller-owned handle. */
+    #ifdef XMLSEC_MSCRYPTO_NT4
+        xmlSecAssert2((ctx->p_prov != NULL) && (ctx->p_prov->refcnt == 1), -1);
+        ctx->p_prov->hProv = 0;
+        ctx->p_prov->fCallerFreeProv = FALSE;
+        xmlSecMSCryptoKeyDataCtxDestroyProvider(ctx);
+    #else /* XMLSEC_MSCRYPTO_NT4 */
+        ctx->hProv = 0;
+        ctx->fCallerFreeProv = FALSE;
+    #endif /* XMLSEC_MSCRYPTO_NT4 */
         return(-1);
     }
     ret = xmlSecMSCryptoKeyDataCtxSetCert(ctx, NULL);
@@ -581,7 +597,7 @@ xmlSecMSCryptoKeyDataGetKey(xmlSecKeyDataPtr data, xmlSecKeyDataType type) {
  * @data:       the key data pointer
  *
  * Native MSCrypto decrypt key retrieval from xmlsec keydata. The
- * returned HKEY must not be destroyed by the caller.
+ * returned HKEY must be destroyed by the caller using CryptDestroyKey.
  *
  * Returns: HKEY on success or NULL otherwise.
  */
@@ -693,11 +709,15 @@ xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo(xmlSecKeyDataPtr data) {
     }
 
     if(dwInfoDataLength > 0) {
-        pInfoData = malloc(dwInfoDataLength * sizeof(BYTE));
+        pInfoData = (LPBYTE)xmlMalloc(dwInfoDataLength * sizeof(BYTE));
+        if(pInfoData == NULL) {
+            xmlSecMallocError(dwInfoDataLength * sizeof(BYTE), NULL);
+            return NULL;
+        }
 
         if(!CertGetCertificateContextProperty(ctx->pCert, CERT_KEY_PROV_INFO_PROP_ID, pInfoData, &dwInfoDataLength)) {
             xmlSecMSCryptoError("CertGetCertificateContextProperty", NULL);
-            free(pInfoData);
+            xmlFree(pInfoData);
             return NULL;
         }
     }
@@ -1745,6 +1765,7 @@ xmlSecMSCryptoKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xml
     UNREFERENCED_PARAMETER(type);
 
     ctx = xmlSecMSCryptoKeyDataGetCtx(data);
+    xmlSecAssert2(ctx != NULL, -1);
 
     hProv = xmlSecMSCryptoFindProvider(ctx->providers, NULL, CRYPT_VERIFYCONTEXT, TRUE);
     if(hProv == 0) {
@@ -1753,7 +1774,7 @@ xmlSecMSCryptoKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xml
     }
 
     dwKeySpec = AT_SIGNATURE;
-    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(sizeBits, dwSize, return(-1), xmlSecKeyDataGetName(data));
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(sizeBits, dwSize, goto done, xmlSecKeyDataGetName(data));
     dwSize = ((dwSize << 16) | CRYPT_EXPORTABLE);
     if (!CryptGenKey(hProv, CALG_DSS_SIGN, dwSize, &hKey)) {
             xmlSecMSCryptoError("CryptGenKey", xmlSecKeyDataGetName(data));

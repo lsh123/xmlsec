@@ -332,7 +332,11 @@ xmlSecNssSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2(value != NULL, -1);
 
     if (transform->operation == xmlSecTransformOperationSign) {
-        if (ctx->u.sig.privkey) {
+        if (ctx->u.sig.sigctx != NULL) {
+            SGN_DestroyContext(ctx->u.sig.sigctx, PR_TRUE);
+            ctx->u.sig.sigctx = NULL;
+        }
+        if (ctx->u.sig.privkey != NULL) {
             SECKEY_DestroyPrivateKey(ctx->u.sig.privkey);
         }
         ctx->u.sig.privkey = xmlSecNssPKIKeyDataGetPrivKey(value);
@@ -349,7 +353,11 @@ xmlSecNssSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
             return(-1);
         }
     } else {
-        if (ctx->u.vfy.pubkey) {
+        if (ctx->u.vfy.vfyctx != NULL) {
+            VFY_DestroyContext(ctx->u.vfy.vfyctx, PR_TRUE);
+            ctx->u.vfy.vfyctx = NULL;
+        }
+        if (ctx->u.vfy.pubkey != NULL) {
             SECKEY_DestroyPublicKey(ctx->u.vfy.pubkey);
         }
         ctx->u.vfy.pubkey = xmlSecNssPKIKeyDataGetPubKey(value);
@@ -630,6 +638,7 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                         xmlSecTransformGetName(transform),
                         "size=%u", signatureClr->len);
                     SECITEM_FreeItem(&signature, PR_FALSE);
+                    SECITEM_FreeItem(signatureClr, PR_TRUE);
                     return(-1);
                 }
 

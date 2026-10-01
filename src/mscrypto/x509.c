@@ -529,7 +529,7 @@ xmlSecMSCryptoKeyDataX509Finalize(xmlSecKeyDataPtr data) {
     if (ctx->hMemStore != 0) {
         if (!CertCloseStore(ctx->hMemStore, CERT_CLOSE_STORE_FORCE_FLAG)) {
             xmlSecInternalError("CertCloseStore", NULL);
-            return;
+            /* ignore error */
         }
     }
 
@@ -970,7 +970,7 @@ xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr
                                 return(-1);
                         }
                         pCert = NULL ;
-                } else if( ( keyInfoCtx->keyReq.keyType & xmlSecKeyDataTypePublic ) == xmlSecKeyDataTypePublic ) {
+                } else {
                         keyValue = xmlSecMSCryptoCertAdopt( pCert, xmlSecKeyDataTypePublic ) ;
                         if(keyValue == NULL) {
                                 xmlSecInternalError("xmlSecMSCryptoCertAdopt",

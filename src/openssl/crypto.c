@@ -546,18 +546,26 @@ xmlSecOpenSSLErrorsShutdown(void) {
  */
 int
 xmlSecOpenSSLSetDefaultTrustedCertsFolder(const xmlChar* path) {
-    if(gXmlSecOpenSSLTrustedCertsFolder != NULL) {
-        xmlFree(gXmlSecOpenSSLTrustedCertsFolder);
-        gXmlSecOpenSSLTrustedCertsFolder = NULL;
-    }
+    xmlChar* newPath;
 
+    /*
+     * Duplicate the new path first so that the previously set folder
+     * is preserved if the allocation fails.
+     */
     if(path != NULL) {
-        gXmlSecOpenSSLTrustedCertsFolder = xmlStrdup(BAD_CAST path);
-        if(gXmlSecOpenSSLTrustedCertsFolder == NULL) {
+        newPath = xmlStrdup(BAD_CAST path);
+        if(newPath == NULL) {
             xmlSecStrdupError(BAD_CAST path, NULL);
             return(-1);
         }
+    } else {
+        newPath = NULL;
     }
+
+    if(gXmlSecOpenSSLTrustedCertsFolder != NULL) {
+        xmlFree(gXmlSecOpenSSLTrustedCertsFolder);
+    }
+    gXmlSecOpenSSLTrustedCertsFolder = newPath;
 
     return(0);
 }

@@ -200,10 +200,10 @@ xmlSecNssKeyTransportSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2(key != NULL, -1);
 
     context = xmlSecNssKeyTransportGetCtx(transform);
-    if((context == NULL) || (context->keyId == NULL) || (context->pubkey != NULL)) {
-        xmlSecInternalError("xmlSecNssKeyTransportGetCtx", xmlSecTransformGetName(transform));
-        return(-1);
-    }
+    xmlSecAssert2(context != NULL, -1);
+    xmlSecAssert2(context->keyId != NULL, -1);
+    xmlSecAssert2(context->pubkey == NULL, -1);
+    xmlSecAssert2(context->prikey == NULL, -1);
     xmlSecAssert2(xmlSecKeyCheckId(key, context->keyId), -1);
 
     keyData = xmlSecKeyGetValue(key);

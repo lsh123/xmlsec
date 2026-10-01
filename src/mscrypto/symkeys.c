@@ -391,6 +391,9 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
     xmlSecAssert2(dwKeyMaterial > 0, FALSE);
     xmlSecAssert2(hSessionKey != NULL, FALSE);
 
+    /* just in case */
+    (*hSessionKey) = 0;
+
     /*  Double check to see if this provider supports this algorithm and key size */
     fFound = FALSE;
     dwFlags = CRYPT_FIRST;

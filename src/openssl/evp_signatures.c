@@ -441,6 +441,7 @@ xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
     ctx = xmlSecOpenSSLEvpSignatureGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->digestCtx != NULL, -1);
+    xmlSecAssert2(ctx->pKey != NULL, -1);
 
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, dataLen, return(-1), xmlSecTransformGetName(transform));
 

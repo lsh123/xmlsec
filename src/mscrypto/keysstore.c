@@ -229,7 +229,10 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
     if(wcName == NULL) {
         xmlSecInternalError("xmlSecWin32ConvertUtf8ToTstr(name)",
                             xmlSecKeyStoreGetName(store));
-        CertCloseStore(hStoreHandle, 0);
+        if(!CertCloseStore(hStoreHandle, 0)) {
+            xmlSecMSCryptoError("CertCloseStore", xmlSecKeyStoreGetName(store));
+            /* intentionally ignoring the error */
+        }
         return(NULL);
     }
 
@@ -258,7 +261,10 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
             xmlSecInternalError("xmlSecWin32ConvertUtf8ToUnicode(name)",
                                 xmlSecKeyStoreGetName(store));
             xmlFree(wcName);
-            CertCloseStore(hStoreHandle, 0);
+            if(!CertCloseStore(hStoreHandle, 0)) {
+                xmlSecMSCryptoError("CertCloseStore", xmlSecKeyStoreGetName(store));
+                /* intentionally ignoring the error */
+            }
             return(NULL);
         }
 
@@ -280,7 +286,10 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
                 xmlSecMallocError(dwPropSize, xmlSecKeyStoreGetName(store));
                 xmlFree(lpwName);
                 xmlFree(wcName);
-                CertCloseStore(hStoreHandle, 0);
+                if(!CertCloseStore(hStoreHandle, 0)) {
+                    xmlSecMSCryptoError("CertCloseStore", xmlSecKeyStoreGetName(store));
+                    /* intentionally ignoring the error */
+                }
                 CertFreeCertificateContext(pCertCtxIter);
                 return(NULL);
             }
@@ -332,7 +341,10 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
     /* aleksey todo: is it a right idea to close store if we have a handle to
      * a cert in this store? */
     xmlFree(wcName);
-    CertCloseStore(hStoreHandle, 0);
+    if(!CertCloseStore(hStoreHandle, 0)) {
+        xmlSecMSCryptoError("CertCloseStore", xmlSecKeyStoreGetName(store));
+        /* intentionally ignoring the error */
+    }
     return(pCertContext);
 }
 

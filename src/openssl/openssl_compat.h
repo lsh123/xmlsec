@@ -24,7 +24,7 @@
 #if !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300)
 
 /* EVP_PKEY stuff */
-#define EVP_PKEY_up_ref(pKey)              CRYPTO_add(&((pKey)->references), 1, CRYPTO_LOCK_EVP_PKEY)
+#define EVP_PKEY_up_ref(pKey)              (((pKey) != NULL) ? (CRYPTO_add(&((pKey)->references), 1, CRYPTO_LOCK_EVP_PKEY)) : 0)
 #define EVP_PKEY_get0_DSA(pKey)            (((pKey) != NULL) ? ((pKey)->pkey.dsa) : (DSA*)NULL)
 #define EVP_PKEY_get0_RSA(pKey)            (((pKey) != NULL) ? ((pKey)->pkey.rsa) : (RSA*)NULL)
 #define EVP_PKEY_get0_EC_KEY(pKey)         (((pKey) != NULL) ? ((pKey)->pkey.ec)  : (EC_KEY*)NULL)
@@ -48,7 +48,7 @@
 #define X509_get0_notAfter(x509)           X509_get_notAfter((x509))
 #define X509_REVOKED_get0_serialNumber(r)  (((r) != NULL) ? ((r)->serialNumber) : (ASN1_INTEGER *)NULL)
 #define X509_OBJECT_new()                  (calloc(1, sizeof(X509_OBJECT)))
-#define X509_OBJECT_free(x)                { X509_OBJECT_free_contents(x); free(x); }
+#define X509_OBJECT_free(x)                { if ((x) != NULL) { X509_OBJECT_free_contents((x)); free((x)); } }
 #define X509_OBJECT_get0_X509(x)           (((x) != NULL) ? ((x)->data.x509) : (X509 *)NULL)
 
 #endif /* !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300) */
@@ -112,7 +112,7 @@ static inline int xmlSecOpenSSLCompatRand(unsigned char *buf, xmlSecSize size) {
 #define EVP_read_pw_string(...)             (-1)
 
 #define X509_OBJECT_new()                  (calloc(1, sizeof(X509_OBJECT)))
-#define X509_OBJECT_free(x)                { X509_OBJECT_free_contents(x); free(x); }
+#define X509_OBJECT_free(x)                { if ((x) != NULL) { X509_OBJECT_free_contents((x)); free((x)); } }
 
 #endif /* OPENSSL_IS_BORINGSSL */
 
@@ -127,7 +127,7 @@ static inline int xmlSecOpenSSLCompatRand(unsigned char *buf, xmlSecSize size) {
 
 /* X509 stuff */
 #define X509_OBJECT_new()                  (calloc(1, sizeof(X509_OBJECT)))
-#define X509_OBJECT_free(x)                { X509_OBJECT_free_contents(x); free(x); }
+#define X509_OBJECT_free(x)                { if ((x) != NULL) { X509_OBJECT_free_contents((x)); free((x)); } }
 #endif /* defined(LIBRESSL_VERSION_NUMBER) && (LIBRESSL_VERSION_NUMBER < 0x30500000L) && defined(XMLSEC_OPENSSL_API_110) */
 
 

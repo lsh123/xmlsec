@@ -391,6 +391,7 @@ xmlSecMSCngAppPkcs12Load(const char *filename,
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferReadFile", NULL, "filename=%s",
             xmlSecErrorsSafeString(filename));
+        xmlSecBufferFinalize(&buffer);
         return(NULL);
     }
 

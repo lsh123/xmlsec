@@ -377,6 +377,10 @@ xmlSecMSCryptoHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         &(ctx->cryptKey)
         ) || (ctx->cryptKey == 0))  {
 
+        if(ctx->cryptKey != 0) {
+            CryptDestroyKey(ctx->cryptKey);
+            ctx->cryptKey = 0;
+        }
         xmlSecInternalError("xmlSecMSCryptoImportPlainSessionBlob",
                             xmlSecTransformGetName(transform));
         return(-1);
@@ -389,6 +393,12 @@ xmlSecMSCryptoHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         0,
         &(ctx->mscHash));
     if((ret == 0) || (ctx->mscHash == 0)) {
+        if(ctx->mscHash != 0) {
+            CryptDestroyHash(ctx->mscHash);
+            ctx->mscHash = 0;
+        }
+        CryptDestroyKey(ctx->cryptKey);
+        ctx->cryptKey = 0;
         xmlSecMSCryptoError("CryptCreateHash",
                             xmlSecTransformGetName(transform));
         return(-1);
@@ -399,6 +409,10 @@ xmlSecMSCryptoHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     hmacInfo.HashAlgid = ctx->alg_id;
     ret = CryptSetHashParam(ctx->mscHash, HP_HMAC_INFO, (BYTE*)&hmacInfo, 0);
     if(ret == 0) {
+        CryptDestroyHash(ctx->mscHash);
+        ctx->mscHash = 0;
+        CryptDestroyKey(ctx->cryptKey);
+        ctx->cryptKey = 0;
         xmlSecMSCryptoError("CryptSetHashParam",
                             xmlSecTransformGetName(transform));
         return(-1);
@@ -529,6 +543,11 @@ xmlSecMSCryptoHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                 return(-1);
             }
             xmlSecAssert2(retLen > 0, -1);
+            if(retLen > XMLSEC_TRASNFORM_HMAC_MAX_OUTPUT_SIZE) {
+                xmlSecInternalError2("CryptGetHashParam", xmlSecTransformGetName(transform),
+                    "retLen=" XMLSEC_SIZE_FMT, (xmlSecSize)retLen);
+                return(-1);
+            }
             XMLSEC_SAFE_CAST_ULONG_TO_SIZE(retLen, hashSize, return(-1), xmlSecTransformGetName(transform));
 
             /* check/set the result digest size */

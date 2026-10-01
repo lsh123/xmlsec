@@ -31,6 +31,7 @@
 
 #include <xmlsec/openssl/crypto.h>
 
+#include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
 
 /*****************************************************************************
@@ -136,6 +137,7 @@ xmlSecOpenSSLSymKeyDataBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 static int
 xmlSecOpenSSLSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecBufferPtr buffer;
+    xmlSecSize sizeBytes;
 
     xmlSecAssert2(xmlSecOpenSSLSymKeyDataCheckId(data), -1);
     xmlSecAssert2(sizeBits > 0, -1);
@@ -144,7 +146,9 @@ xmlSecOpenSSLSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
     xmlSecAssert2(buffer != NULL, -1);
 
-    return(xmlSecOpenSSLGenerateRandom(buffer, (sizeBits + 7) / 8));
+    sizeBytes = XMLSEC_BITS_TO_BYTES(sizeBits);
+    xmlSecAssert2(sizeBytes > 0, -1);
+    return(xmlSecOpenSSLGenerateRandom(buffer, sizeBytes));
 }
 
 static xmlSecKeyDataType

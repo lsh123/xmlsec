@@ -332,6 +332,7 @@ xmlSecOpenSSLEvpDigestVerify(xmlSecTransformPtr transform,
                         const xmlSecByte* data, xmlSecSize dataSize,
                         xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLEvpDigestCtxPtr ctx;
+    int ret;
 
     xmlSecAssert2(xmlSecOpenSSLEvpDigestCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpDigestSize), -1);
@@ -351,7 +352,14 @@ xmlSecOpenSSLEvpDigestVerify(xmlSecTransformPtr transform,
         return(0);
     }
 
-    if(memcmp(ctx->dgst, data, ctx->dgstSize) != 0) {
+    /* compare in constant time so the number of matching leading bytes is
+     * not leaked through timing */
+    ret = xmlSecMemEqual(ctx->dgst, data, ctx->dgstSize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMemEqual", xmlSecTransformGetName(transform));
+        return(-1);
+    }
+    if(ret == 0) {
         xmlSecInvalidDataError("data and digest do not match",
                 xmlSecTransformGetName(transform));
         transform->status = xmlSecTransformStatusFail;
@@ -420,7 +428,7 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
             xmlSecSize size;
 
             ret = EVP_MD_size(ctx->digest);
-            if (ret < 0) {
+            if (ret <= 0) {
                 xmlSecOpenSSLError("EVP_MD_size",
                                     xmlSecTransformGetName(transform));
                 return(-1);

@@ -94,6 +94,7 @@ static int
 xmlSecMSCngSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits,
         xmlSecKeyDataType type) {
     xmlSecBufferPtr buffer;
+    xmlSecSize sizeBytes;
 
     xmlSecAssert2(xmlSecMSCngSymKeyDataCheckId(data), -1);
     xmlSecAssert2(sizeBits > 0, -1);
@@ -102,7 +103,9 @@ xmlSecMSCngSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits,
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
     xmlSecAssert2(buffer != NULL, -1);
 
-    return(xmlSecMSCngGenerateRandom(buffer, (sizeBits + 7) / 8));
+    sizeBytes = XMLSEC_BITS_TO_BYTES(sizeBits);
+    xmlSecAssert2(sizeBytes > 0, -1);
+    return(xmlSecMSCngGenerateRandom(buffer, sizeBytes));
 }
 
 static xmlSecKeyDataType

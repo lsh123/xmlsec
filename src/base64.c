@@ -119,6 +119,11 @@ static int                      xmlSecBase64CtxDecodeIsFinished (xmlSecBase64Ctx
 
 static int g_xmlsec_base64_default_line_size = XMLSEC_BASE64_LINESIZE;
 
+static int
+xmlSecBase64IsValidColumns(int columns) {
+    return((columns == 0) || (columns > 1));
+}
+
 /**
  * xmlSecBase64GetDefaultLineSize:
  *
@@ -204,6 +209,7 @@ xmlSecBase64CtxDestroy(xmlSecBase64CtxPtr ctx) {
 int
 xmlSecBase64CtxInitialize(xmlSecBase64CtxPtr ctx, int encode, int columns) {
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(xmlSecBase64IsValidColumns(columns), -1);
 
     memset(ctx, 0, sizeof(xmlSecBase64Ctx));
 
@@ -580,16 +586,46 @@ xmlSecBase64CtxDecodeIsFinished(xmlSecBase64CtxPtr ctx) {
 }
 
 static xmlSecSize
-xmlSecBase64GetEncodeSize(xmlSecBase64CtxPtr ctx, xmlSecSize inLen) {
+xmlSecBase64GetEncodeSize(xmlSecSize columnsSize, xmlSecSize inSize) {
     xmlSecSize size;
+    xmlSecSize blocks;
 
-    xmlSecAssert2(ctx != NULL, 0);
+    blocks = inSize / 3;
+    if((inSize % 3) != 0) {
+        ++blocks;
+    }
+    if(blocks > (XMLSEC_SIZE_MAX / 4)) {
+        return(0);
+    }
+    size = blocks * 4;
 
-    size = (4 * inLen) / 3 + 4;
-    if(ctx->columns > 0) {
-        size += (size / ctx->columns) + 4;
+    if(columnsSize > 1) {
+        /* columnsSize is at least 2, so this is safe */
+        if(size > XMLSEC_SIZE_MAX - 1 - (size / columnsSize) - 4) {
+            return(0);
+        }
+        size += (size / columnsSize) + 4;
+    }
+    if(size > XMLSEC_SIZE_MAX - 1) {
+        return(0);
     }
     return(size + 1);
+}
+
+static xmlSecSize
+xmlSecBase64GetDecodeSize(xmlSecSize inSize) {
+    xmlSecSize blocks;
+
+    blocks = inSize / 4;
+    if((inSize % 4) != 0) {
+        /* this only happens if we have line breaks, etc. so just to be safe */
+        ++blocks;
+    }
+
+    if(blocks > ((XMLSEC_SIZE_MAX - 8) / 3)) {
+        return(0);
+    }
+    return(3 * blocks + 8);
 }
 
 /**
@@ -625,7 +661,7 @@ xmlSecBase64Encode(const xmlSecByte *in, xmlSecSize inSize, int columns) {
     ctx_initialized = 1;
 
     /* create result buffer */
-    outSize = xmlSecBase64GetEncodeSize(&ctx, inSize);
+    outSize = xmlSecBase64GetEncodeSize(ctx.columns, inSize);
     if(outSize == 0) {
         xmlSecInternalError("xmlSecBase64GetEncodeSize", NULL);
         goto done;
@@ -969,12 +1005,19 @@ xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
             outSize = xmlSecBufferGetSize(out);
             if(inSize > 0) {
                 if(ctx->encode != 0) {
-                    outMaxLen = 4 * inSize / 3 + 8;
-                    if(ctx->columns > 0) {
-                        outMaxLen += inSize / ctx->columns + 4;
-                    }
+                    outMaxLen = xmlSecBase64GetEncodeSize(ctx->columns, inSize);
                 } else {
-                    outMaxLen = 3 * inSize / 4 + 8;
+                    outMaxLen = xmlSecBase64GetDecodeSize(inSize);
+                }
+                if(outMaxLen == 0) {
+                    xmlSecInternalError2("xmlSecBase64Execute", xmlSecTransformGetName(transform),
+                        "inSize=" XMLSEC_SIZE_FMT, inSize);
+                    return(-1);
+                }
+                if(outSize > XMLSEC_SIZE_MAX - outMaxLen) {
+                    xmlSecInternalError3("xmlSecBufferSetMaxSize", xmlSecTransformGetName(transform),
+                        "outSize=" XMLSEC_SIZE_FMT "; outMaxLen=" XMLSEC_SIZE_FMT, outSize, outMaxLen);
+                    return(-1);
                 }
                 ret = xmlSecBufferSetMaxSize(out, outSize + outMaxLen);
                 if(ret < 0) {
@@ -1012,6 +1055,11 @@ xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
                 outSize = xmlSecBufferGetSize(out);
                 outMaxLen = 16; /* last block */
 
+                if(outSize > XMLSEC_SIZE_MAX - outMaxLen) {
+                    xmlSecInternalError3("xmlSecBufferSetMaxSize", xmlSecTransformGetName(transform),
+                        "outSize=" XMLSEC_SIZE_FMT "; outMaxLen=" XMLSEC_SIZE_FMT, outSize, outMaxLen);
+                    return(-1);
+                }
                 ret = xmlSecBufferSetMaxSize(out, outSize + outMaxLen);
                 if(ret < 0) {
                     xmlSecInternalError2("xmlSecBufferSetMaxSize", xmlSecTransformGetName(transform),

@@ -16,6 +16,8 @@
 #include <time.h>
 #include <string.h>
 #include <assert.h>
+#include <errno.h>
+#include <limits.h>
 
 #include <xmlsec/xmlsec.h>
 #include "cmdline.h"
@@ -315,9 +317,18 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
                 return(-1);
             }
             value->strValue = argv[++pos];
-            if(XMLSEC_SCANF(value->strValue, "%d", &(value->intValue)) != 1) {
-                fprintf(stderr, "Error: integer argument \"%s\" is invalid.\n", value->strValue);
-                return(-1);
+            {
+                char* end = NULL;
+                long v;
+
+                errno = 0;
+                v = strtol(value->strValue, &end, 10);
+                if((end == value->strValue) || (*end != '\0') || (errno == ERANGE) ||
+                   (v < INT_MIN) || (v > INT_MAX)) {
+                    fprintf(stderr, "Error: integer argument \"%s\" is invalid.\n", value->strValue);
+                    return(-1);
+                }
+                value->intValue = (int)v;
             }
             break;
         case xmlSecAppCmdLineParamTypeTime:

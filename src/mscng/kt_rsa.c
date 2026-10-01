@@ -199,9 +199,12 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
     outSize = xmlSecBufferGetSize(out);
     xmlSecAssert2(outSize == 0, -1);
 
-    /* the encoded size is equal to the keys size so we could not
-     * process more than that */
-    if((transform->operation == xmlSecTransformOperationEncrypt) && (inSize >= keySize)) {
+    /* the encoded size is equal to the key's size so we could not
+     * process more than that. For encryption the input must be non-empty (it is the
+     * key or hash to wrap, or the data to encrypt); the public API
+     * xmlSecEncCtxBinaryEncrypt() permits a zero-size input, so this is checked
+     * explicitly. Decryption is guarded by the inSize != keySize check below. */
+    if((transform->operation == xmlSecTransformOperationEncrypt) && ((inSize == 0) || (inSize >= keySize))) {
         xmlSecInvalidSizeLessThanError("Input data", inSize, keySize,
             xmlSecTransformGetName(transform));
         return(-1);

@@ -158,6 +158,7 @@ xmlSecNssKeyTransportFinalize(xmlSecTransformPtr transform) {
     }
 
     if(context->material != NULL) {
+        xmlSecMemCleanse(xmlSecBufferGetData(context->material), xmlSecBufferGetSize(context->material));
         xmlSecBufferDestroy(context->material);
         context->material = NULL;
     }
@@ -246,6 +247,7 @@ xmlSecNssKeyTransportCtxInit(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr in
     xmlSecAssert2(transformCtx != NULL, -1);
 
     if(ctx->material != NULL) {
+        xmlSecMemCleanse(xmlSecBufferGetData(ctx->material), xmlSecBufferGetSize(ctx->material));
         xmlSecBufferDestroy(ctx->material);
         ctx->material = NULL;
     }
@@ -484,11 +486,13 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
     if(xmlSecBufferAppend(out, xmlSecBufferGetData(result), xmlSecBufferGetSize(result)) < 0) {
         xmlSecInternalError2("xmlSecBufferAppend", NULL,
             "size=" XMLSEC_SIZE_FMT, xmlSecBufferGetSize(result));
+        xmlSecMemCleanse(xmlSecBufferGetData(result), xmlSecBufferGetSize(result));
         xmlSecBufferDestroy(result);
         return(-1);
     }
 
     /* done */
+    xmlSecMemCleanse(xmlSecBufferGetData(result), xmlSecBufferGetSize(result));
     xmlSecBufferDestroy(result);
     return(0);
 }

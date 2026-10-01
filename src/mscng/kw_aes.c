@@ -387,7 +387,7 @@ xmlSecMSCngKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
     xmlSecAssert2(xmlSecMSCngKWAesCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngKWAesSize), -1);
     xmlSecAssert2(in != NULL, -1);
-    xmlSecAssert2(inSize >= XMLSEC_KW_AES_BLOCK_SIZE, -1);
+    xmlSecAssert2(inSize == XMLSEC_KW_AES_BLOCK_SIZE, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= inSize, -1);
     xmlSecAssert2(outWritten != NULL, -1);
@@ -508,12 +508,14 @@ done:
         BCryptDestroyKey(hKey);
     }
     if (pbKeyObject != NULL) {
+        xmlSecMemCleanse(pbKeyObject, cbKeyObject);
         xmlFree(pbKeyObject);
     }
     if (hAlg != NULL) {
         BCryptCloseAlgorithmProvider(hAlg, 0);
     }
     if (blob_initialized != 0) {
+        xmlSecMemCleanse(xmlSecBufferGetData(&blob), xmlSecBufferGetMaxSize(&blob));
         xmlSecBufferFinalize(&blob);
     }
     return(res);
@@ -544,7 +546,7 @@ xmlSecMSCngKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
     xmlSecAssert2(xmlSecMSCngKWAesCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngKWAesSize), -1);
     xmlSecAssert2(in != NULL, -1);
-    xmlSecAssert2(inSize >= XMLSEC_KW_AES_BLOCK_SIZE, -1);
+    xmlSecAssert2(inSize == XMLSEC_KW_AES_BLOCK_SIZE, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= inSize, -1);
     xmlSecAssert2(outWritten != NULL, -1);
@@ -665,12 +667,14 @@ done:
         BCryptDestroyKey(hKey);
     }
     if (pbKeyObject != NULL) {
+        xmlSecMemCleanse(pbKeyObject, cbKeyObject);
         xmlFree(pbKeyObject);
     }
     if (hAlg != NULL) {
         BCryptCloseAlgorithmProvider(hAlg, 0);
     }
     if (blob_initialized != 0) {
+        xmlSecMemCleanse(xmlSecBufferGetData(&blob), xmlSecBufferGetMaxSize(&blob));
         xmlSecBufferFinalize(&blob);
     }
     return(res);

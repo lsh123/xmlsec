@@ -1021,23 +1021,11 @@ xmlSecNssKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr key,
 
 static int
 xmlSecNssX509CertGetTime(PRTime* t, time_t* res) {
-
-    PRTime tmp64_1, tmp64_2;
-    PRUint32 tmp32 = 1000000;
-
     xmlSecAssert2(t != NULL, -1);
     xmlSecAssert2(res != NULL, -1);
 
-    /* PRTime is time in microseconds since epoch. Divide by 1000000 to
-     * convert to seconds, then convert to an unsigned 32 bit number
-     */
-    (*res) = 0;
-    LL_UI2L(tmp64_1, tmp32);
-    LL_DIV(tmp64_2, *t, tmp64_1);
-    LL_L2UI(tmp32, tmp64_2);
-
-    (*res) = (time_t)(tmp32);
-
+    /* PRTime is the number of microseconds since the epoch, convert to seconds */
+    (*res) = (time_t)(*t / PR_USEC_PER_SEC);
     return(0);
 }
 

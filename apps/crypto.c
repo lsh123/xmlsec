@@ -13,6 +13,8 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
+#include <limits.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -323,6 +325,8 @@ xmlSecAppCryptoKeyGenerate(const char* keyKlassAndSize, const char* name, xmlSec
     xmlSecKeyPtr key;
     char* buf;
     char* p;
+    char* end = NULL;
+    long v;
     int size;
     int ret;
 
@@ -343,7 +347,16 @@ xmlSecAppCryptoKeyGenerate(const char* keyKlassAndSize, const char* name, xmlSec
         return(NULL);
     }
     *(p++) = '\0';
-    size = atoi(p);
+    errno = 0;
+    v = strtol(p, &end, 10);
+    if((end == p) || (*end != '\0') || (errno == ERANGE) ||
+       (v < INT_MIN) || (v > INT_MAX)) {
+        fprintf(stderr, "Error: key size is not a valid integer in the key definition \"%s\"\n",
+                    xmlSecErrorsSafeString(keyKlassAndSize));
+        xmlFree(buf);
+        return(NULL);
+    }
+    size = (int)v;
     if(size <= 0) {
        fprintf(stderr, "Error: key size should be greater than zero \"%s\"\n",
                     xmlSecErrorsSafeString(buf));

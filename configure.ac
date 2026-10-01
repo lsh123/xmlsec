@@ -31,6 +31,10 @@ AM_MAINTAINER_MODE
 # to make
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
+dnl save the user-provided CFLAGS so we can detect an explicit -std= later
+dnl and not override it with our own choice of the C standard
+XMLSEC_CFLAGS_USER="$CFLAGS"
+
 dnl
 dnl Check the environment
 dnl
@@ -2442,7 +2446,7 @@ dnl ==========================================================================
 AC_MSG_CHECKING(for pedantic)
 AC_ARG_ENABLE([pedantic], [AS_HELP_STRING([--enable-pedantic],[enable pedantic compilation flags (no)])])
 if test "z$enable_pedantic" = "zyes" ; then
-    CFLAGS="$CFLAGS -O -std=c99 -pedantic -pedantic-errors -W -Wall -Wextra"
+    CFLAGS="$CFLAGS -O -pedantic -pedantic-errors -W -Wall -Wextra"
     CFLAGS="$CFLAGS -fno-inline -Wnull-dereference -Wdouble-promotion"
     CFLAGS="$CFLAGS -Wformat=2 -Wformat-security -Wformat-nonliteral"
     CFLAGS="$CFLAGS -Wconversion -Wunused -Wshadow -Wpointer-arith -Wcast-align"
@@ -2458,6 +2462,39 @@ else
 fi
 
 dnl ==========================================================================
+dnl C standard: use C23 if the compiler (recent GCC or Clang) supports it.
+dnl C23 provides memset_explicit() which xmlSecMemCleanse() prefers for
+dnl secure zeroing of sensitive data.
+dnl ==========================================================================
+AC_MSG_CHECKING([for C23 support])
+case " $XMLSEC_CFLAGS_USER " in
+    *" -std="*)
+        AC_MSG_RESULT([no (custom -std= in CFLAGS)])
+        ;;
+    *)
+        XMLSEC_CFLAGS_SAVE="$CFLAGS"
+        CFLAGS="$CFLAGS -std=c23"
+        AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+            #if !defined(__STDC_VERSION__) || __STDC_VERSION__ < 202311L
+            #error "the compiler does not support C23"
+            #endif
+        ]],[[
+            /* compiled as C23 */
+        ]])],
+            [XMLSEC_USE_C23="yes"],
+            [XMLSEC_USE_C23="no"])
+        CFLAGS="$XMLSEC_CFLAGS_SAVE"
+        if test "z$XMLSEC_USE_C23" = "zyes" ; then
+            CFLAGS="$CFLAGS -std=c23"
+            AC_MSG_RESULT([yes])
+        else
+            CFLAGS="$CFLAGS -std=c99"
+            AC_MSG_RESULT([no (use -std=c99)])
+        fi
+        ;;
+esac
+
+dnl ==========================================================================
 dnl Secure memset
 dnl ==========================================================================
 AC_MSG_CHECKING(for secure memset)
@@ -2468,6 +2505,20 @@ if test "z$enable_secure_memset" != "zno" ; then
 else
     AC_MSG_RESULT([disabled])
 fi
+
+
+
+dnl ==========================================================================
+dnl Checks for secure zeroing functions (used by xmlSecMemCleanse)
+dnl ==========================================================================
+AC_CHECK_FUNCS([memset_explicit explicit_bzero memset_s])
+AC_CHECK_DECLS([memset_explicit, explicit_bzero, memset_s], [], [], [[
+    #if defined(__GNUC__) && !defined(_GNU_SOURCE)
+    #define _GNU_SOURCE
+    #endif
+
+    #include <string.h>
+]])
 
 
 dnl ==========================================================================

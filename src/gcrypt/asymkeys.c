@@ -390,6 +390,7 @@ xmlSecGCryptAsymSExpDup(gcry_sexp_t pKey) {
 
 done:
     if(buf != NULL) {
+        xmlSecMemCleanse(buf, size);
         xmlFree(buf);
     }
     return (res);

@@ -247,13 +247,14 @@ jobs:
           base-devel
           git
           libtool
-          mingw-w64-${{ matrix.arch }}-toolchain
-          mingw-w64-${{ matrix.arch }}-libxml2
-          mingw-w64-${{ matrix.arch }}-libxslt
-          mingw-w64-${{ matrix.arch }}-libltdl
-          mingw-w64-${{ matrix.arch }}-openssl
-          mingw-w64-${{ matrix.arch }}-libgcrypt
-          mingw-w64-${{ matrix.arch }}-gnutls
+          mingw-w64-ucrt-${{ matrix.arch }}-gcc
+          mingw-w64-ucrt-${{ matrix.arch }}-gcc-libs
+          mingw-w64-ucrt-${{ matrix.arch }}-libxml2
+          mingw-w64-ucrt-${{ matrix.arch }}-libxslt
+          mingw-w64-ucrt-${{ matrix.arch }}-libltdl
+          mingw-w64-ucrt-${{ matrix.arch }}-openssl
+          mingw-w64-ucrt-${{ matrix.arch }}-libgcrypt
+          mingw-w64-ucrt-${{ matrix.arch }}-gnutls
     - name: configure-git
       run: |
           git config --global core.autocrlf input

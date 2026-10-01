@@ -351,7 +351,6 @@ xmlSecMSCngShutdown(void) {
  */
 int
 xmlSecMSCngGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
-    xmlSecByte* data;
     NTSTATUS status;
     DWORD dwSize;
     int ret;
@@ -365,13 +364,10 @@ xmlSecMSCngGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
         return(-1);
     }
 
-    data = xmlSecBufferGetData(buffer);
-    xmlSecAssert2(data != NULL, -1);
-
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(size, dwSize, return(-1), NULL);
     status = BCryptGenRandom(
         NULL,
-        (PBYTE)data,
+        (PBYTE)xmlSecBufferGetData(buffer),
         dwSize,
         BCRYPT_USE_SYSTEM_PREFERRED_RNG);
     if(status != STATUS_SUCCESS) {

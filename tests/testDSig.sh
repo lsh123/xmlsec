@@ -51,18 +51,18 @@ execDSigTest $res_success \
     "defCan-1" \
     "c14n11 sha1 hmac-sha1" \
     "hmac" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin"
+    "--enabled-reference-uris any --hmackey $topfolder/keys/hmackey.bin" \
+    "--enabled-reference-uris any --hmackey $topfolder/keys/hmackey.bin" \
+    "--enabled-reference-uris any --hmackey $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "xmldsig2ed-tests" \
     "defCan-2" \
     "c14n11 xslt xpath sha1 hmac-sha1" \
     "hmac" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin"
+    "--enabled-reference-uris any --hmackey $topfolder/keys/hmackey.bin" \
+    "--enabled-reference-uris any --hmackey $topfolder/keys/hmackey.bin" \
+    "--enabled-reference-uris any --hmackey $topfolder/keys/hmackey.bin"
 
 #
 # differences in XSLT transform output, tbd
@@ -156,9 +156,9 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/signature-two-keynames" \
     "sha1 rsa-sha1" \
     "rsa x509" \
-    "$priv_key_option:key2 $topfolder/keys/rsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2018" \
-    "$priv_key_option:key2 $topfolder/keys/rsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2018" \
-    "$priv_key_option:key2 $topfolder/keys/rsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2018"
+    "--enabled-reference-uris any $priv_key_option:key2 $topfolder/keys/rsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2018" \
+    "--enabled-reference-uris any $priv_key_option:key2 $topfolder/keys/rsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2018" \
+    "--enabled-reference-uris any $priv_key_option:key2 $topfolder/keys/rsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2018"
 
 execDSigTest $res_success \
     "" \
@@ -376,9 +376,9 @@ execDSigTest $res_success \
     "enveloping-sha256-rsa-sha256-relationship" \
     "sha256 rsa-sha256 relationship" \
     "rsa x509" \
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/rsakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+    "--enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "--enabled-reference-uris any $priv_key_option $topfolder/keys/rsakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
     "" \
@@ -577,81 +577,81 @@ execDSigTest $res_success \
     "merlin-xmldsig-twenty-three/signature-external-b64-dsa" \
     "base64 sha1 dsa-sha1" \
     "dsa" \
-    " $url_map_xml_stylesheet_b64_2005" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_b64_2005" \
-    " $url_map_xml_stylesheet_b64_2005"
+    "--enabled-reference-uris any  $url_map_xml_stylesheet_b64_2005" \
+    "--enabled-reference-uris any $priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_b64_2005" \
+    "--enabled-reference-uris any  $url_map_xml_stylesheet_b64_2005"
 
 execDSigTest $res_success \
     "" \
     "merlin-xmldsig-twenty-three/signature-external-dsa" \
     "sha1 dsa-sha1" \
     "dsa" \
-    "$url_map_xml_stylesheet_2005" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005" \
-    " $url_map_xml_stylesheet_2005"
+    "--enabled-reference-uris any $url_map_xml_stylesheet_2005" \
+    "--enabled-reference-uris any $priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005" \
+    "--enabled-reference-uris any  $url_map_xml_stylesheet_2005"
 
 execDSigTest $res_success \
     "" \
     "merlin-xmldsig-twenty-three/signature-keyname" \
     "sha1 dsa-sha1" \
     "dsa x509" \
-    "--pubkey-cert-$cert_format:Lugh $topfolder/merlin-xmldsig-twenty-three/certs/lugh-cert.$cert_format $url_map_xml_stylesheet_2005" \
-    "$priv_key_option:test-dsa $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005" \
-    "$priv_key_option:test-dsa $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"
+    "--enabled-reference-uris any --pubkey-cert-$cert_format:Lugh $topfolder/merlin-xmldsig-twenty-three/certs/lugh-cert.$cert_format $url_map_xml_stylesheet_2005" \
+    "--enabled-reference-uris any $priv_key_option:test-dsa $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005" \
+    "--enabled-reference-uris any $priv_key_option:test-dsa $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"
 
 execDSigTest $res_success \
     "" \
     "merlin-xmldsig-twenty-three/signature-x509-crt" \
     "sha1 dsa-sha1" \
     "dsa x509" \
-    "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format $url_map_xml_stylesheet_2005"
+    "--enabled-reference-uris any --trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005" \
+    "--enabled-reference-uris any $priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
+    "--enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format $url_map_xml_stylesheet_2005"
 
 execDSigTest $res_success \
     "" \
     "merlin-xmldsig-twenty-three/signature-x509-sn" \
     "sha1 dsa-sha1" \
     "dsa x509" \
-    "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --untrusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/badb.$cert_format --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format $url_map_xml_stylesheet_2005"
+    "--enabled-reference-uris any --trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --untrusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/badb.$cert_format --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005" \
+    "--enabled-reference-uris any $priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
+    "--enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format $url_map_xml_stylesheet_2005"
 
 execDSigTest $res_success \
     "" \
     "merlin-xmldsig-twenty-three/signature-x509-is" \
     "sha1 dsa-sha1" \
     "dsa x509" \
-    "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --untrusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/macha.$cert_format --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format $url_map_xml_stylesheet_2005"
+    "--enabled-reference-uris any --trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --untrusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/macha.$cert_format --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005" \
+    "--enabled-reference-uris any $priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
+    "--enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format $url_map_xml_stylesheet_2005"
 
 execDSigTest $res_success \
     "" \
     "merlin-xmldsig-twenty-three/signature-x509-ski" \
     "sha1 dsa-sha1" \
     "dsa x509" \
-    "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --untrusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/nemain.$cert_format --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format $url_map_xml_stylesheet_2005"
+    "--enabled-reference-uris any --trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --untrusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/nemain.$cert_format --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005" \
+    "--enabled-reference-uris any $priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
+    "--enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format $url_map_xml_stylesheet_2005"
 
 execDSigTest $res_success \
     "" \
     "merlin-xmldsig-twenty-three/signature-retrievalmethod-rawx509crt" \
     "sha1 dsa-sha1" \
     "dsa x509" \
-    "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --untrusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/nemain.$cert_format --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --trusted-$cert_format $topfolder/keys/ca2cert.$cert_format $url_map_xml_stylesheet_2005"
+    "--enabled-reference-uris any --enabled-retrieval-method-uris remote --trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --untrusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/nemain.$cert_format --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005" \
+    "--enabled-reference-uris any --enabled-retrieval-method-uris remote $priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
+    "--enabled-reference-uris any --enabled-retrieval-method-uris remote --trusted-$cert_format $topfolder/keys/cacert.$cert_format --trusted-$cert_format $topfolder/keys/ca2cert.$cert_format $url_map_xml_stylesheet_2005"
 
 execDSigTest $res_success \
     "" \
     "merlin-xmldsig-twenty-three/signature" \
     "base64 xpath xslt enveloped-signature c14n-with-comments sha1 dsa-sha1" \
     "dsa x509" \
-    "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/merlin.$cert_format --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005 $url_map_xml_stylesheet_b64_2005" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005 $url_map_xml_stylesheet_b64_2005" \
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format $url_map_xml_stylesheet_2005 $url_map_xml_stylesheet_b64_2005"
+    "--enabled-reference-uris any --trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/merlin.$cert_format --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005 $url_map_xml_stylesheet_b64_2005" \
+    "--enabled-reference-uris any $priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005 $url_map_xml_stylesheet_b64_2005" \
+    "--enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format $url_map_xml_stylesheet_2005 $url_map_xml_stylesheet_b64_2005"
 
 
 ##########################################################################
@@ -668,44 +668,44 @@ execDSigTest $res_success \
     "merlin-xmlenc-five/encsig-ripemd160-hmac-ripemd160-kw-tripledes" \
     "ripemd160 hmac-ripemd160 kw-tripledes" \
     "hmac des" \
-    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml $url_map_xml_stylesheet_2005" \
-    "--session-key hmac-192 --keys-file $topfolder/merlin-xmlenc-five/keys.xml $url_map_xml_stylesheet_2005" \
-    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml $url_map_xml_stylesheet_2005"
+    "--enabled-reference-uris any --keys-file $topfolder/merlin-xmlenc-five/keys.xml $url_map_xml_stylesheet_2005" \
+    "--enabled-reference-uris any --session-key hmac-192 --keys-file $topfolder/merlin-xmlenc-five/keys.xml $url_map_xml_stylesheet_2005" \
+    "--enabled-reference-uris any --keys-file $topfolder/merlin-xmlenc-five/keys.xml $url_map_xml_stylesheet_2005"
 
 execDSigTest $res_success \
     "" \
     "merlin-xmlenc-five/encsig-sha256-hmac-sha256-kw-aes128" \
     "sha256 hmac-sha256 kw-aes128" \
     "hmac aes" \
-    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml $url_map_xml_stylesheet_2005"
+    "--enabled-reference-uris any --keys-file $topfolder/merlin-xmlenc-five/keys.xml $url_map_xml_stylesheet_2005"
 
 execDSigTest $res_success \
     "" \
     "merlin-xmlenc-five/encsig-sha384-hmac-sha384-kw-aes192" \
     "sha384 hmac-sha384 kw-aes192" \
     "hmac aes" \
-    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml $url_map_xml_stylesheet_2005"
+    "--enabled-reference-uris any --keys-file $topfolder/merlin-xmlenc-five/keys.xml $url_map_xml_stylesheet_2005"
 
 execDSigTest $res_success \
     "" \
     "merlin-xmlenc-five/encsig-sha512-hmac-sha512-kw-aes256" \
     "sha512 hmac-sha512 kw-aes256" \
     "hmac aes" \
-    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml $url_map_xml_stylesheet_2005"
+    "--enabled-reference-uris any --keys-file $topfolder/merlin-xmlenc-five/keys.xml $url_map_xml_stylesheet_2005"
 
 execDSigTest $res_success \
     "" \
     "merlin-xmlenc-five/encsig-hmac-sha256-rsa-1_5" \
     "sha1 hmac-sha256 rsa-1_5" \
     "hmac rsa" \
-    "$priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret $url_map_xml_stylesheet_2005"
+    "--enabled-reference-uris any $priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret $url_map_xml_stylesheet_2005"
 
 execDSigTest $res_success \
     "" \
     "merlin-xmlenc-five/encsig-hmac-sha256-rsa-oaep-mgf1p" \
     "sha1 hmac-sha256 rsa-oaep-mgf1p" \
     "hmac rsa" \
-    "$priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret $url_map_xml_stylesheet_2005"
+    "--enabled-reference-uris any $priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret $url_map_xml_stylesheet_2005"
 
 
 
@@ -773,14 +773,14 @@ execDSigTest $res_success \
     "signature-big" \
     "base64 xslt xpath sha1 rsa-sha1" \
     "rsa x509" \
-    "--pubkey-cert-$cert_format certs/rsa-cert.$cert_format $url_map_rfc3161"
+    "--enabled-reference-uris any --pubkey-cert-$cert_format certs/rsa-cert.$cert_format $url_map_rfc3161"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
     "signature-dsa-detached" \
     "sha1 dsa-sha1" \
     "dsa x509" \
-    "--trusted-$cert_format certs/dsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
+    "--enabled-reference-uris any --trusted-$cert_format certs/dsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
@@ -801,7 +801,7 @@ execDSigTest $res_success \
     "signature-dsa-manifest" \
     "sha1 dsa-sha1" \
     "dsa x509" \
-    "--trusted-$cert_format certs/dsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
+    "--enabled-reference-uris any --trusted-$cert_format certs/dsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
@@ -815,21 +815,21 @@ execDSigTest $res_success \
     "signature-hmac-sha1-40-c14n-comments-detached" \
     "c14n-with-comments sha1 hmac-sha1" \
     "hmac" \
-    "--hmackey certs/hmackey.bin  $url_map_rfc3161"
+    "--enabled-reference-uris any --hmackey certs/hmackey.bin  $url_map_rfc3161"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
     "signature-hmac-sha1-40-exclusive-c14n-comments-detached" \
     "exc-c14n-with-comments sha1 hmac-sha1" \
     "hmac" \
-    "--hmackey certs/hmackey.bin $url_map_rfc3161"
+    "--enabled-reference-uris any --hmackey certs/hmackey.bin $url_map_rfc3161"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
     "signature-hmac-sha1-exclusive-c14n-comments-detached" \
     "exc-c14n-with-comments sha1 hmac-sha1" \
     "hmac" \
-    "--hmackey certs/hmackey.bin  $url_map_rfc3161"
+    "--enabled-reference-uris any --hmackey certs/hmackey.bin  $url_map_rfc3161"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
@@ -843,35 +843,35 @@ execDSigTest $res_success \
     "signature-rsa-detached-b64-transform" \
     "base64 sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00  $url_map_rfc3161"
+    "--enabled-reference-uris any --trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00  $url_map_rfc3161"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
     "signature-rsa-detached" \
     "sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00  $url_map_rfc3161"
+    "--enabled-reference-uris any --trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00  $url_map_rfc3161"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
     "signature-rsa-detached-xpath-transform" \
     "xpath sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00  $url_map_rfc3161"
+    "--enabled-reference-uris any --trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00  $url_map_rfc3161"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
     "signature-rsa-detached-xslt-transform-retrieval-method" \
     "xslt sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00  $url_map_rfc3161"
+    "--enabled-reference-uris any --enabled-retrieval-method-uris remote --trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00  $url_map_rfc3161"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
     "signature-rsa-detached-xslt-transform" \
     "xslt sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00  $url_map_rfc3161"
+    "--enabled-reference-uris any --trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00  $url_map_rfc3161"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
@@ -892,42 +892,42 @@ execDSigTest $res_success \
     "signature-rsa-manifest-x509-data-cert-chain" \
     "sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
+    "--enabled-reference-uris any --trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
     "signature-rsa-manifest-x509-data-cert" \
     "sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
+    "--enabled-reference-uris any --trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
     "signature-rsa-manifest-x509-data-issuer-serial" \
     "sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --untrusted-$cert_format certs/rsa-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
+    "--enabled-reference-uris any --trusted-$cert_format certs/rsa-ca-cert.$cert_format --untrusted-$cert_format certs/rsa-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
     "signature-rsa-manifest-x509-data-ski" \
     "sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --untrusted-$cert_format certs/rsa-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
+    "--enabled-reference-uris any --trusted-$cert_format certs/rsa-ca-cert.$cert_format --untrusted-$cert_format certs/rsa-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
     "signature-rsa-manifest-x509-data-subject-name" \
     "sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --untrusted-$cert_format certs/rsa-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
+    "--enabled-reference-uris any --trusted-$cert_format certs/rsa-ca-cert.$cert_format --untrusted-$cert_format certs/rsa-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
     "signature-rsa-manifest" \
     "sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
+    "--enabled-reference-uris any --trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \

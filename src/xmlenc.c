@@ -468,6 +468,7 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
  */
 int
 xmlSecEncCtxUriEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, const xmlChar *uri) {
+    xmlSecTransformUriType saved;
     int ret;
 
     xmlSecAssert2(encCtx != NULL, -1);
@@ -479,13 +480,17 @@ xmlSecEncCtxUriEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, const xmlChar *u
     encCtx->operation = xmlSecTransformOperationEncrypt;
     xmlSecAddIDs(tmpl->doc, tmpl, xmlSecEncIds);
 
-    /* we need to add input uri transform first */
+    /* we need to add input uri transform first, make sure to enable local and remote URIs */
+    saved = encCtx->transformCtx.enabledUris;
+    encCtx->transformCtx.enabledUris |= xmlSecTransformUriTypeLocal | xmlSecTransformUriTypeRemote;
     ret = xmlSecTransformCtxSetUri(&(encCtx->transformCtx), uri, tmpl);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecTransformCtxSetUri", NULL,
                              "uri=%s", xmlSecErrorsSafeString(uri));
+        encCtx->transformCtx.enabledUris = saved;
         return(-1);
     }
+    encCtx->transformCtx.enabledUris = saved;
 
     /* read the template and set encryption method, key, etc. */
     ret = xmlSecEncCtxEncDataNodeRead(encCtx, tmpl);

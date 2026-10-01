@@ -1429,10 +1429,6 @@ xmlSecKeyDataEncryptedKeyXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodeP
     }
     xmlSecAssert2(keyInfoCtx->encCtx != NULL, -1);
 
-    /* setup current recursion levels for the write context */
-    keyInfoCtx->encCtx->keyInfoWriteCtx.curRetrievalMethodLevel = keyInfoCtx->curRetrievalMethodLevel;
-    keyInfoCtx->encCtx->keyInfoWriteCtx.curEncryptedKeyLevel = keyInfoCtx->curEncryptedKeyLevel + 1;
-
     /* encrypt */
     ret = xmlSecEncCtxBinaryEncrypt(keyInfoCtx->encCtx, node, keyBuf, keySize);
     if(ret < 0) {

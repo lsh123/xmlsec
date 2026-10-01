@@ -201,6 +201,7 @@ xmlSecNssDigestVerify(xmlSecTransformPtr transform,
                         const xmlSecByte* data, xmlSecSize dataSize,
                         xmlSecTransformCtxPtr transformCtx) {
     xmlSecNssDigestCtxPtr ctx;
+    int ret;
 
     xmlSecAssert2(xmlSecNssDigestCheckId(transform), -1);
     xmlSecAssert2(transform->operation == xmlSecTransformOperationVerify, -1);
@@ -221,7 +222,14 @@ xmlSecNssDigestVerify(xmlSecTransformPtr transform,
         return(0);
     }
 
-    if(memcmp(ctx->dgst, data, dataSize) != 0) {
+    /* compare in constant time so the number of matching leading bytes is
+     * not leaked through timing */
+    ret = xmlSecMemEqual(ctx->dgst, data, dataSize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMemEqual", xmlSecTransformGetName(transform));
+        return(-1);
+    }
+    if(ret == 0) {
         xmlSecInvalidDataError("data and digest do not match",
                 xmlSecTransformGetName(transform));
         transform->status = xmlSecTransformStatusFail;

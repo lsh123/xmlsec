@@ -432,6 +432,8 @@ xmlSecMSCryptoHmacVerify(xmlSecTransformPtr transform,
 
     xmlSecMSCryptoHmacCtxPtr ctx;
     xmlSecByte mask;
+    xmlSecByte lastByteDiff;
+    int ret;
 
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoHmacSize), -1);
@@ -453,19 +455,19 @@ xmlSecMSCryptoHmacVerify(xmlSecTransformPtr transform,
         return(0);
     }
 
-    /* we check the last byte separately */
+    /* compare in constant time so the number of matching leading bytes is
+     * not leaked through timing; the last byte is masked as possibly not
+     * all bits should be compared for truncated HMAC output */
     xmlSecAssert2(dataSize > 0, -1);
     mask = last_byte_masks[ctx->dgstSize % 8];
-    if((ctx->dgst[dataSize - 1] & mask) != (data[dataSize - 1]  & mask)) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
-                         xmlSecTransformGetName(transform),
-                         "data and digest do not match (last byte)");
-        transform->status = xmlSecTransformStatusFail;
-        return(0);
-    }
+    lastByteDiff = (ctx->dgst[dataSize - 1] & mask) ^ (data[dataSize - 1] & mask);
 
-    /* now check the rest of the digest */
-    if((dataSize > 1) && (memcmp(ctx->dgst, data, dataSize - 1) != 0)) {
+    ret = xmlSecMemEqual(ctx->dgst, data, dataSize - 1);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMemEqual", xmlSecTransformGetName(transform));
+        return(-1);
+    }
+    if((ret == 0) || (lastByteDiff != 0)) {
         xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
                          xmlSecTransformGetName(transform),
                          "data and digest do not match");

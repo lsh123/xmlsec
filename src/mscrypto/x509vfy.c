@@ -1230,6 +1230,8 @@ xmlSecMSCryptoX509FindCertByIssuer(HCERTSTORE store, const LPTSTR wcIssuer,
     xmlSecAssert2(wcIssuer != NULL, NULL);
     xmlSecAssert2(issuerSerialBn != NULL, NULL);
 
+    memset(&certInfo, 0, sizeof(certInfo));
+
     certInfo.SerialNumber.pbData = xmlSecBnGetData(issuerSerialBn);
 
     size = xmlSecBnGetSize(issuerSerialBn);
@@ -1418,6 +1420,16 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store, const xmlChar *subjectName,
         ret = xmlSecBnFromDecString(&issuerSerialBn, issuerSerial);
         if(ret < 0) {
             xmlSecInternalError("xmlSecBnInitialize", NULL);
+            xmlSecBnFinalize(&issuerSerialBn);
+            return(NULL);
+        }
+
+        /* the certificate serial number is a DER INTEGER, which carries a leading
+         * 0x00 byte when the most significant bit is set; add it so the blob
+         * matches the serial number stored in the certificate */
+        ret = xmlSecBnPrependZeroIfMsbSet(&issuerSerialBn);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecBnPrependZeroIfMsbSet", NULL);
             xmlSecBnFinalize(&issuerSerialBn);
             return(NULL);
         }

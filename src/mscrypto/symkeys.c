@@ -357,6 +357,7 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
 
 done:
     if(keyBlob != NULL) {
+        xmlSecMemCleanse(keyBlob, keyBlobLen);
         xmlFree(keyBlob);
     }
     if (hKey != 0) {
@@ -527,6 +528,7 @@ done:
         CryptDestroyKey(hTempKey);
     }
     if(keyBlob != NULL) {
+        xmlSecMemCleanse(keyBlob, keyBlobLen);
         xmlFree(keyBlob);
     }
     return(res);

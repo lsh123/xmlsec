@@ -1992,7 +1992,12 @@ xmlSecAppPrepareKeyInfoReadCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
         keyInfoCtx->certsVerificationTime = xmlSecAppCmdLineParamGetTime(&verificationGmtTimeParam, 0);
     }
     if(xmlSecAppCmdLineParamIsSet(&depthParam)) {
-        keyInfoCtx->certsVerificationDepth = xmlSecAppCmdLineParamGetInt(&depthParam, 0);
+        int depth = xmlSecAppCmdLineParamGetInt(&depthParam, 0);
+        if(depth < 0) {
+            fprintf(stderr, "Error: certificate verification depth should be greater than or equal to zero\n");
+            return(-1);
+        }
+        keyInfoCtx->certsVerificationDepth = depth;
     }
     if(xmlSecAppCmdLineParamIsSet(&X509SkipStrictChecksParam)) {
         keyInfoCtx->flags |= XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS;

@@ -14,6 +14,11 @@
  *
  */
 
+/* Required for xmlSecMemCleanse when compiled with -std=c99 or -std=c23 (also see configure.ac) */
+#if defined(__GNUC__) && !defined(_GNU_SOURCE)
+#define _GNU_SOURCE
+#endif /* defined(__GNUC__) && !defined(_GNU_SOURCE) */
+
 #include "globals.h"
 
 #include <stdlib.h>
@@ -28,8 +33,15 @@
 #include <xmlsec/base64.h>
 #include <xmlsec/buffer.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/exports.h>
 
 #include "cast_helpers.h"
+
+/* SecureZeroMemory() is declared in <windows.h>, this must be included
+ * after xmlsec/exports.h file that defines XMLSEC_WINDOWS . */
+#if defined(XMLSEC_WINDOWS)
+#include <windows.h>
+#endif /* defined(XMLSEC_WINDOWS) */
 
 /*****************************************************************************
  *
@@ -241,6 +253,10 @@ xmlSecBufferSetSize(xmlSecBufferPtr buf, xmlSecSize size) {
         return(-1);
     }
 
+    if(size < buf->size) {
+        xmlSecAssert2(buf->data != NULL, -1);
+        memset(buf->data + size, 0, buf->size - size);
+    }
 
     buf->size = size;
     return(0);
@@ -683,4 +699,76 @@ xmlSecBufferIOClose(xmlSecBufferPtr buf) {
 
     /* just do nothing */
     return(0);
+}
+
+/******************************************************************************
+ *
+ * Helpers
+ *
+ *****************************************************************************/
+
+/**
+ * @brief Compares two memory buffers in constant time.
+ * @details Compares @p buf1 and @p buf2 across exactly @p size bytes without
+ * leaking the number of matching leading bytes through timing.
+ * @param buf1 the first buffer.
+ * @param buf2 the second buffer.
+ * @param size the number of bytes to compare.
+ * @return 1 if the buffers are equal, 0 if they are not equal, or a negative
+ * value if an error occurs.
+ */
+int
+xmlSecMemEqual(const xmlSecByte* buf1, const xmlSecByte* buf2, xmlSecSize size) {
+    xmlSecByte diff = 0;
+    xmlSecSize ii;
+
+    if(size <= 0) {
+        return(1);
+    }
+
+    xmlSecAssert2(buf1 != NULL, -1);
+    xmlSecAssert2(buf2 != NULL, -1);
+
+    for(ii = 0; ii < size; ++ii) {
+        diff |= (buf1[ii] ^ buf2[ii]);
+    }
+
+    return((diff == 0) ? 1 : 0);
+}
+
+
+/**
+ * @brief Securely wipes (zeroes) a block of memory.
+ * @details Overwrites @p size bytes starting at @p data with zeros, using a
+ * platform-specific secure zeroing routine that the compiler cannot optimize
+ * away. Use this to clear sensitive data (keys, secrets, intermediate key
+ * material) before it is freed or reused.
+ * @param data the pointer to the memory to wipe.
+ * @param size the number of bytes to wipe.
+ */
+void
+xmlSecMemCleanse(void* data, xmlSecSize size) {
+    if((data == NULL) || (size == 0)) {
+        return;
+    }
+
+#if defined(XMLSEC_WINDOWS)
+    SecureZeroMemory(data, size);
+#elif defined(HAVE_MEMSET_EXPLICIT) && defined(HAVE_DECL_MEMSET_EXPLICIT) && (HAVE_DECL_MEMSET_EXPLICIT == 1)
+    memset_explicit(data, 0, size);
+#elif defined(HAVE_EXPLICIT_BZERO) && defined(HAVE_DECL_EXPLICIT_BZERO) && (HAVE_DECL_EXPLICIT_BZERO == 1)
+    explicit_bzero(data, size);
+#elif defined(HAVE_MEMSET_S) && defined(HAVE_DECL_MEMSET_S) && (HAVE_DECL_MEMSET_S == 1)
+    (void)memset_s(data, size, 0, size);
+#else
+    /* Fallback: zero through a volatile pointer so the compiler cannot
+     * optimize the write away. */
+    {
+        volatile unsigned char* p = (volatile unsigned char*)data;
+        while(size > 0) {
+            *p++ = 0;
+            size--;
+        }
+    }
+#endif
 }

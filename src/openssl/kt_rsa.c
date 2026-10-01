@@ -737,6 +737,7 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
     } else if((encrypt == 0) && (paramsSize != 0)) {
         BIGNUM * bn;
         int outLen, keyLen, paramLen;
+        xmlSecSize outResSize;
 
         xmlSecAssert2(xmlSecBufferGetData(&(ctx->oaepParams)) != NULL, -1);
         XMLSEC_SAFE_CAST_SIZE_TO_INT(ctx->keySize, keyLen, return(-1), NULL);
@@ -759,6 +760,7 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
         bn = BN_new();
         if(bn == NULL) {
             xmlSecOpenSSLError("BN_new()", NULL);
+            xmlSecMemCleanse(outBuf, (*outSize));
             return(-1);
         }
 
@@ -766,6 +768,7 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
             xmlSecOpenSSLError2("BN_bin2bn", NULL,
                 "size=%d", outLen);
             BN_clear_free(bn);
+            xmlSecMemCleanse(outBuf, (*outSize));
             return(-1);
         }
 
@@ -773,6 +776,7 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
         if(ret <= 0) {
             xmlSecOpenSSLError("BN_bn2bin", NULL);
             BN_clear_free(bn);
+            xmlSecMemCleanse(outBuf, (*outSize));
             return(-1);
         }
         outLen = ret;
@@ -783,7 +787,18 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
             xmlSecBufferGetData(&(ctx->oaepParams)), paramLen);
         if(ret < 0) {
             xmlSecOpenSSLError("RSA_padding_check_PKCS1_OAEP",  NULL);
+            xmlSecMemCleanse(outBuf, (*outSize));
             return(-1);
+        }
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outResSize, return(-1), NULL);
+
+        /*
+         * cleanse the tail of the output buffer that held the raw
+         * OAEP-encoded message; only the first 'outResSize' bytes contain
+         * the recovered plaintext
+         */
+        if((*outSize) > outResSize) {
+            xmlSecMemCleanse(outBuf + outResSize, ((*outSize) - outResSize));
         }
     } else {
         xmlSecInternalError3("Impossible to be here",  NULL,

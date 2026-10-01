@@ -441,4 +441,12 @@ static inline ctxType* xmlSec ## name ## GetCtx(baseType* obj) {                
 #define XMLSEC_KEY_STORE_SIZE(name) \
     XMLSEC_CHILD_STRUCT_SIZE(name, KeyStore)
 
+/******************************************************************************
+ *
+ *  Helper to convert bits to bytes
+ *
+ *****************************************************************************/
+#define XMLSEC_BITS_TO_BYTES(bits)                                              \
+    (((bits) > 0) ? (((bits) - 1) / 8 + 1) : 0)
+
 #endif /* __XMLSEC_CAST_HELPERS_H__ */

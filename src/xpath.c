@@ -507,8 +507,8 @@ xmlSecTransformXPathNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
     xmlSecXPathDataPtr data;
     xmlNodePtr cur;
     xmlChar* tmp;
-    xmlSecSize tmpSize;
-    int tmpLen;
+    int totalLen, dataLen, tmplLen;
+    xmlSecSize totalSize;
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXPathId), -1);
@@ -554,16 +554,22 @@ xmlSecTransformXPathNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
 
     /* create full XPath expression */
     xmlSecAssert2(data->expr != NULL, -1);
-    tmpLen = xmlStrlen(data->expr) + xmlStrlen(BAD_CAST XMLSEC_TRANSFORM_XPATH_TMPL) + 1;
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(tmpLen, tmpSize, return(-1), NULL);
+    dataLen = xmlStrlen(data->expr);
+    tmplLen = xmlStrlen(BAD_CAST XMLSEC_TRANSFORM_XPATH_TMPL);
+    if(dataLen > (INT_MAX - tmplLen - 1)) {
+        xmlSecInvalidSizeError("size", (xmlSecSize)dataLen, (xmlSecSize)(INT_MAX - tmplLen - 1), NULL);
+        return(-1);
+    }
+    totalLen = dataLen + tmplLen + 1;
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(totalLen, totalSize, return(-1), NULL);
 
-    tmp = (xmlChar*) xmlMalloc(sizeof(xmlChar) * tmpSize);
+    tmp = (xmlChar*) xmlMalloc(sizeof(xmlChar) * totalSize);
     if(tmp == NULL) {
-        xmlSecMallocError(sizeof(xmlChar) * tmpSize,
+        xmlSecMallocError(sizeof(xmlChar) * totalSize,
                           xmlSecTransformGetName(transform));
         return(-1);
     }
-    ret = xmlStrPrintf(tmp, tmpLen, XMLSEC_TRANSFORM_XPATH_TMPL, (char*)data->expr);
+    ret = xmlStrPrintf(tmp, totalLen, XMLSEC_TRANSFORM_XPATH_TMPL, (char*)data->expr);
     if(ret < 0) {
        xmlSecXmlError("xmlStrPrintf", xmlSecTransformGetName(transform));
        xmlFree(tmp);
@@ -706,6 +712,12 @@ xmlSecTransformXPath2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xml
     /* check that we have nothing else */
     if(cur != NULL) {
         xmlSecUnexpectedNodeError(cur, xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
+    /* check that we have at least one XPath node */
+    if(xmlSecPtrListGetSize(dataList) == 0) {
+        xmlSecInvalidNodeContentError(node, xmlSecTransformGetName(transform), "empty");
         return(-1);
     }
     return(0);

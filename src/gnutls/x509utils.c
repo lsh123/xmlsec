@@ -679,16 +679,26 @@ xmlChar*
 xmlSecGnuTLSASN1IntegerWrite(const unsigned char * data, size_t len) {
     xmlChar *res = NULL;
     unsigned long long int val = 0;
+    const unsigned char* p;
     size_t ii = 0;
     int shift = 0;
     int ret;
 
     xmlSecAssert2(data != NULL, NULL);
-    xmlSecAssert2(len <= 9, NULL);
+    /* Accept up to 64-bit values. ASN.1 INTEGER may include a leading 0x00
+     * for positive values with the high bit set, so allow 9 bytes only in
+     * that canonical case. */
+    if(len > 8) {
+        xmlSecAssert2((len == 9) && (data[0] == 0), NULL);
+        p = data + 1;
+        len = 8;
+    } else {
+        p = data;
+    }
 
     /* HACK : to be fixed after GnuTLS provides a way to read opaque ASN1 integer */
     for(ii = len; ii > 0; --ii, shift += 8) {
-        val |= ((unsigned long long)data[ii - 1]) << shift;
+        val |= ((unsigned long long)p[ii - 1]) << shift;
     }
 
     res = (xmlChar*)xmlMalloc(XMLSEC_GNUTLS_INT_TO_STR_MAX_SIZE + 1);

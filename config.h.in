@@ -1,5 +1,17 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
+/* Define to 1 if you have the declaration of 'explicit_bzero', and to 0 if
+   you don't. */
+#undef HAVE_DECL_EXPLICIT_BZERO
+
+/* Define to 1 if you have the declaration of 'memset_explicit', and to 0 if
+   you don't. */
+#undef HAVE_DECL_MEMSET_EXPLICIT
+
+/* Define to 1 if you have the declaration of 'memset_s', and to 0 if you
+   don't. */
+#undef HAVE_DECL_MEMSET_S
+
 /* Define to 1 if you have the <dirent.h> header file, and it defines 'DIR'.
    */
 #undef HAVE_DIRENT_H
@@ -7,8 +19,17 @@
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #undef HAVE_DLFCN_H
 
+/* Define to 1 if you have the 'explicit_bzero' function. */
+#undef HAVE_EXPLICIT_BZERO
+
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
+
+/* Define to 1 if you have the 'memset_explicit' function. */
+#undef HAVE_MEMSET_EXPLICIT
+
+/* Define to 1 if you have the 'memset_s' function. */
+#undef HAVE_MEMSET_S
 
 /* Define to 1 if you have the <ndir.h> header file, and it defines 'DIR'. */
 #undef HAVE_NDIR_H

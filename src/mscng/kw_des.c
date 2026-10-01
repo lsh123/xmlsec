@@ -395,9 +395,11 @@ done:
         BCryptDestroyKey(hKey);
     }
 
+    xmlSecMemCleanse(xmlSecBufferGetData(&blob), xmlSecBufferGetMaxSize(&blob));
     xmlSecBufferFinalize(&blob);
 
     if (pbKeyObject != NULL) {
+        xmlSecMemCleanse(pbKeyObject, cbKeyObject);
         xmlFree(pbKeyObject);
     }
 
@@ -575,9 +577,11 @@ done:
         BCryptDestroyKey(hKey);
     }
 
+    xmlSecMemCleanse(xmlSecBufferGetData(&blob), xmlSecBufferGetMaxSize(&blob));
     xmlSecBufferFinalize(&blob);
 
     if (pbKeyObject != NULL) {
+        xmlSecMemCleanse(pbKeyObject, cbKeyObject);
         xmlFree(pbKeyObject);
     }
 

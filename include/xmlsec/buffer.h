@@ -101,6 +101,15 @@ XMLSEC_EXPORT int               xmlSecBufferBase64NodeContentWrite(xmlSecBufferP
 XMLSEC_EXPORT xmlOutputBufferPtr xmlSecBufferCreateOutputBuffer (xmlSecBufferPtr buf);
 
 
+/**
+ * Helpers
+ */
+XMLSEC_EXPORT int               xmlSecMemEqual                  (const xmlSecByte* buf1,
+                                                                 const xmlSecByte* buf2,
+                                                                 xmlSecSize size);
+
+XMLSEC_EXPORT void              xmlSecMemCleanse                (void* data, xmlSecSize size);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

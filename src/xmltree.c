@@ -751,7 +751,8 @@ xmlSecReplaceNode(xmlNodePtr node, xmlNodePtr newNode) {
 
 /**
  * @brief Swaps a node with another and optionally returns the replaced node.
- * @details Swaps the @p node and @p newNode in the XML tree.
+ * @details Swaps the @p node and @p newNode in the XML tree (the both old and new
+ * nodes should have same type).
  *
  * Note: on error, the state of the @p newNode is undefined and the caller
  * should not make any assumptions about it. The recommended way is to
@@ -765,44 +766,41 @@ xmlSecReplaceNode(xmlNodePtr node, xmlNodePtr newNode) {
 int
 xmlSecReplaceNodeAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr* replaced) {
     xmlNodePtr oldNode;
-    xmlNodePtr origNodeDocChildren = NULL;
-    xmlNodePtr origNewNodeDocChildren = NULL;
 
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(newNode != NULL, -1);
+    xmlSecAssert2(node != newNode, -1);
+    xmlSecAssert2(node->type == newNode->type, -1);
 
-    /* fix documents children if necessary first */
-    if((node->doc != NULL) && (node->doc->children == node)) {
-        origNodeDocChildren = node->doc->children;
-        node->doc->children = node->next;
-    }
-    if((newNode->doc != NULL) && (newNode->doc->children == newNode)) {
-        origNewNodeDocChildren = newNode->doc->children;
-        newNode->doc->children = newNode->next;
-    }
-
-    oldNode = xmlReplaceNode(node, newNode);
-    if(oldNode == NULL) {
-        /* restore the document children we mutated above so the tree is not left corrupted */
-        if(origNodeDocChildren != NULL) {
-            node->doc->children = origNodeDocChildren;
+    if((node->doc != NULL) && (xmlDocGetRootElement(node->doc) == node)) {
+        /* Handle Root node */
+        oldNode = xmlDocSetRootElement(node->doc, newNode);
+        if(oldNode == NULL) {
+            xmlSecXmlError("xmlDocSetRootElement", NULL);
+            return(-1);
         }
-        if(origNewNodeDocChildren != NULL) {
-            newNode->doc->children = origNewNodeDocChildren;
+
+        /* Ensure document tracking transfers to children if newNode has a subtree */
+        xmlSetTreeDoc(newNode, node->doc);
+    } else {
+        /* Handle generic structural replacement */
+        oldNode = xmlReplaceNode(node, newNode);
+        if((oldNode == NULL)) {
+            xmlSecXmlError("xmlReplaceNode", NULL);
+            return(-1);
         }
-        xmlSecXmlError("xmlReplaceNode", NULL);
-        return(-1);
+
+        /* Fix doc->children manually ONLY if replacing a non-element top level node
+         * (like a top-level Comment or Processing Instruction) */
+        if((node->doc != NULL) && (node->doc->children == node)) {
+            node->doc->children = newNode;
+        }
+        if((node->doc != NULL) && (node->doc->last == node)) {
+            node->doc->last = newNode;
+        }
     }
 
-    if(origNodeDocChildren != NULL) {
-        /* xmlDocSetRootElement returns the current root (if any)*/
-        xmlNodePtr oldRoot = xmlDocSetRootElement(oldNode->doc, newNode);
-        if (oldRoot != NULL) {
-            xmlFreeNode(oldRoot);
-        }
-    }
-
-    /* return the old node if requested */
+    /* Return or free the unlinked node */
     if(replaced != NULL) {
         (*replaced) = oldNode;
     } else {

@@ -15,14 +15,7 @@
 #define _GNU_SOURCE
 #endif
 
-/* SecureZeroMemory() is declared in <windows.h>. */
-#if defined(XMLSEC_WINDOWS)
-#include <windows.h>
-#endif /* defined(XMLSEC_WINDOWS) */
-
-
 #include "globals.h"
-
 
 
 #include <stdlib.h>
@@ -35,8 +28,16 @@
 #include <xmlsec/base64.h>
 #include <xmlsec/buffer.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/exports.h>
 
 #include "cast_helpers.h"
+
+/* SecureZeroMemory() is declared in <windows.h>, this must be included
+ * after xmlsec/exports.h file that defines XMLSEC_WINDOWS . */
+#if defined(XMLSEC_WINDOWS)
+#include <windows.h>
+#endif /* defined(XMLSEC_WINDOWS) */
+
 
 /******************************************************************************
  *

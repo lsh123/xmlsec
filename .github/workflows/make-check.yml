@@ -247,6 +247,7 @@ jobs:
           base-devel
           git
           libtool
+          pkgconf
           mingw-w64-ucrt-${{ matrix.arch }}-gcc
           mingw-w64-ucrt-${{ matrix.arch }}-gcc-libs
           mingw-w64-ucrt-${{ matrix.arch }}-libxml2
@@ -255,6 +256,7 @@ jobs:
           mingw-w64-ucrt-${{ matrix.arch }}-openssl
           mingw-w64-ucrt-${{ matrix.arch }}-libgcrypt
           mingw-w64-ucrt-${{ matrix.arch }}-gnutls
+          mingw-w64-ucrt-${{ matrix.arch }}-pkgconf
     - name: configure-git
       run: |
           git config --global core.autocrlf input

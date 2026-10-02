@@ -668,32 +668,37 @@ xmlSecMSCngX509StoreContainsCert(HCERTSTORE store, CERT_NAME_BLOB* name,
     xmlSecAssert2(name != NULL, -1);
     xmlSecAssert2(cert != NULL, -1);
 
-    storeCert = CertFindCertificateInStore(store,
-        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-        0,
-        CERT_FIND_SUBJECT_NAME,
-        name,
-        NULL);
-    if (storeCert == NULL) {
-        return (0);
-    }
+    /* enumerate all certificates with the same subject: a valid second cert
+     * with the same subject (e.g. CA key rotation) must not be rejected just
+     * because the first matching cert does not verify;
+     * CertFindCertificateInStore frees the previous certificate context (see
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certfindcertificateinstore) */
+    while (TRUE) {
+        storeCert = CertFindCertificateInStore(store,
+            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+            0,
+            CERT_FIND_SUBJECT_NAME,
+            name,
+            storeCert);
+        if (storeCert == NULL) {
+            return (0);
+        }
 
-    ret = xmlSecMSCngX509StoreVerifySubject(cert, storeCert);
-    if (ret < 0) {
-        xmlSecInternalError("xmlSecMSCngX509StoreVerifySubject", NULL);
-        CertFreeCertificateContext(storeCert);
-        return(-1);
-    } else if (ret == 0) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-            NULL,
-            "xmlSecMSCngX509StoreVerifySubject");
-        CertFreeCertificateContext(storeCert);
-        return(-1);
-    }
+        ret = xmlSecMSCngX509StoreVerifySubject(cert, storeCert);
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecMSCngX509StoreVerifySubject", NULL);
+            continue;
+        } else if (ret == 0) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+                NULL,
+                "xmlSecMSCngX509StoreVerifySubject");
+            continue;
+        }
 
-    /* success */
-    CertFreeCertificateContext(storeCert);
-    return(1);
+        /* success */
+        CertFreeCertificateContext(storeCert);
+        return(1);
+    }
 }
 
 static int

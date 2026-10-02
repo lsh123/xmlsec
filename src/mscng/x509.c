@@ -76,6 +76,8 @@ static int
 xmlSecMSCngKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     PCCERT_CONTEXT srcCert = NULL;
     PCCERT_CONTEXT dstCert;
+    PCCRL_CONTEXT srcCrl = NULL;
+    PCCRL_CONTEXT dstCrl;
     xmlSecMSCngX509DataCtxPtr srcCtx;
     int ret;
 
@@ -83,12 +85,15 @@ xmlSecMSCngKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecMSCngKeyDataX509Id), -1);
     srcCtx = xmlSecMSCngX509DataGetCtx(src);
 
-    /* duplicate the certificate store */
+    /* duplicate the certificate store; CertEnumCertificatesInStore frees the
+     * previous certificate context (see
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcertificatesinstore) */
     while((srcCert = CertEnumCertificatesInStore(srcCtx->hMemStore, srcCert)) != NULL) {
         dstCert = CertDuplicateCertificateContext(srcCert);
         if(dstCert == NULL) {
             xmlSecMSCngLastError("CertDuplicateCertificateContext",
                 xmlSecKeyDataGetName(dst));
+            CertFreeCertificateContext(srcCert);
             return(-1);
         }
 
@@ -96,7 +101,30 @@ xmlSecMSCngKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
         if(ret < 0) {
             xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCert",
                 xmlSecKeyDataGetName(dst));
+            CertFreeCertificateContext(srcCert);
             CertFreeCertificateContext(dstCert);
+            return(-1);
+        }
+    }
+
+    /* duplicate the CRLs; CertEnumCRLsInStore frees the previous CRL context
+     * (see
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcrlsinstore) */
+    while((srcCrl = CertEnumCRLsInStore(srcCtx->hMemStore, srcCrl)) != NULL) {
+        dstCrl = CertDuplicateCRLContext(srcCrl);
+        if(dstCrl == NULL) {
+            xmlSecMSCngLastError("CertDuplicateCRLContext",
+                xmlSecKeyDataGetName(dst));
+            CertFreeCRLContext(srcCrl);
+            return(-1);
+        }
+
+        ret = xmlSecMSCngKeyDataX509AdoptCrl(dst, dstCrl);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCrl",
+                xmlSecKeyDataGetName(dst));
+            CertFreeCRLContext(srcCrl);
+            CertFreeCRLContext(dstCrl);
             return(-1);
         }
     }
@@ -254,6 +282,8 @@ xmlSecMSCngKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, PCCRL_CONTEXT crl) {
         return(-1);
     }
 
+    /* this just decrements the refcount, so won't free */
+    CertFreeCRLContext(crl);
     return(0);
 }
 

@@ -149,7 +149,7 @@
 
 
 /*structures/types*/
-typedef struct _PUBKEY {
+typedef struct _DSSPUBKEY {
         DWORD magic;
         DWORD bitlen;
 } DSSPUBKEY;

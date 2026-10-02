@@ -468,6 +468,7 @@ xmlSecMSCngRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
     ctx = xmlSecMSCngRsaPkcs1OaepGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(xmlSecBufferGetSize(&(ctx->oaepParams)) == 0, -1);
 
     ret = xmlSecTransformRsaOaepReadParams(node, &(ctx->oaepParams), &algorithm);
     if (ret < 0) {

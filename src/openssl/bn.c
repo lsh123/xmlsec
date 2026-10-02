@@ -115,6 +115,15 @@ xmlSecOpenSSLNodeSetBNValue(xmlNodePtr cur, const BIGNUM *a, int addLineBreaks) 
     xmlSecAssert2(a != NULL, -1);
     xmlSecAssert2(cur != NULL, -1);
 
+    /* CryptoBinary values are non-negative
+       (http://www.w3.org/TR/xmldsig-core/#sec-CryptoBinary) and
+       BN_bn2bin() writes the absolute value |a| only, so reject
+       negative BIGNUMs instead of silently dropping the sign */
+    if(BN_is_negative(a) != 0) {
+        xmlSecInvalidIntegerDataError("BIGNUM value", -1, ">= 0", NULL);
+        goto done;
+    }
+
     ret = BN_num_bytes(a);
     if(ret < 0) {
         xmlSecOpenSSLError("BN_num_bytes", NULL);

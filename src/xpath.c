@@ -796,8 +796,6 @@ xmlSecTransformXPointerSetExpr(xmlSecTransformPtr transform, const xmlChar* expr
     xmlSecAssert2(expr != NULL, -1);
     xmlSecAssert2(hereNode != NULL, -1);
 
-    transform->hereNode = hereNode;
-
     dataList = xmlSecXPathGetCtx(transform);
     xmlSecAssert2(xmlSecPtrListCheckId(dataList, xmlSecXPathDataListId), -1);
     xmlSecAssert2(xmlSecPtrListGetSize(dataList) == 0, -1);
@@ -837,6 +835,10 @@ xmlSecTransformXPointerSetExpr(xmlSecTransformPtr transform, const xmlChar* expr
     /* set correct node set type and operation */
     data->nodeSetOp     = xmlSecNodeSetIntersection;
     data->nodeSetType   = nodeSetType;
+
+    /* set the "here" node only after all fallible operations succeeded,
+     * so a failed call leaves the transform unmodified */
+    transform->hereNode = hereNode;
 
     return(0);
 }

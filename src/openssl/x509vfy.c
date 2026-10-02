@@ -1523,10 +1523,6 @@ xmlSecOpenSSLX509StoreVerifySetParams(X509_STORE_CTX *xsc, xmlSecKeyInfoCtx* key
     xmlSecAssert2(xsc != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    if(keyInfoCtx->certsVerificationTime > 0) {
-        X509_STORE_CTX_set_time(xsc, 0, keyInfoCtx->certsVerificationTime);
-    }
-
     vpm = X509_VERIFY_PARAM_new();
     if(vpm == NULL) {
         xmlSecOpenSSLError("X509_VERIFY_PARAM_new", NULL);

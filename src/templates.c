@@ -860,9 +860,8 @@ xmlSecTmplEncDataGetEncMethodNode(xmlNodePtr encNode) {
  * @cipherReferenceNode:        the pointer to <enc:CipherReference/> node.
  * @transformId:                the transform id.
  *
- * Adds <dsig:Transform/> node (and the parent <dsig:Transforms/> node)
- * with specified transform methods @transform to the <enc:CipherReference/>
- * child node of the <enc:EncryptedData/> node @encNode.
+ * Adds <dsig:Transform/> node (and the parent <enc:Transforms/> node)
+ * with specified @transformId transform to the @cipherReferenceNode.
  *
  * Returns: the pointer to newly created <dsig:Transform/> node or
  * NULL if an error occurs.
@@ -1126,7 +1125,7 @@ xmlSecTmplKeyInfoAddRetrievalMethod(xmlNodePtr keyInfoNode, const xmlChar *uri,
  * @transformId:        the transform id.
  *
  * Adds <dsig:Transform/> node (and the parent <dsig:Transforms/> node
- * if required) to the <dsig:RetrievalMethod/> node @retrMethod.
+ * if required) to the @retrMethodNode.
  *
  * Returns: the pointer to the newly created <dsig:Transforms/> node or
  * NULL if an error occurs.

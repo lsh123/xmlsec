@@ -15,6 +15,7 @@
 
 #include "globals.h"
 
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -763,6 +764,21 @@ static const xmlSecByte xmlSecKWAesMagicBlock[XMLSEC_KW_AES_MAGIC_BLOCK_SIZE] = 
     0xA6,  0xA6,  0xA6,  0xA6,  0xA6,  0xA6,  0xA6,  0xA6
 };
 
+/* XORs the full 64-bit counter @p counter into the 8-byte A register @p block
+ * (big-endian), as required by RFC 3394. Only the low byte is not enough: for
+ * N >= 43 the counter t exceeds 255 and the high bytes must be mixed in too. */
+static void
+xmlSecKWAesXorCounter(xmlSecByte* block, uint64_t counter) {
+    xmlSecSize ii;
+
+    xmlSecAssert(block != NULL);
+
+    for(ii = 0; ii < XMLSEC_KW_AES_MAGIC_BLOCK_SIZE; ++ii) {
+        /* the shift (up to 56) is well-defined */
+        block[ii] ^= (xmlSecByte)(counter >> (8 * (XMLSEC_KW_AES_MAGIC_BLOCK_SIZE - 1 - ii)));
+    }
+}
+
 int
 xmlSecKWAesEncode(xmlSecKWAesId kwAesId, xmlSecTransformPtr transform,
                   const xmlSecByte *in, xmlSecSize inSize,
@@ -818,7 +834,7 @@ xmlSecKWAesEncode(xmlSecKWAesId kwAesId, xmlSecTransformPtr transform,
                         "outWritten2=" XMLSEC_SIZE_FMT, outWritten2);
                     return(-1);
                 }
-                block[7] ^=  (xmlSecByte)tt;
+                xmlSecKWAesXorCounter(block, tt);
                 memcpy(out, block, 8);
                 memcpy(p, block + 8, 8);
             }
@@ -844,10 +860,18 @@ xmlSecKWAesDecode(xmlSecKWAesId kwAesId, xmlSecTransformPtr transform,
     xmlSecAssert2(kwAesId->decrypt != NULL, -1);
     xmlSecAssert2(transform != NULL, -1);
     xmlSecAssert2(in != NULL, -1);
-    xmlSecAssert2(inSize >= XMLSEC_KW_AES_MAGIC_BLOCK_SIZE, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= inSize, -1);
     xmlSecAssert2(outWritten != NULL, -1);
+
+    /* a valid wrapped key is at least the magic block plus one data block;
+     * reject a bare magic block (NN == 0) which would otherwise "unwrap" to a
+     * zero-length key without any decryption or integrity check */
+    if(inSize < 2 * XMLSEC_KW_AES_MAGIC_BLOCK_SIZE) {
+        xmlSecInvalidSizeLessThanError("Input data", inSize,
+            2 * XMLSEC_KW_AES_MAGIC_BLOCK_SIZE, NULL);
+        return(-1);
+    }
 
     /* copy input */
     if(in != out) {
@@ -872,7 +896,7 @@ xmlSecKWAesDecode(xmlSecKWAesId kwAesId, xmlSecTransformPtr transform,
 
                 memcpy(block, out, 8);
                 memcpy(block + 8, p, 8);
-                block[7] ^= (xmlSecByte)tt;
+                xmlSecKWAesXorCounter(block, tt);
 
                 outWritten2 = 0;
                 ret = kwAesId->decrypt(transform, block, sizeof(block),

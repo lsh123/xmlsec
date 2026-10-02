@@ -152,7 +152,7 @@ xmlSecNssBlockCipherCtxInit(xmlSecNssBlockCipherCtxPtr ctx,
     }
 
     symKey = PK11_ImportSymKey(slot, ctx->cipher, PK11_OriginDerive,
-                               CKA_ENCRYPT, &keyItem, NULL);
+        (encrypt) ? CKA_ENCRYPT : CKA_DECRYPT, &keyItem, NULL);
     if(symKey == NULL) {
         xmlSecNssError("PK11_ImportSymKey", cipherName);
         PK11_FreeSlot(slot);
@@ -160,8 +160,7 @@ xmlSecNssBlockCipherCtxInit(xmlSecNssBlockCipherCtxPtr ctx,
     }
 
     ctx->cipherCtx = PK11_CreateContextBySymKey(ctx->cipher,
-                        (encrypt) ? CKA_ENCRYPT : CKA_DECRYPT,
-                        symKey, &ivItem);
+        (encrypt) ? CKA_ENCRYPT : CKA_DECRYPT, symKey, &ivItem);
     if(ctx->cipherCtx == NULL) {
         xmlSecNssError("PK11_CreateContextBySymKey", cipherName);
         PK11_FreeSymKey(symKey);

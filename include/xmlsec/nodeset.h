@@ -35,7 +35,7 @@ typedef struct _xmlSecNodeSet   xmlSecNodeSet, *xmlSecNodeSetPtr;
  * @xmlSecNodeSetTreeWithoutCommentsInvert:     nodes set = all document nodes
  *                              minus (nodes in the list and all their subtress
  *                              plus all comment nodes).
- * @xmlSecNodeSetList:          nodes set = all nodes in the children list of nodes sets.
+ * @xmlSecNodeSetList:          Deprecated, do not use. nodes set = all nodes in the children list of nodes sets.
  *
  * The basic nodes sets types.
  */
@@ -46,7 +46,7 @@ typedef enum {
     xmlSecNodeSetTreeWithoutComments,
     xmlSecNodeSetTreeInvert,
     xmlSecNodeSetTreeWithoutCommentsInvert,
-    xmlSecNodeSetList
+    xmlSecNodeSetList /* deprecated */
 } xmlSecNodeSetType;
 
 /**
@@ -73,7 +73,7 @@ typedef enum {
  * @op:                         the operation type.
  * @next:                       the next nodes set.
  * @prev:                       the previous nodes set.
- * @children:                   the children list (valid only if type
+ * @children:                   deprecated, the children list (valid only if type
  *                              equal to #xmlSecNodeSetList).
  *
  * The enchanced nodes set.
@@ -86,7 +86,7 @@ struct _xmlSecNodeSet {
     xmlSecNodeSetOp     op;
     xmlSecNodeSetPtr    next;
     xmlSecNodeSetPtr    prev;
-    xmlSecNodeSetPtr    children;
+    xmlSecNodeSetPtr    children; /* deprecated */
 };
 
 /**
@@ -117,7 +117,7 @@ XMLSEC_EXPORT int               xmlSecNodeSetContains   (xmlSecNodeSetPtr nset,
 XMLSEC_EXPORT xmlSecNodeSetPtr  xmlSecNodeSetAdd        (xmlSecNodeSetPtr nset,
                                                          xmlSecNodeSetPtr newNSet,
                                                          xmlSecNodeSetOp op);
-XMLSEC_EXPORT xmlSecNodeSetPtr  xmlSecNodeSetAddList    (xmlSecNodeSetPtr nset,
+XMLSEC_DEPRECATED XMLSEC_EXPORT xmlSecNodeSetPtr  xmlSecNodeSetAddList(xmlSecNodeSetPtr nset,
                                                          xmlSecNodeSetPtr newNSet,
                                                          xmlSecNodeSetOp op);
 XMLSEC_EXPORT xmlSecNodeSetPtr  xmlSecNodeSetGetChildren(xmlDocPtr doc,

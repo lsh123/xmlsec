@@ -125,7 +125,8 @@ static int              xmlSecRelationshipReadNode        (xmlSecTransformPtr tr
 
 static int              xmlSecTransformRelationshipProcessElementNode(xmlSecTransformPtr transform,
                                                             xmlOutputBufferPtr buf,
-                                                            xmlNodePtr cur);
+                                                            xmlNodePtr cur,
+                                                            int depth);
 
 
 static xmlSecTransformKlass xmlSecRelationshipKlass = {
@@ -290,7 +291,7 @@ done:
  * then exclude it from the output, instead of processing it.
  */
 static int
-xmlSecTransformRelationshipProcessNode(xmlSecTransformPtr transform, xmlOutputBufferPtr buf, xmlNodePtr cur) {
+xmlSecTransformRelationshipProcessNode(xmlSecTransformPtr transform, xmlOutputBufferPtr buf, xmlNodePtr cur, int depth) {
     int found = -1;
     xmlSecRelationshipCtxPtr ctx;
     xmlSecSize ii;
@@ -325,7 +326,7 @@ xmlSecTransformRelationshipProcessNode(xmlSecTransformPtr transform, xmlOutputBu
         }
     }
 
-    ret = xmlSecTransformRelationshipProcessElementNode(transform, buf, cur);
+    ret = xmlSecTransformRelationshipProcessElementNode(transform, buf, cur, depth);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformRelationshipProcessElementNode",
                             xmlSecTransformGetName(transform));
@@ -340,7 +341,7 @@ xmlSecTransformRelationshipProcessNode(xmlSecTransformPtr transform, xmlOutputBu
  * then sort, and finally process them (process the head of the list, then pop the head, till the list becomes empty).
  */
 static int
-xmlSecTransformRelationshipProcessNodeList(xmlSecTransformPtr transform, xmlOutputBufferPtr buf, xmlNodePtr cur) {
+xmlSecTransformRelationshipProcessNodeList(xmlSecTransformPtr transform, xmlOutputBufferPtr buf, xmlNodePtr cur, int depth) {
     xmlListPtr list;
     int ret;
 
@@ -362,7 +363,7 @@ xmlSecTransformRelationshipProcessNodeList(xmlSecTransformPtr transform, xmlOutp
                 return(-1);
             }
         } else {
-            ret = xmlSecTransformRelationshipProcessNode(transform, buf, cur);
+            ret = xmlSecTransformRelationshipProcessNode(transform, buf, cur, depth);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecTransformRelationshipProcessNode",
                                     xmlSecTransformGetName(transform));
@@ -378,7 +379,7 @@ xmlSecTransformRelationshipProcessNodeList(xmlSecTransformPtr transform, xmlOutp
         xmlLinkPtr link = xmlListFront(list);
         xmlNodePtr node = (xmlNodePtr)xmlLinkGetData(link);
 
-        ret = xmlSecTransformRelationshipProcessNode(transform, buf, node);
+        ret = xmlSecTransformRelationshipProcessNode(transform, buf, node, depth);
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformRelationshipProcessNode",
                                 xmlSecTransformGetName(transform));
@@ -500,9 +501,10 @@ xmlSecTransformRelationshipWriteNs(xmlOutputBufferPtr buf, const xmlChar * href)
     return(xmlSecTransformRelationshipWriteProp(buf, BAD_CAST "xmlns", (href != NULL) ? href : BAD_CAST ""));
 }
 
+static int g_xmlSecTransformRelationshipMaxDepth = 10;
 
 static int
-xmlSecTransformRelationshipProcessElementNode(xmlSecTransformPtr transform, xmlOutputBufferPtr buf, xmlNodePtr cur) {
+xmlSecTransformRelationshipProcessElementNode(xmlSecTransformPtr transform, xmlOutputBufferPtr buf, xmlNodePtr cur, int depth) {
     xmlAttrPtr attr;
     int foundTargetMode = 0;
     int ret;
@@ -511,6 +513,13 @@ xmlSecTransformRelationshipProcessElementNode(xmlSecTransformPtr transform, xmlO
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(cur != NULL, -1);
     xmlSecAssert2(cur->name != NULL, -1);
+    xmlSecAssert2(depth >= 0, -1);
+
+    if(depth > g_xmlSecTransformRelationshipMaxDepth) {
+        xmlSecInternalError("xmlSecTransformRelationshipProcessElementNode: max depth exceeded",
+                            xmlSecTransformGetName(transform));
+        return(-1);
+    }
 
     /* write open node */
     ret = xmlOutputBufferWriteString(buf, "<");
@@ -579,7 +588,7 @@ xmlSecTransformRelationshipProcessElementNode(xmlSecTransformPtr transform, xmlO
 
     /* write children */
     if(cur->children != NULL) {
-        ret = xmlSecTransformRelationshipProcessNodeList(transform, buf, cur->children);
+        ret = xmlSecTransformRelationshipProcessNodeList(transform, buf, cur->children, depth + 1);
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformRelationshipProcessNodeList",
                                 xmlSecTransformGetName(transform));
@@ -619,7 +628,8 @@ xmlSecTransformRelationshipExecute(xmlSecTransformPtr transform, xmlOutputBuffer
     xmlSecAssert2(doc != NULL, -1);
 
     if(doc->children != NULL) {
-        ret = xmlSecTransformRelationshipProcessNodeList(transform, buf, doc->children);
+        /* start processing with depth 0 */
+        ret = xmlSecTransformRelationshipProcessNodeList(transform, buf, doc->children, 0);
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformRelationshipProcessNodeList",
                                 xmlSecTransformGetName(transform));

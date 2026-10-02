@@ -217,10 +217,19 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
 
     hStoreHandle = CertOpenSystemStore(0, storeName);
     if (NULL == hStoreHandle) {
-        xmlSecMSCryptoError2("CertOpenSystemStore",
-                             xmlSecKeyStoreGetName(store),
-                             "storeName=%s",
-                             xmlSecErrorsSafeString(storeName));
+        xmlChar* storeNameUtf8;
+
+        storeNameUtf8 = xmlSecWin32ConvertTstrToUtf8(storeName);
+        if(storeNameUtf8 != NULL) {
+            xmlSecMSCryptoError2("CertOpenSystemStore",
+                                 xmlSecKeyStoreGetName(store),
+                                 "storeName=%s",
+                                 storeNameUtf8);
+            xmlFree(storeNameUtf8);
+        } else {
+            xmlSecMSCryptoError("CertOpenSystemStore",
+                                xmlSecKeyStoreGetName(store));
+        }
         return(NULL);
     }
 

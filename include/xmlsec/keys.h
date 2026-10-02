@@ -237,8 +237,8 @@ XMLSEC_EXPORT xmlSecKeyPtr      xmlSecKeyReadMemory     (xmlSecKeyDataId dataId,
  * xmlSecKeyIsValid:
  * @key: the pointer to key.
  *
- * Macro. Returns 1 if @key is not NULL and @key->id is not NULL
- * or 0 otherwise.
+ * Macro. Returns 1 if @key is not NULL, @key->value is not NULL
+ * and @key->value->id is not NULL or 0 otherwise.
  */
 #define xmlSecKeyIsValid(key) \
         ((( key ) != NULL) && \

@@ -415,7 +415,7 @@ XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformRsaPkcs1GetKlass 
 /**
  * xmlSecTransformRsaOaepId:
  *
- * The RSA PKCS1 key transport transform klass.
+ * The RSA-OAEP key transport transform klass.
  */
 #define xmlSecTransformRsaOaepId                xmlSecTransformRsaOaepGetKlass()
 XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformRsaOaepGetKlass  (void);

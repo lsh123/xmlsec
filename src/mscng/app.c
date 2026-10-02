@@ -230,8 +230,7 @@ xmlSecMSCngAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecK
     /* create key */
     key = xmlSecKeyCreate();
     if(key == NULL) {
-        xmlSecInternalError("xmlSecKeyCreate",
-            xmlSecKeyDataGetName(x509Data));
+        xmlSecInternalError("xmlSecKeyCreate", NULL);
         goto done;
     }
 

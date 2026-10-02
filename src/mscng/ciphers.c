@@ -528,6 +528,7 @@ static int xmlSecMSCngGCMBlockCipherCtxInit(xmlSecMSCngBlockCipherCtxPtr ctx,
             xmlSecMSCngNtError("BCryptGetProperty", cipherName, status);
             return(-1);
         }
+        xmlSecAssert2(bytesRead == sizeof(authTagLengths), -1);
 
         if(ctx->authInfo.pbMacContext == NULL) {
             ctx->authInfo.pbMacContext = xmlMalloc(authTagLengths.dwMaxLength);
@@ -675,6 +676,9 @@ xmlSecMSCngCBCBlockCipherCtxUpdate(xmlSecMSCngBlockCipherCtxPtr ctx,
         inBlocks = (inSize - 1) / blockSize;
     }
     inSize = inBlocks * blockSize;
+    if(inSize == 0) {
+        return(0);
+    }
 
     /* we write out the input size plus maybe one block */
     if((inSize > XMLSEC_SIZE_MAX - blockSize) || (outSize > XMLSEC_SIZE_MAX - inSize - blockSize)) {
@@ -814,6 +818,11 @@ xmlSecMSCngGCMBlockCipherCtxUpdate(xmlSecMSCngBlockCipherCtxPtr ctx,
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, inLen, return(-1), cipherName);
 
     outSize = xmlSecBufferGetSize(out);
+    if(outSize > XMLSEC_SIZE_MAX - inSize) {
+        xmlSecInternalError3("xmlSecBufferSetMaxSize", cipherName,
+            "outSize=" XMLSEC_SIZE_FMT "; inSize=" XMLSEC_SIZE_FMT, outSize, inSize);
+        return(-1);
+    }
     ret = xmlSecBufferSetMaxSize(out, outSize + inSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetMaxSize", cipherName,
@@ -1203,7 +1212,7 @@ xmlSecMSCngGCMBlockCipherCtxFinal(xmlSecMSCngBlockCipherCtxPtr ctx,
         /* check if we really have decrypted the numbers of bytes that we
         * requested */
         if(dwCLen != dwInSize) {
-            xmlSecInternalError3("BCryptEncrypt", cipherName,
+            xmlSecInternalError3("BCryptDecrypt", cipherName,
                 "in-size=%lu; out-size=%lu", dwInSize, dwCLen);
             return(-1);
         }

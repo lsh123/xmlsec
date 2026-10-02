@@ -20,6 +20,7 @@
 #include <libxml/xmlIO.h>
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/list.h>
 #include <xmlsec/keysdata.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>

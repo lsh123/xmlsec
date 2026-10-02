@@ -173,15 +173,117 @@ xmlSecFindChild(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns)
  */
 xmlNodePtr
 xmlSecFindParent(const xmlNodePtr cur, const xmlChar *name, const xmlChar *ns) {
+    xmlNodePtr node;
+
     xmlSecAssert2(cur != NULL, NULL);
     xmlSecAssert2(name != NULL, NULL);
 
-    if(xmlSecCheckNodeName(cur, name, ns)) {
-        return(cur);
-    } else if(cur->parent != NULL) {
-        return(xmlSecFindParent(cur->parent, name, ns));
+    for(node = cur; node != NULL; node = node->parent) {
+        if(xmlSecCheckNodeName(node, name, ns)) {
+            return(node);
+        }
     }
     return(NULL);
+}
+
+/* Helpers for XML tree traversal */
+#define xmlSecXmlNodePtrListId  (&xmlSecXmlNodePtrListKlass)
+static xmlSecPtrListKlass xmlSecXmlNodePtrListKlass = {
+    BAD_CAST "xml-node-ptr-list",
+    NULL,   /* duplicateItem */
+    NULL,   /* destroyItem */
+    NULL,   /* debugDumpItem */
+    NULL,   /* debugXmlDumpItem */
+};
+
+/**
+ * xmlSecDepthFirstTreeWalk:
+ * @node:               the pointer to an XML node to start the walk from.
+ * @callback:           the callback function to call for each node.
+ * @data:               the pointer to data to pass to the callback function.
+ *
+ * Walks thru the XML tree starting from @node and calls @callback for each
+ * node. The @callback should return 1 to continue the walk, 0 to stop the
+ * walk, or a negative value to stop the walk with an error.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecDepthFirstTreeWalk(xmlNodePtr node, xmlSecTreeWalkCallback callback, void* data) {
+    xmlSecPtrList queue;
+    xmlNodePtr cur;
+    int ret;
+
+    xmlSecAssert2(callback != NULL, -1);
+
+    if(node == NULL) {
+        return(0);
+    }
+
+    ret = xmlSecPtrListInitialize(&queue, xmlSecXmlNodePtrListId);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecPtrListInitialize", NULL);
+        return(-1);
+    }
+
+    /* seed the queue */
+    ret = xmlSecPtrListAdd(&queue, (xmlSecPtr)node);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecPtrListAdd", NULL);
+        xmlSecPtrListFinalize(&queue);
+        return(-1);
+    }
+
+    /* process the queue */
+    while((cur = (xmlNodePtr)xmlSecPtrListPopLast(&queue)) != NULL) {
+        /* call the callback */
+        ret = callback(cur, data);
+        if(ret < 0) {
+            xmlSecInternalError("callback", NULL);
+            xmlSecPtrListFinalize(&queue);
+            return(-1);
+        } else if(ret == 0) {
+            /* stop the walk */
+            break;
+        }
+
+        /* element and document nodes have children, push children onto queue
+         * in reverse order for correct traversal */
+        if((cur->type == XML_ELEMENT_NODE) || (cur->type == XML_DOCUMENT_NODE)) {
+            xmlNodePtr child;
+
+            for(child = cur->last; child != NULL; child = child->prev) {
+                ret = xmlSecPtrListAdd(&queue, (xmlSecPtr)child);
+                if(ret < 0) {
+                    xmlSecInternalError("xmlSecPtrListAdd", NULL);
+                    xmlSecPtrListFinalize(&queue);
+                    return(-1);
+                }
+            }
+        }
+    }
+
+    /* done */
+    xmlSecPtrListFinalize(&queue);
+    return(0);
+}
+
+typedef struct {
+    const xmlChar* name;
+    const xmlChar* ns;
+    xmlNodePtr result;
+} xmlSecFindNodeCtx;
+
+static int
+xmlSecFindNodeCallback(xmlNodePtr cur, void* data) {
+    xmlSecFindNodeCtx* ctx = (xmlSecFindNodeCtx*)data;
+    xmlSecAssert2(ctx != NULL, -1);
+
+    if((cur->type == XML_ELEMENT_NODE) && xmlSecCheckNodeName(cur, ctx->name, ctx->ns)) {
+        ctx->result = cur;
+        return(0); /* stop the walk */
+    }
+    return(1); /* continue */
 }
 
 /**
@@ -198,25 +300,28 @@ xmlSecFindParent(const xmlNodePtr cur, const xmlChar *name, const xmlChar *ns) {
  */
 xmlNodePtr
 xmlSecFindNode(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
+    xmlSecFindNodeCtx ctx;
     xmlNodePtr cur;
-    xmlNodePtr ret;
+    int ret;
 
     xmlSecAssert2(name != NULL, NULL);
 
-    cur = parent;
-    while(cur != NULL) {
-        if((cur->type == XML_ELEMENT_NODE) && xmlSecCheckNodeName(cur, name, ns)) {
-            return(cur);
+    /* setup context */
+    ctx.name = name;
+    ctx.ns = ns;
+    ctx.result = NULL;
+
+    /* walk the tree */
+    for(cur = parent; cur != NULL; cur = cur->next) {
+        ret = xmlSecDepthFirstTreeWalk(cur, xmlSecFindNodeCallback, &ctx);
+        if(ret < 0) {
+            return(NULL);
         }
-        if(cur->children != NULL) {
-            ret = xmlSecFindNode(cur->children, name, ns);
-            if(ret != NULL) {
-                return(ret);
-            }
+        if(ctx.result != NULL) {
+            break;
         }
-        cur = cur->next;
     }
-    return(NULL);
+    return(ctx.result);
 }
 
 /**
@@ -790,6 +895,53 @@ xmlSecNodeEncodeAndSetContent(xmlNodePtr node, const xmlChar * buffer) {
     return(0);
 }
 
+typedef struct {
+    xmlDocPtr doc;
+    const xmlChar** ids;
+} xmlSecAddIDsCtx;
+
+static int
+xmlSecAddIDsCallback(xmlNodePtr cur, void* data) {
+    xmlSecAddIDsCtx* ctx = (xmlSecAddIDsCtx*)data;
+    xmlAttrPtr attr;
+    xmlAttrPtr tmp;
+    int ii;
+    xmlChar* name;
+
+    xmlSecAssert2(ctx != NULL, -1);
+
+    if(cur->type != XML_ELEMENT_NODE) {
+        return(1); /* continue walk */
+    }
+
+    for(attr = cur->properties; attr != NULL; attr = attr->next) {
+        for(ii = 0; ctx->ids[ii] != NULL; ++ii) {
+            if(xmlStrEqual(attr->name, ctx->ids[ii]) == 0) {
+                continue;
+            }
+            name = xmlNodeListGetString(ctx->doc, attr->children, 1);
+            if(name == NULL) {
+                continue;
+            }
+
+            tmp = xmlGetID(ctx->doc, name);
+            if(tmp == NULL) {
+                if(xmlAddID(NULL, ctx->doc, name, attr) == NULL) {
+                    xmlSecXmlError("xmlAddID", NULL);
+                    xmlFree(name);
+                    return(-1);
+                }
+            } else if(tmp != attr) {
+                xmlSecInvalidStringDataError("id", name, "unique id (id already defined)", NULL);
+                /* ignore error */
+            }
+            xmlFree(name);
+        }
+    }
+
+    return(1); /* continue walk */
+}
+
 /**
  * xmlSecAddIDs:
  * @doc:                the pointer to an XML document.
@@ -801,45 +953,33 @@ xmlSecNodeEncodeAndSetContent(xmlNodePtr node, const xmlChar * buffer) {
  */
 void
 xmlSecAddIDs(xmlDocPtr doc, xmlNodePtr cur, const xmlChar** ids) {
-    xmlNodePtr children = NULL;
+    xmlSecAddIDsCtx ctx;
+    xmlNodePtr children;
+    int ret;
 
     xmlSecAssert(doc != NULL);
     xmlSecAssert(ids != NULL);
 
-    if((cur != NULL) && (cur->type == XML_ELEMENT_NODE)) {
-        xmlAttrPtr attr;
-        xmlAttrPtr tmp;
-        int i;
-        xmlChar* name;
+    ctx.doc = doc;
+    ctx.ids = ids;
 
-        for(attr = cur->properties; attr != NULL; attr = attr->next) {
-            for(i = 0; ids[i] != NULL; ++i) {
-                if(xmlStrEqual(attr->name, ids[i])) {
-                    name = xmlNodeListGetString(doc, attr->children, 1);
-                    if(name != NULL) {
-                        tmp = xmlGetID(doc, name);
-                        if(tmp == NULL) {
-                            xmlAddID(NULL, doc, name, attr);
-                        } else if(tmp != attr) {
-                            xmlSecInvalidStringDataError("id", name, "unique id (id already defined)", NULL);
-                            /* ignore error */
-                        }
-                        xmlFree(name);
-                    }
-                }
+    if((cur != NULL) && (cur->type == XML_ELEMENT_NODE)) {
+        ret = xmlSecDepthFirstTreeWalk(cur, xmlSecAddIDsCallback, &ctx);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecDepthFirstTreeWalk", NULL);
+            return;
+        }
+    } else if((cur == NULL) || (cur->type == XML_DOCUMENT_NODE)) {
+        for(children = doc->children; children != NULL; children = children->next) {
+            if(children->type != XML_ELEMENT_NODE) {
+                continue;
+            }
+            ret = xmlSecDepthFirstTreeWalk(children, xmlSecAddIDsCallback, &ctx);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecDepthFirstTreeWalk", NULL);
+                return;
             }
         }
-
-        children = cur->children;
-    } else if(cur == NULL) {
-        children = doc->children;
-    }
-
-    while(children != NULL) {
-        if(children->type == XML_ELEMENT_NODE) {
-            xmlSecAddIDs(doc, children, ids);
-        }
-        children = children->next;
     }
 }
 

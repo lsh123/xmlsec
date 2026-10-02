@@ -412,6 +412,24 @@ xmlSecPtrListRemoveAndReturn(xmlSecPtrListPtr list, xmlSecSize pos) {
     return(res);
 }
 
+/**
+ * xmlSecPtrListPopLast:
+ * @list:               the pointer to list.
+ *
+ * Removes and returns the last item from the @list.
+ *
+ * Returns: the pointer to the last list item, or NULL if the list is empty.
+ */
+xmlSecPtr
+xmlSecPtrListPopLast(xmlSecPtrListPtr list) {
+    xmlSecAssert2(xmlSecPtrListIsValid(list), NULL);
+
+    if(list->use <= 0) {
+        return(NULL);
+    }
+    return(xmlSecPtrListRemoveAndReturn(list, list->use - 1));
+}
+
 
 /**
  * xmlSecPtrListDebugDump:

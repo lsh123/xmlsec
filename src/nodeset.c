@@ -25,6 +25,7 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/nodeset.h>
+#include <xmlsec/xmltree.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/private.h>
 
@@ -35,14 +36,19 @@
         (node)->parent : \
         (xmlNodePtr)((xmlNsPtr)(node))->next)
 
+static int      xmlSecNodeSetCheckNode                  (xmlNodeSetPtr nodes,
+                                                         xmlNodePtr node,
+                                                         xmlNodePtr parent);
+static int      xmlSecNodeSetCheckNodeOrParent          (xmlNodeSetPtr nodes,
+                                                         xmlNodePtr node,
+                                                         xmlNodePtr parent);
 static int      xmlSecNodeSetOneContains                (xmlSecNodeSetPtr nset,
                                                          xmlNodePtr node,
                                                          xmlNodePtr parent);
 static int      xmlSecNodeSetWalkRecursive              (xmlSecNodeSetPtr nset,
+                                                         xmlNodePtr startNode,
                                                          xmlSecNodeSetWalkCallback walkFunc,
-                                                         void* data,
-                                                         xmlNodePtr cur,
-                                                         xmlNodePtr parent);
+                                                         void* data);
 
 /**
  * xmlSecNodeSetCreate:
@@ -98,9 +104,8 @@ xmlSecNodeSetDestroy(xmlSecNodeSetPtr nset) {
         if(tmp->nodes != NULL) {
             xmlXPathFreeNodeSet(tmp->nodes);
         }
-        if(tmp->children != NULL) {
-            xmlSecNodeSetDestroy(tmp->children);
-        }
+        xmlSecAssert(tmp->children == NULL); /* deprecated */
+
         if((tmp->doc != NULL) && (tmp->destroyDoc != 0)) {
             /* all nodesets should belong to the same doc */
             xmlSecAssert((destroyDoc == NULL) || (tmp->doc == destroyDoc));
@@ -129,12 +134,75 @@ xmlSecNodeSetDocDestroy(xmlSecNodeSetPtr nset) {
     nset->destroyDoc = 1;
 }
 
+/* checks node against LibXML2 nodeset */
+static int
+xmlSecNodeSetCheckNode(xmlNodeSetPtr nodes, xmlNodePtr node, xmlNodePtr parent) {
+    xmlSecAssert2(node != NULL, 0);
+
+    /* assume whole tree is included if nodes is NULL */
+    if(nodes == NULL) {
+        return(1);
+    }
+
+    if(node->type != XML_NAMESPACE_DECL) {
+        return(xmlXPathNodeSetContains(nodes, node));
+    } else {
+        xmlNs ns;
+
+        memcpy(&ns, node, sizeof(ns));
+
+        /* this is a libxml hack! check xpath.c for details */
+        if((parent != NULL) && (parent->type == XML_ATTRIBUTE_NODE)) {
+            ns.next = (xmlNsPtr)parent->parent;
+        } else {
+            ns.next = (xmlNsPtr)parent;
+        }
+
+        /*
+         * If the input is an XPath node-set, then the node-set must explicitly
+         * contain every node to be rendered to the canonical form.
+         */
+        return(xmlXPathNodeSetContains(nodes, (xmlNodePtr)&ns));
+    }
+}
+
+/* checks node or its parents against LibXML2 nodeset */
+static int
+xmlSecNodeSetCheckNodeOrParent(xmlNodeSetPtr nodes, xmlNodePtr node, xmlNodePtr parent) {
+    int ret;
+
+    xmlSecAssert2(node != NULL, -1);
+
+    do {
+        ret = xmlSecNodeSetCheckNode(nodes, node, parent);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecNodeSetCheckNode", NULL);
+            return(-1);
+        }
+        if(ret) {
+            return(1);
+        }
+
+        /* traverse up the tree, only element nodes can have children */
+        if((parent != NULL) && (parent->type == XML_ELEMENT_NODE)) {
+            node = parent;
+            parent = parent->parent;
+        } else {
+            node = NULL;
+        }
+    } while(node != NULL);
+
+    /* done */
+    return(0);
+}
+
+/* checks node against THIS nodeset only */
 static int
 xmlSecNodeSetOneContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent) {
-    int in_nodes_set = 1;
+    int ret;
 
-    xmlSecAssert2(nset != NULL, 0);
-    xmlSecAssert2(node != NULL, 0);
+    xmlSecAssert2(nset != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
 
     /* special cases: */
     switch(nset->type) {
@@ -145,57 +213,47 @@ xmlSecNodeSetOneContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr pare
             }
             break;
         case xmlSecNodeSetList:
-            return(xmlSecNodeSetContains(nset->children, node, parent));
+            xmlSecOtherError(XMLSEC_ERRORS_R_NOT_IMPLEMENTED, NULL, "xmlSecNodeSetList is deprecated");
+            return(-1);
         default:
             break;
     }
 
-    if(nset->nodes != NULL) {
-        if(node->type != XML_NAMESPACE_DECL) {
-            in_nodes_set = xmlXPathNodeSetContains(nset->nodes, node);
-        } else {
-            xmlNs ns;
-
-            memcpy(&ns, node, sizeof(ns));
-
-            /* this is a libxml hack! check xpath.c for details */
-            if((parent != NULL) && (parent->type == XML_ATTRIBUTE_NODE)) {
-                ns.next = (xmlNsPtr)parent->parent;
-            } else {
-                ns.next = (xmlNsPtr)parent;
-            }
-
-            /*
-             * If the input is an XPath node-set, then the node-set must explicitly
-             * contain every node to be rendered to the canonical form.
-             */
-            in_nodes_set = (xmlXPathNodeSetContains(nset->nodes, (xmlNodePtr)&ns));
-        }
-    }
-
     switch(nset->type) {
     case xmlSecNodeSetNormal:
-        return(in_nodes_set);
+        /* simple case */
+        ret = xmlSecNodeSetCheckNode(nset->nodes, node, parent);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecNodeSetCheckNode", NULL);
+            return(-1);
+        }
+        return(ret);
     case xmlSecNodeSetInvert:
-        return(!in_nodes_set);
+        /* simple case: return inverted result */
+        ret = xmlSecNodeSetCheckNode(nset->nodes, node, parent);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecNodeSetCheckNode", NULL);
+            return(-1);
+        }
+        return(!ret);
     case xmlSecNodeSetTree:
     case xmlSecNodeSetTreeWithoutComments:
-        if(in_nodes_set) {
-            return(1);
+        /* just traverse up the tree to see if any of the parents are in the nodeset */
+        ret = xmlSecNodeSetCheckNodeOrParent(nset->nodes, node, parent);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecNodeSetCheckNodeOrParent", NULL);
+            return(-1);
         }
-        if((parent != NULL) && (parent->type == XML_ELEMENT_NODE)) {
-            return(xmlSecNodeSetOneContains(nset, parent, parent->parent));
-        }
-        return(0);
+        return(ret);
     case xmlSecNodeSetTreeInvert:
     case xmlSecNodeSetTreeWithoutCommentsInvert:
-        if(in_nodes_set) {
-            return(0);
+        /* just traverse up the tree to see if any of the parents are in the nodeset and invert the result */
+        ret = xmlSecNodeSetCheckNodeOrParent(nset->nodes, node, parent);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecNodeSetCheckNodeOrParent", NULL);
+            return(-1);
         }
-        if((parent != NULL) && (parent->type == XML_ELEMENT_NODE)) {
-            return(xmlSecNodeSetOneContains(nset, parent, parent->parent));
-        }
-        return(1);
+        return(!ret);
     default:
         xmlSecUnsupportedEnumValueError("node set type", nset->type, NULL);
         return(0);
@@ -210,15 +268,16 @@ xmlSecNodeSetOneContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr pare
  *
  * Checks whether the @node is in the nodes set or not.
  *
- * Returns: 1 if the @node is in the nodes set @nset, 0 if it is not
- * and a negative value if an error occurs.
+ * Returns: 1 if the @node is in the nodes set @nset or 0 if it is not.
+ * There is no return value for errors.
  */
 int
 xmlSecNodeSetContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent) {
-    int status = 1;
     xmlSecNodeSetPtr cur;
+    int status = 1;
+    int ret;
 
-    xmlSecAssert2(node != NULL, 0);
+    xmlSecAssert2(node != NULL, 0);  /* no return value for error */
 
     /* special cases: */
     if(nset == NULL) {
@@ -230,24 +289,39 @@ xmlSecNodeSetContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent)
     do {
         switch(cur->op) {
         case xmlSecNodeSetIntersection:
-            if(status && !xmlSecNodeSetOneContains(cur, node, parent)) {
+            ret = xmlSecNodeSetOneContains(cur, node, parent);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecNodeSetOneContains", NULL);
+                return(0); /* no return value for error */
+            }
+            if(status && !ret) {
                 status = 0;
             }
             break;
         case xmlSecNodeSetSubtraction:
-            if(status && xmlSecNodeSetOneContains(cur, node, parent)) {
+            ret = xmlSecNodeSetOneContains(cur, node, parent);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecNodeSetOneContains", NULL);
+                return(0); /* no return value for error */
+            }
+            if(status && ret) {
                 status = 0;
             }
             break;
         case xmlSecNodeSetUnion:
-            if(!status && xmlSecNodeSetOneContains(cur, node, parent)) {
+            ret = xmlSecNodeSetOneContains(cur, node, parent);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecNodeSetOneContains", NULL);
+                return(0); /* no return value for error */
+            }
+            if(!status && ret) {
                 status = 1;
             }
             break;
         default:
             xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_OPERATION, NULL,
                 "node set operation=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(cur->op));
-            return(-1);
+            return(0); /* no return value for error */
         }
         cur = cur->next;
     } while(cur != nset);
@@ -293,31 +367,23 @@ xmlSecNodeSetAdd(xmlSecNodeSetPtr nset, xmlSecNodeSetPtr newNSet,
  * @newNSet:            the pointer to new nodes set.
  * @op:                 the operation type.
  *
- * Adds @newNSet to the @nset as child using operation @op.
+ * Deprecated. Adds @newNSet to the @nset as child using operation @op.
  *
  * Returns: the pointer to combined nodes set or NULL if an error
  * occurs.
  */
 xmlSecNodeSetPtr
-xmlSecNodeSetAddList(xmlSecNodeSetPtr nset, xmlSecNodeSetPtr newNSet, xmlSecNodeSetOp op) {
-    xmlSecNodeSetPtr tmp1, tmp2;
+xmlSecNodeSetAddList(
+    xmlSecNodeSetPtr nset XMLSEC_ATTRIBUTE_UNUSED,
+    xmlSecNodeSetPtr newNSet XMLSEC_ATTRIBUTE_UNUSED,
+    xmlSecNodeSetOp op XMLSEC_ATTRIBUTE_UNUSED
+) {
+    UNREFERENCED_PARAMETER(nset);
+    UNREFERENCED_PARAMETER(newNSet);
+    UNREFERENCED_PARAMETER(op);
 
-    xmlSecAssert2(newNSet != NULL, NULL);
-
-    tmp1 = xmlSecNodeSetCreate(newNSet->doc, NULL, xmlSecNodeSetList);
-    if(tmp1 == NULL) {
-        xmlSecInternalError("xmlSecNodeSetCreate", NULL);
-        return(NULL);
-    }
-    tmp1->children = newNSet;
-
-    tmp2 = xmlSecNodeSetAdd(nset, tmp1, op);
-    if(tmp2 == NULL) {
-        xmlSecInternalError("xmlSecNodeSetAdd", NULL);
-        xmlSecNodeSetDestroy(tmp1);
-        return(NULL);
-    }
-    return(tmp2);
+    xmlSecOtherError(XMLSEC_ERRORS_R_NOT_IMPLEMENTED, NULL, "xmlSecNodeSetAddList is deprecated");
+    return(NULL);
 }
 
 
@@ -351,9 +417,7 @@ xmlSecNodeSetWalk(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc, voi
         case xmlSecNodeSetTree:
         case xmlSecNodeSetTreeWithoutComments:
             for(i = 0; (ret >= 0) && (i < nset->nodes->nodeNr); ++i) {
-                ret = xmlSecNodeSetWalkRecursive(nset, walkFunc, data,
-                    nset->nodes->nodeTab[i],
-                    xmlSecGetParent(nset->nodes->nodeTab[i]));
+                ret = xmlSecNodeSetWalkRecursive(nset, nset->nodes->nodeTab[i], walkFunc, data);
             }
             return(ret);
         default:
@@ -362,26 +426,34 @@ xmlSecNodeSetWalk(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc, voi
     }
 
     for(cur = nset->doc->children; (cur != NULL) && (ret >= 0); cur = cur->next) {
-        ret = xmlSecNodeSetWalkRecursive(nset, walkFunc, data, cur, xmlSecGetParent(cur));
+        ret = xmlSecNodeSetWalkRecursive(nset, cur, walkFunc, data);
     }
     return(ret);
 }
 
+typedef struct {
+    xmlSecNodeSetPtr nset;
+    xmlSecNodeSetWalkCallback walkFunc;
+    void* data;
+} xmlSecNodeSetWalkCtx;
+
 static int
-xmlSecNodeSetWalkRecursive(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc,
-                            void* data, xmlNodePtr cur, xmlNodePtr parent) {
+xmlSecNodeSetWalkRecursiveCallback(xmlNodePtr cur, void* data) {
+    xmlSecNodeSetWalkCtx* ctx = (xmlSecNodeSetWalkCtx*)data;
+    xmlNodePtr parent = xmlSecGetParent(cur);
     int ret;
 
-    xmlSecAssert2(nset != NULL, -1);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->nset != NULL, -1);
+    xmlSecAssert2(ctx->walkFunc != NULL, -1);
     xmlSecAssert2(cur != NULL, -1);
-    xmlSecAssert2(walkFunc != NULL, -1);
 
     /* the node itself */
-    if(xmlSecNodeSetContains(nset, cur, parent)) {
-        ret = walkFunc(nset, cur, parent, data);
+    if(xmlSecNodeSetContains(ctx->nset, cur, parent)) {
+        ret = ctx->walkFunc(ctx->nset, cur, parent, ctx->data);
 
         if(ret < 0) {
-            return(ret);
+            return(-1);
         }
     }
 
@@ -393,10 +465,10 @@ xmlSecNodeSetWalkRecursive(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walk
 
         attr = (xmlAttrPtr)cur->properties;
         while(attr != NULL) {
-            if(xmlSecNodeSetContains(nset, (xmlNodePtr)attr, cur)) {
-                ret = walkFunc(nset, (xmlNodePtr)attr, cur, data);
+            if(xmlSecNodeSetContains(ctx->nset, (xmlNodePtr)attr, cur)) {
+                ret = ctx->walkFunc(ctx->nset, (xmlNodePtr)attr, cur, ctx->data);
                 if(ret < 0) {
-                    return(ret);
+                    return(-1);
                 }
             }
             attr = attr->next;
@@ -406,11 +478,11 @@ xmlSecNodeSetWalkRecursive(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walk
         while(node != NULL) {
             ns = node->nsDef;
             while(ns != NULL) {
-                tmp = xmlSearchNs(nset->doc, cur, ns->prefix);
-                if((tmp == ns) && xmlSecNodeSetContains(nset, (xmlNodePtr)ns, cur)) {
-                    ret = walkFunc(nset, (xmlNodePtr)ns, cur, data);
+                tmp = xmlSearchNs(ctx->nset->doc, cur, ns->prefix);
+                if((tmp == ns) && xmlSecNodeSetContains(ctx->nset, (xmlNodePtr)ns, cur)) {
+                    ret = ctx->walkFunc(ctx->nset, (xmlNodePtr)ns, cur, ctx->data);
                     if(ret < 0) {
-                        return(ret);
+                        return(-1);
                     }
                 }
                 ns = ns->next;
@@ -419,19 +491,31 @@ xmlSecNodeSetWalkRecursive(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walk
         }
     }
 
-    /* element and document nodes have children */
-    if((cur->type == XML_ELEMENT_NODE) || (cur->type == XML_DOCUMENT_NODE)) {
-        xmlNodePtr node;
+    /* continue the walk */
+    return(1);
+}
 
-        node = cur->children;
-        while(node != NULL) {
-            ret = xmlSecNodeSetWalkRecursive(nset, walkFunc, data, node, cur);
-            if(ret < 0) {
-                return(ret);
-            }
-            node = node->next;
-        }
+static int
+xmlSecNodeSetWalkRecursive(xmlSecNodeSetPtr nset, xmlNodePtr startNode,
+                           xmlSecNodeSetWalkCallback walkFunc, void* data) {
+    xmlSecNodeSetWalkCtx ctx;
+    int ret;
+
+    xmlSecAssert2(nset != NULL, -1);
+    xmlSecAssert2(startNode != NULL, -1);
+    xmlSecAssert2(walkFunc != NULL, -1);
+
+    ctx.nset = nset;
+    ctx.walkFunc = walkFunc;
+    ctx.data = data;
+
+    ret = xmlSecDepthFirstTreeWalk(startNode, xmlSecNodeSetWalkRecursiveCallback, &ctx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecDepthFirstTreeWalk", NULL);
+        return(-1);
     }
+
+    /* done */
     return(0);
 }
 
@@ -582,9 +666,8 @@ xmlSecNodeSetDebugDump(xmlSecNodeSetPtr nset, FILE *output) {
         fprintf(output, "(xmlSecNodeSetTreeWithoutCommentsInvert)\n");
         break;
     case xmlSecNodeSetList:
-        fprintf(output, "(xmlSecNodeSetList)\n");
+        fprintf(output, "(xmlSecNodeSetList, deprecated)\n");
         fprintf(output, ">>>\n");
-        xmlSecNodeSetDebugDump(nset->children, output);
         fprintf(output, "<<<\n");
         return;
     }

@@ -109,6 +109,33 @@ XMLSEC_EXPORT xmlChar*          xmlSecGetQName          (xmlNodePtr node,
                                                          const xmlChar* href,
                                                          const xmlChar* local);
 
+/**
+ * xmlSecTreeWalkCallback:
+ * @cur:                the current XML node.
+ * @data:               the user data passed to the callback.
+ *
+ * The callback function called for each node during the tree walk.
+ *
+ * Returns: 1 to continue the walk, 0 to stop the walk, or a negative
+ * value to stop the walk with an error.
+ */
+typedef int (*xmlSecTreeWalkCallback)                   (xmlNodePtr cur,
+                                                         void* data);
+
+/**
+ * xmlSecDepthFirstTreeWalk:
+ * @node:               the pointer to an XML node to start the walk from.
+ * @callback:           the callback function to call for each node.
+ * @data:               the pointer to data to pass to the callback function.
+ *
+ * Walks thru the XML tree starting from @node and calls @callback for each
+ * node.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+XMLSEC_EXPORT int               xmlSecDepthFirstTreeWalk  (xmlNodePtr node,
+                                                           xmlSecTreeWalkCallback callback,
+                                                           void* data);
 
 XMLSEC_EXPORT int               xmlSecPrintXmlString    (FILE * fd,
                                                          const xmlChar * str);

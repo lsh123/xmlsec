@@ -249,6 +249,49 @@ xmlSecGnuTLSX509CheckTime(const gnutls_x509_crt_t * cert_list,
     return(1);
 }
 
+/* For custom verification time, check only trusted certs that could act as
+ * issuer for @p cert. This avoids rejecting valid chains because of unrelated
+ * expired certs in the trust store. */
+static int
+xmlSecGnuTLSX509StoreCheckTrustedAnchorTime(xmlSecGnuTLSX509StoreCtxPtr ctx,
+                                            gnutls_x509_crt_t cert,
+                                            time_t verification_time) {
+    xmlSecSize ca_list_size, ii;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(cert != NULL, -1);
+
+    ca_list_size = xmlSecPtrListGetSize(&(ctx->certsTrusted));
+    for(ii = 0; ii < ca_list_size; ++ii) {
+        gnutls_x509_crt_t trusted_cert;
+        unsigned int is_issuer;
+        int ret;
+
+        trusted_cert = xmlSecPtrListGetItem(&(ctx->certsTrusted), ii);
+        if(trusted_cert == NULL) {
+            xmlSecInternalError("xmlSecPtrListGetItem(certsTrusted)", NULL);
+            return(-1);
+        }
+
+        is_issuer = gnutls_x509_crt_check_issuer(cert, trusted_cert);
+        if(is_issuer == 0) {
+            continue;
+        }
+
+        ret = xmlSecGnuTLSX509CheckTime(&trusted_cert, 1, verification_time);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGnuTLSX509CheckTime(trusted_cert)", NULL);
+            return(-1);
+        } else if(ret == 1) {
+            /* found a matching trusted cert that is valid at the requested time */
+            return(1);
+        }
+    }
+
+    /* no valid matching trusted cert found at the requested verification time */
+    return(0);
+}
+
 static int
 xmlSecGnuTLSX509GetVerificationFlags(const xmlSecKeyInfoCtx* keyInfoCtx,
                                      unsigned int* flags) {
@@ -258,8 +301,13 @@ xmlSecGnuTLSX509GetVerificationFlags(const xmlSecKeyInfoCtx* keyInfoCtx,
     (*flags) = 0;
 
     /* gnutls doesn't allow to specify "verification" timestamp so
-       we have to do it ourselves */
-    (*flags) |= GNUTLS_VERIFY_DISABLE_TIME_CHECKS;
+       we have to do it ourselves; disable the gnutls time checks only
+       in this case, otherwise gnutls checks the validity periods of
+       all certificates (including the trusted ones) against the
+       current time */
+    if(keyInfoCtx->certsVerificationTime > 0) {
+        (*flags) |= GNUTLS_VERIFY_DISABLE_TIME_CHECKS;
+    }
 
     if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS) != 0) {
         (*flags) |= GNUTLS_VERIFY_ALLOW_SIGN_RSA_MD2;
@@ -471,12 +519,32 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
         }
 
         /* gnutls doesn't allow to specify "verification" timestamp so
-           we have to do it ourselves */
-        ret = xmlSecGnuTLSX509CheckTime(cert_list, cert_list_cur_size, verification_time);
-        if(ret != 1) {
-            xmlSecInternalError("xmlSecGnuTLSX509CheckTime", NULL);
-            /* ignore error, don't stop, continue! */
-            continue;
+           we have to do it ourselves (gnutls only checks the time against
+           the current time, which is not the custom verification time) */
+        if(keyInfoCtx->certsVerificationTime > 0) {
+            ret = xmlSecGnuTLSX509CheckTime(cert_list, cert_list_cur_size, verification_time);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecGnuTLSX509CheckTime", NULL);
+                /* ignore error, don't stop, continue! */
+                continue;
+            } else if(ret != 1) {
+                /* cert in the candidate chain is not valid at verification time */
+                continue;
+            }
+
+            /* GNUTLS_VERIFY_DISABLE_TIME_CHECKS disables time checks for trusted
+               certs too, so check only the trust anchor candidates for this
+               chain instead of all trusted certs in the store. */
+            ret = xmlSecGnuTLSX509StoreCheckTrustedAnchorTime(ctx,
+                    cert_list[cert_list_cur_size - 1], verification_time);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecGnuTLSX509StoreCheckTrustedAnchorTime", NULL);
+                /* ignore error, don't stop, continue! */
+                continue;
+            } else if(ret != 1) {
+                /* trusted cert candidate not valid at the verification time */
+                continue;
+            }
         }
 
         /* DONE! */
@@ -598,18 +666,32 @@ xmlSecGnuTLSX509StoreVerifyIssuerCert(xmlSecGnuTLSX509StoreCtxPtr ctx,
     }
 
     /* gnutls doesn't allow to specify "verification" timestamp so
-       we have to do it ourselves */
-    verification_time = (keyInfoCtx->certsVerificationTime > 0) ?
-                        keyInfoCtx->certsVerificationTime :
-                        time(0);
-    ret = xmlSecGnuTLSX509CheckTime(chain, chain_cur_size, verification_time);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecGnuTLSX509CheckTime", NULL);
-        goto done;
-    } else if(ret != 1) {
-        /* issuer cert not valid at the verification time */
-        res = 0;
-        goto done;
+       we have to do it ourselves; GNUTLS_VERIFY_DISABLE_TIME_CHECKS makes
+       gnutls skip the time checks for the trusted certs as well, so they
+       have to be checked here too */
+    if(keyInfoCtx->certsVerificationTime > 0) {
+        verification_time = keyInfoCtx->certsVerificationTime;
+
+        ret = xmlSecGnuTLSX509CheckTime(chain, chain_cur_size, verification_time);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGnuTLSX509CheckTime", NULL);
+            goto done;
+        } else if(ret != 1) {
+            /* issuer cert not valid at the verification time */
+            res = 0;
+            goto done;
+        }
+
+        ret = xmlSecGnuTLSX509StoreCheckTrustedAnchorTime(ctx,
+                chain[chain_cur_size - 1], verification_time);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGnuTLSX509StoreCheckTrustedAnchorTime", NULL);
+            goto done;
+        } else if(ret != 1) {
+            /* trusted cert candidate not valid at the verification time */
+            res = 0;
+            goto done;
+        }
     }
 
     /* done! */

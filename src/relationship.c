@@ -81,6 +81,7 @@
 #include <libxml/tree.h>
 #include <libxml/xpointer.h>
 #include <libxml/c14n.h>
+#include <libxml/list.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
@@ -257,6 +258,11 @@ xmlSecTransformRelationshipCompare(xmlNodePtr node1, xmlNodePtr node2) {
 
     id1 = xmlGetProp(node1, xmlSecRelationshipAttrId);
     id2 = xmlGetProp(node2, xmlSecRelationshipAttrId);
+    if(id1 == NULL && id2 == NULL) {
+        /* Both lack an Id: treat as equal so the comparator is a strict weak ordering. */
+        ret = 0;
+        goto done;
+    }
     if(id1 == NULL) {
         ret = -1;
         goto done;
@@ -297,10 +303,11 @@ xmlSecTransformRelationshipProcessNode(xmlSecTransformPtr transform, xmlOutputBu
     if(xmlSecCheckNodeName(cur, xmlSecNodeRelationship, xmlSecRelationshipsNs)) {
         xmlChar* id = xmlGetProp(cur, xmlSecRelationshipAttrId);
         if(id == NULL) {
-            xmlSecXmlError2("xmlGetProp(xmlSecRelationshipAttrId)",
-                            xmlSecTransformGetName(transform),
-                            "name=%s", xmlSecRelationshipAttrId);
-            return(-1);
+            /* xmlGetProp() returns NULL both when the Id attribute is absent
+             * and when it cannot allocate the return value. Current behavior
+             * treats either case as "no usable Id", so per step 2, point 4
+             * the node is dropped instead of failing the transform. */
+            return(0);
         }
 
         ctx = xmlSecRelationshipGetCtx(transform);

@@ -449,7 +449,11 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
         SECItem*                        keyItem;
 
         /* pay attention to mechanism */
-        symKey = PK11_PubUnwrapSymKey(ctx->prikey, &oriskv, ctx->cipher, CKA_UNWRAP, 0);
+        /* target is the mechanism of the unwrapped symmetric key, which is
+         * unknown here (passing ctx->cipher, e.g. CKM_RSA_PKCS, would make
+         * NSS mark the unwrapped session key as CKK_RSA), so pass
+         * CKM_GENERIC_SECRET_KEY_GEN */
+        symKey = PK11_PubUnwrapSymKey(ctx->prikey, &oriskv, CKM_GENERIC_SECRET_KEY_GEN, CKA_UNWRAP, 0);
         if(symKey == NULL) {
             xmlSecNssError("PK11_PubUnwrapSymKey", NULL);
             xmlSecBufferDestroy(result);

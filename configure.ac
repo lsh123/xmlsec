@@ -1024,7 +1024,7 @@ dnl     seamonkey-nspr and seamonkey-nss
 dnl     mozilla-nspr and mozilla-nss
 dnl     xulrunner-nspr and xulrunner-nss
 dnl     nspr and nss
-if test "z$NSPR_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" -a "z$with_mozilla_ver" = "z" -a "z$with_seamonkey_ver" ; then
+if test "z$NSPR_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" -a "z$with_mozilla_ver" = "z" ; then
     if test "z$NSPR_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(NSPR, seamonkey-nspr >= $NSPR_MIN_VERSION,
            [NSPR_FOUND=yes NSPR_PACKAGE=seamonkey-nspr],
@@ -1046,7 +1046,7 @@ if test "z$NSPR_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" -a "z$with_mozill
            [NSPR_FOUND=no])
     fi
 fi
-if test "z$NSS_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" -a "z$with_mozilla_ver" = "z" -a "z$with_seamonkey_ver" ; then
+if test "z$NSS_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" -a "z$with_mozilla_ver" = "z" ; then
     if test "z$NSS_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(NSS, seamonkey-nss >= $SEAMONKEY_MIN_VERSION,
     	   [NSS_FOUND=yes NSS_PACKAGE=seamonkey-nss],
@@ -1263,6 +1263,7 @@ GCRYPT_INCLUDE_MARKER="gcrypt.h"
 GCRYPT_LIB_MARKER="libgcrypt$shrext"
 GCRYPT_CRYPTO_LIB="$XMLSEC_PACKAGE-gcrypt"
 GCRYPT_LIBS_LIST="-lgcrypt"
+GCRYPT_PACKAGE=libgcrypt
 
 XMLSEC_NO_GCRYPT="1"
 GCRYPT_VERSION=
@@ -1302,22 +1303,22 @@ dnl Priority 3: Guess with pkg_config
 if test "z$GCRYPT_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
     if test "z$GCRYPT_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(GCRYPT, gcrypt >= $GCRYPT_MIN_VERSION,
-            [GCRYPT_FOUND=yes],
+            [GCRYPT_FOUND=yes GCRYPT_PACKAGE=gcrypt],
             [GCRYPT_FOUND=no])
     fi
     if test "z$GCRYPT_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(GCRYPT, libgcrypt20 >= $GCRYPT_MIN_VERSION,
-            [GCRYPT_FOUND=yes],
+            [GCRYPT_FOUND=yes GCRYPT_PACKAGE=libgcrypt20],
             [GCRYPT_FOUND=no])
     fi
     if test "z$GCRYPT_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(GCRYPT, libgcrypt11 >= $GCRYPT_MIN_VERSION,
-            [GCRYPT_FOUND=yes],
+            [GCRYPT_FOUND=yes GCRYPT_PACKAGE=libgcrypt11],
             [GCRYPT_FOUND=no])
     fi
     if test "z$GCRYPT_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(GCRYPT, libgcrypt >= $GCRYPT_MIN_VERSION,
-            [GCRYPT_FOUND=yes],
+            [GCRYPT_FOUND=yes GCRYPT_PACKAGE=libgcrypt],
             [GCRYPT_FOUND=no])
     fi
 fi
@@ -1434,6 +1435,7 @@ AC_SUBST(GCRYPT_CFLAGS)
 AC_SUBST(GCRYPT_LIBS)
 AC_SUBST(GCRYPT_CRYPTO_LIB)
 AC_SUBST(GCRYPT_MIN_VERSION)
+AC_SUBST(GCRYPT_PACKAGE)
 
 dnl ==========================================================================
 dnl See if we can find GnuTLS
@@ -1445,6 +1447,7 @@ GNUTLS_INCLUDE_MARKER="gnutls/gnutls.h"
 GNUTLS_LIB_MARKER="libgnutls$shrext"
 GNUTLS_CRYPTO_LIB="$XMLSEC_PACKAGE-gnutls"
 GNUTLS_LIBS_LIST="-lgnutls"
+GNUTLS_PACKAGE=gnutls
 
 XMLSEC_NO_GNUTLS="1"
 GNUTLS_INCLUDE_PATH=
@@ -1479,12 +1482,12 @@ dnl Priority 3: Guess with pkg_config
 if test "z$GNUTLS_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
     if test "z$GNUTLS_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(GNUTLS, gnutls >= $GNUTLS_MIN_VERSION,
-            [GNUTLS_FOUND=yes],
+            [GNUTLS_FOUND=yes GNUTLS_PACKAGE=gnutls],
             [GNUTLS_FOUND=no])
     fi
     if test "z$GNUTLS_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(GNUTLS, libgnutls >= $GNUTLS_MIN_VERSION,
-            [GNUTLS_FOUND=yes],
+            [GNUTLS_FOUND=yes GNUTLS_PACKAGE=libgnutls],
             [GNUTLS_FOUND=no])
     fi
 fi
@@ -1587,6 +1590,7 @@ AC_SUBST(GNUTLS_CFLAGS)
 AC_SUBST(GNUTLS_LIBS)
 AC_SUBST(GNUTLS_CRYPTO_LIB)
 AC_SUBST(GNUTLS_MIN_VERSION)
+AC_SUBST(GNUTLS_PACKAGE)
 
 
 dnl ==========================================================================
@@ -2396,8 +2400,10 @@ dnl ==========================================================================
 dnl See do we need templates tests
 dnl ==========================================================================
 AC_MSG_CHECKING(for templates testing)
-AC_ARG_ENABLE([tmpl_tests], [AS_HELP_STRING([--enable-tmpl-tests],[enable templates testing in xmlsec utility (yes)])])
-if test "z$enable_tmpl_tests" = "zyes" ; then
+AC_ARG_ENABLE([tmpl_tests], [AS_HELP_STRING([--enable-tmpl-tests],[enable templates testing in xmlsec utility (yes)]),
+                             [enable_tmpl_tests=$enableval],
+                             [enable_tmpl_tests=yes]])
+if test "z$enable_tmpl_tests" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_TMPL_TEST=1"
     AC_MSG_RESULT([disabled])
 else

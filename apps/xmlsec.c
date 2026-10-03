@@ -2085,7 +2085,8 @@ xmlSecAppEncryptFile(const char* inputFileName, const char* outputFileNameTmpl) 
                 goto done;
             }
         } else {
-            if(xmlSecAppWriteResult(inputFileName, outputFileNameTmpl, NULL, encCtx.result, (data != NULL) ? data->doc->encoding : doc->encoding) < 0) {
+            /* raw binary results must be written without charset conversion */
+            if(xmlSecAppWriteResult(inputFileName, outputFileNameTmpl, NULL, encCtx.result, NULL) < 0) {
                 goto done;
             }
         }
@@ -2154,7 +2155,8 @@ xmlSecAppDecryptFile(const char* inputFileName, const char* outputFileNameTmpl) 
                 goto done;
             }
         } else {
-            if(xmlSecAppWriteResult(inputFileName, outputFileNameTmpl, NULL, encCtx.result, data->doc->encoding) < 0) {
+            /* raw binary results must be written without charset conversion */
+            if(xmlSecAppWriteResult(inputFileName, outputFileNameTmpl, NULL, encCtx.result, NULL) < 0) {
                 goto done;
             }
         }
@@ -2492,6 +2494,11 @@ xmlSecAppLoadKeys(void) {
     }
 
     /* read all crls*/
+    if((verifyCrls == 0) &&
+       ((crlPemParam.value != NULL) || (crlDerParam.value != NULL))) {
+        fprintf(stderr, "Warning: CRLs are loaded without verification;"
+                " use --verify-crls to verify CRL signatures and validity periods\n");
+    }
     for(value = crlPemParam.value; value != NULL; value = value->next) {
         if(value->strValue == NULL) {
             fprintf(stderr, "Error: invalid value for option \"%s\".\n", crlPemParam.fullName);

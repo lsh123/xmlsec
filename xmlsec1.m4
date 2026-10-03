@@ -71,9 +71,9 @@ AC_DEFUN([AM_PATH_XMLSEC1],[
             ''|*[!0-9]*) no_xmlsec1=yes ;;
         esac
     done
+    ac_save_CFLAGS="$CFLAGS"
+    ac_save_LIBS="$LIBS"
     if test "x$enable_xmlsec1test" = "xyes" ; then
-      ac_save_CFLAGS="$CFLAGS"
-      ac_save_LIBS="$LIBS"
       CFLAGS="$CFLAGS $XMLSEC1_CFLAGS"
       LIBS="$LIBS $XMLSEC1_LIBS"
 dnl
@@ -153,7 +153,7 @@ int main(int argc, char **argv) {
            LIBS="$LIBS $XMLSEC1_LIBS"
             AC_LANG_PUSH([C])
             AC_TRY_LINK([
- #include <xmlsec/app.h>
+ #include <xmlsec/xmlsec.h>
  #include <stdio.h>
 ],      [ (void)xmlSecInit; return 0;],
         [ echo "*** The test program compiled, but did not run. This usually means"

@@ -206,15 +206,18 @@ xmlSecMSCryptoKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert
 
     ctx = xmlSecMSCryptoX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->keyCert == NULL, -1);
 
-    /* PCERT_CONTEXT is reference-counted, even if this is same cert we need to free the old one
-     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certduplicatecertificatecontext */
-    if(ctx->keyCert != NULL) {
-        CertFreeCertificateContext(ctx->keyCert);
-        ctx->keyCert = NULL;
+    /* CertAddCertificateContextToStore creates a new copy of the certificate context
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddcertificatecontexttostore */
+    if (!CertAddCertificateContextToStore(ctx->hMemStore, cert, CERT_STORE_ADD_USE_EXISTING,  NULL)) {
+        xmlSecMSCryptoError("CertAddCertificateContextToStore", NULL);
+        return(-1);
     }
-    ctx->keyCert = cert;
+    ctx->numCerts++;
 
+    /* cert is now owned by data */
+    ctx->keyCert = cert;
     return(0);
 }
 
@@ -235,14 +238,24 @@ xmlSecMSCryptoKeyDataX509AdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->hMemStore != 0, -1);
 
-    if (!CertAddCertificateContextToStore(ctx->hMemStore, cert, CERT_STORE_ADD_ALWAYS, NULL)) {
-        xmlSecMSCryptoError("CertAddCertificateContextToStore",
-                            xmlSecKeyDataGetName(data));
+
+    /* pkcs12 files sometimes have key cert twice: as the key cert and as the cert in the chain */
+    if ((ctx->keyCert != NULL) && (CertCompareCertificate(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, cert->pCertInfo, ctx->keyCert->pCertInfo) == TRUE)) {
+        /* the pointer-equal cert is already owned by ctx->keyCert caller expects data to own the cert on success. */
+        CertFreeCertificateContext(cert);
+        return(0);
+    }
+
+    /* CertAddCertificateContextToStore creates a new copy of the certificate context
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddcertificatecontexttostore */
+    if (!CertAddCertificateContextToStore(ctx->hMemStore, cert, CERT_STORE_ADD_USE_EXISTING, NULL)) {
+        xmlSecMSCryptoError("CertAddCertificateContextToStore", xmlSecKeyDataGetName(data));
         return(-1);
     }
-    CertFreeCertificateContext(cert);
     ctx->numCerts++;
 
+    /* caller expects data to own the cert on success. */
+    CertFreeCertificateContext(cert);
     return(0);
 }
 

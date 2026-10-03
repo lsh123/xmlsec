@@ -95,11 +95,6 @@ xmlSecKeyPtr xmlSecNssX509FindKeyByValue                (CERTCertDBHandle *certD
                                                          xmlSecPtrListPtr keysList,
                                                          xmlSecKeyX509DataValuePtr x509Value);
 
-int         xmlSecNssX509StoreVerifyKey                 (xmlSecKeyDataStorePtr store,
-                                                         xmlSecKeyPtr key,
-                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
-
-
 /* NSS has a list for Certs but not Crls so we have to do it ourselves */
 typedef struct _xmlSecNssX509CrlNode xmlSecNssX509CrlNode, *xmlSecNssX509CrlNodePtr;
 struct _xmlSecNssX509CrlNode {
@@ -122,15 +117,27 @@ CERTSignedCrl*   xmlSecNssX509CrlDerRead                (xmlSecByte* buf,
                                                          xmlSecSize size,
                                                          unsigned int flags);
 
-int              xmlSecNssX509StoreVerifyCrl            (xmlSecKeyDataStorePtr store,
-                                                         CERTSignedCrl* crl,
-                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
-
 int              xmlSecNssX509CertGetTime               (PRTime* t,
                                                          time_t* res);
 
-CERTCertList* xmlSecNssKeyDataX509GetCerts              (xmlSecKeyDataPtr data);
+CERTCertList*   xmlSecNssKeyDataX509GetCerts            (xmlSecKeyDataPtr data);
 xmlSecNssX509CrlNodePtr xmlSecNssKeyDataX509GetCrls     (xmlSecKeyDataPtr data);
+int              xmlSecNssX509DataVerifyAndCopyKeyInfoCrls (xmlSecKeyDataStorePtr store,
+                                                           xmlSecKeyDataPtr data,
+                                                           xmlSecKeyInfoCtxPtr keyInfoCtx,
+                                                           const CERTSignedCrl* const** res);
+
+
+CERTCertificate*    xmlSecNssX509StoreVerifyCerts       (xmlSecKeyDataStorePtr store,
+                                                         CERTCertList* certs,
+                                                         const CERTSignedCrl* const* crls,
+                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
+int                 xmlSecNssX509StoreVerifyKey         (xmlSecKeyDataStorePtr store,
+                                                         xmlSecKeyPtr key,
+                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
+int                 xmlSecNssX509StoreVerifyCrl         (xmlSecKeyDataStorePtr store,
+                                                         CERTSignedCrl* crl,
+                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 #endif /* XMLSEC_NO_X509 */
 

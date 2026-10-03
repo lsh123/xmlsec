@@ -60,7 +60,7 @@ to select a crypto engine either at link time or at run time.
 dnl
 dnl Check for xmlsec and friends
 dnl
-PKG_CHECK_MODULES(XMLSEC, xmlsec1-openssl >= 1.3.0 xml2 libxslt,,exit)
+PKG_CHECK_MODULES(XMLSEC, xmlsec1-openssl >= 1.3.0 libxml-2.0 libxslt,,exit)
 CFLAGS="$CFLAGS $XMLSEC_CFLAGS"
 CPPFLAGS="$CPPFLAGS $XMLSEC_CFLAGS"
 LDFLAGS="$LDFLAGS $XMLSEC_LIBS"
@@ -72,7 +72,7 @@ LDFLAGS="$LDFLAGS $XMLSEC_LIBS"
 dnl
 dnl Check for xmlsec and friends
 dnl
-PKG_CHECK_MODULES(XMLSEC, xmlsec1 >= 1.3.0 xml2 libxslt,,exit)
+PKG_CHECK_MODULES(XMLSEC, xmlsec1 >= 1.3.0 libxml-2.0 libxslt,,exit)
 CFLAGS="$CFLAGS $XMLSEC_CFLAGS"
 CPPFLAGS="$CPPFLAGS $XMLSEC_CFLAGS"
 LDFLAGS="$LDFLAGS $XMLSEC_LIBS"

@@ -30,7 +30,7 @@ apt install libltdl7 libltdl-dev
 apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
 
 # openssl libraries
-apt install openssl libssl3 libssl-dev
+apt install openssl libssl-dev
 
 # nspr/nss libraries
 apt install libnspr4 libnspr4-dev libnss3 libnss3-dev libnss3-tools

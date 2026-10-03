@@ -696,6 +696,18 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
     xmlSecAssert2(outBuf != NULL, -1);
     xmlSecAssert2(outSize != NULL, -1);
 
+    /*
+     * the digest algorithms must have been set either by
+     * xmlSecOpenSSLRsaOaepNodeRead or by the defaults in
+     * xmlSecOpenSSLRsaOaepInitialize; a NULL value means the default
+     * SHA-1 digest is disabled and no explicit digest was specified
+     */
+    if((ctx->md == NULL) || (ctx->mgf1md == NULL)) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_DISABLED, NULL,
+            "No OAEP digest algorithm is specified and the default SHA1 digest is disabled");
+        return(-1);
+    }
+
     rsa = EVP_PKEY_get0_RSA(ctx->pKey);
     xmlSecAssert2(rsa != NULL, -1);
 
@@ -991,6 +1003,18 @@ xmlSecOpenSSLRsaOaepInitialize(xmlSecTransformPtr transform) {
     xmlSecAssert2(ctx != NULL, -1);
 
     memset(ctx, 0, sizeof(xmlSecOpenSSLRsaOaepCtx));
+
+#ifndef XMLSEC_OPENSSL_API_300
+#ifndef XMLSEC_NO_SHA1
+    /*
+     * default digest algorithm (overridden by NodeRead if specified);
+     * keeps ctx->md/ctx->mgf1md non-NULL when the transform is used
+     * without readNode (e.g. created programmatically)
+     */
+    ctx->md = EVP_sha1();
+    ctx->mgf1md = EVP_sha1();
+#endif /* XMLSEC_NO_SHA1 */
+#endif /* XMLSEC_OPENSSL_API_300 */
 
     ret = xmlSecBufferInitialize(&(ctx->oaepParams), 0);
     if(ret < 0) {

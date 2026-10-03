@@ -145,6 +145,7 @@ int main(int argc, const char **argv) {
     if (test_transform_helpers() != 1) {
         success = 0;
     }
+#ifndef XMLSEC_NO_X509
     if (test_xmlSecX509EscapedStringRead() != 1) {
         success = 0;
     }
@@ -160,6 +161,7 @@ int main(int argc, const char **argv) {
     if (test_xmlSecKeyDataX509XmlRead() != 1) {
         success = 0;
     }
+#endif /* XMLSEC_NO_X509 */
     if (test_nodeset() != 1) {
         success = 0;
     }

@@ -63,6 +63,9 @@ cd "$cur_pwd"
 
 echo "============== Signing tar file"
 gpg --output "${sig_file}" --detach-sig "${tar_file}"
+# verify the signature to make sure the signing succeeded; the script
+# aborts on failure due to 'set -e'
+gpg --batch --yes --verify "${sig_file}" "${tar_file}"
 
 echo "============== Creating local tags for release ${full_version}"
 # Verify the local repository (where the tags are created) is at the same

@@ -51,7 +51,10 @@ static PRBool xmlSecNssAppAscii2UCS2Conv                        (PRBool toUnicod
                                                                  unsigned int   maxOutBufLen,
                                                                  unsigned int  *outBufLen,
                                                                  PRBool         swapBytes);
-static xmlSecKeyPtr     xmlSecNssAppDerKeyLoadSECItem           (SECItem* secItem);
+static xmlSecKeyPtr     xmlSecNssAppDerKeyLoadSECItem           (SECItem* secItem,
+                                                                  const char *pwd,
+                                                                  void* pwdCallback,
+                                                                  void* pwdCallbackCtx);
 
 
 #ifndef XMLSEC_NO_X509
@@ -59,6 +62,297 @@ static SECItem *xmlSecNssAppNicknameCollisionCallback           (SECItem *old_ni
                                                                  PRBool *cancel,
                                                                  void *wincx);
 #endif /* XMLSEC_NO_X509 */
+
+/* SEC_ASN1_MKSUB() is a no-op on non-Windows platforms, but it is needed
+ * when NSS is linked as a DLL (Windows) */
+SEC_ASN1_MKSUB(SECOID_AlgorithmIDTemplate)
+
+/*
+ * The password callback used by the key and PKCS12 loading functions below.
+ * For compatibility with the other backends it has the same signature
+ * as the OpenSSL pem_password_cb (a function type, so a pointer to it
+ * is a function pointer).
+ */
+typedef int xmlSecNssAppPwdCallback(char *buf, int bufSize, int verify, void *userdata);
+
+XMLSEC_PTR_TO_FUNC_IMPL(xmlSecNssAppPwdCallback)
+
+/**
+ * Resolves the password for the key loading functions. If @p pwd is not
+ * NULL, it is used as is (an explicit password wins, even if it is empty).
+ * Otherwise, if @p pwdCallback is not NULL, it is called with @p verify set
+ * to 0 and the password is expected to be written to @p buf (up to @p bufSize
+ * - 1 characters). If neither @p pwd nor @p pwdCallback is given, the empty
+ * password "" is used.
+ *
+ * @param pwd the explicit password or NULL.
+ * @param pwdCallback the password callback or NULL; expected to have the
+ * type #xmlSecNssAppPwdCallback.
+ * @param pwdCallbackCtx the user context for the password callback.
+ * @param buf the caller-provided buffer for the callback result.
+ * @param bufSize the size of @p buf.
+ *
+ * @return pointer to the resolved password (either @p pwd itself or @p buf)
+ * or NULL if the callback failed.
+ */
+static const char*
+xmlSecNssAppPwdCallbackResolve(const char* pwd, void* pwdCallback,
+    void* pwdCallbackCtx, char* buf, int bufSize) {
+    xmlSecNssAppPwdCallback *callback = NULL;
+    int ret;
+
+    xmlSecAssert2(buf != NULL, NULL);
+    xmlSecAssert2(bufSize > 0, NULL);
+
+    if(pwd != NULL) {
+        /* an explicit password wins */
+        return(pwd);
+    }
+    if(pwdCallback == NULL) {
+        /* no password and no callback */
+        buf[0] = '\0';
+        return(buf);
+    }
+
+    callback = XMLSEC_PTR_TO_FUNC(xmlSecNssAppPwdCallback, pwdCallback);
+    ret = callback(buf, bufSize, 0, pwdCallbackCtx);
+    if((ret < 0) || (ret >= bufSize)) {
+        xmlSecNssError3("pwdCallback", NULL, "ret=%d; bufSize=%d", ret, bufSize);
+        return(NULL);
+    }
+    buf[ret] = '\0';
+    return(buf);
+}
+
+/*
+ * Templates for parsing the PKCS#8 structures used by the encrypted
+ * private key import below:
+ *
+ * EncryptedPrivateKeyInfo ::= SEQUENCE {
+ *      version                   INTEGER { v1(0) } (v1) -- optional,
+ *      decryptionAlgorithm       AlgorithmIdentifier,
+ *      encryptedData             OCTET STRING
+ * }
+ *
+ * Some encoders (e.g. OpenSSL) omit the "version" field, which has a
+ * default value of 0, so it is marked as optional here.
+ *
+ * PrivateKeyInfo ::= SEQUENCE {
+ *      version                   Version,
+ *      privateKeyAlgorithm       AlgorithmIdentifier,
+ *      privateKey                OCTET STRING
+ * }
+ */
+typedef struct _xmlSecNssEpkiInfo {
+    SECItem version;
+    SECAlgorithmID algorithm;
+    SECItem encryptedData;
+} xmlSecNssEpkiInfo;
+
+typedef struct _xmlSecNssPkcs8OuterInfo {
+    SECItem version;
+    SECAlgorithmID privateKeyAlgorithm;
+    SECItem privateKey;
+} xmlSecNssPkcs8OuterInfo;
+
+static const SEC_ASN1Template xmlSecNssEpkiTemplate[] = {
+    { SEC_ASN1_SEQUENCE, 0, NULL, sizeof(xmlSecNssEpkiInfo) },
+    { SEC_ASN1_INTEGER | SEC_ASN1_OPTIONAL, offsetof(xmlSecNssEpkiInfo, version), NULL, 0 },
+    { SEC_ASN1_INLINE | SEC_ASN1_XTRN, offsetof(xmlSecNssEpkiInfo, algorithm),
+      SEC_ASN1_SUB(SECOID_AlgorithmIDTemplate), 0 },
+    { SEC_ASN1_OCTET_STRING, offsetof(xmlSecNssEpkiInfo, encryptedData), NULL, 0 },
+    { 0 }
+};
+
+static const SEC_ASN1Template xmlSecNssPkcs8OuterTemplate[] = {
+    { SEC_ASN1_SEQUENCE, 0, NULL, sizeof(xmlSecNssPkcs8OuterInfo) },
+    { SEC_ASN1_INTEGER, offsetof(xmlSecNssPkcs8OuterInfo, version), NULL, 0 },
+    { SEC_ASN1_INLINE | SEC_ASN1_XTRN, offsetof(xmlSecNssPkcs8OuterInfo, privateKeyAlgorithm),
+      SEC_ASN1_SUB(SECOID_AlgorithmIDTemplate), 0 },
+    { SEC_ASN1_OCTET_STRING, offsetof(xmlSecNssPkcs8OuterInfo, privateKey), NULL, 0 },
+    { 0 }
+};
+
+/*
+ * Imports the encrypted PKCS#8 private key described by @p epki into @p slot
+ * using the non-NUL-terminated password @p pwditem. The key type cannot be
+ * determined from the EncryptedPrivateKeyInfo structure, so the encrypted
+ * data is first decrypted with the password-derived PBE key into an opaque
+ * generic secret key; the resulting PKCS#8 DER is then imported with
+ * PK11_ImportDERPrivateKeyInfoAndReturnKey, which derives the key type from
+ * the inner PKCS#8 algorithm OID.
+ *
+ * The PK11_ImportEncryptedPrivateKeyInfoAndReturnKey() API is not used here:
+ * it relies on PK11_UnwrapPrivKey, which (on NSS 3.120 and earlier) rejects
+ * a NULL public value, and a PKCS#8 container does not contain the public
+ * key.
+ *
+ * Returns 0 on success (with @p privkey set) or -1 on failure (the failing
+ * NSS call is reported).
+ */
+static int
+xmlSecNssAppImportEpkiKey(PK11SlotInfo* slot, SECKEYEncryptedPrivateKeyInfo* epki,
+    SECItem* pwditem, SECKEYPrivateKey** privkey) {
+    PK11SymKey* pbeKey = NULL;
+    PK11SymKey* symKey = NULL;
+    SECItem* param = NULL;
+    SECItem nickname = { siBuffer, NULL, 0 };
+    SECItem derPKI;
+    SECItem* keyData;
+    CK_MECHANISM_TYPE mech;
+    SECStatus rv;
+    int res = -1;
+
+    xmlSecAssert2(slot != NULL, -1);
+    xmlSecAssert2(epki != NULL, -1);
+    xmlSecAssert2(pwditem != NULL, -1);
+    xmlSecAssert2(privkey != NULL, -1);
+    xmlSecAssert2(*privkey == NULL, -1);
+
+    /* derive the PBE symmetric key from the password */
+    pbeKey = PK11_PBEKeyGen(slot, &epki->algorithm, pwditem, PR_FALSE, NULL);
+    if(pbeKey == NULL) {
+        xmlSecNssError("PK11_PBEKeyGen", NULL);
+        return(-1);
+    }
+
+    /* get the cipher mechanism and its parameters (e.g. the IV) for the
+     * PBE scheme */
+    mech = PK11_GetPBECryptoMechanism(&epki->algorithm, &param, pwditem);
+    if((mech == CKM_INVALID_MECHANISM) || (param == NULL)) {
+        xmlSecNssError("PK11_GetPBECryptoMechanism", NULL);
+        goto done;
+    }
+    mech = PK11_GetPadMechanism(mech);
+
+    /* decrypt the encrypted data into an opaque generic secret key; the
+     * key size is not known up front, so let NSS use the actual
+     * (decrypted) length */
+    symKey = PK11_UnwrapSymKey(pbeKey, mech, param, &epki->encryptedData,
+        CKM_GENERIC_SECRET_KEY_GEN, CKA_DECRYPT, 0);
+    if(symKey == NULL) {
+        xmlSecNssError("PK11_UnwrapSymKey", NULL);
+        goto done;
+    }
+
+    rv = PK11_ExtractKeyValue(symKey);
+    if(rv != SECSuccess) {
+        xmlSecNssError("PK11_ExtractKeyValue", NULL);
+        goto done;
+    }
+    keyData = PK11_GetKeyData(symKey);
+    if((keyData == NULL) || (keyData->data == NULL) || (keyData->len == 0)) {
+        xmlSecInternalError("PK11_GetKeyData", NULL);
+        goto done;
+    }
+    derPKI.data = keyData->data;
+    derPKI.len = keyData->len;
+
+    rv = PK11_ImportDERPrivateKeyInfoAndReturnKey(slot, &derPKI, &nickname,
+        NULL, PR_FALSE, PR_TRUE, KU_ALL, privkey, NULL);
+    if(rv != SECSuccess) {
+        /* the decrypted data is not a valid PKCS#8 container (a wrong
+         * password usually fails earlier, in PK11_UnwrapSymKey) */
+        xmlSecNssError("PK11_ImportDERPrivateKeyInfoAndReturnKey", NULL);
+        goto done;
+    }
+
+    res = 0;
+
+done:
+    if(symKey != NULL) {
+        PK11_FreeSymKey(symKey);
+    }
+    if(param != NULL) {
+        SECITEM_FreeItem(param, PR_TRUE);
+    }
+    if(pbeKey != NULL) {
+        PK11_FreeSymKey(pbeKey);
+    }
+    return(res);
+}
+
+/* Imports an encrypted PKCS#8 private key from @p derItem into @p slot.
+ * @p derItem may be either a bare EncryptedPrivateKeyInfo (the layout
+ * produced by "openssl pkcs8 -topk8 -v2 <algorithm>") or a PrivateKeyInfo
+ * container with the inner EncryptedPrivateKeyInfo stored in the
+ * "privateKey" OCTET STRING. Returns 0 if the key was imported (and
+ * @p privkey was set), 1 if @p derItem is not a PKCS#8 container (the
+ * caller may try the SubjectPublicKeyInfo path), and -1 if @p derItem is a
+ * PKCS#8 container but the import failed (e.g. wrong password or an
+ * unsupported algorithm). */
+static int
+xmlSecNssAppImportEncryptedPkcs8Key(PK11SlotInfo* slot, SECItem* derItem,
+    const char* resolvedPwd, SECKEYPrivateKey** privkey) {
+    xmlSecNssEpkiInfo epkiInfo;
+    xmlSecNssPkcs8OuterInfo outer;
+    SECKEYEncryptedPrivateKeyInfo epki;
+    PLArenaPool* arena = NULL;
+    SECItem pwditem = { siBuffer, NULL, 0 };
+    SECStatus rv;
+    size_t pwdSize;
+    int res = -1;
+
+    xmlSecAssert2(slot != NULL, -1);
+    xmlSecAssert2(derItem != NULL, -1);
+    xmlSecAssert2(resolvedPwd != NULL, -1);
+    xmlSecAssert2(privkey != NULL, -1);
+    xmlSecAssert2(*privkey == NULL, -1);
+
+    /* the password item passed to NSS must NOT be NUL-terminated */
+    pwdSize = strlen(resolvedPwd);
+    XMLSEC_SAFE_CAST_SIZE_T_TO_UINT(pwdSize, pwditem.len, goto done, NULL);
+    pwditem.data = (unsigned char*)resolvedPwd;
+
+    arena = PORT_NewArena(DER_DEFAULT_CHUNKSIZE);
+    if(arena == NULL) {
+        xmlSecNssError("PORT_NewArena", NULL);
+        goto done;
+    }
+
+    /* try to parse the whole item as a bare EncryptedPrivateKeyInfo */
+    memset(&epkiInfo, 0, sizeof(epkiInfo));
+    rv = SEC_QuickDERDecodeItem(arena, &epkiInfo, xmlSecNssEpkiTemplate, derItem);
+    if(rv == SECSuccess) {
+        goto import;
+    }
+
+    /* try to parse the item as a PrivateKeyInfo container with the inner
+     * EncryptedPrivateKeyInfo in the "privateKey" OCTET STRING */
+    memset(&outer, 0, sizeof(outer));
+    rv = SEC_QuickDERDecodeItem(arena, &outer, xmlSecNssPkcs8OuterTemplate, derItem);
+    if(rv != SECSuccess) {
+        /* not a PKCS#8 container; the caller may try the
+         * SubjectPublicKeyInfo path */
+        res = 1;
+        goto done;
+    }
+
+    memset(&epkiInfo, 0, sizeof(epkiInfo));
+    rv = SEC_QuickDERDecodeItem(arena, &epkiInfo, xmlSecNssEpkiTemplate, &outer.privateKey);
+    if(rv != SECSuccess) {
+        xmlSecNssError("SEC_QuickDERDecodeItem(EncryptedPrivateKeyInfo)", NULL);
+        goto done;
+    }
+
+import:
+    memset(&epki, 0, sizeof(epki));
+    epki.algorithm = epkiInfo.algorithm;
+    epki.encryptedData = epkiInfo.encryptedData;
+    res = xmlSecNssAppImportEpkiKey(slot, &epki, &pwditem, privkey);
+    if(res != 0) {
+        xmlSecNssError2("xmlSecNssAppImportEncryptedPkcs8Key", NULL,
+            "failed to import encrypted PKCS#8 private key: %s",
+            "wrong password, bad data, or unsupported encryption algorithm");
+        goto done;
+    }
+
+done:
+    if(arena != NULL) {
+        PORT_FreeArena(arena, PR_TRUE);
+    }
+    return(res);
+}
 
 /**
  * @brief Initializes the NSS crypto engine.
@@ -299,8 +593,11 @@ xmlSecNssAppNicknameCollisionCallback(SECItem *old_nick XMLSEC_ATTRIBUTE_UNUSED,
  * @param filename the key filename.
  * @param type the key type (public / private).
  * @param format the key file format.
- * @param pwd the key file password.
- * @param pwdCallback the key password callback.
+ * @param pwd the key file password, or NULL to use the password callback.
+ * @param pwdCallback the key password callback (used only when @p pwd is NULL)
+ * or NULL; expected to have the signature
+ * int (*callback)(char* buf, int bufSize, int verify, void* userdata), called
+ * with verify set to 0.
  * @param pwdCallbackCtx the user context for password callback.
  * @return pointer to the key or NULL if an error occurs.
  */
@@ -340,8 +637,11 @@ xmlSecNssAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATTRIB
  * @param data the key binary data.
  * @param dataSize the key binary data size.
  * @param format the key data format.
- * @param pwd the key data password.
- * @param pwdCallback the key password callback.
+ * @param pwd the key data password, or NULL to use the password callback.
+ * @param pwdCallback the key password callback (used only when @p pwd is NULL)
+ * or NULL; expected to have the signature
+ * int (*callback)(char* buf, int bufSize, int verify, void* userdata), called
+ * with verify set to 0.
  * @param pwdCallbackCtx the user context for password callback.
  * @return pointer to the key or NULL if an error occurs.
  */
@@ -377,8 +677,11 @@ xmlSecNssAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecKey
  * @brief Reads a key from a SECItem.
  * @param secItem the pointer to sec item.
  * @param format the key format.
- * @param pwd the key password.
- * @param pwdCallback the key password callback.
+ * @param pwd the key password, or NULL to use the password callback.
+ * @param pwdCallback the key password callback (used only when @p pwd is NULL)
+ * or NULL; expected to have the signature
+ * int (*callback)(char* buf, int bufSize, int verify, void* userdata), called
+ * with verify set to 0.
  * @param pwdCallbackCtx the user context for password callback.
  * @return pointer to the key or NULL if an error occurs.
  */
@@ -411,7 +714,7 @@ xmlSecNssAppKeyLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format,
 #endif /* XMLSEC_NO_X509 */
     case xmlSecKeyDataFormatDer:
     case xmlSecKeyDataFormatPkcs8Der:
-        key = xmlSecNssAppDerKeyLoadSECItem(secItem);
+        key = xmlSecNssAppDerKeyLoadSECItem(secItem, pwd, pwdCallback, pwdCallbackCtx);
         if(key == NULL) {
             xmlSecInternalError("xmlSecNssAppDerKeyLoadSECItem", NULL);
             return(NULL);
@@ -427,10 +730,13 @@ xmlSecNssAppKeyLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format,
 }
 
 static xmlSecKeyPtr
-xmlSecNssAppDerKeyLoadSECItem(SECItem* secItem) {
+xmlSecNssAppDerKeyLoadSECItem(SECItem* secItem, const char *pwd,
+    void* pwdCallback, void* pwdCallbackCtx) {
     xmlSecKeyPtr key = NULL;
     xmlSecKeyPtr retval = NULL;
     xmlSecKeyDataPtr data = NULL;
+    const char* resolvedPwd = NULL;
+    char pwdBuf[2048];
     int ret;
     SECKEYPublicKey *pubkey = NULL;
     SECKEYPrivateKey *privkey = NULL;
@@ -450,6 +756,12 @@ xmlSecNssAppDerKeyLoadSECItem(SECItem* secItem) {
         goto done;
     }
 
+    resolvedPwd = xmlSecNssAppPwdCallbackResolve(pwd, pwdCallback, pwdCallbackCtx,
+        pwdBuf, (int)sizeof(pwdBuf));
+    if(resolvedPwd == NULL) {
+        goto done;
+    }
+
     nickname.len = 0;
     nickname.data = NULL;
 
@@ -463,17 +775,30 @@ xmlSecNssAppDerKeyLoadSECItem(SECItem* secItem) {
                             &nickname, NULL, PR_FALSE,
                             PR_TRUE, KU_ALL, &privkey, NULL);
     if (status != SECSuccess) {
-        /* TRY PUBLIC KEY */
-        spki = SECKEY_DecodeDERSubjectPublicKeyInfo(secItem);
-        if (spki == NULL) {
-            xmlSecNssError("SECKEY_DecodeDERSubjectPublicKeyInfo", NULL);
+        /* the data is not a plain (unencrypted) PKCS#8 private key;
+         * if a password is available, try to import an encrypted
+         * PKCS#8 private key */
+        ret = xmlSecNssAppImportEncryptedPkcs8Key(slot, secItem, resolvedPwd, &privkey);
+        if(ret < 0) {
+            /* the data is a PKCS#8 container and the import failed; the
+             * error was reported by the helper, so do not try the
+             * public key path */
             goto done;
         }
 
-        pubkey = SECKEY_ExtractPublicKey(spki);
-        if (pubkey == NULL) {
-            xmlSecNssError("SECKEY_ExtractPublicKey", NULL);
-            goto done;
+        if(ret != 0) {
+            /* TRY PUBLIC KEY */
+            spki = SECKEY_DecodeDERSubjectPublicKeyInfo(secItem);
+            if (spki == NULL) {
+                xmlSecNssError("SECKEY_DecodeDERSubjectPublicKeyInfo", NULL);
+                goto done;
+            }
+
+            pubkey = SECKEY_ExtractPublicKey(spki);
+            if (pubkey == NULL) {
+                xmlSecNssError("SECKEY_ExtractPublicKey", NULL);
+                goto done;
+            }
         }
     }
 
@@ -775,15 +1100,18 @@ done:
  * in format=xmlSecKeyDataFormatPkcs12.
  *
  * @param filename the PKCS12 key filename.
- * @param pwd the PKCS12 file password.
- * @param pwdCallback the password callback.
+ * @param pwd the PKCS12 file password, or NULL to use the password callback.
+ * @param pwdCallback the password callback (used only when @p pwd is NULL)
+ * or NULL; expected to have the signature
+ * int (*callback)(char* buf, int bufSize, int verify, void* userdata), called
+ * with verify set to 0.
  * @param pwdCallbackCtx the user context for password callback.
  * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecNssAppPkcs12Load(const char *filename, const char *pwd,
-                       void *pwdCallback XMLSEC_ATTRIBUTE_UNUSED,
-                       void* pwdCallbackCtx XMLSEC_ATTRIBUTE_UNUSED) {
+                       void *pwdCallback,
+                       void* pwdCallbackCtx) {
     SECItem secItem = { siBuffer, NULL, 0 };
     xmlSecKeyPtr res;
     int ret;
@@ -817,15 +1145,18 @@ xmlSecNssAppPkcs12Load(const char *filename, const char *pwd,
  *
  * @param data the key binary data.
  * @param dataSize the key binary data size.
- * @param pwd the PKCS12 password.
- * @param pwdCallback the password callback.
+ * @param pwd the PKCS12 password, or NULL to use the password callback.
+ * @param pwdCallback the password callback (used only when @p pwd is NULL)
+ * or NULL; expected to have the signature
+ * int (*callback)(char* buf, int bufSize, int verify, void* userdata), called
+ * with verify set to 0.
  * @param pwdCallbackCtx the user context for password callback.
  * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecNssAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const char *pwd,
-                       void *pwdCallback XMLSEC_ATTRIBUTE_UNUSED,
-                       void* pwdCallbackCtx XMLSEC_ATTRIBUTE_UNUSED) {
+                       void *pwdCallback,
+                       void* pwdCallbackCtx) {
     SECItem secItem = { siBuffer, NULL, 0 };
     xmlSecKeyPtr res;
     int ret;
@@ -858,15 +1189,18 @@ xmlSecNssAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const 
  * in format=xmlSecKeyDataFormatPkcs12.
  *
  * @param secItem the SECItem object.
- * @param pwd the PKCS12 file password.
- * @param pwdCallback the password callback.
+ * @param pwd the PKCS12 file password, or NULL to use the password callback.
+ * @param pwdCallback the password callback (used only when @p pwd is NULL)
+ * or NULL; expected to have the signature
+ * int (*callback)(char* buf, int bufSize, int verify, void* userdata), called
+ * with verify set to 0.
  * @param pwdCallbackCtx the user context for password callback.
  * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
-                       void *pwdCallback XMLSEC_ATTRIBUTE_UNUSED,
-                       void* pwdCallbackCtx XMLSEC_ATTRIBUTE_UNUSED) {
+                       void *pwdCallback,
+                       void* pwdCallbackCtx) {
     xmlSecKeyPtr key = NULL;
     xmlSecKeyDataPtr keyValueData = NULL;
     xmlSecKeyDataPtr x509Data = NULL;
@@ -884,12 +1218,16 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
     SEC_PKCS12DecoderContext *p12ctx = NULL;
     const SEC_PKCS12DecoderItem *dip;
     size_t pwdSize;
+    const char* resolvedPwd = NULL;
+    char pwdBuf[2048];
     xmlSecKeyPtr res = NULL;
 
     xmlSecAssert2((secItem != NULL), NULL);
 
-    if (pwd == NULL) {
-        pwd = "";
+    resolvedPwd = xmlSecNssAppPwdCallbackResolve(pwd, pwdCallback, pwdCallbackCtx,
+        pwdBuf, (int)sizeof(pwdBuf));
+    if(resolvedPwd == NULL) {
+        goto done;
     }
     memset(&uc2_pwditem, 0, sizeof(uc2_pwditem));
 
@@ -902,8 +1240,8 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
         goto done;
     }
 
-    pwditem.data = (unsigned char *)pwd;
-    pwdSize = strlen(pwd) + 1;
+    pwditem.data = (unsigned char *)resolvedPwd;
+    pwdSize = strlen(resolvedPwd) + 1;
     XMLSEC_SAFE_CAST_SIZE_T_TO_UINT(pwdSize, pwditem.len, goto done, NULL);
 
     if (!SECITEM_AllocItem(NULL, &uc2_pwditem, 2*pwditem.len)) {
@@ -1806,6 +2144,9 @@ xmlSecNssAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, xm
  */
 void*
 xmlSecNssAppGetDefaultPwdCallback(void) {
-    /* TODO: NSS doesn't support password callback */
+    /* the key loading functions (e.g. xmlSecNssAppKeyLoadEx) accept a
+     * password callback; the NSS backend does not provide a default
+     * callback, so callers must supply their own
+     */
     return(NULL);
 }

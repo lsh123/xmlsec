@@ -35,6 +35,7 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size);
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
+#include <xmlsec/parser.h>
 #include <xmlsec/keysdata.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
@@ -103,7 +104,7 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
 
     /* NONET stops external fetches; NOENT enables general-entity substitution. */
     doc = xmlReadMemory((const char*)data, (int)size, "fuzz.xml", NULL,
-                        XML_PARSE_NONET | XML_PARSE_NOENT);
+        xmlSecParserGetDefaultOptions() | XML_PARSE_PEDANTIC | XML_PARSE_NONET);
     if (doc == NULL) {
         return 0;
     }

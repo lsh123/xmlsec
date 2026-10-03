@@ -18,6 +18,7 @@
 #include "../../src/cast_helpers.h"
 #include "../../src/x509_helpers.h"
 
+#ifndef XMLSEC_NO_X509
 /******************************************************************************
  * test_xmlSecX509EscapedStringRead
  *****************************************************************************/
@@ -888,3 +889,4 @@ test_xmlSecKeyDataX509XmlRead(void) {
     test_xmlSecKeyDataX509XmlRead_null_key_fails();
     return (testGroupFinished());
 }
+#endif /* XMLSEC_NO_X509 */

@@ -318,12 +318,23 @@ xmlSecBufferSetMaxSize(xmlSecBufferPtr buf, xmlSecSize size) {
         newSize = gInitialSize;
     }
 
-
     /* allocate or reallocate the buffer to the new size */
-    if(buf->data != NULL) {
+    if(buf->data == NULL) {
+        newData = (xmlSecByte*)xmlMalloc(newSize);
+    } else if((buf->flags & XMLSEC_BUFFER_FLAG_SECURE) == 0) {
         newData = (xmlSecByte*)xmlRealloc(buf->data, newSize);
     } else {
+        /* perform alloc+memcpy+cleanse+free */
         newData = (xmlSecByte*)xmlMalloc(newSize);
+        if(newData != NULL) {
+            if(buf->size > 0) {
+                memcpy(newData, buf->data, buf->size);
+            }
+            if(buf->maxSize > 0) {
+                xmlSecMemCleanse(buf->data, buf->maxSize);
+            }
+            xmlFree(buf->data);
+        }
     }
     if(newData == NULL) {
         xmlSecMallocError(newSize, NULL);
@@ -563,7 +574,11 @@ xmlSecBufferReadFile(xmlSecBufferPtr buf, const char* filename) {
 
 done:
     if(f != NULL) {
-        fclose(f);
+        ret = fclose(f);
+        if(ret != 0) {
+            xmlSecIOError("fclose", filename, NULL);
+            /* ignore the error */
+        }
     }
     return(res);
 }

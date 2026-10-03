@@ -303,16 +303,12 @@ $cruntimeSet = 0
 for ($i = 0; ($i -lt $args.Count) -and ($script:errorFlag -eq 0); $i++) {
     $arg = $args[$i]
     $eqIdx = $arg.IndexOf("=")
-    $colIdx = $arg.IndexOf(":")
     $opt = ""
     $sepIdx = -1
 
     if ($eqIdx -ge 0) {
         $opt = $arg.Substring(0, $eqIdx)
         $sepIdx = $eqIdx
-    } elseif ($colIdx -ge 0) {
-        $opt = $arg.Substring(0, $colIdx)
-        $sepIdx = $colIdx
     }
 
     if ($opt.Length -gt 0) {

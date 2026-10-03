@@ -89,7 +89,7 @@ echo "RUN MANUALLY (smtp): cd /home/apps/www/aleksey.com/xmlsec/ && sudo ln -sfn
 
 echo "Verify that the website is working correctly."
 echo "Check the Windows build script, build the Windows version, and upload it to smtp.aleksey.com:"
-echo "RUN MANUALLY (Windows): scp d:\home\aleksey\distro\xmlsec1-${full_version}-win64.zip smtp.aleksey.com:"
+echo "RUN MANUALLY (Windows): scp d:\home\aleksey\distro.release\xmlsec1-${full_version}-win64.zip smtp.aleksey.com:"
 echo "RUN MANUALLY (smtp): sudo cp ~/xmlsec1-${full_version}-win64.zip /home/apps/www/aleksey.com/xmlsec/download/win64/"
 echo "RUN MANUALLY (smtp): cd /home/apps/www/aleksey.com/xmlsec/download/"
 echo "Move old versions to the 'older-releases' folder"

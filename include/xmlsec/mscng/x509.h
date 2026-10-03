@@ -72,8 +72,8 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngX509StoreAdoptTrustedStore (x
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngX509StoreAdoptUntrustedStore (xmlSecKeyDataStorePtr store,
                                                                                  HCERTSTORE untrustedStore);
 XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT     xmlSecMSCngX509StoreVerify           (xmlSecKeyDataStorePtr store,
-                                                                              HCERTSTORE certs,
-                                                                              xmlSecKeyInfoCtxPtr keyInfoCtx);
+                                                                               HCERTSTORE certs,
+                                                                               xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 /******************************************************************************
  *

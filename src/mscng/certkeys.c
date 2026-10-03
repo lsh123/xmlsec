@@ -395,7 +395,10 @@ xmlSecMSCngKeyDataGetPubkey(xmlSecKeyDataPtr data) {
  * @param data the key data to retrieve the private key from.
  *
  * @return the private key on success or 0 otherwise. The returned key is
- * owned by the key data; the caller must not destroy it.
+ * owned by the key data; the caller must not destroy it. Note that DH and
+ * X25519 private keys are stored as a BCRYPT_KEY_HANDLE (not an
+ * NCRYPT_KEY_HANDLE) and are not accessible via this function; it returns 0
+ * for such keys.
  */
 NCRYPT_KEY_HANDLE
 xmlSecMSCngKeyDataGetPrivkey(xmlSecKeyDataPtr data) {
@@ -793,9 +796,38 @@ xmlSecMSCngCertKeyDataGetType(xmlSecKeyDataPtr data) {
     return(xmlSecKeyDataTypePublic);
 }
 
+/**
+ * @brief Gets the key strength (in bits) of a CNG public key handle.
+ * @param hKey the CNG public key handle.
+ * @return the key strength in bits, or 0 on failure.
+ */
+static xmlSecSize
+xmlSecMSCngGetPubkeyStrengthInBits(BCRYPT_KEY_HANDLE hKey) {
+    NTSTATUS status;
+    DWORD length = 0;
+    DWORD lenlen = sizeof(length);
+    xmlSecSize res;
+
+    /* Returns the number of bits in the key
+     * https://learn.microsoft.com/en-us/windows/win32/seccng/cng-property-identifiers */
+    status = BCryptGetProperty(hKey,
+        BCRYPT_KEY_STRENGTH,
+        (PUCHAR)&length,
+        lenlen,
+        &lenlen,
+        0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
+        return(0);
+    }
+    xmlSecAssert2(lenlen == sizeof(length), 0);
+
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(length, res, return(0), NULL);
+    return(res);
+}
+
 xmlSecSize
 xmlSecMSCngCertKeyDataGetSizeInBits(xmlSecKeyDataPtr data) {
-    NTSTATUS status;
     xmlSecMSCngKeyDataCtxPtr ctx;
     DWORD length = 0;
     xmlSecSize res;
@@ -812,32 +844,30 @@ xmlSecMSCngCertKeyDataGetSizeInBits(xmlSecKeyDataPtr data) {
          * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certgetpublickeylength */
         length = CertGetPublicKeyLength(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
             &ctx->cert->pCertInfo->SubjectPublicKeyInfo);
-        if(length == 0) {
-            xmlSecMSCngLastError("CertGetPublicKeyLength", NULL);
-            return(0);
+        if(length != 0) {
+            XMLSEC_SAFE_CAST_ULONG_TO_SIZE(length, res, return(0), NULL);
+            return(res);
         }
-    } else if(ctx->pubkey != 0) {
-        DWORD lenlen = sizeof(length);
-        /* Returns the number of bits in the key
-         * https://learn.microsoft.com/en-us/windows/win32/seccng/cng-property-identifiers */
-        status = BCryptGetProperty(ctx->pubkey,
-            BCRYPT_KEY_STRENGTH,
-            (PUCHAR)&length,
-            lenlen,
-            &lenlen,
-            0);
-        if(status != STATUS_SUCCESS) {
-            xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
-            return(0);
+        /* CertGetPublicKeyLength only understands RSA and some legacy EC/DSA
+         * encodings; it fails for X25519, DH (X9.42) and DSA > 1024.
+         * Fall back to the CNG key strength when the public key handle is available. */
+        if(ctx->pubkey != 0) {
+            return(xmlSecMSCngGetPubkeyStrengthInBits(ctx->pubkey));
         }
-        xmlSecAssert2(lenlen == sizeof(length), 0);
-    } else if(ctx->privkey != 0) {
+        xmlSecMSCngLastError("CertGetPublicKeyLength", NULL);
+        return(0);
+    }
+
+    if(ctx->pubkey != 0) {
+        return(xmlSecMSCngGetPubkeyStrengthInBits(ctx->pubkey));
+    }
+
+    if(ctx->privkey != 0) {
         xmlSecNotImplementedError("MSCNG doesn't support getting key length from private key");
         return(0);
     }
 
-    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(length, res, return(0), NULL);
-    return(res);
+    return(0);
 }
 
 #define XMLSEC_MSCNG_CERTKEY_KLASS_EX(klassName, xmlName, usage, dataNodeName, dataNodeNs, generate, xmlRead, xmlWrite) \

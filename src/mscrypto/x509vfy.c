@@ -993,13 +993,13 @@ xmlSecMSCryptoX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCe
     /* CertAddCertificateContextToStore copies the certificate into the store,
      * so the input context can be freed after a successful add. */
     xmlSecAssert2(certStore != NULL, -1);
-    if (!CertAddCertificateContextToStore(certStore, pCert, CERT_STORE_ADD_ALWAYS, NULL)) {
-        xmlSecMSCryptoError("CertAddCertificateContextToStore",
-                            xmlSecKeyDataStoreGetName(store));
+    if (!CertAddCertificateContextToStore(certStore, pCert, CERT_STORE_ADD_USE_EXISTING, NULL)) {
+        xmlSecMSCryptoError("CertAddCertificateContextToStore", xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
-    CertFreeCertificateContext(pCert);
 
+    /* caller expects data to own the cert on success. */
+    CertFreeCertificateContext(pCert);
     return(0);
 }
 

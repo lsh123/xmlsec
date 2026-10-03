@@ -447,12 +447,15 @@ xmlSecMSCngX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, PCCRL_CONTEXT crl) {
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->crlMemStore != NULL, -1);
 
-    if(!CertAddCRLContextToStore(ctx->crlMemStore, crl, CERT_STORE_ADD_ALWAYS, NULL)) {
+    /* CertAddCRLContextToStore creates a new copy of the certificate context
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddcrlcontexttostore */    
+    if(!CertAddCRLContextToStore(ctx->crlMemStore, crl, CERT_STORE_ADD_USE_EXISTING, NULL)) {
         xmlSecMSCngLastError("CertAddCRLContextToStore", xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
-    CertFreeCRLContext(crl);
 
+    /* caller expects data to own the crl on success. */
+    CertFreeCRLContext(crl);
     return(0);
 }
 

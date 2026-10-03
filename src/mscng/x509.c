@@ -95,9 +95,9 @@ xmlSecMSCngKeyDataX509Finalize(xmlSecKeyDataPtr data) {
 static int
 xmlSecMSCngKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     PCCERT_CONTEXT srcCert = NULL;
-    PCCERT_CONTEXT dstCert;
+    PCCERT_CONTEXT dstCert = NULL;
     PCCRL_CONTEXT srcCrl = NULL;
-    PCCRL_CONTEXT dstCrl;
+    PCCRL_CONTEXT dstCrl = NULL;
     xmlSecMSCngX509DataCtxPtr srcCtx;
     xmlSecMSCngX509DataCtxPtr dstCtx;
     int ret;
@@ -273,12 +273,15 @@ xmlSecMSCngKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, PCCRL_CONTEXT crl) {
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->hMemStore != 0, -1);
 
-    if (!CertAddCRLContextToStore(ctx->hMemStore, crl, CERT_STORE_ADD_ALWAYS, NULL)) {
+    /* CertAddCRLContextToStore creates a new copy of the certificate context
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddcrlcontexttostore */    
+    if (!CertAddCRLContextToStore(ctx->hMemStore, crl, CERT_STORE_ADD_USE_EXISTING, NULL)) {
         xmlSecMSCngLastError("CertAddCRLContextToStore", NULL);
         return(-1);
     }
-    CertFreeCRLContext(crl);
 
+    /* caller expects data to own the crl on success. */
+    CertFreeCRLContext(crl);
     return(0);
 }
 

@@ -61,6 +61,13 @@ XMLSEC_KEY_DATA_STORE_DECLARE(MSCryptoX509Store, xmlSecMSCryptoX509StoreCtx)
 
 static int         xmlSecMSCryptoX509StoreInitialize    (xmlSecKeyDataStorePtr store);
 static void        xmlSecMSCryptoX509StoreFinalize      (xmlSecKeyDataStorePtr store);
+static int         xmlSecMSCryptoBuildCertChain         (PCCERT_CONTEXT cert,
+                                                         LPFILETIME pfTime,
+                                                         HCERTSTORE trustedStore,
+                                                         HCERTSTORE untrustedStore,
+                                                         HCERTSTORE certStore,
+                                                         xmlSecKeyDataStorePtr store,
+                                                         int checkRevocation);
 
 static xmlSecKeyDataStoreKlass xmlSecMSCryptoX509StoreKlass = {
     sizeof(xmlSecKeyDataStoreKlass),
@@ -189,27 +196,160 @@ xmlSecMSCryptoUnixTimeToFileTime(time_t t, LPFILETIME pft) {
     pft->dwHighDateTime = (DWORD)(ll >> 32);
 }
 
+/* Returns TRUE if the CRL is time valid (NotBefore <= time <= NotAfter),
+ * FALSE otherwise. A NULL time skips the check (skip-time-checks flag). */
 static BOOL
-xmlSecMSCryptoVerifyCertTime(PCCERT_CONTEXT pCert, LPFILETIME pft) {
+xmlSecMSCryptoVerifyCertTime(PCCERT_CONTEXT pCert, LPFILETIME pfTime) {
     xmlSecAssert2(pCert != NULL, FALSE);
     xmlSecAssert2(pCert->pCertInfo != NULL, FALSE);
-    xmlSecAssert2(pft != NULL, FALSE);
 
-    if(1 == CompareFileTime(&(pCert->pCertInfo->NotBefore), pft)) {
+    if (pfTime == NULL) {
+        return(TRUE);
+    }
+
+    if(1 == CompareFileTime(&(pCert->pCertInfo->NotBefore), pfTime)) {
         return (FALSE);
     }
-    if(-1 == CompareFileTime(&(pCert->pCertInfo->NotAfter), pft)) {
+    if(-1 == CompareFileTime(&(pCert->pCertInfo->NotAfter), pfTime)) {
         return (FALSE);
     }
 
     return (TRUE);
 }
 
+/* Returns TRUE if the CRL is time valid (thisUpdate <= time <= nextUpdate),
+ * FALSE otherwise. A NULL time skips the check (skip-time-checks flag). */
 static BOOL
-xmlSecMSCryptoCheckRevocation(HCERTSTORE hStore, PCCERT_CONTEXT pCert) {
+xmlSecMSCryptoVerifyCrlTime(PCCRL_CONTEXT pCrl, LPFILETIME pfTime) {
+    xmlSecAssert2(pCrl != NULL, FALSE);
+    xmlSecAssert2(pCrl->pCrlInfo != NULL, FALSE);
+
+    if (pfTime == NULL) {
+        return(TRUE);
+    }
+
+    if (CompareFileTime(pfTime, &(pCrl->pCrlInfo->ThisUpdate)) < 0) {
+        return(FALSE);
+    }
+
+    if ((pCrl->pCrlInfo->NextUpdate.dwLowDateTime != 0) ||
+            (pCrl->pCrlInfo->NextUpdate.dwHighDateTime != 0)) {
+        if (CompareFileTime(pfTime, &(pCrl->pCrlInfo->NextUpdate)) > 0) {
+            return(FALSE);
+        }
+    }
+
+    return(TRUE);
+}
+
+/* Returns 1 if the CRL signature verifies against a trusted issuer
+ * certificate, 0 if it does not, or a negative value on error. Issuers found
+ * outside the trusted store must still chain to trust, but that chain
+ * validation skips revocation to avoid recursively consulting the CRL being
+ * verified. */
+static int
+xmlSecMSCryptoVerifyCrlSignature(
+    HCERTSTORE trustedStore,
+    HCERTSTORE untrustedStore,
+    HCERTSTORE certStore,
+    PCCRL_CONTEXT pCrl,
+    LPFILETIME pfTime
+) {
+    PCCERT_CONTEXT issuerCert = NULL;
+    HCERTSTORE stores[2];
+    int numStores = 0;
+    int ii;
+
+    xmlSecAssert2(trustedStore != NULL, -1);
+    xmlSecAssert2(pCrl != NULL, -1);
+    xmlSecAssert2(pCrl->pCrlInfo != NULL, -1);
+
+    issuerCert = CertFindCertificateInStore(trustedStore,
+        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+        0,
+        CERT_FIND_SUBJECT_NAME,
+        &(pCrl->pCrlInfo->Issuer),
+        NULL);
+    while (issuerCert != NULL) {
+        if (CryptVerifyCertificateSignatureEx(
+            (HCRYPTPROV_LEGACY)NULL,
+            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+            CRYPT_VERIFY_CERT_SIGN_SUBJECT_CRL, (void*)pCrl,
+            CRYPT_VERIFY_CERT_SIGN_ISSUER_CERT, (void*)issuerCert,
+            0, NULL) == TRUE) {
+            CertFreeCertificateContext(issuerCert);
+            return(1);
+        }
+
+        /* try next matching cert; CertFindCertificateInStore frees issuerCert
+         * (see https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certfindcertificateinstore) */
+        issuerCert = CertFindCertificateInStore(trustedStore,
+            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+            0,
+            CERT_FIND_SUBJECT_NAME,
+            &(pCrl->pCrlInfo->Issuer),
+            issuerCert);
+    }
+
+    if ((certStore != NULL) && (certStore != trustedStore)) {
+        stores[numStores++] = certStore;
+    }
+    if ((untrustedStore != NULL) && (untrustedStore != trustedStore) && (untrustedStore != certStore)) {
+        stores[numStores++] = untrustedStore;
+    }
+
+    for (ii = 0; ii < numStores; ++ii) {
+        issuerCert = CertFindCertificateInStore(stores[ii],
+            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+            0,
+            CERT_FIND_SUBJECT_NAME,
+            &(pCrl->pCrlInfo->Issuer),
+            NULL);
+        while (issuerCert != NULL) {
+            if (CryptVerifyCertificateSignatureEx(
+                (HCRYPTPROV_LEGACY)NULL,
+                X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                CRYPT_VERIFY_CERT_SIGN_SUBJECT_CRL, (void*)pCrl,
+                CRYPT_VERIFY_CERT_SIGN_ISSUER_CERT, (void*)issuerCert,
+                0, NULL) == TRUE) {
+                int ret;
+
+                ret = xmlSecMSCryptoBuildCertChain(
+                    issuerCert, pfTime, trustedStore, untrustedStore, certStore,
+                    NULL, 0); /* do not check for revocation when verifying CRL to avoid infinite recursion */
+                if(ret < 0) {
+                    xmlSecInternalError("xmlSecMSCryptoBuildCertChain", NULL);
+                    CertFreeCertificateContext(issuerCert);
+                    return(-1);
+                }
+                if(ret == 1) {
+                    CertFreeCertificateContext(issuerCert);
+                    return(1);
+                }
+            }
+
+            issuerCert = CertFindCertificateInStore(stores[ii],
+                X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                0,
+                CERT_FIND_SUBJECT_NAME,
+                &(pCrl->pCrlInfo->Issuer),
+                issuerCert);
+        }
+    }
+
+    /* no matching issuer found, none of the matching issuers verified the CRL
+     * signature, or the issuer certificate does not chain to a trusted root */
+    return(0);
+}
+
+static BOOL
+xmlSecMSCryptoCheckRevocation(HCERTSTORE hStore, PCCERT_CONTEXT pCert,
+    LPFILETIME pfTime, HCERTSTORE trustedStore, HCERTSTORE untrustedStore,
+    HCERTSTORE certStore) {
     PCCRL_CONTEXT pCrl = NULL;
     PCRL_ENTRY pCrlEntry = NULL;
     BOOL ret;
+    int sigRet;
 
     xmlSecAssert2(pCert != NULL, FALSE);
     xmlSecAssert2(hStore != NULL, FALSE);
@@ -217,6 +357,25 @@ xmlSecMSCryptoCheckRevocation(HCERTSTORE hStore, PCCERT_CONTEXT pCert) {
     /* CertEnumCRLsInStore automatically frees the previous CRL context (see
      * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcrlsinstore) */
     while((pCrl = CertEnumCRLsInStore(hStore, pCrl)) != NULL) {
+        /* check CRL time validity (thisUpdate <= time <= nextUpdate); skip a
+         * CRL that is not yet valid or has expired */
+        if (!xmlSecMSCryptoVerifyCrlTime(pCrl, pfTime)) {
+            continue;
+        }
+
+        /* verify the CRL signature against a trusted issuer; a CRL embedded in
+         * the document is controlled by the document author, so an unverified
+         * (forged) CRL must not be able to revoke a certificate */
+        sigRet = xmlSecMSCryptoVerifyCrlSignature(trustedStore,
+            untrustedStore, certStore, pCrl, pfTime);
+        if (sigRet < 0) {
+            xmlSecInternalError("xmlSecMSCryptoVerifyCrlSignature", NULL);
+            return(FALSE);
+        }
+        if (sigRet == 0) {
+            continue;
+        }
+
         /* pCrlEntry will point to the entry for the certificate in the CRL if it exists, it doesn't need
          * to be freed manually (see https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certfindcertificateincrl) */
         ret = CertFindCertificateInCRL(pCert, pCrl, 0, NULL, &pCrlEntry);
@@ -290,7 +449,10 @@ xmlSecBuildChainUsingWinapi (PCCERT_CONTEXT cert, LPFILETIME pfTime,
         xmlSecMSCryptoError("CertGetCertificateChain", NULL);
         goto end;
     }
-    if (pChainContext->TrustStatus.dwErrorStatus == CERT_TRUST_REVOCATION_STATUS_UNKNOWN) {
+    /* retry excluding the root if the revocation status is unknown; the
+     * unknown bit may be combined with other ignorable bits, so use a mask
+     * rather than an exact equality to avoid skipping the retry */
+    if ((pChainContext->TrustStatus.dwErrorStatus & CERT_TRUST_REVOCATION_STATUS_UNKNOWN) != 0) {
         CertFreeCertificateChain(pChainContext); pChainContext = NULL;
         if(!CertGetCertificateChain(NULL,   /* use the default chain engine */
                                     cert,
@@ -451,20 +613,20 @@ xmlSecMSCryptoX509GetCertHash(PCCERT_CONTEXT pCert, BYTE* pHash, DWORD* hashSize
     return(0);
 }
 
-/**
- * @brief Builds certificates chain manually.
- * @param theCert the certificate we check
- * @param pfTime pointer to FILETIME that we are interested in
- * @param store_trusted trusted certificates added via API
- * @param store_untrusted untrusted certificates added via API
- * @param certs untrusted certificates/CRLs extracted from a document
- * @param store pointer to store klass passed to error functions
- * @return TRUE on success or FALSE otherwise.
- */
-static BOOL
-xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT theCert, LPFILETIME pfTime,
-        HCERTSTORE store_trusted, HCERTSTORE store_untrusted, HCERTSTORE certs,
-        xmlSecKeyDataStorePtr store) {
+/* Returns 1 if @p cert chains to @p trustedStore without using revocation,
+ * 0 if no trusted chain is found, or a negative value on error. This is used
+ * only for CRL issuer certificates to avoid recursively consulting the CRL
+ * currently being verified. */
+static int
+xmlSecMSCryptoBuildCertChain(
+    PCCERT_CONTEXT theCert,
+    LPFILETIME pfTime,
+    HCERTSTORE trustedStore,
+    HCERTSTORE untrustedStore,
+    HCERTSTORE certStore,
+    xmlSecKeyDataStorePtr store,
+    int checkRevocation
+) {
     struct xmlSecMSCryptoBuildCertChainStep * queue = NULL;
     xmlSecSize queueSize = 0, queueMaxSize = 0;
     BYTE seenHashes[XMLSEC_MSCRYPTO_BUILD_CERT_CHAIN_MAX_DEPTH][XMLSEC_MSCRYPTO_X509_CERT_HASH_SIZE];
@@ -473,15 +635,15 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT theCert, LPFILETIME pfTime,
     DWORD hashSize;
     PCCERT_CONTEXT currentCert = NULL;
     BOOL freeCurrentCert = FALSE;
-    BOOL res = FALSE;
+    const xmlChar* storeName = (store != NULL) ? xmlSecKeyDataStoreGetName(store) : NULL;
+    int res = -1;
     int ret;
 
-    xmlSecAssert2(theCert != NULL, FALSE);
-    xmlSecAssert2(pfTime != NULL, FALSE);
-    xmlSecAssert2(store_trusted != NULL, FALSE);
-    xmlSecAssert2(store_untrusted != NULL, FALSE);
-    xmlSecAssert2(certs != NULL, FALSE);
-    xmlSecAssert2(store != NULL, FALSE);
+    xmlSecAssert2(theCert != NULL, -1);
+    xmlSecAssert2(trustedStore != NULL, -1);
+    xmlSecAssert2(untrustedStore != NULL, -1);
+    xmlSecAssert2(certStore != NULL, -1);
+    xmlSecAssert2((checkRevocation == 0) || (store != NULL), -1);
 
     /* setup queue */
     queue = (struct xmlSecMSCryptoBuildCertChainStep*)xmlMalloc(
@@ -489,7 +651,7 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT theCert, LPFILETIME pfTime,
     if(queue == NULL) {
         xmlSecMallocError(
             sizeof(struct xmlSecMSCryptoBuildCertChainStep) * XMLSEC_MSCRYPTO_BUILD_CERT_CHAIN_STEP_SIZE, NULL);
-        return(FALSE);
+        return(-1);
     }
     queueMaxSize = XMLSEC_MSCRYPTO_BUILD_CERT_CHAIN_STEP_SIZE;
 
@@ -508,9 +670,9 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT theCert, LPFILETIME pfTime,
 
         /* limit the chain depth to avoid excessive work on crafted inputs */
         if(seenSize >= XMLSEC_MSCRYPTO_BUILD_CERT_CHAIN_MAX_DEPTH) {
-            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-                xmlSecKeyDataStoreGetName(store),
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, storeName,
                 "certificate chain is too deep");
+            res = 0;
             goto done;
         }
 
@@ -544,10 +706,10 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT theCert, LPFILETIME pfTime,
 
         /* check certificate validity and revocation; an expired/revoked cert
          * cannot be part of a valid chain, so skip this branch (and its issuer)
-         * and continue searching the other branches in the queue */
+         * and continue searching the other branches in the queue. */
         if (!xmlSecMSCryptoVerifyCertTime(currentCert, pfTime)) {
             xmlSecOtherError(XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
-                xmlSecKeyDataStoreGetName(store),
+                storeName,
                 "certificate expired");
             if(freeCurrentCert == TRUE) {
                 CertFreeCertificateContext(currentCert);
@@ -557,37 +719,40 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT theCert, LPFILETIME pfTime,
             continue;
         }
 
-        if (!xmlSecMSCryptoCheckRevocation(certs, currentCert)) {
-            xmlSecOtherError(XMLSEC_ERRORS_R_CRL_VERIFY_FAILED,
-                xmlSecKeyDataStoreGetName(store),
-                "certificate revoked");
-            if(freeCurrentCert == TRUE) {
-                CertFreeCertificateContext(currentCert);
+        if(checkRevocation != 0) {
+            if (!xmlSecMSCryptoCheckRevocation(certStore, currentCert, pfTime,
+                    trustedStore, untrustedStore, certStore)) {
+                xmlSecOtherError(XMLSEC_ERRORS_R_CRL_VERIFY_FAILED,
+                    storeName,
+                    "certificate revoked");
+                if(freeCurrentCert == TRUE) {
+                    CertFreeCertificateContext(currentCert);
+                }
+                currentCert = NULL;
+                freeCurrentCert = FALSE;
+                continue;
             }
-            currentCert = NULL;
-            freeCurrentCert = FALSE;
-            continue;
         }
 
         /* does trustedStore contain cert directly? */
-        ret = xmlSecMSCryptoX509StoreContainsCert(store_trusted, &(currentCert->pCertInfo->Subject), currentCert);
+        ret = xmlSecMSCryptoX509StoreContainsCert(trustedStore, &(currentCert->pCertInfo->Subject), currentCert);
         if (ret < 0) {
             xmlSecInternalError("xmlSecMSCryptoX509StoreContainsCert", NULL);
             goto done;
         } else if (ret == 1) {
             /* success */
-            res = TRUE;
+            res = 1;
             goto done;
         }
 
         /* does trustedStore contain the issuer cert? */
-        ret = xmlSecMSCryptoX509StoreContainsCert(store_trusted, &(currentCert->pCertInfo->Issuer), currentCert);
+        ret = xmlSecMSCryptoX509StoreContainsCert(trustedStore, &(currentCert->pCertInfo->Issuer), currentCert);
         if (ret < 0) {
             xmlSecInternalError("xmlSecMSCryptoX509StoreContainsCert", NULL);
             goto done;
         } else if (ret == 1) {
             /* success */
-            res = TRUE;
+            res = 1;
             goto done;
         }
 
@@ -613,7 +778,7 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT theCert, LPFILETIME pfTime,
             }
 
             /* try the untrusted certs in the chain */
-            issuerCert = xmlSecMSCryptoX509StoreFindIssuer(certs, currentCert);
+            issuerCert = xmlSecMSCryptoX509StoreFindIssuer(certStore, currentCert);
             if(issuerCert != NULL) {
                 xmlSecAssert2(queueSize < queueMaxSize, FALSE);
                 queue[queueSize].cert = issuerCert;
@@ -622,7 +787,7 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT theCert, LPFILETIME pfTime,
             }
 
             /* try the untrusted certs in the store */
-            issuerCert = xmlSecMSCryptoX509StoreFindIssuer(store_untrusted, currentCert);
+            issuerCert = xmlSecMSCryptoX509StoreFindIssuer(untrustedStore, currentCert);
             if(issuerCert != NULL) {
                 xmlSecAssert2(queueSize < queueMaxSize, FALSE);
                 queue[queueSize].cert = issuerCert;
@@ -638,7 +803,9 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT theCert, LPFILETIME pfTime,
         freeCurrentCert = FALSE;
     }
 
-    /* not verified */
+    /*  not verified */
+    res = 0;
+
 done:
     if((currentCert != NULL) && (freeCurrentCert == TRUE)) {
         CertFreeCertificateContext(currentCert);
@@ -655,12 +822,37 @@ done:
     return(res);
 }
 
+/**
+ * @brief Builds certificates chain manually.
+ * @param theCert the certificate we check
+ * @param pfTime pointer to FILETIME that we are interested in
+ * @param store_trusted trusted certificates added via API
+ * @param store_untrusted untrusted certificates added via API
+ * @param certs untrusted certificates/CRLs extracted from a document
+ * @param store pointer to store klass passed to error functions
+ * @return TRUE on success or FALSE otherwise.
+ */
+static BOOL
+xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT theCert, LPFILETIME pfTime,
+        HCERTSTORE store_trusted, HCERTSTORE store_untrusted, HCERTSTORE certs,
+        xmlSecKeyDataStorePtr store) {
+    int ret;
+
+    ret = xmlSecMSCryptoBuildCertChain(theCert, pfTime,
+        store_trusted, store_untrusted, certs, store, 1); /* check for revocation when building the certificate chain */
+    if(ret < 0) {
+        return(FALSE);
+    }
+    return((ret == 1) ? TRUE : FALSE);
+}
+
 static BOOL
 xmlSecMSCryptoX509StoreConstructCertsChain(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT cert, HCERTSTORE certs,
                               xmlSecKeyInfoCtx* keyInfoCtx) {
     xmlSecMSCryptoX509StoreCtxPtr ctx;
     PCCERT_CONTEXT tempCert = NULL;
     FILETIME fTime;
+    FILETIME* pfTime;
     BOOL res = FALSE;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCryptoX509StoreId), FALSE);
@@ -674,14 +866,23 @@ xmlSecMSCryptoX509StoreConstructCertsChain(xmlSecKeyDataStorePtr store, PCCERT_C
     xmlSecAssert2(ctx->trusted != NULL, FALSE);
     xmlSecAssert2(ctx->untrusted != NULL, FALSE);
 
-    if(keyInfoCtx->certsVerificationTime > 0) {
-        /* convert the time to FILETIME */
-        xmlSecMSCryptoUnixTimeToFileTime(keyInfoCtx->certsVerificationTime, &fTime);
+
+
+    /* honor the skip-time-checks flag: pass NULL so the chain builders skip
+     * the certificate notBefore/notAfter checks */
+    if ((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS) == 0) {
+        /* get time and convert to FILETIME*/
+        if(keyInfoCtx->certsVerificationTime > 0) {
+            xmlSecMSCryptoUnixTimeToFileTime(keyInfoCtx->certsVerificationTime, &fTime);
+        } else {
+            /* Defaults to current time. GetSystemTimeAsFileTime effectively never
+            * fails, so its return value is not checked.
+            * https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getsystemtimeasfiletime */
+            GetSystemTimeAsFileTime(&fTime);
+        }
+        pfTime = &fTime;
     } else {
-        /* Defaults to current time. GetSystemTimeAsFileTime effectively never
-         * fails, so its return value is not checked.
-         * https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getsystemtimeasfiletime */
-        GetSystemTimeAsFileTime(&fTime);
+        pfTime = NULL;
     }
 
     /* try the certificates in the keys manager */
@@ -691,13 +892,13 @@ xmlSecMSCryptoX509StoreConstructCertsChain(xmlSecKeyDataStorePtr store, PCCERT_C
         tempCert = CertEnumCertificatesInStore(ctx->trusted, NULL);
         if(tempCert) {
             CertFreeCertificateContext(tempCert);
-            res = xmlSecMSCryptoBuildCertChainManually(cert, &fTime, ctx->trusted, ctx->untrusted, certs, store);
+            res = xmlSecMSCryptoBuildCertChainManually(cert, pfTime, ctx->trusted, ctx->untrusted, certs, store);
         }
     }
 
     /* try the certificates in the system */
     if(!res && !ctx->dont_use_system_trusted_certs) {
-        res = xmlSecBuildChainUsingWinapi(cert, &fTime, ctx->untrusted, certs);
+        res = xmlSecBuildChainUsingWinapi(cert, pfTime, ctx->untrusted, certs);
     }
 
     /* done */

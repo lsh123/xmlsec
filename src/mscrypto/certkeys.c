@@ -874,8 +874,9 @@ PCCERT_CONTEXT xmlSecMSCryptoCertDup(PCCERT_CONTEXT pCert) {
  * @param pCert the pointer to cert.
  * @param type the expected key type.
  *
- * The function takes ownership of the certificate context; the caller
- * must not free it afterwards.
+ * @details On success, the function takes ownership of the certificate context; the caller
+ * must not free it afterwards. On failure the function does not take ownership and the
+ * caller must free @p pCert.
  *
  * @return pointer to newly created xmlsec key or NULL if an error occurs.
  */

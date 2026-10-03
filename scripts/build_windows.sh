@@ -20,7 +20,9 @@ openssl_version="4.0.0"
 xmlsec_version="1.3.13-rc1"
 
 orig_pwd=$(pwd)
-script_dir=$(dirname "$0")
+# "$0" may use Windows backslash separators (e.g. "scripts\build_windows.sh");
+# normalize them to forward slashes so dirname() resolves the script directory.
+script_dir=$(dirname "${0//\\//}")
 
 
 # Build locations, overridable via environment variables.
@@ -219,7 +221,7 @@ function build_openssl {
 
   echo "*** Configuring \"${full_name}\" ..."
   OLD_PATH="$PATH"
-  PATH="$PATH;$PERL_PATH"
+  PATH="${PATH}:${PERL_PATH}"
   cd "${full_name}" || return 1
   perl Configure no-unit-test --prefix="${openssl_install_dir_win}" ${OPENSSL_XMLSEC_CONFIG} VC-WIN64A-HYBRIDCRT
   rc=$?
@@ -303,7 +305,7 @@ function build_xmlsec {
 function create_readme {
   echo "*** Creating README..."
   cd "${orig_pwd}" || return 1
-  cat "${script_dir}\\README-WINDOWS.md.in" | \
+  cat "${script_dir}/README-WINDOWS.md.in" | \
     sed "s/@libxml2_version@/${libxml2_version}/g" | \
     sed "s/@libxslt_version@/${libxslt_version}/g" | \
     sed "s/@openssl_version@/${openssl_version}/g" | \

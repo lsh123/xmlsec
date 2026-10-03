@@ -460,9 +460,14 @@ done:
  * @return 0 on success or a negative value otherwise.
  */
 int
-xmlSecMSCngAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
-                           xmlSecKeyDataFormat format) {
+xmlSecMSCngAppKeyCertLoad(
+    xmlSecKeyPtr key,
+    const char* filename,
+    xmlSecKeyDataFormat format
+) {
     xmlSecBuffer buffer;
+    const xmlSecByte* bufferData;
+    xmlSecSize bufferSize;
     int ret;
 
     xmlSecAssert2(key != NULL, -1);
@@ -483,14 +488,23 @@ xmlSecMSCngAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
         return(-1);
     }
 
-    ret = xmlSecMSCngAppKeyCertLoadMemory(key, xmlSecBufferGetData(&buffer),
-            xmlSecBufferGetSize(&buffer), format);
+    bufferData = xmlSecBufferGetData(&buffer);
+    bufferSize = xmlSecBufferGetSize(&buffer);
+    if((bufferData == NULL) || (bufferSize == 0)) {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
+            "empty file: %s", xmlSecErrorsSafeString(filename));
+        xmlSecBufferFinalize(&buffer);
+        return(-1);
+    }
+
+    ret = xmlSecMSCngAppKeyCertLoadMemory(key, bufferData, bufferSize, format);
     if(ret < 0) {
         xmlSecInternalError("xmlSecMSCngAppKeyCertLoadMemory", NULL);
         xmlSecBufferFinalize(&buffer);
         return(-1);
     }
 
+    /* done */
     xmlSecBufferFinalize(&buffer);
     return(0);
 }
@@ -579,7 +593,7 @@ xmlSecMSCngAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSec
  * in format=xmlSecKeyDataFormatPkcs12.
  *
  * @param filename the PKCS12 key filename.
- * @param pwd the PKCS12 file password.
+ * @param pwd the PKCS12 file password (UTF-8 encoded).
  * @param pwdCallback the password callback. Not supported by the MSCng
  * back-end and ignored; the password must be supplied via @p pwd.
  * @param pwdCallbackCtx the user context for password callback. Not supported
@@ -587,8 +601,10 @@ xmlSecMSCngAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSec
  * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
-xmlSecMSCngAppPkcs12Load(const char *filename,
-    const char *pwd, void* pwdCallback, void* pwdCallbackCtx
+xmlSecMSCngAppPkcs12Load(
+    const char *filename,
+    const char *pwd,
+    void* pwdCallback, void* pwdCallbackCtx
 ) {
     xmlSecBuffer buffer;
     xmlSecByte* data;
@@ -596,7 +612,11 @@ xmlSecMSCngAppPkcs12Load(const char *filename,
     int ret;
 
     xmlSecAssert2(filename != NULL, NULL);
-    xmlSecAssert2(pwd != NULL, NULL);
+    if(pwd == NULL) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
+            "password is required; password callbacks are not supported by the MSCng back-end");
+        return(NULL);
+    }
 
     ret = xmlSecBufferInitialize(&buffer, 0);
     if(ret < 0) {
@@ -668,7 +688,7 @@ xmlSecMSCngIsPrivateKeyCert(PCCERT_CONTEXT cert, BOOL isPersistentKey) {
  *
  * @param data the key binary data.
  * @param dataSize the key binary data size.
- * @param pwd the PKCS12 password.
+ * @param pwd the PKCS12 password (UTF-8 encoded).
  * @param pwdCallback the password callback. Not supported by the MSCng
  * back-end and ignored; the password must be supplied via @p pwd.
  * @param pwdCallbackCtx the user context for password callback. Not supported
@@ -676,9 +696,11 @@ xmlSecMSCngIsPrivateKeyCert(PCCERT_CONTEXT cert, BOOL isPersistentKey) {
  * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
-xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const char *pwd,
-                               void *pwdCallback,
-                               void* pwdCallbackCtx) {
+xmlSecMSCngAppPkcs12LoadMemory(
+    const xmlSecByte* data, xmlSecSize dataSize,
+    const char *pwd,
+    void *pwdCallback, void* pwdCallbackCtx
+) {
     XMLSEC_UNREFERENCED(pwdCallback);
     XMLSEC_UNREFERENCED(pwdCallbackCtx);
     CRYPT_DATA_BLOB pfx;
@@ -694,7 +716,11 @@ xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, cons
 
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(dataSize > 0, NULL);
-    xmlSecAssert2(pwd != NULL, NULL);
+    if(pwd == NULL) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
+            "password is required; password callbacks are not supported by the MSCng back-end");
+        return(NULL);
+    }
 
     memset(&pfx, 0, sizeof(pfx));
     pfx.pbData = (BYTE *)data;
@@ -706,9 +732,9 @@ xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, cons
         return(NULL);
     }
 
-    pwdWideChar = xmlSecWin32ConvertLocaleToUnicode(pwd);
+    pwdWideChar = xmlSecWin32ConvertUtf8ToUnicode((const xmlChar*)pwd);
     if(pwdWideChar == NULL) {
-        xmlSecInternalError("xmlSecWin32ConvertLocaleToUnicode", NULL);
+        xmlSecInternalError("xmlSecWin32ConvertUtf8ToUnicode", NULL);
         goto cleanup;
     }
 
@@ -1366,6 +1392,7 @@ xmlSecMSCngAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, 
  */
 void*
 xmlSecMSCngAppGetDefaultPwdCallback(void) {
-    /* TODO: MSCNG doesn't support password callback */
+    /* The MSCng backend does not support password callbacks; the password (if any)
+     * must be supplied explicitly via the pwd parameter of the load functions. */
     return(NULL);
 }

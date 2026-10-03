@@ -231,7 +231,10 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name) {
 #endif /* XMLSEC_NO_X509 */
 
     /*
-     * Try to find certificate with name="Friendly Name"
+     * Try to find certificate with name="Friendly Name". This is an O(N)
+     * enumeration over the store: a targeted CertFindCertificateInStore() match
+     * is not possible because CERT_FIND_PROPERTY is an existence check, not a
+     * value match on the friendly-name string.
      */
     if (NULL == pCertContext) {
         DWORD dwPropSize;
@@ -257,6 +260,10 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name) {
                 break;
             }
 
+            /* CertGetCertificateContextProperty takes a generic LPVOID and has
+             * no _A/_W variant; the friendly-name property (CERT_FRIENDLY_NAME_PROP_ID)
+             * is always a NULL-terminated UTF-16 string, so it can be compared
+             * with lstrcmpW regardless of the library's TCHAR width */
             if (TRUE != CertGetCertificateContextProperty(pCertCtxIter,
                                                       CERT_FRIENDLY_NAME_PROP_ID,
                                                       NULL,
@@ -294,9 +301,8 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name) {
 
         xmlFree(lpwName);
     }
-
-    /* We don't give up easily, now try to find cert with part of the name
-     */
+    /* We don't give up easily, now try to find cert with part of the name.
+     * This is an indexed lookup. */
     if (NULL == pCertContext) {
         pCertContext = CertFindCertificateInStore(
             hStoreHandle,
@@ -306,7 +312,6 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name) {
             tstrName,
             NULL);
     }
-
 
     /* We could do the following here:
      * It would be nice if we could locate the cert with issuer name and
@@ -450,8 +455,8 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
             goto done;
         }
 
-        /* now that we have a key, make sure it is valid and let the simple
-        * store adopt it */
+        /* now that we have a key, make sure it is valid; the key is returned
+        * to the caller (it is not cached in the simple store) */
         if (xmlSecKeyIsValid(key)) {
             res = key;
             key = NULL;

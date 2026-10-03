@@ -124,6 +124,7 @@ function Show-Usage {
     Write-Host "  hardening:                Build with security hardening flags: /guard:cf, /DYNAMICBASE, and /NXCOMPAT (default: '$(if ($script:buildHardening) { 'yes' } else { 'no' })')"
     Write-Host "  cc:                       Build with the specified compiler (default: '$($script:buildCc)')"
     Write-Host "  cflags:                   Build with the specified compiler flags (default: '$($script:buildCflags)')"
+    Write-Host "  cruntime:                 Compiler runtime library to link (default: '$($script:cruntime)')"
     Write-Host "  static:                   Build static xmlsec libraries (default: '$(if ($script:buildStatic) { 'yes' } else { 'no' })')"
     Write-Host "  apps:                     Build binaries from the 'apps/' folder (default: '$(if ($script:buildApps) { 'yes' } else { 'no' })')"
     Write-Host "  prefix:                   Base directory for the installation (default: '$($script:buildPrefix)')"
@@ -449,7 +450,12 @@ if (-not (Test-Path $makefileMsvc)) {
     Write-Host "ERROR: Cannot find '$makefileMsvc'."
     exit 1
 }
-Copy-Item $makefileMsvc (Join-Path $scriptRoot "Makefile") -Force
+try {
+    Copy-Item $makefileMsvc (Join-Path $scriptRoot "Makefile") -Force -ErrorAction Stop
+} catch {
+    Write-Host "ERROR: Failed to create 'Makefile' from '$makefileMsvc': $($_.Exception.Message)"
+    exit 1
+}
 Write-Host "Created Makefile."
 
 # Display the final configuration.

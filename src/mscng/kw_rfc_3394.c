@@ -389,7 +389,7 @@ xmlSecMSCngKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
     blobSize = xmlSecBufferGetSize(&blob);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(blobSize, dwBlobSize, goto done, NULL);
 
-    /* perform the actual import */
+    /* perform the key import */
     status = BCryptImportKey(hAlg,
         NULL,
         BCRYPT_KEY_DATA_BLOB,
@@ -404,6 +404,7 @@ xmlSecMSCngKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
         goto done;
     }
 
+    /* perform the encryption */
     cbData = 0;
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwInSize, goto done, NULL);
     status = BCryptEncrypt(hKey,
@@ -539,7 +540,7 @@ xmlSecMSCngKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
     blobSize = xmlSecBufferGetSize(&blob);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(blobSize, dwBlobSize, goto done, NULL);
 
-    /* perform the actual import */
+    /* perform the key import */
     status = BCryptImportKey(hAlg,
         NULL,
         BCRYPT_KEY_DATA_BLOB,
@@ -554,6 +555,7 @@ xmlSecMSCngKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
         goto done;
     }
 
+    /* perform the decryption */
     cbData = 0;
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwInSize, goto done, NULL);
     status = BCryptDecrypt(hKey,

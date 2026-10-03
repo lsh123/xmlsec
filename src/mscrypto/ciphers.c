@@ -88,6 +88,11 @@ xmlSecMSCryptoBlockCipherCtxInit(xmlSecMSCryptoBlockCipherCtxPtr ctx,
         unsigned char* iv;
 
         /* allocate space for IV */
+        if(outSize > XMLSEC_SIZE_MAX - blockSize) {
+            xmlSecInternalError3("xmlSecBufferSetSize", cipherName,
+                "outSize=" XMLSEC_SIZE_FMT "; blockSize=" XMLSEC_SIZE_FMT, outSize, blockSize);
+            return(-1);
+        }
         ret = xmlSecBufferSetSize(out, outSize + blockSize);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetSize", cipherName,
@@ -178,6 +183,12 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     inSize = inBlocks * blockSize;
 
     /* we write out the input size plus maybe one block */
+    if(outSize > XMLSEC_SIZE_MAX - inSize - blockSize) {
+        xmlSecInternalError4("xmlSecBufferSetMaxSize", cipherName,
+            "outSize=" XMLSEC_SIZE_FMT "; inSize=" XMLSEC_SIZE_FMT "; blockSize=" XMLSEC_SIZE_FMT,
+            outSize, inSize, blockSize);
+        return(-1);
+    }
     ret = xmlSecBufferSetMaxSize(out, outSize + inSize + blockSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetMaxSize", cipherName,
@@ -292,6 +303,11 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     }
 
     /* process last block */
+    if(outSize > XMLSEC_SIZE_MAX - 2 * blockSize) {
+        xmlSecInternalError3("xmlSecBufferSetMaxSize", cipherName,
+            "outSize=" XMLSEC_SIZE_FMT "; blockSize=" XMLSEC_SIZE_FMT, outSize, blockSize);
+        return(-1);
+    }
     ret = xmlSecBufferSetMaxSize(out, outSize + 2 * blockSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetMaxSize", cipherName,

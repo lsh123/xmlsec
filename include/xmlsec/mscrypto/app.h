@@ -35,6 +35,15 @@ extern "C" {
   *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppInit                           (const char* config);
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppShutdown                       (void);
+
+/* This getter returns LPCTSTR (const TCHAR*). The width of TCHAR is fixed at
+ * compile time by the UNICODE/_UNICODE macro: wchar_t (2 bytes) when UNICODE
+ * is defined, char (1 byte) otherwise. The underlying string is allocated by
+ * the library with the library's own TCHAR width, so the consuming application
+ * must be compiled with the same UNICODE/_UNICODE setting as the xmlsec
+ * library. If the character sets mismatch, the returned pointer misinterprets
+ * the string (e.g. a wide string read as a narrow one), which is undefined
+ * behavior. */
 XMLSEC_CRYPTO_EXPORT LPCTSTR    xmlSecMSCryptoAppGetCertStoreName               (void);
 
 /******************************************************************************

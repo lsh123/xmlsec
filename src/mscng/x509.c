@@ -211,11 +211,14 @@ xmlSecMSCngKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
         CertFreeCertificateContext(cert);  /* caller expects data to own the cert on success. */
         return(0);
     }
+
     /* replace the existing key certificate, duplicate to ensure the private key is copied */
     if(ctx->keyCert != NULL) {
         CertFreeCertificateContext(ctx->keyCert);
         ctx->keyCert = NULL;
     }
+
+    /* replace the existing key certificate, duplicate to ensure the private key is copied */
     ctx->keyCert = CertDuplicateCertificateContext(cert);
     if (ctx->keyCert == NULL) {
         xmlSecMSCngLastError("CertDuplicateCertificateContext", NULL);

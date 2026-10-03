@@ -127,8 +127,8 @@ xmlSecMSCngKeyDataCertGetDsaPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE
         xmlSecInvalidSizeMoreThanError("DSA Q size", (xmlSecSize)qSize, (xmlSecSize)XMLSEC_MSCNG_DSA_V2_Q_SIZE, NULL);
         goto done;
     }
-    if((gSize > pSize) || (ySize > pSize)) {
-        xmlSecInvalidDataError("invalid DSA key parameters (g/y longer than p)", NULL);
+    if((qSize > pSize) || (gSize > pSize) || (ySize > pSize)) {
+        xmlSecInvalidDataError("invalid DSA key parameters (q/g/y longer than p)", NULL);
         goto done;
     }
 
@@ -452,6 +452,7 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         xmlSecInvalidSizeMoreThanError("DSA P size", (xmlSecSize)pSize, (xmlSecSize)XMLSEC_MSCNG_DSA_MAX_P_SIZE, NULL);
         goto done;
     }
+    xmlSecAssert2(qSize <= pSize, NULL);
     xmlSecAssert2(gSize <= pSize, NULL);
     xmlSecAssert2(ySize <= pSize, NULL);
 

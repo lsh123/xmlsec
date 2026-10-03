@@ -81,10 +81,6 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoX509StoreAdoptUntrustedSto
 XMLSEC_CRYPTO_EXPORT void               xmlSecMSCryptoX509StoreEnableSystemTrustedCerts(xmlSecKeyDataStorePtr store,
                                                                                   int val);
 
-XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT     xmlSecMSCryptoX509StoreVerify           (xmlSecKeyDataStorePtr store,
-                                                                                 HCERTSTORE certs,
-                                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
-
 
 #ifdef __cplusplus
 }

@@ -85,28 +85,6 @@ XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT     xmlSecMSCryptoX509StoreVerify           
                                                                                  HCERTSTORE certs,
                                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
 
-/******************************************************************************
- *
- * DEPRECATED
- *
-  *****************************************************************************/
-XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED PCCERT_CONTEXT xmlSecMSCryptoX509StoreFindCert     (xmlSecKeyDataStorePtr store,
-                                                                                           xmlChar *subjectName,
-                                                                                           xmlChar *issuerName,
-                                                                                           xmlChar *issuerSerial,
-                                                                                           xmlChar *ski,
-                                                                                           xmlSecKeyInfoCtxPtr keyInfoCtx);
-XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED PCCERT_CONTEXT xmlSecMSCryptoX509StoreFindCert_ex  (xmlSecKeyDataStorePtr store,
-                                                                                           xmlChar* subjectName,
-                                                                                           xmlChar* issuerName,
-                                                                                           xmlChar* issuerSerial,
-                                                                                           xmlSecByte* ski,
-                                                                                           xmlSecSize skiSize,
-                                                                                           xmlSecKeyInfoCtxPtr keyInfoCtx);
-XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED PCCERT_CONTEXT xmlSecMSCryptoX509FindCertBySubject (HCERTSTORE store,
-                                                                                            LPCTSTR wcSubject,
-                                                                                            DWORD dwCertEncodingType);
-
 
 #ifdef __cplusplus
 }

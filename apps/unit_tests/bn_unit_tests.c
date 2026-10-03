@@ -17,6 +17,7 @@
 /* must be included before any other xmlsec header */
 #include "xmlsec_unit_tests.h"
 #include <xmlsec/bn.h>
+#include <xmlsec/private.h>
 
 /******************************************************************************
  * helpers
@@ -512,6 +513,56 @@ test_xmlSecBnFromString_baseBoundsRejected(void) {
     if(str != NULL) {
         testLog("Error: xmlSecBnToString unexpectedly succeeded for base=17\n");
         xmlFree(str);
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecBnFinalize(&bn);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecBnFromString_oversizedStringRejected(void) {
+    char str[XMLSEC_BN_FROM_STRING_MAX_LEN + 2];
+    xmlSecBn bn;
+    int ret;
+
+    testStart("xmlSecBnFromString: strings longer than the limit are rejected");
+
+    ret = xmlSecBnInitialize(&bn, 0);
+    if(ret < 0) {
+        testLog("Error: xmlSecBnInitialize failed\n");
+        testFinishedFailure();
+        return;
+    }
+
+    /* a string of exactly the limit length must still be accepted */
+    memset(str, '1', sizeof(str));
+    str[XMLSEC_BN_FROM_STRING_MAX_LEN] = '\0';
+    ret = xmlSecBnFromHexString(&bn, BAD_CAST str);
+    if(ret < 0) {
+        testLog("Error: xmlSecBnFromHexString failed for a string of the maximum length\n");
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+
+    /* extend the string by one character: it must now be rejected */
+    str[XMLSEC_BN_FROM_STRING_MAX_LEN] = '1';
+    str[XMLSEC_BN_FROM_STRING_MAX_LEN + 1] = '\0';
+    ret = xmlSecBnFromHexString(&bn, BAD_CAST str);
+    if(ret >= 0) {
+        testLog("Error: xmlSecBnFromHexString unexpectedly succeeded for an over-long string\n");
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+
+    /* the same limit applies to the decimal entry point */
+    ret = xmlSecBnFromDecString(&bn, BAD_CAST str);
+    if(ret >= 0) {
+        testLog("Error: xmlSecBnFromDecString unexpectedly succeeded for an over-long string\n");
         xmlSecBnFinalize(&bn);
         testFinishedFailure();
         return;
@@ -2394,6 +2445,7 @@ test_bn(void) {
     test_xmlSecBnFromString_emptyAndWhitespaceBothZero();
     test_xmlSecBnFromString_base2AndBase8_roundTrip();
     test_xmlSecBnFromString_baseBoundsRejected();
+    test_xmlSecBnFromString_oversizedStringRejected();
     test_xmlSecBnToString_largeMultiByte_roundTrip();
     test_xmlSecBnToString_zeroBnProducesZero();
     test_xmlSecBnAdd_updatesValue();

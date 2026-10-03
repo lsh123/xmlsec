@@ -92,7 +92,7 @@ static xmlSecKeyDataStoreKlass xmlSecNssX509StoreKlass = {
 };
 
 static CERTCertificate*         xmlSecNssX509FindCert(CERTCertList* certsList, xmlSecNssX509FindCertCtxPtr findCertCtx);
-static int                      xmlSecNssX509VerifyCRLTimeValidity(CERTSignedCrl* crl, xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int                      xmlSecNssX509VerifyCRLTimeValidity(const CERTSignedCrl* crl, xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 
 /**
@@ -232,7 +232,7 @@ xmlSecNssX509StoreFindCertByValue(xmlSecKeyDataStorePtr store, xmlSecKeyX509Data
 
 /* returns 1 if cert was revoked, 0 if not, and a negative value if an error occurs */
 static int
-xmlSecNssX509StoreCheckIfCertIsRevoked(CERTCertificate* cert, CERTSignedCrl* crl, xmlSecKeyInfoCtx* keyInfoCtx) {
+xmlSecNssX509StoreCheckIfCertIsRevoked(CERTCertificate* cert, const CERTSignedCrl* crl, xmlSecKeyInfoCtx* keyInfoCtx) {
     CERTCrlEntry *entry;
     SECStatus rv;
     int ret;
@@ -281,13 +281,73 @@ xmlSecNssX509StoreCheckIfCertIsRevoked(CERTCertificate* cert, CERTSignedCrl* crl
     return(0);
 }
 
+/* Considers @p crl as a candidate for the best CRL for @p cert.
+ * The CRL must be issued for the cert and be time-valid.
+ * Returns 1 if @p crl is a candidate (updating *res and *resLastUpdate if it
+ * is more recent than the current best), 0 if the CRL should be skipped,
+ * and a negative value if an error occurs. */
 static int
-xmlSecNssX509StoreFindBestCrl(xmlSecNssX509StoreCtxPtr x509StoreCtx, CERTCertificate* cert, CERTSignedCrl ** res, xmlSecKeyInfoCtx* keyInfoCtx) {
-    xmlSecNssX509CrlNodePtr cur;
+xmlSecNssX509StoreConsiderCrl(
+    CERTCertificate* cert,
+    const CERTSignedCrl* crl,
+    const CERTSignedCrl** res,
+    PRTime* resLastUpdate,
+    xmlSecKeyInfoCtx* keyInfoCtx
+) {
     PRTime lastUpdate = 0;
-    PRTime resLastUpdate = 0;
     int timeRet;
     SECStatus rv;
+
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(crl != NULL, -1);
+    xmlSecAssert2(res != NULL, -1);
+    xmlSecAssert2(resLastUpdate != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    if (SECITEM_CompareItem(&(cert->derIssuer), &(crl->crl.derName)) != SECEqual) {
+        return(0);
+    }
+
+    /* skip CRLs that are not yet valid or have expired */
+    timeRet = xmlSecNssX509VerifyCRLTimeValidity(crl, keyInfoCtx);
+    if(timeRet < 0) {
+        xmlSecInternalError("xmlSecNssX509VerifyCRLTimeValidity", NULL);
+        return(-1);
+    } else if(timeRet != 1) {
+        return(0);
+    }
+
+    /* get lastUpdate time */
+    rv = DER_DecodeTimeChoice(&lastUpdate, &(crl->crl.lastUpdate));
+    if((rv != SECSuccess) || (lastUpdate == 0)) {
+        xmlSecNssError("DER_DecodeTimeChoice(lastUpdate)", NULL);
+        return(-1);
+    }
+
+    /* use the latest CRL by the last update time */
+    if(((*res) == NULL) || (*resLastUpdate < lastUpdate)) {
+        (*res) = crl;
+        (*resLastUpdate) = lastUpdate;
+    }
+
+    /* good CRL */
+    return(1);
+}
+
+/* looks for the best matching CRL in the store's CRLs and in the
+ * @p keyInfoCrls (a NULL-terminated array or NULL) */
+static int
+xmlSecNssX509StoreFindBestCrl(
+    xmlSecNssX509StoreCtxPtr x509StoreCtx,
+    CERTCertificate* cert,
+    const CERTSignedCrl* const* keyInfoCrls,
+    const CERTSignedCrl** res,
+    xmlSecKeyInfoCtx* keyInfoCtx
+) {
+    xmlSecNssX509CrlNodePtr cur;
+    PRTime resLastUpdate = 0;
+    int ret;
+    int ii;
 
     xmlSecAssert2(x509StoreCtx != NULL, -1);
     xmlSecAssert2(cert != NULL, -1);
@@ -295,35 +355,26 @@ xmlSecNssX509StoreFindBestCrl(xmlSecNssX509StoreCtxPtr x509StoreCtx, CERTCertifi
     xmlSecAssert2((*res) == NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    /* find best matching CRL */
+    /* just in case */
+    (*res) = NULL;
+
+    /* find the best matching CRL in the store: if there are multiple, pick the one
+     * with the latest update time using resLastUpdate */
     for(cur = x509StoreCtx->crlsList; cur != NULL; cur = cur->next) {
         if(cur->crl == NULL) {
             continue;
         }
-        if (SECITEM_CompareItem(&(cert->derIssuer), &(cur->crl->crl.derName)) != SECEqual) {
-            continue;
-        }
-
-        /* skip CRLs that are not yet valid or have expired */
-        timeRet = xmlSecNssX509VerifyCRLTimeValidity(cur->crl, keyInfoCtx);
-        if(timeRet < 0) {
-            xmlSecInternalError("xmlSecNssX509VerifyCRLTimeValidity", NULL);
-            return(-1);
-        } else if(timeRet != 1) {
-            continue;
-        }
-
-        /* get lastUpdate time */
-        rv = DER_DecodeTimeChoice(&lastUpdate, &(cur->crl->crl.lastUpdate));
-        if((rv != SECSuccess) || (lastUpdate == 0)) {
-            xmlSecNssError("DER_DecodeTimeChoice(lastUpdate)", NULL);
+        ret = xmlSecNssX509StoreConsiderCrl(cert, cur->crl, res, &resLastUpdate, keyInfoCtx);
+        if(ret < 0) {
             return(-1);
         }
+    }
 
-        /* Use latest CRL by the last update time */
-        if(((*res) == NULL) || (resLastUpdate < lastUpdate)) {
-            (*res) = cur->crl;
-            resLastUpdate = lastUpdate;
+    /* find the best matching CRL among the keyInfo CRLs */
+    for(ii = 0; (keyInfoCrls != NULL) && (keyInfoCrls[ii] != NULL); ++ii) {
+        ret = xmlSecNssX509StoreConsiderCrl(cert, keyInfoCrls[ii], res, &resLastUpdate, keyInfoCtx);
+        if(ret < 0) {
+            return(-1);
         }
     }
 
@@ -332,8 +383,12 @@ xmlSecNssX509StoreFindBestCrl(xmlSecNssX509StoreCtxPtr x509StoreCtx, CERTCertifi
 }
 
 static int
-xmlSecNssX509StoreRemoveRevokedCerts(xmlSecNssX509StoreCtxPtr x509StoreCtx, CERTCertList* certs,
-    CERTCertList** res, xmlSecKeyInfoCtx* keyInfoCtx
+xmlSecNssX509StoreRemoveRevokedCerts(
+    xmlSecNssX509StoreCtxPtr x509StoreCtx,
+    CERTCertList* certs,
+    const CERTSignedCrl* const* keyInfoCrls,
+    CERTCertList** res,
+    xmlSecKeyInfoCtx* keyInfoCtx
 ) {
     CERTCertListNode* cur;
     CERTCertificate* cert;
@@ -353,13 +408,13 @@ xmlSecNssX509StoreRemoveRevokedCerts(xmlSecNssX509StoreCtxPtr x509StoreCtx, CERT
     }
 
     for (cur = CERT_LIST_HEAD(certs); !CERT_LIST_END(cur, certs); cur = CERT_LIST_NEXT(cur)) {
-        CERTSignedCrl* crl = NULL;
+        const CERTSignedCrl* crl = NULL;
 
         if(cur->cert == NULL) {
             continue;
         }
 
-        ret = xmlSecNssX509StoreFindBestCrl(x509StoreCtx, cur->cert, &crl, keyInfoCtx);
+        ret = xmlSecNssX509StoreFindBestCrl(x509StoreCtx, cur->cert, keyInfoCrls, &crl, keyInfoCtx);
         if(ret < 0) {
             xmlSecInternalError("xmlSecNssX509StoreFindBestCrl", NULL);
             return(-1);
@@ -433,13 +488,19 @@ xmlSecNssX509StoreGetVerificationTime(xmlSecKeyInfoCtx* keyInfoCtx) {
 
 /* Checks every certificate in the chain resolved from @p cert (the leaf up to
  * the root, including intermediate certificates that NSS pulled from the
- * certificate database during chain building) against the store's CRLs.
+ * certificate database during chain building) against the store's CRLs and
+ * the @p keyInfoCrls (a NULL-terminated array or NULL).
  * Returns 1 if none of the certificates is revoked, 0 if any of them is
  * revoked, and a negative value if an error occurs. */
 static int
-xmlSecNssX509StoreVerifyChainAgainstCrls(xmlSecNssX509StoreCtxPtr x509StoreCtx, CERTCertificate* cert, xmlSecKeyInfoCtx* keyInfoCtx) {
+xmlSecNssX509StoreVerifyChainAgainstCrls(
+    xmlSecNssX509StoreCtxPtr x509StoreCtx,
+    CERTCertificate* cert,
+    const CERTSignedCrl* const* keyInfoCrls,
+    xmlSecKeyInfoCtx* keyInfoCtx
+) {
     CERTCertList* chain = NULL;
-    CERTSignedCrl* crl;
+    const CERTSignedCrl* crl;
     int ret;
     CERTCertListNode* node;
     int64 verificationTime;
@@ -449,8 +510,8 @@ xmlSecNssX509StoreVerifyChainAgainstCrls(xmlSecNssX509StoreCtxPtr x509StoreCtx, 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    /* no CRLs in the store, nothing to check */
-    if(x509StoreCtx->crlsList == NULL) {
+    /* no CRLs in the store and no keyInfo CRLs, nothing to check */
+    if((x509StoreCtx->crlsList == NULL) && (keyInfoCrls == NULL)) {
         return(1);
     }
 
@@ -468,7 +529,7 @@ xmlSecNssX509StoreVerifyChainAgainstCrls(xmlSecNssX509StoreCtxPtr x509StoreCtx, 
         }
 
         crl = NULL; /* just in case */
-        ret = xmlSecNssX509StoreFindBestCrl(x509StoreCtx, node->cert, &crl, keyInfoCtx);
+        ret = xmlSecNssX509StoreFindBestCrl(x509StoreCtx, node->cert, keyInfoCrls, &crl, keyInfoCtx);
         if(ret < 0) {
             xmlSecInternalError("xmlSecNssX509StoreFindBestCrl", NULL);
             res = -1;
@@ -566,11 +627,17 @@ xmlSecNssX509StoreVerifyCert(CERTCertDBHandle *handle, CERTCertificate* cert, xm
  * @return 1 if key is verified, 0 otherwise, or a negative value if an error occurs.
  */
 int
-xmlSecNssX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecNssX509StoreVerifyKey(
+    xmlSecKeyDataStorePtr store,
+    xmlSecKeyPtr key,
+    xmlSecKeyInfoCtxPtr keyInfoCtx
+) {
     xmlSecNssX509StoreCtxPtr ctx;
     xmlSecKeyDataPtr x509Data;
     CERTCertificate* key_cert;
+    const CERTSignedCrl* const* keyInfoCrls = NULL;
     int ret;
+    int res;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecNssX509StoreId), -1);
     xmlSecAssert2(key != NULL, -1);
@@ -592,42 +659,85 @@ xmlSecNssX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, xmlSe
         return(0); /* key cannot be verified w/o key cert */
     }
 
+    /* verify the key-info CRLs and keep the verified ones for the revocation
+     * checks below; the CRLs that fail verification are skipped */
+    ret = xmlSecNssX509DataVerifyAndCopyKeyInfoCrls(store, x509Data, keyInfoCtx, &keyInfoCrls);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNssX509DataVerifyAndCopyKeyInfoCrls", xmlSecKeyDataStoreGetName(store));
+        return(-1);
+    }
+
     ret = xmlSecNssX509StoreVerifyCert(ctx->certDb, key_cert, keyInfoCtx, certificateUsageEmailSigner);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssX509StoreVerifyCert", xmlSecKeyDataStoreGetName(store));
-        return(-1);
+        res = -1;
+        goto done;
     } else if(ret != 1) {
-        return(0); /* cert verification failed*/
+        res = 0; /* cert verification failed */
+        goto done;
     }
 
     /* make sure no certificate in the resolved chain (including intermediate
      * certificates that NSS pulled from the certificate database) is revoked
-     * by a store CRL */
-    ret = xmlSecNssX509StoreVerifyChainAgainstCrls(ctx, key_cert, keyInfoCtx);
+     * by a store or key-info CRL */
+    ret = xmlSecNssX509StoreVerifyChainAgainstCrls(ctx, key_cert, keyInfoCrls, keyInfoCtx);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssX509StoreVerifyChainAgainstCrls", xmlSecKeyDataStoreGetName(store));
-        return(-1);
+        res = -1;
+        goto done;
     } else if(ret != 1) {
-        return(0); /* a certificate in the chain was revoked */
+        res = 0; /* a certificate in the chain was revoked */
+        goto done;
     }
 
     /* success */
-    return(1);
+    res = 1;
+
+done:
+    if(keyInfoCrls != NULL) {
+        xmlFree((void*)keyInfoCrls);
+    }
+    return(res);
 }
 
 /**
- * @brief Verifies @p certs list.
+ * @brief Deprecated. Verifies @p certs list.
  * @param store the pointer to X509 key data store.
  * @param certs the untrusted certificates stack.
  * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  * @return pointer to the first verified certificate from @p certs.
  */
 CERTCertificate *
-xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecNssX509StoreVerify(
+    xmlSecKeyDataStorePtr store,
+    CERTCertList* certs,
+    xmlSecKeyInfoCtxPtr keyInfoCtx
+) {
+    return(xmlSecNssX509StoreVerifyCerts(store, certs, NULL, keyInfoCtx));
+}
+
+
+/**
+ * @brief Verifies @p certs list.
+ * @param store the pointer to X509 key data store.
+ * @param certs the untrusted certificates stack.
+ * @param crls an optional NULL-terminated array of additional CRLs (e.g. the
+ * verified CRLs from the key info) to use for the revocation checks; pass
+ * NULL if there are no additional CRLs. The caller keeps ownership of the
+ * CRLs.
+ * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
+ * @return pointer to the first verified certificate from @p certs.
+ */
+CERTCertificate *
+xmlSecNssX509StoreVerifyCerts(
+    xmlSecKeyDataStorePtr store,
+    CERTCertList* certs,
+    const CERTSignedCrl* const* crls,
+    xmlSecKeyInfoCtxPtr keyInfoCtx
+) {
     xmlSecNssX509StoreCtxPtr ctx;
     CERTCertListNode* cur;
     CERTCertList* good_certs = NULL;
-
     CERTCertificate* res = NULL;
     int ret;
 
@@ -644,7 +754,7 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs, xmlSe
         good_certs = certs;
     } else {
         /* look through the certs and remove all revoked certs */
-        ret = xmlSecNssX509StoreRemoveRevokedCerts(ctx, certs, &good_certs, keyInfoCtx);
+        ret = xmlSecNssX509StoreRemoveRevokedCerts(ctx, certs, crls, &good_certs, keyInfoCtx);
         if((ret < 0) || (good_certs == NULL)) {
             xmlSecInternalError("xmlSecNssX509StoreRemoveRevokedCerts", xmlSecKeyDataStoreGetName(store));
             goto done;
@@ -673,8 +783,8 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs, xmlSe
         /* the revocation check above only covered the caller-supplied certs;
          * make sure no certificate in the resolved chain (including
          * intermediate certificates that NSS pulled from the certificate
-         * database) is revoked by a store CRL */
-        ret = xmlSecNssX509StoreVerifyChainAgainstCrls(ctx, cert, keyInfoCtx);
+         * database) is revoked by a store or key-info CRL */
+        ret = xmlSecNssX509StoreVerifyChainAgainstCrls(ctx, cert, crls, keyInfoCtx);
         if(ret < 0) {
             xmlSecInternalError("xmlSecNssX509StoreVerifyChainAgainstCrls", xmlSecKeyDataStoreGetName(store));
             continue; /* ignore all errors and try other certs */
@@ -790,7 +900,7 @@ xmlSecNssX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, CERTSignedCrl * crl) {
 
 /* Helper function to verify CRL time validity */
 static int
-xmlSecNssX509VerifyCRLTimeValidity(CERTSignedCrl* crl, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecNssX509VerifyCRLTimeValidity(const CERTSignedCrl* crl, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     PRTime verification_time;
     PRTime thisUpdate = 0;
     PRTime nextUpdate = 0;

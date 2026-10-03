@@ -696,6 +696,7 @@ OPENSSL_LIBS_LIST="-lcrypto"
 
 XMLSEC_NO_OPENSSL="1"
 XMLSEC_OPENSSL_VERSION=""
+OPENSSL_PC_REQUIRES=""
 OPENSSL_INCLUDE_PATH=
 OPENSSL_LIB_PATH=
 OPENSSL_TEST_CONFIG=
@@ -743,7 +744,8 @@ fi
 dnl Priority 3: Guess with pkg_config
 if test "z$OPENSSL_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
     PKG_CHECK_MODULES(OPENSSL, openssl >= $OPENSSL_MIN_VERSION,
-        [OPENSSL_FOUND=yes],
+        [OPENSSL_FOUND=yes
+         OPENSSL_PC_REQUIRES="openssl, "],
         [OPENSSL_FOUND=no])
 fi
 
@@ -937,6 +939,7 @@ AM_CONDITIONAL(XMLSEC_NO_OPENSSL, test "z$XMLSEC_NO_OPENSSL" = "z1")
 AC_SUBST(XMLSEC_NO_OPENSSL)
 AC_SUBST(OPENSSL_CFLAGS)
 AC_SUBST(OPENSSL_LIBS)
+AC_SUBST(OPENSSL_PC_REQUIRES)
 AC_SUBST(OPENSSL_CRYPTO_LIB)
 AC_SUBST(OPENSSL_TEST_CONFIG)
 AC_SUBST(OPENSSL_MIN_VERSION)
@@ -987,6 +990,8 @@ NSS_LIB_MARKER="libnss3$shrext"
 NSS_LIBS_LIST="-lnss3 -lsmime3 -lnssutil3"
 
 XMLSEC_NO_NSS="1"
+NSS_PC_REQUIRES=""
+NSPR_PC_REQUIRES=""
 NSPR_INCLUDE_PATH=
 NSPR_LIB_PATH=
 NSS_INCLUDE_PATH=
@@ -1045,35 +1050,41 @@ dnl     nspr and nss
 if test "z$NSPR_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" -a "z$with_mozilla_ver" = "z" ; then
     if test "z$NSPR_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(NSPR, mozilla-nspr >= $MOZILLA_MIN_VERSION,
-           [NSPR_FOUND=yes NSPR_PACKAGE=mozilla-nspr],
-           [NSPR_FOUND=no])
+            [NSPR_FOUND=yes NSPR_PACKAGE=mozilla-nspr
+                NSPR_PC_REQUIRES="mozilla-nspr >= $MOZILLA_MIN_VERSION, "],
+            [NSPR_FOUND=no])
     fi
     if test "z$NSPR_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(NSPR, xulrunner-nspr >= $NSPR_MIN_VERSION,
-           [NSPR_FOUND=yes NSPR_PACKAGE=xulrunner-nspr],
-           [NSPR_FOUND=no])
+            [NSPR_FOUND=yes NSPR_PACKAGE=xulrunner-nspr
+                NSPR_PC_REQUIRES="xulrunner-nspr >= $NSPR_MIN_VERSION, "],
+            [NSPR_FOUND=no])
     fi
     if test "z$NSPR_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(NSPR, nspr >= $NSPR_MIN_VERSION,
-           [NSPR_FOUND=yes NSPR_PACKAGE=nspr],
-           [NSPR_FOUND=no])
+            [NSPR_FOUND=yes NSPR_PACKAGE=nspr
+                NSPR_PC_REQUIRES="nspr >= $NSPR_MIN_VERSION, "],
+            [NSPR_FOUND=no])
     fi
 fi
 if test "z$NSS_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" -a "z$with_mozilla_ver" = "z" ; then
     if test "z$NSS_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(NSS, mozilla-nss >= $MOZILLA_MIN_VERSION,
-    	   [NSS_FOUND=yes NSS_PACKAGE=mozilla-nss],
-	       [NSS_FOUND=no])
+            [NSS_FOUND=yes NSS_PACKAGE=mozilla-nss
+                NSS_PC_REQUIRES="mozilla-nss >= $MOZILLA_MIN_VERSION, "],
+            [NSS_FOUND=no])
     fi
     if test "z$NSS_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(NSS, xulrunner-nss >= $NSS_MIN_VERSION,
-    	   [NSS_FOUND=yes NSS_PACKAGE=xulrunner-nss],
-	       [NSS_FOUND=no])
+            [NSS_FOUND=yes NSS_PACKAGE=xulrunner-nss
+                NSS_PC_REQUIRES="xulrunner-nss >= $NSS_MIN_VERSION, "],
+            [NSS_FOUND=no])
     fi
     if test "z$NSS_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(NSS, nss >= $NSS_MIN_VERSION,
-    	   [NSS_FOUND=yes NSS_PACKAGE=nss],
-	       [NSS_FOUND=no])
+            [NSS_FOUND=yes NSS_PACKAGE=nss
+                NSS_PC_REQUIRES="nss >= $NSS_MIN_VERSION, "],
+            [NSS_FOUND=no])
     fi
 fi
 
@@ -1251,6 +1262,8 @@ AM_CONDITIONAL(XMLSEC_NO_NSS, test "z$XMLSEC_NO_NSS" = "z1")
 AC_SUBST(XMLSEC_NO_NSS)
 AC_SUBST(NSPR_PACKAGE)
 AC_SUBST(NSS_PACKAGE)
+AC_SUBST(NSS_PC_REQUIRES)
+AC_SUBST(NSPR_PC_REQUIRES)
 AC_SUBST(NSS_CFLAGS)
 AC_SUBST(NSS_LIBS)
 AC_SUBST(NSS_CRYPTO_LIB)

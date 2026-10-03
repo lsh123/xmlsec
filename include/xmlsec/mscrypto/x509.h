@@ -42,14 +42,15 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoKeyDataX509AdoptKeyCert   
                                                                                  PCCERT_CONTEXT cert);
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoKeyDataX509AdoptCert      (xmlSecKeyDataPtr data,
                                                                                  PCCERT_CONTEXT cert);
-XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT     xmlSecMSCryptoKeyDataX509GetCert        (xmlSecKeyDataPtr data,
-                                                                                 xmlSecSize pos);
-XMLSEC_CRYPTO_EXPORT xmlSecSize         xmlSecMSCryptoKeyDataX509GetCertsSize   (xmlSecKeyDataPtr data);
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoKeyDataX509AdoptCrl       (xmlSecKeyDataPtr data,
                                                                                  PCCRL_CONTEXT crl);
-XMLSEC_CRYPTO_EXPORT PCCRL_CONTEXT      xmlSecMSCryptoKeyDataX509GetCrl         (xmlSecKeyDataPtr data,
-                                                                                 xmlSecSize pos);
-XMLSEC_CRYPTO_EXPORT xmlSecSize         xmlSecMSCryptoKeyDataX509GetCrlsSize    (xmlSecKeyDataPtr data);
+
+XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED xmlSecSize         xmlSecMSCryptoKeyDataX509GetCertsSize (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED PCCERT_CONTEXT     xmlSecMSCryptoKeyDataX509GetCert      (xmlSecKeyDataPtr data,
+                                                                                                 xmlSecSize pos);
+XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED xmlSecSize         xmlSecMSCryptoKeyDataX509GetCrlsSize  (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED PCCRL_CONTEXT      xmlSecMSCryptoKeyDataX509GetCrl       (xmlSecKeyDataPtr data,
+                                                                                                 xmlSecSize pos);
 
 
 /**

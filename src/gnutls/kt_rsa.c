@@ -627,6 +627,20 @@ xmlSecGnuTLSRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
         return(-1);
     }
 
+    /* GnuTLS cannot perform RSA-OAEP with SHA1 or SHA-224 digests:
+     * gnutls_x509_spki_set_rsa_oaep_params accepts them, but
+     * gnutls_pubkey_encrypt_data/gnutls_privkey_decrypt_data fail at
+     * runtime; reject them early with a clear error instead. */
+    if((digestAlg == GNUTLS_DIG_SHA1) || (digestAlg == GNUTLS_DIG_SHA224)) {
+        xmlSecInvalidTransformError2(transform,
+            "GnuTLS does not support RSA-OAEP with the SHA1 or SHA-224 digest algorithm (%s): "
+            "use SHA-256, SHA-384 or SHA-512 instead",
+            xmlSecErrorsSafeString(oaepParams.digestAlgorithm)
+        );
+        xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
+        return(-1);
+    }
+
     ctx->digestAlg = digestAlg;
 
     /* transfer the label buffer ownership to ctx */

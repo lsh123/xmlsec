@@ -217,6 +217,8 @@ xmlSecGnuTLSKeyDataX509AddCertInternal(xmlSecGnuTLSX509DataCtxPtr ctx, gnutls_x5
         if(cert2 == NULL) {
             continue;
         }
+        /* remove the cert if it's equal, we don't care if it's same pointer since
+         * certs are refcounted */
         if(gnutls_x509_crt_equals(cert, cert2) == 1) {
             ret = xmlSecPtrListRemove(&(ctx->certsList), ii);
             if(ret < 0) {
@@ -265,14 +267,6 @@ xmlSecGnuTLSKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, gnutls_x509_crt_t cer
 
     ctx = xmlSecGnuTLSX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
-
-    /* check if for some reasons same cert is used */
-    if((ctx->keyCert != NULL) && ((cert == ctx->keyCert) || (gnutls_x509_crt_equals(cert, ctx->keyCert) == 1))) {
-        if(cert != ctx->keyCert) {
-            gnutls_x509_crt_deinit(cert); /* the list owns ctx->keyCert; the caller expects data to own the cert on success. */
-        }
-        return(0);
-    }
     xmlSecAssert2(ctx->keyCert == NULL, -1);
 
     ret = xmlSecGnuTLSKeyDataX509AddCertInternal(ctx, cert, 1); /* key cert */

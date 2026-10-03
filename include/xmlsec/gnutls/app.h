@@ -78,6 +78,18 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSAppKeysMngrCrlLoadAndVerify (xmlSecK
  *
   *****************************************************************************/
 
+/*
+ * The functions in this section that accept a pwdCallback argument use the
+ * callback only when the pwd argument is NULL. The callback must have the
+ * following signature (compatible with the OpenSSL pem_password_cb):
+ *
+ *     int (*fn)(char *buf, int buflen, int verify, void *userdata);
+ *
+ * It is called with verify=0, the buffer and its size are passed in
+ * buf/buflen, and it must store the password (as a NUL-terminated string)
+ * in buf and return its length. The callback must return -1 on error.
+ */
+
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecGnuTLSAppKeyLoadEx              (const char *filename,
                                                                          xmlSecKeyDataType type,
                                                                          xmlSecKeyDataFormat format,

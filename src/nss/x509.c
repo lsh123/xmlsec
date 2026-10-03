@@ -219,6 +219,85 @@ xmlSecNssKeyDataX509GetCrls(xmlSecKeyDataPtr data) {
     return(ctx->crlsList);
 }
 
+/* Verifies the CRLs attached to @p data with @p store and copies the verified
+ * ones to a new NULL-terminated array of borrowed CERTSignedCrl* pointers.
+ * The CRLs that fail verification are silently skipped.
+ * Returns 0 on success, -1 on error; *res receives the new array (the caller
+ * must free it with xmlFree()) or NULL if there are no CRLs or none of them was
+ * verified. */
+int
+xmlSecNssX509DataVerifyAndCopyKeyInfoCrls(
+    xmlSecKeyDataStorePtr store,
+    xmlSecKeyDataPtr data,
+    xmlSecKeyInfoCtxPtr keyInfoCtx,
+    const CERTSignedCrl* const** res
+) {
+    xmlSecNssX509CrlNodePtr cur;
+    xmlSecNssX509CrlNodePtr crlsList;
+    const CERTSignedCrl** arr;
+    xmlSecSize numCrls = 0;
+    xmlSecSize numVerified = 0;
+    int ret;
+
+    xmlSecAssert2(store != NULL, -1);
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(res != NULL, -1);
+    xmlSecAssert2(*res == NULL, -1);
+
+    *res = NULL;
+
+    crlsList = xmlSecNssKeyDataX509GetCrls(data);
+    if(crlsList == NULL) {
+        return(0);
+    }
+
+    /* count the CRLs */
+    for(cur = crlsList; cur != NULL; cur = cur->next) {
+        if(cur->crl != NULL) {
+            ++numCrls;
+        }
+    }
+    if(numCrls == 0) {
+        return(0);
+    }
+
+    arr = (const CERTSignedCrl**)xmlMalloc((numCrls + 1) * sizeof(CERTSignedCrl*));
+    if(arr == NULL) {
+        xmlSecMallocError((numCrls + 1) * sizeof(CERTSignedCrl*), NULL);
+        return(-1);
+    }
+
+    /* verify each CRL and keep the verified ones */
+    for(cur = crlsList; cur != NULL; cur = cur->next) {
+        if(cur->crl == NULL) {
+            continue;
+        }
+        ret = xmlSecNssX509StoreVerifyCrl(store, cur->crl, keyInfoCtx);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecNssX509StoreVerifyCrl", NULL);
+            xmlFree(arr);
+            return(-1);
+        } else if(ret != 1) {
+            /* skip the CRLs that fail verification */
+            continue;
+        }
+        arr[numVerified] = cur->crl;
+        ++numVerified;
+    }
+    arr[numVerified] = NULL;
+
+    if(numVerified == 0) {
+        /* none of the CRLs was verified, nothing to report */
+        xmlFree(arr);
+    } else {
+        *res = arr;
+    }
+
+    /* success */
+    return(0);
+}
+
 static CERTCertListNode*
 xmlSecNssKeyDataX509FindCertInternal(xmlSecNssX509DataCtxPtr ctx, CERTCertificate* cert) {
     CERTCertListNode* cur;
@@ -299,12 +378,6 @@ xmlSecNssKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, CERTCertificate* cert) {
 
     ctx = xmlSecNssX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
-
-    /* check if for some reason the same cert is used */
-    if((ctx->keyCert != NULL) && ((ctx->keyCert == cert) || (CERT_CompareCerts(cert, ctx->keyCert) == PR_TRUE))) {
-        CERT_DestroyCertificate(cert);  /* caller expects data to own the cert on success. */
-        return(0);
-    }
     xmlSecAssert2(ctx->keyCert == NULL, -1);
 
     ret = xmlSecNssKeyDataX509AddCertInternal(ctx, cert, 1); /* key cert */
@@ -334,11 +407,12 @@ xmlSecNssKeyDataX509AdoptCert(xmlSecKeyDataPtr data, CERTCertificate* cert) {
     ctx = xmlSecNssX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
-   /* pkcs12 files sometimes have key cert twice: as the key cert and as the cert in the chain */
+    /* pkcs12 files sometimes have key cert twice: as the key cert and as the cert in the chain */
     if((ctx->keyCert != NULL) && ((ctx->keyCert == cert) || (CERT_CompareCerts(cert, ctx->keyCert) == PR_TRUE))) {
         CERT_DestroyCertificate(cert); /* caller expects data to own the cert on success. */
         return(0);
     }
+
     return(xmlSecNssKeyDataX509AddCertInternal(ctx, cert, 0)); /* not a key cert */
 }
 
@@ -949,6 +1023,7 @@ xmlSecNssVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xmlS
     xmlSecKeyDataPtr keyValue;
     CERTCertificate* cert;
     CERTCertificate* keyCert;
+    const CERTSignedCrl* const* keyInfoCrls = NULL;
     int ret;
     SECStatus status;
     PRTime notBefore, notAfter;
@@ -973,7 +1048,20 @@ xmlSecNssVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xmlS
         xmlSecInternalError("xmlSecKeysMngrGetDataStore", xmlSecKeyDataGetName(data));
         return(-1);
     }
-    cert = xmlSecNssX509StoreVerify(x509Store, ctx->certsList, keyInfoCtx);
+
+    /* verify the key-info CRLs and keep the verified ones for the revocation
+     * checks in xmlSecNssX509StoreVerify; the CRLs that fail verification
+     * are skipped */
+    ret = xmlSecNssX509DataVerifyAndCopyKeyInfoCrls(x509Store, data, keyInfoCtx, &keyInfoCrls);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNssX509DataVerifyAndCopyKeyInfoCrls", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+
+    cert = xmlSecNssX509StoreVerifyCerts(x509Store, ctx->certsList, keyInfoCrls, keyInfoCtx);
+    if(keyInfoCrls != NULL) {
+        xmlFree((void*)keyInfoCrls);
+    }
     if(cert == NULL) {
         /* check if we want to fail if cert is not found */
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT) != 0) {

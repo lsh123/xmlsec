@@ -95,9 +95,9 @@ xmlSecMSCngKeyDataX509Finalize(xmlSecKeyDataPtr data) {
 static int
 xmlSecMSCngKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     PCCERT_CONTEXT srcCert = NULL;
-    PCCERT_CONTEXT dstCert;
+    PCCERT_CONTEXT dstCert = NULL;
     PCCRL_CONTEXT srcCrl = NULL;
-    PCCRL_CONTEXT dstCrl;
+    PCCRL_CONTEXT dstCrl = NULL;
     xmlSecMSCngX509DataCtxPtr srcCtx;
     xmlSecMSCngX509DataCtxPtr dstCtx;
     int ret;
@@ -205,36 +205,17 @@ xmlSecMSCngKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
     ctx = xmlSecMSCngX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->hMemStore != 0, -1);
+    xmlSecAssert2(ctx->keyCert == NULL, -1);
 
-    /* check if the same cert is used for some reason */
-    if ((ctx->keyCert != NULL) && (CertCompareCertificate(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, cert->pCertInfo, ctx->keyCert->pCertInfo) == TRUE)) {
-        CertFreeCertificateContext(cert);  /* caller expects data to own the cert on success. */
-        return(0);
-    }
-
-    /* replace the existing key certificate, duplicate to ensure the private key is copied */
-    if(ctx->keyCert != NULL) {
-        CertFreeCertificateContext(ctx->keyCert);
-        ctx->keyCert = NULL;
-    }
-
-    /* replace the existing key certificate, duplicate to ensure the private key is copied */
-    ctx->keyCert = CertDuplicateCertificateContext(cert);
-    if (ctx->keyCert == NULL) {
-        xmlSecMSCngLastError("CertDuplicateCertificateContext", NULL);
-        return(-1);
-    }
-
-    /* CertAddCertificateContextToStore will NOT create a duplicate cert if NULL is passed as the last parameter */
+    /* CertAddCertificateContextToStore creates a new copy of the certificate context
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddcertificatecontexttostore */
     if (!CertAddCertificateContextToStore(ctx->hMemStore, cert, CERT_STORE_ADD_USE_EXISTING,  NULL)) {
         xmlSecMSCngLastError("CertAddCertificateContextToStore", NULL);
-        CertFreeCertificateContext(ctx->keyCert);
-        ctx->keyCert = NULL;        
         return(-1);
     }
 
-    /* caller expects data to own the cert on success. */
-    CertFreeCertificateContext(cert);
+    /* cert is now owned by data */
+    ctx->keyCert = cert;
     return(0);
 }
 
@@ -258,11 +239,13 @@ xmlSecMSCngKeyDataX509AdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
 
     /* pkcs12 files sometimes have key cert twice: as the key cert and as the cert in the chain */
     if ((ctx->keyCert != NULL) && (CertCompareCertificate(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, cert->pCertInfo, ctx->keyCert->pCertInfo) == TRUE)) {
-        CertFreeCertificateContext(cert); /* caller expects data to own the cert on success. */
+        /* the cert is already owned by ctx->keyCert caller expects data to own the cert on success. */
+        CertFreeCertificateContext(cert);
         return(0);
     }
 
-    /* CertAddCertificateContextToStore will NOT create a duplicate cert if NULL is passed as the last parameter */
+    /* CertAddCertificateContextToStore creates a new copy of the certificate context
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddcertificatecontexttostore */
     if (!CertAddCertificateContextToStore(ctx->hMemStore, cert, CERT_STORE_ADD_USE_EXISTING, NULL)) {
         xmlSecMSCngLastError("CertAddCertificateContextToStore", NULL);
         return(-1);
@@ -290,12 +273,15 @@ xmlSecMSCngKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, PCCRL_CONTEXT crl) {
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->hMemStore != 0, -1);
 
-    if (!CertAddCRLContextToStore(ctx->hMemStore, crl, CERT_STORE_ADD_ALWAYS, NULL)) {
+    /* CertAddCRLContextToStore creates a new copy of the certificate context
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddcrlcontexttostore */    
+    if (!CertAddCRLContextToStore(ctx->hMemStore, crl, CERT_STORE_ADD_USE_EXISTING, NULL)) {
         xmlSecMSCngLastError("CertAddCRLContextToStore", NULL);
         return(-1);
     }
-    CertFreeCRLContext(crl);
 
+    /* caller expects data to own the crl on success. */
+    CertFreeCRLContext(crl);
     return(0);
 }
 

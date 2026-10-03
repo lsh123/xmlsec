@@ -564,6 +564,20 @@ struct _xmlSecCryptoDLFunctions {
 #define XMLSEC_UNREFERENCED(param)   ((void)(param))
 #endif /* XMLSEC_UNREFERENCED */
 
+
+/**
+ * @brief The maximum length of the input string for #xmlSecBnFromString.
+ * @details The BN string parsing routines process the input digit by digit and
+ * the total cost grows with the square of the string length. The actual
+ * usage in the XMLSec library is limited to parsing X509 serial numbers
+ * which length is limited to 20 octets (160 bits) by RFC 5280 which is
+ * less than 50 dec/hex digits.
+ */
+#ifndef XMLSEC_BN_FROM_STRING_MAX_LEN
+#  define XMLSEC_BN_FROM_STRING_MAX_LEN                     ((xmlSecSize)64)
+#endif /* XMLSEC_BN_FROM_STRING_MAX_LEN */
+
+
 /******************************************************************************
  *
  * Helpers to convert from void* to function pointer, this silences

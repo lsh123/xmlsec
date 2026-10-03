@@ -49,8 +49,13 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
     assert(mngr);
     assert(xml_file);
 
-    /* load file */
+    /* load file: LIBXML_VERSION encodes major*10000+minor*100+micro,
+     * so 21300 is libxml2 2.13.0, where XML_PARSE_NO_XXE was introduced. */
+#if LIBXML_VERSION >= 21300
+    doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT | XML_PARSE_NO_XXE);
+#else /* LIBXML_VERSION >= 21300 */
     doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT);
+#endif /* LIBXML_VERSION >= 21300 */
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
         fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
         goto done;
@@ -120,6 +125,7 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
         fprintf(stdout, "Signature is OK\n");
     } else {
         fprintf(stdout, "Signature is INVALID\n");
+        goto done;
     }
 
     /* success */

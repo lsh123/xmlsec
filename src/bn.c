@@ -24,6 +24,7 @@
 #include <xmlsec/base64.h>
 #include <xmlsec/bn.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/private.h>
 
 #include "cast_helpers.h"
 
@@ -150,7 +151,9 @@ xmlSecBnZero(xmlSecBnPtr bn) {
  * @brief Reads @p bn from string @p str in given base.
  * @details Reads @p bn from string @p str assuming it has base @p base. The value is
  * always treated as an unsigned magnitude; a sign character ('+' or '-') is not
- * allowed and will be rejected as an invalid digit.
+ * allowed and will be rejected as an invalid digit. The input string length is
+ * hard-limited to XMLSEC_BN_FROM_STRING_MAX_LEN characters (64 by default);
+ * a longer string is rejected with an error.
  * @param bn the pointer to BN.
  * @param str the string with BN.
  * @param base the base for @p str.
@@ -182,6 +185,15 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
      * Finally, we can add one byte for the 00 prefix.
      */
     strSize = xmlSecStrlen(str);
+    /* bound the input length: the parsing loop below is quadratic in the
+     * number of digits, so the length is capped to keep the CPU cost bounded
+     * for untrusted input (e.g. document content) */
+    if(strSize > XMLSEC_BN_FROM_STRING_MAX_LEN) {
+        xmlSecInvalidSizeMoreThanError("input string length", strSize,
+            XMLSEC_BN_FROM_STRING_MAX_LEN, NULL);
+        return (-1);
+    }
+
     /* note that the bn was just cleared and has size 0 */
     size = strSize / 2 + 1 + 1;
     ret = xmlSecBufferSetMaxSize(bn, size);
@@ -196,8 +208,10 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
      *
      * Note: each digit is processed with one multiply and one add, so the
      * total cost is quadratic in the number of digits. This is acceptable:
-     * the inputs are short (e.g. key sizes, serial numbers) and the simple
-     * schoolbook algorithm avoids pulling in a full bignum parser. */
+     * the input length is hard-limited by XMLSEC_BN_FROM_STRING_MAX_LEN
+     * (checked above) which keeps the CPU cost bounded even for untrusted
+     * input, and the simple schoolbook algorithm avoids pulling in a full
+     * bignum parser. */
     ii = 0;
     while(ii < strSize) {
         ch = str[ii++];

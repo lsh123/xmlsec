@@ -20,6 +20,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
+#include <xmlsec/parser.h>
 
 int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size);
 
@@ -107,7 +108,7 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
     }
 
     input_doc = xmlReadMemory((const char*)data, (int)size, "fuzz.xml", NULL,
-                              XML_PARSE_NONET | XML_PARSE_NOENT);
+        xmlSecParserGetDefaultOptions() | XML_PARSE_PEDANTIC | XML_PARSE_NONET);
     if (input_doc == NULL || (root = xmlDocGetRootElement(input_doc)) == NULL) {
         goto done;
     }

@@ -272,6 +272,17 @@ xmlSecGnuTLSKWRfc3394SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         xmlSecInternalError("xmlSecTransformKWRfc3394SetKey", xmlSecTransformGetName(transform));
         return(-1);
     }
+
+    /*
+     * The cached cipher was created from the previous key material;
+     * release it so it is re-created with the new key on the next
+     * block operation.
+     */
+    if(ctx->cipher != NULL) {
+        gnutls_cipher_deinit(ctx->cipher);
+        ctx->cipher = NULL;
+    }
+
     return(0);
 }
 

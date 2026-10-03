@@ -251,19 +251,6 @@ xmlSecOpenSSLKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, X509* cert) {
 
     ctx = xmlSecOpenSSLX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
-
-
-    /* check if for some reasons same cert is used */
-    if(ctx->keyCert != NULL) {
-        if(cert == ctx->keyCert) {
-            X509_free(cert);  /* caller expects data to own the cert on success, this is required for refcounted objects. */
-            return(0);
-        }
-        if(X509_cmp(cert, ctx->keyCert) == 0) {
-            X509_free(cert);  /* caller expects data to own the cert on success. */
-            return(0);
-        }
-    }
     xmlSecAssert2(ctx->keyCert == NULL, -1);
 
     ret = xmlSecOpenSSLKeyDataX509AddCertInternal(ctx, cert, 1); /* key cert */
@@ -287,6 +274,7 @@ xmlSecOpenSSLKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, X509* cert) {
 int
 xmlSecOpenSSLKeyDataX509AdoptCert(xmlSecKeyDataPtr data, X509* cert) {
     xmlSecOpenSSLX509DataCtxPtr ctx;
+    int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), -1);
     xmlSecAssert2(cert != NULL, -1);
@@ -300,7 +288,14 @@ xmlSecOpenSSLKeyDataX509AdoptCert(xmlSecKeyDataPtr data, X509* cert) {
         X509_free(cert); /* caller expects data to own the cert on success. */
         return(0);
     }
-    return(xmlSecOpenSSLKeyDataX509AddCertInternal(ctx, cert, 0)); /* not a key cert */
+    ret = xmlSecOpenSSLKeyDataX509AddCertInternal(ctx, cert, 0); /* not a key cert */
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLKeyDataX509AddCertInternal", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+
+    /* success: cert is now owned by data */
+    return(0);
 }
 
 /**

@@ -49,6 +49,52 @@ static xmlSecKeyPtr     xmlSecGnuTLSAppKeyFromCertLoadMemory    (const xmlSecByt
                                                                  xmlSecKeyDataFormat format);
 #endif /* XMLSEC_NO_X509 */
 
+/*
+ * The password callback used by the key and PKCS12 loading functions below.
+ * For compatibility with the other backends it has the same signature
+ * as the OpenSSL pem_password_cb (a function type, so a pointer to it
+ * is a function pointer).
+ */
+typedef int xmlSecGnuTLSAppPwdCallback(char *buf, int buflen, int verify, void *userdata);
+
+XMLSEC_PTR_TO_FUNC_IMPL(xmlSecGnuTLSAppPwdCallback)
+
+/**
+ * @brief Resolves the password for key/PKCS12 loading.
+ * @details Returns the explicit password if it is not NULL. Otherwise, if a
+ * password callback is given, invokes it (with verify=0) to obtain the
+ * password into the supplied buffer and returns it.
+ *
+ * @param pwd the explicitly provided password.
+ * @param pwdCallback the password callback, used when pwd is NULL.
+ * @param pwdCallbackCtx the user context for the password callback.
+ * @param buf the buffer to store the password in when the callback is used.
+ * @param bufSize the size of the buffer.
+ * @return the password to use or NULL if no password is available
+ *         or the password callback failed.
+ */
+static const char*
+xmlSecGnuTLSAppResolvePwd(const char* pwd, void* pwdCallback, void* pwdCallbackCtx,
+                          char* buf, int bufSize) {
+    int ret;
+
+    if(pwd != NULL) {
+        return(pwd);
+    }
+    if(pwdCallback == NULL) {
+        return(NULL);
+    }
+
+    ret = XMLSEC_PTR_TO_FUNC(xmlSecGnuTLSAppPwdCallback, pwdCallback)(buf, bufSize, 0, pwdCallbackCtx);
+    if((ret < 0) || (ret >= bufSize)) {
+        xmlSecInternalError("pwdCallback", NULL);
+        return(NULL);
+    }
+    buf[ret] = '\0';
+
+    return(buf);
+}
+
 
 /**
  * @brief Initializes the GnuTLS crypto engine.
@@ -92,8 +138,9 @@ xmlSecGnuTLSAppShutdown(void) {
  * @param filename the key filename.
  * @param type the expected key type.
  * @param format the key file format.
- * @param pwd the key file password.
- * @param pwdCallback the key password callback.
+ * @param pwd the key file password. If NULL, the password is obtained
+ *        from the password callback.
+ * @param pwdCallback the key password callback, used when pwd is NULL.
  * @param pwdCallbackCtx the user context for password callback.
  * @return pointer to the key or NULL if an error occurs.
  */
@@ -152,8 +199,9 @@ xmlSecGnuTLSAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATT
  * @param data the binary key data.
  * @param dataSize the size of binary key.
  * @param format the key file format.
- * @param pwd the key file password.
- * @param pwdCallback the key password callback.
+ * @param pwd the key file password. If NULL, the password is obtained
+ *        from the password callback.
+ * @param pwdCallback the key password callback, used when pwd is NULL.
  * @param pwdCallbackCtx the user context for password callback.
  * @return pointer to the key or NULL if an error occurs.
  */
@@ -441,8 +489,9 @@ done:
  * in format=xmlSecKeyDataFormatPkcs12.
  *
  * @param filename the PKCS12 key filename.
- * @param pwd the PKCS12 file password.
- * @param pwdCallback the password callback.
+ * @param pwd the PKCS12 file password. If NULL, the password is obtained
+ *        from the password callback.
+ * @param pwdCallback the password callback, used when pwd is NULL.
  * @param pwdCallbackCtx the user context for password callback.
  * @return pointer to the key or NULL if an error occurs.
  */
@@ -463,14 +512,15 @@ xmlSecGnuTLSAppPkcs12Load(const char *filename,
  *
  * @param data the PKCS12 binary data.
  * @param dataSize the PKCS12 binary data size.
- * @param pwd the PKCS12 file password.
- * @param pwdCallback the password callback.
+ * @param pwd the PKCS12 file password. If NULL, the password is obtained
+ *        from the password callback.
+ * @param pwdCallback the password callback, used when pwd is NULL.
  * @param pwdCallbackCtx the user context for password callback.
  * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecGnuTLSAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
-    const char *pwd, void* pwdCallback XMLSEC_ATTRIBUTE_UNUSED, void* pwdCallbackCtx XMLSEC_ATTRIBUTE_UNUSED
+    const char *pwd, void* pwdCallback, void* pwdCallbackCtx
 ) {
     xmlSecKeyPtr key = NULL;
     xmlSecKeyPtr res = NULL;
@@ -481,11 +531,23 @@ xmlSecGnuTLSAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     gnutls_x509_crt_t key_cert = NULL;
     xmlChar * keyName = NULL;
     xmlSecSize certsSize;
+    const char * effectivePwd;
+    char pwdBuf[2048];
     int err;
     int ret;
 
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(dataSize > 0, NULL);
+
+    /*
+     * Resolve the password: use the explicit password if it is given,
+     * otherwise obtain it from the password callback.
+     */
+    effectivePwd = xmlSecGnuTLSAppResolvePwd(pwd, pwdCallback, pwdCallbackCtx, pwdBuf, sizeof(pwdBuf));
+    if((effectivePwd == NULL) && (pwdCallback != NULL)) {
+        /* the password callback failed; the error is reported by xmlSecGnuTLSAppResolvePwd */
+        return(NULL);
+    }
 
     /* prepare */
     ret = xmlSecPtrListInitialize(&(certsList), xmlSecGnuTLSX509CrtListId);
@@ -495,7 +557,7 @@ xmlSecGnuTLSAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     }
 
     /* load pkcs12 */
-    ret = xmlSecGnuTLSPkcs12LoadMemory(data, dataSize, pwd, &x509_privkey, &key_cert, &certsList, &keyName);
+    ret = xmlSecGnuTLSPkcs12LoadMemory(data, dataSize, effectivePwd, &x509_privkey, &key_cert, &certsList, &keyName);
     if((ret < 0) || (x509_privkey == NULL)) {
         xmlSecInternalError("xmlSecGnuTLSPkcs12LoadMemory", NULL);
         goto done;
@@ -719,14 +781,16 @@ xmlSecGnuTLSAppPemDerKeyLoadMemory(const xmlSecByte * data, xmlSecSize dataSize,
 
 static xmlSecKeyPtr
 xmlSecGnuTLSAppPkcs8KeyLoadMemory(const xmlSecByte * data, xmlSecSize dataSize, gnutls_x509_crt_fmt_t fmt,
-    const char *pwd, void* pwdCallback XMLSEC_ATTRIBUTE_UNUSED, void* pwdCallbackCtx XMLSEC_ATTRIBUTE_UNUSED)
+    const char *pwd, void* pwdCallback, void* pwdCallbackCtx)
 {
     gnutls_x509_privkey_t x509_privkey = NULL;
     gnutls_privkey_t privkey = NULL;
     xmlSecKeyPtr key = NULL;
     gnutls_datum_t datum;
     int err;
+    const char * effectivePwd;
     const char * safePwd;
+    char pwdBuf[2048];
 
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(dataSize > 0, NULL);
@@ -734,11 +798,21 @@ xmlSecGnuTLSAppPkcs8KeyLoadMemory(const xmlSecByte * data, xmlSecSize dataSize, 
     datum.data = (xmlSecByte*)data; /* for const */
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, datum.size, return(NULL), NULL);
 
+    /*
+     * Resolve the password: use the explicit password if it is given,
+     * otherwise obtain it from the password callback.
+     */
+    effectivePwd = xmlSecGnuTLSAppResolvePwd(pwd, pwdCallback, pwdCallbackCtx, pwdBuf, sizeof(pwdBuf));
+    if((effectivePwd == NULL) && (pwdCallback != NULL)) {
+        /* the password callback failed; the error is reported by xmlSecGnuTLSAppResolvePwd */
+        return(NULL);
+    }
+
     /* GnuTLS >= 3.8 calls strlen() on the password in the encrypted key
      * import path, so a NULL password must be normalized to an empty string,
      * which is the conventional "no password" value (the OpenSSL backend
      * treats a NULL password as an empty password). */
-    safePwd = (pwd != NULL) ? pwd : "";
+    safePwd = (effectivePwd != NULL) ? effectivePwd : "";
 
     /* read the private key from pkcs8 */
     err = gnutls_x509_privkey_init(&x509_privkey);
@@ -1349,6 +1423,11 @@ xmlSecGnuTLSAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename,
  */
 void*
 xmlSecGnuTLSAppGetDefaultPwdCallback(void) {
-    /* TODO: GnuTLS doesn't support password callback */
+    /*
+     * The GnuTLS backend has no built-in interactive password prompt, so
+     * there is no default callback to return. Callers must either supply
+     * an explicit password or a password callback with the documented
+     * signature (compatible with the OpenSSL pem_password_cb).
+     */
     return(NULL);
 }

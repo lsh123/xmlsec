@@ -142,12 +142,14 @@ xmlSecGCryptAppShutdown(void) {
 
 /**
  * @brief Reads a key from a file.
+ * @details Reads only unencrypted traditional DER key formats (PKCS#1/DSS/EC);
+ * the password parameters are not used by the GCrypt back-end.
  * @param filename the key filename.
  * @param type the expected key type.
  * @param format the key file format.
- * @param pwd the key file password.
- * @param pwdCallback the key password callback.
- * @param pwdCallbackCtx the user context for password callback.
+ * @param pwd the key file password (not used by the GCrypt back-end).
+ * @param pwdCallback the key password callback (not used by the GCrypt back-end).
+ * @param pwdCallbackCtx the user context for password callback (not used by the GCrypt back-end).
  * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
@@ -193,12 +195,14 @@ xmlSecGCryptAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATT
 
 /**
  * @brief Reads a key from the memory buffer.
+ * @details Reads only unencrypted traditional DER key formats (PKCS#1/DSS/EC);
+ * the password parameters are not used by the GCrypt back-end.
  * @param data the binary key data.
  * @param dataSize the size of binary key.
  * @param format the key file format.
- * @param pwd the key file password.
- * @param pwdCallback the key password callback.
- * @param pwdCallbackCtx the user context for password callback.
+ * @param pwd the key file password (not used by the GCrypt back-end).
+ * @param pwdCallback the key password callback (not used by the GCrypt back-end).
+ * @param pwdCallbackCtx the user context for password callback (not used by the GCrypt back-end).
  * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
@@ -313,9 +317,9 @@ xmlSecGCryptAppKeyCertLoadMemory(xmlSecKeyPtr key,
  * in format=xmlSecKeyDataFormatPkcs12.
  *
  * @param filename the PKCS12 key filename.
- * @param pwd the PKCS12 file password.
- * @param pwdCallback the password callback.
- * @param pwdCallbackCtx the user context for password callback.
+ * @param pwd the PKCS12 file password (not used by the GCrypt back-end).
+ * @param pwdCallback the password callback (not used by the GCrypt back-end).
+ * @param pwdCallbackCtx the user context for password callback (not used by the GCrypt back-end).
  * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
@@ -337,9 +341,9 @@ xmlSecGCryptAppPkcs12Load(const char *filename,
  *
  * @param data the PKCS12 binary data.
  * @param dataSize the PKCS12 binary data size.
- * @param pwd the PKCS12 file password.
- * @param pwdCallback the password callback.
- * @param pwdCallbackCtx the user context for password callback.
+ * @param pwd the PKCS12 file password (not used by the GCrypt back-end).
+ * @param pwdCallback the password callback (not used by the GCrypt back-end).
+ * @param pwdCallbackCtx the user context for password callback (not used by the GCrypt back-end).
  * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
@@ -638,6 +642,8 @@ xmlSecGCryptAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename,
 
 /**
  * @brief Gets default password callback.
+ * @details The GCrypt back-end does not support password callbacks, so this
+ * function always returns NULL.
  *
  * @return default password callback.
  */

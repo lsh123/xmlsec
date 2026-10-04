@@ -853,6 +853,8 @@ xmlSecKWRfc3394Encode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transfor
                 if((ret < 0) || (outWritten2 != XMLSEC_KW_RFC3394_BLOCK_SIZE)) {
                     xmlSecInternalError2("kwRfc3394Id->encrypt", NULL,
                         "outWritten2=" XMLSEC_SIZE_FMT, outWritten2);
+                    /* wipe the local temporary block before returning */
+                    xmlSecMemCleanse(block, sizeof(block));
                     return(-1);
                 }
                 xmlSecKWRfc3394XorCounter(block, tt);
@@ -923,6 +925,8 @@ xmlSecKWRfc3394Decode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transfor
                 if((ret < 0) || (outWritten2 != XMLSEC_KW_RFC3394_BLOCK_SIZE)) {
                     xmlSecInternalError2("kwRfc3394Id->decrypt", NULL,
                         "outWritten2=" XMLSEC_SIZE_FMT, outWritten2);
+                    /* wipe the local temporary block before returning */
+                    xmlSecMemCleanse(block, sizeof(block));
                     return(-1);
                 }
                 memcpy(out, block, 8);

@@ -17,7 +17,7 @@ The latest stable XML Security Library version is **1.3.13**:
   the [coordination page](http://memebeam.org/toys/DebianXmlsec).
 - XML Security Library [OpenBSD](https://openports.pl/path/security/xmlsec) port.
 
-The [previous releases](http://www.aleksey.com/xmlsec/download/) are also available.
+The [previous releases](https://www.aleksey.com/xmlsec/download/) are also available.
 
 The [signature key](https://www.aleksey.com/xmlsec/download/aleksey%40aleksey.com.gpg)
 fingerprint is: `00FD D6A7 DFB8 1C88 F34B  9BF0 E63E CDEF 9E1D 829E`

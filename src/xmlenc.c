@@ -835,13 +835,20 @@ xmlSecEncCtxEncDataNodeWrite(xmlSecEncCtxPtr encCtx) {
 
     /* write encrypted data to xml (if requested) */
     if(encCtx->cipherValueNode != NULL) {
-        xmlSecByte* inBuf;
+        static const xmlSecByte empty[] = {0};
+        const xmlSecByte* inBuf;
         xmlSecSize inSize;
         int inLen;
 
         inBuf = xmlSecBufferGetData(encCtx->result);
         inSize = xmlSecBufferGetSize(encCtx->result);
-        xmlSecAssert2(inBuf != NULL, -1);
+        /* Note: xmlSecBufferGetData() returns NULL for an empty buffer, which is
+         * a valid result for unpadded ciphers when encrypting zero bytes of data;
+         * in that case write an empty <enc:CipherValue/> */
+        if(inBuf == NULL) {
+            inBuf = empty;
+            inSize = 0;
+        }
         XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, return(-1), NULL);
 
 #if LIBXML_VERSION >= 21300

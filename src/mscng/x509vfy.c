@@ -448,7 +448,7 @@ xmlSecMSCngX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, PCCRL_CONTEXT crl) {
     xmlSecAssert2(ctx->crlMemStore != NULL, -1);
 
     /* CertAddCRLContextToStore creates a new copy of the certificate context
-     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddcrlcontexttostore */    
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddcrlcontexttostore */
     if(!CertAddCRLContextToStore(ctx->crlMemStore, crl, CERT_STORE_ADD_USE_EXISTING, NULL)) {
         xmlSecMSCngLastError("CertAddCRLContextToStore", xmlSecKeyDataStoreGetName(store));
         return(-1);
@@ -565,6 +565,8 @@ xmlSecMSCngX509StoreVerifyCrlSignature(
  * @brief Checks if @p cert is in the CRL of @p store.
  * @param store may contain a CRL
  * @param trustedStore trusted certificates added via xmlSecMSCngX509StoreAdoptCert()
+ * @param untrustedStore untrusted certificates added via xmlSecMSCngX509StoreAdoptCert()
+ * @param certStore additional certificates that may be needed for chain building
  * @param cert the certificate that is revoked (or not)
  * @param time the time for CRL validity check (can be NULL)
  * @return 1 if the certificate is NOT revoked, 0 if it is revoked, or a negative value if an error occurs.

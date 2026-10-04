@@ -664,6 +664,8 @@ xmlSecGCryptKeyDataDsaGetKlass(void) {
 
 /**
  * @brief Sets the value of DSA key data.
+ * @details On success, @p dsa_key will be owned by the @p data; on failure the
+ * caller retains ownership.
  * @param data the pointer to DSA key data.
  * @param dsa_key the pointer to GCrypt DSA key.
  * @return 0 on success or a negative value otherwise.
@@ -684,6 +686,8 @@ xmlSecGCryptKeyDataDsaAdoptKey(xmlSecKeyDataPtr data, gcry_sexp_t dsa_key) {
 
 /**
  * @brief Sets the value of DSA key data.
+ * @details On success, @p pub_key and @p priv_key will be owned by the @p data;
+ * on failure the caller retains ownership.
  * @param data the pointer to DSA key data.
  * @param pub_key the pointer to GCrypt DSA pub key.
  * @param priv_key the pointer to GCrypt DSA priv key.
@@ -1179,6 +1183,8 @@ xmlSecGCryptKeyDataRsaGetKlass(void) {
 
 /**
  * @brief Sets the value of RSA key data.
+ * @details On success, @p rsa_key will be owned by the @p data; on failure the
+ * caller retains ownership.
  * @param data the pointer to RSA key data.
  * @param rsa_key the pointer to GCrypt RSA key.
  * @return 0 on success or a negative value otherwise.
@@ -1199,6 +1205,8 @@ xmlSecGCryptKeyDataRsaAdoptKey(xmlSecKeyDataPtr data, gcry_sexp_t rsa_key) {
 
 /**
  * @brief Sets the value of RSA key data.
+ * @details On success, @p pub_key and @p priv_key will be owned by the @p data;
+ * on failure the caller retains ownership.
  * @param data the pointer to RSA key data.
  * @param pub_key the pointer to GCrypt RSA pub key.
  * @param priv_key the pointer to GCrypt RSA priv key.
@@ -1605,6 +1613,8 @@ xmlSecGCryptKeyDataEcGetKlass(void) {
 
 /**
  * @brief Sets the value of EC key data.
+ * @details On success, @p ec_key will be owned by the @p data; on failure the
+ * caller retains ownership.
  * @param data the pointer to EC key data.
  * @param ec_key the pointer to GCrypt EC key.
  * @return 0 on success or a negative value otherwise.
@@ -1624,6 +1634,8 @@ xmlSecGCryptKeyDataEcAdoptKey(xmlSecKeyDataPtr data, gcry_sexp_t ec_key) {
 
 /**
  * @brief Sets the value of EC key data.
+ * @details On success, @p pub_key and @p priv_key will be owned by the @p data;
+ * on failure the caller retains ownership.
  * @param data the pointer to EC key data.
  * @param pub_key the pointer to GCrypt EC pub key.
  * @param priv_key the pointer to GCrypt EC priv key.

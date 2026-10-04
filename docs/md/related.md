@@ -27,7 +27,7 @@
 
 - XML Security Library is included as part of Debian GNU/Linux. For more information see the [coordination page](http://memebeam.org/toys/DebianXmlsec).
 - XML Security Library [OpenBSD](https://openports.pl/path/security/xmlsec) port.
-- [Python xmlsec module](https://github.com/mehcode/python-xmlsec) — Python bindings for XML Security Library.
+- [Python xmlsec module](https://github.com/xmlsec/python-xmlsec) — Python bindings for XML Security Library.
 - [Perl CPAN module](https://metacpan.org/pod/XML::LibXML::xmlsec) — Perl bindings for XML Security Library ([source code](https://github.com/estrelow/Perl-LibXML-Sec)).
 - [Lasso Library](http://lasso.entrouvert.org/) — the Liberty Alliance standards implementation.
 

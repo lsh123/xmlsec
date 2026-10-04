@@ -304,11 +304,21 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
             break;
         case xmlSecAppCmdLineParamTypeStringList:
             if(pos + 1 >= argc) {
-                fprintf(stderr, "Error: string list argument expected for parameter \"%s\".\n",
-                    argv[pos]);
+                fprintf(stderr, "Error: string list argument expected for parameter \"%s\".\n", argv[pos]);
                 return(-1);
             }
             value->strValue = argv[++pos];
+            /*
+             * reject lists with empty entries (a leading or a trailing comma,
+             * or a doubled comma) before the NUL conversion below; a
+             * zero-length entry would silently truncate the list walk in the
+             * consumers of the list
+             */
+            if((value->strValue[0] == ',') || (strstr(value->strValue, ",,") != NULL) ||
+               ((strlen(value->strValue) > 1) && (value->strValue[strlen(value->strValue) - 1] == ','))) {
+                fprintf(stderr, "Error: empty entry found in the comma-separated list for parameter \"%s\".\n", argv[pos - 1]);
+                return(-1);
+            }
             /* we need +2 here to include \0 for the end of the string itself plus additional \0 to indicate end of the list */
             buf = (char*)malloc(strlen(value->strValue) + 2);
             if(buf == NULL) {

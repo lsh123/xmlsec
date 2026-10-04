@@ -784,11 +784,15 @@ done:
 
 /**
  * @brief Verifies @p certs list.
+ * @details Unlike the OpenSSL back-end equivalent, @p crls must not be NULL:
+ * verification is always performed against the given CRLs, and a NULL @p crls
+ * results in an immediate failure (NULL return).
  * @param store the pointer to X509 key data store klass.
  * @param certs the untrusted certificates.
- * @param crls the crls.
+ * @param crls the CRLs (must not be NULL).
  * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
- * @return pointer to the first verified certificate from @p certs.
+ * @return pointer to the first verified certificate from @p certs, or NULL if
+ * verification fails.
  */
 gnutls_x509_crt_t
 xmlSecGnuTLSX509StoreVerify(

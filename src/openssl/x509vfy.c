@@ -479,30 +479,11 @@ xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked(X509 * cert, STACK_OF(X509_REVOKE
             if (ret < 0) {
                 xmlSecOpenSSLError("xmlSecOpenSSLAsn1TimeIsAfter(revocationDate)", NULL);
                 return(-1);
-            }
-            /* ret > 0: revocationDate is later than the verification time */
-            if (ret > 0) {
-                XMLSEC_OPENSSL400_CONST X509_NAME *issuer;
-                time_t ts;
+            } else if (ret > 0) {
+                /* ret > 0: revocationDate is later than the verification time;
+                 * a forward-dated revocation entry has not taken effect yet,
+                 * so the cert is treated as not revoked */
 
-                /* revocationDate > certsVerificationTime, we are good */
-                ret = xmlSecOpenSSLX509Asn1TimeToTime(revocationDate, &ts);
-                if (ret < 0) {
-                    xmlSecInternalError("xmlSecOpenSSLX509Asn1TimeToTime", NULL);
-                    return(-1);
-                }
-                issuer = X509_get_issuer_name(cert);
-                if(issuer != NULL) {
-                    char issuer_name[256];
-                    ret = xmlSecOpenSSLX509NameToString(issuer, issuer_name, sizeof(issuer_name));
-                    xmlSecOtherError3(XMLSEC_ERRORS_R_CRL_NOT_YET_VALID, NULL,
-                        "issuer=%s; revocationDate=%lf",
-                        ((ret >= 0) ? issuer_name : "unknown"),
-                        (double)ts);
-                } else {
-                    xmlSecOtherError2(XMLSEC_ERRORS_R_CRL_NOT_YET_VALID, NULL,
-                        "revocationDate=%lf", (double)ts);
-                }
                 continue;
             }
         }

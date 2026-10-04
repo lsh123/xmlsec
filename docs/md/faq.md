@@ -114,7 +114,7 @@ have name "ID", "Id" or "id". It can be anything you want! There are several way
 - **Use xmlAddID function.** If you are writing an application, you can declare an ID attribute using
   the `xmlAddID` LibXML2 function.
 
-### 3.3. I am trying to sign an XML document and I have a warning about "empty nodes set". Should I worry about this?
+### 3.3. I am trying to sign an XML document and signing fails because the Reference URI does not resolve to any node (empty nodes set). Should I worry about this?
 
 Most likely **yes**. When it's not an error from specification point of view, I can hardly imagine
 a real world case that requires signing an empty nodes set (i.e. signing an empty string). Most likely,

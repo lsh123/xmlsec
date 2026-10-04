@@ -1587,7 +1587,11 @@ xmlSecTransformPump(xmlSecTransformPtr left, xmlSecTransformPtr right, xmlSecTra
     if(((leftType & xmlSecTransformDataTypeXml) != 0) && ((rightType & xmlSecTransformDataTypeXml) != 0)) {
        xmlSecNodeSetPtr nodes = NULL;
 
-        /* left transform owns nodes in the outNodes pointer */
+        /* the node set may either still be referenced by left->outNodes
+         * (the default popXml keeps ownership with left) or the popXml
+         * method may transfer its ownership to us (e.g. the xmlParser
+         * transform); in the latter case we must release the nodes on
+         * error */
         ret = xmlSecTransformPopXml(left, &nodes, transformCtx);
         if(ret < 0) {
              xmlSecInternalError("xmlSecTransformPopXml", xmlSecTransformGetName(left));
@@ -1603,7 +1607,15 @@ xmlSecTransformPump(xmlSecTransformPtr left, xmlSecTransformPtr right, xmlSecTra
         ret = xmlSecTransformPushXml(right, nodes, transformCtx);
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformPushXml", xmlSecTransformGetName(right));
+            /* if left didn't acquire ownership of the nodes, we need to destroy them */
+            if(nodes != left->outNodes) {
+                xmlSecNodeSetDestroy(nodes);
+            }
             return(-1);
+        }
+        /* if left didn't acquire ownership of the nodes, we need to destroy them */
+        if(nodes != left->outNodes) {
+            xmlSecNodeSetDestroy(nodes);
         }
     }  else if(((leftType & xmlSecTransformDataTypeBin) != 0) && ((rightType & xmlSecTransformDataTypeBin) != 0)) {
         xmlSecByte* buf;
@@ -2205,6 +2217,12 @@ xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
 
             inSize = xmlSecBufferGetSize(&(transform->inBuf));
             chunkSize = transformCtx->binaryChunkSize;
+
+            /* make sure (inSize + chunkSize) does not overflow */
+            if(inSize > (XMLSEC_SIZE_MAX - chunkSize)) {
+                xmlSecInvalidSizeMoreThanError("inSize", inSize, (XMLSEC_SIZE_MAX - chunkSize), NULL);
+                return(-1);
+            }
 
             /* ensure that we have space for at least one data chunk */
             ret = xmlSecBufferSetMaxSize(&(transform->inBuf), inSize + chunkSize);

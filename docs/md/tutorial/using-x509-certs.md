@@ -14,9 +14,9 @@ To sign a file using an X509 certificate, an application needs to
 associate the certificate (or certificates) with the private key using
 one of the following functions:
 
-- [xmlSecOpenSSLAppKeyCertLoad](../api/xmlsec_openssl_app.md#xmlsecopensslappkeycertload):
+- [xmlSecCryptoAppKeyCertLoad](../api/xmlsec_core_app.md#xmlseccryptoappkeycertload):
   loads a certificate from a file and adds it to the key;
-- [xmlSecOpenSSLAppPkcs12Load](../api/xmlsec_openssl_app.md#xmlsecopensslapppkcs12load):
+- [xmlSecCryptoAppPkcs12Load](../api/xmlsec_core_app.md#xmlseccryptoapppkcs12load):
   loads a private key and all the certificates associated with it from
   a PKCS12 file;
 - [xmlSecKeyAdoptData](../api/xmlsec_core_keys.md#xmlseckeyadoptdata):

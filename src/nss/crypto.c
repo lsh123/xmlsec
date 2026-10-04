@@ -638,6 +638,14 @@ xmlSecNssUpdateAvailableCryptoTransforms(xmlSecCryptoDLFunctionsPtr functions) {
 
 #endif /* XMLSEC_NO_HMAC */
 
+    /****** KDF ******/
+    /*
+     * NSS has no dedicated OIDs for ConcatKDF and HKDF, so their availability
+     * cannot be checked against the NSS security policy; the transforms are
+     * left registered and will fail at runtime if the selected digest
+     * mechanism is unsupported.
+     */
+
     /****** PBKDF2 ******/
 #ifndef XMLSEC_NO_PBKDF2
     if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_PKCS5_PBKDF2) == 0) {

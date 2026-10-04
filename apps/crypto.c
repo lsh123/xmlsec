@@ -177,6 +177,9 @@ xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
     }
 
 #ifndef XMLSEC_NO_X509
+    /* the caller (apps/cmdline.c) validates the comma-separated list and
+     * rejects empty entries, so this walk always stops at the extra trailing
+     * NUL after the last file */
     for(cert_file = files + strlen(files) + 1; (cert_file[0] != '\0'); cert_file += strlen(cert_file) + 1) {
         ret = xmlSecCryptoAppKeyCertLoad(key, cert_file, format);
         if(ret < 0) {
@@ -258,6 +261,9 @@ xmlSecAppCryptoSimpleKeysMngrEngineKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
 
     /* load certs (if any) */
 #ifndef XMLSEC_NO_X509
+    /* the caller (apps/cmdline.c) validates the comma-separated list and
+     * rejects empty entries, so this walk always stops at the extra trailing
+     * NUL after the last file */
     for(file = certFiles; (file[0] != '\0'); file += strlen(file) + 1) {
         ret = xmlSecCryptoAppKeyCertLoad(key, file, certFormat);
         if(ret < 0) {

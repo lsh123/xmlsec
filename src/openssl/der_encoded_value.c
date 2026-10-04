@@ -236,7 +236,8 @@ xmlSecOpenSSLKeyDataDEREncodedKeyValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr 
     /* get EVP_PKEY */
     pKey = xmlSecOpenSSLKeyGetEvp(key);
     if(pKey == NULL) {
-        xmlSecInternalError("xmlSecOpenSSLKeyGetEvp", xmlSecKeyDataKlassGetName(id));
+        xmlSecInvalidDataError("key value is missing or is not an OpenSSL EVP key data object",
+                               xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 

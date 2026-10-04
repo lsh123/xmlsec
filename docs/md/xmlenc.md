@@ -46,7 +46,7 @@ XML Security library supports the following features as defined in
 | [Camellia-CBC-256](https://www.ietf.org/rfc/rfc9231.html#section-2.6.2) | Optional | Yes | Yes | Yes | No | No | No |
 | [ChaCha20](https://www.w3.org/2021/04/xmldsig-more#chacha20) | Optional | Yes | No | Yes | No | No | No |
 | [ChaCha20-Poly1305](https://www.w3.org/2021/04/xmldsig-more#chacha20poly1305) | Optional | Yes | Yes | Yes | No | No | No |
-| [Stream Encryption Algorithms](https://www.w3.org/TR/xmlenc-core1/#sec-Alg-Stream) | Optional | Yes | Yes | Yes | No | No | No |
+| [Stream Encryption Algorithms](https://www.w3.org/TR/xmlenc-core1/#sec-Alg-Stream) [(11)](#stream-algorithms) | Optional | Yes | Yes | Yes | No | No | No |
 | **Key Derivation** | | | | | | | |
 | [ConcatKDF](https://www.w3.org/TR/xmlenc-core1/#sec-ConcatKDF) | Required | Yes [(3)](#openssl3-required) [(6)](#concatkdf) | Yes [(6)](#concatkdf) | Yes [(6)](#concatkdf) | Yes [(6)](#concatkdf) [(5)](#new-windows-required) | No | No |
 | [PBKDF2](https://www.w3.org/TR/xmlenc-core1/#sec-PBKDF2) | Optional | Yes [(3)](#openssl3-required) [(4)](#pbkdf2) | Yes [(4)](#pbkdf2) | Yes [(4)](#pbkdf2) | Yes [(5)](#new-windows-required) [(4)](#pbkdf2) | No | No |
@@ -90,6 +90,7 @@ XML Security library supports the following features as defined in
 8. <a id="dhx-only"></a> Only DHX (X9.42 format) keys are supported.
 9. <a id="x25519-only"></a> Only X25519 (Curve25519) is supported, the X448 (Curve448) is not supported.
 10. <a id="openssl35-required"></a> Requires OpenSSL 3.5.0 or newer.
+11. <a id="stream-algorithms"></a> The XML Encryption Core specification defines no specific stream encryption algorithm; xmlsec implements ChaCha20 and ChaCha20-Poly1305 (see the rows above, xmldsig-more identifiers).
 
 ### Test vectors
 

@@ -42,8 +42,8 @@ see the Copyright file in the distribution for details.
   - (xmlsec-mscng) Added support for using both current user and local machine certificates store for verifying
     the certificates (new `xmlSecMSCngAppGetCurrentUserCertStoreName()` / `xmlSecMSCngAppGetLocalMachineCertStoreName()`
     APIs; `xmlSecMSCngAppGetCertStoreName` is now a deprecated alias).
-  - (xmlsec-nss) Hardened CRL verification: CRLs without `thisUpdate` / `nextUpdate` are rejected, and the CRL
-    issuer certificate is chain-verified with CA usage.
+  - (xmlsec-nss) Hardened CRL verification: CRLs without `thisUpdate` are rejected, `nextUpdate` is enforced
+    when present, and the CRL issuer certificate is chain-verified with CA usage.
   - (xmlsec-build, **not backward compatible**) Added `--enable-hardening` option to `configure` script and
     `hardening` option to `configure.ps1` script to enable security hardening flags on GCC, Clang, and MSVC
     when the compiler version and the target architecture support it (default: `yes`).

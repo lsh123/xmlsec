@@ -544,7 +544,9 @@ failed:
 
 static void
 test_safe_cast_ptrdiff_to_int(void) {
+#if (PTRDIFF_MIN < INT_MIN) || (PTRDIFF_MAX > INT_MAX)
     ptrdiff_t src;
+#endif /* (PTRDIFF_MIN < INT_MIN) || (PTRDIFF_MAX > INT_MAX) */
     int dst = 0;
     int ret;
 
@@ -669,7 +671,9 @@ failed:
 
 static void
 test_safe_cast_size_t_to_uint(void) {
+#if (SIZE_MAX > UINT_MAX)
     size_t src;
+#endif /* (SIZE_MAX > UINT_MAX) */
     unsigned int dst = 0;
     int ret;
 
@@ -708,7 +712,9 @@ failed:
 
 static void
 test_safe_cast_size_to_uint(void) {
+#if (XMLSEC_SIZE_MAX > UINT_MAX)
     xmlSecSize src;
+#endif /* (XMLSEC_SIZE_MAX > UINT_MAX) */
     unsigned int dst = 0;
     int ret;
 

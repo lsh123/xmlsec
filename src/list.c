@@ -156,7 +156,9 @@ xmlSecPtrListEmpty(xmlSecPtrListPtr list) {
  * @details Copies @p src list items to @p dst list using duplicateItem method
  * of the list klass. If duplicateItem is provided then the list klass must
  * also provide destroyItem so partially copied items can be released on
- * errors. If duplicateItem method is NULL then we just copy pointers to items.
+ * errors. If duplicateItem method is NULL then we just copy pointers to
+ * items, unless destroyItem is also provided, in which case the copy is
+ * rejected because finalizing both lists would free each shared item twice.
  * @param dst the pointer to destination list.
  * @param src the pointer to source list.
  * @return 0 on success or a negative value if an error occurs.
@@ -174,6 +176,17 @@ xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
     if(dst == src) {
         /* copying a list to itself is a no-op */
         return(0);
+    }
+
+    /*
+     * A list klass that shares raw item pointers (duplicateItem is NULL)
+     * and destroys items on finalize/empty (destroyItem is not NULL) would
+     * double free each shared item if both lists were finalized, so such
+     * klasses are not copyable.
+     */
+    if((dst->id->duplicateItem == NULL) && (dst->id->destroyItem != NULL)) {
+        xmlSecInternalError("list klass is not copyable (destroyItem set without duplicateItem)", xmlSecPtrListGetName(dst));
+        return(-1);
     }
 
     initialUse = dst->use;

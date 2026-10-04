@@ -1291,6 +1291,7 @@ static int                      xmlSecAppInit                   (void);
 static void                     xmlSecAppShutdown               (void);
 static int                      xmlSecAppLoadKeys               (void);
 static int                      xmlSecAppPrepareKeyInfoCtx      (xmlSecKeyInfoCtxPtr ctx);
+static int                      xmlSecAppDebugOutputRequested   (void);
 
 #ifndef XMLSEC_NO_XMLDSIG
 static int                      xmlSecAppSignFile               (const char* inputFileName,
@@ -1355,6 +1356,17 @@ const char* gOutputFilename = NULL;
 static _CrtMemState g_memStateAfterInit;
 static int g_memStateAfterInitSet = 0;
 #endif /* defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC) */
+
+/* returns 1 if the user requested debug output (via --verbose,
+ * --print-debug, --print-xml-debug, or --store-references/--store-signatures
+ * which enable debug output), and 0 otherwise */
+static int
+xmlSecAppDebugOutputRequested(void) {
+    return ((g_printDebug != 0) ||
+            (xmlSecAppCmdLineParamIsSet(&verboseParam)) ||
+            (xmlSecAppCmdLineParamIsSet(&printDebugParam)) ||
+            (xmlSecAppCmdLineParamIsSet(&printXmlDebugParam))) ? 1 : 0;
+}
 
 #if defined(XMLSEC_WINDOWS) && defined(UNICODE)
 int wmain(int argc, wchar_t *argv[]) {
@@ -1811,7 +1823,7 @@ done:
     }
 
     /* print debug info if requested */
-    if(xmlSecAppCmdLineParamIsSet(&verboseParam)) {
+    if(xmlSecAppDebugOutputRequested()) {
         xmlSecAppPrintDSigCtx(&dsigCtx);
     }
     xmlSecDSigCtxFinalize(&dsigCtx);
@@ -1871,7 +1883,7 @@ done:
     }
 
     /* print debug info if requested */
-    if(xmlSecAppCmdLineParamIsSet(&verboseParam)) {
+    if(xmlSecAppDebugOutputRequested()) {
         xmlSecDSigReferenceCtxPtr dsigRefCtx;
         xmlSecSize good, i, size;
 
@@ -2099,7 +2111,7 @@ done:
     }
 
     /* print debug info if requested */
-    if(xmlSecAppCmdLineParamIsSet(&verboseParam)) {
+    if(xmlSecAppDebugOutputRequested()) {
         xmlSecAppPrintEncCtx(&encCtx);
     }
     xmlSecEncCtxFinalize(&encCtx);
@@ -2169,7 +2181,7 @@ done:
     }
 
     /* print debug info if requested */
-    if(xmlSecAppCmdLineParamIsSet(&verboseParam)) {
+    if(xmlSecAppDebugOutputRequested()) {
         xmlSecAppPrintEncCtx(&encCtx);
     }
     xmlSecEncCtxFinalize(&encCtx);

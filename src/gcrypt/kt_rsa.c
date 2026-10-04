@@ -378,7 +378,7 @@ done:
 static int
 xmlSecGCryptRsaPkcs1Decrypt(xmlSecGCryptRsaPkcs1CtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out) {
     xmlSecSize inSize;
-    xmlSecSize modulusSize;
+    xmlSecSize modulusSize = 0;
     const void *modulusData;
     int inLen;
     gcry_sexp_t s_priv_key;

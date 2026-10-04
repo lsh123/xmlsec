@@ -149,7 +149,7 @@ typedef void                    (*xmlSecPtrDebugDumpItemMethod) (xmlSecPtr ptr,
  * @details If #duplicateItem is NULL then #xmlSecPtrListCopy shares the raw item
  * pointers between the source and the destination lists. In that case, if
  * #destroyItem is not NULL, finalizing both lists will free each shared item
- * twice.
+ * twice, so #xmlSecPtrListCopy rejects such list klasses.
  */
 struct _xmlSecPtrListKlass {
     const xmlChar*                      name;  /**< the list klass name. */

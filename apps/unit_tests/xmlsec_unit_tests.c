@@ -255,7 +255,16 @@ void testLog(const char* fmt, ...) {
 
     if (len <= 0) return;
     if ((size_t)len >= sizeof(buf)) {
-        len = (int)(sizeof(buf) - 1);
+        /*
+         * The message did not fit into the local buffer; append a visible
+         * truncation marker so it is clear the tail of the message was cut.
+         */
+        const char truncMarker[] = " ... [truncated]";
+        const int truncMarkerLen = (int)sizeof(truncMarker) - 1;
+
+        len = (int)(sizeof(buf) - 1) - truncMarkerLen;
+        memcpy(buf + len, truncMarker, (size_t)truncMarkerLen);
+        len += truncMarkerLen;
     }
 
     if (g_testLogBufferLen + (size_t)len + 1 > g_testLogBufferCap) {

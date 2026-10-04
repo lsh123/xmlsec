@@ -539,6 +539,11 @@ test_buffer_set_get_data(void) {
         testLog("Error: data mismatch after SetData(data2)\n");
         goto done;
     }
+    /* old data beyond the new size must be wiped */
+    if((buf.maxSize > sizeof(data2)) && (buf.data[sizeof(data2)] != 0)) {
+        testLog("Error: old data is not wiped after SetData(data2)\n");
+        goto done;
+    }
 
     /* set empty data (size 0) */
     ret = xmlSecBufferSetData(&buf, NULL, 0);

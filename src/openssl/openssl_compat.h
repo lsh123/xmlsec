@@ -16,6 +16,7 @@
 #include <openssl/rand.h>
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/openssl/crypto.h>
 
 #include "../cast_helpers.h"
 

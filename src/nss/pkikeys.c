@@ -492,7 +492,9 @@ xmlSecNssPKIKeyDataGetSize(xmlSecKeyDataPtr data) {
 #endif /* XMLSEC_NO_EC */
 #ifndef XMLSEC_NO_EDDSA
     case edKey:
-        return(SECKEY_PublicKeyStrengthInBits(ctx->pubkey));
+        /* SECKEY_PublicKeyStrengthInBits doesn't handle EC keys correctly so we compute the size
+         * from the public value length. */
+        return(8 * ctx->pubkey->u.ec.publicValue.len);
 #endif /* XMLSEC_NO_EDDSA */
 #ifndef XMLSEC_NO_XDH
     case ecMontKey:

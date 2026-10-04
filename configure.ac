@@ -745,7 +745,7 @@ dnl Priority 3: Guess with pkg_config
 if test "z$OPENSSL_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
     PKG_CHECK_MODULES(OPENSSL, openssl >= $OPENSSL_MIN_VERSION,
         [OPENSSL_FOUND=yes
-         OPENSSL_PC_REQUIRES="openssl, "],
+         OPENSSL_PC_REQUIRES="openssl >= $OPENSSL_MIN_VERSION, "],
         [OPENSSL_FOUND=no])
 fi
 

@@ -191,9 +191,9 @@ sign_file(const char* xml_file, const char* key_file, const char* cert_file) {
         goto done;
     }
 
-    /* create signature template for RSA-SHA1 enveloped signature */
+    /* create signature template for RSA-SHA256 enveloped signature */
     signNode = xmlSecTmplSignatureCreate(doc, xmlSecTransformExclC14NId,
-                                         xmlSecTransformRsaSha1Id, NULL);
+                                         xmlSecTransformRsaSha256Id, NULL);
     if(signNode == NULL) {
         fprintf(stderr, "Error: failed to create signature template\n");
         goto done;
@@ -207,8 +207,8 @@ sign_file(const char* xml_file, const char* key_file, const char* cert_file) {
     }
 
     /* add reference */
-    refNode = xmlSecTmplSignatureAddReference(signNode, xmlSecTransformSha1Id,
-                                        NULL, BAD_CAST "", NULL);
+    refNode = xmlSecTmplSignatureAddReference(signNode, xmlSecTransformSha256Id,
+        NULL, BAD_CAST "", NULL);
     if(refNode == NULL) {
         fprintf(stderr, "Error: failed to add reference to signature template\n");
         goto done;

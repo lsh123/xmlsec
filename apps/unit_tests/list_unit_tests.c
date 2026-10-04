@@ -1035,9 +1035,11 @@ test_ptr_list_invalid_alloc_mode(void) {
     ret = xmlSecPtrListAdd(list, item);
     if(ret >= 0) {
         testLog("Error: xmlSecPtrListAdd succeeded with an invalid allocation mode\n");
-        /* The add succeeded, so the item is now owned by the list; set item to
-         * NULL so the done: path does not destroy it a second time. */
-        item = NULL;
+        /*
+         * The add succeeded, so the list now references the item; the shallow
+         * klass does not destroy its items, so the done: path frees the item
+         * exactly once (no double free is possible).
+         */
         goto done;
     }
     if(xmlSecPtrListGetSize(list) != 0) {

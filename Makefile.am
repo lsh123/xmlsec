@@ -14,6 +14,8 @@ SUBDIRS += man docs
 TEST_APP 	    = apps/xmlsec1$(EXEEXT)
 UNIT_TEST_APP 	= apps/xmlsec_unit_tests$(EXEEXT)
 DEFAULT_CRYPTO	= @XMLSEC_DEFAULT_CRYPTO@
+# folder for the test logs (honors the TMPFOLDER environment variable)
+TMPFOLDER	?= /tmp
 
 bin_SCRIPTS 	= xmlsec1-config
 pkgconfig_DATA 	= @XMLSEC_PC_FILE@ @XMLSEC_CRYPTO_PC_FILES_LIST@
@@ -206,13 +208,13 @@ check-enc: $(TEST_APP)
 	)
 
 memcheck-res:
-	@$(GREP) -i 'ERROR SUMMARY' /tmp/xmlsec-test*/*.log | $(SED) 's/.*==.*== *//' | $(SORT) -u
-	@$(GREP) -i 'in use at exit' /tmp/xmlsec-test*/*.log | $(SED) 's/.*==.*== *//' | $(SORT) -u
-	@$(GREP) -i 'definitely lost:' /tmp/xmlsec-test*/*.log | $(SED) 's/.*==.*== *//' | $(SORT) -u
-	@$(GREP) -i 'indirectly lost:' /tmp/xmlsec-test*/*.log | $(SED) 's/.*==.*== *//' | $(SORT) -u
-	@$(GREP) -i 'possibly lost:' /tmp/xmlsec-test*/*.log | $(SED) 's/.*==.*== *//' | $(SORT) -u
-	@$(GREP) -i 'still reachable:' /tmp/xmlsec-test*/*.log | $(SED) 's/.*==.*== *//' | $(SORT) -u
-	@$(GREP) -i 'used_suppression:' /tmp/xmlsec-test*/*.log | $(SED) 's/.*--.*-- *//' | $(SORT) -u
+	@$(GREP) -i 'ERROR SUMMARY' "$(TMPFOLDER)"/xmlsec-test*/*.log | $(SED) 's/.*==.*== *//' | $(SORT) -u
+	@$(GREP) -i 'in use at exit' "$(TMPFOLDER)"/xmlsec-test*/*.log | $(SED) 's/.*==.*== *//' | $(SORT) -u
+	@$(GREP) -i 'definitely lost:' "$(TMPFOLDER)"/xmlsec-test*/*.log | $(SED) 's/.*==.*== *//' | $(SORT) -u
+	@$(GREP) -i 'indirectly lost:' "$(TMPFOLDER)"/xmlsec-test*/*.log | $(SED) 's/.*==.*== *//' | $(SORT) -u
+	@$(GREP) -i 'possibly lost:' "$(TMPFOLDER)"/xmlsec-test*/*.log | $(SED) 's/.*==.*== *//' | $(SORT) -u
+	@$(GREP) -i 'still reachable:' "$(TMPFOLDER)"/xmlsec-test*/*.log | $(SED) 's/.*==.*== *//' | $(SORT) -u
+	@$(GREP) -i 'used_suppression:' "$(TMPFOLDER)"/xmlsec-test*/*.log | $(SED) 's/.*--.*-- *//' | $(SORT) -u
 
 memcheck: $(TEST_APP)
 	@(export DEBUG_MEMORY=1 && $(MAKE) $(AM_MAKEFLAGS) check && $(MAKE) $(AM_MAKEFLAGS) memcheck-res)

@@ -37,6 +37,7 @@
 static void
 xmlSecXPathHereFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     xmlXPathObjectPtr obj;
+    int ret;
 
     CHECK_ARITY(0);
 
@@ -47,7 +48,16 @@ xmlSecXPathHereFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     if(obj == NULL) {
         XP_ERROR(XPATH_MEMORY_ERROR);
     }
-    valuePush(ctxt, obj);
+    ret = xmlXPathValuePush(ctxt, obj);
+    if(ret < 0) {
+#if (LIBXML_VERSION < 21100)
+        /* libxml2 < 2.11 does not free the object on a valuePush failure
+         * https://github.com/GNOME/libxml2/commit/85bc313e7996c06d52b6f6f5c6a467ff3a148e75
+         */
+        xmlXPathFreeObject(obj);
+#endif /* (LIBXML_VERSION < 21100) */
+        XP_ERROR(XPATH_MEMORY_ERROR);
+    }
 }
 
 /******************************************************************************

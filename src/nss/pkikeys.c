@@ -200,6 +200,9 @@ xmlSecNssPKIKeyDataAdoptKey(xmlSecKeyDataPtr data,
 
 /**
  * @brief Build a KeyData object from the given Private Key and Public Key handles.
+ * @details On success, ownership of the @p privkey and @p pubkey handles transfers
+ * to the returned key data (the caller must not release them); on a NULL return
+ * the caller retains ownership and must release the handles itself.
  * @param privkey the NSS Private Key handle
  * @param pubkey the NSS Public Key handle
  *
@@ -292,8 +295,49 @@ xmlSecNssPKIAdoptKey(SECKEYPrivateKey *privkey,
     return(data);
 }
 
+static int
+xmlSecNssPKIKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
+
+#ifndef XMLSEC_NO_DSA
+    if(klass == xmlSecNssKeyDataDsaId) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_DSA */
+
+#ifndef XMLSEC_NO_EC
+    if(klass == xmlSecNssKeyDataEcId) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_EC */
+
+#ifndef XMLSEC_NO_EDDSA
+    if(klass == xmlSecNssKeyDataEdDSAId) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_EDDSA */
+
+#ifndef XMLSEC_NO_XDH
+    if(klass == xmlSecNssKeyDataXdhId) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_XDH */
+
+#ifndef XMLSEC_NO_RSA
+    if(klass == xmlSecNssKeyDataRsaId) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_RSA */
+
+    return(0);
+}
+
+#define xmlSecNssPKIKeyDataCheckId(data) \
+    (xmlSecKeyDataIsValid((data)) && \
+     xmlSecNssPKIKeyDataKlassCheck((data)->id))
+
 /**
  * @brief Gets the Public Key from the key data.
+ * @details Returns NULL if the key data is not an NSS PKI key data object.
  * @param data the pointer to NSS Key data.
  *
  *
@@ -305,8 +349,7 @@ xmlSecNssPKIKeyDataGetPubKey(xmlSecKeyDataPtr data) {
     xmlSecNssPKIKeyDataCtxPtr ctx;
     SECKEYPublicKey *ret;
 
-    xmlSecAssert2(xmlSecKeyDataIsValid(data), NULL);
-    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecNssPKIKeyDataSize), NULL);
+    xmlSecAssert2(xmlSecNssPKIKeyDataCheckId(data), NULL);
 
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, NULL);
@@ -321,6 +364,7 @@ xmlSecNssPKIKeyDataGetPubKey(xmlSecKeyDataPtr data) {
 
 /**
  * @brief Gets the Private Key from the key data.
+ * @details Returns NULL if the key data is not an NSS PKI key data object.
  * @param data the pointer to NSS Key data.
  *
  *
@@ -332,8 +376,7 @@ xmlSecNssPKIKeyDataGetPrivKey(xmlSecKeyDataPtr data) {
     xmlSecNssPKIKeyDataCtxPtr ctx;
     SECKEYPrivateKey *ret;
 
-    xmlSecAssert2(xmlSecKeyDataIsValid(data), NULL);
-    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecNssPKIKeyDataSize), NULL);
+    xmlSecAssert2(xmlSecNssPKIKeyDataCheckId(data), NULL);
 
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, NULL);
@@ -1560,7 +1603,7 @@ xmlSecNssKeyDataEdDSAGetKlass(void) {
 #ifndef XMLSEC_NO_XDH
 /******************************************************************************
  *
- * XDH key data (X25519 and X448, RFC 7748)
+ * XDH key data (X25519 only, RFC 7748)
  *
   *****************************************************************************/
 
@@ -1601,7 +1644,7 @@ static xmlSecKeyDataKlass xmlSecNssKeyData ## lcname ## Klass = {               
 XMLSEC_NSS_PKI_KEY_KLASS_XDH(Xdh, XDH, NULL)
 
 /**
- * @brief The XDH key data klass (X25519 and X448).
+ * @brief The XDH key data klass (X25519 only; the NSS back-end has no X448 support).
  * @return pointer to XDH key data klass.
  */
 xmlSecKeyDataId

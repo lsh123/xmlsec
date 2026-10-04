@@ -29,7 +29,7 @@ XML Security library supports the following features as defined in
 | [The KeyName Element](https://www.w3.org/TR/xmldsig-core1/#sec-KeyName) | Optional | Yes |
 | [The KeyValue Element](https://www.w3.org/TR/xmldsig-core1/#sec-KeyValue) | Optional | Yes (disabled by default; also see [algorithms section](#xmlsec-cryptographic-libraries-features)) |
 | [The RetrievalMethod Element](https://www.w3.org/TR/xmldsig-core1/#sec-RetrievalMethod) | Optional | Yes |
-| [The MgmtData Element](https://www.w3.org/TR/xmldsig-core1/#sec-MgmtData) | NOT RECOMMENDED and SHOULD NOT be used | Yes |
+| [The MgmtData Element](https://www.w3.org/TR/xmldsig-core1/#sec-MgmtData) | NOT RECOMMENDED and SHOULD NOT be used | No (ignored) |
 | [XML Encryption EncryptedKey and DerivedKey Elements](https://www.w3.org/TR/xmlenc-core1/#sec-Extensions-to-KeyInfo) | Optional | Yes (see [XML Encryption report](xmlenc.md)) |
 | [The KeyInfoReference Element](https://www.w3.org/TR/xmldsig-core1/#sec-KeyInfoReference) | Optional | Yes |
 | [The Object Element](https://www.w3.org/TR/xmldsig-core1/#sec-Object) | Optional | Yes (only the Manifest element is supported) |
@@ -65,9 +65,9 @@ XML Security library supports the following features as defined in
 | [SHA3-384](https://www.ietf.org/rfc/rfc9231.html#name-sha-3-algorithms) | Optional | Yes | Yes | Yes | Yes [(2)](#new-windows-required) | No | Yes |
 | [SHA3-512](https://www.ietf.org/rfc/rfc9231.html#name-sha-3-algorithms) | Optional | Yes | Yes | Yes | Yes [(2)](#new-windows-required) | No | Yes |
 | [RIPEMD160](https://www.w3.org/TR/xmlenc-core1/#sec-RIPEMD-160) | DEPRECATED | Yes [(1)](#feature-disabled) | No | No | No | No | Yes [(1)](#feature-disabled) |
-| GOST-R3411-94 | Optional | Yes [(3)](#openssl-gost) | No | Yes | No | Yes [(4)](#mscrypto-gost) | No |
-| GOST-R3411-2012 (256 bit) | Optional | Yes [(3)](#openssl-gost) | No | Yes | No | Yes [(4)](#mscrypto-gost) | No |
-| GOST-R3411-2012 (512 bit) | Optional | Yes [(3)](#openssl-gost) | No | Yes | No | Yes [(4)](#mscrypto-gost) | No |
+| GOST-R3411-94 | Optional | Yes [(1)](#feature-disabled)[(3)](#openssl-gost) | No | Yes [(1)](#feature-disabled) | No | Yes [(1)](#feature-disabled)[(4)](#mscrypto-gost) | No |
+| GOST-R3411-2012 (256 bit) | Optional | Yes [(1)](#feature-disabled)[(3)](#openssl-gost) | No | Yes [(1)](#feature-disabled) | No | Yes [(1)](#feature-disabled)[(4)](#mscrypto-gost) | No |
+| GOST-R3411-2012 (512 bit) | Optional | Yes [(1)](#feature-disabled)[(3)](#openssl-gost) | No | Yes [(1)](#feature-disabled) | No | Yes [(1)](#feature-disabled)[(4)](#mscrypto-gost) | No |
 | [MD5](https://www.ietf.org/rfc/rfc9231.html#section-2.1.1) | DEPRECATED | Yes [(1)](#feature-disabled) | No | No | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) |
 | **Message Authentication Codes** | | | | | | | |
 | [HMAC-SHA1](https://www.w3.org/TR/xmldsig-core1/#sec-HMAC) | Required (use is DISCOURAGED) | Yes | Yes | Yes | Yes | Yes | Yes |
@@ -107,9 +107,9 @@ XML Security library supports the following features as defined in
 | [RSASSA-PSS-SHA3-256 without Parameters](https://www.ietf.org/rfc/rfc9231.html#section-2.3.10) | Optional | Yes | No | No | Yes [(2)](#new-windows-required) | No | Yes |
 | [RSASSA-PSS-SHA3-384 without Parameters](https://www.ietf.org/rfc/rfc9231.html#section-2.3.10) | Optional | Yes | No | No | Yes [(2)](#new-windows-required) | No | Yes |
 | [RSASSA-PSS-SHA3-512 without Parameters](https://www.ietf.org/rfc/rfc9231.html#section-2.3.10) | Optional | Yes | No | No | Yes [(2)](#new-windows-required) | No | Yes |
-| GOST-R3410-2001 | Optional | Yes [(3)](#openssl-gost) | No | Yes | No | Yes [(4)](#mscrypto-gost) | No |
-| GOST-R3410-2012 (256 bit) | Optional | Yes [(3)](#openssl-gost) | No | Yes | No | Yes [(4)](#mscrypto-gost) | No |
-| GOST-R3410-2012 (512 bit) | Optional | Yes [(3)](#openssl-gost) | No | Yes | No | Yes [(4)](#mscrypto-gost) | No |
+| GOST-R3410-2001 | Optional | Yes [(1)](#feature-disabled)[(3)](#openssl-gost) | No | Yes [(1)](#feature-disabled) | No | Yes [(1)](#feature-disabled)[(4)](#mscrypto-gost) | No |
+| GOST-R3410-2012 (256 bit) | Optional | Yes [(1)](#feature-disabled)[(3)](#openssl-gost) | No | Yes [(1)](#feature-disabled) | No | Yes [(1)](#feature-disabled)[(4)](#mscrypto-gost) | No |
+| GOST-R3410-2012 (512 bit) | Optional | Yes [(1)](#feature-disabled)[(3)](#openssl-gost) | No | Yes [(1)](#feature-disabled) | No | Yes [(1)](#feature-disabled)[(4)](#mscrypto-gost) | No |
 | ML-DSA | EXPERIMENTAL | Yes [(1)](#feature-disabled)[(12)](#openssl35-required) | No | Yes [(1)](#feature-disabled) [(8)](#no-context-string) | No | No | No |
 | SLH-DSA-SHA2 (128, 192, 256; fast and slow variants) | EXPERIMENTAL | Yes [(1)](#feature-disabled)[(12)](#openssl35-required) | No | No | No | No | No |
 | **The KeyInfo Element** | | | | | | | |

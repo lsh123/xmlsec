@@ -54,16 +54,17 @@ typedef enum {
 
 /**
  * @brief The enhanced node set.
- * @details The node set adopts the node list and the document passed to
- * #xmlSecNodeSetCreate: the caller must not free them. Node sets are linked
- * into a chain via #next and #prev; #xmlSecNodeSetDestroy destroys the entire
- * chain, frees each member's node list and, if #xmlSecNodeSetDocDestroy was
- * called, frees the document. Destroying a member that is also reachable
- * through a second pointer double-frees the chain.
+ * @details The node set adopts the node list passed to #xmlSecNodeSetCreate:
+ * #xmlSecNodeSetDestroy frees it and the caller must not free it. The document
+ * is adopted (and freed by #xmlSecNodeSetDestroy) only if
+ * #xmlSecNodeSetDocDestroy was called; otherwise the caller must free the
+ * document itself. Node sets are linked into a chain via #next and #prev;
+ * #xmlSecNodeSetDestroy destroys the entire chain. Destroying a member that is
+ * also reachable through a second pointer double-frees the chain.
  */
 struct _xmlSecNodeSet {
     xmlNodeSetPtr       nodes;  /**< the nodes list (adopted from the caller; NULL means the whole document). */
-    xmlDocPtr           doc;  /**< the parent XML document (adopted from the caller). */
+    xmlDocPtr           doc;  /**< the parent XML document (adopted from the caller only if #xmlSecNodeSetDocDestroy was called). */
     int                 destroyDoc;  /**< the flag: if set to 1 then @p doc will be destroyed when node set is destroyed. */
     xmlSecNodeSetType   type;  /**< the node set type. */
     xmlSecNodeSetOp     op;  /**< the operation type. */

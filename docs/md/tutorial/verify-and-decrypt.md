@@ -164,8 +164,9 @@ verify_signature_results(xmlSecDSigCtxPtr dsigCtx) {
         return(-1);
     }
 
-    /* check URI */
-    if(!xmlStrEqual(dsigRefCtx->uri, BAD_CAST "")) {
+    /* check URI: a NULL URI (Reference without a URI attribute) means the whole document,
+     * which xmlsec treats the same as an empty URI */
+    if((dsigRefCtx->uri != NULL) && (!xmlStrEqual(dsigRefCtx->uri, BAD_CAST ""))) {
         fprintf(stderr,"Error: Reference URI value doesn't match expected one\n");
         return(-1);
     }

@@ -132,6 +132,11 @@ static int               xmlSecOpenSSLEvpKeyDataDuplicate        (xmlSecKeyDataP
 static void              xmlSecOpenSSLEvpKeyDataFinalize         (xmlSecKeyDataPtr data);
 static xmlSecSize        xmlSecOpenSSLEvpKeyDataGetKeySize       (xmlSecKeyDataPtr data);
 static xmlSecKeyDataType xmlSecOpenSSLEvpKeyDataGetType          (xmlSecKeyDataPtr data);
+static int               xmlSecOpenSSLEvpKeyDataKlassCheck       (xmlSecKeyDataKlass* klass);
+
+#define xmlSecOpenSSLEvpKeyDataCheckId(data) \
+    (xmlSecKeyDataIsValid((data)) && \
+     xmlSecOpenSSLEvpKeyDataKlassCheck((data)->id))
 
 
 
@@ -162,6 +167,7 @@ xmlSecOpenSSLEvpKeyDataAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
 
 /**
  * @brief Gets the EVP_PKEY from the key data.
+ * @details Returns NULL if the key data is not an OpenSSL EVP key data object.
  * @param data the pointer to OpenSSL EVP data.
  * @return a borrowed pointer to EVP_PKEY, or NULL if an error occurs; the caller must NOT free it.
  */
@@ -169,8 +175,7 @@ EVP_PKEY*
 xmlSecOpenSSLEvpKeyDataGetEvp(xmlSecKeyDataPtr data) {
     xmlSecOpenSSLEvpKeyDataCtxPtr ctx;
 
-    xmlSecAssert2(xmlSecKeyDataIsValid(data), NULL);
-    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecOpenSSLEvpKeyDataSize), NULL);
+    xmlSecAssert2(xmlSecOpenSSLEvpKeyDataCheckId(data), NULL);
 
     ctx = xmlSecOpenSSLEvpKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, NULL);
@@ -180,6 +185,7 @@ xmlSecOpenSSLEvpKeyDataGetEvp(xmlSecKeyDataPtr data) {
 
 /**
  * @brief Gets the EVP_PKEY from the key.
+ * @details Returns NULL if the key has no value or the value is not an OpenSSL EVP key data object.
  * @param key the pointer to OpenSSL EVP key.
  * @return a borrowed pointer to EVP_PKEY, or NULL if an error occurs; the caller must NOT free it.
  */
@@ -603,6 +609,81 @@ xmlSecOpenSSLEvpKeyDataGetType(xmlSecKeyDataPtr data) {
     return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
 }
 #endif /* XMLSEC_OPENSSL_API_300 */
+
+static int
+xmlSecOpenSSLEvpKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
+
+#ifndef XMLSEC_NO_DSA
+    if(klass == xmlSecOpenSSLKeyDataDsaId) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_DSA */
+
+#ifndef XMLSEC_NO_DH
+    if(klass == xmlSecOpenSSLKeyDataDhId) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_DH */
+
+#ifndef XMLSEC_NO_EC
+    if(klass == xmlSecOpenSSLKeyDataEcId) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_EC */
+
+#ifndef XMLSEC_NO_GOST
+    if(klass == xmlSecOpenSSLKeyDataGost2001Id) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_GOST */
+
+#ifndef XMLSEC_NO_GOST2012
+    if(klass == xmlSecOpenSSLKeyDataGostR3410_2012_256Id) {
+        return(1);
+    }
+    if(klass == xmlSecOpenSSLKeyDataGostR3410_2012_512Id) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_GOST2012 */
+
+#ifndef XMLSEC_NO_RSA
+    if(klass == xmlSecOpenSSLKeyDataRsaId) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_RSA */
+
+#ifndef XMLSEC_NO_MLDSA
+    if(klass == xmlSecOpenSSLKeyDataMLDSAId) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_MLDSA */
+
+#ifndef XMLSEC_NO_MLKEM
+    if(klass == xmlSecOpenSSLKeyDataMLKEMId) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_MLKEM */
+
+#ifndef XMLSEC_NO_SLHDSA
+    if(klass == xmlSecOpenSSLKeyDataSLHDSAId) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_SLHDSA */
+
+#ifndef XMLSEC_NO_EDDSA
+    if(klass == xmlSecOpenSSLKeyDataEdDSAId) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_EDDSA */
+
+#ifndef XMLSEC_NO_XDH
+    if(klass == xmlSecOpenSSLKeyDataXdhId) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_XDH */
+
+    return(0);
+}
 
 
 /******************************************************************************

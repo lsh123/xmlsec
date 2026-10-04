@@ -224,13 +224,13 @@ xmlSecNssKeyDataDEREncodedKeyValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
         xmlSecInternalError("xmlSecKeyGetValue", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
-    /* keyData is always an NSS PKI key data object: the key value for this
-     * key data type is set to a PKI key (via xmlSecNssPKIAdoptKey) during key
-     * loading, so the size check performed by xmlSecNssPKIKeyDataGetPubKey is
-     * sufficient to validate it */
+    /* the key value is expected to be an NSS PKI key data object (set during
+     * key loading); xmlSecNssPKIKeyDataGetPubKey checks the key data klass
+     * and returns NULL if it does not match */
     pubkey = xmlSecNssPKIKeyDataGetPubKey(keyData);
     if(pubkey == NULL) {
-        xmlSecInternalError("xmlSecNssPKIKeyDataGetPubKey", xmlSecKeyDataKlassGetName(id));
+        xmlSecInvalidDataError("key value is missing or is not an NSS PKI key data object",
+                               xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 

@@ -174,6 +174,7 @@ If you want to use automatic crypto library configuration with the
 #define XMLSEC_CRYPTO_GNUTLS
 #define XMLSEC_CRYPTO_NSS
 #define XMLSEC_CRYPTO_MSCRYPTO
+#define XMLSEC_CRYPTO_GCRYPT
 ```
 
 You will also need to define all configuration parameters used when

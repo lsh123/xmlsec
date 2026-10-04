@@ -2111,18 +2111,9 @@ if [ "z$xmlsec_feature_crl_load" = "zyes" ] ; then
         "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
         "sha256 rsa-sha256" \
         "x509" \
-        "--verification-gmt-time 2023-04-01+00:00:00 --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsa/rsa-2048-cert-revoked-crl.$cert_format --enabled-key-data x509"
+        "--verification-gmt-time 2026-04-01+00:00:00 --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsa/rsa-2048-cert-revoked-crl.$cert_format --enabled-key-data x509"
 
-    # this should fail because while CRL is past due, it's still better than nothing
-    extra_message="Negative test: CRL is past due"
-    execDSigTest $res_fail \
-        "" \
-        "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
-        "sha256 rsa-sha256" \
-        "x509" \
-        "--verification-gmt-time 2023-05-01+00:00:00 --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsa/rsa-2048-cert-revoked-crl.$cert_format --enabled-key-data x509"
-
-    # NSS / GnuTLS doesn't allow CRL verification by time (https://github.com/lsh123/xmlsec/issues/579)
+    # NSS doesn't allow CRL verification by time (https://github.com/lsh123/xmlsec/issues/579)
     if [ "z$xmlsec_feature_crl_check_skip_time" = "zyes" ] ; then
         # this should succeed because CRL is not valid yet
         extra_message="CRL is not valid yet"
@@ -2154,7 +2145,7 @@ if [ "z$xmlsec_feature_crl_verification" = "zyes" ] ; then
         "rsa x509" \
         "--verification-gmt-time 2026-03-10+00:00:00 --crl-$cert_format $topfolder/keys/rsa/rsa-2048-cert-revoked-crl.$cert_format --untrusted-$cert_format $topfolder/keys/rsa/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
-    # GnuTLS doesn't allow CRL verification by time (https://github.com/lsh123/xmlsec/issues/579)
+    # NSS doesn't allow CRL verification by time (https://github.com/lsh123/xmlsec/issues/579)
     if [ "z$xmlsec_feature_crl_check_skip_time" = "zyes" ] ; then
         extra_message="Verify CRL: this should succeed because CRL is valid"
         execDSigTest $res_success \

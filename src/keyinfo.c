@@ -672,8 +672,11 @@ xmlSecKeyDataNameXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, 
 
     /* read key name */
     newName = xmlSecGetNodeContentAndTrim(node);
-    if(newName == NULL) {
+    if((newName == NULL) || (newName[0] == '\0')) {
         xmlSecInvalidNodeContentError(node, xmlSecKeyDataKlassGetName(id), "empty");
+        if(newName != NULL) {
+            xmlFree(newName);
+        }
         return(-1);
     }
 

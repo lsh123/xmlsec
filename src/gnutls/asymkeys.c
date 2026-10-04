@@ -1817,6 +1817,8 @@ xmlSecGnuTLSKeyDataMLDSAGetKlass(void) {
  */
 int
 xmlSecGnuTLSKeyDataMLDSAAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
+    int pubkey_algo = GNUTLS_PK_UNKNOWN;
+    int privkey_algo = GNUTLS_PK_UNKNOWN;
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataMLDSAId), -1);
@@ -1832,6 +1834,7 @@ xmlSecGnuTLSKeyDataMLDSAAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, 
             xmlSecInternalError2("Invalid pubkey algorithm", NULL, "type=%d", ret);
             return(-1);
         }
+        pubkey_algo = ret;
     }
     if(privkey != NULL) {
         ret = gnutls_privkey_get_pk_algorithm(privkey, NULL);
@@ -1843,6 +1846,12 @@ xmlSecGnuTLSKeyDataMLDSAAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, 
             xmlSecInternalError2("Invalid privkey algorithm", NULL, "type=%d", ret);
             return(-1);
         }
+        privkey_algo = ret;
+    }
+    if((pubkey_algo != GNUTLS_PK_UNKNOWN) && (privkey_algo != GNUTLS_PK_UNKNOWN) && (pubkey_algo != privkey_algo)) {
+        xmlSecInternalError3("different algorithms for public and private key", NULL,
+            "pubkey=%d; privkey=%d", pubkey_algo, privkey_algo);
+        return(-1);
     }
 
     /* do the work */
@@ -1965,6 +1974,8 @@ xmlSecGnuTLSKeyDataEdDSAGetKlass(void) {
  */
 int
 xmlSecGnuTLSKeyDataEdDSAAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
+    int pubkey_algo = GNUTLS_PK_UNKNOWN;
+    int privkey_algo = GNUTLS_PK_UNKNOWN;
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEdDSAId), -1);
@@ -1980,6 +1991,7 @@ xmlSecGnuTLSKeyDataEdDSAAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, 
             xmlSecInternalError2("Invalid pubkey algorithm", NULL, "type=%d", ret);
             return(-1);
         }
+        pubkey_algo = ret;
     }
     if(privkey != NULL) {
         ret = gnutls_privkey_get_pk_algorithm(privkey, NULL);
@@ -1991,6 +2003,12 @@ xmlSecGnuTLSKeyDataEdDSAAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, 
             xmlSecInternalError2("Invalid privkey algorithm", NULL, "type=%d", ret);
             return(-1);
         }
+        privkey_algo = ret;
+    }
+    if((pubkey_algo != GNUTLS_PK_UNKNOWN) && (privkey_algo != GNUTLS_PK_UNKNOWN) && (pubkey_algo != privkey_algo)) {
+        xmlSecInternalError3("different algorithms for public and private key", NULL,
+            "pubkey=%d; privkey=%d", pubkey_algo, privkey_algo);
+        return(-1);
     }
 
     /* do the work */
@@ -2051,6 +2069,8 @@ xmlSecGnuTLSKeyDataXdhGetKlass(void) {
  */
 int
 xmlSecGnuTLSKeyDataXdhAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
+    int pubkey_algo = GNUTLS_PK_UNKNOWN;
+    int privkey_algo = GNUTLS_PK_UNKNOWN;
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataXdhId), -1);
@@ -2066,6 +2086,7 @@ xmlSecGnuTLSKeyDataXdhAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gn
             xmlSecInternalError2("Invalid pubkey algorithm", NULL, "type=%d", ret);
             return(-1);
         }
+        pubkey_algo = ret;
     }
     if(privkey != NULL) {
         ret = gnutls_privkey_get_pk_algorithm(privkey, NULL);
@@ -2077,6 +2098,12 @@ xmlSecGnuTLSKeyDataXdhAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gn
             xmlSecInternalError2("Invalid privkey algorithm", NULL, "type=%d", ret);
             return(-1);
         }
+        privkey_algo = ret;
+    }
+    if((pubkey_algo != GNUTLS_PK_UNKNOWN) && (privkey_algo != GNUTLS_PK_UNKNOWN) && (pubkey_algo != privkey_algo)) {
+        xmlSecInternalError3("different algorithms for public and private key", NULL,
+            "pubkey=%d; privkey=%d", pubkey_algo, privkey_algo);
+        return(-1);
     }
 
     /* do the work */
@@ -2145,7 +2172,8 @@ xmlSecGnuTLSAsymKeyDataCreate(gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) 
     } else if(pubkey_algo == privkey_algo) {
         algo = pubkey_algo;
     } else {
-        xmlSecGnuTLSError("different algorithms for public and private key", GNUTLS_E_SUCCESS, NULL);
+        xmlSecInternalError3("different algorithms for public and private key", NULL,
+            "pubkey=%d; privkey=%d", pubkey_algo, privkey_algo);
         return(NULL);
     }
     if(algo == GNUTLS_PK_UNKNOWN) {

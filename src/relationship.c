@@ -15,7 +15,6 @@
 #include <string.h>
 
 #include <libxml/tree.h>
-#include <libxml/list.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
@@ -254,50 +253,95 @@ xmlSecRelationshipReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSec
     return(0);
 }
 
-/* Sorts Relationship elements by Id value in lexicographical order. */
+/*
+ * An item of the list used to collect Relationship elements before sorting:
+ * the element itself plus the (cached) value of its Id attribute. Caching the
+ * Id value avoids re-reading (and re-allocating) the attribute on every
+ * comparison while the list is being sorted.
+ */
+typedef struct _xmlSecRelationshipListItem      xmlSecRelationshipListItem,
+                                                *xmlSecRelationshipListItemPtr;
+struct _xmlSecRelationshipListItem {
+    xmlNodePtr                  node;  /**< the Relationship element. */
+    xmlChar*                    id;  /**< the cached value of the Id attribute (NULL if the element has no Id or it could not be read). */
+};
+
+static void             xmlSecRelationshipListItemDestroy     (xmlSecPtr item);
+
+static xmlSecPtrListKlass xmlSecRelationshipListItemKlass = {
+    BAD_CAST "relationship-list-items",
+    NULL,                                       /* xmlSecPtrDuplicateItemMethod duplicateItem; */
+    xmlSecRelationshipListItemDestroy,          /* xmlSecPtrDestroyItemMethod destroyItem; */
+    NULL,                                       /* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
+    NULL,                                       /* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
+};
+
+/**
+ * @brief Creates a new list item for @p node.
+ * @details The Id attribute of @p node is read once and cached in the new
+ * item. Caller is responsible for freeing the returned item by calling
+ * #xmlSecRelationshipListItemDestroy function.
+ * @param node the pointer to the Relationship element.
+ * @return pointer to the newly allocated item or NULL if an error occurs.
+ */
+static xmlSecRelationshipListItemPtr
+xmlSecRelationshipListItemCreate(xmlNodePtr node) {
+    xmlSecRelationshipListItemPtr item;
+
+    xmlSecAssert2(node != NULL, NULL);
+
+    item = (xmlSecRelationshipListItemPtr)xmlMalloc(sizeof(xmlSecRelationshipListItem));
+    if(item == NULL) {
+        xmlSecMallocError(sizeof(xmlSecRelationshipListItem), NULL);
+        return(NULL);
+    }
+
+    item->node = node;
+    /*
+     * xmlGetProp() returns NULL both when the Id attribute is absent and
+     * when it cannot allocate the return value; in either case the item is
+     * left with no cached Id (the element is dropped later by
+     * xmlSecTransformRelationshipProcessNode, which reports the same
+     * condition).
+     */
+    item->id = xmlGetProp(node, xmlSecRelationshipAttrId);
+    return(item);
+}
+
+static void
+xmlSecRelationshipListItemDestroy(xmlSecPtr item) {
+    xmlSecRelationshipListItemPtr listItem = (xmlSecRelationshipListItemPtr)item;
+
+    xmlSecAssert(item != NULL);
+
+    if(listItem->id != NULL) {
+        xmlFree(listItem->id);
+    }
+    xmlFree(listItem);
+}
+
+/*
+ * Compares two list items by their cached Id value in lexicographical order
+ * (case-sensitive). Items without an Id value sort before items that have
+ * one; two items that both lack an Id compare equal, so the comparator is
+ * a strict weak ordering.
+ */
 static int
-xmlSecTransformRelationshipCompare(xmlNodePtr node1, xmlNodePtr node2) {
-    xmlChar* id1 = NULL;
-    xmlChar* id2 = NULL;
+xmlSecTransformRelationshipCompareItems(xmlSecPtr item1, xmlSecPtr item2) {
+    const xmlSecRelationshipListItem* listItem1 = (const xmlSecRelationshipListItem*)item1;
+    const xmlSecRelationshipListItem* listItem2 = (const xmlSecRelationshipListItem*)item2;
     int ret;
 
-    if(node1 == node2) {
-        return(0);
-    }
-    if(node1 == NULL) {
-        return(-1);
-    }
-    if(node2 == NULL) {
-        return(1);
-    }
-
-    id1 = xmlGetProp(node1, xmlSecRelationshipAttrId);
-    id2 = xmlGetProp(node2, xmlSecRelationshipAttrId);
-    if(id1 == NULL && id2 == NULL) {
-        /* Both lack an Id: treat as equal so the comparator is a strict weak ordering. */
+    if((listItem1->id == NULL) && (listItem2->id == NULL)) {
         ret = 0;
-        goto done;
-    }
-    if(id1 == NULL) {
+    } else if(listItem1->id == NULL) {
         ret = -1;
-        goto done;
-    }
-    if(id2 == NULL) {
+    } else if(listItem2->id == NULL) {
         ret = 1;
-        goto done;
+    } else {
+        ret = xmlStrcmp(listItem1->id, listItem2->id);
     }
-
-    ret = xmlStrcmp(id1, id2);
-
-done:
-    if (id1 != NULL) {
-        xmlFree(id1);
-    }
-    if (id2 != NULL) {
-        xmlFree(id2);
-    }
-
-    return ret;
+    return(ret);
 }
 
 
@@ -396,12 +440,15 @@ xmlSecTransformRelationshipProcessNode(xmlSecTransformPtr transform, xmlOutputBu
 }
 
 /*
- * This is step 2, point 3: sort elements by Id: we process other elements as-is, but for elements we collect them in a list,
- * then sort, and finally process them (process the head of the list, then pop the head, till the list becomes empty).
+ * This is step 2, point 3: sort elements by Id: we process other elements as-is, but for
+ * Relationship elements we collect them in a list, sort the list in place, and finally
+ * process the elements in the sorted order.
  */
 static int
 xmlSecTransformRelationshipProcessNodeList(xmlSecTransformPtr transform, xmlOutputBufferPtr buf, xmlNodePtr cur, unsigned int depth, xmlSecTransformCtxPtr transformCtx) {
-    xmlListPtr list;
+    xmlSecPtrListPtr list;
+    xmlSecRelationshipListItemPtr item = NULL;
+    xmlSecSize ii;
     int ret;
 
     xmlSecAssert2(transform != NULL, -1);
@@ -416,9 +463,9 @@ xmlSecTransformRelationshipProcessNodeList(xmlSecTransformPtr transform, xmlOutp
         return(-1);
     }
 
-    list = xmlListCreate(NULL, (xmlListDataCompare)xmlSecTransformRelationshipCompare);
+    list = xmlSecPtrListCreate(&xmlSecRelationshipListItemKlass);
     if(list == NULL) {
-        xmlSecXmlError("xmlListCreate", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecPtrListCreate", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -442,37 +489,52 @@ xmlSecTransformRelationshipProcessNodeList(xmlSecTransformPtr transform, xmlOutp
          * local name "Relationship" is not mistaken for a real relationship entry.
          */
         if(xmlSecCheckNodeName(cur, xmlSecNodeRelationship, xmlSecRelationshipsNs)) {
-            if(xmlListInsert(list, cur) != 0) {
-                xmlSecXmlError("xmlListInsert", xmlSecTransformGetName(transform));
-                xmlListDelete(list);
+            item = xmlSecRelationshipListItemCreate(cur);
+            if(item == NULL) {
+                xmlSecInternalError("xmlSecRelationshipListItemCreate", xmlSecTransformGetName(transform));
+                xmlSecPtrListDestroy(list);
                 return(-1);
             }
+            ret = xmlSecPtrListAdd(list, (xmlSecPtr)item);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecPtrListAdd", xmlSecTransformGetName(transform));
+                xmlSecRelationshipListItemDestroy((xmlSecPtr)item);
+                xmlSecPtrListDestroy(list);
+                return(-1);
+            }
+            item = NULL;
         } else {
             ret = xmlSecTransformRelationshipProcessNode(transform, buf, cur, depth, transformCtx);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecTransformRelationshipProcessNode", xmlSecTransformGetName(transform));
-                xmlListDelete(list);
+                xmlSecPtrListDestroy(list);
                 return(-1);
             }
         }
     }
 
-    while(!xmlListEmpty(list)) {
-        xmlLinkPtr link = xmlListFront(list);
-        xmlNodePtr node = (xmlNodePtr)xmlLinkGetData(link);
+    /* sort the collected elements by their cached Id value */
+    ret = xmlSecPtrListSort(list, xmlSecTransformRelationshipCompareItems);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecPtrListSort", xmlSecTransformGetName(transform));
+        xmlSecPtrListDestroy(list);
+        return(-1);
+    }
 
-        ret = xmlSecTransformRelationshipProcessNode(transform, buf, node, depth, transformCtx);
+    for(ii = 0; ii < xmlSecPtrListGetSize(list); ++ii) {
+        const xmlSecRelationshipListItem* listItem =
+            (const xmlSecRelationshipListItem*)xmlSecPtrListGetItem(list, ii);
+
+        ret = xmlSecTransformRelationshipProcessNode(transform, buf, listItem->node, depth, transformCtx);
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformRelationshipProcessNode", xmlSecTransformGetName(transform));
-            xmlListDelete(list);
+            xmlSecPtrListDestroy(list);
             return(-1);
         }
-
-        xmlListPopFront(list);
     }
 
     /* done */
-    xmlListDelete(list);
+    xmlSecPtrListDestroy(list);
     return(0);
 }
 

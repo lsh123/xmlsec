@@ -378,7 +378,11 @@ done:
 static int
 xmlSecGCryptRsaPkcs1Decrypt(xmlSecGCryptRsaPkcs1CtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out) {
     xmlSecSize inSize;
+    xmlSecSize modulusSize;
+    const void *modulusData;
     int inLen;
+    gcry_sexp_t s_priv_key;
+    gcry_sexp_t s_modulus = NULL;
     gcry_sexp_t s_encrypted_data = NULL;
     gpg_error_t err;
     int ret;
@@ -392,6 +396,36 @@ xmlSecGCryptRsaPkcs1Decrypt(xmlSecGCryptRsaPkcs1CtxPtr ctx, xmlSecBufferPtr in, 
     /* setup encrypted data */
     inSize = xmlSecBufferGetSize(in);
     XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, return(-1), NULL);
+
+    /* verify the input size: an RSA PKCS#1 v1.5 ciphertext must be exactly
+     * the size of the RSA modulus */
+    s_priv_key = xmlSecGCryptKeyDataRsaGetPrivateKey(ctx->keyData);
+    if(s_priv_key == NULL) {
+        xmlSecInternalError("xmlSecGCryptKeyDataRsaGetPrivateKey", NULL);
+        return(-1);
+    }
+    s_modulus = gcry_sexp_find_token(s_priv_key, "n", 0);
+    if(s_modulus == NULL) {
+        xmlSecGCryptError2("gcry_sexp_find_token()", (gcry_error_t)GPG_ERR_NO_ERROR, NULL,
+            "name=%s", "n");
+        return(-1);
+    }
+    modulusData = gcry_sexp_nth_data(s_modulus, 1, &modulusSize);
+    if(modulusData == NULL) {
+        xmlSecGCryptError("gcry_sexp_nth_data()", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
+        goto done;
+    }
+    /* libgcrypt may prepend a leading 0x00 byte to positive integers; strip
+     * it so the size matches the actual modulus size */
+    if((modulusSize > 0) && (((const xmlSecByte*)modulusData)[0] == 0x00)) {
+        modulusSize--;
+    }
+    gcry_sexp_release(s_modulus);
+    s_modulus = NULL;
+    if(inSize != modulusSize) {
+        xmlSecInvalidSizeError("Input data", inSize, modulusSize, NULL);
+        goto done;
+    }
 
     err = gcry_sexp_build(&s_encrypted_data, NULL,
             "(enc-val (flags pkcs1)"
@@ -425,6 +459,9 @@ xmlSecGCryptRsaPkcs1Decrypt(xmlSecGCryptRsaPkcs1CtxPtr ctx, xmlSecBufferPtr in, 
 
 done:
     /* cleanup */
+    if(s_modulus != NULL) {
+        gcry_sexp_release(s_modulus);
+    }
     if(s_encrypted_data != NULL) {
         gcry_sexp_release(s_encrypted_data);
     }

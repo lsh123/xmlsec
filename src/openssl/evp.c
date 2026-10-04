@@ -1949,7 +1949,8 @@ xmlSecOpenSSLKeyDataDhSetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDhPtr
         goto done;
     }
 
-    if((dhKeyValue->p != NULL) && (dhKeyValue->q != NULL) && (dhKeyValue->generator != NULL)) {
+    if((dhKeyValue->p != NULL) && (dhKeyValue->generator != NULL)) {
+        /* the subgroup order is optional; DH_set0_pqg() accepts a NULL q */
         ret = DH_set0_pqg(dh, dhKeyValue->p, dhKeyValue->q, dhKeyValue->generator);
         if(ret != 1) {
             xmlSecOpenSSLError("DH_set0_pqg", xmlSecKeyDataGetName(data));
@@ -2341,6 +2342,14 @@ xmlSecOpenSSLKeyDataDhRead(xmlSecKeyDataId id, xmlSecKeyValueDhPtr dhValue) {
     xmlSecAssert2(id == xmlSecOpenSSLKeyDataDhId, NULL);
     xmlSecAssert2(dhValue != NULL, NULL);
 
+    /* a DH key value requires the prime and the generator; without them
+     * the resulting key cannot be used for key agreement */
+    if((xmlSecBufferGetSize(&(dhValue->p)) == 0) || (xmlSecBufferGetSize(&(dhValue->generator)) == 0)) {
+        xmlSecInvalidDataError("DH key value is missing the <P> or <Generator> element",
+            xmlSecKeyDataKlassGetName(id));
+        return(NULL);
+    }
+
     ret = xmlSecOpenSSLKeyValueDhInitialize(&dhKeyValue);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLKeyValueDhInitialize",
@@ -2348,7 +2357,7 @@ xmlSecOpenSSLKeyDataDhRead(xmlSecKeyDataId id, xmlSecKeyValueDhPtr dhValue) {
         goto done;
     }
 
-    /* p: optional */
+    /* p: required (validated above) */
     if (xmlSecBufferGetSize(&(dhValue->p)) > 0) {
         ret = xmlSecOpenSSLGetBNValue(&(dhValue->p), &(dhKeyValue.p));
         if(ret < 0) {
@@ -2366,7 +2375,7 @@ xmlSecOpenSSLKeyDataDhRead(xmlSecKeyDataId id, xmlSecKeyValueDhPtr dhValue) {
             goto done;
         }
     }
-    /* generator: optional */
+    /* generator: required (validated above) */
     if (xmlSecBufferGetSize(&(dhValue->generator)) > 0) {
         ret = xmlSecOpenSSLGetBNValue(&(dhValue->generator), &(dhKeyValue.generator));
         if(ret < 0) {

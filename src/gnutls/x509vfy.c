@@ -289,6 +289,32 @@ xmlSecGnuTLSX509StoreGetTrustedCerts(xmlSecGnuTLSX509StoreCtxPtr ctx,
     return(0);
 }
 
+/*
+ * Get the verification time used for CRL time checks: the explicit
+ * verification time from the context if set, otherwise the current
+ * system time. Returns (time_t)-1 on error.
+ */
+static time_t
+xmlSecGnuTLSX509StoreGetCrlVerificationTime(
+    const xmlSecKeyInfoCtx* keyInfoCtx,
+    const xmlChar* storeName
+) {
+    time_t verification_time;
+
+    xmlSecAssert2(keyInfoCtx != NULL, (time_t)-1);
+
+    if(keyInfoCtx->certsVerificationTime > 0) {
+        return(keyInfoCtx->certsVerificationTime);
+    }
+
+    verification_time = time(NULL);
+    if(verification_time == (time_t)-1) {
+        xmlSecInternalError("time", storeName);
+        return((time_t)-1);
+    }
+    return(verification_time);
+}
+
 
 static int
 xmlSecGnuTLSX509StoreGetCrls(
@@ -302,6 +328,7 @@ xmlSecGnuTLSX509StoreGetCrls(
     gnutls_x509_crl_t* res;
     xmlSecSize ii, res_size, res_pos = 0;
     xmlSecSize extra_crls_size, ctx_crls_size;
+    time_t verification_time = 0;
     int ret;
 
     xmlSecAssert2(store != NULL, -1);
@@ -322,7 +349,8 @@ xmlSecGnuTLSX509StoreGetCrls(
         return(0);
     }
 
-    /* copy lists, verifying caller-supplied crls before use (store crls are already trusted) */
+    /* copy lists, verifying caller-supplied crls before use (store crls
+     * are checked for time validity below) */
     res = (gnutls_x509_crl_t *)xmlMalloc(sizeof(gnutls_x509_crl_t) * res_size);
     if(res == NULL) {
         xmlSecMallocError(sizeof(gnutls_x509_crl_t) * res_size, NULL);
@@ -352,13 +380,42 @@ xmlSecGnuTLSX509StoreGetCrls(
         res[res_pos] = crl;
         ++res_pos;
     }
-    for(ii = 0; ii < ctx_crls_size; ++ii, ++res_pos) {
-        res[res_pos] = xmlSecPtrListGetItem(&(ctx->crls), ii);
-        if(res[res_pos] == NULL) {
+    /* gnutls does not check the CRL time window when using CRLs for
+     * revocation decisions, so a store CRL that is not yet valid at the
+     * verification time must not be used: it would otherwise revoke
+     * certificates that were not yet revoked at that time. An expired
+     * store CRL is still honored (fail closed). */
+    if(ctx_crls_size > 0) {
+        verification_time = xmlSecGnuTLSX509StoreGetCrlVerificationTime(keyInfoCtx,
+            xmlSecKeyDataStoreGetName(store));
+        if(verification_time == (time_t)-1) {
+            xmlFree(res);
+            return(-1);
+        }
+    }
+    for(ii = 0; ii < ctx_crls_size; ++ii) {
+        gnutls_x509_crl_t crl;
+        time_t this_update;
+
+        crl = xmlSecPtrListGetItem(&(ctx->crls), ii);
+        if(crl == NULL) {
             xmlSecInternalError("xmlSecPtrListGetItem(crls)", NULL);
             xmlFree(res);
             return(-1);
         }
+        this_update = gnutls_x509_crl_get_this_update(crl);
+        if(this_update == (time_t)-1) {
+            xmlSecInternalError("gnutls_x509_crl_get_this_update (failed to get CRL thisUpdate time)",
+                xmlSecKeyDataStoreGetName(store));
+            xmlFree(res);
+            return(-1);
+        }
+        if(this_update > verification_time) {
+            /* CRL is not yet valid: skip it */
+            continue;
+        }
+        res[res_pos] = crl;
+        ++res_pos;
     }
 
     if(res_pos <= 0) {
@@ -932,14 +989,9 @@ xmlSecGnuTLSX509StoreVerifyCrlTimeValidity(
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     /* Get verification time */
-    if(keyInfoCtx->certsVerificationTime > 0) {
-        verification_time = keyInfoCtx->certsVerificationTime;
-    } else {
-        verification_time = time(NULL);
-        if(verification_time == (time_t)-1) {
-            xmlSecInternalError("time", storeName);
-            return(-1);
-        }
+    verification_time = xmlSecGnuTLSX509StoreGetCrlVerificationTime(keyInfoCtx, storeName);
+    if(verification_time == (time_t)-1) {
+        return(-1);
     }
 
     /* Verify this_update */

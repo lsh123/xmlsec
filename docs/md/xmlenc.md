@@ -83,7 +83,7 @@ XML Security library supports the following features as defined in
 1. <a id="feature-disabled"></a> The feature is disabled by default but can be re-enabled at build time.
 2. <a id="rsa-oaep-same-algo"></a> RSA-OAEP digest and MGF1 algorithms must be the same.
 3. <a id="openssl3-required"></a> Requires OpenSSL 3.0.0 or newer.
-4. <a id="pbkdf2"></a> Only "specified" salt is supported for PBKDF2.
+4. <a id="pbkdf2"></a> Only "specified" salt is supported for PBKDF2. The maximum IterationCount value is 1000000 (build time configuration).
 5. <a id="new-windows-required"></a> Some cryptographic algorithms are not supported on older versions of Windows.
 6. <a id="concatkdf"></a> Only byte-aligned bit strings in ConcatKDFParams element are supported ([more details](https://github.com/lsh123/xmlsec/issues/514)).
 7. <a id="derived-key"></a> Some optional features in DerivedKey element are not supported ([more details](https://github.com/lsh123/xmlsec/issues/515)).

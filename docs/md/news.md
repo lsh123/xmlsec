@@ -17,6 +17,8 @@
     fix circular dependencies, etc.
   - (xmlsec-core, **not backward compatible**) Removed support for negative values in BN string conversion/parsing helpers;
     values are now treated as unsigned magnitudes.
+  - (xmlsec-core, **not backward compatible**) Added hard cap (adjustable at build time) on maximum number of the
+    PBKDF2 iterations (1000000 by default).
   - (xmlsec-build, **not backward compatible**) Added '-std=c23' compiler flag for building the library
     on compilers that support it or '-std=c99' otherwise (this flag was only enabled with --enable-pedantic builds
     in the past).

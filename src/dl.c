@@ -240,12 +240,6 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
      * the library is miscconfigured. */
     getFunctions = xmlSecCryptoOpenLibraryAndGetFunctions(lib);
     if(getFunctions == NULL) {
-        xmlSecInternalError("xmlSecCryptoOpenLibraryAndGetFunctions", NULL);
-        xmlSecCryptoDLLibraryDestroy(lib);
-        return(NULL);
-    }
-
-    if(getFunctions == NULL) {
         xmlSecInternalError("invalid configuration: no way to load library", NULL);
         xmlSecCryptoDLLibraryDestroy(lib);
         return(NULL);

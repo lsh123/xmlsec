@@ -1580,7 +1580,17 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
             }
             break;
         case xmlSecGnuTLSDnParseState_BeforeString:
-            if(!XMLSEC_GNUTLS_IS_SPACE(ch)) {
+            if(ch == '\0') {
+                /* the last name component has an empty unquoted value */
+                *(p) = '\0';
+                attrs[pos].value = xmlStrdup(tmp);
+                if(attrs[pos].value == NULL) {
+                    xmlSecStrdupError(tmp, NULL);
+                    goto done;
+                }
+                state = xmlSecGnuTLSDnParseState_BeforeNameComponent;
+                ++pos;
+            } else if(!XMLSEC_GNUTLS_IS_SPACE(ch)) {
                 if(ch != '\"') {
                     state = xmlSecGnuTLSDnParseState_String;
                     slash = 0;

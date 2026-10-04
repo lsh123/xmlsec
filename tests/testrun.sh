@@ -200,9 +200,9 @@ else
     xmlsec_feature_crl_verification="no"
 fi
 
-# currently only openssl/mscng support CRL verification by time
+# currently only openssl/gnutls/mscng support CRL verification by time
 # https://github.com/lsh123/xmlsec/issues/579
-if [ "z$crypto" = "zopenssl" -o "z$crypto" = "zmscng" ] ; then
+if [ "z$crypto" = "zopenssl" -o "z$crypto" = "zgnutls" -o "z$crypto" = "zmscng" ] ; then
     xmlsec_feature_crl_check_skip_time="yes"
 else
     xmlsec_feature_crl_check_skip_time="no"

@@ -194,6 +194,16 @@ XMLSEC_EXPORT int xmlSecTransformEdDSAReadContextString(xmlNodePtr node,
 /* PBKDF2 */
 #ifndef XMLSEC_NO_PBKDF2
 
+/*
+ * The maximum number of PBKDF2 iterations accepted by
+ * xmlSecTransformPbkdf2ParamsRead(). Iteration counts above this
+ * limit are rejected to protect against CPU exhaustion (denial
+ * of service) when processing untrusted documents.
+ */
+#if !defined(XMLSEC_PBKDF2_MAX_ITERATIONS)
+#define XMLSEC_PBKDF2_MAX_ITERATIONS  ((xmlSecSize)1000000)
+#endif /* !defined(XMLSEC_PBKDF2_MAX_ITERATIONS) */
+
 struct _xmlSecTransformPbkdf2Params {
     xmlSecBuffer salt;
     xmlSecSize iterationCount;

@@ -276,8 +276,12 @@ done:
  * @p derItem may be either a bare EncryptedPrivateKeyInfo (the layout
  * produced by "openssl pkcs8 -topk8 -v2 <algorithm>") or a PrivateKeyInfo
  * container with the inner EncryptedPrivateKeyInfo stored in the
- * "privateKey" OCTET STRING. Returns 0 if the key was imported (and
- * @p privkey was set), 1 if @p derItem is not a PKCS#8 container (the
+ * "privateKey" OCTET STRING. The container layout is detected first: its
+ * version field is mandatory, whereas the version field of the
+ * EncryptedPrivateKeyInfo template is optional, so the bare-EPKI template
+ * would otherwise also match the container and the import would fail with
+ * the (non-PBE) container algorithm. Returns 0 if the key was imported
+ * (and @p privkey was set), 1 if @p derItem is not a PKCS#8 container (the
  * caller may try the SubjectPublicKeyInfo path), and -1 if @p derItem is a
  * PKCS#8 container but the import failed (e.g. wrong password or an
  * unsupported algorithm). */
@@ -310,30 +314,37 @@ xmlSecNssAppImportEncryptedPkcs8Key(PK11SlotInfo* slot, SECItem* derItem,
         goto done;
     }
 
-    /* try to parse the whole item as a bare EncryptedPrivateKeyInfo */
+    /* try to parse the item as a PrivateKeyInfo container with the inner
+     * EncryptedPrivateKeyInfo stored in the "privateKey" OCTET STRING. The
+     * container template has a mandatory version field, so a bare
+     * EncryptedPrivateKeyInfo without a version field can never match it.
+     * A versioned bare EncryptedPrivateKeyInfo does match it structurally,
+     * but in that case the "privateKey" content is not a valid
+     * EncryptedPrivateKeyInfo and the fall-through below handles it */
+    memset(&outer, 0, sizeof(outer));
+    rv = SEC_QuickDERDecodeItem(arena, &outer, xmlSecNssPkcs8OuterTemplate, derItem);
+    if(rv == SECSuccess) {
+        memset(&epkiInfo, 0, sizeof(epkiInfo));
+        rv = SEC_QuickDERDecodeItem(arena, &epkiInfo, xmlSecNssEpkiTemplate,
+            &outer.privateKey);
+        if(rv == SECSuccess) {
+            goto import;
+        }
+        /* the "privateKey" content is not an EncryptedPrivateKeyInfo; the
+         * whole item itself might still be one, so fall through */
+    }
+
+    /* try to parse the whole item as an EncryptedPrivateKeyInfo */
     memset(&epkiInfo, 0, sizeof(epkiInfo));
     rv = SEC_QuickDERDecodeItem(arena, &epkiInfo, xmlSecNssEpkiTemplate, derItem);
     if(rv == SECSuccess) {
         goto import;
     }
 
-    /* try to parse the item as a PrivateKeyInfo container with the inner
-     * EncryptedPrivateKeyInfo in the "privateKey" OCTET STRING */
-    memset(&outer, 0, sizeof(outer));
-    rv = SEC_QuickDERDecodeItem(arena, &outer, xmlSecNssPkcs8OuterTemplate, derItem);
-    if(rv != SECSuccess) {
-        /* not a PKCS#8 container; the caller may try the
-         * SubjectPublicKeyInfo path */
-        res = 1;
-        goto done;
-    }
-
-    memset(&epkiInfo, 0, sizeof(epkiInfo));
-    rv = SEC_QuickDERDecodeItem(arena, &epkiInfo, xmlSecNssEpkiTemplate, &outer.privateKey);
-    if(rv != SECSuccess) {
-        xmlSecNssError("SEC_QuickDERDecodeItem(EncryptedPrivateKeyInfo)", NULL);
-        goto done;
-    }
+    /* not a PKCS#8 container; the caller may try the SubjectPublicKeyInfo
+     * path */
+    res = 1;
+    goto done;
 
 import:
     memset(&epki, 0, sizeof(epki));

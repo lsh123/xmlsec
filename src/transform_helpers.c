@@ -1399,6 +1399,10 @@ xmlSecTransformPbkdf2ParamsRead(xmlSecTransformPbkdf2ParamsPtr params, xmlNodePt
         xmlSecInternalError("xmlSecGetNodeContentAsSize(iterationCount)", NULL);
         return(-1);
     }
+    if(params->iterationCount > XMLSEC_PBKDF2_MAX_ITERATIONS) {
+        xmlSecInvalidSizeDataError("iterationCount", params->iterationCount, "too big", NULL);
+        return(-1);
+    }
 
     /* next is required KeyLength */
     cur = xmlSecGetNextElementNode(cur->next);

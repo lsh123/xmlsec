@@ -48,7 +48,7 @@ xmlSecXPathHereFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     if(obj == NULL) {
         XP_ERROR(XPATH_MEMORY_ERROR);
     }
-    ret = xmlXPathValuePush(ctxt, obj);
+    ret = valuePush(ctxt, obj);
     if(ret < 0) {
 #if (LIBXML_VERSION < 21100)
         /* libxml2 < 2.11 does not free the object on a valuePush failure

@@ -42,6 +42,18 @@ static void               test_ptr_list_set                     (void);
 static void               test_ptr_list_remove                  (void);
 static void               test_ptr_list_remove_and_return       (void);
 static void               test_ptr_list_pop_last                (void);
+static void               test_ptr_list_sort_null_compare       (void);
+static void               test_ptr_list_sort_empty              (void);
+static void               test_ptr_list_sort_single             (void);
+static void               test_ptr_list_sort_shuffled           (void);
+static void               test_ptr_list_sort_reversed           (void);
+static void               test_ptr_list_sort_already_sorted     (void);
+static void               test_ptr_list_sort_all_equal          (void);
+static void               test_ptr_list_sort_duplicates         (void);
+static void               test_ptr_list_sort_exact_order        (void);
+static int                test_ptr_list_sort_compare            (xmlSecPtr item1, xmlSecPtr item2);
+static int                test_ptr_list_sort_verify_sorted      (xmlSecPtrListPtr list);
+static int                test_ptr_list_sort_fill_and_verify    (int* values, int size);
 static void               test_ptr_list_copy_duplicate          (void);
 static void               test_ptr_list_invalid_alloc_mode      (void);
 static void               test_ptr_list_get_item_out_of_range   (void);
@@ -706,6 +718,338 @@ done:
     testFinishedFailure();
 }
 
+static int
+test_ptr_list_sort_compare(xmlSecPtr item1, xmlSecPtr item2) {
+    const int* a = (const int*)item1;
+    const int* b = (const int*)item2;
+
+    if(*a < *b) {
+        return(-1);
+    }
+    if(*a > *b) {
+        return(1);
+    }
+    return(0);
+}
+
+/* returns 1 if all items of @p list are in non-decreasing order */
+static int
+test_ptr_list_sort_verify_sorted(xmlSecPtrListPtr list) {
+    xmlSecSize pos;
+    const int* item;
+    const int* prev = NULL;
+
+    for(pos = 0; pos < xmlSecPtrListGetSize(list); ++pos) {
+        item = (const int*)xmlSecPtrListGetItem(list, pos);
+        if(item == NULL) {
+            return(0);
+        }
+        if((prev != NULL) && (*prev > *item)) {
+            return(0);
+        }
+        prev = item;
+    }
+    return(1);
+}
+
+/*
+ * Fills a fresh list with @p values (which must fit in the 0..49 range),
+ * sorts it, and verifies that the result is sorted and is a permutation of
+ * the input values. Returns 1 on success.
+ */
+static int
+test_ptr_list_sort_fill_and_verify(int* values, int size) {
+    xmlSecPtrList list;
+    int counts[50] = {0};
+    int ii;
+    xmlSecSize pos;
+    const int* item;
+
+    memset(&list, 0, sizeof(list));
+    if(xmlSecPtrListInitialize(&list, &g_xmlSecListShallowKlass) < 0) {
+        return(0);
+    }
+    for(ii = 0; ii < size; ++ii) {
+        if((values[ii] < 0) || (values[ii] > 49)) {
+            xmlSecPtrListFinalize(&list);
+            return(0);
+        }
+        ++counts[values[ii]];
+        if(xmlSecPtrListAdd(&list, (xmlSecPtr)&values[ii]) < 0) {
+            xmlSecPtrListFinalize(&list);
+            return(0);
+        }
+    }
+
+    if(xmlSecPtrListSort(&list, test_ptr_list_sort_compare) < 0) {
+        xmlSecPtrListFinalize(&list);
+        return(0);
+    }
+    if(!test_ptr_list_sort_verify_sorted(&list)) {
+        xmlSecPtrListFinalize(&list);
+        return(0);
+    }
+
+    /* the sorted list must contain exactly the input values */
+    for(pos = 0; pos < xmlSecPtrListGetSize(&list); ++pos) {
+        item = (const int*)xmlSecPtrListGetItem(&list, pos);
+        if((item == NULL) || (counts[*item] == 0)) {
+            xmlSecPtrListFinalize(&list);
+            return(0);
+        }
+        --counts[*item];
+    }
+    for(ii = 0; ii < 50; ++ii) {
+        if(counts[ii] != 0) {
+            xmlSecPtrListFinalize(&list);
+            return(0);
+        }
+    }
+
+    xmlSecPtrListFinalize(&list);
+    return(1);
+}
+
+static void
+test_ptr_list_sort_null_compare(void) {
+    xmlSecPtrList list;
+
+    memset(&list, 0, sizeof(list));
+
+    testStart("xmlSecPtrListSort(NULL compare)");
+
+    if(xmlSecPtrListInitialize(&list, &g_xmlSecListShallowKlass) < 0) {
+        testLog("Error: xmlSecPtrListInitialize failed\n");
+        goto done;
+    }
+
+    /* a NULL comparison function must be rejected */
+    if(xmlSecPtrListSort(&list, NULL) >= 0) {
+        testLog("Error: xmlSecPtrListSort accepted a NULL comparison function\n");
+        goto done;
+    }
+
+    xmlSecPtrListFinalize(&list);
+    testFinishedSuccess();
+    return;
+
+done:
+    if(xmlSecPtrListIsValid(&list)) {
+        xmlSecPtrListFinalize(&list);
+    }
+    testFinishedFailure();
+}
+
+static void
+test_ptr_list_sort_empty(void) {
+    xmlSecPtrList list;
+
+    memset(&list, 0, sizeof(list));
+
+    testStart("xmlSecPtrListSort(empty list)");
+
+    if(xmlSecPtrListInitialize(&list, &g_xmlSecListShallowKlass) < 0) {
+        testLog("Error: xmlSecPtrListInitialize failed\n");
+        goto done;
+    }
+
+    /* sorting an empty list is a no-op */
+    if(xmlSecPtrListSort(&list, test_ptr_list_sort_compare) < 0) {
+        testLog("Error: xmlSecPtrListSort failed for an empty list\n");
+        goto done;
+    }
+
+    xmlSecPtrListFinalize(&list);
+    testFinishedSuccess();
+    return;
+
+done:
+    if(xmlSecPtrListIsValid(&list)) {
+        xmlSecPtrListFinalize(&list);
+    }
+    testFinishedFailure();
+}
+
+static void
+test_ptr_list_sort_single(void) {
+    xmlSecPtrList list;
+    int singleItem = 7;
+
+    memset(&list, 0, sizeof(list));
+
+    testStart("xmlSecPtrListSort(single item)");
+
+    if(xmlSecPtrListInitialize(&list, &g_xmlSecListShallowKlass) < 0) {
+        testLog("Error: xmlSecPtrListInitialize failed\n");
+        goto done;
+    }
+
+    /* a single item list is a no-op */
+    if(xmlSecPtrListAdd(&list, (xmlSecPtr)&singleItem) < 0) {
+        testLog("Error: xmlSecPtrListAdd failed\n");
+        goto done;
+    }
+    if(xmlSecPtrListSort(&list, test_ptr_list_sort_compare) < 0) {
+        testLog("Error: xmlSecPtrListSort failed for a single-item list\n");
+        goto done;
+    }
+    if(xmlSecPtrListGetItem(&list, 0) != (xmlSecPtr)&singleItem) {
+        testLog("Error: xmlSecPtrListSort changed a single-item list\n");
+        goto done;
+    }
+    if(xmlSecPtrListRemove(&list, 0) < 0) {
+        testLog("Error: xmlSecPtrListRemove failed\n");
+        goto done;
+    }
+
+    xmlSecPtrListFinalize(&list);
+    testFinishedSuccess();
+    return;
+
+done:
+    if(xmlSecPtrListIsValid(&list)) {
+        xmlSecPtrListFinalize(&list);
+    }
+    testFinishedFailure();
+}
+
+static void
+test_ptr_list_sort_shuffled(void) {
+    int shuffled[50];
+    int ii;
+
+    testStart("xmlSecPtrListSort(shuffled)");
+
+    for(ii = 0; ii < 50; ++ii) {
+        shuffled[ii] = (int)((ii * 37) % 50);  /* a permutation of 0..49 */
+    }
+    if(!test_ptr_list_sort_fill_and_verify(shuffled, 50)) {
+        testLog("Error: xmlSecPtrListSort failed for shuffled input\n");
+        testFinishedFailure();
+        return;
+    }
+    testFinishedSuccess();
+}
+
+static void
+test_ptr_list_sort_reversed(void) {
+    int reversed[50];
+    int ii;
+
+    testStart("xmlSecPtrListSort(reversed)");
+
+    for(ii = 0; ii < 50; ++ii) {
+        reversed[ii] = 49 - ii;
+    }
+    if(!test_ptr_list_sort_fill_and_verify(reversed, 50)) {
+        testLog("Error: xmlSecPtrListSort failed for reversed input\n");
+        testFinishedFailure();
+        return;
+    }
+    testFinishedSuccess();
+}
+
+static void
+test_ptr_list_sort_already_sorted(void) {
+    int sorted[50];
+    int ii;
+
+    testStart("xmlSecPtrListSort(already sorted)");
+
+    for(ii = 0; ii < 50; ++ii) {
+        sorted[ii] = ii;
+    }
+    if(!test_ptr_list_sort_fill_and_verify(sorted, 50)) {
+        testLog("Error: xmlSecPtrListSort failed for already sorted input\n");
+        testFinishedFailure();
+        return;
+    }
+    testFinishedSuccess();
+}
+
+static void
+test_ptr_list_sort_all_equal(void) {
+    int allEqual[50];
+    int ii;
+
+    testStart("xmlSecPtrListSort(all equal items)");
+
+    for(ii = 0; ii < 50; ++ii) {
+        allEqual[ii] = 42;
+    }
+    if(!test_ptr_list_sort_fill_and_verify(allEqual, 50)) {
+        testLog("Error: xmlSecPtrListSort failed for all equal items\n");
+        testFinishedFailure();
+        return;
+    }
+    testFinishedSuccess();
+}
+
+static void
+test_ptr_list_sort_duplicates(void) {
+    int duplicates[50];
+    int ii;
+
+    testStart("xmlSecPtrListSort(duplicated values)");
+
+    for(ii = 0; ii < 50; ++ii) {
+        duplicates[ii] = (ii / 2) % 25;
+    }
+    if(!test_ptr_list_sort_fill_and_verify(duplicates, 50)) {
+        testLog("Error: xmlSecPtrListSort failed for duplicated values\n");
+        testFinishedFailure();
+        return;
+    }
+    testFinishedSuccess();
+}
+
+static void
+test_ptr_list_sort_exact_order(void) {
+    xmlSecPtrList list;
+    int shuffled[50];
+    int ii;
+    const int* item;
+
+    memset(&list, 0, sizeof(list));
+
+    testStart("xmlSecPtrListSort(exact order)");
+
+    if(xmlSecPtrListInitialize(&list, &g_xmlSecListShallowKlass) < 0) {
+        testLog("Error: xmlSecPtrListInitialize failed\n");
+        goto done;
+    }
+    for(ii = 0; ii < 50; ++ii) {
+        shuffled[ii] = (int)((ii * 37) % 50);  /* a permutation of 0..49 */
+        if(xmlSecPtrListAdd(&list, (xmlSecPtr)&shuffled[ii]) < 0) {
+            testLog("Error: xmlSecPtrListAdd failed\n");
+            goto done;
+        }
+    }
+    if(xmlSecPtrListSort(&list, test_ptr_list_sort_compare) < 0) {
+        testLog("Error: xmlSecPtrListSort failed\n");
+        goto done;
+    }
+
+    /* verify the exact order of the sorted shuffled permutation */
+    for(ii = 0; ii < 50; ++ii) {
+        item = (const int*)xmlSecPtrListGetItem(&list, (xmlSecSize)ii);
+        if((item == NULL) || (*item != ii)) {
+            testLog("Error: xmlSecPtrListSort produced unexpected item order\n");
+            goto done;
+        }
+    }
+
+    xmlSecPtrListFinalize(&list);
+    testFinishedSuccess();
+    return;
+
+done:
+    if(xmlSecPtrListIsValid(&list)) {
+        xmlSecPtrListFinalize(&list);
+    }
+    testFinishedFailure();
+}
+
 static void
 test_ptr_list_copy_duplicate(void) {
     xmlSecPtrList src;
@@ -1075,6 +1419,15 @@ int test_list(void) {
     test_ptr_list_remove();
     test_ptr_list_remove_and_return();
     test_ptr_list_pop_last();
+    test_ptr_list_sort_null_compare();
+    test_ptr_list_sort_empty();
+    test_ptr_list_sort_single();
+    test_ptr_list_sort_shuffled();
+    test_ptr_list_sort_reversed();
+    test_ptr_list_sort_already_sorted();
+    test_ptr_list_sort_all_equal();
+    test_ptr_list_sort_duplicates();
+    test_ptr_list_sort_exact_order();
     test_ptr_list_copy_duplicate();
     test_ptr_list_invalid_alloc_mode();
     test_ptr_list_get_item_out_of_range();

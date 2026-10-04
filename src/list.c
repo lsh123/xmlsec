@@ -446,6 +446,88 @@ xmlSecPtrListPopLast(xmlSecPtrListPtr list) {
     return(xmlSecPtrListRemoveAndReturn(list, list->use - 1));
 }
 
+static inline void
+xmlSecPtrListSwapItems(xmlSecPtr* item1, xmlSecPtr* item2) {
+    xmlSecPtr tmp;
+
+    tmp = (*item1);
+    (*item1) = (*item2);
+    (*item2) = tmp;
+}
+
+/*
+ * Sifts the item at position @p root down the heap (data[0..size)) until the
+ * max-heap property is restored.
+ */
+static inline void
+xmlSecPtrListHeapSiftDown(xmlSecPtr* data, xmlSecSize size, xmlSecSize root, xmlSecPtrListCompareMethod compare) {
+    xmlSecSize left;
+    xmlSecSize right;
+    xmlSecSize largest;
+
+    for(;;) {
+
+        /* a node without children is already in place; the check also keeps
+         * 2 * root + 1 from overflowing xmlSecSize */
+        if(root > (size - 1) / 2) {
+            return;
+        }
+
+        largest = root;
+        left = (2 * root) + 1;
+        right = (2 * root) + 2;
+        if((left < size) && (compare(data[left], data[largest]) > 0)) {
+            largest = left;
+        }
+        if((right < size) && (compare(data[right], data[largest]) > 0)) {
+            largest = right;
+        }
+        if(largest == root) {
+            return;
+        }
+
+        xmlSecPtrListSwapItems(&(data[root]), &(data[largest]));
+        root = largest;
+    }
+}
+
+/**
+ * @brief Sorts the items of a list in place.
+ * @details Sorts the items of @p list in place using the heapsort algorithm.
+ * The items are compared with the @p compare function, which must return a
+ * value less than zero, zero, or greater than zero depending on whether the
+ * first item should sort before, is equal to, or should sort after the second
+ * item, respectively.
+ * @param list the pointer to list.
+ * @param compare the comparison function (see #xmlSecPtrListCompareMethod).
+ * @return 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecPtrListSort(xmlSecPtrListPtr list, xmlSecPtrListCompareMethod compare) {
+    xmlSecSize pos;
+
+    xmlSecAssert2(xmlSecPtrListIsValid(list), -1);
+    xmlSecAssert2(compare != NULL, -1);
+
+    if(list->use >= 2) {
+        xmlSecAssert2(list->data != NULL, -1);
+
+        /* build a max-heap over data[0..use) */
+        for(pos = (list->use - 1) / 2; pos != 0; --pos) {
+            xmlSecPtrListHeapSiftDown(list->data, list->use, pos, compare);
+        }
+        xmlSecPtrListHeapSiftDown(list->data, list->use, 0, compare);
+
+        /* move the max item to the end of the list, shrink the heap, and repeat */
+        for(pos = list->use - 1; pos > 0; --pos) {
+            xmlSecPtrListSwapItems(&(list->data[0]), &(list->data[pos]));
+            xmlSecPtrListHeapSiftDown(list->data, pos, 0, compare);
+        }
+    }
+
+    return(0);
+}
+
 /**
  * @brief Prints debug info about a list.
  * @details Prints debug information about @p list to the @p output.

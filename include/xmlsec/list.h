@@ -36,6 +36,18 @@ typedef const struct _xmlSecPtrListKlass                        *xmlSecPtrListId
 typedef struct _xmlSecPtrList                                   xmlSecPtrList,
                                                                 *xmlSecPtrListPtr;
 
+                                                                /**
+ * @brief Compares two list items.
+ * @details A comparison function used by #xmlSecPtrListSort.
+ * @param item1 the first list item.
+ * @param item2 the second list item.
+ * @return a value less than zero, zero, or greater than zero depending on
+ * whether @p item1 should sort before, is equal to, or should sort after
+ * @p item2, respectively.
+ */
+typedef int                     (*xmlSecPtrListCompareMethod) (xmlSecPtr item1,
+                                                               xmlSecPtr item2);
+
 /**
  * @brief The pointer list.
  */
@@ -79,6 +91,8 @@ XMLSEC_EXPORT int               xmlSecPtrListRemove             (xmlSecPtrListPt
 XMLSEC_EXPORT xmlSecPtr         xmlSecPtrListRemoveAndReturn    (xmlSecPtrListPtr list,
                                                                  xmlSecSize pos);
 XMLSEC_EXPORT xmlSecPtr         xmlSecPtrListPopLast            (xmlSecPtrListPtr list);
+XMLSEC_EXPORT int               xmlSecPtrListSort               (xmlSecPtrListPtr list,
+                                                                 xmlSecPtrListCompareMethod compare);
 XMLSEC_EXPORT void              xmlSecPtrListDebugDump          (xmlSecPtrListPtr list,
                                                                  FILE* output);
 XMLSEC_EXPORT void              xmlSecPtrListDebugXmlDump       (xmlSecPtrListPtr list,

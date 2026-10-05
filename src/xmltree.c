@@ -303,9 +303,9 @@ xmlSecFindChild(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns)
 }
 
 /**
- * @brief Searches ancestor nodes by name and namespace.
- * @details Searches the ancestors axis of the @p cur node for a node having given name
- * and namespace href.
+ * @brief Searches a node and its ancestors by name and namespace.
+ * @details Searches the @p cur node itself and its ancestors (up to the
+ * document root, inclusive) for a node having given name and namespace href.
  * @param cur the pointer to an XML node.
  * @param name the name.
  * @param ns the namespace href (may be NULL).
@@ -833,6 +833,7 @@ int
 xmlSecReplaceContentAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr *replaced) {
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(newNode != NULL, -1);
+    xmlSecAssert2(node != newNode, -1);
 
     /* return the old nodes if requested */
     if(replaced != NULL) {
@@ -926,6 +927,13 @@ xmlSecReplaceNodeBufferAndReturn(xmlNodePtr node, const xmlSecByte *buffer, xmlS
     node->doc->encoding = oldenc;
     if(ret != XML_ERR_OK) {
         xmlSecXmlError("xmlParseInNodeContext", NULL);
+        return(-1);
+    }
+    /* xmlParseInNodeContext() returns XML_ERR_OK with a NULL result list for
+     * an empty buffer; fail instead of silently deleting @p node without
+     * replacing it */
+    if(results == NULL) {
+        xmlSecInvalidDataError("buffer does not contain any XML nodes", xmlSecNodeGetName(node));
         return(-1);
     }
 

@@ -82,6 +82,10 @@ xmlSecKeyUseWithCopy(xmlSecKeyUseWithPtr dst, xmlSecKeyUseWithPtr src) {
     xmlSecAssert2(dst != NULL, -1);
     xmlSecAssert2(src != NULL, -1);
 
+    if(dst == src) {
+        return(0);
+    }
+
     return(xmlSecKeyUseWithSet(dst, src->application, src->identifier));
 }
 
@@ -784,6 +788,7 @@ xmlSecKeyGetValue(xmlSecKeyPtr key) {
 int
 xmlSecKeySetValue(xmlSecKeyPtr key, xmlSecKeyDataPtr value) {
     xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2((value == NULL) || xmlSecKeyDataIsValid(value), -1);
 
     /* do nothing if the same value is set again */
     if(value == key->value) {
@@ -916,6 +921,11 @@ xmlSecKeyAdoptData(xmlSecKeyPtr key, xmlSecKeyDataPtr data) {
             xmlSecKeyDataDestroy(key->value);
         }
         key->value = data;
+        return(0);
+    }
+
+    /* do nothing if the data is already the key's value */
+    if(data == key->value) {
         return(0);
     }
 

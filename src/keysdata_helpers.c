@@ -158,7 +158,11 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr
 
     xmlSecAssert2(id != xmlSecKeyDataIdUnknown, -1);
     xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(xmlSecKeyGetValue(key) == NULL, -1);
+    if(xmlSecKeyGetValue(key) != NULL) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_KEY_DATA,
+            xmlSecKeyDataKlassGetName(id), "key already has a value");
+        goto done;
+    }
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
@@ -248,6 +252,11 @@ xmlSecKeyDataBinaryValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     }
 
     value = xmlSecKeyGetValue(key);
+    if(value == NULL) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_KEY_DATA,
+            xmlSecKeyDataKlassGetName(id), "key has no value");
+        return(-1);
+    }
     xmlSecAssert2(xmlSecKeyDataIsValid(value), -1);
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(value);
@@ -368,6 +377,11 @@ xmlSecKeyDataBinaryValueBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     }
 
     value = xmlSecKeyGetValue(key);
+    if(value == NULL) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_KEY_DATA,
+            xmlSecKeyDataKlassGetName(id), "key has no value");
+        return(-1);
+    }
     xmlSecAssert2(xmlSecKeyDataIsValid(value), -1);
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(value);

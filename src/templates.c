@@ -1346,6 +1346,9 @@ xmlSecTmplKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, xmlSecTransformId encMe
  * @details Adds &lt;dsig:X509IssuerSerial/&gt; node to the given &lt;dsig:X509Data/&gt; node.
  * @param x509DataNode the pointer to &lt;dsig:X509Data/&gt; node.
  *
+ * Note: multiple &lt;dsig:X509IssuerSerial&gt; elements may be added, as the W3C
+ * X509DataType permits repeated child elements (see https://www.w3.org/TR/xmldsig-core1/#sec-KeyInfo).
+ *
  * @return the pointer to the newly created &lt;dsig:X509IssuerSerial/&gt; node or
  * NULL if an error occurs.
  */
@@ -1355,12 +1358,6 @@ xmlSecTmplX509DataAddIssuerSerial(xmlNodePtr x509DataNode) {
     xmlNodePtr cur;
 
     xmlSecAssert2(x509DataNode != NULL, NULL);
-
-    cur = xmlSecFindChild(x509DataNode, xmlSecNodeX509IssuerSerial, xmlSecDSigNs);
-    if(cur != NULL) {
-        xmlSecNodeAlreadyPresentError(x509DataNode, xmlSecNodeX509IssuerSerial, NULL);
-        return(NULL);
-    }
 
     cur = xmlSecAddChild(x509DataNode, xmlSecNodeX509IssuerSerial, xmlSecDSigNs);
     if(cur == NULL) {
@@ -1453,6 +1450,9 @@ xmlSecTmplX509IssuerSerialAddSerialNumber(xmlNodePtr x509IssuerSerialNode, const
  * @details Adds &lt;dsig:X509SubjectName/&gt; node to the given &lt;dsig:X509Data/&gt; node.
  * @param x509DataNode the pointer to &lt;dsig:X509Data/&gt; node.
  *
+ * Note: multiple &lt;dsig:X509SubjectName&gt; elements may be added, as the W3C
+ * X509DataType permits repeated child elements (see https://www.w3.org/TR/xmldsig-core1/#sec-X509Data).
+ *
  * @return the pointer to the newly created &lt;dsig:X509SubjectName/&gt; node or
  * NULL if an error occurs.
  */
@@ -1462,12 +1462,6 @@ xmlSecTmplX509DataAddSubjectName(xmlNodePtr x509DataNode) {
     xmlNodePtr cur;
 
     xmlSecAssert2(x509DataNode != NULL, NULL);
-
-    cur = xmlSecFindChild(x509DataNode, xmlSecNodeX509SubjectName, xmlSecDSigNs);
-    if(cur != NULL) {
-        xmlSecNodeAlreadyPresentError(x509DataNode, xmlSecNodeX509SubjectName, NULL);
-        return(NULL);
-    }
 
     cur = xmlSecAddChild(x509DataNode, xmlSecNodeX509SubjectName, xmlSecDSigNs);
     if(cur == NULL) {
@@ -1483,6 +1477,9 @@ xmlSecTmplX509DataAddSubjectName(xmlNodePtr x509DataNode) {
  * @details Adds &lt;dsig:X509SKI/&gt; node to the given &lt;dsig:X509Data/&gt; node.
  * @param x509DataNode the pointer to &lt;dsig:X509Data/&gt; node.
  *
+ * Note: multiple &lt;dsig:X509SKI&gt; elements may be added, as the W3C
+ * X509DataType permits repeated child elements (see https://www.w3.org/TR/xmldsig-core1/#sec-X509Data).
+ *
  * @return the pointer to the newly created &lt;dsig:X509SKI/&gt; node or
  * NULL if an error occurs.
  */
@@ -1492,12 +1489,6 @@ xmlSecTmplX509DataAddSKI(xmlNodePtr x509DataNode) {
     xmlNodePtr cur;
 
     xmlSecAssert2(x509DataNode != NULL, NULL);
-
-    cur = xmlSecFindChild(x509DataNode, xmlSecNodeX509SKI, xmlSecDSigNs);
-    if(cur != NULL) {
-        xmlSecNodeAlreadyPresentError(x509DataNode, xmlSecNodeX509SKI, NULL);
-        return(NULL);
-    }
 
     cur = xmlSecAddChild(x509DataNode, xmlSecNodeX509SKI, xmlSecDSigNs);
     if(cur == NULL) {
@@ -1514,6 +1505,9 @@ xmlSecTmplX509DataAddSKI(xmlNodePtr x509DataNode) {
  * @param x509DataNode the pointer to &lt;dsig:X509Data/&gt; node.
  * @param digestAlgorithm the digest algorithm URL.
  *
+ * Note: multiple &lt;dsig11:X509Digest&gt; elements may be added, as the W3C
+ * X509DataType permits repeated child elements (see https://www.w3.org/TR/xmldsig-core1/#sec-X509Data).
+ *
  * @return the pointer to the newly created &lt;dsig11:X509Digest/&gt; node or
  * NULL if an error occurs.
  */
@@ -1524,12 +1518,6 @@ xmlSecTmplX509DataAddDigest(xmlNodePtr x509DataNode, const xmlChar* digestAlgori
 
     xmlSecAssert2(x509DataNode != NULL, NULL);
     xmlSecAssert2(digestAlgorithm != NULL, NULL);
-
-    cur = xmlSecFindChild(x509DataNode, xmlSecNodeX509Digest, xmlSecDSig11Ns);
-    if(cur != NULL) {
-        xmlSecNodeAlreadyPresentError(x509DataNode, xmlSecNodeX509Digest, NULL);
-        return(NULL);
-    }
 
     cur = xmlSecAddChild(x509DataNode, xmlSecNodeX509Digest, xmlSecDSig11Ns);
     if(cur == NULL) {
@@ -1553,6 +1541,10 @@ xmlSecTmplX509DataAddDigest(xmlNodePtr x509DataNode, const xmlChar* digestAlgori
  * @details Adds &lt;dsig:X509Certificate/&gt; node to the given &lt;dsig:X509Data/&gt; node.
  * @param x509DataNode the pointer to &lt;dsig:X509Data/&gt; node.
  *
+ * Note: multiple &lt;dsig:X509Certificate&gt; elements may be added (e.g.
+ * a certificate chain), as the W3C X509DataType permits repeated child elements
+ * (see https://www.w3.org/TR/xmldsig-core1/#sec-X509Data).
+ *
  * @return the pointer to the newly created &lt;dsig:X509Certificate/&gt; node or
  * NULL if an error occurs.
  */
@@ -1562,12 +1554,6 @@ xmlSecTmplX509DataAddCertificate(xmlNodePtr x509DataNode) {
     xmlNodePtr cur;
 
     xmlSecAssert2(x509DataNode != NULL, NULL);
-
-    cur = xmlSecFindChild(x509DataNode, xmlSecNodeX509Certificate, xmlSecDSigNs);
-    if(cur != NULL) {
-        xmlSecNodeAlreadyPresentError(x509DataNode, xmlSecNodeX509Certificate, NULL);
-        return(NULL);
-    }
 
     cur = xmlSecAddChild(x509DataNode, xmlSecNodeX509Certificate, xmlSecDSigNs);
     if(cur == NULL) {
@@ -1583,6 +1569,9 @@ xmlSecTmplX509DataAddCertificate(xmlNodePtr x509DataNode) {
  * @details Adds &lt;dsig:X509CRL/&gt; node to the given &lt;dsig:X509Data/&gt; node.
  * @param x509DataNode the pointer to &lt;dsig:X509Data/&gt; node.
  *
+ * Note: multiple &lt;dsig:X509CRL&gt; elements may be added, as the W3C
+ * X509DataType permits repeated child elements (see https://www.w3.org/TR/xmldsig-core1/#sec-X509Data).
+ *
  * @return the pointer to the newly created &lt;dsig:X509CRL/&gt; node or
  * NULL if an error occurs.
  */
@@ -1592,12 +1581,6 @@ xmlSecTmplX509DataAddCRL(xmlNodePtr x509DataNode) {
     xmlNodePtr cur;
 
     xmlSecAssert2(x509DataNode != NULL, NULL);
-
-    cur = xmlSecFindChild(x509DataNode, xmlSecNodeX509CRL, xmlSecDSigNs);
-    if(cur != NULL) {
-        xmlSecNodeAlreadyPresentError(x509DataNode, xmlSecNodeX509CRL, NULL);
-        return(NULL);
-    }
 
     cur = xmlSecAddChild(x509DataNode, xmlSecNodeX509CRL, xmlSecDSigNs);
     if(cur == NULL) {

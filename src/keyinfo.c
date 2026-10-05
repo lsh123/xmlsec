@@ -99,12 +99,22 @@ xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCtx
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeRead, -1);
 
-    for(cur = xmlSecGetNextElementNode(keyInfoNode->children);
-        (cur != NULL) &&
-        (((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_DONT_STOP_ON_KEY_FOUND) != 0) ||
-         (xmlSecKeyIsValid(key) == 0) ||
-         (xmlSecKeyMatch(key, NULL, &(keyInfoCtx->keyReq)) == 0));
-        cur = xmlSecGetNextElementNode(cur->next)) {
+    for(cur = xmlSecGetNextElementNode(keyInfoNode->children); cur != NULL; cur = xmlSecGetNextElementNode(cur->next)) {
+
+        /* stop processing the next nodes if the key already matches
+         * the requirements (unless the DONT_STOP_ON_KEY_FOUND flag is set) */
+        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_DONT_STOP_ON_KEY_FOUND) == 0) {
+            if(xmlSecKeyIsValid(key) != 0) {
+                ret = xmlSecKeyMatch(key, NULL, &(keyInfoCtx->keyReq));
+                if(ret < 0) {
+                    xmlSecInternalError("xmlSecKeyMatch", xmlSecKeyDataKlassGetName(key->value->id));
+                    return(-1);
+                }
+                if(ret != 0) {
+                    break;
+                }
+            }
+        }
 
         /* find data id */
         nodeName = cur->name;
@@ -1620,6 +1630,13 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
             return(-1);
         }
         return(0);
+    }
+
+    /* check that the key id is set */
+    if(keyInfoCtx->keyReq.keyId == NULL) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_KEY_DATA,
+            xmlSecKeyDataKlassGetName(id), "key id is not set");
+        return(-1);
     }
 
     ret = xmlSecKeyDataBinRead(keyInfoCtx->keyReq.keyId, key,

@@ -285,7 +285,9 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
 
     /* if we can have a string value after the name, parse it */
     if((param->flags & xmlSecAppCmdLineParamFlagParamNameValue) != 0) {
-        value->paramNameValue = strchr(argv[pos], ':');
+        /* argv[] entries are const char*, while strchr() takes a non-const
+         * char*; the cast is safe because strchr() does not modify the string. */
+        value->paramNameValue = strchr((char*)argv[pos], ':');
         if(value->paramNameValue != NULL) {
             ++value->paramNameValue;
         }
@@ -309,12 +311,13 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
             }
             value->strValue = argv[++pos];
             /*
-             * reject lists with empty entries (a leading or a trailing comma,
-             * or a doubled comma) before the NUL conversion below; a
-             * zero-length entry would silently truncate the list walk in the
-             * consumers of the list
+             * reject lists with empty entries (an empty string, a leading or
+             * a trailing comma, or a doubled comma) before the NUL conversion
+             * below; a zero-length entry would silently truncate the list
+             * walk in the consumers of the list
              */
-            if((value->strValue[0] == ',') || (strstr(value->strValue, ",,") != NULL) ||
+            if((value->strValue[0] == '\0') || (value->strValue[0] == ',') ||
+               (strstr(value->strValue, ",,") != NULL) ||
                ((strlen(value->strValue) > 1) && (value->strValue[strlen(value->strValue) - 1] == ','))) {
                 fprintf(stderr, "Error: empty entry found in the comma-separated list for parameter \"%s\".\n", argv[pos - 1]);
                 return(-1);

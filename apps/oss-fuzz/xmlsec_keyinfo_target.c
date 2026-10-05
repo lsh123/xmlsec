@@ -141,8 +141,11 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
 
     keyInfoCtx->mode = xmlSecKeyInfoModeRead;
     /* Accept any key so the first successfully read child element satisfies
-     * the requirement (the reader then stops, skipping later siblings). */
-    keyInfoCtx->keyReq.keyId = xmlSecKeyDataIdUnknown;
+     * the requirement (the reader then stops, skipping later siblings).
+     * keyId must name a concrete class: xmlSecKeyDataIdUnknown (NULL) makes
+     * the EncryptedKey reader fail its "key id is not set" check before the
+     * xmlSecKeyDataBinRead extraction step is reached. */
+    keyInfoCtx->keyReq.keyId = xmlSecOpenSSLKeyDataAesId;
     keyInfoCtx->keyReq.keyType = xmlSecKeyDataTypeAny;
     keyInfoCtx->keyReq.keyUsage = xmlSecKeyUsageAny;
     /* <RetrievalMethod> and <KeyInfoReference> must not fetch remote or local

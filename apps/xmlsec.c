@@ -1511,7 +1511,9 @@ done:
     if(g_memStateAfterInitSet) {
         /* Use checkpoint-based comparison to exclude crypto library init
          * allocations that survive their own cleanup (e.g. OpenSSL 3.x
-         * providers loaded via OPENSSL_CONF). Use (ptrdiff_t) cast
+         * providers loaded via OPENSSL_CONF). _CrtMemDifference() computes
+         * (state2 - state3), so the (now, after-init) order makes blocks
+         * leaked after the checkpoint positive. Use (ptrdiff_t) cast
          * because lCounts is size_t (unsigned) and the difference can
          * be negative when pre-checkpoint blocks are freed. */
         _CrtMemState memStateNow, memStateDiff;
@@ -1647,10 +1649,14 @@ xmlSecAppExecute(xmlSecAppCommand command, const char** utf8_argv, int argc) {
     }
 
     /* get the "g_repeats" number */
-    if(xmlSecAppCmdLineParamIsSet(&repeatParam) &&
-       (xmlSecAppCmdLineParamGetInt(&repeatParam, 1) > 0)) {
-
-        g_repeats = xmlSecAppCmdLineParamGetInt(&repeatParam, 1);
+    if(xmlSecAppCmdLineParamIsSet(&repeatParam)) {
+        int repeats = xmlSecAppCmdLineParamGetInt(&repeatParam, 1);
+        if(repeats <= 0) {
+            fprintf(stderr, "Error: repeat count should be greater than zero\n");
+            xmlSecAppPrintUsage();
+            goto done;
+        }
+        g_repeats = repeats;
     }
 
     /* get the output file */

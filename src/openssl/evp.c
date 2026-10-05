@@ -58,6 +58,10 @@ xmlSecOpenSSLGetBNValue(const xmlSecBufferPtr buf, BIGNUM **bigNum) {
 
     bufPtr = xmlSecBufferGetData(buf);
     bufSize = xmlSecBufferGetSize(buf);
+    if((bufPtr == NULL) || (bufSize == 0)) {
+        xmlSecInvalidDataError("BIGNUM value is empty", NULL);
+        return(-1);
+    }
     XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_SIZE_T(bufSize, bufLen, return(-1), NULL);
 
     (*bigNum) = BN_bin2bn(bufPtr, bufLen, (*bigNum));
@@ -431,6 +435,21 @@ xmlSecOpenSSLEvpKeyDataGetKeySize(xmlSecKeyDataPtr data) {
     case NID_id_GostR3410_2012_512:
         return(1024);
 #endif /* XMLSEC_NO_GOST2012 */
+
+#ifndef XMLSEC_NO_EDDSA
+    /* key sizes match the values returned by EVP_PKEY_get_bits() on OpenSSL 3.0+ */
+    case EVP_PKEY_ED25519:
+        return(256);
+    case EVP_PKEY_ED448:
+        return(456);
+#endif /* XMLSEC_NO_EDDSA */
+
+#ifndef XMLSEC_NO_XDH
+    case EVP_PKEY_X25519:
+        return(253);
+    case EVP_PKEY_X448:
+        return(448);
+#endif /* XMLSEC_NO_XDH */
 
     default:
         {
@@ -2154,18 +2173,16 @@ xmlSecOpenSSLKeyDataDhGetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDhPtr
         /* ignore the error since public keys don't have private component */
     }
 
-    /* Ignore seed and pgenCounter
+    /* seed and pgenCounter are optional; they are only present for DH keys
+     * whose domain parameters were generated from a seed (PKCS#3/X9.42) */
     ret = EVP_PKEY_get_bn_param(pKey, OSSL_PKEY_PARAM_FFC_SEED, &(dhKeyValue->seed));
     if((ret != 1) || (dhKeyValue->seed == NULL)) {
-        xmlSecOpenSSLError("EVP_PKEY_get_bn_param(seed)", xmlSecKeyDataGetName(data));
-        return(-1);
+        /* ignore the error since seed is optional for DH keys */
     }
     ret = EVP_PKEY_get_bn_param(pKey, OSSL_PKEY_PARAM_FFC_PCOUNTER, &(dhKeyValue->pgenCounter));
     if((ret != 1) || (dhKeyValue->pgenCounter == NULL)) {
-        xmlSecOpenSSLError("EVP_PKEY_get_bn_param(pgenCounter)", xmlSecKeyDataGetName(data));
-        return(-1);
+        /* ignore the error since pgenCounter is optional for DH keys */
     }
-    */
 
     /* success */
     return(0);
@@ -4453,6 +4470,12 @@ xmlSecOpenSSLEvpGetProviderQuery(EVP_PKEY_CTX* pKeyCtx, xmlChar* buf, int bufSiz
     ret = xmlStrPrintf(buf, bufSize, "provider=%s", provName);
     if(ret < 0) {
         xmlSecXmlError("xmlStrPrintf", NULL);
+        return(NULL);
+    }
+    /* xmlStrPrintf returns the length of the formatted string; if it does not
+     * fit the buffer the query string would be truncated and is unusable */
+    if(ret >= bufSize) {
+        xmlSecInvalidSizeOtherError("provider query buffer is too small", NULL);
         return(NULL);
     }
 

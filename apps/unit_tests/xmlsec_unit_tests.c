@@ -333,7 +333,7 @@ int testGroupFinished(void) {
         (testsStarted - (testsFinishedSuccess + testsFinishedFailed))
     );
     testsGroupName = NULL;
-    return testsStarted == testsFinishedSuccess ? 1 : 0;
+    return ((testsFinishedFailed == 0) && (testsStarted == testsFinishedSuccess)) ? 1 : 0;
 }
 
 void testStart(const char * name) {
@@ -348,7 +348,11 @@ void testStart(const char * name) {
 
 void testFinishedSuccess(void) {
     if(g_testGroupSkip) { return; }
-    fprintf(stdout, "    %s     OK\n", testsName != NULL ? testsName : "(no test name)");
+    if(testsName == NULL) {
+        /* the test is not (or no longer) in progress; do not count it */
+        return;
+    }
+    fprintf(stdout, "    %s     OK\n", testsName);
     testLogReset();
     testsFinishedSuccess += 1;
     testsName = NULL;
@@ -356,7 +360,11 @@ void testFinishedSuccess(void) {
 
 void testFinishedFailure(void) {
     if(g_testGroupSkip) { return; }
-    fprintf(stdout, "    %s     FAILED\n", testsName != NULL ? testsName : "(no test name)");
+    if(testsName == NULL) {
+        /* the test is not (or no longer) in progress; do not count it */
+        return;
+    }
+    fprintf(stdout, "    %s     FAILED\n", testsName);
     testLogFlush();
     testsFinishedFailed += 1;
     testsName = NULL;

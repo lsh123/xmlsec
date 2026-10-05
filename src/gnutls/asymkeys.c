@@ -1414,10 +1414,9 @@ xmlSecGnuTLSKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
          * key, and they cannot be derived from (modulus, e, d) alone. As a
          * result, a private RSA key written by xmlSecGnuTLSKeyDataRsaWrite
          * (which emits privateExponent) cannot be read back by this function. */
-        xmlSecInternalError2("xmlSecGnuTLSKeyDataRsaRead", NULL,
-            "private RSA keys are not supported: GnuTLS requires the RSA CRT parameters "
-            "(%s), which are not available in the RSAKeyValue format",
-            "Prime1 and Prime2");
+        xmlSecInvalidDataError("private RSA keys are not supported: GnuTLS requires the RSA CRT parameters "
+            "(Prime1 and Prime2), which are not available in the RSAKeyValue format",
+            xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 

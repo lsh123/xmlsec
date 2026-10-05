@@ -554,7 +554,7 @@ xmlSecGnuTLSBlockCipherInitialize(xmlSecTransformPtr transform) {
             xmlSecInternalError2("gnutls_cipher_get_iv_size", xmlSecTransformGetName(transform), "ivSize=" XMLSEC_SIZE_FMT, ctx->ivSize);
             return(-1);
         }
-        xmlSecAssert2(ctx->ivSize < XMLSEC_GNUTLS_BLOCK_CIPHER_MAX_IV_SIZE, -1);
+        xmlSecAssert2(ctx->ivSize <= XMLSEC_GNUTLS_BLOCK_CIPHER_MAX_IV_SIZE, -1);
     }
 
     /* done */

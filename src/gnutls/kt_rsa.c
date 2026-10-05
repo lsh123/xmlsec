@@ -938,6 +938,16 @@ xmlSecGnuTLSRsaOaepExecute(xmlSecTransformPtr transform, int last,
         return(-1);
     }
 
+    /* GnuTLS cannot perform RSA-OAEP with SHA1 or SHA-224 digests: reject them
+     * here as well, so a transform created programmatically without NodeRead
+     * (which defaults the digest to SHA1) gets the same clear rejection. */
+    if((ctx->digestAlg == GNUTLS_DIG_SHA1) || (ctx->digestAlg == GNUTLS_DIG_SHA224)) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_DISABLED, NULL,
+            "GnuTLS does not support RSA-OAEP with the SHA1 or SHA-224 digest algorithm: "
+            "use SHA-256, SHA-384 or SHA-512 instead");
+        return(-1);
+    }
+
     inBuf  = &(transform->inBuf);
     outBuf = &(transform->outBuf);
     inSize  = xmlSecBufferGetSize(inBuf);

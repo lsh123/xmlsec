@@ -958,6 +958,8 @@ xmlSecGnuTLSVerifyAndAdoptX509KeyData(
     gnutls_x509_crt_t cert;
     gnutls_x509_crt_t keyCert;
     xmlSecKeyDataPtr keyValue;
+    time_t origNotValidBefore;
+    time_t origNotValidAfter;
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataX509Id), -1);
@@ -1017,6 +1019,15 @@ xmlSecGnuTLSVerifyAndAdoptX509KeyData(
         xmlSecKeyDataDestroy(keyValue);
         return(-1);
     }
+    /*
+     * from this point on we mutate the caller's key (set its value and validity
+     * times). save the original validity times so we can restore the key if a
+     * later step fails; the key value is guaranteed to be NULL here (see the
+     * check at the beginning of this function)
+     */
+    origNotValidBefore = key->notValidBefore;
+    origNotValidAfter = key->notValidAfter;
+
     ret = xmlSecKeySetValue(key, keyValue);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeySetValue", xmlSecKeyDataGetName(data));
@@ -1030,13 +1041,13 @@ xmlSecGnuTLSVerifyAndAdoptX509KeyData(
     if(key->notValidBefore == (time_t)-1) {
         xmlSecInternalError("gnutls_x509_crt_get_activation_time (failed to get certificate activation time)",
             xmlSecKeyDataGetName(data));
-        return(-1);
+        goto restore;
     }
     key->notValidAfter = gnutls_x509_crt_get_expiration_time(ctx->keyCert);
     if(key->notValidAfter == (time_t)-1) {
         xmlSecInternalError("gnutls_x509_crt_get_expiration_time (failed to get certificate expiration time)",
             xmlSecKeyDataGetName(data));
-        return(-1);
+        goto restore;
     }
 
     /* THIS MUST BE THE LAST THING WE DO: add data to the key
@@ -1045,11 +1056,22 @@ xmlSecGnuTLSVerifyAndAdoptX509KeyData(
     ret = xmlSecKeyAdoptData(key, data);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyAdoptData", xmlSecKeyDataGetName(data));
-        return(-1);
+        goto restore;
     }
 
     /* success: cert found and data was adopted */
     return(1);
+
+restore:
+    /* restore the key to its original state */
+    ret = xmlSecKeySetValue(key, NULL);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeySetValue", xmlSecKeyDataGetName(data));
+        /* continue restoring the original state even if setting the value to NULL failed */
+    }
+    key->notValidBefore = origNotValidBefore;
+    key->notValidAfter = origNotValidAfter;
+    return(-1);
 }
 
 /**

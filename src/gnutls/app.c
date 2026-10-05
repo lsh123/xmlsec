@@ -546,6 +546,7 @@ xmlSecGnuTLSAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     effectivePwd = xmlSecGnuTLSAppResolvePwd(pwd, pwdCallback, pwdCallbackCtx, pwdBuf, sizeof(pwdBuf));
     if((effectivePwd == NULL) && (pwdCallback != NULL)) {
         /* the password callback failed; the error is reported by xmlSecGnuTLSAppResolvePwd */
+        xmlSecMemCleanse(pwdBuf, sizeof(pwdBuf));
         return(NULL);
     }
 
@@ -553,6 +554,7 @@ xmlSecGnuTLSAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     ret = xmlSecPtrListInitialize(&(certsList), xmlSecGnuTLSX509CrtListId);
     if(ret < 0) {
         xmlSecInternalError("xmlSecPtrListInitialize(certsListId)", NULL);
+        xmlSecMemCleanse(pwdBuf, sizeof(pwdBuf));
         return(NULL);
     }
 
@@ -665,6 +667,10 @@ done:
         xmlSecKeyDestroy(key);
     }
     xmlSecPtrListFinalize(&certsList);
+
+    /* clear the password buffer before returning */
+    xmlSecMemCleanse(pwdBuf, sizeof(pwdBuf));
+
     return(res);
 }
 #endif /* XMLSEC_NO_X509 */
@@ -805,6 +811,7 @@ xmlSecGnuTLSAppPkcs8KeyLoadMemory(const xmlSecByte * data, xmlSecSize dataSize, 
     effectivePwd = xmlSecGnuTLSAppResolvePwd(pwd, pwdCallback, pwdCallbackCtx, pwdBuf, sizeof(pwdBuf));
     if((effectivePwd == NULL) && (pwdCallback != NULL)) {
         /* the password callback failed; the error is reported by xmlSecGnuTLSAppResolvePwd */
+        xmlSecMemCleanse(pwdBuf, sizeof(pwdBuf));
         return(NULL);
     }
 
@@ -818,6 +825,7 @@ xmlSecGnuTLSAppPkcs8KeyLoadMemory(const xmlSecByte * data, xmlSecSize dataSize, 
     err = gnutls_x509_privkey_init(&x509_privkey);
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_x509_privkey_init", err, NULL);
+        xmlSecMemCleanse(pwdBuf, sizeof(pwdBuf));
         return(NULL);
     }
     /* unencrypted PKCS#8 keys are imported with GNUTLS_PKCS_PLAIN; if that
@@ -829,6 +837,7 @@ xmlSecGnuTLSAppPkcs8KeyLoadMemory(const xmlSecByte * data, xmlSecSize dataSize, 
         if(err != GNUTLS_E_SUCCESS) {
             xmlSecGnuTLSError("gnutls_x509_privkey_import_pkcs8", err, NULL);
             gnutls_x509_privkey_deinit(x509_privkey);
+            xmlSecMemCleanse(pwdBuf, sizeof(pwdBuf));
             return(NULL);
         }
     }
@@ -838,6 +847,7 @@ xmlSecGnuTLSAppPkcs8KeyLoadMemory(const xmlSecByte * data, xmlSecSize dataSize, 
     if (err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_privkey_init", err, NULL);
         gnutls_x509_privkey_deinit(x509_privkey);
+        xmlSecMemCleanse(pwdBuf, sizeof(pwdBuf));
         return(NULL);
     }
 
@@ -846,6 +856,7 @@ xmlSecGnuTLSAppPkcs8KeyLoadMemory(const xmlSecByte * data, xmlSecSize dataSize, 
         xmlSecGnuTLSError("gnutls_privkey_import_x509", err, NULL);
         gnutls_x509_privkey_deinit(x509_privkey);
         gnutls_privkey_deinit(privkey);
+        xmlSecMemCleanse(pwdBuf, sizeof(pwdBuf));
         return(NULL);
     }
     x509_privkey = NULL; /* owned by privkey now */
@@ -854,10 +865,12 @@ xmlSecGnuTLSAppPkcs8KeyLoadMemory(const xmlSecByte * data, xmlSecSize dataSize, 
     if(key == NULL) {
         xmlSecInternalError("xmlSecGnuTLSAsymmetricKeyCreatePriv", NULL);
         gnutls_privkey_deinit(privkey);
+        xmlSecMemCleanse(pwdBuf, sizeof(pwdBuf));
         return(NULL);
     }
 
     /* done */
+    xmlSecMemCleanse(pwdBuf, sizeof(pwdBuf));
     return(key);
 }
 

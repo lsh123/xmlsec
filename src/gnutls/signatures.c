@@ -832,6 +832,11 @@ xmlSecGnuTLSReadDerInteger(const xmlSecByte * data, xmlSecSize dataSize, xmlSecS
     if(len > dataSize - (*ii)) {
         return(-1);
     }
+    /* reject negative values: the most significant bit of the first value byte
+     * is the DER INTEGER sign bit */
+    if((len > 0) && ((data[(*ii)] & 0x80) != 0)) {
+        return(-1);
+    }
     /* skip zeros if any */
     while((len > 0) && (data[(*ii)] == 0)) {
         ++(*ii);

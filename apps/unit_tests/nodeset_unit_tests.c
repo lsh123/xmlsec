@@ -434,7 +434,10 @@ test_xmlSecNodeSetDumpTextNodes_preserves_document_order(void) {
         testLog("Error: failed to prepare dump text nodes test data\n");
         if(out != NULL) {
             (void)xmlOutputBufferClose(out);
-        } else if(buffer != NULL) {
+        }
+        /* xmlOutputBufferClose() frees only the output-buffer wrapper, not
+         * the underlying xmlBuffer. */
+        if(buffer != NULL) {
             xmlBufferFree(buffer);
         }
         if(nset != NULL) {
@@ -451,6 +454,7 @@ test_xmlSecNodeSetDumpTextNodes_preserves_document_order(void) {
         testLog("Error: dump text nodes output mismatch (ret=%d, text='%s')\n",
             ret, (xmlBufferContent(buffer) != NULL) ? (const char*)xmlBufferContent(buffer) : "(null)");
         xmlOutputBufferClose(out);
+        xmlBufferFree(buffer);
         xmlSecNodeSetDestroy(nset);
         xmlFreeDoc(doc);
         testFinishedFailure();
@@ -458,6 +462,7 @@ test_xmlSecNodeSetDumpTextNodes_preserves_document_order(void) {
     }
 
     xmlOutputBufferClose(out);
+    xmlBufferFree(buffer);
     xmlSecNodeSetDestroy(nset);
     xmlFreeDoc(doc);
     testFinishedSuccess();

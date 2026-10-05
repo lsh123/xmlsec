@@ -237,7 +237,15 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     xmlSecAssert2(blockLen > 0, -1);
 
     XMLSEC_OPENSSL_SAFE_CAST_UINT_TO_SIZE(blockLen, blockSize, return(-1), NULL);
-    xmlSecAssert2((inSize % blockSize) == 0, -1);
+    if((blockSize > 1) && ((inSize % blockSize) != 0)) {
+        /*
+         * non-block-aligned data is invalid in CBC mode: a malformed
+         * (e.g. truncated) CBC ciphertext ends up here on the final
+         * update with a partial block left over
+         */
+        xmlSecInvalidSizeDataError("ciphertext data size", inSize, "a multiple of the cipher block size", cipherName);
+        return(-1);
+    }
 
     outSize = xmlSecBufferGetSize(out);
     if(ctx->cbcMode != 0) {
@@ -629,7 +637,12 @@ xmlSecOpenSSLEvpBlockCipherGCMCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         }
     } else {
         /* There must be at least 16 bytes in the buffer - the tag and anything left over */
-        xmlSecAssert2(inSize >= XMLSEC_OPENSSL_GCM_TAG_SIZE, -1);
+        if(inSize < XMLSEC_OPENSSL_GCM_TAG_SIZE) {
+            /* decryption input is shorter than the tag, this is a malformed document */
+            xmlSecInvalidSizeDataError("decryption data size", inSize,
+                "at least the cipher tag size", cipherName);
+            return(-1);
+        }
 
         /* extract the tag */
         memcpy(tag, inBuf + inSize - XMLSEC_OPENSSL_GCM_TAG_SIZE, XMLSEC_OPENSSL_GCM_TAG_SIZE);

@@ -714,8 +714,18 @@ xmlSecOpenSSLErrorsInit(void) {
 #if !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR)
     xmlSecSize pos;
 
-    /* get XMLSec library id */
-    gXmlSecOpenSSLErrorsLib = ERR_get_next_error_library();
+    /*
+     * get the XMLSec library id, reusing the previously allocated id to
+     * avoid consuming a new OpenSSL ERR library id on every init
+     */
+    if(gXmlSecOpenSSLErrorsLib == 0) {
+        gXmlSecOpenSSLErrorsLib = ERR_get_next_error_library();
+        if(gXmlSecOpenSSLErrorsLib <= 0) {
+            xmlSecInternalError("ERR_get_next_error_library", NULL);
+            gXmlSecOpenSSLErrorsLib = 0;
+            return(-1);
+        }
+    }
 
     /* initialize xmlsec lib name array */
     memset(xmlSecOpenSSLStrLib, 0, sizeof(xmlSecOpenSSLStrLib));
@@ -873,8 +883,11 @@ xmlSecOpenSSLCreateMemBufBio(const xmlSecByte *buf, xmlSecSize bufSize) {
 
 /**
  * @brief Creates a read-file BIO for @p path.
+ * @details The BIO is created with BIO_new_ex() and the file is opened
+ * with BIO_read_filename(). The caller must free the BIO with BIO_free_all()
+ * to properly close the file and release all underlying resources.
  * @param path the file path
- * @return a new BIO that the caller owns and must free with BIO_free().
+ * @return a new BIO that the caller owns and must free with BIO_free_all().
  */
 BIO*
 xmlSecOpenSSLCreateReadFileBio(const char* path) {

@@ -11,7 +11,11 @@
  * arguments are given the harness is exercised once with a zero-length input
  * (useful as a basic smoke test / compile check in the regular test suite).
  */
-#ifndef _POSIX_C_SOURCE
+/* fseeko/ftello are POSIX.1-2008; if the build system predefines
+ * _POSIX_C_SOURCE to an older value, raise it so the declarations are
+ * available. */
+#if !defined(_POSIX_C_SOURCE) || _POSIX_C_SOURCE < 200809L
+#undef _POSIX_C_SOURCE
 #define _POSIX_C_SOURCE 200809L
 #endif
 #include <stdint.h>

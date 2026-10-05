@@ -37,9 +37,12 @@ xmlSecAppCryptoInit(const char* config) {
     }
     if(xmlSecCryptoInit() < 0) {
         fprintf(stderr, "Error: xmlSecCryptoInit failed\n");
-        if(xmlSecCryptoAppShutdown() < 0) {
-            fprintf(stderr, "Error: xmlSecCryptoAppShutdown failed\n");
-        }
+        /* Do not call xmlSecCryptoAppShutdown() here: on failure the caller
+         * (xmlSecAppExecute done:) runs xmlSecAppShutdown() even when
+         * xmlSecAppInit() failed (initialized is set before the crypto init),
+         * which calls xmlSecAppCryptoShutdown() -> xmlSecCryptoAppShutdown().
+         * Shutting the crypto down here as well would run the backend
+         * shutdown (e.g. NSS PK11_LogoutAll()/NSS_Shutdown()) twice. */
         return(-1);
     }
 

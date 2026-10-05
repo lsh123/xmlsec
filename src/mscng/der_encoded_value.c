@@ -146,7 +146,6 @@ xmlSecMSCngKeyDataDEREncodedKeyValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key
     xmlSecBuffer buffer;
     const xmlSecByte* data;
     xmlSecSize dataSize;
-    DWORD dataLen;
     const xmlSecByte* tlvEnd;
     xmlSecKeyDataPtr keyData = NULL;
     xmlNodePtr cur;
@@ -187,13 +186,13 @@ xmlSecMSCngKeyDataDEREncodedKeyValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key
         goto done;
     }
 
-    /* read key from DER (SPKI public key). The top-level TLV is strictly validated above;
-     * the inner content is decoded by CAPI's CryptDecodeObjectEx (a standard, well-tested
-     * component), which is BER-tolerant. Any leniency in the inner encoding has no
-     * practical security impact because the resulting key is still valid.
+    /* read key from DER (SPKI public key). The inner content is decoded by CAPI's
+     * CryptDecodeObjectEx (a standard, well-tested component), which is BER-tolerant.
+     * Any leniency in the inner encoding has no practical security impact because
+     * the resulting key is still valid. The top-level TLV boundary and the absence
+     * of trailing bytes are strictly validated below.
      * See https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptdecodeobjectex */
-    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(dataSize, dataLen, goto done, xmlSecKeyDataKlassGetName(id));
-    keyData = xmlSecMSCngAppKeyReadPubKeyFromDer(data, dataLen);
+    keyData = xmlSecMSCngAppKeyReadPubKeyFromDer(data, dataSize);
     if(keyData == NULL) {
         xmlSecInternalError("xmlSecMSCngAppKeyReadPubKeyFromDer", xmlSecKeyDataKlassGetName(id));
         goto done;

@@ -171,6 +171,32 @@ xmlSecMSCngRsaPkcs1OaepSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 }
 
 #ifndef XMLSEC_NO_RSA_OAEP
+/* Returns the output size in bytes of the given OAEP digest algorithm, or 0 if
+ * the algorithm is unknown. The digest is always one of the fixed set established
+ * by xmlSecMSCngRsaOaepNodeRead or xmlSecMSCngRsaPkcs1OaepEnsureDefaultDigest. */
+static xmlSecSize
+xmlSecMSCngRsaOaepDigestSize(LPCWSTR pszDigestAlgId) {
+    if(pszDigestAlgId == NULL) {
+        return(0);
+    }
+    if(lstrcmpW(pszDigestAlgId, BCRYPT_SHA1_ALGORITHM) == 0) {
+        return(20);
+    }
+    if(lstrcmpW(pszDigestAlgId, BCRYPT_SHA224_ALGORITHM) == 0) {
+        return(28);
+    }
+    if(lstrcmpW(pszDigestAlgId, BCRYPT_SHA256_ALGORITHM) == 0) {
+        return(32);
+    }
+    if(lstrcmpW(pszDigestAlgId, BCRYPT_SHA384_ALGORITHM) == 0) {
+        return(48);
+    }
+    if(lstrcmpW(pszDigestAlgId, BCRYPT_SHA512_ALGORITHM) == 0) {
+        return(64);
+    }
+    return(0);
+}
+
 static int
 xmlSecMSCngRsaPkcs1OaepEnsureDefaultDigest(xmlSecMSCngRsaPkcs1OaepCtxPtr ctx) {
     /* SHA1 is the XML Encryption spec default when no OAEP digest is
@@ -270,6 +296,15 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         /* encrypt */
 #ifndef XMLSEC_NO_RSA_PKCS15
         if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaPkcs1Id)) {
+            /* RSA PKCS1 v1.5 (EME-PKCS1-v1_5) limits the plaintext to k - 11 bytes;
+             * CNG would reject an oversized plaintext with an opaque NTSTATUS error,
+             * so check the bound explicitly */
+            if((keySize <= 11) || (inSize > (keySize - 11))) {
+                xmlSecInvalidSizeMoreThanError("Input data", inSize,
+                    (keySize > 11) ? (keySize - 11) : 0,
+                    xmlSecTransformGetName(transform));
+                return(-1);
+            }
             status = BCryptEncrypt(hPubKey,
                 inBuf,
                 dwInSize,
@@ -292,6 +327,8 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepId) || xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepEnc11Id)) {
             BCRYPT_OAEP_PADDING_INFO paddingInfo;
             xmlSecSize oaepParamsSize;
+            xmlSecSize digestSize;
+            xmlSecSize oaepMaxPlainSize;
 
             ret = xmlSecMSCngRsaPkcs1OaepEnsureDefaultDigest(ctx);
             if (ret < 0) {
@@ -302,6 +339,20 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
 
             oaepParamsSize = xmlSecBufferGetSize(&(ctx->oaepParams));
             XMLSEC_SAFE_CAST_SIZE_TO_ULONG(oaepParamsSize, paddingInfo.cbLabel, return(-1), xmlSecTransformGetName(transform));
+
+            /* RSA-OAEP (EME-OAEP) limits the plaintext to k - 2 * hashLen - 2
+             * bytes (independent of label length); CNG would reject an
+             * oversized plaintext with an opaque NTSTATUS error, so check the
+             * bound explicitly */
+            digestSize = xmlSecMSCngRsaOaepDigestSize(ctx->pszDigestAlgId);
+            if(digestSize > 0) {
+                oaepMaxPlainSize = (keySize > (2 * digestSize + 2)) ? (keySize - (2 * digestSize + 2)) : 0;
+                if(inSize > oaepMaxPlainSize) {
+                    xmlSecInvalidSizeMoreThanError("Input data", inSize, oaepMaxPlainSize,
+                        xmlSecTransformGetName(transform));
+                    return(-1);
+                }
+            }
 
             /* see https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/nf-bcrypt-bcryptencrypt */
             status = BCryptEncrypt(hPubKey,
@@ -501,7 +552,13 @@ xmlSecMSCngRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     } else
 #ifndef XMLSEC_NO_MD5
     if (xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefMd5) == 0) {
-        ctx->pszDigestAlgId = BCRYPT_MD5_ALGORITHM;
+        /* MD5 is a broken hash and must not be used as the OAEP digest; reject
+         * it explicitly (the mscrypto backend rejects all non-SHA1 OAEP digests). */
+        xmlSecInvalidTransformError2(transform,
+            "digest algorithm=\"%s\" is not supported for rsa/oaep",
+            xmlSecErrorsSafeString(oaepParams.digestAlgorithm));
+        xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
+        return(-1);
     } else
 #endif /* XMLSEC_NO_MD5 */
 

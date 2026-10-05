@@ -299,6 +299,9 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
             NULL,
             0);
         if(status != STATUS_SUCCESS) {
+            /* the out-handle is not guaranteed to be zeroed on failure; reset it so
+             * finalize() does not attempt to close an indeterminate handle */
+            ctx->hAlg = NULL;
             xmlSecMSCngNtError("BCryptOpenAlgorithmProvider", xmlSecTransformGetName(transform), status);
             return(-1);
         }
@@ -356,6 +359,9 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
             0,
             0);
         if(status != STATUS_SUCCESS) {
+            /* the out-handle is not guaranteed to be zeroed on failure; reset it so
+             * finalize() does not attempt to destroy an indeterminate handle */
+            ctx->hHash = NULL;
             xmlSecMSCngNtError("BCryptCreateHash", xmlSecTransformGetName(transform), status);
             return(-1);
         }

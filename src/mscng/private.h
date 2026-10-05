@@ -73,9 +73,9 @@ xmlSecSize         xmlSecMSCngCertKeyDataGetSizeInBits              (xmlSecKeyDa
 
 
 xmlSecKeyDataPtr   xmlSecMSCngAppKeyReadPubKeyFromDer               (const xmlSecByte* derData,
-                                                                     DWORD derDataLen);
+                                                                     xmlSecSize derDataSize);
 xmlSecKeyDataPtr   xmlSecMSCngAppKeyReadPrivKeyFromDer              (const xmlSecByte* data,
-                                                                     DWORD dataSize);
+                                                                     xmlSecSize dataSize);
 int                xmlSecMSCngCreateDerForBCryptPubkey              (xmlSecKeyDataPtr data,
                                                                      LPVOID* ppDer,
                                                                      DWORD* pcbDer);
@@ -91,12 +91,6 @@ int                xmlSecMSCngCreateDerForBCryptPubkey              (xmlSecKeyDa
 /* Maximum DH prime (P) size in bytes. CNG DH keys are at most a few KB; this bound
  * is far above any real key and prevents DWORD overflow in the cbKey * 3 blob size. */
 #define XMLSEC_MSCNG_DH_MAX_P_SIZE (0x10000U)
-
-/* OID for X942 Diffie-Hellman key agreement; always ANSI LPSTR per CAPI design,
- * even in UNICODE builds. */
-#ifndef szOID_X942_DH
-#define szOID_X942_DH                       "1.2.840.10046.2.1"
-#endif /* szOID_X942_DH */
 
 
 int                xmlSecMSCngKeyDataSetDhQ                         (xmlSecKeyDataPtr data,
@@ -126,8 +120,15 @@ xmlSecKeyDataPtr   xmlSecMSCngKeyDataDhRead                         (xmlSecKeyDa
 int                xmlSecMSCngKeyDataDhPubkeyWrite                  (BCRYPT_KEY_HANDLE pubkey,
                                                                      xmlSecKeyValueDhPtr dhValue);
 xmlSecKeyDataPtr   xmlSecMSCngKeyDataDhReadFromPkcs8Der             (const xmlSecByte* derData,
-                                                                     DWORD derDataLen);
+                                                                      DWORD derDataLen);
 #endif /* XMLSEC_NO_DH */
+
+/* OID for X942 Diffie-Hellman key agreement; always ANSI LPSTR per CAPI design,
+ * even in UNICODE builds. Defined unconditionally because the private key dispatch
+ * in certkeys.c references the OID even when DH support is disabled. */
+#ifndef szOID_X942_DH
+#define szOID_X942_DH                       "1.2.840.10046.2.1"
+#endif /* szOID_X942_DH */
 
 /******************************************************************************
  *
@@ -173,12 +174,6 @@ int                xmlSecMSCngKeyDataDsaPubkeyWrite                 (BCRYPT_KEY_
 
 #ifndef XMLSEC_NO_XDH
 
-/* OID for X25519 public/private key (RFC 8410, id-X25519); always ANSI LPSTR per CAPI design,
- * even in UNICODE builds. */
-#ifndef szOID_X25519
-#define szOID_X25519                        "1.3.101.110"
-#endif /* szOID_X25519 */
-
 BCRYPT_KEY_HANDLE  xmlSecMSCngKeyDataXdhImportPublicKey             (const xmlSecByte* pubKeyBytes,
                                                                      DWORD pubKeyLen);
 int                xmlSecMSCngKeyDataDuplicateBCryptXdhPrivKey      (BCRYPT_KEY_HANDLE src,
@@ -186,9 +181,16 @@ int                xmlSecMSCngKeyDataDuplicateBCryptXdhPrivKey      (BCRYPT_KEY_
 xmlSecKeyDataPtr   xmlSecMSCngKeyDataXdhReadFromPkcs8Der            (const xmlSecByte* derData,
                                                                      DWORD derDataLen);
 int                xmlSecMSCngKeyDataCertGetXdhPubkey               (PCERT_PUBLIC_KEY_INFO spki,
-                                                                     BCRYPT_KEY_HANDLE* key);
+                                                                      BCRYPT_KEY_HANDLE* key);
 
 #endif /* XMLSEC_NO_XDH */
+
+/* OID for X25519 public/private key (RFC 8410, id-X25519); always ANSI LPSTR per CAPI design,
+ * even in UNICODE builds. Defined unconditionally because the private key dispatch
+ * in certkeys.c references the OID even when XDH support is disabled. */
+#ifndef szOID_X25519
+#define szOID_X25519                        "1.3.101.110"
+#endif /* szOID_X25519 */
 
 
 /******************************************************************************

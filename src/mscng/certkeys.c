@@ -51,13 +51,12 @@ xmlSecMSCngKeyDataCertGetPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE* k
     xmlSecAssert2(spki != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
 
+    /* make sure the output handle is clean on all failure paths */
+    (*key) = NULL;
+
     /* Try the standard API first: works for RSA, EC, and DSA up to 1024-bit.
      * For DSA > 1024-bit it fails (E_INVALIDARG) due to legacy CryptoAPI limits. */
-    if(CryptImportPublicKeyInfoEx2(X509_ASN_ENCODING,
-            spki,
-            0,
-            NULL,
-            key)) {
+    if(CryptImportPublicKeyInfoEx2(X509_ASN_ENCODING, spki, 0, NULL, key)) {
         return(0);
     }
 
@@ -1467,11 +1466,16 @@ xmlSecMSCngKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
     xmlSecAssert2(ecValue != NULL, NULL);
     xmlSecAssert2(ecValue->curve != NULL, NULL);
 
-    /* first byte in ecValue->pubkey is the magic byte, we don't need it */
+    /* first byte in ecValue->pubkey is the uncompressed point marker (0x04), we don't need it */
     pubkeyData = xmlSecBufferGetData(&(ecValue->pubkey));
     pubkeySize = xmlSecBufferGetSize(&(ecValue->pubkey));
     xmlSecAssert2(pubkeyData != NULL, NULL);
     xmlSecAssert2(pubkeySize > 1, NULL);
+    if(pubkeyData[0] != 0x04) {
+        xmlSecInvalidIntegerDataError("EC public key point marker", (int)pubkeyData[0],
+            "0x04 (uncompressed point)", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
     pubkeyData += 1;
     pubkeySize -= 1;
 
@@ -2265,14 +2269,17 @@ xmlSecMSCngCreateDerForBCryptPubkey(xmlSecKeyDataPtr data, LPVOID* ppDer, DWORD*
     xmlSecAssert2(ppDer != NULL, -1);
     xmlSecAssert2(pcbDer != NULL, -1);
 
+    /* just in case, initialize output parameters */
+    (*ppDer) = NULL;
+    (*pcbDer) = 0;
+
+
     hPubkey = xmlSecMSCngKeyDataGetPubkey(data);
     if(hPubkey == 0) {
         xmlSecInternalError("xmlSecMSCngKeyDataGetPubkey", NULL);
         return(-1);
     }
 
-    *ppDer = NULL;
-    *pcbDer = 0;
 
 #ifndef XMLSEC_NO_XDH
     /* CryptExportPublicKeyInfoFromBCryptKeyHandle does not support the X25519 OID and
@@ -2282,6 +2289,15 @@ xmlSecMSCngCreateDerForBCryptPubkey(xmlSecKeyDataPtr data, LPVOID* ppDer, DWORD*
         return(-1);
     }
 #endif /* XMLSEC_NO_XDH */
+
+#ifndef XMLSEC_NO_DH
+    /* CryptExportPublicKeyInfoFromBCryptKeyHandle does not support X9.42 DH keys
+     * (it returns ERROR_NOT_SUPPORTED), so reject DH keys explicitly. */
+    if(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataDhId)) {
+        xmlSecNotImplementedError("MSCNG doesn't support DER export of DH public keys");
+        return(-1);
+    }
+#endif /* XMLSEC_NO_DH */
 
 #ifndef XMLSEC_NO_DSA
     ret = xmlSecMSCngIsDsaBcryptKey(hPubkey);
@@ -2367,20 +2383,23 @@ done:
  * @return new key data or NULL on failure.
  */
 xmlSecKeyDataPtr
-xmlSecMSCngAppKeyReadPubKeyFromDer(const xmlSecByte* derData, DWORD derDataLen) {
+xmlSecMSCngAppKeyReadPubKeyFromDer(const xmlSecByte* derData, xmlSecSize derDataSize) {
     xmlSecKeyDataPtr data = NULL;
     xmlSecKeyDataPtr res = NULL;
     CERT_PUBLIC_KEY_INFO* spki = NULL;
+    DWORD dwDerDataSize = 0;
     DWORD spkiLen = 0;
     BCRYPT_KEY_HANDLE hPubKey = NULL;
     int ret;
 
     xmlSecAssert2(derData != NULL, NULL);
-    xmlSecAssert2(derDataLen > 0, NULL);
+    xmlSecAssert2(derDataSize > 0, NULL);
+
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(derDataSize, dwDerDataSize, return(NULL), NULL);
 
     /* Decode SubjectPublicKeyInfo */
     if(!CryptDecodeObjectEx(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-            X509_PUBLIC_KEY_INFO, derData, derDataLen,
+            X509_PUBLIC_KEY_INFO, derData, dwDerDataSize,
             CRYPT_DECODE_ALLOC_FLAG | CRYPT_DECODE_NOCOPY_FLAG,
             NULL, &spki, &spkiLen)) {
         xmlSecMSCngLastError("CryptDecodeObjectEx(SPKI)", NULL);
@@ -2558,7 +2577,8 @@ done:
  * @return new key data or NULL on failure.
  */
 xmlSecKeyDataPtr
-xmlSecMSCngAppKeyReadPrivKeyFromDer(const xmlSecByte* data, DWORD dataSize) {
+xmlSecMSCngAppKeyReadPrivKeyFromDer(const xmlSecByte* data, xmlSecSize dataSize) {
+    DWORD dwDataSize = 0;
     xmlSecKeyDataPtr res = NULL;
     CRYPT_PRIVATE_KEY_INFO* pki = NULL;
     DWORD pkiLen = 0;
@@ -2566,10 +2586,12 @@ xmlSecMSCngAppKeyReadPrivKeyFromDer(const xmlSecByte* data, DWORD dataSize) {
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(dataSize > 0, NULL);
 
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(dataSize, dwDataSize, return(NULL), NULL);
+
     /* Decode the PKCS8 PrivateKeyInfo once so that we can dispatch on the OID. */
     if(!CryptDecodeObjectEx(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
             PKCS_PRIVATE_KEY_INFO,
-            data, dataSize,
+            data, dwDataSize,
             CRYPT_DECODE_ALLOC_FLAG | CRYPT_DECODE_NOCOPY_FLAG,
             NULL, &pki, &pkiLen)) {
         xmlSecMSCngLastError("CryptDecodeObjectEx(PKCS8)", NULL);
@@ -2582,13 +2604,13 @@ xmlSecMSCngAppKeyReadPrivKeyFromDer(const xmlSecByte* data, DWORD dataSize) {
 
     if(strcmp(pki->Algorithm.pszObjId, szOID_X942_DH) == 0) {
 #ifndef XMLSEC_NO_DH
-        res = xmlSecMSCngKeyDataDhReadFromPkcs8Der(data, dataSize);
+        res = xmlSecMSCngKeyDataDhReadFromPkcs8Der(data, dwDataSize);
 #else /* XMLSEC_NO_DH */
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "DH private keys are not supported in this build");
 #endif /* XMLSEC_NO_DH */
     } else if(strcmp(pki->Algorithm.pszObjId, szOID_X25519) == 0) {
 #ifndef XMLSEC_NO_XDH
-        res = xmlSecMSCngKeyDataXdhReadFromPkcs8Der(data, dataSize);
+        res = xmlSecMSCngKeyDataXdhReadFromPkcs8Der(data, dwDataSize);
 #else /* XMLSEC_NO_XDH */
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "XDH private keys are not supported in this build");
 #endif /* XMLSEC_NO_XDH */
@@ -2598,6 +2620,7 @@ xmlSecMSCngAppKeyReadPrivKeyFromDer(const xmlSecByte* data, DWORD dataSize) {
 
 done:
     if(pki != NULL) {
+        SecureZeroMemory(pki, pkiLen);
         LocalFree(pki);
     }
     return(res);

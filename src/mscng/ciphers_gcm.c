@@ -463,6 +463,12 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
             xmlSecMSCngAesGcmNonceLengthInBytes,
             BCRYPT_USE_SYSTEM_PREFERRED_RNG);
         if (status != STATUS_SUCCESS) {
+            /* roll back the buffer growth so the caller sees the original state */
+            ret = xmlSecBufferSetSize(out, bufferSize);
+            if (ret < 0) {
+                xmlSecInternalError2("xmlSecBufferSetSize(rollback)", cipherName,
+                    "size=" XMLSEC_SIZE_FMT, bufferSize);
+            }
             xmlSecMSCngNtError("BCryptGenRandom", cipherName, status);
             return(-1);
         }

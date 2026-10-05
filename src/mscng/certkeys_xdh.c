@@ -609,6 +609,7 @@ done:
     if(pki != NULL) {
         /* LocalFree also frees pki->Algorithm.pszObjId: CryptDecodeObjectEx
          * (CRYPT_DECODE_ALLOC_FLAG) allocates it inside the pki block */
+        SecureZeroMemory(pki, pkiLen);
         LocalFree(pki);
     }
     if(data != NULL) {

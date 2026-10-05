@@ -48,6 +48,27 @@ xmlSecMSCngReverseBlob(CRYPT_UINT_BLOB* blob, DWORD* pSize) {
     blob->cbData = *pSize;
 }
 
+/* Strips leading zero bytes from a big-endian value without copying it.
+ * Returns a pointer to the first non-zero byte and sets *outSize to the
+ * remaining length; if all bytes are zero, returns a pointer to the last
+ * byte with (*outSize) = 1. */
+static const xmlSecByte*
+xmlSecMSCngDsaStripLeadingZeros(const xmlSecByte* data, xmlSecSize size, xmlSecSize* outSize) {
+    xmlSecAssert2(data != NULL, NULL);
+    xmlSecAssert2(outSize != NULL, NULL);
+
+    if(size == 0) {
+        (*outSize) = 0;
+        return(data);
+    }
+    while((size > 1) && (data[0] == 0)) {
+        data++;
+        size--;
+    }
+    (*outSize) = size;
+    return(data);
+}
+
 /* Import a DSA public key from a certificate using BCryptImportKeyPair.
  * CryptImportPublicKeyInfoEx2 only supports DSA up to 1024-bit (legacy CryptoAPI
  * limitation), so for all DSA keys we manually decode the SubjectPublicKeyInfo
@@ -125,6 +146,12 @@ xmlSecMSCngKeyDataCertGetDsaPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE
 
     if(qSize > XMLSEC_MSCNG_DSA_V2_Q_SIZE) {
         xmlSecInvalidSizeMoreThanError("DSA Q size", (xmlSecSize)qSize, (xmlSecSize)XMLSEC_MSCNG_DSA_V2_Q_SIZE, NULL);
+        goto done;
+    }
+    /* CNG DSA blobs only support 160-bit (20-byte, SHA1) and 256-bit (32-byte,
+     * SHA256) group sizes; anything in between would produce an invalid blob. */
+    if((qSize > XMLSEC_MSCNG_DSA_MAX_Q_SIZE) && (qSize < XMLSEC_MSCNG_DSA_V2_Q_SIZE)) {
+        xmlSecInvalidSizeDataError("DSA Q size", (xmlSecSize)qSize, "20 or 32 bytes", NULL);
         goto done;
     }
     if((qSize > pSize) || (gSize > pSize) || (ySize > pSize)) {
@@ -412,6 +439,7 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     xmlSecBuffer blob;
     int blobInitialized = 0;
     xmlSecByte* blobData;
+    const xmlSecByte* pData, *qData, *gData, *yData;
     xmlSecSize pSize, qSize, gSize, ySize, qBlobSize;
     xmlSecSize offset, blobSize;
     DWORD dwBlobSize;
@@ -438,6 +466,13 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     xmlSecAssert2(gSize > 0, NULL);
     xmlSecAssert2(ySize > 0, NULL);
 
+    /* The XML values may be non-minimal big-endian encodings; strip leading
+     * zero bytes so the sizes reflect the actual values. */
+    pData = xmlSecMSCngDsaStripLeadingZeros(xmlSecBufferGetData(&(dsaValue->p)), pSize, &pSize);
+    qData = xmlSecMSCngDsaStripLeadingZeros(xmlSecBufferGetData(&(dsaValue->q)), qSize, &qSize);
+    gData = xmlSecMSCngDsaStripLeadingZeros(xmlSecBufferGetData(&(dsaValue->g)), gSize, &gSize);
+    yData = xmlSecMSCngDsaStripLeadingZeros(xmlSecBufferGetData(&(dsaValue->y)), ySize, &ySize);
+
     /* turn the read data into a public key blob.
       * We support both V1 (BCRYPT_DSA_KEY_BLOB, q up to 20 bytes, keys up to 1024-bit)
       * and V2 (BCRYPT_DSA_KEY_BLOB_V2, q up to 32 bytes, keys up to 4096-bit).
@@ -446,6 +481,12 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
      */
     if(qSize > XMLSEC_MSCNG_DSA_V2_Q_SIZE) {
         xmlSecInvalidSizeMoreThanError("DSA Q size", (xmlSecSize)qSize, (xmlSecSize)XMLSEC_MSCNG_DSA_V2_Q_SIZE, NULL);
+        goto done;
+    }
+    /* CNG DSA blobs only support 160-bit (20-byte, SHA1) and 256-bit (32-byte,
+     * SHA256) group sizes; anything in between would produce an invalid blob. */
+    if((qSize > XMLSEC_MSCNG_DSA_MAX_Q_SIZE) && (qSize < XMLSEC_MSCNG_DSA_V2_Q_SIZE)) {
+        xmlSecInvalidSizeDataError("DSA Q size", (xmlSecSize)qSize, "20 or 32 bytes", NULL);
         goto done;
     }
     if(pSize > XMLSEC_MSCNG_DSA_MAX_P_SIZE) {
@@ -506,18 +547,18 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
 
         /* q (in header, fixed 20 bytes) */
         xmlSecAssert2(sizeof(dsakey->q) == XMLSEC_MSCNG_DSA_MAX_Q_SIZE, NULL);
-        memcpy(dsakey->q + (XMLSEC_MSCNG_DSA_MAX_Q_SIZE - qSize), xmlSecBufferGetData(&(dsaValue->q)), qSize);
+        memcpy(dsakey->q + (XMLSEC_MSCNG_DSA_MAX_Q_SIZE - qSize), qData, qSize);
 
         /*  p  */
-        memcpy(blobData + offset, xmlSecBufferGetData(&(dsaValue->p)), pSize);
+        memcpy(blobData + offset, pData, pSize);
         offset += pSize;
 
         /*  g  */
-        memcpy(blobData + offset + (pSize - gSize), xmlSecBufferGetData(&(dsaValue->g)), gSize);
+        memcpy(blobData + offset + (pSize - gSize), gData, gSize);
         offset += pSize; /* gSize <= pSize */
 
         /*  y  */
-        memcpy(blobData + offset + (pSize - ySize), xmlSecBufferGetData(&(dsaValue->y)), ySize);
+        memcpy(blobData + offset + (pSize - ySize), yData, ySize);
         offset += pSize; /* ySize <= pSize */
     } else {
 #if XMLSEC_MSCNG_HAVE_DSA_V2
@@ -541,19 +582,19 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         offset += qBlobSize;
 
         /*  q (qBlobSize-byte field, right-aligned)  */
-        memcpy(blobData + offset + (qBlobSize - qSize), xmlSecBufferGetData(&(dsaValue->q)), qSize);
+        memcpy(blobData + offset + (qBlobSize - qSize), qData, qSize);
         offset += qBlobSize;
 
         /*  p  */
-        memcpy(blobData + offset, xmlSecBufferGetData(&(dsaValue->p)), pSize);
+        memcpy(blobData + offset, pData, pSize);
         offset += pSize;
 
         /*  g  */
-        memcpy(blobData + offset + (pSize - gSize), xmlSecBufferGetData(&(dsaValue->g)), gSize);
+        memcpy(blobData + offset + (pSize - gSize), gData, gSize);
         offset += pSize; /* gSize <= pSize */
 
         /*  y  */
-        memcpy(blobData + offset + (pSize - ySize), xmlSecBufferGetData(&(dsaValue->y)), ySize);
+        memcpy(blobData + offset + (pSize - ySize), yData, ySize);
         offset += pSize; /* ySize <= pSize */
 #else /* XMLSEC_MSCNG_HAVE_DSA_V2 */
         xmlSecNotImplementedError("DSA keys with p > 1024 bits require newer Windows SDK bcrypt definitions");
@@ -617,27 +658,6 @@ done:
         xmlSecBufferFinalize(&blob);
     }
     return(res);
-}
-
-/* Strips leading zero bytes from a big-endian value without copying it.
- * Returns a pointer to the first non-zero byte and sets *outSize to the
- * remaining length; if all bytes are zero, returns a pointer to the last
- * byte with *outSize = 1. */
-static const xmlSecByte*
-xmlSecMSCngDsaStripLeadingZeros(const xmlSecByte* data, xmlSecSize size, xmlSecSize* outSize) {
-    xmlSecAssert2(data != NULL, NULL);
-    xmlSecAssert2(outSize != NULL, NULL);
-
-    if(size == 0) {
-        *outSize = 0;
-        return(data);
-    }
-    while((size > 1) && (data[0] == 0)) {
-        data++;
-        size--;
-    }
-    *outSize = size;
-    return(data);
 }
 
 int

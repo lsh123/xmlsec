@@ -156,6 +156,9 @@ xmlSecMSCngKWDes3Sha1(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSe
         0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptCreateHash", NULL, status);
+        /* the out-handle is not guaranteed to be zeroed on failure; reset it so
+         * the cleanup below does not attempt to destroy an indeterminate handle */
+        hHash = NULL;
         goto done;
     }
 

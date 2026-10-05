@@ -106,7 +106,10 @@ xmlSecMSCngCertStoreCtxInitialize(xmlSecMSCngCertStoreCtx* ctx, LPCTSTR localMac
         if(ret == FALSE) {
             xmlSecMSCngLastError("CertAddStoreToCollection(LocalMachine)", NULL);
             /* non-fatal - continue without local machine store */
-            CertCloseStore(ctx->hLocalMachine, 0);
+            if(!CertCloseStore(ctx->hLocalMachine, 0)) {
+                xmlSecMSCngLastError("CertCloseStore", NULL);
+                /* ignore error */
+            }
             ctx->hLocalMachine = NULL;
         }
     }
@@ -126,7 +129,10 @@ xmlSecMSCngCertStoreCtxInitialize(xmlSecMSCngCertStoreCtx* ctx, LPCTSTR localMac
         if(ret == FALSE) {
             xmlSecMSCngLastError("CertAddStoreToCollection(CurrentUser)", NULL);
             /* non-fatal */
-            CertCloseStore(ctx->hCurrentUser, 0);
+            if(!CertCloseStore(ctx->hCurrentUser, 0)) {
+                xmlSecMSCngLastError("CertCloseStore", NULL);
+                /* ignore error */
+            }
             ctx->hCurrentUser = NULL;
         }
     }
@@ -135,7 +141,10 @@ xmlSecMSCngCertStoreCtxInitialize(xmlSecMSCngCertStoreCtx* ctx, LPCTSTR localMac
     if(ctx->hLocalMachine == NULL && ctx->hCurrentUser == NULL) {
         xmlSecOtherError(XMLSEC_ERRORS_R_CRYPTO_FAILED, NULL,
             "neither LocalMachine nor CurrentUser store could be opened");
-        CertCloseStore(ctx->hCollection, 0);
+        if(!CertCloseStore(ctx->hCollection, 0)) {
+            xmlSecMSCngLastError("CertCloseStore", NULL);
+            /* ignore error */
+        }
         ctx->hCollection = NULL;
         return(-1);
     }
@@ -150,15 +159,24 @@ xmlSecMSCngCertStoreCtxFinalize(xmlSecMSCngCertStoreCtx* ctx) {
     }
     /* close individual stores before the collection */
     if(ctx->hLocalMachine != NULL) {
-        CertCloseStore(ctx->hLocalMachine, 0);
+        if(!CertCloseStore(ctx->hLocalMachine, 0)) {
+            xmlSecMSCngLastError("CertCloseStore", NULL);
+            /* ignore error */
+        }
         ctx->hLocalMachine = NULL;
     }
     if(ctx->hCurrentUser != NULL) {
-        CertCloseStore(ctx->hCurrentUser, 0);
+        if(!CertCloseStore(ctx->hCurrentUser, 0)) {
+            xmlSecMSCngLastError("CertCloseStore", NULL);
+            /* ignore error */
+        }
         ctx->hCurrentUser = NULL;
     }
     if(ctx->hCollection != NULL) {
-        CertCloseStore(ctx->hCollection, 0);
+        if(!CertCloseStore(ctx->hCollection, 0)) {
+            xmlSecMSCngLastError("CertCloseStore", NULL);
+            /* ignore error */
+        }
         ctx->hCollection = NULL;
     }
 }
@@ -367,7 +385,10 @@ xmlSecMSCngKeysStoreAddCertDataToKey(xmlSecKeyPtr key, PCCERT_CONTEXT cert) {
     ret = xmlSecMSCngKeyDataX509AdoptKeyCert(x509Data, certTmp);
     if (ret < 0) {
         xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptKeyCert", NULL);
-        CertFreeCertificateContext(certTmp);
+        if (!CertFreeCertificateContext(certTmp)) {
+            xmlSecMSCngLastError("CertFreeCertificateContext", NULL);
+            /* ignore error */
+        }
         xmlSecKeyDataDestroy(x509Data);
         return(-1);
     }
@@ -412,7 +433,10 @@ xmlSecMSCngKeysStoreSetKeyValueFromCert(xmlSecKeyPtr key, PCCERT_CONTEXT cert, x
     keyValue = xmlSecMSCngCertAdopt(certTmp, keyReq->keyType);
     if (keyValue == NULL) {
         xmlSecInternalError("xmlSecMSCngCertAdopt", NULL);
-        CertFreeCertificateContext(certTmp);
+        if (!CertFreeCertificateContext(certTmp)) {
+            xmlSecMSCngLastError("CertFreeCertificateContext", NULL);
+            /* ignore error */
+        }
         return(-1);
     }
     certTmp = NULL; /* owned by key value now */
@@ -523,7 +547,10 @@ xmlSecMSCngKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSec
 
 done:
     if(cert != NULL) {
-        CertFreeCertificateContext(cert);
+        if(!CertFreeCertificateContext(cert)) {
+            xmlSecMSCngLastError("CertFreeCertificateContext", NULL);
+            /* ignore error */
+        }
     }
     if(key != NULL) {
         xmlSecKeyDestroy(key);
@@ -567,13 +594,19 @@ xmlSecMSCngKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509Da
     key = xmlSecMSCngKeysStoreCreateKeyFromCert(cert, &(keyInfoCtx->keyReq));
     if (key == NULL) {
         xmlSecInternalError("xmlSecMSCngKeysStoreCreateKeyFromCert", xmlSecKeyStoreGetName(store));
-        CertFreeCertificateContext(cert);
+        if (!CertFreeCertificateContext(cert)) {
+            xmlSecMSCngLastError("CertFreeCertificateContext", NULL);
+            /* ignore error */
+        }
         xmlSecMSCngX509FindCertCtxFinalize(&findCertCtx);
         return(NULL);
     }
 
     /* done! */
-    CertFreeCertificateContext(cert);
+    if (!CertFreeCertificateContext(cert)) {
+        xmlSecMSCngLastError("CertFreeCertificateContext", NULL);
+        /* ignore error */
+    }
     xmlSecMSCngX509FindCertCtxFinalize(&findCertCtx);
     return(key);
 #else  /* XMLSEC_NO_X509 */

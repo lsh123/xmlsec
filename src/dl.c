@@ -35,6 +35,9 @@
 
 #if defined(XMLSEC_WINDOWS) && defined(XMLSEC_DL_WIN32)
 #include <windows.h>
+#if defined(WINAPI_FAMILY) && (WINAPI_FAMILY != WINAPI_FAMILY_DESKTOP_APP)
+#include <windowsapp.h>
+#endif /* defined(WINAPI_FAMILY) && (WINAPI_FAMILY != WINAPI_FAMILY_DESKTOP_APP) */
 #endif /* defined(XMLSEC_WINDOWS) && defined(XMLSEC_DL_WIN32) */
 
 #include "cast_helpers.h"

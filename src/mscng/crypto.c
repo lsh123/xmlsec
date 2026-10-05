@@ -50,11 +50,19 @@ xmlSecMSCngIsAlgorithmSupported(LPCWSTR pszAlgId, DWORD dwMinLength, LPCWSTR cur
 
         status = BCryptGetProperty(hAlg, BCRYPT_KEY_LENGTHS, (PBYTE)&keyLengths, sizeof(keyLengths), &cbResult, 0);
         if(status != STATUS_SUCCESS) {
-            BCryptCloseAlgorithmProvider(hAlg, 0);
+            status = BCryptCloseAlgorithmProvider(hAlg, 0);
+            if(status != STATUS_SUCCESS) {
+                xmlSecMSCngNtError("BCryptCloseAlgorithmProvider", NULL, status);
+                /* ignore error */
+            }
             return(0);
         }
         if(keyLengths.dwMaxLength < dwMinLength) {
-            BCryptCloseAlgorithmProvider(hAlg, 0);
+            status = BCryptCloseAlgorithmProvider(hAlg, 0);
+            if(status != STATUS_SUCCESS) {
+                xmlSecMSCngNtError("BCryptCloseAlgorithmProvider", NULL, status);
+                /* ignore error */
+            }
             return(0);
         }
     }
@@ -64,13 +72,21 @@ xmlSecMSCngIsAlgorithmSupported(LPCWSTR pszAlgId, DWORD dwMinLength, LPCWSTR cur
         DWORD cbCurveName = (DWORD)((wcslen(curveName) + 1) * sizeof(WCHAR));
         status = BCryptSetProperty(hAlg, BCRYPT_ECC_CURVE_NAME, (PUCHAR)curveName, cbCurveName, 0);
         if(status != STATUS_SUCCESS) {
-            BCryptCloseAlgorithmProvider(hAlg, 0);
+            status = BCryptCloseAlgorithmProvider(hAlg, 0);
+            if(status != STATUS_SUCCESS) {
+                xmlSecMSCngNtError("BCryptCloseAlgorithmProvider", NULL, status);
+                /* ignore error */
+            }
             return(0);
         }
     }
 
     /* done */
-    BCryptCloseAlgorithmProvider(hAlg, 0);
+    status = BCryptCloseAlgorithmProvider(hAlg, 0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptCloseAlgorithmProvider", NULL, status);
+        /* ignore error */
+    }
     return(1);
 }
 

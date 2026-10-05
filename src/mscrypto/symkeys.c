@@ -405,7 +405,11 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
         dwFlags = 0;
     }
     if(!fFound) {
-        xmlSecMSCryptoError2("CryptGetProvParam", NULL, "algId=%u is not supported", algId);
+        if(GetLastError() != (DWORD)NTE_NO_MORE_ITEMS) {
+            xmlSecMSCryptoError("CryptGetProvParam", NULL);
+        } else {
+            xmlSecMSCryptoError2("CryptGetProvParam", NULL, "algId=%u is not supported", algId);
+        }
         goto done;
     }
 
@@ -426,10 +430,11 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
         CryptDestroyKey(hTempKey);
         hTempKey = 0;
 
-        /* yell if key is too big */
-        if ((8 * dwKeyMaterialLen) > dwProvSessionKeySize) {
+        /* yell if key is too big (use 64-bit arithmetic to avoid overflow) */
+        if ((LONGLONG)dwKeyMaterialLen * 8 > (LONGLONG)dwProvSessionKeySize) {
             xmlSecMSCryptoError3("CryptGetKeyParam(KP_KEYLEN)", NULL,
-                "8*dwKeyMaterialLen=%lu; dwProvSessionKeySize=%lu", (8 * dwKeyMaterialLen), dwProvSessionKeySize);
+                "8*dwKeyMaterialLen=%llu; dwProvSessionKeySize=%lu",
+                (unsigned long long)((LONGLONG)dwKeyMaterialLen * 8), dwProvSessionKeySize);
             goto done;
         }
     } else {

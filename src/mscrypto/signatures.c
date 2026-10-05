@@ -585,7 +585,10 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             return (-1);
         }
 
-        /* First try: create hash with provider acquired in xmlSecMSCryptoKeyDataAdoptCert */
+        /* First try: create hash with provider acquired in xmlSecMSCryptoKeyDataAdoptCert.
+         * Zero the out-handle first: it is not guaranteed to be zeroed on failure, so
+         * a failed attempt must not leave an indeterminate handle for Finalize to destroy. */
+        ctx->mscHash = 0;
         bOk = CryptCreateHash(hProv, ctx->digestAlgId, 0, 0, &(ctx->mscHash));
 
         /* Second try: use container name, provider name and type from certificate context */
@@ -607,6 +610,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
                 return(-1);
             }
 
+            ctx->mscHash = 0;
             bOk = CryptCreateHash(hFallbackProv, ctx->digestAlgId, 0, 0, &(ctx->mscHash));
         }
 
@@ -627,6 +631,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
                 return(-1);
             }
 
+            ctx->mscHash = 0;
             bOk = CryptCreateHash(hFallbackProv, ctx->digestAlgId, 0, 0, &(ctx->mscHash));
         }
 

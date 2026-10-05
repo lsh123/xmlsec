@@ -1167,6 +1167,13 @@ xmlSecMSCryptoKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits,
     }
 
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(sizeBits, dwSize, goto done, xmlSecKeyDataGetName(data));
+    /* the key size is passed in the upper 16 bits of the CryptGenKey flags;
+     * reject sizes that would wrap around silently */
+    if(dwSize > 0xFFFF) {
+        xmlSecInternalError2("xmlSecMSCryptoKeyDataRsaGenerate", xmlSecKeyDataGetName(data),
+            "RSA key size is too large: sizeBits=%lu", dwSize);
+        goto done;
+    }
     dwKeySpec = AT_SIGNATURE;
     dwSize = ((dwSize << 16) | CRYPT_EXPORTABLE);
     if (!CryptGenKey(hProv, CALG_RSA_SIGN, dwSize, &hKey)) {
@@ -1754,6 +1761,13 @@ xmlSecMSCryptoKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xml
 
     dwKeySpec = AT_SIGNATURE;
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(sizeBits, dwSize, goto done, xmlSecKeyDataGetName(data));
+    /* the key size is passed in the upper 16 bits of the CryptGenKey flags;
+     * reject sizes that would wrap around silently */
+    if(dwSize > 0xFFFF) {
+        xmlSecInternalError2("xmlSecMSCryptoKeyDataDsaGenerate", xmlSecKeyDataGetName(data),
+            "DSA key size is too large: sizeBits=%lu", dwSize);
+        goto done;
+    }
     dwSize = ((dwSize << 16) | CRYPT_EXPORTABLE);
     if (!CryptGenKey(hProv, CALG_DSS_SIGN, dwSize, &hKey)) {
             xmlSecMSCryptoError("CryptGenKey", xmlSecKeyDataGetName(data));

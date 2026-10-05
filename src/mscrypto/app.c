@@ -196,8 +196,12 @@ xmlSecMSCryptoAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_A
  * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
-xmlSecMSCryptoAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format,
-                               const char *pwd, void* pwdCallback, void* pwdCallbackCtx) {
+xmlSecMSCryptoAppKeyLoadMemory(
+    const xmlSecByte* data, xmlSecSize dataSize,
+    xmlSecKeyDataFormat format,
+    const char *pwd, void* pwdCallback, void* pwdCallbackCtx
+) {
+#ifndef XMLSEC_NO_X509
     PCCERT_CONTEXT pCert = NULL;
     PCCERT_CONTEXT tmpcert = NULL;
     xmlSecKeyDataPtr x509Data = NULL;
@@ -209,7 +213,11 @@ xmlSecMSCryptoAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlS
 
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(dataSize > 0, NULL);
-    xmlSecAssert2(format == xmlSecKeyDataFormatCertDer, NULL);
+    if(format != xmlSecKeyDataFormatCertDer) {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
+            "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
+        return(NULL);
+    }
     XMLSEC_UNREFERENCED(pwd);
     XMLSEC_UNREFERENCED(pwdCallback);
     XMLSEC_UNREFERENCED(pwdCallbackCtx);
@@ -294,6 +302,23 @@ done:
         xmlSecKeyDestroy(key);
     }
     return(res);
+#else  /* XMLSEC_NO_X509 */
+
+    xmlSecAssert2(data != NULL, NULL);
+    xmlSecAssert2(dataSize > 0, NULL);
+    if(format != xmlSecKeyDataFormatCertDer) {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
+            "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
+        return(NULL);
+    }
+    XMLSEC_UNREFERENCED(pwd);
+    XMLSEC_UNREFERENCED(pwdCallback);
+    XMLSEC_UNREFERENCED(pwdCallbackCtx);
+
+    xmlSecNotImplementedError("X509 support is disabled during compilation");
+    return(NULL);
+
+#endif /* XMLSEC_NO_X509 */
 }
 
 
@@ -414,13 +439,20 @@ xmlSecMSCryptoAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xml
         }
         pCert = NULL; /* owned by kdata */
 
-        ret = xmlSecMSCryptoKeyDataX509AdoptKeyCert(kdata, pKeyCert);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecMSCryptoKeyDataX509AdoptKeyCert", xmlSecKeyDataGetName(kdata));
+        /* set the key cert only if the key does not have one yet; otherwise
+         * keep the existing key cert and add this cert to the chain only */
+        if(xmlSecMSCryptoKeyDataX509GetKeyCert(kdata) == NULL) {
+            ret = xmlSecMSCryptoKeyDataX509AdoptKeyCert(kdata, pKeyCert);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecMSCryptoKeyDataX509AdoptKeyCert", xmlSecKeyDataGetName(kdata));
+                CertFreeCertificateContext(pKeyCert);
+                return(-1);
+            }
+            pKeyCert = NULL; /* owned by kdata */
+        } else {
             CertFreeCertificateContext(pKeyCert);
-            return(-1);
+            pKeyCert = NULL;
         }
-        pKeyCert = NULL; /* owned by kdata */
 
         break;
     default:
@@ -498,11 +530,12 @@ xmlSecMSCryptoAppPkcs12Load(const char *filename,
  * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
-xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
-                                  xmlSecSize dataSize,
-                                  const char *pwd,
-                                  void* pwdCallback XMLSEC_ATTRIBUTE_UNUSED,
-                                  void* pwdCallbackCtx XMLSEC_ATTRIBUTE_UNUSED) {
+xmlSecMSCryptoAppPkcs12LoadMemory(
+    const xmlSecByte* data, xmlSecSize dataSize,
+    const char *pwd,
+    void* pwdCallback XMLSEC_ATTRIBUTE_UNUSED,
+    void* pwdCallbackCtx XMLSEC_ATTRIBUTE_UNUSED
+) {
     CRYPT_DATA_BLOB pfx;
     HCERTSTORE hCertStore = NULL;
     PCCERT_CONTEXT tmpcert = NULL;
@@ -531,9 +564,9 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
         goto done;
     }
 
-    wcPwd = xmlSecWin32ConvertLocaleToUnicode(pwd);
+    wcPwd = xmlSecWin32ConvertUtf8ToUnicode((const xmlChar*)pwd);
     if (wcPwd == NULL) {
-        xmlSecInternalError("xmlSecWin32ConvertLocaleToUnicode(pw)", NULL);
+        xmlSecInternalError("xmlSecWin32ConvertUtf8ToUnicode(pw)", NULL);
         goto done;
     }
 

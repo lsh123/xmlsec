@@ -384,8 +384,10 @@ xmlSecGnuTLSX509StoreGetCrls(
      * revocation decisions, so a store CRL that is not yet valid at the
      * verification time must not be used: it would otherwise revoke
      * certificates that were not yet revoked at that time. An expired
-     * store CRL is still honored (fail closed). */
-    if(ctx_crls_size > 0) {
+     * store CRL is still honored (fail closed). The skip-time-checks
+     * flag disables this window check as well. */
+    if((ctx_crls_size > 0) &&
+       ((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS) == 0)) {
         verification_time = xmlSecGnuTLSX509StoreGetCrlVerificationTime(keyInfoCtx,
             xmlSecKeyDataStoreGetName(store));
         if(verification_time == (time_t)-1) {
@@ -410,9 +412,11 @@ xmlSecGnuTLSX509StoreGetCrls(
             xmlFree(res);
             return(-1);
         }
-        if(this_update > verification_time) {
-            /* CRL is not yet valid: skip it */
-            continue;
+        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS) == 0) {
+            if(this_update > verification_time) {
+                /* CRL is not yet valid: skip it */
+                continue;
+            }
         }
         res[res_pos] = crl;
         ++res_pos;
@@ -507,10 +511,16 @@ xmlSecGnuTLSX509GetVerificationFlags(const xmlSecKeyInfoCtx* keyInfoCtx, unsigne
     return(0);
 }
 
-/* Verify issuer certificate chain against trusted certs: 1 if valid, 0 if not, < 0 if error */
+/* Verify issuer certificate chain against trusted certs: 1 if valid, 0 if not, < 0 if error.
+ * The chain is built from the store's untrusted certs and the caller-supplied
+ * @p extra_certs, so an issuer cert that needs intermediate certs provided by
+ * the caller can still be verified. */
 static int
-xmlSecGnuTLSX509StoreVerifyIssuerCert(xmlSecGnuTLSX509StoreCtxPtr ctx,
-    gnutls_x509_crt_t issuer_cert, const xmlSecKeyInfoCtx* keyInfoCtx
+xmlSecGnuTLSX509StoreVerifyIssuerCert(
+    xmlSecGnuTLSX509StoreCtxPtr ctx,
+    gnutls_x509_crt_t issuer_cert,
+    xmlSecPtrListPtr extra_certs,
+    const xmlSecKeyInfoCtx* keyInfoCtx
 ) {
     gnutls_x509_crt_t* certs_chain = NULL;
     xmlSecSize certs_chain_size, certs_chain_cur_size = 0;
@@ -533,14 +543,15 @@ xmlSecGnuTLSX509StoreVerifyIssuerCert(xmlSecGnuTLSX509StoreCtxPtr ctx,
         goto done;
     }
 
-    certs_chain_size = xmlSecPtrListGetSize(&(ctx->certsUntrusted)) + 1;
+    certs_chain_size = xmlSecPtrListGetSize(&(ctx->certsUntrusted)) +
+                       ((extra_certs != NULL) ? xmlSecPtrListGetSize(extra_certs) : 0) + 1;
     certs_chain = (gnutls_x509_crt_t*)xmlMalloc(sizeof(gnutls_x509_crt_t) * certs_chain_size);
     if(certs_chain == NULL) {
         xmlSecMallocError(sizeof(gnutls_x509_crt_t) * certs_chain_size, NULL);
         goto done;
     }
 
-    /* Build issuer chain using untrusted certs from store. */
+    /* Build issuer chain using untrusted certs from store and the caller-supplied certs. */
     certs_chain[0] = issuer_cert;
     certs_chain_cur_size = 1;
     if((xmlSecGnuTLSX509CertIsSelfSigned(issuer_cert) != 1) && (certs_chain_size > 1)) {
@@ -551,6 +562,9 @@ xmlSecGnuTLSX509StoreVerifyIssuerCert(xmlSecGnuTLSX509StoreCtxPtr ctx,
             gnutls_x509_crt_t tmp;
 
             tmp = xmlSecGnuTLSX509FindSignerCert(&(ctx->certsUntrusted), cert);
+            if((tmp == NULL) && (extra_certs != NULL)) {
+                tmp = xmlSecGnuTLSX509FindSignerCert(extra_certs, cert);
+            }
             if((tmp == NULL) || (tmp == cert)) {
                 break;
             }
@@ -604,6 +618,16 @@ xmlSecGnuTLSX509StoreVerifyCert(xmlSecGnuTLSX509StoreCtxPtr ctx,
     /* do we even need to verify the cert? */
     if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) != 0) {
         return(1);
+    }
+
+    /* enforce the requested maximum certificate chain length
+     * (the OpenSSL backend enforces it via X509_VERIFY_PARAM_set_depth) */
+    if((keyInfoCtx->certsVerificationDepth > 0) &&
+       (certs_chain_size > (xmlSecSize)keyInfoCtx->certsVerificationDepth)) {
+        xmlSecOtherError3(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL,
+            "certificate chain length " XMLSEC_SIZE_FMT " exceeds the requested maximum depth %d",
+            certs_chain_size, keyInfoCtx->certsVerificationDepth);
+        return(0);
     }
 
     ret = xmlSecGnuTLSX509GetVerificationFlags(keyInfoCtx, &flags);
@@ -992,6 +1016,12 @@ xmlSecGnuTLSX509StoreVerifyCrlTimeValidity(
     xmlSecAssert2(crl != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
+    /* honor the skip-time-checks flag: it covers CRL time windows as well
+     * (the OpenSSL backend maps it to X509_V_FLAG_NO_CHECK_TIME, which covers CRLs) */
+    if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS) != 0) {
+        return(1);
+    }
+
     /* Get verification time */
     verification_time = xmlSecGnuTLSX509StoreGetCrlVerificationTime(keyInfoCtx, storeName);
     if(verification_time == (time_t)-1) {
@@ -1060,6 +1090,7 @@ static int
 xmlSecGnuTLSX509StoreFindCrlIssuerCert(
     xmlSecGnuTLSX509StoreCtxPtr ctx,
     xmlSecPtrListPtr certs,
+    xmlSecPtrListPtr extra_certs,
     gnutls_x509_crl_t crl,
     int verify_issuer,
     const xmlSecKeyInfoCtx* keyInfoCtx,
@@ -1091,7 +1122,7 @@ xmlSecGnuTLSX509StoreFindCrlIssuerCert(
 
         if(verify_issuer != 0) {
             /* the issuer cert's chain must verify before the cert can be used */
-            ret = xmlSecGnuTLSX509StoreVerifyIssuerCert(ctx, cert, keyInfoCtx);
+            ret = xmlSecGnuTLSX509StoreVerifyIssuerCert(ctx, cert, extra_certs, keyInfoCtx);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecGnuTLSX509StoreVerifyIssuerCert", storeName);
                 return(-1);
@@ -1130,7 +1161,7 @@ xmlSecGnuTLSX509StoreVerifyCrlSignature(
 
     /* Find the issuer certificate: search trusted certs first (no need to verify trusted issuer certs). */
     if(issuer_cert == NULL) {
-        ret = xmlSecGnuTLSX509StoreFindCrlIssuerCert(ctx, &(ctx->certsTrusted), crl, 0,
+        ret = xmlSecGnuTLSX509StoreFindCrlIssuerCert(ctx, &(ctx->certsTrusted), extra_certs, crl, 0,
             keyInfoCtx, storeName, &issuer_cert);
         if(ret < 0) {
             xmlSecInternalError("xmlSecGnuTLSX509StoreFindCrlIssuerCert(trusted)", storeName);
@@ -1140,7 +1171,7 @@ xmlSecGnuTLSX509StoreVerifyCrlSignature(
 
     /* Then untrusted certs and make sure their chain verifies. */
     if(issuer_cert == NULL) {
-        ret = xmlSecGnuTLSX509StoreFindCrlIssuerCert(ctx, &(ctx->certsUntrusted), crl, 1,
+        ret = xmlSecGnuTLSX509StoreFindCrlIssuerCert(ctx, &(ctx->certsUntrusted), extra_certs, crl, 1,
             keyInfoCtx, storeName, &issuer_cert);
         if(ret < 0) {
             xmlSecInternalError("xmlSecGnuTLSX509StoreFindCrlIssuerCert(untrusted)", storeName);
@@ -1150,7 +1181,7 @@ xmlSecGnuTLSX509StoreVerifyCrlSignature(
 
     /* And finally caller-supplied (e.g. KeyInfo) certs and make sure their chain verifies. */
     if((issuer_cert == NULL) && (extra_certs != NULL)) {
-        ret = xmlSecGnuTLSX509StoreFindCrlIssuerCert(ctx, extra_certs, crl, 1,
+        ret = xmlSecGnuTLSX509StoreFindCrlIssuerCert(ctx, extra_certs, extra_certs, crl, 1,
             keyInfoCtx, storeName, &issuer_cert);
         if(ret < 0) {
             xmlSecInternalError("xmlSecGnuTLSX509StoreFindCrlIssuerCert(extra_certs)", storeName);
@@ -1187,9 +1218,11 @@ xmlSecGnuTLSX509StoreVerifyCrlSignature(
      * against the current time (not gated by GNUTLS_VERIFY_DISABLE_TIME_CHECKS).
      * When a verification timestamp is set, time validity was already checked
      * against that timestamp by xmlSecGnuTLSX509StoreVerifyCrlTimeValidity, so
-     * ignore the time-based failure flags here.
+     * ignore the time-based failure flags here. The skip-time-checks flag
+     * skips the CRL time window checks altogether.
      */
-    if(keyInfoCtx->certsVerificationTime > 0) {
+    if((keyInfoCtx->certsVerificationTime > 0) ||
+       ((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS) != 0)) {
         const unsigned int ignored_verify_result =
             (unsigned int)(GNUTLS_CERT_REVOCATION_DATA_ISSUED_IN_FUTURE |
                            GNUTLS_CERT_REVOCATION_DATA_SUPERSEDED);

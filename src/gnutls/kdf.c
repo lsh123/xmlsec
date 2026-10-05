@@ -949,8 +949,13 @@ xmlSecGnuTLSHkdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 }
 
 static int
-xmlSecGnuTLSHkdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen,
-                            xmlSecBufferPtr out, const xmlChar* transformName) {
+xmlSecGnuTLSHkdfGenerateKey(
+    xmlSecGnuTLSKdfCtxPtr ctx,
+    xmlSecSize outLen,
+    xmlSecBufferPtr out,
+    const xmlChar* transformName
+) {
+    static const xmlSecByte zero = 0;
     xmlSecByte * keyData;
     xmlSecSize keySize;
     xmlSecByte * saltData;
@@ -1002,7 +1007,7 @@ xmlSecGnuTLSHkdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen,
         XMLSEC_SAFE_CAST_SIZE_TO_UINT(infoSize, infoDatum.size, return(-1), transformName);
         infoDatum.data = infoData;
     } else {
-        infoDatum.data = NULL;
+        infoDatum.data = (unsigned char*)&zero;
         infoDatum.size = 0;
     }
 

@@ -1512,6 +1512,7 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
 {
     xmlChar * tmp = NULL;
     xmlChar * p;
+    xmlChar * lastEscaped = NULL;
     xmlChar ch;
     enum xmlSecGnuTLSDnParseState state;
     int slash;
@@ -1594,6 +1595,7 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
                 if(ch != '\"') {
                     state = xmlSecGnuTLSDnParseState_String;
                     slash = 0;
+                    lastEscaped = NULL;
                     --dn; /* small hack, so we can look at the same char
                            again with the correct state */
                 } else {
@@ -1608,12 +1610,14 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
             if(slash == 1) {
                 *(p++) = ch; /* we are sure we have enough buffer */
                 slash = 0;
+                lastEscaped = (p - 1); /* remember the escaped char, it must not be stripped */
             } else if(ch == '\\') {
                 slash = 1;
             } else if((ch == ',') || (ch == ';') || (ch == '\0')) {
                 *(p) = '\0';
-                /* remove spaces back */
-                while((p > tmp) && (XMLSEC_GNUTLS_IS_SPACE(*(p - 1)))) {
+                /* remove spaces back, but keep a backslash-escaped trailing space
+                 * (GnuTLS emits "CN=abc\ " for values ending in a space) */
+                while((p > tmp) && (XMLSEC_GNUTLS_IS_SPACE(*(p - 1))) && ((p - 1) != lastEscaped)) {
                     *(--p) = '\0';
                 }
 

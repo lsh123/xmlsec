@@ -430,6 +430,13 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         hKey = 0;
 
         outSize = dwOutLen;
+
+        /* wipe the tail of the output buffer that held the raw OAEP-decoded
+         * block; only the first 'outSize' bytes contain the recovered
+         * plaintext (CEK) */
+        if (keySize > outSize) {
+            xmlSecMemCleanse(outBuf + outSize, keySize - outSize);
+        }
     }
 
     ret = xmlSecBufferSetSize(out, outSize);

@@ -965,9 +965,11 @@ xmlSecMSCryptoKeyDataX509Write(
 
 static int
 xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr key,
-                                             xmlSecKeyInfoCtxPtr keyInfoCtx) {
+                                              xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecMSCryptoX509DataCtxPtr ctx;
     xmlSecKeyDataStorePtr x509Store;
+    time_t origNotValidBefore;
+    time_t origNotValidAfter;
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataX509Id), -1);
@@ -1047,18 +1049,29 @@ xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr
                 return(-1);
             }
 
+            if (ctx->keyCert->pCertInfo == NULL) {
+                xmlSecInternalError("ctx->keyCert->pCertInfo is NULL",
+                                    xmlSecKeyDataGetName(data));
+                return(-1);
+            }
+
+            /* copy the cert validity period into the key; save the previous
+             * values so they can be restored if the conversion fails */
+            origNotValidBefore = key->notValidBefore;
+            origNotValidAfter = key->notValidAfter;
+
             ret = xmlSecMSCryptoX509CertGetTime(ctx->keyCert->pCertInfo->NotBefore, &(key->notValidBefore));
             if(ret < 0) {
                 xmlSecInternalError("xmlSecMSCryptoX509CertGetTime(notValidBefore)",
                                     xmlSecKeyDataGetName(data));
-                return(-1);
+                goto restore;
             }
 
             ret = xmlSecMSCryptoX509CertGetTime(ctx->keyCert->pCertInfo->NotAfter, &(key->notValidAfter));
             if(ret < 0) {
                 xmlSecInternalError("xmlSecMSCryptoX509CertGetTime(notValidAfter)",
                                     xmlSecKeyDataGetName(data));
-                return(-1);
+                goto restore;
             }
         } else if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT) != 0) {
             xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_FOUND,
@@ -1067,6 +1080,10 @@ xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr
         }
     }
     return(0);
+restore:
+    key->notValidBefore = origNotValidBefore;
+    key->notValidAfter = origNotValidAfter;
+    return(-1);
 }
 
 static int

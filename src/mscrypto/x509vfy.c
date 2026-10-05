@@ -370,6 +370,7 @@ xmlSecMSCryptoCheckRevocation(HCERTSTORE hStore, PCCERT_CONTEXT pCert,
             untrustedStore, certStore, pCrl, pfTime);
         if (sigRet < 0) {
             xmlSecInternalError("xmlSecMSCryptoVerifyCrlSignature", NULL);
+            CertFreeCRLContext(pCrl);
             return(FALSE);
         }
         if (sigRet == 0) {

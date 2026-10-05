@@ -43,9 +43,14 @@ int             xmlSecOpenSSLGenerateRandomBytes             (xmlSecByte* data, 
 #ifndef EVP_PKEY_base_id
 #define EVP_PKEY_base_id(pkey)              EVP_PKEY_id(pkey)
 #endif
+/* EVP_read_pw_string is not implemented by BoringSSL; AWS-LC provides it
+ * (aws-lc include/openssl/evp.h:160), and #ifndef cannot detect a plain
+ * function declaration, so the shim must be BoringSSL-only */
+#if defined(OPENSSL_IS_BORINGSSL)
 #ifndef EVP_read_pw_string
 #define EVP_read_pw_string(buf, len, prompt, verify)     (-1)
 #endif
+#endif /* defined(OPENSSL_IS_BORINGSSL) */
 
 /* simply return success */
 #ifndef sk_X509_reserve

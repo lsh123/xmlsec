@@ -162,10 +162,14 @@ xmlSecNssKeysStoreFinalize(xmlSecKeyStorePtr store) {
     xmlSecAssert(xmlSecKeyStoreCheckId(store, xmlSecNssKeysStoreId));
 
     ss = xmlSecNssKeysStoreGetCtx(store);
-    xmlSecAssert((ss != NULL) && (*ss != NULL));
+    xmlSecAssert(ss != NULL);
 
-    xmlSecKeyStoreDestroy(*ss);
-    *ss = NULL;
+    /* (*ss) may be NULL if Initialize failed (e.g. OOM in xmlSecKeyStoreCreate);
+     * xmlSecKeyStoreCreate still calls finalize in that case, so guard against it. */
+    if((*ss) != NULL) {
+        xmlSecKeyStoreDestroy(*ss);
+        (*ss) = NULL;
+    }
 }
 
 static xmlSecKeyPtr
@@ -180,6 +184,7 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
     SECKEYPrivateKey *privkey = NULL;
     xmlSecKeyDataPtr data = NULL;
     xmlSecKeyDataPtr x509Data = NULL;
+    int match;
     int ret;
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecNssKeysStoreId), NULL);
@@ -284,6 +289,20 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
         ret = xmlSecKeySetName(key, name);
         if (ret < 0) {
             xmlSecInternalError("xmlSecKeySetName", xmlSecKeyStoreGetName(store));
+            goto done;
+        }
+
+        /* the key built from the NSS DB might not satisfy the request
+         * (e.g. a different key data klass or a public-only key when a
+         * private one was required); filter it out the same way the
+         * simple keys store does, so callers do not have to discard it */
+        match = xmlSecKeyMatch(key, name, keyReq);
+        if(match < 0) {
+            xmlSecInternalError("xmlSecKeyMatch", xmlSecKeyStoreGetName(store));
+            goto done;
+        }
+        if(match != 1) {
+            /* the key does not match the request: discard it */
             goto done;
         }
 

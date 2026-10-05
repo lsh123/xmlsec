@@ -1004,17 +1004,18 @@ xmlSecOpenSSLRsaOaepInitialize(xmlSecTransformPtr transform) {
 
     memset(ctx, 0, sizeof(xmlSecOpenSSLRsaOaepCtx));
 
-#ifndef XMLSEC_OPENSSL_API_300
-#ifndef XMLSEC_NO_SHA1
     /*
-     * default digest algorithm (overridden by NodeRead if specified);
-     * keeps ctx->md/ctx->mgf1md non-NULL when the transform is used
-     * without readNode (e.g. created programmatically)
+     * default digest algorithm (overridden by NodeRead if specified)
      */
+#ifndef XMLSEC_NO_SHA1
+#ifndef XMLSEC_OPENSSL_API_300
     ctx->md = EVP_sha1();
     ctx->mgf1md = EVP_sha1();
-#endif /* XMLSEC_NO_SHA1 */
+#else /* XMLSEC_OPENSSL_API_300 */
+    ctx->mdName = OSSL_DIGEST_NAME_SHA1;
+    ctx->mgf1mdName = OSSL_DIGEST_NAME_SHA1;
 #endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* XMLSEC_NO_SHA1 */
 
     ret = xmlSecBufferInitialize(&(ctx->oaepParams), 0);
     if(ret < 0) {

@@ -92,7 +92,7 @@ static xmlSecKeyDataStoreKlass xmlSecNssX509StoreKlass = {
 };
 
 static CERTCertificate*         xmlSecNssX509FindCert(CERTCertList* certsList, xmlSecNssX509FindCertCtxPtr findCertCtx);
-static int                      xmlSecNssX509VerifyCRLTimeValidity(const CERTSignedCrl* crl, xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int                      xmlSecNssX509VerifyCRLTimeValidity(const CERTSignedCrl* crl, xmlSecKeyInfoCtxPtr keyInfoCtx, int reportErrors);
 
 
 /**
@@ -308,8 +308,9 @@ xmlSecNssX509StoreConsiderCrl(
         return(0);
     }
 
-    /* skip CRLs that are not yet valid or have expired */
-    timeRet = xmlSecNssX509VerifyCRLTimeValidity(crl, keyInfoCtx);
+    /* skip CRLs that are not yet valid or have expired; this is not a
+     * verification failure, so out-of-window CRLs are skipped silently */
+    timeRet = xmlSecNssX509VerifyCRLTimeValidity(crl, keyInfoCtx, 0);
     if(timeRet < 0) {
         xmlSecInternalError("xmlSecNssX509VerifyCRLTimeValidity", NULL);
         return(-1);
@@ -517,7 +518,9 @@ xmlSecNssX509StoreVerifyChainAgainstCrls(
 
     verificationTime = xmlSecNssX509StoreGetVerificationTime(keyInfoCtx);
 
-    chain = CERT_GetCertChainFromCert(cert, verificationTime, certificateUsageEmailSigner);
+    /* CERT_GetCertChainFromCert takes the old SECCertUsage enum, not the new
+     * SECCertificateUsage bitfield */
+    chain = CERT_GetCertChainFromCert(cert, verificationTime, certUsageEmailSigner);
     if(chain == NULL) {
         xmlSecNssError("CERT_GetCertChainFromCert", NULL);
         return(-1);
@@ -558,7 +561,12 @@ done:
 
 /* returns 1 if verified, 0 if not verified, and a value < 0 if an error occurs */
 static int
-xmlSecNssX509StoreVerifyCert(CERTCertDBHandle *handle, CERTCertificate* cert, xmlSecKeyInfoCtxPtr keyInfoCtx, SECCertUsage usage) {
+xmlSecNssX509StoreVerifyCert(
+    CERTCertDBHandle *handle,
+    CERTCertificate* cert,
+    xmlSecKeyInfoCtxPtr keyInfoCtx,
+    SECCertificateUsage usage
+) {
     int64 verificationTime;
     SECStatus status;
     PRErrorCode err;
@@ -898,9 +906,17 @@ xmlSecNssX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, CERTSignedCrl * crl) {
     return(0);
 }
 
-/* Helper function to verify CRL time validity */
+/* Helper function to verify CRL time validity.
+ * Returns 1 if the CRL is valid at the verification time, 0 if it is not yet
+ * valid or has expired (not an error: the caller skips the CRL or reports the
+ * verification outcome), and a negative value if an error occurs.
+ * The out-of-window outcomes are only reported when @p reportErrors is set;
+ * the best-CRL scan (xmlSecNssX509StoreConsiderCrl) passes zero, otherwise
+ * every out-of-window CRL in the store prints a misleading message.
+ * The XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS flag skips the time
+ * window checks altogether (the CRL is then taken as valid). */
 static int
-xmlSecNssX509VerifyCRLTimeValidity(const CERTSignedCrl* crl, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecNssX509VerifyCRLTimeValidity(const CERTSignedCrl* crl, xmlSecKeyInfoCtxPtr keyInfoCtx, int reportErrors) {
     PRTime verification_time;
     PRTime thisUpdate = 0;
     PRTime nextUpdate = 0;
@@ -908,6 +924,13 @@ xmlSecNssX509VerifyCRLTimeValidity(const CERTSignedCrl* crl, xmlSecKeyInfoCtxPtr
 
     xmlSecAssert2(crl != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    /* honor the skip-time-checks flag: it covers the CRL time windows as well,
+     * the same way the openssl (X509_V_FLAG_NO_CHECK_TIME), gnutls and mscrypto
+     * backends skip the CRL time checks */
+    if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS) != 0) {
+        return(1);
+    }
 
     /* Get verification time */
     if(keyInfoCtx->certsVerificationTime > 0) {
@@ -930,8 +953,10 @@ xmlSecNssX509VerifyCRLTimeValidity(const CERTSignedCrl* crl, xmlSecKeyInfoCtxPtr
 
     /* Verify thisUpdate <= verification_time */
     if(thisUpdate > verification_time) {
-        /* CRL not yet valid */
-        xmlSecOtherError(XMLSEC_ERRORS_R_CRL_NOT_YET_VALID, NULL, NULL);
+        /* CRL not yet valid: not an error, the caller skips this CRL */
+        if(reportErrors != 0) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_CRL_NOT_YET_VALID, NULL, NULL);
+        }
         return(0);
     }
 
@@ -945,8 +970,10 @@ xmlSecNssX509VerifyCRLTimeValidity(const CERTSignedCrl* crl, xmlSecKeyInfoCtxPtr
 
         /* Verify verification_time <= nextUpdate */
         if(verification_time > nextUpdate) {
-            /* CRL expired */
-            xmlSecOtherError(XMLSEC_ERRORS_R_CRL_HAS_EXPIRED, NULL, NULL);
+            /* CRL expired: not an error, the caller skips this CRL */
+            if(reportErrors != 0) {
+                xmlSecOtherError(XMLSEC_ERRORS_R_CRL_HAS_EXPIRED, NULL, NULL);
+            }
             return(0);
         }
     }
@@ -1064,7 +1091,7 @@ xmlSecNssX509StoreVerifyCrl(xmlSecKeyDataStorePtr store, CERTSignedCrl* crl,
     xmlSecAssert2(ctx != NULL, -1);
 
     /* Verify time validity first (fast check) */
-    ret = xmlSecNssX509VerifyCRLTimeValidity(crl, keyInfoCtx);
+    ret = xmlSecNssX509VerifyCRLTimeValidity(crl, keyInfoCtx, 1);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssX509VerifyCRLTimeValidity", xmlSecKeyDataStoreGetName(store));
         return(-1);

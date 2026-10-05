@@ -1475,7 +1475,13 @@ xmlSecOpenSSLX509Asn1TimeToTime(const ASN1_TIME * t, time_t * res) {
                 offset = -offset;
             }
         }
-        tm.tm_isdst = -1;
+        /*
+         * match OpenSSL's own ASN1_TIME_to_tm(), which leaves tm_isdst at 0:
+         * the Windows timegm() fallback below computes mktime() minus the
+         * standard-time offset, and letting mktime() pick DST (tm_isdst=-1)
+         * would shift wall-clock times inside a DST period by 3600s
+         */
+        tm.tm_isdst = 0;
     } else {
         int offStart = 14;
         xmlSecAssert2(t->length > 14, -1);
@@ -1505,7 +1511,8 @@ xmlSecOpenSSLX509Asn1TimeToTime(const ASN1_TIME * t, time_t * res) {
                 offset = -offset;
             }
         }
-        tm.tm_isdst = -1;
+        /* see the comment above: tm_isdst must be 0 */
+        tm.tm_isdst = 0;
     }
 #undef g2
 

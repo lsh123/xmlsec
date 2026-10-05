@@ -415,7 +415,6 @@ xmlSecKeyDataBinaryValueDebugDump(xmlSecKeyDataPtr data, FILE* output) {
 
     xmlSecAssert(xmlSecKeyDataIsValid(data));
     xmlSecAssert(xmlSecKeyDataCheckSize(data, xmlSecKeyDataBinarySize));
-    xmlSecAssert(data->id->dataNodeName != NULL);
     xmlSecAssert(output != NULL);
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
@@ -423,7 +422,8 @@ xmlSecKeyDataBinaryValueDebugDump(xmlSecKeyDataPtr data, FILE* output) {
 
     /* print only size, everything else is sensitive */
     fprintf(output, "=== %s: size=" XMLSEC_SIZE_FMT "\n",
-        data->id->dataNodeName, xmlSecKeyDataGetSize(data));
+        (data->id->dataNodeName != NULL) ? xmlSecErrorsSafeString(data->id->dataNodeName) : xmlSecErrorsSafeString(data->id->name),
+        xmlSecKeyDataGetSize(data));
 }
 
 /**
@@ -438,7 +438,6 @@ xmlSecKeyDataBinaryValueDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 
     xmlSecAssert(xmlSecKeyDataIsValid(data));
     xmlSecAssert(xmlSecKeyDataCheckSize(data, xmlSecKeyDataBinarySize));
-    xmlSecAssert(data->id->dataNodeName != NULL);
     xmlSecAssert(output != NULL);
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
@@ -446,7 +445,8 @@ xmlSecKeyDataBinaryValueDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 
     /* print only size, everything else is sensitive */
     fprintf(output, "<%s size=\"" XMLSEC_SIZE_FMT "\" />\n",
-        data->id->dataNodeName, xmlSecKeyDataGetSize(data));
+        (data->id->dataNodeName != NULL) ? xmlSecErrorsSafeString(data->id->dataNodeName) : xmlSecErrorsSafeString(data->id->name),
+        xmlSecKeyDataGetSize(data));
 }
 
 /**

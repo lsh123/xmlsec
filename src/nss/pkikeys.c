@@ -817,7 +817,6 @@ xmlSecNssKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     xmlSecKeyDataPtr data = NULL;
     xmlSecKeyDataPtr res = NULL;
     PK11SlotInfo *slot = NULL;
-    CK_OBJECT_HANDLE handle;
     SECKEYPublicKey *pubkey=NULL;
     PRArenaPool *arena = NULL;
     int ret;
@@ -882,15 +881,11 @@ xmlSecNssKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         goto done;
     }
 
-    /* create key: the returned handle is just an integer for the position
-     * of the imported key in the slot and doesn't need to be "freed" manually */
-    handle = PK11_ImportPublicKey(slot, pubkey, PR_FALSE);
-    if(handle == CK_INVALID_HANDLE) {
-        xmlSecNssError("PK11_ImportPublicKey",
-                       xmlSecKeyDataKlassGetName(id));
-        goto done;
-    }
-
+    /* no need to import the key into the slot: the pubkey object is adopted
+     * by the key data and used directly for verification. Importing it would
+     * create a token object whose handle is discarded, so the object would
+     * stay in the session forever (see the RSA read path, which does not
+     * import the key either) */
     data = xmlSecKeyDataCreate(id);
     if(data == NULL) {
         xmlSecInternalError("xmlSecKeyDataCreate",
@@ -1360,7 +1355,6 @@ xmlSecNssKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
     xmlSecKeyDataPtr data = NULL;
     xmlSecKeyDataPtr res = NULL;
     PK11SlotInfo *slot = NULL;
-    CK_OBJECT_HANDLE handle;
     SECKEYPublicKey *pubkey=NULL;
     PRArenaPool *arena = NULL;
     SECItem ecparams = { siBuffer, NULL, 0 };
@@ -1431,13 +1425,11 @@ xmlSecNssKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
         goto done;
     }
 
-    /* create key */
-    handle = PK11_ImportPublicKey(slot, pubkey, PR_FALSE);
-    if(handle == CK_INVALID_HANDLE) {
-        xmlSecNssError("PK11_ImportPublicKey", xmlSecKeyDataKlassGetName(id));
-        goto done;
-    }
-
+    /* no need to import the key into the slot: the pubkey object is adopted
+     * by the key data and used directly for verification. Importing it would
+     * create a token object whose handle is discarded, so the object would
+     * stay in the session forever (see the RSA read path, which does not
+     * import the key either) */
     data = xmlSecKeyDataCreate(id);
     if(data == NULL) {
         xmlSecInternalError("xmlSecKeyDataCreate", xmlSecKeyDataKlassGetName(id));

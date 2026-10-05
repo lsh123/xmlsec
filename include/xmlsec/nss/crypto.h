@@ -493,11 +493,9 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecNssKeyDataHmacSet         (xmlSecK
 
 #ifndef XMLSEC_NO_RIPEMD160
 /**
- * @brief The HMAC with RIPEMD160 signature transform klass.
+ * @brief Deprecated. The HMAC with RIPEMD160 signature transform klass.
  */
-#define xmlSecNssTransformHmacRipemd160Id \
-        xmlSecNssTransformHmacRipemd160GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHmacRipemd160GetKlass(void);
+#define xmlSecNssTransformHmacRipemd160Id       ((xmlSecTransformId)NULL)
 #endif /* XMLSEC_NO_RIPEMD160 */
 
 #ifndef XMLSEC_NO_SHA1

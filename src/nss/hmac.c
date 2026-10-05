@@ -85,13 +85,6 @@ static int      xmlSecNssHmacExecute                    (xmlSecTransformPtr tran
 static int
 xmlSecNssHmacCheckId(xmlSecTransformPtr transform) {
 
-
-#ifndef XMLSEC_NO_RIPEMD160
-    if(xmlSecTransformCheckId(transform, xmlSecNssTransformHmacRipemd160Id)) {
-        return(1);
-    }
-#endif /* XMLSEC_NO_RIPEMD160 */
-
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformHmacSha1Id)) {
         return(1);
@@ -136,12 +129,6 @@ xmlSecNssHmacInitialize(xmlSecTransformPtr transform) {
     ctx = xmlSecNssHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     memset(ctx, 0, sizeof(xmlSecNssHmacCtx));
-
-#ifndef XMLSEC_NO_RIPEMD160
-    if(xmlSecTransformCheckId(transform, xmlSecNssTransformHmacRipemd160Id)) {
-        ctx->digestType = CKM_RIPEMD160_HMAC;
-    } else
-#endif /* XMLSEC_NO_RIPEMD160 */
 
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformHmacSha1Id)) {
@@ -473,25 +460,6 @@ static xmlSecTransformKlass xmlSecNssHmac ## name ## Klass = {                  
 
 #define XMLSEC_NSS_HMAC_KLASS(name)                                                                     \
     XMLSEC_NSS_HMAC_KLASS_EX(name, xmlSecNssHmacNodeRead)
-
-
-#ifndef XMLSEC_NO_RIPEMD160
-/******************************************************************************
- *
- * HMAC Ripemd160
- *
-  *****************************************************************************/
-XMLSEC_NSS_HMAC_KLASS(Ripemd160)
-
-/**
- * @brief The HMAC-RIPEMD160 transform klass.
- * @return the HMAC-RIPEMD160 transform klass.
- */
-xmlSecTransformId
-xmlSecNssTransformHmacRipemd160GetKlass(void) {
-    return(&xmlSecNssHmacRipemd160Klass);
-}
-#endif /* XMLSEC_NO_RIPEMD160 */
 
 
 #ifndef XMLSEC_NO_SHA1

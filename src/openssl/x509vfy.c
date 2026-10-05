@@ -1638,6 +1638,13 @@ xmlSecOpenSSLX509VerifyCRLTimeValidity(X509_CRL *crl, xmlSecKeyInfoCtx* keyInfoC
     xmlSecAssert2(crl != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
+    /* honor the SKIP_TIME_CHECKS flag: the certificate path honors it via
+     * X509_V_FLAG_NO_CHECK_TIME (see line ~695), and the mscrypto/gnutls
+     * backends skip the CRL time checks the same way */
+    if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS) != 0) {
+        return(1);
+    }
+
     /* Get verification time */
     verification_time = (keyInfoCtx->certsVerificationTime > 0) ?
                         keyInfoCtx->certsVerificationTime : time(NULL);

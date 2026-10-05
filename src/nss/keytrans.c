@@ -265,10 +265,44 @@ xmlSecNssKeyTransportSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     return(0);
 }
 
+/* Computes the size of the encoded key blob (the RSA modulus size in bytes)
+ * for the key held by @p ctx. Returns 0 on success or a negative value on
+ * error; on success @p blockSize is set. */
+static int
+xmlSecNssKeyTransportGetBlockSize(xmlSecNssKeyTransportCtxPtr ctx, xmlSecSize* blockSize) {
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(blockSize != NULL, -1);
+
+    if(ctx->pubkey != NULL) {
+        (*blockSize) = SECKEY_PublicKeyStrength(ctx->pubkey);
+        if((*blockSize) == 0) {
+            xmlSecNssError("SECKEY_PublicKeyStrength", NULL);
+            return(-1);
+        }
+    } else if(ctx->prikey != NULL) {
+        int blockLen;
+
+        blockLen = PK11_SignatureLen(ctx->prikey);
+        if(blockLen <= 0) {
+            xmlSecNssError("PK11_SignatureLen", NULL);
+            return(-1);
+        }
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(blockLen, (*blockSize), return(-1), NULL);
+    } else {
+        xmlSecOtherError(XMLSEC_ERRORS_R_KEY_NOT_FOUND, NULL,
+            "neither public nor private keys are set");
+        return(-1);
+    }
+
+    /* done */
+    return(0);
+}
+
 static int
 xmlSecNssKeyTransportCtxInit(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out,
                              int encrypt, xmlSecTransformCtxPtr transformCtx) {
     xmlSecSize blockSize;
+    int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->cipher != CKM_INVALID_MECHANISM, -1);
@@ -284,24 +318,17 @@ xmlSecNssKeyTransportCtxInit(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr in
         ctx->material = NULL;
     }
 
-    if(ctx->pubkey != NULL) {
-        blockSize = SECKEY_PublicKeyStrength(ctx->pubkey);
-        if(blockSize == 0) {
-            xmlSecNssError("SECKEY_PublicKeyStrength", NULL);
-            return(-1);
-        }
-    } else if(ctx->prikey != NULL) {
-        int blockLen;
+    ret = xmlSecNssKeyTransportGetBlockSize(ctx, &blockSize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNssKeyTransportGetBlockSize", NULL);
+        return(-1);
+    }
 
-        blockLen = PK11_SignatureLen(ctx->prikey);
-        if(blockLen <= 0) {
-            xmlSecNssError("PK11_SignatureLen", NULL);
-            return(-1);
-        }
-        XMLSEC_SAFE_CAST_INT_TO_SIZE(blockLen, blockSize, return(-1), NULL);
-    } else {
-        xmlSecOtherError(XMLSEC_ERRORS_R_KEY_NOT_FOUND, NULL,
-            "neither public nor private keys are set");
+    /* the encoded key blob is exactly the modulus size: reject the input
+     * that cannot possibly fit before buffering it (matches the OpenSSL
+     * backend behavior, see src/openssl/kt_rsa.c) */
+    if(xmlSecBufferGetSize(in) > blockSize) {
+        xmlSecInvalidSizeMoreThanError("Input data", xmlSecBufferGetSize(in), blockSize, NULL);
         return(-1);
     }
 
@@ -331,6 +358,9 @@ xmlSecNssKeyTransportCtxInit(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr in
 static int
 xmlSecNssKeyTransportCtxUpdate(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr  in, xmlSecBufferPtr out,
                                int encrypt, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecSize blockSize;
+    int ret;
+
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->cipher != CKM_INVALID_MECHANISM, -1);
     xmlSecAssert2((ctx->pubkey != NULL && encrypt) || (ctx->prikey != NULL && !encrypt), -1);
@@ -339,6 +369,19 @@ xmlSecNssKeyTransportCtxUpdate(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr 
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
+
+    /* the encoded key blob is exactly the modulus size: never let the
+     * accumulated material grow past it (see xmlSecNssKeyTransportCtxInit) */
+    ret = xmlSecNssKeyTransportGetBlockSize(ctx, &blockSize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNssKeyTransportGetBlockSize", NULL);
+        return(-1);
+    }
+    if((xmlSecBufferGetSize(ctx->material) + xmlSecBufferGetSize(in)) > blockSize) {
+        xmlSecInvalidSizeMoreThanError("Input data",
+            (xmlSecBufferGetSize(ctx->material) + xmlSecBufferGetSize(in)), blockSize, NULL);
+        return(-1);
+    }
 
     /* read raw key material and append into context */
     if(xmlSecBufferAppend(ctx->material, xmlSecBufferGetData(in), xmlSecBufferGetSize(in)) < 0) {
@@ -389,12 +432,10 @@ static PK11SymKey*
 xmlSecNssKeyTransportLoadSymKeyUsingPublicKeySlot(
     xmlSecNssKeyTransportCtxPtr ctx,
     SECItem* oriskv,
-    PK11SlotInfo** outSlot,
-    CK_OBJECT_HANDLE* outImportedPubKey
+    PK11SlotInfo** outSlot
 ) {
     PK11SlotInfo* slot = NULL;
     PK11SymKey* symKey = NULL;
-    CK_OBJECT_HANDLE id = CK_INVALID_HANDLE;
 
     xmlSecAssert2(ctx != NULL, NULL);
     xmlSecAssert2(ctx->pubkey != NULL, NULL);
@@ -405,12 +446,6 @@ xmlSecNssKeyTransportLoadSymKeyUsingPublicKeySlot(
         if(slot == NULL) {
             xmlSecNssError("PK11_GetBestSlot", NULL);
             return(NULL);
-        }
-
-        id = PK11_ImportPublicKey(slot, ctx->pubkey, PR_FALSE);
-        if(id == CK_INVALID_HANDLE) {
-            xmlSecNssError("PK11_ImportPublicKey", NULL);
-            goto done;
         }
     }
 
@@ -424,29 +459,17 @@ xmlSecNssKeyTransportLoadSymKeyUsingPublicKeySlot(
         NULL);
     if(symKey == NULL) {
         xmlSecNssError("PK11_ImportSymKey", NULL);
-        goto done;
-    }
-
-    /* success: the imported public key must remain valid while the caller wraps
-     * the symmetric key, so the caller takes ownership of both the slot and the
-     * imported public key object */
-    (*outSlot) = slot;
-    (*outImportedPubKey) = id;
-    slot = NULL;
-    id = CK_INVALID_HANDLE;
-
-done:
-    if(id != CK_INVALID_HANDLE) {
-        SECStatus rv;
-
-        rv = PK11_DestroyObject(slot, id);
-        if(rv != SECSuccess) {
-            xmlSecNssError("PK11_DestroyObject", NULL);
+        if(slot != NULL) {
+            PK11_FreeSlot(slot);
         }
+        return(NULL);
     }
-    if(slot != NULL) {
-        PK11_FreeSlot(slot);
-    }
+
+    /* success: the caller takes ownership of the slot the symmetric key was
+     * created in. There is no need to import the public key into this slot:
+     * PK11_PubWrapSymKey/PK11_PubWrapSymKeyWithMechanism take the public key
+     * directly and re-import it into the wrap slot internally. */
+    (*outSlot) = slot;
     return(symKey);
 }
 
@@ -455,12 +478,12 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
                               int encrypt, xmlSecTransformCtxPtr transformCtx) {
     PK11SymKey* symKey = NULL;
     PK11SlotInfo* slot = NULL;
-    CK_OBJECT_HANDLE importedPubKey = CK_INVALID_HANDLE;
     SECItem oriskv = { siBuffer, NULL, 0 };
     xmlSecSize blockSize, materialSize, resultSize;
     unsigned int resultLen;
     xmlSecBufferPtr result;
     SECStatus rv;
+    int ret;
     int res = -1;
 
     xmlSecAssert2(ctx != NULL, -1);
@@ -471,6 +494,19 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
+
+    /* the encoded key blob is exactly the modulus size: never let the
+     * accumulated material grow past it (see xmlSecNssKeyTransportCtxInit) */
+    ret = xmlSecNssKeyTransportGetBlockSize(ctx, &blockSize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNssKeyTransportGetBlockSize", NULL);
+        return(-1);
+    }
+    if((xmlSecBufferGetSize(ctx->material) + xmlSecBufferGetSize(in)) > blockSize) {
+        xmlSecInvalidSizeMoreThanError("Input data",
+            (xmlSecBufferGetSize(ctx->material) + xmlSecBufferGetSize(in)), blockSize, NULL);
+        return(-1);
+    }
 
     /* read raw key material and append into context */
     if(xmlSecBufferAppend(ctx->material, xmlSecBufferGetData(in), xmlSecBufferGetSize(in)) < 0) {
@@ -488,24 +524,10 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
 
     /* Now we get all of the key material */
     /* from now on we will wrap or unwrap the key */
-    if(ctx->pubkey != NULL) {
-        blockSize = SECKEY_PublicKeyStrength(ctx->pubkey);
-        if(blockSize == 0) {
-            xmlSecNssError("SECKEY_PublicKeyStrength", NULL);
-            return(-1);
-        }
-    } else if(ctx->prikey != NULL) {
-        int blockLen;
-
-        blockLen = PK11_SignatureLen(ctx->prikey);
-        if(blockLen <= 0) {
-            xmlSecNssError("PK11_SignatureLen", NULL);
-            return(-1);
-        }
-        XMLSEC_SAFE_CAST_INT_TO_SIZE(blockLen, blockSize, return(-1), NULL);
-    } else {
-        xmlSecOtherError(XMLSEC_ERRORS_R_KEY_NOT_FOUND, NULL,
-                         "neither public nor private keys are set");
+    if(materialSize == 0) {
+        /* an empty key material is never a valid key to wrap nor a valid
+         * ciphertext to unwrap */
+        xmlSecInvalidZeroKeyDataSizeError(NULL);
         return(-1);
     }
 
@@ -525,7 +547,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
         SECItem wrpskv = { siBuffer, NULL, 0 };
 
         /* Create template symmetric key from material if needed */
-        symKey = xmlSecNssKeyTransportLoadSymKeyUsingPublicKeySlot(ctx, &oriskv, &slot, &importedPubKey);
+        symKey = xmlSecNssKeyTransportLoadSymKeyUsingPublicKeySlot(ctx, &oriskv, &slot);
         if (symKey == NULL) {
             xmlSecInternalError("xmlSecNssKeyTransportLoadSymKeyUsingPublicKeySlot", NULL);
             goto done;
@@ -547,7 +569,6 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
         if(ctx->cipher == CKM_RSA_PKCS_OAEP) {
             CK_RSA_PKCS_OAEP_PARAMS oaep_params;
             SECItem param = {siBuffer, (unsigned char*)&oaep_params, sizeof(oaep_params)};
-            int ret;
 
             ret = xmlSecNssKeyTransportSetOaepParams(ctx, &oaep_params);
             if (ret < 0) {
@@ -589,7 +610,6 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
         if(ctx->cipher == CKM_RSA_PKCS_OAEP) {
             CK_RSA_PKCS_OAEP_PARAMS oaep_params;
             SECItem param = {siBuffer, (unsigned char*)&oaep_params, sizeof(oaep_params)};
-            int ret;
 
             ret = xmlSecNssKeyTransportSetOaepParams(ctx, &oaep_params);
             if (ret < 0) {
@@ -642,12 +662,6 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
 
 done:
     /* cleanup */
-    if(importedPubKey != CK_INVALID_HANDLE) {
-        rv = PK11_DestroyObject(slot, importedPubKey);
-        if(rv != SECSuccess) {
-            xmlSecNssError("PK11_DestroyObject", NULL);
-        }
-    }
     if(slot != NULL) {
         PK11_FreeSlot(slot);
     }

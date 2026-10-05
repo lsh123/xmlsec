@@ -2378,7 +2378,7 @@ done:
 /**
  * @brief Loads a public key of any supported type (RSA, DSA, EC, DH) from a raw SubjectPublicKeyInfo DER blob.
  * @param derData DER-encoded SubjectPublicKeyInfo.
- * @param derDataLen length of @p derData.
+ * @param derDataSize length of @p derData.
  *
  * @return new key data or NULL on failure.
  */

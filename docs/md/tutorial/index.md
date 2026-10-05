@@ -50,8 +50,8 @@ xmlsec-gnutls, xmlsec-gcrypt, xmlsec-nss, ...).
 ![The library structure and dependencies](images/structure.png)
 
 The core library has no dependencies on any crypto library and
-implements all engines as well as all non-crypto transforms (XML
-parser, C14N transforms, XPath and XSLT transforms, ...). The XML
+implements all non-crypto transforms (XML parser, C14N transforms,
+XPath and XSLT transforms, ...). The XML
 Security Crypto library implements crypto transforms, crypto key data,
 and key data stores. An application links against a particular XML
 Security Crypto library (or even multiple libraries), but the

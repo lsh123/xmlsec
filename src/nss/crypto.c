@@ -270,10 +270,6 @@ xmlSecCryptoGetFunctions_nss(void) {
     /* HMAC */
 #ifndef XMLSEC_NO_HMAC
 
-#ifndef XMLSEC_NO_RIPEMD160
-    gXmlSecNssFunctions->transformHmacRipemd160GetKlass = xmlSecNssTransformHmacRipemd160GetKlass;
-#endif /* XMLSEC_NO_RIPEMD160 */
-
 #ifndef XMLSEC_NO_SHA1
     gXmlSecNssFunctions->transformHmacSha1GetKlass      = xmlSecNssTransformHmacSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */

@@ -8,9 +8,10 @@
 /**
  * @brief XML Security Library example: Verifying a simple SAML response with an X509 certificate
  * @details Verifies a simple SAML response. In addition to regular verification
- * it also ensures that the signature has only one <dsig:Reference/> element
- * with an empty or NULL URI attribute and one enveloped signature transform
- * as required by the SAML specification.
+ * it also ensures that the <dsig:Signature/> element is a direct child of the
+ * SAML Response element, that the signature has only one <dsig:Reference/>
+ * element with an empty or NULL URI attribute and one enveloped signature
+ * transform, as required by the SAML specification.
  *
  * This example was developed and tested with OpenSSL crypto library. The
  * certificate management policies for another crypto library may break it.
@@ -248,10 +249,16 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
         goto done;
     }
 
-    /* find start node */
+    /* find start node; per the SAML specification the signature must be a
+     * direct child of the signed element, so the <dsig:Signature/> node
+     * must be a direct child of the SAML Response (the document root) */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
     if(node == NULL) {
         fprintf(stderr, "Error: start node not found in \"%s\"\n", xml_file);
+        goto done;
+    }
+    if(node->parent != (xmlNodePtr)xmlDocGetRootElement(doc)) {
+        fprintf(stderr, "Error: the signature node is not a direct child of the SAML response\n");
         goto done;
     }
 

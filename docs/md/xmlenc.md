@@ -70,7 +70,7 @@ XML Security library supports the following features as defined in
 | [Elliptic Curve Diffie-Hellman (ECDH)](https://www.w3.org/TR/xmlenc-core1/#sec-ECDH-ES) | Required | Yes [(3)](#openssl3-required) | Yes | Yes | Yes [(5)](#new-windows-required) | No | No |
 | [XDH Key Agreement](https://www.w3.org/2021/04/xmldsig-more) (X25519, X448) | Optional | Yes [(3)](#openssl3-required) | Yes [(9)](#x25519-only) | Yes | Yes [(9)](#x25519-only) | No | No |
 | [Diffie-Hellman with legacy KDF](https://www.w3.org/TR/xmlenc-core1/#sec-DHKeyAgreement) | Optional | No | No | No | No | No | No |
-| [Diffie-Hellman with explicit KDF](https://www.w3.org/TR/xmlenc-core1/#sec-DHKeyAgreement) | Optional | Yes [(3)](#openssl3-required) [(8)](#dhx-only) | No | No | Yes [(8)](#dhx-only) | No | No |
+| [Diffie-Hellman with explicit KDF](https://www.w3.org/TR/xmlenc-core1/#sec-DHKeyAgreement) | Optional | Yes [(3)](#openssl3-required) [(12)](#openssl-dh-key-formats) | No | No | Yes [(8)](#dhx-only) | No | No |
 | **Key Encapsulation** [(1)](#feature-disabled) | EXPERIMENTAL | | | | | | |
 | ML-KEM-512 | EXPERIMENTAL | Yes [(1)](#feature-disabled) [(10)](#openssl35-required) | No | No | No | No | No |
 | ML-KEM-768 | EXPERIMENTAL | Yes [(1)](#feature-disabled) [(10)](#openssl35-required) | No | No | No | No | No |
@@ -91,6 +91,7 @@ XML Security library supports the following features as defined in
 9. <a id="x25519-only"></a> Only X25519 (Curve25519) is supported, the X448 (Curve448) is not supported.
 10. <a id="openssl35-required"></a> Requires OpenSSL 3.5.0 or newer.
 11. <a id="stream-algorithms"></a> The XML Encryption Core specification defines no specific stream encryption algorithm; xmlsec implements ChaCha20 and ChaCha20-Poly1305 (see the rows above, xmldsig-more identifiers).
+12. <a id="openssl-dh-key-formats"></a> Both the PKCS#3 and X9.42 (DHX) DH key formats are accepted.
 
 ### Test vectors
 

@@ -68,6 +68,10 @@ main(int argc, char **argv) {
 #ifndef XMLSEC_NO_XSLT
     /* disable all XSLT file and network access */
     xsltSecPrefs = xsltNewSecurityPrefs();
+    if(xsltSecPrefs == NULL) {
+        fprintf(stderr, "Error: failed to create the xslt security prefs\n");
+        goto done;
+    }
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid);
@@ -148,7 +152,7 @@ done:
  * @details Verifies the XML signature in #xml_file using the public key from #key_file.
  * @param xml_file the signed XML file name.
  * @param key_file the PEM public key file name.
- * @param key_name the name to assign to the key (used to match the signature KeyName).
+ * @param key_name the name to assign to the key.
  * @return 0 on success or a negative value if an error occurs.
  */
 int

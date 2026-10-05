@@ -199,9 +199,9 @@ create_files_keys_mngr(void) {
 
 /******************************************************************************
  *
- * Files Keys Store: we assume that key's name (content of the
- * <dsig:KeyName/> element is a name of the file with a key (in the
- * current folder).
+ * Files Keys Store: we assume that the key name (content of the
+ * <dsig:KeyName/> or <xenc:KeyName/> element) is a name of the file
+ * with a key in the current folder.
  * Attention: this is probably not a good solution for high traffic systems.
  *
   *****************************************************************************/

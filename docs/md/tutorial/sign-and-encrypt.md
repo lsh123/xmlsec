@@ -112,7 +112,10 @@ sign_file(const char* tmpl_file, const char* key_file, const char* key_name) {
     }
 
     /* print signed document to stdout */
-    xmlDocDump(stdout, doc);
+    if(xmlDocDump(stdout, doc) < 0) {
+        fprintf(stderr, "Error: failed to write the signed document to stdout\n");
+        goto done;
+    }
 
     /* success */
     res = 0;
@@ -226,7 +229,10 @@ encrypt_file(const char* tmpl_file, const char* key_file,
     }
 
     /* print encrypted data with the document to stdout */
-    xmlDocDump(stdout, doc);
+    if(xmlDocDump(stdout, doc) < 0) {
+        fprintf(stderr, "Error: failed to write the encrypted document to stdout\n");
+        goto done;
+    }
 
     /* success */
     res = 0;

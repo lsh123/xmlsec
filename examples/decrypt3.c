@@ -176,7 +176,11 @@ decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file) {
     assert(enc_file);
 
     /* load encrypted file */
+#if LIBXML_VERSION >= 21300
+    doc = xmlReadFile(enc_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT | XML_PARSE_NO_XXE);
+#else /* LIBXML_VERSION >= 21300 */
     doc = xmlReadFile(enc_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT);
+#endif /* LIBXML_VERSION >= 21300 */
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
         fprintf(stderr, "Error: unable to parse file \"%s\"\n", enc_file);
         goto done;

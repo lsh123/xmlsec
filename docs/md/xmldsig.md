@@ -117,7 +117,7 @@ XML Security library supports the following features as defined in
 | [The RSAKeyValue Element](https://www.w3.org/TR/xmldsig-core1/#sec-RSAKeyValue) | Optional | Yes [(13)](#keydata-runtime) | Yes [(13)](#keydata-runtime) | Yes [(13)](#keydata-runtime) | Yes [(13)](#keydata-runtime) | Yes [(13)](#keydata-runtime) | Yes [(13)](#keydata-runtime) |
 | [The ECKeyValue Element](https://www.w3.org/TR/xmldsig-core/#sec-ECKeyValue) | Optional | Yes [(13)](#keydata-runtime) | Yes [(13)](#keydata-runtime) | Yes [(13)](#keydata-runtime) | Yes [(13)](#keydata-runtime) | No | Yes |
 | [The X509Data Element](https://www.w3.org/TR/xmldsig-core1/#sec-X509Data) | Optional | Yes | Yes | Yes | Yes | Yes | No |
-| [The X509Digest Element](https://www.w3.org/TR/xmldsig-core1/#sec-X509Data) | Optional | Yes | Yes | Yes | Yes [(7)](#mscng-limited-x509-digest) | No | No |
+| [The X509Digest Element](https://www.w3.org/TR/xmldsig-core1/#sec-X509Data) | Optional | Yes | Yes | Yes | Yes [(7)](#mscng-limited-x509-digest) | Yes [(15)](#mscrypto-x509-digest-write-only) | No |
 | [The PGPData Element](https://www.w3.org/TR/xmldsig-core1/#sec-PGPData) | Optional | No | No | No | No | No | No |
 | [The SPKIData Element](https://www.w3.org/TR/xmldsig-core1/#sec-SPKIData) | Optional | No | No | No | No | No | No |
 | [The DEREncodedKeyValue Element](https://www.w3.org/TR/xmldsig-core1/#sec-DEREncodedKeyValue) | Optional | Yes [(13)](#keydata-runtime) | Yes [(13)](#keydata-runtime) | Yes [(13)](#keydata-runtime) | Yes [(13)](#keydata-runtime) [(11)](#only-x25519) | No | No |
@@ -138,6 +138,7 @@ XML Security library supports the following features as defined in
 12. <a id="openssl35-required"></a> Requires OpenSSL 3.5.0 or newer.
 13. <a id="keydata-runtime"></a> The feature is disabled by default but can be enabled at runtime (for example, with the `xmlsec --enabled-key-data` command line option).
 14. <a id="gnutls-eddsa-limited"></a> Only Ed25519 and Ed448 are supported; the Ed25519ctx, Ed25519ph and Ed448ph variants are not supported.
+15. <a id="mscrypto-x509-digest-write-only"></a> MSCrypto can only write the X509Digest element (i.e. it is supported when creating a signature); the key cannot be resolved from the X509Digest element during verification.
 
 ### Test vectors
 

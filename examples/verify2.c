@@ -257,7 +257,9 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
         goto done;
     }
 
-    /* find start node */
+    /* find start node; note: only the first <dsig:Signature/> element in
+     * document order is verified, a document with multiple signatures
+     * is not fully checked */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
     if(node == NULL) {
         fprintf(stderr, "Error: start node not found in \"%s\"\n", xml_file);

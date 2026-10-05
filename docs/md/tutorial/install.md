@@ -9,7 +9,7 @@ And at least one of the following cryptographic libraries:
 - [OpenSSL](https://www.openssl.org) >= 3.0.13 (>= 3.5.0 is recommended)
 - [LibreSSL](https://www.libressl.org/) >= 3.9.0
 - [BoringSSL](https://boringssl.googlesource.com/boringssl/) >= 1.1.0
-- [AWS-LC](https://github.com/aws/aws-lc) >= 1.66.0
+- [AWS-LC](https://github.com/aws/aws-lc) >= 1.63.0
 - [NSS](https://firefox-source-docs.mozilla.org/security/nss/index.html) >= 3.91 (with [NSPR](https://firefox-source-docs.mozilla.org/nspr/index.html) >= 4.34.1)
 - [GnuTLS](https://www.gnutls.org/) >= 3.8.3
 - [Microsoft Cryptography API: Next Generation (CNG)](https://learn.microsoft.com/en-us/windows/win32/seccng/cng-portal)
@@ -27,7 +27,7 @@ apt install automake autoconf libtool libtool-bin gcc
 apt install libltdl7 libltdl-dev
 
 # core libxml2 and libxslt libraries
-apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
+apt install libxml2-dev libxslt1.1 libxslt1-dev
 
 # openssl libraries
 apt install openssl libssl-dev

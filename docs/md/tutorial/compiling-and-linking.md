@@ -118,6 +118,13 @@ clean:
 	@rm -rf $(PROGRAM)
 ```
 
+Note: the `xmlsec1` pkg-config package enables dynamic loading of the
+crypto library only when the XML Security Library itself is built with
+dynamic crypto library loading enabled. When built without it, `xmlsec1.pc`
+is a symlink to the `xmlsec1-<default-crypto>.pc` file, so the application
+is linked directly against the default crypto backend (and no dynamic
+loading takes place).
+
 ### xmlsec1-config script
 
 #### Example: xmlsec1-config to select GnuTLS at link time
@@ -217,8 +224,9 @@ dynamic linking, and debug vs release builds. The
 rule is simple: ***exactly the same runtime MUST be used throughout
 the application (including all dependencies)***.
 
-By default, `configure.ps1` uses the `/MD` (non-debug version of 
-the multithreaded DLL runtime) runtime libraries. 
+By default, `configure.ps1` uses the `/MD` (non-debug version of
+the multithreaded DLL runtime) runtime libraries, or `/MDd` for
+debug builds.
 Use the `cruntime=<new runtime>` option to change it (see the XML Security
 Library [installation tutorial](install.md) for more details).
 

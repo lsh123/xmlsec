@@ -74,7 +74,11 @@ create_signature_template(xmlDocPtr doc){
     }
 
     /* add <dsig:Signature/> node to the doc */
-    xmlAddChild(xmlDocGetRootElement(doc), signNode);
+    if(xmlAddChild(xmlDocGetRootElement(doc), signNode) == NULL) {
+        fprintf(stderr, "Error: failed to add signature node to the document\n");
+        xmlFreeNode(signNode);
+        return(NULL);
+    }
 
     /* add <dsig:Reference/> node */
     refNode = xmlSecTmplSignatureAddReference(signNode, xmlSecTransformSha256Id, NULL, BAD_CAST "", NULL);
@@ -166,22 +170,27 @@ create_encryption_template(xmlDocPtr doc) {
     /* add <enc:CipherValue/> node */
     if(xmlSecTmplEncDataEnsureCipherValue(encDataNode) == NULL) {
         fprintf(stderr, "Error: failed to add CipherValue node\n");
-        return(NULL);
+        goto done;
     }
 
     /* add <dsig:KeyInfo/> and <dsig:KeyName/> nodes to put key name in the encrypted document */
     keyInfoNode = xmlSecTmplEncDataEnsureKeyInfo(encDataNode, NULL);
     if(keyInfoNode == NULL) {
         fprintf(stderr, "Error: failed to add key info\n");
-        return(NULL);
+        goto done;
     }
     if(xmlSecTmplKeyInfoAddKeyName(keyInfoNode, NULL) == NULL) {
         fprintf(stderr, "Error: failed to add key name\n");
-        return(NULL);
+        goto done;
     }
 
-    /* done */
+    /* success */
     return(encDataNode);
+
+done:
+    /* free the partially created template node and its subtree */
+    xmlFreeNode(encDataNode);
+    return(NULL);
 }
 ```
 [Full program listing](../examples/encrypt2.md)

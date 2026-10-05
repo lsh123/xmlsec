@@ -281,9 +281,8 @@ xmlSecGCryptDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 
         inSize = xmlSecBufferGetSize(in);
         if(inSize > 0) {
-            /* The gcry_md_write() return value is not checked: given the validated
-             * context handle it effectively cannot fail. This is a codebase-wide
-             * pattern in the gcrypt backend. */
+            /* gcry_md_write() returns void (no error code), so there is
+             * nothing to check. */
             gcry_md_write(ctx->digestCtx, xmlSecBufferGetData(in), inSize);
 
             ret = xmlSecBufferRemoveHead(in, inSize);

@@ -1612,6 +1612,37 @@ xmlSecGCryptKeyDataEcGetKlass(void) {
 }
 
 /**
+ * @brief Checks that a GCrypt key S-expression is an EC key.
+ * @details Accepts both the "ecdsa" and the "ecc" algorithm token: "ecdsa" is
+ * the token used in the S-expressions constructed by this back-end, while "ecc"
+ * is the token that libgcrypt itself uses in the EC keys it creates
+ * (e.g. with gcry_pk_genkey).
+ * @param key the pointer to the GCrypt key S-expression (public key, private key, or key pair).
+ * @return 0 if the key is an EC key or -1 otherwise.
+ */
+static int
+xmlSecGCryptKeyDataEcCheckKeyAlg(gcry_sexp_t key) {
+    gcry_sexp_t tok;
+
+    xmlSecAssert2(key != NULL, -1);
+
+    /* the algorithm token (ecdsa/ecc) is present in the public-key,
+       private-key and key-pair S-expressions alike, so its presence
+       unambiguously identifies the key type */
+    tok = gcry_sexp_find_token(key, "ecdsa", 0);
+    if(tok == NULL) {
+        tok = gcry_sexp_find_token(key, "ecc", 0);
+    }
+    if(tok == NULL) {
+        return(-1);
+    }
+    gcry_sexp_release(tok);
+
+    /* success */
+    return(0);
+}
+
+/**
  * @brief Sets the value of EC key data.
  * @details On success, @p ec_key will be owned by the @p data; on failure the
  * caller retains ownership.
@@ -1624,7 +1655,7 @@ xmlSecGCryptKeyDataEcAdoptKey(xmlSecKeyDataPtr data, gcry_sexp_t ec_key) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcId), -1);
     xmlSecAssert2(ec_key != NULL, -1);
 
-    if(xmlSecGCryptAsymKeyDataCheckKeyAlg(ec_key, "ecdsa") < 0) {
+    if(xmlSecGCryptKeyDataEcCheckKeyAlg(ec_key) < 0) {
         xmlSecInvalidDataError("the provided key is not an EC key", xmlSecKeyDataGetName(data));
         return(-1);
     }
@@ -1646,11 +1677,11 @@ xmlSecGCryptKeyDataEcAdoptKeyPair(xmlSecKeyDataPtr data, gcry_sexp_t pub_key, gc
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcId), -1);
     xmlSecAssert2(pub_key != NULL, -1);
 
-    if(xmlSecGCryptAsymKeyDataCheckKeyAlg(pub_key, "ecdsa") < 0) {
+    if(xmlSecGCryptKeyDataEcCheckKeyAlg(pub_key) < 0) {
         xmlSecInvalidDataError("the provided key is not an EC key", xmlSecKeyDataGetName(data));
         return(-1);
     }
-    if((priv_key != NULL) && (xmlSecGCryptAsymKeyDataCheckKeyAlg(priv_key, "ecdsa") < 0)) {
+    if((priv_key != NULL) && (xmlSecGCryptKeyDataEcCheckKeyAlg(priv_key) < 0)) {
         xmlSecInvalidDataError("the provided key is not an EC key", xmlSecKeyDataGetName(data));
         return(-1);
     }
@@ -1778,12 +1809,33 @@ typedef struct _xmlSecGCryptKeyDataEcCurveOidToName {
     xmlChar curveOid[64];
 } xmlSecGCryptKeyDataEcCurveOidToName;
 
+/* The table contains both the curve names accepted by libgcrypt in the
+   S-expressions (secpNnnr1, primeNnnv1, secp256k1, brainpoolPNNNr1) and the
+   canonical names that libgcrypt itself stores in the S-expressions of the
+   keys it creates (e.g. "NIST P-256" for secp256r1/prime256v1), so that both
+   the keys constructed by this back-end and the libgcrypt-created keys can be
+   written to XML. */
 static xmlSecGCryptKeyDataEcCurveOidToName g_xmlSecGCryptKeyDataEcCurveOidToName[] = {
-    { "prime192v1",  "1.2.840.10045.3.1.1" },
-    { "prime256v1",  "1.2.840.10045.3.1.7" },
-    { "secp224r1",   "1.3.132.0.33" },
-    { "secp384r1",   "1.3.132.0.34" },
-    { "secp521r1",   "1.3.132.0.35" }
+    { "prime192v1",      "1.2.840.10045.3.1.1" },
+    { "prime256v1",      "1.2.840.10045.3.1.7" },
+    { "secp192r1",       "1.3.132.0.32" },
+    { "secp224r1",       "1.3.132.0.33" },
+    { "secp256r1",       "1.2.840.10045.3.1.7" },
+    { "secp384r1",       "1.3.132.0.34" },
+    { "secp521r1",       "1.3.132.0.35" },
+    { "secp256k1",       "1.3.132.0.10" },
+    { "brainpoolP160r1", "1.3.36.3.3.2.8.1.1.1" },
+    { "brainpoolP192r1", "1.3.36.3.3.2.8.1.1.3" },
+    { "brainpoolP224r1", "1.3.36.3.3.2.8.1.1.5" },
+    { "brainpoolP256r1", "1.3.36.3.3.2.8.1.1.7" },
+    { "brainpoolP320r1", "1.3.36.3.3.2.8.1.1.9" },
+    { "brainpoolP384r1", "1.3.36.3.3.2.8.1.1.11" },
+    { "brainpoolP512r1", "1.3.36.3.3.2.8.1.1.13" },
+    { "NIST P-192",      "1.2.840.10045.3.1.1" },
+    { "NIST P-224",      "1.3.132.0.33" },
+    { "NIST P-256",      "1.2.840.10045.3.1.7" },
+    { "NIST P-384",      "1.3.132.0.34" },
+    { "NIST P-521",      "1.3.132.0.35" }
 };
 
 static const char*
@@ -1834,11 +1886,17 @@ xmlSecGCryptKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
         goto done;
     }
 
-    /* pubkey */
-    if(xmlSecBufferGetSize(&(ecValue->pubkey)) == 0) {
-        xmlSecInvalidZeroKeyDataSizeError(xmlSecKeyDataKlassGetName(id));
+    /* check that the public key point is well-formed (odd size > 1 and the
+       leading uncompressed point magic byte 0x04); note that the point cannot
+       be validated to be on the curve, because libgcrypt does not expose the
+       curve parameters for that */
+    ret = xmlSecKeyDataEcPublicKeySplitComponents(ecValue);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyDataEcPublicKeySplitComponents", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
+
+    /* pubkey */
     err = gcry_mpi_scan(&pubkey, GCRYMPI_FMT_USG,
         xmlSecBufferGetData(&(ecValue->pubkey)), xmlSecBufferGetSize(&(ecValue->pubkey)),
         NULL);
@@ -1946,9 +2004,14 @@ xmlSecGCryptKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyV
         goto done;
     }
 
+    /* the algorithm token is "ecdsa" for the S-expressions constructed by this
+       back-end and "ecc" for the keys created by libgcrypt itself */
     s_ecdsa = gcry_sexp_find_token(s_pub_key, "ecdsa", 0);
     if(s_ecdsa == NULL) {
-        xmlSecGCryptError("gcry_sexp_find_token(ecdsa)", (gcry_error_t)GPG_ERR_NO_ERROR,
+        s_ecdsa = gcry_sexp_find_token(s_pub_key, "ecc", 0);
+    }
+    if(s_ecdsa == NULL) {
+        xmlSecGCryptError("gcry_sexp_find_token(ecdsa/ecc)", (gcry_error_t)GPG_ERR_NO_ERROR,
             xmlSecKeyDataKlassGetName(id));
         goto done;
     }

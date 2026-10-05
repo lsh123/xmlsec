@@ -977,7 +977,14 @@ xmlSecGCryptDsaVerify(int digest XMLSEC_ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_d
     xmlSecAssert2(dgst != NULL, -1);
     xmlSecAssert2(dgstSize > 0, -1);
     xmlSecAssert2(data != NULL, -1);
-    xmlSecAssert2(dataSize == (XMLSEC_GCRYPT_DSA_SIG_SIZE + XMLSEC_GCRYPT_DSA_SIG_SIZE), -1);
+
+    /* check signature size: a DSA signature is two fixed-size components (r and s) */
+    if(dataSize != (XMLSEC_GCRYPT_DSA_SIG_SIZE + XMLSEC_GCRYPT_DSA_SIG_SIZE)) {
+        xmlSecInternalError3("Invalid signature size", NULL,
+            "actual=" XMLSEC_SIZE_FMT "; expected=" XMLSEC_SIZE_FMT, dataSize,
+            (xmlSecSize)(XMLSEC_GCRYPT_DSA_SIG_SIZE + XMLSEC_GCRYPT_DSA_SIG_SIZE));
+        goto done;
+    }
 
     s_key = xmlSecGCryptKeyDataDsaGetPublicKey(key_data);
     xmlSecAssert2(s_key != NULL, -1);

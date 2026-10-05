@@ -310,6 +310,14 @@ xmlSecGCryptHmacVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(ctx->digestCtx != NULL, -1);
     xmlSecAssert2(ctx->dgstSizeInBits > 0, -1);
 
+    /* the digest to verify must not be empty */
+    if(dataSize <= 0) {
+        xmlSecInvalidSizeError("HMAC digest", dataSize,
+                               XMLSEC_BITS_TO_BYTES(ctx->dgstSizeInBits),
+                               xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
     /* Returns 1 for match, 0 for no match, <0 for errors. */
     ret = xmlSecTransformHmacVerify(data, dataSize, ctx->dgst, ctx->dgstSizeInBits, sizeof(ctx->dgst));
     if(ret < 0) {
@@ -354,10 +362,8 @@ xmlSecGCryptHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
 
         inSize = xmlSecBufferGetSize(in);
         if(inSize > 0) {
-            /* The gcry_md_write() return value is not checked: given the validated
-             * context handle it effectively cannot fail (if it ever did, the input
-             * chunk would be silently omitted from the HMAC). This is a codebase-wide
-             * pattern in the gcrypt backend. */
+            /* gcry_md_write() returns void (no error code), so there is
+             * nothing to check. */
             gcry_md_write(ctx->digestCtx, xmlSecBufferGetData(in), inSize);
 
             ret = xmlSecBufferRemoveHead(in, inSize);

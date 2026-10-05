@@ -136,6 +136,10 @@ xmlSecGCryptSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSe
 
     xmlSecAssert2(xmlSecGCryptSymKeyDataCheckId(data), -1);
     xmlSecAssert2(sizeBits > 0, -1);
+    if(sizeBits > (XMLSEC_SIZE_MAX - 7)) {
+        xmlSecInvalidSizeMoreThanError("sizeBits", sizeBits, (XMLSEC_SIZE_MAX - 7), NULL);
+        return(-1);
+    }
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
     xmlSecAssert2(buffer != NULL, -1);

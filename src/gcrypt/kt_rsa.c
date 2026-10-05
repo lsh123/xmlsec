@@ -321,6 +321,7 @@ static int
 xmlSecGCryptRsaPkcs1Encrypt(xmlSecGCryptRsaPkcs1CtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out) {
     xmlSecSize inSize;
     int inLen;
+    gcry_sexp_t s_pub_key;
     gcry_sexp_t s_plaintext_data = NULL;
     gpg_error_t err;
     int ret;
@@ -344,10 +345,16 @@ xmlSecGCryptRsaPkcs1Encrypt(xmlSecGCryptRsaPkcs1CtxPtr ctx, xmlSecBufferPtr in, 
         goto done;
     }
 
+    s_pub_key = xmlSecGCryptKeyDataRsaGetPublicKey(ctx->keyData);
+    if(s_pub_key == NULL) {
+        xmlSecInternalError("xmlSecGCryptKeyDataRsaGetPublicKey", NULL);
+        goto done;
+    }
+
     /* encrypt */
     ret = xmlSecGCryptRsaKtEncrypt(
         s_plaintext_data,
-        xmlSecGCryptKeyDataRsaGetPublicKey(ctx->keyData),
+        s_pub_key,
         out);
     if(ret != 0) {
         xmlSecInternalError("xmlSecGCryptRsaKtEncrypt", NULL);
@@ -901,6 +908,7 @@ static int
 xmlSecGCryptRsaOaepEncrypt(xmlSecGCryptRsaOaepCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out) {
     xmlSecSize inSize, oaepParamSize;
     int inLen, oaepParamLen;
+    gcry_sexp_t s_pub_key;
     gcry_sexp_t s_plaintext_data = NULL;
     gpg_error_t err;
     int ret;
@@ -948,10 +956,16 @@ xmlSecGCryptRsaOaepEncrypt(xmlSecGCryptRsaOaepCtxPtr ctx, xmlSecBufferPtr in, xm
         goto done;
     }
 
+    s_pub_key = xmlSecGCryptKeyDataRsaGetPublicKey(ctx->keyData);
+    if(s_pub_key == NULL) {
+        xmlSecInternalError("xmlSecGCryptKeyDataRsaGetPublicKey", NULL);
+        goto done;
+    }
+
     /* encrypt */
     ret = xmlSecGCryptRsaKtEncrypt(
         s_plaintext_data,
-        xmlSecGCryptKeyDataRsaGetPublicKey(ctx->keyData),
+        s_pub_key,
         out);
     if(ret != 0) {
         xmlSecInternalError("xmlSecGCryptRsaKtEncrypt", NULL);
@@ -982,7 +996,11 @@ done:
 static int
 xmlSecGCryptRsaOaepDecrypt(xmlSecGCryptRsaOaepCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out) {
     xmlSecSize inSize, oaepParamSize;
+    xmlSecSize modulusSize = 0;
+    const void *modulusData;
     int inLen, oaepParamLen;
+    gcry_sexp_t s_priv_key;
+    gcry_sexp_t s_modulus = NULL;
     gcry_sexp_t s_encrypted_data = NULL;
     gpg_error_t err;
     int ret;
@@ -1006,6 +1024,36 @@ xmlSecGCryptRsaOaepDecrypt(xmlSecGCryptRsaOaepCtxPtr ctx, xmlSecBufferPtr in, xm
     /* setup encrypted data */
     inSize = xmlSecBufferGetSize(in);
     XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, return(-1), NULL);
+
+    /* verify the input size: an RSA OAEP ciphertext must be exactly
+     * the size of the RSA modulus */
+    s_priv_key = xmlSecGCryptKeyDataRsaGetPrivateKey(ctx->keyData);
+    if(s_priv_key == NULL) {
+        xmlSecInternalError("xmlSecGCryptKeyDataRsaGetPrivateKey", NULL);
+        return(-1);
+    }
+    s_modulus = gcry_sexp_find_token(s_priv_key, "n", 0);
+    if(s_modulus == NULL) {
+        xmlSecGCryptError2("gcry_sexp_find_token()", (gcry_error_t)GPG_ERR_NO_ERROR, NULL,
+            "name=%s", "n");
+        return(-1);
+    }
+    modulusData = gcry_sexp_nth_data(s_modulus, 1, &modulusSize);
+    if(modulusData == NULL) {
+        xmlSecGCryptError("gcry_sexp_nth_data()", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
+        goto done;
+    }
+    /* libgcrypt may prepend a leading 0x00 byte to positive integers; strip
+     * it so the size matches the actual modulus size */
+    if((modulusSize > 0) && (((const xmlSecByte*)modulusData)[0] == 0x00)) {
+        modulusSize--;
+    }
+    gcry_sexp_release(s_modulus);
+    s_modulus = NULL;
+    if(inSize != modulusSize) {
+        xmlSecInvalidSizeError("Input data", inSize, modulusSize, NULL);
+        goto done;
+    }
 
     oaepParamSize = xmlSecBufferGetSize(&(ctx->oaepParams));
     XMLSEC_SAFE_CAST_SIZE_TO_INT(oaepParamSize, oaepParamLen, return(-1), NULL);
@@ -1033,7 +1081,7 @@ xmlSecGCryptRsaOaepDecrypt(xmlSecGCryptRsaOaepCtxPtr ctx, xmlSecBufferPtr in, xm
     /* decrypt */
     ret = xmlSecGCryptRsaKtDecrypt(
         s_encrypted_data,
-        xmlSecGCryptKeyDataRsaGetPrivateKey(ctx->keyData),
+        s_priv_key,
         out);
     if(ret != 0) {
         xmlSecInternalError("xmlSecGCryptRsaKtDecrypt", NULL);
@@ -1053,6 +1101,9 @@ xmlSecGCryptRsaOaepDecrypt(xmlSecGCryptRsaOaepCtxPtr ctx, xmlSecBufferPtr in, xm
 
 done:
     /* cleanup */
+    if(s_modulus != NULL) {
+        gcry_sexp_release(s_modulus);
+    }
     if(s_encrypted_data != NULL) {
         gcry_sexp_release(s_encrypted_data);
     }

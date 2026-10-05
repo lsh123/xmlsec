@@ -1062,6 +1062,13 @@ xmlSecMSCngSignatureStartHash(
             xmlSecTransformGetName(transform), status);
         return(-1);
     }
+    xmlSecAssert2(cbData == sizeof(DWORD), -1);
+    if (cbHashObject <= 0) {
+        xmlSecInternalError2("BCryptGetProperty",
+            xmlSecTransformGetName(transform),
+            "unexpected hash object size=" XMLSEC_SIZE_FMT, (xmlSecSize)cbHashObject);
+        return(-1);
+    }
 
     /* allocate the hash object on the heap */
     xmlSecAssert2(ctx->pbHashObject == NULL, -1);
@@ -1081,6 +1088,12 @@ xmlSecMSCngSignatureStartHash(
         0);
     if (status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptGetProperty", xmlSecTransformGetName(transform), status);
+        return(-1);
+    }
+    xmlSecAssert2(cbData == sizeof(DWORD), -1);
+    if (ctx->cbHash <= 0) {
+        xmlSecInternalError2("BCryptGetProperty", xmlSecTransformGetName(transform),
+            "unexpected hash length=" XMLSEC_SIZE_FMT, (xmlSecSize)ctx->cbHash);
         return(-1);
     }
 
@@ -1104,6 +1117,9 @@ xmlSecMSCngSignatureStartHash(
         0);
     if (status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptCreateHash", xmlSecTransformGetName(transform), status);
+        /* the out-handle is not guaranteed to be zeroed on failure; reset it so
+         * the cleanup below does not attempt to destroy an indeterminate handle */
+        ctx->hHash = 0;
         return(-1);
     }
 

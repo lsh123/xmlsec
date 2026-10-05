@@ -1539,7 +1539,16 @@ xmlSecMSCngX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs, xmlSec
                     !CertCompareCertificateName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
                                                 &(foundCert->pCertInfo->Subject),
                                                 &(foundCert->pCertInfo->Issuer))) {
-                skip = 1;
+                /* make sure foundCert is actually signed by cert; the issuer name
+                 * match alone can be forged and would skip a legitimate key cert */
+                if(CryptVerifyCertificateSignatureEx(
+                        (HCRYPTPROV_LEGACY)NULL,
+                        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                        CRYPT_VERIFY_CERT_SIGN_SUBJECT_CERT, (void*)foundCert,
+                        CRYPT_VERIFY_CERT_SIGN_ISSUER_CERT, (void*)cert,
+                        0, NULL) == TRUE) {
+                    skip = 1;
+                }
             }
         } while(skip == 0 && foundCert != NULL);
         if(foundCert != NULL) {

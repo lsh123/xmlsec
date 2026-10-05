@@ -7,16 +7,16 @@
 # $ c:\cygwin64\bin\bash scripts\build_windows.sh build-release
 # $ c:\cygwin64\bin\bash scripts\build_windows.sh build-debug
 #
-# To clean up the build, run the script with "cleanup-release" or "cleanup-debug" parameter:
+# To clean up the build, run the script with "clean-release" or "clean-debug" parameter:
 #
-# $ c:\cygwin64\bin\bash scripts\build_windows.sh cleanup-release
-# $ c:\cygwin64\bin\bash scripts\build_windows.sh cleanup-debug
+# $ c:\cygwin64\bin\bash scripts\build_windows.sh clean-release
+# $ c:\cygwin64\bin\bash scripts\build_windows.sh clean-debug
 #
 
 # pin all library versions include xmlsec (so we can build rc builds or rebuild specific versions if needed)
-libxml2_version="2.15.3"
+libxml2_version="2.15.4"
 libxslt_version="1.1.45"
-openssl_version="4.0.0"
+openssl_version="4.0.3"
 xmlsec_version="1.3.13-rc1"
 
 orig_pwd=$(pwd)
@@ -54,7 +54,7 @@ elif [[ "$1" =~ '-debug' ]] ; then
   ZIP_POSTFIX="-debug"
   echo "*** DETECTED DEBUG CONFIGURATION..."
 else
-  echo "Usage: $0 [build-release|build-debug|cleanup-release|cleanup-debug]"
+  echo "Usage: $0 [build-release|build-debug|clean-release|clean-debug]"
   exit 1
 fi
 
@@ -64,15 +64,14 @@ libxslt_install_dir="${top_install_dir}/libxslt"
 openssl_install_dir="${top_install_dir}/openssl"
 xmlsec_install_dir="${top_install_dir}/xmlsec"
 
-# Windows-style (mixed, e.g. "D:\...") paths for the native tools (cmake/perl/
+# Windows-style (e.g. "D:\...") paths for the native tools (cmake/perl/
 # nmake/powershell). Native tools interpret a leading "/cygdrive/..." as a
-# drive-relative path, so the POSIX paths above must be converted with cygpath
-# before being passed to them.
-libxml2_install_dir_win=$(cygpath -m "${libxml2_install_dir}")
-libxslt_install_dir_win=$(cygpath -m "${libxslt_install_dir}")
-openssl_install_dir_win=$(cygpath -m "${openssl_install_dir}")
-xmlsec_install_dir_win=$(cygpath -m "${xmlsec_install_dir}")
-top_install_dir_win=$(cygpath -m "${top_install_dir}")
+# drive-relative path, so the POSIX paths above must be converted.
+libxml2_install_dir_win=$(cygpath -w "${libxml2_install_dir}")
+libxslt_install_dir_win=$(cygpath -w "${libxslt_install_dir}")
+openssl_install_dir_win=$(cygpath -w "${openssl_install_dir}")
+xmlsec_install_dir_win=$(cygpath -w "${xmlsec_install_dir}")
+top_install_dir_win=$(cygpath -w "${top_install_dir}")
 
 zip_folders_and_files="libxml2 libxslt openssl xmlsec README.md"
 zip_output_file="${top_install_dir}\xmlsec1-${xmlsec_version}-win64${ZIP_POSTFIX}.zip"
@@ -370,8 +369,8 @@ if [[ "$1" =~ 'build-' ]] ; then
   fi
   ls -la "${top_install_dir}"
   echo "*** Done with BUILD!!!"
-elif [[ "$1" =~ 'cleanup-' ]] ; then
-  echo "*** CLEANUP (top dir: ${top_install_dir})..."
+elif [[ "$1" =~ 'clean-' ]] ; then
+  echo "*** CLEAN (top dir: ${top_install_dir})..."
   xmlsec_version_without_rc=$(echo "${xmlsec_version}" | sed 's/-rc.*//g' | sed 's/-preview.*//g')
   rm -rf "${libxml2_install_dir}" "${libxslt_install_dir}" "${openssl_install_dir}" "${xmlsec_install_dir}" "${top_install_dir}\\README.md"
   rm -rf "${work_dir}\\libxml2-v${libxml2_version}" "${work_dir}\\libxml2-v${libxml2_version}.tar.gz" \
@@ -379,9 +378,9 @@ elif [[ "$1" =~ 'cleanup-' ]] ; then
     "${work_dir}\\openssl-${openssl_version}" "${work_dir}\\openssl-${openssl_version}.tar.gz" \
     "${work_dir}\\xmlsec1-${xmlsec_version_without_rc}" "${work_dir}\\xmlsec1-${xmlsec_version}.tar.gz"
   ls -la "${top_install_dir}"
-  echo "*** Done with CLEANUP!!!"
+  echo "*** Done with CLEAN!!!"
 else
-  echo "Usage: $0 [build-release|build-debug|cleanup-release|cleanup-debug]"
+  echo "Usage: $0 [build-release|build-debug|clean-release|clean-debug]"
   exit 1
 fi
 

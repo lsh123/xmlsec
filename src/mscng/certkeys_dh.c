@@ -75,7 +75,7 @@ xmlSecMSCngKeyDataDuplicateBCryptDhPrivKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HAN
         xmlSecMSCngNtError("BCryptImportKeyPair(DH priv dup)", NULL, status);
         return(-1);
     }
-    *dst = hDhAlgKey;
+    (*dst) = hDhAlgKey;
     return(0);
 }
 
@@ -96,8 +96,18 @@ xmlSecMSCngDerReadTlv(const xmlSecByte* p, const xmlSecByte* end, BYTE expectedT
     }
     if(*p & 0x80) {
         BYTE nBytes = (*p) & 0x7F;
+        BYTE firstLenByte;
         p++;
         if(nBytes == 0 || nBytes > 4 || p + nBytes > end) {
+            return(NULL);
+        }
+        firstLenByte = *p;
+        /* reject non-minimal length encodings: a leading zero byte or a
+         * value that fits in the short form is not valid DER */
+        if((nBytes > 1) && (firstLenByte == 0)) {
+            return(NULL);
+        }
+        if((nBytes == 1) && (firstLenByte < 0x80)) {
             return(NULL);
         }
         len = 0;
@@ -457,7 +467,8 @@ xmlSecMSCngKeyDataDhPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDhPtr dh
     }
     bufData += sizeof(BCRYPT_DH_KEY_BLOB);
     bufLen  -= (DWORD)sizeof(BCRYPT_DH_KEY_BLOB);
-    if(bufLen != 3 * dhkey->cbKey) {
+    /* compare via division to avoid a 32-bit overflow in 3 * cbKey */
+    if((bufLen % 3) != 0 || (bufLen / 3) != dhkey->cbKey) {
         xmlSecOtherError3(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "BCRYPT_DH_KEY_BLOB size mismatch: bufLen=%lu, cbKey=%lu", bufLen, dhkey->cbKey);
         goto done;
     }
@@ -795,6 +806,8 @@ xmlSecMSCngKeyDataDhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLen
     DWORD cbPrivBlob = 0;
     const xmlSecByte* inner;
     DWORD innerLen;
+    const xmlSecByte* xVal;
+    DWORD xTlvLen;
     BCRYPT_KEY_HANDLE hPrivKey = NULL;
     BCRYPT_KEY_HANDLE hPubKey = NULL;
     BCRYPT_ALG_HANDLE hAlg = NULL;
@@ -848,6 +861,12 @@ xmlSecMSCngKeyDataDhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLen
         goto done;
     }
 
+    /* the payload must be exactly one DER INTEGER with no trailing bytes */
+    xVal = xmlSecMSCngDerReadTlv(inner, inner + innerLen, 0x02 /* INTEGER */, &xTlvLen);
+    if((xVal == NULL) || (xVal + xTlvLen != inner + innerLen)) {
+        xmlSecInvalidDataError("DH PKCS8: private key payload must be a single DER INTEGER", NULL);
+        goto done;
+    }
     pX = xmlSecMSCngDerDecodeInteger(inner, inner + innerLen, &pXLen);
     if(pX == NULL) {
         xmlSecInternalError("DH PKCS8: failed to parse private key INTEGER X", NULL);
@@ -947,6 +966,7 @@ done:
     if(pki != NULL) {
         /* LocalFree also frees pki->Algorithm.pszObjId: CryptDecodeObjectEx
          * (CRYPT_DECODE_ALLOC_FLAG) allocates it inside the pki block */
+        SecureZeroMemory(pki, pkiLen);
         LocalFree(pki);
     }
     if(data != NULL) {

@@ -635,12 +635,16 @@ xmlSecMSCngHkdfPerformKeyDerivation(
         goto done;
     }
 
-    /* if no salt is provided, use a zero-filled salt of HashLen bytes
-     * (per RFC 5869 section 2.2); the core param reader yields an empty salt
-     * for both a missing and an empty <enc:Salt> element, so both cases reach
-     * this branch. Salts longer than HashLen are passed to CNG as-is: CNG
-     * normalizes them internally per the RFC (verified empirically: the output
-     * matches a reference HKDF implementation for a salt longer than HashLen). */
+    /* If no salt is provided, use a zero-filled salt of HashLen bytes (per
+     * RFC 5869 section 2.2). This branch is mandatory: CNG's HKDF provider
+     * requires the salt property to be set (BCryptKeyDerivation fails with
+     * STATUS_INVALID_PARAMETER otherwise). The core param reader yields an
+     * empty salt for both a missing and an empty <enc:Salt> element, so both
+     * cases reach this branch. Salts of any length are passed to CNG as-is:
+     * CNG uses the salt as the HMAC key and normalizes over-long keys per
+     * RFC 2104, which reproduces the RFC 5869 A.2 test vector (its 80-byte
+     * salt is used as the full HMAC key). Verified empirically against a
+     * reference HKDF implementation for salt lengths 16..80 bytes. */
     if((pbSalt == NULL) || (cbSalt == 0)) {
         BCRYPT_ALG_HANDLE hHashAlg = NULL;
         DWORD hashLen = 0;

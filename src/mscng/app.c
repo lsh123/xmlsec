@@ -209,6 +209,8 @@ xmlSecMSCngAppKeyLoadEx(const char *filename, xmlSecKeyDataType type, xmlSecKeyD
 ) {
     xmlSecBuffer buffer;
     xmlSecKeyPtr key = NULL;
+    const xmlSecByte* bufferData;
+    xmlSecSize bufferSize;
     int ret;
 
     xmlSecAssert2(filename != NULL, NULL);
@@ -241,16 +243,16 @@ xmlSecMSCngAppKeyLoadEx(const char *filename, xmlSecKeyDataType type, xmlSecKeyD
             return (NULL);
         }
 
-        if(xmlSecBufferGetData(&buffer) == NULL) {
+        bufferData = xmlSecBufferGetData(&buffer);
+        bufferSize = xmlSecBufferGetSize(&buffer);
+        if((bufferData == NULL) || (bufferSize == 0)) {
             xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
                 "empty file: %s", xmlSecErrorsSafeString(filename));
             xmlSecBufferFinalize(&buffer);
             return(NULL);
         }
 
-        key = xmlSecMSCngAppKeyLoadMemory(xmlSecBufferGetData(&buffer),
-                                        xmlSecBufferGetSize(&buffer), format,
-                                        pwd, pwdCallback, pwdCallbackCtx);
+        key = xmlSecMSCngAppKeyLoadMemory(bufferData, bufferSize, format, pwd, pwdCallback, pwdCallbackCtx);
         if(key == NULL) {
             xmlSecInternalError("xmlSecMSCngAppKeyLoadMemory", NULL);
             xmlSecBufferFinalize(&buffer);
@@ -260,8 +262,6 @@ xmlSecMSCngAppKeyLoadEx(const char *filename, xmlSecKeyDataType type, xmlSecKeyD
         break;
     case xmlSecKeyDataFormatDer: {
         xmlSecKeyDataPtr keyData = NULL;
-        xmlSecSize bufSize;
-        DWORD dwDataSize = 0;
 
         ret = xmlSecBufferInitialize(&buffer, 0);
         if(ret < 0) {
@@ -276,23 +276,23 @@ xmlSecMSCngAppKeyLoadEx(const char *filename, xmlSecKeyDataType type, xmlSecKeyD
             return(NULL);
         }
 
-        if(xmlSecBufferGetData(&buffer) == NULL) {
+        bufferData = xmlSecBufferGetData(&buffer);
+        bufferSize = xmlSecBufferGetSize(&buffer);
+        if((bufferData == NULL) || (bufferSize == 0)) {
             xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
                 "empty file: %s", xmlSecErrorsSafeString(filename));
             xmlSecBufferFinalize(&buffer);
             return(NULL);
         }
-        bufSize = xmlSecBufferGetSize(&buffer);
-        XMLSEC_SAFE_CAST_SIZE_TO_ULONG(bufSize, dwDataSize, {xmlSecBufferFinalize(&buffer); return(NULL);}, NULL);
-
+        
         /* Try to read private key first and if no luck, try public key
          *
          * Note: xmlSecMSCngAppKeyReadPrivKeyFromDer() only supports DH and X25519 PKCS#8
          * private keys; other private key types (RSA/EC/DSA) are not supported in DER form
          * by this backend. Public-key DER files are handled by xmlSecMSCngAppKeyReadPubKeyFromDer(). */
-        keyData = xmlSecMSCngAppKeyReadPrivKeyFromDer(xmlSecBufferGetData(&buffer), dwDataSize);
+        keyData = xmlSecMSCngAppKeyReadPrivKeyFromDer(bufferData, bufferSize);
         if(keyData == NULL) {
-            keyData = xmlSecMSCngAppKeyReadPubKeyFromDer(xmlSecBufferGetData(&buffer), dwDataSize);
+            keyData = xmlSecMSCngAppKeyReadPubKeyFromDer(bufferData, bufferSize);
         }
         if(keyData == NULL) {
             xmlSecInternalError("xmlSecMSCngAppKeyReadPrivKeyFromDer and xmlSecMSCngAppKeyReadPubKeyFromDer", NULL);
@@ -300,6 +300,7 @@ xmlSecMSCngAppKeyLoadEx(const char *filename, xmlSecKeyDataType type, xmlSecKeyD
             return(NULL);
         }
         xmlSecBufferFinalize(&buffer);
+        
         key = xmlSecKeyCreate();
         if(key == NULL) {
             xmlSecInternalError("xmlSecKeyCreate", NULL);
@@ -351,7 +352,11 @@ xmlSecMSCngAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecK
 
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(dataSize > 0, NULL);
-    xmlSecAssert2(format == xmlSecKeyDataFormatCertDer, NULL);
+    if(format != xmlSecKeyDataFormatCertDer) {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
+            "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
+        return(NULL);
+    }
     XMLSEC_UNREFERENCED(pwd);
     XMLSEC_UNREFERENCED(pwdCallback);
     XMLSEC_UNREFERENCED(pwdCallbackCtx);
@@ -437,7 +442,11 @@ done:
 
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(dataSize > 0, NULL);
-    xmlSecAssert2(format == xmlSecKeyDataFormatCertDer, NULL);
+    if(format != xmlSecKeyDataFormatCertDer) {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
+            "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
+        return(NULL);
+    }
     XMLSEC_UNREFERENCED(pwd);
     XMLSEC_UNREFERENCED(pwdCallback);
     XMLSEC_UNREFERENCED(pwdCallbackCtx);
@@ -558,7 +567,7 @@ xmlSecMSCngAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSec
             return(-1);
         }
 
-        /* add cert and key cert */
+        /* add cert to the chain */
         ret = xmlSecMSCngKeyDataX509AdoptCert(kdata, pCert);
         if(ret < 0) {
             xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCert", xmlSecKeyDataGetName(kdata));
@@ -568,13 +577,20 @@ xmlSecMSCngAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSec
         }
         pCert = NULL; /* owned by kdata */
 
-        ret = xmlSecMSCngKeyDataX509AdoptKeyCert(kdata, pKeyCert);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptKeyCert", xmlSecKeyDataGetName(kdata));
+        /* set the key cert only if the key does not have one yet; otherwise
+         * keep the existing key cert and add this cert to the chain only */
+        if(xmlSecMSCngKeyDataX509GetKeyCert(kdata) == NULL) {
+            ret = xmlSecMSCngKeyDataX509AdoptKeyCert(kdata, pKeyCert);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptKeyCert", xmlSecKeyDataGetName(kdata));
+                CertFreeCertificateContext(pKeyCert);
+                return(-1);
+            }
+            pKeyCert = NULL; /* owned by kdata */
+        } else {
             CertFreeCertificateContext(pKeyCert);
-            return(-1);
+            pKeyCert = NULL;
         }
-        pKeyCert = NULL; /* owned by kdata */
 
         break;
     default:
@@ -632,7 +648,7 @@ xmlSecMSCngAppPkcs12Load(
     }
 
     data = xmlSecBufferGetData(&buffer);
-    if(data == NULL) {
+    if((data == NULL) || (xmlSecBufferGetSize(&buffer) == 0)) {
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "empty file: %s", xmlSecErrorsSafeString(filename));
         xmlSecBufferFinalize(&buffer);
         return(NULL);
@@ -874,7 +890,9 @@ cleanup:
         CertFreeCertificateContext(certDuplicate);
     }
     if(certStore != NULL) {
-        CertCloseStore(certStore, 0);
+        if(!CertCloseStore(certStore, 0)) {
+            xmlSecMSCngLastError("CertCloseStore", NULL);
+        }
     }
     return(key);
 }
@@ -916,7 +934,7 @@ xmlSecMSCngAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
         return(-1);
     }
 
-    if(xmlSecBufferGetData(&buffer) == NULL) {
+    if((xmlSecBufferGetData(&buffer) == NULL) || (xmlSecBufferGetSize(&buffer) == 0)) {
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
             "empty file: %s", xmlSecErrorsSafeString(filename));
         xmlSecBufferFinalize(&buffer);
@@ -1010,6 +1028,8 @@ xmlSecMSCngAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* d
 int
 xmlSecMSCngAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlSecKeyDataFormat format) {
     xmlSecBuffer buffer;
+    const xmlSecByte* bufferData;
+    xmlSecSize bufferSize;
     int ret;
 
     xmlSecAssert2(mngr != NULL, -1);
@@ -1030,15 +1050,16 @@ xmlSecMSCngAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlS
         return(-1);
     }
 
-    if(xmlSecBufferGetData(&buffer) == NULL) {
+    bufferData = xmlSecBufferGetData(&buffer);
+    bufferSize = xmlSecBufferGetSize(&buffer);
+    if((bufferData == NULL) || (bufferSize == 0)) {
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
             "empty file: %s", xmlSecErrorsSafeString(filename));
         xmlSecBufferFinalize(&buffer);
         return(-1);
     }
 
-    ret = xmlSecMSCngAppKeysMngrCrlLoadMemory(mngr, xmlSecBufferGetData(&buffer),
-        xmlSecBufferGetSize(&buffer), format);
+    ret = xmlSecMSCngAppKeysMngrCrlLoadMemory(mngr, bufferData, bufferSize, format);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecMSCngAppKeysMngrCrlLoadMemory", NULL,
                              "filename=%s", xmlSecErrorsSafeString(filename));
@@ -1093,10 +1114,16 @@ xmlSecMSCngReadCrlFromBuffer(const xmlSecByte* data, xmlSecSize dataSize,
  * @return 0 on success or a negative value otherwise.
  */
 int
-xmlSecMSCngAppKeysMngrCrlLoadAndVerify(xmlSecKeysMngrPtr mngr, const char *filename,
-    xmlSecKeyDataFormat format, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecMSCngAppKeysMngrCrlLoadAndVerify(
+    xmlSecKeysMngrPtr mngr,
+    const char *filename,
+    xmlSecKeyDataFormat format,
+    xmlSecKeyInfoCtxPtr keyInfoCtx
+) {
     xmlSecKeyDataStorePtr x509Store;
     xmlSecBuffer buffer;
+    const xmlSecByte* bufferData;
+    xmlSecSize bufferSize;
     PCCRL_CONTEXT pCrl = NULL;
     int ret;
     int res = -1;
@@ -1124,12 +1151,14 @@ xmlSecMSCngAppKeysMngrCrlLoadAndVerify(xmlSecKeysMngrPtr mngr, const char *filen
         goto done;
     }
 
-    if(xmlSecBufferGetData(&buffer) == NULL) {
+    bufferData = xmlSecBufferGetData(&buffer);
+    bufferSize = xmlSecBufferGetSize(&buffer);
+    if((bufferData == NULL) || (bufferSize == 0)) {
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "empty file: %s", xmlSecErrorsSafeString(filename));
         goto done;
     }
 
-    pCrl = xmlSecMSCngReadCrlFromBuffer(xmlSecBufferGetData(&buffer), xmlSecBufferGetSize(&buffer), format);
+    pCrl = xmlSecMSCngReadCrlFromBuffer(bufferData, bufferSize, format);
     if(pCrl == NULL) {
         xmlSecInternalError2("xmlSecMSCngReadCrlFromBuffer", NULL, "filename=%s", xmlSecErrorsSafeString(filename));
         goto done;

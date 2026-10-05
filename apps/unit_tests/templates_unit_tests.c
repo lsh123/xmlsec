@@ -2703,10 +2703,16 @@ test_xmlSecTmplX509DataAddSubNodes(void) {
     xmlNodePtr signNode = NULL;
     xmlNodePtr keyInfoNode;
     xmlNodePtr x509DataNode;
+    xmlNodePtr issuerSerialNode;
+    xmlNodePtr issuerSerialNode2;
     xmlNodePtr subjectNameNode;
+    xmlNodePtr subjectNameNode2;
     xmlNodePtr skiNode;
+    xmlNodePtr skiNode2;
     xmlNodePtr digestNode;
+    xmlNodePtr digestNode2;
     xmlNodePtr certNode;
+    xmlNodePtr certNode2;
     xmlChar* attr;
 
     testStart("xmlSecTmplX509DataAdd*: adds SubjectName, SKI, Digest and Certificate");
@@ -2746,6 +2752,40 @@ test_xmlSecTmplX509DataAddSubNodes(void) {
         return;
     }
 
+    issuerSerialNode = xmlSecTmplX509DataAddIssuerSerial(x509DataNode);
+    if(issuerSerialNode == NULL) {
+        testLog("Error: xmlSecTmplX509DataAddIssuerSerial returned NULL\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(!xmlSecCheckNodeName(issuerSerialNode, xmlSecNodeX509IssuerSerial, xmlSecDSigNs)) {
+        testLog("Error: returned node is not <dsig:X509IssuerSerial>\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    issuerSerialNode2 = xmlSecTmplX509DataAddIssuerSerial(x509DataNode);
+    if(issuerSerialNode2 == NULL) {
+        testLog("Error: expected second xmlSecTmplX509DataAddIssuerSerial to succeed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(!xmlSecCheckNodeName(issuerSerialNode2, xmlSecNodeX509IssuerSerial, xmlSecDSigNs)) {
+        testLog("Error: second returned node is not <dsig:X509IssuerSerial>\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(issuerSerialNode2 == issuerSerialNode) {
+        testLog("Error: second xmlSecTmplX509DataAddIssuerSerial returned the same node\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
     subjectNameNode = xmlSecTmplX509DataAddSubjectName(x509DataNode);
     if(subjectNameNode == NULL) {
         testLog("Error: xmlSecTmplX509DataAddSubjectName returned NULL\n");
@@ -2760,6 +2800,26 @@ test_xmlSecTmplX509DataAddSubNodes(void) {
         return;
     }
 
+    subjectNameNode2 = xmlSecTmplX509DataAddSubjectName(x509DataNode);
+    if(subjectNameNode2 == NULL) {
+        testLog("Error: expected second xmlSecTmplX509DataAddSubjectName to succeed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(!xmlSecCheckNodeName(subjectNameNode2, xmlSecNodeX509SubjectName, xmlSecDSigNs)) {
+        testLog("Error: second returned node is not <dsig:X509SubjectName>\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(subjectNameNode2 == subjectNameNode) {
+        testLog("Error: second xmlSecTmplX509DataAddSubjectName returned the same node\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
     skiNode = xmlSecTmplX509DataAddSKI(x509DataNode);
     if(skiNode == NULL) {
         testLog("Error: xmlSecTmplX509DataAddSKI returned NULL\n");
@@ -2769,6 +2829,26 @@ test_xmlSecTmplX509DataAddSubNodes(void) {
     }
     if(!xmlSecCheckNodeName(skiNode, xmlSecNodeX509SKI, xmlSecDSigNs)) {
         testLog("Error: returned node is not <dsig:X509SKI>\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    skiNode2 = xmlSecTmplX509DataAddSKI(x509DataNode);
+    if(skiNode2 == NULL) {
+        testLog("Error: expected second xmlSecTmplX509DataAddSKI to succeed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(!xmlSecCheckNodeName(skiNode2, xmlSecNodeX509SKI, xmlSecDSigNs)) {
+        testLog("Error: second returned node is not <dsig:X509SKI>\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(skiNode2 == skiNode) {
+        testLog("Error: second xmlSecTmplX509DataAddSKI returned the same node\n");
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
@@ -2798,6 +2878,36 @@ test_xmlSecTmplX509DataAddSubNodes(void) {
     }
     xmlFree(attr);
 
+    digestNode2 = xmlSecTmplX509DataAddDigest(x509DataNode, xmlSecHrefSha256);
+    if(digestNode2 == NULL) {
+        testLog("Error: expected second xmlSecTmplX509DataAddDigest to succeed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(!xmlSecCheckNodeName(digestNode2, xmlSecNodeX509Digest, xmlSecDSig11Ns)) {
+        testLog("Error: second returned node is not <dsig11:X509Digest>\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(digestNode2 == digestNode) {
+        testLog("Error: second xmlSecTmplX509DataAddDigest returned the same node\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    attr = xmlGetProp(digestNode2, xmlSecAttrAlgorithm);
+    if(attr == NULL || xmlStrcmp(attr, xmlSecHrefSha256) != 0) {
+        testLog("Error: expected second X509Digest Algorithm='%s', got '%s'\n",
+                (char*)xmlSecHrefSha256, attr ? (char*)attr : "NULL");
+        xmlFree(attr);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(attr);
+
     certNode = xmlSecTmplX509DataAddCertificate(x509DataNode);
     if(certNode == NULL) {
         testLog("Error: xmlSecTmplX509DataAddCertificate returned NULL\n");
@@ -2807,6 +2917,26 @@ test_xmlSecTmplX509DataAddSubNodes(void) {
     }
     if(!xmlSecCheckNodeName(certNode, xmlSecNodeX509Certificate, xmlSecDSigNs)) {
         testLog("Error: returned node is not <dsig:X509Certificate>\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    certNode2 = xmlSecTmplX509DataAddCertificate(x509DataNode);
+    if(certNode2 == NULL) {
+        testLog("Error: expected second xmlSecTmplX509DataAddCertificate to succeed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(!xmlSecCheckNodeName(certNode2, xmlSecNodeX509Certificate, xmlSecDSigNs)) {
+        testLog("Error: second returned node is not <dsig:X509Certificate>\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(certNode2 == certNode) {
+        testLog("Error: second xmlSecTmplX509DataAddCertificate returned the same node\n");
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;

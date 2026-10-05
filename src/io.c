@@ -502,6 +502,12 @@ xmlSecTransformInputURIGetKlass(void) {
  * @param transform the pointer to IO transform.
  * @param uri the URL to open.
  *
+ * Note: the @p uri is passed to the match and open callbacks as-is (without
+ * percent-decoding), the open callback is responsible for interpreting the
+ * URI. In particular, for "file:" URIs the built-in open callback percent-decodes
+ * the path exactly once after stripping the "file:" prefix, and a file name
+ * without a scheme is used as-is.
+ *
  * Note: in case of failure, the transform is left in a well-defined
  * (unopened) state and the #xmlSecTransformInputURIClose function
  * must be called to close the transform.
@@ -521,40 +527,25 @@ xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const xmlChar *uri) {
     xmlSecAssert2(ctx->clbksCtx == NULL, -1);
 
     /*
-     * Try to find one of the input accept methods accepting that scheme
+     * Try to find one of the input accept methods accepting that scheme.
      * Go in reverse to give precedence to user defined handlers.
-     * try with an unescaped version of the uri
+     *
+     * The URI is passed to the match and open callbacks as-is (without
+     * percent-decoding): the open callback is responsible for interpreting
+     * it. The built-in file callback percent-decodes the path exactly once
+     * after stripping the "file:" prefix (plain file names without a scheme
+     * are used as-is), and the built-in http/ftp callbacks parse the raw URI
+     * with xmlParseURI. Decoding the URI here as well would decode it twice:
+     * "file:///a%252Fb" (a file literally named "a%2Fb") would end up opening
+     * "a/b", and for http/ftp URIs a decoded "%23"/"%3F" would become a
+     * fragment/query delimiter, so a different resource would be fetched.
      */
-    {
-        char *unescaped;
-
-        unescaped = xmlURIUnescapeString((char*)uri, 0, NULL);
-        if (unescaped != NULL) {
-            ctx->clbks = xmlSecIOCallbackPtrListFind(&xmlSecAllIOCallbacks, unescaped);
-            if(ctx->clbks != NULL) {
-                if(ctx->clbks->opencallback != NULL) {
-                    ctx->clbksCtx = ctx->clbks->opencallback(unescaped);
-                } else {
-                    ctx->clbksCtx = NULL;
-                }
-            }
-            xmlFree(unescaped);
-        }
-    }
-
-    /*
-     * If this failed try with a non-escaped uri this may be a strange
-     * filename. Gate on clbksCtx (not clbks) so that a callback found via the
-     * unescaped URI whose opencallback returned NULL still gets a raw-URI retry.
-     */
-    if (ctx->clbksCtx == NULL) {
-        ctx->clbks = xmlSecIOCallbackPtrListFind(&xmlSecAllIOCallbacks, (char*)uri);
-        if(ctx->clbks != NULL) {
-            if(ctx->clbks->opencallback != NULL) {
-                ctx->clbksCtx = ctx->clbks->opencallback((char*)uri);
-            } else {
-                ctx->clbksCtx = NULL;
-            }
+    ctx->clbks = xmlSecIOCallbackPtrListFind(&xmlSecAllIOCallbacks, (char*)uri);
+    if(ctx->clbks != NULL) {
+        if(ctx->clbks->opencallback != NULL) {
+            ctx->clbksCtx = ctx->clbks->opencallback((char*)uri);
+        } else {
+            ctx->clbksCtx = NULL;
         }
     }
 

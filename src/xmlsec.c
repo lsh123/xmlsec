@@ -33,7 +33,10 @@ static xmlExternalEntityLoader xmlSecDefaultExternalEntityLoader = NULL;
 #if LIBXML_VERSION < 21300
 /*
  * Custom external entity handler, denies all files except the initial
- * document we're parsing (input_id == 1)
+ * document we're parsing. The initial document is loaded before any input
+ * is pushed on the parser context (ctxt->input == NULL), while external
+ * entities and DTD subsets are loaded while the document input is already
+ * on the stack (ctxt->input != NULL) and/or ctxt->inputNr > 0.
  */
 static xmlParserInputPtr
 xmlSecNoXxeExternalEntityLoader(const char *URL, const char *ID,
@@ -41,7 +44,7 @@ xmlSecNoXxeExternalEntityLoader(const char *URL, const char *ID,
     if (ctxt == NULL) {
         return(NULL);
     }
-    if (ctxt->input_id == 1) {
+    if ((ctxt->input == NULL) || (ctxt->inputNr == 0)) {
         if (xmlSecDefaultExternalEntityLoader == NULL) {
             xmlSecXmlError("xmlSecNoXxeExternalEntityLoader", NULL);
             return(NULL);

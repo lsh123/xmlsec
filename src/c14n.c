@@ -193,8 +193,12 @@ xmlSecTransformC14NNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSe
 }
 
 /*
- * Note: in case of failure, the transform state is undefined until
- * the #xmlSecTransformDestroy function is called.
+ * Note: in case of failure, the transform status is set to
+ * #xmlSecTransformStatusFail and any partial output in the output buffer
+ * is discarded, so a subsequent push operation will fail explicitly
+ * instead of returning success without producing any output. The rest
+ * of the transform state is undefined until the #xmlSecTransformDestroy
+ * function is called.
  */
 static int
 xmlSecTransformC14NPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes, xmlSecTransformCtxPtr transformCtx) {
@@ -225,18 +229,19 @@ xmlSecTransformC14NPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
         buf = xmlSecTransformCreateOutputBuffer(transform->next, transformCtx);
         if(buf == NULL) {
             xmlSecInternalError("xmlSecTransformCreateOutputBuffer", xmlSecTransformGetName(transform));
+            transform->status = xmlSecTransformStatusFail;
             return(-1);
         }
     } else {
         buf = xmlSecBufferCreateOutputBuffer(&(transform->outBuf));
         if(buf == NULL) {
             xmlSecInternalError("xmlSecBufferCreateOutputBuffer", xmlSecTransformGetName(transform));
+            transform->status = xmlSecTransformStatusFail;
             return(-1);
         }
     }
 
-    ret = xmlSecTransformC14NExecute(transform->id, nodes,
-            xmlSecC14NGetCtx(transform), buf);
+    ret = xmlSecTransformC14NExecute(transform->id, nodes, xmlSecC14NGetCtx(transform), buf);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformC14NExecute", xmlSecTransformGetName(transform));
         /* the buffer must be closed to release it (the IO buffer is only
@@ -244,12 +249,17 @@ xmlSecTransformC14NPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
          * into the next transform, which is harmless here: the whole
          * operation is aborted and the produced data is discarded */
         (void)xmlOutputBufferClose(buf);
+        /* discard any partial output produced before the failure so it
+         * cannot be picked up by a later operation and mark the transform as failed */
+        xmlSecBufferEmpty(&(transform->outBuf));
+        transform->status = xmlSecTransformStatusFail;
         return(-1);
     }
 
     ret = xmlOutputBufferClose(buf);
     if(ret < 0) {
         xmlSecXmlError("xmlOutputBufferClose", xmlSecTransformGetName(transform));
+        transform->status = xmlSecTransformStatusFail;
         return(-1);
     }
     transform->status = xmlSecTransformStatusFinished;

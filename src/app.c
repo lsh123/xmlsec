@@ -24,7 +24,7 @@
 #include <xmlsec/errors.h>
 
 
-static const char missingMethodError[] = "Method is missing in the dynamically loaded library: %s";
+static const char missingMethodError[] = "Crypto library was not loaded or the method is missing in the dynamically loaded library: %s";
 
 /******************************************************************************
  *

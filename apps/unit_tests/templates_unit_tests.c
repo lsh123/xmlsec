@@ -2823,6 +2823,7 @@ test_xmlSecTmplX509DataAddCRL(void) {
     xmlNodePtr keyInfoNode;
     xmlNodePtr x509DataNode;
     xmlNodePtr crlNode;
+    xmlNodePtr crlNode2;
 
     testStart("xmlSecTmplX509DataAddCRL: adds X509CRL node");
 
@@ -2875,9 +2876,23 @@ test_xmlSecTmplX509DataAddCRL(void) {
         return;
     }
 
-    /* second call must fail (node already present) */
-    if(xmlSecTmplX509DataAddCRL(x509DataNode) != NULL) {
-        testLog("Error: expected second xmlSecTmplX509DataAddCRL to fail\n");
+    /* The W3C X509DataType permits repeated child elements, so a second
+     * element of the same kind must be allowed. */
+    crlNode2 = xmlSecTmplX509DataAddCRL(x509DataNode);
+    if(crlNode2 == NULL) {
+        testLog("Error: expected second xmlSecTmplX509DataAddCRL to succeed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(!xmlSecCheckNodeName(crlNode2, xmlSecNodeX509CRL, xmlSecDSigNs)) {
+        testLog("Error: second returned node is not <dsig:X509CRL>\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(crlNode2 == crlNode) {
+        testLog("Error: second xmlSecTmplX509DataAddCRL returned the same node\n");
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;

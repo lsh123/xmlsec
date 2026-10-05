@@ -150,7 +150,6 @@ static int                      xmlSecBase64CtxDecode           (xmlSecBase64Ctx
                                                                  xmlSecByte* outBuf,
                                                                  xmlSecSize outBufSize,
                                                                  xmlSecSize* outBufResSize);
-static int                      xmlSecBase64CtxDecodeIsFinished (xmlSecBase64CtxPtr ctx);
 
 
 
@@ -272,6 +271,14 @@ xmlSecBase64CtxUpdate_ex(xmlSecBase64CtxPtr ctx, const xmlSecByte *in, xmlSecSiz
     return(0);
 }
 
+
+/*  */
+static inline int
+xmlSecBase64CtxDecodeIsFinished(xmlSecBase64CtxPtr ctx) {
+    xmlSecAssert2(ctx != NULL, -1);
+    return((ctx->inPos == 0) ? 1 : 0);
+}
+
 /**
  * @brief Finishes encoding or decoding and returns the result.
  * @details Encodes or decodes the last piece of data stored in the context
@@ -284,12 +291,13 @@ xmlSecBase64CtxUpdate_ex(xmlSecBase64CtxPtr ctx, const xmlSecByte *in, xmlSecSiz
  */
 int
 xmlSecBase64CtxFinal_ex(xmlSecBase64CtxPtr ctx, xmlSecByte *out, xmlSecSize outSize, xmlSecSize* outWritten) {
+    int ret;
+
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outWritten != NULL, -1);
 
     if(ctx->encode != 0) {
-        int ret;
 
         /* the encode path writes at least one byte when there are pending input
          * bytes (ctx->inPos != 0), so it needs a non-empty buffer in that case */
@@ -297,13 +305,16 @@ xmlSecBase64CtxFinal_ex(xmlSecBase64CtxPtr ctx, xmlSecByte *out, xmlSecSize outS
 
         ret = xmlSecBase64CtxEncodeFinal(ctx, out, outSize, outWritten);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBase64CtxEncodeFinal", NULL,
-                "outSize=" XMLSEC_SIZE_FMT, outSize);
+            xmlSecInternalError2("xmlSecBase64CtxEncodeFinal", NULL, "outSize=" XMLSEC_SIZE_FMT, outSize);
             return(-1);
         }
     } else {
-        if(!xmlSecBase64CtxDecodeIsFinished(ctx)) {
+        ret = xmlSecBase64CtxDecodeIsFinished(ctx);
+        if(ret < 0) {
             xmlSecInternalError("xmlSecBase64CtxDecodeIsFinished", NULL);
+            return(-1);
+        } else if(ret != 1) {
+            xmlSecInvalidSizeOtherError("Base64 decode finished prematurely", NULL);
             return(-1);
         }
         (*outWritten) = 0;
@@ -592,12 +603,6 @@ xmlSecBase64CtxDecode(xmlSecBase64CtxPtr ctx,
     return(0);
 }
 
-static int
-xmlSecBase64CtxDecodeIsFinished(xmlSecBase64CtxPtr ctx) {
-    xmlSecAssert2(ctx != NULL, -1);
-
-    return((ctx->inPos == 0) ? 1 : 0);
-}
 
 static xmlSecSize
 xmlSecBase64GetEncodeSize(xmlSecSize columnsSize, xmlSecSize inSize) {

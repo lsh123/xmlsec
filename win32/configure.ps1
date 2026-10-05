@@ -106,6 +106,16 @@ function StrToBool($opt, $name) {
     return 0
 }
 
+# Helper function, checks that a free-form option value is not empty.
+function ValidateNonEmptyValue($opt, $name) {
+    if ([string]::IsNullOrWhiteSpace($opt)) {
+        Write-Host "ERROR: Option '$name' requires a non-empty value."
+        $script:errorFlag = 1
+        return $false
+    }
+    return $true
+}
+
 # Displays the details about how to use this script.
 function Show-Usage {
     $scriptName = Split-Path -Leaf $PSCommandPath
@@ -155,9 +165,10 @@ function Show-Usage {
 }
 
 # Parses AC_INIT([name],[version],[url]) and extracts version components.
+# Allows optional whitespace around the arguments and an optional URL part.
 # Returns an array @(major, minor, subminor) or $null.
 function ParseAcInit($str) {
-    if ($str -match 'AC_INIT\(\[([^\]]*)\],\[(\d+)\.(\d+)\.(\d+)\],\[([^\]]*)\]\)') {
+    if ($str -match 'AC_INIT\s*\(\s*\[([^\]]*)\]\s*,\s*\[(\d+)\.(\d+)\.(\d+)\]\s*(?:,\s*\[([^\]]*)\])?\s*\)') {
         return @($Matches[2], $Matches[3], $Matches[4])
     }
     return $null
@@ -186,6 +197,8 @@ function DiscoverVersion {
     # Get version from configure.ac AC_INIT
     $ver = ParseConfigureAc
     if ($null -eq $ver) {
+        Write-Host "ERROR: Could not discover the package version from '$configFile'."
+        Write-Host "Expected an AC_INIT line of the form: AC_INIT([package],[major.minor.subminor],[url])."
         $script:errorFlag = 1
         return
     }
@@ -324,7 +337,15 @@ for ($i = 0; ($i -lt $args.Count) -and ($script:errorFlag -eq 0); $i++) {
             "legacy-features"     { $script:withLegacyFeatures = StrToBool $val "legacy-features" }
             "legacy-crypto"       { $script:withLegacyFeatures = StrToBool $val "legacy-crypto" }
             "unicode"             { $script:buildUnicode = StrToBool $val "unicode" }
-            "debug"               { $script:buildDebug = StrToBool $val "debug" }
+            "debug" {
+                $dbg = StrToBool $val "debug"
+                if ($dbg -eq 0 -and $script:buildWithMemcheck -ne "no") {
+                    Write-Host "Note: Option 'debug=no' is ignored because memcheck '$($script:buildWithMemcheck)' requires a debug build."
+                    $script:buildDebug = 1
+                } else {
+                    $script:buildDebug = $dbg
+                }
+            }
             "memcheck" {
                 $script:buildWithMemcheck = ValidateMemcheckOption $val
                 if ($script:buildWithMemcheck -eq "") {
@@ -337,15 +358,39 @@ for ($i = 0; ($i -lt $args.Count) -and ($script:errorFlag -eq 0); $i++) {
             }
             "pedantic"            { $script:buildPedantic = StrToBool $val "pedantic" }
             "hardening"           { $script:buildHardening = StrToBool $val "hardening" }
-            "cc"                  { $script:buildCc = $val }
+            "cc" {
+                if (ValidateNonEmptyValue $val "cc") {
+                    $script:buildCc = $val
+                }
+            }
             "cflags"              { $script:buildCflags = $val }
             "static"              { $script:buildStatic = StrToBool $val "static" }
             "apps"                { $script:buildApps = StrToBool $val "apps" }
-            "prefix"              { $script:buildPrefix = $val }
-            "incdir"              { $script:buildIncPrefix = $val }
-            "bindir"              { $script:buildBinPrefix = $val }
-            "libdir"              { $script:buildLibPrefix = $val }
-            "sodir"               { $script:buildSoPrefix = $val }
+            "prefix" {
+                if (ValidateNonEmptyValue $val "prefix") {
+                    $script:buildPrefix = $val
+                }
+            }
+            "incdir" {
+                if (ValidateNonEmptyValue $val "incdir") {
+                    $script:buildIncPrefix = $val
+                }
+            }
+            "bindir" {
+                if (ValidateNonEmptyValue $val "bindir") {
+                    $script:buildBinPrefix = $val
+                }
+            }
+            "libdir" {
+                if (ValidateNonEmptyValue $val "libdir") {
+                    $script:buildLibPrefix = $val
+                }
+            }
+            "sodir" {
+                if (ValidateNonEmptyValue $val "sodir") {
+                    $script:buildSoPrefix = $val
+                }
+            }
             "include"             { $script:buildInclude = $val }
             "lib"                 { $script:buildLib = $val }
             "cruntime" {
@@ -363,6 +408,7 @@ for ($i = 0; ($i -lt $args.Count) -and ($script:errorFlag -eq 0); $i++) {
         exit 0
     } else {
         $script:errorFlag = 1
+        Write-Host "ERROR: Invalid argument '$arg'. Options must be in the form <option>=<value> ('help' is only accepted as the first argument)."
     }
 }
 

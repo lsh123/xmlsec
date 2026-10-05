@@ -67,9 +67,6 @@ static int              xmlSecMSCngX509StoreVerifyCertificateChain  (PCCERT_CONT
                                                                      HCERTSTORE crlStore,
                                                                      int checkRevocation);
 
-static int              xmlSecMSCngX509CertCheckCaConstraints         (PCCERT_CONTEXT cert,
-                                                                      int depth);
-
 static FILETIME*
 xmlSecMSCngX509StoreGetVerificationTime(xmlSecKeyInfoCtxPtr keyInfoCtx, FILETIME* timeContainer) {
     xmlSecAssert2(keyInfoCtx != NULL, NULL);

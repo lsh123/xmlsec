@@ -405,7 +405,7 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
         dwFlags = 0;
     }
     if(!fFound) {
-        if(GetLastError() != NTE_NO_MORE_ITEMS) {
+        if(GetLastError() != (DWORD)NTE_NO_MORE_ITEMS) {
             xmlSecMSCryptoError("CryptGetProvParam", NULL);
         } else {
             xmlSecMSCryptoError2("CryptGetProvParam", NULL, "algId=%u is not supported", algId);

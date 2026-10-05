@@ -27,6 +27,11 @@
 #include "asn1.h"
 #include "../cast_helpers.h"
 
+/* the flag that indicates whether the secure memory was initialized
+   (GCRYCTL_INIT_SECMEM can fail; the error is ignored because of
+   a known libgcrypt bug, see https://github.com/lsh123/xmlsec/issues/415) */
+static int g_xmlSecGCryptSecureMemoryInitialized = 0;
+
 /**
  * @brief Initializes the GCrypt crypto engine.
  * @details General crypto engine initialization. This function is used
@@ -95,6 +100,9 @@ Noteworthy changes in version 1.4.3 (2008-09-18)
         xmlSecGCryptError("gcry_control(GCRYCTL_INIT_SECMEM)", err, NULL);
         /* ignore this error because of libgcrypt bug in allocating memory,
         see https://github.com/lsh123/xmlsec/issues/415 for more details */
+        g_xmlSecGCryptSecureMemoryInitialized = 0;
+    } else {
+        g_xmlSecGCryptSecureMemoryInitialized = 1;
     }
 
     /* It is now okay to let Libgcrypt complain when there was/is
@@ -130,10 +138,16 @@ int
 xmlSecGCryptAppShutdown(void) {
     gcry_error_t err;
 
-    err = gcry_control(GCRYCTL_TERM_SECMEM);
-    if(err != GPG_ERR_NO_ERROR) {
-        xmlSecGCryptError("gcry_control(GCRYCTL_TERM_SECMEM)", err, NULL);
-        return(-1);
+    /* only terminate the secure memory if it was actually initialized;
+       GCRYCTL_TERM_SECMEM can fail (e.g. GPG_ERR_CONFLICT) when the
+       secure memory was never allocated (e.g. because the ignored
+       GCRYCTL_INIT_SECMEM failure happened during initialization) */
+    if(g_xmlSecGCryptSecureMemoryInitialized) {
+        err = gcry_control(GCRYCTL_TERM_SECMEM);
+        if(err != GPG_ERR_NO_ERROR) {
+            xmlSecGCryptError("gcry_control(GCRYCTL_TERM_SECMEM)", err, NULL);
+            return(-1);
+        }
     }
 
     /* done */

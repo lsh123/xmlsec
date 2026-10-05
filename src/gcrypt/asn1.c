@@ -328,7 +328,15 @@ xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSe
 
                         /* expect an INTEGER tag */
                         if((remaining < 1) || (*p != TAG_INTEGER)) {
-                            xmlSecInternalError2("xmlSecGCryptAsn1ParseIntegerSequence", NULL, "INTEGER expected inside BIT STRING, remaining=%lu", remaining);
+                            if((remaining >= 1) && (*p == 0x30)) {
+                                /* a SEQUENCE inside the BIT STRING indicates an
+                                   unsupported key format, e.g. an RSA key in
+                                   SPKI/SubjectPublicKeyInfo form; only the
+                                   traditional (PKCS#1) RSA formats are supported */
+                                xmlSecInvalidDataError("unsupported key format: a SEQUENCE was found inside a BIT STRING (e.g. an RSA key in SPKI/SubjectPublicKeyInfo form); use the traditional PKCS#1 format instead", NULL);
+                            } else {
+                                xmlSecInternalError2("xmlSecGCryptAsn1ParseIntegerSequence", NULL, "INTEGER expected inside BIT STRING, remaining=%lu", remaining);
+                            }
                             return(-1);
                         }
                         p++; remaining--;
@@ -436,13 +444,12 @@ xmlSecGCryptAsn1GuessKeyType(gcry_mpi_t * integers, xmlSecSize integers_num, xml
     }
 
     /* try other keys */
-    /* Note: this guessing is inherently heuristic. A malformed key (for example,
-     * an EC private key missing both its curve OID and its public key, which
-     * flattens to exactly two integers with no OIDs) can be misidentified as a
-     * different type (here, an RSA public key with a garbage modulus of 0 or 1).
-     * Such a misidentified key is invalid and is rejected by libgcrypt on use, so
-     * this cannot lead to a verification bypass; it only affects how malformed
-     * input is reported. This is therefore not a security defect. */
+    /* Note: this guessing is inherently heuristic. An RSA public key is only
+     * recognized when the first integer (the modulus) is at least 512 bits long;
+     * a 2-integer key with a small first integer (for example, an EC private key
+     * missing both its curve OID and its optional public point, which flattens to
+     * version + d) is not treated as an RSA key and is rejected with a
+     * "number of parameters" error below instead of a garbage key being built. */
     switch(integers_num) {
     case XMLSEC_GCRYPT_ASN1_DSA_PUB_NUM:
         return(xmlSecGCryptDerKeyTypePublicDsa);
@@ -450,7 +457,14 @@ xmlSecGCryptAsn1GuessKeyType(gcry_mpi_t * integers, xmlSecSize integers_num, xml
         return(xmlSecGCryptDerKeyTypePrivateDsa);
 
     case XMLSEC_GCRYPT_ASN1_RSA_PUB_NUM:
-        return(xmlSecGCryptDerKeyTypePublicRsa);
+        /* a real RSA modulus is at least 512 bits long; 512 is a heuristic
+           threshold (libgcrypt itself accepts smaller moduli), used to tell a
+           valid RSAPublicKey apart from other 2-integer shapes, e.g. an EC
+           private key (version + d) missing its curve OID */
+        if(gcry_mpi_get_nbits(integers[0]) >= 512) {
+            return(xmlSecGCryptDerKeyTypePublicRsa);
+        }
+        return(xmlSecGCryptDerKeyTypeAuto);
     case XMLSEC_GCRYPT_ASN1_RSA_PRIV_NUM:
         return(xmlSecGCryptDerKeyTypePrivateRsa);
     default:
@@ -516,10 +530,16 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
     }
 
     /* PKCS#8-wrapped private keys (PrivateKeyInfo) are not supported and would be
-     * misparsed into a garbage key: they flatten to exactly two integers
-     * [version(0), <raw-key blob>] with an algorithm object id present. Detect this
-     * shape and fail instead of building a wrong key. */
-    if((integers_num == 2) && (objectids_num >= 1) && (gcry_mpi_get_nbits(integers[0]) == 0)) {
+     * misparsed into a garbage key: they always flatten to at least two integers
+     * starting with version(0) and carry an algorithm object id. For a PKCS#8 RSA
+     * key the shape is exactly two integers [version(0), <raw-key blob>], but a
+     * PKCS#8 DSA key flattens to more (the DSA parameters p, q, g are collected
+     * from the algorithm-params SEQUENCE), so detect any such shape (version(0) +
+     * >=1 more integer + an OID present) and fail instead of building a wrong key.
+     * No supported traditional format matches this: PKCS#1/traditional DSA/EC keys
+     * carry no OIDs, a SPKI DSA public key has integers[0]=p (non-zero), and a SPKI
+     * EC public key has exactly one integer. */
+    if((integers_num >= 2) && (objectids_num >= 1) && (gcry_mpi_get_nbits(integers[0]) == 0)) {
         xmlSecInvalidDataError("PKCS#8 private keys are not supported; use a traditional format (PKCS#1 RSAPrivateKey, DSAPrivateKey, or ECPrivateKey)", NULL);
         goto done;
     }

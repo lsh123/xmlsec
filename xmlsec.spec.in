@@ -7,9 +7,23 @@ Vendor: Aleksey Sanin <aleksey@aleksey.com>
 Packager: Aleksey Sanin <aleksey@aleksey.com>
 Source: https://www.aleksey.com/xmlsec/releases/@PACKAGE@-%{version}.tar.gz
 URL: http://www.aleksey.com/xmlsec
+
+# The values below are substituted by configure: 1 means the feature/library
+# was not configured or not found, 0 means it is built into this package.
+# Keep them in sync with the %if checks in the sections below.
+%define no_libxslt @XMLSEC_NO_LIBXSLT@
+%define no_openssl @XMLSEC_NO_OPENSSL@
+%define no_nss @XMLSEC_NO_NSS@
+%define no_gnutls @XMLSEC_NO_GNUTLS@
+%define no_gcrypt @XMLSEC_NO_GCRYPT@
+
 Requires: libxml2 >= @LIBXML_MIN_VERSION@
+%if %{no_libxslt} == 0
 Requires: libxslt >= @LIBXSLT_MIN_VERSION@
+%endif
+%if %{no_openssl} == 0
 Requires: xmlsec1-openssl = %{version}
+%endif
 BuildRequires: gcc
 BuildRequires: make
 BuildRequires: autoconf
@@ -17,12 +31,22 @@ BuildRequires: automake
 BuildRequires: libtool
 BuildRequires: help2man
 BuildRequires: libxml2-devel >= @LIBXML_MIN_VERSION@
+%if %{no_libxslt} == 0
 BuildRequires: libxslt-devel >= @LIBXSLT_MIN_VERSION@
+%endif
+%if %{no_openssl} == 0
 BuildRequires: openssl-devel >= @OPENSSL_MIN_VERSION@
+%endif
+%if %{no_nss} == 0
 BuildRequires: nss-devel >= @NSS_MIN_VERSION@
 BuildRequires: nspr-devel >= @NSPR_MIN_VERSION@
+%endif
+%if %{no_gnutls} == 0
 BuildRequires: gnutls-devel >= @GNUTLS_MIN_VERSION@
+%endif
+%if %{no_gcrypt} == 0
 BuildRequires: libgcrypt-devel >= @GCRYPT_MIN_VERSION@
+%endif
 
 %define _missing_doc_files_terminate_build 0
 
@@ -35,13 +59,18 @@ standards "XML Digital Signature" and "XML Encryption".
 Summary: Libraries, includes, etc. to develop applications with XML Digital Signatures and XML Encryption support.
 Requires: xmlsec1 = %{version}
 Requires: libxml2-devel >= @LIBXML_MIN_VERSION@
+%if %{no_libxslt} == 0
 Requires: libxslt-devel >= @LIBXSLT_MIN_VERSION@
+%endif
+%if %{no_openssl} == 0
 Requires: openssl-devel >= @OPENSSL_MIN_VERSION@
+%endif
 
 %description devel
 Libraries, includes, etc. you can use to develop applications with XML Digital
 Signatures and XML Encryption support.
 
+%if %{no_openssl} == 0
 %package openssl
 Summary: OpenSSL crypto plugin for XML Security Library
 Requires: xmlsec1 = %{version}
@@ -71,7 +100,9 @@ Requires: openssl-devel >= @OPENSSL_MIN_VERSION@
 
 %description openssl-devel
 Libraries, includes, etc. for developing XML Security applications with OpenSSL.
+%endif
 
+%if %{no_nss} == 0
 %package nss
 Summary: NSS crypto plugin for XML Security Library
 Requires: xmlsec1 = %{version}
@@ -102,7 +133,9 @@ Requires: nspr-devel >= @NSPR_MIN_VERSION@
 
 %description nss-devel
 Libraries, includes, etc. for developing XML Security applications with NSS.
+%endif
 
+%if %{no_gnutls} == 0
 %package gnutls
 Summary: GnuTLS crypto plugin for XML Security Library
 Requires: xmlsec1 = %{version}
@@ -131,7 +164,9 @@ Requires: gnutls-devel >= @GNUTLS_MIN_VERSION@
 
 %description gnutls-devel
 Libraries, includes, etc. for developing XML Security applications with GnuTLS.
+%endif
 
+%if %{no_gcrypt} == 0
 %package gcrypt
 Summary: GCrypt crypto plugin for XML Security Library
 Requires: xmlsec1 = %{version}
@@ -160,6 +195,7 @@ Requires: libgcrypt-devel >= @GCRYPT_MIN_VERSION@
 
 %description gcrypt-devel
 Libraries, includes, etc. for developing XML Security applications with GCrypt.
+%endif
 
 %prep
 %setup -q
@@ -212,6 +248,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS.md HACKING ChangeLog NEWS README.md Copyright
 %doc %{_mandir}/man1/xmlsec1-config.1*
 
+%if %{no_openssl} == 0
 %files openssl
 %defattr(-, root, root)
 
@@ -224,7 +261,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libxmlsec1-openssl.so
 %{_libdir}/libxmlsec1-openssl.*a
 %{_libdir}/pkgconfig/xmlsec1-openssl.pc
+%endif
 
+%if %{no_nss} == 0
 %files nss
 %defattr(-, root, root)
 
@@ -237,7 +276,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libxmlsec1-nss.so
 %{_libdir}/libxmlsec1-nss.*a
 %{_libdir}/pkgconfig/xmlsec1-nss.pc
+%endif
 
+%if %{no_gnutls} == 0
 %files gnutls
 %defattr(-, root, root)
 
@@ -250,7 +291,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libxmlsec1-gnutls.so
 %{_libdir}/libxmlsec1-gnutls.*a
 %{_libdir}/pkgconfig/xmlsec1-gnutls.pc
+%endif
 
+%if %{no_gcrypt} == 0
 %files gcrypt
 %defattr(-, root, root)
 
@@ -263,5 +306,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libxmlsec1-gcrypt.so
 %{_libdir}/libxmlsec1-gcrypt.*a
 %{_libdir}/pkgconfig/xmlsec1-gcrypt.pc
+%endif
 
 %changelog

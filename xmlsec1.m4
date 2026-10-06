@@ -68,7 +68,7 @@ AC_DEFUN([AM_PATH_XMLSEC1],[
            sed -n 's/^[[0-9]]*\.[[0-9]]*\.\([[0-9]]*\).*/\1/p'`
     for xmlsec1_config_v in "$xmlsec1_config_major_version" "$xmlsec1_config_minor_version" "$xmlsec1_config_micro_version" ; do
         case "$xmlsec1_config_v" in
-            ''|*[!0-9]*) no_xmlsec1=yes ;;
+            ''|*[[!0-9]]*) no_xmlsec1=yes ;;
         esac
     done
     ac_save_CFLAGS="$CFLAGS"
@@ -80,9 +80,15 @@ dnl
 dnl Now check if the installed libxmlsec1 is sufficiently new.
 dnl (Also sanity checks the results of xmlsec1-config to some extent)
 dnl
+dnl The test program uses strdup(), a POSIX function that is not declared with
+dnl strict -std=c99/-std=c11 compilers; define _GNU_SOURCE for the test program
+dnl
       rm -f conf.xmlsec1test
       AC_LANG_PUSH([C])
       AC_TRY_RUN([
+#if defined(__GNUC__) && !defined(_GNU_SOURCE)
+#define _GNU_SOURCE
+#endif
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

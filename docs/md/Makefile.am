@@ -40,6 +40,7 @@ docs-copy:
 		$(CP) $(srcdir)/*.md $(builddir)/ ; \
 	fi
 
+if XMLSEC_APPS
 docs-manpages:
 	@if [ ! -f "$(XMLSEC1_MAN)" ]; then \
 		echo "-- Man page is not built yet, rebuilding ..."; \
@@ -51,6 +52,10 @@ docs-manpages:
 		--from=man \
 		--to=markdown \
 		$(XMLSEC1_MAN) >> $(XMLSEC1_MAN_MD)
+else
+docs-manpages:
+	@echo "-- Skipping man page docs: the xmlsec command line tool is not built (--disable-apps)"
+endif
 
 else
 

@@ -1287,6 +1287,10 @@ XMLSEC_NO_GNUTLS="1"
 GNUTLS_INCLUDE_PATH=
 GNUTLS_LIB_PATH=
 GNUTLS_FOUND="no"
+dnl Only set the pkg-config Requires entry when gnutls is found via pkg-config,
+dnl otherwise the referenced .pc file may not exist on the system (see
+dnl xmlsec-gnutls.pc.in and the same pattern as OPENSSL_PC_REQUIRES)
+GNUTLS_PC_REQUIRES=""
 AC_ARG_WITH([gnutls], [AS_HELP_STRING([--with-gnutls@<:@=PFX@:>@],[gnutls location])])
 
 dnl Priority 0: Check if library is not needed
@@ -1316,12 +1320,14 @@ dnl Priority 3: Guess with pkg_config
 if test "z$GNUTLS_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
     if test "z$GNUTLS_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(GNUTLS, gnutls >= $GNUTLS_MIN_VERSION,
-            [GNUTLS_FOUND=yes GNUTLS_PACKAGE=gnutls],
+            [GNUTLS_FOUND=yes GNUTLS_PACKAGE=gnutls
+             GNUTLS_PC_REQUIRES="gnutls >= $GNUTLS_MIN_VERSION, "],
             [GNUTLS_FOUND=no])
     fi
     if test "z$GNUTLS_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(GNUTLS, libgnutls >= $GNUTLS_MIN_VERSION,
-            [GNUTLS_FOUND=yes GNUTLS_PACKAGE=libgnutls],
+            [GNUTLS_FOUND=yes GNUTLS_PACKAGE=libgnutls
+             GNUTLS_PC_REQUIRES="libgnutls >= $GNUTLS_MIN_VERSION, "],
             [GNUTLS_FOUND=no])
     fi
 fi
@@ -1419,6 +1425,7 @@ AC_SUBST(GNUTLS_LIBS)
 AC_SUBST(GNUTLS_CRYPTO_LIB)
 AC_SUBST(GNUTLS_MIN_VERSION)
 AC_SUBST(GNUTLS_PACKAGE)
+AC_SUBST(GNUTLS_PC_REQUIRES)
 
 
 dnl ==========================================================================
@@ -1597,6 +1604,10 @@ GCRYPT_VERSION=
 GCRYPT_INCLUDE_PATH=
 GCRYPT_LIB_PATH=
 GCRYPT_FOUND="no"
+dnl Only set the pkg-config Requires entry when gcrypt is found via pkg-config,
+dnl otherwise the referenced .pc file may not exist on the system (see
+dnl xmlsec-gcrypt.pc.in and the same pattern as OPENSSL_PC_REQUIRES)
+GCRYPT_PC_REQUIRES=""
 AC_ARG_WITH([gcrypt], [AS_HELP_STRING([--with-gcrypt@<:@=PFX@:>@],[gcrypt location (no,deprecated)])])
 
 dnl Priority 0: Check if library is not needed
@@ -1630,22 +1641,26 @@ dnl Priority 3: Guess with pkg_config
 if test "z$GCRYPT_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
     if test "z$GCRYPT_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(GCRYPT, gcrypt >= $GCRYPT_MIN_VERSION,
-            [GCRYPT_FOUND=yes GCRYPT_PACKAGE=gcrypt],
+            [GCRYPT_FOUND=yes GCRYPT_PACKAGE=gcrypt
+             GCRYPT_PC_REQUIRES="gcrypt >= $GCRYPT_MIN_VERSION, "],
             [GCRYPT_FOUND=no])
     fi
     if test "z$GCRYPT_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(GCRYPT, libgcrypt20 >= $GCRYPT_MIN_VERSION,
-            [GCRYPT_FOUND=yes GCRYPT_PACKAGE=libgcrypt20],
+            [GCRYPT_FOUND=yes GCRYPT_PACKAGE=libgcrypt20
+             GCRYPT_PC_REQUIRES="libgcrypt20 >= $GCRYPT_MIN_VERSION, "],
             [GCRYPT_FOUND=no])
     fi
     if test "z$GCRYPT_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(GCRYPT, libgcrypt11 >= $GCRYPT_MIN_VERSION,
-            [GCRYPT_FOUND=yes GCRYPT_PACKAGE=libgcrypt11],
+            [GCRYPT_FOUND=yes GCRYPT_PACKAGE=libgcrypt11
+             GCRYPT_PC_REQUIRES="libgcrypt11 >= $GCRYPT_MIN_VERSION, "],
             [GCRYPT_FOUND=no])
     fi
     if test "z$GCRYPT_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(GCRYPT, libgcrypt >= $GCRYPT_MIN_VERSION,
-            [GCRYPT_FOUND=yes GCRYPT_PACKAGE=libgcrypt],
+            [GCRYPT_FOUND=yes GCRYPT_PACKAGE=libgcrypt
+             GCRYPT_PC_REQUIRES="libgcrypt >= $GCRYPT_MIN_VERSION, "],
             [GCRYPT_FOUND=no])
     fi
 fi
@@ -1763,6 +1778,7 @@ AC_SUBST(GCRYPT_LIBS)
 AC_SUBST(GCRYPT_CRYPTO_LIB)
 AC_SUBST(GCRYPT_MIN_VERSION)
 AC_SUBST(GCRYPT_PACKAGE)
+AC_SUBST(GCRYPT_PC_REQUIRES)
 
 
 dnl ==========================================================================
@@ -2859,9 +2875,11 @@ else
     dnl -D_FORTIFY_SOURCE=2: glibc compile- and run-time checks for unsafe
     dnl libc usage. It is only effective when compiling with -O1 or higher,
     dnl so enable it only if CFLAGS already contain an optimization flag.
+    dnl Note: bare -O is equivalent to -O1 (and the pedantic block above
+    dnl appends exactly that), so match it as well.
     if test "z$build_on_linux" = "zyes" ; then
         case " $CFLAGS " in
-            *" -O1 "*|*" -O2 "*|*" -O3 "*|*" -Os "*|*" -Ofast "*|*" -Oz "*)
+            *" -O "*|*" -O1 "*|*" -O2 "*|*" -O3 "*|*" -Os "*|*" -Ofast "*|*" -Oz "*)
                 CFLAGS="$CFLAGS -D_FORTIFY_SOURCE=2"
                 ;;
         esac
@@ -2897,7 +2915,34 @@ fi
 dnl ==========================================================================
 dnl Checks for library functions (using all CFLAGS, etc)
 dnl ==========================================================================
-AC_CHECK_FUNCS([memset_explicit explicit_bzero memset_s])
+dnl memset_explicit, explicit_bzero and memset_s may need the _GNU_SOURCE
+dnl feature test macro to be declared (e.g., with -std=c99 and -pedantic-errors
+dnl the plain AC_CHECK_FUNCS test fails to compile); use explicit link checks
+dnl with the same prelude as the AC_CHECK_DECLS below (also see src/buffer.c).
+AC_LINK_IFELSE(
+   [AC_LANG_PROGRAM([[
+#if defined(__GNUC__) && !defined(_GNU_SOURCE)
+#define _GNU_SOURCE
+#endif
+#include <string.h>
+]],[[memset_explicit(NULL, 0, 0);]])],
+   [AC_DEFINE([HAVE_MEMSET_EXPLICIT], [1], [Define to 1 if you have the memset_explicit function.])])
+AC_LINK_IFELSE(
+   [AC_LANG_PROGRAM([[
+#if defined(__GNUC__) && !defined(_GNU_SOURCE)
+#define _GNU_SOURCE
+#endif
+#include <string.h>
+]],[[explicit_bzero(NULL, 0);]])],
+   [AC_DEFINE([HAVE_EXPLICIT_BZERO], [1], [Define to 1 if you have the explicit_bzero function.])])
+AC_LINK_IFELSE(
+   [AC_LANG_PROGRAM([[
+#if defined(__GNUC__) && !defined(_GNU_SOURCE)
+#define _GNU_SOURCE
+#endif
+#include <string.h>
+]],[[(void)memset_s(NULL, 0, 0, 0);]])],
+   [AC_DEFINE([HAVE_MEMSET_S], [1], [Define to 1 if you have the memset_s function.])])
 AC_CHECK_DECLS([memset_explicit, explicit_bzero, memset_s], [], [], [[
     #if defined(__GNUC__) && !defined(_GNU_SOURCE)
     #define _GNU_SOURCE

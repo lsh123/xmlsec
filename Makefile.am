@@ -132,6 +132,13 @@ FUZZ_TARGETS = \
 	$(NULL)
 endif
 
+# Build the fuzzers on demand so the check-fuzz target can be run directly in
+# a fresh build dir, before a full 'make' has built the subdirectories (same
+# pattern as $(TEST_APP)/$(UNIT_TEST_APP) above). The whole project is built
+# (not just apps/) so the library dependencies in src/ are available.
+$(FUZZ_TARGETS):
+	$(MAKE) $(AM_MAKEFLAGS) all
+
 check-fuzz: $(FUZZ_TARGETS)
 	@($(PRECHECK_COMMANDS) && \
 	echo "=================== Checking oss-fuzz harnesses =================================" && \
@@ -242,6 +249,12 @@ cleantar:
 	@($(RM) -f xmlsec*.tar.gz)
 
 
+# The man pages are generated from the xmlsec command line tool with help2man,
+# so they can only be built when the apps are configured (--disable-apps omits
+# apps/ from SUBDIRS and the tool is never built). Without the tool, skip the
+# man docs and let the man/Makefile.am dist/install hooks warn about it.
 docs-build: all
+if XMLSEC_APPS
 	@$(MAKE) $(AM_MAKEFLAGS) -C man docs
+endif
 	@$(MAKE) $(AM_MAKEFLAGS) -C docs docs

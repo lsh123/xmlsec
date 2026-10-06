@@ -639,7 +639,7 @@ xmlSecKeyDataEcXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(writeFunc != NULL, -1);
-    xmlSecAssert2(base64LineSize > 0, -1);
+    xmlSecAssert2((base64LineSize == 0) || (base64LineSize > 1), -1); /* see xmlSecBase64IsValidColumns */
 
     if(((xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate) & keyInfoCtx->keyReq.keyType) == 0) {
         /* we can have only private key or public key */
@@ -1186,7 +1186,7 @@ xmlSecKeyDataDhXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(writeFunc != NULL, -1);
-    xmlSecAssert2(base64LineSize > 0, -1);
+    xmlSecAssert2((base64LineSize == 0) || (base64LineSize > 1), -1); /* see xmlSecBase64IsValidColumns */
 
     if(((xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate) & keyInfoCtx->keyReq.keyType) == 0) {
         /* we can have only private key or public key */
@@ -1787,7 +1787,7 @@ xmlSecKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(writeFunc != NULL, -1);
-    xmlSecAssert2(base64LineSize > 0, -1);
+    xmlSecAssert2((base64LineSize == 0) || (base64LineSize > 1), -1); /* see xmlSecBase64IsValidColumns */
 
     if(((xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate) & keyInfoCtx->keyReq.keyType) == 0) {
         /* we can have only private key or public key */
@@ -2359,7 +2359,7 @@ xmlSecKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(writeFunc != NULL, -1);
-    xmlSecAssert2(base64LineSize > 0, -1);
+    xmlSecAssert2((base64LineSize == 0) || (base64LineSize > 1), -1); /* see xmlSecBase64IsValidColumns */
 
     if(((xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate) & keyInfoCtx->keyReq.keyType) == 0) {
         /* we can only write private key or public key */

@@ -284,6 +284,7 @@ xmlSecEncCtxBinaryEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl,
     xmlSecAssert2(encCtx != NULL, -1);
     xmlSecAssert2(encCtx->result == NULL, -1);
     xmlSecAssert2(tmpl != NULL, -1);
+    xmlSecAssert2(tmpl->doc != NULL, -1);
     xmlSecAssert2((data != NULL) || (dataSize == 0), -1);
 
     /* initialize context and add ID attributes to the list of known ids */
@@ -337,6 +338,7 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
     xmlSecAssert2(encCtx != NULL, -1);
     xmlSecAssert2(encCtx->result == NULL, -1);
     xmlSecAssert2(tmpl != NULL, -1);
+    xmlSecAssert2(tmpl->doc != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(node->doc != NULL, -1);
 
@@ -461,6 +463,7 @@ xmlSecEncCtxUriEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, const xmlChar* u
     xmlSecAssert2(encCtx != NULL, -1);
     xmlSecAssert2(encCtx->result == NULL, -1);
     xmlSecAssert2(tmpl != NULL, -1);
+    xmlSecAssert2(tmpl->doc != NULL, -1);
     xmlSecAssert2(uri != NULL, -1);
 
     /* initialize context and add ID attributes to the list of known ids */

@@ -710,6 +710,53 @@ xmlSecTransformRelationshipWriteAttribute(xmlSecTransformPtr transform, xmlOutpu
     return(0);
 }
 
+/*
+ * Write children.
+ *
+ * Step 3, point 2: remove any contents of the Relationship element. In
+ * non-legacy mode a Relationship element is written with no content even
+ * if the (non-conformant) input has content inside it; legacy mode keeps
+ * the old behaviour of serializing the children.
+ */
+static int
+xmlSecTransformRelationshipProcessElementNodeChildren(
+    xmlSecTransformPtr transform,
+    xmlOutputBufferPtr buf,
+    xmlNodePtr cur,
+    unsigned int depth,
+    xmlSecTransformCtxPtr transformCtx
+) {
+    int ret;
+
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(cur != NULL, -1);
+    xmlSecAssert2(cur->name != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+
+    /* do nothing if there are no children */
+    if(cur->children == NULL) {
+        return(0);
+    }
+
+    /* in non-legacy mode, skip writing children for the Relationship element */
+    if(
+        ((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_RELATIONSHIP_LEGACY) == 0) &&
+        (xmlSecCheckNodeName(cur, xmlSecNodeRelationship, xmlSecRelationshipsNs) == 1)
+     ) {
+        return(0);
+    }
+
+    /* process the list of child nodes */
+    ret = xmlSecTransformRelationshipProcessNodeList(transform, buf, cur->children, depth + 1, transformCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformRelationshipProcessNodeList", xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
+    return(0);
+}
+
 static int
 xmlSecTransformRelationshipProcessElementNode(xmlSecTransformPtr transform, xmlOutputBufferPtr buf, xmlNodePtr cur, unsigned int depth, xmlSecTransformCtxPtr transformCtx) {
     xmlAttrPtr attr;
@@ -831,13 +878,13 @@ xmlSecTransformRelationshipProcessElementNode(xmlSecTransformPtr transform, xmlO
         return(-1);
     }
 
-    /* write children */
-    if(cur->children != NULL) {
-        ret = xmlSecTransformRelationshipProcessNodeList(transform, buf, cur->children, depth + 1, transformCtx);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecTransformRelationshipProcessNodeList", xmlSecTransformGetName(transform));
-            return(-1);
-        }
+    /*
+     * Write children.
+     */
+    ret = xmlSecTransformRelationshipProcessElementNodeChildren(transform, buf, cur, depth, transformCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformRelationshipProcessElementNodeChildren", xmlSecTransformGetName(transform));
+        return(-1);
     }
 
     /* write closing node */

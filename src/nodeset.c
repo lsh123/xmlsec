@@ -150,27 +150,18 @@ xmlSecNodeSetCheckNode(xmlNodeSetPtr nodes, xmlNodePtr node, xmlNodePtr parent) 
         /*
          * libxml2 stores namespace nodes in XPath node sets as copies whose
          * ->next field points at the hosting element; match on that plus the
-         * prefix. This is done manually (instead of relying on
-         * xmlXPathNodeSetContains) because older libxml2 versions compare
-         * namespace nodes by pointer only, which would never match.
+         * prefix and the namespace URI. This is done manually (instead of
+         * relying on xmlXPathNodeSetContains) because older libxml2 versions
+         * compare namespace nodes by pointer only, which would never match.
          *
-         * Matching on (hosting element, prefix) without comparing the
-         * namespace URI is sufficient: an element can have at most one
-         * namespace declaration per prefix (XML well-formedness forbids
-         * duplicate namespace prefixes on the same element), and libxml2
-         * enforces this both in the parser (a duplicate declaration on the
-         * same element is rejected) and in xmlNewNs() (a duplicate prefix
-         * on the same node is rejected), so two declarations with the same
-         * prefix but different URIs cannot exist on one element.
-         *
-         * Limitation: because the namespace URI is not compared, a shadowed
-         * same-prefix namespace on an ancestor, when checked with a
-         * descendant (shadowing) element as the hosting context, can
-         * incorrectly match the descendant's own same-prefix declaration
-         * (different URI). The internal walk avoids this via the
-         * closest-declaration check (xmlSearchNs) in
-         * xmlSecNodeSetWalkRecursiveCallback; it only manifests on direct
-         * xmlSecNodeSetContains() calls (e.g. the C14N visibility callback).
+         * On a single element the prefix uniquely identifies the namespace
+         * declaration (XML well-formedness forbids duplicate namespace
+         * prefixes on the same element, and libxml2 enforces this both in
+         * the parser and in xmlNewNs()); the namespace URI is compared as
+         * well so that a shadowed same-prefix namespace on an ancestor
+         * (different URI) cannot match the descendant's own same-prefix
+         * declaration when the descendant (shadowing) element is used as
+         * the hosting context.
          */
         for(ii = 0; ii < nodes->nodeNr; ii++) {
             if(nodes->nodeTab[ii]->type != XML_NAMESPACE_DECL) {
@@ -178,7 +169,8 @@ xmlSecNodeSetCheckNode(xmlNodeSetPtr nodes, xmlNodePtr node, xmlNodePtr parent) 
             }
             ns = (xmlNsPtr)nodes->nodeTab[ii];
             if((ns->next == (xmlNsPtr)hostingNode) &&
-               (xmlStrEqual(ns->prefix, ((xmlNsPtr)node)->prefix))) {
+               (xmlStrEqual(ns->prefix, ((xmlNsPtr)node)->prefix)) &&
+               (xmlStrEqual(ns->href, ((xmlNsPtr)node)->href))) {
                 return(1);
             }
         }
@@ -215,7 +207,7 @@ xmlSecNodeSetCheckNodeOrParent(xmlNodeSetPtr nodes, xmlNodePtr node, xmlNodePtr 
     return(0);
 }
 
-/* checks node against THIS nodeset only */
+/* checks node against THIS nodeset only: returns 1 if the node is in the set, 0 otherwise or if an error occurs */
 static int
 xmlSecNodeSetContainsNode(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent) {
     xmlSecAssert2(nset != NULL, 0);
@@ -256,12 +248,13 @@ xmlSecNodeSetContainsNode(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr par
 
 /**
  * @brief Checks if a node is in the nodes set.
- * @details Checks whether the @p node is in the nodes set or not.
+ * @details Checks whether the @p node is in the nodes set or not. The function returns
+ * 0 (not visible) in case of an error to match the LibXML2 C14N IsVisibleCallback expectations.
  * @param nset the pointer to node set.
  * @param node the pointer to XML node to check.
  * @param parent the pointer to @p node parent node.
  * @return 1 if the @p node is in the nodes set @p nset, 0 if it is not
- * or if @p node is NULL, and a negative value if an error occurs.
+ * or if @p node is NULL or  if an error occurs.
  */
 int
 xmlSecNodeSetContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent) {
@@ -304,11 +297,11 @@ xmlSecNodeSetContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent)
             default:
                 xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_OPERATION, NULL,
                     "node set operation=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(curNset->op));
-                return(-1);
+                return(0);
             }
         }
         curNset = curNset->next;
-        xmlSecAssert2(curNset != NULL, -1);
+        xmlSecAssert2(curNset != NULL, 0);
     } while(curNset != nset);
 
     /* done */

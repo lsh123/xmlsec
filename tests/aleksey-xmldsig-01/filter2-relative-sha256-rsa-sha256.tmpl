@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+  <data id="data-1">first data element</data>
+  <data id="data-2">second data element</data>
+  <dsig:Signature>
+    <dsig:SignedInfo>
+      <dsig:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+      <dsig:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+      <dsig:Reference URI="">
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="http://www.w3.org/2002/06/xmldsig-filter2">
+            <XPath xmlns="http://www.w3.org/2002/06/xmldsig-filter2" Filter="intersect">descendant::data</XPath>
+          </dsig:Transform>
+          <dsig:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+        <dsig:DigestValue></dsig:DigestValue>
+      </dsig:Reference>
+    </dsig:SignedInfo>
+    <dsig:SignatureValue></dsig:SignatureValue>
+    <dsig:KeyInfo>
+      <dsig:KeyName>TestKeyName-rsa-2048</dsig:KeyName>
+      <dsig:KeyValue/>
+    </dsig:KeyInfo>
+  </dsig:Signature>
+</root>

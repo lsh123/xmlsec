@@ -589,6 +589,8 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefAgreementMethod[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeOriginatorKeyInfo[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRecipientKeyInfo[];
 
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeKANonce[];
+
 /******************************************************************************
  *
  * EncapsulationMechanism

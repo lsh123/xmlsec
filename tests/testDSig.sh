@@ -1219,6 +1219,30 @@ execDSigTest $res_success \
     "--enabled-reference-uris any $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
+# Relationship transform: any contents of the Relationship element must be removed (spec step 3.2).
+execDSigTest $res_success \
+    "aleksey-xmldsig-01" \
+    "enveloping-sha256-rsa-sha256-relationship-content" \
+    "sha256 rsa-sha256 relationship" \
+    "rsa x509" \
+    "--enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "--enabled-reference-uris any $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+# XPath2 (xmldsig-filter2) transform with a relative expression: per the xmldsig-filter2
+# REC (sec 3.3) the expression is evaluated with the document root node (the document node
+# itself) as the context node, context position and size 1. Without the context node the
+# relative expression "descendant::data" resolves to an empty node set and the stored
+# reference digest no longer matches.
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/filter2-relative-sha256-rsa-sha256" \
+    "xpath2 c14n sha256 rsa-sha256" \
+    "key-value rsa" \
+    "--enabled-key-data key-value,rsa" \
+    "--enabled-key-data key-value,key-name,rsa $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,rsa"
+
 # Relationship transform (legacy mode): with --relationship-legacy the old behaviour is restored,
 # so text/comment nodes are serialized as spurious elements instead of being removed.
 execDSigTest $res_success \

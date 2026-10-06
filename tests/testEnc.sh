@@ -605,6 +605,16 @@ execEncTest $res_success \
     "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --max-encrypted-key-level 3 --session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ec/ec-prime256v1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ec/ec-prime256v1-second-pubkey.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha512_kw_aes256_aes128gcm.data" \
     "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --max-encrypted-key-level 3 $priv_key_option:recipient-key-name $topfolder/keys/ec/ec-prime256v1-second-key.$priv_key_format --pwd secret123 $pub_key_option:originator-key-name $topfolder/keys/ec/ec-prime256v1-pubkey.$pub_key_format"
 
+# ECDH + ConcatKDF + SHA512: optional leading KA-Nonce must be accepted (xmlenc-core1 AgreementMethodType).
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha512_kw_aes256_aes128gcm_kanonce" \
+    "aes256-gcm kw-aes256 ecdh-es concatkdf sha512" \
+    "agreement-method enc-key ec" \
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --max-encrypted-key-level 3 $priv_key_option:recipient-key-name $topfolder/keys/ec/ec-prime256v1-second-key.$priv_key_format --pwd secret123 $pub_key_option:originator-key-name $topfolder/keys/ec/ec-prime256v1-pubkey.$pub_key_format" \
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --max-encrypted-key-level 3 --session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ec/ec-prime256v1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ec/ec-prime256v1-second-pubkey.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha512_kw_aes256_aes128gcm_kanonce.data" \
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --max-encrypted-key-level 3 $priv_key_option:recipient-key-name $topfolder/keys/ec/ec-prime256v1-second-key.$priv_key_format --pwd secret123 $pub_key_option:originator-key-name $topfolder/keys/ec/ec-prime256v1-pubkey.$pub_key_format"
+
 # ECDH + ConcatKDF + SHA3
 execEncTest $res_success \
     "" \

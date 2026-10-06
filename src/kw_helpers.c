@@ -311,6 +311,8 @@ xmlSecKWDes3Encode(xmlSecKWDes3Id kwDes3Id, xmlSecTransformPtr transform,
     outWritten2 = 0;
     ret = kwDes3Id->sha1(transform, in, inSize, sha1, sizeof(sha1), &outWritten2);
     if((ret < 0) || (outWritten2 != sizeof(sha1))) {
+        /* the key checksum (sha1) is not needed anymore; wipe it from the stack */
+        xmlSecMemCleanse(sha1, sizeof(sha1));
         xmlSecInternalError2("kwDes3Id->sha1", NULL,
             "outWritten2=" XMLSEC_SIZE_FMT, outWritten2);
         return(-1);

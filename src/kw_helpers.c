@@ -401,21 +401,19 @@ xmlSecKWDes3Decode(xmlSecKWDes3Id kwDes3Id, xmlSecTransformPtr transform,
     xmlSecAssert2(outSize >= inSize, -1);
     xmlSecAssert2(outWritten != NULL, -1);
 
-    /* the unwrapped key is at least 16 bytes (a 128-bit DES key), so the input
-     * must be at least the key plus the 8-byte IV and the 8-byte key checksum
-     * (CKS); reject smaller inputs which would otherwise "unwrap" to a key
-     * shorter than 16 bytes */
-    if(inSize < 2 * (XMLSEC_KW_DES3_IV_LENGTH + XMLSEC_KW_DES3_BLOCK_LENGTH)) {
-        xmlSecInvalidSizeLessThanError("Input data", inSize,
-            2 * (XMLSEC_KW_DES3_IV_LENGTH + XMLSEC_KW_DES3_BLOCK_LENGTH), NULL);
+    /* reject smaller or larger inputs */
+    if(inSize < XMLSEC_KW_DES3_MIN_OUTPUT_SIZE) {
+        xmlSecInvalidSizeLessThanError("Input data", inSize, XMLSEC_KW_DES3_MIN_OUTPUT_SIZE, NULL);
+        return(-1);
+    } else if(inSize > XMLSEC_KW_DES3_MAX_OUTPUT_SIZE) {
+        xmlSecInvalidSizeMoreThanError("Input data", inSize, XMLSEC_KW_DES3_MAX_OUTPUT_SIZE, NULL);
         return(-1);
     }
 
     /* step 2: first decryption with static IV, result is TEMP3 */
     tmp = xmlSecBufferCreate(inSize);
     if(tmp == NULL) {
-        xmlSecInternalError2("xmlSecBufferCreate", NULL,
-            "inSize=" XMLSEC_SIZE_FMT, inSize);
+        xmlSecInternalError2("xmlSecBufferCreate", NULL, "inSize=" XMLSEC_SIZE_FMT, inSize);
         goto done;
     }
     tmpBuf = xmlSecBufferGetData(tmp);
@@ -429,8 +427,10 @@ xmlSecKWDes3Decode(xmlSecKWDes3Id kwDes3Id, xmlSecTransformPtr transform,
         goto done;
     }
     if (outWritten2 < XMLSEC_KW_DES3_IV_LENGTH) {
-        xmlSecInvalidSizeLessThanError("kwDes3Id->decrypt(iv)",
-            outWritten2, XMLSEC_KW_DES3_IV_LENGTH, NULL);
+        xmlSecInvalidSizeLessThanError("kwDes3Id->decrypt(iv)", outWritten2, XMLSEC_KW_DES3_IV_LENGTH, NULL);
+        goto done;
+    } else if(outWritten2 > tmpSize) {
+        xmlSecInvalidSizeMoreThanError("kwDes3Id->decrypt", outWritten2, tmpSize, NULL);
         goto done;
     }
     tmpSize = outWritten2;
@@ -470,7 +470,6 @@ xmlSecKWDes3Decode(xmlSecKWDes3Id kwDes3Id, xmlSecTransformPtr transform,
 
     /* check sha1 in constant time: the checksum is derived from the unwrapped
      * key, so the number of matching leading bytes must not leak through timing */
-    xmlSecAssert2(XMLSEC_KW_DES3_BLOCK_LENGTH <= sizeof(sha1), -1);
     ret = xmlSecMemEqual(sha1, out + outSz, XMLSEC_KW_DES3_BLOCK_LENGTH);
     if(ret < 0) {
         xmlSecInternalError("xmlSecMemEqual", NULL);
@@ -570,6 +569,7 @@ xmlSecTransformKWRfc3394SetKeyReq(xmlSecTransformPtr transform, xmlSecTransformK
     xmlSecAssert2(transform != NULL, -1);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->keyId != NULL, -1);
+    xmlSecAssert2(ctx->keyExpectedSize < XMLSEC_SIZE_MAX / 8, -1);
     xmlSecAssert2(keyReq != NULL, -1);
 
     keyReq->keyId   = ctx->keyId;
@@ -821,6 +821,7 @@ xmlSecKWRfc3394Encode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transfor
     xmlSecAssert2(transform != NULL, -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize > 0, -1);
+    xmlSecAssert2((inSize % 8) == 0, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= inSize + XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE, -1);
     xmlSecAssert2(outWritten != NULL, -1);
@@ -897,6 +898,7 @@ xmlSecKWRfc3394Decode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transfor
             2 * XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE, NULL);
         return(-1);
     }
+    xmlSecAssert2((inSize % 8) == 0, -1);
 
     /* copy input */
     if(in != out) {

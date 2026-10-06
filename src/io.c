@@ -13,6 +13,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 #include <libxml/uri.h>
 #include <libxml/tree.h>
@@ -251,6 +252,9 @@ xmlSecIOFileExtractFilename(char const* filename, char** out) {
 
     xmlSecAssert2(filename != NULL, -1);
 
+    /* just in case */
+    (*out) = NULL;
+
     if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file://localhost/", 17)) {
         escaped = &filename[16];
     } else if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file:///", 8)) {
@@ -268,7 +272,11 @@ xmlSecIOFileExtractFilename(char const* filename, char** out) {
 
 #ifdef XMLSEC_WINDOWS
     /* Ignore slash like in file:///C:/file.txt */
-    escaped += 1;
+    if(xmlStrlen(BAD_CAST escaped) >= 4) {
+        if((escaped[0] == '/') && isalpha((unsigned char)escaped[1]) && (escaped[2] == ':') && ((escaped[3] == '/') || (escaped[3] == '\\'))) {
+            escaped += 1;
+        }
+    }
 #endif /* XMLSEC_WINDOWS */
 
     unescaped = xmlURIUnescapeString(escaped, 0, NULL);

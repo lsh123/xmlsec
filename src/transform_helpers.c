@@ -1940,6 +1940,7 @@ int
 xmlSecTransformRsaOaepParamsRead(xmlSecTransformRsaOaepParamsPtr oaepParams, xmlNodePtr node) {
     xmlNodePtr cur;
     int ret;
+    int oaepParamsPresent = 0;
 
     xmlSecAssert2(oaepParams != NULL, -1);
     xmlSecAssert2(xmlSecBufferGetSize(&(oaepParams->oaepParams)) == 0, -1);
@@ -1952,7 +1953,7 @@ xmlSecTransformRsaOaepParamsRead(xmlSecTransformRsaOaepParamsPtr oaepParams, xml
     cur = xmlSecGetNextElementNode(node->children);
     while(cur != NULL) {
         if(xmlSecCheckNodeName(cur, xmlSecNodeRsaOAEPparams, xmlSecEncNs)) {
-            if(xmlSecBufferGetSize(&(oaepParams->oaepParams)) != 0) {
+            if(oaepParamsPresent != 0) {
                 xmlSecInvalidNodeError(cur, NULL, "OAEPparams already set");
                 return(-1);
             }
@@ -1961,6 +1962,10 @@ xmlSecTransformRsaOaepParamsRead(xmlSecTransformRsaOaepParamsPtr oaepParams, xml
                 xmlSecInternalError("xmlSecBufferBase64NodeContentRead", NULL);
                 return(-1);
             }
+            /* the decoded value can legitimately be empty, so the buffer size
+             * cannot serve as the "already set" marker; track presence instead
+             * (same pattern as the digestAlgorithm/mgf1DigestAlgorithm checks) */
+            oaepParamsPresent = 1;
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeDigestMethod, xmlSecDSigNs)) {
             if(oaepParams->digestAlgorithm != NULL) {
                 xmlSecInvalidNodeError(cur, NULL, "DigestMethod already set");

@@ -461,7 +461,9 @@ xmlSecSimpleKeysStoreEnableAllKeyData(xmlSecKeyInfoCtxPtr keyInfoCtx) {
 
 /**
  * @brief Reads keys from an XML file using a custom adopt callback.
- * @details Reads keys from an XML file.
+ * @details Reads keys from an XML file. The X509 certificates and other key information are
+ * extracted and added to the keys store using the provided adopt callback. The certificates
+ * are not verified.
  * @param store the pointer to simple keys store.
  * @param uri the filename.
  * @param keysMngr the pointer to associated keys manager.
@@ -470,9 +472,12 @@ xmlSecSimpleKeysStoreEnableAllKeyData(xmlSecKeyInfoCtxPtr keyInfoCtx) {
  * @return 0 on success or a negative value if an error occurs.
  */
 int
-xmlSecSimpleKeysStoreLoad_ex(xmlSecKeyStorePtr store, const char *uri,
-                            xmlSecKeysMngrPtr keysMngr XMLSEC_ATTRIBUTE_UNUSED,
-                            xmlSecSimpleKeysStoreAdoptKeyFunc adoptKeyFunc) {
+xmlSecSimpleKeysStoreLoad_ex(
+    xmlSecKeyStorePtr store,
+    const char *uri,
+    xmlSecKeysMngrPtr keysMngr XMLSEC_ATTRIBUTE_UNUSED,
+    xmlSecSimpleKeysStoreAdoptKeyFunc adoptKeyFunc
+) {
     xmlDocPtr doc;
     xmlNodePtr root;
     xmlNodePtr cur;
@@ -557,6 +562,7 @@ xmlSecSimpleKeysStoreLoad_ex(xmlSecKeyStorePtr store, const char *uri,
             }
         } else {
             /* we have an unknown key in our file, just ignore it */
+            xmlSecInternalError("xmlSecKeyIsValid", xmlSecKeyStoreGetName(store));
             xmlSecKeyDestroy(key);
         }
         cur = xmlSecGetNextElementNode(cur->next);
@@ -601,15 +607,15 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecK
     list = xmlSecSimpleKeysStoreGetCtx(store);
     xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecKeyPtrListId), -1);
 
+    idsList = xmlSecKeyDataIdsGet();
+    xmlSecAssert2(idsList != NULL, -1);
+
     /* create doc */
     doc = xmlSecCreateTree(BAD_CAST "Keys", xmlSecNs);
     if(doc == NULL) {
         xmlSecInternalError("xmlSecCreateTree", xmlSecKeyStoreGetName(store));
         return(-1);
     }
-
-    idsList = xmlSecKeyDataIdsGet();
-    xmlSecAssert2(idsList != NULL, -1);
 
     keysSize = xmlSecPtrListGetSize(list);
     idsSize = xmlSecPtrListGetSize(idsList);

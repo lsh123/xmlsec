@@ -1218,9 +1218,11 @@ xmlSecX509NameRead(const xmlChar *str, xmlSecX509NameReplacements *replacements,
                     continue;
                 }
 
-                /* found replacement */
+                /* found replacement; xmlStrPrintf() returns the number of bytes
+                 * that *would* have been written, so truncation must be detected
+                 * explicitly (a return value >= buffer size means the name was cut) */
                 ret = xmlStrPrintf(BAD_CAST name, sizeof(name), "%s", cur->replacement);
-                if(ret < 0) {
+                if((ret < 0) || ((size_t)ret >= sizeof(name))) {
                     xmlSecInternalError("xmlStrPrintf()", NULL);
                     return(-1);
                 }
@@ -1279,7 +1281,10 @@ xmlSecX509SerialNumberWrite(const xmlSecByte *data, xmlSecSize dataSize) {
         ++data;
         --dataSize;
     }
-    xmlSecAssert2(dataSize <= XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES, NULL);
+    if(dataSize > XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES) {
+        xmlSecInvalidDataError("Serial number is longer than supported length", NULL);
+        goto done;
+    }
 
     workBytesLen = (size_t)dataSize;
 

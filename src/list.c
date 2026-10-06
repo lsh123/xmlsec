@@ -131,20 +131,18 @@ xmlSecPtrListFinalize(xmlSecPtrListPtr list) {
 void
 xmlSecPtrListEmpty(xmlSecPtrListPtr list) {
     xmlSecAssert(xmlSecPtrListIsValid(list));
+    xmlSecAssert((list->use == 0) || (list->data != NULL));
 
     if(list->id->destroyItem != NULL) {
         xmlSecSize pos;
 
         for(pos = 0; pos < list->use; ++pos) {
-            xmlSecAssert(list->data != NULL);
             if(list->data[pos] != NULL) {
                 list->id->destroyItem(list->data[pos]);
             }
         }
     }
-    if(list->max > 0) {
-        xmlSecAssert(list->data != NULL);
-
+    if(list->data != NULL) {
         xmlFree(list->data);
     }
     list->max = list->use = 0;
@@ -188,10 +186,14 @@ xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
         xmlSecInternalError("list klass is not copyable (destroyItem set without duplicateItem)", xmlSecPtrListGetName(dst));
         return(-1);
     }
-
-    initialUse = dst->use;
+    if(dst->use > (XMLSEC_SIZE_MAX - src->use)) {
+        xmlSecInternalError3("xmlSecPtrListCopy", xmlSecPtrListGetName(dst),
+            "dst->use=" XMLSEC_SIZE_FMT "; src->use=" XMLSEC_SIZE_FMT, dst->use, src->use);
+        return(-1);
+    }
 
     /* allocate memory */
+    initialUse = dst->use;
     ret = xmlSecPtrListEnsureSize(dst, dst->use + src->use);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecPtrListEnsureSize", xmlSecPtrListGetName(dst),
@@ -412,7 +414,7 @@ xmlSecPtrListRemove(xmlSecPtrListPtr list, xmlSecSize pos) {
  * items towards the beginning of the list, and return the removed item back.
  * @param list the pointer to list.
  * @param pos the position.
- * @return the pointer to the list item.
+ * @return the pointer to the list item. The caller is responsible for destroying the returned item.
  */
 xmlSecPtr
 xmlSecPtrListRemoveAndReturn(xmlSecPtrListPtr list, xmlSecSize pos) {
@@ -434,7 +436,8 @@ xmlSecPtrListRemoveAndReturn(xmlSecPtrListPtr list, xmlSecSize pos) {
 /**
  * @brief Removes and returns the last item from the list.
  * @param list the pointer to list.
- * @return the pointer to the last list item, or NULL if the list is empty.
+ * @return the pointer to the last list item, or NULL if the list is empty. The caller is
+ * responsible for destroying the returned item.
  */
 xmlSecPtr
 xmlSecPtrListPopLast(xmlSecPtrListPtr list) {
@@ -464,6 +467,8 @@ xmlSecPtrListHeapSiftDown(xmlSecPtr* data, xmlSecSize size, xmlSecSize root, xml
     xmlSecSize left;
     xmlSecSize right;
     xmlSecSize largest;
+
+    xmlSecAssert(size > 0);
 
     for(;;) {
 

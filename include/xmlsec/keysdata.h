@@ -332,7 +332,7 @@ XMLSEC_EXPORT int               xmlSecKeyDataBinWrite           (xmlSecKeyDataId
  */
 #define xmlSecKeyDataCheckSize(data, size) \
         (xmlSecKeyDataIsValid(( data )) && \
-         (( data )->id->objSize >= size))
+         (( data )->id->objSize >= ( size )))
 
 /******************************************************************************
  *
@@ -620,7 +620,7 @@ XMLSEC_EXPORT void              xmlSecKeyDataStoreDestroy       (xmlSecKeyDataSt
  */
 #define xmlSecKeyDataStoreCheckSize(store, size) \
         (xmlSecKeyDataStoreIsValid(( store )) && \
-         (( store )->id->objSize >= size))
+         (( store )->id->objSize >= ( size )))
 
 
 /******************************************************************************

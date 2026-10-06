@@ -164,7 +164,7 @@ static int
 xmlSecNssKWRfc3394Initialize(xmlSecTransformPtr transform) {
     xmlSecNssKWRfc3394CtxPtr ctx;
     xmlSecKeyDataId keyId = NULL;
-    xmlSecSize keyExpectedSize;
+    xmlSecSize keyExpectedSize = 0;
     int ret;
 
     xmlSecAssert2(xmlSecNssKWRfc3394CheckId(transform), -1);
@@ -211,6 +211,7 @@ xmlSecNssKWRfc3394Initialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
+    xmlSecAssert2(keyExpectedSize > 0, -1);
     ret = xmlSecTransformKWRfc3394Initialize(transform, &(ctx->parentCtx),
         &xmlSecNssKWRfc3394Klass, keyId,
         keyExpectedSize);

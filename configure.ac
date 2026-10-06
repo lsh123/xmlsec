@@ -2625,15 +2625,22 @@ AC_ARG_ENABLE([apps_crypto_dl], [AS_HELP_STRING([--enable-apps-crypto-dl],[enabl
 if test "z$enable_apps_crypto_dl" = "z" ; then
     enable_apps_crypto_dl="$enable_crypto_dl"
 fi
+
 if test "z$enable_apps_crypto_dl" = "zno" ; then
     XMLSEC_NO_APPS_CRYPTO_DYNAMIC_LOADING="1"
     AC_MSG_RESULT([disabled])
 elif test "z$enable_crypto_dl" = "zno" ; then
-    AC_MSG_RESULT([disabled])
-    AC_MSG_ERROR(xmlsec-crypto libraries dynamic loading support in xmlsec command line tool is requested but dynamic loading in xmlsec itself is disabled)
+    XMLSEC_NO_APPS_CRYPTO_DYNAMIC_LOADING="1"
+    AC_MSG_RESULT([disabled, dynamic loading was disabled])
+    if test "z$enable_apps_crypto_dl" = "zyes" ; then
+        AC_MSG_ERROR(xmlsec-crypto libraries dynamic loading support in xmlsec command line tool is requested but dynamic loading in xmlsec itself is disabled)
+    fi
 elif test "z$LIBLTDL_FOUND" != "zyes" ; then
-    AC_MSG_RESULT([disabled])
-    AC_MSG_ERROR(xmlsec-crypto libraries dynamic loading support in xmlsec command line tool is requested but LibLTDL was not found)
+    XMLSEC_NO_APPS_CRYPTO_DYNAMIC_LOADING="1"
+    AC_MSG_RESULT([disabled, LibLTDL is not found])
+    if test "z$enable_apps_crypto_dl" = "zyes" ; then
+        AC_MSG_ERROR(xmlsec-crypto libraries dynamic loading support in xmlsec command line tool is requested but LibLTDL was not found)
+    fi
 else
     XMLSEC_APP_DEFINES="$XMLSEC_APP_DEFINES -DXMLSEC_CRYPTO_DYNAMIC_LOADING=1"
     XMLSEC_NO_APPS_CRYPTO_DYNAMIC_LOADING="0"
@@ -2878,6 +2885,7 @@ else
     dnl Note: bare -O is equivalent to -O1 (and the pedantic block above
     dnl appends exactly that), so match it as well.
     if test "z$build_on_linux" = "zyes" ; then
+        dnl A bare "-O" means "-O1", so it also satisfies the -O1 requirement.
         case " $CFLAGS " in
             *" -O "*|*" -O1 "*|*" -O2 "*|*" -O3 "*|*" -Os "*|*" -Ofast "*|*" -Oz "*)
                 CFLAGS="$CFLAGS -D_FORTIFY_SOURCE=2"
@@ -2890,7 +2898,13 @@ else
     dnl -Wl,-z,now: perform all relocations at load time (BIND_NOW).
     dnl GNU ld only (required for -pie); not supported on Windows (PE linker).
     if test "z$build_on_windows" != "zyes" -a "z$with_gnu_ld" = "zyes" ; then
-        LDFLAGS="$LDFLAGS -pie"
+        dnl -pie is only meaningful for dynamic executables. With
+        dnl --enable-static-linking the apps are linked with -static, and
+        dnl toolchains without static-pie support reject "-static -pie"
+        dnl together; skip -pie in that configuration.
+        if test "z$XMLSEC_STATIC_BINARIES" != "z-static" ; then
+            LDFLAGS="$LDFLAGS -pie"
+        fi
         LDFLAGS="$LDFLAGS -Wl,-z,relro -Wl,-z,now"
     fi
 

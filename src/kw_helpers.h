@@ -34,6 +34,19 @@ extern "C" {
 #define XMLSEC_KW_DES3_BLOCK_LENGTH                 ((xmlSecSize)8)
 #define XMLSEC_KW_DES3_SHA_DIGEST_LENGTH            ((xmlSecSize)20)
 
+/* https://www.w3.org/TR/2002/REC-xmlenc-core-20021210/
+ * Check if the length of the cipher text is reasonable given the key type. It must be 40 bytes
+ * for a 168 bit key and either 32, 40, or 48 bytes for a 128, 192, or 256 bit key.
+ */
+
+/* the unwrapped key is at least 16 bytes (a 128-bit key), so the input
+ * must be at least the key plus the 8-byte IV and the 8-byte key checksum (CKS) */
+#define XMLSEC_KW_DES3_MIN_OUTPUT_SIZE              ((xmlSecSize)(16 + XMLSEC_KW_DES3_IV_LENGTH + XMLSEC_KW_DES3_BLOCK_LENGTH))
+
+/* the unwrapped key is at most 32 bytes (a 256-bit key), so the input
+ * must be at most the key plus the 8-byte IV and the 8-byte key checksum (CKS) */
+#define XMLSEC_KW_DES3_MAX_OUTPUT_SIZE              ((xmlSecSize)(32 + XMLSEC_KW_DES3_IV_LENGTH + XMLSEC_KW_DES3_BLOCK_LENGTH))
+
 
 typedef int  (*xmlSecKWDes3Sha1Method)              (xmlSecTransformPtr transform,
                                                      const xmlSecByte * in,

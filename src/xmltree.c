@@ -225,9 +225,11 @@ xmlSecGetNodeContentAsSize(const xmlNodePtr cur, xmlSecSize defValue, xmlSecSize
         return(0);
     }
 
-    /* reject negative values */
-    if(*start == '-') {
-        xmlSecInvalidNodeContentError(cur, NULL, "can't parse node content as size (negative value)");
+    /* reject negative values and the non-canonical explicit '+' sign: the
+     * XML Schema types these values come from (xs:positiveInteger /
+     * xs:nonNegativeInteger) forbid any sign, but strtoull() would accept one */
+    if((*start == '-') || (*start == '+')) {
+        xmlSecInvalidNodeContentError(cur, NULL, "can't parse node content as size (invalid sign)");
         xmlFree(content);
         return(-1);
     }

@@ -193,6 +193,13 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
             return(-1);
         }
 
+        /* defensive: the node set owns its document; release any set left over
+         * from a previous final push before replacing it */
+        if(transform->outNodes != NULL) {
+            xmlSecNodeSetDestroy(transform->outNodes);
+            transform->outNodes = NULL;
+        }
+
         transform->outNodes = xmlSecNodeSetCreate(ctx->parserCtx->myDoc, NULL, xmlSecNodeSetTree);
         if(transform->outNodes == NULL) {
             xmlSecInternalError("xmlSecNodeSetCreate", xmlSecTransformGetName(transform));
@@ -457,6 +464,15 @@ xmlSecParseMemoryExt(const xmlSecByte *prefix, xmlSecSize prefixSize,
         xmlSecXmlParserError("xmlParseChunk", ctxt, NULL);
         goto done;
     }
+
+    /* not all supported versions of libxml2 signal malformed documents through
+     * the xmlParseChunk() return value; check the wellFormed flag explicitly
+     * (same contract as xmlSecParseFile and xmlSecParseMemory) */
+    if(!(ctxt->wellFormed)) {
+        xmlSecInternalError("document is not well formed", NULL);
+        goto done;
+    }
+
     doc = ctxt->myDoc;
     ctxt->myDoc = NULL;
 

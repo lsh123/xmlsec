@@ -438,6 +438,7 @@ xmlNodePtr
 xmlSecTmplReferenceAddTransform(xmlNodePtr referenceNode, xmlSecTransformId transformId) {
     xmlNodePtr transformsNode;
     xmlNodePtr res;
+    int transformsNodeWasCreated = 0;
 
     xmlSecAssert2(referenceNode != NULL, NULL);
     xmlSecAssert2(transformId != NULL, NULL);
@@ -447,6 +448,8 @@ xmlSecTmplReferenceAddTransform(xmlNodePtr referenceNode, xmlSecTransformId tran
     transformsNode = xmlSecFindChild(referenceNode, xmlSecNodeTransforms, xmlSecDSigNs);
     if(transformsNode == NULL) {
         xmlNodePtr tmp;
+
+        transformsNodeWasCreated = 1;
 
         tmp = xmlSecGetNextElementNode(referenceNode->children);
         if(tmp == NULL) {
@@ -474,6 +477,12 @@ xmlSecTmplReferenceAddTransform(xmlNodePtr referenceNode, xmlSecTransformId tran
         xmlSecXmlError2("xmlSetProp", NULL, "name=%s", xmlSecErrorsSafeString(xmlSecAttrAlgorithm));
         xmlUnlinkNode(res);
         xmlFreeNode(res);
+        if(transformsNodeWasCreated != 0) {
+            /* the container was created by this call and is now empty: remove
+             * it so the template is left exactly as it was on entry */
+            xmlUnlinkNode(transformsNode);
+            xmlFreeNode(transformsNode);
+        }
         return(NULL);
     }
 
@@ -664,6 +673,10 @@ xmlSecTmplPrepareEncData(xmlNodePtr parentNode, xmlSecTransformId encMethodId) {
         }
         if(xmlSetProp(cur, xmlSecAttrAlgorithm, encMethodId->href) == NULL) {
             xmlSecXmlError2("xmlSetProp", NULL, "name=%s", xmlSecErrorsSafeString(xmlSecAttrAlgorithm));
+            /* an EncryptionMethod without its required Algorithm attribute is
+             * invalid: remove the node we just added before failing */
+            xmlUnlinkNode(cur);
+            xmlFreeNode(cur);
             return(-1);
         }
     }
@@ -952,6 +965,7 @@ xmlSecTmplCipherReferenceAddTransform(xmlNodePtr cipherReferenceNode,
                                   xmlSecTransformId transformId) {
     xmlNodePtr transformsNode;
     xmlNodePtr res;
+    int transformsNodeWasCreated = 0;
 
     xmlSecAssert2(cipherReferenceNode != NULL, NULL);
     xmlSecAssert2(transformId != NULL, NULL);
@@ -959,6 +973,7 @@ xmlSecTmplCipherReferenceAddTransform(xmlNodePtr cipherReferenceNode,
 
     transformsNode = xmlSecFindChild(cipherReferenceNode, xmlSecNodeTransforms, xmlSecEncNs);
     if(transformsNode == NULL) {
+        transformsNodeWasCreated = 1;
         transformsNode = xmlSecAddChild(cipherReferenceNode, xmlSecNodeTransforms, xmlSecEncNs);
         if(transformsNode == NULL) {
             xmlSecInternalError("xmlSecAddChild(xmlSecNodeTransforms)", NULL);
@@ -976,6 +991,12 @@ xmlSecTmplCipherReferenceAddTransform(xmlNodePtr cipherReferenceNode,
         xmlSecXmlError2("xmlSetProp", NULL, "name=%s", xmlSecErrorsSafeString(xmlSecAttrAlgorithm));
         xmlUnlinkNode(res);
         xmlFreeNode(res);
+        if(transformsNodeWasCreated != 0) {
+            /* the container was created by this call and is now empty: remove
+             * it so the template is left exactly as it was on entry */
+            xmlUnlinkNode(transformsNode);
+            xmlFreeNode(transformsNode);
+        }
         return(NULL);
     }
 
@@ -1245,6 +1266,7 @@ xmlNodePtr
 xmlSecTmplRetrievalMethodAddTransform(xmlNodePtr retrMethodNode, xmlSecTransformId transformId) {
     xmlNodePtr transformsNode;
     xmlNodePtr res;
+    int transformsNodeWasCreated = 0;
 
     xmlSecAssert2(retrMethodNode != NULL, NULL);
     xmlSecAssert2(transformId != NULL, NULL);
@@ -1252,6 +1274,7 @@ xmlSecTmplRetrievalMethodAddTransform(xmlNodePtr retrMethodNode, xmlSecTransform
 
     transformsNode = xmlSecFindChild(retrMethodNode, xmlSecNodeTransforms, xmlSecDSigNs);
     if(transformsNode == NULL) {
+        transformsNodeWasCreated = 1;
         transformsNode = xmlSecAddChild(retrMethodNode, xmlSecNodeTransforms, xmlSecDSigNs);
         if(transformsNode == NULL) {
             xmlSecInternalError("xmlSecAddChild(xmlSecNodeTransforms)", NULL);
@@ -1269,6 +1292,12 @@ xmlSecTmplRetrievalMethodAddTransform(xmlNodePtr retrMethodNode, xmlSecTransform
         xmlSecXmlError2("xmlSetProp", NULL, "name=%s", xmlSecErrorsSafeString(xmlSecAttrAlgorithm));
         xmlUnlinkNode(res);
         xmlFreeNode(res);
+        if(transformsNodeWasCreated != 0) {
+            /* the container was created by this call and is now empty: remove
+             * it so the template is left exactly as it was on entry */
+            xmlUnlinkNode(transformsNode);
+            xmlFreeNode(transformsNode);
+        }
         return(NULL);
     }
 
@@ -1785,6 +1814,9 @@ xmlSecTmplTransformAddRsaDigest(xmlNodePtr transformNode, const xmlChar *algorit
  * @details Writes the XSLT transform expression to the @p transformNode.
  * @param transformNode the pointer to &lt;dsig:Transform/&gt; node.
  * @param xslt the XSLT transform expression.
+ *
+ * Note: in case of failure, the @p transformNode node might be left in an inconsistent
+ * state.
  *
  * @return 0 on success or a negative value otherwise.
  */

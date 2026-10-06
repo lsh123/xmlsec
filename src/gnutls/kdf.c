@@ -183,7 +183,7 @@ xmlSecGnuTLSKdfInitialize(xmlSecTransformPtr transform) {
         xmlSecGnuTLSKdfFinalize(transform);
         return(-1);
     }
-    ctx->key.flags |= XMLSEC_BUFFER_FLAG_SECURE;
+    xmlSecBufferMakeSecure(&(ctx->key));
 
     /* init KDF-specific structures */
     if(0) {
@@ -195,7 +195,8 @@ xmlSecGnuTLSKdfInitialize(xmlSecTransformPtr transform) {
             xmlSecGnuTLSKdfFinalize(transform);
             return(-1);
         }
-        ctx->u.concatKdf.fixedInfo.flags |= XMLSEC_BUFFER_FLAG_SECURE;
+        xmlSecBufferMakeSecure(&(ctx->u.concatKdf.fixedInfo));
+
         ret = xmlSecTransformConcatKdfParamsInitialize(&(ctx->u.concatKdf.params));
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformConcatKdfParamsInitialize", NULL);
@@ -222,14 +223,16 @@ xmlSecGnuTLSKdfInitialize(xmlSecTransformPtr transform) {
             xmlSecGnuTLSKdfFinalize(transform);
             return(-1);
         }
-        ctx->u.hkdf.salt.flags |= XMLSEC_BUFFER_FLAG_SECURE;
+        xmlSecBufferMakeSecure(&(ctx->u.hkdf.salt));
+
         ret = xmlSecBufferInitialize(&(ctx->u.hkdf.info), 0);
         if(ret < 0) {
             xmlSecInternalError("xmlSecBufferInitialize(info)", NULL);
             xmlSecGnuTLSKdfFinalize(transform);
             return(-1);
         }
-        ctx->u.hkdf.info.flags |= XMLSEC_BUFFER_FLAG_SECURE;
+        xmlSecBufferMakeSecure(&(ctx->u.hkdf.info));
+
         ret = xmlSecTransformHkdfParamsInitialize(&(ctx->u.hkdf.params));
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformHkdfParamsInitialize", NULL);

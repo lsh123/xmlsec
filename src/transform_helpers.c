@@ -127,31 +127,35 @@ xmlSecTransformConcatKdfParamsInitialize(xmlSecTransformConcatKdfParamsPtr param
         xmlSecTransformConcatKdfParamsFinalize(params);
         return(-1);
     }
+
     ret = xmlSecBufferInitialize(&(params->bufPartyUInfo), XMLSEC_TRANSFORM_CONCATKDF_DEFAULT_BUF_SIZE);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize(bufPartyUInfo)", NULL);
         xmlSecTransformConcatKdfParamsFinalize(params);
         return(-1);
     }
+
     ret = xmlSecBufferInitialize(&(params->bufPartyVInfo), XMLSEC_TRANSFORM_CONCATKDF_DEFAULT_BUF_SIZE);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize(bufPartyVInfo)", NULL);
         xmlSecTransformConcatKdfParamsFinalize(params);
         return(-1);
     }
+
     ret = xmlSecBufferInitialize(&(params->bufSuppPubInfo), XMLSEC_TRANSFORM_CONCATKDF_DEFAULT_BUF_SIZE);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize(bufSuppPubInfo)", NULL);
         xmlSecTransformConcatKdfParamsFinalize(params);
         return(-1);
     }
+
     ret = xmlSecBufferInitialize(&(params->bufSuppPrivInfo), XMLSEC_TRANSFORM_CONCATKDF_DEFAULT_BUF_SIZE);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize(bufSuppPrivInfo)", NULL);
         xmlSecTransformConcatKdfParamsFinalize(params);
         return(-1);
     }
-    params->bufSuppPrivInfo.flags |= XMLSEC_BUFFER_FLAG_SECURE;
+    xmlSecBufferMakeSecure(&(params->bufSuppPrivInfo));
 
     /* done */
     return(0);
@@ -1475,6 +1479,7 @@ xmlSecTransformHkdfParamsInitialize(xmlSecTransformHkdfParamsPtr params) {
         xmlSecInternalError("xmlSecBufferInitialize(salt)", NULL);
         return(-1);
     }
+    xmlSecBufferMakeSecure(&(params->salt));
 
     ret = xmlSecBufferInitialize(&(params->info), 0);
     if(ret < 0) {
@@ -1482,6 +1487,7 @@ xmlSecTransformHkdfParamsInitialize(xmlSecTransformHkdfParamsPtr params) {
         xmlSecBufferFinalize(&(params->salt));
         return(-1);
     }
+    xmlSecBufferMakeSecure(&(params->info));
 
     return(0);
 }

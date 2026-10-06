@@ -265,7 +265,7 @@ xmlSecNssKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
             xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
             return(-1);
         }
-        secret.flags |= XMLSEC_BUFFER_FLAG_SECURE;
+        xmlSecBufferMakeSecure(&secret);
 
         /* Step 1: derive shared secret using NSS ECDH derive support */
         kamKeyData = xmlSecTransformCtxExtraKeyDataGet(transformCtx, xmlSecKeyDataKAMId);
@@ -277,7 +277,6 @@ xmlSecNssKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
         ret = xmlSecNssKeyAgreementGenerateSecret(ctx, transform->operation, kamKeyData, &secret);
         if(ret < 0) {
             xmlSecInternalError("xmlSecNssKeyAgreementGenerateSecret", xmlSecTransformGetName(transform));
-            xmlSecBufferEmpty(&secret);
             xmlSecBufferFinalize(&secret);
             return(-1);
         }
@@ -287,12 +286,10 @@ xmlSecNssKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
             transform->expectedOutputSize, transformCtx);
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformKAMExecuteKdf", xmlSecTransformGetName(transform));
-            xmlSecBufferEmpty(&secret);
             xmlSecBufferFinalize(&secret);
             return(-1);
         }
-
-        xmlSecBufferEmpty(&secret);
+        /* automatically cleansed on finalize */
         xmlSecBufferFinalize(&secret);
 
         transform->status = xmlSecTransformStatusFinished;
@@ -329,6 +326,7 @@ xmlSecNssKeyAgreementGenerateSecret(xmlSecNssKeyAgreementCtxPtr ctx,
     xmlSecAssert2(kamKeyData != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(kamKeyData, xmlSecKeyDataKAMId), -1);
     xmlSecAssert2(secret != NULL, -1);
+    xmlSecAssert2(xmlSecBufferIsSecure(secret), -1); /* we expect secure buffer for the secret */
 
     kamData = (xmlSecKeyDataKAM*)kamKeyData;
     xmlSecAssert2(kamData != NULL, -1);
@@ -457,9 +455,7 @@ done:
     if(otherPubKey != NULL) {
         SECKEY_DestroyPublicKey(otherPubKey);
     }
-    if((res != 0) && (secret != NULL)) {
-        xmlSecBufferEmpty(secret);
-    }
+
     return(res);
 }
 

@@ -40,17 +40,6 @@ typedef enum {
     xmlSecAllocModeDouble       /**< the memory allocation mode that tries to minimize the number of malloc calls. */
 } xmlSecAllocMode;
 
-
-/**
- * @brief Wipe the buffer data with xmlSecMemCleanse() on release.
- * @details If this flag is set then the buffer data is wiped using
- * xmlSecMemCleanse() (which cannot be optimized away by the compiler)
- * instead of memset(0) when the buffer is emptied, shrunk, or finalized;
- * when the buffer is grown, the newly allocated area is always zeroed
- * with memset(0), regardless of this flag.
- */
-#define XMLSEC_BUFFER_FLAG_SECURE                0x0001
-
 /******************************************************************************
  *
  * xmlSecBuffer
@@ -76,6 +65,8 @@ XMLSEC_EXPORT void              xmlSecBufferDestroy             (xmlSecBufferPtr
 XMLSEC_EXPORT int               xmlSecBufferInitialize          (xmlSecBufferPtr buf,
                                                                  xmlSecSize size);
 XMLSEC_EXPORT void              xmlSecBufferFinalize            (xmlSecBufferPtr buf);
+XMLSEC_EXPORT void              xmlSecBufferMakeSecure          (xmlSecBufferPtr buf);
+XMLSEC_EXPORT int               xmlSecBufferIsSecure            (xmlSecBufferPtr buf);
 XMLSEC_EXPORT int               xmlSecBufferIsEmpty             (xmlSecBufferPtr buf);
 XMLSEC_EXPORT xmlSecByte*       xmlSecBufferGetData             (xmlSecBufferPtr buf);
 XMLSEC_EXPORT int               xmlSecBufferSetData             (xmlSecBufferPtr buf,

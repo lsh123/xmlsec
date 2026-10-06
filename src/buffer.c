@@ -39,6 +39,18 @@
 #endif /* defined(XMLSEC_WINDOWS) */
 
 
+
+/**
+ * @brief Wipe the buffer data with xmlSecMemCleanse() on release.
+ * @details If this flag is set then the buffer data is wiped using
+ * xmlSecMemCleanse() (which cannot be optimized away by the compiler)
+ * instead of memset(0) when the buffer is emptied, shrunk, or finalized;
+ * when the buffer is grown, the newly allocated area is always zeroed
+ * with memset(0), regardless of this flag.
+ */
+#define XMLSEC_BUFFER_FLAG_SECURE                0x0001
+
+
 /******************************************************************************
  *
  * xmlSecBuffer
@@ -157,6 +169,31 @@ xmlSecBufferFinalize(xmlSecBufferPtr buf) {
     buf->flags = 0;
 }
 
+/**
+ * @brief Marks the buffer as secure to ensure memory is cleansed on release.
+ * @details Sets the XMLSEC_BUFFER_FLAG_SECURE flag for the buffer.
+ * @param buf the pointer to buffer object.
+ */
+void
+xmlSecBufferMakeSecure(xmlSecBufferPtr buf) {
+    xmlSecAssert(buf != NULL);
+
+    buf->flags |= XMLSEC_BUFFER_FLAG_SECURE;
+}
+
+
+/**
+ * @brief Checks if the buffer is marked as secure.
+ * @details Checks if the XMLSEC_BUFFER_FLAG_SECURE flag is set for the buffer.
+ * @param buf the pointer to buffer object.
+ * @return 1 if the buffer is secure or 0 otherwise.
+ */
+int
+xmlSecBufferIsSecure(xmlSecBufferPtr buf) {
+    xmlSecAssert2(buf != NULL, 0);
+
+    return((buf->flags & XMLSEC_BUFFER_FLAG_SECURE) ? 1 : 0);
+}
 /**
  * @brief Empties the buffer.
  * @param buf the pointer to buffer object.

@@ -255,7 +255,7 @@ xmlSecOpenSSLKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecT
             xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
             return(-1);
         }
-        secret.flags |= XMLSEC_BUFFER_FLAG_SECURE;
+        xmlSecBufferMakeSecure(&secret);
 
         /* Step 1: derive shared secret */
         kamKeyData = xmlSecTransformCtxExtraKeyDataGet(transformCtx, xmlSecKeyDataKAMId);
@@ -268,8 +268,6 @@ xmlSecOpenSSLKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecT
         ret = xmlSecOpenSSLKeyAgreementGenerateSecret(ctx, transform->operation, kamKeyData, &secret);
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLKeyAgreementGenerateSecret", xmlSecTransformGetName(transform));
-            /* Securely clear secret before finalize */
-            xmlSecBufferEmpty(&secret);
             xmlSecBufferFinalize(&secret);
             return(-1);
         }
@@ -279,14 +277,10 @@ xmlSecOpenSSLKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecT
             transform->expectedOutputSize, transformCtx);
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformKAMExecuteKdf", xmlSecTransformGetName(transform));
-            /* Securely clear secret before finalize */
-            xmlSecBufferEmpty(&secret);
             xmlSecBufferFinalize(&secret);
             return(-1);
         }
-
-        /* Securely clear secret before finalize */
-        xmlSecBufferEmpty(&secret);
+        /* automatically cleansed on finalize */
         xmlSecBufferFinalize(&secret);
 
         transform->status = xmlSecTransformStatusFinished;
@@ -320,6 +314,7 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
     xmlSecAssert2(kamKeyData != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(kamKeyData, xmlSecKeyDataKAMId), -1);
     xmlSecAssert2(secret != NULL, -1);
+    xmlSecAssert2(xmlSecBufferIsSecure(secret), -1); /* we expect secure buffer for the secret */
 
     kamData = (xmlSecKeyDataKAM*)kamKeyData;
     xmlSecAssert2(kamData != NULL, -1);
@@ -433,8 +428,6 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
     ret = EVP_PKEY_derive(pKeyCtx, secretData, &secretSize);
     if((ret != 1) || (secretSize == 0)) {
         xmlSecOpenSSLError("EVP_PKEY_derive", NULL);
-        /* Clear partial secret data on error */
-        xmlSecBufferEmpty(secret);
         goto done;
     }
 
@@ -442,7 +435,6 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
     ret = xmlSecBufferSetSize(secret, secretSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, secretSize);
-        xmlSecBufferEmpty(secret);
         goto done;
     }
 
@@ -452,10 +444,6 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
 done:
     if(pKeyCtx != NULL) {
         EVP_PKEY_CTX_free(pKeyCtx);
-    }
-    /* Clear secret buffer on error path */
-    if((res != 0) && (secret != NULL)) {
-        xmlSecBufferEmpty(secret);
     }
     return(res);
 }

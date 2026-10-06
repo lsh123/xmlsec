@@ -97,14 +97,16 @@ xmlSecMSCngConcatKdfInitialize(xmlSecTransformPtr transform) {
         xmlSecMSCngConcatKdfFinalize(transform);
         return(-1);
     }
-    ctx->key.flags |= XMLSEC_BUFFER_FLAG_SECURE;
+    xmlSecBufferMakeSecure(&(ctx->key));
+
     ret = xmlSecBufferInitialize(&(ctx->fixedInfo), XMLSEC_MSCNG_KDF_DEFAULT_BUF_SIZE);
     if (ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize(fixedInfo)", NULL);
         xmlSecMSCngConcatKdfFinalize(transform);
         return(-1);
     }
-    ctx->fixedInfo.flags |= XMLSEC_BUFFER_FLAG_SECURE;
+    xmlSecBufferMakeSecure(&(ctx->fixedInfo));
+
     ret = xmlSecTransformConcatKdfParamsInitialize(&(ctx->params));
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformConcatKdfParamsInitialize", NULL);

@@ -186,7 +186,7 @@ xmlSecNssKeyTransportFinalize(xmlSecTransformPtr transform) {
     }
 
     if(context->material != NULL) {
-        xmlSecMemCleanse(xmlSecBufferGetData(context->material), xmlSecBufferGetSize(context->material));
+        /* automaticaly cleansed by xmlSecBufferDestroy */
         xmlSecBufferDestroy(context->material);
         context->material = NULL;
     }
@@ -313,7 +313,7 @@ xmlSecNssKeyTransportCtxInit(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr in
     xmlSecAssert2(transformCtx != NULL, -1);
 
     if(ctx->material != NULL) {
-        xmlSecMemCleanse(xmlSecBufferGetData(ctx->material), xmlSecBufferGetSize(ctx->material));
+        /* automatically cleansed by xmlSecBufferDestroy */
         xmlSecBufferDestroy(ctx->material);
         ctx->material = NULL;
     }
@@ -338,6 +338,7 @@ xmlSecNssKeyTransportCtxInit(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr in
             "size=" XMLSEC_SIZE_FMT, blockSize);
         return(-1);
     }
+    xmlSecBufferMakeSecure(ctx->material);
 
     /* read raw key material into context */
     if(xmlSecBufferSetData(ctx->material, xmlSecBufferGetData(in), xmlSecBufferGetSize(in)) < 0) {
@@ -481,7 +482,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
     SECItem oriskv = { siBuffer, NULL, 0 };
     xmlSecSize blockSize, materialSize, resultSize;
     unsigned int resultLen;
-    xmlSecBufferPtr result;
+    xmlSecBufferPtr result = NULL;
     SECStatus rv;
     int ret;
     int res = -1;
@@ -536,6 +537,8 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
         xmlSecInternalError("xmlSecBufferCreate", NULL);
         return(-1);
     }
+    xmlSecBufferMakeSecure(result);
+
     resultSize = xmlSecBufferGetMaxSize(result);
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(resultSize, resultLen, goto done, NULL);
 
@@ -665,8 +668,9 @@ done:
     if(slot != NULL) {
         PK11_FreeSlot(slot);
     }
-    xmlSecMemCleanse(xmlSecBufferGetData(result), xmlSecBufferGetSize(result));
-    xmlSecBufferDestroy(result);
+    if(result != NULL) {
+        xmlSecBufferDestroy(result);
+    }
     if(symKey != NULL) {
         PK11_FreeSymKey(symKey);
     }

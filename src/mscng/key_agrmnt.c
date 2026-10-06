@@ -633,10 +633,7 @@ xmlSecMSCngKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
             return(-1);
         }
-        /* the SECURE flag only selects the wipe method used when the buffer is finalized;
-         * it is safe to set after xmlSecBufferInitialize since no secret data has been
-         * written to the buffer at this point */
-        secret.flags |= XMLSEC_BUFFER_FLAG_SECURE;
+        xmlSecBufferMakeSecure(&secret);
 
         /* step 1: generate secret with key agreement */
         kamKeyData = xmlSecTransformCtxExtraKeyDataGet(transformCtx, xmlSecKeyDataKAMId);

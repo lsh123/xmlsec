@@ -517,6 +517,12 @@ xmlSecTransformKAMRead(xmlSecTransformKAMPtr params, xmlNodePtr node, xmlSecTran
     /* start with the first child element of the node */
     cur = xmlSecGetNextElementNode(node->children);
 
+    /* skip the optional leading KA-Nonce (xmlenc-core1 AgreementMethodType);
+     * the transform does not use it */
+    if((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeKANonce, xmlSecEncNs)) {
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+
     /* first is required KeyDerivationMethod */
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeKeyDerivationMethod, xmlSecEnc11Ns))) {
         xmlSecInvalidNodeError(cur, xmlSecNodeKeyDerivationMethod, NULL);
@@ -606,6 +612,12 @@ xmlSecTransformKAMWrite(xmlSecTransformKAMPtr params, xmlNodePtr node, xmlSecTra
 
     /* start with the first child element of the node */
     cur = xmlSecGetNextElementNode(node->children);
+
+    /* skip the optional leading KA-Nonce (xmlenc-core1 AgreementMethodType);
+     * the transform does not use it */
+    if((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeKANonce, xmlSecEncNs)) {
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
 
     /* first is required KeyDerivationMethod */
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeKeyDerivationMethod, xmlSecEnc11Ns))) {
@@ -1929,45 +1941,41 @@ xmlSecTransformRsaOaepParamsRead(xmlSecTransformRsaOaepParamsPtr oaepParams, xml
     xmlSecAssert2(oaepParams->mgf1DigestAlgorithm == NULL, -1);
     xmlSecAssert2(node != NULL, -1);
 
+    /* the optional OAEPparams, MGF and DigestMethod elements are accepted
+     * in any order; each of them is allowed at most once */
     cur = xmlSecGetNextElementNode(node->children);
-    while (cur != NULL) {
-        if (xmlSecCheckNodeName(cur, xmlSecNodeRsaOAEPparams, xmlSecEncNs)) {
-            if (xmlSecBufferGetSize(&(oaepParams->oaepParams)) != 0) {
+    while(cur != NULL) {
+        if(xmlSecCheckNodeName(cur, xmlSecNodeRsaOAEPparams, xmlSecEncNs)) {
+            if(xmlSecBufferGetSize(&(oaepParams->oaepParams)) != 0) {
                 xmlSecInvalidNodeError(cur, NULL, "OAEPparams already set");
                 return(-1);
             }
-
             ret = xmlSecBufferBase64NodeContentRead(&(oaepParams->oaepParams), cur);
-            if (ret < 0) {
+            if(ret < 0) {
                 xmlSecInternalError("xmlSecBufferBase64NodeContentRead", NULL);
                 return(-1);
             }
-        } else if (xmlSecCheckNodeName(cur, xmlSecNodeDigestMethod, xmlSecDSigNs)) {
-            /* digest algorithm attribute is required; free any previously
-             * stored value to avoid a leak if the node appears more than once */
-            if (oaepParams->digestAlgorithm != NULL) {
-                xmlFree(oaepParams->digestAlgorithm);
-                oaepParams->digestAlgorithm = NULL;
+        } else if(xmlSecCheckNodeName(cur, xmlSecNodeDigestMethod, xmlSecDSigNs)) {
+            if(oaepParams->digestAlgorithm != NULL) {
+                xmlSecInvalidNodeError(cur, NULL, "DigestMethod already set");
+                return(-1);
             }
             oaepParams->digestAlgorithm = xmlGetProp(cur, xmlSecAttrAlgorithm);
-            if (oaepParams->digestAlgorithm == NULL) {
+            if(oaepParams->digestAlgorithm == NULL) {
                 xmlSecInvalidNodeAttributeError(cur, xmlSecAttrAlgorithm, NULL, "empty");
                 return(-1);
             }
-        } else if (xmlSecCheckNodeName(cur, xmlSecNodeRsaMGF, xmlSecEnc11Ns)) {
-            /* mgf1 digest algorithm attribute is required; free any previously
-             * stored value to avoid a leak if the node appears more than once */
-            if (oaepParams->mgf1DigestAlgorithm != NULL) {
-                xmlFree(oaepParams->mgf1DigestAlgorithm);
-                oaepParams->mgf1DigestAlgorithm = NULL;
+        } else if(xmlSecCheckNodeName(cur, xmlSecNodeRsaMGF, xmlSecEnc11Ns)) {
+            if(oaepParams->mgf1DigestAlgorithm != NULL) {
+                xmlSecInvalidNodeError(cur, NULL, "MGF already set");
+                return(-1);
             }
             oaepParams->mgf1DigestAlgorithm = xmlGetProp(cur, xmlSecAttrAlgorithm);
-            if (oaepParams->mgf1DigestAlgorithm == NULL) {
+            if(oaepParams->mgf1DigestAlgorithm == NULL) {
                 xmlSecInvalidNodeAttributeError(cur, xmlSecAttrAlgorithm, NULL, "empty");
                 return(-1);
             }
         } else {
-            /* node not recognized */
             xmlSecUnexpectedNodeError(cur, NULL);
             return(-1);
         }

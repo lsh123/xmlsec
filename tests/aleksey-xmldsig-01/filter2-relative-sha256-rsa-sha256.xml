@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+  <data id="data-1">first data element</data>
+  <data id="data-2">second data element</data>
+  <dsig:Signature>
+    <dsig:SignedInfo>
+      <dsig:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+      <dsig:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+      <dsig:Reference URI="">
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="http://www.w3.org/2002/06/xmldsig-filter2">
+            <XPath xmlns="http://www.w3.org/2002/06/xmldsig-filter2" Filter="intersect">descendant::data</XPath>
+          </dsig:Transform>
+          <dsig:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+        <dsig:DigestValue>DdMo38rlPEfZ1EQKMdH42AjiC4Hn3d8ncf2NYNpjlD4=</dsig:DigestValue>
+      </dsig:Reference>
+    </dsig:SignedInfo>
+    <dsig:SignatureValue>EbbnIgfVDtXEnHQGo4Of/lo2kwOe4x8mU+UqsCvkpu9Tx4V0zyCrZLH2CHA1Aqtk
+OtWS6a3BUG/YqTtaK1Llv86YLGdz8OXb1OzLnYjKSgnAeZ12W2Gftd2ce5SjSkou
+OA7i37QlvQDEVLXJq7Qx0wZ/Duvhi4b+N87pSwAxTKbJqjDQfUDefQzWlLxBfsAr
+HGS7hoIW9XmnSknfTSZ+s8VNV2uWm9LxYqjwOXjNR7qVnfNMy2KM0dgW6u81iOsR
+ypM8I6y7mTi+7ZvYE+N9zoin8VUS5NnbYHmVhS0Mi8XwnPN6U6udyA6aXotP7X2G
+ljPff1R1sfZUwIm6xvAoOA==</dsig:SignatureValue>
+    <dsig:KeyInfo>
+      <dsig:KeyName>TestKeyName-rsa-2048</dsig:KeyName>
+      <dsig:KeyValue>
+<dsig:RSAKeyValue>
+<dsig:Modulus>
+3iVnhDXlgGiWvV2f21bCP4NAeTkwouWvN9K94SNeV01xzuvPg2GRb+ozF0/YbQ8j
+j7UDeuIgcLoBrC/jSMtp7gJp6zj3oHhX97NZVv5SBUmBOJRbB8efy3apTvTvWlzJ
+QhO4WVXBRDqmA0dGHPRRuMB6l125wy+WBMWxO6BzUooe9m0OpQXjKokJKFcl9Zd4
+ht3EqXW8cuHgiyrtYzXTcO63W9+J6dFOi1DTYhKMkK53jMsModlleEUdqUHgTbxK
+0TBSYMa2sB1rGfcVq+QanOlsRHXAXiZM/BE6uPqlFq+g5osSZbHfH2qC/0G/wKKl
+WzIx0YPjQSBq/MbroodKLQ==
+</dsig:Modulus>
+<dsig:Exponent>
+AQAB
+</dsig:Exponent>
+</dsig:RSAKeyValue>
+</dsig:KeyValue>
+    </dsig:KeyInfo>
+  </dsig:Signature>
+</root>

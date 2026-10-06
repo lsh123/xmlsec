@@ -315,7 +315,7 @@ xmlSecKeyDataX509XmlWrite(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInfoC
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
-    xmlSecAssert2(base64LineSize > 0, -1);
+    xmlSecAssert2((base64LineSize == 0) || (base64LineSize > 1), -1); /* see xmlSecBase64IsValidColumns */
     xmlSecAssert2(writeFunc != NULL, -1);
 
     if(((xmlSecKeyDataTypePublic) & keyInfoCtx->keyReq.keyType) == 0) {
@@ -700,28 +700,31 @@ xmlSecKeyX509DataValueXmlWriteBase64Blob(xmlSecBufferPtr buf, xmlNodePtr node,
         goto done;
     }
 
+    /* the node is empty at this point, so the leading linefeed is set
+     * with xmlNodeSetContent() (which would wipe the node content) and
+     * the base64 content is appended afterwards */
     if(addLineBreaks) {
 #if LIBXML_VERSION >= 21300
-        if(xmlNodeAddContent(child, xmlSecGetDefaultLineFeed()) < 0) {
-            xmlSecXmlError("xmlNodeAddContent", child);
+        if(xmlNodeSetContent(child, xmlSecGetDefaultLineFeed()) < 0) {
+            xmlSecXmlError("xmlNodeSetContent", child);
             child = NULL;
             goto done;
         }
 #else /* LIBXML_VERSION >= 21300 */
-        /* libxml2 < 2.13.0: xmlNodeAddContent() returns void and cannot report errors */
-        xmlNodeAddContent(child, xmlSecGetDefaultLineFeed());
+        /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
+        xmlNodeSetContent(child, xmlSecGetDefaultLineFeed());
 #endif /* LIBXML_VERSION >= 21300 */
     }
 
 #if LIBXML_VERSION >= 21300
-    if(xmlNodeSetContent(child, content) < 0) {
-        xmlSecXmlError("xmlNodeSetContent", child);
+    if(xmlNodeAddContent(child, content) < 0) {
+        xmlSecXmlError("xmlNodeAddContent", child);
         child = NULL;
         goto done;
     }
 #else /* LIBXML_VERSION >= 21300 */
-    /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
-    xmlNodeSetContent(child, content);
+    /* libxml2 < 2.13.0: xmlNodeAddContent() returns void and cannot report errors */
+    xmlNodeAddContent(child, content);
 #endif /* LIBXML_VERSION >= 21300 */
 
     if(addLineBreaks) {

@@ -561,6 +561,8 @@ const xmlChar xmlSecHrefAgreementMethod[]       = "http://www.w3.org/2000/09/xml
 const xmlChar xmlSecNodeOriginatorKeyInfo[]     = "OriginatorKeyInfo";
 const xmlChar xmlSecNodeRecipientKeyInfo[]      = "RecipientKeyInfo";
 
+const xmlChar xmlSecNodeKANonce[]               = "KA-Nonce";
+
 /******************************************************************************
  *
  * EncapsulationMechanism

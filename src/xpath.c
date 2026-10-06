@@ -221,6 +221,22 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
     /* do not forget to set the doc */
     data->ctx->doc = doc;
 
+    /*
+     * Set the document root node (the document node itself) as the context
+     * node and the context size to 1. Per the xmldsig-filter2 REC (sec 3.3)
+     * the filter expressions are evaluated with the document root node as
+     * the context node, context position and size 1. The same context is
+     * used for the original XPath and XPointer transforms; the original
+     * XPath expression is wrapped into an absolute path, so it is not
+     * affected by the context node.
+     */
+    if(xmlXPathSetContextNode((xmlNodePtr)doc, data->ctx) != 0) {
+        xmlSecXmlError("xmlXPathSetContextNode", NULL);
+        return(NULL);
+    }
+    data->ctx->contextSize = 1;
+    data->ctx->proximityPosition = 1;
+
     /* always register here(); not all libxml2 versions support unregistering with NULL */
     if(xmlXPathRegisterFunc(data->ctx, (xmlChar *)"here", xmlSecXPathHereFunction) < 0) {
         xmlSecXmlError("xmlXPathRegisterFunc", NULL);

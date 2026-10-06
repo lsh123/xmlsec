@@ -26,6 +26,7 @@ all:
 #
 # Generate man pages into $(builddir).
 #
+if XMLSEC_APPS
 if BUILD_MAN_DOCS
 
 docs:
@@ -49,6 +50,15 @@ else
 
 docs:
 	@(echo "=== ERROR: To build man pages, make sure help2man is installed" ; exit 1; )
+
+endif
+else
+
+# The command line tool is not configured (--disable-apps), so the man pages
+# cannot be generated; warn and succeed so the docs-build / tar-release
+# targets keep working.
+docs:
+	@(echo "=== WARNING: The xmlsec command line tool is not built (--disable-apps), skipping man pages" ; exit 0; )
 
 endif
 

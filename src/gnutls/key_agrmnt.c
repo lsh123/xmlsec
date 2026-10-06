@@ -260,7 +260,7 @@ xmlSecGnuTLSKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTr
             xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
             return(-1);
         }
-        secret.flags |= XMLSEC_BUFFER_FLAG_SECURE;
+        xmlSecBufferMakeSecure(&secret);
 
         /* Step 1: derive shared secret using gnutls_privkey_derive_secret */
         kamKeyData = xmlSecTransformCtxExtraKeyDataGet(transformCtx, xmlSecKeyDataKAMId);
@@ -272,7 +272,6 @@ xmlSecGnuTLSKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTr
         ret = xmlSecGnuTLSKeyAgreementGenerateSecret(ctx, transform->operation, transform, kamKeyData, &secret);
         if(ret < 0) {
             xmlSecInternalError("xmlSecGnuTLSKeyAgreementGenerateSecret", xmlSecTransformGetName(transform));
-            xmlSecBufferEmpty(&secret);
             xmlSecBufferFinalize(&secret);
             return(-1);
         }
@@ -282,12 +281,11 @@ xmlSecGnuTLSKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTr
             transform->expectedOutputSize, transformCtx);
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformKAMExecuteKdf", xmlSecTransformGetName(transform));
-            xmlSecBufferEmpty(&secret);
             xmlSecBufferFinalize(&secret);
             return(-1);
         }
 
-        xmlSecBufferEmpty(&secret);
+        /* automatically cleansed on finalize */
         xmlSecBufferFinalize(&secret);
 
         transform->status = xmlSecTransformStatusFinished;
@@ -323,6 +321,7 @@ xmlSecGnuTLSKeyAgreementGenerateSecret(xmlSecGnuTLSKeyAgreementCtxPtr ctx, xmlSe
     xmlSecAssert2(xmlSecKeyDataCheckId(kamKeyData, xmlSecKeyDataKAMId), -1);
     xmlSecAssert2(transform != NULL, -1);
     xmlSecAssert2(secret != NULL, -1);
+    xmlSecAssert2(xmlSecBufferIsSecure(secret), -1); /* we expect secure buffer for the secret */
 
     kamData = (xmlSecKeyDataKAM*)kamKeyData;
     xmlSecAssert2(kamData != NULL, -1);
@@ -458,9 +457,6 @@ done:
         /* securely wipe and free the GnuTLS-allocated secret */
         xmlSecMemCleanse(secretDatum.data, secretDatum.size);
         gnutls_free(secretDatum.data);
-    }
-    if((res != 0) && (secret != NULL)) {
-        xmlSecBufferEmpty(secret);
     }
     return(res);
 }

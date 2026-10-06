@@ -1444,8 +1444,8 @@ xmlSecTransformCreate(xmlSecTransformId id) {
     ) {
         /* the input (eg the shared secret fed into a KDF) and the output
          * (the derived key) are both sensitive */
-        transform->inBuf.flags |= XMLSEC_BUFFER_FLAG_SECURE;
-        transform->outBuf.flags |= XMLSEC_BUFFER_FLAG_SECURE;
+        xmlSecBufferMakeSecure(&(transform->inBuf));
+        xmlSecBufferMakeSecure(&(transform->outBuf));
     }
 
     return(transform);

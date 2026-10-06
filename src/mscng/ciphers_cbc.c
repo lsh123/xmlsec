@@ -287,7 +287,7 @@ xmlSecMSCngCbcBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
             "size=" XMLSEC_SIZE_FMT, blobSize);
         goto done;
     }
-    blob.flags |= XMLSEC_BUFFER_FLAG_SECURE;
+    xmlSecBufferMakeSecure(&blob);
     bufInitialized = 1;
 
     ret = xmlSecBufferSetSize(&blob, blobSize);

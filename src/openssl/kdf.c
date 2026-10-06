@@ -181,7 +181,7 @@ xmlSecOpenSSLKdfInitialize(xmlSecTransformPtr transform) {
         xmlSecOpenSSLKdfFinalize(transform);
         return(-1);
     }
-    ctx->buffer.flags |= XMLSEC_BUFFER_FLAG_SECURE;
+    xmlSecBufferMakeSecure(&(ctx->buffer));
 
     ret = xmlSecBufferInitialize(&(ctx->buffer2), 0);
     if(ret < 0) {
@@ -189,7 +189,7 @@ xmlSecOpenSSLKdfInitialize(xmlSecTransformPtr transform) {
         xmlSecOpenSSLKdfFinalize(transform);
         return(-1);
     }
-    ctx->buffer2.flags |= XMLSEC_BUFFER_FLAG_SECURE;
+    xmlSecBufferMakeSecure(&(ctx->buffer2));
 
     ret = xmlSecBufferInitialize(&(ctx->keyBuffer), 0);
     if(ret < 0) {
@@ -197,7 +197,7 @@ xmlSecOpenSSLKdfInitialize(xmlSecTransformPtr transform) {
         xmlSecOpenSSLKdfFinalize(transform);
         return(-1);
     }
-    ctx->keyBuffer.flags |= XMLSEC_BUFFER_FLAG_SECURE;
+    xmlSecBufferMakeSecure(&(ctx->keyBuffer));
 
     /* done */
     return(0);
@@ -772,9 +772,9 @@ xmlSecOpenSSLPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     }
     ctx->params[ctx->paramsPos++] = OSSL_PARAM_construct_uint(OSSL_KDF_PARAM_ITER, &(ctx->param1));
 
-    /* set salt */
+    /* set salt, this also swaps secure flag */
     xmlSecBufferSwap(&(ctx->buffer), &(params.salt));
-    ctx->buffer.flags |= XMLSEC_BUFFER_FLAG_SECURE;
+
     saltData = xmlSecBufferGetData(&(ctx->buffer));
     saltSize = xmlSecBufferGetSize(&(ctx->buffer));
     if((saltData == NULL) || (saltSize == 0)) {
@@ -978,8 +978,9 @@ xmlSecOpenSSLHkdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     saltData = xmlSecBufferGetData(&(params.salt));
     saltSize = xmlSecBufferGetSize(&(params.salt));
     if((saltData != NULL) && (saltSize > 0)) {
+        /* this also swaps secure flag */
         xmlSecBufferSwap(&(ctx->buffer), &(params.salt));
-        ctx->buffer.flags |= XMLSEC_BUFFER_FLAG_SECURE;
+
         saltData = xmlSecBufferGetData(&(ctx->buffer));
         saltSize = xmlSecBufferGetSize(&(ctx->buffer));
         if(ctx->paramsPos >= XMLSEC_OPENSSL_KDF_MAX_PARAMS) {
@@ -993,9 +994,9 @@ xmlSecOpenSSLHkdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     infoData = xmlSecBufferGetData(&(params.info));
     infoSize = xmlSecBufferGetSize(&(params.info));
     if((infoData != NULL) && (infoSize > 0)) {
-        /* swap info into ctx->buffer2 so the data remains valid after params finalize */
+        /* swap info into ctx->buffer2 so the data remains valid after params finalize (this also swaps the secure flag) */
         xmlSecBufferSwap(&(ctx->buffer2), &(params.info));
-        ctx->buffer2.flags |= XMLSEC_BUFFER_FLAG_SECURE;
+
         infoData = xmlSecBufferGetData(&(ctx->buffer2));
         infoSize = xmlSecBufferGetSize(&(ctx->buffer2));
         if(ctx->paramsPos >= XMLSEC_OPENSSL_KDF_MAX_PARAMS) {

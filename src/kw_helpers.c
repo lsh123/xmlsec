@@ -70,7 +70,8 @@ xmlSecTransformKWDes3Initialize(xmlSecTransformPtr transform, xmlSecTransformKWD
         xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
         return(-1);
     }
-    ctx->keyBuffer.flags |= XMLSEC_BUFFER_FLAG_SECURE;
+    xmlSecBufferMakeSecure(&(ctx->keyBuffer));
+
     ctx->kwDes3Id = kwDes3Id;
     ctx->keyId    = keyId;
 
@@ -546,7 +547,8 @@ xmlSecTransformKWRfc3394Initialize(xmlSecTransformPtr transform, xmlSecTransform
         xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
         return(-1);
     }
-    ctx->keyBuffer.flags |= XMLSEC_BUFFER_FLAG_SECURE;
+    xmlSecBufferMakeSecure(&(ctx->keyBuffer));
+
     ctx->kwRfc3394Id     = kwRfc3394Id;
     ctx->keyId           = keyId;
     ctx->keyExpectedSize = keyExpectedSize;

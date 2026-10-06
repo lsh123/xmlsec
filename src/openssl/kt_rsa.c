@@ -729,7 +729,7 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
                 "size=" XMLSEC_SIZE_FMT, ctx->keySize);
             return(-1);
         }
-        tmp.flags |= XMLSEC_BUFFER_FLAG_SECURE;
+        xmlSecBufferMakeSecure(&tmp);
 
         /* add padding */
         ret = RSA_padding_add_PKCS1_OAEP_mgf1(

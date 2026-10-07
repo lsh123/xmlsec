@@ -77,25 +77,37 @@ static xmlSecKWDes3Klass xmlSecNssKWDes3ImplKlass = {
     NULL,                                   /* void*                               reserved1; */
 };
 
-static int      xmlSecNssKWDes3Encrypt                          (const xmlSecByte *key,
-                                                                 xmlSecSize keySize,
-                                                                 const xmlSecByte *iv,
-                                                                 xmlSecSize ivSize,
-                                                                 const xmlSecByte *in,
-                                                                 xmlSecSize inSize,
-                                                                 xmlSecByte *out,
-                                                                 xmlSecSize outSize,
-                                                                 xmlSecSize * outWritten,
-                                                                 int enc);
-
-
 /******************************************************************************
  *
  * Triple DES Key Wrap transform context
  *
   *****************************************************************************/
-typedef xmlSecTransformKWDes3Ctx  xmlSecNssKWDes3Ctx,
-                                 *xmlSecNssKWDes3CtxPtr;
+/* the cipher mechanism used by the implementation; the slot and the
+   symmetric key cached in the transform context are bound to it */
+#define XMLSEC_NSS_KW_DES3_CIPHER_MECH  CKM_DES3_CBC
+
+typedef struct _xmlSecNssKWDes3Ctx   xmlSecNssKWDes3Ctx,
+                                  *xmlSecNssKWDes3CtxPtr;
+
+struct _xmlSecNssKWDes3Ctx {
+    xmlSecTransformKWDes3Ctx parentCtx;
+    PK11SlotInfo* slot;
+    PK11SymKey* symKey;
+    CK_ATTRIBUTE_TYPE symKeyOp;
+    xmlSecBuffer scratchIn;
+};
+
+static int      xmlSecNssKWDes3EnsureKey    (xmlSecNssKWDes3CtxPtr ctx,
+                                            CK_ATTRIBUTE_TYPE symKeyOp);
+static int      xmlSecNssKWDes3Encrypt      (xmlSecNssKWDes3CtxPtr ctx,
+                                            CK_ATTRIBUTE_TYPE op,
+                                            const xmlSecByte *iv,
+                                            xmlSecSize ivSize,
+                                            const xmlSecByte *in,
+                                            xmlSecSize inSize,
+                                            xmlSecByte *out,
+                                            xmlSecSize outSize,
+                                            xmlSecSize * outWritten);
 
 /******************************************************************************
  *
@@ -162,12 +174,32 @@ xmlSecNssKWDes3Initialize(xmlSecTransformPtr transform) {
     xmlSecAssert2(ctx != NULL, -1);
     memset(ctx, 0, sizeof(xmlSecNssKWDes3Ctx));
 
-    ret = xmlSecTransformKWDes3Initialize(transform, ctx,
+    /* the scratch buffer is secure, so the key wrap data it holds is wiped
+       on resize and on context finalization */
+    ret = xmlSecBufferInitialize(&(ctx->scratchIn), 0);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
+        xmlSecNssKWDes3Finalize(transform);
+        return(-1);
+    }
+    xmlSecBufferMakeSecure(&(ctx->scratchIn));
+
+    ctx->slot = PK11_GetBestSlot(XMLSEC_NSS_KW_DES3_CIPHER_MECH, NULL);
+    if(ctx->slot == NULL) {
+        xmlSecNssError("PK11_GetBestSlot", NULL);
+        xmlSecNssKWDes3Finalize(transform);
+        return(-1);
+    }
+
+    ret = xmlSecTransformKWDes3Initialize(transform, &(ctx->parentCtx),
         &xmlSecNssKWDes3ImplKlass, xmlSecNssKeyDataDesId);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformKWDes3Initialize", xmlSecTransformGetName(transform));
+        xmlSecNssKWDes3Finalize(transform);
         return(-1);
     }
+
+    /* done */
     return(0);
 }
 
@@ -181,7 +213,17 @@ xmlSecNssKWDes3Finalize(xmlSecTransformPtr transform) {
     ctx = xmlSecNssKWDes3GetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
-    xmlSecTransformKWDes3Finalize(transform, ctx);
+    if(ctx->symKey != NULL) {
+        PK11_FreeSymKey(ctx->symKey);
+        ctx->symKey = NULL;
+    }
+    if(ctx->slot != NULL) {
+        PK11_FreeSlot(ctx->slot);
+        ctx->slot = NULL;
+    }
+    xmlSecBufferFinalize(&(ctx->scratchIn));
+    xmlSecTransformKWDes3Finalize(transform, &(ctx->parentCtx));
+
     memset(ctx, 0, sizeof(xmlSecNssKWDes3Ctx));
 }
 
@@ -196,7 +238,7 @@ xmlSecNssKWDes3SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) 
     ctx = xmlSecNssKWDes3GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ret = xmlSecTransformKWDes3SetKeyReq(transform, ctx, keyReq);
+    ret = xmlSecTransformKWDes3SetKeyReq(transform, &(ctx->parentCtx), keyReq);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformKWDes3SetKeyReq",
             xmlSecTransformGetName(transform));
@@ -216,11 +258,20 @@ xmlSecNssKWDes3SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     ctx = xmlSecNssKWDes3GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ret = xmlSecTransformKWDes3SetKey(transform, ctx, key);
+    ret = xmlSecTransformKWDes3SetKey(transform, &(ctx->parentCtx), key);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformKWDes3SetKey", xmlSecTransformGetName(transform));
         return(-1);
     }
+
+    /* the cached symmetric key was created with the previous key material;
+       release it so it is re-imported with the new key on the next operation */
+    if(ctx->symKey != NULL) {
+        PK11_FreeSymKey(ctx->symKey);
+        ctx->symKey = NULL;
+        ctx->symKeyOp = 0;
+    }
+
     return(0);
 }
 
@@ -236,7 +287,7 @@ xmlSecNssKWDes3Execute(xmlSecTransformPtr transform, int last,
 
     ctx = xmlSecNssKWDes3GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
-    ret = xmlSecTransformKWDes3Execute(transform, ctx, last);
+    ret = xmlSecTransformKWDes3Execute(transform, &(ctx->parentCtx), last);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformKWDes3Execute", xmlSecTransformGetName(transform));
         return(-1);
@@ -296,11 +347,17 @@ xmlSecNssKWDes3Sha1(xmlSecTransformPtr transform XMLSEC_ATTRIBUTE_UNUSED,
         return(-1);
     }
 
+    if (outLen != SHA1_LENGTH) {
+        xmlSecInternalError3("xmlSecNssKWDes3Sha1", NULL,
+            "digest length=" XMLSEC_SIZE_FMT ", expected " XMLSEC_SIZE_FMT,
+            (xmlSecSize)outLen, (xmlSecSize)SHA1_LENGTH);
+        PK11_DestroyContext(pk11ctx, PR_TRUE);
+        return(-1);
+    }
+
     /* done */
     PK11_DestroyContext(pk11ctx, PR_TRUE);
-    xmlSecAssert2(outLen == SHA1_LENGTH, -1);
     (*outWritten) = outLen;
-
     return(0);
 }
 
@@ -348,14 +405,20 @@ xmlSecNssKWDes3BlockEncrypt(xmlSecTransformPtr transform,
 
     ctx = xmlSecNssKWDes3GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(xmlSecBufferGetData(&(ctx->keyBuffer)) != NULL, -1);
-    xmlSecAssert2(xmlSecBufferGetSize(&(ctx->keyBuffer)) >= XMLSEC_KW_DES3_KEY_LENGTH, -1);
 
-    ret = xmlSecNssKWDes3Encrypt(xmlSecBufferGetData(&(ctx->keyBuffer)), XMLSEC_KW_DES3_KEY_LENGTH,
+    /* create key if needed */
+    ret = xmlSecNssKWDes3EnsureKey(ctx, CKA_ENCRYPT);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNssKWDes3EnsureKey", NULL);
+        return(-1);
+    }
+    xmlSecAssert2(ctx->symKey != NULL, -1);
+    xmlSecAssert2(ctx->symKeyOp == CKA_ENCRYPT, -1);
+
+    ret = xmlSecNssKWDes3Encrypt(ctx, CKA_ENCRYPT,
                                  iv, XMLSEC_KW_DES3_IV_LENGTH,
                                  in, inSize,
-                                 out, outSize, outWritten,
-                                 1); /* encrypt */
+                                 out, outSize, outWritten);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssKWDes3Encrypt", NULL);
         return(-1);
@@ -385,14 +448,20 @@ xmlSecNssKWDes3BlockDecrypt(xmlSecTransformPtr transform,
 
     ctx = xmlSecNssKWDes3GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(xmlSecBufferGetData(&(ctx->keyBuffer)) != NULL, -1);
-    xmlSecAssert2(xmlSecBufferGetSize(&(ctx->keyBuffer)) >= XMLSEC_KW_DES3_KEY_LENGTH, -1);
 
-    ret = xmlSecNssKWDes3Encrypt(xmlSecBufferGetData(&(ctx->keyBuffer)), XMLSEC_KW_DES3_KEY_LENGTH,
+    /* create key if needed */
+    ret = xmlSecNssKWDes3EnsureKey(ctx, CKA_DECRYPT);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNssKWDes3EnsureKey", NULL);
+        return(-1);
+    }
+    xmlSecAssert2(ctx->symKey != NULL, -1);
+    xmlSecAssert2(ctx->symKeyOp == CKA_DECRYPT, -1);
+
+    ret = xmlSecNssKWDes3Encrypt(ctx, CKA_DECRYPT,
                                  iv, XMLSEC_KW_DES3_IV_LENGTH,
                                  in, inSize,
-                                 out, outSize, outWritten,
-                                 0); /* decrypt */
+                                 out, outSize, outWritten);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssKWDes3Encrypt", NULL);
         return(-1);
@@ -402,26 +471,73 @@ xmlSecNssKWDes3BlockDecrypt(xmlSecTransformPtr transform,
 }
 
 static int
-xmlSecNssKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
-                       const xmlSecByte *iv, xmlSecSize ivSize,
-                       const xmlSecByte *in, xmlSecSize inSize,
-                       xmlSecByte *out, xmlSecSize outSize,
-                       xmlSecSize * outWritten,
-                       int enc) {
-    CK_MECHANISM_TYPE  cipherMech;
-    PK11SlotInfo* slot = NULL;
-    PK11SymKey* symKey = NULL;
+xmlSecNssKWDes3EnsureKey(xmlSecNssKWDes3CtxPtr ctx, CK_ATTRIBUTE_TYPE symKeyOp) {
+    xmlSecByte* keyData;
+    xmlSecSize keySize;
+    SECItem  keyItem = { siBuffer, NULL, 0 };
+    int res = -1;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->slot != NULL, -1);
+
+    /* the cached symmetric key has the operation (CKA_ENCRYPT/CKA_DECRYPT)
+       baked in at import time, so it can only be reused for the same
+       operation */
+    if((ctx->symKey != NULL) && (ctx->symKeyOp == symKeyOp)) {
+        return(0);
+    }
+    if(ctx->symKey != NULL) {
+        PK11_FreeSymKey(ctx->symKey);
+        ctx->symKey = NULL;
+        ctx->symKeyOp = 0;
+    }
+
+    keyData = xmlSecBufferGetData(&(ctx->parentCtx.keyBuffer));
+    keySize = xmlSecBufferGetSize(&(ctx->parentCtx.keyBuffer));
+    xmlSecAssert2(keyData != NULL, -1);
+    xmlSecAssert2(keySize == XMLSEC_KW_DES3_KEY_LENGTH, -1);
+
+    keyItem.data = keyData;
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(keySize, keyItem.len, goto done, NULL);
+    ctx->symKey = PK11_ImportSymKey(ctx->slot, XMLSEC_NSS_KW_DES3_CIPHER_MECH, PK11_OriginUnwrap,
+                                    symKeyOp, &keyItem, NULL);
+    if (ctx->symKey == NULL) {
+        xmlSecNssError("PK11_ImportSymKey", NULL);
+        goto done;
+    }
+    ctx->symKeyOp = symKeyOp;
+
+    /* success */
+    res = 0;
+
+done:
+    return(res);
+}
+
+/* encrypt/decrypt a buffer; the slot and the symmetric key are cached in the
+   transform context and only the IV-dependent parameter and the PKCS#11
+   context are created per call */
+static int
+xmlSecNssKWDes3Encrypt(
+    xmlSecNssKWDes3CtxPtr ctx,
+    CK_ATTRIBUTE_TYPE  op,
+    const xmlSecByte *iv, xmlSecSize ivSize,
+    const xmlSecByte *in, xmlSecSize inSize,
+    xmlSecByte *out, xmlSecSize outSize, xmlSecSize * outWritten
+) {
     SECItem* param = NULL;
     PK11Context* pk11ctx = NULL;
-    SECItem keyItem = { siBuffer, NULL, 0 };
     SECItem ivItem = { siBuffer, NULL, 0 };
+    xmlSecByte* scratchIn;
     SECStatus status;
     int inLen, outLen, maxOutLen;
     int res = -1;
 
-    xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(keySize == XMLSEC_KW_DES3_KEY_LENGTH, -1);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->symKey != NULL, -1);
     xmlSecAssert2(iv != NULL, -1);
+    /* the wrappers above check >=, but always pass the exact IV length;
+       the helper enforces exact equality */
     xmlSecAssert2(ivSize == XMLSEC_KW_DES3_IV_LENGTH, -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize > 0, -1);
@@ -429,42 +545,37 @@ xmlSecNssKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
     xmlSecAssert2(outSize >= inSize, -1);
     xmlSecAssert2(outWritten != NULL, -1);
 
-    cipherMech = CKM_DES3_CBC;
-    slot = PK11_GetBestSlot(cipherMech, NULL);
-    if (slot == NULL) {
-        xmlSecNssError("PK11_GetBestSlot", NULL);
-        goto done;
-    }
-
-    keyItem.data = (unsigned char *)key;
-    XMLSEC_SAFE_CAST_SIZE_TO_UINT(keySize, keyItem.len, goto done, NULL);
-    symKey = PK11_ImportSymKey(slot, cipherMech, PK11_OriginUnwrap,
-                               enc ? CKA_ENCRYPT : CKA_DECRYPT, &keyItem, NULL);
-    if (symKey == NULL) {
-        xmlSecNssError("PK11_ImportSymKey", NULL);
-        goto done;
-    }
-
     ivItem.data = (unsigned char *)iv;
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(ivSize, ivItem.len, goto done, NULL);
-    param = PK11_ParamFromIV(cipherMech, &ivItem);
+    param = PK11_ParamFromIV(XMLSEC_NSS_KW_DES3_CIPHER_MECH, &ivItem);
     if (param == NULL) {
         xmlSecNssError("PK11_ParamFromIV", NULL);
         goto done;
     }
 
-    pk11ctx = PK11_CreateContextBySymKey(cipherMech,
-                                            enc ? CKA_ENCRYPT : CKA_DECRYPT,
-                                            symKey, param);
+    pk11ctx = PK11_CreateContextBySymKey(XMLSEC_NSS_KW_DES3_CIPHER_MECH, op, ctx->symKey, param);
     if (pk11ctx == NULL) {
         xmlSecNssError("PK11_CreateContextBySymKey", NULL);
         goto done;
     }
 
+    /* NSS does not promise in-place (in == out) processing and the generic
+       KW driver (src/kw_helpers.c) passes the same buffer as both input and
+       output, so stage the input through the scratch buffer in the transform
+       context; the buffer is secure, so its contents are wiped on resize and
+       on context finalization */
+    if(xmlSecBufferSetSize(&(ctx->scratchIn), inSize) < 0) {
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, inSize);
+        goto done;
+    }
+    scratchIn = xmlSecBufferGetData(&(ctx->scratchIn));
+    xmlSecAssert2(scratchIn != NULL, -1);
+    memcpy(scratchIn, in, inSize);
+
     XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, goto done, NULL);
     XMLSEC_SAFE_CAST_SIZE_TO_INT(outSize, maxOutLen, goto done, NULL);
     outLen = 0;
-    status = PK11_CipherOp(pk11ctx, out, &outLen, maxOutLen, (unsigned char *)in, inLen);
+    status = PK11_CipherOp(pk11ctx, out, &outLen, maxOutLen, scratchIn, inLen);
     if (status != SECSuccess) {
         xmlSecNssError("PK11_CipherOp", NULL);
         goto done;
@@ -481,12 +592,6 @@ xmlSecNssKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
     res = 0;
 
 done:
-    if (slot) {
-        PK11_FreeSlot(slot);
-    }
-    if (symKey) {
-        PK11_FreeSymKey(symKey);
-    }
     if (param) {
         SECITEM_FreeItem(param, PR_TRUE);
     }

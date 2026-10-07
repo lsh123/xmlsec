@@ -407,7 +407,10 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoSignatureSize), -1);
     xmlSecAssert2(transform->status == xmlSecTransformStatusFinished, -1);
     xmlSecAssert2(data != NULL, -1);
-    xmlSecAssert2(dataSize > 0, -1);
+    if(dataSize == 0) {
+        xmlSecInvalidDataError("zero-length signature data", xmlSecTransformGetName(transform));
+        goto done;
+    }
     xmlSecAssert2(transformCtx != NULL, -1);
 
     ctx = xmlSecMSCryptoSignatureGetCtx(transform);
@@ -554,6 +557,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
     xmlSecSize inSize, outSize;
     int ret;
     DWORD dwSigLen;
+    DWORD dwProbeSigLen;
     BYTE *tmpBuf, *outBuf;
 
     xmlSecAssert2(xmlSecMSCryptoSignatureCheckId(transform), -1);
@@ -687,6 +691,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
                 xmlSecMSCryptoError("CryptSignHash", NULL);
                 return(-1);
             }
+            dwProbeSigLen = dwSigLen;
             XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwSigLen, outSize, return(-1), NULL);
 
             ret = xmlSecBufferInitialize(&tmp, outSize);
@@ -704,7 +709,12 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
                 xmlSecBufferFinalize(&tmp);
                 return(-1);
             }
-            XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwSigLen, outSize, return(-1), NULL);
+            if(dwSigLen > dwProbeSigLen) {
+                xmlSecInvalidSizeMoreThanError("Signature", (xmlSecSize)dwSigLen, (xmlSecSize)dwProbeSigLen, NULL);
+                xmlSecBufferFinalize(&tmp);
+                return(-1);
+            }
+            XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwSigLen, outSize, { xmlSecBufferFinalize(&tmp); return(-1); }, NULL);
 
             ret = xmlSecBufferSetSize(out, outSize);
             if(ret < 0) {

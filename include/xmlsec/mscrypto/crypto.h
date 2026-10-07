@@ -13,6 +13,9 @@
 /**
  * @defgroup xmlsec_mscrypto (DEPRECATED) XML Security Library for Microsoft CryptoAPI
  * @brief API reference for the xmlsec-mscrypto back-end (Microsoft CryptoAPI).
+ * @deprecated This back-end targets the legacy Microsoft CryptoAPI (VC6-era CSPs) and
+ *   is deprecated. Use the xmlsec-mscng (Microsoft CryptoAPI Next Gen) or the
+ *   xmlsec-openssl back-ends instead.
  */
 
 /**

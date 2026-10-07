@@ -382,7 +382,10 @@ xmlSecMSCryptoGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
 done:
     /* cleanup */
     if (hProv != 0) {
-        CryptReleaseContext(hProv, 0);
+        if (!CryptReleaseContext(hProv, 0)) {
+            xmlSecMSCryptoError("CryptReleaseContext", NULL);
+            /* cleanup path: best-effort teardown, keep the original result */
+        }
     }
     return(res);
 }
@@ -390,9 +393,10 @@ done:
 /**
  * @brief Returns the system error message for the given error code.
  * @param dwError the error code.
- * @param out the output buffer.
- * @param outLen the output buffer size.
- *
+ * @param out the output buffer, provided (and sized) by the caller.
+ * @param outLen the exact size, in bytes, of the out buffer; the caller must
+ *   guarantee out != NULL and outLen > 0. If the converted message does not
+ *   fit, the result is truncated and always NUL-terminated within outLen.
  */
 void
 xmlSecMSCryptoGetErrorMessage(DWORD dwError, xmlChar * out, size_t outLen) {
@@ -426,6 +430,10 @@ xmlSecMSCryptoGetErrorMessage(DWORD dwError, xmlChar * out, size_t outLen) {
     if(ret <= 0) {
         goto done;
     }
+    /* MSDN: when the output buffer is too small, WideCharToMultiByte performs a
+     * partial conversion and does NOT NUL-terminate; force termination so `out`
+     * is always a valid C string (truncated to cbOutLen-1 characters) */
+    out[outLen - 1] = '\0';
 
 done:
     if(errorTextW != NULL) {
@@ -528,13 +536,15 @@ xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
                             providers[ii].providerType,
                             CRYPT_NEWKEYSET | dwFlags);
                 if((ret == TRUE) && (res != 0)) {
-                    /* TODO - NEED TO DELETE ALL THE TEMP CONTEXTS ON SHUTDOWN
-
-                        CryptAcquireContext(&tmp, XMLSEC_CONTAINER_NAME,
-                            providers[ii].providerName,
-                            providers[ii].providerType,
-                            CRYPT_DELETEKEYSET);
-
+                    /* NOTE: this branch is unreachable for all current callers (they
+                     * pass CRYPT_VERIFYCONTEXT, see the NTE_EXISTS comment above).
+                     * A future caller that requests a persistent key container must
+                     * delete the container created here on shutdown, e.g.:
+                     *
+                     *   CryptAcquireContext(&tmp, XMLSEC_CONTAINER_NAME,
+                     *       providers[ii].providerName,
+                     *       providers[ii].providerType,
+                     *       CRYPT_DELETEKEYSET);
                      */
                     return (res);
                 }

@@ -115,9 +115,14 @@ xmlSecMSCryptoX509StoreGetKlass(void) {
  * or an error occurs.
  */
 PCCERT_CONTEXT
-xmlSecMSCryptoX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
-                xmlChar *issuerName, xmlChar *issuerSerial,
-                xmlChar *ski, xmlSecKeyInfoCtx* keyInfoCtx) {
+xmlSecMSCryptoX509StoreFindCert(
+    xmlSecKeyDataStorePtr store,
+    const xmlChar *subjectName,
+    const xmlChar *issuerName,
+    const xmlChar *issuerSerial,
+    xmlChar *ski,
+    xmlSecKeyInfoCtx* keyInfoCtx
+) {
     if (ski != NULL) {
         xmlSecSize skiDecodedSize = 0;
         int ret;
@@ -155,10 +160,14 @@ xmlSecMSCryptoX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectNam
  * or an error occurs.
  */
 PCCERT_CONTEXT
-xmlSecMSCryptoX509StoreFindCert_ex(xmlSecKeyDataStorePtr store, xmlChar* subjectName,
-                                   xmlChar* issuerName, xmlChar* issuerSerial,
-                                   xmlSecByte* ski, xmlSecSize skiSize,
-                                   xmlSecKeyInfoCtx* keyInfoCtx XMLSEC_ATTRIBUTE_UNUSED) {
+xmlSecMSCryptoX509StoreFindCert_ex(
+    xmlSecKeyDataStorePtr store,
+    const xmlChar* subjectName,
+    const xmlChar* issuerName,
+    const xmlChar* issuerSerial,
+    const xmlSecByte* ski, xmlSecSize skiSize,
+    xmlSecKeyInfoCtx* keyInfoCtx XMLSEC_ATTRIBUTE_UNUSED
+) {
     xmlSecMSCryptoX509StoreCtxPtr ctx;
     PCCERT_CONTEXT pCert = NULL;
 
@@ -184,16 +193,26 @@ xmlSecMSCryptoX509StoreFindCert_ex(xmlSecKeyDataStorePtr store, xmlChar* subject
 }
 
 
-static void
+static int
 xmlSecMSCryptoUnixTimeToFileTime(time_t t, LPFILETIME pft) {
     /* Note that LONGLONG is a 64-bit value */
     LONGLONG ll;
 
-    xmlSecAssert(pft != NULL);
+    xmlSecAssert2(pft != NULL, -1);
+
+    /* FILETIME counts 100-nanosecond intervals since 1601-01-01 in a 64-bit
+     * value; reject time stamps that cannot be represented (before 1601-01-01
+     * or after the FILETIME maximum) instead of silently overflowing */
+    if ((LONGLONG)t > 910692730085LL || (LONGLONG)t < -11644473600LL) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
+            "time stamp out of FILETIME representable range");
+        return(-1);
+    }
 
     ll = t * 10000000LL + 116444736000000000LL;
     pft->dwLowDateTime  = (DWORD)ll;
     pft->dwHighDateTime = (DWORD)(ll >> 32);
+    return(0);
 }
 
 /* Returns TRUE if the CRL is time valid (NotBefore <= time <= NotAfter),
@@ -735,6 +754,10 @@ xmlSecMSCryptoBuildCertChain(
             }
         }
 
+        /* Trust decision: members of the trusted store are taken exactly as the
+         * user declared them. A root matched by Subject/Issuer below is accepted
+         * without time-window checking it against pfTime, unlike the queue-popped
+         * chain certs checked by xmlSecMSCryptoVerifyCertTime above. */
         /* does trustedStore contain cert directly? */
         ret = xmlSecMSCryptoX509StoreContainsCert(trustedStore, &(currentCert->pCertInfo->Subject), currentCert);
         if (ret < 0) {
@@ -781,7 +804,13 @@ xmlSecMSCryptoBuildCertChain(
             /* try the untrusted certs in the chain */
             issuerCert = xmlSecMSCryptoX509StoreFindIssuer(certStore, currentCert);
             if(issuerCert != NULL) {
-                xmlSecAssert2(queueSize < queueMaxSize, FALSE);
+                if (queueSize >= queueMaxSize) {
+                    /* queue growth above should guarantee space; treat as internal
+                     * error routed through the done: cleanup so nothing leaks */
+                    xmlSecInternalError("xmlSecMSCryptoX509StoreFindIssuer queue capacity invariant violated", NULL);
+                    CertFreeCertificateContext(issuerCert);
+                    goto done;
+                }
                 queue[queueSize].cert = issuerCert;
                 queue[queueSize].freeCert = TRUE;
                 ++queueSize;
@@ -790,7 +819,11 @@ xmlSecMSCryptoBuildCertChain(
             /* try the untrusted certs in the store */
             issuerCert = xmlSecMSCryptoX509StoreFindIssuer(untrustedStore, currentCert);
             if(issuerCert != NULL) {
-                xmlSecAssert2(queueSize < queueMaxSize, FALSE);
+                if (queueSize >= queueMaxSize) {
+                    xmlSecInternalError("xmlSecMSCryptoX509StoreFindIssuer queue capacity invariant violated", NULL);
+                    CertFreeCertificateContext(issuerCert);
+                    goto done;
+                }
                 queue[queueSize].cert = issuerCert;
                 queue[queueSize].freeCert = TRUE;
                 ++queueSize;
@@ -855,6 +888,7 @@ xmlSecMSCryptoX509StoreConstructCertsChain(xmlSecKeyDataStorePtr store, PCCERT_C
     FILETIME fTime;
     FILETIME* pfTime;
     BOOL res = FALSE;
+    int ret;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCryptoX509StoreId), FALSE);
     xmlSecAssert2(cert != NULL, FALSE);
@@ -874,7 +908,11 @@ xmlSecMSCryptoX509StoreConstructCertsChain(xmlSecKeyDataStorePtr store, PCCERT_C
     if ((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS) == 0) {
         /* get time and convert to FILETIME*/
         if(keyInfoCtx->certsVerificationTime > 0) {
-            xmlSecMSCryptoUnixTimeToFileTime(keyInfoCtx->certsVerificationTime, &fTime);
+            ret = xmlSecMSCryptoUnixTimeToFileTime(keyInfoCtx->certsVerificationTime, &fTime);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecMSCryptoUnixTimeToFileTime", NULL);
+                return(FALSE);
+            }
         } else {
             /* Defaults to current time. GetSystemTimeAsFileTime effectively never
             * fails, so its return value is not checked.
@@ -928,7 +966,11 @@ xmlSecMSCryptoX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs,
         PCCERT_CONTEXT nextCert = NULL;
         unsigned char selected = 1;
 
-        xmlSecAssert2(cert->pCertInfo != NULL, NULL);
+        if (cert->pCertInfo == NULL) {
+            /* malformed store context: skip it; the next CertEnumCertificatesInStore
+             * call frees this handle (and the final one is freed by the loop exit) */
+            continue;
+        }
 
         /* if cert is the issuer of any other cert in the list, then it is
           * to be skipped except a case of a self-signed cert*/

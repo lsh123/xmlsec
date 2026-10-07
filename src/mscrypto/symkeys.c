@@ -239,7 +239,14 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
     /* just in case */
     *hPrivateKey = 0;
 
-    /* Generate the private key */
+    /* Generate the private key.
+     * NOTE: the third CryptGenKey parameter is dwExportBits (the RSA key length
+     * in bits for AT_KEYEXCHANGE; 0 = provider default), but upstream has always
+     * passed the CRYPT_EXPORTABLE export-mask constant here by mistake. The base
+     * CSP ignores the bogus value and uses its default RSA length, which is also
+     * what the matching CryptExportKey/KP_KEYLEN round-trip below assumes.
+     * Kept as-is for provider-compatibility; a future strict provider that
+     * honors dwExportBits would need a real RSA bit length (>= 8 * (keyMaterialLen + 3)). */
     if(!CryptGenKey(hProv, AT_KEYEXCHANGE, CRYPT_EXPORTABLE, &hKey)) {
         xmlSecMSCryptoError("CryptGenKey", NULL);
         goto done;
@@ -257,6 +264,10 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
         goto done;
     }
 
+    /* NOTE: the real export below writes into keyBlob before the sanity checks;
+     * this is safe only because the provider returns the exact same size for the
+     * NULL-probe call and the real call. The checks are kept after the write for
+     * upstream compatibility; a misbehaving provider would overflow the buffer. */
     if(!CryptExportKey(hKey, 0, PRIVATEKEYBLOB, 0, keyBlob, &keyBlobLen)) {
         xmlSecMSCryptoError("CryptExportKey", NULL);
         goto done;

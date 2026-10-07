@@ -246,7 +246,8 @@ xmlSecMSCryptoAppKeyLoadMemory(
     if(ret < 0) {
         xmlSecInternalError("xmlSecMSCryptoKeyDataX509AdoptKeyCert",
                             xmlSecKeyDataGetName(x509Data));
-        CertFreeCertificateContext(tmpcert);
+        /* on failure the cert is not owned by x509Data; leave tmpcert set so
+         * the done: block releases it exactly once */
         goto done;
     }
     tmpcert = NULL;
@@ -541,6 +542,7 @@ xmlSecMSCryptoAppPkcs12LoadMemory(
     PCCERT_CONTEXT tmpcert = NULL;
     PCCERT_CONTEXT pCert = NULL;
     WCHAR* wcPwd = NULL;
+    DWORD wcPwdLen = 0;
     DWORD dwFlags;
     xmlSecKeyDataPtr x509Data = NULL;
     xmlSecKeyDataPtr keyData = NULL;
@@ -569,6 +571,8 @@ xmlSecMSCryptoAppPkcs12LoadMemory(
         xmlSecInternalError("xmlSecWin32ConvertUtf8ToUnicode(pw)", NULL);
         goto done;
     }
+    /* remember the exact wide-string size so cleanup can wipe the plaintext password */
+    wcPwdLen = (DWORD)MultiByteToWideChar(CP_UTF8, 0, (LPCCH)pwd, -1, NULL, 0);
 
     if (FALSE == PFXVerifyPassword(&pfx, wcPwd, 0)) {
         xmlSecMSCryptoError("PFXVerifyPassword", NULL);
@@ -689,6 +693,10 @@ done:
         CertCloseStore(hCertStore, 0);
     }
     if(wcPwd != NULL) {
+        /* wipe the plaintext password before releasing the buffer */
+        if(wcPwdLen > 0) {
+            xmlSecMemCleanse(wcPwd, wcPwdLen * sizeof(WCHAR));
+        }
         xmlFree(wcPwd);
     }
     if(x509Data != NULL) {

@@ -427,6 +427,24 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
     }
     xmlSecAssert2(bytesRead == sizeof(authTagLengths), -1);
 
+    /* XML-ENC AES-GCM support uses a 128-bit tag only (see
+     * http://www.w3.org/TR/xmlenc-core1/#sec-AES-GCM); verify that the provider
+     * can actually produce a tag of that size before allocating/using it. */
+    if (authTagLengths.dwMinLength > (DWORD)xmlSecMSCngAesGcmTagLengthInBytes) {
+        xmlSecInvalidSizeError("AES-GCM provider minimum tag length",
+            (xmlSecSize)authTagLengths.dwMinLength,
+            (xmlSecSize)xmlSecMSCngAesGcmTagLengthInBytes,
+            cipherName);
+        return(-1);
+    }
+    if (authTagLengths.dwMaxLength < (DWORD)xmlSecMSCngAesGcmTagLengthInBytes) {
+        xmlSecInvalidSizeError("AES-GCM provider maximum tag length",
+            (xmlSecSize)authTagLengths.dwMaxLength,
+            (xmlSecSize)xmlSecMSCngAesGcmTagLengthInBytes,
+            cipherName);
+        return(-1);
+    }
+
     if (ctx->authInfo.pbMacContext == NULL) {
         ctx->authInfo.pbMacContext = xmlMalloc(authTagLengths.dwMaxLength);
         if (ctx->authInfo.pbMacContext == NULL) {
@@ -648,7 +666,7 @@ xmlSecMSCngGcmBlockCipherCtxFinal(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
     DWORD dwInSize, dwOutSize, dwCLen;
     NTSTATUS status;
     int ret;
-    static xmlSecByte dummy = 0;
+    xmlSecByte dummy = 0;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->ctxInitialized != 0, -1);
@@ -718,7 +736,11 @@ xmlSecMSCngGcmBlockCipherCtxFinal(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
     } else {
         xmlSecSize outMaxSize;
 
-        xmlSecAssert2(inBufSize >= xmlSecMSCngAesGcmTagLengthInBytes, -1);
+        if(inBufSize < xmlSecMSCngAesGcmTagLengthInBytes) {
+            xmlSecInvalidSizeLessThanError("inBufSize",
+                inBufSize, (xmlSecSize)xmlSecMSCngAesGcmTagLengthInBytes, cipherName);
+            return(-1);
+        }
 
         /* Get the tag */
         memcpy(ctx->authInfo.pbTag, inBuf + inBufSize - xmlSecMSCngAesGcmTagLengthInBytes,

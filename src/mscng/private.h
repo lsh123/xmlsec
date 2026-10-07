@@ -23,6 +23,17 @@
 
 #include "../keysdata_helpers.h"
 
+/* Flag to use when CertCloseStore()-ing a certificate store.
+ * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certclosestore
+ * CERT_CLOSE_STORE_CHECK_FLAG should only be used as a diagnostic tool in the
+ * development of applications, so it is only enabled in debug builds; never use
+ * the CERT_CLOSE_STORE_FORCE_FLAG variant. */
+#ifdef _DEBUG
+#define XMLSEC_CLOSE_STORE_FLAG     (CERT_CLOSE_STORE_CHECK_FLAG)
+#else /* _DEBUG */
+#define XMLSEC_CLOSE_STORE_FLAG     (0)
+#endif /* _DEBUG */
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -148,7 +159,7 @@ xmlSecKeyDataPtr   xmlSecMSCngKeyDataDhReadFromPkcs8Der             (const xmlSe
 
 
 #define XMLSEC_MSCNG_DSA_MAX_CBKEY_SIZE (512U)                      /*  4096 bits, which is 512 bytes */
-#define XMLSEC_MSCNG_DSA_MAX_P_SIZE     (512U)                      /*  4096 bits, which is 512 bytes */
+#define XMLSEC_MSCNG_DSA_MAX_P_SIZE     XMLSEC_MSCNG_DSA_MAX_CBKEY_SIZE /* same quantity as MAX_CBKEY_SIZE: keep the two in sync by aliasing */
 #define XMLSEC_MSCNG_DSA_MAX_Q_SIZE     (20U)
 #define XMLSEC_MSCNG_DSA_V2_Q_SIZE      (32U)
 #define XMLSEC_MSCNG_DSA_V1_MAX_P_SIZE  (128U)                      /*  1024 bits, which is 128 bytes */

@@ -339,6 +339,7 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
             xmlSecMSCngNtError("BCryptGetProperty", xmlSecTransformGetName(transform), status);
             return(-1);
         }
+        xmlSecAssert2(ctx->cbHash > 0, -1);
 
         /* allocate the hash buffer on the heap */
         xmlSecAssert2(ctx->pbHash == NULL, -1);
@@ -406,8 +407,6 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
                 xmlSecMSCngNtError("BCryptFinishHash", xmlSecTransformGetName(transform), status);
                 return(-1);
             }
-
-            xmlSecAssert2(ctx->cbHash > 0, -1);
 
             /* copy result to output */
             if(transform->operation == xmlSecTransformOperationSign) {

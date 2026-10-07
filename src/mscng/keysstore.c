@@ -106,7 +106,7 @@ xmlSecMSCngCertStoreCtxInitialize(xmlSecMSCngCertStoreCtx* ctx, LPCTSTR localMac
         if(ret == FALSE) {
             xmlSecMSCngLastError("CertAddStoreToCollection(LocalMachine)", NULL);
             /* non-fatal - continue without local machine store */
-            if(!CertCloseStore(ctx->hLocalMachine, 0)) {
+            if(!CertCloseStore(ctx->hLocalMachine, XMLSEC_CLOSE_STORE_FLAG)) {
                 xmlSecMSCngLastError("CertCloseStore", NULL);
                 /* ignore error */
             }
@@ -129,7 +129,7 @@ xmlSecMSCngCertStoreCtxInitialize(xmlSecMSCngCertStoreCtx* ctx, LPCTSTR localMac
         if(ret == FALSE) {
             xmlSecMSCngLastError("CertAddStoreToCollection(CurrentUser)", NULL);
             /* non-fatal */
-            if(!CertCloseStore(ctx->hCurrentUser, 0)) {
+            if(!CertCloseStore(ctx->hCurrentUser, XMLSEC_CLOSE_STORE_FLAG)) {
                 xmlSecMSCngLastError("CertCloseStore", NULL);
                 /* ignore error */
             }
@@ -141,7 +141,7 @@ xmlSecMSCngCertStoreCtxInitialize(xmlSecMSCngCertStoreCtx* ctx, LPCTSTR localMac
     if(ctx->hLocalMachine == NULL && ctx->hCurrentUser == NULL) {
         xmlSecOtherError(XMLSEC_ERRORS_R_CRYPTO_FAILED, NULL,
             "neither LocalMachine nor CurrentUser store could be opened");
-        if(!CertCloseStore(ctx->hCollection, 0)) {
+        if(!CertCloseStore(ctx->hCollection, XMLSEC_CLOSE_STORE_FLAG)) {
             xmlSecMSCngLastError("CertCloseStore", NULL);
             /* ignore error */
         }
@@ -159,21 +159,21 @@ xmlSecMSCngCertStoreCtxFinalize(xmlSecMSCngCertStoreCtx* ctx) {
     }
     /* close individual stores before the collection */
     if(ctx->hLocalMachine != NULL) {
-        if(!CertCloseStore(ctx->hLocalMachine, 0)) {
+        if(!CertCloseStore(ctx->hLocalMachine, XMLSEC_CLOSE_STORE_FLAG)) {
             xmlSecMSCngLastError("CertCloseStore", NULL);
             /* ignore error */
         }
         ctx->hLocalMachine = NULL;
     }
     if(ctx->hCurrentUser != NULL) {
-        if(!CertCloseStore(ctx->hCurrentUser, 0)) {
+        if(!CertCloseStore(ctx->hCurrentUser, XMLSEC_CLOSE_STORE_FLAG)) {
             xmlSecMSCngLastError("CertCloseStore", NULL);
             /* ignore error */
         }
         ctx->hCurrentUser = NULL;
     }
     if(ctx->hCollection != NULL) {
-        if(!CertCloseStore(ctx->hCollection, 0)) {
+        if(!CertCloseStore(ctx->hCollection, XMLSEC_CLOSE_STORE_FLAG)) {
             xmlSecMSCngLastError("CertCloseStore", NULL);
             /* ignore error */
         }

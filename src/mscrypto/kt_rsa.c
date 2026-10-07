@@ -241,6 +241,7 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
     xmlSecBufferPtr in, out;
     xmlSecSize inSize, outSize;
     xmlSecSize keySize;
+    xmlSecSize keyBits;
     int ret;
     HCRYPTKEY hKey = 0;
     HCRYPTKEY hTmpKey = 0;
@@ -258,7 +259,12 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->data != NULL, -1);
 
-    keySize = xmlSecKeyDataGetSize(ctx->data) / 8;
+    keyBits = xmlSecKeyDataGetSize(ctx->data);
+    if((keyBits % 8) != 0) {
+        xmlSecInvalidSizeNotMultipleOfError("Key size", keyBits, 8, xmlSecTransformGetName(transform));
+        return(-1);
+    }
+    keySize = keyBits / 8;
     xmlSecAssert2(keySize > 0, -1);
 
     in = &(transform->inBuf);
@@ -362,7 +368,11 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         /* The output of CryptEncrypt is in little-endian format, so we have to convert to
          * big-endian first.
          */
-        xmlSecMSCryptoConvertEndianInPlace(outBuf, outSize);
+        ret = xmlSecMSCryptoConvertEndianInPlace(outBuf, outSize);
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecMSCryptoConvertEndianInPlace", xmlSecTransformGetName(transform));
+            return (-1);
+        }
     } else {
         XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwOutLen, return(-1), xmlSecTransformGetName(transform));
 
@@ -371,7 +381,13 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
          */
         inBuf   = xmlSecBufferGetData(in);
         outBuf  = xmlSecBufferGetData(out);
-        xmlSecMSCryptoConvertEndian(inBuf, outBuf, inSize);
+        xmlSecAssert2(inBuf != NULL, -1);
+        xmlSecAssert2(outBuf != NULL, -1);
+        ret = xmlSecMSCryptoConvertEndian(inBuf, outBuf, inSize);
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecMSCryptoConvertEndian", xmlSecTransformGetName(transform));
+            return (-1);
+        }
 
         hKey = xmlSecMSCryptoKeyDataGetDecryptKey(ctx->data);
         if (0 == hKey) {
@@ -411,7 +427,9 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         }
 #endif /* XMLSEC_NO_RSA_OAEP */
 
-        /* decrypt */
+        /* decrypt: fFinal must be TRUE so that the full RSA block is decrypted in one call;
+         * passing FALSE makes CryptDecrypt treat the call as streaming decryption and
+         * return a partial block instead of the full RSA block */
         if (!CryptDecrypt(((hTmpKey != 0) ? hTmpKey : hKey), 0, TRUE, ctx->dwFlags, outBuf, &dwOutLen)) {
             xmlSecMSCryptoError("CryptDecrypt", xmlSecTransformGetName(transform));
             if (hTmpKey != 0) {

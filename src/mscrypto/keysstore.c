@@ -51,7 +51,12 @@
  * MSCrypto Keys Store. Uses Simple Keys Store under the hood
  *
   *****************************************************************************/
-XMLSEC_KEY_STORE_DECLARE(MSCryptoKeysStore, xmlSecKeyStorePtr)
+ typedef struct _xmlSecMSCryptoKeysStoreCtx {
+    xmlSecKeyStorePtr   simpleKeyStore;
+    HCERTSTORE          hStoreHandle;
+} xmlSecMSCryptoKeysStoreCtx;
+
+XMLSEC_KEY_STORE_DECLARE(MSCryptoKeysStore, xmlSecMSCryptoKeysStoreCtx)
 #define xmlSecMSCryptoKeysStoreSize XMLSEC_KEY_STORE_SIZE(MSCryptoKeysStore)
 
 static int                      xmlSecMSCryptoKeysStoreInitialize   (xmlSecKeyStorePtr store);
@@ -94,16 +99,17 @@ xmlSecMSCryptoKeysStoreGetKlass(void) {
  */
 int
 xmlSecMSCryptoKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
-    xmlSecKeyStorePtr *ss;
+    xmlSecMSCryptoKeysStoreCtx* ctx;
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCryptoKeysStoreId), -1);
     xmlSecAssert2((key != NULL), -1);
 
-    ss = xmlSecMSCryptoKeysStoreGetCtx(store);
-    xmlSecAssert2(((ss != NULL) && (*ss != NULL) &&
-        (xmlSecKeyStoreCheckId(*ss, xmlSecSimpleKeysStoreId))), -1);
+    ctx = xmlSecMSCryptoKeysStoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->simpleKeyStore != NULL, -1);
+    xmlSecAssert2((xmlSecKeyStoreCheckId(ctx->simpleKeyStore, xmlSecSimpleKeysStoreId)), -1);
 
-    return (xmlSecSimpleKeysStoreAdoptKey(*ss, key));
+    return (xmlSecSimpleKeysStoreAdoptKey(ctx->simpleKeyStore, key));
 }
 
 /**
@@ -129,64 +135,23 @@ xmlSecMSCryptoKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
  */
 int
 xmlSecMSCryptoKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecKeyDataType type) {
-    xmlSecKeyStorePtr *ss;
+    xmlSecMSCryptoKeysStoreCtx* ctx;
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCryptoKeysStoreId), -1);
     xmlSecAssert2((filename != NULL), -1);
 
-    ss = xmlSecMSCryptoKeysStoreGetCtx(store);
-    xmlSecAssert2(((ss != NULL) && (*ss != NULL) &&
-                   (xmlSecKeyStoreCheckId(*ss, xmlSecSimpleKeysStoreId))), -1);
+    ctx = xmlSecMSCryptoKeysStoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->simpleKeyStore != NULL, -1);
+    xmlSecAssert2(xmlSecKeyStoreCheckId(ctx->simpleKeyStore, xmlSecSimpleKeysStoreId), -1);
 
-    return (xmlSecSimpleKeysStoreSave(*ss, filename, type));
+    return (xmlSecSimpleKeysStoreSave(ctx->simpleKeyStore, filename, type));
 }
 
-static int
-xmlSecMSCryptoKeysStoreInitialize(xmlSecKeyStorePtr store) {
-    xmlSecKeyStorePtr *ss;
-
-    xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCryptoKeysStoreId), -1);
-
-    ss = xmlSecMSCryptoKeysStoreGetCtx(store);
-    xmlSecAssert2(ss != NULL, -1);
-    xmlSecAssert2((*ss == NULL), -1);
-
-    *ss = xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId);
-    if(*ss == NULL) {
-        xmlSecInternalError("xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId)",
-                            xmlSecKeyStoreGetName(store));
-        return(-1);
-    }
-
-    return(0);
-}
-
-static void
-xmlSecMSCryptoKeysStoreFinalize(xmlSecKeyStorePtr store) {
-    xmlSecKeyStorePtr *ss;
-
-    xmlSecAssert(xmlSecKeyStoreCheckId(store, xmlSecMSCryptoKeysStoreId));
-
-    ss = xmlSecMSCryptoKeysStoreGetCtx(store);
-    xmlSecAssert(ss != NULL);
-
-    /* (*ss) may be NULL if Initialize failed (e.g. OOM in xmlSecKeyStoreCreate);
-     * xmlSecKeyStoreCreate still calls finalize in that case, so guard against it. */
-    if((*ss) != NULL) {
-        xmlSecKeyStoreDestroy(*ss);
-        (*ss) = NULL;
-    }
-}
-
-static PCCERT_CONTEXT
-xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name) {
+static HCERTSTORE
+xmlSecMSCryptoOpenDefaultCertStore(void) {
     LPCTSTR storeName;
     HCERTSTORE hStoreHandle = NULL;
-    PCCERT_CONTEXT pCertContext = NULL;
-    LPTSTR tstrName = NULL;
-
-    xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCryptoKeysStoreId), NULL);
-    xmlSecAssert2(name != NULL, NULL);
 
     storeName = xmlSecMSCryptoAppGetCertStoreName();
     if(storeName == NULL) {
@@ -200,23 +165,84 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name) {
         storeNameUtf8 = xmlSecWin32ConvertTstrToUtf8(storeName);
         if(storeNameUtf8 != NULL) {
             xmlSecMSCryptoError2("CertOpenSystemStore",
-                                 xmlSecKeyStoreGetName(store),
+                                 NULL,
                                  "storeName=%s",
                                  storeNameUtf8);
             xmlFree(storeNameUtf8);
         } else {
-            xmlSecMSCryptoError("CertOpenSystemStore",
-                                xmlSecKeyStoreGetName(store));
+            xmlSecMSCryptoError("CertOpenSystemStore", NULL);
         }
         return(NULL);
     }
+
+    return(hStoreHandle);
+}
+
+static int
+xmlSecMSCryptoKeysStoreInitialize(xmlSecKeyStorePtr store) {
+    xmlSecMSCryptoKeysStoreCtx* ctx;
+
+    xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCryptoKeysStoreId), -1);
+
+    ctx = xmlSecMSCryptoKeysStoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->simpleKeyStore == NULL, -1);
+    xmlSecAssert2(ctx->hStoreHandle == NULL, -1);
+
+    ctx->simpleKeyStore = xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId);
+    if(ctx->simpleKeyStore == NULL) {
+        xmlSecInternalError("xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId)", xmlSecKeyStoreGetName(store));
+        return(-1);
+    }
+
+    ctx->hStoreHandle = xmlSecMSCryptoOpenDefaultCertStore();
+    if(ctx->hStoreHandle == NULL) {
+        xmlSecInternalError("xmlSecMSCryptoOpenDefaultCertStore", xmlSecKeyStoreGetName(store));
+        return(-1);
+    }
+
+    return(0);
+}
+
+static void
+xmlSecMSCryptoKeysStoreFinalize(xmlSecKeyStorePtr store) {
+    xmlSecMSCryptoKeysStoreCtx* ctx;
+
+    xmlSecAssert(xmlSecKeyStoreCheckId(store, xmlSecMSCryptoKeysStoreId));
+
+    ctx = xmlSecMSCryptoKeysStoreGetCtx(store);
+    xmlSecAssert(ctx != NULL);
+
+    if(ctx->hStoreHandle != NULL) {
+        if (!CertCloseStore(ctx->hStoreHandle, XMLSEC_CLOSE_STORE_FLAG)) {
+            xmlSecMSCryptoError("CertCloseStore", xmlSecKeyStoreGetName(store));
+            /* cleanup: the returned cert context may still reference the closed store
+            * (see the todo note above); nothing else can be done here */
+        }
+        ctx->hStoreHandle = NULL;
+    }
+
+    if(ctx->simpleKeyStore != NULL) {
+        xmlSecKeyStoreDestroy(ctx->simpleKeyStore);
+        ctx->simpleKeyStore = NULL;
+    }
+}
+
+
+static PCCERT_CONTEXT
+xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, HCERTSTORE hStoreHandle, const xmlChar* name) {
+    PCCERT_CONTEXT pCertContext = NULL;
+    LPTSTR tstrName = NULL;
+
+    xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCryptoKeysStoreId), NULL);
+    xmlSecAssert2(hStoreHandle != NULL, NULL);
+    xmlSecAssert2(name != NULL, NULL);
 
     /* convert name to TSTR */
     tstrName = xmlSecWin32ConvertUtf8ToTstr(name);
     if(tstrName == NULL) {
         xmlSecInternalError("xmlSecWin32ConvertUtf8ToTstr(name)",
                             xmlSecKeyStoreGetName(store));
-        CertCloseStore(hStoreHandle, 0);
         return(NULL);
     }
 
@@ -238,6 +264,8 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name) {
      */
     if (NULL == pCertContext) {
         DWORD dwPropSize;
+        DWORD dwAllocSize;
+        DWORD dwFetchSize;
         PBYTE pbFriendlyName;
         PCCERT_CONTEXT pCertCtxIter = NULL;
         LPWSTR lpwName;
@@ -248,7 +276,6 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name) {
             xmlSecInternalError("xmlSecWin32ConvertUtf8ToUnicode(name)",
                                 xmlSecKeyStoreGetName(store));
             xmlFree(tstrName);
-            CertCloseStore(hStoreHandle, 0);
             return(NULL);
         }
 
@@ -270,24 +297,38 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name) {
                                                       &dwPropSize)) {
                 continue;
             }
+            dwAllocSize = dwPropSize + 2;   /* +2: guaranteed UTF-16 NUL terminator */
 
-            pbFriendlyName = xmlMalloc(dwPropSize);
+            pbFriendlyName = xmlMalloc(dwAllocSize);
             if(pbFriendlyName == NULL) {
-                xmlSecMallocError(dwPropSize, xmlSecKeyStoreGetName(store));
+                xmlSecMallocError(dwAllocSize, xmlSecKeyStoreGetName(store));
                 xmlFree(lpwName);
                 xmlFree(tstrName);
-                CertCloseStore(hStoreHandle, 0);
                 CertFreeCertificateContext(pCertCtxIter);
                 return(NULL);
             }
-
+            dwFetchSize = dwAllocSize;    /* input to the fetch: buffer capacity */
             if (TRUE != CertGetCertificateContextProperty(pCertCtxIter,
                                                       CERT_FRIENDLY_NAME_PROP_ID,
                                                       pbFriendlyName,
-                                                      &dwPropSize)) {
+                                                      &dwFetchSize)) {
                 xmlFree(pbFriendlyName);
                 continue;
             }
+
+            /* The friendly-name property lives in a mutable OS-owned collection, so its
+             * size can theoretically differ between the probe and the fetch; reject
+             * anything that does not fit the allocation made from the probe. */
+            if ((dwFetchSize == 0) || (dwFetchSize > dwPropSize)) {
+                xmlSecMSCryptoError("CertGetCertificateContextProperty",
+                                    xmlSecKeyStoreGetName(store));
+                xmlFree(pbFriendlyName);
+                continue;
+            }
+
+            /* guarantee the NULL terminator based on the actual fetched size */
+            pbFriendlyName[dwFetchSize] = 0;
+            pbFriendlyName[dwFetchSize + 1] = 0;
 
             /* Compare FriendlyName to name */
             if (lstrcmpW(lpwName, (LPCWSTR)pbFriendlyName) == 0) {
@@ -323,18 +364,14 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name) {
 
     /* OK, I give up, I'm gone :( */
 
-    /* todo: is it a right idea to close store if we have a handle to
-     * a cert in this store? */
     xmlFree(tstrName);
-    CertCloseStore(hStoreHandle, 0);
     return(pCertContext);
 }
-
 
 static xmlSecKeyPtr
 xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
                                xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecKeyStorePtr* ss;
+    xmlSecMSCryptoKeysStoreCtx* ctx;
     xmlSecKeyPtr key = NULL;
     xmlSecKeyReqPtr keyReq = NULL;
     PCCERT_CONTEXT pCertContext = NULL;
@@ -347,11 +384,13 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCryptoKeysStoreId), NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
-    ss = xmlSecMSCryptoKeysStoreGetCtx(store);
-    xmlSecAssert2(((ss != NULL) && (*ss != NULL)), NULL);
+    ctx = xmlSecMSCryptoKeysStoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, NULL);
+    xmlSecAssert2(ctx->simpleKeyStore != NULL, NULL);
+    xmlSecAssert2(ctx->hStoreHandle != NULL, NULL);
 
     /* first try to find key in the simple keys store */
-    key = xmlSecKeyStoreFindKey(*ss, name, keyInfoCtx);
+    key = xmlSecKeyStoreFindKey(ctx->simpleKeyStore, name, keyInfoCtx);
     if (key != NULL) {
         return (key);
     }
@@ -370,7 +409,7 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
     */
     keyReq = &(keyInfoCtx->keyReq);
     if (keyReq->keyType & (xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate)) {
-        pCertContext = xmlSecMSCryptoKeysStoreFindCert(store, name);
+        pCertContext = xmlSecMSCryptoKeysStoreFindCert(store, ctx->hStoreHandle, name);
         if(pCertContext == NULL) {
             goto done;
         }
@@ -379,36 +418,32 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
         /* set cert in x509 data */
         x509Data = xmlSecKeyDataCreate(xmlSecMSCryptoKeyDataX509Id);
         if(x509Data == NULL) {
-            xmlSecInternalError("xmlSecKeyDataCreate", NULL);
+            xmlSecInternalError("xmlSecKeyDataCreate", xmlSecKeyStoreGetName(store));
             goto done;
         }
 
         pCertContext2 = CertDuplicateCertificateContext(pCertContext);
         if (NULL == pCertContext2) {
-            xmlSecMSCryptoError("CertDuplicateCertificateContext",
-                                xmlSecKeyDataGetName(x509Data));
+            xmlSecMSCryptoError("CertDuplicateCertificateContext", xmlSecKeyStoreGetName(store));
             goto done;
         }
 
         ret = xmlSecMSCryptoKeyDataX509AdoptCert(x509Data, pCertContext2);
         if (ret < 0) {
-            xmlSecInternalError("xmlSecMSCryptoKeyDataX509AdoptCert",
-                                xmlSecKeyDataGetName(x509Data));
+            xmlSecInternalError("xmlSecMSCryptoKeyDataX509AdoptCert", xmlSecKeyStoreGetName(store));
             goto done;
         }
         pCertContext2 = NULL;
 
         pCertContext2 = CertDuplicateCertificateContext(pCertContext);
         if (NULL == pCertContext2) {
-            xmlSecMSCryptoError("CertDuplicateCertificateContext",
-                                xmlSecKeyDataGetName(x509Data));
+            xmlSecMSCryptoError("CertDuplicateCertificateContext", xmlSecKeyStoreGetName(store));
             goto done;
         }
 
         ret = xmlSecMSCryptoKeyDataX509AdoptKeyCert(x509Data, pCertContext2);
         if (ret < 0) {
-            xmlSecInternalError("xmlSecMSCryptoKeyDataX509AdoptKeyCert",
-                                xmlSecKeyDataGetName(x509Data));
+            xmlSecInternalError("xmlSecMSCryptoKeyDataX509AdoptKeyCert", xmlSecKeyStoreGetName(store));
             goto done;
         }
         pCertContext2 = NULL;
@@ -417,7 +452,7 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
         /* set cert in key data */
         data = xmlSecMSCryptoCertAdopt(pCertContext, keyReq->keyType);
         if(data == NULL) {
-            xmlSecInternalError("xmlSecMSCryptoCertAdopt", NULL);
+            xmlSecInternalError("xmlSecMSCryptoCertAdopt", xmlSecKeyStoreGetName(store));
             goto done;
         }
         pCertContext = NULL;
@@ -425,14 +460,13 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
         /* create key and add key data and x509 data to it */
         key = xmlSecKeyCreate();
         if (key == NULL) {
-            xmlSecInternalError("xmlSecKeyCreate", NULL);
+            xmlSecInternalError("xmlSecKeyCreate", xmlSecKeyStoreGetName(store));
             goto done;
         }
 
         ret = xmlSecKeySetValue(key, data);
         if (ret < 0) {
-            xmlSecInternalError("xmlSecKeySetValue",
-                                xmlSecKeyDataGetName(data));
+            xmlSecInternalError("xmlSecKeySetValue", xmlSecKeyStoreGetName(store));
             goto done;
         }
         data = NULL;
@@ -440,8 +474,7 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 #ifndef XMLSEC_NO_X509
         ret = xmlSecKeyAdoptData(key, x509Data);
         if (ret < 0) {
-            xmlSecInternalError("xmlSecKeyAdoptData",
-                                xmlSecKeyDataGetName(x509Data));
+            xmlSecInternalError("xmlSecKeyAdoptData", xmlSecKeyStoreGetName(store));
             goto done;
         }
         x509Data = NULL;
@@ -450,8 +483,7 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
         /* Set the name of the key to the given name */
         ret = xmlSecKeySetName(key, name);
         if (ret < 0) {
-            xmlSecInternalError("xmlSecKeySetName",
-                                xmlSecKeyStoreGetName(store));
+            xmlSecInternalError("xmlSecKeySetName", xmlSecKeyStoreGetName(store));
             goto done;
         }
 

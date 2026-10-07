@@ -340,9 +340,12 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
             oaepParamsSize = xmlSecBufferGetSize(&(ctx->oaepParams));
             XMLSEC_SAFE_CAST_SIZE_TO_ULONG(oaepParamsSize, paddingInfo.cbLabel, return(-1), xmlSecTransformGetName(transform));
 
-            /* RSA-OAEP (EME-OAEP) limits the plaintext to k - 2 * hashLen - 2
-             * bytes (independent of label length); CNG would reject an
-             * oversized plaintext with an opaque NTSTATUS error, so check the
+            /* RSA-OAEP (EME-OAEP) https://www.rfc-editor.org/info/rfc8017/
+             * "RSAES-OAEP can operate on messages of length up to (k - 2 * hLen - 2) octets,
+             * where hLen is the length of the output from the underlying hash function and k is
+             * the length in octets of the recipient's RSA modulus."
+             *
+             * CNG would reject an oversized plaintext with an opaque NTSTATUS error, so check the
              * bound explicitly */
             digestSize = xmlSecMSCngRsaOaepDigestSize(ctx->pszDigestAlgId);
             if(digestSize > 0) {
@@ -570,7 +573,17 @@ xmlSecMSCngRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
 #ifndef XMLSEC_NO_SHA224
     if (xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha224) == 0) {
-        ctx->pszDigestAlgId = BCRYPT_SHA224_ALGORITHM;
+        /* SHA-224 is not in the documented set of hash algorithms supported by
+         * CNG and it is rejected by the provider at use time (for example,
+         * NCryptEncrypt/NCryptDecrypt fails with NTSTATUS 0x80090027). Reject
+         * it here so that the error is clear; note that mscng does not define
+         * the SHA-224 digest klass transform at all, so this algorithm cannot
+         * be used with this backend. */
+        xmlSecInvalidTransformError2(transform,
+            "digest algorithm=\"%s\" is not supported for rsa/oaep",
+            xmlSecErrorsSafeString(oaepParams.digestAlgorithm));
+        xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
+        return(-1);
     } else
 #endif /* XMLSEC_NO_SHA224 */
 
@@ -617,7 +630,13 @@ xmlSecMSCngRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
 #ifndef XMLSEC_NO_SHA224
     if (xmlStrcmp(oaepParams.mgf1DigestAlgorithm, xmlSecHrefMgf1Sha224) == 0) {
-        mgf1AlgId = BCRYPT_SHA224_ALGORITHM;
+        /* see the comment in the digest algorithm handling above: SHA-224 is
+         * not supported by CNG, reject it early */
+        xmlSecInvalidTransformError2(transform,
+            "mgf1 digest algorithm=\"%s\" is not supported for rsa/oaep",
+            xmlSecErrorsSafeString(oaepParams.mgf1DigestAlgorithm));
+        xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
+        return(-1);
     } else
 #endif /* XMLSEC_NO_SHA224 */
 

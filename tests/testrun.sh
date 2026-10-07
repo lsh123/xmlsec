@@ -434,7 +434,7 @@ setupCryptoConfig() {
     mkdir $crypto_config_folder
 
     # see https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certopensystemstorea
-    if [ "z$crypto" = "zmscng" ] ; then
+    if [ "z$crypto" = "zmscng" -o "z$crypto" = "zmscrypto" ] ; then
         default_crypto_config="MY"
     else
         default_crypto_config="$crypto_config_folder"

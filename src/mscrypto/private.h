@@ -27,6 +27,17 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
 
+/* Flag to use when CertCloseStore()-ing a certificate store.
+ * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certclosestore
+ * CERT_CLOSE_STORE_CHECK_FLAG should only be used as a diagnostic tool in the
+ * development of applications, so it is only enabled in debug builds; never use
+ * the CERT_CLOSE_STORE_FORCE_FLAG variant. */
+#ifdef _DEBUG
+#define XMLSEC_CLOSE_STORE_FLAG     (CERT_CLOSE_STORE_CHECK_FLAG)
+#else /* _DEBUG */
+#define XMLSEC_CLOSE_STORE_FLAG     (0)
+#endif /* _DEBUG */
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -111,16 +122,16 @@ PCCERT_CONTEXT     xmlSecMSCryptoX509FindCertBySubject          (HCERTSTORE stor
                                                                  DWORD dwCertEncodingType);
 
 PCCERT_CONTEXT     xmlSecMSCryptoX509StoreFindCert              (xmlSecKeyDataStorePtr store,
-                                                                 xmlChar *subjectName,
-                                                                 xmlChar *issuerName,
-                                                                 xmlChar *issuerSerial,
+                                                                 const xmlChar *subjectName,
+                                                                 const xmlChar *issuerName,
+                                                                 const xmlChar *issuerSerial,
                                                                  xmlChar *ski,
                                                                  xmlSecKeyInfoCtx* keyInfoCtx);
 PCCERT_CONTEXT     xmlSecMSCryptoX509StoreFindCert_ex           (xmlSecKeyDataStorePtr store,
-                                                                 xmlChar *subjectName,
-                                                                 xmlChar *issuerName,
-                                                                 xmlChar *issuerSerial,
-                                                                 xmlSecByte* ski,
+                                                                 const xmlChar *subjectName,
+                                                                 const xmlChar *issuerName,
+                                                                 const xmlChar *issuerSerial,
+                                                                 const xmlSecByte* ski,
                                                                  xmlSecSize skiSize,
                                                                  xmlSecKeyInfoCtx* keyInfoCtx);
 

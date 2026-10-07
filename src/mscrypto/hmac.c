@@ -227,16 +227,28 @@ xmlSecMSCryptoHmacFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     if(ctx->mscHash != 0) {
-        CryptDestroyHash(ctx->mscHash);
+        if (!CryptDestroyHash(ctx->mscHash)) {
+            xmlSecMSCryptoError("CryptDestroyHash", NULL);
+            /* teardown: best-effort, nothing else can be done in a void finalize */
+        }
     }
-    if (ctx->cryptKey) {
-        CryptDestroyKey(ctx->cryptKey);
+    if (ctx->cryptKey != 0) {
+        if (!CryptDestroyKey(ctx->cryptKey)) {
+            xmlSecMSCryptoError("CryptDestroyKey", NULL);
+            /* teardown: best-effort */
+        }
     }
-    if (ctx->pubPrivKey) {
-        CryptDestroyKey(ctx->pubPrivKey);
+    if (ctx->pubPrivKey != 0) {
+        if (!CryptDestroyKey(ctx->pubPrivKey)) {
+            xmlSecMSCryptoError("CryptDestroyKey", NULL);
+            /* teardown: best-effort */
+        }
     }
     if(ctx->provider != 0) {
-        CryptReleaseContext(ctx->provider, 0);
+        if (!CryptReleaseContext(ctx->provider, 0)) {
+            xmlSecMSCryptoError("CryptReleaseContext", NULL);
+            /* teardown: best-effort */
+        }
     }
 
     memset(ctx, 0, sizeof(xmlSecMSCryptoHmacCtx));

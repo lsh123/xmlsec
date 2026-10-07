@@ -285,6 +285,10 @@ xmlSecOpenSSLKeyDataX509AdoptCert(xmlSecKeyDataPtr data, X509* cert) {
     /* pkcs12 files sometimes have key cert twice: as the key cert and as the cert in the chain,
      * if this ever change -- fix xmlSecOpenSSLCreateKey that relies on this check */
     if((ctx->keyCert != NULL) && ((ctx->keyCert == cert) || (X509_cmp(ctx->keyCert, cert) == 0))) {
+        /* ownership contract: cert must be a caller-owned object. When it is
+         * pointer-identical to ctx->keyCert, the caller must have X509_up_ref()'d
+         * it (as the app.c/pkcs12 paths do) so this X509_free() only drops the
+         * extra reference and the key cert itself stays alive. */
         X509_free(cert); /* caller expects data to own the cert on success. */
         return(0);
     }
@@ -1588,8 +1592,11 @@ xmlSecOpenSSLVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, 
         return(0);
     }
 
-    /* set cert into the x509 data, we don't know if the cert is already in KeyData or not
-     * so assume we need to add it again.
+    /* cert is a borrowed pointer owned by the store's certsList: duplicate it
+     * so the x509 data owns its own copy (add-internal's delete_ptr matches by
+     * pointer identity and would not displace the original chain entry, so the
+     * duplicated content does end up serialized twice alongside the original
+     * chain entry -- an accepted consequence of keeping store data immutable).
      */
     keyCert = X509_dup(cert);
     if(keyCert == NULL) {
@@ -1610,6 +1617,10 @@ xmlSecOpenSSLVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, 
         xmlSecInternalError("xmlSecOpenSSLX509CertGetKey", xmlSecKeyDataGetName(data));
         return(-1);
     }
+    /* note: a clean non-match (return 0) is folded into the error branch on
+     * purpose: at this point a certificate has already been verified, so a key
+     * that does not satisfy keyReq is treated as a hard failure (fail-closed)
+     * rather than the lenient not-found used above for unverified certs. */
     if(xmlSecKeyReqMatchKeyValue(&(keyInfoCtx->keyReq), keyValue) != 1) {
         xmlSecInternalError("xmlSecKeyReqMatchKeyValue", xmlSecKeyDataGetName(data));
         xmlSecKeyDataDestroy(keyValue);

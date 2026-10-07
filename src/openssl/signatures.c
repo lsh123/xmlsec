@@ -1872,7 +1872,8 @@ xmlSecOpenSSLEvpSignatureDsa_XmlDSig2OpenSSL(const xmlSecTransformId transformId
     DSA_SIG* sig = NULL;
     BIGNUM* rr = NULL;
     BIGNUM* ss = NULL;
-    int signLen, signHalfLen;
+    int signLen, signHalfLen, keyHalfLen;
+    int rLen, sLen;
     int res = -1;
     int ret;
 
@@ -1889,6 +1890,7 @@ xmlSecOpenSSLEvpSignatureDsa_XmlDSig2OpenSSL(const xmlSecTransformId transformId
         xmlSecInternalError("xmlSecOpenSSLEvpSignatureDsaHalfLen", NULL);
         goto done;
     }
+    keyHalfLen = signHalfLen;  /* key-based half length, before the lenient split below */
 
     /* check size: we expect the r and s to be the same size and match the size of
      * the key (RFC 6931) */
@@ -1918,6 +1920,18 @@ xmlSecOpenSSLEvpSignatureDsa_XmlDSig2OpenSSL(const xmlSecTransformId transformId
     ss = BN_bin2bn(data + signHalfLen, signHalfLen, NULL);
     if(ss == NULL) {
         xmlSecOpenSSLError("BN_bin2bn(sig->s)", NULL);
+        goto done;
+    }
+
+    /* malleability guard: r and s must fit within the half length derived from the
+     * key size (RFC 6931: I2OSP with xLen equal to the key size). This rejects
+     * padded/shifted encodings whose extra bytes are not pure zero padding,
+     * while keeping the documented lenient leading-zero encodings above. */
+    rLen = BN_num_bytes(rr);
+    sLen = BN_num_bytes(ss);
+    if((rLen <= 0) || (rLen > keyHalfLen) || (sLen <= 0) || (sLen > keyHalfLen)) {
+        xmlSecInvalidIntegerDataError("Signature r or s length", (rLen > keyHalfLen ? rLen : sLen),
+            "less than or equal to the key half length", NULL);
         goto done;
     }
 
@@ -1962,7 +1976,7 @@ done:
 static int
 xmlSecOpenSSLEvpSignatureDsa_OpenSSL2XmlDSig(const xmlSecTransformId transformId, xmlSecBufferPtr data) {
     xmlSecByte * buf;
-    xmlSecSize bufSize;
+    xmlSecSize bufSize, bufHalfSize;
     int bufLen, signHalfLen, rLen, sLen;
     DSA_SIG* sig = NULL;
     ptrdiff_t consumed;
@@ -2022,8 +2036,11 @@ xmlSecOpenSSLEvpSignatureDsa_OpenSSL2XmlDSig(const xmlSecTransformId transformId
         goto done;
     }
 
-    /* adjust the buffer size */
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(2 * signHalfLen, bufSize, goto done, NULL);
+    /* adjust the buffer size; safe-cast the half length first so the doubling
+     * happens on xmlSecSize (evaluating 2 * signHalfLen as a signed int
+     * multiplication before the range check would be undefined behavior) */
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(signHalfLen, bufHalfSize, goto done, NULL);
+    bufSize = 2 * bufHalfSize;
     ret = xmlSecBufferSetSize(data, bufSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, bufSize);
@@ -2035,8 +2052,16 @@ xmlSecOpenSSLEvpSignatureDsa_OpenSSL2XmlDSig(const xmlSecTransformId transformId
     /* write components */
     xmlSecAssert2((rLen + sLen) <= 2 * signHalfLen, -1);
     memset(buf, 0, bufSize);
-    BN_bn2bin(rr, buf + signHalfLen - rLen);
-    BN_bn2bin(ss, buf + 2 * signHalfLen - sLen);
+    ret = BN_bn2bin(rr, buf + signHalfLen - rLen);
+    if(ret <= 0) {
+        xmlSecOpenSSLError("BN_bn2bin(rr)", NULL);
+        goto done;
+    }
+    ret = BN_bn2bin(ss, buf + 2 * signHalfLen - sLen);
+    if(ret <= 0) {
+        xmlSecOpenSSLError("BN_bn2bin(ss)", NULL);
+        goto done;
+    }
 
     /* success */
     res = 0;
@@ -2167,7 +2192,8 @@ xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(
     ECDSA_SIG* sig = NULL;
     BIGNUM* rr = NULL;
     BIGNUM* ss = NULL;
-    int signLen, signHalfLen;
+    int signLen, signHalfLen, keyHalfLen;
+    int rLen, sLen;
     int res = -1;
     int ret;
 
@@ -2193,6 +2219,7 @@ xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(
     keySizeBytes = XMLSEC_BITS_TO_BYTES(keySizeBits);
     xmlSecAssert2(keySizeBytes > 0, -1);
     XMLSEC_SAFE_CAST_SIZE_TO_INT(keySizeBytes, signHalfLen, goto done, NULL);
+    keyHalfLen = signHalfLen;  /* key-based half length, before the lenient split below */
 
     /* check size: we expect the r and s to be the same size and match the size of
      * the key (RFC 6931) */
@@ -2222,6 +2249,18 @@ xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(
     ss = BN_bin2bn(data + signHalfLen, signHalfLen, NULL);
     if(ss == NULL) {
         xmlSecOpenSSLError("BN_bin2bn(sig->s)", NULL);
+        goto done;
+    }
+
+    /* malleability guard: r and s must fit within the half length derived from the
+     * key size (RFC 6931: I2OSP with xLen equal to the key size). This rejects
+     * padded/shifted encodings whose extra bytes are not pure zero padding,
+     * while keeping the documented lenient leading-zero encodings above. */
+    rLen = BN_num_bytes(rr);
+    sLen = BN_num_bytes(ss);
+    if((rLen <= 0) || (rLen > keyHalfLen) || (sLen <= 0) || (sLen > keyHalfLen)) {
+        xmlSecInvalidIntegerDataError("Signature r or s length", (rLen > keyHalfLen ? rLen : sLen),
+            "less than or equal to the key half length", NULL);
         goto done;
     }
 
@@ -2267,7 +2306,7 @@ static int
 xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig(xmlSecTransformCtxPtr transformCtx, xmlSecSize keySizeBits, xmlSecBufferPtr data) {
     xmlSecSize keySizeBytes;
     xmlSecByte * buf;
-    xmlSecSize bufSize;
+    xmlSecSize bufSize, bufHalfSize;
     int bufLen, signHalfLen, rLen, sLen;
     ECDSA_SIG* sig = NULL;
     ptrdiff_t consumed;
@@ -2333,8 +2372,11 @@ xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig(xmlSecTransformCtxPtr transformCt
         goto done;
     }
 
-    /* adjust the buffer size */
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(2 * signHalfLen, bufSize, goto done, NULL);
+    /* adjust the buffer size; safe-cast the half length first so the doubling
+     * happens on xmlSecSize (evaluating 2 * signHalfLen as a signed int
+     * multiplication before the range check would be undefined behavior) */
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(signHalfLen, bufHalfSize, goto done, NULL);
+    bufSize = 2 * bufHalfSize;
     ret = xmlSecBufferSetSize(data, bufSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, bufSize);
@@ -2346,8 +2388,16 @@ xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig(xmlSecTransformCtxPtr transformCt
     /* write components */
     xmlSecAssert2((rLen + sLen) <= 2 * signHalfLen, -1);
     memset(buf, 0, bufSize);
-    BN_bn2bin(rr, buf + signHalfLen - rLen);
-    BN_bn2bin(ss, buf + 2 * signHalfLen - sLen);
+    ret = BN_bn2bin(rr, buf + signHalfLen - rLen);
+    if(ret <= 0) {
+        xmlSecOpenSSLError("BN_bn2bin(rr)", NULL);
+        goto done;
+    }
+    ret = BN_bn2bin(ss, buf + 2 * signHalfLen - sLen);
+    if(ret <= 0) {
+        xmlSecOpenSSLError("BN_bn2bin(ss)", NULL);
+        goto done;
+    }
 
     /* success */
     res = 0;

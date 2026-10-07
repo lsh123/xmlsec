@@ -60,6 +60,8 @@ struct _xmlSecOpenSSLRsaPkcs1Ctx {
     xmlSecSize          keySize;
 };
 
+#define XMLSEC_OPENSSL_RSA_PKCS15_MIN_PADDING_SIZE      ((xmlSecSize) 11)
+
 /******************************************************************************
  *
  * RSA PKCS1 key transport transform
@@ -433,7 +435,7 @@ static int
 xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform) {
     xmlSecOpenSSLRsaPkcs1CtxPtr ctx;
     xmlSecBufferPtr in, out;
-    xmlSecSize inSize, outSize;
+    xmlSecSize inSize, outSize, maxPayloadSize;
     int encrypt;
     int ret;
 
@@ -465,9 +467,12 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform) {
     }
 
     /* the encoded size is equal to the key size so we could not
-     * process more than that */
-    if((encrypt != 0) && (inSize >= ctx->keySize)) {
-        xmlSecInvalidSizeLessThanError("Input data", inSize, ctx->keySize,
+     * process more than that; PKCS#1 v1.5 padding adds at least
+     * 11 bytes (00 || 02 || at least 8 bytes of PS || 00), so the
+     * plaintext must be at most keySize - 11 bytes long */
+    maxPayloadSize = (ctx->keySize > XMLSEC_OPENSSL_RSA_PKCS15_MIN_PADDING_SIZE) ? ctx->keySize - XMLSEC_OPENSSL_RSA_PKCS15_MIN_PADDING_SIZE : 0;
+    if((encrypt != 0) && (inSize > maxPayloadSize)) {
+        xmlSecInvalidSizeMoreThanError("Input data", inSize, maxPayloadSize,
             xmlSecTransformGetName(transform));
         return(-1);
     } else if((encrypt == 0) && (inSize != ctx->keySize)) {
@@ -760,9 +765,9 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
         XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, (*outSize), return(-1), NULL);
     } else {
         /* decrypt */
-        BIGNUM * bn;
         xmlSecSize outResSize;
         int outLen;
+        int pos;
 
         ret = RSA_private_decrypt(inLen, inBuf, outBuf, rsa, RSA_NO_PADDING);
         if(ret <= 0) {
@@ -772,35 +777,24 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
         outLen = ret;
 
         /*
-         * the private decrypt w/o padding adds '0's at the beginning.
-         * it's not clear to me if I can simply skip all '0's from the
-         * beginning so I have to decode it back to BIGNUM and dump
-         * buffer again
+         * the private decrypt w/o padding left-pads the result with '0's
+         * up to the key length: strip the leading zeros in place.
          */
-        bn = BN_new();
-        if(bn == NULL) {
-            xmlSecOpenSSLError("BN_new", NULL);
+        for(pos = 0; pos < outLen && outBuf[pos] == 0; ++pos) {
+            /* nothing */
+        }
+        if(pos >= outLen) {
+            /* the recovered block is all zeros: not a valid OAEP block */
+            xmlSecInvalidSizeError("Recovered encoded data size", outLen, keyLen, NULL);
             OPENSSL_cleanse(outBuf, (*outSize));
             return(-1);
         }
-
-        if(BN_bin2bn(outBuf, outLen, bn) == NULL) {
-            xmlSecOpenSSLError2("BN_bin2bn", NULL, "size=%d", outLen);
-            BN_clear_free(bn);
-            OPENSSL_cleanse(outBuf, (*outSize));
-            return(-1);
+        if(pos > 0) {
+            memmove(outBuf, outBuf + pos, outLen - pos);
+            outLen -= pos;
         }
 
-        ret = BN_bn2bin(bn, outBuf);
-        if(ret <= 0) {
-            xmlSecOpenSSLError("BN_bn2bin", NULL);
-            BN_clear_free(bn);
-            OPENSSL_cleanse(outBuf, (*outSize));
-            return(-1);
-        }
-        outLen = ret;
-        BN_clear_free(bn);
-
+        /* accept 0-length recovered message */
         ret = RSA_padding_check_PKCS1_OAEP_mgf1(
             outBuf, outLen, outBuf, outLen, keyLen,
             oaepLabel, oaepLabelLen,
@@ -964,6 +958,20 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
     xmlSecAssert2(inSize > 0, -1);
     xmlSecAssert2(outBuf != NULL, -1);
     xmlSecAssert2(outSize != NULL, -1);
+
+    /*
+     * the digest algorithms must have been set either by
+     * xmlSecOpenSSLRsaOaepNodeRead or by the defaults in
+     * xmlSecOpenSSLRsaOaepInitialize; a NULL value means the default
+     * SHA-1 digest is disabled and no explicit digest was specified.
+     * Without this guard OpenSSL would silently fall back to its
+     * SHA-1 default even in XMLSEC_NO_SHA1 builds.
+     */
+    if((ctx->mdName == NULL) || (ctx->mgf1mdName == NULL)) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_DISABLED, NULL,
+            "No OAEP digest algorithm is specified and the default SHA1 digest is disabled");
+        return(-1);
+    }
 
     ret = xmlSecOpenSSLRsaOaepSetParamsIfNeeded(ctx);
     if(ret != 0) {

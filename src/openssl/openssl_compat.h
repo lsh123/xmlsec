@@ -36,13 +36,22 @@ int             xmlSecOpenSSLGenerateRandomBytes             (xmlSecByte* data, 
 #define XMLSEC_OPENSSL_NO_STORE             1
 #define XMLSEC_OPENSSL_NO_DEEP_COPY         1
 
+/* AWS-LC declares the real RAND_priv_bytes (aws-lc include/openssl/rand.h);
+ * BoringSSL (boringssl include/openssl/rand.h) only declares RAND_bytes.
+ * #ifndef cannot detect a plain function declaration, so the shim must be
+ * BoringSSL-only to avoid shadowing the real function on AWS-LC. */
+#if defined(OPENSSL_IS_BORINGSSL)
 #ifndef RAND_priv_bytes
 #define RAND_priv_bytes(buf,len)            RAND_bytes((buf), (len))
 #endif
+#endif /* defined(OPENSSL_IS_BORINGSSL) */
 
-#ifndef EVP_PKEY_base_id
-#define EVP_PKEY_base_id(pkey)              EVP_PKEY_id(pkey)
-#endif
+/* Both BoringSSL (boringssl include/openssl/evp.h, which implements it as a
+ * wrapper for EVP_PKEY_id) and AWS-LC (aws-lc include/openssl/evp.h) declare
+ * the real EVP_PKEY_base_id today, so no shim: #ifndef cannot detect a plain
+ * function declaration, and shadowing the real function with EVP_PKEY_id()
+ * would be silently wrong for key types whose base id differs from their id.
+ * If a provider ever lacks EVP_PKEY_base_id, the build will fail loudly. */
 /* EVP_read_pw_string is not implemented by BoringSSL; AWS-LC provides it
  * (aws-lc include/openssl/evp.h:160), and #ifndef cannot detect a plain
  * function declaration, so the shim must be BoringSSL-only */

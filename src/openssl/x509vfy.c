@@ -460,6 +460,12 @@ xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked(X509 * cert, STACK_OF(X509_REVOKE
             return(-1);
         }
 
+        /* revocation matching policy: this backend's CRL model matches revocations
+         * by serial number only. OpenSSL's own CRL machinery additionally honors
+         * the optional CRLEntry 'digest' attribute; a revoked certificate expressed
+         * through a digest-based CRLEntry whose serial differs from the
+         * certificate serial is not detected here. Publishers that rely on
+         * digest-based CRLEntries must set the matching serial number as well. */
         if (ASN1_INTEGER_cmp(cert_serial, revoked_cert_serial) != 0) {
             continue;
         }
@@ -607,14 +613,19 @@ xmlSecOpenSSLX509StoreVerifyCertAgainstCrls(STACK_OF(X509_CRL) *crls, X509* cert
 
     /* verify against revoked certs */
     if(crl == NULL) {
-        /* success: verified! */
+        /* success: no CRL for this issuer: the manual check succeeds with "nothing to
+         * revoke" on purpose (OpenSSL's built-in path fails when no CRL
+         * exists). Callers cannot distinguish fully-checked from no-CRL-available;
+         * this is the intentional policy of this backend. */
         return(1);
     }
 
     revoked_certs = X509_CRL_get_REVOKED(crl);
     if(revoked_certs == NULL) {
-        xmlSecOpenSSLError("X509_CRL_get_REVOKED", NULL);
-        return(-1);
+        /* the OPTIONAL 'revoked' field may be absent from a perfectly valid CRL:
+         * treat it as an empty revocation set rather than a hard error */
+        /* success: verified! */
+        return(1);
     }
 
     ret = xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked(cert, revoked_certs, keyInfoCtx);
@@ -1069,6 +1080,10 @@ xmlSecOpenSSLX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, x
     /* retrieve X509 data and get key cert */
     x509Data = xmlSecKeyGetData(key, xmlSecOpenSSLKeyDataX509Id);
     if(x509Data == NULL) {
+        /* policy note: a key without the X509 key-data component is an internal
+         * error (-1) while a component without a key cert is "not verified"
+         * (0). Both fail closed; the distinction reflects that this function
+         * is only expected to run for keys that carry X509 data. */
         xmlSecInternalError("xmlSecKeyGetData(xmlSecOpenSSLKeyDataX509Id)", xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
@@ -1652,6 +1667,11 @@ xmlSecOpenSSLX509VerifyCRLTimeValidity(X509_CRL *crl, xmlSecKeyInfoCtx* keyInfoC
     thisUpdate = X509_CRL_get0_lastUpdate(crl);
     nextUpdate = X509_CRL_get0_nextUpdate(crl);
 
+    /* Policy note: thisUpdate and nextUpdate are OPTIONAL in the CRL grammar.
+     * A CRL that omits either bound is treated as unbounded on that side and
+     * passes the time-validity check: this is deliberately more permissive than
+     * OpenSSL's built-in CRL handling (which requires both timestamps), chosen
+     * to match real-world issuer-provided CRLs. */
     /* Verify thisUpdate */
     if(thisUpdate != NULL) {
         ret = xmlSecOpenSSLAsn1TimeIsAfter(thisUpdate, &verification_time);
@@ -2242,7 +2262,12 @@ xmlSecOpenSSLX509FindChildCert(STACK_OF(X509) *chain, X509 *cert) {
     }
     for(ii = 0; ii < sk_X509_num(chain); ++ii) {
         X509* cert_ii = sk_X509_value(chain, ii);
-        xmlSecAssert2(cert_ii != NULL, NULL);
+        if(cert_ii == NULL) {
+            /* the chain (all_untrusted_certs) can preserve NULL entries from a
+             * caller-provided certs stack; skip them, so a NULL entry is simply
+             * not a candidate parent */
+            continue;
+        }
 
         if(cert == cert_ii) {
             /* same cert, skip for self-signed certs */
@@ -2379,6 +2404,7 @@ xmlSecOpenSSLX509_NAME_ENTRIES_copy(XMLSEC_OPENSSL400_CONST X509_NAME * a) {
         if(ret <= 0) {
             xmlSecOpenSSLError("sk_X509_NAME_ENTRY_push", NULL);
             sk_X509_NAME_ENTRY_pop_free(res, X509_NAME_ENTRY_free);
+            X509_NAME_ENTRY_free(entry_dup); /* the push failed: the dup is not owned by res, free it */
             return(NULL);
         }
     }

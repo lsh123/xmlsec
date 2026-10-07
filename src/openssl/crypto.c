@@ -744,10 +744,10 @@ xmlSecOpenSSLErrorsInit(void) {
         xmlSecOpenSSLStrReasons[pos].string = xmlSecErrorsGetMsg(pos);
     }
 
-    /* load xmlsec strings in OpenSSL */
-    ERR_load_strings(gXmlSecOpenSSLErrorsLib, xmlSecOpenSSLStrLib); /* define xmlsec lib name */
-    ERR_load_strings(gXmlSecOpenSSLErrorsLib, xmlSecOpenSSLStrDefReason); /* define default reason */
-    ERR_load_strings(gXmlSecOpenSSLErrorsLib, xmlSecOpenSSLStrReasons);
+    /* Load xmlsec strings in OpenSSL: this is a best-effort initialization. */
+    (void) ERR_load_strings(gXmlSecOpenSSLErrorsLib, xmlSecOpenSSLStrLib); /* define xmlsec lib name */
+    (void) ERR_load_strings(gXmlSecOpenSSLErrorsLib, xmlSecOpenSSLStrDefReason); /* define default reason */
+    (void) ERR_load_strings(gXmlSecOpenSSLErrorsLib, xmlSecOpenSSLStrReasons);
 #endif /* !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR) */
 
     /* and set default errors callback for xmlsec to use OpenSSL specific callback */
@@ -763,10 +763,10 @@ xmlSecOpenSSLErrorsShutdown(void) {
     xmlSecErrorsSetSystemCallback(xmlSecErrorsDefaultCallback);
 
 #if !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR)
-    /* unload xmlsec strings from OpenSSL */
-    ERR_unload_strings(gXmlSecOpenSSLErrorsLib, xmlSecOpenSSLStrLib);
-    ERR_unload_strings(gXmlSecOpenSSLErrorsLib, xmlSecOpenSSLStrDefReason);
-    ERR_unload_strings(gXmlSecOpenSSLErrorsLib, xmlSecOpenSSLStrReasons);
+    /* Unload the xmlsec strings from OpenSSL: this is a best-effort cleanup. */
+    (void) ERR_unload_strings(gXmlSecOpenSSLErrorsLib, xmlSecOpenSSLStrLib);
+    (void) ERR_unload_strings(gXmlSecOpenSSLErrorsLib, xmlSecOpenSSLStrDefReason);
+    (void) ERR_unload_strings(gXmlSecOpenSSLErrorsLib, xmlSecOpenSSLStrReasons);
 #endif /* !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR) */
 }
 

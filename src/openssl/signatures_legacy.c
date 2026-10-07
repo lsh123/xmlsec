@@ -815,7 +815,8 @@ xmlSecOpenSSLSignatureLegacyEcdsa_XmlDSigToOpenSSL(
     ECDSA_SIG* sig = NULL;
     BIGNUM* rr = NULL;
     BIGNUM* ss = NULL;
-    xmlSecOpenSSLSizeT signLen, signHalfLen;
+    xmlSecOpenSSLSizeT signLen, signHalfLen, keyHalfLen;
+    xmlSecOpenSSLSizeT rLen, sLen;
     ECDSA_SIG* res = NULL;
     int ret;
 
@@ -823,6 +824,7 @@ xmlSecOpenSSLSignatureLegacyEcdsa_XmlDSigToOpenSSL(
     xmlSecAssert2(ctx->pKey != NULL, NULL);
     xmlSecAssert2(transformCtx != NULL, NULL);
     xmlSecAssert2(signData != NULL, NULL);
+    xmlSecAssert2(signSize > 0, NULL);
 
     /* however some implementations (e.g. Java) just put ASN1 structure in the signature
      * https://github.com/lsh123/xmlsec/issues/995 */
@@ -854,6 +856,7 @@ xmlSecOpenSSLSignatureLegacyEcdsa_XmlDSigToOpenSSL(
             xmlSecInternalError("xmlSecOpenSSLSignatureLegacyEcdsaSignatureHalfLen", NULL);
             goto done;
         }
+        keyHalfLen = signHalfLen;  /* key-based half length before the lenient split below */
 
         /* check size: we expect the r and s to be the same size and match the size of
         * the key (RFC 6931) */
@@ -888,6 +891,17 @@ xmlSecOpenSSLSignatureLegacyEcdsa_XmlDSigToOpenSSL(
         ss = BN_bin2bn(signData + signHalfLen, signHalfLen, NULL);
         if(ss == NULL) {
             xmlSecOpenSSLError("BN_bin2bn(signData + signHalfLen)", NULL);
+            goto done;
+        }
+
+        /* malleability guard: r and s must fit within the key-size half length
+         * (RFC 6931: I2OSP with xLen equal to the size of the base point order).
+         * This rejects padded/shifted encodings where the extra bytes are not
+         * pure zero padding, without touching the documented lenient cases. */
+        XMLSEC_OPENSSL_SAFE_CAST_UINT_TO_SIZE(BN_num_bytes(rr), rLen, goto done, NULL);
+        XMLSEC_OPENSSL_SAFE_CAST_UINT_TO_SIZE(BN_num_bytes(ss), sLen, goto done, NULL);
+        if((rLen > keyHalfLen) || (sLen > keyHalfLen)) {
+            xmlSecInvalidDataError("Signature r or s is longer than expected based on key size", NULL);
             goto done;
         }
 
@@ -932,6 +946,7 @@ xmlSecOpenSSLSignatureLegacyEcdsaVerify(
     xmlSecAssert2(ctx->dgstSize <= sizeof(ctx->dgst), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
     xmlSecAssert2(signData != NULL, -1);
+    xmlSecAssert2(signSize > 0, -1);
 
     /* get signature value */
     sig = xmlSecOpenSSLSignatureLegacyEcdsa_XmlDSigToOpenSSL(ctx, transformCtx, signData, signSize);

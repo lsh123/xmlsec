@@ -450,6 +450,7 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
                 return(-1);
             }
             xmlSecAssert2(dgstSize > 0, -1);
+            xmlSecAssert2((xmlSecOpenSSLSizeT)dgstSize == mdSize, -1); /* cross-check: digest final agrees with EVP_MD_size */
             ctx->dgstSize = dgstSize;
 
             /* copy result to output */

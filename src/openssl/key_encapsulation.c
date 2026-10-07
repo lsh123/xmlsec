@@ -326,21 +326,27 @@ xmlSecOpenSSLMLKEMGetPKeyCtx(xmlSecTransformCtxPtr transformCtx) {
 
 
 static int
-xmlSecOpenSSLMLKEMEncapsulate(xmlSecTransformCtxPtr transformCtx, xmlSecOpenSSLMLKEMCtxPtr ctx,
-    xmlSecBufferPtr cipherTextOut, xmlSecBufferPtr sharedSecretOut
+xmlSecOpenSSLMLKEMEncapsulate(
+    xmlSecTransformCtxPtr transformCtx,
+    xmlSecOpenSSLMLKEMCtxPtr ctx,
+    xmlSecBufferPtr cipherTextOut,
+    xmlSecBufferPtr sharedSecretOut
 ) {
     EVP_PKEY_CTX* pKeyCtx = NULL;
     xmlSecByte ssBuf[OSSL_ML_KEM_SHARED_SECRET_BYTES];
-    xmlSecByte* ctBuf;
-    xmlSecSize ctSize;
-    xmlSecSize ssSize;
+    xmlSecByte* ctBuf = NULL;
+    xmlSecSize ctSize = 0;
+    xmlSecSize ssSize = 0;
+    xmlSecSize queriedSsSize = 0;
     int ret;
     int res = -1;
 
     xmlSecAssert2(transformCtx != NULL, -1);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(cipherTextOut != NULL, -1);
+    xmlSecAssert2(xmlSecBufferIsSecure(cipherTextOut), -1);
     xmlSecAssert2(sharedSecretOut != NULL, -1);
+    xmlSecAssert2(xmlSecBufferIsSecure(sharedSecretOut), -1);
 
     /* create context */
     pKeyCtx = xmlSecOpenSSLMLKEMGetPKeyCtx(transformCtx);
@@ -365,6 +371,7 @@ xmlSecOpenSSLMLKEMEncapsulate(xmlSecTransformCtxPtr transformCtx, xmlSecOpenSSLM
         xmlSecInternalError2("Shared secret size is too big", NULL, "size=" XMLSEC_SIZE_T_FMT, ssSize);
         goto done;
     }
+    queriedSsSize = ssSize;
 
     /* create ct buffer */
     if(ctSize != ctx->ciphertextSize) {
@@ -390,6 +397,12 @@ xmlSecOpenSSLMLKEMEncapsulate(xmlSecTransformCtxPtr transformCtx, xmlSecOpenSSLM
     }
     if(ctSize != ctx->ciphertextSize) {
         xmlSecInvalidSizeError("Output ciphertext", ctSize, ctx->ciphertextSize, NULL);
+        goto done;
+    }
+    /* the actual sizes must match the sizes reported by the size query */
+    if(ssSize != queriedSsSize || ssSize > sizeof(ssBuf)) {
+        xmlSecInternalError2("Shared secret size changed after encapsulation", NULL,
+            "queried=" XMLSEC_SIZE_FMT " actual=" XMLSEC_SIZE_FMT, queriedSsSize, ssSize);
         goto done;
     }
 
@@ -468,6 +481,12 @@ xmlSecOpenSSLMLKEMDecapsulate(xmlSecTransformCtxPtr transformCtx, xmlSecOpenSSLM
         xmlSecOpenSSLError("EVP_PKEY_decapsulate", NULL);
         goto done;
     }
+    /* the actual size must match the size reported by the size query */
+    if(ssLen2 != ssLen) {
+        xmlSecInternalError2("Shared secret size changed after decapsulation", NULL,
+            "queried=" XMLSEC_SIZE_T_FMT " actual=" XMLSEC_SIZE_T_FMT, ssLen, ssLen2);
+        goto done;
+    }
 
     /* write ss to output buffer: this becomes the CEK for content decryption */
     ssSize = ssLen2;
@@ -542,9 +561,19 @@ xmlSecOpenSSLMLKEMProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr tr
         }
     }
 
-    /* truncate shared secret output to the expected key size if necessary */
+    /*
+     * Truncate the shared secret to the expected content-decryption key size
+     * if the KEM output is longer (e.g. the 32-byte ML-KEM shared secret vs.
+     * a 16-byte AES-128 CEK): this is allowed but spec-flavored; a mismatch
+     * larger than the KEM output is rejected outright.
+     */
     if(transform->expectedOutputSize > 0) {
         xmlSecSize outSize = xmlSecBufferGetSize(&(transform->outBuf));
+        if(transform->expectedOutputSize > outSize) {
+            xmlSecInvalidSizeLessThanError("Output data", outSize, transform->expectedOutputSize,
+                xmlSecTransformGetName(transform));
+            return(-1);
+        }
         if(transform->expectedOutputSize < outSize) {
             ret = xmlSecBufferSetSize(&(transform->outBuf), transform->expectedOutputSize);
             if(ret < 0) {

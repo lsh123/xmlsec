@@ -314,7 +314,11 @@ xmlSecOpenSSLKdfSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 }
 
 static int
-xmlSecOpenSSLKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
+xmlSecOpenSSLKdfExecute(
+    xmlSecTransformPtr transform,
+    int last,
+    xmlSecTransformCtxPtr transformCtx
+) {
     xmlSecOpenSSLKdfCtxPtr ctx;
     xmlSecBufferPtr in, out;
     int ret;
@@ -324,8 +328,13 @@ xmlSecOpenSSLKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKdfCtxSize), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
+    /* the KDF derives a key from the keying material only: it never consumes
+     * transform input; data pushed into the transform is a caller error and
+     * must not be silently dropped */
     in = &(transform->inBuf);
     out = &(transform->outBuf);
+    xmlSecAssert2(xmlSecBufferGetSize(in) == 0, -1);
+    xmlSecAssert2(xmlSecBufferIsSecure(out), -1);
 
     ctx = xmlSecOpenSSLKdfGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
@@ -923,6 +932,7 @@ xmlSecOpenSSLHkdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
     ctx = xmlSecOpenSSLKdfGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->mac == NULL, -1);
 
     ret = xmlSecTransformHkdfParamsInitialize(&params);
     if(ret < 0) {

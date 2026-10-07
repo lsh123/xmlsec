@@ -454,7 +454,10 @@ xmlSecOpenSSLKWDes3Encrypt(const xmlSecByte* key, xmlSecSize keySize,
         goto done;
     }
     XMLSEC_OPENSSL_SAFE_CAST_UINT_TO_SIZE(len, size, goto done, NULL);
-    xmlSecAssert2(keySize == size, -1);
+    if(keySize != size) {
+        xmlSecInvalidSizeError("key size", keySize, size, NULL);
+        goto done;
+    }
 
     len = EVP_CIPHER_iv_length(cipher);
     if (len <= 0) {
@@ -462,7 +465,10 @@ xmlSecOpenSSLKWDes3Encrypt(const xmlSecByte* key, xmlSecSize keySize,
         goto done;
     }
     XMLSEC_OPENSSL_SAFE_CAST_UINT_TO_SIZE(len, size, goto done, NULL);
-    xmlSecAssert2(ivSize == size, -1);
+    if(ivSize != size) {
+        xmlSecInvalidSizeError("iv size", ivSize, size, NULL);
+        goto done;
+    }
 
     cipherCtx = EVP_CIPHER_CTX_new();
     if(cipherCtx == NULL) {
@@ -488,6 +494,7 @@ xmlSecOpenSSLKWDes3Encrypt(const xmlSecByte* key, xmlSecSize keySize,
         goto done;
     }
 
+    /* padding is disabled and the input is block-aligned: EVP_CipherFinal_ex() must not write */
     ret = EVP_CipherFinal_ex(cipherCtx, out + updateLen, &finalLen);
     if(ret != 1) {
         xmlSecOpenSSLError("EVP_CipherFinal_ex", NULL);

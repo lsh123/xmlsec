@@ -39,6 +39,16 @@
 
 static xmlSecCryptoDLFunctionsPtr  gXmlSecNssFunctions = NULL;
 
+/*
+ * NSS 3.103 and later have dedicated OIDs (SEC_OID_ECDH_KEA and
+ * SEC_OID_X25519) that allow the ECDH and X25519 key agreement algorithms
+ * to be checked against the NSS security policy; older NSS does not, so the
+ * closest available proxy, the CKM_ECDH1_DERIVE mechanism, is used for the
+ * policy check there.
+ */
+#if (NSS_VMAJOR > 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR >= 103))
+# define XMLSEC_NSS_HAS_KEY_AGREEMENT_OIDS 1
+#endif
 
 /*
  * Checks if a given algorithm is enabled in NSS.
@@ -507,24 +517,22 @@ xmlSecNssUpdateAvailableCryptoTransforms(xmlSecCryptoDLFunctionsPtr functions) {
 
     /****** CHACHA20 ******/
 #ifndef XMLSEC_NO_CHACHA20
-    /*
-     * NSS has no OID for ChaCha20-Poly1305, so its availability cannot be
-     * checked against the NSS security policy; the transform is left
-     * registered and will fail at runtime if the mechanism is unsupported.
-     */
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_CHACHA20_POLY1305) == 0) {
+        functions->transformChaCha20Poly1305GetKlass = NULL;
+    }
 #endif /* XMLSEC_NO_CHACHA20 */
 
     /****** DSA ******/
 #ifndef XMLSEC_NO_DSA
 
 #ifndef XMLSEC_NO_SHA1
-    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_ANSIX9_DSA_SIGNATURE_WITH_SHA1_DIGEST) == 0) {
+    if ((xmlSecNssCryptoCheckAlgorithm(SEC_OID_ANSIX9_DSA_SIGNATURE_WITH_SHA1_DIGEST) == 0) || (xmlSecNssCryptoCheckAlgorithm(SEC_OID_SHA1) == 0)) {
         functions->transformDsaSha1GetKlass         = NULL;
     }
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
-    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_NIST_DSA_SIGNATURE_WITH_SHA256_DIGEST) == 0) {
+    if ((xmlSecNssCryptoCheckAlgorithm(SEC_OID_NIST_DSA_SIGNATURE_WITH_SHA256_DIGEST) == 0) || (xmlSecNssCryptoCheckAlgorithm(SEC_OID_SHA256) == 0)) {
         functions->transformDsaSha256GetKlass       = NULL;
     }
 #endif /* XMLSEC_NO_SHA256 */
@@ -533,50 +541,70 @@ xmlSecNssUpdateAvailableCryptoTransforms(xmlSecCryptoDLFunctionsPtr functions) {
 
     /****** XDH ******/
 #ifndef XMLSEC_NO_XDH
-    /*
-     * NSS has no X25519-specific OID, so the ECDH-derive mechanism (which
+#ifdef XMLSEC_NSS_HAS_KEY_AGREEMENT_OIDS
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_X25519) == 0) {
+        functions->transformX25519GetKlass = NULL;
+    }
+#else
+    /* NSS has no X25519-specific OID, so the ECDH-derive mechanism (which
      * maps to the ECDSA OID) is used as the closest available proxy for the
-     * NSS security policy check.
-     */
+     * NSS security policy check */
     if (xmlSecNssCryptoCheckMechanism(CKM_ECDH1_DERIVE) == 0) {
         functions->transformX25519GetKlass = NULL;
     }
+#endif /* XMLSEC_NSS_HAS_KEY_AGREEMENT_OIDS */
 #endif /* XMLSEC_NO_XDH */
 
     /****** ECDSA ******/
 #ifndef XMLSEC_NO_EC
 
-    /* key agreement (ECDH-ES): uses the same derive mechanism as X25519 */
+#ifdef XMLSEC_NSS_HAS_KEY_AGREEMENT_OIDS
+    /*
+     * Key agreement (ECDH-ES) uses the ECDH-derive mechanism. Several OIDs
+     * share CKM_ECDH1_DERIVE and NSS's mechanism map keeps only the last one
+     * (SEC_OID_ECDH_KEA), so that tag is what the security policy check
+     * resolves to; check it explicitly.
+     */
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_ECDH_KEA) == 0) {
+        functions->transformEcdhGetKlass = NULL;
+    }
+#else
+    /*
+     * Key agreement (ECDH-ES) uses the ECDH-derive mechanism; older NSS has
+     * no dedicated OID for it, so the mechanism itself is the closest
+     * available proxy for the NSS security policy check
+     */
     if (xmlSecNssCryptoCheckMechanism(CKM_ECDH1_DERIVE) == 0) {
         functions->transformEcdhGetKlass = NULL;
     }
+#endif /* XMLSEC_NSS_HAS_KEY_AGREEMENT_OIDS */
 
 #ifndef XMLSEC_NO_SHA1
-    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_ANSIX962_ECDSA_SHA1_SIGNATURE) == 0) {
+    if ((xmlSecNssCryptoCheckAlgorithm(SEC_OID_ANSIX962_ECDSA_SHA1_SIGNATURE) == 0) || (xmlSecNssCryptoCheckAlgorithm(SEC_OID_SHA1) == 0)) {
         functions->transformEcdsaSha1GetKlass = NULL;
     }
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA224
-    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_ANSIX962_ECDSA_SHA224_SIGNATURE) == 0) {
+    if ((xmlSecNssCryptoCheckAlgorithm(SEC_OID_ANSIX962_ECDSA_SHA224_SIGNATURE) == 0) || (xmlSecNssCryptoCheckAlgorithm(SEC_OID_SHA224) == 0)) {
         functions->transformEcdsaSha224GetKlass = NULL;
     }
 #endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA256
-    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_ANSIX962_ECDSA_SHA256_SIGNATURE) == 0) {
+    if ((xmlSecNssCryptoCheckAlgorithm(SEC_OID_ANSIX962_ECDSA_SHA256_SIGNATURE) == 0) || (xmlSecNssCryptoCheckAlgorithm(SEC_OID_SHA256) == 0)) {
         functions->transformEcdsaSha256GetKlass = NULL;
     }
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
-    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_ANSIX962_ECDSA_SHA384_SIGNATURE) == 0) {
+    if ((xmlSecNssCryptoCheckAlgorithm(SEC_OID_ANSIX962_ECDSA_SHA384_SIGNATURE) == 0) || (xmlSecNssCryptoCheckAlgorithm(SEC_OID_SHA384) == 0)) {
         functions->transformEcdsaSha384GetKlass = NULL;
     }
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
-    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_ANSIX962_ECDSA_SHA512_SIGNATURE) == 0) {
+    if ((xmlSecNssCryptoCheckAlgorithm(SEC_OID_ANSIX962_ECDSA_SHA512_SIGNATURE) == 0) || (xmlSecNssCryptoCheckAlgorithm(SEC_OID_SHA512) == 0)) {
         functions->transformEcdsaSha512GetKlass = NULL;
     }
 #endif /* XMLSEC_NO_SHA512 */
@@ -593,14 +621,6 @@ xmlSecNssUpdateAvailableCryptoTransforms(xmlSecCryptoDLFunctionsPtr functions) {
 
     /****** HMAC ******/
 #ifndef XMLSEC_NO_HMAC
-
-#ifndef XMLSEC_NO_RIPEMD160
-    /*
-     * The NSS softoken does not support RipeMD160 and there is no OID
-     * mapping for CKM_RIPEMD160_HMAC, so this transform is never available.
-     */
-    functions->transformHmacRipemd160GetKlass = NULL;
-#endif /* XMLSEC_NO_RIPEMD160 */
 
 #ifndef XMLSEC_NO_SHA1
     if (xmlSecNssCryptoCheckMechanism(CKM_SHA_1_HMAC) == 0) {
@@ -653,7 +673,7 @@ xmlSecNssUpdateAvailableCryptoTransforms(xmlSecCryptoDLFunctionsPtr functions) {
 #ifndef XMLSEC_NO_RSA
 
 #ifndef XMLSEC_NO_SHA1
-    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_PKCS1_SHA1_WITH_RSA_ENCRYPTION) == 0) {
+    if ((xmlSecNssCryptoCheckAlgorithm(SEC_OID_PKCS1_SHA1_WITH_RSA_ENCRYPTION) == 0) || (xmlSecNssCryptoCheckAlgorithm(SEC_OID_SHA1) == 0)) {
         functions->transformRsaSha1GetKlass       = NULL;
     }
 
@@ -663,7 +683,7 @@ xmlSecNssUpdateAvailableCryptoTransforms(xmlSecCryptoDLFunctionsPtr functions) {
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA224
-    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_PKCS1_SHA224_WITH_RSA_ENCRYPTION) == 0) {
+    if ((xmlSecNssCryptoCheckAlgorithm(SEC_OID_PKCS1_SHA224_WITH_RSA_ENCRYPTION) == 0) || (xmlSecNssCryptoCheckAlgorithm(SEC_OID_SHA224) == 0)) {
         functions->transformRsaSha224GetKlass     = NULL;
     }
 
@@ -673,7 +693,7 @@ xmlSecNssUpdateAvailableCryptoTransforms(xmlSecCryptoDLFunctionsPtr functions) {
 #endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA256
-    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_PKCS1_SHA256_WITH_RSA_ENCRYPTION) == 0) {
+    if ((xmlSecNssCryptoCheckAlgorithm(SEC_OID_PKCS1_SHA256_WITH_RSA_ENCRYPTION) == 0) || (xmlSecNssCryptoCheckAlgorithm(SEC_OID_SHA256) == 0)) {
         functions->transformRsaSha256GetKlass     = NULL;
     }
 
@@ -683,7 +703,7 @@ xmlSecNssUpdateAvailableCryptoTransforms(xmlSecCryptoDLFunctionsPtr functions) {
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
-    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_PKCS1_SHA384_WITH_RSA_ENCRYPTION) == 0) {
+    if ((xmlSecNssCryptoCheckAlgorithm(SEC_OID_PKCS1_SHA384_WITH_RSA_ENCRYPTION) == 0) || (xmlSecNssCryptoCheckAlgorithm(SEC_OID_SHA384) == 0)) {
         functions->transformRsaSha384GetKlass     = NULL;
     }
 
@@ -693,7 +713,7 @@ xmlSecNssUpdateAvailableCryptoTransforms(xmlSecCryptoDLFunctionsPtr functions) {
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
-    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_PKCS1_SHA512_WITH_RSA_ENCRYPTION) == 0) {
+    if ((xmlSecNssCryptoCheckAlgorithm(SEC_OID_PKCS1_SHA512_WITH_RSA_ENCRYPTION) == 0) || (xmlSecNssCryptoCheckAlgorithm(SEC_OID_SHA512) == 0)) {
         functions->transformRsaSha512GetKlass     = NULL;
     }
 
@@ -896,19 +916,19 @@ xmlSecNssGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
     xmlSecAssert2(buffer != NULL, -1);
     xmlSecAssert2(size > 0, -1);
 
+    /* check the size fits into int before allocating */
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(size, len, return(-1), NULL);
+
     ret = xmlSecBufferSetSize(buffer, size);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
-                             "size=" XMLSEC_SIZE_FMT, size);
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, size);
         return(-1);
     }
 
     /* get random data */
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(size, len, return(-1), NULL);
     rv = PK11_GenerateRandom((xmlSecByte*)xmlSecBufferGetData(buffer), len);
     if(rv != SECSuccess) {
-        xmlSecNssError2("PK11_GenerateRandom", NULL,
-                        "size=" XMLSEC_SIZE_FMT, size);
+        xmlSecNssError2("PK11_GenerateRandom", NULL, "size=" XMLSEC_SIZE_FMT, size);
         return(-1);
     }
     return(0);

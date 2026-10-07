@@ -388,7 +388,11 @@ xmlSecNssSignatureInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-    /* EdDSA needs a buffer for message data */
+    /* EdDSA needs a buffer for message data: NSS provides no incremental
+     * sign/verify context for Ed25519/Ed448, so the entire document is
+     * accumulated here and signed/verified in one PK11_Sign/PK11_Verify call;
+     * for large documents this doubles peak memory compared to the streaming
+     * SGN/VFY contexts used for the other algorithms */
     if (ctx->isEdDSA) {
         ret = xmlSecBufferInitialize(&(ctx->eddsaData), 0);
         if (ret < 0) {
@@ -523,6 +527,10 @@ xmlSecNssSignatureCreatePssAlgId(xmlSecNssSignatureCtxPtr ctx) {
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->arena != NULL, -1);
 
+    /* note: this is re-run on every SetKey and each run allocates the PSS
+     * params and algorithm ID in the context arena, which is only freed in
+     * Finalize; SetKey is called once per transform in practice, so the
+     * accumulation is negligible */
     params = xmlSecNssSignatureCreatePssParams(ctx);
     if (params == NULL) {
         xmlSecInternalError("xmlSecNssSignatureCreatePssParams", NULL);

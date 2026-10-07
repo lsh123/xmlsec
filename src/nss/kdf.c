@@ -406,7 +406,8 @@ xmlSecNssConcatKdfGenerateKey(xmlSecNssKdfCtxPtr ctx, xmlSecSize outLen, xmlSecB
     xmlSecByte hashBuf[XMLSEC_NSS_KDF_MAX_HASH_SIZE];
     xmlSecByte counter[4];
     uint32_t counterVal;
-    PK11Context* hashCtx;
+    xmlSecSize toCopy, hashSize;
+    PK11Context* hashCtx = NULL;
     SECStatus rv;
     int ret;
     int res = -1;
@@ -442,6 +443,15 @@ xmlSecNssConcatKdfGenerateKey(xmlSecNssKdfCtxPtr ctx, xmlSecSize outLen, xmlSecB
     outData = xmlSecBufferGetData(out);
     xmlSecAssert2(outData != NULL, -1);
 
+    /* one digest context is reused for all counter blocks: PK11_DigestBegin
+     * starts a fresh operation on each block, since PK11_DigestFinal clears
+     * the previous one (Begin after Final is an explicit NSS-supported pattern) */
+    hashCtx = PK11_CreateDigestContext(oidData->offset);
+    if(hashCtx == NULL) {
+        xmlSecNssError("PK11_CreateDigestContext", NULL);
+        goto done;
+    }
+
     pos = 0;
     counterVal = 1;
     while(pos < outLen) {
@@ -456,67 +466,50 @@ xmlSecNssConcatKdfGenerateKey(xmlSecNssKdfCtxPtr ctx, xmlSecSize outLen, xmlSecB
         counter[2] = (xmlSecByte)((counterVal >> 8) & 0xFF);
         counter[3] = (xmlSecByte)(counterVal & 0xFF);
 
-        hashCtx = PK11_CreateDigestContext(oidData->offset);
-        if(hashCtx == NULL) {
-            xmlSecNssError("PK11_CreateDigestContext", NULL);
-            goto done;
-        }
-
         rv = PK11_DigestBegin(hashCtx);
         if(rv != SECSuccess) {
             xmlSecNssError("PK11_DigestBegin", NULL);
-            PK11_DestroyContext(hashCtx, PR_TRUE);
             goto done;
         }
 
         rv = PK11_DigestOp(hashCtx, counter, 4);
         if(rv != SECSuccess) {
             xmlSecNssError("PK11_DigestOp(counter)", NULL);
-            PK11_DestroyContext(hashCtx, PR_TRUE);
             goto done;
         }
 
-        XMLSEC_SAFE_CAST_SIZE_TO_UINT(keySize, keyLen,
-            PK11_DestroyContext(hashCtx, PR_TRUE); goto done, NULL);
+        XMLSEC_SAFE_CAST_SIZE_TO_UINT(keySize, keyLen, goto done, NULL);
         rv = PK11_DigestOp(hashCtx, keyData, keyLen);
         if(rv != SECSuccess) {
             xmlSecNssError("PK11_DigestOp(Z)", NULL);
-            PK11_DestroyContext(hashCtx, PR_TRUE);
             goto done;
         }
 
         if((fixedInfoData != NULL) && (fixedInfoSize > 0)) {
             unsigned int fixedInfoLen;
 
-            XMLSEC_SAFE_CAST_SIZE_TO_UINT(fixedInfoSize, fixedInfoLen,
-                PK11_DestroyContext(hashCtx, PR_TRUE); goto done, NULL);
+            XMLSEC_SAFE_CAST_SIZE_TO_UINT(fixedInfoSize, fixedInfoLen, goto done, NULL);
             rv = PK11_DigestOp(hashCtx, fixedInfoData, fixedInfoLen);
             if(rv != SECSuccess) {
                 xmlSecNssError("PK11_DigestOp(OtherInfo)", NULL);
-                PK11_DestroyContext(hashCtx, PR_TRUE);
                 goto done;
             }
         }
 
         hashLen = XMLSEC_NSS_KDF_MAX_HASH_SIZE;
         rv = PK11_DigestFinal(hashCtx, hashBuf, &hashLen, XMLSEC_NSS_KDF_MAX_HASH_SIZE);
-        PK11_DestroyContext(hashCtx, PR_TRUE);
         if(rv != SECSuccess) {
             xmlSecNssError("PK11_DigestFinal", NULL);
             goto done;
         }
+        XMLSEC_SAFE_CAST_UINT_TO_SIZE(hashLen, hashSize, goto done, NULL);
 
-        {
-            xmlSecSize toCopy;
-
-            toCopy = outLen - pos;
-            if(toCopy > (xmlSecSize)hashLen) {
-                toCopy = (xmlSecSize)hashLen;
-            }
-            memcpy(outData + pos, hashBuf, toCopy);
-            pos += toCopy;
+        toCopy = outLen - pos;
+        if(toCopy > hashSize) {
+            toCopy = hashSize;
         }
-
+        memcpy(outData + pos, hashBuf, toCopy);
+        pos += toCopy;
         counterVal++;
     }
 
@@ -524,6 +517,9 @@ xmlSecNssConcatKdfGenerateKey(xmlSecNssKdfCtxPtr ctx, xmlSecSize outLen, xmlSecB
     res = 0;
 
 done:
+    if(hashCtx != NULL) {
+        PK11_DestroyContext(hashCtx, PR_TRUE);
+    }
     xmlSecMemCleanse(hashBuf, sizeof(hashBuf));
     return(res);
 }

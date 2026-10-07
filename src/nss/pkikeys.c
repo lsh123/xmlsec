@@ -816,19 +816,12 @@ static xmlSecKeyDataPtr
 xmlSecNssKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     xmlSecKeyDataPtr data = NULL;
     xmlSecKeyDataPtr res = NULL;
-    PK11SlotInfo *slot = NULL;
     SECKEYPublicKey *pubkey=NULL;
     PRArenaPool *arena = NULL;
     int ret;
 
     xmlSecAssert2(id == xmlSecNssKeyDataDsaId, NULL);
     xmlSecAssert2(dsaValue != NULL, NULL);
-
-    slot = PK11_GetBestSlot(CKM_DSA, NULL);
-    if(slot == NULL) {
-        xmlSecNssError("PK11_GetBestSlot", xmlSecKeyDataKlassGetName(id));
-        goto done;
-    }
 
     arena = PORT_NewArena(DER_DEFAULT_CHUNKSIZE);
     if(arena == NULL) {
@@ -906,9 +899,6 @@ xmlSecNssKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     data = NULL;
 
 done:
-    if (slot != NULL) {
-        PK11_FreeSlot(slot);
-    }
     if (arena != NULL) {
         PORT_FreeArena(arena, PR_FALSE);
     }
@@ -1073,7 +1063,6 @@ static xmlSecKeyDataPtr
 xmlSecNssKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     xmlSecKeyDataPtr data = NULL;
     xmlSecKeyDataPtr res = NULL;
-    PK11SlotInfo *slot = NULL;
     SECKEYPublicKey *pubkey=NULL;
     PRArenaPool *arena = NULL;
     int ret;
@@ -1081,20 +1070,13 @@ xmlSecNssKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     xmlSecAssert2(id == xmlSecNssKeyDataRsaId, NULL);
     xmlSecAssert2(rsaValue != NULL, NULL);
 
-    slot = PK11_GetBestSlot(CKM_RSA_PKCS, NULL);
-    if(slot == NULL) {
-        xmlSecNssError("PK11_GetBestSlot", xmlSecKeyDataKlassGetName(id));
-        goto done;
-    }
-
     arena = PORT_NewArena(DER_DEFAULT_CHUNKSIZE);
     if(arena == NULL) {
         xmlSecNssError("PORT_NewArena", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
-    pubkey = (SECKEYPublicKey *)PORT_ArenaZAlloc(arena,
-                                                 sizeof(SECKEYPublicKey));
+    pubkey = (SECKEYPublicKey *)PORT_ArenaZAlloc(arena, sizeof(SECKEYPublicKey));
     if(pubkey == NULL) {
         xmlSecNssError("PORT_ArenaZAlloc", xmlSecKeyDataKlassGetName(id));
         goto done;
@@ -1138,9 +1120,6 @@ xmlSecNssKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     data = NULL;
 
 done:
-    if (slot != NULL) {
-        PK11_FreeSlot(slot);
-    }
     if(arena != NULL) {
         PORT_FreeArena(arena, PR_FALSE);
     }
@@ -1354,7 +1333,6 @@ static xmlSecKeyDataPtr
 xmlSecNssKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
     xmlSecKeyDataPtr data = NULL;
     xmlSecKeyDataPtr res = NULL;
-    PK11SlotInfo *slot = NULL;
     SECKEYPublicKey *pubkey=NULL;
     PRArenaPool *arena = NULL;
     SECItem ecparams = { siBuffer, NULL, 0 };
@@ -1368,12 +1346,6 @@ xmlSecNssKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
     xmlSecAssert2(ecValue->curve != NULL, NULL);
 
     /* prepare and create public key */
-    slot = PK11_GetBestSlot(CKM_ECDSA, NULL);
-    if(slot == NULL) {
-        xmlSecNssError("PK11_GetBestSlot", xmlSecKeyDataKlassGetName(id));
-        goto done;
-    }
-
     arena = PORT_NewArena(DER_DEFAULT_CHUNKSIZE);
     if(arena == NULL) {
         xmlSecNssError("PORT_NewArena", xmlSecKeyDataKlassGetName(id));
@@ -1448,9 +1420,6 @@ xmlSecNssKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
     data = NULL;
 
 done:
-    if (slot != NULL) {
-        PK11_FreeSlot(slot);
-    }
     if (arena != NULL) {
         PORT_FreeArena(arena, PR_FALSE);
     }

@@ -241,6 +241,7 @@ xmlSecNssKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
     int ret;
 
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKeyAgreementSize), -1);
     xmlSecAssert2(((transform->operation == xmlSecTransformOperationEncrypt) ||
                    (transform->operation == xmlSecTransformOperationDecrypt)), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
@@ -260,7 +261,9 @@ xmlSecNssKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
     } else if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
         xmlSecBuffer secret;
 
-        ret = xmlSecBufferInitialize(&secret, 64);
+        /* 128 covers the largest supported ECDH secret (P-521: 66 bytes);
+         * the buffer grows automatically if a larger secret is produced */
+        ret = xmlSecBufferInitialize(&secret, 128);
         if(ret < 0) {
             xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
             return(-1);
@@ -319,6 +322,8 @@ xmlSecNssKeyAgreementGenerateSecret(xmlSecNssKeyAgreementCtxPtr ctx,
     SECItem *keyData = NULL;
     SECStatus rv;
     xmlSecSize secretSize;
+    xmlSecSize expectedSecretLen;
+    unsigned int keyStrength;
     int ret;
     int res = -1;
 
@@ -366,6 +371,20 @@ xmlSecNssKeyAgreementGenerateSecret(xmlSecNssKeyAgreementCtxPtr ctx,
         goto done;
     }
 
+    /* determine the expected shared-secret length. X25519 always yields 32
+     * bytes (set in Initialize); ECDH depends on the curve, so derive the
+     * field size in bytes from the peer's public key (SECKEY_PublicKeyStrength
+     * returns 0 for unknown curve OIDs, which keeps the check disabled). This
+     * catches token providers that strip leading zero bytes from the X9.63
+     * shared secret, which xmlenc-core1 forbids (fixed-width, left-padded). */
+    expectedSecretLen = ctx->expected_secret_len;
+    if(expectedSecretLen == 0) {
+        keyStrength = SECKEY_PublicKeyStrength(otherPubKey);
+        if(keyStrength > 0) {
+            XMLSEC_SAFE_CAST_UINT_TO_SIZE(keyStrength, expectedSecretLen, goto done, NULL);
+        }
+    }
+
     /* derive shared secret via PKCS#11 CKM_ECDH1_DERIVE; NSS routes this to the
      * correct ECDH operation for both regular EC and Montgomery-curve (X25519)
      * keys based on the key type, not the mechanism alone. Note: routing of
@@ -393,16 +412,28 @@ xmlSecNssKeyAgreementGenerateSecret(xmlSecNssKeyAgreementCtxPtr ctx,
      * prohibits extraction, move it to the software slot first */
     rv = PK11_ExtractKeyValue(symKey);
     if(rv != SECSuccess) {
-        PK11SlotInfo *internalSlot = PK11_GetInternalSlot();
-        if(internalSlot != NULL) {
-            PK11SymKey *movedKey = PK11_MoveSymKey(internalSlot, CKA_DERIVE, 0, PR_FALSE, symKey);
-            PK11_FreeSlot(internalSlot);
-            if(movedKey != NULL) {
-                PK11_FreeSymKey(symKey);
-                symKey = movedKey;
-                rv = PK11_ExtractKeyValue(symKey);
-            }
+        PK11SlotInfo *internalSlot;
+        PK11SymKey *movedKey;
+
+        internalSlot = PK11_GetInternalSlot();
+        if(internalSlot == NULL) {
+            xmlSecNssError("PK11_GetInternalSlot", NULL);
+            goto done;
         }
+        /* PK11_MoveSymKey does not destroy the original key, so free it
+         * explicitly on success; on failure symKey remains valid and is
+         * freed in the done block */
+        movedKey = PK11_MoveSymKey(internalSlot, CKA_DERIVE, 0, PR_FALSE, symKey);
+        if(movedKey == NULL) {
+            xmlSecNssError("PK11_MoveSymKey", NULL);
+            PK11_FreeSlot(internalSlot);
+            goto done;
+        }
+        PK11_FreeSlot(internalSlot);
+        PK11_FreeSymKey(symKey);
+        symKey = movedKey;
+
+        rv = PK11_ExtractKeyValue(symKey);
     }
     if(rv != SECSuccess) {
         xmlSecNssError("PK11_ExtractKeyValue", NULL);
@@ -417,10 +448,10 @@ xmlSecNssKeyAgreementGenerateSecret(xmlSecNssKeyAgreementCtxPtr ctx,
 
     /* validate secret length */
     XMLSEC_SAFE_CAST_UINT_TO_SIZE(keyData->len, secretSize, goto done, NULL);
-    if((ctx->expected_secret_len != 0) && (secretSize != ctx->expected_secret_len)) {
+    if((expectedSecretLen != 0) && (secretSize != expectedSecretLen)) {
         char expectedLenStr[32];
 
-        ret = xmlStrPrintf(BAD_CAST expectedLenStr, sizeof(expectedLenStr), XMLSEC_SIZE_FMT, ctx->expected_secret_len);
+        ret = xmlStrPrintf(BAD_CAST expectedLenStr, sizeof(expectedLenStr), XMLSEC_SIZE_FMT, expectedSecretLen);
         if(ret < 0) {
             xmlSecInternalError("xmlStrPrintf", NULL);
             goto done;

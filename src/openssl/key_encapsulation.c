@@ -401,7 +401,7 @@ xmlSecOpenSSLMLKEMEncapsulate(
     }
     /* the actual sizes must match the sizes reported by the size query */
     if(ssSize != queriedSsSize || ssSize > sizeof(ssBuf)) {
-        xmlSecInternalError2("Shared secret size changed after encapsulation", NULL,
+        xmlSecInternalError3("Shared secret size changed after encapsulation", NULL,
             "queried=" XMLSEC_SIZE_FMT " actual=" XMLSEC_SIZE_FMT, queriedSsSize, ssSize);
         goto done;
     }
@@ -483,7 +483,7 @@ xmlSecOpenSSLMLKEMDecapsulate(xmlSecTransformCtxPtr transformCtx, xmlSecOpenSSLM
     }
     /* the actual size must match the size reported by the size query */
     if(ssLen2 != ssLen) {
-        xmlSecInternalError2("Shared secret size changed after decapsulation", NULL,
+        xmlSecInternalError3("Shared secret size changed after decapsulation", NULL,
             "queried=" XMLSEC_SIZE_T_FMT " actual=" XMLSEC_SIZE_T_FMT, ssLen, ssLen2);
         goto done;
     }

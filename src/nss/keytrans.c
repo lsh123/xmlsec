@@ -125,12 +125,17 @@ xmlSecNssKeyTransportInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_RSA_PKCS15 */
 
 #ifndef XMLSEC_NO_RSA_OAEP
+    /* The RSA-OAEP transforms default to the SHA-1 digest and MGF1
+     * prescribed by the XML Encryption spec; xmlSecNssRsaOaepNodeRead
+     * overrides these when an explicit digest is provided. With
+     * XMLSEC_NO_SHA1 the defaults are left at 0 and the klass remains
+     * registered as available; the failure is then reported at runtime by
+     * xmlSecNssKeyTransportSetOaepParams as a DISABLED error (un-registering
+     * the klass in such a build would require reworking the availability
+     * reporting) */
     if(transform->id == xmlSecNssTransformRsaOaepId) {
         context->cipher = CKM_RSA_PKCS_OAEP;
         context->keyId = xmlSecNssKeyDataRsaId;
-        /* default to the SHA-1 digest and MGF1 prescribed by the XML
-         * Encryption spec; xmlSecNssRsaOaepNodeRead overrides these when an
-         * explicit digest is provided */
 #ifndef XMLSEC_NO_SHA1
         context->oaepHashAlg = CKM_SHA_1;
         context->oaepMgf = CKG_MGF1_SHA1;
@@ -298,6 +303,119 @@ xmlSecNssKeyTransportGetBlockSize(xmlSecNssKeyTransportCtxPtr ctx, xmlSecSize* b
     return(0);
 }
 
+/* Returns the digest length in bytes for the given PKCS#11 digest
+ * mechanism used as the RSA-OAEP hash algorithm and 0 if the mechanism
+ * is not supported. NSS does not provide a public API to convert a
+ * mechanism to the digest length it produces. */
+#ifndef XMLSEC_NO_RSA_OAEP
+static xmlSecSize
+xmlSecNssKeyTransportOaepHashLen(CK_MECHANISM_TYPE hashAlg) {
+    switch(hashAlg) {
+#ifndef XMLSEC_NO_SHA1
+        case CKM_SHA_1:
+            return(SHA1_LENGTH);
+#endif /* XMLSEC_NO_SHA1 */
+#ifndef XMLSEC_NO_SHA224
+        case CKM_SHA224:
+            return(SHA224_LENGTH);
+#endif /* XMLSEC_NO_SHA224 */
+#ifndef XMLSEC_NO_SHA256
+        case CKM_SHA256:
+            return(SHA256_LENGTH);
+#endif /* XMLSEC_NO_SHA256 */
+#ifndef XMLSEC_NO_SHA384
+        case CKM_SHA384:
+            return(SHA384_LENGTH);
+#endif /* XMLSEC_NO_SHA384 */
+#ifndef XMLSEC_NO_SHA512
+        case CKM_SHA512:
+            return(SHA512_LENGTH);
+#endif /* XMLSEC_NO_SHA512 */
+#ifndef XMLSEC_NO_SHA3
+        case CKM_SHA3_224:
+            return(SHA3_224_LENGTH);
+        case CKM_SHA3_256:
+            return(SHA3_256_LENGTH);
+        case CKM_SHA3_384:
+            return(SHA3_384_LENGTH);
+        case CKM_SHA3_512:
+            return(SHA3_512_LENGTH);
+#endif /* XMLSEC_NO_SHA3 */
+        default:
+            /* unsupported mechanism */
+            return(0);
+    }
+}
+#endif /* XMLSEC_NO_RSA_OAEP */
+
+/* Returns the maximum size of the raw key material that can be wrapped
+ * with the cipher configured in @p ctx (PKCS#1 v1.5: blockSize - 11,
+ * RSA-OAEP: blockSize - 2 - 2*hashLen, where hashLen is the length of the
+ * OAEP digest) and stores it in @p maxMaterialSize. Returns 0 on success
+ * or a negative value on error. If the RSA-OAEP digest algorithm has not
+ * been set yet (for example when the SHA-1 digest is disabled and no
+ * explicit digest was specified), the limit is set to the modulus size,
+ * which the caller already enforces, so that the specific error is
+ * reported by xmlSecNssKeyTransportSetOaepParams. */
+static int
+xmlSecNssKeyTransportGetMaxMaterialSize(xmlSecNssKeyTransportCtxPtr ctx, xmlSecSize* maxMaterialSize) {
+    xmlSecSize blockSize;
+    xmlSecSize overhead;
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(maxMaterialSize != NULL, -1);
+
+    ret = xmlSecNssKeyTransportGetBlockSize(ctx, &blockSize);
+    if(ret < 0) {
+        return(ret);
+    }
+
+    if(ctx->cipher == CKM_RSA_PKCS) {
+        /* PKCS#1 v1.5 (EMSA-PKCS1-v1_5): 0x00 || 0x02 || PS (>= 8 bytes) || 0x00 */
+        overhead = 11;
+    } else
+#ifndef XMLSEC_NO_RSA_OAEP
+    if(ctx->cipher == CKM_RSA_PKCS_OAEP) {
+        xmlSecSize hashLen;
+
+        if(ctx->oaepHashAlg == 0) {
+            /* the digest algorithm has not been set; fall back to the
+             * modulus size so that xmlSecNssKeyTransportSetOaepParams
+             * reports the specific error */
+            (*maxMaterialSize) = blockSize;
+            return(0);
+        }
+
+        hashLen = xmlSecNssKeyTransportOaepHashLen(ctx->oaepHashAlg);
+        if(hashLen == 0) {
+            xmlSecInternalError2("xmlSecNssKeyTransportOaepHashLen", NULL,
+                "hashAlg=0x%08x", (unsigned int)ctx->oaepHashAlg);
+            return(-1);
+        }
+        /* EME-OAEP: 0x00 || lHash (hashLen) || seed (hashLen) || ... || 0x01 */
+        overhead = 2 + 2*hashLen;
+    } else
+#endif /* XMLSEC_NO_RSA_OAEP */
+    {
+        xmlSecInternalError2("unsupported keywrap cipher", NULL,
+            "cipher=0x%08x", (unsigned int)ctx->cipher);
+        return(-1);
+    }
+
+    if(blockSize <= overhead) {
+        xmlSecInternalError3("key too small for the keywrap cipher", NULL,
+            "blockSize=" XMLSEC_SIZE_FMT ", overhead=" XMLSEC_SIZE_FMT,
+            blockSize, overhead);
+        return(-1);
+    }
+
+    (*maxMaterialSize) = blockSize - overhead;
+
+    /* done */
+    return(0);
+}
+
 static int
 xmlSecNssKeyTransportCtxInit(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out,
                              int encrypt, xmlSecTransformCtxPtr transformCtx) {
@@ -308,15 +426,10 @@ xmlSecNssKeyTransportCtxInit(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr in
     xmlSecAssert2(ctx->cipher != CKM_INVALID_MECHANISM, -1);
     xmlSecAssert2((ctx->pubkey != NULL && encrypt) || (ctx->prikey != NULL && !encrypt), -1);
     xmlSecAssert2(ctx->keyId != NULL, -1);
+    xmlSecAssert2(ctx->material == NULL, -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
-
-    if(ctx->material != NULL) {
-        /* automatically cleansed by xmlSecBufferDestroy */
-        xmlSecBufferDestroy(ctx->material);
-        ctx->material = NULL;
-    }
 
     ret = xmlSecNssKeyTransportGetBlockSize(ctx, &blockSize);
     if(ret < 0) {
@@ -417,14 +530,25 @@ xmlSecNssKeyTransportSetOaepParams(xmlSecNssKeyTransportCtxPtr ctx, CK_RSA_PKCS_
         return(-1);
     }
 
+    /* the same applies to the MGF1 digest algorithm; the two fields are set
+     * together today, but a zeroed MGF must not be passed to NSS */
+    if(ctx->oaepMgf == 0) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_DISABLED, NULL,
+            "OAEP mgf1 digest algorithm is not set and the default SHA1 digest is disabled");
+        return(-1);
+    }
+
     oaepParams->hashAlg = ctx->oaepHashAlg;
     oaepParams->mgf     = ctx->oaepMgf ;
     oaepParams->source  = CKZ_DATA_SPECIFIED;
-    oaepParams->pSourceData      = xmlSecBufferGetData(&(ctx->oaepParams));
 
+    /* NSS (softoken) rejects a zero-length label passed with a non-NULL
+     * pSourceData, and xmlSecBufferGetData() returns the allocated
+     * pointer of a buffer that was ever grown, so normalize the empty
+     * label to pSourceData == NULL */
     size = xmlSecBufferGetSize(&(ctx->oaepParams));
+    oaepParams->pSourceData = (size > 0 )? xmlSecBufferGetData(&(ctx->oaepParams)) : NULL;
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(size, oaepParams->ulSourceDataLen, return(-1), NULL);
-
     return(0);
 }
 #endif /* XMLSEC_NO_RSA_OAEP */
@@ -525,14 +649,38 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
 
     /* Now we get all of the key material */
     /* from now on we will wrap or unwrap the key */
-    if(materialSize == 0) {
-        /* an empty key material is never a valid key to wrap nor a valid
-         * ciphertext to unwrap */
+    if(encrypt == 0) {
+        /* a valid ciphertext is exactly the modulus size; empty and short
+         * encodings are rejected through the unified decrypt error channel
+         * (NSS would zero-pad short inputs and unwrap them as the same RSA
+         * integer, making the ciphertext malleable; the OpenSSL backend
+         * enforces the exact size too, see src/openssl/kt_rsa.c) */
+        if(materialSize != blockSize) {
+            xmlSecInvalidSizeError("Encrypted input data", materialSize, blockSize, NULL);
+            return(-1);
+        }
+    } else if(materialSize == 0) {
+        /* an empty key material is never a valid key to wrap */
         xmlSecInvalidZeroKeyDataSizeError(NULL);
         return(-1);
+    } else {
+        /* the encoded key blob is at most the modulus size minus the cipher
+         * padding overhead, so reject the material that cannot possibly fit
+         * before the wrap is attempted (matches the OpenSSL backend
+         * behavior, see src/openssl/kt_rsa.c) */
+        xmlSecSize maxMaterialSize;
+
+        ret = xmlSecNssKeyTransportGetMaxMaterialSize(ctx, &maxMaterialSize);
+        if(ret < 0) {
+            return(-1);
+        }
+        if(materialSize > maxMaterialSize) {
+            xmlSecInvalidSizeMoreThanError("Input data", materialSize, maxMaterialSize, NULL);
+            return(-1);
+        }
     }
 
-    result = xmlSecBufferCreate(blockSize * 2);
+    result = xmlSecBufferCreate(blockSize);
     if(result == NULL) {
         xmlSecInternalError("xmlSecBufferCreate", NULL);
         return(-1);
@@ -713,14 +861,13 @@ xmlSecNssKeyTransportExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
                 return(-1);
             }
         }
+        xmlSecAssert2(context->material != NULL, -1);
 
-        if(context->material != NULL) {
-            rtv = xmlSecNssKeyTransportCtxUpdate(context, inBuf, outBuf, operation, transformCtx);
-            if(rtv < 0) {
-                xmlSecInternalError("xmlSecNssKeyTransportCtxUpdate",
-                        xmlSecTransformGetName(transform));
-                return(-1);
-            }
+        rtv = xmlSecNssKeyTransportCtxUpdate(context, inBuf, outBuf, operation, transformCtx);
+        if(rtv < 0) {
+            xmlSecInternalError("xmlSecNssKeyTransportCtxUpdate",
+                    xmlSecTransformGetName(transform));
+            return(-1);
         }
 
         if(last) {
@@ -897,7 +1044,10 @@ xmlSecNssRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
         return(-1);
     }
 
-    /* digest algorithm */
+    /* digest algorithm. Note: xmlenc#sha128 (MD5) and xmlenc#sha160
+     * (RIPEMD160) are intentionally not mapped: the NSS softoken only
+     * accepts the SHA-1/224/256/384/512 digests for OAEP, so any other
+     * mapping would be rejected at runtime anyway */
     if (oaepParams.digestAlgorithm == NULL) {
 #ifndef XMLSEC_NO_SHA1
         ctx->oaepHashAlg = CKM_SHA_1;

@@ -292,6 +292,12 @@ xmlSecMSCngKeyAgreementGetPublicKey(xmlSecKeyDataPtr keyValue, NCRYPT_KEY_HANDLE
      * ECDH magic. The ECDSA and ECDH magics are distinct values (e.g. P256:
      * 0x31534345 'ECS1' vs 0x314B4345 'ECK1'), so this is a required
      * conversion, not a no-op. */
+    /* the blob must hold at least the key-blob header before Magic is read */
+    if (cbBlob < sizeof(BCRYPT_KEY_BLOB)) {
+        xmlSecInvalidSizeLessThanError("BCryptExportKey blob size",
+            (xmlSecSize)cbBlob, (xmlSecSize)sizeof(BCRYPT_KEY_BLOB), NULL);
+        goto done;
+    }
     pKeyBlob = (BCRYPT_KEY_BLOB*)pbBlob;
     switch (pKeyBlob->Magic) {
 #ifndef XMLSEC_NO_EC
@@ -493,6 +499,13 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
                     "size=" XMLSEC_SIZE_FMT, secretSize);
                 goto done;
             }
+            /* re-fetch: xmlSecBufferSetSize above may have reallocated the buffer,
+             * so the old secretData pointer would be dangling (use-after-free) */
+            secretData = xmlSecBufferGetData(secret);
+            if(secretData == NULL) {
+                xmlSecInternalError("xmlSecBufferGetData", NULL);
+                goto done;
+            }
 
             /* CNG returns the raw shared secret as the byte reversal of the standard
              * wire format, so reverse it to produce Z in the standard representation
@@ -574,6 +587,13 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
     if (ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL,
             "size=" XMLSEC_SIZE_FMT, secretSize);
+        goto done;
+    }
+    /* re-fetch: xmlSecBufferSetSize above may have reallocated the buffer,
+     * so the old secretData pointer would be dangling (use-after-free) */
+    secretData = xmlSecBufferGetData(secret);
+    if (secretData == NULL) {
+        xmlSecInternalError("xmlSecBufferGetData", NULL);
         goto done;
     }
 

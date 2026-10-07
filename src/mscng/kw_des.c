@@ -116,7 +116,11 @@ xmlSecMSCngKWDes3Sha1(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSe
         xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
         goto done;
     }
-    xmlSecAssert2(cbData == sizeof(DWORD), -1);
+    if(cbData != sizeof(DWORD)) {
+        xmlSecInternalError2("BCryptGetProperty", NULL,
+            "size=" XMLSEC_SIZE_FMT, (xmlSecSize)cbData);
+        goto done;
+    }
 
     pbHashObject = (PBYTE)xmlMalloc(cbHashObject);
     if(pbHashObject == NULL) {
@@ -134,7 +138,11 @@ xmlSecMSCngKWDes3Sha1(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSe
         xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
         goto done;
     }
-    xmlSecAssert2(cbData == sizeof(DWORD), -1);
+    if(cbData != sizeof(DWORD)) {
+        xmlSecInternalError2("BCryptGetProperty", NULL,
+            "size=" XMLSEC_SIZE_FMT, (xmlSecSize)cbData);
+        goto done;
+    }
 
     if(outSize < cbHash) {
         xmlSecInvalidSizeLessThanError("outSize", outSize, (xmlSecSize)cbHash, NULL);
@@ -283,7 +291,11 @@ xmlSecMSCngKWDes3BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
         goto done;
     }
-    xmlSecAssert2(cbData == sizeof(DWORD), -1);
+    if(cbData != sizeof(DWORD)) {
+        xmlSecInternalError2("BCryptGetProperty", NULL,
+            "size=" XMLSEC_SIZE_FMT, (xmlSecSize)cbData);
+        goto done;
+    }
 
     pbKeyObject = xmlMalloc(cbKeyObject);
     if(pbKeyObject == NULL) {
@@ -345,7 +357,11 @@ xmlSecMSCngKWDes3BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
         goto done;
     }
-    xmlSecAssert2(dwBlockLenLen == sizeof(dwBlockLen), -1);
+    if(dwBlockLenLen != sizeof(dwBlockLen)) {
+        xmlSecInternalError2("BCryptGetProperty", NULL,
+            "size=" XMLSEC_SIZE_FMT, (xmlSecSize)dwBlockLenLen);
+        goto done;
+    }
     XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwBlockLen, blockLen, goto done, NULL);
 
     /* CNG requires the IV to be exactly the block length; reject any other
@@ -495,7 +511,11 @@ xmlSecMSCngKWDes3BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
         goto done;
     }
-    xmlSecAssert2(cbData == sizeof(DWORD), -1);
+    if(cbData != sizeof(DWORD)) {
+        xmlSecInternalError2("BCryptGetProperty", NULL,
+            "size=" XMLSEC_SIZE_FMT, (xmlSecSize)cbData);
+        goto done;
+    }
 
     pbKeyObject = xmlMalloc(cbKeyObject);
     if(pbKeyObject == NULL) {
@@ -557,7 +577,11 @@ xmlSecMSCngKWDes3BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
         goto done;
     }
-    xmlSecAssert2(dwBlockLenLen == sizeof(dwBlockLen), -1);
+    if(dwBlockLenLen != sizeof(dwBlockLen)) {
+        xmlSecInternalError2("BCryptGetProperty", NULL,
+            "size=" XMLSEC_SIZE_FMT, (xmlSecSize)dwBlockLenLen);
+        goto done;
+    }
     XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwBlockLen, blockLen, goto done, NULL);
 
     /* CNG requires the IV to be exactly the block length; reject any other

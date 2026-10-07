@@ -437,8 +437,8 @@ xmlSecMSCryptoKWDes3BlockEncrypt(xmlSecTransformPtr transform,
         keyBuf,
         dwKeyBufSize,
         TRUE,
-        &cryptKey))  {
-
+        &cryptKey)
+    )  {
         xmlSecInternalError("xmlSecMSCryptoImportPlainSessionBlob", NULL);
         goto done;
     }
@@ -452,7 +452,14 @@ xmlSecMSCryptoKWDes3BlockEncrypt(xmlSecTransformPtr transform,
     }
     XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwBlockLen, blockSizeInBits, goto done, NULL);
 
-    /* set IV */
+    /* the provider must report a non-zero block size that is a multiple of 8 bits,
+     * otherwise the size checks below would divide by zero */
+    if((blockSizeInBits == 0) || ((blockSizeInBits % 8) != 0)) {
+        xmlSecInvalidSizeError("blockSizeInBits", blockSizeInBits, (xmlSecSize)8, NULL);
+        goto done;
+    }
+
+    /* set IV, the IV length must match the block length */
     if(ivSize < blockSizeInBits / 8) {
         xmlSecInvalidSizeLessThanError("ivSize", ivSize, blockSizeInBits / 8, NULL);
         goto done;
@@ -469,6 +476,10 @@ xmlSecMSCryptoKWDes3BlockEncrypt(xmlSecTransformPtr transform,
 
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwCLen, goto done, NULL);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(outSize, dwOutSize, goto done, NULL);
+    if((inSize % (blockSizeInBits / 8)) != 0) {
+        xmlSecInvalidSizeNotMultipleOfError("inSize", inSize, blockSizeInBits / 8, NULL);
+        goto done;
+    }
     /* Pass Final=FALSE to CryptEncrypt since the input is a whole number of blocks and MSCrypto's own padding must be skipped. */
     if(!CryptEncrypt(cryptKey, 0, FALSE, 0, out, &dwCLen, dwOutSize)) {
         xmlSecMSCryptoError("CryptEncrypt", NULL);
@@ -543,7 +554,14 @@ xmlSecMSCryptoKWDes3BlockDecrypt(xmlSecTransformPtr transform,
     }
     XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwBlockLen, blockSizeInBits, goto done, NULL);
 
-    /* set IV */
+    /* the provider must report a non-zero block size that is a multiple of 8 bits,
+     * otherwise the size checks below would divide by zero */
+    if((blockSizeInBits == 0) || ((blockSizeInBits % 8) != 0)) {
+        xmlSecInvalidSizeError("blockSizeInBits", blockSizeInBits, (xmlSecSize)8, NULL);
+        goto done;
+    }
+
+    /* set IV, the IV length must match the block length */
     if(ivSize < blockSizeInBits / 8) {
         xmlSecInvalidSizeLessThanError("ivSize", ivSize, blockSizeInBits / 8, NULL);
         goto done;
@@ -558,6 +576,10 @@ xmlSecMSCryptoKWDes3BlockDecrypt(xmlSecTransformPtr transform,
     }
 
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwCLen, goto done, NULL);
+    if((inSize % (blockSizeInBits / 8)) != 0) {
+        xmlSecInvalidSizeNotMultipleOfError("inSize", inSize, blockSizeInBits / 8, NULL);
+        goto done;
+    }
     /* Pass Final=FALSE to CryptDecrypt since the input is a whole number of blocks and MSCrypto's own padding must be skipped. */
     if(!CryptDecrypt(cryptKey, 0, FALSE, 0, out, &dwCLen)) {
         xmlSecMSCryptoError("CryptDecrypt", NULL);

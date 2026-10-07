@@ -297,7 +297,11 @@ xmlSecMSCngCbcBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
         goto done;
     }
     blobData = xmlSecBufferGetData(&blob);
-    xmlSecAssert2(blobData != NULL, -1);
+    if(blobData == NULL) {
+        xmlSecInternalError2("xmlSecBufferGetData", xmlSecTransformGetName(transform),
+            "size=" XMLSEC_SIZE_FMT, blobSize);
+        goto done;
+    }
 
     blobHeader = (BCRYPT_KEY_DATA_BLOB_HEADER*)blobData;
     blobHeader->dwMagic = BCRYPT_KEY_DATA_BLOB_MAGIC;

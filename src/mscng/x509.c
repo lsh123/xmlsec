@@ -83,7 +83,7 @@ xmlSecMSCngKeyDataX509Finalize(xmlSecKeyDataPtr data) {
     }
 
     if (ctx->hMemStore != 0) {
-        if (!CertCloseStore(ctx->hMemStore, 0)) {
+        if (!CertCloseStore(ctx->hMemStore, XMLSEC_CLOSE_STORE_FLAG)) {
             xmlSecMSCngLastError("CertCloseStore", NULL);
             /* ignore error */
         }
@@ -238,7 +238,8 @@ xmlSecMSCngKeyDataX509AdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
     xmlSecAssert2(ctx->hMemStore != 0, -1);
 
     /* pkcs12 files sometimes have key cert twice: as the key cert and as the cert in the chain */
-    if ((ctx->keyCert != NULL) && (CertCompareCertificate(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, cert->pCertInfo, ctx->keyCert->pCertInfo) == TRUE)) {
+    if ((ctx->keyCert != NULL) && (cert->pCertInfo != NULL) && (ctx->keyCert->pCertInfo != NULL) &&
+        (CertCompareCertificate(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, cert->pCertInfo, ctx->keyCert->pCertInfo) == TRUE)) {
         /* the cert is already owned by ctx->keyCert caller expects data to own the cert on success. */
         CertFreeCertificateContext(cert);
         return(0);
@@ -360,7 +361,7 @@ xmlSecMSCngX509CertGetTime(FILETIME in, time_t* out) {
     /* 100 nanoseconds -> seconds */
     result /= 10000000;
     /* 1601-01-01 epoch -> 1970-01-01 epoch */
-    result -= 11644473600;
+    result -= 11644473600LL;
 
     (*out) = (time_t)result;
 
@@ -460,6 +461,10 @@ xmlSecMSCngVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xm
     keyValue = NULL; /* owned by key now */
 
     /* copy cert not before / not after times from the cert */
+    if (ctx->keyCert->pCertInfo == NULL) {
+        xmlSecInvalidDataError("X509 cert context has no pCertInfo", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
     ret = xmlSecMSCngX509CertGetTime(ctx->keyCert->pCertInfo->NotBefore, &(key->notValidBefore));
     if(ret < 0) {
         xmlSecInternalError("xmlSecMSCngX509CertGetTime", xmlSecKeyDataGetName(data));
@@ -706,6 +711,7 @@ xmlSecMSCngX509SKIWrite(PCCERT_CONTEXT cert, xmlSecBufferPtr buf) {
 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(cert->pCertInfo != NULL, -1);
 
     /* First check if the SKI extension actually exists, otherwise we get a SHA1 hash of the cert */
     pCertExt = CertFindExtension(szOID_SUBJECT_KEY_IDENTIFIER, cert->pCertInfo->cExtension, cert->pCertInfo->rgExtension);

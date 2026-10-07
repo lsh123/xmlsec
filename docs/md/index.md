@@ -34,9 +34,6 @@ see the Copyright file in the distribution for details.
     values are now treated as unsigned magnitudes.
   - (xmlsec-core, **not backward compatible**) Added hard cap (adjustable at build time) on maximum number of the
     PBKDF2 iterations (1000000 by default).
-  - (xmlsec-build, **not backward compatible**) Added '-std=c23' compiler flag for building the library
-    on compilers that support it or '-std=c99' otherwise (this flag was only enabled with --enable-pedantic builds
-    in the past).
   - (xmlsec-openssl, xmlsec-nss, xmlsec-gnutls, xmlsec-mscng, xmlsec-mscrypto, xmlsec-gcrypt,
     **not backward compatible**) Reject zero-length CBC padding blocks in all CBC finalization paths.
   - (xmlsec-mscng) Added support for using both current user and local machine certificates store for verifying
@@ -44,6 +41,11 @@ see the Copyright file in the distribution for details.
     APIs; `xmlSecMSCngAppGetCertStoreName` is now a deprecated alias).
   - (xmlsec-nss) Hardened CRL verification: CRLs without `thisUpdate` are rejected, `nextUpdate` is enforced
     when present, and the CRL issuer certificate is chain-verified with CA usage.
+  - (xmlsec-mscrypt, **not backward compatible**) Enforced the use of '--crypto-config' command line
+  option value when opening certificate stores.
+  - (xmlsec-build, **not backward compatible**) Added '-std=c23' compiler flag for building the library
+    on compilers that support it or '-std=c99' otherwise (this flag was only enabled with --enable-pedantic builds
+    in the past).
   - (xmlsec-build, **not backward compatible**) Added `--enable-hardening` option to `configure` script and
     `hardening` option to `configure.ps1` script to enable security hardening flags on GCC, Clang, and MSVC
     when the compiler version and the target architecture support it (default: `yes`).

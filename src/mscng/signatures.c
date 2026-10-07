@@ -886,6 +886,7 @@ xmlSecMSCngSignatureConvertToASN1(xmlSecMSCngSignatureCtxPtr ctx, xmlSecBufferPt
     xmlSecMSCngReverseBytes(data + halfSize, dwHalfSize);
 
     /* encode */
+    memset(&eccSignature, 0, sizeof(eccSignature));
     eccSignature.r.cbData = dwHalfSize;
     eccSignature.r.pbData = data;
     eccSignature.s.cbData = dwHalfSize;
@@ -902,6 +903,9 @@ xmlSecMSCngSignatureConvertToASN1(xmlSecMSCngSignatureCtxPtr ctx, xmlSecBufferPt
     );
     if ((status != TRUE) || (encodedData == NULL) || (encodedDataSize <= 0)) {
         xmlSecMSCngLastError("CryptEncodeObjectEx(X509_ECC_SIGNATURE)", NULL);
+        if (encodedData != NULL) {
+            LocalFree(encodedData); /* CRYPT_ENCODE_ALLOC_FLAG may allocate even when the call fails */
+        }
         return(-1);
     }
 
@@ -999,6 +1003,23 @@ xmlSecMSCngSignatureSign(
     if (status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("NCryptSignHash", xmlSecTransformGetName(transform), status);
         return(-1);
+    }
+
+    /* the real call rewrites cbSignature; re-validate it against the capacity
+     * sized from the probe and trim the out buffer if the provider reported
+     * a shorter signature */
+    if ((xmlSecSize)cbSignature > outSize) {
+        xmlSecInvalidSizeMoreThanError("Signature", (xmlSecSize)cbSignature, outSize,
+            xmlSecTransformGetName(transform));
+        return(-1);
+    }
+    if ((xmlSecSize)cbSignature < outSize) {
+        ret = xmlSecBufferSetSize(&(transform->outBuf), (xmlSecSize)cbSignature);
+        if (ret < 0) {
+            xmlSecInternalError2("xmlSecBufferSetSize", xmlSecTransformGetName(transform),
+                "size=" XMLSEC_SIZE_FMT, (xmlSecSize)cbSignature);
+            return(-1);
+        }
     }
 
     if ((ctx->keyId == xmlSecMSCngKeyDataEcId) &&

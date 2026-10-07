@@ -284,7 +284,12 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
         }
         inBuf = xmlSecBufferGetData(in);
 
-        /* create random padding */
+        /* create random padding: the XML-ENC padding scheme used by this backend
+         * fills the pad bytes with random data and puts the pad length in the
+         * last byte only (matching the legacy MS CSPs and the mscng backend).
+         * Note this is NOT standard PKCS#7 padding: strict decoders (e.g. OpenSSL)
+         * reject such output; interop with other stacks is by design limited to
+         * same-scheme producers. */
         if(blockSize > (inSize + 1)) {
             XMLSEC_SAFE_CAST_SIZE_TO_ULONG((blockSize - inSize - 1), dwCLen, return(-1), cipherName);
             if (!CryptGenRandom(ctx->cryptProvider, dwCLen, inBuf + inSize)) {
@@ -343,7 +348,11 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     if(encrypt == 0) {
         xmlSecSize padLen;
 
-        /* check padding */
+        /* check padding: only the trailing length byte is validated (pad != 0,
+         * pad <= block size). The preceding pad bytes are random (see the
+         * encrypt-side comment above) and the XML-ENC spec constrains only the
+         * final byte, so they are deliberately NOT compared; this asymmetry with
+         * strict PKCS#7 decoders is intentional for legacy MS CSP interop. */
         padLen = outBuf[blockSize - 1];
         if((padLen == 0) || (inSize < padLen)) {
             xmlSecInvalidSizeLessThanError("Input data padding",

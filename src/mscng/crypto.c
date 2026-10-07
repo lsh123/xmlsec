@@ -31,6 +31,18 @@
 
 static xmlSecCryptoDLFunctionsPtr gXmlSecMSCngFunctions = NULL;
 
+/* Close the algorithm provider handle opened by the support probe. The probe
+ * outcome is already decided when this is called, so a close failure is logged
+ * and ignored; at most one handle per probe can leak during the one-time
+ * initialization, which is an accepted cost for a startup probe. */
+static void
+xmlSecMSCngCloseProbeAlgorithmProvider(BCRYPT_ALG_HANDLE hAlg) {
+    NTSTATUS status = BCryptCloseAlgorithmProvider(hAlg, 0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptCloseAlgorithmProvider", NULL, status);
+    }
+}
+
 /* Probe at runtime whether BCrypt supports a given algorithm. */
 static int
 xmlSecMSCngIsAlgorithmSupported(LPCWSTR pszAlgId, DWORD dwMinLength, LPCWSTR curveName) {
@@ -50,19 +62,11 @@ xmlSecMSCngIsAlgorithmSupported(LPCWSTR pszAlgId, DWORD dwMinLength, LPCWSTR cur
 
         status = BCryptGetProperty(hAlg, BCRYPT_KEY_LENGTHS, (PBYTE)&keyLengths, sizeof(keyLengths), &cbResult, 0);
         if(status != STATUS_SUCCESS) {
-            status = BCryptCloseAlgorithmProvider(hAlg, 0);
-            if(status != STATUS_SUCCESS) {
-                xmlSecMSCngNtError("BCryptCloseAlgorithmProvider", NULL, status);
-                /* ignore error */
-            }
+            xmlSecMSCngCloseProbeAlgorithmProvider(hAlg);
             return(0);
         }
         if(keyLengths.dwMaxLength < dwMinLength) {
-            status = BCryptCloseAlgorithmProvider(hAlg, 0);
-            if(status != STATUS_SUCCESS) {
-                xmlSecMSCngNtError("BCryptCloseAlgorithmProvider", NULL, status);
-                /* ignore error */
-            }
+            xmlSecMSCngCloseProbeAlgorithmProvider(hAlg);
             return(0);
         }
     }
@@ -72,21 +76,13 @@ xmlSecMSCngIsAlgorithmSupported(LPCWSTR pszAlgId, DWORD dwMinLength, LPCWSTR cur
         DWORD cbCurveName = (DWORD)((wcslen(curveName) + 1) * sizeof(WCHAR));
         status = BCryptSetProperty(hAlg, BCRYPT_ECC_CURVE_NAME, (PUCHAR)curveName, cbCurveName, 0);
         if(status != STATUS_SUCCESS) {
-            status = BCryptCloseAlgorithmProvider(hAlg, 0);
-            if(status != STATUS_SUCCESS) {
-                xmlSecMSCngNtError("BCryptCloseAlgorithmProvider", NULL, status);
-                /* ignore error */
-            }
+            xmlSecMSCngCloseProbeAlgorithmProvider(hAlg);
             return(0);
         }
     }
 
     /* done */
-    status = BCryptCloseAlgorithmProvider(hAlg, 0);
-    if(status != STATUS_SUCCESS) {
-        xmlSecMSCngNtError("BCryptCloseAlgorithmProvider", NULL, status);
-        /* ignore error */
-    }
+    xmlSecMSCngCloseProbeAlgorithmProvider(hAlg);
     return(1);
 }
 
@@ -108,10 +104,13 @@ xmlSecCryptoGetFunctions_mscng(void) {
      * 2048-bit keys; the probe detects that via the provider's maximum key length
      * (>= 2048). The CNG DSA provider exists only on Windows 8+ (BCryptOpenAlgorithmProvider
      * fails on older systems) and supports up to 3072 bits there, so the probe passes
-     * exactly when DSA-SHA256 works. Verified on Windows 11 (build 26200): the maximum
+     * exactly when DSA-SHA256 works. Observed on Windows 11 (build 26200): the maximum
      * key length is 3072, a 2048-bit key signs a SHA-256 hash, and a 1024-bit key rejects
-     * a SHA-256 hash with STATUS_INVALID_PARAMETER. (xmlsec does not support Windows 7,
-     * so no Win7-specific handling is required.) */
+     * a SHA-256 hash with STATUS_INVALID_PARAMETER; this is a point-in-time observation on
+     * one OS build, not a guarantee for future releases. The runtime probe above is
+     * authoritative: if a future OS build changes the provider's capabilities, the probe
+     * result follows it. (xmlsec does not support Windows 7, so no Win7-specific handling
+     * is required.) */
 #if !defined(XMLSEC_NO_DSA) && !defined(XMLSEC_NO_SHA256)
     int isDsaSha256Supported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_DSA_ALGORITHM, 2048, NULL);
 #endif /* !defined(XMLSEC_NO_DSA) && !defined(XMLSEC_NO_SHA256) */

@@ -301,8 +301,13 @@ xmlSecMSCngDsaBuildSubjectPublicKeyInfoDer(BCRYPT_KEY_HANDLE hKey, LPVOID* ppDer
 
     /* Export DSA public key to BCrypt blob */
     status = BCryptExportKey(hKey, NULL, BCRYPT_DSA_PUBLIC_BLOB, NULL, 0, &blobLen, 0);
-    if((status != STATUS_SUCCESS) || (blobLen < sizeof(BCRYPT_DSA_KEY_BLOB))) {
+    if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptExportKey(size)", NULL, status);
+        goto done;
+    }
+    if(blobLen < sizeof(BCRYPT_DSA_KEY_BLOB)) {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_RESULT, NULL,
+            "DSA public key blob size too small: blobLen=%lu", (unsigned long)blobLen);
         goto done;
     }
     blobData = (BYTE*)LocalAlloc(LMEM_ZEROINIT, blobLen);
@@ -335,9 +340,17 @@ xmlSecMSCngDsaBuildSubjectPublicKeyInfoDer(BCRYPT_KEY_HANDLE hKey, LPVOID* ppDer
         /* V2: header + seed[cbSeedLength] + q[cbGroupSize] + p[cbKey] + g[cbKey] + y[cbKey].
          * The blob was produced by BCryptExportKey above (size query followed by an export
          * into a buffer of exactly the reported size), so the header fields are consistent
-         * with blobLen and the DWORD size sum in the check below cannot wrap. */
+         * with blobLen; independently bound every header field against blobLen anyway so a
+         * provider inconsistency cannot cause OOB reads, and compute the size sum in size_t
+         * so no DWORD wrap is possible. */
         BCRYPT_DSA_KEY_BLOB_V2* h2 = (BCRYPT_DSA_KEY_BLOB_V2*)blobData;
-        if((h2->cbKey > XMLSEC_MSCNG_DSA_MAX_CBKEY_SIZE) || (blobLen < (sizeof(BCRYPT_DSA_KEY_BLOB_V2) + h2->cbSeedLength + h2->cbGroupSize + 3 * h2->cbKey))) {
+        size_t needed = (size_t)sizeof(BCRYPT_DSA_KEY_BLOB_V2)
+                        + (size_t)h2->cbSeedLength
+                        + (size_t)h2->cbGroupSize
+                        + 3 * (size_t)h2->cbKey;
+        if((h2->cbKey > XMLSEC_MSCNG_DSA_MAX_CBKEY_SIZE) ||
+           (h2->cbSeedLength > blobLen) || (h2->cbGroupSize > blobLen) ||
+           (needed > blobLen)) {
             xmlSecOtherError3(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "DSA V2 blob size mismatch: blobLen=%lu; keyLen=%lu", blobLen, h2->cbKey);
             goto done;
         }
@@ -684,8 +697,13 @@ xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDsaPtr 
         0,
         &bufLen,
         0);
-    if ((status != STATUS_SUCCESS) || (bufLen == 0)) {
+    if (status != STATUS_SUCCESS) {
         xmlSecMSCngNtError2("BCryptExportKey", NULL, status, "bufLen=%lu", bufLen);
+        goto done;
+    }
+    if (bufLen == 0) {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_RESULT, NULL,
+            "DSA public key blob size is zero: bufLen=%lu", (unsigned long)bufLen);
         goto done;
     }
 
@@ -706,8 +724,13 @@ xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDsaPtr 
         bufLen,
         &bufLen,
         0);
-    if ((status != STATUS_SUCCESS) || (bufLen == 0)) {
+    if (status != STATUS_SUCCESS) {
         xmlSecMSCngNtError2("BCryptExportKey", NULL, status, "bufLen=%lu", bufLen);
+        goto done;
+    }
+    if (bufLen == 0) {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_RESULT, NULL,
+            "DSA public key blob size is zero: bufLen=%lu", (unsigned long)bufLen);
         goto done;
     }
 
@@ -766,11 +789,20 @@ xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDsaPtr 
         /* V2: BCRYPT_DSA_KEY_BLOB_V2 + seed[cbSeedLength] + q[cbGroupSize] + p[cbKey] + g[cbKey] + y[cbKey].
          * The blob was produced by BCryptExportKey above (size query followed by an export
          * into a buffer of exactly the reported size), so the header fields are consistent
-         * with bufLen and the DWORD size sum in the check below cannot wrap. */
+         * with bufLen; independently bound every header field against bufLen anyway so a
+         * provider inconsistency cannot cause OOB reads, and compute the size sum in size_t
+         * so no DWORD wrap is possible. */
         BCRYPT_DSA_KEY_BLOB_V2* dsakey2v;
         xmlSecByte* v2Data;
+        size_t v2Needed;
         dsakey2v = (BCRYPT_DSA_KEY_BLOB_V2*)bufData;
-        if((dsakey2v->cbKey > XMLSEC_MSCNG_DSA_MAX_CBKEY_SIZE) || (bufLen < (sizeof(BCRYPT_DSA_KEY_BLOB_V2) + dsakey2v->cbSeedLength + dsakey2v->cbGroupSize + 3 * dsakey2v->cbKey))) {
+        v2Needed = (size_t)sizeof(BCRYPT_DSA_KEY_BLOB_V2)
+                   + (size_t)dsakey2v->cbSeedLength
+                   + (size_t)dsakey2v->cbGroupSize
+                   + 3 * (size_t)dsakey2v->cbKey;
+        if((dsakey2v->cbKey > XMLSEC_MSCNG_DSA_MAX_CBKEY_SIZE) ||
+           (dsakey2v->cbSeedLength > bufLen) || (dsakey2v->cbGroupSize > bufLen) ||
+           (v2Needed > bufLen)) {
             xmlSecOtherError3(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "DSA V2 blob size mismatch: bufLen=%lu; keyLen=%lu", bufLen, dsakey2v->cbKey);
             goto done;
         }

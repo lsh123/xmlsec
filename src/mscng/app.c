@@ -722,6 +722,7 @@ xmlSecMSCngAppPkcs12LoadMemory(
     CRYPT_DATA_BLOB pfx;
     xmlSecKeyPtr key = NULL;
     WCHAR* pwdWideChar = NULL;
+    DWORD pwdWideCharLen = 0;
     HCERTSTORE certStore = NULL;
     xmlSecKeyDataPtr keyData = NULL;
     xmlSecKeyDataPtr privKeyData = NULL;
@@ -753,6 +754,8 @@ xmlSecMSCngAppPkcs12LoadMemory(
         xmlSecInternalError("xmlSecWin32ConvertUtf8ToUnicode", NULL);
         goto cleanup;
     }
+    /* remember the exact wide-string size so cleanup can wipe the plaintext password */
+    pwdWideCharLen = (DWORD)MultiByteToWideChar(CP_UTF8, 0, (LPCCH)pwd, -1, NULL, 0);
 
     ret = PFXVerifyPassword(&pfx, pwdWideChar, 0);
     if(ret == FALSE) {
@@ -872,6 +875,10 @@ xmlSecMSCngAppPkcs12LoadMemory(
 
 cleanup:
     if(pwdWideChar != NULL) {
+        /* wipe the plaintext password before releasing the buffer */
+        if(pwdWideCharLen > 0) {
+            SecureZeroMemory(pwdWideChar, pwdWideCharLen * sizeof(WCHAR));
+        }
         xmlFree(pwdWideChar);
     }
     if (keyName != NULL) {

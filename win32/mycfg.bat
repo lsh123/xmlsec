@@ -7,13 +7,13 @@ REM
 REM Aleksey Sanin <aleksey@aleksey.com>
 REM
 
-SET XMLSEC_CRYPTO=mscng
-SET XMLSEC_DEBUG=no
+SET XMLSEC_CRYPTO=mscrypto
+SET XMLSEC_DEBUG=yes
 SET XMLSEC_UNICODE=no
 
 IF "%XMLSEC_DEBUG%" == "yes" (
     SET PREFIX=%USERHOME%\distro.debug
-    SET XMLSEC_OPTIONS=debug=yes memcheck=yes cruntime=/MDd unicode=%XMLSEC_UNICODE%
+    SET XMLSEC_OPTIONS=debug=yes memcheck=no cruntime=/MDd unicode=%XMLSEC_UNICODE%
 ) ELSE (
     SET PREFIX=%USERHOME%\distro.release
     SET XMLSEC_OPTIONS=debug=no memcheck=no cruntime=/MD unicode=%XMLSEC_UNICODE%

@@ -1094,7 +1094,11 @@ xmlSecMSCngKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
         goto done;
     }
     blobData = xmlSecBufferGetData(&blob);
-    xmlSecAssert2(blobData != NULL, NULL);
+    if (blobData == NULL) {
+        xmlSecInternalError2("xmlSecBufferGetData", xmlSecKeyDataKlassGetName(id),
+            "size=" XMLSEC_SIZE_FMT, blobBufferSize);
+        goto done;
+    }
     /* zero out the buffer so that all padding bytes are 0 */
     memset(blobData, 0, blobBufferSize);
 
@@ -1220,7 +1224,10 @@ xmlSecMSCngKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     bufInitialized = 1;
 
     bufData = xmlSecBufferGetData(&buf);
-    xmlSecAssert2(bufData != NULL, -1);
+    if (bufData == NULL) {
+        xmlSecInternalError("xmlSecBufferGetData", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
 
     status = BCryptExportKey(ctx->pubkey,
         NULL,
@@ -1502,10 +1509,15 @@ xmlSecMSCngKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
             "size=" XMLSEC_SIZE_FMT, blobSize);
         goto done;
     }
-    /* zero out the buffer so that all padding bytes are 0 */
-    memset(xmlSecBufferGetData(&blob), 0, blobSize);
-
     blobData = xmlSecBufferGetData(&blob);
+    if (blobData == NULL) {
+        xmlSecInternalError2("xmlSecBufferGetData", xmlSecKeyDataKlassGetName(id),
+            "size=" XMLSEC_SIZE_FMT, blobSize);
+        goto done;
+    }
+    /* zero out the buffer so that all padding bytes are 0 */
+    memset(blobData, 0, blobSize);
+
     eckey = (BCRYPT_ECCKEY_BLOB*)blobData;
     blobType = xmlSecMSCngKeyDataEcGetTypeAndMagicFromOid(ecValue->curve, &(eckey->dwMagic));
     if ((blobType == NULL) || (eckey->dwMagic == 0)) {
@@ -1626,7 +1638,10 @@ xmlSecMSCngKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyVa
     bufInitialized = 1;
 
     bufData = xmlSecBufferGetData(&buf);
-    xmlSecAssert2(bufData != NULL, -1);
+    if (bufData == NULL) {
+        xmlSecInternalError("xmlSecBufferGetData", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
 
     status = BCryptExportKey(ctx->pubkey,
         NULL,

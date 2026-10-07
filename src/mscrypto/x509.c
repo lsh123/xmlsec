@@ -167,7 +167,8 @@ xmlSecMSCryptoKeyDataX509GetKlass(void) {
  *
  *
  * @return the key's certificate or NULL if key data was not used for key
- * extraction or an error occurs.
+ * extraction or an error occurs. : the returned PCCERT_CONTEXT is owned by
+ * the key data and must NOT be CertFreeCertificateContext()-ed by the caller.
  */
 PCCERT_CONTEXT
 xmlSecMSCryptoKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
@@ -656,7 +657,8 @@ xmlSecMSCryptoKeyDataX509DebugDump(xmlSecKeyDataPtr data, FILE* output) {
     /* CertEnumCertificatesInStore automatically frees the previous certificate context (see
      * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcertificatesinstore) */
     while((cert = CertEnumCertificatesInStore(ctx->hMemStore, cert)) != NULL) {
-        if((ctx->keyCert != NULL) && (CertCompareCertificate(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+        if((ctx->keyCert != NULL) && (cert->pCertInfo != NULL) && (ctx->keyCert->pCertInfo != NULL) &&
+            (CertCompareCertificate(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
                 cert->pCertInfo, ctx->keyCert->pCertInfo) == TRUE)) {
             fprintf(output, "==== Key Certificate:\n");
         } else {
@@ -682,7 +684,8 @@ xmlSecMSCryptoKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     /* CertEnumCertificatesInStore automatically frees the previous certificate context (see
      * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcertificatesinstore) */
     while((cert = CertEnumCertificatesInStore(ctx->hMemStore, cert)) != NULL) {
-        if((ctx->keyCert != NULL) && (CertCompareCertificate(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+        if((ctx->keyCert != NULL) && (cert->pCertInfo != NULL) && (ctx->keyCert->pCertInfo != NULL) &&
+            (CertCompareCertificate(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
                 cert->pCertInfo, ctx->keyCert->pCertInfo) == TRUE)) {
             fprintf(output, "<KeyCertificate>\n");
             xmlSecMSCryptoX509CertDebugXmlDump(cert, output);
@@ -1098,7 +1101,7 @@ xmlSecMSCryptoX509CertGetTime(FILETIME t, time_t* res) {
     /* 100 nanoseconds -> seconds */
     result /= 10000000;
     /* 1601-01-01 epoch -> 1970-01-01 epoch */
-    result -= 11644473600;
+    result -= 11644473600LL;
 
     (*res) = (time_t)result;
 
@@ -1232,6 +1235,7 @@ xmlSecMSCryptoX509SKIWrite(PCCERT_CONTEXT cert, xmlSecBufferPtr buf) {
 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(cert->pCertInfo != NULL, -1);
 
     /* First check if the SKI extension actually exists, otherwise we get the SHA-1 hash of the public key */
     pCertExt = CertFindExtension(szOID_SUBJECT_KEY_IDENTIFIER, cert->pCertInfo->cExtension, cert->pCertInfo->rgExtension);

@@ -112,6 +112,7 @@ int
 xmlSecMSCngKeyDataDuplicateBCryptXdhPrivKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HANDLE* dst) {
     BCRYPT_ALG_HANDLE hAlg = NULL;
     DWORD cbPrivBlob = 0;
+    DWORD cbPrivBlobAlloc = 0;
     PUCHAR pbPrivBlob = NULL;
     BCRYPT_KEY_HANDLE hKey = NULL;
     NTSTATUS status;
@@ -132,10 +133,11 @@ xmlSecMSCngKeyDataDuplicateBCryptXdhPrivKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HA
         xmlSecMallocError(cbPrivBlob, NULL);
         return(-1);
     }
-    status = BCryptExportKey(src, NULL, BCRYPT_ECCPRIVATE_BLOB, pbPrivBlob, cbPrivBlob, &cbPrivBlob, 0);
+    cbPrivBlobAlloc = cbPrivBlob;
+    status = BCryptExportKey(src, NULL, BCRYPT_ECCPRIVATE_BLOB, pbPrivBlob, cbPrivBlobAlloc, &cbPrivBlob, 0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptExportKey(X25519 priv, data)", NULL, status);
-        xmlSecMemCleanse(pbPrivBlob, cbPrivBlob);
+        xmlSecMemCleanse(pbPrivBlob, cbPrivBlobAlloc);
         xmlFree(pbPrivBlob);
         return(-1);
     }
@@ -144,7 +146,7 @@ xmlSecMSCngKeyDataDuplicateBCryptXdhPrivKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HA
     status = BCryptOpenAlgorithmProvider(&hAlg, BCRYPT_ECDH_ALGORITHM, NULL, 0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptOpenAlgorithmProvider(X25519 priv dup)", NULL, status);
-        xmlSecMemCleanse(pbPrivBlob, cbPrivBlob);
+        xmlSecMemCleanse(pbPrivBlob, cbPrivBlobAlloc);
         xmlFree(pbPrivBlob);
         return(-1);
     }
@@ -157,7 +159,7 @@ xmlSecMSCngKeyDataDuplicateBCryptXdhPrivKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HA
             xmlSecMSCngNtError("BCryptCloseAlgorithmProvider", NULL, status);
             /* ignore error */
         }
-        xmlSecMemCleanse(pbPrivBlob, cbPrivBlob);
+        xmlSecMemCleanse(pbPrivBlob, cbPrivBlobAlloc);
         xmlFree(pbPrivBlob);
         return(-1);
     }
@@ -171,7 +173,7 @@ xmlSecMSCngKeyDataDuplicateBCryptXdhPrivKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HA
             /* ignore error */
         }
     }
-    xmlSecMemCleanse(pbPrivBlob, cbPrivBlob);
+    xmlSecMemCleanse(pbPrivBlob, cbPrivBlobAlloc);
     xmlFree(pbPrivBlob);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptImportKeyPair(X25519 priv dup)", NULL, status);
@@ -337,7 +339,9 @@ xmlSecMSCngXdhDerivePubKeyU(BCRYPT_ALG_HANDLE hAlg, BCRYPT_KEY_HANDLE hPrivKeyTe
 
     /* prepend zeros if needed */
     memset(pubKeyU, 0, pubKeyULen);
-    cbDerived = min(cbDerived, pubKeyULen); /* safety guard */
+    if(cbDerived > pubKeyULen) {
+        cbDerived = pubKeyULen; /* safety guard (min(), written out to avoid non-standard min()) */
+    }
     status = BCryptDeriveKey(
         hSelfSecret,
         BCRYPT_KDF_RAW_SECRET,
@@ -347,7 +351,7 @@ xmlSecMSCngXdhDerivePubKeyU(BCRYPT_ALG_HANDLE hAlg, BCRYPT_KEY_HANDLE hPrivKeyTe
         &cbDerived,
         0
     );
-    if(status != STATUS_SUCCESS) {
+    if((status != STATUS_SUCCESS) || (cbDerived == 0)) {
         xmlSecMSCngNtError("BCryptDeriveKey(X25519 u data)", NULL, status);
         goto done;
     }
@@ -571,6 +575,9 @@ xmlSecMSCngKeyDataXdhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLe
     data = NULL;
 
 done:
+    /* wipe the derived public key u-coordinate (key material) from the stack */
+    SecureZeroMemory(pubKeyU, sizeof(pubKeyU));
+
     /* Retry-on-failure, not a double-destroy: hPrivKeyTemp is only non-NULL here if the
      * earlier BCryptDestroyKey(hPrivKeyTemp) failed (on success it is set to NULL above),
      * in which case the handle is still valid and this is a legitimate retry. */

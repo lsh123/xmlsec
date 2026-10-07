@@ -46,16 +46,6 @@ struct _xmlSecMSCngX509StoreCtx {
 XMLSEC_KEY_DATA_STORE_DECLARE(MSCngX509Store, xmlSecMSCngX509StoreCtx)
 #define xmlSecMSCngX509StoreSize XMLSEC_KEY_DATA_STORE_SIZE(MSCngX509Store)
 
-// https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certclosestore
-//
-// CERT_CLOSE_STORE_CHECK_FLAG should only be used as a diagnostic tool in the development
-// of applications.
-#ifdef _DEBUG
-#define XMLSEC_CLOSE_STORE_FLAG     (CERT_CLOSE_STORE_CHECK_FLAG)
-#else  // _DEBUG
-#define XMLSEC_CLOSE_STORE_FLAG     (0)
-#endif // _DEBUG
-
 static int              xmlSecMSCngUnixTimeToFileTime               (time_t in,
                                                                      LPFILETIME out);
 
@@ -175,7 +165,7 @@ xmlSecMSCngX509StoreFinalize(xmlSecKeyDataStorePtr store) {
 int
 xmlSecMSCngX509StoreAdoptKeyStore(xmlSecKeyDataStorePtr store, HCERTSTORE keyStore) {
     xmlSecMSCngX509StoreCtxPtr ctx;
-    int ret;
+    BOOL bRet;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCngX509StoreId), -1);
     xmlSecAssert2(keyStore != NULL, -1);
@@ -185,8 +175,8 @@ xmlSecMSCngX509StoreAdoptKeyStore(xmlSecKeyDataStorePtr store, HCERTSTORE keySto
     xmlSecAssert2(ctx->trusted != NULL, -1);
 
     /* the 4th argument is dwPriority (the store's search priority level) */
-    ret = CertAddStoreToCollection(ctx->trusted, keyStore, CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG, 2);
-    if(ret != TRUE) {
+    bRet = CertAddStoreToCollection(ctx->trusted, keyStore, CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG, 2);
+    if(bRet == FALSE) {
         xmlSecMSCngLastError("CertAddStoreToCollection",
             xmlSecKeyDataStoreGetName(store));
         return(-1);
@@ -257,7 +247,7 @@ xmlSecMSCngX509StoreAdoptUntrustedStore(xmlSecKeyDataStorePtr store, HCERTSTORE 
 
 static int
 xmlSecMSCngX509StoreInitialize(xmlSecKeyDataStorePtr store) {
-    int ret;
+    BOOL bRet;
     xmlSecMSCngX509StoreCtxPtr ctx;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCngX509StoreId), -1);
@@ -293,12 +283,12 @@ xmlSecMSCngX509StoreInitialize(xmlSecKeyDataStorePtr store) {
 
     /* add the store to the trusted collection (the last argument is dwPriority,
      * the store's search priority level) */
-    ret = CertAddStoreToCollection(
+    bRet = CertAddStoreToCollection(
         ctx->trusted,
         ctx->trustedMemStore,
         CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG,
         1);
-    if(ret == 0) {
+    if(bRet == FALSE) {
         xmlSecMSCngLastError("CertAddStoreToCollection", xmlSecKeyDataStoreGetName(store));
         xmlSecMSCngX509StoreFinalize(store);
         return(-1);
@@ -332,12 +322,12 @@ xmlSecMSCngX509StoreInitialize(xmlSecKeyDataStorePtr store) {
 
     /* add the store to the untrusted collection (the last argument is dwPriority,
      * the store's search priority level) */
-    ret = CertAddStoreToCollection(
+    bRet = CertAddStoreToCollection(
         ctx->untrusted,
         ctx->untrustedMemStore,
         CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG,
         1);
-    if(ret == 0) {
+    if(bRet == FALSE) {
         xmlSecMSCngLastError("CertAddStoreToCollection", xmlSecKeyDataStoreGetName(store));
         xmlSecMSCngX509StoreFinalize(store);
         return(-1);
@@ -583,6 +573,7 @@ xmlSecMSCngCheckRevocation(
     PCCRL_CONTEXT crlCtx = NULL;
     PCRL_ENTRY crlEntry = NULL;
     int isCrlTimeValid;
+    BOOL bRet;
     int ret;
 
     xmlSecAssert2(store != NULL, -1);
@@ -614,12 +605,12 @@ xmlSecMSCngCheckRevocation(
             continue;
         }
 
-        ret = CertFindCertificateInCRL(cert,
+        bRet = CertFindCertificateInCRL(cert,
             crlCtx,
             0,
             NULL,
             &crlEntry);
-        if(ret == 0) {
+        if(bRet == FALSE) {
             /* CertFindCertificateInCRL returns FALSE only on a genuine failure (not when
              * the cert is simply not listed), so fail closed instead of skipping the CRL. */
             xmlSecMSCngLastError("CertFindCertificateInCRL", NULL);
@@ -819,37 +810,46 @@ xmlSecMSCngX509StoreVerifyCertificateTrust(PCCERT_CONTEXT cert, HCERTSTORE trust
 
 
 
-/* returns 1 if verified, 0 if not, or a negative value if an error occurs */
+/* Returns the issuer certificate context (owned by the caller; must be
+ * CertFreeCertificateContext()-ed) whose subject name matches the issuer of
+ * the given certificate and whose signature verifies against that certificate,
+ * or NULL if no such certificate is in the store or an error occurs. */
 static PCCERT_CONTEXT
 xmlSecMSCngX509StoreFindIssuer(HCERTSTORE store, PCCERT_CONTEXT cert) {
-    PCCERT_CONTEXT issuerCert = NULL;
+    PCCERT_CONTEXT candidate = NULL;
     int ret;
 
     xmlSecAssert2(store != NULL, NULL);
     xmlSecAssert2(cert != NULL, NULL);
+    xmlSecAssert2(cert->pCertInfo != NULL, NULL);
 
-    issuerCert = CertFindCertificateInStore(store,
-        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-        0,
-        CERT_FIND_SUBJECT_NAME,
-        &(cert->pCertInfo->Issuer),
-        NULL);
-    if(issuerCert == NULL) {
-        return(NULL);
+    /* scan every certificate in the store: CertFindCertificateInStore would only
+     * return the first name match, but another certificate with the same issuer
+     * name may actually verify (same iteration pattern as VerifyCrlSignature) */
+    while((candidate = CertEnumCertificatesInStore(store, candidate)) != NULL) {
+        if (candidate->pCertInfo == NULL) {
+            continue;
+        }
+        if (CertCompareCertificateName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                &(cert->pCertInfo->Issuer), &(candidate->pCertInfo->Subject)) != TRUE) {
+            continue;
+        }
+        ret = xmlSecMSCngX509StoreVerifySubject(cert, candidate);
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecMSCngX509StoreVerifySubject", NULL);
+            /* internal error, not a verification failure: stop scanning; the
+             * enumerated handle is not owned by the caller on this path */
+            CertFreeCertificateContext(candidate);
+            return(NULL);
+        } else if (ret == 1) {
+            /* success: the enumerated handle is owned by the caller */
+            return(candidate);
+        }
+        /* verification failed keep scanning other candidates
+         * with the same issuer name */
     }
 
-    ret = xmlSecMSCngX509StoreVerifySubject(cert, issuerCert);
-    if (ret < 0) {
-        xmlSecInternalError("xmlSecMSCngX509StoreVerifySubject", NULL);
-        CertFreeCertificateContext(issuerCert);
-        return(NULL);
-    } else if (ret == 0) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL, "xmlSecMSCngX509StoreVerifySubject");
-        CertFreeCertificateContext(issuerCert);
-        return(NULL);
-    }
-
-    return(issuerCert);
+    return(NULL);
 }
 
 struct xmlSecMSCngX509StoreVerifyCertificateChainStep {
@@ -1815,16 +1815,16 @@ LPCWSTR
 xmlSecMSCngX509GetFriendlyNameUnicode(PCCERT_CONTEXT cert) {
     DWORD dwPropSize;
     PBYTE pbFriendlyName;
-    BOOL ret;
+    BOOL bRet;
 
     xmlSecAssert2(cert != 0, NULL);
 
     /* CERT_FRIENDLY_NAME_PROP_ID: Returns a null-terminated Unicode character
      * string that contains the display name for the certificate. */
-    ret = CertGetCertificateContextProperty(cert,
+    bRet = CertGetCertificateContextProperty(cert,
         CERT_FRIENDLY_NAME_PROP_ID,
         NULL, &dwPropSize);
-    if (ret != TRUE) {
+    if (bRet == FALSE) {
         /* name might not exist */
         return(NULL);
     }
@@ -1835,11 +1835,11 @@ xmlSecMSCngX509GetFriendlyNameUnicode(PCCERT_CONTEXT cert) {
         return(NULL);
     }
 
-    ret = CertGetCertificateContextProperty(cert,
+    bRet = CertGetCertificateContextProperty(cert,
         CERT_FRIENDLY_NAME_PROP_ID,
         pbFriendlyName,
         &dwPropSize);
-    if ((ret != TRUE) || (dwPropSize <= 0)) {
+    if ((bRet == FALSE) || (dwPropSize <= 0)) {
         xmlSecMSCngLastError("CertGetCertificateContextProperty", NULL);
         xmlFree(pbFriendlyName);
         return(NULL);

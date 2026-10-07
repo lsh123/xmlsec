@@ -356,7 +356,7 @@ xmlSecMSCryptoKeyDataCtxDestroyCert(xmlSecMSCryptoKeyDataCtxPtr ctx) {
     xmlSecAssert(ctx != NULL);
 
     if(ctx->pCert != NULL) {
-            CertFreeCertificateContext(ctx->pCert);
+        CertFreeCertificateContext(ctx->pCert);
     }
     ctx->pCert = NULL;
 }
@@ -420,11 +420,13 @@ xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlS
     ctx = xmlSecMSCryptoKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
+    /* cleanup old stuff */
     xmlSecMSCryptoKeyDataCtxDestroyProvider(ctx);
     xmlSecMSCryptoKeyDataCtxDestroyKey(ctx);
     xmlSecMSCryptoKeyDataCtxDestroyCert(ctx);
 
     ctx->type = type;
+    ctx->dwKeySpec = 0;
 
     /* Now we acquire a context for this key(pair). The context is needed
      * for the real crypto stuff in MS Crypto.
@@ -521,11 +523,17 @@ xmlSecMSCryptoKeyDataAdoptKey(xmlSecKeyDataPtr data,
     ctx = xmlSecMSCryptoKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
+    /* cleanup old stuff */
+    xmlSecMSCryptoKeyDataCtxDestroyProvider(ctx);
+    xmlSecMSCryptoKeyDataCtxDestroyKey(ctx);
+    xmlSecMSCryptoKeyDataCtxDestroyCert(ctx);
+
     ret = xmlSecMSCryptoKeyDataCtxSetProvider(ctx, hProv, fCallerFreeProv);
     if(ret != 0) {
         xmlSecInternalError("xmlSecMSCryptoKeyDataCtxSetProvider", NULL);
         return(-1);
     }
+    
     ret = xmlSecMSCryptoKeyDataCtxSetKey(ctx, hKey);
     if(ret != 0) {
         xmlSecInternalError("xmlSecMSCryptoKeyDataCtxSetKey", NULL);
@@ -542,15 +550,9 @@ xmlSecMSCryptoKeyDataAdoptKey(xmlSecKeyDataPtr data,
     #endif /* XMLSEC_MSCRYPTO_CUSTOM_REFCOUNT */
         return(-1);
     }
-    ret = xmlSecMSCryptoKeyDataCtxSetCert(ctx, NULL);
-    if(ret != 0) {
-        xmlSecInternalError("xmlSecMSCryptoKeyDataCtxSetCert", NULL);
-        return(-1);
-    }
 
     ctx->dwKeySpec       = dwKeySpec;
     ctx->type            = type;
-
     return(0);
 }
 
@@ -583,12 +585,19 @@ xmlSecMSCryptoKeyDataGetKey(xmlSecKeyDataPtr data, xmlSecKeyDataType type) {
  *
  * Returned HKEY must be destroyed by the caller using CryptDestroyKey.
  *
+ * The keyspec recorded in the key data (ctx->dwKeySpec) is used to retrieve the
+ * user key: certificate-based and generated key pairs are acquired/created as
+ * AT_SIGNATURE, so hardcoding AT_KEYEXCHANGE made decrypt/keywrap retrieval fail
+ * with "wrong key type" on CSPs that enforce aiKeyAlg. When no keyspec was
+ * recorded, the legacy AT_KEYEXCHANGE default is kept.
+ *
  * @return HKEY on success or NULL otherwise.
  */
 HCRYPTKEY
 xmlSecMSCryptoKeyDataGetDecryptKey(xmlSecKeyDataPtr data) {
     xmlSecMSCryptoKeyDataCtxPtr ctx;
     HCRYPTKEY hKey;
+    DWORD dwKeySpec;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), 0);
     xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCryptoKeyDataSize), 0);
@@ -596,7 +605,8 @@ xmlSecMSCryptoKeyDataGetDecryptKey(xmlSecKeyDataPtr data) {
     ctx = xmlSecMSCryptoKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, 0);
 
-    if(!CryptGetUserKey(xmlSecMSCryptoKeyDataCtxGetProvider(ctx), AT_KEYEXCHANGE, &(hKey))) {
+    dwKeySpec = (ctx->dwKeySpec != 0) ? ctx->dwKeySpec : (DWORD)AT_KEYEXCHANGE;
+    if(!CryptGetUserKey(xmlSecMSCryptoKeyDataCtxGetProvider(ctx), dwKeySpec, &(hKey))) {
         xmlSecMSCryptoError("CryptGetUserKey", NULL);
         return(0);
     }
@@ -2069,7 +2079,10 @@ xmlSecMSCryptoKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
 
     /* get data */
     blob = xmlSecBufferGetData(&buf);
-    xmlSecAssert2(blob != NULL, -1);
+    if (blob == NULL) {
+        xmlSecInvalidDataError("buffer data pointer is NULL", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
 
     status = CryptExportKey(
         xmlSecMSCryptoKeyDataCtxGetKey(ctx),
@@ -2116,6 +2129,14 @@ xmlSecMSCryptoKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
 
     }
     keyLen = pubKey->bitlen / 8;
+
+    /* the slot arithmetic below must not overflow or overrun the blob buffer;
+     * reject zero/oversized bit lengths up front */
+    if (pubKey->bitlen == 0 || (pubKey->bitlen % 8) != 0 || keyLen > dwBlobLen) {
+        xmlSecMSCryptoError3("CryptExportKey", xmlSecKeyDataKlassGetName(id),
+            "pubKey->bitlen=%lu; dwBlobLen=%lu", (unsigned long)(pubKey->bitlen), dwBlobLen);
+        goto done;
+    }
 
     /* we assume that sizeof(q) < XMLSEC_MSCRYPTO_DSA_MAX_Q_SIZE, sizeof(g) <= sizeof(p) and sizeof(y) <= sizeof(p) */
     if (dwBlobLen < (sizeof(PUBLICKEYSTRUC) + sizeof(DSSPUBKEY) + 3 * keyLen + XMLSEC_MSCRYPTO_DSA_MAX_Q_SIZE + sizeof(DSSSEED))) {

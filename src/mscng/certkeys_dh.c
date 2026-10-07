@@ -446,7 +446,10 @@ xmlSecMSCngKeyDataDhPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDhPtr dh
     bufInitialized = 1;
 
     bufData = xmlSecBufferGetData(&buf);
-    xmlSecAssert2(bufData != NULL, -1);
+    if (bufData == NULL) {
+        xmlSecInternalError2("xmlSecBufferGetData", NULL, "size=%lu", bufLen);
+        goto done;
+    }
 
     status = BCryptExportKey(pubkey, NULL, BCRYPT_DH_PUBLIC_BLOB, bufData, bufLen, &bufLen, 0);
     if((status != STATUS_SUCCESS) || (bufLen <= 0)) {
@@ -688,7 +691,9 @@ xmlSecMSCngDhDerivePubKeyY(BCRYPT_ALG_HANDLE hAlg, BCRYPT_KEY_HANDLE hPrivKey, P
         xmlSecMSCngNtError("BCryptDeriveKey(Y size)", NULL, status);
         goto done;
     }
-    cbY = min(cbY, cbKey); /* safety */
+    if(cbY > cbKey) {
+        cbY = cbKey; /* safety (min() written out: lowercase min() is MSVC-specific, not standard C) */
+    }
 
     /* derive into Y field of the private blob (right-aligned) */
     pbY = pbPrivBlob + sizeof(BCRYPT_DH_KEY_BLOB) + cbKey * 2;

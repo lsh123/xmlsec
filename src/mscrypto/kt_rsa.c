@@ -261,7 +261,7 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
 
     keyBits = xmlSecKeyDataGetSize(ctx->data);
     if((keyBits % 8) != 0) {
-        xmlSecInvalidSizeNotMultipleOfError("Key size", keyBits, 8, xmlSecTransformGetName(transform));
+        xmlSecInvalidSizeNotMultipleOfError("Key size", keyBits, (xmlSecSize)8, xmlSecTransformGetName(transform));
         return(-1);
     }
     keySize = keyBits / 8;

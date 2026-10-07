@@ -1695,7 +1695,49 @@ xmlSecMSCngX509FindCertByIssuerNameAndSerial(HCERTSTORE store, LPTSTR wcIssuerNa
         }
     }
 
-    /* CASE 3: UNICODE, DN */
+    /* CASE 2: UTF8, DN */
+    if (NULL == res) {
+        bdata = xmlSecMSCngCertStrToName(dwCertEncodingType,
+            wcIssuerName,
+            CERT_NAME_STR_FORCE_UTF8_DIR_STR_FLAG  | CERT_OID_NAME_STR,
+            &len);
+        if (bdata != NULL) {
+            certInfo.Issuer.cbData = len;
+            certInfo.Issuer.pbData = bdata;
+
+            res = CertFindCertificateInStore(store,
+                dwCertEncodingType,
+                0,
+                CERT_FIND_SUBJECT_CERT,
+                &certInfo,
+                NULL);
+            xmlFree(bdata);
+            bdata = NULL;
+        }
+    }
+
+    /* CASE 3: UTF8, REVERSE DN */
+    if (NULL == res) {
+        bdata = xmlSecMSCngCertStrToName(dwCertEncodingType,
+            wcIssuerName,
+            CERT_NAME_STR_FORCE_UTF8_DIR_STR_FLAG  | CERT_OID_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
+            &len);
+        if (bdata != NULL) {
+            certInfo.Issuer.cbData = len;
+            certInfo.Issuer.pbData = bdata;
+
+            res = CertFindCertificateInStore(store,
+                dwCertEncodingType,
+                0,
+                CERT_FIND_SUBJECT_CERT,
+                &certInfo,
+                NULL);
+            xmlFree(bdata);
+            bdata = NULL;
+        }
+    }
+
+    /* CASE 4: UNICODE, DN */
     if (NULL == res) {
         bdata = xmlSecMSCngCertStrToName(dwCertEncodingType,
             wcIssuerName,
@@ -1716,7 +1758,7 @@ xmlSecMSCngX509FindCertByIssuerNameAndSerial(HCERTSTORE store, LPTSTR wcIssuerNa
         }
     }
 
-    /* CASE 4: UNICODE, REVERSE DN */
+    /* CASE 5: UNICODE, REVERSE DN */
     if (NULL == res) {
         bdata = xmlSecMSCngCertStrToName(dwCertEncodingType,
             wcIssuerName,
@@ -2066,7 +2108,50 @@ xmlSecMSCngX509FindCertBySubject(HCERTSTORE store, LPTSTR wcSubject,
         }
     }
 
-    /* CASE 3: UNICODE, DN */
+
+    /* CASE 3: UTF8, DN */
+    if(res == NULL) {
+        bdata = xmlSecMSCngCertStrToName(dwCertEncodingType,
+                    wcSubject,
+                    CERT_NAME_STR_FORCE_UTF8_DIR_STR_FLAG  | CERT_OID_NAME_STR,
+                    &len);
+        if(bdata != NULL) {
+            cnb.cbData = len;
+            cnb.pbData = bdata;
+
+            res = CertFindCertificateInStore(store,
+                        dwCertEncodingType,
+                        0,
+                        CERT_FIND_SUBJECT_NAME,
+                        &cnb,
+                        NULL);
+            xmlFree(bdata);
+            bdata = NULL;
+        }
+    }
+
+    /* CASE 4: UTF8, REVERSE DN */
+    if(res == NULL) {
+        bdata = xmlSecMSCngCertStrToName(dwCertEncodingType,
+                    wcSubject,
+                    CERT_NAME_STR_FORCE_UTF8_DIR_STR_FLAG  | CERT_OID_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
+                    &len);
+        if(bdata != NULL) {
+            cnb.cbData = len;
+            cnb.pbData = bdata;
+
+            res = CertFindCertificateInStore(store,
+                        dwCertEncodingType,
+                        0,
+                        CERT_FIND_SUBJECT_NAME,
+                        &cnb,
+                        NULL);
+            xmlFree(bdata);
+            bdata = NULL;
+        }
+    }
+
+    /* CASE 5: UNICODE, DN */
     if(res == NULL) {
         bdata = xmlSecMSCngCertStrToName(dwCertEncodingType,
                     wcSubject,
@@ -2087,7 +2172,7 @@ xmlSecMSCngX509FindCertBySubject(HCERTSTORE store, LPTSTR wcSubject,
         }
     }
 
-    /* CASE 4: UNICODE, REVERSE DN */
+    /* CASE 6: UNICODE, REVERSE DN */
     if(res == NULL) {
         bdata = xmlSecMSCngCertStrToName(dwCertEncodingType,
                     wcSubject,

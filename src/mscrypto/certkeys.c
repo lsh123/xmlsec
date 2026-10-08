@@ -438,7 +438,7 @@ xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlS
         /* The Windows SDK (wincrypt.h) declares the key-spec output parameter
          * as DWORD* (not DWORD_PTR*), so passing &(ctx->dwKeySpec) (a DWORD)
          * is the correct, SDK-conformant usage and no 8-byte store occurs on
-         * 64-bit Windows; the project's MinGW header matches the SDK. */
+          * 64-bit Windows. */
         if (!CryptAcquireCertificatePrivateKey(pCert,
                     CRYPT_ACQUIRE_COMPARE_KEY_FLAG,
                     NULL,
@@ -1475,6 +1475,14 @@ xmlSecMSCryptoKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
     modulusLen = pubKey->bitlen / 8;
+
+    /* the arithmetic below must not overflow or overrun the blob buffer;
+     * reject zero/oversized bit lengths up front */
+    if (pubKey->bitlen == 0 || (pubKey->bitlen % 8) != 0 || modulusLen > dwBlobLen) {
+        xmlSecMSCryptoError3("CryptExportKey", xmlSecKeyDataKlassGetName(id),
+            "pubKey->bitlen=%lu; dwBlobLen=%lu", (unsigned long)(pubKey->bitlen), dwBlobLen);
+        goto done;
+    }
 
     /* get the data */
     if (dwBlobLen < sizeof(PUBLICKEYSTRUC) + sizeof(RSAPUBKEY) + modulusLen) {

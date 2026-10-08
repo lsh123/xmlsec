@@ -1504,23 +1504,9 @@ AC_SUBST(MSCNG_CRYPTO_LIB)
 dnl ==========================================================================
 dnl See if we can find MSCrypto
 dnl ==========================================================================
+MSCRYPTO_XMLSEC_DEFINES=
+MSCRYPTO_LIBS_LIST="-lcrypt32"
 MSCRYPTO_CRYPTO_LIB="$XMLSEC_PACKAGE-mscrypto"
-case $host in
-*-w64-mingw*)
-    MSCRYPTO_XMLSEC_DEFINES=
-    MSCRYPTO_LIBS_LIST="-lcrypt32"
-    ;;
-*-*-mingw*)
-    dnl use own def-file and header as mingw.org crypt32
-    dnl is limited (library and header)
-    MSCRYPTO_XMLSEC_DEFINES="-DXMLSEC_CUSTOM_CRYPT32=1"
-    MSCRYPTO_LIBS_LIST="-Wl,$(srcdir)/mingw-crypt32.def"
-    ;;
-*)
-    MSCRYPTO_XMLSEC_DEFINES=
-    MSCRYPTO_LIBS_LIST="-lcrypt32"
-    ;;
-esac
 
 XMLSEC_NO_MSCRYPTO="1"
 MSCRYPTO_FOUND="no"

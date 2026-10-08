@@ -400,6 +400,7 @@ xmlSecGCryptKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
     gcry_error_t err;
 
     xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(keySize > 0, -1);
     xmlSecAssert2(keySize == key_len, -1);
     xmlSecAssert2(iv != NULL, -1);
     xmlSecAssert2(ivSize == block_len, -1);

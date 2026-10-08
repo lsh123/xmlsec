@@ -135,9 +135,19 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, unsigned long *buflen, stru
             }
             c = *buf++;
             length--;
+            /* DER requires minimal tag encoding: the first continuation byte
+             * must have its 7 value bits set (rejects e.g. 0x3f 0x80 ...). */
+            if((num_tag_bytes == 0) && ((c & 0x7f) == 0)) {
+                return(-1); /* Invalid tag encoding. */
+            }
             tag |= (c & 0x7f);
             num_tag_bytes++;
         } while ( (c & 0x80) );
+        /* DER requires minimal tag encoding: the tag value must not fit in
+         * the initial 5 bits (rejects e.g. 0x3f 0x02). */
+        if(tag < 0x1f) {
+            return(-1); /* Invalid tag encoding. */
+        }
     }
     ti->tag = tag;
 
@@ -164,7 +174,17 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, unsigned long *buflen, stru
             return -1; /* Invalid length encoding. */
         }
 
-        for (; count; count--) {
+        if (length <= 0) {
+            return -1; /* Premature EOF.  */
+        }
+        len = *buf++; length--;
+        /* DER requires minimal length encoding: the first length byte must be
+         * non-zero, and a single length byte is only allowed when the value
+         * does not fit in the short form. */
+        if((len == 0) || ((count == 1) && (len < 0x80))) {
+            return -1; /* Invalid length encoding. */
+        }
+        for(count--; count; count--) {
             len <<= 8;
             if (length <= 0) {
                 return -1; /* Premature EOF.  */
@@ -314,7 +334,8 @@ xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSe
                     /* A DSA public key (SubjectPublicKeyInfo) wraps the public value (y) in a
                      * BIT STRING that contains an INTEGER: <unused-bits byte><INTEGER y>. Skip the
                      * unused-bits byte and the INTEGER tag/length header to reach the value. EC keys
-                     * also use BIT_STRING but their content is not wrapped this way, so leave it as-is. */
+                     * also use BIT_STRING but their content is the raw point encoding preceded by
+                     * an unused-bits octet, handled below. */
                     if((ti.tag == TAG_BIT_STRING) && (xmlSecGCryptAsn1IsECKey(objectids, *objectids_out_size) == 0)) {
                         const xmlSecByte* p = buf;
                         unsigned long remaining = ti.length;
@@ -371,6 +392,15 @@ xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSe
                         }
                         value = p;
                         value_len = int_len;
+                    } else if(ti.tag == TAG_BIT_STRING) {
+                        /* EC key: the BIT STRING content is the raw point encoding,
+                           preceded by an unused-bits octet, which must be 0 */
+                        if((ti.length < 1) || (buf[0] != 0)) {
+                            xmlSecInternalError2("xmlSecGCryptAsn1ParseIntegerSequence", NULL, "invalid EC key BIT STRING, len=%lu", ti.length);
+                            return(-1);
+                        }
+                        value = buf + 1;
+                        value_len = ti.length - 1;
                     }
 
                     err = gcry_mpi_scan(&(integers[(*integers_out_size)]), GCRYMPI_FMT_USG, value, value_len, NULL);

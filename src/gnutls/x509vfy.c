@@ -958,15 +958,13 @@ xmlSecGnuTLSX509StoreAdoptCert(xmlSecKeyDataStorePtr store, gnutls_x509_crt_t ce
     if((type & xmlSecKeyDataTypeTrusted) != 0) {
         ret = xmlSecPtrListAdd(&(ctx->certsTrusted), cert);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecPtrListAdd(trusted)",
-                                xmlSecKeyDataStoreGetName(store));
+            xmlSecInternalError("xmlSecPtrListAdd(trusted)", xmlSecKeyDataStoreGetName(store));
             return(-1);
         }
     } else {
         ret = xmlSecPtrListAdd(&(ctx->certsUntrusted), cert);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecPtrListAdd(untrusted)",
-                                xmlSecKeyDataStoreGetName(store));
+            xmlSecInternalError("xmlSecPtrListAdd(untrusted)", xmlSecKeyDataStoreGetName(store));
             return(-1);
         }
     }
@@ -1116,7 +1114,7 @@ xmlSecGnuTLSX509StoreFindCrlIssuerCert(
         }
 
         is_issuer = gnutls_x509_crl_check_issuer(crl, cert);
-        if(is_issuer == 0) {
+        if(is_issuer != 1) {
             continue;
         }
 
@@ -1556,6 +1554,7 @@ xmlSecGnuTLSX509FindSignedCert(xmlSecPtrListPtr certs, gnutls_x509_crt_t cert) {
     gnutls_x509_crt_t res = NULL;
     xmlChar * subject = NULL;
     xmlSecSize ii, sz;
+    int ret;
 
     xmlSecAssert2(certs != NULL, NULL);
     xmlSecAssert2(cert != NULL, NULL);
@@ -1593,7 +1592,12 @@ xmlSecGnuTLSX509FindSignedCert(xmlSecPtrListPtr certs, gnutls_x509_crt_t cert) {
         }
 
         /* are we done? */
-        if(xmlSecGnuTLSX509DnsEqual(subject, issuer) == 1) {
+        ret = xmlSecGnuTLSX509DnsEqual(subject, issuer);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGnuTLSX509DnsEqual", NULL);
+            xmlFree(issuer);
+            goto done;
+        } else if(ret == 1) {
             res = tmp;
         }
         xmlFree(issuer);
@@ -1612,6 +1616,7 @@ xmlSecGnuTLSX509FindSignerCert(xmlSecPtrListPtr certs, gnutls_x509_crt_t cert) {
     gnutls_x509_crt_t res = NULL;
     xmlChar * issuer = NULL;
     xmlSecSize ii, sz;
+    int ret;
 
     xmlSecAssert2(certs != NULL, NULL);
     xmlSecAssert2(cert != NULL, NULL);
@@ -1644,7 +1649,12 @@ xmlSecGnuTLSX509FindSignerCert(xmlSecPtrListPtr certs, gnutls_x509_crt_t cert) {
         }
 
         /* are we done? */
-        if(xmlSecGnuTLSX509DnsEqual(issuer, subject) == 1) {
+        ret = xmlSecGnuTLSX509DnsEqual(issuer, subject);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGnuTLSX509DnsEqual", NULL);
+            xmlFree(subject);
+            goto done;
+        } else if(ret == 1) {
             res = tmp;
         }
         xmlFree(subject);

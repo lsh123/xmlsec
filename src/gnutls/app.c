@@ -129,7 +129,6 @@ xmlSecGnuTLSAppInit(const char* config XMLSEC_ATTRIBUTE_UNUSED) {
 int
 xmlSecGnuTLSAppShutdown(void) {
     gnutls_global_deinit();
-
     return(0);
 }
 

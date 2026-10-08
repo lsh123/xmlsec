@@ -217,9 +217,17 @@ xmlSecGnuTLSKeyDataX509AddCertInternal(xmlSecGnuTLSX509DataCtxPtr ctx, gnutls_x5
         if(cert2 == NULL) {
             continue;
         }
-        /* remove the cert if it's equal, we don't care if it's same pointer since
-         * certs are refcounted */
-        if(gnutls_x509_crt_equals(cert, cert2) == 1) {
+        if(cert2 == cert) {
+            gnutls_x509_crt_t sameCert;
+            /* the exact same cert is already in the list: the list owns it, so
+             * it must not be deinited (gnutls_x509_crt_t does NOT use refcounting)
+             * If this ever changes then this code will leak certs. */
+            sameCert = (gnutls_x509_crt_t)xmlSecPtrListRemoveAndReturn(&(ctx->certsList), ii);
+            xmlSecAssert2(sameCert == cert, -1);
+            break;
+        } else if(gnutls_x509_crt_equals(cert, cert2) == 1) {
+            /* a content-equal cert with a distinct pointer can be replaced
+             * by the new one */
             ret = xmlSecPtrListRemove(&(ctx->certsList), ii);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecPtrListRemove(certsList)", NULL);

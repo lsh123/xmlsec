@@ -583,7 +583,9 @@ xmlSecGnuTLSX509MatchBySubjectName(gnutls_x509_crt_t cert, const xmlChar* subjec
 
     certSubjectName = xmlSecGnuTLSX509CertGetSubjectDN(cert);
     if(certSubjectName == NULL) {
-        return(-1);
+        /* the cert has no subject DN (or the getter has logged an error):
+         * treat it as a non-matching cert instead of failing the whole scan */
+        return(0);
     }
 
     /* returns 1 if equal, -1 on error */
@@ -616,7 +618,9 @@ xmlSecGnuTLSX509MatchByIssuer(gnutls_x509_crt_t cert, const xmlChar* issuerName,
 
     certIssuerName = xmlSecGnuTLSX509CertGetIssuerDN(cert);
     if(certIssuerName == NULL) {
-        return(-1);
+        /* the cert has no issuer DN (or the getter has logged an error):
+         * treat it as a non-matching cert instead of failing the whole scan */
+        return(0);
     }
 
     /* returns 1 if equal, -1 on error */
@@ -633,7 +637,9 @@ xmlSecGnuTLSX509MatchByIssuer(gnutls_x509_crt_t cert, const xmlChar* issuerName,
 
     certIssuerSerial = xmlSecGnuTLSX509CertGetIssuerSerial(cert);
     if(certIssuerSerial == NULL) {
-        return(-1);
+        /* the cert has no issuer serial (or the getter has logged an error):
+         * treat it as a non-matching cert instead of failing the whole scan */
+        return(0);
     }
     if(!xmlStrEqual(issuerSerial, certIssuerSerial)) {
         xmlFree(certIssuerSerial);
@@ -1276,9 +1282,14 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const 
     res = 0;
 
 done:
+    /* on failure, make sure no output is left allocated */
     if((res < 0) && ((*priv_key) != NULL)) {
         gnutls_x509_privkey_deinit(*priv_key);
-        *priv_key = NULL;
+        (*priv_key) = NULL;
+    }
+    if((res < 0) && ((*keyName) != NULL)) {
+        xmlFree(*keyName);
+        (*keyName) = NULL;
     }
     if(cert != NULL) {
         gnutls_x509_crt_deinit(cert);

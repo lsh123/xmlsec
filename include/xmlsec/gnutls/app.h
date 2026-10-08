@@ -88,6 +88,10 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSAppKeysMngrCrlLoadAndVerify (xmlSecK
  * It is called with verify=0, the buffer and its size are passed in
  * buf/buflen, and it must store the password (as a NUL-terminated string)
  * in buf and return its length. The callback must return -1 on error.
+ *
+ * Note that the GnuTLS backend has no built-in interactive password prompt
+ * (xmlSecGnuTLSAppGetDefaultPwdCallback returns NULL): to load an encrypted
+ * key, either an explicit password or a password callback must be supplied.
  */
 
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecGnuTLSAppKeyLoadEx              (const char *filename,

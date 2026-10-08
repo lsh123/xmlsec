@@ -10,7 +10,7 @@ CMAKE_XMLSEC_RUNTIME="MultiThreadedDLL"
 CMAKE_XMLSEC_CONFIG=Release
 CMAKE_XMLSEC_SHARED_LIBS=ON
 
-cmake -B <build-path>" -A "${CMAKE_XMLSEC_ARCH}" -G "${CMAKE_XMLSEC_GENERATOR}" \
+cmake -B "<build-path>" -A "${CMAKE_XMLSEC_ARCH}" -G "${CMAKE_XMLSEC_GENERATOR}" \
     -D CMAKE_MSVC_RUNTIME_LIBRARY="${CMAKE_XMLSEC_RUNTIME}" \
     -D BUILD_SHARED_LIBS="${CMAKE_XMLSEC_SHARED_LIBS}" \
     -D CMAKE_PREFIX_PATH="<top-install-path>" \
@@ -20,7 +20,7 @@ cmake -B <build-path>" -A "${CMAKE_XMLSEC_ARCH}" -G "${CMAKE_XMLSEC_GENERATOR}" 
     -D LIBXML2_WITH_ZLIB=OFF \
     -D LIBXML2_WITH_TESTS=OFF
 
-cmake --build <build-path>" --config "${CMAKE_XMLSEC_CONFIG}" 
+cmake --build "<build-path>" --config "${CMAKE_XMLSEC_CONFIG}"
 
 cmake --install "<build-path>" --config "${CMAKE_XMLSEC_CONFIG}"
 

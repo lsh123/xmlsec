@@ -662,7 +662,7 @@ AC_MSG_RESULT([$LIBXSLT_FOUND])
 dnl Finally set variables
 if test "z$LIBXSLT_FOUND" = "zyes" ; then
     XMLSEC_NO_LIBXSLT="0"
-    LIBXSLT_PC_FILE_COND=", libxslt >= $LIBXSLT_MIN_VERSION"
+    LIBXSLT_PC_FILE_COND="libxslt >= $LIBXSLT_MIN_VERSION"
 else
     XMLSEC_NO_LIBXSLT="1"
     LIBXSLT_PC_FILE_COND=""
@@ -745,7 +745,7 @@ dnl Priority 3: Guess with pkg_config
 if test "z$OPENSSL_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
     PKG_CHECK_MODULES(OPENSSL, openssl >= $OPENSSL_MIN_VERSION,
         [OPENSSL_FOUND=yes
-         OPENSSL_PC_REQUIRES="openssl >= $OPENSSL_MIN_VERSION, "],
+         OPENSSL_PC_REQUIRES="openssl >= $OPENSSL_MIN_VERSION"],
         [OPENSSL_FOUND=no])
 fi
 
@@ -1051,19 +1051,19 @@ if test "z$NSPR_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" -a "z$with_mozill
     if test "z$NSPR_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(NSPR, mozilla-nspr >= $MOZILLA_MIN_VERSION,
             [NSPR_FOUND=yes NSPR_PACKAGE=mozilla-nspr
-                NSPR_PC_REQUIRES="mozilla-nspr >= $MOZILLA_MIN_VERSION, "],
+                NSPR_PC_REQUIRES="mozilla-nspr >= $MOZILLA_MIN_VERSION"],
             [NSPR_FOUND=no])
     fi
     if test "z$NSPR_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(NSPR, xulrunner-nspr >= $NSPR_MIN_VERSION,
             [NSPR_FOUND=yes NSPR_PACKAGE=xulrunner-nspr
-                NSPR_PC_REQUIRES="xulrunner-nspr >= $NSPR_MIN_VERSION, "],
+                NSPR_PC_REQUIRES="xulrunner-nspr >= $NSPR_MIN_VERSION"],
             [NSPR_FOUND=no])
     fi
     if test "z$NSPR_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(NSPR, nspr >= $NSPR_MIN_VERSION,
             [NSPR_FOUND=yes NSPR_PACKAGE=nspr
-                NSPR_PC_REQUIRES="nspr >= $NSPR_MIN_VERSION, "],
+                NSPR_PC_REQUIRES="nspr >= $NSPR_MIN_VERSION"],
             [NSPR_FOUND=no])
     fi
 fi
@@ -1071,19 +1071,19 @@ if test "z$NSS_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" -a "z$with_mozilla
     if test "z$NSS_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(NSS, mozilla-nss >= $MOZILLA_MIN_VERSION,
             [NSS_FOUND=yes NSS_PACKAGE=mozilla-nss
-                NSS_PC_REQUIRES="mozilla-nss >= $MOZILLA_MIN_VERSION, "],
+                NSS_PC_REQUIRES="mozilla-nss >= $MOZILLA_MIN_VERSION"],
             [NSS_FOUND=no])
     fi
     if test "z$NSS_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(NSS, xulrunner-nss >= $NSS_MIN_VERSION,
             [NSS_FOUND=yes NSS_PACKAGE=xulrunner-nss
-                NSS_PC_REQUIRES="xulrunner-nss >= $NSS_MIN_VERSION, "],
+                NSS_PC_REQUIRES="xulrunner-nss >= $NSS_MIN_VERSION"],
             [NSS_FOUND=no])
     fi
     if test "z$NSS_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(NSS, nss >= $NSS_MIN_VERSION,
             [NSS_FOUND=yes NSS_PACKAGE=nss
-                NSS_PC_REQUIRES="nss >= $NSS_MIN_VERSION, "],
+                NSS_PC_REQUIRES="nss >= $NSS_MIN_VERSION"],
             [NSS_FOUND=no])
     fi
 fi
@@ -1321,13 +1321,13 @@ if test "z$GNUTLS_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
     if test "z$GNUTLS_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(GNUTLS, gnutls >= $GNUTLS_MIN_VERSION,
             [GNUTLS_FOUND=yes GNUTLS_PACKAGE=gnutls
-             GNUTLS_PC_REQUIRES="gnutls >= $GNUTLS_MIN_VERSION, "],
+             GNUTLS_PC_REQUIRES="gnutls >= $GNUTLS_MIN_VERSION"],
             [GNUTLS_FOUND=no])
     fi
     if test "z$GNUTLS_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(GNUTLS, libgnutls >= $GNUTLS_MIN_VERSION,
             [GNUTLS_FOUND=yes GNUTLS_PACKAGE=libgnutls
-             GNUTLS_PC_REQUIRES="libgnutls >= $GNUTLS_MIN_VERSION, "],
+             GNUTLS_PC_REQUIRES="libgnutls >= $GNUTLS_MIN_VERSION"],
             [GNUTLS_FOUND=no])
     fi
 fi
@@ -1642,25 +1642,25 @@ if test "z$GCRYPT_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
     if test "z$GCRYPT_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(GCRYPT, gcrypt >= $GCRYPT_MIN_VERSION,
             [GCRYPT_FOUND=yes GCRYPT_PACKAGE=gcrypt
-             GCRYPT_PC_REQUIRES="gcrypt >= $GCRYPT_MIN_VERSION, "],
+             GCRYPT_PC_REQUIRES="gcrypt >= $GCRYPT_MIN_VERSION"],
             [GCRYPT_FOUND=no])
     fi
     if test "z$GCRYPT_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(GCRYPT, libgcrypt20 >= $GCRYPT_MIN_VERSION,
             [GCRYPT_FOUND=yes GCRYPT_PACKAGE=libgcrypt20
-             GCRYPT_PC_REQUIRES="libgcrypt20 >= $GCRYPT_MIN_VERSION, "],
+             GCRYPT_PC_REQUIRES="libgcrypt20 >= $GCRYPT_MIN_VERSION"],
             [GCRYPT_FOUND=no])
     fi
     if test "z$GCRYPT_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(GCRYPT, libgcrypt11 >= $GCRYPT_MIN_VERSION,
             [GCRYPT_FOUND=yes GCRYPT_PACKAGE=libgcrypt11
-             GCRYPT_PC_REQUIRES="libgcrypt11 >= $GCRYPT_MIN_VERSION, "],
+             GCRYPT_PC_REQUIRES="libgcrypt11 >= $GCRYPT_MIN_VERSION"],
             [GCRYPT_FOUND=no])
     fi
     if test "z$GCRYPT_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(GCRYPT, libgcrypt >= $GCRYPT_MIN_VERSION,
             [GCRYPT_FOUND=yes GCRYPT_PACKAGE=libgcrypt
-             GCRYPT_PC_REQUIRES="libgcrypt >= $GCRYPT_MIN_VERSION, "],
+             GCRYPT_PC_REQUIRES="libgcrypt >= $GCRYPT_MIN_VERSION"],
             [GCRYPT_FOUND=no])
     fi
 fi

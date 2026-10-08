@@ -204,6 +204,17 @@ XMLSEC_EXPORT int xmlSecTransformEdDSAReadContextString(xmlNodePtr node,
 #define XMLSEC_PBKDF2_MAX_ITERATIONS  ((xmlSecSize)1000000)
 #endif /* !defined(XMLSEC_PBKDF2_MAX_ITERATIONS) */
 
+/*
+ * The maximum derived key length (in bytes) accepted by
+ * xmlSecTransformPbkdf2ParamsRead(). Key lengths above this
+ * limit are rejected to protect against oversized derived-key
+ * buffer allocations (denial of service) when processing
+ * untrusted documents.
+ */
+#if !defined(XMLSEC_PBKDF2_MAX_KEY_LENGTH)
+#define XMLSEC_PBKDF2_MAX_KEY_LENGTH  ((xmlSecSize)4096)
+#endif /* !defined(XMLSEC_PBKDF2_MAX_KEY_LENGTH) */
+
 struct _xmlSecTransformPbkdf2Params {
     xmlSecBuffer salt;
     xmlSecSize iterationCount;

@@ -690,7 +690,7 @@ xmlSecMSCryptoAppPkcs12LoadMemory(
 
 done:
     if(hCertStore != NULL) {
-        CertCloseStore(hCertStore, 0);
+        CertCloseStore(hCertStore, XMLSEC_CLOSE_STORE_FLAG);
     }
     if(wcPwd != NULL) {
         /* wipe the plaintext password before releasing the buffer */

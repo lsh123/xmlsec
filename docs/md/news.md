@@ -26,8 +26,11 @@
     APIs; `xmlSecMSCngAppGetCertStoreName` is now a deprecated alias).
   - (xmlsec-nss) Hardened CRL verification: CRLs without `thisUpdate` are rejected, `nextUpdate` is enforced
     when present, and the CRL issuer certificate is chain-verified with CA usage.
-  - (xmlsec-mscrypt, **not backward compatible**) Enforced the use of '--crypto-config' command line
+  - (xmlsec-mscrypto, **not backward compatible**) Enforced the use of '--crypto-config' command line
   option value when opening certificate stores.
+  - (xmlsec-mscrypto, **not backward compatible**) Removed the fallback definitions for the old 32-bit
+    MinGW.org toolchain; building the MSCrypto backend now requires the Windows SDK headers provided by
+    the toolchain (e.g., MinGW-w64 or MSVC).
   - (xmlsec-build, **not backward compatible**) Added '-std=c23' compiler flag for building the library
     on compilers that support it or '-std=c99' otherwise (this flag was only enabled with --enable-pedantic builds
     in the past).

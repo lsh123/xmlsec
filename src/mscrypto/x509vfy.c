@@ -492,8 +492,12 @@ xmlSecBuildChainUsingWinapi (PCCERT_CONTEXT cert, LPFILETIME pfTime,
     }
 
 end:
-    if (pChainContext) CertFreeCertificateChain(pChainContext);
-    if (store_add) CertCloseStore(store_add, 0);
+    if (pChainContext) {
+        CertFreeCertificateChain(pChainContext);
+    }
+    if (store_add) {
+        CertCloseStore(store_add, XMLSEC_CLOSE_STORE_FLAG);
+    }
     return (rc);
 }
 
@@ -1187,7 +1191,7 @@ xmlSecMSCryptoX509StoreInitialize(xmlSecKeyDataStorePtr store) {
                    NULL);
     if(hTrustedMemStore == NULL) {
         xmlSecMSCryptoError("CertOpenStore", xmlSecKeyDataStoreGetName(store));
-        CertCloseStore(ctx->trusted, 0);
+        CertCloseStore(ctx->trusted, XMLSEC_CLOSE_STORE_FLAG);
         ctx->trusted = NULL ;
         return(-1);
     }
@@ -1197,12 +1201,12 @@ xmlSecMSCryptoX509StoreInitialize(xmlSecKeyDataStorePtr store) {
      * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddstoretocollection */
     if( !CertAddStoreToCollection( ctx->trusted, hTrustedMemStore, CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG, 1 ) ) {
         xmlSecMSCryptoError("CertAddStoreToCollection", xmlSecKeyDataStoreGetName(store));
-        CertCloseStore(ctx->trusted, 0);
-        CertCloseStore(hTrustedMemStore, 0);
+        CertCloseStore(ctx->trusted, XMLSEC_CLOSE_STORE_FLAG);
+        CertCloseStore(hTrustedMemStore, XMLSEC_CLOSE_STORE_FLAG);
         ctx->trusted = NULL ;
         return(-1);
     }
-    CertCloseStore(hTrustedMemStore, 0);
+    CertCloseStore(hTrustedMemStore, XMLSEC_CLOSE_STORE_FLAG);
 
     /* create untrusted certs store collection */
     ctx->untrusted = CertOpenStore(CERT_STORE_PROV_COLLECTION,
@@ -1212,7 +1216,7 @@ xmlSecMSCryptoX509StoreInitialize(xmlSecKeyDataStorePtr store) {
                    NULL);
     if(ctx->untrusted == NULL) {
         xmlSecMSCryptoError("CertOpenStore", xmlSecKeyDataStoreGetName(store));
-        CertCloseStore(ctx->trusted, 0);
+        CertCloseStore(ctx->trusted, XMLSEC_CLOSE_STORE_FLAG);
         ctx->trusted = NULL ;
         return(-1);
     }
@@ -1225,8 +1229,8 @@ xmlSecMSCryptoX509StoreInitialize(xmlSecKeyDataStorePtr store) {
                    NULL);
     if(hUntrustedMemStore == NULL) {
         xmlSecMSCryptoError("CertOpenStore", xmlSecKeyDataStoreGetName(store));
-        CertCloseStore(ctx->trusted, 0);
-        CertCloseStore(ctx->untrusted, 0);
+        CertCloseStore(ctx->trusted, XMLSEC_CLOSE_STORE_FLAG);
+        CertCloseStore(ctx->untrusted, XMLSEC_CLOSE_STORE_FLAG);
         ctx->trusted = NULL ;
         ctx->untrusted = NULL ;
         return(-1);
@@ -1237,14 +1241,14 @@ xmlSecMSCryptoX509StoreInitialize(xmlSecKeyDataStorePtr store) {
      * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddstoretocollection */
     if( !CertAddStoreToCollection( ctx->untrusted, hUntrustedMemStore, CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG, 1 ) ) {
         xmlSecMSCryptoError("CertAddStoreToCollection", xmlSecKeyDataStoreGetName(store));
-        CertCloseStore(ctx->untrusted, 0);
-        CertCloseStore(ctx->trusted, 0);
-        CertCloseStore(hUntrustedMemStore, 0);
+        CertCloseStore(ctx->untrusted, XMLSEC_CLOSE_STORE_FLAG);
+        CertCloseStore(ctx->trusted, XMLSEC_CLOSE_STORE_FLAG);
+        CertCloseStore(hUntrustedMemStore, XMLSEC_CLOSE_STORE_FLAG);
         ctx->trusted = NULL ;
         ctx->untrusted = NULL ;
         return(-1);
     }
-    CertCloseStore(hUntrustedMemStore, 0);
+    CertCloseStore(hUntrustedMemStore, XMLSEC_CLOSE_STORE_FLAG);
 
     return(0);
 }
@@ -1258,10 +1262,10 @@ xmlSecMSCryptoX509StoreFinalize(xmlSecKeyDataStorePtr store) {
     xmlSecAssert(ctx != NULL);
 
     if (ctx->trusted) {
-        CertCloseStore(ctx->trusted, 0);
+        CertCloseStore(ctx->trusted, XMLSEC_CLOSE_STORE_FLAG);
     }
     if (ctx->untrusted) {
-        CertCloseStore(ctx->untrusted, 0);
+        CertCloseStore(ctx->untrusted, XMLSEC_CLOSE_STORE_FLAG);
     }
 
     memset(ctx, 0, sizeof(xmlSecMSCryptoX509StoreCtx));

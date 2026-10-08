@@ -1,7 +1,6 @@
 NULL =
 
 EXTRA_DIST = \
-	mingw-crypt32.def \
 	README.md \
 	$(NULL)
 
@@ -38,7 +37,6 @@ libxmlsec1_mscrypto_la_SOURCES =\
 	x509vfy.c \
 	csp_calg.h \
 	csp_oid.h \
-	xmlsec-mingw.h \
 	$(NULL)
 
 libxmlsec1_mscrypto_la_LIBADD = \
@@ -49,7 +47,6 @@ libxmlsec1_mscrypto_la_LIBADD = \
 	$(NULL)
 
 libxmlsec1_mscrypto_la_DEPENDENCIES = \
-	mingw-crypt32.def \
 	$(NULL)
 
 libxmlsec1_mscrypto_la_LDFLAGS = \

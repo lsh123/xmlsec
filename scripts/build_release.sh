@@ -3,6 +3,12 @@ set -e
 #
 # Usage: build_release.sh <version> [<release-candidate-tag>]
 #
+# Note: the temporary build area under /tmp ($build_root, created at the
+# start of the run) is intentionally left in place when the script finishes,
+# so that the cloned source and the built artifacts can be inspected;
+# remove it manually when it is no longer needed, e.g. with
+# 'rm -rf /tmp/xmlsec-build-area-<date-time>'.
+#
 
 
 # Configuration.

@@ -59,7 +59,7 @@ endif
 
 else
 
-docs, docs-copy, docs-manpages:
+docs docs-copy docs-manpages:
 	@(echo "=== ERROR: To build Markdown docs, make sure pandoc and python3 are installed" ; exit 1; )
 
 endif

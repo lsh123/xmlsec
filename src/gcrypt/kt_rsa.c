@@ -382,14 +382,59 @@ done:
     return(res);
 }
 
+/**
+ * @brief Verifies that the input size matches the size of the RSA modulus.
+ * @details Finds the "n" (modulus) token in the private key S-expression,
+ * normalizes its size (stripping the leading 0x00 byte that libgcrypt may
+ * prepend to positive integers) and reports an error unless it matches
+ * @p inSize.
+ * @param s_priv_key the private key S-expression.
+ * @param inSize the input size to verify.
+ * @return 0 if the input size matches the modulus size or a negative value otherwise.
+ */
+static int
+xmlSecGCryptRsaKtCheckModulusSize(gcry_sexp_t s_priv_key, xmlSecSize inSize) {
+    size_t modulusSize = 0;
+    const void *modulusData;
+    gcry_sexp_t s_modulus;
+
+    xmlSecAssert2(s_priv_key != NULL, -1);
+
+    s_modulus = gcry_sexp_find_token(s_priv_key, "n", 0);
+    if(s_modulus == NULL) {
+        xmlSecGCryptError2("gcry_sexp_find_token()", (gcry_error_t)GPG_ERR_NO_ERROR, NULL,
+            "name=%s", "n");
+        return(-1);
+    }
+    modulusData = gcry_sexp_nth_data(s_modulus, 1, &modulusSize);
+    if(modulusData == NULL) {
+        xmlSecGCryptError("gcry_sexp_nth_data()", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
+        gcry_sexp_release(s_modulus);
+        return(-1);
+    }
+    /* libgcrypt may prepend a leading 0x00 byte to positive integers; strip
+     * it so the size matches the actual modulus size */
+    if((modulusSize > 0) && (((const xmlSecByte*)modulusData)[0] == 0x00)) {
+        modulusSize--;
+    }
+    gcry_sexp_release(s_modulus);
+
+    if(modulusSize > XMLSEC_SIZE_MAX) {
+        xmlSecInvalidSizeMoreThanError("Input data", modulusSize, XMLSEC_SIZE_MAX, NULL);
+        return(-1);
+    }
+    if(inSize != modulusSize) {
+        xmlSecInvalidSizeError("Input data", inSize, modulusSize, NULL);
+        return(-1);
+    }
+    return(0);
+}
+
 static int
 xmlSecGCryptRsaPkcs1Decrypt(xmlSecGCryptRsaPkcs1CtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out) {
     xmlSecSize inSize;
-    xmlSecSize modulusSize = 0;
-    const void *modulusData;
     int inLen;
     gcry_sexp_t s_priv_key;
-    gcry_sexp_t s_modulus = NULL;
     gcry_sexp_t s_encrypted_data = NULL;
     gpg_error_t err;
     int ret;
@@ -409,28 +454,10 @@ xmlSecGCryptRsaPkcs1Decrypt(xmlSecGCryptRsaPkcs1CtxPtr ctx, xmlSecBufferPtr in, 
     s_priv_key = xmlSecGCryptKeyDataRsaGetPrivateKey(ctx->keyData);
     if(s_priv_key == NULL) {
         xmlSecInternalError("xmlSecGCryptKeyDataRsaGetPrivateKey", NULL);
-        return(-1);
-    }
-    s_modulus = gcry_sexp_find_token(s_priv_key, "n", 0);
-    if(s_modulus == NULL) {
-        xmlSecGCryptError2("gcry_sexp_find_token()", (gcry_error_t)GPG_ERR_NO_ERROR, NULL,
-            "name=%s", "n");
-        return(-1);
-    }
-    modulusData = gcry_sexp_nth_data(s_modulus, 1, &modulusSize);
-    if(modulusData == NULL) {
-        xmlSecGCryptError("gcry_sexp_nth_data()", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         goto done;
     }
-    /* libgcrypt may prepend a leading 0x00 byte to positive integers; strip
-     * it so the size matches the actual modulus size */
-    if((modulusSize > 0) && (((const xmlSecByte*)modulusData)[0] == 0x00)) {
-        modulusSize--;
-    }
-    gcry_sexp_release(s_modulus);
-    s_modulus = NULL;
-    if(inSize != modulusSize) {
-        xmlSecInvalidSizeError("Input data", inSize, modulusSize, NULL);
+    ret = xmlSecGCryptRsaKtCheckModulusSize(s_priv_key, inSize);
+    if(ret < 0) {
         goto done;
     }
 
@@ -466,9 +493,6 @@ xmlSecGCryptRsaPkcs1Decrypt(xmlSecGCryptRsaPkcs1CtxPtr ctx, xmlSecBufferPtr in, 
 
 done:
     /* cleanup */
-    if(s_modulus != NULL) {
-        gcry_sexp_release(s_modulus);
-    }
     if(s_encrypted_data != NULL) {
         gcry_sexp_release(s_encrypted_data);
     }
@@ -996,11 +1020,8 @@ done:
 static int
 xmlSecGCryptRsaOaepDecrypt(xmlSecGCryptRsaOaepCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out) {
     xmlSecSize inSize, oaepParamSize;
-    xmlSecSize modulusSize = 0;
-    const void *modulusData;
     int inLen, oaepParamLen;
     gcry_sexp_t s_priv_key;
-    gcry_sexp_t s_modulus = NULL;
     gcry_sexp_t s_encrypted_data = NULL;
     gpg_error_t err;
     int ret;
@@ -1030,28 +1051,10 @@ xmlSecGCryptRsaOaepDecrypt(xmlSecGCryptRsaOaepCtxPtr ctx, xmlSecBufferPtr in, xm
     s_priv_key = xmlSecGCryptKeyDataRsaGetPrivateKey(ctx->keyData);
     if(s_priv_key == NULL) {
         xmlSecInternalError("xmlSecGCryptKeyDataRsaGetPrivateKey", NULL);
-        return(-1);
-    }
-    s_modulus = gcry_sexp_find_token(s_priv_key, "n", 0);
-    if(s_modulus == NULL) {
-        xmlSecGCryptError2("gcry_sexp_find_token()", (gcry_error_t)GPG_ERR_NO_ERROR, NULL,
-            "name=%s", "n");
-        return(-1);
-    }
-    modulusData = gcry_sexp_nth_data(s_modulus, 1, &modulusSize);
-    if(modulusData == NULL) {
-        xmlSecGCryptError("gcry_sexp_nth_data()", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         goto done;
     }
-    /* libgcrypt may prepend a leading 0x00 byte to positive integers; strip
-     * it so the size matches the actual modulus size */
-    if((modulusSize > 0) && (((const xmlSecByte*)modulusData)[0] == 0x00)) {
-        modulusSize--;
-    }
-    gcry_sexp_release(s_modulus);
-    s_modulus = NULL;
-    if(inSize != modulusSize) {
-        xmlSecInvalidSizeError("Input data", inSize, modulusSize, NULL);
+    ret = xmlSecGCryptRsaKtCheckModulusSize(s_priv_key, inSize);
+    if(ret < 0) {
         goto done;
     }
 
@@ -1101,9 +1104,6 @@ xmlSecGCryptRsaOaepDecrypt(xmlSecGCryptRsaOaepCtxPtr ctx, xmlSecBufferPtr in, xm
 
 done:
     /* cleanup */
-    if(s_modulus != NULL) {
-        gcry_sexp_release(s_modulus);
-    }
     if(s_encrypted_data != NULL) {
         gcry_sexp_release(s_encrypted_data);
     }

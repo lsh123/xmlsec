@@ -138,6 +138,7 @@ xmlSecGCryptKWAesInitialize(xmlSecTransformPtr transform) {
 
     blockSize = gcry_cipher_get_algo_blklen(ctx->cipher);
     xmlSecAssert2(blockSize > 0, -1);
+    xmlSecAssert2(blockSize == XMLSEC_KW_RFC3394_BLOCK_SIZE, -1);
 
     ctx->mode     = GCRY_CIPHER_MODE_CBC;
     ctx->flags    = GCRY_CIPHER_SECURE; /* we are paranoid */
@@ -399,6 +400,8 @@ xmlSecGCryptKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
                                 xmlSecByte * out, xmlSecSize outSize,
                                 xmlSecSize * outWritten) {
     xmlSecGCryptKWAesCtxPtr ctx;
+    xmlSecByte tmp[XMLSEC_KW_RFC3394_BLOCK_SIZE];
+    const xmlSecByte* src;
     gcry_error_t err;
     int ret;
 
@@ -430,14 +433,25 @@ xmlSecGCryptKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         return(-1);
     }
 
-    err = gcry_cipher_encrypt(ctx->cipherHandle, out, outSize, in, inSize);
+    /* gcry_cipher_encrypt() does not support in-place (in == out) processing,
+       so stage the block through a scratch buffer when the input and output are
+       the same buffer; the buffer must stay in scope for the duration of the
+       call */
+    src = in;
+    if(in == out) {
+        memcpy(tmp, in, sizeof(tmp));
+        src = tmp;
+    }
+    err = gcry_cipher_encrypt(ctx->cipherHandle, out, outSize, src, inSize);
     if(err != GPG_ERR_NO_ERROR) {
         xmlSecGCryptError("gcry_cipher_encrypt", err, NULL);
+        xmlSecMemCleanse(tmp, sizeof(tmp));
         return(-1);
     }
 
     /* success */
     (*outWritten) = ctx->blockSize;
+    xmlSecMemCleanse(tmp, sizeof(tmp));
     return(0);
 }
 
@@ -446,6 +460,8 @@ xmlSecGCryptKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
                                 xmlSecByte * out, xmlSecSize outSize,
                                 xmlSecSize * outWritten) {
     xmlSecGCryptKWAesCtxPtr ctx;
+    xmlSecByte tmp[XMLSEC_KW_RFC3394_BLOCK_SIZE];
+    const xmlSecByte* src;
     gcry_error_t err;
     int ret;
 
@@ -477,14 +493,25 @@ xmlSecGCryptKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         return(-1);
     }
 
-    err = gcry_cipher_decrypt(ctx->cipherHandle, out, outSize, in, inSize);
+    /* gcry_cipher_decrypt() does not support in-place (in == out) processing,
+       so stage the block through a scratch buffer when the input and output are
+       the same buffer; the buffer must stay in scope for the duration of the
+       call */
+    src = in;
+    if(in == out) {
+        memcpy(tmp, in, sizeof(tmp));
+        src = tmp;
+    }
+    err = gcry_cipher_decrypt(ctx->cipherHandle, out, outSize, src, inSize);
     if(err != GPG_ERR_NO_ERROR) {
         xmlSecGCryptError("gcry_cipher_decrypt", err, NULL);
+        xmlSecMemCleanse(tmp, sizeof(tmp));
         return(-1);
     }
 
     /* success */
     (*outWritten) = ctx->blockSize;
+    xmlSecMemCleanse(tmp, sizeof(tmp));
     return(0);
 }
 

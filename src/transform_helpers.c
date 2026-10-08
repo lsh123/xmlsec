@@ -1431,6 +1431,10 @@ xmlSecTransformPbkdf2ParamsRead(xmlSecTransformPbkdf2ParamsPtr params, xmlNodePt
         xmlSecInternalError("xmlSecGetNodeContentAsSize(keyLength)", NULL);
         return(-1);
     }
+    if(params->keyLength > XMLSEC_PBKDF2_MAX_KEY_LENGTH) {
+        xmlSecInvalidSizeDataError("keyLength", params->keyLength, "too big", NULL);
+        return(-1);
+    }
 
     /* next is required PRF */
     cur = xmlSecGetNextElementNode(cur->next);

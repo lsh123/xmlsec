@@ -382,6 +382,9 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->keyId       = xmlSecGnuTLSKeyDataGost2001Id;
         ctx->dgstAlgo    = GNUTLS_DIG_GOSTR_94;
         ctx->signAlgo    = GNUTLS_SIGN_GOST_94;
+        /* GOST R 34.10-94 (GOST_01) is a legacy algorithm that GnuTLS classifies as
+         * "insufficient security" under the default security profile. Without the
+         * GNUTLS_VERIFY_ALLOW_BROKEN flag, the signature verification would fail. */
         ctx->verifyFlags = GNUTLS_VERIFY_ALLOW_BROKEN;
         ctx->getPubKey   = xmlSecGnuTLSKeyDataGost2001GetPublicKey;
         ctx->getPrivKey  = xmlSecGnuTLSKeyDataGost2001GetPrivateKey;

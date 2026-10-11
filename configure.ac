@@ -2290,38 +2290,6 @@ AM_CONDITIONAL(XMLSEC_NO_SLHDSA, test "z$XMLSEC_NO_SLHDSA" = "z1")
 AC_SUBST(XMLSEC_NO_SLHDSA)
 
 dnl ==========================================================================
-dnl Check the PQC (ML-DSA/ML-KEM/SLH-DSA) support requirements
-dnl ==========================================================================
-dnl The OpenSSL backend uses PQC constants (EVP_PKEY_ML_DSA_*, NID_ML_KEM_*,
-dnl EVP_PKEY_SLH_DSA_*) that are only available in OpenSSL 3.5.0 or newer.
-dnl Without this check, building with OpenSSL 3.0-3.4 would fail at compile
-dnl time and with OpenSSL 1.1.1 the requested PQC support would be silently
-dnl excluded by XMLSEC_OPENSSL_API_300.
-if test "z$OPENSSL_FOUND" = "zyes" -a \( "z$XMLSEC_NO_MLDSA" = "z0" -o "z$XMLSEC_NO_MLKEM" = "z0" -o "z$XMLSEC_NO_SLHDSA" = "z0" \) ; then
-    AC_MSG_CHECKING([whether the detected OpenSSL provides the PQC constants])
-    OLD_CPPFLAGS=$CPPFLAGS
-    CPPFLAGS="$CPPFLAGS $OPENSSL_CFLAGS"
-    AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-#include <openssl/evp.h>
-#include <openssl/objects.h>
-]], [[
-    int ml_dsa = EVP_PKEY_ML_DSA_44;
-    int ml_kem = NID_ML_KEM_512;
-    int slh_dsa = EVP_PKEY_SLH_DSA_SHA2_128F;
-    (void) ml_dsa;
-    (void) ml_kem;
-    (void) slh_dsa;
-]])],[
-        AC_MSG_RESULT([yes])
-    ],[
-        AC_MSG_RESULT([no])
-        AC_MSG_ERROR([ML-DSA/ML-KEM/SLH-DSA support requires OpenSSL 3.5.0 or newer; the detected OpenSSL (version '$XMLSEC_OPENSSL_VERSION') does not provide the required PQC constants. Reconfigure with --disable-ml-dsa, --disable-ml-kem and/or --disable-slh-dsa, or use OpenSSL 3.5.0 or newer])
-    ])
-    CPPFLAGS=$OLD_CPPFLAGS
-fi
-
-
-dnl ==========================================================================
 dnl Check if we need EdDSA support
 dnl ==========================================================================
 AC_MSG_CHECKING(for EdDSA support)

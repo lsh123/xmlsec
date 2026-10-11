@@ -1067,6 +1067,9 @@ xmlSecMSCngSignatureStartHash(
     if (status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptOpenAlgorithmProvider",
             xmlSecTransformGetName(transform), status);
+        /* the out-handle is not guaranteed to be zeroed on failure; reset it so
+         * the cleanup below does not attempt to close an indeterminate handle */
+        ctx->hHashAlg = 0;
         return(-1);
     }
 

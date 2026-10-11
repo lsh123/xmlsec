@@ -193,6 +193,14 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
             return(-1);
         }
 
+        /* not all supported versions of libxml2 signal malformed documents through
+         * the xmlParseChunk() return value; check the wellFormed flag explicitly
+         * (same contract as xmlSecParseFile and xmlSecParseMemory) */
+        if(!(ctx->parserCtx->wellFormed)) {
+            xmlSecInternalError("document is not well formed", NULL);
+            return(-1);
+        }
+
         /* defensive: the node set owns its document; release any set left over
          * from a previous final push before replacing it */
         if(transform->outNodes != NULL) {

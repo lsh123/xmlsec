@@ -223,6 +223,13 @@ xmlSecGnuTLSDigestInitialize(xmlSecTransformPtr transform) {
     err = gnutls_hash_init(&(ctx->hash), ctx->dgstAlgo);
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_hash_init", err, xmlSecTransformGetName(transform));
+        /* Do not call gnutls_hash_deinit() on init failure: GnuTLS leaves the
+         * handle non-NULL with an uninitialized deinit function pointer when
+         * gnutls_hash_init() fails (verified in GnuTLS 3.8: gnutls_hash_init()
+         * does not free or reset *dig on error), so calling deinit on it is
+         * undefined behavior. The small handle allocation is leaked on this
+         * rare error path as a deliberate trade-off. */
+        ctx->hash = NULL;
         return(-1);
     }
 

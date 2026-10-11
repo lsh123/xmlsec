@@ -1199,8 +1199,15 @@ xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
     /* get data */
     dataToSign = xmlSecBufferGetData(&(ctx->preSignBuffer));
     dataToSignSize = xmlSecBufferGetSize(&(ctx->preSignBuffer));
-    xmlSecAssert2(dataToSign != NULL, -1);
-    xmlSecAssert2(dataToSignSize > 0, -1);
+    if(ctx->digest == NULL) {
+        /* message-based signature (e.g. EdDSA): an empty message is a valid
+         * input (RFC 8032), so the buffer may be empty (NULL data, size 0) */
+        xmlSecAssert2((dataToSign != NULL) || (dataToSignSize == 0), -1);
+    } else {
+        /* digest-based signature: the buffer must contain the digest */
+        xmlSecAssert2(dataToSign != NULL, -1);
+        xmlSecAssert2(dataToSignSize > 0, -1);
+    }
 
     /* create and setup verification context */
     pKeyCtx = xmlSecOpenSSLEvpSignatureCreatePkeyCtx(transform, ctx);
@@ -1301,8 +1308,15 @@ xmlSecOpenSSLEvpSignatureSign(xmlSecTransformPtr transform, xmlSecTransformCtxPt
     /* get data */
     dataToSign = xmlSecBufferGetData(&(ctx->preSignBuffer));
     dataToSignSize = xmlSecBufferGetSize(&(ctx->preSignBuffer));
-    xmlSecAssert2(dataToSign != NULL, -1);
-    xmlSecAssert2(dataToSignSize > 0, -1);
+    if(ctx->digest == NULL) {
+        /* message-based signature (e.g. EdDSA): an empty message is a valid
+         * input (RFC 8032), so the buffer may be empty (NULL data, size 0) */
+        xmlSecAssert2((dataToSign != NULL) || (dataToSignSize == 0), -1);
+    } else {
+        /* digest-based signature: the buffer must contain the digest */
+        xmlSecAssert2(dataToSign != NULL, -1);
+        xmlSecAssert2(dataToSignSize > 0, -1);
+    }
 
     /* create and setup signature context */
     pKeyCtx = xmlSecOpenSSLEvpSignatureCreatePkeyCtx(transform, ctx);

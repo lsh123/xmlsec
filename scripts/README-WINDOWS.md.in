@@ -68,7 +68,7 @@ nmake install_sw
 
 cd win32
 
-powershell -ExecutionPolicy Bypass -File configure.ps1 pedantic=yes werror=yes static=no cruntime=/MD xslt=yes crypto=openssl,mscng unicode=yes prefix=C:\local\distro\xmlsec include=C:\local\distro\libxml2\include;C:\local\distro\libxml2\include\libxml2;C:\local\distro\libxslt\include;C:\local\distro\openssl\include; lib=C:\local\distro\libxml2\lib;C:\local\distro\libxslt\lib;C:\local\distro\openssl\lib
+powershell -ExecutionPolicy Bypass -File configure.ps1 pedantic=yes static=no cruntime=/MD xslt=yes crypto=openssl,mscng unicode=yes prefix=C:\local\distro\xmlsec include=C:\local\distro\libxml2\include;C:\local\distro\libxml2\include\libxml2;C:\local\distro\libxslt\include;C:\local\distro\openssl\include; lib=C:\local\distro\libxml2\lib;C:\local\distro\libxslt\lib;C:\local\distro\openssl\lib
 
 nmake
 

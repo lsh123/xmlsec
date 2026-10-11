@@ -132,20 +132,40 @@ do
 done
 
 #
-# Get LibXML2 settings
+# Get LibXML2 settings. If the full path to the config tool was recorded at
+# configure time (it contains a path separator) query the tool; otherwise
+# libxml2 was found via pkg-config, the folders search, or the link test and
+# the xml2-config tool may not be present (or may point to a different
+# installation), so use the flags recorded at configure time.
 #
-the_xml_flags="`@LIBXML_CONFIG@ --cflags`"
-the_xml_libs="`@LIBXML_CONFIG@ --libs`"
+case "@LIBXML_CONFIG@" in
+    */*)
+        the_xml_flags="`@LIBXML_CONFIG@ --cflags`"
+        the_xml_libs="`@LIBXML_CONFIG@ --libs`"
+        ;;
+    *)
+        the_xml_flags="@LIBXML_CFLAGS@"
+        the_xml_libs="@LIBXML_LIBS@"
+        ;;
+esac
 
 #
-# Get LibXSLT settings
+# Get LibXSLT settings (see the LibXML2 note above)
 #
 the_xslt_flags=""
 the_xslt_libs=""
 if test "@XMLSEC_NO_LIBXSLT@" = "0" ;
 then
-    the_xslt_flags="`@LIBXSLT_CONFIG@ --cflags`"
-    the_xslt_libs="`@LIBXSLT_CONFIG@ --libs`"
+    case "@LIBXSLT_CONFIG@" in
+        */*)
+            the_xslt_flags="`@LIBXSLT_CONFIG@ --cflags`"
+            the_xslt_libs="`@LIBXSLT_CONFIG@ --libs`"
+            ;;
+        *)
+            the_xslt_flags="@LIBXSLT_CFLAGS@"
+            the_xslt_libs="@LIBXSLT_LIBS@"
+            ;;
+    esac
 fi
 
 #

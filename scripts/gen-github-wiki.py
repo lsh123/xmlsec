@@ -243,10 +243,19 @@ def main():
     print(f"Temporary build directory: {tmp_dir}")
 
     try:
-        # Run autogen.sh from srcdir inside tmp_dir. Only the docs target is
-        # needed (it does not depend on the compiled library), so skip the full
-        # library build to keep generation fast and avoid failing on unrelated
-        # build components or crypto-backend dependencies.
+        # Verify the external tools required by the docs target are present
+        # (the docs Makefiles abort partway through the build otherwise)
+        required_tools = ("pandoc", "python3", "doxygen", "help2man")
+        missing_tools = [tool for tool in required_tools if shutil.which(tool) is None]
+        if missing_tools:
+            print(f"ERROR: Required tools for the docs target are missing: {', '.join(missing_tools)}. "
+                  f"Please install them and re-run the script.", file=sys.stderr)
+            sys.exit(1)
+
+        # Run autogen.sh from srcdir inside tmp_dir. Note that the docs target
+        # also generates the command line tool man page: if the xmlsec1 app
+        # has not been built yet, the target builds it (along with the
+        # libraries it links against).
         print("\n--- Running autogen.sh ---")
         build_cmd = f"{shlex.quote(autogen_sh)} && make -C docs docs"
         run_command(

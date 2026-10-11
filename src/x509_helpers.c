@@ -886,7 +886,7 @@ xmlSecKeyX509DataValueXmlWrite(xmlSecKeyX509DataValuePtr x509Value, xmlNodePtr n
  * @param outSize the size of the output string.
  * @param outWritten the number of characters written to the output string.
  * @param delim the delimiter (stop char).
- * @param ignoreTrailingSpaces the flag indicating if trailing spaces should not be copied to output.
+ * @param ignoreTrailingSpaces the flag indicating if unescaped trailing spaces should not be copied to output.
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -952,8 +952,9 @@ xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
                 ++ii;
                 ++jj;
 
-                /* remember position of last non-spaceChar */
-                if (ignoreTrailingSpaces && !isspace(inCh)) {
+                /* an escaped char is always significant (per RFC 4514 a trailing
+                 * space is part of the value only if it is escaped) */
+                if (ignoreTrailingSpaces) {
                     nonSpaceJJ = jj;
                 }
              }
@@ -974,8 +975,9 @@ xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
                 ++ii;
                 ++jj;
 
-                /* remember position of last non-spaceChar */
-                if (ignoreTrailingSpaces && !isspace(inCh)) {
+                /* an escaped char is always significant (per RFC 4514 a trailing
+                 * space is part of the value only if it is escaped) */
+                if (ignoreTrailingSpaces) {
                     nonSpaceJJ = jj;
                 }
             } else {
@@ -1026,7 +1028,7 @@ xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
  * @param outWritten the number of characters written to the output string.
  * @param outType the type of string (UTF8 or octet).
  * @param delim the delimiter (stop char).
- * @param ignoreTrailingSpaces the flag indicating if trailing spaces should not be copied to output.
+ * @param ignoreTrailingSpaces the flag indicating if unescaped trailing spaces should not be copied to output.
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -1061,8 +1063,11 @@ xmlSecX509AttrValueStringRead(
         /* skip quote */
         ++(*in); --(*inSize);
 
-        /* read string till next un-escaped quote */
-        ret = xmlSecX509EscapedStringRead(in, inSize, out, outSize, outWritten, '\"', ignoreTrailingSpaces);
+        /* read string till next un-escaped quote; spaces inside the quoted
+         * string are significant (the quoted form exists to allow spaces and
+         * special chars in the value), only the un-escaped spaces after the
+         * closing quote are skipped below */
+        ret = xmlSecX509EscapedStringRead(in, inSize, out, outSize, outWritten, '\"', 0);
         if(ret < 0) {
             xmlSecInternalError("xmlSecX509EscapedStringRead", NULL);
             return(-1);

@@ -278,8 +278,17 @@ dnl ==========================================================================
 PKGCONFIG_FOUND="no"
 AC_ARG_ENABLE([pkgconfig], [AS_HELP_STRING([--enable-pkgconfig],[enable pkgconfig for configuration (yes)])])
 if test "z$enable_pkgconfig" != "zno" ; then
-    PKG_PROG_PKG_CONFIG()
-    PKGCONFIG_FOUND="yes"
+    dnl don't abort when pkg-config is not installed or too old: in that case
+    dnl PKG_CONFIG stays empty and PKGCONFIG_FOUND stays "no", so the
+    dnl per-package fallback configuration methods (config scripts, folders
+    dnl search, direct linking) are used instead
+    PKG_PROG_PKG_CONFIG([],
+        AC_MSG_NOTICE([pkg-config not found or too old; will use the fallback configuration methods]))
+    if test "z$PKG_CONFIG" = "z" ; then
+        PKGCONFIG_FOUND="no"
+    else
+        PKGCONFIG_FOUND="yes"
+    fi
 else
     PKGCONFIG_FOUND="no"
 fi
@@ -344,6 +353,10 @@ LIBXML_INCLUDE_PATH=
 LIBXML_LIB_PATH=
 LIBXML_CONFIG_PATH=
 LIBXML_FOUND="no"
+dnl Only set the pkg-config Requires entry when libxml2 is found via
+dnl pkg-config, otherwise the referenced .pc file may not exist on the
+dnl system (see xmlsec.pc.in and the same pattern as OPENSSL_PC_REQUIRES)
+LIBXML_PC_FILE_COND=""
 AC_ARG_WITH([libxml], [AS_HELP_STRING([--with-libxml@<:@=PFX@:>@],[libxml2 location])])
 AC_ARG_WITH([libxml2], [AS_HELP_STRING([--with-libxml2@<:@=PFX@:>@],[libxml2 location])])
 dnl Priority 0: LibXML2 is disabled: hard error.
@@ -393,7 +406,8 @@ fi
 dnl Priority 4: Guess with pkg_config
 if test "z$LIBXML_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
     PKG_CHECK_MODULES(LIBXML, libxml-2.0 >= $LIBXML_MIN_VERSION,
-        [LIBXML_FOUND=yes],
+        [LIBXML_FOUND=yes
+         LIBXML_PC_FILE_COND="libxml-2.0 >= $LIBXML_MIN_VERSION"],
         [LIBXML_FOUND=no])
 fi
 
@@ -506,6 +520,7 @@ AC_SUBST(LIBXML_CFLAGS)
 AC_SUBST(LIBXML_LIBS)
 AC_SUBST(LIBXML_CONFIG)
 AC_SUBST(LIBXML_MIN_VERSION)
+AC_SUBST(LIBXML_PC_FILE_COND)
 
 dnl ==========================================================================
 dnl find libxslt
@@ -524,6 +539,10 @@ LIBXSLT_INCLUDE_PATH=
 LIBXSLT_LIB_PATH=
 LIBXSLT_CONFIG_PATH=
 LIBXSLT_FOUND="no"
+dnl Only set the pkg-config Requires entry when libxslt is found via
+dnl pkg-config, otherwise the referenced .pc file may not exist on the
+dnl system (see xmlsec.pc.in and the same pattern as OPENSSL_PC_REQUIRES)
+LIBXSLT_PC_FILE_COND=""
 AC_ARG_WITH([libxslt], [AS_HELP_STRING([--with-libxslt@<:@=PFX@:>@],[libxslt location])])
 
 dnl Priority 0: Check if library is not needed
@@ -556,7 +575,8 @@ fi
 dnl Priority 3: Guess with pkg_config
 if test "z$LIBXSLT_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
     PKG_CHECK_MODULES(LIBXSLT, libxslt >= $LIBXSLT_MIN_VERSION,
-        [LIBXSLT_FOUND=yes],
+        [LIBXSLT_FOUND=yes
+         LIBXSLT_PC_FILE_COND="libxslt >= $LIBXSLT_MIN_VERSION"],
         [LIBXSLT_FOUND=no])
 fi
 
@@ -662,10 +682,8 @@ AC_MSG_RESULT([$LIBXSLT_FOUND])
 dnl Finally set variables
 if test "z$LIBXSLT_FOUND" = "zyes" ; then
     XMLSEC_NO_LIBXSLT="0"
-    LIBXSLT_PC_FILE_COND="libxslt >= $LIBXSLT_MIN_VERSION"
 else
     XMLSEC_NO_LIBXSLT="1"
-    LIBXSLT_PC_FILE_COND=""
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_XSLT=1"
 fi
 AC_SUBST(XMLSEC_NO_LIBXSLT)
@@ -1215,7 +1233,20 @@ if test "z$NSPR_FOUND" = "zyes" ; then
     ],[
         NSPR_FOUND=yes
     ],[
-        NSPR_FOUND=no
+        dnl prinit.h was not found with the recorded include paths (e.g. NSPR
+        dnl was found by the last-resort link test, which does not record
+        dnl include paths); retry with the subdirectory include form used
+        dnl by that test
+        AC_EGREP_CPP(greater-than-minvers, [
+            #include <nspr/prinit.h>
+            #if ((PR_VMAJOR * 100 + PR_VMINOR) * 100 + PR_VPATCH) >= $minvers
+            greater-than-minvers
+            #endif
+        ],[
+            NSPR_FOUND=yes
+        ],[
+            NSPR_FOUND=no
+        ])
     ])
     CPPFLAGS="$OLD_CPPFLAGS"
 fi
@@ -1234,7 +1265,19 @@ if test "z$NSS_FOUND" = "zyes" ; then
     ],[
         NSS_FOUND=yes
     ],[
-        NSS_FOUND=no
+        dnl nss.h was not found with the recorded include paths (e.g. NSS was
+        dnl found by the last-resort link test, which does not record include
+        dnl paths); retry with the subdirectory include form used by that test
+        AC_EGREP_CPP(greater-than-minvers, [
+            #include <nss/nss.h>
+            #if ((NSS_VMAJOR * 100 + NSS_VMINOR) * 100 + NSS_VPATCH) >= $minvers
+            greater-than-minvers
+            #endif
+        ],[
+            NSS_FOUND=yes
+        ],[
+            NSS_FOUND=no
+        ])
     ])
     CPPFLAGS="$OLD_CPPFLAGS"
 fi
@@ -2245,6 +2288,37 @@ else
 fi
 AM_CONDITIONAL(XMLSEC_NO_SLHDSA, test "z$XMLSEC_NO_SLHDSA" = "z1")
 AC_SUBST(XMLSEC_NO_SLHDSA)
+
+dnl ==========================================================================
+dnl Check the PQC (ML-DSA/ML-KEM/SLH-DSA) support requirements
+dnl ==========================================================================
+dnl The OpenSSL backend uses PQC constants (EVP_PKEY_ML_DSA_*, NID_ML_KEM_*,
+dnl EVP_PKEY_SLH_DSA_*) that are only available in OpenSSL 3.5.0 or newer.
+dnl Without this check, building with OpenSSL 3.0-3.4 would fail at compile
+dnl time and with OpenSSL 1.1.1 the requested PQC support would be silently
+dnl excluded by XMLSEC_OPENSSL_API_300.
+if test "z$OPENSSL_FOUND" = "zyes" -a \( "z$XMLSEC_NO_MLDSA" = "z0" -o "z$XMLSEC_NO_MLKEM" = "z0" -o "z$XMLSEC_NO_SLHDSA" = "z0" \) ; then
+    AC_MSG_CHECKING([whether the detected OpenSSL provides the PQC constants])
+    OLD_CPPFLAGS=$CPPFLAGS
+    CPPFLAGS="$CPPFLAGS $OPENSSL_CFLAGS"
+    AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#include <openssl/evp.h>
+#include <openssl/objects.h>
+]], [[
+    int ml_dsa = EVP_PKEY_ML_DSA_44;
+    int ml_kem = NID_ML_KEM_512;
+    int slh_dsa = EVP_PKEY_SLH_DSA_SHA2_128F;
+    (void) ml_dsa;
+    (void) ml_kem;
+    (void) slh_dsa;
+]])],[
+        AC_MSG_RESULT([yes])
+    ],[
+        AC_MSG_RESULT([no])
+        AC_MSG_ERROR([ML-DSA/ML-KEM/SLH-DSA support requires OpenSSL 3.5.0 or newer; the detected OpenSSL (version '$XMLSEC_OPENSSL_VERSION') does not provide the required PQC constants. Reconfigure with --disable-ml-dsa, --disable-ml-kem and/or --disable-slh-dsa, or use OpenSSL 3.5.0 or newer])
+    ])
+    CPPFLAGS=$OLD_CPPFLAGS
+fi
 
 
 dnl ==========================================================================

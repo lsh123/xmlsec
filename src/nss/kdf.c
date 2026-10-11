@@ -964,8 +964,12 @@ xmlSecNssKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKdfCtxSize), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
+    /* the KDF derives a key from the keying material only: it never consumes
+     * transform input; data pushed into the transform is a caller error and
+     * must not be silently dropped */
     in = &(transform->inBuf);
     out = &(transform->outBuf);
+    xmlSecAssert2(xmlSecBufferGetSize(in) == 0, -1);
 
     ctx = xmlSecNssKdfGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);

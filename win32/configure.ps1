@@ -422,7 +422,13 @@ if ($script:errorFlag -ne 0) {
     exit $script:errorFlag
 }
 
-# Discover crypto support
+# Discover crypto support. Reset the per-backend flags first so that only
+# the crypto engines requested in the crypto list are enabled (the default
+# list enables MSCng only).
+$script:withOpenSSL = 0
+$script:withNss = 0
+$script:withMSCrypto = 0
+$script:withMSCng = 0
 $crlist = $script:withCrypto.Split(",")
 $script:withCrypto = ""
 $script:withDefaultCrypto = ""
@@ -467,6 +473,13 @@ for ($j = 0; $j -lt $crlist.Count; $j++) {
     } else {
         $script:withCrypto = $script:withCrypto + " " + $curcrypto
     }
+}
+
+# Make MSCNG the default crypto engine if no other engine is specified.
+if ($script:withCrypto -eq "") {
+    $script:withCrypto = "mscng"
+    $script:withDefaultCrypto = "mscng"
+    $script:withMSCng = 1
 }
 
 # Discover the version.

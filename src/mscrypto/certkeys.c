@@ -12,6 +12,7 @@
  */
 #include "globals.h"
 
+#include <limits.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -1927,6 +1928,15 @@ xmlSecMSCryptoKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) 
     xmlSecAssert2(qSize <= XMLSEC_MSCRYPTO_DSA_MAX_Q_SIZE, NULL);
     xmlSecAssert2(gSize <= pSize, NULL);
     xmlSecAssert2(ySize <= pSize, NULL);
+
+    /* DSSPUBKEY.bitlen is a DWORD, so reject P values whose bit count
+     * (pSize * 8) does not fit in that field; this also prevents the
+     * 3 * pSize blob size arithmetic below from wrapping on 32-bit builds */
+    if (pSize > (ULONG_MAX / 8)) {
+        xmlSecInternalError2("xmlSecMSCryptoKeyDataDsaRead", xmlSecKeyDataKlassGetName(id),
+            "size=" XMLSEC_SIZE_FMT, pSize);
+        goto done;
+    }
 
     /* Now try to prepare buffer for key */
     blobBufferSize = sizeof(PUBLICKEYSTRUC) + sizeof(DSSPUBKEY) +

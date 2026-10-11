@@ -249,6 +249,91 @@ xmlSecGnuTLSX509CheckCrtsTime(const gnutls_x509_crt_t * cert_list, xmlSecSize ce
     return(1);
 }
 
+/**
+ * @brief Checks that the trust anchor(s) of @p certs_chain are time valid at @p ts.
+ *
+ * The trust anchor(s) are the certs from @p trusted whose subject name matches
+ * the issuer name of the topmost cert of @p certs_chain. The rest of the trusted
+ * store is irrelevant to this chain and is not checked: an unrelated expired or
+ * future-dated cert in the store must not break the verification of a valid chain.
+ *
+ * @return 1 if all anchor certs are time valid (or no anchor was found in the
+ * trusted store), 0 if any anchor cert is not time valid, or a negative value
+ * if an error occurs.
+ */
+static int
+xmlSecGnuTLSX509CheckChainAnchorTime(const gnutls_x509_crt_t* trusted, xmlSecSize trusted_size,
+    const gnutls_x509_crt_t* certs_chain, xmlSecSize certs_chain_size, time_t ts) {
+    xmlChar* issuerDN = NULL;
+    gnutls_x509_crt_t* anchors = NULL;
+    xmlSecSize anchorsSize = 0;
+    xmlSecSize ii;
+    int res = -1;
+
+    xmlSecAssert2(certs_chain != NULL, -1);
+    xmlSecAssert2(certs_chain_size >= 1, -1);
+    if(certs_chain[certs_chain_size - 1] == NULL) {
+        xmlSecInternalError("topmost chain cert is NULL", NULL);
+        return(-1);
+    }
+
+    issuerDN = xmlSecGnuTLSX509CertGetIssuerDN(certs_chain[certs_chain_size - 1]);
+    if(issuerDN == NULL) {
+        xmlSecInternalError("xmlSecGnuTLSX509CertGetIssuerDN", NULL);
+        goto done;
+    }
+
+    /* collect the trusted certs that can serve as the chain's trust anchor */
+    for(ii = 0; ii < trusted_size; ++ii) {
+        const gnutls_x509_crt_t crt = trusted[ii];
+        xmlChar* subjectDN = NULL;
+
+        if(crt == NULL) {
+            continue;
+        }
+        subjectDN = xmlSecGnuTLSX509CertGetSubjectDN(crt);
+        if(subjectDN == NULL) {
+            xmlSecInternalError("xmlSecGnuTLSX509CertGetSubjectDN", NULL);
+            goto done;
+        }
+        if(xmlStrcmp(subjectDN, issuerDN) == 0) {
+            gnutls_x509_crt_t* tmp;
+
+            tmp = xmlRealloc(anchors, (anchorsSize + 1) * sizeof(gnutls_x509_crt_t));
+            if(tmp == NULL) {
+                xmlSecMallocError((anchorsSize + 1) * sizeof(gnutls_x509_crt_t), NULL);
+                xmlFree(subjectDN);
+                goto done;
+            }
+            anchors = tmp;
+            anchors[anchorsSize] = crt;
+            ++anchorsSize;
+        }
+        xmlFree(subjectDN);
+    }
+
+    /* time-check the collected anchor certs; if no trusted cert matches the
+     * topmost chain cert's issuer name (e.g. the topmost chain cert is a
+     * self-signed root that is not in the store) there is nothing more to
+     * check, as the chain certs were already checked by the caller */
+    res = 1;
+    if(anchorsSize > 0) {
+        res = xmlSecGnuTLSX509CheckCrtsTime(anchors, anchorsSize, ts);
+        if(res < 0) {
+            xmlSecInternalError("xmlSecGnuTLSX509CheckCrtsTime(anchor)", NULL);
+        }
+    }
+
+done:
+    if(issuerDN != NULL) {
+        xmlFree(issuerDN);
+    }
+    if(anchors != NULL) {
+        xmlFree(anchors);
+    }
+    return(res);
+}
+
 static int
 xmlSecGnuTLSX509StoreGetTrustedCerts(xmlSecGnuTLSX509StoreCtxPtr ctx,
     gnutls_x509_crt_t** trusted, xmlSecSize* trusted_size
@@ -660,8 +745,8 @@ xmlSecGnuTLSX509StoreVerifyCert(xmlSecGnuTLSX509StoreCtxPtr ctx,
 
     /* gnutls doesn't allow to specify "verification" timestamp so
      * we have to do it ourselves; GNUTLS_VERIFY_DISABLE_TIME_CHECKS makes
-     * gnutls skip the time checks for the trusted certs as well, so they
-     * have to be checked here too */
+     * gnutls skip the time checks for the trusted certs as well, so the
+     * chain's trust anchor(s) have to be checked here too */
     if(keyInfoCtx->certsVerificationTime > 0) {
         ret = xmlSecGnuTLSX509CheckCrtsTime(certs_chain, certs_chain_size, keyInfoCtx->certsVerificationTime);
         if(ret < 0) {
@@ -672,9 +757,10 @@ xmlSecGnuTLSX509StoreVerifyCert(xmlSecGnuTLSX509StoreCtxPtr ctx,
             return(0);
         }
         if(trusted_size > 0) {
-            ret = xmlSecGnuTLSX509CheckCrtsTime(trusted, trusted_size, keyInfoCtx->certsVerificationTime);
+            ret = xmlSecGnuTLSX509CheckChainAnchorTime(trusted, trusted_size,
+                certs_chain, certs_chain_size, keyInfoCtx->certsVerificationTime);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecGnuTLSX509CheckCrtsTime(trusted)", NULL);
+                xmlSecInternalError("xmlSecGnuTLSX509CheckChainAnchorTime", NULL);
                 return(-1);
             }
             if(ret != 1) {

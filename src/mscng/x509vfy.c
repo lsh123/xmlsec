@@ -1222,6 +1222,15 @@ xmlSecMSCngUnixTimeToFileTime(time_t in, LPFILETIME out) {
 
     xmlSecAssert2(out != NULL, -1);
 
+    /* FILETIME counts 100-nanosecond intervals since 1601-01-01 in a 64-bit
+     * value; reject time stamps that cannot be represented (before 1601-01-01
+     * or after the FILETIME maximum) instead of silently overflowing */
+    if ((LONGLONG)in > 910692730085LL || (LONGLONG)in < -11644473600LL) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
+            "time stamp out of FILETIME representable range");
+        return(-1);
+    }
+
     /* seconds -> 100 nanoseconds */
     /* 1970-01-01 epoch -> 1601-01-01 epoch */
     ll = in * 10000000LL + 116444736000000000LL;

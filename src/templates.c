@@ -761,11 +761,36 @@ xmlSecTmplEncDataEnsureEncProperties(xmlNodePtr encNode, const xmlChar *id) {
     res = xmlSecFindChild(encNode, xmlSecNodeEncryptionProperties, xmlSecEncNs);
     if(res == NULL) {
         /* Per the XML-Enc schema (https://www.w3.org/TR/xmlenc-core/#sec-EncryptedType),
-         * the EncryptionProperties node follows CipherData, so append it as the last child. */
-        res = xmlSecAddChild(encNode, xmlSecNodeEncryptionProperties, xmlSecEncNs);
-        if(res == NULL) {
-            xmlSecInternalError("xmlSecAddChild(xmlSecNodeEncryptionProperties)", NULL);
-            return(NULL);
+         * the EncryptedType sequence is: EncryptionMethod?, EncryptionProperties?,
+         * KeyInfo?, ReferenceList?, CarriedKeyName?, CipherData; insert the
+         * EncryptionProperties node before the first of its following siblings
+         * (KeyInfo, ReferenceList, CarriedKeyName, CipherData) that is present,
+         * or append it as the last child if none of them is present. */
+        xmlNodePtr nextSiblingNode = NULL;
+
+        nextSiblingNode = xmlSecFindChild(encNode, xmlSecNodeKeyInfo, xmlSecDSigNs);
+        if(nextSiblingNode == NULL) {
+            nextSiblingNode = xmlSecFindChild(encNode, xmlSecNodeReferenceList, xmlSecEncNs);
+        }
+        if(nextSiblingNode == NULL) {
+            nextSiblingNode = xmlSecFindChild(encNode, xmlSecNodeCarriedKeyName, xmlSecEncNs);
+        }
+        if(nextSiblingNode == NULL) {
+            nextSiblingNode = xmlSecFindChild(encNode, xmlSecNodeCipherData, xmlSecEncNs);
+        }
+
+        if(nextSiblingNode != NULL) {
+            res = xmlSecAddPrevSibling(nextSiblingNode, xmlSecNodeEncryptionProperties, xmlSecEncNs);
+            if(res == NULL) {
+                xmlSecInternalError("xmlSecAddPrevSibling(xmlSecNodeEncryptionProperties)", NULL);
+                return(NULL);
+            }
+        } else {
+            res = xmlSecAddChild(encNode, xmlSecNodeEncryptionProperties, xmlSecEncNs);
+            if(res == NULL) {
+                xmlSecInternalError("xmlSecAddChild(xmlSecNodeEncryptionProperties)", NULL);
+                return(NULL);
+            }
         }
         created = 1;
     }
@@ -1023,11 +1048,16 @@ xmlSecTmplEncDataEnsureReferenceList(xmlNodePtr encNode) {
 
     /* Per the XML-Enc schema (https://www.w3.org/TR/xmlenc-core/#sec-EncryptedType
      * and https://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey),
-     * the ReferenceList node follows EncryptedType and precedes CarriedKeyName. */
+     * the EncryptedType sequence is: EncryptionMethod?, EncryptionProperties?,
+     * KeyInfo?, ReferenceList?, CarriedKeyName?, CipherData; the ReferenceList
+     * node precedes CarriedKeyName and CipherData, so insert it before the
+     * first of them that is present, or append it as the last child if neither
+     * of them is present. */
     nextSiblingNode = xmlSecFindChild(encNode, xmlSecNodeCarriedKeyName, xmlSecEncNs);
+    if(nextSiblingNode == NULL) {
+        nextSiblingNode = xmlSecFindChild(encNode, xmlSecNodeCipherData, xmlSecEncNs);
+    }
 
-    /* Add the ReferenceList node before CarriedKeyName if present,
-     * otherwise append as the last child. */
     if(nextSiblingNode != NULL) {
         refListNode = xmlSecAddPrevSibling(nextSiblingNode, xmlSecNodeReferenceList, xmlSecEncNs);
         if(refListNode == NULL) {

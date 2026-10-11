@@ -978,12 +978,14 @@ xmlSecTransformRelationshipPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPt
        buf = xmlSecTransformCreateOutputBuffer(transform->next, transformCtx);
        if(buf == NULL) {
            xmlSecInternalError("xmlSecTransformCreateOutputBuffer", xmlSecTransformGetName(transform));
+           transform->status = xmlSecTransformStatusFail;
            return(-1);
        }
     } else {
        buf = xmlSecBufferCreateOutputBuffer(&(transform->outBuf));
        if(buf == NULL) {
            xmlSecInternalError("xmlSecBufferCreateOutputBuffer", xmlSecTransformGetName(transform));
+           transform->status = xmlSecTransformStatusFail;
            return(-1);
        }
     }
@@ -991,13 +993,22 @@ xmlSecTransformRelationshipPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPt
     ret = xmlSecTransformRelationshipExecute(transform, buf, nodes->doc, transformCtx);
     if(ret < 0) {
        xmlSecInternalError("xmlSecTransformRelationshipExecute", xmlSecTransformGetName(transform));
+       /* the buffer must be closed to release it (the IO buffer is only
+        * freed by its close callback). The close pushes the partial data
+        * into the next transform, which is harmless here: the whole
+        * operation is aborted and the produced data is discarded */
        (void)xmlOutputBufferClose(buf);
+       /* discard any partial output produced before the failure so it
+        * cannot be picked up by a later operation and mark the transform as failed */
+       xmlSecBufferEmpty(&(transform->outBuf));
+       transform->status = xmlSecTransformStatusFail;
        return(-1);
     }
 
     ret = xmlOutputBufferClose(buf);
     if(ret < 0) {
        xmlSecXmlError("xmlOutputBufferClose", xmlSecTransformGetName(transform));
+       transform->status = xmlSecTransformStatusFail;
        return(-1);
     }
     transform->status = xmlSecTransformStatusFinished;

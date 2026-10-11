@@ -1607,14 +1607,22 @@ xmlSecTransformPump(xmlSecTransformPtr left, xmlSecTransformPtr right, xmlSecTra
         ret = xmlSecTransformPushXml(right, nodes, transformCtx);
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformPushXml", xmlSecTransformGetName(right));
-            /* if left didn't acquire ownership of the nodes, we need to destroy them */
+            /* if left still owns the nodes (the default popXml keeps
+             * left->outNodes set), we must not destroy them; otherwise the
+             * ownership was transferred to us (e.g. by the xmlParser transform),
+             * so clear all references to the nodes and destroy them */
             if(nodes != left->outNodes) {
+                xmlSecTransformCtxClearNodeRefs(transformCtx, nodes);
                 xmlSecNodeSetDestroy(nodes);
             }
             return(-1);
         }
-        /* if left didn't acquire ownership of the nodes, we need to destroy them */
+        /* if left still owns the nodes (the default popXml keeps
+         * left->outNodes set), we must not destroy them; otherwise the
+         * ownership was transferred to us (e.g. by the xmlParser transform),
+         * so clear all references to the nodes and destroy them */
         if(nodes != left->outNodes) {
+            xmlSecTransformCtxClearNodeRefs(transformCtx, nodes);
             xmlSecNodeSetDestroy(nodes);
         }
     }  else if(((leftType & xmlSecTransformDataTypeBin) != 0) && ((rightType & xmlSecTransformDataTypeBin) != 0)) {

@@ -262,9 +262,13 @@ test_xmlSecX509AttrValueStringRead(void) {
     test_xmlSecX509AttrValueStringRead_success("check without trailing spaces", "Foo Bar ,name=value", ',', 1, ",name=value", "Foo Bar", XMLSEC_X509_VALUE_TYPE_UTF8_STRING);
     test_xmlSecX509AttrValueStringRead_success("check quoted end of line", "\"Foo Bar  \"", ',', 0, "", "Foo Bar  ", XMLSEC_X509_VALUE_TYPE_UTF8_STRING);
     test_xmlSecX509AttrValueStringRead_success("check quoted with trailing spaces inside quotes", "\"Foo Bar  \",name=value", ',', 0, ",name=value", "Foo Bar  ", XMLSEC_X509_VALUE_TYPE_UTF8_STRING);
-    test_xmlSecX509AttrValueStringRead_success("check quoted without trailing spaces inside quotes", "\"Foo Bar  \",name=value", ',', 1, ",name=value", "Foo Bar", XMLSEC_X509_VALUE_TYPE_UTF8_STRING);
+    /* per RFC 4514 spaces inside a quoted string are significant (the quoted
+       form is the only way to express leading/trailing spaces in a value),
+       so ignoreTrailingSpaces only affects unquoted input and the spaces
+       after the closing quote */
+    test_xmlSecX509AttrValueStringRead_success("check quoted with trailing spaces inside quotes (ignoreTrailingSpaces)", "\"Foo Bar  \",name=value", ',', 1, ",name=value", "Foo Bar  ", XMLSEC_X509_VALUE_TYPE_UTF8_STRING);
     test_xmlSecX509AttrValueStringRead_success("check quoted with trailing spaces outside quotes", "\"Foo Bar  \"  ,name=value", ',', 0, "  ,name=value", "Foo Bar  ", XMLSEC_X509_VALUE_TYPE_UTF8_STRING);
-    test_xmlSecX509AttrValueStringRead_success("check quoted without trailing spaces outside quotes", "\"Foo Bar  \"  ,name=value", ',', 1, ",name=value", "Foo Bar", XMLSEC_X509_VALUE_TYPE_UTF8_STRING);
+    test_xmlSecX509AttrValueStringRead_success("check quoted with trailing spaces inside and outside quotes (ignoreTrailingSpaces)", "\"Foo Bar  \"  ,name=value", ',', 1, ",name=value", "Foo Bar  ", XMLSEC_X509_VALUE_TYPE_UTF8_STRING);
     test_xmlSecX509AttrValueStringRead_success("check octet/hex", "#466F6F20426172,name=value", ',', 1, ",name=value", "Foo Bar", XMLSEC_X509_VALUE_TYPE_OCTET_STRING);
     test_xmlSecX509AttrValueStringRead_success("check octet/hex end of line", "#466F6F20426172", ',', 1, "", "Foo Bar", XMLSEC_X509_VALUE_TYPE_OCTET_STRING);
     test_xmlSecX509AttrValueStringRead_success("check octet/hex with trailing spaces", "#466F6F20426172  ,name=value", ',', 0, "  ,name=value", "Foo Bar", XMLSEC_X509_VALUE_TYPE_OCTET_STRING);

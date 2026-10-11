@@ -420,6 +420,10 @@ xmlSecMSCryptoCheckRevocation(HCERTSTORE hStore, PCCERT_CONTEXT pCert,
 }
 
 
+/* Trust status bits caused only by certificate/CRL time validity checks. */
+#define XMLSEC_MSCRYPTO_X509_CHAIN_TIME_ERROR_FLAGS \
+    (CERT_TRUST_IS_NOT_TIME_VALID | CERT_TRUST_IS_NOT_TIME_NESTED | CERT_TRUST_CTL_IS_NOT_TIME_VALID)
+
 /**
  * @brief Builds certificates chain using Windows API.
  * @param cert the certificate we check
@@ -436,6 +440,7 @@ xmlSecBuildChainUsingWinapi (PCCERT_CONTEXT cert, LPFILETIME pfTime,
     CERT_CHAIN_PARA          chainPara;
     BOOL rc = FALSE;
     HCERTSTORE store_add = NULL;
+    DWORD ignoredErrorStatus = 0;
 
     /* Initialize data structures. */
     memset(&chainPara, 0, sizeof(CERT_CHAIN_PARA));
@@ -487,7 +492,14 @@ xmlSecBuildChainUsingWinapi (PCCERT_CONTEXT cert, LPFILETIME pfTime,
         }
     }
 
-    if (pChainContext->TrustStatus.dwErrorStatus == CERT_TRUST_NO_ERROR) {
+    if (pfTime == NULL) {
+        /* the caller explicitly requested to skip certificate/CRL time checks;
+         * CertGetCertificateChain() still evaluates the chain at the current
+         * system time, so ignore only the time-related trust status bits */
+        ignoredErrorStatus = XMLSEC_MSCRYPTO_X509_CHAIN_TIME_ERROR_FLAGS;
+    }
+
+    if ((pChainContext->TrustStatus.dwErrorStatus & (~ignoredErrorStatus)) == CERT_TRUST_NO_ERROR) {
         rc = TRUE;
     }
 
@@ -949,6 +961,64 @@ xmlSecMSCryptoX509StoreConstructCertsChain(xmlSecKeyDataStorePtr store, PCCERT_C
 }
 
 /**
+ * @brief Checks whether @p cert is the issuer of any other certificate in @p certs.
+ * @details A certificate in @p certs is considered to be issued by @p cert when its
+ * issuer name matches @p cert's subject name and @p cert actually signed it.
+ * Self-signed certificates (subject name equal to issuer name) are ignored, and the
+ * issuer name match alone is not trusted because it can be forged, so the signature
+ * is verified.
+ * @param certs the store of certificates to search.
+ * @param cert the certificate to check.
+ * @return 1 if @p cert is the issuer of another (non-self-signed) certificate in
+ * @p certs, 0 otherwise.
+ */
+static BOOL
+xmlSecMSCryptoCertIsIssuerOfAnyOtherCert(HCERTSTORE certs, PCCERT_CONTEXT cert) {
+    PCCERT_CONTEXT tmpCert = NULL;
+
+    xmlSecAssert2(certs != NULL, FALSE);
+    xmlSecAssert2(cert != NULL, FALSE);
+    xmlSecAssert2(cert->pCertInfo != NULL, FALSE);
+
+    /* CertFindCertificateInStore automatically frees the previous certificate context (see
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certfindcertificateinstore) */
+    while((tmpCert = CertFindCertificateInStore(certs,
+                    X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                    0,
+                    CERT_FIND_ISSUER_NAME,
+                    &(cert->pCertInfo->Subject),
+                    tmpCert)) != NULL)
+    {
+        /* skip self-signed certs: a cert is its own issuer */
+        if(CertCompareCertificateName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                    &(tmpCert->pCertInfo->Subject),
+                    &(tmpCert->pCertInfo->Issuer)) == TRUE
+        ) {
+            continue;
+        }
+
+        /* make sure nextCert is actually signed by cert; the issuer name
+         * match alone can be forged and would skip a legitimate key cert */
+        if(CryptVerifyCertificateSignatureEx(
+                    (HCRYPTPROV_LEGACY)NULL,
+                    X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                    CRYPT_VERIFY_CERT_SIGN_SUBJECT_CERT, (void*)tmpCert,
+                    CRYPT_VERIFY_CERT_SIGN_ISSUER_CERT, (void*)cert,
+                    0, NULL) != TRUE)
+        {
+            continue;
+        }
+
+        /* found the non-self signed cert tmpCert that is actually signed by cert */
+        CertFreeCertificateContext(tmpCert);
+        return(TRUE);
+    }
+
+    /* tmpCert is NULL here, meaning no other certificate was found that is issued by cert */
+    return(FALSE);
+}
+
+/**
  * @brief Verifies @p certs list.
  * @param store the pointer to X509 certificate context store klass.
  * @param certs the untrusted certificates stack.
@@ -967,40 +1037,25 @@ xmlSecMSCryptoX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs,
     /* CertEnumCertificatesInStore automatically frees the previous certificate context (see
      * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcertificatesinstore) */
     while((cert = CertEnumCertificatesInStore(certs, cert)) != NULL){
-        PCCERT_CONTEXT nextCert = NULL;
-        unsigned char selected = 1;
-
         if (cert->pCertInfo == NULL) {
             /* malformed store context: skip it; the next CertEnumCertificatesInStore
              * call frees this handle (and the final one is freed by the loop exit) */
             continue;
         }
 
-        /* if cert is the issuer of any other cert in the list, then it is
-          * to be skipped except a case of a self-signed cert*/
-        do {
-            /* CertFindCertificateInStore automatically frees the previous certificate context (see
-             * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certfindcertificateinstore) */
-            nextCert = CertFindCertificateInStore(certs,
-                    X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-                    0,
-                    CERT_FIND_ISSUER_NAME,
-                    &(cert->pCertInfo->Subject),
-                    nextCert);
-            if((nextCert != NULL) && !CertCompareCertificateName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-                                        &(nextCert->pCertInfo->Subject), &(nextCert->pCertInfo->Issuer))) {
-                selected = 0;
-            }
-        } while((selected == 1) && (nextCert != NULL));
-        if(nextCert != NULL) {
-            CertFreeCertificateContext(nextCert);
+        /* skip the cert if it is the issuer of any other cert in the list; a
+         * self-signed cert is not considered to be issued by itself */
+        if(xmlSecMSCryptoCertIsIssuerOfAnyOtherCert(certs, cert)) {
+            continue;
         }
 
-        if(selected == 1) {
-            if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) != 0
-                    || xmlSecMSCryptoX509StoreConstructCertsChain(store, cert, certs, keyInfoCtx)) {
-                return(cert);
-            }
+        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) != 0) {
+            /* skip cert verification */
+            return(cert);
+        }
+        if(xmlSecMSCryptoX509StoreConstructCertsChain(store, cert, certs, keyInfoCtx)) {
+            /* successfully constructed and verified the certificate chain */
+            return(cert);
         }
     }
 
@@ -1571,7 +1626,7 @@ xmlSecMSCryptoX509FindCertByIssuer(HCERTSTORE store, const LPTSTR wcIssuer,
                         NULL);
             xmlFree(bdata);
         }
-    }    
+    }
     /* CASE 5: UNICODE, DN */
     if (NULL == res) {
         bdata = xmlSecMSCryptoCertStrToName(dwCertEncodingType,

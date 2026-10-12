@@ -23,6 +23,7 @@
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
 #include <xmlsec/list.h>
+#include <xmlsec/x509.h>
 
 #ifdef __cplusplus
 extern "C" {

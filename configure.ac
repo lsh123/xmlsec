@@ -2868,10 +2868,14 @@ else
     fi
 
     dnl -fPIE: compile all objects as position-independent executable code.
-    dnl Not supported on Windows (PE images are ASLR-ready via DYNAMICBASE).
+    dnl Only added when the GNU linker is detected: the matching -pie link flag
+    dnl (added below) is only supported with GNU ld, and compiling PIE objects
+    dnl while linking non-PIE executables is an inconsistent configuration
+    dnl (e.g. on AIX). Not supported on Windows (PE images are ASLR-ready via
+    dnl DYNAMICBASE).
     dnl   GCC: -fPIE added in 4.9 (require major >= 5 to avoid minor-version checks)
     dnl   Clang: supported since early versions (require major >= 5)
-    if test "z$build_on_windows" != "zyes" ; then
+    if test "z$build_on_windows" != "zyes" -a "z$with_gnu_ld" = "zyes" ; then
         if test "z$build_with_gcc" = "zyes" -a "$gcc_major_ver" -ge 5 ; then
             CFLAGS="$CFLAGS -fPIE"
         elif test "z$build_with_clang" = "zyes" -a "$clang_major_ver" -ge 5 ; then

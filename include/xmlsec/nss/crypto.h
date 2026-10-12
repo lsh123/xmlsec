@@ -491,11 +491,26 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecNssKeyDataHmacSet         (xmlSecK
                                                                          const xmlSecByte* buf,
                                                                          xmlSecSize bufSize);
 
+#ifndef XMLSEC_NO_MD5
+/**
+ * @brief Deprecated. The HMAC with MD5 signature transform klass.
+ */
+#define xmlSecNssTransformHmacMd5Id             ((xmlSecTransformId)NULL)
+/**
+ * @brief Deprecated. The HMAC with MD5 signature transform klass.
+ */
+#define xmlSecNssTransformHmacMd5GetKlass()     ((xmlSecTransformId)NULL)
+#endif /* XMLSEC_NO_MD5 */
+
 #ifndef XMLSEC_NO_RIPEMD160
 /**
  * @brief Deprecated. The HMAC with RIPEMD160 signature transform klass.
  */
-#define xmlSecNssTransformHmacRipemd160Id       ((xmlSecTransformId)NULL)
+#define xmlSecNssTransformHmacRipemd160Id               ((xmlSecTransformId)NULL)
+/**
+ * @brief Deprecated. The HMAC with RIPEMD160 signature transform klass.
+ */
+#define xmlSecNssTransformHmacRipemd160GetKlass()       ((xmlSecTransformId)NULL)
 #endif /* XMLSEC_NO_RIPEMD160 */
 
 #ifndef XMLSEC_NO_SHA1
@@ -546,6 +561,22 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHmacSha512GetKlass(void
 
 #endif /* XMLSEC_NO_HMAC */
 
+
+/******************************************************************************
+ *
+ * MD5 transform
+ *
+  *****************************************************************************/
+#ifndef XMLSEC_NO_MD5
+/**
+ * @brief Deprecated. The MD5 digest transform klass.
+ */
+#define xmlSecNssTransformMd5Id                         ((xmlSecTransformId)NULL)
+/**
+ * @brief Deprecated. The MD5 digest transform klass.
+ */
+#define xmlSecNssTransformMd5GetKlass()                 ((xmlSecTransformId)NULL)
+#endif /* XMLSEC_NO_MD5 */
 
 /******************************************************************************
  *
@@ -636,6 +667,17 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHkdfGetKlass(void);
 #define xmlSecNssKeyDataRsaId \
         xmlSecNssKeyDataRsaGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNssKeyDataRsaGetKlass     (void);
+
+#ifndef XMLSEC_NO_MD5
+/**
+ * @brief Deprecated. The RSA with MD5 signature transform klass.
+ */
+#define xmlSecNssTransformRsaMd5Id             ((xmlSecTransformId)NULL)
+/**
+ * @brief Deprecated. The RSA with MD5 signature transform klass.
+ */
+#define xmlSecNssTransformRsaMd5GetKlass()      ((xmlSecTransformId)NULL)
+#endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_SHA1
 /**

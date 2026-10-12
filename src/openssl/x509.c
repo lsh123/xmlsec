@@ -1457,7 +1457,10 @@ xmlSecOpenSSLX509Asn1TimeToTime(const ASN1_TIME * t, time_t * res) {
 
 #define g2(p) (((p)[0]-'0')*10+(p)[1]-'0')
     if(t->type == V_ASN1_UTCTIME) {
-        xmlSecAssert2(t->length > 12, -1);
+        if(t->length <= 12) {
+            xmlSecOpenSSLError("invalid ASN1_TIME length", NULL);
+            return(-1);
+        }
 
         /* this code is copied from OpenSSL asn1/a_utctm.c file */
         tm.tm_year = g2(t->data);
@@ -1472,7 +1475,10 @@ xmlSecOpenSSLX509Asn1TimeToTime(const ASN1_TIME * t, time_t * res) {
         if(t->data[12] == 'Z') {
             offset = 0;
         } else {
-            xmlSecAssert2(t->length > 16, -1);
+            if(t->length <= 16) {
+                xmlSecOpenSSLError("invalid ASN1_TIME length", NULL);
+                return(-1);
+            }
 
             offset = g2(t->data + 13) * 60 + g2(t->data + 15);
             if(t->data[12] == '-') {
@@ -1488,7 +1494,10 @@ xmlSecOpenSSLX509Asn1TimeToTime(const ASN1_TIME * t, time_t * res) {
         tm.tm_isdst = 0;
     } else {
         int offStart = 14;
-        xmlSecAssert2(t->length > 14, -1);
+        if(t->length <= 14) {
+            xmlSecOpenSSLError("invalid ASN1_TIME length", NULL);
+            return(-1);
+        }
 
         tm.tm_year = g2(t->data) * 100 + g2(t->data + 2) - 1900;
         tm.tm_mon  = g2(t->data + 4) - 1;
@@ -1504,11 +1513,17 @@ xmlSecOpenSSLX509Asn1TimeToTime(const ASN1_TIME * t, time_t * res) {
             }
         }
 
-        xmlSecAssert2(offStart < t->length, -1);
+        if(offStart >= t->length) {
+            xmlSecOpenSSLError("invalid ASN1_TIME length", NULL);
+            return(-1);
+        }
         if(t->data[offStart] == 'Z') {
             offset = 0;
         } else {
-            xmlSecAssert2(t->length > (offStart + 4), -1);
+            if(t->length <= (offStart + 4)) {
+                xmlSecOpenSSLError("invalid ASN1_TIME length", NULL);
+                return(-1);
+            }
 
             offset = g2(t->data + offStart + 1) * 60 + g2(t->data + offStart + 3);
             if(t->data[offStart] == '-') {

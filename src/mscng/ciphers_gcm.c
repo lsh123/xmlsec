@@ -773,8 +773,12 @@ xmlSecMSCngGcmBlockCipherCtxFinal(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
         XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inBufSize, dwInSize, return(-1), cipherName);
         outBuf = xmlSecBufferGetData(out) + outBufSize;
         dwOutSize = dwInSize;
-        /* outBuf is valid when inBufSize > 0 (the SetMaxSize call above allocated the
-         * buffer); BCryptDecrypt requires a non-NULL pointer even for zero-length input */
+        /* inBuf and outBuf are valid when inBufSize > 0 (the SetMaxSize call above
+         * allocated the out buffer); BCryptDecrypt requires non-NULL pointers even
+         * for zero-length input */
+        if((dwInSize == 0) && (inBuf == NULL)) {
+            inBuf = &dummy;
+        }
         if((dwOutSize == 0) && (outBuf == NULL)) {
             outBuf = &dummy;
         }

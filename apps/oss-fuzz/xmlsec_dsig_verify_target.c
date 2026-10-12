@@ -128,14 +128,17 @@ static int do_init(void) {
             off += len;
             pem[off++] = 0x0A;  /* newline; avoid escape sequences (see note above) */
         }
-        /* Best effort: load embedded trusted cert. If it fails we keep going
-         * with an (essentially empty) manager; the signature parsing surface
-         * still runs. */
 #ifndef XMLSEC_NO_X509
         if (xmlSecOpenSSLAppKeysMngrCertLoadMemory(g_mngr,
             (const xmlSecByte*)pem, (xmlSecSize)off,
             xmlSecKeyDataFormatCertPem, xmlSecKeyDataTypeTrusted) < 0) {
             fprintf(stderr, "xmlsec_dsig_verify_target: failed to load the embedded trusted cert\n");
+            xmlSecKeysMngrDestroy(g_mngr);
+            g_mngr = NULL;
+            xmlSecOpenSSLShutdown();
+            xmlSecOpenSSLAppShutdown();
+            xmlSecShutdown();
+            return -1;
         }
 #endif /* XMLSEC_NO_X509 */
     }

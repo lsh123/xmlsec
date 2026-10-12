@@ -1,0 +1,13 @@
+<KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#" xmlns:fixture="urn:xmlsec:fuzz:keyinfo">
+  <RetrievalMethod URI="#rsa" Type="http://www.w3.org/2000/09/xmldsig#RSAKeyValue"/>
+  <fixture:Data>
+    <RSAKeyValue Id="rsa">
+      <Modulus>
+        q07hpxA5DGFfvJFZueFl/LI85XxQxrvqgVugL25V090A9MrlLBg5PmAsxFTe+G6a
+        xvWJQwYOVHj/nuiCnNLa9a7uAtPFiTtW+v5H3wlLaY3ws4atRBNOQlYkIBp38sTf
+        QBkk4i8PEU1GQ2M0CLIJq4/2Akfv1wxzSQ9+8oWkArc=
+      </Modulus>
+      <Exponent>AQAB</Exponent>
+    </RSAKeyValue>
+  </fixture:Data>
+</KeyInfo>

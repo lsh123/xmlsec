@@ -1,0 +1,9 @@
+<KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#" xmlns:fixture="urn:xmlsec:fuzz:keyinfo">
+  <X509Data>
+    <fixture:Unknown/>
+    <X509SubjectName>CN=Badb,OU=X/Secure,O=Baltimore Technologies Ltd.,ST=Dublin,C=IE</X509SubjectName>
+    <X509Certificate>not-base64!</X509Certificate>
+    <X509SKI>hf10xKfSnIg=</X509SKI>
+  </X509Data>
+  <KeyName>Lugh</KeyName>
+</KeyInfo>

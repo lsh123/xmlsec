@@ -1,0 +1,17 @@
+<KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#" xmlns:dsig11="http://www.w3.org/2009/xmldsig11#" xmlns:fixture="urn:xmlsec:fuzz:keyinfo">
+  <dsig11:KeyInfoReference URI="#referenced-key"/>
+  <fixture:Data>
+    <KeyInfo Id="referenced-key">
+      <KeyValue>
+        <RSAKeyValue>
+          <Modulus>
+            q07hpxA5DGFfvJFZueFl/LI85XxQxrvqgVugL25V090A9MrlLBg5PmAsxFTe+G6a
+            xvWJQwYOVHj/nuiCnNLa9a7uAtPFiTtW+v5H3wlLaY3ws4atRBNOQlYkIBp38sTf
+            QBkk4i8PEU1GQ2M0CLIJq4/2Akfv1wxzSQ9+8oWkArc=
+          </Modulus>
+          <Exponent>AQAB</Exponent>
+        </RSAKeyValue>
+      </KeyValue>
+    </KeyInfo>
+  </fixture:Data>
+</KeyInfo>

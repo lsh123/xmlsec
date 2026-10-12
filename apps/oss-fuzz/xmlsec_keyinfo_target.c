@@ -11,13 +11,10 @@
  * (the KeyValue and EncryptedKey structure readers), keyinfo.c and the OpenSSL
  * key-data implementations.
  *
- * The keys manager is NULL on purpose. A manager only adds trusted-key lookup,
- * which needs key material this target does not supply, and it brings in
- * application-level initialization that this target does not need. The KeyValue
- * and EncryptedKey structure readers, the part that reads attacker-supplied
- * bytes, run either way. The X509Data reader is not reached: with a NULL keys
- * manager xmlSecKeyDataX509XmlRead() fails before any <X509Data> child is
- * parsed, so x509_helpers.c is not exercised by this target.
+ * An initialized, empty keys manager enables X509Data child processing without
+ * trusting input certificates. A general-key pass accepts KeyValue classes;
+ * a separate fresh AES pass preserves EncryptedKey's concrete extraction
+ * requirement. No private keys or trust anchors are installed.
  *
  * External fetches are disabled, so the target stays offline.
  */
@@ -35,6 +32,7 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size);
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
+#include <xmlsec/keysmngr.h>
 #include <xmlsec/parser.h>
 #include <xmlsec/keysdata.h>
 #include <xmlsec/transforms.h>
@@ -48,6 +46,7 @@ static int g_initialized = 0;
 /* Set when do_init() fails, so a failed one-time init is not retried on
  * every input. */
 static int g_init_failed = 0;
+static xmlSecKeysMngrPtr g_mngr = NULL;
 
 static void ignore_error(void* ctx, const char* msg, ...) {
     (void)ctx; (void)msg;
@@ -82,15 +81,59 @@ static int do_init(void) {
 
     xmlSetGenericErrorFunc(NULL, &ignore_error);
     xmlSecErrorsSetCallback(&ignore_xmlsec_error);
+
+    g_mngr = xmlSecKeysMngrCreate();
+    if (g_mngr == NULL) {
+        goto fail;
+    }
+    if (xmlSecOpenSSLAppDefaultKeysMngrInit(g_mngr) < 0) {
+        xmlSecKeysMngrDestroy(g_mngr);
+        g_mngr = NULL;
+        goto fail;
+    }
     return 0;
+
+fail:
+    xmlSecOpenSSLShutdown();
+    xmlSecOpenSSLAppShutdown();
+    xmlSecShutdown();
+    return -1;
+}
+
+static void read_keyinfo(xmlNodePtr node, xmlSecKeyDataId keyId) {
+    xmlSecKeyPtr key = NULL;
+    xmlSecKeyInfoCtxPtr keyInfoCtx = NULL;
+
+    key = xmlSecKeyCreate();
+    if (key == NULL) {
+        return;
+    }
+    keyInfoCtx = xmlSecKeyInfoCtxCreate(g_mngr);
+    if (keyInfoCtx == NULL) {
+        xmlSecKeyDestroy(key);
+        return;
+    }
+
+    keyInfoCtx->mode = xmlSecKeyInfoModeRead;
+    keyInfoCtx->keyReq.keyId = keyId;
+    keyInfoCtx->keyReq.keyType = xmlSecKeyDataTypeAny;
+    keyInfoCtx->keyReq.keyUsage = xmlSecKeyUsageAny;
+    keyInfoCtx->retrievalMethodCtx.enabledUris =
+        xmlSecTransformUriTypeEmpty | xmlSecTransformUriTypeSameDocument;
+    keyInfoCtx->keyInfoReferenceCtx.enabledUris =
+        xmlSecTransformUriTypeEmpty | xmlSecTransformUriTypeSameDocument;
+
+    (void)xmlSecKeyInfoNodeRead(node, key, keyInfoCtx);
+
+    xmlSecKeyInfoCtxDestroy(keyInfoCtx);
+    xmlSecKeyDestroy(key);
 }
 
 int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
+    const xmlChar* ids[] = { BAD_CAST "Id", NULL };
     xmlDocPtr doc = NULL;
     xmlNodePtr root = NULL;
     xmlNodePtr node = NULL;
-    xmlSecKeyPtr key = NULL;
-    xmlSecKeyInfoCtxPtr keyInfoCtx = NULL;
 
     if (!g_initialized) {
         g_init_failed = (do_init() < 0);
@@ -126,40 +169,11 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
         return 0;
     }
 
-    key = xmlSecKeyCreate();
-    if (key == NULL) {
-        xmlFreeDoc(doc);
-        return 0;
-    }
-
-    keyInfoCtx = xmlSecKeyInfoCtxCreate(NULL);
-    if (keyInfoCtx == NULL) {
-        xmlSecKeyDestroy(key);
-        xmlFreeDoc(doc);
-        return 0;
-    }
-
-    keyInfoCtx->mode = xmlSecKeyInfoModeRead;
-    /* Accept any key so the first successfully read child element satisfies
-     * the requirement (the reader then stops, skipping later siblings).
-     * keyId must name a concrete class: xmlSecKeyDataIdUnknown (NULL) makes
-     * the EncryptedKey reader fail its "key id is not set" check before the
-     * xmlSecKeyDataBinRead extraction step is reached. */
-    keyInfoCtx->keyReq.keyId = xmlSecOpenSSLKeyDataAesId;
-    keyInfoCtx->keyReq.keyType = xmlSecKeyDataTypeAny;
-    keyInfoCtx->keyReq.keyUsage = xmlSecKeyUsageAny;
-    /* <RetrievalMethod> and <KeyInfoReference> must not fetch remote or local
-     * data. This is the no-network guard. */
-    keyInfoCtx->retrievalMethodCtx.enabledUris =
-        xmlSecTransformUriTypeEmpty | xmlSecTransformUriTypeSameDocument;
-    keyInfoCtx->keyInfoReferenceCtx.enabledUris =
-        xmlSecTransformUriTypeEmpty | xmlSecTransformUriTypeSameDocument;
-
-    /* The return value does not matter. The parsing paths are the target. */
-    (void)xmlSecKeyInfoNodeRead(node, key, keyInfoCtx);
-
-    xmlSecKeyInfoCtxDestroy(keyInfoCtx);
-    xmlSecKeyDestroy(key);
+    xmlSecAddIDs(doc, root, ids);
+    read_keyinfo(node, xmlSecKeyDataIdUnknown);
+#if !defined(XMLSEC_NO_AES) && !defined(XMLSEC_NO_XMLENC)
+    read_keyinfo(node, xmlSecOpenSSLKeyDataAesId);
+#endif
     xmlFreeDoc(doc);
     return 0;
 }

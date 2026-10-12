@@ -1,0 +1,5 @@
+<KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#" xmlns:dsig11="http://www.w3.org/2009/xmldsig11#">
+  <KeyName>Lugh</KeyName>
+  <dsig11:KeyInfoReference URI="#referenced-key"><KeyName>Lugh</KeyName></dsig11:KeyInfoReference>
+  <KeyInfo Id="referenced-key"><KeyName>Lugh</KeyName></KeyInfo>
+</KeyInfo>

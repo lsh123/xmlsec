@@ -1,0 +1,6 @@
+<KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#" xmlns:fixture="urn:xmlsec:fuzz:keyinfo">
+  <fixture:Unknown/>
+  <KeyName>Lugh</KeyName>
+  <KeyValue><RSAKeyValue><Modulus>AQAB</Modulus></RSAKeyValue></KeyValue>
+  <KeyValue/>
+</KeyInfo>

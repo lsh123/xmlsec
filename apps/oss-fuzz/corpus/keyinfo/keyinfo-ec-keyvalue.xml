@@ -1,0 +1,8 @@
+<KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#" xmlns:dsig11="http://www.w3.org/2009/xmldsig11#">
+  <KeyValue>
+    <dsig11:ECKeyValue>
+      <dsig11:NamedCurve URI="urn:oid:1.2.840.10045.3.1.7"/>
+      <dsig11:PublicKey>BJ/yaXNlq4FRObyJCBhb5jAz8GVzinK3bBGLjSDfjbJwNfydtgjnlS4EsDmxSRhWyJWq6GIqy5wvnaiARK04uB4=</dsig11:PublicKey>
+    </dsig11:ECKeyValue>
+  </KeyValue>
+</KeyInfo>

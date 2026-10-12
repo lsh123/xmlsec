@@ -1,0 +1,8 @@
+<KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+  <X509Data>
+    <X509IssuerSerial>
+      <X509IssuerName>CN=Another Transient CA,OU=X/Secure,O=Baltimore Technologies Ltd.,ST=Dublin,C=IE</X509IssuerName>
+      <X509SerialNumber>1017792003066</X509SerialNumber>
+    </X509IssuerSerial>
+  </X509Data>
+</KeyInfo>

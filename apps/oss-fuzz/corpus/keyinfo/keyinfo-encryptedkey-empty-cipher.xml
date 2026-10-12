@@ -1,0 +1,7 @@
+<KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#" xmlns:enc="http://www.w3.org/2001/04/xmlenc#">
+  <enc:EncryptedKey>
+    <enc:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#kw-aes128"/>
+    <KeyInfo><KeyName>Lugh</KeyName></KeyInfo>
+    <enc:CipherData><enc:CipherValue/></enc:CipherData>
+  </enc:EncryptedKey>
+</KeyInfo>

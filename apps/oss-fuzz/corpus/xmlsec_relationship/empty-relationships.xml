@@ -1,0 +1,6 @@
+<Fuzz xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:mdssi="http://schemas.openxmlformats.org/package/2006/digital-signature">
+  <ds:Transform Algorithm="http://schemas.openxmlformats.org/package/2006/RelationshipTransform">
+    <mdssi:RelationshipReference SourceId="absent"/>
+  </ds:Transform>
+  <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"/>
+</Fuzz>

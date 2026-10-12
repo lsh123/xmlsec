@@ -1,0 +1,17 @@
+<Fuzz xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:mdssi="http://schemas.openxmlformats.org/package/2006/digital-signature" xmlns:foreign="urn:fuzz:foreign">
+  <ds:Transform Algorithm="http://schemas.openxmlformats.org/package/2006/RelationshipTransform">
+    <RelationshipReference/>
+    <foreign:RelationshipReference SourceId="wrong-namespace"/>
+    <mdssi:Other SourceId="wrong-name"/>
+    <mdssi:Group>
+      <mdssi:RelationshipReference SourceId="nested"/>
+    </mdssi:Group>
+    <mdssi:RelationshipReference SourceId="selected"/>
+  </ds:Transform>
+  <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+    <Relationship Id="wrong-namespace" Type="urn:fuzz:part" Target="namespace.xml"/>
+    <Relationship Id="wrong-name" Type="urn:fuzz:part" Target="name.xml"/>
+    <Relationship Id="nested" Type="urn:fuzz:part" Target="nested.xml"/>
+    <Relationship Id="selected" Type="urn:fuzz:part" Target="document.xml"/>
+  </Relationships>
+</Fuzz>

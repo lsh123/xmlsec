@@ -1,0 +1,10 @@
+apps/oss-fuzz/corpus/xmlsec_relationship/case-sensitive-ids.xml
+apps/oss-fuzz/corpus/xmlsec_relationship/empty-relationships.xml
+apps/oss-fuzz/corpus/xmlsec_relationship/empty-selection.xml
+apps/oss-fuzz/corpus/xmlsec_relationship/ignored-transform-children.xml
+apps/oss-fuzz/corpus/xmlsec_relationship/missing-and-duplicate-ids.xml
+apps/oss-fuzz/corpus/xmlsec_relationship/missing-source-id.xml
+apps/oss-fuzz/corpus/xmlsec_relationship/namespaces-and-content.xml
+apps/oss-fuzz/corpus/xmlsec_relationship/nonmatching-ids.xml
+apps/oss-fuzz/corpus/xmlsec_relationship/same-namespace-nesting.xml
+apps/oss-fuzz/corpus/xmlsec_relationship/select-and-sort.xml

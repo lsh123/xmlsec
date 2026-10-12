@@ -5,7 +5,7 @@
  * xmlSecEncCtxDecryptToBuffer() and xmlSecEncCtxDecrypt() on an
  * <EncryptedData> element, which exercises EncryptedData/CipherData parsing,
  * the transform chain, block cipher padding, AES/DES key wrap, RSA key
- * transport and the ConcatKDF/AgreementMethod key derivation paths.
+ * transport. Agreement/KDF fixtures are deferred until matching keys are loaded.
  *
  * The keys the xmlenc test documents name are loaded into the keys manager so
  * that decryption can succeed rather than stopping at key lookup. Network and
@@ -35,56 +35,51 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size);
 #include <xmlsec/openssl/app.h>
 #include <xmlsec/openssl/crypto.h>
 
-/* Symmetric keys used by the xmlenc test documents, which name them in
- * <KeyName>. The material is the plain ASCII prefix that
- * tests/merlin-xmlenc-five/keys.xml carries base64-encoded, so a document
- * wrapped to one of these keys really does decrypt. */
+/* Named symmetric test keys from tests/merlin-xmlenc-five/keys.xml and
+ * tests/keys/keys.xml. Explicit sizes preserve binary AES-GCM key material. */
 static const struct {
     const char* name;
-    const char* material;   /* length selects the algorithm variant */
+    const char* material;
+    xmlSecSize size;
     int is_des;
 } g_sym_keys[] = {
-    { "bob", "abcdefghijklmnopqrstuvwx",         1 },  /* tripledes, kw-tripledes */
-    { "jeb", "abcdefghijklmnopqrstuvwx",         0 },  /* aes192, kw-aes192 */
-    { "job", "abcdefghijklmnop",                 0 },  /* aes128, kw-aes128 */
-    { "jed", "abcdefghijklmnopqrstuvwxyz012345", 0 },  /* aes256, kw-aes256 */
+    { "bob", "abcdefghijklmnopqrstuvwx",         24, 1 },  /* tripledes, kw-tripledes */
+    { "jeb", "abcdefghijklmnopqrstuvwx",         24, 0 },  /* aes192, kw-aes192 */
+    { "job", "abcdefghijklmnop",                 16, 0 },  /* aes128, kw-aes128 */
+    { "jed", "abcdefghijklmnopqrstuvwxyz012345", 32, 0 },  /* aes256, kw-aes256 */
+    { "test-aes128",
+        "\xd1\x77\xf2\xdc\x44\xbe\x15\xbb\xff\x39\xf5\xae\x40\x72\xaf\x3c",
+        16, 0 },
+    { "test-aes192",
+        "\x96\x4f\x43\xc8\x0d\x3b\xc4\xbf\xe6\xe3\x97\xd4\x6f\xbc\xdb\x2e"
+        "\x8c\xb7\x73\x48\x4b\x87\x0f\x34",
+        24, 0 },
+    { "test-aes256",
+        "\x7e\x90\x8f\x40\xb0\x8c\x64\x2c\x3d\x5a\x2a\x47\xf2\x49\x35\x27"
+        "\xbe\x42\xa9\x88\x16\x06\x16\xc9\x0c\xc1\x4f\x89\x44\xb4\x87\x31",
+        32, 0 },
 };
 #define G_SYM_NKEYS ((int)(sizeof(g_sym_keys) / sizeof(g_sym_keys[0])))
 
-/* Fixed RSA test key (PEM), stored as individual lines so the source contains
- * no backslash-escape sequences; the PEM is re-assembled (with real newline
- * characters) at runtime. The rsa-1_5 and rsa-oaep documents were wrapped to a
- * different key, so key transport is driven down its failure paths, which is
- * where the padding handling lives. */
+/* Public test-suite key from tests/merlin-xmlenc-five/rsapriv.pem, named
+ * merlin-rsa-key by tests/testEnc.sh. This is test material, not a production
+ * secret. The PEM lines are reassembled with newlines at runtime. */
 static const char* const g_key_lines[] = {
-    "-----BEGIN PRIVATE KEY-----",
-    "MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDQBXL8JyfDOJhr",
-    "K1019rmofPLqsMbIGielYOAwu5DjcICOXG5f2ew5oFySJPryWUTY2A3YbmLpX7/0",
-    "7wVOdXyd8WgidrlIRsOaEnp0XeQ/VYV7ng6MDhM1efwGvvJdBysDwQAWkexaOPtK",
-    "omu0mOExVHtrDO3LpS3GFtsdbLgDMph10ZFW6I9ZWurWded9osqZY39Monj9cEXt",
-    "SapupJeP1wWLJUvzQNp6CYfNMhWpmvchuMG0HIIlqAm9i7AMNCLXbSIYvjAtOGOS",
-    "ABjKwnZsBRr/2apET0E7j4Uo+T7Yb5alhYzxsXz+Ywjrji86em3yAjukQQdv+YGa",
-    "WVsrsGIPAgMBAAECggEABwmhwdiGE3UfHJETaDeR2s3PXuB4LF2y9awsKYa1XvYR",
-    "ab+RMS3FCVx2UhagmGf4vxu5uP0sqRfG/YxdZTG7jSrIcR7YvRJxaUCZL/kO0PqE",
-    "HfiGjKp1PLWE/ao8HNv/OPNKNqx2wit0JPd1v8UxHGNVTmJAZHr3Uq2EE2zE+1nZ",
-    "+F+ia87JX9UB3WgqW+5ZxneQ7U9s84dGaPRSvNFmOnUTlKp6P9QmH29tl8bSYFez",
-    "LGAXsPNXcLRrmS88P9UkF+jAdik5rJUxGoiJ4SGmadZOPusVp4If9m3eH33BTzR8",
-    "uUDcDWW9/z+/Jw3VLLdcOnOIdCo3gzRtYcKWXsHd8QKBgQD9iGMsVrQnpjkDiCul",
-    "cZVJ9MLgTzGPjK/sQXxm4NnFN603wmWe7CRJK0Dnx7Q8mDkM6Ufq/30dxHgVnx13",
-    "dO/qQoaonL0dAw8qdI3v80i0MScp51HqeJRWHp+3LsUBEvj2+Mz+Y2QlZviZKRoj",
-    "9NfDxR4Yjt9lOKHhNOhWiOXxFQKBgQDSC65z78Md6wSE4qF7Kn+oc7OsPHEopika",
-    "grSXPyuwI2icNj7DEYypphPs6vrlxdDn2zusO+p9LOBjm35zce1y+dqnnAvPBMpN",
-    "4i++s7Dc8ALtB2F9FVPNuNQfYc9IPJire046bKhNjCFTlkeWl9P5FHy31QPqp2R9",
-    "jTWzy+nnkwKBgF+lWGSdwRFEMDYY5P5hP0TLRcmBltzk4mlquxfEs+MnAf4LJHMz",
-    "+uxvmOjX+jLx6nPofe01vWnBeNwPTvqF7wydVFe/6chMIyiNGA7x5Pe1o2S3k7u1",
-    "CaEDpJVi24dwNORXMF63+Evz8M03KFlwQQXmE1iIbdat6sQfRZd/xd+RAoGAOsk2",
-    "LBCAhVEPVLmxBC2iyNyI/r1z1jKa8mZ+cI4nhgaC8qVj72hr+9cVYItraP9yNlHv",
-    "Y4bpW9tBed89BsZt9G3lOl+8FlZ64E1bm33jFBLAXuJf8IgVilAeXiIbx1XeTLAX",
-    "9tYOTJXZhfFbW9RmaSHIvhKKJBRxVYo963I4pq0CgYBNukE2d/6dzIhsDC+Ndf9c",
-    "uzyJVfihxoQRPJAR7C2RdyfUFLJPqEiqGWOUBm9f092WJT11mNZ1vtT9Lar2lg7b",
-    "msfYIwZXfUbFerc0NY7Ak9mVhk7ZxFqtV38p9OvJgsh1BpMA7M/9HtaaZP6aTC/b",
-    "0MODtheSMAnrJbLRlnBqHg==",
-    "-----END PRIVATE KEY-----",
+    "-----BEGIN RSA PRIVATE KEY-----",
+    "MIICXQIBAAKBgQDkXTUsWzRVpUHjbDpWCfYDfXmQ/q4LkaioZoTpu4ut1Q3eQC5t",
+    "gD14agJhgT8yzeY5S/YNlwCyuVkjuFyoyTHFX2IOPpz7jnh4KnQ+B1IH9fY/+kmk",
+    "zHJgxSUDJsdUMPgGpKt5hnEn7ziXAWXLc2udFbnHwhi9TXXwRHGi9wZ4YwIDAQAB",
+    "AoGBALNTnlXeqRI4W61DZ+v4ln/XIIeD9xiOoWrcVrNU2zL+g41ryQmkEqFkXcpD",
+    "vGUg2xFTXTz+v0WZ1y39sIW6uKFRYUfaNsF6iVfGAyx1VWK/jgtPnCWDQy26Eby0",
+    "BqpbZRy1a6MLYVEG/5bvZE01CDV4XttpTrNX91WWcYGduJxBAkEA6ED1ZOqIzBpu",
+    "c2KAo+bWmroCH8+cSDk0gVq6bnRB+EEhRCmo/VgvndWLxfexdGmDIOAIisB06N5a",
+    "GzBSCaEY/QJBAPu2cNvuuBNLwrlxPCwOEpIHYT4gJq8UMtg6O6N+u++nYCGhK6uo",
+    "VCmrKY+UewyNIcsLZF0jsNI2qJjiU1vQxN8CQQDfQJnigMQwlfO3/Ga1po6Buu2R",
+    "0IpkroB3G1R8GkrTrR+iGv2zUdKrwHsUOC2fPlFrB4+OeMOomRw6aG9jjDStAkB1",
+    "ztiZhuvuVAoKIv5HnDqC0CNqIUAZtzlozDB3f+xT6SFr+/Plfn4Nlod4JMVGhZNo",
+    "ZaeOlBLBAEX+cAcVtOs/AkBicZOAPv84ABmFfyhXhYaAuacaJLq//jg+t+URUOg+",
+    "XZS9naRmawEQxOkZQVoMeKgvu05+V4MniFqdQBINIkr5",
+    "-----END RSA PRIVATE KEY-----",
 };
 #define G_KEY_NLINES ((int)(sizeof(g_key_lines) / sizeof(g_key_lines[0])))
 
@@ -105,9 +100,7 @@ static void ignore_xmlsec_error(const char* file, int line, const char* func,
     (void)errorObject; (void)errorSubject; (void)reason; (void)msg;
 }
 
-/* Load the named symmetric keys. Failures are ignored: a missing key only
- * makes the harness shallower, it does not make it wrong. */
-static void load_sym_keys(void) {
+static int load_sym_keys(void) {
     int i;
 
     for (i = 0; i < G_SYM_NKEYS; ++i) {
@@ -116,19 +109,21 @@ static void load_sym_keys(void) {
             xmlSecOpenSSLKeyDataAesId;
         xmlSecKeyPtr key = xmlSecKeyReadMemory(id,
             (const xmlSecByte*)g_sym_keys[i].material,
-            (xmlSecSize)strlen(g_sym_keys[i].material));
+            g_sym_keys[i].size);
 
         if (key == NULL) {
-            continue;
+            return -1;
         }
         if (xmlSecKeySetName(key, (const xmlChar*)g_sym_keys[i].name) < 0 ||
             xmlSecOpenSSLAppDefaultKeysMngrAdoptKey(g_mngr, key) < 0) {
             xmlSecKeyDestroy(key);
+            return -1;
         }
     }
+    return 0;
 }
 
-static void load_rsa_key(void) {
+static int load_rsa_key(void) {
     char pem[4096];
     size_t off = 0;
     int i;
@@ -137,7 +132,7 @@ static void load_rsa_key(void) {
     for (i = 0; i < G_KEY_NLINES; ++i) {
         size_t len = strlen(g_key_lines[i]);
         if (off + len + 1 >= sizeof(pem)) {
-            return;
+            return -1;
         }
         memcpy(pem + off, g_key_lines[i], len);
         off += len;
@@ -147,12 +142,14 @@ static void load_rsa_key(void) {
     key = xmlSecOpenSSLAppKeyLoadMemory((const xmlSecByte*)pem, (xmlSecSize)off,
                                        xmlSecKeyDataFormatPem, NULL, NULL, NULL);
     if (key == NULL) {
-        return;
+        return -1;
     }
     if (xmlSecKeySetName(key, (const xmlChar*)"merlin-rsa-key") < 0 ||
         xmlSecOpenSSLAppDefaultKeysMngrAdoptKey(g_mngr, key) < 0) {
         xmlSecKeyDestroy(key);
+        return -1;
     }
+    return 0;
 }
 
 static int do_init(void) {
@@ -186,7 +183,8 @@ static int do_init(void) {
         xmlSecShutdown();
         return -1;
     }
-    if (xmlSecOpenSSLAppDefaultKeysMngrInit(g_mngr) < 0) {
+    if (xmlSecOpenSSLAppDefaultKeysMngrInit(g_mngr) < 0 ||
+        load_sym_keys() < 0 || load_rsa_key() < 0) {
         xmlSecKeysMngrDestroy(g_mngr);
         g_mngr = NULL;
         xmlSecOpenSSLShutdown();
@@ -195,8 +193,6 @@ static int do_init(void) {
         return -1;
     }
 
-    load_sym_keys();
-    load_rsa_key();
     return 0;
 }
 

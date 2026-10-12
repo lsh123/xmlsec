@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+  <SignedInfo>
+    <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+    <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+    <Reference URI="#object">
+      <Transforms>
+        <Transform Algorithm="http://www.w3.org/TR/1999/REC-xslt-19991116">
+          <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+            <xsl:output method="text"/>
+            <xsl:template match="/"><xsl:text>text</xsl:text></xsl:template>
+          </xsl:stylesheet>
+        </Transform>
+      </Transforms>
+      <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+      <DigestValue>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</DigestValue>
+    </Reference>
+  </SignedInfo>
+  <SignatureValue>AA==</SignatureValue>
+  <KeyInfo><KeyValue><RSAKeyValue>
+    <Modulus>q07hpxA5DGFfvJFZueFl/LI85XxQxrvqgVugL25V090A9MrlLBg5PmAsxFTe+G6axvWJQwYOVHj/nuiCnNLa9a7uAtPFiTtW+v5H3wlLaY3ws4atRBNOQlYkIBp38sTfQBkk4i8PEU1GQ2M0CLIJq4/2Akfv1wxzSQ9+8oWkArc=</Modulus>
+    <Exponent>AQAB</Exponent>
+  </RSAKeyValue></KeyValue></KeyInfo>
+  <Object Id="object">text</Object>
+</Signature>

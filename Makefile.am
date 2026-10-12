@@ -98,7 +98,7 @@ CHECK_CRYPTO_LIST = \
 
 
 .PHONY: all check check-all check-info check-keys check-dsig check-enc check-fuzz \
-	check-unit-tests memcheck memcheck-res perfcheck tar-release cleantar docs-build
+	check-unit-tests check-build memcheck memcheck-res perfcheck tar-release cleantar docs-build
 
 all:
 
@@ -106,12 +106,17 @@ if XMLSEC_APPS
 
 check: check-all check-fuzz check-info
 
-# Build the command line tool and the unit tests on demand so the check-* /
-# memcheck / perfcheck targets can be run directly in a fresh build dir,
-# before a full 'make' has built the subdirectories. The whole project is
+# Build the command line tool, the unit tests and the fuzzers on demand so the
+# check-* / memcheck / perfcheck targets can be run directly in a fresh build
+# dir, before a full 'make' has built the subdirectories. The whole project is
 # built (not just apps/) so the library dependencies in src/ are available.
-$(TEST_APP) $(UNIT_TEST_APP):
+# All the on-demand targets share the single 'check-build' phony prerequisite
+# so a parallel 'make -j check' runs the recursive build exactly once.
+.PHONY: check-build
+check-build:
 	$(MAKE) $(AM_MAKEFLAGS) all
+
+$(TEST_APP) $(UNIT_TEST_APP): check-build
 
 check-unit-tests: $(UNIT_TEST_APP)
 	@($(PRECHECK_COMMANDS) && $(ABS_BUILDDIR)/$(UNIT_TEST_APP))
@@ -132,12 +137,10 @@ FUZZ_TARGETS = \
 	$(NULL)
 endif
 
-# Build the fuzzers on demand so the check-fuzz target can be run directly in
-# a fresh build dir, before a full 'make' has built the subdirectories (same
-# pattern as $(TEST_APP)/$(UNIT_TEST_APP) above). The whole project is built
-# (not just apps/) so the library dependencies in src/ are available.
-$(FUZZ_TARGETS):
-	$(MAKE) $(AM_MAKEFLAGS) all
+# The fuzzers share the 'check-build' prerequisite with $(TEST_APP) and
+# $(UNIT_TEST_APP) so a parallel 'make -j check' runs the recursive build
+# exactly once.
+$(FUZZ_TARGETS): check-build
 
 check-fuzz: $(FUZZ_TARGETS)
 	@($(PRECHECK_COMMANDS) && \

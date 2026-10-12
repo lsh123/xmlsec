@@ -456,6 +456,18 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoKeyDataHmacSet     (xmlSec
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCryptoTransformHmacMd5GetKlass(void);
 #endif /* XMLSEC_NO_MD5 */
 
+#ifndef XMLSEC_NO_RIPEMD160
+/**
+ * @brief The HMAC with RIPEMD160 signature transform klass.
+ */
+#define xmlSecMSCryptoTransformHmacRipemd160Id          ((xmlSecTransformId)NULL)
+/**
+ * @brief The HMAC with RIPEMD160 signature transform klass.
+ */
+#define xmlSecMSCryptoTransformHmacRipemd160GetKlass() ((xmlSecTransformId)NULL)
+#endif /* XMLSEC_NO_RIPEMD160 */
+
+
 #ifndef XMLSEC_NO_SHA1
 /**
  * @brief The HMAC with SHA1 signature transform klass.
@@ -473,6 +485,17 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCryptoTransformHmacSha1GetKlass(
         xmlSecMSCryptoTransformHmacSha256GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCryptoTransformHmacSha256GetKlass(void);
 #endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA224
+/**
+ * @brief The HMAC with SHA2-224 signature transform klass.
+ */
+#define xmlSecMSCryptoTransformHmacSha224Id             ((xmlSecTransformId)NULL)
+/**
+ * @brief The HMAC with SHA2-224 signature transform klass.
+ */
+#define xmlSecMSCryptoTransformHmacSha224GetKlass()     ((xmlSecTransformId)NULL)
+#endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA384
 /**

@@ -3831,12 +3831,11 @@ xmlSecAppWriteResult(const char* inputFileName, const char* outputFileNameTmpl, 
     /* dump output */
     if(doc != NULL) {
         ret = xmlSaveFileTo(outBuffer, doc, (const char*)doc->encoding);
+        /* xmlSaveFileTo closes the output buffer on both success and error */
         if (ret < 0) {
             fprintf(stderr, "Error: failed to write xml output\n");
-            (void)xmlOutputBufferClose(outBuffer);
             return(-1);
         }
-        /* xmlSaveFileTo closes the buffer */
     } else if(buffer != NULL) {
         xmlSecSize bufSize;
         const xmlSecByte* bufData;

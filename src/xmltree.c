@@ -1803,15 +1803,18 @@ xmlSecQName2BitMaskGetInfo(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitMask m
 /**
  * @brief Converts @p qnameLocalPart to @p mask.
  * @param info the qname<->bit mask mapping information.
- * @param qnameHref the qname Href value.
  * @param qnameLocalPart the qname LocalPart value.
+ * @param qnameHref the qname Href value.
  * @param mask the pointer to result mask.
  * @return 0 on success or a negative value if an error occurs.
  */
 int
-xmlSecQName2BitMaskGetBitMask(xmlSecQName2BitMaskInfoConstPtr info,
-                            const xmlChar* qnameHref, const xmlChar* qnameLocalPart,
-                            xmlSecBitMask* mask) {
+xmlSecQName2BitMaskGetBitMask(
+    xmlSecQName2BitMaskInfoConstPtr info,
+    const xmlChar* qnameLocalPart,
+    const xmlChar* qnameHref,
+    xmlSecBitMask* mask
+) {
     unsigned int ii;
 
     xmlSecAssert2(info != NULL, -1);
@@ -1884,7 +1887,7 @@ xmlSecQName2BitMaskGetBitMaskFromString(xmlSecQName2BitMaskInfoConstPtr info,
     qnameHref = (ns != NULL) ? ns->href : BAD_CAST NULL;
 
     /* and finally search for mask */
-    ret = xmlSecQName2BitMaskGetBitMask(info, qnameHref, qnameLocalPart, mask);
+    ret = xmlSecQName2BitMaskGetBitMask(info, qnameLocalPart, qnameHref, mask);
     if(ret < 0) {
         xmlSecInternalError4("xmlSecQName2BitMaskGetBitMask", NULL,
                              "node=%s,qnameLocalPart=%s,qnameHref=%s",

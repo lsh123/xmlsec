@@ -30,8 +30,7 @@ the XMLSEC API or via an administrator operation.
 
 When a getKey is done on the NSS Keys Store, it first checks the Simple
 Keys Store. If the key is found there, it is returned. If not, the key
-is searched in the NSS database. If found, the key is stored in the
-Simple Keys Store before it is returned.
+is searched in the NSS database.
 
 
 Thus, the various sources for keys/certs/crls for an XMLSEC-NSS application

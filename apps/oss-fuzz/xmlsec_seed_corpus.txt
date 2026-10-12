@@ -1,0 +1,12 @@
+apps/oss-fuzz/corpus/xmlsec/ascii-encoding.xml
+apps/oss-fuzz/corpus/xmlsec/comment-pi-cdata.xml
+apps/oss-fuzz/corpus/xmlsec/escaped-attributes.xml
+apps/oss-fuzz/corpus/xmlsec/expected-parse-fail-bare-ampersand.xml
+apps/oss-fuzz/corpus/xmlsec/expected-parse-fail-duplicate-attribute.xml
+apps/oss-fuzz/corpus/xmlsec/expected-parse-fail-mismatched-close.xml
+apps/oss-fuzz/corpus/xmlsec/expected-parse-fail-truncated-attribute.xml
+apps/oss-fuzz/corpus/xmlsec/expected-parse-fail-truncated-element.xml
+apps/oss-fuzz/corpus/xmlsec/internal-entity-default-attribute.xml
+apps/oss-fuzz/corpus/xmlsec/namespaces.xml
+apps/oss-fuzz/corpus/xmlsec/nested-mixed-content.xml
+apps/oss-fuzz/corpus/xmlsec/root.xml

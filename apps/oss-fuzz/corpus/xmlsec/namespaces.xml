@@ -1,0 +1,3 @@
+<root xmlns="urn:xmlsec:parser:root" xmlns:p="urn:xmlsec:parser:item">
+  <p:item p:id="one"><plain xmlns=""/></p:item>
+</root>

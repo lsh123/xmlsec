@@ -1,0 +1,14 @@
+<Fuzz xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:mdssi="http://schemas.openxmlformats.org/package/2006/digital-signature" xmlns:rel="http://schemas.openxmlformats.org/package/2006/relationships" xmlns:foreign="urn:fuzz:foreign" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+  <ds:Transform Algorithm="http://schemas.openxmlformats.org/package/2006/RelationshipTransform">
+    <mdssi:RelationshipReference SourceId="selected"/>
+  </ds:Transform>
+  <rel:Relationships mc:Ignorable="foreign" xml:base="parts/">
+    ignored text
+    <!-- ignored comment -->
+    <?fuzz ignored?>
+    <foreign:Relationship Id="selected" Target="foreign.xml"/>
+    <rel:Relationship Id="selected" Type="urn:fuzz:part" Target="a&amp;b&lt;c&gt;&quot;d.xml" foreign:attribute="ignored" xml:lang="en">
+      ignored content <foreign:Child/>
+    </rel:Relationship>
+  </rel:Relationships>
+</Fuzz>

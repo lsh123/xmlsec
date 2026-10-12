@@ -1,0 +1,13 @@
+<Fuzz xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:mdssi="http://schemas.openxmlformats.org/package/2006/digital-signature">
+  <ds:Transform Algorithm="http://schemas.openxmlformats.org/package/2006/RelationshipTransform">
+    <mdssi:RelationshipReference SourceId=""/>
+    <mdssi:RelationshipReference SourceId="same"/>
+  </ds:Transform>
+  <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+    <Relationship Type="urn:fuzz:part" Target="missing-first.xml"/>
+    <Relationship Id="same" Type="urn:fuzz:part" Target="first.xml"/>
+    <Relationship Type="urn:fuzz:part" Target="missing-second.xml"/>
+    <Relationship Id="" Type="urn:fuzz:part" Target="empty.xml"/>
+    <Relationship Id="same" Type="urn:fuzz:part" Target="second.xml" TargetMode="Internal"/>
+  </Relationships>
+</Fuzz>

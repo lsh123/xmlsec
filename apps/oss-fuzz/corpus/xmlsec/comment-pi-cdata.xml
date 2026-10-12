@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<?seed mode="parser"?>
+<!-- prolog -->
+<root><!-- child --><?item value?><![CDATA[<item>&literal;</item>]]></root>
+<!-- epilog -->

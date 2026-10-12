@@ -1,0 +1,6 @@
+<!DOCTYPE root [
+  <!ELEMENT root (#PCDATA)>
+  <!ENTITY greeting "hello">
+  <!ATTLIST root mode CDATA "parser">
+]>
+<root>&greeting;</root>

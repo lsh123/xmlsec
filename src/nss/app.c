@@ -17,10 +17,12 @@
 
 #include "globals.h"
 
+#include <stdlib.h>
 #include <string.h>
 
 #include <nspr.h>
 #include <nss.h>
+#include <secoid.h>
 #include <pk11pub.h>
 #include <cert.h>
 #include <keyhi.h>
@@ -67,6 +69,47 @@ static SECItem *xmlSecNssAppNicknameCollisionCallback           (SECItem *old_ni
                                                                  void *wincx);
 static xmlSecKeyPtr     xmlSecNssAppDerKeyLoadSECItem           (SECItem* secItem);
 
+static int
+xmlSecNssEnableLegacyAlgorithms(void) {
+    const SECOidTag sha1Oids[] = {
+        SEC_OID_SHA1,
+        SEC_OID_PKCS1_SHA1_WITH_RSA_ENCRYPTION,
+        SEC_OID_ANSIX9_DSA_SIGNATURE_WITH_SHA1_DIGEST,
+        SEC_OID_BOGUS_DSA_SIGNATURE_WITH_SHA1_DIGEST,
+        SEC_OID_ANSIX962_ECDSA_SHA1_SIGNATURE
+    };
+    SECStatus rv;
+    size_t ii;
+
+    for(ii = 0; ii < sizeof(sha1Oids) / sizeof(sha1Oids[0]); ii++) {
+        rv = NSS_SetAlgorithmPolicy(sha1Oids[ii], NSS_USE_ALG_IN_CERT_SIGNATURE, 0);
+        if(rv != SECSuccess) {
+            xmlSecNssError2("NSS_SetAlgorithmPolicy", NULL, "oid=%d", (int)(sha1Oids[ii]));
+            return(-1);
+        }
+    }
+
+    /* restore the pre-NSS-3.101 key size policy scope */
+    rv = NSS_OptionSet(NSS_KEY_SIZE_POLICY_FLAGS, NSS_KEY_SIZE_POLICY_SSL_FLAG);
+    if(rv != SECSuccess) {
+        xmlSecNssError("NSS_OptionSet", NULL);
+        return(-1);
+    }
+
+    /* allow keys of any size */
+    rv = NSS_OptionSet(NSS_RSA_MIN_KEY_SIZE, 0);
+    if(rv == SECSuccess) {
+        rv = NSS_OptionSet(NSS_DSA_MIN_KEY_SIZE, 0);
+    }
+    if(rv != SECSuccess) {
+        xmlSecNssError("NSS_OptionSet", NULL);
+        return(-1);
+    }
+
+    /* success */
+    return(0);
+}
+
 /**
  * xmlSecNssAppInit:
  * @config:             the path to NSS database files.
@@ -79,6 +122,7 @@ static xmlSecKeyPtr     xmlSecNssAppDerKeyLoadSECItem           (SECItem* secIte
  */
 int
 xmlSecNssAppInit(const char* config) {
+    const char* legacyAlgs;
     SECStatus rv;
 
     if(config) {
@@ -93,6 +137,32 @@ xmlSecNssAppInit(const char* config) {
         rv = NSS_NoDB_Init(NULL);
         if(rv != SECSuccess) {
             xmlSecNssError("NSS_NoDB_Init", NULL);
+            return(-1);
+        }
+    }
+
+    /*
+     * If the XMLSEC_NSS_ENABLE_LEGACY_ALGORITHMS environment variable is
+     * set, relax the NSS algorithm policy to allow verification of
+     * legacy certificates.
+     *
+     * Since NSS 3.101 the minimum key size policy applies to certificate
+     * chain verification by default and its violations are reported as
+     * the misleading SEC_ERROR_CERT_SIGNATURE_ALGORITHM_DISABLED error.
+     * The xmlsec test suite contains a 512-bit RSA intermediate CA and
+     * SHA-1 signed certificates which are rejected by these defaults.
+     * Re-enable the SHA-1 signature algorithms for certificate
+     * verification and clear the minimum key size.
+     * Note that the MD2/MD4/MD5 signature algorithms are controlled
+     * separately by the NSS_ALLOW_WEAK_SIGNATURE_ALG variable.
+     */
+    legacyAlgs = getenv("XMLSEC_NSS_ENABLE_LEGACY_ALGORITHMS");
+    if(legacyAlgs != NULL && legacyAlgs[0] != '\0') {
+        int ret;
+
+        ret = xmlSecNssEnableLegacyAlgorithms();
+        if(ret < 0) {
+            xmlSecNssError("xmlSecNssEnableLegacyAlgorithms", NULL);
             return(-1);
         }
     }

@@ -379,6 +379,12 @@ xmlSecKeyReqCopy(xmlSecKeyReqPtr dst, xmlSecKeyReqPtr src) {
     dst->keyUsage       = src->keyUsage;
     dst->keyBitsSize    = src->keyBitsSize;
 
+    /* xmlSecPtrListCopy() appends to the existing list, so clear the
+     * destination first to get the documented "copy" (replace) semantics */
+    if(dst != src) {
+        xmlSecPtrListEmpty(&dst->keyUseWithList);
+    }
+
     ret = xmlSecPtrListCopy(&dst->keyUseWithList, &src->keyUseWithList);
     if(ret < 0) {
         xmlSecInternalError("xmlSecPtrListCopy", NULL);
@@ -1247,7 +1253,7 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {
         }
 
         if((xmlSecKeyGetValue(key) != NULL) &&
-           (xmlSecKeyMatch(key, NULL, &(keyInfoCtx->keyReq)) != 0)) {
+           (xmlSecKeyMatch(key, NULL, &(keyInfoCtx->keyReq)) == 1)) {
             return(key);
         }
     }

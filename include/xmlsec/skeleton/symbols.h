@@ -119,6 +119,4 @@ extern "C" {
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_SKELETON_CRYPTO_H__ */
-
-#define __XMLSEC_SKELETON_CRYPTO_H__
+#endif /* __XMLSEC_SKELETON_SYMBOLS_H__ */

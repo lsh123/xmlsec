@@ -468,10 +468,17 @@ xmlSecAddChildNode(xmlNodePtr parent, xmlNodePtr child) {
             xmlSecXmlError("xmlNewText", NULL);
             return(NULL);
         }
-        xmlAddChild(parent, text);
+        if(xmlAddChild(parent, text) == NULL) {
+            xmlSecXmlError("xmlAddChild", NULL);
+            xmlFreeNode(text);
+            return(NULL);
+        }
     }
 
-    xmlAddChild(parent, child);
+    if(xmlAddChild(parent, child) == NULL) {
+        xmlSecXmlError("xmlAddChild", NULL);
+        return(NULL);
+    }
 
     /* TODO: add indents */
     text = xmlNewText(xmlSecGetDefaultLineFeed());
@@ -479,7 +486,11 @@ xmlSecAddChildNode(xmlNodePtr parent, xmlNodePtr child) {
         xmlSecXmlError("xmlNewText", NULL);
         return(NULL);
     }
-    xmlAddChild(parent, text);
+    if(xmlAddChild(parent, text) == NULL) {
+        xmlSecXmlError("xmlAddChild", NULL);
+        xmlFreeNode(text);
+        return(NULL);
+    }
 
     return(child);
 }

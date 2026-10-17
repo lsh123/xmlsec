@@ -361,6 +361,7 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
 static time_t
 xmlSecAppGetGmtTime(struct tm* timeptr) {
     time_t t1, t2;
+    struct tm* tmGmt;
 
     if(timeptr == NULL) {
         return(0);
@@ -368,9 +369,19 @@ xmlSecAppGetGmtTime(struct tm* timeptr) {
 
     /* t1 is gmt time "mapped" to localtime as-is */
     t1 = mktime(timeptr);
+    if(t1 == (time_t)-1) {
+        return((time_t)-1);
+    }
 
     /* t2 is "mapped" gmt time converted to gmt */
-    t2 = mktime(gmtime(&t1));
+    tmGmt = gmtime(&t1);
+    if(tmGmt == NULL) {
+        return((time_t)-1);
+    }
+    t2 = mktime(tmGmt);
+    if(t2 == (time_t)-1) {
+        return((time_t)-1);
+    }
 
     /* shift t1 back by the (t2 - t1) delta */
     return(t1 - (t2 - t1));
@@ -403,6 +414,25 @@ xmlSecAppCmdLineTimeParamRead(const char* str, time_t* t, int is_gmt_time) {
         return(-1);
     }
 
+    /* reject impossible dates (e.g. 2024-02-30); mktime() would
+     * silently normalize them to a date in the next month */
+    {
+        static const int daysInMonth[] = {31, 28, 31, 30, 31, 30,
+                                          31, 31, 30, 31, 30, 31};
+        int isLeap;
+        int maxDay;
+
+        isLeap = (((tm.tm_year % 4) == 0) && ((tm.tm_year % 100) != 0))
+                     || ((tm.tm_year % 400) == 0);
+        maxDay = daysInMonth[tm.tm_mon - 1];
+        if((tm.tm_mon == 2) && isLeap) {
+            maxDay = 29;
+        }
+        if(tm.tm_mday > maxDay) {
+            return(-1);
+        }
+    }
+
     tm.tm_year -= 1900; /* tm relative format year */
     tm.tm_mon  -= 1; /* tm relative format month */
 
@@ -410,6 +440,12 @@ xmlSecAppCmdLineTimeParamRead(const char* str, time_t* t, int is_gmt_time) {
         (*t) = XMLSEC_MKGMTIME(&tm);
     } else {
         (*t) = mktime(&tm);
+    }
+    /* mktime()/XMLSEC_MKGMTIME() returns -1 for out-of-range dates;
+     * the parsed year is always >= 1900 so -1 cannot be a valid
+     * result here */
+    if(*t == (time_t)-1) {
+        return(-1);
     }
     return(0);
 }

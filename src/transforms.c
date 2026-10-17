@@ -121,7 +121,11 @@ xmlSecTransformIdsInit(void) {
     }
 
 #ifndef XMLSEC_NO_XSLT
-    xmlSecTransformXsltInitialize();
+    ret = xmlSecTransformXsltInitialize();
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformXsltInitialize", NULL);
+        return(-1);
+    }
 #endif /* XMLSEC_NO_XSLT */
 
     return(0);
@@ -2486,6 +2490,47 @@ xmlSecTransformCreateInputBuffer(xmlSecTransformPtr transform, xmlSecTransformCt
     return(input);
 }
 
+/**
+ * xmlSecTransformDiscardOutputBuffer:
+ * @output:             the pointer to the output buffer created by
+ *                      #xmlSecTransformCreateOutputBuffer.
+ *
+ * Discards the output buffer without pushing the accumulated data
+ * into the destination transform. Intended for use on error paths to
+ * prevent partially produced data from reaching the next transform
+ * in the chain.
+ */
+void
+xmlSecTransformDiscardOutputBuffer(xmlOutputBufferPtr output) {
+    xmlSecTransformIOBufferPtr buffer;
+
+    xmlSecAssert(output != NULL);
+
+    /*
+     * Only transform-created output buffers carry xmlSecTransformIOBuffer
+     * in output->context. Buffers created by xmlSecBufferCreateOutputBuffer()
+     * carry a different context type and must not be cast/destroyed here.
+     */
+    if((output->writecallback == (xmlOutputWriteCallback)xmlSecTransformIOBufferWrite) &&
+       (output->closecallback == (xmlOutputCloseCallback)xmlSecTransformIOBufferClose)) {
+        buffer = (xmlSecTransformIOBufferPtr)output->context;
+        if(buffer != NULL) {
+            xmlSecTransformIOBufferDestroy(buffer);
+            output->context = NULL;
+        }
+
+        /*
+         * Disable the callbacks so that xmlOutputBufferClose() frees the
+         * buffer (and the data accumulated in it) without invoking the
+         * write or close callbacks that would push the data downstream.
+         */
+        output->writecallback = NULL;
+        output->closecallback = NULL;
+    }
+
+    (void)xmlOutputBufferClose(output);
+}
+
 static xmlSecTransformIOBufferPtr
 xmlSecTransformIOBufferCreate(xmlSecTransformIOBufferMode mode, xmlSecTransformPtr transform,
                               xmlSecTransformCtxPtr transformCtx) {
@@ -2693,6 +2738,7 @@ int
 xmlSecTransformRsaOaepReadParams(xmlNodePtr node, xmlSecBufferPtr params, xmlChar** algorithm) {
     xmlChar* alg = NULL;
     xmlNodePtr cur;
+    int haveParams = 0;
     int ret;
     int res = -1;
 
@@ -2703,12 +2749,23 @@ xmlSecTransformRsaOaepReadParams(xmlNodePtr node, xmlSecBufferPtr params, xmlCha
     cur = xmlSecGetNextElementNode(node->children);
     while (cur != NULL) {
         if (xmlSecCheckNodeName(cur, xmlSecNodeRsaOAEPparams, xmlSecEncNs)) {
+            if(haveParams != 0) {
+                /* the schema allows at most one RsaOAEPparams element */
+                xmlSecUnexpectedNodeError(cur, NULL);
+                goto done;
+            }
             ret = xmlSecBufferBase64NodeContentRead(params, cur);
             if (ret < 0) {
                 xmlSecInternalError("xmlSecBufferBase64NodeContentRead", NULL);
                 goto done;
             }
+            haveParams = 1;
         } else if (xmlSecCheckNodeName(cur, xmlSecNodeDigestMethod, xmlSecDSigNs)) {
+            if(alg != NULL) {
+                /* the schema allows at most one DigestMethod element */
+                xmlSecUnexpectedNodeError(cur, NULL);
+                goto done;
+            }
             /* Algorithm attribute is required */
             alg = xmlGetProp(cur, xmlSecAttrAlgorithm);
             if (alg == NULL) {

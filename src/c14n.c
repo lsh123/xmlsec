@@ -200,6 +200,14 @@ xmlSecTransformC14NNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSe
     return(0);
 }
 
+/*
+ * Note: in case of failure, the transform status is set to
+ * #xmlSecTransformStatusFail and any partial output in the output buffer
+ * is discarded, so a subsequent push operation will fail explicitly
+ * instead of returning success without producing any output. The rest
+ * of the transform state is undefined until the #xmlSecTransformDestroy
+ * function is called.
+ */
 static int
 xmlSecTransformC14NPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
                             xmlSecTransformCtxPtr transformCtx) {
@@ -229,15 +237,15 @@ xmlSecTransformC14NPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
     if(transform->next != NULL) {
         buf = xmlSecTransformCreateOutputBuffer(transform->next, transformCtx);
         if(buf == NULL) {
-            xmlSecInternalError("xmlSecTransformCreateOutputBuffer",
-                                xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecTransformCreateOutputBuffer", xmlSecTransformGetName(transform));
+            transform->status = xmlSecTransformStatusFail;
             return(-1);
         }
     } else {
         buf = xmlSecBufferCreateOutputBuffer(&(transform->outBuf));
         if(buf == NULL) {
-            xmlSecInternalError("xmlSecBufferCreateOutputBuffer",
-                                xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecBufferCreateOutputBuffer", xmlSecTransformGetName(transform));
+            transform->status = xmlSecTransformStatusFail;
             return(-1);
         }
     }
@@ -247,13 +255,25 @@ xmlSecTransformC14NPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformC14NExecute",
                             xmlSecTransformGetName(transform));
-        (void)xmlOutputBufferClose(buf);
+        /*
+         * Discard the partially canonicalized data without pushing it
+         * into the next transform, drop any partial output in our own
+         * buffer, and mark the transform as failed so that a subsequent
+         * push operation fails explicitly instead of returning success
+         * without producing any output. The rest of the transform state
+         * is undefined until the xmlSecTransformDestroy function is
+         * called.
+         */
+        xmlSecTransformDiscardOutputBuffer(buf);
+        xmlSecBufferEmpty(&(transform->outBuf));
+        transform->status = xmlSecTransformStatusFail;
         return(-1);
     }
 
     ret = xmlOutputBufferClose(buf);
     if(ret < 0) {
         xmlSecXmlError("xmlOutputBufferClose", xmlSecTransformGetName(transform));
+        transform->status = xmlSecTransformStatusFail;
         return(-1);
     }
     transform->status = xmlSecTransformStatusFinished;
@@ -289,6 +309,7 @@ xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformPopXml",
                                 xmlSecTransformGetName(transform));
+            transform->status = xmlSecTransformStatusFail;
             return(-1);
         }
 
@@ -297,6 +318,7 @@ xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
         if(buf == NULL) {
             xmlSecInternalError("xmlSecBufferCreateOutputBuffer",
                                 xmlSecTransformGetName(transform));
+            transform->status = xmlSecTransformStatusFail;
             return(-1);
         }
 
@@ -308,11 +330,23 @@ xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
             xmlSecInternalError("xmlSecTransformC14NExecute",
                                 xmlSecTransformGetName(transform));
             (void)xmlOutputBufferClose(buf);
+            /*
+             * Discard any partial output and mark the transform as
+             * failed so that a subsequent pop operation fails explicitly
+             * instead of re-invoking the previous transform's popXml
+             * with a non-NULL inNodes. The rest of the transform state
+             * is undefined until the xmlSecTransformDestroy function is
+             * called.
+             */
+            xmlSecBufferEmpty(out);
+            transform->status = xmlSecTransformStatusFail;
             return(-1);
         }
         ret = xmlOutputBufferClose(buf);
         if(ret < 0) {
             xmlSecXmlError("xmlOutputBufferClose", xmlSecTransformGetName(transform));
+            xmlSecBufferEmpty(out);
+            transform->status = xmlSecTransformStatusFail;
             return(-1);
         }
         transform->status = xmlSecTransformStatusWorking;

@@ -71,10 +71,10 @@ extern "C" {
 #define xmlSecTransformHmacMd5Id                xmlSecNssTransformHmacMd5Id
 #define xmlSecTransformHmacRipemd160Id          xmlSecNssTransformHmacRipemd160Id
 #define xmlSecTransformHmacSha1Id               xmlSecNssTransformHmacSha1Id
-#define xmlSecTransformRipemd160Id              xmlSecNssTransformRipemd160Id
+/* the RIPEMD160 transform is not supported by this backend */
 #define xmlSecTransformRsaSha1Id                xmlSecNssTransformRsaSha1Id
 #define xmlSecTransformRsaPkcs1Id               xmlSecNssTransformRsaPkcs1Id
-#define xmlSecTransformRsaOaepId                xmlSecNssTransformRsaOaepId
+/* the RSA OAEP transform is not supported by this backend */
 #define xmlSecTransformSha1Id                   xmlSecNssTransformSha1Id
 
 /********************************************************************
@@ -104,6 +104,4 @@ extern "C" {
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_NSS_CRYPTO_H__ */
-
-#define __XMLSEC_NSS_CRYPTO_H__
+#endif /* __XMLSEC_NSS_SYMBOLS_H__ */

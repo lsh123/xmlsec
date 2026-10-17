@@ -1011,7 +1011,6 @@ xmlSecKeysMngrPtr gKeysMngr = NULL;
 int repeats = 1;
 int print_debug = 0;
 int print_verbose_debug = 0;
-int block_network_io = 0;
 clock_t total_time = 0;
 const char* xmlsec_crypto = NULL;
 const char* tmp = NULL;
@@ -2371,29 +2370,6 @@ xmlSecAppInputMatchCallback(char const* filename) {
         }
     }
 
-    if(block_network_io != 0) {
-        static const xmlChar http[] = "http://";
-        static const xmlChar https[] = "https://";
-        static const xmlChar ftp[] = "ftp://";
-        if(xmlStrncasecmp(BAD_CAST filename, http, xmlStrlen(http)) == 0) {
-            if(print_verbose_debug != 0) {
-                fprintf(stderr, "Debug: blocking access to \"%s\"\n", filename);
-            }
-            return(1);
-        }
-        if(xmlStrncasecmp(BAD_CAST filename, https, xmlStrlen(https)) == 0) {
-            if(print_verbose_debug != 0) {
-                fprintf(stderr, "Debug: blocking access to \"%s\"\n", filename);
-            }
-            return(1);
-        }
-        if(xmlStrncasecmp(BAD_CAST filename, ftp, xmlStrlen(ftp)) == 0) {
-            if(print_verbose_debug != 0) {
-                fprintf(stderr, "Debug: blocking access to \"%s\"\n", filename);
-            }
-            return(1);
-        }
-    }
     return(0);
 }
 

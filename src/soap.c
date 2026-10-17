@@ -252,7 +252,18 @@ xmlSecSoap11AddFaultEntry(xmlNodePtr envNode, const xmlChar* faultCodeHref,
     }
 
     /* set faultcode value */
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeSetContent(cur, qname) < 0) {
+        xmlSecXmlError("xmlNodeSetContent", cur);
+        xmlFree(qname);
+        xmlUnlinkNode(faultNode);
+        xmlFreeNode(faultNode);
+        return(NULL);
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
     xmlNodeSetContent(cur, qname);
+#endif /* LIBXML_VERSION >= 21300 */
     xmlFree(qname);
 
     /* add faultstring node */
@@ -265,7 +276,17 @@ xmlSecSoap11AddFaultEntry(xmlNodePtr envNode, const xmlChar* faultCodeHref,
     }
 
     /* set faultstring node */
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeSetContent(cur, faultString) < 0) {
+        xmlSecXmlError("xmlNodeSetContent", cur);
+        xmlUnlinkNode(faultNode);
+        xmlFreeNode(faultNode);
+        return(NULL);
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
     xmlNodeSetContent(cur, faultString);
+#endif /* LIBXML_VERSION >= 21300 */
 
     if(faultActor != NULL) {
         /* add faultactor node */
@@ -278,7 +299,17 @@ xmlSecSoap11AddFaultEntry(xmlNodePtr envNode, const xmlChar* faultCodeHref,
         }
 
         /* set faultactor node */
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeSetContent(cur, faultActor) < 0) {
+            xmlSecXmlError("xmlNodeSetContent", cur);
+            xmlUnlinkNode(faultNode);
+            xmlFreeNode(faultNode);
+            return(NULL);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
         xmlNodeSetContent(cur, faultActor);
+#endif /* LIBXML_VERSION >= 21300 */
     }
 
     return(faultNode);
@@ -865,7 +896,20 @@ xmlSecSoap12AddFaultSubcode(xmlNodePtr faultNode, const xmlChar* subCodeHref, co
     }
 
     /* set result qname in Value node */
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeSetContent(valueNode, qname) < 0) {
+        xmlSecXmlError("xmlNodeSetContent", valueNode);
+        if(qname != subCodeName) {
+            xmlFree(qname);
+        }
+        xmlUnlinkNode(subcodeNode);
+        xmlFreeNode(subcodeNode);
+        return(NULL);
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
     xmlNodeSetContent(valueNode, qname);
+#endif /* LIBXML_VERSION >= 21300 */
     if(qname != subCodeName) {
         xmlFree(qname);
     }
@@ -907,8 +951,28 @@ xmlSecSoap12AddFaultReasonText(xmlNodePtr faultNode, const xmlChar* faultReasonT
         xmlSecInternalError("xmlSecAddChild(xmlSecNodeText)", NULL);
         return(NULL);
     }
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeSetContent(textNode, faultReasonText) < 0) {
+        xmlSecXmlError("xmlNodeSetContent", textNode);
+        xmlUnlinkNode(textNode);
+        xmlFreeNode(textNode);
+        return(NULL);
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
     xmlNodeSetContent(textNode, faultReasonText);
+#endif /* LIBXML_VERSION >= 21300 */
+#if LIBXML_VERSION >= 21300
+    if(xmlNodeSetLang(textNode, faultReasonLang) < 0) {
+        xmlSecXmlError("xmlNodeSetLang", textNode);
+        xmlUnlinkNode(textNode);
+        xmlFreeNode(textNode);
+        return(NULL);
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* libxml2 < 2.13.0: xmlNodeSetLang() returns void and cannot report errors */
     xmlNodeSetLang(textNode, faultReasonLang);
+#endif /* LIBXML_VERSION >= 21300 */
 
     return(textNode);
 }

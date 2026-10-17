@@ -556,6 +556,18 @@ XMLSEC_EXPORT xmlOutputBufferPtr        xmlSecTransformCreateOutputBuffer(xmlSec
 XMLSEC_EXPORT xmlParserInputBufferPtr   xmlSecTransformCreateInputBuffer(xmlSecTransformPtr transform,
                                                                  xmlSecTransformCtxPtr transformCtx);
 
+/**
+ * xmlSecTransformDiscardOutputBuffer:
+ * @output:             the pointer to the output buffer created by
+ *                      xmlSecTransformCreateOutputBuffer.
+ *
+ * Discards the output buffer without pushing the accumulated data
+ * into the destination transform. Intended for use on error paths to
+ * prevent partially produced data from reaching the next transform
+ * in the chain.
+ */
+XMLSEC_EXPORT void                          xmlSecTransformDiscardOutputBuffer(xmlOutputBufferPtr output);
+
 /************************************************************************
  *
  * Transform Klass

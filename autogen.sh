@@ -1,11 +1,11 @@
 #!/bin/sh
 # Run this to generate all the initial makefiles, etc.
 
-srcdir=`dirname $0`
+srcdir=`dirname "$0"`
 test -z "$srcdir" && srcdir=.
 
 THEDIR=`pwd`
-cd $srcdir
+cd "$srcdir"
 DIE=0
 
 (autoconf --version) < /dev/null > /dev/null 2>&1 || {
@@ -82,18 +82,18 @@ automake --gnu --add-missing
 echo "Running autoconf..."
 autoconf
 echo "Running autoreconf..."
-autoreconf -i
+autoreconf -fi || exit 1
 
-cd $THEDIR
+cd "$THEDIR"
 
-if test x$OBJ_DIR != x; then
+if test x"$OBJ_DIR" != x; then
     mkdir -p "$OBJ_DIR"
     cd "$OBJ_DIR"
 fi
 
 conf_flags="--enable-maintainer-mode" #--enable-iso-c
 echo Running configure $conf_flags "$@" ...
-$srcdir/configure $conf_flags "$@"
+$srcdir/configure $conf_flags "$@" || exit 1
 
 echo
 echo "Now type 'make' to compile xmlsec."

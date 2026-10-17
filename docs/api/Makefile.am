@@ -53,10 +53,10 @@ CRYPTO_LIBS_LIST = \
 # because gtkdoc does not understand some C features
 #
 SOURCE_CODE_FILES=\
-	$(shell find $(SOURCE_DIR) -name '*.c' -print )  \
-	$(shell find $(SOURCE_DIR2) -name '*.c' -print )  \
-	$(shell find $(INCLUDE_DIR) -name '*.h' -a ! -name "symbols.h" -print ) \
-	$(shell find $(INCLUDE_DIR2) -name '*.h' -a ! -name "symbols.h" -print )
+	$(shell { find $(SOURCE_DIR) -name '*.c' -print ; \
+	    find $(SOURCE_DIR2) -name '*.c' -print ; \
+	    find $(INCLUDE_DIR) -name '*.h' -a ! -name "symbols.h" -print ; \
+	    find $(INCLUDE_DIR2) -name '*.h' -a ! -name "symbols.h" -print ; } | sort -u)
 
 EXAMPLES_SOURCE_DIR=$(top_srcdir)/examples
 EXAMPLES_SOURCE_FILES=\
@@ -70,6 +70,11 @@ REMOVE_GTKDOCLINK=$(top_srcdir)/scripts/remove-gtkdoclink.pl
 
 # docs is legacy
 all: docs
+
+# The gtkdoc pipeline targets below do not create target files;
+# mark them phony so they re-execute when needed.
+.PHONY: docs html-cleanup html sgml sgml-base scan \
+	SOURCE_CODEs SOURCE_CODEs_cleanup xmlsec-index example_sources
 
 
 # if build API docs, then we also have xsltproc
@@ -226,6 +231,16 @@ xmlsec-index: scan $(SGML_DIR)/.sentinel
 #
 example_sources: $(EXAMPLES_DIR)/.sentinel
 	@echo "Preprocessing example source files into '$(EXAMPLES_DIR)' ..." 
+	@(for i in $(EXAMPLES_SOURCE_FILES) ; do \
+	    echo `echo $$i | sed 's#.*/##' | sed 's#\..*$$##'`; \
+	done | sort | uniq -d | while read dup ; do \
+	    echo "error: example source basename '$$dup' is not unique; $(EXAMPLES_DIR)/$$dup.sgml would be silently overwritten" >&2; \
+	    for j in $(EXAMPLES_SOURCE_FILES) ; do \
+	        [ `echo $$j | sed 's#.*/##' | sed 's#\..*$$##'` = "$$dup" ] && \
+	            echo "error:   $$j" >&2 ; \
+	    done; \
+	    exit 1; \
+	done);
 	@rm -rf $(EXAMPLES_DIR)/*
 	@(for i in $(EXAMPLES_SOURCE_FILES) ; do \
 	    file_name=`echo $$i | sed 's#.*/##' | sed 's#\..*$$##'`; \
@@ -276,5 +291,9 @@ clean-local:
 distclean-local: clean-local
 
 maintainer-clean-local: clean-local
-	-rm -f *.html
+	@# In an in-source build the generated html overwrites the
+	@# checked-in docs/api/*.html, so only remove it in VPATH builds.
+	@if test "$(builddir)" != "$(srcdir)"; then \
+	    rm -f *.html ; \
+	fi
 

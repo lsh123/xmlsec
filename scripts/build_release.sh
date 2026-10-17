@@ -2,13 +2,13 @@
 #
 # Usage: build_release.sh <version> [<release-candidate-tag>]
 #
-
+set -e
 
 # config
 version=$1
 rc=$2
 cur_pwd=`pwd`
-today=`date +%F-%H-%M-%S`
+today=`date +%Y-%m-%d-%H-%M-%S`
 
 git_uri=git@github.com:lsh123/xmlsec.git
 rpm_root=/usr/src/redhat
@@ -31,7 +31,7 @@ rm -rf "$build_root"
 mkdir -p "$build_root"
 cd "$build_root"
 
-echo "============== Checking out the module '$git_url'"
+echo "============== Checking out the module '$git_uri'"
 git clone $git_uri
 cd xmlsec
 if [ x"$rc" != x ]; then
@@ -41,7 +41,7 @@ else
     echo "============== Switching to 1.2.x branch '$git_1_2_x_branch'"
     git checkout $git_1_2_x_branch
 fi
-find . -name ".git" | xargs rm -r
+find . -name ".git" | xargs rm -rf
 
 echo "============== Building xmlsec1-$version"
 ./autogen.sh --prefix=/usr --sysconfdir=/etc

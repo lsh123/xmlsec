@@ -7,14 +7,22 @@ Group: Development/Libraries
 Vendor: Aleksey Sanin <aleksey@aleksey.com>
 Distribution:  Aleksey Sanin <aleksey@aleksey.com>
 Packager: Aleksey Sanin <aleksey@aleksey.com>
-Source: ftp://ftp.aleksey.com/pub/xmlsec/releases/@PACKAGE@-%{version}.tar.gz
+Source: https://www.aleksey.com/xmlsec/releases/@PACKAGE@-%{version}.tar.gz
 BuildRoot: %{_tmppath}/@PACKAGE@-%{version}-root
 URL: http://www.aleksey.com/xmlsec
+%define no_openssl @XMLSEC_NO_OPENSSL@
+%define no_nss @XMLSEC_NO_NSS@
 Requires: libxml2 >= @LIBXML_MIN_VERSION@
 Requires: libxslt >= @LIBXSLT_MIN_VERSION@
-Requires: libtool-ltdl
+Requires: libltdl
 BuildRequires: libxml2-devel >= @LIBXML_MIN_VERSION@
 BuildRequires: libxslt-devel >= @LIBXSLT_MIN_VERSION@
+%if %{no_openssl} == 0
+BuildRequires: openssl-devel >= @OPENSSL_MIN_VERSION@
+%endif
+%if %{no_nss} == 0
+BuildRequires: mozilla-nss-devel >= @MOZILLA_MIN_VERSION@
+%endif
 Prefix: %{_prefix}
 Docdir: %{_docdir}
 
@@ -32,13 +40,16 @@ Group: Development/Libraries
 Requires: xmlsec1 = %{version}
 Requires: libxml2-devel >= @LIBXML_MIN_VERSION@
 Requires: libxslt-devel >= @LIBXSLT_MIN_VERSION@
+%if %{no_openssl} == 0
 Requires: openssl-devel >= @OPENSSL_MIN_VERSION@
-Requires: zlib-devel
-Requires: libtool-ltdl-devel
+%endif
+Requires: libltdl-devel
 
 %description devel
 Libraries, includes, etc. you can use to develop applications with XML Digital
 Signatures and XML Encryption support.
+
+%if %{no_openssl} == 0
 
 %package openssl
 Summary: OpenSSL crypto plugin for XML Security Library
@@ -67,6 +78,10 @@ Requires: openssl-devel >= @OPENSSL_MIN_VERSION@
 %description openssl-devel
 Libraries, includes, etc. for developing XML Security applications with OpenSSL
 
+%endif
+
+%if %{no_nss} == 0
+
 %package nss
 Summary: NSS crypto plugin for XML Security Library
 Group: Development/Libraries
@@ -93,30 +108,19 @@ Requires: mozilla-nss-devel >= @MOZILLA_MIN_VERSION@
 %description nss-devel
 Libraries, includes, etc. for developing XML Security applications with NSS
 
+%endif
+
 %prep
 %setup -q
 
 %build
 # Needed for snapshot releases.
 if [ ! -f configure ]; then
-%ifarch alpha
-  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --host=alpha-redhat-linux --prefix=%prefix --sysconfdir="/etc" --mandir=%{_mandir}
-%else
   CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --prefix=%prefix --sysconfdir="/etc" --mandir=%{_mandir}
-%endif
 else
-%ifarch alpha
-  CFLAGS="$RPM_OPT_FLAGS" ./configure --host=alpha-redhat-linux --prefix=%prefix --sysconfdir="/etc" --mandir=%{_mandir}
-%else
   CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%prefix --sysconfdir="/etc" --mandir=%{_mandir}
-%endif
 fi
-if [ "$SMP" != "" ]; then
-  (make "MAKE=make -k -j $SMP"; exit 0)
-  make
-else
-  make
-fi
+make %{?_smp_mflags}
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -124,6 +128,10 @@ mkdir -p $RPM_BUILD_ROOT/usr/bin
 mkdir -p $RPM_BUILD_ROOT/usr/include/@PACKAGE@
 mkdir -p $RPM_BUILD_ROOT/usr/lib
 mkdir -p $RPM_BUILD_ROOT/usr/man/man1
+# Build the documentation so the docdir is populated (in VPATH builds
+# the html files live in the source tree and are only copied to the
+# build tree by 'make docs').
+(cd docs && make docs)
 make prefix=$RPM_BUILD_ROOT%{prefix} mandir=$RPM_BUILD_ROOT%{_mandir} install
 
 %clean
@@ -157,6 +165,8 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS HACKING ChangeLog NEWS README Copyright
 %doc %{_mandir}/man1/xmlsec1-config.1*
 
+%if %{no_openssl} == 0
+
 %files openssl
 %defattr(-, root, root)
 
@@ -170,6 +180,10 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/lib/libxmlsec1-openssl.*a
 %{prefix}/lib/pkgconfig/xmlsec1-openssl.pc
 
+%endif
+
+%if %{no_nss} == 0
+
 %files nss
 %defattr(-, root, root)
 
@@ -182,5 +196,7 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/include/xmlsec1/xmlsec/nss/*.h
 %{prefix}/lib/libxmlsec1-nss.*a
 %{prefix}/lib/pkgconfig/xmlsec1-nss.pc
+
+%endif
 
 %changelog

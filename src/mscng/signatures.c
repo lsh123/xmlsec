@@ -404,7 +404,11 @@ static int xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
                 xmlSecTransformGetName(transform),
                 "BCryptVerifySignature: the signature was not verified");
             transform->status = xmlSecTransformStatusFail;
-            return(-1);
+            /* A signature that does not verify is a normal verification
+             * result, not a processing error: return 0 so the caller
+             * reports "reference does not match" (see xmlSecTransformVerify
+             * in src/transforms.c). */
+            return(0);
         } else {
             xmlSecMSCngNtError("BCryptVerifySignature",
                 xmlSecTransformGetName(transform), status);

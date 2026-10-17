@@ -273,8 +273,11 @@ xmlSecGnuTLSX509StoreCheckTrustedAnchorTime(xmlSecGnuTLSX509StoreCtxPtr ctx,
             return(-1);
         }
 
+        /* gnutls_x509_crt_check_issuer() returns 1 (match), 0 (no match)
+         * or a negative GnuTLS error code; only a definite match (1)
+         * qualifies the cert as the anchor at the requested time */
         is_issuer = gnutls_x509_crt_check_issuer(cert, trusted_cert);
-        if(is_issuer == 0) {
+        if(is_issuer != 1) {
             continue;
         }
 

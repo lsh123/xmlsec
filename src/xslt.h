@@ -21,7 +21,7 @@
 extern "C" {
 #endif /* __cplusplus */
 
-void xmlSecTransformXsltInitialize                          (void);
+int xmlSecTransformXsltInitialize                           (void);
 void xmlSecTransformXsltShutdown                            (void);
 
 #ifdef __cplusplus

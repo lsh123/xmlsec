@@ -735,7 +735,8 @@ xmlSecKeyDataNameXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node,
 
     name = xmlSecKeyGetName(key);
     if(name == NULL) {
-        return(8);
+        /* nothing to write */
+        return(0);
     }
 
     if(!xmlSecIsEmptyNode(node)) {
@@ -896,7 +897,7 @@ xmlSecKeyDataValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node
         return(0);
     }
     if((xmlSecPtrListGetSize(&(keyInfoCtx->enabledKeyData)) > 0) &&
-        (xmlSecKeyDataIdListFind(&(keyInfoCtx->enabledKeyData), id) != 1)) {
+        (xmlSecKeyDataIdListFind(&(keyInfoCtx->enabledKeyData), key->value->id) != 1)) {
 
         /* we are not enabled to write out key data with this id */
         return(0);

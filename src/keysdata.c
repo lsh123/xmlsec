@@ -584,6 +584,11 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         xmlSecInternalError("xmlSecBase64Decode_ex", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
+    if(decodedSize == 0) {
+        /* no actual key data (e.g. whitespace-only element content) */
+        xmlSecInvalidNodeContentError(node, xmlSecKeyDataKlassGetName(id), "empty");
+        goto done;
+    }
 
     /* check do we have a key already */
     data = xmlSecKeyGetValue(key);

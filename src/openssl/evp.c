@@ -1740,10 +1740,37 @@ xmlSecOpenSSLKeyDataEcdsaFinalize(xmlSecKeyDataPtr data) {
 }
 
 static xmlSecKeyDataType
-xmlSecOpenSSLKeyDataEcdsaGetType(xmlSecKeyDataPtr data XMLSEC_ATTRIBUTE_UNUSED) {
-    UNREFERENCED_PARAMETER(data);
-    /* XXX-MAK: Fix this. */
+xmlSecOpenSSLKeyDataEcdsaGetType(xmlSecKeyDataPtr data) {
+    EVP_PKEY * pKey = NULL;
+    BIGNUM * privKey = NULL;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId), xmlSecKeyDataTypeUnknown);
+
+    pKey = xmlSecOpenSSLKeyDataEcdsaGetEvp(data);
+    if(pKey == NULL) {
+        xmlSecInternalError("xmlSecOpenSSLKeyDataEcdsaGetEvp",
+            xmlSecKeyDataGetName(data));
+        return(xmlSecKeyDataTypeUnknown);
+    }
+
+#if defined(XMLSEC_OPENSSL_API_111) || defined(XMLSEC_OPENSSL_API_300)
+    /*
+     * An EC key with a private component exposes the "priv" parameter as a
+     * non-zero value; a public-only key does not expose it at all.
+     */
+    if((EVP_PKEY_get_bn_param(pKey, OSSL_PKEY_PARAM_PRIV_KEY, &privKey) == 1) &&
+       (privKey != NULL) && !BN_is_zero(privKey)) {
+        BN_clear_free(privKey);
+        return(xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate);
+    }
+    BN_clear_free(privKey);
+    return(xmlSecKeyDataTypePublic);
+#else /* defined(XMLSEC_OPENSSL_API_111) || defined(XMLSEC_OPENSSL_API_300) */
+    /* EVP_PKEY_get_bn_param() is not available on OpenSSL 1.1.0; keep the
+     * historical assumption that the key has both components. */
+    UNREFERENCED_PARAMETER(pKey);
     return(xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate);
+#endif /* defined(XMLSEC_OPENSSL_API_111) || defined(XMLSEC_OPENSSL_API_300) */
 }
 
 #ifndef XMLSEC_OPENSSL_API_300

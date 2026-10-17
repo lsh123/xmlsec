@@ -27,10 +27,14 @@
 /**
  * xmlSecGnuTLSGCryptError:
  * @errorFunction:      the failed function name.
- * @errCode:            the GCrypt error code.
+ * @errCode:            the libgcrypt error code (gcry_error_t).
  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
  *
- * Macro. The XMLSec library macro for reporting GnuTLS-GCrypt errors.
+ * Macro. The XMLSec library macro for reporting libgcrypt errors from the
+ * GnuTLS backend. The backend delegates crypto operations to the gcrypt
+ * backend (see src/gnutls/Makefile.am) and therefore links libgcrypt, so the
+ * error text comes from gcry_strsource()/gcry_strerror(). Not to be confused
+ * with xmlSecGCryptError in the gcrypt backend (src/gcrypt/globals.h).
  */
 #define xmlSecGnuTLSGCryptError(errorFunction, errCode, errorObject)  \
     {                                                       \

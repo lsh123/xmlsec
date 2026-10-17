@@ -912,6 +912,10 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
     if test "z$OPENSSL_VERSION" != "z" ; then
         dnl enforce the minimum version on the manual detection paths
         case $OPENSSL_VERSION in
+            0.*)
+                AC_MSG_WARN([OpenSSL version $OPENSSL_VERSION is not supported (minimum is $OPENSSL_MIN_VERSION)])
+                OPENSSL_FOUND=no
+                ;;
             1.0.*)
                 AC_MSG_WARN([OpenSSL version $OPENSSL_VERSION is not supported (minimum is $OPENSSL_MIN_VERSION)])
                 OPENSSL_FOUND=no

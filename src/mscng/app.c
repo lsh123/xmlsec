@@ -525,6 +525,7 @@ xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, cons
         ret = xmlSecMSCngKeyDataX509AdoptCert(keyData, certDuplicate);
         if(ret < 0) {
             xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptKeyCert", NULL);
+            CertFreeCertificateContext(certDuplicate);
             goto cleanup;
         }
         certDuplicate = NULL;

@@ -206,6 +206,7 @@ xmlSecGCryptAsn1ParseIntegerSequence(xmlSecByte const **buffer, xmlSecSize* bufl
                                      gcry_mpi_t * params, int params_size) {
     const xmlSecByte *buf;
     unsigned long length;
+    unsigned long seqLen;
     struct tag_info ti;
     gcry_error_t err;
     int idx = 0;
@@ -229,15 +230,27 @@ xmlSecGCryptAsn1ParseIntegerSequence(xmlSecByte const **buffer, xmlSecSize* bufl
             "TAG_SEQUENCE is expected: tag=%lu", ti.tag);
         return(-1);
     }
+    /* remember the declared SEQUENCE content length; the INTEGERs
+     * must fit inside it */
+    seqLen = ti.length;
 
     /* read INTEGERs */
-    for (idx = 0; ((idx < params_size) && (length > 0)); idx++) {
+    for (idx = 0; ((idx < params_size) && (seqLen > 0)); idx++) {
+        unsigned long lenBefore;
         memset(&ti, 0, sizeof(ti));
+        lenBefore = length;
         ret = xmlSecGCryptAsn1ParseTag (&buf, &length, &ti);
         if((ret != 0) || (ti.tag != TAG_INTEGER) || ti.class || ti.cons || ti.ndef)
         {
             xmlSecInternalError3("xmlSecGCryptAsn1ParseTag", NULL,
                 "TAG_INTEGER is expected - index=%d, tag=%lu", idx, ti.tag);
+            return(-1);
+        }
+        /* the whole INTEGER TLV (header + content) must fit
+         * inside the SEQUENCE content */
+        if((lenBefore - length) + ti.length > seqLen) {
+            xmlSecInternalError2("xmlSecGCryptAsn1ParseTag", NULL,
+                "INTEGER out of range - index=%d", idx);
             return(-1);
         }
 
@@ -247,11 +260,12 @@ xmlSecGCryptAsn1ParseIntegerSequence(xmlSecByte const **buffer, xmlSecSize* bufl
             return(-1);
         }
         buf += ti.length;
+        seqLen -= (lenBefore - length) + ti.length;
         length -= ti.length;
     }
 
     /* did we parse everything? */
-    if(length > 0) {
+    if(seqLen > 0) {
         xmlSecInternalError3("xmlSecGCryptAsn1ParseTag", NULL,
             "too many params - cur=%d, expected=%d", (idx - 1), params_size);
         return(-1);
@@ -385,10 +399,12 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
             goto done;
         }
 
-        /* Build the S-expression.  */
+        /* Build the S-expression.
+         * The traditional DSA public key DER layout is (0, p, q, g, y),
+         * the same order the private key parser expects before the (x, y) pair. */
         err = gcry_sexp_build (&s_pub_key, NULL,
                 "(public-key(dsa(p%m)(q%m)(g%m)(y%m)))",
-                keyparms[2], keyparms[3], keyparms[4], keyparms[1]
+                keyparms[1], keyparms[2], keyparms[3], keyparms[4]
         );
         if((err != GPG_ERR_NO_ERROR) || (s_pub_key == NULL)) {
             xmlSecGCryptError("gcry_sexp_build(public-key/dsa)", err, NULL);

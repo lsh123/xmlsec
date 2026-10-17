@@ -266,9 +266,12 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs,
 
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) == 0) {
             /* it's important to set the usage here, otherwise no real verification
-             * is performed. */
+             * is performed. Also pass checkSig=PR_TRUE: in the current NSS API
+             * the third argument selects whether the chain signatures are
+             * cryptographically verified at all; with PR_FALSE NSS would only
+             * check the validity times and the trust anchor. */
             status = CERT_VerifyCertificate(ctx->certDb,
-                                            cert, PR_FALSE,
+                                            cert, PR_TRUE,
                                             certificateUsageEmailSigner,
                                             timeboundary , NULL, NULL, NULL);
             if(status == SECSuccess) {
@@ -592,9 +595,14 @@ xmlSecNssX509FindCert(CERTCertList* certsList, const xmlChar *subjectName,
                 memset(&tmpitem, 0, sizeof(tmpitem));
                 status = CERT_FindSubjectKeyIDExtension(head->cert, &tmpitem);
                 if (status != SECSuccess)  {
-                    xmlSecNssError("CERT_FindSubjectKeyIDExtension(ski)", NULL);
+                    /*
+                     * The cert has no SubjectKeyIdentifier extension (root
+                     * CAs typically don't carry one); it cannot match the
+                     * requested SKI, so just skip it and continue the
+                     * search with the next cert in the list.
+                     */
                     SECITEM_FreeItem(&tmpitem, PR_FALSE);
-                    goto done;
+                    continue;
                 }
 
                 if((tmpitem.len == subjKeyID.len) &&
@@ -665,6 +673,8 @@ xmlSecNssX509NameRead(const xmlChar *str) {
             ++str; --strSize;
             if((*str) == '\"') {
                 valueSize = 0;
+                /* skip the opening quote */
+                ++str; --strSize;
                 ret = xmlSecNssX509NameStringRead(&str, &strSize,
                     value, sizeof(value), &valueSize, '"', 1);
                 if(ret < 0) {
@@ -675,17 +685,21 @@ xmlSecNssX509NameRead(const xmlChar *str) {
                 memcpy(p, value, valueSize);
                 p += valueSize;
                 *(p++) = '\"';
+                /* skip the closing quote */
+                if(strSize > 0) {
+                    ++str; --strSize;
+                }
 
                 /* skip spaces before comma or semicolon */
                 while((strSize > 0) && isspace(*str)) {
                     ++str; --strSize;
                 }
-                if((strSize > 0) && ((*str) != ',')) {
-                    xmlSecInvalidIntegerDataError("char", (*str), "comma ','", NULL);
+                if((strSize > 0) && ((*str) != ',') && ((*str) != ';')) {
+                    xmlSecInvalidIntegerDataError("char", (*str), "comma ',' or semicolon ';'", NULL);
                     goto done;
                 }
                 if(strSize > 0) {
-                    ++str; --strSize;
+                    *(p++) = ',';
                 }
             } else if((*str) == '#') {
                 /* TODO: read octect values */

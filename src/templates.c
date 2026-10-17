@@ -26,6 +26,7 @@
 #include <xmlsec/strings.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/templates.h>
+#include <xmlsec/parser.h>
 #include <xmlsec/errors.h>
 
 
@@ -1558,9 +1559,9 @@ xmlSecTmplTransformAddXsltStylesheet(xmlNodePtr transformNode, const xmlChar *xs
     xmlSecAssert2(transformNode != NULL, -1);
     xmlSecAssert2(xslt != NULL, -1);
 
-    xsltDoc = xmlParseMemory((const char*)xslt, xmlStrlen(xslt));
+    xsltDoc = xmlSecParseMemory(xslt, xmlStrlen(xslt), 0);
     if(xsltDoc == NULL) {
-        xmlSecXmlError("xmlParseMemory", NULL);
+        xmlSecXmlError("xmlSecParseMemory", NULL);
         return(-1);
     }
 

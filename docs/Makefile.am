@@ -5,15 +5,21 @@ SUBDIRS=api
 TARGET_DIR=@XMLSEC_DOCDIR@
 
 EXTRA_DIST=\
-	$(builddir)/images     \
-	$(builddir)/*.html     \
-	$(builddir)/*.ico      \
-	$(builddir)/xmlsec.xsl \
-	$(builddir)/xmlsec-ga.xsl \
+	$(srcdir)/images     \
+	$(srcdir)/*.html     \
+	$(srcdir)/*.ico      \
+	$(srcdir)/xmlsec.xsl \
+	$(srcdir)/xmlsec-ga.xsl \
 	$(NULL)
 
 XMLSEC1_MAN=$(top_builddir)/man/xmlsec1.1
 XMLSEC_HTML=$(builddir)/xmlsec-man.html
+
+# UTF-8 no-break space, for the portable 'sed' clean-up below
+nbsp = $(shell printf '\302\240')
+
+$(XMLSEC1_MAN):
+	$(MAKE) -C $(top_builddir)/man
 
 all:
 	@echo "======= Run 'make docs' in the xmlsec/docs folder to rebuild docs"
@@ -51,26 +57,26 @@ endif
 if HAS_XSLTPROC
 docs-format:
 	@(echo "Formatting html documents"; \
-	for i in `find $(builddir) -name "*.html" -print`; \
+	for i in `cd $(builddir) && find . -name "*.html" -print`; \
 	do \
 	    top_folder=`echo $$i | sed 's#/[^/]*$$#/#' | sed 's#\./##' | \
 			sed 's#[^/]*/#../#g'`; \
 	    echo "Processing $$i (topfolder='$$top_folder')"; \
 	    $(XSLTPROC) --html --stringparam topfolder "$$top_folder" \
-		     --output $$i.tmp $(srcdir)/xmlsec.xsl $$i; \
+		     --output $(builddir)/$$i.tmp $(srcdir)/xmlsec.xsl $(builddir)/$$i; \
 	    if [ $$? != 0 ]; \
 	    then \
 			echo "ERROR: processing file $$i"; \
 			exit 1; \
 	    fi; \
-	    mv $$i.tmp $$i; \
+	    mv $(builddir)/$$i.tmp $(builddir)/$$i; \
 	done)
 	@(echo "Cleaning html documents"; \
-	for i in `find $(builddir) -name "*.html" -print`; \
+	for i in `cd $(builddir) && find . -name "*.html" -print`; \
 	do \
 	    echo Cleaning $$i ; \
-	    sed 's/\xA0/ /g' $$i > $$i.tmp ; \
-	    mv $$i.tmp $$i ; \
+	    sed "s/$(nbsp)/ /g" $(builddir)/$$i > $(builddir)/$$i.tmp ; \
+	    mv $(builddir)/$$i.tmp $(builddir)/$$i ; \
 	done)
 docs-format-ga:
 	@(echo "Formatting html documents to add Google Analytics"; \
@@ -108,7 +114,7 @@ clean-local:
 
 distclean-local: clean-local
 
-install-data-local: 
+install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/images
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/api

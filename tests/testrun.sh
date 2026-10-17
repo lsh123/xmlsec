@@ -92,6 +92,17 @@ if [ "z$crypto" = "zopenssl" ] ; then
     export OPENSSL_ENABLE_MD5_VERIFY=1
 fi
 
+if [ "z$crypto" = "znss" ] ; then
+    # phaos certs use RSA-MD5 which might be disabled
+    extra_vars="$extra_vars NSS_ALLOW_WEAK_SIGNATURE_ALG=1"
+    export NSS_ALLOW_WEAK_SIGNATURE_ALG=1
+
+    # test certs include a 512-bit RSA CA and SHA-1 signed certs
+    # which newer NSS (3.101+) rejects by default
+    extra_vars="$extra_vars XMLSEC_NSS_ENABLE_LEGACY_ALGORITHMS=1"
+    export XMLSEC_NSS_ENABLE_LEGACY_ALGORITHMS=1
+fi
+
 #
 # Setup keys config
 #

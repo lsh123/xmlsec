@@ -256,9 +256,13 @@ verify_request(xmlSecKeysMngrPtr mngr) {
 
     while(!feof(stdin)) {
         ret = fread(buf, 1, sizeof(buf), stdin);
-        if(ret < 0) {
-            fprintf(stdout,"Error: read failed\n");
-            goto done;
+        if(ret == 0) {
+            if(ferror(stdin)) {
+                fprintf(stdout,"Error: read failed\n");
+                goto done;
+            }
+            /* clean end of file */
+            break;
         }
         xmlBufferAdd(buffer, buf, (xmlSecSize)ret);
     }

@@ -436,6 +436,7 @@ xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, cons
     CRYPT_DATA_BLOB pfx;
     xmlSecKeyPtr key = NULL;
     WCHAR* pwdWideChar = NULL;
+    DWORD pwdWideCharLen = 0;
     HCERTSTORE certStore = NULL;
     xmlSecKeyDataPtr keyData = NULL;
     xmlSecKeyDataPtr privKeyData = NULL;
@@ -462,6 +463,10 @@ xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, cons
         xmlSecInternalError("xmlSecWin32ConvertLocaleToUnicode", NULL);
         goto cleanup;
     }
+    /* remember the exact wide-string size (including the terminating
+     * null, same code page as the conversion above) so cleanup can
+     * wipe the plaintext password */
+    pwdWideCharLen = (DWORD)MultiByteToWideChar(CP_ACP, 0, pwd, -1, NULL, 0);
 
     ret = PFXVerifyPassword(&pfx, pwdWideChar, 0);
     if(ret == FALSE) {
@@ -560,6 +565,10 @@ cleanup:
         CertCloseStore(certStore, 0);
     }
     if(pwdWideChar != NULL) {
+        /* wipe the plaintext password before releasing the buffer */
+        if(pwdWideCharLen > 0) {
+            xmlSecMemCleanse(pwdWideChar, (xmlSecSize)(pwdWideCharLen * sizeof(WCHAR)));
+        }
         xmlFree(pwdWideChar);
     }
     if(keyData != NULL) {
@@ -570,6 +579,9 @@ cleanup:
     }
     if(certDuplicate != NULL) {
         CertFreeCertificateContext(certDuplicate);
+    }
+    if(cert != NULL) {
+        CertFreeCertificateContext(cert);
     }
     return(key);
 }

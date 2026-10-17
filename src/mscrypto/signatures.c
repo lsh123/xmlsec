@@ -580,6 +580,10 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
         }
 
         //First try create hash with provider acquired in function xmlSecMSCryptoKeyDataAdoptCert.
+        /* Reset the hash handle: MSDN leaves the out-param of a failed
+         * CryptCreateHash() undefined and Finalize() must not destroy a
+         * garbage handle. */
+        ctx->mscHash = 0;
         bOk = CryptCreateHash(hProv, ctx->digestAlgId, 0, 0, &(ctx->mscHash));
 
         //Then try it with container name, provider name and type acquired from certificate context.
@@ -598,7 +602,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
                 0)) {
 
                 xmlSecMSCryptoError("CryptAcquireContext", NULL);
-                free(pProviderInfo);
+                xmlFree(pProviderInfo);
                 return(-1);
             }
 
@@ -618,7 +622,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
                 PROV_RSA_AES,
                 0)) {
                 xmlSecMSCryptoError("CryptAcquireContext", NULL);
-                free(pProviderInfo);
+                xmlFree(pProviderInfo);
                 return(-1);
             }
 
@@ -626,7 +630,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
         }
 
         if(pProviderInfo != NULL) {
-            free(pProviderInfo);
+            xmlFree(pProviderInfo);
         }
 
         if(!bOk) {

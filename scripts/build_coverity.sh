@@ -1,9 +1,10 @@
 #!/bin/sh
+set -e
 
 # input
 cov_token=$1
 version=$2
-if [ "x$version" = "x" ]; then
+if [ "x$cov_token" = "x" ] || [ "x$version" = "x" ]; then
     echo "Usage: $0 <token> <version>"
     exit 1
 fi
@@ -11,8 +12,7 @@ fi
 # config
 cov_url="https://scan.coverity.com/builds?project=xmlsec"
 cov_email="aleksey@aleksey.com"
-cur_pwd=`pwd`
-today=`date +%F-%H-%M-%S`
+today=`date +%Y-%m-%d-%H-%M-%S`
 tar_file="xmlsec1-$version-$today.tar.gz"
 
 echo "============= Building xmlsec"
@@ -29,9 +29,5 @@ curl \
     --form version="$version" \
     --form description="$version built on $today" \
     "$cov_url"
-
-echo "============== Cleanup"
-cd "$cur_pwd"
-#rm -rf "$build_root"
 
 

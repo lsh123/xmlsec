@@ -43,8 +43,6 @@ AC_PROG_INSTALL
 LT_INIT
 AC_PROG_EGREP
 
-LT_INIT
-
 dnl
 dnl Find programs
 dnl
@@ -325,7 +323,7 @@ fi
 dnl Priority 1: User specifies the path to source code
 if test "z$LIBXML_FOUND" = "zno" -a "z$with_libxml_src" != "z" -a "z$with_libxml_src" != "zyes" ; then
     AC_MSG_CHECKING(for libxml2 library source tree in "$with_libxml_src" folder)
-    if test [ -f "$with_libxml_src/include/$LIBXML_INCLUDE_MARKER" ] -a [ -f "$with_libxml_src/.libs/$LIBXML_SHARED_LIB_MARKER" -o -f "$with_libxml_src/.libs/$LIBXML_STATIC_LIB_MARKER"] ; then
+    if test -f "$with_libxml_src/include/$LIBXML_INCLUDE_MARKER" && test \( -f "$with_libxml_src/.libs/$LIBXML_SHARED_LIB_MARKER" -o -f "$with_libxml_src/.libs/$LIBXML_STATIC_LIB_MARKER" \) ; then
         LIBXML_INCLUDE_PATH="$with_libxml_src/include"
         LIBXML_LIB_PATH="$with_libxml_src/.libs"
         LIBXML_FOUND="yes"
@@ -342,7 +340,7 @@ if test "z$LIBXML_FOUND" = "zno" -a "z$with_libxml" != "z" -a "z$with_libxml" !=
         LIBXML_CONFIG_PATH="$with_libxml/bin/$LIBXML_CONFIG"
         LIBXML_FOUND="yes"
         AC_MSG_RESULT([yes])
-    elif test [ -f "$with_libxml/include/libxml2/$LIBXML_INCLUDE_MARKER" ] -a [ -f "$with_libxml/lib/$LIBXML_SHARED_LIB_MARKER" -o -f "$with_libxml/lib/$LIBXML_STATIC_LIB_MARKER" ] ; then
+    elif test -f "$with_libxml/include/libxml2/$LIBXML_INCLUDE_MARKER" && test \( -f "$with_libxml/lib/$LIBXML_SHARED_LIB_MARKER" -o -f "$with_libxml/lib/$LIBXML_STATIC_LIB_MARKER" \) ; then
         LIBXML_INCLUDE_PATH="$with_libxml/include/libxml2"
         LIBXML_LIB_PATH="$with_libxml/lib"
         LIBXML_FOUND="yes"
@@ -441,6 +439,15 @@ if test "z$LIBXML_FOUND" = "zyes" ; then
             LIBXML_LIBS="$LIBXML_LIBS -L$LIBXML_LIB_PATH $LIBXML_LIBS_LIST"
         fi
     fi
+    dnl Upgrade the config tool name to a full path when found on PATH,
+    dnl so the installed xmlsec1-config script does not rely on the
+    dnl consumer's PATH at build time.
+    if test "z$LIBXML_CONFIG_PATH" = "z" -o "z$LIBXML_CONFIG_PATH" = "zno" ; then
+        LIBXML_CONFIG_PATH=`which $LIBXML_CONFIG 2>/dev/null`
+    fi
+    if test "z$LIBXML_CONFIG_PATH" != "z" -a "z$LIBXML_CONFIG_PATH" != "zno" ; then
+        LIBXML_CONFIG=$LIBXML_CONFIG_PATH
+    fi
 fi
 
 dnl Verify the version.
@@ -502,7 +509,7 @@ fi
 dnl Priority 1: User specifies the path to source code
 if test "z$LIBXSLT_FOUND" = "zno" -a "z$with_libxslt_src" != "z" -a "z$with_libxslt_src" != "zyes" ; then
     AC_MSG_CHECKING(for libxslt library source tree in "$with_libxslt_src" folder)
-    if test [ -f "$with_libxslt_src/$LIBXSLT_INCLUDE_MARKER" ] -a [ -f "$with_libxslt_src/libxslt/.libs/$LIBXSLT_SHARED_LIB_MARKER" -o -f "$with_libxslt_src/libxslt/.libs/$LIBXSLT_STATIC_LIB_MARKER" ] ; then
+    if test -f "$with_libxslt_src/$LIBXSLT_INCLUDE_MARKER" && test \( -f "$with_libxslt_src/libxslt/.libs/$LIBXSLT_SHARED_LIB_MARKER" -o -f "$with_libxslt_src/libxslt/.libs/$LIBXSLT_STATIC_LIB_MARKER" \) ; then
         LIBXSLT_INCLUDE_PATH="$with_libxslt_src"
         LIBXSLT_LIB_PATH="$with_libxslt_src/libxslt/.libs"
         LIBXSLT_FOUND="yes"
@@ -519,7 +526,7 @@ if test "z$LIBXSLT_FOUND" = "zno" -a "z$with_libxslt" != "z" -a "z$with_libxslt"
         LIBXSLT_CONFIG_PATH="$with_libxslt/bin/$LIBXSLT_CONFIG"
         LIBXSLT_FOUND="yes"
         AC_MSG_RESULT([yes])
-    elif test [ -f "$with_libxslt/include/$LIBXSLT_INCLUDE_MARKER" ] -a [ -f "$with_libxslt/lib/$LIBXSLT_SHARED_LIB_MARKER" -o -f "$with_libxslt/lib/$LIBXSLT_STATIC_LIB_MARKER" ] ; then
+    elif test -f "$with_libxslt/include/$LIBXSLT_INCLUDE_MARKER" && test \( -f "$with_libxslt/lib/$LIBXSLT_SHARED_LIB_MARKER" -o -f "$with_libxslt/lib/$LIBXSLT_STATIC_LIB_MARKER" \) ; then
         LIBXSLT_INCLUDE_PATH="$with_libxslt/include"
         LIBXSLT_LIB_PATH="$with_libxslt/lib"
         LIBXSLT_FOUND="yes"
@@ -617,6 +624,15 @@ if test "z$LIBXSLT_FOUND" = "zyes" ; then
             fi
             LIBXSLT_LIBS="$LIBXSLT_LIBS -L$LIBXSLT_LIB_PATH $LIBXSLT_LIBS_LIST"
         fi
+    fi
+    dnl Upgrade the config tool name to a full path when found on PATH,
+    dnl so the installed xmlsec1-config script does not rely on the
+    dnl consumer's PATH at build time.
+    if test "z$LIBXSLT_CONFIG_PATH" = "z" -o "z$LIBXSLT_CONFIG_PATH" = "zno" ; then
+        LIBXSLT_CONFIG_PATH=`which $LIBXSLT_CONFIG 2>/dev/null`
+    fi
+    if test "z$LIBXSLT_CONFIG_PATH" != "z" -a "z$LIBXSLT_CONFIG_PATH" != "zno" ; then
+        LIBXSLT_CONFIG=$LIBXSLT_CONFIG_PATH
     fi
 fi
 
@@ -894,7 +910,16 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
     CPPFLAGS=$OLD_CPPFLAGS
 
     if test "z$OPENSSL_VERSION" != "z" ; then
-        OPENSSL_FOUND=yes
+        dnl enforce the minimum version on the manual detection paths
+        case $OPENSSL_VERSION in
+            1.0.*)
+                AC_MSG_WARN([OpenSSL version $OPENSSL_VERSION is not supported (minimum is $OPENSSL_MIN_VERSION)])
+                OPENSSL_FOUND=no
+                ;;
+            *)
+                OPENSSL_FOUND=yes
+                ;;
+        esac
     else
         OPENSSL_FOUND=no
     fi
@@ -958,7 +983,9 @@ SEAMONKEY_MIN_VERSION="1.0"
 MOZILLA_MIN_VERSION="1.4"
 NSS_CRYPTO_LIB="$XMLSEC_PACKAGE-nss"
 NSPR_PACKAGE=mozilla-nspr
+NSPR_PC_VERSION=
 NSS_PACKAGE=mozilla-nss
+NSS_PC_VERSION=
 NSPR_INCLUDE_MARKER="nspr/nspr.h"
 NSPR_LIB_MARKER="libnspr4$shrext"
 NSPR_LIBS_LIST="-lnspr4 -lplds4 -lplc4"
@@ -1027,44 +1054,44 @@ dnl     nspr and nss
 if test "z$NSPR_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" -a "z$with_mozilla_ver" = "z" ; then
     if test "z$NSPR_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(NSPR, seamonkey-nspr >= $NSPR_MIN_VERSION,
-           [NSPR_FOUND=yes NSPR_PACKAGE=seamonkey-nspr],
+           [NSPR_FOUND=yes NSPR_PACKAGE=seamonkey-nspr NSPR_PC_VERSION=$NSPR_MIN_VERSION],
            [NSPR_FOUND=no])
     fi
     if test "z$NSPR_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(NSPR, mozilla-nspr >= $MOZILLA_MIN_VERSION,
-           [NSPR_FOUND=yes NSPR_PACKAGE=mozilla-nspr],
+           [NSPR_FOUND=yes NSPR_PACKAGE=mozilla-nspr NSPR_PC_VERSION=$MOZILLA_MIN_VERSION],
            [NSPR_FOUND=no])
     fi
     if test "z$NSPR_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(NSPR, xulrunner-nspr >= $NSPR_MIN_VERSION,
-           [NSPR_FOUND=yes NSPR_PACKAGE=xulrunner-nspr],
+           [NSPR_FOUND=yes NSPR_PACKAGE=xulrunner-nspr NSPR_PC_VERSION=$NSPR_MIN_VERSION],
            [NSPR_FOUND=no])
     fi
     if test "z$NSPR_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(NSPR, nspr >= $NSPR_MIN_VERSION,
-           [NSPR_FOUND=yes NSPR_PACKAGE=nspr],
+           [NSPR_FOUND=yes NSPR_PACKAGE=nspr NSPR_PC_VERSION=$NSPR_MIN_VERSION],
            [NSPR_FOUND=no])
     fi
 fi
 if test "z$NSS_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" -a "z$with_mozilla_ver" = "z" ; then
     if test "z$NSS_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(NSS, seamonkey-nss >= $SEAMONKEY_MIN_VERSION,
-    	   [NSS_FOUND=yes NSS_PACKAGE=seamonkey-nss],
+    	   [NSS_FOUND=yes NSS_PACKAGE=seamonkey-nss NSS_PC_VERSION=$SEAMONKEY_MIN_VERSION],
 	       [NSS_FOUND=no])
     fi
     if test "z$NSS_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(NSS, mozilla-nss >= $MOZILLA_MIN_VERSION,
-    	   [NSS_FOUND=yes NSS_PACKAGE=mozilla-nss],
+    	   [NSS_FOUND=yes NSS_PACKAGE=mozilla-nss NSS_PC_VERSION=$MOZILLA_MIN_VERSION],
 	       [NSS_FOUND=no])
     fi
     if test "z$NSS_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(NSS, xulrunner-nss >= $NSS_MIN_VERSION,
-    	   [NSS_FOUND=yes NSS_PACKAGE=xulrunner-nss],
+    	   [NSS_FOUND=yes NSS_PACKAGE=xulrunner-nss NSS_PC_VERSION=$NSS_MIN_VERSION],
 	       [NSS_FOUND=no])
     fi
     if test "z$NSS_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(NSS, nss >= $NSS_MIN_VERSION,
-    	   [NSS_FOUND=yes NSS_PACKAGE=nss],
+    	   [NSS_FOUND=yes NSS_PACKAGE=nss NSS_PC_VERSION=$NSS_MIN_VERSION],
 	       [NSS_FOUND=no])
     fi
 fi
@@ -1144,7 +1171,7 @@ if test "z$NSPR_FOUND" = "zyes" -a "z$NSPR_LIB_PATH" != "z" ; then
     if test "z$with_gnu_ld" = "zyes" ; then
         NSPR_LIBS="$NSPR_LIBS -Wl,-rpath-link -Wl,$NSPR_LIB_PATH"
     fi
-    NSPR_LIBS="$NSPR_LIBS -L$NSPR_LIB_PATH/lib $NSPR_LIBS_LIST"
+    NSPR_LIBS="$NSPR_LIBS -L$NSPR_LIB_PATH $NSPR_LIBS_LIST"
 fi
 
 dnl Priority 5 (NSS): Just try to compile/link and hope for the best
@@ -1181,8 +1208,23 @@ if test "z$NSS_FOUND" = "zyes" -a "z$NSS_LIB_PATH" != "z" ; then
     if test "z$with_gnu_ld" = "zyes" ; then
         NSS_LIBS="$NSS_LIBS -Wl,-rpath-link -Wl,$NSS_LIB_PATH"
     fi
-    NSS_LIBS="$NSS_LIBS -L$NSS_LIB_PATH/lib $NSS_LIBS_LIST"
+    NSS_LIBS="$NSS_LIBS -L$NSS_LIB_PATH $NSS_LIBS_LIST"
 fi
+
+dnl Assemble the pkg-config "Requires" fragments for the installed
+dnl xmlsec1-nss.pc. These are only meaningful when NSPR/NSS were found
+dnl via pkg-config (priority 3), since only then can the consumer's
+dnl pkg-config actually resolve the package names.
+NSPR_PC_REQUIRES=""
+NSS_PC_REQUIRES=""
+if test "z$NSPR_PC_VERSION" != "z" ; then
+    NSPR_PC_REQUIRES="${NSPR_PACKAGE} >= ${NSPR_PC_VERSION}"
+fi
+if test "z$NSS_PC_VERSION" != "z" ; then
+    NSS_PC_REQUIRES="${NSS_PACKAGE} >= ${NSS_PC_VERSION}"
+fi
+AC_SUBST(NSPR_PC_REQUIRES)
+AC_SUBST(NSS_PC_REQUIRES)
 
 dnl Check NSS and NSPR versions
 AC_MSG_CHECKING(for nspr library >= $NSPR_MIN_VERSION)
@@ -2629,10 +2671,19 @@ AC_CONFIG_FILES([include/xmlsec/mscng/Makefile src/mscng/Makefile])
 fi
 
 if test "z$XMLSEC_NO_CRYPTO_DYNAMIC_LOADING" = "z1" ; then
-(rm -f xmlsec1.pc && $LN_S xmlsec1-$XMLSEC_DEFAULT_CRYPTO.pc xmlsec1.pc)
+    if test "z$XMLSEC_DEFAULT_CRYPTO" = "zmscng" -o "z$XMLSEC_DEFAULT_CRYPTO" = "zmscrypto" ; then
+        dnl No pkg-config file is generated for mscng/mscrypto, so there is
+        dnl nothing to link xmlsec1.pc to; do not create it.
+        XMLSEC_PC_FILE=""
+    else
+        (rm -f xmlsec1.pc && $LN_S xmlsec1-$XMLSEC_DEFAULT_CRYPTO.pc xmlsec1.pc)
+        XMLSEC_PC_FILE="xmlsec1.pc"
+    fi
 else
 AC_CONFIG_FILES([xmlsec1.pc:xmlsec.pc.in])
+    XMLSEC_PC_FILE="xmlsec1.pc"
 fi
+AC_SUBST(XMLSEC_PC_FILE)
 
 AC_CONFIG_FILES([
 include/xmlsec/version.h

@@ -244,8 +244,23 @@ function configureXmlSecVersion()
 	var fso, ofi, of, ln, s;
 	fso = new ActiveXObject("Scripting.FileSystemObject");
 	if (fso.FileExists(versionHeader)) {
-		// version.h is already generated, nothing to do.
-		return;
+		// version.h is already generated; check whether it is up to
+		// date with the current version, and regenerate it if not.
+		var ifi, ln, stale;
+		stale = true;
+		ifi = fso.OpenTextFile(versionHeader, 1);
+		while (ifi.AtEndOfStream != true) {
+			ln = ifi.ReadLine();
+			if (ln.indexOf('#define XMLSEC_VERSION "' +
+				verMajorXmlSec + "." + verMinorXmlSec + "." + verMicroXmlSec + '"') != -1) {
+				stale = false;
+				break;
+			}
+		}
+		ifi.Close();
+		if (stale == false) {
+			return;
+		}
 	}
 
 	ofi = fso.OpenTextFile(versionHeaderIn, 1);
@@ -423,7 +438,7 @@ for (j = 0; j < crlist.length; j++) {
 		withMSCng = 1;
 	} else {
 		WScript.Echo("Unknown crypto engine \"" + crlist[j] + "\" is found. Aborting.");
-		WScript.Quit(error);
+		WScript.Quit(1);
 	}
 	if (j == 0) {
 		withDefaultCrypto = curcrypto;

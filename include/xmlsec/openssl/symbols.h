@@ -131,6 +131,4 @@ extern "C" {
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_OPENSSL_CRYPTO_H__ */
-
-#define __XMLSEC_OPENSSL_CRYPTO_H__
+#endif /* __XMLSEC_OPENSSL_SYMBOLS_H__ */

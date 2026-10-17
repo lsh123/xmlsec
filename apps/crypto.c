@@ -131,6 +131,7 @@ xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
     files += strlen(files) + 1;
     if(files[0] != '\0') {
         fprintf(stderr, "Error: X509 support is disabled\n");
+        xmlSecKeyDestroy(key);
         return(-1);
     }
 #endif /* XMLSEC_NO_X509 */

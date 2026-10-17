@@ -608,8 +608,11 @@ xmlSecGCryptDsaPkSign(int digest XMLSEC_ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_d
     gcry_sexp_t s_s = NULL;
     gcry_mpi_t m_r = NULL;
     gcry_mpi_t m_s = NULL;
+    gcry_mpi_t m_q = NULL;
+    gcry_sexp_t s_q = NULL;
     gcry_sexp_t s_tmp;
     gpg_error_t err;
+    xmlSecSize q_size;
     int ret;
     int res = -1;
 
@@ -618,6 +621,21 @@ xmlSecGCryptDsaPkSign(int digest XMLSEC_ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_d
     xmlSecAssert2(dgst != NULL, -1);
     xmlSecAssert2(dgstSize > 0, -1);
     xmlSecAssert2(out != NULL, -1);
+
+    /* figure out the size of q; the r and s values fit in that many bytes */
+    s_q = gcry_sexp_find_token(xmlSecGCryptKeyDataDsaGetPrivateKey(key_data), "q", 0);
+    if(s_q == NULL) {
+        xmlSecGCryptError("gcry_sexp_find_token(q)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
+        goto done;
+    }
+    m_q = gcry_sexp_nth_mpi(s_q, 1, GCRYMPI_FMT_USG);
+    if(m_q == NULL) {
+        xmlSecGCryptError("gcry_sexp_nth_mpi(q)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
+        goto done;
+    }
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE((size_t)gcry_mpi_get_nbits(m_q), q_size,
+                                    goto done, NULL);
+    q_size = (q_size + 7) / 8;
 
     /* get the current digest, can't use "hash" :( */
     err = gcry_mpi_scan(&m_hash, GCRYMPI_FMT_USG, dgst, dgstSize, NULL);
@@ -685,15 +703,15 @@ xmlSecGCryptDsaPkSign(int digest XMLSEC_ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_d
     }
 
     /* write out: r + s */
-    ret = xmlSecGCryptAppendMpi(m_r, out, 20);
-    if((ret < 0) || (xmlSecBufferGetSize(out) != 20)) {
+    ret = xmlSecGCryptAppendMpi(m_r, out, q_size);
+    if((ret < 0) || (xmlSecBufferGetSize(out) != q_size)) {
         xmlSecInternalError2("xmlSecGCryptAppendMpi", NULL,
             "outSize=" XMLSEC_SIZE_FMT, xmlSecBufferGetSize(out));
         goto done;
     }
 
-    ret = xmlSecGCryptAppendMpi(m_s, out, 20);
-    if((ret < 0) || (xmlSecBufferGetSize(out) != (20 + 20))) {
+    ret = xmlSecGCryptAppendMpi(m_s, out, q_size);
+    if((ret < 0) || (xmlSecBufferGetSize(out) != (q_size + q_size))) {
         xmlSecInternalError2("xmlSecGCryptAppendMpi", NULL,
             "outSize=" XMLSEC_SIZE_FMT, xmlSecBufferGetSize(out));
         goto done;
@@ -712,6 +730,9 @@ done:
     if(m_s != NULL) {
         gcry_mpi_release(m_s);
     }
+    if(m_q != NULL) {
+        gcry_mpi_release(m_q);
+    }
 
     if(s_data != NULL) {
         gcry_sexp_release(s_data);
@@ -725,6 +746,9 @@ done:
     if(s_s != NULL) {
         gcry_sexp_release(s_s);
     }
+    if(s_q != NULL) {
+        gcry_sexp_release(s_q);
+    }
 
     return(res);
 }
@@ -737,8 +761,11 @@ xmlSecGCryptDsaPkVerify(int digest XMLSEC_ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key
     gcry_sexp_t s_data = NULL;
     gcry_mpi_t m_sig_r = NULL;
     gcry_mpi_t m_sig_s = NULL;
+    gcry_mpi_t m_q = NULL;
     gcry_sexp_t s_sig = NULL;
+    gcry_sexp_t s_q = NULL;
     gpg_error_t err;
+    xmlSecSize q_size;
     int res = -1;
 
     xmlSecAssert2(key_data != NULL, -1);
@@ -746,7 +773,27 @@ xmlSecGCryptDsaPkVerify(int digest XMLSEC_ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key
     xmlSecAssert2(dgst != NULL, -1);
     xmlSecAssert2(dgstSize > 0, -1);
     xmlSecAssert2(data != NULL, -1);
-    xmlSecAssert2(dataSize == (20 + 20), -1);
+
+    /* figure out the size of q; the r and s values fit in that many bytes */
+    s_q = gcry_sexp_find_token(xmlSecGCryptKeyDataDsaGetPublicKey(key_data), "q", 0);
+    if(s_q == NULL) {
+        xmlSecGCryptError("gcry_sexp_find_token(q)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
+        goto done;
+    }
+    m_q = gcry_sexp_nth_mpi(s_q, 1, GCRYMPI_FMT_USG);
+    if(m_q == NULL) {
+        xmlSecGCryptError("gcry_sexp_nth_mpi(q)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
+        goto done;
+    }
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE((size_t)gcry_mpi_get_nbits(m_q), q_size,
+                                    goto done, NULL);
+    q_size = (q_size + 7) / 8;
+    if(dataSize != (q_size + q_size)) {
+        xmlSecInternalError3("Invalid signature size", NULL,
+            "actual=" XMLSEC_SIZE_FMT "; expected=" XMLSEC_SIZE_FMT,
+            dataSize, (xmlSecSize)(q_size + q_size));
+        goto done;
+    }
 
     /* get the current digest, can't use "hash" :( */
     err = gcry_mpi_scan(&m_hash, GCRYMPI_FMT_USG, dgst, dgstSize, NULL);
@@ -764,12 +811,12 @@ xmlSecGCryptDsaPkVerify(int digest XMLSEC_ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key
     }
 
     /* get the existing signature */
-    err = gcry_mpi_scan(&m_sig_r, GCRYMPI_FMT_USG, data, 20, NULL);
+    err = gcry_mpi_scan(&m_sig_r, GCRYMPI_FMT_USG, data, q_size, NULL);
     if((err != GPG_ERR_NO_ERROR) || (m_sig_r == NULL)) {
         xmlSecGCryptError("gcry_mpi_scan(r)", err, NULL);
         goto done;
     }
-    err = gcry_mpi_scan(&m_sig_s, GCRYMPI_FMT_USG, data + 20, 20, NULL);
+    err = gcry_mpi_scan(&m_sig_s, GCRYMPI_FMT_USG, data + q_size, q_size, NULL);
     if((err != GPG_ERR_NO_ERROR) || (m_sig_s == NULL)) {
         xmlSecGCryptError("gcry_mpi_scan(s)", err, NULL);
         goto done;
@@ -805,12 +852,18 @@ done:
     if(m_sig_s != NULL) {
         gcry_mpi_release(m_sig_s);
     }
+    if(m_q != NULL) {
+        gcry_mpi_release(m_q);
+    }
 
     if(s_data != NULL) {
         gcry_sexp_release(s_data);
     }
     if(s_sig != NULL) {
         gcry_sexp_release(s_sig);
+    }
+    if(s_q != NULL) {
+        gcry_sexp_release(s_q);
     }
 
     return(res);

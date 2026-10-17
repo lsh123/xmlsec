@@ -203,11 +203,18 @@ xmlSecGnuTLSX509CertDup(gnutls_x509_crt_t src) {
 /* returns 1 if self signed; 0 - if not; <0 on error*/
 int
 xmlSecGnuTLSX509CertIsSelfSigned(gnutls_x509_crt_t cert) {
-    unsigned ret;
+    int ret;
 
     xmlSecAssert2(cert != NULL, -1);
+
+    /* gnutls_x509_crt_check_issuer() returns 1 (match), 0 (no match)
+     * or a negative GnuTLS error code */
     ret = gnutls_x509_crt_check_issuer(cert, cert);
-    return ((ret != 0) ? 1 : 0);
+    if(ret < 0) {
+        xmlSecGnuTLSError("gnutls_x509_crt_check_issuer", ret, NULL);
+        return(-1);
+    }
+    return ((ret == 1) ? 1 : 0);
 }
 
 xmlChar *
@@ -969,7 +976,7 @@ xmlSecGnuTLSCreateKeyDataAndAdoptPrivKey(gnutls_x509_privkey_t priv_key) {
     /* create key value data */
     key_alg = gnutls_x509_privkey_get_pk_algorithm(priv_key);
     if(key_alg < 0) {
-        xmlSecGnuTLSError("gnutls_x509_privkey_get_pk_algorithm", key_alg < 0, NULL);
+        xmlSecGnuTLSError("gnutls_x509_privkey_get_pk_algorithm", key_alg, NULL);
         return (NULL);
     }
     switch(key_alg) {

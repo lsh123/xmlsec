@@ -39,15 +39,15 @@ extern "C" {
 #define xmlSecKeyDataDsaId                      xmlSecGCryptKeyDataDsaId
 #define xmlSecKeyDataHmacId                     xmlSecGCryptKeyDataHmacId
 #define xmlSecKeyDataRsaId                      xmlSecGCryptKeyDataRsaId
-#define xmlSecKeyDataX509Id                     xmlSecGCryptKeyDataX509Id
-#define xmlSecKeyDataRawX509CertId              xmlSecGCryptKeyDataRawX509CertId
+/* X509 is not supported by this backend; the generic
+ * xmlSecKeyDataX509Id/xmlSecKeyDataRawX509CertId are used instead */
 
 /********************************************************************
  *
  * Key data store ids
  *
  ********************************************************************/
-#define xmlSecX509StoreId                       xmlSecGCryptX509StoreId
+/* the X509 store is not supported by this backend */
 
 /********************************************************************
  *
@@ -68,8 +68,7 @@ extern "C" {
 #define xmlSecTransformHmacSha1Id               xmlSecGCryptTransformHmacSha1Id
 #define xmlSecTransformRipemd160Id              xmlSecGCryptTransformRipemd160Id
 #define xmlSecTransformRsaSha1Id                xmlSecGCryptTransformRsaSha1Id
-#define xmlSecTransformRsaPkcs1Id               xmlSecGCryptTransformRsaPkcs1Id
-#define xmlSecTransformRsaOaepId                xmlSecGCryptTransformRsaOaepId
+/* the RSA key transport transforms are not supported by this backend */
 #define xmlSecTransformSha1Id                   xmlSecGCryptTransformSha1Id
 
 /********************************************************************
@@ -99,6 +98,4 @@ extern "C" {
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_GCRYPT_CRYPTO_H__ */
-
-#define __XMLSEC_GCRYPT_CRYPTO_H__
+#endif /* __XMLSEC_GCRYPT_SYMBOLS_H__ */

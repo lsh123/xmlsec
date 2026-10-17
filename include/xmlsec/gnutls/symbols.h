@@ -68,8 +68,7 @@ extern "C" {
 #define xmlSecTransformHmacSha1Id               xmlSecGnuTLSTransformHmacSha1Id
 #define xmlSecTransformRipemd160Id              xmlSecGnuTLSTransformRipemd160Id
 #define xmlSecTransformRsaSha1Id                xmlSecGnuTLSTransformRsaSha1Id
-#define xmlSecTransformRsaPkcs1Id               xmlSecGnuTLSTransformRsaPkcs1Id
-#define xmlSecTransformRsaOaepId                xmlSecGnuTLSTransformRsaOaepId
+/* the RSA key transport transforms are not supported by this backend */
 #define xmlSecTransformSha1Id                   xmlSecGnuTLSTransformSha1Id
 
 /********************************************************************
@@ -99,6 +98,4 @@ extern "C" {
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_GNUTLS_CRYPTO_H__ */
-
-#define __XMLSEC_GNUTLS_CRYPTO_H__
+#endif /* __XMLSEC_GNUTLS_SYMBOLS_H__ */

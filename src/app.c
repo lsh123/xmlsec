@@ -325,7 +325,7 @@ xmlSecKeyDataStoreId
 xmlSecX509StoreGetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->x509StoreGetKlass == NULL)) {
         xmlSecNotImplementedError("x509StoreGetKlass");
-        return(xmlSecKeyStoreIdUnknown);
+        return(xmlSecKeyDataStoreIdUnknown);
     }
 
     return(xmlSecCryptoDLGetFunctions()->x509StoreGetKlass());

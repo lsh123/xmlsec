@@ -674,6 +674,7 @@ xmlSecTransformRelationshipPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPt
        if(buf == NULL) {
            xmlSecInternalError("xmlSecTransformCreateOutputBuffer",
                                xmlSecTransformGetName(transform));
+           transform->status = xmlSecTransformStatusFail;
            return(-1);
        }
     } else {
@@ -681,6 +682,7 @@ xmlSecTransformRelationshipPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPt
        if(buf == NULL) {
            xmlSecInternalError("xmlSecBufferCreateOutputBuffer",
                                xmlSecTransformGetName(transform));
+           transform->status = xmlSecTransformStatusFail;
            return(-1);
        }
     }
@@ -689,7 +691,17 @@ xmlSecTransformRelationshipPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPt
     if(ret < 0) {
        xmlSecInternalError("xmlSecTransformRelationshipExecute",
                            xmlSecTransformGetName(transform));
-       (void)xmlOutputBufferClose(buf);
+       xmlSecTransformDiscardOutputBuffer(buf);
+       /*
+        * Discard any partial output produced before the failure so it
+        * cannot be consumed later, and mark the transform as failed so
+        * that a subsequent push operation fails explicitly instead of
+        * returning success without producing any output. The rest of
+        * the transform state is undefined until the
+        * xmlSecTransformDestroy function is called.
+        */
+       xmlSecBufferEmpty(&(transform->outBuf));
+       transform->status = xmlSecTransformStatusFail;
        return(-1);
     }
 

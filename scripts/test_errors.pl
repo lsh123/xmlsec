@@ -34,5 +34,12 @@ while ($file = shift @ARGV) {
 	    }
 	}
     }
+    if($state ne "") {
+        # The file ended with an open xmlSecError(...) call (no
+        # terminating ';' on a later line); print what we have so the
+        # last record is not lost silently.
+        print "$state\n";
+        $state = "";
+    }
     close IN;
 }

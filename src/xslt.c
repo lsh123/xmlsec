@@ -112,16 +112,23 @@ static xmlSecTransformKlass xmlSecXsltKlass = {
 
 static xsltSecurityPrefsPtr g_xslt_default_security_prefs = NULL;
 
-void xmlSecTransformXsltInitialize(void) {
-    xmlSecAssert(g_xslt_default_security_prefs == NULL);
+int xmlSecTransformXsltInitialize(void) {
+    if(g_xslt_default_security_prefs != NULL) {
+        xmlSecInternalError("xslt security prefs are already initialized", NULL);
+        return(-1);
+    }
 
     g_xslt_default_security_prefs = xsltNewSecurityPrefs();
-    xmlSecAssert(g_xslt_default_security_prefs != NULL);
+    if(g_xslt_default_security_prefs == NULL) {
+        xmlSecInternalError("xsltNewSecurityPrefs", NULL);
+        return(-1);
+    }
     xsltSetSecurityPrefs(g_xslt_default_security_prefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
     xsltSetSecurityPrefs(g_xslt_default_security_prefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
     xsltSetSecurityPrefs(g_xslt_default_security_prefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid);
     xsltSetSecurityPrefs(g_xslt_default_security_prefs,  XSLT_SECPREF_READ_NETWORK,     xsltSecurityForbid);
     xsltSetSecurityPrefs(g_xslt_default_security_prefs,  XSLT_SECPREF_WRITE_NETWORK,    xsltSecurityForbid);
+    return(0);
 }
 
 void xmlSecTransformXsltShutdown(void) {
@@ -370,6 +377,7 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
             output = xmlSecTransformCreateOutputBuffer(transform->next, transformCtx);
             if(output == NULL) {
                 xmlSecInternalError("xmlSecTransformCreateOutputBuffer", xmlSecTransformGetName(transform));
+                transform->status = xmlSecTransformStatusFail;
                 xmlFreeDoc(docOut);
                 return(-1);
             }
@@ -377,6 +385,7 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
             output = xmlSecBufferCreateOutputBuffer(&(transform->outBuf));
             if(output == NULL) {
                 xmlSecInternalError("xmlSecBufferCreateOutputBuffer", xmlSecTransformGetName(transform));
+                transform->status = xmlSecTransformStatusFail;
                 xmlFreeDoc(docOut);
                 return(-1);
             }
@@ -385,7 +394,17 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         ret = xsltSaveResultTo(output, docOut, ctx->xslt);
         if(ret < 0) {
             xmlSecXsltError("xsltParseStylesheetDoc", ctx->xslt, xmlSecTransformGetName(transform));
-            (void)xmlOutputBufferClose(output);
+            xmlSecTransformDiscardOutputBuffer(output);
+            /*
+             * Discard any partial output produced before the failure so it
+             * cannot be consumed later, and mark the transform as failed so
+             * that a subsequent push operation fails explicitly instead of
+             * returning success without producing any output. The rest of
+             * the transform state is undefined until the
+             * xmlSecTransformDestroy function is called.
+             */
+            xmlSecBufferEmpty(&(transform->outBuf));
+            transform->status = xmlSecTransformStatusFail;
             xmlFreeDoc(docOut);
             return(-1);
         }
@@ -535,6 +554,15 @@ xmlSecXsApplyStylesheet(xmlSecXsltCtxPtr ctx, xmlDocPtr doc) {
     }
 
     /* set security prefs  */
+    if(g_xslt_default_security_prefs == NULL) {
+        /*
+         * Fail safe: never run the stylesheet without the default
+         * security prefs in place (e.g. in case the initialization
+         * failed due to an out-of-memory condition).
+         */
+        xmlSecInternalError("xslt security prefs are not initialized", NULL);
+        goto done;
+    }
     ret = xsltSetCtxtSecurityPrefs(g_xslt_default_security_prefs, xsltCtx);
     if(ret < 0) {
         xmlSecXsltError("xsltSetCtxtSecurityPrefs", ctx->xslt, NULL);

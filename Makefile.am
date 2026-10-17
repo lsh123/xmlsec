@@ -15,7 +15,7 @@ TEST_APP 	    = apps/xmlsec1$(EXEEXT)
 DEFAULT_CRYPTO	= @XMLSEC_DEFAULT_CRYPTO@
 
 bin_SCRIPTS 	= xmlsec1-config
-pkgconfig_DATA 	= xmlsec1.pc @XMLSEC_CRYPTO_PC_FILES_LIST@
+pkgconfig_DATA 	= @XMLSEC_PC_FILE@ @XMLSEC_CRYPTO_PC_FILES_LIST@
 pkgconfigdir 	= $(libdir)/pkgconfig
 confexecdir	= $(libdir)
 confexec_DATA 	= xmlsec1Conf.sh
@@ -58,14 +58,18 @@ EXTRA_DIST = \
 	xmlsecConf.sh.in \
 	xmlsec.spec.in \
 	xmlsec1Conf.sh \
-	xmlsec1.pc @XMLSEC_CRYPTO_PC_FILES_LIST@ \
+	@XMLSEC_PC_FILE@ @XMLSEC_CRYPTO_PC_FILES_LIST@ \
 	xmlsec1-config \
 	xmlsec1.spec \
 	xmlsec1.m4 \
 	$(NULL)
 
 EXTRA_CLEAN = \
-	examples \
+	examples/sign1 examples/sign2 examples/sign3 \
+	examples/verify1 examples/verify2 examples/verify3 examples/verify4 \
+	examples/encrypt1 examples/encrypt2 examples/encrypt3 \
+	examples/decrypt1 examples/decrypt2 examples/decrypt3 \
+	examples/xmldsigverify \
 	$(NULL)
 
 ABS_SRCDIR=@abs_srcdir@
@@ -98,6 +102,8 @@ docs-clean:
 
 docs-man:
 	@(cd man && $(MAKE) docs)
+
+if XMLSEC_APPS
 
 check: check-all check-info
 
@@ -184,6 +190,15 @@ memcheck-crypto-%: $(TEST_APP)
 
 perfcheck: $(TEST_APP)
 	@(export PERF_TEST=10 && $(MAKE) check)
+
+else
+
+check:
+	@echo "Error: the test suite requires the xmlsec command line tool." 1>&2
+	@echo "Reconfigure with --enable-apps to build it and run the tests." 1>&2
+	@exit 1
+
+endif
 
 dist-hook:
 

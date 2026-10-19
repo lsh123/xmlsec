@@ -27,19 +27,17 @@ AC_DEFUN([AM_PATH_XMLSEC1],[
   AC_ARG_ENABLE(xmlsec1test,
     AC_HELP_STRING(
       [--disable-xmlsec1test],
-      [Do not try to compile and run a test cSOAP program]
+      [Do not try to compile and run a test program]
     ),,
     enable_xmlsec1test=yes
   )
 
-  if test x$xmlsec1_config_exec_prefix != x ; then
-     xmlsec1_config_args="$xmlsec1_config_args --exec-prefix=$xmlsec1_config_exec_prefix"
+  if test x"$xmlsec1_config_exec_prefix" != x ; then
      if test x${XMLSEC1_CONFIG+set} != xset ; then
         XMLSEC1_CONFIG=$xmlsec1_config_exec_prefix/bin/xmlsec1-config
      fi
   fi
-  if test x$xmlsec1_config_prefix != x ; then
-     xmlsec1_config_args="$xmlsec1_config_args --prefix=$xmlsec1_config_prefix"
+  if test x"$xmlsec1_config_prefix" != x ; then
      if test x${XMLSEC1_CONFIG+set} != xset ; then
         XMLSEC1_CONFIG=$xmlsec1_config_prefix/bin/xmlsec1-config
      fi
@@ -53,14 +51,25 @@ AC_DEFUN([AM_PATH_XMLSEC1],[
   if test "$XMLSEC1_CONFIG" = "no" ; then
     no_xmlsec1=yes
   else
-    XMLSEC1_CFLAGS=`$XMLSEC1_CONFIG $xmlsec1_config_args --cflags`
-    XMLSEC1_LIBS=`$XMLSEC1_CONFIG $xmlsec1_config_args --libs`
-    xmlsec1_config_major_version=`$XMLSEC1_CONFIG $xmlsec1_config_args --version | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
-    xmlsec1_config_minor_version=`$XMLSEC1_CONFIG $xmlsec1_config_args --version | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\2/'`
-    xmlsec1_config_micro_version=`$XMLSEC1_CONFIG $xmlsec1_config_args --version | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\3/'`
+    dnl Build a properly quoted xmlsec1-config command line so that
+    dnl paths containing spaces (in XMLSEC1_CONFIG itself or in the
+    dnl --with-xmlsec1[-exec-]prefix values) survive the eval re-parse
+    dnl of the invocations below.
+    xmlsec1_config_cmd="\"$XMLSEC1_CONFIG\""
+    if test x"$xmlsec1_config_exec_prefix" != x ; then
+       xmlsec1_config_cmd="$xmlsec1_config_cmd \"--exec-prefix=$xmlsec1_config_exec_prefix\""
+    fi
+    if test x"$xmlsec1_config_prefix" != x ; then
+       xmlsec1_config_cmd="$xmlsec1_config_cmd \"--prefix=$xmlsec1_config_prefix\""
+    fi
+    XMLSEC1_CFLAGS=$(eval "$xmlsec1_config_cmd" --cflags)
+    XMLSEC1_LIBS=$(eval "$xmlsec1_config_cmd" --libs)
+    xmlsec1_config_major_version=$(eval "$xmlsec1_config_cmd" --version | \
+           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/')
+    xmlsec1_config_minor_version=$(eval "$xmlsec1_config_cmd" --version | \
+           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\2/')
+    xmlsec1_config_micro_version=$(eval "$xmlsec1_config_cmd" --version | \
+           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\3/')
     if test "x$enable_xmlsec1test" = "xyes" ; then
       ac_save_CFLAGS="$CFLAGS"
       ac_save_LIBS="$LIBS"
@@ -125,7 +134,7 @@ int main(int argc, char **argv) {
 
   if test "x$no_xmlsec1" = x ; then
      AC_MSG_RESULT(yes (version $xmlsec1_config_major_version.$xmlsec1_config_minor_version.$xmlsec1_config_micro_version))
-     ifelse([$2], , :, [$2])     
+     ifelse([$2], , :, [$2])
   else
      AC_MSG_RESULT(no)
      if test "$XMLSEC1_CONFIG" = "no" ; then
@@ -141,9 +150,9 @@ int main(int argc, char **argv) {
           CFLAGS="$CFLAGS $XMLSEC1_CFLAGS"
           LIBS="$LIBS $XMLSEC1_LIBS"
           AC_TRY_LINK([
-#include <libxmlsec1/version.h>
+#include <xmlsec/version.h>
 #include <stdio.h>
-],      [ soap_client_destroy(); return 0;],
+],      [ return 0;],
         [ echo "*** The test program compiled, but did not run. This usually means"
           echo "*** that the run-time linker is not finding LIBXMLSEC1 or finding the wrong"
           echo "*** version of LIBXMLSEC1. If it is not finding LIBXMLSEC1, you'll need to set your"

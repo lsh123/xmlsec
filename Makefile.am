@@ -50,6 +50,7 @@ EXTRA_DIST = \
 	Copyright \
 	HACKING \
 	README.md \
+	xmlsec.pc.in \
 	xmlsec-openssl.pc.in \
 	xmlsec-nss.pc.in\
 	xmlsec-gnutls.pc.in \

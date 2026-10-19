@@ -126,20 +126,24 @@ do
 done
 
 #
-# Get LibXML2 settings
+# Get LibXML2/LibXSLT settings. Query the -config tools only when the
+# flags or libraries are actually requested: --prefix/--libdir-style
+# queries must work even if xml2-config/xslt-config are not available
+# on the consumer's system.
 #
-the_xml_flags="`@LIBXML_CONFIG@ --cflags`"
-the_xml_libs="`@LIBXML_CONFIG@ --libs`"
-
-#
-# Get LibXSLT settings
-#
+the_xml_flags=""
+the_xml_libs=""
 the_xslt_flags=""
 the_xslt_libs=""
-if test "@XMLSEC_NO_LIBXSLT@" = "0" ;
+if $cflags || $libs ;
 then
-    the_xslt_flags="`@LIBXSLT_CONFIG@ --cflags`"
-    the_xslt_libs="`@LIBXSLT_CONFIG@ --libs`"
+    the_xml_flags="`@LIBXML_CONFIG@ --cflags`"
+    the_xml_libs="`@LIBXML_CONFIG@ --libs`"
+    if test "@XMLSEC_NO_LIBXSLT@" = "0" ;
+    then
+        the_xslt_flags="`@LIBXSLT_CONFIG@ --cflags`"
+        the_xslt_libs="`@LIBXSLT_CONFIG@ --libs`"
+    fi
 fi
 
 #
@@ -304,6 +308,6 @@ for i in $rev_libs; do
     esac
 done
 
-echo $other_flags $ord_libs
+echo "$other_flags $ord_libs"
 
 exit 0

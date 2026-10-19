@@ -12,6 +12,8 @@ BuildRoot: %{_tmppath}/@PACKAGE@-%{version}-root
 URL: http://www.aleksey.com/xmlsec
 %define no_openssl @XMLSEC_NO_OPENSSL@
 %define no_nss @XMLSEC_NO_NSS@
+%define no_gcrypt @XMLSEC_NO_GCRYPT@
+%define no_gnutls @XMLSEC_NO_GNUTLS@
 Requires: libxml2 >= @LIBXML_MIN_VERSION@
 Requires: libxslt >= @LIBXSLT_MIN_VERSION@
 Requires: libltdl
@@ -22,6 +24,12 @@ BuildRequires: openssl-devel >= @OPENSSL_MIN_VERSION@
 %endif
 %if %{no_nss} == 0
 BuildRequires: mozilla-nss-devel >= @MOZILLA_MIN_VERSION@
+%endif
+%if %{no_gcrypt} == 0
+BuildRequires: libgcrypt-devel >= @GCRYPT_MIN_VERSION@
+%endif
+%if %{no_gnutls} == 0
+BuildRequires: gnutls-devel >= @GNUTLS_MIN_VERSION@
 %endif
 Prefix: %{_prefix}
 Docdir: %{_docdir}
@@ -107,6 +115,66 @@ Requires: mozilla-nss-devel >= @MOZILLA_MIN_VERSION@
 
 %description nss-devel
 Libraries, includes, etc. for developing XML Security applications with NSS
+
+%endif
+
+%if %{no_gcrypt} == 0
+
+%package gcrypt
+Summary: libgcrypt crypto plugin for XML Security Library
+Group: Development/Libraries
+Requires: xmlsec1 = %{version}
+Requires: libxml2 >= @LIBXML_MIN_VERSION@
+Requires: libxslt >= @LIBXSLT_MIN_VERSION@
+Requires: libgcrypt >= @GCRYPT_MIN_VERSION@
+BuildRequires: libgcrypt-devel >= @GCRYPT_MIN_VERSION@
+
+%description gcrypt
+libgcrypt plugin for XML Security Library provides libgcrypt based crypto services
+for the xmlsec library
+
+%package gcrypt-devel
+Summary: libgcrypt crypto plugin for XML Security Library
+Group: Development/Libraries
+Requires: xmlsec1 = %{version}
+Requires: xmlsec1-devel = %{version}
+Requires: xmlsec1-gcrypt = %{version}
+Requires: libxml2-devel >= @LIBXML_MIN_VERSION@
+Requires: libxslt-devel >= @LIBXSLT_MIN_VERSION@
+Requires: libgcrypt-devel >= @GCRYPT_MIN_VERSION@
+
+%description gcrypt-devel
+Libraries, includes, etc. for developing XML Security applications with libgcrypt
+
+%endif
+
+%if %{no_gnutls} == 0
+
+%package gnutls
+Summary: GnuTLS crypto plugin for XML Security Library
+Group: Development/Libraries
+Requires: xmlsec1 = %{version}
+Requires: libxml2 >= @LIBXML_MIN_VERSION@
+Requires: libxslt >= @LIBXSLT_MIN_VERSION@
+Requires: gnutls >= @GNUTLS_MIN_VERSION@
+BuildRequires: gnutls-devel >= @GNUTLS_MIN_VERSION@
+
+%description gnutls
+GnuTLS plugin for XML Security Library provides GnuTLS based crypto services
+for the xmlsec library
+
+%package gnutls-devel
+Summary: GnuTLS crypto plugin for XML Security Library
+Group: Development/Libraries
+Requires: xmlsec1 = %{version}
+Requires: xmlsec1-devel = %{version}
+Requires: xmlsec1-gnutls = %{version}
+Requires: libxml2-devel >= @LIBXML_MIN_VERSION@
+Requires: libxslt-devel >= @LIBXSLT_MIN_VERSION@
+Requires: gnutls-devel >= @GNUTLS_MIN_VERSION@
+
+%description gnutls-devel
+Libraries, includes, etc. for developing XML Security applications with GnuTLS
 
 %endif
 
@@ -196,6 +264,40 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/include/xmlsec1/xmlsec/nss/*.h
 %{prefix}/lib/libxmlsec1-nss.*a
 %{prefix}/lib/pkgconfig/xmlsec1-nss.pc
+
+%endif
+
+%if %{no_gcrypt} == 0
+
+%files gcrypt
+%defattr(-, root, root)
+
+%{prefix}/lib/libxmlsec1-gcrypt.so.*
+%{prefix}/lib/libxmlsec1-gcrypt.so
+
+%files gcrypt-devel
+%defattr(-, root, root)
+
+%{prefix}/include/xmlsec1/xmlsec/gcrypt/*.h
+%{prefix}/lib/libxmlsec1-gcrypt.*a
+%{prefix}/lib/pkgconfig/xmlsec1-gcrypt.pc
+
+%endif
+
+%if %{no_gnutls} == 0
+
+%files gnutls
+%defattr(-, root, root)
+
+%{prefix}/lib/libxmlsec1-gnutls.so.*
+%{prefix}/lib/libxmlsec1-gnutls.so
+
+%files gnutls-devel
+%defattr(-, root, root)
+
+%{prefix}/include/xmlsec1/xmlsec/gnutls/*.h
+%{prefix}/lib/libxmlsec1-gnutls.*a
+%{prefix}/lib/pkgconfig/xmlsec1-gnutls.pc
 
 %endif
 

@@ -1,17 +1,17 @@
 /**
  * XML Security Library example: Encrypting XML file with a dynamicaly created template.
  *
- * Encrypts XML file using a dynamicaly created template file and a DES key
+ * Encrypts XML file using a dynamicaly created template file and an AES key
  * from a binary file
  *
  * Usage:
- *      ./encrypt2 <xml-doc> <des-key-file>
+ *      ./encrypt2 <xml-doc> <aes-key-file>
  *
  * Example:
- *      ./encrypt2 encrypt2-doc.xml deskey.bin > encrypt2-res.xml
+ *      ./encrypt2 encrypt2-doc.xml aeskey.bin > encrypt2-res.xml
  *
  * The result could be decrypted with decrypt1 example:
- *      ./decrypt1 encrypt2-res.xml deskey.bin
+ *      ./decrypt1 encrypt2-res.xml aeskey.bin
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -56,8 +56,10 @@ main(int argc, char **argv) {
     /* Init libxml and libxslt libraries */
     xmlInitParser();
     LIBXML_TEST_VERSION
-    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
-    xmlSubstituteEntitiesDefault(1);
+    /* Do not substitute (external) entities and do not load external DTDs:
+     * enabling entity expansion is XXE-prone for untrusted input. */
+    xmlLoadExtDtdDefaultValue = 0;
+    xmlSubstituteEntitiesDefault(0);
 #ifndef XMLSEC_NO_XSLT
     xmlIndentTreeOutput = 1;
 #endif /* XMLSEC_NO_XSLT */
@@ -138,9 +140,9 @@ main(int argc, char **argv) {
 /**
  * encrypt_file:
  * @xml_file:           the encryption template file name.
- * @key_file:           the Triple DES key file.
+ * @key_file:           the AES key file.
  *
- * Encrypts #xml_file using a dynamicaly created template and DES key from
+ * Encrypts #xml_file using a dynamicaly created template and AES key from
  * #key_file.
  *
  * Returns 0 on success or a negative value if an error occurs.
@@ -165,7 +167,7 @@ encrypt_file(const char* xml_file, const char* key_file) {
 
     /* create encryption template to encrypt XML file and replace
      * its content with encryption result */
-    encDataNode = xmlSecTmplEncDataCreate(doc, xmlSecTransformDes3CbcId,
+    encDataNode = xmlSecTmplEncDataCreate(doc, xmlSecTransformAes128CbcId,
                                 NULL, xmlSecTypeEncElement, NULL, NULL);
     if(encDataNode == NULL) {
         fprintf(stderr, "Error: failed to create encryption template\n");
@@ -197,10 +199,10 @@ encrypt_file(const char* xml_file, const char* key_file) {
         goto done;
     }
 
-    /* load DES key, assuming that there is not password */
-    encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
+    /* load AES key, assuming that there is not password */
+    encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataAesId, key_file);
     if(encCtx->encKey == NULL) {
-        fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);
+        fprintf(stderr,"Error: failed to load aes key from binary file \"%s\"\n", key_file);
         goto done;
     }
 

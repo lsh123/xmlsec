@@ -1,16 +1,16 @@
 /**
  * XML Security Library example: Encrypting data using a template file.
  *
- * Encrypts binary data using a template file and a DES key from a binary file
+ * Encrypts binary data using a template file and an AES key from a binary file
  *
  * Usage:
- *      ./encrypt1 <xml-tmpl> <des-key-file>
+ *      ./encrypt1 <xml-tmpl> <aes-key-file>
  *
  * Example:
- *      ./encrypt1 encrypt1-tmpl.xml deskey.bin > encrypt1-res.xml
+ *      ./encrypt1 encrypt1-tmpl.xml aeskey.bin > encrypt1-res.xml
  *
  * The result could be decrypted with decrypt1 example:
- *      ./decrypt1 encrypt1-res.xml deskey.bin
+ *      ./decrypt1 encrypt1-res.xml aeskey.bin
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -55,8 +55,10 @@ main(int argc, char **argv) {
     /* Init libxml and libxslt libraries */
     xmlInitParser();
     LIBXML_TEST_VERSION
-    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
-    xmlSubstituteEntitiesDefault(1);
+    /* Do not substitute (external) entities and do not load external DTDs:
+     * enabling entity expansion is XXE-prone for untrusted input. */
+    xmlLoadExtDtdDefaultValue = 0;
+    xmlSubstituteEntitiesDefault(0);
 #ifndef XMLSEC_NO_XSLT
     xmlIndentTreeOutput = 1;
 #endif /* XMLSEC_NO_XSLT */
@@ -137,11 +139,11 @@ main(int argc, char **argv) {
 /**
  * encrypt_file:
  * @tmpl_file:          the encryption template file name.
- * @key_file:           the Triple DES key file.
+ * @key_file:           the AES key file.
  * @data:               the binary data to encrypt.
  * @dataSize:           the binary data size.
  *
- * Encrypts binary #data using template from #tmpl_file and DES key from
+ * Encrypts binary #data using template from #tmpl_file and AES key from
  * #key_file.
  *
  * Returns 0 on success or a negative value if an error occurs.
@@ -179,10 +181,10 @@ encrypt_file(const char* tmpl_file, const char* key_file,
         goto done;
     }
 
-    /* load DES key, assuming that there is not password */
-    encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
+    /* load AES key, assuming that there is not password */
+    encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataAesId, key_file);
     if(encCtx->encKey == NULL) {
-        fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);
+        fprintf(stderr,"Error: failed to load aes key from binary file \"%s\"\n", key_file);
         goto done;
     }
 

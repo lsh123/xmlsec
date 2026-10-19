@@ -27,13 +27,13 @@ check: $(PROGRAMS)
 	./verify2  sign2-res.xml     rsapub.pem
 	./verify3  sign3-res.xml     ca2cert.pem cacert.pem
 	./verify4  verify4-res.xml   ca2cert.pem cacert.pem
-	./encrypt1 encrypt1-tmpl.xml deskey.bin
-	./encrypt2 encrypt2-doc.xml  deskey.bin 
+	./encrypt1 encrypt1-tmpl.xml aeskey.bin
+	./encrypt2 encrypt2-doc.xml  aeskey.bin
 	./encrypt3 encrypt3-doc.xml  rsakey.pem
-	./decrypt1 encrypt1-res.xml  deskey.bin
-	./decrypt1 encrypt2-res.xml  deskey.bin
-	./decrypt2 encrypt1-res.xml  deskey.bin
-	./decrypt2 encrypt2-res.xml  deskey.bin
+	./decrypt1 encrypt1-res.xml  aeskey.bin
+	./decrypt1 encrypt2-res.xml  aeskey.bin
+	./decrypt2 encrypt1-res.xml  aeskey.bin
+	./decrypt2 encrypt2-res.xml  aeskey.bin
 	./decrypt3 encrypt1-res.xml
 	./decrypt3 encrypt2-res.xml
 	./decrypt3 encrypt3-res.xml

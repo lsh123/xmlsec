@@ -80,7 +80,7 @@ $(XMLSEC_OBJS_DIR) :
 
 .c{$(XMLSEC_OBJS_DIR)}.exe :
 	$(CC) /c $(CFLAGS) /Fo$(XMLSEC_OBJS_DIR)\ $<
-	$(LD) $(LDFLAGS) /OUT:$*.exe $*.obj
+	$(LD) $(LDFLAGS) /OUT:$(XMLSEC_OBJS_DIR)\$*.exe $(XMLSEC_OBJS_DIR)\$*.obj
 
 clean:
 	if exist $(XMLSEC_OBJS_DIR) rmdir /S /Q $(XMLSEC_OBJS_DIR)

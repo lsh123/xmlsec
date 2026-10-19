@@ -2,14 +2,14 @@
  * XML Security Library example: Decrypting an encrypted file using keys manager.
  *
  * Decrypts encrypted XML file using keys manager and a list of
- * DES key from a binary file
+ * AES key from a binary file
  *
  * Usage:
- *      ./decrypt2 <xml-enc> <des-key-file1> [<des-key-file2> [...]]
+ *      ./decrypt2 <xml-enc> <aes-key-file1> [<aes-key-file2> [...]]
  *
  * Example:
- *      ./decrypt2 encrypt1-res.xml deskey.bin
- *      ./decrypt2 encrypt2-res.xml deskey.bin
+ *      ./decrypt2 encrypt1-res.xml aeskey.bin
+ *      ./decrypt2 encrypt2-res.xml aeskey.bin
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -34,7 +34,7 @@
 #include <xmlsec/xmlenc.h>
 #include <xmlsec/crypto.h>
 
-xmlSecKeysMngrPtr load_des_keys(char** files, int files_size);
+xmlSecKeysMngrPtr load_aes_keys(char** files, int files_size);
 int decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file);
 
 int
@@ -46,7 +46,7 @@ main(int argc, char **argv) {
 
     assert(argv);
 
-    if(argc != 3) {
+    if(argc < 3) {
         fprintf(stderr, "Error: wrong number of arguments.\n");
         fprintf(stderr, "Usage: %s <enc-file> <key-file1> [<key-file2> [...]]\n", argv[0]);
         return(1);
@@ -55,8 +55,10 @@ main(int argc, char **argv) {
     /* Init libxml and libxslt libraries */
     xmlInitParser();
     LIBXML_TEST_VERSION
-    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
-    xmlSubstituteEntitiesDefault(1);
+    /* Do not substitute (external) entities and do not load external DTDs:
+     * enabling entity expansion is XXE-prone for untrusted input. */
+    xmlLoadExtDtdDefaultValue = 0;
+    xmlSubstituteEntitiesDefault(0);
 #ifndef XMLSEC_NO_XSLT
     xmlIndentTreeOutput = 1;
 #endif /* XMLSEC_NO_XSLT */
@@ -113,7 +115,7 @@ main(int argc, char **argv) {
     }
 
     /* create keys manager and load keys */
-    mngr = load_des_keys(&(argv[2]), argc - 2);
+    mngr = load_aes_keys(&(argv[2]), argc - 2);
     if(mngr == NULL) {
         return(-1);
     }
@@ -146,11 +148,11 @@ main(int argc, char **argv) {
 }
 
 /**
- * load_des_keys:
+ * load_aes_keys:
  * @files:              the list of filenames.
  * @files_size:         the number of filenames in #files.
  *
- * Creates simple keys manager and load DES keys from #files in it.
+ * Creates simple keys manager and load AES keys from #files in it.
  * The caller is responsible for destroying returned keys manager using
  * @xmlSecKeysMngrDestroy.
  *
@@ -158,7 +160,7 @@ main(int argc, char **argv) {
  * occurs.
  */
 xmlSecKeysMngrPtr
-load_des_keys(char** files, int files_size) {
+load_aes_keys(char** files, int files_size) {
     xmlSecKeysMngrPtr mngr;
     xmlSecKeyPtr key;
     int i;
@@ -184,10 +186,10 @@ load_des_keys(char** files, int files_size) {
     for(i = 0; i < files_size; ++i) {
         assert(files[i]);
 
-        /* load DES key */
-        key = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, files[i]);
+        /* load AES key */
+        key = xmlSecKeyReadBinaryFile(xmlSecKeyDataAesId, files[i]);
         if(key == NULL) {
-            fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", files[i]);
+            fprintf(stderr,"Error: failed to load aes key from binary file \"%s\"\n", files[i]);
             xmlSecKeysMngrDestroy(mngr);
             return(NULL);
         }
@@ -219,7 +221,7 @@ load_des_keys(char** files, int files_size) {
  * @mngr:               the pointer to keys manager.
  * @enc_file:           the encrypted XML  file name.
  *
- * Decrypts the XML file #enc_file using DES key from #key_file and
+ * Decrypts the XML file #enc_file using AES key from #key_file and
  * prints results to stdout.
  *
  * Returns 0 on success or a negative value if an error occurs.

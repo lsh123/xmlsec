@@ -149,13 +149,13 @@ encrypt1-tmpl.xml   The result of processing encrypt1_tmpl.xml by encrypt1.c
 
 To run this example:
 ```
-./encrypt1 encrypt1-tmpl.xml deskey.bin
+./encrypt1 encrypt1-tmpl.xml aeskey.bin
 ```
 
 To encrypt binary data with a template file with `xmlsec1` command line
 utility (use `xmlsec` on Windows):
 ```
-xmlsec1 encrypt --deskey deskey.bin  --binary-data binary.dat --output encrypt1.xml encrypt1-tmpl.xml
+xmlsec1 encrypt --aeskey aeskey.bin  --binary-data binary.dat --output encrypt1.xml encrypt1-tmpl.xml
 ```
 
 ### encrypt2: encrypting XML file using a dynamicaly created template
@@ -169,10 +169,10 @@ encrypt2-res.xml    The result of encryptin encrypt2-doc.xml by encrypt2.c
 
 To run this example:
 ```
-./encrypt2 encrypt2-doc.xml deskey.bin
+./encrypt2 encrypt2-doc.xml aeskey.bin
 ```
 
-### encrypt3: encrypting XML file using a session DES key
+### encrypt3: encrypting XML file using a session AES key
 
 Files:
 ```
@@ -195,8 +195,8 @@ decrypt1.c          The source code
 
 To run this example:
 ```
-./decrypt1 encrypt1-res.xml deskey.bin
-./decrypt1 encrypt2-res.xml deskey.bin
+./decrypt1 encrypt1-res.xml aeskey.bin
+./decrypt1 encrypt2-res.xml aeskey.bin
 ```
 
 ### decrypt2: decrypting binary data using keys manager
@@ -208,14 +208,14 @@ decrypt2.c          The source code
 
 To run this example:
 ```
-./decrypt2 encrypt1-res.xml deskey.bin
-./decrypt2 encrypt2-res.xml deskey.bin
+./decrypt2 encrypt1-res.xml aeskey.bin
+./decrypt2 encrypt2-res.xml aeskey.bin
 ```
 
 To decrypt binary data with `xmlsec1` command line utility (use `xmlsec` on Windows):
 ```
-xmlsec1 decrypt --deskey deskey.bin encrypt1-res.xml
-xmlsec1 decrypt --deskey deskey.bin encrypt2-res.xml
+xmlsec1 decrypt --aeskey aeskey.bin encrypt1-res.xml
+xmlsec1 decrypt --aeskey aeskey.bin encrypt2-res.xml
 xmlsec1 decrypt --privkey rsakey.pem encrypt3-res.xml
 ```
 
@@ -250,5 +250,5 @@ ca2cert.pem         CA (trusted) certificate (signed with cacert.pem)
 rsakey.pem          Private PEM key file
 rsapub.pem          Public PEM key file
 rsacert.pem         Certificate for rsakey.pem signed with ca2cert.pem
-deskey.bin          A DES keys
+aeskey.bin          An AES key
 ```

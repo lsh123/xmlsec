@@ -21,6 +21,7 @@
 #endif /* XMLSEC_NO_XSLT */
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/parser.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/xmldsig.h>
 #include <xmlsec/crypto.h>
@@ -28,6 +29,8 @@
 /* #define XMLDSIGVERIFY_DEFAULT_TRUSTED_CERTS_FOLDER   "/etc/httpd/conf/ssl.crt" */
 #define XMLDSIGVERIFY_DEFAULT_TRUSTED_CERTS_FOLDER      "/var/www/cgi-bin/keys-certs.def"
 #define XMLDSIGVERIFY_KEY_AND_CERTS_FOLDER              "/var/www/cgi-bin/keys-certs"
+/* maximum size of the request (stdin) to prevent memory exhaustion */
+#define XMLDSIGVERIFY_MAX_REQUEST_SIZE                  (1024 * 1024)
 
 
 int load_keys(xmlSecKeysMngrPtr mngr, const char* path, int report_loaded_keys);
@@ -49,8 +52,10 @@ main(int , char **) {
     /* Init libxml and libxslt libraries */
     xmlInitParser();
     LIBXML_TEST_VERSION
-    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
-    xmlSubstituteEntitiesDefault(1);
+    /* this CGI processes untrusted input; do not substitute entities
+     * (including external ones) and do not load external DTDs */
+    xmlLoadExtDtdDefaultValue = 0;
+    xmlSubstituteEntitiesDefault(0);
 #ifndef XMLSEC_NO_XSLT
     xmlIndentTreeOutput = 1;
 #endif /* XMLSEC_NO_XSLT */
@@ -116,6 +121,7 @@ main(int , char **) {
     }
     if(xmlSecCryptoAppDefaultKeysMngrInit(mngr) < 0) {
         fprintf(stdout, "Error: failed to initialize keys manager.\n");
+        xmlSecKeysMngrDestroy(mngr);
         return(-1);
     }
 
@@ -181,7 +187,6 @@ int load_trusted_certs(xmlSecKeysMngrPtr mngr, const char* path, int report_load
         return(-1);
     }
     while((entry = readdir(dir)) != NULL) {
-        assert(entry->d_name);
         len = strlen(entry->d_name);
         if((len > 4) && (strcmp(entry->d_name + len - 4, ".pem") == 0)) {
             snprintf(filename, sizeof(filename), "%s/%s", path, entry->d_name);
@@ -264,7 +269,16 @@ verify_request(xmlSecKeysMngrPtr mngr) {
             /* clean end of file */
             break;
         }
-        xmlBufferAdd(buffer, buf, (xmlSecSize)ret);
+        /* bound the total request size to prevent memory exhaustion
+         * (e.g. a very large POST body to the CGI) */
+        if((xmlSecSize)ret + xmlBufferLength(buffer) > XMLDSIGVERIFY_MAX_REQUEST_SIZE) {
+            fprintf(stdout,"Error: request is too large\n");
+            goto done;
+        }
+        if(xmlBufferAdd(buffer, buf, (xmlSecSize)ret) < 0) {
+            fprintf(stdout,"Error: failed to append to buffer\n");
+            goto done;
+        }
     }
 
     /* is the document submitted from the form? */
@@ -273,11 +287,11 @@ verify_request(xmlSecKeysMngrPtr mngr) {
         buffer->use = url_decode((char*)xmlBufferContent(buffer), xmlBufferLength(buffer));
     }
 
-    /**
+    /*
      * Load doc
      */
-    xmlSecParserSetDefaultOptions(XML_PARSE_NOENT | XML_PARSE_NOCDATA |
-                        XML_PARSE_PEDANTIC | XML_PARSE_NOCDATA);
+    xmlSecParserSetDefaultOptions(XML_PARSE_NONET | XML_PARSE_NOCDATA |
+                        XML_PARSE_PEDANTIC);
     doc = xmlReadMemory((const char*)xmlBufferContent(buffer), xmlBufferLength(buffer),
         NULL, NULL, xmlSecParserGetDefaultOptions());
     if (doc == NULL) {
@@ -329,7 +343,10 @@ verify_request(xmlSecKeysMngrPtr mngr) {
     fprintf(stdout, "---------------------------------------------------\n");
     xmlSecDSigCtxDebugDump(dsigCtx, stdout);
 
-    /* success */
+    /* the signature must be valid for the CGI to report success */
+    if(dsigCtx->status != xmlSecDSigStatusSucceeded) {
+        goto done;
+    }
     res = 0;
 
 done:

@@ -1,14 +1,14 @@
 /**
  * XML Security Library example: Decrypting an encrypted file using a single key.
  *
- * Decrypts encrypted XML file using a single DES key from a binary file
+ * Decrypts encrypted XML file using a single AES key from a binary file
  *
  * Usage:
- *      ./decrypt1 <xml-enc> <des-key-file>
+ *      ./decrypt1 <xml-enc> <aes-key-file>
  *
  * Example:
- *      ./decrypt1 encrypt1-res.xml deskey.bin
- *      ./decrypt1 encrypt2-res.xml deskey.bin
+ *      ./decrypt1 encrypt1-res.xml aeskey.bin
+ *      ./decrypt1 encrypt2-res.xml aeskey.bin
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -52,8 +52,10 @@ main(int argc, char **argv) {
     /* Init libxml and libxslt libraries */
     xmlInitParser();
     LIBXML_TEST_VERSION
-    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
-    xmlSubstituteEntitiesDefault(1);
+    /* Do not substitute (external) entities and do not load external DTDs:
+     * enabling entity expansion is XXE-prone for untrusted input. */
+    xmlLoadExtDtdDefaultValue = 0;
+    xmlSubstituteEntitiesDefault(0);
 #ifndef XMLSEC_NO_XSLT
     xmlIndentTreeOutput = 1;
 #endif /* XMLSEC_NO_XSLT */
@@ -124,6 +126,7 @@ main(int argc, char **argv) {
 
     /* Shutdown libxslt/libxml */
 #ifndef XMLSEC_NO_XSLT
+    xsltFreeSecurityPrefs(xsltSecPrefs);
     xsltCleanupGlobals();
 #endif /* XMLSEC_NO_XSLT */
     xmlCleanupParser();
@@ -134,9 +137,9 @@ main(int argc, char **argv) {
 /**
  * decrypt_file:
  * @enc_file:           the encrypted XML  file name.
- * @key_file:           the Triple DES key file.
+ * @key_file:           the AES key file.
  *
- * Decrypts the XML file #enc_file using DES key from #key_file and
+ * Decrypts the XML file #enc_file using AES key from #key_file and
  * prints results to stdout.
  *
  * Returns 0 on success or a negative value if an error occurs.
@@ -172,10 +175,10 @@ decrypt_file(const char* enc_file, const char* key_file) {
         goto done;
     }
 
-    /* load DES key */
-    encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
+    /* load AES key */
+    encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataAesId, key_file);
     if(encCtx->encKey == NULL) {
-        fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);
+        fprintf(stderr,"Error: failed to load aes key from binary file \"%s\"\n", key_file);
         goto done;
     }
 

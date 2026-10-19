@@ -58,8 +58,10 @@ main(int argc, char **argv) {
     /* Init libxml and libxslt libraries */
     xmlInitParser();
     LIBXML_TEST_VERSION
-    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
-    xmlSubstituteEntitiesDefault(1);
+    /* Do not substitute (external) entities and do not load external DTDs:
+     * enabling entity expansion is XXE-prone for untrusted input. */
+    xmlLoadExtDtdDefaultValue = 0;
+    xmlSubstituteEntitiesDefault(0);
 #ifndef XMLSEC_NO_XSLT
     xmlIndentTreeOutput = 1;
 #endif /* XMLSEC_NO_XSLT */
@@ -343,6 +345,13 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
         if(!isalnum((*p)) && ((*p) != '.') && ((*p) != '-') && ((*p) != '_')) {
             return(NULL);
         }
+    }
+    /* the character set above allows '.'; additionally reject the ".."
+     * sequence, otherwise a key name like "../key.pem" would let the
+     * lookup load a file outside the current folder, bypassing the
+     * "current folder only" protection */
+    if(strstr((const char*)name, "..") != NULL) {
+        return(NULL);
     }
 
     if((keyInfoCtx->keyReq.keyId == xmlSecKeyDataDsaId) || (keyInfoCtx->keyReq.keyId == xmlSecKeyDataRsaId)) {

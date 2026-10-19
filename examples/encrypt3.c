@@ -2,7 +2,7 @@
  * XML Security Library example: Encrypting XML file with a session key and dynamicaly created template.
  *
  * Encrypts XML file using a dynamicaly created template file and a session
- * DES key (encrypted with an RSA key).
+ * AES key (encrypted with an RSA key).
  *
  * Usage:
  *      ./encrypt3 <xml-doc> <rsa-pem-key-file>
@@ -58,8 +58,10 @@ main(int argc, char **argv) {
     /* Init libxml and libxslt libraries */
     xmlInitParser();
     LIBXML_TEST_VERSION
-    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
-    xmlSubstituteEntitiesDefault(1);
+    /* Do not substitute (external) entities and do not load external DTDs:
+     * enabling entity expansion is XXE-prone for untrusted input. */
+    xmlLoadExtDtdDefaultValue = 0;
+    xmlSubstituteEntitiesDefault(0);
 #ifndef XMLSEC_NO_XSLT
     xmlIndentTreeOutput = 1;
 #endif /* XMLSEC_NO_XSLT */
@@ -216,7 +218,7 @@ load_rsa_keys(char* key_file) {
  * @xml_file:           the encryption template file name.
  * @key_name:           the RSA key name.
  *
- * Encrypts #xml_file using a dynamicaly created template, a session DES key
+ * Encrypts #xml_file using a dynamicaly created template, a session AES key
  * and an RSA key from keys manager.
  *
  * Returns 0 on success or a negative value if an error occurs.
@@ -244,7 +246,7 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
 
     /* create encryption template to encrypt XML file and replace
      * its content with encryption result */
-    encDataNode = xmlSecTmplEncDataCreate(doc, xmlSecTransformDes3CbcId,
+    encDataNode = xmlSecTmplEncDataCreate(doc, xmlSecTransformAes128CbcId,
                                 NULL, xmlSecTypeEncElement, NULL, NULL);
     if(encDataNode == NULL) {
         fprintf(stderr, "Error: failed to create encryption template\n");
@@ -299,10 +301,10 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
         goto done;
     }
 
-    /* generate a Triple DES key */
-    encCtx->encKey = xmlSecKeyGenerate(xmlSecKeyDataDesId, 192, xmlSecKeyDataTypeSession);
+    /* generate an AES key */
+    encCtx->encKey = xmlSecKeyGenerate(xmlSecKeyDataAesId, 128, xmlSecKeyDataTypeSession);
     if(encCtx->encKey == NULL) {
-        fprintf(stderr,"Error: failed to generate session des key\n");
+        fprintf(stderr,"Error: failed to generate session aes key\n");
         goto done;
     }
 

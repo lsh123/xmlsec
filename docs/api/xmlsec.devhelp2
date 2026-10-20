@@ -303,6 +303,7 @@
     <keyword type="function" name="xmlSecBnDiv ()" link="xmlsec-bn.html#xmlSecBnDiv"/>
     <keyword type="function" name="xmlSecBnAdd ()" link="xmlsec-bn.html#xmlSecBnAdd"/>
     <keyword type="function" name="xmlSecBnReverse ()" link="xmlsec-bn.html#xmlSecBnReverse"/>
+    <keyword type="function" name="xmlSecBnPrependZeroIfMsbSet ()" link="xmlsec-bn.html#xmlSecBnPrependZeroIfMsbSet"/>
     <keyword type="function" name="xmlSecBnCompare ()" link="xmlsec-bn.html#xmlSecBnCompare"/>
     <keyword type="function" name="xmlSecBnCompareReverse ()" link="xmlsec-bn.html#xmlSecBnCompareReverse"/>
     <keyword type="function" name="xmlSecBnGetNodeValue ()" link="xmlsec-bn.html#xmlSecBnGetNodeValue"/>
@@ -330,6 +331,8 @@
     <keyword type="function" name="xmlSecBufferBase64NodeContentRead ()" link="xmlsec-buffer.html#xmlSecBufferBase64NodeContentRead"/>
     <keyword type="function" name="xmlSecBufferBase64NodeContentWrite ()" link="xmlsec-buffer.html#xmlSecBufferBase64NodeContentWrite"/>
     <keyword type="function" name="xmlSecBufferCreateOutputBuffer ()" link="xmlsec-buffer.html#xmlSecBufferCreateOutputBuffer"/>
+    <keyword type="function" name="xmlSecMemEqual ()" link="xmlsec-buffer.html#xmlSecMemEqual"/>
+    <keyword type="function" name="xmlSecMemCleanse ()" link="xmlsec-buffer.html#xmlSecMemCleanse"/>
     <keyword type="enum" name="enum xmlSecAllocMode" link="xmlsec-buffer.html#xmlSecAllocMode"/>
     <keyword type="struct" name="struct xmlSecBuffer" link="xmlsec-buffer.html#xmlSecBuffer"/>
     <keyword type="function" name="xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms ()" link="xmlsec-dl.html#xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms"/>
@@ -402,6 +405,7 @@
     <keyword type="macro" name="XMLSEC_ERRORS_R_DSIG_NO_REFERENCES" link="xmlsec-errors.html#XMLSEC-ERRORS-R-DSIG-NO-REFERENCES:CAPS"/>
     <keyword type="macro" name="XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE" link="xmlsec-errors.html#XMLSEC-ERRORS-R-DSIG-INVALID-REFERENCE:CAPS"/>
     <keyword type="macro" name="XMLSEC_ERRORS_R_ASSERTION" link="xmlsec-errors.html#XMLSEC-ERRORS-R-ASSERTION:CAPS"/>
+    <keyword type="macro" name="XMLSEC_ERRORS_R_CAST_IMPOSSIBLE" link="xmlsec-errors.html#XMLSEC-ERRORS-R-CAST-IMPOSSIBLE:CAPS"/>
     <keyword type="macro" name="XMLSEC_ERROR_R_CAST_IMPOSSIBLE" link="xmlsec-errors.html#XMLSEC-ERROR-R-CAST-IMPOSSIBLE:CAPS"/>
     <keyword type="macro" name="XMLSEC_ERRORS_MAX_NUMBER" link="xmlsec-errors.html#XMLSEC-ERRORS-MAX-NUMBER:CAPS"/>
     <keyword type="macro" name="XMLSEC_ERRORS_HERE" link="xmlsec-errors.html#XMLSEC-ERRORS-HERE:CAPS"/>
@@ -441,6 +445,7 @@
     <keyword type="macro" name="XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS" link="xmlsec-keyinfo.html#XMLSEC-KEYINFO-FLAGS-X509DATA-DONT-VERIFY-CERTS:CAPS"/>
     <keyword type="macro" name="XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT" link="xmlsec-keyinfo.html#XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-UNKNOWN-CERT:CAPS"/>
     <keyword type="macro" name="XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT" link="xmlsec-keyinfo.html#XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-INVALID-CERT:CAPS"/>
+    <keyword type="macro" name="XMLSEC_KEYINFO_FLAGS_ENCKEY_STOP_ON_FAILED_DECRYPTION" link="xmlsec-keyinfo.html#XMLSEC-KEYINFO-FLAGS-ENCKEY-STOP-ON-FAILED-DECRYPTION:CAPS"/>
     <keyword type="macro" name="XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION" link="xmlsec-keyinfo.html#XMLSEC-KEYINFO-FLAGS-ENCKEY-DONT-STOP-ON-FAILED-DECRYPTION:CAPS"/>
     <keyword type="macro" name="XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE" link="xmlsec-keyinfo.html#XMLSEC-KEYINFO-FLAGS-STOP-ON-EMPTY-NODE:CAPS"/>
     <keyword type="macro" name="XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS" link="xmlsec-keyinfo.html#XMLSEC-KEYINFO-FLAGS-X509DATA-SKIP-STRICT-CHECKS:CAPS"/>
@@ -641,6 +646,7 @@
     <keyword type="function" name="xmlSecPtrListSet ()" link="xmlsec-list.html#xmlSecPtrListSet"/>
     <keyword type="function" name="xmlSecPtrListRemove ()" link="xmlsec-list.html#xmlSecPtrListRemove"/>
     <keyword type="function" name="xmlSecPtrListRemoveAndReturn ()" link="xmlsec-list.html#xmlSecPtrListRemoveAndReturn"/>
+    <keyword type="function" name="xmlSecPtrListPopLast ()" link="xmlsec-list.html#xmlSecPtrListPopLast"/>
     <keyword type="function" name="xmlSecPtrListDebugDump ()" link="xmlsec-list.html#xmlSecPtrListDebugDump"/>
     <keyword type="function" name="xmlSecPtrListDebugXmlDump ()" link="xmlsec-list.html#xmlSecPtrListDebugXmlDump"/>
     <keyword type="macro" name="xmlSecPtrListGetName()" link="xmlsec-list.html#xmlSecPtrListGetName"/>
@@ -664,8 +670,7 @@
     <keyword type="function" name="xmlSecNodeSetDocDestroy ()" link="xmlsec-nodeset.html#xmlSecNodeSetDocDestroy"/>
     <keyword type="function" name="xmlSecNodeSetContains ()" link="xmlsec-nodeset.html#xmlSecNodeSetContains"/>
     <keyword type="function" name="xmlSecNodeSetAdd ()" link="xmlsec-nodeset.html#xmlSecNodeSetAdd"/>
-    <keyword type="function" name="xmlSecNodeSetAddList ()" link="xmlsec-nodeset.html#xmlSecNodeSetAddList"/>
-    <keyword type="function" name="xmlSecNodeSetGetChildren ()" link="xmlsec-nodeset.html#xmlSecNodeSetGetChildren"/>
+    <keyword type="function" name="xmlSecNodeSetGetChildren ()" link="xmlsec-nodeset.html#xmlSecNodeSetGetChildren" deprecated=""/>
     <keyword type="function" name="xmlSecNodeSetWalk ()" link="xmlsec-nodeset.html#xmlSecNodeSetWalk"/>
     <keyword type="function" name="xmlSecNodeSetDumpTextNodes ()" link="xmlsec-nodeset.html#xmlSecNodeSetDumpTextNodes"/>
     <keyword type="function" name="xmlSecNodeSetDebugDump ()" link="xmlsec-nodeset.html#xmlSecNodeSetDebugDump"/>
@@ -777,6 +782,7 @@
     <keyword type="function" name="xmlSecTransformDefaultPopXml ()" link="xmlsec-transforms.html#xmlSecTransformDefaultPopXml"/>
     <keyword type="function" name="xmlSecTransformCreateOutputBuffer ()" link="xmlsec-transforms.html#xmlSecTransformCreateOutputBuffer"/>
     <keyword type="function" name="xmlSecTransformCreateInputBuffer ()" link="xmlsec-transforms.html#xmlSecTransformCreateInputBuffer"/>
+    <keyword type="function" name="xmlSecTransformDiscardOutputBuffer ()" link="xmlsec-transforms.html#xmlSecTransformDiscardOutputBuffer"/>
     <keyword type="function" name="xmlSecTransformInitializeMethod ()" link="xmlsec-transforms.html#xmlSecTransformInitializeMethod"/>
     <keyword type="function" name="xmlSecTransformFinalizeMethod ()" link="xmlsec-transforms.html#xmlSecTransformFinalizeMethod"/>
     <keyword type="function" name="xmlSecTransformGetDataTypeMethod ()" link="xmlsec-transforms.html#xmlSecTransformGetDataTypeMethod"/>
@@ -960,6 +966,8 @@
     <keyword type="function" name="xmlSecIsEmptyNode ()" link="xmlsec-xmltree.html#xmlSecIsEmptyNode"/>
     <keyword type="function" name="xmlSecIsEmptyString ()" link="xmlsec-xmltree.html#xmlSecIsEmptyString"/>
     <keyword type="function" name="xmlSecGetQName ()" link="xmlsec-xmltree.html#xmlSecGetQName"/>
+    <keyword type="function" name="xmlSecTreeWalkCallback ()" link="xmlsec-xmltree.html#xmlSecTreeWalkCallback"/>
+    <keyword type="function" name="xmlSecDepthFirstTreeWalk ()" link="xmlsec-xmltree.html#xmlSecDepthFirstTreeWalk"/>
     <keyword type="function" name="xmlSecPrintXmlString ()" link="xmlsec-xmltree.html#xmlSecPrintXmlString"/>
     <keyword type="macro" name="xmlSecIsHex()" link="xmlsec-xmltree.html#xmlSecIsHex"/>
     <keyword type="macro" name="xmlSecGetHex()" link="xmlsec-xmltree.html#xmlSecGetHex"/>
@@ -1099,7 +1107,6 @@
     <keyword type="function" name="xmlSecOpenSSLTransformSha384GetKlass ()" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformSha384GetKlass"/>
     <keyword type="function" name="xmlSecOpenSSLTransformSha512GetKlass ()" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformSha512GetKlass"/>
     <keyword type="function" name="xmlSecOpenSSLErrorsDefaultCallback ()" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLErrorsDefaultCallback"/>
-    <keyword type="macro" name="XMLSEC_OPENSSL_API_100" link="xmlsec-openssl-crypto.html#XMLSEC-OPENSSL-API-100:CAPS"/>
     <keyword type="macro" name="XMLSEC_OPENSSL_API_110" link="xmlsec-openssl-crypto.html#XMLSEC-OPENSSL-API-110:CAPS"/>
     <keyword type="macro" name="XMLSEC_OPENSSL_API_300" link="xmlsec-openssl-crypto.html#XMLSEC-OPENSSL-API-300:CAPS"/>
     <keyword type="macro" name="XMLSEC_OPENSSL_API_111" link="xmlsec-openssl-crypto.html#XMLSEC-OPENSSL-API-111:CAPS"/>

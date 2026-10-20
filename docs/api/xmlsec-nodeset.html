@@ -1,14 +1,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
 <title>nodeset: XML Security Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
 <link rel="up" href="xmlsec-ref.html" title="XML Security Core Library API Reference.">
 <link rel="prev" href="xmlsec-membuf.html" title="membuf">
 <link rel="next" href="xmlsec-parser.html" title="parser">
-<meta name="generator" content="GTK-Doc V1.34.0 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.35.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -89,14 +89,6 @@
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetAdd" title="xmlSecNodeSetAdd ()">xmlSecNodeSetAdd</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="returnvalue">xmlSecNodeSetPtr</span></a>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetAddList" title="xmlSecNodeSetAddList ()">xmlSecNodeSetAddList</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -336,8 +328,8 @@ parent node.</p></td>
 <a name="xmlSecNodeSetContains.returns"></a><h4>Returns</h4>
 <p> 1 if the <em class="parameter"><code>node</code></em>
 is in the nodes set <em class="parameter"><code>nset</code></em>
-, 0 if it is not
-and a negative value if an error occurs.</p>
+or 0 if it is not.
+There is no return value for errors.</p>
 </div>
 </div>
 <hr>
@@ -386,56 +378,13 @@ occurs.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecNodeSetAddList"></a><h3>xmlSecNodeSetAddList ()</h3>
-<pre class="programlisting"><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="returnvalue">xmlSecNodeSetPtr</span></a>
-xmlSecNodeSetAddList (<em class="parameter"><code><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSetPtr</span></a> nset</code></em>,
-                      <em class="parameter"><code><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSetPtr</span></a> newNSet</code></em>,
-                      <em class="parameter"><code><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetOp" title="enum xmlSecNodeSetOp"><span class="type">xmlSecNodeSetOp</span></a> op</code></em>);</pre>
-<p>Adds <em class="parameter"><code>newNSet</code></em>
- to the <em class="parameter"><code>nset</code></em>
- as child using operation <em class="parameter"><code>op</code></em>
-.</p>
-<div class="refsect3">
-<a name="xmlSecNodeSetAddList.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>nset</p></td>
-<td class="parameter_description"><p>the pointer to current nodes set (or NULL).</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>newNSet</p></td>
-<td class="parameter_description"><p>the pointer to new nodes set.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>op</p></td>
-<td class="parameter_description"><p>the operation type.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="xmlSecNodeSetAddList.returns"></a><h4>Returns</h4>
-<p> the pointer to combined nodes set or NULL if an error
-occurs.</p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
 <a name="xmlSecNodeSetGetChildren"></a><h3>xmlSecNodeSetGetChildren ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="returnvalue">xmlSecNodeSetPtr</span></a>
 xmlSecNodeSetGetChildren (<em class="parameter"><code><font><span class="type">xmlDocPtr</span></font> doc</code></em>,
                           <em class="parameter"><code>const <font><span class="type">xmlNodePtr</span></font> parent</code></em>,
                           <em class="parameter"><code><font><span class="type">int</span></font> withComments</code></em>,
                           <em class="parameter"><code><font><span class="type">int</span></font> invert</code></em>);</pre>
+<div class="warning"><p><code class="literal">xmlSecNodeSetGetChildren</code> is deprecated and should not be used in newly-written code.</p></div>
 <p>Creates a new nodes set that contains:</p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p>if <em class="parameter"><code>withComments</code></em>
@@ -665,7 +614,7 @@ plus all comment nodes).</p></td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecNodeSetList"></a>xmlSecNodeSetList</p></td>
-<td class="enum_member_description"><p>nodes set = all nodes in the children list of nodes sets.</p></td>
+<td class="enum_member_description"><p>Deprecated, do not use. nodes set = all nodes in the children list of nodes sets.</p></td>
 <td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
@@ -715,7 +664,7 @@ plus all comment nodes).</p></td>
     xmlSecNodeSetOp     op;
     xmlSecNodeSetPtr    next;
     xmlSecNodeSetPtr    prev;
-    xmlSecNodeSetPtr    children;
+    xmlSecNodeSetPtr    children; /* deprecated */
 };
 </pre>
 <p>The enchanced nodes set.</p>
@@ -767,7 +716,7 @@ be destroyed when node set is destroyed.</p></td>
 </tr>
 <tr>
 <td class="struct_member_name"><p><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSetPtr</span></a> <em class="structfield"><code><a name="xmlSecNodeSet.children"></a>children</code></em>;</p></td>
-<td class="struct_member_description"><p>the children list (valid only if type
+<td class="struct_member_description"><p>deprecated, the children list (valid only if type
 equal to <a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetList"><span class="type">xmlSecNodeSetList</span></a>).</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
@@ -778,6 +727,6 @@ equal to <a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetList"><span clas
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.34.0</div>
+<hr>Generated by GTK-Doc V1.35.1</div>
 </body>
 </html>

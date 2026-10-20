@@ -1,14 +1,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
 <title>Encrypting data with a session key.: XML Security Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
 <link rel="up" href="xmlsec-examples.html" title="Examples.">
 <link rel="prev" href="xmlsec-encrypt-dynamic-template.html" title="Encrypting data with a dynamicaly created template.">
 <link rel="next" href="xmlsec-decrypt-with-signle-key.html" title="Decrypting data with a single key.">
-<meta name="generator" content="GTK-Doc V1.34.0 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.35.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -30,7 +30,7 @@
  * XML Security Library example: Encrypting XML file with a session key and dynamicaly created template.
  *
  * Encrypts XML file using a dynamicaly created template file and a session
- * DES key (encrypted with an RSA key).
+ * AES key (encrypted with an RSA key).
  *
  * Usage:
  *      ./encrypt3 &lt;xml-doc&gt; &lt;rsa-pem-key-file&gt;
@@ -86,8 +86,10 @@ main(int argc, char **argv) {
     /* Init libxml and libxslt libraries */
     xmlInitParser();
     LIBXML_TEST_VERSION
-    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
-    xmlSubstituteEntitiesDefault(1);
+    /* Do not substitute (external) entities and do not load external DTDs:
+     * enabling entity expansion is XXE-prone for untrusted input. */
+    xmlLoadExtDtdDefaultValue = 0;
+    xmlSubstituteEntitiesDefault(0);
 #ifndef XMLSEC_NO_XSLT
     xmlIndentTreeOutput = 1;
 #endif /* XMLSEC_NO_XSLT */
@@ -244,7 +246,7 @@ load_rsa_keys(char* key_file) {
  * @xml_file:           the encryption template file name.
  * @key_name:           the RSA key name.
  *
- * Encrypts #xml_file using a dynamicaly created template, a session DES key
+ * Encrypts #xml_file using a dynamicaly created template, a session AES key
  * and an RSA key from keys manager.
  *
  * Returns 0 on success or a negative value if an error occurs.
@@ -272,7 +274,7 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
 
     /* create encryption template to encrypt XML file and replace
      * its content with encryption result */
-    encDataNode = xmlSecTmplEncDataCreate(doc, xmlSecTransformDes3CbcId,
+    encDataNode = xmlSecTmplEncDataCreate(doc, xmlSecTransformAes128CbcId,
                                 NULL, xmlSecTypeEncElement, NULL, NULL);
     if(encDataNode == NULL) {
         fprintf(stderr, "Error: failed to create encryption template\n");
@@ -327,10 +329,10 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
         goto done;
     }
 
-    /* generate a Triple DES key */
-    encCtx-&gt;encKey = xmlSecKeyGenerate(xmlSecKeyDataDesId, 192, xmlSecKeyDataTypeSession);
+    /* generate an AES key */
+    encCtx-&gt;encKey = xmlSecKeyGenerate(xmlSecKeyDataAesId, 128, xmlSecKeyDataTypeSession);
     if(encCtx-&gt;encKey == NULL) {
-        fprintf(stderr,"Error: failed to generate session des key\n");
+        fprintf(stderr,"Error: failed to generate session aes key\n");
         goto done;
     }
 
@@ -392,7 +394,7 @@ XML Security Library example: Original XML doc file before encryption (encrypt3 
 XML Security Library example: Original XML doc file before encryption (encrypt3 example). 
 --&gt;
 &lt;EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#" Type="http://www.w3.org/2001/04/xmlenc#Element"&gt;
-&lt;EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#tripledes-cbc"/&gt;
+&lt;EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes128-cbc"/&gt;
 &lt;KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;
 &lt;EncryptedKey xmlns="http://www.w3.org/2001/04/xmlenc#"&gt;
 &lt;EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-1_5"/&gt;
@@ -400,20 +402,20 @@ XML Security Library example: Original XML doc file before encryption (encrypt3 
 &lt;KeyName&gt;rsakey.pem&lt;/KeyName&gt;
 &lt;/KeyInfo&gt;
 &lt;CipherData&gt;
-&lt;CipherValue&gt;QYYKljhcX20QyP20hYmq8CSES875oIdbrsjMOxnb0VnYDn01Jk00OIPpb9gdIdZg
-MLOtSy26mWrQ+XqfPGuyaA==&lt;/CipherValue&gt;
+&lt;CipherValue&gt;Awkkhb6MHXLb9bHfAnKTNveHA9SmBh/lbNgQ/AQczhkOD7dT48HxV2hNzQGNp5wP
+E100IGvlrVr8MQmdWZgbyg==&lt;/CipherValue&gt;
 &lt;/CipherData&gt;
 &lt;/EncryptedKey&gt;
 &lt;/KeyInfo&gt;
 &lt;CipherData&gt;
-&lt;CipherValue&gt;+UiDv73SE8K8KwXuOmHLHK7N2hNWDakTAEu6NprbCdULC1w/LXT9FLtNRJetmwwO
-XpBqTY56AAMeMgpxPWN3SPO0ETeQw7pR+bp0IjUvcGlFSXz6yE1qgQ==&lt;/CipherValue&gt;
+&lt;CipherValue&gt;ixfUuW6igwN5We148FXoDEemmv0P0FK64uzX4oGQHFk5cTzlEAC85ORc5YLoBHuJ
+6bjSfkGHHYwNWY/JEJSUIwU0ZEbETN4P+7U2ln3S2L/dKoCaCWtYH0FU+mrI91lz&lt;/CipherValue&gt;
 &lt;/CipherData&gt;
 &lt;/EncryptedData&gt;
 </pre></div>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.34.0</div>
+<hr>Generated by GTK-Doc V1.35.1</div>
 </body>
 </html>

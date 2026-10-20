@@ -1,14 +1,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
 <title>xmltree: XML Security Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
 <link rel="up" href="xmlsec-ref.html" title="XML Security Core Library API Reference.">
 <link rel="prev" href="xmlsec-xmlsec.html" title="xmlsec">
 <link rel="next" href="xmlsec-x509.html" title="x509">
-<meta name="generator" content="GTK-Doc V1.34.0 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.35.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -261,6 +261,22 @@
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-xmltree.html#xmlSecGetQName" title="xmlSecGetQName ()">xmlSecGetQName</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<span class="c_punctuation">(</span><a class="link" href="xmlsec-xmltree.html#xmlSecTreeWalkCallback" title="xmlSecTreeWalkCallback ()">*xmlSecTreeWalkCallback</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmltree.html#xmlSecDepthFirstTreeWalk" title="xmlSecDepthFirstTreeWalk ()">xmlSecDepthFirstTreeWalk</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -1137,7 +1153,8 @@ xmlSecReplaceNodeAndReturn (<em class="parameter"><code><font><span class="type"
                             <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> *replaced</code></em>);</pre>
 <p>Swaps the <em class="parameter"><code>node</code></em>
  and <em class="parameter"><code>newNode</code></em>
- in the XML tree.</p>
+ in the XML tree. Both the old
+and the new node must have the same node type.</p>
 <div class="refsect3">
 <a name="xmlSecReplaceNodeAndReturn.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -1547,6 +1564,84 @@ Caller is responsible for freeing returned string with xmlFree.</p>
 <div class="refsect3">
 <a name="xmlSecGetQName.returns"></a><h4>Returns</h4>
 <p> qname or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTreeWalkCallback"></a><h3>xmlSecTreeWalkCallback ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+<span class="c_punctuation">(</span>*xmlSecTreeWalkCallback<span class="c_punctuation">)</span> (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> cur</code></em>,
+                           <em class="parameter"><code><font><span class="type">void</span></font> *data</code></em>);</pre>
+<p>The callback function called for each node during the tree walk.</p>
+<div class="refsect3">
+<a name="xmlSecTreeWalkCallback.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>cur</p></td>
+<td class="parameter_description"><p>the current XML node.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>the user data passed to the callback.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecTreeWalkCallback.returns"></a><h4>Returns</h4>
+<p> 1 to continue the walk, 0 to stop the walk, or a negative
+value to stop the walk with an error.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecDepthFirstTreeWalk"></a><h3>xmlSecDepthFirstTreeWalk ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecDepthFirstTreeWalk (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
+                          <em class="parameter"><code><a class="link" href="xmlsec-xmltree.html#xmlSecTreeWalkCallback" title="xmlSecTreeWalkCallback ()"><span class="type">xmlSecTreeWalkCallback</span></a> callback</code></em>,
+                          <em class="parameter"><code><font><span class="type">void</span></font> *data</code></em>);</pre>
+<p>Walks thru the XML tree starting from <em class="parameter"><code>node</code></em>
+ and calls <em class="parameter"><code>callback</code></em>
+ for each
+node.</p>
+<div class="refsect3">
+<a name="xmlSecDepthFirstTreeWalk.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>node</p></td>
+<td class="parameter_description"><p>the pointer to an XML node to start the walk from.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>callback</p></td>
+<td class="parameter_description"><p>the callback function to call for each node.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>the pointer to data to pass to the callback function.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecDepthFirstTreeWalk.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
 <hr>
@@ -2133,8 +2228,8 @@ or NULL if mask is unknown.</p>
 <a name="xmlSecQName2BitMaskGetBitMask"></a><h3>xmlSecQName2BitMaskGetBitMask ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecQName2BitMaskGetBitMask (<em class="parameter"><code><font><span class="type">xmlSecQName2BitMaskInfoConstPtr</span></font> info</code></em>,
-                               <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *qnameLocalPart</code></em>,
                                <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *qnameHref</code></em>,
+                               <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *qnameLocalPart</code></em>,
                                <em class="parameter"><code><a class="link" href="xmlsec-xmltree.html#xmlSecBitMask" title="xmlSecBitMask"><span class="type">xmlSecBitMask</span></a> *mask</code></em>);</pre>
 <p>Converts <em class="parameter"><code>qnameLocalPart</code></em>
  to <em class="parameter"><code>mask</code></em>
@@ -2765,6 +2860,6 @@ xmlSecWin32ConvertUtf8ToTstr (<em class="parameter"><code>const <font><span clas
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.34.0</div>
+<hr>Generated by GTK-Doc V1.35.1</div>
 </body>
 </html>

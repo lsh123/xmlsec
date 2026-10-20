@@ -312,6 +312,9 @@ xmlSecBufferSetMaxSize(xmlSecBufferPtr buf, xmlSecSize size) {
             }
             newSize = 2 * size + 32;
             break;
+        default:
+            xmlSecUnsupportedEnumValueError("allocMode", buf->allocMode, NULL);
+            return(-1);
     }
 
     if(newSize < gInitialSize) {
@@ -581,7 +584,7 @@ xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf, xmlNodePtr node) {
     xmlSecAssert2(node != NULL, -1);
 
     content = xmlNodeGetContent(node);
-    if(content == NULL) {
+    if(content == NULL || xmlSecStrlen(content) == 0) {
         xmlSecInvalidNodeContentError(node, NULL, "empty");
         goto done;
     }

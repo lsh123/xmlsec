@@ -124,7 +124,12 @@ xmlSecTmplSignatureCreateNsPref(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
     xmlSetNs(signNode, ns);
 
     if(id != NULL) {
-        xmlSetProp(signNode, BAD_CAST "Id", id);
+        if(xmlSetProp(signNode, BAD_CAST "Id", id) == NULL) {
+            xmlSecXmlError2("xmlSetProp", NULL,
+                            "name=%s", xmlSecErrorsSafeString(BAD_CAST "Id"));
+            xmlFreeNode(signNode);
+            return(NULL);
+        }
     }
 
     /* add SignedInfo node */
@@ -188,6 +193,7 @@ xmlSecTmplSignatureCreateNsPref(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
 xmlNodePtr
 xmlSecTmplSignatureEnsureKeyInfo(xmlNodePtr signNode, const xmlChar *id) {
     xmlNodePtr res;
+    int resCreated = 0;
 
     xmlSecAssert2(signNode != NULL, NULL);
 
@@ -207,9 +213,22 @@ xmlSecTmplSignatureEnsureKeyInfo(xmlNodePtr signNode, const xmlChar *id) {
             xmlSecInternalError("xmlSecAddNextSibling(xmlSecNodeKeyInfo)", NULL);
             return(NULL);
         }
+        resCreated = 1;
     }
     if(id != NULL) {
-        xmlSetProp(res, xmlSecAttrId, id);
+        if(xmlSetProp(res, xmlSecAttrId, id) == NULL) {
+            xmlSecXmlError2("xmlSetProp", NULL,
+                            "name=%s", xmlSecErrorsSafeString(xmlSecAttrId));
+            /*
+             * Drop the node only if it was just created; a pre-existing
+             * KeyInfo node is left in place.
+             */
+            if(resCreated) {
+                xmlUnlinkNode(res);
+                xmlFreeNode(res);
+            }
+            return(NULL);
+        }
     }
     return(res);
 }
@@ -267,13 +286,31 @@ xmlSecTmplAddReference(xmlNodePtr parentNode, xmlSecTransformId digestMethodId,
 
     /* set Reference node attributes */
     if(id != NULL) {
-        xmlSetProp(res, xmlSecAttrId, id);
+        if(xmlSetProp(res, xmlSecAttrId, id) == NULL) {
+            xmlSecXmlError2("xmlSetProp", NULL,
+                            "name=%s", xmlSecErrorsSafeString(xmlSecAttrId));
+            xmlUnlinkNode(res);
+            xmlFreeNode(res);
+            return(NULL);
+        }
     }
     if(type != NULL) {
-        xmlSetProp(res, xmlSecAttrType, type);
+        if(xmlSetProp(res, xmlSecAttrType, type) == NULL) {
+            xmlSecXmlError2("xmlSetProp", NULL,
+                            "name=%s", xmlSecErrorsSafeString(xmlSecAttrType));
+            xmlUnlinkNode(res);
+            xmlFreeNode(res);
+            return(NULL);
+        }
     }
     if(uri != NULL) {
-        xmlSetProp(res, xmlSecAttrURI, uri);
+        if(xmlSetProp(res, xmlSecAttrURI, uri) == NULL) {
+            xmlSecXmlError2("xmlSetProp", NULL,
+                            "name=%s", xmlSecErrorsSafeString(xmlSecAttrURI));
+            xmlUnlinkNode(res);
+            xmlFreeNode(res);
+            return(NULL);
+        }
     }
 
     /* add DigestMethod node and set algorithm */
@@ -329,13 +366,31 @@ xmlSecTmplSignatureAddObject(xmlNodePtr signNode, const xmlChar *id,
         return(NULL);
     }
     if(id != NULL) {
-        xmlSetProp(res, xmlSecAttrId, id);
+        if(xmlSetProp(res, xmlSecAttrId, id) == NULL) {
+            xmlSecXmlError2("xmlSetProp", NULL,
+                            "name=%s", xmlSecErrorsSafeString(xmlSecAttrId));
+            xmlUnlinkNode(res);
+            xmlFreeNode(res);
+            return(NULL);
+        }
     }
     if(mimeType != NULL) {
-        xmlSetProp(res, xmlSecAttrMimeType, mimeType);
+        if(xmlSetProp(res, xmlSecAttrMimeType, mimeType) == NULL) {
+            xmlSecXmlError2("xmlSetProp", NULL,
+                            "name=%s", xmlSecErrorsSafeString(xmlSecAttrMimeType));
+            xmlUnlinkNode(res);
+            xmlFreeNode(res);
+            return(NULL);
+        }
     }
     if(encoding != NULL) {
-        xmlSetProp(res, xmlSecAttrEncoding, encoding);
+        if(xmlSetProp(res, xmlSecAttrEncoding, encoding) == NULL) {
+            xmlSecXmlError2("xmlSetProp", NULL,
+                            "name=%s", xmlSecErrorsSafeString(xmlSecAttrEncoding));
+            xmlUnlinkNode(res);
+            xmlFreeNode(res);
+            return(NULL);
+        }
     }
     return(res);
 }
@@ -466,10 +521,22 @@ xmlSecTmplObjectAddSignProperties(xmlNodePtr objectNode, const xmlChar *id, cons
         return(NULL);
     }
     if(id != NULL) {
-        xmlSetProp(res, xmlSecAttrId, id);
+        if(xmlSetProp(res, xmlSecAttrId, id) == NULL) {
+            xmlSecXmlError2("xmlSetProp", NULL,
+                            "name=%s", xmlSecErrorsSafeString(xmlSecAttrId));
+            xmlUnlinkNode(res);
+            xmlFreeNode(res);
+            return(NULL);
+        }
     }
     if(target != NULL) {
-        xmlSetProp(res, xmlSecAttrTarget, target);
+        if(xmlSetProp(res, xmlSecAttrTarget, target) == NULL) {
+            xmlSecXmlError2("xmlSetProp", NULL,
+                            "name=%s", xmlSecErrorsSafeString(xmlSecAttrTarget));
+            xmlUnlinkNode(res);
+            xmlFreeNode(res);
+            return(NULL);
+        }
     }
     return(res);
 }
@@ -496,7 +563,13 @@ xmlSecTmplObjectAddManifest(xmlNodePtr objectNode,  const xmlChar *id) {
         return(NULL);
     }
     if(id != NULL) {
-        xmlSetProp(res, xmlSecAttrId, id);
+        if(xmlSetProp(res, xmlSecAttrId, id) == NULL) {
+            xmlSecXmlError2("xmlSetProp", NULL,
+                            "name=%s", xmlSecErrorsSafeString(xmlSecAttrId));
+            xmlUnlinkNode(res);
+            xmlFreeNode(res);
+            return(NULL);
+        }
     }
     return(res);
 }
@@ -651,6 +724,7 @@ xmlSecTmplPrepareEncData(xmlNodePtr parentNode, xmlSecTransformId encMethodId) {
 xmlNodePtr
 xmlSecTmplEncDataEnsureKeyInfo(xmlNodePtr encNode, const xmlChar* id) {
     xmlNodePtr res;
+    int resCreated = 0;
 
     xmlSecAssert2(encNode != NULL, NULL);
 
@@ -670,9 +744,22 @@ xmlSecTmplEncDataEnsureKeyInfo(xmlNodePtr encNode, const xmlChar* id) {
             xmlSecInternalError("xmlSecAddPrevSibling(xmlSecNodeKeyInfo)", NULL);
             return(NULL);
         }
+        resCreated = 1;
     }
     if(id != NULL) {
-        xmlSetProp(res, xmlSecAttrId, id);
+        if(xmlSetProp(res, xmlSecAttrId, id) == NULL) {
+            xmlSecXmlError2("xmlSetProp", NULL,
+                            "name=%s", xmlSecErrorsSafeString(xmlSecAttrId));
+            /*
+             * Drop the node only if it was just created; a pre-existing
+             * KeyInfo node is left in place.
+             */
+            if(resCreated) {
+                xmlUnlinkNode(res);
+                xmlFreeNode(res);
+            }
+            return(NULL);
+        }
     }
     return(res);
 }
@@ -691,6 +778,7 @@ xmlSecTmplEncDataEnsureKeyInfo(xmlNodePtr encNode, const xmlChar* id) {
 xmlNodePtr
 xmlSecTmplEncDataEnsureEncProperties(xmlNodePtr encNode, const xmlChar *id) {
     xmlNodePtr res;
+    int resCreated = 0;
 
     xmlSecAssert2(encNode != NULL, NULL);
 
@@ -701,10 +789,23 @@ xmlSecTmplEncDataEnsureEncProperties(xmlNodePtr encNode, const xmlChar *id) {
             xmlSecInternalError("xmlSecAddChild(xmlSecNodeEncryptionProperties)", NULL);
             return(NULL);
         }
+        resCreated = 1;
     }
 
     if(id != NULL) {
-        xmlSetProp(res, xmlSecAttrId, id);
+        if(xmlSetProp(res, xmlSecAttrId, id) == NULL) {
+            xmlSecXmlError2("xmlSetProp", NULL,
+                            "name=%s", xmlSecErrorsSafeString(xmlSecAttrId));
+            /*
+             * Drop the node only if it was just created; a pre-existing
+             * EncryptionProperties node is left in place.
+             */
+            if(resCreated) {
+                xmlUnlinkNode(res);
+                xmlFreeNode(res);
+            }
+            return(NULL);
+        }
     }
 
     return(res);
@@ -742,10 +843,22 @@ xmlSecTmplEncDataAddEncProperty(xmlNodePtr encNode, const xmlChar *id, const xml
         return(NULL);
     }
     if(id != NULL) {
-        xmlSetProp(res, xmlSecAttrId, id);
+        if(xmlSetProp(res, xmlSecAttrId, id) == NULL) {
+            xmlSecXmlError2("xmlSetProp", NULL,
+                            "name=%s", xmlSecErrorsSafeString(xmlSecAttrId));
+            xmlUnlinkNode(res);
+            xmlFreeNode(res);
+            return(NULL);
+        }
     }
     if(target != NULL) {
-        xmlSetProp(res, xmlSecAttrTarget, target);
+        if(xmlSetProp(res, xmlSecAttrTarget, target) == NULL) {
+            xmlSecXmlError2("xmlSetProp", NULL,
+                            "name=%s", xmlSecErrorsSafeString(xmlSecAttrTarget));
+            xmlUnlinkNode(res);
+            xmlFreeNode(res);
+            return(NULL);
+        }
     }
 
     return(res);
@@ -808,6 +921,7 @@ xmlNodePtr
 xmlSecTmplEncDataEnsureCipherReference(xmlNodePtr encNode, const xmlChar *uri) {
     xmlNodePtr cipherDataNode;
     xmlNodePtr res, tmp;
+    int resCreated = 0;
 
     xmlSecAssert2(encNode != NULL, NULL);
 
@@ -832,10 +946,23 @@ xmlSecTmplEncDataEnsureCipherReference(xmlNodePtr encNode, const xmlChar *uri) {
             xmlSecInternalError("xmlSecAddChild(xmlSecNodeCipherReference)", NULL);
             return(NULL);
         }
+        resCreated = 1;
     }
 
     if(uri != NULL) {
-        xmlSetProp(res, xmlSecAttrURI, uri);
+        if(xmlSetProp(res, xmlSecAttrURI, uri) == NULL) {
+            xmlSecXmlError2("xmlSetProp", NULL,
+                            "name=%s", xmlSecErrorsSafeString(xmlSecAttrURI));
+            /*
+             * Drop the node only if it was just created; a pre-existing
+             * CipherReference node is left in place.
+             */
+            if(resCreated) {
+                xmlUnlinkNode(res);
+                xmlFreeNode(res);
+            }
+            return(NULL);
+        }
     }
 
     return(res);
@@ -1112,10 +1239,22 @@ xmlSecTmplKeyInfoAddRetrievalMethod(xmlNodePtr keyInfoNode, const xmlChar *uri,
     }
 
     if(uri != NULL) {
-        xmlSetProp(res, xmlSecAttrURI, uri);
+        if(xmlSetProp(res, xmlSecAttrURI, uri) == NULL) {
+            xmlSecXmlError2("xmlSetProp", NULL,
+                            "name=%s", xmlSecErrorsSafeString(xmlSecAttrURI));
+            xmlUnlinkNode(res);
+            xmlFreeNode(res);
+            return(NULL);
+        }
     }
     if(type != NULL) {
-        xmlSetProp(res, xmlSecAttrType, type);
+        if(xmlSetProp(res, xmlSecAttrType, type) == NULL) {
+            xmlSecXmlError2("xmlSetProp", NULL,
+                            "name=%s", xmlSecErrorsSafeString(xmlSecAttrType));
+            xmlUnlinkNode(res);
+            xmlFreeNode(res);
+            return(NULL);
+        }
     }
     return(res);
 }
@@ -1196,13 +1335,31 @@ xmlSecTmplKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, xmlSecTransformId encMe
     }
 
     if(id != NULL) {
-        xmlSetProp(encKeyNode, xmlSecAttrId, id);
+        if(xmlSetProp(encKeyNode, xmlSecAttrId, id) == NULL) {
+            xmlSecXmlError2("xmlSetProp", NULL,
+                            "name=%s", xmlSecErrorsSafeString(xmlSecAttrId));
+            xmlUnlinkNode(encKeyNode);
+            xmlFreeNode(encKeyNode);
+            return(NULL);
+        }
     }
     if(type != NULL) {
-        xmlSetProp(encKeyNode, xmlSecAttrType, type);
+        if(xmlSetProp(encKeyNode, xmlSecAttrType, type) == NULL) {
+            xmlSecXmlError2("xmlSetProp", NULL,
+                            "name=%s", xmlSecErrorsSafeString(xmlSecAttrType));
+            xmlUnlinkNode(encKeyNode);
+            xmlFreeNode(encKeyNode);
+            return(NULL);
+        }
     }
     if(recipient != NULL) {
-        xmlSetProp(encKeyNode, xmlSecAttrRecipient, recipient);
+        if(xmlSetProp(encKeyNode, xmlSecAttrRecipient, recipient) == NULL) {
+            xmlSecXmlError2("xmlSetProp", NULL,
+                            "name=%s", xmlSecErrorsSafeString(xmlSecAttrRecipient));
+            xmlUnlinkNode(encKeyNode);
+            xmlFreeNode(encKeyNode);
+            return(NULL);
+        }
     }
 
     if(xmlSecTmplPrepareEncData(encKeyNode, encMethodId) < 0) {
@@ -1534,6 +1691,12 @@ xmlSecTmplTransformAddRsaOaepParam(xmlNodePtr transformNode,
     base64 = xmlSecBase64Encode(buf, size, 0);
     if(base64 == NULL) {
         xmlSecInternalError2("xmlSecBase64Encode", NULL, "size=" XMLSEC_SIZE_FMT, size);
+        /*
+         * Drop the empty <enc:OAEPparams/> child just added, so that the
+         * failed call leaves the caller's tree unchanged.
+         */
+        xmlUnlinkNode(oaepParamNode);
+        xmlFreeNode(oaepParamNode);
         return(-1);
     }
 

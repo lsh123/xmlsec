@@ -169,6 +169,8 @@ xmlSecMSCngKWDes3Sha1(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSe
         0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptCreateHash", NULL, status);
+        /* the out-handle is not guaranteed to be zeroed on failure */
+        hHash = NULL;
         goto done;
     }
 
@@ -267,6 +269,11 @@ xmlSecMSCngKWDes3BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         xmlSecMSCngNtError("BCryptOpenAlgorithmProvider", NULL, status);
         goto done;
     }
+
+    /* NOTE: the chain mode is not set explicitly, so the CNG default
+     * (CBC) is used. RFC 3394 specifies Triple-DES in CFB64 for key
+     * wrap, so keys wrapped by this implementation do not interoperate
+     * with strict RFC 3394 implementations. */
 
     /* allocate the key object */
     status = BCryptGetProperty(hAlg,
@@ -460,6 +467,11 @@ xmlSecMSCngKWDes3BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         xmlSecMSCngNtError("BCryptOpenAlgorithmProvider", NULL, status);
         goto done;
     }
+
+    /* NOTE: the chain mode is not set explicitly, so the CNG default
+     * (CBC) is used. RFC 3394 specifies Triple-DES in CFB64 for key
+     * wrap, so keys wrapped by this implementation do not interoperate
+     * with strict RFC 3394 implementations. */
 
     /* allocate the key object */
     status = BCryptGetProperty(hAlg,

@@ -394,6 +394,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
     if(encrypt != 0) {
         CK_OBJECT_HANDLE id;
         SECItem wrpskv;
+        int freeSlot = 0;
 
         /* Create template symmetric key from material */
         slot = ctx->pubkey->pkcs11Slot;
@@ -404,6 +405,10 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
                 xmlSecBufferDestroy(result);
                 return(-1);
             }
+            /* the slot reference is owned by the caller and must be
+             * released explicitly; the key's own reference (taken by
+             * PK11_ImportPublicKey) is released with the key */
+            freeSlot = 1;
 
             id = PK11_ImportPublicKey(slot, ctx->pubkey, PR_FALSE);
             if(id == CK_INVALID_HANDLE) {
@@ -413,13 +418,19 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
                 return(-1);
             }
         }
+        /* note: when the slot is taken from the public key it is owned by
+         * the key and freed by SECKEY_DestroyPublicKey in
+         * xmlSecNssKeyTransportFinalize; freeing it here too would drop
+         * the reference twice (use-after-free) */
 
         /* pay attention to mechanism */
         symKey = PK11_ImportSymKey(slot, ctx->cipher, PK11_OriginUnwrap, CKA_WRAP, &oriskv, NULL);
         if(symKey == NULL) {
             xmlSecNssError("PK11_ImportSymKey", NULL);
             xmlSecBufferDestroy(result);
-            PK11_FreeSlot(slot);
+            if(freeSlot) {
+                PK11_FreeSlot(slot);
+            }
             return(-1);
         }
 
@@ -431,7 +442,9 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
             xmlSecNssError("PK11_PubWrapSymKey", NULL);
             PK11_FreeSymKey(symKey);
             xmlSecBufferDestroy(result);
-            PK11_FreeSlot(slot);
+            if(freeSlot) {
+                PK11_FreeSlot(slot);
+            }
             return(-1);
         }
 
@@ -440,11 +453,15 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
                 "size=%u", wrpskv.len);
             PK11_FreeSymKey(symKey);
             xmlSecBufferDestroy(result);
-            PK11_FreeSlot(slot);
+            if(freeSlot) {
+                PK11_FreeSlot(slot);
+            }
             return(-1);
         }
         PK11_FreeSymKey(symKey);
-        PK11_FreeSlot(slot);
+        if(freeSlot) {
+            PK11_FreeSlot(slot);
+        }
     } else {
         SECItem*                        keyItem;
 

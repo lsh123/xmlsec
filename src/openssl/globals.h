@@ -63,6 +63,7 @@
  * Macro. The XMLSec library macro for reporting OpenSSL crypro errors.
  */
 #define xmlSecOpenSSLError2(errorFunction, errorObject, msg, param) \
+    {                                                               \
         char _openssl_error_buf[XMLSEC_OPENSSL_ERROR_BUFFER_SIZE];  \
         unsigned long _openssl_error_code = ERR_peek_error();       \
         ERR_error_string_n(_openssl_error_code, _openssl_error_buf, sizeof(_openssl_error_buf)); \
@@ -74,6 +75,7 @@
                     (param),                                \
                     xmlSecErrorsSafeString(_openssl_error_buf) \
         );                                                  \
+    }
 
  /**
   * xmlSecOpenSSLError3:
@@ -86,6 +88,7 @@
   * Macro. The XMLSec library macro for reporting OpenSSL crypro errors.
   */
 #define xmlSecOpenSSLError3(errorFunction, errorObject, msg, param1, param2) \
+    {                                                                         \
         char _openssl_error_buf[XMLSEC_OPENSSL_ERROR_BUFFER_SIZE];  \
         unsigned long _openssl_error_code = ERR_peek_error();       \
         ERR_error_string_n(_openssl_error_code, _openssl_error_buf, sizeof(_openssl_error_buf)); \
@@ -98,6 +101,7 @@
                     (param2),                               \
                     xmlSecErrorsSafeString(_openssl_error_buf) \
         );                                                  \
+    }
 
 
 

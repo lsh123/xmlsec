@@ -479,7 +479,9 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
             return(-1);
         }
 
-        /* get the pad length from the last byte */
+        /* get the pad length from the last byte; only its value
+         * (1..blockLen) is validated, which is the minimum check
+         * required by the W3C XML Encryption specification */
         padLen = outBuf[outLen - 1];
         if((padLen == 0) || (padLen > blockLen)) {
             xmlSecInvalidDataError("invalid padding length for cipher", cipherName);

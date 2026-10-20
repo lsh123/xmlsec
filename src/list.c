@@ -508,10 +508,19 @@ xmlSecPtrListEnsureSize(xmlSecPtrListPtr list, xmlSecSize size) {
             }
             newSize = 2 * size + 32;
             break;
+        default:
+            xmlSecUnsupportedEnumValueError("allocMode", list->allocMode, NULL);
+            return(-1);
     }
 
     if(newSize < gInitialSize) {
         newSize = gInitialSize;
+    }
+
+    if(newSize > (XMLSEC_SIZE_MAX / sizeof(xmlSecPtr))) {
+        xmlSecInvalidSizeMoreThanError("size", newSize,
+            (xmlSecSize)(XMLSEC_SIZE_MAX / sizeof(xmlSecPtr)), NULL);
+        return(-1);
     }
 
     if(list->data != NULL) {

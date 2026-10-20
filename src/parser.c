@@ -292,7 +292,14 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
     if(ret < 0) {
         xmlSecXmlParserError("inputPush", ctxt,
                              xmlSecTransformGetName(transform));
+#if LIBXML_VERSION < 21000
+        /* libxml2 < 2.10 inputPush() frees the input itself on OOM;
+           calling xmlFreeInputStream() again would be a double-free */
+#else
+        /* the input was not pushed on the failure paths and
+           xmlFreeParserCtxt() does not free it, so free it here */
         xmlFreeInputStream(input);
+#endif
         if(ctxt->myDoc != NULL) {
             xmlFreeDoc(ctxt->myDoc);
             ctxt->myDoc = NULL;

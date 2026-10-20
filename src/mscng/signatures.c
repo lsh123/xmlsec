@@ -457,6 +457,8 @@ xmlSecMSCngSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
         if(status != STATUS_SUCCESS) {
             xmlSecMSCngNtError("BCryptOpenAlgorithmProvider",
                 xmlSecTransformGetName(transform), status);
+            /* the out-handle is not guaranteed to be zeroed on failure */
+            ctx->hHashAlg = 0;
             return(-1);
         }
 
@@ -514,6 +516,8 @@ xmlSecMSCngSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
         if(status != STATUS_SUCCESS) {
             xmlSecMSCngNtError("BCryptCreateHash",
                 xmlSecTransformGetName(transform), status);
+            /* the out-handle is not guaranteed to be zeroed on failure */
+            ctx->hHash = 0;
             return(-1);
         }
 

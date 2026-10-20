@@ -2154,8 +2154,7 @@ xmlSecMSCryptoKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     }
     blob += XMLSEC_MSCRYPTO_DSA_MAX_Q_SIZE;
 
-    /*** g ***/
-    for (len = keyLen; len > 0 && blob[len - 1] == 0; --len);
+    /*** g (keep the full key size, trailing zeros are preserved) ***/
     ret = xmlSecBufferSetData(&(dsaValue->g), blob, keyLen);
     if (ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetData(g)", xmlSecKeyDataKlassGetName(id),
@@ -2167,8 +2166,7 @@ xmlSecMSCryptoKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     /* X is REQUIRED for private key but MSCrypto does not support it,
      * so we just ignore it */
 
-     /*** y ***/
-    for (len = keyLen; len > 0 && blob[len - 1] == 0; --len);
+     /*** y (keep the full key size, trailing zeros are preserved) ***/
     ret = xmlSecBufferSetData(&(dsaValue->y), blob, keyLen);
     if (ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetData(y)", xmlSecKeyDataKlassGetName(id),

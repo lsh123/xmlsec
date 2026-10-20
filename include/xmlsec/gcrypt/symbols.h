@@ -66,10 +66,23 @@ extern "C" {
 #define xmlSecTransformHmacMd5Id                xmlSecGCryptTransformHmacMd5Id
 #define xmlSecTransformHmacRipemd160Id          xmlSecGCryptTransformHmacRipemd160Id
 #define xmlSecTransformHmacSha1Id               xmlSecGCryptTransformHmacSha1Id
+#define xmlSecTransformHmacSha256Id             xmlSecGCryptTransformHmacSha256Id
+#define xmlSecTransformHmacSha384Id             xmlSecGCryptTransformHmacSha384Id
+#define xmlSecTransformHmacSha512Id             xmlSecGCryptTransformHmacSha512Id
+#define xmlSecTransformMd5Id                    xmlSecGCryptTransformMd5Id
 #define xmlSecTransformRipemd160Id              xmlSecGCryptTransformRipemd160Id
+#define xmlSecTransformRsaMd5Id                 xmlSecGCryptTransformRsaMd5Id
+#define xmlSecTransformRsaRipemd160Id           xmlSecGCryptTransformRsaRipemd160Id
 #define xmlSecTransformRsaSha1Id                xmlSecGCryptTransformRsaSha1Id
-/* the RSA key transport transforms are not supported by this backend */
+#define xmlSecTransformRsaSha256Id              xmlSecGCryptTransformRsaSha256Id
+#define xmlSecTransformRsaSha384Id              xmlSecGCryptTransformRsaSha384Id
+#define xmlSecTransformRsaSha512Id              xmlSecGCryptTransformRsaSha512Id
+/* the RSA key transport (RsaPkcs1/RsaOaep) transforms are not supported
+ * by this backend */
 #define xmlSecTransformSha1Id                   xmlSecGCryptTransformSha1Id
+#define xmlSecTransformSha256Id                 xmlSecGCryptTransformSha256Id
+#define xmlSecTransformSha384Id                 xmlSecGCryptTransformSha384Id
+#define xmlSecTransformSha512Id                 xmlSecGCryptTransformSha512Id
 
 /********************************************************************
  *

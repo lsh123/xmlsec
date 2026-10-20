@@ -318,15 +318,20 @@ xmlSecGnuTLSKeyDataRsaAdoptPrivateKey(xmlSecKeyDataPtr data, gnutls_x509_privkey
 
     /* Convert from OpenSSL parameter ordering to the OpenPGP order. */
     /* (http://gnupg.10057.n7.nabble.com/RSA-PKCS-1-signing-differs-from-OpenSSL-s-td27920.html) */
-    /* First check that p < q; if not swap p and q and recompute u.  */
+    /* First check that p < q; if not swap p and q. */
     if (gcry_mpi_cmp(mpis[3], mpis[4]) > 0) {
         gcry_mpi_swap(mpis[3], mpis[4]);
-        if(!gcry_mpi_invm(mpis[5], mpis[3], mpis[4])) {
-            xmlSecGnuTLSGCryptError("gcry_mpi_invm", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
-            xmlSecGnuTLSDestroyMpis(mpis, sizeof(mpis)/sizeof(mpis[0]));
-            gnutls_x509_privkey_deinit(rsa_key);
-            return(-1);
-        }
+    }
+    /* Recompute the CRT coefficient u = p^-1 mod q. gnutls always
+     * returns u = q^-1 mod p (the PKCS#1/OpenSSL convention) with p and
+     * q in the order stored in the key, while gcrypt requires p < q and
+     * u = p^-1 mod q; so the given u is only valid when p > q was
+     * swapped and must be recomputed unconditionally. */
+    if(!gcry_mpi_invm(mpis[5], mpis[3], mpis[4])) {
+        xmlSecGnuTLSGCryptError("gcry_mpi_invm", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
+        xmlSecGnuTLSDestroyMpis(mpis, sizeof(mpis)/sizeof(mpis[0]));
+        gnutls_x509_privkey_deinit(rsa_key);
+        return(-1);
     }
 
     /* build expressions */

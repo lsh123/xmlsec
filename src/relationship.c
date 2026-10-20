@@ -356,7 +356,7 @@ xmlSecTransformRelationshipProcessNodeList(xmlSecTransformPtr transform, xmlOutp
     }
 
     for(; cur; cur = cur->next) {
-        if(xmlStrcmp(cur->name, xmlSecNodeRelationship) == 0) {
+        if(xmlSecCheckNodeName(cur, xmlSecNodeRelationship, xmlSecRelationshipsNs)) {
             if(xmlListInsert(list, cur) != 0) {
                 xmlSecXmlError("xmlListInsert", xmlSecTransformGetName(transform));
                 xmlListDelete(list);
@@ -506,6 +506,7 @@ static int g_xmlSecTransformRelationshipMaxDepth = 10;
 static int
 xmlSecTransformRelationshipProcessElementNode(xmlSecTransformPtr transform, xmlOutputBufferPtr buf, xmlNodePtr cur, int depth) {
     xmlAttrPtr attr;
+    xmlNsPtr ns;
     int foundTargetMode = 0;
     int ret;
 
@@ -535,13 +536,24 @@ xmlSecTransformRelationshipProcessElementNode(xmlSecTransformPtr transform, xmlO
         return(-1);
     }
 
-    /* write namespaces */
-    if(cur->nsDef != NULL) {
-        ret = xmlSecTransformRelationshipWriteNs(buf, cur->nsDef->href);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecTransformRelationshipWriteNs",
-                                xmlSecTransformGetName(transform));
-            return(-1);
+    /*
+     * write namespaces:
+     *
+     * This is step 2, points 1-2: remove all namespace declarations except the
+     * Relationships namespace declaration and remove the Relationships namespace
+     * prefix, if it is present. Walk the element's nsDef chain, write only the
+     * Relationships namespace declaration, always as the default (prefix-less)
+     * xmlns attribute; all other declarations are dropped.
+     */
+    for(ns = cur->nsDef; ns != NULL; ns = ns->next) {
+        if(xmlStrcmp(ns->href, xmlSecRelationshipsNs) == 0) {
+            ret = xmlSecTransformRelationshipWriteNs(buf, ns->href);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecTransformRelationshipWriteNs",
+                                    xmlSecTransformGetName(transform));
+                return(-1);
+            }
+            break;
         }
     }
 
@@ -552,6 +564,15 @@ xmlSecTransformRelationshipProcessElementNode(xmlSecTransformPtr transform, xmlO
      */
     for(attr = cur->properties; attr != NULL; attr = attr->next) {
         xmlChar * value = xmlGetProp(cur, attr->name);
+        if(value == NULL) {
+            /*
+             * xmlGetProp() only returns NULL on memory allocation failure here:
+             * the attribute name comes from cur->properties itself, so the
+             * attribute is guaranteed to be present on the node.
+             */
+            xmlSecXmlError("xmlGetProp", xmlSecTransformGetName(transform));
+            return(-1);
+        }
 
         if(xmlStrcmp(attr->name, xmlSecRelationshipAttrTargetMode) == 0) {
             foundTargetMode = 1;
@@ -569,7 +590,7 @@ xmlSecTransformRelationshipProcessElementNode(xmlSecTransformPtr transform, xmlO
     }
 
     /* write TargetMode */
-    if(xmlStrcmp(cur->name, xmlSecNodeRelationship) == 0 && !foundTargetMode) {
+    if(xmlSecCheckNodeName(cur, xmlSecNodeRelationship, xmlSecRelationshipsNs) && !foundTargetMode) {
         ret = xmlSecTransformRelationshipWriteProp(buf, xmlSecRelationshipAttrTargetMode, BAD_CAST "Internal");
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformRelationshipWriteProp(TargetMode=Internal)",
@@ -708,6 +729,14 @@ xmlSecTransformRelationshipPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPt
     ret = xmlOutputBufferClose(buf);
     if(ret < 0) {
        xmlSecXmlError("xmlOutputBufferClose", xmlSecTransformGetName(transform));
+        /*
+         * Mark the transform as failed so that a subsequent push operation
+         * fails explicitly instead of returning success without producing
+         * any output. The rest of the transform state is undefined until
+         * the xmlSecTransformDestroy function is called.
+         */
+        xmlSecBufferEmpty(&(transform->outBuf));
+        transform->status = xmlSecTransformStatusFail;
        return(-1);
     }
     transform->status = xmlSecTransformStatusFinished;

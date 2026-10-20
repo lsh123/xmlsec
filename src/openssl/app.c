@@ -956,10 +956,12 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
 
         ret = xmlSecOpenSSLKeyDataX509AdoptCert(x509Data, tmpcert);
         if(ret < 0) {
+            X509_free(tmpcert);
             xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptCert",
                                 xmlSecKeyDataGetName(x509Data));
             goto done;
         }
+        tmpcert = NULL; /* owned by x509Data now */
     }
 
     key = xmlSecKeyCreate();

@@ -38,6 +38,9 @@ extern "C" {
 #define xmlSecKeyDataDesId                      xmlSecOpenSSLKeyDataDesId
 #define xmlSecKeyDataDsaId                      xmlSecOpenSSLKeyDataDsaId
 #define xmlSecKeyDataEcdsaId                    xmlSecOpenSSLKeyDataEcdsaId
+#define xmlSecKeyDataGost2001Id                 xmlSecOpenSSLKeyDataGost2001Id
+#define xmlSecKeyDataGostR3410_2012_256Id       xmlSecOpenSSLKeyDataGostR3410_2012_256Id
+#define xmlSecKeyDataGostR3410_2012_512Id       xmlSecOpenSSLKeyDataGostR3410_2012_512Id
 #define xmlSecKeyDataHmacId                     xmlSecOpenSSLKeyDataHmacId
 #define xmlSecKeyDataRsaId                      xmlSecOpenSSLKeyDataRsaId
 #define xmlSecKeyDataX509Id                     xmlSecOpenSSLKeyDataX509Id
@@ -98,6 +101,10 @@ extern "C" {
 #define xmlSecTransformSha512Id                 xmlSecOpenSSLTransformSha512Id
 #define xmlSecTransformGost2001GostR3411_94Id   xmlSecOpenSSLTransformGost2001GostR3411_94Id
 #define xmlSecTransformGostR3411_94Id           xmlSecOpenSSLTransformGostR3411_94Id
+#define xmlSecTransformGostR3410_2012GostR3411_2012_256Id   xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_256Id
+#define xmlSecTransformGostR3410_2012GostR3411_2012_512Id   xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_512Id
+#define xmlSecTransformGostR3411_2012_256Id     xmlSecOpenSSLTransformGostR3411_2012_256Id
+#define xmlSecTransformGostR3411_2012_512Id     xmlSecOpenSSLTransformGostR3411_2012_512Id
 
 
 /********************************************************************

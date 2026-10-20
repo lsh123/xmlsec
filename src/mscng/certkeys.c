@@ -585,6 +585,13 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     xmlSecAssert2(gSize <= pSize, NULL);
     xmlSecAssert2(ySize <= pSize, NULL);
     offset = sizeof(BCRYPT_DSA_KEY_BLOB);
+    /* check for overflow: pSize * 3 + offset must fit in xmlSecSize */
+    if(pSize > ((size_t)XMLSEC_SIZE_MAX - (size_t)offset) / 3) {
+        xmlSecInvalidIntegerDataError2("pSize", (int)pSize, "blobSize",
+            (int)XMLSEC_SIZE_MAX, "pSize * 3 + offset <= XMLSEC_SIZE_MAX",
+            xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
     blobSize = offset + pSize * 3;
 
     ret = xmlSecBufferInitialize(&blob, blobSize);
@@ -1039,7 +1046,16 @@ xmlSecMSCngKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     /* turn the read data into a public key blob, as documented at
      * <https://msdn.microsoft.com/en-us/library/windows/desktop/aa375531(v=vs.85).aspx>:
      * need to write exponent and modulus after the struct */
-    size = sizeof(BCRYPT_RSAKEY_BLOB) + mSize + peSize;
+    /* check for overflow: mSize + peSize + sizeof(BCRYPT_RSAKEY_BLOB)
+     * must fit in xmlSecSize */
+    if(((size_t)mSize + (size_t)peSize) >
+       ((size_t)XMLSEC_SIZE_MAX - (size_t)sizeof(BCRYPT_RSAKEY_BLOB))) {
+        xmlSecInvalidIntegerDataError2("mSize", (int)mSize, "peSize",
+            (int)peSize, "mSize + peSize + sizeof(BCRYPT_RSAKEY_BLOB) <= XMLSEC_SIZE_MAX",
+            xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+    size = (size_t)sizeof(BCRYPT_RSAKEY_BLOB) + (size_t)mSize + (size_t)peSize;
     XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(size, blobBufferSize, goto done, xmlSecKeyDataKlassGetName(id));
 
     ret = xmlSecBufferInitialize(&blob, blobBufferSize);

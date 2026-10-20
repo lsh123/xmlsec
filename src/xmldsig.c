@@ -113,7 +113,9 @@ xmlSecDSigCtxDestroy(xmlSecDSigCtxPtr dsigCtx) {
  *
  * Initializes <dsig:Signature/> element processing context.
  * The caller is responsible for cleaning up returned object by calling
- * #xmlSecDSigCtxFinalize function.
+ * #xmlSecDSigCtxFinalize function. On failure the context is fully
+ * cleaned up (all successfully initialized sub-objects are finalized),
+ * so the caller must not call #xmlSecDSigCtxFinalize in this case.
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
@@ -136,6 +138,7 @@ xmlSecDSigCtxInitialize(xmlSecDSigCtxPtr dsigCtx, xmlSecKeysMngrPtr keysMngr) {
     ret = xmlSecKeyInfoCtxInitialize(&(dsigCtx->keyInfoWriteCtx), keysMngr);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyInfoCtxInitialize", NULL);
+        xmlSecKeyInfoCtxFinalize(&(dsigCtx->keyInfoReadCtx));
         return(-1);
     }
     dsigCtx->keyInfoWriteCtx.mode = xmlSecKeyInfoModeWrite;
@@ -146,6 +149,8 @@ xmlSecDSigCtxInitialize(xmlSecDSigCtxPtr dsigCtx, xmlSecKeysMngrPtr keysMngr) {
     ret = xmlSecTransformCtxInitialize(&(dsigCtx->transformCtx));
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformCtxInitialize", NULL);
+        xmlSecKeyInfoCtxFinalize(&(dsigCtx->keyInfoWriteCtx));
+        xmlSecKeyInfoCtxFinalize(&(dsigCtx->keyInfoReadCtx));
         return(-1);
     }
 
@@ -154,12 +159,19 @@ xmlSecDSigCtxInitialize(xmlSecDSigCtxPtr dsigCtx, xmlSecKeysMngrPtr keysMngr) {
                                   xmlSecDSigReferenceCtxListId);
     if(ret != 0) {
         xmlSecInternalError("xmlSecPtrListInitialize", NULL);
+        xmlSecTransformCtxFinalize(&(dsigCtx->transformCtx));
+        xmlSecKeyInfoCtxFinalize(&(dsigCtx->keyInfoWriteCtx));
+        xmlSecKeyInfoCtxFinalize(&(dsigCtx->keyInfoReadCtx));
         return(ret);
     }
     ret = xmlSecPtrListInitialize(&(dsigCtx->manifestReferences),
                                   xmlSecDSigReferenceCtxListId);
     if(ret != 0) {
         xmlSecInternalError("xmlSecPtrListInitialize", NULL);
+        xmlSecPtrListFinalize(&(dsigCtx->signedInfoReferences));
+        xmlSecTransformCtxFinalize(&(dsigCtx->transformCtx));
+        xmlSecKeyInfoCtxFinalize(&(dsigCtx->keyInfoWriteCtx));
+        xmlSecKeyInfoCtxFinalize(&(dsigCtx->keyInfoReadCtx));
         return(ret);
     }
 
@@ -637,6 +649,10 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node, xm
                                 "node=%s", xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
             return(-1);
         }
+        /* consume the CanonicalizationMethod node; if it was absent and
+         * defaulted above, cur is still the first remaining child (the
+         * first Reference) and must not be advanced again below */
+        cur = xmlSecGetNextElementNode(cur->next);
     } else if(dsigCtx->defC14NMethodId != xmlSecTransformIdUnknown) {
         /* the dsig spec does require CanonicalizationMethod node
          * to be present but in some case it application might decide to
@@ -667,8 +683,9 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node, xm
         }
     }
 
-    /* next node is required SignatureMethod. */
-    cur = xmlSecGetNextElementNode( ((cur != NULL) ? cur->next : node->children) );
+    /* next node is required SignatureMethod. Note that cur is already
+     * advanced past the CanonicalizationMethod node (or still points at
+     * the first remaining child when the method was defaulted). */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeSignatureMethod, xmlSecDSigNs))) {
         dsigCtx->signMethod = xmlSecTransformCtxNodeRead(&(dsigCtx->transformCtx),
                                         cur, xmlSecTransformUsageSignatureMethod);

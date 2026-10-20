@@ -440,10 +440,17 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
 
         /* Convert from OpenSSL parameter ordering to the OpenPGP order. */
         /* (http://gnupg.10057.n7.nabble.com/RSA-PKCS-1-signing-differs-from-OpenSSL-s-td27920.html) */
-        /* First check that p < q; if not swap p and q and recompute u.  */
+        /* First check that p < q; if not swap p and q. */
         if (gcry_mpi_cmp (keyparms[4], keyparms[5]) > 0) {
             gcry_mpi_swap (keyparms[4], keyparms[5]);
-            gcry_mpi_invm (keyparms[8], keyparms[4], keyparms[5]);
+        }
+        /* Recompute the CRT coefficient u = p^-1 mod q. The parsed PKCS#1
+         * value is u = q^-1 mod p, which only matches gcrypt's (p < q,
+         * u = p^-1 mod q) convention when p > q was swapped, so recompute
+         * unconditionally. */
+        if(!gcry_mpi_invm (keyparms[8], keyparms[4], keyparms[5])) {
+            xmlSecGCryptError("gcry_mpi_invm", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
+            goto done;
         }
 
         /* Build the S-expression.  */

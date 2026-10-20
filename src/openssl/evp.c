@@ -1809,7 +1809,7 @@ xmlSecOpenSSLKeyDataEcdsaGetSize(xmlSecKeyDataPtr data) {
         goto done;
     }
 
-    numBits = BN_num_bytes(order);
+    numBits = BN_num_bits(order);
     if(numBits < 0) {
         xmlSecOpenSSLError("BN_num_bits", xmlSecKeyDataGetName(data));
         goto done;
@@ -1847,7 +1847,7 @@ xmlSecOpenSSLKeyDataEcdsaGetSize(xmlSecKeyDataPtr data) {
         goto done;
     }
 
-    numBits = BN_num_bytes(order);
+    numBits = BN_num_bits(order);
     if(numBits < 0) {
         xmlSecOpenSSLError("BN_num_bits",
             xmlSecKeyDataGetName(data));

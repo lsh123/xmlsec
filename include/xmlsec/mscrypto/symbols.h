@@ -38,6 +38,8 @@ extern "C" {
 #define xmlSecKeyDataDesId                      xmlSecMSCryptoKeyDataDesId
 #define xmlSecKeyDataDsaId                      xmlSecMSCryptoKeyDataDsaId
 #define xmlSecKeyDataGost2001Id                 xmlSecMSCryptoKeyDataGost2001Id
+#define xmlSecKeyDataGostR3410_2012_256Id       xmlSecMSCryptoKeyDataGost2012_256Id
+#define xmlSecKeyDataGostR3410_2012_512Id       xmlSecMSCryptoKeyDataGost2012_512Id
 #define xmlSecKeyDataHmacId                     xmlSecMSCryptoKeyDataHmacId
 #define xmlSecKeyDataRsaId                      xmlSecMSCryptoKeyDataRsaId
 #define xmlSecKeyDataX509Id                     xmlSecMSCryptoKeyDataX509Id
@@ -70,7 +72,13 @@ extern "C" {
 #define xmlSecTransformHmacMd5Id                xmlSecMSCryptoTransformHmacMd5Id
 #define xmlSecTransformHmacRipemd160Id          xmlSecMSCryptoTransformHmacRipemd160Id
 #define xmlSecTransformHmacSha1Id               xmlSecMSCryptoTransformHmacSha1Id
+#define xmlSecTransformHmacSha224Id             xmlSecMSCryptoTransformHmacSha224Id
+#define xmlSecTransformHmacSha256Id             xmlSecMSCryptoTransformHmacSha256Id
+#define xmlSecTransformHmacSha384Id             xmlSecMSCryptoTransformHmacSha384Id
+#define xmlSecTransformHmacSha512Id             xmlSecMSCryptoTransformHmacSha512Id
+#define xmlSecTransformMd5Id                    xmlSecMSCryptoTransformMd5Id
 /* the RIPEMD160 transform is not supported by this backend */
+#define xmlSecTransformRsaMd5Id                 xmlSecMSCryptoTransformRsaMd5Id
 #define xmlSecTransformRsaSha1Id                xmlSecMSCryptoTransformRsaSha1Id
 #define xmlSecTransformRsaSha256Id              xmlSecMSCryptoTransformRsaSha256Id
 #define xmlSecTransformRsaSha384Id              xmlSecMSCryptoTransformRsaSha384Id

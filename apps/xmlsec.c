@@ -782,7 +782,7 @@ static xmlSecAppCmdLineParam verificationTimeParam = {
     "--verification-time",
     NULL,
     "--verification-time <time>"
-    "\n\tthe local time in \"YYYY-MM-DD HH:MM:SS\" format"
+    "\n\tthe local time in \"YYYY-MM-DD HH:MM:SS\" (or \"YYYY-MM-DD+HH:MM:SS\") format"
     "\n\tused certificates verification",
     xmlSecAppCmdLineParamTypeTime,
     xmlSecAppCmdLineParamFlagNone,
@@ -794,7 +794,7 @@ static xmlSecAppCmdLineParam verificationGmtTimeParam = {
     "--verification-gmt-time",
     NULL,
     "--verification-gmt-time <time>"
-    "\n\tthe GMT time in \"YYYY-MM-DD HH:MM:SS\" format"
+    "\n\tthe GMT time in \"YYYY-MM-DD HH:MM:SS\" (or \"YYYY-MM-DD+HH:MM:SS\") format"
     "\n\tused certificates verification",
     xmlSecAppCmdLineParamTypeGmtTime,
     xmlSecAppCmdLineParamFlagNone,
@@ -1135,13 +1135,27 @@ int main(int argc, const char **argv) {
     /* enable XXE? */
     if(xmlSecAppCmdLineParamIsSet(&xxeParam)) {
         xmlSecSetExternalEntityLoader( NULL );     // reset to libxml2's default handler
+#if LIBXML_VERSION >= 21300
+        /*
+         * libxml2 >= 2.13.0 gates every external entity/DTD load on the
+         * XML_PARSE_NO_XXE parser option, which the library sets by
+         * default; restoring the default entity loader alone would have
+         * no effect, so the flag must be cleared as well.
+         */
+        xmlSecParserSetDefaultOptions(
+            xmlSecParserGetDefaultOptions() & ~XML_PARSE_NO_XXE);
+#endif /* LIBXML_VERSION >= 21300 */
     }
 
     /* get the "repeats" number */
-    if(xmlSecAppCmdLineParamIsSet(&repeatParam) &&
-       (xmlSecAppCmdLineParamGetInt(&repeatParam, 1) > 0)) {
-
+    if(xmlSecAppCmdLineParamIsSet(&repeatParam)) {
         repeats = xmlSecAppCmdLineParamGetInt(&repeatParam, 1);
+        if(repeats <= 0) {
+            fprintf(stderr, "Error: invalid value for option \"%s\".\n",
+                    repeatParam.fullName);
+            xmlSecAppPrintUsage();
+            goto fail;
+        }
     }
 
     /* execute requested number of times */
@@ -1998,7 +2012,19 @@ xmlSecAppPrepareKeyInfoReadCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
             return(-1);
         }
 
-        for(p = value->strListValue; (p != NULL) && ((*p) != '\0'); p += strlen(p)) {
+        /*
+         * strListValue is the original comma-separated string (strValue)
+         * with commas replaced by NULs; the buffer is allocated as
+         * strlen(strValue) + 2 bytes and therefore always ends with a
+         * double NUL. The loop bound points at the NUL terminating the
+         * last entry. Empty entries (e.g. "rsa,,dsa") are skipped
+         * instead of terminating the loop or being processed.
+         */
+        for(p = value->strListValue; p <= (value->strListValue + strlen(value->strValue));
+            p += (p[0] != '\0') ? (strlen(p) + 1) : 1) {
+            if(p[0] == '\0') {
+                continue;
+            }
             dataId = xmlSecKeyDataIdListFindByName(xmlSecKeyDataIdsGet(), BAD_CAST p, xmlSecKeyDataUsageAny);
             if(dataId == xmlSecKeyDataIdUnknown) {
                 fprintf(stderr, "Error: key data \"%s\" is unknown.\n", p);
@@ -2469,6 +2495,15 @@ xmlSecAppInit(void) {
 #ifndef XMLSEC_NO_XSLT
     /* disable everything */
     xsltSecPrefs = xsltNewSecurityPrefs();
+    if(xsltSecPrefs == NULL) {
+        /*
+         * Without the security prefs libxslt skips all security checks,
+         * so the "forbid everything" settings below must not be silently
+         * lost; fail initialization instead.
+         */
+        fprintf(stderr, "Error: failed to allocate XSLT security preferences.\n");
+        return(-1);
+    }
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid);

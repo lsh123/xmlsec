@@ -66,10 +66,23 @@ extern "C" {
 #define xmlSecTransformHmacMd5Id                xmlSecGnuTLSTransformHmacMd5Id
 #define xmlSecTransformHmacRipemd160Id          xmlSecGnuTLSTransformHmacRipemd160Id
 #define xmlSecTransformHmacSha1Id               xmlSecGnuTLSTransformHmacSha1Id
+#define xmlSecTransformHmacSha256Id             xmlSecGnuTLSTransformHmacSha256Id
+#define xmlSecTransformHmacSha384Id             xmlSecGnuTLSTransformHmacSha384Id
+#define xmlSecTransformHmacSha512Id             xmlSecGnuTLSTransformHmacSha512Id
+#define xmlSecTransformMd5Id                    xmlSecGnuTLSTransformMd5Id
 #define xmlSecTransformRipemd160Id              xmlSecGnuTLSTransformRipemd160Id
+#define xmlSecTransformRsaMd5Id                 xmlSecGnuTLSTransformRsaMd5Id
+#define xmlSecTransformRsaRipemd160Id           xmlSecGnuTLSTransformRsaRipemd160Id
 #define xmlSecTransformRsaSha1Id                xmlSecGnuTLSTransformRsaSha1Id
-/* the RSA key transport transforms are not supported by this backend */
+#define xmlSecTransformRsaSha256Id              xmlSecGnuTLSTransformRsaSha256Id
+#define xmlSecTransformRsaSha384Id              xmlSecGnuTLSTransformRsaSha384Id
+#define xmlSecTransformRsaSha512Id              xmlSecGnuTLSTransformRsaSha512Id
+/* the RSA key transport (RsaPkcs1/RsaOaep) transforms are not supported
+ * by this backend */
 #define xmlSecTransformSha1Id                   xmlSecGnuTLSTransformSha1Id
+#define xmlSecTransformSha256Id                 xmlSecGnuTLSTransformSha256Id
+#define xmlSecTransformSha384Id                 xmlSecGnuTLSTransformSha384Id
+#define xmlSecTransformSha512Id                 xmlSecGnuTLSTransformSha512Id
 
 /********************************************************************
  *

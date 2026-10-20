@@ -410,7 +410,7 @@ xmlSecSimpleKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
  */
 int
 xmlSecSimpleKeysStoreLoad_ex(xmlSecKeyStorePtr store, const char *uri,
-                            xmlSecKeysMngrPtr keysMngr XMLSEC_ATTRIBUTE_UNUSED,
+                            xmlSecKeysMngrPtr keysMngr,
                             xmlSecSimpleKeysStoreAdoptKeyFunc adoptKeyFunc) {
     xmlDocPtr doc;
     xmlNodePtr root;
@@ -424,7 +424,6 @@ xmlSecSimpleKeysStoreLoad_ex(xmlSecKeyStorePtr store, const char *uri,
     xmlSecAssert2(store != NULL, -1);
     xmlSecAssert2(uri != NULL, -1);
     xmlSecAssert2(adoptKeyFunc != NULL, -1);
-    UNREFERENCED_PARAMETER(keysMngr);
 
     doc = xmlParseFile(uri);
     if(doc == NULL) {
@@ -461,7 +460,9 @@ xmlSecSimpleKeysStoreLoad_ex(xmlSecKeyStorePtr store, const char *uri,
         }
 
         keyInfoCtx.mode           = xmlSecKeyInfoModeRead;
-        keyInfoCtx.keysMngr       = NULL;
+        /* pass the keys manager down; X509Data reading requires it in
+           order to adopt the loaded keys */
+        keyInfoCtx.keysMngr       = keysMngr;
         keyInfoCtx.flags          = XMLSEC_KEYINFO_FLAGS_DONT_STOP_ON_KEY_FOUND |
                                     XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS;
         keyInfoCtx.keyReq.keyId   = xmlSecKeyDataIdUnknown;
@@ -706,7 +707,13 @@ xmlSecSimpleKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
     for(pos = 0; pos < size; ++pos) {
         key = (xmlSecKeyPtr)xmlSecPtrListGetItem(list, pos);
         if((key != NULL) && (xmlSecKeyMatch(key, name, &(keyInfoCtx->keyReq)) == 1)) {
-            return(xmlSecKeyDuplicate(key));
+            key = xmlSecKeyDuplicate(key);
+            if(key == NULL) {
+                xmlSecInternalError("xmlSecKeyDuplicate",
+                                    xmlSecKeyStoreGetName(store));
+                return(NULL);
+            }
+            return(key);
         }
     }
     return(NULL);

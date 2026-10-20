@@ -55,9 +55,6 @@ struct _xmlSecMSCngHmacCtx {
 XMLSEC_TRANSFORM_DECLARE(MSCngHmac, xmlSecMSCngHmacCtx)
 #define xmlSecMSCngHmacSize XMLSEC_TRANSFORM_SIZE(MSCngHmac)
 
-/* 80 is a minimum value from: https://www.w3.org/TR/xmldsig-core1/#sec-SignatureMethod */
-#define XMLSEC_MSCNG_HMAC_MIN_LENGTH                     80
-
 static int
 xmlSecMSCngHmacCheckId(xmlSecTransformPtr transform) {
 

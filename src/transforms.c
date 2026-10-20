@@ -1775,6 +1775,20 @@ xmlSecTransformConnect(xmlSecTransformPtr left, xmlSecTransformPtr right,
     leftType = xmlSecTransformGetDataType(left, xmlSecTransformModePop, transformCtx);
     rightType = xmlSecTransformGetDataType(right, xmlSecTransformModePush, transformCtx);
 
+    /*
+     * Both transforms must be at the chain ends: @left must not have a next
+     * transform and @right must not have a prev transform. Otherwise
+     * overwriting left->next/right->prev below would silently corrupt the
+     * existing chain.
+     */
+    if((left->next != NULL) || (right->prev != NULL)) {
+        xmlSecInternalError3("xmlSecTransformConnect", NULL,
+                             "left transform \"%s\" and/or right transform \"%s\" is already linked to another transform",
+                             xmlSecErrorsSafeString(xmlSecTransformGetName(left)),
+                             xmlSecErrorsSafeString(xmlSecTransformGetName(right)));
+        return(-1);
+    }
+
     /* happy case first: nothing need to be done */
     if((((leftType & xmlSecTransformDataTypeBin) != 0) &&
         ((rightType & xmlSecTransformDataTypeBin) != 0)) ||

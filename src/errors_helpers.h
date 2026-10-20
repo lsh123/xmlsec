@@ -246,6 +246,10 @@ extern "C" {
  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
  *
  * Macro. The XMLSec library macro for reporting IO errors.
+ *
+ * NOTE: errno is read at macro expansion time; the macro must be called
+ * immediately after the failing system call (no intervening calls or
+ * statements that may modify errno).
  */
 #define xmlSecIOError(errorFunction, name, errorObject) \
     {                                                 \

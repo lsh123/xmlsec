@@ -438,11 +438,13 @@ xmlSecSoap11GetBodyEntriesNumber(xmlNodePtr envNode) {
 /**
  * xmlSecSoap11GetBodyEntry:
  * @envNode:    the pointer to <soap:Envelope> node.
- * @pos:        the body entry number.
+ * @pos:        the 0-based index of the body entry.
  *
- * Gets the body entry number @pos.
+ * Gets the body entry at the given 0-based index @pos (@pos == 0 returns
+ * the first entry).
  *
- * Returns: pointer to body entry node or NULL if an error occurs.
+ * Returns: pointer to body entry node or NULL if an error occurs or @pos
+ *          is out of range.
  */
 xmlNodePtr
 xmlSecSoap11GetBodyEntry(xmlNodePtr envNode, xmlSecSize pos) {
@@ -811,7 +813,19 @@ xmlSecSoap12AddFaultEntry(xmlNodePtr envNode, xmlSecSoap12FaultCode faultCode,
             xmlFreeNode(faultNode);
             return(NULL);
         }
+
+        /* set Node node */
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeSetContent(cur, faultNodeURI) < 0) {
+            xmlSecXmlError("xmlNodeSetContent", cur);
+            xmlUnlinkNode(faultNode);
+            xmlFreeNode(faultNode);
+            return(NULL);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
         xmlNodeSetContent(cur, faultNodeURI);
+#endif /* LIBXML_VERSION >= 21300 */
     }
 
     if(faultRole != NULL) {
@@ -823,7 +837,19 @@ xmlSecSoap12AddFaultEntry(xmlNodePtr envNode, xmlSecSoap12FaultCode faultCode,
             xmlFreeNode(faultNode);
             return(NULL);
         }
+
+        /* set Role node */
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeSetContent(cur, faultRole) < 0) {
+            xmlSecXmlError("xmlNodeSetContent", cur);
+            xmlUnlinkNode(faultNode);
+            xmlFreeNode(faultNode);
+            return(NULL);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
         xmlNodeSetContent(cur, faultRole);
+#endif /* LIBXML_VERSION >= 21300 */
     }
 
     return(faultNode);
@@ -1130,11 +1156,13 @@ xmlSecSoap12GetBodyEntriesNumber(xmlNodePtr envNode) {
 /**
  * xmlSecSoap12GetBodyEntry:
  * @envNode:    the pointer to <soap:Envelope> node.
- * @pos:        the body entry number.
+ * @pos:        the 0-based index of the body entry.
  *
- * Gets the body entry number @pos.
+ * Gets the body entry at the given 0-based index @pos (@pos == 0 returns
+ * the first entry).
  *
- * Returns: pointer to body entry node or NULL if an error occurs.
+ * Returns: pointer to body entry node or NULL if an error occurs or @pos
+ *          is out of range.
  */
 xmlNodePtr
 xmlSecSoap12GetBodyEntry(xmlNodePtr envNode, xmlSecSize pos) {

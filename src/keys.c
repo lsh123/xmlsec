@@ -407,12 +407,17 @@ xmlSecKeyReqCopy(xmlSecKeyReqPtr dst, xmlSecKeyReqPtr src) {
 int
 xmlSecKeyReqMatchKey(xmlSecKeyReqPtr keyReq, xmlSecKeyPtr key) {
     xmlSecAssert2(keyReq != NULL, -1);
-    xmlSecAssert2(xmlSecKeyIsValid(key), -1);
+    xmlSecAssert2(key != NULL, -1);
 
     if((keyReq->keyType != xmlSecKeyDataTypeUnknown) && ((xmlSecKeyGetType(key) & keyReq->keyType) == 0)) {
          return(0);
     }
     if((keyReq->keyUsage != xmlSecKeyDataUsageUnknown) && ((keyReq->keyUsage & key->usage) == 0)) {
+        return(0);
+    }
+
+    if(xmlSecKeyGetValue(key) == NULL) {
+        /* a key without value data cannot satisfy the key requirements */
         return(0);
     }
 
@@ -576,6 +581,7 @@ int
 xmlSecKeyCopy(xmlSecKeyPtr keyDst, xmlSecKeyPtr keySrc) {
     xmlSecAssert2(keyDst != NULL, -1);
     xmlSecAssert2(keySrc != NULL, -1);
+    xmlSecAssert2(keyDst != keySrc, -1);
 
     /* empty destination */
     xmlSecKeyEmpty(keyDst);

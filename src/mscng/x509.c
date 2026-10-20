@@ -395,6 +395,11 @@ xmlSecMSCngKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data,
                 CertFreeCertificateContext(certCopy);
                 return(-1);
             }
+        } else {
+            CertFreeCertificateContext(certCopy);
+            xmlSecInvalidDataError("key type is neither public nor private",
+                xmlSecKeyDataGetName(data));
+            return(-1);
         }
         certCopy = NULL; /* owned by keyValue now */
 

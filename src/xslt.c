@@ -411,6 +411,17 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         ret = xmlOutputBufferClose(output);
         if(ret < 0) {
             xmlSecXmlError("xmlOutputBufferClose", xmlSecTransformGetName(transform));
+            /*
+             * Note that @output is already freed by xmlOutputBufferClose()
+             * on the failure path. Discard any partial output accumulated in
+             * our own buffer so it cannot be consumed later, and mark the
+             * transform as failed so that a subsequent push operation fails
+             * explicitly instead of returning success without producing any
+             * output. The rest of the transform state is undefined until the
+             * xmlSecTransformDestroy function is called.
+             */
+            xmlSecBufferEmpty(&(transform->outBuf));
+            transform->status = xmlSecTransformStatusFail;
             xmlFreeDoc(docOut);
             return(-1);
         }

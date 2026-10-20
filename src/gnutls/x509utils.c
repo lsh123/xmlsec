@@ -736,6 +736,7 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
                              gnutls_x509_crt_t * key_cert,
                              xmlSecPtrListPtr certsList)
 {
+    static const char empty[] = "";
     gnutls_pkcs12_t pkcs12 = NULL;
     gnutls_pkcs12_bag_t bag = NULL;
     gnutls_x509_crt_t cert = NULL;
@@ -773,7 +774,7 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     }
 
     /* verify */
-    err = gnutls_pkcs12_verify_mac(pkcs12, pwd);
+    err = gnutls_pkcs12_verify_mac(pkcs12, (pwd != NULL) ? pwd : empty);
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_pkcs12_verify_mac", err, NULL);
         goto done;
@@ -800,6 +801,26 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
             goto done;
         }
 
+        /* check the number of elements first; querying the type of a
+         * non-existent element (index 0) fails for empty bags and would
+         * abort the whole load even when other bags are usable.
+         *
+         * Note that for encrypted bags this count is the number of
+         * placeholder elements (1, of type GNUTLS_BAG_ENCRYPTED); the real
+         * element count is only known after gnutls_pkcs12_bag_decrypt(), so
+         * it is re-fetched below */
+        elements_in_bag = gnutls_pkcs12_bag_get_count(bag);
+        if(elements_in_bag < 0) {
+            xmlSecGnuTLSError("gnutls_pkcs12_bag_get_count", elements_in_bag, NULL);
+            goto done;
+        }
+        if(elements_in_bag == 0) {
+            /* skip the empty bag */
+            gnutls_pkcs12_bag_deinit(bag);
+            bag = NULL;
+            continue;
+        }
+
         /* check if we need to decrypt the bag */
         bag_type = gnutls_pkcs12_bag_get_type(bag, 0);
         if(bag_type < 0) {
@@ -807,20 +828,22 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
             goto done;
         }
         if(bag_type == GNUTLS_BAG_ENCRYPTED) {
-            err = gnutls_pkcs12_bag_decrypt(bag, pwd);
+            err = gnutls_pkcs12_bag_decrypt(bag, (pwd != NULL) ? pwd : empty);
             if(err != GNUTLS_E_SUCCESS) {
                 xmlSecGnuTLSError("gnutls_pkcs12_bag_decrypt", err, NULL);
                 goto done;
             }
         }
 
-        /* scan elements in bag */
+        /* get the actual number of elements; after decryption the bag
+         * contains the real elements, not the single placeholder */
         elements_in_bag = gnutls_pkcs12_bag_get_count(bag);
         if(elements_in_bag < 0) {
             xmlSecGnuTLSError("gnutls_pkcs12_bag_get_count", elements_in_bag, NULL);
             goto done;
         }
         XMLSEC_SAFE_CAST_INT_TO_UINT(elements_in_bag, num, goto done, NULL);
+
         for(ii = 0; ii < num; ++ii) {
             bag_type = gnutls_pkcs12_bag_get_type(bag, ii);
             if(bag_type < 0) {
@@ -847,7 +870,7 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
 
                     err = gnutls_x509_privkey_import_pkcs8((*priv_key),
                                 &datum, GNUTLS_X509_FMT_DER,
-                                pwd,
+                                (pwd != NULL) ? pwd : empty,
                                 (bag_type == GNUTLS_BAG_PKCS8_KEY) ? GNUTLS_PKCS_PLAIN : 0);
                     if(err != GNUTLS_E_SUCCESS) {
                         xmlSecGnuTLSError("gnutls_x509_privkey_import_pkcs8", err, NULL);

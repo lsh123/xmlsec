@@ -8,8 +8,8 @@
  *
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_BN_H__
-#define __XMLSEC_BN_H__
+#ifndef __XMLSEC_OPENSSL_BN_H__
+#define __XMLSEC_OPENSSL_BN_H__
 
 #include <openssl/bn.h>
 
@@ -32,5 +32,5 @@ XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT int        xmlSecOpenSSLNodeSetBNValue   
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_BN_H__ */
+#endif /* __XMLSEC_OPENSSL_BN_H__ */
 

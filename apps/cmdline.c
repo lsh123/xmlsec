@@ -37,10 +37,8 @@ static int                      xmlSecAppCmdLineTimeParamRead   (const char* str
                                                                  int is_gmt_time);
 
 #if defined(_MSC_VER)
-#define XMLSEC_SCANF     sscanf_s
 #define XMLSEC_MKGMTIME  _mkgmtime
 #else /* defined(_MSC_VER) */
-#define XMLSEC_SCANF      sscanf
 #define XMLSEC_MKGMTIME  xmlSecAppGetGmtTime
 
 static time_t                   xmlSecAppGetGmtTime             (struct tm* timeptr);
@@ -338,7 +336,7 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
             }
             value->strValue = argv[++pos];
             if(xmlSecAppCmdLineTimeParamRead(value->strValue, &(value->timeValue), 0) < 0) {
-                fprintf(stderr, "Error: time argument \"%s\" is invalid, expected format is \"YYYY-MM-DD HH:MM:SS\").\n", value->strValue);
+                fprintf(stderr, "Error: time argument \"%s\" is invalid, expected format is \"YYYY-MM-DD HH:MM:SS\" (or \"YYYY-MM-DD+HH:MM:SS\").\n", value->strValue);
                 return(-1);
             }
             break;
@@ -349,7 +347,7 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
             }
             value->strValue = argv[++pos];
             if(xmlSecAppCmdLineTimeParamRead(value->strValue, &(value->timeValue), 1) < 0) {
-                fprintf(stderr, "Error: gmt time argument \"%s\" is invalid, expected format is \"YYYY-MM-DD HH:MM:SS\").\n", value->strValue);
+                fprintf(stderr, "Error: gmt time argument \"%s\" is invalid, expected format is \"YYYY-MM-DD HH:MM:SS\" (or \"YYYY-MM-DD+HH:MM:SS\").\n", value->strValue);
                 return(-1);
             }
             break;
@@ -378,6 +376,13 @@ xmlSecAppGetGmtTime(struct tm* timeptr) {
     if(tmGmt == NULL) {
         return((time_t)-1);
     }
+    /* gmtime() resets tm_isdst to 0, which would make mktime() below assume
+     * standard (non-DST) time and apply the standard offset even when t1
+     * falls during DST.  Force a re-resolution of the DST state
+     * (tm_isdst = -1) so that the (t2 - t1) delta reflects the actual UTC
+     * offset; otherwise the result is off by up to one hour when a DST
+     * transition falls between the two mktime() conversions. */
+    tmGmt->tm_isdst = -1;
     t2 = mktime(tmGmt);
     if(t2 == (time_t)-1) {
         return((time_t)-1);
@@ -388,21 +393,109 @@ xmlSecAppGetGmtTime(struct tm* timeptr) {
 }
 #endif /* !defined(_MSC_VER) */
 
+/*
+ * Read a decimal field of at most `maxCount` digits from `*p` (advancing
+ * it past the field) into `*out`.  At least one digit is required; a field
+ * with more than `maxCount` digits is rejected (rather than silently
+ * truncated, as "%Nd" in sscanf() would do, e.g. "099" -> 9).
+ */
+static int
+xmlSecAppTimeParseDigits(const char** p, int maxCount, int* out) {
+    int value = 0;
+    int i;
+
+    if((p == NULL) || (out == NULL) || (maxCount <= 0)) {
+        return(-1);
+    }
+    for(i = 0; i < maxCount; i++) {
+        char c = (**p);
+
+        if((c < '0') || (c > '9')) {
+            break;
+        }
+        value = (value * 10) + (c - '0');
+        (*p)++;
+    }
+    if(i == 0) {
+        /* no digits at all */
+        return(-1);
+    }
+    if((**p >= '0') && (**p <= '9')) {
+        /* more digits follow: the value would be silently truncated */
+        return(-1);
+    }
+    *out = value;
+    return(0);
+}
+
 static int
 xmlSecAppCmdLineTimeParamRead(const char* str, time_t* t, int is_gmt_time) {
     struct tm tm;
-    int n;
+    const char* p;
 
     if((str == NULL) || (t == NULL)) {
         return(-1);
     }
     memset(&tm, 0, sizeof(tm));
     tm.tm_isdst = -1;
-    n = XMLSEC_SCANF(str, "%4d-%2d-%2d%*c%2d:%2d:%2d",
-                        &tm.tm_year, &tm.tm_mon, &tm.tm_mday,
-                        &tm.tm_hour, &tm.tm_min, &tm.tm_sec);
-    if(n != 6) {
+
+    /* Parse "YYYY-MM-DD HH:MM:SS" (or "YYYY-MM-DD+HH:MM:SS") with strict
+     * field validation.  The old sscanf() call neither checked for trailing
+     * garbage (so "2024-01-02 03:04:05XYZ" was accepted) nor rejected
+     * over-long fields (which "%2d" truncated silently).  Here every
+     * separator must match exactly (whitespace between the date and the
+     * time or a single "+", the format used by the test suite) and only
+     * whitespace may follow the seconds. */
+    p = str;
+    if(xmlSecAppTimeParseDigits(&p, 4, &tm.tm_year) < 0) {
         return(-1);
+    }
+    if(*p != '-') {
+        return(-1);
+    }
+    p++;
+    if(xmlSecAppTimeParseDigits(&p, 2, &tm.tm_mon) < 0) {
+        return(-1);
+    }
+    if(*p != '-') {
+        return(-1);
+    }
+    p++;
+    if(xmlSecAppTimeParseDigits(&p, 2, &tm.tm_mday) < 0) {
+        return(-1);
+    }
+    if(*p == '+') {
+        p++;
+    } else {
+        if(!((*p == ' ') || (*p == '\t'))) {
+            return(-1);
+        }
+        while((*p == ' ') || (*p == '\t')) {
+            p++;
+        }
+    }
+    if(xmlSecAppTimeParseDigits(&p, 2, &tm.tm_hour) < 0) {
+        return(-1);
+    }
+    if(*p != ':') {
+        return(-1);
+    }
+    p++;
+    if(xmlSecAppTimeParseDigits(&p, 2, &tm.tm_min) < 0) {
+        return(-1);
+    }
+    if(*p != ':') {
+        return(-1);
+    }
+    p++;
+    if(xmlSecAppTimeParseDigits(&p, 2, &tm.tm_sec) < 0) {
+        return(-1);
+    }
+    while(*p != '\0') {
+        if(!((*p == ' ') || (*p == '\t'))) {
+            return(-1);
+        }
+        p++;
     }
 
     if((tm.tm_year < 1900)

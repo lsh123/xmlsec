@@ -396,9 +396,9 @@ xmlSecGnuTLSKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecGnuTLSKeyDataX509Id), -1);
 
     ctxSrc = xmlSecGnuTLSX509DataGetCtx(src);
-    xmlSecAssert2(ctxSrc != NULL, 0);
+    xmlSecAssert2(ctxSrc != NULL, -1);
     ctxDst = xmlSecGnuTLSX509DataGetCtx(dst);
-    xmlSecAssert2(ctxDst != NULL, 0);
+    xmlSecAssert2(ctxDst != NULL, -1);
 
     /* copy key cert if exist */
     if(ctxDst->keyCert != NULL) {

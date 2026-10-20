@@ -587,7 +587,10 @@ xmlSecMSCngCheckRevocation(
             continue;
         }
 
-        /* verify the CRL signature; skip CRLs that cannot be verified */
+        /* verify the CRL signature; skip CRLs that cannot be verified.
+         * Note: if every CRL listing the certificate is skipped (unverifiable
+         * or out of validity), the revocation check trivially succeeds
+         * (fail-open); this is intended, matching upstream CRL handling. */
         ret = xmlSecMSCngX509StoreVerifyCrl(keyDataStore, crlCtx, time, store, depth);
         if(ret < 0) {
             xmlSecInternalError("xmlSecMSCngX509StoreVerifyCrl", NULL);

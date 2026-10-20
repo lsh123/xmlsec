@@ -329,7 +329,7 @@ if test "z$LIBXML_FOUND" = "zno" -a "z$with_libxml_src" != "z" -a "z$with_libxml
         LIBXML_FOUND="yes"
         AC_MSG_RESULT([yes])
     else
-        AC_MSG_ERROR([not found: "$with_libxml_src/include/$LIBXML_INCLUDE_MARKER" or "$with_libxml_src/.libs/$LIBXML_SHARED_LIB_MARKER" or "$with_libxml_src/.libs/$LIBXML_STATIC_LIB_MARKER" files don't exist), typo?])
+        AC_MSG_ERROR([not found: "$with_libxml_src/include/$LIBXML_INCLUDE_MARKER" or "$with_libxml_src/.libs/$LIBXML_SHARED_LIB_MARKER" or "$with_libxml_src/.libs/$LIBXML_STATIC_LIB_MARKER" files don't exist], [typo?])
     fi
 fi
 
@@ -346,7 +346,7 @@ if test "z$LIBXML_FOUND" = "zno" -a "z$with_libxml" != "z" -a "z$with_libxml" !=
         LIBXML_FOUND="yes"
         AC_MSG_RESULT([yes])
     else
-        AC_MSG_ERROR([not found: "$with_libxml/bin/$LIBXML_CONFIG" tool, or "$with_libxml/include/libxml2/$LIBXML_INCLUDE_MARKER" and/or "$with_libxml/lib/$LIBXML_SHARED_LIB_MARKER" or "$with_libxml/lib/$LIBXML_STATIC_LIB_MARKER" files don't exist), typo?])
+        AC_MSG_ERROR([not found: "$with_libxml/bin/$LIBXML_CONFIG" tool, or "$with_libxml/include/libxml2/$LIBXML_INCLUDE_MARKER" and/or "$with_libxml/lib/$LIBXML_SHARED_LIB_MARKER" or "$with_libxml/lib/$LIBXML_STATIC_LIB_MARKER" files don't exist], [typo?])
     fi
 fi
 
@@ -515,7 +515,7 @@ if test "z$LIBXSLT_FOUND" = "zno" -a "z$with_libxslt_src" != "z" -a "z$with_libx
         LIBXSLT_FOUND="yes"
         AC_MSG_RESULT([yes])
     else
-        AC_MSG_ERROR([not found: "$with_libxslt_src/$LIBXSLT_INCLUDE_MARKER" and/or "$with_libxslt_src/libxslt/.libs/$LIBXSLT_SHARED_LIB_MARKER" or "$with_libxslt_src/libxslt/.libs/$LIBXSLT_STATIC_LIB_MARKER" files don't exist), typo?])
+        AC_MSG_ERROR([not found: "$with_libxslt_src/$LIBXSLT_INCLUDE_MARKER" and/or "$with_libxslt_src/libxslt/.libs/$LIBXSLT_SHARED_LIB_MARKER" or "$with_libxslt_src/libxslt/.libs/$LIBXSLT_STATIC_LIB_MARKER" files don't exist], [typo?])
     fi
 fi
 
@@ -532,7 +532,7 @@ if test "z$LIBXSLT_FOUND" = "zno" -a "z$with_libxslt" != "z" -a "z$with_libxslt"
         LIBXSLT_FOUND="yes"
         AC_MSG_RESULT([yes])
     else
-        AC_MSG_ERROR([not found: "$with_libxslt/bin/$LIBXSLT_CONFIG" tool, or "$with_libxslt/include/$LIBXSLT_INCLUDE_MARKER" and/or "$with_libxslt/lib/$LIBXSLT_SHARED_LIB_MARKER" or "$with_libxslt/lib/$LIBXSLT_STATIC_LIB_MARKER" files don't exist), typo?])
+        AC_MSG_ERROR([not found: "$with_libxslt/bin/$LIBXSLT_CONFIG" tool, or "$with_libxslt/include/$LIBXSLT_INCLUDE_MARKER" and/or "$with_libxslt/lib/$LIBXSLT_SHARED_LIB_MARKER" or "$with_libxslt/lib/$LIBXSLT_STATIC_LIB_MARKER" files don't exist], [typo?])
     fi
 fi
 
@@ -659,7 +659,8 @@ AC_MSG_RESULT([$LIBXSLT_FOUND])
 dnl Finally set variables
 if test "z$LIBXSLT_FOUND" = "zyes" ; then
     XMLSEC_NO_LIBXSLT="0"
-    LIBXSLT_PC_FILE_COND="libxslt >= $LIBXSLT_MIN_VERSION"
+    dnl leading ", " so the pc.in Requires: lines stay comma-separated
+    LIBXSLT_PC_FILE_COND=", libxslt >= $LIBXSLT_MIN_VERSION"
 else
     XMLSEC_NO_LIBXSLT="1"
     LIBXSLT_PC_FILE_COND=""
@@ -731,13 +732,13 @@ if test "z$OPENSSL_FOUND" = "zno" -a "z$with_openssl" != "z" -a "z$with_openssl"
         OPENSSL_LIB_PATH="$with_openssl/lib"
         OPENSSL_FOUND="yes"
         AC_MSG_RESULT([yes])
-    elif test -f "$with_openssl/include/$OPENSSL_INCLUDE_MARKER" -a -f "$with_openssl/libi64/$OPENSSL_LIB_STATIC_MARKER" ; then
+    elif test -f "$with_openssl/include/$OPENSSL_INCLUDE_MARKER" -a -f "$with_openssl/lib64/$OPENSSL_LIB_STATIC_MARKER" ; then
         OPENSSL_INCLUDE_PATH="$with_openssl/include"
         OPENSSL_LIB_PATH="$with_openssl/lib64"
         OPENSSL_FOUND="yes"
         AC_MSG_RESULT([yes])
     else
-        AC_MSG_ERROR([not found: "$with_openssl/include/$OPENSSL_INCLUDE_MARKER" or "$with_openssl/lib(64)/$OPENSSL_LIB_SHARED_MARKER" or "$with_openssl/lib(64)/$OPENSSL_LIB_STATIC_MARKER" files don't exist), typo?])
+        AC_MSG_ERROR([not found: "$with_openssl/include/$OPENSSL_INCLUDE_MARKER" or "$with_openssl/lib(64)/$OPENSSL_LIB_SHARED_MARKER" or "$with_openssl/lib(64)/$OPENSSL_LIB_STATIC_MARKER" files don't exist], [typo?])
     fi
 fi
 
@@ -1024,7 +1025,7 @@ if test "z$NSPR_FOUND" = "zno" -a "z$with_nspr" != "z" -a "z$with_nspr" != "zyes
         NSPR_FOUND="yes"
         AC_MSG_RESULT([yes])
     else
-        AC_MSG_ERROR([not found: "$with_nspr/include/$NSPR_INCLUDE_MARKER" and/or "$with_nspr/lib/$NSPR_LIB_MARKER" files don't exist), typo?])
+        AC_MSG_ERROR([not found: "$with_nspr/include/$NSPR_INCLUDE_MARKER" and/or "$with_nspr/lib/$NSPR_LIB_MARKER" files don't exist], [typo?])
     fi
 fi
 if test "z$NSS_FOUND" = "zno" -a "z$with_nss" != "z" -a "z$with_nss" != "zyes" ; then
@@ -1035,7 +1036,7 @@ if test "z$NSS_FOUND" = "zno" -a "z$with_nss" != "z" -a "z$with_nss" != "zyes" ;
         NSS_FOUND="yes"
         AC_MSG_RESULT([yes])
     else
-        AC_MSG_ERROR([not found: "$with_nss/include/$NSS_INCLUDE_MARKER" and/or "$with_nss/lib/$NSS_LIB_MARKER" files don't exist), typo?])
+        AC_MSG_ERROR([not found: "$with_nss/include/$NSS_INCLUDE_MARKER" and/or "$with_nss/lib/$NSS_LIB_MARKER" files don't exist], [typo?])
     fi
 fi
 
@@ -1184,7 +1185,10 @@ if test "z$NSS_FOUND" = "zno" ; then
     OLD_CPPFLAGS=$CPPFLAGS
     CPPFLAGS="$CPPFLAGS $NSPR_CFLAGS $NSS_CFLAGS"
     OLD_LIBS=$LIBS
-    LIBS="$LIBS $NSS_LIBS $NSPR_LIBS $NSS_LIBS_LIST"
+    dnl link NSS libraries before the (possibly user-provided) NSPR ones:
+    dnl this matches the final assembly order (NSS_LIBS gets NSPR_LIBS
+    dnl appended below) which matters for single-pass linkers
+    LIBS="$LIBS $NSS_LIBS $NSS_LIBS_LIST $NSPR_LIBS"
     AC_LINK_IFELSE([
         AC_LANG_PROGRAM([[
             #include <stdio.h>
@@ -1214,21 +1218,6 @@ if test "z$NSS_FOUND" = "zyes" -a "z$NSS_LIB_PATH" != "z" ; then
     fi
     NSS_LIBS="$NSS_LIBS -L$NSS_LIB_PATH $NSS_LIBS_LIST"
 fi
-
-dnl Assemble the pkg-config "Requires" fragments for the installed
-dnl xmlsec1-nss.pc. These are only meaningful when NSPR/NSS were found
-dnl via pkg-config (priority 3), since only then can the consumer's
-dnl pkg-config actually resolve the package names.
-NSPR_PC_REQUIRES=""
-NSS_PC_REQUIRES=""
-if test "z$NSPR_PC_VERSION" != "z" ; then
-    NSPR_PC_REQUIRES="${NSPR_PACKAGE} >= ${NSPR_PC_VERSION}"
-fi
-if test "z$NSS_PC_VERSION" != "z" ; then
-    NSS_PC_REQUIRES="${NSS_PACKAGE} >= ${NSS_PC_VERSION}"
-fi
-AC_SUBST(NSPR_PC_REQUIRES)
-AC_SUBST(NSS_PC_REQUIRES)
 
 dnl Check NSS and NSPR versions
 AC_MSG_CHECKING(for nspr library >= $NSPR_MIN_VERSION)
@@ -1290,7 +1279,9 @@ fi
 AM_CONDITIONAL(XMLSEC_NO_NSS, test "z$XMLSEC_NO_NSS" = "z1")
 AC_SUBST(XMLSEC_NO_NSS)
 AC_SUBST(NSPR_PACKAGE)
+AC_SUBST(NSPR_PC_VERSION)
 AC_SUBST(NSS_PACKAGE)
+AC_SUBST(NSS_PC_VERSION)
 AC_SUBST(NSS_CFLAGS)
 AC_SUBST(NSS_LIBS)
 AC_SUBST(NSS_CRYPTO_LIB)
@@ -1336,7 +1327,7 @@ if test "z$GCRYPT_FOUND" = "zno" -a "z$with_gcrypt" != "z" -a "z$with_gcrypt" !=
         GCRYPT_FOUND="yes"
         AC_MSG_RESULT([yes])
     else
-        AC_MSG_ERROR([not found: "$with_gcrypt/bin/$GCRYPT_CONFIG" tool, or "$with_gcrypt/include/$GCRYPT_INCLUDE_MARKER" and/or "$with_gcrypt/lib/$GCRYPT_LIB_MARKER" files don't exist), typo?])
+        AC_MSG_ERROR([not found: "$with_gcrypt/bin/$GCRYPT_CONFIG" tool, or "$with_gcrypt/include/$GCRYPT_INCLUDE_MARKER" and/or "$with_gcrypt/lib/$GCRYPT_LIB_MARKER" files don't exist], [typo?])
     fi
 fi
 
@@ -1515,7 +1506,7 @@ if test "z$GNUTLS_FOUND" = "zno" -a "z$with_gnutls" != "z" -a "z$with_gnutls" !=
         GNUTLS_FOUND="yes"
         AC_MSG_RESULT([yes])
     else
-        AC_MSG_ERROR([not found: "$with_gnutls/bin/$GNUTLS_CONFIG" tool, or "$with_gnutls/include/$GNUTLS_INCLUDE_MARKER" and/or "$with_gnutls/lib/$GNUTLS_LIB_MARKER" files don't exist), typo?])
+        AC_MSG_ERROR([not found: "$with_gnutls/bin/$GNUTLS_CONFIG" tool, or "$with_gnutls/include/$GNUTLS_INCLUDE_MARKER" and/or "$with_gnutls/lib/$GNUTLS_LIB_MARKER" files don't exist], [typo?])
     fi
 fi
 

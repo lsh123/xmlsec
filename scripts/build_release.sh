@@ -34,13 +34,10 @@ cd "$build_root"
 echo "============== Checking out the module '$git_uri'"
 git clone $git_uri
 cd xmlsec
-if [ x"$rc" != x ]; then
-    echo "============== Switching to release branch '$git_release_branch' for RC build '$rc'"
-    git checkout $git_release_branch
-else
-    echo "============== Switching to 1.2.x branch '$git_1_2_x_branch'"
-    git checkout $git_1_2_x_branch
-fi
+
+echo "============== Switching to 1.2.x branch '$git_1_2_x_branch'"
+git checkout $git_1_2_x_branch
+
 find . -name ".git" | xargs rm -rf
 
 echo "============== Building xmlsec1-$version"
@@ -64,11 +61,15 @@ else
     gpg --output "$rc_sig_file" --detach-sig "$rc_tar_file"
 fi
 
+echo "============== Tagging the release $version in the github"
 if [ x"$rc" = x ]; then
-     echo "============== Tagging the release $version in the github"
      echo "RUN MANUALLY: git tag -a "xmlsec-$git_version_tag" -m 'XMLSec release $version'"
-     echo "RUN MANUALLY: git push --follow-tags"
+     echo "RUN MANUALLY: git tag -a "$git_version_tag" -m 'XMLSec release $version'"
+else
+     echo "RUN MANUALLY: git tag -a "xmlsec-$git_version_tag-$rc" -m 'XMLSec release $version-$rc'"
+     echo "RUN MANUALLY: git tag -a "$git_version_tag-$rc" -m 'XMLSec release $version-$rc'"
 fi
+echo "RUN MANUALLY: git push --follow-tags"
 
 echo "======== Publish release to website:"
 if [ x"$rc" = x ]; then

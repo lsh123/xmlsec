@@ -17,7 +17,7 @@
 libxml2_version="2.15.4"
 libxslt_version="1.1.45"
 openssl_version="4.0.3"
-xmlsec_version="1.3.13-rc1"
+xmlsec_version="1.3.14"
 
 orig_pwd=$(pwd)
 # "$0" may use Windows backslash separators (e.g. "scripts\build_windows.sh");

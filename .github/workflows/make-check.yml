@@ -31,7 +31,7 @@ jobs:
       run: |
           sudo apt update
           sudo apt install automake autoconf libtool libtool-bin libltdl-dev libltdl7
-          sudo apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
+          sudo apt install libxml2-16 libxml2-dev libxslt1.1 libxslt1-dev
           sudo apt install libssl3 libssl-dev libnspr4 libnspr4-dev libnss3 libnss3-dev libnss3-tools libgcrypt20 libgcrypt20-dev libgnutls28-dev
     - uses: actions/checkout@v4
     - name: create-build-dirs
@@ -74,7 +74,7 @@ jobs:
       run: |
           sudo apt update
           sudo apt install automake autoconf libtool libtool-bin libltdl-dev libltdl7
-          sudo apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
+          sudo apt install libxml2-16 libxml2-dev libxslt1.1 libxslt1-dev
           sudo apt install libssl3 libssl-dev libnspr4 libnspr4-dev libnss3 libnss3-dev libnss3-tools libgcrypt20 libgcrypt20-dev libgnutls28-dev
           sudo apt install help2man pandoc doxygen python3
     - uses: actions/checkout@v4
@@ -118,7 +118,7 @@ jobs:
           sudo apt update
           sudo apt install cmake ninja-build clang perl golang wget
           sudo apt install automake autoconf libtool libtool-bin libltdl-dev libltdl7
-          sudo apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
+          sudo apt install libxml2-16 libxml2-dev libxslt1.1 libxslt1-dev
     - name: build aws lc
       run: |
           mkdir ../aws-lc && cd ../aws-lc

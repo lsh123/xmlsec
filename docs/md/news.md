@@ -1,4 +1,8 @@
 # XML Security Library: News
+- **TBD**
+  The [XML Security Library 1.3.14](download.md) release includes the following changes:
+  - TODO
+  - Many other small fixes (see [commit log](https://github.com/lsh123/xmlsec/commits/xmlsec_1_3_14) for more details).
 
 - **October 27, 2026**
   The [XML Security Library 1.3.13](download.md) release includes the following changes:

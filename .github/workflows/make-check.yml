@@ -109,7 +109,7 @@ jobs:
           # default static build
           - config_flags: --enable-static --enable-static-linking
     env:
-      AWS_LC_VERSION: "1.63.0"
+      AWS_LC_VERSION: "5.12.0"
       AWS_LC_SHA256: "7ebf59b8c8e0ca2dd1333676bf525ed738db41b13b8d0e87325251793ab55f6f"
     steps:
     - uses: actions/checkout@v4

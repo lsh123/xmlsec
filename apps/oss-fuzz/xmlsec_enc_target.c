@@ -104,9 +104,20 @@ static int load_sym_keys(void) {
     int i;
 
     for (i = 0; i < G_SYM_NKEYS; ++i) {
-        xmlSecKeyDataId id = g_sym_keys[i].is_des ?
-            xmlSecOpenSSLKeyDataDesId :
-            xmlSecOpenSSLKeyDataAesId;
+        xmlSecKeyDataId id = xmlSecKeyDataIdUnknown;
+        if (g_sym_keys[i].is_des == 1) {
+#ifndef XMLSEC_NO_DES
+            id = xmlSecOpenSSLKeyDataDesId;
+#endif /* XMLSEC_NO_DES */
+        } else {
+#ifndef XMLSEC_NO_AES
+            id = xmlSecOpenSSLKeyDataAesId;
+#endif /* XMLSEC_NO_AES */
+        }
+        if (id == xmlSecKeyDataIdUnknown) {
+            /* skip test if algorithm is not supported */
+            continue;
+        }
         xmlSecKeyPtr key = xmlSecKeyReadMemory(id,
             (const xmlSecByte*)g_sym_keys[i].material,
             g_sym_keys[i].size);

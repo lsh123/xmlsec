@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PaymentInfo xmlns="http://example.org/paymentv2">
+  <Name>John Smith</Name>
+  <CreditCard Currency="USD" Limit="5,000"><EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Id="ED" Type="http://www.w3.org/2001/04/xmlenc#Content">
+    <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes256-cbc"/>
+    <ds:KeyInfo>
+      <EncryptedKey Id="EK">
+        <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#kw-aes192"/>
+        <ds:KeyInfo>
+          <ds:KeyName>test-aes192</ds:KeyName>
+        </ds:KeyInfo>
+        <CipherData>
+          <CipherValue>KAwTpOQVPBGShJH75YQK1IyVcwe+d9xJzuQC+F6+WtFqrGITNkbBzQ==</CipherValue>
+        </CipherData>
+        <ReferenceList>
+          <DataReference URI="#ED"/>
+        </ReferenceList>
+      </EncryptedKey>
+    </ds:KeyInfo>
+    <CipherData>
+      <CipherValue>w99jz86GGpTp1utRc6dzYBk4WgoCQ8N+FYRBOKPaWUXbAOVCYu1nVbnhtXj2CVAl
+SgYjUD2DRA5l+iacVMIOl8AtsKOp41bsGZsZ9K0RLw6SKzf69QyvGs0L7fEUDCx2
+ajlGf1d6bSXkdgGo75MXZWPjyamFy9u9r8enRBQi0x60HulauMKjviAIlwZOnBH4</CipherValue>
+    </CipherData>
+  </EncryptedData></CreditCard>
+</PaymentInfo>

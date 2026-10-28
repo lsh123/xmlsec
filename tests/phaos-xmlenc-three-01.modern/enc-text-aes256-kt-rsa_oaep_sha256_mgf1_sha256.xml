@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PaymentInfo xmlns="http://example.org/paymentv2">
+  <Name>John Smith</Name>
+  <CreditCard Currency="USD" Limit="5,000">
+    <Number><EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:xenc11="http://www.w3.org/2009/xmlenc11#" Id="ED" Type="http://www.w3.org/2001/04/xmlenc#Content">
+    <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes256-cbc"/>
+    <ds:KeyInfo>
+      <EncryptedKey Id="EK">
+        <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p">
+          <ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          <xenc11:MGF Algorithm="http://www.w3.org/2009/xmlenc11#mgf1sha256"/>
+        </EncryptionMethod>
+        <ds:KeyInfo>
+          <ds:KeyName>TestKeyName-rsa-4096</ds:KeyName>
+        </ds:KeyInfo>
+        <CipherData>
+          <CipherValue>aFt+bpSRat16PBeClo4+eRzZ6TmqX8eY9Ig7OyOX/GF6Xufk+yfbKdv+i6Ip52OK
+qvrPiiv0TpEoqsJBKSGXDsSYrfqaSAlIg4yiI8bI3j1rEb23VHJAPaGgmgJlqvgU
+TxqNn9zn/B8Vn+j9fs5kIj1kPi1hUq734Dt4dQLfAGtbZrmuVM8S5Yl+obEMizFN
+71Qhid6uk3TB6wnif2H5oKQnW1tILWWK6TeLPcku0UiuUpkbOXao9nqSJYOVD/zr
+uBVpuQ+HUqfaCwbQrP36pWu7nxdc+nxjSwWaAiivD3Q1AZm7eykclGSAqLQzqtGb
+LXCk4VKgWtxF56hY/8Fud2OKsbETsLdBssGcC0CRHQc90HL2egNonm661irqvBsm
+yhhpris0tLKNAf4xNBRt5Pm5n//365dRNcIasUC2UyJXrDnW8TJenpYe5pfxpvLJ
+ehF0r5WeUHQ9L/8W/1U2Ai6YSWfrEOUoNqtfX3WyiTdFNammoge6vskZBqPXiwoR
+/rGTNct6eeHF4Tzq8utreLyl8Jf0hhsFj+E9v+ypcKMpNruN6zTuAkbfxpmEA+/X
+nKchzjJjYOB+Cw4rKQFH51Kc4AAOxTii8DhQQc0ZYTjXhuBU2yL1bO35rWz8QhHf
+srVogAFfS51UstwoHjfCFvIQtCXZn12qaOCgy6kbdRo=</CipherValue>
+        </CipherData>
+        <ReferenceList>
+          <DataReference URI="#ED"/>
+        </ReferenceList>
+      </EncryptedKey>
+    </ds:KeyInfo>
+    <CipherData>
+      <CipherValue>5j+uD65UHhaIcyHOFwABaALNYe9XIDkqs3NsfN403GUqBuWkgVwLlSpZjPUD8JmF</CipherValue>
+    </CipherData>
+  </EncryptedData></Number>
+    <Issuer>Bank of the Internet</Issuer>
+    <Expiration Time="04/02"/>
+  </CreditCard>
+</PaymentInfo>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PaymentInfo xmlns="http://example.org/paymentv2">
+  <Name>John Smith</Name>
+  <EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:xenc11="http://www.w3.org/2009/xmlenc11#" Id="ED" Type="http://www.w3.org/2001/04/xmlenc#Element">
+    <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes256-cbc"/>
+    <ds:KeyInfo>
+      <EncryptedKey Id="EK">
+        <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p">
+          <ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          <xenc11:MGF Algorithm="http://www.w3.org/2009/xmlenc11#mgf1sha512"/>
+        </EncryptionMethod>
+        <ds:KeyInfo>
+          <ds:KeyName>TestKeyName-rsa-4096</ds:KeyName>
+        </ds:KeyInfo>
+        <CipherData>
+          <CipherValue>SiFVfrQZjj24IYKthdTQ48ludnP5GIOQV8tnJiuoe5iQCTlJ5k1yarKb/LIb4Ola
+dSEtmktEzLLAYZxe2zzAJS6zsot8BBrJe9vPyAXh/BXx4QQljTjUAU61zXK+LBeE
+yWyoALqOd4dvhIJi5VkGlVJZI2TSGWswlArfkEJN0LhTic41/8ZmZr58SrPEqI0D
+CpE8eJgrUG6uMTqJGg7+hzcWycj/xqWn8vwarCUfTnFD5R5TC/cESHYtSRi1IP+e
++NBOqctN3H+oFZdr/z6cZ4VjOcNRsrgr57pGcuomUZO/K8WVcSDsxG8Mv+cUAp5h
+JFeAzF66VY1yUfCcRAxyCbYYVaoGamnDnpn6BS/olfHkKq/Bu7HAxvRqPLqCT1Vh
+NPiW+y9IYU39q5PpxT28xBxfqMCf19dje23fWKR5isIwnRLFyPnDgFqbdu0wUJ6C
+MzdRCOCr92Sp+9HXIj20V4nFzxECYmOSvrDMsLcQoRfBFFNSkfTse1G12uibP5B+
+fMNXPlUuwoeep+3lvv6QcIq/xKccdqkV5pdhWvtuLHYm/bHim300suP4ETTfD+5F
+q6qNqkGyC6ihGc6rsQk6suMweW1QddGaizia5F2u4NLSHsGIByfXDLqOY2oSePcn
+nj1Nbp0no+k3+qlQxrNNnDkfzOMXK7U1jEMOYmGpGnc=</CipherValue>
+        </CipherData>
+        <ReferenceList>
+          <DataReference URI="#ED"/>
+        </ReferenceList>
+      </EncryptedKey>
+    </ds:KeyInfo>
+    <CipherData>
+      <CipherValue>VRCqpElMLtOC9gSOcmn8lrRK/6o7t3MNdSNAf3li+RdxED7rYapMxyYeIrE+0GIv
+pth+wGrOxsx15TYNe/bZfEiXypk2l/ZrQdNlJDYyqLQq9Q8GQZCNakNjWYMDVOTF
+ENlUbmJXT9kdiB1Or2cCTVz8ithijdmEPKafeOxNqESd89Rvrw8ef4n1Kqrn2RXN
+PHS8ZlosTNDsQkptte/fOfTkqJhEKiN/G1MqGa2Y5D38Tp0OetB1Ab6wQiC4BAlg</CipherValue>
+    </CipherData>
+  </EncryptedData>
+</PaymentInfo>

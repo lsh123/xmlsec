@@ -2042,220 +2042,431 @@ execEncTest $res_success \
 
 ##########################################################################
 #
-# 01-phaos-xmlenc-3
+# phaos-xmlenc-three-01
 #
 ##########################################################################
 
 execEncTest $res_success \
     "" \
-    "01-phaos-xmlenc-3/enc-element-3des-kt-rsa1_5" \
+    "phaos-xmlenc-three-01/enc-element-3des-kt-rsa1_5" \
     "tripledes-cbc rsa-1_5" \
     "" \
-    "$priv_key_option:my-rsa-key $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret" \
-    "--session-key des-192 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/01-phaos-xmlenc-3/enc-element-3des-kt-rsa1_5.data --node-name http://example.org/paymentv2:CreditCard" \
-    "$priv_key_option:my-rsa-key $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret"
+    "$priv_key_option:my-rsa-key $topfolder/phaos-xmlenc-three-01/rsa-priv-key.$priv_key_format --pwd secret" \
+    "--session-key des-192 --keys-file $topfolder/phaos-xmlenc-three-01/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01/enc-element-3des-kt-rsa1_5.data --node-name http://example.org/paymentv2:CreditCard" \
+    "$priv_key_option:my-rsa-key $topfolder/phaos-xmlenc-three-01/rsa-priv-key.$priv_key_format --pwd secret"
 
 if [ "z$xmlsec_feature_rsa_oaep_sha1" = "zyes" ] ; then
     execEncTest $res_success \
         "" \
-        "01-phaos-xmlenc-3/enc-element-3des-kt-rsa_oaep_sha1" \
+        "phaos-xmlenc-three-01/enc-element-3des-kt-rsa_oaep_sha1" \
         "tripledes-cbc rsa-oaep-mgf1p sha1 sha1" \
         "" \
-        "$priv_key_option:my-rsa-key $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret" \
-        "--session-key des-192 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/01-phaos-xmlenc-3/enc-element-3des-kt-rsa_oaep_sha1.data --node-name http://example.org/paymentv2:CreditCard" \
-        "$priv_key_option:my-rsa-key $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret"
+        "$priv_key_option:my-rsa-key $topfolder/phaos-xmlenc-three-01/rsa-priv-key.$priv_key_format --pwd secret" \
+        "--session-key des-192 --keys-file $topfolder/phaos-xmlenc-three-01/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01/enc-element-3des-kt-rsa_oaep_sha1.data --node-name http://example.org/paymentv2:CreditCard" \
+        "$priv_key_option:my-rsa-key $topfolder/phaos-xmlenc-three-01/rsa-priv-key.$priv_key_format --pwd secret"
 fi
 
 if [ "z$xmlsec_feature_rsa_oaep_sha1" = "zyes" -a "z$xmlsec_feature_rsa_oaep_different_digest_and_mgf1" = "zyes" ] ; then
     execEncTest $res_success \
         "" \
-        "01-phaos-xmlenc-3/enc-element-3des-kt-rsa_oaep_sha256" \
+        "phaos-xmlenc-three-01/enc-element-3des-kt-rsa_oaep_sha256" \
         "tripledes-cbc rsa-oaep-mgf1p sha256 sha1" \
         "" \
-        "$priv_key_option:my-rsa-key $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret" \
-        "--session-key des-192 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/01-phaos-xmlenc-3/enc-element-3des-kt-rsa_oaep_sha256.data --node-name http://example.org/paymentv2:CreditCard" \
-        "$priv_key_option:my-rsa-key $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret"
+        "$priv_key_option:my-rsa-key $topfolder/phaos-xmlenc-three-01/rsa-priv-key.$priv_key_format --pwd secret" \
+        "--session-key des-192 --keys-file $topfolder/phaos-xmlenc-three-01/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01/enc-element-3des-kt-rsa_oaep_sha256.data --node-name http://example.org/paymentv2:CreditCard" \
+        "$priv_key_option:my-rsa-key $topfolder/phaos-xmlenc-three-01/rsa-priv-key.$priv_key_format --pwd secret"
 
     execEncTest $res_success \
         "" \
-        "01-phaos-xmlenc-3/enc-element-3des-kt-rsa_oaep_sha512" \
+        "phaos-xmlenc-three-01/enc-element-3des-kt-rsa_oaep_sha512" \
         "tripledes-cbc rsa-oaep-mgf1p sha512 sha1" \
         "" \
-        "$priv_key_option:my-rsa-key $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret" \
-        "--session-key des-192 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/01-phaos-xmlenc-3/enc-element-3des-kt-rsa_oaep_sha512.data --node-name http://example.org/paymentv2:CreditCard" \
-        "$priv_key_option:my-rsa-key $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret"
+        "$priv_key_option:my-rsa-key $topfolder/phaos-xmlenc-three-01/rsa-priv-key.$priv_key_format --pwd secret" \
+        "--session-key des-192 --keys-file $topfolder/phaos-xmlenc-three-01/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01/enc-element-3des-kt-rsa_oaep_sha512.data --node-name http://example.org/paymentv2:CreditCard" \
+        "$priv_key_option:my-rsa-key $topfolder/phaos-xmlenc-three-01/rsa-priv-key.$priv_key_format --pwd secret"
 fi
 
 execEncTest $res_success \
     "" \
-    "01-phaos-xmlenc-3/enc-element-aes128-kt-rsa1_5" \
+    "phaos-xmlenc-three-01/enc-element-aes128-kt-rsa1_5" \
     "aes128-cbc rsa-1_5" \
     "" \
-    "$priv_key_option:my-rsa-key $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret" \
-    "--session-key aes-128 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/01-phaos-xmlenc-3/enc-element-aes128-kt-rsa1_5.data --node-name http://example.org/paymentv2:CreditCard" \
-    "$priv_key_option:my-rsa-key $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret"
+    "$priv_key_option:my-rsa-key $topfolder/phaos-xmlenc-three-01/rsa-priv-key.$priv_key_format --pwd secret" \
+    "--session-key aes-128 --keys-file $topfolder/phaos-xmlenc-three-01/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01/enc-element-aes128-kt-rsa1_5.data --node-name http://example.org/paymentv2:CreditCard" \
+    "$priv_key_option:my-rsa-key $topfolder/phaos-xmlenc-three-01/rsa-priv-key.$priv_key_format --pwd secret"
 
 if [ "z$xmlsec_feature_rsa_oaep_sha1" = "zyes" ] ; then
     execEncTest $res_success \
         "" \
-        "01-phaos-xmlenc-3/enc-element-aes128-kt-rsa_oaep_sha1" \
+        "phaos-xmlenc-three-01/enc-element-aes128-kt-rsa_oaep_sha1" \
         "aes128-cbc rsa-oaep-mgf1p sha1 sha1" \
         "" \
-        "$priv_key_option:my-rsa-key $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret" \
-        "--session-key aes-128 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/01-phaos-xmlenc-3/enc-element-aes128-kt-rsa_oaep_sha1.data --node-name http://example.org/paymentv2:CreditCard" \
-        "$priv_key_option:my-rsa-key $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret"
+        "$priv_key_option:my-rsa-key $topfolder/phaos-xmlenc-three-01/rsa-priv-key.$priv_key_format --pwd secret" \
+        "--session-key aes-128 --keys-file $topfolder/phaos-xmlenc-three-01/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01/enc-element-aes128-kt-rsa_oaep_sha1.data --node-name http://example.org/paymentv2:CreditCard" \
+        "$priv_key_option:my-rsa-key $topfolder/phaos-xmlenc-three-01/rsa-priv-key.$priv_key_format --pwd secret"
 
     execEncTest $res_success \
         "" \
-        "01-phaos-xmlenc-3/enc-element-aes192-kt-rsa_oaep_sha1" \
+        "phaos-xmlenc-three-01/enc-element-aes192-kt-rsa_oaep_sha1" \
         "aes192-cbc rsa-oaep-mgf1p sha1 sha1" \
         "" \
-        "$priv_key_option:my-rsa-key $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret" \
-        "--session-key aes-192 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/01-phaos-xmlenc-3/enc-element-aes192-kt-rsa_oaep_sha1.data --node-name http://example.org/paymentv2:CreditCard" \
-        "$priv_key_option:my-rsa-key $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret"
+        "$priv_key_option:my-rsa-key $topfolder/phaos-xmlenc-three-01/rsa-priv-key.$priv_key_format --pwd secret" \
+        "--session-key aes-192 --keys-file $topfolder/phaos-xmlenc-three-01/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01/enc-element-aes192-kt-rsa_oaep_sha1.data --node-name http://example.org/paymentv2:CreditCard" \
+        "$priv_key_option:my-rsa-key $topfolder/phaos-xmlenc-three-01/rsa-priv-key.$priv_key_format --pwd secret"
 fi
 
 execEncTest $res_success \
     "" \
-    "01-phaos-xmlenc-3/enc-text-aes192-kt-rsa1_5" \
+    "phaos-xmlenc-three-01/enc-text-aes192-kt-rsa1_5" \
     "aes192-cbc rsa-1_5" \
     "" \
-    "$priv_key_option:my-rsa-key $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret" \
-    "--session-key aes-192 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/01-phaos-xmlenc-3/enc-text-aes192-kt-rsa1_5.data --node-name http://example.org/paymentv2:CreditCard" \
-    "$priv_key_option:my-rsa-key $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret"
+    "$priv_key_option:my-rsa-key $topfolder/phaos-xmlenc-three-01/rsa-priv-key.$priv_key_format --pwd secret" \
+    "--session-key aes-192 --keys-file $topfolder/phaos-xmlenc-three-01/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01/enc-text-aes192-kt-rsa1_5.data --node-name http://example.org/paymentv2:CreditCard" \
+    "$priv_key_option:my-rsa-key $topfolder/phaos-xmlenc-three-01/rsa-priv-key.$priv_key_format --pwd secret"
 
 execEncTest $res_success \
     "" \
-    "01-phaos-xmlenc-3/enc-content-aes256-kt-rsa1_5" \
+    "phaos-xmlenc-three-01/enc-content-aes256-kt-rsa1_5" \
     "aes256-cbc rsa-1_5" \
     "" \
-    "$priv_key_option:my-rsa-key $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret" \
-    "--session-key aes-256 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/01-phaos-xmlenc-3/enc-content-aes256-kt-rsa1_5.data --node-name http://example.org/paymentv2:CreditCard" \
-    "$priv_key_option:my-rsa-key $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret"
+    "$priv_key_option:my-rsa-key $topfolder/phaos-xmlenc-three-01/rsa-priv-key.$priv_key_format --pwd secret" \
+    "--session-key aes-256 --keys-file $topfolder/phaos-xmlenc-three-01/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01/enc-content-aes256-kt-rsa1_5.data --node-name http://example.org/paymentv2:CreditCard" \
+    "$priv_key_option:my-rsa-key $topfolder/phaos-xmlenc-three-01/rsa-priv-key.$priv_key_format --pwd secret"
 
 
 extra_message="Negative test: missing key"
 execEncTest $res_fail \
     "" \
-    "01-phaos-xmlenc-3/enc-content-aes256-kt-rsa1_5" \
+    "phaos-xmlenc-three-01/enc-content-aes256-kt-rsa1_5" \
     "" \
     "" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-retrieval-method-uris empty"
+    "--keys-file $topfolder/phaos-xmlenc-three-01/keys.xml --enabled-retrieval-method-uris empty"
 
 if [ "z$xmlsec_feature_rsa_oaep_sha1" = "zyes" ] ; then
     execEncTest $res_success \
         "" \
-        "01-phaos-xmlenc-3/enc-text-aes256-kt-rsa_oaep_sha1" \
+        "phaos-xmlenc-three-01/enc-text-aes256-kt-rsa_oaep_sha1" \
         "aes256-cbc rsa-oaep-mgf1p sha1  sha1" \
         "" \
-        "$priv_key_option:my-rsa-key $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret" \
-        "--session-key aes-256 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/01-phaos-xmlenc-3/enc-text-aes256-kt-rsa_oaep_sha1.data --node-name http://example.org/paymentv2:CreditCard" \
-        "$priv_key_option:my-rsa-key $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret"
+        "$priv_key_option:my-rsa-key $topfolder/phaos-xmlenc-three-01/rsa-priv-key.$priv_key_format --pwd secret" \
+        "--session-key aes-256 --keys-file $topfolder/phaos-xmlenc-three-01/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01/enc-text-aes256-kt-rsa_oaep_sha1.data --node-name http://example.org/paymentv2:CreditCard" \
+        "$priv_key_option:my-rsa-key $topfolder/phaos-xmlenc-three-01/rsa-priv-key.$priv_key_format --pwd secret"
 fi
 
 execEncTest $res_success \
     "" \
-    "01-phaos-xmlenc-3/enc-element-3des-kw-3des" \
+    "phaos-xmlenc-three-01/enc-element-3des-kw-3des" \
     "tripledes-cbc kw-tripledes" \
     "" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml" \
-    "--session-key des-192 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/01-phaos-xmlenc-3/enc-element-3des-kw-3des.data --node-name http://example.org/paymentv2:CreditCard" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml"
+    "--keys-file $topfolder/phaos-xmlenc-three-01/keys.xml" \
+    "--session-key des-192 --keys-file $topfolder/phaos-xmlenc-three-01/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01/enc-element-3des-kw-3des.data --node-name http://example.org/paymentv2:CreditCard" \
+    "--keys-file $topfolder/phaos-xmlenc-three-01/keys.xml"
 
 execEncTest $res_success \
     "" \
-    "01-phaos-xmlenc-3/enc-content-aes128-kw-3des" \
+    "phaos-xmlenc-three-01/enc-content-aes128-kw-3des" \
     "aes128-cbc kw-tripledes" \
     "" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml" \
-    "--session-key aes-128 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/01-phaos-xmlenc-3/enc-content-aes128-kw-3des.data --node-name http://example.org/paymentv2:CreditCard" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml"
+    "--keys-file $topfolder/phaos-xmlenc-three-01/keys.xml" \
+    "--session-key aes-128 --keys-file $topfolder/phaos-xmlenc-three-01/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01/enc-content-aes128-kw-3des.data --node-name http://example.org/paymentv2:CreditCard" \
+    "--keys-file $topfolder/phaos-xmlenc-three-01/keys.xml"
 
 execEncTest $res_success \
     "" \
-    "01-phaos-xmlenc-3/enc-element-aes128-kw-aes128" \
+    "phaos-xmlenc-three-01/enc-element-aes128-kw-aes128" \
     "aes128-cbc kw-aes128" \
     "" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml" \
-    "--session-key aes-128 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/01-phaos-xmlenc-3/enc-element-aes128-kw-aes128.data --node-name http://example.org/paymentv2:CreditCard" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml"
+    "--keys-file $topfolder/phaos-xmlenc-three-01/keys.xml" \
+    "--session-key aes-128 --keys-file $topfolder/phaos-xmlenc-three-01/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01/enc-element-aes128-kw-aes128.data --node-name http://example.org/paymentv2:CreditCard" \
+    "--keys-file $topfolder/phaos-xmlenc-three-01/keys.xml"
 
 execEncTest $res_success \
     "" \
-    "01-phaos-xmlenc-3/enc-element-aes128-kw-aes256" \
+    "phaos-xmlenc-three-01/enc-element-aes128-kw-aes256" \
     "aes128-cbc kw-aes256" \
     "" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml" \
-    "--session-key aes-128 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/01-phaos-xmlenc-3/enc-element-aes128-kw-aes256.data --node-name http://example.org/paymentv2:CreditCard" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml"
+    "--keys-file $topfolder/phaos-xmlenc-three-01/keys.xml" \
+    "--session-key aes-128 --keys-file $topfolder/phaos-xmlenc-three-01/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01/enc-element-aes128-kw-aes256.data --node-name http://example.org/paymentv2:CreditCard" \
+    "--keys-file $topfolder/phaos-xmlenc-three-01/keys.xml"
 
 execEncTest $res_success \
     "" \
-    "01-phaos-xmlenc-3/enc-content-3des-kw-aes192" \
+    "phaos-xmlenc-three-01/enc-content-3des-kw-aes192" \
     "tripledes-cbc kw-aes192" \
     "" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml" \
-    "--session-key des-192 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/01-phaos-xmlenc-3/enc-content-3des-kw-aes192.data --node-name http://example.org/paymentv2:CreditCard" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml"
+    "--keys-file $topfolder/phaos-xmlenc-three-01/keys.xml" \
+    "--session-key des-192 --keys-file $topfolder/phaos-xmlenc-three-01/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01/enc-content-3des-kw-aes192.data --node-name http://example.org/paymentv2:CreditCard" \
+    "--keys-file $topfolder/phaos-xmlenc-three-01/keys.xml"
 
 execEncTest $res_success \
     "" \
-    "01-phaos-xmlenc-3/enc-content-aes192-kw-aes256" \
+    "phaos-xmlenc-three-01/enc-content-aes192-kw-aes256" \
     "aes192-cbc kw-aes256" \
     "" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml" \
-    "--session-key aes-192 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/01-phaos-xmlenc-3/enc-content-aes192-kw-aes256.data --node-name http://example.org/paymentv2:CreditCard" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml"
+    "--keys-file $topfolder/phaos-xmlenc-three-01/keys.xml" \
+    "--session-key aes-192 --keys-file $topfolder/phaos-xmlenc-three-01/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01/enc-content-aes192-kw-aes256.data --node-name http://example.org/paymentv2:CreditCard" \
+    "--keys-file $topfolder/phaos-xmlenc-three-01/keys.xml"
 
 execEncTest $res_success \
     "" \
-    "01-phaos-xmlenc-3/enc-element-aes192-kw-aes192" \
+    "phaos-xmlenc-three-01/enc-element-aes192-kw-aes192" \
     "aes192-cbc kw-aes192" \
     "" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml" \
-    "--session-key aes-192 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/01-phaos-xmlenc-3/enc-element-aes192-kw-aes192.data --node-name http://example.org/paymentv2:CreditCard" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml"
+    "--keys-file $topfolder/phaos-xmlenc-three-01/keys.xml" \
+    "--session-key aes-192 --keys-file $topfolder/phaos-xmlenc-three-01/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01/enc-element-aes192-kw-aes192.data --node-name http://example.org/paymentv2:CreditCard" \
+    "--keys-file $topfolder/phaos-xmlenc-three-01/keys.xml"
 
 execEncTest $res_success \
     "" \
-    "01-phaos-xmlenc-3/enc-element-aes256-kw-aes256" \
+    "phaos-xmlenc-three-01/enc-element-aes256-kw-aes256" \
     "aes256-cbc kw-aes256" \
     "" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml" \
-    "--session-key aes-256 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/01-phaos-xmlenc-3/enc-element-aes256-kw-aes256.data --node-name http://example.org/paymentv2:CreditCard" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml"
+    "--keys-file $topfolder/phaos-xmlenc-three-01/keys.xml" \
+    "--session-key aes-256 --keys-file $topfolder/phaos-xmlenc-three-01/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01/enc-element-aes256-kw-aes256.data --node-name http://example.org/paymentv2:CreditCard" \
+    "--keys-file $topfolder/phaos-xmlenc-three-01/keys.xml"
 
 execEncTest $res_success \
     "" \
-    "01-phaos-xmlenc-3/enc-text-3des-kw-aes256" \
+    "phaos-xmlenc-three-01/enc-text-3des-kw-aes256" \
     "tripledes-cbc kw-aes256" \
     "" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml" \
-    "--session-key des-192 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/01-phaos-xmlenc-3/enc-text-3des-kw-aes256.data --node-name http://example.org/paymentv2:CreditCard" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml"
+    "--keys-file $topfolder/phaos-xmlenc-three-01/keys.xml" \
+    "--session-key des-192 --keys-file $topfolder/phaos-xmlenc-three-01/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01/enc-text-3des-kw-aes256.data --node-name http://example.org/paymentv2:CreditCard" \
+    "--keys-file $topfolder/phaos-xmlenc-three-01/keys.xml"
 
 execEncTest $res_success \
     "" \
-    "01-phaos-xmlenc-3/enc-text-aes128-kw-aes192" \
+    "phaos-xmlenc-three-01/enc-text-aes128-kw-aes192" \
     "aes128-cbc kw-aes192" \
     "" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml" \
-    "--session-key aes-128 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/01-phaos-xmlenc-3/enc-text-aes128-kw-aes192.data --node-name http://example.org/paymentv2:CreditCard" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml"
+    "--keys-file $topfolder/phaos-xmlenc-three-01/keys.xml" \
+    "--session-key aes-128 --keys-file $topfolder/phaos-xmlenc-three-01/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01/enc-text-aes128-kw-aes192.data --node-name http://example.org/paymentv2:CreditCard" \
+    "--keys-file $topfolder/phaos-xmlenc-three-01/keys.xml"
 
 extra_message="Negative test: bad alg enc element"
 execEncTest $res_fail \
     "" \
-    "01-phaos-xmlenc-3/bad-alg-enc-element-aes128-kw-3des" \
+    "phaos-xmlenc-three-01/bad-alg-enc-element-aes128-kw-3des" \
     "" \
     "" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml"
+    "--keys-file $topfolder/phaos-xmlenc-three-01/keys.xml"
 
 
-#01-phaos-xmlenc-3/enc-element-3des-ka-dh.xml
-#01-phaos-xmlenc-3/enc-element-aes128-ka-dh.xml
-#01-phaos-xmlenc-3/enc-element-aes192-ka-dh.xml
-#01-phaos-xmlenc-3/enc-element-aes256-ka-dh.xml
+#phaos-xmlenc-three-01/enc-element-3des-ka-dh.xml
+#phaos-xmlenc-three-01/enc-element-aes128-ka-dh.xml
+#phaos-xmlenc-three-01/enc-element-aes192-ka-dh.xml
+#phaos-xmlenc-three-01/enc-element-aes256-ka-dh.xml
+
+
+##########################################################################
+#
+# phaos-xmlenc-three-01.modern
+#
+##########################################################################
+
+if [ "z$xmlsec_feature_rsa_oaep_sha256" = "zyes" ] ; then
+    execEncTest $res_success \
+        "" \
+        "phaos-xmlenc-three-01.modern/enc-element-aes256-kt-rsa_oaep_sha256_mgf1_sha256" \
+        "aes256-cbc rsa-oaep-mgf1p sha256 sha256" \
+        "" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-pubkey$rsa_pub_key_suffix.$pub_key_format --session-key aes-256 --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01.modern/enc-element-aes256-kt-rsa_oaep_sha256_mgf1_sha256.data --node-name http://example.org/paymentv2:CreditCard" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123"
+
+    execEncTest $res_success \
+        "" \
+        "phaos-xmlenc-three-01.modern/enc-element-aes128-kt-rsa_oaep_sha256_mgf1_sha256" \
+        "aes128-cbc rsa-oaep-mgf1p sha256 sha256" \
+        "" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-pubkey$rsa_pub_key_suffix.$pub_key_format --session-key aes-128 --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01.modern/enc-element-aes128-kt-rsa_oaep_sha256_mgf1_sha256.data --node-name http://example.org/paymentv2:CreditCard" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123"
+
+    execEncTest $res_success \
+        "" \
+        "phaos-xmlenc-three-01.modern/enc-element-aes192-kt-rsa_oaep_sha256_mgf1_sha256" \
+        "aes192-cbc rsa-oaep-mgf1p sha256 sha256" \
+        "" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-pubkey$rsa_pub_key_suffix.$pub_key_format --session-key aes-192 --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01.modern/enc-element-aes192-kt-rsa_oaep_sha256_mgf1_sha256.data --node-name http://example.org/paymentv2:CreditCard" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123"
+
+    execEncTest $res_success \
+        "" \
+        "phaos-xmlenc-three-01.modern/enc-text-aes192-kt-rsa_oaep_sha256_mgf1_sha256" \
+        "aes192-cbc rsa-oaep-mgf1p sha256 sha256" \
+        "" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-pubkey$rsa_pub_key_suffix.$pub_key_format --session-key aes-192 --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01.modern/enc-text-aes192-kt-rsa_oaep_sha256_mgf1_sha256.data --node-name http://example.org/paymentv2:Number" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123"
+
+    execEncTest $res_success \
+        "" \
+        "phaos-xmlenc-three-01.modern/enc-content-aes256-kt-rsa_oaep_sha256_mgf1_sha256" \
+        "aes256-cbc rsa-oaep-mgf1p sha256 sha256" \
+        "" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-pubkey$rsa_pub_key_suffix.$pub_key_format --session-key aes-256 --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01.modern/enc-content-aes256-kt-rsa_oaep_sha256_mgf1_sha256.data --node-name http://example.org/paymentv2:CreditCard" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123"
+
+    execEncTest $res_success \
+        "" \
+        "phaos-xmlenc-three-01.modern/enc-text-aes256-kt-rsa_oaep_sha256_mgf1_sha256" \
+        "aes256-cbc rsa-oaep-mgf1p sha256 sha256" \
+        "" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-pubkey$rsa_pub_key_suffix.$pub_key_format --session-key aes-256 --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01.modern/enc-text-aes256-kt-rsa_oaep_sha256_mgf1_sha256.data --node-name http://example.org/paymentv2:Number" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123"
+fi
+
+if [ "z$xmlsec_feature_rsa_oaep_sha384" = "zyes" ] ; then
+    execEncTest $res_success \
+        "" \
+        "phaos-xmlenc-three-01.modern/enc-element-aes256-kt-rsa_oaep_sha384_mgf1_sha384" \
+        "aes256-cbc rsa-oaep-mgf1p sha384 sha384" \
+        "" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-pubkey$rsa_pub_key_suffix.$pub_key_format --session-key aes-256 --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01.modern/enc-element-aes256-kt-rsa_oaep_sha384_mgf1_sha384.data --node-name http://example.org/paymentv2:CreditCard" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123"
+
+    execEncTest $res_success \
+        "" \
+        "phaos-xmlenc-three-01.modern/enc-element-aes128-kt-rsa_oaep_sha384_mgf1_sha384" \
+        "aes128-cbc rsa-oaep-mgf1p sha384 sha384" \
+        "" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-pubkey$rsa_pub_key_suffix.$pub_key_format --session-key aes-128 --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01.modern/enc-element-aes128-kt-rsa_oaep_sha384_mgf1_sha384.data --node-name http://example.org/paymentv2:CreditCard" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123"
+fi
+
+if [ "z$xmlsec_feature_rsa_oaep_sha256" = "zyes" -a "z$xmlsec_feature_rsa_oaep_different_digest_and_mgf1" = "zyes" ] ; then
+    execEncTest $res_success \
+        "" \
+        "phaos-xmlenc-three-01.modern/enc-element-aes256-kt-rsa_oaep_sha256_mgf1_sha512" \
+        "aes256-cbc rsa-oaep-mgf1p sha256 sha512" \
+        "" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-pubkey$rsa_pub_key_suffix.$pub_key_format --session-key aes-256 --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01.modern/enc-element-aes256-kt-rsa_oaep_sha256_mgf1_sha512.data --node-name http://example.org/paymentv2:CreditCard" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123"
+fi
+
+if [ "z$xmlsec_feature_rsa_oaep_sha512" = "zyes" -a "z$xmlsec_feature_rsa_oaep_different_digest_and_mgf1" = "zyes" ] ; then
+    execEncTest $res_success \
+        "" \
+        "phaos-xmlenc-three-01.modern/enc-element-aes256-kt-rsa_oaep_sha512_mgf1_sha384" \
+        "aes256-cbc rsa-oaep-mgf1p sha512 sha384" \
+        "" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-pubkey$rsa_pub_key_suffix.$pub_key_format --session-key aes-256 --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01.modern/enc-element-aes256-kt-rsa_oaep_sha512_mgf1_sha384.data --node-name http://example.org/paymentv2:CreditCard" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123"
+fi
+
+execEncTest $res_success \
+    "" \
+    "phaos-xmlenc-three-01.modern/enc-element-aes256-kw-aes192" \
+    "aes256-cbc kw-aes192" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml" \
+    "--session-key aes-256 --keys-file $topfolder/keys/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01.modern/enc-element-aes256-kw-aes192.data --node-name http://example.org/paymentv2:CreditCard" \
+    "--keys-file $topfolder/keys/keys.xml"
+
+execEncTest $res_success \
+    "" \
+    "phaos-xmlenc-three-01.modern/enc-content-aes128-kw-aes192" \
+    "aes128-cbc kw-aes192" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml" \
+    "--session-key aes-128 --keys-file $topfolder/keys/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01.modern/enc-content-aes128-kw-aes192.data --node-name http://example.org/paymentv2:CreditCard" \
+    "--keys-file $topfolder/keys/keys.xml"
+
+execEncTest $res_success \
+    "" \
+    "phaos-xmlenc-three-01.modern/enc-element-aes128-kw-aes128" \
+    "aes128-cbc kw-aes128" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml" \
+    "--session-key aes-128 --keys-file $topfolder/keys/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01.modern/enc-element-aes128-kw-aes128.data --node-name http://example.org/paymentv2:CreditCard" \
+    "--keys-file $topfolder/keys/keys.xml"
+
+execEncTest $res_success \
+    "" \
+    "phaos-xmlenc-three-01.modern/enc-element-aes128-kw-aes256" \
+    "aes128-cbc kw-aes256" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml" \
+    "--session-key aes-128 --keys-file $topfolder/keys/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01.modern/enc-element-aes128-kw-aes256.data --node-name http://example.org/paymentv2:CreditCard" \
+    "--keys-file $topfolder/keys/keys.xml"
+
+execEncTest $res_success \
+    "" \
+    "phaos-xmlenc-three-01.modern/enc-content-aes256-kw-aes192" \
+    "aes256-cbc kw-aes192" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml" \
+    "--session-key aes-256 --keys-file $topfolder/keys/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01.modern/enc-content-aes256-kw-aes192.data --node-name http://example.org/paymentv2:CreditCard" \
+    "--keys-file $topfolder/keys/keys.xml"
+
+execEncTest $res_success \
+    "" \
+    "phaos-xmlenc-three-01.modern/enc-content-aes192-kw-aes256" \
+    "aes192-cbc kw-aes256" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml" \
+    "--session-key aes-192 --keys-file $topfolder/keys/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01.modern/enc-content-aes192-kw-aes256.data --node-name http://example.org/paymentv2:CreditCard" \
+    "--keys-file $topfolder/keys/keys.xml"
+
+execEncTest $res_success \
+    "" \
+    "phaos-xmlenc-three-01.modern/enc-element-aes192-kw-aes192" \
+    "aes192-cbc kw-aes192" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml" \
+    "--session-key aes-192 --keys-file $topfolder/keys/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01.modern/enc-element-aes192-kw-aes192.data --node-name http://example.org/paymentv2:CreditCard" \
+    "--keys-file $topfolder/keys/keys.xml"
+
+execEncTest $res_success \
+    "" \
+    "phaos-xmlenc-three-01.modern/enc-element-aes256-kw-aes256" \
+    "aes256-cbc kw-aes256" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml" \
+    "--session-key aes-256 --keys-file $topfolder/keys/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01.modern/enc-element-aes256-kw-aes256.data --node-name http://example.org/paymentv2:CreditCard" \
+    "--keys-file $topfolder/keys/keys.xml"
+
+execEncTest $res_success \
+    "" \
+    "phaos-xmlenc-three-01.modern/enc-text-aes256-kw-aes256" \
+    "aes256-cbc kw-aes256" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml" \
+    "--session-key aes-256 --keys-file $topfolder/keys/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01.modern/enc-text-aes256-kw-aes256.data --node-name http://example.org/paymentv2:Number" \
+    "--keys-file $topfolder/keys/keys.xml"
+
+execEncTest $res_success \
+    "" \
+    "phaos-xmlenc-three-01.modern/enc-text-aes128-kw-aes192" \
+    "aes128-cbc kw-aes192" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml" \
+    "--session-key aes-128 --keys-file $topfolder/keys/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01.modern/enc-text-aes128-kw-aes192.data --node-name http://example.org/paymentv2:Number" \
+    "--keys-file $topfolder/keys/keys.xml"
+
+extra_message="Negative test: missing key"
+execEncTest $res_fail \
+    "" \
+    "phaos-xmlenc-three-01.modern/enc-content-aes256-kt-rsa_oaep_sha256_mgf1_sha256" \
+    "" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml --enabled-retrieval-method-uris empty"
+
+extra_message="Negative test: bad alg enc element"
+execEncTest $res_fail \
+    "" \
+    "phaos-xmlenc-three-01.modern/bad-alg-enc-element-aes128-kw-aes256" \
+    "" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml"
 
 
 echo "--------- AES-GCM tests include both positive and negative tests ----------"

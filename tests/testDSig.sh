@@ -1100,6 +1100,104 @@ execDSigTest $res_success \
 
 ##########################################################################
 #
+# xmldsig2ed-tests.modern
+#
+# http://www.w3.org/TR/xmldsig2ed-tests/
+#
+# The same documents as in xmldsig2ed-tests, but re-signed with the
+# modern algorithms and the key from tests/keys: the deprecated
+# hmac-sha1 signatures and sha1 digests were replaced with their
+# modern equivalents (hmac-sha256 and sha256).  The defCan tests
+# reference the external c14n11/xml-base-input.xml file (copied from
+# the original folder), so --enabled-reference-uris any is required.
+# None of the xpointer tests include KeyInfo so we use
+# "--lax-key-search" for *any* hmac key.
+#
+##########################################################################
+
+execDSigTest $res_success \
+    "xmldsig2ed-tests.modern" \
+    "defCan-1" \
+    "c14n11 sha256 hmac-sha256" \
+    "hmac" \
+    "--enabled-reference-uris any --lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--enabled-reference-uris any --hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin" \
+    "--enabled-reference-uris any --hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin"
+
+execDSigTest $res_success \
+    "xmldsig2ed-tests.modern" \
+    "defCan-2" \
+    "c14n11 xslt xpath sha256 hmac-sha256" \
+    "hmac" \
+    "--enabled-reference-uris any --lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--enabled-reference-uris any --hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin" \
+    "--enabled-reference-uris any --hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin"
+
+execDSigTest $res_success \
+    "xmldsig2ed-tests.modern" \
+    "defCan-3" \
+    "c14n11 xslt xpath sha256 hmac-sha256" \
+    "hmac" \
+    "--enabled-reference-uris any --lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--enabled-reference-uris any --hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin" \
+    "--enabled-reference-uris any --hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin"
+
+execDSigTest $res_success \
+    "xmldsig2ed-tests.modern" \
+    "xpointer-1-SUN" \
+    "c14n11 xpointer sha256 hmac-sha256" \
+    "hmac" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin"
+
+execDSigTest $res_success \
+    "xmldsig2ed-tests.modern" \
+    "xpointer-2-SUN" \
+    "c14n11 xpointer sha256 hmac-sha256" \
+    "hmac" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin"
+
+execDSigTest $res_success \
+    "xmldsig2ed-tests.modern" \
+    "xpointer-3-SUN" \
+    "c14n11 xpointer sha256 hmac-sha256" \
+    "hmac" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin"
+
+execDSigTest $res_success \
+    "xmldsig2ed-tests.modern" \
+    "xpointer-4-SUN" \
+    "c14n11 xpointer sha256 hmac-sha256" \
+    "hmac" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin"
+
+execDSigTest $res_success \
+    "xmldsig2ed-tests.modern" \
+    "xpointer-5-SUN" \
+    "c14n11 xpointer sha256 hmac-sha256" \
+    "hmac" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin"
+
+execDSigTest $res_success \
+    "xmldsig2ed-tests.modern" \
+    "xpointer-6-SUN" \
+    "c14n11 xpointer sha256 hmac-sha256" \
+    "hmac" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin"
+
+##########################################################################
+#
 # aleksey-xmldsig-01
 #
 ##########################################################################

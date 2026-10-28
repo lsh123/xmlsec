@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Envelope xmlns="http://example.org/envelope">
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+      <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/>
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+        <DigestValue>lQAPmz8wCKcmOXKZhwVxrbLHc4vQemDHYOvT2YAFfB4=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>QUFVIdkhjh24znoZWF2WKLesv08gKFrJQ5k0UZhEjWT0Z6FKdFlR7A1c+DJ5yRwb
+5nttynGikqBwzh2Ko9Kq9w==</SignatureValue>
+    <KeyInfo>
+      <KeyName>TestKeyName-ec-prime256v1</KeyName>
+      <KeyValue>
+<ECKeyValue xmlns="http://www.w3.org/2009/xmldsig11#">
+<NamedCurve URI="urn:oid:1.2.840.10045.3.1.7"/>
+<PublicKey>
+BP4TDUMXanrPs0QmI8bGK0l7x3mhNCt11nlv3+6F6uWpSZjtZuPHnb+OCwBCcPHK
+eK1j24raHXg8Il5Xwzx2YNw=
+</PublicKey>
+</ECKeyValue>
+</KeyValue>
+    </KeyInfo>
+  </Signature>
+</Envelope>

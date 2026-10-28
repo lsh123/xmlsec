@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Envelope [
+<!ENTITY dsig "http://www.w3.org/2000/09/xmldsig#">
+<!ENTITY c14n "http://www.w3.org/TR/2001/REC-xml-c14n-20010315">
+<!ENTITY xpath "http://www.w3.org/TR/1999/REC-xpath-19991116">
+<!ENTITY xslt "http://www.w3.org/TR/1999/REC-xslt-19991116">
+<!ATTLIST Notaries Id ID #IMPLIED>
+]>
+<!-- Preamble -->
+<Envelope xmlns:foo="http://example.org/foo" xmlns="http://example.org/usps">
+  <DearSir>foo</DearSir>
+  <Body>bar</Body>
+  <YoursSincerely>
+    <Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="signature">
+      <SignedInfo>
+        <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+        <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/>
+        <Reference URI="http://www.w3.org/TR/xml-stylesheet">
+          <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          <DigestValue>eI1OLVStn6Z4q7Byq8XGUJ4bce1LMSlanI6o+SvYzt0=</DigestValue>
+        </Reference>
+        <Reference URI="http://www.w3.org/Signature/2002/04/xml-stylesheet.b64">
+          <Transforms>
+            <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#base64"/>
+          </Transforms>
+          <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          <DigestValue>eI1OLVStn6Z4q7Byq8XGUJ4bce1LMSlanI6o+SvYzt0=</DigestValue>
+        </Reference>
+        <Reference Type="http://www.w3.org/2000/09/xmldsig#Object" URI="#object-1">
+          <Transforms>
+            <Transform Algorithm="http://www.w3.org/TR/1999/REC-xpath-19991116">
+              <XPath>
+                self::text()
+              </XPath>
+            </Transform>
+          </Transforms>
+          <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          <DigestValue>CvHxBPZy4k8OEqazMrFy4RiyW+WOLONg82nG+rFUodE=</DigestValue>
+        </Reference>
+        <Reference Type="http://www.w3.org/2000/09/xmldsig#Object" URI="#object-2">
+          <Transforms>
+            <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#base64"/>
+          </Transforms>
+          <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          <DigestValue>CvHxBPZy4k8OEqazMrFy4RiyW+WOLONg82nG+rFUodE=</DigestValue>
+        </Reference>
+        <Reference Type="http://www.w3.org/2000/09/xmldsig#Manifest" URI="#manifest-1">
+          <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          <DigestValue>BKHyRXOXqpTxj/BebbEXEX0vHvBygd2yZGWrb++/CQ8=</DigestValue>
+        </Reference>
+        <Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#signature-properties-1">
+          <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          <DigestValue>SUnJKBNrsdcOlPGM5aWri+bQjWApLJ+Lx3x7zKXutGY=</DigestValue>
+        </Reference>
+        <Reference URI="">
+          <Transforms>
+            <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+          </Transforms>
+          <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          <DigestValue>LvSSqJH2MOf6XN/MLz1ftvE8GW9uT2Astik39K2R+Oo=</DigestValue>
+        </Reference>
+        <Reference URI="">
+          <Transforms>
+            <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+            <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments"/>
+          </Transforms>
+          <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          <DigestValue>LvSSqJH2MOf6XN/MLz1ftvE8GW9uT2Astik39K2R+Oo=</DigestValue>
+        </Reference>
+        <Reference URI="#xpointer(/)">
+          <Transforms>
+            <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+          </Transforms>
+          <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          <DigestValue>LvSSqJH2MOf6XN/MLz1ftvE8GW9uT2Astik39K2R+Oo=</DigestValue>
+        </Reference>
+        <Reference URI="#xpointer(/)">
+          <Transforms>
+            <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+            <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments"/>
+          </Transforms>
+          <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          <DigestValue>glWYfBNJzIwkwh7fF8VRhH+DIlffiCDdBwl+1tT2D4I=</DigestValue>
+        </Reference>
+        <Reference Type="http://www.w3.org/2000/09/xmldsig#Object" URI="#object-3">
+          <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          <DigestValue>PCkxN/V+q7hhH6c2sX4zk3lY5EtZd4ZolxiIJi3nsyE=</DigestValue>
+        </Reference>
+        <Reference Type="http://www.w3.org/2000/09/xmldsig#Object" URI="#object-3">
+          <Transforms>
+            <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments"/>
+          </Transforms>
+          <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          <DigestValue>PCkxN/V+q7hhH6c2sX4zk3lY5EtZd4ZolxiIJi3nsyE=</DigestValue>
+        </Reference>
+        <Reference Type="http://www.w3.org/2000/09/xmldsig#Object" URI="#xpointer(id('object-3'))">
+          <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          <DigestValue>PCkxN/V+q7hhH6c2sX4zk3lY5EtZd4ZolxiIJi3nsyE=</DigestValue>
+        </Reference>
+        <Reference Type="http://www.w3.org/2000/09/xmldsig#Object" URI="#xpointer(id('object-3'))">
+          <Transforms>
+            <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments"/>
+          </Transforms>
+          <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          <DigestValue>dCMjeh7S9iA5veFAsvjjmW0yQ0FXIZkLuXSmwvs0l04=</DigestValue>
+        </Reference>
+        <Reference Id="reference-1" URI="#manifest-reference-1">
+          <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          <DigestValue>kLrSFVUMkWsuDN++sI3TxPjTd+zXD/dFtPdDKumdF3k=</DigestValue>
+        </Reference>
+        <Reference Id="reference-2" URI="#reference-1">
+          <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          <DigestValue>AmmJbTEQ/dI/ZkB6gjYnDdOFjzUo+BKzINEFYDN6s/o=</DigestValue>
+        </Reference>
+        <Reference URI="#reference-2">
+          <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          <DigestValue>A0YwQ2sdFhogFyIUaoWW24BQEuKLZUcN5xTBYaYO1i4=</DigestValue>
+        </Reference>
+        <Reference Type="http://www.w3.org/2000/09/xmldsig#Object" URI="">
+          <Transforms>
+            <Transform Algorithm="http://www.w3.org/TR/1999/REC-xpath-19991116">
+              <XPath xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+                ancestor-or-self::dsig:SignedInfo
+                  and
+                count(ancestor-or-self::dsig:Reference |
+                      here()/ancestor::dsig:Reference[1]) &gt;
+                count(ancestor-or-self::dsig:Reference)
+                  or
+                count(ancestor-or-self::node() |
+                      id('notaries')) =
+                count(ancestor-or-self::node())
+              </XPath>
+            </Transform>
+          </Transforms>
+          <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          <DigestValue>GLCAqP65PaKqdNWH6KIWghD1zZMYSR04XbYG8y3riYk=</DigestValue>
+        </Reference>
+      </SignedInfo>
+      <SignatureValue>8FADq7/1hvbH/VfwteWnk+7+SLUYJqFtCZjrBP5aja304THOjFnu0dWiluBvZiBl
+jaV7MJaGYzcj43PlAKwLpg==</SignatureValue>
+      <KeyInfo>
+        <RetrievalMethod Type="http://www.w3.org/2000/09/xmldsig#X509Data" URI="#object-4">
+          <Transforms>
+            <Transform Algorithm="http://www.w3.org/TR/1999/REC-xpath-19991116">
+              <XPath xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+                ancestor-or-self::dsig:X509Data
+              </XPath>
+            </Transform>
+          </Transforms>
+        </RetrievalMethod>
+      </KeyInfo>
+      <Object Id="object-1" MimeType="text/plain">I am the text.</Object>
+      <Object Encoding="http://www.w3.org/2000/09/xmldsig#base64" Id="object-2" MimeType="text/plain">SSBhbSB0aGUgdGV4dC4=</Object>
+      <Object Id="object-3">
+        <NonCommentandus xmlns=""><!-- Commentandum --></NonCommentandus>
+      </Object>
+      <Object>
+        <Manifest Id="manifest-1">
+          <Reference Id="manifest-reference-1" URI="http://www.w3.org/TR/xml-stylesheet">
+            <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+            <DigestValue>eI1OLVStn6Z4q7Byq8XGUJ4bce1LMSlanI6o+SvYzt0=</DigestValue>
+          </Reference>
+          <Reference URI="#reference-1">
+            <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+            <DigestValue>dVesXYrftlkSbEQcfyu3q+bgplrKYWPpc8k5K2Ab/I4=</DigestValue>
+          </Reference>
+          <Reference URI="#notaries">
+            <Transforms>
+              <Transform Algorithm="http://www.w3.org/TR/1999/REC-xslt-19991116">
+                <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/TR/xhtml1/strict" exclude-result-prefixes="foo" version="1.0">
+                  <xsl:output encoding="UTF-8" indent="no" method="xml"/>
+                  <xsl:template match="/">
+                    <html>
+                      <head>
+                        <title>Notaries</title>
+                      </head>
+                      <body>
+                        <table>
+                          <xsl:for-each select="Notaries/Notary">
+                            <tr>
+                              <th>
+                                <xsl:value-of select="@name"/>
+                              </th>
+                            </tr>
+                          </xsl:for-each>
+                        </table>
+                      </body>
+                    </html>
+                  </xsl:template>
+                </xsl:stylesheet>
+              </Transform>
+              <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+            </Transforms>
+            <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+            <DigestValue>Eqo+kHZt0tWf+6kfGfYbsogozNU4F3bXvj5BcKc07ok=</DigestValue>
+          </Reference>
+        </Manifest>
+      </Object>
+      <Object>
+        <SignatureProperties Id="signature-properties-1">
+          <SignatureProperty Target="#signature">
+            <SignerAddress xmlns="urn:demo"><IP>192.168.21.138</IP></SignerAddress>
+          </SignatureProperty>
+        </SignatureProperties>
+      </Object>
+      <Object Id="object-4">
+        <X509Data>
+          <X509Certificate>
+MIIEUTCCAzmgAwIBAgIUdzXuSH9oYtrxs5VtlhzLD6bzT1YwDQYJKoZIhvcNAQELBQAwgbYxCzAJ
+BgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMT0wOwYDVQQKEzRYTUwgU2VjdXJpdHkgTGli
+cmFyeSAoaHR0cDovL3d3dy5hbGVrc2V5LmNvbS94bWxzZWMpMRgwFgYDVQQLEw9TZWNvbmQgbGV2
+ZWwgQ0ExFjAUBgNVBAMTDUFsZWtzZXkgU2FuaW4xITAfBgkqhkiG9w0BCQEWEnhtbHNlY0BhbGVr
+c2V5LmNvbTAgFw0yNjAzMDgyMjIwMjBaGA8yMTI2MDIxMjIyMjAyMFowgYIxCzAJBgNVBAYTAlVT
+MRMwEQYDVQQIEwpDYWxpZm9ybmlhMT0wOwYDVQQKEzRYTUwgU2VjdXJpdHkgTGlicmFyeSAoaHR0
+cDovL3d3dy5hbGVrc2V5LmNvbS94bWxzZWMpMR8wHQYDVQQDExZUZXN0IEtleSBlYy1wcmltZTI1
+NnYxMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE/hMNQxdqes+zRCYjxsYrSXvHeaE0K3XWeW/f
+7oXq5alJmO1m48edv44LAEJw8cp4rWPbitodeDwiXlfDPHZg3KOCAVAwggFMMAwGA1UdEwQFMAMB
+Af8wLAYJYIZIAYb4QgENBB8WHU9wZW5TU0wgR2VuZXJhdGVkIENlcnRpZmljYXRlMB0GA1UdDgQW
+BBStxt57CiTvjsf9kdC4llj/mfwuATCB7gYDVR0jBIHmMIHjgBTRfResRUKKjvmwFyXVPHKYnYg6
+JaGBtKSBsTCBrjELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExPTA7BgNVBAoTNFhN
+TCBTZWN1cml0eSBMaWJyYXJ5IChodHRwOi8vd3d3LmFsZWtzZXkuY29tL3htbHNlYykxEDAOBgNV
+BAsTB1Jvb3QgQ0ExFjAUBgNVBAMTDUFsZWtzZXkgU2FuaW4xITAfBgkqhkiG9w0BCQEWEnhtbHNl
+Y0BhbGVrc2V5LmNvbYIUdzXuSH9oYtrxs5VtlhzLD6bzT08wDQYJKoZIhvcNAQELBQADggEBAK0r
+Yvzv+4G0BaHIXkyaRiM5+CahHyOrt41XFWJqpim5CFTo7z4SRHDFADQ6fH7U8JS2qB5VXrR0IUzV
+MgsyivTdr9D8eXGJa21Qljgyfe+gYOg3XnhP7zONoE4DLFXd1cF51XIM1Hxy5Or7h3x9/8eb3jpS
+ls3mG18mbfddD+tw3ab2wQkZTbJKKAs0r8Pk/h+7miBOh6qqnk+NE8PFyToVfMrz/0Ry1cWBwkT3
+6oyyE4b9eH0G3I64kVBrq/oRZYPHU7syF7kdZvIcoho6E17wJKQ08+X1LQF2Gf+CeTGcEiNgCI7/
+oZJ4E9MZcHMY2alPTm4IHCw1elSob4DlLCs=
+          </X509Certificate>
+        </X509Data>
+      </Object>
+    </Signature>
+  </YoursSincerely>
+  <PostScript>bar</PostScript>
+  <Notaries xmlns="" Id="notaries">
+    <Notary name="Great, A. T."/>
+    <Notary name="Hun, A. T."/>
+  </Notaries>
+  <!-- Commentary -->
+</Envelope>
+<!-- Postamble -->

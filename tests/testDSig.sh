@@ -2395,6 +2395,177 @@ execDSigTest $res_success \
 
 ##########################################################################
 #
+# merlin-xmldsig-twenty-three.modern
+#
+##########################################################################
+
+#
+# The same documents as in merlin-xmldsig-twenty-three, but signed with
+# modern algorithms and keys from tests/keys: ecdsa-sha256 (prime256v1),
+# rsa-sha256 (rsa-2048) and hmac-sha256 (hmackey.bin).
+#
+
+execDSigTest $res_success \
+    "merlin-xmldsig-twenty-three.modern" \
+    "signature-enveloped-ecdsa" \
+    "enveloped-signature sha256 ecdsa-sha256" \
+    "ec key-value" \
+    "--enabled-key-data key-value,ec" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,ec"
+
+execDSigTest $res_success \
+    "merlin-xmldsig-twenty-three.modern" \
+    "signature-enveloping-ecdsa" \
+    "sha256 ecdsa-sha256" \
+    "ec key-value" \
+    "--enabled-key-data key-value,ec" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,ec"
+
+execDSigTest $res_success \
+    "merlin-xmldsig-twenty-three.modern" \
+    "signature-enveloping-b64-ecdsa" \
+    "base64 sha256 ecdsa-sha256" \
+    "ec key-value" \
+    "--enabled-key-data key-value,ec" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,ec"
+
+execDSigTest $res_success \
+    "merlin-xmldsig-twenty-three.modern" \
+    "signature-enveloping-hmac-sha256-40" \
+    "sha256 hmac-sha256" \
+    "hmac" \
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin" \
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin" \
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin"
+
+execDSigTest $res_success \
+    "merlin-xmldsig-twenty-three.modern" \
+    "signature-enveloping-hmac-sha256" \
+    "sha256 hmac-sha256" \
+    "hmac" \
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin" \
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin" \
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin"
+
+execDSigTest $res_success \
+    "merlin-xmldsig-twenty-three.modern" \
+    "signature-enveloping-rsa" \
+    "sha256 rsa-sha256" \
+    "rsa key-value" \
+    "--enabled-key-data key-value,rsa" \
+    "--enabled-key-data key-name,key-value,rsa $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,rsa"
+
+execDSigTest $res_success \
+    "merlin-xmldsig-twenty-three.modern" \
+    "signature-external-b64-ecdsa" \
+    "base64 sha256 ecdsa-sha256" \
+    "ec key-value" \
+    "--enabled-reference-uris any $url_map_xml_stylesheet_b64_2005 --enabled-key-data key-value,ec" \
+    "--enabled-reference-uris any $url_map_xml_stylesheet_b64_2005 --enabled-key-data key-name,key-value,ec $priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-reference-uris any $url_map_xml_stylesheet_b64_2005 --enabled-key-data key-value,ec"
+
+execDSigTest $res_success \
+    "merlin-xmldsig-twenty-three.modern" \
+    "signature-external-ecdsa" \
+    "sha256 ecdsa-sha256" \
+    "ec key-value" \
+    "--enabled-reference-uris any $url_map_xml_stylesheet_2005 --enabled-key-data key-value,ec" \
+    "--enabled-reference-uris any $url_map_xml_stylesheet_2005 --enabled-key-data key-name,key-value,ec $priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-reference-uris any $url_map_xml_stylesheet_2005 --enabled-key-data key-value,ec"
+
+execDSigTest $res_success \
+    "merlin-xmldsig-twenty-three.modern" \
+    "signature-keyname" \
+    "sha256 ecdsa-sha256" \
+    "ec x509" \
+    "--enabled-reference-uris any $url_map_xml_stylesheet_2005 --pubkey-cert-$cert_format:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-cert.$cert_format" \
+    "--enabled-reference-uris any $url_map_xml_stylesheet_2005 $priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-reference-uris any $url_map_xml_stylesheet_2005 $pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey.$pub_key_format"
+
+execDSigTest $res_success \
+    "merlin-xmldsig-twenty-three.modern" \
+    "signature-x509-crt" \
+    "sha256 ecdsa-sha256" \
+    "ec x509" \
+    "--enabled-reference-uris any $url_map_xml_stylesheet_2005 --trusted-$cert_format $topfolder/keys/cacert.$cert_format" \
+    "--enabled-reference-uris any $url_map_xml_stylesheet_2005 $priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-reference-uris any $url_map_xml_stylesheet_2005 --trusted-$cert_format $topfolder/keys/cacert.$cert_format"
+
+execDSigTest $res_success \
+    "merlin-xmldsig-twenty-three.modern" \
+    "signature-x509-crt-crl" \
+    "sha256 rsa-sha256" \
+    "rsa x509" \
+    "--enabled-reference-uris any $url_map_xml_stylesheet_2005 --trusted-$cert_format $topfolder/keys/cacert.$cert_format" \
+    "--enabled-reference-uris any $url_map_xml_stylesheet_2005 $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-reference-uris any $url_map_xml_stylesheet_2005 --trusted-$cert_format $topfolder/keys/cacert.$cert_format"
+
+if [ "z$xmlsec_feature_crl_load" = "zyes" ] ; then
+    # this should fail because there is a CRL for the cert used for signing
+    extra_message="Negative test: CRL is present"
+    execDSigTest $res_fail \
+        "merlin-xmldsig-twenty-three.modern" \
+        "signature-x509-crt-crl" \
+        "sha256 rsa-sha256" \
+        "rsa x509" \
+        "--verification-gmt-time 2026-04-01+00:00:00 --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsa/rsa-2048-cert-revoked-crl.$cert_format --enabled-key-data x509 --enabled-reference-uris any $url_map_xml_stylesheet_2005"
+fi
+
+# these tests require the key to be found by X509 data in the keys store
+if [ "z$xmlsec_feature_x509_data_lookup" = "zyes" ] ; then
+    execDSigTest $res_success \
+        "merlin-xmldsig-twenty-three.modern" \
+        "signature-x509-sn" \
+        "sha256 ecdsa-sha256" \
+        "ec x509" \
+        "--enabled-reference-uris any $url_map_xml_stylesheet_2005 --untrusted-$cert_format $topfolder/keys/ec/ec-prime256v1-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+        "--enabled-reference-uris any $url_map_xml_stylesheet_2005 $priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+        "--enabled-reference-uris any $url_map_xml_stylesheet_2005 --untrusted-$cert_format $topfolder/keys/ec/ec-prime256v1-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+    execDSigTest $res_success \
+        "merlin-xmldsig-twenty-three.modern" \
+        "signature-x509-is" \
+        "sha256 ecdsa-sha256" \
+        "ec x509" \
+        "--enabled-reference-uris any $url_map_xml_stylesheet_2005 --untrusted-$cert_format $topfolder/keys/ec/ec-prime256v1-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+        "--enabled-reference-uris any $url_map_xml_stylesheet_2005 $priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+        "--enabled-reference-uris any $url_map_xml_stylesheet_2005 --untrusted-$cert_format $topfolder/keys/ec/ec-prime256v1-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+    execDSigTest $res_success \
+        "merlin-xmldsig-twenty-three.modern" \
+        "signature-x509-ski" \
+        "sha256 ecdsa-sha256" \
+        "ec x509" \
+        "--enabled-reference-uris any $url_map_xml_stylesheet_2005 --untrusted-$cert_format $topfolder/keys/ec/ec-prime256v1-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+        "--enabled-reference-uris any $url_map_xml_stylesheet_2005 $priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+        "--enabled-reference-uris any $url_map_xml_stylesheet_2005 --untrusted-$cert_format $topfolder/keys/ec/ec-prime256v1-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+fi
+
+execDSigTest $res_success \
+    "merlin-xmldsig-twenty-three.modern" \
+    "signature-retrievalmethod-rawx509crt" \
+    "sha256 ecdsa-sha256" \
+    "ec retrieval-method raw-x509-cert x509" \
+    "--enabled-reference-uris any $url_map_xml_stylesheet_2005 --enabled-retrieval-method-uris remote --enabled-key-data retrieval-method,raw-x509-cert,x509 --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format" \
+    "--enabled-reference-uris any $url_map_xml_stylesheet_2005 --enabled-retrieval-method-uris remote --lax-key-search $priv_key_option $topfolder/keys/ec/ec-prime256v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-reference-uris any $url_map_xml_stylesheet_2005 --enabled-retrieval-method-uris remote --enabled-key-data retrieval-method,raw-x509-cert,x509 --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format"
+
+execDSigTest $res_success \
+    "merlin-xmldsig-twenty-three.modern" \
+    "signature" \
+    "base64 xpath xslt enveloped-signature c14n-with-comments sha256 ecdsa-sha256" \
+    "ec x509" \
+    "--enabled-reference-uris any $url_map_xml_stylesheet_2005 $url_map_xml_stylesheet_b64_2005 --trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format" \
+    "--enabled-reference-uris any $url_map_xml_stylesheet_2005 $url_map_xml_stylesheet_b64_2005 --lax-key-search $priv_key_option $topfolder/keys/ec/ec-prime256v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-reference-uris any $url_map_xml_stylesheet_2005 $url_map_xml_stylesheet_b64_2005 --trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format"
+
+
+##########################################################################
+#
 # merlin-xmlenc-five
 #
 # While the main operation is signature (and this is why we have these

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+  <SignedInfo>
+    <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+    <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/>
+    <Reference URI="http://www.w3.org/TR/xml-stylesheet">
+      <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+      <DigestValue>eI1OLVStn6Z4q7Byq8XGUJ4bce1LMSlanI6o+SvYzt0=</DigestValue>
+    </Reference>
+  </SignedInfo>
+  <SignatureValue>qFO290JgSevoMWOSLU1eoAbFayW/Fj55kJDsqu/j16r22JsPcOiYXgj8uoS5Xgyj
+iyLtTGr0Dp8/9n/Blw50pw==</SignatureValue>
+  <KeyInfo>
+    <KeyName>
+      TestKeyName-ec-prime256v1
+    </KeyName>
+  </KeyInfo>
+</Signature>

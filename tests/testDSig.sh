@@ -2692,6 +2692,36 @@ execDSigTest $res_success \
 
 ##########################################################################
 #
+# merlin-xpath-filter2-three.modern
+#
+##########################################################################
+
+#
+# The same documents as in merlin-xpath-filter2-three, but signed with
+# modern algorithms and keys from tests/keys: ecdsa-sha256 (prime256v1)
+# and hmac-sha256.
+#
+
+execDSigTest $res_success \
+    "merlin-xpath-filter2-three.modern" \
+    "sign-xfdl" \
+    "enveloped-signature xpath2 sha256 ecdsa-sha256 hmac-sha256" \
+    "ec key-value hmac" \
+    "--enabled-key-data key-value,ec" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin"
+
+execDSigTest $res_success \
+    "merlin-xpath-filter2-three.modern" \
+    "sign-spec" \
+    "enveloped-signature xpath2 sha256 ecdsa-sha256" \
+    "ec key-value" \
+    "--enabled-key-data key-value,ec" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,ec"
+
+##########################################################################
+#
 # merlin-xpath-filter2-three
 #
 ##########################################################################

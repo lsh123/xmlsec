@@ -2907,32 +2907,35 @@ execDSigTest $res_success \
     "$priv_key_option:TestKeyName-rsa-2048-phaos $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123 --enabled-reference-uris any $url_map_rfc3161" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-reference-uris any $url_map_rfc3161"
 
-execDSigTest $res_success \
-    "phaos-xmldsig-three-modern" \
-    "signature-rsa-manifest-x509-data-issuer-serial" \
-    "sha256 rsa-sha256" \
-    "rsa x509" \
-    "--untrusted-$cert_format $topfolder/keys/rsa/rsa-2048-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --enabled-reference-uris any $url_map_rfc3161" \
-    "$priv_key_option $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123 --enabled-reference-uris any $url_map_rfc3161" \
-    "--untrusted-$cert_format $topfolder/keys/rsa/rsa-2048-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --enabled-reference-uris any $url_map_rfc3161"
+# these tests require the key to be found by X509 data in the keys store
+if [ "z$xmlsec_feature_x509_data_lookup" = "zyes" ] ; then
+    execDSigTest $res_success \
+        "phaos-xmldsig-three-modern" \
+        "signature-rsa-manifest-x509-data-issuer-serial" \
+        "sha256 rsa-sha256" \
+        "rsa x509" \
+        "--untrusted-$cert_format $topfolder/keys/rsa/rsa-2048-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --enabled-reference-uris any $url_map_rfc3161" \
+        "$priv_key_option $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123 --enabled-reference-uris any $url_map_rfc3161" \
+        "--untrusted-$cert_format $topfolder/keys/rsa/rsa-2048-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --enabled-reference-uris any $url_map_rfc3161"
 
-execDSigTest $res_success \
-    "phaos-xmldsig-three-modern" \
-    "signature-rsa-manifest-x509-data-ski" \
-    "sha256 rsa-sha256" \
-    "rsa x509" \
-    "--untrusted-$cert_format $topfolder/keys/rsa/rsa-2048-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --enabled-reference-uris any $url_map_rfc3161" \
-    "$priv_key_option $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123 --enabled-reference-uris any $url_map_rfc3161" \
-    "--untrusted-$cert_format $topfolder/keys/rsa/rsa-2048-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --enabled-reference-uris any $url_map_rfc3161"
+    execDSigTest $res_success \
+        "phaos-xmldsig-three-modern" \
+        "signature-rsa-manifest-x509-data-ski" \
+        "sha256 rsa-sha256" \
+        "rsa x509" \
+        "--untrusted-$cert_format $topfolder/keys/rsa/rsa-2048-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --enabled-reference-uris any $url_map_rfc3161" \
+        "$priv_key_option $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123 --enabled-reference-uris any $url_map_rfc3161" \
+        "--untrusted-$cert_format $topfolder/keys/rsa/rsa-2048-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --enabled-reference-uris any $url_map_rfc3161"
 
-execDSigTest $res_success \
-    "phaos-xmldsig-three-modern" \
-    "signature-rsa-manifest-x509-data-subject-name" \
-    "sha256 rsa-sha256" \
-    "rsa x509" \
-    "--untrusted-$cert_format $topfolder/keys/rsa/rsa-2048-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --enabled-reference-uris any $url_map_rfc3161" \
-    "$priv_key_option $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123 --enabled-reference-uris any $url_map_rfc3161" \
-    "--untrusted-$cert_format $topfolder/keys/rsa/rsa-2048-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --enabled-reference-uris any $url_map_rfc3161"
+    execDSigTest $res_success \
+        "phaos-xmldsig-three-modern" \
+        "signature-rsa-manifest-x509-data-subject-name" \
+        "sha256 rsa-sha256" \
+        "rsa x509" \
+        "--untrusted-$cert_format $topfolder/keys/rsa/rsa-2048-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --enabled-reference-uris any $url_map_rfc3161" \
+        "$priv_key_option $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123 --enabled-reference-uris any $url_map_rfc3161" \
+        "--untrusted-$cert_format $topfolder/keys/rsa/rsa-2048-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --enabled-reference-uris any $url_map_rfc3161"
+fi
 
 execDSigTest $res_success \
     "phaos-xmldsig-three-modern" \

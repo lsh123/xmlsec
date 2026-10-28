@@ -206,7 +206,9 @@ Contents of phaos-xmldsig-three-modern
 	Contains a detached RSA signature with a manifest and an
 	X509SubjectName element that references the subject name of the
 	certificate stored in tests/keys/rsa/rsa-2048-cert.  KeyInfo
-	contains no KeyName element.
+	contains no KeyName element; the signing key is looked up by
+	X509 data, which requires a backend that supports it
+	(OpenSSL, NSS or GnuTLS).
 
 
 	signature-rsa-manifest-x509-data-issuer-serial.{xml,tmpl}
@@ -214,7 +216,9 @@ Contents of phaos-xmldsig-three-modern
 	Contains a detached RSA signature with a manifest and an
 	X509IssuerSerial element that references the issuer and serial
 	number of the certificate stored in
-	tests/keys/rsa/rsa-2048-cert.  KeyInfo contains no KeyName element.
+	tests/keys/rsa/rsa-2048-cert.  KeyInfo contains no KeyName
+	element; the signing key is looked up by X509 data, which
+	requires a backend that supports it (OpenSSL, NSS or GnuTLS).
 
 
 	signature-rsa-manifest-x509-data-ski.{xml,tmpl}
@@ -222,7 +226,9 @@ Contents of phaos-xmldsig-three-modern
 	Contains a detached RSA signature with a manifest and an X509SKI
 	element that references the Subject Key Identifier of the
 	certificate stored in tests/keys/rsa/rsa-2048-cert.  KeyInfo
-	contains no KeyName element.
+	contains no KeyName element; the signing key is looked up by
+	X509 data, which requires a backend that supports it
+	(OpenSSL, NSS or GnuTLS).
 
 
 	signature-rsa-detached-xslt-transform-retrieval-method.{xml,tmpl}

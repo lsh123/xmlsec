@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#" MimeType="text/plain">
+<EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#"
+  xmlns:xenc11="http://www.w3.org/2009/xmlenc11#" MimeType="text/plain">
   <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes256-cbc" />
   <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
     <EncryptedKey xmlns="http://www.w3.org/2001/04/xmlenc#">
       <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p">
         <DigestMethod xmlns="http://www.w3.org/2000/09/xmldsig#" Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+        <xenc11:MGF Algorithm="http://www.w3.org/2009/xmlenc11#mgf1sha256" />
         <OAEPparams>
           MTIzNDU2Nzg=
         </OAEPparams>

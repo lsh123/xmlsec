@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xenc:EncryptedData xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:xenc11="http://www.w3.org/2009/xmlenc11#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <xenc:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes256-cbc"/>
+  <ds:KeyInfo>
+    <xenc11:DerivedKey>
+      <xenc11:KeyDerivationMethod Algorithm="http://www.w3.org/2009/xmlenc11#pbkdf2">
+        <xenc11:PBKDF2-params>
+          <xenc11:Salt>
+            <xenc11:Specified>VGhpc0lzQVNTSUQ=</xenc11:Specified>
+          </xenc11:Salt>
+          <xenc11:IterationCount>4096</xenc11:IterationCount>
+          <xenc11:KeyLength>32</xenc11:KeyLength>
+          <xenc11:PRF Algorithm="http://www.w3.org/2001/04/xmldsig-more#hmac-sha256"/>
+        </xenc11:PBKDF2-params>
+      </xenc11:KeyDerivationMethod>
+      <xenc11:MasterKeyName>dkey3-pbkdf2</xenc11:MasterKeyName>
+    </xenc11:DerivedKey>
+  </ds:KeyInfo>
+  <xenc:CipherData>
+    <xenc:CipherValue>WQWJSA9ZTSJO6KS+d2CN/y4occriylqUqNHYCS1SpKxyOyCKf6fIm/vZadOUip0Z
+mN3IC2/I4G5nqkogAqsGoe5PJJ/4ld49EvtlPErZ5PWITRy6SZlCSShYQO+BYCZN
+YKK2/OKNwCoXUAXO4YI7v4PL08e5/bhTQSQZeUSnLyGbYtb/KeMlT77zG6Eb+nTQ
+jKxgSZ3RP2ryKbv1tTE8ScCXlwO16zmvBOk2Ad9g21ChvRaTt78YEFxz6gEGoHl4
+jVvVEjVgDAGH0XIaj2z3Gp6puao/wfC/h3KfdB2iTPluwpBT2hjRl6VFXVMf3NlM
+F9JcIxFHMPuJ+ZZOEV+gH51Pt4A/ME+v2DMRbMM+3sX+F0xLaxYE9CPzwkBrvq+M
+KetlbFWzrqkrqgUzxEMF1wkflLOnQAm0+i+QWlfHmnd1iQV11R27v5+Bp+hxI61z</xenc:CipherValue>
+  </xenc:CipherData>
+</xenc:EncryptedData>

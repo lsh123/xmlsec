@@ -2648,6 +2648,27 @@ execDSigTest $res_success \
     "dsa" \
     "--enabled-key-data key-value,dsa"
 
+
+##########################################################################
+#
+# merlin-c14n-three.modern
+#
+##########################################################################
+
+#
+# The same document as in merlin-c14n-three, but signed with a modern
+# algorithm and key from tests/keys: ecdsa-sha256 (prime256v1).
+#
+
+execDSigTest $res_success \
+    "merlin-c14n-three.modern" \
+    "signature" \
+    "c14n c14n-with-comments exc-c14n exc-c14n-with-comments xpath sha256 ecdsa-sha256" \
+    "ec key-value" \
+    "--enabled-key-data key-value,ec" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,ec"
+
 ##########################################################################
 #
 # merlin-xpath-filter2-three

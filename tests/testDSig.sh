@@ -2707,6 +2707,279 @@ execDSigTest $res_fail \
 
 
 ##########################################################################
+#
+# phaos-xmldsig-three-modern
+#
+##########################################################################
+
+#
+# The same documents as in phaos-xmldsig-three, but signed with modern
+# algorithms and keys from tests/keys: rsa-sha256 (rsa-2048),
+# ecdsa-sha256 (prime256v1) and hmac-sha256 (hmackey.bin).
+#
+
+execDSigTest $res_success \
+    "phaos-xmldsig-three-modern" \
+    "signature-big" \
+    "base64 xslt xpath sha256 rsa-sha256" \
+    "rsa x509" \
+    "--lax-key-search --pubkey-cert-$cert_format $topfolder/keys/rsa/rsa-2048-cert.$cert_format --enabled-reference-uris any $url_map_rfc3161" \
+    "--lax-key-search $priv_key_option $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123 --enabled-reference-uris any $url_map_rfc3161" \
+    "--lax-key-search --pubkey-cert-$cert_format $topfolder/keys/rsa/rsa-2048-cert.$cert_format --enabled-reference-uris any $url_map_rfc3161"
+
+execDSigTest $res_success \
+    "phaos-xmldsig-three-modern" \
+    "signature-ecdsa-detached" \
+    "sha256 ecdsa-sha256" \
+    "ec x509" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-reference-uris any $url_map_rfc3161" \
+    "$priv_key_option:TestKeyName-ec-prime256v1-phaos $topfolder/keys/ec/ec-prime256v1-key$priv_key_suffix.$priv_key_format --pwd secret123 --enabled-reference-uris any $url_map_rfc3161" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-reference-uris any $url_map_rfc3161"
+
+execDSigTest $res_success \
+    "phaos-xmldsig-three-modern" \
+    "signature-ecdsa-enveloped" \
+    "enveloped-signature sha256 ecdsa-sha256" \
+    "ec x509" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format" \
+    "$priv_key_option:TestKeyName-ec-prime256v1-phaos $topfolder/keys/ec/ec-prime256v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
+
+execDSigTest $res_success \
+    "phaos-xmldsig-three-modern" \
+    "signature-ecdsa-enveloping" \
+    "sha256 ecdsa-sha256" \
+    "ec x509" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format" \
+    "$priv_key_option:TestKeyName-ec-prime256v1-phaos $topfolder/keys/ec/ec-prime256v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
+
+execDSigTest $res_success \
+    "phaos-xmldsig-three-modern" \
+    "signature-ecdsa-manifest" \
+    "sha256 ecdsa-sha256" \
+    "key-value ec" \
+    "--enabled-key-data key-value,ec --enabled-reference-uris any $url_map_rfc3161" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:TestKeyName-ec-prime256v1-phaos $topfolder/keys/ec/ec-prime256v1-key$priv_key_suffix.$priv_key_format --pwd secret123 --enabled-reference-uris any $url_map_rfc3161" \
+    "--enabled-key-data key-value,ec --enabled-reference-uris any $url_map_rfc3161"
+
+execDSigTest $res_success \
+    "phaos-xmldsig-three-modern" \
+    "signature-hmac-sha256-c14n-enveloping" \
+    "sha256 hmac-sha256" \
+    "hmac" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin"
+
+execDSigTest $res_success \
+    "phaos-xmldsig-three-modern" \
+    "signature-hmac-sha256-40-c14n-comments-detached" \
+    "c14n-with-comments sha256 hmac-sha256" \
+    "hmac" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin --enabled-reference-uris any $url_map_rfc3161" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin --enabled-reference-uris any $url_map_rfc3161" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin --enabled-reference-uris any $url_map_rfc3161"
+
+execDSigTest $res_success \
+    "phaos-xmldsig-three-modern" \
+    "signature-hmac-sha256-40-exclusive-c14n-comments-detached" \
+    "exc-c14n-with-comments sha256 hmac-sha256" \
+    "hmac" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin --enabled-reference-uris any $url_map_rfc3161" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin --enabled-reference-uris any $url_map_rfc3161" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin --enabled-reference-uris any $url_map_rfc3161"
+
+execDSigTest $res_success \
+    "phaos-xmldsig-three-modern" \
+    "signature-hmac-sha256-exclusive-c14n-comments-detached" \
+    "exc-c14n-with-comments sha256 hmac-sha256" \
+    "hmac" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin --enabled-reference-uris any $url_map_rfc3161" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin --enabled-reference-uris any $url_map_rfc3161" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin --enabled-reference-uris any $url_map_rfc3161"
+
+execDSigTest $res_success \
+    "phaos-xmldsig-three-modern" \
+    "signature-hmac-sha256-exclusive-c14n-enveloped" \
+    "enveloped-signature exc-c14n sha256 hmac-sha256" \
+    "hmac" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin"
+
+execDSigTest $res_success \
+    "phaos-xmldsig-three-modern" \
+    "signature-rsa-detached-b64-transform" \
+    "base64 sha256 rsa-sha256" \
+    "key-value rsa" \
+    "--enabled-key-data key-value,rsa --enabled-reference-uris any" \
+    "--enabled-key-data key-name,key-value,rsa $priv_key_option:TestKeyName-rsa-2048-phaos $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123 --enabled-reference-uris any" \
+    "--enabled-key-data key-value,rsa --enabled-reference-uris any"
+
+execDSigTest $res_success \
+    "phaos-xmldsig-three-modern" \
+    "signature-rsa-detached-xpath-transform" \
+    "xpath sha256 rsa-sha256" \
+    "key-value rsa" \
+    "--enabled-key-data key-value,rsa --enabled-reference-uris any" \
+    "--enabled-key-data key-name,key-value,rsa $priv_key_option:TestKeyName-rsa-2048-phaos $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123 --enabled-reference-uris any" \
+    "--enabled-key-data key-value,rsa --enabled-reference-uris any"
+
+execDSigTest $res_success \
+    "phaos-xmldsig-three-modern" \
+    "signature-rsa-detached-xslt-transform" \
+    "xslt sha256 rsa-sha256" \
+    "key-value rsa" \
+    "--enabled-key-data key-value,rsa --enabled-reference-uris any" \
+    "--enabled-key-data key-name,key-value,rsa $priv_key_option:TestKeyName-rsa-2048-phaos $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123 --enabled-reference-uris any" \
+    "--enabled-key-data key-value,rsa --enabled-reference-uris any"
+
+execDSigTest $res_success \
+    "phaos-xmldsig-three-modern" \
+    "signature-rsa-manifest" \
+    "sha256 rsa-sha256" \
+    "key-value rsa" \
+    "--enabled-key-data key-value,rsa --enabled-reference-uris any $url_map_rfc3161" \
+    "--enabled-key-data key-name,key-value,rsa $priv_key_option:TestKeyName-rsa-2048-phaos $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123 --enabled-reference-uris any $url_map_rfc3161" \
+    "--enabled-key-data key-value,rsa --enabled-reference-uris any $url_map_rfc3161"
+
+execDSigTest $res_success \
+    "phaos-xmldsig-three-modern" \
+    "signature-rsa-detached" \
+    "sha256 rsa-sha256" \
+    "rsa x509" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-reference-uris any $url_map_rfc3161" \
+    "$priv_key_option:TestKeyName-rsa-2048-phaos $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123 --enabled-reference-uris any $url_map_rfc3161" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-reference-uris any $url_map_rfc3161"
+
+execDSigTest $res_success \
+    "phaos-xmldsig-three-modern" \
+    "signature-rsa-detached-xslt-transform-retrieval-method" \
+    "xslt sha256 rsa-sha256" \
+    "retrieval-method raw-x509-cert x509" \
+    "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-retrieval-method-uris remote --enabled-key-data retrieval-method,raw-x509-cert,x509 --enabled-reference-uris any $url_map_rfc3161" \
+    "--enabled-key-data key-name $priv_key_option:TestKeyName-rsa-2048-phaos $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123 --enabled-reference-uris any $url_map_rfc3161" \
+    "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-retrieval-method-uris remote --enabled-key-data retrieval-method,raw-x509-cert,x509 --enabled-reference-uris any $url_map_rfc3161"
+
+execDSigTest $res_success \
+    "phaos-xmldsig-three-modern" \
+    "signature-rsa-enveloped" \
+    "enveloped-signature sha256 rsa-sha256" \
+    "rsa x509" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format" \
+    "$priv_key_option:TestKeyName-rsa-2048-phaos $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
+
+execDSigTest $res_success \
+    "phaos-xmldsig-three-modern" \
+    "signature-rsa-enveloping" \
+    "sha256 rsa-sha256" \
+    "rsa x509" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format" \
+    "$priv_key_option:TestKeyName-rsa-2048-phaos $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
+
+execDSigTest $res_success \
+    "phaos-xmldsig-three-modern" \
+    "signature-rsa-manifest-x509-data-cert" \
+    "sha256 rsa-sha256" \
+    "rsa x509" \
+    "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-reference-uris any $url_map_rfc3161" \
+    "$priv_key_option:TestKeyName-rsa-2048-phaos $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123 --enabled-reference-uris any $url_map_rfc3161" \
+    "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-reference-uris any $url_map_rfc3161"
+
+execDSigTest $res_success \
+    "phaos-xmldsig-three-modern" \
+    "signature-rsa-manifest-x509-data-cert-chain" \
+    "sha256 rsa-sha256" \
+    "rsa x509" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-reference-uris any $url_map_rfc3161" \
+    "$priv_key_option:TestKeyName-rsa-2048-phaos $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123 --enabled-reference-uris any $url_map_rfc3161" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-reference-uris any $url_map_rfc3161"
+
+execDSigTest $res_success \
+    "phaos-xmldsig-three-modern" \
+    "signature-rsa-manifest-x509-data-crl" \
+    "sha256 rsa-sha256" \
+    "rsa x509" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-reference-uris any $url_map_rfc3161" \
+    "$priv_key_option:TestKeyName-rsa-2048-phaos $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123 --enabled-reference-uris any $url_map_rfc3161" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-reference-uris any $url_map_rfc3161"
+
+execDSigTest $res_success \
+    "phaos-xmldsig-three-modern" \
+    "signature-rsa-manifest-x509-data-issuer-serial" \
+    "sha256 rsa-sha256" \
+    "rsa x509" \
+    "--untrusted-$cert_format $topfolder/keys/rsa/rsa-2048-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --enabled-reference-uris any $url_map_rfc3161" \
+    "$priv_key_option $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123 --enabled-reference-uris any $url_map_rfc3161" \
+    "--untrusted-$cert_format $topfolder/keys/rsa/rsa-2048-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --enabled-reference-uris any $url_map_rfc3161"
+
+execDSigTest $res_success \
+    "phaos-xmldsig-three-modern" \
+    "signature-rsa-manifest-x509-data-ski" \
+    "sha256 rsa-sha256" \
+    "rsa x509" \
+    "--untrusted-$cert_format $topfolder/keys/rsa/rsa-2048-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --enabled-reference-uris any $url_map_rfc3161" \
+    "$priv_key_option $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123 --enabled-reference-uris any $url_map_rfc3161" \
+    "--untrusted-$cert_format $topfolder/keys/rsa/rsa-2048-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --enabled-reference-uris any $url_map_rfc3161"
+
+execDSigTest $res_success \
+    "phaos-xmldsig-three-modern" \
+    "signature-rsa-manifest-x509-data-subject-name" \
+    "sha256 rsa-sha256" \
+    "rsa x509" \
+    "--untrusted-$cert_format $topfolder/keys/rsa/rsa-2048-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --enabled-reference-uris any $url_map_rfc3161" \
+    "$priv_key_option $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123 --enabled-reference-uris any $url_map_rfc3161" \
+    "--untrusted-$cert_format $topfolder/keys/rsa/rsa-2048-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --enabled-reference-uris any $url_map_rfc3161"
+
+execDSigTest $res_success \
+    "phaos-xmldsig-three-modern" \
+    "signature-rsa-xpath-transform-enveloped" \
+    "enveloped-signature xpath sha256 rsa-sha256" \
+    "rsa x509" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format" \
+    "$priv_key_option:TestKeyName-rsa-2048-phaos $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
+
+extra_message="Negative test: bad retrieval method"
+execDSigTest $res_fail \
+    "phaos-xmldsig-three-modern" \
+    "signature-rsa-detached-xslt-transform-bad-retrieval-method" \
+    "xslt sha256 rsa-sha256" \
+    "retrieval-method raw-x509-cert x509" \
+    "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-retrieval-method-uris remote --enabled-key-data retrieval-method,raw-x509-cert,x509"
+
+extra_message="Negative test: bad digest"
+execDSigTest $res_fail \
+    "phaos-xmldsig-three-modern" \
+    "signature-rsa-enveloped-bad-digest-val" \
+    "enveloped-signature sha256 rsa-sha256" \
+    "rsa x509" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
+
+extra_message="Negative test: bad sig"
+execDSigTest $res_fail \
+    "phaos-xmldsig-three-modern" \
+    "signature-rsa-enveloped-bad-sig" \
+    "enveloped-signature sha256 rsa-sha256" \
+    "rsa x509" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
+
+if [ "z$xmlsec_feature_crl_load" = "zyes" ] ; then
+    # this should fail because there is a CRL for the cert used for signing
+    extra_message="Negative test: CRL present"
+    execDSigTest $res_fail \
+        "phaos-xmldsig-three-modern" \
+        "signature-rsa-manifest-x509-data-crl" \
+        "sha256 rsa-sha256" \
+        "rsa x509" \
+        "--verification-gmt-time 2026-04-01+00:00:00 --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsa/rsa-2048-cert-revoked-crl.$cert_format --enabled-key-data x509 --enabled-reference-uris any $url_map_rfc3161"
+fi
+
+
+##########################################################################
 ##########################################################################
 ##########################################################################
 echo "--------- These tests CAN FAIL (extra OS config required) ----------"

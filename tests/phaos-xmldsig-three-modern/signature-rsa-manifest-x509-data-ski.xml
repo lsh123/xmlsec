@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+      <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+      <Reference Id="reference-manifest" Type="http://www.w3.org/2000/09/xmldsig#Manifest" URI="#manifest">
+          <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          <DigestValue>uZqKiWB1xtFhMpmMwsMOkU/opdeNUlxB2t/k2OwIv9k=</DigestValue>
+        </Reference>
+    </SignedInfo>
+    <SignatureValue>xSkCQ+G1MSWXWTvgvFwRihsnJ4S5wMdfCtAtd6jWqoWkTIQDiEnn62VWVWaqQIpp
+dNUuGH/zyVBHykHVETbrC8C8s2UZvWkkJkW7U+wh3rWtIDOLhIGDyTZyB68oiuWP
+64pOwqWi1oZ/ntonaEzM4/CeJ5qc5leNT/ToDI4WP/APt98acGe7K2aK/mxDPx6f
+X2pjO9SQ8GJFxHBnWI8bENGPKNdWxfDLh4Tmd6Sq0UkBHYzXHtUA5Lxf2OoNkh8s
+AzyDza2EXPj969PJDhduQSDpg4YQ7XvMh0vv4TVzZO6EzHtSvva2+5SekGopRigo
+z/slzYQ84jRWkPhFbar6eQ==</SignatureValue>
+    <KeyInfo>
+      <X509Data>
+        <X509SKI>bcOXN/nsVl8GatRbcKrPbzIbw0Y=</X509SKI>
+      </X509Data>
+    </KeyInfo>
+    <Object>
+      <Manifest Id="manifest">
+        <Reference Id="reference-0" URI="document.xml">
+          <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          <DigestValue>O/OG2qja/otlQ1IGsW2m0kTB0O9c1tPkuFOaN8COHyI=</DigestValue>
+        </Reference>
+        <Reference Id="reference-1" URI="http://www.ietf.org/rfc/rfc3161.txt">
+          <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          <DigestValue>Of0XZE/y1lS8g4FKeLHFtedRf0lnQfNOrVBklD65gkA=</DigestValue>
+        </Reference>
+      </Manifest>
+    </Object>
+  </Signature>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE test [
+<!ATTLIST PurchaseOrder Id ID #IMPLIED>
+]>
+<EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#" xmlns:xenc11="http://www.w3.org/2009/xmlenc11#" Type="http://www.w3.org/2001/04/xmlenc#Element">
+    <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes128-cbc"/>
+    <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+      <EncryptedKey xmlns="http://www.w3.org/2001/04/xmlenc#">
+        <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p">
+          <DigestMethod xmlns="http://www.w3.org/2000/09/xmldsig#" Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          <xenc11:MGF Algorithm="http://www.w3.org/2009/xmlenc11#mgf1sha256"/>
+        </EncryptionMethod>
+        <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+          <KeyName>TestKeyName-rsa-4096</KeyName>
+          <X509Data>
+            <X509Certificate>
+MIIGFjCCBP6gAwIBAgIUdzXuSH9oYtrxs5VtlhzLD6bzT1QwDQYJKoZIhvcNAQEL
+BQAwgbYxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMT0wOwYDVQQK
+EzRYTUwgU2VjdXJpdHkgTGlicmFyeSAoaHR0cDovL3d3dy5hbGVrc2V5LmNvbS94
+bWxzZWMpMRgwFgYDVQQLEw9TZWNvbmQgbGV2ZWwgQ0ExFjAUBgNVBAMTDUFsZWtz
+ZXkgU2FuaW4xITAfBgkqhkiG9w0BCQEWEnhtbHNlY0BhbGVrc2V5LmNvbTAgFw0y
+NjAzMDgyMjE0MjdaGA8yMTI2MDIxMjIyMTQyN1owfTELMAkGA1UEBhMCVVMxEzAR
+BgNVBAgTCkNhbGlmb3JuaWExPTA7BgNVBAoTNFhNTCBTZWN1cml0eSBMaWJyYXJ5
+IChodHRwOi8vd3d3LmFsZWtzZXkuY29tL3htbHNlYykxGjAYBgNVBAMTEVRlc3Qg
+S2V5IHJzYS00MDk2MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEApFht
+8oSsDMTV1GOWqg7o7NVllW2835GtOiLPJ/dnRy9vEQGYqB+KSSX9axIVyrFNfiS6
+SsH7Tam9A4bEHSBP6risPS9wyoTpyy7q2a31ZUETmI0pFej9db2vgAvpmx8DX3e8
+Y03SecMYqNLr2HLj7daWhu9/OY+xrd6q567NLFmG3335Hr8wHNwl/HbdCwmXBWaw
+16D1g1RSV0kkFvD1gHMZqAjANJsqmuKJogMj2waXFAy/KAsUK3cPDCDKu7KHxtAT
+LZ0UWqPNgz8GLBPI87vmyxSGgbtw1XQWQa4zxdknz80qRGExROc8DMszs575N7+Z
+vjSusT+PT+CQxmDSyiqtp/v2OIQS3zAR7uFv0Xb3DS5Cs0VWkGU/N0mrdU1nd4WB
+ecdTZCXbG959r1HKtqiWKa7nOOxKTrwHr9cDrlzSW2kyXb/1tvdEE5gy1HNOil07
+SVUv4Vi6CRvUa3Jv/B6ifb0lY9wp82gc42TOLv9Udx9xm7Barh8lfzqc4T+VR1ON
+jbHzeLyMC6aG54rZZpcorUOT7f6SfPHcbx2Jmz3T4g3UaML4nlJkBfpBSkBRloRp
+dKffhnpyru5OQEb7fLxlDePEAOkYrTNbBaHEXFqO1gKSxz3Mg+4gCA9mZOXP9yLC
+Dz10S9vROUVSu9H4CT4ucUPT2cEg95X5H/2fqRMCAwEAAaOCAVAwggFMMAwGA1Ud
+EwQFMAMBAf8wLAYJYIZIAYb4QgENBB8WHU9wZW5TU0wgR2VuZXJhdGVkIENlcnRp
+ZmljYXRlMB0GA1UdDgQWBBTrTMwsoJ/NDeqdcDMAHNE2l2BDxDCB7gYDVR0jBIHm
+MIHjgBTRfResRUKKjvmwFyXVPHKYnYg6JaGBtKSBsTCBrjELMAkGA1UEBhMCVVMx
+EzARBgNVBAgTCkNhbGlmb3JuaWExPTA7BgNVBAoTNFhNTCBTZWN1cml0eSBMaWJy
+YXJ5IChodHRwOi8vd3d3LmFsZWtzZXkuY29tL3htbHNlYykxEDAOBgNVBAsTB1Jv
+b3QgQ0ExFjAUBgNVBAMTDUFsZWtzZXkgU2FuaW4xITAfBgkqhkiG9w0BCQEWEnht
+bHNlY0BhbGVrc2V5LmNvbYIUdzXuSH9oYtrxs5VtlhzLD6bzT08wDQYJKoZIhvcN
+AQELBQADggEBAIlPInAPcM4cRhUqeRmWcwi4Ue5xkn5UL8hNPKsfbNDvRoa3aOKz
+jc0WNd7LQZJzALP4Q+VoE9+TDYbM0fwIGpUr0RMcNUt1DzwVKyDKtbv/tOayIS2j
+L8pI9AALHzjGdRjk713LuOd1ixwvEyaVBJtQ+vz39c3baSJQtSvXeVU0KLxJSqy8
+fgbBuiNx+hZiGsee9BzocAyCoSyKuyEqhxbvcBSDIIgLyCoroR/uXk+wsBgy/15X
+QGa1GHVWwSLdaqACDlqvu5PYMMQq4IfY+fADf3tYl81ZiIJerRcHwZMa2zgof/lZ
+0tzrqr9lKyHcVitF2kkwC50xi2hvkDrZhvI=
+</X509Certificate>
+          </X509Data>
+        </KeyInfo>
+        <CipherData>
+          <CipherValue>Seoceq0h2cYPDN2oq2/ctbm97f099/8AP6sLjEmh9cVa/nujCpy0edRXr8yekt12
+gllNaLIkDAenxUm2p+1UljbczjKGygPJOvEawWm0zprJwgCB9Ee+GovLI2bLkSw/
+3mANIa1/DHqG9zC0W0EMQ/hSNl6sNFnZZLJQsk5vgCZIIEBPikCGDtmOTh/Y2Gld
+bVO7iT97OPV2C2bjzkSNU8QiKqvVJ52nApI2nYW6i95z//HZ9S4yct+UvycMCbKO
+jjddZfPOglDG5ZMoWNu9IuJXvHuEnHB9dXvuyIT6jA0wmNh80UnjgHI2icYGfzbT
+mg7vM5VaPUFrIRoTKuBg8kvB9igfcqJma8nzfKnEwr40hIsM9g6+wXzrl2fWG0SS
+N/H9hQSEA9y3ZKJGgR2JCW3qzxomXgqEBH+thC6osBC0daloVLhaL6eLLPhuk7E1
+N1eKscMWRLfWuOE457KZWB2FXSu4w6GfJHwDodSjbJYDf/Y2nv0sQEs56PVTersB
+OP89f0FKYvADi7ThromY44WqvNU/C5QxSWmGwuDxo/jIvfU0Eh0FlTjz4Fp0KgLI
+gid9D6cud7/nnm5XJAUEnBpgXX3B+dQywdgQ9DtbGZ7x1uyRmCd6D6KcIUF3PXgS
+gufq+0shC1L6Sv8yLppbCVE/jvrVIDFv2Km0PjdlHP4=</CipherValue>
+        </CipherData>
+      </EncryptedKey>
+    </KeyInfo>
+    <CipherData>
+      <CipherValue>W9yyRe9kFzPeGepXVc1lQNcH86KKZl7UZ5Vn2JeWhsSbXuVhpvQa5x7tpLaOVlry
+tMwi9WrNaoYCnWFHPSB5/dczmW19OSnySIXRFbsioNXxRgLqmUogqgVRywXpl6GL
+AEDowsJg1zQO3GzWlot27zpokERxB8n9enVdIYrUPyPmYyME81sZ+nWXykqkM8ch
+fsDzZ2HR4IotzTa8ddtf/pptt8nWBI2J2tZlqznnzP34SHvJ9h8BRE/9j8Z5PUsr
+Nzjpa8caC7aEvf6/UOZxOasyxrYaPSrEHF8KBdrjvru0zO69HpLYdxg1r/lgBLjp
+odWgYG6hXFJR4s1X6d25tWAPhXmr6L5yaYSbQ63R8P8y2IyNQtt8sA59jSf+cmoo
+iY1G4d1WLnGeZIMFqfON6GyQXj2z+gJdtgzgeJpgPTghwU2LKERTVcMgs/5VG5aj
+2SbhEam2Mc6IOjk1wbXJ/kUXhjNffp5e1I32ZcgSH/38KbgPaFXPDqEPZckepBw7
+rwpDZlVRa3lpEvfbbukJ3blyGjYb65HGIQ+H05jyQaeMY/PqgAkL1Z4pun9PCBV2
+k9bN4Oql8O7NXEQiupegiVsbYdwkOm7+oTdj1dl0oCDt8FUee11HJDEH5MzBRDT9
+/E0bMj+W078wy/f2z+2vTN0zm8i9QQZWKiaz6ua25wFqZrircgcEAvX3IKwWLDcF
+WZO3gFEeuRsEytjXCB3dZJhTrxxakyea6jepzJmc3Yv7I1+VSJXq70BoJRB1TYZ1
+I2iHo5ZOSzvG5wlszHMdVj4omM5GWT6QeaxPpL6UYKU=</CipherValue>
+    </CipherData>
+</EncryptedData>

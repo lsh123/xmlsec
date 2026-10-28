@@ -761,6 +761,8 @@ xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
     VOID* pPaddingInfo = NULL;
     xmlSecByte* fixedData = NULL;
     xmlSecSize fixedDataSize = 0;
+    xmlSecByte* dsaSig = NULL;
+    DWORD cbHash;
     DWORD dwDataSize;
     int ret;
     int res = -1;
@@ -818,12 +820,52 @@ xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
         }
     }
 
+    /* for DSA signatures CNG requires the hash to be no longer than the group
+     * (q) size and the signature to be exactly 2 * qSize bytes; when the hash
+     * is larger than q (e.g. SHA-256 with a 160-bit q key) FIPS 186-4 requires
+     * truncating the hash to its leftmost q-size bits, and the r||s signature
+     * must be converted from the xmlsec size (2 * halfSize) to the CNG size
+     * (2 * qSize) by dropping the leading bytes of each half */
+    cbHash = ctx->cbHash;
+#ifndef XMLSEC_NO_DSA
+    if((ctx->keyId == xmlSecMSCngKeyDataDsaId) && (ctx->cbHash > XMLSEC_MSCNG_DSA_MAX_Q_SIZE)) {
+        DWORD qSize = 0;
+
+        ret = xmlSecMSCngDsaGetQSizeInBytes(pubkey, &qSize);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecMSCngDsaGetQSizeInBytes", xmlSecTransformGetName(transform));
+            goto done;
+        }
+        if(ctx->cbHash > qSize) {
+            cbHash = qSize;
+        }
+        if(dataSize != (xmlSecSize)(2 * qSize)) {
+            if(dataSize < (xmlSecSize)(2 * qSize)) {
+                xmlSecInvalidSizeLessThanError("Signature", dataSize, (xmlSecSize)(2 * qSize),
+                    xmlSecTransformGetName(transform));
+                goto done;
+            }
+            dsaSig = (xmlSecByte*)xmlMalloc(2 * qSize);
+            if(dsaSig == NULL) {
+                xmlSecMallocError(2 * qSize, NULL);
+                goto done;
+            }
+            /* drop the leading bytes of each half (they are zero for a valid
+             * signature; otherwise the signature will be rejected by CNG) */
+            memcpy(dsaSig, data + (ctx->signatureHalfSize - qSize), qSize);
+            memcpy(dsaSig + qSize, data + ctx->signatureHalfSize + (ctx->signatureHalfSize - qSize), qSize);
+            data = dsaSig;
+            dataSize = 2 * qSize;
+        }
+    }
+#endif /* XMLSEC_NO_DSA */
+
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(dataSize, dwDataSize, goto done, xmlSecTransformGetName(transform));
     status = BCryptVerifySignature(
         pubkey,
         pPaddingInfo,
         ctx->pbHash,
-        ctx->cbHash,
+        cbHash,
         (PBYTE)data,
         dwDataSize,
         ctx->dwInfoFlags);
@@ -849,6 +891,9 @@ xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
 done:
     if (fixedData != NULL) {
         xmlFree(fixedData);
+    }
+    if (dsaSig != NULL) {
+        xmlFree(dsaSig);
     }
     return(res);
 }
@@ -931,6 +976,7 @@ xmlSecMSCngSignatureSign(
     BCRYPT_PKCS1_PADDING_INFO pkcs1PaddingInfo;
     BCRYPT_PSS_PADDING_INFO pssPaddingInfo;
     VOID* pPaddingInfo = NULL;
+    DWORD cbHash;
     DWORD cbSignature;
     NTSTATUS status;
     xmlSecSize outSize;
@@ -950,6 +996,32 @@ xmlSecMSCngSignatureSign(
         return(-1);
     }
 
+    /* for DSA signatures CNG requires the hash to be no longer than the group
+     * (q) size; when the DSA hash is larger than q (e.g. SHA-256 with a
+     * 160-bit q key) FIPS 186-4 requires truncating the hash to its leftmost
+     * q-size bits */
+    cbHash = ctx->cbHash;
+#ifndef XMLSEC_NO_DSA
+    if((ctx->keyId == xmlSecMSCngKeyDataDsaId) && (ctx->cbHash > XMLSEC_MSCNG_DSA_MAX_Q_SIZE)) {
+        BCRYPT_KEY_HANDLE pubkey;
+        DWORD qSize = 0;
+
+        pubkey = xmlSecMSCngKeyDataGetPubkey(ctx->data);
+        if(pubkey == 0) {
+            xmlSecInternalError("xmlSecMSCngKeyDataGetPubkey", xmlSecTransformGetName(transform));
+            return(-1);
+        }
+        ret = xmlSecMSCngDsaGetQSizeInBytes(pubkey, &qSize);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecMSCngDsaGetQSizeInBytes", xmlSecTransformGetName(transform));
+            return(-1);
+        }
+        if(ctx->cbHash > qSize) {
+            cbHash = qSize;
+        }
+    }
+#endif /* XMLSEC_NO_DSA */
+
     /* calculate the length of the signature; this size probe passes
      * pPaddingInfo=NULL and dwFlags=0 on purpose - NCryptSignHash only needs
      * the hash to report the signature size, and the real call below supplies
@@ -959,7 +1031,7 @@ xmlSecMSCngSignatureSign(
         privkey,
         NULL,
         ctx->pbHash,
-        ctx->cbHash,
+        cbHash,
         NULL,
         0,
         &cbSignature,
@@ -968,6 +1040,67 @@ xmlSecMSCngSignatureSign(
         xmlSecMSCngNtError("NCryptSignHash", xmlSecTransformGetName(transform), status);
         return(-1);
     }
+
+    /* for DSA signatures the CNG signature size is 2 * qSize, which may differ
+     * from the xmlsec size of 2 * halfSize (e.g. DSA-SHA256 with a 160-bit q
+     * key); in that case sign into a temporary buffer and convert each r/s
+     * half to the xmlsec size by zero-padding on the left */
+#ifndef XMLSEC_NO_DSA
+    if((ctx->keyId == xmlSecMSCngKeyDataDsaId) && (cbSignature != (DWORD)(2 * ctx->signatureHalfSize))) {
+        xmlSecByte* cngSignature;
+        PBYTE outData;
+
+        if(cbSignature > (DWORD)(2 * ctx->signatureHalfSize)) {
+            xmlSecInvalidSizeMoreThanError("Signature", (xmlSecSize)cbSignature,
+                (xmlSecSize)(2 * ctx->signatureHalfSize), xmlSecTransformGetName(transform));
+            return(-1);
+        }
+        cngSignature = (xmlSecByte*)xmlMalloc(cbSignature);
+        if(cngSignature == NULL) {
+            xmlSecMallocError(cbSignature, NULL);
+            return(-1);
+        }
+        status = NCryptSignHash(
+            privkey,
+            NULL,
+            ctx->pbHash,
+            cbHash,
+            cngSignature,
+            cbSignature,
+            &cbSignature,
+            ctx->dwInfoFlags);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("NCryptSignHash", xmlSecTransformGetName(transform), status);
+            xmlFree(cngSignature);
+            return(-1);
+        }
+        /* DSA signatures have a fixed size of 2 * qSize; the real call must
+         * report an even size no larger than the xmlsec size so that the r/s
+         * halves can be converted to the xmlsec layout */
+        if((((xmlSecSize)cbSignature % 2) != 0) || ((xmlSecSize)cbSignature > (xmlSecSize)(2 * ctx->signatureHalfSize))) {
+            xmlSecInternalError2("NCryptSignHash", xmlSecTransformGetName(transform),
+                "unexpected signature size=" XMLSEC_SIZE_FMT, (xmlSecSize)cbSignature);
+            xmlFree(cngSignature);
+            return(-1);
+        }
+        outSize = 2 * ctx->signatureHalfSize;
+        ret = xmlSecBufferSetSize(&(transform->outBuf), outSize);
+        if(ret < 0) {
+            xmlSecInternalError2("xmlSecBufferSetSize", xmlSecTransformGetName(transform),
+                "size=" XMLSEC_SIZE_FMT, outSize);
+            xmlFree(cngSignature);
+            return(-1);
+        }
+        outData = (PBYTE)xmlSecBufferGetData(&(transform->outBuf));
+        memset(outData, 0, outSize);
+        memcpy(outData + (ctx->signatureHalfSize - cbSignature / 2), cngSignature, cbSignature / 2);
+        memcpy(outData + ctx->signatureHalfSize + (ctx->signatureHalfSize - cbSignature / 2),
+            cngSignature + cbSignature / 2, cbSignature / 2);
+        xmlFree(cngSignature);
+        return(0);
+    }
+#endif /* XMLSEC_NO_DSA */
+
     XMLSEC_SAFE_CAST_ULONG_TO_SIZE(cbSignature, outSize, return(-1), xmlSecTransformGetName(transform));
 
     /* allocate the signature buffer on the heap */
@@ -995,7 +1128,7 @@ xmlSecMSCngSignatureSign(
         privkey,
         pPaddingInfo,
         ctx->pbHash,
-        ctx->cbHash,
+        cbHash,
         (PBYTE)xmlSecBufferGetData(&(transform->outBuf)),
         cbSignature,
         &cbSignature,

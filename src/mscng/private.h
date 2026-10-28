@@ -170,6 +170,8 @@ int                xmlSecMSCngDsaBuildSubjectPublicKeyInfoDer       (BCRYPT_KEY_
                                                                      LPVOID* ppDer,
                                                                      DWORD* pcbDer);
 int                xmlSecMSCngIsDsaBcryptKey                        (BCRYPT_KEY_HANDLE hKey);
+int                xmlSecMSCngDsaGetQSizeInBytes                    (BCRYPT_KEY_HANDLE hKey,
+                                                                     DWORD* qSize);
 xmlSecKeyDataPtr   xmlSecMSCngKeyDataDsaRead                        (xmlSecKeyDataId id,
                                                                      xmlSecKeyValueDsaPtr dsaValue);
 int                xmlSecMSCngKeyDataDsaPubkeyWrite                 (BCRYPT_KEY_HANDLE pubkey,

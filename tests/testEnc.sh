@@ -2040,6 +2040,30 @@ execEncTest $res_success \
     "" \
     "--keys-file $topfolder/keys/keys.xml"
 
+#
+# DH-ES key agreement (RFC 5114 group 3 keys). The data key is derived from
+# the AgreementMethod, so encryption uses the first private key (plus the
+# second public key) and decryption uses the second private key (plus the
+# first public key).
+#
+execEncTest $res_success \
+    "" \
+    "merlin-xmlenc-five.modern/encrypt-content-aes192-cbc-dh-sha256" \
+    "aes192-cbc dh-es concatkdf" \
+    "agreement-method dh" \
+    "--enabled-key-data agreement-method,key-value,key-name,dh $dhx_priv_key_option:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-key.$dhx_priv_key_format $dhx_pub_key_option:dhx-rfc5114-3-first $topfolder/keys/dhx/dhx-rfc5114-3-first-pubkey.$dhx_pub_key_format" \
+    "--enabled-key-data agreement-method,key-value,key-name,dh $dhx_priv_key_option:dhx-rfc5114-3-first $topfolder/keys/dhx/dhx-rfc5114-3-first-key.$dhx_priv_key_format $dhx_pub_key_option:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-pubkey.$dhx_pub_key_format --xml-data $topfolder/merlin-xmlenc-five.modern/encrypt-content-aes192-cbc-dh-sha256.data --node-id Payment" \
+    "--enabled-key-data agreement-method,key-value,key-name,dh $dhx_priv_key_option:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-key.$dhx_priv_key_format $dhx_pub_key_option:dhx-rfc5114-3-first $topfolder/keys/dhx/dhx-rfc5114-3-first-pubkey.$dhx_pub_key_format"
+
+execEncTest $res_success \
+    "" \
+    "merlin-xmlenc-five.modern/encrypt-element-aes256-cbc-kw-aes256-dh-sha256" \
+    "aes256-cbc kw-aes256 dh-es concatkdf" \
+    "agreement-method enc-key dh" \
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,dh --max-encrypted-key-level 3 $dhx_priv_key_option:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-key.$dhx_priv_key_format $dhx_pub_key_option:dhx-rfc5114-3-first $topfolder/keys/dhx/dhx-rfc5114-3-first-pubkey.$dhx_pub_key_format" \
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,dh --max-encrypted-key-level 3 --session-key aes-256 $dhx_priv_key_option:dhx-rfc5114-3-first $topfolder/keys/dhx/dhx-rfc5114-3-first-key.$dhx_priv_key_format $dhx_pub_key_option:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-pubkey.$dhx_pub_key_format --xml-data $topfolder/merlin-xmlenc-five.modern/encrypt-element-aes256-cbc-kw-aes256-dh-sha256.data --node-id Purchase" \
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,dh --max-encrypted-key-level 3 $dhx_priv_key_option:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-key.$dhx_priv_key_format $dhx_pub_key_option:dhx-rfc5114-3-first $topfolder/keys/dhx/dhx-rfc5114-3-first-pubkey.$dhx_pub_key_format"
+
 ##########################################################################
 #
 # phaos-xmlenc-three-01
@@ -2451,6 +2475,41 @@ execEncTest $res_success \
     "--keys-file $topfolder/keys/keys.xml" \
     "--session-key aes-128 --keys-file $topfolder/keys/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/phaos-xmlenc-three-01.modern/enc-text-aes128-kw-aes192.data --node-name http://example.org/paymentv2:Number" \
     "--keys-file $topfolder/keys/keys.xml"
+
+#
+# DH-ES key agreement (RFC 5114 group 3 keys). These replace the four legacy
+# key-agreement files (enc-element-{3des,aes128,aes192,aes256}-ka-dh); the
+# 3DES variant is covered by the aes256 test. The data key is derived from
+# the AgreementMethod, so encryption uses the first private key (plus the
+# second public key) and decryption uses the second private key (plus the
+# first public key).
+#
+execEncTest $res_success \
+    "" \
+    "phaos-xmlenc-three-01.modern/enc-element-aes128-ka-dh-sha256" \
+    "aes128-cbc dh-es concatkdf" \
+    "agreement-method dh" \
+    "--enabled-key-data agreement-method,key-value,key-name,dh $dhx_priv_key_option:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-key.$dhx_priv_key_format $dhx_pub_key_option:dhx-rfc5114-3-first $topfolder/keys/dhx/dhx-rfc5114-3-first-pubkey.$dhx_pub_key_format" \
+    "--enabled-key-data agreement-method,key-value,key-name,dh $dhx_priv_key_option:dhx-rfc5114-3-first $topfolder/keys/dhx/dhx-rfc5114-3-first-key.$dhx_priv_key_format $dhx_pub_key_option:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-pubkey.$dhx_pub_key_format --xml-data $topfolder/phaos-xmlenc-three-01.modern/enc-element-aes128-ka-dh-sha256.data --node-name http://example.org/paymentv2:CreditCard" \
+    "--enabled-key-data agreement-method,key-value,key-name,dh $dhx_priv_key_option:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-key.$dhx_priv_key_format $dhx_pub_key_option:dhx-rfc5114-3-first $topfolder/keys/dhx/dhx-rfc5114-3-first-pubkey.$dhx_pub_key_format"
+
+execEncTest $res_success \
+    "" \
+    "phaos-xmlenc-three-01.modern/enc-element-aes192-ka-dh-sha256" \
+    "aes192-cbc dh-es concatkdf" \
+    "agreement-method dh" \
+    "--enabled-key-data agreement-method,key-value,key-name,dh $dhx_priv_key_option:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-key.$dhx_priv_key_format $dhx_pub_key_option:dhx-rfc5114-3-first $topfolder/keys/dhx/dhx-rfc5114-3-first-pubkey.$dhx_pub_key_format" \
+    "--enabled-key-data agreement-method,key-value,key-name,dh $dhx_priv_key_option:dhx-rfc5114-3-first $topfolder/keys/dhx/dhx-rfc5114-3-first-key.$dhx_priv_key_format $dhx_pub_key_option:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-pubkey.$dhx_pub_key_format --xml-data $topfolder/phaos-xmlenc-three-01.modern/enc-element-aes192-ka-dh-sha256.data --node-name http://example.org/paymentv2:CreditCard" \
+    "--enabled-key-data agreement-method,key-value,key-name,dh $dhx_priv_key_option:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-key.$dhx_priv_key_format $dhx_pub_key_option:dhx-rfc5114-3-first $topfolder/keys/dhx/dhx-rfc5114-3-first-pubkey.$dhx_pub_key_format"
+
+execEncTest $res_success \
+    "" \
+    "phaos-xmlenc-three-01.modern/enc-element-aes256-ka-dh-sha256" \
+    "aes256-cbc dh-es concatkdf" \
+    "agreement-method dh" \
+    "--enabled-key-data agreement-method,key-value,key-name,dh $dhx_priv_key_option:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-key.$dhx_priv_key_format $dhx_pub_key_option:dhx-rfc5114-3-first $topfolder/keys/dhx/dhx-rfc5114-3-first-pubkey.$dhx_pub_key_format" \
+    "--enabled-key-data agreement-method,key-value,key-name,dh $dhx_priv_key_option:dhx-rfc5114-3-first $topfolder/keys/dhx/dhx-rfc5114-3-first-key.$dhx_priv_key_format $dhx_pub_key_option:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-pubkey.$dhx_pub_key_format --xml-data $topfolder/phaos-xmlenc-three-01.modern/enc-element-aes256-ka-dh-sha256.data --node-name http://example.org/paymentv2:CreditCard" \
+    "--enabled-key-data agreement-method,key-value,key-name,dh $dhx_priv_key_option:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-key.$dhx_priv_key_format $dhx_pub_key_option:dhx-rfc5114-3-first $topfolder/keys/dhx/dhx-rfc5114-3-first-pubkey.$dhx_pub_key_format"
 
 extra_message="Negative test: missing key"
 execEncTest $res_fail \

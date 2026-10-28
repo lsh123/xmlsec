@@ -17,10 +17,14 @@ see the Copyright file in the distribution for details.
 
 - **TBD**
   The [XML Security Library 1.3.14](download.md) release includes the following changes:
-  - (xmlsec-build) Disabled Triple DES and Triple DES KeyWrap by default (use `--enable-des` option to re-enable both).
+  - (xmlsec-core, **not backward compatible**) Key agreement methods with `ConcatKDF` key derivation
+    method now fall back to the KDF digest output size as the derived key length when the uplevel
+    key requirements do not specify a key size.
+  - (xmlsec-build, **not backward compatible**) Disabled Triple DES and Triple DES KeyWrap
+    by default (use `--enable-des` option to re-enable both).
   - (xmlsec-docs) GOST-R3410-2001 algorithm is marked as "deprecated" (already disabled by default).
-  - (xmlsec-docs) SHA1 (and all derivatives); DSA; RSA-PKCS1 v1.5; ChaCha20 algorithms are marked as "use discouraged".
-  These algorithms will be deprecated in the future and disabled by default.
+  - (xmlsec-docs) SHA1 (and all derivatives); DSA; RSA-PKCS1 v1.5; ChaCha20 algorithms are marked
+    as "use discouraged". These algorithms will be deprecated in the future and disabled by default.
   - Many other small fixes (see [commit log](https://github.com/lsh123/xmlsec/commits/xmlsec_1_3_14) for more details).
 
 - **October 27, 2026**

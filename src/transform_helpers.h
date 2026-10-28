@@ -71,6 +71,9 @@ struct _xmlSecTransformKAM {
     xmlSecTransformPtr      kdfTransform;     /**< Key Derivation Function transform */
     xmlSecKeyInfoCtx        kdfKeyInfoCtx;    /**< Context for KDF key info */
     xmlSecTransformPtr      memBufTransform;  /**< memBuf transform used to collect KDF output */
+    xmlSecSize              defaultOutputSize;/**< default derived key size in bytes, used when
+                                                *   the caller does not specify one; 0 means
+                                                *   not specified */
 };
 typedef struct _xmlSecTransformKAM                          xmlSecTransformKAM,
                                                             *xmlSecTransformKAMPtr;

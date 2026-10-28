@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE test [
+<!ATTLIST PaymentInfo Id ID #IMPLIED>
+]>
+<PurchaseOrder xmlns="urn:example:po">
+  <Items>
+    <Item Code="001-001-001" Quantity="1">
+      spade
+    </Item>
+    <Item Code="001-001-002" Quantity="1">
+      shovel
+    </Item>
+  </Items>
+  <ShippingAddress>
+    Dig PLC, 1 First Ave, Dublin 1, Ireland
+  </ShippingAddress>
+  <PaymentInfo Id="Payment"><EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#" xmlns:xenc11="http://www.w3.org/2009/xmlenc11#" Type="http://www.w3.org/2001/04/xmlenc#Content">
+      <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes192-cbc"/>
+      <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <AgreementMethod xmlns="http://www.w3.org/2001/04/xmlenc#" Algorithm="http://www.w3.org/2009/xmlenc11#dh-es">
+          <xenc11:KeyDerivationMethod Algorithm="http://www.w3.org/2009/xmlenc11#ConcatKDF">
+            <xenc11:ConcatKDFParams AlgorithmID="" PartyUInfo="" PartyVInfo="">
+              <DigestMethod xmlns="http://www.w3.org/2000/09/xmldsig#" Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+            </xenc11:ConcatKDFParams>
+          </xenc11:KeyDerivationMethod>
+          <OriginatorKeyInfo>
+            <KeyName xmlns="http://www.w3.org/2000/09/xmldsig#">dhx-rfc5114-3-first</KeyName>
+            <KeyValue xmlns="http://www.w3.org/2000/09/xmldsig#">
+<DHKeyValue xmlns="http://www.w3.org/2001/04/xmlenc#">
+<P>
+h6jmHbS2Zjz/u9GcZRlZmYzu9ghmDdDyXSzu1ENeOwDgDfjx1hlX1Pr330Vhsqow
+FsPZETQJb6o79Cltgw6afCCeDGSXUXq9WoqdMGvPZ+2R+eZyW0dYwCLgse9Cdb97
+bFv8EdRfkIi5QfVOseWbuLw5oL8SMH9cT9twxYGyP3a2Osrhyqa3kC1SUmc1SIoO
+8TxtmlG/pKs62DR3llJNjvahZ7WkGCXZZ+FE5RQFZCUcysuD5rSG9rPKP3lxUGAm
+wLhX9omWKFbe1AEKvQvmIcOjlgpU5xDDdfJjddcBQQOktUMwwZivEmEW0iduEXFf
+aTh3+tfvCcrbCUrpHhoVlw==
+</P>
+<Q>
+jPg2QqcJoJe0R5l2QBKdopmxpH0es3ULowiw/mT1+9M=
+</Q>
+<Generator>
+P7Msm3MTTQsud1BmYO29SEynsY8h7yBUB/R5OhoLoSUQ28FQd75GP/9P7UqsC7VV
+vjpsGwxrR7G8N3O/foxvYpASKPjCjLsYpVrjE0EACmUBlvkxx3pX8t30Y+Xp7BRL
+d33mKqq4qGKKw3bSgtbtOGTmeYJCjryDHRQ0j28vkZO1BFrydnFk4d/JZ8H7Py5V
+pL0b/+g7nIDQUrmF0YLqCtsqO3MT0/4UyEhLHgUliLm30rvS3wFhmezQbhVXzQkV
+szU7u2Tg7Dd/0Cg3DfkrUseJFCjNxn62GEtSPR2yRsMvYweEkPAO+NZH0UjUeVRR
+XiMnz++YxYJmS0wPbMQWWQ==
+</Generator>
+<Public>
+E/R21WwMZQITvJl/cwRfaNT14BmmFHd3+ocALKsMTyvKEchyVoHSDTTKhTN956u7
+tAsdNLlSPkuPKKoH0+rcJ1q/ZeoNpoNilG7YYA+6zYR1soa6+gzowfCyUVvznkQ1
+Fq2c4m01YEheuKYLPjnSLIdqtt3BFFOszCE+UU5WsCc/SPrY61fZUcOLYZxfBvIE
+ZStyQN3nFcaoqeBQ9Gsv1eK9TjzYJg/MUoKjr+KEMKhz1+xNV/skdIFiJsG8y3y9
+pO8ucEDANcVCyHeCChRHYinhgGsvL71FXfEHLDpqfEH+c678c3tEWquwLNPgjaaq
+683wRZCBG+cK9rQyz1INxg==
+</Public>
+</DHKeyValue>
+</KeyValue>
+          </OriginatorKeyInfo>
+          <RecipientKeyInfo>
+            <KeyName xmlns="http://www.w3.org/2000/09/xmldsig#">dhx-rfc5114-3-second</KeyName>
+          </RecipientKeyInfo>
+        </AgreementMethod>
+      </KeyInfo>
+      <CipherData>
+        <CipherValue>CxguLEJSRmY3Unk7dipnrO6bHRlo61OfWg6uK3IRhntRO8YVtlVib2w0xaLNbRv1
+CqZ4AZyF80zdizJLhrExH8uROnioZ+ADqmc1PqQoE8TQQBbEhTLzCt/bpIhjxGyQ
+wfdBrIEPjHq+zh0QaJkl6UdnH+UkUeoQRUsFTlZK7kUaKm9pGbB4B4MMoPGTUKOl
+JqJx2apFrMgXUBe7uYcpTL4Jt21/9WSLrNFvQD77ZE1nY3xGROjuNasj3Up2XBhB
+haS2qwTu41BmWbpI8PhXZQbp+Y8tbZNNxmmFFuucdwxhA9ZG1YA+HxS9toM3v6Zh
+KrdT0uYlVQ6kjvjqsk+TPhKsrU+5G/F0clutT5cj/hs=</CipherValue>
+      </CipherData>
+</EncryptedData></PaymentInfo>
+</PurchaseOrder>

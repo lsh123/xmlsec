@@ -3070,6 +3070,30 @@ if [ "z$xmlsec_feature_rsa_oaep_sha256" = "zyes" ] ; then
         "--enabled-reference-uris any $priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"
 fi
 
+#
+# DH-ES key agreement (RFC 5114 group 3 keys). The signing key is derived
+# from the AgreementMethod, so the originator signs with the first private
+# key (plus the second public key) and verification uses the second private
+# key (plus the first public key).
+#
+execDSigTest $res_success \
+    "" \
+    "merlin-xmlenc-five.modern/encsig-hmac-sha256-dh" \
+    "sha256 hmac-sha256 dh-es concatkdf" \
+    "agreement-method dh" \
+    "--enabled-key-data agreement-method,key-value,key-name,dh --enabled-reference-uris any $dhx_priv_key_option:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-key.$dhx_priv_key_format $dhx_pub_key_option:dhx-rfc5114-3-first $topfolder/keys/dhx/dhx-rfc5114-3-first-pubkey.$dhx_pub_key_format $url_map_xml_stylesheet_2005" \
+    "--enabled-key-data agreement-method,key-value,key-name,dh --enabled-reference-uris any $dhx_priv_key_option:dhx-rfc5114-3-first $topfolder/keys/dhx/dhx-rfc5114-3-first-key.$dhx_priv_key_format $dhx_pub_key_option:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-pubkey.$dhx_pub_key_format $url_map_xml_stylesheet_2005" \
+    "--enabled-key-data agreement-method,key-value,key-name,dh --enabled-reference-uris any $dhx_priv_key_option:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-key.$dhx_priv_key_format $dhx_pub_key_option:dhx-rfc5114-3-first $topfolder/keys/dhx/dhx-rfc5114-3-first-pubkey.$dhx_pub_key_format $url_map_xml_stylesheet_2005"
+
+execDSigTest $res_success \
+    "" \
+    "merlin-xmlenc-five.modern/encsig-hmac-sha256-kw-aes256-dh" \
+    "sha256 hmac-sha256 kw-aes256 dh-es concatkdf" \
+    "agreement-method enc-key dh" \
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,dh --max-encrypted-key-level 3 --enabled-reference-uris any $dhx_priv_key_option:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-key.$dhx_priv_key_format $dhx_pub_key_option:dhx-rfc5114-3-first $topfolder/keys/dhx/dhx-rfc5114-3-first-pubkey.$dhx_pub_key_format $url_map_xml_stylesheet_2005" \
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,dh --max-encrypted-key-level 3 --session-key hmac-256 --enabled-reference-uris any $dhx_priv_key_option:dhx-rfc5114-3-first $topfolder/keys/dhx/dhx-rfc5114-3-first-key.$dhx_priv_key_format $dhx_pub_key_option:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-pubkey.$dhx_pub_key_format $url_map_xml_stylesheet_2005" \
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,dh --max-encrypted-key-level 3 --enabled-reference-uris any $dhx_priv_key_option:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-key.$dhx_priv_key_format $dhx_pub_key_option:dhx-rfc5114-3-first $topfolder/keys/dhx/dhx-rfc5114-3-first-pubkey.$dhx_pub_key_format $url_map_xml_stylesheet_2005"
+
 
 ##########################################################################
 #

@@ -79,15 +79,15 @@ check-verify: check-sign $(PROGRAMS_VERIFY)
 
 # Do not redirect ouput to overwrite the result files
 check-enc: $(PROGRAMS_ENC)
-	./encrypt1 encrypt1-tmpl.xml deskey.bin
-	./encrypt2 encrypt2-doc.xml  deskey.bin
+	./encrypt1 encrypt1-tmpl.xml aeskey.bin
+	./encrypt2 encrypt2-doc.xml  aeskey.bin
 	./encrypt3 encrypt3-doc.xml  rsakey.pem
 
 check-dec: check-enc $(PROGRAMS_DEC)
-	./decrypt1 encrypt1-res.xml  deskey.bin
-	./decrypt1 encrypt2-res.xml  deskey.bin
-	./decrypt2 encrypt1-res.xml  deskey.bin
-	./decrypt2 encrypt2-res.xml  deskey.bin
+	./decrypt1 encrypt1-res.xml  aeskey.bin
+	./decrypt1 encrypt2-res.xml  aeskey.bin
+	./decrypt2 encrypt1-res.xml  aeskey.bin
+	./decrypt2 encrypt2-res.xml  aeskey.bin
 	./decrypt3 encrypt1-res.xml
 	./decrypt3 encrypt2-res.xml
 	./decrypt3 encrypt3-res.xml

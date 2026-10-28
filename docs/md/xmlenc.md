@@ -34,7 +34,7 @@ XML Security library supports the following features as defined in
 | Algorithm | [Requirements](https://www.w3.org/TR/xmlenc-core1/#sec-AlgID) | XMLSec with OpenSSL | XMLSec with NSS | XMLSec with GnuTLS | XMLSec with MSCng | XMLSec with MSCrypto [(1)](#feature-disabled) | XMLSec with GCrypt [(1)](#feature-disabled) |
 |---|---|---|---|---|---|---|---|
 | **Block Encryption Algorithms** | | | | | | | |
-| [Triple DES (DES3)](https://www.w3.org/TR/xmlenc-core1/#sec-tripledes-cbc) | Required | Yes | Yes | Yes | Yes | Yes | Yes |
+| [Triple DES (DES3)](https://www.w3.org/TR/xmlenc-core1/#sec-tripledes-cbc) | DEPRECATED | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) |
 | [AES-CBC-128](https://www.w3.org/TR/xmlenc-core1/#sec-AES) | Required | Yes | Yes | Yes | Yes | Yes | Yes |
 | [AES-CBC-192](https://www.w3.org/TR/xmlenc-core1/#sec-AES) | Optional | Yes | Yes | Yes | Yes | Yes | Yes |
 | [AES-CBC-256](https://www.w3.org/TR/xmlenc-core1/#sec-AES) | Required | Yes | Yes | Yes | Yes | Yes | Yes |
@@ -59,7 +59,7 @@ XML Security library supports the following features as defined in
 | [RSA-OAEP with MGF1-SHA384](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Optional | Yes | Yes | Yes [(2)](#rsa-oaep-same-algo) | Yes [(2)](#rsa-oaep-same-algo) | No | Yes [(2)](#rsa-oaep-same-algo) |
 | [RSA-OAEP with MGF1-SHA512](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Optional | Yes | Yes | Yes [(2)](#rsa-oaep-same-algo) | Yes [(2)](#rsa-oaep-same-algo) | No | Yes [(2)](#rsa-oaep-same-algo) |
 | **Symmetric Key Wrap** | | | | | | | |
-| [Triple DES Key Wrap](https://www.w3.org/TR/xmlenc-core1/#sec-kw-tripledes) | Required | Yes | Yes | Yes | Yes | Yes | Yes |
+| [Triple DES Key Wrap](https://www.w3.org/TR/xmlenc-core1/#sec-kw-tripledes) | DEPRECATED | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) |
 | [AES-128 KeyWrap](https://www.w3.org/TR/xmlenc-core1/#sec-kw-aes) | Required | Yes | Yes | Yes | Yes | Yes | Yes |
 | [AES-192 KeyWrap](https://www.w3.org/TR/xmlenc-core1/#sec-kw-aes) | Optional | Yes | Yes | Yes | Yes | Yes | Yes |
 | [AES-256 KeyWrap](https://www.w3.org/TR/xmlenc-core1/#sec-kw-aes) | Required | Yes | Yes | Yes | Yes | Yes | Yes |

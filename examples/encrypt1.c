@@ -7,24 +7,24 @@
  */
 /**
  * @brief XML Security Library example: Encrypting data using a template file.
- * @details Encrypts binary data using a template file and a Triple DES key from a binary file
+ * @details Encrypts binary data using a template file and an AES key from a binary file
  *
  * Usage:
  *
  * \code{.sh}
- *      ./encrypt1 <xml-tmpl> <des-key-file>
+ *      ./encrypt1 <xml-tmpl> <aes-key-file>
  * \endcode
  *
  * Example:
  *
  * \code{.sh}
- *      ./encrypt1 encrypt1-tmpl.xml deskey.bin > encrypt1-res.xml
+ *      ./encrypt1 encrypt1-tmpl.xml aeskey.bin > encrypt1-res.xml
  * \endcode
  *
  * The result can be decrypted using the decrypt1 example:
  *
  * \code{.sh}
- *      ./decrypt1 encrypt1-res.xml deskey.bin
+ *      ./decrypt1 encrypt1-res.xml aeskey.bin
  * \endcode
  */
 #include <stdlib.h>
@@ -152,11 +152,11 @@ done:
 }
 
 /**
- * @brief Encrypts binary data using a Triple DES key and a template file.
- * @details Encrypts binary #data using template from #tmpl_file and Triple DES key from
+ * @brief Encrypts binary data using an AES key and a template file.
+ * @details Encrypts binary #data using template from #tmpl_file and AES key from
  * #key_file.
  * @param tmpl_file the encryption template file name.
- * @param key_file the Triple DES key file.
+ * @param key_file the AES key file.
  * @param data the binary data to encrypt.
  * @param dataSize the binary data size.
  * @return 0 on success or a negative value if an error occurs.
@@ -198,10 +198,10 @@ encrypt_file(const char* tmpl_file, const char* key_file,
         goto done;
     }
 
-    /* load DES key */
-    encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
+    /* load AES key */
+    encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataAesId, key_file);
     if(encCtx->encKey == NULL) {
-        fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);
+        fprintf(stderr,"Error: failed to load aes key from binary file \"%s\"\n", key_file);
         goto done;
     }
 

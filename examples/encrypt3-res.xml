@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-XML Security Library example: Original XML doc file before encryption (encrypt3 example). 
+XML Security Library example: Encrypted XML file (encrypt3 example).
 -->
 <EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#" Type="http://www.w3.org/2001/04/xmlenc#Element">
-<EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#tripledes-cbc"/>
+<EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes128-cbc"/>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <EncryptedKey xmlns="http://www.w3.org/2001/04/xmlenc#">
 <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-1_5"/>
@@ -11,13 +11,13 @@ XML Security Library example: Original XML doc file before encryption (encrypt3 
 <KeyName>rsakey.pem</KeyName>
 </KeyInfo>
 <CipherData>
-<CipherValue>pFfhaCpQfHTOJ+mRN919Ia3JimY2AS/8u9pimLEWGGjh3egy3pE2st4+YoVkpS4G
-XyUU4Ps+KRzsdJcKI4moXQ==</CipherValue>
+<CipherValue>BY7+biYQJ9FnBUVBjClrIceSH/NhvT8jQB6VcRnKN3yfPiAxDWkWzdzkU3O3n/UZ
+fsTuzNv1Hg+711Zyrq/RNA==</CipherValue>
 </CipherData>
 </EncryptedKey>
 </KeyInfo>
 <CipherData>
-<CipherValue>PMuoILFXjCmMg2pCzrmJYZcySLsTzgGYRX2ymYV9tLVrNSPhWV2mwMHWMchSWH9b
-8pRgdaJ3msWmN3EqqElV1Y5wEDQjB5nMz7Tsz3+QmrAxGfxj7bCPyw==</CipherValue>
+<CipherValue>Ls6t05/xD9JubSUjqsV0QaR8iBrj9oSEhHAKhGY9PCRIBGjI4UDLBbS78oZFr7XP
+445uJuEbXWlhf2ZQkboOfxJPKsdDLKjQ8qEYZU0fsLKNZiuyBHgIhVY6GN8Jgn2X</CipherValue>
 </CipherData>
 </EncryptedData>

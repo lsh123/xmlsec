@@ -8,19 +8,19 @@
 /**
  * @brief XML Security Library example: Decrypting an encrypted file using a keys manager.
  * @details Decrypts encrypted XML file using a keys manager and a list of
- * DES keys from a binary file.
+ * AES keys from a binary file.
  *
  * Usage:
  *
  * \code{.sh}
- *      ./decrypt2 <xml-enc> <des-key-file1> [<des-key-file2> [...]]
+ *      ./decrypt2 <xml-enc> <aes-key-file1> [<aes-key-file2> [...]]
  * \endcode
  *
  * Example:
  *
  * \code{.sh}
- *      ./decrypt2 encrypt1-res.xml deskey.bin
- *      ./decrypt2 encrypt2-res.xml deskey.bin
+ *      ./decrypt2 encrypt1-res.xml aeskey.bin
+ *      ./decrypt2 encrypt2-res.xml aeskey.bin
  * \endcode
  */
 #include <stdlib.h>
@@ -37,7 +37,7 @@
 #include <xmlsec/crypto.h>
 #include <xmlsec/dl.h>
 
-xmlSecKeysMngrPtr load_des_keys(char** files, int files_size);
+xmlSecKeysMngrPtr load_aes_keys(char** files, int files_size);
 int decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file);
 
 int
@@ -98,7 +98,7 @@ main(int argc, char **argv) {
     xmlsec_initialized = 1;
 
     /* create keys manager and load keys */
-    mngr = load_des_keys(&(argv[2]), argc - 2);
+    mngr = load_aes_keys(&(argv[2]), argc - 2);
     if(mngr == NULL) {
         goto done;
     }
@@ -129,8 +129,8 @@ done:
 }
 
 /**
- * @brief Creates a keys manager and loads DES keys from files.
- * @details Creates a simple keys manager and loads the DES keys from #files into it.
+ * @brief Creates a keys manager and loads AES keys from files.
+ * @details Creates a simple keys manager and loads the AES keys from #files into it.
  * The caller is responsible for destroying returned keys manager using
  * #xmlSecKeysMngrDestroy.
  * @param files the list of filenames.
@@ -139,7 +139,7 @@ done:
  * occurs.
  */
 xmlSecKeysMngrPtr
-load_des_keys(char** files, int files_size) {
+load_aes_keys(char** files, int files_size) {
     xmlSecKeysMngrPtr mngr;
     xmlSecKeyPtr key;
     int i;
@@ -165,10 +165,10 @@ load_des_keys(char** files, int files_size) {
     for(i = 0; i < files_size; ++i) {
         assert(files[i]);
 
-        /* load DES key */
-        key = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, files[i]);
+        /* load AES key */
+        key = xmlSecKeyReadBinaryFile(xmlSecKeyDataAesId, files[i]);
         if(key == NULL) {
-            fprintf(stderr, "Error: failed to load DES key from binary file \"%s\"\n", files[i]);
+            fprintf(stderr, "Error: failed to load AES key from binary file \"%s\"\n", files[i]);
             xmlSecKeysMngrDestroy(mngr);
             return(NULL);
         }
@@ -196,8 +196,8 @@ load_des_keys(char** files, int files_size) {
 }
 
 /**
- * @brief Decrypts an encrypted XML file using a DES key from keys manager.
- * @details Decrypts the XML file #enc_file using DES keys from the keys manager
+ * @brief Decrypts an encrypted XML file using an AES key from keys manager.
+ * @details Decrypts the XML file #enc_file using AES keys from the keys manager
  * and prints results to stdout.
  * @param mngr the pointer to keys manager.
  * @param enc_file the encrypted XML file name.

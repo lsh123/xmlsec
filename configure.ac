@@ -216,6 +216,7 @@ if test "z$enable_legacy_features" = "zyes" ; then
     dnl legacy crypto algos
     enable_md5="yes"
     enable_ripemd160="yes"
+    enable_des="yes"
 
     AC_MSG_RESULT([yes])
 else
@@ -2342,14 +2343,14 @@ dnl ==========================================================================
 dnl Check if we need DES support
 dnl ==========================================================================
 AC_MSG_CHECKING(for DES support)
-AC_ARG_ENABLE([des], [AS_HELP_STRING([--enable-des],[enable DES support (yes, use discouraged)])])
-if test "z$enable_des" = "zno" ; then
+AC_ARG_ENABLE([des], [AS_HELP_STRING([--enable-des],[enable DES support (no, deprecated)])])
+if test "z$enable_des" = "zyes" ; then
+    XMLSEC_NO_DES="0"
+    AC_MSG_RESULT([yes (deprecated)])
+else
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_DES=1"
     XMLSEC_NO_DES="1"
     AC_MSG_RESULT([disabled])
-else
-    XMLSEC_NO_DES="0"
-    AC_MSG_RESULT([yes (use discouraged)])
 fi
 AM_CONDITIONAL(XMLSEC_NO_DES, test "z$XMLSEC_NO_DES" = "z1")
 AC_SUBST(XMLSEC_NO_DES)

@@ -52,30 +52,36 @@ make check XMLSEC_TEST_IGNORE_PERCENT_SUCCESS=y
 
 ## Statistics
 
-The tests are run with legacy algorithms enabled but without GOST. Note that the
-reported number of skipped tests is lower than the actual number, because a single
-skipped test case may include multiple subtests.
+The tests were run in October 2026 without legacy algorithms (MD5, RIPEMD-160, DES) and
+without GOST. Note that the reported number of skipped tests is lower than the actual
+number, because a single skipped test case may include multiple subtests.
 
 - OpenSSL:
-  - xmldsig: TOTAL OK: 293; TOTAL FAILED: 0; TOTAL SKIPPED: 3
-  - xmlenc:  TOTAL OK: 590; TOTAL FAILED: 0; TOTAL SKIPPED: 0
+   - keys:     TOTAL OK: 73; OK (percent): 86; TOTAL FAILED: 0; TOTAL SKIPPED: 11
+   - xmldsig:  TOTAL OK: 568; OK (percent): 94; TOTAL FAILED: 0; TOTAL SKIPPED: 33
+   - xmlenc:   TOTAL OK: 778; OK (percent): 96; TOTAL FAILED: 0; TOTAL SKIPPED: 32
 
 - NSS:
-   - xmldsig: TOTAL OK: 268; TOTAL FAILED: 0; TOTAL SKIPPED: 11
-   - xmlenc:  TOTAL OK: 578; TOTAL FAILED: 0; TOTAL SKIPPED: 4
+   - keys:     TOTAL OK: 63; OK (percent): 84; TOTAL FAILED: 0; TOTAL SKIPPED: 12
+   - xmldsig:  TOTAL OK: 509; OK (percent): 93; TOTAL FAILED: 0; TOTAL SKIPPED: 35
+   - xmlenc:   TOTAL OK: 694; OK (percent): 97; TOTAL FAILED: 0; TOTAL SKIPPED: 17
 
 - GnuTLS:
-   - xmldsig: TOTAL OK: 238; TOTAL FAILED: 0; TOTAL SKIPPED: 26
-   - xmlenc:  TOTAL OK: 482; TOTAL FAILED: 0; TOTAL SKIPPED: 36
+   - keys:     TOTAL OK: 31; OK (percent): 72; TOTAL FAILED: 0; TOTAL SKIPPED: 12
+   - xmldsig:  TOTAL OK: 506; OK (percent): 93; TOTAL FAILED: 0; TOTAL SKIPPED: 38
+   - xmlenc:   TOTAL OK: 737; OK (percent): 95; TOTAL FAILED: 0; TOTAL SKIPPED: 36
 
 - MSCng:
-   - xmldsig: TOTAL OK: 251; TOTAL FAILED: 0; TOTAL SKIPPED: 20
-   - xmlenc:  TOTAL OK: 518; TOTAL FAILED: 0; TOTAL SKIPPED: 1
+   - keys:     TOTAL OK: 24; OK (percent): 58; TOTAL FAILED: 0; TOTAL SKIPPED: 17
+   - xmldsig:  TOTAL OK: 449; OK (percent): 91; TOTAL FAILED: 0; TOTAL SKIPPED: 43
+   - xmlenc:   TOTAL OK: 612; OK (percent): 93; TOTAL FAILED: 0; TOTAL SKIPPED: 43
 
 - MSCrypto:
-   - xmldsig: TOTAL OK: 191; TOTAL FAILED: 0; TOTAL SKIPPED: 57
-   - xmlenc:  TOTAL OK: 132; TOTAL FAILED: 0; TOTAL SKIPPED: 181
+   - keys:     TOTAL OK: 10; OK (percent): 29; TOTAL FAILED: 0; TOTAL SKIPPED: 24
+   - xmldsig:  TOTAL OK: 269; OK (percent): 73; TOTAL FAILED: 0; TOTAL SKIPPED: 96
+   - xmlenc:   TOTAL OK: 90; OK (percent): 25; TOTAL FAILED: 0; TOTAL SKIPPED: 268
 
 - GCrypt:
-   - xmldsig: TOTAL OK: 115; TOTAL FAILED: 0; TOTAL SKIPPED: 70
-   - xmlenc:  TOTAL OK: 135; TOTAL FAILED: 0; TOTAL SKIPPED: 186
+   - keys:     TOTAL OK: 73; OK (percent): 86; TOTAL FAILED: 0; TOTAL SKIPPED: 11
+   - xmldsig:  TOTAL OK: 211; OK (percent): 60; TOTAL FAILED: 0; TOTAL SKIPPED: 136
+   - xmlenc:   TOTAL OK: 87; OK (percent): 23; TOTAL FAILED: 0; TOTAL SKIPPED: 276

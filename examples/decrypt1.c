@@ -7,19 +7,19 @@
  */
 /**
  * @brief XML Security Library example: Decrypting an encrypted file using a single key.
- * @details Decrypts encrypted XML file using a single DES key from a binary file
+ * @details Decrypts encrypted XML file using a single AES key from a binary file
  *
  * Usage:
  *
  * \code{.sh}
- *      ./decrypt1 <xml-enc> <des-key-file>
+ *      ./decrypt1 <xml-enc> <aes-key-file>
  * \endcode
  *
  * Example:
  *
  * \code{.sh}
- *      ./decrypt1 encrypt1-res.xml deskey.bin
- *      ./decrypt1 encrypt2-res.xml deskey.bin
+ *      ./decrypt1 encrypt1-res.xml aeskey.bin
+ *      ./decrypt1 encrypt2-res.xml aeskey.bin
  * \endcode
  */
 #include <stdlib.h>
@@ -115,11 +115,11 @@ done:
 }
 
 /**
- * @brief Decrypts an encrypted XML file using a DES key.
- * @details Decrypts the XML file #enc_file using DES key from #key_file and
+ * @brief Decrypts an encrypted XML file using an AES key.
+ * @details Decrypts the XML file #enc_file using an AES key from #key_file and
  * prints results to stdout.
  * @param enc_file the encrypted XML file name.
- * @param key_file the DES key file.
+ * @param key_file the AES key file.
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -153,10 +153,10 @@ decrypt_file(const char* enc_file, const char* key_file) {
         goto done;
     }
 
-    /* load DES key */
-    encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
+    /* load AES key */
+    encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataAesId, key_file);
     if(encCtx->encKey == NULL) {
-        fprintf(stderr, "Error: failed to load DES key from binary file \"%s\"\n", key_file);
+        fprintf(stderr, "Error: failed to load AES key from binary file \"%s\"\n", key_file);
         goto done;
     }
 

@@ -561,8 +561,7 @@ xmlSecSimpleKeysStoreLoad_ex(
                 return(-1);
             }
         } else {
-            /* we have an unknown key in our file, just ignore it */
-            xmlSecInternalError("xmlSecKeyIsValid", xmlSecKeyStoreGetName(store));
+            /* we have an unknown key in our file, just ignore it and don't print error */
             xmlSecKeyDestroy(key);
         }
         cur = xmlSecGetNextElementNode(cur->next);

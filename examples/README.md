@@ -190,14 +190,14 @@ encrypt1-res.xml    The result of processing encrypt1-tmpl.xml by encrypt1.c
 
 To run this example:
 ```
-./encrypt1 encrypt1-tmpl.xml deskey.bin
+./encrypt1 encrypt1-tmpl.xml aeskey.bin
 ```
 
 To encrypt binary data with a template file with the `xmlsec1` command line
 utility (use `xmlsec` on Windows). Note that in this example we set KeyName to be
 the same as the filename of the key:
 ```
-xmlsec1 encrypt --deskey:deskey.bin deskey.bin  --binary-data binary.dat --output encrypt1-res.xml encrypt1-tmpl.xml
+xmlsec1 encrypt --aes-key:aeskey.bin aeskey.bin --binary-data binary.dat --output encrypt1-res.xml encrypt1-tmpl.xml
 ```
 
 ### encrypt2: encrypting XML file using a dynamically created template
@@ -211,10 +211,10 @@ encrypt2-res.xml    The result of encrypting encrypt2-doc.xml by encrypt2.c
 
 To run this example:
 ```
-./encrypt2 encrypt2-doc.xml deskey.bin
+./encrypt2 encrypt2-doc.xml aeskey.bin
 ```
 
-### encrypt3: encrypting XML file using a session DES key
+### encrypt3: encrypting XML file using a session AES key
 
 Files:
 ```
@@ -238,8 +238,8 @@ decrypt1.c          The source code
 
 To run this example:
 ```
-./decrypt1 encrypt1-res.xml deskey.bin
-./decrypt1 encrypt2-res.xml deskey.bin
+./decrypt1 encrypt1-res.xml aeskey.bin
+./decrypt1 encrypt2-res.xml aeskey.bin
 ```
 
 ### decrypt2: decrypting binary data using keys manager
@@ -251,16 +251,16 @@ decrypt2.c          The source code
 
 To run this example:
 ```
-./decrypt2 encrypt1-res.xml deskey.bin
-./decrypt2 encrypt2-res.xml deskey.bin
+./decrypt2 encrypt1-res.xml aeskey.bin
+./decrypt2 encrypt2-res.xml aeskey.bin
 ```
 
 To decrypt binary data with the `xmlsec1` command line utility (use `xmlsec` on Windows).
 Note that in this example we set KeyName to be the same as the filename of the
 (private) key:
 ```
-xmlsec1 decrypt --deskey:deskey.bin deskey.bin encrypt1-res.xml
-xmlsec1 decrypt --deskey:deskey.bin deskey.bin encrypt2-res.xml
+xmlsec1 decrypt --aes-key:aeskey.bin aeskey.bin encrypt1-res.xml
+xmlsec1 decrypt --aes-key:aeskey.bin aeskey.bin encrypt2-res.xml
 xmlsec1 decrypt --privkey:rsakey.pem rsakey.pem encrypt3-res.xml
 ```
 
@@ -285,5 +285,5 @@ ca2cert.pem         CA (trusted) certificate (signed with cacert.pem)
 rsakey.pem          Private PEM key file
 rsapub.pem          Public PEM key file
 rsacert.pem         Certificate for rsakey.pem signed with ca2cert.pem
-deskey.bin          A DES key
+aeskey.bin          An AES key
 ```

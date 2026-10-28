@@ -544,6 +544,153 @@ execEncTest $res_success \
 
 ##########################################################################
 #
+# xmlenc11-interop-2012.modern
+#
+##########################################################################
+
+#
+# The same vectors as in xmlenc11-interop-2012, but using modern keys and
+# certificates from tests/keys.  The deprecated sha1 DigestMethod in the
+# RSA-OAEP vectors was replaced with sha256 and the 1024-bit DH keys were
+# replaced with 2048-bit RFC 5114 group 3 keys.  Every test has a .tmpl
+# and a pre-encrypted .xml file.
+#
+
+# AES GCM
+execEncTest $res_success \
+    "" \
+    "xmlenc11-interop-2012.modern/xenc11-example-AES128-GCM" \
+    "aes128-gcm" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml" \
+    "--keys-file $topfolder/keys/keys.xml --binary-data $topfolder/xmlenc11-interop-2012.modern/xenc11-example-AES128-GCM.data" \
+    "--keys-file $topfolder/keys/keys.xml"
+
+# RSA-OAEP + AES GCM (SHA-256 digest, MGF1-SHA1)
+if [ "z$xmlsec_feature_rsa_oaep_sha1" = "zyes" -a "z$xmlsec_feature_rsa_oaep_sha256" = "zyes" -a "z$xmlsec_feature_rsa_oaep_different_digest_and_mgf1" = "zyes" ] ; then
+    execEncTest $res_success \
+        "" \
+        "xmlenc11-interop-2012.modern/cipherText__RSA-2048__aes128-gcm__rsa-oaep-mgf1p__Sha256" \
+        "aes128-gcm rsa-oaep-mgf1p sha256 sha1" \
+        "" \
+        "$priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key.$priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-pubkey$rsa_pub_key_suffix.$pub_key_format --session-key aes-128 --xml-data $topfolder/xmlenc11-interop-2012.modern/cipherText__RSA-2048__aes128-gcm__rsa-oaep-mgf1p__Sha256.data" \
+        "$priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key.$priv_key_format --pwd secret123"
+
+    execEncTest $res_success \
+        "" \
+        "xmlenc11-interop-2012.modern/cipherText__RSA-4096__aes192-gcm__rsa-oaep-mgf1p__Sha256" \
+        "aes192-gcm rsa-oaep-mgf1p sha256 sha1" \
+        "" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-pubkey$rsa_pub_key_suffix.$pub_key_format --session-key aes-192 --xml-data $topfolder/xmlenc11-interop-2012.modern/cipherText__RSA-4096__aes192-gcm__rsa-oaep-mgf1p__Sha256.data" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123"
+fi
+
+# RSA-OAEP + AES GCM (SHA-384 digest, MGF1-SHA1)
+if [ "z$xmlsec_feature_rsa_oaep_sha1" = "zyes" -a "z$xmlsec_feature_rsa_oaep_sha384" = "zyes" -a "z$xmlsec_feature_rsa_oaep_different_digest_and_mgf1" = "zyes" ] ; then
+    execEncTest $res_success \
+        "" \
+        "xmlenc11-interop-2012.modern/cipherText__RSA-2048__aes256-gcm__rsa-oaep__Sha384-MGF_Sha1" \
+        "aes256-gcm rsa-oaep-enc11 sha384 sha1" \
+        "" \
+        "$priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key.$priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-pubkey$rsa_pub_key_suffix.$pub_key_format --session-key aes-256 --xml-data $topfolder/xmlenc11-interop-2012.modern/cipherText__RSA-2048__aes256-gcm__rsa-oaep__Sha384-MGF_Sha1.data" \
+        "$priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key.$priv_key_format --pwd secret123"
+fi
+
+# RSA-OAEP + AES GCM (SHA-512 digest, MGF1-SHA1, PSource)
+if [ "z$xmlsec_feature_rsa_oaep_sha1" = "zyes" -a "z$xmlsec_feature_rsa_oaep_sha512" = "zyes" -a "z$xmlsec_feature_rsa_oaep_different_digest_and_mgf1" = "zyes" ] ; then
+    execEncTest $res_success \
+        "" \
+        "xmlenc11-interop-2012.modern/cipherText__RSA-4096__aes256-gcm__rsa-oaep__Sha512-MGF_Sha1_PSource" \
+        "aes256-gcm rsa-oaep-enc11 sha512 sha1" \
+        "" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-pubkey$rsa_pub_key_suffix.$pub_key_format --session-key aes-256 --xml-data $topfolder/xmlenc11-interop-2012.modern/cipherText__RSA-4096__aes256-gcm__rsa-oaep__Sha512-MGF_Sha1_PSource.data" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123"
+fi
+
+# ConcatKDF
+execEncTest $res_success \
+    "" \
+    "xmlenc11-interop-2012.modern/dkey-example-ConcatKDF-crypto" \
+    "aes256-cbc concatkdf sha256" \
+    "derived-key" \
+    "--concatkdf-key:dkey $topfolder/keys/hmackey.bin" \
+    "--concatkdf-key:dkey $topfolder/keys/hmackey.bin --binary-data $topfolder/xmlenc11-interop-2012.modern/dkey-example-ConcatKDF-crypto.data" \
+    "--concatkdf-key:dkey $topfolder/keys/hmackey.bin"
+
+execEncTest $res_success \
+    "" \
+    "xmlenc11-interop-2012.modern/dkey3-example-ConcatKDF-crypto" \
+    "aes256-cbc concatkdf sha256" \
+    "derived-key" \
+    "--concatkdf-key:dkey3 $topfolder/keys/hmackey.bin" \
+    "--concatkdf-key:dkey3 $topfolder/keys/hmackey.bin --binary-data $topfolder/xmlenc11-interop-2012.modern/dkey3-example-ConcatKDF-crypto.data" \
+    "--concatkdf-key:dkey3 $topfolder/keys/hmackey.bin"
+
+# PBKDF2
+execEncTest $res_success \
+    "" \
+    "xmlenc11-interop-2012.modern/dkey-example-PBKDF2-crypto" \
+    "aes256-cbc pbkdf2 sha256" \
+    "derived-key" \
+    "--pbkdf2-key:dkey-pbkdf2 $topfolder/keys/hmackey.bin" \
+    "--pbkdf2-key:dkey-pbkdf2 $topfolder/keys/hmackey.bin --binary-data $topfolder/xmlenc11-interop-2012.modern/dkey-example-PBKDF2-crypto.data" \
+    "--pbkdf2-key:dkey-pbkdf2 $topfolder/keys/hmackey.bin"
+
+execEncTest $res_success \
+    "" \
+    "xmlenc11-interop-2012.modern/dkey3-example-PBKDF2-crypto" \
+    "aes256-cbc pbkdf2 sha256" \
+    "derived-key" \
+    "--pbkdf2-key:dkey3-pbkdf2 $topfolder/keys/hmackey.bin" \
+    "--pbkdf2-key:dkey3-pbkdf2 $topfolder/keys/hmackey.bin --binary-data $topfolder/xmlenc11-interop-2012.modern/dkey3-example-PBKDF2-crypto.data" \
+    "--pbkdf2-key:dkey3-pbkdf2 $topfolder/keys/hmackey.bin"
+
+# ECDH-ES
+execEncTest $res_success \
+    "" \
+    "xmlenc11-interop-2012.modern/cipherText__EC-P256__aes128-gcm__kw-aes128__ECDH-ES__ConcatKDF" \
+    "aes128-gcm kw-aes128 concatkdf ecdh-es sha256" \
+    "agreement-method enc-key ec" \
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,ec --max-encrypted-key-level 3 $priv_key_option:TestKeyName-ec-prime256v1-second $topfolder/keys/ec/ec-prime256v1-second-key.$priv_key_format --pwd secret123 $pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey.$pub_key_format" \
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,ec --max-encrypted-key-level 3 --session-key aes-128 $priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key.$priv_key_format --pwd secret123 $pub_key_option:TestKeyName-ec-prime256v1-second $topfolder/keys/ec/ec-prime256v1-second-pubkey.$pub_key_format --xml-data $topfolder/xmlenc11-interop-2012.modern/cipherText__EC-P256__aes128-gcm__kw-aes128__ECDH-ES__ConcatKDF.data" \
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,ec --max-encrypted-key-level 3 $priv_key_option:TestKeyName-ec-prime256v1-second $topfolder/keys/ec/ec-prime256v1-second-key.$priv_key_format --pwd secret123 $pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey.$pub_key_format"
+
+execEncTest $res_success \
+    "" \
+    "xmlenc11-interop-2012.modern/cipherText__EC-P384__aes192-gcm__kw-aes192__ECDH-ES__ConcatKDF" \
+    "aes192-gcm kw-aes192 concatkdf ecdh-es sha256" \
+    "agreement-method enc-key ec" \
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,ec --max-encrypted-key-level 3 $priv_key_option:TestKeyName-ec-prime384v1-second $topfolder/keys/ec/ec-prime384v1-second-key.$priv_key_format --pwd secret123 $pub_key_option:TestKeyName-ec-prime384v1 $topfolder/keys/ec/ec-prime384v1-pubkey.$pub_key_format" \
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,ec --max-encrypted-key-level 3 --session-key aes-192 $priv_key_option:TestKeyName-ec-prime384v1 $topfolder/keys/ec/ec-prime384v1-key.$priv_key_format --pwd secret123 $pub_key_option:TestKeyName-ec-prime384v1-second $topfolder/keys/ec/ec-prime384v1-second-pubkey.$pub_key_format --xml-data $topfolder/xmlenc11-interop-2012.modern/cipherText__EC-P384__aes192-gcm__kw-aes192__ECDH-ES__ConcatKDF.data" \
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,ec --max-encrypted-key-level 3 $priv_key_option:TestKeyName-ec-prime384v1-second $topfolder/keys/ec/ec-prime384v1-second-key.$priv_key_format --pwd secret123 $pub_key_option:TestKeyName-ec-prime384v1 $topfolder/keys/ec/ec-prime384v1-pubkey.$pub_key_format"
+
+execEncTest $res_success \
+    "" \
+    "xmlenc11-interop-2012.modern/cipherText__EC-P521__aes256-gcm__kw-aes256__ECDH-ES__ConcatKDF" \
+    "aes256-gcm kw-aes256 concatkdf ecdh-es sha256" \
+    "agreement-method enc-key ec" \
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,ec --max-encrypted-key-level 3 $priv_key_option:TestKeyName-ec-prime521v1-second $topfolder/keys/ec/ec-prime521v1-second-key.$priv_key_format --pwd secret123 $pub_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec/ec-prime521v1-pubkey.$pub_key_format" \
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,ec --max-encrypted-key-level 3 --session-key aes-256 $priv_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec/ec-prime521v1-key.$priv_key_format --pwd secret123 $pub_key_option:TestKeyName-ec-prime521v1-second $topfolder/keys/ec/ec-prime521v1-second-pubkey.$pub_key_format --xml-data $topfolder/xmlenc11-interop-2012.modern/cipherText__EC-P521__aes256-gcm__kw-aes256__ECDH-ES__ConcatKDF.data" \
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,ec --max-encrypted-key-level 3 $priv_key_option:TestKeyName-ec-prime521v1-second $topfolder/keys/ec/ec-prime521v1-second-key.$priv_key_format --pwd secret123 $pub_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec/ec-prime521v1-pubkey.$pub_key_format"
+
+# DH-ES
+execEncTest $res_success \
+    "" \
+    "xmlenc11-interop-2012.modern/cipherText__DH-2048__aes128-gcm__kw-aes128__dh-es__ConcatKDF" \
+    "aes128-gcm kw-aes128 concatkdf dh-es sha256" \
+    "agreement-method enc-key dh" \
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,dh --max-encrypted-key-level 3 $dhx_priv_key_option:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-key.$dhx_priv_key_format" \
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,dh --max-encrypted-key-level 3 --session-key aes-128 $dhx_priv_key_option:dhx-rfc5114-3-first $topfolder/keys/dhx/dhx-rfc5114-3-first-key.$dhx_priv_key_format $dhx_pub_key_option:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-pubkey.$dhx_pub_key_format --xml-data $topfolder/xmlenc11-interop-2012.modern/cipherText__DH-2048__aes128-gcm__kw-aes128__dh-es__ConcatKDF.data" \
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,dh --max-encrypted-key-level 3 $dhx_priv_key_option:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-key.$dhx_priv_key_format"
+
+
+
+##########################################################################
+#
 # aleksey-xmlenc-01
 #
 #########################################################################

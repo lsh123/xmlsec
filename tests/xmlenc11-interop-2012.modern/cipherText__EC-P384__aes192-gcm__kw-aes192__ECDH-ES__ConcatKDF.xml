@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<xenc:EncryptedData xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" Type="http://www.w3.org/2001/04/xmlenc#Element">
+  <xenc:EncryptionMethod Algorithm="http://www.w3.org/2009/xmlenc11#aes192-gcm"/>
+  <dsig:KeyInfo xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+    <xenc:EncryptedKey xmlns:xenc="http://www.w3.org/2001/04/xmlenc#">
+      <xenc:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#kw-aes192"/>
+      <dsig:KeyInfo xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+        <xenc:AgreementMethod Algorithm="http://www.w3.org/2009/xmlenc11#ECDH-ES">
+          <xenc11:KeyDerivationMethod xmlns:xenc11="http://www.w3.org/2009/xmlenc11#" Algorithm="http://www.w3.org/2009/xmlenc11#ConcatKDF">
+            <xenc11:ConcatKDFParams AlgorithmID="" PartyUInfo="00cf909ce60678fe4e64b3be6b1554c416" PartyVInfo="">
+              <dsig:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+            </xenc11:ConcatKDFParams>
+          </xenc11:KeyDerivationMethod>
+          <xenc:OriginatorKeyInfo xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+            <dsig:KeyName>TestKeyName-ec-prime384v1</dsig:KeyName>
+          </xenc:OriginatorKeyInfo>
+          <xenc:RecipientKeyInfo xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+            <dsig:KeyName>TestKeyName-ec-prime384v1-second</dsig:KeyName>
+          </xenc:RecipientKeyInfo>
+        </xenc:AgreementMethod>
+      </dsig:KeyInfo>
+      <xenc:CipherData>
+        <xenc:CipherValue>4CXjG40smRXPnnExfRqkvSTbl4TRRkvJFxHkzU3UNnA=</xenc:CipherValue>
+      </xenc:CipherData>
+    </xenc:EncryptedKey>
+  </dsig:KeyInfo>
+  <xenc:CipherData>
+    <xenc:CipherValue>xSHXcRmOKqHl6XV8kQUrEPWLc1+R+xMQID6x+QfW6E7O/XMCmu0cMIvwn8UZf5C3
+cIrLQwVr9ctf+sInSsBRCIbNE4mm2tYJQGa51VL5uI8IWA/YVVP28d3kOUQGQrY/
+xSoAyw40qJntdtsazpf0/Zykzw0m8WfB+m5/sAO3u3B4/6qaDwE104DwDbTeud5l
+dRm9mTK0iKAlZgQtpF17GpG/jXjYmBPMGj+gO7bSvVnoGl5mL7z7qflHz1NfU0eI
+wyxV8GDS+NXKs9z8pfXBoR9mRCIZDN3fEKfm9iODkRBoooLVEtOryPAK5N/p8D5S
+noLvdNkwXAb3ii5NkidmaOHeS/iNQxDSZA3fJQbc0MQa7sa8gkwS/hs1nXkvdiCq
+StlseCi5XLC973HD/Pl2VnUwaxc7V10LTBbb654tScW9qnqtb7i9Nw7xXXfYG7jM
+iYlzd1OND6Vz+Qg2IBLkPS2f9dFzW5jIVhJferb5x3/41uVKqs+HGeEgHgQXDA2J
+Ko6RC4RkJC6O1btUrtv0sdyVxBJwMleveSWQJ7bwarcSbgB6wu44QDq5JYIJDLsh
+QwjJbEUTtfTKBSORYYuYSrQSJS8gbn+8lC5BLvUr2GynDT8WTfaLS0jCmtNf1UTW
+mqBESKwzvxWbDea58G2OBllh/78ocO8ca8YfDywPue9PC8Qx7glrvIBtrNLSKOPd
+TkbivQn66cxCO3lrUzN71zAiw9UUUgPF01FdQuNDBLadf3Dw/pUmwfNH5OEBagvG
+LuiLkn+8YLnoP5jN94+o9DIoZPpscvlST0Q=</xenc:CipherValue>
+  </xenc:CipherData>
+</xenc:EncryptedData>

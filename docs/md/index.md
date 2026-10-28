@@ -17,7 +17,7 @@ see the Copyright file in the distribution for details.
 
 - **TBD**
   The [XML Security Library 1.3.14](download.md) release includes the following changes:
-  - TODO
+  - (xmlsec-build) Disabled Triple DES and Triple DES KeyWrap by default (use `--enable-des` option to re-enable both).
   - Many other small fixes (see [commit log](https://github.com/lsh123/xmlsec/commits/xmlsec_1_3_14) for more details).
 
 - **October 27, 2026**

@@ -1574,22 +1574,24 @@ if [ "z$xmlsec_feature_rsa_oaep_sha512" = "zyes" ] ; then
 fi
 
 # same test but decrypt using two different keys
-execEncTest $res_success \
-    "" \
-    "aleksey-xmlenc-01/enc-two-recipients" \
-    "tripledes-cbc rsa-1_5" \
-    "x509" \
-    "--lax-key-search $priv_key_option:pub1 $topfolder/keys/rsa/rsa-2048-key.$priv_key_format --pwd secret123" \
-    "--pubkey-cert-$cert_format:pub1 $topfolder/keys/rsa/rsa-2048-cert.$cert_format --pubkey-cert-$cert_format:pub2 $topfolder/keys/rsa/rsa-4096-cert.$cert_format --session-key des-192 --xml-data $topfolder/aleksey-xmlenc-01/enc-two-recipients.data" \
-    "--lax-key-search $priv_key_option:pub1 $topfolder/keys/rsa/rsa-2048-key.$priv_key_format --pwd secret123"
-execEncTest $res_success \
-    "" \
-    "aleksey-xmlenc-01/enc-two-recipients" \
-    "tripledes-cbc rsa-1_5" \
-    "x509" \
-    "--lax-key-search $priv_key_option:pub1 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123" \
-    "--pubkey-cert-$cert_format:pub1 $topfolder/keys/rsa/rsa-2048-cert.$cert_format --pubkey-cert-$cert_format:pub2 $topfolder/keys/rsa/rsa-4096-cert.$cert_format --session-key des-192 --xml-data $topfolder/aleksey-xmlenc-01/enc-two-recipients.data" \
-    "--lax-key-search $priv_key_option:pub1 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123"
+if [ "z$xmlsec_feature_rsa_oaep_sha256" = "zyes" ] ; then
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc-two-recipients" \
+        "aes256-cbc rsa-oaep-mgf1p sha256 sha256" \
+        "x509" \
+        "--lax-key-search $priv_key_option:pub1 $topfolder/keys/rsa/rsa-2048-key.$priv_key_format --pwd secret123" \
+        "--pubkey-cert-$cert_format:pub1 $topfolder/keys/rsa/rsa-2048-cert.$cert_format --pubkey-cert-$cert_format:pub2 $topfolder/keys/rsa/rsa-4096-cert.$cert_format --session-key aes-256 --xml-data $topfolder/aleksey-xmlenc-01/enc-two-recipients.data" \
+        "--lax-key-search $priv_key_option:pub1 $topfolder/keys/rsa/rsa-2048-key.$priv_key_format --pwd secret123"
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc-two-recipients" \
+        "aes256-cbc rsa-oaep-mgf1p sha256 sha256" \
+        "x509" \
+        "--lax-key-search $priv_key_option:pub1 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123" \
+        "--pubkey-cert-$cert_format:pub1 $topfolder/keys/rsa/rsa-2048-cert.$cert_format --pubkey-cert-$cert_format:pub2 $topfolder/keys/rsa/rsa-4096-cert.$cert_format --session-key aes-256 --xml-data $topfolder/aleksey-xmlenc-01/enc-two-recipients.data" \
+        "--lax-key-search $priv_key_option:pub1 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123"
+fi
 
 ##########################################################################
 #

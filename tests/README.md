@@ -52,21 +52,21 @@ make check XMLSEC_TEST_IGNORE_PERCENT_SUCCESS=y
 
 ## Statistics
 
-The tests are run with legacy algorithms enabled but without GOST. Note that the
-reported number of skipped tests is lower than the actual number, because a single
-skipped test case may include multiple subtests.
+The tests are run without legacy algorithms (MD5, RIPEMD-160, DES) and without
+GOST. Note that the reported number of skipped tests is lower than the actual
+number, because a single skipped test case may include multiple subtests.
 
 - OpenSSL:
-  - xmldsig: TOTAL OK: 293; TOTAL FAILED: 0; TOTAL SKIPPED: 3
-  - xmlenc:  TOTAL OK: 590; TOTAL FAILED: 0; TOTAL SKIPPED: 0
+  - xmldsig: TOTAL OK: 568; TOTAL FAILED: 0; TOTAL SKIPPED: 33
+  - xmlenc:  TOTAL OK: 778; TOTAL FAILED: 0; TOTAL SKIPPED: 32
 
 - NSS:
-   - xmldsig: TOTAL OK: 268; TOTAL FAILED: 0; TOTAL SKIPPED: 11
-   - xmlenc:  TOTAL OK: 578; TOTAL FAILED: 0; TOTAL SKIPPED: 4
+   - xmldsig: TOTAL OK: 506; TOTAL FAILED: 0; TOTAL SKIPPED: 38
+   - xmlenc:  TOTAL OK: 737; TOTAL FAILED: 0; TOTAL SKIPPED: 36
 
 - GnuTLS:
-   - xmldsig: TOTAL OK: 238; TOTAL FAILED: 0; TOTAL SKIPPED: 26
-   - xmlenc:  TOTAL OK: 482; TOTAL FAILED: 0; TOTAL SKIPPED: 36
+   - xmldsig: TOTAL OK: 509; TOTAL FAILED: 0; TOTAL SKIPPED: 35
+   - xmlenc:  TOTAL OK: 694; TOTAL FAILED: 0; TOTAL SKIPPED: 17
 
 - MSCng:
    - xmldsig: TOTAL OK: 251; TOTAL FAILED: 0; TOTAL SKIPPED: 20

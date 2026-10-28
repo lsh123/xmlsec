@@ -577,12 +577,16 @@ xmlSecTransformKAMRead(xmlSecTransformKAMPtr params, xmlNodePtr node, xmlSecTran
     xmlSecAssert2(kamTransform != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
 
-    if(transformCtx->parentKeyInfoCtx->operation == xmlSecTransformOperationEncrypt) {
-        /* we are encrypting on originator side which needs private key */
+    /* When acting as the originator (encrypting or signing) we derive the key
+     * with our own private key and the other party's public key; when acting
+     * as the recipient (decrypting or verifying) it is the other way around. */
+    if((transformCtx->parentKeyInfoCtx->operation == xmlSecTransformOperationEncrypt) ||
+       (transformCtx->parentKeyInfoCtx->operation == xmlSecTransformOperationSign)) {
+        /* we are the originator (encrypting or signing) which needs our private key */
         originatorKeyType = xmlSecKeyDataTypePrivate;
         recipientKeyType = xmlSecKeyDataTypePublic;
     } else {
-        /* we are decrypting on recipient side which needs private key */
+        /* we are the recipient (decrypting or verifying) which needs our private key */
         originatorKeyType = xmlSecKeyDataTypePublic;
         recipientKeyType = xmlSecKeyDataTypePrivate;
     }

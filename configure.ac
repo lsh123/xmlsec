@@ -2196,14 +2196,14 @@ dnl ==========================================================================
 dnl Check if we need RSA PKCS 1.5 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for RSA PKCS 1.5 support)
-AC_ARG_ENABLE([rsa-pkcs15], [AS_HELP_STRING([--enable-rsa-pkcs15], [enable RSA PKCS 1.5 support (yes)])])
+AC_ARG_ENABLE([rsa-pkcs15], [AS_HELP_STRING([--enable-rsa-pkcs15], [enable RSA PKCS 1.5 support (yes, use discouraged)])])
 if test "z$enable_rsa_pkcs15" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_RSA_PKCS15=1"
     XMLSEC_NO_RSA_PKCS15="1"
     AC_MSG_RESULT([disabled])
 else
     XMLSEC_NO_RSA_PKCS15="0"
-    AC_MSG_RESULT([yes])
+    AC_MSG_RESULT([yes (use discouraged)])
 fi
 AM_CONDITIONAL(XMLSEC_NO_RSA_PKCS15, test "z$XMLSEC_NO_RSA_PKCS15" = "z1")
 AC_SUBST(XMLSEC_NO_RSA_PKCS15)
@@ -2455,7 +2455,7 @@ dnl ==========================================================================
 dnl Check if we need GOST 2001 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for GOST 2001 support)
-AC_ARG_ENABLE([gost], [AS_HELP_STRING([--enable-gost], [enable GOST-2001 support (no)])])
+AC_ARG_ENABLE([gost], [AS_HELP_STRING([--enable-gost], [enable GOST-2001 support (no, deprecated)])])
 if test "z$enable_gost" != "zyes" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_GOST=1"
     XMLSEC_NO_GOST="1"

@@ -44,7 +44,7 @@ XML Security library supports the following features as defined in
 | [Camellia-CBC-128](https://www.ietf.org/rfc/rfc9231.html#section-2.6.2) | Optional | Yes | Yes | Yes | No | No | No |
 | [Camellia-CBC-192](https://www.ietf.org/rfc/rfc9231.html#section-2.6.2) | Optional | Yes | Yes | Yes | No | No | No |
 | [Camellia-CBC-256](https://www.ietf.org/rfc/rfc9231.html#section-2.6.2) | Optional | Yes | Yes | Yes | No | No | No |
-| [ChaCha20](https://www.w3.org/2021/04/xmldsig-more#chacha20) | Optional | Yes | No | Yes | No | No | No |
+| [ChaCha20](https://www.w3.org/2021/04/xmldsig-more#chacha20) | Optional (use is DISCOURAGED) | Yes | No | Yes | No | No | No |
 | [ChaCha20-Poly1305](https://www.w3.org/2021/04/xmldsig-more#chacha20poly1305) | Optional | Yes | Yes | Yes | No | No | No |
 | [Stream Encryption Algorithms](https://www.w3.org/TR/xmlenc-core1/#sec-Alg-Stream) [(11)](#stream-algorithms) | Optional | Yes | Yes | Yes | No | No | No |
 | **Key Derivation** | | | | | | | |
@@ -52,7 +52,7 @@ XML Security library supports the following features as defined in
 | [PBKDF2](https://www.w3.org/TR/xmlenc-core1/#sec-PBKDF2) | Optional | Yes [(3)](#openssl3-required) [(4)](#pbkdf2) | Yes [(4)](#pbkdf2) | Yes [(4)](#pbkdf2) | Yes [(5)](#new-windows-required) [(4)](#pbkdf2) | No | No |
 | [HKDF](https://www.w3.org/2021/04/xmldsig-more#hkdf) | Optional | Yes [(3)](#openssl3-required) | Yes | Yes | Yes [(5)](#new-windows-required) | No | No |
 | **Key Transport** | | | | | | | |
-| [RSA PKCS1 v1.5](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-1_5) | Optional | Yes | Yes | Yes | Yes | Yes | Yes |
+| [RSA PKCS1 v1.5](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-1_5) | Optional (use is DISCOURAGED) | Yes | Yes | Yes | Yes | Yes | Yes |
 | [RSA-OAEP with MGF1-SHA1](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Required | Yes | Yes | No | Yes [(2)](#rsa-oaep-same-algo) | Yes [(2)](#rsa-oaep-same-algo) | Yes [(2)](#rsa-oaep-same-algo) |
 | [RSA-OAEP with MGF1-SHA224](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Optional | Yes | Yes | No | Yes [(2)](#rsa-oaep-same-algo) | No | Yes [(2)](#rsa-oaep-same-algo) |
 | [RSA-OAEP with MGF1-SHA256](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Optional | Yes | Yes | Yes [(2)](#rsa-oaep-same-algo) | Yes [(2)](#rsa-oaep-same-algo) | No | Yes [(2)](#rsa-oaep-same-algo) |

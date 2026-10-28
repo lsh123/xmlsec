@@ -970,10 +970,13 @@ if [ "z$xmlsec_feature_x509_data_lookup" = "zyes" ] ; then
 fi
 
 # same file is encrypted with two keys, test both
+# these tests use RSA OAEP with the default MGF1-SHA1 and a different
+# (SHA-256) digest, which is only supported by some backends
+if [ "z$xmlsec_feature_rsa_oaep_sha1" = "zyes" -a "z$xmlsec_feature_rsa_oaep_different_digest_and_mgf1" = "zyes" ] ; then
 execEncTest $res_success \
     "" \
     "aleksey-xmlenc-01/enc-two-enc-keys" \
-    "aes256-cbc rsa-1_5" \
+    "aes256-cbc rsa-oaep-mgf1p sha256 sha1" \
     "x509" \
     "$priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key.$priv_key_format --pwd secret123" \
     "--session-key aes-256 --xml-data $topfolder/aleksey-xmlenc-01/enc-two-enc-keys.data --pubkey-cert-$cert_format:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-cert.$cert_format --pubkey-cert-$cert_format:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-cert.$cert_format" \
@@ -982,7 +985,7 @@ execEncTest $res_success \
 execEncTest $res_success \
     "" \
     "aleksey-xmlenc-01/enc-two-enc-keys" \
-    "aes256-cbc rsa-1_5" \
+    "aes256-cbc rsa-oaep-mgf1p sha256 sha1" \
     "x509" \
     "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123" \
     "--session-key aes-256 --xml-data $topfolder/aleksey-xmlenc-01/enc-two-enc-keys.data --pubkey-cert-$cert_format:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-cert.$cert_format --pubkey-cert-$cert_format:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-cert.$cert_format" \
@@ -992,7 +995,7 @@ execEncTest $res_success \
 execEncTest $res_success \
     "" \
     "aleksey-xmlenc-01/large_input" \
-    "aes256-cbc rsa-1_5" \
+    "aes256-cbc rsa-oaep-mgf1p sha256 sha1" \
     "x509" \
     "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123" \
     "--session-key aes-256 --xml-data $topfolder/aleksey-xmlenc-01/large_input.data --pubkey-cert-$cert_format:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-cert.$cert_format" \
@@ -1001,7 +1004,7 @@ execEncTest $res_success \
 execEncTest $res_success \
     "" \
     "aleksey-xmlenc-01/enc-element-isolatin1" \
-    "aes256-cbc rsa-1_5" \
+    "aes256-cbc rsa-oaep-mgf1p sha256 sha1" \
     "x509" \
     "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123" \
     "--session-key aes-256 --xml-data $topfolder/aleksey-xmlenc-01/enc-element-isolatin1.data --pubkey-cert-$cert_format:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-cert.$cert_format" \
@@ -1010,11 +1013,12 @@ execEncTest $res_success \
 execEncTest $res_success \
     "" \
     "aleksey-xmlenc-01/enc-content-isolatin1" \
-    "aes256-cbc rsa-1_5" \
+    "aes256-cbc rsa-oaep-mgf1p sha256 sha1" \
     "x509" \
     "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123" \
     "--session-key aes-256 --xml-data $topfolder/aleksey-xmlenc-01/enc-content-isolatin1.data --node-name http://example.org/paymentv2:CreditCard --pubkey-cert-$cert_format:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-cert.$cert_format" \
     "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123"
+fi
 
 execEncTest $res_success \
     "" \

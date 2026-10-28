@@ -79,7 +79,7 @@ XML Security library supports the following features as defined in
 | [HMAC-MD5](https://www.ietf.org/rfc/rfc9231.html#section-2.2.1) | DEPRECATED | Yes [(1)](#feature-disabled) | No | No | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) |
 | **Signatures** | | | | | | | |
 | [DSA-SHA1](https://www.w3.org/TR/xmldsig-core1/#sec-DSA) | Required (use is DISCOURAGED for signature generation) | Yes | Yes | Yes | Yes | Yes | Yes |
-| [DSA-SHA256](https://www.w3.org/TR/xmldsig-core1/#sec-DSA) | Optional | Yes | Yes | Yes | Yes | No | No |
+| [DSA-SHA256](https://www.w3.org/TR/xmldsig-core1/#sec-DSA) | Optional (use is DISCOURAGED for signature generation) | Yes | Yes | Yes | Yes | No | No |
 | [PKCS1 RSA-SHA1](https://www.w3.org/TR/xmldsig-core1/#sec-PKCS1) | Recommended (use is DISCOURAGED for signature generation) | Yes | Yes | Yes | Yes | Yes | Yes |
 | [PKCS1 RSA-SHA2-224](https://www.w3.org/TR/xmldsig-core1/#sec-PKCS1) | Optional | Yes | Yes | Yes | No | No | No |
 | [PKCS1 RSA-SHA2-256](https://www.w3.org/TR/xmldsig-core1/#sec-PKCS1) | Required | Yes | Yes | Yes | Yes | Yes | Yes |
@@ -107,7 +107,7 @@ XML Security library supports the following features as defined in
 | [RSASSA-PSS-SHA3-256 without Parameters](https://www.ietf.org/rfc/rfc9231.html#section-2.3.10) | Optional | Yes | No | No | Yes [(2)](#new-windows-required) | No | Yes |
 | [RSASSA-PSS-SHA3-384 without Parameters](https://www.ietf.org/rfc/rfc9231.html#section-2.3.10) | Optional | Yes | No | No | Yes [(2)](#new-windows-required) | No | Yes |
 | [RSASSA-PSS-SHA3-512 without Parameters](https://www.ietf.org/rfc/rfc9231.html#section-2.3.10) | Optional | Yes | No | No | Yes [(2)](#new-windows-required) | No | Yes |
-| GOST-R3410-2001 | Optional | Yes [(1)](#feature-disabled)[(3)](#openssl-gost) | No | Yes [(1)](#feature-disabled) | No | Yes [(1)](#feature-disabled)[(4)](#mscrypto-gost) | No |
+| GOST-R3410-2001 | DEPRECATED | Yes [(1)](#feature-disabled)[(3)](#openssl-gost) | No | Yes [(1)](#feature-disabled) | No | Yes [(1)](#feature-disabled)[(4)](#mscrypto-gost) | No |
 | GOST-R3410-2012 (256 bit) | Optional | Yes [(1)](#feature-disabled)[(3)](#openssl-gost) | No | Yes [(1)](#feature-disabled) | No | Yes [(1)](#feature-disabled)[(4)](#mscrypto-gost) | No |
 | GOST-R3410-2012 (512 bit) | Optional | Yes [(1)](#feature-disabled)[(3)](#openssl-gost) | No | Yes [(1)](#feature-disabled) | No | Yes [(1)](#feature-disabled)[(4)](#mscrypto-gost) | No |
 | ML-DSA | EXPERIMENTAL | Yes [(1)](#feature-disabled)[(12)](#openssl35-required) | No | Yes [(1)](#feature-disabled) [(8)](#no-context-string) | No | No | No |

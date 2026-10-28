@@ -445,6 +445,78 @@ xmlSecMSCngIsDsaBcryptKey(BCRYPT_KEY_HANDLE hKey) {
     return (((wcslen(algName) == wcslen(BCRYPT_DSA_ALGORITHM)) && (wcsncmp(algName, BCRYPT_DSA_ALGORITHM, wcslen(BCRYPT_DSA_ALGORITHM)) == 0)) ? 1 : 0);
 }
 
+/* Returns the size of the DSA group (q) in bytes for a DSA BCrypt key.
+ * CNG DSA keys support only 160-bit (20-byte) and 256-bit (32-byte) group
+ * sizes: V1 blobs (BCRYPT_DSA_PUBLIC_MAGIC) carry a fixed 20-byte q and V2
+ * blobs (BCRYPT_DSA_PUBLIC_MAGIC_V2) carry the size in the cbGroupSize field.
+ * On success returns 0; *qSize is set to 0 on failure. */
+int
+xmlSecMSCngDsaGetQSizeInBytes(BCRYPT_KEY_HANDLE hKey, DWORD* qSize) {
+    BYTE* blobData = NULL;
+    BCRYPT_DSA_KEY_BLOB* hdr;
+    DWORD blobLen = 0;
+    NTSTATUS status;
+    int res = -1;
+
+    xmlSecAssert2(hKey != 0, -1);
+    xmlSecAssert2(qSize != NULL, -1);
+
+    *qSize = 0;
+
+    /* export the DSA public key blob to read the q size */
+    status = BCryptExportKey(hKey, NULL, BCRYPT_DSA_PUBLIC_BLOB, NULL, 0, &blobLen, 0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptExportKey(size)", NULL, status);
+        goto done;
+    }
+    if(blobLen < sizeof(BCRYPT_DSA_KEY_BLOB)) {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_RESULT, NULL,
+            "DSA public key blob size too small: blobLen=%lu", (unsigned long)blobLen);
+        goto done;
+    }
+    blobData = (BYTE*)LocalAlloc(LMEM_ZEROINIT, blobLen);
+    if(blobData == NULL) {
+        xmlSecMSCngLastError("LocalAlloc", NULL);
+        goto done;
+    }
+    status = BCryptExportKey(hKey, NULL, BCRYPT_DSA_PUBLIC_BLOB, blobData, blobLen, &blobLen, 0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptExportKey", NULL, status);
+        goto done;
+    }
+
+    hdr = (BCRYPT_DSA_KEY_BLOB*)blobData;
+    if(hdr->dwMagic == BCRYPT_DSA_PUBLIC_MAGIC) {
+        /* V1 blob: q is fixed 160 bits (20 bytes) */
+        *qSize = sizeof(hdr->q);
+        res = 0;
+    }
+#if XMLSEC_MSCNG_HAVE_DSA_V2
+    else if(hdr->dwMagic == BCRYPT_DSA_PUBLIC_MAGIC_V2) {
+        /* V2 blob: the q size is in the cbGroupSize field */
+        BCRYPT_DSA_KEY_BLOB_V2* h2 = (BCRYPT_DSA_KEY_BLOB_V2*)blobData;
+        if((h2->cbGroupSize != XMLSEC_MSCNG_DSA_MAX_Q_SIZE) && (h2->cbGroupSize != XMLSEC_MSCNG_DSA_V2_Q_SIZE)) {
+            xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
+                "Unsupported DSA group size: cbGroupSize=%lu", (unsigned long)h2->cbGroupSize);
+            goto done;
+        }
+        *qSize = h2->cbGroupSize;
+        res = 0;
+    }
+#endif /* XMLSEC_MSCNG_HAVE_DSA_V2 */
+    else {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
+            "Unexpected DSA blob magic: 0x%08lX", (unsigned long)hdr->dwMagic);
+        goto done;
+    }
+
+done:
+    if(blobData != NULL) {
+        LocalFree(blobData);
+    }
+    return(res);
+}
+
 xmlSecKeyDataPtr
 xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     xmlSecKeyDataPtr data = NULL;

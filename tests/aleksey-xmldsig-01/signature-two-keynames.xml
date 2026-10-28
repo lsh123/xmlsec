@@ -2,18 +2,18 @@
 <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
   <SignedInfo>
     <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
-    <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+    <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
     <Reference URI="http://www.w3.org/TR/xml-stylesheet">
-      <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
-      <DigestValue>ITIkrxsTd8x8DE+Ui4ZehAiisH4=</DigestValue>
+      <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+      <DigestValue>oQBz3IZO5+ye6701SF7fh7O5E28wX/gHEfSLgXrV+24=</DigestValue>
     </Reference>
   </SignedInfo>
-  <SignatureValue>PRUU7HClc+9qC5LxWRB8jFJD9q5S2Eyb9CUoRTQJjq0XrQ1HrvJ1iDYmfqbDof9J
-ismCEy90NSbjbBNJ+qfXK43smnRRlrrxzX/xewICccBhxesOcYsnh3AazVv8w6EP
-2xXcGRSe593sAFG50j2R10P7nlLXVGPXYFSw3RaQ+kwBT4JLyl+59LCPRJdCad6u
-97C6FV1VOGTBWc/DZaVCk7R67p2VxPVN7EySKmzeciSLSiTteDCoCoBrj3L7i4Za
-SL06pi+6RFiOsC741Zd4nsVsm6BuSk+YzvhnGhRIQ6Bm6T9agMLHe6hSx5DzdjS4
-iWL+0KlkuwTC8HB6+luFnw==</SignatureValue>
+  <SignatureValue>vVhlQwdV4+qVUWQrxX1B07oeBV81wIIp91kDDJuGChCt5UJgoNBNZtvStGUX+ucO
+SHoVi3ixSc8s+Le0VpJXO2T6fq533fzZSLipTqe+HrXa6963VKxqVwD40Ox8NVIE
+a8XL56d2jnPTdS1c1gPPWp4ZHS1D3sa3Te3/f/Z2O00FQDMRX2dJFKophF4lNbKP
+hmiafpmvqhdeXTlAGR7emq4oD56bt+6x5Tccb7zhGqjy3uNKj+8htlW6bY7lt//8
+mjbM/Hkvzod8PvXLU6pYf0RC3BqVNoiGQ+umCHtHEHbgrntwyY1rtQiGAO77HqWZ
+/H6hgZnyT0/2tYpmAb90Ug==</SignatureValue>
   <KeyInfo>
     <KeyName>key1</KeyName>
     <KeyName>key2</KeyName>

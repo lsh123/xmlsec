@@ -6,23 +6,23 @@
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
-      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+      <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
       <Reference URI="">
         <Transforms>
           <Transform Algorithm="http://www.w3.org/2002/06/xmldsig-filter2">
             <XPath xmlns="http://www.w3.org/2002/06/xmldsig-filter2" Filter="intersect"> //ToBeSigned </XPath>
           </Transform>
         </Transforms>
-        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
-        <DigestValue>3om1gINPzaogcdLuDdjIQlls4NE=</DigestValue>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+        <DigestValue>JxZ+qnmIG8nVMCGL6DtG14Ma3s/MEykpPaxAUh5u8jQ=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>Cvpql96eOfylGzfELcvI83yQgA9suLNoDgbQzsbaI/JpEmXgvI834cKSXsrEEypW
-yFSi7YWjDwtv+KYariVCAKBHKpNfv6ZpH5xGEd5j0dsnypzlQe5TejOuWUj+U0G3
-mW9lbH7ugtrTE+k6uPjpbOp/0tKOb86UyRYxDlDCkfZo7N/pETAkhL4KKk5CLENI
-qxZYjUn9DSC1jTzDGvWoSwyl6M2rl7Nz7t74rExvsN8hUiC1XgFMCe1pZ/QfaPzw
-oqq3j7Z6cELxAkokv+PpfVOMaIXiUCF6IMV8B2tgvqFd1WstfgBcgVgcNSOQURx4
-ToIYke7fdodJLFcjLxctcw==</SignatureValue>
+    <SignatureValue>zW4BqcufXxNj2icHk1MTFBRru6PAN4gimBbMjowoK/au7EVd9lByo0vxGwJFrxgZ
+E+8baRnr1qmqKKzfJ4M0sAkugBLYgXFZJyPIbmy7/2zf47jLUYKJpEpoIDCWgvpP
+xRpf7Wfw4q0e1El0C9EREz27g9oNoE4MYqGrkamIXcPvE5dgnuTB9T1toYRaDQuU
+XCS8dfYzj6TEJrSL+L80bX9UxqVCVP21vUHxCvrQa7XGvzYvLNnda1meIx+5DVPN
+hQDa7ZBWTl40EO0kKXjJktjhSHZDOCu2NObpVgbXDlnJ4JvZR7eqCSB7iB77WMQf
+ijcIktzlDi7RX0TbEjz1vw==</SignatureValue>
     <KeyInfo>
       <KeyName>TestKeyName-rsa-2048</KeyName>
       <X509Data>

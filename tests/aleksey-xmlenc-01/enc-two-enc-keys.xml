@@ -6,11 +6,14 @@
 <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes256-cbc"/>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <EncryptedKey xmlns="http://www.w3.org/2001/04/xmlenc#">
-<EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-1_5"> </EncryptionMethod>
+<EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p">
+<DigestMethod xmlns="http://www.w3.org/2000/09/xmldsig#" Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+</EncryptionMethod>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <KeyName>TestKeyName-rsa-2048</KeyName>
 <X509Data>
-<X509Certificate>MIIFFjCCA/6gAwIBAgIUdzXuSH9oYtrxs5VtlhzLD6bzT1MwDQYJKoZIhvcNAQEL
+<X509Certificate>
+MIIFFjCCA/6gAwIBAgIUdzXuSH9oYtrxs5VtlhzLD6bzT1MwDQYJKoZIhvcNAQEL
 BQAwgbYxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMT0wOwYDVQQK
 EzRYTUwgU2VjdXJpdHkgTGlicmFyeSAoaHR0cDovL3d3dy5hbGVrc2V5LmNvbS94
 bWxzZWMpMRgwFgYDVQQLEw9TZWNvbmQgbGV2ZWwgQ0ExFjAUBgNVBAMTDUFsZWtz
@@ -42,20 +45,23 @@ hwvZjgian+dyQw==
 </X509Data>
 </KeyInfo>
 <CipherData>
-<CipherValue>En93mXzpN+ggXwoOduB8YjqFksd6ibOgrZLbP7LRhVSkBvpq1M7xDRduhiKn+weG
-KjPgjDLXCwCsduQQgGQ5cSAxLtoYzncQH/NA8bzkHS5wBdlIziHp22YPMuzG5NAi
-OpER6b3AnTbMiSYKCOyDMKtWbhchLFJksGEIR3TgIEVuBd7Spex7rfGLNvJtIrT5
-LHP5l45MHK3wPznVxLtpbOnynFUYvFxCIP3wBqiwF44IIr0vEdHBjZ6ydTrIpUnZ
-5EBJJdBw8RAIHVgptUy3fFLwNH2ECCl3ayuIgwJ8g272xTlFz/fLOQvFzOjYzJiz
-XEMkAKVFWpEbzaPv/dpQNQ==</CipherValue>
+<CipherValue>klpnSmArDNLczxtQZMnOKVY9UtkMYxm63o3TqYKxvj1HvCz8glj7KUo2vVL8Jg+s
+KtFbnpQiKKmeXVtE+hSJcZWiLh6p+j+ci64I26BpVlI4zfxqRR9Eb0TBdkgLRKX7
+vwnyMn4kERMwGQhRrhB1T+Wi7qtsRjs7OF1S27qA4nV/O69tNRwXJBt6LhUCz3+R
+D0/Q4j+hxyQy7kCu//L7Xv8IzW9ZDGQ1+vlTmiHtOgb4Xhk5ykB+SjJVP+OuwHxo
+aEBnu1Mqc0OagsvjytbsQUu3KMt/VbUfnJbBN/2CbipR44dqH3XouYNYjMS4vHDE
+3uSBKA3Q5TKjiqkLCA9ZZQ==</CipherValue>
 </CipherData>
 </EncryptedKey>
 <EncryptedKey xmlns="http://www.w3.org/2001/04/xmlenc#">
-<EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-1_5"> </EncryptionMethod>
+<EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p">
+<DigestMethod xmlns="http://www.w3.org/2000/09/xmldsig#" Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+</EncryptionMethod>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <KeyName>TestKeyName-rsa-4096</KeyName>
 <X509Data>
-<X509Certificate>MIIGFjCCBP6gAwIBAgIUdzXuSH9oYtrxs5VtlhzLD6bzT1QwDQYJKoZIhvcNAQEL
+<X509Certificate>
+MIIGFjCCBP6gAwIBAgIUdzXuSH9oYtrxs5VtlhzLD6bzT1QwDQYJKoZIhvcNAQEL
 BQAwgbYxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMT0wOwYDVQQK
 EzRYTUwgU2VjdXJpdHkgTGlicmFyeSAoaHR0cDovL3d3dy5hbGVrc2V5LmNvbS94
 bWxzZWMpMRgwFgYDVQQLEw9TZWNvbmQgbGV2ZWwgQ0ExFjAUBgNVBAMTDUFsZWtz
@@ -92,21 +98,21 @@ QGa1GHVWwSLdaqACDlqvu5PYMMQq4IfY+fADf3tYl81ZiIJerRcHwZMa2zgof/lZ
 </X509Data>
 </KeyInfo>
 <CipherData>
-<CipherValue>o2GamuyA4mxwZ9uT/HeHU3MEVSnNgZMaPi7K3e06LVLmufkZLu00oz2F6DuI0VF5
-RYrQ94TcaNvAXvO97KKna+6OZDiVLNksFI47mepUb1OV7rjwv0U7pu+DxAKS+LFj
-EO+RmnJtDJd4uhQ4f3+bEPHKe8kELHg9Y7puLYx8AiJTbWVmDtHMjI8Fjb9E0Rb6
-WzbvRDH3HQ+1E2CuiaRyQpAYYmDy2ZKClOU9fMc/KHfzVd80bQlQH1IDpOgDKLjv
-1Awf7Jpi1oY3MJU4pqw+vc910ZJ/ehHapTpWBAE1CAuVfk+cg5aRFx3bWvlUxiWj
-su2a3nZM07FUf0pK3EVliV+mNDO0R4eNN8uLy9ItXlyKhMfDQv8qf+2d2SXo5A1/
-nQNmEfX74zPl0uSuDgIh6M9kpOKnB02ULs55qf6WzhfO+Wrx6y7YdDFdyoyITC5p
-yU6g7iLRCo7GX+1BdCCi52ApUlNWaIuLmv48tsMFiv3b6ixgTAWPkpkNAbMJsWvD
-Rmroiyf5mTSvw1gm7WW4f+LGRsjWb1/nMtmk7ZLGg6ljtFz1zfb5kFeIetAYmHj2
-mjR+9yrdRUvmGLK0L3MJGv83JMxMwxDcDmYa+ANkqhTJqIRlYuhXSYN40mIA4qYY
-bUXkT/w2EIroVPJMpLR11h1aNvEJ+Jdc48UgFoEtMoc=</CipherValue>
+<CipherValue>YFSYfeisE+TMgbnsqiEG+AGSp1UV24R/GhGVCy917jdMXojVjPdNYcKQWgXT5sKz
+zuAjDm31E7gdwErQYCgam72NwdTH1UpHAPWSfbCODAu9B4fnJu+KFqTImc4WXJo5
+Ovw2V5SgY1vSCTeQ71Hr6a0QBWIANrU+6cElm4ZqkmceAzrJ35akaUggj8RiJ1up
+H7FJ/vgRjIMx6aatZWv6ifzRDVmmBme3U7dHBZ2SYenvDKrh2XNe/LmBk6YslHfh
+IzT0k1iLMVOBws+Iw0wpqtknTTMHLYxrm8yS9fgW9oMAGApfKig+6v5t0u7/+zft
+WP21poGZ74AcyM3LqeBeExUk5QHP+O+ETiNJ3iwQMgin+9YIgrsD9mNZBYSdMG0b
+MA3gV18Gkzi5Pqzg131nxeRO03UMZupM/e5ElCXtUs8S4oeQEFUZuNK8PC04tY2y
+ly9I5YdmKriWDPJeDBGukfigOvxUafZaaRAEZKOcc5IpP3Hu4W6g/umk5G+HxWc6
+waP6c1xHWkbJ7RDR+NVqTZZdjywTgkV/D/1Vyaab82eYYt3Jayhf3MZb+A7cY0M9
+GcWU1zc4ECDyH0T1/WF2u5klBgnhwVtk/VdGUUp7aruWfzJMNuUWrTawMnTcuzvU
+A45O2Mnb/yJWvTwlC0HIB5B5lfEel4gBVSRij4BGL+E=</CipherValue>
 </CipherData>
 </EncryptedKey>
 </KeyInfo>
 <CipherData>
-<CipherValue>R17o0HDz/YotD3i65TC+YmrDBZe51wfifQyj11+LkLezJmlNKuLq/WaR9SPvLzJY</CipherValue>
+<CipherValue>oGQSZancDqWLyviHxpPicXzgRgMFif0U+X5XxnqVZf1LefvtMFhHb+lx5RmEcH7q</CipherValue>
 </CipherData>
 </EncryptedData>

@@ -3,27 +3,29 @@
 <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes256-cbc"/>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <EncryptedKey xmlns="http://www.w3.org/2001/04/xmlenc#">
-<EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-1_5"/>
+<EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p">
+<DigestMethod xmlns="http://www.w3.org/2000/09/xmldsig#" Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+</EncryptionMethod>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <KeyName>TestKeyName-rsa-4096</KeyName>
 </KeyInfo>
 <CipherData>
-<CipherValue>VkKLd9JOztHjy/84ENYUtJElBluu2Dhh2TFIkR/4Pv6H3C2wbzqpNfFVkeWSA259
-myXEt0RA158d7AoBYXi7AYtnlcqMdggGRiXaI+ATFDD8RDxmV/k7JjJqk+12YSNl
-3NacXu+IY5bK0D4O5o9pFdXd5QWEE7erSAzA32d1FHbXeoPA/VWM5iDSNR6ZdkRx
-yTGwlAa3GaubypX2aF31vU7Jj6+BigYiedU1P/9wuwWRY74UaHkNHeXMkTJgHKLh
-AQBsmBvvNMKtLRaAyM7fa+QkklKN+3LyXy//OYU1gd87EFyqpcH4Ojdr+AI6Q93W
-+dpLdcFb+7sUuD512Nw9IGFqZ5YkfEzqqRm2ipTXvGjEaymWE4K7HJchMz2DfkZ2
-eVcyR9fnvEDJnQqagZxo1SA1jPt6S6EgowrJckazatvxBGAkjPk4B57bENBmudav
-sUaRrjPbTsqpArbYy3MtEAosbtpo1P1lmiJO2rdSX5Qm0pC6ctZL55zjR9zVFhtU
-UGVIPB/H71uxafxDTU5QbeKXpI44Hze8xIcCBfLPMD7cvyoFNZz9/IVAtc+yZpAa
-XPdUV8sPSIysh425y8LTE1CuxpslTi/mrHlP/VZ6+fBideKGhNbVt1Jy2aF3cX6l
-HWsdWqYsxVSC7fBhpGjBdEgL8BmgQkYJyTkwgNlEFyE=</CipherValue>
+<CipherValue>RmFJzxJQMwm1BCU/+V3msQFKiulXsraZSUoDISibTn0PSOVUzlOAF4Cum4l7/9PZ
+CH15np7rt2D0222lOPVsVTLvtLgrvv7UzTbKYluhMDq9GxCM/Ad3fsWEiVWlsKb8
+RkldyXgbXo3JUDg/TL7/os0DopUvjccBdUsEWcgYXzu49bztPxxbCPH+2Qds6nvw
+ikWrjVu9oO31u8hZ6yMrasmd2nGVh2/YHrdPwhvFwe5e6QIg+K5oe0lc+zaAmy7C
+oe/oK+eZA8657RGTI9Ol3oGG44cpCGDmxICjRsHR1Y7e02gTN/FB18pCNQpIhwFE
+p0Oq3XE6/9z7+T37zasQ77e8G1HqkTRgLYSujH81RykNPmjPMyVQf6nTeGyoj68q
+KA/qnsgjIqBfbuSF7+D7m8as95AxoUaFjBQI5S9TCLeyCVefruM8MmnIx8AT7qFC
+sK1aG60/jl/qVAc1ZejGQUtH/FtdRzbURPDxbUkpLbKEE9PHp6UDYnXmSxhfzVbw
+s5zfGW9xdSGmtXaj2ZY+lWxDjRYie2F5cf7It6rOpc7KCcn8D2/lvcB4dhiUOk8W
+csDrdPydfNZsxdHsXXYTI9JQfxDhZH8dlzGJEZBWQc02u7HFktDThtpFx5Zz100J
+jHHStdVbDchbkG+Y1r3P8ciu6kWLtfaYWw8ypaVSycc=</CipherValue>
 </CipherData>
 </EncryptedKey>
 </KeyInfo>
 <CipherData>
-<CipherValue>Gpys9e0MUrFLkRi7snR9uOeYt6B5/t1jAe3sH+prSV6Am9KTaxVGq16GCJW+wFD1
-u+CRd8Uj260QwS3uwZGYvQ==</CipherValue>
+<CipherValue>+gvI7LIYxVC9ctKJb7vB4HyeQ+MaoqJ46pFcH6nj5hOuTUQ6bELAyWeFPyU18svo
+m/IMqbpggSwQZtdST1a4Gg==</CipherValue>
 </CipherData>
 </EncryptedData>

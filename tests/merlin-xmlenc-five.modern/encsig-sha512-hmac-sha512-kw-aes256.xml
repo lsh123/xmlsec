@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+  <SignedInfo>
+    <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+    <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#hmac-sha512"/>
+    <Reference URI="http://www.w3.org/TR/xml-stylesheet">
+      <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>
+      <DigestValue>c8+KT9+qCSbNpdZm7/dp9Mv/lgF51ATycY0Ttz/0bw2p5nvnmeEgQpIPw5HhVJ9K
+u6dDf0RKVVR/CsYvPGfnEg==</DigestValue>
+    </Reference>
+  </SignedInfo>
+  <SignatureValue>r6vtKUAj8TqKgZ3yEAfF7ta6qac9R635iyhmI47HYMdLJVdVN1Rnwqy9w9EjB8Tn
++qRr6DJF5D9CjPHK9AF3PA==</SignatureValue>
+  <KeyInfo>
+    <EncryptedKey xmlns="http://www.w3.org/2001/04/xmlenc#">
+      <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#kw-aes256"/>
+      <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <KeyName>test-aes256</KeyName>
+      </KeyInfo>
+      <CipherData>
+        <CipherValue>hHXhux/uONQ3V69gqL3Mc6D8Ixu+mOLy/yCm9yKU/pPrvRvMK6uwa8QPzIwuZHMU
+lC70EqUJWL99yHJrUOzhjkBaLL8dkrLU</CipherValue>
+      </CipherData>
+    </EncryptedKey>
+  </KeyInfo>
+</Signature>

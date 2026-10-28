@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#" MimeType="text/plain">
+  <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes192-cbc"/>
+  <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <EncryptedKey xmlns="http://www.w3.org/2001/04/xmlenc#">
+      <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#kw-aes256"/>
+      <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <KeyName>test-aes256</KeyName>
+      </KeyInfo>
+      <CipherData>
+        <CipherValue>Itu4JRjJ2XSrbxjJVmHlIdeb8nh7UnHVP0mRcweZJgQ=</CipherValue>
+      </CipherData>
+    </EncryptedKey>
+  </KeyInfo>
+  <CipherData>
+    <CipherValue>ojOFatITjhIe3D0b64pwPv8IRRO//XyQeWLfayIIqiOTojIT5DDmglG+GCjK0IqS</CipherValue>
+  </CipherData>
+</EncryptedData>

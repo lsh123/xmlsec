@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE test [
+<!ATTLIST EncryptedKey Id ID #IMPLIED>
+]>
+<PurchaseOrder xmlns="urn:example:po">
+  <Items>
+    <Item Code="001-001-001" Quantity="1">
+      spade
+    </Item>
+    <Item Code="001-001-002" Quantity="1">
+      shovel
+    </Item>
+  </Items>
+  <ShippingAddress>
+    Dig PLC, 1 First Ave, Dublin 1, Ireland
+  </ShippingAddress>
+  <EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#" Type="http://www.w3.org/2001/04/xmlenc#Element">
+    <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes256-cbc" />
+    <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+      <RetrievalMethod Type="http://www.w3.org/2001/04/xmlenc#EncryptedKey" URI="#encrypt-key-0" />
+    </KeyInfo>
+    <CipherData>
+      <CipherValue>
+        eYFnQTTDHlJ4CkkTiMbCJ5ctrac3nwX4xVs7OhrLKcivXx82t1YlGHyaPAgASoRraRKoM6n6SxnB
+        kzh6ap3HB7o+k0RRQC4qHanZPUHKLrmKuSzFNhcGyG5CeJw497xuEa2EIi7HpSRT2UUlEXtrZEw9
+        jzbfprHhMBJvlJEqwINoVIVSelABqAq3wXFx52CqT+fGkDuMlojbznoFX+e1qmgrNDD4VH1b3VAd
+        9vBgD4TUtI/Cd5KO0p68kZFkJplAw3mmGv2nI+cVBYGcITglElQHGbwR0DLb6VvOedqUXMmD+FAC
+        Pup51CqDruDFShDwgnjJWnemNWZLOaNu/aydgooKp8kEdu/aR45dNT/VdrVRKKBEEaMGqM7YD5jx
+        mYJ8VUV1rdlzz/0j94U2BhAYPQ==
+      </CipherValue>
+    </CipherData>
+  </EncryptedData>
+  <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <EncryptedKey xmlns="http://www.w3.org/2001/04/xmlenc#" Id="encrypt-key-0">
+      <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#kw-aes256" />
+      <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <KeyName>test-aes256</KeyName>
+      </KeyInfo>
+      <CipherData>
+        <CipherValue>
+          BfjxnDMe3KrJXfh4WrUSDQyfnU3fwgGKwsD3E7hUzT/8GHHArJX/dg==
+        </CipherValue>
+      </CipherData>
+    </EncryptedKey>
+  </KeyInfo>
+</PurchaseOrder>

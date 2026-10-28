@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#"
+  xmlns:xenc11="http://www.w3.org/2009/xmlenc11#"
+  Type="http://www.w3.org/2001/04/xmlenc#Element">
+    <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes128-cbc" />
+    <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+      <EncryptedKey xmlns="http://www.w3.org/2001/04/xmlenc#">
+        <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p">
+          <DigestMethod xmlns="http://www.w3.org/2000/09/xmldsig#" Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+          <xenc11:MGF Algorithm="http://www.w3.org/2009/xmlenc11#mgf1sha256" />
+        </EncryptionMethod>
+        <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+          <KeyName>TestKeyName-rsa-4096</KeyName>
+          <X509Data>
+            <X509Certificate/>
+          </X509Data>
+        </KeyInfo>
+        <CipherData>
+          <CipherValue>
+          </CipherValue>
+        </CipherData>
+      </EncryptedKey>
+    </KeyInfo>
+    <CipherData>
+      <CipherValue>
+      </CipherValue>
+    </CipherData>
+</EncryptedData>

@@ -3016,6 +3016,63 @@ fi
 
 ##########################################################################
 #
+# merlin-xmlenc-five.modern
+#
+# While the main operation is signature (and this is why we have these
+# tests here instead of testEnc.sh), these tests check the encryption
+# key transport/wrapper algorithms
+#
+##########################################################################
+execDSigTest $res_success \
+    "" \
+    "merlin-xmlenc-five.modern/encsig-sha256-hmac-sha256-kw-aes256" \
+    "sha256 hmac-sha256 kw-aes256" \
+    "hmac aes" \
+    "--enabled-reference-uris any --keys-file $topfolder/keys/keys.xml $url_map_xml_stylesheet_2005" \
+    "--enabled-reference-uris any --session-key hmac-256 --keys-file $topfolder/keys/keys.xml $url_map_xml_stylesheet_2005" \
+    "--enabled-reference-uris any --keys-file $topfolder/keys/keys.xml $url_map_xml_stylesheet_2005"
+
+execDSigTest $res_success \
+    "" \
+    "merlin-xmlenc-five.modern/encsig-sha256-hmac-sha256-kw-aes128" \
+    "sha256 hmac-sha256 kw-aes128" \
+    "hmac aes" \
+    "--enabled-reference-uris any --keys-file $topfolder/keys/keys.xml $url_map_xml_stylesheet_2005" \
+    "--enabled-reference-uris any --session-key hmac-256 --keys-file $topfolder/keys/keys.xml $url_map_xml_stylesheet_2005" \
+    "--enabled-reference-uris any --keys-file $topfolder/keys/keys.xml $url_map_xml_stylesheet_2005"
+
+execDSigTest $res_success \
+    "" \
+    "merlin-xmlenc-five.modern/encsig-sha384-hmac-sha384-kw-aes192" \
+    "sha384 hmac-sha384 kw-aes192" \
+    "hmac aes" \
+    "--enabled-reference-uris any --keys-file $topfolder/keys/keys.xml $url_map_xml_stylesheet_2005" \
+    "--enabled-reference-uris any --session-key hmac-384 --keys-file $topfolder/keys/keys.xml $url_map_xml_stylesheet_2005" \
+    "--enabled-reference-uris any --keys-file $topfolder/keys/keys.xml $url_map_xml_stylesheet_2005"
+
+execDSigTest $res_success \
+    "" \
+    "merlin-xmlenc-five.modern/encsig-sha512-hmac-sha512-kw-aes256" \
+    "sha512 hmac-sha512 kw-aes256" \
+    "hmac aes" \
+    "--enabled-reference-uris any --keys-file $topfolder/keys/keys.xml $url_map_xml_stylesheet_2005" \
+    "--enabled-reference-uris any --session-key hmac-512 --keys-file $topfolder/keys/keys.xml $url_map_xml_stylesheet_2005" \
+    "--enabled-reference-uris any --keys-file $topfolder/keys/keys.xml $url_map_xml_stylesheet_2005"
+
+if [ "z$xmlsec_feature_rsa_oaep_sha256" = "zyes" ] ; then
+    execDSigTest $res_success \
+        "" \
+        "merlin-xmlenc-five.modern/encsig-hmac-sha256-rsa-oaep-sha256" \
+        "sha256 hmac-sha256 rsa-oaep-mgf1p sha256 sha256" \
+        "hmac rsa" \
+        "--enabled-reference-uris any $priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005" \
+        "--enabled-reference-uris any --session-key hmac-256 $pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-pubkey$rsa_pub_key_suffix.$pub_key_format $url_map_xml_stylesheet_2005" \
+        "--enabled-reference-uris any $priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"
+fi
+
+
+##########################################################################
+#
 # merlin-exc-c14n-one
 #
 ##########################################################################

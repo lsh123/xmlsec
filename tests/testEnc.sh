@@ -1778,6 +1778,121 @@ execEncTest $res_success \
 #merlin-xmlenc-five/encsig-hmac-sha256-dh.xml
 #merlin-xmlenc-five/encsig-hmac-sha256-kw-tripledes-dh.xml
 
+
+##########################################################################
+#
+# merlin-xmlenc-five.modern
+#
+##########################################################################
+
+execEncTest $res_success \
+    "" \
+    "merlin-xmlenc-five.modern/encrypt-data-aes128-cbc" \
+    "aes128-cbc" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml" \
+    "--keys-file $topfolder/keys/keys.xml --binary-data $topfolder/merlin-xmlenc-five.modern/encrypt-data-aes128-cbc.data" \
+    "--keys-file $topfolder/keys/keys.xml"
+
+execEncTest $res_success \
+    "" \
+    "merlin-xmlenc-five.modern/encrypt-content-aes256-cbc" \
+    "aes256-cbc" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml" \
+    "--keys-file $topfolder/keys/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/merlin-xmlenc-five.modern/encrypt-content-aes256-cbc.data --node-id Payment" \
+    "--keys-file $topfolder/keys/keys.xml"
+
+execEncTest $res_success \
+    "" \
+    "merlin-xmlenc-five.modern/encrypt-content-aes256-cbc-prop" \
+    "aes256-cbc" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml" \
+    "--keys-file $topfolder/keys/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/merlin-xmlenc-five.modern/encrypt-content-aes256-cbc-prop.data --node-id Payment" \
+    "--keys-file $topfolder/keys/keys.xml"
+
+execEncTest $res_success \
+    "" \
+    "merlin-xmlenc-five.modern/encrypt-element-aes192-cbc-ref" \
+    "aes192-cbc" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml"
+
+execEncTest $res_success \
+    "" \
+    "merlin-xmlenc-five.modern/encrypt-element-aes128-cbc-rsa-oaep-sha256" \
+    "aes128-cbc rsa-oaep-mgf1p sha256 sha256" \
+    "" \
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123" \
+    "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-pubkey$rsa_pub_key_suffix.$pub_key_format --session-key aes-128 --enabled-key-data key-name,enc-key --xml-data $topfolder/merlin-xmlenc-five.modern/encrypt-element-aes128-cbc-rsa-oaep-sha256.data --node-id Purchase" \
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123"
+
+if [ "z$xmlsec_feature_rsa_oaep_sha1" = "zyes" -a "z$xmlsec_feature_rsa_oaep_different_digest_and_mgf1" = "zyes" ] ; then
+    execEncTest $res_success \
+        "" \
+        "merlin-xmlenc-five.modern/encrypt-data-aes256-cbc-rsa-oaep-sha256" \
+        "aes256-cbc rsa-oaep-mgf1p sha256 sha1" \
+        "" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-pubkey$rsa_pub_key_suffix.$pub_key_format --session-key aes-256 --binary-data $topfolder/merlin-xmlenc-five.modern/encrypt-data-aes256-cbc-rsa-oaep-sha256.data" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123"
+fi
+
+if [ "z$xmlsec_feature_rsa_oaep_sha256" = "zyes" ] ; then
+    execEncTest $res_success \
+        "" \
+        "merlin-xmlenc-five.modern/encrypt-data-aes256-cbc-rsa-oaep-mgf1p-sha256" \
+        "aes256-cbc rsa-oaep-mgf1p sha256 sha256" \
+        "" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-pubkey$rsa_pub_key_suffix.$pub_key_format --session-key aes-256 --binary-data $topfolder/merlin-xmlenc-five.modern/encrypt-data-aes256-cbc-rsa-oaep-mgf1p-sha256.data" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123"
+fi
+
+execEncTest $res_success \
+    "" \
+    "merlin-xmlenc-five.modern/encrypt-data-aes256-cbc-kw-aes256" \
+    "aes256-cbc kw-aes256" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml" \
+    "--keys-file $topfolder/keys/keys.xml --session-key aes-256 --binary-data $topfolder/merlin-xmlenc-five.modern/encrypt-data-aes256-cbc-kw-aes256.data" \
+    "--keys-file $topfolder/keys/keys.xml"
+
+execEncTest $res_success \
+    "" \
+    "merlin-xmlenc-five.modern/encrypt-content-aes128-cbc-kw-aes192" \
+    "aes128-cbc kw-aes192" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml" \
+    "--keys-file $topfolder/keys/keys.xml --session-key aes-128 --node-name urn:example:po:PaymentInfo --xml-data $topfolder/merlin-xmlenc-five.modern/encrypt-content-aes128-cbc-kw-aes192.data" \
+    "--keys-file $topfolder/keys/keys.xml"
+
+execEncTest $res_success \
+    "" \
+    "merlin-xmlenc-five.modern/encrypt-data-aes192-cbc-kw-aes256" \
+    "aes192-cbc kw-aes256" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml" \
+    "--keys-file $topfolder/keys/keys.xml --session-key aes-192 --binary-data $topfolder/merlin-xmlenc-five.modern/encrypt-data-aes192-cbc-kw-aes256.data" \
+    "--keys-file $topfolder/keys/keys.xml"
+
+execEncTest $res_success \
+    "" \
+    "merlin-xmlenc-five.modern/encrypt-element-aes256-cbc-kw-aes128" \
+    "aes256-cbc kw-aes128" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml" \
+    "--keys-file $topfolder/keys/keys.xml --session-key aes-256 --node-name urn:example:po:PaymentInfo --xml-data $topfolder/merlin-xmlenc-five.modern/encrypt-element-aes256-cbc-kw-aes128.data" \
+    "--keys-file $topfolder/keys/keys.xml"
+
+execEncTest $res_success \
+    "" \
+    "merlin-xmlenc-five.modern/encrypt-element-aes256-cbc-retrieved-kw-aes256" \
+    "aes256-cbc kw-aes256" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml"
+
 ##########################################################################
 #
 # 01-phaos-xmlenc-3

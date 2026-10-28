@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE test [
+<!ATTLIST PaymentInfo Id ID #IMPLIED>
+]>
+<PurchaseOrder xmlns="urn:example:po">
+  <Items>
+    <Item Code="001-001-001" Quantity="1">
+      spade
+    </Item>
+    <Item Code="001-001-002" Quantity="1">
+      shovel
+    </Item>
+  </Items>
+  <ShippingAddress>
+    Dig PLC, 1 First Ave, Dublin 1, Ireland
+  </ShippingAddress>
+  <PaymentInfo>
+    <BillingAddress>
+      Dig PLC, 1 First Ave, Dublin 1, Ireland
+    </BillingAddress>
+    <CreditCard Type="Amex">
+      <Name>Foo B Baz</Name>
+      <Number>1234 567890 12345</Number>
+      <Expires Month="1" Year="2005"/>
+    </CreditCard>
+  </PaymentInfo>
+  <CipherValue xmlns="http://www.example.org/repository" Id="example1">
+    yjXUKDDfYjssYY/GPXIipeAA2PNNQ5DCrhKvPZPRjyygd2rUG4oijas8nxWht1H5LQ80/RAKHRgW
+    3oOLvi++K/xIPoRpaLwFheT8QaWNNDuv45uCM2/Co2Tw9vg9o0hVDsxeyW7wFx5WCfP5hL5sxyYB
+    nz0SSun8ye6euX88zdiwqzPbOm5a3PEwJ20spAcCXlJ6kRA+QvKkdQA1TwkAauV8SzAIZJ64bAU/
+    FaOCTf1P0J2sSGD5bNaGOLSaikcxBdsTyPphVHTNjApwqtpwxZmuwvz2+IiwoEBNyKFoW88VMt7O
+    5UEcWGFIbBziHqg8LXULQHwTFbPee6G0srO89ci5FexePnzlVrH1j/kvWWsYr0akXCJYI895ArPp
+    t/o+3EDIJAd4ebjQGjfcDMzXxA==
+  </CipherValue>
+</PurchaseOrder>

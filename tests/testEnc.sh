@@ -1819,15 +1819,6 @@ execEncTest $res_success \
     "" \
     "--keys-file $topfolder/keys/keys.xml"
 
-execEncTest $res_success \
-    "" \
-    "merlin-xmlenc-five.modern/encrypt-element-aes128-cbc-rsa-oaep-sha256" \
-    "aes128-cbc rsa-oaep-mgf1p sha256 sha256" \
-    "" \
-    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-pubkey$rsa_pub_key_suffix.$pub_key_format --session-key aes-128 --enabled-key-data key-name,enc-key --xml-data $topfolder/merlin-xmlenc-five.modern/encrypt-element-aes128-cbc-rsa-oaep-sha256.data --node-id Purchase" \
-    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123"
-
 if [ "z$xmlsec_feature_rsa_oaep_sha1" = "zyes" -a "z$xmlsec_feature_rsa_oaep_different_digest_and_mgf1" = "zyes" ] ; then
     execEncTest $res_success \
         "" \
@@ -1840,6 +1831,15 @@ if [ "z$xmlsec_feature_rsa_oaep_sha1" = "zyes" -a "z$xmlsec_feature_rsa_oaep_dif
 fi
 
 if [ "z$xmlsec_feature_rsa_oaep_sha256" = "zyes" ] ; then
+    execEncTest $res_success \
+        "" \
+        "merlin-xmlenc-five.modern/encrypt-element-aes128-cbc-rsa-oaep-sha256" \
+        "aes128-cbc rsa-oaep-mgf1p sha256 sha256" \
+        "" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-pubkey$rsa_pub_key_suffix.$pub_key_format --session-key aes-128 --enabled-key-data key-name,enc-key --xml-data $topfolder/merlin-xmlenc-five.modern/encrypt-element-aes128-cbc-rsa-oaep-sha256.data --node-id Purchase" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123"
+
     execEncTest $res_success \
         "" \
         "merlin-xmlenc-five.modern/encrypt-data-aes256-cbc-rsa-oaep-mgf1p-sha256" \

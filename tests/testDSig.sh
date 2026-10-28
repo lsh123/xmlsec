@@ -956,7 +956,7 @@ fi
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/signature-two-keynames" \
-    "sha1 rsa-sha1" \
+    "sha256 rsa-sha256" \
     "rsa x509" \
     "--enabled-reference-uris any $pub_key_option:key2  $topfolder/keys/rsa/rsa-2048-pubkey$rsa_pub_key_suffix.$pub_key_format $url_map_xml_stylesheet_2018" \
     "--enabled-reference-uris any $priv_key_option:key2 $topfolder/keys/rsa/rsa-2048-key.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2018" \
@@ -964,8 +964,8 @@ execDSigTest $res_success \
 
 execDSigTest $res_success \
     "" \
-    "aleksey-xmldsig-01/enveloping-dsa-x509chain" \
-    "sha1 dsa-sha1" \
+    "aleksey-xmldsig-01/enveloping-sha256-dsa1024-sha256-x509chain" \
+    "sha256 dsa-sha256" \
     "dsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
     "$priv_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa/dsa-1024-key.$priv_key_format --pwd secret123" \
@@ -974,7 +974,7 @@ execDSigTest $res_success \
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloping-rsa-x509chain" \
-    "sha1 rsa-sha1" \
+    "sha256 rsa-sha256" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
     "$priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key.$priv_key_format --pwd secret123" \
@@ -1019,7 +1019,7 @@ execDSigTest $res_success \
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/xpointer-hmac" \
-    "xpointer sha1 hmac-sha1" \
+    "xpointer sha256 hmac-sha256" \
     "hmac" \
     "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
     "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin" \
@@ -1652,7 +1652,7 @@ execDSigTest $res_success \
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/x509data-test" \
-    "xpath2 sha1 rsa-sha1" \
+    "xpath2 sha256 rsa-sha256" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format" \
     "$priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key.$priv_key_format --pwd secret123" \
@@ -1662,14 +1662,14 @@ execDSigTest $res_success \
 execDSigPrintXmlDebugTest \
     "" \
     "aleksey-xmldsig-01/x509data-test" \
-    "xpath2 sha1 rsa-sha1" \
+    "xpath2 sha256 rsa-sha256" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/x509data-sn-test" \
-    "xpath2 sha1 rsa-sha1" \
+    "xpath2 sha256 rsa-sha256" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --untrusted-$cert_format $topfolder/keys/rsa/rsa-2048-cert.$cert_format --enabled-key-data x509" \
     "$priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key.$priv_key_format --pwd secret123" \
@@ -2000,7 +2000,7 @@ extra_message="Negative test: expired cert"
 execDSigTest $res_fail \
     "" \
     "aleksey-xmldsig-01/enveloping-expired-cert" \
-    "sha1 rsa-sha1" \
+    "sha256 rsa-sha256" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
@@ -2009,7 +2009,7 @@ extra_message="Expired cert but there is verification timestamp overwrite"
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloping-expired-cert" \
-    "sha1 rsa-sha1" \
+    "sha256 rsa-sha256" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --verification-gmt-time 2026-03-15+00:00:00"
 
@@ -2018,7 +2018,7 @@ if [ "z$xmlsec_feature_cert_check_skip_time" = "zyes" ] ; then
     execDSigTest $res_success \
         "" \
         "aleksey-xmldsig-01/enveloping-expired-cert" \
-        "sha1 rsa-sha1" \
+        "sha256 rsa-sha256" \
         "rsa x509" \
         "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --X509-skip-time-checks"
 fi
@@ -2708,7 +2708,7 @@ execDSigTest $res_fail \
 
 ##########################################################################
 #
-# phaos-xmldsig-three-modern
+# phaos-xmldsig-three.modern
 #
 ##########################################################################
 
@@ -2719,7 +2719,7 @@ execDSigTest $res_fail \
 #
 
 execDSigTest $res_success \
-    "phaos-xmldsig-three-modern" \
+    "phaos-xmldsig-three.modern" \
     "signature-big" \
     "base64 xslt xpath sha256 rsa-sha256" \
     "rsa x509" \
@@ -2728,7 +2728,7 @@ execDSigTest $res_success \
     "--lax-key-search --pubkey-cert-$cert_format $topfolder/keys/rsa/rsa-2048-cert.$cert_format --enabled-reference-uris any $url_map_rfc3161"
 
 execDSigTest $res_success \
-    "phaos-xmldsig-three-modern" \
+    "phaos-xmldsig-three.modern" \
     "signature-ecdsa-detached" \
     "sha256 ecdsa-sha256" \
     "ec x509" \
@@ -2737,7 +2737,7 @@ execDSigTest $res_success \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-reference-uris any $url_map_rfc3161"
 
 execDSigTest $res_success \
-    "phaos-xmldsig-three-modern" \
+    "phaos-xmldsig-three.modern" \
     "signature-ecdsa-enveloped" \
     "enveloped-signature sha256 ecdsa-sha256" \
     "ec x509" \
@@ -2746,7 +2746,7 @@ execDSigTest $res_success \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
 
 execDSigTest $res_success \
-    "phaos-xmldsig-three-modern" \
+    "phaos-xmldsig-three.modern" \
     "signature-ecdsa-enveloping" \
     "sha256 ecdsa-sha256" \
     "ec x509" \
@@ -2755,7 +2755,7 @@ execDSigTest $res_success \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
 
 execDSigTest $res_success \
-    "phaos-xmldsig-three-modern" \
+    "phaos-xmldsig-three.modern" \
     "signature-ecdsa-manifest" \
     "sha256 ecdsa-sha256" \
     "key-value ec" \
@@ -2764,7 +2764,7 @@ execDSigTest $res_success \
     "--enabled-key-data key-value,ec --enabled-reference-uris any $url_map_rfc3161"
 
 execDSigTest $res_success \
-    "phaos-xmldsig-three-modern" \
+    "phaos-xmldsig-three.modern" \
     "signature-hmac-sha256-c14n-enveloping" \
     "sha256 hmac-sha256" \
     "hmac" \
@@ -2773,7 +2773,7 @@ execDSigTest $res_success \
     "--lax-key-search --hmackey $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
-    "phaos-xmldsig-three-modern" \
+    "phaos-xmldsig-three.modern" \
     "signature-hmac-sha256-40-c14n-comments-detached" \
     "c14n-with-comments sha256 hmac-sha256" \
     "hmac" \
@@ -2782,7 +2782,7 @@ execDSigTest $res_success \
     "--lax-key-search --hmackey $topfolder/keys/hmackey.bin --enabled-reference-uris any $url_map_rfc3161"
 
 execDSigTest $res_success \
-    "phaos-xmldsig-three-modern" \
+    "phaos-xmldsig-three.modern" \
     "signature-hmac-sha256-40-exclusive-c14n-comments-detached" \
     "exc-c14n-with-comments sha256 hmac-sha256" \
     "hmac" \
@@ -2791,7 +2791,7 @@ execDSigTest $res_success \
     "--lax-key-search --hmackey $topfolder/keys/hmackey.bin --enabled-reference-uris any $url_map_rfc3161"
 
 execDSigTest $res_success \
-    "phaos-xmldsig-three-modern" \
+    "phaos-xmldsig-three.modern" \
     "signature-hmac-sha256-exclusive-c14n-comments-detached" \
     "exc-c14n-with-comments sha256 hmac-sha256" \
     "hmac" \
@@ -2800,7 +2800,7 @@ execDSigTest $res_success \
     "--lax-key-search --hmackey $topfolder/keys/hmackey.bin --enabled-reference-uris any $url_map_rfc3161"
 
 execDSigTest $res_success \
-    "phaos-xmldsig-three-modern" \
+    "phaos-xmldsig-three.modern" \
     "signature-hmac-sha256-exclusive-c14n-enveloped" \
     "enveloped-signature exc-c14n sha256 hmac-sha256" \
     "hmac" \
@@ -2809,7 +2809,7 @@ execDSigTest $res_success \
     "--lax-key-search --hmackey $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
-    "phaos-xmldsig-three-modern" \
+    "phaos-xmldsig-three.modern" \
     "signature-rsa-detached-b64-transform" \
     "base64 sha256 rsa-sha256" \
     "key-value rsa" \
@@ -2818,7 +2818,7 @@ execDSigTest $res_success \
     "--enabled-key-data key-value,rsa --enabled-reference-uris any"
 
 execDSigTest $res_success \
-    "phaos-xmldsig-three-modern" \
+    "phaos-xmldsig-three.modern" \
     "signature-rsa-detached-xpath-transform" \
     "xpath sha256 rsa-sha256" \
     "key-value rsa" \
@@ -2827,7 +2827,7 @@ execDSigTest $res_success \
     "--enabled-key-data key-value,rsa --enabled-reference-uris any"
 
 execDSigTest $res_success \
-    "phaos-xmldsig-three-modern" \
+    "phaos-xmldsig-three.modern" \
     "signature-rsa-detached-xslt-transform" \
     "xslt sha256 rsa-sha256" \
     "key-value rsa" \
@@ -2836,7 +2836,7 @@ execDSigTest $res_success \
     "--enabled-key-data key-value,rsa --enabled-reference-uris any"
 
 execDSigTest $res_success \
-    "phaos-xmldsig-three-modern" \
+    "phaos-xmldsig-three.modern" \
     "signature-rsa-manifest" \
     "sha256 rsa-sha256" \
     "key-value rsa" \
@@ -2845,7 +2845,7 @@ execDSigTest $res_success \
     "--enabled-key-data key-value,rsa --enabled-reference-uris any $url_map_rfc3161"
 
 execDSigTest $res_success \
-    "phaos-xmldsig-three-modern" \
+    "phaos-xmldsig-three.modern" \
     "signature-rsa-detached" \
     "sha256 rsa-sha256" \
     "rsa x509" \
@@ -2854,7 +2854,7 @@ execDSigTest $res_success \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-reference-uris any $url_map_rfc3161"
 
 execDSigTest $res_success \
-    "phaos-xmldsig-three-modern" \
+    "phaos-xmldsig-three.modern" \
     "signature-rsa-detached-xslt-transform-retrieval-method" \
     "xslt sha256 rsa-sha256" \
     "retrieval-method raw-x509-cert x509" \
@@ -2863,7 +2863,7 @@ execDSigTest $res_success \
     "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-retrieval-method-uris remote --enabled-key-data retrieval-method,raw-x509-cert,x509 --enabled-reference-uris any $url_map_rfc3161"
 
 execDSigTest $res_success \
-    "phaos-xmldsig-three-modern" \
+    "phaos-xmldsig-three.modern" \
     "signature-rsa-enveloped" \
     "enveloped-signature sha256 rsa-sha256" \
     "rsa x509" \
@@ -2872,7 +2872,7 @@ execDSigTest $res_success \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
 
 execDSigTest $res_success \
-    "phaos-xmldsig-three-modern" \
+    "phaos-xmldsig-three.modern" \
     "signature-rsa-enveloping" \
     "sha256 rsa-sha256" \
     "rsa x509" \
@@ -2881,7 +2881,7 @@ execDSigTest $res_success \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
 
 execDSigTest $res_success \
-    "phaos-xmldsig-three-modern" \
+    "phaos-xmldsig-three.modern" \
     "signature-rsa-manifest-x509-data-cert" \
     "sha256 rsa-sha256" \
     "rsa x509" \
@@ -2890,7 +2890,7 @@ execDSigTest $res_success \
     "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-reference-uris any $url_map_rfc3161"
 
 execDSigTest $res_success \
-    "phaos-xmldsig-three-modern" \
+    "phaos-xmldsig-three.modern" \
     "signature-rsa-manifest-x509-data-cert-chain" \
     "sha256 rsa-sha256" \
     "rsa x509" \
@@ -2899,7 +2899,7 @@ execDSigTest $res_success \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-reference-uris any $url_map_rfc3161"
 
 execDSigTest $res_success \
-    "phaos-xmldsig-three-modern" \
+    "phaos-xmldsig-three.modern" \
     "signature-rsa-manifest-x509-data-crl" \
     "sha256 rsa-sha256" \
     "rsa x509" \
@@ -2910,7 +2910,7 @@ execDSigTest $res_success \
 # these tests require the key to be found by X509 data in the keys store
 if [ "z$xmlsec_feature_x509_data_lookup" = "zyes" ] ; then
     execDSigTest $res_success \
-        "phaos-xmldsig-three-modern" \
+        "phaos-xmldsig-three.modern" \
         "signature-rsa-manifest-x509-data-issuer-serial" \
         "sha256 rsa-sha256" \
         "rsa x509" \
@@ -2919,7 +2919,7 @@ if [ "z$xmlsec_feature_x509_data_lookup" = "zyes" ] ; then
         "--untrusted-$cert_format $topfolder/keys/rsa/rsa-2048-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --enabled-reference-uris any $url_map_rfc3161"
 
     execDSigTest $res_success \
-        "phaos-xmldsig-three-modern" \
+        "phaos-xmldsig-three.modern" \
         "signature-rsa-manifest-x509-data-ski" \
         "sha256 rsa-sha256" \
         "rsa x509" \
@@ -2928,7 +2928,7 @@ if [ "z$xmlsec_feature_x509_data_lookup" = "zyes" ] ; then
         "--untrusted-$cert_format $topfolder/keys/rsa/rsa-2048-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --enabled-reference-uris any $url_map_rfc3161"
 
     execDSigTest $res_success \
-        "phaos-xmldsig-three-modern" \
+        "phaos-xmldsig-three.modern" \
         "signature-rsa-manifest-x509-data-subject-name" \
         "sha256 rsa-sha256" \
         "rsa x509" \
@@ -2938,7 +2938,7 @@ if [ "z$xmlsec_feature_x509_data_lookup" = "zyes" ] ; then
 fi
 
 execDSigTest $res_success \
-    "phaos-xmldsig-three-modern" \
+    "phaos-xmldsig-three.modern" \
     "signature-rsa-xpath-transform-enveloped" \
     "enveloped-signature xpath sha256 rsa-sha256" \
     "rsa x509" \
@@ -2948,7 +2948,7 @@ execDSigTest $res_success \
 
 extra_message="Negative test: bad retrieval method"
 execDSigTest $res_fail \
-    "phaos-xmldsig-three-modern" \
+    "phaos-xmldsig-three.modern" \
     "signature-rsa-detached-xslt-transform-bad-retrieval-method" \
     "xslt sha256 rsa-sha256" \
     "retrieval-method raw-x509-cert x509" \
@@ -2956,7 +2956,7 @@ execDSigTest $res_fail \
 
 extra_message="Negative test: bad digest"
 execDSigTest $res_fail \
-    "phaos-xmldsig-three-modern" \
+    "phaos-xmldsig-three.modern" \
     "signature-rsa-enveloped-bad-digest-val" \
     "enveloped-signature sha256 rsa-sha256" \
     "rsa x509" \
@@ -2964,7 +2964,7 @@ execDSigTest $res_fail \
 
 extra_message="Negative test: bad sig"
 execDSigTest $res_fail \
-    "phaos-xmldsig-three-modern" \
+    "phaos-xmldsig-three.modern" \
     "signature-rsa-enveloped-bad-sig" \
     "enveloped-signature sha256 rsa-sha256" \
     "rsa x509" \
@@ -2974,7 +2974,7 @@ if [ "z$xmlsec_feature_crl_load" = "zyes" ] ; then
     # this should fail because there is a CRL for the cert used for signing
     extra_message="Negative test: CRL present"
     execDSigTest $res_fail \
-        "phaos-xmldsig-three-modern" \
+        "phaos-xmldsig-three.modern" \
         "signature-rsa-manifest-x509-data-crl" \
         "sha256 rsa-sha256" \
         "rsa x509" \

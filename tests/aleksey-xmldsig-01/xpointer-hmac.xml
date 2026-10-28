@@ -9,20 +9,23 @@
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
-      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#hmac-sha1"/>
+      <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#hmac-sha256"/>
       <Reference URI="">
         <Transforms>
           <Transform Algorithm="http://www.w3.org/2001/04/xmldsig-more/xptr">
             <XPointer xmlns="http://www.w3.org/2001/04/xmldsig-more/xptr">
-		    xpointer(id(&quot;foo&quot;))
+		    xpointer(id("foo"))
 	    </XPointer>
           </Transform>
         </Transforms>
-        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
-        <DigestValue>faszbFrqwUNeZH5QrXPPobn+zso=</DigestValue>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+        <DigestValue>g/ZUVIWMZudWUXDjOdIQ82r3I+flDyMCbq6ePTY92vs=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>BTB6iZWZjOIG0JjGjpYbihO3Igg=</SignatureValue>
-    <Object Id="object">some text</Object>
+    <SignatureValue>hbihLmXcWBRtibeg3QlRu0uxplbr5cEDP7hKv+UpwGs=</SignatureValue>
+  <KeyInfo>
+    <KeyName>TeskKeyName-Hmac</KeyName>
+  </KeyInfo>
+  <Object Id="object">some text</Object>
   </Signature>
 </Document>

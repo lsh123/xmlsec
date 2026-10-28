@@ -63,7 +63,7 @@ Keys and certificates (all in tests/keys/)
 	The HMAC key (the ASCII encoding of the word "secret") used by the
 	HMAC signature examples.
 
-Contents of phaos-xmldsig-three-modern
+Contents of phaos-xmldsig-three.modern
 ======================================
 
 	signature-rsa-enveloped.{xml,tmpl}

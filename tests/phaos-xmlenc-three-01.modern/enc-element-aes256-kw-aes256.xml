@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PaymentInfo xmlns="http://example.org/paymentv2">
+  <Name>John Smith</Name>
+  <EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Id="ED" Type="http://www.w3.org/2001/04/xmlenc#Element">
+    <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes256-cbc"/>
+    <ds:KeyInfo>
+      <EncryptedKey Id="EK">
+        <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#kw-aes256"/>
+        <ds:KeyInfo>
+          <ds:KeyName>test-aes256</ds:KeyName>
+        </ds:KeyInfo>
+        <CipherData>
+          <CipherValue>Fnr47TDH0heHUjGKsaE2B3Z8K1c7SHNtxwnqhq2cQyf50R3jCwqfLQ==</CipherValue>
+        </CipherData>
+        <ReferenceList>
+          <DataReference URI="#ED"/>
+        </ReferenceList>
+      </EncryptedKey>
+    </ds:KeyInfo>
+    <CipherData>
+      <CipherValue>K+pKlfq4AOeyFbPEUWmLWypUDC0bwIE6cdbbpI9AOdyFPatZ1qG+3DrAP5m2GgGe
+hkPpO3dw58UWVdjxKBTfBWUHb624T/ebPSBupb42m7Jp3Ku8WfEHn6xPFuawRFP+
+tv+o2Jf3Y1VL7NFX7tNpoCAcNrW3tp4esrbM70TGlMBa25wpDCbeGdPnWj+E1XQF
+NdnJQgMvZlnviNbNR2hEAoBbRYuaZSAm61SRS7PLY7gQ+VjXP9FwuMDoj6zN+1/2</CipherValue>
+    </CipherData>
+  </EncryptedData>
+</PaymentInfo>

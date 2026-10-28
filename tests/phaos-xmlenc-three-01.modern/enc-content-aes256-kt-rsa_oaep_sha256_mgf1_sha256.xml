@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PaymentInfo xmlns="http://example.org/paymentv2">
+  <Name>John Smith</Name>
+  <CreditCard Currency="USD" Limit="5,000"><EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:xenc11="http://www.w3.org/2009/xmlenc11#" Id="ED" Type="http://www.w3.org/2001/04/xmlenc#Content">
+    <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes256-cbc"/>
+    <ds:KeyInfo>
+      <EncryptedKey Id="EK">
+        <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p">
+          <ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          <xenc11:MGF Algorithm="http://www.w3.org/2009/xmlenc11#mgf1sha256"/>
+        </EncryptionMethod>
+        <ds:KeyInfo>
+          <ds:KeyName>TestKeyName-rsa-4096</ds:KeyName>
+        </ds:KeyInfo>
+        <CipherData>
+          <CipherValue>iGCcXkJOBxa+Zy591CmRcuy3Qa2n/97O3nzTDQkVM1SvE0wDcc8F53gS6lSNd9Tw
+2eGKgCOAKjA8zCAtvseQrvv0Ybfei5rT59gXVa6dkPyego+2KfZK1xGB5PKQwU+O
+JREI1eUbeHPR5576DirZFq4vecfhdnhG64ht6kjy/7DlGS6INulkiEOd+zJ4wgbk
+Md90gaYlRlYa1aq2JHoQB0M7ULIu2RCB2T1cyphHF6IAD69aWtdlb/LEo9CIboi5
+fcedBIPkPU9S62hFQMp5uA0+Q5cHK/LSTIoERH1sYhguDnHmbNFXHZmkIsLsRijI
+70lIkbuGSvQN7M59qhc3C0kFoHb0daif+cNxyEKXCYjX1RsI3nNeyxm9UiRkKPcA
+zCpbZ+1O+aT9k9RbCbVnoewDnZR5r+pdb7GbP6RBS9m20dtbG7y8qdKYogn3yFkP
+qfRUBV/pP/ldyzBLF1/kld4EtVfdiBPOZJRd0PVlQIbPxo8KTy7lFBZ4WgwVunzG
+mGk04oJmaxHhAW6jM0tGqLu4lxvGjzjO881cgyM5s9jdnkolBL5c97jj/+4mzu6T
+qJBmoQvK073XU45hkr0uThqmYrTdF37oM/rzcziPCzofePdfZIeyhAW4vDS8KQ1M
+kaSrYLRA2YnhaJcKD/ASO0uGpmKDHt/5n6vgKSXk0m8=</CipherValue>
+        </CipherData>
+        <ReferenceList>
+          <DataReference URI="#ED"/>
+        </ReferenceList>
+      </EncryptedKey>
+    </ds:KeyInfo>
+    <CipherData>
+      <CipherValue>4xnAcTA/qxc8MOZiDDcjtp6nXlwI2jTXDDhk6iCj9FVeIO0NG2Hb55LYKPOV3iZ0
+Cm+bfXwKAGyAAawyUo+GOsoh8A+o1z/wlxiSVSoSHo/21pKws/UHO8VF3Yrqrafl
+ILczPJa1T3Q7A7mNOiaSquHXngQXpkTePDvBbmN4+Ox4bAAk+yVnl86nP/9UlvfH</CipherValue>
+    </CipherData>
+  </EncryptedData></CreditCard>
+</PaymentInfo>

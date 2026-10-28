@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PaymentInfo xmlns="http://example.org/paymentv2">
+  <Name>John Smith</Name>
+  <EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:xenc11="http://www.w3.org/2009/xmlenc11#" Id="ED" Type="http://www.w3.org/2001/04/xmlenc#Element">
+    <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes256-cbc"/>
+    <ds:KeyInfo>
+      <EncryptedKey Id="EK">
+        <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p">
+          <ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#sha384"/>
+          <xenc11:MGF Algorithm="http://www.w3.org/2009/xmlenc11#mgf1sha384"/>
+        </EncryptionMethod>
+        <ds:KeyInfo>
+          <ds:KeyName>TestKeyName-rsa-4096</ds:KeyName>
+        </ds:KeyInfo>
+        <CipherData>
+          <CipherValue>Q8lLxWcgfIY3oJwHWXl65s0lp+wjSvTr1YCED8UQ/0HedY45Tn1IVx3EK4nsebBE
+698wWjc8NnYhQXnxNVVj48QXGB5fAnQNTKL+Oyunc7e5qlAdHPFVEUEt4FKrI0cY
+gTxaFqEZkWsvNp685Zus4LqV1sKx9zoLFasO4Ni1aSCe/35WtbWwRMy28zQq/7lp
+TY9+XYPns9v8F3xQGU1u5MsRblhfuHCyN8RDAgGsfnDCPvS6lfo/bAzde9mwXUvZ
+ghXLIzvcOrhwtpPDd1EX0xlQM6mymDrgxg8TrN0Kt6pnQqmA2Q7QsbAo9jO6KDAZ
+nbvze1fOV41m35XHw8hMrnP7qGoWDuw5ysCVV7BTV6H9jSXVZA5EyAWyTHN9Le+1
+LhOYH+EkwLTyk2lGB7brUGeMhP3WpsquML9Rl39tkIN4Jx96gHVmiEVVlyv/v75W
+Ym6JAlOAzVKs2sMjR9o7LP6KubxFNxxW/TcNHMtc5K0pSRtGShxxuSFG9GizMRnT
+aZl3MWM73FVulzNAUFEn8+T3DfIK7W1hE60Y+6QaNvEesVNlyjZUqi+FlbX0WhsF
+AWx9Ea5ZZoCz0SQAM8SspZgGGkhXKfgGffohElcR2/Exqyr03bB/HTx/U0tqc1jA
+muGHOGCbqemDrw+0lrKH2SxVn3aGhYtLN5JxbR2DKI0=</CipherValue>
+        </CipherData>
+        <ReferenceList>
+          <DataReference URI="#ED"/>
+        </ReferenceList>
+      </EncryptedKey>
+    </ds:KeyInfo>
+    <CipherData>
+      <CipherValue>AsVjOAiUg2bNodenFBKtlxppkdCNRfkbqT+jTLjha340zep3g7/J7qowPlqQ2yio
+d9PytDNS7pvshbFTZRJPORkUxrN/cZ5h9B4jO8nFGMzwcyblA56w5Iiwgs8whVWT
+0ySTnToIN57n/paDy4cOEmvKDVzYK8/Gh0xNM2OQAETYmeovNuuKoSiMnzAxwXFU
+50BmzKlv8tgbuUYhwN2O+hDaJ5eK+kAz/cg8O/efH9IC2NIGnd90ZahVi7DRW/QA</CipherValue>
+    </CipherData>
+  </EncryptedData>
+</PaymentInfo>

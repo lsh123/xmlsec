@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<dsig:Signature xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+  <dsig:SignedInfo>
+    <dsig:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+    <dsig:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+    <dsig:Reference URI="#DSig.Object_W1u9Me3FAhWb4c7uH1IEmA22" Type="http://www.w3.org/2000/09/xmldsig#Object">
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+      <dsig:DigestValue>XRF6v/WdZByFWFxHXRhKcxSvwxGtEbZtROeZzDvYmqc=</dsig:DigestValue>
+    </dsig:Reference>
+  </dsig:SignedInfo>
+  <dsig:SignatureValue>SHMeDKGWXFow/VgSwhYa7vZER5wOzgtvowYwzWJCm/gIhjGhwxxPZtltCc6ctNT0
+0QtfTgI9HmECODQh/OYjd4RUVmnqTziwlakGtLAOTfMm3xMI6Eax/YoCZolllVgD
+VnZzqeSTHefO16JgzyU2Q/3Beg4/YSM0RofHL0isjR8Q6jq8YOvBm+RVjggSZTgM
+6KkpKnYhXxAl8IggKy9JJMJo7X5i2BPq/+VZ4FHepTo7kgNaD5GTJUhHnzyhOFdK
+h0/Fn5Tyq10uvZ8bHPFEaOi/AjfaRntM/vbyEqK51Yi2TUWeNHS7cDHgsM1yZ6dy
+e8+Xj+ZLgB/uWhIutCaLWglPb/2Lgk+rRVb7u/E6GQZMxvaXmgGzH/y4flEG99Re
+ji8eu7M6OQYM7MswfO8Qe9Wj2bzxvw5vJOVcRFNyUthUixn6ShffVZaUbzfaVwuC
+kEkY/oi2SidZ3mftBacIg3LxAh889uplX72IH9RmhmoS178jQwF/gYClBdjkdDWS
+ng2Hrn1iG16nXK2Ba3LkJ7Pm3ESoS0fvQs9fA46Gw2NZb4I+Vqe4limvDb2TGP4K
+2X9ZluA9ZZGH1A9xoYACQlA6PB4i8/PdYwSoGwGqV6waEJ8DnztTgS1VYvq/TF6G
+EKrlH7bIpdWr6AnM43SjtA7euZ9MZhK/OJzbIQZ5S1k=</dsig:SignatureValue>
+  <dsig:KeyInfo xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+    <dsig11:KeyInfoReference xmlns:dsig11="http://www.w3.org/2009/xmldsig11#" URI="#KeyInfoID"/>
+  </dsig:KeyInfo>
+  <dsig:Object Id="DSig.Object_W1u9Me3FAhWb4c7uH1IEmA22" MimeType="text/xml">
+    <Web>up up and away</Web>
+  </dsig:Object>
+  <dsig:Object Id="DSig.Object_ivEK2COgIC4F8ZGLuETxSw22" MimeType="text/xml">
+    <dsig:KeyInfo xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" Id="KeyInfoID">
+      <dsig:KeyName>TestKeyName-rsa-4096</dsig:KeyName>
+      <dsig:KeyValue>
+        <dsig:RSAKeyValue>
+          <dsig:Modulus>
+pFht8oSsDMTV1GOWqg7o7NVllW2835GtOiLPJ/dnRy9vEQGYqB+KSSX9axIVyrFN
+fiS6SsH7Tam9A4bEHSBP6risPS9wyoTpyy7q2a31ZUETmI0pFej9db2vgAvpmx8D
+X3e8Y03SecMYqNLr2HLj7daWhu9/OY+xrd6q567NLFmG3335Hr8wHNwl/HbdCwmX
+BWaw16D1g1RSV0kkFvD1gHMZqAjANJsqmuKJogMj2waXFAy/KAsUK3cPDCDKu7KH
+xtATLZ0UWqPNgz8GLBPI87vmyxSGgbtw1XQWQa4zxdknz80qRGExROc8DMszs575
+N7+ZvjSusT+PT+CQxmDSyiqtp/v2OIQS3zAR7uFv0Xb3DS5Cs0VWkGU/N0mrdU1n
+d4WBecdTZCXbG959r1HKtqiWKa7nOOxKTrwHr9cDrlzSW2kyXb/1tvdEE5gy1HNO
+il07SVUv4Vi6CRvUa3Jv/B6ifb0lY9wp82gc42TOLv9Udx9xm7Barh8lfzqc4T+V
+R1ONjbHzeLyMC6aG54rZZpcorUOT7f6SfPHcbx2Jmz3T4g3UaML4nlJkBfpBSkBR
+loRpdKffhnpyru5OQEb7fLxlDePEAOkYrTNbBaHEXFqO1gKSxz3Mg+4gCA9mZOXP
+9yLCDz10S9vROUVSu9H4CT4ucUPT2cEg95X5H/2fqRM=
+</dsig:Modulus>
+          <dsig:Exponent>AQAB</dsig:Exponent>
+        </dsig:RSAKeyValue>
+      </dsig:KeyValue>
+    </dsig:KeyInfo>
+  </dsig:Object>
+</dsig:Signature>

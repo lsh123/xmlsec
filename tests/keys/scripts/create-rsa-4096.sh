@@ -33,6 +33,8 @@ create_pkcs12_from_private_key_and_cert "${keyname}"
 # Print cert info
 echo "*** Certificate info: update tests accordingly in: ***"
 echo "      tests/xmldsig11-interop-2012/signature-enveloping-x509digest-rsa.tmpl"
+echo "      tests/xmldsig11-interop-2012.modern/signature-enveloping-x509digest-rsa.tmpl"
+echo "      tests/xmldsig11-interop-2012.modern/signature-enveloping-keyinforeference-rsa.xml"
 echo "      tests/aleksey-xmldsig-01/enveloped-x509-*.tmpl"
 echo "      tests/aleksey-xmlenc-01/enc_rsa_1_5_x509_*.tmpl"
 

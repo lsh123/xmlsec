@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<dsig:Signature xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+  <dsig:SignedInfo>
+    <dsig:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+    <dsig:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384"/>
+    <dsig:Reference URI="#DSig.Object_1" Type="http://www.w3.org/2000/09/xmldsig#Object">
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#sha384"/>
+      <dsig:DigestValue>8WuHAhBsioXByonBILsSX72syiJKlyNWuT3rGOp1IIOq+I0lHbNQRXPpZj/QehBQ</dsig:DigestValue>
+    </dsig:Reference>
+  </dsig:SignedInfo>
+  <dsig:SignatureValue>OKVBLj1ZdDAQetWu8Iq+hwWbInRptVnyZUM4/NpIqrbT9wgR6OD+mhKhBz1ECeui
+7urfgA8RU5vhM0HeWWNeSBVVggwMptXfKz2897Eq/i8QFaBrQwKIs9ZE8VR8DxLU</dsig:SignatureValue>
+  <dsig:KeyInfo>
+    <dsig:KeyName>TestKeyName-ec-prime384v1</dsig:KeyName>
+    <dsig:KeyValue>
+<ECKeyValue xmlns="http://www.w3.org/2009/xmldsig11#">
+<NamedCurve URI="urn:oid:1.3.132.0.34"/>
+<PublicKey>
+BPFYMnsCvKMIUBz9bUTr59rImvz7yZ2Oco9w0OBKL4pqf+EojYQGMeNj+9J964D/
+aUfRh4Yp/pLYkC4HT8cDc7Tp2Q8H27BJRAwGFWdY44zOm4JFs5Zujm2ADg987ELv
+xg==
+</PublicKey>
+</ECKeyValue>
+</dsig:KeyValue>
+  </dsig:KeyInfo>
+  <dsig:Object Id="DSig.Object_1" MimeType="text/xml">
+    <Web>up up and away</Web>
+  </dsig:Object>
+</dsig:Signature>

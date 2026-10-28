@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<dsig:Signature xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+  <dsig:SignedInfo>
+    <dsig:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+    <dsig:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+    <dsig:Reference URI="#DSig.Object_QJnJQxCUj6aHHt1qjOkXSg22" Type="http://www.w3.org/2000/09/xmldsig#Object">
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+      <dsig:DigestValue>pXJqfzWzJvmnvCIvf52kZeB+NQePjYmE5Fiken0VJp4=</dsig:DigestValue>
+    </dsig:Reference>
+  </dsig:SignedInfo>
+  <dsig:SignatureValue>igmTt7bpMpFsjnoEOd9N4qdISqLu1oJV3ubOsXZ07XeKwutypdyyVK1OFstzJKFz
+in+Wu0OCsUS57jcb5nlUGadoapw9EParRO2aTmAj/696DwD3/aREb7SpIC5PPKXo
+7jGeVBYyap2Ynfjgzd3ktqMm7RmgynHTg71yVDdOIZev6EVHFNRZqIwVrur0DhYf
+V16W5gH7pI0ZkeWHirPNS2Mv2Atlx+LrG6c6ofcJdN1fCp+0abmIoM6PkKMDj66g
+JBPkviineDX2sZE09reSpnwkAy4zMSgJyse4cUjf2R3qqkgCNpz4a66+N3aTYHEN
+w1qI+gCdWbOFVzchHsGZ6Q32Z9ZAD0B3bEccue/nmXXEu5e0k5Du4I7KExH7I3sb
+CzKHKFI9dpmvY8sMfuF30z6oC4Lp7tsmTual6snAaqZ+heQw1c3dki9mPvDm9ava
+qBlhrw/YW4dksqgBO5wK3hFexjaaiHhGCNM6GBVcr7E6eQpnzwDmkPWjz/tEos2B
+UpQ27icszqw+jP3831KT6OLCjCVTmQ3t4aoS2fV5XynNalJ5y10JqGUDzjtJKiyl
+PTj0/QK+9+g79jtqkbamfUUTeqXKHimV0d2B6qCsf8wt9AB02kE5mUzNbK5aESDP
+n0kTyhwWqgI7csJVEM9YxGeRrdYuhZYFL2tcu0lGO1k=</dsig:SignatureValue>
+  <dsig:KeyInfo xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+    <dsig:X509Data>
+      <dsig11:X509Digest xmlns:dsig11="http://www.w3.org/2009/xmldsig11#" Algorithm="http://www.w3.org/2001/04/xmlenc#sha256">
+      fZd23DD+/7HSo72ZyFMENaMmbxjDF2SfThmux0P6qTY=
+      </dsig11:X509Digest>
+    </dsig:X509Data>
+  </dsig:KeyInfo>
+  <dsig:Object Id="DSig.Object_QJnJQxCUj6aHHt1qjOkXSg22" MimeType="text/xml">
+    <Web>up up and away</Web>
+  </dsig:Object>
+</dsig:Signature>

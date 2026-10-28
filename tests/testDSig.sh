@@ -718,6 +718,302 @@ if [ "z$xmlsec_feature_x509_data_lookup" = "zyes" ] ; then
         "--enabled-key-data x509 --pubkey-cert-der $topfolder/keys/rsa/rsa-4096-cert.der"
 fi
 
+##########################################################################
+#
+# xmldsig11-interop-2012.modern
+#
+##########################################################################
+
+#
+# The same documents as in xmldsig11-interop-2012, but re-signed with
+# modern algorithms and keys from tests/keys: hmac-sha256 (hmackey.bin),
+# ecdsa-sha224/256/384/512 (ec-prime256v1/prime384v1/prime521v1) and
+# rsa-sha224/256/384/512 (rsa-2048/rsa-4096).  The deprecated hmac-sha1
+# signatures and sha1 digests were replaced with their modern
+# equivalents and the ecdsa-sha1 tests were dropped as duplicates of
+# the ecdsa-sha256 tests.  Every test has a .tmpl and a pre-signed .xml
+# file.
+#
+
+# HMAC
+# None of the tests include KeyInfo so we use "--lax-key-search" for *any* hmac key
+execDSigTest $res_success \
+    "xmldsig11-interop-2012.modern" \
+    "signature-enveloping-hmac-sha256-truncated40" \
+    "c14n sha256 hmac-sha256" \
+    "" \
+    "--lax-key-search --hmac-min-out-len 40 --hmackey $topfolder/keys/hmackey.bin" \
+    "--lax-key-search --hmac-min-out-len 40 --hmackey $topfolder/keys/hmackey.bin" \
+    "--lax-key-search --hmac-min-out-len 40 --hmackey $topfolder/keys/hmackey.bin"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012.modern" \
+    "signature-enveloping-hmac-sha256-truncated160" \
+    "c14n sha256 hmac-sha256" \
+    "" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012.modern" \
+    "signature-enveloping-hmac-sha224" \
+    "c14n sha256 hmac-sha224" \
+    "" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012.modern" \
+    "signature-enveloping-hmac-sha256" \
+    "c14n sha256 hmac-sha256" \
+    "" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012.modern" \
+    "signature-enveloping-hmac-sha384" \
+    "c14n sha256 hmac-sha384" \
+    "" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012.modern" \
+    "signature-enveloping-hmac-sha512" \
+    "c14n sha256 hmac-sha512" \
+    "" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin"
+
+# ECDSA
+execDSigTest $res_success \
+    "xmldsig11-interop-2012.modern" \
+    "signature-enveloping-p256_sha224" \
+    "c14n sha224 ecdsa-sha224" \
+    "key-value ec" \
+    "--enabled-key-data key-value,ec" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,ec"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012.modern" \
+    "signature-enveloping-p256_sha256" \
+    "c14n sha256 ecdsa-sha256" \
+    "key-value ec" \
+    "--enabled-key-data key-value,ec" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,ec"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012.modern" \
+    "signature-enveloping-p256_sha384" \
+    "c14n sha384 ecdsa-sha384" \
+    "key-value ec" \
+    "--enabled-key-data key-value,ec" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,ec"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012.modern" \
+    "signature-enveloping-p256_sha512" \
+    "c14n sha512 ecdsa-sha512" \
+    "key-value ec" \
+    "--enabled-key-data key-value,ec" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,ec"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012.modern" \
+    "signature-enveloping-p384_sha224" \
+    "c14n sha224 ecdsa-sha224" \
+    "key-value ec" \
+    "--enabled-key-data key-value,ec" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:TestKeyName-ec-prime384v1 $topfolder/keys/ec/ec-prime384v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,ec"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012.modern" \
+    "signature-enveloping-p384_sha256" \
+    "c14n sha256 ecdsa-sha256" \
+    "key-value ec" \
+    "--enabled-key-data key-value,ec" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:TestKeyName-ec-prime384v1 $topfolder/keys/ec/ec-prime384v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,ec"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012.modern" \
+    "signature-enveloping-p384_sha384" \
+    "c14n sha384 ecdsa-sha384" \
+    "key-value ec" \
+    "--enabled-key-data key-value,ec" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:TestKeyName-ec-prime384v1 $topfolder/keys/ec/ec-prime384v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,ec"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012.modern" \
+    "signature-enveloping-p384_sha512" \
+    "c14n sha512 ecdsa-sha512" \
+    "key-value ec" \
+    "--enabled-key-data key-value,ec" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:TestKeyName-ec-prime384v1 $topfolder/keys/ec/ec-prime384v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,ec"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012.modern" \
+    "signature-enveloping-p521_sha224" \
+    "c14n sha224 ecdsa-sha224" \
+    "key-value ec" \
+    "--enabled-key-data key-value,ec" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec/ec-prime521v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,ec"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012.modern" \
+    "signature-enveloping-p521_sha256" \
+    "c14n sha256 ecdsa-sha256" \
+    "key-value ec" \
+    "--enabled-key-data key-value,ec" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec/ec-prime521v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,ec"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012.modern" \
+    "signature-enveloping-p521_sha384" \
+    "c14n sha384 ecdsa-sha384" \
+    "key-value ec" \
+    "--enabled-key-data key-value,ec" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec/ec-prime521v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,ec"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012.modern" \
+    "signature-enveloping-p521_sha512" \
+    "c14n sha512 ecdsa-sha512" \
+    "key-value ec" \
+    "--enabled-key-data key-value,ec" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec/ec-prime521v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,ec"
+
+# RSA
+execDSigTest $res_success \
+    "xmldsig11-interop-2012.modern" \
+    "signature-enveloping-rsa-sha224" \
+    "c14n sha256 rsa-sha224" \
+    "rsa" \
+    "--enabled-key-data key-value,rsa" \
+    "--enabled-key-data key-name,key-value,rsa $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,rsa"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012.modern" \
+    "signature-enveloping-rsa-sha256" \
+    "c14n sha256 rsa-sha256" \
+    "rsa" \
+    "--enabled-key-data key-value,rsa" \
+    "--enabled-key-data key-name,key-value,rsa $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,rsa"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012.modern" \
+    "signature-enveloping-rsa_sha384" \
+    "c14n sha256 rsa-sha384" \
+    "rsa" \
+    "--enabled-key-data key-value,rsa" \
+    "--enabled-key-data key-name,key-value,rsa $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,rsa"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012.modern" \
+    "signature-enveloping-rsa_sha512" \
+    "c14n sha256 rsa-sha512" \
+    "rsa" \
+    "--enabled-key-data key-value,rsa" \
+    "--enabled-key-data key-name,key-value,rsa $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,rsa"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012.modern" \
+    "signature-enveloping-sha224-rsa_sha256" \
+    "c14n sha224 rsa-sha256" \
+    "rsa" \
+    "--enabled-key-data key-value,rsa" \
+    "--enabled-key-data key-name,key-value,rsa $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,rsa"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012.modern" \
+    "signature-enveloping-sha256-rsa-sha256" \
+    "c14n sha256 rsa-sha256" \
+    "rsa" \
+    "--enabled-key-data key-value,rsa" \
+    "--enabled-key-data key-name,key-value,rsa $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,rsa"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012.modern" \
+    "signature-enveloping-sha384-rsa_sha256" \
+    "c14n sha384 rsa-sha256" \
+    "rsa" \
+    "--enabled-key-data key-value,rsa" \
+    "--enabled-key-data key-name,key-value,rsa $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,rsa"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012.modern" \
+    "signature-enveloping-sha512-rsa_sha256" \
+    "c14n sha512 rsa-sha256" \
+    "rsa" \
+    "--enabled-key-data key-value,rsa" \
+    "--enabled-key-data key-name,key-value,rsa $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,rsa"
+
+# KeyInfoReference
+execDSigTest $res_success \
+    "xmldsig11-interop-2012.modern" \
+    "signature-enveloping-keyinforeference-rsa" \
+    "c14n sha256 rsa-sha256" \
+    "key-info-reference key-name key-value rsa" \
+    "--enabled-key-data key-info-reference,key-name,key-value,rsa" \
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-info-reference,key-name,rsa $pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-pubkey$rsa_pub_key_suffix.$pub_key_format"
+
+# DEREncodedKeyValue
+execDSigTest $res_success \
+    "xmldsig11-interop-2012.modern" \
+    "signature-enveloping-derencoded-rsa" \
+    "c14n sha256 rsa-sha256" \
+    "der-encoded-key-value rsa" \
+    "--enabled-key-data der-encoded-key-value,rsa" \
+    "--enabled-key-data der-encoded-key-value,key-name,rsa $priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data der-encoded-key-value,rsa"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012.modern" \
+    "signature-enveloping-derencoded-ec" \
+    "c14n sha256 ecdsa-sha256" \
+    "der-encoded-key-value ec" \
+    "--enabled-key-data der-encoded-key-value,ec" \
+    "--enabled-key-data der-encoded-key-value,key-name,ec $priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data der-encoded-key-value,ec"
+
+# X509Digest (the key is looked up by X509 data, only backends that
+# support it (OpenSSL, NSS, GnuTLS) can run this test)
+if [ "z$xmlsec_feature_x509_data_lookup" = "zyes" ] ; then
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012.modern" \
+        "signature-enveloping-x509digest-rsa" \
+        "c14n sha256 rsa-sha256" \
+        "x509" \
+        "--enabled-key-data x509 --pubkey-cert-der $topfolder/keys/rsa/rsa-4096-cert.der" \
+        "--enabled-key-data x509 $priv_key_option $topfolder/keys/rsa/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+        "--enabled-key-data x509 --pubkey-cert-der $topfolder/keys/rsa/rsa-4096-cert.der"
+fi
 
 ##########################################################################
 #

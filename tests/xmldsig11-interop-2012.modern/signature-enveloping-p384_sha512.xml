@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<dsig:Signature xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+  <dsig:SignedInfo>
+    <dsig:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+    <dsig:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512"/>
+    <dsig:Reference URI="#DSig.Object_1" Type="http://www.w3.org/2000/09/xmldsig#Object">
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>
+      <dsig:DigestValue>LrbkWy7HWWjNZe/T7oC2TcTgNzRLDIlzKAzmGWSEKT/Mp0I8Bq6GLSFZqXr2D1b/
+ojdsadSPClAXB4hLyoDDQA==</dsig:DigestValue>
+    </dsig:Reference>
+  </dsig:SignedInfo>
+  <dsig:SignatureValue>lD8yTzEy5JnYGdaCVSXQBgDlBXH9+qJCQFR3vQv0ViGD40rpSguV+q4zAOeKTP1e
+jLwPEiSBjcexNLfm0uRC3og/2JSez71MGBq1YOb8XC8iTTF7CA60o6CJ4aFg17uZ</dsig:SignatureValue>
+  <dsig:KeyInfo>
+    <dsig:KeyName>TestKeyName-ec-prime384v1</dsig:KeyName>
+    <dsig:KeyValue>
+<ECKeyValue xmlns="http://www.w3.org/2009/xmldsig11#">
+<NamedCurve URI="urn:oid:1.3.132.0.34"/>
+<PublicKey>
+BPFYMnsCvKMIUBz9bUTr59rImvz7yZ2Oco9w0OBKL4pqf+EojYQGMeNj+9J964D/
+aUfRh4Yp/pLYkC4HT8cDc7Tp2Q8H27BJRAwGFWdY44zOm4JFs5Zujm2ADg987ELv
+xg==
+</PublicKey>
+</ECKeyValue>
+</dsig:KeyValue>
+  </dsig:KeyInfo>
+  <dsig:Object Id="DSig.Object_1" MimeType="text/xml">
+    <Web>up up and away</Web>
+  </dsig:Object>
+</dsig:Signature>

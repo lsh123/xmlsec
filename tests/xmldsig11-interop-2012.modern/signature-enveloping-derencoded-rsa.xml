@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<dsig:Signature xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+  <dsig:SignedInfo>
+    <dsig:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+    <dsig:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+    <dsig:Reference URI="#DSig.Object_ot2pLlQIKFpOeOFz7tIxAA22" Type="http://www.w3.org/2000/09/xmldsig#Object">
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+      <dsig:DigestValue>qPZb0M8OCQjmLyrf39gQJbIMK+BKMYQ1+V0qT3gsk/M=</dsig:DigestValue>
+    </dsig:Reference>
+  </dsig:SignedInfo>
+  <dsig:SignatureValue>Lm6q0M9EjByAD0qk5PxX/XQyoXVYJSIV7qfLwcR3RTmM5MJbOwjoLda1a4WwsUqn
+Sm6i4bCGj5jvU9PWFsnEyjTvLON+7TQZLmMhOcTznlH48fZdAmREOTGe+Ah6eFRq
+f/ezdH47cqK6qosF9BflCjcqSDSkcKpq0+7o4dxGzjgESZbDNsm9Ug3bxToeu7dC
+aFDmM9bzzaQkpR6UYFmGm9H4S3h78SyCYYS5ygK8epSvrT1BuztepxTB1JvyAo5u
+e8luYJYr6zJtHsNHXC5rFG9PYlc4eLiytuOfpyNR4BbRV9ZZ8Kr3VMvrs7Aw5GbW
+TRTAzrKlbod1MPY/0HNRdJv3Yvf8Ov0RZtd/MXDYYr3SV5afwNHv+5F/usVN/tgh
+NtdQjLBHekEgAUmRLDwlgIMVXGWYkLaUnBBIDkHJU1a2BIBYJDNBsk+w78dXngFb
+iG4riIghP6amrqAdn358mAQF0svYDnVbGZ6zmEtjkR2sG0D1XuzvT5hMQW6AMy5F
+zV3NwDg2g02rTDrYBGtqTq3ZoToUUHXBvQEpVEZnjZ9VpWMM5/ykJ7cKu4gNazX+
+hHcX/4KiplQFSIcQVKGoCxv1czJVAl2aLm6oUe4s9oL/0qjxjHYwas1uiTzWbkc2
+PIsn6tIEvw6Gs9ZopT7QOtMyv0pDhkfzNW05qwiK9pw=</dsig:SignatureValue>
+  <dsig:KeyInfo xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+    <dsig:KeyName>TestKeyName-rsa-4096</dsig:KeyName>
+    <dsig11:DEREncodedKeyValue xmlns:dsig11="http://www.w3.org/2009/xmldsig11#">MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEApFht8oSsDMTV1GOWqg7o
+7NVllW2835GtOiLPJ/dnRy9vEQGYqB+KSSX9axIVyrFNfiS6SsH7Tam9A4bEHSBP
+6risPS9wyoTpyy7q2a31ZUETmI0pFej9db2vgAvpmx8DX3e8Y03SecMYqNLr2HLj
+7daWhu9/OY+xrd6q567NLFmG3335Hr8wHNwl/HbdCwmXBWaw16D1g1RSV0kkFvD1
+gHMZqAjANJsqmuKJogMj2waXFAy/KAsUK3cPDCDKu7KHxtATLZ0UWqPNgz8GLBPI
+87vmyxSGgbtw1XQWQa4zxdknz80qRGExROc8DMszs575N7+ZvjSusT+PT+CQxmDS
+yiqtp/v2OIQS3zAR7uFv0Xb3DS5Cs0VWkGU/N0mrdU1nd4WBecdTZCXbG959r1HK
+tqiWKa7nOOxKTrwHr9cDrlzSW2kyXb/1tvdEE5gy1HNOil07SVUv4Vi6CRvUa3Jv
+/B6ifb0lY9wp82gc42TOLv9Udx9xm7Barh8lfzqc4T+VR1ONjbHzeLyMC6aG54rZ
+ZpcorUOT7f6SfPHcbx2Jmz3T4g3UaML4nlJkBfpBSkBRloRpdKffhnpyru5OQEb7
+fLxlDePEAOkYrTNbBaHEXFqO1gKSxz3Mg+4gCA9mZOXP9yLCDz10S9vROUVSu9H4
+CT4ucUPT2cEg95X5H/2fqRMCAwEAAQ==</dsig11:DEREncodedKeyValue>
+  </dsig:KeyInfo>
+  <dsig:Object Id="DSig.Object_ot2pLlQIKFpOeOFz7tIxAA22" MimeType="text/xml">
+    <Web>up up and away</Web>
+  </dsig:Object>
+</dsig:Signature>

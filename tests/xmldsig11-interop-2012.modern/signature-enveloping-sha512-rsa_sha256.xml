@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<dsig:Signature xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+  <dsig:SignedInfo>
+    <dsig:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+    <dsig:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+    <dsig:Reference URI="#DSig.Object_1" Type="http://www.w3.org/2000/09/xmldsig#Object">
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>
+      <dsig:DigestValue>LrbkWy7HWWjNZe/T7oC2TcTgNzRLDIlzKAzmGWSEKT/Mp0I8Bq6GLSFZqXr2D1b/
+ojdsadSPClAXB4hLyoDDQA==</dsig:DigestValue>
+    </dsig:Reference>
+  </dsig:SignedInfo>
+  <dsig:SignatureValue>BvvDwijgd9gYY3jwAtXrpYOlsFRM+yfPlFjaNZD8JRRHVeeQsppIuOWt7cVIDxn8
+ja4krJxu3W1WJMl6PtVMXANWqmhRCtz1Y7WePxWTdKOVndam8dGB2P/AmwQlu4Q0
+idRYWx95xqHA+402kgEqiWyS/l8/opubAiapID3yO4ypoWs3t7jut29s8fqqupFF
+hFcW1r5ETNgZHh6sKOoQsemYjBSDLg8Z8Mu520WLw+H4PknEMe8u09pntQpvIagq
+fj5k4aZGSmynXZqX/FT5yBoc8wLrD4sn8bbaLqIgPizerW7mSAmUDL+T6gEf33th
+su7phmNQ2zRgumeNZ7jXBA==</dsig:SignatureValue>
+  <dsig:KeyInfo>
+    <dsig:KeyName>TestKeyName-rsa-2048</dsig:KeyName>
+    <dsig:KeyValue>
+<dsig:RSAKeyValue>
+<dsig:Modulus>
+3iVnhDXlgGiWvV2f21bCP4NAeTkwouWvN9K94SNeV01xzuvPg2GRb+ozF0/YbQ8j
+j7UDeuIgcLoBrC/jSMtp7gJp6zj3oHhX97NZVv5SBUmBOJRbB8efy3apTvTvWlzJ
+QhO4WVXBRDqmA0dGHPRRuMB6l125wy+WBMWxO6BzUooe9m0OpQXjKokJKFcl9Zd4
+ht3EqXW8cuHgiyrtYzXTcO63W9+J6dFOi1DTYhKMkK53jMsModlleEUdqUHgTbxK
+0TBSYMa2sB1rGfcVq+QanOlsRHXAXiZM/BE6uPqlFq+g5osSZbHfH2qC/0G/wKKl
+WzIx0YPjQSBq/MbroodKLQ==
+</dsig:Modulus>
+<dsig:Exponent>
+AQAB
+</dsig:Exponent>
+</dsig:RSAKeyValue>
+</dsig:KeyValue>
+  </dsig:KeyInfo>
+  <dsig:Object Id="DSig.Object_1" MimeType="text/xml">
+    <Web>up up and away</Web>
+  </dsig:Object>
+</dsig:Signature>

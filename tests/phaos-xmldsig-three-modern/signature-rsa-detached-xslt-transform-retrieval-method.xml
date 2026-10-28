@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+      <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+      <Reference Id="reference-manifest" Type="http://www.w3.org/2000/09/xmldsig#Manifest" URI="#manifest">
+          <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          <DigestValue>xs35qGeUJwPxDbEmN5Av25LAAqBWxgJa6xLGNTBHoGc=</DigestValue>
+        </Reference>
+    </SignedInfo>
+    <SignatureValue>vsJa5uXJKGX+bJtIi5vqaGWOroheTu5VkfeMhErLhsCn0i8n0PL3WVZgfiV91hnO
+gQ/NNtFYb2G+3Ch/crwCoUsyVW43Sf6xVruT3E2v+2cVM7cTPr7FMycTSOeLDlY4
+9VPshJGFq6sPC2b/g9r4ew4EJ8cIf1/+F8czsJ1y83TEkzQpMfAD/JI2gY8Wn1CL
+Jg7EW7nH+BFtXNDF3UBDjJw6yt185azNcMNQ3B0NTpytM7lmUlTmZorBcHOHNyCC
+3GggTwAS/pp4lLAchICNgavJpi4YgAKQb0HC3z/YInf0oGN6uJTu6MzVsF5ZqYKt
+Y2pgVf5L9kmB0JxWHlxRvA==</SignatureValue>
+    <KeyInfo>
+      <KeyName>TestKeyName-rsa-2048-phaos</KeyName>
+      <RetrievalMethod Type="http://www.w3.org/2000/09/xmldsig#rawX509Certificate" URI="../keys/rsa/rsa-2048-cert.der"/>
+    </KeyInfo>
+    <Object>
+      <Manifest Id="manifest">
+        <Reference Id="reference-0" URI="document-stylesheet.xml">
+          <Transforms>
+            <Transform Algorithm="http://www.w3.org/TR/1999/REC-xslt-19991116"><xsl:stylesheet xmlns="http://www.w3.org/TR/xhtml1/strict" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+
+<xsl:strip-space elements="player name position team"/>
+<xsl:output encoding="iso-8859-1" indent="no" method="xml"/>
+
+<xsl:template match="player">
+ <html>
+   <head>
+     <title>
+       <xsl:value-of select="name"/>
+     </title>
+   </head>
+   <body>
+     <xsl:apply-templates/>
+   </body>
+ </html>
+</xsl:template>
+
+<xsl:template match="player/name">
+  <h1>
+    <xsl:apply-templates/>
+  </h1>
+</xsl:template>
+
+<xsl:template match="player/position">
+  <h2>
+    <xsl:apply-templates/>
+  </h2>
+</xsl:template>
+
+<xsl:template match="player/team">
+  <h3>
+    <xsl:apply-templates/>
+  </h3>
+</xsl:template>
+
+
+
+</xsl:stylesheet></Transform>
+            <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+          </Transforms>
+          <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          <DigestValue>gvRuWYTavyZrvVp27wOV7gDgVqDjBIfHmXveGUR3250=</DigestValue>
+        </Reference>
+      </Manifest>
+    </Object>
+  </Signature>

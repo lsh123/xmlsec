@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+      <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+      <Reference Id="reference-0" URI="document.xml">
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+        <DigestValue>O/OG2qja/otlQ1IGsW2m0kTB0O9c1tPkuFOaN8COHyI=</DigestValue>
+      </Reference>
+      <Reference Id="reference-b64" URI="document.b64">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#base64"/>
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+        <DigestValue>O/OG2qja/otlQ1IGsW2m0kTB0O9c1tPkuFOaN8COHyI=</DigestValue>
+      </Reference>
+      <Reference Id="reference-xslt" URI="document-stylesheet.xml">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/TR/1999/REC-xslt-19991116"><xsl:stylesheet xmlns="http://www.w3.org/TR/xhtml1/strict" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+
+<xsl:strip-space elements="player name position team"/>
+<xsl:output encoding="iso-8859-1" indent="no" method="xml"/>
+
+<xsl:template match="player">
+ <html>
+   <head>
+     <title>
+       <xsl:value-of select="name"/>
+     </title>
+   </head>
+   <body>
+     <xsl:apply-templates/>
+   </body>
+ </html>
+</xsl:template>
+
+<xsl:template match="player/name">
+  <h1>
+    <xsl:apply-templates/>
+  </h1>
+</xsl:template>
+
+<xsl:template match="player/position">
+  <h2>
+    <xsl:apply-templates/>
+  </h2>
+</xsl:template>
+
+<xsl:template match="player/team">
+  <h3>
+    <xsl:apply-templates/>
+  </h3>
+</xsl:template>
+
+
+
+</xsl:stylesheet></Transform>
+          <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+        <DigestValue>gvRuWYTavyZrvVp27wOV7gDgVqDjBIfHmXveGUR3250=</DigestValue>
+      </Reference>
+      <Reference Id="reference-xpath" URI="document.xml">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/TR/1999/REC-xpath-19991116"><XPath xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">@*</XPath></Transform>
+          <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments"/>
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+        <DigestValue>0eqRDO7Dcf63GeXFUNViX9IktdNWRAKh1viUMz+YT1I=</DigestValue>
+      </Reference>
+      <Reference Id="reference-manifest" Type="http://www.w3.org/2000/09/xmldsig#Manifest" URI="#manifest-0">
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+        <DigestValue>2QlSdhFjZCK9OkhAoeIsdxIE+FPudIpKmfDD+0Xpuww=</DigestValue>
+      </Reference>
+      <Reference Id="reference-object-0" Type="http://www.w3.org/2000/09/xmldsig#Object" URI="#object-0">
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+        <DigestValue>o2u8kDDwlS2qhxPeOXTu8Xxsf23t9+n1ZeTasdqXa7U=</DigestValue>
+      </Reference>
+      <Reference Id="reference-key-info" URI="#key-info">
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+        <DigestValue>FAuSdcB+ip8CTfgk1S5bl7Fb9ImpbpvWQ0vw/JfZ9G8=</DigestValue>
+      </Reference>
+      <Reference Id="reference-key-name" URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/TR/1999/REC-xpath-19991116">
+            <XPath xmlns:ds="http://www.w3.org/2000/09/xmldsig#">ancestor-or-self::ds:KeyName</XPath>
+          </Transform>
+          <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+        <DigestValue>t+y3yKqmSkHBG7JUPmpcJY7WTww3D/lZ1CIZuHRBmHo=</DigestValue>
+      </Reference>
+      <Reference Id="reference-xpointer-0" URI="#xpointer(id('reference-b64'))">
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+        <DigestValue>6ymjcnkZQkSMIX+UDzImHIfXooHpJPWiELXUQETQ+DQ=</DigestValue>
+      </Reference>
+      <Reference Id="reference-xpointer-1" URI="#xpointer(id('reference-object-0'))">
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+        <DigestValue>swkhKW6+m2R77ZrryQWzFGFND/mOjqtdhXIZUqIKU6I=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>S+HIXF0jwo67U/wmZXr0oTw2qNvXYZAkm5yuMTEXSpTm6h2ozOyu8pDPmRpVJ/xR
+OJ8rJTiQsqVAXGIjxJoolK7Xf2TVBKqUfhWvTSJn/uNQZWKwrsVAw8NxQND7+O2r
+tf451FR9Qx3Q0JVpL9LQEJGeCBPiJARcfRXrF77dmLsEqCWuAFGkMLTcsEtKO945
+koEDBD6La3MceJ9qFTtp9fH4l0Lcq2uPcUfI9WdOFt62yjxE55cudIG8m1gm52dv
+QuN1VExfO4UM+WigChDdpO/rMsw8P92aVgQ5tGDGZqddVt3yeWkafrT/3xd6iZTV
+RmHIQmfBd/Q6H9BUDQFvDw==</SignatureValue>
+    <KeyInfo Id="key-info">
+      <KeyName>CN=Test Key rsa-2048,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</KeyName>
+    </KeyInfo>
+    <Object Id="object-0">
+      <Manifest Id="manifest-0">
+        <Reference Id="reference-raw-x509-cert" Type="http://www.w3.org/2000/09/xmldsig#rawX509Certificate" URI="../keys/rsa/rsa-2048-cert.der">
+          <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          <DigestValue>YHsWWsbtVX5TpDnowgu+Pay1JLKUaBdX/vpV5G0govE=</DigestValue>
+        </Reference>
+        <Reference Id="reference-rfc3161" URI="http://www.ietf.org/rfc/rfc3161.txt">
+          <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          <DigestValue>Of0XZE/y1lS8g4FKeLHFtedRf0lnQfNOrVBklD65gkA=</DigestValue>
+        </Reference>
+      </Manifest>
+    </Object>
+  </Signature>

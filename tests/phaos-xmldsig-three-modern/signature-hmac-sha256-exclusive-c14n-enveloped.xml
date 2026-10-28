@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<player id="10012" bats="left" throws="right">
+	<!-- Here's a comment -->
+	<name>Alfonso Soriano</name>
+	<position>2B</position>
+	<team>New York Yankees</team>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+      <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#hmac-sha256"/>
+      <Reference URI="">
+          <Transforms>
+            <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+          </Transforms>
+          <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          <DigestValue>HNGPAc/sXiJnZb50AbgL24QISKtD3Wa5HWFRg4zbQyw=</DigestValue>
+        </Reference>
+    </SignedInfo>
+    <SignatureValue>n2u5hacGW/FlwrHyVK+eMp3FlBUpZNNeC/n83OT2g7k=</SignatureValue>
+  </Signature>
+</player>

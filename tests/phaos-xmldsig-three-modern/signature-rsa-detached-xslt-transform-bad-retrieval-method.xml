@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<player id="10012" bats="left" throws="right">
+	<!-- Here's a comment -->
+	<name>Alfonso Soriano</name>
+	<position>2B</position>
+	<team>New York Yankees</team>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+      <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+        <DigestValue>HNGPAc/sXiJnZb50AbgL24QISKtD3Wa5HWFRg4zbQyw=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>owArxP2KYN5rVeowBvs8IldCfRImIUZwgHRbqR5O6n8A5AUXzf2izXWSZbqvCuDq
+wuY+2c1ZUdweN7VeAmz+I8sg/CvKd+dp5PTaEH1wuPYlbJy00CZI2Pi3e2HWsVI0
+yUJAZnrWhkmm7VEzG2Anepqey9AxhWfcrC6QI9H6hiUtor0NtKGjm2nPINICLPNm
+nzxwlpyedt8c2qBHVBmK8CrDGZvf1BLAEkQH7yY0yOJxr/UOSM9+UiSBNXpSHv9T
+YzYQAlk1iPdoQBZzLNgiWcDhhCh5tOL1KffOajnDQNnjLfOVjE9FnlvAK7JkvmFJ
+xNBAeQ4egQY4v11YJmA/bQ==</SignatureValue>
+    <KeyInfo>
+      <KeyName>TestKeyName-rsa-2048-phaos</KeyName>
+      <RetrievalMethod Type="http://www.w3.org/2000/09/xmldsig#rawX509Certificate" URI="../keys/rsa/rsa-4096-cert.der"/>
+    </KeyInfo>
+  </Signature>
+</player>

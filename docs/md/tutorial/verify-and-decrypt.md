@@ -224,11 +224,11 @@ A typical decryption process includes the following steps:
 ```c
 
 /**
- * @brief Decrypts an encrypted XML file using a Triple DES key.
- * @details Decrypts the XML file #enc_file using Triple DES key from #key_file and
+ * @brief Decrypts an encrypted XML file using a AES key.
+ * @details Decrypts the XML file #enc_file using AES key from #key_file and
  * prints results to stdout.
  * @param enc_file the encrypted XML file name.
- * @param key_file the Triple DES key file.
+ * @param key_file the AES key file.
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -267,10 +267,10 @@ decrypt_file(const char* enc_file, const char* key_file) {
         goto done;
     }
 
-    /* load DES key */
-    encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
+    /* load AES key */
+    encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataAesId, key_file);
     if(encCtx->encKey == NULL) {
-        fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);
+        fprintf(stderr,"Error: failed to load aes key from binary file \"%s\"\n", key_file);
         goto done;
     }
 

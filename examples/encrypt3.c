@@ -8,7 +8,7 @@
 /**
  * @brief XML Security Library example: Encrypting an XML file with a session key and a dynamically created template.
  * @details Encrypts an XML file using a dynamically created template and a session
- * Triple DES key (encrypted with an RSA key).
+ * AES key (encrypted with an RSA key).
  *
  * Usage:
  *
@@ -224,8 +224,8 @@ load_rsa_keys(const char* key_file) {
 }
 
 /**
- * @brief Encrypts an XML file using a session Triple DES key and RSA key transport.
- * @details Encrypts #xml_file using a dynamically created template, a session Triple DES key,
+ * @brief Encrypts an XML file using a session AES key and RSA key transport.
+ * @details Encrypts #xml_file using a dynamically created template, a session AES key,
  * and an RSA key from the keys manager.
  * @param mngr the pointer to keys manager.
  * @param xml_file the XML file name.
@@ -259,7 +259,7 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
 
     /* create encryption template to encrypt XML file and replace
      * its content with encryption result */
-    encDataNode = xmlSecTmplEncDataCreate(doc, xmlSecTransformDes3CbcId,
+    encDataNode = xmlSecTmplEncDataCreate(doc, xmlSecTransformAes128CbcId,
                                 NULL, xmlSecTypeEncElement, NULL, NULL);
     if(encDataNode == NULL) {
         fprintf(stderr, "Error: failed to create encryption template\n");
@@ -314,10 +314,10 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
         goto done;
     }
 
-    /* generate a Triple DES key */
-    encCtx->encKey = xmlSecKeyGenerate(xmlSecKeyDataDesId, 192, xmlSecKeyDataTypeSession);
+    /* generate a session AES key */
+    encCtx->encKey = xmlSecKeyGenerate(xmlSecKeyDataAesId, 128, xmlSecKeyDataTypeSession);
     if(encCtx->encKey == NULL) {
-        fprintf(stderr, "Error: failed to generate session des key\n");
+        fprintf(stderr, "Error: failed to generate session aes key\n");
         goto done;
     }
 

@@ -7,25 +7,25 @@
  */
 /**
  * @brief XML Security Library example: Encrypting an XML file with a dynamically created template.
- * @details Encrypts an XML file using a dynamically created template and a Triple DES key
+ * @details Encrypts an XML file using a dynamically created template and an AES key
  * from a binary file.
  *
  * Usage:
  *
  * \code{.sh}
- *      ./encrypt2 <xml-doc> <des-key-file>
+ *      ./encrypt2 <xml-doc> <aes-key-file>
  * \endcode
  *
  * Example:
  *
  * \code{.sh}
- *      ./encrypt2 encrypt2-doc.xml deskey.bin > encrypt2-res.xml
+ *      ./encrypt2 encrypt2-doc.xml aeskey.bin > encrypt2-res.xml
  * \endcode
  *
  * The result can be decrypted using the decrypt1 example:
  *
  * \code{.sh}
- *      ./decrypt1 encrypt2-res.xml deskey.bin
+ *      ./decrypt1 encrypt2-res.xml aeskey.bin
  * \endcode
  */
 #include <stdlib.h>
@@ -135,7 +135,7 @@ create_encryption_template(xmlDocPtr doc) {
     assert(doc);
 
     /* add <enc:EncryptedData/> node to encrypt XML file and replace its content with encryption result */
-    encDataNode = xmlSecTmplEncDataCreate(doc, xmlSecTransformDes3CbcId, NULL, xmlSecTypeEncElement, NULL, NULL);
+    encDataNode = xmlSecTmplEncDataCreate(doc, xmlSecTransformAes128CbcId, NULL, xmlSecTypeEncElement, NULL, NULL);
     if(encDataNode == NULL) {
         fprintf(stderr, "Error: failed to create encryption template\n");
         return(NULL);
@@ -168,11 +168,11 @@ done:
 }
 
 /**
- * @brief Encrypts an XML file using a dynamically created template and Triple DES key.
- * @details Encrypts #xml_file using a dynamically created template and the Triple DES key
+ * @brief Encrypts an XML file using a dynamically created template and an AES key.
+ * @details Encrypts #xml_file using a dynamically created template and the AES key
  * from #key_file.
  * @param xml_file the XML file name.
- * @param key_file the Triple DES key file.
+ * @param key_file the AES key file.
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -209,10 +209,10 @@ encrypt_file(const char* xml_file, const char* key_file) {
         goto done;
     }
 
-    /* load Triple DES key */
-    encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
+    /* load AES key */
+    encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataAesId, key_file);
     if(encCtx->encKey == NULL) {
-        fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);
+        fprintf(stderr,"Error: failed to load aes key from binary file \"%s\"\n", key_file);
         goto done;
     }
 

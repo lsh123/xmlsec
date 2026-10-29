@@ -110,7 +110,7 @@ XML Security library supports the following features as defined in
 | GOST-R3410-2001 | DEPRECATED | Yes [(1)](#feature-disabled)[(3)](#openssl-gost) | No | Yes [(1)](#feature-disabled) | No | Yes [(1)](#feature-disabled)[(4)](#mscrypto-gost) | No |
 | GOST-R3410-2012 (256 bit) | Optional | Yes [(1)](#feature-disabled)[(3)](#openssl-gost) | No | Yes [(1)](#feature-disabled) | No | Yes [(1)](#feature-disabled)[(4)](#mscrypto-gost) | No |
 | GOST-R3410-2012 (512 bit) | Optional | Yes [(1)](#feature-disabled)[(3)](#openssl-gost) | No | Yes [(1)](#feature-disabled) | No | Yes [(1)](#feature-disabled)[(4)](#mscrypto-gost) | No |
-| ML-DSA | EXPERIMENTAL | Yes [(1)](#feature-disabled)[(12)](#openssl35-required) | No | Yes [(1)](#feature-disabled) [(8)](#no-context-string) | No | No | No |
+| ML-DSA | EXPERIMENTAL | Yes [(1)](#feature-disabled)[(12)](#openssl35-required) | No | Yes [(1)](#feature-disabled) [(8)](#no-context-string) | Yes [(1)](#feature-disabled) [(16)](#mscng-mldsa)| No | No |
 | SLH-DSA-SHA2 (128, 192, 256; fast and slow variants) | EXPERIMENTAL | Yes [(1)](#feature-disabled)[(12)](#openssl35-required) | No | No | No | No | No |
 | **The KeyInfo Element** | | | | | | | |
 | [The DSAKeyValue Element](https://www.w3.org/TR/xmldsig-core1/#sec-DSAKeyValue) | Optional | Yes [(13)](#keydata-runtime) [(5)](#dsa-key-value) | Yes [(13)](#keydata-runtime) [(5)](#dsa-key-value) | Yes [(13)](#keydata-runtime) [(5)](#dsa-key-value) | Yes [(13)](#keydata-runtime) [(5)](#dsa-key-value) | Yes [(13)](#keydata-runtime) [(5)](#dsa-key-value) | Yes [(13)](#keydata-runtime) [(5)](#dsa-key-value) |
@@ -139,6 +139,7 @@ XML Security library supports the following features as defined in
 13. <a id="keydata-runtime"></a> The feature is disabled by default but can be enabled at runtime (for example, with the `xmlsec --enabled-key-data` command line option).
 14. <a id="gnutls-eddsa-limited"></a> Only Ed25519 and Ed448 are supported; the Ed25519ctx, Ed25519ph and Ed448ph variants are not supported.
 15. <a id="mscrypto-x509-digest-write-only"></a> MSCrypto can only write the X509Digest element (i.e. it is supported when creating a signature); the key cannot be resolved from the X509Digest element during verification.
+16. <a id="mscng-mldsa"></a> Requires Windows 11 version 25H2 or Windows Server 2025. 
 
 ### Test vectors
 

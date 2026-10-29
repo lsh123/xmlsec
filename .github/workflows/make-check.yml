@@ -300,22 +300,22 @@ jobs:
         include:
           # mscng: default build
           - crypto: mscng
-            config_flags: unicode=yes
+            config_flags: unicode=yes legacy-features=yes experimental-features=yes 
           # mscng: no unicode, legacy crypto
           - crypto: mscng
-            config_flags: unicode=no legacy-features=yes
+            config_flags: unicode=no legacy-features=yes experimental-features=yes
           # mscrypto: default build
           - crypto: mscrypto
-            config_flags: unicode=yes
+            config_flags: unicode=yes legacy-features=yes experimental-features=yes
           # mscrypto: no unicode, legacy crypto
           - crypto: mscrypto
-            config_flags: unicode=no legacy-features=yes
+            config_flags: unicode=no legacy-features=yes experimental-features=yes
           # openssl-300: default build
           - crypto: openssl-300
-            config_flags: unicode=yes
+            config_flags: unicode=yes legacy-features=yes experimental-features=yes
           # openssl-300: no unicode, legacy crypto
           - crypto: openssl-300
-            config_flags: unicode=no
+            config_flags: unicode=no legacy-features=yes experimental-features=yes
     env:
       INSTALL_FOLDER: c:\install.dir
       LIBS_VERSION: 1.3.13

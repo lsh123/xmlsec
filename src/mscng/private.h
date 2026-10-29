@@ -208,6 +208,57 @@ int                xmlSecMSCngKeyDataCertGetXdhPubkey               (PCERT_PUBLI
 
 /******************************************************************************
  *
+ * ML-DSA (FIPS 204) Util functions
+ *
+   *****************************************************************************/
+#ifndef XMLSEC_NO_MLDSA
+
+/* CNG ML-DSA (PQDSA) definitions. The Windows SDK used at build time may lack
+ * some or all of them; the values below were verified against the CNG ML-DSA
+ * provider on Windows 11 24H2+ (build 26300). */
+#ifndef BCRYPT_MLDSA_ALGORITHM
+#define BCRYPT_MLDSA_ALGORITHM            L"ML-DSA"
+#endif /* BCRYPT_MLDSA_ALGORITHM */
+#ifndef BCRYPT_PQDSA_PUBLIC_MAGIC
+#define BCRYPT_PQDSA_PUBLIC_MAGIC         0x4B505344
+#endif /* BCRYPT_PQDSA_PUBLIC_MAGIC */
+#ifndef BCRYPT_PQDSA_PUBLIC_BLOB
+#define BCRYPT_PQDSA_PUBLIC_BLOB          L"PQDSAPUBLICBLOB"
+#endif /* BCRYPT_PQDSA_PUBLIC_BLOB */
+#ifndef BCRYPT_PAD_PQDSA
+#define BCRYPT_PAD_PQDSA                  0x00000020
+#endif /* BCRYPT_PAD_PQDSA */
+
+/* PQDSA padding info. The layout matches BCRYPT_PQDSA_PADDING_INFO in the
+ * Windows SDK, but it is defined locally because the type is not available
+ * in all SDK versions. For a signature without a context string pbCtx and
+ * cbCtx must be zero and pszPrehashAlgId must be NULL. */
+typedef struct _xmlSecMSCngPqdsaPaddingInfo {
+    PUCHAR  pbCtx;
+    ULONG   cbCtx;
+    LPCWSTR pszPrehashAlgId;
+} xmlSecMSCngPqdsaPaddingInfo;
+
+/* ML-DSA raw public key sizes in bytes (FIPS 204, Table 2):
+ * ML-DSA-44: 1312, ML-DSA-65: 1952, ML-DSA-87: 2592. */
+#define XMLSEC_MSCNG_MLDSA_44_PK_SIZE     (1312)
+#define XMLSEC_MSCNG_MLDSA_65_PK_SIZE     (1952)
+#define XMLSEC_MSCNG_MLDSA_87_PK_SIZE     (2592)
+
+/* OIDs of the ML-DSA parameter sets (id-ML-DSA-44/65/87); always ANSI LPSTR
+ * per CAPI design, even in UNICODE builds. */
+#define XMLSEC_MSCNG_OID_MLDSA_44         "2.16.840.1.101.3.4.3.17"
+#define XMLSEC_MSCNG_OID_MLDSA_65         "2.16.840.1.101.3.4.3.18"
+#define XMLSEC_MSCNG_OID_MLDSA_87         "2.16.840.1.101.3.4.3.19"
+
+int                xmlSecMSCngKeyDataCertGetMlDsaPubkey               (PCERT_PUBLIC_KEY_INFO spki,
+                                                                       BCRYPT_KEY_HANDLE* key);
+
+#endif /* XMLSEC_NO_MLDSA */
+
+
+/******************************************************************************
+ *
  * X509 Util functions
  *
   *****************************************************************************/

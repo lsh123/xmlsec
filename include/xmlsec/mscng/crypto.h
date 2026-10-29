@@ -369,10 +369,47 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCngKeyDataXdhGetKlass(void);
  * @brief The X25519 key agreement transform klass.
  */
 #define xmlSecMSCngTransformX25519Id \
-       xmlSecMSCngTransformX25519GetKlass()
+        xmlSecMSCngTransformX25519GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformX25519GetKlass(void);
 
 #endif /* XMLSEC_NO_XDH */
+
+/******************************************************************************
+ *
+ * ML-DSA (FIPS 204) key and signature transforms
+ *
+   *****************************************************************************/
+#ifndef XMLSEC_NO_MLDSA
+
+/**
+ * @brief The ML-DSA key data klass.
+ */
+#define xmlSecMSCngKeyDataMLDSAId \
+        xmlSecMSCngKeyDataMLDSAGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCngKeyDataMLDSAGetKlass(void);
+
+/**
+ * @brief The ML-DSA-44 (FIPS 204) signature transform klass.
+ */
+#define xmlSecMSCngTransformMLDSA44Id \
+        xmlSecMSCngTransformMLDSA44GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformMLDSA44GetKlass(void);
+
+/**
+ * @brief The ML-DSA-65 (FIPS 204) signature transform klass.
+ */
+#define xmlSecMSCngTransformMLDSA65Id \
+        xmlSecMSCngTransformMLDSA65GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformMLDSA65GetKlass(void);
+
+/**
+ * @brief The ML-DSA-87 (FIPS 204) signature transform klass.
+ */
+#define xmlSecMSCngTransformMLDSA87Id \
+        xmlSecMSCngTransformMLDSA87GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformMLDSA87GetKlass(void);
+
+#endif /* XMLSEC_NO_MLDSA */
 
 /******************************************************************************
  *

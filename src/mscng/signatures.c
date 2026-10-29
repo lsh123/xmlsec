@@ -57,6 +57,7 @@ struct _xmlSecMSCngSignatureCtx {
     BCRYPT_HASH_HANDLE hHash;
     ULONG dwInfoFlags;
     ULONG dwRsaPssSaltSize;
+    xmlSecBuffer preSignBuffer; /* ML-DSA (FIPS 204): the raw message, signed/verified without a hash */
 };
 
 /******************************************************************************
@@ -241,6 +242,18 @@ static int xmlSecMSCngSignatureCheckId(xmlSecTransformPtr transform) {
 
 #endif /* XMLSEC_NO_EC */
 
+#ifndef XMLSEC_NO_MLDSA
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformMLDSA44Id)) {
+       return(1);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformMLDSA65Id)) {
+       return(1);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformMLDSA87Id)) {
+       return(1);
+    } else
+#endif /* XMLSEC_NO_MLDSA */
+
     /* not found */
     return(0);
 }
@@ -424,11 +437,37 @@ static int xmlSecMSCngSignatureInitialize(xmlSecTransformPtr transform) {
 
 #endif /* XMLSEC_NO_EC */
 
+#ifndef XMLSEC_NO_MLDSA
+    /* ML-DSA (FIPS 204) signs the raw message without a hash */
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformMLDSA44Id)) {
+        ctx->keyId = xmlSecMSCngKeyDataMLDSAId;
+        ctx->dwInfoFlags = BCRYPT_PAD_PQDSA;
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformMLDSA65Id)) {
+        ctx->keyId = xmlSecMSCngKeyDataMLDSAId;
+        ctx->dwInfoFlags = BCRYPT_PAD_PQDSA;
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformMLDSA87Id)) {
+        ctx->keyId = xmlSecMSCngKeyDataMLDSAId;
+        ctx->dwInfoFlags = BCRYPT_PAD_PQDSA;
+    } else
+#endif /* XMLSEC_NO_MLDSA */
+
     /* not found */
     {
         xmlSecInvalidTransformError(transform);
         return(-1);
     }
+
+#ifndef XMLSEC_NO_MLDSA
+    if(ctx->keyId == xmlSecMSCngKeyDataMLDSAId) {
+        /* ML-DSA accumulates the raw message in preSignBuffer */
+        if(xmlSecBufferInitialize(&ctx->preSignBuffer, 0) < 0) {
+            xmlSecInternalError("xmlSecBufferInitialize(preSignBuffer)", xmlSecTransformGetName(transform));
+            return(-1);
+        }
+    }
+#endif /* XMLSEC_NO_MLDSA */
 
     return(0);
 }
@@ -470,6 +509,10 @@ static void xmlSecMSCngSignatureFinalize(xmlSecTransformPtr transform) {
         xmlFree(ctx->pbHash);
     }
 
+#ifndef XMLSEC_NO_MLDSA
+    xmlSecBufferFinalize(&ctx->preSignBuffer);
+#endif /* XMLSEC_NO_MLDSA */
+
     memset(ctx, 0, sizeof(xmlSecMSCngSignatureCtx));
 }
 
@@ -485,7 +528,15 @@ static int xmlSecMSCngSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr
     ctx = xmlSecMSCngSignatureGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->keyId != NULL, -1);
-    xmlSecAssert2(ctx->pszHashAlgId != 0, -1);
+#ifndef XMLSEC_NO_MLDSA
+    /* ML-DSA (FIPS 204) signs the raw message without a hash */
+    if(ctx->keyId == xmlSecMSCngKeyDataMLDSAId) {
+        xmlSecAssert2(ctx->pszHashAlgId == 0, -1);
+    } else
+#endif /* XMLSEC_NO_MLDSA */
+    {
+        xmlSecAssert2(ctx->pszHashAlgId != 0, -1);
+    }
     xmlSecAssert2(xmlSecKeyCheckId(key, ctx->keyId), -1);
 
     value = xmlSecKeyGetValue(key);
@@ -784,6 +835,54 @@ xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
         goto done;
     }
 
+#ifndef XMLSEC_NO_MLDSA
+    /* ML-DSA (FIPS 204) verifies the raw message accumulated in preSignBuffer;
+     * the signature is computed over the message directly, without a hash */
+    if(ctx->keyId == xmlSecMSCngKeyDataMLDSAId) {
+        xmlSecMSCngPqdsaPaddingInfo pqdsaPaddingInfo;
+        xmlSecByte* msgData;
+        DWORD dwMsgSize;
+
+        msgData = xmlSecBufferGetData(&ctx->preSignBuffer);
+        xmlSecAssert2(msgData != NULL, -1);
+        XMLSEC_SAFE_CAST_SIZE_TO_ULONG(dataSize, dwDataSize, goto done, xmlSecTransformGetName(transform));
+        XMLSEC_SAFE_CAST_SIZE_TO_ULONG(xmlSecBufferGetSize(&ctx->preSignBuffer), dwMsgSize, goto done, xmlSecTransformGetName(transform));
+
+        /* no context string, no prehash algorithm */
+        pqdsaPaddingInfo.pbCtx = NULL;
+        pqdsaPaddingInfo.cbCtx = 0;
+        pqdsaPaddingInfo.pszPrehashAlgId = NULL;
+
+        status = BCryptVerifySignature(
+            pubkey,
+            &pqdsaPaddingInfo,
+            (PBYTE)msgData,
+            dwMsgSize,
+            (PBYTE)data,
+            dwDataSize,
+            BCRYPT_PAD_PQDSA);
+        if(status != STATUS_SUCCESS) {
+            if(status == STATUS_INVALID_SIGNATURE) {
+                xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
+                    xmlSecTransformGetName(transform),
+                    "BCryptVerifySignature: the signature was not verified");
+                transform->status = xmlSecTransformStatusFail;
+                res = 0;
+                goto done;
+            } else {
+                xmlSecMSCngNtError("BCryptVerifySignature",
+                    xmlSecTransformGetName(transform), status);
+                goto done;
+            }
+        }
+
+        /* success */
+        transform->status = xmlSecTransformStatusOk;
+        res = 0;
+        goto done;
+    }
+#endif /* XMLSEC_NO_MLDSA */
+
     /* RSA needs explicit padding, otherwise STATUS_INVALID_PARAMETER is
      * returned */
     if(ctx->dwInfoFlags == BCRYPT_PAD_PKCS1) {
@@ -995,6 +1094,80 @@ xmlSecMSCngSignatureSign(
         xmlSecInternalError("xmlSecMSCngKeyDataGetPrivkey", xmlSecTransformGetName(transform));
         return(-1);
     }
+
+#ifndef XMLSEC_NO_MLDSA
+    /* ML-DSA (FIPS 204) signs the raw message accumulated in preSignBuffer;
+     * the signature is computed over the message directly, without a hash */
+    if(ctx->keyId == xmlSecMSCngKeyDataMLDSAId) {
+        xmlSecMSCngPqdsaPaddingInfo pqdsaPaddingInfo;
+        xmlSecByte* msgData;
+        DWORD dwMsgSize;
+        DWORD dwSigSize;
+
+        msgData = xmlSecBufferGetData(&ctx->preSignBuffer);
+        xmlSecAssert2(msgData != NULL, -1);
+        XMLSEC_SAFE_CAST_SIZE_TO_ULONG(xmlSecBufferGetSize(&ctx->preSignBuffer), dwMsgSize, return(-1), xmlSecTransformGetName(transform));
+
+        /* no context string, no prehash algorithm */
+        pqdsaPaddingInfo.pbCtx = NULL;
+        pqdsaPaddingInfo.cbCtx = 0;
+        pqdsaPaddingInfo.pszPrehashAlgId = NULL;
+
+        /* calculate the length of the signature */
+        status = NCryptSignHash(
+            privkey,
+            &pqdsaPaddingInfo,
+            msgData,
+            dwMsgSize,
+            NULL,
+            0,
+            &dwSigSize,
+            BCRYPT_PAD_PQDSA);
+        if (status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("NCryptSignHash", xmlSecTransformGetName(transform), status);
+            return(-1);
+        }
+
+        XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwSigSize, outSize, return(-1), xmlSecTransformGetName(transform));
+
+        /* allocate the signature buffer on the heap */
+        ret = xmlSecBufferSetSize(&(transform->outBuf), outSize);
+        if (ret < 0) {
+            xmlSecInternalError2("xmlSecBufferSetSize", xmlSecTransformGetName(transform),
+                "size=" XMLSEC_SIZE_FMT, outSize);
+            return(-1);
+        }
+
+        /* sign the raw message */
+        status = NCryptSignHash(
+            privkey,
+            &pqdsaPaddingInfo,
+            msgData,
+            dwMsgSize,
+            (PBYTE)xmlSecBufferGetData(&(transform->outBuf)),
+            dwSigSize,
+            &dwSigSize,
+            BCRYPT_PAD_PQDSA);
+        if (status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("NCryptSignHash", xmlSecTransformGetName(transform), status);
+            return(-1);
+        }
+
+        /* the PQDSA signature size is fixed; trim the out buffer if the
+         * provider reported a shorter signature */
+        if ((xmlSecSize)dwSigSize < outSize) {
+            ret = xmlSecBufferSetSize(&(transform->outBuf), (xmlSecSize)dwSigSize);
+            if (ret < 0) {
+                xmlSecInternalError2("xmlSecBufferSetSize", xmlSecTransformGetName(transform),
+                    "size=" XMLSEC_SIZE_FMT, (xmlSecSize)dwSigSize);
+                return(-1);
+            }
+        }
+
+        /* done */
+        return(0);
+    }
+#endif /* XMLSEC_NO_MLDSA */
 
     /* for DSA signatures CNG requires the hash to be no longer than the group
      * (q) size; when the DSA hash is larger than q (e.g. SHA-256 with a
@@ -1354,6 +1527,47 @@ xmlSecMSCngSignatureFinishHash(
 }
 
 
+#ifndef XMLSEC_NO_MLDSA
+/* Append the inBuf contents to the ctx preSignBuffer and remove the processed
+ * data from inBuf. ML-DSA (FIPS 204) signs the raw message directly, so no
+ * hash is used. */
+static int
+xmlSecMSCngSignatureAppendPreSignData(
+    xmlSecTransformPtr transform,
+    xmlSecMSCngSignatureCtxPtr ctx)
+{
+    xmlSecByte* inData;
+    xmlSecSize inSize;
+    int ret;
+
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    inData = xmlSecBufferGetData(&transform->inBuf);
+    inSize = xmlSecBufferGetSize(&transform->inBuf);
+    if((inData == NULL) || (inSize <= 0)) {
+        /* nothing to do */
+        return(0);
+    }
+
+    ret = xmlSecBufferAppend(&ctx->preSignBuffer, inData, inSize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferAppend(preSignBuffer)", xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
+    /* remove processed data */
+    ret = xmlSecBufferRemoveHead(&transform->inBuf, inSize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
+    /* done */
+    return(0);
+}
+#endif /* XMLSEC_NO_MLDSA */
+
 static int
 xmlSecMSCngSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecMSCngSignatureCtxPtr ctx;
@@ -1368,43 +1582,77 @@ xmlSecMSCngSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
     xmlSecAssert2(ctx != NULL, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
-        /* start hash */
-        ret = xmlSecMSCngSignatureStartHash(transform, ctx);
-        if (ret < 0) {
-            xmlSecInternalError("xmlSecMSCngSignatureStartHash", xmlSecTransformGetName(transform));
-            return(-1);
-        }
-
-        transform->status = xmlSecTransformStatusWorking;
-    }
-
-    if(transform->status == xmlSecTransformStatusWorking) {
-        /* update hash (if we have data) */
-        ret = xmlSecMSCngSignatureUpdateHash(transform, ctx);
-        if (ret < 0) {
-            xmlSecInternalError("xmlSecMSCngSignatureUpdateHash", xmlSecTransformGetName(transform));
-            return(-1);
-        }
-
-        if(last != 0) {
-            /* finish the hash */
-            ret = xmlSecMSCngSignatureFinishHash(transform, ctx);
+#ifndef XMLSEC_NO_MLDSA
+        /* ML-DSA (FIPS 204) signs the raw message without a hash */
+        if(ctx->keyId == xmlSecMSCngKeyDataMLDSAId) {
+            transform->status = xmlSecTransformStatusWorking;
+        } else
+#endif /* XMLSEC_NO_MLDSA */
+        {
+            /* start hash */
+            ret = xmlSecMSCngSignatureStartHash(transform, ctx);
             if (ret < 0) {
-                xmlSecInternalError("xmlSecMSCngSignatureFinishHash", xmlSecTransformGetName(transform));
+                xmlSecInternalError("xmlSecMSCngSignatureStartHash", xmlSecTransformGetName(transform));
                 return(-1);
             }
 
-            /* create signature if needed */
-            if(transform->operation == xmlSecTransformOperationSign) {
-                ret = xmlSecMSCngSignatureSign(transform, ctx, transformCtx);
-                if (ret < 0) {
-                    xmlSecInternalError("xmlSecMSCngSignatureSign", xmlSecTransformGetName(transform));
-                    return(-1);
-                }
+            transform->status = xmlSecTransformStatusWorking;
+        }
+    }
+
+    if(transform->status == xmlSecTransformStatusWorking) {
+#ifndef XMLSEC_NO_MLDSA
+        /* ML-DSA (FIPS 204): accumulate the raw message and sign it directly */
+        if(ctx->keyId == xmlSecMSCngKeyDataMLDSAId) {
+            ret = xmlSecMSCngSignatureAppendPreSignData(transform, ctx);
+            if (ret < 0) {
+                xmlSecInternalError("xmlSecMSCngSignatureAppendPreSignData", xmlSecTransformGetName(transform));
+                return(-1);
             }
 
-            /* done */
-            transform->status = xmlSecTransformStatusFinished;
+            if(last != 0) {
+                /* create signature if needed */
+                if(transform->operation == xmlSecTransformOperationSign) {
+                    ret = xmlSecMSCngSignatureSign(transform, ctx, transformCtx);
+                    if (ret < 0) {
+                        xmlSecInternalError("xmlSecMSCngSignatureSign", xmlSecTransformGetName(transform));
+                        return(-1);
+                    }
+                }
+
+                /* done */
+                transform->status = xmlSecTransformStatusFinished;
+            }
+        } else
+#endif /* XMLSEC_NO_MLDSA */
+        {
+            /* update hash (if we have data) */
+            ret = xmlSecMSCngSignatureUpdateHash(transform, ctx);
+            if (ret < 0) {
+                xmlSecInternalError("xmlSecMSCngSignatureUpdateHash", xmlSecTransformGetName(transform));
+                return(-1);
+            }
+
+            if(last != 0) {
+                /* finish the hash */
+                ret = xmlSecMSCngSignatureFinishHash(transform, ctx);
+                if (ret < 0) {
+                    xmlSecInternalError("xmlSecMSCngSignatureFinishHash", xmlSecTransformGetName(transform));
+                    return(-1);
+                }
+
+                /* create signature if needed */
+                if(transform->operation == xmlSecTransformOperationSign) {
+                    ret = xmlSecMSCngSignatureSign(transform, ctx, transformCtx);
+                    if (ret < 0) {
+                        xmlSecInternalError("xmlSecMSCngSignatureSign", xmlSecTransformGetName(transform));
+                        return(-1);
+                    }
+                }
+
+                /* done */
+                transform->status = xmlSecTransformStatusFinished;
+            }
         }
     }
 
@@ -1802,3 +2050,65 @@ xmlSecMSCngTransformEcdsaSha3_512GetKlass(void) {
 #endif /* XMLSEC_NO_SHA3 */
 
 #endif /* XMLSEC_NO_EC */
+
+
+/******************************************************************************
+ *
+ * ML-DSA (FIPS 204) signature transforms
+ *
+ * https://www.ietf.org/archive/id/draft-ietf-cfrg-ml-dsa-xml-02.html
+ * The ML-DSA algorithm signs the message directly, without a hash; the
+ * signature is the base64 encoding of the raw PQDSA signature value.
+ *
+   *****************************************************************************/
+#ifndef XMLSEC_NO_MLDSA
+
+/******************************************************************************
+ *
+ * ML-DSA-44 signature transform
+ *
+   *****************************************************************************/
+XMLSEC_MSCNG_SIGNATURE_KLASS(MLDSA44)
+
+/**
+ * @brief The ML-DSA-44 (FIPS 204) signature transform klass.
+ * @return ML-DSA-44 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformMLDSA44GetKlass(void) {
+    return(&xmlSecMSCngMLDSA44Klass);
+}
+
+/******************************************************************************
+ *
+ * ML-DSA-65 signature transform
+ *
+   *****************************************************************************/
+XMLSEC_MSCNG_SIGNATURE_KLASS(MLDSA65)
+
+/**
+ * @brief The ML-DSA-65 (FIPS 204) signature transform klass.
+ * @return ML-DSA-65 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformMLDSA65GetKlass(void) {
+    return(&xmlSecMSCngMLDSA65Klass);
+}
+
+/******************************************************************************
+ *
+ * ML-DSA-87 signature transform
+ *
+   *****************************************************************************/
+XMLSEC_MSCNG_SIGNATURE_KLASS(MLDSA87)
+
+/**
+ * @brief The ML-DSA-87 (FIPS 204) signature transform klass.
+ * @return ML-DSA-87 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformMLDSA87GetKlass(void) {
+    return(&xmlSecMSCngMLDSA87Klass);
+}
+
+#endif /* XMLSEC_NO_MLDSA */

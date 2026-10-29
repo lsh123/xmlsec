@@ -77,6 +77,18 @@ xmlSecMSCngKeyDataCertGetPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE* k
     }
 #endif /* XMLSEC_NO_XDH */
 
+#ifndef XMLSEC_NO_MLDSA
+    /* ML-DSA (FIPS 204) public keys are imported from the raw key bytes in
+     * SubjectPublicKey; CryptImportPublicKeyInfoEx2 does not support the
+     * ML-DSA OIDs. */
+    if((spki->Algorithm.pszObjId != NULL) &&
+       (strcmp(spki->Algorithm.pszObjId, XMLSEC_MSCNG_OID_MLDSA_44) == 0 ||
+        strcmp(spki->Algorithm.pszObjId, XMLSEC_MSCNG_OID_MLDSA_65) == 0 ||
+        strcmp(spki->Algorithm.pszObjId, XMLSEC_MSCNG_OID_MLDSA_87) == 0)) {
+        return(xmlSecMSCngKeyDataCertGetMlDsaPubkey(spki, key));
+    }
+#endif /* XMLSEC_NO_MLDSA */
+
     xmlSecMSCngLastError("CryptImportPublicKeyInfoEx2", NULL);
     return(-1);
 }
@@ -322,6 +334,19 @@ xmlSecMSCngKeyDataFromAlgorithm(LPSTR pszObjId) {
         }
     }
 #endif /* XMLSEC_NO_XDH */
+
+#ifndef XMLSEC_NO_MLDSA
+    /* OIDs for the ML-DSA (FIPS 204) parameter sets */
+    if (!strcmp(pszObjId, XMLSEC_MSCNG_OID_MLDSA_44) ||
+        !strcmp(pszObjId, XMLSEC_MSCNG_OID_MLDSA_65) ||
+        !strcmp(pszObjId, XMLSEC_MSCNG_OID_MLDSA_87)) {
+        data = xmlSecKeyDataCreate(xmlSecMSCngKeyDataMLDSAId);
+        if (data == NULL) {
+            xmlSecInternalError("xmlSecKeyDataCreate(KeyDataMLDSAId)", NULL);
+            return(NULL);
+        }
+    }
+#endif /* XMLSEC_NO_MLDSA */
 
     if (data == NULL) {
         xmlSecInvalidStringTypeError("Algorithm",
@@ -869,20 +894,20 @@ xmlSecMSCngCertKeyDataGetSizeInBits(xmlSecKeyDataPtr data) {
     return(0);
 }
 
-#define XMLSEC_MSCNG_CERTKEY_KLASS_EX(klassName, xmlName, usage, dataNodeName, dataNodeNs, generate, xmlRead, xmlWrite) \
-static xmlSecKeyDataKlass xmlSecMSCngKeyData ## klassName ## Klass = {                                  \
+#define XMLSEC_MSCNG_CERTKEY_KLASS_EX2(klassVarName, keyDataName, keyDataHref, usage, dataNodeName, dataNodeNs, generate, xmlRead, xmlWrite) \
+static xmlSecKeyDataKlass klassVarName  = {                                                              \
     sizeof(xmlSecKeyDataKlass),                 /* xmlSecSize klassSize */                               \
     xmlSecMSCngKeyDataSize,                     /* xmlSecSize objSize */                                 \
                                                                                                          \
     /* data */                                                                                           \
-    xmlSecName ## xmlName ## KeyValue,         /* const xmlChar* name; */                               \
+    keyDataName,                                /* const xmlChar* name; */                               \
     usage,                                      /* xmlSecKeyDataUsage usage; */                          \
-    xmlSecHref ## xmlName ## KeyValue,         /* const xmlChar* href; */                               \
+    keyDataHref,                                /* const xmlChar* href; */                               \
     dataNodeName,                               /* const xmlChar* dataNodeName; */                       \
     dataNodeNs,                                 /* const xmlChar* dataNodeNs; */                         \
                                                                                                          \
     /* constructors/destructor */                                                                        \
-    xmlSecMSCngCertKeyDataInitialize,           /* xmlSecKeyDataInitMethod initialize; */          \
+    xmlSecMSCngCertKeyDataInitialize,           /* xmlSecKeyDataInitMethod initialize; */                \
     xmlSecMSCngCertKeyDataDuplicate,            /* xmlSecKeyDataDuplicateMethod duplicate; */            \
     xmlSecMSCngCertKeyDataFinalize,             /* xmlSecKeyDataFinalizeMethod finalize; */              \
     generate,                                   /* xmlSecKeyDataGenerateMethod generate; */              \
@@ -908,7 +933,18 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyData ## klassName ## Klass = {          
 };
 
 
-
+#define XMLSEC_MSCNG_CERTKEY_KLASS_EX(klassName, xmlName, usage, dataNodeName, dataNodeNs, generate, xmlRead, xmlWrite) \
+    XMLSEC_MSCNG_CERTKEY_KLASS_EX2(                     \
+        xmlSecMSCngKeyData ## klassName ## Klass,       \
+        xmlSecName ## xmlName ## KeyValue,              \
+        xmlSecHref ## xmlName ## KeyValue,              \
+        usage,                                          \
+        dataNodeName,                                   \
+        dataNodeNs,                                     \
+        generate,                                       \
+        xmlRead,                                        \
+        xmlWrite                                        \
+    )
 
 #ifndef XMLSEC_NO_DSA
 
@@ -2664,3 +2700,31 @@ xmlSecMSCngKeyDataXdhGetKlass(void) {
 }
 
 #endif /* XMLSEC_NO_XDH */
+
+
+/******************************************************************************
+ * ML-DSA (FIPS 204) key data
+   *****************************************************************************/
+#ifndef XMLSEC_NO_MLDSA
+
+XMLSEC_MSCNG_CERTKEY_KLASS_EX2(
+    xmlSecMSCngKeyDataMlDsaKlass,
+    xmlSecNameMLDSAKeyValue,
+    NULL,         /* keyDataHref */
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+    NULL,         /* dataNodeName */
+    NULL,         /* dataNodeNs */
+    NULL,         /* generate (not supported) */
+    NULL,         /* xmlRead */
+    NULL)         /* xmlWrite */
+
+/**
+ * @brief The MSCng ML-DSA (FIPS 204) key data klass.
+ * @return pointer to MSCng ML-DSA key data klass.
+ */
+xmlSecKeyDataId
+xmlSecMSCngKeyDataMLDSAGetKlass(void) {
+    return(&xmlSecMSCngKeyDataMlDsaKlass);
+}
+
+#endif /* XMLSEC_NO_MLDSA */

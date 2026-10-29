@@ -24,8 +24,10 @@ see the Copyright file in the distribution for details.
   - (xmlsec-core, **not backward compatible**) Key agreement methods with `ConcatKDF` key derivation
     method now fall back to the KDF digest output size as the derived key length when the uplevel
     key requirements do not specify a key size.
+  - (xmlsec-mscng) Added support for ML-DSA (requires Windows 11 version 25H2 or Windows Server 2025).
   - (xmlsec-build, **not backward compatible**) Disabled Triple DES and Triple DES KeyWrap
     by default (use `--enable-des` option to re-enable both).
+  - 
   - (xmlsec-docs) GOST-R3410-2001 algorithm is marked as "deprecated" (already disabled by default).
   - (xmlsec-docs) SHA1 (and all derivatives); DSA; RSA-PKCS1 v1.5; ChaCha20 algorithms are marked
     as "use discouraged". These algorithms will be deprecated in the future and disabled by default.

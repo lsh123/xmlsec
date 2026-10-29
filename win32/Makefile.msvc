@@ -48,6 +48,7 @@ AUTOCONF = .\configure.txt
 #WITH_GOST=0
 #WITH_RSA_PKCS15=1
 #WITH_LEGACY_FEATURES=0
+#WITH_EXPERIMENTAL_FEATURES=0
 #STATIC = 0
 #WITH_APPS = 1
 #PEDANTIC = 1
@@ -432,6 +433,7 @@ XMLSEC_MSCNG_OBJS = \
 	$(XMLSEC_MSCNG_INTDIR)\certkeys.obj \
 	$(XMLSEC_MSCNG_INTDIR)\certkeys_dh.obj \
 	$(XMLSEC_MSCNG_INTDIR)\certkeys_xdh.obj \
+$(XMLSEC_MSCNG_INTDIR)\certkeys_mldsa.obj \
 	$(XMLSEC_MSCNG_INTDIR)\certkeys_dsa.obj \
 	$(XMLSEC_MSCNG_INTDIR)\der_encoded_value.obj \
 	$(XMLSEC_MSCNG_INTDIR)\ciphers_cbc.obj \
@@ -456,6 +458,7 @@ XMLSEC_MSCNG_OBJS_A = \
 	$(XMLSEC_MSCNG_INTDIR_A)\certkeys.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\certkeys_dh.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\certkeys_xdh.obj \
+	$(XMLSEC_MSCNG_INTDIR_A)\certkeys_mldsa.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\certkeys_dsa.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\der_encoded_value.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\ciphers_cbc.obj \
@@ -508,6 +511,12 @@ CFLAGS = $(CFLAGS)  /D "XMLSEC_NO_RSA_PKCS15"
 CFLAGS = $(CFLAGS)
 !else
 CFLAGS = $(CFLAGS)  /D "XMLSEC_NO_MD5" /D "XMLSEC_NO_RIPEMD160" /D "XMLSEC_NO_DES"
+!endif
+
+!if "$(WITH_EXPERIMENTAL_FEATURES)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS)  /D "XMLSEC_NO_MLDSA" /D "XMLSEC_NO_MLKEM" /D "XMLSEC_NO_SLHDSA"
 !endif
 
 !if "$(WITH_FTP)" == "1"

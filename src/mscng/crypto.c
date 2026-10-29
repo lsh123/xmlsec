@@ -145,6 +145,11 @@ xmlSecCryptoGetFunctions_mscng(void) {
     int isX25519Supported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_ECDH_ALGORITHM, 0, BCRYPT_ECC_CURVE_25519);
 #endif /* XMLSEC_NO_XDH */
 
+    /* ML-DSA (FIPS 204) requires Windows 11 24H2+ or Windows Server 2025. */
+#ifndef XMLSEC_NO_MLDSA
+    int isMlDsaSupported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_MLDSA_ALGORITHM, 0, NULL);
+#endif /* XMLSEC_NO_MLDSA */
+
     /* Publish the (zeroed) table before populating it. This matches the pattern used by
      * every other backend: the table is filled during one-time initialization, and xmlsec
      * initialization is not re-entrant, so a concurrent first-time caller cannot observe
@@ -199,6 +204,12 @@ xmlSecCryptoGetFunctions_mscng(void) {
         gXmlSecMSCngFunctions->keyDataXdhGetKlass       = xmlSecMSCngKeyDataXdhGetKlass;
     }
 #endif /* XMLSEC_NO_XDH */
+
+#ifndef XMLSEC_NO_MLDSA
+    if(isMlDsaSupported != 0) {
+        gXmlSecMSCngFunctions->keyDataMLDSAGetKlass     = xmlSecMSCngKeyDataMLDSAGetKlass;
+    }
+#endif /* XMLSEC_NO_MLDSA */
 
 #ifndef XMLSEC_NO_HMAC
     gXmlSecMSCngFunctions->keyDataHmacGetKlass          = xmlSecMSCngKeyDataHmacGetKlass;
@@ -326,6 +337,15 @@ xmlSecCryptoGetFunctions_mscng(void) {
         gXmlSecMSCngFunctions->transformX25519GetKlass          = xmlSecMSCngTransformX25519GetKlass;
     }
 #endif /* XMLSEC_NO_XDH */
+
+    /* ML-DSA (FIPS 204) */
+#ifndef XMLSEC_NO_MLDSA
+    if(isMlDsaSupported != 0) {
+        gXmlSecMSCngFunctions->transformMLDSA44GetKlass         = xmlSecMSCngTransformMLDSA44GetKlass;
+        gXmlSecMSCngFunctions->transformMLDSA65GetKlass         = xmlSecMSCngTransformMLDSA65GetKlass;
+        gXmlSecMSCngFunctions->transformMLDSA87GetKlass         = xmlSecMSCngTransformMLDSA87GetKlass;
+    }
+#endif /* XMLSEC_NO_MLDSA */
 
     /* HMAC */
 #ifndef XMLSEC_NO_HMAC

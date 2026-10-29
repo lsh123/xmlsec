@@ -421,24 +421,23 @@ const xmlChar xmlSecHrefEcdsaSha3_512[]         = "http://www.w3.org/2021/04/xml
  *
   *****************************************************************************/
 const xmlChar xmlSecNameMLDSAKeyValue[]       = "ml-dsa";
-const xmlChar xmlSecHrefMLDSAKeyValue[]       = XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12 "ml-dsa";
 
 /******************************************************************************
  *
- * ML-DSA signature transform strings
+ * ML-DSA signature transform strings (https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/)
  *
   *****************************************************************************/
-const xmlChar xmlSecMLDSANs[]                 = XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12;
-const xmlChar xmlSecNodeMLDSAContextString[]  = "MLDSAContextString";
+const xmlChar xmlSecNsMLDSAContextString[]    = "http://www.w3.org/2026/08/xmldsig-more#";
+const xmlChar xmlSecNodeMLDSAContextString[]  = "SignatureContext";
 
 const xmlChar xmlSecNameMLDSA44[]             = "ml-dsa-44";
-const xmlChar xmlSecHrefMLDSA44[]             = XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12 "ml-dsa-44";
+const xmlChar xmlSecHrefMLDSA44[]             = "http://www.w3.org/2026/08/xmldsig-more#ml-dsa-44";
 
 const xmlChar xmlSecNameMLDSA65[]             = "ml-dsa-65";
-const xmlChar xmlSecHrefMLDSA65[]             = XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12 "ml-dsa-65";
+const xmlChar xmlSecHrefMLDSA65[]             = "http://www.w3.org/2026/08/xmldsig-more#ml-dsa-65";
 
 const xmlChar xmlSecNameMLDSA87[]             = "ml-dsa-87";
-const xmlChar xmlSecHrefMLDSA87[]             = XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12 "ml-dsa-87";
+const xmlChar xmlSecHrefMLDSA87[]             = "http://www.w3.org/2026/08/xmldsig-more#ml-dsa-87";
 
 /******************************************************************************
  *
@@ -468,33 +467,32 @@ const xmlChar xmlSecHrefMLKEM1024[]           = XMLSEC_ALEKSEY_EXPERIMENTAL_2025
  *
   *****************************************************************************/
 const xmlChar xmlSecNameSLHDSAKeyValue[]      = "slh-dsa";
-const xmlChar xmlSecHrefSLHDSAKeyValue[]      = XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12 "slh-dsa";
 
 /******************************************************************************
  *
- * SLH-DSA signature transform strings
+ * SLH-DSA signature transform strings (https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/)
  *
   *****************************************************************************/
-const xmlChar xmlSecSLHDSANs[]                = XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12;
-const xmlChar xmlSecNodeSLHDSAContextString[] = "SLHDSAContextString";
+const xmlChar xmlSecNsSLHDSAContextString[]   = "http://www.w3.org/2026/08/xmldsig-more#";
+const xmlChar xmlSecNodeSLHDSAContextString[] = "SignatureContext";
 
 const xmlChar xmlSecNameSLHDSA_SHA2_128f[]    = "slh-dsa-sha2-128f";
-const xmlChar xmlSecHrefSLHDSA_SHA2_128f[]    = XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12 "slh-dsa-sha2-128f";
+const xmlChar xmlSecHrefSLHDSA_SHA2_128f[]    = "http://www.w3.org/2026/08/xmldsig-more#slh-dsa-sha2-128f";
 
 const xmlChar xmlSecNameSLHDSA_SHA2_128s[]    = "slh-dsa-sha2-128s";
-const xmlChar xmlSecHrefSLHDSA_SHA2_128s[]    = XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12 "slh-dsa-sha2-128s";
+const xmlChar xmlSecHrefSLHDSA_SHA2_128s[]    = "http://www.w3.org/2026/08/xmldsig-more#slh-dsa-sha2-128s";
 
 const xmlChar xmlSecNameSLHDSA_SHA2_192f[]    = "slh-dsa-sha2-192f";
-const xmlChar xmlSecHrefSLHDSA_SHA2_192f[]    = XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12 "slh-dsa-sha2-192f";
+const xmlChar xmlSecHrefSLHDSA_SHA2_192f[]    = "http://www.w3.org/2026/08/xmldsig-more#slh-dsa-sha2-192f";
 
 const xmlChar xmlSecNameSLHDSA_SHA2_192s[]    = "slh-dsa-sha2-192s";
-const xmlChar xmlSecHrefSLHDSA_SHA2_192s[]    = XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12 "slh-dsa-sha2-192s";
+const xmlChar xmlSecHrefSLHDSA_SHA2_192s[]    = "http://www.w3.org/2026/08/xmldsig-more#slh-dsa-sha2-192s";
 
 const xmlChar xmlSecNameSLHDSA_SHA2_256f[]    = "slh-dsa-sha2-256f";
-const xmlChar xmlSecHrefSLHDSA_SHA2_256f[]    = XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12 "slh-dsa-sha2-256f";
+const xmlChar xmlSecHrefSLHDSA_SHA2_256f[]    = "http://www.w3.org/2026/08/xmldsig-more#slh-dsa-sha2-256f";
 
 const xmlChar xmlSecNameSLHDSA_SHA2_256s[]    = "slh-dsa-sha2-256s";
-const xmlChar xmlSecHrefSLHDSA_SHA2_256s[]    = XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12 "slh-dsa-sha2-256s";
+const xmlChar xmlSecHrefSLHDSA_SHA2_256s[]    = "http://www.w3.org/2026/08/xmldsig-more#slh-dsa-sha2-256s";
 
 /******************************************************************************
  *

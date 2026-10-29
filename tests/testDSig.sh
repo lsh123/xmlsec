@@ -2153,11 +2153,36 @@ execDSigTest $res_success \
 if [ "z$xmlsec_feature_context_string" = "zyes" ] ; then
     execDSigTest $res_success \
         "" \
-        "aleksey-xmldsig-01/enveloped-sha512-mldsa44-with-context-string" \
+        "aleksey-xmldsig-01/enveloped-sha512-mldsa44-with-signature-context" \
         "sha512 ml-dsa-44" \
         "ml-dsa" \
         "$pub_key_option:TestKeyName-ml-dsa-44 $topfolder/keys/ml-dsa/ml-dsa-44-pubkey.$pub_key_format" \
         "$priv_key_option:TestKeyName-ml-dsa-44 $topfolder/keys/ml-dsa/ml-dsa-44-key.$priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-ml-dsa-44 $topfolder/keys/ml-dsa/ml-dsa-44-pubkey.$pub_key_format"
+
+    execDSigTest $res_success \
+        "" \
+        "aleksey-xmldsig-01/enveloped-sha512-mldsa44-with-object-signature-context" \
+        "sha512 ml-dsa-44" \
+        "ml-dsa" \
+        "$pub_key_option:TestKeyName-ml-dsa-44 $topfolder/keys/ml-dsa/ml-dsa-44-pubkey.$pub_key_format" \
+        "$priv_key_option:TestKeyName-ml-dsa-44 $topfolder/keys/ml-dsa/ml-dsa-44-key.$priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-ml-dsa-44 $topfolder/keys/ml-dsa/ml-dsa-44-pubkey.$pub_key_format"
+
+    extra_message="Negative test: two SignatureContext elements in SignatureMethod, should fail"
+    execDSigTest $res_fail \
+        "" \
+        "aleksey-xmldsig-01/enveloped-sha512-mldsa44-with-two-signature-contexts-in-signature-method" \
+        "sha512 ml-dsa-44" \
+        "ml-dsa" \
+        "$pub_key_option:TestKeyName-ml-dsa-44 $topfolder/keys/ml-dsa/ml-dsa-44-pubkey.$pub_key_format"
+
+    extra_message="Negative test: SignatureContext in SignatureMethod and in Object, should fail"
+    execDSigTest $res_fail \
+        "" \
+        "aleksey-xmldsig-01/enveloped-sha512-mldsa44-with-two-signature-contexts-in-signature-method-and-object" \
+        "sha512 ml-dsa-44" \
+        "ml-dsa" \
         "$pub_key_option:TestKeyName-ml-dsa-44 $topfolder/keys/ml-dsa/ml-dsa-44-pubkey.$pub_key_format"
 fi
 
@@ -2173,7 +2198,16 @@ execDSigTest $res_success \
 if [ "z$xmlsec_feature_context_string" = "zyes" ] ; then
     execDSigTest $res_success \
         "" \
-        "aleksey-xmldsig-01/enveloped-sha512-mldsa65-with-context-string" \
+        "aleksey-xmldsig-01/enveloped-sha512-mldsa65-with-signature-context" \
+        "sha512 ml-dsa-65" \
+        "ml-dsa" \
+        "$pub_key_option:TestKeyName-ml-dsa-65 $topfolder/keys/ml-dsa/ml-dsa-65-pubkey.$pub_key_format" \
+        "$priv_key_option:TestKeyName-ml-dsa-65 $topfolder/keys/ml-dsa/ml-dsa-65-key.$priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-ml-dsa-65 $topfolder/keys/ml-dsa/ml-dsa-65-pubkey.$pub_key_format"
+
+    execDSigTest $res_success \
+        "" \
+        "aleksey-xmldsig-01/enveloped-sha512-mldsa65-with-object-signature-context" \
         "sha512 ml-dsa-65" \
         "ml-dsa" \
         "$pub_key_option:TestKeyName-ml-dsa-65 $topfolder/keys/ml-dsa/ml-dsa-65-pubkey.$pub_key_format" \
@@ -2193,7 +2227,16 @@ execDSigTest $res_success \
 if [ "z$xmlsec_feature_context_string" = "zyes" ] ; then
     execDSigTest $res_success \
         "" \
-        "aleksey-xmldsig-01/enveloped-sha512-mldsa87-with-context-string" \
+        "aleksey-xmldsig-01/enveloped-sha512-mldsa87-with-signature-context" \
+        "sha512 ml-dsa-87" \
+        "ml-dsa" \
+        "$pub_key_option:TestKeyName-ml-dsa-87 $topfolder/keys/ml-dsa/ml-dsa-87-pubkey.$pub_key_format" \
+        "$priv_key_option:TestKeyName-ml-dsa-87 $topfolder/keys/ml-dsa/ml-dsa-87-key.$priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-ml-dsa-87 $topfolder/keys/ml-dsa/ml-dsa-87-pubkey.$pub_key_format"
+
+    execDSigTest $res_success \
+        "" \
+        "aleksey-xmldsig-01/enveloped-sha512-mldsa87-with-object-signature-context" \
         "sha512 ml-dsa-87" \
         "ml-dsa" \
         "$pub_key_option:TestKeyName-ml-dsa-87 $topfolder/keys/ml-dsa/ml-dsa-87-pubkey.$pub_key_format" \
@@ -2215,7 +2258,16 @@ execDSigTest $res_success \
 if [ "z$xmlsec_feature_context_string" = "zyes" ] ; then
     execDSigTest $res_success \
         "" \
-        "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-128f-with-context-string" \
+        "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-128f-with-signature-context" \
+        "sha512 slh-dsa-sha2-128f" \
+        "slh-dsa" \
+        "$pub_key_option:TestKeyName-slh-dsa-sha2-128f $topfolder/keys/slh-dsa/slh-dsa-sha2-128f-pubkey.$pub_key_format" \
+        "$priv_key_option:TestKeyName-slh-dsa-sha2-128f $topfolder/keys/slh-dsa/slh-dsa-sha2-128f-key.$priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-slh-dsa-sha2-128f $topfolder/keys/slh-dsa/slh-dsa-sha2-128f-pubkey.$pub_key_format"
+
+    execDSigTest $res_success \
+        "" \
+        "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-128f-with-object-signature-context" \
         "sha512 slh-dsa-sha2-128f" \
         "slh-dsa" \
         "$pub_key_option:TestKeyName-slh-dsa-sha2-128f $topfolder/keys/slh-dsa/slh-dsa-sha2-128f-pubkey.$pub_key_format" \
@@ -2236,11 +2288,28 @@ execDSigTest $res_success \
 if [ "z$xmlsec_feature_context_string" = "zyes" ] ; then
     execDSigTest $res_success \
         "" \
-        "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-128s-with-context-string" \
+        "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-128s-with-signature-context" \
         "sha512 slh-dsa-sha2-128s" \
         "slh-dsa" \
         "$pub_key_option:TestKeyName-slh-dsa-sha2-128s $topfolder/keys/slh-dsa/slh-dsa-sha2-128s-pubkey.$pub_key_format" \
         "$priv_key_option:TestKeyName-slh-dsa-sha2-128s $topfolder/keys/slh-dsa/slh-dsa-sha2-128s-key.$priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-slh-dsa-sha2-128s $topfolder/keys/slh-dsa/slh-dsa-sha2-128s-pubkey.$pub_key_format"
+
+    execDSigTest $res_success \
+        "" \
+        "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-128s-with-object-signature-context" \
+        "sha512 slh-dsa-sha2-128s" \
+        "slh-dsa" \
+        "$pub_key_option:TestKeyName-slh-dsa-sha2-128s $topfolder/keys/slh-dsa/slh-dsa-sha2-128s-pubkey.$pub_key_format" \
+        "$priv_key_option:TestKeyName-slh-dsa-sha2-128s $topfolder/keys/slh-dsa/slh-dsa-sha2-128s-key.$priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-slh-dsa-sha2-128s $topfolder/keys/slh-dsa/slh-dsa-sha2-128s-pubkey.$pub_key_format"
+
+    extra_message="Negative test: two SignatureContext elements in Objects, should fail"
+    execDSigTest $res_fail \
+        "" \
+        "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-128s-with-two-signature-contexts-in-objects" \
+        "sha512 slh-dsa-sha2-128s" \
+        "slh-dsa" \
         "$pub_key_option:TestKeyName-slh-dsa-sha2-128s $topfolder/keys/slh-dsa/slh-dsa-sha2-128s-pubkey.$pub_key_format"
 fi
 
@@ -2257,7 +2326,16 @@ execDSigTest $res_success \
 if [ "z$xmlsec_feature_context_string" = "zyes" ] ; then
     execDSigTest $res_success \
         "" \
-        "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-192f-with-context-string" \
+        "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-192f-with-signature-context" \
+        "sha512 slh-dsa-sha2-192f" \
+        "slh-dsa" \
+        "$pub_key_option:TestKeyName-slh-dsa-sha2-192f $topfolder/keys/slh-dsa/slh-dsa-sha2-192f-pubkey.$pub_key_format" \
+        "$priv_key_option:TestKeyName-slh-dsa-sha2-192f $topfolder/keys/slh-dsa/slh-dsa-sha2-192f-key.$priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-slh-dsa-sha2-192f $topfolder/keys/slh-dsa/slh-dsa-sha2-192f-pubkey.$pub_key_format"
+
+    execDSigTest $res_success \
+        "" \
+        "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-192f-with-object-signature-context" \
         "sha512 slh-dsa-sha2-192f" \
         "slh-dsa" \
         "$pub_key_option:TestKeyName-slh-dsa-sha2-192f $topfolder/keys/slh-dsa/slh-dsa-sha2-192f-pubkey.$pub_key_format" \
@@ -2277,7 +2355,16 @@ execDSigTest $res_success \
 if [ "z$xmlsec_feature_context_string" = "zyes" ] ; then
     execDSigTest $res_success \
         "" \
-        "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-192s-with-context-string" \
+        "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-192s-with-signature-context" \
+        "sha512 slh-dsa-sha2-192s" \
+        "slh-dsa" \
+        "$pub_key_option:TestKeyName-slh-dsa-sha2-192s $topfolder/keys/slh-dsa/slh-dsa-sha2-192s-pubkey.$pub_key_format" \
+        "$priv_key_option:TestKeyName-slh-dsa-sha2-192s $topfolder/keys/slh-dsa/slh-dsa-sha2-192s-key.$priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-slh-dsa-sha2-192s $topfolder/keys/slh-dsa/slh-dsa-sha2-192s-pubkey.$pub_key_format"
+
+    execDSigTest $res_success \
+        "" \
+        "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-192s-with-object-signature-context" \
         "sha512 slh-dsa-sha2-192s" \
         "slh-dsa" \
         "$pub_key_option:TestKeyName-slh-dsa-sha2-192s $topfolder/keys/slh-dsa/slh-dsa-sha2-192s-pubkey.$pub_key_format" \
@@ -2297,7 +2384,16 @@ execDSigTest $res_success \
 if [ "z$xmlsec_feature_context_string" = "zyes" ] ; then
     execDSigTest $res_success \
         "" \
-        "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-256f-with-context-string" \
+        "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-256f-with-signature-context" \
+        "sha512 slh-dsa-sha2-256f" \
+        "slh-dsa" \
+        "$pub_key_option:TestKeyName-slh-dsa-sha2-256f $topfolder/keys/slh-dsa/slh-dsa-sha2-256f-pubkey.$pub_key_format" \
+        "$priv_key_option:TestKeyName-slh-dsa-sha2-256f $topfolder/keys/slh-dsa/slh-dsa-sha2-256f-key.$priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-slh-dsa-sha2-256f $topfolder/keys/slh-dsa/slh-dsa-sha2-256f-pubkey.$pub_key_format"
+
+    execDSigTest $res_success \
+        "" \
+        "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-256f-with-object-signature-context" \
         "sha512 slh-dsa-sha2-256f" \
         "slh-dsa" \
         "$pub_key_option:TestKeyName-slh-dsa-sha2-256f $topfolder/keys/slh-dsa/slh-dsa-sha2-256f-pubkey.$pub_key_format" \
@@ -2317,7 +2413,16 @@ execDSigTest $res_success \
 if [ "z$xmlsec_feature_context_string" = "zyes" ] ; then
     execDSigTest $res_success \
         "" \
-        "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-256s-with-context-string" \
+        "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-256s-with-signature-context" \
+        "sha512 slh-dsa-sha2-256s" \
+        "slh-dsa" \
+        "$pub_key_option:TestKeyName-slh-dsa-sha2-256s $topfolder/keys/slh-dsa/slh-dsa-sha2-256s-pubkey.$pub_key_format" \
+        "$priv_key_option:TestKeyName-slh-dsa-sha2-256s $topfolder/keys/slh-dsa/slh-dsa-sha2-256s-key.$priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-slh-dsa-sha2-256s $topfolder/keys/slh-dsa/slh-dsa-sha2-256s-pubkey.$pub_key_format"
+
+    execDSigTest $res_success \
+        "" \
+        "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-256s-with-object-signature-context" \
         "sha512 slh-dsa-sha2-256s" \
         "slh-dsa" \
         "$pub_key_option:TestKeyName-slh-dsa-sha2-256s $topfolder/keys/slh-dsa/slh-dsa-sha2-256s-pubkey.$pub_key_format" \
@@ -2379,7 +2484,7 @@ execDSigTest $res_success \
 # context string is required for Ed25519ctx so no point in checking feature flag
 execDSigTest $res_success \
     "" \
-    "aleksey-xmldsig-01/enveloped-sha256-eddsa-ed25519ctx-with-context-string" \
+    "aleksey-xmldsig-01/enveloped-sha256-eddsa-ed25519ctx-with-signature-context" \
     "sha256 eddsa-ed25519ctx" \
     "eddsa" \
     "$pub_key_option:TestKeyName-eddsa-ed25519 $topfolder/keys/eddsa/eddsa-ed25519-pubkey.$pub_key_format" \
@@ -2390,7 +2495,7 @@ if [ "z$xmlsec_feature_context_string" = "zyes" ] ; then
 
     execDSigTest $res_success \
         "" \
-        "aleksey-xmldsig-01/enveloped-sha256-eddsa-ed25519ph-with-context-string" \
+        "aleksey-xmldsig-01/enveloped-sha256-eddsa-ed25519ph-with-signature-context" \
         "sha256 eddsa-ed25519ph" \
         "eddsa" \
         "$pub_key_option:TestKeyName-eddsa-ed25519 $topfolder/keys/eddsa/eddsa-ed25519-pubkey.$pub_key_format" \
@@ -2419,7 +2524,7 @@ execDSigTest $res_success \
 if [ "z$xmlsec_feature_context_string" = "zyes" ] ; then
     execDSigTest $res_success \
         "" \
-        "aleksey-xmldsig-01/enveloped-sha256-eddsa-ed448ph-with-context-string" \
+        "aleksey-xmldsig-01/enveloped-sha256-eddsa-ed448ph-with-signature-context" \
         "sha256 eddsa-ed448ph" \
         "eddsa" \
         "$pub_key_option:TestKeyName-eddsa-ed448 $topfolder/keys/eddsa/eddsa-ed448-pubkey.$pub_key_format" \

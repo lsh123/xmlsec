@@ -1227,39 +1227,140 @@ xmlSecTransformHmacVerify(const xmlSecByte* data, xmlSecSize dataSize,
 #endif /* XMLSEC_NO_HMAC */
 
 
-/* ML-DSA */
-#ifndef XMLSEC_NO_MLDSA
+#if !defined(XMLSEC_NO_MLDSA) || !defined(XMLSEC_NO_SLHDSA)
 
 
+static xmlNodePtr
+xmlSecTransformReadContextStringFromObjectGetSignatureNode(xmlNodePtr signatureMethodNode) {
+    xmlSecAssert2(signatureMethodNode != NULL, NULL);
+
+    /* Parent of SignatureMethod should be SignedInfo */
+    if (signatureMethodNode->parent == NULL) {
+        return(NULL);
+    }
+    if (xmlSecCheckNodeName(signatureMethodNode->parent, xmlSecNodeSignedInfo, xmlSecDSigNs) == 0) {
+        return(NULL);
+    }
+    /* Parent of SignedInfo should be Signature */
+    if (signatureMethodNode->parent->parent == NULL) {
+        return(NULL);
+    }
+    if (xmlSecCheckNodeName(signatureMethodNode->parent->parent, xmlSecNodeSignature, xmlSecDSigNs) == 0) {
+        return(NULL);
+    }
+
+    /* success! */
+    return(signatureMethodNode->parent->parent);
+}
 /*
- * THIS IS EXPERIMENTAL AND NON-STANDARD
+ * The context string element may be placed in a <ds:Object> element of
+ * the <ds:Signature>:
  *
- * <SignatureMethod Algorithm="XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12#ml-dsa-44">
- *   <mldsa:MLDSAContextString>base64 encoded context string</mldsa:MLDSAContextString>
- * </SignatureMethod>
+ *   <ds:Signature>
+ *     ...
+ *     <ds:Object>
+ *       <mldsa:SignatureContext>base64 encoded context string</mldsa:SignatureContext>
+ *     </ds:Object>
+ *   </ds:Signature>
+ *
+ * The <ds:SignatureMethod> node is a child of the <ds:SignedInfo> element,
+ * which is a child of the <ds:Signature> element. If the structure is not
+ * as expected (the function called outside of the standard <ds:Signature>
+ * processing flow), there is nothing to read.
  */
-int
-xmlSecTransformMLDSAReadContextString(xmlNodePtr node, xmlSecBufferPtr res) {
+static int
+xmlSecTransformReadContextStringFromObject(
+    xmlNodePtr signatureMethodNode,
+    const xmlChar* name,
+    const xmlChar* ns,
+    xmlSecSize maxSize,
+    xmlSecBufferPtr res
+) {
+    xmlNodePtr signatureNode;
+    xmlNodePtr objectNode;
+    xmlNodePtr objNodeChild;
+    int ret;
+
+    xmlSecAssert2(signatureMethodNode != NULL, -1);
+    xmlSecAssert2(name != NULL, -1);
+    xmlSecAssert2(ns != NULL, -1);
+    xmlSecAssert2(maxSize > 0, -1);
+    xmlSecAssert2(res != NULL, -1);
+
+
+    /* get <ds:Signature> node */
+    signatureNode = xmlSecTransformReadContextStringFromObjectGetSignatureNode(signatureMethodNode);
+    if(signatureNode == NULL) {
+        return(0);
+    }
+
+    /*
+     * Not more than one context string element is allowed per signature: the
+     * result buffer may already contain the context string read from the
+     * <ds:SignatureMethod> element.
+     */
+    for(objectNode = xmlSecGetNextElementNode(signatureNode->children); objectNode != NULL; objectNode = xmlSecGetNextElementNode(objectNode->next)) {
+        if (!xmlSecCheckNodeName(objectNode, xmlSecNodeObject, xmlSecDSigNs)) {
+            continue;
+        }
+
+        /* process children of <ds:Object> */
+        for(objNodeChild = xmlSecGetNextElementNode(objectNode->children); objNodeChild != NULL; objNodeChild = xmlSecGetNextElementNode(objNodeChild->next)) {
+            if (!xmlSecCheckNodeName(objNodeChild, name, ns)) {
+                continue;
+            }
+            if (!xmlSecBufferIsEmpty(res)) {
+                xmlSecInvalidNodeContentError(objNodeChild, NULL, "more than one SignatureContext element is not allowed");
+                return(-1);
+            }
+            ret = xmlSecBufferBase64NodeContentRead(res, objNodeChild);
+            if (ret != 0) {
+                xmlSecInternalError("xmlSecBufferBase64NodeContentRead(SignatureContext)", NULL);
+                return(-1);
+            }
+
+            /* ensure length is not exceeded */
+            if (xmlSecBufferGetSize(res) > maxSize) {
+                xmlSecInvalidNodeContentError3(objNodeChild, NULL,
+                    "context string length=" XMLSEC_SIZE_FMT " exceeds max expected length=" XMLSEC_SIZE_FMT,
+                    xmlSecBufferGetSize(res), maxSize);
+                return(-1);
+            }
+        }
+    }
+
+    return(0);
+}
+
+static int
+xmlSecTransformReadContextStringFromSignatureMethodOrObjectNodes(
+    xmlNodePtr signatureMethodNode,
+    const xmlChar* name,
+    const xmlChar* ns,
+    xmlSecSize maxSize,
+    xmlSecBufferPtr res
+) {
     xmlNodePtr cur;
     int ret;
 
-    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(signatureMethodNode != NULL, -1);
     xmlSecAssert2(res != NULL, -1);
+    xmlSecAssert2(xmlSecBufferIsEmpty(res), -1);
 
-    cur = xmlSecGetNextElementNode(node->children);
-    if ((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeMLDSAContextString, xmlSecMLDSANs)) {
-
+    /* try to read the context string from the first child of the SignatureMethod element */
+    cur = xmlSecGetNextElementNode(signatureMethodNode->children);
+    if ((cur != NULL) && xmlSecCheckNodeName(cur, name, ns)) {
         ret = xmlSecBufferBase64NodeContentRead(res, cur);
         if (ret != 0) {
-            xmlSecInternalError("xmlSecBufferBase64NodeContentRead(MLDSAContextString)", NULL);
+            xmlSecInternalError("xmlSecBufferBase64NodeContentRead(SignatureContext)", NULL);
             return(-1);
         }
 
         /* ensure length is not exceeded */
-        if (xmlSecBufferGetSize(res) > XMLSEC_MLDSA_MAX_SIZE) {
+        if (xmlSecBufferGetSize(res) > maxSize) {
             xmlSecInvalidNodeContentError3(cur, NULL,
-                "MLDSA context string length=" XMLSEC_SIZE_FMT " exceeds max expected length=" XMLSEC_SIZE_FMT,
-                xmlSecBufferGetSize(res), XMLSEC_MLDSA_MAX_SIZE);
+                "context string length=" XMLSEC_SIZE_FMT " exceeds max expected length=" XMLSEC_SIZE_FMT,
+                xmlSecBufferGetSize(res), maxSize);
             return(-1);
         }
 
@@ -1271,6 +1372,68 @@ xmlSecTransformMLDSAReadContextString(xmlNodePtr node, xmlSecBufferPtr res) {
         xmlSecUnexpectedNodeError(cur, NULL);
         return(-1);
     }
+
+    /* the context string may also be placed in a <ds:Object> element of the
+     * containing <ds:Signature>; not more than one context string element
+     * is allowed per signature */
+    ret = xmlSecTransformReadContextStringFromObject(signatureMethodNode, name, ns, maxSize, res);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecTransformReadContextStringFromObject()", NULL);
+        return(-1);
+    }
+
+    /* done */
+    return(0);
+}
+
+#endif /* !XMLSEC_NO_MLDSA || !XMLSEC_NO_SLHDSA */
+
+
+/* ML-DSA */
+#ifndef XMLSEC_NO_MLDSA
+
+
+/*
+ * THIS IS EXPERIMENTAL (CURRENT RFC DRAFT: https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/):
+ *
+ * The context string may be placed in the <SignatureMethod> element:
+ *
+ * <SignatureMethod Algorithm="http://www.w3.org/2026/08/xmldsig-more#ml-dsa-44">
+ *   <mldsa:SignatureContext>base64 encoded context string</mldsa:SignatureContext>
+ * </SignatureMethod>
+ *
+ * or in a <ds:Object> element of the containing <ds:Signature>:
+ *
+ * <Signature>
+ *   ...
+ *   <Object>
+ *     <mldsa:SignatureContext>base64 encoded context string</mldsa:SignatureContext>
+ *   </Object>
+ * </Signature>
+ *
+ * Not more than one context string element is allowed per signature.
+ */
+int
+xmlSecTransformMLDSAReadContextString(xmlNodePtr node, xmlSecBufferPtr res) {
+    int ret;
+
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(res != NULL, -1);
+
+    ret = xmlSecTransformReadContextStringFromSignatureMethodOrObjectNodes(
+        node,
+        xmlSecNodeMLDSAContextString,
+        xmlSecNsMLDSAContextString,
+        XMLSEC_MLDSA_MAX_SIZE,
+        res
+    );
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecTransformReadContextStringFromSignatureMethodOrObjectNodes()", NULL);
+        return(-1);
+    }
+
+
+    /* done */
     return(0);
 }
 #endif /* XMLSEC_NO_MLDSA */
@@ -1280,45 +1443,46 @@ xmlSecTransformMLDSAReadContextString(xmlNodePtr node, xmlSecBufferPtr res) {
 #ifndef XMLSEC_NO_SLHDSA
 
 /*
- * THIS IS EXPERIMENTAL AND NON-STANDARD
+ * THIS IS EXPERIMENTAL AND NON-STANDARD: the context string element
+ * is not defined by the draft specification.
  *
- * <SignatureMethod Algorithm="XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12#slh-dsa-44">
- *   <slhdsa:SLHDSAContextString>base64 encoded context string</slhdsa:SLHDSAContextString>
+ * The context string may be placed in the <SignatureMethod> element:
+ *
+ * <SignatureMethod Algorithm="http://www.w3.org/2026/08/xmldsig-more#slh-dsa-sha2-128s">
+ *   <slhdsa:SignatureContext>base64 encoded context string</slhdsa:SignatureContext>
  * </SignatureMethod>
+ *
+ * or in a <ds:Object> element of the containing <ds:Signature>:
+ *
+ * <Signature>
+ *   ...
+ *   <Object>
+ *     <slhdsa:SignatureContext>base64 encoded context string</slhdsa:SignatureContext>
+ *   </Object>
+ * </Signature>
+ *
+ * Not more than one context string element is allowed per signature.
  */
 int
 xmlSecTransformSLHDSAReadContextString(xmlNodePtr node, xmlSecBufferPtr res) {
-    xmlNodePtr cur;
     int ret;
 
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(res != NULL, -1);
 
-    cur = xmlSecGetNextElementNode(node->children);
-    if ((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeSLHDSAContextString, xmlSecSLHDSANs)) {
-
-        ret = xmlSecBufferBase64NodeContentRead(res, cur);
-        if (ret != 0) {
-            xmlSecInternalError("xmlSecBufferBase64NodeContentRead(SLHDSAContextString)", NULL);
-            return(-1);
-        }
-
-        /* ensure length is not exceeded */
-        if (xmlSecBufferGetSize(res) > XMLSEC_SLHDSA_MAX_SIZE) {
-            xmlSecInvalidNodeContentError3(cur, NULL,
-                "SLHDSA context string length=" XMLSEC_SIZE_FMT " exceeds max expected length=" XMLSEC_SIZE_FMT,
-                xmlSecBufferGetSize(res), XMLSEC_SLHDSA_MAX_SIZE);
-            return(-1);
-        }
-
-        cur = xmlSecGetNextElementNode(cur->next);
-    }
-
-    /* no other nodes expected */
-    if (cur != NULL) {
-        xmlSecUnexpectedNodeError(cur, NULL);
+    ret = xmlSecTransformReadContextStringFromSignatureMethodOrObjectNodes(
+        node,
+        xmlSecNodeSLHDSAContextString,
+        xmlSecNsSLHDSAContextString,
+        XMLSEC_SLHDSA_MAX_SIZE,
+        res
+    );
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecTransformReadContextStringFromSignatureMethodOrObjectNodes()", NULL);
         return(-1);
     }
+
+    /* done */
     return(0);
 }
 #endif /* XMLSEC_NO_SLHDSA */

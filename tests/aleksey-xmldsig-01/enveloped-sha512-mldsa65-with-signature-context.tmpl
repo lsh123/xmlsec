@@ -3,11 +3,11 @@
   <Data>
 	Hello, World!
   </Data>
-  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#" xmlns:mldsa="http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#">
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#" xmlns:mldsa="http://www.w3.org/2026/08/xmldsig-more#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
-      <SignatureMethod Algorithm="http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#ml-dsa-65">
-        <mldsa:MLDSAContextString>QSBjb250ZXh0IHN0cmluZwo=</mldsa:MLDSAContextString>
+      <SignatureMethod Algorithm="http://www.w3.org/2026/08/xmldsig-more#ml-dsa-65">
+        <mldsa:SignatureContext>QSBjb250ZXh0IHN0cmluZwo=</mldsa:SignatureContext>
       </SignatureMethod>
       <Reference URI="">
         <Transforms>

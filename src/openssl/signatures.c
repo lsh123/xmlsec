@@ -2573,7 +2573,7 @@ xmlSecOpenSSLTransformEcdsaSha3_512GetKlass(void) {
 
 /******************************************************************************
  *
- * ML-DSA
+ * ML-DSA (https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/)
  *
   *****************************************************************************/
 
@@ -2656,7 +2656,7 @@ xmlSecOpenSSLTransformMLDSA87GetKlass(void) {
 
 /******************************************************************************
  *
- * SLH-DSA
+ * SLH-DSA (https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/)
  *
   *****************************************************************************/
 

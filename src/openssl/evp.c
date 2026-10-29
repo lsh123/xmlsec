@@ -917,15 +917,15 @@ xmlSecOpenSSLEvpKeyAdopt(EVP_PKEY *pKey) {
 
 
 /* Helper macro to define the key data klass */
-#define XMLSEC_OPENSSL_EVP_KEY_KLASS_EX(klassName, xmlName, usage, dataNodeName, dataNodeNs, generate, xmlRead, xmlWrite)  \
+#define XMLSEC_OPENSSL_EVP_KEY_KLASS_EX2(klassName, keyName, keyHref, usage, dataNodeName, dataNodeNs, generate, xmlRead, xmlWrite)  \
 static xmlSecKeyDataKlass xmlSecOpenSSLKeyData ## klassName ## Klass = {                                    \
     sizeof(xmlSecKeyDataKlass),                 /* xmlSecSize klassSize */                                  \
     xmlSecOpenSSLEvpKeyDataSize,                /* xmlSecSize objSize */                                    \
                                                                                                             \
     /* data */                                                                                              \
-    xmlSecName ## xmlName ## KeyValue,          /* const xmlChar* name; */                                  \
+    keyName,                                    /* const xmlChar* name; */                                  \
     usage,                                      /* xmlSecKeyDataUsage usage; */                             \
-    xmlSecHref ## xmlName ## KeyValue,          /* const xmlChar* href; */                                  \
+    keyHref,                                    /* const xmlChar* href; */                                  \
     dataNodeName,                               /* const xmlChar* dataNodeName; */                          \
     dataNodeNs,                                 /* const xmlChar* dataNodeNs; */                            \
                                                                                                             \
@@ -954,6 +954,10 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyData ## klassName ## Klass = {        
     NULL,                                       /* void* reserved0; */                                      \
     NULL,                                       /* void* reserved1; */                                      \
 };
+
+#define XMLSEC_OPENSSL_EVP_KEY_KLASS_EX(klassName, xmlName, usage, dataNodeName, dataNodeNs, generate, xmlRead, xmlWrite)  \
+    XMLSEC_OPENSSL_EVP_KEY_KLASS_EX2(klassName, xmlSecName ## xmlName ## KeyValue, xmlSecHref ## xmlName ## KeyValue, usage, dataNodeName, dataNodeNs, generate, xmlRead, xmlWrite)
+
 
 #define XMLSEC_OPENSSL_EVP_KEY_KLASS(klassName, xmlName)                                                    \
     XMLSEC_OPENSSL_EVP_KEY_KLASS_EX(klassName, xmlName,                                                     \
@@ -4055,7 +4059,9 @@ xmlSecOpenSSLKeyValueMLDSACheckKeyType(EVP_PKEY* pKey)
     }
 }
 
-XMLSEC_OPENSSL_EVP_KEY_KLASS(MLDSA, MLDSA)
+XMLSEC_OPENSSL_EVP_KEY_KLASS_EX2(MLDSA, xmlSecNameMLDSAKeyValue, NULL,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+    NULL, NULL, NULL, NULL, NULL)
 
 /**
  * @brief The OpenSSL ML-DSA data klass.
@@ -4152,7 +4158,9 @@ xmlSecOpenSSLKeyValueSLHDSACheckKeyType(EVP_PKEY* pKey)
     }
 }
 
-XMLSEC_OPENSSL_EVP_KEY_KLASS(SLHDSA, SLHDSA)
+XMLSEC_OPENSSL_EVP_KEY_KLASS_EX2(SLHDSA, xmlSecNameSLHDSAKeyValue, NULL,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+    NULL, NULL, NULL, NULL, NULL)
 
 /**
  * @brief The OpenSSL SLH-DSA data klass.

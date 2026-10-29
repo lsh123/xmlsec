@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+  <SignedInfo>
+    <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+    <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+    <Reference URI="#object">
+      <Transforms>
+        <Transform Algorithm="http://www.w3.org/TR/1999/REC-xslt-19991116">
+          <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:r="http://example.org/records">
+            <xsl:output method="xml" indent="no" encoding="UTF-8"/>
+            <xsl:template match="/">
+              <Summary>
+                <xsl:for-each select="//r:Record">
+                  <Entry id="{@id}">
+                    <xsl:value-of select="r:name"/>
+                  </Entry>
+                </xsl:for-each>
+              </Summary>
+            </xsl:template>
+          </xsl:stylesheet>
+        </Transform>
+      </Transforms>
+      <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+      <DigestValue></DigestValue>
+    </Reference>
+  </SignedInfo>
+  <SignatureValue>
+  </SignatureValue>
+  <KeyInfo>
+    <KeyName>TestKeyName-rsa-2048</KeyName>
+    <X509Data/>
+  </KeyInfo>
+  <Object Id="object">
+    <Records xmlns="http://example.org/records">
+      <Record id="1"><name>Alice</name><age>30</age></Record>
+      <Record id="2"><name>Bob</name><age>25</age></Record>
+    </Records>
+  </Object>
+</Signature>

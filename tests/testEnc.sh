@@ -1352,6 +1352,15 @@ execEncTest $res_success \
 
 execEncTest $res_success \
     "" \
+    "aleksey-xmlenc-01/enc-aes128cbc-kw-des3-keyname" \
+    "aes128-cbc kw-tripledes" \
+    "enc-key des" \
+    "--keys-file $topfolder/keys/keys.xml" \
+    "--keys-file $topfolder/keys/keys.xml --session-key aes-128 --binary-data $topfolder/aleksey-xmlenc-01/enc-aes128cbc-kw-des3-keyname.data" \
+    "--keys-file $topfolder/keys/keys.xml"
+
+execEncTest $res_success \
+    "" \
     "aleksey-xmlenc-01/enc-chacha20-keyname" \
     "chacha20" \
     "" \

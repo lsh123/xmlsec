@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+  <SignedInfo>
+    <CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#WithComments"/>
+    <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+    <Reference URI="#xpointer(id('object'))">
+      <Transforms>
+        <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#WithComments"/>
+      </Transforms>
+      <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+      <DigestValue></DigestValue>
+    </Reference>
+  </SignedInfo>
+  <SignatureValue>
+  </SignatureValue>
+  <KeyInfo>
+    <KeyName>TestKeyName-rsa-2048</KeyName>
+    <X509Data/>
+  </KeyInfo>
+  <Object Id="object" xmlns:ns1="http://example.org/ns1" xmlns:ns2="http://example.org/ns2" xmlns:unused="http://example.org/unused">
+    <ns1:Item>First item</ns1:Item>
+    <ns1:Item>Second item</ns1:Item>
+    <!-- Comment inside the signed object: included only by the with-comments canonicalization methods -->
+    <ns2:Total>42</ns2:Total>
+  </Object>
+</Signature>

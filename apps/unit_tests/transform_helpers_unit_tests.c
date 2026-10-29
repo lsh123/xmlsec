@@ -20,7 +20,7 @@
 #include <xmlsec/xmltree.h>
 #include "../../src/transform_helpers.h"
 
- #if !defined(XMLSEC_NO_CHACHA20) || !defined(XMLSEC_NO_MLDSA) || !defined(XMLSEC_NO_SLHDSA)
+ #if !defined(XMLSEC_NO_CHACHA20) || !defined(XMLSEC_NO_MLDSA) || !defined(XMLSEC_NO_SLHDSA) || !defined(XMLSEC_NO_EDDSA)
 static xmlNodePtr
 xmlSecUnitTestParseNode(const char* xml, xmlDocPtr* doc) {
     xmlNodePtr node;
@@ -44,7 +44,7 @@ xmlSecUnitTestParseNode(const char* xml, xmlDocPtr* doc) {
     }
     return(node);
 }
-#endif /* !defined(XMLSEC_NO_CHACHA20) || !defined(XMLSEC_NO_MLDSA) || !defined(XMLSEC_NO_SLHDSA) */
+#endif /* !defined(XMLSEC_NO_CHACHA20) || !defined(XMLSEC_NO_MLDSA) || !defined(XMLSEC_NO_SLHDSA) || !defined(XMLSEC_NO_EDDSA) */
 
 #ifndef XMLSEC_NO_CHACHA20
 
@@ -955,16 +955,17 @@ test_xmlSecTransformHmacWriteOutput_prefilled_full_bytes(void) {
 
 #endif /* XMLSEC_NO_HMAC */
 
-#if !defined(XMLSEC_NO_MLDSA) || !defined(XMLSEC_NO_SLHDSA)
+#if !defined(XMLSEC_NO_MLDSA) || !defined(XMLSEC_NO_SLHDSA) || !defined(XMLSEC_NO_EDDSA)
 
 /******************************************************************************
- * xmlSecTransformMLDSAReadContextString / xmlSecTransformSLHDSAReadContextString
+ * xmlSecTransformMLDSAReadContextString / xmlSecTransformSLHDSAReadContextString /
+ * xmlSecTransformEdDSAReadContextString
  *
- * Both functions read a base64 encoded context string either from the first
- * child of a <SignatureMethod> element or from a <ds:Object> element of the
- * containing <ds:Signature> element. They are identical apart from the
- * maximum allowed context string size, so the tests below are shared and
- * parameterized by the reader function and the expected limits.
+ * All three functions read a base64 encoded context string either from the
+ * first child of a <SignatureMethod> element or from a <ds:Object> element
+ * of the containing <ds:Signature> element. They are identical apart from
+ * the maximum allowed context string size, so the tests below are shared
+ * and parameterized by the reader function and the expected limits.
  *****************************************************************************/
 
 #define XMLSEC_UNIT_TEST_DSIG_NS_URI      "http://www.w3.org/2000/09/xmldsig#"
@@ -1924,7 +1925,7 @@ test_xmlSecTransformContextStringRead_non_empty_buffer(const xmlSecUnitTestConte
     testFinishedSuccess();
 }
 
-#endif /* !XMLSEC_NO_MLDSA || !XMLSEC_NO_SLHDSA */
+#endif /* !XMLSEC_NO_MLDSA || !XMLSEC_NO_SLHDSA || !XMLSEC_NO_EDDSA */
 
 int
 test_transform_helpers(void) {
@@ -1963,7 +1964,7 @@ test_transform_helpers(void) {
     if(testGroupFinished() != 1) { success = 0; }
 #endif /* XMLSEC_NO_HMAC */
 
-#if !defined(XMLSEC_NO_MLDSA) || !defined(XMLSEC_NO_SLHDSA)
+#if !defined(XMLSEC_NO_MLDSA) || !defined(XMLSEC_NO_SLHDSA) || !defined(XMLSEC_NO_EDDSA)
 #ifndef XMLSEC_NO_MLDSA
     {
         const xmlSecUnitTestContextStringParams mldsaParams = {
@@ -2023,7 +2024,37 @@ test_transform_helpers(void) {
         if(testGroupFinished() != 1) { success = 0; }
     }
 #endif /* XMLSEC_NO_SLHDSA */
-#endif /* !XMLSEC_NO_MLDSA || !XMLSEC_NO_SLHDSA */
+
+#ifndef XMLSEC_NO_EDDSA
+    {
+        const xmlSecUnitTestContextStringParams eddsaParams = {
+            "EdDSA",
+            "http://www.w3.org/2021/04/xmldsig-more#eddsa-ed25519ctx",
+            XMLSEC_EDDSA_MAX_SIZE,
+            xmlSecTransformEdDSAReadContextString
+        };
+
+        testGroupStart("xmlSecTransformEdDSAReadContextString");
+
+        test_xmlSecTransformContextStringRead_null_node(&eddsaParams);
+        test_xmlSecTransformContextStringRead_null_buffer(&eddsaParams);
+        test_xmlSecTransformContextStringRead_no_context(&eddsaParams);
+        test_xmlSecTransformContextStringRead_signature_method(&eddsaParams);
+        test_xmlSecTransformContextStringRead_signature_method_max_size(&eddsaParams);
+        test_xmlSecTransformContextStringRead_signature_method_exceeds_max(&eddsaParams);
+        test_xmlSecTransformContextStringRead_invalid_base64(&eddsaParams);
+        test_xmlSecTransformContextStringRead_unexpected_first_child(&eddsaParams);
+        test_xmlSecTransformContextStringRead_extra_child_after_context(&eddsaParams);
+        test_xmlSecTransformContextStringRead_wrong_namespace(&eddsaParams);
+        test_xmlSecTransformContextStringRead_object(&eddsaParams);
+        test_xmlSecTransformContextStringRead_object_exceeds_max(&eddsaParams);
+        test_xmlSecTransformContextStringRead_both_method_and_object(&eddsaParams);
+        test_xmlSecTransformContextStringRead_non_empty_buffer(&eddsaParams);
+
+        if(testGroupFinished() != 1) { success = 0; }
+    }
+#endif /* XMLSEC_NO_EDDSA */
+#endif /* !XMLSEC_NO_MLDSA || !XMLSEC_NO_SLHDSA || !XMLSEC_NO_EDDSA */
 
     return(success);
 }

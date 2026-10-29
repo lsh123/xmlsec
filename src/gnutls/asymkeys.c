@@ -1952,7 +1952,7 @@ xmlSecGnuTLSKeyDataMLDSAGetKL(xmlSecKeyDataPtr data) {
  * EdDSA key (Ed25519 and Ed448, RFC 8032)
  *
   *****************************************************************************/
-XMLSEC_GNUTLS_ASYMKEY_KLASS(EdDSA, xmlSecNameEdDSAKeyValue, xmlSecHrefEdDSAKeyValue)
+XMLSEC_GNUTLS_ASYMKEY_KLASS(EdDSA, xmlSecNameEdDSAKeyValue, NULL)
 
 /**
  * @brief The GnuTLS EdDSA key data klass.

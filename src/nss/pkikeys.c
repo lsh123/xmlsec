@@ -1518,14 +1518,14 @@ xmlSecNssKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyValu
 
 /* EdDSA klass: no XML KeyValue representation, load from file/DER/PEM only */
 #define XMLSEC_NSS_PKI_KEY_KLASS_EDDSA(lcname, ucname, generate)                          \
-static xmlSecKeyDataKlass xmlSecNssKeyData ## lcname ## Klass = {                        \
+static xmlSecKeyDataKlass xmlSecNssKeyData ## lcname ## Klass = {                         \
     sizeof(xmlSecKeyDataKlass),                 /* xmlSecSize klassSize */                \
     xmlSecNssPKIKeyDataSize,                    /* xmlSecSize objSize */                  \
     /* data */                                                                            \
     xmlSecName ## ucname ## KeyValue,           /* const xmlChar* name; */                \
     xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml,            \
                                                 /* xmlSecKeyDataUsage usage; */           \
-    xmlSecHref ## ucname ## KeyValue,           /* const xmlChar* href; */                \
+    NULL,                                       /* const xmlChar* href; */                \
     NULL,                                       /* const xmlChar* dataNodeName; */        \
     NULL,                                       /* const xmlChar* dataNodeNs; */          \
     /* constructors/destructor */                                                         \
@@ -1549,6 +1549,7 @@ static xmlSecKeyDataKlass xmlSecNssKeyData ## lcname ## Klass = {               
     NULL,                                       /* void* reserved0; */                   \
     NULL,                                       /* void* reserved1; */                   \
 };
+
 
 XMLSEC_NSS_PKI_KEY_KLASS_EDDSA(EdDSA, EdDSA, NULL)
 

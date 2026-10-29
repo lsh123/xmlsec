@@ -4313,7 +4313,9 @@ xmlSecOpenSSLKeyValueEdDSACheckKeyType(EVP_PKEY* pKey)
     }
 }
 
-XMLSEC_OPENSSL_EVP_KEY_KLASS(EdDSA, EdDSA)
+XMLSEC_OPENSSL_EVP_KEY_KLASS_EX2(EdDSA, xmlSecNameEdDSAKeyValue, NULL,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+    NULL, NULL, NULL, NULL, NULL)
 
 /**
  * @brief The OpenSSL EdDSA data klass.

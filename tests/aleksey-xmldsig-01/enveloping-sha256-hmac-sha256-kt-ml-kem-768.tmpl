@@ -11,14 +11,15 @@
   <SignatureValue>
   </SignatureValue>
   <KeyInfo>
-    <as:EncapsulationMechanism xmlns:as="http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#" Algorithm="http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#ml-kem-768">
-      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
-        <ds:KeyName>TestKeyName-ml-kem-768</ds:KeyName>
-      </ds:KeyInfo>
-      <enc:CipherData xmlns:enc="http://www.w3.org/2001/04/xmlenc#">
+    <enc:EncryptedKey Id="EK" xmlns:enc="http://www.w3.org/2001/04/xmlenc#">
+      <enc:EncryptionMethod Algorithm="http://www.w3.org/2026/08/xmldsig-more#ml-kem-768"/>
+      <KeyInfo>
+        <KeyName>TestKeyName-ml-kem-768</KeyName>
+      </KeyInfo>
+      <enc:CipherData>
         <enc:CipherValue/>
       </enc:CipherData>
-    </as:EncapsulationMechanism>
+    </enc:EncryptedKey>
   </KeyInfo>
   <Object Id="object">some text</Object>
 </Signature>

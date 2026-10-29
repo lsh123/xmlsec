@@ -471,7 +471,6 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMLDSA87[];
  *
   *****************************************************************************/
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameMLKEMKeyValue[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMLKEMKeyValue[];
 
 /******************************************************************************
  *
@@ -588,18 +587,6 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeOriginatorKeyInfo[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRecipientKeyInfo[];
 
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeKANonce[];
-
-/******************************************************************************
- *
- * EncapsulationMechanism
- *
-  *****************************************************************************/
-XMLSEC_EXPORT_VAR const xmlChar xmlSecExperimental202512Ns[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEncapsulationMechanism[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeEncapsulationMechanism[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEncapsulationMechanism[];
-
-
 
 /******************************************************************************
  *

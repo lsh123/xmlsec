@@ -1439,8 +1439,7 @@ xmlSecTransformCreate(xmlSecTransformId id) {
     }
 
     if(((transform->id->usage & xmlSecTransformUsageKeyDerivationMethod) != 0) ||
-       ((transform->id->usage & xmlSecTransformUsageAgreementMethod) != 0) ||
-       ((transform->id->usage & xmlSecTransformUsageEncapsulationMechanism) != 0)
+       ((transform->id->usage & xmlSecTransformUsageAgreementMethod) != 0)
     ) {
         /* the input (eg the shared secret fed into a KDF) and the output
          * (the derived key) are both sensitive */

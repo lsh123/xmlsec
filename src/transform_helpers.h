@@ -31,7 +31,7 @@ void                        xmlSecTransformCtxClearNodeRefs     (xmlSecTransform
                                                                  xmlSecNodeSetPtr nodes);
 
 
-/* Internal helpers used by key-agreement and KEM code: read / write key info inside transforms */
+/* Internal helpers used by key-agreement code: read / write key info inside transforms */
 /**
  * @brief Reads the key from a key info node.
  * @return the pointer to the key (the caller must call xmlSecKeyDestroy) or NULL on failure.
@@ -98,25 +98,6 @@ XMLSEC_EXPORT int   xmlSecTransformKAMExecuteKdf            (xmlSecTransformKAMP
                                                              xmlSecTransformCtxPtr transformCtx);
 
 
-
-#ifndef XMLSEC_NO_MLKEM
-/******************************************************************************
- *
- * Key Encapsulation Method (KEM) Transform: the transform doesn't have any
- * additional parameters except the data in the xmlSecKeyDataKEM structure
- * (which is attached to the derived-key object and passed around
- * to avoid (potentially expensive) re-lookup of the keys).
- *
-  *****************************************************************************/
-
-XMLSEC_EXPORT int  xmlSecTransformKEMRead                   (xmlNodePtr node,
-                                                             xmlSecTransformPtr kemTransform,
-                                                             xmlSecTransformCtxPtr transformCtx);
-XMLSEC_EXPORT int  xmlSecTransformKEMWrite                  (xmlNodePtr node,
-                                                             xmlSecTransformPtr kemTransform,
-                                                             xmlSecTransformCtxPtr transformCtx);
-
-#endif /* XMLSEC_NO_MLKEM */
 
 
 /* ConcatKDF */

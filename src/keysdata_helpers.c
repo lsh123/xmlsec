@@ -2801,8 +2801,8 @@ xmlSecKeyDataKAMGetKlass(void) {
  *
  * xmlSecKeyDataKEM klass - internal helper for KEM ciphertext
  *
- * Holds both the recipient key (public for encrypt, private for decrypt) and
- * the KEM ciphertext exchanged via enc:CipherData/enc:CipherValue.
+ * Holds the KEM ciphertext produced by a key encapsulation mechanism
+ * (e.g. ML-KEM) and written into enc:CipherData/enc:CipherValue.
  *
   *****************************************************************************/
 
@@ -2861,7 +2861,6 @@ xmlSecKeyDataKEMInitialize(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecKeyDataKEMSize), -1);
 
     kemData = (xmlSecKeyDataKEM*)data;
-    /* encapsulationKey is already NULL since xmlSecKeyDataCreate zeroes memory */
 
     ret = xmlSecBufferInitialize(&(kemData->ciphertext), XMLSEC_KEY_DATA_KEM_CIPHER_VALUE_INIT_BUF_SIZE);
     if(ret < 0) {
@@ -2888,19 +2887,6 @@ xmlSecKeyDataKEMDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     dstData = (xmlSecKeyDataKEM*)dst;
     srcData = (xmlSecKeyDataKEM*)src;
 
-    /* copy recipient key */
-    if(dstData->encapsulationKey != NULL) {
-        xmlSecKeyDestroy(dstData->encapsulationKey);
-        dstData->encapsulationKey = NULL;
-    }
-    if(srcData->encapsulationKey != NULL) {
-        dstData->encapsulationKey = xmlSecKeyDuplicate(srcData->encapsulationKey);
-        if(dstData->encapsulationKey == NULL) {
-            xmlSecInternalError("xmlSecKeyDuplicate", xmlSecKeyDataGetName(src));
-            return(-1);
-        }
-    }
-
     /* copy ciphertext */
     ret = xmlSecBufferSetData(&(dstData->ciphertext),
         xmlSecBufferGetData(&(srcData->ciphertext)),
@@ -2920,10 +2906,6 @@ xmlSecKeyDataKEMFinalize(xmlSecKeyDataPtr data) {
     xmlSecAssert(xmlSecKeyDataCheckSize(data, xmlSecKeyDataKEMSize));
 
     kemData = (xmlSecKeyDataKEM*)data;
-    if(kemData->encapsulationKey != NULL) {
-        xmlSecKeyDestroy(kemData->encapsulationKey);
-        kemData->encapsulationKey = NULL;
-    }
     xmlSecBufferFinalize(&(kemData->ciphertext));
 }
 
@@ -2938,19 +2920,6 @@ xmlSecKeyDataKEMGetKlass(void) {
 }
 
 /**
- * @brief Gets the recipient key from KEM cipher value key data.
- * @param data the pointer to KEM cipher value key data.
- *
- * @return pointer to the recipient key or NULL if not set.
- */
-xmlSecKeyPtr
-xmlSecKeyDataKEMGetRecipientKey(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataKEMId), NULL);
-
-    return(((xmlSecKeyDataKEM*)data)->encapsulationKey);
-}
-
-/**
  * @brief Gets the KEM ciphertext buffer from KEM cipher value key data.
  * @param data the pointer to KEM cipher value key data.
  *
@@ -2961,22 +2930,6 @@ xmlSecKeyDataKEMGetCiphertext(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataKEMId), NULL);
 
     return(&(((xmlSecKeyDataKEM*)data)->ciphertext));
-}
-
-/**
- * @brief Sets the KEM ciphertext in KEM cipher value key data.
- * @param data the pointer to KEM cipher value key data.
- * @param buf the pointer to the ciphertext bytes.
- * @param bufSize the size of the ciphertext buffer.
- *
- * @return 0 on success or a negative value if an error occurs.
- */
-int
-xmlSecKeyDataKEMSetCiphertext(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataKEMId), -1);
-    xmlSecAssert2(buf != NULL, -1);
-
-    return(xmlSecBufferSetData(&(((xmlSecKeyDataKEM*)data)->ciphertext), buf, bufSize));
 }
 
 #endif /* !defined(XMLSEC_NO_MLKEM) */

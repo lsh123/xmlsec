@@ -128,9 +128,8 @@ typedef enum {
 /**
  * @brief Stop when key recovery from an encrypted key element fails.
  * @details If the flag is set then we'll stop when key recovery fails while
- * processing <enc:EncryptedKey />, <enc11:DerivedKey />, <enc:AgreementMethod />
- * or <as:EncapsulationMechanism /> elements. Other processing errors always
- * cause an abort regardless of this flag.
+ * processing <enc:EncryptedKey />, <enc11:DerivedKey /> or <enc:AgreementMethod />
+ * elements. Other processing errors always cause an abort regardless of this flag.
  */
 #define XMLSEC_KEYINFO_FLAGS_ENCKEY_STOP_ON_FAILED_DECRYPTION   0x00001000
 
@@ -209,7 +208,7 @@ struct _xmlSecKeyInfoCtx {
     int                                 curRetrievalMethodLevel;  /**< the current &lt;dsig:RetrievalMethod/&gt; element processing level (see #maxRetrievalMethodLevel). */
     int                                 curKeyInfoReferenceLevel;  /**< the current &lt;dsig11:KeyInfoReference/&gt; element processing level (see #maxKeyInfoReferenceLevel). */
 #ifndef XMLSEC_NO_XMLENC
-    int                                 curEncryptedKeyLevel;  /**< the current &lt;enc:EncryptedKey/&gt;, &lt;enc11:DerivedKey/&gt;, &lt;enc:AgreementMethod/&gt; or &lt;as:EncapsulationMechanism/&gt; element processing level (see #maxEncryptedKeyLevel). */
+    int                                 curEncryptedKeyLevel;  /**< the current &lt;enc:EncryptedKey/&gt;, &lt;enc11:DerivedKey/&gt; or &lt;enc:AgreementMethod/&gt; element processing level (see #maxEncryptedKeyLevel). */
 #endif /* XMLSEC_NO_XMLENC */
     xmlSecTransformOperation            operation;  /**< the transform operation for this key info. */
     xmlSecKeyReq                        keyReq;  /**< the current key requirements. */
@@ -274,14 +273,6 @@ XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataAgreementMethodGetKlass(voi
  */
 #define xmlSecKeyDataDerivedKeyId       xmlSecKeyDataDerivedKeyGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataDerivedKeyGetKlass(void);
-
-#ifndef XMLSEC_NO_MLKEM
-/**
- * @brief The as:EncapsulationMechanism processing class.
- */
-#define xmlSecKeyDataEncapsulationMechanismId   xmlSecKeyDataEncapsulationMechanismGetKlass()
-XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataEncapsulationMechanismGetKlass(void);
-#endif /* XMLSEC_NO_MLKEM */
 
 #endif /* XMLSEC_NO_XMLENC */
 

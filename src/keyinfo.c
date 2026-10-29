@@ -1583,9 +1583,9 @@ xmlSecKeyDataEncryptedKeyGetKlass(void) {
     return(&xmlSecKeyDataEncryptedKeyKlass);
 }
 
+
 static int
 xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecBufferPtr result;
     int ret;
 
     xmlSecAssert2(id == xmlSecKeyDataEncryptedKeyId, -1);
@@ -1618,45 +1618,24 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
     keyInfoCtx->encCtx->keyInfoReadCtx.curRetrievalMethodLevel = keyInfoCtx->curRetrievalMethodLevel;
     keyInfoCtx->encCtx->keyInfoReadCtx.curEncryptedKeyLevel = keyInfoCtx->curEncryptedKeyLevel + 1;
 
-    /* decrypt */
-    result = xmlSecEncCtxDecryptToBuffer(keyInfoCtx->encCtx, node);
-    if((result == NULL) || (xmlSecBufferGetData(result) == NULL)) {
-        /* We might have multiple EncryptedKey elements, encrypted
-         * for different recipients but application can enforce
-         * correct enc key.
-         */
-        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_ENCKEY_STOP_ON_FAILED_DECRYPTION) != 0) {
-            xmlSecInternalError("xmlSecEncCtxDecryptToBuffer", xmlSecKeyDataKlassGetName(id));
-            return(-1);
-        }
-        return(0);
-    }
+    /* keep a pointer to the parent key info context so that the key transport
+     * transforms (e.g. ML-KEM) can derive the expected CEK size from the
+     * uplevel key requirements and trim the shared secret to match it */
+    keyInfoCtx->encCtx->transformCtx.parentKeyInfoCtx = keyInfoCtx;
 
-    /* check that the key id is set */
-    if(keyInfoCtx->keyReq.keyId == NULL) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_KEY_DATA,
-            xmlSecKeyDataKlassGetName(id), "key id is not set");
-        return(-1);
-    }
-
-    ret = xmlSecKeyDataBinRead(keyInfoCtx->keyReq.keyId, key,
-                           xmlSecBufferGetData(result),
-                           xmlSecBufferGetSize(result),
-                           keyInfoCtx);
+    /* read the EncryptedKey node */
+    ret = xmlSecEncCtxEncryptedKeyXmlRead(keyInfoCtx->encCtx, node, key, keyInfoCtx);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyDataBinRead",
-                            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecEncCtxEncryptedKeyXmlRead", xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
+
+    /* done */
     return(0);
 }
 
 static int
 xmlSecKeyDataEncryptedKeyXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecKeyInfoCtx keyInfoCtx2;
-    xmlSecByte *keyBuf = NULL;
-    xmlSecSize keySize = 0;
-    int res = -1;
     int ret;
 
     xmlSecAssert2(id == xmlSecKeyDataEncryptedKeyId, -1);
@@ -1673,30 +1652,6 @@ xmlSecKeyDataEncryptedKeyXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodeP
         return(-1);
     }
 
-    /* dump key to a binary buffer */
-    ret = xmlSecKeyInfoCtxInitialize(&keyInfoCtx2, NULL);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyInfoCtxInitialize", xmlSecKeyDataKlassGetName(id));
-        xmlSecKeyInfoCtxFinalize(&keyInfoCtx2);
-        goto done;
-    }
-
-    ret = xmlSecKeyInfoCtxCopyUserPref(&keyInfoCtx2, keyInfoCtx);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref", xmlSecKeyDataKlassGetName(id));
-        xmlSecKeyInfoCtxFinalize(&keyInfoCtx2);
-        goto done;
-    }
-
-    keyInfoCtx2.keyReq.keyType = xmlSecKeyDataTypeAny;
-    ret = xmlSecKeyDataBinWrite(key->value->id, key, &keyBuf, &keySize, &keyInfoCtx2);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyDataBinWrite", xmlSecKeyDataKlassGetName(id));
-        xmlSecKeyInfoCtxFinalize(&keyInfoCtx2);
-        goto done;
-    }
-    xmlSecKeyInfoCtxFinalize(&keyInfoCtx2);
-
     /* init Enc context */
     if(keyInfoCtx->encCtx != NULL) {
         xmlSecEncCtxReset(keyInfoCtx->encCtx);
@@ -1704,7 +1659,7 @@ xmlSecKeyDataEncryptedKeyXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodeP
         ret = xmlSecKeyInfoCtxCreateEncCtx(keyInfoCtx);
         if(ret < 0) {
             xmlSecInternalError("xmlSecKeyInfoCtxCreateEncCtx", xmlSecKeyDataKlassGetName(id));
-            goto done;
+            return(-1);
         }
     }
     xmlSecAssert2(keyInfoCtx->encCtx != NULL, -1);
@@ -1714,20 +1669,16 @@ xmlSecKeyDataEncryptedKeyXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodeP
     keyInfoCtx->encCtx->keyInfoWriteCtx.curRetrievalMethodLevel = keyInfoCtx->curRetrievalMethodLevel;
     keyInfoCtx->encCtx->keyInfoWriteCtx.curEncryptedKeyLevel = keyInfoCtx->curEncryptedKeyLevel + 1;
 
-    /* encrypt */
-    ret = xmlSecEncCtxBinaryEncrypt(keyInfoCtx->encCtx, node, keyBuf, keySize);
+
+
+    /* write the EncryptedKey node */
+    ret = xmlSecEncCtxEncryptedKeyXmlWrite(keyInfoCtx->encCtx, node, key, keyInfoCtx);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecEncCtxBinaryEncrypt", xmlSecKeyDataKlassGetName(id));
-        goto done;
+        xmlSecInternalError("xmlSecEncCtxEncryptedKeyXmlWrite", xmlSecKeyDataKlassGetName(id));
+        return(-1);
     }
 
-    res = 0;
-done:
-    if(keyBuf != NULL) {
-        xmlSecMemCleanse(keyBuf, keySize);
-        xmlFree(keyBuf);
-    }
-    return(res);
+    return(0);
 }
 
 
@@ -2121,236 +2072,5 @@ xmlSecKeyDataAgreementMethodXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNo
 
     return(0);
 }
-
-
-/******************************************************************************
- *
- * &lt;as:EncapsulationMechanism/&gt; processing
- *
-  *****************************************************************************/
-#ifndef XMLSEC_NO_MLKEM
-
-static int      xmlSecKeyDataEncapsulationMechanismXmlRead  (xmlSecKeyDataId id,
-                                                             xmlSecKeyPtr key,
-                                                             xmlNodePtr node,
-                                                             xmlSecKeyInfoCtxPtr keyInfoCtx);
-static int      xmlSecKeyDataEncapsulationMechanismXmlWrite (xmlSecKeyDataId id,
-                                                             xmlSecKeyPtr key,
-                                                             xmlNodePtr node,
-                                                             xmlSecKeyInfoCtxPtr keyInfoCtx);
-
-
-static xmlSecKeyDataKlass xmlSecKeyDataEncapsulationMechanismKlass = {
-    sizeof(xmlSecKeyDataKlass),
-    sizeof(xmlSecKeyData),
-
-    /* data */
-    xmlSecNameEncapsulationMechanism,
-    xmlSecKeyDataUsageKeyInfoNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
-                                                /* xmlSecKeyDataUsage usage; */
-    xmlSecHrefEncapsulationMechanism,           /* const xmlChar* href; */
-    xmlSecNodeEncapsulationMechanism,           /* const xmlChar* dataNodeName; */
-    xmlSecExperimental202512Ns,                 /* const xmlChar* dataNodeNs; */
-
-    /* constructors/destructor */
-    NULL,                                       /* xmlSecKeyDataInitMethod initialize; */
-    NULL,                                       /* xmlSecKeyDataDuplicateMethod duplicate; */
-    NULL,                                       /* xmlSecKeyDataFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
-
-    /* get info */
-    NULL,                                       /* xmlSecKeyDataGetTypeMethod getType; */
-    NULL,                                       /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
-
-    /* read/write */
-    xmlSecKeyDataEncapsulationMechanismXmlRead, /* xmlSecKeyDataXmlReadMethod xmlRead; */
-    xmlSecKeyDataEncapsulationMechanismXmlWrite,/* xmlSecKeyDataXmlWriteMethod xmlWrite; */
-    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
-    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
-
-    /* debug */
-    NULL,                                       /* xmlSecKeyDataDebugDumpMethod debugDump; */
-    NULL,                                       /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
-
-    /* reserved for the future */
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
-
-/**
- * @brief Gets the EncapsulationMechanism element key data klass.
- * @details The &lt;as:EncapsulationMechanism/&gt; element key data klass.
- *
- * Key Encapsulation Mechanism (KEM) is a cryptographic primitive that securely
- * transports a symmetric key via public-key operations. The encapsulator uses the
- * recipient's public key to produce a ciphertext and a shared secret; the recipient
- * decapsulates the ciphertext with their private key to recover the same secret.
- *
- * @return the &lt;as:EncapsulationMechanism/&gt; element processing key data klass.
- */
-xmlSecKeyDataId
-xmlSecKeyDataEncapsulationMechanismGetKlass(void) {
-    return(&xmlSecKeyDataEncapsulationMechanismKlass);
-}
-
-static int
-xmlSecKeyDataEncapsulationMechanismXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node,
-    xmlSecKeyInfoCtxPtr keyInfoCtx)
-{
-    xmlSecKeyDataPtr kemKeyData;
-    xmlSecKeyPtr generatedKey;
-    int ret;
-
-    xmlSecAssert2(id == xmlSecKeyDataEncapsulationMechanismId, -1);
-    xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(node != NULL, -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
-    xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeRead, -1);
-
-    /* check the enc level */
-    if(keyInfoCtx->curEncryptedKeyLevel >= keyInfoCtx->maxEncryptedKeyLevel) {
-        xmlSecOtherError3(XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL, xmlSecKeyDataKlassGetName(id),
-            "cur=%d;max=%d", keyInfoCtx->curEncryptedKeyLevel, keyInfoCtx->maxEncryptedKeyLevel);
-        return(-1);
-    }
-
-    /* init enc context */
-    if(keyInfoCtx->encCtx != NULL) {
-        xmlSecEncCtxReset(keyInfoCtx->encCtx);
-    } else {
-        ret = xmlSecKeyInfoCtxCreateEncCtx(keyInfoCtx);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecKeyInfoCtxCreateEncCtx", xmlSecKeyDataKlassGetName(id));
-            return(-1);
-        }
-    }
-    xmlSecAssert2(keyInfoCtx->encCtx != NULL, -1);
-
-    /* setup current recursion levels for the read context */
-    keyInfoCtx->encCtx->keyInfoReadCtx.curKeyInfoReferenceLevel = keyInfoCtx->curKeyInfoReferenceLevel;
-    keyInfoCtx->encCtx->keyInfoReadCtx.curRetrievalMethodLevel = keyInfoCtx->curRetrievalMethodLevel;
-    keyInfoCtx->encCtx->keyInfoReadCtx.curEncryptedKeyLevel = keyInfoCtx->curEncryptedKeyLevel + 1;
-
-    /* generate EM key */
-    generatedKey = xmlSecEncCtxEncapsulationMechanismGenerate(keyInfoCtx->encCtx, keyInfoCtx->keyReq.keyId, node, keyInfoCtx);
-    if(generatedKey == NULL) {
-        /* We might have multiple EncapsulationMechanism elements, each encapsulating
-         * for different recipients; the application can enforce correct decapsulation key.
-         */
-        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_ENCKEY_STOP_ON_FAILED_DECRYPTION) != 0) {
-            xmlSecInternalError("xmlSecEncCtxEncapsulationMechanismGenerate", xmlSecKeyDataKlassGetName(id));
-            return(-1);
-        }
-        return(0);
-    }
-
-    if(xmlSecKeyReqMatchKey(&(keyInfoCtx->keyReq), generatedKey) != 1) {
-        /* we are not allowed to use this key, ignore and continue */
-        xmlSecKeyDestroy(generatedKey);
-        return(0);
-    }
-
-    ret = xmlSecKeyCopy(key, generatedKey);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyCopy", xmlSecKeyDataKlassGetName(id));
-        xmlSecKeyDestroy(generatedKey);
-        return(-1);
-    }
-    xmlSecKeyDestroy(generatedKey);
-
-    /* if the KEM transform set kemKeyData, attach a duplicate to the key (keep data in transform) */
-    kemKeyData = xmlSecTransformCtxExtraKeyDataGet(&keyInfoCtx->encCtx->transformCtx, xmlSecKeyDataKEMId);
-    if(kemKeyData != NULL) {
-        xmlSecKeyDataPtr kemKeyDataDup = xmlSecKeyDataDuplicate(kemKeyData);
-        if(kemKeyDataDup == NULL) {
-            xmlSecInternalError("xmlSecKeyDataDuplicate(kemKeyData)", xmlSecKeyDataKlassGetName(id));
-            return(-1);
-        }
-        ret = xmlSecKeyAdoptData(key, kemKeyDataDup);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecKeyAdoptData", xmlSecKeyDataKlassGetName(id));
-            xmlSecKeyDataDestroy(kemKeyDataDup);
-            return(-1);
-        }
-        /* kemKeyDataDup is now owned by the key */
-    }
-
-    /* success */
-    return(0);
-}
-
-static int
-xmlSecKeyDataEncapsulationMechanismXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node,
-    xmlSecKeyInfoCtxPtr keyInfoCtx)
-{
-    xmlSecKeyDataPtr kemKeyData;
-    xmlSecKeyDataPtr kemKeyDataDup;
-    int ret;
-
-    xmlSecAssert2(id == xmlSecKeyDataEncapsulationMechanismId, -1);
-    xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(xmlSecKeyIsValid(key), -1);
-    xmlSecAssert2(node != NULL, -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
-    xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeWrite, -1);
-
-
-    /* there might be several nodes that can re-use encCtx */
-
-    /* check the enc level */
-    if(keyInfoCtx->curEncryptedKeyLevel >= keyInfoCtx->maxEncryptedKeyLevel) {
-        xmlSecOtherError3(XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL, xmlSecKeyDataKlassGetName(id),
-            "cur=%d;max=%d", keyInfoCtx->curEncryptedKeyLevel, keyInfoCtx->maxEncryptedKeyLevel);
-        return(-1);
-    }
-
-    /* init enc context */
-    if(keyInfoCtx->encCtx != NULL) {
-        xmlSecEncCtxReset(keyInfoCtx->encCtx);
-    } else {
-        ret = xmlSecKeyInfoCtxCreateEncCtx(keyInfoCtx);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecKeyInfoCtxCreateEncCtx", xmlSecKeyDataKlassGetName(id));
-            return(-1);
-        }
-    }
-    xmlSecAssert2(keyInfoCtx->encCtx != NULL, -1);
-
-    /* we should have kemKeyData in the key, pre-populate transformCtx */
-    kemKeyData = xmlSecKeyGetData(key, xmlSecKeyDataKEMId);
-    if(kemKeyData == NULL) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND, xmlSecKeyDataKlassGetName(id), "key has no KEM key data");
-        return(-1);
-    }
-
-    kemKeyDataDup = xmlSecKeyDataDuplicate(kemKeyData);
-    if(kemKeyDataDup == NULL) {
-        xmlSecInternalError("xmlSecKeyDataDuplicate(kemKeyData)", xmlSecKeyDataKlassGetName(id));
-        return(-1);
-    }
-    ret = xmlSecTransformCtxExtraKeyDataAdopt(&(keyInfoCtx->encCtx->transformCtx), kemKeyDataDup);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformCtxExtraKeyDataAdopt", xmlSecKeyDataKlassGetName(id));
-        xmlSecKeyDataDestroy(kemKeyDataDup);
-        return(-1);
-    }
-    /* kemKeyDataDup is now owned by the transform context */
-
-    /* setup current recursion levels for the write context */
-    keyInfoCtx->encCtx->keyInfoWriteCtx.curKeyInfoReferenceLevel = keyInfoCtx->curKeyInfoReferenceLevel;
-    keyInfoCtx->encCtx->keyInfoWriteCtx.curRetrievalMethodLevel = keyInfoCtx->curRetrievalMethodLevel;
-    keyInfoCtx->encCtx->keyInfoWriteCtx.curEncryptedKeyLevel = keyInfoCtx->curEncryptedKeyLevel + 1;
-
-    /* write the encapsulation mechanism */
-    ret = xmlSecEncCtxEncapsulationMechanismXmlWrite(keyInfoCtx->encCtx, node, keyInfoCtx);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecEncCtxEncapsulationMechanismXmlWrite", xmlSecKeyDataKlassGetName(id));
-        return(-1);
-    }
-
-    return(0);
-}
-#endif /* XMLSEC_NO_MLKEM */
 
 #endif /* XMLSEC_NO_XMLENC */

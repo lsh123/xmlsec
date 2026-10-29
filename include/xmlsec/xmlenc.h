@@ -158,13 +158,14 @@ XMLSEC_EXPORT int               xmlSecEncCtxAgreementMethodXmlWrite        (xmlS
                                                                             xmlNodePtr node,
                                                                             xmlSecKeyInfoCtxPtr keyInfoCtx);
 
-XMLSEC_EXPORT xmlSecKeyPtr      xmlSecEncCtxEncapsulationMechanismGenerate (xmlSecEncCtxPtr encCtx,
-                                                                            xmlSecKeyDataId keyId,
+XMLSEC_EXPORT int               xmlSecEncCtxEncryptedKeyXmlRead            (xmlSecEncCtxPtr encCtx,
                                                                             xmlNodePtr node,
+                                                                            xmlSecKeyPtr key,
                                                                             xmlSecKeyInfoCtxPtr keyInfoCtx);
 
-XMLSEC_EXPORT int               xmlSecEncCtxEncapsulationMechanismXmlWrite (xmlSecEncCtxPtr encCtx,
+XMLSEC_EXPORT int               xmlSecEncCtxEncryptedKeyXmlWrite           (xmlSecEncCtxPtr encCtx,
                                                                             xmlNodePtr node,
+                                                                            xmlSecKeyPtr key,
                                                                             xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 XMLSEC_EXPORT const char*       xmlSecEncCtxGetFailureReasonString         (xmlSecEncFailureReason failureReason);

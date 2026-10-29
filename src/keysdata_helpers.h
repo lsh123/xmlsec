@@ -320,28 +320,23 @@ XMLSEC_EXPORT xmlSecKeyDataId   xmlSecKeyDataKAMGetKlass           (void);
 
 #if !defined(XMLSEC_NO_MLKEM)
 /**
- * @brief Key Encapsulation data cached in a key object.
+ * @brief KEM ciphertext data attached to the encapsulated key.
  *
- * After a successful key-encapsulation Execute, the recipient key and the ciphertext
- * are stored here and attached to the derived-key object. On the subsequent
- * write path the cached data are retrieved from the key object and placed into
- * @c transformCtx->extraKeyData (KEM key data) so that the backend NodeRead can skip XML parsing
- * and repeated key-store lookups.
-
+ * After a successful key encapsulation (e.g. ML-KEM), the KEM ciphertext
+ * is stored here: during the key generation (read) phase it is produced by
+ * the KEM transform and cached in the transform context's extra key data,
+ * then a duplicate is attached to the encapsulated (content encryption) key
+ * so that it can be serialized into enc:CipherData/enc:CipherValue in the
+ * subsequent write phase without re-encapsulating.
  */
 typedef struct _xmlSecKeyDataKEM {
     xmlSecKeyData   keyData;          /**< base key data (MUST be first) */
-    xmlSecKeyPtr    encapsulationKey; /**< recipient public key (encrypt) or private key (decrypt) */
-    xmlSecBuffer    ciphertext;          /**< KEM ciphertext from/to enc:CipherData/enc:CipherValue */
+    xmlSecBuffer    ciphertext;       /**< KEM ciphertext written into enc:CipherData/enc:CipherValue */
 } xmlSecKeyDataKEM;
 
 #define xmlSecKeyDataKEMId      xmlSecKeyDataKEMGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId   xmlSecKeyDataKEMGetKlass        (void);
-XMLSEC_EXPORT xmlSecKeyPtr      xmlSecKeyDataKEMGetRecipientKey (xmlSecKeyDataPtr data);
 XMLSEC_EXPORT xmlSecBufferPtr   xmlSecKeyDataKEMGetCiphertext   (xmlSecKeyDataPtr data);
-XMLSEC_EXPORT int               xmlSecKeyDataKEMSetCiphertext   (xmlSecKeyDataPtr data,
-                                                                 const xmlSecByte* buf,
-                                                                 xmlSecSize bufSize);
 
 #endif /* !defined(XMLSEC_NO_MLKEM) */
 

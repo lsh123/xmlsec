@@ -528,14 +528,13 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefSLHDSA_SHA2_256s[];
  *
   *****************************************************************************/
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEdDSAKeyValue[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEdDSAKeyValue[];
 
 /******************************************************************************
  *
  * EdDSA signature transform strings
  *
   *****************************************************************************/
-XMLSEC_EXPORT_VAR const xmlChar xmlSecEdDSANs[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNsEdDSAContextString[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeEdDSAContextString[];
 
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEdDSAEd25519[];

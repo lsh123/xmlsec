@@ -500,15 +500,14 @@ const xmlChar xmlSecHrefSLHDSA_SHA2_256s[]    = "http://www.w3.org/2026/08/xmlds
  *
   *****************************************************************************/
 const xmlChar xmlSecNameEdDSAKeyValue[]       = "eddsa";
-const xmlChar xmlSecHrefEdDSAKeyValue[]       = XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12 "eddsa";
 
 /******************************************************************************
  *
  * EdDSA signature transform strings
  *
   *****************************************************************************/
-const xmlChar xmlSecEdDSANs[]                 = XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12;
-const xmlChar xmlSecNodeEdDSAContextString[]  = "EdDSAContextString";
+const xmlChar xmlSecNsEdDSAContextString[]    = "http://www.w3.org/2026/08/xmldsig-more#";
+const xmlChar xmlSecNodeEdDSAContextString[]  = "SignatureContext";
 
 const xmlChar xmlSecNameEdDSAEd25519[]        = "eddsa-ed25519";
 const xmlChar xmlSecHrefEdDSAEd25519[]        = "http://www.w3.org/2021/04/xmldsig-more#eddsa-ed25519";

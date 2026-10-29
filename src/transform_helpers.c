@@ -1227,7 +1227,7 @@ xmlSecTransformHmacVerify(const xmlSecByte* data, xmlSecSize dataSize,
 #endif /* XMLSEC_NO_HMAC */
 
 
-#if !defined(XMLSEC_NO_MLDSA) || !defined(XMLSEC_NO_SLHDSA)
+#if !defined(XMLSEC_NO_MLDSA) || !defined(XMLSEC_NO_SLHDSA) || !defined(XMLSEC_NO_EDDSA)
 
 
 static xmlNodePtr
@@ -1386,7 +1386,7 @@ xmlSecTransformReadContextStringFromSignatureMethodOrObjectNodes(
     return(0);
 }
 
-#endif /* !XMLSEC_NO_MLDSA || !XMLSEC_NO_SLHDSA */
+#endif /* !XMLSEC_NO_MLDSA || !XMLSEC_NO_SLHDSA || !XMLSEC_NO_EDDSA */
 
 
 /* ML-DSA */
@@ -1492,45 +1492,47 @@ xmlSecTransformSLHDSAReadContextString(xmlNodePtr node, xmlSecBufferPtr res) {
 #ifndef XMLSEC_NO_EDDSA
 
 /*
- * THIS IS EXPERIMENTAL AND NON-STANDARD
+ * THIS IS EXPERIMENTAL AND NON-STANDARD: the context string element
+ * is not defined by the draft specification.
+ *
+ * The context string may be placed in the <SignatureMethod> element:
  *
  * <SignatureMethod Algorithm="http://www.w3.org/2021/04/xmldsig-more#eddsa-ed25519ctx">
- *   <eddsa:EdDSAContextString>base64 encoded context string</eddsa:EdDSAContextString>
+ *   <eddsa:SignatureContext>base64 encoded context string</eddsa:SignatureContext>
  * </SignatureMethod>
+ *
+ * or in a <ds:Object> element of the containing <ds:Signature>:
+ *
+ * <Signature>
+ *   ...
+ *   <Object>
+ *     <eddsa:SignatureContext>base64 encoded context string</eddsa:SignatureContext>
+ *   </Object>
+ * </Signature>
+ *
+ * Not more than one context string element is allowed per signature.
  */
 int
 xmlSecTransformEdDSAReadContextString(xmlNodePtr node, xmlSecBufferPtr res) {
-    xmlNodePtr cur;
     int ret;
 
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(res != NULL, -1);
 
-    cur = xmlSecGetNextElementNode(node->children);
-    if ((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeEdDSAContextString, xmlSecEdDSANs)) {
-
-        ret = xmlSecBufferBase64NodeContentRead(res, cur);
-        if (ret != 0) {
-            xmlSecInternalError("xmlSecBufferBase64NodeContentRead(EdDSAContextString)", NULL);
-            return(-1);
-        }
-
-        /* ensure length is not exceeded */
-        if (xmlSecBufferGetSize(res) > XMLSEC_EDDSA_MAX_SIZE) {
-            xmlSecInvalidNodeContentError3(cur, NULL,
-                "EdDSA context string length=" XMLSEC_SIZE_FMT " exceeds max expected length=" XMLSEC_SIZE_FMT,
-                xmlSecBufferGetSize(res), XMLSEC_EDDSA_MAX_SIZE);
-            return(-1);
-        }
-
-        cur = xmlSecGetNextElementNode(cur->next);
-    }
-
-    /* no other nodes expected */
-    if (cur != NULL) {
-        xmlSecUnexpectedNodeError(cur, NULL);
+    ret = xmlSecTransformReadContextStringFromSignatureMethodOrObjectNodes(
+        node,
+        xmlSecNodeEdDSAContextString,
+        xmlSecNsEdDSAContextString,
+        XMLSEC_EDDSA_MAX_SIZE,
+        res
+    );
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecTransformReadContextStringFromSignatureMethodOrObjectNodes()", NULL);
         return(-1);
     }
+
+
+    /* done */
     return(0);
 }
 #endif /* XMLSEC_NO_EDDSA */

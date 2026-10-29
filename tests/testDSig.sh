@@ -60,6 +60,10 @@ execDSigTestWithCryptoConfig() {
     params2="$7"
     params3="$8"
     crypto_config="$9"
+    # consume the global extra_message so that a message set for this test
+    # does not leak into the next test when this one returns early
+    cur_extra_message="$extra_message"
+    extra_message=""
     failures=0
 
     if [ -n "$XMLSEC_TEST_NAME" -a "$XMLSEC_TEST_NAME" != "$filename" ]; then
@@ -83,14 +87,13 @@ execDSigTestWithCryptoConfig() {
     if [ -n "$folder" ] ; then
         cd $topfolder/$folder
         full_file=$filename
-        echo "Test: $folder/$filename $extra_message"
-        echo "Test: $folder/$filename in folder " `pwd` " $extra_message -- expected $expected_res" > $curlogfile
+        echo "Test: $folder/$filename $cur_extra_message"
+        echo "Test: $folder/$filename in folder " `pwd` " $cur_extra_message -- expected $expected_res" > $curlogfile
     else
         full_file=$topfolder/$filename
-        echo "Test: $filename $extra_message"
-        echo "Test: $filename $extra_message -- expected $expected_res" > $curlogfile
+        echo "Test: $filename $cur_extra_message"
+        echo "Test: $filename $cur_extra_message -- expected $expected_res" > $curlogfile
     fi
-    extra_message=""
 
     # check transforms
     if [ -n "$req_transforms" ] ; then
@@ -182,6 +185,10 @@ execDSigPrintXmlDebugTest() {
     req_key_data="$4"
     params1="$5"
     crypto_config="$6"
+    # consume the global extra_message so that a message set for this test
+    # does not leak into the next test when this one returns early
+    cur_extra_message="$extra_message"
+    extra_message=""
     failures=0
     test_name="$filename (with --print-xml-debug)"
 
@@ -200,14 +207,13 @@ execDSigPrintXmlDebugTest() {
     if [ -n "$folder" ] ; then
         cd $topfolder/$folder
         full_file=$filename
-        echo "Test: $folder/$test_name $extra_message"
-        echo "Test: $folder/$test_name in folder " `pwd` " $extra_message -- expected $res_success" > $curlogfile
+        echo "Test: $folder/$test_name $cur_extra_message"
+        echo "Test: $folder/$test_name in folder " `pwd` " $cur_extra_message -- expected $res_success" > $curlogfile
     else
         full_file=$topfolder/$filename
-        echo "Test: $test_name $extra_message"
-        echo "Test: $test_name $extra_message -- $res_success" > $curlogfile
+        echo "Test: $test_name $cur_extra_message"
+        echo "Test: $test_name $cur_extra_message -- $res_success" > $curlogfile
     fi
-    extra_message=""
 
     # check transforms
     if [ -n "$req_transforms" ] ; then
@@ -2491,11 +2497,29 @@ execDSigTest $res_success \
     "$eddsa_priv_key_option:TestKeyName-eddsa-ed25519 $topfolder/keys/eddsa/eddsa-ed25519-key.$eddsa_priv_key_format --pwd secret123" \
     "$pub_key_option:TestKeyName-eddsa-ed25519 $topfolder/keys/eddsa/eddsa-ed25519-pubkey.$pub_key_format"
 
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloped-sha256-eddsa-ed25519ctx-with-object-signature-context" \
+    "sha256 eddsa-ed25519ctx" \
+    "eddsa" \
+    "$pub_key_option:TestKeyName-eddsa-ed25519 $topfolder/keys/eddsa/eddsa-ed25519-pubkey.$pub_key_format" \
+    "$eddsa_priv_key_option:TestKeyName-eddsa-ed25519 $topfolder/keys/eddsa/eddsa-ed25519-key.$eddsa_priv_key_format --pwd secret123" \
+    "$pub_key_option:TestKeyName-eddsa-ed25519 $topfolder/keys/eddsa/eddsa-ed25519-pubkey.$pub_key_format"
+
 if [ "z$xmlsec_feature_context_string" = "zyes" ] ; then
 
     execDSigTest $res_success \
         "" \
         "aleksey-xmldsig-01/enveloped-sha256-eddsa-ed25519ph-with-signature-context" \
+        "sha256 eddsa-ed25519ph" \
+        "eddsa" \
+        "$pub_key_option:TestKeyName-eddsa-ed25519 $topfolder/keys/eddsa/eddsa-ed25519-pubkey.$pub_key_format" \
+        "$eddsa_priv_key_option:TestKeyName-eddsa-ed25519 $topfolder/keys/eddsa/eddsa-ed25519-key.$eddsa_priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-eddsa-ed25519 $topfolder/keys/eddsa/eddsa-ed25519-pubkey.$pub_key_format"
+
+    execDSigTest $res_success \
+        "" \
+        "aleksey-xmldsig-01/enveloped-sha256-eddsa-ed25519ph-with-object-signature-context" \
         "sha256 eddsa-ed25519ph" \
         "eddsa" \
         "$pub_key_option:TestKeyName-eddsa-ed25519 $topfolder/keys/eddsa/eddsa-ed25519-pubkey.$pub_key_format" \
@@ -2525,6 +2549,15 @@ if [ "z$xmlsec_feature_context_string" = "zyes" ] ; then
     execDSigTest $res_success \
         "" \
         "aleksey-xmldsig-01/enveloped-sha256-eddsa-ed448ph-with-signature-context" \
+        "sha256 eddsa-ed448ph" \
+        "eddsa" \
+        "$pub_key_option:TestKeyName-eddsa-ed448 $topfolder/keys/eddsa/eddsa-ed448-pubkey.$pub_key_format" \
+        "$eddsa_priv_key_option:TestKeyName-eddsa-ed448 $topfolder/keys/eddsa/eddsa-ed448-key.$eddsa_priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-eddsa-ed448 $topfolder/keys/eddsa/eddsa-ed448-pubkey.$pub_key_format"
+
+    execDSigTest $res_success \
+        "" \
+        "aleksey-xmldsig-01/enveloped-sha256-eddsa-ed448ph-with-object-signature-context" \
         "sha256 eddsa-ed448ph" \
         "eddsa" \
         "$pub_key_option:TestKeyName-eddsa-ed448 $topfolder/keys/eddsa/eddsa-ed448-pubkey.$pub_key_format" \

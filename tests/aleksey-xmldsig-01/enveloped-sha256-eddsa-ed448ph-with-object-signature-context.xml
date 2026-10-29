@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Envelope xmlns="urn:envelope">
+  <Data>
+	Hello, World!
+  </Data>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#" xmlns:eddsa="http://www.w3.org/2026/08/xmldsig-more#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+      <SignatureMethod Algorithm="http://www.w3.org/2021/04/xmldsig-more#eddsa-ed448ph"/>
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+	        <Transform Algorithm="http://www.w3.org/TR/1999/REC-xpath-19991116">
+	          <XPath xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">not(ancestor-or-self::dsig:Signature)</XPath>
+	        </Transform>
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+        <DigestValue>SsyGDfQDqAg9cuEzSIJDsrp8cSWGzoRqH8E3atXJ4Dw=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>a3GX/dyfAPPtAtfEkzzh9BIi73Jdh7ff8qq3rQVv0aJOqninLmmiOdHoMbpD6FLr
+2IHGm280Xt6AvwL054obi4Pg8HP/YCkaMcd4y6QsVEAa47N8SsjfG45watpMehwe
+dk9/u7hSY9mV82J/zLY4IwUA</SignatureValue>
+    <KeyInfo>
+      <KeyName>TestKeyName-eddsa-ed448</KeyName>
+    </KeyInfo>
+    <Object>
+      <eddsa:SignatureContext>ZW1haWwtc2lnbmF0dXJl</eddsa:SignatureContext>
+    </Object>
+  </Signature>
+</Envelope>

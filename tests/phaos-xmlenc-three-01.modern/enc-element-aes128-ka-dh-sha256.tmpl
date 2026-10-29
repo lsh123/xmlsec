@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EncryptedData Id="ED" Type="http://www.w3.org/2001/04/xmlenc#Element"
+  xmlns="http://www.w3.org/2001/04/xmlenc#"
+  xmlns:xenc11="http://www.w3.org/2009/xmlenc11#">
+    <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes128-cbc"/>
+    <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+      <AgreementMethod xmlns="http://www.w3.org/2001/04/xmlenc#" Algorithm="http://www.w3.org/2009/xmlenc11#dh-es">
+        <xenc11:KeyDerivationMethod Algorithm="http://www.w3.org/2009/xmlenc11#ConcatKDF">
+          <xenc11:ConcatKDFParams AlgorithmID="" PartyUInfo="" PartyVInfo="">
+            <DigestMethod xmlns="http://www.w3.org/2000/09/xmldsig#" Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          </xenc11:ConcatKDFParams>
+        </xenc11:KeyDerivationMethod>
+        <OriginatorKeyInfo>
+          <KeyName xmlns="http://www.w3.org/2000/09/xmldsig#">dhx-rfc5114-3-first</KeyName>
+          <KeyValue xmlns="http://www.w3.org/2000/09/xmldsig#">
+            <DHKeyValue xmlns="http://www.w3.org/2001/04/xmlenc#"/>
+          </KeyValue>
+        </OriginatorKeyInfo>
+        <RecipientKeyInfo>
+          <KeyName xmlns="http://www.w3.org/2000/09/xmldsig#">dhx-rfc5114-3-second</KeyName>
+        </RecipientKeyInfo>
+      </AgreementMethod>
+    </KeyInfo>
+    <CipherData>
+      <CipherValue>
+      </CipherValue>
+    </CipherData>
+</EncryptedData>

@@ -26,7 +26,19 @@ The conversions are:
 	  "TestKeyName-rsa-4096" from tests/keys/rsa/;
 	- the tests that already used modern algorithms (AES-CBC data
 	  encryption with AES key wrap) were kept as-is; only the keys
-	  were replaced.
+	  were replaced;
+	- the four legacy key-agreement files
+	  (enc-element-{3des,aes128,aes192,aes256}-ka-dh) that used the
+	  unsupported legacy DH key agreement with X.509 certificates and
+	  a 1024-bit key were converted to the current XML Encryption
+	  key-agreement specification: the http://www.w3.org/2009/xmlenc11#dh-es
+	  (explicit DH, "DH-ES") AgreementMethod with the ConcatKDF
+	  (http://www.w3.org/2009/xmlenc11#ConcatKDF) key derivation
+	  function and a SHA-256 DigestMethod, using the 2048-bit
+	  RFC 5114 group 3 DH keys from tests/keys/dhx/
+	  (dhx-rfc5114-3-first / dhx-rfc5114-3-second).  Since the modern
+	  suite dropped 3DES, the 3DES variant is covered by the aes256
+	  test, so the four legacy files map to three modern tests.
 
 The per-test correspondence between the original and the modernized
 files is:
@@ -53,6 +65,10 @@ files is:
 	enc-content-aes192-kw-aes256              enc-content-aes192-kw-aes256 (unchanged)
 	enc-text-aes128-kw-aes192                 enc-text-aes128-kw-aes192 (unchanged)
 	bad-alg-enc-element-aes128-kw-3des       bad-alg-enc-element-aes128-kw-aes256
+	enc-element-3des-ka-dh                    enc-element-aes256-ka-dh-sha256
+	enc-element-aes128-ka-dh                  enc-element-aes128-ka-dh-sha256
+	enc-element-aes192-ka-dh                  enc-element-aes192-ka-dh-sha256
+	enc-element-aes256-ka-dh                  enc-element-aes256-ka-dh-sha256
 
 The "element", "content" and "text" prefixes keep the original meaning:
 "element" encrypts the <CreditCard> element itself, "content" encrypts
@@ -76,8 +92,22 @@ decryption result, the expected plaintext is stored in <name>.data
 (all .data files contain the same payment document).
 
 The four legacy key-agreement files from the original suite
-(enc-element-{3des,aes128,aes192,aes256}-ka-dh.xml) use the unsupported
-legacy DH key agreement with X.509 certificates and a 1024-bit key.
-They were never registered as tests (they have no .tmpl/.data files and
-are only mentioned in comments in tests/testEnc.sh), so they are not
-converted or copied into this folder.
+(enc-element-{3des,aes128,aes192,aes256}-ka-dh.xml) are converted to
+three modern DH-ES tests (the 3DES variant is covered by the aes256
+test, since the modern suite dropped 3DES):
+
+	- enc-element-aes128-ka-dh-sha256.{xml,tmpl,data}
+	- enc-element-aes192-ka-dh-sha256.{xml,tmpl,data}
+	- enc-element-aes256-ka-dh-sha256.{xml,tmpl,data}
+
+Each test encrypts the <CreditCard> element with the corresponding
+AES-CBC algorithm; the data key is derived directly from a DH-ES
+AgreementMethod (http://www.w3.org/2009/xmlenc11#dh-es) using
+ConcatKDF with a SHA-256 DigestMethod and the RFC 5114 group 3 DH
+keys from tests/keys/dhx/ (dhx-rfc5114-3-first as the originator and
+dhx-rfc5114-3-second as the recipient), replacing the legacy DH key
+agreement with X.509 certificates and a 1024-bit key.  These tests are
+only run when the crypto backend implements the DH-ES key agreement
+method (currently OpenSSL and MSCng); on the other backends the
+required "dh" key data is not registered, so the harness skips them
+rather than failing them.

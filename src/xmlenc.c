@@ -1444,7 +1444,11 @@ xmlSecEncCtxAgreementMethodGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyI
         return(NULL);
     }
 
-    /* expected key size is determined by the requirements from the uplevel key info */
+    /* expected key size is determined by the requirements from the uplevel key info;
+     * if the uplevel key info does not specify a size (e.g. a KAM used directly in an
+     * enveloping signature over encrypted content, with no EncryptedKey or cipher
+     * method above it), the KAM falls back to the KDF digest output size when the
+     * KDF is ConcatKDF (see xmlSecTransformKAMExecuteKdf() in src/transform_helpers.c) */
     encCtx->encMethod->expectedOutputSize = keyInfoCtx->keyReq.keyBitsSize / 8;
     encCtx->encMethod->operation = encCtx->operation;
     encCtx->keyInfoReadCtx.operation = encCtx->operation;

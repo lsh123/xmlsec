@@ -38,12 +38,21 @@ The conversions are:
 	  DigestMethod);
 	- the encsig tests that already used modern algorithms
 	  (SHA-256/SHA-384/SHA-512 digests, HMAC/SHA-2/3/512 signatures and
-	  AES key wrap) were kept as-is; only the keys were replaced.
+	  AES key wrap) were kept as-is; only the keys were replaced;
+	- the four key-agreement tests that used the legacy Diffie-Hellman
+	  KDF (the 2002 draft http://www.w3.org/2001/04/xmlenc#dh KDF with
+	  SHA-512 / RIPEMD-160 digests and 1024-bit DH keys) were converted to
+	  the current XML Encryption key-agreement specification:
+	  http://www.w3.org/2009/xmlenc11#dh-es (explicit DH, "DH-ES") with
+	  the ConcatKDF (http://www.w3.org/2009/xmlenc11#ConcatKDF) key
+	  derivation function and a SHA-256 DigestMethod, using the 2048-bit
+	  RFC 5114 group 3 DH keys from tests/keys/dhx/.  The legacy kw-tripledes
+	  key wrap in one of the tests was replaced with kw-aes256.
 
 The tests are split into two groups, following the original suite:
 
-	- 12 XML Encryption tests, run by tests/testEnc.sh (execEncTest);
-	- 5 "encsig" tests (XML Signature over encrypted content, per
+	- 14 XML Encryption tests, run by tests/testEnc.sh (execEncTest);
+	- 7 "encsig" tests (XML Signature over encrypted content, per
 	  https://www.w3.org/TR/xmlenc-sig), run by tests/testDSig.sh.
 
 Every test has an unsigned template <name>.tmpl with a matching
@@ -69,6 +78,15 @@ Keys (all in tests/keys/)
 	(key name "TestKeyName-rsa-4096").  The certificate is currently
 	valid, so no --verification-gmt-time is needed.
 
+	dhx/dhx-rfc5114-3-{first,second}-key.pem and
+	dhx/dhx-rfc5114-3-{first,second}-pubkey.pem
+	---------------------------------------------
+	The 2048-bit RFC 5114 group 3 Diffie-Hellman key pairs
+	("dhx-rfc5114-3-first" and "dhx-rfc5114-3-second") used by the
+	DH-ES key-agreement tests.  The "first" key is the originator
+	(the signing / encrypting side) and the "second" key is the
+	recipient (the verifying / decrypting side).
+
 	Note on the encsig session keys: like in the original suite
 	(the original Readme says the signatures are "WITHOUT
 	cryptographic merit; for example, key transport of an HMAC key
@@ -76,7 +94,11 @@ Keys (all in tests/keys/)
 	purposes"), the HMAC session key of the encsig tests is
 	generated randomly by xmlsec1 at signing time (the key length
 	equals the HMAC output length, e.g. 256 bits for
-	HMAC/SHA-256).
+	HMAC/SHA-256).  The two DH-ES encsig tests are the exception:
+	"encsig-hmac-sha256-kw-aes256-dh" still uses a random session
+	key (wrapped by kw-aes256), but "encsig-hmac-sha256-dh" has no
+	EncryptedKey, so the HMAC key is derived directly by the KAM
+	from the shared secret (see the test description below).
 
 
 Contents of merlin-xmlenc-five.modern
@@ -194,6 +216,31 @@ XML Encryption tests (run by tests/testEnc.sh):
 	file, since the EncryptedKey is part of the document.
 
 
+	encrypt-content-aes192-cbc-dh-sha256.{xml,tmpl,data}
+	---------------------------------------------------
+	(original: encrypt-content-aes192-cbc-dh-sha512)
+	The PaymentInfo content, encrypted in-place with AES-192-CBC.
+	The data key is derived from a DH-ES AgreementMethod
+	(http://www.w3.org/2009/xmlenc11#dh-es) using ConcatKDF with a
+	SHA-256 DigestMethod and the RFC 5114 group 3 keys
+	(dhx-rfc5114-3-first / dhx-rfc5114-3-second); the original used
+	the legacy 2002-draft DH KDF (dh-sha512) with 1024-bit DH keys.
+	Only the backends that implement DH-ES (OpenSSL and MSCng) can
+	decrypt this test; the harness skips it elsewhere.
+
+
+	encrypt-element-aes256-cbc-kw-aes256-dh-sha256.{xml,tmpl,data}
+	------------------------------------------------------------
+	(original: encrypt-element-aes256-cbc-kw-aes256-dh-ripemd160)
+	The Purchase element, encrypted in-place with AES-256-CBC.  The
+	session key is wrapped with AES-256 (kw-aes256); the wrap key is
+	derived from a DH-ES AgreementMethod using ConcatKDF with a
+	SHA-256 DigestMethod and the RFC 5114 group 3 keys.  The
+	original used kw-tripledes and the legacy 2002-draft DH KDF
+	(dh-ripemd160) with 1024-bit DH keys.  As above, only run on
+	backends that implement DH-ES.
+
+
 "encsig" tests (XML Signature over encrypted content, run by
 tests/testDSig.sh; the encrypted PaymentInfo content carries an
 enveloping signature):
@@ -242,6 +289,30 @@ enveloping signature):
 	RSAES-OAEP with the modern digest/MGF1 combination.
 
 
+	encsig-hmac-sha256-dh.{xml,tmpl}
+	------------------------------
+	(original: encsig-hmac-sha256-dh)
+	SHA-256 digest and HMAC/SHA-256 signature; the HMAC key is
+	derived directly from a DH-ES AgreementMethod (no EncryptedKey)
+	using ConcatKDF with a SHA-256 DigestMethod and the RFC 5114
+	group 3 keys.  Because the HMAC signing method does not specify
+	a key size, the derived key length defaults to the KDF digest
+	output length (32 bytes for SHA-256).  The original used the
+	legacy 2002-draft DH KDF with 1024-bit DH keys.  Only run on
+	backends that implement DH-ES.
+
+
+	encsig-hmac-sha256-kw-aes256-dh.{xml,tmpl}
+	-----------------------------------------
+	(original: encsig-hmac-sha256-kw-tripledes-dh)
+	SHA-256 digest and HMAC/SHA-256 signature; the HMAC key is
+	wrapped with AES-256 (kw-aes256) and the wrap key is derived
+	from a DH-ES AgreementMethod using ConcatKDF with a SHA-256
+	DigestMethod and the RFC 5114 group 3 keys.  The original used
+	kw-tripledes and the legacy 2002-draft DH KDF with 1024-bit DH
+	keys.  Only run on backends that implement DH-ES.
+
+
 Files from the original suite that were NOT converted
 -----------------------------------------------------
 
@@ -251,18 +322,6 @@ Files from the original suite that were NOT converted
 	http://www.w3.org/TR/xmlenc-decrypt) is not implemented in
 	xmlsec, so these tests cannot be run (they were already
 	disabled in the original testEnc.sh).
-
-	encrypt-content-aes192-cbc-dh-sha512.xml
-	encrypt-element-aes256-cbc-kw-aes256-dh-ripemd160.xml
-	encsig-hmac-sha256-dh.xml
-	encsig-hmac-sha256-kw-tripledes-dh.xml
-	These tests use the legacy Diffie-Hellman KDF
-	(dh-sha512 / dh-ripemd160), which xmlsec does not support
-	(no DH KDF code in src/).  A modern replacement would need a
-	specification update (the 2002 draft KDF is not part of the
-	current XML Encryption specification), so these tests were
-	dropped (they were already disabled in the original
-	testEnc.sh).
 
 	encrypt-element-aes256-cbc-carried-kw-aes256.xml
 	This test is not decryptable: it relies on a CarriedKeyName in
@@ -288,6 +347,13 @@ SHA-256), while the "encrypt-data-aes256-cbc-rsa-oaep-sha256" test
 (SHA-256 digest with the default MGF1-SHA1) additionally requires
 the xmlsec_feature_rsa_oaep_sha1 and
 xmlsec_feature_rsa_oaep_different_digest_and_mgf1 features.
+
+The DH-ES key-agreement tests (the two "*-dh-sha256" encryption
+tests and the two "encsig-hmac-sha256-*-dh" signature tests) are
+only run when the crypto backend implements the DH-ES key
+agreement method (currently OpenSSL and MSCng).  On the other
+backends the required "dh" key data is not registered, so the
+harness skips these tests rather than failing them.
 
 
 README.txt

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#"
+  xmlns:xenc11="http://www.w3.org/2009/xmlenc11#">
+  <SignedInfo>
+    <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+    <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#hmac-sha256" />
+    <Reference URI="http://www.w3.org/TR/xml-stylesheet">
+      <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+      <DigestValue></DigestValue>
+    </Reference>
+  </SignedInfo>
+  <SignatureValue>
+  </SignatureValue>
+  <KeyInfo>
+    <EncryptedKey xmlns="http://www.w3.org/2001/04/xmlenc#">
+      <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#kw-aes256" />
+      <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <AgreementMethod xmlns="http://www.w3.org/2001/04/xmlenc#" Algorithm="http://www.w3.org/2009/xmlenc11#dh-es">
+          <xenc11:KeyDerivationMethod Algorithm="http://www.w3.org/2009/xmlenc11#ConcatKDF">
+            <xenc11:ConcatKDFParams AlgorithmID="" PartyUInfo="" PartyVInfo="">
+              <DigestMethod xmlns="http://www.w3.org/2000/09/xmldsig#" Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+            </xenc11:ConcatKDFParams>
+          </xenc11:KeyDerivationMethod>
+          <OriginatorKeyInfo>
+            <KeyName xmlns="http://www.w3.org/2000/09/xmldsig#">dhx-rfc5114-3-first</KeyName>
+            <KeyValue xmlns="http://www.w3.org/2000/09/xmldsig#">
+              <DHKeyValue xmlns="http://www.w3.org/2001/04/xmlenc#"/>
+            </KeyValue>
+          </OriginatorKeyInfo>
+          <RecipientKeyInfo>
+            <KeyName xmlns="http://www.w3.org/2000/09/xmldsig#">dhx-rfc5114-3-second</KeyName>
+          </RecipientKeyInfo>
+        </AgreementMethod>
+      </KeyInfo>
+      <CipherData>
+        <CipherValue>
+        </CipherValue>
+      </CipherData>
+    </EncryptedKey>
+  </KeyInfo>
+</Signature>

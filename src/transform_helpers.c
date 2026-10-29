@@ -432,6 +432,7 @@ done:
  *
  *****************************************************************************/
 
+
 int
 xmlSecTransformKAMInitialize(xmlSecTransformKAMPtr params) {
     int ret;
@@ -468,6 +469,83 @@ xmlSecTransformKAMFinalize(xmlSecTransformKAMPtr params) {
     memset(params, 0, sizeof(*params));
 }
 
+
+/*
+ * Returns the output size in bytes for the given digest algorithm @p href
+ * or 0 if the algorithm is not recognized.
+ *
+ * Used by Key Agreement Methods as the default derived key size when the
+ * uplevel key requirements do not specify one (e.g. signature methods
+ * such as HMAC which accept keys of any size).
+ */
+static xmlSecSize
+xmlSecTransformKAMDigestOutputSizeGet(const xmlChar* href) {
+    xmlSecAssert2(href != NULL, 0);
+
+    if(xmlStrcmp(href, xmlSecHrefSha1) == 0) {
+        return(20);
+    } else if(xmlStrcmp(href, xmlSecHrefSha224) == 0) {
+        return(28);
+    } else if(xmlStrcmp(href, xmlSecHrefSha256) == 0) {
+        return(32);
+    } else if(xmlStrcmp(href, xmlSecHrefSha384) == 0) {
+        return(48);
+    } else if(xmlStrcmp(href, xmlSecHrefSha512) == 0) {
+        return(64);
+    } else if(xmlStrcmp(href, xmlSecHrefSha3_224) == 0) {
+        return(28);
+    } else if(xmlStrcmp(href, xmlSecHrefSha3_256) == 0) {
+        return(32);
+    } else if(xmlStrcmp(href, xmlSecHrefSha3_384) == 0) {
+        return(48);
+    } else if(xmlStrcmp(href, xmlSecHrefSha3_512) == 0) {
+        return(64);
+    } else if(xmlStrcmp(href, xmlSecHrefRipemd160) == 0) {
+        return(20);
+    }
+
+    /* not found */
+    return(0);
+}
+
+static
+xmlSecSize xmlSecTransformKAMGetOutputSize(const xmlChar* href, xmlNodePtr node) {
+    xmlNodePtr paramsNode;
+    xmlNodePtr digestMethodNode;
+    xmlChar* digestHref;
+    xmlSecSize res;
+
+    xmlSecAssert2(node != NULL, 0);
+
+    /* check if we have a ConcatKDF node */
+    if((href == NULL) || (xmlStrcmp(href, xmlSecHrefConcatKdf) != 0)) {
+        return(0);
+    }
+
+    /* check that we have ConcatKDFParams node */
+    paramsNode = xmlSecGetNextElementNode(node->children);
+    if((paramsNode == NULL) || (!xmlSecCheckNodeName(paramsNode, xmlSecNodeConcatKDFParams, xmlSecEnc11Ns))) {
+        return(0);
+    }
+
+    /* check that we have DigestMethod node */
+    digestMethodNode = xmlSecGetNextElementNode(paramsNode->children);
+    if((digestMethodNode == NULL) || (!xmlSecCheckNodeName(digestMethodNode, xmlSecNodeDigestMethod, xmlSecDSigNs))) {
+        return(0);
+    }
+
+    /* get the Algorithm attribute */
+    digestHref = xmlGetProp(digestMethodNode, xmlSecAttrAlgorithm);
+    if(digestHref == NULL) {
+        return(0);
+    }
+
+    /* get the output size for the specified digest algorithm */
+    res = xmlSecTransformKAMDigestOutputSizeGet(digestHref);
+    xmlFree(digestHref);
+    return(res);
+}
+
 /**
  * @brief Reads an AgreementMethod element into @p params.
  * @details Reads the KeyDerivationMethod, OriginatorKeyInfo and
@@ -499,12 +577,16 @@ xmlSecTransformKAMRead(xmlSecTransformKAMPtr params, xmlNodePtr node, xmlSecTran
     xmlSecAssert2(kamTransform != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
 
-    if(transformCtx->parentKeyInfoCtx->operation == xmlSecTransformOperationEncrypt) {
-        /* we are encrypting on originator side which needs private key */
+    /* When acting as the originator (encrypting or signing) we derive the key
+     * with our own private key and the other party's public key; when acting
+     * as the recipient (decrypting or verifying) it is the other way around. */
+    if((transformCtx->parentKeyInfoCtx->operation == xmlSecTransformOperationEncrypt) ||
+       (transformCtx->parentKeyInfoCtx->operation == xmlSecTransformOperationSign)) {
+        /* we are the originator (encrypting or signing) which needs our private key */
         originatorKeyType = xmlSecKeyDataTypePrivate;
         recipientKeyType = xmlSecKeyDataTypePublic;
     } else {
-        /* we are decrypting on recipient side which needs private key */
+        /* we are the recipient (decrypting or verifying) which needs our private key */
         originatorKeyType = xmlSecKeyDataTypePublic;
         recipientKeyType = xmlSecKeyDataTypePrivate;
     }
@@ -542,9 +624,14 @@ xmlSecTransformKAMRead(xmlSecTransformKAMPtr params, xmlNodePtr node, xmlSecTran
         xmlSecInternalError("xmlSecTransformSetKeyReq", xmlSecNodeGetName(node));
         return(-1);
     }
-    cur = xmlSecGetNextElementNode(cur->next);
+
+    /* remember the default derived key size for KDFs whose XML node does
+     * not carry a key length (e.g. ConcatKDF): the KDF digest output size,
+     * used when the caller does not specify the key size */
+    params->defaultOutputSize = xmlSecTransformKAMGetOutputSize(params->kdfTransform->id->href, cur);
 
     /* next node is required OriginatorKeyInfo (originator key: private for encrypt, public for decrypt) */
+    cur = xmlSecGetNextElementNode(cur->next);
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeOriginatorKeyInfo, xmlSecEncNs))) {
         xmlSecInvalidNodeError(cur, xmlSecNodeOriginatorKeyInfo, NULL);
         return(-1);
@@ -723,6 +810,13 @@ xmlSecTransformKAMExecuteKdf(xmlSecTransformKAMPtr params, xmlSecTransformOperat
     xmlSecAssert2(params->memBufTransform != NULL, -1);
     xmlSecAssert2(secret != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
+
+    /* the derived key size is normally specified by the caller (the uplevel
+     * key requirements); if it is not specified, fall back to the default
+     * size taken from the KDF digest output size */
+    if((expectedOutputSize == 0) && (params->defaultOutputSize > 0)) {
+        expectedOutputSize = params->defaultOutputSize;
+    }
 
     params->kdfTransform->operation = operation;
     params->kdfTransform->expectedOutputSize = expectedOutputSize;

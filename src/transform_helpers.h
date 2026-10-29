@@ -164,7 +164,7 @@ XMLSEC_EXPORT int xmlSecTransformHmacVerify             (const xmlSecByte* data,
 
 #endif /* XMLSEC_NO_HMAC */
 
-/* ML-DSA */
+/* ML-DSA (https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/) */
 #ifndef XMLSEC_NO_MLDSA
 
 #define XMLSEC_MLDSA_MAX_SIZE   ((xmlSecSize)255)
@@ -174,7 +174,7 @@ XMLSEC_EXPORT int xmlSecTransformMLDSAReadContextString(xmlNodePtr node,
 #endif /* XMLSEC_NO_MLDSA */
 
 
-/* SLH-DSA */
+/* SLH-DSA (https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/)*/
 #ifndef XMLSEC_NO_SLHDSA
 
 #define XMLSEC_SLHDSA_MAX_SIZE  ((xmlSecSize)255)

@@ -1795,7 +1795,7 @@ xmlSecGnuTLSKeyDataGost2012_512GetPrivateKey(xmlSecKeyDataPtr data) {
  *
   *****************************************************************************/
 
-XMLSEC_GNUTLS_ASYMKEY_KLASS(MLDSA, xmlSecNameMLDSAKeyValue, xmlSecHrefMLDSAKeyValue)
+XMLSEC_GNUTLS_ASYMKEY_KLASS(MLDSA, xmlSecNameMLDSAKeyValue, NULL)
 
 /**
  * @brief The GnuTLS ML-DSA key data klass.

@@ -390,7 +390,12 @@ XMLSEC_TRANSFORM_DECLARE(XPath, xmlSecPtrList)
 #define xmlSecTransformXPathCheckId(transform) \
     (xmlSecTransformCheckId((transform), xmlSecTransformXPathId) || \
      xmlSecTransformCheckId((transform), xmlSecTransformXPath2Id) || \
-     xmlSecTransformCheckId((transform), xmlSecTransformXPointerId))
+     xmlSecTransformCheckId((transform), xmlSecTransformXPointerId) || \
+     xmlSecTransformCheckId((transform), xmlSecTransformXPointerLegacyId))
+
+#define xmlSecTransformXPointerCheckId(transform) \
+    (xmlSecTransformCheckId((transform), xmlSecTransformXPointerId) || \
+     xmlSecTransformCheckId((transform), xmlSecTransformXPointerLegacyId))
 
 static int              xmlSecTransformXPathInitialize  (xmlSecTransformPtr transform);
 static void             xmlSecTransformXPathFinalize    (xmlSecTransformPtr transform);
@@ -773,6 +778,46 @@ xmlSecTransformXPointerGetKlass(void) {
     return(&xmlSecTransformXPointerKlass);
 }
 
+static xmlSecTransformKlass xmlSecTransformXPointerLegacyKlass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecXPathSize,                            /* xmlSecSize objSize */
+
+    xmlSecNameXPointerLegacy,                   /* const xmlChar* name; */
+    xmlSecXPointerLegacyNs,                     /* const xmlChar* href; */
+    xmlSecTransformUsageDSigTransform,          /* xmlSecTransformUsage usage; */
+
+    xmlSecTransformXPathInitialize,             /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecTransformXPathFinalize,               /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecTransformXPointerNodeRead,            /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    NULL,                                       /* xmlSecTransformPushBinMethod pushBin; */
+    NULL,                                       /* xmlSecTransformPopBinMethod popBin; */
+    xmlSecTransformDefaultPushXml,              /* xmlSecTransformPushXmlMethod pushXml; */
+    xmlSecTransformDefaultPopXml,               /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecTransformXPathExecute,                /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * @brief Deprecated.Gets the legacy XPointer transform klass.
+ * @details Deprecated. The legacy XPointer transform klass, registered under the pre-RFC 9231
+ * (RFC 4051) identifier <http://www.w3.org/2001/04/xmldsig-more/xptr>. It behaves
+ * identically to the XPointer transform (see xmlSecTransformXPointerGetKlass) and
+ * exists for backward compatibility with documents that use the legacy identifier.
+ * @return legacy XPointer transform klass.
+ */
+xmlSecTransformId
+xmlSecTransformXPointerLegacyGetKlass(void) {
+    return(&xmlSecTransformXPointerLegacyKlass);
+}
+
 /**
  * @brief Sets the XPointer expression for a transform.
  * @details Sets the XPointer expression for an XPointer @p transform.
@@ -789,7 +834,7 @@ xmlSecTransformXPointerSetExpr(xmlSecTransformPtr transform, const xmlChar* expr
     xmlSecXPathDataPtr data;
     int ret;
 
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXPointerId), -1);
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXPointerId) || xmlSecTransformCheckId(transform, xmlSecTransformXPointerLegacyId), -1);
     xmlSecAssert2(transform->hereNode == NULL, -1);
     xmlSecAssert2(expr != NULL, -1);
     xmlSecAssert2(hereNode != NULL, -1);
@@ -800,23 +845,20 @@ xmlSecTransformXPointerSetExpr(xmlSecTransformPtr transform, const xmlChar* expr
 
     data = xmlSecXPathDataCreate(xmlSecXPathDataTypeXPointer);
     if(data == NULL) {
-        xmlSecInternalError("xmlSecXPathDataCreate",
-                            xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecXPathDataCreate", xmlSecTransformGetName(transform));
         return(-1);
     }
 
     ret = xmlSecXPathDataRegisterNamespaces(data, hereNode);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecXPathDataRegisterNamespaces",
-                            xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecXPathDataRegisterNamespaces", xmlSecTransformGetName(transform));
         xmlSecXPathDataDestroy(data);
         return(-1);
     }
 
     ret = xmlSecXPathDataSetExpr(data, expr);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecXPathDataSetExpr",
-                            xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecXPathDataSetExpr", xmlSecTransformGetName(transform));
         xmlSecXPathDataDestroy(data);
         return(-1);
     }
@@ -824,8 +866,7 @@ xmlSecTransformXPointerSetExpr(xmlSecTransformPtr transform, const xmlChar* expr
     /* append it to the list */
     ret = xmlSecPtrListAdd(dataList, data);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecPtrListAdd",
-                            xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecPtrListAdd", xmlSecTransformGetName(transform));
         xmlSecXPathDataDestroy(data);
         return(-1);
     }
@@ -848,7 +889,7 @@ xmlSecTransformXPointerNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, x
     xmlNodePtr cur;
     int ret;
 
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXPointerId), -1);
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXPointerId) || xmlSecTransformCheckId(transform, xmlSecTransformXPointerLegacyId), -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
@@ -856,26 +897,27 @@ xmlSecTransformXPointerNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, x
     xmlSecAssert2(xmlSecPtrListCheckId(dataList, xmlSecXPathDataListId), -1);
     xmlSecAssert2(xmlSecPtrListGetSize(dataList) == 0, -1);
 
-    /* there is only one required node */
+    /* there is only one required node; accept the <XPointer> child element in both
+     * the current and the legacy (RFC 4051) namespaces */
     cur = xmlSecGetNextElementNode(node->children);
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeXPointer, xmlSecXPointerNs))) {
-        xmlSecInvalidNodeError(cur, xmlSecNodeXPointer,
-                               xmlSecTransformGetName(transform));
+    if((cur == NULL) ||
+       (!xmlSecCheckNodeName(cur, xmlSecNodeXPointer, xmlSecXPointerNs) &&
+        !xmlSecCheckNodeName(cur, xmlSecNodeXPointer, xmlSecXPointerLegacyNs))
+    ) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeXPointer, xmlSecTransformGetName(transform));
         return(-1);
     }
 
     /* read information from the node */
     data = xmlSecXPathDataCreate(xmlSecXPathDataTypeXPointer);
     if(data == NULL) {
-        xmlSecInternalError("xmlSecXPathDataCreate",
-                            xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecXPathDataCreate", xmlSecTransformGetName(transform));
         return(-1);
     }
 
     ret = xmlSecXPathDataNodeRead(data, cur);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecXPathDataNodeRead",
-                            xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecXPathDataNodeRead", xmlSecTransformGetName(transform));
         xmlSecXPathDataDestroy(data);
         return(-1);
     }
@@ -883,8 +925,7 @@ xmlSecTransformXPointerNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, x
     /* append it to the list */
     ret = xmlSecPtrListAdd(dataList, data);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecPtrListAdd",
-                            xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecPtrListAdd", xmlSecTransformGetName(transform));
         xmlSecXPathDataDestroy(data);
         return(-1);
     }

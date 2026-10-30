@@ -35,6 +35,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecEnc11Ns[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPathNs[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPath2Ns[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPointerNs[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecXPointerLegacyNs[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecDSig2021MoreNs[];
 
 /** @brief Deprecated. Use xmlSecDSig2021MoreNs instead. */
@@ -919,6 +920,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecXPath2FilterIntersect[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPath2FilterSubtract[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPath2FilterUnion[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameXPointer[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameXPointerLegacy[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeXPointer[];
 
 /******************************************************************************

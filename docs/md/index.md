@@ -21,6 +21,12 @@ see the Copyright file in the distribution for details.
     were converted to follow the [draft RFC](https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/).
     These algorithms are still marked as experimental and disabled by default due to the "draft"
     status of the RFC.
+  - (xmlsec-core, **not backward compatible**) Digest and signature transforms now reject
+    empty (0-length) input with an error. To restore the old behaviour (allow empty
+    (0-length) input), use the `--allow-empty-input` command line option or set the
+    `XMLSEC_DSIG_FLAGS_ALLOW_EMPTY_INPUT` flag in the `xmlSecDSigCtx` struct / the
+    `XMLSEC_TRANSFORMCTX_FLAGS_ALLOW_EMPTY_INPUT` flag in the `xmlSecTransformCtx` struct
+    in your application code.
   - (xmlsec-core, **not backward compatible**) Key agreement methods with `ConcatKDF` key derivation
     method now fall back to the KDF digest output size as the derived key length when the uplevel
     key requirements do not specify a key size.

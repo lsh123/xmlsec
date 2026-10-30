@@ -3312,12 +3312,14 @@ execDSigTest $res_success \
 #
 ##########################################################################
 
+# The document contains references with empty (0-length) digest input, so
+# the test has to allow empty input.
 execDSigTest $res_success \
     "" \
     "merlin-c14n-three/signature" \
     "c14n c14n-with-comments exc-c14n exc-c14n-with-comments xpath sha1 dsa-sha1" \
     "dsa" \
-    "--enabled-key-data key-value,dsa"
+    "--allow-empty-input --enabled-key-data key-value,dsa"
 
 
 ##########################################################################
@@ -3331,14 +3333,16 @@ execDSigTest $res_success \
 # algorithm and key from tests/keys: ecdsa-sha256 (prime256v1).
 #
 
+# The document contains references with empty (0-length) digest input, so
+# the test has to allow empty input.
 execDSigTest $res_success \
     "merlin-c14n-three.modern" \
     "signature" \
     "c14n c14n-with-comments exc-c14n exc-c14n-with-comments xpath sha256 ecdsa-sha256" \
     "ec key-value" \
-    "--enabled-key-data key-value,ec" \
-    "--enabled-key-data key-name,key-value,ec $priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
-    "--enabled-key-data key-value,ec"
+    "--allow-empty-input --enabled-key-data key-value,ec" \
+    "--allow-empty-input --enabled-key-data key-name,key-value,ec $priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--allow-empty-input --enabled-key-data key-value,ec"
 
 
 ##########################################################################
@@ -3382,14 +3386,16 @@ execDSigTest $res_success \
     "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
     "--lax-key-search --hmackey $topfolder/keys/hmackey.bin"
 
+# The document contains references with empty (0-length) digest input, so
+# the test has to allow empty input.
 execDSigTest $res_success \
     "merlin-xpath-filter2-three.modern" \
     "sign-spec" \
     "enveloped-signature xpath2 sha256 ecdsa-sha256" \
     "ec key-value" \
-    "--enabled-key-data key-value,ec" \
-    "--enabled-key-data key-name,key-value,ec $priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
-    "--enabled-key-data key-value,ec"
+    "--allow-empty-input --enabled-key-data key-value,ec" \
+    "--allow-empty-input --enabled-key-data key-name,key-value,ec $priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--allow-empty-input --enabled-key-data key-value,ec"
 
 ##########################################################################
 #
@@ -3404,12 +3410,14 @@ execDSigTest $res_success \
     "dsa" \
     "--enabled-key-data key-value,dsa"
 
+# The document contains references with empty (0-length) digest input, so
+# the test has to allow empty input.
 execDSigTest $res_success \
     "" \
     "merlin-xpath-filter2-three/sign-spec" \
     "enveloped-signature xpath2 sha1 dsa-sha1" \
     "dsa" \
-    "--enabled-key-data key-value,dsa"
+    "--allow-empty-input --enabled-key-data key-value,dsa"
 ##########################################################################
 #
 # phaos-xmldsig-three
@@ -3894,6 +3902,36 @@ if [ "z$xmlsec_feature_crl_load" = "zyes" ] ; then
         "rsa x509" \
         "--verification-gmt-time 2026-04-01+00:00:00 --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsa/rsa-2048-cert-revoked-crl.$cert_format --enabled-key-data x509 --enabled-reference-uris any $url_map_rfc3161"
 fi
+
+
+##########################################################################
+#
+# Empty (0-length) input for digest and signature transforms
+#
+##########################################################################
+
+# The Reference in this document uses an XPath transform that matches no
+# nodes, so the digest transform receives no input data at all. Without
+# the --allow-empty-input option, verification (and signing) of such a
+# document must fail with an error.
+extra_message="Negative test: empty (0-length) input for the digest transform is not allowed by default, should fail"
+execDSigTest $res_fail \
+    "" \
+    "aleksey-xmldsig-01/enveloped-empty-input-sha256-rsa-sha256" \
+    "sha256 rsa-sha256" \
+    "rsa" \
+    "$pub_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-pubkey$rsa_pub_key_suffix.$pub_key_format"
+
+# The same document can be signed and verified successfully when the
+# --allow-empty-input option is used.
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloped-empty-input-sha256-rsa-sha256" \
+    "sha256 rsa-sha256" \
+    "rsa" \
+    "--allow-empty-input $pub_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-pubkey$rsa_pub_key_suffix.$pub_key_format" \
+    "--allow-empty-input $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--allow-empty-input $pub_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-pubkey$rsa_pub_key_suffix.$pub_key_format"
 
 
 ##########################################################################

@@ -124,6 +124,15 @@ typedef enum {
 #define XMLSEC_DSIG_FLAGS_RELATIONSHIP_LEGACY                   0x00000040
 
 /**
+ * @brief If set, allow empty (0-length) input for digest and signature transforms.
+ * @details By default digest and signature transforms reject empty (0-length) input
+ * with an error. If this flag is set then empty (0-length) input is allowed (see
+ * #XMLSEC_TRANSFORMCTX_FLAGS_ALLOW_EMPTY_INPUT). This is propagated to the transform
+ * context of every Reference and to the <dsig:SignedInfo/> processing context.
+ */
+#define XMLSEC_DSIG_FLAGS_ALLOW_EMPTY_INPUT                     0x00000080
+
+/**
  * @brief XML DSig processing context.
  */
 struct _xmlSecDSigCtx {

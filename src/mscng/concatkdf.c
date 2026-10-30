@@ -460,8 +460,12 @@ xmlSecMSCngConcatKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngConcatKdfCtxSize), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
+    /* the KDF derives a key from the keying material only: it never consumes
+     * transform input; data pushed into the transform is a caller error and
+     * must not be silently dropped */
     in = &(transform->inBuf);
     out = &(transform->outBuf);
+    xmlSecAssert2(xmlSecBufferGetSize(in) == 0, -1);
 
     ctx = xmlSecMSCngConcatKdfGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);

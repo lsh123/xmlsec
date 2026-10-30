@@ -118,7 +118,9 @@ xmlSecMSCngKeyDataCertGetPrivkey(PCCERT_CONTEXT cert, NCRYPT_KEY_HANDLE* key, BO
 
     /* try non persistent key */
     res = CertGetCertificateContextProperty(cert, CERT_KEY_CONTEXT_PROP_ID, &ckc, &dwCkcLen);
-    if (res && (ckc.hNCryptKey != 0)) {
+    /* CERT_KEY_CONTEXT is a union selected by dwKeySpec; only accept a CNG key
+     * handle, a legacy CryptoAPI provider handle must not be passed to NCrypt */
+    if (res && (ckc.dwKeySpec == CERT_NCRYPT_KEY_SPEC) && (ckc.hNCryptKey != 0)) {
         (*key) = ckc.hNCryptKey;
         (*needsFree) = FALSE; /* this key doesn't need NCryptFreeObject */
         return(0);
@@ -2023,26 +2025,6 @@ xmlSecMSCngKeyDataDhExportValue(xmlSecKeyDataPtr data, xmlSecKeyValueDhPtr dhVal
 }
 
 static int
-xmlSecMSCngDhCompareBigNums(const xmlSecByte* left, xmlSecSize leftSize,
-    const xmlSecByte* right, xmlSecSize rightSize) {
-    while((leftSize > 0) && (left[0] == 0)) {
-        ++left;
-        --leftSize;
-    }
-    while((rightSize > 0) && (right[0] == 0)) {
-        ++right;
-        --rightSize;
-    }
-    if(leftSize != rightSize) {
-        return((leftSize > rightSize) ? 1 : -1);
-    }
-    if(leftSize == 0) {
-        return(0);
-    }
-    return(memcmp(left, right, leftSize));
-}
-
-static int
 xmlSecMSCngDhEnsureEqualParam(xmlSecBufferPtr left, xmlSecBufferPtr right, const char* name) {
     int cmp;
 
@@ -2061,7 +2043,8 @@ xmlSecMSCngDhEnsureEqualParam(xmlSecBufferPtr left, xmlSecBufferPtr right, const
 }
 
 static int
-xmlSecMSCngDhValidatePublicRange(xmlSecBufferPtr p, xmlSecBufferPtr publicValue) {
+xmlSecMSCngDhValidatePublicRangeRaw(const xmlSecByte* p, xmlSecSize pSize,
+    const xmlSecByte* publicValue, xmlSecSize publicValueSize) {
     static const xmlSecByte two[] = { 0x02 };
     xmlSecBn pMinusTwo;
     int bnInitialized = 0;
@@ -2071,22 +2054,20 @@ xmlSecMSCngDhValidatePublicRange(xmlSecBufferPtr p, xmlSecBufferPtr publicValue)
     xmlSecAssert2(p != NULL, -1);
     xmlSecAssert2(publicValue != NULL, -1);
 
-    cmp = xmlSecMSCngDhCompareBigNums(
-        xmlSecBufferGetData(publicValue), xmlSecBufferGetSize(publicValue),
-        two, sizeof(two));
+    cmp = xmlSecMSCngDhCompareBigNums(publicValue, publicValueSize, two, sizeof(two));
     if(cmp < 0) {
         xmlSecInvalidDataError("DH public key is smaller than 2", NULL);
         return(-1);
     }
 
-    ret = xmlSecBnInitialize(&pMinusTwo, xmlSecBufferGetSize(p));
+    ret = xmlSecBnInitialize(&pMinusTwo, pSize);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBnInitialize", NULL);
         return(-1);
     }
     bnInitialized = 1;
 
-    ret = xmlSecBnSetData(&pMinusTwo, xmlSecBufferGetData(p), xmlSecBufferGetSize(p));
+    ret = xmlSecBnSetData(&pMinusTwo, p, pSize);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBnSetData", NULL);
         goto done;
@@ -2098,8 +2079,7 @@ xmlSecMSCngDhValidatePublicRange(xmlSecBufferPtr p, xmlSecBufferPtr publicValue)
         goto done;
     }
 
-    cmp = xmlSecBnCompare(&pMinusTwo,
-        xmlSecBufferGetData(publicValue), xmlSecBufferGetSize(publicValue));
+    cmp = xmlSecBnCompare(&pMinusTwo, publicValue, publicValueSize);
     if(cmp < 0) {
         xmlSecInvalidDataError("DH public key is greater than p - 2", NULL);
         ret = -1;
@@ -2113,6 +2093,13 @@ done:
         xmlSecBnFinalize(&pMinusTwo);
     }
     return(ret);
+}
+
+static int
+xmlSecMSCngDhValidatePublicRange(xmlSecBufferPtr p, xmlSecBufferPtr publicValue) {
+    return xmlSecMSCngDhValidatePublicRangeRaw(
+        xmlSecBufferGetData(p), xmlSecBufferGetSize(p),
+        xmlSecBufferGetData(publicValue), xmlSecBufferGetSize(publicValue));
 }
 
 static int
@@ -2565,6 +2552,12 @@ xmlSecMSCngAppKeyReadPubKeyFromDer(const xmlSecByte* derData, xmlSecSize derData
                 xmlSecInternalError("DH SPKI: failed to parse public key INTEGER Y", NULL);
                 goto done;
             }
+        }
+
+        /* validate the public value at import time: 2 <= Y <= P - 2 */
+        ret = xmlSecMSCngDhValidatePublicRangeRaw(pP, (xmlSecSize)pPLen, pY, (xmlSecSize)pYLen);
+        if(ret < 0) {
+            goto done;
         }
 
         cbKey = pPLen;

@@ -53,7 +53,7 @@ xmlSecMSCngMlDsaGetParamsetName(xmlSecSize pkSize) {
  *          (BCRYPT_PQDSA_PUBLIC_MAGIC), DWORD cbParamSet, DWORD cbKey,
  *          WCHAR pszParamSet[], BYTE pbKey[]; this layout was verified against
  *          the CNG ML-DSA provider on Windows 11 version 26H2 (build 26300).
- *          (https://learn.microsoft.com/en-us/windows/win32/seccng/cng-mlkem-examples)
+ *          (https://learn.microsoft.com/en-us/windows/win32/seccng/cng-mldsa-examples)
  *
  * @param spki SubjectPublicKeyInfo of the certificate.
  * @param key receives the imported BCRYPT key handle on success.
@@ -128,7 +128,6 @@ xmlSecMSCngKeyDataCertGetMlDsaPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HAND
     status = BCryptImportKeyPair(hAlg, NULL, BCRYPT_PQDSA_PUBLIC_BLOB, &hKey, pbBlob, cbBlob, 0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptImportKeyPair(ML-DSA pub)", NULL, status);
-        hKey = NULL;
         goto done;
     }
 

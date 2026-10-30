@@ -729,6 +729,7 @@ xmlSecMSCngSignatureFixBrokenJava(xmlSecMSCngSignatureCtxPtr ctx,
     xmlSecSize keySize;
     xmlSecByte* res;
     xmlSecSize offset;
+    xmlSecSize i;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->data != NULL, -1);
@@ -779,6 +780,16 @@ xmlSecMSCngSignatureFixBrokenJava(xmlSecMSCngSignatureCtxPtr ctx,
     } else if ((dataSize > 2 * halfSize) && (dataSize % 2 == 0)) {
         /* however some implementations (e.g. Java) add leading zeros:
          * https://github.com/lsh123/xmlsec/issues/941 */
+        offset = (dataSize - 2 * halfSize) / 2;
+
+        /* the stripped bytes must actually be zeros; non-zero leading bytes mean
+         * the original r/s values are out of range and the signature is rejected */
+        for(i = 0; i < offset; i++) {
+            if((data[i] != 0) || (data[dataSize / 2 + i] != 0)) {
+                xmlSecInvalidDataError("DSA/ECDSA signature has non-zero leading bytes", NULL);
+                return(-1);
+            }
+        }
 
         /* let's fix it! */
         res = (xmlSecByte*)xmlMalloc(2 * halfSize);
@@ -788,9 +799,7 @@ xmlSecMSCngSignatureFixBrokenJava(xmlSecMSCngSignatureCtxPtr ctx,
         }
         memset(res, 0, 2 * halfSize);
 
-        /* remove zeros at the beginning of both r and s (note: we don't check if those
-         * are actually zeros, just hope for the best) */
-        offset = (dataSize - 2 * halfSize) / 2;
+        /* remove zeros at the beginning of both r and s */
         memcpy(res, data + offset, halfSize);
         memcpy(res + halfSize, data + dataSize / 2 + offset, halfSize);
 
@@ -966,17 +975,23 @@ xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
 #ifndef XMLSEC_NO_MLDSA
     /* ML-DSA (FIPS 204) verifies the raw message accumulated in preSignBuffer;
      * the signature is computed over the message directly, without a hash
-     * (https://learn.microsoft.com/en-us/windows/win32/seccng/cng-mlkem-examples)
+     * (https://learn.microsoft.com/en-us/windows/win32/seccng/cng-mldsa-examples)
      */
     if(ctx->keyId == xmlSecMSCngKeyDataMLDSAId) {
         xmlSecMSCngPqdsaPaddingInfo pqdsaPaddingInfo;
         xmlSecByte* msgData;
         DWORD dwMsgSize;
+        xmlSecByte dummy = 0;
 
         msgData = xmlSecBufferGetData(&ctx->preSignBuffer);
+        XMLSEC_SAFE_CAST_SIZE_TO_ULONG(xmlSecBufferGetSize(&ctx->preSignBuffer), dwMsgSize, goto done, xmlSecTransformGetName(transform));
+        if((msgData == NULL) && (dwMsgSize == 0)) {
+            /* empty message: BCryptVerifySignature requires a non-NULL
+             * pointer even when the size is zero */
+            msgData = &dummy;
+        }
         xmlSecAssert2(msgData != NULL, -1);
         XMLSEC_SAFE_CAST_SIZE_TO_ULONG(dataSize, dwDataSize, goto done, xmlSecTransformGetName(transform));
-        XMLSEC_SAFE_CAST_SIZE_TO_ULONG(xmlSecBufferGetSize(&ctx->preSignBuffer), dwMsgSize, goto done, xmlSecTransformGetName(transform));
 
         /* no context string, no prehash algorithm */
         pqdsaPaddingInfo.pbCtx = NULL;
@@ -1228,17 +1243,23 @@ xmlSecMSCngSignatureSign(
 #ifndef XMLSEC_NO_MLDSA
     /* ML-DSA (FIPS 204) signs the raw message accumulated in preSignBuffer;
     * the signature is computed over the message directly, without a hash
-    * (https://learn.microsoft.com/en-us/windows/win32/seccng/cng-mlkem-examples)
+    * (https://learn.microsoft.com/en-us/windows/win32/seccng/cng-mldsa-examples)
      */
     if(ctx->keyId == xmlSecMSCngKeyDataMLDSAId) {
         xmlSecMSCngPqdsaPaddingInfo pqdsaPaddingInfo;
         xmlSecByte* msgData;
         DWORD dwMsgSize;
         DWORD dwSigSize;
+        xmlSecByte dummy = 0;
 
         msgData = xmlSecBufferGetData(&ctx->preSignBuffer);
-        xmlSecAssert2(msgData != NULL, -1);
         XMLSEC_SAFE_CAST_SIZE_TO_ULONG(xmlSecBufferGetSize(&ctx->preSignBuffer), dwMsgSize, return(-1), xmlSecTransformGetName(transform));
+        if((msgData == NULL) && (dwMsgSize == 0)) {
+            /* empty message: NCryptSignHash requires a non-NULL pointer
+             * even when the size is zero */
+            msgData = &dummy;
+        }
+        xmlSecAssert2(msgData != NULL, -1);
 
         /* no context string, no prehash algorithm */
         pqdsaPaddingInfo.pbCtx = NULL;

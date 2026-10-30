@@ -427,6 +427,17 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
     }
     xmlSecAssert2(bytesRead == sizeof(authTagLengths), -1);
 
+    /* The BCRYPT_KEY_LENGTHS_STRUCT fields are documented in bits, but the CNG
+     * AES-GCM provider reports them in bytes (verified empirically: min=12,
+     * max=16, inc=1). A GCM tag is at most 16 bytes, so dwMaxLength > 16 can
+     * only be a bits-unit report; normalize it to bytes so the checks below
+     * work regardless of the provider's unit. */
+    if(authTagLengths.dwMaxLength > (DWORD)xmlSecMSCngAesGcmTagLengthInBytes) {
+        authTagLengths.dwMinLength /= 8;
+        authTagLengths.dwMaxLength /= 8;
+        authTagLengths.dwIncrement /= 8;
+    }
+
     /* XML-ENC AES-GCM support uses a 128-bit tag only (see
      * http://www.w3.org/TR/xmlenc-core1/#sec-AES-GCM); verify that the provider
      * can actually produce a tag of that size before allocating/using it. */

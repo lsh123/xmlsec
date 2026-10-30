@@ -173,11 +173,11 @@ xmlSecMSCngKWAesInitialize(xmlSecTransformPtr transform) {
     }
 
 
-    /* cache the CSP algorithm provider handle and the key object for the whole
-     * transform lifetime. The CSP AES provider keeps mutable state in the key
-     * object, so the key itself is still re-imported (into a fresh key handle) on
-     * every block call; only the provider handle, the key object buffer and the
-     * wrapped-key blob (built in SetKey) are cached to avoid re-allocating them. */
+    /* cache the CNG algorithm provider handle and the key object for the whole
+     * transform lifetime; only the provider handle, the key object buffer and the
+     * wrapped-key blob (built in SetKey) are cached to avoid re-allocating them.
+     * The key itself is still re-imported (into a fresh key handle) on every
+     * block call. */
     status = BCryptOpenAlgorithmProvider(&ctx->hAlg, BCRYPT_AES_ALGORITHM, NULL, 0);
     if (status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptOpenAlgorithmProvider", xmlSecTransformGetName(transform), status);
@@ -410,10 +410,9 @@ xmlSecMSCngTransformKWAes256GetKlass(void) {
   *****************************************************************************/
 /* The AES provider handle and the wrapped-key blob (ctx->blob) plus the key
  * object buffer (ctx->keyObject) are cached in the ctx and released in Finalize,
- * so no memory is re-allocated per block call. The CSP AES provider keeps mutable state
- * inside the key object, so the key itself is still imported into a *fresh* local key handle
- * on every block call (and that handle is destroyed before the next call reuses the shared
- * key object buffer). */
+ * so no memory is re-allocated per block call. The key itself is still imported
+ * into a *fresh* local key handle on every block call (and that handle is
+ * destroyed before the next call reuses the shared key object buffer). */
 static int
 xmlSecMSCngKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte* in, xmlSecSize inSize,
                              xmlSecByte* out, xmlSecSize outSize,

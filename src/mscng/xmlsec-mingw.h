@@ -127,6 +127,11 @@
 #define CERT_FIND_SHA256_HASH               (22 << 16)
 #endif /* CERT_FIND_SHA256_HASH */
 
+/* MinGW may ship older wincrypt.h that lacks the NCRYPT key spec identifier */
+#ifndef CERT_NCRYPT_KEY_SPEC
+#define CERT_NCRYPT_KEY_SPEC                0x00000001
+#endif /* CERT_NCRYPT_KEY_SPEC */
+
 
 
 #endif /* defined(__MINGW32__) || defined(__MINGW64__) */

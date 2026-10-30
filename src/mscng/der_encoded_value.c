@@ -186,19 +186,13 @@ xmlSecMSCngKeyDataDEREncodedKeyValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key
         goto done;
     }
 
-    /* read key from DER (SPKI public key). The inner content is decoded by CAPI's
-     * CryptDecodeObjectEx (a standard, well-tested component), which is BER-tolerant.
-     * Any leniency in the inner encoding has no practical security impact because
-     * the resulting key is still valid. The top-level TLV boundary and the absence
-     * of trailing bytes are strictly validated below.
+    /* strictly validate the top-level TLV boundary and the absence of trailing
+     * bytes before invoking the lenient CAPI decode, so that malformed input is
+     * rejected before CryptDecodeObjectEx (BER-tolerant) sees it. The inner
+     * content is then decoded by CAPI's CryptDecodeObjectEx (a standard,
+     * well-tested component); any leniency in the inner encoding has no
+     * practical security impact because the resulting key is still valid.
      * See https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptdecodeobjectex */
-    keyData = xmlSecMSCngAppKeyReadPubKeyFromDer(data, dataSize);
-    if(keyData == NULL) {
-        xmlSecInternalError("xmlSecMSCngAppKeyReadPubKeyFromDer", xmlSecKeyDataKlassGetName(id));
-        goto done;
-    }
-
-    /* verify the DER parser consumed the entire buffer (no trailing bytes) */
     tlvEnd = xmlSecMSCngDerReadTopLevelTlv(data, data + dataSize);
     if(tlvEnd == NULL) {
         xmlSecInternalError("xmlSecMSCngDerReadTopLevelTlv", xmlSecKeyDataKlassGetName(id));
@@ -206,6 +200,13 @@ xmlSecMSCngKeyDataDEREncodedKeyValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key
     }
     if(tlvEnd != data + dataSize) {
         xmlSecInvalidSizeDataError("Remaining bytes", (xmlSecSize)(data + dataSize - tlvEnd), "0 bytes", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
+    /* read key from DER (SPKI public key) */
+    keyData = xmlSecMSCngAppKeyReadPubKeyFromDer(data, dataSize);
+    if(keyData == NULL) {
+        xmlSecInternalError("xmlSecMSCngAppKeyReadPubKeyFromDer", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 

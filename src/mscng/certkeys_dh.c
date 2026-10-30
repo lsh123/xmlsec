@@ -33,9 +33,9 @@ int
 xmlSecMSCngKeyDataDuplicateBCryptDhPrivKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HANDLE* dst) {
     BCRYPT_ALG_HANDLE hDhAlg = NULL;
     DWORD cbPrivBlob = 0;
-    PUCHAR pbPrivBlob;
-    BCRYPT_KEY_HANDLE hDhAlgKey = NULL;
+    PUCHAR pbPrivBlob = NULL;
     NTSTATUS status;
+    int res = -1;
 
     xmlSecAssert2(src != NULL, -1);
     xmlSecAssert2(dst != NULL, -1);
@@ -46,37 +46,48 @@ xmlSecMSCngKeyDataDuplicateBCryptDhPrivKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HAN
     status = BCryptExportKey(src, NULL, BCRYPT_DH_PRIVATE_BLOB, NULL, 0, &cbPrivBlob, 0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptExportKey(DH priv)", NULL, status);
-        return(-1);
+        goto done;
     }
     pbPrivBlob = (PUCHAR)xmlMalloc(cbPrivBlob);
     if(pbPrivBlob == NULL) {
         xmlSecMallocError(cbPrivBlob, NULL);
-        return(-1);
+        goto done;
     }
     status = BCryptExportKey(src, NULL, BCRYPT_DH_PRIVATE_BLOB, pbPrivBlob, cbPrivBlob, &cbPrivBlob, 0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptExportKey(DH priv data)", NULL, status);
-        xmlSecMemCleanse(pbPrivBlob, cbPrivBlob);
-        xmlFree(pbPrivBlob);
-        return(-1);
+        goto done;
     }
+
+    /* import DH private key */
     status = BCryptOpenAlgorithmProvider(&hDhAlg, BCRYPT_DH_ALGORITHM, NULL, 0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptOpenAlgorithmProvider(DH priv dup)", NULL, status);
-        xmlSecMemCleanse(pbPrivBlob, cbPrivBlob);
-        xmlFree(pbPrivBlob);
-        return(-1);
+        goto done;
     }
-    status = BCryptImportKeyPair(hDhAlg, NULL, BCRYPT_DH_PRIVATE_BLOB, &hDhAlgKey, pbPrivBlob, cbPrivBlob, 0);
-    BCryptCloseAlgorithmProvider(hDhAlg, 0);
-    xmlSecMemCleanse(pbPrivBlob, cbPrivBlob);
-    xmlFree(pbPrivBlob);
+    status = BCryptImportKeyPair(hDhAlg, NULL, BCRYPT_DH_PRIVATE_BLOB, dst, pbPrivBlob, cbPrivBlob, 0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptImportKeyPair(DH priv dup)", NULL, status);
-        return(-1);
+        goto done;
     }
-    (*dst) = hDhAlgKey;
-    return(0);
+
+    /* success */
+    res = 0;
+
+done:
+    if (pbPrivBlob != NULL) {
+        xmlSecMemCleanse(pbPrivBlob, cbPrivBlob);
+        xmlFree(pbPrivBlob);
+    }
+    if (hDhAlg != NULL) {
+        status = BCryptCloseAlgorithmProvider(hDhAlg, 0);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptCloseAlgorithmProvider(DH priv dup)", NULL, status);
+            /* We ignore errors from closing the algorithm provider here. */
+        }
+    }
+
+    return(res);
 }
 
 /* DER parsing helpers */
@@ -147,6 +158,54 @@ xmlSecMSCngDerDecodeInteger(const xmlSecByte* p, const xmlSecByte* end, DWORD* p
 
     *pLen = len;
     return(val);
+}
+
+/* Compare big-endian unsigned integers, ignoring leading zero bytes.
+ * Returns -1, 0, or 1 (like memcmp). */
+int
+xmlSecMSCngDhCompareBigNums(const xmlSecByte* left, xmlSecSize leftSize,
+    const xmlSecByte* right, xmlSecSize rightSize) {
+    while((leftSize > 0) && (left[0] == 0)) {
+        ++left;
+        --leftSize;
+    }
+    while((rightSize > 0) && (right[0] == 0)) {
+        ++right;
+        --rightSize;
+    }
+    if(leftSize != rightSize) {
+        return((leftSize > rightSize) ? 1 : -1);
+    }
+    if(leftSize == 0) {
+        return(0);
+    }
+    return(memcmp(left, right, leftSize));
+}
+
+/* Validate a DH private exponent X: reject X == 0 (degenerate public key Y = 1)
+ * and X >= P (out of range). */
+static int
+xmlSecMSCngDhValidatePrivateExponent(const xmlSecByte* x, DWORD xLen,
+    const xmlSecByte* p, DWORD pLen) {
+    static const xmlSecByte zero[] = { 0x00 };
+    int cmp;
+
+    xmlSecAssert2(x != NULL, -1);
+    xmlSecAssert2(xLen > 0, -1);
+    xmlSecAssert2(p != NULL, -1);
+    xmlSecAssert2(pLen > 0, -1);
+
+    cmp = xmlSecMSCngDhCompareBigNums(x, xLen, zero, sizeof(zero));
+    if(cmp == 0) {
+        xmlSecInvalidDataError("DH private exponent X is zero", NULL);
+        return(-1);
+    }
+    cmp = xmlSecMSCngDhCompareBigNums(x, xLen, p, pLen);
+    if(cmp >= 0) {
+        xmlSecInvalidDataError("DH private exponent X is out of range", NULL);
+        return(-1);
+    }
+    return(0);
 }
 
 /* Parse Windows DH AlgorithmIdentifier parameters: SEQUENCE { INTEGER p, INTEGER g [, INTEGER q] }
@@ -878,10 +937,12 @@ xmlSecMSCngKeyDataDhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLen
         goto done;
     }
 
-    /* Note: the private exponent X is not range-validated here (no check that
-     * 1 <= X <= P-2). Degenerate values (X=0 or X=1) produce a degenerate
-     * public key (Y=1 or Y=G); a peer-side public-key check (Y >= 2) catches
-     * Y=1 at key-agreement time. */
+    /* Reject a degenerate or out-of-range private exponent (X = 0 or X >= P) */
+    ret = xmlSecMSCngDhValidatePrivateExponent(pX, pXLen, pP, pPLen);
+    if(ret < 0) {
+        goto done;
+    }
+
     /* Open DH algorithm provider (shared by all steps below) */
     status = BCryptOpenAlgorithmProvider(&hAlg, BCRYPT_DH_ALGORITHM, NULL, 0);
     if(status != STATUS_SUCCESS) {

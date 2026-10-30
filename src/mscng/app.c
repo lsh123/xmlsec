@@ -689,8 +689,8 @@ xmlSecMSCngIsPrivateKeyCert(PCCERT_CONTEXT cert, BOOL isPersistentKey) {
         DWORD dwDataLen = sizeof(ckc);
         /* Only the presence of CERT_KEY_CONTEXT_PROP_ID is checked here; the CNG key
          * context it points to is validated later by xmlSecMSCngKeyDataCertGetPrivkey()
-         * (which requires ckc.hNCryptKey != 0). A CAPI-only context cannot arise from the
-         * CNG PKCS12 import used by this backend.
+         * (which requires a CNG key spec and ckc.hNCryptKey != 0). A CAPI-only context
+         * cannot arise from the CNG PKCS12 import used by this backend.
          * See https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-cert_context_property_id */
         return CertGetCertificateContextProperty(cert, CERT_KEY_CONTEXT_PROP_ID, &ckc, &dwDataLen);
     }
@@ -897,7 +897,7 @@ cleanup:
         CertFreeCertificateContext(certDuplicate);
     }
     if(certStore != NULL) {
-        if(!CertCloseStore(certStore, 0)) {
+        if(!CertCloseStore(certStore, XMLSEC_CLOSE_STORE_FLAG)) {
             xmlSecMSCngLastError("CertCloseStore", NULL);
         }
     }

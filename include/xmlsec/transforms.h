@@ -267,6 +267,15 @@ typedef int             (*xmlSecTransformCtxPreExecuteCallback)         (xmlSecT
  */
 #define XMLSEC_TRANSFORMCTX_FLAGS_RELATIONSHIP_LEGACY           0x00000004
 
+/**
+ * @brief Allow empty (0-length) input for digest and signature transforms.
+ * @details By default digest and signature transforms reject empty (0-length) input
+ * with an error. If this flag is set then empty (0-length) input is allowed and
+ * digests of the empty string and signatures over the empty string are produced
+ * or verified as usual.
+ */
+#define XMLSEC_TRANSFORMCTX_FLAGS_ALLOW_EMPTY_INPUT             0x00000008
+
 
 /**
  * @brief The transform execution context.
@@ -391,6 +400,9 @@ struct _xmlSecTransform {
 
     /* transform flags (use uintptr_t to ensure struct size stays the same) */
     uintptr_t                           flags;  /**< the transform flags (eg user specified vs inserted by XMLSec). */
+
+    /* used for empty input checks */
+    xmlSecSize                          inTotalSize;  /**< the total size of the input binary data received by the transform so far. */
 
     /* reserved for the future */
     void*                               reserved0;  /**< reserved for the future. */

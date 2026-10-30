@@ -474,6 +474,9 @@ xmlSecDSigCtxProcessSignatureNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     if((dsigCtx->flags & XMLSEC_DSIG_FLAGS_USE_ASN1_SIGNATURE_VALUES) != 0) {
         dsigCtx->transformCtx.flags |= XMLSEC_TRANSFORMCTX_FLAGS_SUPPORT_ASN1_SIGNATURE_VALUES;
     }
+    if((dsigCtx->flags & XMLSEC_DSIG_FLAGS_ALLOW_EMPTY_INPUT) != 0) {
+        dsigCtx->transformCtx.flags |= XMLSEC_TRANSFORMCTX_FLAGS_ALLOW_EMPTY_INPUT;
+    }
 
     /* read node data */
     xmlSecAssert2(dsigCtx->id == NULL, -1);
@@ -1278,6 +1281,9 @@ xmlSecDSigReferenceCtxInitialize(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlSecDSi
     }
     if((dsigCtx->flags & XMLSEC_DSIG_FLAGS_RELATIONSHIP_LEGACY) != 0) {
         dsigRefCtx->transformCtx.flags |= XMLSEC_TRANSFORMCTX_FLAGS_RELATIONSHIP_LEGACY;
+    }
+    if((dsigCtx->flags & XMLSEC_DSIG_FLAGS_ALLOW_EMPTY_INPUT) != 0) {
+        dsigRefCtx->transformCtx.flags |= XMLSEC_TRANSFORMCTX_FLAGS_ALLOW_EMPTY_INPUT;
     }
     return(0);
 }

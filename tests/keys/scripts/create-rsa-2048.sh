@@ -25,6 +25,13 @@ if [ $? -ne 0 ]; then
     exit $?
 fi
 
+### Some libraries (e.g GCrypt) don't like the newer versions of DER formats. So we use
+### old (traditional, ASN1, etc) formats instead
+openssl rsa -inform PEM -outform DER -traditional -pubin -RSAPublicKey_out -in ${keyname}-pubkey.pem -out ${keyname}-pubkey-gcrypt.der
+if [ $? -ne 0 ]; then
+    exit $?
+fi
+
 ### Create certificate signed by second level CA
 create_certificate_from_private_key "${keyname}" "${gencert_options}"
 if [ $? -ne 0 ]; then

@@ -889,6 +889,18 @@ static xmlSecAppCmdLineParam relationshipLegacyParam = {
     NULL
 };
 
+static xmlSecAppCmdLineParam allowEmptyInputParam = {
+    xmlSecAppCmdLineTopicDSigCommon,
+    "--allow-empty-input",
+    NULL,
+    "--allow-empty-input"
+    "\n\tallow empty (0-length) input for digest and signature transforms. By default"
+    "\n\tdigest and signature transforms reject empty (0-length) input with an error.",
+    xmlSecAppCmdLineParamTypeFlag,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};
+
 
 #endif /* XMLSEC_NO_XMLDSIG */
 
@@ -1130,6 +1142,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &enableVisa3DHackParam,
     &enableAsn1SignaturesHackParam,
     &relationshipLegacyParam,
+    &allowEmptyInputParam,
 
 #ifndef XMLSEC_NO_HMAC
     &hmacMinOutputLenParam,
@@ -1981,6 +1994,9 @@ xmlSecAppPrepareDSigCtx(xmlSecDSigCtxPtr dsigCtx) {
     }
     if(xmlSecAppCmdLineParamIsSet(&relationshipLegacyParam)) {
         dsigCtx->flags |= XMLSEC_DSIG_FLAGS_RELATIONSHIP_LEGACY;
+    }
+    if(xmlSecAppCmdLineParamIsSet(&allowEmptyInputParam)) {
+        dsigCtx->flags |= XMLSEC_DSIG_FLAGS_ALLOW_EMPTY_INPUT;
     }
 
 #ifndef XMLSEC_NO_HMAC

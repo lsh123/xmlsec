@@ -1883,9 +1883,51 @@ xmlSecTransformPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
     return((transform->id->popXml)(transform, nodes, transformCtx));
 }
 
+/* returns 1 if the transform is a digest or signature method, 0 otherwise */
+static int
+xmlSecTransformIsDigestOrSignature(xmlSecTransformPtr transform) {
+    xmlSecAssert2(xmlSecTransformIsValid(transform), 0);
+
+    if((transform->id->usage & xmlSecTransformUsageDigestMethod) != 0) {
+        return(1);
+    }
+    if((transform->id->usage & xmlSecTransformUsageSignatureMethod) != 0) {
+        return(1);
+    }
+    return(0);
+}
+
+/* returns 1 if the input data is ok, 0 if the input is empty and not allowed,
+ * or a negative value if an error occurs. */
+static int
+xmlSecTransformCheckNonEmptyInput(xmlSecTransformPtr transform, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+
+    /* only digest and signature transforms are affected */
+    if(xmlSecTransformIsDigestOrSignature(transform) != 1) {
+        return(1);
+    }
+
+    /* empty input is allowed if the flag is set */
+    if((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_ALLOW_EMPTY_INPUT) != 0) {
+        return(1);
+    }
+
+    /* if the input is non empty we are good */
+    if(transform->inTotalSize > 0) {
+        return(1);
+    }
+
+    return(0);
+}
+
 /**
  * @brief Executes a transform (used by default push/pop methods).
  * @details Executes transform (used by default popBin/pushBin/popXml/pushXml methods).
+ * Empty (0-length) input for digest and signature transforms is rejected with
+ * an error unless the XMLSEC_TRANSFORMCTX_FLAGS_ALLOW_EMPTY_INPUT flag is set
+ * in the transform context.
  * @param transform the pointer to transform.
  * @param last the flag: if set to 1 then it's the last data chunk.
  * @param transformCtx the transform's chain processing context.
@@ -1894,9 +1936,24 @@ xmlSecTransformPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
  */
 int
 xmlSecTransformExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
+    int ret;
+
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(transform->id->execute != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
+
+    /* reject empty (0-length) input for digest and signature transforms
+     * (unless explicitly allowed via the transform context flags) */
+    if(last != 0) {
+        ret = xmlSecTransformCheckNonEmptyInput(transform, transformCtx);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecTransformCheckNonEmptyInput", xmlSecTransformGetName(transform));
+            return(-1);
+        } else if(ret == 0) {
+            xmlSecInvalidDataError("empty (0-length) input is not allowed for digest and signature transforms", xmlSecTransformGetName(transform));
+            return(-1);
+        }
+    }
 
     return((transform->id->execute)(transform, last, transformCtx));
 }
@@ -2143,6 +2200,13 @@ xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, const xmlSecByte* da
                 return(-1);
             }
 
+            /* keep track of the total input size received (saturated) */
+            if(transform->inTotalSize <= (XMLSEC_SIZE_MAX - chunkSize)) {
+                transform->inTotalSize += chunkSize;
+            } else {
+                transform->inTotalSize = XMLSEC_SIZE_MAX;
+            }
+
             dataSize -= chunkSize;
             data += chunkSize;
         }
@@ -2260,6 +2324,14 @@ xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
                         "size=" XMLSEC_SIZE_FMT, (inSize + chunkSize));
                     return(-1);
                 }
+
+                /* keep track of the total input size received (saturated) */
+                if(transform->inTotalSize <= (XMLSEC_SIZE_MAX - chunkSize)) {
+                    transform->inTotalSize += chunkSize;
+                } else {
+                    transform->inTotalSize = XMLSEC_SIZE_MAX;
+                }
+
                 final = 0; /* the previous transform returned some data */
             } else {
                 final = 1; /* no data returned from previous transform, we are done */

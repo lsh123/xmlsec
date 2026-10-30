@@ -215,6 +215,10 @@ xmlSecTransformIdsRegisterDefault(void) {
         xmlSecInternalError("xmlSecTransformIdsRegister(xmlSecTransformXPointerId)", NULL);
         return(-1);
     }
+    if(xmlSecTransformIdsRegister(xmlSecTransformXPointerLegacyId) < 0) {
+        xmlSecInternalError("xmlSecTransformIdsRegister(xmlSecTransformXPointerLegacyId)", NULL);
+        return(-1);
+    }
 
     if(xmlSecTransformIdsRegister(xmlSecTransformRelationshipId) < 0) {
         xmlSecInternalError("xmlSecTransformIdsRegister(xmlSecTransformRelationshipId)", NULL);

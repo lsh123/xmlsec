@@ -849,6 +849,17 @@ XMLSEC_EXPORT int               xmlSecTransformXPointerSetExpr          (xmlSecT
                                                                          const xmlChar* expr,
                                                                          xmlSecNodeSetType nodeSetType,
                                                                          xmlNodePtr hereNode);
+
+/**
+ * @brief Deprecated. The legacy (RFC 4051) XPointer transform klass.
+ * @details Deprecated. The legacy XPointer transform klass registered under the identifier
+ * <http://www.w3.org/2001/04/xmldsig-more/xptr>. It behaves identically to the
+ * XPointer transform (xmlSecTransformXPointerId) and exists for backward
+ * compatibility with documents that use the legacy identifier.
+ */
+#define xmlSecTransformXPointerLegacyId \
+        xmlSecTransformXPointerLegacyGetKlass()
+XMLSEC_EXPORT xmlSecTransformId xmlSecTransformXPointerLegacyGetKlass   (void);
 /**
  * @brief The Relationship transform klass.
  */

@@ -1416,6 +1416,17 @@ execDSigTest $res_success \
     "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin" \
     "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin"
 
+# the legacy (RFC 4051) XPointer transform identifier test
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/xpointer-hmac-legacy" \
+    "xpointer-legacy sha256 hmac-sha256" \
+    "hmac" \
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin" \
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin"
+
+# the XPointer transform identifier from draft-rfc9231bis-xmlsec-uris test
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/xpointer-hmac" \

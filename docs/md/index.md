@@ -24,7 +24,9 @@ see the Copyright file in the distribution for details.
   - (xmlsec-core, **not backward compatible**) Key agreement methods with `ConcatKDF` key derivation
     method now fall back to the KDF digest output size as the derived key length when the uplevel
     key requirements do not specify a key size.
-  - (xmlsec-mscng) Added support for ML-DSA and ML-KEM (requires Windows 11 version 25H2 or Windows Server 2025).
+  - (xmlsec-core) Fixed the XPointer transform identifier, the original one is kept as deprecated and
+    will be removed in the future.
+  - (xmlsec-mscng) Added support for ML-DSA (requires Windows 11 version 25H2 or Windows Server 2025).
   - (xmlsec-build, **not backward compatible**) Disabled Triple DES and Triple DES KeyWrap
     by default (use `--enable-des` option to re-enable both).
   - (xmlsec-docs) GOST-R3410-2001 algorithm is marked as "deprecated" (already disabled by default).

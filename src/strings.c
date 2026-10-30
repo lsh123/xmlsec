@@ -29,7 +29,10 @@ const xmlChar xmlSecEncNs[]                     = "http://www.w3.org/2001/04/xml
 const xmlChar xmlSecEnc11Ns[]                   = "http://www.w3.org/2009/xmlenc11#";
 const xmlChar xmlSecXPathNs[]                   = "http://www.w3.org/TR/1999/REC-xpath-19991116";
 const xmlChar xmlSecXPath2Ns[]                  = "http://www.w3.org/2002/06/xmldsig-filter2";
-const xmlChar xmlSecXPointerNs[]                = "http://www.w3.org/2001/04/xmldsig-more/xptr";
+/* the XPointer transform identifier from draft-rfc9231bis-xmlsec-uris (Section 3.5.1) */
+const xmlChar xmlSecXPointerNs[]                = "http://www.w3.org/2001/04/xmldsig-more#xptr";
+/* the legacy (RFC 4051) XPointer transform identifier, kept for backward compatibility */
+const xmlChar xmlSecXPointerLegacyNs[]          = "http://www.w3.org/2001/04/xmldsig-more/xptr";
 const xmlChar xmlSecDSig2021MoreNs[]            = "http://www.w3.org/2021/04/xmldsig-more#";
 
 /******************************************************************************
@@ -888,6 +891,7 @@ const xmlChar xmlSecXPath2FilterSubtract[]      = "subtract";
 const xmlChar xmlSecXPath2FilterUnion[]         = "union";
 
 const xmlChar xmlSecNameXPointer[]              = "xpointer";
+const xmlChar xmlSecNameXPointerLegacy[]        = "xpointer-legacy";
 const xmlChar xmlSecNodeXPointer[]              = "XPointer";
 
 /******************************************************************************

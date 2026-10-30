@@ -44,8 +44,10 @@ XML Security library supports the following features as defined in
 | [Camellia-CBC-128](https://www.ietf.org/rfc/rfc9231.html#section-2.6.2) | Optional | Yes | Yes | Yes | No | No | No |
 | [Camellia-CBC-192](https://www.ietf.org/rfc/rfc9231.html#section-2.6.2) | Optional | Yes | Yes | Yes | No | No | No |
 | [Camellia-CBC-256](https://www.ietf.org/rfc/rfc9231.html#section-2.6.2) | Optional | Yes | Yes | Yes | No | No | No |
+| [SEED-128-CBC](https://www.ietf.org/rfc/rfc9231.html#section-2.6.5) | Optional | No | No | No | No | No | No |
 | [ChaCha20](https://www.w3.org/2021/04/xmldsig-more#chacha20) | Optional (use is DISCOURAGED) | Yes | No | Yes | No | No | No |
 | [ChaCha20-Poly1305](https://www.w3.org/2021/04/xmldsig-more#chacha20poly1305) | Optional | Yes | Yes | Yes | No | No | No |
+| [ARCFOUR](https://www.ietf.org/rfc/rfc9231.html#section-2.6.1) | Optional (use is DISCOURAGED) | No | No | No | No | No | No |
 | [Stream Encryption Algorithms](https://www.w3.org/TR/xmlenc-core1/#sec-Alg-Stream) [(11)](#stream-algorithms) | Optional | Yes | Yes | Yes | No | No | No |
 | **Key Derivation** | | | | | | | |
 | [ConcatKDF](https://www.w3.org/TR/xmlenc-core1/#sec-ConcatKDF) | Required | Yes [(3)](#openssl3-required) [(6)](#concatkdf) | Yes [(6)](#concatkdf) | Yes [(6)](#concatkdf) | Yes [(6)](#concatkdf) [(5)](#new-windows-required) | No | No |
@@ -58,14 +60,17 @@ XML Security library supports the following features as defined in
 | [RSA-OAEP with MGF1-SHA256](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Optional | Yes | Yes | Yes [(2)](#rsa-oaep-same-algo) | Yes [(2)](#rsa-oaep-same-algo) | No | Yes [(2)](#rsa-oaep-same-algo) |
 | [RSA-OAEP with MGF1-SHA384](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Optional | Yes | Yes | Yes [(2)](#rsa-oaep-same-algo) | Yes [(2)](#rsa-oaep-same-algo) | No | Yes [(2)](#rsa-oaep-same-algo) |
 | [RSA-OAEP with MGF1-SHA512](https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) | Optional | Yes | Yes | Yes [(2)](#rsa-oaep-same-algo) | Yes [(2)](#rsa-oaep-same-algo) | No | Yes [(2)](#rsa-oaep-same-algo) |
+| [Generic Hybrid Key Transport](https://www.w3.org/TR/xmlsec-generic-hybrid/) | Optional | No | No | No | No | No | No |
 | **Symmetric Key Wrap** | | | | | | | |
 | [Triple DES Key Wrap](https://www.w3.org/TR/xmlenc-core1/#sec-kw-tripledes) | DEPRECATED | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) |
 | [AES-128 KeyWrap](https://www.w3.org/TR/xmlenc-core1/#sec-kw-aes) | Required | Yes | Yes | Yes | Yes | Yes | Yes |
 | [AES-192 KeyWrap](https://www.w3.org/TR/xmlenc-core1/#sec-kw-aes) | Optional | Yes | Yes | Yes | Yes | Yes | Yes |
 | [AES-256 KeyWrap](https://www.w3.org/TR/xmlenc-core1/#sec-kw-aes) | Required | Yes | Yes | Yes | Yes | Yes | Yes |
+| [AES KeyWrap with Padding (128, 192, 256 bit)](https://www.w3.org/TR/xmlenc-core1/#sec-kw-aes-with-pad) | Optional | No | No | No | No | No | No |
 | [Camellia-128 KeyWrap](https://www.ietf.org/rfc/rfc9231.html#section-2.6.3) | Optional | Yes | Yes | Yes | No | No | No |
 | [Camellia-192 KeyWrap](https://www.ietf.org/rfc/rfc9231.html#section-2.6.3) | Optional | Yes | Yes | Yes | No | No | No |
 | [Camellia-256 KeyWrap](https://www.ietf.org/rfc/rfc9231.html#section-2.6.3) | Optional | Yes | Yes | Yes | No | No | No |
+| [SEED-128 KeyWrap](https://www.ietf.org/rfc/rfc9231.html#section-2.6.6) | Optional | No | No | No | No | No | No |
 | **Key Agreement** | | | | | | | |
 | [Elliptic Curve Diffie-Hellman (ECDH)](https://www.w3.org/TR/xmlenc-core1/#sec-ECDH-ES) | Required | Yes [(3)](#openssl3-required) | Yes | Yes | Yes [(5)](#new-windows-required) | No | No |
 | [XDH Key Agreement](https://www.w3.org/2021/04/xmldsig-more) (X25519, X448) | Optional | Yes [(3)](#openssl3-required) | Yes [(9)](#x25519-only) | Yes | Yes [(9)](#x25519-only) | No | No |
@@ -73,6 +78,11 @@ XML Security library supports the following features as defined in
 | [Diffie-Hellman with explicit KDF](https://www.w3.org/TR/xmlenc-core1/#sec-DHKeyAgreement) | Optional | Yes [(3)](#openssl3-required) [(12)](#openssl-dh-key-formats) | No | No | Yes [(8)](#dhx-only) | No | No |
 | **Key Encapsulation** |  | | | | | | |
 | [ML-KEM 512, 768, 1024](https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/)| EXPERIMENTAL | Yes [(1)](#feature-disabled) [(10)](#openssl35-required) | No | No | Yes [(1)](#feature-disabled) [(5)](#new-windows-required) | No | No |
+| [PSEC-KEM](https://www.ietf.org/rfc/rfc9231.html#section-2.6.4) | Optional | No | No | No | No | No | No |
+| [RSAES-KEM](https://www.ietf.org/rfc/rfc9231.html#section-2.6.4) | Optional | No | No | No | No | No | No |
+| [ECIES-KEM](https://www.ietf.org/rfc/rfc9231.html#section-2.6.4) | Optional | No | No | No | No | No | No |
+| [FrodoKEM](https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/) (640, 976, 1344; AES and SHAKE variants) | EXPERIMENTAL | No | No | No | No | No | No |
+| [eFrodoKEM](https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/) (640, 976, 1344; AES and SHAKE variants) | EXPERIMENTAL | No | No | No | No | No | No |
 | **Message Digest** | | | | | | | |
 | [Message Digest Algorithms](https://www.w3.org/TR/xmlenc-core1/#sec-Alg-MessageDigest) | See [XMLDsig Report](xmldsig.md) | | | | | | |
 

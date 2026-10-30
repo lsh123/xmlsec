@@ -575,6 +575,11 @@ xmlSecMSCngKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509Da
     xmlSecAssert2(ctx != NULL, NULL);
     xmlSecAssert2(ctx->certStoreCtx.hCollection != NULL, NULL);
 
+    /* only public or private keys can be created from a certificate */
+    if(!(keyInfoCtx->keyReq.keyType & (xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate))) {
+        return(NULL);
+    }
+
     /* init find certs */
     ret = xmlSecMSCngX509FindCertCtxInitializeFromValue(&findCertCtx, x509Data);
     if (ret < 0) {

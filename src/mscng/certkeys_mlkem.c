@@ -148,24 +148,22 @@ xmlSecMSCngKeyDataMlKemImportPublicKey(const xmlSecByte* pubKeyBytes, DWORD pubK
 
     pszParamset = xmlSecMSCngMlKemGetParamsetByPkSize(pubKeyLen);
     if(pszParamset == NULL) {
-        xmlSecInvalidSizeDataError("ML-KEM public key size", pubKeyLen,
-            "800, 1184 or 1568 bytes", NULL);
-        return(0);
+        xmlSecInvalidSizeDataError("ML-KEM public key size", pubKeyLen, "800, 1184 or 1568 bytes", NULL);
+        goto done;
     }
 
-    pbBlob = xmlSecMSCngMlKemBuildBlob(BCRYPT_MLKEM_PUBLIC_MAGIC, pszParamset,
-        pubKeyBytes, pubKeyLen, &cbBlob);
+    pbBlob = xmlSecMSCngMlKemBuildBlob(BCRYPT_MLKEM_PUBLIC_MAGIC, pszParamset, pubKeyBytes, pubKeyLen, &cbBlob);
     if(pbBlob == NULL) {
-        return(0);
+        goto done;
     }
 
-    status = BCryptImportKeyPair(BCRYPT_MLKEM_ALG_HANDLE, NULL,
-        BCRYPT_MLKEM_PUBLIC_BLOB, &hKey, pbBlob, cbBlob, 0);
+    status = BCryptImportKeyPair(BCRYPT_MLKEM_ALG_HANDLE, NULL, BCRYPT_MLKEM_PUBLIC_BLOB, &hKey, pbBlob, cbBlob, 0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptImportKeyPair(ML-KEM pub)", NULL, status);
-        hKey = NULL;
+        goto done;
     }
 
+done:
     if(pbBlob != NULL) {
         xmlFree(pbBlob);
     }
@@ -198,22 +196,21 @@ xmlSecMSCngKeyDataMlKemImportPrivateKey(const xmlSecByte* privKeyBytes, DWORD pr
     if(pszParamset == NULL) {
         xmlSecInvalidSizeDataError("ML-KEM secret key size", privKeyLen,
             "1632, 2400 or 3168 bytes", NULL);
-        return(0);
+        goto done;
     }
 
-    pbBlob = xmlSecMSCngMlKemBuildBlob(BCRYPT_MLKEM_PRIVATE_MAGIC, pszParamset,
-        privKeyBytes, privKeyLen, &cbBlob);
+    pbBlob = xmlSecMSCngMlKemBuildBlob(BCRYPT_MLKEM_PRIVATE_MAGIC, pszParamset, privKeyBytes, privKeyLen, &cbBlob);
     if(pbBlob == NULL) {
-        return(0);
+        goto done;
     }
 
-    status = BCryptImportKeyPair(BCRYPT_MLKEM_ALG_HANDLE, NULL,
-        BCRYPT_MLKEM_PRIVATE_BLOB, &hKey, pbBlob, cbBlob, 0);
+    status = BCryptImportKeyPair(BCRYPT_MLKEM_ALG_HANDLE, NULL, BCRYPT_MLKEM_PRIVATE_BLOB, &hKey, pbBlob, cbBlob, 0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptImportKeyPair(ML-KEM priv)", NULL, status);
-        hKey = NULL;
+        goto done;
     }
 
+done:
     if(pbBlob != NULL) {
         xmlSecMemCleanse(pbBlob, cbBlob);
         xmlFree(pbBlob);
@@ -233,42 +230,50 @@ xmlSecMSCngKeyDataMlKemImportPrivateKey(const xmlSecByte* privKeyBytes, DWORD pr
  */
 int
 xmlSecMSCngKeyDataDuplicateMlKemPubKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HANDLE* dst) {
-    BCRYPT_KEY_HANDLE hKey = NULL;
     PUCHAR pbBlob = NULL;
     DWORD cbBlob = 0;
     NTSTATUS status;
+    int res = -1;
 
     xmlSecAssert2(src != NULL, -1);
     xmlSecAssert2(dst != NULL, -1);
 
     (*dst) = NULL;
 
+    /* export the key */
     status = BCryptExportKey(src, NULL, BCRYPT_MLKEM_PUBLIC_BLOB, NULL, 0, &cbBlob, 0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptExportKey(ML-KEM pub dup, size)", NULL, status);
-        return(-1);
+        goto done;
     }
     pbBlob = (PUCHAR)xmlMalloc(cbBlob);
     if(pbBlob == NULL) {
         xmlSecMallocError(cbBlob, NULL);
-        return(-1);
+        goto done;
     }
     status = BCryptExportKey(src, NULL, BCRYPT_MLKEM_PUBLIC_BLOB, pbBlob, cbBlob, &cbBlob, 0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptExportKey(ML-KEM pub dup, data)", NULL, status);
-        xmlFree(pbBlob);
-        return(-1);
-    }
-    status = BCryptImportKeyPair(BCRYPT_MLKEM_ALG_HANDLE, NULL,
-        BCRYPT_MLKEM_PUBLIC_BLOB, &hKey, pbBlob, cbBlob, 0);
-    xmlFree(pbBlob);
-    if(status != STATUS_SUCCESS) {
-        xmlSecMSCngNtError("BCryptImportKeyPair(ML-KEM pub dup)", NULL, status);
-        return(-1);
+        goto done;
     }
 
-    (*dst) = hKey;
-    return(0);
+    /* import the key */
+    status = BCryptImportKeyPair(BCRYPT_MLKEM_ALG_HANDLE, NULL, BCRYPT_MLKEM_PUBLIC_BLOB, dst, pbBlob, cbBlob, 0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptImportKeyPair(ML-KEM pub dup)", NULL, status);
+        goto done;
+    }
+
+    /* success */
+    res = 0;
+
+done:
+    if(pbBlob != NULL) {
+        xmlSecMemCleanse(pbBlob, cbBlob);
+        xmlFree(pbBlob);
+    }
+
+    return(res);
 }
 
 /**
@@ -283,46 +288,52 @@ xmlSecMSCngKeyDataDuplicateMlKemPubKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HANDLE*
  */
 int
 xmlSecMSCngKeyDataDuplicateMlKemPrivKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HANDLE* dst) {
-    BCRYPT_KEY_HANDLE hKey = NULL;
     PUCHAR pbBlob = NULL;
     DWORD cbBlob = 0;
     DWORD cbBlobAlloc = 0;
     NTSTATUS status;
+    int res = -1;
 
     xmlSecAssert2(src != NULL, -1);
     xmlSecAssert2(dst != NULL, -1);
 
     (*dst) = NULL;
 
+    /* export the private key */
     status = BCryptExportKey(src, NULL, BCRYPT_MLKEM_PRIVATE_BLOB, NULL, 0, &cbBlob, 0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptExportKey(ML-KEM priv dup, size)", NULL, status);
-        return(-1);
+        goto done;
     }
     pbBlob = (PUCHAR)xmlMalloc(cbBlob);
     if(pbBlob == NULL) {
         xmlSecMallocError(cbBlob, NULL);
-        return(-1);
+        goto done;
     }
     cbBlobAlloc = cbBlob;
+
     status = BCryptExportKey(src, NULL, BCRYPT_MLKEM_PRIVATE_BLOB, pbBlob, cbBlobAlloc, &cbBlob, 0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptExportKey(ML-KEM priv dup, data)", NULL, status);
-        xmlSecMemCleanse(pbBlob, cbBlobAlloc);
-        xmlFree(pbBlob);
-        return(-1);
-    }
-    status = BCryptImportKeyPair(BCRYPT_MLKEM_ALG_HANDLE, NULL,
-        BCRYPT_MLKEM_PRIVATE_BLOB, &hKey, pbBlob, cbBlob, 0);
-    xmlSecMemCleanse(pbBlob, cbBlobAlloc);
-    xmlFree(pbBlob);
-    if(status != STATUS_SUCCESS) {
-        xmlSecMSCngNtError("BCryptImportKeyPair(ML-KEM priv dup)", NULL, status);
-        return(-1);
+        goto done;
     }
 
-    (*dst) = hKey;
-    return(0);
+    /* import the private key */
+    status = BCryptImportKeyPair(BCRYPT_MLKEM_ALG_HANDLE, NULL, BCRYPT_MLKEM_PRIVATE_BLOB, dst, pbBlob, cbBlob, 0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptImportKeyPair(ML-KEM priv dup)", NULL, status);
+        goto done;
+    }
+
+    /* success */
+    res = 0;
+
+done:
+    if(pbBlob != NULL) {
+        xmlSecMemCleanse(pbBlob, cbBlobAlloc);
+        xmlFree(pbBlob);
+    }
+    return(res);
 }
 
 /**
@@ -482,6 +493,13 @@ xmlSecMSCngKeyDataMlKemReadFromPkcs8Der(const xmlSecByte* derData, DWORD derData
     }
     pPos += firstLen;
 
+    /* require at least a tag and a length byte to remain, so the tag read below
+     * cannot run past the end of the PrivateKey field */
+    if((DWORD)(pInner + innerLen - pPos) < 2) {
+        xmlSecInternalError("ML-KEM PKCS8: PrivateKey field is truncated", NULL);
+        goto done;
+    }
+
     /* second OCTET STRING: the full secret key */
     if(*pPos != 0x04) {
         xmlSecInternalError("ML-KEM PKCS8: expected OCTET STRING for the secret key", NULL);
@@ -525,8 +543,7 @@ xmlSecMSCngKeyDataMlKemReadFromPkcs8Der(const xmlSecByte* derData, DWORD derData
         xmlSecMSCngNtError("BCryptExportKey(ML-KEM pub from priv, data)", NULL, status);
         goto done;
     }
-    status = BCryptImportKeyPair(BCRYPT_MLKEM_ALG_HANDLE, NULL,
-        BCRYPT_MLKEM_PUBLIC_BLOB, &hPubKey, pbPubBlob, cbPubBlob, 0);
+    status = BCryptImportKeyPair(BCRYPT_MLKEM_ALG_HANDLE, NULL, BCRYPT_MLKEM_PUBLIC_BLOB, &hPubKey, pbPubBlob, cbPubBlob, 0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptImportKeyPair(ML-KEM pub from priv)", NULL, status);
         goto done;

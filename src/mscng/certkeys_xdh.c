@@ -83,7 +83,6 @@ xmlSecMSCngKeyDataXdhImportPublicKey(const xmlSecByte* pubKeyBytes, DWORD pubKey
     status = BCryptImportKeyPair(hAlg, NULL, BCRYPT_ECCPUBLIC_BLOB, &hKey, pbBlob, cbBlob, 0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptImportKeyPair(X25519 pub)", NULL, status);
-        hKey = NULL;
         goto done;
     }
 
@@ -114,73 +113,67 @@ xmlSecMSCngKeyDataDuplicateBCryptXdhPrivKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HA
     DWORD cbPrivBlob = 0;
     DWORD cbPrivBlobAlloc = 0;
     PUCHAR pbPrivBlob = NULL;
-    BCRYPT_KEY_HANDLE hKey = NULL;
     NTSTATUS status;
+    int res = -1;
 
     xmlSecAssert2(src != NULL, -1);
     xmlSecAssert2(dst != NULL, -1);
 
-    *dst = NULL;
+    (*dst) = NULL;
 
     /* export X25519 private key blob */
     status = BCryptExportKey(src, NULL, BCRYPT_ECCPRIVATE_BLOB, NULL, 0, &cbPrivBlob, 0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptExportKey(X25519 priv, size)", NULL, status);
-        return(-1);
+        goto done;
     }
     pbPrivBlob = (PUCHAR)xmlMalloc(cbPrivBlob);
     if(pbPrivBlob == NULL) {
         xmlSecMallocError(cbPrivBlob, NULL);
-        return(-1);
+        goto done;
     }
     cbPrivBlobAlloc = cbPrivBlob;
+
     status = BCryptExportKey(src, NULL, BCRYPT_ECCPRIVATE_BLOB, pbPrivBlob, cbPrivBlobAlloc, &cbPrivBlob, 0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptExportKey(X25519 priv, data)", NULL, status);
-        xmlSecMemCleanse(pbPrivBlob, cbPrivBlobAlloc);
-        xmlFree(pbPrivBlob);
-        return(-1);
+        goto done;
     }
 
     /* Open ECDH provider with Curve25519 and re-import */
     status = BCryptOpenAlgorithmProvider(&hAlg, BCRYPT_ECDH_ALGORITHM, NULL, 0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptOpenAlgorithmProvider(X25519 priv dup)", NULL, status);
-        xmlSecMemCleanse(pbPrivBlob, cbPrivBlobAlloc);
-        xmlFree(pbPrivBlob);
-        return(-1);
+        goto done;
     }
-    status = BCryptSetProperty(hAlg, BCRYPT_ECC_CURVE_NAME,
-        (PUCHAR)BCRYPT_ECC_CURVE_25519, sizeof(BCRYPT_ECC_CURVE_25519), 0);
+    status = BCryptSetProperty(hAlg, BCRYPT_ECC_CURVE_NAME, (PUCHAR)BCRYPT_ECC_CURVE_25519, sizeof(BCRYPT_ECC_CURVE_25519), 0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptSetProperty(curve25519 priv dup)", NULL, status);
+        goto done;
+    }
+
+    status = BCryptImportKeyPair(hAlg, NULL, BCRYPT_ECCPRIVATE_BLOB, dst, pbPrivBlob, cbPrivBlob, 0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptImportKeyPair(X25519 priv dup)", NULL, status);
+        goto done;
+    }
+
+    /* success  */
+    res = 0;
+
+done:
+    if(pbPrivBlob != NULL) {
+        xmlSecMemCleanse(pbPrivBlob, cbPrivBlobAlloc);
+        xmlFree(pbPrivBlob);
+    }
+    if(hAlg != NULL) {
         status = BCryptCloseAlgorithmProvider(hAlg, 0);
         if(status != STATUS_SUCCESS) {
             xmlSecMSCngNtError("BCryptCloseAlgorithmProvider", NULL, status);
             /* ignore error */
         }
-        xmlSecMemCleanse(pbPrivBlob, cbPrivBlobAlloc);
-        xmlFree(pbPrivBlob);
-        return(-1);
     }
-
-    status = BCryptImportKeyPair(hAlg, NULL, BCRYPT_ECCPRIVATE_BLOB, &hKey, pbPrivBlob, cbPrivBlob, 0);
-    {
-        NTSTATUS closeStatus;
-        closeStatus = BCryptCloseAlgorithmProvider(hAlg, 0);
-        if(closeStatus != STATUS_SUCCESS) {
-            xmlSecMSCngNtError("BCryptCloseAlgorithmProvider", NULL, closeStatus);
-            /* ignore error */
-        }
-    }
-    xmlSecMemCleanse(pbPrivBlob, cbPrivBlobAlloc);
-    xmlFree(pbPrivBlob);
-    if(status != STATUS_SUCCESS) {
-        xmlSecMSCngNtError("BCryptImportKeyPair(X25519 priv dup)", NULL, status);
-        return(-1);
-    }
-    *dst = hKey;
-    return(0);
+    return(res);
 }
 
 /**
@@ -461,15 +454,18 @@ xmlSecMSCngKeyDataXdhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLe
             CRYPT_DECODE_ALLOC_FLAG | CRYPT_DECODE_NOCOPY_FLAG,
             NULL, &pki, &pkiLen)
     ) {
-        /* silently fail so callers can try other formats */
+        xmlSecMSCngLastError("CryptDecodeObjectEx(PKCS8)", NULL);
         goto done;
     }
     if(pki == NULL) {
+        xmlSecInternalError("CryptDecodeObjectEx returned NULL", NULL);
         goto done;
     }
     /* Must be X25519 OID "1.3.101.110" */
     if(pki->Algorithm.pszObjId == NULL || strcmp(pki->Algorithm.pszObjId, szOID_X25519) != 0) {
-        goto done;  /* not an X25519 key - silent fail */
+        /* not an X25519 key - fail so callers can try other formats */
+        xmlSecInternalError("X25519 PKCS8: unexpected algorithm OID", NULL);
+        goto done;
     }
 
     /* PrivateKey field (RFC 8410): outer OCTET STRING wraps inner CurvePrivateKey ::= OCTET STRING */

@@ -218,9 +218,10 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
     xmlSecMSCngRsaPkcs1OaepCtxPtr ctx;
     xmlSecBufferPtr in, out;
     xmlSecSize inSize, outSize;
-    xmlSecSize keySize;
+    xmlSecSize keyBits, keySize;
     BCRYPT_KEY_HANDLE hPubKey;
     NCRYPT_KEY_HANDLE hPrivKey;
+    xmlSecByte dummy = 0;
     DWORD dwInSize, dwOutSize, dwOutLen;
     xmlSecByte * outBuf;
     xmlSecByte * inBuf;
@@ -236,7 +237,12 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->data != NULL, -1);
 
-    keySize = xmlSecKeyDataGetSize(ctx->data) / 8;
+    keyBits = xmlSecKeyDataGetSize(ctx->data);
+    if((keyBits % 8) != 0) {
+        xmlSecInvalidSizeNotMultipleOfError("Key size", keyBits, (xmlSecSize)8, xmlSecTransformGetName(transform));
+        return(-1);
+    }
+    keySize = keyBits / 8;
     xmlSecAssert2(keySize > 0, -1);
 
     in = &(transform->inBuf);
@@ -247,12 +253,10 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
     xmlSecAssert2(outSize == 0, -1);
 
     /* the encoded size is equal to the key's size so we could not
-     * process more than that. For encryption the input must be non-empty (it is the
-     * key or hash to wrap, or the data to encrypt); the public API
-     * xmlSecEncCtxBinaryEncrypt() permits a zero-size input, so this is checked
-     * explicitly, consistent with the OpenSSL backend. Decryption is guarded by the
-     * inSize != keySize check below. */
-    if((transform->operation == xmlSecTransformOperationEncrypt) && ((inSize == 0) || (inSize >= keySize))) {
+     * process more than that. An empty input is allowed for encryption,
+     * matching the OpenSSL and MSCrypto backends; decryption is guarded
+     * by the inSize != keySize check below. */
+    if((transform->operation == xmlSecTransformOperationEncrypt) && (inSize >= keySize)) {
         xmlSecInvalidSizeLessThanError("Input data", inSize, keySize,
             xmlSecTransformGetName(transform));
         return(-1);
@@ -272,6 +276,11 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
 
     /* get everything ready */
     inBuf = xmlSecBufferGetData(in);
+    if((transform->operation == xmlSecTransformOperationEncrypt) && (inSize == 0) && (inBuf == NULL)) {
+        /* BCryptEncrypt requires a non-NULL input pointer even for an
+         * empty message */
+        inBuf = &dummy;
+    }
     outBuf = xmlSecBufferGetData(out);
     dwOutLen = 0;
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwInSize, return(-1), xmlSecTransformGetName(transform));
@@ -450,6 +459,13 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         }
 
         outSize = dwOutLen;
+
+        /* wipe the tail of the output buffer that held the raw OAEP-decoded
+         * block; only the first 'outSize' bytes contain the recovered
+         * plaintext (CEK) */
+        if (keySize > outSize) {
+            xmlSecMemCleanse(outBuf + outSize, keySize - outSize);
+        }
     }
 
     ret = xmlSecBufferSetSize(out, outSize);

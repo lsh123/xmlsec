@@ -1330,8 +1330,13 @@ xmlSecMSCngX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, xml
     /* retrieve X509 data and get key cert */
     x509Data = xmlSecKeyGetData(key, xmlSecMSCngKeyDataX509Id);
     if (x509Data == NULL) {
+        /* policy note (matches the OpenSSL backend): a key without the X509
+         * key-data component is an internal error (-1) while a component
+         * without a key cert is "not verified" (0). Both fail closed; the
+         * distinction reflects that this function is only expected to run for
+         * keys that carry X509 data. */
         xmlSecInternalError("xmlSecKeyGetData(xmlSecMSCngKeyDataX509Id)", xmlSecKeyDataStoreGetName(store));
-        return(0); /* key cannot be verified w/o key cert */
+        return(-1);
     }
     keyCert = xmlSecMSCngKeyDataX509GetKeyCert(x509Data);
     if (keyCert == NULL) {
@@ -1416,9 +1421,26 @@ xmlSecMSCngX509StoreVerifyCrl(xmlSecKeyDataStorePtr store, PCCRL_CONTEXT crl,
             CRYPT_VERIFY_CERT_SIGN_ISSUER_CERT, (void*)issuerCert,
             0, NULL);
         if (verified == TRUE) {
-            CertFreeCertificateContext(issuerCert);
-            issuerCert = NULL;
-            break;
+            /* verify that the issuer cert itself is valid (time) and chains
+             * to a trusted root, matching the untrusted-store path below; do
+             * not check for revocation while verifying the issuer cert to
+             * avoid circular dependency */
+            ret = xmlSecMSCngX509StoreVerifyCertificateChain(issuerCert,
+                time, ctx->trusted, ctx->untrusted, ctx->untrusted, NULL, 0);
+            if (ret < 0) {
+                xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateChain", NULL);
+                CertFreeCertificateContext(issuerCert);
+                return(-1);
+            }
+            if (ret == 1) {
+                verified = TRUE;
+                CertFreeCertificateContext(issuerCert);
+                issuerCert = NULL;
+                break;
+            }
+            /* issuer cert failed chain verification; try the next matching
+             * cert (the next CertFindCertificateInStore call frees issuerCert) */
+            verified = FALSE;
         }
         /* try next matching cert; CertFindCertificateInStore frees issuerCert
          * (see https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certfindcertificateinstore) */

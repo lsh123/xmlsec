@@ -185,10 +185,52 @@ xmlSecMSCngHmacFinalize(xmlSecTransformPtr transform) {
     memset(ctx, 0, sizeof(xmlSecMSCngHmacCtx));
 }
 
+/* Returns the full digest size in bits for the given MSCng HMAC transform ID,
+ * or -1 if the ID is not a known MSCng HMAC transform. */
+static int
+xmlSecMSCngHmacDigestSizeInBits(xmlSecTransformPtr transform) {
+
+#ifndef XMLSEC_NO_MD5
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformHmacMd5Id)) {
+        return(128);
+    } else
+#endif /* XMLSEC_NO_MD5 */
+
+#ifndef XMLSEC_NO_SHA1
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformHmacSha1Id)) {
+        return(160);
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformHmacSha256Id)) {
+        return(256);
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformHmacSha384Id)) {
+        return(384);
+    } else
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformHmacSha512Id)) {
+        return(512);
+    } else
+#endif /* XMLSEC_NO_SHA512 */
+
+    /* not found */
+    {
+        return(-1);
+    }
+}
+
 static int
 xmlSecMSCngHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
                         xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecMSCngHmacCtxPtr ctx;
+    int dgstSizeInBits;
     int ret;
 
     xmlSecAssert2(xmlSecMSCngHmacCheckId(transform), -1);
@@ -202,6 +244,21 @@ xmlSecMSCngHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     ret = xmlSecTransformHmacReadOutputBitsSize(node, ctx->dgstSizeInBits, &ctx->dgstSizeInBits);
     if (ret < 0) {
         xmlSecInternalError("xmlSecTransformHmacReadOutputBitsSize()",
+            xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
+    /* reject an output length that exceeds the full digest size of the
+     * selected HMAC algorithm at node-read time; previously this was only
+     * caught later in xmlSecMSCngHmacSetKey */
+    dgstSizeInBits = xmlSecMSCngHmacDigestSizeInBits(transform);
+    if(dgstSizeInBits < 0) {
+        xmlSecInternalError("xmlSecMSCngHmacDigestSizeInBits", xmlSecTransformGetName(transform));
+        return(-1);
+    }
+    if((ctx->dgstSizeInBits != 0) && (ctx->dgstSizeInBits > (xmlSecSize)dgstSizeInBits)) {
+        xmlSecInvalidSizeMoreThanError("HMAC output length (bits)",
+            ctx->dgstSizeInBits, (xmlSecSize)dgstSizeInBits,
             xmlSecTransformGetName(transform));
         return(-1);
     }

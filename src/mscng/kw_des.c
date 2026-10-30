@@ -77,9 +77,9 @@ xmlSecMSCngKWDes3Sha1(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSe
     BCRYPT_ALG_HANDLE hAlg = NULL;
     BCRYPT_HASH_HANDLE hHash = NULL;
     PBYTE pbHashObject = NULL;
-    DWORD cbHashObject;
+    DWORD cbHashObject = 0;
     PBYTE pbHash = NULL;
-    DWORD cbHash;
+    DWORD cbHash = 0;
     DWORD cbData;
     DWORD dwInSize;
     int res = -1;
@@ -200,10 +200,14 @@ done:
     }
 
     if(pbHash != NULL) {
+        /* wipe the digest (it contains the checksum over the wrapped key)
+         * before releasing the buffer */
+        xmlSecMemCleanse(pbHash, cbHash);
         xmlFree(pbHash);
     }
 
     if(pbHashObject != NULL) {
+        xmlSecMemCleanse(pbHashObject, cbHashObject);
         xmlFree(pbHashObject);
     }
 

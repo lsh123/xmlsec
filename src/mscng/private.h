@@ -112,8 +112,12 @@ int                xmlSecMSCngKeyDataDhEnsureValidAgreement         (xmlSecKeyDa
 int                xmlSecMSCngKeyDataDuplicateBCryptDhPrivKey       (BCRYPT_KEY_HANDLE src,
                                                                      BCRYPT_KEY_HANDLE* dst);
 const xmlSecByte*  xmlSecMSCngDerDecodeInteger                      (const xmlSecByte* p,
-                                                                     const xmlSecByte* end,
-                                                                     DWORD* pLen);
+                                                                      const xmlSecByte* end,
+                                                                      DWORD* pLen);
+int                xmlSecMSCngDhCompareBigNums                      (const xmlSecByte* left,
+                                                                      xmlSecSize leftSize,
+                                                                      const xmlSecByte* right,
+                                                                      xmlSecSize rightSize);
 int                xmlSecMSCngDhParseDhParameters                   (const xmlSecByte* params,
                                                                      DWORD paramsLen,
                                                                      const xmlSecByte** ppP,

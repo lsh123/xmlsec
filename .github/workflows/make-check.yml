@@ -300,7 +300,7 @@ jobs:
         include:
           # mscng: default build
           - crypto: mscng
-            config_flags: unicode=yes legacy-features=yes experimental-features=yes 
+            config_flags: unicode=yes legacy-features=yes experimental-features=yes
           # mscng: no unicode, legacy crypto
           - crypto: mscng
             config_flags: unicode=no legacy-features=yes experimental-features=yes

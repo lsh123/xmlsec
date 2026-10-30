@@ -273,12 +273,6 @@ else
     xmlsec_feature_context_string="no"
 fi
 
-# Support for ML-KEM key transport (OpenSSL 3.5+)
-if [ "z$crypto" = "zopenssl" ] ; then
-    xmlsec_feature_ml_kem="yes"
-else
-    xmlsec_feature_ml_kem="no"
-fi
 
 #
 # Setup keys config
@@ -390,11 +384,19 @@ else
 fi
 
 # ML-KEM keys have no certificates and cannot be stored in PKCS12.
-# Use PKCS8-PEM format for private keys and PEM for public keys on all platforms.
-mlkem_priv_key_option="--pkcs8-pem"
-mlkem_priv_key_format="p8-pem"
-mlkem_pub_key_option="--pubkey-pem"
-mlkem_pub_key_format="pem"
+# OpenSSL uses PKCS8-PEM format for private keys and PEM for public keys.
+# MSCng only supports DER (unencrypted PKCS#8 / SubjectPublicKeyInfo) formats.
+if [ "z$crypto" = "zmscng" ] ; then
+    mlkem_priv_key_option="--privkey-der"
+    mlkem_priv_key_format="der"
+    mlkem_pub_key_option="--pubkey-der"
+    mlkem_pub_key_format="der"
+else
+    mlkem_priv_key_option="--pkcs8-pem"
+    mlkem_priv_key_format="p8-pem"
+    mlkem_pub_key_option="--pubkey-pem"
+    mlkem_pub_key_format="pem"
+fi
 
 # On Windows, we need to specify Crypto Service Provider (CSP)
 # in the pkcs12 file to ensure it is loaded correctly to be used

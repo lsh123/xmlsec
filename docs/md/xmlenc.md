@@ -72,9 +72,9 @@ XML Security library supports the following features as defined in
 | [Diffie-Hellman with legacy KDF](https://www.w3.org/TR/xmlenc-core1/#sec-DHKeyAgreement) | Optional | No | No | No | No | No | No |
 | [Diffie-Hellman with explicit KDF](https://www.w3.org/TR/xmlenc-core1/#sec-DHKeyAgreement) | Optional | Yes [(3)](#openssl3-required) [(12)](#openssl-dh-key-formats) | No | No | Yes [(8)](#dhx-only) | No | No |
 | **Key Encapsulation** [(1)](#feature-disabled) | EXPERIMENTAL | | | | | | |
-| ML-KEM-512 | EXPERIMENTAL | Yes [(1)](#feature-disabled) [(10)](#openssl35-required) | No | No | No | No | No |
-| ML-KEM-768 | EXPERIMENTAL | Yes [(1)](#feature-disabled) [(10)](#openssl35-required) | No | No | No | No | No |
-| ML-KEM-1024 | EXPERIMENTAL | Yes [(1)](#feature-disabled) [(10)](#openssl35-required) | No | No | No | No | No |
+| [ML-KEM-512](https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/) | EXPERIMENTAL | Yes [(1)](#feature-disabled) [(10)](#openssl35-required) | No | No | No | No | No |
+| [ML-KEM-768](https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/) | EXPERIMENTAL | Yes [(1)](#feature-disabled) [(10)](#openssl35-required) | No | No | No | No | No |
+| [ML-KEM-1024](https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/) | EXPERIMENTAL | Yes [(1)](#feature-disabled) [(10)](#openssl35-required) | No | No | No | No | No |
 | **Message Digest** | | | | | | | |
 | [Message Digest Algorithms](https://www.w3.org/TR/xmlenc-core1/#sec-Alg-MessageDigest) | See [XMLDsig Report](xmldsig.md) | | | | | | |
 

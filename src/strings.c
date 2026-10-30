@@ -445,21 +445,20 @@ const xmlChar xmlSecHrefMLDSA87[]             = "http://www.w3.org/2026/08/xmlds
  *
   *****************************************************************************/
 const xmlChar xmlSecNameMLKEMKeyValue[]       = "ml-kem";
-const xmlChar xmlSecHrefMLKEMKeyValue[]       = XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12 "ml-kem";
 
 /******************************************************************************
  *
- * ML-KEM key transport transform strings
+ * ML-KEM key transport transform strings (https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/)
  *
   *****************************************************************************/
 const xmlChar xmlSecNameMLKEM512[]            = "ml-kem-512";
-const xmlChar xmlSecHrefMLKEM512[]            = XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12 "ml-kem-512";
+const xmlChar xmlSecHrefMLKEM512[]            = "http://www.w3.org/2026/08/xmldsig-more#ml-kem-512";
 
 const xmlChar xmlSecNameMLKEM768[]            = "ml-kem-768";
-const xmlChar xmlSecHrefMLKEM768[]            = XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12 "ml-kem-768";
+const xmlChar xmlSecHrefMLKEM768[]            = "http://www.w3.org/2026/08/xmldsig-more#ml-kem-768";
 
 const xmlChar xmlSecNameMLKEM1024[]           = "ml-kem-1024";
-const xmlChar xmlSecHrefMLKEM1024[]           = XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12 "ml-kem-1024";
+const xmlChar xmlSecHrefMLKEM1024[]           = "http://www.w3.org/2026/08/xmldsig-more#ml-kem-1024";
 
 /******************************************************************************
  *
@@ -559,16 +558,6 @@ const xmlChar xmlSecNodeOriginatorKeyInfo[]     = "OriginatorKeyInfo";
 const xmlChar xmlSecNodeRecipientKeyInfo[]      = "RecipientKeyInfo";
 
 const xmlChar xmlSecNodeKANonce[]               = "KA-Nonce";
-
-/******************************************************************************
- *
- * EncapsulationMechanism
- *
-  *****************************************************************************/
-const xmlChar xmlSecExperimental202512Ns[]          = XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12;
-const xmlChar xmlSecNameEncapsulationMechanism[]    = "encapsulation-mechanism";
-const xmlChar xmlSecNodeEncapsulationMechanism[]    = "EncapsulationMechanism";
-const xmlChar xmlSecHrefEncapsulationMechanism[]    = XMLSEC_ALEKSEY_EXPERIMENTAL_2025_12 "EncapsulationMechanism";
 
 /******************************************************************************
  *

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+  <SignedInfo>
+    <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+    <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#hmac-sha256"/>
+    <Reference URI="#object">
+      <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+      <DigestValue>iDhYt78o294fA6pzQ7k44+eejrQMi+WX3l3UrUdtL1Q=</DigestValue>
+    </Reference>
+  </SignedInfo>
+  <SignatureValue>SjYQpPALlcY+w+rd2qWa2tPuLzZtDrMf3ab00Ordzvk=</SignatureValue>
+  <KeyInfo>
+    <enc:EncryptedKey xmlns:enc="http://www.w3.org/2001/04/xmlenc#" Id="EK">
+      <enc:EncryptionMethod Algorithm="http://www.w3.org/2026/08/xmldsig-more#ml-kem-512"/>
+      <KeyInfo>
+        <KeyName>TestKeyName-ml-kem-512</KeyName>
+      </KeyInfo>
+      <enc:CipherData>
+        <enc:CipherValue>QlqhifPpU5bcq5F5idm+Nhn0HuYEg93YXdw4Hgvjf4Fvdgrflg7qtIauca3mIAkF
+YwprjsdITUhnSeTX9FPs5a3kPtxwrN82yuSjsFezJjWVOn8uXg55oa3n6uI3k8pp
+YYfEJ7PHs7OaYhJX+X+iSkq+snkS2sSSv+W83UyXRTNIh/NWsylvHEZmnVyysmW5
+gbPg7fHDVuGCbELjwxQAxWacnxDcfFo1bar5SL1bzxJ+U1MadGIcW9keEdop0u+v
++39/DVjohD4Iwwta+IlWkxGNIxTPDv94BRZmpfKHuKDsawIKlJ7kM+jpH1Qihjh6
+Wx2XdIm+ugXgNQeWlUyN3fp/fDtJ40b4OX/8woI2gAyd7AezxA8+J7EVDor7AqJ0
+WoAgeNVUT08Bj/AV4Keq2cgeJ+4caNWjwxEX2baDW+peuq+qB/GTiBvKyNugJo1O
+lHpdicQhZoMU9C56UkgQSKmO7+eLW3Z+zRuXFh24q0VSrnrpBcSa4SA3MewvgaJ/
+A3tDgI82Z9dz3QeZytTf3ZOdnZFSgI4OBkq8vK7679ZniWgme97aZdFWXz7yakbq
+Xkhbsi2lXrPcHd/CX9GC13xXfKb+w+GDIif5MnrC7pFHyMYdxkuC5tlLNfecq3M0
+RAQMLZhC/kFKDFDMuxI868hKKJz8OJpJKwymxHi/u+8l1MSu1RIHtdSZ/9euI4hH
+hhleNq6xCjo2ycC6fUBf/ZzK0gLwiATuTvFUUiRZriijcHkLl4JZgiEEvOIwMCCy
+CHIRS7Zna/yqr9+FEYDNfrxaVl55H9QBRkNHhnNKphHKupQKPk3Xuem+ZffkAVUQ
+Z3yJgemrF7Rl5TzHErznB0fRK2Bqc5x8dH+sPO9GjINRwYLJHDWV8wm4LGImyxdz
+ktGEEuRQmkAODNlDhNzZ7YdSR8+zWBJrF2M8EQ/HuVdGKBf6X9u7T0BHGkhDhPIv
+Q8S1cykC0o0eNtPF8jntjQ8FeWmDIWS1mW/QheD+vILGNoqDYCn7QUU2ve/E8F0/</enc:CipherValue>
+      </enc:CipherData>
+    </enc:EncryptedKey>
+  </KeyInfo>
+  <Object Id="object">some text</Object>
+</Signature>

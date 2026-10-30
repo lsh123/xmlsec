@@ -17,7 +17,7 @@ see the Copyright file in the distribution for details.
 
 - **TBD**
   The [XML Security Library 1.3.14](download.md) release includes the following changes:
-  - (xmlsec-core, **not backward compatible**) Experimental implementations for ML-DSA and SLH-DSA
+  - (xmlsec-core, **not backward compatible**) Experimental implementations for ML-DSA, SLH-DSA, and ML-KEM
     were converted to follow the [draft RFC](https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/).
     These algorithms are still marked as experimental and disabled by default due to the "draft"
     status of the RFC.

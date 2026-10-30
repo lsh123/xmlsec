@@ -38,14 +38,14 @@ tests/phaos-xmlenc-three-01.modern/enc-text-aes128-kw-aes192.xml
 tests/phaos-xmlenc-three-01.modern/enc-text-aes192-kt-rsa_oaep_sha256_mgf1_sha256.xml
 tests/phaos-xmlenc-three-01.modern/enc-text-aes256-kt-rsa_oaep_sha256_mgf1_sha256.xml
 tests/aleksey-xmlenc-01/enc-aes128cbc-keyname.xml
-tests/aleksey-xmlenc-01/enc-aes128gcm-em-ml-kem-512.xml
 tests/aleksey-xmlenc-01/enc-aes128gcm-empty-data.xml
+tests/aleksey-xmlenc-01/enc-aes128gcm-kt-ml-kem-512.xml
 tests/aleksey-xmlenc-01/enc-aes192cbc-keyname-ref.xml
 tests/aleksey-xmlenc-01/enc-aes192cbc-keyname.xml
-tests/aleksey-xmlenc-01/enc-aes192gcm-em-ml-kem-768.xml
-tests/aleksey-xmlenc-01/enc-aes256-em-ml-kem-1024.xml
-tests/aleksey-xmlenc-01/enc-aes256-em-ml-kem-512.xml
-tests/aleksey-xmlenc-01/enc-aes256-em-ml-kem-768.xml
+tests/aleksey-xmlenc-01/enc-aes192gcm-kt-ml-kem-768.xml
+tests/aleksey-xmlenc-01/enc-aes256-kt-ml-kem-1024.xml
+tests/aleksey-xmlenc-01/enc-aes256-kt-ml-kem-512.xml
+tests/aleksey-xmlenc-01/enc-aes256-kt-ml-kem-768.xml
 tests/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_enc11_sha512_mgf1_sha512.xml
 tests/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_md5.xml
 tests/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_md5_mgf1_sha512.xml
@@ -75,7 +75,6 @@ tests/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha512_mgf1_sha256.xml
 tests/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha512_mgf1_sha384.xml
 tests/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha512_mgf1_sha512.xml
 tests/aleksey-xmlenc-01/enc-aes256cbc-keyname.xml
-tests/aleksey-xmlenc-01/enc-aes256gcm-em-ml-kem-1024.xml
 tests/aleksey-xmlenc-01/enc-camellia128cbc-keyname.xml
 tests/aleksey-xmlenc-01/enc-camellia128cbc-kw-camellia128-keyname.xml
 tests/aleksey-xmlenc-01/enc-camellia128cbc-kw-camellia192-keyname.xml
@@ -155,3 +154,4 @@ tests/aleksey-xmlenc-01/large_input.xml
 tests/aleksey-xmlenc-01/enc-aes128gcm-keyname.xml
 tests/aleksey-xmlenc-01/enc-aes192gcm-keyname.xml
 tests/aleksey-xmlenc-01/enc-aes256gcm-keyname.xml
+tests/aleksey-xmlenc-01/enc-aes256gcm-kt-ml-kem-1024.xml

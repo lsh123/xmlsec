@@ -4205,9 +4205,6 @@ xmlSecOpenSSLKeyDataSLHDSAGetEvp(xmlSecKeyDataPtr data) {
 
 
 #ifndef XMLSEC_NO_MLKEM
-/*
- * EXPERIMENTAL SUPPORT FOR ML-KEM
- */
 static int
 xmlSecOpenSSLKeyValueMLKEMCheckKeyType(EVP_PKEY* pKey)
 {
@@ -4223,7 +4220,9 @@ xmlSecOpenSSLKeyValueMLKEMCheckKeyType(EVP_PKEY* pKey)
     }
 }
 
-XMLSEC_OPENSSL_EVP_KEY_KLASS(MLKEM, MLKEM)
+XMLSEC_OPENSSL_EVP_KEY_KLASS_EX2(MLKEM, xmlSecNameMLKEMKeyValue, NULL,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+    NULL, NULL, NULL, NULL, NULL)
 
 /**
  * @brief The OpenSSL ML-KEM data klass.

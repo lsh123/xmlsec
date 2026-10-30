@@ -42,6 +42,7 @@ XML Security library supports the following features as defined in
 | [Canonical XML 1.1 (C14N11) with comments](https://www.w3.org/TR/xmldsig-core1/#sec-Canonical11) | Recommended | Yes |
 | [Exclusive Canonical XML 1.0 (EXC-C14N) omit comments](https://www.w3.org/TR/xmldsig-core1/#sec-ExcC14N10) | Required | Yes |
 | [Exclusive Canonical XML 1.0 (EXC-C14N) with comments](https://www.w3.org/TR/xmldsig-core1/#sec-ExcC14N10) | Recommended | Yes |
+| [Minimal Canonicalization](https://www.ietf.org/rfc/rfc9231.html#section-2.4) | Optional | No |
 | [Base64 Transform](https://www.w3.org/TR/xmldsig-core1/#sec-Base-64) | Required | Yes |
 | [XPath Filtering](https://www.w3.org/TR/xmldsig-core1/#sec-XPath) | Recommended | Yes |
 | [XPath Filter 2.0](https://www.w3.org/TR/2002/REC-xmldsig-filter2-20021108/) | Recommended | Yes |
@@ -69,6 +70,7 @@ XML Security library supports the following features as defined in
 | GOST-R3411-2012 (256 bit) | Optional | Yes [(1)](#feature-disabled)[(3)](#openssl-gost) | No | Yes [(1)](#feature-disabled) | No | Yes [(1)](#feature-disabled)[(4)](#mscrypto-gost) | No |
 | GOST-R3411-2012 (512 bit) | Optional | Yes [(1)](#feature-disabled)[(3)](#openssl-gost) | No | Yes [(1)](#feature-disabled) | No | Yes [(1)](#feature-disabled)[(4)](#mscrypto-gost) | No |
 | [MD5](https://www.ietf.org/rfc/rfc9231.html#section-2.1.1) | DEPRECATED | Yes [(1)](#feature-disabled) | No | No | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) |
+| [Whirlpool](https://www.ietf.org/rfc/rfc9231.html#section-2.1.4) | Optional | No | No | No | No | No | No |
 | **Message Authentication Codes** | | | | | | | |
 | [HMAC-SHA1](https://www.w3.org/TR/xmldsig-core1/#sec-HMAC) | Required (use is DISCOURAGED) | Yes | Yes | Yes | Yes | Yes | Yes |
 | [HMAC-SHA2-224](https://www.w3.org/TR/xmldsig-core1/#sec-HMAC) | Optional | Yes | Yes | Yes | No | No | No |
@@ -77,6 +79,8 @@ XML Security library supports the following features as defined in
 | [HMAC-SHA2-512](https://www.w3.org/TR/xmldsig-core1/#sec-HMAC) | Recommended | Yes | Yes | Yes | Yes | Yes | Yes |
 | [HMAC-RIPEMD160](https://www.ietf.org/rfc/rfc9231.html#section-2.2.3) | DEPRECATED | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | No | No | No | Yes [(1)](#feature-disabled) |
 | [HMAC-MD5](https://www.ietf.org/rfc/rfc9231.html#section-2.2.1) | DEPRECATED | Yes [(1)](#feature-disabled) | No | No | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) |
+| [Poly1305](https://www.ietf.org/rfc/rfc9231.html#section-2.2.4) | Optional | No | No | No | No | No | No |
+| [SipHash-2-4](https://www.ietf.org/rfc/rfc9231.html#section-2.2.5) | Optional | No | No | No | No | No | No |
 | **Signatures** | | | | | | | |
 | [DSA-SHA1](https://www.w3.org/TR/xmldsig-core1/#sec-DSA) | Required (use is DISCOURAGED for signature generation) | Yes | Yes | Yes | Yes | Yes | Yes |
 | [DSA-SHA256](https://www.w3.org/TR/xmldsig-core1/#sec-DSA) | Optional (use is DISCOURAGED for signature generation) | Yes | Yes | Yes | Yes | No | No |
@@ -87,6 +91,7 @@ XML Security library supports the following features as defined in
 | [PKCS1 RSA-SHA2-512](https://www.w3.org/TR/xmldsig-core1/#sec-PKCS1) | Optional | Yes | Yes | Yes | Yes | Yes | Yes |
 | [PKCS1 RSA-RIPEMD160](https://www.ietf.org/rfc/rfc9231.html#section-2.3.5) | DEPRECATED | Yes [(1)](#feature-disabled) | No | No | No | No | Yes [(1)](#feature-disabled) |
 | [PKCS1 RSA-MD5](https://www.ietf.org/rfc/rfc9231.html#section-2.3.1) | DEPRECATED | Yes [(1)](#feature-disabled) | No | No | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) | Yes [(1)](#feature-disabled) |
+| [PKCS1 RSA-Whirlpool](https://www.ietf.org/rfc/rfc9231.html#section-2.3.8) | Optional | No | No | No | No | No | No |
 | [ECDSA-RIPEMD160](https://www.ietf.org/rfc/rfc9231.html#section-2.3.6) | DEPRECATED | Yes [(1)](#feature-disabled) | No | No | No | No | No |
 | [ECDSA-SHA1](https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA) | Optional (use is DISCOURAGED) | Yes | Yes | Yes | Yes | No | Yes |
 | [ECDSA-SHA2-224](https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA) | Optional | Yes | Yes | Yes | No | No | No |
@@ -97,7 +102,9 @@ XML Security library supports the following features as defined in
 | [ECDSA-SHA3-256](https://www.ietf.org/rfc/rfc9231.html#name-ecdsa-sha-ecdsa-ripemd160-e) | Optional | Yes | No | Yes | Yes [(2)](#new-windows-required) | No | Yes |
 | [ECDSA-SHA3-384](https://www.ietf.org/rfc/rfc9231.html#name-ecdsa-sha-ecdsa-ripemd160-e) | Optional | Yes | No | Yes | Yes [(2)](#new-windows-required) | No | Yes |
 | [ECDSA-SHA3-512](https://www.ietf.org/rfc/rfc9231.html#name-ecdsa-sha-ecdsa-ripemd160-e) | Optional | Yes | No | Yes | Yes [(2)](#new-windows-required) | No | Yes |
+| [ECDSA-Whirlpool](https://www.ietf.org/rfc/rfc9231.html#section-2.3.6) | Optional | No | No | No | No | No | No |
 | [EdDSA](https://www.w3.org/2021/04/xmldsig-more) (Ed25519, Ed25519ctx [(9)](#eddsa-ctx), Ed25519ph, Ed448, Ed448ph) | Optional | Yes [(12)](#openssl35-required) | Yes [(10)](#only-ed25519) | Yes [(14)](#gnutls-eddsa-limited) | No | No | No |
+| [ESIGN](https://www.ietf.org/rfc/rfc9231.html#section-2.3.7) (SHA-1, SHA-224, SHA-256, SHA-384, SHA-512) | Optional | No | No | No | No | No | No |
 | [RSASSA-PSS-SHA1 without Parameters](https://www.ietf.org/rfc/rfc9231.html#section-2.3.10) | Optional (use is DISCOURAGED) | Yes | Yes | No | Yes | No | Yes |
 | [RSASSA-PSS-SHA2-224 without Parameters](https://www.ietf.org/rfc/rfc9231.html#section-2.3.10) | Optional | Yes | Yes | No | No | No | No |
 | [RSASSA-PSS-SHA2-256 without Parameters](https://www.ietf.org/rfc/rfc9231.html#section-2.3.10) | Optional | Yes | Yes | Yes | Yes | No | Yes |
@@ -107,11 +114,17 @@ XML Security library supports the following features as defined in
 | [RSASSA-PSS-SHA3-256 without Parameters](https://www.ietf.org/rfc/rfc9231.html#section-2.3.10) | Optional | Yes | No | No | Yes [(2)](#new-windows-required) | No | Yes |
 | [RSASSA-PSS-SHA3-384 without Parameters](https://www.ietf.org/rfc/rfc9231.html#section-2.3.10) | Optional | Yes | No | No | Yes [(2)](#new-windows-required) | No | Yes |
 | [RSASSA-PSS-SHA3-512 without Parameters](https://www.ietf.org/rfc/rfc9231.html#section-2.3.10) | Optional | Yes | No | No | Yes [(2)](#new-windows-required) | No | Yes |
+| [RSASSA-PSS with Parameters](https://www.ietf.org/rfc/rfc9231.html#section-2.3.9) | Optional | No | No | No | No | No | No |
+| [RSASSA-PSS-Whirlpool without Parameters](https://www.ietf.org/rfc/rfc9231.html#section-2.3.10) | Optional | No | No | No | No | No | No |
 | GOST-R3410-2001 | DEPRECATED | Yes [(1)](#feature-disabled)[(3)](#openssl-gost) | No | Yes [(1)](#feature-disabled) | No | Yes [(1)](#feature-disabled)[(4)](#mscrypto-gost) | No |
 | GOST-R3410-2012 (256 bit) | Optional | Yes [(1)](#feature-disabled)[(3)](#openssl-gost) | No | Yes [(1)](#feature-disabled) | No | Yes [(1)](#feature-disabled)[(4)](#mscrypto-gost) | No |
 | GOST-R3410-2012 (512 bit) | Optional | Yes [(1)](#feature-disabled)[(3)](#openssl-gost) | No | Yes [(1)](#feature-disabled) | No | Yes [(1)](#feature-disabled)[(4)](#mscrypto-gost) | No |
 | [ML-DSA](https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/) | EXPERIMENTAL | Yes [(1)](#feature-disabled)[(12)](#openssl35-required) | No | Yes [(1)](#feature-disabled) [(8)](#no-context-string) | Yes [(1)](#feature-disabled) [(8)](#no-context-string) [(16)](#mscng-mldsa) | No | No |
 | [SLH-DSA-SHA2](https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/) (128, 192, 256; fast and slow variants) | EXPERIMENTAL | Yes [(1)](#feature-disabled)[(12)](#openssl35-required) | No | No | No | No | No |
+| [SLH-DSA-SHAKE](https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/) (128, 192, 256; fast and slow variants) | EXPERIMENTAL | No | No | No | No | No | No |
+| [XMSS](https://www.ietf.org/rfc/rfc9231.html#section-2.2.6) (21 parameter sets) | Optional | No | No | No | No | No | No |
+| [XMSSMT](https://www.ietf.org/rfc/rfc9231.html#section-2.2.6) (56 parameter sets) | Optional | No | No | No | No | No | No |
+| [HSS/LMS](https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/) | EXPERIMENTAL | No | No | No | No | No | No |
 | **The KeyInfo Element** | | | | | | | |
 | [The DSAKeyValue Element](https://www.w3.org/TR/xmldsig-core1/#sec-DSAKeyValue) | Optional | Yes [(13)](#keydata-runtime) [(5)](#dsa-key-value) | Yes [(13)](#keydata-runtime) [(5)](#dsa-key-value) | Yes [(13)](#keydata-runtime) [(5)](#dsa-key-value) | Yes [(13)](#keydata-runtime) [(5)](#dsa-key-value) | Yes [(13)](#keydata-runtime) [(5)](#dsa-key-value) | Yes [(13)](#keydata-runtime) [(5)](#dsa-key-value) |
 | [The RSAKeyValue Element](https://www.w3.org/TR/xmldsig-core1/#sec-RSAKeyValue) | Optional | Yes [(13)](#keydata-runtime) | Yes [(13)](#keydata-runtime) | Yes [(13)](#keydata-runtime) | Yes [(13)](#keydata-runtime) | Yes [(13)](#keydata-runtime) | Yes [(13)](#keydata-runtime) |

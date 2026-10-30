@@ -25,6 +25,7 @@ libxmlsec1_mscng_la_SOURCES =\
 	certkeys_xdh.c \
 	certkeys_dsa.c \
 	certkeys_mldsa.c \
+	certkeys_mlkem.c \
 	der_encoded_value.c \
 	ciphers_cbc.c \
 	ciphers_gcm.c \
@@ -36,6 +37,7 @@ libxmlsec1_mscng_la_SOURCES =\
 	kdf.c \
 	key_agrmnt.c \
 	keysstore.c \
+	kt_mlkem.c \
 	kt_rsa.c \
 	kw_rfc_3394.c \
 	kw_des.c \

@@ -82,6 +82,12 @@ static int      xmlSecMSCngSignatureVerify              (xmlSecTransformPtr tran
 static int      xmlSecMSCngSignatureExecute             (xmlSecTransformPtr transform,
                                                          int last,
                                                          xmlSecTransformCtxPtr transformCtx);
+#ifndef XMLSEC_NO_MLDSA
+static const WCHAR* xmlSecMSCngSignatureGetMlDsaExpectedParamSet(xmlSecTransformPtr transform);
+static int      xmlSecMSCngSignatureGetMlDsaKeyParamSet (xmlSecKeyDataPtr data,
+                                                         WCHAR* paramSet,
+                                                         xmlSecSize paramSetSize);
+#endif /* XMLSEC_NO_MLDSA */
 
 
 /* Helper macros to define the transform klass */
@@ -542,6 +548,34 @@ static int xmlSecMSCngSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr
     value = xmlSecKeyGetValue(key);
     xmlSecAssert2(value != NULL, -1);
 
+#ifndef XMLSEC_NO_MLDSA
+    if(ctx->keyId == xmlSecMSCngKeyDataMLDSAId) {
+        const WCHAR* expectedParamSet;
+        WCHAR actualParamSet[8];
+        int ret;
+
+        expectedParamSet = xmlSecMSCngSignatureGetMlDsaExpectedParamSet(transform);
+        if(expectedParamSet == NULL) {
+            xmlSecInvalidTransformError(transform);
+            return(-1);
+        }
+
+        ret = xmlSecMSCngSignatureGetMlDsaKeyParamSet(value, actualParamSet,
+            sizeof(actualParamSet) / sizeof(actualParamSet[0]));
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecMSCngSignatureGetMlDsaKeyParamSet", xmlSecTransformGetName(transform));
+            return(-1);
+        }
+
+        if(wcscmp(expectedParamSet, actualParamSet) != 0) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_KEY_DATA,
+                xmlSecTransformGetName(transform),
+                "ML-DSA transform/key parameter set mismatch");
+            return(-1);
+        }
+    }
+#endif /* XMLSEC_NO_MLDSA */
+
     /* free previous value (if any) */
     if(ctx->data != NULL) {
         xmlSecKeyDataDestroy(ctx->data);
@@ -556,6 +590,100 @@ static int xmlSecMSCngSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr
 
     return(0);
 }
+
+#ifndef XMLSEC_NO_MLDSA
+/* Returns the expected ML-DSA parameter set name for the current transform. */
+static const WCHAR*
+xmlSecMSCngSignatureGetMlDsaExpectedParamSet(xmlSecTransformPtr transform) {
+    xmlSecAssert2(transform != NULL, NULL);
+
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformMLDSA44Id)) {
+        return(L"44");
+    }
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformMLDSA65Id)) {
+        return(L"65");
+    }
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformMLDSA87Id)) {
+        return(L"87");
+    }
+
+    return(NULL);
+}
+
+/* Extracts ML-DSA parameter set name from a CNG PQDSA public key blob. */
+static int
+xmlSecMSCngSignatureGetMlDsaKeyParamSet(xmlSecKeyDataPtr data,
+    WCHAR* paramSet, xmlSecSize paramSetSize) {
+    BCRYPT_KEY_HANDLE pubkey;
+    PUCHAR pbBlob = NULL;
+    DWORD cbBlob = 0;
+    DWORD cbParamSet;
+    DWORD cbData;
+    DWORD cbChars;
+    NTSTATUS status;
+    int ret = -1;
+
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(paramSet != NULL, -1);
+    xmlSecAssert2(paramSetSize > 0, -1);
+
+    pubkey = xmlSecMSCngKeyDataGetPubkey(data);
+    if(pubkey == 0) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_KEY_NOT_FOUND, NULL,
+            "ML-DSA key data doesn't contain a public key handle");
+        return(-1);
+    }
+
+    status = BCryptExportKey(pubkey, NULL, BCRYPT_PQDSA_PUBLIC_BLOB,
+        NULL, 0, &cbBlob, 0);
+    if((status != STATUS_SUCCESS) || (cbBlob <= 12)) {
+        xmlSecMSCngNtError("BCryptExportKey(ML-DSA size)", NULL, status);
+        goto done;
+    }
+
+    pbBlob = (PUCHAR)xmlMalloc(cbBlob);
+    if(pbBlob == NULL) {
+        xmlSecMallocError(cbBlob, NULL);
+        goto done;
+    }
+
+    status = BCryptExportKey(pubkey, NULL, BCRYPT_PQDSA_PUBLIC_BLOB,
+        pbBlob, cbBlob, &cbData, 0);
+    if((status != STATUS_SUCCESS) || (cbData != cbBlob)) {
+        xmlSecMSCngNtError("BCryptExportKey(ML-DSA data)", NULL, status);
+        goto done;
+    }
+
+    memcpy(&cbParamSet, pbBlob + 4, sizeof(cbParamSet));
+    if((cbParamSet < sizeof(WCHAR)) || (cbParamSet > (cbBlob - 12)) ||
+       ((cbParamSet % sizeof(WCHAR)) != 0)) {
+        xmlSecInvalidSizeDataError("ML-DSA key param set size", cbParamSet,
+            "a valid WCHAR string length", NULL);
+        goto done;
+    }
+
+    cbChars = cbParamSet / sizeof(WCHAR);
+    if((xmlSecSize)cbChars > paramSetSize) {
+        xmlSecInvalidSizeMoreThanError("ML-DSA key param set size", (xmlSecSize)cbChars,
+            paramSetSize, NULL);
+        goto done;
+    }
+
+    memcpy(paramSet, pbBlob + 12, cbParamSet);
+    if((paramSet[cbChars - 1] != L'\0') || (paramSet[0] == L'\0')) {
+        xmlSecInvalidDataError("ML-DSA key param set string", NULL);
+        goto done;
+    }
+
+    ret = 0;
+
+done:
+    if(pbBlob != NULL) {
+        xmlFree(pbBlob);
+    }
+    return(ret);
+}
+#endif /* XMLSEC_NO_MLDSA */
 
 static int xmlSecMSCngSignatureSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
     xmlSecMSCngSignatureCtxPtr ctx;
@@ -837,7 +965,9 @@ xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
 
 #ifndef XMLSEC_NO_MLDSA
     /* ML-DSA (FIPS 204) verifies the raw message accumulated in preSignBuffer;
-     * the signature is computed over the message directly, without a hash */
+     * the signature is computed over the message directly, without a hash
+     * (https://learn.microsoft.com/en-us/windows/win32/seccng/cng-mlkem-examples)
+     */
     if(ctx->keyId == xmlSecMSCngKeyDataMLDSAId) {
         xmlSecMSCngPqdsaPaddingInfo pqdsaPaddingInfo;
         xmlSecByte* msgData;
@@ -1097,7 +1227,9 @@ xmlSecMSCngSignatureSign(
 
 #ifndef XMLSEC_NO_MLDSA
     /* ML-DSA (FIPS 204) signs the raw message accumulated in preSignBuffer;
-     * the signature is computed over the message directly, without a hash */
+    * the signature is computed over the message directly, without a hash
+    * (https://learn.microsoft.com/en-us/windows/win32/seccng/cng-mlkem-examples)
+     */
     if(ctx->keyId == xmlSecMSCngKeyDataMLDSAId) {
         xmlSecMSCngPqdsaPaddingInfo pqdsaPaddingInfo;
         xmlSecByte* msgData;

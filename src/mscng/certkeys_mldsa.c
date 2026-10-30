@@ -52,7 +52,9 @@ xmlSecMSCngMlDsaGetParamsetName(xmlSecSize pkSize) {
  *          The blob layout (all fields little-endian): DWORD dwMagic
  *          (BCRYPT_PQDSA_PUBLIC_MAGIC), DWORD cbParamSet, DWORD cbKey,
  *          WCHAR pszParamSet[], BYTE pbKey[]; this layout was verified against
- *          the CNG ML-DSA provider on Windows 11 24H2+ (build 26300).
+ *          the CNG ML-DSA provider on Windows 11 version 26H2 (build 26300).
+ *          (https://learn.microsoft.com/en-us/windows/win32/seccng/cng-mlkem-examples)
+ *
  * @param spki SubjectPublicKeyInfo of the certificate.
  * @param key receives the imported BCRYPT key handle on success.
  * @return 0 on success or a negative value if an error occurs.
@@ -84,10 +86,14 @@ xmlSecMSCngKeyDataCertGetMlDsaPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HAND
 
     /* The SubjectPublicKey field carries the raw ML-DSA public key. Some
      * encoders (e.g. OpenSSL) prefix it with a single zero byte; strip one
-     * leading zero byte if present. */
+     * leading zero byte only when the resulting length matches a known
+     * ML-DSA parameter set size. */
     pkData = spki->PublicKey.pbData;
     pkSize = (xmlSecSize)spki->PublicKey.cbData;
-    if((pkSize > 32) && (pkData[0] == 0x00)) {
+    if((pkSize > 0) && (pkData[0] == 0x00) &&
+       (xmlSecMSCngMlDsaGetParamsetName(pkSize) == NULL) &&
+       (xmlSecMSCngMlDsaGetParamsetName(pkSize - 1) != NULL)
+    ) {
         pkData++;
         pkSize--;
     }

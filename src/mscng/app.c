@@ -287,7 +287,7 @@ xmlSecMSCngAppKeyLoadEx(const char *filename, xmlSecKeyDataType type, xmlSecKeyD
         
         /* Try to read private key first and if no luck, try public key
          *
-         * Note: xmlSecMSCngAppKeyReadPrivKeyFromDer() only supports DH and X25519 PKCS#8
+         * Note: xmlSecMSCngAppKeyReadPrivKeyFromDer() only supports DH, X25519, and ML-KEM
          * private keys; other private key types (RSA/EC/DSA) are not supported in DER form
          * by this backend. Public-key DER files are handled by xmlSecMSCngAppKeyReadPubKeyFromDer(). */
         keyData = xmlSecMSCngAppKeyReadPrivKeyFromDer(bufferData, bufferSize);

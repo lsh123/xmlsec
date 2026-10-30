@@ -50,6 +50,7 @@ extern "C" {
 #define xmlSecKeyDataPbkdf2Id                   xmlSecMSCngKeyDataPbkdf2Id
 #define xmlSecKeyDataRawX509CertId              xmlSecMSCngKeyDataRawX509CertId
 #define xmlSecKeyDataMLDSAId                    xmlSecMSCngKeyDataMLDSAId
+#define xmlSecKeyDataMLKEMId                    xmlSecMSCngKeyDataMLKEMId
 #define xmlSecKeyDataRsaId                      xmlSecMSCngKeyDataRsaId
 #define xmlSecKeyDataX509Id                     xmlSecMSCngKeyDataX509Id
 #define xmlSecKeyDataXdhId                      xmlSecMSCngKeyDataXdhId
@@ -106,6 +107,10 @@ extern "C" {
 #define xmlSecTransformMLDSA44Id                xmlSecMSCngTransformMLDSA44Id
 #define xmlSecTransformMLDSA65Id                xmlSecMSCngTransformMLDSA65Id
 #define xmlSecTransformMLDSA87Id                xmlSecMSCngTransformMLDSA87Id
+
+#define xmlSecTransformMLKEM512Id               xmlSecMSCngTransformMLKEM512Id
+#define xmlSecTransformMLKEM768Id               xmlSecMSCngTransformMLKEM768Id
+#define xmlSecTransformMLKEM1024Id              xmlSecMSCngTransformMLKEM1024Id
 
 #define xmlSecTransformHmacMd5Id                xmlSecMSCngTransformHmacMd5Id
 #define xmlSecTransformHmacSha1Id               xmlSecMSCngTransformHmacSha1Id

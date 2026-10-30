@@ -413,6 +413,43 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformMLDSA87GetKlass(void)
 
 /******************************************************************************
  *
+ * ML-KEM (FIPS 203) key and key transport transforms
+ *
+   *****************************************************************************/
+#ifndef XMLSEC_NO_MLKEM
+
+/**
+ * @brief The ML-KEM key data klass.
+ */
+#define xmlSecMSCngKeyDataMLKEMId \
+        xmlSecMSCngKeyDataMLKEMGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCngKeyDataMLKEMGetKlass(void);
+
+/**
+ * @brief The ML-KEM-512 (FIPS 203) key transport transform klass.
+ */
+#define xmlSecMSCngTransformMLKEM512Id \
+        xmlSecMSCngTransformMLKEM512GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformMLKEM512GetKlass(void);
+
+/**
+ * @brief The ML-KEM-768 (FIPS 203) key transport transform klass.
+ */
+#define xmlSecMSCngTransformMLKEM768Id \
+        xmlSecMSCngTransformMLKEM768GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformMLKEM768GetKlass(void);
+
+/**
+ * @brief The ML-KEM-1024 (FIPS 203) key transport transform klass.
+ */
+#define xmlSecMSCngTransformMLKEM1024Id \
+        xmlSecMSCngTransformMLKEM1024GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformMLKEM1024GetKlass(void);
+
+#endif /* XMLSEC_NO_MLKEM */
+
+/******************************************************************************
+ *
  * DES transform
  *
   *****************************************************************************/

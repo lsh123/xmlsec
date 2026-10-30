@@ -1758,7 +1758,6 @@ fi
 # ML-KEM (Key Encapsulation Mechanism via enc:EncryptedKey)
 #
 ##########################################################################
-if [ "z$xmlsec_feature_ml_kem" = "zyes" ] ; then
 execEncTest $res_success \
     "" \
     "aleksey-xmlenc-01/enc-aes256-kt-ml-kem-512" \
@@ -1807,7 +1806,6 @@ execEncTest $res_success \
     "$mlkem_priv_key_option:TestKeyName-ml-kem-1024 $topfolder/keys/ml-kem/ml-kem-1024-key.$mlkem_priv_key_format --pwd secret123 --enabled-key-data key-name,enc-key" \
     "$mlkem_pub_key_option:TestKeyName-ml-kem-1024 $topfolder/keys/ml-kem/ml-kem-1024-pubkey.$mlkem_pub_key_format --enabled-key-data key-name,enc-key --xml-data $topfolder/aleksey-xmlenc-01/enc-aes256gcm-kt-ml-kem-1024.data --node-name http://example.org/paymentv2:CreditCard" \
     "$mlkem_priv_key_option:TestKeyName-ml-kem-1024 $topfolder/keys/ml-kem/ml-kem-1024-key.$mlkem_priv_key_format --pwd secret123 --enabled-key-data key-name,enc-key"
-fi # xmlsec_feature_ml_kem
 
 
 ##########################################################################

@@ -89,6 +89,18 @@ xmlSecMSCngKeyDataCertGetPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE* k
     }
 #endif /* XMLSEC_NO_MLDSA */
 
+#ifndef XMLSEC_NO_MLKEM
+    /* ML-KEM (FIPS 203) public keys are imported from the raw key bytes in
+     * SubjectPublicKey; CryptImportPublicKeyInfoEx2 does not support the
+     * ML-KEM OIDs. */
+    if((spki->Algorithm.pszObjId != NULL) &&
+       (strcmp(spki->Algorithm.pszObjId, XMLSEC_MSCNG_OID_MLKEM_512) == 0 ||
+        strcmp(spki->Algorithm.pszObjId, XMLSEC_MSCNG_OID_MLKEM_768) == 0 ||
+        strcmp(spki->Algorithm.pszObjId, XMLSEC_MSCNG_OID_MLKEM_1024) == 0)) {
+        return(xmlSecMSCngKeyDataCertGetMlKemPubkey(spki, key));
+    }
+#endif /* XMLSEC_NO_MLKEM */
+
     xmlSecMSCngLastError("CryptImportPublicKeyInfoEx2", NULL);
     return(-1);
 }
@@ -348,6 +360,19 @@ xmlSecMSCngKeyDataFromAlgorithm(LPSTR pszObjId) {
     }
 #endif /* XMLSEC_NO_MLDSA */
 
+#ifndef XMLSEC_NO_MLKEM
+    /* OIDs for the ML-KEM (FIPS 203) parameter sets */
+    if (!strcmp(pszObjId, XMLSEC_MSCNG_OID_MLKEM_512) ||
+        !strcmp(pszObjId, XMLSEC_MSCNG_OID_MLKEM_768) ||
+        !strcmp(pszObjId, XMLSEC_MSCNG_OID_MLKEM_1024)) {
+        data = xmlSecKeyDataCreate(xmlSecMSCngKeyDataMLKEMId);
+        if (data == NULL) {
+            xmlSecInternalError("xmlSecKeyDataCreate(KeyDataMLKEMId)", NULL);
+            return(NULL);
+        }
+    }
+#endif /* XMLSEC_NO_MLKEM */
+
     if (data == NULL) {
         xmlSecInvalidStringTypeError("Algorithm",
             pszObjId,
@@ -580,6 +605,7 @@ xmlSecMSCngCertKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     BCRYPT_ALG_HANDLE hAlg = NULL;
     LPCWSTR pszAlgId;
     LPCWSTR pszCurveName = NULL;  /* non-NULL iff a curve property must be set before import */
+    LPCWSTR pszBlobType = BCRYPT_PUBLIC_KEY_BLOB;  /* import blob format; ML-DSA public keys need their own format */
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(dst), -1);
@@ -635,6 +661,18 @@ xmlSecMSCngCertKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
             return(-1);
         }
     } else if(srcCtx->pubkey != NULL) {
+#ifndef XMLSEC_NO_MLKEM
+        /* ML-KEM keys do not support the generic BCRYPT_PUBLIC_KEY_BLOB export
+         * format; duplicate via the ML-KEM-specific blob instead */
+        if(xmlSecKeyDataCheckId(src, xmlSecMSCngKeyDataMLKEMId)) {
+            ret = xmlSecMSCngKeyDataDuplicateMlKemPubKey(srcCtx->pubkey, &dstCtx->pubkey);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecMSCngKeyDataDuplicateMlKemPubKey", NULL);
+                return(-1);
+            }
+        } else
+#endif /* XMLSEC_NO_MLKEM */
+        {
         /* re-import the public key under a fresh algorithm provider; the algorithm
          * is determined from the exported blob magic */
         status = BCryptExportKey(srcCtx->pubkey,
@@ -712,6 +750,15 @@ xmlSecMSCngCertKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
                 break;
 #endif /* XMLSEC_NO_XDH */
 
+#ifndef XMLSEC_NO_MLDSA
+            case BCRYPT_PQDSA_PUBLIC_MAGIC:
+                /* ML-DSA public keys are exported in the generic format but must be
+                 * imported with the PQDSA-specific blob format */
+                pszAlgId = BCRYPT_MLDSA_ALGORITHM;
+                pszBlobType = BCRYPT_PQDSA_PUBLIC_BLOB;
+                break;
+#endif /* XMLSEC_NO_MLDSA */
+
             default:
                 xmlSecNotImplementedError2("Unexpected key magic value: %llu", (unsigned long long)(((BCRYPT_KEY_BLOB*)pbBlob)->Magic));
                 xmlFree(pbBlob);
@@ -744,7 +791,7 @@ xmlSecMSCngCertKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
         status = BCryptImportKeyPair(
             hAlg,
             NULL,
-            BCRYPT_PUBLIC_KEY_BLOB,
+            pszBlobType,
             &dstCtx->pubkey,
             pbBlob,
             cbBlob,
@@ -758,6 +805,7 @@ xmlSecMSCngCertKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
 
         xmlFree(pbBlob);
         BCryptCloseAlgorithmProvider(hAlg, 0);
+        }
     }
 
     if(srcCtx->bcryptPrivkey != NULL) {
@@ -779,6 +827,15 @@ xmlSecMSCngCertKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
             }
         } else
 #endif /* XMLSEC_NO_XDH */
+#ifndef XMLSEC_NO_MLKEM
+        if(xmlSecKeyDataCheckId(src, xmlSecMSCngKeyDataMLKEMId)) {
+            ret = xmlSecMSCngKeyDataDuplicateMlKemPrivKey(srcCtx->bcryptPrivkey, &dstCtx->bcryptPrivkey);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecMSCngKeyDataDuplicateMlKemPrivKey", NULL);
+                return(-1);
+            }
+        } else
+#endif /* XMLSEC_NO_MLKEM */
         {
             xmlSecNotImplementedError("BCrypt private key duplication for unknown key type");
             return(-1);
@@ -2427,7 +2484,7 @@ done:
 
 
 /**
- * @brief Loads a public key of any supported type (RSA, DSA, EC, DH) from a raw SubjectPublicKeyInfo DER blob.
+ * @brief Loads a public key of any supported type (RSA, DSA, EC, DH, ML-DSA, ML-KEM) from a raw SubjectPublicKeyInfo DER blob.
  * @param derData DER-encoded SubjectPublicKeyInfo.
  * @param derDataSize length of @p derData.
  *
@@ -2581,7 +2638,7 @@ xmlSecMSCngAppKeyReadPubKeyFromDer(const xmlSecByte* derData, xmlSecSize derData
     }
 #endif /* XMLSEC_NO_DH */
 
-    /* All other key types: RSA, DSA, EC */
+    /* All other key types: RSA, DSA, EC, ML-DSA, ML-KEM */
     ret = xmlSecMSCngKeyDataCertGetPubkey(spki, &hPubKey);
     if(ret < 0) {
         xmlSecInternalError("xmlSecMSCngKeyDataCertGetPubkey", NULL);
@@ -2623,7 +2680,7 @@ done:
  * @param data DER-encoded PKCS8 PrivateKeyInfo blob.
  * @param dataSize length of @p data.
  *
- * Currently only DH and XDH (X25519) private keys are supported.
+ * Currently only DH, XDH (X25519), and ML-KEM private keys are supported.
  *
  * @return new key data or NULL on failure.
  */
@@ -2665,6 +2722,12 @@ xmlSecMSCngAppKeyReadPrivKeyFromDer(const xmlSecByte* data, xmlSecSize dataSize)
 #else /* XMLSEC_NO_XDH */
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "XDH private keys are not supported in this build");
 #endif /* XMLSEC_NO_XDH */
+#ifndef XMLSEC_NO_MLKEM
+    } else if(strcmp(pki->Algorithm.pszObjId, XMLSEC_MSCNG_OID_MLKEM_512) == 0 ||
+             strcmp(pki->Algorithm.pszObjId, XMLSEC_MSCNG_OID_MLKEM_768) == 0 ||
+             strcmp(pki->Algorithm.pszObjId, XMLSEC_MSCNG_OID_MLKEM_1024) == 0) {
+        res = xmlSecMSCngKeyDataMlKemReadFromPkcs8Der(data, dwDataSize);
+#endif /* XMLSEC_NO_MLKEM */
     } else {
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "Unsupported private key algorithm: %s", pki->Algorithm.pszObjId);
     }
@@ -2728,3 +2791,31 @@ xmlSecMSCngKeyDataMLDSAGetKlass(void) {
 }
 
 #endif /* XMLSEC_NO_MLDSA */
+
+
+/******************************************************************************
+ * ML-KEM (FIPS 203) key data
+   *****************************************************************************/
+#ifndef XMLSEC_NO_MLKEM
+
+XMLSEC_MSCNG_CERTKEY_KLASS_EX2(
+    xmlSecMSCngKeyDataMlKemKlass,
+    xmlSecNameMLKEMKeyValue,
+    NULL,         /* keyDataHref */
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+    NULL,         /* dataNodeName */
+    NULL,         /* dataNodeNs */
+    NULL,         /* generate (not supported) */
+    NULL,         /* xmlRead */
+    NULL)         /* xmlWrite */
+
+/**
+ * @brief The MSCng ML-KEM (FIPS 203) key data klass.
+ * @return pointer to MSCng ML-KEM key data klass.
+ */
+xmlSecKeyDataId
+xmlSecMSCngKeyDataMLKEMGetKlass(void) {
+    return(&xmlSecMSCngKeyDataMlKemKlass);
+}
+
+#endif /* XMLSEC_NO_MLKEM */

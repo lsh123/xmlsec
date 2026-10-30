@@ -215,7 +215,7 @@ int                xmlSecMSCngKeyDataCertGetXdhPubkey               (PCERT_PUBLI
 
 /* CNG ML-DSA (PQDSA) definitions. The Windows SDK used at build time may lack
  * some or all of them; the values below were verified against the CNG ML-DSA
- * provider on Windows 11 24H2+ (build 26300). */
+ * provider on Windows 11 version 26H2 (build 26300). */
 #ifndef BCRYPT_MLDSA_ALGORITHM
 #define BCRYPT_MLDSA_ALGORITHM            L"ML-DSA"
 #endif /* BCRYPT_MLDSA_ALGORITHM */
@@ -252,9 +252,103 @@ typedef struct _xmlSecMSCngPqdsaPaddingInfo {
 #define XMLSEC_MSCNG_OID_MLDSA_87         "2.16.840.1.101.3.4.3.19"
 
 int                xmlSecMSCngKeyDataCertGetMlDsaPubkey               (PCERT_PUBLIC_KEY_INFO spki,
-                                                                       BCRYPT_KEY_HANDLE* key);
+                                                                        BCRYPT_KEY_HANDLE* key);
 
 #endif /* XMLSEC_NO_MLDSA */
+
+
+/******************************************************************************
+ *
+ * ML-KEM (FIPS 203) Util functions
+ *
+   *****************************************************************************/
+#ifndef XMLSEC_NO_MLKEM
+
+/* CNG ML-KEM definitions. The Windows SDK used at build time may lack
+ * some or all of them (guarded by NTDDI_VERSION >= NTDDI_WIN11_GE in the
+ * SDK); the values below were verified against the CNG ML-KEM provider
+ * on Windows build 26300.
+ * (https://learn.microsoft.com/en-us/windows/win32/seccng/cng-mlkem-examples) */
+#ifndef BCRYPT_MLKEM_ALGORITHM
+#define BCRYPT_MLKEM_ALGORITHM            L"ML-KEM"
+#endif /* BCRYPT_MLKEM_ALGORITHM */
+#ifndef BCRYPT_MLKEM_ALG_HANDLE
+#define BCRYPT_MLKEM_ALG_HANDLE           ((BCRYPT_ALG_HANDLE)0x00000481)
+#endif /* BCRYPT_MLKEM_ALG_HANDLE */
+#ifndef BCRYPT_MLKEM_PUBLIC_MAGIC
+#define BCRYPT_MLKEM_PUBLIC_MAGIC         0x504B4C4D /* MLKP */
+#endif /* BCRYPT_MLKEM_PUBLIC_MAGIC */
+#ifndef BCRYPT_MLKEM_PRIVATE_MAGIC
+#define BCRYPT_MLKEM_PRIVATE_MAGIC        0x524B4C4D /* MLKR */
+#endif /* BCRYPT_MLKEM_PRIVATE_MAGIC */
+#ifndef BCRYPT_MLKEM_PUBLIC_BLOB
+#define BCRYPT_MLKEM_PUBLIC_BLOB          L"MLKEMPUBLICBLOB"
+#endif /* BCRYPT_MLKEM_PUBLIC_BLOB */
+#ifndef BCRYPT_MLKEM_PRIVATE_BLOB
+#define BCRYPT_MLKEM_PRIVATE_BLOB         L"MLKEMPRIVATEBLOB"
+#endif /* BCRYPT_MLKEM_PRIVATE_BLOB */
+#ifndef BCRYPT_KEM_SHARED_SECRET_LENGTH
+#define BCRYPT_KEM_SHARED_SECRET_LENGTH   L"KEMSharedSecretLength"
+#endif /* BCRYPT_KEM_SHARED_SECRET_LENGTH */
+#ifndef BCRYPT_KEM_CIPHERTEXT_LENGTH
+#define BCRYPT_KEM_CIPHERTEXT_LENGTH      L"KEMCiphertextLength"
+#endif /* BCRYPT_KEM_CIPHERTEXT_LENGTH */
+
+/* BCryptEncapsulate() and BCryptDecapsulate() are declared by the Windows
+ * SDK only when NTDDI_VERSION >= NTDDI_WIN11_GE; provide local prototypes
+ * otherwise. */
+#if !(defined(NTDDI_VERSION) && (NTDDI_VERSION >= NTDDI_WIN11_GE))
+NTSTATUS WINAPI BCryptEncapsulate(BCRYPT_KEY_HANDLE hKey, PUCHAR pbSecretKey,
+    ULONG cbSecretKey, ULONG* pcbSecretKey, PUCHAR pbCipherText,
+    ULONG cbCipherText, ULONG* pcbCipherText, ULONG dwFlags);
+NTSTATUS WINAPI BCryptDecapsulate(BCRYPT_KEY_HANDLE hKey, PUCHAR pbCipherText,
+    ULONG cbCipherText, PUCHAR pbSecretKey, ULONG cbSecretKey,
+    ULONG* pcbSecretKey, ULONG dwFlags);
+#endif /* !(NTDDI_VERSION >= NTDDI_WIN11_GE) */
+
+/* ML-KEM raw key sizes in bytes, verified against the CNG ML-KEM provider
+ * on Windows build 26300: public key: ML-KEM-512: 800, ML-KEM-768: 1184,
+ * ML-KEM-1024: 1568; secret key: ML-KEM-512: 1632, ML-KEM-768: 2400,
+ * ML-KEM-1024: 3168. */
+#define XMLSEC_MSCNG_MLKEM_512_PK_SIZE    (800)
+#define XMLSEC_MSCNG_MLKEM_768_PK_SIZE    (1184)
+#define XMLSEC_MSCNG_MLKEM_1024_PK_SIZE   (1568)
+#define XMLSEC_MSCNG_MLKEM_512_SK_SIZE    (1632)
+#define XMLSEC_MSCNG_MLKEM_768_SK_SIZE    (2400)
+#define XMLSEC_MSCNG_MLKEM_1024_SK_SIZE   (3168)
+
+/* ML-KEM ciphertext sizes in bytes: ML-KEM-512: 768, ML-KEM-768: 1088,
+ * ML-KEM-1024: 1568; the shared secret is 32 bytes for all parameter sets. */
+#define XMLSEC_MSCNG_MLKEM_512_CT_SIZE    (768)
+#define XMLSEC_MSCNG_MLKEM_768_CT_SIZE    (1088)
+#define XMLSEC_MSCNG_MLKEM_1024_CT_SIZE   (1568)
+#define XMLSEC_MSCNG_MLKEM_SS_SIZE        (32)
+
+/* The PrivateKey field of the ML-KEM PKCS#8 PrivateKeyInfo produced by
+ * OpenSSL 3.5+ is a DER SEQUENCE of two OCTET STRINGs: a 64-byte auxiliary
+ * value (unused by CNG) and the full secret key. */
+#define XMLSEC_MSCNG_MLKEM_PKCS8_PREFIX_SIZE  (64)
+
+/* OIDs of the ML-KEM parameter sets; always ANSI LPSTR per CAPI design,
+ * even in UNICODE builds. */
+#define XMLSEC_MSCNG_OID_MLKEM_512        "2.16.840.1.101.3.4.4.1"
+#define XMLSEC_MSCNG_OID_MLKEM_768        "2.16.840.1.101.3.4.4.2"
+#define XMLSEC_MSCNG_OID_MLKEM_1024       "2.16.840.1.101.3.4.4.3"
+
+int                xmlSecMSCngKeyDataCertGetMlKemPubkey               (PCERT_PUBLIC_KEY_INFO spki,
+                                                                        BCRYPT_KEY_HANDLE* key);
+int                xmlSecMSCngKeyDataDuplicateMlKemPubKey             (BCRYPT_KEY_HANDLE src,
+                                                                        BCRYPT_KEY_HANDLE* dst);
+int                xmlSecMSCngKeyDataDuplicateMlKemPrivKey            (BCRYPT_KEY_HANDLE src,
+                                                                        BCRYPT_KEY_HANDLE* dst);
+BCRYPT_KEY_HANDLE  xmlSecMSCngKeyDataMlKemImportPublicKey             (const xmlSecByte* pubKeyBytes,
+                                                                        DWORD pubKeyLen);
+BCRYPT_KEY_HANDLE  xmlSecMSCngKeyDataMlKemImportPrivateKey            (const xmlSecByte* privKeyBytes,
+                                                                        DWORD privKeyLen);
+xmlSecKeyDataPtr   xmlSecMSCngKeyDataMlKemReadFromPkcs8Der            (const xmlSecByte* derData,
+                                                                        DWORD derDataLen);
+
+#endif /* XMLSEC_NO_MLKEM */
 
 
 /******************************************************************************

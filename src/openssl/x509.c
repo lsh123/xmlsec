@@ -39,9 +39,9 @@
 #include <openssl/x509v3.h>
 #include <openssl/asn1.h>
 
-#if defined(OPENSSL_IS_BORINGSSL) || defined(OPENSSL_IS_AWSLC)
+#if defined(XMLSEC_OPENSSL_IS_BORINGSSL) || defined(XMLSEC_OPENSSL_IS_AWSLC)
 #include <openssl/mem.h>
-#endif /* OPENSSL_IS_BORINGSSL || OPENSSL_IS_AWSLC */
+#endif /* XMLSEC_OPENSSL_IS_BORINGSSL || XMLSEC_OPENSSL_IS_AWSLC */
 
 #include "../cast_helpers.h"
 #include "../x509_helpers.h"

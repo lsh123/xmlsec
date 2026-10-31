@@ -23,6 +23,7 @@
 #include <openssl/crypto.h>
 #include <openssl/err.h>
 
+
 #ifndef IN_XMLSEC_CRYPTO
 #define IN_XMLSEC_CRYPTO
 #endif /* IN_XMLSEC_CRYPTO */
@@ -31,6 +32,8 @@
 #define XMLSEC_PRIVATE
 #endif /* XMLSEC_PRIVATE */
 
+/* required for OpenSSL flavor / version defines */
+#include <xmlsec/openssl/crypto.h>
 
 /* Include common error helper macros. */
 #include "../errors_helpers.h"
@@ -42,11 +45,11 @@
 #define XMLSEC_OPENSSL_ERROR_BUFFER_SIZE                1024
 
 /** AWS-LC, BoringSSL and OpenSSL use different types for the error code */
-#if defined(OPENSSL_IS_BORINGSSL) || defined(OPENSSL_IS_AWSLC)
+#if defined(XMLSEC_OPENSSL_IS_BORINGSSL) || defined(XMLSEC_OPENSSL_IS_AWSLC)
 typedef uint32_t xmlSecOpenSSLErrorType;
-#else /* defined(OPENSSL_IS_BORINGSSL) || defined(OPENSSL_IS_AWSLC) */
+#else /* defined(XMLSEC_OPENSSL_IS_BORINGSSL) || defined(XMLSEC_OPENSSL_IS_AWSLC) */
 typedef unsigned long xmlSecOpenSSLErrorType;
-#endif /* defined(OPENSSL_IS_BORINGSSL) || defined(OPENSSL_IS_AWSLC) */
+#endif /* defined(XMLSEC_OPENSSL_IS_BORINGSSL) || defined(XMLSEC_OPENSSL_IS_AWSLC) */
 
 
 /**

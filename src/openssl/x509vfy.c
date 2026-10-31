@@ -1490,17 +1490,17 @@ xmlSecOpenSSLX509FindTrustedIssuer(X509_STORE* xst, XMLSEC_OPENSSL400_CONST X509
     xmlSecAssert2(issuer != NULL, NULL);
 
     /* Get all objects from the trusted store */
-#if defined(XMLSEC_OPENSSL_API_350)
+#ifndef XMLSEC_OPENSSL_NO_X509_STORE_GET1_OBJECTS
     objects = X509_STORE_get1_objects(xst);
     if(objects == NULL) {
         return(NULL);
     }
-#else   /* defined(XMLSEC_OPENSSL_API_350) */
+#else   /* XMLSEC_OPENSSL_NO_X509_STORE_GET1_OBJECTS */
     objects = X509_STORE_get0_objects(xst);
     if(objects == NULL) {
         return(NULL);
     }
-#endif /* defined(XMLSEC_OPENSSL_API_350) */
+#endif /* XMLSEC_OPENSSL_NO_X509_STORE_GET1_OBJECTS */
 
     /* Search for a certificate with matching subject */
     num = sk_X509_OBJECT_num(objects);
@@ -1540,9 +1540,9 @@ xmlSecOpenSSLX509FindTrustedIssuer(X509_STORE* xst, XMLSEC_OPENSSL400_CONST X509
     }
 
     /* list returned by X509_STORE_get1_objects needs to be freed */
-#if defined(XMLSEC_OPENSSL_API_350)
+#ifndef XMLSEC_OPENSSL_NO_X509_STORE_GET1_OBJECTS
     sk_X509_OBJECT_pop_free(objects, X509_OBJECT_free);
-#endif /* defined(XMLSEC_OPENSSL_API_350) */
+#endif /* XMLSEC_OPENSSL_NO_X509_STORE_GET1_OBJECTS */
 
     /* done */
     return(issuer_cert);

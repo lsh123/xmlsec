@@ -43,9 +43,9 @@
 #include <openssl/engine.h>
 #endif /* !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES)) */
 
-#if !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC)
+#if !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC)
 #include <openssl/ui.h>
-#endif /* !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC) */
+#endif /* !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC) */
 
 #ifndef XMLSEC_OPENSSL_NO_STORE
 #include <openssl/store.h>
@@ -143,13 +143,13 @@ xmlSecOpenSSLAppInit(const char* config) {
     opts |= OPENSSL_INIT_ADD_ALL_DIGESTS;
     opts |= OPENSSL_INIT_LOAD_CONFIG;
 
-#if !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC)
+#if !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC)
     opts |= OPENSSL_INIT_ASYNC;
-#endif /* !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC) */
+#endif /* !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC) */
 
-#if !defined(OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_AWSLC)
+#if !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_API_300) && !defined(XMLSEC_OPENSSL_IS_AWSLC)
     opts |= OPENSSL_INIT_ENGINE_ALL_BUILTIN;
-#endif /* !defined(OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_AWSLC) */
+#endif /* !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_API_300) && !defined(XMLSEC_OPENSSL_IS_AWSLC) */
 
     ret = OPENSSL_init_crypto(opts, NULL);
     if(ret != 1) {
@@ -837,11 +837,11 @@ xmlSecOpenSSLAppCheckCertMatchesKey(EVP_PKEY * pKey,  X509 * cert) {
     xmlSecAssert2(pKey != NULL, -1);
     xmlSecAssert2(cert != NULL, -1);
 
-#if defined(OPENSSL_IS_BORINGSSL)
+#if defined(XMLSEC_OPENSSL_IS_BORINGSSL)
     certKey = X509_get_pubkey(cert);
-#else /* defined(OPENSSL_IS_BORINGSSL) */
+#else /* defined(XMLSEC_OPENSSL_IS_BORINGSSL) */
     certKey = X509_get0_pubkey(cert);
-#endif /* defined(OPENSSL_IS_BORINGSSL) */
+#endif /* defined(XMLSEC_OPENSSL_IS_BORINGSSL) */
     if(certKey == NULL) {
         return(-1);
     }
@@ -852,9 +852,9 @@ xmlSecOpenSSLAppCheckCertMatchesKey(EVP_PKEY * pKey,  X509 * cert) {
     res = (EVP_PKEY_eq(pKey, certKey) == 1) ? 1 : 0;
 #endif /* XMLSEC_OPENSSL_API_300 */
 
-#if defined(OPENSSL_IS_BORINGSSL)
+#if defined(XMLSEC_OPENSSL_IS_BORINGSSL)
     EVP_PKEY_free(certKey);
-#endif /* defined(OPENSSL_IS_BORINGSSL) */
+#endif /* defined(XMLSEC_OPENSSL_IS_BORINGSSL) */
 
     return(res);
 }

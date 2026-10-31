@@ -785,12 +785,12 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
         }
         if(pos >= outLen) {
             /* the recovered block is all zeros: not a valid OAEP block */
-            xmlSecInvalidSizeError("Recovered encoded data size", outLen, keyLen, NULL);
+            xmlSecInvalidSizeError("Recovered encoded data size", (xmlSecSize)outLen, (xmlSecSize)keyLen, NULL);
             OPENSSL_cleanse(outBuf, (*outSize));
             return(-1);
         }
         if(pos > 0) {
-            memmove(outBuf, outBuf + pos, outLen - pos);
+            memmove(outBuf, outBuf + pos, (unsigned int)(outLen - pos));
             outLen -= pos;
         }
 

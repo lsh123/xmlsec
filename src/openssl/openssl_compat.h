@@ -26,53 +26,64 @@ int             xmlSecOpenSSLGenerateRandomBytes             (xmlSecByte* data, 
 
 /******************************************************************************
  *
- * boringssl and aws-lc compatibility
+ * BoringSSL compatibility
  *
-  *****************************************************************************/
-#if defined(OPENSSL_IS_BORINGSSL) || defined(OPENSSL_IS_AWSLC)
+ *****************************************************************************/
+#if defined(XMLSEC_OPENSSL_IS_BORINGSSL)
 
-/* Not implemented by BoringSSL/AWS-LC (yet?) */
-#define XMLSEC_OPENSSL_NO_ASN1_TIME_TO_TM   1
-#define XMLSEC_OPENSSL_NO_STORE             1
-#define XMLSEC_OPENSSL_NO_DEEP_COPY         1
+/* Not implemented by BoringSSL */
+#define XMLSEC_OPENSSL_NO_ASN1_TIME_TO_TM 1
+#define XMLSEC_OPENSSL_NO_STORE           1
+#define XMLSEC_OPENSSL_NO_DEEP_COPY       1
 
-/* AWS-LC declares the real RAND_priv_bytes (aws-lc include/openssl/rand.h);
- * BoringSSL (boringssl include/openssl/rand.h) only declares RAND_bytes.
+/* BoringSSL (boringssl include/openssl/rand.h) only declares RAND_bytes.
  * #ifndef cannot detect a plain function declaration, so the shim must be
  * BoringSSL-only to avoid shadowing the real function on AWS-LC. */
-#if defined(OPENSSL_IS_BORINGSSL)
 #ifndef RAND_priv_bytes
-#define RAND_priv_bytes(buf,len)            RAND_bytes((buf), (len))
-#endif
-#endif /* defined(OPENSSL_IS_BORINGSSL) */
+#define RAND_priv_bytes(buf,len)          RAND_bytes((buf), (len))
+#endif /* RAND_priv_bytes */
 
-/* Both BoringSSL (boringssl include/openssl/evp.h, which implements it as a
- * wrapper for EVP_PKEY_id) and AWS-LC (aws-lc include/openssl/evp.h) declare
- * the real EVP_PKEY_base_id today, so no shim: #ifndef cannot detect a plain
- * function declaration, and shadowing the real function with EVP_PKEY_id()
- * would be silently wrong for key types whose base id differs from their id.
- * If a provider ever lacks EVP_PKEY_base_id, the build will fail loudly. */
-/* EVP_read_pw_string is not implemented by BoringSSL; AWS-LC provides it
- * (aws-lc include/openssl/evp.h:160), and #ifndef cannot detect a plain
- * function declaration, so the shim must be BoringSSL-only */
-#if defined(OPENSSL_IS_BORINGSSL)
+/* EVP_read_pw_string is not implemented by BoringSSL */
 #ifndef EVP_read_pw_string
 #define EVP_read_pw_string(buf, len, prompt, verify)     (-1)
-#endif
-#endif /* defined(OPENSSL_IS_BORINGSSL) */
+#endif /* EVP_read_pw_string */
 
 /* simply return success */
 #ifndef sk_X509_reserve
-#define sk_X509_reserve(crts, num)          (1)
-#endif
+#define sk_X509_reserve(crts, num)        (1)
+#endif  /* sk_X509_reserve */
 #ifndef sk_X509_CRL_reserve
-#define sk_X509_CRL_reserve(crls, num)      (1)
-#endif
+#define sk_X509_CRL_reserve(crls, num)    (1)
+#endif  /* sk_X509_CRL_reserve */
 
-#endif /* defined(OPENSSL_IS_BORINGSSL) || defined(OPENSSL_IS_AWSLC) */
+#endif /* defined(XMLSEC_OPENSSL_IS_BORINGSSL) */
+
+
+/******************************************************************************
+ *
+ * AWS-LC compatibility
+ *
+ *****************************************************************************/
+#if defined(XMLSEC_OPENSSL_IS_AWSLC)
+
+/* Not implemented by AWS-LC (yet?) */
+#define XMLSEC_OPENSSL_NO_STORE                    1
+#define XMLSEC_OPENSSL_NO_DEEP_COPY                1
+#define XMLSEC_OPENSSL_NO_X509_STORE_GET1_OBJECTS  1
+
+/* simply return success */
+#ifndef sk_X509_reserve
+#define sk_X509_reserve(crts, num)        (1)
+#endif  /* sk_X509_reserve */
+
+#ifndef sk_X509_CRL_reserve
+#define sk_X509_CRL_reserve(crls, num)    (1)
+#endif  /* sk_X509_CRL_reserve */
+
+#endif /* defined(XMLSEC_OPENSSL_IS_AWSLC) */
 
 /* BoringSSL redefines int->size_t or int->unsigned */
-#if defined(OPENSSL_IS_BORINGSSL) || defined(OPENSSL_IS_AWSLC)
+#if defined(XMLSEC_OPENSSL_IS_BORINGSSL) || defined(XMLSEC_OPENSSL_IS_AWSLC)
 
 /* when BoringSSL replaced int with unsigned */
 typedef unsigned xmlSecOpenSSLUInt;
@@ -101,7 +112,7 @@ typedef size_t xmlSecOpenSSLSizeT;
 #define XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_INT(srcVal, dstVal, errorAction, errorObject) \
        XMLSEC_SAFE_CAST_SIZE_T_TO_INT((srcVal), (dstVal), errorAction, (errorObject))
 
-#else /* defined(OPENSSL_IS_BORINGSSL) || defined(OPENSSL_IS_AWSLC) */
+#else /* defined(XMLSEC_OPENSSL_IS_BORINGSSL) || defined(XMLSEC_OPENSSL_IS_AWSLC) */
 
 /* plain int type (no BoringSSL/AWS-LC redefinition) */
 typedef int xmlSecOpenSSLUInt;
@@ -130,7 +141,7 @@ typedef int xmlSecOpenSSLSizeT;
 #define XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_INT(srcVal, dstVal, errorAction, errorObject) \
         (dstVal) = (srcVal)
 
-#endif /* defined(OPENSSL_IS_BORINGSSL) || defined(OPENSSL_IS_AWSLC) */
+#endif /* defined(XMLSEC_OPENSSL_IS_BORINGSSL) || defined(XMLSEC_OPENSSL_IS_AWSLC) */
 
 
 /******************************************************************************
@@ -138,27 +149,26 @@ typedef int xmlSecOpenSSLSizeT;
  * LibreSSL compatibility (implements most of OpenSSL 1.1 API)
  *
   *****************************************************************************/
-#if defined(LIBRESSL_VERSION_NUMBER)
+#if defined(XMLSEC_OPENSSL_IS_LIBRESSL)
 
 /* Not implemented by LibreSSL (yet?) */
-#define XMLSEC_OPENSSL_NO_ASN1_TIME_TO_TM   1
-#define XMLSEC_OPENSSL_NO_STORE             1
-#define XMLSEC_OPENSSL_NO_PWD_CALLBACK      1
-#define XMLSEC_OPENSSL_NO_DEEP_COPY         1
+#define XMLSEC_OPENSSL_NO_STORE           1
+#define XMLSEC_OPENSSL_NO_PWD_CALLBACK    1
+#define XMLSEC_OPENSSL_NO_DEEP_COPY       1
 
 #ifndef RAND_priv_bytes
-#define RAND_priv_bytes(buf,len)            RAND_bytes((buf), (len))
+#define RAND_priv_bytes(buf,len)          RAND_bytes((buf), (len))
 #endif
 
 /* simply return success */
 #ifndef sk_X509_reserve
-#define sk_X509_reserve(crts, num)          (1)
+#define sk_X509_reserve(crts, num)        (1)
 #endif
 #ifndef sk_X509_CRL_reserve
-#define sk_X509_CRL_reserve(crls, num)      (1)
+#define sk_X509_CRL_reserve(crls, num)    (1)
 #endif
 
-#endif /* defined(LIBRESSL_VERSION_NUMBER) */
+#endif /* defined(XMLSEC_OPENSSL_IS_LIBRESSL) */
 
 /******************************************************************************
  *
@@ -171,6 +181,19 @@ typedef int xmlSecOpenSSLSizeT;
 /* OpenSSL 4.0.0 or newer adds "const" in a few places */
 #define XMLSEC_OPENSSL400_CONST  const
 #endif /* !defined(XMLSEC_OPENSSL_API_400) */
+
+/******************************************************************************
+ *
+ * OpenSSL 3.5.0 compatibility
+ *
+  *****************************************************************************/
+#if !defined(XMLSEC_OPENSSL_API_350)
+
+#if defined(XMLSEC_OPENSSL_IS_OPENSSL)
+#define XMLSEC_OPENSSL_NO_X509_STORE_GET1_OBJECTS 1
+#endif /* defined(XMLSEC_OPENSSL_IS_OPENSSL) */
+
+#endif /* defined(XMLSEC_OPENSSL_API_350) */
 
 /******************************************************************************
  *

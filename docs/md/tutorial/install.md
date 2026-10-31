@@ -7,8 +7,8 @@ XML Security Library requires the following libraries:
 
 And at least one of the following cryptographic libraries:
 - [OpenSSL](https://www.openssl.org) >= 3.0.13 (>= 3.5.0 is recommended)
-- [LibreSSL](https://www.libressl.org/) >= 3.9.0
-- [BoringSSL](https://boringssl.googlesource.com/boringssl/) >= 1.1.0
+- [LibreSSL](https://www.libressl.org/) >= 4.0.0
+- [BoringSSL](https://boringssl.googlesource.com/boringssl/) later than Oct 2024
 - [AWS-LC](https://github.com/aws/aws-lc) >= 1.63.0
 - [NSS](https://firefox-source-docs.mozilla.org/security/nss/index.html) >= 3.91 (with [NSPR](https://firefox-source-docs.mozilla.org/nspr/index.html) >= 4.34.1)
 - [GnuTLS](https://www.gnutls.org/) >= 3.8.3

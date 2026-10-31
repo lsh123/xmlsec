@@ -33,23 +33,33 @@
 
 /******************************************************************************
  *
- * What version of the OpenSSL API do we have? (also see configure.ac)
+ * What flavor and version of the OpenSSL API do we have? (also see configure.ac)
  *
  *****************************************************************************/
 #if defined(LIBRESSL_VERSION_NUMBER)
+#define XMLSEC_OPENSSL_IS_LIBRESSL      1
+#elif defined(OPENSSL_IS_BORINGSSL)
+#define XMLSEC_OPENSSL_IS_BORINGSSL     1
+#elif defined(OPENSSL_IS_AWSLC)
+#define XMLSEC_OPENSSL_IS_AWSLC         1
+#else  /* */
+#define XMLSEC_OPENSSL_IS_OPENSSL       1
+#endif /* */
+
+#if defined(XMLSEC_OPENSSL_IS_LIBRESSL)
 /* LibreSSL implements (most of) OpenSSL 1.1 API */
-#define XMLSEC_OPENSSL_API_111      1
+#define XMLSEC_OPENSSL_API_111          1
 #elif OPENSSL_VERSION_NUMBER >= 0x40000000L
-#define XMLSEC_OPENSSL_API_400      1
-#define XMLSEC_OPENSSL_API_350      1
-#define XMLSEC_OPENSSL_API_300      1
+#define XMLSEC_OPENSSL_API_400          1
+#define XMLSEC_OPENSSL_API_350          1
+#define XMLSEC_OPENSSL_API_300          1
 #elif OPENSSL_VERSION_NUMBER >= 0x30500000L
-#define XMLSEC_OPENSSL_API_350      1
-#define XMLSEC_OPENSSL_API_300      1
+#define XMLSEC_OPENSSL_API_350          1
+#define XMLSEC_OPENSSL_API_300          1
 #elif OPENSSL_VERSION_NUMBER >= 0x30000000L
-#define XMLSEC_OPENSSL_API_300      1
+#define XMLSEC_OPENSSL_API_300          1
 #elif OPENSSL_VERSION_NUMBER >= 0x10101000L
-#define XMLSEC_OPENSSL_API_111      1
+#define XMLSEC_OPENSSL_API_111          1
 #else  /* OPENSSL_VERSION_NUMBER */
 #error "This version of OpenSSL library is not supported"
 #endif /* OPENSSL_VERSION_NUMBER */
@@ -60,7 +70,7 @@
  * what is supported and what is not.
  *
 *****************************************************************************/
-#if defined(OPENSSL_IS_BORINGSSL) || defined(OPENSSL_IS_AWSLC)
+#if defined(XMLSEC_OPENSSL_IS_BORINGSSL) || defined(XMLSEC_OPENSSL_IS_AWSLC)
 /*
  * BoringSSL and AWS-LC do not provide a usable opensslconf.h, so the
  * OPENSSL_NO_* capability mappings below are not available for them and the
@@ -76,13 +86,14 @@
 #define XMLSEC_NO_GOST                  1
 #define XMLSEC_NO_GOST2012              1
 #define XMLSEC_NO_RIPEMD160             1
-#endif /* defined(OPENSSL_IS_BORINGSSL) || defined(OPENSSL_IS_AWSLC) */
+#endif /* defined(XMLSEC_OPENSSL_IS_BORINGSSL) || defined(XMLSEC_OPENSSL_IS_AWSLC) */
 
-#if defined(LIBRESSL_VERSION_NUMBER)
+#if defined(XMLSEC_OPENSSL_IS_LIBRESSL)
 #define XMLSEC_NO_DH                    1
 #define XMLSEC_NO_CAMELLIA              1
 #define XMLSEC_NO_CHACHA20              1
-#endif /* defined(LIBRESSL_VERSION_NUMBER) */
+#define XMLSEC_NO_XDH                   1
+#endif /* defined(XMLSEC_OPENSSL_IS_LIBRESSL) */
 
 #if !defined(XMLSEC_OPENSSL_API_350)
 #define XMLSEC_NO_MLDSA                 1
@@ -105,9 +116,9 @@
  *
  *****************************************************************************/
 #include <openssl/err.h>
-#if !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC)
+#if !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC)
 #include <openssl/opensslconf.h>
-#endif /*  !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC) */
+#endif /*  !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC) */
 
 
 #ifndef XMLSEC_NO_DSA

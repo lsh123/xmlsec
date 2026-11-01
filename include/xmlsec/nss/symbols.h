@@ -50,6 +50,8 @@ extern "C" {
 #define xmlSecKeyDataEdDSAId                    xmlSecNssKeyDataEdDSAId
 #define xmlSecKeyDataHkdfId                     xmlSecNssKeyDataHkdfId
 #define xmlSecKeyDataHmacId                     xmlSecNssKeyDataHmacId
+#define xmlSecKeyDataMLDSAId                    xmlSecNssKeyDataMLDSAId
+#define xmlSecKeyDataMLKEMId                    xmlSecNssKeyDataMLKEMId
 #define xmlSecKeyDataPbkdf2Id                   xmlSecNssKeyDataPbkdf2Id
 #ifndef XMLSEC_NO_X509
 #define xmlSecKeyDataRawX509CertId              xmlSecNssKeyDataRawX509CertId
@@ -114,6 +116,14 @@ extern "C" {
 #define xmlSecTransformEcdhId                   xmlSecNssTransformEcdhId
 
 #define xmlSecTransformEdDSAEd25519Id           xmlSecNssTransformEdDSAEd25519Id
+
+#define xmlSecTransformMLDSA44Id                xmlSecNssTransformMLDSA44Id
+#define xmlSecTransformMLDSA65Id                xmlSecNssTransformMLDSA65Id
+#define xmlSecTransformMLDSA87Id                xmlSecNssTransformMLDSA87Id
+
+#define xmlSecTransformMLKEM512Id               xmlSecNssTransformMLKEM512Id
+#define xmlSecTransformMLKEM768Id               xmlSecNssTransformMLKEM768Id
+#define xmlSecTransformMLKEM1024Id              xmlSecNssTransformMLKEM1024Id
 
 #define xmlSecTransformX25519Id                 xmlSecNssTransformX25519Id
 

@@ -366,6 +366,7 @@ XMLSEC_NSS_OBJS = \
 	$(XMLSEC_NSS_INTDIR)\kw_des.obj \
 	$(XMLSEC_NSS_INTDIR)\kw_rfc_3394.obj \
 	$(XMLSEC_NSS_INTDIR)\kdf.obj \
+	$(XMLSEC_NSS_INTDIR)\kt_mlkem.obj \
 	$(XMLSEC_NSS_INTDIR)\pkikeys.obj \
 	$(XMLSEC_NSS_INTDIR)\signatures.obj \
 	$(XMLSEC_NSS_INTDIR)\strings.obj \
@@ -386,6 +387,7 @@ XMLSEC_NSS_OBJS_A = \
 	$(XMLSEC_NSS_INTDIR_A)\kw_des.obj \
 	$(XMLSEC_NSS_INTDIR_A)\kw_rfc_3394.obj \
 	$(XMLSEC_NSS_INTDIR_A)\kdf.obj \
+	$(XMLSEC_NSS_INTDIR_A)\kt_mlkem.obj \
 	$(XMLSEC_NSS_INTDIR_A)\pkikeys.obj \
 	$(XMLSEC_NSS_INTDIR_A)\strings.obj \
 	$(XMLSEC_NSS_INTDIR_A)\signatures.obj \

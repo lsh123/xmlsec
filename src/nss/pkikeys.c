@@ -280,6 +280,24 @@ xmlSecNssPKIAdoptKey(SECKEYPrivateKey *privkey,
         }
         break;
 #endif /* XMLSEC_NO_XDH */
+#ifndef XMLSEC_NO_MLDSA
+    case mldsaKey:
+        data = xmlSecKeyDataCreate(xmlSecNssKeyDataMLDSAId);
+        if(data == NULL) {
+            xmlSecInternalError("xmlSecKeyDataCreate", NULL);
+            return(NULL);
+        }
+        break;
+#endif /* XMLSEC_NO_MLDSA */
+#ifndef XMLSEC_NO_MLKEM
+    case kyberKey:
+        data = xmlSecKeyDataCreate(xmlSecNssKeyDataMLKEMId);
+        if(data == NULL) {
+            xmlSecInternalError("xmlSecKeyDataCreate", NULL);
+            return(NULL);
+        }
+        break;
+#endif /* XMLSEC_NO_MLKEM */
     default:
         xmlSecUnsupportedEnumValueError("pubType", pubType, NULL);
         return(NULL);
@@ -327,6 +345,18 @@ xmlSecNssPKIKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
         return(1);
     }
 #endif /* XMLSEC_NO_RSA */
+
+#ifndef XMLSEC_NO_MLDSA
+    if(klass == xmlSecNssKeyDataMLDSAId) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_MLDSA */
+
+#ifndef XMLSEC_NO_MLKEM
+    if(klass == xmlSecNssKeyDataMLKEMId) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_MLKEM */
 
     return(0);
 }
@@ -500,6 +530,18 @@ xmlSecNssPKIKeyDataGetSize(xmlSecKeyDataPtr data) {
     case ecMontKey:
         return(8 * ctx->pubkey->u.ec.publicValue.len);
 #endif /* XMLSEC_NO_XDH */
+#ifndef XMLSEC_NO_MLDSA
+    case mldsaKey:
+        /* SECKEY_PublicKeyStrengthInBits doesn't handle ML-DSA keys correctly so we compute the size
+         * from the public value length. */
+        return(8 * ctx->pubkey->u.mldsa.publicValue.len);
+#endif /* XMLSEC_NO_MLDSA */
+#ifndef XMLSEC_NO_MLKEM
+    case kyberKey:
+        /* SECKEY_PublicKeyStrengthInBits doesn't handle ML-KEM keys correctly so we compute the size
+         * from the public value length. */
+        return(8 * ctx->pubkey->u.kyber.publicValue.len);
+#endif /* XMLSEC_NO_MLKEM */
     default:
         break;
     }
@@ -1617,3 +1659,113 @@ xmlSecNssKeyDataXdhGetKlass(void) {
 }
 
 #endif /* XMLSEC_NO_XDH */
+
+#ifndef XMLSEC_NO_MLDSA
+/******************************************************************************
+ *
+ * ML-DSA key data
+ *
+  *****************************************************************************/
+
+/* ML-DSA klass: no XML KeyValue representation, keys are read from certificates/tokens only */
+#define XMLSEC_NSS_PKI_KEY_KLASS_MLDSA(lcname, ucname, generate)                          \
+static xmlSecKeyDataKlass xmlSecNssKeyData ## lcname ## Klass = {                         \
+    sizeof(xmlSecKeyDataKlass),                 /* xmlSecSize klassSize */                \
+    xmlSecNssPKIKeyDataSize,                    /* xmlSecSize objSize */                  \
+    /* data */                                                                            \
+    xmlSecName ## ucname ## KeyValue,           /* const xmlChar* name; */                \
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml,            \
+                                                 /* xmlSecKeyDataUsage usage; */           \
+    NULL,                                       /* const xmlChar* href; */                \
+    NULL,                                       /* const xmlChar* dataNodeName; */        \
+    NULL,                                       /* const xmlChar* dataNodeNs; */          \
+    /* constructors/destructor */                                                         \
+    xmlSecNssPKIKeyDataInitialize,              /* xmlSecKeyDataInitMethod initialize; */ \
+    xmlSecNssPKIKeyDataDuplicate,               /* xmlSecKeyDataDuplicateMethod duplicate; */   \
+    xmlSecNssPKIKeyDataFinalize,                /* xmlSecKeyDataFinalizeMethod finalize; */      \
+    generate,                                   /* xmlSecKeyDataGenerateMethod generate; */      \
+    /* get info */                                                                        \
+    xmlSecNssPKIKeyDataGetType,                 /* xmlSecKeyDataGetTypeMethod getType; */ \
+    xmlSecNssPKIKeyDataGetSize,                 /* xmlSecKeyDataGetSizeMethod getSize; */ \
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */ \
+    /* read/write */                                                                      \
+    NULL,                                       /* xmlSecKeyDataXmlReadMethod xmlRead; */ \
+    NULL,                                       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */ \
+    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */ \
+    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */ \
+    /* debug */                                                                           \
+    xmlSecKeyDataDebugDumpImpl,                 /* xmlSecKeyDataDebugDumpMethod debugDump; */ \
+    xmlSecKeyDataDebugXmlDumpImpl,              /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */ \
+    /* reserved for the future */                                                         \
+    NULL,                                       /* void* reserved0; */                   \
+    NULL,                                       /* void* reserved1; */                   \
+};
+
+
+XMLSEC_NSS_PKI_KEY_KLASS_MLDSA(MLDSA, MLDSA, NULL)
+
+/**
+ * @brief The ML-DSA key data klass.
+ * @return pointer to ML-DSA key data klass.
+ */
+xmlSecKeyDataId
+xmlSecNssKeyDataMLDSAGetKlass(void) {
+    return(&xmlSecNssKeyDataMLDSAKlass);
+}
+
+#endif /* XMLSEC_NO_MLDSA */
+
+#ifndef XMLSEC_NO_MLKEM
+/******************************************************************************
+ *
+ * ML-KEM key data
+ *
+  *****************************************************************************/
+
+/* ML-KEM klass: no XML KeyValue representation, keys are read from certificates/tokens only */
+#define XMLSEC_NSS_PKI_KEY_KLASS_MLKEM(lcname, ucname, generate)                          \
+static xmlSecKeyDataKlass xmlSecNssKeyData ## lcname ## Klass = {                         \
+    sizeof(xmlSecKeyDataKlass),                 /* xmlSecSize klassSize */                \
+    xmlSecNssPKIKeyDataSize,                    /* xmlSecSize objSize */                  \
+    /* data */                                                                            \
+    xmlSecName ## ucname ## KeyValue,           /* const xmlChar* name; */                \
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml,            \
+                                                 /* xmlSecKeyDataUsage usage; */           \
+    NULL,                                       /* const xmlChar* href; */                \
+    NULL,                                       /* const xmlChar* dataNodeName; */        \
+    NULL,                                       /* const xmlChar* dataNodeNs; */          \
+    /* constructors/destructor */                                                         \
+    xmlSecNssPKIKeyDataInitialize,              /* xmlSecKeyDataInitMethod initialize; */ \
+    xmlSecNssPKIKeyDataDuplicate,               /* xmlSecKeyDataDuplicateMethod duplicate; */   \
+    xmlSecNssPKIKeyDataFinalize,                /* xmlSecKeyDataFinalizeMethod finalize; */      \
+    generate,                                   /* xmlSecKeyDataGenerateMethod generate; */      \
+    /* get info */                                                                        \
+    xmlSecNssPKIKeyDataGetType,                 /* xmlSecKeyDataGetTypeMethod getType; */ \
+    xmlSecNssPKIKeyDataGetSize,                 /* xmlSecKeyDataGetSizeMethod getSize; */ \
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */ \
+    /* read/write */                                                                      \
+    NULL,                                       /* xmlSecKeyDataXmlReadMethod xmlRead; */ \
+    NULL,                                       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */ \
+    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */ \
+    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */ \
+    /* debug */                                                                           \
+    xmlSecKeyDataDebugDumpImpl,                 /* xmlSecKeyDataDebugDumpMethod debugDump; */ \
+    xmlSecKeyDataDebugXmlDumpImpl,              /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */ \
+    /* reserved for the future */                                                         \
+    NULL,                                       /* void* reserved0; */                   \
+    NULL,                                       /* void* reserved1; */                   \
+};
+
+
+XMLSEC_NSS_PKI_KEY_KLASS_MLKEM(MLKEM, MLKEM, NULL)
+
+/**
+ * @brief The ML-KEM key data klass.
+ * @return pointer to ML-KEM key data klass.
+ */
+xmlSecKeyDataId
+xmlSecNssKeyDataMLKEMGetKlass(void) {
+    return(&xmlSecNssKeyDataMLKEMKlass);
+}
+
+#endif /* XMLSEC_NO_MLKEM */

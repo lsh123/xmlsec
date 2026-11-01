@@ -77,7 +77,7 @@ XML Security library supports the following features as defined in
 | [Diffie-Hellman with legacy KDF](https://www.w3.org/TR/xmlenc-core1/#sec-DHKeyAgreement) | Optional | No | No | No | No | No | No |
 | [Diffie-Hellman with explicit KDF](https://www.w3.org/TR/xmlenc-core1/#sec-DHKeyAgreement) | Optional | Yes [(3)](#openssl3-required) [(12)](#openssl-dh-key-formats) | No | No | Yes [(8)](#dhx-only) | No | No |
 | **Key Encapsulation** |  | | | | | | |
-| [ML-KEM 512, 768, 1024](https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/)| EXPERIMENTAL | Yes [(1)](#feature-disabled) [(10)](#openssl35-required) | No | No | Yes [(1)](#feature-disabled) [(5)](#new-windows-required) | No | No |
+| [ML-KEM 512, 768, 1024](https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/)| EXPERIMENTAL | Yes [(1)](#feature-disabled) [(10)](#openssl35-required) | Yes [(1)](#feature-disabled) [(13)](#nss-mlkem-required) | No | Yes [(1)](#feature-disabled) [(5)](#new-windows-required) | No | No |
 | [PSEC-KEM](https://www.ietf.org/rfc/rfc9231.html#section-2.6.4) | Optional | No | No | No | No | No | No |
 | [RSAES-KEM](https://www.ietf.org/rfc/rfc9231.html#section-2.6.4) | Optional | No | No | No | No | No | No |
 | [ECIES-KEM](https://www.ietf.org/rfc/rfc9231.html#section-2.6.4) | Optional | No | No | No | No | No | No |
@@ -100,6 +100,7 @@ XML Security library supports the following features as defined in
 10. <a id="openssl35-required"></a> Requires OpenSSL 3.5.0 or newer.
 11. <a id="stream-algorithms"></a> The XML Encryption Core specification defines no specific stream encryption algorithm; xmlsec implements ChaCha20 and ChaCha20-Poly1305 (see the rows above, xmldsig-more identifiers).
 12. <a id="openssl-dh-key-formats"></a> Both the PKCS#3 and X9.42 (DHX) DH key formats are accepted.
+13. <a id="nss-mlkem-required"></a> Requires NSS 3.129 or newer.
 
 ### Test vectors
 

@@ -33,6 +33,7 @@ see the Copyright file in the distribution for details.
   - (xmlsec-core) Fixed the XPointer transform identifier, the original one is kept as deprecated and
     will be removed in the future.
   - (xmlsec-mscng) Added support for ML-DSA (requires Windows 11 version 25H2 or Windows Server 2025).
+  - (xmlsec-nss) Added support for ML-DSA signature and ML-KEM key transport algorithms (requires NSS 3.129 or newer).
   - (xmlsec-openssl) Bumped the minimum supported version of LibreSSL to 4.0.0 and BoringSSL to later than Oct 2024.
   - (xmlsec-build, **not backward compatible**) Disabled Triple DES and Triple DES KeyWrap
     by default (use `--enable-des` option to re-enable both).

@@ -62,6 +62,24 @@
 #endif /* (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 99)) */
 #endif /* XMLSEC_NO_EDDSA */
 
+#ifndef XMLSEC_NO_MLDSA
+#if (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 129))
+/**
+ * ML-DSA sign/verify requires NSS >= 3.129
+ */
+#define XMLSEC_NO_MLDSA 1
+#endif /* (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 129)) */
+#endif /* XMLSEC_NO_MLDSA */
+
+#ifndef XMLSEC_NO_MLKEM
+#if (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 129))
+/**
+ * ML-KEM requires NSS >= 3.129 (ML-KEM-512 was added in 3.129)
+ */
+#define XMLSEC_NO_MLKEM 1
+#endif /* (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 129)) */
+#endif /* XMLSEC_NO_MLKEM */
+
 #ifndef XMLSEC_NO_HKDF
 #if !defined(CKM_HKDF_DERIVE) || !defined(CKM_HKDF_DATA) || !defined(CKF_HKDF_SALT_NULL) || !defined(CKF_HKDF_SALT_DATA)
 /**
@@ -448,6 +466,82 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNssKeyDataEdDSAGetKlass(void);
         xmlSecNssTransformEdDSAEd25519GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEdDSAEd25519GetKlass(void);
 #endif /* XMLSEC_NO_EDDSA */
+
+
+/******************************************************************************
+ *
+ * ML-DSA keys and signatures
+ *
+  *****************************************************************************/
+#ifndef XMLSEC_NO_MLDSA
+
+/**
+ * @brief The ML-DSA key klass.
+ */
+#define xmlSecNssKeyDataMLDSAId \
+        xmlSecNssKeyDataMLDSAGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNssKeyDataMLDSAGetKlass(void);
+
+/**
+ * @brief The ML-DSA-44 signature transform klass.
+ */
+#define xmlSecNssTransformMLDSA44Id \
+        xmlSecNssTransformMLDSA44GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformMLDSA44GetKlass(void);
+
+/**
+ * @brief The ML-DSA-65 signature transform klass.
+ */
+#define xmlSecNssTransformMLDSA65Id \
+        xmlSecNssTransformMLDSA65GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformMLDSA65GetKlass(void);
+
+/**
+ * @brief The ML-DSA-87 signature transform klass.
+ */
+#define xmlSecNssTransformMLDSA87Id \
+        xmlSecNssTransformMLDSA87GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformMLDSA87GetKlass(void);
+
+#endif /* XMLSEC_NO_MLDSA */
+
+
+/******************************************************************************
+ *
+ * ML-KEM keys and key transport
+ *
+  *****************************************************************************/
+#ifndef XMLSEC_NO_MLKEM
+
+/**
+ * @brief The ML-KEM key klass.
+ */
+#define xmlSecNssKeyDataMLKEMId \
+        xmlSecNssKeyDataMLKEMGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNssKeyDataMLKEMGetKlass(void);
+
+/**
+ * @brief The ML-KEM-512 key transport transform klass.
+ */
+#define xmlSecNssTransformMLKEM512Id \
+        xmlSecNssTransformMLKEM512GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformMLKEM512GetKlass(void);
+
+/**
+ * @brief The ML-KEM-768 key transport transform klass.
+ */
+#define xmlSecNssTransformMLKEM768Id \
+        xmlSecNssTransformMLKEM768GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformMLKEM768GetKlass(void);
+
+/**
+ * @brief The ML-KEM-1024 key transport transform klass.
+ */
+#define xmlSecNssTransformMLKEM1024Id \
+        xmlSecNssTransformMLKEM1024GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformMLKEM1024GetKlass(void);
+
+#endif /* XMLSEC_NO_MLKEM */
 
 
 /******************************************************************************

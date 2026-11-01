@@ -169,6 +169,14 @@ xmlSecCryptoGetFunctions_nss(void) {
     gXmlSecNssFunctions->keyDataXdhGetKlass             = xmlSecNssKeyDataXdhGetKlass;
 #endif /* XMLSEC_NO_XDH */
 
+#ifndef XMLSEC_NO_MLDSA
+    gXmlSecNssFunctions->keyDataMLDSAGetKlass           = xmlSecNssKeyDataMLDSAGetKlass;
+#endif /* XMLSEC_NO_MLDSA */
+
+#ifndef XMLSEC_NO_MLKEM
+    gXmlSecNssFunctions->keyDataMLKEMGetKlass           = xmlSecNssKeyDataMLKEMGetKlass;
+#endif /* XMLSEC_NO_MLKEM */
+
 #ifndef XMLSEC_NO_X509
     gXmlSecNssFunctions->keyDataX509GetKlass            = xmlSecNssKeyDataX509GetKlass;
     gXmlSecNssFunctions->keyDataRawX509CertGetKlass     = xmlSecNssKeyDataRawX509CertGetKlass;
@@ -276,6 +284,20 @@ xmlSecCryptoGetFunctions_nss(void) {
 #ifndef XMLSEC_NO_XDH
     gXmlSecNssFunctions->transformX25519GetKlass = xmlSecNssTransformX25519GetKlass;
 #endif /* XMLSEC_NO_XDH */
+
+    /* ML-DSA */
+#ifndef XMLSEC_NO_MLDSA
+    gXmlSecNssFunctions->transformMLDSA44GetKlass = xmlSecNssTransformMLDSA44GetKlass;
+    gXmlSecNssFunctions->transformMLDSA65GetKlass = xmlSecNssTransformMLDSA65GetKlass;
+    gXmlSecNssFunctions->transformMLDSA87GetKlass = xmlSecNssTransformMLDSA87GetKlass;
+#endif /* XMLSEC_NO_MLDSA */
+
+    /* ML-KEM */
+#ifndef XMLSEC_NO_MLKEM
+    gXmlSecNssFunctions->transformMLKEM512GetKlass = xmlSecNssTransformMLKEM512GetKlass;
+    gXmlSecNssFunctions->transformMLKEM768GetKlass = xmlSecNssTransformMLKEM768GetKlass;
+    gXmlSecNssFunctions->transformMLKEM1024GetKlass = xmlSecNssTransformMLKEM1024GetKlass;
+#endif /* XMLSEC_NO_MLKEM */
 
     /* HMAC */
 #ifndef XMLSEC_NO_HMAC
@@ -618,6 +640,34 @@ xmlSecNssUpdateAvailableCryptoTransforms(xmlSecCryptoDLFunctionsPtr functions) {
         functions->transformEdDSAEd25519GetKlass = NULL;
     }
 #endif /* XMLSEC_NO_EDDSA */
+
+    /****** ML-DSA ******/
+#ifndef XMLSEC_NO_MLDSA
+    /* Check if ML-DSA is available in this NSS version */
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_ML_DSA_44) == 0) {
+        functions->transformMLDSA44GetKlass = NULL;
+    }
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_ML_DSA_65) == 0) {
+        functions->transformMLDSA65GetKlass = NULL;
+    }
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_ML_DSA_87) == 0) {
+        functions->transformMLDSA87GetKlass = NULL;
+    }
+#endif /* XMLSEC_NO_MLDSA */
+
+    /****** ML-KEM ******/
+#ifndef XMLSEC_NO_MLKEM
+    /* Check if ML-KEM is available in this NSS version */
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_ML_KEM_512) == 0) {
+        functions->transformMLKEM512GetKlass = NULL;
+    }
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_ML_KEM_768) == 0) {
+        functions->transformMLKEM768GetKlass = NULL;
+    }
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_ML_KEM_1024) == 0) {
+        functions->transformMLKEM1024GetKlass = NULL;
+    }
+#endif /* XMLSEC_NO_MLKEM */
 
     /****** HMAC ******/
 #ifndef XMLSEC_NO_HMAC

@@ -24,11 +24,13 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/nss/crypto.h>
 #include <xmlsec/nss/pkikeys.h>
 
 #include "../cast_helpers.h"
+#include "../transform_helpers.h"
 
 /******************************************************************************
  *
@@ -48,9 +50,13 @@ struct _xmlSecNssSignatureCtx {
     SECOidTag           pssMaskAlgTag;
     unsigned int        pssSaltLength;
 
-    /* EdDSA uses PK11 APIs directly without streaming contexts */
+    /* ML-DSA and EdDSA uses PK11 APIs directly without streaming contexts
+     * and require the complete signed data in a buffer */
+    xmlSecBuffer        dataBuffer;
+
     int                 isEdDSA;
-    xmlSecBuffer        eddsaData;
+    int                 isMlDsa;
+    xmlSecBufferPtr     contextString;
 
     union {
         struct {
@@ -136,6 +142,18 @@ xmlSecNssSignatureCheckId(xmlSecTransformPtr transform) {
         return(1);
     }
 #endif /* XMLSEC_NO_EDDSA */
+
+#ifndef XMLSEC_NO_MLDSA
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformMLDSA44Id)) {
+        return(1);
+    }
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformMLDSA65Id)) {
+        return(1);
+    }
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformMLDSA87Id)) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_MLDSA */
 
 #ifndef XMLSEC_NO_RSA
 
@@ -281,6 +299,23 @@ xmlSecNssSignatureInitialize(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_EDDSA */
 
+#ifndef XMLSEC_NO_MLDSA
+    /* ML-DSA uses its own internally defined hash so no need to have digest here */
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformMLDSA44Id)) {
+        ctx->keyId      = xmlSecNssKeyDataMLDSAId;
+        ctx->alg        = SEC_OID_ML_DSA_44;
+        ctx->isMlDsa    = 1;
+    } else if(xmlSecTransformCheckId(transform, xmlSecNssTransformMLDSA65Id)) {
+        ctx->keyId      = xmlSecNssKeyDataMLDSAId;
+        ctx->alg        = SEC_OID_ML_DSA_65;
+        ctx->isMlDsa    = 1;
+    } else if(xmlSecTransformCheckId(transform, xmlSecNssTransformMLDSA87Id)) {
+        ctx->keyId      = xmlSecNssKeyDataMLDSAId;
+        ctx->alg        = SEC_OID_ML_DSA_87;
+        ctx->isMlDsa    = 1;
+    } else
+#endif /* XMLSEC_NO_MLDSA */
+
 #ifndef XMLSEC_NO_RSA
 
 #ifndef XMLSEC_NO_SHA1
@@ -388,13 +423,14 @@ xmlSecNssSignatureInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-    /* EdDSA needs a buffer for message data: NSS provides no incremental
-     * sign/verify context for Ed25519/Ed448, so the entire document is
-     * accumulated here and signed/verified in one PK11_Sign/PK11_Verify call;
-     * for large documents this doubles peak memory compared to the streaming
-     * SGN/VFY contexts used for the other algorithms */
-    if (ctx->isEdDSA) {
-        ret = xmlSecBufferInitialize(&(ctx->eddsaData), 0);
+    /* EdDSA and ML-DSA need a buffer for message data: NSS provides no
+     * incremental sign/verify context for these algorithms, so the entire
+     * document is accumulated here and signed/verified in a single one-shot
+     * PK11_Sign/PK11_SignWithMechanism/PK11_Verify/PK11_VerifyWithMechanism
+     * call; for large documents this doubles peak memory compared to the
+     * streaming SGN/VFY contexts used for the other algorithms */
+    if ((ctx->isEdDSA != 0) || (ctx->isMlDsa != 0)) {
+        ret = xmlSecBufferInitialize(&(ctx->dataBuffer), 0);
         if (ret < 0) {
             xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
             PORT_FreeArena(ctx->arena, PR_FALSE);
@@ -441,8 +477,12 @@ xmlSecNssSignatureFinalize(xmlSecTransformPtr transform) {
         PORT_FreeArena(ctx->arena, PR_FALSE);
     }
 
-    if (ctx->isEdDSA) {
-        xmlSecBufferFinalize(&(ctx->eddsaData));
+    if ((ctx->isEdDSA != 0) || (ctx->isMlDsa != 0)) {
+        xmlSecBufferFinalize(&(ctx->dataBuffer));
+    }
+    if (ctx->contextString != NULL) {
+        xmlSecBufferDestroy(ctx->contextString);
+        ctx->contextString = NULL;
     }
 
     memset(ctx, 0, sizeof(xmlSecNssSignatureCtx));
@@ -584,9 +624,34 @@ xmlSecNssSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
             return(-1);
         }
 
-        /* EdDSA uses PK11_Sign directly, no streaming context needed */
+        /* EdDSA and ML-DSA use PK11 APIs directly, no streaming context needed */
         if (ctx->isEdDSA) {
             /* Nothing to do here, will sign in Execute */
+        } else if (ctx->isMlDsa) {
+            int signatureLen;
+            unsigned int expectedSignatureLen;
+
+            /* ML-DSA: the private key has no parameter set getter, so verify
+             * that the parameter set matches the transform variant by comparing
+             * the signature length */
+            if (ctx->alg == SEC_OID_ML_DSA_44) {
+                expectedSignatureLen = ML_DSA_44_SIGNATURE_LEN;
+            } else if (ctx->alg == SEC_OID_ML_DSA_65) {
+                expectedSignatureLen = ML_DSA_65_SIGNATURE_LEN;
+            } else { /* ctx->alg == SEC_OID_ML_DSA_87 */
+                expectedSignatureLen = ML_DSA_87_SIGNATURE_LEN;
+            }
+            signatureLen = PK11_SignatureLen(ctx->u.sig.privkey);
+            if (signatureLen <= 0) {
+                xmlSecNssError("PK11_SignatureLen", xmlSecTransformGetName(transform));
+                return(-1);
+            }
+            if ((unsigned int)signatureLen != expectedSignatureLen) {
+                xmlSecInternalError3("ML-DSA private key parameter set mismatch",
+                    xmlSecTransformGetName(transform),
+                    "signatureLen=%d expectedSignatureLen=%u", signatureLen, expectedSignatureLen);
+                return(-1);
+            }
         } else if(ctx->alg == SEC_OID_PKCS1_RSA_PSS_SIGNATURE) {
             ret = xmlSecNssSignatureCreatePssAlgId(ctx);
             if (ret != 0) {
@@ -623,9 +688,17 @@ xmlSecNssSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
             return(-1);
         }
 
-        /* EdDSA uses PK11_Verify directly, no streaming context needed */
+        /* EdDSA and ML-DSA use PK11 APIs directly, no streaming context needed */
         if (ctx->isEdDSA) {
             /* Nothing to do here, will verify in Verify */
+        } else if (ctx->isMlDsa) {
+            /* ML-DSA: verify that the public key parameter set matches the transform variant */
+            if (ctx->u.vfy.pubkey->u.mldsa.paramSet != ctx->alg) {
+                xmlSecInternalError3("ML-DSA public key parameter set mismatch",
+                    xmlSecTransformGetName(transform),
+                    "paramSet=%u alg=%u", (unsigned int)ctx->u.vfy.pubkey->u.mldsa.paramSet, (unsigned int)ctx->alg);
+                return(-1);
+            }
         } else if(ctx->alg == SEC_OID_PKCS1_RSA_PSS_SIGNATURE) {
             ret = xmlSecNssSignatureCreatePssAlgId(ctx);
             if (ret != 0) {
@@ -736,10 +809,10 @@ xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
         xmlSecSize eddsaDataSize;
         SECItem dataItem = { siBuffer, NULL, 0 };
 
-        eddsaDataSize = xmlSecBufferGetSize(&(ctx->eddsaData));
+        eddsaDataSize = xmlSecBufferGetSize(&(ctx->dataBuffer));
         XMLSEC_SAFE_CAST_SIZE_TO_UINT(eddsaDataSize, dataItem.len, return(-1), xmlSecTransformGetName(transform));
 
-        dataItem.data = xmlSecBufferGetData(&(ctx->eddsaData));
+        dataItem.data = xmlSecBufferGetData(&(ctx->dataBuffer));
         if((dataItem.len == 0) && (dataItem.data == NULL)) {
             /* empty message: use a valid empty buffer to avoid passing a NULL
              * data pointer to NSS */
@@ -748,6 +821,37 @@ xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
         }
 
         status = PK11_Verify(ctx->u.vfy.pubkey, &signature, &dataItem, NULL);
+    } else if (ctx->isMlDsa) {
+        /* ML-DSA: verify using PK11_VerifyWithMechanism with the entire message */
+        xmlSecSize mldsaDataSize;
+        SECItem dataItem = { siBuffer, NULL, 0 };
+        CK_SIGN_ADDITIONAL_CONTEXT mldsaParam;
+        SECItem mldsaParamItem;
+        const SECItem* mldsaParamPtr = NULL;
+
+        mldsaDataSize = xmlSecBufferGetSize(&(ctx->dataBuffer));
+        XMLSEC_SAFE_CAST_SIZE_TO_UINT(mldsaDataSize, dataItem.len, return(-1), xmlSecTransformGetName(transform));
+
+        dataItem.data = xmlSecBufferGetData(&(ctx->dataBuffer));
+        if((dataItem.len == 0) && (dataItem.data == NULL)) {
+            /* empty message: use a valid empty buffer to avoid passing a NULL
+             * data pointer to NSS */
+            static const xmlSecByte emptyData = 0;
+            dataItem.data = (unsigned char *)&emptyData;
+        }
+
+        if((ctx->contextString != NULL) && (xmlSecBufferGetSize(ctx->contextString) > 0)) {
+            mldsaParam.hedgeVariant = CKH_HEDGE_PREFERRED;
+            mldsaParam.pContext = xmlSecBufferGetData(ctx->contextString);
+            mldsaParam.ulContextLen = xmlSecBufferGetSize(ctx->contextString);
+            memset(&mldsaParamItem, 0, sizeof(mldsaParamItem));
+            mldsaParamItem.type = siBuffer;
+            mldsaParamItem.data = (unsigned char*)&mldsaParam;
+            mldsaParamItem.len = sizeof(mldsaParam);
+            mldsaParamPtr = &mldsaParamItem;
+        }
+
+        status = PK11_VerifyWithMechanism(ctx->u.vfy.pubkey, CKM_ML_DSA, mldsaParamPtr, &signature, &dataItem, NULL);
     } else if(xmlSecNssSignatureAlgorithmEncoded(transformCtx, ctx->alg)) {
         /* This creates a signature which is ASN1 encoded */
         SECItem   signatureDer = { siBuffer, NULL, 0 };
@@ -775,8 +879,14 @@ xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
                              "signature verification failed");
             transform->status = xmlSecTransformStatusFail;
             return(0);
+        } else if (ctx->isEdDSA) {
+            xmlSecNssError("PK11_Verify",
+                           xmlSecTransformGetName(transform));
+        } else if (ctx->isMlDsa) {
+            xmlSecNssError("PK11_VerifyWithMechanism",
+                           xmlSecTransformGetName(transform));
         } else {
-            xmlSecNssError((ctx->isEdDSA) ? "PK11_Verify" : "VFY_EndWithSignature",
+            xmlSecNssError("VFY_EndWithSignature",
                            xmlSecTransformGetName(transform));
         }
         return(-1);
@@ -855,12 +965,12 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
     outSize = xmlSecBufferGetSize(out);
 
     if(transform->operation == xmlSecTransformOperationSign) {
-        if (!ctx->isEdDSA) {
+        if (!(ctx->isEdDSA || ctx->isMlDsa)) {
             xmlSecAssert2(ctx->u.sig.sigctx != NULL, -1);
         }
         xmlSecAssert2(ctx->u.sig.privkey != NULL, -1);
     } else {
-        if (!ctx->isEdDSA) {
+        if (!(ctx->isEdDSA || ctx->isMlDsa)) {
             xmlSecAssert2(ctx->u.vfy.vfyctx != NULL, -1);
         }
         xmlSecAssert2(ctx->u.vfy.pubkey != NULL, -1);
@@ -869,8 +979,8 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
     if(transform->status == xmlSecTransformStatusNone) {
         xmlSecAssert2(outSize == 0, -1);
 
-        if (ctx->isEdDSA) {
-            /* EdDSA: no Begin needed, just collect data */
+        if ((ctx->isEdDSA) || (ctx->isMlDsa)) {
+            /* EdDSA/ML-DSA: no Begin needed, just collect data */
         } else if(transform->operation == xmlSecTransformOperationSign) {
             status = SGN_Begin(ctx->u.sig.sigctx);
             if(status != SECSuccess) {
@@ -895,9 +1005,9 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
         xmlSecAssert2(outSize == 0, -1);
 
         XMLSEC_SAFE_CAST_SIZE_TO_UINT(inSize, inLen, return(-1), xmlSecTransformGetName(transform));
-        if (ctx->isEdDSA) {
-            /* EdDSA: accumulate data in buffer */
-            ret = xmlSecBufferAppend(&(ctx->eddsaData), xmlSecBufferGetData(in), inSize);
+        if ((ctx->isEdDSA != 0) || (ctx->isMlDsa != 0)) {
+            /* accumulate data in buffer */
+            ret = xmlSecBufferAppend(&(ctx->dataBuffer), xmlSecBufferGetData(in), inSize);
             if (ret < 0) {
                 xmlSecInternalError("xmlSecBufferAppend",
                                    xmlSecTransformGetName(transform));
@@ -937,10 +1047,10 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                 unsigned int sigLen = 0;
                 int signatureLen;
 
-                eddsaDataSize = xmlSecBufferGetSize(&(ctx->eddsaData));
+                eddsaDataSize = xmlSecBufferGetSize(&(ctx->dataBuffer));
                 XMLSEC_SAFE_CAST_SIZE_TO_UINT(eddsaDataSize, dataItem.len, return(-1), xmlSecTransformGetName(transform));
 
-                dataItem.data = xmlSecBufferGetData(&(ctx->eddsaData));
+                dataItem.data = xmlSecBufferGetData(&(ctx->dataBuffer));
                 if((dataItem.len == 0) && (dataItem.data == NULL)) {
                     /* empty message: use a valid empty buffer to avoid passing a
                      * NULL data pointer to NSS */
@@ -971,6 +1081,76 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                 status = PK11_Sign(ctx->u.sig.privkey, &signature, &dataItem);
                 if (status != SECSuccess) {
                     xmlSecNssError("PK11_Sign", xmlSecTransformGetName(transform));
+                    PORT_Free(signature.data);
+                    return(-1);
+                }
+
+                /* Output signature */
+                ret = xmlSecBufferSetData(out, signature.data, signature.len);
+                if (ret < 0) {
+                    xmlSecInternalError2("xmlSecBufferSetData",
+                        xmlSecTransformGetName(transform),
+                        "size=%u", signature.len);
+                    PORT_Free(signature.data);
+                    return(-1);
+                }
+
+                PORT_Free(signature.data);
+            } else if (ctx->isMlDsa) {
+                /* ML-DSA: sign the entire message using PK11_SignWithMechanism */
+                xmlSecSize mldsaDataSize;
+                SECItem dataItem = { siBuffer, NULL, 0 };
+                CK_SIGN_ADDITIONAL_CONTEXT mldsaParam;
+                SECItem mldsaParamItem;
+                const SECItem* mldsaParamPtr = NULL;
+                unsigned int sigLen = 0;
+                int signatureLen;
+
+                mldsaDataSize = xmlSecBufferGetSize(&(ctx->dataBuffer));
+                XMLSEC_SAFE_CAST_SIZE_TO_UINT(mldsaDataSize, dataItem.len, return(-1), xmlSecTransformGetName(transform));
+
+                dataItem.data = xmlSecBufferGetData(&(ctx->dataBuffer));
+                if((dataItem.len == 0) && (dataItem.data == NULL)) {
+                    /* empty message: use a valid empty buffer to avoid passing a
+                     * NULL data pointer to NSS */
+                    static const xmlSecByte emptyData = 0;
+                    dataItem.data = (unsigned char *)&emptyData;
+                }
+
+                if((ctx->contextString != NULL) && (xmlSecBufferGetSize(ctx->contextString) > 0)) {
+                    mldsaParam.hedgeVariant = CKH_HEDGE_PREFERRED;
+                    mldsaParam.pContext = xmlSecBufferGetData(ctx->contextString);
+                    mldsaParam.ulContextLen = xmlSecBufferGetSize(ctx->contextString);
+                    memset(&mldsaParamItem, 0, sizeof(mldsaParamItem));
+                    mldsaParamItem.type = siBuffer;
+                    mldsaParamItem.data = (unsigned char*)&mldsaParam;
+                    mldsaParamItem.len = sizeof(mldsaParam);
+                    mldsaParamPtr = &mldsaParamItem;
+                }
+
+                /* Get signature length */
+                signatureLen = PK11_SignatureLen(ctx->u.sig.privkey);
+                if (signatureLen <= 0) {
+                    xmlSecNssError("PK11_SignatureLen", xmlSecTransformGetName(transform));
+                    return(-1);
+                }
+                XMLSEC_SAFE_CAST_INT_TO_UINT(signatureLen, sigLen, return(-1), xmlSecTransformGetName(transform));
+
+                /* Allocate signature buffer */
+                memset(&signature, 0, sizeof(signature));
+                signature.type = siBuffer;
+                signature.data = (unsigned char *)PORT_Alloc(sigLen);
+                if (signature.data == NULL) {
+                    xmlSecNssError2("PORT_Alloc", xmlSecTransformGetName(transform),
+                                   "size=%u", sigLen);
+                    return(-1);
+                }
+                signature.len = sigLen;
+
+                /* Sign the data */
+                status = PK11_SignWithMechanism(ctx->u.sig.privkey, CKM_ML_DSA, mldsaParamPtr, &signature, &dataItem);
+                if (status != SECSuccess) {
+                    xmlSecNssError("PK11_SignWithMechanism", xmlSecTransformGetName(transform));
                     PORT_Free(signature.data);
                     return(-1);
                 }
@@ -1191,6 +1371,79 @@ xmlSecNssTransformEdDSAEd25519GetKlass(void) {
     return(&xmlSecNssEdDSAEd25519Klass);
 }
 #endif /* XMLSEC_NO_EDDSA */
+
+#ifndef XMLSEC_NO_MLDSA
+
+static int
+xmlSecNssTransformMLDSANodeRead(
+    xmlSecTransformPtr transform,
+    xmlNodePtr node,
+    xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED
+) {
+    xmlSecNssSignatureCtxPtr ctx;
+    int ret;
+
+    xmlSecAssert2(xmlSecNssSignatureCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssSignatureSize), -1);
+    XMLSEC_UNREFERENCED(transformCtx);
+
+    ctx = xmlSecNssSignatureGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->contextString == NULL, -1);
+
+    /* set max size to make sure we have non-NULL buffer for the mechanism params */
+    ctx->contextString = xmlSecBufferCreate(XMLSEC_MLDSA_MAX_SIZE);
+    if (ctx->contextString == NULL) {
+        xmlSecInternalError("xmlSecBufferCreate()", xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
+    ret = xmlSecTransformMLDSAReadContextString(node, ctx->contextString);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecTransformMLDSAReadContextString()", xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
+    return(0);
+}
+
+/* ML-DSA-44 signature transform: xmlSecNssMLDSA44Klass */
+XMLSEC_NSS_SIGNATURE_KLASS_EX(MLDSA44, xmlSecNssTransformMLDSANodeRead)
+
+/**
+ * @brief The ML-DSA-44 signature transform klass.
+ * @return ML-DSA-44 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecNssTransformMLDSA44GetKlass(void) {
+    return(&xmlSecNssMLDSA44Klass);
+}
+
+/* ML-DSA-65 signature transform: xmlSecNssMLDSA65Klass */
+XMLSEC_NSS_SIGNATURE_KLASS_EX(MLDSA65, xmlSecNssTransformMLDSANodeRead)
+
+/**
+ * @brief The ML-DSA-65 signature transform klass.
+ * @return ML-DSA-65 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecNssTransformMLDSA65GetKlass(void) {
+    return(&xmlSecNssMLDSA65Klass);
+}
+
+/* ML-DSA-87 signature transform: xmlSecNssMLDSA87Klass */
+XMLSEC_NSS_SIGNATURE_KLASS_EX(MLDSA87, xmlSecNssTransformMLDSANodeRead)
+
+/**
+ * @brief The ML-DSA-87 signature transform klass.
+ * @return ML-DSA-87 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecNssTransformMLDSA87GetKlass(void) {
+    return(&xmlSecNssMLDSA87Klass);
+}
+
+#endif /* XMLSEC_NO_MLDSA */
 
 #ifndef XMLSEC_NO_RSA
 

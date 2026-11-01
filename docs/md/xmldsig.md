@@ -119,7 +119,7 @@ XML Security library supports the following features as defined in
 | GOST-R3410-2001 | DEPRECATED | Yes [(1)](#feature-disabled)[(3)](#openssl-gost) | No | Yes [(1)](#feature-disabled) | No | Yes [(1)](#feature-disabled)[(4)](#mscrypto-gost) | No |
 | GOST-R3410-2012 (256 bit) | Optional | Yes [(1)](#feature-disabled)[(3)](#openssl-gost) | No | Yes [(1)](#feature-disabled) | No | Yes [(1)](#feature-disabled)[(4)](#mscrypto-gost) | No |
 | GOST-R3410-2012 (512 bit) | Optional | Yes [(1)](#feature-disabled)[(3)](#openssl-gost) | No | Yes [(1)](#feature-disabled) | No | Yes [(1)](#feature-disabled)[(4)](#mscrypto-gost) | No |
-| [ML-DSA](https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/) | EXPERIMENTAL | Yes [(1)](#feature-disabled)[(12)](#openssl35-required) | No | Yes [(1)](#feature-disabled) [(8)](#no-context-string) | Yes [(1)](#feature-disabled) [(8)](#no-context-string) [(16)](#mscng-mldsa) | No | No |
+| [ML-DSA](https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/) | EXPERIMENTAL | Yes [(1)](#feature-disabled)[(12)](#openssl35-required) | Yes [(1)](#feature-disabled) [(17)](#nss-mldsa-required) | Yes [(1)](#feature-disabled) [(8)](#no-context-string) | Yes [(1)](#feature-disabled) [(8)](#no-context-string) [(16)](#mscng-mldsa) | No | No |
 | [SLH-DSA-SHA2](https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/) (128, 192, 256; fast and slow variants) | EXPERIMENTAL | Yes [(1)](#feature-disabled)[(12)](#openssl35-required) | No | No | No | No | No |
 | [SLH-DSA-SHAKE](https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/) (128, 192, 256; fast and slow variants) | EXPERIMENTAL | No | No | No | No | No | No |
 | [XMSS](https://www.ietf.org/rfc/rfc9231.html#section-2.2.6) (21 parameter sets) | Optional | No | No | No | No | No | No |
@@ -153,6 +153,7 @@ XML Security library supports the following features as defined in
 14. <a id="gnutls-eddsa-limited"></a> Only Ed25519 and Ed448 are supported; the Ed25519ctx, Ed25519ph and Ed448ph variants are not supported.
 15. <a id="mscrypto-x509-digest-write-only"></a> MSCrypto can only write the X509Digest element (i.e. it is supported when creating a signature); the key cannot be resolved from the X509Digest element during verification.
 16. <a id="mscng-mldsa"></a> Requires Windows 11 version 25H2 or Windows Server 2025.
+17. <a id="nss-mldsa-required"></a> Requires NSS 3.129 or newer.
 
 ### Test vectors
 

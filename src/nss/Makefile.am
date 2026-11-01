@@ -31,6 +31,7 @@ libxmlsec1_nss_la_SOURCES =\
 	kw_des.c \
 	kw_rfc_3394.c \
 	kdf.c \
+	kt_mlkem.c \
 	der_encoded_value.c \
 	pkikeys.c \
 	private.h \

@@ -140,6 +140,7 @@ xmlsec_fuzzer_CFLAGS = \
 	-I../include \
 	-I$(top_srcdir)/include \
 	$(XMLSEC_DEFINES) \
+	$(XMLSEC_CRYPTO_CFLAGS) \
 	$(LIBXML_CFLAGS) \
 	$(NULL)
 
@@ -205,7 +206,8 @@ xmlsec_dsig_verify_fuzzer_CFLAGS = \
 	-I../include \
 	-I$(top_srcdir)/include \
 	$(XMLSEC_DEFINES) \
-	$(XMLSEC_OPENSSL_CFLAGS) \
+	$(XMLSEC_CRYPTO_CFLAGS) \
+	$(CRYPTO_INCLUDES) \
 	$(LIBXML_CFLAGS) \
 	$(NULL)
 
@@ -240,7 +242,8 @@ xmlsec_keyinfo_fuzzer_CFLAGS = \
 	-I../include \
 	-I$(top_srcdir)/include \
 	$(XMLSEC_DEFINES) \
-	$(XMLSEC_OPENSSL_CFLAGS) \
+	$(XMLSEC_CRYPTO_CFLAGS) \
+	$(CRYPTO_INCLUDES) \
 	$(LIBXML_CFLAGS) \
 	$(NULL)
 
@@ -275,7 +278,8 @@ xmlsec_keyload_fuzzer_CFLAGS = \
 	-I../include \
 	-I$(top_srcdir)/include \
 	$(XMLSEC_DEFINES) \
-	$(XMLSEC_OPENSSL_CFLAGS) \
+	$(XMLSEC_CRYPTO_CFLAGS) \
+	$(CRYPTO_INCLUDES) \
 	$(LIBXML_CFLAGS) \
 	$(NULL)
 
@@ -310,7 +314,8 @@ xmlsec_enc_fuzzer_CFLAGS = \
 	-I../include \
 	-I$(top_srcdir)/include \
 	$(XMLSEC_DEFINES) \
-	$(XMLSEC_OPENSSL_CFLAGS) \
+	$(XMLSEC_CRYPTO_CFLAGS) \
+	$(CRYPTO_INCLUDES) \
 	$(LIBXML_CFLAGS) \
 	$(NULL)
 

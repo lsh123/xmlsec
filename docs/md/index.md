@@ -39,6 +39,9 @@ see the Copyright file in the distribution for details.
     and BoringSSL to later than Oct 2024.
   - (xmlsec-build, **not backward compatible**) Disabled Triple DES and Triple DES KeyWrap
     by default (use `--enable-des` option to re-enable both).
+  - (xmlsec-windows) Added per-algorithm options to `configure.ps1` (e.g. `aes=yes`, `md5=no`, `gost2012=yes`)
+    to enable / disable individual crypto algorithms, mirroring the `--enable-*` options of the `configure`
+    script with the same defaults.
   - (xmlsec-docs) GOST-R3410-2001 algorithm is marked as "deprecated" (already disabled by default).
   - (xmlsec-docs) SHA1 (and all derivatives); DSA; RSA-PKCS1 v1.5; ChaCha20 algorithms are marked
     as "use discouraged". These algorithms will be deprecated in the future and disabled by default.

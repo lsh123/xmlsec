@@ -2358,7 +2358,9 @@ xmlSecMSCngCreateDerForBCryptPubkey(xmlSecKeyDataPtr data, LPVOID* ppDer, DWORD*
     PUCHAR pInfo = NULL;
     DWORD cbInfo = 0;
     BOOL status;
+#ifndef XMLSEC_NO_DSA
     int ret;
+#endif /* XMLSEC_NO_DSA */
 
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(ppDer != NULL, -1);
@@ -2703,25 +2705,41 @@ xmlSecMSCngAppKeyReadPrivKeyFromDer(const xmlSecByte* data, xmlSecSize dataSize)
         goto done;
     }
 
-    if(strcmp(pki->Algorithm.pszObjId, szOID_X942_DH) == 0) {
 #ifndef XMLSEC_NO_DH
+    if(strcmp(pki->Algorithm.pszObjId, szOID_X942_DH) == 0) {
         res = xmlSecMSCngKeyDataDhReadFromPkcs8Der(data, dwDataSize);
-#else /* XMLSEC_NO_DH */
-        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "DH private keys are not supported in this build");
+        if(res == NULL) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "Failed to read DH private key from PKCS8 DER");
+            goto done;
+        }
+    } else
 #endif /* XMLSEC_NO_DH */
-    } else if(strcmp(pki->Algorithm.pszObjId, szOID_X25519) == 0) {
+
 #ifndef XMLSEC_NO_XDH
+    if(strcmp(pki->Algorithm.pszObjId, szOID_X25519) == 0) {
         res = xmlSecMSCngKeyDataXdhReadFromPkcs8Der(data, dwDataSize);
-#else /* XMLSEC_NO_XDH */
-        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "XDH private keys are not supported in this build");
+        if(res == NULL) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "Failed to read XDH private key from PKCS8 DER");
+            goto done;
+        }
+    } else
 #endif /* XMLSEC_NO_XDH */
+
 #ifndef XMLSEC_NO_MLKEM
-    } else if(strcmp(pki->Algorithm.pszObjId, XMLSEC_MSCNG_OID_MLKEM_512) == 0 ||
-             strcmp(pki->Algorithm.pszObjId, XMLSEC_MSCNG_OID_MLKEM_768) == 0 ||
-             strcmp(pki->Algorithm.pszObjId, XMLSEC_MSCNG_OID_MLKEM_1024) == 0) {
+    if(
+        strcmp(pki->Algorithm.pszObjId, XMLSEC_MSCNG_OID_MLKEM_512) == 0 ||
+        strcmp(pki->Algorithm.pszObjId, XMLSEC_MSCNG_OID_MLKEM_768) == 0 ||
+        strcmp(pki->Algorithm.pszObjId, XMLSEC_MSCNG_OID_MLKEM_1024) == 0
+    ) {
         res = xmlSecMSCngKeyDataMlKemReadFromPkcs8Der(data, dwDataSize);
+        if(res == NULL) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "Failed to read ML-KEM private key from PKCS8 DER");
+            goto done;
+        }
+    } else
 #endif /* XMLSEC_NO_MLKEM */
-    } else {
+
+    {
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "Unsupported private key algorithm: %s", pki->Algorithm.pszObjId);
     }
 

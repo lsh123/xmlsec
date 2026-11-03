@@ -13,8 +13,6 @@
  * no plain ChaCha20 algorithm in CNG, so only the ChaCha20-Poly1305 transform
  * is implemented here.
  */
-#ifndef XMLSEC_NO_CHACHA20
-
 #include "globals.h"
 
 #include <string.h>
@@ -32,6 +30,8 @@
 #include "../transform_helpers.h"
 
 #include "private.h"
+
+#ifndef XMLSEC_NO_CHACHA20
 
 /******************************************************************************
  *
@@ -615,5 +615,10 @@ xmlSecTransformId
 xmlSecMSCngTransformChaCha20Poly1305GetKlass(void) {
     return(&xmlSecMSCngChaCha20Poly1305Klass);
 }
+
+#else /* XMLSEC_NO_CHACHA20 */
+
+/* ISO C forbids an empty translation unit */
+typedef int make_iso_compilers_happy;
 
 #endif /* XMLSEC_NO_CHACHA20 */

@@ -76,6 +76,8 @@ static xmlSecTransformKlass xmlSecMSCng ## name ## Klass = {                    
 
 static int
 xmlSecMSCngCbcBlockCipherCheckId(xmlSecTransformPtr transform) {
+    xmlSecAssert2(transform != NULL, 0);
+
 #ifndef XMLSEC_NO_AES
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformAes128CbcId)) {
        return(1);

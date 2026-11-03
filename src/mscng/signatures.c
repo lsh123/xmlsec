@@ -737,16 +737,24 @@ xmlSecMSCngSignatureFixBrokenJava(xmlSecMSCngSignatureCtxPtr ctx,
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize != NULL, -1);
 
+#ifndef XMLSEC_NO_DSA
     if (ctx->keyId == xmlSecMSCngKeyDataDsaId) {
         halfSize = ctx->signatureHalfSize;
-    } else if (ctx->keyId == xmlSecMSCngKeyDataEcId) {
+    } else
+#endif /* XMLSEC_NO_DSA */
+
+#ifndef XMLSEC_NO_EC
+    if (ctx->keyId == xmlSecMSCngKeyDataEcId) {
         keySize = xmlSecMSCngCertKeyDataGetSizeInBits(ctx->data);
         if (keySize <= 0) {
             xmlSecInternalError("xmlSecMSCngCertKeyDataGetSizeInBits", NULL);
             return(-1);
         }
         halfSize = XMLSEC_BITS_TO_BYTES(keySize);
-    } else {
+    } else
+#endif /* XMLSEC_NO_EC */
+
+    {
         /* nothing to do: this only applies to DSA and ECDSA signatures */
         return(0);
     }

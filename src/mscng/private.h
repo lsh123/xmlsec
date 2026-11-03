@@ -212,6 +212,24 @@ int                xmlSecMSCngKeyDataCertGetXdhPubkey               (PCERT_PUBLI
 
 /******************************************************************************
  *
+ * ChaCha20-Poly1305 definitions
+ *
+ *****************************************************************************/
+#ifndef XMLSEC_NO_CHACHA20
+
+/* CNG exposes ChaCha20 only as the ChaCha20-Poly1305 AEAD algorithm; there is
+ * no plain ChaCha20 algorithm. The Windows SDK used at build time may lack the
+ * definition (added in the Windows 10 version 1803 SDK); the value below was
+ * verified against the CNG algorithm enumeration on Windows 11. */
+#ifndef BCRYPT_CHACHA20_POLY1305_ALGORITHM
+#define BCRYPT_CHACHA20_POLY1305_ALGORITHM  L"CHACHA20_POLY1305"
+#endif /* BCRYPT_CHACHA20_POLY1305_ALGORITHM */
+
+#endif /* XMLSEC_NO_CHACHA20 */
+
+
+/******************************************************************************
+ *
  * ML-DSA (FIPS 204) Util functions
  *
    *****************************************************************************/

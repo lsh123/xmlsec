@@ -86,6 +86,40 @@ $script:cruntime = "/MD"
 # Crypto options
 $script:withOpenSSL3Engines = 0
 
+# Crypto algorithm options (defaults mirror the options in configure.ac).
+$script:withMd5 = 0
+$script:withRipemd160 = 0
+$script:withSha1 = 1
+$script:withSha224 = 1
+$script:withSha256 = 1
+$script:withSha384 = 1
+$script:withSha512 = 1
+$script:withSha3 = 1
+$script:withHmac = 1
+$script:withDh = 1
+$script:withDsa = 1
+$script:withRsa = 1
+$script:withRsaOaep = 1
+$script:withEc = 1
+$script:withMlDsa = 0
+$script:withMlKem = 0
+$script:withSlhDsa = 0
+$script:withEddsa = 1
+$script:withXdh = 1
+$script:withX509 = 1
+$script:withDes = 0
+$script:withAes = 1
+$script:withCamellia = 1
+$script:withChacha20 = 1
+$script:withConcatkdf = 1
+$script:withPbkdf2 = 1
+$script:withHkdf = 1
+$script:withGost2012 = 0
+# Tracks the algorithm options explicitly set on the command line so that
+# the 'legacy-features' and 'experimental-features' options only fill in
+# the values the user did not specify (same behaviour as configure.ac).
+$script:algoUserSet = @{}
+
 # Local stuff
 $script:errorFlag = 0
 
@@ -156,10 +190,40 @@ function Show-Usage {
     Write-Host "  iconv:                    Use the iconv library (default: '$(if ($script:withIconv) { 'yes' } else { 'no' })')"
     Write-Host "  ftp:                      Enable FTP support (default: '$(if ($script:withFTP) { 'yes' } else { 'no' })')"
     Write-Host "  http:                     Enable HTTP support (default: '$(if ($script:withHTTP) { 'yes' } else { 'no' })')"
-    Write-Host "  rsa-pkcs15:               Enable RSA PKCS#1.5 key transport (use discouraged) (default: '$(if ($script:withRsaPkcs15) { 'yes' } else { 'no' })')"
-    Write-Host "  gost:                     Enable GOST algorithms (default: '$(if ($script:withGost) { 'yes' } else { 'no' })')"
     Write-Host "  legacy-features:          Enable legacy features and crypto algorithms (default: '$(if ($script:withLegacyFeatures) { 'yes' } else { 'no' })')"
     Write-Host "  experimental-features:    Enable experimental features (ML-DSA, ML-KEM, and SLH-DSA) (default: '$(if ($script:withExperimentalFeatures) { 'yes' } else { 'no' })')"
+    Write-Host ""
+    Write-Host "Algorithm options:"
+    Write-Host "  md5:                      Enable MD5 support (default: 'no, deprecated')"
+    Write-Host "  ripemd160:                Enable RIPEMD-160 support (default: 'no, deprecated')"
+    Write-Host "  sha1:                     Enable SHA1 support (default: 'yes, use discouraged')"
+    Write-Host "  sha224:                   Enable SHA224 support (default: 'yes')"
+    Write-Host "  sha256:                   Enable SHA256 support (default: 'yes')"
+    Write-Host "  sha384:                   Enable SHA384 support (default: 'yes')"
+    Write-Host "  sha512:                   Enable SHA512 support (default: 'yes')"
+    Write-Host "  sha3:                     Enable SHA3 support (default: 'yes')"
+    Write-Host "  hmac:                     Enable HMAC support (default: 'yes')"
+    Write-Host "  dh:                       Enable DH support (default: 'yes')"
+    Write-Host "  dsa:                      Enable DSA support (default: 'yes, use discouraged')"
+    Write-Host "  rsa:                      Enable RSA support (default: 'yes')"
+    Write-Host "  rsa-pkcs15:               Enable RSA PKCS 1.5 support (default: 'yes, use discouraged')"
+    Write-Host "  rsa-oaep:                 Enable RSA OAEP support (default: 'yes')"
+    Write-Host "  ec:                       Enable EC support (default: 'yes')"
+    Write-Host "  ml-dsa:                   Enable experimental ML-DSA support (default: 'no')"
+    Write-Host "  ml-kem:                   Enable experimental ML-KEM support (default: 'no')"
+    Write-Host "  slh-dsa:                  Enable experimental SLH-DSA support (default: 'no')"
+    Write-Host "  eddsa:                    Enable EdDSA support (default: 'yes')"
+    Write-Host "  xdh:                      Enable XDH (X25519/X448) support (default: 'yes')"
+    Write-Host "  x509:                     Enable x509 support (default: 'yes')"
+    Write-Host "  des:                      Enable DES support (default: 'no, deprecated')"
+    Write-Host "  aes:                      Enable AES support (default: 'yes')"
+    Write-Host "  camellia:                 Enable Camellia support (default: 'yes')"
+    Write-Host "  chacha20:                 Enable ChaCha20 support (default: 'yes')"
+    Write-Host "  concatkdf:                Enable ConcatKDF support (default: 'yes')"
+    Write-Host "  pbkdf2:                   Enable PBKDF2 support (default: 'yes')"
+    Write-Host "  hkdf:                     Enable HKDF support (default: 'yes')"
+    Write-Host "  gost:                     Enable GOST-2001 support (default: 'no, deprecated')"
+    Write-Host "  gost2012:                 Enable GOST-2012 support (default: 'no')"
     Write-Host ""
     Write-Host "Crypto options:"
     Write-Host "  with-openssl3-engines:    Enable ENGINE interface support for OpenSSL (default: '$(if ($script:withOpenSSL3Engines) { 'yes' } else { 'no' })')"
@@ -236,6 +300,34 @@ function DiscoverVersion {
     $lines += "WITH_RSA_PKCS15=$(if ($script:withRsaPkcs15) { '1' } else { '0' })"
     $lines += "WITH_LEGACY_FEATURES=$(if ($script:withLegacyFeatures) { '1' } else { '0' })"
     $lines += "WITH_EXPERIMENTAL_FEATURES=$(if ($script:withExperimentalFeatures) { '1' } else { '0' })"
+    $lines += "WITH_MD5=$(if ($script:withMd5) { '1' } else { '0' })"
+    $lines += "WITH_RIPEMD160=$(if ($script:withRipemd160) { '1' } else { '0' })"
+    $lines += "WITH_SHA1=$(if ($script:withSha1) { '1' } else { '0' })"
+    $lines += "WITH_SHA224=$(if ($script:withSha224) { '1' } else { '0' })"
+    $lines += "WITH_SHA256=$(if ($script:withSha256) { '1' } else { '0' })"
+    $lines += "WITH_SHA384=$(if ($script:withSha384) { '1' } else { '0' })"
+    $lines += "WITH_SHA512=$(if ($script:withSha512) { '1' } else { '0' })"
+    $lines += "WITH_SHA3=$(if ($script:withSha3) { '1' } else { '0' })"
+    $lines += "WITH_HMAC=$(if ($script:withHmac) { '1' } else { '0' })"
+    $lines += "WITH_DH=$(if ($script:withDh) { '1' } else { '0' })"
+    $lines += "WITH_DSA=$(if ($script:withDsa) { '1' } else { '0' })"
+    $lines += "WITH_RSA=$(if ($script:withRsa) { '1' } else { '0' })"
+    $lines += "WITH_RSA_OAEP=$(if ($script:withRsaOaep) { '1' } else { '0' })"
+    $lines += "WITH_EC=$(if ($script:withEc) { '1' } else { '0' })"
+    $lines += "WITH_MLDSA=$(if ($script:withMlDsa) { '1' } else { '0' })"
+    $lines += "WITH_MLKEM=$(if ($script:withMlKem) { '1' } else { '0' })"
+    $lines += "WITH_SLHDSA=$(if ($script:withSlhDsa) { '1' } else { '0' })"
+    $lines += "WITH_EDDSA=$(if ($script:withEddsa) { '1' } else { '0' })"
+    $lines += "WITH_XDH=$(if ($script:withXdh) { '1' } else { '0' })"
+    $lines += "WITH_X509=$(if ($script:withX509) { '1' } else { '0' })"
+    $lines += "WITH_DES=$(if ($script:withDes) { '1' } else { '0' })"
+    $lines += "WITH_AES=$(if ($script:withAes) { '1' } else { '0' })"
+    $lines += "WITH_CAMELLIA=$(if ($script:withCamellia) { '1' } else { '0' })"
+    $lines += "WITH_CHACHA20=$(if ($script:withChacha20) { '1' } else { '0' })"
+    $lines += "WITH_CONCATKDF=$(if ($script:withConcatkdf) { '1' } else { '0' })"
+    $lines += "WITH_PBKDF2=$(if ($script:withPbkdf2) { '1' } else { '0' })"
+    $lines += "WITH_HKDF=$(if ($script:withHkdf) { '1' } else { '0' })"
+    $lines += "WITH_GOST2012=$(if ($script:withGost2012) { '1' } else { '0' })"
     $lines += "UNICODE=$(if ($script:buildUnicode) { '1' } else { '0' })"
     $lines += "DEBUG=$(if ($script:buildDebug) { '1' } else { '0' })"
     $lines += "MEMCHECK=$($script:buildWithMemcheck)"
@@ -335,8 +427,36 @@ for ($i = 0; ($i -lt $args.Count) -and ($script:errorFlag -eq 0); $i++) {
             "iconv"               { $script:withIconv = StrToBool $val "iconv" }
             "ftp"                 { $script:withFTP = StrToBool $val "ftp" }
             "http"                { $script:withHTTP = StrToBool $val "http" }
-            "rsa-pkcs15"          { $script:withRsaPkcs15 = StrToBool $val "rsa-pkcs15" }
-            "gost"                { $script:withGost = StrToBool $val "gost" }
+            "md5"                 { $script:withMd5 = StrToBool $val "md5"; $script:algoUserSet["md5"] = $true }
+            "ripemd160"           { $script:withRipemd160 = StrToBool $val "ripemd160"; $script:algoUserSet["ripemd160"] = $true }
+            "sha1"                { $script:withSha1 = StrToBool $val "sha1"; $script:algoUserSet["sha1"] = $true }
+            "sha224"              { $script:withSha224 = StrToBool $val "sha224"; $script:algoUserSet["sha224"] = $true }
+            "sha256"              { $script:withSha256 = StrToBool $val "sha256"; $script:algoUserSet["sha256"] = $true }
+            "sha384"              { $script:withSha384 = StrToBool $val "sha384"; $script:algoUserSet["sha384"] = $true }
+            "sha512"              { $script:withSha512 = StrToBool $val "sha512"; $script:algoUserSet["sha512"] = $true }
+            "sha3"                { $script:withSha3 = StrToBool $val "sha3"; $script:algoUserSet["sha3"] = $true }
+            "hmac"                { $script:withHmac = StrToBool $val "hmac"; $script:algoUserSet["hmac"] = $true }
+            "dh"                  { $script:withDh = StrToBool $val "dh"; $script:algoUserSet["dh"] = $true }
+            "dsa"                 { $script:withDsa = StrToBool $val "dsa"; $script:algoUserSet["dsa"] = $true }
+            "rsa"                 { $script:withRsa = StrToBool $val "rsa"; $script:algoUserSet["rsa"] = $true }
+            "rsa-pkcs15"          { $script:withRsaPkcs15 = StrToBool $val "rsa-pkcs15"; $script:algoUserSet["rsa-pkcs15"] = $true }
+            "rsa-oaep"            { $script:withRsaOaep = StrToBool $val "rsa-oaep"; $script:algoUserSet["rsa-oaep"] = $true }
+            "ec"                  { $script:withEc = StrToBool $val "ec"; $script:algoUserSet["ec"] = $true }
+            "ml-dsa"              { $script:withMlDsa = StrToBool $val "ml-dsa"; $script:algoUserSet["ml-dsa"] = $true }
+            "ml-kem"              { $script:withMlKem = StrToBool $val "ml-kem"; $script:algoUserSet["ml-kem"] = $true }
+            "slh-dsa"             { $script:withSlhDsa = StrToBool $val "slh-dsa"; $script:algoUserSet["slh-dsa"] = $true }
+            "eddsa"               { $script:withEddsa = StrToBool $val "eddsa"; $script:algoUserSet["eddsa"] = $true }
+            "xdh"                 { $script:withXdh = StrToBool $val "xdh"; $script:algoUserSet["xdh"] = $true }
+            "x509"                { $script:withX509 = StrToBool $val "x509"; $script:algoUserSet["x509"] = $true }
+            "des"                 { $script:withDes = StrToBool $val "des"; $script:algoUserSet["des"] = $true }
+            "aes"                 { $script:withAes = StrToBool $val "aes"; $script:algoUserSet["aes"] = $true }
+            "camellia"            { $script:withCamellia = StrToBool $val "camellia"; $script:algoUserSet["camellia"] = $true }
+            "chacha20"            { $script:withChacha20 = StrToBool $val "chacha20"; $script:algoUserSet["chacha20"] = $true }
+            "concatkdf"           { $script:withConcatkdf = StrToBool $val "concatkdf"; $script:algoUserSet["concatkdf"] = $true }
+            "pbkdf2"              { $script:withPbkdf2 = StrToBool $val "pbkdf2"; $script:algoUserSet["pbkdf2"] = $true }
+            "hkdf"                { $script:withHkdf = StrToBool $val "hkdf"; $script:algoUserSet["hkdf"] = $true }
+            "gost"                { $script:withGost = StrToBool $val "gost"; $script:algoUserSet["gost"] = $true }
+            "gost2012"            { $script:withGost2012 = StrToBool $val "gost2012"; $script:algoUserSet["gost2012"] = $true }
             "legacy-features"     { $script:withLegacyFeatures = StrToBool $val "legacy-features" }
             "legacy-crypto"       { $script:withLegacyFeatures = StrToBool $val "legacy-crypto" }
             "experimental-features" { $script:withExperimentalFeatures = StrToBool $val "experimental-features" }
@@ -424,6 +544,20 @@ if ($cruntimeSet -eq 0 -and $script:buildDebug -ne 0) {
 if ($script:errorFlag -ne 0) {
     Show-Usage
     exit $script:errorFlag
+}
+
+# Apply the 'legacy-features' and 'experimental-features' options the same
+# way configure.ac does: force the legacy/experimental algorithms on unless
+# the user explicitly set the option on the command line.
+if ($script:withLegacyFeatures -eq 1) {
+    if (-not $script:algoUserSet.ContainsKey("md5")) { $script:withMd5 = 1 }
+    if (-not $script:algoUserSet.ContainsKey("ripemd160")) { $script:withRipemd160 = 1 }
+    if (-not $script:algoUserSet.ContainsKey("des")) { $script:withDes = 1 }
+}
+if ($script:withExperimentalFeatures -eq 1) {
+    if (-not $script:algoUserSet.ContainsKey("ml-dsa")) { $script:withMlDsa = 1 }
+    if (-not $script:algoUserSet.ContainsKey("ml-kem")) { $script:withMlKem = 1 }
+    if (-not $script:algoUserSet.ContainsKey("slh-dsa")) { $script:withSlhDsa = 1 }
 }
 
 # Discover crypto support. Reset the per-backend flags first so that only
@@ -530,12 +664,43 @@ Write-Host "              Use NSS: $(BoolToStr $script:withNss)"
 Write-Host "         Use MSCrypto: $(BoolToStr $script:withMSCrypto)"
 Write-Host "          Use LibXSLT: $(BoolToStr $script:withLibXSLT)"
 Write-Host "            Use iconv: $(BoolToStr $script:withIconv)"
-Write-Host "         RSA PKCS#1.5: $(if ($script:withRsaPkcs15) { 'yes (use discouraged)' } else { 'no' })"
-Write-Host "                 GOST: $(BoolToStr $script:withGost)"
 Write-Host "      Legacy features: $(BoolToStr $script:withLegacyFeatures)"
 Write-Host "Experimental features: $(BoolToStr $script:withExperimentalFeatures)"
 Write-Host "          Support FTP: $(BoolToStr $script:withFTP)"
 Write-Host "         Support HTTP: $(BoolToStr $script:withHTTP)"
+Write-Host ""
+Write-Host "Algorithm configuration"
+Write-Host "-------------------------"
+Write-Host "                  MD5: $(BoolToStr $script:withMd5)"
+Write-Host "           RIPEMD-160: $(BoolToStr $script:withRipemd160)"
+Write-Host "                 SHA1: $(BoolToStr $script:withSha1)"
+Write-Host "               SHA224: $(BoolToStr $script:withSha224)"
+Write-Host "               SHA256: $(BoolToStr $script:withSha256)"
+Write-Host "               SHA384: $(BoolToStr $script:withSha384)"
+Write-Host "               SHA512: $(BoolToStr $script:withSha512)"
+Write-Host "                 SHA3: $(BoolToStr $script:withSha3)"
+Write-Host "                 HMAC: $(BoolToStr $script:withHmac)"
+Write-Host "                   DH: $(BoolToStr $script:withDh)"
+Write-Host "                  DSA: $(BoolToStr $script:withDsa)"
+Write-Host "                  RSA: $(BoolToStr $script:withRsa)"
+Write-Host "         RSA PKCS#1.5: $(if ($script:withRsaPkcs15) { 'yes (use discouraged)' } else { 'no' })"
+Write-Host "             RSA OAEP: $(BoolToStr $script:withRsaOaep)"
+Write-Host "                   EC: $(BoolToStr $script:withEc)"
+Write-Host "               ML-DSA: $(BoolToStr $script:withMlDsa)"
+Write-Host "               ML-KEM: $(BoolToStr $script:withMlKem)"
+Write-Host "              SLH-DSA: $(BoolToStr $script:withSlhDsa)"
+Write-Host "                EdDSA: $(BoolToStr $script:withEddsa)"
+Write-Host "                  XDH: $(BoolToStr $script:withXdh)"
+Write-Host "                 X509: $(BoolToStr $script:withX509)"
+Write-Host "                  DES: $(BoolToStr $script:withDes)"
+Write-Host "                  AES: $(BoolToStr $script:withAes)"
+Write-Host "             Camellia: $(BoolToStr $script:withCamellia)"
+Write-Host "             ChaCha20: $(BoolToStr $script:withChacha20)"
+Write-Host "             ConcatKDF: $(BoolToStr $script:withConcatkdf)"
+Write-Host "               PBKDF2: $(BoolToStr $script:withPbkdf2)"
+Write-Host "                 HKDF: $(BoolToStr $script:withHkdf)"
+Write-Host "                 GOST: $(BoolToStr $script:withGost)"
+Write-Host "             GOST2012: $(BoolToStr $script:withGost2012)"
 Write-Host ""
 Write-Host "Win32 build configuration"
 Write-Host "-------------------------"

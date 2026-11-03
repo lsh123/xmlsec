@@ -46,9 +46,37 @@ AUTOCONF = .\configure.txt
 #WITH_FTP=0
 #WITH_HTTP=0
 #WITH_GOST=0
+#WITH_GOST2012=0
 #WITH_RSA_PKCS15=1
 #WITH_LEGACY_FEATURES=0
 #WITH_EXPERIMENTAL_FEATURES=0
+#WITH_MD5=0
+#WITH_RIPEMD160=0
+#WITH_SHA1=1
+#WITH_SHA224=1
+#WITH_SHA256=1
+#WITH_SHA384=1
+#WITH_SHA512=1
+#WITH_SHA3=1
+#WITH_HMAC=1
+#WITH_DH=1
+#WITH_DSA=1
+#WITH_RSA=1
+#WITH_RSA_OAEP=1
+#WITH_EC=1
+#WITH_MLDSA=0
+#WITH_MLKEM=0
+#WITH_SLHDSA=0
+#WITH_EDDSA=1
+#WITH_XDH=1
+#WITH_X509=1
+#WITH_DES=0
+#WITH_AES=1
+#WITH_CAMELLIA=1
+#WITH_CHACHA20=1
+#WITH_CONCATKDF=1
+#WITH_PBKDF2=1
+#WITH_HKDF=1
 #STATIC = 0
 #WITH_APPS = 1
 #PEDANTIC = 1
@@ -503,28 +531,186 @@ CFLAGS = $(CFLAGS) /D "WIN32_LEAN_AND_MEAN"
 CFLAGS = $(CFLAGS) /I$(BASEDIR) /I$(BASEDIR)\include
 CFLAGS = $(CFLAGS) /I$(INCPREFIX)
 
-!if "$(WITH_GOST)" == "1"
+# Crypto algorithm options (set by configure.ps1; 'legacy-features' and
+# 'experimental-features' are resolved to these per-algorithm values).
+!if "$(WITH_MD5)" == "1"
 CFLAGS = $(CFLAGS)
 !else
-CFLAGS = $(CFLAGS) /D "XMLSEC_NO_GOST" /D "XMLSEC_NO_GOST2012"
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_MD5"
+!endif
+
+!if "$(WITH_RIPEMD160)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_RIPEMD160"
+!endif
+
+!if "$(WITH_SHA1)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_SHA1"
+!endif
+
+!if "$(WITH_SHA224)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_SHA224"
+!endif
+
+!if "$(WITH_SHA256)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_SHA256"
+!endif
+
+!if "$(WITH_SHA384)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_SHA384"
+!endif
+
+!if "$(WITH_SHA512)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_SHA512"
+!endif
+
+!if "$(WITH_SHA3)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_SHA3"
+!endif
+
+!if "$(WITH_HMAC)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_HMAC"
+!endif
+
+!if "$(WITH_DH)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_DH"
+!endif
+
+!if "$(WITH_DSA)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_DSA"
+!endif
+
+!if "$(WITH_RSA)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_RSA"
 !endif
 
 !if "$(WITH_RSA_PKCS15)" == "1"
 CFLAGS = $(CFLAGS)
 !else
-CFLAGS = $(CFLAGS)  /D "XMLSEC_NO_RSA_PKCS15"
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_RSA_PKCS15"
 !endif
 
-!if "$(WITH_LEGACY_FEATURES)" == "1"
+!if "$(WITH_RSA_OAEP)" == "1"
 CFLAGS = $(CFLAGS)
 !else
-CFLAGS = $(CFLAGS)  /D "XMLSEC_NO_MD5" /D "XMLSEC_NO_RIPEMD160" /D "XMLSEC_NO_DES"
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_RSA_OAEP"
 !endif
 
-!if "$(WITH_EXPERIMENTAL_FEATURES)" == "1"
+!if "$(WITH_EC)" == "1"
 CFLAGS = $(CFLAGS)
 !else
-CFLAGS = $(CFLAGS)  /D "XMLSEC_NO_MLDSA" /D "XMLSEC_NO_MLKEM" /D "XMLSEC_NO_SLHDSA"
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_EC"
+!endif
+
+!if "$(WITH_MLDSA)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_MLDSA"
+!endif
+
+!if "$(WITH_MLKEM)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_MLKEM"
+!endif
+
+!if "$(WITH_SLHDSA)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_SLHDSA"
+!endif
+
+!if "$(WITH_EDDSA)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_EDDSA"
+!endif
+
+!if "$(WITH_XDH)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_XDH"
+!endif
+
+!if "$(WITH_X509)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_X509"
+!endif
+
+!if "$(WITH_DES)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_DES"
+!endif
+
+!if "$(WITH_AES)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_AES"
+!endif
+
+!if "$(WITH_CAMELLIA)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_CAMELLIA"
+!endif
+
+!if "$(WITH_CHACHA20)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_CHACHA20"
+!endif
+
+!if "$(WITH_CONCATKDF)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_CONCATKDF"
+!endif
+
+!if "$(WITH_PBKDF2)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_PBKDF2"
+!endif
+
+!if "$(WITH_HKDF)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_HKDF"
+!endif
+
+!if "$(WITH_GOST)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_GOST"
+!endif
+
+!if "$(WITH_GOST2012)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_GOST2012"
 !endif
 
 !if "$(WITH_FTP)" == "1"

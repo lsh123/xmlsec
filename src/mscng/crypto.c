@@ -155,6 +155,11 @@ xmlSecCryptoGetFunctions_mscng(void) {
     int isMlKemSupported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_MLKEM_ALGORITHM, 0, NULL);
 #endif /* XMLSEC_NO_MLKEM */
 
+    /* ChaCha20-Poly1305 requires Windows 10 version 1803 (April 2018 Update). */
+#ifndef XMLSEC_NO_CHACHA20
+    int isChaCha20Poly1305Supported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_CHACHA20_POLY1305_ALGORITHM, 0, NULL);
+#endif /* XMLSEC_NO_CHACHA20 */
+
     /* Publish the (zeroed) table before populating it. This matches the pattern used by
      * every other backend: the table is filled during one-time initialization, and xmlsec
      * initialization is not re-entrant, so a concurrent first-time caller cannot observe
@@ -179,6 +184,12 @@ xmlSecCryptoGetFunctions_mscng(void) {
 #ifndef XMLSEC_NO_AES
     gXmlSecMSCngFunctions->keyDataAesGetKlass           = xmlSecMSCngKeyDataAesGetKlass;
 #endif /* XMLSEC_NO_AES */
+
+#ifndef XMLSEC_NO_CHACHA20
+    if(isChaCha20Poly1305Supported != 0) {
+        gXmlSecMSCngFunctions->keyDataChaCha20GetKlass  = xmlSecMSCngKeyDataChaCha20GetKlass;
+    }
+#endif /* XMLSEC_NO_CHACHA20 */
 
 #ifndef XMLSEC_NO_CONCATKDF
     if(isConcatKdfSupported != 0) {
@@ -276,6 +287,13 @@ xmlSecCryptoGetFunctions_mscng(void) {
     gXmlSecMSCngFunctions->transformKWAes192GetKlass            = xmlSecMSCngTransformKWAes192GetKlass;
     gXmlSecMSCngFunctions->transformKWAes256GetKlass            = xmlSecMSCngTransformKWAes256GetKlass;
 #endif /* XMLSEC_NO_AES */
+
+    /* ChaCha20-Poly1305 */
+#ifndef XMLSEC_NO_CHACHA20
+    if(isChaCha20Poly1305Supported != 0) {
+        gXmlSecMSCngFunctions->transformChaCha20Poly1305GetKlass   = xmlSecMSCngTransformChaCha20Poly1305GetKlass;
+    }
+#endif /* XMLSEC_NO_CHACHA20 */
 
     /* ConcatKDF */
 #ifndef XMLSEC_NO_CONCATKDF

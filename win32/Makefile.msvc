@@ -440,6 +440,7 @@ XMLSEC_MSCNG_OBJS = \
 	$(XMLSEC_MSCNG_INTDIR)\certkeys_dsa.obj \
 	$(XMLSEC_MSCNG_INTDIR)\der_encoded_value.obj \
 	$(XMLSEC_MSCNG_INTDIR)\ciphers_cbc.obj \
+	$(XMLSEC_MSCNG_INTDIR)\ciphers_chacha.obj \
 	$(XMLSEC_MSCNG_INTDIR)\ciphers_gcm.obj \
 	$(XMLSEC_MSCNG_INTDIR)\concatkdf.obj \
 	$(XMLSEC_MSCNG_INTDIR)\crypto.obj\
@@ -467,6 +468,7 @@ XMLSEC_MSCNG_OBJS_A = \
 	$(XMLSEC_MSCNG_INTDIR_A)\certkeys_dsa.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\der_encoded_value.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\ciphers_cbc.obj \
+	$(XMLSEC_MSCNG_INTDIR_A)\ciphers_chacha.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\ciphers_gcm.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\concatkdf.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\crypto.obj\

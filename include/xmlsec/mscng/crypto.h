@@ -760,6 +760,28 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformKWAes256GetKlass(void
 #endif /* XMLSEC_NO_AES */
 
 
+/******************************************************************************
+ *
+ * ChaCha20-Poly1305 transforms
+ *
+ *****************************************************************************/
+#ifndef XMLSEC_NO_CHACHA20
+/**
+ * @brief The ChaCha20 key data klass.
+ */
+#define xmlSecMSCngKeyDataChaCha20Id \
+        xmlSecMSCngKeyDataChaCha20GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCngKeyDataChaCha20GetKlass(void);
+
+/**
+ * @brief The ChaCha20-Poly1305 AEAD cipher transform klass.
+ */
+#define xmlSecMSCngTransformChaCha20Poly1305Id \
+        xmlSecMSCngTransformChaCha20Poly1305GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformChaCha20Poly1305GetKlass(void);
+#endif /* XMLSEC_NO_CHACHA20 */
+
+
 /**
  * @brief The MSCng DEREncodedKeyValue data klass.
  */

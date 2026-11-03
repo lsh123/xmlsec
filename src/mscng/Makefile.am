@@ -28,6 +28,7 @@ libxmlsec1_mscng_la_SOURCES =\
 	certkeys_mlkem.c \
 	der_encoded_value.c \
 	ciphers_cbc.c \
+	ciphers_chacha.c \
 	ciphers_gcm.c \
 	concatkdf.c \
 	crypto.c \

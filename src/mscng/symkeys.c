@@ -37,6 +37,12 @@ xmlSecMSCngSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
     } else
 #endif /* XMLSEC_NO_AES */
 
+#ifndef XMLSEC_NO_CHACHA20
+    if(klass == xmlSecMSCngKeyDataChaCha20Id) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_CHACHA20 */
+
 #ifndef XMLSEC_NO_CONCATKDF
     if(klass == xmlSecMSCngKeyDataConcatKdfId) {
         return(1);
@@ -250,6 +256,29 @@ xmlSecMSCngKeyDataAesGetKlass(void) {
     return(&xmlSecMSCngKeyDataAesKlass);
 }
 #endif /* XMLSEC_NO_AES */
+
+
+#ifndef XMLSEC_NO_CHACHA20
+/******************************************************************************
+ *
+ * <xmlsec:ChaCha20KeyValue> processing
+ *
+   *****************************************************************************/
+XMLSEC_MSCNG_SYMKEY_WITH_XML(ChaCha20,
+    xmlSecNameChaCha20KeyValue,
+    xmlSecHrefChaCha20KeyValue,
+    xmlSecNodeChaCha20KeyValue,
+    xmlSecNs)
+
+/**
+ * @brief The ChaCha20 key data klass.
+ * @return ChaCha20 key data klass.
+ */
+xmlSecKeyDataId
+xmlSecMSCngKeyDataChaCha20GetKlass(void) {
+    return(&xmlSecMSCngKeyDataChaCha20Klass);
+}
+#endif /* XMLSEC_NO_CHACHA20 */
 
 
 #ifndef XMLSEC_NO_CONCATKDF

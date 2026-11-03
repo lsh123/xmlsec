@@ -46,7 +46,7 @@ XML Security library supports the following features as defined in
 | [Camellia-CBC-256](https://www.ietf.org/rfc/rfc9231.html#section-2.6.2) | Optional | Yes | Yes | Yes | No | No | No |
 | [SEED-128-CBC](https://www.ietf.org/rfc/rfc9231.html#section-2.6.5) | Optional | No | No | No | No | No | No |
 | [ChaCha20](https://www.w3.org/2021/04/xmldsig-more#chacha20) | Optional (use is DISCOURAGED) | Yes | No | Yes | No | No | No |
-| [ChaCha20-Poly1305](https://www.w3.org/2021/04/xmldsig-more#chacha20poly1305) | Optional | Yes | Yes | Yes | No | No | No |
+| [ChaCha20-Poly1305](https://www.w3.org/2021/04/xmldsig-more#chacha20poly1305) | Optional | Yes | Yes | Yes | Yes [(5)](#new-windows-required) | No | No |
 | [ARCFOUR](https://www.ietf.org/rfc/rfc9231.html#section-2.6.1) | Optional (use is DISCOURAGED) | No | No | No | No | No | No |
 | [Stream Encryption Algorithms](https://www.w3.org/TR/xmlenc-core1/#sec-Alg-Stream) [(11)](#stream-algorithms) | Optional | Yes | Yes | Yes | No | No | No |
 | **Key Derivation** | | | | | | | |

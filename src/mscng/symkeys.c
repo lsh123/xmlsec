@@ -30,6 +30,7 @@
 
 static int
 xmlSecMSCngSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
+    xmlSecAssert2(klass != NULL, 0);
 
 #ifndef XMLSEC_NO_AES
     if(klass == xmlSecMSCngKeyDataAesId) {

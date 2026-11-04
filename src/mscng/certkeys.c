@@ -126,31 +126,30 @@ xmlSecMSCngKeyDataCertGetPrivkey(PCCERT_CONTEXT cert, NCRYPT_KEY_HANDLE* key, BO
         return(0);
     }
 
-    /* try persistent key */
-    DWORD dwData = 0;
-    DWORD dwDataLen = sizeof(dwData);
-    if (CertGetCertificateContextProperty(cert, CERT_KEY_SPEC_PROP_ID, &dwData, &dwDataLen)) {
-        DWORD keySpec = 0;
-        BOOL fCallerFreeProvOrNCryptKey = FALSE;
-        ret = CryptAcquireCertificatePrivateKey(
-            cert,
-            CRYPT_ACQUIRE_COMPARE_KEY_FLAG | CRYPT_ACQUIRE_ONLY_NCRYPT_KEY_FLAG,
-            NULL,
-            key,
-            &keySpec,
-            &fCallerFreeProvOrNCryptKey);
-        if (ret == FALSE) {
+    /* try persistent key: don't require CERT_KEY_SPEC_PROP_ID, a certificate
+     * decoded from DER (e.g. from X509Certificate) has no key properties, but
+     * CryptAcquireCertificatePrivateKey() can still find its key by the key
+     * identifier */
+    DWORD keySpec = 0;
+    BOOL fCallerFreeProvOrNCryptKey = FALSE;
+    ret = CryptAcquireCertificatePrivateKey(
+        cert,
+        CRYPT_ACQUIRE_COMPARE_KEY_FLAG | CRYPT_ACQUIRE_ONLY_NCRYPT_KEY_FLAG,
+        NULL,
+        key,
+        &keySpec,
+        &fCallerFreeProvOrNCryptKey);
+    if (ret == FALSE) {
+        if (GetLastError() == (DWORD)CRYPT_E_NO_KEY_PROPERTY) {
+            /* no luck: the certificate doesn't have a private key */
+            xmlSecOtherError(XMLSEC_ERRORS_R_KEY_NOT_FOUND, NULL, "the certificate doesn't have a private key");
+        } else {
             xmlSecMSCngLastError("CryptAcquireCertificatePrivateKey", NULL);
-            return(-1);
         }
-        (*needsFree) = fCallerFreeProvOrNCryptKey;
-        return(0);
+        return(-1);
     }
-
-
-    /* no luck: the certificate doesn't have a private key */
-    xmlSecOtherError(XMLSEC_ERRORS_R_KEY_NOT_FOUND, NULL, "the certificate doesn't have a private key");
-    return(-1);
+    (*needsFree) = fCallerFreeProvOrNCryptKey;
+    return(0);
 }
 
 /**

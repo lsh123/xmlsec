@@ -19,8 +19,10 @@
 #error "xmlsec-mingw.h file contains private xmlsec definitions for mingw build and should not be used outside the xmlsec or xmlsec-mscng libraries"
 #endif /* XMLSEC_PRIVATE */
 
-/* This header provides fallback definitions for symbols missing from older MinGW headers. */
-#if defined(__MINGW32__) || defined(__MINGW64__)
+/* This header provides fallback definitions for symbols missing from older MinGW headers and
+ * from older Windows SDKs: the MSVC build still uses SDK 10.0.22621, while e.g. the SHA3
+ * algorithm identifiers need 10.0.26100. Each symbol below has its own #ifndef, so this is a
+ * no-op once the headers catch up. */
 
 /* ---- bcrypt.h: algorithm identifiers ------------------------------------- */
 
@@ -134,6 +136,5 @@
 
 
 
-#endif /* defined(__MINGW32__) || defined(__MINGW64__) */
 
 #endif /* XMLSEC_MSCNG_XMLSEC_MINGW_H */

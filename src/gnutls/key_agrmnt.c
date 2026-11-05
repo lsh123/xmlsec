@@ -423,9 +423,10 @@ xmlSecGnuTLSKeyAgreementGenerateSecret(xmlSecGnuTLSKeyAgreementCtxPtr ctx, xmlSe
             goto done;
         }
         if(ret != expectedPkAlgo) {
+            const char *actualAlgoName = gnutls_pk_algorithm_get_name((gnutls_pk_algorithm_t)ret);
             xmlSecInvalidTransformError2(transform,
                 "key data curve \"%s\" does not match the key agreement transform",
-                xmlSecErrorsSafeString(gnutls_pk_algorithm_get_name(ret)));
+                xmlSecErrorsSafeString(actualAlgoName));
             goto done;
         }
         ret = gnutls_pubkey_get_pk_algorithm(otherPubKey, NULL);
@@ -434,9 +435,10 @@ xmlSecGnuTLSKeyAgreementGenerateSecret(xmlSecGnuTLSKeyAgreementCtxPtr ctx, xmlSe
             goto done;
         }
         if(ret != expectedPkAlgo) {
+            const char *actualAlgoName = gnutls_pk_algorithm_get_name((gnutls_pk_algorithm_t)ret);
             xmlSecInvalidTransformError2(transform,
                 "peer key data curve \"%s\" does not match the key agreement transform",
-                xmlSecErrorsSafeString(gnutls_pk_algorithm_get_name(ret)));
+                xmlSecErrorsSafeString(actualAlgoName));
             goto done;
         }
     } else

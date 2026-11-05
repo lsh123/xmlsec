@@ -1304,6 +1304,15 @@ xmlSecMSCryptoKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) 
     xmlSecAssert2(mSize > 0, NULL);
     xmlSecAssert2(peSize > 0, NULL);
 
+    /* RSAPUBKEY.bitlen is a DWORD, so reject modulus values whose bit count
+     * (mSize * 8) does not fit in that field; this also prevents the
+     * blob size arithmetic below from wrapping on 32-bit builds */
+    if (mSize > (ULONG_MAX / 8)) {
+        xmlSecInternalError2("xmlSecMSCryptoKeyDataRsaRead", xmlSecKeyDataKlassGetName(id),
+            "size=" XMLSEC_SIZE_FMT, mSize);
+        goto done;
+    }
+
     /* Now try to prepare buffer for key */
     blobBufferSize = sizeof(PUBLICKEYSTRUC) + sizeof(RSAPUBKEY) + mSize;
     ret = xmlSecBufferInitialize(&blob, blobBufferSize);
@@ -1442,6 +1451,10 @@ xmlSecMSCryptoKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
 
     /* get data */
     blob = xmlSecBufferGetData(&buf);
+    if (blob == NULL) {
+        xmlSecInvalidDataError("buffer data pointer is NULL", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
     if (!CryptExportKey(xmlSecMSCryptoKeyDataCtxGetKey(ctx), 0, PUBLICKEYBLOB, 0, blob, &dwBlobLen)) {
         xmlSecMSCryptoError("CryptExportKey", xmlSecKeyDataKlassGetName(id));
         goto done;

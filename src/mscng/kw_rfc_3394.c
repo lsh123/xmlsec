@@ -187,6 +187,21 @@ xmlSecMSCngKWAesInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
+    /* RFC 3394 key wrap uses a raw single AES block with no chaining, so set
+     * the ECB chain mode explicitly: the block functions below pass a NULL IV,
+     * which is only valid in ECB, and relying on the provider's default chain
+     * mode would be fragile */
+    status = BCryptSetProperty(ctx->hAlg,
+        BCRYPT_CHAINING_MODE,
+        (PUCHAR)BCRYPT_CHAIN_MODE_ECB,
+        sizeof(BCRYPT_CHAIN_MODE_ECB),
+        0);
+    if (status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptSetProperty", xmlSecTransformGetName(transform), status);
+        xmlSecMSCngKWAesFinalize(transform);
+        return(-1);
+    }
+
     /* get key object size */
     status = BCryptGetProperty(ctx->hAlg,
         BCRYPT_OBJECT_LENGTH,
@@ -483,6 +498,11 @@ xmlSecMSCngKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
         xmlSecMSCngNtError("BCryptEncrypt", xmlSecTransformGetName(transform), status);
         goto done;
     }
+    if (cbData != dwInSize) {
+        xmlSecInternalError2("BCryptEncrypt output size", xmlSecTransformGetName(transform),
+            "size=" XMLSEC_SIZE_FMT, (xmlSecSize)cbData);
+        goto done;
+    }
 
     /* success */
     XMLSEC_SAFE_CAST_ULONG_TO_SIZE(cbData, (*outWritten), goto done, xmlSecTransformGetName(transform));
@@ -563,6 +583,11 @@ xmlSecMSCngKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
         0);
     if (status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptDecrypt", xmlSecTransformGetName(transform), status);
+        goto done;
+    }
+    if (cbData != dwInSize) {
+        xmlSecInternalError2("BCryptDecrypt output size", xmlSecTransformGetName(transform),
+            "size=" XMLSEC_SIZE_FMT, (xmlSecSize)cbData);
         goto done;
     }
 

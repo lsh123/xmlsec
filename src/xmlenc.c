@@ -686,8 +686,10 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     encCtx->mimeType = xmlGetProp(node, xmlSecAttrMimeType);
     encCtx->encoding = xmlGetProp(node, xmlSecAttrEncoding);
     if(encCtx->mode == xmlSecEncCtxModeEncryptedKey) {
+        /* the Recipient attribute identifies the intended recipient; the
+         * identifier is application-specific, so it is stored for the
+         * application to check and is not validated here */
         encCtx->recipient = xmlGetProp(node, xmlSecAttrRecipient);
-        /* todo: check recipient? */
     }
     cur = xmlSecGetNextElementNode(node->children);
 

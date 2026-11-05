@@ -1112,6 +1112,10 @@ xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
     }
 #endif /* XMLSEC_NO_DSA */
 
+    /* for non-DSA keys (e.g. ECDSA) the full hash length (cbHash) is passed
+     * to CNG: when the hash is longer than the EC field size, CNG is expected
+     * to truncate it to the leftmost bits per SEC1 v2 / RFC 6931, the same
+     * truncation that is applied explicitly above for DSA */
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(dataSize, dwDataSize, goto done, xmlSecTransformGetName(transform));
     status = BCryptVerifySignature(
         pubkey,
@@ -1356,6 +1360,10 @@ xmlSecMSCngSignatureSign(
     }
 #endif /* XMLSEC_NO_DSA */
 
+    /* for non-DSA keys (e.g. ECDSA) the full hash length (cbHash) is passed
+     * to CNG: when the hash is longer than the EC field size, CNG is expected
+     * to truncate it to the leftmost bits per SEC1 v2 / RFC 6931, the same
+     * truncation that is applied explicitly above for DSA */
     /* calculate the length of the signature; this size probe passes
      * pPaddingInfo=NULL and dwFlags=0 on purpose - NCryptSignHash only needs
      * the hash to report the signature size, and the real call below supplies

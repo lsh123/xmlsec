@@ -785,7 +785,7 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
         }
         if(pos >= outLen) {
             /* the recovered block is all zeros: not a valid OAEP block */
-            xmlSecInvalidSizeError("Recovered encoded data size", (xmlSecSize)outLen, (xmlSecSize)keyLen, NULL);
+            xmlSecInvalidDataError("recovered OAEP block is all zeros", NULL);
             OPENSSL_cleanse(outBuf, (*outSize));
             return(-1);
         }
@@ -1342,12 +1342,56 @@ xmlSecOpenSSLRsaOaepExecute(xmlSecTransformPtr transform, int last,
     return(0);
 }
 
+/*
+ * Returns the size in bytes of the OAEP digest algorithm stored in the
+ * context. A zero return value means no digest is set (the default SHA-1
+ * digest is disabled and no explicit digest was specified); a negative
+ * return value indicates a failure, the error is reported.
+ */
+static int
+xmlSecOpenSSLRsaOaepGetMdSize(xmlSecOpenSSLRsaOaepCtxPtr ctx) {
+    int mdSize;
+
+    xmlSecAssert2(ctx != NULL, -1);
+#ifndef XMLSEC_OPENSSL_API_300
+    if(ctx->md == NULL) {
+        return(0);
+    }
+    mdSize = EVP_MD_size(ctx->md);
+    if(mdSize <= 0) {
+        xmlSecOpenSSLError("EVP_MD_size", NULL);
+        return(-1);
+    }
+    return(mdSize);
+#else /* XMLSEC_OPENSSL_API_300 */
+    EVP_MD* md;
+
+    if(ctx->mdName == NULL) {
+        return(0);
+    }
+    md = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), ctx->mdName, NULL);
+    if(md == NULL) {
+        xmlSecOpenSSLError2("EVP_MD_fetch", NULL, "digestName=%s",
+            xmlSecErrorsSafeString(ctx->mdName));
+        return(-1);
+    }
+    mdSize = EVP_MD_size(md);
+    EVP_MD_free(md);
+    if(mdSize <= 0) {
+        xmlSecOpenSSLError("EVP_MD_size", NULL);
+        return(-1);
+    }
+    return(mdSize);
+#endif /* XMLSEC_OPENSSL_API_300 */
+}
+
 static int
 xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform) {
     xmlSecOpenSSLRsaOaepCtxPtr ctx;
     xmlSecBufferPtr in, out;
-    xmlSecSize inSize, outSize;
+    xmlSecSize inSize, outSize, maxPayloadSize, labelSize;
     int encrypt;
+    int mdSize;
     int ret;
 
     xmlSecAssert2(xmlSecOpenSSLRsaOaepCheckId(transform), -1);
@@ -1379,11 +1423,44 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-    if((encrypt != 0) && (inSize >= ctx->keySize)) {
-        xmlSecInvalidSizeMoreThanError("Input data", inSize, ctx->keySize,
-            xmlSecTransformGetName(transform));
-        return(-1);
-    } else if((encrypt == 0) && (inSize != ctx->keySize)) {
+    if(encrypt != 0) {
+        /* empty input is not a valid message to encrypt; without this
+         * check ProcessImpl would fail on its inSize > 0 assertion */
+        if(inSize == 0) {
+            xmlSecInvalidSizeOtherError("input data is empty",
+                xmlSecTransformGetName(transform));
+            return(-1);
+        }
+
+        if(inSize >= ctx->keySize) {
+            xmlSecInvalidSizeMoreThanError("Input data", inSize, ctx->keySize,
+                xmlSecTransformGetName(transform));
+            return(-1);
+        }
+
+        /*
+         * OAEP padding (RFC 8017 section 9.1) consumes 2*mdSize + 2
+         * bytes plus the label size, so the plaintext must be at most
+         * keySize - (2*mdSize + 2 + labelSize) bytes long; if no digest
+         * is set skip the check, ProcessImpl will report the specific
+         * error about the missing digest
+         */
+        mdSize = xmlSecOpenSSLRsaOaepGetMdSize(ctx);
+        if(mdSize < 0) {
+            return(-1);
+        }
+        if(mdSize > 0) {
+            labelSize = xmlSecBufferGetSize(&(ctx->oaepParams));
+            maxPayloadSize = (ctx->keySize > ((xmlSecSize)mdSize * 2 + 2 + labelSize))
+                ? (ctx->keySize - ((xmlSecSize)mdSize * 2 + 2 + labelSize))
+                : 0;
+            if(inSize > maxPayloadSize) {
+                xmlSecInvalidSizeMoreThanError("Input data", inSize, maxPayloadSize,
+                    xmlSecTransformGetName(transform));
+                return(-1);
+            }
+        }
+    } else if(inSize != ctx->keySize) {
         xmlSecInvalidSizeError("Input data", inSize, ctx->keySize,
             xmlSecTransformGetName(transform));
         return(-1);

@@ -758,6 +758,10 @@ xmlSecMSCngAppPkcs12LoadMemory(
     }
     /* remember the exact wide-string size so cleanup can wipe the plaintext password */
     pwdWideCharLen = (DWORD)MultiByteToWideChar(CP_UTF8, 0, (LPCCH)pwd, -1, NULL, 0);
+    if(pwdWideCharLen == 0) {
+        xmlSecMSCngLastError("MultiByteToWideChar", NULL);
+        goto cleanup;
+    }
 
     ret = PFXVerifyPassword(&pfx, pwdWideChar, 0);
     if(ret == FALSE) {

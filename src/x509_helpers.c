@@ -160,7 +160,9 @@ xmlSecKeyDataX509XmlRead(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xmlNodePtr nod
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
-    xmlSecAssert2(keyInfoCtx->keysMngr != NULL, -1);
+    /* note: keyInfoCtx->keysMngr is optional (see xmlSecKeyInfoCtxCreate);
+     * without it the key lookup and the readFunc fallback are skipped below
+     * and the key is left empty, the same way as in the KeyName path */
 
     ret = xmlSecKeyX509DataValueInitialize(&x509Value);
     if(ret < 0) {
@@ -177,7 +179,7 @@ xmlSecKeyDataX509XmlRead(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xmlNodePtr nod
         }
 
         /* first try to lookup key in keys manager using x509 data */
-        if(keyFound == 0) {
+        if((keyFound == 0) && (keyInfoCtx->keysMngr != NULL)) {
             xmlSecKeyPtr tmpKey;
 
             tmpKey = xmlSecKeysMngrFindKeyFromX509Data(keyInfoCtx->keysMngr, &x509Value, keyInfoCtx);
@@ -195,8 +197,9 @@ xmlSecKeyDataX509XmlRead(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xmlNodePtr nod
             }
         }
 
-        /* otherwise, see if we can get it from certs, etc */
-        if((keyFound == 0) && (readFunc != NULL)) {
+        /* otherwise, see if we can get it from certs, etc; the read function
+         * requires a keys manager (it may look up certificates in the stores) */
+        if((keyFound == 0) && (keyInfoCtx->keysMngr != NULL) && (readFunc != NULL)) {
             /* xmlSecKeyDataX509Read: 0 on success and a negative value otherwise */
             ret = readFunc(data, &x509Value, keyInfoCtx->keysMngr, keyInfoCtx->flags);
             if(ret < 0) {

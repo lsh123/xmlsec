@@ -567,7 +567,10 @@ xmlSecBufferReverse(xmlSecBufferPtr buf) {
  * @details Reads the content of the file @p filename into the buffer.
  * @param buf the pointer to buffer object.
  * @param filename the filename.
- * @return 0 on success or a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs. Note: on a
+ * mid-stream read or append error the buffer may be left partially filled
+ * with the data read before the failure; the caller can only distinguish
+ * this from valid data by the return code.
  */
 int
 xmlSecBufferReadFile(xmlSecBufferPtr buf, const char* filename) {

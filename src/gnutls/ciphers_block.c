@@ -546,7 +546,7 @@ xmlSecGnuTLSBlockCipherInitialize(xmlSecTransformPtr transform) {
             return(-1);
         }
     }
-    xmlSecAssert2(ctx->blockSize < XMLSEC_GNUTLS_BLOCK_CIPHER_MAX_BLOCK_SIZE, -1);
+    xmlSecAssert2(ctx->blockSize <= XMLSEC_GNUTLS_BLOCK_CIPHER_MAX_BLOCK_SIZE, -1);
 
     if (ctx->ivSize == 0) {
         ctx->ivSize = gnutls_cipher_get_iv_size(ctx->algorithm);

@@ -245,7 +245,8 @@ sign_file(const char* xml_file, const char* id_attr, const char* key_file, const
         goto done;
     }
 
-    /* add ID attributes to the doc context since we don't have DTDs */
+    /* add ID attributes to the doc context since we don't have DTDs;
+     * xmlSecAddIDs() returns no value */
     xmlSecAddIDs(doc, NULL, id_attributes);
 
     /* create signature context, we don't need keys manager in this example */

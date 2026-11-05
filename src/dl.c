@@ -207,8 +207,21 @@ static xmlSecCryptoDLLibraryPtr
 xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
     xmlSecCryptoDLLibraryPtr lib;
     xmlSecCryptoGetFunctionsCallback * getFunctions = NULL;
+    const xmlChar* p;
 
     xmlSecAssert2(name != NULL, NULL);
+
+    /* the name is embedded into the library filename (see
+     * xmlSecCryptoDLLibraryConstructFilename) and into the get-functions
+     * symbol name. The fixed "lib$PACKAGE-" prefix already makes path
+     * traversal impractical, but reject names containing path separators
+     * to remove any doubt; a valid crypto name never contains them */
+    for(p = name; (*p != '\0'); ++p) {
+        if((*p == '/') || (*p == '\\')) {
+            xmlSecInvalidDataError("crypto library name contains a path separator", NULL);
+            return(NULL);
+        }
+    }
 
     /* Allocate a new xmlSecCryptoDLLibrary and fill the fields. */
     lib = (xmlSecCryptoDLLibraryPtr)xmlMalloc(sizeof(xmlSecCryptoDLLibrary));
@@ -572,6 +585,7 @@ xmlSecCryptoDLGetLibraryFunctions(const xmlChar* crypto) {
 int
 xmlSecCryptoDLUnloadLibrary(const xmlChar* crypto) {
     xmlSecCryptoDLLibraryPtr lib;
+    xmlSecCryptoDLFunctionsPtr libFunctions = NULL;
     xmlSecSize pos;
     int ret;
 
@@ -589,14 +603,24 @@ xmlSecCryptoDLUnloadLibrary(const xmlChar* crypto) {
     }
 
     lib = (xmlSecCryptoDLLibraryPtr)xmlSecPtrListGetItem(&gXmlSecCryptoDLLibraries, pos);
-    if((lib != NULL) && (lib->functions == gXmlSecCryptoDLFunctions)) {
-        gXmlSecCryptoDLFunctions = NULL;
+    if(lib != NULL) {
+        /* the library is destroyed by the remove below, so remember its
+         * functions table before the remove is called */
+        libFunctions = lib->functions;
     }
 
     ret = xmlSecPtrListRemove(&gXmlSecCryptoDLLibraries, pos);
     if(ret < 0) {
+        /* the remove failed, so the library is still in the list; keep
+         * the global functions table (it still points to a loaded library) */
         xmlSecInternalError("xmlSecPtrListRemove", NULL);
         return(-1);
+    }
+
+    /* the library was removed from the list, invalidate the global
+     * functions table if it belongs to the unloaded library */
+    if((lib != NULL) && (libFunctions == gXmlSecCryptoDLFunctions)) {
+        gXmlSecCryptoDLFunctions = NULL;
     }
 
     return(0);

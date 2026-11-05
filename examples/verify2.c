@@ -77,11 +77,30 @@ main(int argc, char **argv) {
 #ifndef XMLSEC_NO_XSLT
     /* disable all XSLT file and network access */
     xsltSecPrefs = xsltNewSecurityPrefs();
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_NETWORK,     xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_NETWORK,    xsltSecurityForbid);
+    if(xsltSecPrefs == NULL) {
+        fprintf(stderr, "Error: failed to create the xslt security prefs\n");
+        goto done;
+    }
+    if(xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid) < 0) {
+        fprintf(stderr, "Error: failed to set XSLT security pref READ_FILE\n");
+        goto done;
+    }
+    if(xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid) < 0) {
+        fprintf(stderr, "Error: failed to set XSLT security pref WRITE_FILE\n");
+        goto done;
+    }
+    if(xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid) < 0) {
+        fprintf(stderr, "Error: failed to set XSLT security pref CREATE_DIRECTORY\n");
+        goto done;
+    }
+    if(xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_NETWORK,     xsltSecurityForbid) < 0) {
+        fprintf(stderr, "Error: failed to set XSLT security pref READ_NETWORK\n");
+        goto done;
+    }
+    if(xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_NETWORK,    xsltSecurityForbid) < 0) {
+        fprintf(stderr, "Error: failed to set XSLT security pref WRITE_NETWORK\n");
+        goto done;
+    }
     xsltSetDefaultSecurityPrefs(xsltSecPrefs);
 #endif /* XMLSEC_NO_XSLT */
 

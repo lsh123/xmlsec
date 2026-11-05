@@ -1865,6 +1865,7 @@ xmlSecTransformPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
                     xmlSecTransformCtxPtr transformCtx) {
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(transform->id->pushXml != NULL, -1);
+    xmlSecAssert2(nodes != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
     return((transform->id->pushXml)(transform, nodes, transformCtx));
@@ -2406,6 +2407,7 @@ xmlSecTransformDefaultPushXml(
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(transform->inNodes == NULL, -1);
     xmlSecAssert2(transform->outNodes == NULL, -1);
+    xmlSecAssert2(nodes != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
     /* execute our transform */

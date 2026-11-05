@@ -401,6 +401,9 @@ xmlSecNssDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
                 return(-1);
             }
             xmlSecAssert2(dgstSize > 0, -1);
+            /* NSS honors the maxResultLen passed to PK11_DigestFinal, so the
+             * digest size cannot exceed the buffer; keep the invariant explicit */
+            xmlSecAssert2(dgstSize <= sizeof(ctx->dgst), -1);
             ctx->dgstSize = dgstSize;
 
             if(transform->operation == xmlSecTransformOperationSign) {

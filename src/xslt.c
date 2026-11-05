@@ -331,6 +331,7 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         ctx->parserCtx = xmlCreatePushParserCtxt(NULL, NULL, NULL, 0, NULL);
         if(ctx->parserCtx == NULL) {
             xmlSecXmlError("xmlCreatePushParserCtxt", xmlSecTransformGetName(transform));
+            transform->status = xmlSecTransformStatusFail;
             return(-1);
         }
         xmlSecParsePrepareCtxt(ctx->parserCtx);
@@ -358,6 +359,7 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         if(ret != 0) {
             xmlSecXmlParserError2("xmlParseChunk", ctx->parserCtx, xmlSecTransformGetName(transform),
                 "size=" XMLSEC_SIZE_FMT, dataSize);
+            transform->status = xmlSecTransformStatusFail;
             return(-1);
         }
     }
@@ -372,6 +374,7 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         ret = xmlParseChunk(ctx->parserCtx, NULL, 0, 1);
         if((ret != 0) || (ctx->parserCtx->myDoc == NULL)) {
             xmlSecXmlParserError("xmlParseChunk", ctx->parserCtx, xmlSecTransformGetName(transform));
+            transform->status = xmlSecTransformStatusFail;
             return(-1);
         }
 
@@ -382,6 +385,7 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         if(docOut == NULL) {
             xmlSecInternalError("xmlSecXsltApplyStylesheet", xmlSecTransformGetName(transform));
             xmlFreeDoc(docIn);
+            transform->status = xmlSecTransformStatusFail;
             return(-1);
         }
         xmlFreeDoc(docIn);
@@ -391,6 +395,7 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
             if(output == NULL) {
                 xmlSecInternalError("xmlSecTransformCreateOutputBuffer", xmlSecTransformGetName(transform));
                 xmlFreeDoc(docOut);
+                transform->status = xmlSecTransformStatusFail;
                 return(-1);
             }
         } else {
@@ -398,6 +403,7 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
             if(output == NULL) {
                 xmlSecInternalError("xmlSecBufferCreateOutputBuffer", xmlSecTransformGetName(transform));
                 xmlFreeDoc(docOut);
+                transform->status = xmlSecTransformStatusFail;
                 return(-1);
             }
         }
@@ -407,12 +413,22 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
             xmlSecXsltError("xsltSaveResultTo", xmlSecTransformGetName(transform));
             (void)xmlOutputBufferClose(output);
             xmlFreeDoc(docOut);
+            /* discard any partial output kept in our own output buffer so it
+             * cannot be picked up by a later operation and mark the
+             * transform as failed */
+            xmlSecBufferEmpty(&(transform->outBuf));
+            transform->status = xmlSecTransformStatusFail;
             return(-1);
         }
         ret = xmlOutputBufferClose(output);
         if(ret < 0) {
             xmlSecXmlError("xmlOutputBufferClose", xmlSecTransformGetName(transform));
             xmlFreeDoc(docOut);
+            /* discard any partial output kept in our own output buffer so it
+             * cannot be picked up by a later operation and mark the
+             * transform as failed */
+            xmlSecBufferEmpty(&(transform->outBuf));
+            transform->status = xmlSecTransformStatusFail;
             return(-1);
         }
         xmlFreeDoc(docOut);
@@ -457,6 +473,10 @@ xmlSecXsltExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr 
         ret = xmlSecXsltProcess(ctx, in, out);
         if(ret < 0) {
             xmlSecInternalError("xmlSecXsltProcess", xmlSecTransformGetName(transform));
+            /* discard any partial output so it cannot be picked up by a
+             * later operation and mark the transform as failed */
+            xmlSecBufferEmpty(out);
+            transform->status = xmlSecTransformStatusFail;
             return(-1);
         }
 
@@ -464,6 +484,10 @@ xmlSecXsltExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr 
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform),
                 "size=" XMLSEC_SIZE_FMT, inSize);
+            /* the input was not consumed, so the output cannot be used;
+             * discard it and mark the transform as failed */
+            xmlSecBufferEmpty(out);
+            transform->status = xmlSecTransformStatusFail;
             return(-1);
         }
 

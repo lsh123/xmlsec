@@ -1342,7 +1342,7 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     }
 
     ret = DSA_generate_key(dsa);
-    if(ret < 0) {
+    if(ret != 1) {
         xmlSecOpenSSLError("DSA_generate_key", xmlSecKeyDataGetName(data));
         goto done;
     }
@@ -2117,7 +2117,7 @@ xmlSecOpenSSLKeyDataDhGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSe
     }
 
     ret = DH_generate_key(dh);
-    if(ret < 0) {
+    if(ret != 1) {
         xmlSecOpenSSLError("DH_generate_key", xmlSecKeyDataGetName(data));
         goto done;
     }

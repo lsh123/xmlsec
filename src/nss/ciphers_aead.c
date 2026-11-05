@@ -269,6 +269,7 @@ static int
 xmlSecNssAeadCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecNssAeadCipherCtxPtr ctx;
     xmlSecKeyDataPtr keyData;
+    xmlSecBufferPtr buffer;
 
     xmlSecAssert2(xmlSecNssAeadCipherCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
@@ -283,6 +284,15 @@ xmlSecNssAeadCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     keyData = xmlSecKeyGetValue(key);
     xmlSecAssert2(keyData != NULL, -1);
+
+    buffer = xmlSecKeyDataBinaryValueGetBuffer(keyData);
+    xmlSecAssert2(buffer != NULL, -1);
+
+    if(xmlSecBufferGetSize(buffer) < ctx->keySize) {
+        xmlSecInvalidKeyDataSizeError(xmlSecBufferGetSize(buffer), ctx->keySize,
+                xmlSecTransformGetName(transform));
+        return(-1);
+    }
 
     ctx->keyData = xmlSecKeyDataDuplicate(keyData);
     if(ctx->keyData == NULL) {

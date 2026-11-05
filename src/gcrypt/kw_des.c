@@ -403,9 +403,17 @@ xmlSecGCryptKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
     xmlSecAssert2(keySize > 0, -1);
     xmlSecAssert2(keySize == key_len, -1);
     xmlSecAssert2(iv != NULL, -1);
+    /*
+     * The IV must be exactly one block long. The block functions above pass
+     * the first XMLSEC_KW_DES3_IV_LENGTH bytes of the caller's IV, so an
+     * oversized IV is silently truncated (the same convention as the openssl
+     * and gnutls backends; the driver always passes exactly
+     * XMLSEC_KW_DES3_IV_LENGTH bytes).
+     */
     xmlSecAssert2(ivSize == block_len, -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize > 0, -1);
+    xmlSecAssert2((inSize % XMLSEC_KW_DES3_BLOCK_LENGTH) == 0, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= inSize, -1);
     xmlSecAssert2(outWritten != NULL, -1);

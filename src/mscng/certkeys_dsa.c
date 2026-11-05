@@ -116,6 +116,14 @@ xmlSecMSCngKeyDataCertGetDsaPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE
     xmlSecAssert2(spki->PublicKey.cbData != 0, -1);
     xmlSecAssert2(spki->PublicKey.pbData != NULL, -1);
 
+    /* The DSA SubjectPublicKey BIT STRING has no unused bits; a non-zero value
+     * would make CryptDecodeObjectEx treat the trailing padding bits as part of
+     * the y value, so reject such SPKIs. */
+    if(spki->PublicKey.cUnusedBits != 0) {
+        xmlSecInvalidDataError("DSA SPKI: PublicKey BIT STRING has unused bits", NULL);
+        goto done;
+    }
+
     /* Decode the DSA public key value (y) from SubjectPublicKeyInfo.PublicKey */
     if(!CryptDecodeObjectEx(
             X509_ASN_ENCODING,
@@ -149,8 +157,8 @@ xmlSecMSCngKeyDataCertGetDsaPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE
         goto done;
     }
     /* CNG DSA blobs only support 160-bit (20-byte, SHA1) and 256-bit (32-byte,
-     * SHA256) group sizes; anything in between would produce an invalid blob. */
-    if((qSize > XMLSEC_MSCNG_DSA_MAX_Q_SIZE) && (qSize < XMLSEC_MSCNG_DSA_V2_Q_SIZE)) {
+     * SHA256) group sizes; anything else would produce an invalid blob. */
+    if((qSize != XMLSEC_MSCNG_DSA_MAX_Q_SIZE) && (qSize != XMLSEC_MSCNG_DSA_V2_Q_SIZE)) {
         xmlSecInvalidSizeDataError("DSA Q size", (xmlSecSize)qSize, "20 or 32 bytes", NULL);
         goto done;
     }
@@ -179,6 +187,7 @@ xmlSecMSCngKeyDataCertGetDsaPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE
         memset(dsakey->Count, 0xFF, sizeof(dsakey->Count));
         memset(dsakey->Seed, 0xFF, sizeof(dsakey->Seed));
         /* q is stored right-aligned in the fixed 20-byte header field */
+        xmlSecAssert2(sizeof(dsakey->q) == XMLSEC_MSCNG_DSA_MAX_Q_SIZE, -1);
         memcpy(dsakey->q + (XMLSEC_MSCNG_DSA_MAX_Q_SIZE - qSize), pDssParams->q.pbData, qSize);
 
         offset = (DWORD)sizeof(BCRYPT_DSA_KEY_BLOB);
@@ -344,6 +353,10 @@ xmlSecMSCngDsaBuildSubjectPublicKeyInfoDer(BCRYPT_KEY_HANDLE hKey, LPVOID* ppDer
          * provider inconsistency cannot cause OOB reads, and compute the size sum in size_t
          * so no DWORD wrap is possible. */
         BCRYPT_DSA_KEY_BLOB_V2* h2 = (BCRYPT_DSA_KEY_BLOB_V2*)blobData;
+        if(blobLen < sizeof(BCRYPT_DSA_KEY_BLOB_V2)) {
+            xmlSecInvalidSizeLessThanError("DSA V2 blob size", (xmlSecSize)blobLen, (xmlSecSize)sizeof(BCRYPT_DSA_KEY_BLOB_V2), NULL);
+            goto done;
+        }
         size_t needed = (size_t)sizeof(BCRYPT_DSA_KEY_BLOB_V2)
                         + (size_t)h2->cbSeedLength
                         + (size_t)h2->cbGroupSize
@@ -495,6 +508,10 @@ xmlSecMSCngDsaGetQSizeInBytes(BCRYPT_KEY_HANDLE hKey, DWORD* qSize) {
     else if(hdr->dwMagic == BCRYPT_DSA_PUBLIC_MAGIC_V2) {
         /* V2 blob: the q size is in the cbGroupSize field */
         BCRYPT_DSA_KEY_BLOB_V2* h2 = (BCRYPT_DSA_KEY_BLOB_V2*)blobData;
+        if(blobLen < sizeof(BCRYPT_DSA_KEY_BLOB_V2)) {
+            xmlSecInvalidSizeLessThanError("DSA V2 blob size", (xmlSecSize)blobLen, (xmlSecSize)sizeof(BCRYPT_DSA_KEY_BLOB_V2), NULL);
+            goto done;
+        }
         if((h2->cbGroupSize != XMLSEC_MSCNG_DSA_MAX_Q_SIZE) && (h2->cbGroupSize != XMLSEC_MSCNG_DSA_V2_Q_SIZE)) {
             xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
                 "Unsupported DSA group size: cbGroupSize=%lu", (unsigned long)h2->cbGroupSize);
@@ -569,8 +586,8 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         goto done;
     }
     /* CNG DSA blobs only support 160-bit (20-byte, SHA1) and 256-bit (32-byte,
-     * SHA256) group sizes; anything in between would produce an invalid blob. */
-    if((qSize > XMLSEC_MSCNG_DSA_MAX_Q_SIZE) && (qSize < XMLSEC_MSCNG_DSA_V2_Q_SIZE)) {
+     * SHA256) group sizes; anything else would produce an invalid blob. */
+    if((qSize != XMLSEC_MSCNG_DSA_MAX_Q_SIZE) && (qSize != XMLSEC_MSCNG_DSA_V2_Q_SIZE)) {
         xmlSecInvalidSizeDataError("DSA Q size", (xmlSecSize)qSize, "20 or 32 bytes", NULL);
         goto done;
     }
@@ -868,6 +885,10 @@ xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDsaPtr 
         xmlSecByte* v2Data;
         size_t v2Needed;
         dsakey2v = (BCRYPT_DSA_KEY_BLOB_V2*)bufData;
+        if(bufLen < sizeof(BCRYPT_DSA_KEY_BLOB_V2)) {
+            xmlSecInvalidSizeLessThanError("DSA V2 blob size", (xmlSecSize)bufLen, (xmlSecSize)sizeof(BCRYPT_DSA_KEY_BLOB_V2), NULL);
+            goto done;
+        }
         v2Needed = (size_t)sizeof(BCRYPT_DSA_KEY_BLOB_V2)
                    + (size_t)dsakey2v->cbSeedLength
                    + (size_t)dsakey2v->cbGroupSize

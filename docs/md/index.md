@@ -30,6 +30,8 @@ see the Copyright file in the distribution for details.
   - (xmlsec-core, **not backward compatible**) Key agreement methods with `ConcatKDF` key derivation
     method now fall back to the KDF digest output size as the derived key length when the uplevel
     key requirements do not specify a key size.
+  - (xmlsec-core, **not backward compatible**) Added hard cap (adjustable at build time) on
+    maximum HKDF derived key length (`XMLSEC_HKDF_MAX_KEY_LENGTH`, 16320 bytes by default).
   - (xmlsec-core) Fixed the XPointer transform identifier, the original one is kept as deprecated and
     will be removed in the future.
   - (xmlsec-mscng) Added support for ML-DSA signature (requires Windows 11 version 25H2 or Windows Server 2025)

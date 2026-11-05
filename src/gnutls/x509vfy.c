@@ -1005,9 +1005,9 @@ xmlSecGnuTLSX509StoreVerify(
             all_crls, all_crls_size,
             keyInfoCtx);
         if(ret < 0) {
-            /* ignore all errors, don't stop, continue! */
+            /* a hard error, stop and report */
             xmlSecInternalError("xmlSecGnuTLSX509StoreVerifyCert(certs)", xmlSecKeyDataStoreGetName(store));
-            continue;
+            goto done;
         } else if (ret != 1) {
             /* ignore if chain can't be verified, don't stop, continue! */
             continue;
@@ -1705,7 +1705,90 @@ done:
     return(res);
 }
 
-/* signer cert has subject dn equal to our issuer dn */
+/* Check the AKI of @p cert against the SKI of @p issuer, the same check
+ * that GnuTLS' find_issuer() performs in addition to the DN comparison.
+ * Returns 1 if the identifiers match, or if either one is missing (the
+ * check cannot be applied); returns 0 if both are present and do not
+ * match, and a negative value if an error occurs. */
+static int
+xmlSecGnuTLSX509CertAkiMatchesSki(gnutls_x509_crt_t cert, gnutls_x509_crt_t issuer) {
+    xmlSecByte* aki = NULL;
+    xmlSecByte* ski = NULL;
+    xmlSecSize akiSize = 0;
+    xmlSecSize skiSize = 0;
+    unsigned int critical = 0;
+    int err;
+    int res = -1;
+
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(issuer != NULL, -1);
+
+    /* get AKI size */
+    err = gnutls_x509_crt_get_authority_key_id(cert, NULL, &akiSize, &critical);
+    if(err == GNUTLS_E_REQUESTED_DATA_NOT_AVAILABLE) {
+        /* no AKI in the certificate: the check cannot be applied, assume a match */
+        return(1);
+    } else if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (akiSize == 0)) {
+        xmlSecGnuTLSError("gnutls_x509_crt_get_authority_key_id", err, NULL);
+        goto done;
+    }
+
+    /* get SKI size */
+    err = gnutls_x509_crt_get_subject_key_id(issuer, NULL, &skiSize, &critical);
+    if(err == GNUTLS_E_REQUESTED_DATA_NOT_AVAILABLE) {
+        /* no SKI in the issuer certificate: the check cannot be applied, assume a match */
+        res = 1;
+        goto done;
+    } else if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (skiSize == 0)) {
+        xmlSecGnuTLSError("gnutls_x509_crt_get_subject_key_id", err, NULL);
+        goto done;
+    }
+
+    if(akiSize != skiSize) {
+        /* doesn't match */
+        res = 0;
+        goto done;
+    }
+
+    /* allocate buffers */
+    aki = (xmlSecByte *)xmlMalloc(akiSize);
+    if(aki == NULL) {
+        xmlSecMallocError(akiSize, NULL);
+        goto done;
+    }
+    ski = (xmlSecByte *)xmlMalloc(skiSize);
+    if(ski == NULL) {
+        xmlSecMallocError(skiSize, NULL);
+        goto done;
+    }
+
+    /* read the identifiers */
+    err = gnutls_x509_crt_get_authority_key_id(cert, aki, &akiSize, &critical);
+    if(err != GNUTLS_E_SUCCESS) {
+        xmlSecGnuTLSError("gnutls_x509_crt_get_authority_key_id", err, NULL);
+        goto done;
+    }
+    err = gnutls_x509_crt_get_subject_key_id(issuer, ski, &skiSize, &critical);
+    if(err != GNUTLS_E_SUCCESS) {
+        xmlSecGnuTLSError("gnutls_x509_crt_get_subject_key_id", err, NULL);
+        goto done;
+    }
+
+    /* compare */
+    res = (memcmp(aki, ski, akiSize) == 0) ? 1 : 0;
+
+done:
+    if(aki != NULL) {
+        xmlFree(aki);
+    }
+    if(ski != NULL) {
+        xmlFree(ski);
+    }
+    return(res);
+}
+
+/* signer cert has subject dn equal to our issuer dn, and (when both are
+ * present) its SKI matches our AKI */
 static gnutls_x509_crt_t
 xmlSecGnuTLSX509FindSignerCert(xmlSecPtrListPtr certs, gnutls_x509_crt_t cert) {
     gnutls_x509_crt_t res = NULL;
@@ -1750,7 +1833,17 @@ xmlSecGnuTLSX509FindSignerCert(xmlSecPtrListPtr certs, gnutls_x509_crt_t cert) {
             xmlFree(subject);
             goto done;
         } else if(ret == 1) {
-            res = tmp;
+            /* the DNs match; also check the AKI/SKI pair to disambiguate
+             * candidates that share the same subject DN */
+            ret = xmlSecGnuTLSX509CertAkiMatchesSki(cert, tmp);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecGnuTLSX509CertAkiMatchesSki", NULL);
+                xmlFree(subject);
+                goto done;
+            }
+            if(ret == 1) {
+                res = tmp;
+            }
         }
         xmlFree(subject);
     }

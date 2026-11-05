@@ -938,7 +938,12 @@ xmlSecKeyDataValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node
         /* we are not enabled to write out key data with this id */
         return(0);
     }
-    if(xmlSecKeyReqMatchKey(&(keyInfoCtx->keyReq), key) != 1) {
+    ret = xmlSecKeyReqMatchKey(&(keyInfoCtx->keyReq), key);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyReqMatchKey", xmlSecKeyDataKlassGetName(id));
+        return(-1);
+    }
+    if(ret == 0) {
         /* we are not allowed to write out this key */
         return(0);
     }
@@ -1815,7 +1820,13 @@ xmlSecKeyDataDerivedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr 
      * BTW this should happen even if the key doesn't match the current request
      * (https://github.com/lsh123/xmlsec/issues/515)
      */
-    if(xmlSecKeyReqMatchKey(&(keyInfoCtx->keyReq), generatedKey) != 1) {
+    ret = xmlSecKeyReqMatchKey(&(keyInfoCtx->keyReq), generatedKey);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyReqMatchKey", xmlSecKeyDataKlassGetName(id));
+        xmlSecKeyDestroy(generatedKey);
+        return(-1);
+    }
+    if(ret == 0) {
         /* we are not allowed to use this key, ignore and continue */
         xmlSecKeyDestroy(generatedKey);
         return(0);
@@ -1970,7 +1981,13 @@ xmlSecKeyDataAgreementMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
         return(0);
     }
 
-    if(xmlSecKeyReqMatchKey(&(keyInfoCtx->keyReq), generatedKey) != 1) {
+    ret = xmlSecKeyReqMatchKey(&(keyInfoCtx->keyReq), generatedKey);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyReqMatchKey", xmlSecKeyDataKlassGetName(id));
+        xmlSecKeyDestroy(generatedKey);
+        return(-1);
+    }
+    if(ret == 0) {
         /* we are not allowed to use this key, ignore and continue */
         xmlSecKeyDestroy(generatedKey);
         return(0);

@@ -132,8 +132,7 @@ xmlSecOpenSSLSymKeyDataBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 static int
 xmlSecOpenSSLSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecBufferPtr buffer;
-    xmlSecSize size;
-    int ret;
+    xmlSecSize sizeBytes;
 
     xmlSecAssert2(xmlSecOpenSSLSymKeyDataCheckId(data), -1);
     xmlSecAssert2(sizeBits > 0, -1);
@@ -142,18 +141,10 @@ xmlSecOpenSSLSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
     xmlSecAssert2(buffer != NULL, -1);
 
-    size = XMLSEC_BITS_TO_BYTES(sizeBits);
-    xmlSecAssert2(size > 0, -1);
-
-    ret = xmlSecBufferSetSize(buffer, size);
-    if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, size);
-        return(-1);
-    }
-
-    xmlSecAssert2(xmlSecBufferGetData(buffer) != NULL, -1);
-
-    return(xmlSecOpenSSLGenerateRandomBytes(xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer)));
+    sizeBytes = XMLSEC_BITS_TO_BYTES(sizeBits);
+    xmlSecAssert2(sizeBytes > 0, -1);
+    xmlSecAssert2(sizeBytes <= XMLSEC_BINARY_KEY_BYTES_SIZE_MAX, -1);
+    return(xmlSecOpenSSLGenerateRandom(buffer, sizeBytes));
 }
 
 static xmlSecKeyDataType

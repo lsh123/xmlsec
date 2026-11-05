@@ -2407,6 +2407,12 @@ xmlSecMSCngCreateDerForBCryptPubkey(xmlSecKeyDataPtr data, LPVOID* ppDer, DWORD*
 
 #endif /* XMLSEC_NO_DSA */
 
+    /* Note: ML-DSA and ML-KEM public keys (on OSes with CNG post-quantum support)
+     * are exported through the generic CryptExportPublicKeyInfoFromBCryptKeyHandle
+     * path below. Correctness of the exported SPKI for PQ OIDs depends on the OS
+     * CAPI2 layer mapping them correctly (like the X25519 case above); if a given
+     * OS version is found to emit an incorrect SPKI, reject such keys explicitly
+     * here, like the XDH and DH cases. */
     status = CryptExportPublicKeyInfoFromBCryptKeyHandle(
         hPubkey,
         X509_ASN_ENCODING,

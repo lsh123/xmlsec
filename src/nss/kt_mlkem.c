@@ -283,10 +283,34 @@ xmlSecNssMLKEMSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
      * that case).
      */
     if((xmlSecKeyGetType(key) & xmlSecKeyDataTypePrivate) != 0) {
+        xmlSecSize expectedPrivKeySize;
+        unsigned int privKeyStrengthInBits;
+
         ctx->privKey = xmlSecNssPKIKeyDataGetPrivKey(xmlSecKeyGetValue(key));
         if(ctx->privKey == NULL) {
             xmlSecInternalError("xmlSecNssPKIKeyDataGetPrivKey",
                                 xmlSecTransformGetName(transform));
+            return(-1);
+        }
+
+        /* verify that the private key parameter set matches the transform variant;
+         * NSS does not expose the parameter set of a private key directly, so
+         * compare the key strength (the private key value size in bits, derived
+         * from the CKA_PARAMETER_SET attribute) with the expected size for this
+         * variant; a zero strength means the parameter set could not be
+         * determined, in which case the check is skipped and NSS will report a
+         * decapsulation error at the execution time if the key does not match */
+        if(ctx->params == params_ml_kem512) {
+            expectedPrivKeySize = MLKEM512_PRIVATE_KEY_BYTES;
+        } else if(ctx->params == params_ml_kem768) {
+            expectedPrivKeySize = KYBER768_PRIVATE_KEY_BYTES;
+        } else { /* ctx->params == params_ml_kem1024 */
+            expectedPrivKeySize = MLKEM1024_PRIVATE_KEY_BYTES;
+        }
+        privKeyStrengthInBits = SECKEY_PrivateKeyStrengthInBits(ctx->privKey);
+        if((privKeyStrengthInBits != 0) && ((xmlSecSize)privKeyStrengthInBits != (8 * expectedPrivKeySize))) {
+            xmlSecInvalidTypeError("ML-KEM private key parameter set mismatch",
+                                   xmlSecTransformGetName(transform));
             return(-1);
         }
     }

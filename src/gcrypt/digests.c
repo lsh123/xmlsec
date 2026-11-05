@@ -271,6 +271,8 @@ xmlSecGCryptDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 
     in = &(transform->inBuf);
     out = &(transform->outBuf);
+    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
         transform->status = xmlSecTransformStatusWorking;

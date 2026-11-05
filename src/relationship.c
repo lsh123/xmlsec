@@ -925,9 +925,13 @@ xmlSecTransformRelationshipExecute(xmlSecTransformPtr transform, xmlOutputBuffer
      */
     if((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_RELATIONSHIP_LEGACY) == 0) {
         xmlNodePtr top;
+
         for(top = doc->children; top != NULL; top = top->next) {
-            if((top->type == XML_ELEMENT_NODE) &&
-               !xmlSecTransformRelationshipIsOutputElement(top)) {
+            if(top->type != XML_ELEMENT_NODE) {
+                continue;
+            }
+            ret = xmlSecTransformRelationshipIsOutputElement(top);
+            if(ret != 1) {
                 xmlSecInvalidNodeContentError(top, xmlSecTransformGetName(transform),
                     "top-level node is not in the Relationships namespace");
                 return(-1);

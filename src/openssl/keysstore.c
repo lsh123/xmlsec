@@ -96,10 +96,13 @@ xmlSecOpenSSLKeysStoreFinalize(xmlSecKeyStorePtr store) {
     xmlSecAssert(xmlSecKeyStoreCheckId(store, xmlSecOpenSSLKeysStoreId));
 
     simplekeystore = xmlSecOpenSSLKeysStoreGetCtx(store);
-    xmlSecAssert((simplekeystore != NULL) && (*simplekeystore != NULL));
-
-    xmlSecKeyStoreDestroy(*simplekeystore);
-    *simplekeystore = NULL;
+    /* (*simplekeystore) may be NULL if Initialize failed (e.g. OOM in
+     * xmlSecKeyStoreCreate); xmlSecKeyStoreCreate still calls finalize
+     * in that case, so guard against it. */
+    if((simplekeystore != NULL) && (*simplekeystore != NULL)) {
+        xmlSecKeyStoreDestroy(*simplekeystore);
+        *simplekeystore = NULL;
+    }
 }
 
 static xmlSecKeyPtr
@@ -192,6 +195,11 @@ xmlSecOpenSSLKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
 int
 xmlSecOpenSSLKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
                             xmlSecKeysMngrPtr keysMngr XMLSEC_ATTRIBUTE_UNUSED) {
+    /* xmlSecSimpleKeysStoreLoad_ex defers the store id check to the adopt
+     * callback, so a file with no keys would succeed even for a store of
+     * the wrong klass; validate the id up front like the other entry points */
+    xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecOpenSSLKeysStoreId), -1);
+
     return(xmlSecSimpleKeysStoreLoad_ex(store, uri, keysMngr,
         xmlSecOpenSSLKeysStoreAdoptKey));
 }

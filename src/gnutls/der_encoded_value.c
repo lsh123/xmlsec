@@ -127,7 +127,17 @@ xmlSecGnuTLSDerSingleTlvCheck(const xmlSecByte* data, xmlSecSize dataSize) {
     if(dataSize < 2) {
         return(0);
     }
-    pos = 1; /* skip the tag */
+    pos = 1; /* skip the first tag byte */
+    /* a multi-byte tag number uses continuation bytes with the high bit set */
+    if((data[0] & 0x1F) == 0x1F) {
+        while((pos < dataSize) && (data[pos] & 0x80)) {
+            pos++;
+        }
+        if(pos >= dataSize) {
+            /* no length field follows the tag continuation */
+            return(0);
+        }
+    }
 
     /* length */
     if(data[pos] < 0x80) {

@@ -526,10 +526,59 @@ xmlSecGCryptPkSignatureFinalize(xmlSecTransformPtr transform) {
     memset(ctx, 0, sizeof(xmlSecGCryptPkSignatureCtx));
 }
 
+#ifndef XMLSEC_NO_DSA
+/**
+ * @brief Verifies that the size of the q parameter of a DSA key is supported by this backend.
+ * @details This backend encodes the DSA signature components (r and s) as fixed
+ * 20-byte (160-bit) values, so DSA keys with a q larger than 160 bits (e.g.
+ * 2048-bit keys with a 256-bit q) are not supported and must be rejected.
+ * @param key_data the DSA key data.
+ * @return 0 if the q parameter size is supported or a negative value otherwise.
+ */
+static int
+xmlSecGCryptPkSignatureCheckDsaKeyQSize(xmlSecKeyDataPtr key_data) {
+    gcry_sexp_t s_key;
+    gcry_sexp_t s_q = NULL;
+    gcry_mpi_t m_q = NULL;
+    unsigned int qBits;
+
+    xmlSecAssert2(key_data != NULL, -1);
+
+    s_key = xmlSecGCryptKeyDataDsaGetPublicKey(key_data);
+    if(s_key == NULL) {
+        s_key = xmlSecGCryptKeyDataDsaGetPrivateKey(key_data);
+    }
+    xmlSecAssert2(s_key != NULL, -1);
+
+    s_q = gcry_sexp_find_token(s_key, "q", 0);
+    if(s_q == NULL) {
+        xmlSecGCryptError("gcry_sexp_find_token(q)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
+        return(-1);
+    }
+    m_q = gcry_sexp_nth_mpi(s_q, 1, GCRYMPI_FMT_USG);
+    gcry_sexp_release(s_q);
+    if(m_q == NULL) {
+        xmlSecGCryptError("gcry_sexp_nth_mpi", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
+        return(-1);
+    }
+
+    qBits = gcry_mpi_get_nbits(m_q);
+    gcry_mpi_release(m_q);
+
+    if(qBits > 160) {
+        xmlSecInvalidDataError("DSA keys with a q parameter larger than 160 bits are not supported by this backend", NULL);
+        return(-1);
+    }
+
+    return(0);
+}
+#endif /* XMLSEC_NO_DSA */
+
 static int
 xmlSecGCryptPkSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecGCryptPkSignatureCtxPtr ctx;
     xmlSecKeyDataPtr key_data;
+    int ret;
 
     xmlSecAssert2(xmlSecGCryptPkSignatureCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationSign) || (transform->operation == xmlSecTransformOperationVerify), -1);
@@ -543,6 +592,17 @@ xmlSecGCryptPkSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     key_data = xmlSecKeyGetValue(key);
     xmlSecAssert2(key_data != NULL, -1);
+
+#ifndef XMLSEC_NO_DSA
+    /* reject DSA keys with a q larger than 160 bits: this backend encodes the
+     * signature components (r and s) as fixed 20-byte values */
+    if(ctx->keyId == xmlSecGCryptKeyDataDsaId) {
+        ret = xmlSecGCryptPkSignatureCheckDsaKeyQSize(key_data);
+        if(ret < 0) {
+            return(-1);
+        }
+    }
+#endif /* XMLSEC_NO_DSA */
 
     if(ctx->key_data != NULL) {
         xmlSecKeyDataDestroy(ctx->key_data);

@@ -755,7 +755,7 @@ xmlSecOpenSSLKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
             xmlSecInternalError2("xmlSecOpenSSLKeyDataX509GetCert",
                                  xmlSecKeyDataGetName(data),
                                  "pos=" XMLSEC_SIZE_FMT, pos);
-            return;
+            break;
         }
         fprintf(output, "<Certificate>\n");
         xmlSecOpenSSLX509CertDebugXmlDump(cert, output);
@@ -1388,17 +1388,33 @@ my_timegm(struct tm *t) {
 static time_t
 my_timegm(struct tm *t) {
     long seconds = 0;
+    time_t utcTime;
+
     if(_get_timezone(&seconds) != 0) {
         return(-1);
     }
-    return (mktime(t) - seconds);
+    utcTime = mktime(t);
+    if(utcTime == (time_t)-1) {
+        return((time_t)-1);
+    }
+    return (utcTime - seconds);
 }
 #define timegm(tm) my_timegm(tm)
 
 #else  /* defined(_MSC_VER) */
 
 /* Windows build with MinGW, Cygwin, etc */
-#define timegm(tm)      (mktime(tm) - _timezone)
+static time_t
+my_timegm(struct tm *t) {
+    time_t utcTime;
+
+    utcTime = mktime(t);
+    if(utcTime == (time_t)-1) {
+        return((time_t)-1);
+    }
+    return (utcTime - _timezone);
+}
+#define timegm(tm) my_timegm(tm)
 
 #endif /* HAVE_TIMEGM */
 
@@ -1957,6 +1973,7 @@ done:
 
 static void
 xmlSecOpenSSLX509CertDebugDump(X509* cert, FILE* output) {
+    const ASN1_INTEGER* serial;
     char buf[1024];
     BIGNUM *bn = NULL;
     int ret;
@@ -1977,9 +1994,13 @@ xmlSecOpenSSLX509CertDebugDump(X509* cert, FILE* output) {
         fprintf(output, "==== Issuer Name: unknown\n");
     }
     fprintf(output, "==== Issuer Serial: ");
-    bn = ASN1_INTEGER_to_BN(X509_get_serialNumber(cert), NULL);
+    serial = X509_get_serialNumber(cert);
+    if(serial != NULL) {
+        bn = ASN1_INTEGER_to_BN(serial, NULL);
+    }
     if(bn != NULL) {
-        BN_print_fp(output, bn);
+        /* debug output only: the result of BN_print_fp() is not checked */
+        (void) BN_print_fp(output, bn);
         BN_clear_free(bn);
         fprintf(output, "\n");
     } else {
@@ -1990,6 +2011,7 @@ xmlSecOpenSSLX509CertDebugDump(X509* cert, FILE* output) {
 
 static void
 xmlSecOpenSSLX509CertDebugXmlDump(X509* cert, FILE* output) {
+    const ASN1_INTEGER* serial;
     char buf[1024];
     BIGNUM *bn = NULL;
     int ret;
@@ -2013,9 +2035,13 @@ xmlSecOpenSSLX509CertDebugXmlDump(X509* cert, FILE* output) {
     fprintf(output, "</IssuerName>\n");
 
     fprintf(output, "<SerialNumber>");
-    bn = ASN1_INTEGER_to_BN(X509_get_serialNumber(cert), NULL);
+    serial = X509_get_serialNumber(cert);
+    if(serial != NULL) {
+        bn = ASN1_INTEGER_to_BN(serial, NULL);
+    }
     if(bn != NULL) {
-        BN_print_fp(output, bn);
+        /* debug output only: the result of BN_print_fp() is not checked */
+        (void) BN_print_fp(output, bn);
         BN_clear_free(bn);
     }
     fprintf(output, "</SerialNumber>\n");

@@ -449,9 +449,9 @@ xmlSecMSCngX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, PCCRL_CONTEXT crl) {
     return(0);
 }
 
-/* Returns 1 if the CRL signature verifies against a trusted issuer
- * certificate, 0 if it does not, or a negative value if an error occurs.
- * Issuers found outside the trusted store must still chain to trust, but that
+/* Returns 1 if the CRL signature verifies against an issuer certificate that
+ * chains to a trusted root (time validity is checked when @p time is not
+ * NULL), 0 if it does not, or a negative value if an error occurs. The issuer
  * chain validation skips revocation to avoid recursively consulting the CRL
  * being verified. */
 static int
@@ -487,8 +487,26 @@ xmlSecMSCngX509StoreVerifyCrlSignature(
             CRYPT_VERIFY_CERT_SIGN_ISSUER_CERT, (void*)issuerCert,
             0, NULL);
         if (verified == TRUE) {
-            CertFreeCertificateContext(issuerCert);
-            return(1);
+            int ret;
+
+            /* verify that the issuer cert itself is valid (time) and chains
+             * to a trusted root, matching the untrusted-store path below and
+             * xmlSecMSCngX509StoreVerifyCrl(); do not check for revocation
+             * while verifying the CRL to avoid circular dependency */
+            ret = xmlSecMSCngX509StoreVerifyCertificateChain(
+                issuerCert, time, trustedStore, untrustedStore, certStore,
+                NULL, 0);
+            if (ret < 0) {
+                xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateChain", NULL);
+                CertFreeCertificateContext(issuerCert);
+                return(-1);
+            }
+            if (ret == 1) {
+                CertFreeCertificateContext(issuerCert);
+                return(1);
+            }
+            /* issuer cert failed chain verification; the next
+             * CertFindCertificateInStore call below frees issuerCert */
         }
         /* try next matching cert; CertFindCertificateInStore frees issuerCert
          * (see https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certfindcertificateinstore) */

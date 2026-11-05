@@ -236,6 +236,7 @@ static int
 xmlSecOpenSSLMLKEMSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecOpenSSLMLKEMCtxPtr ctx;
     EVP_PKEY* pKey;
+    int expectedKL;
 
     xmlSecAssert2(xmlSecOpenSSLMLKEMCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) ||
@@ -253,6 +254,20 @@ xmlSecOpenSSLMLKEMSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     if(pKey == NULL) {
         xmlSecInternalError("xmlSecOpenSSLKeyDataMLKEMGetEvp",
                             xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
+    /* verify that the key parameter set matches the transform variant */
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformMLKEM512Id)) {
+        expectedKL = 512;
+    } else if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformMLKEM768Id)) {
+        expectedKL = 768;
+    } else {
+        expectedKL = 1024;
+    }
+    if(xmlSecOpenSSLKeyDataMLKEMGetKL(xmlSecKeyGetValue(key)) != expectedKL) {
+        xmlSecInvalidTypeError("ML-KEM key parameter set mismatch",
+                               xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -420,6 +435,7 @@ xmlSecOpenSSLMLKEMDecapsulate(xmlSecOpenSSLMLKEMCtxPtr ctx, xmlSecBufferPtr ciph
     xmlSecAssert2(ctx->ciphertextSize > 0, -1);
     xmlSecAssert2(cipherTextIn != NULL, -1);
     xmlSecAssert2(sharedSecretOut != NULL, -1);
+    xmlSecAssert2(xmlSecBufferIsSecure(sharedSecretOut), -1);
 
     inSize = xmlSecBufferGetSize(cipherTextIn);
     if(inSize != ctx->ciphertextSize) {

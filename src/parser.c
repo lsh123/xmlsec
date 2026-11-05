@@ -525,7 +525,12 @@ xmlSecParseMemory(const xmlSecByte *buffer, xmlSecSize size, int recovery) {
 #if (LIBXML_VERSION < 21300)
         ctxt->recovery = 1;
 #else  /* (LIBXML_VERSION < 21300) */
-        xmlCtxtSetOptions(ctxt, xmlSecParserGetDefaultOptions() | XML_PARSE_RECOVER);
+        ret = xmlCtxtSetOptions(ctxt, xmlSecParserGetDefaultOptions() | XML_PARSE_RECOVER);
+        if(ret != 0) {
+            /* libxml2 ignores the unknown options and returns their mask */
+            xmlSecXmlError2("xmlCtxtSetOptions", NULL,
+                "unknown options mask=0x%lx", (unsigned long)ret);
+        }
 #endif /* (LIBXML_VERSION < 21300) */
     }
 
@@ -572,15 +577,24 @@ xmlSecParseMemory(const xmlSecByte *buffer, xmlSecSize size, int recovery) {
  */
 void
 xmlSecParsePrepareCtxt(xmlParserCtxtPtr ctxt) {
+#if (LIBXML_VERSION < 21300)
     xmlSecAssert(ctxt != NULL);
 
-#if (LIBXML_VERSION < 21300)
     /* required for c14n! */
     ctxt->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
     ctxt->replaceEntities = 1;
     xmlCtxtUseOptions(ctxt, xmlSecParserGetDefaultOptions());
 #else  /* (LIBXML_VERSION < 21300) */
-    xmlCtxtSetOptions(ctxt, xmlSecParserGetDefaultOptions());
+    int ret;
+
+    xmlSecAssert(ctxt != NULL);
+
+    ret = xmlCtxtSetOptions(ctxt, xmlSecParserGetDefaultOptions());
+    if(ret != 0) {
+        /* libxml2 ignores the unknown options and returns their mask */
+        xmlSecXmlError2("xmlCtxtSetOptions", NULL,
+            "unknown options mask=0x%lx", (unsigned long)ret);
+    }
 #endif /* (LIBXML_VERSION < 21300) */
 
 }

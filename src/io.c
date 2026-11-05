@@ -197,7 +197,9 @@ xmlSecIOShutdown(void) {
     xmlNanoFTPCleanup();
 #endif /* XMLSEC_NO_FTP */
 
-    xmlSecPtrListFinalize(&xmlSecAllIOCallbacks);
+    if(xmlSecPtrListIsValid(&xmlSecAllIOCallbacks)) {
+        xmlSecPtrListFinalize(&xmlSecAllIOCallbacks);
+    }
 }
 
 /**
@@ -207,7 +209,9 @@ xmlSecIOShutdown(void) {
  */
 void
 xmlSecIOCleanupCallbacks(void) {
-    xmlSecPtrListEmpty(&xmlSecAllIOCallbacks);
+    if(xmlSecPtrListIsValid(&xmlSecAllIOCallbacks)) {
+        xmlSecPtrListEmpty(&xmlSecAllIOCallbacks);
+    }
 }
 
 /**
@@ -258,6 +262,7 @@ xmlSecIOFileExtractFilename(char const* filename, char** out) {
     char* unescaped = NULL;
 
     xmlSecAssert2(filename != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);
 
     /* just in case */
     (*out) = NULL;

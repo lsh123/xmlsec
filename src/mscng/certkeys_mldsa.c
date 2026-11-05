@@ -122,6 +122,9 @@ xmlSecMSCngKeyDataCertGetMlDsaPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HAND
     status = BCryptOpenAlgorithmProvider(&hAlg, BCRYPT_MLDSA_ALGORITHM, NULL, 0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptOpenAlgorithmProvider(ML-DSA pub)", NULL, status);
+        /* the out-handle is not guaranteed to be zeroed on failure; reset it so
+         * cleanup does not attempt to close an indeterminate handle */
+        hAlg = NULL;
         goto done;
     }
 

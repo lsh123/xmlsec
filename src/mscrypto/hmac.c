@@ -210,6 +210,13 @@ xmlSecMSCryptoHmacInitialize(xmlSecTransformPtr transform) {
         xmlSecMSCryptoError("xmlSecMSCryptoCreatePrivateExponentOneKey",
                             xmlSecTransformGetName(transform));
 
+        /* release the provider acquired above so it is not held until the
+         * caller's finalize */
+        if (!CryptReleaseContext(ctx->provider, 0)) {
+            xmlSecMSCryptoError("CryptReleaseContext", NULL);
+            /* teardown: best-effort */
+        }
+        ctx->provider = 0;
         return(-1);
     }
 
@@ -339,7 +346,10 @@ xmlSecMSCryptoHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
      *
      * HACK!!! HACK!!! HACK!!!
      *
-      * Using CALG_RC2 instead of CALG_HMAC for the key algorithm so that we don't have to check the key length
+     * Using CALG_RC2 instead of CALG_HMAC for the key algorithm so that we don't have to check the key length.
+     * The key is passed to CAPI as-is (bCheckKeyLength=FALSE), even if it is
+     * longer than the hash's block size: RFC 2104 permits arbitrary key sizes,
+     * but how CAPI handles such over-long keys is unverified.
      */
     if (!xmlSecMSCryptoImportPlainSessionBlob(ctx->provider,
         ctx->pubPrivKey,
@@ -364,7 +374,10 @@ xmlSecMSCryptoHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     if((ret == 0) || (ctx->mscHash == 0)) {
         xmlSecMSCryptoError("CryptCreateHash",
                             xmlSecTransformGetName(transform));
-        return(-1);
+        /* the out-handle is not guaranteed to be zeroed on failure; reset it so
+         * the cleanup below does not attempt to destroy an indeterminate handle */
+        ctx->mscHash = 0;
+        goto done;
     }
 
     /* set parameters */
@@ -374,12 +387,31 @@ xmlSecMSCryptoHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     if(ret == 0) {
         xmlSecMSCryptoError("CryptSetHashParam",
                             xmlSecTransformGetName(transform));
-        return(-1);
+        goto done;
     }
 
     /* done */
     ctx->ctxInitialized = 1;
     return(0);
+
+done:
+    /* destroy the handles acquired above so they are not held until the
+     * caller's finalize */
+    if(ctx->mscHash != 0) {
+        if (!CryptDestroyHash(ctx->mscHash)) {
+            xmlSecMSCryptoError("CryptDestroyHash", NULL);
+            /* teardown: best-effort */
+        }
+        ctx->mscHash = 0;
+    }
+    if(ctx->cryptKey != 0) {
+        if (!CryptDestroyKey(ctx->cryptKey)) {
+            xmlSecMSCryptoError("CryptDestroyKey", NULL);
+            /* teardown: best-effort */
+        }
+        ctx->cryptKey = 0;
+    }
+    return(-1);
 }
 
 static int
@@ -394,6 +426,7 @@ xmlSecMSCryptoHmacVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(transform->operation == xmlSecTransformOperationVerify, -1);
     xmlSecAssert2(transform->status == xmlSecTransformStatusFinished, -1);
     xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(dataSize > 0, -1);
     XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecMSCryptoHmacGetCtx(transform);

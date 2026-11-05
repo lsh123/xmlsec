@@ -29,12 +29,21 @@
 #define XMLSEC_UNREFERENCED(param)   ((void)(param))
 #endif /* XMLSEC_UNREFERENCED */
 
+/* track the initialization state so that xmlSecAppCryptoShutdown() only
+ * shuts down the layers that were actually initialized; the backend
+ * shutdowns (e.g. NSS PK11_LogoutAll()/NSS_Shutdown()) should only be
+ * called after a successful matching init */
+static int g_cryptoAppInitialized = 0;
+static int g_cryptoInitialized = 0;
+
 int
 xmlSecAppCryptoInit(const char* config) {
     if(xmlSecCryptoAppInit(config) < 0) {
         fprintf(stderr, "Error: xmlSecCryptoAppInit failed\n");
         return(-1);
     }
+    g_cryptoAppInitialized = 1;
+
     if(xmlSecCryptoInit() < 0) {
         fprintf(stderr, "Error: xmlSecCryptoInit failed\n");
         /* Do not call xmlSecCryptoAppShutdown() here: on failure the caller
@@ -45,6 +54,7 @@ xmlSecAppCryptoInit(const char* config) {
          * shutdown (e.g. NSS PK11_LogoutAll()/NSS_Shutdown()) twice. */
         return(-1);
     }
+    g_cryptoInitialized = 1;
 
     return(0);
 }
@@ -53,14 +63,20 @@ int
 xmlSecAppCryptoShutdown(void) {
     int ret = 0;
 
-    if(xmlSecCryptoShutdown() < 0) {
-        fprintf(stderr, "Error: xmlSecCryptoShutdown failed\n");
-        ret = -1;
+    if(g_cryptoInitialized != 0) {
+        if(xmlSecCryptoShutdown() < 0) {
+            fprintf(stderr, "Error: xmlSecCryptoShutdown failed\n");
+            ret = -1;
+        }
+        g_cryptoInitialized = 0;
     }
 
-    if(xmlSecCryptoAppShutdown() < 0) {
-        fprintf(stderr, "Error: xmlSecCryptoAppShutdown failed\n");
-        ret = -1;
+    if(g_cryptoAppInitialized != 0) {
+        if(xmlSecCryptoAppShutdown() < 0) {
+            fprintf(stderr, "Error: xmlSecCryptoAppShutdown failed\n");
+            ret = -1;
+        }
+        g_cryptoAppInitialized = 0;
     }
     return(ret);
 }

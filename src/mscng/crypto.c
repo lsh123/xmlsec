@@ -73,7 +73,14 @@ xmlSecMSCngIsAlgorithmSupported(LPCWSTR pszAlgId, DWORD dwMinLength, LPCWSTR cur
 
     /* check curve name if needed */
     if(curveName != NULL) {
-        DWORD cbCurveName = (DWORD)((wcslen(curveName) + 1) * sizeof(WCHAR));
+        size_t curveNameSize = (wcslen(curveName) + 1) * sizeof(WCHAR);
+        DWORD cbCurveName;
+
+        if(curveNameSize > (size_t)ULONG_MAX) {
+            xmlSecMSCngCloseProbeAlgorithmProvider(hAlg);
+            return(0);
+        }
+        cbCurveName = (DWORD)curveNameSize;
         status = BCryptSetProperty(hAlg, BCRYPT_ECC_CURVE_NAME, (PUCHAR)curveName, cbCurveName, 0);
         if(status != STATUS_SUCCESS) {
             xmlSecMSCngCloseProbeAlgorithmProvider(hAlg);

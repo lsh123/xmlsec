@@ -1388,6 +1388,15 @@ xmlSecNssKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
     xmlSecAssert2(ecValue != NULL, NULL);
     xmlSecAssert2(ecValue->curve != NULL, NULL);
 
+    /* check that the public key point is well-formed (odd size > 1 and the
+     * leading uncompressed point magic byte 0x04); the on-curve validation
+     * is performed by NSS at the key use time */
+    ret = xmlSecKeyDataEcPublicKeySplitComponents(ecValue);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyDataEcPublicKeySplitComponents", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
     /* prepare and create public key */
     arena = PORT_NewArena(DER_DEFAULT_CHUNKSIZE);
     if(arena == NULL) {

@@ -194,15 +194,15 @@ xmlSecGnuTLSKWRfc3394Initialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-    /* get and check block / iv sizes */
+    /* get and check block / iv sizes: KW-RFC3394 requires a 16-byte block */
     ctx->blockSize = gnutls_cipher_get_block_size(ctx->algorithm);
-    if((ctx->blockSize == 0) || (ctx->blockSize > XMLSEC_KW_RFC3394_BLOCK_SIZE)) {
+    if(ctx->blockSize != XMLSEC_KW_RFC3394_BLOCK_SIZE) {
         xmlSecInternalError2("gnutls_cipher_get_block_size", xmlSecTransformGetName(transform), "blockSize=" XMLSEC_SIZE_FMT, ctx->blockSize);
         xmlSecGnuTLSKWRfc3394Finalize(transform);
         return(-1);
     }
     ctx->ivSize = gnutls_cipher_get_iv_size(ctx->algorithm);
-    if((ctx->ivSize == 0) || (ctx->ivSize > XMLSEC_KW_RFC3394_BLOCK_SIZE)) {
+    if(ctx->ivSize != XMLSEC_KW_RFC3394_BLOCK_SIZE) {
         xmlSecInternalError2("gnutls_cipher_get_iv_size", xmlSecTransformGetName(transform), "ivSize=" XMLSEC_SIZE_FMT, ctx->ivSize);
         xmlSecGnuTLSKWRfc3394Finalize(transform);
         return(-1);

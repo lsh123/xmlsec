@@ -347,6 +347,12 @@ xmlSecMSCryptoKWDes3Sha1(xmlSecTransformPtr transform,
         goto done;
     }
 
+    /* the output buffer must fit the 20-byte SHA-1 digest */
+    if(outSize < 20) {
+        xmlSecInvalidSizeLessThanError("outSize", outSize, (xmlSecSize)20, NULL);
+        goto done;
+    }
+
     /* get results */
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(outSize, dwOutSize, goto done, NULL);
     ret = CryptGetHashParam(mscHash, HP_HASHVAL, out, &dwOutSize, 0);
@@ -419,6 +425,8 @@ xmlSecMSCryptoKWDes3BlockEncrypt(xmlSecTransformPtr transform,
 
     ctx = xmlSecMSCryptoKWDes3GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->desCryptProvider != 0, -1);
+    xmlSecAssert2(ctx->pubPrivKey != 0, -1);
 
     keyBuf = xmlSecBufferGetData(&(ctx->parentCtx.keyBuffer));
     keyBufSize = xmlSecBufferGetSize(&(ctx->parentCtx.keyBuffer));
@@ -457,9 +465,10 @@ xmlSecMSCryptoKWDes3BlockEncrypt(xmlSecTransformPtr transform,
         goto done;
     }
 
-    /* set IV, the IV length must match the block length */
-    if(ivSize < blockSizeInBits / 8) {
-        xmlSecInvalidSizeLessThanError("ivSize", ivSize, blockSizeInBits / 8, NULL);
+    /* set IV, the IV length must match the block length exactly; an IV longer
+     * than one block would have only its first blockLen bytes used */
+    if(ivSize != blockSizeInBits / 8) {
+        xmlSecInvalidSizeError("ivSize", ivSize, blockSizeInBits / 8, NULL);
         goto done;
     }
 
@@ -522,6 +531,8 @@ xmlSecMSCryptoKWDes3BlockDecrypt(xmlSecTransformPtr transform,
 
     ctx = xmlSecMSCryptoKWDes3GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->desCryptProvider != 0, -1);
+    xmlSecAssert2(ctx->pubPrivKey != 0, -1);
 
     keyBuf = xmlSecBufferGetData(&(ctx->parentCtx.keyBuffer));
     keyBufSize = xmlSecBufferGetSize(&(ctx->parentCtx.keyBuffer));
@@ -560,9 +571,10 @@ xmlSecMSCryptoKWDes3BlockDecrypt(xmlSecTransformPtr transform,
         goto done;
     }
 
-    /* set IV, the IV length must match the block length */
-    if(ivSize < blockSizeInBits / 8) {
-        xmlSecInvalidSizeLessThanError("ivSize", ivSize, blockSizeInBits / 8, NULL);
+    /* set IV, the IV length must match the block length exactly; an IV longer
+     * than one block would have only its first blockLen bytes used */
+    if(ivSize != blockSizeInBits / 8) {
+        xmlSecInvalidSizeError("ivSize", ivSize, blockSizeInBits / 8, NULL);
         goto done;
     }
     if(!CryptSetKeyParam(cryptKey, KP_IV, iv, 0)) {

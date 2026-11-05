@@ -225,6 +225,7 @@ xmlSecMSCngMLKEMSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     BCRYPT_KEY_HANDLE hKey = 0;
     DWORD dwSize = 0;
     DWORD cbResult = 0;
+    DWORD expectedCtSize = 0;
     NTSTATUS status;
 
     xmlSecAssert2(xmlSecMSCngMLKEMCheckId(transform), -1);
@@ -264,6 +265,23 @@ xmlSecMSCngMLKEMSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         return(-1);
     }
     ctx->ciphertextSize = dwSize;
+
+    /* cross-check the reported ciphertext size against the variant selected
+     * by the transform id; a mismatch means the key was generated with a
+     * different ML-KEM parameter set than the transform expects */
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformMLKEM512Id)) {
+        expectedCtSize = XMLSEC_MSCNG_MLKEM_512_CT_SIZE;
+    } else if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformMLKEM768Id)) {
+        expectedCtSize = XMLSEC_MSCNG_MLKEM_768_CT_SIZE;
+    } else if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformMLKEM1024Id)) {
+        expectedCtSize = XMLSEC_MSCNG_MLKEM_1024_CT_SIZE;
+    }
+    if((expectedCtSize == 0) || (ctx->ciphertextSize != expectedCtSize)) {
+        xmlSecInvalidSizeError("ML-KEM key ciphertext size",
+            (xmlSecSize)dwSize, (xmlSecSize)expectedCtSize,
+            xmlSecTransformGetName(transform));
+        return(-1);
+    }
 
     status = BCryptGetProperty(hKey, BCRYPT_KEM_SHARED_SECRET_LENGTH, (PUCHAR)&dwSize, sizeof(dwSize), &cbResult, 0);
     if((status != STATUS_SUCCESS) || (cbResult != sizeof(dwSize)) || (dwSize == 0)) {

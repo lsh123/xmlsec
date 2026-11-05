@@ -158,7 +158,9 @@ xmlSecMSCryptoOpenDefaultCertStore(void) {
 
     hStoreHandle = CertOpenSystemStore(0, storeName);
     if (NULL == hStoreHandle) {
+        DWORD dwLastError = GetLastError();
         xmlChar* storeNameUtf8;
+        xmlChar errBuf[XMLSEC_MSCRYPTO_ERROR_BUFFER_SIZE];
 
         storeNameUtf8 = xmlSecWin32ConvertTstrToUtf8(storeName);
         if(storeNameUtf8 != NULL) {
@@ -168,7 +170,17 @@ xmlSecMSCryptoOpenDefaultCertStore(void) {
                                  storeNameUtf8);
             xmlFree(storeNameUtf8);
         } else {
-            xmlSecMSCryptoError("CertOpenSystemStore", NULL);
+            /* the conversion above may have overwritten GetLastError();
+             * report the stored CertOpenSystemStore error instead */
+            xmlSecMSCryptoGetErrorMessage(dwLastError, errBuf, sizeof(errBuf));
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "CertOpenSystemStore",
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        "MSCrypto error: %lu (0x%08lx): %s",
+                        (unsigned long)dwLastError,
+                        (unsigned long)dwLastError,
+                        errBuf);
         }
         return(NULL);
     }
@@ -196,6 +208,8 @@ xmlSecMSCryptoKeysStoreInitialize(xmlSecKeyStorePtr store) {
     ctx->hStoreHandle = xmlSecMSCryptoOpenDefaultCertStore();
     if(ctx->hStoreHandle == NULL) {
         xmlSecInternalError("xmlSecMSCryptoOpenDefaultCertStore", xmlSecKeyStoreGetName(store));
+        xmlSecKeyStoreDestroy(ctx->simpleKeyStore);
+        ctx->simpleKeyStore = NULL;
         return(-1);
     }
 

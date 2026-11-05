@@ -203,6 +203,13 @@ xmlSecNssKeyAgreementNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xml
 
     ret = xmlSecTransformKAMRead(&(ctx->params), node, transform, transformCtx);
     if(ret < 0) {
+        /*
+         * no cleanup needed here: xmlSecTransformNodeRead() destroys the
+         * transform when readNode fails, which triggers
+         * xmlSecNssKeyAgreementFinalize() and, in turn,
+         * xmlSecTransformKAMFinalize() to release the partially initialized
+         * KAM parameters
+         */
         xmlSecInternalError("xmlSecTransformKAMRead", xmlSecTransformGetName(transform));
         return(-1);
     }

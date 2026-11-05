@@ -257,10 +257,16 @@ static void xmlSecMSCryptoDigestFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     if(ctx->mscHash != 0) {
-        CryptDestroyHash(ctx->mscHash);
+        if (!CryptDestroyHash(ctx->mscHash)) {
+            xmlSecMSCryptoError("CryptDestroyHash", NULL);
+            /* teardown: best-effort, nothing else can be done in a void finalize */
+        }
     }
     if(ctx->provider != 0) {
-        CryptReleaseContext(ctx->provider, 0);
+        if (!CryptReleaseContext(ctx->provider, 0)) {
+            xmlSecMSCryptoError("CryptReleaseContext", NULL);
+            /* teardown: best-effort */
+        }
     }
 
     memset(ctx, 0, sizeof(xmlSecMSCryptoDigestCtx));

@@ -187,6 +187,7 @@ xmlSecGnuTLSX509FindKeyByValue(xmlSecPtrListPtr keysList, xmlSecKeyX509DataValue
 static int
 xmlSecGnuTLSX509CheckCrtTime(const gnutls_x509_crt_t cert, time_t ts) {
     time_t notValidBefore, notValidAfter;
+    xmlChar * subject = NULL;
 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(ts >= 0, -1);
@@ -207,13 +208,19 @@ xmlSecGnuTLSX509CheckCrtTime(const gnutls_x509_crt_t cert, time_t ts) {
 
     /* check */
     if(ts < notValidBefore) {
-        /* TODO: print cert subject */
-        xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_YET_VALID, NULL, NULL);
+        /* certificate is not yet valid; log the subject to identify it */
+        subject = xmlSecGnuTLSX509CertGetSubjectDN(cert);
+        xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_NOT_YET_VALID, NULL,
+            "subject=%s", xmlSecErrorsSafeString(subject));
+        xmlFree(subject);
         return(0);
     }
     if(ts > notValidAfter) {
-        /* TODO: print cert subject */
-        xmlSecOtherError(XMLSEC_ERRORS_R_CERT_HAS_EXPIRED, NULL, NULL);
+        /* certificate has expired; log the subject to identify it */
+        subject = xmlSecGnuTLSX509CertGetSubjectDN(cert);
+        xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_HAS_EXPIRED, NULL,
+            "subject=%s", xmlSecErrorsSafeString(subject));
+        xmlFree(subject);
         return(0);
     }
 
@@ -538,7 +545,9 @@ xmlSecGnuTLSX509StoreGetCertsChain(xmlSecGnuTLSX509StoreCtxPtr ctx, gnutls_x509_
     extra_certs_size = xmlSecPtrListGetSize(extra_certs);
     ctx_certs_size = xmlSecPtrListGetSize(&(ctx->certsUntrusted));
     if((extra_certs_size + ctx_certs_size + 1) > certs_chain_max_size) {
-        xmlSecInternalError("xmlSecGnuTLSX509StoreGetCertsChain", NULL);
+        xmlSecInternalError4("xmlSecGnuTLSX509StoreGetCertsChain", NULL,
+            "extraCertsSize=" XMLSEC_SIZE_FMT "; ctxCertsSize=" XMLSEC_SIZE_FMT "; maxChainSize=" XMLSEC_SIZE_FMT,
+            extra_certs_size, ctx_certs_size, certs_chain_max_size);
         return(-1);
     }
 

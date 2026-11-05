@@ -46,7 +46,7 @@
                     (const char*)(errorObject),               \
                     (errorFunction),                          \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,            \
-                    "NSS error: %ld",                         \
+                    "nss error: %ld",                         \
                     (long)(_nss_error_code)                   \
         );                                                    \
     } while(0)
@@ -66,7 +66,7 @@
                     (const char*)(errorObject),                   \
                     (errorFunction),                              \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,                \
-                    msg "; NSS error: %ld",                       \
+                    msg "; nss error: %ld",                       \
                     (param),                                      \
                     (long)(_nss_error_code)                       \
         );                                                        \
@@ -88,7 +88,7 @@
                     (const char*)(errorObject),                            \
                     (errorFunction),                                       \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,                         \
-                    msg "; NSS error: %ld",                                \
+                    msg "; nss error: %ld",                                \
                     (param1),                                              \
                     (param2),                                              \
                     (long)(_nss_error_code)                                \

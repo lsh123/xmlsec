@@ -145,8 +145,8 @@ xmlSecGnuTLSKWRfc3394CheckId(xmlSecTransformPtr transform) {
 static int
 xmlSecGnuTLSKWRfc3394Initialize(xmlSecTransformPtr transform) {
     xmlSecGnuTLSKWRfc3394CtxPtr ctx;
-    xmlSecKeyDataId keyId;
-    xmlSecSize keySize;
+    xmlSecKeyDataId keyId = NULL;
+    xmlSecSize keySize = 0;
     int ret;
 
     xmlSecAssert2(xmlSecGnuTLSKWRfc3394CheckId(transform), -1);
@@ -197,13 +197,13 @@ xmlSecGnuTLSKWRfc3394Initialize(xmlSecTransformPtr transform) {
     /* get and check block / iv sizes */
     ctx->blockSize = gnutls_cipher_get_block_size(ctx->algorithm);
     if((ctx->blockSize == 0) || (ctx->blockSize > XMLSEC_KW_RFC3394_BLOCK_SIZE)) {
-        xmlSecGnuTLSError2("gnutls_cipher_get_block_size", 0, NULL, "blockSize=" XMLSEC_SIZE_FMT, ctx->blockSize);
+        xmlSecInternalError2("gnutls_cipher_get_block_size", xmlSecTransformGetName(transform), "blockSize=" XMLSEC_SIZE_FMT, ctx->blockSize);
         xmlSecGnuTLSKWRfc3394Finalize(transform);
         return(-1);
     }
     ctx->ivSize = gnutls_cipher_get_iv_size(ctx->algorithm);
     if((ctx->ivSize == 0) || (ctx->ivSize > XMLSEC_KW_RFC3394_BLOCK_SIZE)) {
-        xmlSecGnuTLSError2("gnutls_cipher_get_iv_size", 0, NULL, "ivSize=" XMLSEC_SIZE_FMT, ctx->ivSize);
+        xmlSecInternalError2("gnutls_cipher_get_iv_size", xmlSecTransformGetName(transform), "ivSize=" XMLSEC_SIZE_FMT, ctx->ivSize);
         xmlSecGnuTLSKWRfc3394Finalize(transform);
         return(-1);
     }

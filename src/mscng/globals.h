@@ -58,13 +58,13 @@
  */
 #define xmlSecMSCngLastError(errorFunction, errorObject) \
     do {                                                 \
-        DWORD dwError = GetLastError();                  \
+        DWORD _mscng_dwLastError = GetLastError();       \
         xmlSecError(XMLSEC_ERRORS_HERE,                  \
                     (const char*)(errorObject),          \
                     (errorFunction),                     \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,       \
                     "MSCng last error: 0x%08lx",         \
-                    (dwError)                            \
+                    (_mscng_dwLastError)                 \
         );                                               \
     } while(0)
 

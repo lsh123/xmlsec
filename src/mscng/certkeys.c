@@ -1345,16 +1345,16 @@ xmlSecMSCngKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
 
     /* check BCRYPT_RSAKEY_BLOB */
     if (bufLen < sizeof(BCRYPT_RSAKEY_BLOB)) {
-        xmlSecMSCngNtError2("BCRYPT_RSAKEY_BLOB", xmlSecKeyDataKlassGetName(id),
-            STATUS_SUCCESS, "dwBlobLen=%lu", bufLen);
+        xmlSecInternalError2("BCRYPT_RSAKEY_BLOB", xmlSecKeyDataKlassGetName(id),
+            "dwBlobLen=%lu", bufLen);
         goto done;
     }
     rsakey = (BCRYPT_RSAKEY_BLOB*)bufData;
 
     /* check sizes */
     if (bufLen < (sizeof(BCRYPT_RSAKEY_BLOB) + rsakey->cbPublicExp + rsakey->cbModulus)) {
-        xmlSecMSCngNtError3("BCryptExportKey", xmlSecKeyDataKlassGetName(id),
-            STATUS_SUCCESS, "dwBlobLen: %lu; keyLen: %lu", bufLen, rsakey->cbModulus);
+        xmlSecInternalError3("BCryptExportKey", xmlSecKeyDataKlassGetName(id),
+            "dwBlobLen: %lu; keyLen: %lu", bufLen, rsakey->cbModulus);
         goto done;
 
     }
@@ -1752,16 +1752,16 @@ xmlSecMSCngKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyVa
 
     /* check BCRYPT_ECCKEY_BLOB */
     if (bufLen < sizeof(BCRYPT_ECCKEY_BLOB)) {
-        xmlSecMSCngNtError2("BCRYPT_ECCKEY_BLOB", xmlSecKeyDataKlassGetName(id),
-            STATUS_SUCCESS, "dwBlobLen=%lu", bufLen);
+        xmlSecInternalError2("BCRYPT_ECCKEY_BLOB", xmlSecKeyDataKlassGetName(id),
+            "dwBlobLen=%lu", bufLen);
         goto done;
     }
     eckey = (BCRYPT_ECCKEY_BLOB*)bufData;
     bufData += sizeof(BCRYPT_ECCKEY_BLOB);
     bufLen  -= (DWORD)sizeof(BCRYPT_ECCKEY_BLOB);
     if (bufLen != 2 * eckey->cbKey) {
-        xmlSecMSCngNtError3("BCRYPT_ECCKEY_BLOB", xmlSecKeyDataKlassGetName(id),
-            STATUS_SUCCESS, "bufLen=%lu, eckey->cbKey=%lu", bufLen, eckey->cbKey);
+        xmlSecInternalError3("BCRYPT_ECCKEY_BLOB", xmlSecKeyDataKlassGetName(id),
+            "bufLen=%lu, eckey->cbKey=%lu", bufLen, eckey->cbKey);
         goto done;
     }
     /* curve */

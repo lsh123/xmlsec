@@ -185,9 +185,16 @@ xmlSecGCryptAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATT
     }
 
     ret = xmlSecBufferReadFile(&buffer, filename);
-    if((ret < 0) || (xmlSecBufferGetData(&buffer) == NULL) || (xmlSecBufferGetSize(&buffer) <= 0)) {
+    if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferReadFile", NULL,
                              "filename=%s", xmlSecErrorsSafeString(filename));
+        xmlSecBufferFinalize(&buffer);
+        return(NULL);
+    }
+
+    if((xmlSecBufferGetData(&buffer) == NULL) || (xmlSecBufferGetSize(&buffer) <= 0)) {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
+                          "file %s is empty", xmlSecErrorsSafeString(filename));
         xmlSecBufferFinalize(&buffer);
         return(NULL);
     }
@@ -325,7 +332,7 @@ xmlSecGCryptAppKeyCertLoadMemory(xmlSecKeyPtr key,
 }
 
 /**
- * @brief GCrypt does not support X509 certificates.
+ * @brief GCrypt does not support PKCS12.
  * @details Reads a key and all associated certificates from the PKCS12 file.
  * For uniformity, call #xmlSecGCryptAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
@@ -343,12 +350,12 @@ xmlSecGCryptAppPkcs12Load(const char *filename,
                           void* pwdCallbackCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecAssert2(filename != NULL, NULL);
 
-    xmlSecNotImplementedError("GCrypt doesn't support X509 certificates");
+    xmlSecNotImplementedError("GCrypt doesn't support PKCS12");
     return(NULL);
 }
 
 /**
- * @brief GCrypt does not support X509 certificates.
+ * @brief GCrypt does not support PKCS12.
  * @details Reads a key and all associated certificates from the PKCS12 data in the memory buffer.
  * For uniformity, call #xmlSecGCryptAppKeyLoadMemory instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
@@ -368,7 +375,7 @@ xmlSecGCryptAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(dataSize > 0, NULL);
 
-    xmlSecNotImplementedError("GCrypt doesn't support X509 certificates");
+    xmlSecNotImplementedError("GCrypt doesn't support PKCS12");
     return(NULL);
 }
 

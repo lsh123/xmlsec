@@ -360,8 +360,6 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, HCERTSTORE hStoreHandle
      * a good idea :) WK
      */
 
-    /* OK, I give up, I'm gone :( */
-
     xmlFree(tstrName);
     return(pCertContext);
 }

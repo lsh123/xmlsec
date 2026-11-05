@@ -806,14 +806,14 @@ done:
 }
 
 
-#define XMLSEC_MSCNG_SHA1_DIGEST_SIZE 20
-#define XMLSEC_MSCNG_SHA256_DIGEST_SIZE 32
+#define XMLSEC_MSCRYPTO_SHA1_DIGEST_SIZE 20
+#define XMLSEC_MSCRYPTO_SHA256_DIGEST_SIZE 32
 
 static int
 xmlSecMSCryptoX509DigestWrite(PCCERT_CONTEXT cert, const xmlChar* algorithm, xmlSecBufferPtr buf) {
     DWORD certHashPropId;
     DWORD digestSize;
-    xmlSecByte md[XMLSEC_MSCNG_SHA256_DIGEST_SIZE];
+    xmlSecByte md[XMLSEC_MSCRYPTO_SHA256_DIGEST_SIZE];
     DWORD mdLen = sizeof(md);
     BOOL status;
     int ret;
@@ -824,10 +824,10 @@ xmlSecMSCryptoX509DigestWrite(PCCERT_CONTEXT cert, const xmlChar* algorithm, xml
     /* SHA1 and SHA256 algorithms are currently supported */
     if (xmlStrcmp(algorithm, xmlSecHrefSha1) == 0) {
         certHashPropId = CERT_SHA1_HASH_PROP_ID;
-        digestSize = XMLSEC_MSCNG_SHA1_DIGEST_SIZE;
+        digestSize = XMLSEC_MSCRYPTO_SHA1_DIGEST_SIZE;
     } else if (xmlStrcmp(algorithm, xmlSecHrefSha256) == 0) {
         certHashPropId = CERT_SHA256_HASH_PROP_ID;
-        digestSize = XMLSEC_MSCNG_SHA256_DIGEST_SIZE;
+        digestSize = XMLSEC_MSCRYPTO_SHA256_DIGEST_SIZE;
     } else {
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
             "href=%s", xmlSecErrorsSafeString(algorithm));

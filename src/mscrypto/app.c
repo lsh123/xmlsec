@@ -471,8 +471,10 @@ xmlSecMSCryptoAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xml
  *
  * @param filename the PKCS12 key filename.
  * @param pwd the PKCS12 file password.
- * @param pwdCallback the password callback.
- * @param pwdCallbackCtx the user context for password callback.
+ * @param pwdCallback the password callback. Not supported by the MSCrypto
+ * back-end and ignored; the password must be supplied via @p pwd.
+ * @param pwdCallbackCtx the user context for password callback. Not supported
+ * by the MSCrypto back-end and ignored.
  * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
@@ -485,7 +487,11 @@ xmlSecMSCryptoAppPkcs12Load(const char *filename,
     int ret;
 
     xmlSecAssert2(filename != NULL, NULL);
-    xmlSecAssert2(pwd != NULL, NULL);
+    if(pwd == NULL) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
+            "password is required; password callbacks are not supported by the MSCrypto back-end");
+        return(NULL);
+    }
 
     ret = xmlSecBufferInitialize(&buffer, 0);
     if(ret < 0) {
@@ -728,7 +734,7 @@ done:
 int
 xmlSecMSCryptoAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
                                 xmlSecKeyDataFormat format,
-                                xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
+                                xmlSecKeyDataType type) {
     xmlSecBuffer buffer;
     int ret;
 

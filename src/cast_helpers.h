@@ -452,7 +452,7 @@ typedef struct _ ## xmlSec ## name ## postfix {                                 
 } xmlSec ## name ## postfix;                                                       \
 static inline ctxType* xmlSec ## name ## GetCtx(baseType* obj) {                   \
     if(checkSizeFunc(obj, sizeof(xmlSec ## name ## postfix))) {                    \
-        return((ctxType *)(&( ((xmlSec ## name ## postfix *)obj)->ctx )));         \
+        return(&(((xmlSec ## name ## postfix *)obj)->ctx));                        \
     } else {                                                                       \
         return(NULL);                                                              \
     }                                                                              \

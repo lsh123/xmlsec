@@ -51,7 +51,7 @@ static const xmlSecErrorDescription xmlSecErrorsTable[] = {
   { XMLSEC_ERRORS_R_INVALID_OPERATION,          "invalid operation" },
   { XMLSEC_ERRORS_R_INVALID_STATUS,             "invalid status" },
   { XMLSEC_ERRORS_R_INVALID_FORMAT,             "invalid format" },
-  { XMLSEC_ERRORS_R_DATA_NOT_MATCH,             "data do not match" },
+  { XMLSEC_ERRORS_R_DATA_NOT_MATCH,             "data does not match" },
   { XMLSEC_ERRORS_R_INVALID_VERSION,            "invalid version" },
   { XMLSEC_ERRORS_R_INVALID_NODE,               "invalid node" },
   { XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,       "invalid node content" },

@@ -287,8 +287,8 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
     gXmlSecGCryptFunctions->cryptoAppKeysMngrCertLoad           = xmlSecGCryptAppKeysMngrCertLoad;
     gXmlSecGCryptFunctions->cryptoAppKeysMngrCertLoadMemory     = xmlSecGCryptAppKeysMngrCertLoadMemory;
     gXmlSecGCryptFunctions->cryptoAppKeysMngrCrlLoad            = xmlSecGCryptAppKeysMngrCrlLoad;
-    gXmlSecGCryptFunctions->cryptoAppKeysMngrCrlLoadMemory      = xmlSecGCryptAppKeysMngrCrlLoadMemory;
     gXmlSecGCryptFunctions->cryptoAppKeysMngrCrlLoadAndVerify   = xmlSecGCryptAppKeysMngrCrlLoadAndVerify;
+    gXmlSecGCryptFunctions->cryptoAppKeysMngrCrlLoadMemory      = xmlSecGCryptAppKeysMngrCrlLoadMemory;
     gXmlSecGCryptFunctions->cryptoAppPkcs12Load                 = xmlSecGCryptAppPkcs12Load;
     gXmlSecGCryptFunctions->cryptoAppPkcs12LoadMemory           = xmlSecGCryptAppPkcs12LoadMemory;
     gXmlSecGCryptFunctions->cryptoAppKeyCertLoad                = xmlSecGCryptAppKeyCertLoad;

@@ -982,7 +982,7 @@ xmlSecOpenSSLX509SKIWrite(X509* cert, xmlSecBufferPtr buf) {
 
     index = X509_get_ext_by_NID(cert, NID_subject_key_identifier, -1);
     if (index < 0) {
-        xmlSecOpenSSLError("X509_get_ext_by_NID(): Certificate without SubjectKeyIdentifier extension", NULL);
+        xmlSecInvalidDataError("certificate without SubjectKeyIdentifier extension", NULL);
         goto done;
     }
 

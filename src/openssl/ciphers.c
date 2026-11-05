@@ -137,7 +137,7 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         } else {
             if(!ctx->isIvPrepended) {
                 /* IV is not prepended to input, it should be in XML transform node */
-                xmlSecInvalidDataError("IV is expected to be in XML transform node", cipherName);
+                xmlSecInvalidDataError("nonce is expected to be in XML transform node", cipherName);
                 return(-1);
             }
 

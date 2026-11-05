@@ -2176,7 +2176,7 @@ xmlSecGnuTLSAsymKeyDataCreate(gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) 
         return(NULL);
     }
     if(algo == GNUTLS_PK_UNKNOWN) {
-        xmlSecGnuTLSError("cannot determine algorithm for public and private key", GNUTLS_E_SUCCESS, NULL);
+        xmlSecInternalError("cannot determine algorithm for public and private key", NULL);
         return(NULL);
     }
 
@@ -2221,7 +2221,7 @@ xmlSecGnuTLSAsymKeyDataCreate(gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) 
     case GNUTLS_PK_ECDSA:
         keyData = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataEcId);
         if(keyData == NULL) {
-            xmlSecInternalError("xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataEcId)", NULL);
+            xmlSecInternalError("xmlSecKeyDataCreate(EcId)", NULL);
             return(NULL);
         }
 

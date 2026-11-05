@@ -176,7 +176,7 @@ xmlSecNssPKIKeyDataAdoptKey(xmlSecKeyDataPtr data,
         pubType = SECKEY_GetPublicKeyType(pubkey2);
     }
     if ((priType != nullKey) && (pubType != priType)) {
-        xmlSecNssError3("SECKEY_GetPrivateKeyType/SECKEY_GetPublicKeyType", NULL, "pubType=%u; priType=%u", pubType, priType);
+        xmlSecInternalError3("private and public key types do not match", NULL, "pubType=%u; priType=%u", pubType, priType);
         if (pubkey2 != NULL) {
             SECKEY_DestroyPublicKey(pubkey2);
         }
@@ -227,7 +227,7 @@ xmlSecNssPKIAdoptKey(SECKEYPrivateKey *privkey,
 
     if(priType != nullKey && pubType != nullKey) {
         if(pubType != priType) {
-            xmlSecNssError3("SECKEY_GetPrivateKeyType/SECKEY_GetPublicKeyType", NULL,
+            xmlSecInternalError3("private and public key types do not match", NULL,
                 "pubType=%u; priType=%u", pubType, priType);
             return(NULL);
         }
@@ -1120,7 +1120,8 @@ xmlSecNssKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
 
     pubkey = (SECKEYPublicKey *)PORT_ArenaZAlloc(arena, sizeof(SECKEYPublicKey));
     if(pubkey == NULL) {
-        xmlSecNssError("PORT_ArenaZAlloc", xmlSecKeyDataKlassGetName(id));
+        xmlSecNssError2("PORT_ArenaZAlloc", xmlSecKeyDataKlassGetName(id),
+            "size=" XMLSEC_SIZE_T_FMT, sizeof(SECKEYPublicKey));
         goto done;
     }
     pubkey->arena = arena;

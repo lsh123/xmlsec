@@ -140,6 +140,7 @@ xmlSecGCryptSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSe
         xmlSecInvalidSizeMoreThanError("sizeBits", sizeBits, (XMLSEC_SIZE_MAX - 7), NULL);
         return(-1);
     }
+    XMLSEC_UNREFERENCED(type);
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
     xmlSecAssert2(buffer != NULL, -1);

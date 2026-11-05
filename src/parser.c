@@ -513,7 +513,7 @@ xmlSecParseMemory(const xmlSecByte *buffer, xmlSecSize size, int recovery) {
     xmlSecAssert2(buffer != NULL, NULL);
 
     XMLSEC_SAFE_CAST_SIZE_TO_INT(size, len, return(NULL), NULL);
-    ctxt = xmlCreateMemoryParserCtxt((char*)buffer, len);
+    ctxt = xmlCreateMemoryParserCtxt((const char*)buffer, len);
     if (ctxt == NULL) {
         xmlSecXmlError("xmlCreateMemoryParserCtxt", NULL);
         return(NULL);

@@ -204,6 +204,8 @@ xmlSecKeyInfoNodeWrite(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCt
             /* lax schema validation but application can disable it*/
             xmlSecUnexpectedNodeError(cur, NULL);
             return(-1);
+        } else {
+            /* ignore the error as instructed by user and continue with the next node */
         }
     }
 

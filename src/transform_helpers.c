@@ -1552,7 +1552,7 @@ xmlSecTransformHkdfParamsInitialize(xmlSecTransformHkdfParamsPtr params) {
 
     xmlSecAssert2(params != NULL, -1);
 
-    memset(params, 0, sizeof(xmlSecTransformHkdfParams));
+    memset(params, 0, sizeof(*params));
 
     ret = xmlSecBufferInitialize(&(params->salt), 0);
     if(ret < 0) {
@@ -1581,7 +1581,7 @@ xmlSecTransformHkdfParamsFinalize(xmlSecTransformHkdfParamsPtr params) {
     }
     xmlSecBufferFinalize(&(params->salt));
     xmlSecBufferFinalize(&(params->info));
-    memset(params, 0, sizeof(xmlSecTransformHkdfParams));
+    memset(params, 0, sizeof(*params));
 }
 
 int
@@ -1983,7 +1983,7 @@ xmlSecTransformRsaOaepParamsInitialize(xmlSecTransformRsaOaepParamsPtr oaepParam
 
     xmlSecAssert2(oaepParams != NULL, -1);
 
-    memset(oaepParams, 0, sizeof(xmlSecTransformRsaOaepParams));
+    memset(oaepParams, 0, sizeof(*oaepParams));
 
     ret = xmlSecBufferInitialize(&(oaepParams->oaepParams), 0);
     if(ret < 0) {
@@ -2005,7 +2005,7 @@ xmlSecTransformRsaOaepParamsFinalize(xmlSecTransformRsaOaepParamsPtr oaepParams)
     if(oaepParams->mgf1DigestAlgorithm != NULL) {
         xmlFree(oaepParams->mgf1DigestAlgorithm);
     }
-    memset(oaepParams, 0, sizeof(xmlSecTransformRsaOaepParams));
+    memset(oaepParams, 0, sizeof(*oaepParams));
 }
 
 /*

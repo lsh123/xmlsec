@@ -640,7 +640,7 @@ xmlSecMSCngKeyDataCertGetXdhPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE
 
     (*key) = NULL;
     if((spki->PublicKey.cbData == 0) || (spki->PublicKey.pbData == NULL)) {
-        xmlSecInternalError("X25519 SPKI: PublicKey empty", NULL);
+        xmlSecInvalidDataError("X25519 SPKI: PublicKey empty", NULL);
         return(-1);
     }
 
@@ -654,8 +654,8 @@ xmlSecMSCngKeyDataCertGetXdhPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE
         keyBytesLen--;
     }
     if(keyBytesLen != XMLSEC_MSCNG_XDH_CBKEY_SIZE) {
-        xmlSecInternalError2("X25519 SPKI: PublicKey wrong size", NULL,
-            "size=%u", (unsigned)keyBytesLen);
+        xmlSecInvalidSizeDataError("X25519 SPKI: PublicKey size", (xmlSecSize)keyBytesLen,
+            "32 bytes", NULL);
         return(-1);
     }
 

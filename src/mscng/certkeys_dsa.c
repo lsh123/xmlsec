@@ -758,7 +758,7 @@ xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDsaPtr 
     int ret;
     int res = -1;
 
-    xmlSecAssert2(pubkey != NULL, -1);
+    xmlSecAssert2(pubkey != 0, -1);
     xmlSecAssert2(dsaValue != NULL, -1);
 
     /* turn the pubkey into a DSA public key blob */

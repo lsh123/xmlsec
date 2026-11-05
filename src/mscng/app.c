@@ -87,7 +87,8 @@ xmlSecMSCngAppParseConfig(const char* config, LPTSTR* pCurrentUserStoreName, LPT
             *pCurrentUserStoreName = xmlSecWin32ConvertUtf8ToTstr((const xmlChar*)tmp);
             xmlFree(tmp);
             if(*pCurrentUserStoreName == NULL) {
-                xmlSecInternalError("xmlSecWin32ConvertUtf8ToTstr(currentUser)", NULL);
+                xmlSecInternalError2("xmlSecWin32ConvertUtf8ToTstr(currentUser)", NULL,
+                    "config=%s", xmlSecErrorsSafeString(config));
                 return(-1);
             }
         }
@@ -95,7 +96,8 @@ xmlSecMSCngAppParseConfig(const char* config, LPTSTR* pCurrentUserStoreName, LPT
         if(strlen(localMachinePart) > 0) {
             *pLocalMachineStoreName = xmlSecWin32ConvertUtf8ToTstr((const xmlChar*)localMachinePart);
             if(*pLocalMachineStoreName == NULL) {
-                xmlSecInternalError("xmlSecWin32ConvertUtf8ToTstr(localMachine)", NULL);
+                xmlSecInternalError2("xmlSecWin32ConvertUtf8ToTstr(localMachine)", NULL,
+                    "config=%s", xmlSecErrorsSafeString(config));
                 if(*pCurrentUserStoreName != NULL) {
                     xmlFree(*pCurrentUserStoreName);
                     *pCurrentUserStoreName = NULL;

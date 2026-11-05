@@ -216,25 +216,27 @@ xmlSecMSCryptoUnixTimeToFileTime(time_t t, LPFILETIME pft) {
     return(0);
 }
 
-/* Returns TRUE if the certificate is time valid (NotBefore <= time <= NotAfter),
- * FALSE otherwise. A NULL time skips the check (skip-time-checks flag). */
-static BOOL
+/* Returns 1 if the certificate is time valid (NotBefore <= time <= NotAfter),
+ * 0 if the certificate is not yet valid (NotBefore is in the future), and a
+ * negative value if the certificate is expired (NotAfter is in the past) or
+ * on an internal error. A NULL time skips the check (skip-time-checks flag). */
+static int
 xmlSecMSCryptoVerifyCertTime(PCCERT_CONTEXT pCert, LPFILETIME pfTime) {
-    xmlSecAssert2(pCert != NULL, FALSE);
-    xmlSecAssert2(pCert->pCertInfo != NULL, FALSE);
+    xmlSecAssert2(pCert != NULL, -1);
+    xmlSecAssert2(pCert->pCertInfo != NULL, -1);
 
     if (pfTime == NULL) {
-        return(TRUE);
+        return(1);
     }
 
     if(1 == CompareFileTime(&(pCert->pCertInfo->NotBefore), pfTime)) {
-        return (FALSE);
+        return(0);
     }
     if(-1 == CompareFileTime(&(pCert->pCertInfo->NotAfter), pfTime)) {
-        return (FALSE);
+        return(-1);
     }
 
-    return (TRUE);
+    return(1);
 }
 
 /* Returns TRUE if the CRL is time valid (thisUpdate <= time <= nextUpdate),
@@ -362,7 +364,11 @@ xmlSecMSCryptoVerifyCrlSignature(
     return(0);
 }
 
-static BOOL
+/* Returns 1 if the certificate is not listed in any time-valid, verified CRL,
+ * 0 if the certificate is revoked (listed in a CRL), or a negative value on
+ * an internal error (CRL signature verification failure or CRL search
+ * failure). */
+static int
 xmlSecMSCryptoCheckRevocation(HCERTSTORE hStore, PCCERT_CONTEXT pCert,
     LPFILETIME pfTime, HCERTSTORE trustedStore, HCERTSTORE untrustedStore,
     HCERTSTORE certStore) {
@@ -371,8 +377,8 @@ xmlSecMSCryptoCheckRevocation(HCERTSTORE hStore, PCCERT_CONTEXT pCert,
     BOOL ret;
     int sigRet;
 
-    xmlSecAssert2(pCert != NULL, FALSE);
-    xmlSecAssert2(hStore != NULL, FALSE);
+    xmlSecAssert2(pCert != NULL, -1);
+    xmlSecAssert2(hStore != NULL, -1);
 
     /* CertEnumCRLsInStore automatically frees the previous CRL context (see
      * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcrlsinstore) */
@@ -391,7 +397,7 @@ xmlSecMSCryptoCheckRevocation(HCERTSTORE hStore, PCCERT_CONTEXT pCert,
         if (sigRet < 0) {
             xmlSecInternalError("xmlSecMSCryptoVerifyCrlSignature", NULL);
             CertFreeCRLContext(pCrl);
-            return(FALSE);
+            return(-1);
         }
         if (sigRet == 0) {
             continue;
@@ -407,17 +413,17 @@ xmlSecMSCryptoCheckRevocation(HCERTSTORE hStore, PCCERT_CONTEXT pCert,
              * CRL. */
             xmlSecMSCryptoError("CertFindCertificateInCRL", NULL);
             CertFreeCRLContext(pCrl);
-            return(FALSE);
+            return(-1);
         }
         if (pCrlEntry != NULL) {
             xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL, "CertFindCertificateInCRL: cert found in crl list");
             CertFreeCRLContext(pCrl);
-            return(FALSE);
+            return(0);
         }
         /* cert is not listed in this CRL, continue to the next CRL */
     }
 
-    return(TRUE);
+    return(1);
 }
 
 
@@ -744,10 +750,17 @@ xmlSecMSCryptoBuildCertChain(
         /* check certificate validity and revocation; an expired/revoked cert
          * cannot be part of a valid chain, so skip this branch (and its issuer)
          * and continue searching the other branches in the queue. */
-        if (!xmlSecMSCryptoVerifyCertTime(currentCert, pfTime)) {
-            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
-                storeName,
-                "certificate expired");
+        ret = xmlSecMSCryptoVerifyCertTime(currentCert, pfTime);
+        if(ret <= 0) {
+            if(ret == 0) {
+                xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_YET_VALID,
+                    storeName,
+                    "certificate not yet valid");
+            } else {
+                xmlSecOtherError(XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
+                    storeName,
+                    "certificate expired");
+            }
             if(freeCurrentCert == TRUE) {
                 CertFreeCertificateContext(currentCert);
             }
@@ -757,8 +770,17 @@ xmlSecMSCryptoBuildCertChain(
         }
 
         if(checkRevocation != 0) {
-            if (!xmlSecMSCryptoCheckRevocation(certStore, currentCert, pfTime,
-                    trustedStore, untrustedStore, certStore)) {
+            ret = xmlSecMSCryptoCheckRevocation(certStore, currentCert, pfTime,
+                    trustedStore, untrustedStore, certStore);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecMSCryptoCheckRevocation", storeName);
+                if(freeCurrentCert == TRUE) {
+                    CertFreeCertificateContext(currentCert);
+                }
+                currentCert = NULL;
+                freeCurrentCert = FALSE;
+                continue;
+            } else if(ret == 0) {
                 xmlSecOtherError(XMLSEC_ERRORS_R_CRL_VERIFY_FAILED,
                     storeName,
                     "certificate revoked");

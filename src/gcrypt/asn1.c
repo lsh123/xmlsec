@@ -449,8 +449,8 @@ xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSe
 #define XMLSEC_GCRYPT_ASN1_DSA_PUB_NUM          4U
 #define XMLSEC_GCRYPT_ASN1_DSA_PRIV_NUM         6U
 
-#define XMLSEC_GCRYPT_ASN1_EDCSA_PUB_NUM        1U
-#define XMLSEC_GCRYPT_ASN1_EDCSA_PRIV_NUM       3U
+#define XMLSEC_GCRYPT_ASN1_ECDSA_PUB_NUM        1U
+#define XMLSEC_GCRYPT_ASN1_ECDSA_PRIV_NUM       3U
 
 #define XMLSEC_GCRYPT_ASN1_RSA_PUB_NUM          2U
 #define XMLSEC_GCRYPT_ASN1_RSA_PRIV_NUM         9U
@@ -462,11 +462,11 @@ xmlSecGCryptAsn1GuessKeyType(gcry_mpi_t * integers, xmlSecSize integers_num, xml
 
     /* EC key should have the curve object id */
     if(xmlSecGCryptAsn1IsECKey(objectids, objectids_num) != 0) {
-        if(integers_num > XMLSEC_GCRYPT_ASN1_EDCSA_PUB_NUM) {
+        if(integers_num > XMLSEC_GCRYPT_ASN1_ECDSA_PUB_NUM) {
             /* 2 or more integers: a private key (version + d, with or without the
              * optional [1] publicKey). A public key has exactly one integer (q). */
             return(xmlSecGCryptDerKeyTypePrivateEc);
-        } else if(integers_num >= XMLSEC_GCRYPT_ASN1_EDCSA_PUB_NUM) {
+        } else if(integers_num >= XMLSEC_GCRYPT_ASN1_ECDSA_PUB_NUM) {
             return(xmlSecGCryptDerKeyTypePublicEc);
         } else {
             return(xmlSecGCryptDerKeyTypeAuto);
@@ -589,7 +589,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
 
         /* The last two integers are the DSA private exponent x and public key y,
          * but their order is not fixed by the encoding: OpenSSL writes p,q,g,y,x
-         * while RFC 3279 writes p,q,g,x,y. Disambiguate by assuming x < y, i.e.
+         * while other implementations may write p,q,g,x,y. Disambiguate by assuming x < y, i.e.
          * take the smaller value as x (integers[4]) and the larger as y
          * (integers[5]). This holds in practice because x < q is a short exponent
          * while y = g^x mod p is a full-size field element, so y is almost always
@@ -773,12 +773,12 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
                 (xmlSecSize)objectids_num, (xmlSecSize)1U, NULL);
             goto done;
         }
-        if(integers_num < XMLSEC_GCRYPT_ASN1_EDCSA_PRIV_NUM) {
-            if(integers_num == XMLSEC_GCRYPT_ASN1_EDCSA_PRIV_NUM - 1) {
+        if(integers_num < XMLSEC_GCRYPT_ASN1_ECDSA_PRIV_NUM) {
+            if(integers_num == XMLSEC_GCRYPT_ASN1_ECDSA_PRIV_NUM - 1) {
                 xmlSecInvalidDataError("EC private key is missing the optional [1] publicKey field; re-encode the key to include the public point", NULL);
             } else {
                 xmlSecInvalidSizeError("Private EC key params",
-                    (xmlSecSize)integers_num, (xmlSecSize)XMLSEC_GCRYPT_ASN1_EDCSA_PRIV_NUM, NULL);
+                    (xmlSecSize)integers_num, (xmlSecSize)XMLSEC_GCRYPT_ASN1_ECDSA_PRIV_NUM, NULL);
             }
             goto done;
         }
@@ -845,9 +845,9 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
                 (xmlSecSize)objectids_num, (xmlSecSize)1U, NULL);
             goto done;
         }
-        if(integers_num < XMLSEC_GCRYPT_ASN1_EDCSA_PUB_NUM) {
+        if(integers_num < XMLSEC_GCRYPT_ASN1_ECDSA_PUB_NUM) {
             xmlSecInvalidSizeError("Public EC key params",
-                (xmlSecSize)integers_num, (xmlSecSize)XMLSEC_GCRYPT_ASN1_EDCSA_PUB_NUM, NULL);
+                (xmlSecSize)integers_num, (xmlSecSize)XMLSEC_GCRYPT_ASN1_ECDSA_PUB_NUM, NULL);
             goto done;
         }
 

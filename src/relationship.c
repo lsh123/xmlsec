@@ -558,7 +558,7 @@ xmlSecTransformRelationshipWriteEscapedValue(xmlOutputBufferPtr buf, const xmlCh
     /* Worst case every character expands to "&quot;" (6 bytes). */
     len = strlen((const char*)value);
     if(len > ((SIZE_MAX - 1U) / 6U)) {
-        xmlSecInvalidSizeError("value", len, ((SIZE_MAX - 1U) / 6U), NULL);
+        xmlSecInvalidSizeMoreThanError("value", len, ((SIZE_MAX - 1U) / 6U), NULL);
         return(-1);
     }
     escaped = xmlMalloc(len * 6 + 1);

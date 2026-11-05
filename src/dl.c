@@ -168,7 +168,7 @@ xmlSecCryptoOpenLibraryAndGetFunctions(xmlSecCryptoDLLibraryPtr lib)  {
 
     wcLibFilename = xmlSecWin32ConvertUtf8ToUnicode(lib->filename);
     if(wcLibFilename == NULL) {
-        xmlSecIOError("xmlSecWin32ConvertUtf8ToUnicode", lib->filename, NULL);
+        xmlSecInternalError("xmlSecWin32ConvertUtf8ToUnicode", lib->filename);
         return(NULL);
     }
 

@@ -815,10 +815,10 @@ xmlSecGCryptKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 }
 
 static int
-xmlSecGCryptKeyDataDsaReadMpi(xmlSecBufferPtr buf, gcry_mpi_t* mpi) {
+xmlSecGCryptKeyDataDsaReadMpi(xmlSecKeyDataId id, xmlSecBufferPtr buf, gcry_mpi_t* mpi) {
     const xmlSecByte* data;
     xmlSecSize size;
-    gpg_error_t err;
+    gcry_error_t err;
 
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(mpi != NULL, -1);
@@ -826,7 +826,7 @@ xmlSecGCryptKeyDataDsaReadMpi(xmlSecBufferPtr buf, gcry_mpi_t* mpi) {
     data = xmlSecBufferGetData(buf);
     size = xmlSecBufferGetSize(buf);
     if((data == NULL) || (size == 0)) {
-        xmlSecInvalidZeroKeyDataSizeError(NULL);
+        xmlSecInvalidZeroKeyDataSizeError(xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
     err = gcry_mpi_scan(mpi, GCRYMPI_FMT_USG, data, size, NULL);
@@ -857,21 +857,21 @@ xmlSecGCryptKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     xmlSecAssert2(dsaValue != NULL, NULL);
 
     /* p */
-    ret = xmlSecGCryptKeyDataDsaReadMpi(&(dsaValue->p), &p);
+    ret = xmlSecGCryptKeyDataDsaReadMpi(id, &(dsaValue->p), &p);
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptKeyDataDsaReadMpi(p)", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
     /* q */
-    ret = xmlSecGCryptKeyDataDsaReadMpi(&(dsaValue->q), &q);
+    ret = xmlSecGCryptKeyDataDsaReadMpi(id, &(dsaValue->q), &q);
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptKeyDataDsaReadMpi(q)", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
     /* g */
-    ret = xmlSecGCryptKeyDataDsaReadMpi(&(dsaValue->g), &g);
+    ret = xmlSecGCryptKeyDataDsaReadMpi(id, &(dsaValue->g), &g);
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptKeyDataDsaReadMpi(g)", xmlSecKeyDataKlassGetName(id));
         goto done;
@@ -879,7 +879,7 @@ xmlSecGCryptKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
 
     /* x (only for private key) */
     if(!xmlSecBufferIsEmpty(&(dsaValue->x))) {
-        ret = xmlSecGCryptKeyDataDsaReadMpi(&(dsaValue->x), &x);
+        ret = xmlSecGCryptKeyDataDsaReadMpi(id, &(dsaValue->x), &x);
         if(ret < 0) {
             xmlSecInternalError("xmlSecGCryptKeyDataDsaReadMpi(x)", xmlSecKeyDataKlassGetName(id));
             goto done;
@@ -887,7 +887,7 @@ xmlSecGCryptKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     }
 
     /* y */
-    ret = xmlSecGCryptKeyDataDsaReadMpi(&(dsaValue->y), &y);
+    ret = xmlSecGCryptKeyDataDsaReadMpi(id, &(dsaValue->y), &y);
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptKeyDataDsaReadMpi(y)", xmlSecKeyDataKlassGetName(id));
         goto done;
@@ -989,8 +989,7 @@ xmlSecGCryptKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     if(pub_priv_key == NULL) {
         pub_priv_key = xmlSecGCryptKeyDataDsaGetPublicKey(data);
         if(pub_priv_key == NULL) {
-            xmlSecInternalError("xmlSecGCryptKeyDataDsaGetPublicKey()",
-                                xmlSecKeyDataKlassGetName(id));
+            xmlSecInternalError("Neither private nor public keys are available", xmlSecKeyDataKlassGetName(id));
             goto done;
         }
     } else {
@@ -1418,7 +1417,7 @@ xmlSecGCryptKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     ret = xmlSecGCryptKeyDataRsaAdoptKeyPair(data, pub_key, priv_key);
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptKeyDataRsaAdoptKeyPair",
-                            xmlSecKeyDataGetName(data));
+                            xmlSecKeyDataKlassGetName(id));
         goto done;
     }
     pub_key = NULL; /* pub_key is owned by data now */
@@ -1475,8 +1474,7 @@ xmlSecGCryptKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     if(pub_priv_key == NULL) {
         pub_priv_key = xmlSecGCryptKeyDataRsaGetPublicKey(data);
         if(pub_priv_key == NULL) {
-            xmlSecInternalError("xmlSecGCryptKeyDataRsaGetPublicKey()",
-                                xmlSecKeyDataKlassGetName(id));
+            xmlSecInternalError("Neither private nor public keys are available", xmlSecKeyDataKlassGetName(id));
             goto done;
         }
     } else {

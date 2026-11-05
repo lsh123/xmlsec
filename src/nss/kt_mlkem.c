@@ -344,7 +344,10 @@ xmlSecNssMLKEMEncapsulate(xmlSecNssMLKEMCtxPtr ctx, xmlSecBufferPtr cipherTextOu
     int res = -1;
 
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->pubKey != NULL, -1);
+    if(ctx->pubKey == NULL) {
+        xmlSecInvalidDataError("encapsulation requires the ML-KEM public key", NULL);
+        return(-1);
+    }
     xmlSecAssert2(ctx->ciphertextSize > 0, -1);
     xmlSecAssert2(cipherTextOut != NULL, -1);
     xmlSecAssert2(xmlSecBufferIsSecure(cipherTextOut), -1);

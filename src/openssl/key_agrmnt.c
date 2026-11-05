@@ -13,10 +13,13 @@
 
 #include <string.h>
 
+#ifndef XMLSEC_NO_DH
+#include <openssl/dh.h>
+#endif /* XMLSEC_NO_DH */
+
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/errors.h>
-#include <xmlsec/membuf.h>
 #include <xmlsec/private.h>
 #include <xmlsec/xmltree.h>
 
@@ -318,7 +321,6 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
     xmlSecAssert2(xmlSecBufferIsSecure(secret), -1); /* we expect secure buffer for the secret */
 
     kamData = (xmlSecKeyDataKAM*)kamKeyData;
-    xmlSecAssert2(kamData != NULL, -1);
     xmlSecAssert2(kamData->keyOriginator != NULL, -1);
     xmlSecAssert2(kamData->keyRecipient != NULL, -1);
 
@@ -385,13 +387,48 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
      * EVP_PKEY_derive_set_peer() validates the peer key: it checks that the peer
      * has the same key type and matching parameters (all OpenSSL versions), and
      * performs a public key check (OpenSSL 3.0+; for DH keys on OpenSSL < 3.0
-     * the public key check is not performed).
+     * the public key check is not performed and is done explicitly below).
      */
     ret = EVP_PKEY_derive_set_peer(pKeyCtx, otherPubKey);
     if(ret != 1) {
         xmlSecOpenSSLError("EVP_PKEY_derive_set_peer", NULL);
         goto done;
     }
+
+#ifndef XMLSEC_OPENSSL_API_300
+#ifndef XMLSEC_NO_DH
+    /*
+     * On OpenSSL < 3.0 the peer DH public value is not validated by
+     * EVP_PKEY_derive_set_peer(), so check it explicitly to reject degenerate
+     * values (e.g. 0, 1, or a value outside the valid range) from an
+     * untrusted document
+     */
+    if((EVP_PKEY_id(otherPubKey) == EVP_PKEY_DH) || (EVP_PKEY_id(otherPubKey) == EVP_PKEY_DHX)) {
+        const DH* peerDh;
+        const BIGNUM* peerPubKey;
+
+        peerDh = EVP_PKEY_get0_DH(otherPubKey);
+        if(peerDh == NULL) {
+            xmlSecOpenSSLError("EVP_PKEY_get0_DH", NULL);
+            goto done;
+        }
+        peerPubKey = DH_get0_pub_key(peerDh);
+        if(peerPubKey == NULL) {
+            xmlSecOpenSSLError("DH_get0_pub_key", NULL);
+            goto done;
+        }
+        ret = DH_check_pub_key(peerDh, peerPubKey, NULL);
+        if(ret != 1) {
+            /*
+             * DH_check_pub_key() returns 0 when the public key is invalid and
+             * 2 when the Yb^q mod P check fails; both cases are rejected
+             */
+            xmlSecInvalidDataError("Invalid peer DH public key", NULL);
+            goto done;
+        }
+    }
+#endif /* XMLSEC_NO_DH */
+#endif /* XMLSEC_OPENSSL_API_300 */
 
     /* determine output buffer size */
     ret = EVP_PKEY_derive(pKeyCtx, NULL, &secretSize);

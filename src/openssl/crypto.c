@@ -58,6 +58,11 @@ static ERR_STRING_DATA xmlSecOpenSSLStrReasons[XMLSEC_OPENSSL_ERRORS_MAX_NUMBER 
 /**
  * @brief Gets the xmlsec-openssl functions table.
  * @details Gets the pointer to xmlsec-openssl functions table.
+ * This one-time initialization is not protected by a lock, so a
+ * concurrent first-time caller could observe a partially populated table.
+ * This matches the pattern used by all backends and only matters if this
+ * function is invoked from multiple threads before the library is fully
+ * initialized (the normal single-threaded init path is unaffected).
  * @return the xmlsec-openssl functions table.
  */
 xmlSecCryptoDLFunctionsPtr

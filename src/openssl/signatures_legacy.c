@@ -690,6 +690,7 @@ xmlSecOpenSSLSignatureLegacyEcdsa_OpenSSLToXmlDsig(
     const BIGNUM* ss = NULL;
     xmlSecByte* outData = NULL;
     xmlSecSize outSize;
+    xmlSecSize signHalfLenSize;
     xmlSecOpenSSLSizeT signHalfLen, rLen, sLen;
     xmlSecOpenSSLSizeT outLen;
     int ret;
@@ -750,8 +751,10 @@ xmlSecOpenSSLSignatureLegacyEcdsa_OpenSSLToXmlDsig(
         return(-1);
     }
 
-    /* allocate buffer */
-    XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_SIZE(2 * signHalfLen, outSize, return(-1), NULL);
+    /* allocate buffer; safe-cast the half length first so the doubling
+     * happens on xmlSecSize, mirroring the modern implementation */
+    XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_SIZE(signHalfLen, signHalfLenSize, return(-1), NULL);
+    outSize = 2 * signHalfLenSize;
     ret = xmlSecBufferSetSize(out, outSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, outSize);
@@ -910,8 +913,8 @@ xmlSecOpenSSLSignatureLegacyEcdsa_XmlDSigToOpenSSL(
          * pure zero padding, without touching the documented lenient cases. */
         XMLSEC_OPENSSL_SAFE_CAST_UINT_TO_SIZE(BN_num_bytes(rr), rLen, goto done, NULL);
         XMLSEC_OPENSSL_SAFE_CAST_UINT_TO_SIZE(BN_num_bytes(ss), sLen, goto done, NULL);
-        if((rLen > keyHalfLen) || (sLen > keyHalfLen)) {
-            xmlSecInvalidDataError("Signature r or s is longer than expected based on key size", NULL);
+        if((rLen <= 0) || (rLen > keyHalfLen) || (sLen <= 0) || (sLen > keyHalfLen)) {
+            xmlSecInvalidDataError("Signature r or s length is zero or longer than expected based on key size", NULL);
             goto done;
         }
 

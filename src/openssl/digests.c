@@ -478,7 +478,7 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 
 
 /* Helper macros to define the digest transform klass */
-#define XMLSEC_OPENSSL_EVP_DIGEST_KLASS_EX(name, readNode)                                                         \
+#define XMLSEC_OPENSSL_EVP_DIGEST_KLASS(name)                                                                      \
 static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                                                     \
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                         \
     xmlSecOpenSSLEvpDigestSize,                 /* xmlSecSize objSize */                                           \
@@ -487,7 +487,7 @@ static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                  
     xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */                                  \
     xmlSecOpenSSLEvpDigestInitialize,           /* xmlSecTransformInitializeMethod initialize; */                  \
     xmlSecOpenSSLEvpDigestFinalize,             /* xmlSecTransformFinalizeMethod finalize; */                      \
-    readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */                      \
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */                      \
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */                    \
     NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */           \
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */                          \
@@ -501,9 +501,6 @@ static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                  
     NULL,                                       /* void* reserved0; */                                             \
     NULL,                                       /* void* reserved1; */                                             \
 };
-
-#define XMLSEC_OPENSSL_EVP_DIGEST_KLASS(name)                                                           \
-    XMLSEC_OPENSSL_EVP_DIGEST_KLASS_EX(name, NULL)
 
 
 #ifndef XMLSEC_NO_MD5

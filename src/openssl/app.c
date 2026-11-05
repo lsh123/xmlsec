@@ -1210,7 +1210,7 @@ xmlSecOpenSSLAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDat
     }
 
     /* check the file is fully consumed before adopting the cert into the key */
-    if(xmlSecOpenSSLAppCheckFileBioConsumed(bio, format) != 1) {
+    if(xmlSecOpenSSLAppCheckFileBioConsumed(bio, certFormat) != 1) {
         X509_free(cert);
         BIO_free_all(bio);
         return(-1);
@@ -1281,7 +1281,7 @@ xmlSecOpenSSLAppKeyCertLoadMemory(
     }
 
     /* check if any bytes remaining before adopting the cert into the key */
-    if(xmlSecOpenSSLAppCheckMemoryBioConsumed(bio, format) != 1) {
+    if(xmlSecOpenSSLAppCheckMemoryBioConsumed(bio, certFormat) != 1) {
         X509_free(cert);
         BIO_free_all(bio);
         return(-1);

@@ -4397,7 +4397,6 @@ int
 xmlSecOpenSSLKeyDataXdhAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
     int ret;
 
-    xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataXdhId), -1);
     xmlSecAssert2(pKey != NULL, -1);
 
@@ -4419,7 +4418,6 @@ xmlSecOpenSSLKeyDataXdhAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
  */
 EVP_PKEY*
 xmlSecOpenSSLKeyDataXdhGetEvp(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataIsValid(data), NULL);
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataXdhId), NULL);
 
     return(xmlSecOpenSSLEvpKeyDataGetEvp(data));

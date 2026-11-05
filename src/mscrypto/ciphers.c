@@ -219,7 +219,7 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     }
     /* Check if we really have de/encrypted the numbers of bytes that we requested */
     if (dwCLen != inSize) {
-        xmlSecInternalError2("CryptEn/Decrypt", cipherName,
+        xmlSecInternalError3("CryptEn/Decrypt", cipherName,
             "inLen=" XMLSEC_SIZE_FMT "; outLen=%lu", inSize, dwCLen);
         return(-1);
     }
@@ -342,7 +342,7 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
 
     /* Check if we really have de/encrypted the numbers of bytes that we requested */
     if (dwCLen != inSize) {
-        xmlSecInternalError2("CryptEn/Decrypt", cipherName,
+        xmlSecInternalError3("CryptEn/Decrypt", cipherName,
             "inLen=" XMLSEC_SIZE_FMT "; outLen=%lu", inSize, dwCLen);
         return(-1);
     }

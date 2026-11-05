@@ -577,16 +577,18 @@ xmlSecParseMemory(const xmlSecByte *buffer, xmlSecSize size, int recovery) {
  */
 void
 xmlSecParsePrepareCtxt(xmlParserCtxtPtr ctxt) {
-    int ret;
-
+#if (LIBXML_VERSION < 21300)
     xmlSecAssert(ctxt != NULL);
 
-#if (LIBXML_VERSION < 21300)
     /* required for c14n! */
     ctxt->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
     ctxt->replaceEntities = 1;
     xmlCtxtUseOptions(ctxt, xmlSecParserGetDefaultOptions());
 #else  /* (LIBXML_VERSION < 21300) */
+    int ret;
+
+    xmlSecAssert(ctxt != NULL);
+
     ret = xmlCtxtSetOptions(ctxt, xmlSecParserGetDefaultOptions());
     if(ret != 0) {
         /* libxml2 ignores the unknown options and returns their mask */

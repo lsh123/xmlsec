@@ -691,6 +691,7 @@ xmlSecOpenSSLSignatureLegacyEcdsa_OpenSSLToXmlDsig(
     xmlSecByte* outData = NULL;
     xmlSecSize outSize;
     xmlSecOpenSSLSizeT signHalfLen, rLen, sLen;
+    xmlSecOpenSSLSizeT outLen;
     int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
@@ -762,13 +763,13 @@ xmlSecOpenSSLSignatureLegacyEcdsa_OpenSSLToXmlDsig(
     /* write components */
     xmlSecAssert2((rLen + sLen) <= 2 * signHalfLen, -1);
     memset(outData, 0, outSize);
-    ret = BN_bn2bin(rr, outData + signHalfLen - rLen);
-    if(ret <= 0) {
+    outLen = BN_bn2bin(rr, outData + signHalfLen - rLen);
+    if(outLen <= 0) {
         xmlSecOpenSSLError("BN_bn2bin(rr)", NULL);
         return(-1);
     }
-    ret = BN_bn2bin(ss, outData + 2 * signHalfLen - sLen);
-    if(ret <= 0) {
+    outLen = BN_bn2bin(ss, outData + 2 * signHalfLen - sLen);
+    if(outLen <= 0) {
         xmlSecOpenSSLError("BN_bn2bin(ss)", NULL);
         return(-1);
     }

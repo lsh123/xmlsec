@@ -312,6 +312,7 @@ xmlSecGnuTLSKeyAgreementGenerateSecret(xmlSecGnuTLSKeyAgreementCtxPtr ctx, xmlSe
     gnutls_pubkey_t otherPubKey;
     gnutls_datum_t secretDatum = { NULL, 0 };
     xmlSecSize secretSize;
+    int expectedPkAlgo;
     int err;
     int ret;
     int res = -1;
@@ -409,6 +410,35 @@ xmlSecGnuTLSKeyAgreementGenerateSecret(xmlSecGnuTLSKeyAgreementCtxPtr ctx, xmlSe
             xmlSecInternalError("xmlSecGnuTLSKeyDataXdhGetPublicKey", NULL);
             goto done;
         }
+
+        /* check that the keys match the transform's curve */
+        if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformX25519Id)) {
+            expectedPkAlgo = GNUTLS_PK_ECDH_X25519;
+        } else {
+            expectedPkAlgo = GNUTLS_PK_ECDH_X448;
+        }
+        ret = gnutls_privkey_get_pk_algorithm(myPrivKey, NULL);
+        if(ret < 0) {
+            xmlSecGnuTLSError("gnutls_privkey_get_pk_algorithm", ret, xmlSecTransformGetName(transform));
+            goto done;
+        }
+        if(ret != expectedPkAlgo) {
+            xmlSecInvalidTransformError2(transform,
+                "key data curve \"%s\" does not match the key agreement transform",
+                xmlSecErrorsSafeString(gnutls_pk_algorithm_get_name(ret)));
+            goto done;
+        }
+        ret = gnutls_pubkey_get_pk_algorithm(otherPubKey, NULL);
+        if(ret < 0) {
+            xmlSecGnuTLSError("gnutls_pubkey_get_pk_algorithm", ret, xmlSecTransformGetName(transform));
+            goto done;
+        }
+        if(ret != expectedPkAlgo) {
+            xmlSecInvalidTransformError2(transform,
+                "peer key data curve \"%s\" does not match the key agreement transform",
+                xmlSecErrorsSafeString(gnutls_pk_algorithm_get_name(ret)));
+            goto done;
+        }
     } else
 #endif /* XMLSEC_NO_XDH */
     {
@@ -416,6 +446,12 @@ xmlSecGnuTLSKeyAgreementGenerateSecret(xmlSecGnuTLSKeyAgreementCtxPtr ctx, xmlSe
         goto done;
     }
 
+    /* Note: no explicit SP800-56A low-order point check (n*Q = O) is
+     * performed on the peer EC public key. GnuTLS' nettle backend
+     * implements that check only in FIPS mode, but it is not needed here:
+     * all NIST curves reachable through this transform have prime group
+     * order (cofactor 1), so no non-trivial low-order points exist, and
+     * off-curve points are rejected by GnuTLS' point validation. */
     /* derive shared secret; GnuTLS allocates secretDatum.data */
     err = gnutls_privkey_derive_secret(myPrivKey, otherPubKey, NULL, &secretDatum, 0);
     if(err != GNUTLS_E_SUCCESS) {

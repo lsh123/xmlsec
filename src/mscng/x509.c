@@ -465,6 +465,9 @@ xmlSecMSCngVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xm
         xmlSecInvalidDataError("X509 cert context has no pCertInfo", xmlSecKeyDataGetName(data));
         return(-1);
     }
+    /* xmlSecMSCngX509CertGetTime() cannot fail here (it only fails when the out
+     * parameter is NULL, which is asserted non-NULL), so the original values are
+     * not saved and restored on failure, unlike the openssl and mscrypto backends */
     ret = xmlSecMSCngX509CertGetTime(ctx->keyCert->pCertInfo->NotBefore, &(key->notValidBefore));
     if(ret < 0) {
         xmlSecInternalError("xmlSecMSCngX509CertGetTime", xmlSecKeyDataGetName(data));
@@ -636,9 +639,11 @@ xmlSecMSCngX509NameWrite(PCERT_NAME_BLOB nm) {
         return(NULL);
     }
 
-    resT = (LPTSTR)xmlMalloc(sizeof(TCHAR) * (csz + 1));
+    /* cast to xmlSecSize before adding 1 so the allocation size cannot wrap on a
+     * (theoretical) maximum DWORD character count */
+    resT = (LPTSTR)xmlMalloc(sizeof(TCHAR) * ((xmlSecSize)csz + 1));
     if (NULL == resT) {
-        xmlSecMallocError(sizeof(TCHAR) * (csz + 1), NULL);
+        xmlSecMallocError(sizeof(TCHAR) * ((xmlSecSize)csz + 1), NULL);
         return (NULL);
     }
 
@@ -668,7 +673,9 @@ xmlSecMSCngASN1IntegerWrite(PCRYPT_INTEGER_BLOB num) {
 
     xmlSecAssert2(num != NULL, NULL);
 
-    ret = xmlSecBnInitialize(&bn, num->cbData + 1);
+    /* cast to xmlSecSize before adding 1 so the size cannot wrap on a
+     * (theoretical) maximum DWORD byte count */
+    ret = xmlSecBnInitialize(&bn, (xmlSecSize)num->cbData + 1);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBnInitialize", NULL, "size=%lu", num->cbData + 1);
         return(NULL);
@@ -1093,7 +1100,8 @@ xmlSecMSCngKeyDataX509DebugDump(xmlSecKeyDataPtr data, FILE* output) {
     /* CertEnumCertificatesInStore automatically frees the previous certificate context (see
      * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcertificatesinstore) */
     while((cert = CertEnumCertificatesInStore(ctx->hMemStore, cert)) != NULL) {
-        if((ctx->keyCert != NULL) && (CertCompareCertificate(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+        if((ctx->keyCert != NULL) && (cert->pCertInfo != NULL) && (ctx->keyCert->pCertInfo != NULL) &&
+           (CertCompareCertificate(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
                 cert->pCertInfo, ctx->keyCert->pCertInfo) == TRUE)) {
             fprintf(output, "==== Key Certificate:\n");
         } else {
@@ -1119,7 +1127,8 @@ xmlSecMSCngKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     /* CertEnumCertificatesInStore automatically frees the previous certificate context (see
      * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcertificatesinstore) */
     while((cert = CertEnumCertificatesInStore(ctx->hMemStore, cert)) != NULL) {
-        if((ctx->keyCert != NULL) && (CertCompareCertificate(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+        if((ctx->keyCert != NULL) && (cert->pCertInfo != NULL) && (ctx->keyCert->pCertInfo != NULL) &&
+           (CertCompareCertificate(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
                 cert->pCertInfo, ctx->keyCert->pCertInfo) == TRUE)) {
             fprintf(output, "<KeyCertificate>\n");
             xmlSecMSCngX509CertDebugXmlDump(cert, output);

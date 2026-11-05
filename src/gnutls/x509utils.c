@@ -1551,6 +1551,11 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
         switch(state) {
         case xmlSecGnuTLSDnParseState_BeforeNameComponent:
             if(!XMLSEC_GNUTLS_IS_SPACE(ch)) {
+                if((ch == ',') || (ch == ';')) {
+                    /* a separator may only appear between name components */
+                    xmlSecInvalidDataError("unexpected separator in DN", NULL);
+                    goto done;
+                }
                 *(p++) = ch; /* we are sure we have enough buffer */
                 state = xmlSecGnuTLSDnParseState_Key;
             } else {

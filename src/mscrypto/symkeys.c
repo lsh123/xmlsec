@@ -147,7 +147,7 @@ xmlSecMSCryptoSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xml
 
     sizeBytes = XMLSEC_BITS_TO_BYTES(sizeBits);
     xmlSecAssert2(sizeBytes > 0, -1);
-
+    xmlSecAssert2(sizeBytes <= XMLSEC_BINARY_KEY_BYTES_SIZE_MAX, -1);
     return(xmlSecMSCryptoGenerateRandom(buffer, sizeBytes));
 }
 
@@ -614,6 +614,8 @@ int
 xmlSecMSCryptoKeyDataAesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
     xmlSecBufferPtr buffer;
 
+    /* the key size is not validated here to match the other backends; an
+     * invalid size is rejected by the AES transforms at use time */
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataAesId), -1);
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(bufSize > 0, -1);

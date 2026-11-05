@@ -304,6 +304,14 @@ xmlSecGnuTLSHmacVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->hmacSizeInBits > 0, -1);
 
+    /* the digest to verify must not be empty */
+    if(dataSize == 0) {
+        xmlSecInvalidSizeError("HMAC digest", dataSize,
+                               XMLSEC_BITS_TO_BYTES(ctx->hmacSizeInBits),
+                               xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
     /* Returns 1 for match, 0 for no match, <0 for errors. */
     ret = xmlSecTransformHmacVerify(data, dataSize, ctx->hmacOutput, ctx->hmacSizeInBits, XMLSEC_TRANSFORM_HMAC_MAX_OUTPUT_SIZE);
     if(ret < 0) {

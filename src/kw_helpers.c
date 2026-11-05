@@ -317,8 +317,9 @@ xmlSecKWDes3Encode(xmlSecKWDes3Id kwDes3Id, xmlSecTransformPtr transform,
         return(-1);
     }
 
-    /* step 3: construct WKCKS as WK || CKS */
-    memcpy(out, in, inSize);
+    /* step 3: construct WKCKS as WK || CKS (memmove so a caller with
+     * overlapping input and output buffers is safe) */
+    memmove(out, in, inSize);
     memcpy(out + inSize, sha1, XMLSEC_KW_DES3_BLOCK_LENGTH);
 
     /* the key checksum (sha1) is not needed anymore; wipe it from the stack */

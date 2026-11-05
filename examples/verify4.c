@@ -254,7 +254,8 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* id_attr) {
         goto done;
     }
 
-    /* add ID attributes to the doc context since we don't have DTDs */
+    /* add ID attributes to the doc context since we don't have DTDs;
+     * xmlSecAddIDs() returns no value */
     xmlSecAddIDs(doc, NULL, id_attributes);
 
     /* find start node */

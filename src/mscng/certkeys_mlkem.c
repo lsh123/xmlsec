@@ -352,6 +352,7 @@ xmlSecMSCngKeyDataCertGetMlKemPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HAND
     const xmlSecByte* pkData;
     xmlSecSize pkSize;
     BCRYPT_KEY_HANDLE hKey = NULL;
+    NTSTATUS status;
     int ret = -1;
 
     xmlSecAssert2(spki != NULL, -1);
@@ -390,7 +391,11 @@ xmlSecMSCngKeyDataCertGetMlKemPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HAND
 
 done:
     if(hKey != NULL) {
-        BCryptDestroyKey(hKey);
+        status = BCryptDestroyKey(hKey);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptDestroyKey(ML-KEM pub)", NULL, status);
+            /* ignore error */
+        }
     }
     return(ret);
 }
@@ -445,10 +450,16 @@ xmlSecMSCngKeyDataMlKemReadFromPkcs8Der(const xmlSecByte* derData, DWORD derData
     if(pki == NULL || pki->Algorithm.pszObjId == NULL) {
         goto done;
     }
-    /* Must be an ML-KEM OID */
-    if(strcmp(pki->Algorithm.pszObjId, XMLSEC_MSCNG_OID_MLKEM_512) != 0 &&
-       strcmp(pki->Algorithm.pszObjId, XMLSEC_MSCNG_OID_MLKEM_768) != 0 &&
-       strcmp(pki->Algorithm.pszObjId, XMLSEC_MSCNG_OID_MLKEM_1024) != 0) {
+    /* Must be an ML-KEM OID; remember the expected secret key size for the
+     * parameter set so it can be cross-checked against the parsed size */
+    DWORD expectedSkLen;
+    if(strcmp(pki->Algorithm.pszObjId, XMLSEC_MSCNG_OID_MLKEM_512) == 0) {
+        expectedSkLen = XMLSEC_MSCNG_MLKEM_512_SK_SIZE;
+    } else if(strcmp(pki->Algorithm.pszObjId, XMLSEC_MSCNG_OID_MLKEM_768) == 0) {
+        expectedSkLen = XMLSEC_MSCNG_MLKEM_768_SK_SIZE;
+    } else if(strcmp(pki->Algorithm.pszObjId, XMLSEC_MSCNG_OID_MLKEM_1024) == 0) {
+        expectedSkLen = XMLSEC_MSCNG_MLKEM_1024_SK_SIZE;
+    } else {
         goto done;  /* not an ML-KEM key - silent fail */
     }
 
@@ -517,6 +528,14 @@ xmlSecMSCngKeyDataMlKemReadFromPkcs8Der(const xmlSecByte* derData, DWORD derData
         goto done;
     }
     pSk = pPos;
+
+    /* cross-check the parsed secret key size against the parameter set claimed
+     * by the algorithm OID */
+    if(skLen != expectedSkLen) {
+        xmlSecInvalidSizeDataError("ML-KEM PKCS8 secret key size", (xmlSecSize)skLen,
+            "size matching the algorithm OID", NULL);
+        goto done;
+    }
 
     /* Import the secret key */
     hPrivKey = xmlSecMSCngKeyDataMlKemImportPrivateKey(pSk, skLen);

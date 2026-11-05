@@ -401,7 +401,7 @@ xmlSecMSCngChaCha20CipherProcess(xmlSecMSCngChaCha20CipherCtxPtr ctx,
     ctx->authInfo.pbTag = ctx->tag;
     ctx->authInfo.cbTag = (ULONG)XMLSEC_CHACHA20_POLY1305_TAG_SIZE;
     ctx->authInfo.pbAuthData = xmlSecBufferGetData(&(ctx->aad));
-    ctx->authInfo.cbAuthData = (ULONG)xmlSecBufferGetSize(&(ctx->aad));
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(xmlSecBufferGetSize(&(ctx->aad)), ctx->authInfo.cbAuthData, return(-1), cipherName);
 
     inBufSize = xmlSecBufferGetSize(in);
     inBuf = xmlSecBufferGetData(in);

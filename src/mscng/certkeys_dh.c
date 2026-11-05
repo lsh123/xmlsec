@@ -208,6 +208,65 @@ xmlSecMSCngDhValidatePrivateExponent(const xmlSecByte* x, DWORD xLen,
     return(0);
 }
 
+/* Validate the DH public value Y against the prime P: reject Y < 2 or Y > P - 2.
+ * Mirrors the check performed on the SPKI import path in certkeys.c. */
+static int
+xmlSecMSCngDhValidatePublicValue(xmlSecBufferPtr p, xmlSecBufferPtr publicValue) {
+    static const xmlSecByte two[] = { 0x02 };
+    xmlSecBn pMinusTwo;
+    int bnInitialized = 0;
+    int cmp;
+    int ret;
+
+    xmlSecAssert2(p != NULL, -1);
+    xmlSecAssert2(publicValue != NULL, -1);
+    xmlSecAssert2(xmlSecBufferGetSize(p) > 0, -1);
+    xmlSecAssert2(xmlSecBufferGetSize(publicValue) > 0, -1);
+
+    cmp = xmlSecMSCngDhCompareBigNums(
+        xmlSecBufferGetData(publicValue), xmlSecBufferGetSize(publicValue),
+        two, sizeof(two));
+    if(cmp < 0) {
+        xmlSecInvalidDataError("DH public key is smaller than 2", NULL);
+        return(-1);
+    }
+
+    ret = xmlSecBnInitialize(&pMinusTwo, xmlSecBufferGetSize(p));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBnInitialize", NULL);
+        return(-1);
+    }
+    bnInitialized = 1;
+
+    ret = xmlSecBnSetData(&pMinusTwo, xmlSecBufferGetData(p), xmlSecBufferGetSize(p));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBnSetData", NULL);
+        goto done;
+    }
+
+    ret = xmlSecBnAdd(&pMinusTwo, -2);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBnAdd", NULL);
+        goto done;
+    }
+
+    cmp = xmlSecBnCompare(&pMinusTwo,
+        xmlSecBufferGetData(publicValue), xmlSecBufferGetSize(publicValue));
+    if(cmp < 0) {
+        xmlSecInvalidDataError("DH public key is greater than p - 2", NULL);
+        ret = -1;
+        goto done;
+    }
+
+    ret = 0;
+
+done:
+    if(bnInitialized != 0) {
+        xmlSecBnFinalize(&pMinusTwo);
+    }
+    return(ret);
+}
+
 /* Parse Windows DH AlgorithmIdentifier parameters: SEQUENCE { INTEGER p, INTEGER g [, INTEGER q] }
  * On success sets output pointers and lengths for p, g, and optional q (big-endian, no sign byte). */
 int
@@ -419,6 +478,13 @@ xmlSecMSCngKeyDataDhRead(xmlSecKeyDataId id, xmlSecKeyValueDhPtr dhValue) {
     memcpy(blobData + offset + (pSize - publicSize), xmlSecBufferGetData(&(dhValue->public)), publicSize);
     offset += pSize;
 
+    /* validate the public value before import: 2 <= Y <= P - 2 (same check
+     * as the SPKI import path in certkeys.c) */
+    ret = xmlSecMSCngDhValidatePublicValue(&(dhValue->p), &(dhValue->public));
+    if(ret < 0) {
+        goto done;
+    }
+
     /* import the key blob */
     status = BCryptOpenAlgorithmProvider(&hAlg, BCRYPT_DH_ALGORITHM, NULL, 0);
     if(status != STATUS_SUCCESS) {
@@ -464,10 +530,18 @@ done:
         xmlSecKeyDataDestroy(data);
     }
     if(hAlg != NULL) {
-        BCryptCloseAlgorithmProvider(hAlg, 0);
+        status = BCryptCloseAlgorithmProvider(hAlg, 0);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptCloseAlgorithmProvider(hAlg)", NULL, status);
+            /* ignore error */
+        }
     }
     if(hKey != NULL) {
-        BCryptDestroyKey(hKey);
+        status = BCryptDestroyKey(hKey);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptDestroyKey(hKey)", NULL, status);
+            /* ignore error */
+        }
     }
     if(blobInitialized != 0) {
         xmlSecBufferFinalize(&blob);
@@ -970,7 +1044,11 @@ xmlSecMSCngKeyDataDhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLen
     }
 
     /* Destroy the placeholder private key handle; re-import with correct Y */
-    BCryptDestroyKey(hPrivKey);
+    status = BCryptDestroyKey(hPrivKey);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptDestroyKey(DH priv placeholder)", NULL, status);
+        goto done;
+    }
     hPrivKey = NULL;
     status = BCryptImportKeyPair(hAlg, NULL, BCRYPT_DH_PRIVATE_BLOB, &hPrivKey, pbPrivBlob, cbPrivBlob, 0);
     if(status != STATUS_SUCCESS) {
@@ -1016,14 +1094,29 @@ xmlSecMSCngKeyDataDhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLen
     data = NULL;
 
 done:
+    /* Retry-on-failure, not a double-destroy: hPrivKey is only non-NULL here if the
+     * earlier BCryptDestroyKey(hPrivKey) failed (on success it is set to NULL above),
+     * in which case the handle is still valid and this is a legitimate retry. */
     if(hPrivKey != NULL) {
-        BCryptDestroyKey(hPrivKey);
+        status = BCryptDestroyKey(hPrivKey);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptDestroyKey(hPrivKey)", NULL, status);
+            /* ignore error */
+        }
     }
     if(hPubKey != NULL) {
-        BCryptDestroyKey(hPubKey);
+        status = BCryptDestroyKey(hPubKey);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptDestroyKey(hPubKey)", NULL, status);
+            /* ignore error */
+        }
     }
     if(hAlg != NULL) {
-        BCryptCloseAlgorithmProvider(hAlg, 0);
+        status = BCryptCloseAlgorithmProvider(hAlg, 0);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptCloseAlgorithmProvider(hAlg)", NULL, status);
+            /* ignore error */
+        }
     }
     if(pbPrivBlob != NULL) {
         xmlSecMemCleanse(pbPrivBlob, cbPrivBlob);

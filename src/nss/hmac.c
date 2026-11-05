@@ -320,6 +320,14 @@ xmlSecNssHmacVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(ctx->digestCtx != NULL, -1);
     xmlSecAssert2(ctx->dgstSizeInBits > 0, -1);
 
+    /* the digest to verify must not be empty */
+    if(dataSize == 0) {
+        xmlSecInvalidSizeError("HMAC digest", dataSize,
+                               XMLSEC_BITS_TO_BYTES(ctx->dgstSizeInBits),
+                               xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
     /* Returns 1 for match, 0 for no match, <0 for errors. */
     ret = xmlSecTransformHmacVerify(data, dataSize, ctx->dgst, ctx->dgstSizeInBits, sizeof(ctx->dgst));
     if(ret < 0) {

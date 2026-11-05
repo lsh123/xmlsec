@@ -456,6 +456,9 @@ xmlSecCryptoGetFunctions_gnutls(void) {
  */
 int
 xmlSecGnuTLSInit(void) {
+    /* Note: like all backends, this function does not guard against
+     * re-initialization; a second call re-runs the class registration.
+     * See the xmlSecInit() documentation for details. */
     /* Check loaded xmlsec library version */
     if(xmlSecCheckVersionExact() != 1) {
         xmlSecInternalError("xmlSecCheckVersionExact", NULL);

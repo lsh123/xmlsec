@@ -1596,6 +1596,14 @@ xmlSecOpenSSLX509FindUntrustedIssuer(XMLSEC_OPENSSL400_CONST X509_NAME* issuer, 
         }
 
         ret = X509_verify_cert(xsc);
+        if(ret < 0) {
+            /* A hard failure (e.g. a low-level memory error) is not the same
+             * as an unverified chain: report it and stop trying the
+             * remaining candidates */
+            xmlSecOpenSSLError("X509_verify_cert", NULL);
+            goto done;
+        }
+
         if(ret == 1) {
             /* Chain verified successfully, return a copy */
             issuer_cert = X509_dup(cert);
@@ -1640,6 +1648,44 @@ xmlSecOpenSSLX509FindIssuer(XMLSEC_OPENSSL400_CONST X509_NAME* issuer, X509_STOR
 
     /* no luck */
     return(NULL);
+}
+
+/*
+ * Checks whether the certificate may be used to sign CRLs.
+ * Returns 1 if the keyUsage extension is absent or asserts the cRLSign bit,
+ * 0 if the keyUsage extension is present but does not assert cRLSign
+ * (RFC 5280 section 6.3.3), or a negative value on error.
+ */
+static int
+xmlSecOpenSSLX509CertCanSignCrl(X509* cert) {
+    XMLSEC_OPENSSL400_CONST X509_EXTENSION* ext;
+    ASN1_BIT_STRING* keyUsage;
+    int index;
+    int res = -1;
+
+    xmlSecAssert2(cert != NULL, -1);
+
+    index = X509_get_ext_by_NID(cert, NID_key_usage, -1);
+    if(index < 0) {
+        /* no keyUsage extension: no restriction on the key usage */
+        return(1);
+    }
+    ext = X509_get_ext(cert, index);
+    if(ext == NULL) {
+        xmlSecOpenSSLError("X509_get_ext(keyUsage)", NULL);
+        return(-1);
+    }
+    keyUsage = (ASN1_BIT_STRING*)X509V3_EXT_d2i(ext);
+    if(keyUsage == NULL) {
+        /* fail-closed: the keyUsage extension is present but cannot be parsed */
+        xmlSecOpenSSLError("X509V3_EXT_d2i(keyUsage)", NULL);
+        return(-1);
+    }
+
+    /* cRLSign is bit 6 (0-based, RFC 5280 section 4.2.1.3) */
+    res = (ASN1_BIT_STRING_get_bit(keyUsage, 6) != 0) ? 1 : 0;
+    ASN1_BIT_STRING_free(keyUsage);
+    return(res);
 }
 
 static int
@@ -1732,6 +1778,24 @@ xmlSecOpenSSLX509VerifyCRLSignature(X509_STORE* xst, X509_STORE_CTX* xsc, STACK_
         xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_NOT_FOUND, NULL,
             "issuer=%s", ((ret >= 0) ? issuer : "unknown"));
         res = 0; /* not verified */
+        goto done;
+    }
+
+    /* RFC 5280 section 6.3.3: if the keyUsage extension is present in the
+     * CRL issuer certificate, the cRLSign bit must be asserted */
+    ret = xmlSecOpenSSLX509CertCanSignCrl(issuer_cert);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLX509CertCanSignCrl", NULL);
+        goto done;
+    } else if(ret != 1) {
+        char issuer[256];
+
+        ret = xmlSecOpenSSLX509NameToString(X509_CRL_get_issuer(crl), issuer, sizeof(issuer));
+        xmlSecOtherError2(XMLSEC_ERRORS_R_CRL_VERIFY_FAILED, NULL,
+            "issuer=%s; cRLSign key usage is not asserted", ((ret >= 0) ? issuer : "unknown"));
+
+        /* not verified */
+        res = 0;
         goto done;
     }
 
@@ -2277,8 +2341,13 @@ xmlSecOpenSSLX509FindChildCert(STACK_OF(X509) *chain, X509 *cert) {
             xmlSecInternalError("xmlSecOpenSSLX509GetSubjectHash", NULL);
             return(NULL);
         }
-        if(certNameHash == certNameHash2) {
-            /* same cert but different copy, skip for self-signed certs */
+        if((certNameHash == certNameHash2) &&
+           (X509_NAME_cmp(X509_get_subject_name(cert), X509_get_subject_name(cert_ii)) == 0)) {
+            /*
+             * same cert but different copy, skip for self-signed certs;
+             * the name hash is only 32 bits, so a full name comparison is
+             * used to avoid skipping a cert on a hash collision
+             */
             continue;
         }
 
@@ -2288,6 +2357,13 @@ xmlSecOpenSSLX509FindChildCert(STACK_OF(X509) *chain, X509 *cert) {
             return(NULL);
         }
         if(certNameHash != certNameHash2) {
+            /* issuer doesn't match */
+            continue;
+        }
+
+        /* the name hash is only 32 bits: confirm the match with a full name
+         * comparison to avoid a false positive on a hash collision */
+        if(X509_NAME_cmp(X509_get_subject_name(cert), X509_get_issuer_name(cert_ii)) != 0) {
             /* issuer doesn't match */
             continue;
         }

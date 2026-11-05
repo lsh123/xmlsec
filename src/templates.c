@@ -470,6 +470,12 @@ xmlSecTmplReferenceAddTransform(xmlNodePtr referenceNode, xmlSecTransformId tran
     res = xmlSecAddChild(transformsNode, xmlSecNodeTransform, xmlSecDSigNs);
     if(res == NULL) {
         xmlSecInternalError("xmlSecAddChild(xmlSecNodeTransform)", NULL);
+        if(transformsNodeWasCreated != 0) {
+            /* the container was created by this call and is now empty: remove
+             * it so the template is left exactly as it was on entry */
+            xmlUnlinkNode(transformsNode);
+            xmlFreeNode(transformsNode);
+        }
         return(NULL);
     }
 
@@ -1009,6 +1015,12 @@ xmlSecTmplCipherReferenceAddTransform(xmlNodePtr cipherReferenceNode,
     res = xmlSecAddChild(transformsNode, xmlSecNodeTransform, xmlSecDSigNs);
     if(res == NULL) {
         xmlSecInternalError("xmlSecAddChild(xmlSecNodeTransform)", NULL);
+        if(transformsNodeWasCreated != 0) {
+            /* the container was created by this call and is now empty: remove
+             * it so the template is left exactly as it was on entry */
+            xmlUnlinkNode(transformsNode);
+            xmlFreeNode(transformsNode);
+        }
         return(NULL);
     }
 
@@ -1315,6 +1327,12 @@ xmlSecTmplRetrievalMethodAddTransform(xmlNodePtr retrMethodNode, xmlSecTransform
     res = xmlSecAddChild(transformsNode, xmlSecNodeTransform, xmlSecDSigNs);
     if(res == NULL) {
         xmlSecInternalError("xmlSecAddChild(xmlSecNodeTransform)", NULL);
+        if(transformsNodeWasCreated != 0) {
+            /* the container was created by this call and is now empty: remove
+             * it so the template is left exactly as it was on entry */
+            xmlUnlinkNode(transformsNode);
+            xmlFreeNode(transformsNode);
+        }
         return(NULL);
     }
 

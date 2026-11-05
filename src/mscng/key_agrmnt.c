@@ -612,10 +612,18 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
 
 done:
     if (hSecret) {
-        NCryptFreeObject(hSecret);
+        status = NCryptFreeObject(hSecret);
+        if (status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("NCryptFreeObject(hSecret)", NULL, status);
+            /* ignore error */
+        }
     }
     if (hOtherPubKey) {
-        NCryptFreeObject(hOtherPubKey);
+        status = NCryptFreeObject(hOtherPubKey);
+        if (status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("NCryptFreeObject(hOtherPubKey)", NULL, status);
+            /* ignore error */
+        }
     }
     return(res);
 }

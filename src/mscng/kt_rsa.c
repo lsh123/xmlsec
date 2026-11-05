@@ -253,9 +253,11 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
     xmlSecAssert2(outSize == 0, -1);
 
     /* the encoded size is equal to the key's size so we could not
-     * process more than that. An empty input is allowed for encryption,
-     * matching the OpenSSL and MSCrypto backends; decryption is guarded
-     * by the inSize != keySize check below. */
+     * process more than that. An empty input is allowed for encryption
+     * (BCryptEncrypt accepts a zero-length message, see the dummy
+     * inBuf handling below); note that the OpenSSL backend rejects
+     * empty input instead. Decryption is guarded by the
+     * inSize != keySize check below. */
     if((transform->operation == xmlSecTransformOperationEncrypt) && (inSize >= keySize)) {
         xmlSecInvalidSizeLessThanError("Input data", inSize, keySize,
             xmlSecTransformGetName(transform));
@@ -350,15 +352,17 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
             XMLSEC_SAFE_CAST_SIZE_TO_ULONG(oaepParamsSize, paddingInfo.cbLabel, return(-1), xmlSecTransformGetName(transform));
 
             /* RSA-OAEP (EME-OAEP) https://www.rfc-editor.org/info/rfc8017/
-             * "RSAES-OAEP can operate on messages of length up to (k - 2 * hLen - 2) octets,
-             * where hLen is the length of the output from the underlying hash function and k is
-             * the length in octets of the recipient's RSA modulus."
+             * "RSAES-OAEP can operate on messages of length up to (k - 2 * hLen - 2 - l) octets,
+             * where hLen is the length of the output from the underlying hash function, k is
+             * the length in octets of the recipient's RSA modulus, and l is the length in
+             * octets of the label."
              *
              * CNG would reject an oversized plaintext with an opaque NTSTATUS error, so check the
              * bound explicitly */
             digestSize = xmlSecMSCngRsaOaepDigestSize(ctx->pszDigestAlgId);
             if(digestSize > 0) {
-                oaepMaxPlainSize = (keySize > (2 * digestSize + 2)) ? (keySize - (2 * digestSize + 2)) : 0;
+                oaepMaxPlainSize = (keySize > (2 * digestSize + 2 + oaepParamsSize))
+                    ? (keySize - (2 * digestSize + 2 + oaepParamsSize)) : 0;
                 if(inSize > oaepMaxPlainSize) {
                     xmlSecInvalidSizeMoreThanError("Input data", inSize, oaepMaxPlainSize,
                         xmlSecTransformGetName(transform));

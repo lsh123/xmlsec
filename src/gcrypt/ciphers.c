@@ -88,6 +88,11 @@ xmlSecGCryptBlockCipherCtxInit(xmlSecGCryptBlockCipherCtxPtr ctx,
 
         /* allocate space for IV */
         outSize = xmlSecBufferGetSize(out);
+        if(outSize > XMLSEC_SIZE_MAX - blockSize) {
+            xmlSecInternalError3("xmlSecBufferSetSize", cipherName,
+                "outSize=" XMLSEC_SIZE_FMT "; blockSize=" XMLSEC_SIZE_FMT, outSize, blockSize);
+            return(-1);
+        }
         ret = xmlSecBufferSetSize(out, outSize + blockSize);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetSize", cipherName,

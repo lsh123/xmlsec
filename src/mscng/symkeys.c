@@ -122,7 +122,7 @@ xmlSecMSCngSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSec
 
     sizeBytes = XMLSEC_BITS_TO_BYTES(sizeBits);
     xmlSecAssert2(sizeBytes > 0, -1);
-
+    xmlSecAssert2(sizeBytes <= XMLSEC_BINARY_KEY_BYTES_SIZE_MAX, -1);
     return(xmlSecMSCngGenerateRandom(buffer, sizeBytes));
 }
 

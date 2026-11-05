@@ -294,6 +294,16 @@ xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSe
                 "TAG_SEQUENCE is expected: tag=%lu", ti.tag);
             return(-1);
         }
+
+        /* The top-level SEQUENCE must consume the entire buffer: any bytes
+         * left after its declared content are rejected instead of being
+         * parsed as extra TLVs (which could change the guessed key type or
+         * the key built from the parsed values). */
+        if(length != ti.length) {
+            xmlSecInternalError3("xmlSecGCryptAsn1ParseIntegerSequence", NULL,
+                "trailing data after the top-level SEQUENCE: sequence_len=%lu, remaining=%lu", ti.length, length);
+            return(-1);
+        }
     }
 
     /* read sequence */
@@ -540,14 +550,6 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         xmlSecInternalError("xmlSecGCryptAsn1ParseIntegerSequence", NULL);
         goto done;
     }
-
-    /* Note: xmlSecGCryptAsn1ParseIntegerSequence parses the leading top-level
-     * SEQUENCE but does not enforce its declared content length, so trailing
-     * bytes after the outer SEQUENCE are parsed by the same switch statement:
-     * TLVs with recognized tags are appended to the integers and object ids
-     * arrays, and TLVs with unrecognized tags cause an error. As a result,
-     * trailing data can change the guessed key type or the key built from
-     * the parsed values. */
 
     /* do we need to guess the key type? not robust but the best we can do */
     if(type == xmlSecGCryptDerKeyTypeAuto) {

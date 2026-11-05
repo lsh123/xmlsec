@@ -134,10 +134,6 @@ xmlSecGnuTLSSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSe
 
     xmlSecAssert2(xmlSecGnuTLSSymKeyDataCheckId(data), -1);
     xmlSecAssert2(sizeBits > 0, -1);
-    if(sizeBits > (XMLSEC_SIZE_MAX - 7)) {
-        xmlSecInvalidSizeMoreThanError("sizeBits", sizeBits, (XMLSEC_SIZE_MAX - 7), NULL);
-        return(-1);
-    }
     XMLSEC_UNREFERENCED(type);
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
@@ -145,6 +141,7 @@ xmlSecGnuTLSSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSe
 
     sizeBytes = XMLSEC_BITS_TO_BYTES(sizeBits);
     xmlSecAssert2(sizeBytes > 0, -1);
+    xmlSecAssert2(sizeBytes <= XMLSEC_BINARY_KEY_BYTES_SIZE_MAX, -1);
     return(xmlSecGnuTLSGenerateRandom(buffer, sizeBytes));
 }
 
@@ -312,6 +309,8 @@ xmlSecGnuTLSKeyDataAesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSi
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataAesId), -1);
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(bufSize > 0, -1);
+    /* The exact key size is validated by the cipher transform rather than
+     * here, consistent with the other crypto backends. */
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
     xmlSecAssert2(buffer != NULL, -1);
@@ -352,6 +351,8 @@ xmlSecGnuTLSKeyDataCamelliaSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xml
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataCamelliaId), -1);
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(bufSize > 0, -1);
+    /* The exact key size is validated by the cipher transform rather than
+     * here, consistent with the other crypto backends. */
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
     xmlSecAssert2(buffer != NULL, -1);
@@ -392,6 +393,8 @@ xmlSecGnuTLSKeyDataDesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSi
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataDesId), -1);
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(bufSize > 0, -1);
+    /* The exact key size is validated by the cipher transform rather than
+     * here, consistent with the other crypto backends. */
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
     xmlSecAssert2(buffer != NULL, -1);
@@ -598,6 +601,8 @@ xmlSecGnuTLSKeyDataChaCha20Set(xmlSecKeyDataPtr data, const xmlSecByte* buf, xml
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataChaCha20Id), -1);
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(bufSize > 0, -1);
+    /* The exact key size is validated by the cipher transform rather than
+     * here, consistent with the other crypto backends. */
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
     xmlSecAssert2(buffer != NULL, -1);

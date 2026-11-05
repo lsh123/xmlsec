@@ -295,7 +295,7 @@ xmlSecOpenSSLKWDes3Sha1(xmlSecTransformPtr transform XMLSEC_ATTRIBUTE_UNUSED,
         return(-1);
     }
 
-    /* success */
+    /* success: EVP_Q_digest wrote the actual digest size into *outWritten */
     return(0);
 }
 

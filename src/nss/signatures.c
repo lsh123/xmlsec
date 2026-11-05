@@ -245,7 +245,13 @@ xmlSecNssSignatureInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformDsaSha256Id)) {
         ctx->keyId      = xmlSecNssKeyDataDsaId;
-        /* This creates a signature which is ASN1 encoded */
+        /* This creates a signature which is ASN1 encoded. Note that no DSA
+         * key size check is performed here: for 1024-bit DSA keys (160-bit q)
+         * the 256-bit digest is longer than q, and NSS truncates such digests
+         * to the leftmost q bits (see dsa_SignDigest()/DSA_VerifyDigest() in
+         * the NSS freebl library), so these keys can be used with dsa-sha256,
+         * consistent with RFC 3275; note that this combination is not
+         * FIPS 186-4 compliant */
         ctx->alg        = SEC_OID_NIST_DSA_SIGNATURE_WITH_SHA256_DIGEST;
     } else
 #endif /* XMLSEC_NO_SHA256 */
@@ -689,7 +695,14 @@ xmlSecNssSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         if (ctx->isEdDSA) {
             /* Nothing to do here, will verify in Verify */
         } else if (ctx->isMlDsa) {
-            /* ML-DSA: verify that the public key parameter set matches the transform variant */
+            /* ML-DSA: verify that the public key is an ML-DSA key and that its
+             * parameter set matches the transform variant */
+            if (ctx->u.vfy.pubkey->keyType != mldsaKey) {
+                xmlSecInternalError2("ML-DSA public key has an unexpected key type",
+                    xmlSecTransformGetName(transform),
+                    "keyType=%u", (unsigned int)ctx->u.vfy.pubkey->keyType);
+                return(-1);
+            }
             if (ctx->u.vfy.pubkey->u.mldsa.paramSet != ctx->alg) {
                 xmlSecInternalError3("ML-DSA public key parameter set mismatch",
                     xmlSecTransformGetName(transform),

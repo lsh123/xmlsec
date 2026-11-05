@@ -258,6 +258,11 @@ xmlSecKeyDataBinaryValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
         return(-1);
     }
     xmlSecAssert2(xmlSecKeyDataIsValid(value), -1);
+    if(!xmlSecKeyDataCheckId(value, id)) {
+        xmlSecInvalidTypeError("key value is not of the expected binary key data type",
+                               xmlSecKeyDataKlassGetName(id));
+        return(-1);
+    }
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(value);
     xmlSecAssert2(buffer != NULL, -1);
@@ -383,6 +388,11 @@ xmlSecKeyDataBinaryValueBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
         return(-1);
     }
     xmlSecAssert2(xmlSecKeyDataIsValid(value), -1);
+    if(!xmlSecKeyDataCheckId(value, id)) {
+        xmlSecInvalidTypeError("key value is not of the expected binary key data type",
+                               xmlSecKeyDataKlassGetName(id));
+        return(-1);
+    }
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(value);
     xmlSecAssert2(buffer != NULL, -1);
@@ -691,6 +701,9 @@ xmlSecKeyValueEcInitialize(xmlSecKeyValueEcPtr data) {
     int ret;
 
     xmlSecAssert2(data != NULL, -1);
+    /* zero the struct so the Finalize function can be safely called on a
+     * mid-way initialization failure below: xmlSecBufferFinalize tolerates
+     * buffers that were never initialized (zeroed) */
     memset(data, 0, sizeof(xmlSecKeyValueEc));
 
     ret = xmlSecBufferInitialize(&(data->pubkey), XMLSEC_KEY_DATA_EC_INIT_BUF_SIZE);
@@ -1238,6 +1251,9 @@ xmlSecKeyValueDhInitialize(xmlSecKeyValueDhPtr data) {
     int ret;
 
     xmlSecAssert2(data != NULL, -1);
+    /* zero the struct so the Finalize function can be safely called on a
+     * mid-way initialization failure below: xmlSecBufferFinalize tolerates
+     * buffers that were never initialized (zeroed) */
     memset(data, 0, sizeof(xmlSecKeyValueDh));
 
     ret = xmlSecBufferInitialize(&(data->p), XMLSEC_KEY_DATA_DH_INIT_BUF_SIZE);
@@ -1843,6 +1859,9 @@ xmlSecKeyValueDsaInitialize(xmlSecKeyValueDsaPtr data) {
     int ret;
 
     xmlSecAssert2(data != NULL, -1);
+    /* zero the struct so the Finalize function can be safely called on a
+     * mid-way initialization failure below: xmlSecBufferFinalize tolerates
+     * buffers that were never initialized (zeroed) */
     memset(data, 0, sizeof(xmlSecKeyValueDsa));
 
     ret = xmlSecBufferInitialize(&(data->p), XMLSEC_KEY_DATA_DSA_INIT_BUF_SIZE);
@@ -2416,6 +2435,9 @@ xmlSecKeyValueRsaInitialize(xmlSecKeyValueRsaPtr data) {
     int ret;
 
     xmlSecAssert2(data != NULL, -1);
+    /* zero the struct so the Finalize function can be safely called on a
+     * mid-way initialization failure below: xmlSecBufferFinalize tolerates
+     * buffers that were never initialized (zeroed) */
     memset(data, 0, sizeof(xmlSecKeyValueRsa));
 
     ret = xmlSecBufferInitialize(&(data->modulus), XMLSEC_KEY_DATA_RSA_INIT_BUF_SIZE);

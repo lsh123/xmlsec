@@ -218,6 +218,18 @@ XMLSEC_EXPORT int   xmlSecTransformPbkdf2ParamsRead          (xmlSecTransformPbk
 /* HKDF */
 #ifndef XMLSEC_NO_HKDF
 
+/*
+ * The maximum derived key length (in bytes) accepted by
+ * xmlSecTransformHkdfParamsRead(). Key lengths above this
+ * limit are rejected to protect against oversized derived-key
+ * buffer allocations (denial of service) when processing
+ * untrusted documents. RFC 5869 permits up to 255 × HashLen bytes
+ * (for SHA-512, 16320 bytes)
+ */
+#if !defined(XMLSEC_HKDF_MAX_KEY_LENGTH)
+#define XMLSEC_HKDF_MAX_KEY_LENGTH  ((xmlSecSize)16320)
+#endif /* !defined(XMLSEC_HKDF_MAX_KEY_LENGTH) */
+
 struct _xmlSecTransformHkdfParams {
     xmlChar*        prfAlgorithmHref;
     xmlSecBuffer    salt;

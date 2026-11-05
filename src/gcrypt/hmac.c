@@ -198,6 +198,11 @@ xmlSecGCryptHmacFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     if(ctx->digestCtx != NULL) {
+        /*
+         * gcry_md_close() is void: there is no error status to check and
+         * nothing to report on failure; at worst a failed close just leaks
+         * the HMAC digest handle.
+         */
         gcry_md_close(ctx->digestCtx);
     }
     xmlSecMemCleanse(ctx, sizeof(xmlSecGCryptHmacCtx));
@@ -284,6 +289,11 @@ xmlSecGCryptHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     err = gcry_md_setkey(ctx->digestCtx, xmlSecBufferGetData(buffer),
                         xmlSecBufferGetSize(buffer));
     if(err != GPG_ERR_NO_ERROR) {
+        /*
+         * On failure the digest handle is intentionally left open: it will
+         * be closed by xmlSecGCryptHmacFinalize when the transform is
+         * destroyed.
+         */
         xmlSecGCryptError("gcry_md_setkey", err,
                           xmlSecTransformGetName(transform));
         return(-1);
@@ -360,6 +370,11 @@ xmlSecGCryptHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
     if(transform->status == xmlSecTransformStatusWorking) {
         xmlSecSize inSize;
 
+        /*
+         * On any of the errors below the digest handle is intentionally left
+         * open: it will be closed by xmlSecGCryptHmacFinalize when the
+         * transform is destroyed.
+         */
         inSize = xmlSecBufferGetSize(in);
         if(inSize > 0) {
             /* gcry_md_write() returns void (no error code), so there is

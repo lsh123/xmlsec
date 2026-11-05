@@ -320,6 +320,46 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         outBuf = xmlSecBufferGetData(out);
         xmlSecAssert2(outBuf != NULL, -1);
 
+#ifndef XMLSEC_NO_RSA_PKCS15
+        if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaPkcs1Id)) {
+            /* RSA PKCS1 v1.5 (EME-PKCS1-v1_5) limits the plaintext to k - 11
+             * bytes; CAPI would reject an oversized plaintext with an opaque
+             * Win32 error, so check the bound explicitly */
+            if((keySize <= 11) || (inSize > (keySize - 11))) {
+                xmlSecInvalidSizeMoreThanError("Input data", inSize,
+                    (keySize > 11) ? (keySize - 11) : 0,
+                    xmlSecTransformGetName(transform));
+                return(-1);
+            }
+        }
+#endif /* XMLSEC_NO_RSA_PKCS15 */
+
+#ifndef XMLSEC_NO_RSA_OAEP
+        if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaOaepId)) {
+            xmlSecSize oaepParamsSize;
+            xmlSecSize oaepMaxPlainSize;
+
+            oaepParamsSize = xmlSecBufferGetSize(&(ctx->oaepParams));
+
+            /* RSA-OAEP (EME-OAEP) https://www.rfc-editor.org/info/rfc8017/
+             * "RSAES-OAEP can operate on messages of length up to
+             * (k - 2 * hLen - 2 - l) octets, where hLen is the length of the
+             * output from the underlying hash function, k is the length in
+             * octets of the recipient's RSA modulus, and l is the length in
+             * octets of the label." CAPI's OAEP implementation always uses
+             * SHA-1, so hLen = 20.
+             *
+             * CAPI would reject an oversized plaintext with an opaque Win32
+             * error, so check the bound explicitly */
+            oaepMaxPlainSize = (keySize > (2 * 20 + 2 + oaepParamsSize))
+                ? (keySize - (2 * 20 + 2 + oaepParamsSize)) : 0;
+            if(inSize > oaepMaxPlainSize) {
+                xmlSecInvalidSizeMoreThanError("Input data", inSize, oaepMaxPlainSize,
+                    xmlSecTransformGetName(transform));
+                return(-1);
+            }
+        }
+#endif /* XMLSEC_NO_RSA_OAEP */
 
 #ifndef XMLSEC_NO_RSA_OAEP
         /* Set the OAEP parameter on a temporary duplicate key, when available,
@@ -389,6 +429,9 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
             return (-1);
         }
 
+        /* Relies on the keyspec recorded in the key data (see
+         * xmlSecMSCryptoKeyDataGetDecryptKey): a key that cannot perform key
+         * exchange fails at CryptGetUserKey there or at CryptDecrypt below */
         hKey = xmlSecMSCryptoKeyDataGetDecryptKey(ctx->data);
         if (0 == hKey) {
             xmlSecInternalError("xmlSecMSCryptoKeyDataGetDecryptKey", xmlSecTransformGetName(transform));

@@ -723,12 +723,17 @@ xmlSecTransformKAMWrite(xmlSecTransformKAMPtr params, xmlNodePtr node, xmlSecTra
         xmlSecInvalidNodeError(cur, xmlSecNodeOriginatorKeyInfo, NULL);
         goto done;
     }
-    if(kamData->keyOriginator != NULL) {
-        ret = xmlSecTransformWriteKeyInfoNode(kamData->keyOriginator, cur, kamTransform, transformCtx);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecTransformWriteKeyInfoNode(OriginatorKeyInfo)", xmlSecNodeGetName(node));
-            goto done;
-        }
+    if(kamData->keyOriginator == NULL) {
+        /* an empty <OriginatorKeyInfo> node would be structurally invalid;
+         * this is expected to be unreachable (the key is set or the read
+         * fails) */
+        xmlSecInternalError("no key to write in the OriginatorKeyInfo node", xmlSecNodeGetName(node));
+        goto done;
+    }
+    ret = xmlSecTransformWriteKeyInfoNode(kamData->keyOriginator, cur, kamTransform, transformCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformWriteKeyInfoNode(OriginatorKeyInfo)", xmlSecNodeGetName(node));
+        goto done;
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
@@ -737,12 +742,17 @@ xmlSecTransformKAMWrite(xmlSecTransformKAMPtr params, xmlNodePtr node, xmlSecTra
         xmlSecInvalidNodeError(cur, xmlSecNodeRecipientKeyInfo, NULL);
         goto done;
     }
-    if(kamData->keyRecipient != NULL) {
-        ret = xmlSecTransformWriteKeyInfoNode(kamData->keyRecipient, cur, kamTransform, transformCtx);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecTransformWriteKeyInfoNode(RecipientKeyInfo)", xmlSecNodeGetName(node));
-            goto done;
-        }
+    if(kamData->keyRecipient == NULL) {
+        /* an empty <RecipientKeyInfo> node would be structurally invalid;
+         * this is expected to be unreachable (the key is set or the read
+         * fails) */
+        xmlSecInternalError("no key to write in the RecipientKeyInfo node", xmlSecNodeGetName(node));
+        goto done;
+    }
+    ret = xmlSecTransformWriteKeyInfoNode(kamData->keyRecipient, cur, kamTransform, transformCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformWriteKeyInfoNode(RecipientKeyInfo)", xmlSecNodeGetName(node));
+        goto done;
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
@@ -1090,7 +1100,8 @@ xmlSecTransformReadContextStringFromObject(
     const xmlChar* name,
     const xmlChar* ns,
     xmlSecSize maxSize,
-    xmlSecBufferPtr res
+    xmlSecBufferPtr res,
+    int contextStringsFound
 ) {
     xmlNodePtr signatureNode;
     xmlNodePtr objectNode;
@@ -1112,8 +1123,9 @@ xmlSecTransformReadContextStringFromObject(
 
     /*
      * Not more than one context string element is allowed per signature: the
-     * result buffer may already contain the context string read from the
-     * <ds:SignatureMethod> element.
+     * context string may have already been read from the <ds:SignatureMethod>
+     * element. The element is counted (instead of checking the result buffer)
+     * because an empty (zero-byte) context string element is legal.
      */
     for(objectNode = xmlSecGetNextElementNode(signatureNode->children); objectNode != NULL; objectNode = xmlSecGetNextElementNode(objectNode->next)) {
         if (!xmlSecCheckNodeName(objectNode, xmlSecNodeObject, xmlSecDSigNs)) {
@@ -1125,10 +1137,11 @@ xmlSecTransformReadContextStringFromObject(
             if (!xmlSecCheckNodeName(objNodeChild, name, ns)) {
                 continue;
             }
-            if (!xmlSecBufferIsEmpty(res)) {
+            if (contextStringsFound != 0) {
                 xmlSecInvalidNodeContentError(objNodeChild, NULL, "more than one SignatureContext element is not allowed");
                 return(-1);
             }
+            contextStringsFound = 1;
             ret = xmlSecBufferBase64NodeContentRead(res, objNodeChild);
             if (ret != 0) {
                 xmlSecInternalError("xmlSecBufferBase64NodeContentRead(SignatureContext)", NULL);
@@ -1157,6 +1170,7 @@ xmlSecTransformReadContextStringFromSignatureMethodOrObjectNodes(
     xmlSecBufferPtr res
 ) {
     xmlNodePtr cur;
+    int contextStringsFound = 0;
     int ret;
 
     xmlSecAssert2(signatureMethodNode != NULL, -1);
@@ -1166,6 +1180,7 @@ xmlSecTransformReadContextStringFromSignatureMethodOrObjectNodes(
     /* try to read the context string from the first child of the SignatureMethod element */
     cur = xmlSecGetNextElementNode(signatureMethodNode->children);
     if ((cur != NULL) && xmlSecCheckNodeName(cur, name, ns)) {
+        contextStringsFound = 1;
         ret = xmlSecBufferBase64NodeContentRead(res, cur);
         if (ret != 0) {
             xmlSecInternalError("xmlSecBufferBase64NodeContentRead(SignatureContext)", NULL);
@@ -1192,7 +1207,7 @@ xmlSecTransformReadContextStringFromSignatureMethodOrObjectNodes(
     /* the context string may also be placed in a <ds:Object> element of the
      * containing <ds:Signature>; not more than one context string element
      * is allowed per signature */
-    ret = xmlSecTransformReadContextStringFromObject(signatureMethodNode, name, ns, maxSize, res);
+    ret = xmlSecTransformReadContextStringFromObject(signatureMethodNode, name, ns, maxSize, res, contextStringsFound);
     if (ret < 0) {
         xmlSecInternalError("xmlSecTransformReadContextStringFromObject()", NULL);
         return(-1);
@@ -1633,6 +1648,10 @@ xmlSecTransformHkdfParamsRead(xmlSecTransformHkdfParamsPtr params, xmlNodePtr no
         ret = xmlSecGetNodeContentAsSize(cur, 0, &(params->keyLength));
         if((ret < 0) || (params->keyLength == 0)) {
             xmlSecInternalError("xmlSecGetNodeContentAsSize(KeyLength)", NULL);
+            return(-1);
+        }
+        if(params->keyLength > XMLSEC_HKDF_MAX_KEY_LENGTH) {
+            xmlSecInvalidSizeDataError("keyLength", params->keyLength, "too big", NULL);
             return(-1);
         }
         cur = xmlSecGetNextElementNode(cur->next);

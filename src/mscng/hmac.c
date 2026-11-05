@@ -292,6 +292,8 @@ xmlSecMSCngHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecSize bufSize;
     DWORD dwBufSize, resultLength = 0;
     NTSTATUS status;
+    LPCWSTR savedAlgId;
+    xmlSecSize savedDgstSizeInBits;
 
     xmlSecAssert2(xmlSecMSCngHmacCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationSign) || (transform->operation == xmlSecTransformOperationVerify), -1);
@@ -318,6 +320,12 @@ xmlSecMSCngHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     xmlSecAssert2(xmlSecBufferGetData(buffer) != NULL, -1);
 
+    /* the done: cleanup below zeros the whole context; save the algorithm
+     * identifier (set during initialize) and the digest size (set during node
+     * read) so a setKey retry keeps them intact */
+    savedAlgId = ctx->pszAlgId;
+    savedDgstSizeInBits = ctx->dgstSizeInBits;
+
     /* at this point we know what should be the key, go ahead with the CNG
      * calls */
     status = BCryptOpenAlgorithmProvider(&ctx->hAlg,
@@ -340,6 +348,11 @@ xmlSecMSCngHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptGetProperty", xmlSecTransformGetName(transform), status);
+        goto done;
+    }
+    if(ctx->hashLength == 0) {
+        xmlSecInternalError2("BCryptGetProperty", xmlSecTransformGetName(transform),
+            "unexpected hash length=" XMLSEC_SIZE_FMT, (xmlSecSize)ctx->hashLength);
         goto done;
     }
 
@@ -398,6 +411,10 @@ done:
         BCryptCloseAlgorithmProvider(ctx->hAlg, 0);
     }
     memset(ctx, 0, sizeof(xmlSecMSCngHmacCtx));
+    /* restore the algorithm identifier and the digest size; see the comment
+     * at the top of this function */
+    ctx->pszAlgId = savedAlgId;
+    ctx->dgstSizeInBits = savedDgstSizeInBits;
     return(-1);
 }
 

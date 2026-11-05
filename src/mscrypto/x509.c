@@ -196,6 +196,7 @@ xmlSecMSCryptoKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert
 
     ctx = xmlSecMSCryptoX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->hMemStore != 0, -1);
     xmlSecAssert2(ctx->keyCert == NULL, -1);
 
     /* CertAddCertificateContextToStore creates a new copy of the certificate context

@@ -345,6 +345,9 @@ xmlSecMSCngKWDes3BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptImportKey", NULL, status);
+        /* the out-handle is not guaranteed to be zeroed on failure; reset it so
+         * the cleanup below does not attempt to destroy an indeterminate handle */
+        hKey = NULL;
         goto done;
     }
 
@@ -564,6 +567,9 @@ xmlSecMSCngKWDes3BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptImportKey", NULL, status);
+        /* the out-handle is not guaranteed to be zeroed on failure; reset it so
+         * the cleanup below does not attempt to destroy an indeterminate handle */
+        hKey = NULL;
         goto done;
     }
 

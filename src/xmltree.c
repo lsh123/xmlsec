@@ -796,6 +796,7 @@ xmlSecReplaceNodeAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr* repl
     if(replaced != NULL) {
         (*replaced) = oldNode;
     } else {
+        xmlUnlinkNode(oldNode);
         xmlFreeNode(oldNode);
     }
 
@@ -1114,6 +1115,7 @@ xmlDocPtr
 xmlSecCreateTree(const xmlChar* rootNodeName, const xmlChar* rootNodeNs) {
     xmlDocPtr doc;
     xmlNodePtr root;
+    xmlNodePtr oldRoot;
     xmlNsPtr ns;
 
     xmlSecAssert2(rootNodeName != NULL, NULL);
@@ -1133,7 +1135,13 @@ xmlSecCreateTree(const xmlChar* rootNodeName, const xmlChar* rootNodeNs) {
         xmlFreeDoc(doc);
         return(NULL);
     }
-    xmlDocSetRootElement(doc, root);
+
+    /* make sure to remove old root */
+    oldRoot = xmlDocSetRootElement(doc, root);
+    if(oldRoot  != NULL) {
+        xmlUnlinkNode(oldRoot);
+        xmlFreeNode(oldRoot);
+    }
 
     /* and set root node namespace */
     if(rootNodeNs != NULL) {

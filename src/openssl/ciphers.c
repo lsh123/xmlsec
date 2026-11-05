@@ -545,6 +545,14 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     } else {
         xmlSecSize padSize;
 
+        /* a truncated ciphertext (e.g. the IV only) leaves less than one block
+         * in the input at the final update; report it as invalid data rather
+         * than failing the block-update assertion */
+        if(inLen < blockLen) {
+            xmlSecInvalidDataError("not enough data to decrypt the last block", cipherName);
+            return(-1);
+        }
+
         /* update the last block with padding */
         ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, inBuf, inSize, out, cipherName, 1, NULL); /* final */
         if(ret < 0) {

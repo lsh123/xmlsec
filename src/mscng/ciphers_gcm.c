@@ -433,7 +433,11 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
      * AES-GCM provider reports them in bytes (verified empirically: min=12,
      * max=16, inc=1). A GCM tag is at most 16 bytes, so dwMaxLength > 16 can
      * only be a bits-unit report; normalize it to bytes so the checks below
-     * work regardless of the provider's unit. */
+     * work regardless of the provider's unit. A bits-unit report with
+     * dwMaxLength <= 16 (a maximum tag of 2 bytes or less) is indistinguishable
+     * from a bytes-unit report and is left as-is; such a provider cannot
+     * produce the 16-byte tag required below, so BCryptEncrypt/BCryptDecrypt
+     * rejects it later and the failure is closed either way. */
     if(authTagLengths.dwMaxLength > (DWORD)xmlSecMSCngAesGcmTagLengthInBytes) {
         authTagLengths.dwMinLength /= 8;
         authTagLengths.dwMaxLength /= 8;

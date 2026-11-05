@@ -456,31 +456,31 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
 
 #ifndef XMLSEC_NO_MD5
     if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaMd5Id)) {
-        xmlSecMSCryptoConvertEndian(data, tmpBuf, dataSize);
+        ret = xmlSecMSCryptoConvertEndian(data, tmpBuf, dataSize);
     } else
 #endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_SHA1
     if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha1Id)) {
-        xmlSecMSCryptoConvertEndian(data, tmpBuf, dataSize);
+        ret = xmlSecMSCryptoConvertEndian(data, tmpBuf, dataSize);
     } else
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
     if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha256Id)) {
-        xmlSecMSCryptoConvertEndian(data, tmpBuf, dataSize);
+        ret = xmlSecMSCryptoConvertEndian(data, tmpBuf, dataSize);
     } else
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
     if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha384Id)) {
-        xmlSecMSCryptoConvertEndian(data, tmpBuf, dataSize);
+        ret = xmlSecMSCryptoConvertEndian(data, tmpBuf, dataSize);
     } else
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
     if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha512Id)) {
-        xmlSecMSCryptoConvertEndian(data, tmpBuf, dataSize);
+        ret = xmlSecMSCryptoConvertEndian(data, tmpBuf, dataSize);
     } else
 #endif /* XMLSEC_NO_SHA512 */
 
@@ -488,8 +488,10 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
 
 #ifndef XMLSEC_NO_DSA
     if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformDsaSha1Id) && (dataSize == 40)) {
-        xmlSecMSCryptoConvertEndian(data, tmpBuf, 20);
-        xmlSecMSCryptoConvertEndian(data + 20, tmpBuf + 20, 20);
+        ret = xmlSecMSCryptoConvertEndian(data, tmpBuf, 20);
+        if(ret >= 0) {
+            ret = xmlSecMSCryptoConvertEndian(data + 20, tmpBuf + 20, 20);
+        }
     } else
 #endif /* XMLSEC_NO_DSA */
 
@@ -499,7 +501,7 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
      * so reversing the whole buffer (rather than each integer half) restores
      * the s-first big-endian order of the XML signature value. */
     if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2001GostR3411_94Id)) {
-        xmlSecMSCryptoConvertEndian(data, tmpBuf, dataSize);
+        ret = xmlSecMSCryptoConvertEndian(data, tmpBuf, dataSize);
     } else
 #endif /* XMLSEC_NO_GOST */
 
@@ -509,12 +511,20 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
      * restores the s-first big-endian order of the XML signature value. */
     if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2012_256Id) ||
         xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2012_512Id)) {
-        xmlSecMSCryptoConvertEndian(data, tmpBuf, dataSize);
+        ret = xmlSecMSCryptoConvertEndian(data, tmpBuf, dataSize);
     } else
 #endif /* XMLSEC_NO_GOST2012 */
 
     {
         xmlSecInvalidTypeError("Invalid signature algorithm", xmlSecTransformGetName(transform));
+        goto done;
+    }
+
+    /* the matching branch of the chain above stores the conversion result in
+     * ret; a failed conversion must not reach CryptVerifySignature with an
+     * unreversed buffer */
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecMSCryptoConvertEndian", xmlSecTransformGetName(transform));
         goto done;
     }
 
@@ -731,31 +741,31 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
 
 #ifndef XMLSEC_NO_MD5
             if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaMd5Id)) {
-                xmlSecMSCryptoConvertEndian(tmpBuf, outBuf, outSize);
+                ret = xmlSecMSCryptoConvertEndian(tmpBuf, outBuf, outSize);
             } else
 #endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_SHA1
             if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha1Id)) {
-                xmlSecMSCryptoConvertEndian(tmpBuf, outBuf, outSize);
+                ret = xmlSecMSCryptoConvertEndian(tmpBuf, outBuf, outSize);
             } else
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
             if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha256Id)) {
-                xmlSecMSCryptoConvertEndian(tmpBuf, outBuf, outSize);
+                ret = xmlSecMSCryptoConvertEndian(tmpBuf, outBuf, outSize);
             } else
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
             if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha384Id)) {
-                xmlSecMSCryptoConvertEndian(tmpBuf, outBuf, outSize);
+                ret = xmlSecMSCryptoConvertEndian(tmpBuf, outBuf, outSize);
             } else
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
             if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha512Id)) {
-                xmlSecMSCryptoConvertEndian(tmpBuf, outBuf, outSize);
+                ret = xmlSecMSCryptoConvertEndian(tmpBuf, outBuf, outSize);
             } else
 #endif /* XMLSEC_NO_SHA512 */
 
@@ -763,8 +773,10 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
 
 #ifndef XMLSEC_NO_DSA
             if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformDsaSha1Id) && (outSize == 40)) {
-                xmlSecMSCryptoConvertEndian(tmpBuf, outBuf, 20);
-                xmlSecMSCryptoConvertEndian(tmpBuf + 20, outBuf + 20, 20);
+                ret = xmlSecMSCryptoConvertEndian(tmpBuf, outBuf, 20);
+                if(ret >= 0) {
+                    ret = xmlSecMSCryptoConvertEndian(tmpBuf + 20, outBuf + 20, 20);
+                }
             } else
 #endif /* XMLSEC_NO_DSA */
 
@@ -774,7 +786,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
              * so reversing the whole buffer (rather than each integer half) produces
              * the s-first big-endian order of the XML signature value. */
             if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2001GostR3411_94Id)) {
-                xmlSecMSCryptoConvertEndian(tmpBuf, outBuf, outSize);
+                ret = xmlSecMSCryptoConvertEndian(tmpBuf, outBuf, outSize);
             } else
 #endif /* XMLSEC_NO_GOST */
 
@@ -784,13 +796,22 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
              * produces the s-first big-endian order of the XML signature value. */
             if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2012_256Id) ||
                 xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2012_512Id)) {
-                xmlSecMSCryptoConvertEndian(tmpBuf, outBuf, outSize);
+                ret = xmlSecMSCryptoConvertEndian(tmpBuf, outBuf, outSize);
             } else
 #endif /* XMLSEC_NO_GOST2012 */
 
             {
                 /* We shouldn't get at this place */
                 xmlSecInvalidTypeError("Invalid signature algorithm", xmlSecTransformGetName(transform));
+                xmlSecBufferFinalize(&tmp);
+                return(-1);
+            }
+
+            /* the matching branch of the chain above stores the conversion
+             * result in ret; a failed conversion must not be written out as
+             * the signature */
+            if (ret < 0) {
+                xmlSecInternalError("xmlSecMSCryptoConvertEndian", xmlSecTransformGetName(transform));
                 xmlSecBufferFinalize(&tmp);
                 return(-1);
             }

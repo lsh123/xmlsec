@@ -183,7 +183,7 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     inSize = inBlocks * blockSize;
 
     /* we write out the input size plus maybe one block */
-    if(outSize > XMLSEC_SIZE_MAX - inSize - blockSize) {
+    if((inSize > XMLSEC_SIZE_MAX - blockSize) || (outSize > XMLSEC_SIZE_MAX - inSize - blockSize)) {
         xmlSecInternalError4("xmlSecBufferSetMaxSize", cipherName,
             "outSize=" XMLSEC_SIZE_FMT "; inSize=" XMLSEC_SIZE_FMT "; blockSize=" XMLSEC_SIZE_FMT,
             outSize, inSize, blockSize);

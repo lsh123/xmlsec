@@ -319,6 +319,8 @@ xmlSecGCryptRsaPkcs1SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
 static int
 xmlSecGCryptRsaPkcs1Encrypt(xmlSecGCryptRsaPkcs1CtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out) {
+    xmlSecSize keySize;
+    xmlSecSize maxPlaintextSize;
     xmlSecSize inSize;
     int inLen;
     gcry_sexp_t s_pub_key;
@@ -335,6 +337,20 @@ xmlSecGCryptRsaPkcs1Encrypt(xmlSecGCryptRsaPkcs1CtxPtr ctx, xmlSecBufferPtr in, 
     /* setup plain text data */
     inSize = xmlSecBufferGetSize(in);
     XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, return(-1), NULL);
+
+    /* check that the input fits into the key
+     * (PKCS#1 v1.5: the maximum plaintext size is the key size - 11) */
+    keySize = XMLSEC_BITS_TO_BYTES(xmlSecKeyDataGetSize(ctx->keyData));
+    if(keySize <= 11) {
+        xmlSecInternalError2("xmlSecGCryptRsaPkcs1Encrypt", NULL,
+            "key size is too small for the PKCS#1 v1.5 padding: keySize=" XMLSEC_SIZE_FMT, keySize);
+        return(-1);
+    }
+    maxPlaintextSize = keySize - 11;
+    if(inSize > maxPlaintextSize) {
+        xmlSecInvalidSizeMoreThanError("Input data", inSize, maxPlaintextSize, NULL);
+        return(-1);
+    }
 
     err = gcry_sexp_build(&s_plaintext_data, NULL,
             "(data (flags pkcs1)"
@@ -927,8 +943,44 @@ xmlSecGCryptRsaOaepSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     return(0);
 }
 
+/**
+ * @brief Gets the digest length in bytes for the RSA-OAEP hash algorithm name.
+ * @details Maps the internal OAEP hash algorithm names (the XMLSEC_GCRYPT_RSA_OAEP_HASH_*
+ * values stored in the transform context) to the corresponding libgcrypt digest
+ * algorithms and returns the digest length in bytes.
+ * @param hashAlg the OAEP hash algorithm name.
+ * @return the digest length in bytes or 0 if the algorithm name is unknown.
+ */
+static xmlSecSize
+xmlSecGCryptRsaOaepGetHashLen(const char* hashAlg) {
+    int digest;
+
+    xmlSecAssert2(hashAlg != NULL, 0);
+
+    if(strcmp(hashAlg, XMLSEC_GCRYPT_RSA_OAEP_HASH_SHA1) == 0) {
+        digest = GCRY_MD_SHA1;
+    } else if(strcmp(hashAlg, XMLSEC_GCRYPT_RSA_OAEP_HASH_SHA224) == 0) {
+        digest = GCRY_MD_SHA224;
+    } else if(strcmp(hashAlg, XMLSEC_GCRYPT_RSA_OAEP_HASH_SHA256) == 0) {
+        digest = GCRY_MD_SHA256;
+    } else if(strcmp(hashAlg, XMLSEC_GCRYPT_RSA_OAEP_HASH_SHA384) == 0) {
+        digest = GCRY_MD_SHA384;
+    } else if(strcmp(hashAlg, XMLSEC_GCRYPT_RSA_OAEP_HASH_SHA512) == 0) {
+        digest = GCRY_MD_SHA512;
+    } else {
+        xmlSecInternalError2("xmlSecGCryptRsaOaepGetHashLen", NULL,
+            "hashAlg=%s", xmlSecErrorsSafeString(hashAlg));
+        return(0);
+    }
+
+    return((xmlSecSize)gcry_md_get_algo_dlen(digest));
+}
+
 static int
 xmlSecGCryptRsaOaepEncrypt(xmlSecGCryptRsaOaepCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out) {
+    xmlSecSize keySize;
+    xmlSecSize hashLen;
+    xmlSecSize maxPlaintextSize;
     xmlSecSize inSize, oaepParamSize;
     int inLen, oaepParamLen;
     gcry_sexp_t s_pub_key;
@@ -955,9 +1007,33 @@ xmlSecGCryptRsaOaepEncrypt(xmlSecGCryptRsaOaepCtxPtr ctx, xmlSecBufferPtr in, xm
     /* setup plain text data */
     inSize = xmlSecBufferGetSize(in);
     XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, return(-1), NULL);
-
     oaepParamSize = xmlSecBufferGetSize(&(ctx->oaepParams));
     XMLSEC_SAFE_CAST_SIZE_TO_INT(oaepParamSize, oaepParamLen, return(-1), NULL);
+
+    /* check that the input fits into the key
+     * (OAEP: the maximum plaintext size is the key size - 2 * hash size
+     * - 2 - label size, RFC 8017 EME-OAEP) */
+    keySize = XMLSEC_BITS_TO_BYTES(xmlSecKeyDataGetSize(ctx->keyData));
+    if(keySize <= 0) {
+        xmlSecInternalError("xmlSecKeyDataGetSize", NULL);
+        return(-1);
+    }
+    hashLen = xmlSecGCryptRsaOaepGetHashLen(ctx->hashAlg);
+    if(hashLen == 0) {
+        xmlSecInternalError2("xmlSecGCryptRsaOaepGetHashLen", NULL,
+            "hashAlg=%s", xmlSecErrorsSafeString(ctx->hashAlg));
+        return(-1);
+    }
+    if(keySize <= (2 * hashLen + 2 + oaepParamSize)) {
+        xmlSecInternalError2("xmlSecGCryptRsaOaepEncrypt", NULL,
+            "key size is too small for the OAEP digest and label: keySize=" XMLSEC_SIZE_FMT, keySize);
+        return(-1);
+    }
+    maxPlaintextSize = keySize - (2 * hashLen + 2 + oaepParamSize);
+    if(inSize > maxPlaintextSize) {
+        xmlSecInvalidSizeMoreThanError("Input data", inSize, maxPlaintextSize, NULL);
+        return(-1);
+    }
 
     if(oaepParamLen > 0) {
         err = gcry_sexp_build(&s_plaintext_data, NULL,

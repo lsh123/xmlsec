@@ -137,7 +137,11 @@ xmlSecTransformC14NNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSe
             return(-1);
         }
 
-        /* the list of namespaces is XML whitespace separated */
+        /* the list of namespaces is XML whitespace separated.
+         * The tokens are not validated as NCNames and duplicates are not
+         * rejected: the list is only used by libxml2 for equality
+         * comparison against the in-scope prefixes during canonicalization,
+         * so an invalid or duplicated token is simply ignored */
         for(p = list; ((p != NULL) && ((*p) != '\0')); p = n) {
             while((*p != '\0') && XMLSEC_IS_XML_SPACE(*p)) {
                 ++p;

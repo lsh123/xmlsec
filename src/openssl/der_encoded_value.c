@@ -188,6 +188,14 @@ xmlSecOpenSSLKeyDataDEREncodedKeyValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr k
         xmlSecInvalidSizeDataError("Remaining bytes", (dataSize - consumedSize), "0 bytes", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
+    if(consumedSize > dataSize) {
+        /*
+         * over-consumption is not expected: d2i_PUBKEY() and d2i_PUBKEY_ex()
+         * never advance the input pointer past the end of the buffer
+         */
+        xmlSecInvalidSizeDataError("Consumed bytes", (consumedSize - dataSize), "0 bytes", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
 
     /* add to key */
     keyData = xmlSecOpenSSLEvpKeyAdopt(pKey);

@@ -42,6 +42,7 @@ XMLSEC_EXPORT void              xmlSecKeyDataDebugXmlDumpImpl   (xmlSecKeyDataPt
 #define XMLSEC_BINARY_KEY_BYTES_SIZE_128            ((xmlSecSize)16)
 #define XMLSEC_BINARY_KEY_BYTES_SIZE_192            ((xmlSecSize)24)
 #define XMLSEC_BINARY_KEY_BYTES_SIZE_256            ((xmlSecSize)32)
+#define XMLSEC_BINARY_KEY_BYTES_SIZE_MAX            ((xmlSecSize)256)
 
 /**
  * @brief The binary key data (e.g. HMAC key).

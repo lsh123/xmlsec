@@ -555,15 +555,23 @@ xmlSecOpenSSLInit (void)  {
  */
 int
 xmlSecOpenSSLShutdown(void) {
+    int ret;
+    int res = 0;
+
 #ifdef XMLSEC_OPENSSL_API_300
     /* drop the reference to the caller-owned library context so that
      * it can be safely freed after shutdown */
     gXmlSecOpenSSLLibCtx = NULL;
 #endif /* XMLSEC_OPENSSL_API_300 */
 
-    xmlSecOpenSSLSetDefaultTrustedCertsFolder(NULL);
+    ret = xmlSecOpenSSLSetDefaultTrustedCertsFolder(NULL);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLSetDefaultTrustedCertsFolder", NULL);
+        res = -1;
+        /* ignore error and continue shutdown */
+    }
     xmlSecOpenSSLErrorsShutdown();
-    return(0);
+    return(res);
 }
 
 /**

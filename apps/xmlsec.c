@@ -1438,7 +1438,10 @@ int main(int argc, const char **argv) {
 
     /* do as much as we can w/o initialization */
     if(command == xmlSecAppCommandHelp) {
-        xmlSecAppPrintHelp(subCommand, cmdLineTopics);
+        /* plain "help"/"--help" and "help-all" do not have a sub command,
+         * so print the general help (the Unknown case is reserved for the
+         * unknown command error) */
+        xmlSecAppPrintHelp((subCommand == xmlSecAppCommandUnknown) ? command : subCommand, cmdLineTopics);
         res = 0;
         goto done;
     } else if(command == xmlSecAppCommandVersion) {

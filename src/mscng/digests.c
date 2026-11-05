@@ -187,6 +187,7 @@ xmlSecMSCngDigestInitialize(xmlSecTransformPtr transform) {
 
 static void xmlSecMSCngDigestFinalize(xmlSecTransformPtr transform) {
     xmlSecMSCngDigestCtxPtr ctx;
+    NTSTATUS status;
 
     xmlSecAssert(xmlSecMSCngDigestCheckId(transform));
     xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecMSCngDigestSize));
@@ -194,14 +195,20 @@ static void xmlSecMSCngDigestFinalize(xmlSecTransformPtr transform) {
     ctx = xmlSecMSCngDigestGetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
-    /* NTSTATUS is intentionally ignored: failures at finalization time are not
-     * recoverable and cannot be reported from a void finalize method */
+    /* NTSTATUS is logged but ignored: failures at finalization time are not
+     * recoverable and cannot be returned from a void finalize method */
     if(ctx->hHash != NULL) {
-        BCryptDestroyHash(ctx->hHash);
+        status = BCryptDestroyHash(ctx->hHash);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptDestroyHash", NULL, status);
+        }
     }
 
     if(ctx->hAlg != NULL) {
-        BCryptCloseAlgorithmProvider(ctx->hAlg, 0);
+        status = BCryptCloseAlgorithmProvider(ctx->hAlg, 0);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptCloseAlgorithmProvider", NULL, status);
+        }
     }
 
     if(ctx->pbHashObject != NULL) {
@@ -318,6 +325,12 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
             xmlSecMSCngNtError("BCryptGetProperty", xmlSecTransformGetName(transform), status);
             return(-1);
         }
+        xmlSecAssert2(cbData == sizeof(DWORD), -1);
+        if(cbHashObject == 0) {
+            xmlSecInternalError2("BCryptGetProperty", xmlSecTransformGetName(transform),
+                "unexpected hash object size=" XMLSEC_SIZE_FMT, (xmlSecSize)cbHashObject);
+            return(-1);
+        }
 
         /* allocate the hash object on the heap */
         xmlSecAssert2(ctx->pbHashObject == NULL, -1);
@@ -339,7 +352,12 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
             xmlSecMSCngNtError("BCryptGetProperty", xmlSecTransformGetName(transform), status);
             return(-1);
         }
-        xmlSecAssert2(ctx->cbHash > 0, -1);
+        xmlSecAssert2(cbData == sizeof(DWORD), -1);
+        if(ctx->cbHash == 0) {
+            xmlSecInternalError2("BCryptGetProperty", xmlSecTransformGetName(transform),
+                "unexpected hash length=" XMLSEC_SIZE_FMT, (xmlSecSize)ctx->cbHash);
+            return(-1);
+        }
 
         /* allocate the hash buffer on the heap */
         xmlSecAssert2(ctx->pbHash == NULL, -1);

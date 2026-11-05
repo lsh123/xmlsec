@@ -579,6 +579,10 @@ xmlSecMSCryptoAppPkcs12LoadMemory(
     }
     /* remember the exact wide-string size so cleanup can wipe the plaintext password */
     wcPwdLen = (DWORD)MultiByteToWideChar(CP_UTF8, 0, (LPCCH)pwd, -1, NULL, 0);
+    if(wcPwdLen == 0) {
+        xmlSecMSCryptoError("MultiByteToWideChar", NULL);
+        goto done;
+    }
 
     if (FALSE == PFXVerifyPassword(&pfx, wcPwd, 0)) {
         xmlSecMSCryptoError("PFXVerifyPassword", NULL);

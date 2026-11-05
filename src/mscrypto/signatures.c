@@ -28,7 +28,6 @@
 #include <xmlsec/mscrypto/crypto.h>
 #include <xmlsec/mscrypto/symbols.h>
 #include <xmlsec/mscrypto/certkeys.h>
-#include <xmlsec/mscrypto/x509.h>
 
 #include "private.h"
 #include "../cast_helpers.h"
@@ -100,19 +99,19 @@ static int xmlSecMSCryptoSignatureCheckId(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha256Id)) {
-       return(1);
+        return(1);
     } else
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha384Id)) {
-       return(1);
+        return(1);
     } else
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha512Id)) {
-       return(1);
+        return(1);
     } else
 #endif /* XMLSEC_NO_SHA512 */
 
@@ -242,7 +241,7 @@ static void xmlSecMSCryptoSignatureFinalize(xmlSecTransformPtr transform) {
         CryptReleaseContext(ctx->hFallbackProv, 0);
     }
 
-    if (ctx->data != NULL)  {
+    if (ctx->data != NULL) {
         xmlSecKeyDataDestroy(ctx->data);
         ctx->data = NULL;
     }
@@ -833,7 +832,7 @@ static xmlSecTransformKlass xmlSecMSCryptoRsaMd5Klass = {
     xmlSecMSCryptoSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCryptoSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecMSCryptoSignatureSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecMSCryptoSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecMSCryptoSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -876,7 +875,7 @@ static xmlSecTransformKlass xmlSecMSCryptoRsaSha1Klass = {
     xmlSecMSCryptoSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCryptoSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecMSCryptoSignatureSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecMSCryptoSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecMSCryptoSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -908,29 +907,29 @@ xmlSecMSCryptoTransformRsaSha1GetKlass(void) {
   *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoRsaSha256Klass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),              /* xmlSecSize klassSize */
-    xmlSecMSCryptoSignatureSize,               /* xmlSecSize objSize */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecMSCryptoSignatureSize,                /* xmlSecSize objSize */
 
-    xmlSecNameRsaSha256,                       /* const xmlChar* name; */
-    xmlSecHrefRsaSha256,                       /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,       /* xmlSecTransformUsage usage; */
+    xmlSecNameRsaSha256,                        /* const xmlChar* name; */
+    xmlSecHrefRsaSha256,                        /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
 
-    xmlSecMSCryptoSignatureInitialize,         /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCryptoSignatureFinalize,           /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCryptoSignatureSetKeyReq,          /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecMSCryptoSignatureSetKey,             /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCryptoSignatureVerify,             /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCryptoSignatureExecute,            /* xmlSecTransformExecuteMethod execute; */
+    xmlSecMSCryptoSignatureInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCryptoSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecMSCryptoSignatureSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
+    xmlSecMSCryptoSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecMSCryptoSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCryptoSignatureExecute,             /* xmlSecTransformExecuteMethod execute; */
 
-    NULL,                                      /* void* reserved0; */
-    NULL,                                      /* void* reserved1; */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
 };
 
 /**
@@ -951,29 +950,29 @@ xmlSecMSCryptoTransformRsaSha256GetKlass(void) {
   *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoRsaSha384Klass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),              /* xmlSecSize klassSize */
-    xmlSecMSCryptoSignatureSize,               /* xmlSecSize objSize */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecMSCryptoSignatureSize,                /* xmlSecSize objSize */
 
-    xmlSecNameRsaSha384,                       /* const xmlChar* name; */
-    xmlSecHrefRsaSha384,                       /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,       /* xmlSecTransformUsage usage; */
+    xmlSecNameRsaSha384,                        /* const xmlChar* name; */
+    xmlSecHrefRsaSha384,                        /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
 
-    xmlSecMSCryptoSignatureInitialize,         /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCryptoSignatureFinalize,           /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCryptoSignatureSetKeyReq,          /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecMSCryptoSignatureSetKey,             /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCryptoSignatureVerify,             /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCryptoSignatureExecute,            /* xmlSecTransformExecuteMethod execute; */
+    xmlSecMSCryptoSignatureInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCryptoSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecMSCryptoSignatureSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
+    xmlSecMSCryptoSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecMSCryptoSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCryptoSignatureExecute,             /* xmlSecTransformExecuteMethod execute; */
 
-    NULL,                                      /* void* reserved0; */
-    NULL,                                      /* void* reserved1; */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
 };
 
 /**
@@ -994,29 +993,29 @@ xmlSecMSCryptoTransformRsaSha384GetKlass(void) {
   *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoRsaSha512Klass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),              /* xmlSecSize klassSize */
-    xmlSecMSCryptoSignatureSize,               /* xmlSecSize objSize */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecMSCryptoSignatureSize,                /* xmlSecSize objSize */
 
-    xmlSecNameRsaSha512,                       /* const xmlChar* name; */
-    xmlSecHrefRsaSha512,                       /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,       /* xmlSecTransformUsage usage; */
+    xmlSecNameRsaSha512,                        /* const xmlChar* name; */
+    xmlSecHrefRsaSha512,                        /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
 
-    xmlSecMSCryptoSignatureInitialize,         /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCryptoSignatureFinalize,           /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCryptoSignatureSetKeyReq,          /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecMSCryptoSignatureSetKey,             /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCryptoSignatureVerify,             /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCryptoSignatureExecute,            /* xmlSecTransformExecuteMethod execute; */
+    xmlSecMSCryptoSignatureInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCryptoSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecMSCryptoSignatureSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
+    xmlSecMSCryptoSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecMSCryptoSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCryptoSignatureExecute,             /* xmlSecTransformExecuteMethod execute; */
 
-    NULL,                                      /* void* reserved0; */
-    NULL,                                      /* void* reserved1; */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
 };
 
 /**
@@ -1051,7 +1050,7 @@ static xmlSecTransformKlass xmlSecMSCryptoDsaSha1Klass = {
     xmlSecMSCryptoSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCryptoSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecMSCryptoSignatureSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecMSCryptoSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecMSCryptoSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -1096,7 +1095,7 @@ static xmlSecTransformKlass xmlSecMSCryptoGost2001GostR3411_94Klass = {
     xmlSecMSCryptoSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCryptoSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecMSCryptoSignatureSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecMSCryptoSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecMSCryptoSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -1144,7 +1143,7 @@ static xmlSecTransformKlass xmlSecMSCryptoGost2012_256Klass = {
     xmlSecMSCryptoSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCryptoSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecMSCryptoSignatureSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecMSCryptoSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecMSCryptoSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -1159,8 +1158,8 @@ static xmlSecTransformKlass xmlSecMSCryptoGost2012_256Klass = {
 };
 
 /**
- * @brief The GOST R 34.10-2012 signature transform klass.
- * @return GOST R 34.10-2012 signature transform klass.
+ * @brief The GOST R 34.10-2012 signature transform klass (256 bit).
+ * @return GOST R 34.10-2012 signature transform klass (256 bit).
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformGost2012_256GetKlass(void) {
@@ -1186,7 +1185,7 @@ static xmlSecTransformKlass xmlSecMSCryptoGost2012_512Klass = {
     xmlSecMSCryptoSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCryptoSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecMSCryptoSignatureSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecMSCryptoSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecMSCryptoSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -1201,8 +1200,8 @@ static xmlSecTransformKlass xmlSecMSCryptoGost2012_512Klass = {
 };
 
 /**
- * @brief The GOST R 34.10-2012 signature transform klass.
- * @return GOST R 34.10-2012 signature transform klass.
+ * @brief The GOST R 34.10-2012 signature transform klass (512 bit).
+ * @return GOST R 34.10-2012 signature transform klass (512 bit).
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformGost2012_512GetKlass(void) {

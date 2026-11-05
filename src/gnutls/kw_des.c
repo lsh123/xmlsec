@@ -125,9 +125,9 @@ static xmlSecTransformKlass xmlSecGnuTLSKWDes3Klass = {
     xmlSecGnuTLSKWDes3Finalize,                /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGnuTLSKWDes3SetKeyReq,               /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecGnuTLSKWDes3SetKeyReq,               /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGnuTLSKWDes3SetKey,                  /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */

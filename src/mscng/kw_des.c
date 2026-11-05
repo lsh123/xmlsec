@@ -326,10 +326,9 @@ xmlSecMSCngKWDes3BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     memcpy(xmlSecBufferGetData(&blob) + sizeof(BCRYPT_KEY_DATA_BLOB_HEADER),
         xmlSecBufferGetData(&ctx->keyBuffer), keySize);
 
-    /* cbDescriptor is intentionally left unset (0): the blob buffer is grown
-     * via xmlSecBufferSetSize(), which zeroes the newly allocated region, so a
-     * raw (descriptorless) key blob header with cbDescriptor == 0 is
-     * guaranteed. */
+    /* all BCRYPT_KEY_DATA_BLOB_HEADER fields are set explicitly above and
+     * the blob buffer is grown via xmlSecBufferSetSize(), which zeroes the
+     * newly allocated region, so no stale data remains in the blob. */
 
     blobSize = xmlSecBufferGetSize(&blob);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(blobSize, dwBlobSize, goto done, NULL);
@@ -546,10 +545,9 @@ xmlSecMSCngKWDes3BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     memcpy(xmlSecBufferGetData(&blob) + sizeof(BCRYPT_KEY_DATA_BLOB_HEADER),
         xmlSecBufferGetData(&ctx->keyBuffer), keySize);
 
-    /* cbDescriptor is intentionally left unset (0): the blob buffer is grown
-     * via xmlSecBufferSetSize(), which zeroes the newly allocated region, so a
-     * raw (descriptorless) key blob header with cbDescriptor == 0 is
-     * guaranteed. */
+    /* all BCRYPT_KEY_DATA_BLOB_HEADER fields are set explicitly above and
+     * the blob buffer is grown via xmlSecBufferSetSize(), which zeroes the
+     * newly allocated region, so no stale data remains in the blob. */
 
     blobSize = xmlSecBufferGetSize(&blob);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(blobSize, dwBlobSize, goto done, NULL);
@@ -777,7 +775,7 @@ static xmlSecTransformKlass xmlSecMSCngKWDes3Klass = {
     xmlSecMSCngKWDes3Finalize,                  /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngKWDes3SetKeyReq,                 /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecMSCngKWDes3SetKeyReq,                 /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecMSCngKWDes3SetKey,                    /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */

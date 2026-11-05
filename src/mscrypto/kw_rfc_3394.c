@@ -298,8 +298,9 @@ xmlSecMSCryptoKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte *
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(keySize, dwKeySize, goto done, NULL);
 
     /* Import this key and get an HCRYPTKEY handle. We do it again and again
-     * to obtain a fresh session key per call (AES KW runs in ECB mode).
-     * we do not want to cache the key */
+     * to obtain a fresh session key per call; AES KW runs in ECB mode, so
+     * there is no chaining state to reset between calls. We do not want to
+     * cache the key */
     if (!xmlSecMSCryptoImportPlainSessionBlob(ctx->cryptProvider,
         ctx->pubPrivKey,
         ctx->algorithmIdentifier,
@@ -369,8 +370,9 @@ xmlSecMSCryptoKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte *
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(keySize, dwKeySize, goto done, NULL);
 
     /* Import this key and get an HCRYPTKEY handle. We do it again and again
-     * to obtain a fresh session key per call (AES KW runs in ECB mode).
-     * we do not want to cache the key */
+     * to obtain a fresh session key per call; AES KW runs in ECB mode, so
+     * there is no chaining state to reset between calls. We do not want to
+     * cache the key */
     if (!xmlSecMSCryptoImportPlainSessionBlob(ctx->cryptProvider,
         ctx->pubPrivKey,
         ctx->algorithmIdentifier,
@@ -429,9 +431,9 @@ static xmlSecTransformKlass xmlSecMSCryptoKWAes128Klass = {
     xmlSecMSCryptoKWAesFinalize,          /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCryptoKWAesSetKeyReq,         /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecMSCryptoKWAesSetKeyReq,         /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecMSCryptoKWAesSetKey,                  /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
@@ -469,9 +471,9 @@ static xmlSecTransformKlass xmlSecMSCryptoKWAes192Klass = {
     xmlSecMSCryptoKWAesFinalize,          /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCryptoKWAesSetKeyReq,         /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecMSCryptoKWAesSetKeyReq,         /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecMSCryptoKWAesSetKey,                  /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
@@ -508,13 +510,13 @@ static xmlSecTransformKlass xmlSecMSCryptoKWAes256Klass = {
     xmlSecMSCryptoKWAesFinalize,          /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCryptoKWAesSetKeyReq,         /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecMSCryptoKWAesSetKeyReq,         /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecMSCryptoKWAesSetKey,                  /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                           /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
     xmlSecMSCryptoKWAesExecute,                 /* xmlSecTransformExecuteMethod execute; */
 

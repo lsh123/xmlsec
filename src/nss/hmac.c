@@ -200,7 +200,7 @@ xmlSecNssHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
     ret = xmlSecTransformHmacReadOutputBitsSize(node, ctx->dgstSizeInBits, &ctx->dgstSizeInBits);
     if (ret < 0) {
-        xmlSecInternalError("xmlSecTransformHmacReadOutputBitsSize()",
+        xmlSecInternalError("xmlSecTransformHmacReadOutputBitsSize",
             xmlSecTransformGetName(transform));
         return(-1);
     }
@@ -400,7 +400,7 @@ xmlSecNssHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxP
 
             /* check/set the result digest size */
             if(ctx->dgstSizeInBits == 0) {
-                ctx->dgstSizeInBits = dgstSize * 8; /* no dgst size specified, use all we have */
+                ctx->dgstSizeInBits = dgstSize * 8; /* no dgst size specified, use all that we have */
             }
 
             /* HMACOutputLength can only truncate the digest, not extend it past the bytes we have */
@@ -434,28 +434,28 @@ xmlSecNssHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxP
 
 /* Helper macros to define the transform klass */
 
-#define XMLSEC_NSS_HMAC_KLASS_EX(name, readNode)                                                        \
-static xmlSecTransformKlass xmlSecNssHmac ## name ## Klass = {                                          \
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
-    xmlSecNssHmacSize,                          /* xmlSecSize objSize */                                \
-    xmlSecNameHmac ## name,                     /* const xmlChar* name; */                              \
-    xmlSecHrefHmac ## name,                     /* const xmlChar* href; */                              \
-    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */                       \
-    xmlSecNssHmacInitialize,                    /* xmlSecTransformInitializeMethod initialize; */       \
-    xmlSecNssHmacFinalize,                      /* xmlSecTransformFinalizeMethod finalize; */           \
-    readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */           \
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */         \
-    xmlSecNssHmacSetKeyReq,                     /* xmlSecTransformSetKeyReqMethod setKeyReq; */         \
-    xmlSecNssHmacSetKey,                        /* xmlSecTransformSetKeyMethod setKey; */               \
-    xmlSecNssHmacVerify,                        /* xmlSecTransformVerifyMethod verify; */               \
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */             \
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
-    xmlSecNssHmacExecute,                       /* xmlSecTransformExecuteMethod execute; */             \
-    NULL,                                       /* void* reserved0; */                                  \
-    NULL,                                       /* void* reserved1; */                                  \
+#define XMLSEC_NSS_HMAC_KLASS_EX(name, readNode)                                                                   \
+static xmlSecTransformKlass xmlSecNssHmac ## name ## Klass = {                                                     \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                         \
+    xmlSecNssHmacSize,                          /* xmlSecSize objSize */                                           \
+    xmlSecNameHmac ## name,                     /* const xmlChar* name; */                                         \
+    xmlSecHrefHmac ## name,                     /* const xmlChar* href; */                                         \
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */                                  \
+    xmlSecNssHmacInitialize,                    /* xmlSecTransformInitializeMethod initialize; */                  \
+    xmlSecNssHmacFinalize,                      /* xmlSecTransformFinalizeMethod finalize; */                      \
+    readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */                      \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */                    \
+    xmlSecNssHmacSetKeyReq,                     /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */           \
+    xmlSecNssHmacSetKey,                        /* xmlSecTransformSetKeyMethod setKey; */                          \
+    xmlSecNssHmacVerify,                        /* xmlSecTransformVerifyMethod verify; */                          \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */                \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                        \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                          \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                        \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                          \
+    xmlSecNssHmacExecute,                       /* xmlSecTransformExecuteMethod execute; */                        \
+    NULL,                                       /* void* reserved0; */                                             \
+    NULL,                                       /* void* reserved1; */                                             \
 };
 
 #define XMLSEC_NSS_HMAC_KLASS(name)                                                                     \

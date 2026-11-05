@@ -67,7 +67,7 @@ typedef struct _xmlSecNssX509FindCertCtx {
     CERTIssuerAndSN issuerAndSN;
     int issuerAndSNInitialized;
 
-    SECItem skiItem; /* NOT OWNED */
+    SECItem skiItem; /* NOT OWNED: data points to the caller's buffer */
 
     const xmlSecByte * digestValue; /* NOT OWNED */
     unsigned int digestLen;

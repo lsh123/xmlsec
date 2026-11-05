@@ -12,8 +12,6 @@
 #include "globals.h"
 
 #include <stdint.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 
 #include <gnutls/gnutls.h>
@@ -21,7 +19,6 @@
 #include <gnutls/crypto.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/base64.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/xmltree.h>
@@ -348,28 +345,28 @@ xmlSecGnuTLSKdfSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
 
 /* Helper macro to define the KDF transform klass */
-#define XMLSEC_GNUTLS_KDF_KLASS(name, readNode)                                                         \
-static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                                           \
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
-    xmlSecGnuTLSKdfCtxSize,                     /* xmlSecSize objSize */                                \
-    xmlSecName ## name,                         /* const xmlChar* name; */                              \
-    xmlSecHref ## name,                         /* const xmlChar* href; */                              \
-    xmlSecTransformUsageKeyDerivationMethod,    /* xmlSecTransformUsage usage; */                       \
-    xmlSecGnuTLSKdfInitialize,                  /* xmlSecTransformInitializeMethod initialize; */       \
-    xmlSecGnuTLSKdfFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */           \
-    readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */           \
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */         \
-    xmlSecGnuTLSKdfSetKeyReq,                   /* xmlSecTransformSetKeyReqMethod setKeyReq; */         \
-    xmlSecGnuTLSKdfSetKey,                      /* xmlSecTransformSetKeyMethod setKey; */               \
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */           \
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */             \
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
-    xmlSecGnuTLSKdfExecute,                     /* xmlSecTransformExecuteMethod execute; */             \
-    NULL,                                       /* void* reserved0; */                                  \
-    NULL,                                       /* void* reserved1; */                                  \
+#define XMLSEC_GNUTLS_KDF_KLASS(name, readNode)                                                                    \
+static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                                                      \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                         \
+    xmlSecGnuTLSKdfCtxSize,                     /* xmlSecSize objSize */                                           \
+    xmlSecName ## name,                         /* const xmlChar* name; */                                         \
+    xmlSecHref ## name,                         /* const xmlChar* href; */                                         \
+    xmlSecTransformUsageKeyDerivationMethod,    /* xmlSecTransformUsage usage; */                                  \
+    xmlSecGnuTLSKdfInitialize,                  /* xmlSecTransformInitializeMethod initialize; */                  \
+    xmlSecGnuTLSKdfFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */                      \
+    readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */                      \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */                    \
+    xmlSecGnuTLSKdfSetKeyReq,                   /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */           \
+    xmlSecGnuTLSKdfSetKey,                      /* xmlSecTransformSetKeyMethod setKey; */                          \
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */                          \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */                \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                        \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                          \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                        \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                          \
+    xmlSecGnuTLSKdfExecute,                     /* xmlSecTransformExecuteMethod execute; */                        \
+    NULL,                                       /* void* reserved0; */                                             \
+    NULL,                                       /* void* reserved1; */                                             \
 };
 
 #ifndef XMLSEC_NO_CONCATKDF

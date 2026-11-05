@@ -333,7 +333,7 @@ xmlSecMSCngXdhDerivePubKeyU(BCRYPT_ALG_HANDLE hAlg, BCRYPT_KEY_HANDLE hPrivKeyTe
     /* prepend zeros if needed */
     memset(pubKeyU, 0, pubKeyULen);
     if(cbDerived > pubKeyULen) {
-        cbDerived = pubKeyULen; /* safety guard (min(), written out to avoid non-standard min()) */
+        cbDerived = pubKeyULen; /* safety guard (min() written out: lowercase min() is MSVC-specific, not standard C) */
     }
     status = BCryptDeriveKey(
         hSelfSecret,
@@ -571,7 +571,7 @@ xmlSecMSCngKeyDataXdhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLe
     data = NULL;
 
 done:
-    /* wipe the derived public key u-coordinate (key material) from the stack */
+    /* wipe the derived public key u-coordinate from the stack */
     SecureZeroMemory(pubKeyU, sizeof(pubKeyU));
 
     /* Retry-on-failure, not a double-destroy: hPrivKeyTemp is only non-NULL here if the
@@ -621,6 +621,15 @@ done:
     return(res);
 }
 
+/**
+ * @brief Imports an X25519 public key from a SubjectPublicKeyInfo.
+ * @details Extracts the raw 32-byte u-coordinate from the SPKI SubjectPublicKey BIT STRING
+ *          (skipping the optional 0x00 unused-bits prefix byte) and imports it via
+ *          xmlSecMSCngKeyDataXdhImportPublicKey().
+ * @param spki SubjectPublicKeyInfo of the certificate.
+ * @param key receives the imported BCRYPT key handle on success.
+ * @return 0 on success or a negative value if an error occurs.
+ */
 int
 xmlSecMSCngKeyDataCertGetXdhPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE* key) {
     const xmlSecByte* pKeyBytes;

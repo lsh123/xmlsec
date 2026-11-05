@@ -59,28 +59,28 @@ XMLSEC_TRANSFORM_DECLARE(MSCngChaCha20Cipher, xmlSecMSCngChaCha20CipherCtx)
 #define xmlSecMSCngChaCha20CipherSize XMLSEC_TRANSFORM_SIZE(MSCngChaCha20Cipher)
 
 
-#define XMLSEC_MSCNG_CHACHA20_CIPHER_KLASS(name)                                                  \
-static xmlSecTransformKlass xmlSecMSCng ## name ## Klass = {                                       \
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                          \
-    xmlSecMSCngChaCha20CipherSize,              /* xmlSecSize objSize */                            \
-    xmlSecName ## name,                         /* const xmlChar* name; */                          \
-    xmlSecHref ## name,                         /* const xmlChar* href; */                          \
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                   \
-    xmlSecMSCngChaCha20CipherInitialize,        /* xmlSecTransformInitializeMethod initialize; */   \
-    xmlSecMSCngChaCha20CipherFinalize,          /* xmlSecTransformFinalizeMethod finalize; */       \
-    xmlSecMSCngChaCha20CipherNodeRead,          /* xmlSecTransformNodeReadMethod readNode; */       \
-    xmlSecMSCngChaCha20CipherNodeWrite,         /* xmlSecTransformNodeWriteMethod writeNode; */     \
-    xmlSecMSCngChaCha20CipherSetKeyReq,         /* xmlSecTransformSetKeyMethod setKeyReq; */        \
-    xmlSecMSCngChaCha20CipherSetKey,            /* xmlSecTransformSetKeyMethod setKey; */           \
-    NULL,                                       /* xmlSecTransformVerifyMethod verify; */           \
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */ \
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */         \
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */           \
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */         \
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */           \
-    xmlSecMSCngChaCha20CipherExecute,           /* xmlSecTransformExecuteMethod execute; */         \
-    NULL,                                       /* void* reserved0; */                              \
-    NULL,                                       /* void* reserved1; */                              \
+#define XMLSEC_MSCNG_CHACHA20_CIPHER_KLASS(name)                                                                  \
+static xmlSecTransformKlass xmlSecMSCng ## name ## Klass = {                                                      \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                        \
+    xmlSecMSCngChaCha20CipherSize,              /* xmlSecSize objSize */                                          \
+    xmlSecName ## name,                         /* const xmlChar* name; */                                        \
+    xmlSecHref ## name,                         /* const xmlChar* href; */                                        \
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                                 \
+    xmlSecMSCngChaCha20CipherInitialize,        /* xmlSecTransformInitializeMethod initialize; */                 \
+    xmlSecMSCngChaCha20CipherFinalize,          /* xmlSecTransformFinalizeMethod finalize; */                     \
+    xmlSecMSCngChaCha20CipherNodeRead,          /* xmlSecTransformNodeReadMethod readNode; */                     \
+    xmlSecMSCngChaCha20CipherNodeWrite,         /* xmlSecTransformNodeWriteMethod writeNode; */                   \
+    xmlSecMSCngChaCha20CipherSetKeyReq,         /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */          \
+    xmlSecMSCngChaCha20CipherSetKey,            /* xmlSecTransformSetKeyMethod setKey; */                         \
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */                         \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */               \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                       \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                         \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                       \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                         \
+    xmlSecMSCngChaCha20CipherExecute,           /* xmlSecTransformExecuteMethod execute; */                       \
+    NULL,                                       /* void* reserved0; */                                            \
+    NULL,                                       /* void* reserved1; */                                            \
 };
 
 

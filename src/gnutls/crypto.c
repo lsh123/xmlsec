@@ -7,7 +7,7 @@
  */
 /**
  * @addtogroup xmlsec_gnutls_crypto
- * @brief Crypto transforms implementation for GnuTLS.
+ * @brief Crypto key data and transforms implementation for GnuTLS.
  */
 #include "globals.h"
 

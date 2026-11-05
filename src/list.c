@@ -343,7 +343,7 @@ xmlSecPtrListInsert(xmlSecPtrListPtr list, xmlSecPtr item, xmlSecSize pos) {
     }
 
     if(pos < list->use) {
-        /* move (pos, size) to (pos + 1, size + 1) and insert new item at pos */
+        /* move items [pos, use) to [pos + 1, use + 1) and insert new item at pos */
         memmove(&(list->data[pos + 1]), &(list->data[pos]), sizeof(xmlSecPtr) * (list->use - pos));
         list->data[pos] = item;
         ++list->use;
@@ -359,7 +359,8 @@ xmlSecPtrListInsert(xmlSecPtrListPtr list, xmlSecPtr item, xmlSecSize pos) {
 /**
  * @brief Sets a list item at the given position.
  * @details Sets the value of list item at position @p pos. The old value
- * is destroyed.
+ * is destroyed if the list klass provides a destroyItem method and the
+ * current value is not NULL.
  * @param list the pointer to list.
  * @param item the item.
  * @param pos the position.
@@ -385,8 +386,9 @@ xmlSecPtrListSet(xmlSecPtrListPtr list, xmlSecPtr item, xmlSecSize pos) {
 
 /**
  * @brief Destroys a list item at the given position.
- * @details Destroys list item at the position @p pos and shifts all following
- * items towards the beginning of the list.
+ * @details Destroys the list item at the position @p pos if the list klass
+ * provides a destroyItem method and the item is not NULL, and shifts all
+ * following items towards the beginning of the list.
  * @param list the pointer to list.
  * @param pos the position.
  * @return 0 on success or a negative value if an error occurs.
@@ -411,7 +413,7 @@ xmlSecPtrListRemove(xmlSecPtrListPtr list, xmlSecSize pos) {
 /**
  * @brief Removes and returns a list item.
  * @details Remove the list item at the position @p pos, shift all following
- * items towards the beginning of the list, and return the removed item back.
+ * items towards the beginning of the list, and return the removed item.
  * @param list the pointer to list.
  * @param pos the position.
  * @return the pointer to the list item. The caller is responsible for destroying the returned item.

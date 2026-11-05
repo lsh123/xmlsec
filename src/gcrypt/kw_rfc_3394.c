@@ -245,9 +245,9 @@ static xmlSecTransformKlass xmlSecGCryptKWAes128Klass = {
     xmlSecGCryptKWAesFinalize,                  /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptKWAesSetKeyReq,                 /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecGCryptKWAesSetKeyReq,                 /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptKWAesSetKey,                    /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
@@ -281,9 +281,9 @@ static xmlSecTransformKlass xmlSecGCryptKWAes192Klass = {
     xmlSecGCryptKWAesFinalize,                  /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptKWAesSetKeyReq,                 /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecGCryptKWAesSetKeyReq,                 /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptKWAesSetKey,                    /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
@@ -318,9 +318,9 @@ static xmlSecTransformKlass xmlSecGCryptKWAes256Klass = {
     xmlSecGCryptKWAesFinalize,                  /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptKWAesSetKeyReq,                 /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecGCryptKWAesSetKeyReq,                 /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptKWAesSetKey,                    /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */

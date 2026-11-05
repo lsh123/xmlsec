@@ -113,29 +113,29 @@ static int              xmlSecNssKWRfc3394Execute       (xmlSecTransformPtr tran
                                                          xmlSecTransformCtxPtr transformCtx);
 
 /* Helper macro to define the RFC 3394 KW transform klass */
-#define XMLSEC_NSS_KW_RFC3394_KLASS(name)                                                               \
-static xmlSecTransformKlass xmlSecNssKW ## name ## Klass = {                                           \
-    /* klass/object sizes */                                                                            \
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                             \
-    xmlSecNssKWRfc3394Size,                     /* xmlSecSize objSize */                               \
-    xmlSecNameKW ## name,                       /* const xmlChar* name; */                             \
-    xmlSecHrefKW ## name,                       /* const xmlChar* href; */                             \
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                      \
-    xmlSecNssKWRfc3394Initialize,               /* xmlSecTransformInitializeMethod initialize; */      \
-    xmlSecNssKWRfc3394Finalize,                 /* xmlSecTransformFinalizeMethod finalize; */          \
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */          \
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */        \
-    xmlSecNssKWRfc3394SetKeyReq,                /* xmlSecTransformSetKeyMethod setKeyReq; */           \
-    xmlSecNssKWRfc3394SetKey,                   /* xmlSecTransformSetKeyMethod setKey; */              \
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */          \
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */    \
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */            \
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */              \
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */            \
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */              \
-    xmlSecNssKWRfc3394Execute,                  /* xmlSecTransformExecuteMethod execute; */            \
-    NULL,                                       /* void* reserved0; */                                 \
-    NULL,                                       /* void* reserved1; */                                 \
+#define XMLSEC_NSS_KW_RFC3394_KLASS(name)                                                                              \
+static xmlSecTransformKlass xmlSecNssKW ## name ## Klass = {                                                           \
+    /* klass/object sizes */                                                                                           \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                             \
+    xmlSecNssKWRfc3394Size,                     /* xmlSecSize objSize */                                               \
+    xmlSecNameKW ## name,                       /* const xmlChar* name; */                                             \
+    xmlSecHrefKW ## name,                       /* const xmlChar* href; */                                             \
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                                      \
+    xmlSecNssKWRfc3394Initialize,               /* xmlSecTransformInitializeMethod initialize; */                      \
+    xmlSecNssKWRfc3394Finalize,                 /* xmlSecTransformFinalizeMethod finalize; */                          \
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */                          \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */                        \
+    xmlSecNssKWRfc3394SetKeyReq,                /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */               \
+    xmlSecNssKWRfc3394SetKey,                   /* xmlSecTransformSetKeyMethod setKey; */                              \
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */                              \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */                    \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                            \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                              \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                            \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                              \
+    xmlSecNssKWRfc3394Execute,                  /* xmlSecTransformExecuteMethod execute; */                            \
+    NULL,                                       /* void* reserved0; */                                                 \
+    NULL,                                       /* void* reserved1; */                                                 \
 };
 
 
@@ -481,7 +481,7 @@ xmlSecNssKWRfc3394CipherOp(xmlSecNssKWRfc3394CtxPtr ctx, const xmlSecByte *in, x
     xmlSecAssert2(out != NULL, -1);
 
     /* note: the PKCS#11 context is created per block; RFC 3394 performs many
-       block operations per key and we need new context each time */
+       block operations per key and we need a new context each time */
     ctxt = PK11_CreateContextBySymKey(ctx->cipherMech, ctx->symKeyOp, ctx->symKey, ctx->secParam);
     if (ctxt == NULL) {
         xmlSecNssError("PK11_CreateContextBySymKey", NULL);

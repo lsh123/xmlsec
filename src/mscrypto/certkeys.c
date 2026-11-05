@@ -189,16 +189,16 @@ static void
 xmlSecMSCryptoKeyDataCtxDestroyKey(xmlSecMSCryptoKeyDataCtxPtr ctx) {
     xmlSecAssert(ctx != NULL);
 
-        if(ctx->p_key != NULL) {
-                if(InterlockedDecrement(&(ctx->p_key->refcnt)) <= 0) {
-                        if(ctx->p_key->hKey != 0) {
-                                CryptDestroyKey(ctx->p_key->hKey) ;
-                        }
+    if(ctx->p_key != NULL) {
+        if(InterlockedDecrement(&(ctx->p_key->refcnt)) <= 0) {
+            if(ctx->p_key->hKey != 0) {
+                CryptDestroyKey(ctx->p_key->hKey) ;
+            }
             memset(ctx->p_key, 0, sizeof(struct _mscrypt_key));
-                        xmlFree(ctx->p_key) ;
-                }
-        ctx->p_key = NULL;
+            xmlFree(ctx->p_key) ;
         }
+        ctx->p_key = NULL;
+    }
 }
 
 static int
@@ -283,12 +283,12 @@ xmlSecMSCryptoKeyDataCtxDuplicateProvider(xmlSecMSCryptoKeyDataCtxPtr ctxDst, xm
 
     if(ctxSrc->hProv != 0) {
         if(!CryptContextAddRef(ctxSrc->hProv, NULL, 0)) {
-                xmlSecMSCryptoError("CryptContextAddRef", NULL);
+            xmlSecMSCryptoError("CryptContextAddRef", NULL);
             return(-1);
         }
 
-            ctxDst->hProv                   = ctxSrc->hProv;
-            ctxDst->fCallerFreeProv = TRUE;
+        ctxDst->hProv                   = ctxSrc->hProv;
+        ctxDst->fCallerFreeProv = TRUE;
     }
     return(0);
 }
@@ -310,7 +310,7 @@ xmlSecMSCryptoKeyDataCtxDestroyKey(xmlSecMSCryptoKeyDataCtxPtr ctx) {
     xmlSecAssert(ctx != NULL);
 
     if (ctx->hKey != 0) {
-            CryptDestroyKey(ctx->hKey);
+        CryptDestroyKey(ctx->hKey);
     }
     ctx->hKey = 0;
 }
@@ -331,10 +331,10 @@ xmlSecMSCryptoKeyDataCtxDuplicateKey(xmlSecMSCryptoKeyDataCtxPtr ctxDst, xmlSecM
 
     xmlSecMSCryptoKeyDataCtxDestroyKey(ctxDst);
     if (ctxSrc->hKey != 0) {
-            if (!CryptDuplicateKey(ctxSrc->hKey, NULL, 0, &(ctxDst->hKey))) {
-                xmlSecMSCryptoError("CryptDuplicateKey", NULL);
-                return(-1);
-            }
+        if (!CryptDuplicateKey(ctxSrc->hKey, NULL, 0, &(ctxDst->hKey))) {
+            xmlSecMSCryptoError("CryptDuplicateKey", NULL);
+            return(-1);
+        }
     }
 
     return(0);
@@ -1605,7 +1605,7 @@ done:
  *
  * ============================================================================
  *
- * To support reading/writing private keys an X element added (before Y).
+ * To support reading/writing private keys an X element is added (before Y).
  *
  * The current implementation does not support Seed and PgenCounter!
  * by this the P, Q and G are *required*!
@@ -2119,7 +2119,7 @@ xmlSecMSCryptoKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     if (dwBlobLen < sizeof(PUBLICKEYSTRUC)) {
         xmlSecMSCryptoError2("CryptExportKey", xmlSecKeyDataKlassGetName(id),
             "dwBlobLen=%lu", dwBlobLen);
-            goto done;
+        goto done;
     }
     pubKeyStruc = (PUBLICKEYSTRUC*)blob;
     if (pubKeyStruc->bVersion != 0x02) {
@@ -2137,7 +2137,7 @@ xmlSecMSCryptoKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     if (dwBlobLen < sizeof(PUBLICKEYSTRUC) + sizeof(DSSPUBKEY)) {
         xmlSecMSCryptoError2("CryptExportKey", xmlSecKeyDataKlassGetName(id),
             "dwBlobLen=%lu", dwBlobLen);
-            goto done;
+        goto done;
     }
     pubKey = (DSSPUBKEY*)(blob + sizeof(PUBLICKEYSTRUC));
     if (pubKey->magic != 0x31535344) { /* DSS key magic */

@@ -400,7 +400,7 @@ xmlSecDSigCtxMarkAsFailed(xmlSecDSigCtxPtr dsigCtx, xmlSecDSigFailureReason fail
 /*
  * xmlSecDSigCtxProcessSignatureNode:
  *
- * The Signature  element (http://www.w3.org/TR/xmldsig-core/#sec-Signature)
+ * The Signature element (http://www.w3.org/TR/xmldsig-core/#sec-Signature)
  *
  * The Signature element is the root element of an XML Signature.
  * Implementation MUST generate laxly schema valid [XML-schema] Signature
@@ -905,7 +905,7 @@ xmlSecDSigCtxProcessObjectNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
 
 /**
  * @brief Processes a dsig:Manifest element.
- * @details The Manifest  Element (http://www.w3.org/TR/xmldsig-core/#sec-Manifest)
+ * @details The Manifest Element (http://www.w3.org/TR/xmldsig-core/#sec-Manifest)
  *
  * The Manifest element provides a list of References. The difference from
  * the list in SignedInfo is that it is application defined which, if any, of
@@ -1093,9 +1093,9 @@ xmlSecDSigCtxDebugDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
        (xmlSecDSigCtxGetPreSignBuffer(dsigCtx) != NULL) &&
        (xmlSecBufferGetData(xmlSecDSigCtxGetPreSignBuffer(dsigCtx)) != NULL)) {
 
-        fprintf(output, "== PreSigned data - start buffer:\n");
+        fprintf(output, "== PreSign data - start buffer:\n");
         xmlSecBufferDebugHexDump(xmlSecDSigCtxGetPreSignBuffer(dsigCtx), output);
-        fprintf(output, "\n== PreSigned data - end buffer\n");
+        fprintf(output, "\n== PreSign data - end buffer\n");
     }
 }
 
@@ -1167,9 +1167,9 @@ xmlSecDSigCtxDebugXmlDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
        (xmlSecDSigCtxGetPreSignBuffer(dsigCtx) != NULL) &&
        (xmlSecBufferGetData(xmlSecDSigCtxGetPreSignBuffer(dsigCtx)) != NULL)) {
 
-        fprintf(output, "<PreSignedData>\n");
+        fprintf(output, "<PreSignData>\n");
         xmlSecBufferDebugHexDump(xmlSecDSigCtxGetPreSignBuffer(dsigCtx), output);
-        fprintf(output, "\n</PreSignedData>\n");
+        fprintf(output, "\n</PreSignData>\n");
     }
 
     if(dsigCtx->operation == xmlSecTransformOperationSign) {
@@ -1315,7 +1315,7 @@ xmlSecDSigReferenceCtxFinalize(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
  * @details Gets the results of &lt;dsig:Reference/&gt; node processing just before digesting
  * (valid only if #XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES or
  * #XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES flags of signature context
- * is set).
+ * are set).
  *
  * @param dsigRefCtx the pointer to &lt;dsig:Reference/&gt; element processing context.
  * @return pointer to the buffer or NULL if an error occurs.
@@ -1477,7 +1477,7 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
         int outLen;
 
         if((dsigRefCtx->result == NULL) || (xmlSecBufferGetData(dsigRefCtx->result) == NULL)) {
-            xmlSecInternalError("xmlSecTransformCtxExecute", NULL);
+            xmlSecInternalError("dsigRefCtx->result is NULL or empty", NULL);
             return(-1);
         }
 
@@ -1584,9 +1584,9 @@ xmlSecDSigReferenceCtxDebugXmlDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* o
     xmlSecAssert(output != NULL);
 
     if(dsigRefCtx->dsigCtx->operation == xmlSecTransformOperationSign) {
-        fprintf(output, "<ReferenceCalculationContext ");
+        fprintf(output, "<ReferenceCalculationContext");
     } else {
-        fprintf(output, "<ReferenceVerificationContext ");
+        fprintf(output, "<ReferenceVerificationContext");
     }
     fprintf(output, " status=\"%s\"", xmlSecDSigCtxGetStatusString(dsigRefCtx->status));
     fprintf(output, ">\n");

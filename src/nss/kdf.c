@@ -1157,7 +1157,7 @@ static xmlSecTransformKlass xmlSecNssHkdfKlass = {
 
 /**
  * @brief The HKDF key derivation transform klass.
- * @return pointer to HKDF key derivation transform klass.
+ * @return the HKDF key derivation transform klass.
  */
 xmlSecTransformId
 xmlSecNssTransformHkdfGetKlass(void) {

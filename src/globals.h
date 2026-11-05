@@ -6,7 +6,7 @@
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * @brief Internal header defining the compile-time marker macros IN_XMLSEC and XMLSEC_PRIVATE and including the error-reporting helper macros.
+ * @brief Internal header defining the compile-time marker macros IN_XMLSEC and XMLSEC_PRIVATE, conditionally including the config.h file, and including the error-reporting helper macros.
  */
 
 #ifndef XMLSEC_CORE_GLOBALS_H
@@ -27,7 +27,7 @@
 #define XMLSEC_PRIVATE
 #endif /* XMLSEC_PRIVATE */
 
-/* Include common error helper macros. */
+/* Include common error helper macros and functions. */
 #include "errors_helpers.h"
 
 #endif /* XMLSEC_CORE_GLOBALS_H */

@@ -118,7 +118,6 @@ xmlSecGnuTLSDigestCheckId(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_GOST */
 
-
 #ifndef XMLSEC_NO_GOST2012
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformGostR3411_2012_256Id)) {
         return(1);
@@ -371,28 +370,28 @@ xmlSecGnuTLSDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 }
 
 /* Helper macro to define the digest transform klass */
-#define XMLSEC_GNUTLS_DIGEST_KLASS(name)                                                                \
-static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                                          \
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
-    xmlSecGnuTLSDigestSize,                     /* xmlSecSize objSize */                                \
-    xmlSecName ## name,                         /* const xmlChar* name; */                              \
-    xmlSecHref ## name,                         /* const xmlChar* href; */                              \
-    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */                       \
-    xmlSecGnuTLSDigestInitialize,               /* xmlSecTransformInitializeMethod initialize; */       \
-    xmlSecGnuTLSDigestFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */           \
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */           \
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */         \
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */         \
-    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */               \
-    xmlSecGnuTLSDigestVerify,                   /* xmlSecTransformVerifyMethod verify; */               \
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */             \
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
-    xmlSecGnuTLSDigestExecute,                  /* xmlSecTransformExecuteMethod execute; */             \
-    NULL,                                       /* void* reserved0; */                                  \
-    NULL,                                       /* void* reserved1; */                                  \
+#define XMLSEC_GNUTLS_DIGEST_KLASS(name)                                                                           \
+static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                                                      \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                         \
+    xmlSecGnuTLSDigestSize,                     /* xmlSecSize objSize */                                           \
+    xmlSecName ## name,                         /* const xmlChar* name; */                                         \
+    xmlSecHref ## name,                         /* const xmlChar* href; */                                         \
+    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */                                  \
+    xmlSecGnuTLSDigestInitialize,               /* xmlSecTransformInitializeMethod initialize; */                  \
+    xmlSecGnuTLSDigestFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */                      \
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */                      \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */                    \
+    NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */           \
+    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */                          \
+    xmlSecGnuTLSDigestVerify,                   /* xmlSecTransformVerifyMethod verify; */                          \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */                \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                        \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                          \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                        \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                          \
+    xmlSecGnuTLSDigestExecute,                  /* xmlSecTransformExecuteMethod execute; */                        \
+    NULL,                                       /* void* reserved0; */                                             \
+    NULL,                                       /* void* reserved1; */                                             \
 };
 
 

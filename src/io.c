@@ -108,7 +108,7 @@ static xmlSecPtrListKlass xmlSecIOCallbackPtrListKlass = {
     NULL                        /* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
 };
 
-#define xmlSecIOCallbackPtrListId       xmlSecIOCallbackPtrListGetKlass ()
+#define xmlSecIOCallbackPtrListId       xmlSecIOCallbackPtrListGetKlass()
 static xmlSecPtrListId                  xmlSecIOCallbackPtrListGetKlass (void);
 static xmlSecIOCallbackPtr              xmlSecIOCallbackPtrListFind     (xmlSecPtrListPtr list,
                                                                          const char* uri);
@@ -213,6 +213,9 @@ xmlSecIOCleanupCallbacks(void) {
 /**
  * @brief Registers I/O callbacks for parser input.
  * @details Register a new set of I/O callbacks for handling parser input.
+ * If an open callback is provided, the read and close callbacks must be
+ * provided as well; otherwise a successfully opened resource will never
+ * be read from or closed.
  * @param matchFunc the protocol match callback.
  * @param openFunc the open stream callback.
  * @param readFunc the read from stream callback.
@@ -244,7 +247,11 @@ xmlSecIORegisterCallbacks(xmlInputMatchCallback matchFunc,
 }
 
 #ifndef XMLSEC_NO_FILES
-/** File IO **/
+/******************************************************************************
+ *
+ * File I/O
+ *
+  *****************************************************************************/
 static int
 xmlSecIOFileExtractFilename(char const* filename, char** out) {
     const char* escaped;
@@ -271,7 +278,7 @@ xmlSecIOFileExtractFilename(char const* filename, char** out) {
     }
 
 #ifdef XMLSEC_WINDOWS
-    /* Ignore slash like in file:///C:/file.txt */
+    /* Ignore the leading slash, as in file:///C:/file.txt */
     if(xmlStrlen(BAD_CAST escaped) >= 4) {
         if((escaped[0] == '/') && isalpha((unsigned char)escaped[1]) && (escaped[2] == ':') && ((escaped[3] == '/') || (escaped[3] == '\\'))) {
             escaped += 1;
@@ -346,7 +353,7 @@ xmlSecIOFileOpen(char const* filename) {
             return(NULL);
         }
     }
-#else /* defined(XMLSEC_WINDOWS) && defined(UNICODE) */
+#else /* !defined(XMLSEC_WINDOWS) || !defined(UNICODE) */
     fd = fopen(filename, "rb");
     if (fd == NULL) {
         xmlSecIOError("fopen", filename, NULL);
@@ -481,7 +488,7 @@ static xmlSecTransformKlass xmlSecTransformInputURIKlass = {
     xmlSecTransformInputURIFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -517,8 +524,10 @@ xmlSecTransformInputURIGetKlass(void) {
  * without a scheme is used as-is.
  *
  * Note: in case of failure, the transform is left in a well-defined
- * (unopened) state and the #xmlSecTransformInputURIClose function
- * must be called to close the transform.
+ * (unopened) state, but the failed open leaves the callback set recorded
+ * in the transform; the #xmlSecTransformInputURIClose function must be
+ * called to reset this state before the transform can be opened again,
+ * otherwise a subsequent call to this function will fail.
  *
  * @return 0 on success or a negative value otherwise.
  */
@@ -536,7 +545,7 @@ xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const xmlChar *uri) {
 
     /*
      * Try to find one of the input accept methods accepting that scheme.
-     * Go in reverse to give precedence to user defined handlers.
+     * Go in reverse to give precedence to user-defined handlers.
      *
      * The URI is passed to the match and open callbacks as-is (without
      * percent-decoding): the open callback is responsible for interpreting

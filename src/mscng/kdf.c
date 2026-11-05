@@ -935,7 +935,7 @@ static xmlSecTransformKlass xmlSecMSCngPbkdf2Klass = {
     xmlSecMSCngKdfFinalize,                         /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecMSCngPbkdf2NodeRead,                      /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                           /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngKdfSetKeyReq,                        /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecMSCngKdfSetKeyReq,                        /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecMSCngKdfSetKey,                           /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                           /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,              /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -982,7 +982,7 @@ static xmlSecTransformKlass xmlSecMSCngHkdfKlass = {
     xmlSecMSCngKdfFinalize,                         /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecMSCngHkdfNodeRead,                        /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                           /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngKdfSetKeyReq,                        /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecMSCngKdfSetKeyReq,                        /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecMSCngKdfSetKey,                           /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                           /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,              /* xmlSecTransformGetDataTypeMethod getDataType; */

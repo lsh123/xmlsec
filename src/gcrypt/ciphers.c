@@ -313,7 +313,7 @@ xmlSecGCryptBlockCipherCtxFinal(xmlSecGCryptBlockCipherCtxPtr ctx,
          * whose last octet holds the padding length, while the remaining padding octets
          * are filled with random bytes (see the encrypt branch above). This is NOT strict
          * PKCS#7 (where every padding octet equals the length), so the other octets are
-         * deliberately not validated for equality See the XML Encryption specification
+         * deliberately not validated for equality. See the XML Encryption specification
          * for details. */
         padding = (xmlSecSize)outBuf[blockLen - 1];
         if((padding == 0) || (inSize < padding)) {
@@ -624,9 +624,9 @@ static xmlSecTransformKlass xmlSecGCryptAes128CbcKlass = {
     xmlSecGCryptBlockCipherFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptBlockCipherSetKeyReq,           /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecGCryptBlockCipherSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptBlockCipherSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
@@ -660,9 +660,9 @@ static xmlSecTransformKlass xmlSecGCryptAes192CbcKlass = {
     xmlSecGCryptBlockCipherFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptBlockCipherSetKeyReq,           /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecGCryptBlockCipherSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptBlockCipherSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
@@ -696,9 +696,9 @@ static xmlSecTransformKlass xmlSecGCryptAes256CbcKlass = {
     xmlSecGCryptBlockCipherFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptBlockCipherSetKeyReq,           /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecGCryptBlockCipherSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptBlockCipherSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
@@ -735,9 +735,9 @@ static xmlSecTransformKlass xmlSecGCryptDes3CbcKlass = {
     xmlSecGCryptBlockCipherFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptBlockCipherSetKeyReq,           /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecGCryptBlockCipherSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptBlockCipherSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */

@@ -94,9 +94,9 @@ static xmlSecTransformKlass xmlSecOpenSSLRsaPkcs1Klass = {
     xmlSecOpenSSLRsaPkcs1Finalize,              /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecOpenSSLRsaPkcs1SetKeyReq,             /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecOpenSSLRsaPkcs1SetKeyReq,             /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecOpenSSLRsaPkcs1SetKey,                /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
@@ -578,9 +578,9 @@ static xmlSecTransformKlass xmlSecOpenSSLRsaOaepKlass = {
     xmlSecOpenSSLRsaOaepFinalize,               /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecOpenSSLRsaOaepNodeRead,               /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecOpenSSLRsaOaepSetKeyReq,              /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecOpenSSLRsaOaepSetKeyReq,              /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecOpenSSLRsaOaepSetKey,                 /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
@@ -615,9 +615,9 @@ static xmlSecTransformKlass xmlSecOpenSSLRsaOaepEnc11Klass = {
     xmlSecOpenSSLRsaOaepFinalize,               /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecOpenSSLRsaOaepNodeRead,               /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecOpenSSLRsaOaepSetKeyReq,              /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecOpenSSLRsaOaepSetKeyReq,              /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecOpenSSLRsaOaepSetKey,                 /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
@@ -878,10 +878,12 @@ xmlSecOpenSSLRsaOaepSetKeyImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, EVP_PKEY* pKey,
     return(0);
 }
 
-// We can put all the params into one OSSL_PARAM array and setup everything at-once.
-// However, in OpenSSL <= 3.0.7 there is a bug that mixes OAEP digest and
-// OAEP MGF1 digest (https://pullanswer.com/questions/mgf1-digest-not-set-correctly-when-configuring-rsa-evp_pkey_ctx-with-ossl_params)
-// so we do one param at a time.
+/*
+ * We can put all the params into one OSSL_PARAM array and set up everything at once.
+ * However, in OpenSSL <= 3.0.7 there is a bug that mixes OAEP digest and
+ * OAEP MGF1 digest (https://pullanswer.com/questions/mgf1-digest-not-set-correctly-when-configuring-rsa-evp_pkey_ctx-with-ossl_params)
+ * so we do one param at a time.
+ */
 static int
 xmlSecOpenSSLRsaOaepSetParamsIfNeeded(xmlSecOpenSSLRsaOaepCtxPtr ctx) {
     xmlSecByte* label;
@@ -1167,7 +1169,7 @@ xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 #endif /* XMLSEC_NO_SHA3 */
 
     {
-       xmlSecInvalidTransformError2(transform,
+        xmlSecInvalidTransformError2(transform,
             "digest algorithm=\"%s\" is not supported for rsa/oaep",
             xmlSecErrorsSafeString(oaepParams.digestAlgorithm));
         xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
@@ -1214,7 +1216,7 @@ xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     } else
 #endif /* XMLSEC_NO_SHA512 */
     {
-       xmlSecInvalidTransformError2(transform,
+        xmlSecInvalidTransformError2(transform,
             "mgf1 digest algorithm=\"%s\" is not supported for rsa/oaep",
             xmlSecErrorsSafeString(oaepParams.mgf1DigestAlgorithm));
         xmlSecTransformRsaOaepParamsFinalize(&oaepParams);

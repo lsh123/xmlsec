@@ -12,12 +12,9 @@
 #include "globals.h"
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
-#include <ctype.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/base64.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/private.h>
@@ -342,7 +339,7 @@ xmlSecOpenSSLKdfExecute(
     xmlSecAssert2(ctx->paramsInitialized != 0, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
-        /* we should be already initialized when we set key */
+        /* we should already be initialized when we set key */
         transform->status = xmlSecTransformStatusWorking;
     }
 
@@ -355,8 +352,8 @@ xmlSecOpenSSLKdfExecute(
             xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL, "KDF output key size is not specified");
             return(-1);
         }
-        if((ctx->expectedOutputSize > 0) && (ctx->expectedOutputSize != transform->expectedOutputSize)){
-            xmlSecInvalidSizeError("Output kdf size doesn't match expected",
+        if((ctx->expectedOutputSize > 0) && (ctx->expectedOutputSize != transform->expectedOutputSize)) {
+            xmlSecInvalidSizeError("Output KDF size doesn't match the expected size",
                 transform->expectedOutputSize, ctx->expectedOutputSize, xmlSecTransformGetName(transform));
             return(-1);
         }
@@ -390,28 +387,28 @@ xmlSecOpenSSLKdfExecute(
 }
 
 /* Helper macro to define the KDF transform klass */
-#define XMLSEC_OPENSSL_KDF_KLASS_EX(name, readNode)                                                     \
-static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                                          \
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
-    xmlSecOpenSSLKdfCtxSize,                    /* xmlSecSize objSize */                                \
-    xmlSecName ## name,                         /* const xmlChar* name; */                              \
-    xmlSecHref ## name,                         /* const xmlChar* href; */                              \
-    xmlSecTransformUsageKeyDerivationMethod,    /* xmlSecTransformUsage usage; */                       \
-    xmlSecOpenSSLKdfInitialize,                 /* xmlSecTransformInitializeMethod initialize; */       \
-    xmlSecOpenSSLKdfFinalize,                   /* xmlSecTransformFinalizeMethod finalize; */           \
-    readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */           \
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */         \
-    xmlSecOpenSSLKdfSetKeyReq,                  /* xmlSecTransformSetKeyReqMethod setKeyReq; */         \
-    xmlSecOpenSSLKdfSetKey,                     /* xmlSecTransformSetKeyMethod setKey; */               \
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */           \
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */             \
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
-    xmlSecOpenSSLKdfExecute,                    /* xmlSecTransformExecuteMethod execute; */             \
-    NULL,                                       /* void* reserved0; */                                  \
-    NULL,                                       /* void* reserved1; */                                  \
+#define XMLSEC_OPENSSL_KDF_KLASS_EX(name, readNode)                                                                  \
+static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                                                       \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                           \
+    xmlSecOpenSSLKdfCtxSize,                    /* xmlSecSize objSize */                                             \
+    xmlSecName ## name,                         /* const xmlChar* name; */                                           \
+    xmlSecHref ## name,                         /* const xmlChar* href; */                                           \
+    xmlSecTransformUsageKeyDerivationMethod,    /* xmlSecTransformUsage usage; */                                    \
+    xmlSecOpenSSLKdfInitialize,                 /* xmlSecTransformInitializeMethod initialize; */                    \
+    xmlSecOpenSSLKdfFinalize,                   /* xmlSecTransformFinalizeMethod finalize; */                        \
+    readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */                        \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */                      \
+    xmlSecOpenSSLKdfSetKeyReq,                  /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */             \
+    xmlSecOpenSSLKdfSetKey,                     /* xmlSecTransformSetKeyMethod setKey; */                            \
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */                            \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */                  \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                          \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                            \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                          \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                            \
+    xmlSecOpenSSLKdfExecute,                    /* xmlSecTransformExecuteMethod execute; */                          \
+    NULL,                                       /* void* reserved0; */                                               \
+    NULL,                                       /* void* reserved1; */                                               \
 };
 
 

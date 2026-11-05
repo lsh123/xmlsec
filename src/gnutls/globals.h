@@ -36,7 +36,8 @@
 
 /**
  * @brief Maximum digest size for the GnuTLS backend.
- * @details The maximum digest size (in bytes) supported by the GnuTLS backend.
+ * @details A conservative upper bound for the digest output size (in bytes)
+ *          used by the GnuTLS backend for buffer sizing and sanity checks.
  */
 #define XMLSEC_GNUTLS_MAX_DIGEST_SIZE 128
 

@@ -204,8 +204,9 @@ xmlSecGetNodeContentAsSize(const xmlNodePtr cur, xmlSecSize defValue, xmlSecSize
         return(0);
     }
 
-    /* Get the content of the node and trim whitespace, the function returns NULL on error or
-     * if the node has no content. Assume no content and return the default value. */
+    /* get the content of the node and trim whitespace; the function returns
+     * NULL only on error (a node without content returns an empty string),
+     * so fall back to the default value */
     content = xmlSecGetNodeContentAndTrim(cur);
     if(content == NULL) {
         (*res) = defValue;
@@ -979,7 +980,7 @@ xmlSecReplaceNodeBufferAndReturn(xmlNodePtr node, const xmlSecByte *buffer, xmlS
  * @return 0 on success or a negative value if an error occurs.
  */
 int
-xmlSecNodeEncodeAndSetContent(xmlNodePtr node, const xmlChar * buffer) {
+xmlSecNodeEncodeAndSetContent(xmlNodePtr node, const xmlChar* buffer) {
     xmlSecAssert2(node != NULL, -1);
 
     if(buffer != NULL) {
@@ -1166,7 +1167,8 @@ xmlSecIsEmptyNode(xmlNodePtr node) {
         return(0);
     }
 
-    /* xmlNodeGetContent may return NULL if there are no children nodes or content */
+    /* xmlNodeGetContent returns NULL only on allocation failure (a node
+     * without content yields an empty string) */
     content = xmlNodeGetContent(node);
     if(content == NULL) {
         return(1);

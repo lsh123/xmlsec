@@ -90,29 +90,29 @@ static int      xmlSecOpenSSLMLKEMDecapsulate                   (xmlSecOpenSSLML
 static int      xmlSecOpenSSLMLKEMProcess                       (xmlSecTransformPtr transform,
                                                                  xmlSecTransformCtxPtr transformCtx);
 
-#define XMLSEC_OPENSSL_ML_KEM_KLASS_EX(name)                                                            \
-static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                                          \
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
-    xmlSecOpenSSLMLKEMSize,                     /* xmlSecSize objSize */                                \
-    xmlSecName ## name,                         /* const xmlChar* name; */                              \
-    xmlSecHref ## name,                         /* const xmlChar* href; */                              \
-    xmlSecTransformUsageEncryptionMethod,                                                             \
-                                                /* xmlSecAlgorithmUsage usage; */                       \
-    xmlSecOpenSSLMLKEMInitialize,               /* xmlSecTransformInitializeMethod initialize; */       \
-    xmlSecOpenSSLMLKEMFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */           \
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */           \
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */         \
-    xmlSecOpenSSLMLKEMSetKeyReq,                /* xmlSecTransformSetKeyReqMethod setKeyReq; */         \
-    xmlSecOpenSSLMLKEMSetKey,                   /* xmlSecTransformSetKeyMethod setKey; */               \
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */           \
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */             \
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
-    xmlSecOpenSSLMLKEMExecute,                  /* xmlSecTransformExecuteMethod execute; */             \
-    NULL,                                       /* void* reserved0; */                                  \
-    NULL,                                       /* void* reserved1; */                                  \
+#define XMLSEC_OPENSSL_ML_KEM_KLASS_EX(name)                                                                         \
+static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                                                       \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                           \
+    xmlSecOpenSSLMLKEMSize,                     /* xmlSecSize objSize */                                             \
+    xmlSecName ## name,                         /* const xmlChar* name; */                                           \
+    xmlSecHref ## name,                         /* const xmlChar* href; */                                           \
+    xmlSecTransformUsageEncryptionMethod,                                                                            \
+                                                /* xmlSecAlgorithmUsage usage; */                                    \
+    xmlSecOpenSSLMLKEMInitialize,               /* xmlSecTransformInitializeMethod initialize; */                    \
+    xmlSecOpenSSLMLKEMFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */                        \
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */                        \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */                      \
+    xmlSecOpenSSLMLKEMSetKeyReq,                /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */             \
+    xmlSecOpenSSLMLKEMSetKey,                   /* xmlSecTransformSetKeyMethod setKey; */                            \
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */                            \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */                  \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                          \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                            \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                          \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                            \
+    xmlSecOpenSSLMLKEMExecute,                  /* xmlSecTransformExecuteMethod execute; */                          \
+    NULL,                                       /* void* reserved0; */                                               \
+    NULL,                                       /* void* reserved1; */                                               \
 };
 
 /* ML-KEM-512 key transport: xmlSecOpenSSLMLKEM512Klass */

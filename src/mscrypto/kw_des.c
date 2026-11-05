@@ -12,8 +12,6 @@
 #ifndef XMLSEC_NO_DES
 #include "globals.h"
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 
 #include <xmlsec/xmlsec.h>
@@ -123,7 +121,7 @@ static xmlSecTransformKlass xmlSecMSCryptoKWDes3Klass = {
     xmlSecMSCryptoKWDes3Finalize,               /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCryptoKWDes3SetKeyReq,              /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecMSCryptoKWDes3SetKeyReq,              /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecMSCryptoKWDes3SetKey,                 /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */

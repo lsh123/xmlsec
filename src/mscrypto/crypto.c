@@ -199,15 +199,15 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
-    gXmlSecMSCryptoFunctions->transformRsaSha256GetKlass       = xmlSecMSCryptoTransformRsaSha256GetKlass;
+    gXmlSecMSCryptoFunctions->transformRsaSha256GetKlass        = xmlSecMSCryptoTransformRsaSha256GetKlass;
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
-    gXmlSecMSCryptoFunctions->transformRsaSha384GetKlass       = xmlSecMSCryptoTransformRsaSha384GetKlass;
+    gXmlSecMSCryptoFunctions->transformRsaSha384GetKlass        = xmlSecMSCryptoTransformRsaSha384GetKlass;
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
-    gXmlSecMSCryptoFunctions->transformRsaSha512GetKlass       = xmlSecMSCryptoTransformRsaSha512GetKlass;
+    gXmlSecMSCryptoFunctions->transformRsaSha512GetKlass        = xmlSecMSCryptoTransformRsaSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
 #ifndef XMLSEC_NO_RSA_PKCS15
@@ -225,13 +225,13 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
     gXmlSecMSCryptoFunctions->transformSha1GetKlass             = xmlSecMSCryptoTransformSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
 #ifndef XMLSEC_NO_SHA256
-    gXmlSecMSCryptoFunctions->transformSha256GetKlass          = xmlSecMSCryptoTransformSha256GetKlass;
+    gXmlSecMSCryptoFunctions->transformSha256GetKlass           = xmlSecMSCryptoTransformSha256GetKlass;
 #endif /* XMLSEC_NO_SHA256 */
 #ifndef XMLSEC_NO_SHA384
-    gXmlSecMSCryptoFunctions->transformSha384GetKlass          = xmlSecMSCryptoTransformSha384GetKlass;
+    gXmlSecMSCryptoFunctions->transformSha384GetKlass           = xmlSecMSCryptoTransformSha384GetKlass;
 #endif /* XMLSEC_NO_SHA384 */
 #ifndef XMLSEC_NO_SHA512
-    gXmlSecMSCryptoFunctions->transformSha512GetKlass          = xmlSecMSCryptoTransformSha512GetKlass;
+    gXmlSecMSCryptoFunctions->transformSha512GetKlass           = xmlSecMSCryptoTransformSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
     /******************************************************************************
@@ -449,7 +449,7 @@ done:
  * @param line the error location line number (__LINE__ macro).
  * @param func the error location function name (__FUNCTION__ macro).
  * @param errorObject the specific error object
- * @param errorSubject the error specific error subject.
+ * @param errorSubject the specific error subject.
  * @param reason the error code.
  * @param msg the additional error message.
  *
@@ -472,7 +472,7 @@ xmlSecMSCryptoErrorsDefaultCallback(const char* file, int line, const char* func
  * @param pszContainer the container name for CryptAcquireContext call
  * @param dwFlags the flags for CryptAcquireContext call
  * @param bUseXmlSecContainer the flag to indicate whether we should try to use XmlSec container if default fails
- * @return provider handle on success or NULL for error.
+ * @return provider handle on success or 0 for error.
  */
 HCRYPTPROV
 xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
@@ -519,6 +519,11 @@ xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
                         providers[ii].providerType,
                         CRYPT_NEWKEYSET | dwFlags);
             if((ret == TRUE) && (res != 0)) {
+                /* NOTE: unreachable for all current callers (they pass
+                 * CRYPT_VERIFYCONTEXT, so NTE_BAD_KEYSET cannot occur). A future
+                 * caller that requests a persistent key container would create a
+                 * key container here that nothing deletes on shutdown (no
+                 * CRYPT_DELETEKEYSET cleanup exists). */
                 return (res);
             }
             break;

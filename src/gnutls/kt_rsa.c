@@ -13,8 +13,6 @@
 
 #ifndef XMLSEC_NO_RSA
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 
 #include <gnutls/gnutls.h>
@@ -209,7 +207,7 @@ xmlSecGnuTLSKeyTransportEncrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
         return(-1);
     }
 
-    /* encrypt: gnutls_pubkey_encrypt_data only supports PKCS 1.5 padding */
+    /* encrypt: gnutls_pubkey_encrypt_data uses PKCS 1.5 padding by default */
     plaintext.data = xmlSecBufferGetData(inBuf);
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(inSize, plaintext.size, return(-1), NULL);
     err = gnutls_pubkey_encrypt_data(pubkey,
@@ -271,7 +269,7 @@ xmlSecGnuTLSKeyTransportDecrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
         return(-1);
     }
 
-    /* decrypt: gnutls_privkey_decrypt_data only supports PKCS 1.5 padding */
+    /* decrypt: gnutls_privkey_decrypt_data uses PKCS 1.5 padding by default */
     ciphertext.data = xmlSecBufferGetData(inBuf);
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(inSize, ciphertext.size, return(-1), NULL);
     err = gnutls_privkey_decrypt_data(privkey,

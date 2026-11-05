@@ -66,31 +66,31 @@ static int      xmlSecNssDigestExecute                  (xmlSecTransformPtr tran
                                                          xmlSecTransformCtxPtr transformCtx);
 
 /* Helper macros to define the transform klass */
-#define XMLSEC_NSS_DIGEST_KLASS_EX(name, readNode)                                                      \
-static xmlSecTransformKlass xmlSecNss ## name ## Klass = {                                              \
-    /* klass/object sizes */                                                                            \
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
-    xmlSecNssDigestSize,                        /* xmlSecSize objSize */                                \
-    /* data */                                                                                          \
-    xmlSecName ## name,                         /* const xmlChar* name; */                              \
-    xmlSecHref ## name,                         /* const xmlChar* href; */                              \
-    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */                       \
-    /* methods */                                                                                       \
-    xmlSecNssDigestInitialize,                  /* xmlSecTransformInitializeMethod initialize; */       \
-    xmlSecNssDigestFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */           \
-    readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */           \
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */         \
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */         \
-    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */               \
-    xmlSecNssDigestVerify,                      /* xmlSecTransformVerifyMethod verify; */               \
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */             \
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
-    xmlSecNssDigestExecute,                     /* xmlSecTransformExecuteMethod execute; */             \
-    NULL,                                       /* void* reserved0; */                                  \
-    NULL,                                       /* void* reserved1; */                                  \
+#define XMLSEC_NSS_DIGEST_KLASS_EX(name, readNode)                                                                 \
+static xmlSecTransformKlass xmlSecNss ## name ## Klass = {                                                         \
+    /* klass/object sizes */                                                                                       \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                         \
+    xmlSecNssDigestSize,                        /* xmlSecSize objSize */                                           \
+    /* data */                                                                                                     \
+    xmlSecName ## name,                         /* const xmlChar* name; */                                         \
+    xmlSecHref ## name,                         /* const xmlChar* href; */                                         \
+    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */                                  \
+    /* methods */                                                                                                  \
+    xmlSecNssDigestInitialize,                  /* xmlSecTransformInitializeMethod initialize; */                  \
+    xmlSecNssDigestFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */                      \
+    readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */                      \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */                    \
+    NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */           \
+    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */                          \
+    xmlSecNssDigestVerify,                      /* xmlSecTransformVerifyMethod verify; */                          \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */                \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                        \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                          \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                        \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                          \
+    xmlSecNssDigestExecute,                     /* xmlSecTransformExecuteMethod execute; */                        \
+    NULL,                                       /* void* reserved0; */                                             \
+    NULL,                                       /* void* reserved1; */                                             \
 };
 
 #define XMLSEC_NSS_DIGEST_KLASS(name)                                                                   \

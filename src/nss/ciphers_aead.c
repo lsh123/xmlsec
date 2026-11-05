@@ -109,32 +109,32 @@ static int      xmlSecNssAeadCipherCheckId       (xmlSecTransformPtr transform);
 
 
 /* Helper macro to define the AES GCM / ChaCha20-Poly1305 transform klass */
-#define XMLSEC_NSS_CIPHER_AEAD_KLASS_EX(name, nodeRead, nodeWrite)                                          \
-static xmlSecTransformKlass xmlSecNss ## name ## Klass = {                                                  \
-    /* klass/object sizes */                                                                                \
-    sizeof(xmlSecTransformKlass),                   /* xmlSecSize klassSize */                              \
-    xmlSecNssAeadCipherSize,                        /* xmlSecSize objSize */                                \
-                                                                                                            \
-    xmlSecName ## name,                             /* const xmlChar* name; */                              \
-    xmlSecHref ## name,                             /* const xmlChar* href; */                              \
-    xmlSecTransformUsageEncryptionMethod,           /* xmlSecAlgorithmUsage usage; */                       \
-                                                                                                            \
-    xmlSecNssAeadCipherInitialize,                  /* xmlSecTransformInitializeMethod initialize; */       \
-    xmlSecNssAeadCipherFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */           \
-    nodeRead,                                       /* xmlSecTransformNodeReadMethod readNode; */           \
-    nodeWrite,                                      /* xmlSecTransformNodeWriteMethod writeNode; */         \
-    xmlSecNssAeadCipherSetKeyReq,                   /* xmlSecTransformSetKeyMethod setKeyReq; */            \
-    xmlSecNssAeadCipherSetKey,                      /* xmlSecTransformSetKeyMethod setKey; */               \
-    NULL,                                           /* xmlSecTransformValidateMethod validate; */           \
-    xmlSecTransformDefaultGetDataType,              /* xmlSecTransformGetDataTypeMethod getDataType; */     \
-    xmlSecTransformDefaultPushBin,                  /* xmlSecTransformPushBinMethod pushBin; */             \
-    xmlSecTransformDefaultPopBin,                   /* xmlSecTransformPopBinMethod popBin; */               \
-    NULL,                                           /* xmlSecTransformPushXmlMethod pushXml; */             \
-    NULL,                                           /* xmlSecTransformPopXmlMethod popXml; */               \
-    xmlSecNssAeadCipherExecute,                     /* xmlSecTransformExecuteMethod execute; */             \
-                                                                                                            \
-    NULL,                                           /* void* reserved0; */                                  \
-    NULL,                                           /* void* reserved1; */                                  \
+#define XMLSEC_NSS_CIPHER_AEAD_KLASS_EX(name, nodeRead, nodeWrite)                                                          \
+static xmlSecTransformKlass xmlSecNss ## name ## Klass = {                                                                  \
+    /* klass/object sizes */                                                                                                \
+    sizeof(xmlSecTransformKlass),                   /* xmlSecSize klassSize */                                              \
+    xmlSecNssAeadCipherSize,                        /* xmlSecSize objSize */                                                \
+                                                                                                                            \
+    xmlSecName ## name,                             /* const xmlChar* name; */                                              \
+    xmlSecHref ## name,                             /* const xmlChar* href; */                                              \
+    xmlSecTransformUsageEncryptionMethod,           /* xmlSecTransformUsage usage; */                                       \
+                                                                                                                            \
+    xmlSecNssAeadCipherInitialize,                  /* xmlSecTransformInitializeMethod initialize; */                       \
+    xmlSecNssAeadCipherFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */                           \
+    nodeRead,                                       /* xmlSecTransformNodeReadMethod readNode; */                           \
+    nodeWrite,                                      /* xmlSecTransformNodeWriteMethod writeNode; */                         \
+    xmlSecNssAeadCipherSetKeyReq,                   /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */                \
+    xmlSecNssAeadCipherSetKey,                      /* xmlSecTransformSetKeyMethod setKey; */                               \
+    NULL,                                           /* xmlSecTransformVerifyMethod verify; */                               \
+    xmlSecTransformDefaultGetDataType,              /* xmlSecTransformGetDataTypeMethod getDataType; */                     \
+    xmlSecTransformDefaultPushBin,                  /* xmlSecTransformPushBinMethod pushBin; */                             \
+    xmlSecTransformDefaultPopBin,                   /* xmlSecTransformPopBinMethod popBin; */                               \
+    NULL,                                           /* xmlSecTransformPushXmlMethod pushXml; */                             \
+    NULL,                                           /* xmlSecTransformPopXmlMethod popXml; */                               \
+    xmlSecNssAeadCipherExecute,                     /* xmlSecTransformExecuteMethod execute; */                             \
+                                                                                                                            \
+    NULL,                                           /* void* reserved0; */                                                  \
+    NULL,                                           /* void* reserved1; */                                                  \
 };
 
 

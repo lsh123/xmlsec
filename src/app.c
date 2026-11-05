@@ -56,7 +56,7 @@ xmlSecCryptoInit(void) {
  * @details XMLSec library specific crypto engine shutdown.
  *
  * Note: Once this function has been called it might be
- * impossible to reinitialise the library correctly.
+ * impossible to reinitialize the library correctly.
  *
  * @return 0 on success or a negative value otherwise.
  */
@@ -1160,9 +1160,9 @@ xmlSecTransformGost2001GostR3411_94GetKlass(void) {
 }
 
 /**
- * @brief Gets GOST R 34.10-2012/R 34.11-2012 256-bit signature klass.
- * @details The GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform klass.
- * @return GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform klass or NULL if an error
+ * @brief Gets the GOST R 34.10-2012/R 34.11-2012 256-bit signature klass.
+ * @details The GOST R 34.10-2012/R 34.11-2012 256 bit signature transform klass.
+ * @return GOST R 34.10-2012/R 34.11-2012 256 bit signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1178,9 +1178,9 @@ xmlSecTransformGostR3410_2012GostR3411_2012_256GetKlass(void) {
 }
 
 /**
- * @brief Gets GOST R 34.10-2012/R 34.11-2012 512-bit signature klass.
- * @details The GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform klass.
- * @return GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform klass or NULL if an error
+ * @brief Gets the GOST R 34.10-2012/R 34.11-2012 512-bit signature klass.
+ * @details The GOST R 34.10-2012/R 34.11-2012 512 bit signature transform klass.
+ * @return GOST R 34.10-2012/R 34.11-2012 512 bit signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -2040,8 +2040,8 @@ xmlSecTransformGostR3411_2012_512GetKlass(void) {
 }
 
 /**
- * @brief SHA-1 digest transform klass.
- * @return pointer to SHA-1 digest transform klass or NULL if an error
+ * @brief SHA1 digest transform klass.
+ * @return pointer to SHA1 digest transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -2231,7 +2231,7 @@ xmlSecCryptoAppInit(const char* config) {
  * #xmlSecShutdown function.
  *
  * Note: Once this function has been called it might be
- * impossible to reinitialise the library correctly.
+ * impossible to reinitialize the library correctly.
  *
  * @return 0 on success or a negative value otherwise.
  */
@@ -2351,7 +2351,7 @@ xmlSecCryptoAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename,
  * @param mngr the keys manager.
  * @param filename the certificate file.
  * @param format the certificate file format.
- * @param type the flag that indicates if the certificate in @p filename is trusted or not.
+ * @param type the flag that indicates whether the certificate in @p filename is trusted or not.
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -2374,7 +2374,7 @@ xmlSecCryptoAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
  * @param data the certificate binary data.
  * @param dataSize the certificate binary data size.
  * @param format the certificate data format.
- * @param type the flag that indicates if the certificate is trusted or not.
+ * @param type the flag that indicates whether the certificate is trusted or not.
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -2589,14 +2589,14 @@ xmlSecCryptoAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSe
 }
 
 /**
- * @brief Gets default password callback.
+ * @brief Gets the default password callback.
  * @return default password callback.
  */
 void*
 xmlSecCryptoAppGetDefaultPwdCallback(void) {
     /* default password callback can be NULL */
     xmlSecCryptoDLFunctionsPtr functions = xmlSecCryptoDLGetFunctions();
-    if(functions == NULL)  {
+    if(functions == NULL) {
         xmlSecNotImplementedError2(missingMethodError, "cryptoAppDefaultPwdCallback");
         return(NULL);
     }

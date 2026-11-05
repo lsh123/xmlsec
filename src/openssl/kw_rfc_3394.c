@@ -12,10 +12,8 @@
 #include "globals.h"
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 
-#include <openssl/rand.h>
 #include <openssl/evp.h>
 
 #include <xmlsec/xmlsec.h>
@@ -175,28 +173,28 @@ static int      xmlSecOpenSSLKWRfc3394Execute                  (xmlSecTransformP
  * Unified RFC 3394 KW transform class macro
  *
   *****************************************************************************/
-#define XMLSEC_OPENSSL_KW_RFC3394_KLASS(name)                                                           \
-static xmlSecTransformKlass xmlSecOpenSSLKW ## name ## Klass = {                                        \
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
-    xmlSecOpenSSLKWRfc3394Size,                 /* xmlSecSize objSize */                                \
-    xmlSecNameKW ## name,                       /* const xmlChar* name; */                              \
-    xmlSecHrefKW ## name,                       /* const xmlChar* href; */                              \
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                       \
-    xmlSecOpenSSLKWRfc3394Initialize,           /* xmlSecTransformInitializeMethod initialize; */       \
-    xmlSecOpenSSLKWRfc3394Finalize,             /* xmlSecTransformFinalizeMethod finalize; */           \
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */           \
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */         \
-    xmlSecOpenSSLKWRfc3394SetKeyReq,            /* xmlSecTransformSetKeyMethod setKeyReq; */            \
-    xmlSecOpenSSLKWRfc3394SetKey,               /* xmlSecTransformSetKeyMethod setKey; */               \
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */           \
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */             \
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
-    xmlSecOpenSSLKWRfc3394Execute,              /* xmlSecTransformExecuteMethod execute; */             \
-    NULL,                                       /* void* reserved0; */                                  \
-    NULL,                                       /* void* reserved1; */                                  \
+#define XMLSEC_OPENSSL_KW_RFC3394_KLASS(name)                                                                           \
+static xmlSecTransformKlass xmlSecOpenSSLKW ## name ## Klass = {                                                        \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                              \
+    xmlSecOpenSSLKWRfc3394Size,                 /* xmlSecSize objSize */                                                \
+    xmlSecNameKW ## name,                       /* const xmlChar* name; */                                              \
+    xmlSecHrefKW ## name,                       /* const xmlChar* href; */                                              \
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                                       \
+    xmlSecOpenSSLKWRfc3394Initialize,           /* xmlSecTransformInitializeMethod initialize; */                       \
+    xmlSecOpenSSLKWRfc3394Finalize,             /* xmlSecTransformFinalizeMethod finalize; */                           \
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */                           \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */                         \
+    xmlSecOpenSSLKWRfc3394SetKeyReq,            /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */                \
+    xmlSecOpenSSLKWRfc3394SetKey,               /* xmlSecTransformSetKeyMethod setKey; */                               \
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */                               \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */                     \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                             \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                               \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                             \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                               \
+    xmlSecOpenSSLKWRfc3394Execute,              /* xmlSecTransformExecuteMethod execute; */                             \
+    NULL,                                       /* void* reserved0; */                                                  \
+    NULL,                                       /* void* reserved1; */                                                  \
 };
 
 

@@ -249,8 +249,11 @@ xmlSecTransformC14NPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
          * into the next transform, which is harmless here: the whole
          * operation is aborted and the produced data is discarded */
         (void)xmlOutputBufferClose(buf);
-        /* discard any partial output produced before the failure so it
-         * cannot be picked up by a later operation and mark the transform as failed */
+        /* clear the partial output in the local buffer so it cannot be
+         * picked up by a later operation (the data may have already been
+         * pushed into the next transform by the close callback, but the
+         * whole operation is aborted, so it is of no use) and mark the
+         * transform as failed */
         xmlSecBufferEmpty(&(transform->outBuf));
         transform->status = xmlSecTransformStatusFail;
         return(-1);
@@ -330,8 +333,8 @@ xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlSecP
             return(-1);
         }
 
-        /* HACK: we are using a semi-hack here: we know that xmlSecPtrList keeps
-         * all pointers in the big array */
+        /* we know that xmlSecPtrList keeps all pointers
+         * in a contiguous array */
         ret = xmlC14NExecute(nodes->doc,
                         (xmlC14NIsVisibleCallback)xmlSecNodeSetContains,
                         nodes, XML_C14N_EXCLUSIVE_1_0, (xmlChar**)(nsList->data), 0, buf);
@@ -344,8 +347,8 @@ xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlSecP
             return(-1);
         }
 
-        /* HACK: we are using a semi-hack here: we know that xmlSecPtrList keeps
-         * all pointers in the big array */
+        /* we know that xmlSecPtrList keeps all pointers
+         * in a contiguous array */
         ret = xmlC14NExecute(nodes->doc,
                         (xmlC14NIsVisibleCallback)xmlSecNodeSetContains,
                         nodes, XML_C14N_EXCLUSIVE_1_0, (xmlChar**)(nsList->data), 1, buf);
@@ -386,7 +389,7 @@ static xmlSecTransformKlass xmlSecTransformInclC14NKlass = {
     xmlSecTransformC14NFinalize,                /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -431,7 +434,7 @@ static xmlSecTransformKlass xmlSecTransformInclC14NWithCommentsKlass = {
     xmlSecTransformC14NFinalize,                /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -476,7 +479,7 @@ static xmlSecTransformKlass xmlSecTransformInclC14N11Klass = {
     xmlSecTransformC14NFinalize,                /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -519,7 +522,7 @@ static xmlSecTransformKlass xmlSecTransformInclC14N11WithCommentsKlass = {
     xmlSecTransformC14NFinalize,                /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -563,7 +566,7 @@ static xmlSecTransformKlass xmlSecTransformExclC14NKlass = {
     xmlSecTransformC14NFinalize,                /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecTransformC14NNodeRead,                /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -607,7 +610,7 @@ static xmlSecTransformKlass xmlSecTransformExclC14NWithCommentsKlass = {
     xmlSecTransformC14NFinalize,                /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecTransformC14NNodeRead,                /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -651,7 +654,7 @@ static xmlSecTransformKlass xmlSecTransformRemoveXmlTagsC14NKlass = {
     xmlSecTransformC14NFinalize,                /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */

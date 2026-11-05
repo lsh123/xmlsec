@@ -21,6 +21,8 @@
 
 /**
  * Add all Windows headers in one place.
+ * WIN32_NO_STATUS suppresses the basic STATUS_ code definitions inside winnt.h,
+ * so the NTSTATUS values come from the explicit <ntstatus.h> include below.
  */
 #define WIN32_NO_STATUS
 #include <windows.h>

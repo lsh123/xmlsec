@@ -37,12 +37,6 @@
 
 #ifndef XMLSEC_NO_DES
 
-
-/******************************************************************************
- *
- * DES KW implementation
- *
-  *****************************************************************************/
 static int       xmlSecOpenSSLKWDes3GenerateRandom               (xmlSecTransformPtr transform,
                                                                  xmlSecByte * out,
                                                                  xmlSecSize outSize,
@@ -132,7 +126,7 @@ static xmlSecTransformKlass xmlSecOpenSSLKWDes3Klass = {
     xmlSecOpenSSLKWDes3Finalize,                /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecOpenSSLKWDes3SetKeyReq,               /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecOpenSSLKWDes3SetKeyReq,               /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecOpenSSLKWDes3SetKey,                  /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -408,11 +402,11 @@ xmlSecOpenSSLKWDes3BlockDecrypt(xmlSecTransformPtr transform,
 
 
 static int
-xmlSecOpenSSLKWDes3Encrypt(const xmlSecByte* key, xmlSecSize keySize,
-                           const xmlSecByte* iv, xmlSecSize ivSize,
-                           const xmlSecByte* in, xmlSecSize inSize,
-                           xmlSecByte* out, xmlSecSize outSize,
-                           xmlSecSize* outWritten,
+xmlSecOpenSSLKWDes3Encrypt(const xmlSecByte * key, xmlSecSize keySize,
+                           const xmlSecByte * iv, xmlSecSize ivSize,
+                           const xmlSecByte * in, xmlSecSize inSize,
+                           xmlSecByte * out, xmlSecSize outSize,
+                           xmlSecSize * outWritten,
                            int enc) {
 #ifndef XMLSEC_OPENSSL_API_300
     const EVP_CIPHER*   cipher = NULL;
@@ -443,7 +437,7 @@ xmlSecOpenSSLKWDes3Encrypt(const xmlSecByte* key, xmlSecSize keySize,
 #else /* XMLSEC_OPENSSL_API_300 */
     cipher = EVP_CIPHER_fetch(xmlSecOpenSSLGetLibCtx(), XMLSEC_OPENSSL_CIPHER_NAME_DES3_EDE, NULL);
     if(cipher == NULL) {
-        xmlSecOpenSSLError("EVP_CIPHER_fetch(des3)", NULL);
+        xmlSecOpenSSLError("EVP_CIPHER_fetch(DES3)", NULL);
         goto done;
     }
 #endif /* XMLSEC_OPENSSL_API_300 */
@@ -460,7 +454,7 @@ xmlSecOpenSSLKWDes3Encrypt(const xmlSecByte* key, xmlSecSize keySize,
     }
 
     len = EVP_CIPHER_iv_length(cipher);
-    if (len <= 0) {
+    if(len <= 0) {
         xmlSecOpenSSLError("EVP_CIPHER_iv_length", NULL);
         goto done;
     }

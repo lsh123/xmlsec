@@ -1008,7 +1008,7 @@ xmlSecGnuTLSAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr,
  * @param data the certificate binary data.
  * @param dataSize the certificate binary data size.
  * @param format the certificate file format.
- * @param type the flag that indicates if the certificate trusted or not.
+ * @param type the flag that indicates if the certificate in @p data is trusted or not.
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -1114,7 +1114,13 @@ xmlSecGnuTLSAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xml
 
 /**
  * @brief Loads and verifies a CRL from a file.
- * @details Atomically loads and verifies a CRL from @p filename.
+ * @details Atomically loads and verifies a CRL from @p filename. This function eliminates
+ * TOCTOU (Time-of-Check/Time-of-Use) vulnerabilities by loading the CRL once into memory,
+ * verifying it, and then adopting it to the store.
+ *
+ * The CRL is verified by:
+ * 1. Checking the signature against the issuer's certificate in the store
+ * 2. Validating thisUpdate and nextUpdate times
  *
  * @param mngr the keys manager.
  * @param filename the CRL filename.

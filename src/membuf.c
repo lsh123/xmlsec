@@ -54,7 +54,7 @@ static xmlSecTransformKlass xmlSecTransformMemBufKlass = {
     xmlSecTransformMemBufFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -79,7 +79,7 @@ xmlSecTransformMemBufGetKlass(void) {
 }
 
 /**
- * @brief Gets the pointer to memory buffer transform buffer.
+ * @brief Gets the pointer to the memory buffer transform's buffer.
  * @param transform the pointer to memory buffer transform.
  *
  * @return pointer to the transform's xmlSecBuffer.

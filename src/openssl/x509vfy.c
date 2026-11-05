@@ -122,7 +122,7 @@ xmlSecOpenSSLX509StoreGetKlass(void) {
 
 /**
  * @brief Deprecated. Searches @p store for a certificate that matches given criteria.
- * @param store the pointer to X509 key data store klass.
+ * @param store the pointer to the X509 key data store.
  * @param subjectName the desired certificate name.
  * @param issuerName the desired certificate issuer name.
  * @param issuerSerial the desired certificate issuer serial number.
@@ -158,7 +158,7 @@ xmlSecOpenSSLX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName
 
 /**
  * @brief Deprecated. Searches @p store for a certificate that matches given criteria.
- * @param store the pointer to X509 key data store klass.
+ * @param store the pointer to the X509 key data store.
  * @param subjectName the desired certificate name.
  * @param issuerName the desired certificate issuer name.
  * @param issuerSerial the desired certificate issuer serial number.
@@ -925,7 +925,7 @@ xmlSecOpenSSLX509FilterCrlsByTime(STACK_OF(X509_CRL)* crls, xmlSecKeyInfoCtx* ke
  * @param certs the untrusted certificates stack.
  * @param crls the CRLs stack.
  * @param keyInfoCtx the pointer to the &lt;dsig:KeyInfo/&gt; element processing context.
- * @return a borrowed pointer to the first verified certificate, or NULL if an error occurs; the caller must NOT free it.
+ * @return a borrowed pointer to the first verified certificate, or NULL if the cert is not verified or an error occurs; the caller must NOT free it.
  */
 X509*
 xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs, STACK_OF(X509_CRL)* crls, xmlSecKeyInfoCtxPtr keyInfoCtx) {
@@ -1075,7 +1075,7 @@ xmlSecOpenSSLX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, x
 
     ctx = xmlSecOpenSSLX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->xst != NULL,  -1);
+    xmlSecAssert2(ctx->xst != NULL, -1);
 
     /* retrieve X509 data and get key cert */
     x509Data = xmlSecKeyGetData(key, xmlSecOpenSSLKeyDataX509Id);
@@ -1087,7 +1087,7 @@ xmlSecOpenSSLX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, x
         xmlSecInternalError("xmlSecKeyGetData(xmlSecOpenSSLKeyDataX509Id)", xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
-    keyCert =  xmlSecOpenSSLKeyDataX509GetKeyCert(x509Data);
+    keyCert = xmlSecOpenSSLKeyDataX509GetKeyCert(x509Data);
     if(keyCert == NULL) {
         xmlSecInternalError("xmlSecOpenSSLKeyDataX509GetKeyCert", xmlSecKeyDataStoreGetName(store));
         res = 0; /* verification failed */
@@ -1165,7 +1165,7 @@ done:
 
 /**
  * @brief Verifies @p crl by checking:
- * @param store the pointer to X509 key data store klass.
+ * @param store the pointer to the X509 key data store.
  * @param crl the CRL to verify.
  * @param keyInfoCtx the key info context for verification parameters.
  *
@@ -1227,7 +1227,7 @@ done:
 /**
  * @brief Adds cert to the trusted or untrusted store.
  * @details On success, ownership of @p cert transfers to the store; on failure the caller retains ownership.
- * @param store the pointer to X509 key data store klass.
+ * @param store the pointer to the X509 key data store.
  * @param cert the pointer to OpenSSL X509 certificate.
  * @param type the certificate type (trusted/untrusted).
  * @return 0 on success or a negative value if an error occurs.
@@ -1272,7 +1272,7 @@ xmlSecOpenSSLX509StoreAdoptCert(xmlSecKeyDataStorePtr store, X509* cert, xmlSecK
 /**
  * @brief Adds X509 CRL to the store.
  * @details On success, ownership of @p crl transfers to the store; on failure the caller retains ownership.
- * @param store the pointer to X509 key data store klass.
+ * @param store the pointer to the X509 key data store.
  * @param crl the pointer to OpenSSL X509_CRL.
  * @return 0 on success or a negative value if an error occurs.
  */
@@ -1298,11 +1298,9 @@ xmlSecOpenSSLX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, X509_CRL* crl) {
 }
 
 /**
- * @brief Adds all certs in the @p path to the list of trusted certs
+ * @brief Adds all certs in the @p path to the list of trusted certs in @p store.
  * @param store the pointer to OpenSSL x509 store.
  * @param path the path to the certs dir.
- *
- * in @p store.
  *
  * @return 0 on success or a negative value otherwise.
  */
@@ -1335,11 +1333,11 @@ xmlSecOpenSSLX509StoreAddCertsPath(xmlSecKeyDataStorePtr store, const char *path
 }
 
 /**
- * @brief Adds all certs in the file to the list of trusted certs
+ * @brief Adds all certs in the file to the list of trusted certs in @p store.
  * @param store the pointer to OpenSSL x509 store.
  * @param filename the certs file.
  *
- * in @p store. It is possible for the file to contain multiple certs.
+ * It is possible for the file to contain multiple certs.
  *
  * @return 0 on success or a negative value otherwise.
  */
@@ -1654,8 +1652,8 @@ xmlSecOpenSSLX509VerifyCRLTimeValidity(X509_CRL *crl, xmlSecKeyInfoCtx* keyInfoC
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     /* honor the SKIP_TIME_CHECKS flag: the certificate path honors it via
-     * X509_V_FLAG_NO_CHECK_TIME (see line ~695), and the mscrypto/gnutls
-     * backends skip the CRL time checks the same way */
+     * X509_V_FLAG_NO_CHECK_TIME (see xmlSecOpenSSLX509StoreSetCtx), and the
+     * mscrypto/gnutls backends skip the CRL time checks the same way */
     if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS) != 0) {
         return(1);
     }
@@ -2166,7 +2164,7 @@ xmlSecOpenSSLX509StoreCombineCerts(STACK_OF(X509)* certs1, STACK_OF(X509)* certs
 
     res = sk_X509_new_null();
     if (res == NULL) {
-        xmlSecOpenSSLError("sk_X509_new_null()", NULL);
+        xmlSecOpenSSLError("sk_X509_new_null", NULL);
         return(NULL);
     }
 
@@ -2225,7 +2223,7 @@ xmlSecOpenSSLX509StoreCombineCerts(STACK_OF(X509)* certs1, STACK_OF(X509)* certs
             return(NULL);
         }
 
-         for(ii = 0; ii < num; ++ii) {
+        for(ii = 0; ii < num; ++ii) {
             cert = sk_X509_value(certs2, ii);
             if(cert == NULL) {
                 continue;
@@ -2233,10 +2231,10 @@ xmlSecOpenSSLX509StoreCombineCerts(STACK_OF(X509)* certs1, STACK_OF(X509)* certs
             ret = sk_X509_push(res, cert);
             if(ret <= 0) {
                 xmlSecInternalError("sk_X509_push(res)", NULL);
-            sk_X509_free(res);
-            return(NULL);
+                sk_X509_free(res);
+                return(NULL);
             }
-         }
+        }
     }
 
     /* done */

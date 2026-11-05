@@ -207,9 +207,9 @@ static xmlSecTransformKlass xmlSecGCryptRsaPkcs1Klass = {
     xmlSecGCryptRsaPkcs1Finalize,               /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptRsaPkcs1SetKeyReq,              /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecGCryptRsaPkcs1SetKeyReq,              /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptRsaPkcs1SetKey,                 /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
@@ -609,9 +609,9 @@ static xmlSecTransformKlass xmlSecGCryptRsaOaepKlass = {
     xmlSecGCryptRsaOaepFinalize,               /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecGCryptRsaOaepNodeRead,               /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptRsaOaepSetKeyReq,              /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecGCryptRsaOaepSetKeyReq,              /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptRsaOaepSetKey,                 /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                      /* xmlSecTransformValidateMethod validate; */
+    NULL,                                      /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
@@ -646,9 +646,9 @@ static xmlSecTransformKlass xmlSecGCryptRsaOaepEnc11Klass = {
     xmlSecGCryptRsaOaepFinalize,               /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecGCryptRsaOaepNodeRead,               /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptRsaOaepSetKeyReq,              /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecGCryptRsaOaepSetKeyReq,              /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptRsaOaepSetKey,                 /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */

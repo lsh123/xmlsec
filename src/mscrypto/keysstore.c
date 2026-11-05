@@ -23,8 +23,6 @@
 #include <string.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/buffer.h>
-#include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/xmltree.h>
@@ -216,8 +214,8 @@ xmlSecMSCryptoKeysStoreFinalize(xmlSecKeyStorePtr store) {
     if(ctx->hStoreHandle != NULL) {
         if (!CertCloseStore(ctx->hStoreHandle, XMLSEC_CLOSE_STORE_FLAG)) {
             xmlSecMSCryptoError("CertCloseStore", xmlSecKeyStoreGetName(store));
-            /* cleanup: the returned cert context may still reference the closed store
-            * (see the todo note above); nothing else can be done here */
+            /* cleanup: the returned cert context may still reference the closed store;
+            * nothing else can be done here */
         }
         ctx->hStoreHandle = NULL;
     }

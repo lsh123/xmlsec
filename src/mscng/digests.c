@@ -53,29 +53,29 @@ static int      xmlSecMSCngDigestExecute     (xmlSecTransformPtr transform,
                                               xmlSecTransformCtxPtr transformCtx);
 static int      xmlSecMSCngDigestCheckId     (xmlSecTransformPtr transform);
 
-#define XMLSEC_MSCNG_DIGEST_KLASS_EX(name)                                                         \
-static xmlSecTransformKlass xmlSecMSCng ## name ## Klass = {                                      \
-    sizeof(xmlSecTransformKlass),              /* size_t klassSize */                              \
-    xmlSecMSCngDigestSize,                     /* size_t objSize */                                \
-                                                                                                   \
-    xmlSecName ## name,                        /* const xmlChar* name; */                          \
-    xmlSecHref ## name,                        /* const xmlChar* href; */                          \
-    xmlSecTransformUsageDigestMethod,          /* xmlSecTransformUsage usage; */                   \
-    xmlSecMSCngDigestInitialize,               /* xmlSecTransformInitializeMethod initialize; */   \
-    xmlSecMSCngDigestFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */       \
-    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */       \
-    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */     \
-    NULL,                                      /* xmlSecTransformSetKeyReqMethod setKeyReq; */     \
-    NULL,                                      /* xmlSecTransformSetKeyMethod setKey; */           \
-    xmlSecMSCngDigestVerify,                   /* xmlSecTransformVerifyMethod verify; */           \
-    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */ \
-    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */         \
-    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */           \
-    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */         \
-    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */           \
-    xmlSecMSCngDigestExecute,                  /* xmlSecTransformExecuteMethod execute; */         \
-    NULL,                                      /* void* reserved0; */                              \
-    NULL,                                      /* void* reserved1; */                              \
+#define XMLSEC_MSCNG_DIGEST_KLASS_EX(name)                                                                    \
+static xmlSecTransformKlass xmlSecMSCng ## name ## Klass = {                                                  \
+    sizeof(xmlSecTransformKlass),              /* size_t klassSize */                                         \
+    xmlSecMSCngDigestSize,                     /* size_t objSize */                                           \
+                                                                                                              \
+    xmlSecName ## name,                        /* const xmlChar* name; */                                     \
+    xmlSecHref ## name,                        /* const xmlChar* href; */                                     \
+    xmlSecTransformUsageDigestMethod,          /* xmlSecTransformUsage usage; */                              \
+    xmlSecMSCngDigestInitialize,               /* xmlSecTransformInitializeMethod initialize; */              \
+    xmlSecMSCngDigestFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */                  \
+    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */                  \
+    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */                \
+    NULL,                                      /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */       \
+    NULL,                                      /* xmlSecTransformSetKeyMethod setKey; */                      \
+    xmlSecMSCngDigestVerify,                   /* xmlSecTransformVerifyMethod verify; */                      \
+    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */            \
+    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */                    \
+    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */                      \
+    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */                    \
+    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */                      \
+    xmlSecMSCngDigestExecute,                  /* xmlSecTransformExecuteMethod execute; */                    \
+    NULL,                                      /* void* reserved0; */                                         \
+    NULL,                                      /* void* reserved1; */                                         \
 };
 
 

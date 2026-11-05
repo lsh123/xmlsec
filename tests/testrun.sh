@@ -385,7 +385,7 @@ fi
 
 # ML-KEM keys have no certificates and cannot be stored in PKCS12.
 # OpenSSL uses PKCS8-PEM format for private keys and PEM for public keys.
-# NSS and MSCng only supports DER (unencrypted PKCS#8 / SubjectPublicKeyInfo) formats.
+# NSS and MSCng only support DER (unencrypted PKCS#8 / SubjectPublicKeyInfo) formats.
 if [ "z$crypto" = "znss" -o "z$crypto" = "zmscng" ] ; then
     mlkem_priv_key_option="--privkey-der"
     mlkem_priv_key_format="der"

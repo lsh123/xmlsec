@@ -8,7 +8,7 @@
 /**
  * @addtogroup xmlsec_gcrypt_crypto
  * @brief Core crypto functions for GCrypt.
- * Core crypto functions for GCrypt.
+ * @details Core crypto functions for GCrypt.
  */
 #include "globals.h"
 
@@ -30,7 +30,7 @@ static xmlSecCryptoDLFunctionsPtr gXmlSecGCryptFunctions = NULL;
 
 /**
  * @brief Gets the pointer to xmlsec-gcrypt functions table.
- * @return the xmlsec-gcrypt functions table or NULL if an error occurs.
+ * @return the xmlsec-gcrypt functions table.
  */
 xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoGetFunctions_gcrypt(void) {
@@ -308,7 +308,7 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
  * @return 0 on success or a negative value otherwise.
  */
 int
-xmlSecGCryptInit (void)  {
+xmlSecGCryptInit(void) {
     /* Note: the full libgcrypt initialization (secure memory, etc.) is
      * performed by xmlSecGCryptAppInit (src/gcrypt/app.c), which the
      * application invokes through xmlSecCryptoAppInit before calling

@@ -13,7 +13,7 @@
  * Usage:
  *
  * \code{.sh}
- *      ./encrypt3 <xml-doc> <rsa-pem-key-file>
+ *      ./encrypt3 <xml-file> <key-file>
  * \endcode
  *
  * Example (note: we are using the private key here instead of the public
@@ -197,7 +197,7 @@ load_rsa_keys(const char* key_file) {
     /* load public or private RSA key */
     key = xmlSecCryptoAppKeyLoadEx(key_file, xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
     if(key == NULL) {
-        fprintf(stderr, "Error: failed to load rsa key from file \"%s\"\n", key_file);
+        fprintf(stderr, "Error: failed to load RSA key from file \"%s\"\n", key_file);
         xmlSecKeysMngrDestroy(mngr);
         return(NULL);
     }
@@ -301,7 +301,7 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
         goto done;
     }
 
-    /* set key name so we can lookup key when needed */
+    /* set key name so we can look up key when needed */
     if(xmlSecTmplKeyInfoAddKeyName(keyInfoNode2, BAD_CAST key_name) == NULL) {
         fprintf(stderr, "Error: failed to add key name\n");
         goto done;
@@ -317,7 +317,7 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
     /* generate a session AES key */
     encCtx->encKey = xmlSecKeyGenerate(xmlSecKeyDataAesId, 128, xmlSecKeyDataTypeSession);
     if(encCtx->encKey == NULL) {
-        fprintf(stderr, "Error: failed to generate session aes key\n");
+        fprintf(stderr, "Error: failed to generate session AES key\n");
         goto done;
     }
 

@@ -34,8 +34,9 @@ extern "C" {
 #define XMLSEC_KW_DES3_BLOCK_LENGTH                 ((xmlSecSize)8)
 #define XMLSEC_KW_DES3_SHA_DIGEST_LENGTH            ((xmlSecSize)20)
 
-/* https://www.w3.org/TR/2002/REC-xmlenc-core-20021210/
- * Check if the length of the cipher text is reasonable given the key type. It must be 40 bytes
+/* Check if the length of the cipher text is reasonable given the key type,
+ * per the W3C XML Encryption Core specification
+ * (https://www.w3.org/TR/2002/REC-xmlenc-core-20021210/): it must be 40 bytes
  * for a 168 bit key and either 32, 40, or 48 bytes for a 128, 192, or 256 bit key.
  */
 

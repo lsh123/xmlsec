@@ -1766,7 +1766,7 @@ xmlSecEncCtxEncryptedKeyXmlWrite(
     }
 #endif /* XMLSEC_NO_MLKEM */
 
-    /* dump the key to a binary buffer and */
+    /* dump the key to a binary buffer */
     ret = xmlSecEncCtxEncryptedKeyWriteKeyToBinary(key, &keyBuf, &keySize, keyInfoCtx);
     if(ret < 0) {
         xmlSecInternalError("xmlSecEncCtxEncryptedKeyWriteKeyToBinary", NULL);

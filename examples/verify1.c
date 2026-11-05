@@ -12,7 +12,7 @@
  * Usage:
  *
  * \code{.sh}
- *      verify1 <signed-file> <public-pem-key> [key-name]
+ *      verify1 <xml-file> <key-file> [key-name]
  * \endcode
  *
  * Example:
@@ -187,7 +187,7 @@ verify_file(const char* xml_file, const char* key_file, const char* key_name) {
     /* create signature context, we don't need keys manager in this example */
     dsigCtx = xmlSecDSigCtxCreate(NULL);
     if(dsigCtx == NULL) {
-        fprintf(stderr,"Error: failed to create signature context\n");
+        fprintf(stderr, "Error: failed to create signature context\n");
         goto done;
     }
 
@@ -199,19 +199,19 @@ verify_file(const char* xml_file, const char* key_file, const char* key_name) {
         NULL,
         NULL);
     if(dsigCtx->signKey == NULL) {
-        fprintf(stderr,"Error: failed to load public pem key from \"%s\"\n", key_file);
+        fprintf(stderr, "Error: failed to load PEM key from \"%s\"\n", key_file);
         goto done;
     }
 
     /* set the key name */
     if(xmlSecKeySetName(dsigCtx->signKey, BAD_CAST key_name) < 0) {
-        fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
+        fprintf(stderr, "Error: failed to set key name for key from \"%s\"\n", key_file);
         goto done;
     }
 
     /* Verify signature */
     if(xmlSecDSigCtxVerify(dsigCtx, node) < 0) {
-        fprintf(stderr,"Error: signature verification failed\n");
+        fprintf(stderr, "Error: signature verification failed\n");
         goto done;
     }
 
@@ -254,33 +254,33 @@ verify_signature_results(xmlSecDSigCtxPtr dsigCtx) {
 
     /* check that signature verification succeeded */
     if(dsigCtx->status != xmlSecDSigStatusSucceeded) {
-        fprintf(stderr,"Error: Signature verification result is not SUCCESS\n");
+        fprintf(stderr, "Error: Signature verification result is not SUCCESS\n");
         return(-1);
     }
 
     /* in this example we expect exactly ONE reference with URI="" and
     *  exactly ONE enveloped signature transform (i.e. the whole document is signed)*/
     if(xmlSecPtrListGetSize(&(dsigCtx->signedInfoReferences)) != 1) {
-        fprintf(stderr,"Error: Exactly one Reference is expected\n");
+        fprintf(stderr, "Error: Exactly one Reference is expected\n");
         return(-1);
     }
     dsigRefCtx = (xmlSecDSigReferenceCtxPtr)xmlSecPtrListGetItem(&(dsigCtx->signedInfoReferences), 0);
     if((dsigRefCtx == NULL) || (dsigRefCtx->status != xmlSecDSigStatusSucceeded)) {
-        fprintf(stderr,"Error: Reference verification result is not SUCCESS\n");
+        fprintf(stderr, "Error: Reference verification result is not SUCCESS\n");
         return(-1);
     }
 
     /* check URI: a NULL URI (Reference without a URI attribute) means the whole document,
      * which xmlsec treats the same as an empty URI */
     if((dsigRefCtx->uri != NULL) && (!xmlStrEqual(dsigRefCtx->uri, BAD_CAST ""))) {
-        fprintf(stderr,"Error: Reference URI value doesn't match expected one\n");
+        fprintf(stderr, "Error: Reference URI value doesn't match expected one\n");
         return(-1);
     }
 
     /* check transforms: we expect only one "enveloped signature" transform */
     transform = dsigRefCtx->transformCtx.first;
     if((transform == NULL) || (!xmlStrEqual(transform->id->name, xmlSecNameEnveloped))) {
-        fprintf(stderr,"Error: First Transform name '%s' doesn't match expected '%s'\n", (transform != NULL ? transform->id->name : BAD_CAST "NULL"), xmlSecNameEnveloped);
+        fprintf(stderr, "Error: First Transform name '%s' doesn't match expected '%s'\n", (transform != NULL ? transform->id->name : BAD_CAST "NULL"), xmlSecNameEnveloped);
         return(-1);
     }
 
@@ -288,7 +288,7 @@ verify_signature_results(xmlSecDSigCtxPtr dsigCtx) {
     transform = transform->next;
     while(transform != NULL) {
         if((transform->flags & XMLSEC_TRANSFORM_FLAGS_USER_SPECIFIED) != 0) {
-            fprintf(stderr,"Error: Found unexpected Transform name '%s'\n", transform->id->name);
+            fprintf(stderr, "Error: Found unexpected Transform name '%s'\n", transform->id->name);
             return(-1);
         }
         transform = transform->next;

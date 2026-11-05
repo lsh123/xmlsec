@@ -650,7 +650,6 @@ xmlSecGCryptPkSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
     xmlSecAssert2(ctx->key_data != NULL, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
-        /* do nothing, already initialized */
         transform->status = xmlSecTransformStatusWorking;
     }
 
@@ -1072,7 +1071,7 @@ static xmlSecTransformKlass xmlSecGCryptDsaSha1Klass = {
     xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -1570,7 +1569,7 @@ static xmlSecTransformKlass xmlSecGCryptRsaMd5Klass = {
     xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -1614,7 +1613,7 @@ static xmlSecTransformKlass xmlSecGCryptRsaRipemd160Klass = {
     xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -1658,7 +1657,7 @@ static xmlSecTransformKlass xmlSecGCryptRsaSha1Klass = {
     xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -1703,7 +1702,7 @@ static xmlSecTransformKlass xmlSecGCryptRsaSha256Klass = {
     xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -1747,7 +1746,7 @@ static xmlSecTransformKlass xmlSecGCryptRsaSha384Klass = {
     xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -1791,7 +1790,7 @@ static xmlSecTransformKlass xmlSecGCryptRsaSha512Klass = {
     xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -1836,7 +1835,7 @@ static xmlSecTransformKlass xmlSecGCryptRsaPssSha1Klass = {
     xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -1881,7 +1880,7 @@ static xmlSecTransformKlass xmlSecGCryptRsaPssSha256Klass = {
     xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -1925,7 +1924,7 @@ static xmlSecTransformKlass xmlSecGCryptRsaPssSha384Klass = {
     xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -1969,7 +1968,7 @@ static xmlSecTransformKlass xmlSecGCryptRsaPssSha512Klass = {
     xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -2015,7 +2014,7 @@ static xmlSecTransformKlass xmlSecGCryptRsaPssSha3_256Klass = {
     xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -2056,7 +2055,7 @@ static xmlSecTransformKlass xmlSecGCryptRsaPssSha3_384Klass = {
     xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -2097,7 +2096,7 @@ static xmlSecTransformKlass xmlSecGCryptRsaPssSha3_512Klass = {
     xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -2413,7 +2412,7 @@ static xmlSecTransformKlass xmlSecGCryptEcdsaSha1Klass = {
     xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -2458,7 +2457,7 @@ static xmlSecTransformKlass xmlSecGCryptEcdsaSha256Klass = {
     xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -2502,7 +2501,7 @@ static xmlSecTransformKlass xmlSecGCryptEcdsaSha384Klass = {
     xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -2546,7 +2545,7 @@ static xmlSecTransformKlass xmlSecGCryptEcdsaSha512Klass = {
     xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -2593,7 +2592,7 @@ static xmlSecTransformKlass xmlSecGCryptEcdsaSha3_256Klass = {
     xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -2634,7 +2633,7 @@ static xmlSecTransformKlass xmlSecGCryptEcdsaSha3_384Klass = {
     xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -2675,7 +2674,7 @@ static xmlSecTransformKlass xmlSecGCryptEcdsaSha3_512Klass = {
     xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */

@@ -1411,7 +1411,6 @@ xmlSecTmplKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, xmlSecTransformId encMe
  * @return the pointer to the newly created &lt;dsig:X509IssuerSerial/&gt; node or
  * NULL if an error occurs.
  */
-
 xmlNodePtr
 xmlSecTmplX509DataAddIssuerSerial(xmlNodePtr x509DataNode) {
     xmlNodePtr cur;
@@ -1453,7 +1452,7 @@ xmlSecTmplX509IssuerSerialAddIssuerName(xmlNodePtr x509IssuerSerialNode, const x
         return(NULL);
     }
 
-    if (issuerName != NULL) {
+    if(issuerName != NULL) {
         ret = xmlSecNodeEncodeAndSetContent(res, issuerName);
         if(ret < 0) {
             xmlSecInternalError("xmlSecNodeEncodeAndSetContent", NULL);
@@ -1492,7 +1491,7 @@ xmlSecTmplX509IssuerSerialAddSerialNumber(xmlNodePtr x509IssuerSerialNode, const
         return(NULL);
     }
 
-    if (serial != NULL) {
+    if(serial != NULL) {
         ret = xmlSecNodeEncodeAndSetContent(res, serial);
         if(ret < 0) {
             xmlSecInternalError("xmlSecNodeEncodeAndSetContent", NULL);
@@ -1515,7 +1514,6 @@ xmlSecTmplX509IssuerSerialAddSerialNumber(xmlNodePtr x509IssuerSerialNode, const
  * @return the pointer to the newly created &lt;dsig:X509SubjectName/&gt; node or
  * NULL if an error occurs.
  */
-
 xmlNodePtr
 xmlSecTmplX509DataAddSubjectName(xmlNodePtr x509DataNode) {
     xmlNodePtr cur;
@@ -1542,7 +1540,6 @@ xmlSecTmplX509DataAddSubjectName(xmlNodePtr x509DataNode) {
  * @return the pointer to the newly created &lt;dsig:X509SKI/&gt; node or
  * NULL if an error occurs.
  */
-
 xmlNodePtr
 xmlSecTmplX509DataAddSKI(xmlNodePtr x509DataNode) {
     xmlNodePtr cur;
@@ -1570,7 +1567,6 @@ xmlSecTmplX509DataAddSKI(xmlNodePtr x509DataNode) {
  * @return the pointer to the newly created &lt;dsig11:X509Digest/&gt; node or
  * NULL if an error occurs.
  */
-
 xmlNodePtr
 xmlSecTmplX509DataAddDigest(xmlNodePtr x509DataNode, const xmlChar* digestAlgorithm) {
     xmlNodePtr cur;
@@ -1607,7 +1603,6 @@ xmlSecTmplX509DataAddDigest(xmlNodePtr x509DataNode, const xmlChar* digestAlgori
  * @return the pointer to the newly created &lt;dsig:X509Certificate/&gt; node or
  * NULL if an error occurs.
  */
-
 xmlNodePtr
 xmlSecTmplX509DataAddCertificate(xmlNodePtr x509DataNode) {
     xmlNodePtr cur;
@@ -1634,7 +1629,6 @@ xmlSecTmplX509DataAddCertificate(xmlNodePtr x509DataNode) {
  * @return the pointer to the newly created &lt;dsig:X509CRL/&gt; node or
  * NULL if an error occurs.
  */
-
 xmlNodePtr
 xmlSecTmplX509DataAddCRL(xmlNodePtr x509DataNode) {
     xmlNodePtr cur;
@@ -1903,9 +1897,8 @@ xmlSecTmplTransformAddXsltStylesheet(xmlNodePtr transformNode, const xmlChar *xs
  * @brief Adds inclusive namespaces to the ExcC14N transform node.
  * @details Adds "inclusive" namespaces to the ExcC14N transform node @p transformNode.
  * @param transformNode the pointer to &lt;dsig:Transform/&gt; node.
- * @param prefixList the white space delimited  list of namespace prefixes,
- *                      where "#default" indicates the default namespace
- *                      (optional).
+ * @param prefixList the white space delimited list of namespace prefixes,
+ *                      where "#default" indicates the default namespace.
  *
  * @return 0 if success or a negative value otherwise.
  */

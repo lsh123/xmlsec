@@ -145,28 +145,28 @@ static int      xmlSecOpenSSLEvpSignatureExecute                (xmlSecTransform
 
 /* Helper macros to define the transform klass */
 
-#define XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS_EX(name, readNode)                                           \
-static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                                          \
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
-    xmlSecOpenSSLEvpSignatureSize,              /* xmlSecSize objSize */                                \
-    xmlSecName ## name,                         /* const xmlChar* name; */                              \
-    xmlSecHref ## name,                         /* const xmlChar* href; */                              \
-    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */                       \
-    xmlSecOpenSSLEvpSignatureInitialize,        /* xmlSecTransformInitializeMethod initialize; */       \
-    xmlSecOpenSSLEvpSignatureFinalize,          /* xmlSecTransformFinalizeMethod finalize; */           \
-    readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */           \
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */         \
-    xmlSecOpenSSLEvpSignatureSetKeyReq,         /* xmlSecTransformSetKeyReqMethod setKeyReq; */         \
-    xmlSecOpenSSLEvpSignatureSetKey,            /* xmlSecTransformSetKeyMethod setKey; */               \
-    xmlSecOpenSSLEvpSignatureVerify,            /* xmlSecTransformVerifyMethod verify; */               \
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */             \
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
-    xmlSecOpenSSLEvpSignatureExecute,           /* xmlSecTransformExecuteMethod execute; */             \
-    NULL,                                       /* void* reserved0; */                                  \
-    NULL,                                       /* void* reserved1; */                                  \
+#define XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS_EX(name, readNode)                                                      \
+static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                                                     \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                         \
+    xmlSecOpenSSLEvpSignatureSize,              /* xmlSecSize objSize */                                           \
+    xmlSecName ## name,                         /* const xmlChar* name; */                                         \
+    xmlSecHref ## name,                         /* const xmlChar* href; */                                         \
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */                                  \
+    xmlSecOpenSSLEvpSignatureInitialize,        /* xmlSecTransformInitializeMethod initialize; */                  \
+    xmlSecOpenSSLEvpSignatureFinalize,          /* xmlSecTransformFinalizeMethod finalize; */                      \
+    readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */                      \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */                    \
+    xmlSecOpenSSLEvpSignatureSetKeyReq,         /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */           \
+    xmlSecOpenSSLEvpSignatureSetKey,            /* xmlSecTransformSetKeyMethod setKey; */                          \
+    xmlSecOpenSSLEvpSignatureVerify,            /* xmlSecTransformVerifyMethod verify; */                          \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */                \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                        \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                          \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                        \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                          \
+    xmlSecOpenSSLEvpSignatureExecute,           /* xmlSecTransformExecuteMethod execute; */                        \
+    NULL,                                       /* void* reserved0; */                                             \
+    NULL,                                       /* void* reserved1; */                                             \
 };
 
 #define XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(name)                                                        \
@@ -1904,7 +1904,7 @@ xmlSecOpenSSLEvpSignatureDsa_XmlDSig2OpenSSL(const xmlSecTransformId transformId
         xmlSecInternalError("xmlSecOpenSSLEvpSignatureDsaHalfLen", NULL);
         goto done;
     }
-    keyHalfLen = signHalfLen;  /* key-based half length, before the lenient split below */
+    keyHalfLen = signHalfLen;  /* DSA order-q half length, before the lenient split below */
 
     /* check size: we expect the r and s to be the same size and match the size of
      * the key (RFC 6931) */
@@ -1938,7 +1938,7 @@ xmlSecOpenSSLEvpSignatureDsa_XmlDSig2OpenSSL(const xmlSecTransformId transformId
     }
 
     /* malleability guard: r and s must fit within the half length derived from the
-     * key size (RFC 6931: I2OSP with xLen equal to the key size). This rejects
+     * DSA order q size (RFC 6931: I2OSP with xLen equal to the order size). This rejects
      * padded/shifted encodings whose extra bytes are not pure zero padding,
      * while keeping the documented lenient leading-zero encodings above. */
     rLen = BN_num_bytes(rr);
@@ -2051,8 +2051,7 @@ xmlSecOpenSSLEvpSignatureDsa_OpenSSL2XmlDSig(const xmlSecTransformId transformId
     }
 
     /* adjust the buffer size; safe-cast the half length first so the doubling
-     * happens on xmlSecSize (evaluating 2 * signHalfLen as a signed int
-     * multiplication before the range check would be undefined behavior) */
+     * happens on xmlSecSize rather than as a signed int multiplication */
     XMLSEC_SAFE_CAST_INT_TO_SIZE(signHalfLen, bufHalfSize, goto done, NULL);
     bufSize = 2 * bufHalfSize;
     ret = xmlSecBufferSetSize(data, bufSize);
@@ -2111,8 +2110,8 @@ xmlSecOpenSSLTransformDsaSha1GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(DsaSha256)
 
 /**
- * @brief The DSA-SHA2-256 signature transform klass.
- * @return DSA-SHA2-256 signature transform klass.
+ * @brief The DSA-SHA256 signature transform klass.
+ * @return DSA-SHA256 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformDsaSha256GetKlass(void) {
@@ -2243,11 +2242,11 @@ xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(
     } else if((signLen < 2 * signHalfLen) && (signLen % 2 == 0)) {
         /* however some implementations (e.g. Java) cut leading zeros:
          * https://github.com/lsh123/xmlsec/issues/228 */
-         signHalfLen = signLen / 2;
+        signHalfLen = signLen / 2;
     } else if((signLen > 2 * signHalfLen) && (signLen % 2 == 0)) {
         /* however some implementations (e.g. Java) add leading zeros:
          * https://github.com/lsh123/xmlsec/issues/941 */
-         signHalfLen = signLen / 2;
+        signHalfLen = signLen / 2;
     } else {
         xmlSecInternalError3("xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL", NULL,
             "signLen=%d; signHalfLen=%d", signLen, signHalfLen);
@@ -2387,8 +2386,7 @@ xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig(xmlSecTransformCtxPtr transformCt
     }
 
     /* adjust the buffer size; safe-cast the half length first so the doubling
-     * happens on xmlSecSize (evaluating 2 * signHalfLen as a signed int
-     * multiplication before the range check would be undefined behavior) */
+     * happens on xmlSecSize rather than as a signed int multiplication */
     XMLSEC_SAFE_CAST_INT_TO_SIZE(signHalfLen, bufHalfSize, goto done, NULL);
     bufSize = 2 * bufHalfSize;
     ret = xmlSecBufferSetSize(data, bufSize);
@@ -2843,6 +2841,8 @@ XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS_EX(EdDSAEd25519ph, xmlSecOpenSSLTransformEdDS
 
 /**
  * @brief The EdDSA-Ed25519ph signature transform klass.
+ * @note The context string is read from the XML, but the klass has no writeNode
+ * method, so a context string is never emitted when signing with this transform.
  * @return EdDSA-Ed25519ph signature transform klass.
  */
 xmlSecTransformId
@@ -2867,6 +2867,8 @@ XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS_EX(EdDSAEd448ph, xmlSecOpenSSLTransformEdDSAN
 
 /**
  * @brief The EdDSA-Ed448ph signature transform klass.
+ * @note The context string is read from the XML, but the klass has no writeNode
+ * method, so a context string is never emitted when signing with this transform.
  * @return EdDSA-Ed448ph signature transform klass.
  */
 xmlSecTransformId

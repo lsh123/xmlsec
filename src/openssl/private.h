@@ -29,9 +29,6 @@
 
 #include "openssl_compat.h"
 
-#include "../keysdata_helpers.h"
-
-
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */

@@ -173,11 +173,10 @@ xmlSecMSCngKWAesInitialize(xmlSecTransformPtr transform) {
     }
 
 
-    /* cache the CNG algorithm provider handle and the key object for the whole
-     * transform lifetime; only the provider handle, the key object buffer and the
-     * wrapped-key blob (built in SetKey) are cached to avoid re-allocating them.
-     * The key itself is still re-imported (into a fresh key handle) on every
-     * block call. */
+    /* the CNG algorithm provider handle, the key object buffer and the
+     * wrapped-key blob (built in SetKey) are cached for the whole transform
+     * lifetime to avoid re-allocating them. The key itself is still
+     * re-imported (into a fresh key handle) on every block call. */
     status = BCryptOpenAlgorithmProvider(&ctx->hAlg, BCRYPT_AES_ALGORITHM, NULL, 0);
     if (status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptOpenAlgorithmProvider", xmlSecTransformGetName(transform), status);

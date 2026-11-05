@@ -36,16 +36,16 @@ static xmlExternalEntityLoader xmlSecDefaultExternalEntityLoader = NULL;
  * document we're parsing. The initial document is loaded before any input
  * is pushed on the parser context (ctxt->input == NULL), while external
  * entities and DTD subsets are loaded while the document input is already
- * on the stack (ctxt->input != NULL) and/or ctxt->inputNr > 0.
+ * on the stack (ctxt->input != NULL) and ctxt->inputNr > 0.
  */
 static xmlParserInputPtr
 xmlSecNoXxeExternalEntityLoader(const char *URL, const char *ID,
                           xmlParserCtxtPtr ctxt) {
-    if (ctxt == NULL) {
+    if(ctxt == NULL) {
         return(NULL);
     }
-    if ((ctxt->input == NULL) || (ctxt->inputNr == 0)) {
-        if (xmlSecDefaultExternalEntityLoader == NULL) {
+    if((ctxt->input == NULL) || (ctxt->inputNr == 0)) {
+        if(xmlSecDefaultExternalEntityLoader == NULL) {
             xmlSecXmlError("xmlSecNoXxeExternalEntityLoader", NULL);
             return(NULL);
         }
@@ -65,9 +65,9 @@ xmlSecNoXxeExternalEntityLoader(const char *URL, const char *ID,
  */
 void
 xmlSecSetExternalEntityLoader(xmlExternalEntityLoader entityLoader) {
-    if (entityLoader != NULL) {
+    if(entityLoader != NULL) {
         xmlSetExternalEntityLoader(entityLoader);
-    } else if (xmlSecDefaultExternalEntityLoader != NULL) {
+    } else if(xmlSecDefaultExternalEntityLoader != NULL) {
         xmlSetExternalEntityLoader(xmlSecDefaultExternalEntityLoader);
     } else {
         /* log an error but ignore it (non critical) */
@@ -120,7 +120,7 @@ xmlSecInit(void) {
     }
 
     /* initialize safe external entity loader */
-    if (!xmlSecDefaultExternalEntityLoader) {
+    if(!xmlSecDefaultExternalEntityLoader) {
         xmlSecDefaultExternalEntityLoader = xmlGetExternalEntityLoader();
     }
 
@@ -145,7 +145,7 @@ xmlSecInit(void) {
  */
 int
 xmlSecShutdown(void) {
-    int res = -1;
+    int res = 0;
 
     xmlSecTransformIdsShutdown();
     xmlSecKeyDataIdsShutdown();
@@ -153,20 +153,13 @@ xmlSecShutdown(void) {
 #ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
     if(xmlSecCryptoDLShutdown() < 0) {
         xmlSecInternalError("xmlSecCryptoDLShutdown", NULL);
-        goto done;
+        res = -1;
     }
-#endif /* XMLSEC_NO_CRYPTO_DYNAMIC_LOADING */
-
-    /* success */
-    res = 0;
-
-#ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
-done:
 #endif /* XMLSEC_NO_CRYPTO_DYNAMIC_LOADING */
 
 #if LIBXML_VERSION < 21300
     /* restore the original external entity loader */
-    if (xmlSecDefaultExternalEntityLoader != NULL) {
+    if(xmlSecDefaultExternalEntityLoader != NULL) {
         xmlSetExternalEntityLoader(xmlSecDefaultExternalEntityLoader);
     }
 #endif /* LIBXML_VERSION < 21300 */
@@ -241,7 +234,7 @@ xmlSecCheckVersionExt(int major, int minor, int subminor, xmlSecCheckVersionMode
  */
 xmlSecSize
 xmlSecStrlen(const xmlChar* str) {
-    if (str == NULL) {
+    if(str == NULL) {
         return(0);
     }
     return(strlen((const char*)str));

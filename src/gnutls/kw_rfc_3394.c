@@ -94,28 +94,28 @@ static int      xmlSecGnuTLSKWRfc3394Execute                   (xmlSecTransformP
                                                                 xmlSecTransformCtxPtr transformCtx);
 
 /* Helper macro to define the transform klass */
-#define XMLSEC_GNUTLS_KW_RFC3394_KLASS(name)                                                            \
-static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                                           \
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
-    xmlSecGnuTLSKWRfc3394Size,                  /* xmlSecSize objSize */                                \
-    xmlSecName ## name,                         /* const xmlChar* name; */                              \
-    xmlSecHref ## name,                         /* const xmlChar* href; */                              \
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                       \
-    xmlSecGnuTLSKWRfc3394Initialize,            /* xmlSecTransformInitializeMethod initialize; */       \
-    xmlSecGnuTLSKWRfc3394Finalize,              /* xmlSecTransformFinalizeMethod finalize; */           \
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */           \
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */         \
-    xmlSecGnuTLSKWRfc3394SetKeyReq,             /* xmlSecTransformSetKeyMethod setKeyReq; */            \
-    xmlSecGnuTLSKWRfc3394SetKey,                /* xmlSecTransformSetKeyMethod setKey; */               \
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */           \
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */             \
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
-    xmlSecGnuTLSKWRfc3394Execute,               /* xmlSecTransformExecuteMethod execute; */             \
-    NULL,                                       /* void* reserved0; */                                  \
-    NULL,                                       /* void* reserved1; */                                  \
+#define XMLSEC_GNUTLS_KW_RFC3394_KLASS(name)                                                                          \
+static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                                                         \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                            \
+    xmlSecGnuTLSKWRfc3394Size,                  /* xmlSecSize objSize */                                              \
+    xmlSecName ## name,                         /* const xmlChar* name; */                                            \
+    xmlSecHref ## name,                         /* const xmlChar* href; */                                            \
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                                     \
+    xmlSecGnuTLSKWRfc3394Initialize,            /* xmlSecTransformInitializeMethod initialize; */                     \
+    xmlSecGnuTLSKWRfc3394Finalize,              /* xmlSecTransformFinalizeMethod finalize; */                         \
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */                         \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */                       \
+    xmlSecGnuTLSKWRfc3394SetKeyReq,             /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */              \
+    xmlSecGnuTLSKWRfc3394SetKey,                /* xmlSecTransformSetKeyMethod setKey; */                             \
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */                             \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */                   \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                           \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                             \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                           \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                             \
+    xmlSecGnuTLSKWRfc3394Execute,               /* xmlSecTransformExecuteMethod execute; */                           \
+    NULL,                                       /* void* reserved0; */                                                \
+    NULL,                                       /* void* reserved1; */                                                \
 };
 
 

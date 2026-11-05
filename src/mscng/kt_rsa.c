@@ -460,9 +460,9 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
 
         outSize = dwOutLen;
 
-        /* wipe the tail of the output buffer that held the raw OAEP-decoded
-         * block; only the first 'outSize' bytes contain the recovered
-         * plaintext (CEK) */
+        /* wipe the tail of the output buffer beyond the recovered plaintext;
+         * CNG wrote exactly 'outSize' bytes of the CEK into the buffer, so
+         * the remaining space is unwritten and must not retain stale data */
         if (keySize > outSize) {
             xmlSecMemCleanse(outBuf + outSize, keySize - outSize);
         }
@@ -721,7 +721,7 @@ static xmlSecTransformKlass xmlSecMSCngRsaOaepKlass = {
     xmlSecMSCngRsaPkcs1OaepFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecMSCngRsaOaepNodeRead,                 /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngRsaPkcs1OaepSetKeyReq,           /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecMSCngRsaPkcs1OaepSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecMSCngRsaPkcs1OaepSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -759,7 +759,7 @@ static xmlSecTransformKlass xmlSecMSCngRsaOaepEnc11Klass = {
     xmlSecMSCngRsaPkcs1OaepFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecMSCngRsaOaepNodeRead,                 /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngRsaPkcs1OaepSetKeyReq,           /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecMSCngRsaPkcs1OaepSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecMSCngRsaPkcs1OaepSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -804,7 +804,7 @@ static xmlSecTransformKlass xmlSecMSCngRsaPkcs1Klass = {
     xmlSecMSCngRsaPkcs1OaepFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngRsaPkcs1OaepSetKeyReq,           /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecMSCngRsaPkcs1OaepSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecMSCngRsaPkcs1OaepSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */

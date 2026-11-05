@@ -240,7 +240,7 @@ xmlSecMSCngKeyDataX509AdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
     /* pkcs12 files sometimes have key cert twice: as the key cert and as the cert in the chain */
     if ((ctx->keyCert != NULL) && (cert->pCertInfo != NULL) && (ctx->keyCert->pCertInfo != NULL) &&
         (CertCompareCertificate(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, cert->pCertInfo, ctx->keyCert->pCertInfo) == TRUE)) {
-        /* the cert is already owned by ctx->keyCert caller expects data to own the cert on success. */
+        /* the cert is already owned by ctx->keyCert; the caller expects data to own the cert on success. */
         CertFreeCertificateContext(cert);
         return(0);
     }
@@ -274,8 +274,8 @@ xmlSecMSCngKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, PCCRL_CONTEXT crl) {
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->hMemStore != 0, -1);
 
-    /* CertAddCRLContextToStore creates a new copy of the certificate context
-     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddcrlcontexttostore */    
+    /* CertAddCRLContextToStore creates a new copy of the CRL context
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddcrlcontexttostore */
     if (!CertAddCRLContextToStore(ctx->hMemStore, crl, CERT_STORE_ADD_USE_EXISTING, NULL)) {
         xmlSecMSCngLastError("CertAddCRLContextToStore", NULL);
         return(-1);
@@ -713,7 +713,7 @@ xmlSecMSCngX509SKIWrite(PCCERT_CONTEXT cert, xmlSecBufferPtr buf) {
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(cert->pCertInfo != NULL, -1);
 
-    /* First check if the SKI extension actually exists, otherwise we get a SHA1 hash of the cert */
+    /* First check if the SKI extension actually exists, otherwise we get the SHA-1 hash of the public key */
     pCertExt = CertFindExtension(szOID_SUBJECT_KEY_IDENTIFIER, cert->pCertInfo->cExtension, cert->pCertInfo->rgExtension);
     if (pCertExt == NULL) {
         /* no SKI extension: nothing to write */

@@ -295,7 +295,7 @@ xmlSecMSCngAppKeyLoadEx(const char *filename, xmlSecKeyDataType type, xmlSecKeyD
             keyData = xmlSecMSCngAppKeyReadPubKeyFromDer(bufferData, bufferSize);
         }
         if(keyData == NULL) {
-            xmlSecInternalError("xmlSecMSCngAppKeyReadPrivKeyFromDer and xmlSecMSCngAppKeyReadPubKeyFromDer", NULL);
+            xmlSecInternalError("unable to read private or public key from DER data", NULL);
             xmlSecBufferFinalize(&buffer);
             return(NULL);
         }

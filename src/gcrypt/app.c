@@ -156,7 +156,7 @@ xmlSecGCryptAppShutdown(void) {
 
 /**
  * @brief Reads a key from a file.
- * @details Reads only unencrypted traditional DER key formats (PKCS#1/DSS/EC);
+ * @details Reads only unencrypted traditional DER key formats (PKCS#1/DSA/EC);
  * the password parameters are not used by the GCrypt back-end.
  * @param filename the key filename.
  * @param type the expected key type.
@@ -209,7 +209,7 @@ xmlSecGCryptAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATT
 
 /**
  * @brief Reads a key from the memory buffer.
- * @details Reads only unencrypted traditional DER key formats (PKCS#1/DSS/EC);
+ * @details Reads only unencrypted traditional DER key formats (PKCS#1/DSA/EC);
  * the password parameters are not used by the GCrypt back-end.
  * @param data the binary key data.
  * @param dataSize the size of binary key.
@@ -375,7 +375,7 @@ xmlSecGCryptAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
 /**
  * @brief GCrypt does not support X509 certificates.
  * @details Reads cert from @p filename and adds to the list of trusted or known
- * untrusted certs in @p store.
+ * untrusted certs in @p mngr.
  *
  * @param mngr the keys manager.
  * @param filename the certificate file.
@@ -398,7 +398,7 @@ xmlSecGCryptAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr,
 
 /**
  * @brief GCrypt does not support X509 certificates.
- * @details Reads crls from @p filename and adds to the list of crls in @p store.
+ * @details Reads crls from @p filename and adds to the list of crls in @p mngr.
  *
  * @param mngr the keys manager.
  * @param filename the CRL file.
@@ -417,7 +417,7 @@ xmlSecGCryptAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xml
 
 /**
  * @brief GCrypt does not support X509 certificates.
- * @details Reads crls from binary buffer @p data and adds to the list of crls in @p store.
+ * @details Reads crls from binary buffer @p data and adds to the list of crls in @p mngr.
  *
  * @param mngr the keys manager.
  * @param data the CRL binary data.
@@ -464,13 +464,13 @@ xmlSecGCryptAppKeysMngrCrlLoadAndVerify(xmlSecKeysMngrPtr mngr, const char *file
 /**
  * @brief GCrypt does not support X509 certificates.
  * @details Reads cert from binary buffer @p data and adds to the list of trusted or known
- * untrusted certs in @p store.
+ * untrusted certs in @p mngr.
  *
  * @param mngr the keys manager.
  * @param data the certificate binary data.
  * @param dataSize the certificate binary data size.
  * @param format the certificate file format.
- * @param type the flag that indicates if the certificate trusted or not.
+ * @param type the flag that indicates if the certificate is trusted or not.
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -571,9 +571,6 @@ xmlSecGCryptAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key)
  * - Checks that key certificate is present
  * - Checks that key certificate is valid
  *
- * Adds @p key to the keys manager @p mngr created with #xmlSecGCryptAppDefaultKeysMngrInit
- * function.
- *
  * @param mngr the pointer to keys manager.
  * @param key the pointer to key.
  * @param keyInfoCtx the key info context for verification.
@@ -663,6 +660,7 @@ xmlSecGCryptAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename,
  */
 void*
 xmlSecGCryptAppGetDefaultPwdCallback(void) {
-    /* TODO: GCrypt doesn't support password callback */
+    /* the GCrypt back-end does not support password callbacks, so there is
+       no default callback to return */
     return(NULL);
 }

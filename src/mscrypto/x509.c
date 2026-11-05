@@ -165,9 +165,8 @@ xmlSecMSCryptoKeyDataX509GetKlass(void) {
  * @brief Gets the certificate from which the key was extracted.
  * @param data the pointer to X509 key data.
  *
- *
  * @return the key's certificate or NULL if key data was not used for key
- * extraction or an error occurs. : the returned PCCERT_CONTEXT is owned by
+ * extraction or an error occurs. The returned PCCERT_CONTEXT is owned by
  * the key data and must NOT be CertFreeCertificateContext()-ed by the caller.
  */
 PCCERT_CONTEXT
@@ -232,7 +231,7 @@ xmlSecMSCryptoKeyDataX509AdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
     /* pkcs12 files sometimes have key cert twice: as the key cert and as the cert in the chain */
     if ((ctx->keyCert != NULL) && (cert->pCertInfo != NULL) && (ctx->keyCert->pCertInfo != NULL) &&
         (CertCompareCertificate(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, cert->pCertInfo, ctx->keyCert->pCertInfo) == TRUE)) {
-        /* the pointer-equal cert is already owned by ctx->keyCert caller expects data to own the cert on success. */
+        /* the cert is already owned by ctx->keyCert; caller expects data to own the cert on success. */
         CertFreeCertificateContext(cert);
         return(0);
     }
@@ -253,7 +252,6 @@ xmlSecMSCryptoKeyDataX509AdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
  * @brief Deprecated. Gets a certificate from X509 key data.
  * @param data the pointer to X509 key data.
  * @param pos the desired certificate position.
- *
  *
  * @return the pointer to certificate or NULL if @p pos is larger than the
  * number of certificates in @p data or an error occurs.
@@ -296,7 +294,7 @@ xmlSecMSCryptoKeyDataX509GetCertsSize(xmlSecKeyDataPtr data) {
     ctx = xmlSecMSCryptoX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, 0);
     xmlSecAssert2(ctx->hMemStore != 0, 0);
- 
+
     /* CertEnumCertificatesInStore automatically frees the previous certificate context (see
      * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcertificatesinstore) */
     pCert = CertEnumCertificatesInStore(ctx->hMemStore, pCert);
@@ -326,7 +324,7 @@ xmlSecMSCryptoKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, PCCRL_CONTEXT crl) {
     xmlSecAssert2(ctx->hMemStore != 0, -1);
 
     /* CertAddCRLContextToStore creates a new copy of the certificate context
-     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddcrlcontexttostore */     
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddcrlcontexttostore */
     if (!CertAddCRLContextToStore(ctx->hMemStore, crl, CERT_STORE_ADD_USE_EXISTING, NULL)) {
         xmlSecMSCryptoError("CertAddCRLContextToStore", xmlSecKeyDataGetName(data));
         return(-1);
@@ -341,7 +339,6 @@ xmlSecMSCryptoKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, PCCRL_CONTEXT crl) {
  * @brief Deprecated. Gets a CRL from X509 key data.
  * @param data the pointer to X509 key data.
  * @param pos the desired CRL position.
- *
  *
  * @return the pointer to CRL or NULL if @p pos is larger than the
  * number of CRLs in @p data or an error occurs.
@@ -376,13 +373,13 @@ xmlSecMSCryptoKeyDataX509GetCrlsSize(xmlSecKeyDataPtr data) {
     xmlSecMSCryptoX509DataCtxPtr ctx;
     PCCRL_CONTEXT pCRL = NULL;
     xmlSecSize size = 0;
-    
+
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataX509Id), 0);
 
     ctx = xmlSecMSCryptoX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, 0);
     xmlSecAssert2(ctx->hMemStore != 0, 0);
-    
+
     while ((pCRL = CertEnumCRLsInStore(ctx->hMemStore, pCRL)) != NULL) {
         size++;
     }
@@ -469,7 +466,7 @@ xmlSecMSCryptoKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     while((srcCrl = CertEnumCRLsInStore(srcCtx->hMemStore, srcCrl)) != NULL) {
         dstCrl = CertDuplicateCRLContext(srcCrl);
         if(dstCrl == NULL) {
-            xmlSecMSCryptoError("CertDuplicateCRLContext", NULL);   
+            xmlSecMSCryptoError("CertDuplicateCRLContext", NULL);
             CertFreeCRLContext(srcCrl);
             return(-1);
         }
@@ -652,7 +649,7 @@ xmlSecMSCryptoKeyDataX509DebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(output != NULL);
 
     ctx = xmlSecMSCryptoX509DataGetCtx(data);
-    xmlSecAssert(ctx != NULL);    
+    xmlSecAssert(ctx != NULL);
 
     fprintf(output, "=== X509 Data:\n");
     /* CertEnumCertificatesInStore automatically frees the previous certificate context (see
@@ -679,7 +676,7 @@ xmlSecMSCryptoKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(output != NULL);
 
     ctx = xmlSecMSCryptoX509DataGetCtx(data);
-    xmlSecAssert(ctx != NULL);    
+    xmlSecAssert(ctx != NULL);
 
     fprintf(output, "<X509Data>\n");
     /* CertEnumCertificatesInStore automatically frees the previous certificate context (see

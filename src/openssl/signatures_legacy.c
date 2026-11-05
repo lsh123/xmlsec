@@ -176,28 +176,28 @@ xmlSecOpenSSLSignatureLegacyCheckId(xmlSecTransformPtr transform) {
     (ctx)->digest = (digestVal)
 
 /* Helper macros to define the transform klass */
-#define XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS_EX(name, readNode)                                    \
-static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                                          \
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
-    xmlSecOpenSSLSignatureLegacySize,           /* xmlSecSize objSize */                                \
-    xmlSecName ## name,                         /* const xmlChar* name; */                              \
-    xmlSecHref ## name,                         /* const xmlChar* href; */                              \
-    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */                       \
-    xmlSecOpenSSLSignatureLegacyInitialize,     /* xmlSecTransformInitializeMethod initialize; */       \
-    xmlSecOpenSSLSignatureLegacyFinalize,       /* xmlSecTransformFinalizeMethod finalize; */           \
-    readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */           \
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */         \
-    xmlSecOpenSSLSignatureLegacySetKeyReq,      /* xmlSecTransformSetKeyReqMethod setKeyReq; */         \
-    xmlSecOpenSSLSignatureLegacySetKey,         /* xmlSecTransformSetKeyMethod setKey; */               \
-    xmlSecOpenSSLSignatureLegacyVerify,         /* xmlSecTransformVerifyMethod verify; */               \
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */             \
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
-    xmlSecOpenSSLSignatureLegacyExecute,        /* xmlSecTransformExecuteMethod execute; */             \
-    NULL,                                       /* void* reserved0; */                                  \
-    NULL,                                       /* void* reserved1; */                                  \
+#define XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS_EX(name, readNode)                                               \
+static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                                                     \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                         \
+    xmlSecOpenSSLSignatureLegacySize,           /* xmlSecSize objSize */                                           \
+    xmlSecName ## name,                         /* const xmlChar* name; */                                         \
+    xmlSecHref ## name,                         /* const xmlChar* href; */                                         \
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */                                  \
+    xmlSecOpenSSLSignatureLegacyInitialize,     /* xmlSecTransformInitializeMethod initialize; */                  \
+    xmlSecOpenSSLSignatureLegacyFinalize,       /* xmlSecTransformFinalizeMethod finalize; */                      \
+    readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */                      \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */                    \
+    xmlSecOpenSSLSignatureLegacySetKeyReq,      /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */           \
+    xmlSecOpenSSLSignatureLegacySetKey,         /* xmlSecTransformSetKeyMethod setKey; */                          \
+    xmlSecOpenSSLSignatureLegacyVerify,         /* xmlSecTransformVerifyMethod verify; */                          \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */                \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                        \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                          \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                        \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                          \
+    xmlSecOpenSSLSignatureLegacyExecute,        /* xmlSecTransformExecuteMethod execute; */                        \
+    NULL,                                       /* void* reserved0; */                                             \
+    NULL,                                       /* void* reserved1; */                                             \
 };
 
 #define XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS(name)                                                 \
@@ -434,7 +434,7 @@ xmlSecOpenSSLSignatureLegacyVerify(xmlSecTransformPtr transform,
     if(ret == 1) {
         transform->status = xmlSecTransformStatusOk;
     } else {
-        xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH, xmlSecTransformGetName(transform), "ctx->verifyCallback: signature verification failed");
+        xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH, xmlSecTransformGetName(transform), "Signature verification failed");
         transform->status = xmlSecTransformStatusFail;
     }
 
@@ -837,7 +837,7 @@ xmlSecOpenSSLSignatureLegacyEcdsa_XmlDSigToOpenSSL(
         XMLSEC_SAFE_CAST_SIZE_TO_INT(signSize, dataLen, goto done, NULL);
         sig = d2i_ECDSA_SIG(NULL, &data, dataLen);
         if (sig == NULL) {
-            xmlSecOpenSSLError("d2i_ECDSA_SIG()", NULL);
+            xmlSecOpenSSLError("d2i_ECDSA_SIG", NULL);
             goto done;
         }
 
@@ -845,7 +845,7 @@ xmlSecOpenSSLSignatureLegacyEcdsa_XmlDSigToOpenSSL(
         consumed = data - signData;
         XMLSEC_SAFE_CAST_PTRDIFF_TO_SIZE(consumed, consumedSize, goto done, NULL);
         if(consumedSize < signSize) {
-            xmlSecInvalidSizeDataError("Remaining bytes", (signSize - consumedSize), "0 bytes",  NULL);
+            xmlSecInvalidSizeDataError("Remaining bytes", (signSize - consumedSize), "0 bytes", NULL);
             goto done;
         }
     } else {
@@ -869,7 +869,7 @@ xmlSecOpenSSLSignatureLegacyEcdsa_XmlDSigToOpenSSL(
             signHalfLen = signLen / 2;
         } else if((signLen > 2 * signHalfLen) && (signLen % 2 == 0)) {
             /* however some implementations (e.g. Java) add leading zeros:
-            * https://github.com/lsh123/xmlsec/issues/941*/
+            * https://github.com/lsh123/xmlsec/issues/941 */
             signHalfLen = signLen / 2;
         } else {
             xmlSecInvalidDataError("Signature length doesn't match key size", NULL);
@@ -907,7 +907,7 @@ xmlSecOpenSSLSignatureLegacyEcdsa_XmlDSigToOpenSSL(
 
         ret = ECDSA_SIG_set0(sig, rr, ss);
         if(ret == 0) {
-            xmlSecOpenSSLError("ECDSA_SIG_set0()", NULL);
+            xmlSecOpenSSLError("ECDSA_SIG_set0", NULL);
             goto done;
         }
         rr = ss = NULL; /* owned by sig now */

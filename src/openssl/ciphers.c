@@ -93,7 +93,8 @@ static int      xmlSecOpenSSLEvpBlockCipherCtxFinal     (xmlSecOpenSSLEvpBlockCi
 
 static int
 xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
-                                xmlSecBufferPtr in, xmlSecBufferPtr out,
+                                xmlSecBufferPtr in,
+                                xmlSecBufferPtr out,
                                 int encrypt,
                                 const xmlChar* cipherName,
                                 xmlSecTransformCtxPtr transformCtx) {
@@ -363,10 +364,10 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdate(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     inSize = xmlSecBufferGetSize(in);
     if(ctx->cbcMode != 0) {
         if(blockSize > 1) {
-            /* block cipher: we want to make sure we keep the last chunk in tmp buffer for padding check/removal on decryption */
+            /* block cipher: we want to make sure we keep the last chunk in the input buffer for padding check/removal on decryption */
             inBlocksSize = blockSize * (inSize / blockSize);
             if(inBlocksSize == 0) {
-                /* wait for more data: we want to make sure we keep the last chunk in tmp buffer for padding check/removal on decryption */
+                /* wait for more data so the last chunk stays in the input buffer */
                 return(0);
             }
             if(inBlocksSize == inSize) {
@@ -556,14 +557,14 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         outSize = xmlSecBufferGetSize(out);
         XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_UINT(outSize, outLen, return(-1), NULL);
         if(outLen < blockLen) {
-            xmlSecInvalidDataError("data length is less than block size for cipher", cipherName);
+            xmlSecInvalidDataError("data length is less than the block size for the cipher", cipherName);
             return(-1);
         }
 
         /* get the pad length from the last byte */
         padLen = outBuf[outLen - 1];
         if((padLen == 0) || (padLen > blockLen)) {
-            xmlSecInvalidDataError("invalid padding length for cipher", cipherName);
+            xmlSecInvalidDataError("invalid padding length for the cipher", cipherName);
             return(-1);
         }
         xmlSecAssert2(padLen <= outLen, -1);
@@ -887,7 +888,7 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-    /* set IV length if not already set above  */
+    /* set IV length if not already set above */
     if(ctx->ivLen == 0) {
         ctx->ivLen = EVP_CIPHER_iv_length(ctx->cipher);
     }
@@ -1064,29 +1065,29 @@ xmlSecOpenSSLEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSe
 }
 
 /* Helper macros to define block cipher transform klasses */
-#define XMLSEC_OPENSSL_BLOCK_CIPHER_KLASS_EX(name, readNode, writeNode)                                 \
-static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                                          \
-    /* klass/object sizes */                                                                            \
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
-    xmlSecOpenSSLEvpBlockCipherSize,            /* xmlSecSize objSize */                                \
-    xmlSecName ## name,                         /* const xmlChar* name; */                              \
-    xmlSecHref ## name,                         /* const xmlChar* href; */                              \
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                       \
-    xmlSecOpenSSLEvpBlockCipherInitialize,      /* xmlSecTransformInitializeMethod initialize; */       \
-    xmlSecOpenSSLEvpBlockCipherFinalize,        /* xmlSecTransformFinalizeMethod finalize; */           \
-    readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */           \
-    writeNode,                                  /* xmlSecTransformNodeWriteMethod writeNode; */         \
-    xmlSecOpenSSLEvpBlockCipherSetKeyReq,       /* xmlSecTransformSetKeyReqMethod setKeyReq; */         \
-    xmlSecOpenSSLEvpBlockCipherSetKey,          /* xmlSecTransformSetKeyMethod setKey; */               \
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */           \
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */             \
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
-    xmlSecOpenSSLEvpBlockCipherExecute,         /* xmlSecTransformExecuteMethod execute; */             \
-    NULL,                                       /* void* reserved0; */                                  \
-    NULL,                                       /* void* reserved1; */                                  \
+#define XMLSEC_OPENSSL_BLOCK_CIPHER_KLASS_EX(name, readNode, writeNode)                                              \
+static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                                                       \
+    /* klass/object sizes */                                                                                         \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                           \
+    xmlSecOpenSSLEvpBlockCipherSize,            /* xmlSecSize objSize */                                             \
+    xmlSecName ## name,                         /* const xmlChar* name; */                                           \
+    xmlSecHref ## name,                         /* const xmlChar* href; */                                           \
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                                    \
+    xmlSecOpenSSLEvpBlockCipherInitialize,      /* xmlSecTransformInitializeMethod initialize; */                    \
+    xmlSecOpenSSLEvpBlockCipherFinalize,        /* xmlSecTransformFinalizeMethod finalize; */                        \
+    readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */                        \
+    writeNode,                                  /* xmlSecTransformNodeWriteMethod writeNode; */                      \
+    xmlSecOpenSSLEvpBlockCipherSetKeyReq,       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */             \
+    xmlSecOpenSSLEvpBlockCipherSetKey,          /* xmlSecTransformSetKeyMethod setKey; */                            \
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */                            \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */                  \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                          \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                            \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                          \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                            \
+    xmlSecOpenSSLEvpBlockCipherExecute,         /* xmlSecTransformExecuteMethod execute; */                          \
+    NULL,                                       /* void* reserved0; */                                               \
+    NULL,                                       /* void* reserved1; */                                               \
 };
 
 #define XMLSEC_OPENSSL_BLOCK_CIPHER_KLASS(name)                                                         \

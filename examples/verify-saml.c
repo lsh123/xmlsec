@@ -19,7 +19,7 @@
  * Usage:
  *
  * \code{.sh}
- *      verify-saml <signed-file> <trusted-cert-pem-file1> [<trusted-cert-pem-file2> [...]]
+ *      verify-saml <xml-file> <cert-file1> [<cert-file2> [...]]
  * \endcode
  *
  * Example (success):
@@ -212,7 +212,7 @@ load_trusted_certs(char** files, int files_size) {
 
         /* load trusted cert */
         if(xmlSecCryptoAppKeysMngrCertLoad(mngr, files[i], xmlSecKeyDataFormatPem, xmlSecKeyDataTypeTrusted) < 0) {
-            fprintf(stderr, "Error: failed to load pem certificate from \"%s\"\n", files[i]);
+            fprintf(stderr, "Error: failed to load PEM certificate from \"%s\"\n", files[i]);
             xmlSecKeysMngrDestroy(mngr);
             return(NULL);
         }

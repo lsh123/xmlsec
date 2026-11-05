@@ -7,12 +7,12 @@
  */
 /**
  * @brief XML Security Library example: Signing a template file.
- * @details Signs a template file using a key from a PEM file
+ * @details Signs a template file using a key from a PEM file.
  *
  * Usage:
  *
  * \code{.sh}
- *      ./sign1 <xml-tmpl> <pem-key> [key-name]
+ *      ./sign1 <tmpl-file> <key-file> [key-name]
  * \endcode
  *
  * Example:
@@ -196,7 +196,7 @@ sign_file(const char* tmpl_file, const char* key_file, const char* key_name) {
     /* create signature context, we don't need keys manager in this example */
     dsigCtx = xmlSecDSigCtxCreate(NULL);
     if(dsigCtx == NULL) {
-        fprintf(stderr,"Error: failed to create signature context\n");
+        fprintf(stderr, "Error: failed to create signature context\n");
         goto done;
     }
 
@@ -208,19 +208,19 @@ sign_file(const char* tmpl_file, const char* key_file, const char* key_name) {
         NULL,
         NULL);
     if(dsigCtx->signKey == NULL) {
-        fprintf(stderr,"Error: failed to load private PEM key from \"%s\"\n", key_file);
+        fprintf(stderr, "Error: failed to load private PEM key from \"%s\"\n", key_file);
         goto done;
     }
 
     /* set the key name */
     if(xmlSecKeySetName(dsigCtx->signKey, BAD_CAST key_name) < 0) {
-        fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
+        fprintf(stderr, "Error: failed to set key name for key from \"%s\"\n", key_file);
         goto done;
     }
 
     /* sign the template */
     if(xmlSecDSigCtxSign(dsigCtx, node) < 0) {
-        fprintf(stderr,"Error: signature failed\n");
+        fprintf(stderr, "Error: signature failed\n");
         goto done;
     }
 

@@ -171,7 +171,7 @@ xmlSecBase64CtxCreate(int encode, int columns) {
      * Allocate a new xmlSecBase64CtxPtr and fill the fields.
      */
     ctx = (xmlSecBase64CtxPtr) xmlMalloc(sizeof(xmlSecBase64Ctx));
-    if (ctx == NULL) {
+    if(ctx == NULL) {
         xmlSecMallocError(sizeof(xmlSecBase64Ctx), NULL);
         return(NULL);
     }
@@ -271,8 +271,6 @@ xmlSecBase64CtxUpdate_ex(xmlSecBase64CtxPtr ctx, const xmlSecByte *in, xmlSecSiz
     return(0);
 }
 
-
-/*  */
 static inline int
 xmlSecBase64CtxDecodeIsFinished(xmlSecBase64CtxPtr ctx) {
     xmlSecAssert2(ctx != NULL, -1);
@@ -337,7 +335,7 @@ xmlSecBase64CtxEncodeByte(xmlSecBase64CtxPtr ctx, xmlSecByte inByte, xmlSecByte*
         ctx->linePos = 0;
         return(xmlSecBase64StatusConsumeAndRepeat);
     } else if(ctx->inPos == 0) {
-        /* we just started new block */
+        /* we just started a new block */
         (*outByte) = base64[xmlSecBase64Encode1(inByte)];
         ctx->inByte = inByte;
         ++ctx->linePos;
@@ -690,7 +688,7 @@ xmlSecBase64Encode(const xmlSecByte *in, xmlSecSize inSize, int columns) {
     }
 
     ret = xmlSecBase64CtxUpdate_ex(&ctx, in, inSize, ptr, outSize, &outUpdatedSize);
-    if (ret < 0) {
+    if(ret < 0) {
         xmlSecInternalError3("xmlSecBase64CtxUpdate_ex", NULL,
             "inSize=" XMLSEC_SIZE_FMT "; outSize=" XMLSEC_SIZE_FMT, inSize, outSize);
         goto done;
@@ -698,7 +696,7 @@ xmlSecBase64Encode(const xmlSecByte *in, xmlSecSize inSize, int columns) {
 
     ret = xmlSecBase64CtxFinal_ex(&ctx, ptr + outUpdatedSize, outSize - outUpdatedSize,
         &outFinalSize);
-    if (ret < 0) {
+    if(ret < 0) {
         xmlSecInternalError("xmlSecBase64CtxFinal_ex", NULL);
         goto done;
     }
@@ -749,14 +747,14 @@ xmlSecBase64Decode_ex(const xmlChar* str, xmlSecByte* out, xmlSecSize outSize, x
 
     ret = xmlSecBase64CtxUpdate_ex(&ctx, (const xmlSecByte*)str, xmlSecStrlen(str),
         out, outSize, &outUpdateSize);
-    if (ret < 0) {
+    if(ret < 0) {
         xmlSecInternalError("xmlSecBase64CtxUpdate_ex", NULL);
         goto done;
     }
 
     ret = xmlSecBase64CtxFinal_ex(&ctx, out + outUpdateSize, outSize - outUpdateSize,
         &outFinalSize);
-    if (ret < 0) {
+    if(ret < 0) {
         xmlSecInternalError("xmlSecBase64CtxFinal_ex", NULL);
         goto done;
     }
@@ -815,7 +813,7 @@ static xmlSecTransformKlass xmlSecBase64Klass = {
     xmlSecBase64Finalize,                       /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -991,7 +989,7 @@ xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
                 /* add from ctx buffer */
                 ret = xmlSecBase64CtxFinal_ex(ctx, xmlSecBufferGetData(out) + outSize,
                     outMaxLen, &outLen);
-                if (ret < 0) {
+                if(ret < 0) {
                     xmlSecInternalError("xmlSecBase64CtxFinal_ex", xmlSecTransformGetName(transform));
                     return(-1);
                 }

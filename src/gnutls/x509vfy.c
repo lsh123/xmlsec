@@ -811,7 +811,7 @@ xmlSecGnuTLSX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, xm
     x509Data = xmlSecKeyGetData(key, xmlSecGnuTLSKeyDataX509Id);
     if(x509Data == NULL) {
         xmlSecInternalError("xmlSecKeyGetData(xmlSecGnuTLSKeyDataX509Id)", xmlSecKeyDataStoreGetName(store));
-        res = 0; /* key cannot be verified w/o key cert */
+        res = 0; /* key cannot be verified w/o X509 key data */
         goto done;
     }
     key_cert = xmlSecGnuTLSKeyDataX509GetKeyCert(x509Data);

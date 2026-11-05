@@ -11,7 +11,6 @@
  */
 #include "globals.h"
 
-#include <stdlib.h>
 #include <string.h>
 
 #include <libxml/tree.h>
@@ -20,14 +19,7 @@
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
-#include <xmlsec/transforms.h>
-#include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
-#include <xmlsec/private.h>
-#include <xmlsec/x509.h>
-
-#include "cast_helpers.h"
-#include "keysdata_helpers.h"
 
 /******************************************************************************
  *
@@ -75,7 +67,7 @@ xmlSecKeyDataIdsInit(void) {
 
     ret = xmlSecPtrListInitialize(&xmlSecAllKeyDataIds, xmlSecKeyDataIdListId);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecPtrListInitialize(xmlSecKeyDataIdListId)", NULL);
+        xmlSecInternalError("xmlSecPtrListInitialize(&xmlSecAllKeyDataIds)", NULL);
         return(-1);
     }
 
@@ -311,7 +303,7 @@ xmlSecKeyDataDestroy(xmlSecKeyDataPtr data) {
 
 /**
  * @brief Reads key data from an XML node into a key.
- * @details Reads the key data of klass @p id from XML @p node and adds them to @p key.
+ * @details Reads the key data of klass @p id from XML @p node and adds it to @p key.
  * @param id the data klass.
  * @param key the destination key.
  * @param node the pointer to an XML node.

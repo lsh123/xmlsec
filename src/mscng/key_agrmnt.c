@@ -71,32 +71,32 @@ static int      xmlSecMSCngKeyAgreementExecute                      (xmlSecTrans
                                                              int last,
                                                              xmlSecTransformCtxPtr transformCtx);
 
-#define XMLSEC_MSCNG_KEY_AGREEMENT_KLASS_EX(name)                                                              \
-static xmlSecTransformKlass xmlSecMSCng ## name ## Klass = {                                                   \
-    /* klass/object sizes */                                                                                   \
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                     \
-    xmlSecMSCngKeyAgreementSize,                /* xmlSecSize objSize */                                       \
-                                                                                                               \
-    xmlSecName ## name,                         /* const xmlChar* name; */                                     \
-    xmlSecHref ## name,                         /* const xmlChar* href; */                                     \
-    xmlSecTransformUsageAgreementMethod,        /* xmlSecTransformUsage usage; */                              \
-                                                                                                               \
-    xmlSecMSCngKeyAgreementInitialize,          /* xmlSecTransformInitializeMethod initialize; */              \
-    xmlSecMSCngKeyAgreementFinalize,            /* xmlSecTransformFinalizeMethod finalize; */                  \
-    xmlSecMSCngKeyAgreementNodeRead,            /* xmlSecTransformNodeReadMethod readNode; */                  \
-    xmlSecMSCngKeyAgreementNodeWrite,           /* xmlSecTransformNodeWriteMethod writeNode; */                \
-    xmlSecMSCngKeyAgreementSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */                \
-    xmlSecMSCngKeyAgreementSetKey,              /* xmlSecTransformSetKeyMethod setKey; */                      \
-    NULL,                                       /* xmlSecTransformVerifyMethod verify; */                      \
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */            \
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                    \
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                      \
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                    \
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                      \
-    xmlSecMSCngKeyAgreementExecute,             /* xmlSecTransformExecuteMethod execute; */                    \
-                                                                                                               \
-    NULL,                                       /* void* reserved0; */                                         \
-    NULL,                                       /* void* reserved1; */                                         \
+#define XMLSEC_MSCNG_KEY_AGREEMENT_KLASS_EX(name)                                                                         \
+static xmlSecTransformKlass xmlSecMSCng ## name ## Klass = {                                                              \
+    /* klass/object sizes */                                                                                              \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                                \
+    xmlSecMSCngKeyAgreementSize,                /* xmlSecSize objSize */                                                  \
+                                                                                                                          \
+    xmlSecName ## name,                         /* const xmlChar* name; */                                                \
+    xmlSecHref ## name,                         /* const xmlChar* href; */                                                \
+    xmlSecTransformUsageAgreementMethod,        /* xmlSecTransformUsage usage; */                                         \
+                                                                                                                          \
+    xmlSecMSCngKeyAgreementInitialize,          /* xmlSecTransformInitializeMethod initialize; */                         \
+    xmlSecMSCngKeyAgreementFinalize,            /* xmlSecTransformFinalizeMethod finalize; */                             \
+    xmlSecMSCngKeyAgreementNodeRead,            /* xmlSecTransformNodeReadMethod readNode; */                             \
+    xmlSecMSCngKeyAgreementNodeWrite,           /* xmlSecTransformNodeWriteMethod writeNode; */                           \
+    xmlSecMSCngKeyAgreementSetKeyReq,           /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */                  \
+    xmlSecMSCngKeyAgreementSetKey,              /* xmlSecTransformSetKeyMethod setKey; */                                 \
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */                                 \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */                       \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                               \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                                 \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                               \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                                 \
+    xmlSecMSCngKeyAgreementExecute,             /* xmlSecTransformExecuteMethod execute; */                               \
+                                                                                                                          \
+    NULL,                                       /* void* reserved0; */                                                    \
+    NULL,                                       /* void* reserved1; */                                                    \
 };
 
 static int
@@ -340,7 +340,7 @@ xmlSecMSCngKeyAgreementGetPublicKey(xmlSecKeyDataPtr keyValue, NCRYPT_KEY_HANDLE
     status = NCryptGetProperty(
         hPrivKey,
         NCRYPT_PROVIDER_HANDLE_PROPERTY,
-        (PBYTE) &(hProvider),
+        (PBYTE)&(hProvider),
         sizeof(hProvider),
         &size,
         0);
@@ -551,7 +551,7 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
         &dwSecretLen,
         0);
     if ((status != STATUS_SUCCESS) || (dwSecretLen == 0)) {
-        xmlSecMSCngNtError("NCryptDeriveKey(dwSecretLen)", NULL, status);
+        xmlSecMSCngNtError("NCryptDeriveKey(size)", NULL, status);
         goto done;
     }
     XMLSEC_SAFE_CAST_UINT_TO_SIZE(dwSecretLen, secretSize, goto done, NULL);
@@ -577,7 +577,7 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
         &dwSecretLen,
         0);
     if ((status != STATUS_SUCCESS) || (dwSecretLen == 0)) {
-        xmlSecMSCngNtError("NCryptDeriveKey", NULL, status);
+        xmlSecMSCngNtError("NCryptDeriveKey(data)", NULL, status);
         goto done;
     }
 
@@ -648,6 +648,8 @@ xmlSecMSCngKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTra
     } else if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
         xmlSecBuffer secret;
 
+        /* 128 covers the largest supported ECDH secret (P-521: 66 bytes);
+         * the buffer grows automatically if a larger secret is produced */
         ret = xmlSecBufferInitialize(&secret, 128);
         if(ret < 0) {
             xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));

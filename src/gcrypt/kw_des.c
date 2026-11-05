@@ -7,7 +7,7 @@
  */
 /**
  * @addtogroup xmlsec_gcrypt_crypto
- * @brief DES Key Transport transforms implementation for GCrypt.
+ * @brief DES Key Wrap transforms implementation for GCrypt.
  */
 #ifndef XMLSEC_NO_DES
 #include "globals.h"
@@ -96,7 +96,7 @@ typedef xmlSecTransformKWDes3Ctx xmlSecGCryptKWDes3Ctx,
 
 /******************************************************************************
  *
- * Triple DES KW transforms
+ * Triple DES Key Wrap transform
  *
  * xmlSecTransform + xmlSecGCryptKWDes3Ctx
  *
@@ -126,7 +126,7 @@ static xmlSecTransformKlass xmlSecGCryptKWDes3Klass = {
     xmlSecGCryptKWDes3Finalize,                 /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptKWDes3SetKeyReq,                /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecGCryptKWDes3SetKeyReq,                /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptKWDes3SetKey,                   /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */

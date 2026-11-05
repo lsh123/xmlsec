@@ -282,7 +282,7 @@ xmlSecKeyUseWithPtrListGetKlass(void) {
   *****************************************************************************/
 /**
  * @brief Initializes a key requirements object.
- * @details Initialize key requirements object. Caller is responsible for
+ * @details Initializes key requirements object. Caller is responsible for
  * cleaning it with #xmlSecKeyReqFinalize function.
  * @param keyReq the pointer to key requirements object.
  *
@@ -599,7 +599,7 @@ xmlSecKeyCopy(xmlSecKeyPtr keyDst, xmlSecKeyPtr keySrc) {
     }
 
 /**
- * @brief Swaps key data for @p key1 and @p key2
+ * @brief Swaps key data for @p key1 and @p key2.
  * @param key1 the first key.
  * @param key2 the second key.
  *
@@ -1219,7 +1219,7 @@ xmlSecKeyReadBinaryFile(xmlSecKeyDataId dataId, const char* filename) {
     }
 
     xmlSecBufferFinalize(&buffer);
-    return (key);
+    return(key);
 }
 
 /**
@@ -1249,7 +1249,7 @@ xmlSecKeyReadMemory(xmlSecKeyDataId dataId, const xmlSecByte* data, xmlSecSize d
     }
     xmlSecBufferMakeSecure(&buffer); /* mark buffer as sensitive */
 
-    if (xmlSecBufferAppend(&buffer, data, dataSize) < 0) {
+    if(xmlSecBufferAppend(&buffer, data, dataSize) < 0) {
         xmlSecInternalError("xmlSecBufferAppend", xmlSecKeyDataKlassGetName(dataId));
         xmlSecBufferFinalize(&buffer);
         return(NULL);
@@ -1263,7 +1263,7 @@ xmlSecKeyReadMemory(xmlSecKeyDataId dataId, const xmlSecByte* data, xmlSecSize d
     }
 
     xmlSecBufferFinalize(&buffer);
-    return (key);
+    return(key);
 }
 
 /**

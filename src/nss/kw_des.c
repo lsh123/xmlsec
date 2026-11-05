@@ -139,7 +139,7 @@ static xmlSecTransformKlass xmlSecNssKWDes3Klass = {
     xmlSecNssKWDes3Finalize,                    /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecNssKWDes3SetKeyReq,                   /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecNssKWDes3SetKeyReq,                   /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecNssKWDes3SetKey,                      /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */

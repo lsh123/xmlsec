@@ -12,12 +12,12 @@
  * of the node to be signed. The key certificate is written in the <dsig:X509Data/> node.
  *
  * This example was developed and tested with the OpenSSL crypto library. The
- * certificates management policies for another crypto library may break it.
+ * certificate management policies for another crypto library may break it.
  *
  * Usage:
  *
  * \code{.sh}
- *      sign4 <xml-doc> <id-attribute-to-sign> <pem-key-file> <pem-cert-file>
+ *      sign4 <xml-file> <id-attr> <key-file> <cert-file>
  * \endcode
  *
  * Example:
@@ -161,9 +161,9 @@ done:
  * dynamically created signature template. The certificate from #cert_file
  * is placed in the <dsig:X509Data/> node.
  * @param xml_file the XML file name.
- * @param id_attr the ID attribute of the node to sign.
+ * @param id_attr the value of the ID attribute of the node to sign.
  * @param key_file the PEM private key file name.
- * @param cert_file the x509 certificate PEM file.
+ * @param cert_file the X.509 certificate PEM file.
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -251,7 +251,7 @@ sign_file(const char* xml_file, const char* id_attr, const char* key_file, const
     /* create signature context, we don't need keys manager in this example */
     dsigCtx = xmlSecDSigCtxCreate(NULL);
     if(dsigCtx == NULL) {
-        fprintf(stderr,"Error: failed to create signature context\n");
+        fprintf(stderr, "Error: failed to create signature context\n");
         goto done;
     }
 
@@ -263,25 +263,25 @@ sign_file(const char* xml_file, const char* id_attr, const char* key_file, const
         NULL,
         NULL);
     if(dsigCtx->signKey == NULL) {
-        fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", key_file);
+        fprintf(stderr, "Error: failed to load private PEM key from \"%s\"\n", key_file);
         goto done;
     }
 
     /* load certificate and add to the key */
     if(xmlSecCryptoAppKeyCertLoad(dsigCtx->signKey, cert_file, xmlSecKeyDataFormatPem) < 0) {
-        fprintf(stderr,"Error: failed to load pem certificate \"%s\"\n", cert_file);
+        fprintf(stderr, "Error: failed to load PEM certificate \"%s\"\n", cert_file);
         goto done;
     }
 
     /* set the key name to the file name; this is only an example */
     if(xmlSecKeySetName(dsigCtx->signKey, BAD_CAST key_file) < 0) {
-        fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
+        fprintf(stderr, "Error: failed to set key name for key from \"%s\"\n", key_file);
         goto done;
     }
 
     /* sign the template */
     if(xmlSecDSigCtxSign(dsigCtx, signNode) < 0) {
-        fprintf(stderr,"Error: signature failed\n");
+        fprintf(stderr, "Error: signature failed\n");
         goto done;
     }
 

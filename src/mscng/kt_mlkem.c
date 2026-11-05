@@ -13,7 +13,8 @@
  * (https://www.w3.org/TR/xmlenc-core1/#sec-EncryptedKey): the &lt;enc:EncryptionMethod/&gt;
  * references one of the ML-KEM transforms and the &lt;enc:CipherValue/&gt; holds the
  * base64 encoded FIPS 203 ciphertext; the resulting 32-byte shared secret becomes
- * the content encryption key (CEK).
+ * the content encryption key (CEK), truncated to the expected CEK size when the
+ * KEM output is longer than the CEK.
  *
  *  - Encrypt (encapsulate): BCryptEncapsulate(recipient public key) -> (ct, ss);
  *    the shared secret becomes the CEK and the ciphertext is stored in the
@@ -24,7 +25,6 @@
 
 #include "globals.h"
 
-#include <stdlib.h>
 #include <string.h>
 
 #include <xmlsec/xmlsec.h>
@@ -87,29 +87,29 @@ static int      xmlSecMSCngMLKEMDecapsulate                   (xmlSecMSCngMLKEMC
 static int      xmlSecMSCngMLKEMProcess                       (xmlSecTransformPtr transform,
                                                                xmlSecTransformCtxPtr transformCtx);
 
-#define XMLSEC_MSCNG_ML_KEM_KLASS_EX(name)                                                            \
-static xmlSecTransformKlass xmlSecMSCng ## name ## Klass = {                                          \
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                            \
-    xmlSecMSCngMLKEMSize,                       /* xmlSecSize objSize */                              \
-    xmlSecName ## name,                         /* const xmlChar* name; */                            \
-    xmlSecHref ## name,                         /* const xmlChar* href; */                            \
-    xmlSecTransformUsageEncryptionMethod,                                                             \
-                                                /* xmlSecAlgorithmUsage usage; */                     \
-    xmlSecMSCngMLKEMInitialize,               /* xmlSecTransformInitializeMethod initialize; */       \
-    xmlSecMSCngMLKEMFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */           \
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */          \
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */        \
-    xmlSecMSCngMLKEMSetKeyReq,                /* xmlSecTransformSetKeyReqMethod setKeyReq; */         \
-    xmlSecMSCngMLKEMSetKey,                   /* xmlSecTransformSetKeyMethod setKey; */               \
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */          \
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */    \
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */            \
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */              \
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */            \
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
-    xmlSecMSCngMLKEMExecute,                  /* xmlSecTransformExecuteMethod execute; */             \
-    NULL,                                       /* void* reserved0; */                                 \
-    NULL,                                       /* void* reserved1; */                                 \
+#define XMLSEC_MSCNG_ML_KEM_KLASS_EX(name)                                                                         \
+static xmlSecTransformKlass xmlSecMSCng ## name ## Klass = {                                                       \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                         \
+    xmlSecMSCngMLKEMSize,                       /* xmlSecSize objSize */                                           \
+    xmlSecName ## name,                         /* const xmlChar* name; */                                         \
+    xmlSecHref ## name,                         /* const xmlChar* href; */                                         \
+    xmlSecTransformUsageEncryptionMethod,                                                                          \
+                                                /* xmlSecAlgorithmUsage usage; */                                  \
+    xmlSecMSCngMLKEMInitialize,               /* xmlSecTransformInitializeMethod initialize; */                    \
+    xmlSecMSCngMLKEMFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */                        \
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */                      \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */                    \
+    xmlSecMSCngMLKEMSetKeyReq,                /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */             \
+    xmlSecMSCngMLKEMSetKey,                   /* xmlSecTransformSetKeyMethod setKey; */                            \
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */                          \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */                \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                        \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                          \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                        \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                          \
+    xmlSecMSCngMLKEMExecute,                  /* xmlSecTransformExecuteMethod execute; */                          \
+    NULL,                                       /* void* reserved0; */                                             \
+    NULL,                                       /* void* reserved1; */                                             \
 };
 
 /* ML-KEM-512 key transport: xmlSecMSCngMLKEM512Klass */

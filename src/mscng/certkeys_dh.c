@@ -463,10 +463,10 @@ done:
     if(data != NULL) {
         xmlSecKeyDataDestroy(data);
     }
-    if(hAlg != 0) {
+    if(hAlg != NULL) {
         BCryptCloseAlgorithmProvider(hAlg, 0);
     }
-    if(hKey != 0) {
+    if(hKey != NULL) {
         BCryptDestroyKey(hKey);
     }
     if(blobInitialized != 0) {

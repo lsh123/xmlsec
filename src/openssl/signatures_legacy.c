@@ -576,7 +576,8 @@ xmlSecOpenSSLSignatureLegacyEcdsaSignatureHalfLen(EVP_PKEY* pKey) {
     }
     signHalfLen = BN_num_bytes(order);
     if(signHalfLen <= 0) {
-        xmlSecInternalError("curve order size is 0", NULL);
+        xmlSecInternalError2("xmlSecOpenSSLSignatureLegacyEcdsaSignatureHalfLen", NULL,
+            "curve order size=%d", (int)signHalfLen);
         goto done;
     }
 

@@ -563,6 +563,7 @@ xmlSecMSCngKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509Da
 #ifndef XMLSEC_NO_X509
     xmlSecMSCngKeysStoreCtx* ctx;
     xmlSecMSCngX509FindCertCtx findCertCtx;
+    xmlSecKeyReqPtr keyReq;
     PCCERT_CONTEXT cert = NULL;
     xmlSecKeyPtr key;
     int ret;
@@ -576,14 +577,15 @@ xmlSecMSCngKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509Da
     xmlSecAssert2(ctx->certStoreCtx.hCollection != NULL, NULL);
 
     /* only public or private keys can be created from a certificate */
-    if(!(keyInfoCtx->keyReq.keyType & (xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate))) {
+    keyReq = &(keyInfoCtx->keyReq);
+    if(!(keyReq->keyType & (xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate))) {
         return(NULL);
     }
 
     /* init find certs */
     ret = xmlSecMSCngX509FindCertCtxInitializeFromValue(&findCertCtx, x509Data);
     if (ret < 0) {
-        xmlSecInternalError("xmlSecMSCngX509FindCertCtxInitializeFromValue", NULL);
+        xmlSecInternalError("xmlSecMSCngX509FindCertCtxInitializeFromValue", xmlSecKeyStoreGetName(store));
         xmlSecMSCngX509FindCertCtxFinalize(&findCertCtx);
         return(NULL);
     }
@@ -596,7 +598,7 @@ xmlSecMSCngKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509Da
     }
 
     /* create a key */
-    key = xmlSecMSCngKeysStoreCreateKeyFromCert(cert, &(keyInfoCtx->keyReq));
+    key = xmlSecMSCngKeysStoreCreateKeyFromCert(cert, keyReq);
     if (key == NULL) {
         xmlSecInternalError("xmlSecMSCngKeysStoreCreateKeyFromCert", xmlSecKeyStoreGetName(store));
         if (!CertFreeCertificateContext(cert)) {

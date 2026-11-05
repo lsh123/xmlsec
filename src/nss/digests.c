@@ -415,7 +415,7 @@ xmlSecNssDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
         }
     } else if(transform->status == xmlSecTransformStatusFinished) {
         /* the only way we can get here is if there is no input */
-        xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
+        xmlSecAssert2(xmlSecBufferGetSize(in) == 0, -1);
     } else {
         xmlSecInvalidTransformStatusError(transform);
         return(-1);

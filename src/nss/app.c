@@ -197,7 +197,7 @@ xmlSecNssAppImportEpkiKey(PK11SlotInfo* slot, SECKEYEncryptedPrivateKeyInfo* epk
     PK11SymKey* symKey = NULL;
     SECItem* param = NULL;
     SECItem nickname = { siBuffer, NULL, 0 };
-    SECItem derPKI;
+    SECItem derPKI = { siBuffer, NULL, 0 };
     SECItem* keyData;
     CK_MECHANISM_TYPE mech;
     SECStatus rv;
@@ -395,7 +395,7 @@ xmlSecNssAppInit(const char* config) {
     }
 
     /* configure PKCS11 */
-    PK11_ConfigurePKCS11("manufacturesID", "libraryDescription",
+    PK11_ConfigurePKCS11("manufacturerID", "libraryDescription",
                          "tokenDescription", "privateTokenDescription",
                          "slotDescription", "privateSlotDescription",
                          "fipsSlotDescription", "fipsPrivateSlotDescription",

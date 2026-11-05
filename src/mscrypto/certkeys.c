@@ -282,6 +282,8 @@ xmlSecMSCryptoKeyDataCtxDuplicateProvider(xmlSecMSCryptoKeyDataCtxPtr ctxDst, xm
     xmlSecMSCryptoKeyDataCtxDestroyProvider(ctxDst);
 
     if(ctxSrc->hProv != 0) {
+        /* add our own reference to the shared provider handle so that
+         * DestroyProvider can safely release it (fCallerFreeProv=TRUE) */
         if(!CryptContextAddRef(ctxSrc->hProv, NULL, 0)) {
             xmlSecMSCryptoError("CryptContextAddRef", NULL);
             return(-1);
@@ -2082,7 +2084,7 @@ xmlSecMSCryptoKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         NULL,
         &dwBlobLen);
     if((status != TRUE) || (dwBlobLen <= 0)) {
-        xmlSecInternalError2("CryptExportKey", xmlSecKeyDataKlassGetName(id),
+        xmlSecMSCryptoError2("CryptExportKey", xmlSecKeyDataKlassGetName(id),
             "dwBlobLen=%lu", dwBlobLen);
         goto done;
     }
@@ -2110,7 +2112,7 @@ xmlSecMSCryptoKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         blob,
         &dwBlobLen);
     if ((status != TRUE) || (dwBlobLen <= 0)) {
-        xmlSecInternalError2("CryptExportKey", xmlSecKeyDataKlassGetName(id),
+        xmlSecMSCryptoError2("CryptExportKey", xmlSecKeyDataKlassGetName(id),
             "dwBlobLen=%lu", dwBlobLen);
         goto done;
     }

@@ -2396,8 +2396,11 @@ xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
  * @return 0 on success or a negative value if an error occurs.
  */
 int
-xmlSecTransformDefaultPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
-                            xmlSecTransformCtxPtr transformCtx) {
+xmlSecTransformDefaultPushXml(
+    xmlSecTransformPtr transform,
+    xmlSecNodeSetPtr nodes,
+    xmlSecTransformCtxPtr transformCtx
+) {
     int ret;
 
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
@@ -2409,8 +2412,7 @@ xmlSecTransformDefaultPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nod
     transform->inNodes = nodes;
     ret = xmlSecTransformExecute(transform, 1, transformCtx);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformExecute",
-                            xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecTransformExecute", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -2418,8 +2420,7 @@ xmlSecTransformDefaultPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nod
     if(transform->next != NULL) {
         ret = xmlSecTransformPushXml(transform->next, transform->outNodes, transformCtx);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecTransformPushXml",
-                                xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecTransformPushXml", xmlSecTransformGetName(transform->next));
             return(-1);
         }
     }
@@ -2437,8 +2438,11 @@ xmlSecTransformDefaultPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nod
  * @return 0 on success or a negative value if an error occurs.
  */
 int
-xmlSecTransformDefaultPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
-                            xmlSecTransformCtxPtr transformCtx) {
+xmlSecTransformDefaultPopXml(
+    xmlSecTransformPtr transform,
+    xmlSecNodeSetPtr* nodes,
+    xmlSecTransformCtxPtr transformCtx
+) {
     int ret;
 
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
@@ -2450,8 +2454,7 @@ xmlSecTransformDefaultPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nod
     if(transform->prev != NULL) {
         ret = xmlSecTransformPopXml(transform->prev, &(transform->inNodes), transformCtx);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecTransformPopXml",
-                                xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecTransformPopXml", xmlSecTransformGetName(transform->prev));
             return(-1);
         }
     }
@@ -2459,8 +2462,7 @@ xmlSecTransformDefaultPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nod
     /* execute our transform */
     ret = xmlSecTransformExecute(transform, 1, transformCtx);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformExecute",
-                            xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecTransformExecute", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -2573,8 +2575,11 @@ xmlSecTransformIdListFindByName(xmlSecPtrListPtr list, const xmlChar* name,
         transformId = (xmlSecTransformId)xmlSecPtrListGetItem(list, i);
         xmlSecAssert2(transformId != xmlSecTransformIdUnknown, xmlSecTransformIdUnknown);
 
-        if(((usage & transformId->usage) != 0) && (transformId->name != NULL) &&
-           xmlStrEqual(name, BAD_CAST transformId->name)) {
+        if(
+            ((usage & transformId->usage) != 0) &&
+            (transformId->name != NULL) &&
+            xmlStrEqual(name, transformId->name)
+        ) {
 
            return(transformId);
         }

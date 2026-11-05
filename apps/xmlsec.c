@@ -453,8 +453,8 @@ static xmlSecAppCmdLineParam chacha20KeyParam = {
 #ifndef XMLSEC_NO_CONCATKDF
 static xmlSecAppCmdLineParam concatKdfKeyParam = {
     xmlSecAppCmdLineTopicKeysMngr,
-    "--concatkdfkey",
     "--concatkdf-key",
+    "--concatkdfkey",
     "--concatkdf-key[:<name>] <file>"
     "\n\tload ConcatKDF key from binary file <file>",
     xmlSecAppCmdLineParamTypeString,
@@ -504,8 +504,8 @@ static xmlSecAppCmdLineParam hmacMinOutputLenParam = {
 #ifndef XMLSEC_NO_PBKDF2
 static xmlSecAppCmdLineParam pbkdf2KeyParam = {
     xmlSecAppCmdLineTopicKeysMngr,
-    "--pbkdf2key",
     "--pbkdf2-key",
+    "--pbkdf2key",
     "--pbkdf2-key[:<name>] <file>"
     "\n\tload PBKDF2 key from binary file <file>",
     xmlSecAppCmdLineParamTypeString,
@@ -517,8 +517,8 @@ static xmlSecAppCmdLineParam pbkdf2KeyParam = {
 #ifndef XMLSEC_NO_HKDF
 static xmlSecAppCmdLineParam hkdfKeyParam = {
     xmlSecAppCmdLineTopicKeysMngr,
-    "--hkdfkey",
     "--hkdf-key",
+    "--hkdfkey",
     "--hkdf-key[:<name>] <file>"
     "\n\tload HKDF key (IKM) from binary file <file>",
     xmlSecAppCmdLineParamTypeString,
@@ -1120,7 +1120,7 @@ static xmlSecAppCmdLineParam X509SkipStrictChecksParam = {
     NULL
 };
 
-static xmlSecAppCmdLineParam X509DontVerifyCerts = {
+static xmlSecAppCmdLineParam X509DontVerifyCertsParam = {
     xmlSecAppCmdLineTopicX509Certs,
     "--insecure",
     NULL,
@@ -1241,7 +1241,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &X509SkipTimeChecksParam,
     &depthParam,
     &X509SkipStrictChecksParam,
-    &X509DontVerifyCerts,
+    &X509DontVerifyCertsParam,
 #endif /* XMLSEC_NO_X509 */
 
 
@@ -2332,7 +2332,7 @@ xmlSecAppPrepareKeyInfoCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
     if(xmlSecAppCmdLineParamIsSet(&X509SkipStrictChecksParam)) {
         keyInfoCtx->flags |= XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS;
     }
-    if(xmlSecAppCmdLineParamIsSet(&X509DontVerifyCerts)) {
+    if(xmlSecAppCmdLineParamIsSet(&X509DontVerifyCertsParam)) {
         keyInfoCtx->flags |= XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS;
     }
 #endif /* XMLSEC_NO_X509 */
@@ -3695,6 +3695,7 @@ xmlSecAppOpenFile(const char* filename, const char* encoding) {
     if(encoding != NULL) {
         encoder = xmlFindCharEncodingHandler(encoding);
         if(encoder == NULL) {
+            fprintf(stderr, "Error: failed to find encoding handler for \"%s\"\n", encoding);
             return(NULL);
         }
     }

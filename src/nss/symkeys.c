@@ -495,7 +495,7 @@ xmlSecNssKeyDataHmacSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize
 #ifndef XMLSEC_NO_PBKDF2
 /******************************************************************************
  *
- * PBKDF2 key
+ * The PBKDF2 key derivation key
  *
   *****************************************************************************/
 XMLSEC_NSS_SYMKEY_KLASS(KeyDataPbkdf2, xmlSecNamePbkdf2, xmlSecHrefPbkdf2)
@@ -535,7 +535,7 @@ xmlSecNssKeyDataPbkdf2Set(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSi
 #ifndef XMLSEC_NO_CONCATKDF
 /******************************************************************************
  *
- * ConcatKDF key
+ * The ConcatKDF key derivation key
  *
   *****************************************************************************/
 XMLSEC_NSS_SYMKEY_KLASS(KeyDataConcatKdf, xmlSecNameConcatKdf, xmlSecHrefConcatKdf)
@@ -575,7 +575,7 @@ xmlSecNssKeyDataConcatKdfSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSe
 #ifndef XMLSEC_NO_HKDF
 /******************************************************************************
  *
- * HKDF key
+ * The HKDF key derivation key
  *
   *****************************************************************************/
 XMLSEC_NSS_SYMKEY_KLASS(KeyDataHkdf, xmlSecNameHkdf, xmlSecHrefHkdf)

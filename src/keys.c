@@ -967,7 +967,7 @@ xmlSecKeyDebugDump(xmlSecKeyPtr key, FILE *output) {
     if(key->value != NULL) {
         fprintf(output, "=== method: %s\n",
                 (key->value->id->dataNodeName != NULL) ?
-                (char*)(key->value->id->dataNodeName) : "NULL");
+                (const char*)(key->value->id->dataNodeName) : "NULL");
     }
 
     fprintf(output, "=== key type: ");

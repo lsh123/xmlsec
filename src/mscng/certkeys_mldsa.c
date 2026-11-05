@@ -31,7 +31,7 @@
 /* Returns the CNG ML-DSA parameter set name for the given raw public key size,
  * or NULL if the size does not match a known ML-DSA parameter set. */
 static const WCHAR*
-xmlSecMSCngMlDsaGetParamsetName(xmlSecSize pkSize) {
+xmlSecMSCngMlDsaGetParamsetByPkSize(xmlSecSize pkSize) {
     switch(pkSize) {
     case XMLSEC_MSCNG_MLDSA_44_PK_SIZE:
         return(L"44");
@@ -91,14 +91,14 @@ xmlSecMSCngKeyDataCertGetMlDsaPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HAND
     pkData = spki->PublicKey.pbData;
     pkSize = (xmlSecSize)spki->PublicKey.cbData;
     if((pkSize > 0) && (pkData[0] == 0x00) &&
-       (xmlSecMSCngMlDsaGetParamsetName(pkSize) == NULL) &&
-       (xmlSecMSCngMlDsaGetParamsetName(pkSize - 1) != NULL)
+       (xmlSecMSCngMlDsaGetParamsetByPkSize(pkSize) == NULL) &&
+       (xmlSecMSCngMlDsaGetParamsetByPkSize(pkSize - 1) != NULL)
     ) {
         pkData++;
         pkSize--;
     }
 
-    pszParamset = xmlSecMSCngMlDsaGetParamsetName(pkSize);
+    pszParamset = xmlSecMSCngMlDsaGetParamsetByPkSize(pkSize);
     if(pszParamset == NULL) {
         xmlSecInvalidSizeDataError("ML-DSA public key size", pkSize,
             "1312, 1952 or 2592 bytes", NULL);

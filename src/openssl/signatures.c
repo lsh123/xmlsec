@@ -1944,8 +1944,8 @@ xmlSecOpenSSLEvpSignatureDsa_XmlDSig2OpenSSL(const xmlSecTransformId transformId
     rLen = BN_num_bytes(rr);
     sLen = BN_num_bytes(ss);
     if((rLen <= 0) || (rLen > keyHalfLen) || (sLen <= 0) || (sLen > keyHalfLen)) {
-        xmlSecInvalidIntegerDataError("Signature r or s length", (rLen > keyHalfLen ? rLen : sLen),
-            "less than or equal to the key half length", NULL);
+        xmlSecInvalidIntegerDataError2("Signature r length", rLen, "Signature s length", sLen,
+            "greater than 0 and less than or equal to the key half length", NULL);
         goto done;
     }
 
@@ -2272,8 +2272,8 @@ xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(
     rLen = BN_num_bytes(rr);
     sLen = BN_num_bytes(ss);
     if((rLen <= 0) || (rLen > keyHalfLen) || (sLen <= 0) || (sLen > keyHalfLen)) {
-        xmlSecInvalidIntegerDataError("Signature r or s length", (rLen > keyHalfLen ? rLen : sLen),
-            "less than or equal to the key half length", NULL);
+        xmlSecInvalidIntegerDataError2("Signature r length", rLen, "Signature s length", sLen,
+            "greater than 0 and less than or equal to the key half length", NULL);
         goto done;
     }
 

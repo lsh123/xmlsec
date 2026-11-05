@@ -137,8 +137,12 @@ xmlSecGCryptKWAesInitialize(xmlSecTransformPtr transform) {
     }
 
     blockSize = gcry_cipher_get_algo_blklen(ctx->cipher);
-    xmlSecAssert2(blockSize > 0, -1);
-    xmlSecAssert2(blockSize == XMLSEC_KW_RFC3394_BLOCK_SIZE, -1);
+    if((blockSize == 0) || (blockSize != XMLSEC_KW_RFC3394_BLOCK_SIZE)) {
+        xmlSecInternalError2("gcry_cipher_get_algo_blklen", xmlSecTransformGetName(transform),
+                             "blockSize=" XMLSEC_SIZE_FMT, (xmlSecSize)blockSize);
+        xmlSecGCryptKWAesFinalize(transform);
+        return(-1);
+    }
 
     ctx->mode     = GCRY_CIPHER_MODE_CBC;
     ctx->flags    = GCRY_CIPHER_SECURE; /* we are paranoid */
@@ -346,7 +350,7 @@ xmlSecGCryptTransformKWAes256GetKlass(void) {
  * AES KW implementation
  *
   *****************************************************************************/
-static unsigned char g_zero_iv[XMLSEC_KW_RFC3394_BLOCK_SIZE] =
+static const unsigned char xmlSecGCryptKWRfc3394ZeroIv[XMLSEC_KW_RFC3394_BLOCK_SIZE] =
     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 /**
@@ -427,7 +431,7 @@ xmlSecGCryptKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     xmlSecAssert2(ctx->cipherHandle != NULL, -1);
 
     /* use zero IV and CBC mode to ensure we get result as-is */
-    err = gcry_cipher_setiv(ctx->cipherHandle, g_zero_iv, sizeof(g_zero_iv));
+    err = gcry_cipher_setiv(ctx->cipherHandle, xmlSecGCryptKWRfc3394ZeroIv, sizeof(xmlSecGCryptKWRfc3394ZeroIv));
     if(err != GPG_ERR_NO_ERROR) {
         xmlSecGCryptError("gcry_cipher_setiv", err, NULL);
         return(-1);
@@ -487,7 +491,7 @@ xmlSecGCryptKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     xmlSecAssert2(ctx->cipherHandle != NULL, -1);
 
     /* use zero IV and CBC mode to ensure we get result as-is */
-    err = gcry_cipher_setiv(ctx->cipherHandle, g_zero_iv, sizeof(g_zero_iv));
+    err = gcry_cipher_setiv(ctx->cipherHandle, xmlSecGCryptKWRfc3394ZeroIv, sizeof(xmlSecGCryptKWRfc3394ZeroIv));
     if(err != GPG_ERR_NO_ERROR) {
         xmlSecGCryptError("gcry_cipher_setiv", err, NULL);
         return(-1);

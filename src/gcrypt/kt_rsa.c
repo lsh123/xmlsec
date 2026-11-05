@@ -402,8 +402,7 @@ xmlSecGCryptRsaKtCheckModulusSize(gcry_sexp_t s_priv_key, xmlSecSize inSize) {
 
     s_modulus = gcry_sexp_find_token(s_priv_key, "n", 0);
     if(s_modulus == NULL) {
-        xmlSecGCryptError2("gcry_sexp_find_token()", (gcry_error_t)GPG_ERR_NO_ERROR, NULL,
-            "name=%s", "n");
+        xmlSecGCryptError("gcry_sexp_find_token(n)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         return(-1);
     }
     modulusData = gcry_sexp_nth_data(s_modulus, 1, &modulusSize);

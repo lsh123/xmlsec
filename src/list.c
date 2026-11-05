@@ -221,7 +221,7 @@ xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
                     }
                 }
                 dst->use = initialUse;
-                xmlSecInternalError("duplicateItem", xmlSecPtrListGetName(src));
+                xmlSecInternalError("duplicateItem", xmlSecPtrListGetName(dst));
                 return(-1);
             }
         } else {

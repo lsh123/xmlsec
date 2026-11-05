@@ -468,7 +468,7 @@ xmlSecKeyDataBinaryValueGetSize(xmlSecKeyDataPtr data) {
 
     size = xmlSecBufferGetSize(buffer);
     if(size > (XMLSEC_SIZE_MAX / 8)) {
-        xmlSecInvalidSizeError("size", size, (XMLSEC_SIZE_MAX / 8), NULL);
+        xmlSecInvalidSizeMoreThanError("size", size, (XMLSEC_SIZE_MAX / 8), NULL);
         return(0);
     }
 
@@ -803,7 +803,7 @@ xmlSecKeyDataEcPublicKeyCombineComponents(xmlSecKeyValueEcPtr ecValue) {
     /* max of the two sizes (prepend 0s if needed) */
     sizeKey = (sizeX >= sizeY) ? sizeX : sizeY;
     if(sizeKey > ((XMLSEC_SIZE_MAX - 1) / 2)) {
-        xmlSecInvalidSizeError("sizeKey", sizeKey, ((XMLSEC_SIZE_MAX - 1) / 2), NULL);
+        xmlSecInvalidSizeMoreThanError("sizeKey", sizeKey, ((XMLSEC_SIZE_MAX - 1) / 2), NULL);
         return(-1);
     }
     size = 1 + 2 * sizeKey; /* <magic byte> || x || y */

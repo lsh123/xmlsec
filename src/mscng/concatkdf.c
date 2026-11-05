@@ -279,9 +279,9 @@ xmlSecMSCngConcatKdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     }
 
     /* set the hash algorithm ID */
+    /* the helper reports the invalid algorithm href itself */
     ctx->pszAlgId = xmlSecMSCngConcatKdfGetDigestFromHref(ctx->params.digestMethod);
     if(ctx->pszAlgId == NULL) {
-        xmlSecInternalError("xmlSecMSCngConcatKdfGetDigestFromHref", xmlSecTransformGetName(transform));
         return(-1);
     }
 

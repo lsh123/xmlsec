@@ -162,7 +162,8 @@ xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     /* first is the key file */
-    key = xmlSecCryptoAppKeyLoadEx(files, type, format, pwd, xmlSecCryptoAppGetDefaultPwdCallback(), (void*)files);
+    key = xmlSecCryptoAppKeyLoadEx(files, type, format, pwd,
+        xmlSecCryptoAppGetDefaultPwdCallback(), (void*)files);
     if(key == NULL) {
         fprintf(stderr, "Error: xmlSecCryptoAppKeyLoadEx failed: file=%s\n",
                 xmlSecErrorsSafeString(files));

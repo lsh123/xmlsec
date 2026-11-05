@@ -35,7 +35,7 @@
  * For the purposes of this specification, AES-GCM shall be used with
  * a 96 bit Initialization Vector (IV) and a 128 bit Authentication Tag (T).
  */
-#define XMLSEC_NSS_AEAD_CIPHER_MAX_BLOCK_SIZE             32
+#define XMLSEC_NSS_AEAD_CIPHER_OUTPUT_SLACK               32
 #define XMLSEC_NSS_AEAD_CIPHER_IV_SIZE                    12
 #define XMLSEC_NSS_AEAD_CIPHER_TAG_SIZE                   16
 
@@ -377,7 +377,7 @@ xmlSecNssAeadCipherEncrypt(xmlSecNssAeadCipherCtxPtr ctx, xmlSecBufferPtr in, xm
     /* Handle IV/Nonce differently for GCM (prepended) vs ChaCha20-Poly1305 (in XML) */
     if(ctx->isIvPrepended) {
         /* copy iv to the buffer */
-        outSize = sizeof(ctx->iv) + inSize + XMLSEC_NSS_AEAD_CIPHER_TAG_SIZE + 2 * XMLSEC_NSS_AEAD_CIPHER_MAX_BLOCK_SIZE;
+        outSize = sizeof(ctx->iv) + inSize + XMLSEC_NSS_AEAD_CIPHER_TAG_SIZE + 2 * XMLSEC_NSS_AEAD_CIPHER_OUTPUT_SLACK;
         ret = xmlSecBufferSetMaxSize(out, outSize);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetMaxSize", NULL, "size=" XMLSEC_SIZE_FMT, outSize);
@@ -393,7 +393,7 @@ xmlSecNssAeadCipherEncrypt(xmlSecNssAeadCipherCtxPtr ctx, xmlSecBufferPtr in, xm
         outData += sizeof(ctx->iv);
         outSize -= sizeof(ctx->iv);
     } else {
-        outSize = inSize + XMLSEC_NSS_AEAD_CIPHER_TAG_SIZE + 2 * XMLSEC_NSS_AEAD_CIPHER_MAX_BLOCK_SIZE;
+        outSize = inSize + XMLSEC_NSS_AEAD_CIPHER_TAG_SIZE + 2 * XMLSEC_NSS_AEAD_CIPHER_OUTPUT_SLACK;
         ret = xmlSecBufferSetMaxSize(out, outSize);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetMaxSize", NULL, "size=" XMLSEC_SIZE_FMT, outSize);
@@ -411,7 +411,8 @@ xmlSecNssAeadCipherEncrypt(xmlSecNssAeadCipherCtxPtr ctx, xmlSecBufferPtr in, xm
     /* setup params */
     ret = ctx->setupParams(ctx, &param);
     if(ret < 0) {
-        xmlSecInternalError("ctx->setupParams", NULL);
+        xmlSecInternalError2("xmlSecNssAeadCipherCtxSetupParams", NULL, "mechanism=%s",
+                             ((ctx->mechanism == CKM_AES_GCM) ? "CKM_AES_GCM" : "CKM_CHACHA20_POLY1305"));
         return(-1);
     }
 
@@ -512,7 +513,8 @@ xmlSecNssAeadCipherDecrypt(xmlSecNssAeadCipherCtxPtr ctx, xmlSecBufferPtr in, xm
     /* setup params */
     ret = ctx->setupParams(ctx, &param);
     if(ret < 0) {
-        xmlSecInternalError("ctx->setupParams", NULL);
+        xmlSecInternalError2("xmlSecNssAeadCipherCtxSetupParams", NULL, "mechanism=%s",
+                             ((ctx->mechanism == CKM_AES_GCM) ? "CKM_AES_GCM" : "CKM_CHACHA20_POLY1305"));
         return(-1);
     }
 

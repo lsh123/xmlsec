@@ -1380,7 +1380,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform) {
     }
 
     if((encrypt != 0) && (inSize >= ctx->keySize)) {
-        xmlSecInvalidSizeLessThanError("Input data", inSize, ctx->keySize,
+        xmlSecInvalidSizeMoreThanError("Input data", inSize, ctx->keySize,
             xmlSecTransformGetName(transform));
         return(-1);
     } else if((encrypt == 0) && (inSize != ctx->keySize)) {

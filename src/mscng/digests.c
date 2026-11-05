@@ -196,11 +196,11 @@ static void xmlSecMSCngDigestFinalize(xmlSecTransformPtr transform) {
 
     /* NTSTATUS is intentionally ignored: failures at finalization time are not
      * recoverable and cannot be reported from a void finalize method */
-    if(ctx->hHash != 0) {
+    if(ctx->hHash != NULL) {
         BCryptDestroyHash(ctx->hHash);
     }
 
-    if(ctx->hAlg != 0) {
+    if(ctx->hAlg != NULL) {
         BCryptCloseAlgorithmProvider(ctx->hAlg, 0);
     }
 

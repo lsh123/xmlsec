@@ -2230,7 +2230,7 @@ xmlSecOpenSSLX509StoreCombineCerts(STACK_OF(X509)* certs1, STACK_OF(X509)* certs
             }
             ret = sk_X509_push(res, cert);
             if(ret <= 0) {
-                xmlSecInternalError("sk_X509_push(res)", NULL);
+                xmlSecOpenSSLError("sk_X509_push(res)", NULL);
                 sk_X509_free(res);
                 return(NULL);
             }

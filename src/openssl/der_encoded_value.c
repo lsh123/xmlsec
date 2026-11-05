@@ -185,7 +185,7 @@ xmlSecOpenSSLKeyDataDEREncodedKeyValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr k
     consumed = data - (xmlSecBufferGetData(&buffer));
     XMLSEC_SAFE_CAST_PTRDIFF_TO_SIZE(consumed, consumedSize, goto done, xmlSecKeyDataKlassGetName(id));
     if(consumedSize < dataSize) {
-        xmlSecInvalidSizeDataError("Remaining bytes", (dataSize - consumedSize), "0 bytes", NULL);
+        xmlSecInvalidSizeDataError("Remaining bytes", (dataSize - consumedSize), "0 bytes", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
@@ -258,7 +258,7 @@ xmlSecOpenSSLKeyDataDEREncodedKeyValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr 
 #if LIBXML_VERSION >= 21300
     ret = xmlNodeAddContent(node, content);
     if(ret < 0) {
-        xmlSecInternalError("xmlNodeAddContent", xmlSecKeyDataKlassGetName(id));
+        xmlSecXmlError("xmlNodeAddContent", node);
         goto done;
     }
 #else /* LIBXML_VERSION >= 21300 */

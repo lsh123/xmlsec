@@ -249,7 +249,7 @@ xmlSecGCryptBlockCipherCtxFinal(xmlSecGCryptBlockCipherCtxPtr ctx,
     inSize = xmlSecBufferGetSize(in);
     outSize = xmlSecBufferGetSize(out);
 
-    if(encrypt != 0) {
+    if(encrypt) {
         xmlSecAssert2(inSize < blockSize, -1);
 
         /* create padding */
@@ -393,7 +393,7 @@ xmlSecGCryptBlockCipherCheckId(xmlSecTransformPtr transform) {
 static int
 xmlSecGCryptBlockCipherInitialize(xmlSecTransformPtr transform) {
     xmlSecGCryptBlockCipherCtxPtr ctx;
-    gcry_error_t err;
+    gcry_err_code_t err;
 
     xmlSecAssert2(xmlSecGCryptBlockCipherCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGCryptBlockCipherSize), -1);
@@ -582,7 +582,7 @@ xmlSecGCryptBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             }
         }
 
-        if(last) {
+        if(last != 0) {
             ret = xmlSecGCryptBlockCipherCtxFinal(ctx, in, out,
                         (transform->operation == xmlSecTransformOperationEncrypt) ? 1 : 0,
                         xmlSecTransformGetName(transform), transformCtx);

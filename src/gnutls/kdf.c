@@ -542,7 +542,7 @@ xmlSecGnuTLSConcatKdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen,
     /* allocate output buffer */
     ret = xmlSecBufferSetSize(out, outLen);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
+        xmlSecInternalError2("xmlSecBufferSetSize", transformName,
             "size=" XMLSEC_SIZE_FMT, outLen);
         return(-1);
     }
@@ -765,7 +765,7 @@ xmlSecGnuTLSPbkdf2GenerateKey(
 
     ret = xmlSecBufferSetSize(out, ctx->u.pbkdf2.params.keyLength);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
+        xmlSecInternalError2("xmlSecBufferSetSize", transformName,
             "size=" XMLSEC_SIZE_FMT, ctx->u.pbkdf2.params.keyLength);
         return(-1);
     }

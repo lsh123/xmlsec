@@ -504,7 +504,7 @@ xmlSecNssSignatureCreatePssParams(xmlSecNssSignatureCtxPtr ctx) {
     /* pss hash algorithm */
     params.hashAlg = (SECAlgorithmID *)PORT_ArenaZAlloc(ctx->arena, sizeof(SECAlgorithmID));
     if(params.hashAlg == NULL) {
-        xmlSecNssError("PORT_ArenaZAlloc", NULL);
+        xmlSecNssError("PORT_ArenaZAlloc(hashAlg)", NULL);
         return(NULL);
     }
     rv = SECOID_SetAlgorithmID(ctx->arena, params.hashAlg, ctx->pssHashAlgTag, NULL);
@@ -528,7 +528,7 @@ xmlSecNssSignatureCreatePssParams(xmlSecNssSignatureCtxPtr ctx) {
 
     params.maskAlg = (SECAlgorithmID *)PORT_ArenaZAlloc(ctx->arena, sizeof(SECAlgorithmID));
     if(params.maskAlg == NULL) {
-        xmlSecNssError("PORT_ArenaZAlloc", NULL);
+        xmlSecNssError("PORT_ArenaZAlloc(maskAlg)", NULL);
         return(NULL);
     }
     rv = SECOID_SetAlgorithmID(ctx->arena, params.maskAlg, SEC_OID_PKCS1_MGF1, maskHashAlgItem);
@@ -856,6 +856,16 @@ xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
 
         statusDer = DSAU_EncodeDerSigWithLen(&signatureDer, &signature, signature.len);
         if(statusDer != SECSuccess) {
+            /* an invalid argument error means the raw signature value is malformed
+             * (e.g. it has an odd length); report it as a verification failure
+             * instead of a processing error */
+            if(PORT_GetError() == PR_INVALID_ARGUMENT_ERROR) {
+                xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
+                                 xmlSecTransformGetName(transform),
+                                 "signature verification failed");
+                transform->status = xmlSecTransformStatusFail;
+                return(0);
+            }
             xmlSecNssError("DSAU_EncodeDerSigWithLen",
                            xmlSecTransformGetName(transform));
             return(-1);
@@ -870,7 +880,11 @@ xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
         PRErrorCode err;
 
         err = PORT_GetError();
-        if((err == SEC_ERROR_BAD_SIGNATURE) || (err == SEC_ERROR_PKCS7_BAD_SIGNATURE)) {
+        /* SEC_ERROR_BAD_DER means the DSA/ECDSA signature value is malformed
+         * (e.g. r or s exceeds the key field size); treat it the same as a
+         * plain bad signature */
+        if((err == SEC_ERROR_BAD_SIGNATURE) || (err == SEC_ERROR_PKCS7_BAD_SIGNATURE) ||
+           (err == SEC_ERROR_BAD_DER)) {
             xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
                              xmlSecTransformGetName(transform),
                              "signature verification failed");

@@ -275,7 +275,8 @@ xmlSecGnuTLSKeyDataDEREncodedKeyValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr k
     /* get pubkey */
     pubkey = xmlSecGnuTLSAsymmetricKeyGetPub(key);
     if(pubkey == NULL) {
-        xmlSecInternalError("xmlSecGnuTLSAsymmetricKeyGetPub", xmlSecKeyDataKlassGetName(id));
+        xmlSecInvalidDataError("key value is missing or is not a GnuTLS asymmetric key data object",
+            xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 

@@ -114,7 +114,7 @@ extern "C" {
 #define XMLSEC_ERRORS_R_INVALID_FORMAT                  17
 
 /**
- * @brief The data do not match our expectation.
+ * @brief The data does not match our expectation.
  */
 #define XMLSEC_ERRORS_R_DATA_NOT_MATCH                  18
 

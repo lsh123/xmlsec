@@ -468,16 +468,17 @@ xmlSecMSCryptoKWDes3BlockEncrypt(xmlSecTransformPtr transform,
         goto done;
     }
 
-    if(out != in) {
-        memcpy(out, in, inSize);
-    }
-
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwCLen, goto done, NULL);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(outSize, dwOutSize, goto done, NULL);
     if((inSize % (blockSizeInBits / 8)) != 0) {
         xmlSecInvalidSizeNotMultipleOfError("inSize", inSize, blockSizeInBits / 8, NULL);
         goto done;
     }
+
+    if(out != in) {
+        memcpy(out, in, inSize);
+    }
+
     /* Pass Final=FALSE to CryptEncrypt since the input is a whole number of blocks and MSCrypto's own padding must be skipped. */
     if(!CryptEncrypt(cryptKey, 0, FALSE, 0, out, &dwCLen, dwOutSize)) {
         xmlSecMSCryptoError("CryptEncrypt", NULL);
@@ -569,15 +570,16 @@ xmlSecMSCryptoKWDes3BlockDecrypt(xmlSecTransformPtr transform,
         goto done;
     }
 
-    if(out != in) {
-        memcpy(out, in, inSize);
-    }
-
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwCLen, goto done, NULL);
     if((inSize % (blockSizeInBits / 8)) != 0) {
         xmlSecInvalidSizeNotMultipleOfError("inSize", inSize, blockSizeInBits / 8, NULL);
         goto done;
     }
+
+    if(out != in) {
+        memcpy(out, in, inSize);
+    }
+
     /* Pass Final=FALSE to CryptDecrypt since the input is a whole number of blocks and MSCrypto's own padding must be skipped. */
     if(!CryptDecrypt(cryptKey, 0, FALSE, 0, out, &dwCLen)) {
         xmlSecMSCryptoError("CryptDecrypt", NULL);

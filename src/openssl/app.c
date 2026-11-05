@@ -481,7 +481,11 @@ xmlSecOpenSSLAppKeyLoadBIO(
             XMLSEC_OPENSSL_POP_LIB_CTX();
         }
         if(pKey == NULL) {
+#ifndef XMLSEC_OPENSSL_API_300
+            xmlSecOpenSSLError("d2i_PrivateKey_bio and d2i_PUBKEY_bio", NULL);
+#else /* XMLSEC_OPENSSL_API_300 */
             xmlSecOpenSSLError("d2i_PrivateKey_ex_bio and d2i_PUBKEY_bio", NULL);
+#endif /* XMLSEC_OPENSSL_API_300 */
             return(NULL);
         }
         break;
@@ -489,7 +493,11 @@ xmlSecOpenSSLAppKeyLoadBIO(
         /* read private key */
         pKey = PEM_read_bio_PrivateKey_ex(bio, NULL, pwdCb, pwdCbCtx, xmlSecOpenSSLGetLibCtx(), NULL);
         if(pKey == NULL) {
+#ifndef XMLSEC_OPENSSL_API_300
             xmlSecOpenSSLError("PEM_read_bio_PrivateKey", NULL);
+#else /* XMLSEC_OPENSSL_API_300 */
+            xmlSecOpenSSLError("PEM_read_bio_PrivateKey_ex", NULL);
+#endif /* XMLSEC_OPENSSL_API_300 */
             return(NULL);
         }
         break;
@@ -1018,7 +1026,8 @@ xmlSecOpenSSLAppStoreKeyLoad(const char *uri, xmlSecKeyDataType type, const char
     /* what do we get? */
     if(type == xmlSecKeyDataTypePrivate) {
         if(pPrivKey == NULL) {
-            xmlSecOpenSSLError("Private key is not found in the store", NULL);
+            xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
+                "Private key is not found in the store");
             goto done;
         }
         pKey = pPrivKey;
@@ -1031,7 +1040,8 @@ xmlSecOpenSSLAppStoreKeyLoad(const char *uri, xmlSecKeyDataType type, const char
             pKey = pPubKey;
             pPubKey = NULL;
         } else {
-            xmlSecOpenSSLError("Neither private nor public key was found in the store", NULL);
+            xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
+                "Neither private nor public key was found in the store");
             goto done;
         }
     }

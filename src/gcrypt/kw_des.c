@@ -271,7 +271,7 @@ xmlSecGCryptKWDes3Sha1(xmlSecTransformPtr transform,
 
     err = gcry_md_open(&digestCtx, GCRY_MD_SHA1, GCRY_MD_FLAG_SECURE); /* we are paranoid */
     if(err != GPG_ERR_NO_ERROR) {
-        xmlSecGCryptError("gcry_md_open(GCRY_MD_SHA1)", err, NULL);
+        xmlSecGCryptError("gcry_md_open(GCRY_MD_SHA1)", err, xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -279,14 +279,14 @@ xmlSecGCryptKWDes3Sha1(xmlSecTransformPtr transform,
 
     err = gcry_md_final(digestCtx);
     if(err != GPG_ERR_NO_ERROR) {
-        xmlSecGCryptError("gcry_md_final", err, NULL);
+        xmlSecGCryptError("gcry_md_final", err, xmlSecTransformGetName(transform));
         gcry_md_close(digestCtx);
         return(-1);
     }
 
     outBuf = gcry_md_read(digestCtx, GCRY_MD_SHA1);
     if(outBuf == NULL) {
-        xmlSecInternalError("gcry_md_read", NULL);
+        xmlSecInternalError("gcry_md_read", xmlSecTransformGetName(transform));
         gcry_md_close(digestCtx);
         return(-1);
     }

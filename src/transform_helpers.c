@@ -1388,6 +1388,7 @@ xmlSecTransformPbkdf2ParamsInitialize(xmlSecTransformPbkdf2ParamsPtr params) {
         xmlSecTransformPbkdf2ParamsFinalize(params);
         return(-1);
     }
+    xmlSecBufferMakeSecure(&(params->salt));
 
     /* done */
     return(0);

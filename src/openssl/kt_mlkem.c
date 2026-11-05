@@ -222,8 +222,8 @@ xmlSecOpenSSLMLKEMSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq
 
     keyReq->keyId = xmlSecOpenSSLKeyDataMLKEMId;
     if(transform->operation == xmlSecTransformOperationEncrypt) {
-        /* encapsulate: public key required */
-        keyReq->keyType  = xmlSecKeyDataTypePublic;
+        /* encapsulate: at least public key required */
+        keyReq->keyType  = xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic;
     } else {
         /* decapsulate: private key required */
         keyReq->keyType  = xmlSecKeyDataTypePrivate;

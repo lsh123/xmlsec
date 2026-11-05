@@ -1955,7 +1955,38 @@ xmlSecOpenSSLX509NameToString(XMLSEC_OPENSSL400_CONST X509_NAME* name, char* buf
 
     /* truncate the name if needed */
     if(len > bufLen - 1) {
+        long pos;
+        long charLen;
+        unsigned char leadByte;
+
         len = bufLen - 1;
+
+        /*
+         * XN_FLAG_RFC2253 output is UTF-8: back off to a character boundary
+         * so we do not split a multi-byte character when truncating the
+         * diagnostic text. Locate the lead byte of the last character and
+         * drop the character if it does not fit entirely within the
+         * truncated length.
+         */
+        pos = len - 1;
+        while((pos >= 0) && ((((unsigned char)data[pos]) & 0xC0) == 0x80)) {
+            pos--;
+        }
+        if(pos >= 0) {
+            leadByte = (unsigned char)data[pos];
+            if(leadByte >= 0xF0) {
+                charLen = 4;
+            } else if(leadByte >= 0xE0) {
+                charLen = 3;
+            } else if(leadByte >= 0xC0) {
+                charLen = 2;
+            } else {
+                charLen = 1;
+            }
+            if(pos + charLen > len) {
+                len = pos;
+            }
+        }
     }
     XMLSEC_SAFE_CAST_LONG_TO_SIZE(len, lenSize, goto done, NULL);
     memcpy(buf, data, lenSize);

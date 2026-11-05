@@ -1002,6 +1002,10 @@ extern "C" {
         )
 
 
+/**
+ * @brief Returns 1 if the crypto library error log dump on exit is enabled.
+ * @details Returns 1 if the crypto library error log dump on exit is enabled or 0 otherwise (only supported by OpenSSL).
+ */
 XMLSEC_EXPORT int   xmlSecErrorsPrintCryptoLibraryLogOnExitIsEnabled    (void);
 
 

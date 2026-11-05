@@ -144,7 +144,7 @@ xmlSecOpenSSLKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509
         return(NULL);
     }
 
-    /* since not all key stores can return key owned by someone else, we need to duplicate the key */
+    /* since not all key stores can return a key owned by someone else, we need to duplicate the key */
     res = xmlSecKeyDuplicate(key);
     if(res == NULL) {
         xmlSecInternalError("xmlSecKeyDuplicate", xmlSecKeyStoreGetName(store));

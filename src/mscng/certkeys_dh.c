@@ -161,7 +161,7 @@ xmlSecMSCngDerDecodeInteger(const xmlSecByte* p, const xmlSecByte* end, DWORD* p
 }
 
 /* Compare big-endian unsigned integers, ignoring leading zero bytes.
- * Returns -1, 0, or 1 (like memcmp). */
+ * Returns negative, 0, or positive (like memcmp). */
 int
 xmlSecMSCngDhCompareBigNums(const xmlSecByte* left, xmlSecSize leftSize,
     const xmlSecByte* right, xmlSecSize rightSize) {

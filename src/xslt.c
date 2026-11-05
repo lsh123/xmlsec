@@ -85,9 +85,9 @@ static xmlSecTransformKlass xmlSecXsltKlass = {
     xmlSecXsltFinalize,                         /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecXsltReadNode,                         /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecXsltPushBin,                          /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
@@ -177,8 +177,8 @@ xmlSecTransformXsltSetDefaultSecurityPrefs(xsltSecurityPrefsPtr sec) {
  * XSLT declarations within the resource is determined by the XSLT processing
  * model; the ordered application of multiple stylesheet may require multiple
  * Transforms. No special provision is made for the identification of a remote
- * stylesheet at a given URI because it can be communicated via an  xsl:include
- * or  xsl:import within the stylesheet child of the Transform.
+ * stylesheet at a given URI because it can be communicated via an xsl:include
+ * or xsl:import within the stylesheet child of the Transform.
  *
  * This transform requires an octet stream as input. If the actual input is an
  * XPath node-set, then the signature application should attempt to convert it
@@ -261,7 +261,7 @@ xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransfor
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->xslt == NULL, -1);
 
-    /* read content in the buffer */
+    /* read content into the buffer */
     buffer = xmlBufferCreate();
     if(buffer == NULL) {
         xmlSecXmlError("xmlBufferCreate", xmlSecTransformGetName(transform));

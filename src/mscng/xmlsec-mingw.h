@@ -134,7 +134,4 @@
 #define CERT_NCRYPT_KEY_SPEC                0x00000001
 #endif /* CERT_NCRYPT_KEY_SPEC */
 
-
-
-
 #endif /* XMLSEC_MSCNG_XMLSEC_MINGW_H */

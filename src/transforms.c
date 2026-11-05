@@ -1233,6 +1233,13 @@ xmlSecTransformCtxXmlExecute(xmlSecTransformCtxPtr ctx, xmlSecNodeSetPtr nodes) 
     return(0);
 }
 
+/**
+ * @brief Clears references to @p nodes in the transforms chain in @p ctx.
+ * @details Clears input and output node set references pointing to @p nodes in
+ * all transforms of the chain in @p ctx.
+ * @param ctx the pointer to transforms chain processing context.
+ * @param nodes the node set to clear references to.
+ */
 void
 xmlSecTransformCtxClearNodeRefs(xmlSecTransformCtxPtr ctx, xmlSecNodeSetPtr nodes) {
     xmlSecTransformPtr transform;
@@ -1597,14 +1604,14 @@ xmlSecTransformPump(xmlSecTransformPtr left, xmlSecTransformPtr right, xmlSecTra
          * error */
         ret = xmlSecTransformPopXml(left, &nodes, transformCtx);
         if(ret < 0) {
-             xmlSecInternalError("xmlSecTransformPopXml", xmlSecTransformGetName(left));
-             return(-1);
+            xmlSecInternalError("xmlSecTransformPopXml", xmlSecTransformGetName(left));
+            return(-1);
         }
         if(nodes == NULL) {
-             xmlSecInternalError2("xmlSecTransformPopXml", NULL,
-                                 "left transform \"%s\" returned no nodes",
-                                 xmlSecErrorsSafeString(xmlSecTransformGetName(left)));
-             return(-1);
+            xmlSecInternalError2("xmlSecTransformPopXml", NULL,
+                                "left transform \"%s\" returned no nodes",
+                                xmlSecErrorsSafeString(xmlSecTransformGetName(left)));
+            return(-1);
         }
 
         ret = xmlSecTransformPushXml(right, nodes, transformCtx);
@@ -1801,7 +1808,7 @@ xmlSecTransformGetDataType(xmlSecTransformPtr transform, xmlSecTransformMode mod
  * @brief Processes binary data and pushes results to next transform.
  * @details Process binary @p data and pushes results to next transform.
  * @param transform the pointer to transform object.
- * @param data the input binary data,
+ * @param data the input binary data.
  * @param dataSize the input data size.
  * @param final the flag: if set to 1 then it's the last
  *                      data chunk.
@@ -2162,7 +2169,7 @@ xmlSecTransformDefaultGetDataType(xmlSecTransformPtr transform, xmlSecTransformM
  * in a chain must therefore store its results elsewhere (e.g. in a dedicated
  * buffer, as the membuf transform does).
  * @param transform the pointer to transform object.
- * @param data the input binary data,
+ * @param data the input binary data.
  * @param dataSize the input data size.
  * @param final the flag: if set to 1 then it's the last
  *                      data chunk.

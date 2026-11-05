@@ -508,8 +508,8 @@ xmlSecTransformKAMDigestOutputSizeGet(const xmlChar* href) {
     return(0);
 }
 
-static
-xmlSecSize xmlSecTransformKAMGetOutputSize(const xmlChar* href, xmlNodePtr node) {
+static xmlSecSize
+xmlSecTransformKAMGetOutputSize(const xmlChar* href, xmlNodePtr node) {
     xmlNodePtr paramsNode;
     xmlNodePtr digestMethodNode;
     xmlChar* digestHref;
@@ -921,7 +921,7 @@ xmlSecTransformHmacReadOutputBitsSize(xmlNodePtr node, xmlSecSize defaultSize, x
             return(-1);
         }
 
-        /* Ensure that HMAC length is greater than min specified.
+        /* Ensure that HMAC length is greater than or equal to min specified.
            Otherwise, an attacker can set this length to 0 or very
            small value
         */
@@ -1016,7 +1016,7 @@ xmlSecTransformHmacVerify(const xmlSecByte* data, xmlSecSize dataSize,
     xmlSecAssert2(hmacSize > 0, -1);
     xmlSecAssert2(hmacSize <= hmacMaxSizeInBytes, -1);
 
-    if(dataSize != hmacSize){
+    if(dataSize != hmacSize) {
         xmlSecInvalidSizeError("HMAC digest", dataSize, hmacSize, NULL);
         return(0);
     }
@@ -1436,7 +1436,7 @@ xmlSecTransformPbkdf2ParamsReadSalt(xmlSecTransformPbkdf2ParamsPtr params, xmlNo
     xmlSecAssert2(params != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
 
-    /* first and only node is required Salt / Specified (Salt / OtherSource is not supported) */
+    /* the first and only child node must be Salt / Specified (Salt / OtherSource is not supported) */
     cur  = xmlSecGetNextElementNode(node->children);
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodePbkdf2SaltSpecified, xmlSecEnc11Ns))) {
         xmlSecInvalidNodeError(cur, xmlSecNodePbkdf2SaltSpecified, NULL);

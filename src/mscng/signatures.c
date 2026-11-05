@@ -35,7 +35,7 @@
  *           in the RFC 3447 [PKCS1] specification with a l parameter equal to 20
  * DSA-SHA256: The pairs (2048, 256) and (3072, 256) correspond to the algorithm DSAwithSHA256
   *****************************************************************************/
-#define XMLSEC_MSCNG_SIGNATURE_DSA_SHA1_HALF_LEN              20
+#define XMLSEC_MSCNG_SIGNATURE_DSA_SHA1_HALF_LEN              (160 / 8)
 #define XMLSEC_MSCNG_SIGNATURE_DSA_SHA256_HALF_LEN            (256 / 8)
 
 /******************************************************************************
@@ -92,28 +92,28 @@ static int      xmlSecMSCngSignatureGetMlDsaKeyParamSet (xmlSecKeyDataPtr data,
 
 /* Helper macros to define the transform klass */
 
-#define XMLSEC_MSCNG_SIGNATURE_KLASS_EX(name, readNode)                                              \
-static xmlSecTransformKlass xmlSecMSCng ## name ## Klass = {                                         \
-    sizeof(xmlSecTransformKlass),              /* xmlSecSize klassSize */                            \
-    xmlSecMSCngSignatureSize,                  /* xmlSecSize objSize */                              \
-    xmlSecName ## name,                        /* const xmlChar* name; */                            \
-    xmlSecHref ## name,                        /* const xmlChar* href; */                            \
-    xmlSecTransformUsageSignatureMethod,       /* xmlSecTransformUsage usage; */                     \
-    xmlSecMSCngSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */     \
-    xmlSecMSCngSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */         \
-    readNode,                                  /* xmlSecTransformNodeReadMethod readNode; */         \
-    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */       \
-    xmlSecMSCngSignatureSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */       \
-    xmlSecMSCngSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */             \
-    xmlSecMSCngSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */             \
-    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */   \
-    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */           \
-    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */             \
-    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */           \
-    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */             \
-    xmlSecMSCngSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */           \
-    NULL,                                      /* void* reserved0; */                                \
-    NULL,                                      /* void* reserved1; */                                \
+#define XMLSEC_MSCNG_SIGNATURE_KLASS_EX(name, readNode)                                                         \
+static xmlSecTransformKlass xmlSecMSCng ## name ## Klass = {                                                    \
+    sizeof(xmlSecTransformKlass),              /* xmlSecSize klassSize */                                       \
+    xmlSecMSCngSignatureSize,                  /* xmlSecSize objSize */                                         \
+    xmlSecName ## name,                        /* const xmlChar* name; */                                       \
+    xmlSecHref ## name,                        /* const xmlChar* href; */                                       \
+    xmlSecTransformUsageSignatureMethod,       /* xmlSecTransformUsage usage; */                                \
+    xmlSecMSCngSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */                \
+    xmlSecMSCngSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */                    \
+    readNode,                                  /* xmlSecTransformNodeReadMethod readNode; */                    \
+    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */                  \
+    xmlSecMSCngSignatureSetKeyReq,             /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */         \
+    xmlSecMSCngSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */                        \
+    xmlSecMSCngSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */                        \
+    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */              \
+    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */                      \
+    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */                        \
+    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */                      \
+    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */                        \
+    xmlSecMSCngSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */                      \
+    NULL,                                      /* void* reserved0; */                                           \
+    NULL,                                      /* void* reserved1; */                                           \
 };
 
 #define XMLSEC_MSCNG_SIGNATURE_KLASS(name)                                                           \
@@ -854,7 +854,7 @@ xmlSecMSCngSignatureFixBrokenASN1(xmlSecMSCngSignatureCtxPtr ctx,
     /* get half signature size */
     keySize = xmlSecMSCngCertKeyDataGetSizeInBits(ctx->data);
     if (keySize <= 0) {
-        xmlSecInternalError("xmlSecMSCngCertKeyDataGetSize", NULL);
+        xmlSecInternalError("xmlSecMSCngCertKeyDataGetSizeInBits", NULL);
         return(-1);
     }
 
@@ -1535,7 +1535,7 @@ xmlSecMSCngSignatureStartHash(
         xmlSecMSCngNtError("BCryptOpenAlgorithmProvider",
             xmlSecTransformGetName(transform), status);
         /* the out-handle is not guaranteed to be zeroed on failure; reset it so
-         * the cleanup below does not attempt to close an indeterminate handle */
+         * finalize() does not attempt to close an indeterminate handle */
         ctx->hHashAlg = 0;
         return(-1);
     }
@@ -1609,7 +1609,7 @@ xmlSecMSCngSignatureStartHash(
     if (status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptCreateHash", xmlSecTransformGetName(transform), status);
         /* the out-handle is not guaranteed to be zeroed on failure; reset it so
-         * the cleanup below does not attempt to destroy an indeterminate handle */
+         * finalize() does not attempt to destroy an indeterminate handle */
         ctx->hHash = 0;
         return(-1);
     }

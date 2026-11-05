@@ -478,28 +478,28 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 
 
 /* Helper macros to define the digest transform klass */
-#define XMLSEC_OPENSSL_EVP_DIGEST_KLASS_EX(name, readNode)                                              \
-static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                                          \
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
-    xmlSecOpenSSLEvpDigestSize,                 /* xmlSecSize objSize */                                \
-    xmlSecName ## name,                         /* const xmlChar* name; */                              \
-    xmlSecHref ## name,                         /* const xmlChar* href; */                              \
-    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */                       \
-    xmlSecOpenSSLEvpDigestInitialize,           /* xmlSecTransformInitializeMethod initialize; */       \
-    xmlSecOpenSSLEvpDigestFinalize,             /* xmlSecTransformFinalizeMethod finalize; */           \
-    readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */           \
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */         \
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */         \
-    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */               \
-    xmlSecOpenSSLEvpDigestVerify,               /* xmlSecTransformVerifyMethod verify; */               \
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */             \
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
-    xmlSecOpenSSLEvpDigestExecute,              /* xmlSecTransformExecuteMethod execute; */             \
-    NULL,                                       /* void* reserved0; */                                  \
-    NULL,                                       /* void* reserved1; */                                  \
+#define XMLSEC_OPENSSL_EVP_DIGEST_KLASS_EX(name, readNode)                                                         \
+static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                                                     \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                         \
+    xmlSecOpenSSLEvpDigestSize,                 /* xmlSecSize objSize */                                           \
+    xmlSecName ## name,                         /* const xmlChar* name; */                                         \
+    xmlSecHref ## name,                         /* const xmlChar* href; */                                         \
+    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */                                  \
+    xmlSecOpenSSLEvpDigestInitialize,           /* xmlSecTransformInitializeMethod initialize; */                  \
+    xmlSecOpenSSLEvpDigestFinalize,             /* xmlSecTransformFinalizeMethod finalize; */                      \
+    readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */                      \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */                    \
+    NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */           \
+    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */                          \
+    xmlSecOpenSSLEvpDigestVerify,               /* xmlSecTransformVerifyMethod verify; */                          \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */                \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                        \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                          \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                        \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                          \
+    xmlSecOpenSSLEvpDigestExecute,              /* xmlSecTransformExecuteMethod execute; */                        \
+    NULL,                                       /* void* reserved0; */                                             \
+    NULL,                                       /* void* reserved1; */                                             \
 };
 
 #define XMLSEC_OPENSSL_EVP_DIGEST_KLASS(name)                                                           \

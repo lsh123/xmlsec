@@ -701,9 +701,9 @@ static xmlSecTransformKlass xmlSecMSCryptoAes128CbcKlass = {
     xmlSecMSCryptoBlockCipherFinalize,          /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCryptoBlockCipherSetKeyReq,         /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecMSCryptoBlockCipherSetKeyReq,         /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecMSCryptoBlockCipherSetKey,            /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
@@ -737,9 +737,9 @@ static xmlSecTransformKlass xmlSecMSCryptoAes192CbcKlass = {
     xmlSecMSCryptoBlockCipherFinalize,          /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCryptoBlockCipherSetKeyReq,         /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecMSCryptoBlockCipherSetKeyReq,         /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecMSCryptoBlockCipherSetKey,            /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
@@ -773,9 +773,9 @@ static xmlSecTransformKlass xmlSecMSCryptoAes256CbcKlass = {
     xmlSecMSCryptoBlockCipherFinalize,          /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCryptoBlockCipherSetKeyReq,         /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecMSCryptoBlockCipherSetKeyReq,         /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecMSCryptoBlockCipherSetKey,            /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
@@ -813,9 +813,9 @@ static xmlSecTransformKlass xmlSecMSCryptoDes3CbcKlass = {
     xmlSecMSCryptoBlockCipherFinalize,   /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCryptoBlockCipherSetKeyReq,  /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecMSCryptoBlockCipherSetKeyReq,  /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecMSCryptoBlockCipherSetKey,     /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                /* xmlSecTransformValidateMethod validate; */
+    NULL,                                /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,   /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,       /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,        /* xmlSecTransformPopBinMethod popBin; */

@@ -49,28 +49,28 @@ XMLSEC_TRANSFORM_DECLARE(MSCngCbcBlockCipher, xmlSecMSCngCbcBlockCipherCtx)
 #define xmlSecMSCngCbcBlockCipherSize XMLSEC_TRANSFORM_SIZE(MSCngCbcBlockCipher)
 
 
-#define XMLSEC_MSCNG_CBC_CIPHER_KLASS(name)                                                         \
-static xmlSecTransformKlass xmlSecMSCng ## name ## Klass = {                                        \
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                          \
-    xmlSecMSCngCbcBlockCipherSize,              /* xmlSecSize objSize */                            \
-    xmlSecName ## name,                         /* const xmlChar* name; */                          \
-    xmlSecHref ## name,                         /* const xmlChar* href; */                          \
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                   \
-    xmlSecMSCngCbcBlockCipherInitialize,        /* xmlSecTransformInitializeMethod initialize; */   \
-    xmlSecMSCngCbcBlockCipherFinalize,          /* xmlSecTransformFinalizeMethod finalize; */       \
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */       \
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */     \
-    xmlSecMSCngCbcBlockCipherSetKeyReq,         /* xmlSecTransformSetKeyMethod setKeyReq; */        \
-    xmlSecMSCngCbcBlockCipherSetKey,            /* xmlSecTransformSetKeyMethod setKey; */           \
-    NULL,                                       /* xmlSecTransformVerifyMethod verify; */           \
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */ \
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */         \
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */           \
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */         \
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */           \
-    xmlSecMSCngCbcBlockCipherExecute,           /* xmlSecTransformExecuteMethod execute; */         \
-    NULL,                                       /* void* reserved0; */                              \
-    NULL,                                       /* void* reserved1; */                              \
+#define XMLSEC_MSCNG_CBC_CIPHER_KLASS(name)                                                                       \
+static xmlSecTransformKlass xmlSecMSCng ## name ## Klass = {                                                      \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                        \
+    xmlSecMSCngCbcBlockCipherSize,              /* xmlSecSize objSize */                                          \
+    xmlSecName ## name,                         /* const xmlChar* name; */                                        \
+    xmlSecHref ## name,                         /* const xmlChar* href; */                                        \
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                                 \
+    xmlSecMSCngCbcBlockCipherInitialize,        /* xmlSecTransformInitializeMethod initialize; */                 \
+    xmlSecMSCngCbcBlockCipherFinalize,          /* xmlSecTransformFinalizeMethod finalize; */                     \
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */                     \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */                   \
+    xmlSecMSCngCbcBlockCipherSetKeyReq,         /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */          \
+    xmlSecMSCngCbcBlockCipherSetKey,            /* xmlSecTransformSetKeyMethod setKey; */                         \
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */                         \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */               \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                       \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                         \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                       \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                         \
+    xmlSecMSCngCbcBlockCipherExecute,           /* xmlSecTransformExecuteMethod execute; */                       \
+    NULL,                                       /* void* reserved0; */                                            \
+    NULL,                                       /* void* reserved1; */                                            \
 };
 
 

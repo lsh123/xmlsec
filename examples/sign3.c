@@ -13,12 +13,12 @@
  * itself. The key certificate is written in the <dsig:X509Data/> node.
  *
  * This example was developed and tested with the OpenSSL crypto library. The
- * certificates management policies for another crypto library may break it.
+ * certificate management policies for another crypto library may break it.
  *
  * Usage:
  *
  * \code{.sh}
- *      sign3 <xml-doc> <pem-key-file> <pem-cert-file>
+ *      sign3 <xml-file> <key-file> <cert-file>
  * \endcode
  *
  * Example:
@@ -163,7 +163,7 @@ done:
  * is placed in the <dsig:X509Data/> node.
  * @param xml_file the XML file name.
  * @param key_file the PEM private key file name.
- * @param cert_file the x509 certificate PEM file.
+ * @param cert_file the X.509 certificate PEM file.
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -246,7 +246,7 @@ sign_file(const char* xml_file, const char* key_file, const char* cert_file) {
     /* create signature context, we don't need a keys manager in this example */
     dsigCtx = xmlSecDSigCtxCreate(NULL);
     if(dsigCtx == NULL) {
-        fprintf(stderr,"Error: failed to create signature context\n");
+        fprintf(stderr, "Error: failed to create signature context\n");
         goto done;
     }
 
@@ -258,19 +258,19 @@ sign_file(const char* xml_file, const char* key_file, const char* cert_file) {
         NULL,
         NULL);
     if(dsigCtx->signKey == NULL) {
-        fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", key_file);
+        fprintf(stderr, "Error: failed to load private PEM key from \"%s\"\n", key_file);
         goto done;
     }
 
     /* load certificate and add to the key */
     if(xmlSecCryptoAppKeyCertLoad(dsigCtx->signKey, cert_file, xmlSecKeyDataFormatPem) < 0) {
-        fprintf(stderr,"Error: failed to load pem certificate \"%s\"\n", cert_file);
+        fprintf(stderr, "Error: failed to load PEM certificate \"%s\"\n", cert_file);
         goto done;
     }
 
     /* sign the template */
     if(xmlSecDSigCtxSign(dsigCtx, signNode) < 0) {
-        fprintf(stderr,"Error: signature failed\n");
+        fprintf(stderr, "Error: signature failed\n");
         goto done;
     }
 

@@ -447,7 +447,7 @@ static xmlSecTransformKlass xmlSecGCryptHmacSha1Klass = {
     xmlSecGCryptHmacFinalize,                   /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecGCryptHmacNodeRead,                   /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptHmacSetKeyReq,                  /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptHmacSetKeyReq,                  /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptHmacSetKey,                     /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptHmacVerify,                     /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -490,7 +490,7 @@ static xmlSecTransformKlass xmlSecGCryptHmacSha256Klass = {
     xmlSecGCryptHmacFinalize,                   /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecGCryptHmacNodeRead,                   /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptHmacSetKeyReq,                  /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptHmacSetKeyReq,                  /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptHmacSetKey,                     /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptHmacVerify,                     /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -533,7 +533,7 @@ static xmlSecTransformKlass xmlSecGCryptHmacSha384Klass = {
     xmlSecGCryptHmacFinalize,                   /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecGCryptHmacNodeRead,                   /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptHmacSetKeyReq,                  /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptHmacSetKeyReq,                  /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptHmacSetKey,                     /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptHmacVerify,                     /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -576,7 +576,7 @@ static xmlSecTransformKlass xmlSecGCryptHmacSha512Klass = {
     xmlSecGCryptHmacFinalize,                   /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecGCryptHmacNodeRead,                   /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptHmacSetKeyReq,                  /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptHmacSetKeyReq,                  /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptHmacSetKey,                     /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptHmacVerify,                     /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -620,7 +620,7 @@ static xmlSecTransformKlass xmlSecGCryptHmacRipemd160Klass = {
     xmlSecGCryptHmacFinalize,                   /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecGCryptHmacNodeRead,                   /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptHmacSetKeyReq,                  /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptHmacSetKeyReq,                  /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptHmacSetKey,                     /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptHmacVerify,                     /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -663,7 +663,7 @@ static xmlSecTransformKlass xmlSecGCryptHmacMd5Klass = {
     xmlSecGCryptHmacFinalize,                   /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecGCryptHmacNodeRead,                   /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGCryptHmacSetKeyReq,                  /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptHmacSetKeyReq,                  /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecGCryptHmacSetKey,                     /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptHmacVerify,                     /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */

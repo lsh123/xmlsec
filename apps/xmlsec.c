@@ -165,7 +165,7 @@ static xmlSecAppCmdLineParam cryptoParam = {
     NULL,
     "--crypto <name>"
     "\n\tthe name of the crypto engine to use from the following"
-    "\n\tlist: openssl, mscrypto, nss, gnutls, gcrypt (if no crypto engine is"
+    "\n\tlist: openssl, mscrypto, nss, gnutls, mscng, gcrypt (if no crypto engine is"
     "\n\tspecified then the default one is used)",
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagNone,
@@ -271,7 +271,7 @@ static xmlSecAppCmdLineParam genKeyParam = {
     "--gen-key[:<name>] <keyKlass>-<keySize>"
     "\n\tgenerate new <keyKlass> key of <keySize> bits size,"
     "\n\tset the key name to <name> and add the result to keys"
-    "\n\tmanager (for example, \"--gen:MyKeyName rsa-1024\" generates"
+    "\n\tmanager (for example, \"--gen-key:MyKeyName rsa-1024\" generates"
     "\n\ta new 1024 bits RSA key and sets its name to \"MyKeyName\")",
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
@@ -507,7 +507,7 @@ static xmlSecAppCmdLineParam pbkdf2KeyParam = {
     "--pbkdf2key",
     "--pbkdf2-key",
     "--pbkdf2-key[:<name>] <file>"
-    "\n\tload Pbkdf2 key from binary file <file>",
+    "\n\tload PBKDF2 key from binary file <file>",
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
     NULL
@@ -630,8 +630,8 @@ static xmlSecAppCmdLineParam sessionKeyParam = {
     NULL,
     "--session-key <keyKlass>-<keySize>"
     "\n\tgenerate new session <keyKlass> key of <keySize> bits size"
-    "\n\t(for example, \"--session des-192\" generates a new 192 bits"
-    "\n\tDES key for DES3 encryption)",
+    "\n\t(for example, \"--session-key aes-256\" generates a new 256 bits"
+    "\n\tAES key for encryption)",
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagNone,
     NULL
@@ -1324,9 +1324,9 @@ static void                     xmlSecAppPrintEncCtx            (xmlSecEncCtxPtr
 #endif /* XMLSEC_NO_XMLENC */
 
 static void                     xmlSecAppListKeyData            (void);
-static int                      xmlSecAppCheckKeyData       (const char * name);
+static int                      xmlSecAppCheckKeyData           (const char * name);
 static void                     xmlSecAppListTransforms         (void);
-static int                      xmlSecAppCheckTransform     (const char * name);
+static int                      xmlSecAppCheckTransform         (const char * name);
 
 static xmlSecTransformUriType   xmlSecAppGetUriType             (const char* string);
 static xmlOutputBufferPtr       xmlSecAppOpenFile               (const char* filename, const char* encoding);
@@ -1502,10 +1502,10 @@ done:
 #if defined(XMLSEC_WINDOWS)
     if(utf8_argv != NULL) {
         for(ii = 0; ii < argc; ++ii) {
-           if(utf8_argv[ii] != NULL) {
-               xmlFree(BAD_CAST utf8_argv[ii]);
-               utf8_argv[ii] = NULL;
-           }
+            if(utf8_argv[ii] != NULL) {
+                xmlFree(BAD_CAST utf8_argv[ii]);
+                utf8_argv[ii] = NULL;
+            }
         }
         xmlFree(BAD_CAST utf8_argv);
         utf8_argv = NULL;
@@ -1610,14 +1610,14 @@ xmlSecAppExecute(xmlSecAppCommand command, const char** utf8_argv, int argc) {
 
     /* enable verbose mode? */
     if(xmlSecAppCmdLineParamIsSet(&verboseParam)) {
-       xmlSecErrorsDefaultCallbackEnableOutput(1);
+        xmlSecErrorsDefaultCallbackEnableOutput(1);
     } else {
-       xmlSecErrorsDefaultCallbackEnableOutput(0);
+        xmlSecErrorsDefaultCallbackEnableOutput(0);
     }
 
     /* enable detailed crypto library errors on exit */
     if(xmlSecAppCmdLineParamIsSet(&printCryptoErrorsParam)) {
-       xmlSecErrorsPrintCryptoLibraryLogOnExitSet(1);
+        xmlSecErrorsPrintCryptoLibraryLogOnExitSet(1);
     }
 
 
@@ -1764,7 +1764,7 @@ xmlSecAppExecute(xmlSecAppCommand command, const char** utf8_argv, int argc) {
 
         g_repeats = xmlSecAppCmdLineParamGetInt(&repeatParam, 1);
         msecs = (1000 * (long double)g_totalTime) / (long double)CLOCKS_PER_SEC;
-        fprintf(stderr, "Executed %d tests in %.2f msec\n", g_repeats, (double)msecs);
+        fprintf(stderr, "Executed %d operations in %.2f msec\n", g_repeats, (double)msecs);
     }
 
     /* success! */
@@ -1911,7 +1911,7 @@ done:
         for(i = good = 0; i < size; ++i) {
             dsigRefCtx = (xmlSecDSigReferenceCtxPtr)xmlSecPtrListGetItem(&(dsigCtx.signedInfoReferences), i);
             if(dsigRefCtx == NULL) {
-                fprintf(stderr,"Error: reference ctx is null\n");
+                fprintf(stderr, "Error: reference ctx is null\n");
                 goto done2;
             }
             if(dsigRefCtx->status == xmlSecDSigStatusSucceeded) {
@@ -1925,7 +1925,7 @@ done:
         for(i = good = 0; i < size; ++i) {
             dsigRefCtx = (xmlSecDSigReferenceCtxPtr)xmlSecPtrListGetItem(&(dsigCtx.manifestReferences), i);
             if(dsigRefCtx == NULL) {
-                fprintf(stderr,"Error: reference ctx is null\n");
+                fprintf(stderr, "Error: reference ctx is null\n");
                 goto done2;
             }
             if(dsigRefCtx->status == xmlSecDSigStatusSucceeded) {
@@ -2437,13 +2437,13 @@ xmlSecAppLoadKeys(void) {
 
     /* do we need to verify public/private keys? */
     if(xmlSecAppCmdLineParamIsSet(&verifyKeysParam)) {
-       verifyKeys = 1;
+        verifyKeys = 1;
     }
 
     /* do we need to verify CRLs? */
     int verifyCrls = 0;
     if(xmlSecAppCmdLineParamIsSet(&verifyCrlsParam)) {
-       verifyCrls = 1;
+        verifyCrls = 1;
     }
 
     /* generate new keys */
@@ -3014,7 +3014,7 @@ xmlSecAppLoadKeys(void) {
 #endif /* XMLSEC_NO_HMAC */
 
 #ifndef XMLSEC_NO_PBKDF2
-    /* read all Pbkdf2 keys */
+    /* read all PBKDF2 keys */
     for(value = pbkdf2KeyParam.value; value != NULL; value = value->next) {
         if(value->strValue == NULL) {
             fprintf(stderr, "Error: invalid value for option \"%s\".\n",
@@ -3023,7 +3023,7 @@ xmlSecAppLoadKeys(void) {
             return(-1);
         } else if(xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(g_keysManager,
                     (const char*)xmlSecNamePbkdf2, value->strValue, value->paramNameValue) < 0) {
-            fprintf(stderr, "Error: failed to load Pbkdf2 key from \"%s\".\n",
+            fprintf(stderr, "Error: failed to load PBKDF2 key from \"%s\".\n",
                     value->strValue);
             xmlSecKeyInfoCtxDestroy(keyInfoCtx);
             return(-1);

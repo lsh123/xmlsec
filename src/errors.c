@@ -68,7 +68,7 @@ static const xmlSecErrorDescription xmlSecErrorsTable[] = {
   { XMLSEC_ERRORS_R_INVALID_ALGORITHM,          "invalid or unsupported algorithm" },
   { XMLSEC_ERRORS_R_INVALID_KEY_DATA,           "invalid key data" },
   { XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND,         "key data is not found" },
-   { XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,     "key data already exists" },
+  { XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,     "key data already exists" },
   { XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE,      "invalid key data size" },
   { XMLSEC_ERRORS_R_KEY_NOT_FOUND,              "key is not found" },
   { XMLSEC_ERRORS_R_KEYDATA_DISABLED,           "key data is disabled" },
@@ -153,7 +153,10 @@ xmlSecErrorsClearCallback(void) {
 /**
  * @brief Sets the system errors callback function.
  * @details Sets the system errors callback function to @p callback that will be
- * called every time an error occurs.
+ * called every time an error occurs, unless a custom errors callback is set
+ * using #xmlSecErrorsSetCallback (which takes precedence).
+ *
+ * Note that this function is not thread-safe (see the module notes).
  * @param callback the new system errors callback function.
  */
 void
@@ -220,7 +223,7 @@ xmlSecErrorsDefaultCallbackEnableOutput(int enabled) {
  */
 int
 xmlSecErrorsGetCode(xmlSecSize pos) {
-    /* could not use asserts here! */
+    /* cannot use asserts here! */
     if(pos < sizeof(xmlSecErrorsTable) / sizeof(xmlSecErrorsTable[0])) {
         return(xmlSecErrorsTable[pos].errorCode);
     }
@@ -235,7 +238,7 @@ xmlSecErrorsGetCode(xmlSecSize pos) {
  */
 const char*
 xmlSecErrorsGetMsg(xmlSecSize pos) {
-    /* could not use asserts here! */
+    /* cannot use asserts here! */
     if(pos < sizeof(xmlSecErrorsTable) / sizeof(xmlSecErrorsTable[0])) {
         return(xmlSecErrorsTable[pos].errorMsg);
     }
@@ -292,7 +295,7 @@ xmlSecError(const char* file, int line, const char* func,
 /**
  * @brief Enables or disables the crypto library error log dump on exit.
  * @details Enables or disables the crypto library error log dump on exit (only supported by OpenSSL).
- * @param enabled the flag
+ * @param enabled the flag.
  */
 void
 xmlSecErrorsPrintCryptoLibraryLogOnExitSet(int enabled) {

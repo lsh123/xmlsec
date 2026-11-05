@@ -21,7 +21,6 @@
 
 #include <xmlsec/mscng/crypto.h>
 
-#include "../cast_helpers.h"
 #include "private.h"
 
 

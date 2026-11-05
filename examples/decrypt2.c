@@ -8,12 +8,12 @@
 /**
  * @brief XML Security Library example: Decrypting an encrypted file using a keys manager.
  * @details Decrypts encrypted XML file using a keys manager and a list of
- * AES keys from a binary file.
+ * AES keys from binary files.
  *
  * Usage:
  *
  * \code{.sh}
- *      ./decrypt2 <xml-enc> <aes-key-file1> [<aes-key-file2> [...]]
+ *      ./decrypt2 <enc-file> <key-file1> [<key-file2> [...]]
  * \endcode
  *
  * Example:

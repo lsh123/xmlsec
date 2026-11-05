@@ -38,7 +38,7 @@
             errorAction;                                                       \
         }                                                                      \
         (dstVal) = (dstType)(srcVal);                                          \
-    } while(0)                                                                 \
+    } while(0)
 
 /* we assume that dstType_min <= srcType_min and srcType_max >= dstType_max */
 #define XMLSEC_SAFE_CAST_MAX_CHECK(srcType, srcVal, srcFmt, dstType, dstVal, dstFmt, dstMin, dstMax, errorAction, errorObject) \
@@ -49,7 +49,7 @@
             errorAction;                                                       \
         }                                                                      \
         (dstVal) = (dstType)(srcVal);                                          \
-    } while(0)                                                                 \
+    } while(0)
 
 
 /* we assume that srcType_min <= dstType_min and srcType_max <= dstType_max */
@@ -61,7 +61,7 @@
             errorAction;                                                       \
         }                                                                      \
         (dstVal) = (dstType)(srcVal);                                          \
-    } while(0)                                                                 \
+    } while(0)
 
 
 /******************************************************************************
@@ -174,7 +174,7 @@
             errorAction;                                                       \
         }                                                                      \
         (dstVal) = (int)(srcVal);                                              \
-    } while(0)                                                                 \
+    } while(0)
 
 /* Safe cast with limits check: ptrdiff_t -> xmlSecSize (xmlSecSize is non-negative, so the min bound is 0).
    Only the lower bound is checked: on all supported platforms ptrdiff_t and size_t (xmlSecSize) have the

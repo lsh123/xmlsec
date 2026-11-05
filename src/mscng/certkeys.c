@@ -2472,7 +2472,7 @@ done:
 
 
 /**
- * @brief Loads a public key of any supported type (RSA, DSA, EC, DH, ML-DSA, ML-KEM) from a raw SubjectPublicKeyInfo DER blob.
+ * @brief Loads a public key of any supported type (RSA, DSA, EC, DH, X25519, ML-DSA, ML-KEM) from a raw SubjectPublicKeyInfo DER blob.
  * @param derData DER-encoded SubjectPublicKeyInfo.
  * @param derDataSize length of @p derData.
  *

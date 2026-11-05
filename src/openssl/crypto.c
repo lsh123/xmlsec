@@ -58,7 +58,7 @@ static ERR_STRING_DATA xmlSecOpenSSLStrReasons[XMLSEC_OPENSSL_ERRORS_MAX_NUMBER 
 /**
  * @brief Gets the xmlsec-openssl functions table.
  * @details Gets the pointer to xmlsec-openssl functions table.
- * @return the xmlsec-openssl functions table or NULL if an error occurs.
+ * @return the xmlsec-openssl functions table.
  */
 xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoGetFunctions_openssl(void) {
@@ -567,8 +567,8 @@ xmlSecOpenSSLShutdown(void) {
 }
 
 /**
- * @brief Adds OpenSSL specific key data stores.
- * @details Adds OpenSSL specific key data stores in keys manager.
+ * @brief Adds the OpenSSL specific key data store.
+ * @details Adds the OpenSSL specific key data store in keys manager.
  * @param mngr the pointer to keys manager.
  * @return 0 on success or a negative value otherwise.
  */
@@ -609,6 +609,13 @@ xmlSecOpenSSLKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 
 #define XMLSEC_OPENSSL_RAND_BYTES_STRENGTH     0
 
+/**
+ * @brief Generates random bytes into @p buffer.
+ * @details Generates @p size random bytes and stores them in @p buffer.
+ * @param buffer the destination buffer.
+ * @param size the number of bytes to generate.
+ * @return 0 on success or a negative value otherwise.
+ */
 int
 xmlSecOpenSSLGenerateRandomBytes(xmlSecByte* buffer, xmlSecSize size) {
     int ret;
@@ -629,6 +636,13 @@ xmlSecOpenSSLGenerateRandomBytes(xmlSecByte* buffer, xmlSecSize size) {
 
 #else /* XMLSEC_OPENSSL_API_300 */
 
+/**
+ * @brief Generates random bytes into @p buffer.
+ * @details Generates @p size random bytes and stores them in @p buffer.
+ * @param buffer the destination buffer.
+ * @param size the number of bytes to generate.
+ * @return 0 on success or a negative value otherwise.
+ */
 int
 xmlSecOpenSSLGenerateRandomBytes(xmlSecByte* buffer, xmlSecSize size) {
     xmlSecOpenSSLSizeT num;
@@ -688,7 +702,7 @@ xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
  * @param file the error location file name (__FILE__ macro).
  * @param line the error location line number (__LINE__ macro).
  * @param func the error location function name (__FUNCTION__ macro).
- * @param errorObject the specific error object
+ * @param errorObject the specific error object.
  * @param errorSubject the specific error subject.
  * @param reason the error code.
  * @param msg the additional error message.

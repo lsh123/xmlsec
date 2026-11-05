@@ -10,12 +10,12 @@
  * @details Verifies a file signed with an X509 certificate.
  *
  * This example was developed and tested with the OpenSSL crypto library. The
- * certificates management policies for another crypto library may break it.
+ * certificate management policies for another crypto library may break it.
  *
  * Usage:
  *
  * \code{.sh}
- *      verify3 <signed-file> <trusted-cert-pem-file1> [<trusted-cert-pem-file2> [...]]
+ *      verify3 <xml-file> <cert-file1> [<cert-file2> [...]]
  * \endcode
  *
  * Example:
@@ -196,7 +196,7 @@ load_trusted_certs(char** files, int files_size) {
 
         /* load trusted cert */
         if(xmlSecCryptoAppKeysMngrCertLoad(mngr, files[ii], xmlSecKeyDataFormatPem, xmlSecKeyDataTypeTrusted) < 0) {
-            fprintf(stderr, "Error: failed to load pem certificate from \"%s\"\n", files[ii]);
+            fprintf(stderr, "Error: failed to load PEM certificate from \"%s\"\n", files[ii]);
             xmlSecKeysMngrDestroy(mngr);
             return(NULL);
         }

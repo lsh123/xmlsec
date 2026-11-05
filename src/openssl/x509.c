@@ -283,7 +283,7 @@ xmlSecOpenSSLKeyDataX509AdoptCert(xmlSecKeyDataPtr data, X509* cert) {
     xmlSecAssert2(ctx != NULL, -1);
 
     /* pkcs12 files sometimes have key cert twice: as the key cert and as the cert in the chain,
-     * if this ever change -- fix xmlSecOpenSSLCreateKey that relies on this check */
+     * if this ever changes -- fix xmlSecOpenSSLCreateKey that relies on this check */
     if((ctx->keyCert != NULL) && ((ctx->keyCert == cert) || (X509_cmp(ctx->keyCert, cert) == 0))) {
         /* ownership contract: cert must be a caller-owned object. When it is
          * pointer-identical to ctx->keyCert, the caller must have X509_up_ref()'d
@@ -450,7 +450,7 @@ xmlSecOpenSSLKeyDataX509GetCerts(xmlSecKeyDataPtr data) {
 }
 
 STACK_OF(X509_CRL)*
-xmlSecOpenSSLKeyDataX509GetCrls (xmlSecKeyDataPtr data) {
+xmlSecOpenSSLKeyDataX509GetCrls(xmlSecKeyDataPtr data) {
     xmlSecOpenSSLX509DataCtxPtr ctx;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), NULL);
@@ -892,7 +892,7 @@ xmlSecOpenSSLX509CertDerWrite(X509* cert, xmlSecBufferPtr buf) {
     }
 
     len = BIO_get_mem_data(mem, (char**)&data);
-    if((len <= 0) || (data == NULL)){
+    if((len <= 0) || (data == NULL)) {
         xmlSecOpenSSLError("BIO_get_mem_data", NULL);
         goto done;
     }
@@ -944,7 +944,7 @@ xmlSecOpenSSLX509CrlDerWrite(X509_CRL* crl, xmlSecBufferPtr buf) {
     }
 
     len = BIO_get_mem_data(mem, (char**)&data);
-    if((len <= 0) || (data == NULL)){
+    if((len <= 0) || (data == NULL)) {
         xmlSecOpenSSLError("BIO_get_mem_data", NULL);
         goto done;
     }
@@ -1141,7 +1141,7 @@ xmlSecOpenSSLX509NameWrite(XMLSEC_OPENSSL400_CONST X509_NAME* nm) {
         goto done;
     }
 
-    if (X509_NAME_print_ex(mem, nm, 0, XN_FLAG_RFC2253) <=0) {
+    if(X509_NAME_print_ex(mem, nm, 0, XN_FLAG_RFC2253) <= 0) {
         xmlSecOpenSSLError("X509_NAME_print_ex", NULL);
         goto done;
     }
@@ -1346,7 +1346,7 @@ extern time_t timegm (struct tm *tm);
 #elif !defined(XMLSEC_WINDOWS)
 
 /* Absolutely not the best way but it's the only ANSI compatible way I know.
- * If you system has a native struct tm --> GMT time_t conversion function
+ * If your system has a native struct tm --> GMT time_t conversion function
  * (like timegm) use it instead.
  */
 static time_t
@@ -1977,7 +1977,7 @@ xmlSecOpenSSLX509CertDebugDump(X509* cert, FILE* output) {
         fprintf(output, "==== Issuer Name: unknown\n");
     }
     fprintf(output, "==== Issuer Serial: ");
-    bn = ASN1_INTEGER_to_BN(X509_get_serialNumber(cert),NULL);
+    bn = ASN1_INTEGER_to_BN(X509_get_serialNumber(cert), NULL);
     if(bn != NULL) {
         BN_print_fp(output, bn);
         BN_clear_free(bn);
@@ -2013,7 +2013,7 @@ xmlSecOpenSSLX509CertDebugXmlDump(X509* cert, FILE* output) {
     fprintf(output, "</IssuerName>\n");
 
     fprintf(output, "<SerialNumber>");
-    bn = ASN1_INTEGER_to_BN(X509_get_serialNumber(cert),NULL);
+    bn = ASN1_INTEGER_to_BN(X509_get_serialNumber(cert), NULL);
     if(bn != NULL) {
         BN_print_fp(output, bn);
         BN_clear_free(bn);

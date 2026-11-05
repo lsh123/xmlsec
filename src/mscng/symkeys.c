@@ -24,6 +24,11 @@
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
 
+/******************************************************************************
+ *
+ * Symmetric (binary) keys - just a wrapper for xmlSecKeyDataBinary
+ *
+  *****************************************************************************/
 #define xmlSecMSCngSymKeyDataCheckId(data) \
     (xmlSecKeyDataIsValid((data)) && \
      xmlSecMSCngSymKeyDataKlassCheck((data)->id))
@@ -201,7 +206,7 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyData ## klassName ## Klass = {          
     dataNodeNs,                                 /* const xmlChar* dataNodeNs; */                     \
                                                                                                      \
     /* constructors/destructor */                                                                    \
-    xmlSecMSCngSymKeyDataInitialize,            /* xmlSecKeyDataInitMethod initialize; */      \
+    xmlSecMSCngSymKeyDataInitialize,            /* xmlSecKeyDataInitMethod initialize; */            \
     xmlSecMSCngSymKeyDataDuplicate,             /* xmlSecKeyDataDuplicateMethod duplicate; */        \
     xmlSecMSCngSymKeyDataFinalize,              /* xmlSecKeyDataFinalizeMethod finalize; */          \
     xmlSecMSCngSymKeyDataGenerate,              /* xmlSecKeyDataGenerateMethod generate; */          \
@@ -237,6 +242,7 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyData ## klassName ## Klass = {          
         NULL, NULL, NULL, NULL)
 
 #ifndef XMLSEC_NO_AES
+
 /******************************************************************************
  *
  * <xmlsec:AESKeyValue> processing
@@ -260,6 +266,7 @@ xmlSecMSCngKeyDataAesGetKlass(void) {
 
 
 #ifndef XMLSEC_NO_CHACHA20
+
 /******************************************************************************
  *
  * <xmlsec:ChaCha20KeyValue> processing
@@ -292,8 +299,8 @@ xmlSecMSCngKeyDataChaCha20GetKlass(void) {
 XMLSEC_MSCNG_SYMKEY(ConcatKdf, xmlSecNameConcatKdf, xmlSecHrefConcatKdf)
 
 /**
- * @brief The ConcatKDF key data klass.
- * @return ConcatKDF key data klass.
+ * @brief The ConcatKdf key data klass.
+ * @return ConcatKdf key data klass.
  */
 xmlSecKeyDataId
 xmlSecMSCngKeyDataConcatKdfGetKlass(void) {

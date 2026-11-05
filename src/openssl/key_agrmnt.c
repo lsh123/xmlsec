@@ -241,7 +241,6 @@ xmlSecOpenSSLKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecT
     xmlSecAssert2(ctx != NULL, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
-        /* we should be already initialized when we set key */
         transform->status = xmlSecTransformStatusWorking;
     }
 
@@ -250,6 +249,8 @@ xmlSecOpenSSLKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecT
     } else if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
         xmlSecBuffer secret;
 
+        /* 128 bytes is an initial size hint only; DH secrets can exceed
+         * it and the buffer grows automatically */
         ret = xmlSecBufferInitialize(&secret, 128);
         if(ret < 0) {
             xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
@@ -323,7 +324,7 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
 
     /* get key values */
     if(operation == xmlSecTransformOperationEncrypt) {
-        /* encrypting on originator side who needs priv key */
+        /* encrypting on originator side which needs private key */
         myKeyValue = xmlSecKeyGetValue(kamData->keyOriginator);
         if(myKeyValue == NULL) {
             xmlSecInternalError("xmlSecKeyGetValue(keyOriginator)", NULL);
@@ -335,7 +336,7 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
             goto done;
         }
     } else {
-        /* decrypting on recipient side who needs priv key */
+        /* decrypting on recipient side which needs private key */
         myKeyValue = xmlSecKeyGetValue(kamData->keyRecipient);
         if(myKeyValue == NULL) {
             xmlSecInternalError("xmlSecKeyGetValue(keyRecipient)", NULL);
@@ -399,7 +400,9 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
         goto done;
     }
 
-    /* Validate secret size matches expected value (if specified) */
+    /* Validate secret size matches expected value (if specified); this is
+     * defense-in-depth since OpenSSL always reports the fixed sizes
+     * (32/56 bytes) for X25519/X448 keys. */
     if((ctx->expected_secret_len != 0) && (secretSize != ctx->expected_secret_len)) {
         char expectedLenStr[32];
 
@@ -431,7 +434,7 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
         goto done;
     }
 
-    /* set the size again just in case */
+    /* set the buffer size to the actual derived secret size */
     ret = xmlSecBufferSetSize(secret, secretSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, secretSize);
@@ -450,28 +453,28 @@ done:
 
 /* Helper macros to define the key agreement transform klass */
 
-#define XMLSEC_OPENSSL_KEY_AGREEMENT_KLASS_EX(name, transformName, transformHref)                       \
-static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                                          \
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
-    xmlSecOpenSSLKeyAgreementSize,              /* xmlSecSize objSize */                                \
-    transformName,                              /* const xmlChar* name; */                              \
-    transformHref,                              /* const xmlChar* href; */                              \
-    xmlSecTransformUsageAgreementMethod,        /* xmlSecTransformUsage usage; */                       \
-    xmlSecOpenSSLKeyAgreementInitialize,        /* xmlSecTransformInitializeMethod initialize; */       \
-    xmlSecOpenSSLKeyAgreementFinalize,          /* xmlSecTransformFinalizeMethod finalize; */           \
-    xmlSecOpenSSLKeyAgreementNodeRead,          /* xmlSecTransformNodeReadMethod readNode; */           \
-    xmlSecOpenSSLKeyAgreementNodeWrite,         /* xmlSecTransformNodeWriteMethod writeNode; */         \
-    xmlSecOpenSSLKeyAgreementSetKeyReq,         /* xmlSecTransformSetKeyReqMethod setKeyReq; */         \
-    xmlSecOpenSSLKeyAgreementSetKey,            /* xmlSecTransformSetKeyMethod setKey; */               \
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */           \
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */             \
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
-    xmlSecOpenSSLKeyAgreementExecute,           /* xmlSecTransformExecuteMethod execute; */             \
-    NULL,                                       /* void* reserved0; */                                  \
-    NULL,                                       /* void* reserved1; */                                  \
+#define XMLSEC_OPENSSL_KEY_AGREEMENT_KLASS_EX(name, transformName, transformHref)                                    \
+static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                                                       \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                           \
+    xmlSecOpenSSLKeyAgreementSize,              /* xmlSecSize objSize */                                             \
+    transformName,                              /* const xmlChar* name; */                                           \
+    transformHref,                              /* const xmlChar* href; */                                           \
+    xmlSecTransformUsageAgreementMethod,        /* xmlSecTransformUsage usage; */                                    \
+    xmlSecOpenSSLKeyAgreementInitialize,        /* xmlSecTransformInitializeMethod initialize; */                    \
+    xmlSecOpenSSLKeyAgreementFinalize,          /* xmlSecTransformFinalizeMethod finalize; */                        \
+    xmlSecOpenSSLKeyAgreementNodeRead,          /* xmlSecTransformNodeReadMethod readNode; */                        \
+    xmlSecOpenSSLKeyAgreementNodeWrite,         /* xmlSecTransformNodeWriteMethod writeNode; */                      \
+    xmlSecOpenSSLKeyAgreementSetKeyReq,         /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */             \
+    xmlSecOpenSSLKeyAgreementSetKey,            /* xmlSecTransformSetKeyMethod setKey; */                            \
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */                            \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */                  \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                          \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                            \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                          \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                            \
+    xmlSecOpenSSLKeyAgreementExecute,           /* xmlSecTransformExecuteMethod execute; */                          \
+    NULL,                                       /* void* reserved0; */                                               \
+    NULL,                                       /* void* reserved1; */                                               \
 };
 
 #define XMLSEC_OPENSSL_KEY_AGREEMENT_KLASS(name)                                                        \

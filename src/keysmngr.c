@@ -22,7 +22,6 @@
 #include <xmlsec/xmltree.h>
 #include <xmlsec/list.h>
 #include <xmlsec/keys.h>
-#include <xmlsec/transforms.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/parser.h>
@@ -143,6 +142,8 @@ xmlSecKeysMngrFindKeyFromX509Data(xmlSecKeysMngrPtr mngr, xmlSecKeyX509DataValue
 
 /**
  * @brief Adopts keys store in the keys manager @p mngr.
+ * @details Adopts keys store @p store in the keys manager @p mngr. If the keys
+ * manager already has a keys store, the previously adopted store is destroyed.
  * @param mngr the pointer to keys manager.
  * @param store the pointer to keys store.
  *
@@ -181,6 +182,8 @@ xmlSecKeysMngrGetKeysStore(xmlSecKeysMngrPtr mngr) {
 
 /**
  * @brief Adopts data store in the keys manager.
+ * @details Adopts data store @p store in the keys manager. If a data store of
+ * the same klass is already adopted, the previously adopted store is destroyed.
  * @param mngr the pointer to keys manager.
  * @param store the pointer to data store.
  *
@@ -252,7 +255,7 @@ xmlSecKeysMngrGetDataStore(xmlSecKeysMngrPtr mngr, xmlSecKeyDataStoreId id) {
  * @return the pointer to newly allocated keys store or NULL if an error occurs.
  */
 xmlSecKeyStorePtr
-xmlSecKeyStoreCreate(xmlSecKeyStoreId id)  {
+xmlSecKeyStoreCreate(xmlSecKeyStoreId id) {
     xmlSecKeyStorePtr store;
     int ret;
 
@@ -723,7 +726,7 @@ xmlSecSimpleKeysStoreGetKeys(xmlSecKeyStorePtr store) {
     list = xmlSecSimpleKeysStoreGetCtx(store);
     xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecKeyPtrListId), NULL);
 
-    return list;
+    return(list);
 }
 
 static int

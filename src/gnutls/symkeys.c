@@ -493,9 +493,9 @@ xmlSecGnuTLSKeyDataPbkdf2Set(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSe
 XMLSEC_GNUTLS_SYMKEY_KLASS_EX(ConcatKdf, xmlSecNameConcatKdf, xmlSecHrefConcatKdf, xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml, NULL, NULL, NULL, NULL)
 
 /**
- * @brief The ConcatKDF key data klass.
+ * @brief The ConcatKdf key data klass.
  *
- * @return ConcatKDF key data klass.
+ * @return ConcatKdf key data klass.
  */
 xmlSecKeyDataId
 xmlSecGnuTLSKeyDataConcatKdfGetKlass(void) {
@@ -503,8 +503,8 @@ xmlSecGnuTLSKeyDataConcatKdfGetKlass(void) {
 }
 
 /**
- * @brief Sets the value of ConcatKDF key data.
- * @param data the pointer to ConcatKDF key data.
+ * @brief Sets the value of ConcatKdf key data.
+ * @param data the pointer to ConcatKdf key data.
  * @param buf the pointer to key value.
  * @param bufSize the key value size (in bytes).
  * @return 0 on success or a negative value if an error occurs.

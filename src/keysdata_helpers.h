@@ -85,13 +85,17 @@ XMLSEC_EXPORT void              xmlSecKeyDataBinaryValueDebugXmlDump    (xmlSecK
 
 
 #if !defined(XMLSEC_NO_EC)
-
+/******************************************************************************
+ *
+ * Helper functions to read/write EC keys
+ *
+ *****************************************************************************/
 /**
  * @brief The EC key value.
  */
 typedef struct _xmlSecKeyValueEc {
     xmlChar* curve;  /**< the curve name. */
-    xmlSecBuffer pubkey;  /**< the full public key (compressed or uncompressed). */
+    xmlSecBuffer pubkey;  /**< the full public key (uncompressed point, prefixed with 0x04). */
     xmlSecBuffer pub_x;  /**< the public key X coordinate. */
     xmlSecBuffer pub_y;  /**< the public key Y coordinate. */
 } xmlSecKeyValueEc, *xmlSecKeyValueEcPtr;
@@ -220,7 +224,7 @@ typedef xmlSecKeyDataPtr       (*xmlSecKeyDataDhRead)                   (xmlSecK
  * @param id the key data ID.
  * @param data the pointer to input xmlSecKeyData.
  * @param dhValue the pointer to the xmlSecKeyValueDh value struct to be filled by the callback.
- * @param writePrivateKey not used (the DH key value has no private components).
+ * @param writePrivateKey the flag, not used (the DH key value has no private components).
  * @return 0 on success or a negative value if an error occurs.
  */
 typedef int                    (*xmlSecKeyDataDhWrite)                  (xmlSecKeyDataId id,
@@ -300,10 +304,12 @@ XMLSEC_EXPORT int               xmlSecKeyDataDsaXmlWrite                (xmlSecK
  * @brief Key agreement params cached in a key object.
  *
  * After a successful key-agreement Execute, the originator and recipient keys
- * are stored here and attached to the derived-key object.  On the subsequent
- * write path the cached keys are retrieved from the key object and placed into
- * @c transformCtx->extraKeyData (KAM key data) so that the backend NodeRead can skip XML parsing
- * and repeated key-store lookups.
+ * are stored here and a duplicate of this key data is attached to the
+ * derived-key object. On the subsequent write path the cached key data is
+ * retrieved from the key object and pre-populates the enc context's transform
+ * context (transformCtx->extraKeyData), so that xmlSecTransformKAMWrite can
+ * serialize the cached keys without re-parsing the AgreementMethod node or
+ * doing repeated key-store lookups.
  */
 typedef struct _xmlSecKeyDataKAM {
     xmlSecKeyData   keyData;          /**< base key data (MUST be first) */

@@ -14,7 +14,7 @@
  * Usage:
  *
  * \code{.sh}
- *      ./decrypt3 <xml-enc>
+ *      ./decrypt3 <enc-file>
  * \endcode
  *
  * Example:
@@ -22,6 +22,7 @@
  * \code{.sh}
  *      ./decrypt3 encrypt1-res.xml
  *      ./decrypt3 encrypt2-res.xml
+ *      ./decrypt3 encrypt3-res.xml
  * \endcode
  */
 #include <stdlib.h>
@@ -120,7 +121,7 @@ main(int argc, char **argv) {
     }
     xmlsec_initialized = 1;
 
-    /* create keys manager and load keys */
+    /* create keys manager */
     mngr = create_files_keys_mngr();
     if(mngr == NULL) {
         goto done;
@@ -196,13 +197,13 @@ decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file) {
     /* create encryption context */
     encCtx = xmlSecEncCtxCreate(mngr);
     if(encCtx == NULL) {
-        fprintf(stderr,"Error: failed to create encryption context\n");
+        fprintf(stderr, "Error: failed to create encryption context\n");
         goto done;
     }
 
     /* decrypt the data */
     if((xmlSecEncCtxDecrypt(encCtx, node) < 0) || (encCtx->result == NULL)) {
-        fprintf(stderr,"Error: decryption failed\n");
+        fprintf(stderr, "Error: decryption failed\n");
         goto done;
     }
 
@@ -358,24 +359,24 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
     }
 
     if((keyInfoCtx->keyReq.keyId == xmlSecKeyDataDsaId) || (keyInfoCtx->keyReq.keyId == xmlSecKeyDataRsaId)) {
-        /* load key from a pem file, if key is not found then it's an error */
+        /* load key from a PEM file, if key is not found then it's an error */
         key = xmlSecCryptoAppKeyLoadEx((const char*)name, xmlSecKeyDataTypePrivate, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
         if(key == NULL) {
-            fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", name);
+            fprintf(stderr, "Error: failed to load private PEM key from \"%s\"\n", name);
             return(NULL);
         }
     } else {
         /* otherwise it's a binary key, if key is not found then it's an error */
         key = xmlSecKeyReadBinaryFile(keyInfoCtx->keyReq.keyId, (const char*)name);
         if(key == NULL) {
-            fprintf(stderr,"Error: failed to load key from binary file \"%s\"\n", name);
+            fprintf(stderr, "Error: failed to load key from binary file \"%s\"\n", name);
             return(NULL);
         }
     }
 
     /* set key name */
     if(xmlSecKeySetName(key, name) < 0) {
-        fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", (const char*)name);
+        fprintf(stderr, "Error: failed to set key name for key from \"%s\"\n", (const char*)name);
         xmlSecKeyDestroy(key);
         return(NULL);
     }

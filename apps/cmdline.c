@@ -49,6 +49,7 @@ xmlSecAppCmdLineParamIsSet(xmlSecAppCmdLineParamPtr param) {
     return(((param != NULL) && (param->value != NULL)) ? 1 : 0);
 }
 
+/**< Returns the value as a string. Prints an error message to stderr and returns NULL if the parameter is not a string. */
 const char*
 xmlSecAppCmdLineParamGetString(xmlSecAppCmdLineParamPtr param) {
     if(param == NULL) {
@@ -76,6 +77,7 @@ xmlSecAppCmdLineParamGetStringList(xmlSecAppCmdLineParamPtr param) {
     return((param->value != NULL) ? param->value->strListValue : NULL);
 }
 
+/**< Returns the value as an integer. Prints an error message to stderr and returns def if the parameter is not an integer. */
 int
 xmlSecAppCmdLineParamGetInt(xmlSecAppCmdLineParamPtr param, int def) {
     if(param == NULL) {
@@ -89,6 +91,7 @@ xmlSecAppCmdLineParamGetInt(xmlSecAppCmdLineParamPtr param, int def) {
     return((param->value != NULL) ? param->value->intValue : def);
 }
 
+/**< Returns the value as a time. Prints an error message to stderr and returns def if the parameter is not a time. */
 time_t
 xmlSecAppCmdLineParamGetTime(xmlSecAppCmdLineParamPtr param, time_t def) {
     if(param == NULL) {
@@ -116,7 +119,7 @@ xmlSecAppCmdLineParamsListParse(xmlSecAppCmdLineParamPtr* params,
     while((pos < argc) && (argv[pos][0] == '-') && (strcmp(argv[pos], XMLSEC_STDOUT_FILENAME) != 0)) {
         param = xmlSecAppCmdLineParamsListFind(params, topics, argv[pos]);
         if(param == NULL) {
-            fprintf(stderr, "Error: parameter \"%s\" is not supported or the requested\nfeature might have been disabled during compilation.\n", argv[pos]);
+            fprintf(stderr, "Error: parameter \"%s\" is not supported or the requested feature might have been disabled during compilation.\n", argv[pos]);
             return(-1);
         }
 
@@ -539,7 +542,7 @@ xmlSecAppCmdLineTimeParamRead(const char* str, time_t* t, int is_gmt_time) {
         return(-1);
     }
 
-    /* reject trailing garbage (trailing whitespaces are allowed) */
+    /* reject trailing garbage (trailing whitespace is allowed) */
     while(isspace((unsigned char)*p)) {
         p++;
     }
@@ -564,8 +567,8 @@ xmlSecAppCmdLineTimeParamRead(const char* str, time_t* t, int is_gmt_time) {
         return(-1);
     }
 
-    tm.tm_year = year - 1900; /* tm relative format year */
-    tm.tm_mon  = month - 1; /* tm relative format month */
+    tm.tm_year = year - 1900; /* tm_year is years since 1900 */
+    tm.tm_mon  = month - 1; /* tm_mon is 0-based (0-11) */
     tm.tm_mday = day;
     tm.tm_hour = hour;
     tm.tm_min  = minute;

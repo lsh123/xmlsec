@@ -79,7 +79,7 @@
 /**
  * @brief Reads and parses a KeyInfo node to extract key data.
  * @details Parses the &lt;dsig:KeyInfo/&gt; element @p keyInfoNode, extracts the key data
- * and stores into @p key.
+ * and stores it into @p key.
  * @param keyInfoNode the pointer to &lt;dsig:KeyInfo/&gt; node.
  * @param key the pointer to result key object.
  * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
@@ -266,7 +266,7 @@ xmlSecKeyInfoCtxDestroy(xmlSecKeyInfoCtxPtr keyInfoCtx) {
  * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  * @param keysMngr the pointer to keys manager (may be NULL).
  *
- * @return 0 on success and a negative value if an error occurs.
+ * @return 0 on success or -1 if an error occurs.
  */
 int
 xmlSecKeyInfoCtxInitialize(xmlSecKeyInfoCtxPtr keyInfoCtx, xmlSecKeysMngrPtr keysMngr) {
@@ -374,7 +374,7 @@ xmlSecKeyInfoCtxReset(xmlSecKeyInfoCtxPtr keyInfoCtx) {
  * of &lt;dsig:KeyInfo/&gt; element.
  * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
- * @return 0 on success and a negative value if an error occurs.
+ * @return 0 on success or -1 if an error occurs.
  */
 int
 xmlSecKeyInfoCtxCreateEncCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
@@ -433,7 +433,7 @@ xmlSecKeyInfoCtxCreateEncCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
  * @param dst the pointer to destination context object.
  * @param src the pointer to source context object.
  *
- * @return 0 on success and a negative value if an error occurs.
+ * @return 0 on success or -1 if an error occurs.
  */
 int
 xmlSecKeyInfoCtxCopyUserPref(xmlSecKeyInfoCtxPtr dst, xmlSecKeyInfoCtxPtr src) {
@@ -1394,7 +1394,7 @@ xmlSecKeyDataKeyInfoReferenceXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNo
         goto done;
     }
 
-    /* destroy prev key info reference context if any and set start URI */
+    /* reset prev key info reference context if any and set start URI */
     xmlSecTransformCtxReset(&(keyInfoCtx->keyInfoReferenceCtx));
     ret = xmlSecTransformCtxSetUri(&(keyInfoCtx->keyInfoReferenceCtx), uri, node);
     if(ret < 0) {

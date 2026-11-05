@@ -182,7 +182,7 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
      * In truth, it would be likely less than 1/2 input string length
      * because each byte is represented by 2 chars. If needed,
      * buffer size would be increased by Mul/Add functions.
-     * Finally, we can add one byte for the 00 prefix.
+     * Finally, we add a couple of extra bytes on top.
      */
     strSize = xmlSecStrlen(str);
     /* bound the input length: the parsing loop below is quadratic in the
@@ -681,7 +681,7 @@ xmlSecBnCompare(xmlSecBnPtr bn, const xmlSecByte* data, xmlSecSize dataSize) {
 }
 
 /**
- * @brief Compares the @p bn with reverse @p data.
+ * @brief Compares the @p bn with reversed @p data.
  * @param bn the pointer to BN.
  * @param data the data to compare BN to.
  * @param dataSize the @p data size.

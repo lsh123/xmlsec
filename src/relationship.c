@@ -142,7 +142,7 @@ static xmlSecTransformKlass xmlSecRelationshipKlass = {
     xmlSecRelationshipFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecRelationshipReadNode,                 /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -301,8 +301,8 @@ xmlSecRelationshipListItemCreate(xmlNodePtr node) {
      * xmlGetProp() returns NULL both when the Id attribute is absent and
      * when it cannot allocate the return value; in either case the item is
      * left with no cached Id (the element is dropped later by
-     * xmlSecTransformRelationshipProcessNode, which reports the same
-     * condition).
+     * xmlSecTransformRelationshipProcessNode, which silently skips nodes
+     * without a usable Id).
      */
     item->id = xmlGetProp(node, xmlSecRelationshipAttrId);
     return(item);
@@ -440,9 +440,10 @@ xmlSecTransformRelationshipProcessNode(xmlSecTransformPtr transform, xmlOutputBu
 }
 
 /*
- * This is step 2, point 3: sort elements by Id: we process other elements as-is, but for
- * Relationship elements we collect them in a list, sort the list in place, and finally
- * process the elements in the sorted order.
+ * This is step 2, point 3: sort elements by Id: non-Relationship elements are written
+ * to the output immediately, in their document order, while Relationship elements are
+ * collected in a list, sorted in place, and written in the sorted order after the
+ * first pass.
  */
 static int
 xmlSecTransformRelationshipProcessNodeList(xmlSecTransformPtr transform, xmlOutputBufferPtr buf, xmlNodePtr cur, unsigned int depth, xmlSecTransformCtxPtr transformCtx) {
@@ -836,9 +837,10 @@ xmlSecTransformRelationshipProcessElementNode(xmlSecTransformPtr transform, xmlO
     /*
      * Write attributes.
      *
-     * This is step 3, point 6: add default value of TargetMode if there is no such attribute.
-     * Only the unprefixed TargetMode attribute counts as present; a namespaced one must not
-     * suppress the default.
+     * Detect an existing TargetMode attribute so that the default value (step 3,
+     * point 6) is only added when the attribute is actually missing.
+     * Only the unprefixed TargetMode attribute counts as present; a namespaced one
+     * must not suppress the default.
      */
     for(attr = cur->properties; attr != NULL; attr = attr->next) {
         if((attr->ns == NULL) && (xmlStrcmp(attr->name, xmlSecRelationshipAttrTargetMode) == 0)) {
@@ -994,12 +996,13 @@ xmlSecTransformRelationshipPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPt
     if(ret < 0) {
        xmlSecInternalError("xmlSecTransformRelationshipExecute", xmlSecTransformGetName(transform));
        /* the buffer must be closed to release it (the IO buffer is only
-        * freed by its close callback). The close pushes the partial data
-        * into the next transform, which is harmless here: the whole
-        * operation is aborted and the produced data is discarded */
+        * freed by its close callback). When a next transform exists, the
+        * close pushes the partial data into its input buffer, which is
+        * harmless here: the whole operation is aborted */
        (void)xmlOutputBufferClose(buf);
-       /* discard any partial output produced before the failure so it
-        * cannot be picked up by a later operation and mark the transform as failed */
+       /* discard any partial output kept in our own output buffer so it
+        * cannot be picked up by a later operation (this only applies when
+        * there is no next transform) and mark the transform as failed */
        xmlSecBufferEmpty(&(transform->outBuf));
        transform->status = xmlSecTransformStatusFail;
        return(-1);

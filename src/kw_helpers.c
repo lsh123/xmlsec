@@ -16,8 +16,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <libxml/tree.h>
-
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
 #include <xmlsec/errors.h>
@@ -308,7 +306,7 @@ xmlSecKWDes3Encode(xmlSecKWDes3Id kwDes3Id, xmlSecTransformPtr transform,
     xmlSecAssert2(outSize >= inSize + XMLSEC_KW_DES3_BLOCK_LENGTH + XMLSEC_KW_DES3_IV_LENGTH, -1);
     xmlSecAssert2(outWritten != NULL, -1);
 
-    /* step 2: calculate sha1 and CMS */
+    /* step 2: calculate the CMS key checksum CKS (first 8 octets of the SHA-1 digest) */
     outWritten2 = 0;
     ret = kwDes3Id->sha1(transform, in, inSize, sha1, sizeof(sha1), &outWritten2);
     if((ret < 0) || (outWritten2 != sizeof(sha1))) {
@@ -729,7 +727,7 @@ xmlSecTransformKWRfc3394Execute(xmlSecTransformPtr transform, xmlSecTransformKWR
  * 64-bit register A, 128-bit register B, and array of 64-bit quantities
  * R(1) through R(N).
  *
- * "|" represents concatenation so x|y, where x and y and 64-bit quantities,
+ * "|" represents concatenation so x|y, where x and y are 64-bit quantities,
  * is the 128-bit quantity with x in the most significant bits and y in the
  * least significant bits. AES(K)enc(x) is the operation of AES encrypting
  * the 128-bit quantity x under the key K. AES(K)dec(x) is the corresponding

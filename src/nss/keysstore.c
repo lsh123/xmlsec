@@ -11,8 +11,8 @@
  * @brief Keys store implementation for NSS.
  * @details Nss keys store that uses Simple Keys Store under the hood.
  * Uses the NSS DB as a backing store for finding keys, but the NSS DB is
- * not written to by the keys store. So, if store->findKey is done and the key is
- * not found in the simple keys store, the NSS DB is looked up. If store is called
+ * not written to by the keys store. So, if store->findKey is called and the key is
+ * not found in the simple keys store, the NSS DB is looked up. If the store is called
  * to adopt a key, that key is not written to the NSS DB. Thus, the NSS DB can be
  * used to pre-load keys and becomes an alternate source of keys for xmlsec
  */
@@ -73,8 +73,8 @@ static xmlSecKeyStoreKlass xmlSecNssKeysStoreKlass = {
 };
 
 /**
- * @brief The Nss list based keys store klass.
- * @return Nss list based keys store klass.
+ * @brief The Nss keys store klass.
+ * @return Nss keys store klass.
  */
 xmlSecKeyStoreId
 xmlSecNssKeysStoreGetKlass(void) {

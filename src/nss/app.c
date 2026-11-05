@@ -2047,9 +2047,6 @@ xmlSecNssAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
  * - Checks that key certificate is present
  * - Checks that key certificate is valid
  *
- * Adds @p key to the keys manager @p mngr created with #xmlSecNssAppDefaultKeysMngrInit
- * function.
- *
  * @param mngr the pointer to keys manager.
  * @param key the pointer to key.
  * @param keyInfoCtx the key info context for verification.

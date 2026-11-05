@@ -35,7 +35,7 @@
 
 /******************************************************************************
  *
- * Internal MSCRYPTO RSA PKCS1 CTX
+ * Internal MSCRYPTO RSA PKCS1/OAEP CTX
  *
   *****************************************************************************/
 typedef struct _xmlSecMSCryptoRsaPkcs1OaepCtx    xmlSecMSCryptoRsaPkcs1OaepCtx,
@@ -428,8 +428,8 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_RSA_OAEP */
 
         /* decrypt: fFinal must be TRUE so that the full RSA block is decrypted in one call;
-         * passing FALSE makes CryptDecrypt treat the call as streaming decryption and
-         * return a partial block instead of the full RSA block */
+         * CAPI does not support streaming RSA operations, so passing FALSE
+         * would simply fail */
         if (!CryptDecrypt(((hTmpKey != 0) ? hTmpKey : hKey), 0, TRUE, ctx->dwFlags, outBuf, &dwOutLen)) {
             xmlSecMSCryptoError("CryptDecrypt", xmlSecTransformGetName(transform));
             if (hTmpKey != 0) {
@@ -449,8 +449,8 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
 
         outSize = dwOutLen;
 
-        /* wipe the tail of the output buffer that held the raw OAEP-decoded
-         * block; only the first 'outSize' bytes contain the recovered
+        /* wipe the tail of the output buffer that holds the leftover ciphertext
+         * bytes; only the first 'outSize' bytes contain the recovered
          * plaintext (CEK) */
         if (keySize > outSize) {
             xmlSecMemCleanse(outBuf + outSize, keySize - outSize);
@@ -493,9 +493,9 @@ static xmlSecTransformKlass xmlSecMSCryptoRsaPkcs1Klass = {
     xmlSecMSCryptoRsaPkcs1OaepFinalize,         /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCryptoRsaPkcs1OaepSetKeyReq,        /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecMSCryptoRsaPkcs1OaepSetKeyReq,        /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecMSCryptoRsaPkcs1OaepSetKey,           /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
@@ -543,9 +543,9 @@ static xmlSecTransformKlass xmlSecMSCryptoRsaOaepKlass = {
     xmlSecMSCryptoRsaPkcs1OaepFinalize,         /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecMSCryptoRsaOaepNodeRead,              /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCryptoRsaPkcs1OaepSetKeyReq,        /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecMSCryptoRsaPkcs1OaepSetKeyReq,        /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecMSCryptoRsaPkcs1OaepSetKey,           /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */

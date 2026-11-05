@@ -82,10 +82,10 @@ int             xmlSecOpenSSLGenerateRandomBytes             (xmlSecByte* data, 
 
 #endif /* defined(XMLSEC_OPENSSL_IS_AWSLC) */
 
-/* BoringSSL redefines int->size_t or int->unsigned */
+/* BoringSSL and AWS-LC redefine int->size_t or int->unsigned */
 #if defined(XMLSEC_OPENSSL_IS_BORINGSSL) || defined(XMLSEC_OPENSSL_IS_AWSLC)
 
-/* when BoringSSL replaced int with unsigned */
+/* when BoringSSL or AWS-LC replaced int with unsigned */
 typedef unsigned xmlSecOpenSSLUInt;
 
 #define XMLSEC_OPENSSL_SAFE_CAST_UINT_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
@@ -97,7 +97,7 @@ typedef unsigned xmlSecOpenSSLUInt;
 #define XMLSEC_OPENSSL_SAFE_CAST_UINT_TO_BYTE(srcVal, dstVal, errorAction, errorObject) \
        XMLSEC_SAFE_CAST_UINT_TO_BYTE((srcVal), (dstVal), errorAction, (errorObject))
 
-/* when BoringSSL replaced int with size_t */
+/* when BoringSSL or AWS-LC replaced int with size_t */
 typedef size_t xmlSecOpenSSLSizeT;
 
 #define XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
@@ -158,15 +158,15 @@ typedef int xmlSecOpenSSLSizeT;
 
 #ifndef RAND_priv_bytes
 #define RAND_priv_bytes(buf,len)          RAND_bytes((buf), (len))
-#endif
+#endif /* RAND_priv_bytes */
 
 /* simply return success */
 #ifndef sk_X509_reserve
 #define sk_X509_reserve(crts, num)        (1)
-#endif
+#endif  /* sk_X509_reserve */
 #ifndef sk_X509_CRL_reserve
 #define sk_X509_CRL_reserve(crls, num)    (1)
-#endif
+#endif  /* sk_X509_CRL_reserve */
 
 #endif /* defined(XMLSEC_OPENSSL_IS_LIBRESSL) */
 
@@ -193,7 +193,7 @@ typedef int xmlSecOpenSSLSizeT;
 #define XMLSEC_OPENSSL_NO_X509_STORE_GET1_OBJECTS 1
 #endif /* defined(XMLSEC_OPENSSL_IS_OPENSSL) */
 
-#endif /* defined(XMLSEC_OPENSSL_API_350) */
+#endif /* !defined(XMLSEC_OPENSSL_API_350) */
 
 /******************************************************************************
  *

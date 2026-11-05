@@ -26,7 +26,7 @@
 
 /******************************************************************************
  *
- * Internal MSCng Block cipher CTX
+ * Internal MSCng GCM Block cipher CTX
  *
   *****************************************************************************/
 typedef struct _xmlSecMSCngGcmBlockCipherCtx xmlSecMSCngGcmBlockCipherCtx, *xmlSecMSCngGcmBlockCipherCtxPtr;
@@ -50,28 +50,28 @@ XMLSEC_TRANSFORM_DECLARE(MSCngGcmBlockCipher, xmlSecMSCngGcmBlockCipherCtx)
 #define xmlSecMSCngGcmBlockCipherSize XMLSEC_TRANSFORM_SIZE(MSCngGcmBlockCipher)
 
 
-#define XMLSEC_MSCNG_GCM_CIPHER_KLASS(name)                                                         \
-static xmlSecTransformKlass xmlSecMSCng ## name  ## Klass = {                                       \
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                          \
-    xmlSecMSCngGcmBlockCipherSize,              /* xmlSecSize objSize */                            \
-    xmlSecName ## name,                         /* const xmlChar* name; */                          \
-    xmlSecHref ## name,                         /* const xmlChar* href; */                          \
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                   \
-    xmlSecMSCngGcmBlockCipherInitialize,        /* xmlSecTransformInitializeMethod initialize; */   \
-    xmlSecMSCngGcmBlockCipherFinalize,          /* xmlSecTransformFinalizeMethod finalize; */       \
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */       \
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */     \
-    xmlSecMSCngGcmBlockCipherSetKeyReq,         /* xmlSecTransformSetKeyMethod setKeyReq; */        \
-    xmlSecMSCngGcmBlockCipherSetKey,            /* xmlSecTransformSetKeyMethod setKey; */           \
-    NULL,                                       /* xmlSecTransformVerifyMethod verify; */           \
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */ \
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */         \
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */           \
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */         \
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */           \
-    xmlSecMSCngGcmBlockCipherExecute,           /* xmlSecTransformExecuteMethod execute; */         \
-    NULL,                                       /* void* reserved0; */                              \
-    NULL,                                       /* void* reserved1; */                              \
+#define XMLSEC_MSCNG_GCM_CIPHER_KLASS(name)                                                                       \
+static xmlSecTransformKlass xmlSecMSCng ## name  ## Klass = {                                                     \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                        \
+    xmlSecMSCngGcmBlockCipherSize,              /* xmlSecSize objSize */                                          \
+    xmlSecName ## name,                         /* const xmlChar* name; */                                        \
+    xmlSecHref ## name,                         /* const xmlChar* href; */                                        \
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                                 \
+    xmlSecMSCngGcmBlockCipherInitialize,        /* xmlSecTransformInitializeMethod initialize; */                 \
+    xmlSecMSCngGcmBlockCipherFinalize,          /* xmlSecTransformFinalizeMethod finalize; */                     \
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */                     \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */                   \
+    xmlSecMSCngGcmBlockCipherSetKeyReq,         /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */          \
+    xmlSecMSCngGcmBlockCipherSetKey,            /* xmlSecTransformSetKeyMethod setKey; */                         \
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */                         \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */               \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                       \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                         \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                       \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                         \
+    xmlSecMSCngGcmBlockCipherExecute,           /* xmlSecTransformExecuteMethod execute; */                       \
+    NULL,                                       /* void* reserved0; */                                            \
+    NULL,                                       /* void* reserved1; */                                            \
 };
 
 
@@ -429,7 +429,7 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
     }
     xmlSecAssert2(bytesRead == sizeof(authTagLengths), -1);
 
-    /* The BCRYPT_KEY_LENGTHS_STRUCT fields are documented in bits, but the CNG
+    /* The BCRYPT_AUTH_TAG_LENGTHS_STRUCT fields are documented in bits, but the CNG
      * AES-GCM provider reports them in bytes (verified empirically: min=12,
      * max=16, inc=1). A GCM tag is at most 16 bytes, so dwMaxLength > 16 can
      * only be a bits-unit report; normalize it to bytes so the checks below

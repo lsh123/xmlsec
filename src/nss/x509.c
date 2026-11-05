@@ -16,7 +16,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <ctype.h>
 #include <errno.h>
 #include <time.h>
 
@@ -395,6 +394,9 @@ xmlSecNssKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, CERTCertificate* cert) {
  * @brief Adds certificate to the X509 key data.
  * @param data the pointer to X509 key data.
  * @param cert the pointer to NSS X509 certificate.
+ *
+ * On success, the @p data owns the cert.
+ *
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -842,7 +844,6 @@ xmlSecNssKeyDataX509Read(
         xmlSecKeyDataStorePtr x509Store;
         int stopOnUnknownCert = 0;
 
-
         x509Store = xmlSecKeysMngrGetDataStore(keysMngr, xmlSecNssX509StoreId);
         if(x509Store == NULL) {
             xmlSecInternalError("xmlSecKeysMngrGetDataStore", xmlSecKeyDataGetName(data));
@@ -1042,7 +1043,7 @@ xmlSecNssVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xmlS
         return(0);
     }
 
-    /* lets find a cert we can verify */
+    /* let's find a cert we can verify */
     x509Store = xmlSecKeysMngrGetDataStore(keyInfoCtx->keysMngr, xmlSecNssX509StoreId);
     if(x509Store == NULL) {
         xmlSecInternalError("xmlSecKeysMngrGetDataStore", xmlSecKeyDataGetName(data));

@@ -292,7 +292,7 @@ xmlSecGCryptAsymKeyDataGenerate(xmlSecKeyDataPtr data, const char * alg, xmlSecS
 
     ret = xmlSecGCryptAsymKeyDataAdoptKey(data, key_pair);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecGCryptAsymKeyDataAdopt", NULL);
+        xmlSecInternalError("xmlSecGCryptAsymKeyDataAdoptKey", NULL);
         goto done;
     }
     key_pair = NULL; /* now owned by data */
@@ -579,7 +579,7 @@ done:
  *
  * ============================================================================
  *
- * To support reading/writing private keys an X element added (before Y).
+ * To support reading/writing private keys an X element is added (before Y).
  *
  * The current implementation does not support Seed and PgenCounter!
  * by this the P, Q and G are *required*!
@@ -654,7 +654,7 @@ static xmlSecKeyDataKlass xmlSecGCryptKeyDataDsaKlass = {
 };
 
 /**
- * @brief The DSA key data klass.
+ * @brief The GCrypt DSA key data klass.
  * @return pointer to DSA key data klass.
  */
 xmlSecKeyDataId
@@ -915,7 +915,7 @@ xmlSecGCryptKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
 
     /* create key data */
     data = xmlSecKeyDataCreate(id);
-    if(data == NULL ) {
+    if(data == NULL) {
         xmlSecInternalError("xmlSecKeyDataCreate",
             xmlSecKeyDataKlassGetName(id));
         goto done;
@@ -1099,7 +1099,7 @@ done:
  *
  * ============================================================================
  *
- * To support reading/writing private keys an PrivateExponent element is added
+ * To support reading/writing private keys a PrivateExponent element is added
  * to the end
  *
   *****************************************************************************/
@@ -1409,7 +1409,7 @@ xmlSecGCryptKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
 
     /* create key data */
     data = xmlSecKeyDataCreate(id);
-    if(data == NULL ) {
+    if(data == NULL) {
         xmlSecInternalError("xmlSecKeyDataCreate",
                             xmlSecKeyDataKlassGetName(id));
         goto done;
@@ -1906,7 +1906,7 @@ xmlSecGCryptKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
     }
 
     /* construct pub key */
-    err = gcry_sexp_build (&s_pub_key, NULL,
+    err = gcry_sexp_build(&s_pub_key, NULL,
         "(public-key"
         " (ecdsa"
         " (curve %s)"
@@ -1921,7 +1921,7 @@ xmlSecGCryptKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
 
     /* create key data */
     data = xmlSecKeyDataCreate(id);
-    if(data == NULL ) {
+    if(data == NULL) {
         xmlSecInternalError("xmlSecKeyDataCreate", xmlSecKeyDataKlassGetName(id));
         goto done;
     }

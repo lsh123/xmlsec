@@ -167,7 +167,7 @@ xmlSecXPathDataRegisterNamespaces(xmlSecXPathDataPtr data, xmlNodePtr node) {
     /* register namespaces */
     for(cur = node; cur != NULL; cur = cur->parent) {
         for(ns = cur->nsDef; ns != NULL; ns = ns->next) {
-            /* check that we have no other namespace with same prefix already */
+            /* check that we have no other namespace with the same prefix already registered */
             if((ns->prefix != NULL) && (xmlXPathNsLookup(data->ctx, ns->prefix) == NULL)) {
                 ret = xmlXPathRegisterNs(data->ctx, ns->prefix, ns->href);
                 if(ret != 0) {
@@ -485,9 +485,9 @@ static xmlSecTransformKlass xmlSecTransformXPathKlass = {
     xmlSecTransformXPathFinalize,               /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecTransformXPathNodeRead,               /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     NULL,                                       /* xmlSecTransformPushBinMethod pushBin; */
     NULL,                                       /* xmlSecTransformPopBinMethod popBin; */
@@ -623,9 +623,9 @@ static xmlSecTransformKlass xmlSecTransformXPath2Klass = {
     xmlSecTransformXPathFinalize,               /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecTransformXPath2NodeRead,              /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     NULL,                                       /* xmlSecTransformPushBinMethod pushBin; */
     NULL,                                       /* xmlSecTransformPopBinMethod popBin; */
@@ -753,9 +753,9 @@ static xmlSecTransformKlass xmlSecTransformXPointerKlass = {
     xmlSecTransformXPathFinalize,               /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecTransformXPointerNodeRead,            /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     NULL,                                       /* xmlSecTransformPushBinMethod pushBin; */
     NULL,                                       /* xmlSecTransformPopBinMethod popBin; */
@@ -791,9 +791,9 @@ static xmlSecTransformKlass xmlSecTransformXPointerLegacyKlass = {
     xmlSecTransformXPathFinalize,               /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecTransformXPointerNodeRead,            /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     NULL,                                       /* xmlSecTransformPushBinMethod pushBin; */
     NULL,                                       /* xmlSecTransformPopBinMethod popBin; */
@@ -806,7 +806,7 @@ static xmlSecTransformKlass xmlSecTransformXPointerLegacyKlass = {
 };
 
 /**
- * @brief Deprecated.Gets the legacy XPointer transform klass.
+ * @brief Deprecated. Gets the legacy XPointer transform klass.
  * @details Deprecated. The legacy XPointer transform klass, registered under the pre-RFC 9231
  * (RFC 4051) identifier <http://www.w3.org/2001/04/xmldsig-more/xptr>. It behaves
  * identically to the XPointer transform (see xmlSecTransformXPointerGetKlass) and
@@ -976,9 +976,9 @@ static xmlSecTransformKlass xmlSecTransformVisa3DHackKlass = {
     xmlSecTransformVisa3DHackFinalize,          /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     NULL,                                       /* xmlSecTransformPushBinMethod pushBin; */
     NULL,                                       /* xmlSecTransformPopBinMethod popBin; */

@@ -191,7 +191,7 @@ xmlSecNssKeyTransportFinalize(xmlSecTransformPtr transform) {
     }
 
     if(context->material != NULL) {
-        /* automaticaly cleansed by xmlSecBufferDestroy */
+        /* automatically cleansed by xmlSecBufferDestroy */
         xmlSecBufferDestroy(context->material);
         context->material = NULL;
     }
@@ -372,7 +372,7 @@ xmlSecNssKeyTransportGetMaxMaterialSize(xmlSecNssKeyTransportCtxPtr ctx, xmlSecS
     }
 
     if(ctx->cipher == CKM_RSA_PKCS) {
-        /* PKCS#1 v1.5 (EMSA-PKCS1-v1_5): 0x00 || 0x02 || PS (>= 8 bytes) || 0x00 */
+        /* PKCS#1 v1.5 (EME-PKCS1-v1_5): 0x00 || 0x02 || PS (>= 8 bytes) || 0x00 */
         overhead = 11;
     } else
 #ifndef XMLSEC_NO_RSA_OAEP
@@ -547,7 +547,7 @@ xmlSecNssKeyTransportSetOaepParams(xmlSecNssKeyTransportCtxPtr ctx, CK_RSA_PKCS_
      * pointer of a buffer that was ever grown, so normalize the empty
      * label to pSourceData == NULL */
     size = xmlSecBufferGetSize(&(ctx->oaepParams));
-    oaepParams->pSourceData = (size > 0 )? xmlSecBufferGetData(&(ctx->oaepParams)) : NULL;
+    oaepParams->pSourceData = (size > 0)? xmlSecBufferGetData(&(ctx->oaepParams)) : NULL;
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(size, oaepParams->ulSourceDataLen, return(-1), NULL);
     return(0);
 }
@@ -805,7 +805,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
     if(xmlSecBufferAppend(out, xmlSecBufferGetData(result), xmlSecBufferGetSize(result)) < 0) {
         xmlSecInternalError2("xmlSecBufferAppend", NULL,
             "size=" XMLSEC_SIZE_FMT, xmlSecBufferGetSize(result));
-       goto done;
+        goto done;
     }
 
     /* success */
@@ -910,9 +910,9 @@ static xmlSecTransformKlass xmlSecNssRsaPkcs1Klass = {
     xmlSecNssKeyTransportFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecNssKeyTransportSetKeyReq,             /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecNssKeyTransportSetKeyReq,             /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecNssKeyTransportSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
@@ -953,9 +953,9 @@ static xmlSecTransformKlass xmlSecNssRsaOaepKlass = {
     xmlSecNssKeyTransportFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecNssRsaOaepNodeRead,                   /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecNssKeyTransportSetKeyReq,             /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecNssKeyTransportSetKeyReq,             /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecNssKeyTransportSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
@@ -990,9 +990,9 @@ static xmlSecTransformKlass xmlSecNssRsaOaepEnc11Klass = {
     xmlSecNssKeyTransportFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecNssRsaOaepNodeRead,                   /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecNssKeyTransportSetKeyReq,             /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecNssKeyTransportSetKeyReq,             /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecNssKeyTransportSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */

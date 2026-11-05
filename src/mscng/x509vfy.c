@@ -1223,8 +1223,10 @@ xmlSecMSCngUnixTimeToFileTime(time_t in, LPFILETIME out) {
     xmlSecAssert2(out != NULL, -1);
 
     /* FILETIME counts 100-nanosecond intervals since 1601-01-01 in a 64-bit
-     * value; reject time stamps that cannot be represented (before 1601-01-01
-     * or after the FILETIME maximum) instead of silently overflowing */
+     * value; reject time stamps that cannot be represented (before 1601-01-01)
+     * or that would overflow the signed 64-bit intermediate of the
+     * seconds-to-100-nanoseconds conversion (roughly after the year 30830,
+     * well before the FILETIME maximum) instead of silently overflowing */
     if ((LONGLONG)in > 910692730085LL || (LONGLONG)in < -11644473600LL) {
         xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
             "time stamp out of FILETIME representable range");
@@ -1726,7 +1728,7 @@ xmlSecMSCngX509FindCertByIssuerNameAndSerial(HCERTSTORE store, LPTSTR wcIssuerNa
         }
     }
 
-    /* CASE 2: UTF8, DN */
+    /* CASE 3: UTF8, DN */
     if (NULL == res) {
         bdata = xmlSecMSCngCertStrToName(dwCertEncodingType,
             wcIssuerName,
@@ -1747,7 +1749,7 @@ xmlSecMSCngX509FindCertByIssuerNameAndSerial(HCERTSTORE store, LPTSTR wcIssuerNa
         }
     }
 
-    /* CASE 3: UTF8, REVERSE DN */
+    /* CASE 4: UTF8, REVERSE DN */
     if (NULL == res) {
         bdata = xmlSecMSCngCertStrToName(dwCertEncodingType,
             wcIssuerName,
@@ -1768,7 +1770,7 @@ xmlSecMSCngX509FindCertByIssuerNameAndSerial(HCERTSTORE store, LPTSTR wcIssuerNa
         }
     }
 
-    /* CASE 4: UNICODE, DN */
+    /* CASE 5: UNICODE, DN */
     if (NULL == res) {
         bdata = xmlSecMSCngCertStrToName(dwCertEncodingType,
             wcIssuerName,
@@ -1789,7 +1791,7 @@ xmlSecMSCngX509FindCertByIssuerNameAndSerial(HCERTSTORE store, LPTSTR wcIssuerNa
         }
     }
 
-    /* CASE 5: UNICODE, REVERSE DN */
+    /* CASE 6: UNICODE, REVERSE DN */
     if (NULL == res) {
         bdata = xmlSecMSCngCertStrToName(dwCertEncodingType,
             wcIssuerName,

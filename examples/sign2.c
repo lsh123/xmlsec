@@ -14,7 +14,7 @@
  * Usage:
  *
  * \code{.sh}
- *      sign2 <xml-doc> <pem-key> [key-name]
+ *      sign2 <xml-file> <key-file> [key-name]
  * \endcode
  *
  * Example:
@@ -203,7 +203,6 @@ sign_file(const char* xml_file, const char* key_file, const char* key_name) {
     assert(key_file);
     assert(key_name);
 
-
     /* load doc file */
 #if LIBXML_VERSION >= 21300
     doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT | XML_PARSE_NO_XXE);
@@ -224,7 +223,7 @@ sign_file(const char* xml_file, const char* key_file, const char* key_name) {
     /* create signature context, we don't need keys manager in this example */
     dsigCtx = xmlSecDSigCtxCreate(NULL);
     if(dsigCtx == NULL) {
-        fprintf(stderr,"Error: failed to create signature context\n");
+        fprintf(stderr, "Error: failed to create signature context\n");
         goto done;
     }
 
@@ -236,19 +235,19 @@ sign_file(const char* xml_file, const char* key_file, const char* key_name) {
         NULL,
         NULL);
     if(dsigCtx->signKey == NULL) {
-        fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", key_file);
+        fprintf(stderr, "Error: failed to load private PEM key from \"%s\"\n", key_file);
         goto done;
     }
 
     /* set the key name */
     if(xmlSecKeySetName(dsigCtx->signKey, BAD_CAST key_name) < 0) {
-        fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
+        fprintf(stderr, "Error: failed to set key name for key from \"%s\"\n", key_file);
         goto done;
     }
 
     /* sign the template */
     if(xmlSecDSigCtxSign(dsigCtx, signNode) < 0) {
-        fprintf(stderr,"Error: signature failed\n");
+        fprintf(stderr, "Error: signature failed\n");
         goto done;
     }
 

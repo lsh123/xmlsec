@@ -455,9 +455,11 @@ xmlSecNssUpdateAvailableCryptoTransforms(xmlSecCryptoDLFunctionsPtr functions) {
 
     /* in theory NSS should be already initialized but just in case; if this
      * fails we still proceed with the per-algorithm checks below. Those rely
-     * on NSS_GetAlgorithmPolicy() (which is independent of the OID table
-     * initialized here) and disable any algorithm whose policy cannot be
-     * resolved, so we do not leave the transforms enabled unchecked. */
+     * on NSS_GetAlgorithmPolicy(), which works without the OID table
+     * initialized here, and disable any algorithm whose policy cannot be
+     * resolved. Note that the default policy values that disable weak
+     * algorithms are established by SECOID_Init() as well, so if it ever
+     * failed every algorithm would be reported as enabled. */
     rv = SECOID_Init();
     if (rv != SECSuccess) {
         xmlSecNssError("SECOID_Init", NULL);

@@ -157,7 +157,6 @@ xmlSecNssSignatureCheckId(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_RSA
 
-
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformRsaSha1Id)) {
         return(1);
@@ -352,8 +351,6 @@ xmlSecNssSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->alg        = SEC_OID_PKCS1_SHA512_WITH_RSA_ENCRYPTION;
     } else
 #endif /* XMLSEC_NO_SHA512 */
-
-
 
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformRsaPssSha1Id)) {
@@ -1226,28 +1223,28 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 
 /* Helper macros to define the transform klass */
 
-#define XMLSEC_NSS_SIGNATURE_KLASS_EX(name, readNode)                                                   \
-static xmlSecTransformKlass xmlSecNss ## name ## Klass = {                                              \
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
-    xmlSecNssSignatureSize,                     /* xmlSecSize objSize */                                \
-    xmlSecName ## name,                         /* const xmlChar* name; */                              \
-    xmlSecHref ## name,                         /* const xmlChar* href; */                              \
-    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */                       \
-    xmlSecNssSignatureInitialize,               /* xmlSecTransformInitializeMethod initialize; */       \
-    xmlSecNssSignatureFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */           \
-    readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */           \
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */         \
-    xmlSecNssSignatureSetKeyReq,                /* xmlSecTransformSetKeyReqMethod setKeyReq; */         \
-    xmlSecNssSignatureSetKey,                   /* xmlSecTransformSetKeyMethod setKey; */               \
-    xmlSecNssSignatureVerify,                   /* xmlSecTransformVerifyMethod verify; */               \
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */             \
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
-    xmlSecNssSignatureExecute,                  /* xmlSecTransformExecuteMethod execute; */             \
-    NULL,                                       /* void* reserved0; */                                  \
-    NULL,                                       /* void* reserved1; */                                  \
+#define XMLSEC_NSS_SIGNATURE_KLASS_EX(name, readNode)                                                              \
+static xmlSecTransformKlass xmlSecNss ## name ## Klass = {                                                         \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                         \
+    xmlSecNssSignatureSize,                     /* xmlSecSize objSize */                                           \
+    xmlSecName ## name,                         /* const xmlChar* name; */                                         \
+    xmlSecHref ## name,                         /* const xmlChar* href; */                                         \
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */                                  \
+    xmlSecNssSignatureInitialize,               /* xmlSecTransformInitializeMethod initialize; */                  \
+    xmlSecNssSignatureFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */                      \
+    readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */                      \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */                    \
+    xmlSecNssSignatureSetKeyReq,                /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */           \
+    xmlSecNssSignatureSetKey,                   /* xmlSecTransformSetKeyMethod setKey; */                          \
+    xmlSecNssSignatureVerify,                   /* xmlSecTransformVerifyMethod verify; */                          \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */                \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                        \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                          \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                        \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                          \
+    xmlSecNssSignatureExecute,                  /* xmlSecTransformExecuteMethod execute; */                        \
+    NULL,                                       /* void* reserved0; */                                             \
+    NULL,                                       /* void* reserved1; */                                             \
 };
 
 #define XMLSEC_NSS_SIGNATURE_KLASS(name)                                                                \
@@ -1394,13 +1391,13 @@ xmlSecNssTransformMLDSANodeRead(
     /* set max size to make sure we have non-NULL buffer for the mechanism params */
     ctx->contextString = xmlSecBufferCreate(XMLSEC_MLDSA_MAX_SIZE);
     if (ctx->contextString == NULL) {
-        xmlSecInternalError("xmlSecBufferCreate()", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecBufferCreate", xmlSecTransformGetName(transform));
         return(-1);
     }
 
     ret = xmlSecTransformMLDSAReadContextString(node, ctx->contextString);
     if (ret < 0) {
-        xmlSecInternalError("xmlSecTransformMLDSAReadContextString()", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecTransformMLDSAReadContextString", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -1446,7 +1443,6 @@ xmlSecNssTransformMLDSA87GetKlass(void) {
 #endif /* XMLSEC_NO_MLDSA */
 
 #ifndef XMLSEC_NO_RSA
-
 
 #ifndef XMLSEC_NO_SHA1
 /* RSA-SHA1 signature transform: xmlSecNssRsaSha1Klass */
@@ -1521,8 +1517,6 @@ xmlSecNssTransformRsaSha512GetKlass(void) {
 }
 
 #endif /* XMLSEC_NO_SHA512 */
-
-
 
 #ifndef XMLSEC_NO_SHA1
 /* RSA-PSS-SHA1 signature transform: xmlSecNssRsaPssSha1Klass */

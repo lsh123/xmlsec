@@ -202,7 +202,8 @@ xmlSecMSCryptoUnixTimeToFileTime(time_t t, LPFILETIME pft) {
 
     /* FILETIME counts 100-nanosecond intervals since 1601-01-01 in a 64-bit
      * value; reject time stamps that cannot be represented (before 1601-01-01
-     * or after the FILETIME maximum) instead of silently overflowing */
+     * or above the signed 64-bit limit of the FILETIME conversion below)
+     * instead of silently overflowing */
     if ((LONGLONG)t > 910692730085LL || (LONGLONG)t < -11644473600LL) {
         xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
             "time stamp out of FILETIME representable range");
@@ -215,7 +216,7 @@ xmlSecMSCryptoUnixTimeToFileTime(time_t t, LPFILETIME pft) {
     return(0);
 }
 
-/* Returns TRUE if the CRL is time valid (NotBefore <= time <= NotAfter),
+/* Returns TRUE if the certificate is time valid (NotBefore <= time <= NotAfter),
  * FALSE otherwise. A NULL time skips the check (skip-time-checks flag). */
 static BOOL
 xmlSecMSCryptoVerifyCertTime(PCCERT_CONTEXT pCert, LPFILETIME pfTime) {

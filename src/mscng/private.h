@@ -139,8 +139,8 @@ xmlSecKeyDataPtr   xmlSecMSCngKeyDataDhReadFromPkcs8Der             (const xmlSe
 #endif /* XMLSEC_NO_DH */
 
 /* OID for X942 Diffie-Hellman key agreement; always ANSI LPSTR per CAPI design,
- * even in UNICODE builds. Defined unconditionally because the private key dispatch
- * in certkeys.c references the OID even when DH support is disabled. */
+ * even in UNICODE builds. Fallback for older MinGW/Windows SDK headers that
+ * do not define it. */
 #ifndef szOID_X942_DH
 #define szOID_X942_DH                       "1.2.840.10046.2.1"
 #endif /* szOID_X942_DH */
@@ -164,8 +164,8 @@ xmlSecKeyDataPtr   xmlSecMSCngKeyDataDhReadFromPkcs8Der             (const xmlSe
 
 #define XMLSEC_MSCNG_DSA_MAX_CBKEY_SIZE (512U)                      /*  4096 bits, which is 512 bytes */
 #define XMLSEC_MSCNG_DSA_MAX_P_SIZE     XMLSEC_MSCNG_DSA_MAX_CBKEY_SIZE /* same quantity as MAX_CBKEY_SIZE: keep the two in sync by aliasing */
-#define XMLSEC_MSCNG_DSA_MAX_Q_SIZE     (20U)
-#define XMLSEC_MSCNG_DSA_V2_Q_SIZE      (32U)
+#define XMLSEC_MSCNG_DSA_MAX_Q_SIZE     (20U)                       /*  160 bits, which is 20 bytes */
+#define XMLSEC_MSCNG_DSA_V2_Q_SIZE      (32U)                       /*  256 bits, which is 32 bytes */
 #define XMLSEC_MSCNG_DSA_V1_MAX_P_SIZE  (128U)                      /*  1024 bits, which is 128 bytes */
 
 int                xmlSecMSCngKeyDataCertGetDsaPubkey               (PCERT_PUBLIC_KEY_INFO spki,
@@ -203,8 +203,8 @@ int                xmlSecMSCngKeyDataCertGetXdhPubkey               (PCERT_PUBLI
 #endif /* XMLSEC_NO_XDH */
 
 /* OID for X25519 public/private key (RFC 8410, id-X25519); always ANSI LPSTR per CAPI design,
- * even in UNICODE builds. Defined unconditionally because the private key dispatch
- * in certkeys.c references the OID even when XDH support is disabled. */
+ * even in UNICODE builds. Fallback for older MinGW/Windows SDK headers that
+ * do not define it. */
 #ifndef szOID_X25519
 #define szOID_X25519                        "1.3.101.110"
 #endif /* szOID_X25519 */
@@ -387,10 +387,10 @@ int                xmlSecMSCngX509StoreVerifyKey                    (xmlSecKeyDa
 HCERTSTORE         xmlSecMSCngKeyDataX509GetCertStore               (xmlSecKeyDataPtr data);
 
 typedef struct _xmlSecMSCngX509FindCertCtx {
-    LPTSTR wcSubjectName;
+    LPTSTR wcSubjectName; /* OWNED */
 
-    LPTSTR wcIssuerName;
-    xmlSecBnPtr issuerSerialBn;
+    LPTSTR wcIssuerName; /* OWNED */
+    xmlSecBnPtr issuerSerialBn; /* OWNED */
 
     const xmlSecByte* ski; /* NOT OWNED */
     DWORD skiLen;

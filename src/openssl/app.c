@@ -212,7 +212,7 @@ xmlSecOpenSSLAppCheckMemoryBioConsumed(BIO* bio, xmlSecKeyDataFormat format) {
     case xmlSecKeyDataFormatCertDer:
         /* DER formats are binary and should consume all data */
         if(BIO_ctrl_pending(bio) > 0) {
-            xmlSecInvalidSizeDataError("Remaining in buffer bytes", BIO_ctrl_pending(bio), "0 bytes", NULL);
+            xmlSecInvalidSizeDataError("Remaining bytes in buffer", BIO_ctrl_pending(bio), "0 bytes", NULL);
             return (0);
         }
         return (1);
@@ -449,7 +449,7 @@ xmlSecOpenSSLAppKeyLoadBIO(
     if(pwd != NULL) {
         pwdCb = xmlSecOpenSSLDummyPasswordCallback;
         pwdCbCtx = (void*)pwd;
-     } else {
+    } else {
         pwdCb = XMLSEC_PTR_TO_FUNC(pem_password_cb, pwdCallback);
         pwdCbCtx = pwdCallbackCtx;
     }
@@ -582,7 +582,7 @@ xmlSecOpenSSLAppEngineKeyLoad(const char *engineName, const char *engineKeyId,
     if(pwd != NULL) {
         pwdCb = xmlSecOpenSSLDummyPasswordCallback;
         pwdCbCtx = (void*)pwd;
-     } else {
+    } else {
         pwdCb = XMLSEC_PTR_TO_FUNC(pem_password_cb, pwdCallback);
         pwdCbCtx = pwdCallbackCtx;
     }
@@ -694,7 +694,7 @@ done:
     if(data != NULL) {
         xmlSecKeyDataDestroy(data);
     }
-    if(engine !=NULL) {
+    if(engine != NULL) {
         if(engineInit != 0) {
             ENGINE_finish(engine);
         }
@@ -920,7 +920,7 @@ xmlSecOpenSSLAppStoreKeyLoad(const char *uri, xmlSecKeyDataType type, const char
     if(pwd != NULL) {
         pwdCb = xmlSecOpenSSLDummyPasswordCallback;
         pwdCbCtx = (void*)pwd;
-     } else {
+    } else {
         pwdCb = XMLSEC_PTR_TO_FUNC(pem_password_cb, pwdCallback);
         pwdCbCtx = pwdCallbackCtx;
     }
@@ -1036,9 +1036,9 @@ xmlSecOpenSSLAppStoreKeyLoad(const char *uri, xmlSecKeyDataType type, const char
         }
     }
 
-    /* try find key cert, the result might be NULL and we are OK with it,
-     * keyCert can't be non-NULL after the call to xmlSecOpenSSLCreateKey()
-     * so we aren't going to free it */
+    /* try find key cert, the result might be NULL and we are OK with it;
+     * on success xmlSecOpenSSLCreateKey() adopts keyCert and sets it to NULL,
+     * otherwise it is freed in the done block */
     keyCert = xmlSecOpenSSLAppFindKeyCert(pKey, certs);
 
     /* finally create a key, xmlSecOpenSSLCreateKey will set values to NULL as it uses them */
@@ -1341,7 +1341,7 @@ xmlSecOpenSSLAppKeyCertLoadBIO(xmlSecKeyPtr key, BIO* bio, xmlSecKeyDataFormat f
 /**
  * @brief Reads key and certificates from PKCS12 file.
  * @details Reads a key and all associated certificates from the PKCS12 file.
- * For uniformity, call xmlSecOpenSSLAppKeyLoadEx instead of this function. Pass
+ * For uniformity, call #xmlSecOpenSSLAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
  * @param filename the PKCS12 key filename.
@@ -1836,7 +1836,7 @@ xmlSecOpenSSLAppKeysMngrCertLoadBIO(xmlSecKeysMngrPtr mngr, BIO* bio, xmlSecKeyD
 
 
 /**
- * @brief Reads CRLs from a file and adds to the store.
+ * @brief Reads a CRL from a file and adds it to the store.
  * @details Reads crl from @p filename and adds to the list of crls in @p store.
  *
  * @param mngr the keys manager.
@@ -1887,7 +1887,7 @@ xmlSecOpenSSLAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xm
 }
 
 /**
- * @brief Reads CRLs from memory and adds to the store.
+ * @brief Reads a CRL from memory and adds it to the store.
  * @details Reads crl from binary buffer @p data and adds to the list of crls in @p store.
  *
  * @param mngr the keys manager.
@@ -1945,7 +1945,7 @@ xmlSecOpenSSLAppKeysMngrCrlLoadMemory(
 }
 
 /**
- * @brief Reads CRLs from BIO and adds to the store.
+ * @brief Reads a CRL from a BIO and adds it to the store.
  * @details Reads crl from an OpenSSL BIO object and adds to the list of crls in @p store.
  *
  * @param mngr the keys manager.

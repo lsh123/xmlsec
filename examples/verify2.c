@@ -12,7 +12,7 @@
  * Usage:
  *
  * \code{.sh}
- *      verify2 <signed-file> <public-pem-key1> <key1-name> [<public-pem-key2> <key2-name> ...]
+ *      verify2 <xml-file> <key-file1> <key1-name> [<key-file2> <key2-name> ...]
  * \endcode
  *
  * Each public key file must be followed by the name to assign to that key
@@ -203,7 +203,7 @@ load_keys(char** files, int files_size) {
         /* load key */
         key = xmlSecCryptoAppKeyLoadEx(file, xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
         if(key == NULL) {
-            fprintf(stderr, "Error: failed to load pem key from \"%s\"\n", file);
+            fprintf(stderr, "Error: failed to load PEM key from \"%s\"\n", file);
             xmlSecKeysMngrDestroy(mngr);
             return(NULL);
         }

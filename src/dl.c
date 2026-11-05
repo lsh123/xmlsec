@@ -188,7 +188,7 @@ xmlSecCryptoOpenLibraryAndGetFunctions(xmlSecCryptoDLLibraryPtr lib)  {
     }
 #endif /* !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP) */
 
-    /* library name is not needed anymore */
+    /* the library filename is not needed anymore */
     xmlFree(wcLibFilename);
 
     /* get function pointer */
@@ -240,7 +240,7 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
     }
 
     /* if compiler can't find xmlSecCryptoOpenLibraryAndGetFunctions() here then
-     * the library is miscconfigured. */
+     * the library is misconfigured. */
     getFunctions = xmlSecCryptoOpenLibraryAndGetFunctions(lib);
     if(getFunctions == NULL) {
         xmlSecInternalError("invalid configuration: no way to load library", NULL);
@@ -451,7 +451,10 @@ xmlSecCryptoDLInit(void) {
  */
 int
 xmlSecCryptoDLShutdown(void) {
+#ifdef XMLSEC_DL_LIBLTDL
     int ret;
+#endif /* XMLSEC_DL_LIBLTDL */
+    int res = 0;
 
     if(!xmlSecPtrListIsValid(&gXmlSecCryptoDLLibraries)) {
         /* the dynamic loading engine was not initialized */
@@ -466,13 +469,12 @@ xmlSecCryptoDLShutdown(void) {
     ret = lt_dlexit();
     if(ret != 0) {
         xmlSecIOError("lt_dlexit", NULL, NULL);
-        /* ignore error */
+        res = -1;
     }
-#else  /* XMLSEC_DL_LIBLTDL */
-    XMLSEC_UNREFERENCED(ret);
 #endif /* XMLSEC_DL_LIBLTDL */
 
-    return(0);
+    /* done */
+    return(res);
 }
 
 /**

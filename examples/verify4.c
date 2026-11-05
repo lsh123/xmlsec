@@ -7,15 +7,17 @@
  */
 /**
  * @brief XML Security Library example: Verifying a file signed with an X509 certificate
- * @details Verifies a file signed with an X509 certificate.
+ * and checking the signature Reference URI
+ * @details Verifies a file signed with an X509 certificate and checks that the
+ * signature Reference URI matches the expected ID attribute value.
  *
  * This example was developed and tested with the OpenSSL crypto library. The
- * certificates management policies for another crypto library may break it.
+ * certificate management policies for another crypto library may break it.
  *
  * Usage:
  *
  * \code{.sh}
- *      verify4 <signed-file> <id-attribute-to-verify> <trusted-cert-pem-file1> [<trusted-cert-pem-file2> [...]]
+ *      verify4 <xml-file> <id-attribute-to-verify> <cert-file1> [<cert-file2> [...]]
  * \endcode
  *
  * Example:
@@ -165,7 +167,7 @@ done:
         xmlSecShutdown();
     }
 
-    /* Shutdown LibXSLT / LibXML2 */
+    /* shutdown LibXSLT / LibXML2 */
 #ifndef XMLSEC_NO_XSLT
     xsltFreeSecurityPrefs(xsltSecPrefs);
     xsltCleanupGlobals();
@@ -213,7 +215,7 @@ load_trusted_certs(char** files, int files_size) {
 
         /* load trusted cert */
         if(xmlSecCryptoAppKeysMngrCertLoad(mngr, files[i], xmlSecKeyDataFormatPem, xmlSecKeyDataTypeTrusted) < 0) {
-            fprintf(stderr,"Error: failed to load PEM certificate from \"%s\"\n", files[i]);
+            fprintf(stderr, "Error: failed to load PEM certificate from \"%s\"\n", files[i]);
             xmlSecKeysMngrDestroy(mngr);
             return(NULL);
         }
@@ -265,13 +267,13 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* id_attr) {
     /* create signature context */
     dsigCtx = xmlSecDSigCtxCreate(mngr);
     if(dsigCtx == NULL) {
-        fprintf(stderr,"Error: failed to create signature context\n");
+        fprintf(stderr, "Error: failed to create signature context\n");
         goto done;
     }
 
     /* Verify signature */
     if(xmlSecDSigCtxVerify(dsigCtx, node) < 0) {
-        fprintf(stderr,"Error: signature verification failed\n");
+        fprintf(stderr, "Error: signature verification failed\n");
         goto done;
     }
 
@@ -317,18 +319,18 @@ verify_signature_results(xmlSecDSigCtxPtr dsigCtx, const char* id_attr) {
 
     /* check that signature verification succeeded */
     if(dsigCtx->status != xmlSecDSigStatusSucceeded) {
-        fprintf(stderr,"Error: Signature verification result is not SUCCESS\n");
+        fprintf(stderr, "Error: Signature verification result is not SUCCESS\n");
         return(-1);
     }
 
     /* in this example we expect exactly ONE reference with URI "#<id-attribute>" and no unexpected transforms */
     if(xmlSecPtrListGetSize(&(dsigCtx->signedInfoReferences)) != 1) {
-        fprintf(stderr,"Error: Exactly one Reference is expected\n");
+        fprintf(stderr, "Error: Exactly one Reference is expected\n");
         return(-1);
     }
     dsigRefCtx = (xmlSecDSigReferenceCtxPtr)xmlSecPtrListGetItem(&(dsigCtx->signedInfoReferences), 0);
     if((dsigRefCtx == NULL) || (dsigRefCtx->status != xmlSecDSigStatusSucceeded)) {
-        fprintf(stderr,"Error: Reference verification result is not SUCCESS\n");
+        fprintf(stderr, "Error: Reference verification result is not SUCCESS\n");
         return(-1);
     }
 
@@ -340,7 +342,7 @@ verify_signature_results(xmlSecDSigCtxPtr dsigCtx, const char* id_attr) {
     sprintf(uri, "#%s", id_attr);
 
     if(!xmlStrEqual(dsigRefCtx->uri, BAD_CAST uri)) {
-        fprintf(stderr,"Error: Reference URI value doesn't match expected one\n");
+        fprintf(stderr, "Error: Reference URI value doesn't match expected one\n");
         return(-1);
     }
 
@@ -348,7 +350,7 @@ verify_signature_results(xmlSecDSigCtxPtr dsigCtx, const char* id_attr) {
     transform = dsigRefCtx->transformCtx.first;
     while(transform != NULL) {
         if((transform->flags & XMLSEC_TRANSFORM_FLAGS_USER_SPECIFIED) != 0) {
-            fprintf(stderr,"Error: Found unexpected Transform name '%s'\n", transform->id->name);
+            fprintf(stderr, "Error: Found unexpected Transform name '%s'\n", transform->id->name);
             return(-1);
         }
         transform = transform->next;

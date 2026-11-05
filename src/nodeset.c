@@ -254,7 +254,7 @@ xmlSecNodeSetContainsNode(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr par
  * @param node the pointer to XML node to check.
  * @param parent the pointer to @p node parent node.
  * @return 1 if the @p node is in the nodes set @p nset, 0 if it is not
- * or if @p node is NULL or  if an error occurs.
+ * or if @p node is NULL or if an error occurs.
  */
 int
 xmlSecNodeSetContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent) {
@@ -405,7 +405,6 @@ xmlSecNodeSetContainsNamespaceNode(xmlNodeSetPtr nodes) {
  * valid when every node of the combined set is guaranteed to lie inside those
  * subtrees:
  *   - a single Normal/Tree/TreeWithoutComments set: its own nodes; or
- *
  *   - a combined set whose operations are all intersections: the nodes of the
  *     first member that has a non-NULL node list. The intersection is a subset
  *     of every member, so it is fully covered by that member's subtrees.
@@ -472,10 +471,12 @@ xmlSecNodeSetGetFastPathNodes(xmlSecNodeSetPtr nset) {
 /**
  * @brief Walks all nodes in a set calling a callback function.
  * @details Calls the function @p walkFunc for each node in the nodes set @p nset.
- * Element and attribute nodes are reported once each. Namespace nodes, however,
- * are reported once per descendant element in which they are in scope (the walk
- * revisits the namespace declarations along each element's ancestor chain), so a
- * namespace declared on a common ancestor may be reported more than once.
+ * Element and attribute nodes are reported once each. For Tree and
+ * TreeWithoutComments sets, namespace nodes are reported once per descendant
+ * element in which they are in scope (the walk revisits the namespace
+ * declarations along each element's ancestor chain), so a namespace declared
+ * on a common ancestor may be reported more than once; for Normal sets the
+ * namespace copies are reported at most once each.
  * If the @p walkFunc returns a negative value, then the walk procedure
  * is interrupted.
  * @param nset the pointer to node set.
@@ -492,7 +493,6 @@ xmlSecNodeSetWalk(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc, voi
     xmlSecAssert2(nset != NULL, -1);
     xmlSecAssert2(nset->doc != NULL, -1);
     xmlSecAssert2(walkFunc != NULL, -1);
-
 
     /* try fast path first if we can iterate through a subset of nodes */
     fastPathNodes = xmlSecNodeSetGetFastPathNodes(nset);
@@ -726,6 +726,7 @@ xmlSecNodeSetDumpTextNodes(xmlSecNodeSetPtr nset, xmlOutputBufferPtr out) {
 
     return(xmlSecNodeSetWalk(nset, xmlSecNodeSetDumpTextNodesWalkCallback, out));
 }
+
 /**
  * @brief Prints information about @p nset to the @p output.
  * @details Prints the type, operation, and node count of each set in the

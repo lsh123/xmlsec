@@ -534,9 +534,9 @@ static xmlSecTransformKlass xmlSecMSCryptoHmacMd5Klass = {
     xmlSecMSCryptoHmacFinalize,                  /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecMSCryptoHmacNodeRead,                  /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCryptoHmacSetKeyReq,                 /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecMSCryptoHmacSetKeyReq,                 /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecMSCryptoHmacSetKey,                    /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCryptoHmacVerify,                    /* xmlSecTransformValidateMethod validate; */
+    xmlSecMSCryptoHmacVerify,                    /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
@@ -578,9 +578,9 @@ static xmlSecTransformKlass xmlSecMSCryptoHmacSha1Klass = {
     xmlSecMSCryptoHmacFinalize,                  /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecMSCryptoHmacNodeRead,                  /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCryptoHmacSetKeyReq,                 /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecMSCryptoHmacSetKeyReq,                 /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecMSCryptoHmacSetKey,                    /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCryptoHmacVerify,                    /* xmlSecTransformValidateMethod validate; */
+    xmlSecMSCryptoHmacVerify,                    /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
@@ -622,9 +622,9 @@ static xmlSecTransformKlass xmlSecMSCryptoHmacSha256Klass = {
     xmlSecMSCryptoHmacFinalize,                  /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecMSCryptoHmacNodeRead,                  /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCryptoHmacSetKeyReq,                 /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecMSCryptoHmacSetKeyReq,                 /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecMSCryptoHmacSetKey,                    /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCryptoHmacVerify,                    /* xmlSecTransformValidateMethod validate; */
+    xmlSecMSCryptoHmacVerify,                    /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
@@ -666,9 +666,9 @@ static xmlSecTransformKlass xmlSecMSCryptoHmacSha384Klass = {
     xmlSecMSCryptoHmacFinalize,                  /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecMSCryptoHmacNodeRead,                  /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCryptoHmacSetKeyReq,                 /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecMSCryptoHmacSetKeyReq,                 /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecMSCryptoHmacSetKey,                    /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCryptoHmacVerify,                    /* xmlSecTransformValidateMethod validate; */
+    xmlSecMSCryptoHmacVerify,                    /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
@@ -710,9 +710,9 @@ static xmlSecTransformKlass xmlSecMSCryptoHmacSha512Klass = {
     xmlSecMSCryptoHmacFinalize,                  /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecMSCryptoHmacNodeRead,                  /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCryptoHmacSetKeyReq,                 /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecMSCryptoHmacSetKeyReq,                 /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecMSCryptoHmacSetKey,                    /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCryptoHmacVerify,                    /* xmlSecTransformValidateMethod validate; */
+    xmlSecMSCryptoHmacVerify,                    /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */

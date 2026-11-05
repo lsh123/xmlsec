@@ -87,29 +87,29 @@ static int      xmlSecNssMLKEMDecapsulate                   (xmlSecNssMLKEMCtxPt
 static int      xmlSecNssMLKEMProcess                       (xmlSecTransformPtr transform,
                                                              xmlSecTransformCtxPtr transformCtx);
 
-#define XMLSEC_NSS_ML_KEM_KLASS_EX(name)                                                            \
-static xmlSecTransformKlass xmlSecNss ## name ## Klass = {                                          \
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                          \
-    xmlSecNssMLKEMSize,                         /* xmlSecSize objSize */                            \
-    xmlSecName ## name,                         /* const xmlChar* name; */                          \
-    xmlSecHref ## name,                         /* const xmlChar* href; */                          \
-    xmlSecTransformUsageEncryptionMethod,                                                             \
-                                                 /* xmlSecAlgorithmUsage usage; */                   \
-    xmlSecNssMLKEMInitialize,                   /* xmlSecTransformInitializeMethod initialize; */   \
-    xmlSecNssMLKEMFinalize,                     /* xmlSecTransformFinalizeMethod finalize; */       \
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */       \
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */     \
-    xmlSecNssMLKEMSetKeyReq,                    /* xmlSecTransformSetKeyReqMethod setKeyReq; */     \
-    xmlSecNssMLKEMSetKey,                       /* xmlSecTransformSetKeyMethod setKey; */           \
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */       \
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */ \
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */         \
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */           \
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */         \
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */           \
-    xmlSecNssMLKEMExecute,                      /* xmlSecTransformExecuteMethod execute; */         \
-    NULL,                                       /* void* reserved0; */                              \
-    NULL,                                       /* void* reserved1; */                              \
+#define XMLSEC_NSS_ML_KEM_KLASS_EX(name)                                                                         \
+static xmlSecTransformKlass xmlSecNss ## name ## Klass = {                                                       \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                       \
+    xmlSecNssMLKEMSize,                         /* xmlSecSize objSize */                                         \
+    xmlSecName ## name,                         /* const xmlChar* name; */                                       \
+    xmlSecHref ## name,                         /* const xmlChar* href; */                                       \
+    xmlSecTransformUsageEncryptionMethod,                                                                        \
+                                                 /* xmlSecAlgorithmUsage usage; */                               \
+    xmlSecNssMLKEMInitialize,                   /* xmlSecTransformInitializeMethod initialize; */                \
+    xmlSecNssMLKEMFinalize,                     /* xmlSecTransformFinalizeMethod finalize; */                    \
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */                    \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */                  \
+    xmlSecNssMLKEMSetKeyReq,                    /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */         \
+    xmlSecNssMLKEMSetKey,                       /* xmlSecTransformSetKeyMethod setKey; */                        \
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */                        \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */              \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                      \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                        \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                      \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                        \
+    xmlSecNssMLKEMExecute,                      /* xmlSecTransformExecuteMethod execute; */                      \
+    NULL,                                       /* void* reserved0; */                                           \
+    NULL,                                       /* void* reserved1; */                                           \
 };
 
 /* ML-KEM-512 key transport: xmlSecNssMLKEM512Klass */

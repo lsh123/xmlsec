@@ -761,7 +761,7 @@ xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDsaPtr 
     xmlSecAssert2(pubkey != NULL, -1);
     xmlSecAssert2(dsaValue != NULL, -1);
 
-    /* turn pubkey into dsakey */
+    /* turn the pubkey into a DSA public key blob */
     status = BCryptExportKey(pubkey,
         NULL,
         BCRYPT_DSA_PUBLIC_BLOB,
@@ -921,8 +921,6 @@ xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDsaPtr 
             "Unexpected DSA blob magic: 0x%08lX", (unsigned long)dsakey->dwMagic);
         goto done;
     }
-
-    /* don't reverse blobs as both the XML and CNG work with big-endian */
 
     /* success */
     res = 0;

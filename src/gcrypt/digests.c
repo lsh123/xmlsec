@@ -361,7 +361,7 @@ static xmlSecTransformKlass xmlSecGCryptMd5Klass = {
     xmlSecGCryptDigestFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptDigestVerify,                   /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -406,7 +406,7 @@ static xmlSecTransformKlass xmlSecGCryptRipemd160Klass = {
     xmlSecGCryptDigestFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptDigestVerify,                   /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -452,7 +452,7 @@ static xmlSecTransformKlass xmlSecGCryptSha1Klass = {
     xmlSecGCryptDigestFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptDigestVerify,                   /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -498,7 +498,7 @@ static xmlSecTransformKlass xmlSecGCryptSha256Klass = {
     xmlSecGCryptDigestFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptDigestVerify,                   /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -543,7 +543,7 @@ static xmlSecTransformKlass xmlSecGCryptSha384Klass = {
     xmlSecGCryptDigestFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptDigestVerify,                   /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -588,7 +588,7 @@ static xmlSecTransformKlass xmlSecGCryptSha512Klass = {
     xmlSecGCryptDigestFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptDigestVerify,                   /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -634,7 +634,7 @@ static xmlSecTransformKlass xmlSecGCryptSha3_256Klass = {
     xmlSecGCryptDigestFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptDigestVerify,                   /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -677,7 +677,7 @@ static xmlSecTransformKlass xmlSecGCryptSha3_384Klass = {
     xmlSecGCryptDigestFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptDigestVerify,                   /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -720,7 +720,7 @@ static xmlSecTransformKlass xmlSecGCryptSha3_512Klass = {
     xmlSecGCryptDigestFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGCryptDigestVerify,                   /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */

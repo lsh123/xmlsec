@@ -48,7 +48,6 @@
  * The content of X509Data is:
  *
  *  1. At least one element, from the following set of element types; any of these may appear together or more than once iff (if and only if) each instance describes or is related to the same certificate:
- *  2.
  *    * The X509IssuerSerial element, which contains an X.509 issuer
  *      distinguished name/serial number pair that SHOULD be compliant
  *      with RFC2253 [LDAP-DN],
@@ -240,7 +239,7 @@ xmlSecX509DataGetNodeContent(xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx, xm
             if(xmlSecIsEmptyNode(cur) == 1) {
                 content |= XMLSEC_X509DATA_CERTIFICATE_NODE;
             } else {
-                /* ensure return value isn't 0 if there are non-empty elements */
+                /* set the non-empty bit for this node type */
                 content |= (XMLSEC_X509DATA_CERTIFICATE_NODE << XMLSEC_X509DATA_SHIFT_IF_NOT_EMPTY);
             }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509SubjectName, xmlSecDSigNs)) {
@@ -360,7 +359,7 @@ xmlSecKeyDataX509XmlWrite(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInfoC
             goto done;
         }
 
-         /* cleanup for the next obj */
+        /* cleanup for the next obj */
         xmlSecKeyX509DataValueReset(&x509Value, 1);
     }
 
@@ -1017,7 +1016,7 @@ xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
  * three types:
  *   - string (eg 'abc')
  *   - quoted string (eg '"abc"')
- *   - hexstring (eg '\#A0B0')
+ *   - hexstring (eg '#A0B0')
  * The function parses the string in the @p in parameter until end of string or @p delim is encountered.
  * The @p in and @p inSize parameters are moved to the next character (e.g. delimiter if it was encountered
  * during parsing).
@@ -1175,7 +1174,7 @@ xmlSecX509NameRead(const xmlChar *str, xmlSecX509NameReplacements *replacements,
 
     strSize = xmlSecStrlen(str);
     while(strSize > 0) {
-        /* skip spaces after comma or semicolon */
+        /* skip spaces after comma */
         while((strSize > 0) && isspace(*str)) {
             ++str; --strSize;
         }
@@ -1228,7 +1227,7 @@ xmlSecX509NameRead(const xmlChar *str, xmlSecX509NameReplacements *replacements,
                  * explicitly (a return value >= buffer size means the name was cut) */
                 ret = xmlStrPrintf(BAD_CAST name, sizeof(name), "%s", cur->replacement);
                 if((ret < 0) || ((size_t)ret >= sizeof(name))) {
-                    xmlSecInternalError("xmlStrPrintf()", NULL);
+                    xmlSecInternalError("xmlStrPrintf", NULL);
                     return(-1);
                 }
                 break;
@@ -1246,7 +1245,7 @@ xmlSecX509NameRead(const xmlChar *str, xmlSecX509NameReplacements *replacements,
         if((strSize > 0) && ((*str) == ',')) {
             ++str; --strSize;
         } else if (strSize > 0) {
-            xmlSecInvalidDataError("A comma ',' is expected between name and value pairs", NULL);
+            xmlSecInvalidDataError("A comma ',' is expected between name/value pairs", NULL);
             return(-1);
         }
     }

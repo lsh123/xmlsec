@@ -13,7 +13,7 @@
  * Usage:
  *
  * \code{.sh}
- *      ./encrypt2 <xml-doc> <aes-key-file>
+ *      ./encrypt2 <xml-file> <key-file>
  * \endcode
  *
  * Example:
@@ -205,33 +205,33 @@ encrypt_file(const char* xml_file, const char* key_file) {
     /* create encryption context, we don't need keys manager in this example */
     encCtx = xmlSecEncCtxCreate(NULL);
     if(encCtx == NULL) {
-        fprintf(stderr,"Error: failed to create encryption context\n");
+        fprintf(stderr, "Error: failed to create encryption context\n");
         goto done;
     }
 
     /* load AES key */
     encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataAesId, key_file);
     if(encCtx->encKey == NULL) {
-        fprintf(stderr,"Error: failed to load aes key from binary file \"%s\"\n", key_file);
+        fprintf(stderr, "Error: failed to load AES key from binary file \"%s\"\n", key_file);
         goto done;
     }
 
     /* set the key name to the file name; this is only an example */
     if(xmlSecKeySetName(encCtx->encKey, BAD_CAST key_file) < 0) {
-        fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
+        fprintf(stderr, "Error: failed to set key name for key from \"%s\"\n", key_file);
         goto done;
     }
 
     /* encrypt the data */
     if(xmlSecEncCtxXmlEncrypt(encCtx, encDataNode, xmlDocGetRootElement(doc)) < 0) {
-        fprintf(stderr,"Error: encryption failed\n");
+        fprintf(stderr, "Error: encryption failed\n");
         goto done;
     }
 
     /* the template is inserted into the document */
     encDataNode = NULL;
 
-    /* print encrypted data with document to stdout */
+    /* print encrypted data with the document to stdout */
     if(xmlDocDump(stdout, doc) < 0) {
         fprintf(stderr, "Error: failed to write the encrypted document to stdout\n");
         goto done;

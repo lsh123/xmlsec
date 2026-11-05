@@ -16,7 +16,6 @@
 #include <openssl/hmac.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/base64.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/private.h>
@@ -288,7 +287,7 @@ xmlSecOpenSSLHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
     ret = xmlSecTransformHmacReadOutputBitsSize(node, ctx->dgstSizeInBits, &ctx->dgstSizeInBits);
     if (ret < 0) {
-        xmlSecInternalError("xmlSecTransformHmacReadOutputBitsSize()",
+        xmlSecInternalError("xmlSecTransformHmacReadOutputBitsSize",
             xmlSecTransformGetName(transform));
         return(-1);
     }
@@ -454,7 +453,7 @@ xmlSecOpenSSLHmacVerify(xmlSecTransformPtr transform,
 
     /* defensive bounds check: ensure the digest fits in the fixed-size buffer */
     if(XMLSEC_BITS_TO_BYTES(ctx->dgstSizeInBits) > EVP_MAX_MD_SIZE) {
-        xmlSecInternalError("xmlSecOpenSSLHmacVerify: hmac size is too long", xmlSecTransformGetName(transform));
+        xmlSecInternalError("HMAC size is too long", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -597,28 +596,28 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
 }
 
 /* Helper macro to define the HMAC transform klass */
-#define XMLSEC_OPENSSL_HMAC_KLASS(name)                                                                 \
-static xmlSecTransformKlass xmlSecOpenSSLHmac ## name ## Klass = {                                      \
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
-    xmlSecOpenSSLHmacSize,                      /* xmlSecSize objSize */                                \
-    xmlSecNameHmac ## name,                     /* const xmlChar* name; */                              \
-    xmlSecHrefHmac ## name,                     /* const xmlChar* href; */                              \
-    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */                       \
-    xmlSecOpenSSLHmacInitialize,                /* xmlSecTransformInitializeMethod initialize; */       \
-    xmlSecOpenSSLHmacFinalize,                  /* xmlSecTransformFinalizeMethod finalize; */           \
-    xmlSecOpenSSLHmacNodeRead,                  /* xmlSecTransformNodeReadMethod readNode; */           \
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */         \
-    xmlSecOpenSSLHmacSetKeyReq,                 /* xmlSecTransformSetKeyReqMethod setKeyReq; */         \
-    xmlSecOpenSSLHmacSetKey,                    /* xmlSecTransformSetKeyMethod setKey; */               \
-    xmlSecOpenSSLHmacVerify,                    /* xmlSecTransformVerifyMethod verify; */               \
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */             \
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
-    xmlSecOpenSSLHmacExecute,                   /* xmlSecTransformExecuteMethod execute; */             \
-    NULL,                                       /* void* reserved0; */                                  \
-    NULL,                                       /* void* reserved1; */                                  \
+#define XMLSEC_OPENSSL_HMAC_KLASS(name)                                                                            \
+static xmlSecTransformKlass xmlSecOpenSSLHmac ## name ## Klass = {                                                 \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                         \
+    xmlSecOpenSSLHmacSize,                      /* xmlSecSize objSize */                                           \
+    xmlSecNameHmac ## name,                     /* const xmlChar* name; */                                         \
+    xmlSecHrefHmac ## name,                     /* const xmlChar* href; */                                         \
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */                                  \
+    xmlSecOpenSSLHmacInitialize,                /* xmlSecTransformInitializeMethod initialize; */                  \
+    xmlSecOpenSSLHmacFinalize,                  /* xmlSecTransformFinalizeMethod finalize; */                      \
+    xmlSecOpenSSLHmacNodeRead,                  /* xmlSecTransformNodeReadMethod readNode; */                      \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */                    \
+    xmlSecOpenSSLHmacSetKeyReq,                 /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */           \
+    xmlSecOpenSSLHmacSetKey,                    /* xmlSecTransformSetKeyMethod setKey; */                          \
+    xmlSecOpenSSLHmacVerify,                    /* xmlSecTransformVerifyMethod verify; */                          \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */                \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                        \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                          \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                        \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                          \
+    xmlSecOpenSSLHmacExecute,                   /* xmlSecTransformExecuteMethod execute; */                        \
+    NULL,                                       /* void* reserved0; */                                             \
+    NULL,                                       /* void* reserved1; */                                             \
 };
 
 #ifndef XMLSEC_NO_MD5

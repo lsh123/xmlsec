@@ -1315,28 +1315,28 @@ xmlSecGnuTLSSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
 
 /* Helper macros to define the transform klass */
 
-#define XMLSEC_GNUTLS_SIGNATURE_KLASS_EX(name, readNode)                                                \
-static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                                           \
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
-    xmlSecGnuTLSSignatureSize,                  /* xmlSecSize objSize */                                \
-    xmlSecName ## name,                         /* const xmlChar* name; */                              \
-    xmlSecHref ## name,                         /* const xmlChar* href; */                              \
-    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */                       \
-    xmlSecGnuTLSSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */       \
-    xmlSecGnuTLSSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */           \
-    readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */           \
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */         \
-    xmlSecGnuTLSSignatureSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */         \
-    xmlSecGnuTLSSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */               \
-    xmlSecGnuTLSSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */               \
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */             \
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
-    xmlSecGnuTLSSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */             \
-    NULL,                                       /* void* reserved0; */                                  \
-    NULL,                                       /* void* reserved1; */                                  \
+#define XMLSEC_GNUTLS_SIGNATURE_KLASS_EX(name, readNode)                                                           \
+static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                                                      \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                         \
+    xmlSecGnuTLSSignatureSize,                  /* xmlSecSize objSize */                                           \
+    xmlSecName ## name,                         /* const xmlChar* name; */                                         \
+    xmlSecHref ## name,                         /* const xmlChar* href; */                                         \
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */                                  \
+    xmlSecGnuTLSSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */                  \
+    xmlSecGnuTLSSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */                      \
+    readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */                      \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */                    \
+    xmlSecGnuTLSSignatureSetKeyReq,             /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */           \
+    xmlSecGnuTLSSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */                          \
+    xmlSecGnuTLSSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */                          \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */                \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                        \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                          \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                        \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                          \
+    xmlSecGnuTLSSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */                        \
+    NULL,                                       /* void* reserved0; */                                             \
+    NULL,                                       /* void* reserved1; */                                             \
 };
 
 #define XMLSEC_GNUTLS_SIGNATURE_KLASS(name)                                                             \

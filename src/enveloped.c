@@ -47,7 +47,7 @@ static xmlSecTransformKlass xmlSecTransformEnvelopedKlass = {
     NULL,                                       /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -63,7 +63,7 @@ static xmlSecTransformKlass xmlSecTransformEnvelopedKlass = {
 
 /**
  * @brief Gets the enveloped signature transform klass.
- * @details The enveloped transform klass (http://www.w3.org/TR/xmldsig-core/#sec-EnvelopedSignature):
+ * @details The enveloped transform klass (https://www.w3.org/TR/xmldsig-core1/#sec-EnvelopedSignature):
  *
  * An enveloped signature transform T removes the whole Signature element
  * containing T from the digest calculation of the Reference element
@@ -88,7 +88,7 @@ static xmlSecTransformKlass xmlSecTransformEnvelopedKlass = {
  * MUST produce output in exactly the same manner as the XPath transform
  * parameterized by the XPath expression above.
  *
- * @return enveloped transform id.
+ * @return enveloped transform klass.
  */
 xmlSecTransformId
 xmlSecTransformEnvelopedGetKlass(void) {
@@ -131,7 +131,7 @@ xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, int last, xmlSecTr
         return(-1);
     }
 
-    /* intersect all document nodes except the &lt;dsig:Signature/&gt; subtree with input nodes (if exist) */
+    /* intersect all document nodes except the &lt;dsig:Signature/&gt; subtree with input nodes (if they exist) */
     transform->outNodes = xmlSecNodeSetAdd(transform->inNodes, nodesExceptSignature, xmlSecNodeSetIntersection);
     if(transform->outNodes == NULL) {
         xmlSecInternalError("xmlSecNodeSetAdd", xmlSecTransformGetName(transform));

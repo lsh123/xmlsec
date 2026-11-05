@@ -462,28 +462,28 @@ done:
 }
 
 /* Helper macros to define the key agreement transform klass */
-#define XMLSEC_GNUTLS_KEY_AGREEMENT_KLASS_EX(name, transformName, transformHref)                        \
-static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                                           \
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
-    xmlSecGnuTLSKeyAgreementSize,               /* xmlSecSize objSize */                                \
-    transformName,                              /* const xmlChar* name; */                              \
-    transformHref,                              /* const xmlChar* href; */                              \
-    xmlSecTransformUsageAgreementMethod,        /* xmlSecTransformUsage usage; */                       \
-    xmlSecGnuTLSKeyAgreementInitialize,         /* xmlSecTransformInitializeMethod initialize; */       \
-    xmlSecGnuTLSKeyAgreementFinalize,           /* xmlSecTransformFinalizeMethod finalize; */           \
-    xmlSecGnuTLSKeyAgreementNodeRead,           /* xmlSecTransformNodeReadMethod readNode; */           \
-    xmlSecGnuTLSKeyAgreementNodeWrite,          /* xmlSecTransformNodeWriteMethod writeNode; */         \
-    xmlSecGnuTLSKeyAgreementSetKeyReq,          /* xmlSecTransformSetKeyReqMethod setKeyReq; */         \
-    xmlSecGnuTLSKeyAgreementSetKey,             /* xmlSecTransformSetKeyMethod setKey; */               \
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */           \
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */             \
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
-    xmlSecGnuTLSKeyAgreementExecute,            /* xmlSecTransformExecuteMethod execute; */             \
-    NULL,                                       /* void* reserved0; */                                  \
-    NULL,                                       /* void* reserved1; */                                  \
+#define XMLSEC_GNUTLS_KEY_AGREEMENT_KLASS_EX(name, transformName, transformHref)                                   \
+static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                                                      \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                         \
+    xmlSecGnuTLSKeyAgreementSize,               /* xmlSecSize objSize */                                           \
+    transformName,                              /* const xmlChar* name; */                                         \
+    transformHref,                              /* const xmlChar* href; */                                         \
+    xmlSecTransformUsageAgreementMethod,        /* xmlSecTransformUsage usage; */                                  \
+    xmlSecGnuTLSKeyAgreementInitialize,         /* xmlSecTransformInitializeMethod initialize; */                  \
+    xmlSecGnuTLSKeyAgreementFinalize,           /* xmlSecTransformFinalizeMethod finalize; */                      \
+    xmlSecGnuTLSKeyAgreementNodeRead,           /* xmlSecTransformNodeReadMethod readNode; */                      \
+    xmlSecGnuTLSKeyAgreementNodeWrite,          /* xmlSecTransformNodeWriteMethod writeNode; */                    \
+    xmlSecGnuTLSKeyAgreementSetKeyReq,          /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */           \
+    xmlSecGnuTLSKeyAgreementSetKey,             /* xmlSecTransformSetKeyMethod setKey; */                          \
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */                          \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */                \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                        \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                          \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                        \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                          \
+    xmlSecGnuTLSKeyAgreementExecute,            /* xmlSecTransformExecuteMethod execute; */                        \
+    NULL,                                       /* void* reserved0; */                                             \
+    NULL,                                       /* void* reserved1; */                                             \
 };
 
 #define XMLSEC_GNUTLS_KEY_AGREEMENT_KLASS(name)                                                         \

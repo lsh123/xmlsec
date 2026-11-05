@@ -524,7 +524,7 @@ static xmlSecTransformKlass xmlSecMSCngConcatKdfKlass = {
     xmlSecMSCngConcatKdfFinalize,                     /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecMSCngConcatKdfNodeRead,                     /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                           /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngConcatKdfSetKeyReq,                    /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecMSCngConcatKdfSetKeyReq,                    /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     xmlSecMSCngConcatKdfSetKey,                       /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                           /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,              /* xmlSecTransformGetDataTypeMethod getDataType; */

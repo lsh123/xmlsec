@@ -552,7 +552,7 @@ xmlSecMSCngKeyDataMlKemReadFromPkcs8Der(const xmlSecByte* derData, DWORD derData
     /* Assemble ML-KEM key data */
     data = xmlSecKeyDataCreate(xmlSecMSCngKeyDataMLKEMId);
     if(data == NULL) {
-        xmlSecInternalError("xmlSecKeyDataCreate(MLKEMId)", NULL);
+        xmlSecInternalError("xmlSecKeyDataCreate(KeyDataMLKEMId)", NULL);
         goto done;
     }
     ret = xmlSecMSCngKeyDataAdoptKey(data, hPubKey);

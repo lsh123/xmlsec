@@ -41,7 +41,7 @@
 
 
 /**
- * @brief Wipe the buffer data with xmlSecMemCleanse() on release.
+ * @brief Wipe the buffer data with xmlSecMemCleanse() when the buffer is emptied, shrunk, or finalized.
  * @details If this flag is set then the buffer data is wiped using
  * xmlSecMemCleanse() (which cannot be optimized away by the compiler)
  * instead of memset(0) when the buffer is emptied, shrunk, or finalized;
@@ -151,7 +151,7 @@ xmlSecBufferInitialize(xmlSecBufferPtr buf, xmlSecSize size) {
 
 /**
  * @brief Frees resources for an initialized buffer.
- * @details Frees allocated resource for a buffer initialized with #xmlSecBufferInitialize
+ * @details Frees allocated resources for a buffer initialized with #xmlSecBufferInitialize
  * function.
  * @param buf the pointer to buffer object.
  */
@@ -161,7 +161,7 @@ xmlSecBufferFinalize(xmlSecBufferPtr buf) {
 
     xmlSecBufferEmpty(buf);
 
-    if(buf->data != 0) {
+    if(buf->data != NULL) {
         xmlFree(buf->data);
     }
     buf->data = NULL;
@@ -202,7 +202,7 @@ void
 xmlSecBufferEmpty(xmlSecBufferPtr buf) {
     xmlSecAssert(buf != NULL);
 
-    if(buf->data != 0) {
+    if(buf->data != NULL) {
         xmlSecAssert(buf->maxSize > 0);
         xmlSecBufferWipe(buf, buf->data, buf->maxSize);
     }
@@ -564,7 +564,7 @@ xmlSecBufferReverse(xmlSecBufferPtr buf) {
 
 /**
  * @brief Reads the content of a file into the buffer.
- * @details Reads the content of the file @p filename in the buffer.
+ * @details Reads the content of the file @p filename into the buffer.
  * @param buf the pointer to buffer object.
  * @param filename the filename.
  * @return 0 on success or a negative value if an error occurs.
@@ -772,7 +772,7 @@ xmlSecBufferHexRead(xmlSecBufferPtr buf, const xmlChar* hexStr) {
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL,
             "bufSize=" XMLSEC_SIZE_FMT, bufSize);
-        return (-1);
+        return(-1);
     }
 
     data = xmlSecBufferGetData(buf);
@@ -785,7 +785,7 @@ xmlSecBufferHexRead(xmlSecBufferPtr buf, const xmlChar* hexStr) {
             xmlSecInvalidDataError("Unexpected character (not hex)", NULL);
             /* do not leave the buffer in a partially-decoded, resized state */
             xmlSecBufferEmpty(buf);
-            return (-1);
+            return(-1);
         }
         (*data) = xmlSecFromHex2(ch1, ch2);
     }
@@ -880,14 +880,14 @@ xmlSecBufferIOClose(xmlSecBufferPtr buf) {
  */
 
 /**
- * @brief Compares two memory buffers in constant time.
+ * @brief Compares two memory blocks in constant time.
  * @details Compares @p buf1 and @p buf2 across exactly @p size bytes without
  * leaking the number of matching leading bytes through timing.
- * @param buf1 the first buffer.
- * @param buf2 the second buffer.
+ * @param buf1 the first memory block.
+ * @param buf2 the second memory block.
  * @param size the number of bytes to compare.
- * @return 1 if the buffers are equal, 0 if they are not equal, or a negative
- * value if an error occurs.
+ * @return 1 if the memory blocks are equal, 0 if they are not equal, or a
+ * negative value if an error occurs.
  */
 int
 xmlSecMemEqual(const xmlSecByte* buf1, const xmlSecByte* buf2, xmlSecSize size) {

@@ -491,28 +491,28 @@ done:
 }
 
 /* Helper macros to define the key agreement transform klass */
-#define XMLSEC_NSS_KEY_AGREEMENT_KLASS_EX(name, transformName, transformHref)                           \
-static xmlSecTransformKlass xmlSecNss ## name ## Klass = {                                              \
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
-    xmlSecNssKeyAgreementSize,                  /* xmlSecSize objSize */                                \
-    transformName,                              /* const xmlChar* name; */                              \
-    transformHref,                              /* const xmlChar* href; */                              \
-    xmlSecTransformUsageAgreementMethod,        /* xmlSecTransformUsage usage; */                       \
-    xmlSecNssKeyAgreementInitialize,            /* xmlSecTransformInitializeMethod initialize; */       \
-    xmlSecNssKeyAgreementFinalize,              /* xmlSecTransformFinalizeMethod finalize; */           \
-    xmlSecNssKeyAgreementNodeRead,              /* xmlSecTransformNodeReadMethod readNode; */           \
-    xmlSecNssKeyAgreementNodeWrite,             /* xmlSecTransformNodeWriteMethod writeNode; */         \
-    xmlSecNssKeyAgreementSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */         \
-    xmlSecNssKeyAgreementSetKey,                /* xmlSecTransformSetKeyMethod setKey; */               \
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */           \
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */             \
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
-    xmlSecNssKeyAgreementExecute,               /* xmlSecTransformExecuteMethod execute; */             \
-    NULL,                                       /* void* reserved0; */                                  \
-    NULL,                                       /* void* reserved1; */                                  \
+#define XMLSEC_NSS_KEY_AGREEMENT_KLASS_EX(name, transformName, transformHref)                                        \
+static xmlSecTransformKlass xmlSecNss ## name ## Klass = {                                                           \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                           \
+    xmlSecNssKeyAgreementSize,                  /* xmlSecSize objSize */                                             \
+    transformName,                              /* const xmlChar* name; */                                           \
+    transformHref,                              /* const xmlChar* href; */                                           \
+    xmlSecTransformUsageAgreementMethod,        /* xmlSecTransformUsage usage; */                                    \
+    xmlSecNssKeyAgreementInitialize,            /* xmlSecTransformInitializeMethod initialize; */                    \
+    xmlSecNssKeyAgreementFinalize,              /* xmlSecTransformFinalizeMethod finalize; */                        \
+    xmlSecNssKeyAgreementNodeRead,              /* xmlSecTransformNodeReadMethod readNode; */                        \
+    xmlSecNssKeyAgreementNodeWrite,             /* xmlSecTransformNodeWriteMethod writeNode; */                      \
+    xmlSecNssKeyAgreementSetKeyReq,             /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */             \
+    xmlSecNssKeyAgreementSetKey,                /* xmlSecTransformSetKeyMethod setKey; */                            \
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */                            \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */                  \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                          \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                            \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                          \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                            \
+    xmlSecNssKeyAgreementExecute,               /* xmlSecTransformExecuteMethod execute; */                          \
+    NULL,                                       /* void* reserved0; */                                               \
+    NULL,                                       /* void* reserved1; */                                               \
 };
 
 #define XMLSEC_NSS_KEY_AGREEMENT_KLASS(name)                                                            \

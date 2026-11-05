@@ -20,14 +20,12 @@
 #include <xmlsec/errors.h>
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/keys.h>
-#include <xmlsec/transforms.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/private.h>
 
 #include <xmlsec/gnutls/crypto.h>
 
 #include "../cast_helpers.h"
-#include "../keysdata_helpers.h"
 #include "private.h"
 
 /******************************************************************************
@@ -111,7 +109,7 @@ xmlSecGnuTLSKeyDataDEREncodedKeyValueGetKlass(void) {
 
 /**
  * @brief Checks that the data consists of a single complete DER TLV
- * (tag, length and value) with no leading or trailing bytes.
+ * (tag, length and value) that consumes all input bytes.
  * @param data the pointer to the data.
  * @param dataSize the size of the data.
  * @return 1 if the data is a single complete DER TLV or 0 otherwise.

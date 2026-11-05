@@ -54,7 +54,7 @@ struct _xmlSecNssX509StoreCtx {
      *
      * 1) Just keeping a reference to destroy later.
      *
-      * 2) NSS doesn't update its cache correctly when new certs are added
+     * 2) NSS doesn't update its cache correctly when new certs are added
      *          https://bugzilla.mozilla.org/show_bug.cgi?id=211051
      *    we use this list to perform search ourselves.
      */
@@ -810,7 +810,7 @@ done:
      * and CERT_DupCertificate() simply bumps the counter. Otherwise, the "cert"
      * might belong to good_certs and will be destroyed here. But exactly the
      * same pointer is in certs as well so we are good. Otherwise we will need to find
-     * a certificates in "certs" that matches "cert" and return that pointer instead.
+     * a certificate in "certs" that matches "cert" and return that pointer instead.
      */
     if((good_certs != certs) && (good_certs != NULL)) {
         CERT_DestroyCertList(good_certs);
@@ -820,7 +820,9 @@ done:
 
 /**
  * @brief Adds cert to the trusted or untrusted store.
- * @details Adds trusted (root) or untrusted certificate to the store.
+ * @details Adds trusted (root) or untrusted certificate to the store. On
+ * success, ownership of @p cert transfers to the store; on failure the
+ * caller retains ownership.
  * @param store the pointer to X509 key data store.
  * @param cert the pointer to NSS X509 certificate.
  * @param type the certificate type (trusted/untrusted).
@@ -878,11 +880,12 @@ xmlSecNssX509StoreAdoptCert(xmlSecKeyDataStorePtr store, CERTCertificate* cert, 
 
 /**
  * @brief Adds CRL to the store.
- * @details The store's revocation checking (xmlSecNssX509StoreVerify) only
- * validates the CRL time range, not its signature. CRLs added here are assumed
- * to have been verified beforehand; use xmlSecNssX509StoreVerifyCrl() to verify
- * a CRL's signature and validity period before adopting it, otherwise a forged
- * CRL could influence revocation decisions.
+ * @details The store's revocation checking (xmlSecNssX509StoreVerifyKey,
+ * xmlSecNssX509StoreVerifyCerts) only validates the CRL time range, not its
+ * signature. CRLs added here are assumed to have been verified beforehand;
+ * use xmlSecNssX509StoreVerifyCrl() to verify a CRL's signature and validity
+ * period before adopting it, otherwise a forged CRL could influence revocation
+ * decisions.
  * @param store the pointer to X509 key data store.
  * @param crl the pointer to NSS X509 CRL.
  * @return 0 on success or a negative value if an error occurs.
@@ -1066,7 +1069,8 @@ done:
  * @param crl the CRL to verify.
  * @param keyInfoCtx the key info context for verification parameters.
  *
- * 1. Signature is valid (signed by issuer cert in store)
+ * 1. Signature is valid (signed by the issuer cert found in the store or in
+ *    the NSS database)
  * 2. thisUpdate <= verification_time <= nextUpdate
  *
  * @return 1 if verified, 0 if not verified, or a negative value on error.
@@ -1170,7 +1174,7 @@ xmlSecNssGetCertName(const xmlChar * name) {
 
     /* nss doesn't support emailAddress (see https://bugzilla.mozilla.org/show_bug.cgi?id=561689)
      * This code is not bullet proof and may produce incorrect results if someone has
-     * "emailAddress=" string in one of the fields, but it is best I can suggest to fix
+     * "emailAddress=" string in one of the fields, but it is the best I can suggest to fix
      * this problem.
      */
     name2 = xmlStrdup(name);

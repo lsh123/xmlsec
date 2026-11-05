@@ -585,7 +585,7 @@ xmlSecOpenSSLEvpKeyDataGetType(xmlSecKeyDataPtr data) {
 
     default:
         {
-            /* for other keys we don't have a good way to get the key type, so return 0 */
+            /* for other keys we don't have a good way to get the key type, so return the unknown key type */
             xmlSecOpenSSLError2("EVP_PKEY_base_id", xmlSecKeyDataGetName(data),
                 "unsupported evp key type=%d", EVP_PKEY_base_id(pKey));
             return(xmlSecKeyDataTypeUnknown);
@@ -613,7 +613,7 @@ xmlSecOpenSSLEvpKeyDataGetKeySize(xmlSecKeyDataPtr data) {
         return(0);
     }
 
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, res,  return(0), xmlSecKeyDataGetName(data));
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, res, return(0), xmlSecKeyDataGetName(data));
     return(res);
 }
 
@@ -1035,7 +1035,7 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyData ## klassName ## Klass = {        
  *
  * ============================================================================
  *
- * To support reading/writing private keys an X element added (before Y).
+ * To support reading/writing private keys an X element is added (before Y).
  *
  * The current implementation does not support Seed and PgenCounter!
  * by this the P, Q and G are *required*!
@@ -2674,7 +2674,7 @@ static int              xmlSecOpenSSLKeyDataEcWrite              (xmlSecKeyDataI
 
 #ifndef XMLSEC_OPENSSL_API_300
 static const EC_KEY*    xmlSecOpenSSLKeyDataEcGetEcKey          (xmlSecKeyDataPtr data);
-#endif /*XMLSEC_OPENSSL_API_300 */
+#endif /* XMLSEC_OPENSSL_API_300 */
 
 XMLSEC_OPENSSL_EVP_KEY_KLASS_EX(Ec, EC,
     xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
@@ -3328,7 +3328,7 @@ xmlSecOpenSSLKeyValueRsaFinalize(xmlSecOpenSSLKeyValueRsaPtr rsaKeyValue) {
  *
  * ============================================================================
  *
- * To support reading/writing private keys an PrivateExponent element is added
+ * To support reading/writing private keys a PrivateExponent element is added
  * to the end
  *
   *****************************************************************************/
@@ -3891,7 +3891,7 @@ xmlSecOpenSSLKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     }
 
     data = xmlSecKeyDataCreate(id);
-    if(data == NULL ) {
+    if(data == NULL) {
         xmlSecInternalError("xmlSecKeyDataCreate", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
@@ -4107,11 +4107,11 @@ xmlSecOpenSSLKeyDataMLDSAGetKL(xmlSecKeyDataPtr data) {
 
     switch(xmlSecOpenSSLEvpKeyGetId(pKey)) {
     case EVP_PKEY_ML_DSA_44:
-        return 44;
+        return(44);
     case EVP_PKEY_ML_DSA_65:
-        return 65;
+        return(65);
     case EVP_PKEY_ML_DSA_87:
-        return 87;
+        return(87);
     default:
         xmlSecInvalidIntegerTypeError("evp key type", xmlSecOpenSSLEvpKeyGetId(pKey),
                 "unsupported evp key type", NULL);
@@ -4265,11 +4265,11 @@ xmlSecOpenSSLKeyDataMLKEMGetKL(xmlSecKeyDataPtr data) {
 
     switch(xmlSecOpenSSLEvpKeyGetId(pKey)) {
     case NID_ML_KEM_512:
-        return 512;
+        return(512);
     case NID_ML_KEM_768:
-        return 768;
+        return(768);
     case NID_ML_KEM_1024:
-        return 1024;
+        return(1024);
     default:
         xmlSecInvalidIntegerTypeError("evp key type", xmlSecOpenSSLEvpKeyGetId(pKey),
                 "unsupported evp key type", NULL);

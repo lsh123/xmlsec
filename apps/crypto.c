@@ -206,12 +206,12 @@ xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
         ret = xmlSecCryptoAppDefaultKeysMngrVerifyKey(mngr, key, keyInfoCtx);
         if(ret < 0) {
             fprintf(stderr, "Error: xmlSecCryptoAppDefaultKeysMngrVerifyKey failed: filename='%s'\n",
-            xmlSecErrorsSafeString(files));
+                    xmlSecErrorsSafeString(files));
             xmlSecKeyDestroy(key);
             return(-1);
         } else if(ret != 1) {
             fprintf(stderr, "Error: key cannot be verified: filename='%s'\n",
-            xmlSecErrorsSafeString(files));
+                    xmlSecErrorsSafeString(files));
             xmlSecKeyDestroy(key);
             return(-1);
         }
@@ -291,12 +291,12 @@ xmlSecAppCryptoSimpleKeysMngrEngineKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
         ret = xmlSecCryptoAppDefaultKeysMngrVerifyKey(mngr, key, keyInfoCtx);
         if(ret < 0) {
             fprintf(stderr, "Error: xmlSecCryptoAppDefaultKeysMngrVerifyKey failed: engineAndKeyId='%s'\n",
-            xmlSecErrorsSafeString(engineAndKeyId));
+                    xmlSecErrorsSafeString(engineAndKeyId));
             xmlSecKeyDestroy(key);
             return(-1);
         } else if(ret != 1) {
             fprintf(stderr, "Error: key cannot be verified: engineAndKeyId='%s'\n",
-            xmlSecErrorsSafeString(engineAndKeyId));
+                    xmlSecErrorsSafeString(engineAndKeyId));
             xmlSecKeyDestroy(key);
             return(-1);
         }
@@ -347,12 +347,12 @@ xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *f
         ret = xmlSecCryptoAppDefaultKeysMngrVerifyKey(mngr, key, keyInfoCtx);
         if(ret < 0) {
             fprintf(stderr, "Error: xmlSecCryptoAppDefaultKeysMngrVerifyKey failed: filename='%s'\n",
-            xmlSecErrorsSafeString(filename));
+                    xmlSecErrorsSafeString(filename));
             xmlSecKeyDestroy(key);
             return(-1);
         } else if(ret != 1) {
             fprintf(stderr, "Error: key cannot be verified: filename='%s'\n",
-            xmlSecErrorsSafeString(filename));
+                    xmlSecErrorsSafeString(filename));
             xmlSecKeyDestroy(key);
             return(-1);
         }

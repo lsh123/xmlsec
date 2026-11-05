@@ -529,7 +529,7 @@ xmlSecGnuTLSBlockCipherInitialize(xmlSecTransformPtr transform) {
         ctx->blockSize      = 1;
         ctx->ivSize         = XMLSEC_CHACHA20_IV_SIZE;
         ctx->isIvPrepended  = 0;
-        ctx->accumulateAll  = 1;  /* GnuTLS 3.8 does not maintain the ChaCha20 keystream state across encrypt2/decrypt2 calls on the same handle (only the first call produces correct output), so all input must be accumulated and processed in a single call */
+        ctx->accumulateAll  = 1;  /* stream cipher: all input must be accumulated and processed in a single cipher call */
     } else
 #endif /* XMLSEC_NO_CHACHA20 */
 
@@ -681,8 +681,7 @@ xmlSecGnuTLSBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTra
     }
     if(transform->status == xmlSecTransformStatusWorking) {
         if(ctx->accumulateAll) {
-            /* Stream cipher (e.g. ChaCha20): GnuTLS does not maintain the ChaCha20 keystream state across encrypt2/decrypt2 calls
-             * (only the first call on a handle produces correct output), so ALL data must be processed in a single call.
+            /* Stream cipher (e.g. ChaCha20): ALL data must be processed in a single cipher call.
              * Accumulate until last=1. */
             if(last == 0) {
                 return(0);
@@ -756,53 +755,53 @@ xmlSecGnuTLSBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTra
 
 
 /* Helper macro to define CBC cipher transform klass */
-#define XMLSEC_GNUTLS_BLOCK_CIPHER_KLASS(name)                                                            \
-static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                                          \
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
-    xmlSecGnuTLSBlockCipherSize,                  /* xmlSecSize objSize */                               \
-    xmlSecName ## name,                         /* const xmlChar* name; */                              \
-    xmlSecHref ## name,                         /* const xmlChar* href; */                              \
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                       \
-    xmlSecGnuTLSBlockCipherInitialize,            /* xmlSecTransformInitializeMethod initialize; */       \
-    xmlSecGnuTLSBlockCipherFinalize,              /* xmlSecTransformFinalizeMethod finalize; */           \
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */           \
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */         \
-    xmlSecGnuTLSBlockCipherSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */         \
-    xmlSecGnuTLSBlockCipherSetKey,                /* xmlSecTransformSetKeyMethod setKey; */               \
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */           \
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */             \
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
-    xmlSecGnuTLSBlockCipherExecute,               /* xmlSecTransformExecuteMethod execute; */             \
-    NULL,                                       /* void* reserved0; */                                  \
-    NULL,                                       /* void* reserved1; */                                  \
+#define XMLSEC_GNUTLS_BLOCK_CIPHER_KLASS(name)                                                                       \
+static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                                                        \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                           \
+    xmlSecGnuTLSBlockCipherSize,                  /* xmlSecSize objSize */                                           \
+    xmlSecName ## name,                         /* const xmlChar* name; */                                           \
+    xmlSecHref ## name,                         /* const xmlChar* href; */                                           \
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                                    \
+    xmlSecGnuTLSBlockCipherInitialize,            /* xmlSecTransformInitializeMethod initialize; */                  \
+    xmlSecGnuTLSBlockCipherFinalize,              /* xmlSecTransformFinalizeMethod finalize; */                      \
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */                        \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */                      \
+    xmlSecGnuTLSBlockCipherSetKeyReq,             /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */           \
+    xmlSecGnuTLSBlockCipherSetKey,                /* xmlSecTransformSetKeyMethod setKey; */                          \
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */                            \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */                  \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                          \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                            \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                          \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                            \
+    xmlSecGnuTLSBlockCipherExecute,               /* xmlSecTransformExecuteMethod execute; */                        \
+    NULL,                                       /* void* reserved0; */                                               \
+    NULL,                                       /* void* reserved1; */                                               \
 };
 
 /* Helper macro to define cipher transform klass with custom NodeRead/NodeWrite */
-#define XMLSEC_GNUTLS_BLOCK_CIPHER_KLASS_EX(name, readNodeFn, writeNodeFn)                               \
-static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                                          \
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
-    xmlSecGnuTLSBlockCipherSize,                  /* xmlSecSize objSize */                               \
-    xmlSecName ## name,                         /* const xmlChar* name; */                              \
-    xmlSecHref ## name,                         /* const xmlChar* href; */                              \
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                       \
-    xmlSecGnuTLSBlockCipherInitialize,            /* xmlSecTransformInitializeMethod initialize; */       \
-    xmlSecGnuTLSBlockCipherFinalize,              /* xmlSecTransformFinalizeMethod finalize; */           \
-    (readNodeFn),                               /* xmlSecTransformNodeReadMethod readNode; */           \
-    (writeNodeFn),                              /* xmlSecTransformNodeWriteMethod writeNode; */         \
-    xmlSecGnuTLSBlockCipherSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */         \
-    xmlSecGnuTLSBlockCipherSetKey,                /* xmlSecTransformSetKeyMethod setKey; */               \
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */           \
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */             \
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
-    xmlSecGnuTLSBlockCipherExecute,               /* xmlSecTransformExecuteMethod execute; */             \
-    NULL,                                       /* void* reserved0; */                                  \
-    NULL,                                       /* void* reserved1; */                                  \
+#define XMLSEC_GNUTLS_BLOCK_CIPHER_KLASS_EX(name, readNodeFn, writeNodeFn)                                           \
+static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                                                        \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                           \
+    xmlSecGnuTLSBlockCipherSize,                  /* xmlSecSize objSize */                                           \
+    xmlSecName ## name,                         /* const xmlChar* name; */                                           \
+    xmlSecHref ## name,                         /* const xmlChar* href; */                                           \
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                                    \
+    xmlSecGnuTLSBlockCipherInitialize,            /* xmlSecTransformInitializeMethod initialize; */                  \
+    xmlSecGnuTLSBlockCipherFinalize,              /* xmlSecTransformFinalizeMethod finalize; */                      \
+    (readNodeFn),                               /* xmlSecTransformNodeReadMethod readNode; */                        \
+    (writeNodeFn),                              /* xmlSecTransformNodeWriteMethod writeNode; */                      \
+    xmlSecGnuTLSBlockCipherSetKeyReq,             /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */           \
+    xmlSecGnuTLSBlockCipherSetKey,                /* xmlSecTransformSetKeyMethod setKey; */                          \
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */                            \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */                  \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                          \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                            \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                          \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                            \
+    xmlSecGnuTLSBlockCipherExecute,               /* xmlSecTransformExecuteMethod execute; */                        \
+    NULL,                                       /* void* reserved0; */                                               \
+    NULL,                                       /* void* reserved1; */                                               \
 };
 
 #ifndef XMLSEC_NO_AES

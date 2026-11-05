@@ -42,31 +42,31 @@ struct _xmlSecMSCngHmacCtx {
 XMLSEC_TRANSFORM_DECLARE(MSCngHmac, xmlSecMSCngHmacCtx)
 #define xmlSecMSCngHmacSize XMLSEC_TRANSFORM_SIZE(MSCngHmac)
 
-#define XMLSEC_MSCNG_HMAC_KLASS_EX(name, readNode)                                                  \
-static xmlSecTransformKlass xmlSecMSCng ## name ## Klass = {                                        \
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                          \
-    xmlSecMSCngHmacSize,                        /* xmlSecSize objSize */                            \
-                                                                                                    \
-    xmlSecName ## name,                         /* const xmlChar* name; */                          \
-    xmlSecHref ## name,                         /* const xmlChar* href; */                          \
-    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */                   \
-                                                                                                    \
-    xmlSecMSCngHmacInitialize,                  /* xmlSecTransformInitializeMethod initialize; */   \
-    xmlSecMSCngHmacFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */       \
-    readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */       \
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */     \
-    xmlSecMSCngHmacSetKeyReq,                   /* xmlSecTransformSetKeyReqMethod setKeyReq; */     \
-    xmlSecMSCngHmacSetKey,                      /* xmlSecTransformSetKeyMethod setKey; */           \
-    xmlSecMSCngHmacVerify,                      /* xmlSecTransformVerifyMethod verify; */           \
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */ \
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */         \
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */           \
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */         \
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */           \
-    xmlSecMSCngHmacExecute,                     /* xmlSecTransformExecuteMethod execute; */         \
-                                                                                                    \
-    NULL,                                       /* void* reserved0; */                              \
-    NULL,                                       /* void* reserved1; */                              \
+#define XMLSEC_MSCNG_HMAC_KLASS_EX(name, readNode)                                                             \
+static xmlSecTransformKlass xmlSecMSCng ## name ## Klass = {                                                   \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                     \
+    xmlSecMSCngHmacSize,                        /* xmlSecSize objSize */                                       \
+                                                                                                               \
+    xmlSecName ## name,                         /* const xmlChar* name; */                                     \
+    xmlSecHref ## name,                         /* const xmlChar* href; */                                     \
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */                              \
+                                                                                                               \
+    xmlSecMSCngHmacInitialize,                  /* xmlSecTransformInitializeMethod initialize; */              \
+    xmlSecMSCngHmacFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */                  \
+    readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */                  \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */                \
+    xmlSecMSCngHmacSetKeyReq,                   /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */       \
+    xmlSecMSCngHmacSetKey,                      /* xmlSecTransformSetKeyMethod setKey; */                      \
+    xmlSecMSCngHmacVerify,                      /* xmlSecTransformVerifyMethod verify; */                      \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */            \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                    \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                      \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                    \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                      \
+    xmlSecMSCngHmacExecute,                     /* xmlSecTransformExecuteMethod execute; */                    \
+                                                                                                               \
+    NULL,                                       /* void* reserved0; */                                         \
+    NULL,                                       /* void* reserved1; */                                         \
 };
 
 static int
@@ -242,7 +242,7 @@ xmlSecMSCngHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     xmlSecAssert2(ctx != NULL, -1);
 
     ret = xmlSecTransformHmacReadOutputBitsSize(node, ctx->dgstSizeInBits, &ctx->dgstSizeInBits);
-    if (ret < 0) {
+    if(ret < 0) {
         xmlSecInternalError("xmlSecTransformHmacReadOutputBitsSize()",
             xmlSecTransformGetName(transform));
         return(-1);
@@ -253,7 +253,7 @@ xmlSecMSCngHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
      * caught later in xmlSecMSCngHmacSetKey */
     dgstSizeInBits = xmlSecMSCngHmacDigestSizeInBits(transform);
     if(dgstSizeInBits < 0) {
-        xmlSecInternalError("xmlSecMSCngHmacDigestSizeInBits", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecMSCngHmacDigestSizeInBits()", xmlSecTransformGetName(transform));
         return(-1);
     }
     if((ctx->dgstSizeInBits != 0) && (ctx->dgstSizeInBits > (xmlSecSize)dgstSizeInBits)) {
@@ -371,10 +371,10 @@ xmlSecMSCngHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         goto done;
     }
 
-    if (ctx->dgstSizeInBits == 0) {
+    if(ctx->dgstSizeInBits == 0) {
         /* no custom value is requested, then default to the full length */
         ctx->dgstSizeInBits = ctx->hashLength * 8;
-    } else if (ctx->dgstSizeInBits > ((xmlSecSize)ctx->hashLength * 8)) {
+    } else if(ctx->dgstSizeInBits > ((xmlSecSize)ctx->hashLength * 8)) {
         /* reject oversized values: they would cause out-of-bounds reads when
            the truncated digest buffer is accessed in verify/sign paths */
         xmlSecInvalidSizeMoreThanError("HMAC digest size (bits)",
@@ -425,11 +425,11 @@ xmlSecMSCngHmacVerify(
 
     /* Returns 1 for match, 0 for no match, <0 for errors. */
     ret = xmlSecTransformHmacVerify(data, dataSize, ctx->hash, ctx->dgstSizeInBits, ctx->hashLength);
-    if (ret < 0) {
+    if(ret < 0) {
         xmlSecInternalError("xmlSecTransformHmacVerify", xmlSecTransformGetName(transform));
         return(-1);
     }
-    if (ret == 1) {
+    if(ret == 1) {
         transform->status = xmlSecTransformStatusOk;
     }
     else {
@@ -498,7 +498,7 @@ xmlSecMSCngHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
             }
 
             /* write results if needed */
-            if (transform->operation == xmlSecTransformOperationSign) {
+            if(transform->operation == xmlSecTransformOperationSign) {
                 ret = xmlSecTransformHmacWriteOutput(ctx->hash, ctx->dgstSizeInBits, ctx->hashLength, out);
                 if (ret < 0) {
                     xmlSecInternalError("xmlSecTransformHmacWriteOutput", xmlSecTransformGetName(transform));

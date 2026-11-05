@@ -76,7 +76,7 @@ static xmlSecTransformKlass xmlSecParserKlass = {
     xmlSecParserFinalize,                       /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
@@ -193,8 +193,7 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
             return(-1);
         }
 
-        /* not all supported versions of libxml2 signal malformed documents through
-         * the xmlParseChunk() return value; check the wellFormed flag explicitly
+        /* check the wellFormed flag explicitly
          * (same contract as xmlSecParseFile and xmlSecParseMemory) */
         if(!(ctx->parserCtx->wellFormed)) {
             xmlSecInternalError("document is not well formed", NULL);
@@ -473,8 +472,7 @@ xmlSecParseMemoryExt(const xmlSecByte *prefix, xmlSecSize prefixSize,
         goto done;
     }
 
-    /* not all supported versions of libxml2 signal malformed documents through
-     * the xmlParseChunk() return value; check the wellFormed flag explicitly
+    /* check the wellFormed flag explicitly
      * (same contract as xmlSecParseFile and xmlSecParseMemory) */
     if(!(ctxt->wellFormed)) {
         xmlSecInternalError("document is not well formed", NULL);
@@ -524,11 +522,11 @@ xmlSecParseMemory(const xmlSecByte *buffer, xmlSecSize size, int recovery) {
 
     /* enable recovery mode */
     if(recovery != 0) {
-#if LIBXML_VERSION < 21300
+#if (LIBXML_VERSION < 21300)
         ctxt->recovery = 1;
-#else  /* LIBXML_VERSION < 21300 */
+#else  /* (LIBXML_VERSION < 21300) */
         xmlCtxtSetOptions(ctxt, xmlSecParserGetDefaultOptions() | XML_PARSE_RECOVER);
-#endif /* LIBXML_VERSION < 21300 */
+#endif /* (LIBXML_VERSION < 21300) */
     }
 
     ret = xmlParseDocument(ctxt);
@@ -576,14 +574,14 @@ void
 xmlSecParsePrepareCtxt(xmlParserCtxtPtr ctxt) {
     xmlSecAssert(ctxt != NULL);
 
-#if LIBXML_VERSION < 21300
+#if (LIBXML_VERSION < 21300)
     /* required for c14n! */
     ctxt->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
     ctxt->replaceEntities = 1;
     xmlCtxtUseOptions(ctxt, xmlSecParserGetDefaultOptions());
-#else  /* LIBXML_VERSION < 21300 */
+#else  /* (LIBXML_VERSION < 21300) */
     xmlCtxtSetOptions(ctxt, xmlSecParserGetDefaultOptions());
-#endif /* LIBXML_VERSION < 21300 */
+#endif /* (LIBXML_VERSION < 21300) */
 
 }
 
@@ -623,11 +621,11 @@ xmlSecParsePrepareCtxt(xmlParserCtxtPtr ctxt) {
  * xmlNoNetExternalEntityLoader in xmlIO.c), so by itself it would not stop
  * file:// or https:// external entity loads.
  */
-#if LIBXML_VERSION < 21300
+#if (LIBXML_VERSION < 21300)
 static int g_xmlsec_parser_default_options = XML_PARSE_NONET | XML_PARSE_NOENT | XML_PARSE_DTDLOAD | XML_PARSE_DTDATTR | XML_PARSE_NODICT | XML_PARSE_HUGE;
-#else  /* LIBXML_VERSION < 21300 */
+#else  /* (LIBXML_VERSION < 21300) */
 static int g_xmlsec_parser_default_options = XML_PARSE_NO_XXE | XML_PARSE_NONET | XML_PARSE_NOENT | XML_PARSE_DTDLOAD | XML_PARSE_DTDATTR | XML_PARSE_NODICT | XML_PARSE_HUGE;
-#endif /* LIBXML_VERSION < 21300 */
+#endif /* (LIBXML_VERSION < 21300) */
 /**
  * @brief Gets default LibXML2 parser options.
  * @note Not thread-safe: the value is a process-wide global, set it before

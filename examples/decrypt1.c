@@ -12,7 +12,7 @@
  * Usage:
  *
  * \code{.sh}
- *      ./decrypt1 <xml-enc> <aes-key-file>
+ *      ./decrypt1 <enc-file> <key-file>
  * \endcode
  *
  * Example:

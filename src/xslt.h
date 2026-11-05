@@ -6,7 +6,7 @@
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * @brief Internal XSLT helper functions.
+ * @brief Internal XSLT transform initialization and shutdown functions.
  */
 #ifndef XMLSEC_XSLT_H
 #define XMLSEC_XSLT_H

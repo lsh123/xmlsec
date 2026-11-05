@@ -62,7 +62,8 @@ int                         xmlSecTransformWriteKeyInfoNode      (xmlSecKeyPtr k
  * Contains the parsed key agreement parameters (excluding the originator / recipient
  * keys which are cached in the xmlSecKeyDataKAM structure). The kdfKeyInfoCtx is
  * initialized in xmlSecTransformKAMInitialize and the kdfTransform / memBufTransform
- * are populated during xmlSecTransformKAMRead, then used during Execute and NodeWrite.
+ * are populated during xmlSecTransformKAMRead, then used by
+ * xmlSecTransformKAMExecuteKdf during Execute.
  * Note that kdfTransform / memBufTransform are freed only in xmlSecTransformKAMFinalize,
  * so the caller must call xmlSecTransformKAMFinalize on error (e.g. if
  * xmlSecTransformKAMRead fails).
@@ -75,8 +76,7 @@ struct _xmlSecTransformKAM {
                                                 *   the caller does not specify one; 0 means
                                                 *   not specified */
 };
-typedef struct _xmlSecTransformKAM                          xmlSecTransformKAM,
-                                                            *xmlSecTransformKAMPtr;
+typedef struct _xmlSecTransformKAM   xmlSecTransformKAM, *xmlSecTransformKAMPtr;
 
 XMLSEC_EXPORT int   xmlSecTransformKAMInitialize            (xmlSecTransformKAMPtr params);
 XMLSEC_EXPORT void  xmlSecTransformKAMFinalize              (xmlSecTransformKAMPtr params);
@@ -277,8 +277,7 @@ struct _xmlSecTransformRsaOaepParams {
     xmlChar *    digestAlgorithm;
     xmlChar *    mgf1DigestAlgorithm;
 };
-typedef struct _xmlSecTransformRsaOaepParams            xmlSecTransformRsaOaepParams,
-                                                        *xmlSecTransformRsaOaepParamsPtr;
+typedef struct _xmlSecTransformRsaOaepParams   xmlSecTransformRsaOaepParams, *xmlSecTransformRsaOaepParamsPtr;
 
 XMLSEC_EXPORT int  xmlSecTransformRsaOaepParamsInitialize   (xmlSecTransformRsaOaepParamsPtr oaepParams);
 XMLSEC_EXPORT void xmlSecTransformRsaOaepParamsFinalize     (xmlSecTransformRsaOaepParamsPtr oaepParams);

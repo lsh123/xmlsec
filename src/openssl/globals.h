@@ -44,7 +44,7 @@
  */
 #define XMLSEC_OPENSSL_ERROR_BUFFER_SIZE                1024
 
-/** AWS-LC, BoringSSL and OpenSSL use different types for the error code */
+/** BoringSSL and AWS-LC use a different type for the error code than OpenSSL and LibreSSL */
 #if defined(XMLSEC_OPENSSL_IS_BORINGSSL) || defined(XMLSEC_OPENSSL_IS_AWSLC)
 typedef uint32_t xmlSecOpenSSLErrorType;
 #else /* defined(XMLSEC_OPENSSL_IS_BORINGSSL) || defined(XMLSEC_OPENSSL_IS_AWSLC) */
@@ -57,6 +57,10 @@ typedef unsigned long xmlSecOpenSSLErrorType;
  * @details Macro. The XMLSec library macro for reporting OpenSSL crypto errors.
  * @param errorFunction the failed function name.
  * @param errorObject the specific error object (e.g. transform, key data, etc).
+ * @note The reported error is the most recent OpenSSL error queue entry
+ * (ERR_peek_last_error()); if the failing call did not push a new error
+ * (e.g. on out-of-memory) or the queue is empty, the reported message may
+ * come from an earlier, unrelated call in the same thread.
  */
 #define xmlSecOpenSSLError(errorFunction, errorObject)      \
     do {                                                    \
@@ -80,11 +84,15 @@ typedef unsigned long xmlSecOpenSSLErrorType;
  * @param errorObject the specific error object (e.g. transform, key data, etc).
  * @param msg the extra message (must be a string literal, it is concatenated with the backend error suffix at compile time).
  * @param param the extra message param.
+ * @note The reported error is the most recent OpenSSL error queue entry
+ * (ERR_peek_last_error()); if the failing call did not push a new error
+ * (e.g. on out-of-memory) or the queue is empty, the reported message may
+ * come from an earlier, unrelated call in the same thread.
  */
 #define xmlSecOpenSSLError2(errorFunction, errorObject, msg, param) \
     do {                                                            \
-        char _openssl_error_buf[XMLSEC_OPENSSL_ERROR_BUFFER_SIZE];  \
-        xmlSecOpenSSLErrorType _openssl_error_code = ERR_peek_last_error();  \
+        char _openssl_error_buf[XMLSEC_OPENSSL_ERROR_BUFFER_SIZE]; \
+        xmlSecOpenSSLErrorType _openssl_error_code = ERR_peek_last_error(); \
         ERR_error_string_n(_openssl_error_code, _openssl_error_buf, sizeof(_openssl_error_buf)); \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
                     (const char*)(errorObject),             \
@@ -104,11 +112,15 @@ typedef unsigned long xmlSecOpenSSLErrorType;
  * @param msg the extra message (must be a string literal, it is concatenated with the backend error suffix at compile time).
  * @param param1 the extra message param1.
  * @param param2 the extra message param2.
+ * @note The reported error is the most recent OpenSSL error queue entry
+ * (ERR_peek_last_error()); if the failing call did not push a new error
+ * (e.g. on out-of-memory) or the queue is empty, the reported message may
+ * come from an earlier, unrelated call in the same thread.
  */
 #define xmlSecOpenSSLError3(errorFunction, errorObject, msg, param1, param2) \
     do {                                                                    \
-        char _openssl_error_buf[XMLSEC_OPENSSL_ERROR_BUFFER_SIZE];  \
-        xmlSecOpenSSLErrorType _openssl_error_code = ERR_peek_last_error();  \
+        char _openssl_error_buf[XMLSEC_OPENSSL_ERROR_BUFFER_SIZE]; \
+        xmlSecOpenSSLErrorType _openssl_error_code = ERR_peek_last_error(); \
         ERR_error_string_n(_openssl_error_code, _openssl_error_buf, sizeof(_openssl_error_buf)); \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
                     (const char*)(errorObject),             \

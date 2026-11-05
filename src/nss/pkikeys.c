@@ -48,7 +48,7 @@ struct _xmlSecNssPKIKeyDataCtx {
 
 /******************************************************************************
  *
- * PKI key data (dsa/rsa/ec)
+ * PKI key data
  *
   *****************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(NssPKIKeyData, xmlSecNssPKIKeyDataCtx)
@@ -239,7 +239,7 @@ xmlSecNssPKIAdoptKey(SECKEYPrivateKey *privkey,
     case rsaKey:
         data = xmlSecKeyDataCreate(xmlSecNssKeyDataRsaId);
         if(data == NULL) {
-            xmlSecInternalError("xmlSecKeyDataCreate(KeyDataRsaId)", NULL);
+            xmlSecInternalError("xmlSecKeyDataCreate", NULL);
             return(NULL);
         }
         break;
@@ -522,7 +522,7 @@ xmlSecNssPKIKeyDataGetSize(xmlSecKeyDataPtr data) {
 #endif /* XMLSEC_NO_EC */
 #ifndef XMLSEC_NO_EDDSA
     case edKey:
-        /* SECKEY_PublicKeyStrengthInBits doesn't handle EC keys correctly so we compute the size
+        /* SECKEY_PublicKeyStrengthInBits doesn't handle EdDSA keys correctly so we compute the size
          * from the public value length. */
         return(8 * ctx->pubkey->u.ec.publicValue.len);
 #endif /* XMLSEC_NO_EDDSA */
@@ -600,7 +600,7 @@ xmlSecNssSetBigNumValue(const SECItem *val, xmlSecBufferPtr buf) {
 
 /******************************************************************************
  *
- * Helper macro to declare PKI key data klass (dsa/rsa/ec)
+ * Helper macro to declare PKI key data klass
  *
   *****************************************************************************/
 #define XMLSEC_NSS_PKI_KEY_KLASS_EX(lcname, ucname, ns, generate, xmlRead, xmlWrite)           \
@@ -1175,7 +1175,7 @@ done:
 }
 
 static int
-xmlSecNssKeyDataRsaWrite(xmlSecKeyDataId id,xmlSecKeyDataPtr data,
+xmlSecNssKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
                          xmlSecKeyValueRsaPtr rsaValue,
                          int writePrivateKey XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecNssPKIKeyDataCtxPtr ctx;
@@ -1419,7 +1419,7 @@ xmlSecNssKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
     }
     if(SECITEM_AllocItem(pubkey->arena, &ecparams, (2 + oidData->oid.len)) == NULL) {
         xmlSecNssError2("SECITEM_AllocItem",  xmlSecKeyDataKlassGetName(id),
-            "curve_oid=%u", (2 + oidData->oid.len));
+            "size=%u", (2 + oidData->oid.len));
         goto done;
     }
     ecparams.data[0] = SEC_ASN1_OBJECT_ID;
@@ -1667,7 +1667,7 @@ xmlSecNssKeyDataXdhGetKlass(void) {
  *
   *****************************************************************************/
 
-/* ML-DSA klass: no XML KeyValue representation, keys are read from certificates/tokens only */
+/* ML-DSA klass: no XML KeyValue representation, load from file/DER/PEM only */
 #define XMLSEC_NSS_PKI_KEY_KLASS_MLDSA(lcname, ucname, generate)                          \
 static xmlSecKeyDataKlass xmlSecNssKeyData ## lcname ## Klass = {                         \
     sizeof(xmlSecKeyDataKlass),                 /* xmlSecSize klassSize */                \
@@ -1722,7 +1722,7 @@ xmlSecNssKeyDataMLDSAGetKlass(void) {
  *
   *****************************************************************************/
 
-/* ML-KEM klass: no XML KeyValue representation, keys are read from certificates/tokens only */
+/* ML-KEM klass: no XML KeyValue representation, load from file/DER/PEM only */
 #define XMLSEC_NSS_PKI_KEY_KLASS_MLKEM(lcname, ucname, generate)                          \
 static xmlSecKeyDataKlass xmlSecNssKeyData ## lcname ## Klass = {                         \
     sizeof(xmlSecKeyDataKlass),                 /* xmlSecSize klassSize */                \

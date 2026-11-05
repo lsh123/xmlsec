@@ -252,7 +252,7 @@ xmlSecGCryptAsn1IsECKey(xmlSecGCryptAsn1ObjectId * objectids, xmlSecSize objecti
 
 
 static int
-xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSecSize* buflen,
+xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSecSize * buflen,
     gcry_mpi_t * integers, xmlSecSize integers_size, xmlSecSize * integers_out_size,
     xmlSecGCryptAsn1ObjectId * objectids, xmlSecSize objectids_size, xmlSecSize * objectids_out_size)
 {
@@ -324,7 +324,7 @@ xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSe
                 case TAG_INTEGER:
                 case TAG_OCTET_STRING:
                     if((*integers_out_size) >= integers_size) {
-                        xmlSecInternalError2("xmlSecGCryptAsn1ParseTag", NULL, "sequence too long, integers_size=" XMLSEC_SIZE_FMT, integers_size);
+                        xmlSecInternalError2("xmlSecGCryptAsn1ParseIntegerSequence", NULL, "sequence too long, integers_size=" XMLSEC_SIZE_FMT, integers_size);
                         return(-1);
                     }
 
@@ -413,7 +413,7 @@ xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSe
 
                 case TAG_OBJECT_ID:
                     if((*objectids_out_size) >= objectids_size) {
-                        xmlSecInternalError2("xmlSecGCryptAsn1ParseTag", NULL, "sequence too long, objectids_size=" XMLSEC_SIZE_FMT, objectids_size);
+                        xmlSecInternalError2("xmlSecGCryptAsn1ParseIntegerSequence", NULL, "sequence too long, objectids_size=" XMLSEC_SIZE_FMT, objectids_size);
                         return(-1);
                     }
                     if(ti.length > XMLSEC_GCRYPT_ASN1_MAX_OBJECT_ID_SIZE) {
@@ -542,11 +542,12 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
     }
 
     /* Note: xmlSecGCryptAsn1ParseIntegerSequence parses the leading top-level
-     * SEQUENCE and does not require that the whole input be consumed, so any
-     * trailing bytes after the outer SEQUENCE are silently ignored. This is a
-     * lenient-parsing choice rather than a defect: the key built from the leading
-     * SEQUENCE is valid, and ignoring trailing data has no memory-safety or
-     * verification-bypass consequence. */
+     * SEQUENCE but does not enforce its declared content length, so trailing
+     * bytes after the outer SEQUENCE are parsed by the same switch statement:
+     * TLVs with recognized tags are appended to the integers and object ids
+     * arrays, and TLVs with unrecognized tags cause an error. As a result,
+     * trailing data can change the guessed key type or the key built from
+     * the parsed values. */
 
     /* do we need to guess the key type? not robust but the best we can do */
     if(type == xmlSecGCryptDerKeyTypeAuto) {
@@ -634,7 +635,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
 
         ret = xmlSecGCryptKeyDataDsaAdoptKeyPair(key_data, s_pub_key, s_priv_key);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecGCryptKeyDataDsaAdoptKey(xmlSecGCryptKeyDataDsaId)", NULL);
+            xmlSecInternalError("xmlSecGCryptKeyDataDsaAdoptKeyPair(xmlSecGCryptKeyDataDsaId)", NULL);
             xmlSecKeyDataDestroy(key_data);
             key_data = NULL;
             goto done;
@@ -671,7 +672,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
 
         ret = xmlSecGCryptKeyDataDsaAdoptKeyPair(key_data, s_pub_key, NULL);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecGCryptKeyDataDsaAdoptKey(xmlSecGCryptKeyDataDsaId)", NULL);
+            xmlSecInternalError("xmlSecGCryptKeyDataDsaAdoptKeyPair(xmlSecGCryptKeyDataDsaId)", NULL);
             xmlSecKeyDataDestroy(key_data);
             key_data = NULL;
             goto done;
@@ -719,7 +720,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
 
         ret = xmlSecGCryptKeyDataRsaAdoptKeyPair(key_data, s_pub_key, s_priv_key);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecGCryptKeyDataRsaAdoptKey(xmlSecGCryptKeyDataRsaId)", NULL);
+            xmlSecInternalError("xmlSecGCryptKeyDataRsaAdoptKeyPair(xmlSecGCryptKeyDataRsaId)", NULL);
             xmlSecKeyDataDestroy(key_data);
             key_data = NULL;
             goto done;
@@ -755,7 +756,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
 
         ret = xmlSecGCryptKeyDataRsaAdoptKeyPair(key_data, s_pub_key, NULL);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecGCryptKeyDataRsaAdoptKey(xmlSecGCryptKeyDataRsaId)", NULL);
+            xmlSecInternalError("xmlSecGCryptKeyDataRsaAdoptKeyPair(xmlSecGCryptKeyDataRsaId)", NULL);
             xmlSecKeyDataDestroy(key_data);
             key_data = NULL;
             goto done;
@@ -782,7 +783,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
             goto done;
         }
 
-        /* first integer is 0, just skip it */
+        /* first integer is the version field (always 1), just skip it */
 
         /* search through all object ids to find the curve name */
         for(xmlSecSize ii = 0; (ii < objectids_num) && (ecCurve == NULL); ++ii) {

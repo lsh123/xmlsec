@@ -121,7 +121,7 @@ xmlSecNssCbcCipherCtxInit(
             return(0);
         }
 
-        /* copy iv to our buffer*/
+        /* copy iv to our buffer */
         xmlSecAssert2(xmlSecBufferGetData(in) != NULL, -1);
         memcpy(ctx->iv, xmlSecBufferGetData(in), ivSize);
 
@@ -639,28 +639,28 @@ xmlSecNssCbcCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 
 /* Helper macros to define the transform klass */
 
-#define XMLSEC_NSS_CIPHER_CBC_KLASS_EX(name, readNode)                                                  \
-static xmlSecTransformKlass xmlSecNss ## name ## Klass = {                                              \
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
-    xmlSecNssCbcCipherSize,                     /* xmlSecSize objSize */                                \
-    xmlSecName ## name,                         /* const xmlChar* name; */                              \
-    xmlSecHref ## name,                         /* const xmlChar* href; */                              \
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                       \
-    xmlSecNssCbcCipherInitialize,               /* xmlSecTransformInitializeMethod initialize; */       \
-    xmlSecNssCbcCipherFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */           \
-    readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */           \
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */         \
-    xmlSecNssCbcCipherSetKeyReq,                /* xmlSecTransformSetKeyMethod setKeyReq; */            \
-    xmlSecNssCbcCipherSetKey,                   /* xmlSecTransformSetKeyMethod setKey; */               \
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */           \
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */             \
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
-    xmlSecNssCbcCipherExecute,                  /* xmlSecTransformExecuteMethod execute; */             \
-    NULL,                                       /* void* reserved0; */                                  \
-    NULL,                                       /* void* reserved1; */                                  \
+#define XMLSEC_NSS_CIPHER_CBC_KLASS_EX(name, readNode)                                                                \
+static xmlSecTransformKlass xmlSecNss ## name ## Klass = {                                                            \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                            \
+    xmlSecNssCbcCipherSize,                     /* xmlSecSize objSize */                                              \
+    xmlSecName ## name,                         /* const xmlChar* name; */                                            \
+    xmlSecHref ## name,                         /* const xmlChar* href; */                                            \
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                                     \
+    xmlSecNssCbcCipherInitialize,               /* xmlSecTransformInitializeMethod initialize; */                     \
+    xmlSecNssCbcCipherFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */                         \
+    readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */                         \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */                       \
+    xmlSecNssCbcCipherSetKeyReq,                /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */              \
+    xmlSecNssCbcCipherSetKey,                   /* xmlSecTransformSetKeyMethod setKey; */                             \
+    NULL,                                       /* xmlSecTransformVerifyMethod verify; */                             \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */                   \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                           \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                             \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                           \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                             \
+    xmlSecNssCbcCipherExecute,                  /* xmlSecTransformExecuteMethod execute; */                           \
+    NULL,                                       /* void* reserved0; */                                                \
+    NULL,                                       /* void* reserved1; */                                                \
 };
 
 #define XMLSEC_NSS_CIPHER_CBC_KLASS(name)                                                               \
@@ -754,7 +754,7 @@ XMLSEC_NSS_CIPHER_CBC_KLASS(Des3Cbc)
 
 /**
  * @brief Triple DES CBC encryption transform klass.
- * @return pointer to Triple DES encryption transform.
+ * @return pointer to Triple DES CBC encryption transform.
  */
 xmlSecTransformId
 xmlSecNssTransformDes3CbcGetKlass(void) {

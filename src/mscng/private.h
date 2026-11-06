@@ -38,6 +38,12 @@
 extern "C" {
 #endif /* __cplusplus */
 
+/**
+ * Maximum digest output size in bytes
+ */
+#ifndef XMLSEC_MSCNG_MAX_DIGEST_SIZE
+#define XMLSEC_MSCNG_MAX_DIGEST_SIZE                    ((xmlSecSize)128)
+#endif /* XMLSEC_MSCNG_MAX_DIGEST_SIZE */
 
 /* Reverse @len bytes of @buf in-place (little-endian <-> big-endian conversion). */
 static inline void
@@ -318,15 +324,17 @@ int                xmlSecMSCngKeyDataCertGetMlDsaPubkey               (PCERT_PUB
 
 /* BCryptEncapsulate() and BCryptDecapsulate() are declared by the Windows
  * SDK only when NTDDI_VERSION >= NTDDI_WIN11_GE; provide local prototypes
- * otherwise. */
-#if !(defined(NTDDI_VERSION) && (NTDDI_VERSION >= NTDDI_WIN11_GE))
+ * otherwise.  The NTDDI_WIN11_GE macro is only defined by SDKs new enough to
+ * declare the functions, so its absence (where it would evaluate to 0 in the
+ * comparison) must also force the local prototypes. */
+#if !(defined(NTDDI_VERSION) && defined(NTDDI_WIN11_GE) && (NTDDI_VERSION >= NTDDI_WIN11_GE))
 NTSTATUS WINAPI BCryptEncapsulate(BCRYPT_KEY_HANDLE hKey, PUCHAR pbSecretKey,
     ULONG cbSecretKey, ULONG* pcbSecretKey, PUCHAR pbCipherText,
     ULONG cbCipherText, ULONG* pcbCipherText, ULONG dwFlags);
 NTSTATUS WINAPI BCryptDecapsulate(BCRYPT_KEY_HANDLE hKey, PUCHAR pbCipherText,
     ULONG cbCipherText, PUCHAR pbSecretKey, ULONG cbSecretKey,
     ULONG* pcbSecretKey, ULONG dwFlags);
-#endif /* !(NTDDI_VERSION >= NTDDI_WIN11_GE) */
+#endif /* !(defined(NTDDI_VERSION) && defined(NTDDI_WIN11_GE) && (NTDDI_VERSION >= NTDDI_WIN11_GE)) */
 
 /* ML-KEM raw key sizes in bytes, verified against the CNG ML-KEM provider
  * on Windows build 26300: public key: ML-KEM-512: 800, ML-KEM-768: 1184,

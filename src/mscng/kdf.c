@@ -26,7 +26,7 @@
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
 #include "../transform_helpers.h"
-
+#include "private.h"
 
 /* SHA224 algorithm identifier is not defined in the Windows SDK bcrypt.h;
  * provide a fallback so the code compiles. */
@@ -659,6 +659,12 @@ xmlSecMSCngHkdfPerformKeyDerivation(
             (PBYTE)&hashLen, sizeof(hashLen), &propLen, 0);
         if(status != STATUS_SUCCESS) {
             xmlSecMSCngNtError("BCryptGetProperty(BCRYPT_HASH_LENGTH)", NULL, status);
+            BCryptCloseAlgorithmProvider(hHashAlg, 0);
+            goto done;
+        }
+        if((hashLen == 0) || (hashLen > XMLSEC_MSCNG_MAX_DIGEST_SIZE)) {
+            xmlSecInternalError2("BCryptGetProperty", NULL,
+                "unexpected hash length=" XMLSEC_SIZE_FMT, (xmlSecSize)hashLen);
             BCryptCloseAlgorithmProvider(hHashAlg, 0);
             goto done;
         }

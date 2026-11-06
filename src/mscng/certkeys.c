@@ -635,11 +635,17 @@ xmlSecMSCngCertKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
 
     if(srcCtx->privkey != 0) {
         if(srcCtx->cert != NULL) {
-            ret = xmlSecMSCngKeyDataCertGetPrivkey(dstCtx->cert, &dstCtx->privkey, &dstCtx->privkeyNeedsFree);
+            NCRYPT_KEY_HANDLE hPrivKey = 0;
+            BOOL needsFree = TRUE;
+
+            ret = xmlSecMSCngKeyDataCertGetPrivkey(dstCtx->cert, &hPrivKey, &needsFree);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecMSCngKeyDataCertGetPrivkey", NULL);
                 return(-1);
             }
+
+            dstCtx->privkey = hPrivKey;
+            dstCtx->privkeyNeedsFree = needsFree;
         } else {
             /* a key without a certificate can only have a private key if it was
              * generated, in which case the BCrypt key pair (srcCtx->pubkey)

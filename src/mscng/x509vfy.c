@@ -998,10 +998,16 @@ xmlSecMSCngX509StoreVerifyCertificateChain(
             xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateValidityAndRevocation", NULL);
             goto done;
         } else if (ret != 1) {
-            /* the certificate failed verification (e.g. expired or revoked),
-             * stop the chain verification process immediately */
-            res = 0;
-            goto done;
+            /* the certificate failed verification (e.g. expired or revoked); it
+             * cannot be part of a valid chain, so skip this branch and continue
+             * searching the other branches in the queue (same behavior as the
+             * mscrypto sibling) instead of aborting the whole verification */
+            if(freeCurrentCert == TRUE) {
+                CertFreeCertificateContext(currentCert);
+            }
+            currentCert = NULL;
+            freeCurrentCert = FALSE;
+            continue;
         }
         ret = xmlSecMSCngX509StoreVerifyCertificateTrust(currentCert, trustedStore);
         if(ret < 0) {
@@ -1575,7 +1581,11 @@ xmlSecMSCngX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs, xmlSec
     while((cert = CertEnumCertificatesInStore(certs, cert)) != NULL) {
         PCCERT_CONTEXT foundCert = NULL;
         int skip = 0;
-        xmlSecAssert2(cert->pCertInfo != NULL, NULL);
+        if(cert->pCertInfo == NULL) {
+            /* malformed store context: skip it; the next CertEnumCertificatesInStore
+             * call frees this handle (and the final one is freed by the loop exit) */
+            continue;
+        }
 
         /* is cert the issuer of a certificate in certs? if so, skip it */
         do {

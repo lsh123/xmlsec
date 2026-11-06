@@ -12,6 +12,8 @@
  */
 #include "globals.h"
 
+#include <stdio.h>
+
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>

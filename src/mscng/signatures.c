@@ -1092,8 +1092,13 @@ xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
             cbHash = qSize;
         }
         if(dataSize != (xmlSecSize)(2 * qSize)) {
-            if(dataSize < (xmlSecSize)(2 * qSize)) {
-                xmlSecInvalidSizeLessThanError("Signature", dataSize, (xmlSecSize)(2 * qSize),
+            if(qSize > ctx->signatureHalfSize) {
+                xmlSecInvalidSizeMoreThanError("Signature", (xmlSecSize)(2 * qSize),
+                    (xmlSecSize)(2 * ctx->signatureHalfSize), xmlSecTransformGetName(transform));
+                goto done;
+            }
+            if(dataSize < (xmlSecSize)(2 * ctx->signatureHalfSize)) {
+                xmlSecInvalidSizeLessThanError("Signature", dataSize, (xmlSecSize)(2 * ctx->signatureHalfSize),
                     xmlSecTransformGetName(transform));
                 goto done;
             }
@@ -1590,7 +1595,7 @@ xmlSecMSCngSignatureStartHash(
         return(-1);
     }
     xmlSecAssert2(cbData == sizeof(DWORD), -1);
-    if (ctx->cbHash <= 0) {
+    if ((ctx->cbHash <= 0) || (ctx->cbHash > XMLSEC_MSCNG_MAX_DIGEST_SIZE)) {
         xmlSecInternalError2("BCryptGetProperty", xmlSecTransformGetName(transform),
             "unexpected hash length=" XMLSEC_SIZE_FMT, (xmlSecSize)ctx->cbHash);
         return(-1);

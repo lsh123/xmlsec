@@ -73,6 +73,9 @@
 #ifndef KDF_GENERIC_PARAMETER
 #define KDF_GENERIC_PARAMETER               0x11
 #endif /* KDF_GENERIC_PARAMETER */
+#ifndef KDF_HASH_ALGORITHM
+#define KDF_HASH_ALGORITHM                  0x00
+#endif /* KDF_HASH_ALGORITHM */
 
 /* HKDF KDF parameters */
 #ifndef KDF_HKDF_INFO
@@ -133,5 +136,10 @@
 #ifndef CERT_NCRYPT_KEY_SPEC
 #define CERT_NCRYPT_KEY_SPEC                0x00000001
 #endif /* CERT_NCRYPT_KEY_SPEC */
+
+/* MinGW may ship older wincrypt.h that lacks PKCS12_NO_PERSIST_KEY */
+#ifndef PKCS12_NO_PERSIST_KEY
+#define PKCS12_NO_PERSIST_KEY    0x00008000
+#endif /* PKCS12_NO_PERSIST_KEY */
 
 #endif /* XMLSEC_MSCNG_XMLSEC_MINGW_H */

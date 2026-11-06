@@ -955,7 +955,6 @@ xmlSecGnuTLSHkdfGenerateKey(
     xmlSecBufferPtr out,
     const xmlChar* transformName
 ) {
-    static const xmlSecByte zero = 0;
     xmlSecByte * keyData;
     xmlSecSize keySize;
     xmlSecByte * saltData;
@@ -963,6 +962,7 @@ xmlSecGnuTLSHkdfGenerateKey(
     xmlSecByte * infoData;
     xmlSecSize infoSize;
     xmlSecByte * outData;
+    xmlSecBufferPtr prkBuffer = NULL;
     xmlSecByte * prk = NULL;
     xmlSecSize prkLen;
     gnutls_datum_t keyDatum;
@@ -1007,7 +1007,7 @@ xmlSecGnuTLSHkdfGenerateKey(
         XMLSEC_SAFE_CAST_SIZE_TO_UINT(infoSize, infoDatum.size, return(-1), transformName);
         infoDatum.data = infoData;
     } else {
-        infoDatum.data = (unsigned char*)&zero;
+        infoDatum.data = NULL;
         infoDatum.size = 0;
     }
 
@@ -1028,20 +1028,23 @@ xmlSecGnuTLSHkdfGenerateKey(
         return(-1);
     }
 
-    /* allocate PRK buffer */
-    prk = (xmlSecByte *)xmlMalloc(prkLen);
-    if(prk == NULL) {
-        xmlSecMallocError(prkLen, NULL);
+    /* allocate PRK buffer (secure, so the key material is cleansed
+     * when the buffer is released) */
+    prkBuffer = xmlSecBufferCreate(prkLen);
+    if(prkBuffer == NULL) {
+        xmlSecInternalError("xmlSecBufferCreate()", transformName);
         return(-1);
     }
+    xmlSecBufferMakeSecure(prkBuffer);
+    prk = xmlSecBufferGetData(prkBuffer);
+    xmlSecAssert2(prk != NULL, -1);
 
     /* HKDF-Extract: PRK = HMAC-Hash(salt, IKM)
      * gnutls_hkdf_extract(mac, key, salt, output) */
     err = gnutls_hkdf_extract(ctx->u.hkdf.mac, &keyDatum, &saltDatum, prk);
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_hkdf_extract", err, transformName);
-        xmlSecMemCleanse(prk, prkLen);
-        xmlFree(prk);
+        xmlSecBufferDestroy(prkBuffer);
         return(-1);
     }
 
@@ -1049,21 +1052,19 @@ xmlSecGnuTLSHkdfGenerateKey(
      * gnutls_hkdf_expand(mac, key, info, output, length) */
     {
         gnutls_datum_t prkDatum;
-        XMLSEC_SAFE_CAST_SIZE_TO_UINT(prkLen, prkDatum.size, xmlSecMemCleanse(prk, prkLen); xmlFree(prk); return(-1), transformName);
+        XMLSEC_SAFE_CAST_SIZE_TO_UINT(prkLen, prkDatum.size, xmlSecBufferDestroy(prkBuffer); return(-1), transformName);
         prkDatum.data = prk;
         err = gnutls_hkdf_expand(ctx->u.hkdf.mac, &prkDatum, &infoDatum, outData, outLen);
     }
 
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_hkdf_expand", err, transformName);
-        xmlSecMemCleanse(prk, prkLen);
-        xmlFree(prk);
+        xmlSecBufferDestroy(prkBuffer);
         return(-1);
     }
 
     /* clean up PRK */
-    xmlSecMemCleanse(prk, prkLen);
-    xmlFree(prk);
+    xmlSecBufferDestroy(prkBuffer);
 
     /* success */
     return(0);
@@ -1108,8 +1109,12 @@ xmlSecGnuTLSKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSKdfCtxSize), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
+    /* the KDF derives a key from the keying material only: it never consumes
+     * transform input; data pushed into the transform is a caller error and
+     * must not be silently dropped */
     in = &(transform->inBuf);
     out = &(transform->outBuf);
+    xmlSecAssert2(xmlSecBufferGetSize(in) == 0, -1);
 
     ctx = xmlSecGnuTLSKdfGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);

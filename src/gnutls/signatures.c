@@ -179,23 +179,20 @@ xmlSecGnuTLSSignatureCheckId(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_MLDSA
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformMLDSA44Id)) {
         return(1);
-    } else
-    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformMLDSA65Id)) {
+    } else if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformMLDSA65Id)) {
         return(1);
-    } else
-    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformMLDSA87Id)) {
+    } else if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformMLDSA87Id)) {
         return(1);
-    } else
+    }
 #endif /* XMLSEC_NO_MLDSA */
 
     /*  EdDSA  */
 #ifndef XMLSEC_NO_EDDSA
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEdDSAEd25519Id)) {
         return(1);
-    } else
-    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEdDSAEd448Id)) {
+    } else if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEdDSAEd448Id)) {
         return(1);
-    } else
+    }
 #endif /* XMLSEC_NO_EDDSA */
 
     /*  RSA  */
@@ -251,7 +248,10 @@ xmlSecGnuTLSSignatureCheckId(xmlSecTransformPtr transform) {
 
 #endif /* XMLSEC_NO_RSA */
 
-    return(0);
+    /*  Unknown  */
+    {
+        return(0);
+    }
 }
 
 static int
@@ -555,6 +555,13 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
         err = gnutls_hash_init(&(ctx->hash), ctx->dgstAlgo);
         if(err != GNUTLS_E_SUCCESS) {
             xmlSecGnuTLSError("gnutls_hash_init", err, NULL);
+            /* Do not call gnutls_hash_deinit() on init failure: GnuTLS leaves the
+             * handle non-NULL with an uninitialized deinit function pointer when
+             * gnutls_hash_init() fails (verified in GnuTLS 3.8: gnutls_hash_init()
+             * does not free or reset *dig on error), so calling deinit on it is
+             * undefined behavior. The small handle allocation is leaked on this
+             * rare error path as a deliberate trade-off. */
+            ctx->hash = NULL;
             xmlSecBufferFinalize(&(ctx->preSignBuffer));
             return(-1);
         }
@@ -697,10 +704,67 @@ xmlSecGnuTLSSignatureSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr key
         return(-1);                                      \
     }
 
+/* returns the size of the minimal DER INTEGER content for the given value:
+ * leading 0x00 bytes are stripped (keeping at least one content byte; an
+ * all-zero value is encoded as a single 0x00 byte) and a 0x00 sign-padding
+ * byte is added when the first content byte has its high bit set */
+static xmlSecSize
+xmlSecGnuTLSToDerGetIntegerContentSize(const xmlSecByte* data, xmlSecSize size) {
+    xmlSecSize len = size;
+
+    xmlSecAssert2(data != NULL, 0);
+    xmlSecAssert2(size > 0, 0);
+
+    /* skip leading 0x00 bytes, keeping at least one content byte */
+    while((len > 1) && (data[0] == 0x00)) {
+        ++data;
+        --len;
+    }
+    /* account for the 0x00 sign-padding byte */
+    if((data[0] & 0x80) != 0) {
+        ++len;
+    }
+
+    /* done */
+    return(len);
+}
+
+/* writes the minimal DER INTEGER content for the given value into the buffer
+ * (see xmlSecGnuTLSToDerGetIntegerContentSize for the encoding rules) and
+ * returns the number of content bytes written */
+static xmlSecSize
+xmlSecGnuTLSToDerWriteIntegerContent(xmlSecByte* pp, const xmlSecByte* data, xmlSecSize size) {
+    xmlSecSize len = size;
+    xmlSecSize written;
+
+    xmlSecAssert2(pp != NULL, 0);
+    xmlSecAssert2(data != NULL, 0);
+    xmlSecAssert2(size > 0, 0);
+
+    /* skip leading 0x00 bytes, keeping at least one content byte;
+     * afterwards len is the number of significant content bytes */
+    while((len > 1) && (data[0] == 0x00)) {
+        ++data;
+        --len;
+    }
+    written = len;
+    if((data[0] & 0x80) != 0) {
+        /* prepend the 0x00 sign-padding byte */
+        *pp = 0x00;
+        ++pp;
+        ++written;
+    }
+    memcpy(pp, data, len);
+
+    /* done */
+    return(written);
+}
+
 static int
 xmlSecGnuTLSToDer(const gnutls_datum_t* src, gnutls_datum_t* dst, xmlSecSize size) {
     xmlSecByte * pp;
-    xmlSecSize sizeOfSize;
+    xmlSecSize rSize, sSize;
+    xmlSecSize rSizeOfSize, sSizeOfSize;
     xmlSecSize seqSize, sizeOfSeqSize;
     xmlSecSize length;
 
@@ -715,7 +779,7 @@ xmlSecGnuTLSToDer(const gnutls_datum_t* src, gnutls_datum_t* dst, xmlSecSize siz
      * the key (RFC 6931) */
     if(src->size == 2 * size) {
         /* good, do nothing */
-    } else if((src->size < 2 * size) && (src->size % 2 == 0)) {
+    } else if((src->size > 0) && (src->size < 2 * size) && (src->size % 2 == 0)) {
         /* however some implementations (e.g. Java) cut leading zeros:
          * https://github.com/lsh123/xmlsec/issues/228 */
         size = src->size / 2;
@@ -729,8 +793,15 @@ xmlSecGnuTLSToDer(const gnutls_datum_t* src, gnutls_datum_t* dst, xmlSecSize siz
         return(-1);
     }
 
-    XMLSEC_GNUTLS_GET_SIZE_OF_SIZE(size, sizeOfSize);
-    seqSize = 2 * (size + sizeOfSize + 1); /* 2 integers: 2 * (int tag + int len + int val)*/
+    /* compute the minimal DER INTEGER content sizes for r and s:
+     * each half may shrink (leading 0x00 bytes stripped) or grow by
+     * 1 byte (0x00 sign-padding byte) */
+    rSize = xmlSecGnuTLSToDerGetIntegerContentSize(src->data, size);
+    sSize = xmlSecGnuTLSToDerGetIntegerContentSize(src->data + size, size);
+
+    XMLSEC_GNUTLS_GET_SIZE_OF_SIZE(rSize, rSizeOfSize);
+    XMLSEC_GNUTLS_GET_SIZE_OF_SIZE(sSize, sSizeOfSize);
+    seqSize = 2 + rSizeOfSize + sSizeOfSize + rSize + sSize; /* 2 integers: 2 * (int tag + int len + int val) */
 
     XMLSEC_GNUTLS_GET_SIZE_OF_SIZE(seqSize, sizeOfSeqSize);
     length = 1 + sizeOfSeqSize + seqSize; /* sequence: seq tag + seq len + seq val */
@@ -750,15 +821,13 @@ xmlSecGnuTLSToDer(const gnutls_datum_t* src, gnutls_datum_t* dst, xmlSecSize siz
 
     /* r */
     (*pp++) = XMLSEC_GNUTLS_ASN1_TAG_INTEGER;
-    XMLSEC_GNUTLS_PUT_LENGTH(pp, size);
-    memcpy(pp, src->data, size);
-    pp += size;
+    XMLSEC_GNUTLS_PUT_LENGTH(pp, rSize);
+    pp += xmlSecGnuTLSToDerWriteIntegerContent(pp, src->data, size);
 
     /* s */
     (*pp++) = XMLSEC_GNUTLS_ASN1_TAG_INTEGER;
-    XMLSEC_GNUTLS_PUT_LENGTH(pp, size);
-    memcpy(pp, src->data + size, size);
-    pp += size;
+    XMLSEC_GNUTLS_PUT_LENGTH(pp, sSize);
+    pp += xmlSecGnuTLSToDerWriteIntegerContent(pp, src->data + size, size);
 
     /* success */
     return(0);

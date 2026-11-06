@@ -29,6 +29,7 @@
 #include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/private.h>
+#include <xmlsec/xmltree.h>
 
 #include <xmlsec/gnutls/crypto.h>
 #include <xmlsec/gnutls/x509.h>
@@ -475,7 +476,9 @@ xmlSecGnuTLSX509CertDebugXmlDump(gnutls_x509_crt_t cert, FILE* output) {
 
     buf = xmlSecGnuTLSX509CertGetSubjectDN(cert);
     if(buf != NULL) {
-        fprintf(output, "<SubjectName>%s</SubjectName>\n", buf);
+        fprintf(output, "<SubjectName>");
+        xmlSecPrintXmlString(output, BAD_CAST buf);
+        fprintf(output, "</SubjectName>\n");
         xmlFree(buf);
     } else {
         fprintf(output, "<SubjectName>unknown</SubjectName>\n");
@@ -483,7 +486,9 @@ xmlSecGnuTLSX509CertDebugXmlDump(gnutls_x509_crt_t cert, FILE* output) {
 
     buf = xmlSecGnuTLSX509CertGetIssuerDN(cert);
     if(buf != NULL) {
-        fprintf(output, "<IssuerName>%s</IssuerName>\n", buf);
+        fprintf(output, "<IssuerName>");
+        xmlSecPrintXmlString(output, BAD_CAST buf);
+        fprintf(output, "</IssuerName>\n");
         xmlFree(buf);
     } else {
         fprintf(output, "<IssuerName>unknown</IssuerName>\n");
@@ -491,7 +496,9 @@ xmlSecGnuTLSX509CertDebugXmlDump(gnutls_x509_crt_t cert, FILE* output) {
 
     buf = xmlSecGnuTLSX509CertGetIssuerSerial(cert);
     if(buf != NULL) {
-        fprintf(output, "<SerialNumber>%s</SerialNumber>\n", buf);
+        fprintf(output, "<SerialNumber>");
+        xmlSecPrintXmlString(output, BAD_CAST buf);
+        fprintf(output, "</SerialNumber>\n");
         xmlFree(buf);
     } else {
         fprintf(output, "<SerialNumber>unknown</SerialNumber>\n");
@@ -532,21 +539,16 @@ int xmlSecGnuTLSX509FindCertCtxInitialize(xmlSecGnuTLSX509FindCertCtxPtr ctx,
 
 int
 xmlSecGnuTLSX509FindCertCtxInitializeFromValue(xmlSecGnuTLSX509FindCertCtxPtr ctx, xmlSecKeyX509DataValuePtr x509Value) {
-    int ret;
-
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(x509Value != NULL, -1);
 
-    ret = xmlSecGnuTLSX509FindCertCtxInitialize(ctx,
+    /* xmlSecGnuTLSX509FindCertCtxInitialize only copies pointers and cannot fail
+     * (its only failure path is a NULL ctx, which is checked above) */
+    xmlSecGnuTLSX509FindCertCtxInitialize(ctx,
                 x509Value->subject,
                 x509Value->issuerName, x509Value->issuerSerial,
                 xmlSecBufferGetData(&(x509Value->ski)), xmlSecBufferGetSize(&(x509Value->ski))
     );
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecGnuTLSX509FindCertCtxInitialize", NULL);
-        xmlSecGnuTLSX509FindCertCtxFinalize(ctx);
-        return(-1);
-    }
 
     if((!xmlSecBufferIsEmpty(&(x509Value->digest))) && (x509Value->digestAlgorithm != NULL)) {
         ctx->digestValue = xmlSecBufferGetData(&(x509Value->digest));
@@ -997,7 +999,9 @@ xmlSecGnuTLSX509CrlDebugXmlDump(gnutls_x509_crl_t crl, FILE* output) {
 
     buf = xmlSecGnuTLSX509CrlGetIssuerDN(crl);
     if(buf != NULL) {
-        fprintf(output, "<IssuerName>%s</IssuerName>\n", buf);
+        fprintf(output, "<IssuerName>");
+        xmlSecPrintXmlString(output, BAD_CAST buf);
+        fprintf(output, "</IssuerName>\n");
         xmlFree(buf);
     } else {
         fprintf(output, "<IssuerName>unknown</IssuerName>\n");

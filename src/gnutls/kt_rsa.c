@@ -576,10 +576,20 @@ xmlSecGnuTLSRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     }
 
     /* GnuTLS uses the same digest for both OAEP hash and MGF1 hash.
-     * If an MGF1 algorithm is specified, verify it matches the OAEP digest. */
+     * Per XMLEnc 1.1 (section 5.5.2), an absent MGF element defaults to
+     * MGF1 with SHA1. Since GnuTLS requires the MGF1 digest to equal the
+     * OAEP digest, let the check below reject configurations it cannot
+     * handle with a clear error. */
     if(oaepParams.mgf1DigestAlgorithm == NULL) {
-        /* no MGF1 specified: default to the OAEP digest per XMLEnc 1.1 */
-        mgf1DigestAlg = digestAlg;
+        /* no MGF1 specified: default to SHA1 per XMLEnc 1.1 */
+#ifndef XMLSEC_NO_SHA1
+        mgf1DigestAlg = GNUTLS_DIG_SHA1;
+#else  /* XMLSEC_NO_SHA1 */
+        xmlSecOtherError(XMLSEC_ERRORS_R_DISABLED, NULL,
+            "No MGF1 digest algorithm is specified and the default SHA1 digest is disabled");
+        xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
+        return(-1);
+#endif /* XMLSEC_NO_SHA1 */
     } else
 #ifndef XMLSEC_NO_SHA1
     if(xmlStrcmp(oaepParams.mgf1DigestAlgorithm, xmlSecHrefMgf1Sha1) == 0) {
@@ -616,11 +626,19 @@ xmlSecGnuTLSRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
     /* GnuTLS limitation: MGF1 digest must equal the OAEP digest */
     if(mgf1DigestAlg != digestAlg) {
-        xmlSecInvalidTransformError3(transform,
-            "GnuTLS does not support different MGF1 and OAEP digests: "
-            "mgf1=\"%s\" differs from oaep digest \"%s\"",
-            xmlSecErrorsSafeString(oaepParams.mgf1DigestAlgorithm),
-            xmlSecErrorsSafeString(oaepParams.digestAlgorithm));
+        if(oaepParams.mgf1DigestAlgorithm == NULL) {
+            xmlSecInvalidTransformError2(transform,
+                "No MGF1 digest algorithm is specified: the XMLEnc 1.1 default "
+                "(MGF1 with SHA1) differs from the specified OAEP digest \"%s\", "
+                "and GnuTLS requires the MGF1 digest to equal the OAEP digest",
+                xmlSecErrorsSafeString(oaepParams.digestAlgorithm));
+        } else {
+            xmlSecInvalidTransformError3(transform,
+                "GnuTLS does not support different MGF1 and OAEP digests: "
+                "mgf1=\"%s\" differs from oaep digest \"%s\"",
+                xmlSecErrorsSafeString(oaepParams.mgf1DigestAlgorithm),
+                xmlSecErrorsSafeString(oaepParams.digestAlgorithm));
+        }
         xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
         return(-1);
     }
@@ -630,11 +648,22 @@ xmlSecGnuTLSRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
      * gnutls_pubkey_encrypt_data/gnutls_privkey_decrypt_data fail at
      * runtime; reject them early with a clear error instead. */
     if((digestAlg == GNUTLS_DIG_SHA1) || (digestAlg == GNUTLS_DIG_SHA224)) {
-        xmlSecInvalidTransformError2(transform,
-            "GnuTLS does not support RSA-OAEP with the SHA1 or SHA-224 digest algorithm (%s): "
-            "use SHA-256, SHA-384 or SHA-512 instead",
-            xmlSecErrorsSafeString(oaepParams.digestAlgorithm)
-        );
+        if(transform->id == xmlSecGnuTLSTransformRsaOaepId) {
+            /* the XMLEnc 1.0 identifier fixes MGF1 to SHA1 and GnuTLS requires
+             * the MGF1 digest to equal the OAEP digest, so the only digest the
+             * transform can use is SHA1; since GnuTLS has no SHA1 OAEP support
+             * the transform cannot be used at all */
+            xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_TRANSFORM, NULL,
+                "GnuTLS does not support the XMLEnc 1.0 RSA-OAEP transform "
+                "(rsa-oaep-mgf1p): its MGF1 is fixed to SHA1, which GnuTLS "
+                "cannot use for RSA-OAEP");
+        } else {
+            xmlSecInvalidTransformError2(transform,
+                "GnuTLS does not support RSA-OAEP with the SHA1 or SHA-224 digest algorithm (%s): "
+                "use SHA-256, SHA-384 or SHA-512 instead",
+                (oaepParams.digestAlgorithm != NULL) ? (const char*)oaepParams.digestAlgorithm
+                                                     : "SHA1 (default)");
+        }
         xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
         return(-1);
     }

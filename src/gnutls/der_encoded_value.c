@@ -296,7 +296,7 @@ xmlSecGnuTLSKeyDataDEREncodedKeyValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr k
         xmlSecGnuTLSError("gnutls_pubkey_export2", err, xmlSecKeyDataKlassGetName(id));
         goto done;
     }
-    if(datum.data == NULL) {
+    if((datum.data == NULL) || (datum.size <= 0)) {
         xmlSecInternalError("gnutls_pubkey_export2", xmlSecKeyDataKlassGetName(id));
         goto done;
     }

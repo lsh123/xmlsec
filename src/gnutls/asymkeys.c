@@ -1537,7 +1537,9 @@ xmlSecGnuTLSKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /* privateExponent (only if available and requested) */
+    /* privateExponent (only if available and requested)
+     * Note: the privateExponent written here cannot be read back by this
+     * backend; see the note in xmlSecGnuTLSKeyDataRsaRead */
     if((writePrivateKey != 0) && (privkey != NULL)) {
         if((privateExponent.data == NULL) || (privateExponent.size <= 0)) {
             xmlSecInternalError("RSA privateExponent parameter is NULL", xmlSecKeyDataKlassGetName(id));

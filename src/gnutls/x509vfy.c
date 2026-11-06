@@ -259,19 +259,23 @@ xmlSecGnuTLSX509CheckCrtsTime(const gnutls_x509_crt_t * cert_list, xmlSecSize ce
 /**
  * @brief Checks that the trust anchor(s) of @p certs_chain are time valid at @p ts.
  *
- * The trust anchor(s) are the certs from @p trusted whose subject name matches
- * the issuer name of the topmost cert of @p certs_chain. The rest of the trusted
- * store is irrelevant to this chain and is not checked: an unrelated expired or
- * future-dated cert in the store must not break the verification of a valid chain.
+ * The trust anchor(s) are the certs from @p trusted that issued the topmost
+ * cert of @p certs_chain (as determined by gnutls_x509_crt_check_issuer(),
+ * the same issuer test GnuTLS applies when it matches the chain against the
+ * store). The rest of the trusted store is irrelevant to this chain and is
+ * not checked: an unrelated expired or future-dated cert in the store must
+ * not break the verification of a valid chain.
  *
  * @return 1 if all anchor certs are time valid (or no anchor was found in the
  * trusted store), 0 if any anchor cert is not time valid, or a negative value
  * if an error occurs.
  */
 static int
-xmlSecGnuTLSX509CheckChainAnchorTime(const gnutls_x509_crt_t* trusted, xmlSecSize trusted_size,
-    const gnutls_x509_crt_t* certs_chain, xmlSecSize certs_chain_size, time_t ts) {
-    xmlChar* issuerDN = NULL;
+xmlSecGnuTLSX509CheckChainAnchorTime(
+    const gnutls_x509_crt_t* trusted, xmlSecSize trusted_size,
+    const gnutls_x509_crt_t* certs_chain, xmlSecSize certs_chain_size,
+    time_t ts
+) {
     gnutls_x509_crt_t* anchors = NULL;
     xmlSecSize anchorsSize = 0;
     xmlSecSize ii;
@@ -284,45 +288,37 @@ xmlSecGnuTLSX509CheckChainAnchorTime(const gnutls_x509_crt_t* trusted, xmlSecSiz
         return(-1);
     }
 
-    issuerDN = xmlSecGnuTLSX509CertGetIssuerDN(certs_chain[certs_chain_size - 1]);
-    if(issuerDN == NULL) {
-        xmlSecInternalError("xmlSecGnuTLSX509CertGetIssuerDN", NULL);
-        goto done;
-    }
-
-    /* collect the trusted certs that can serve as the chain's trust anchor */
+    /* collect the trusted certs that can serve as the chain's trust anchor;
+     * gnutls_x509_crt_check_issuer() matches the issuer the same way GnuTLS
+     * matches it when building the chain (DN plus AKI/SKI comparison), so an
+     * anchor GnuTLS would use for this chain is always collected here */
     for(ii = 0; ii < trusted_size; ++ii) {
         const gnutls_x509_crt_t crt = trusted[ii];
-        xmlChar* subjectDN = NULL;
+        gnutls_x509_crt_t* tmp;
+        unsigned int is_anchor;
 
         if(crt == NULL) {
             continue;
         }
-        subjectDN = xmlSecGnuTLSX509CertGetSubjectDN(crt);
-        if(subjectDN == NULL) {
-            xmlSecInternalError("xmlSecGnuTLSX509CertGetSubjectDN", NULL);
+        is_anchor = gnutls_x509_crt_check_issuer(certs_chain[certs_chain_size - 1], crt);
+        if(is_anchor != 1) {
+            continue;
+        }
+
+        tmp = xmlRealloc(anchors, (anchorsSize + 1) * sizeof(gnutls_x509_crt_t));
+        if(tmp == NULL) {
+            xmlSecMallocError((anchorsSize + 1) * sizeof(gnutls_x509_crt_t), NULL);
             goto done;
         }
-        if(xmlStrcmp(subjectDN, issuerDN) == 0) {
-            gnutls_x509_crt_t* tmp;
-
-            tmp = xmlRealloc(anchors, (anchorsSize + 1) * sizeof(gnutls_x509_crt_t));
-            if(tmp == NULL) {
-                xmlSecMallocError((anchorsSize + 1) * sizeof(gnutls_x509_crt_t), NULL);
-                xmlFree(subjectDN);
-                goto done;
-            }
-            anchors = tmp;
-            anchors[anchorsSize] = crt;
-            ++anchorsSize;
-        }
-        xmlFree(subjectDN);
+        anchors = tmp;
+        anchors[anchorsSize] = crt;
+        ++anchorsSize;
     }
 
-    /* time-check the collected anchor certs; if no trusted cert matches the
-     * topmost chain cert's issuer name (e.g. the topmost chain cert is a
-     * self-signed root that is not in the store) there is nothing more to
-     * check, as the chain certs were already checked by the caller */
+    /* time-check the collected anchor certs; if no trusted cert issued the
+     * topmost chain cert (e.g. the topmost chain cert is a self-signed root
+     * that is not in the store) there is nothing more to check, as the chain
+     * certs were already checked by the caller */
     res = 1;
     if(anchorsSize > 0) {
         res = xmlSecGnuTLSX509CheckCrtsTime(anchors, anchorsSize, ts);
@@ -332,9 +328,6 @@ xmlSecGnuTLSX509CheckChainAnchorTime(const gnutls_x509_crt_t* trusted, xmlSecSiz
     }
 
 done:
-    if(issuerDN != NULL) {
-        xmlFree(issuerDN);
-    }
     if(anchors != NULL) {
         xmlFree(anchors);
     }
@@ -473,11 +466,12 @@ xmlSecGnuTLSX509StoreGetCrls(
         ++res_pos;
     }
     /* gnutls does not check the CRL time window when using CRLs for
-     * revocation decisions, so a store CRL that is not yet valid at the
-     * verification time must not be used: it would otherwise revoke
-     * certificates that were not yet revoked at that time. An expired
-     * store CRL is still honored (fail closed). The skip-time-checks
-     * flag disables this window check as well. */
+     * revocation decisions, so a store CRL that is not currently valid at
+     * the verification time must not be used: a not-yet-valid CRL would
+     * revoke certificates that were not yet revoked at that time, and an
+     * expired CRL could miss revocations recorded after its nextUpdate
+     * (the OpenSSL backend skips store CRLs outside their validity window
+     * the same way). */
     if((ctx_crls_size > 0) &&
        ((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS) == 0)) {
         verification_time = xmlSecGnuTLSX509StoreGetCrlVerificationTime(keyInfoCtx,
@@ -490,6 +484,7 @@ xmlSecGnuTLSX509StoreGetCrls(
     for(ii = 0; ii < ctx_crls_size; ++ii) {
         gnutls_x509_crl_t crl;
         time_t this_update;
+        time_t next_update;
 
         crl = xmlSecPtrListGetItem(&(ctx->crls), ii);
         if(crl == NULL) {
@@ -504,10 +499,22 @@ xmlSecGnuTLSX509StoreGetCrls(
             xmlFree(res);
             return(-1);
         }
-        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS) == 0) {
+        /* verification_time stays 0 when the time window check is disabled
+         * (the skip-time-checks flag), so the window check only runs when
+         * it was enabled */
+        if(verification_time > 0) {
             if(this_update > verification_time) {
                 /* CRL is not yet valid: skip it */
                 continue;
+            }
+            /* nextUpdate is optional (RFC 5280): a missing value means the
+             * CRL never expires */
+            next_update = gnutls_x509_crl_get_next_update(crl);
+            if(next_update != (time_t)-1) {
+                if(next_update <= verification_time) {
+                    /* CRL is expired: skip it */
+                    continue;
+                }
             }
         }
         res[res_pos] = crl;
@@ -655,9 +662,15 @@ xmlSecGnuTLSX509StoreVerifyIssuerCert(
         for(ii = 1; ii < certs_chain_size; ++ii) {
             gnutls_x509_crt_t tmp;
 
-            tmp = xmlSecGnuTLSX509FindSignerCert(&(ctx->certsUntrusted), cert);
-            if((tmp == NULL) && (extra_certs != NULL)) {
+            /* search the caller-supplied certs first and the store's untrusted
+             * certs second (the same order as in
+             * xmlSecGnuTLSX509StoreGetCertsChain) */
+            tmp = NULL;
+            if(extra_certs != NULL) {
                 tmp = xmlSecGnuTLSX509FindSignerCert(extra_certs, cert);
+            }
+            if(tmp == NULL) {
+                tmp = xmlSecGnuTLSX509FindSignerCert(&(ctx->certsUntrusted), cert);
             }
             if((tmp == NULL) || (tmp == cert)) {
                 break;
@@ -755,8 +768,12 @@ xmlSecGnuTLSX509StoreVerifyCert(xmlSecGnuTLSX509StoreCtxPtr ctx,
     /* gnutls doesn't allow to specify "verification" timestamp so
      * we have to do it ourselves; GNUTLS_VERIFY_DISABLE_TIME_CHECKS makes
      * gnutls skip the time checks for the trusted certs as well, so the
-     * chain's trust anchor(s) have to be checked here too */
-    if(keyInfoCtx->certsVerificationTime > 0) {
+     * chain's trust anchor(s) have to be checked here too. The flag is also
+     * set by xmlSecGnuTLSX509GetVerificationFlags when the caller requested
+     * to skip the time checks altogether, in which case these manual checks
+     * are skipped as well. */
+    if((keyInfoCtx->certsVerificationTime > 0) &&
+       ((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS) == 0)) {
         ret = xmlSecGnuTLSX509CheckCrtsTime(certs_chain, certs_chain_size, keyInfoCtx->certsVerificationTime);
         if(ret < 0) {
             xmlSecInternalError("xmlSecGnuTLSX509CheckCrtsTime", NULL);
@@ -819,9 +836,12 @@ xmlSecGnuTLSX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, xm
     /* retrieve X509 data and get key cert, other certs and crls */
     x509Data = xmlSecKeyGetData(key, xmlSecGnuTLSKeyDataX509Id);
     if(x509Data == NULL) {
+        /* policy note: a key without the X509 key-data component is an internal
+         * error (-1) while a component without a key cert is "not verified"
+         * (0). Both fail closed; the distinction reflects that this function
+         * is only expected to run for keys that carry X509 data. */
         xmlSecInternalError("xmlSecKeyGetData(xmlSecGnuTLSKeyDataX509Id)", xmlSecKeyDataStoreGetName(store));
-        res = 0; /* key cannot be verified w/o X509 key data */
-        goto done;
+        return(-1);
     }
     key_cert = xmlSecGnuTLSKeyDataX509GetKeyCert(x509Data);
     if(key_cert == NULL) {
@@ -973,13 +993,19 @@ xmlSecGnuTLSX509StoreVerify(
 
         cert = xmlSecPtrListGetItem(certs, ii);
         if(cert == NULL) {
+            /* skip the corrupted list entry; the remaining certs can still
+             * be verified */
             xmlSecInternalError("xmlSecPtrListGetItem(certs)", xmlSecKeyDataStoreGetName(store));
-            goto done;
+            continue;
         }
 
         if(xmlSecGnuTLSX509CertIsSelfSigned(cert) != 1) {
-            /* check if we are the "leaf" node in the certs chain */
-            if(xmlSecGnuTLSX509FindSignedCert(certs, cert) != NULL) {
+            /* check if we are the "leaf" node in the certs chain: a cert that
+             * signed another cert from the caller's list or from the store's
+             * untrusted list is not a leaf and cannot start the chain (the
+             * same combined set that the chain builder searches for signers) */
+            if((xmlSecGnuTLSX509FindSignedCert(certs, cert) != NULL) ||
+               (xmlSecGnuTLSX509FindSignedCert(&(ctx->certsUntrusted), cert) != NULL)) {
                 continue;
             }
 
@@ -1144,13 +1170,15 @@ xmlSecGnuTLSX509StoreVerifyCrlTimeValidity(
         return(0);
     }
 
-    /* Verify next_update
-     * gnutls_x509_crl_get_next_update() returns (time_t)-1 both on error and when the
-     * nextUpdate field is absent; a missing nextUpdate means the CRL has no expiration
-     * (RFC 5280), so the expiration check is skipped in that case. */
+    /* Verify next_update: a CRL whose nextUpdate is before or equal to the
+     * verification time is expired (the OpenSSL backend uses the same
+     * boundary). gnutls_x509_crl_get_next_update() returns (time_t)-1 both
+     * on error and when the nextUpdate field is absent; a missing nextUpdate
+     * means the CRL has no expiration (RFC 5280), so the expiration check is
+     * skipped in that case. */
     next_update = gnutls_x509_crl_get_next_update(crl);
     if(next_update != (time_t)-1) {
-        if(next_update < verification_time) {
+        if(next_update <= verification_time) {
             /* CRL expired */
             size_t dn_size = 256;
             char dn_buf[256];
@@ -1253,13 +1281,11 @@ xmlSecGnuTLSX509StoreVerifyCrlSignature(
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     /* Find the issuer certificate: search trusted certs first (no need to verify trusted issuer certs). */
-    if(issuer_cert == NULL) {
-        ret = xmlSecGnuTLSX509StoreFindCrlIssuerCert(ctx, &(ctx->certsTrusted), extra_certs, crl, 0,
-            keyInfoCtx, storeName, &issuer_cert);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecGnuTLSX509StoreFindCrlIssuerCert(trusted)", storeName);
-            goto done;
-        }
+    ret = xmlSecGnuTLSX509StoreFindCrlIssuerCert(ctx, &(ctx->certsTrusted), extra_certs, crl, 0,
+        keyInfoCtx, storeName, &issuer_cert);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSX509StoreFindCrlIssuerCert(trusted)", storeName);
+        goto done;
     }
 
     /* Then untrusted certs and make sure their chain verifies. */

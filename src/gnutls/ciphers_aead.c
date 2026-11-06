@@ -219,7 +219,7 @@ xmlSecGnuTLSAeadCipherFinalize(xmlSecTransformPtr transform) {
         gnutls_aead_cipher_deinit(ctx->cipher);
     }
     xmlSecBufferFinalize(&ctx->aad);
-    memset(ctx, 0, sizeof(xmlSecGnuTLSAeadCipherCtx));
+    xmlSecMemCleanse(ctx, sizeof(xmlSecGnuTLSAeadCipherCtx));
 }
 
 static int
@@ -378,7 +378,7 @@ xmlSecGnuTLSAeadCipherEncrypt(
         xmlSecAssert2(ctx->ivInitialized != 0, -1);
         xmlSecAssert2(plaintext != NULL || inSize == 0, -1);
 
-        outSize = inSize + ctx->tagSize + XMLSEC_GNUTLS_AEAD_CIPHER_OUTPUT_SLACK;
+        outSize = inSize + ctx->tagSize + 2 * XMLSEC_GNUTLS_AEAD_CIPHER_OUTPUT_SLACK;
         ret = xmlSecBufferSetMaxSize(out, outSize);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetMaxSize", transformName, "size=" XMLSEC_SIZE_FMT, outSize);

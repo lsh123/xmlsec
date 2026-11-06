@@ -45,7 +45,7 @@
 typedef struct _xmlSecGnuTLSKeyAgreementCtx    xmlSecGnuTLSKeyAgreementCtx, *xmlSecGnuTLSKeyAgreementCtxPtr;
 struct _xmlSecGnuTLSKeyAgreementCtx {
     xmlSecTransformKAM params;
-    xmlSecSize expected_secret_len; /* 32 for X25519, 56 for X448, 0 for ECDH (dynamic) */
+    xmlSecSize expected_secret_len; /* 32 for X25519, 56 for X448, 0 for ECDH (derived from the peer key) */
 };
 
 /* Unified transform functions */
@@ -142,7 +142,7 @@ xmlSecGnuTLSKeyAgreementFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     xmlSecTransformKAMFinalize(&(ctx->params));
-    memset(ctx, 0, sizeof(xmlSecGnuTLSKeyAgreementCtx));
+    xmlSecMemCleanse(ctx, sizeof(xmlSecGnuTLSKeyAgreementCtx));
 }
 
 static int
@@ -312,7 +312,13 @@ xmlSecGnuTLSKeyAgreementGenerateSecret(xmlSecGnuTLSKeyAgreementCtxPtr ctx, xmlSe
     gnutls_pubkey_t otherPubKey;
     gnutls_datum_t secretDatum = { NULL, 0 };
     xmlSecSize secretSize;
+    xmlSecSize expectedSecretLen;
+#ifndef XMLSEC_NO_EC
+    unsigned int peerKeyBits;
+#endif /* XMLSEC_NO_EC */
+#ifndef XMLSEC_NO_XDH
     int expectedPkAlgo;
+#endif /* XMLSEC_NO_XDH */
     int err;
     int ret;
     int res = -1;
@@ -328,6 +334,10 @@ xmlSecGnuTLSKeyAgreementGenerateSecret(xmlSecGnuTLSKeyAgreementCtxPtr ctx, xmlSe
     xmlSecAssert2(kamData != NULL, -1);
     xmlSecAssert2(kamData->keyOriginator != NULL, -1);
     xmlSecAssert2(kamData->keyRecipient != NULL, -1);
+
+    /* the expected shared secret length: fixed for XDH (set in Initialize),
+     * derived from the peer key for ECDH */
+    expectedSecretLen = ctx->expected_secret_len;
 
     /* determine which key is ours (has private key) based on operation */
     if(operation == xmlSecTransformOperationEncrypt) {
@@ -382,6 +392,15 @@ xmlSecGnuTLSKeyAgreementGenerateSecret(xmlSecGnuTLSKeyAgreementCtxPtr ctx, xmlSe
             xmlSecInternalError("xmlSecGnuTLSKeyDataEcGetPublicKey", NULL);
             goto done;
         }
+
+        /* derive the expected shared-secret length from the peer key:
+         * the field size in bytes (32 for P-256, 48 for P-384, 66 for P-521) */
+        ret = gnutls_pubkey_get_pk_algorithm(otherPubKey, &peerKeyBits);
+        if(ret < 0) {
+            xmlSecGnuTLSError("gnutls_pubkey_get_pk_algorithm", ret, xmlSecTransformGetName(transform));
+            goto done;
+        }
+        expectedSecretLen = XMLSEC_BITS_TO_BYTES(peerKeyBits);
     } else
 #endif /* XMLSEC_NO_EC */
 #ifndef XMLSEC_NO_XDH
@@ -449,11 +468,12 @@ xmlSecGnuTLSKeyAgreementGenerateSecret(xmlSecGnuTLSKeyAgreementCtxPtr ctx, xmlSe
     }
 
     /* Note: no explicit SP800-56A low-order point check (n*Q = O) is
-     * performed on the peer EC public key. GnuTLS' nettle backend
-     * implements that check only in FIPS mode, but it is not needed here:
-     * all NIST curves reachable through this transform have prime group
-     * order (cofactor 1), so no non-trivial low-order points exist, and
-     * off-curve points are rejected by GnuTLS' point validation. */
+     * performed on the peer EC public key. GnuTLS performs it only in
+     * FIPS mode, but it is not needed here: the ECDH curves GnuTLS
+     * supports all have prime group order (cofactor 1), so no
+     * non-trivial low-order points exist; off-curve peer points are
+     * rejected by GnuTLS' point validation, and an identity shared
+     * secret is rejected as well. */
     /* derive shared secret; GnuTLS allocates secretDatum.data */
     err = gnutls_privkey_derive_secret(myPrivKey, otherPubKey, NULL, &secretDatum, 0);
     if(err != GNUTLS_E_SUCCESS) {
@@ -465,12 +485,14 @@ xmlSecGnuTLSKeyAgreementGenerateSecret(xmlSecGnuTLSKeyAgreementCtxPtr ctx, xmlSe
         goto done;
     }
 
-    /* validate secret length */
+    /* validate secret length: this catches providers that strip leading zero
+     * bytes from the shared secret, which xmlenc-core1 forbids (fixed-width,
+     * left-padded secrets) */
     XMLSEC_SAFE_CAST_UINT_TO_SIZE(secretDatum.size, secretSize, goto done, NULL);
-    if((ctx->expected_secret_len != 0) && (secretSize != ctx->expected_secret_len)) {
+    if((expectedSecretLen != 0) && (secretSize != expectedSecretLen)) {
         char expectedLenStr[32];
 
-        ret = xmlStrPrintf(BAD_CAST expectedLenStr, sizeof(expectedLenStr), XMLSEC_SIZE_FMT, ctx->expected_secret_len);
+        ret = xmlStrPrintf(BAD_CAST expectedLenStr, sizeof(expectedLenStr), XMLSEC_SIZE_FMT, expectedSecretLen);
         if(ret < 0) {
             xmlSecInternalError("xmlStrPrintf", NULL);
             goto done;

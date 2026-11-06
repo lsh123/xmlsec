@@ -84,11 +84,7 @@ struct _xmlSecGCryptKWAesCtx {
 XMLSEC_TRANSFORM_DECLARE(GCryptKWAes, xmlSecGCryptKWAesCtx)
 #define xmlSecGCryptKWAesSize XMLSEC_TRANSFORM_SIZE(GCryptKWAes)
 
-#define xmlSecGCryptKWAesCheckId(transform) \
-    (xmlSecTransformCheckId((transform), xmlSecGCryptTransformKWAes128Id) || \
-     xmlSecTransformCheckId((transform), xmlSecGCryptTransformKWAes192Id) || \
-     xmlSecTransformCheckId((transform), xmlSecGCryptTransformKWAes256Id))
-
+static int      xmlSecGCryptKWAesCheckId                        (xmlSecTransformPtr transform);
 static int      xmlSecGCryptKWAesInitialize                     (xmlSecTransformPtr transform);
 static void     xmlSecGCryptKWAesFinalize                       (xmlSecTransformPtr transform);
 static int      xmlSecGCryptKWAesSetKeyReq                      (xmlSecTransformPtr transform,
@@ -98,6 +94,22 @@ static int      xmlSecGCryptKWAesSetKey                         (xmlSecTransform
 static int      xmlSecGCryptKWAesExecute                        (xmlSecTransformPtr transform,
                                                                  int last,
                                                                  xmlSecTransformCtxPtr transformCtx);
+
+static int
+xmlSecGCryptKWAesCheckId(xmlSecTransformPtr transform) {
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformKWAes128Id)) {
+        return(1);
+    }
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformKWAes192Id)) {
+        return(1);
+    }
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformKWAes256Id)) {
+        return(1);
+    }
+
+    /* not found */
+    return(0);
+}
 
 static int
 xmlSecGCryptKWAesInitialize(xmlSecTransformPtr transform) {
@@ -437,10 +449,10 @@ xmlSecGCryptKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         return(-1);
     }
 
-    /* gcry_cipher_encrypt() does not support in-place (in == out) processing,
-       so stage the block through a scratch buffer when the input and output are
-       the same buffer; the buffer must stay in scope for the duration of the
-       call */
+    /* gcry_cipher_encrypt() in-place (in == out) processing is not
+       documented by libgcrypt, so stage the block through a scratch buffer
+       when the input and output are the same buffer; the buffer must stay
+       in scope for the duration of the call */
     src = in;
     if(in == out) {
         memcpy(tmp, in, sizeof(tmp));
@@ -449,13 +461,17 @@ xmlSecGCryptKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     err = gcry_cipher_encrypt(ctx->cipherHandle, out, outSize, src, inSize);
     if(err != GPG_ERR_NO_ERROR) {
         xmlSecGCryptError("gcry_cipher_encrypt", err, NULL);
-        xmlSecMemCleanse(tmp, sizeof(tmp));
+        if(src == tmp) {
+            xmlSecMemCleanse(tmp, sizeof(tmp));
+        }
         return(-1);
     }
 
     /* success */
     (*outWritten) = ctx->blockSize;
-    xmlSecMemCleanse(tmp, sizeof(tmp));
+    if(src == tmp) {
+        xmlSecMemCleanse(tmp, sizeof(tmp));
+    }
     return(0);
 }
 
@@ -497,10 +513,10 @@ xmlSecGCryptKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         return(-1);
     }
 
-    /* gcry_cipher_decrypt() does not support in-place (in == out) processing,
-       so stage the block through a scratch buffer when the input and output are
-       the same buffer; the buffer must stay in scope for the duration of the
-       call */
+    /* gcry_cipher_decrypt() in-place (in == out) processing is not
+       documented by libgcrypt, so stage the block through a scratch buffer
+       when the input and output are the same buffer; the buffer must stay
+       in scope for the duration of the call */
     src = in;
     if(in == out) {
         memcpy(tmp, in, sizeof(tmp));
@@ -509,13 +525,17 @@ xmlSecGCryptKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     err = gcry_cipher_decrypt(ctx->cipherHandle, out, outSize, src, inSize);
     if(err != GPG_ERR_NO_ERROR) {
         xmlSecGCryptError("gcry_cipher_decrypt", err, NULL);
-        xmlSecMemCleanse(tmp, sizeof(tmp));
+        if(src == tmp) {
+            xmlSecMemCleanse(tmp, sizeof(tmp));
+        }
         return(-1);
     }
 
     /* success */
     (*outWritten) = ctx->blockSize;
-    xmlSecMemCleanse(tmp, sizeof(tmp));
+    if(src == tmp) {
+        xmlSecMemCleanse(tmp, sizeof(tmp));
+    }
     return(0);
 }
 

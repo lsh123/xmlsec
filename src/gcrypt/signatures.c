@@ -1440,7 +1440,7 @@ xmlSecGCryptRsaPssSign(int digest, xmlSecKeyDataPtr key_data,
     }
     err = gcry_sexp_build (&s_data, NULL,
                            "(data (flags pss)"
-                             "(salt-length %u)"
+                             "(salt-length %d)"
                              "(hash %s %b))",
                            dgstLen,  /* The default salt length is the length of the hash function */
                            algo_name,
@@ -1557,7 +1557,7 @@ xmlSecGCryptRsaPssVerify(int digest, xmlSecKeyDataPtr key_data,
     }
     err = gcry_sexp_build (&s_data, NULL,
                            "(data (flags pss)"
-                           "(salt-length %u)"
+                           "(salt-length %d)"
                            "(hash %s %b))",
                            dgstLen,  /* The default salt length is the length of the hash function */
                            algo_name,

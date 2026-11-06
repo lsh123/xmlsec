@@ -666,7 +666,7 @@ xmlSecBase64Encode(const xmlSecByte *in, xmlSecSize inSize, int columns) {
     xmlSecSize outSize, outUpdatedSize, outFinalSize;
     int ret;
 
-    xmlSecAssert2(in != NULL, NULL);
+    xmlSecAssert2((in != NULL) || (inSize == 0), NULL);
 
     ret = xmlSecBase64CtxInitialize(&ctx, 1, columns);
     if(ret < 0) {

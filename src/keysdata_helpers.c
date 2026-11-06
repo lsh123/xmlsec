@@ -153,6 +153,7 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr
     xmlChar* str = NULL;
     xmlSecKeyDataPtr data = NULL;
     xmlSecSize decodedSize;
+    xmlSecSize strSize = 0;
     int ret;
     int res = -1;
 
@@ -171,7 +172,8 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr
         xmlSecInternalError("xmlSecGetNodeContentAndTrim", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
-    if(str[0] == '\0') {
+    strSize = xmlSecStrlen(str);
+    if(strSize == 0) {
         xmlSecInvalidNodeContentError(node, xmlSecKeyDataKlassGetName(id), "empty");
         goto done;
     }
@@ -218,6 +220,12 @@ done:
         xmlSecKeyDataDestroy(data);
     }
     if(str != NULL) {
+        /* the buffer holds the key material: the base64-encoded value before
+         * the in-place decode and (partially) decoded bytes on a decode
+         * failure; cleanse it before freeing */
+        if(strSize > 0) {
+            xmlSecMemCleanse(str, strSize);
+        }
         xmlFree(str);
     }
     return(res);

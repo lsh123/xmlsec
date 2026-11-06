@@ -526,6 +526,7 @@ xmlSecEncCtxDecrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 
     xmlSecAssert2(encCtx != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(node->doc != NULL, -1);
 
     /* decrypt */
     buffer = xmlSecEncCtxDecryptToBuffer(encCtx, node);
@@ -602,6 +603,7 @@ xmlSecEncCtxDecryptToBuffer(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     xmlSecAssert2(encCtx != NULL, NULL);
     xmlSecAssert2(encCtx->result == NULL, NULL);
     xmlSecAssert2(node != NULL, NULL);
+    xmlSecAssert2(node->doc != NULL, NULL);
 
     /* initialize context and add ID attributes to the list of known ids */
     encCtx->operation = xmlSecTransformOperationDecrypt;
@@ -1209,7 +1211,7 @@ xmlSecEncCtxGenerateKey(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xmlSecKey
 
     keyData = xmlSecBufferGetData(encCtx->result);
     keySize = xmlSecBufferGetSize(encCtx->result);
-    if((keyData == NULL) || (keySize <= 0)) {
+    if((keyData == NULL) || (keySize == 0)) {
         xmlSecInternalError("xmlSecTransformCtxBinaryExecute(no data)", xmlSecTransformGetName(encCtx->encMethod));
         return(NULL);
     }
@@ -1289,6 +1291,7 @@ xmlSecEncCtxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xm
     xmlSecAssert2(encCtx != NULL, NULL);
     xmlSecAssert2(encCtx->encMethod == NULL, NULL);
     xmlSecAssert2(node != NULL, NULL);
+    xmlSecAssert2(node->doc != NULL, NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
     /* initialize context and add ID attributes to the list of known ids */
@@ -1437,6 +1440,7 @@ xmlSecEncCtxAgreementMethodGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyI
     xmlSecAssert2(encCtx != NULL, NULL);
     xmlSecAssert2(encCtx->encMethod == NULL, NULL);
     xmlSecAssert2(node != NULL, NULL);
+    xmlSecAssert2(node->doc != NULL, NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
     /* initialize context and add ID attributes to the list of known ids */
@@ -1493,6 +1497,7 @@ xmlSecEncCtxAgreementMethodXmlWrite(xmlSecEncCtxPtr encCtx, xmlNodePtr node, xml
     xmlSecAssert2(encCtx != NULL, -1);
     xmlSecAssert2(encCtx->encMethod == NULL, -1);
     xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(node->doc != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     /* initialize context and add ID attributes to the list of known ids */
@@ -1511,6 +1516,8 @@ xmlSecEncCtxAgreementMethodXmlWrite(xmlSecEncCtxPtr encCtx, xmlNodePtr node, xml
         return(-1);
     }
     encCtx->encMethod->operation = encCtx->operation;
+    encCtx->keyInfoReadCtx.operation = encCtx->operation;
+    encCtx->keyInfoWriteCtx.operation = encCtx->operation;
 
     /* write */
     if(encCtx->encMethod->id->writeNode != NULL) {
@@ -1741,6 +1748,7 @@ xmlSecEncCtxEncryptedKeyXmlWrite(
     xmlSecAssert2(encCtx != NULL, -1);
     xmlSecAssert2(encCtx->encMethod == NULL, -1);
     xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(node->doc != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 

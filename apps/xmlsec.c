@@ -489,7 +489,7 @@ static xmlSecAppCmdLineParam hmacKeyParam = {
 };
 
 static xmlSecAppCmdLineParam hmacMinOutputLenParam = {
-    xmlSecAppCmdLineTopicKeysMngr,
+    xmlSecAppCmdLineTopicDSigCommon,
     "--hmac-min-out-len",
     NULL,
     "--hmac-min-out-len <bits>"
@@ -606,19 +606,6 @@ static xmlSecAppCmdLineParam verifyKeysParam = {
     NULL
 };
 
-static xmlSecAppCmdLineParam verifyCrlsParam = {
-    xmlSecAppCmdLineTopicX509Certs,
-    "--verify-crls",
-    NULL,
-    "--verify-crls"
-    "\n\tforce verification of loaded CRLs: CRLs are required to have a valid signature"
-    "\n\tfrom an issuer certificate in the trusted or untrusted certificate store, and"
-    "\n\tmust be within their validity period (thisUpdate/nextUpdate)",
-    xmlSecAppCmdLineParamTypeFlag,
-    xmlSecAppCmdLineParamFlagNone,
-    NULL
-};
-
 /******************************************************************************
  *
  * Common params
@@ -638,7 +625,7 @@ static xmlSecAppCmdLineParam sessionKeyParam = {
 };
 
 static xmlSecAppCmdLineParam outputParam = {
-    xmlSecAppCmdLineTopicDSigCommon |
+    xmlSecAppCmdLineTopicDSigSign |
     xmlSecAppCmdLineTopicEncCommon,
     "--output",
     "-o",
@@ -1060,6 +1047,19 @@ static xmlSecAppCmdLineParam crlDerParam = {
     "\n\tload CRLs from DER file <file>",
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};
+
+static xmlSecAppCmdLineParam verifyCrlsParam = {
+    xmlSecAppCmdLineTopicX509Certs,
+    "--verify-crls",
+    NULL,
+    "--verify-crls"
+    "\n\tforce verification of loaded CRLs: CRLs are required to have a valid signature"
+    "\n\tfrom an issuer certificate in the trusted or untrusted certificate store, and"
+    "\n\tmust be within their validity period (thisUpdate/nextUpdate)",
+    xmlSecAppCmdLineParamTypeFlag,
+    xmlSecAppCmdLineParamFlagNone,
     NULL
 };
 
@@ -1613,8 +1613,10 @@ xmlSecAppExecute(xmlSecAppCommand command, const char** utf8_argv, int argc) {
 
     /* enable verbose mode? */
     if(xmlSecAppCmdLineParamIsSet(&verboseParam)) {
+        g_printVerboseDebug = 1;
         xmlSecErrorsDefaultCallbackEnableOutput(1);
     } else {
+        g_printVerboseDebug = 0;
         xmlSecErrorsDefaultCallbackEnableOutput(0);
     }
 
@@ -2444,10 +2446,12 @@ xmlSecAppLoadKeys(void) {
     }
 
     /* do we need to verify CRLs? */
+#ifndef XMLSEC_NO_X509
     int verifyCrls = 0;
     if(xmlSecAppCmdLineParamIsSet(&verifyCrlsParam)) {
         verifyCrls = 1;
     }
+#endif /* XMLSEC_NO_X509 */
 
     /* generate new keys */
     for(value = genKeyParam.value; value != NULL; value = value->next) {

@@ -331,6 +331,8 @@ xmlSecKWDes3Encode(xmlSecKWDes3Id kwDes3Id, xmlSecTransformPtr transform,
     if((ret < 0) || (outWritten2 != sizeof(iv))) {
         xmlSecInternalError2("kwDes3Id->generateRandom", NULL,
             "outWritten2=" XMLSEC_SIZE_FMT, outWritten2);
+        /* wipe the plaintext key from the output buffer before returning */
+        xmlSecMemCleanse(out, inSize);
         return(-1);
     }
 
@@ -341,11 +343,15 @@ xmlSecKWDes3Encode(xmlSecKWDes3Id kwDes3Id, xmlSecTransformPtr transform,
         out, outSize, &outWritten2);
     if(ret < 0) {
         xmlSecInternalError("kwDes3Id->encrypt", NULL);
+        /* wipe the plaintext key from the output buffer before returning */
+        xmlSecMemCleanse(out, inSize);
         return(-1);
     }
     if((inSize + XMLSEC_KW_DES3_BLOCK_LENGTH) != outWritten2) {
         xmlSecInvalidSizeError("kwDes3Id->encrypt",
             outWritten2, (inSize + XMLSEC_KW_DES3_BLOCK_LENGTH), NULL);
+        /* wipe the plaintext key from the output buffer before returning */
+        xmlSecMemCleanse(out, inSize);
         return(-1);
     }
 
@@ -912,6 +918,8 @@ xmlSecKWRfc3394Decode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transfor
         if((ret < 0) || (outWritten2 != XMLSEC_KW_RFC3394_BLOCK_SIZE)) {
             xmlSecInternalError2("kwRfc3394Id->decrypt", NULL,
                 "outWritten2=" XMLSEC_SIZE_FMT, outWritten2);
+            /* wipe the plaintext key from the output buffer before returning */
+            xmlSecMemCleanse(out, inSize);
             return(-1);
         }
     } else {
@@ -930,6 +938,8 @@ xmlSecKWRfc3394Decode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transfor
                 if((ret < 0) || (outWritten2 != XMLSEC_KW_RFC3394_BLOCK_SIZE)) {
                     xmlSecInternalError2("kwRfc3394Id->decrypt", NULL,
                         "outWritten2=" XMLSEC_SIZE_FMT, outWritten2);
+                    /* wipe the plaintext key from the output buffer before returning */
+                    xmlSecMemCleanse(out, inSize);
                     /* wipe the local temporary block before returning */
                     xmlSecMemCleanse(block, sizeof(block));
                     return(-1);

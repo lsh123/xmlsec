@@ -300,7 +300,18 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes, xmlSec
     ret = xmlCtxtPushInput(ctxt, input);
     if(ret < 0) {
         xmlSecXmlParserError("xmlCtxtPushInput", ctxt, xmlSecTransformGetName(transform));
+#if LIBXML_VERSION >= 21000
+        /*
+         * libxml2 >= 2.10 does not take ownership of the input
+         * buffer on failure, so we must free it here.
+         */
         xmlFreeInputStream(input);
+#else /* LIBXML_VERSION >= 21000 */
+        /*
+         * libxml2 < 2.10 frees the input buffer itself on realloc
+         * failure in inputPush(); do not double-free it here.
+         */
+#endif /* LIBXML_VERSION >= 21000 */
         if(ctxt->myDoc != NULL) {
             xmlFreeDoc(ctxt->myDoc);
             ctxt->myDoc = NULL;
@@ -311,7 +322,7 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes, xmlSec
 
     /* finally do the parsing */
     ret = xmlParseDocument(ctxt);
-    if((ret < 0) || (ctxt->myDoc == NULL)) {
+    if((ret < 0) || (ctxt->myDoc == NULL) || (ctxt->wellFormed == 0)) {
         xmlSecXmlParserError("xmlParseDocument", ctxt, xmlSecTransformGetName(transform));
         if(ctxt->myDoc != NULL) {
             xmlFreeDoc(ctxt->myDoc);

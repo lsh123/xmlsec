@@ -16,8 +16,8 @@
 #error "keysdata_helpers.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-crypto libraries"
 #endif /* XMLSEC_PRIVATE */
 
+#include <xmlsec/keyinfo.h>
 #include <xmlsec/keysdata.h>
-#include <xmlsec/keysmngr.h>
 #include <xmlsec/transforms.h>
 
 

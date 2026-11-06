@@ -23,7 +23,8 @@
 /******************************************************************************
  *
  * Main macros to help with casting. Each macro checks that the source value
- * fits into the destination type's range before casting.
+ * fits into the destination type's range before casting. The source value is
+ * evaluated exactly once.
  *
  * NOTE: errorAction MUST transfer control out of the block (e.g. return or goto),
  * because the assignment (dstVal) = (dstType)(srcVal) executes unconditionally
@@ -31,36 +32,39 @@
  *
   *****************************************************************************/
 #define XMLSEC_SAFE_CAST_MIN_MAX_CHECK(srcType, srcVal, srcFmt, dstType, dstVal, dstFmt, dstMin, dstMax, errorAction, errorObject) \
-    do {                                                                        \
-        if(((srcVal) < (srcType)(dstMin)) || ((srcVal) > (srcType)(dstMax))) { \
-            xmlSecImpossibleCastError(srcType, (srcVal), srcFmt,               \
-                dstType, dstMin, dstMax, dstFmt, (errorObject));               \
-            errorAction;                                                       \
-        }                                                                      \
-        (dstVal) = (dstType)(srcVal);                                          \
+    do {                                                                                      \
+        srcType _xmlsec_srcVal = (srcVal);                                                    \
+        if((_xmlsec_srcVal < (srcType)(dstMin)) || (_xmlsec_srcVal > (srcType)(dstMax))) {    \
+            xmlSecImpossibleCastError(srcType, _xmlsec_srcVal, srcFmt,                        \
+                dstType, dstMin, dstMax, dstFmt, (errorObject));                              \
+            errorAction;                                                                      \
+        }                                                                                     \
+        (dstVal) = (dstType)_xmlsec_srcVal;                                                   \
     } while(0)
 
 /* we assume that dstType_min <= srcType_min and srcType_max >= dstType_max */
 #define XMLSEC_SAFE_CAST_MAX_CHECK(srcType, srcVal, srcFmt, dstType, dstVal, dstFmt, dstMin, dstMax, errorAction, errorObject) \
-    do {                                                                        \
-        if((srcVal) > (srcType)(dstMax)) {                                     \
-            xmlSecImpossibleCastError(srcType, (srcVal), srcFmt,               \
-                dstType, dstMin, dstMax, dstFmt, (errorObject));               \
-            errorAction;                                                       \
-        }                                                                      \
-        (dstVal) = (dstType)(srcVal);                                          \
+    do {                                                                      \
+        srcType _xmlsec_srcVal = (srcVal);                                    \
+        if(_xmlsec_srcVal > (srcType)(dstMax)) {                              \
+            xmlSecImpossibleCastError(srcType, _xmlsec_srcVal, srcFmt,        \
+                dstType, dstMin, dstMax, dstFmt, (errorObject));              \
+            errorAction;                                                      \
+        }                                                                     \
+        (dstVal) = (dstType)_xmlsec_srcVal;                                   \
     } while(0)
 
 
 /* we assume that srcType_min <= dstType_min and srcType_max <= dstType_max */
 #define XMLSEC_SAFE_CAST_MIN_CHECK(srcType, srcVal, srcFmt, dstType, dstVal, dstFmt, dstMin, dstMax, errorAction, errorObject) \
-    do {                                                                        \
-        if((srcVal) < (srcType)(dstMin)) {                                     \
-            xmlSecImpossibleCastError(srcType, (srcVal), srcFmt,               \
-                dstType, dstMin, dstMax, dstFmt, (errorObject));               \
-            errorAction;                                                       \
-        }                                                                      \
-        (dstVal) = (dstType)(srcVal);                                          \
+    do {                                                                      \
+        srcType _xmlsec_srcVal = (srcVal);                                    \
+        if(_xmlsec_srcVal < (srcType)(dstMin)) {                              \
+            xmlSecImpossibleCastError(srcType, _xmlsec_srcVal, srcFmt,        \
+                dstType, dstMin, dstMax, dstFmt, (errorObject));              \
+            errorAction;                                                      \
+        }                                                                     \
+        (dstVal) = (dstType)_xmlsec_srcVal;                                   \
     } while(0)
 
 
@@ -168,12 +172,13 @@
   * should be good enough and will only affect output in the logs. */
 #define XMLSEC_SAFE_CAST_PTRDIFF_TO_INT(srcVal, dstVal, errorAction, errorObject) \
     do {                                                                        \
-        if(((srcVal) < INT_MIN) || ((srcVal) > INT_MAX)) {                     \
-            xmlSecImpossibleCastError(ptrdiff_t, (long long)(srcVal), "%lld",  \
+        ptrdiff_t _xmlsec_srcVal = (srcVal);                                    \
+        if((_xmlsec_srcVal < INT_MIN) || (_xmlsec_srcVal > INT_MAX)) {          \
+            xmlSecImpossibleCastError(ptrdiff_t, (long long)_xmlsec_srcVal, "%lld", \
                 int, INT_MIN, INT_MAX, "%d", (errorObject));                   \
             errorAction;                                                       \
         }                                                                      \
-        (dstVal) = (int)(srcVal);                                              \
+        (dstVal) = (int)_xmlsec_srcVal;                                        \
     } while(0)
 
 /* Safe cast with limits check: ptrdiff_t -> xmlSecSize (xmlSecSize is non-negative, so the min bound is 0).
@@ -183,13 +188,14 @@
    should be good enough and will only affect output in the logs. */
 #define XMLSEC_SAFE_CAST_PTRDIFF_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
     do {                                                                        \
-        if((srcVal) < 0) {                                                       \
-            xmlSecImpossibleCastError(ptrdiff_t, (long long)(srcVal), "%lld",   \
+        ptrdiff_t _xmlsec_srcVal = (srcVal);                                    \
+        if(_xmlsec_srcVal < 0) {                                                 \
+            xmlSecImpossibleCastError(ptrdiff_t, (long long)_xmlsec_srcVal, "%lld", \
                 xmlSecSize, XMLSEC_SIZE_MIN, XMLSEC_SIZE_MAX, XMLSEC_SIZE_FMT,  \
                 (errorObject));                                                 \
             errorAction;                                                        \
         }                                                                       \
-        (dstVal) = (xmlSecSize)(srcVal);                                        \
+        (dstVal) = (xmlSecSize)_xmlsec_srcVal;                                  \
     } while(0)
 
 

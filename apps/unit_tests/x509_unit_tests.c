@@ -581,6 +581,8 @@ test_xmlSecX509NameRead(void) {
     test_xmlSecX509NameRead_success("check email address", "Foo=Bar,E=Value,", test_X509NameReplacements, 2, "Foo", "Bar", XMLSEC_X509_VALUE_TYPE_UTF8_STRING, "emailAddress", "Value", XMLSEC_X509_VALUE_TYPE_UTF8_STRING);
     test_xmlSecX509NameRead_success("check escaped comma in name", "Foo\\,Bar=Baz", NULL, 1, "Foo,Bar", "Baz", XMLSEC_X509_VALUE_TYPE_UTF8_STRING, NULL, NULL, -1);
     test_xmlSecX509NameRead_success("check escaped hex pair in value", "Foo=Bar\\41", NULL, 1, "Foo", "BarA", XMLSEC_X509_VALUE_TYPE_UTF8_STRING, NULL, NULL, -1);
+    test_xmlSecX509NameRead_success("check quoted plus in value", "CN=\"a + b\"", NULL, 1, "CN", "a + b", XMLSEC_X509_VALUE_TYPE_UTF8_STRING, NULL, NULL, -1);
+    test_xmlSecX509NameRead_success("check escaped plus in value", "CN=a\\+b", NULL, 1, "CN", "a+b", XMLSEC_X509_VALUE_TYPE_UTF8_STRING, NULL, NULL, -1);
 
     /* positive tests: more than two name/value pairs (verified for all pairs) */
     {
@@ -607,6 +609,8 @@ test_xmlSecX509NameRead(void) {
     test_xmlSecX509NameRead_failure("check truncated escape at end of line (lone backslash)", "Foo\\", NULL, 0);
     test_xmlSecX509NameRead_failure("check truncated escape in value (lone backslash)", "Foo=Bar\\", NULL, 0);
     test_xmlSecX509NameRead_failure("check truncated escape in value (backslash + one hex digit)", "Foo=Bar\\6", NULL, 0);
+    test_xmlSecX509NameRead_failure("check unescaped plus in value", "CN=a+b", NULL, 0);
+    test_xmlSecX509NameRead_failure("check multi-valued RDN (plus separator)", "OU=Sales+CN=J. Smith", NULL, 0);
 
     /* done */
     return (testGroupFinished());

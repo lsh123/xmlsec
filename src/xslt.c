@@ -101,6 +101,7 @@ static xmlSecTransformKlass xmlSecXsltKlass = {
 
 
 static xsltSecurityPrefsPtr g_xslt_default_security_prefs = NULL;
+static xsltSecurityPrefsPtr g_xslt_saved_default_security_prefs = NULL;
 
 int xmlSecTransformXsltInitialize(void) {
     xsltSecurityPrefsPtr sec;
@@ -124,13 +125,17 @@ int xmlSecTransformXsltInitialize(void) {
     }
 
     g_xslt_default_security_prefs = sec;
+    g_xslt_saved_default_security_prefs = xsltGetDefaultSecurityPrefs();
+    xsltSetDefaultSecurityPrefs(g_xslt_default_security_prefs);
     return(0);
 }
 
 void xmlSecTransformXsltShutdown(void) {
     if(g_xslt_default_security_prefs != NULL) {
+        xsltSetDefaultSecurityPrefs(g_xslt_saved_default_security_prefs);
         xsltFreeSecurityPrefs(g_xslt_default_security_prefs);
         g_xslt_default_security_prefs = NULL;
+        g_xslt_saved_default_security_prefs = NULL;
     }
 }
 
@@ -150,7 +155,10 @@ xmlSecXsltCopySecPref(xsltSecurityPrefsPtr src, xsltSecurityPrefsPtr dst, xsltSe
 /**
  * @brief Sets the default XSLT security preferences.
  * @details Sets the new default security preferences. The xmlsec default security policy is
- * to disable everything.
+ * to disable everything. This function modifies the library-wide default security
+ * preferences object in place and therefore must be called before any XSLT
+ * transformations are running, since the change affects all subsequent and concurrent
+ * transformations.
  * @param sec the new security preferences
  */
 void
@@ -287,8 +295,10 @@ xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransfor
         goto done;
     }
 
-    /* pre-process stylesheet: the application is responsible for initializing LibXSLT
-     * including configuration of security preferences via xsltSetDefaultSecurityPrefs */
+    /* pre-process stylesheet: xmlsec installs its own forbid-all default security
+     * preferences application-wide for the lifetime of the library (from
+     * xmlSecTransformXsltInitialize() to xmlSecTransformXsltShutdown()); the
+     * application's previous default is saved and restored during that time */
     ctx->xslt = xsltParseStylesheetDoc(doc);
     if(ctx->xslt == NULL) {
         xmlSecXsltError("xsltParseStylesheetDoc", xmlSecTransformGetName(transform));
@@ -319,6 +329,7 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXsltId), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecXsltSize), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
+    xmlSecAssert2((data != NULL) || (dataSize == 0), -1);
 
     ctx = xmlSecXsltGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);

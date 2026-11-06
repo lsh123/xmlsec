@@ -634,6 +634,7 @@ done:
 int
 xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf, xmlNodePtr node) {
     xmlChar* content = NULL;
+    xmlSecSize contentLen;
     xmlSecSize outWritten;
     int ret;
     int res = -1;
@@ -646,7 +647,8 @@ xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf, xmlNodePtr node) {
         xmlSecInternalError("xmlSecGetNodeContentAndTrim", NULL);
         goto done;
     }
-    if(xmlSecStrlen(content) == 0) {
+    contentLen = xmlSecStrlen(content);
+    if(contentLen == 0) {
         /* empty string is valid base64 for zero-length data */
         ret = xmlSecBufferSetSize(buf, 0);
         if(ret < 0) {
@@ -658,7 +660,7 @@ xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf, xmlNodePtr node) {
     }
 
     /* base64 decode size is less than input size */
-    ret = xmlSecBufferSetMaxSize(buf, xmlSecStrlen(content));
+    ret = xmlSecBufferSetMaxSize(buf, contentLen);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferSetMaxSize", NULL);
         goto done;
@@ -698,7 +700,6 @@ done:
  */
 int
 xmlSecBufferBase64NodeContentWrite(xmlSecBufferPtr buf, xmlNodePtr node, int columns) {
-    static const xmlSecByte empty[] = { 0 };
     const xmlSecByte* data;
     xmlSecSize size;
     xmlChar* content;
@@ -713,12 +714,7 @@ xmlSecBufferBase64NodeContentWrite(xmlSecBufferPtr buf, xmlNodePtr node, int col
         return(-1);
     }
 
-    /* xmlSecBase64Encode() requires a non-NULL input pointer */
-    content = xmlSecBase64Encode(
-        ((data != NULL) ? data : empty),
-        ((data != NULL) ? size : 0),
-        columns
-    );
+    content = xmlSecBase64Encode(data, size, columns);
     if(content == NULL) {
         xmlSecInternalError("xmlSecBase64Encode", NULL);
         return(-1);

@@ -264,12 +264,17 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
         }
         break;
     case xmlSecXPathDataTypeXPointer:
+#ifdef LIBXML_XPTR_ENABLED
         xpathObj = xmlXPtrEval(data->expr, data->ctx);
         if(xpathObj == NULL) {
             xmlSecXmlError2("xmlXPtrEval", NULL, "expr=%s", xmlSecErrorsSafeString(data->expr));
             return(NULL);
         }
         break;
+#else
+        xmlSecXmlError("XPointer support is not enabled in the libxml2 build", NULL);
+        return(NULL);
+#endif
     default:
         xmlSecInternalError("Invalid XPath transform type", NULL);
         return(NULL);
@@ -834,7 +839,7 @@ xmlSecTransformXPointerSetExpr(xmlSecTransformPtr transform, const xmlChar* expr
     xmlSecXPathDataPtr data;
     int ret;
 
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXPointerId) || xmlSecTransformCheckId(transform, xmlSecTransformXPointerLegacyId), -1);
+    xmlSecAssert2(xmlSecTransformXPointerCheckId(transform), -1);
     xmlSecAssert2(transform->hereNode == NULL, -1);
     xmlSecAssert2(expr != NULL, -1);
     xmlSecAssert2(hereNode != NULL, -1);
@@ -889,7 +894,7 @@ xmlSecTransformXPointerNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, x
     xmlNodePtr cur;
     int ret;
 
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXPointerId) || xmlSecTransformCheckId(transform, xmlSecTransformXPointerLegacyId), -1);
+    xmlSecAssert2(xmlSecTransformXPointerCheckId(transform), -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 

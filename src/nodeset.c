@@ -32,9 +32,6 @@
         (xmlNodePtr)((xmlNsPtr)(node))->next)
 
 
-static int      xmlSecNodeSetContainsNode                (xmlSecNodeSetPtr nset,
-                                                         xmlNodePtr node,
-                                                         xmlNodePtr parent);
 static int      xmlSecNodeSetWalkRecursive              (xmlSecNodeSetPtr nset,
                                                          xmlNodePtr startNode,
                                                          xmlSecNodeSetWalkCallback walkFunc,
@@ -149,10 +146,12 @@ xmlSecNodeSetCheckNode(xmlNodeSetPtr nodes, xmlNodePtr node, xmlNodePtr parent) 
          */
         /*
          * libxml2 stores namespace nodes in XPath node sets as copies whose
-         * ->next field points at the hosting element; match on that plus the
-         * prefix and the namespace URI. This is done manually (instead of
-         * relying on xmlXPathNodeSetContains) because older libxml2 versions
-         * compare namespace nodes by pointer only, which would never match.
+         * ->next field points at the hosting element. Since
+         * xmlXPathNodeSetContains() compares nodes by pointer only, the
+         * fast path below only matches when the set contains the very ns
+         * node from the document (e.g. a set built via the public API);
+         * the manual match handles the libxml2 copies: match on the hosting
+         * element (->next) plus the prefix and the namespace URI.
          *
          * On a single element the prefix uniquely identifies the namespace
          * declaration (XML well-formedness forbids duplicate namespace
@@ -163,6 +162,9 @@ xmlSecNodeSetCheckNode(xmlNodeSetPtr nodes, xmlNodePtr node, xmlNodePtr parent) 
          * declaration when the descendant (shadowing) element is used as
          * the hosting context.
          */
+        if(xmlXPathNodeSetContains(nodes, (xmlNodePtr)node)) {
+            return(1);
+        }
         for(ii = 0; ii < nodes->nodeNr; ii++) {
             if(nodes->nodeTab[ii]->type != XML_NAMESPACE_DECL) {
                 continue;
@@ -437,10 +439,11 @@ xmlSecNodeSetGetFastPathNodes(xmlSecNodeSetPtr nset) {
         }
     }
 
-    /* an intersections only list of sets */
+    /* an intersections only list of sets; the first member defines the base
+     * set and its op is unused */
     cur = nset;
     do {
-        if(cur->op != xmlSecNodeSetIntersection) {
+        if((cur != nset) && (cur->op != xmlSecNodeSetIntersection)) {
             return(NULL);
         }
         /* use the first member that has a non-NULL node list; a NULL node list
@@ -512,10 +515,26 @@ xmlSecNodeSetWalk(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc, voi
             if(xmlSecNodeSetWalkRootIsAncestor(fastPathNodes, cur)) {
                 continue;
             }
-            ret = xmlSecNodeSetWalkRecursive(nset, cur, walkFunc, data);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecNodeSetWalkRecursive", NULL);
-                return(ret);
+            /* the doc node itself is never a match: the slow path starts at
+             * the doc's children, so the fast path must not report the doc
+             * node either; walk all of the doc's top-level children (mirroring
+             * the slow path) */
+            if(cur->type == XML_DOCUMENT_NODE) {
+                xmlNodePtr docChild;
+
+                for(docChild = cur->children; (docChild != NULL) && (ret >= 0); docChild = docChild->next) {
+                    ret = xmlSecNodeSetWalkRecursive(nset, docChild, walkFunc, data);
+                    if(ret < 0) {
+                        xmlSecInternalError("xmlSecNodeSetWalkRecursive", NULL);
+                        return(ret);
+                    }
+                }
+            } else {
+                ret = xmlSecNodeSetWalkRecursive(nset, cur, walkFunc, data);
+                if(ret < 0) {
+                    xmlSecInternalError("xmlSecNodeSetWalkRecursive", NULL);
+                    return(ret);
+                }
             }
         }
         return(ret);

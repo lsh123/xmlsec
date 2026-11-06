@@ -424,10 +424,13 @@ xmlSecKeyReqMatchKeyValue(xmlSecKeyReqPtr keyReq, xmlSecKeyDataPtr value) {
        (!xmlSecKeyDataCheckId(value, keyReq->keyId))) {
         return(0);
     }
-    if((keyReq->keyBitsSize > 0) &&
-       (xmlSecKeyDataGetSize(value) > 0) &&
-       (xmlSecKeyDataGetSize(value) < keyReq->keyBitsSize)) {
-        return(0);
+    if(keyReq->keyBitsSize > 0) {
+        xmlSecSize valueSize;
+
+        valueSize = xmlSecKeyDataGetSize(value);
+        if((valueSize > 0) && (valueSize < keyReq->keyBitsSize)) {
+            return(0);
+        }
     }
     return(1);
 }
@@ -921,11 +924,6 @@ xmlSecKeyAdoptData(xmlSecKeyPtr key, xmlSecKeyDataPtr data) {
             xmlSecKeyDataDestroy(key->value);
         }
         key->value = data;
-        return(0);
-    }
-
-    /* do nothing if the data is already the key's value */
-    if(data == key->value) {
         return(0);
     }
 

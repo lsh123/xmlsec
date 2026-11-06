@@ -441,10 +441,6 @@ xmlSecGCryptRsaKtCheckModulusSize(gcry_sexp_t s_priv_key, xmlSecSize inSize) {
     }
     gcry_sexp_release(s_modulus);
 
-    if(modulusSize > XMLSEC_SIZE_MAX) {
-        xmlSecInvalidSizeMoreThanError("Input data", modulusSize, XMLSEC_SIZE_MAX, NULL);
-        return(-1);
-    }
     if(inSize != modulusSize) {
         xmlSecInvalidSizeError("Input data", inSize, modulusSize, NULL);
         return(-1);
@@ -495,7 +491,7 @@ xmlSecGCryptRsaPkcs1Decrypt(xmlSecGCryptRsaPkcs1CtxPtr ctx, xmlSecBufferPtr in, 
     /* decrypt */
     ret = xmlSecGCryptRsaKtDecrypt(
         s_encrypted_data,
-        xmlSecGCryptKeyDataRsaGetPrivateKey(ctx->keyData),
+        s_priv_key,
         out);
     if(ret != 0) {
         xmlSecInternalError("xmlSecGCryptRsaKtDecrypt", NULL);

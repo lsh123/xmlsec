@@ -398,6 +398,10 @@ xmlSecGCryptKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
     size_t block_len = gcry_cipher_get_algo_blklen(GCRY_CIPHER_3DES);
     gcry_cipher_hd_t cipherCtx;
     gcry_error_t err;
+    xmlSecBuffer scratch;
+    const xmlSecByte* src;
+    int haveScratch;
+    int ret;
 
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(keySize > 0, -1);
@@ -438,15 +442,42 @@ xmlSecGCryptKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
         return(-1);
     }
 
+    /* gcry_cipher_encrypt()/gcry_cipher_decrypt() in-place (in == out)
+       processing is not documented by libgcrypt, and the key wrap driver
+       (src/kw_helpers.c) may pass the same buffer as input and output;
+       stage the data through a scratch buffer in that case (the same
+       defense as the AES-KW backend in src/gcrypt/kw_rfc_3394.c) */
+    src = in;
+    haveScratch = 0;
+    if(in == out) {
+        ret = xmlSecBufferInitialize(&scratch, inSize);
+        if(ret < 0) {
+            xmlSecInternalError2("xmlSecBufferInitialize", NULL,
+                "size=" XMLSEC_SIZE_FMT, inSize);
+            gcry_cipher_close(cipherCtx);
+            return(-1);
+        }
+        xmlSecBufferMakeSecure(&scratch);
+        memcpy(xmlSecBufferGetData(&scratch), in, inSize);
+        src = xmlSecBufferGetData(&scratch);
+        haveScratch = 1;
+    }
+
     if(enc) {
-        err = gcry_cipher_encrypt(cipherCtx, out, outSize, in, inSize);
+        err = gcry_cipher_encrypt(cipherCtx, out, outSize, src, inSize);
+        if(haveScratch) {
+            xmlSecBufferFinalize(&scratch);
+        }
         if(err != GPG_ERR_NO_ERROR) {
             xmlSecGCryptError("gcry_cipher_encrypt", err, NULL);
             gcry_cipher_close(cipherCtx);
             return(-1);
         }
     } else {
-        err = gcry_cipher_decrypt(cipherCtx, out, outSize, in, inSize);
+        err = gcry_cipher_decrypt(cipherCtx, out, outSize, src, inSize);
+        if(haveScratch) {
+            xmlSecBufferFinalize(&scratch);
+        }
         if(err != GPG_ERR_NO_ERROR) {
             xmlSecGCryptError("gcry_cipher_decrypt", err, NULL);
             gcry_cipher_close(cipherCtx);

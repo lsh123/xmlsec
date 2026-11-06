@@ -350,9 +350,14 @@ xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSe
                         const xmlSecByte* p = buf;
                         unsigned long remaining = ti.length;
 
-                        /* skip the unused-bits byte */
+                        /* skip the unused-bits byte; it must be 0, the
+                           same check as in the EC branch below */
                         if(remaining < 1) {
-                            xmlSecInternalError2("xmlSecGCryptAsn1ParseIntegerSequence", NULL, "BIT STRING too short to contain an INTEGER, len=%lu", ti.length);
+                            xmlSecInternalError2("xmlSecGCryptAsn1ParseIntegerSequence", NULL, "invalid DSA key BIT STRING: too short to contain an unused-bits byte, len=%lu", ti.length);
+                            return(-1);
+                        }
+                        if(*p != 0) {
+                            xmlSecInternalError2("xmlSecGCryptAsn1ParseIntegerSequence", NULL, "invalid DSA key BIT STRING: the unused-bits byte must be 0, len=%lu", ti.length);
                             return(-1);
                         }
                         p++; remaining--;

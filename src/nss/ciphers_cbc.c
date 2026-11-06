@@ -211,6 +211,12 @@ xmlSecNssCbcCipherCtxUpdate(xmlSecNssCbcCipherCtxPtr ctx,
     }
     inSize = inBlocks * blockSize;
 
+    /* nothing to process: on decryption this happens when the input holds
+     * exactly one block, which is kept for the padding check in CtxFinal */
+    if(inSize == 0) {
+        return(0);
+    }
+
     /* we write out the input size plus maybe one block */
     ret = xmlSecBufferSetMaxSize(out, outSize + inSize + blockSize);
     if(ret < 0) {
@@ -343,15 +349,12 @@ xmlSecNssCbcCipherCtxFinal(xmlSecNssCbcCipherCtxPtr ctx,
     if(encrypt == 0) {
         xmlSecSize padding;
 
-        /* check padding */
+        /* check padding: a single generic error is used for both the zero
+         * and the out-of-range padding values so that the two failure
+         * outcomes are not distinguishable (padding oracle mitigation) */
         padding = (xmlSecSize)outBuf[blockLen - 1];
-        if(padding == 0) {
-            xmlSecInvalidDataError("invalid padding value (0)", cipherName);
-            return(-1);
-        }
-        if(outSize2 < padding) {
-            xmlSecInvalidSizeLessThanError("Input data padding",
-                    inSize, padding, cipherName);
+        if((padding == 0) || (outSize2 < padding)) {
+            xmlSecInvalidDataError("invalid padding length for the cipher", cipherName);
             return(-1);
         }
         outSize2 -= padding;
@@ -503,7 +506,9 @@ xmlSecNssCbcCipherFinalize(xmlSecTransformPtr transform) {
         PK11_DestroyContext(ctx->cipherCtx, PR_TRUE);
     }
 
-    memset(ctx, 0, sizeof(xmlSecNssCbcCipherCtx));
+    /* the context holds the raw symmetric key in ctx->key[], so wipe it with
+     * a compiler-non-elidable cleanse */
+    xmlSecMemCleanse(ctx, sizeof(xmlSecNssCbcCipherCtx));
 }
 
 static int

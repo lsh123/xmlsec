@@ -148,7 +148,7 @@ xmlSecNssKeyDataDEREncodedKeyValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, 
     }
     data = xmlSecBufferGetData(&buffer);
     dataSize = xmlSecBufferGetSize(&buffer);
-    if((data == NULL) || (dataSize <= 0)) {
+    if((data == NULL) || (dataSize == 0)) {
         /* this is not an error if we are reading a doc to be encrypted or signed */
         res = 0;
         goto done;

@@ -229,12 +229,15 @@ xmlSecNssKdfInitialize(xmlSecTransformPtr transform) {
             xmlSecNssKdfFinalize(transform);
             return(-1);
         }
+        xmlSecBufferMakeSecure(&(ctx->u.hkdf.salt));
+
         ret = xmlSecBufferInitialize(&(ctx->u.hkdf.info), 0);
         if(ret < 0) {
             xmlSecInternalError("xmlSecBufferInitialize(info)", NULL);
             xmlSecNssKdfFinalize(transform);
             return(-1);
         }
+        xmlSecBufferMakeSecure(&(ctx->u.hkdf.info));
         ret = xmlSecTransformHkdfParamsInitialize(&(ctx->u.hkdf.params));
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformHkdfParamsInitialize", NULL);
@@ -452,6 +455,9 @@ xmlSecNssConcatKdfGenerateKey(xmlSecNssKdfCtxPtr ctx, xmlSecSize outLen, xmlSecB
         goto done;
     }
 
+    /* keySize does not change during the loop, so cast it once up front */
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(keySize, keyLen, goto done, NULL);
+
     pos = 0;
     counterVal = 1;
     while(pos < outLen) {
@@ -478,7 +484,6 @@ xmlSecNssConcatKdfGenerateKey(xmlSecNssKdfCtxPtr ctx, xmlSecSize outLen, xmlSecB
             goto done;
         }
 
-        XMLSEC_SAFE_CAST_SIZE_TO_UINT(keySize, keyLen, goto done, NULL);
         rv = PK11_DigestOp(hashCtx, keyData, keyLen);
         if(rv != SECSuccess) {
             xmlSecNssError("PK11_DigestOp(Z)", NULL);

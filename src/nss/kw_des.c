@@ -536,8 +536,11 @@ xmlSecNssKWDes3Encrypt(
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->symKey != NULL, -1);
     xmlSecAssert2(iv != NULL, -1);
-    /* the wrappers above check >=, but always pass the exact IV length;
-       the helper enforces exact equality */
+    /* the wrappers above assert ivSize >= XMLSEC_KW_DES3_IV_LENGTH as a
+       defensive bound on the caller-supplied size, but always pass the
+       exact IV length; the helper enforces the exact equality contract
+       (the generic driver always passes exactly 8 bytes), so the checks
+       are intentionally asymmetric */
     xmlSecAssert2(ivSize == XMLSEC_KW_DES3_IV_LENGTH, -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize > 0, -1);
@@ -562,8 +565,12 @@ xmlSecNssKWDes3Encrypt(
     /* NSS does not promise in-place (in == out) processing and the generic
        KW driver (src/kw_helpers.c) passes the same buffer as both input and
        output, so stage the input through the scratch buffer in the transform
-       context; the buffer is secure, so its contents are wiped on resize and
-       on context finalization */
+       context. The buffer is secure memory: between wipes (on any resize
+       and on context finalization) it retains the last block processed
+       (plaintext key material during wrap), so the exposure window is
+       bounded to a single wrap/unwrap operation; a per-block cleanse was
+       considered but not adopted to keep the change minimal (the sibling
+       kw_rfc_3394.c cleanses its scratch buffer on every path instead) */
     if(xmlSecBufferSetSize(&(ctx->scratchIn), inSize) < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, inSize);
         goto done;

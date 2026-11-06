@@ -336,6 +336,13 @@ xmlSecGCryptRsaPkcs1Encrypt(xmlSecGCryptRsaPkcs1CtxPtr ctx, xmlSecBufferPtr in, 
 
     /* setup plain text data */
     inSize = xmlSecBufferGetSize(in);
+    if(inSize == 0) {
+        /* empty input is not a valid message to encrypt: the resulting
+         * empty key cannot be applied to any content cipher, so reject
+         * it early (matches the other back-ends) */
+        xmlSecInvalidSizeOtherError("input data is empty", NULL);
+        return(-1);
+    }
     XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, return(-1), NULL);
 
     /* check that the input fits into the key
@@ -1006,6 +1013,13 @@ xmlSecGCryptRsaOaepEncrypt(xmlSecGCryptRsaOaepCtxPtr ctx, xmlSecBufferPtr in, xm
 
     /* setup plain text data */
     inSize = xmlSecBufferGetSize(in);
+    if(inSize == 0) {
+        /* empty input is not a valid message to encrypt: the resulting
+         * empty key cannot be applied to any content cipher, so reject
+         * it early (matches the other back-ends) */
+        xmlSecInvalidSizeOtherError("input data is empty", NULL);
+        return(-1);
+    }
     XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, return(-1), NULL);
     oaepParamSize = xmlSecBufferGetSize(&(ctx->oaepParams));
     XMLSEC_SAFE_CAST_SIZE_TO_INT(oaepParamSize, oaepParamLen, return(-1), NULL);

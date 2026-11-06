@@ -43,6 +43,9 @@
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
 
+/* The ML-KEM APIs used below (kyber.h) require NSS >= 3.129; on older NSS
+   XMLSEC_NO_MLKEM is defined (include/xmlsec/nss/crypto.h) and this file
+   compiles to a no-op */
 #ifndef XMLSEC_NO_MLKEM
 
 

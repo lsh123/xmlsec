@@ -172,6 +172,34 @@ xmlSecNssKeysStoreFinalize(xmlSecKeyStorePtr store) {
     }
 }
 
+#ifndef XMLSEC_NO_X509
+static void
+xmlSecNssKeysStoreSetKeyValidityTimes(xmlSecKeyPtr key, CERTCertificate* cert) {
+    PRTime notBefore = 0;
+    PRTime notAfter = 0;
+    SECStatus status;
+
+    xmlSecAssert(key != NULL);
+    xmlSecAssert(cert != NULL);
+
+    /* copy the certificate validity times into the key; if the times cannot
+     * be read, leave the key unrestricted (0/0) */
+    status = CERT_GetCertTimes(cert, &notBefore, &notAfter);
+    if (status == SECSuccess) {
+        if (xmlSecNssX509CertGetTime(&notBefore, &(key->notValidBefore)) < 0) {
+            xmlSecInternalError("xmlSecNssX509CertGetTime(notValidBefore)", NULL);
+            key->notValidBefore = 0;
+        }
+        if (xmlSecNssX509CertGetTime(&notAfter, &(key->notValidAfter)) < 0) {
+            xmlSecInternalError("xmlSecNssX509CertGetTime(notValidAfter)", NULL);
+            key->notValidAfter = 0;
+        }
+    } else {
+        key->notValidBefore = key->notValidAfter = 0;
+    }
+}
+#endif /* XMLSEC_NO_X509 */
+
 static xmlSecKeyPtr
 xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyStorePtr* ss;
@@ -205,10 +233,14 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
         goto done;
     }
 
-    /* what type of key are we looking for?
-     * TBD: For now, we'll look only for public/private keys using the
-     * name as a cert nickname. Later on, we can attempt to find
-     * symmetric keys using PK11_FindFixedKey
+    /* What type of key are we looking for?
+     *
+     * The name is used as a cert nickname: that is how keys in the NSS DB
+     * are identified, so a name that is not a nickname simply does not
+     * resolve (the lookup fails silently); value-based key lookups are
+     * handled by the X509Data path (xmlSecNssKeysStoreFindKeyFromX509Data).
+     * TBD: For now, we'll look only for public/private keys. Later on, we
+     * can attempt to find symmetric keys using PK11_FindFixedKey.
      */
     keyReq = &(keyInfoCtx->keyReq);
     if (keyReq->keyType & (xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate)) {
@@ -269,6 +301,11 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
             xmlSecInternalError("xmlSecNssKeyDataX509AdoptKeyCert", NULL);
             goto done;
         }
+
+        /* copy the cert validity times into the key; the cert is now owned
+         * by the x509 data, but it is still valid while we have the pointer */
+        xmlSecNssKeysStoreSetKeyValidityTimes(key, cert);
+
         cert = NULL; /* owned by x509 data */
 
         ret = xmlSecKeyAdoptData(key, x509Data);
@@ -295,7 +332,11 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
         /* the key built from the NSS DB might not satisfy the request
          * (e.g. a different key data klass or a public-only key when a
          * private one was required); filter it out the same way the
-         * simple keys store does, so callers do not have to discard it */
+         * simple keys store does, so callers do not have to discard it.
+         * xmlSecKeyMatch can return -1 on an internal error (its asserts
+         * log and return instead of aborting), so the "match < 0" branch
+         * below is live defensive code, consistent with the codebase idiom
+         * of checking every return value */
         match = xmlSecKeyMatch(key, name, keyReq);
         if(match < 0) {
             xmlSecInternalError("xmlSecKeyMatch", xmlSecKeyStoreGetName(store));
@@ -362,6 +403,17 @@ xmlSecNssKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509Data
         return(NULL);
     }
 
+    /* The key is searched only in the in-memory simple key store, not in
+     * the NSS DB (certDb is used only to initialize the cert matching
+     * context). This is deliberate: the core reads the X509Data value
+     * incrementally (xmlSecKeyDataX509XmlRead, src/x509_helpers.c), so this
+     * function is called with a single, not yet accumulated, value and a
+     * DB lookup by one partial criterion (e.g. just the X509SubjectName)
+     * is ambiguous (a trusted root CA present in the DB would match and
+     * the wrong key would be selected). Correct key selection for X509Data
+     * is handled by the dedicated X509 key data path
+     * (xmlSecNssVerifyAndAdoptX509KeyData in x509.c); the OpenSSL and
+     * GnuTLS twins search the in-memory key store only, as well. */
     key = xmlSecNssX509FindKeyByValue(certDb, keysList, x509Data);
     if(key == NULL) {
         /* not found */

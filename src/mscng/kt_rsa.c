@@ -221,7 +221,6 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
     xmlSecSize keyBits, keySize;
     BCRYPT_KEY_HANDLE hPubKey;
     NCRYPT_KEY_HANDLE hPrivKey;
-    xmlSecByte dummy = 0;
     DWORD dwInSize, dwOutSize, dwOutLen;
     xmlSecByte * outBuf;
     xmlSecByte * inBuf;
@@ -252,11 +251,17 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
     outSize = xmlSecBufferGetSize(out);
     xmlSecAssert2(outSize == 0, -1);
 
+    if((transform->operation == xmlSecTransformOperationEncrypt) && (inSize == 0)) {
+        /* empty input is not a valid message to encrypt: the resulting
+         * empty key cannot be applied to any content cipher, so reject
+         * it early (matches the other back-ends) */
+        xmlSecInvalidSizeOtherError("input data is empty",
+            xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
     /* the encoded size is equal to the key's size so we could not
-     * process more than that. An empty input is allowed for encryption
-     * (BCryptEncrypt accepts a zero-length message, see the dummy
-     * inBuf handling below); note that the OpenSSL backend rejects
-     * empty input instead. Decryption is guarded by the
+     * process more than that. Decryption is guarded by the
      * inSize != keySize check below. */
     if((transform->operation == xmlSecTransformOperationEncrypt) && (inSize >= keySize)) {
         xmlSecInvalidSizeLessThanError("Input data", inSize, keySize,
@@ -278,11 +283,6 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
 
     /* get everything ready */
     inBuf = xmlSecBufferGetData(in);
-    if((transform->operation == xmlSecTransformOperationEncrypt) && (inSize == 0) && (inBuf == NULL)) {
-        /* BCryptEncrypt requires a non-NULL input pointer even for an
-         * empty message */
-        inBuf = &dummy;
-    }
     outBuf = xmlSecBufferGetData(out);
     dwOutLen = 0;
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwInSize, return(-1), xmlSecTransformGetName(transform));

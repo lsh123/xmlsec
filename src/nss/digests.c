@@ -38,7 +38,6 @@
   *****************************************************************************/
 typedef struct _xmlSecNssDigestCtx              xmlSecNssDigestCtx, *xmlSecNssDigestCtxPtr;
 struct _xmlSecNssDigestCtx {
-    SECOidData*         digest;
     PK11Context*        digestCtx;
     xmlSecByte          dgst[XMLSEC_NSS_MAX_DIGEST_SIZE];
     xmlSecSize          dgstSize;       /* dgst size in bytes */
@@ -210,6 +209,7 @@ xmlSecNssDigestCheckId(xmlSecTransformPtr transform) {
 static int
 xmlSecNssDigestInitialize(xmlSecTransformPtr transform) {
     xmlSecNssDigestCtxPtr ctx;
+    SECOidData* digest = NULL;
 
     xmlSecAssert2(xmlSecNssDigestCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssDigestSize), -1);
@@ -222,46 +222,46 @@ xmlSecNssDigestInitialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformSha1Id)) {
-        ctx->digest = SECOID_FindOIDByTag(SEC_OID_SHA1);
+        digest = SECOID_FindOIDByTag(SEC_OID_SHA1);
     } else
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA224
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformSha224Id)) {
-        ctx->digest = SECOID_FindOIDByTag(SEC_OID_SHA224);
+        digest = SECOID_FindOIDByTag(SEC_OID_SHA224);
     } else
 #endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformSha256Id)) {
-        ctx->digest = SECOID_FindOIDByTag(SEC_OID_SHA256);
+        digest = SECOID_FindOIDByTag(SEC_OID_SHA256);
     } else
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformSha384Id)) {
-        ctx->digest = SECOID_FindOIDByTag(SEC_OID_SHA384);
+        digest = SECOID_FindOIDByTag(SEC_OID_SHA384);
     } else
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformSha512Id)) {
-        ctx->digest = SECOID_FindOIDByTag(SEC_OID_SHA512);
+        digest = SECOID_FindOIDByTag(SEC_OID_SHA512);
     } else
 #endif /* XMLSEC_NO_SHA512 */
 
 #ifndef XMLSEC_NO_SHA3
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformSha3_224Id)) {
-        ctx->digest = SECOID_FindOIDByTag(SEC_OID_SHA3_224);
+        digest = SECOID_FindOIDByTag(SEC_OID_SHA3_224);
     } else
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformSha3_256Id)) {
-        ctx->digest = SECOID_FindOIDByTag(SEC_OID_SHA3_256);
+        digest = SECOID_FindOIDByTag(SEC_OID_SHA3_256);
     } else
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformSha3_384Id)) {
-        ctx->digest = SECOID_FindOIDByTag(SEC_OID_SHA3_384);
+        digest = SECOID_FindOIDByTag(SEC_OID_SHA3_384);
     } else
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformSha3_512Id)) {
-        ctx->digest = SECOID_FindOIDByTag(SEC_OID_SHA3_512);
+        digest = SECOID_FindOIDByTag(SEC_OID_SHA3_512);
     } else
 #endif /* XMLSEC_NO_SHA3 */
 
@@ -270,12 +270,12 @@ xmlSecNssDigestInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-    if(ctx->digest == NULL) {
+    if(digest == NULL) {
         xmlSecNssError("SECOID_FindOIDByTag", xmlSecTransformGetName(transform));
         return(-1);
     }
 
-    ctx->digestCtx = PK11_CreateDigestContext(ctx->digest->offset);
+    ctx->digestCtx = PK11_CreateDigestContext(digest->offset);
     if(ctx->digestCtx == NULL) {
         xmlSecNssError("PK11_CreateDigestContext", xmlSecTransformGetName(transform));
         return(-1);
@@ -297,7 +297,7 @@ xmlSecNssDigestFinalize(xmlSecTransformPtr transform) {
     if(ctx->digestCtx != NULL) {
         PK11_DestroyContext(ctx->digestCtx, PR_TRUE);
     }
-    memset(ctx, 0, sizeof(xmlSecNssDigestCtx));
+    xmlSecMemCleanse(ctx, sizeof(xmlSecNssDigestCtx));
 }
 
 static int

@@ -466,6 +466,15 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform) {
         return(-1);
     }
 
+    if((encrypt != 0) && (inSize == 0)) {
+        /* empty input is not a valid message to encrypt: the resulting
+         * empty key cannot be applied to any content cipher, so reject
+         * it early (matches the OAEP transform and the NSS back-end) */
+        xmlSecInvalidSizeOtherError("input data is empty",
+            xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
     /* the encoded size is equal to the key size so we could not
      * process more than that; PKCS#1 v1.5 padding adds at least
      * 11 bytes (00 || 02 || at least 8 bytes of PS || 00), so the

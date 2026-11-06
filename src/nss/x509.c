@@ -1117,7 +1117,11 @@ xmlSecNssVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xmlS
     }
     keyValue = NULL; /* owned by key now */
 
-    /* copy cert not before / not after times from the cert */
+    /* copy cert not before / not after times from the cert; the ret < 0
+     * checks below are live defensive code: xmlSecNssX509CertGetTime()
+     * returns -1 if its asserts fail (they log and return instead of
+     * aborting), consistent with the codebase idiom of checking every
+     * return value */
     status = CERT_GetCertTimes(ctx->keyCert, &notBefore, &notAfter);
     if (status == SECSuccess) {
         ret = xmlSecNssX509CertGetTime(&notBefore, &(key->notValidBefore));

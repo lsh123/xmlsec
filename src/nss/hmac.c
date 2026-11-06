@@ -308,7 +308,7 @@ xmlSecNssHmacVerify(xmlSecTransformPtr transform,
     xmlSecNssHmacCtxPtr ctx;
     int ret;
 
-    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(xmlSecNssHmacCheckId(transform), -1);
     xmlSecAssert2(transform->operation == xmlSecTransformOperationVerify, -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssHmacSize), -1);
     xmlSecAssert2(transform->status == xmlSecTransformStatusFinished, -1);

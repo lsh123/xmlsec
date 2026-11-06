@@ -528,6 +528,11 @@ xmlSecNssPKIKeyDataGetSize(xmlSecKeyDataPtr data) {
 #endif /* XMLSEC_NO_EDDSA */
 #ifndef XMLSEC_NO_XDH
     case ecMontKey:
+        /* SECKEY_PublicKeyStrengthInBits doesn't handle X25519 keys correctly so we compute the
+         * size from the public value length, which is 256 bits for the 32-byte X25519 public key.
+         * This intentionally differs from the OpenSSL backend, which reports 253 bits (OpenSSL's
+         * nominal EVP_PKEY_get_bits() value for X25519), and matches the GnuTLS backend
+         * (see src/gnutls/asymkeys.c). */
         return(8 * ctx->pubkey->u.ec.publicValue.len);
 #endif /* XMLSEC_NO_XDH */
 #ifndef XMLSEC_NO_MLDSA

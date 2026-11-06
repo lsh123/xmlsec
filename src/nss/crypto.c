@@ -448,6 +448,14 @@ xmlSecCryptoGetFunctions_nss(void) {
     return(gXmlSecNssFunctions);
 }
 
+/**
+ * @brief Updates the available transform getters based on the NSS security policy.
+ * @details Getters of the transforms whose algorithms are disabled by the NSS
+ * security policy are set to NULL. Getters are never re-enabled: re-initialization
+ * of the library is not supported (see the note in xmlSecInit()), so a transform
+ * disabled in an earlier pass stays disabled even if the policy later permits it.
+ * @param functions the xmlsec-nss functions table to update.
+ */
 static void
 xmlSecNssUpdateAvailableCryptoTransforms(xmlSecCryptoDLFunctionsPtr functions) {
     SECStatus rv;
@@ -565,18 +573,12 @@ xmlSecNssUpdateAvailableCryptoTransforms(xmlSecCryptoDLFunctionsPtr functions) {
 
     /****** XDH ******/
 #ifndef XMLSEC_NO_XDH
-#ifdef XMLSEC_NSS_HAS_KEY_AGREEMENT_OIDS
+    /* include/xmlsec/nss/crypto.h force-defines XMLSEC_NO_XDH for NSS < 3.103,
+     * which has no SEC_OID_X25519, so the dedicated OID is always available
+     * here for the NSS security policy check */
     if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_X25519) == 0) {
         functions->transformX25519GetKlass = NULL;
     }
-#else
-    /* NSS has no X25519-specific OID, so the ECDH-derive mechanism (which
-     * maps to the ECDSA OID) is used as the closest available proxy for the
-     * NSS security policy check */
-    if (xmlSecNssCryptoCheckMechanism(CKM_ECDH1_DERIVE) == 0) {
-        functions->transformX25519GetKlass = NULL;
-    }
-#endif /* XMLSEC_NSS_HAS_KEY_AGREEMENT_OIDS */
 #endif /* XMLSEC_NO_XDH */
 
     /****** ECDSA ******/

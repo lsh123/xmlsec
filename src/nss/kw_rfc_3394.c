@@ -85,7 +85,6 @@ struct _xmlSecNssKWRfc3394Ctx {
 };
 
 static int              xmlSecNssKWRfc3394EnsureKey     (xmlSecNssKWRfc3394CtxPtr ctx,
-                                                         xmlSecKeyDataId keyId,
                                                          CK_ATTRIBUTE_TYPE symKeyOp);
 static int              xmlSecNssKWRfc3394CipherOp      (xmlSecNssKWRfc3394CtxPtr ctx,
                                                          const xmlSecByte *in,
@@ -351,7 +350,7 @@ xmlSecNssKWRfc3394BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * 
     xmlSecAssert2(ctx->parentCtx.keyId != NULL, -1);
 
     /* create key if needed */
-    ret = xmlSecNssKWRfc3394EnsureKey(ctx, ctx->parentCtx.keyId, CKA_ENCRYPT);
+    ret = xmlSecNssKWRfc3394EnsureKey(ctx, CKA_ENCRYPT);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssKWRfc3394EnsureKey", NULL);
         return(-1);
@@ -389,7 +388,7 @@ xmlSecNssKWRfc3394BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * 
     xmlSecAssert2(ctx->parentCtx.keyId != NULL, -1);
 
     /* create key if needed */
-    ret = xmlSecNssKWRfc3394EnsureKey(ctx, ctx->parentCtx.keyId, CKA_DECRYPT);
+    ret = xmlSecNssKWRfc3394EnsureKey(ctx, CKA_DECRYPT);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssKWRfc3394EnsureKey", NULL);
         return(-1);
@@ -408,7 +407,7 @@ xmlSecNssKWRfc3394BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * 
 }
 
 static int
-xmlSecNssKWRfc3394EnsureKey(xmlSecNssKWRfc3394CtxPtr ctx, xmlSecKeyDataId keyId, CK_ATTRIBUTE_TYPE symKeyOp) {
+xmlSecNssKWRfc3394EnsureKey(xmlSecNssKWRfc3394CtxPtr ctx, CK_ATTRIBUTE_TYPE symKeyOp) {
     xmlSecByte* keyData;
     xmlSecSize keySize;
     PK11SlotInfo* slot = NULL;
@@ -416,9 +415,7 @@ xmlSecNssKWRfc3394EnsureKey(xmlSecNssKWRfc3394CtxPtr ctx, xmlSecKeyDataId keyId,
     int res = -1;
 
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(keyId != NULL, -1);
     xmlSecAssert2(ctx->parentCtx.keyId != NULL, -1);
-    xmlSecAssert2(keyId == ctx->parentCtx.keyId, -1);
 
     /* the cached symmetric key has the operation (CKA_ENCRYPT/CKA_DECRYPT)
      * baked in at import time, so it can only be reused for the same
@@ -472,6 +469,7 @@ xmlSecNssKWRfc3394CipherOp(xmlSecNssKWRfc3394CtxPtr ctx, const xmlSecByte *in, x
     PK11Context*       ctxt = NULL;
     SECStatus          rv;
     int                outlen;
+    xmlSecSize         outLen;
     int                ret = -1;
 
     xmlSecAssert2(ctx != NULL, -1);
@@ -480,8 +478,14 @@ xmlSecNssKWRfc3394CipherOp(xmlSecNssKWRfc3394CtxPtr ctx, const xmlSecByte *in, x
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
 
-    /* note: the PKCS#11 context is created per block; RFC 3394 performs many
-       block operations per key and we need a new context each time */
+    /* note: the PKCS#11 context is created per block. RFC 3394 performs many
+       block operations per key (24 for a 256-bit key) and a new context is
+       needed each time: the softoken has no native CKM_AES_KEY_WRAP and
+       PK11_Finalize terminates the token operation, so a context cannot be
+       reused across blocks (caching one would require bypassing the PK11
+       layer). This makes a wrap/unwrap noticeably slower than the
+       OpenSSL/gcrypt parallels, but is a characteristic of the NSS PK11
+       API, not a defect */
     ctxt = PK11_CreateContextBySymKey(ctx->cipherMech, ctx->symKeyOp, ctx->symKey, ctx->secParam);
     if (ctxt == NULL) {
         xmlSecNssError("PK11_CreateContextBySymKey", NULL);
@@ -489,12 +493,17 @@ xmlSecNssKWRfc3394CipherOp(xmlSecNssKWRfc3394CtxPtr ctx, const xmlSecByte *in, x
     }
 
     /* NSS does not promise in-place (in == out) processing, so stage the
-       block through the scratch buffer in the transform context; it retains
-       the last block until xmlSecNssKWRfc3394Finalize cleanses it */
+       block through the scratch buffer in the transform context; the buffer
+       is cleansed before this function returns on every path */
     memcpy(ctx->scratchIn, in, sizeof(ctx->scratchIn));
     outlen = 0;
     rv = PK11_CipherOp(ctxt, out, &outlen, sizeof(ctx->scratchIn), ctx->scratchIn, sizeof(ctx->scratchIn));
-    if ((rv != SECSuccess) || (outlen != sizeof(ctx->scratchIn))) {
+    if (rv != SECSuccess) {
+        xmlSecNssError("PK11_CipherOp", NULL);
+        goto done;
+    }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(outlen, outLen, goto done, NULL);
+    if (outLen != sizeof(ctx->scratchIn)) {
         xmlSecNssError("PK11_CipherOp", NULL);
         goto done;
     }
@@ -512,6 +521,8 @@ done:
     if (ctxt) {
         PK11_DestroyContext(ctxt, PR_TRUE);
     }
+
+    xmlSecMemCleanse(ctx->scratchIn, sizeof(ctx->scratchIn));
 
     return (ret);
 }

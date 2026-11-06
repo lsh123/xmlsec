@@ -92,7 +92,9 @@ static xmlSecKeyDataStoreKlass xmlSecNssX509StoreKlass = {
 };
 
 static CERTCertificate*         xmlSecNssX509FindCert(CERTCertList* certsList, xmlSecNssX509FindCertCtxPtr findCertCtx);
-static int                      xmlSecNssX509VerifyCRLTimeValidity(const CERTSignedCrl* crl, xmlSecKeyInfoCtxPtr keyInfoCtx, int reportErrors);
+static int                      xmlSecNssX509VerifyCRLTimeValidity          (const CERTSignedCrl* crl,
+                                                                             xmlSecKeyInfoCtxPtr keyInfoCtx,
+                                                                             int reportErrors);
 
 
 /**
@@ -511,6 +513,11 @@ xmlSecNssX509StoreVerifyChainAgainstCrls(
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
+    /* do we even need to check the chain for revocations? */
+    if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) != 0) {
+        return(1);
+    }
+
     /* no CRLs in the store and no keyInfo CRLs, nothing to check */
     if((x509StoreCtx->crlsList == NULL) && (keyInfoCrls == NULL)) {
         return(1);
@@ -658,8 +665,12 @@ xmlSecNssX509StoreVerifyKey(
     /* retrieve X509 data and get key cert, other certs and crls */
     x509Data = xmlSecKeyGetData(key, xmlSecNssKeyDataX509Id);
     if(x509Data == NULL) {
+        /* policy note: a key without the X509 key-data component is an internal
+         * error (-1) while a component without a key cert is "not verified"
+         * (0). Both fail closed; the distinction reflects that this function
+         * is only expected to run for keys that carry X509 data. */
         xmlSecInternalError("xmlSecKeyGetData(xmlSecNssKeyDataX509Id)", xmlSecKeyDataStoreGetName(store));
-        return(0); /* key cannot be verified w/o key cert */
+        return(-1);
     }
     key_cert = xmlSecNssKeyDataX509GetKeyCert(x509Data);
     if(key_cert == NULL) {
@@ -845,9 +856,13 @@ xmlSecNssX509StoreAdoptCert(xmlSecKeyDataStorePtr store, CERTCertificate* cert, 
 
         /* if requested, mark the certificate as trusted; this is done before
          * adding the cert to the list so that on failure the caller can still
-         * safely free the cert (the store does not hold a reference to it yet) */
+         * safely free the cert (the store does not hold a reference to it yet).
+         * Note that the object-signing column (the 3rd one) must use "C"
+         * (CERTDB_TRUSTED_CA) as well, because NSS requires that trust flag
+         * for the object-signer usage (CERT_TrustFlagsForCACertUsage); "T"
+         * (CERTDB_TRUSTED_CLIENT_CA) alone is not sufficient there. */
         CERTCertTrust trust;
-        status = CERT_DecodeTrustString(&trust, "TCu,Cu,Tu");
+        status = CERT_DecodeTrustString(&trust, "TCu,Cu,TCu");
         if(status != SECSuccess) {
             xmlSecNssError("CERT_DecodeTrustString", xmlSecKeyDataStoreGetName(store));
             return(-1);
@@ -917,7 +932,12 @@ xmlSecNssX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, CERTSignedCrl * crl) {
  * the best-CRL scan (xmlSecNssX509StoreConsiderCrl) passes zero, otherwise
  * every out-of-window CRL in the store prints a misleading message.
  * The XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS flag skips the time
- * window checks altogether (the CRL is then taken as valid). */
+ * window checks altogether (the CRL is then taken as valid). On NSS the
+ * flag only affects the CRL time windows: CERT_VerifyCertificate() (used
+ * for the certificate path) has no equivalent of openssl's
+ * X509_V_FLAG_NO_CHECK_TIME and always enforces the certificate validity
+ * window, so a certificate outside its validity window still fails
+ * verification even when the flag is set. */
 static int
 xmlSecNssX509VerifyCRLTimeValidity(const CERTSignedCrl* crl, xmlSecKeyInfoCtxPtr keyInfoCtx, int reportErrors) {
     PRTime verification_time;
@@ -985,45 +1005,27 @@ xmlSecNssX509VerifyCRLTimeValidity(const CERTSignedCrl* crl, xmlSecKeyInfoCtxPtr
     return(1);
 }
 
-/* Helper function to verify CRL signature */
+/* Verifies the CRL signature with a single candidate issuer certificate: the
+ * issuer certificate is verified first (chain and validity), then the CRL
+ * signature is checked against it. The caller retains ownership of
+ * @p issuer_cert. Returns 1 if the CRL signature was verified, 0 if this
+ * candidate does not verify the CRL, and a negative value if an error occurs. */
 static int
-xmlSecNssX509VerifyCRLSignature(xmlSecNssX509StoreCtxPtr ctx, CERTSignedCrl* crl, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    CERTCertificate* issuer_cert = NULL;
+xmlSecNssX509VerifyCRLSignatureWithIssuerCert(
+    xmlSecNssX509StoreCtxPtr ctx,
+    CERTSignedCrl* crl,
+    CERTCertificate* issuer_cert,
+    xmlSecKeyInfoCtxPtr keyInfoCtx
+) {
     SECStatus rv;
     int64 verificationTime;
     int ret;
-    int res = -1;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->certDb != NULL, -1);
     xmlSecAssert2(crl != NULL, -1);
+    xmlSecAssert2(issuer_cert != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
-
-    /* Find the CRL issuer certificate in the store */
-    if((crl->crl.derName.data != NULL) && (crl->crl.derName.len > 0)) {
-        /* Search in the certs list */
-        if(ctx->certsList != NULL) {
-            CERTCertListNode* node;
-            for(node = CERT_LIST_HEAD(ctx->certsList); !CERT_LIST_END(node, ctx->certsList); node = CERT_LIST_NEXT(node)) {
-                if(node->cert != NULL) {
-                    /* Compare CRL issuer (derName) with certificate subject (derSubject) */
-                    if(SECITEM_CompareItem(&(crl->crl.derName), &(node->cert->derSubject)) == SECEqual) {
-                        issuer_cert = CERT_DupCertificate(node->cert);
-                        break;
-                    }
-                }
-            }
-        }
-
-        /* If not found in store, try to find in NSS database */
-        if(issuer_cert == NULL) {
-            issuer_cert = CERT_FindCertByName(ctx->certDb, &(crl->crl.derName));
-        }
-    }
-    if(issuer_cert == NULL) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_FOUND, NULL, "CRL issuer certificate not found");
-        goto done;
-    }
 
     /* the issuer cert must be verified itself (chain and validity) before it
      * can be used to verify the CRL signature; it is a CA cert, so use a CA
@@ -1034,11 +1036,10 @@ xmlSecNssX509VerifyCRLSignature(xmlSecNssX509StoreCtxPtr ctx, CERTSignedCrl* crl
     ret = xmlSecNssX509StoreVerifyCert(ctx->certDb, issuer_cert, keyInfoCtx, certificateUsageSSLCA);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssX509StoreVerifyCert", NULL);
-        goto done;
+        return(-1);
     } else if(ret != 1) {
         /* the issuer cert is not verified, so the CRL signature cannot be verified */
-        res = 0;
-        goto done;
+        return(0);
     }
 
     /* get verification time */
@@ -1049,16 +1050,120 @@ xmlSecNssX509VerifyCRLSignature(xmlSecNssX509StoreCtxPtr ctx, CERTSignedCrl* crl
     if(rv != SECSuccess) {
         xmlSecNssError("CERT_VerifySignedData", NULL);
         /* Verification failed */
-        res = 0;
-        goto done;
+        return(0);
     }
 
     /* Success: verified */
-    res = 1;
+    return(1);
+}
+
+/* Helper function to verify CRL signature: tries every certificate with the
+ * CRL issuer's subject name (the store and the NSS database may hold several
+ * such certificates, e.g. after a CA rekey) until one verifies the signature */
+static int
+xmlSecNssX509VerifyCRLSignature(xmlSecNssX509StoreCtxPtr ctx, CERTSignedCrl* crl, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    CERTCertificate* issuer_cert = NULL;
+    CERTCertList* db_certs = NULL;
+    CERTCertListNode* node;
+    int64 verificationTime;
+    int ret;
+    int res = -1;
+    int found = 0;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->certDb != NULL, -1);
+    xmlSecAssert2(crl != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    if((crl->crl.derName.data == NULL) || (crl->crl.derName.len <= 0)) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_FOUND, NULL, "CRL issuer certificate not found");
+        goto done;
+    }
+
+    verificationTime = xmlSecNssX509StoreGetVerificationTime(keyInfoCtx);
+
+    /* search in the store's certs list first */
+    if(ctx->certsList != NULL) {
+        for(node = CERT_LIST_HEAD(ctx->certsList);
+            (res != 1) && !CERT_LIST_END(node, ctx->certsList);
+            node = CERT_LIST_NEXT(node)) {
+            if(node->cert == NULL) {
+                continue;
+            }
+            /* Compare CRL issuer (derName) with certificate subject (derSubject) */
+            if(SECITEM_CompareItem(&(crl->crl.derName), &(node->cert->derSubject)) != SECEqual) {
+                continue;
+            }
+
+            issuer_cert = CERT_DupCertificate(node->cert);
+            if(issuer_cert == NULL) {
+                xmlSecNssError("CERT_DupCertificate", NULL);
+                goto done;
+            }
+            found = 1;
+            ret = xmlSecNssX509VerifyCRLSignatureWithIssuerCert(ctx, crl, issuer_cert, keyInfoCtx);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecNssX509VerifyCRLSignatureWithIssuerCert", NULL);
+                goto done;
+            } else if(ret == 1) {
+                res = 1; /* the CRL signature was verified */
+            } else {
+                /* this candidate does not verify the CRL signature, try the next one */
+                CERT_DestroyCertificate(issuer_cert);
+                issuer_cert = NULL;
+            }
+        }
+    }
+
+    /* if the store's certs did not verify the CRL signature, try the
+     * certificates from the NSS database with the same subject name */
+    if(res != 1) {
+        db_certs = CERT_CreateSubjectCertList(NULL, ctx->certDb, &(crl->crl.derName),
+            verificationTime, PR_FALSE);
+        if(db_certs != NULL) {
+            for(node = CERT_LIST_HEAD(db_certs);
+                (res != 1) && !CERT_LIST_END(node, db_certs);
+                node = CERT_LIST_NEXT(node)) {
+                if(node->cert == NULL) {
+                    continue;
+                }
+
+                issuer_cert = CERT_DupCertificate(node->cert);
+                if(issuer_cert == NULL) {
+                    xmlSecNssError("CERT_DupCertificate", NULL);
+                    goto done;
+                }
+                found = 1;
+                ret = xmlSecNssX509VerifyCRLSignatureWithIssuerCert(ctx, crl, issuer_cert, keyInfoCtx);
+                if(ret < 0) {
+                    xmlSecInternalError("xmlSecNssX509VerifyCRLSignatureWithIssuerCert", NULL);
+                    goto done;
+                } else if(ret == 1) {
+                    res = 1; /* the CRL signature was verified */
+                } else {
+                    /* this candidate does not verify the CRL signature, try the next one */
+                    CERT_DestroyCertificate(issuer_cert);
+                    issuer_cert = NULL;
+                }
+            }
+        }
+    }
+
+    if(res != 1) {
+        if(found == 0) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_FOUND, NULL, "CRL issuer certificate not found");
+            /* res stays -1: no issuer certificate was found at all */
+        } else {
+            res = 0; /* none of the issuer certificates verified the CRL signature */
+        }
+    }
 
 done:
     if(issuer_cert != NULL) {
         CERT_DestroyCertificate(issuer_cert);
+    }
+    if(db_certs != NULL) {
+        CERT_DestroyCertList(db_certs);
     }
     return(res);
 }
@@ -1069,8 +1174,8 @@ done:
  * @param crl the CRL to verify.
  * @param keyInfoCtx the key info context for verification parameters.
  *
- * 1. Signature is valid (signed by the issuer cert found in the store or in
- *    the NSS database)
+ * 1. Signature is valid (signed by one of the issuer certs found in the store
+ *    or in the NSS database)
  * 2. thisUpdate <= verification_time <= nextUpdate
  *
  * @return 1 if verified, 0 if not verified, or a negative value on error.

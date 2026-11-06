@@ -850,6 +850,14 @@ xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
             dataItem.data = (unsigned char *)&emptyData;
         }
 
+        /* an empty (0-byte) context is treated as absent, not passed as a
+           zero-length context: per FIPS 204 the signed message is M' = C ||
+           M, so an empty context is byte-identical to no context and the
+           signatures are the same (the OpenSSL backend passes a zero-length
+           context and produces identical signatures). Omitting
+           CK_SIGN_ADDITIONAL_CONTEXT is also more conservative, since the
+           NSS behavior for ulContextLen == 0 is not exercised by any code
+           path */
         if((ctx->contextString != NULL) && (xmlSecBufferGetSize(ctx->contextString) > 0)) {
             mldsaParam.hedgeVariant = CKH_HEDGE_PREFERRED;
             mldsaParam.pContext = xmlSecBufferGetData(ctx->contextString);
@@ -1141,6 +1149,14 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                     dataItem.data = (unsigned char *)&emptyData;
                 }
 
+                /* an empty (0-byte) context is treated as absent, not passed
+                   as a zero-length context: per FIPS 204 the signed message
+                   is M' = C || M, so an empty context is byte-identical to
+                   no context and the signatures are the same (the OpenSSL
+                   backend passes a zero-length context and produces identical
+                   signatures). Omitting CK_SIGN_ADDITIONAL_CONTEXT is also
+                   more conservative, since the NSS behavior for ulContextLen
+                   == 0 is not exercised by any code path */
                 if((ctx->contextString != NULL) && (xmlSecBufferGetSize(ctx->contextString) > 0)) {
                     mldsaParam.hedgeVariant = CKH_HEDGE_PREFERRED;
                     mldsaParam.pContext = xmlSecBufferGetData(ctx->contextString);

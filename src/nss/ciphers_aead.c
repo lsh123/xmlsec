@@ -730,6 +730,8 @@ xmlSecNssAeadCipherNodeReadChaCha20Poly1305(xmlSecTransformPtr transform, xmlNod
     xmlSecAssert2(ctx->ivInitialized == 0, -1);
 
     ret = xmlSecTransformChaCha20Poly1305ParamsRead(node, &(ctx->aad), ctx->iv, sizeof(ctx->iv), &ivSize, &noncePresent);
+    /* the ivSize check below is defensive: xmlSecTransformChaCha20Poly1305ParamsRead
+     * always sets *ivSizeOut to XMLSEC_CHACHA20_NONCE_SIZE on success */
     if((ret < 0) || (ivSize != XMLSEC_CHACHA20_NONCE_SIZE)) {
         xmlSecInternalError("xmlSecTransformChaCha20Poly1305ParamsRead", xmlSecTransformGetName(transform));
         return(-1);

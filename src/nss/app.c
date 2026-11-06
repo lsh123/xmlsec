@@ -857,6 +857,8 @@ done:
     if(spki != NULL) {
         SECKEY_DestroySubjectPublicKeyInfo(spki);
     }
+    /* clear the password buffer before returning */
+    xmlSecMemCleanse(pwdBuf, sizeof(pwdBuf));
     return (retval);
 }
 
@@ -882,7 +884,10 @@ xmlSecNssAppCheckCertMatchesKey(xmlSecKeyPtr key,  CERTCertificate * cert) {
     }
     pubkey = xmlSecNssPKIKeyDataGetPubKey(keyData);
     if(pubkey == NULL) {
-        xmlSecInternalError("xmlSecNssPKIKeyDataGetPubKey", NULL);
+        /* the key data has no public key (e.g. it is not an NSS PKI
+         * key data); the certificate cannot match the key, so it is
+         * added as a regular (non-key) certificate */
+        res = 0;
         goto done;
     }
     der_pubkey = SECKEY_EncodeDERSubjectPublicKeyInfo(pubkey);
@@ -1017,6 +1022,7 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
     CERTCertDBHandle *certDb;
     CERTCertificate *cert = NULL;
     xmlSecKeyDataPtr x509Data;
+    xmlSecKeyDataFormat certFormat;
     int isKeyCert = 0;
     int ret;
     int res = -1;
@@ -1028,6 +1034,25 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
     xmlSecAssert2(secItem->len > 0, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
+    /*
+     * A PKCS#8 file does not contain a certificate. The format is the
+     * caller's key file format (the companion certificates are loaded
+     * with the same format as the key), so the PKCS#8 formats are
+     * accepted and treated as the corresponding plain PEM/DER
+     * certificate formats.
+     */
+    switch(format) {
+    case xmlSecKeyDataFormatPkcs8Pem:
+        certFormat = xmlSecKeyDataFormatPem;
+        break;
+    case xmlSecKeyDataFormatPkcs8Der:
+        certFormat = xmlSecKeyDataFormatDer;
+        break;
+    default:
+        certFormat = format;
+        break;
+    }
+
     certDb = CERT_GetDefaultCertDB();
     if(certDb == NULL) {
         xmlSecNssError("CERT_GetDefaultCertDB", NULL);
@@ -1035,13 +1060,13 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
     }
 
     /* read cert */
-    switch(format) {
+    switch(certFormat) {
     case xmlSecKeyDataFormatDer:
     case xmlSecKeyDataFormatCertDer:
         cert = xmlSecNssX509CertDerRead(certDb, secItem->data, secItem->len);
         if(cert == NULL) {
             xmlSecInternalError2("xmlSecNssX509CertDerRead", NULL,
-                "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
+                "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(certFormat));
             goto done;
         }
         break;
@@ -1050,13 +1075,13 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
         cert = xmlSecNssX509CertPemRead(certDb, secItem->data, secItem->len);
         if(cert == NULL) {
             xmlSecInternalError2("xmlSecNssX509CertPemRead", NULL,
-                "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
+                "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(certFormat));
             goto done;
         }
         break;
     default:
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
-            "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
+            "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(certFormat));
         goto done;
     }
     xmlSecAssert2(cert != NULL, -1);
@@ -1476,6 +1501,8 @@ done:
     if (pubkey) {
         SECKEY_DestroyPublicKey(pubkey);
     }
+    /* clear the password buffer before returning */
+    xmlSecMemCleanse(pwdBuf, sizeof(pwdBuf));
 
     return(res);
 }
@@ -1589,7 +1616,8 @@ done:
  *
  * @param mngr the pointer to keys manager.
  * @param filename the certificate file.
- * @param format the certificate file format (PEM or DER).
+ * @param format the certificate file format (PEM or DER; the PKCS#8
+ * formats are accepted and treated as PEM or DER).
  * @param type the certificate type (trusted/untrusted).
  * @return 0 on success or a negative value otherwise.
  */
@@ -1631,7 +1659,8 @@ xmlSecNssAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
  * @param mngr the pointer to keys manager.
  * @param data the certificate data.
  * @param dataSize the certificate data size.
- * @param format the certificate format (PEM or DER).
+ * @param format the certificate format (PEM or DER; the PKCS#8 formats
+ * are accepted and treated as PEM or DER).
  * @param type the certificate type (trusted/untrusted).
  * @return 0 on success or a negative value otherwise.
  */
@@ -1671,7 +1700,8 @@ xmlSecNssAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* dat
  *
  * @param mngr the pointer to keys manager.
  * @param secItem the pointer to SECItem.
- * @param format the certificate format (PEM or DER).
+ * @param format the certificate format (PEM or DER; the PKCS#8 formats
+ * are accepted and treated as PEM or DER).
  * @param type the certificate type (trusted/untrusted).
  * @return 0 on success or a negative value otherwise.
  */
@@ -1685,6 +1715,7 @@ xmlSecNssAppKeysMngrCertLoadSECItem(
     CERTCertDBHandle *certDb;
     xmlSecKeyDataStorePtr x509Store;
     CERTCertificate* cert;
+    xmlSecKeyDataFormat certFormat;
     int ret;
 
     xmlSecAssert2(mngr != NULL, -1);
@@ -1693,6 +1724,25 @@ xmlSecNssAppKeysMngrCertLoadSECItem(
     xmlSecAssert2(secItem->data != NULL, -1);
     xmlSecAssert2(secItem->len > 0, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
+
+    /*
+     * A PKCS#8 file does not contain a certificate. The format is the
+     * caller's key file format (the companion certificates are loaded
+     * with the same format as the key), so the PKCS#8 formats are
+     * accepted and treated as the corresponding plain PEM/DER
+     * certificate formats.
+     */
+    switch(format) {
+    case xmlSecKeyDataFormatPkcs8Pem:
+        certFormat = xmlSecKeyDataFormatPem;
+        break;
+    case xmlSecKeyDataFormatPkcs8Der:
+        certFormat = xmlSecKeyDataFormatDer;
+        break;
+    default:
+        certFormat = format;
+        break;
+    }
 
     x509Store = xmlSecKeysMngrGetDataStore(mngr, xmlSecNssX509StoreId);
     if(x509Store == NULL) {
@@ -1706,13 +1756,13 @@ xmlSecNssAppKeysMngrCertLoadSECItem(
         return(-1);
     }
 
-    switch(format) {
+    switch(certFormat) {
     case xmlSecKeyDataFormatDer:
     case xmlSecKeyDataFormatCertDer:
         cert = xmlSecNssX509CertDerRead(certDb, secItem->data, secItem->len);
         if(cert == NULL) {
             xmlSecInternalError2("xmlSecNssX509CertDerRead", NULL,
-                "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
+                "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(certFormat));
             return(-1);
         }
         break;
@@ -1721,13 +1771,13 @@ xmlSecNssAppKeysMngrCertLoadSECItem(
         cert = xmlSecNssX509CertPemRead(certDb, secItem->data, secItem->len);
         if(cert == NULL) {
             xmlSecInternalError2("xmlSecNssX509CertPemRead", NULL,
-                "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
+                "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(certFormat));
             return(-1);
         }
         break;
     default:
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
-            "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
+            "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(certFormat));
         return(-1);
     }
 

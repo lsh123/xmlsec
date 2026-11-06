@@ -80,6 +80,10 @@ xmlSecMSCngReadDerLength(const xmlSecByte* pBuf, DWORD len, DWORD* pValue) {
     if((n < 1) || (n > 4) || (n + 1 > len)) {
         return(0);
     }
+    /* reject non-minimal long-form lengths (a leading zero byte) */
+    if(pBuf[1] == 0x00) {
+        return(0);
+    }
     v = 0;
     for(i = 0; i < n; i++) {
         v = (v << 8) | pBuf[1 + i];

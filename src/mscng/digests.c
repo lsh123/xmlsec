@@ -23,6 +23,7 @@
 #include <xmlsec/mscng/crypto.h>
 
 #include "../cast_helpers.h"
+#include "private.h"
 
 typedef struct _xmlSecMSCngDigestCtx xmlSecMSCngDigestCtx, *xmlSecMSCngDigestCtxPtr;
 struct _xmlSecMSCngDigestCtx {
@@ -353,7 +354,7 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
             return(-1);
         }
         xmlSecAssert2(cbData == sizeof(DWORD), -1);
-        if(ctx->cbHash == 0) {
+        if((ctx->cbHash == 0) || (ctx->cbHash > XMLSEC_MSCNG_MAX_DIGEST_SIZE)) {
             xmlSecInternalError2("BCryptGetProperty", xmlSecTransformGetName(transform),
                 "unexpected hash length=" XMLSEC_SIZE_FMT, (xmlSecSize)ctx->cbHash);
             return(-1);

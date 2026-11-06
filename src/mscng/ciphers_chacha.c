@@ -411,13 +411,14 @@ xmlSecMSCngChaCha20CipherProcess(xmlSecMSCngChaCha20CipherCtxPtr ctx,
 
     if(encrypt) {
         /* output = ciphertext + 16-byte authentication tag */
-        outSize = inBufSize + XMLSEC_CHACHA20_POLY1305_TAG_SIZE;
         outBufSize = xmlSecBufferGetSize(out);
-        if(outBufSize > XMLSEC_SIZE_MAX - outSize) {
+        if((inBufSize > XMLSEC_SIZE_MAX - XMLSEC_CHACHA20_POLY1305_TAG_SIZE) ||
+           (outBufSize > XMLSEC_SIZE_MAX - inBufSize - XMLSEC_CHACHA20_POLY1305_TAG_SIZE)) {
             xmlSecInternalError3("xmlSecBufferSetMaxSize", cipherName,
-                "outBufSize=" XMLSEC_SIZE_FMT "; outSize=" XMLSEC_SIZE_FMT, outBufSize, outSize);
+                "outBufSize=" XMLSEC_SIZE_FMT "; inBufSize=" XMLSEC_SIZE_FMT, outBufSize, inBufSize);
             return(-1);
         }
+        outSize = inBufSize + XMLSEC_CHACHA20_POLY1305_TAG_SIZE;
         ret = xmlSecBufferSetMaxSize(out, outBufSize + outSize);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetMaxSize", cipherName,

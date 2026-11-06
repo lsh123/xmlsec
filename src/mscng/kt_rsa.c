@@ -474,6 +474,9 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
 
     ret = xmlSecBufferSetSize(out, outSize);
     if(ret < 0) {
+        /* wipe the recovered output (the CEK) before bailing out on
+         * error so key material does not linger in the buffer */
+        xmlSecMemCleanse(outBuf, outSize);
         xmlSecInternalError2("xmlSecBufferSetSize",
             xmlSecTransformGetName(transform), "size=" XMLSEC_SIZE_FMT, outSize);
         return(-1);
@@ -481,6 +484,7 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
 
     ret = xmlSecBufferRemoveHead(in, inSize);
     if(ret < 0) {
+        xmlSecMemCleanse(outBuf, outSize);
         xmlSecInternalError2("xmlSecBufferRemoveHead",
             xmlSecTransformGetName(transform), "size=" XMLSEC_SIZE_FMT, inSize);
         return(-1);

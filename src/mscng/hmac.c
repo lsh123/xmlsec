@@ -26,6 +26,7 @@
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
 #include "../transform_helpers.h"
+#include "private.h"
 
 typedef struct _xmlSecMSCngHmacCtx xmlSecMSCngHmacCtx, *xmlSecMSCngHmacCtxPtr;
 
@@ -34,7 +35,7 @@ struct _xmlSecMSCngHmacCtx {
     int initialized;
     BCRYPT_ALG_HANDLE hAlg;
     PBYTE hash;
-    DWORD hashLength;
+    xmlSecSize hashSizeInBytes;
     xmlSecSize dgstSizeInBits; /* truncation length in bits */
     BCRYPT_HASH_HANDLE hHash;
 };
@@ -170,7 +171,7 @@ xmlSecMSCngHmacFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     if(ctx->hash != NULL) {
-        xmlSecMemCleanse(ctx->hash, ctx->hashLength);
+        xmlSecMemCleanse(ctx->hash, ctx->hashSizeInBytes);
         xmlFree(ctx->hash);
     }
 
@@ -291,6 +292,7 @@ xmlSecMSCngHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecBufferPtr buffer;
     xmlSecSize bufSize;
     DWORD dwBufSize, resultLength = 0;
+    DWORD hashLength = 0;
     NTSTATUS status;
     LPCWSTR savedAlgId;
     xmlSecSize savedDgstSizeInBits;
@@ -342,23 +344,25 @@ xmlSecMSCngHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     status = BCryptGetProperty(ctx->hAlg,
         BCRYPT_HASH_LENGTH,
-        (PBYTE)&ctx->hashLength,
-        sizeof(ctx->hashLength),
+        (PBYTE)&hashLength,
+        sizeof(hashLength),
         &resultLength,
         0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptGetProperty", xmlSecTransformGetName(transform), status);
         goto done;
     }
-    if(ctx->hashLength == 0) {
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(hashLength, ctx->hashSizeInBytes, goto done, xmlSecTransformGetName(transform));
+
+    if((ctx->hashSizeInBytes == 0) || (ctx->hashSizeInBytes > XMLSEC_MSCNG_MAX_DIGEST_SIZE)) {
         xmlSecInternalError2("BCryptGetProperty", xmlSecTransformGetName(transform),
-            "unexpected hash length=" XMLSEC_SIZE_FMT, (xmlSecSize)ctx->hashLength);
+            "unexpected hash length=" XMLSEC_SIZE_FMT, ctx->hashSizeInBytes);
         goto done;
     }
 
-    ctx->hash = (PBYTE)xmlMalloc(ctx->hashLength);
+    ctx->hash = (PBYTE)xmlMalloc(ctx->hashSizeInBytes);
     if(ctx->hash == NULL) {
-        xmlSecMallocError(ctx->hashLength, NULL);
+        xmlSecMallocError(ctx->hashSizeInBytes, NULL);
         goto done;
     }
 
@@ -386,12 +390,12 @@ xmlSecMSCngHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     if(ctx->dgstSizeInBits == 0) {
         /* no custom value is requested, then default to the full length */
-        ctx->dgstSizeInBits = ctx->hashLength * 8;
-    } else if(ctx->dgstSizeInBits > ((xmlSecSize)ctx->hashLength * 8)) {
+        ctx->dgstSizeInBits = ctx->hashSizeInBytes * 8;
+    } else if(ctx->dgstSizeInBits > (ctx->hashSizeInBytes * 8)) {
         /* reject oversized values: they would cause out-of-bounds reads when
            the truncated digest buffer is accessed in verify/sign paths */
         xmlSecInvalidSizeMoreThanError("HMAC digest size (bits)",
-            ctx->dgstSizeInBits, ((xmlSecSize)ctx->hashLength * 8),
+            ctx->dgstSizeInBits, (ctx->hashSizeInBytes * 8),
             xmlSecTransformGetName(transform));
         goto done;
     }
@@ -401,7 +405,7 @@ xmlSecMSCngHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
 done:
     if(ctx->hash != NULL) {
-        xmlSecMemCleanse(ctx->hash, ctx->hashLength);
+        xmlSecMemCleanse(ctx->hash, ctx->hashSizeInBytes);
         xmlFree(ctx->hash);
     }
     if(ctx->hHash != NULL) {
@@ -441,7 +445,7 @@ xmlSecMSCngHmacVerify(
     xmlSecAssert2(ctx->dgstSizeInBits > 0, -1);
 
     /* Returns 1 for match, 0 for no match, <0 for errors. */
-    ret = xmlSecTransformHmacVerify(data, dataSize, ctx->hash, ctx->dgstSizeInBits, ctx->hashLength);
+    ret = xmlSecTransformHmacVerify(data, dataSize, ctx->hash, ctx->dgstSizeInBits, ctx->hashSizeInBytes);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformHmacVerify", xmlSecTransformGetName(transform));
         return(-1);
@@ -505,9 +509,12 @@ xmlSecMSCngHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
         }
 
         if(last) {
+            DWORD hashLength;
+
+            XMLSEC_SAFE_CAST_SIZE_TO_ULONG(ctx->hashSizeInBytes, hashLength, return(-1), xmlSecTransformGetName(transform));
             status = BCryptFinishHash(ctx->hHash,
                 ctx->hash,
-                ctx->hashLength,
+                hashLength,
                 0);
             if(status != STATUS_SUCCESS) {
                 xmlSecMSCngNtError("BCryptFinishHash", xmlSecTransformGetName(transform), status);
@@ -516,7 +523,7 @@ xmlSecMSCngHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
 
             /* write results if needed */
             if(transform->operation == xmlSecTransformOperationSign) {
-                ret = xmlSecTransformHmacWriteOutput(ctx->hash, ctx->dgstSizeInBits, ctx->hashLength, out);
+                ret = xmlSecTransformHmacWriteOutput(ctx->hash, ctx->dgstSizeInBits, ctx->hashSizeInBytes, out);
                 if (ret < 0) {
                     xmlSecInternalError("xmlSecTransformHmacWriteOutput", xmlSecTransformGetName(transform));
                     return(-1);

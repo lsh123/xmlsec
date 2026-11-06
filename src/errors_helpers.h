@@ -850,16 +850,15 @@ extern "C" {
  * @brief Macro. Reports invalid transform status errors.
  * @details Macro. The XMLSec library macro for reporting invalid transform status errors.
  * @param transform the transform.
- * @param msg the extra message.
+ * @param msg the extra message (a string literal appended to the error format).
  */
 #define xmlSecInvalidTransformStatusError2(transform, msg) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
                    (const char*)xmlSecTransformGetName(transform), \
                    NULL,                                    \
                    XMLSEC_ERRORS_R_INVALID_STATUS,          \
-                   "transformStatus=" XMLSEC_ENUM_FMT "; msg=%s", \
-                   XMLSEC_ENUM_CAST((transform) != NULL ? (transform)->status : xmlSecTransformStatusNone),   \
-                   (msg)                                    \
+                   "transformStatus=" XMLSEC_ENUM_FMT "; msg=" msg, \
+                   XMLSEC_ENUM_CAST((transform) != NULL ? (transform)->status : xmlSecTransformStatusNone) \
         )
 
 /**

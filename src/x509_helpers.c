@@ -1168,7 +1168,8 @@ int
 xmlSecX509NameRead(const xmlChar *str, xmlSecX509NameReplacements *replacements, xmlSecX509NameReadCallback callback, void * context) {
     xmlSecByte name[XMLSEC_X509_NAME_SIZE];
     xmlSecByte value[XMLSEC_X509_VALUE_SIZE];
-    xmlSecSize strSize, nameSize, valueSize;
+    const xmlChar *scan;
+    xmlSecSize strSize, nameSize, valueSize, scanSize;
     int type;
     int ret;
 
@@ -1206,6 +1207,54 @@ xmlSecX509NameRead(const xmlChar *str, xmlSecX509NameReplacements *replacements,
         /* skip spaces after '=' */
         while((strSize > 0) && isspace(*str)) {
             ++str; --strSize;
+        }
+
+        /* reject an unescaped '+' in the value: per RFC 4514 it separates the
+         * values of a multi-valued RDN (eg "OU=Sales+CN=J. Smith"), which is
+         * not supported; a backslash escapes the next character, an unescaped
+         * ',' terminates the value, and inside a double-quoted string (which
+         * ends at the next unescaped quote) ',' and '+' are literal */
+        scan = str;
+        scanSize = strSize;
+        while((scanSize > 0) && (*scan != ',')) {
+            if(*scan == '\\') {
+                /* the backslash escapes the next character, so skip both; if
+                 * it is the last character of the region the value reader
+                 * below will report the incomplete escape sequence */
+                if(scanSize == 1) {
+                    break;
+                }
+                scan += 2;
+                scanSize -= 2;
+            } else if(*scan == '\"') {
+                /* skip the double-quoted string: ',' and '+' inside the quotes
+                 * are literal; if the quoted string is unterminated the value
+                 * reader below will report it */
+                ++scan;
+                --scanSize;
+                while((scanSize > 0) && (*scan != '\"')) {
+                    if(*scan == '\\') {
+                        if(scanSize == 1) {
+                            break;
+                        }
+                        scan += 2;
+                        scanSize -= 2;
+                    } else {
+                        ++scan;
+                        --scanSize;
+                    }
+                }
+                if((scanSize > 0) && (*scan == '\"')) {
+                    ++scan;
+                    --scanSize;
+                }
+            } else if(*scan == '+') {
+                xmlSecInvalidDataError("an unescaped '+' is not allowed in the value of a name/value pair since multi-valued RDNs are not supported", NULL);
+                return(-1);
+            } else {
+                ++scan;
+                --scanSize;
+            }
         }
 
         /* read value */

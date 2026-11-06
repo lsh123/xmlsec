@@ -366,9 +366,7 @@ static int
 xmlSecTransformRelationshipIsOutputElement(xmlNodePtr cur) {
     xmlSecAssert2(cur != NULL, 0);
 
-    return((cur->ns != NULL) &&
-           (cur->ns->href != NULL) &&
-           (xmlStrcmp(cur->ns->href, xmlSecRelationshipsNs) == 0));
+    return(xmlStrEqual(xmlSecGetNodeNsHref(cur), xmlSecRelationshipsNs));
 }
 
 static int

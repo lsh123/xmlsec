@@ -329,33 +329,49 @@ xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlSecP
                         (xmlC14NIsVisibleCallback)xmlSecNodeSetContains,
                         nodes, XML_C14N_1_1, NULL, 1, buf);
     } else if(id == xmlSecTransformExclC14NId) {
-        /* LibXML2 expects the list of inclusive namespace prefixes ended with a NULL,
-         * we will add a NULL to the list to ensure it is properly terminated */
-        ret = xmlSecPtrListAdd(nsList, NULL);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecPtrListAdd", NULL);
-            return(-1);
+        xmlChar** nsListData;
+        xmlSecSize nsListSize;
+
+        /* LibXML2 expects the list of inclusive namespace prefixes ended with a NULL.
+         * We already add the NULL at the end in xmlSecTransformC14NNodeRead() but
+         * let's double check just in case */
+        nsListSize = xmlSecPtrListGetSize(nsList);
+        if((nsListSize == 0) || (xmlSecPtrListGetItem(nsList, nsListSize - 1) != NULL)) {
+            ret = xmlSecPtrListAdd(nsList, NULL);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecPtrListAdd", NULL);
+                return(-1);
+            }
         }
 
-        /* we know that xmlSecPtrList keeps all pointers
+        /* HACK: we know that xmlSecPtrList keeps all pointers
          * in a contiguous array */
+        nsListData = (xmlChar**)nsList->data;
         ret = xmlC14NExecute(nodes->doc,
                         (xmlC14NIsVisibleCallback)xmlSecNodeSetContains,
-                        nodes, XML_C14N_EXCLUSIVE_1_0, (xmlChar**)(nsList->data), 0, buf);
+                        nodes, XML_C14N_EXCLUSIVE_1_0, nsListData, 0, buf);
     } else if(id == xmlSecTransformExclC14NWithCommentsId) {
-        /* LibXML2 expects the list of inclusive namespace prefixes ended with a NULL,
-         * we will add a NULL to the list to ensure it is properly terminated */
-        ret = xmlSecPtrListAdd(nsList, NULL);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecPtrListAdd", NULL);
-            return(-1);
+        xmlChar** nsListData;
+        xmlSecSize nsListSize;
+
+        /* LibXML2 expects the list of inclusive namespace prefixes ended with a NULL.
+         * We already add the NULL at the end in xmlSecTransformC14NNodeRead() but
+         * let's double check just in case */
+        nsListSize = xmlSecPtrListGetSize(nsList);
+        if((nsListSize == 0) || (xmlSecPtrListGetItem(nsList, nsListSize - 1) != NULL)) {
+            ret = xmlSecPtrListAdd(nsList, NULL);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecPtrListAdd", NULL);
+                return(-1);
+            }
         }
 
-        /* we know that xmlSecPtrList keeps all pointers
+        /* HACK: we know that xmlSecPtrList keeps all pointers
          * in a contiguous array */
+        nsListData = (xmlChar**)nsList->data;
         ret = xmlC14NExecute(nodes->doc,
                         (xmlC14NIsVisibleCallback)xmlSecNodeSetContains,
-                        nodes, XML_C14N_EXCLUSIVE_1_0, (xmlChar**)(nsList->data), 1, buf);
+                        nodes, XML_C14N_EXCLUSIVE_1_0, nsListData, 1, buf);
     } else if(id == xmlSecTransformRemoveXmlTagsC14NId) {
         failedFunc = "xmlSecNodeSetDumpTextNodes";
         ret = xmlSecNodeSetDumpTextNodes(nodes, buf);

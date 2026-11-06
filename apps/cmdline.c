@@ -63,7 +63,10 @@ xmlSecAppCmdLineParamGetString(xmlSecAppCmdLineParamPtr param) {
     return((param->value != NULL) ? param->value->strValue : NULL);
 }
 
-/**< Returns the value as a NUL-separated list of strings (with a terminating NUL). */
+/**< Returns the value as a NUL-separated list of strings (with a terminating NUL).
+ * Note: for parameters declared with the multiple-values flag, only the first
+ * value's list is returned; callers that need every value must walk the
+ * parameter's value list (param->value) directly. */
 const char*
 xmlSecAppCmdLineParamGetStringList(xmlSecAppCmdLineParamPtr param) {
     if(param == NULL) {
@@ -202,6 +205,31 @@ xmlSecAppCmdLineValueDestroy(xmlSecAppCmdLineValuePtr value) {
     free(value);
 }
 
+/* removes the last value from the parameter's value list and destroys it; used to
+ * roll back a partially parsed value when parsing fails after the value has been
+ * linked into the list (note: strValue/paramNameValue point into argv and are not
+ * freed by xmlSecAppCmdLineValueDestroy()) */
+static void
+xmlSecAppCmdLineParamValueRemoveLast(xmlSecAppCmdLineParamPtr param) {
+    xmlSecAppCmdLineValuePtr cur;
+    xmlSecAppCmdLineValuePtr prev = NULL;
+
+    assert(param != NULL);
+    assert(param->value != NULL);
+
+    cur = param->value;
+    while(cur->next != NULL) {
+        prev = cur;
+        cur = cur->next;
+    }
+    if(prev != NULL) {
+        prev->next = NULL;
+    } else {
+        param->value = NULL;
+    }
+    xmlSecAppCmdLineValueDestroy(cur);
+}
+
 static int
 xmlSecAppCmdLineMatchParam(const char* argvParam, const char* paramName,
                            int canHaveNameString) {
@@ -257,6 +285,7 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
     xmlSecAppCmdLineValuePtr value;
     xmlSecAppCmdLineValuePtr prev = NULL;
     char* buf;
+    size_t strValueLen;
 
     assert(param != NULL);
     assert(argv != NULL);
@@ -303,6 +332,7 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
         case xmlSecAppCmdLineParamTypeString:
             if(pos + 1 >= argc) {
                 fprintf(stderr, "Error: string argument expected for parameter \"%s\".\n", argv[pos]);
+                xmlSecAppCmdLineParamValueRemoveLast(param);
                 return(-1);
             }
             value->strValue = argv[++pos];
@@ -310,9 +340,11 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
         case xmlSecAppCmdLineParamTypeStringList:
             if(pos + 1 >= argc) {
                 fprintf(stderr, "Error: string list argument expected for parameter \"%s\".\n", argv[pos]);
+                xmlSecAppCmdLineParamValueRemoveLast(param);
                 return(-1);
             }
             value->strValue = argv[++pos];
+            strValueLen = strlen(value->strValue);
             /*
              * reject lists with empty entries (an empty string, a leading or
              * a trailing comma, or a doubled comma) before the NUL conversion
@@ -321,19 +353,21 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
              */
             if((value->strValue[0] == '\0') || (value->strValue[0] == ',') ||
                (strstr(value->strValue, ",,") != NULL) ||
-               ((strlen(value->strValue) > 1) && (value->strValue[strlen(value->strValue) - 1] == ','))) {
+               ((strValueLen > 1) && (value->strValue[strValueLen - 1] == ','))) {
                 fprintf(stderr, "Error: empty entry found in the comma-separated list for parameter \"%s\".\n", argv[pos - 1]);
+                xmlSecAppCmdLineParamValueRemoveLast(param);
                 return(-1);
             }
             /* we need +2 here to include \0 for the end of the string itself plus additional \0 to indicate end of the list */
-            buf = (char*)malloc(strlen(value->strValue) + 2);
+            buf = (char*)malloc(strValueLen + 2);
             if(buf == NULL) {
                 fprintf(stderr, "Error: failed to allocate memory (" XMLSEC_SIZE_T_FMT " bytes).\n",
-                    strlen(value->strValue) + 2);
+                    strValueLen + 2);
+                xmlSecAppCmdLineParamValueRemoveLast(param);
                 return(-1);
             }
-            memset(buf, 0, strlen(value->strValue) + 2);
-            memcpy(buf, value->strValue, strlen(value->strValue));
+            memset(buf, 0, strValueLen + 2);
+            memcpy(buf, value->strValue, strValueLen);
             value->strListValue = buf;
             while((*buf) != '\0') {
                 if((*buf) == ',') {
@@ -345,33 +379,39 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
         case xmlSecAppCmdLineParamTypeNumber:
             if(pos + 1 >= argc) {
                 fprintf(stderr, "Error: integer argument expected for parameter \"%s\".\n", argv[pos]);
+                xmlSecAppCmdLineParamValueRemoveLast(param);
                 return(-1);
             }
             value->strValue = argv[++pos];
             if(xmlSecAppCmdLineIntParamRead(value->strValue, &(value->intValue)) < 0) {
                 fprintf(stderr, "Error: integer argument \"%s\" is invalid.\n", value->strValue);
+                xmlSecAppCmdLineParamValueRemoveLast(param);
                 return(-1);
             }
             break;
         case xmlSecAppCmdLineParamTypeTime:
             if(pos + 1 >= argc) {
                 fprintf(stderr, "Error: time argument expected for parameter \"%s\".\n", argv[pos]);
+                xmlSecAppCmdLineParamValueRemoveLast(param);
                 return(-1);
             }
             value->strValue = argv[++pos];
             if(xmlSecAppCmdLineTimeParamRead(value->strValue, &(value->timeValue), 0) < 0) {
                 fprintf(stderr, "Error: time argument \"%s\" is invalid, expected format is \"YYYY-MM-DD HH:MM:SS\").\n", value->strValue);
+                xmlSecAppCmdLineParamValueRemoveLast(param);
                 return(-1);
             }
             break;
         case xmlSecAppCmdLineParamTypeGmtTime:
             if(pos + 1 >= argc) {
                 fprintf(stderr, "Error: gmt time argument expected for parameter \"%s\".\n", argv[pos]);
+                xmlSecAppCmdLineParamValueRemoveLast(param);
                 return(-1);
             }
             value->strValue = argv[++pos];
             if(xmlSecAppCmdLineTimeParamRead(value->strValue, &(value->timeValue), 1) < 0) {
                 fprintf(stderr, "Error: gmt time argument \"%s\" is invalid, expected format is \"YYYY-MM-DD HH:MM:SS\").\n", value->strValue);
+                xmlSecAppCmdLineParamValueRemoveLast(param);
                 return(-1);
             }
             break;

@@ -2188,6 +2188,7 @@ xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, const xmlSecByte* da
 
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
+    xmlSecAssert2(transformCtx->binaryChunkSize > 0, -1);
 
     do {
         /* append data to input buffer */

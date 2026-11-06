@@ -412,6 +412,14 @@ xmlSecKeyInfoCtxCreateEncCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
                 xmlSecEncCtxDestroy(tmp);
                 return(-1);
             }
+            /* the inner <enc:EncryptedKey> KeyInfo is read through the read
+             * context, so the user preferences have to be copied there as well */
+            ret = xmlSecKeyInfoCtxCopyUserPref(&(tmp->keyInfoReadCtx), keyInfoCtx);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref", NULL);
+                xmlSecEncCtxDestroy(tmp);
+                return(-1);
+            }
             break;
         default:
             /* xmlSecKeyInfoMode only has Read and Write values */

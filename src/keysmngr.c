@@ -260,7 +260,9 @@ xmlSecKeyStoreCreate(xmlSecKeyStoreId id) {
     int ret;
 
     xmlSecAssert2(id != NULL, NULL);
-    xmlSecAssert2(id->objSize > 0, NULL);
+    xmlSecAssert2(id->klassSize >= sizeof(xmlSecKeyStoreKlass), NULL);
+    xmlSecAssert2(id->objSize >= sizeof(xmlSecKeyStore), NULL);
+    xmlSecAssert2(id->name != NULL, NULL);
 
     /* Allocate a new xmlSecKeyStore and fill the fields. */
     store = (xmlSecKeyStorePtr)xmlMalloc(id->objSize);

@@ -299,7 +299,7 @@ xmlSecError(const char* file, int line, const char* func,
  */
 void
 xmlSecErrorsPrintCryptoLibraryLogOnExitSet(int enabled) {
-    gXmlSecErrorsPrintCryptoLibraryLogOnExitIsEnabled = enabled;
+    gXmlSecErrorsPrintCryptoLibraryLogOnExitIsEnabled = (enabled != 0) ? 1 : 0;
 }
 
 /**

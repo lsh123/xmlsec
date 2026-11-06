@@ -26,15 +26,16 @@
 #include <xmlsec/errors.h>
 
 
-static xmlNodePtr       xmlSecTmplAddReference          (xmlNodePtr parentNode,
-                                                         xmlSecTransformId digestMethodId,
-                                                         const xmlChar *id,
-                                                         const xmlChar *uri,
-                                                         const xmlChar *type);
-static int              xmlSecTmplPrepareEncData        (xmlNodePtr parentNode,
-                                                         xmlSecTransformId encMethodId);
-static int              xmlSecTmplNodeWriteNsList       (xmlNodePtr parentNode,
-                                                         const xmlChar** namespaces);
+static xmlNodePtr       xmlSecTmplAddReference              (xmlNodePtr parentNode,
+                                                             xmlSecTransformId digestMethodId,
+                                                             const xmlChar *id,
+                                                             const xmlChar *uri,
+                                                             const xmlChar *type);
+static int              xmlSecTmplPrepareEncData            (xmlNodePtr parentNode,
+                                                             xmlSecTransformId encMethodId);
+static int              xmlSecTmplNodeWriteNsList           (xmlNodePtr parentNode,
+                                                             const xmlChar** namespaces);
+static xmlNodePtr       xmlSecTmplEncDataEnsureReferenceList(xmlNodePtr encNode);
 /******************************************************************************
  *
  * &lt;dsig:Signature/&gt; node

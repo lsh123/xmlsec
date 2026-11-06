@@ -863,6 +863,82 @@ test_xmlSecNodeSetWalk_combined_intersection_visits_each_node_once(void) {
 }
 
 static void
+test_xmlSecNodeSetWalk_doc_node_in_set_visits_each_node_once(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    xmlNodePtr child;
+    xmlNodeSetPtr nodes;
+    xmlSecNodeSetPtr nset;
+    struct nodesetWalkStats stats;
+    int ret;
+
+    testStart("xmlSecNodeSetWalk with a doc node in the set visits each node once");
+
+    /* the doc has a top-level comment in addition to the root element so that
+     * the walk roots cover more than the root element's subtree */
+    doc = nodesetTestParseDoc("<!--comment--><Root><Child>text</Child></Root>");
+    if(doc == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    root = xmlDocGetRootElement(doc);
+    child = nodesetTestFindChild(root, BAD_CAST "Child");
+    if((root == NULL) || (child == NULL)) {
+        testLog("Error: failed to prepare walk doc-node test data\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* a Tree node set whose list contains the doc node: the doc node must act
+     * as a walk root covering the whole document (mirroring the slow path,
+     * which starts at the doc's children) without the doc node itself being
+     * reported to the callback, and the root must not be walked a second time */
+    nodes = xmlXPathNodeSetCreate((xmlNodePtr)doc);
+    if(nodes == NULL) {
+        testLog("Error: failed to create XPath node set\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(xmlXPathNodeSetAdd(nodes, root) < 0) {
+        testLog("Error: failed to add root to XPath node set\n");
+        xmlXPathFreeNodeSet(nodes);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    nset = xmlSecNodeSetCreate(doc, nodes, xmlSecNodeSetTree);
+    if(nset == NULL) {
+        testLog("Error: failed to create xmlsec node set\n");
+        xmlXPathFreeNodeSet(nodes);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* Root, Child and the text node must each be visited exactly once; the
+     * top-level comment is not a member of the Tree set */
+    memset(&stats, 0, sizeof(stats));
+    ret = xmlSecNodeSetWalk(nset, nodesetTestWalkStatsCallback, &stats);
+    if((ret < 0) || (stats.total != 3) || (stats.elements != 2) || (stats.text != 1)) {
+        testLog("Error: walk did not visit each node exactly once "
+            "(ret=%d total=%d elem=%d text=%d)\n",
+            ret, stats.total, stats.elements, stats.text);
+        xmlSecNodeSetDestroy(nset);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecNodeSetDestroy(nset);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
 test_xmlSecNodeSetAdd_union_head_is_absolute_set(void) {
     xmlDocPtr doc;
     xmlNodePtr root;
@@ -1102,6 +1178,7 @@ test_nodeset(void) {
     test_xmlSecNodeSetWalk_skips_descendants_listed_before_ancestors();
     test_xmlSecNodeSetWalk_visits_nested_chain_once();
     test_xmlSecNodeSetWalk_combined_intersection_visits_each_node_once();
+    test_xmlSecNodeSetWalk_doc_node_in_set_visits_each_node_once();
     if(testGroupFinished() != 1) { success = 0; }
 
     testGroupStart("xmlSecNodeSetDumpTextNodes");

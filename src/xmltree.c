@@ -638,7 +638,6 @@ xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
         xmlSetNs(cur, nsPtr);
     }
 
-    /* TODO: add indents */
     text = xmlNewText(xmlSecGetDefaultLineFeed());
     if(text == NULL) {
         xmlSecXmlError("xmlNewText", NULL);
@@ -702,7 +701,6 @@ xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
         xmlSetNs(cur, nsPtr);
     }
 
-    /* TODO: add indents */
     text = xmlNewText(xmlSecGetDefaultLineFeed());
     if(text == NULL) {
         xmlSecXmlError("xmlNewText", NULL);

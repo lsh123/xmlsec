@@ -161,6 +161,7 @@ xmlSecShutdown(void) {
     /* restore the original external entity loader */
     if(xmlSecDefaultExternalEntityLoader != NULL) {
         xmlSetExternalEntityLoader(xmlSecDefaultExternalEntityLoader);
+        xmlSecDefaultExternalEntityLoader = NULL;
     }
 #endif /* LIBXML_VERSION < 21300 */
 

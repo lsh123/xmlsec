@@ -449,6 +449,11 @@ xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlS
                     &(ctx->dwKeySpec),
                     &fCallerFreeProv)) {
                 xmlSecMSCryptoError("CryptAcquireCertificatePrivateKey", NULL);
+                /* the provider handle may be output even on failure; release it
+                 * when the API reports that the caller must free it */
+                if((fCallerFreeProv != FALSE) && (hProv != 0)) {
+                    CryptReleaseContext(hProv, 0);
+                }
                 return(-1);
         }
         ret = xmlSecMSCryptoKeyDataCtxSetProvider(ctx, hProv, fCallerFreeProv);

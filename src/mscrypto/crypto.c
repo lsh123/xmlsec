@@ -309,11 +309,13 @@ xmlSecMSCryptoShutdown(void) {
  */
 int
 xmlSecMSCryptoKeysMngrInit(xmlSecKeysMngrPtr mngr) {
+#ifndef XMLSEC_NO_X509
     int ret;
+#endif /* XMLSEC_NO_X509 */
 
     xmlSecAssert2(mngr != NULL, -1);
 
-#ifndef XMLSEC_NO_X509
+#ifndef XMLSEC_NO_X509    
     /* create x509 store if needed */
     if(xmlSecKeysMngrGetDataStore(mngr, xmlSecMSCryptoX509StoreId) == NULL) {
         xmlSecKeyDataStorePtr x509Store;

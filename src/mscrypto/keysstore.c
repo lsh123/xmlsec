@@ -309,6 +309,12 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, HCERTSTORE hStoreHandle
                                                       &dwPropSize)) {
                 continue;
             }
+            /* guard the DWORD addition: an out-of-range property size would
+             * wrap dwAllocSize into a tiny allocation */
+            if (dwPropSize > 0xFFFFFFFE) {
+                xmlSecMSCryptoError("CertGetCertificateContextProperty", xmlSecKeyStoreGetName(store));
+                continue;
+            }
             dwAllocSize = dwPropSize + 2;   /* +2: guaranteed UTF-16 NUL terminator */
 
             pbFriendlyName = xmlMalloc(dwAllocSize);

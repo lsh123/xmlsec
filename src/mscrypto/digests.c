@@ -30,7 +30,7 @@
 #include "private.h"
 #include "../cast_helpers.h"
 
-#define MSCRYPTO_MAX_HASH_SIZE 256
+#define XMLSEC_MSCRYPTO_MAX_HASH_SIZE 256
 
 typedef struct _xmlSecMSCryptoDigestCtx xmlSecMSCryptoDigestCtx, *xmlSecMSCryptoDigestCtxPtr;
 struct _xmlSecMSCryptoDigestCtx {
@@ -38,7 +38,7 @@ struct _xmlSecMSCryptoDigestCtx {
     ALG_ID          alg_id;
     const xmlSecMSCryptoProviderInfo  * providers;
     HCRYPTHASH      mscHash;
-    unsigned char   dgst[MSCRYPTO_MAX_HASH_SIZE];
+    unsigned char   dgst[XMLSEC_MSCRYPTO_MAX_HASH_SIZE];
     xmlSecSize      dgstSize;   /* dgst size in bytes */
 };
 
@@ -377,7 +377,7 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
             }
         }
         if(last) {
-            DWORD retLen = MSCRYPTO_MAX_HASH_SIZE;
+            DWORD retLen = XMLSEC_MSCRYPTO_MAX_HASH_SIZE;
             ret = CryptGetHashParam(ctx->mscHash,
                                     HP_HASHVAL,
                                     ctx->dgst,
@@ -388,7 +388,7 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
                 return(-1);
             }
             xmlSecAssert2(retLen > 0, -1);
-            if(retLen > MSCRYPTO_MAX_HASH_SIZE) {
+            if(retLen > XMLSEC_MSCRYPTO_MAX_HASH_SIZE) {
                 xmlSecInternalError2("CryptGetHashParam(HP_HASHVAL)", xmlSecTransformGetName(transform),
                     "retLen=" XMLSEC_SIZE_FMT, (xmlSecSize)retLen);
                 return(-1);

@@ -879,7 +879,7 @@ test_xmlSecTmplKeyInfoAddKeyName_null_name(void) {
 
 /******************************************************************************
  * xmlSecTmplEncDataEnsureCipherReference
-  *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecTmplEncDataEnsureCipherReference_with_uri(void) {
     xmlNodePtr encNode = NULL;
@@ -963,7 +963,7 @@ test_xmlSecTmplEncDataEnsureCipherReference_idempotent(void) {
 
 /******************************************************************************
  * helper to build a <dsig:Transform> node attached to a real document
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlNodePtr
 testCreateTransformNode(xmlDocPtr* doc) {
     xmlNodePtr transformNode;
@@ -993,7 +993,7 @@ testCreateTransformNode(xmlDocPtr* doc) {
 
 /******************************************************************************
  * xmlSecTmplTransformAddC14NInclNamespaces
-  *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecTmplTransformAddC14NInclNamespaces_prefix_list(void) {
     xmlDocPtr doc = NULL;
@@ -1072,7 +1072,7 @@ test_xmlSecTmplTransformAddC14NInclNamespaces_already_present(void) {
 
 /******************************************************************************
  * xmlSecTmplTransformAddXPath
-  *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecTmplTransformAddXPath_expression(void) {
     xmlDocPtr doc = NULL;
@@ -1151,7 +1151,7 @@ test_xmlSecTmplTransformAddXPath_already_present(void) {
 
 /******************************************************************************
  * xmlSecTmplTransformAddXPath2
-  *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecTmplTransformAddXPath2_filter_and_expression(void) {
     xmlDocPtr doc = NULL;
@@ -1261,7 +1261,7 @@ test_xmlSecTmplTransformAddXPath2_multiple_children(void) {
 
 /******************************************************************************
  * xmlSecTmplTransformAddXPointer
-  *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecTmplTransformAddXPointer_expression(void) {
     xmlDocPtr doc = NULL;
@@ -1340,7 +1340,7 @@ test_xmlSecTmplTransformAddXPointer_already_present(void) {
 
 /******************************************************************************
  * xmlSecTmplX509IssuerSerialAddIssuerName / AddSerialNumber
-  *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecTmplX509IssuerSerialAddIssuerName_content(void) {
     xmlDocPtr doc = NULL;
@@ -2324,6 +2324,7 @@ test_xmlSecTmplReferenceListAddDataReference_and_KeyReference(void) {
     ns = xmlNewNs(encKeyNode, xmlSecEncNs, NULL);
     if(ns == NULL) {
         testLog("Error: failed to create namespace\n");
+        xmlFreeNode(encKeyNode);
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;

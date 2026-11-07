@@ -27,11 +27,6 @@
 #include "../keysdata_helpers.h"
 #include "../transform_helpers.h"
 
-/* SHA224 algorithm identifier is not defined in the Windows SDK bcrypt.h;
- * provide a fallback so the code compiles. */
-#ifndef BCRYPT_SHA224_ALGORITHM
-#define BCRYPT_SHA224_ALGORITHM             L"SHA224"
-#endif /* BCRYPT_SHA224_ALGORITHM */
 
 /******************************************************************************
  *
@@ -189,7 +184,7 @@ xmlSecMSCngConcatKdfSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     return(0);
 }
 
-/* convert digest href to MSCng hash algo */
+/* Convert digest href to MSCNG hash algo. MSCNG does not support SHA224. */
 static LPCWSTR
 xmlSecMSCngConcatKdfGetDigestFromHref(const xmlChar* href) {
     /* xmlSecTransformConcatKdfParamsRead requires a non-NULL DigestMethod href */
@@ -200,12 +195,6 @@ xmlSecMSCngConcatKdfGetDigestFromHref(const xmlChar* href) {
         return(BCRYPT_SHA1_ALGORITHM);
     } else
 #endif /* XMLSEC_NO_SHA1 */
-
-#ifndef XMLSEC_NO_SHA224
-    if(xmlStrcmp(href, xmlSecHrefSha224) == 0) {
-        return(BCRYPT_SHA224_ALGORITHM);
-    } else
-#endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA256
     if(xmlStrcmp(href, xmlSecHrefSha256) == 0) {

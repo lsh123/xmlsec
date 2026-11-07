@@ -2234,14 +2234,14 @@ xmlSecMSCngTransformEcdsaSha3_512GetKlass(void) {
  * The ML-DSA algorithm signs the message directly, without a hash; the
  * signature is the base64 encoding of the raw PQDSA signature value.
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_MLDSA
 
 /******************************************************************************
  *
  * ML-DSA-44 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(MLDSA44)
 
 /**
@@ -2257,7 +2257,7 @@ xmlSecMSCngTransformMLDSA44GetKlass(void) {
  *
  * ML-DSA-65 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(MLDSA65)
 
 /**
@@ -2273,7 +2273,7 @@ xmlSecMSCngTransformMLDSA65GetKlass(void) {
  *
  * ML-DSA-87 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(MLDSA87)
 
 /**

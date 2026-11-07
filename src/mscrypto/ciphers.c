@@ -501,6 +501,13 @@ xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
     if (!xmlSecMSCryptoCreatePrivateExponentOneKey(ctx->cryptProvider, &(ctx->pubPrivKey))) {
         xmlSecMSCryptoError("xmlSecMSCryptoCreatePrivateExponentOneKey",
                             xmlSecTransformGetName(transform));
+        /* release the provider acquired above so it is not held until the
+         * caller's finalize */
+        if (!CryptReleaseContext(ctx->cryptProvider, 0)) {
+            xmlSecMSCryptoError("CryptReleaseContext", NULL);
+            /* teardown: best-effort */
+        }
+        ctx->cryptProvider = 0;
         return(-1);
     }
 

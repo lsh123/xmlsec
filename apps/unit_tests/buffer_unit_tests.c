@@ -1532,6 +1532,8 @@ test_buffer_read_file(void) {
     }
     if(fclose(f) != 0) {
         testLog("Error: failed to close temp file '%s'\n", tmpName);
+        f = NULL;
+        goto done;
     }
     f = NULL;
 
@@ -1627,6 +1629,8 @@ test_buffer_debug_hex_dump(void) {
     xmlSecBufferDebugHexDump(buf, f);
     if(fclose(f) != 0) {
         testLog("Error: failed to close hex dump temp file '%s'\n", tmpName);
+        f = NULL;
+        goto done;
     }
     f = NULL;
 

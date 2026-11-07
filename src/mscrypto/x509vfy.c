@@ -101,49 +101,6 @@ xmlSecMSCryptoX509StoreGetKlass(void) {
     return(&xmlSecMSCryptoX509StoreKlass);
 }
 
-/**
- * @brief Searches @p store for a certificate that matches given criteria.
- * @param store the pointer to X509 key data store klass.
- * @param subjectName the desired certificate name.
- * @param issuerName the desired certificate issuer name.
- * @param issuerSerial the desired certificate issuer serial number.
- * @param ski the desired certificate SKI.
- * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
- *
- *
- * @return pointer to found certificate or NULL if certificate is not found
- * or an error occurs.
- */
-PCCERT_CONTEXT
-xmlSecMSCryptoX509StoreFindCert(
-    xmlSecKeyDataStorePtr store,
-    const xmlChar *subjectName,
-    const xmlChar *issuerName,
-    const xmlChar *issuerSerial,
-    xmlChar *ski,
-    xmlSecKeyInfoCtx* keyInfoCtx
-) {
-    if (ski != NULL) {
-        xmlSecSize skiDecodedSize = 0;
-        int ret;
-
-        /* our usual trick with base64 decode */
-        ret = xmlSecBase64DecodeInPlace(ski, &skiDecodedSize);
-        if (ret < 0) {
-            xmlSecInternalError2("xmlSecBase64DecodeInPlace", NULL,
-                "ski=%s", xmlSecErrorsSafeString(ski));
-            return(NULL);
-        }
-
-        return(xmlSecMSCryptoX509StoreFindCert_ex(store, subjectName, issuerName, issuerSerial,
-            (xmlSecByte*)ski, skiDecodedSize, keyInfoCtx));
-    }
-    else {
-        return(xmlSecMSCryptoX509StoreFindCert_ex(store, subjectName, issuerName, issuerSerial,
-            NULL, 0, keyInfoCtx));
-
-    }
-}
 
 /**
  * @brief Searches @p store for a certificate that matches given criteria.
@@ -160,7 +117,7 @@ xmlSecMSCryptoX509StoreFindCert(
  * or an error occurs.
  */
 PCCERT_CONTEXT
-xmlSecMSCryptoX509StoreFindCert_ex(
+xmlSecMSCryptoX509StoreFindCert(
     xmlSecKeyDataStorePtr store,
     const xmlChar* subjectName,
     const xmlChar* issuerName,

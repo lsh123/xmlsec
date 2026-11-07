@@ -1733,8 +1733,8 @@ typedef struct _xmlSecOpenSSLKeyValueDh {
     BIGNUM* p;
     BIGNUM* q;
     BIGNUM* generator;
-    BIGNUM* public;
-    BIGNUM* private;
+    BIGNUM* pub;
+    BIGNUM* priv;
     BIGNUM* seed;
     BIGNUM* pgenCounter;
     int notOwner;
@@ -1771,11 +1771,11 @@ xmlSecOpenSSLKeyValueDhFinalize(xmlSecOpenSSLKeyValueDhPtr dhKeyValue) {
     if((dhKeyValue->notOwner == 0) && (dhKeyValue->generator != NULL)) {
         BN_clear_free(dhKeyValue->generator);
     }
-    if((dhKeyValue->notOwner == 0) && (dhKeyValue->public != NULL)) {
-        BN_clear_free(dhKeyValue->public);
+    if((dhKeyValue->notOwner == 0) && (dhKeyValue->pub != NULL)) {
+        BN_clear_free(dhKeyValue->pub);
     }
-    if((dhKeyValue->notOwner == 0) && (dhKeyValue->private != NULL)) {
-        BN_clear_free(dhKeyValue->private);
+    if((dhKeyValue->notOwner == 0) && (dhKeyValue->priv != NULL)) {
+        BN_clear_free(dhKeyValue->priv);
     }
     if((dhKeyValue->notOwner == 0) && (dhKeyValue->seed != NULL)) {
         BN_clear_free(dhKeyValue->seed);
@@ -1953,9 +1953,9 @@ xmlSecOpenSSLKeyDataDhGetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDhPtr
     }
     */
     DH_get0_key(dh,
-        (const BIGNUM**)&(dhKeyValue->public),
-        (const BIGNUM**)&(dhKeyValue->private));
-    if(dhKeyValue->public == NULL) {
+        (const BIGNUM**)&(dhKeyValue->pub),
+        (const BIGNUM**)&(dhKeyValue->priv));
+    if(dhKeyValue->pub == NULL) {
         xmlSecOpenSSLError("DH_get0_key", xmlSecKeyDataGetName(data));
         return(-1);
     }
@@ -1974,7 +1974,7 @@ xmlSecOpenSSLKeyDataDhSetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDhPtr
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDhId), -1);
     xmlSecAssert2(dhKeyValue != NULL, -1);
-    xmlSecAssert2(dhKeyValue->public != NULL, -1);
+    xmlSecAssert2(dhKeyValue->pub != NULL, -1);
 
     dh = DH_new();
     if(dh == NULL) {
@@ -1994,12 +1994,12 @@ xmlSecOpenSSLKeyDataDhSetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDhPtr
         dhKeyValue->generator = NULL;
     }
 
-    ret = DH_set0_key(dh, dhKeyValue->public, NULL);
+    ret = DH_set0_key(dh, dhKeyValue->pub, NULL);
     if(ret != 1) {
         xmlSecOpenSSLError("DH_set0_key", xmlSecKeyDataGetName(data));
         goto done;
     }
-    dhKeyValue->public = NULL;
+    dhKeyValue->pub = NULL;
 
     ret = xmlSecOpenSSLKeyDataDhAdoptDh(data, dh);
     if(ret < 0) {
@@ -2096,13 +2096,13 @@ xmlSecOpenSSLKeyDataDhGetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDhPtr
         xmlSecOpenSSLError("EVP_PKEY_get_bn_param(generator)", xmlSecKeyDataGetName(data));
         return(-1);
     }
-    ret = EVP_PKEY_get_bn_param(pKey, OSSL_PKEY_PARAM_PUB_KEY, &(dhKeyValue->public));
-    if((ret != 1) || (dhKeyValue->public == NULL)) {
+    ret = EVP_PKEY_get_bn_param(pKey, OSSL_PKEY_PARAM_PUB_KEY, &(dhKeyValue->pub));
+    if((ret != 1) || (dhKeyValue->pub == NULL)) {
         xmlSecOpenSSLError("EVP_PKEY_get_bn_param(public)", xmlSecKeyDataGetName(data));
         return(-1);
     }
-    ret = EVP_PKEY_get_bn_param(pKey, OSSL_PKEY_PARAM_PRIV_KEY, &(dhKeyValue->private));
-    if((ret != 1) || (dhKeyValue->private == NULL)) {
+    ret = EVP_PKEY_get_bn_param(pKey, OSSL_PKEY_PARAM_PRIV_KEY, &(dhKeyValue->priv));
+    if((ret != 1) || (dhKeyValue->priv == NULL)) {
         /* ignore the error since public keys don't have private component */
     }
 
@@ -2133,7 +2133,7 @@ xmlSecOpenSSLKeyDataDhSetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDhPtr
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDhId), -1);
     xmlSecAssert2(dhKeyValue != NULL, -1);
-    xmlSecAssert2(dhKeyValue->public != NULL, -1);
+    xmlSecAssert2(dhKeyValue->pub != NULL, -1);
 
     param_bld = OSSL_PARAM_BLD_new();
     if(param_bld == NULL) {
@@ -2143,7 +2143,7 @@ xmlSecOpenSSLKeyDataDhSetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDhPtr
     }
 
     /* only required parameter */
-    ret = OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_PUB_KEY, dhKeyValue->public);
+    ret = OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_PUB_KEY, dhKeyValue->pub);
     if(ret != 1) {
         xmlSecOpenSSLError("OSSL_PARAM_BLD_push_BN(public)",
             xmlSecKeyDataGetName(data));
@@ -2189,8 +2189,8 @@ xmlSecOpenSSLKeyDataDhSetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDhPtr
             goto done;
         }
     }
-    if(dhKeyValue->private != NULL) {
-        ret = OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_PRIV_KEY, dhKeyValue->private);
+    if(dhKeyValue->priv != NULL) {
+        ret = OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_PRIV_KEY, dhKeyValue->priv);
         if(ret != 1) {
             xmlSecOpenSSLError("OSSL_PARAM_BLD_push_BN(private)",
                 xmlSecKeyDataGetName(data));
@@ -2222,7 +2222,7 @@ xmlSecOpenSSLKeyDataDhSetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDhPtr
      * If the private key is not present, import only the public key.
      * Importing a keypair with an empty private key parameter fails.
      */
-    ret = EVP_PKEY_fromdata(ctx, &pKey, (dhKeyValue->private != NULL) ? EVP_PKEY_KEYPAIR : EVP_PKEY_PUBLIC_KEY, params);
+    ret = EVP_PKEY_fromdata(ctx, &pKey, (dhKeyValue->priv != NULL) ? EVP_PKEY_KEYPAIR : EVP_PKEY_PUBLIC_KEY, params);
     if(ret <= 0) {
         xmlSecOpenSSLError("EVP_PKEY_fromdata",
             xmlSecKeyDataGetName(data));
@@ -2416,7 +2416,7 @@ xmlSecOpenSSLKeyDataDhRead(xmlSecKeyDataId id, xmlSecKeyValueDhPtr dhValue) {
         }
     }
     /* public: required */
-    ret = xmlSecOpenSSLGetBNValue(&(dhValue->public), &(dhKeyValue.public));
+    ret = xmlSecOpenSSLGetBNValue(&(dhValue->pub), &(dhKeyValue.pub));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLGetBNValue(public)",
             xmlSecKeyDataKlassGetName(id));
@@ -2490,7 +2490,7 @@ xmlSecOpenSSLKeyDataDhWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKey
     }
 
     ret = xmlSecOpenSSLKeyDataDhGetValue(data, &dhKeyValue);
-    if((ret < 0) || (dhKeyValue.public == NULL)) {
+    if((ret < 0) || (dhKeyValue.pub == NULL)) {
         xmlSecInternalError("xmlSecOpenSSLKeyDataDhGetValue",
             xmlSecKeyDataGetName(data));
         goto done;
@@ -2527,7 +2527,7 @@ xmlSecOpenSSLKeyDataDhWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKey
     }
 
     /* public: required */
-    ret = xmlSecOpenSSLSetBNValue(dhKeyValue.public, &(dhValue->public));
+    ret = xmlSecOpenSSLSetBNValue(dhKeyValue.pub, &(dhValue->pub));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLSetBNValue(public)",
             xmlSecKeyDataKlassGetName(id));

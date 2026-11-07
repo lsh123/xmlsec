@@ -1953,7 +1953,7 @@ xmlSecMSCngDhValueInitialize(xmlSecKeyValueDhPtr dhValue) {
         xmlSecBufferFinalize(&(dhValue->p));
         return(-1);
     }
-    ret = xmlSecBufferInitialize(&(dhValue->public), 0);
+    ret = xmlSecBufferInitialize(&(dhValue->pub), 0);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize(public)", NULL);
         xmlSecBufferFinalize(&(dhValue->generator));
@@ -1964,7 +1964,7 @@ xmlSecMSCngDhValueInitialize(xmlSecKeyValueDhPtr dhValue) {
     ret = xmlSecBufferInitialize(&(dhValue->seed), 0);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize(seed)", NULL);
-        xmlSecBufferFinalize(&(dhValue->public));
+        xmlSecBufferFinalize(&(dhValue->pub));
         xmlSecBufferFinalize(&(dhValue->generator));
         xmlSecBufferFinalize(&(dhValue->q));
         xmlSecBufferFinalize(&(dhValue->p));
@@ -1974,7 +1974,7 @@ xmlSecMSCngDhValueInitialize(xmlSecKeyValueDhPtr dhValue) {
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize(pgenCounter)", NULL);
         xmlSecBufferFinalize(&(dhValue->seed));
-        xmlSecBufferFinalize(&(dhValue->public));
+        xmlSecBufferFinalize(&(dhValue->pub));
         xmlSecBufferFinalize(&(dhValue->generator));
         xmlSecBufferFinalize(&(dhValue->q));
         xmlSecBufferFinalize(&(dhValue->p));
@@ -1991,7 +1991,7 @@ xmlSecMSCngDhValueFinalize(xmlSecKeyValueDhPtr dhValue) {
     xmlSecBufferFinalize(&(dhValue->p));
     xmlSecBufferFinalize(&(dhValue->q));
     xmlSecBufferFinalize(&(dhValue->generator));
-    xmlSecBufferFinalize(&(dhValue->public));
+    xmlSecBufferFinalize(&(dhValue->pub));
     xmlSecBufferFinalize(&(dhValue->seed));
     xmlSecBufferFinalize(&(dhValue->pgenCounter));
     memset(dhValue, 0, sizeof(*dhValue));
@@ -2318,11 +2318,11 @@ xmlSecMSCngKeyDataDhEnsureValidAgreement(xmlSecKeyDataPtr myData, xmlSecKeyDataP
         goto done;
     }
 
-    ret = xmlSecMSCngDhValidatePublicRange(&(myDh.p), &(myDh.public));
+    ret = xmlSecMSCngDhValidatePublicRange(&(myDh.p), &(myDh.pub));
     if(ret < 0) {
         goto done;
     }
-    ret = xmlSecMSCngDhValidatePublicRange(&(otherDh.p), &(otherDh.public));
+    ret = xmlSecMSCngDhValidatePublicRange(&(otherDh.p), &(otherDh.pub));
     if(ret < 0) {
         goto done;
     }
@@ -2789,7 +2789,7 @@ xmlSecMSCngKeyDataXdhGetKlass(void) {
 
 /******************************************************************************
  * ML-DSA (FIPS 204) key data
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_MLDSA
 
 XMLSEC_MSCNG_CERTKEY_KLASS_EX2(
@@ -2817,7 +2817,7 @@ xmlSecMSCngKeyDataMLDSAGetKlass(void) {
 
 /******************************************************************************
  * ML-KEM (FIPS 203) key data
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_MLKEM
 
 XMLSEC_MSCNG_CERTKEY_KLASS_EX2(

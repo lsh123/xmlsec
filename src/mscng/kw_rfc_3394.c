@@ -27,11 +27,11 @@
 #include "../kw_helpers.h"
 #include "../cast_helpers.h"
 
- /******************************************************************************
-  *
-  * AES KW forward declarations
-  *
-  *****************************************************************************/
+/******************************************************************************
+ *
+ * AES KW forward declarations
+ *
+ *****************************************************************************/
 static int        xmlSecMSCngKWAesBlockEncrypt              (xmlSecTransformPtr transform,
                                                             const xmlSecByte* in,
                                                             xmlSecSize inSize,

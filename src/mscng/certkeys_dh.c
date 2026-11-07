@@ -420,12 +420,12 @@ xmlSecMSCngKeyDataDhRead(xmlSecKeyDataId id, xmlSecKeyValueDhPtr dhValue) {
     xmlSecAssert2(dhValue != NULL, NULL);
     xmlSecAssert2(xmlSecBufferGetData(&(dhValue->p)) != NULL, NULL);
     xmlSecAssert2(xmlSecBufferGetData(&(dhValue->generator)) != NULL, NULL);
-    xmlSecAssert2(xmlSecBufferGetData(&(dhValue->public)) != NULL, NULL);
+    xmlSecAssert2(xmlSecBufferGetData(&(dhValue->pub)) != NULL, NULL);
 
     /* don't reverse blobs: both XML and CNG use big-endian */
     pSize = xmlSecBufferGetSize(&(dhValue->p));
     gSize = xmlSecBufferGetSize(&(dhValue->generator));
-    publicSize = xmlSecBufferGetSize(&(dhValue->public));
+    publicSize = xmlSecBufferGetSize(&(dhValue->pub));
     xmlSecAssert2(pSize > 0, NULL);
     xmlSecAssert2(gSize > 0, NULL);
     xmlSecAssert2(publicSize > 0, NULL);
@@ -475,12 +475,12 @@ xmlSecMSCngKeyDataDhRead(xmlSecKeyDataId id, xmlSecKeyValueDhPtr dhValue) {
     offset += pSize;
 
     /*  Public (right-justified)  */
-    memcpy(blobData + offset + (pSize - publicSize), xmlSecBufferGetData(&(dhValue->public)), publicSize);
+    memcpy(blobData + offset + (pSize - publicSize), xmlSecBufferGetData(&(dhValue->pub)), publicSize);
     offset += pSize;
 
     /* validate the public value before import: 2 <= Y <= P - 2 (same check
      * as the SPKI import path in certkeys.c) */
-    ret = xmlSecMSCngDhValidatePublicValue(&(dhValue->p), &(dhValue->public));
+    ret = xmlSecMSCngDhValidatePublicValue(&(dhValue->p), &(dhValue->pub));
     if(ret < 0) {
         goto done;
     }
@@ -633,12 +633,12 @@ xmlSecMSCngKeyDataDhPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDhPtr dh
     bufData += dhkey->cbKey;
 
     /* Public */
-    ret = xmlSecBufferSetData(&(dhValue->public), bufData, dhkey->cbKey);
+    ret = xmlSecBufferSetData(&(dhValue->pub), bufData, dhkey->cbKey);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetData(public)", NULL, "cbKey=%lu", dhkey->cbKey);
         goto done;
     }
-    ret = xmlSecMSCngBufferTrimLeadingZeros(&(dhValue->public));
+    ret = xmlSecMSCngBufferTrimLeadingZeros(&(dhValue->pub));
     if(ret < 0) {
         xmlSecInternalError("xmlSecMSCngBufferTrimLeadingZeros(public)", NULL);
         goto done;

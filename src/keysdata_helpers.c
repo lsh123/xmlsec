@@ -1282,7 +1282,7 @@ xmlSecKeyValueDhInitialize(xmlSecKeyValueDhPtr data) {
         xmlSecKeyValueDhFinalize(data);
         return(-1);
     }
-    ret = xmlSecBufferInitialize(&(data->public), XMLSEC_KEY_DATA_DH_INIT_BUF_SIZE);
+    ret = xmlSecBufferInitialize(&(data->pub), XMLSEC_KEY_DATA_DH_INIT_BUF_SIZE);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize(public)", NULL);
         xmlSecKeyValueDhFinalize(data);
@@ -1311,7 +1311,7 @@ xmlSecKeyValueDhFinalize(xmlSecKeyValueDhPtr data) {
     xmlSecBufferFinalize(&(data->p));
     xmlSecBufferFinalize(&(data->q));
     xmlSecBufferFinalize(&(data->generator));
-    xmlSecBufferFinalize(&(data->public));
+    xmlSecBufferFinalize(&(data->pub));
     xmlSecBufferFinalize(&(data->seed));
     xmlSecBufferFinalize(&(data->pgenCounter));
     memset(data, 0, sizeof(xmlSecKeyValueDh));
@@ -1360,7 +1360,7 @@ xmlSecKeyValueDhXmlRead(xmlSecKeyValueDhPtr data, xmlNodePtr node) {
         xmlSecInvalidNodeError(cur, xmlSecNodeDHPublic, NULL);
         return(-1);
     }
-    ret = xmlSecBufferBase64NodeContentRead(&(data->public), cur);
+    ret = xmlSecBufferBase64NodeContentRead(&(data->pub), cur);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferBase64NodeContentRead(public)", NULL);
         return(-1);
@@ -1570,7 +1570,7 @@ xmlSecKeyValueDhXmlWrite(xmlSecKeyValueDhPtr data, xmlNodePtr node, int base64Li
         xmlNodeSetContent(cur, xmlSecStringEmpty);
 #endif /* LIBXML_VERSION >= 21300 */
     }
-    ret = xmlSecBufferBase64NodeContentWrite(&(data->public), cur, base64LineSize);
+    ret = xmlSecBufferBase64NodeContentWrite(&(data->pub), cur, base64LineSize);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(public)", NULL);
         return(-1);

@@ -1046,6 +1046,45 @@ xmlSecTmplCipherReferenceAddTransform(xmlNodePtr cipherReferenceNode,
  *
  * &lt;enc:EncryptedKey/&gt; node
  *
+ * https://www.w3.org/TR/xmlenc-core/#sec-EncryptedType
+ * https://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey
+ *
+ * <complexType name="EncryptedType" abstract="true">
+ *  <sequence>
+ *    <element name="EncryptionMethod" type="xenc:EncryptionMethodType"
+ *             minOccurs="0"/>
+ *    <element ref="ds:KeyInfo" minOccurs="0"/>
+ *    <element ref="xenc:CipherData"/>
+ *    <element ref="xenc:EncryptionProperties" minOccurs="0"/>
+ *  </sequence>
+ *  <attribute name="Id" type="ID" use="optional"/>
+ *  <attribute name="Type" type="anyURI" use="optional"/>
+ *  <attribute name="MimeType" type="string" use="optional"/>
+ *  <attribute name="Encoding" type="anyURI" use="optional"/>
+ * </complexType>
+ *
+ * <element name="EncryptedData" type="xenc:EncryptedDataType"/>
+ * <complexType name="EncryptedDataType">
+ *  <complexContent>
+ *    <extension base="xenc:EncryptedType">
+ *    </extension>
+ *  </complexContent>
+ * </complexType>
+ * </complexType>
+ *
+ * <element name="EncryptedKey" type="xenc:EncryptedKeyType"/>
+ * <complexType name="EncryptedKeyType">
+ *  <complexContent>
+ *    <extension base="xenc:EncryptedType">
+ *      <sequence>
+ *        <element ref="xenc:ReferenceList" minOccurs="0"/>
+ *        <element name="CarriedKeyName" type="string" minOccurs="0"/>
+ *      </sequence>
+ *      <attribute name="Recipient" type="string" use="optional"/>
+ *    </extension>
+ *  </complexContent>
+ * </complexType>
+ *
  *****************************************************************************/
 static xmlNodePtr
 xmlSecTmplEncDataEnsureReferenceList(xmlNodePtr encNode) {
@@ -1059,12 +1098,8 @@ xmlSecTmplEncDataEnsureReferenceList(xmlNodePtr encNode) {
         return(refListNode);
     }
 
-    /* Per the XML-Enc schema (https://www.w3.org/TR/xmlenc-core/#sec-EncryptedType
-     * and https://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey),
-     * the EncryptedType sequence is: EncryptionMethod?, EncryptionProperties?,
-     * KeyInfo?, ReferenceList?, CarriedKeyName?, CipherData; the ReferenceList
-     * node precedes CarriedKeyName and CipherData, so insert it before the
-     * first of them that is present, or append it as the last child if neither
+    /* the ReferenceList node precedes CarriedKeyName and CipherData,
+     * so insert it before the first of them that is present, or append it as the last child if neither
      * of them is present. */
     nextSiblingNode = xmlSecFindChild(encNode, xmlSecNodeCarriedKeyName, xmlSecEncNs);
     if(nextSiblingNode == NULL) {

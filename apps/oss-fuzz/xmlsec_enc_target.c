@@ -142,7 +142,7 @@ static int load_rsa_key(void) {
 
     for (i = 0; i < G_KEY_NLINES; ++i) {
         size_t len = strlen(g_key_lines[i]);
-        if (off + len + 1 >= sizeof(pem)) {
+        if (off + len + 1 > sizeof(pem)) {
             return -1;
         }
         memcpy(pem + off, g_key_lines[i], len);

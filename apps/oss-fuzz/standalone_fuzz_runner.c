@@ -93,11 +93,13 @@ int main(int argc, const char **argv) {
 #if defined(_MSC_VER) && defined(_WIN32) && defined(UNICODE)
         if (_wfopen_s(&f, argv[i], L"rb") != 0) {
             FUZZER_ERROR("cannot open", argv[i]);
+            ret = 1;
             continue;
         }
 #elif defined(_MSC_VER) && defined(_WIN32) && !defined(UNICODE)
         if (fopen_s(&f, argv[i], "rb") != 0) {
             FUZZER_ERROR("cannot open", argv[i]);
+            ret = 1;
             continue;
         }
 #elif defined(_WIN32) && defined(UNICODE)
@@ -108,18 +110,21 @@ int main(int argc, const char **argv) {
 
         if (f == NULL) {
             FUZZER_ERROR("cannot open", argv[i]);
+            ret = 1;
             continue;
         }
 
         if (fuzzer_fseeko(f, 0, SEEK_END) != 0) {
             FUZZER_ERROR("cannot seek in", argv[i]);
             fuzzer_close_file(f);
+            ret = 1;
             continue;
         }
         len = fuzzer_ftello(f);
         if (len < 0) {
             FUZZER_ERROR("cannot determine the size of", argv[i]);
             fuzzer_close_file(f);
+            ret = 1;
             continue;
         }
         /* On 32-bit builds the file offset is 64-bit but size_t is 32-bit;
@@ -129,6 +134,7 @@ int main(int argc, const char **argv) {
         if (sizeof(fuzzer_file_offset_t) > sizeof(size_t) && len > (fuzzer_file_offset_t)SIZE_MAX) {
             FUZZER_ERROR("file is too large", argv[i]);
             fuzzer_close_file(f);
+            ret = 1;
             continue;
         }
         rewind(f);
@@ -139,6 +145,7 @@ int main(int argc, const char **argv) {
         if (buf == NULL) {
             FUZZER_ERROR("out of memory reading", argv[i]);
             fuzzer_close_file(f);
+            ret = 1;
             continue;
         }
 
@@ -146,6 +153,7 @@ int main(int argc, const char **argv) {
             FUZZER_ERROR("failed to read", argv[i]);
             free(buf);
             fuzzer_close_file(f);
+            ret = 1;
             continue;
         }
         fuzzer_close_file(f);

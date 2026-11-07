@@ -30,12 +30,6 @@
 #include "../cast_helpers.h"
 #include "../transform_helpers.h"
 
-/* SHA224 algorithm identifier is not defined in the Windows SDK bcrypt.h;
- * provide a fallback so the code compiles. */
-#ifndef BCRYPT_SHA224_ALGORITHM
-#define BCRYPT_SHA224_ALGORITHM             L"SHA224"
-#endif /* BCRYPT_SHA224_ALGORITHM */
-
 /******************************************************************************
  *
  * Internal MSCNG RSA PKCS1/OAEP CTX
@@ -173,7 +167,8 @@ xmlSecMSCngRsaPkcs1OaepSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 #ifndef XMLSEC_NO_RSA_OAEP
 /* Returns the output size in bytes of the given OAEP digest algorithm, or 0 if
  * the algorithm is unknown. The digest is always one of the fixed set established
- * by xmlSecMSCngRsaOaepNodeRead or xmlSecMSCngRsaPkcs1OaepEnsureDefaultDigest. */
+ * by xmlSecMSCngRsaOaepNodeRead or xmlSecMSCngRsaPkcs1OaepEnsureDefaultDigest.
+ * MSCNG does not support SHA224. */
 static xmlSecSize
 xmlSecMSCngRsaOaepDigestSize(LPCWSTR pszDigestAlgId) {
     if(pszDigestAlgId == NULL) {
@@ -181,9 +176,6 @@ xmlSecMSCngRsaOaepDigestSize(LPCWSTR pszDigestAlgId) {
     }
     if(lstrcmpW(pszDigestAlgId, BCRYPT_SHA1_ALGORITHM) == 0) {
         return(20);
-    }
-    if(lstrcmpW(pszDigestAlgId, BCRYPT_SHA224_ALGORITHM) == 0) {
-        return(28);
     }
     if(lstrcmpW(pszDigestAlgId, BCRYPT_SHA256_ALGORITHM) == 0) {
         return(32);

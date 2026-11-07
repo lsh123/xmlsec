@@ -33,7 +33,9 @@ fi
 git_uri=git@github.com:lsh123/xmlsec.git
 build_root="/tmp/xmlsec-build-area-$today"
 build_tar_file="xmlsec1-${version}.tar.gz"
+html_build_tar_file="xmlsec1-${version}-html.tar.gz"
 tar_file="xmlsec1-${full_version}.tar.gz"
+html_tar_file="xmlsec1-${full_version}-html.tar.gz"
 sig_file="xmlsec1-${full_version}.sig"
 git_version_tag=`echo "${full_version}" | sed 's/\./_/g'`
 
@@ -61,10 +63,11 @@ autoreconf -i -f
 mkdir build.dir
 cd build.dir
 ../configure --prefix=/usr --sysconfdir=/etc
-make tar-release
+make tar-release html-docs-build
 
-echo "============== Moving tar file"
+echo "============== Moving tar files"
 mv "${build_tar_file}" "${cur_pwd}/${tar_file}"
+mv "${html_build_tar_file}" "${cur_pwd}/${html_tar_file}"
 cd "$cur_pwd"
 
 echo "============== Signing tar file"
@@ -91,7 +94,7 @@ echo "RUN MANUALLY: ./scripts/gen-github-wiki.py ../xmlsec.wiki/"
 echo "RUN MANUALLY: cd ../xmlsec.wiki/ && git add . && git commit -m 'Update wiki for release ${full_version}' && git push"
 
 echo "======== Publish the release to the website:"
-echo "RUN MANUALLY: scp ${tar_file} ${sig_file} smtp.aleksey.com:"
+echo "RUN MANUALLY: scp ${tar_file} ${sig_file} ${html_tar_file} smtp.aleksey.com:"
 echo "RUN MANUALLY: ssh smtp.aleksey.com"
 echo "RUN MANUALLY (smtp): ./bin/push-xmlsec-docs.sh ${full_version}"
 echo "RUN MANUALLY (smtp): cd /home/apps/www/aleksey.com/xmlsec/ && sudo ln -sfn xmlsec1-${full_version} ${website_symlink_path}"

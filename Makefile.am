@@ -3,6 +3,7 @@
 # make check    	: runs all tests
 # make docs-build	: builds all docs (requires additional tools installed)
 # make tar-release  : builds distribution tar.gz (including docs)
+# make html-docs-build : builds html docs tar.gz
 #
 NULL =
 SUBDIRS  = include src
@@ -97,8 +98,9 @@ CHECK_CRYPTO_LIST = \
 	$(NULL)
 
 
-.PHONY: all check check-all check-info check-keys check-dsig check-enc check-fuzz \
-	check-unit-tests check-build memcheck memcheck-res perfcheck tar-release cleantar docs-build
+.PHONY: all check check-build check-all check-info check-keys check-dsig check-enc check-fuzz \
+	check-unit-tests check-build memcheck memcheck-res perfcheck tar-release cleantar \
+	docs-build html-docs-build
 
 all:
 
@@ -112,7 +114,6 @@ check: check-all check-fuzz check-info
 # built (not just apps/) so the library dependencies in src/ are available.
 # All the on-demand targets share the single 'check-build' phony prerequisite
 # so a parallel 'make -j check' runs the recursive build exactly once.
-.PHONY: check-build
 check-build:
 	$(MAKE) $(AM_MAKEFLAGS) all
 
@@ -261,3 +262,12 @@ if XMLSEC_APPS
 	@$(MAKE) $(AM_MAKEFLAGS) -C man docs
 endif
 	@$(MAKE) $(AM_MAKEFLAGS) -C docs docs
+
+html-docs-build: docs-build
+	@$(MAKE) $(AM_MAKEFLAGS) -C docs/html docs
+	@$(TAR) -czvf @XMLSEC_PACKAGE@-@XMLSEC_VERSION@-html.tar.gz \
+		--exclude='Makefile*' \
+		--exclude='*.sh' \
+		--exclude='*.py' \
+		--exclude='*.pl' \
+		-C docs/html .

@@ -115,7 +115,7 @@ static int load_sym_keys(void) {
 #endif /* XMLSEC_NO_AES */
         }
         if (id == xmlSecKeyDataIdUnknown) {
-            /* skip test if algorithm is not supported */
+            /* skip loading the key if the algorithm is not supported */
             continue;
         }
         xmlSecKeyPtr key = xmlSecKeyReadMemory(id,

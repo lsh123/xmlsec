@@ -154,10 +154,11 @@ xmlSecErrorsClearCallback(void) {
  * @brief Sets the system errors callback function.
  * @details Sets the system errors callback function to @p callback that will be
  * called every time an error occurs, unless a custom errors callback is set
- * using #xmlSecErrorsSetCallback (which takes precedence).
+ * using #xmlSecErrorsSetCallback (which takes precedence). If @p callback is NULL
+ * then the system errors output will be suppressed.
  *
  * Note that this function is not thread-safe (see the module notes).
- * @param callback the new system errors callback function.
+ * @param callback the new system errors callback function, or NULL to suppress error output.
  */
 void
 xmlSecErrorsSetSystemCallback(xmlSecErrorsCallback callback) {
@@ -219,7 +220,7 @@ xmlSecErrorsDefaultCallbackEnableOutput(int enabled) {
  * @brief Gets the known error code at position @p pos.
  * @param pos the error position.
  * @return the known error code or 0 if @p pos is greater than or equal to
- * total number of known error codes.
+ * the total number of known error codes.
  */
 int
 xmlSecErrorsGetCode(xmlSecSize pos) {
@@ -234,7 +235,7 @@ xmlSecErrorsGetCode(xmlSecSize pos) {
  * @brief Gets the known error message at position @p pos.
  * @param pos the error position.
  * @return the known error message or NULL if @p pos is greater than or equal to
- * total number of known error codes.
+ * the total number of known error codes.
  */
 const char*
 xmlSecErrorsGetMsg(xmlSecSize pos) {

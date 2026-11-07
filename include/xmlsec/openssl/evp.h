@@ -30,7 +30,7 @@ extern "C" {
  *
  * EVP_PKEY Util functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT EVP_PKEY*      xmlSecOpenSSLKeyGetEvp              (xmlSecKeyPtr key);
 
 XMLSEC_CRYPTO_EXPORT int            xmlSecOpenSSLEvpKeyDataAdoptEvp     (xmlSecKeyDataPtr data,
@@ -41,7 +41,7 @@ XMLSEC_CRYPTO_EXPORT EVP_PKEY*      xmlSecOpenSSLEvpKeyDataGetEvp       (xmlSecK
  *
  * EVP helper functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLEvpKeyDup          (EVP_PKEY* pKey);
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr   xmlSecOpenSSLEvpKeyAdopt        (EVP_PKEY* pKey);
 

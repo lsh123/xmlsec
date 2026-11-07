@@ -509,7 +509,7 @@ xmlSecMSCngConcatKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
  *
  * ConcatKDF key derivation algorithm
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCngConcatKdfKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),                   /* xmlSecSize klassSize */

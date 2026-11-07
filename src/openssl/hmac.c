@@ -38,7 +38,7 @@
  *
  * Configuration
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 /******************************************************************************
  *
@@ -55,7 +55,7 @@
  * </SignatureMethod>
  * @endcode
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecOpenSSLHmacCtx            xmlSecOpenSSLHmacCtx, *xmlSecOpenSSLHmacCtxPtr;
 struct _xmlSecOpenSSLHmacCtx {
 #ifndef XMLSEC_OPENSSL_API_300
@@ -75,7 +75,7 @@ struct _xmlSecOpenSSLHmacCtx {
  *
  * HMAC transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(OpenSSLHmac, xmlSecOpenSSLHmacCtx)
 #define xmlSecOpenSSLHmacSize XMLSEC_TRANSFORM_SIZE(OpenSSLHmac)
 

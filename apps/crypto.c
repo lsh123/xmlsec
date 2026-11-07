@@ -15,7 +15,6 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
-#include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/crypto.h>
 
@@ -512,7 +511,7 @@ xmlSecAppCryptoKeyGenerate(const char* keyKlassAndSize, const char* name, xmlSec
 
     key = xmlSecKeyGenerateByName(BAD_CAST buf, (xmlSecSize)size, type);
     if(key == NULL) {
-        fprintf(stderr, "Error: xmlSecKeyGenerateByName() failed: name=%s;size=%d;type=%d\n",
+        fprintf(stderr, "Error: xmlSecKeyGenerateByName failed: name=%s;size=%d;type=%d\n",
                 xmlSecErrorsSafeString(buf), size, (int)type);
         xmlFree(buf);
         return(NULL);

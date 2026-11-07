@@ -28,7 +28,7 @@
  *
  * ASN.1 parser is taken from GCrypt tests
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 /* ASN.1 classes.  */
 enum
@@ -432,7 +432,7 @@ xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSe
                         return(-1);
                     }
                     if(ti.length > XMLSEC_GCRYPT_ASN1_MAX_OBJECT_ID_SIZE) {
-                        xmlSecInternalError2("xmlSecGCryptAsn1ParseTag", NULL, "object id too long, len=%lu", ti.length);
+                        xmlSecInternalError2("xmlSecGCryptAsn1ParseIntegerSequence", NULL, "object id too long, len=%lu", ti.length);
                         return(-1);
                     }
                     memcpy(objectids[(*objectids_out_size)], buf, ti.length);
@@ -692,7 +692,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
     case xmlSecGCryptDerKeyTypePrivateRsa:
         /* check we have enough integers */
         if(integers_num < XMLSEC_GCRYPT_ASN1_RSA_PRIV_NUM) {
-            xmlSecInvalidSizeError("Private RSA key params",
+            xmlSecInvalidSizeLessThanError("Private RSA key params",
                 (xmlSecSize)integers_num, (xmlSecSize)XMLSEC_GCRYPT_ASN1_RSA_PRIV_NUM, NULL);
             goto done;
         }
@@ -784,7 +784,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
             if(integers_num == XMLSEC_GCRYPT_ASN1_ECDSA_PRIV_NUM - 1) {
                 xmlSecInvalidDataError("EC private key is missing the optional [1] publicKey field; re-encode the key to include the public point", NULL);
             } else {
-                xmlSecInvalidSizeError("Private EC key params",
+                xmlSecInvalidSizeLessThanError("Private EC key params",
                     (xmlSecSize)integers_num, (xmlSecSize)XMLSEC_GCRYPT_ASN1_ECDSA_PRIV_NUM, NULL);
             }
             goto done;
@@ -853,7 +853,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
             goto done;
         }
         if(integers_num < XMLSEC_GCRYPT_ASN1_ECDSA_PUB_NUM) {
-            xmlSecInvalidSizeError("Public EC key params",
+            xmlSecInvalidSizeLessThanError("Public EC key params",
                 (xmlSecSize)integers_num, (xmlSecSize)XMLSEC_GCRYPT_ASN1_ECDSA_PUB_NUM, NULL);
             goto done;
         }

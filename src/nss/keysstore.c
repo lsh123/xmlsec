@@ -42,7 +42,7 @@
  *
  * xmlSecKeyStore + xmlSecKeyStorePtr(Simple Keys Store ptr)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_KEY_STORE_DECLARE(NssKeysStore, xmlSecKeyStorePtr)
 #define xmlSecNssKeysStoreSize XMLSEC_KEY_STORE_SIZE(NssKeysStore)
 
@@ -227,7 +227,7 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
     }
 
     /* Try to find the key in the NSS DB, and construct an xmlSecKey.
-     * we must have a name to look up keys in the NSS DB.
+     * We must have a name to look up keys in the NSS DB.
      */
     if (name == NULL) {
         goto done;

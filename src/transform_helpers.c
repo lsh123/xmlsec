@@ -43,7 +43,7 @@
  *
  * Helper transform functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 #ifndef XMLSEC_NO_CONCATKDF
 
@@ -63,7 +63,7 @@
  *
  * While any bit string can be used with ConcatKDF, it is RECOMMENDED to keep byte aligned for greatest interoperability.
  *
- * TODO: only bit aligned bit strings are supported (https://github.com/lsh123/xmlsec/issues/514)
+ * TODO: only byte aligned bit strings are supported (https://github.com/lsh123/xmlsec/issues/514)
  */
 static int
 xmlSecTransformConcatKdfParamsReadBitsAttr(xmlSecBufferPtr buf, xmlNodePtr node, const xmlChar* attrName) {
@@ -99,7 +99,7 @@ xmlSecTransformConcatKdfParamsReadBitsAttr(xmlSecBufferPtr buf, xmlNodePtr node,
 
     /* only byte aligned bit strings are supported */
     if(data[0] != 0) {
-        xmlSecInvalidDataError("First bit string byte should be 0 (only byte aligned bit strings are supported)", NULL);
+        xmlSecInvalidDataError("The first bit string byte should be 0 (only byte aligned bit strings are supported)", NULL);
         return (-1);
     }
 
@@ -429,6 +429,9 @@ done:
  *      <attribute name="Algorithm" type="anyURI" use="required"/>
  *  </complexType>
  * @endcode
+ *
+ * Note: unlike the schema above, in which both are optional, this implementation
+ * requires the OriginatorKeyInfo and RecipientKeyInfo elements to be present.
  *
  *****************************************************************************/
 
@@ -1561,7 +1564,7 @@ xmlSecTransformPbkdf2ParamsRead(xmlSecTransformPbkdf2ParamsPtr params, xmlNodePt
  *
  * HKDF params
  *
-  *****************************************************************************/
+ *****************************************************************************/
 int
 xmlSecTransformHkdfParamsInitialize(xmlSecTransformHkdfParamsPtr params) {
     int ret;

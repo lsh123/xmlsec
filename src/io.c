@@ -50,7 +50,7 @@
  *
  * Input I/O callback sets
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecIOCallback {
     xmlInputMatchCallback matchcallback;
     xmlInputOpenCallback opencallback;
@@ -99,7 +99,7 @@ xmlSecIOCallbackDestroy(void* callbacks) {
  *
  * Input I/O callback list
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecPtrListKlass xmlSecIOCallbackPtrListKlass = {
     BAD_CAST "io-callbacks-list",
     NULL,                       /* xmlSecPtrDuplicateItemMethod duplicateItem; */
@@ -255,7 +255,7 @@ xmlSecIORegisterCallbacks(xmlInputMatchCallback matchFunc,
  *
  * File I/O
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int
 xmlSecIOFileExtractFilename(char const* filename, char** out) {
     const char* escaped;
@@ -461,7 +461,7 @@ xmlSecIORegisterDefaultCallbacks(void) {
  *
  * xmlSecTransform + xmlSecInputURICtx
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecInputURICtx                               xmlSecInputURICtx,
                                                                 *xmlSecInputURICtxPtr;
 struct _xmlSecInputURICtx {
@@ -532,7 +532,8 @@ xmlSecTransformInputURIGetKlass(void) {
  * (unopened) state, but the failed open leaves the callback set recorded
  * in the transform; the #xmlSecTransformInputURIClose function must be
  * called to reset this state before the transform can be opened again,
- * otherwise a subsequent call to this function will fail.
+ * otherwise a subsequent call to this function will fail with an assertion
+ * error (a failed internal consistency check) and return -1.
  *
  * @return 0 on success or a negative value otherwise.
  */

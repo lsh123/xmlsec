@@ -54,7 +54,7 @@
  *
  * Internal GnuTLS AEAD cipher CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecGnuTLSAeadCipherCtx          xmlSecGnuTLSAeadCipherCtx,
                                                 *xmlSecGnuTLSAeadCipherCtxPtr;
 struct _xmlSecGnuTLSAeadCipherCtx {
@@ -75,7 +75,7 @@ struct _xmlSecGnuTLSAeadCipherCtx {
  *
  * Cipher transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 XMLSEC_TRANSFORM_DECLARE(GnuTLSAeadCipher, xmlSecGnuTLSAeadCipherCtx)
 #define xmlSecGnuTLSAeadCipherSize XMLSEC_TRANSFORM_SIZE(GnuTLSAeadCipher)
@@ -576,7 +576,7 @@ xmlSecGnuTLSAeadCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTran
  *
  * AES GCM cipher transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 /* AES 128 GCM cipher transform klass: xmlSecGnuTLSAes128GcmKlass */
 XMLSEC_GNUTLS_AEAD_CIPHER_KLASS(Aes128Gcm)
@@ -621,7 +621,7 @@ xmlSecGnuTLSTransformAes256GcmGetKlass(void) {
  *
  * ChaCha20-Poly1305 AEAD cipher transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 static int
 xmlSecGnuTLSChaCha20Poly1305NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,

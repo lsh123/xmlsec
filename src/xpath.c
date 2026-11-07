@@ -64,7 +64,7 @@ xmlSecXPathHereFunction(xmlXPathParserContextPtr ctxt, int nargs) {
  *
  * XPath/XPointer data
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecXPathData                 xmlSecXPathData,
                                                 *xmlSecXPathDataPtr;
 typedef enum {
@@ -313,7 +313,7 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
  *
  * XPath data list
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #define xmlSecXPathDataListId   \
         xmlSecXPathDataListGetKlass()
 static xmlSecPtrListId  xmlSecXPathDataListGetKlass             (void);
@@ -388,7 +388,7 @@ xmlSecXPathDataListExecute(xmlSecPtrListPtr dataList, xmlDocPtr doc,
  *
  * xmlSecTransform + xmlSecXPathDataList
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(XPath, xmlSecPtrList)
 #define xmlSecXPathSize XMLSEC_TRANSFORM_SIZE(XPath)
 
@@ -472,7 +472,7 @@ xmlSecTransformXPathExecute(xmlSecTransformPtr transform, int last,
  *
  * XPath transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int              xmlSecTransformXPathNodeRead    (xmlSecTransformPtr transform,
                                                          xmlNodePtr node,
                                                          xmlSecTransformCtxPtr transformCtx);
@@ -611,7 +611,7 @@ xmlSecTransformXPathNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
  *
  * XPath2 transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int              xmlSecTransformXPath2NodeRead   (xmlSecTransformPtr transform,
                                                          xmlNodePtr node,
                                                          xmlSecTransformCtxPtr transformCtx);
@@ -741,7 +741,7 @@ xmlSecTransformXPath2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xml
  *
  * XPointer transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int              xmlSecTransformXPointerNodeRead (xmlSecTransformPtr transform,
                                                          xmlNodePtr node,
                                                          xmlSecTransformCtxPtr transformCtx);
@@ -955,7 +955,7 @@ xmlSecTransformXPointerNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, x
  *
  * xmlSecTransform + xmlChar* (pointer to ID)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(Visa3DHack, xmlChar*)
 #define xmlSecVisa3DHackSize XMLSEC_TRANSFORM_SIZE(Visa3DHack)
 

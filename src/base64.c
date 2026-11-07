@@ -65,7 +65,7 @@ static const xmlSecByte base64[] =
  *
  * Base64 Default line size
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int g_xmlsec_base64_default_line_size = XMLSEC_BASE64_LINESIZE;
 
 static int
@@ -106,7 +106,7 @@ xmlSecBase64SetDefaultLineSize(int columns)
  *
  * Base64 Context
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef enum {
     xmlSecBase64StatusConsumeAndNext  = 0,
     xmlSecBase64StatusConsumeAndRepeat,
@@ -312,7 +312,7 @@ xmlSecBase64CtxFinal_ex(xmlSecBase64CtxPtr ctx, xmlSecByte *out, xmlSecSize outS
             xmlSecInternalError("xmlSecBase64CtxDecodeIsFinished", NULL);
             return(-1);
         } else if(ret != 1) {
-            xmlSecInvalidSizeOtherError("Base64 decode finished prematurely", NULL);
+            xmlSecInvalidSizeOtherError("Base64 data is incomplete", NULL);
             return(-1);
         }
         (*outWritten) = 0;
@@ -790,7 +790,7 @@ xmlSecBase64DecodeInPlace(xmlChar* str, xmlSecSize* outWritten) {
  *
  * xmlSecTransform + xmlSecBase64Ctx
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(Base64, xmlSecBase64Ctx)
 #define xmlSecBase64Size XMLSEC_TRANSFORM_SIZE(Base64)
 

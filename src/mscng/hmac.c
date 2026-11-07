@@ -547,7 +547,7 @@ xmlSecMSCngHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
  *
  * HMAC MD5
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_HMAC_KLASS_EX(HmacMd5, xmlSecMSCngHmacNodeRead)
 
 /**
@@ -566,7 +566,7 @@ xmlSecMSCngTransformHmacMd5GetKlass(void) {
  *
  * HMAC SHA1
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_HMAC_KLASS_EX(HmacSha1, xmlSecMSCngHmacNodeRead)
 
 /**
@@ -585,7 +585,7 @@ xmlSecMSCngTransformHmacSha1GetKlass(void) {
  *
  * HMAC SHA256
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_HMAC_KLASS_EX(HmacSha256, xmlSecMSCngHmacNodeRead)
 
 /**
@@ -604,7 +604,7 @@ xmlSecMSCngTransformHmacSha256GetKlass(void) {
  *
  * HMAC SHA384
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_HMAC_KLASS_EX(HmacSha384, xmlSecMSCngHmacNodeRead)
 
 /**
@@ -623,7 +623,7 @@ xmlSecMSCngTransformHmacSha384GetKlass(void) {
  *
  * HMAC SHA512
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_HMAC_KLASS_EX(HmacSha512, xmlSecMSCngHmacNodeRead)
 
 /**

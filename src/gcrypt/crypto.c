@@ -47,7 +47,7 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
      *
      * Crypto Init/shutdown
      *
-      *****************************************************************************/
+     *****************************************************************************/
     gXmlSecGCryptFunctions->cryptoInit                  = xmlSecGCryptInit;
     gXmlSecGCryptFunctions->cryptoShutdown              = xmlSecGCryptShutdown;
     gXmlSecGCryptFunctions->cryptoKeysMngrInit          = xmlSecGCryptKeysMngrInit;
@@ -56,7 +56,7 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
      *
      * Key data ids
      *
-      *****************************************************************************/
+     *****************************************************************************/
 #ifndef XMLSEC_NO_AES
     gXmlSecGCryptFunctions->keyDataAesGetKlass          = xmlSecGCryptKeyDataAesGetKlass;
 #endif /* XMLSEC_NO_AES */
@@ -86,13 +86,13 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
      *
      * Key data store ids
      *
-      *****************************************************************************/
+     *****************************************************************************/
 
     /******************************************************************************
      *
      * Crypto transforms ids
      *
-      *****************************************************************************/
+     *****************************************************************************/
 
     /* AES */
 #ifndef XMLSEC_NO_AES
@@ -275,7 +275,7 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
      *
      * High-level routines for the xmlsec command-line utility
      *
-      *****************************************************************************/
+     *****************************************************************************/
     gXmlSecGCryptFunctions->cryptoAppInit                       = xmlSecGCryptAppInit;
     gXmlSecGCryptFunctions->cryptoAppShutdown                   = xmlSecGCryptAppShutdown;
     gXmlSecGCryptFunctions->cryptoAppDefaultKeysMngrInit        = xmlSecGCryptAppDefaultKeysMngrInit;

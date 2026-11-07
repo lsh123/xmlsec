@@ -40,7 +40,7 @@
  *
  * Internal GnuTLS Block cipher CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecGnuTLSBlockCipherCtx          xmlSecGnuTLSBlockCipherCtx,
                                                   *xmlSecGnuTLSBlockCipherCtxPtr;
 struct _xmlSecGnuTLSBlockCipherCtx {
@@ -409,7 +409,7 @@ xmlSecGnuTLSBlockCipherCtxFinal(xmlSecGnuTLSBlockCipherCtxPtr ctx, xmlSecBufferP
  *
  * Cipher transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GnuTLSBlockCipher, xmlSecGnuTLSBlockCipherCtx)
 #define xmlSecGnuTLSBlockCipherSize XMLSEC_TRANSFORM_SIZE(GnuTLSBlockCipher)
 
@@ -806,7 +806,7 @@ static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                   
  *
  * AES CBC cipher transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_BLOCK_CIPHER_KLASS(Aes128Cbc)
 
 /**
@@ -847,7 +847,7 @@ xmlSecGnuTLSTransformAes256CbcGetKlass(void) {
  *
  * Camellia CBC cipher transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_BLOCK_CIPHER_KLASS(Camellia128Cbc)
 
 /**
@@ -905,7 +905,7 @@ xmlSecGnuTLSTransformDes3CbcGetKlass(void) {
  * IV layout: counter[4 bytes] + nonce[12 bytes] = 16 bytes total.
  * NodeRead/NodeWrite handle XML parameter reading/writing.
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int
 xmlSecGnuTLSChaCha20BlockCipherNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
                                         xmlSecTransformCtxPtr transformCtx)

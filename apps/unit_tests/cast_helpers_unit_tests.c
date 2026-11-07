@@ -280,7 +280,7 @@ test_safe_cast_size_to_byte(void) {
     }
     ret = castTestSizeToByte(255, &dst);
     if((ret != 0) || (dst != 255)) {
-        testLog("Error: value 255 was rejected or mis-cast\n");
+        testLog("Error: valid value 255 was rejected or mis-cast\n");
         goto failed;
     }
 
@@ -728,7 +728,7 @@ test_safe_cast_size_to_uint(void) {
     }
     ret = castTestSizeToUint((xmlSecSize)UINT_MAX, &dst);
     if((ret != 0) || (dst != UINT_MAX)) {
-        testLog("Error: value UINT_MAX was rejected or mis-cast\n");
+        testLog("Error: valid value UINT_MAX was rejected or mis-cast\n");
         goto failed;
     }
 

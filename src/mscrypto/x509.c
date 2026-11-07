@@ -44,7 +44,7 @@
  *
  * X509 utility functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int              xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data,
                                                                 xmlSecKeyPtr key,
                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
@@ -69,7 +69,7 @@ static int              xmlSecMSCryptoX509CertGetTime           (FILETIME t,
  *
  * Internal MSCrypto X509 data CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecMSCryptoX509DataCtx       xmlSecMSCryptoX509DataCtx,
                                                 *xmlSecMSCryptoX509DataCtxPtr;
 
@@ -82,7 +82,7 @@ struct _xmlSecMSCryptoX509DataCtx {
  *
  * &lt;dsig:X509Data/&gt; processing (http://www.w3.org/TR/xmldsig-core/#sec-X509Data)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(MSCryptoX509Data, xmlSecMSCryptoX509DataCtx)
 #define xmlSecMSCryptoX509DataSize XMLSEC_KEY_DATA_SIZE(MSCryptoX509Data)
 
@@ -184,7 +184,7 @@ xmlSecMSCryptoKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
 /**
  * @brief Sets the key's certificate in @p data.
  * @param data the pointer to X509 key data.
- * @param cert the pointer to MSCRYPTO X509 certificate.
+ * @param cert the pointer to MSCrypto X509 certificate.
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -214,7 +214,7 @@ xmlSecMSCryptoKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert
 /**
  * @brief Adds certificate to the X509 key data.
  * @param data the pointer to X509 key data.
- * @param cert the pointer to MSCRYPTO X509 certificate.
+ * @param cert the pointer to MSCrypto X509 certificate.
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -1368,7 +1368,7 @@ done:
  * Raw X509 Certificate processing
  *
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int              xmlSecMSCryptoKeyDataRawX509CertBinRead (xmlSecKeyDataId id,
                                                                  xmlSecKeyPtr key,
                                                                  const xmlSecByte* buf,

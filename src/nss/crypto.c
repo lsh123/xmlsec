@@ -107,7 +107,7 @@ xmlSecCryptoGetFunctions_nss(void) {
      *
      * Crypto Init/shutdown
      *
-      *****************************************************************************/
+     *****************************************************************************/
     gXmlSecNssFunctions->cryptoInit                     = xmlSecNssInit;
     gXmlSecNssFunctions->cryptoShutdown                 = xmlSecNssShutdown;
     gXmlSecNssFunctions->cryptoKeysMngrInit             = xmlSecNssKeysMngrInit;
@@ -116,7 +116,7 @@ xmlSecCryptoGetFunctions_nss(void) {
      *
      * Key data ids
      *
-      *****************************************************************************/
+     *****************************************************************************/
 #ifndef XMLSEC_NO_AES
     gXmlSecNssFunctions->keyDataAesGetKlass             = xmlSecNssKeyDataAesGetKlass;
 #endif /* XMLSEC_NO_AES */
@@ -188,7 +188,7 @@ xmlSecCryptoGetFunctions_nss(void) {
      *
      * Key data store ids
      *
-      *****************************************************************************/
+     *****************************************************************************/
 #ifndef XMLSEC_NO_X509
     gXmlSecNssFunctions->x509StoreGetKlass              = xmlSecNssX509StoreGetKlass;
 #endif /* XMLSEC_NO_X509 */
@@ -197,7 +197,7 @@ xmlSecCryptoGetFunctions_nss(void) {
      *
      * Crypto transforms ids
      *
-      *****************************************************************************/
+     *****************************************************************************/
 
     /* AES */
 #ifndef XMLSEC_NO_AES
@@ -422,7 +422,7 @@ xmlSecCryptoGetFunctions_nss(void) {
      *
      * High-level routines for the xmlsec command-line utility
      *
-      *****************************************************************************/
+     *****************************************************************************/
     gXmlSecNssFunctions->cryptoAppInit                  = xmlSecNssAppInit;
     gXmlSecNssFunctions->cryptoAppShutdown              = xmlSecNssAppShutdown;
     gXmlSecNssFunctions->cryptoAppDefaultKeysMngrInit   = xmlSecNssAppDefaultKeysMngrInit;
@@ -465,9 +465,7 @@ xmlSecNssUpdateAvailableCryptoTransforms(xmlSecCryptoDLFunctionsPtr functions) {
      * fails we still proceed with the per-algorithm checks below. Those rely
      * on NSS_GetAlgorithmPolicy(), which works without the OID table
      * initialized here, and disable any algorithm whose policy cannot be
-     * resolved. Note that the default policy values that disable weak
-     * algorithms are established by SECOID_Init() as well, so if it ever
-     * failed every algorithm would be reported as enabled. */
+     * resolved. */
     rv = SECOID_Init();
     if (rv != SECSuccess) {
         xmlSecNssError("SECOID_Init", NULL);

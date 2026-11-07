@@ -194,7 +194,7 @@ XMLSEC_EXPORT int               xmlSecPrintXmlString    (FILE * fd,
  *
  * QName <-> Integer mapping
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 /**
  * @brief QName <-> Integer conversion definition.
@@ -259,7 +259,7 @@ XMLSEC_EXPORT void              xmlSecQName2IntegerDebugXmlDump(xmlSecQName2Inte
  *
  * QName <-> Bitmask mapping
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 /**
  * @brief Bitmask datatype.
@@ -326,7 +326,7 @@ XMLSEC_EXPORT void              xmlSecQName2BitMaskDebugXmlDump(xmlSecQName2BitM
  *
  * Windows string conversions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #if defined(XMLSEC_WINDOWS)
 XMLSEC_EXPORT LPWSTR             xmlSecWin32ConvertLocaleToUnicode(const char* str);
 

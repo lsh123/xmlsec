@@ -26,7 +26,7 @@
 #include "cast_helpers.h"
 
 
-/* default external entity loader, pointer saved during xmlInit */
+/* default external entity loader, pointer saved during xmlSecInit */
 static xmlExternalEntityLoader xmlSecDefaultExternalEntityLoader = NULL;
 
 /* new parser option XML_PARSE_NO_XXE available since 2.13.0 */
@@ -124,8 +124,10 @@ xmlSecInit(void) {
         xmlSecDefaultExternalEntityLoader = xmlGetExternalEntityLoader();
     }
 
-    /* new parser option XML_PARSE_NO_XXE available since 2.13.0 and is
-     * set as a default option for parsers */
+    /* libxml2 >= 2.13.0 provides the XML_PARSE_NO_XXE parser option, which is
+     * included in xmlsec's default parser options mask (see src/parser.c);
+     * for older libxml2 versions the external entity loader below is used
+     * instead */
 #if LIBXML_VERSION < 21300
     xmlSetExternalEntityLoader(xmlSecNoXxeExternalEntityLoader);
 #endif /* LIBXML_VERSION < 21300 */

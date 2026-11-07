@@ -40,7 +40,7 @@
  *
  * Internal MSCNG RSA PKCS1/OAEP CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecMSCngRsaPkcs1OaepCtx xmlSecMSCngRsaPkcs1OaepCtx, *xmlSecMSCngRsaPkcs1OaepCtxPtr;
 
 struct _xmlSecMSCngRsaPkcs1OaepCtx {
@@ -53,7 +53,7 @@ struct _xmlSecMSCngRsaPkcs1OaepCtx {
  *
  * RSA PKCS1 key transport transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MSCngRsaPkcs1Oaep, xmlSecMSCngRsaPkcs1OaepCtx)
 #define xmlSecMSCngRsaPkcs1OaepSize XMLSEC_TRANSFORM_SIZE(MSCngRsaPkcs1Oaep)
 
@@ -798,7 +798,7 @@ xmlSecMSCngTransformRsaOaepEnc11GetKlass(void) {
  *
  * RSA/PKCS1 transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCngRsaPkcs1Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */

@@ -31,7 +31,7 @@ extern "C" {
  *
  * Init/shutdown
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppInit                   (const char* config);
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppShutdown               (void);
 
@@ -55,7 +55,7 @@ XMLSEC_CRYPTO_EXPORT LPCTSTR    xmlSecMSCngAppGetLocalMachineCertStoreName(void)
  *
  * Keys Manager
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppDefaultKeysMngrInit    (xmlSecKeysMngrPtr mngr);
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr,
                                                                       xmlSecKeyPtr key);
@@ -78,10 +78,10 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppKeysMngrCertLoadMemory (xmlSecKeys
                                                                       xmlSecKeyDataFormat format,
                                                                       xmlSecKeyDataType type);
 
-XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppKeysMngrCrlLoad       (xmlSecKeysMngrPtr mngr,
+XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppKeysMngrCrlLoad        (xmlSecKeysMngrPtr mngr,
                                                                       const char *filename,
                                                                       xmlSecKeyDataFormat format);
-XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppKeysMngrCrlLoadMemory (xmlSecKeysMngrPtr mngr,
+XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppKeysMngrCrlLoadMemory  (xmlSecKeysMngrPtr mngr,
                                                                       const xmlSecByte *data,
                                                                       xmlSecSize dataSize,
                                                                       xmlSecKeyDataFormat format);
@@ -96,7 +96,7 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppKeysMngrCrlLoadAndVerify(xmlSecKey
  *
  * Keys
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCngAppKeyLoadEx            (const char *filename,
                                                                       xmlSecKeyDataType type,
                                                                       xmlSecKeyDataFormat format,

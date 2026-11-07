@@ -71,7 +71,7 @@
  *
  * Global xmlSecTransformIds list functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecPtrList xmlSecAllTransformIds;
 
 
@@ -239,7 +239,7 @@ xmlSecTransformIdsRegisterDefault(void) {
  *
  * utils
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Checks if @p uri matches expected type @p type.
  * @param type the expected URI type.
@@ -269,7 +269,7 @@ xmlSecTransformUriTypeCheck(xmlSecTransformUriType type, const xmlChar* uri) {
  *
  * xmlSecTransformCtx
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecSize g_xmlSecTransformCtxDefaultBinaryChunkSize = (64*1024); /* 64kb */
 static unsigned int g_xmlSecTransformCtxDefaultMaxDepth = 16u; /* 16 levels */
 
@@ -1395,7 +1395,7 @@ xmlSecTransformCtxDebugXmlDump(xmlSecTransformCtxPtr ctx, FILE* output) {
  *
  * xmlSecTransform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Creates a new transform of the specified klass.
  * @details Creates new transform of the @p id klass. The caller is responsible for
@@ -2003,7 +2003,7 @@ xmlSecTransformDebugXmlDump(xmlSecTransformPtr transform, FILE* output) {
  *
  * Operations on transforms chain
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Connects two transforms in the chain, inserting a conversion if needed.
  * @details If the data object is a node-set and the next transform requires octets,
@@ -2114,7 +2114,7 @@ xmlSecTransformRemove(xmlSecTransformPtr transform) {
  *
  * Default callbacks, most of the transforms can use them
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Gets transform data type by analyzing available push/pop methods.
  * @details Gets transform input (@p mode is "push") or output (@p mode is "pop") data
@@ -2481,7 +2481,7 @@ xmlSecTransformDefaultPopXml(
  *
  * Transform Ids list
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecPtrListKlass xmlSecTransformIdListKlass = {
     BAD_CAST "transform-ids-list",
     NULL,                                                       /* xmlSecPtrDuplicateItemMethod duplicateItem; */
@@ -2651,7 +2651,7 @@ xmlSecTransformIdListDebugXmlDump(xmlSecPtrListPtr list, FILE* output) {
  *
  * IO buffers for transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecTransformIOBuffer                 xmlSecTransformIOBuffer,
                                                         *xmlSecTransformIOBufferPtr;
 typedef enum {

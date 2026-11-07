@@ -240,7 +240,7 @@ test_ptr_list_initialize_finalize(void) {
         goto done;
     }
     if(list.id != &g_xmlSecListTestKlass) {
-        testLog("Error: xmlSecPtrListInitialize set unexpected klass\n");
+        testLog("Error: xmlSecPtrListInitialize set an unexpected klass\n");
         goto done;
     }
 

@@ -95,7 +95,7 @@ static int      xmlSecOpenSSLKWDes3Encrypt                      (xmlSecOpenSSLKW
  *
  * Triple DES Key Wrap transform context
  *
-  *****************************************************************************/
+ *****************************************************************************/
 struct _xmlSecOpenSSLKWDes3Ctx {
     xmlSecTransformKWDes3Ctx parentCtx;
 
@@ -108,7 +108,7 @@ struct _xmlSecOpenSSLKWDes3Ctx {
  *
  * Triple DES Key Wrap transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(OpenSSLKWDes3, xmlSecOpenSSLKWDes3Ctx)
 #define xmlSecOpenSSLKWDes3Size XMLSEC_TRANSFORM_SIZE(OpenSSLKWDes3)
 
@@ -273,7 +273,7 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last,
  *
  * DES KW implementation
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_OPENSSL_API_300
 
 static int

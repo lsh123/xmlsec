@@ -29,12 +29,12 @@ extern "C" {
  *
  * Helper functions to read/write X509 Keys
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 
 /**
  * @brief Reads a key from X509 data value.
- * @param data the pointer to X509 key data
+ * @param data the pointer to X509 key data.
  * @param x509Value the pointer to input xmlSecKeyX509DataValue.
  * @param keysMngr the pointer to xmlSecKeysMngr.
  * @param flags the flags for certs processing.

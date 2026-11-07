@@ -80,7 +80,7 @@ xmlSecCryptoGetFunctions_openssl(void) {
      *
      * Crypto Init/shutdown
      *
-      *****************************************************************************/
+     *****************************************************************************/
     gXmlSecOpenSSLFunctions->cryptoInit                 = xmlSecOpenSSLInit;
     gXmlSecOpenSSLFunctions->cryptoShutdown             = xmlSecOpenSSLShutdown;
     gXmlSecOpenSSLFunctions->cryptoKeysMngrInit         = xmlSecOpenSSLKeysMngrInit;
@@ -89,7 +89,7 @@ xmlSecCryptoGetFunctions_openssl(void) {
      *
      * Key data ids
      *
-      *****************************************************************************/
+     *****************************************************************************/
 #ifndef XMLSEC_NO_AES
     gXmlSecOpenSSLFunctions->keyDataAesGetKlass         = xmlSecOpenSSLKeyDataAesGetKlass;
 #endif /* XMLSEC_NO_AES */
@@ -178,7 +178,7 @@ xmlSecCryptoGetFunctions_openssl(void) {
      *
      * Key data store ids
      *
-      *****************************************************************************/
+     *****************************************************************************/
 #ifndef XMLSEC_NO_X509
     gXmlSecOpenSSLFunctions->x509StoreGetKlass          = xmlSecOpenSSLX509StoreGetKlass;
 #endif /* XMLSEC_NO_X509 */
@@ -187,7 +187,7 @@ xmlSecCryptoGetFunctions_openssl(void) {
      *
      * Crypto transforms ids
      *
-      *****************************************************************************/
+     *****************************************************************************/
 
     /* AES */
 #ifndef XMLSEC_NO_AES
@@ -501,7 +501,7 @@ xmlSecCryptoGetFunctions_openssl(void) {
      *
      * High-level routines for the xmlsec command-line utility
      *
-      *****************************************************************************/
+     *****************************************************************************/
     gXmlSecOpenSSLFunctions->cryptoAppInit                      = xmlSecOpenSSLAppInit;
     gXmlSecOpenSSLFunctions->cryptoAppShutdown                  = xmlSecOpenSSLAppShutdown;
     gXmlSecOpenSSLFunctions->cryptoAppDefaultKeysMngrInit       = xmlSecOpenSSLAppDefaultKeysMngrInit;
@@ -581,7 +581,7 @@ xmlSecOpenSSLShutdown(void) {
 
 /**
  * @brief Adds the OpenSSL specific key data store.
- * @details Adds the OpenSSL specific key data store in keys manager.
+ * @details Adds the OpenSSL specific key data store in the keys manager.
  * @param mngr the pointer to keys manager.
  * @return 0 on success or a negative value otherwise.
  */
@@ -867,7 +867,7 @@ xmlSecOpenSSLGetLibCtx(void) {
  *
  * BIO helpers
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 /**
  * @brief Creates a memory BIO.

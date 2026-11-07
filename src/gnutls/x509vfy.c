@@ -36,7 +36,7 @@
  *
  * Internal GnuTLS X509 store CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecGnuTLSX509StoreCtx                xmlSecGnuTLSX509StoreCtx,
                                                         *xmlSecGnuTLSX509StoreCtxPtr;
 struct _xmlSecGnuTLSX509StoreCtx {
@@ -49,7 +49,7 @@ struct _xmlSecGnuTLSX509StoreCtx {
  *
  * xmlSecGnuTLSKeyDataStoreX509Id:
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_KEY_DATA_STORE_DECLARE(GnuTLSX509Store, xmlSecGnuTLSX509StoreCtx)
 #define xmlSecGnuTLSX509StoreSize XMLSEC_KEY_DATA_STORE_SIZE(GnuTLSX509Store)
 
@@ -727,8 +727,9 @@ xmlSecGnuTLSX509StoreVerifyCert(xmlSecGnuTLSX509StoreCtxPtr ctx,
         return(1);
     }
 
-    /* enforce the requested maximum certificate chain length
-     * (the OpenSSL backend enforces it via X509_VERIFY_PARAM_set_depth) */
+    /* enforce the requested maximum certificate chain length (the OpenSSL
+     * backend enforces the analogous limit via X509_VERIFY_PARAM_set_depth,
+     * which counts intermediate certificates only) */
     if((keyInfoCtx->certsVerificationDepth > 0) &&
        (certs_chain_size > (xmlSecSize)keyInfoCtx->certsVerificationDepth)) {
         xmlSecOtherError3(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL,
@@ -1503,7 +1504,7 @@ xmlSecGnuTLSX509StoreFinalize(xmlSecKeyDataStorePtr store) {
  *
  * Low-level x509 functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #define XMLSEC_GNUTLS_DN_ATTRS_SIZE             1024
 
 int

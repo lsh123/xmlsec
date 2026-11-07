@@ -30,7 +30,7 @@ static const char missingMethodError[] = "Crypto library was not loaded or the m
  *
  * Crypto Init/shutdown
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Initializes the XMLSec crypto engine.
  * @details XMLSec library specific crypto engine initialization.
@@ -92,7 +92,7 @@ xmlSecCryptoKeysMngrInit(xmlSecKeysMngrPtr mngr) {
  *
  * Key data ids
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief The AES key data klass.
  * @return AES key data klass or NULL if an error occurs
@@ -488,7 +488,7 @@ xmlSecKeyDataDEREncodedKeyValueGetKlass(void) {
  *
  * Key data store ids
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief The X509 certificates key data store klass.
  * @return pointer to X509 certificates key data store klass or NULL if
@@ -510,7 +510,7 @@ xmlSecX509StoreGetKlass(void) {
  *
  * Crypto transforms ids
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief AES 128 CBC encryption transform klass.
  * @return pointer to AES 128 CBC encryption transform or NULL if an error
@@ -1160,7 +1160,7 @@ xmlSecTransformGost2001GostR3411_94GetKlass(void) {
 }
 
 /**
- * @brief Gets the GOST R 34.10-2012/R 34.11-2012 256-bit signature klass.
+ * @brief Gets the GOST R 34.10-2012/R 34.11-2012 256 bit signature transform klass.
  * @details The GOST R 34.10-2012/R 34.11-2012 256 bit signature transform klass.
  * @return GOST R 34.10-2012/R 34.11-2012 256 bit signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
@@ -1178,7 +1178,7 @@ xmlSecTransformGostR3410_2012GostR3411_2012_256GetKlass(void) {
 }
 
 /**
- * @brief Gets the GOST R 34.10-2012/R 34.11-2012 512-bit signature klass.
+ * @brief Gets the GOST R 34.10-2012/R 34.11-2012 512 bit signature transform klass.
  * @details The GOST R 34.10-2012/R 34.11-2012 512 bit signature transform klass.
  * @return GOST R 34.10-2012/R 34.11-2012 512 bit signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
@@ -2198,7 +2198,7 @@ xmlSecTransformSha3_512GetKlass(void) {
  *
  * High-level routines for the xmlsec command-line utility
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Initializes the crypto engine for the command-line utility.
  * @details General crypto engine initialization. This function is used

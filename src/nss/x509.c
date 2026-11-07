@@ -51,7 +51,7 @@
  *
  * X509 utility functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int              xmlSecNssVerifyAndAdoptX509KeyData     (xmlSecKeyPtr key,
                                                                 xmlSecKeyDataPtr data,
                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
@@ -73,7 +73,7 @@ static void             xmlSecNssX509CertDebugXmlDump           (CERTCertificate
  *
  * Internal NSS X509 data CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecNssX509DataCtx {
     CERTCertificate*  keyCert;  /* OWNED BY certsList */
 
@@ -88,7 +88,7 @@ typedef struct _xmlSecNssX509DataCtx {
  *
  * &lt;dsig:X509Data/&gt; processing (http://www.w3.org/TR/xmldsig-core/#sec-X509Data)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(NssX509Data, xmlSecNssX509DataCtx)
 #define xmlSecNssX509DataSize XMLSEC_KEY_DATA_SIZE(NssX509Data)
 
@@ -1553,7 +1553,7 @@ xmlSecNssX509CrlListAdoptCrl(xmlSecNssX509CrlNodePtr * head, CERTSignedCrl* crl)
  * Raw X509 Certificate processing
  *
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int              xmlSecNssKeyDataRawX509CertBinRead      (xmlSecKeyDataId id,
                                                                  xmlSecKeyPtr key,
                                                                  const xmlSecByte* buf,

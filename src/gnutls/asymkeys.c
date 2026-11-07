@@ -36,7 +36,7 @@
  *
  * Internal GnuTLS asym key CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecGnuTLSAsymKeyDataCtx       xmlSecGnuTLSAsymKeyDataCtx,
                                                 *xmlSecGnuTLSAsymKeyDataCtxPtr;
 struct _xmlSecGnuTLSAsymKeyDataCtx {
@@ -48,7 +48,7 @@ struct _xmlSecGnuTLSAsymKeyDataCtx {
  *
  * GnuTLS asym key data (dsa/rsa/ec/gost/ml-dsa/eddsa/xdh)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(GnuTLSAsymKeyData, xmlSecGnuTLSAsymKeyDataCtx)
 #define xmlSecGnuTLSAsymKeyDataSize XMLSEC_KEY_DATA_SIZE(GnuTLSAsymKeyData)
 
@@ -452,7 +452,7 @@ xmlSecGnuTLSAsymKeyDataGetSize(xmlSecKeyDataPtr data) {
  *
  * Asymmetric keys helpers
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 /**
  * @brief Creates XMLSec key from GnuTLS public key.
@@ -577,7 +577,7 @@ xmlSecGnuTLSAsymmetricKeyGetPriv(xmlSecKeyPtr key) {
  *
  * The DSAKeyValue Element (http://www.w3.org/TR/xmldsig-core/#sec-DSAKeyValue)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int              xmlSecGnuTLSKeyDataDsaGenerate          (xmlSecKeyDataPtr data,
                                                                  xmlSecSize sizeBits,
                                                                  xmlSecKeyDataType type);
@@ -941,7 +941,7 @@ done:
  *
  * EC XML key representation processing.
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 static int              xmlSecGnuTLSKeyDataEcGenerate           (xmlSecKeyDataPtr data,
                                                                  xmlSecSize sizeBits,
@@ -1258,7 +1258,7 @@ done:
  *
  * The RSAKeyValue Element (http://www.w3.org/TR/xmldsig-core/#sec-RSAKeyValue)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int              xmlSecGnuTLSKeyDataRsaGenerate          (xmlSecKeyDataPtr data,
                                                                  xmlSecSize sizeBits,
                                                                  xmlSecKeyDataType type);
@@ -1576,7 +1576,7 @@ done:
  *
  * Shared GOST2001 and GOST2012 keys functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 #if !defined(XMLSEC_NO_GOST) || !defined(XMLSEC_NO_GOST2012)
 
@@ -1619,7 +1619,7 @@ xmlSecGnuTLSKeyDataGostAdoptKey(int algo, xmlSecKeyDataPtr data, gnutls_pubkey_t
  *
  * GOST2001 XML key representation processing.
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_ASYMKEY_KLASS(Gost2001, xmlSecNameGOST2001KeyValue, xmlSecHrefGOST2001KeyValue)
 
 /**
@@ -1678,7 +1678,7 @@ xmlSecGnuTLSKeyDataGost2001GetPrivateKey(xmlSecKeyDataPtr data) {
  *
  * GOST R 34.10-2012 256 bit xml key representation processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 XMLSEC_GNUTLS_ASYMKEY_KLASS(Gost2012_256, xmlSecNameGostR3410_2012_256KeyValue, xmlSecHrefGostR3410_2012_256KeyValue)
 
@@ -1733,7 +1733,7 @@ xmlSecGnuTLSKeyDataGost2012_256GetPrivateKey(xmlSecKeyDataPtr data) {
  *
  * GOST R 34.10-2012 512 bit xml key representation processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_ASYMKEY_KLASS(Gost2012_512, xmlSecNameGostR3410_2012_512KeyValue, xmlSecHrefGostR3410_2012_512KeyValue)
 
 /**
@@ -1795,7 +1795,7 @@ xmlSecGnuTLSKeyDataGost2012_512GetPrivateKey(xmlSecKeyDataPtr data) {
  * ML-DSA is a post-quantum digital signature algorithm standardized in FIPS 204.
  * Three parameter sets are defined: ML-DSA-44, ML-DSA-65, and ML-DSA-87.
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 XMLSEC_GNUTLS_ASYMKEY_KLASS(MLDSA, xmlSecNameMLDSAKeyValue, NULL)
 
@@ -1953,7 +1953,7 @@ xmlSecGnuTLSKeyDataMLDSAGetKL(xmlSecKeyDataPtr data) {
  *
  * EdDSA key (Ed25519 and Ed448, RFC 8032)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_ASYMKEY_KLASS(EdDSA, xmlSecNameEdDSAKeyValue, NULL)
 
 /**
@@ -2048,7 +2048,7 @@ xmlSecGnuTLSKeyDataEdDSAGetPrivateKey(xmlSecKeyDataPtr data) {
  *
  * XDH key (X25519 and X448, RFC 7748)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_ASYMKEY_KLASS(Xdh, xmlSecNameXDHKeyValue, xmlSecHrefXDHKeyValue)
 
 /**
@@ -2140,7 +2140,7 @@ xmlSecGnuTLSKeyDataXdhGetPrivateKey(xmlSecKeyDataPtr data) {
  *
  * Internal helper functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 xmlSecKeyDataPtr
 xmlSecGnuTLSAsymKeyDataCreate(gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
     int pubkey_algo = GNUTLS_PK_UNKNOWN;

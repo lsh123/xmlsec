@@ -40,7 +40,7 @@
  *
  * Internal OpenSSL Block cipher CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecOpenSSLEvpBlockCipherCtx          xmlSecOpenSSLEvpBlockCipherCtx,
                                                         *xmlSecOpenSSLEvpBlockCipherCtxPtr;
 struct _xmlSecOpenSSLEvpBlockCipherCtx {
@@ -553,7 +553,7 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
             return(-1);
         }
 
-        /* update the last block with padding */
+        /* decrypt the last block (the padding is removed afterwards) */
         ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, inBuf, inSize, out, cipherName, 1, NULL); /* final */
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock", cipherName);
@@ -705,7 +705,7 @@ xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
  *
  * EVP Block Cipher transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(OpenSSLEvpBlockCipher, xmlSecOpenSSLEvpBlockCipherCtx)
 #define xmlSecOpenSSLEvpBlockCipherSize XMLSEC_TRANSFORM_SIZE(OpenSSLEvpBlockCipher)
 
@@ -1107,7 +1107,7 @@ static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                  
  *
  * AES CBC cipher transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /* AES 128 CBC cipher transform: xmlSecOpenSSLAes128CbcKlass */
 XMLSEC_OPENSSL_BLOCK_CIPHER_KLASS(Aes128Cbc)
 
@@ -1190,7 +1190,7 @@ xmlSecOpenSSLTransformAes256GcmGetKlass(void)
  *
  * Camellia CBC cipher transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /* Camellia 128 CBC cipher transform: xmlSecOpenSSLCamellia128CbcKlass */
 XMLSEC_OPENSSL_BLOCK_CIPHER_KLASS(Camellia128Cbc)
 
@@ -1248,14 +1248,14 @@ xmlSecOpenSSLTransformDes3CbcGetKlass(void) {
  *
  * ChaCha20 cipher support
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 /******************************************************************************
  *
  * ChaCha20 stream cipher transform (uses xmlSecOpenSSLEvpBlockCipher framework,
  * cbcMode=1 with blockLen=1: no padding, IV provided via XML node params)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int
 xmlSecOpenSSLChaCha20NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
                                xmlSecTransformCtxPtr transformCtx) {
@@ -1333,7 +1333,7 @@ xmlSecOpenSSLTransformChaCha20GetKlass(void) {
  * ChaCha20-Poly1305 AEAD transform (uses xmlSecOpenSSLEvpBlockCipher framework,
  * cbcMode=0: nonce and AAD provided via XML node params, tag appended to output)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int
 xmlSecOpenSSLChaCha20Poly1305NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
                                       xmlSecTransformCtxPtr transformCtx) {

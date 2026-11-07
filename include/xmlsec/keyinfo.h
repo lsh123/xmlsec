@@ -37,7 +37,7 @@ extern "C" {
  *
  * High-level functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_EXPORT int               xmlSecKeyInfoNodeRead           (xmlNodePtr keyInfoNode,
                                                                  xmlSecKeyPtr key,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
@@ -135,7 +135,7 @@ typedef enum {
 
 /**
  * @brief Deprecated. Use XMLSEC_KEYINFO_FLAGS_ENCKEY_STOP_ON_FAILED_DECRYPTION instead.
- * @details Deprecated,  do not use. The old name ("DONT_STOP") contradicted the actual behavior (set = stop); it is
+ * @details Deprecated, do not use. The old name ("DONT_STOP") contradicted the actual behavior (set = stop); it is
  * kept only for source compatibility and maps to the same value.
  */
 #define XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION \

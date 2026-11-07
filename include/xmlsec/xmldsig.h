@@ -64,7 +64,7 @@ typedef enum {
  *
  * xmlSecDSigCtx
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 /**
  * @brief If set, dsig:Manifest nodes will not be processed.
@@ -200,7 +200,7 @@ XMLSEC_EXPORT const char*       xmlSecDSigCtxGetFailureReasonString(xmlSecDSigFa
  *
  * xmlSecDSigReferenceCtx
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief The possible dsig:Reference node locations (SignedInfo or Manifest).
  * @details The possible &lt;dsig:Reference/&gt; node locations: in the &lt;dsig:SignedInfo/&gt;
@@ -253,7 +253,7 @@ XMLSEC_EXPORT void              xmlSecDSigReferenceCtxDebugXmlDump(xmlSecDSigRef
  *
  * xmlSecDSigReferenceCtxListKlass
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief The references list klass.
  */

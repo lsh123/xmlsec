@@ -25,7 +25,7 @@ extern "C" {
  *
  * Crypto Init/shutdown
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #define xmlSecCryptoInit                        xmlSecGCryptInit
 #define xmlSecCryptoShutdown                    xmlSecGCryptShutdown
 
@@ -35,7 +35,7 @@ extern "C" {
  *
  * Key data ids
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #define xmlSecKeyDataAesId                      xmlSecGCryptKeyDataAesId
 #define xmlSecKeyDataDesId                      xmlSecGCryptKeyDataDesId
 #define xmlSecKeyDataDsaId                      xmlSecGCryptKeyDataDsaId
@@ -53,7 +53,7 @@ extern "C" {
  * https://www.aleksey.com/xmlsec/xmldsig.html
  * https://www.aleksey.com/xmlsec/xmlenc.html
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #define xmlSecTransformAes128CbcId              xmlSecGCryptTransformAes128CbcId
 #define xmlSecTransformAes192CbcId              xmlSecGCryptTransformAes192CbcId
 #define xmlSecTransformAes256CbcId              xmlSecGCryptTransformAes256CbcId
@@ -124,7 +124,7 @@ extern "C" {
  *
  * High-level routines for the xmlsec command-line utility
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #define xmlSecCryptoAppInit                     xmlSecGCryptAppInit
 #define xmlSecCryptoAppShutdown                 xmlSecGCryptAppShutdown
 #define xmlSecCryptoAppDefaultKeysMngrInit      xmlSecGCryptAppDefaultKeysMngrInit

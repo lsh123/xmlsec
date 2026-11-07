@@ -400,7 +400,7 @@ xmlSecMSCngX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCert,
     } else if(type == xmlSecKeyDataTypeNone) {
         hCertStore = ctx->untrusted;
     } else {
-        xmlSecNotImplementedError2("MSCNG doesn't support key data type: %d", (int)type);
+        xmlSecNotImplementedError2("MSCng doesn't support key data type: %d", (int)type);
         return(-1);
     }
 
@@ -1558,7 +1558,7 @@ xmlSecMSCngX509StoreVerifyCrl(xmlSecKeyDataStorePtr store, PCCRL_CONTEXT crl,
 
 /**
  * @brief Verifies @p certs list.
- * @param store the pointer to X509 certificate context store klass.
+ * @param store the pointer to the X509 key data store instance.
  * @param certs the untrusted certificates stack.
  * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  * @return pointer to the first verified certificate from @p certs.
@@ -2266,7 +2266,7 @@ xmlSecMSCngX509FindCertBySubject(HCERTSTORE store, LPTSTR wcSubject,
  *
  * xmlSecMSCngX509FindCert functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 int
 xmlSecMSCngX509FindCertCtxInitialize(xmlSecMSCngX509FindCertCtxPtr ctx,
     const xmlChar* subjectName,

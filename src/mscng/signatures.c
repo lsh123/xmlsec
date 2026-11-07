@@ -34,7 +34,7 @@
  * DSA-SHA1: Integer to octet-stream conversion must be done according to the I2OSP operation defined
  *           in the RFC 3447 [PKCS1] specification with a l parameter equal to 20
  * DSA-SHA256: The pairs (2048, 256) and (3072, 256) correspond to the algorithm DSAwithSHA256
-  *****************************************************************************/
+ *****************************************************************************/
 #define XMLSEC_MSCNG_SIGNATURE_DSA_SHA1_HALF_LEN              (160 / 8)
 #define XMLSEC_MSCNG_SIGNATURE_DSA_SHA256_HALF_LEN            (256 / 8)
 
@@ -42,7 +42,7 @@
  *
  * Internal MSCng signatures ctx
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecMSCngSignatureCtx      xmlSecMSCngSignatureCtx,
                                              *xmlSecMSCngSignatureCtxPtr;
 struct _xmlSecMSCngSignatureCtx {
@@ -64,7 +64,7 @@ struct _xmlSecMSCngSignatureCtx {
  *
  * Signature transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MSCngSignature, xmlSecMSCngSignatureCtx)
 #define xmlSecMSCngSignatureSize XMLSEC_TRANSFORM_SIZE(MSCngSignature)
 
@@ -1259,8 +1259,8 @@ xmlSecMSCngSignatureSign(
 
 #ifndef XMLSEC_NO_MLDSA
     /* ML-DSA (FIPS 204) signs the raw message accumulated in preSignBuffer;
-    * the signature is computed over the message directly, without a hash
-    * (https://learn.microsoft.com/en-us/windows/win32/seccng/cng-mldsa-examples)
+     * the signature is computed over the message directly, without a hash
+     * (https://learn.microsoft.com/en-us/windows/win32/seccng/cng-mldsa-examples)
      */
     if(ctx->keyId == xmlSecMSCngKeyDataMLDSAId) {
         xmlSecMSCngPqdsaPaddingInfo pqdsaPaddingInfo;
@@ -1849,7 +1849,7 @@ xmlSecMSCngSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
  *
  * DSA-SHA1 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(DsaSha1)
 
 /**
@@ -1867,7 +1867,7 @@ xmlSecMSCngTransformDsaSha1GetKlass(void) {
  *
  * DSA-SHA2-256 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(DsaSha256)
 
 /**
@@ -1889,7 +1889,7 @@ xmlSecMSCngTransformDsaSha256GetKlass(void) {
  *
  * RSA-MD5 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(RsaMd5)
 
 /**
@@ -1907,7 +1907,7 @@ xmlSecMSCngTransformRsaMd5GetKlass(void) {
  *
  * RSA-SHA1 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(RsaSha1)
 
 /**
@@ -1925,7 +1925,7 @@ xmlSecMSCngTransformRsaSha1GetKlass(void) {
  *
  * RSA-SHA2-256 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(RsaSha256)
 
 /**
@@ -1943,7 +1943,7 @@ xmlSecMSCngTransformRsaSha256GetKlass(void) {
  *
  * RSA-SHA2-384 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(RsaSha384)
 
 /**
@@ -1961,7 +1961,7 @@ xmlSecMSCngTransformRsaSha384GetKlass(void) {
  *
  * RSA-SHA2-512 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(RsaSha512)
 
 /**
@@ -1980,7 +1980,7 @@ xmlSecMSCngTransformRsaSha512GetKlass(void) {
  *
  * RSA-PSS-SHA1 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(RsaPssSha1)
 
 /**
@@ -1998,7 +1998,7 @@ xmlSecMSCngTransformRsaPssSha1GetKlass(void) {
  *
  * RSA-PSS-SHA2-256 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(RsaPssSha256)
 
 /**
@@ -2016,7 +2016,7 @@ xmlSecMSCngTransformRsaPssSha256GetKlass(void) {
  *
  * RSA-PSS-SHA2-384 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(RsaPssSha384)
 
 /**
@@ -2034,7 +2034,7 @@ xmlSecMSCngTransformRsaPssSha384GetKlass(void) {
  *
  * RSA-PSS-SHA2-512 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(RsaPssSha512)
 
 /**
@@ -2052,7 +2052,7 @@ xmlSecMSCngTransformRsaPssSha512GetKlass(void) {
  *
  * RSA-PSS-SHA3-256 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(RsaPssSha3_256)
 
 /**
@@ -2068,7 +2068,7 @@ xmlSecMSCngTransformRsaPssSha3_256GetKlass(void) {
  *
  * RSA-PSS-SHA3-384 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(RsaPssSha3_384)
 
 /**
@@ -2084,7 +2084,7 @@ xmlSecMSCngTransformRsaPssSha3_384GetKlass(void) {
  *
  * RSA-PSS-SHA3-512 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(RsaPssSha3_512)
 
 /**
@@ -2106,7 +2106,7 @@ xmlSecMSCngTransformRsaPssSha3_512GetKlass(void) {
  *
  * ECDSA-SHA1 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(EcdsaSha1)
 
 /**
@@ -2124,7 +2124,7 @@ xmlSecMSCngTransformEcdsaSha1GetKlass(void) {
  *
  * ECDSA-SHA2-256 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(EcdsaSha256)
 
 /**
@@ -2142,7 +2142,7 @@ xmlSecMSCngTransformEcdsaSha256GetKlass(void) {
  *
  * ECDSA-SHA2-384 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(EcdsaSha384)
 
 /**
@@ -2160,7 +2160,7 @@ xmlSecMSCngTransformEcdsaSha384GetKlass(void) {
  *
  * ECDSA-SHA2-512 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(EcdsaSha512)
 
 /**
@@ -2178,7 +2178,7 @@ xmlSecMSCngTransformEcdsaSha512GetKlass(void) {
  *
  * ECDSA-SHA3-256 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(EcdsaSha3_256)
 
 /**
@@ -2194,7 +2194,7 @@ xmlSecMSCngTransformEcdsaSha3_256GetKlass(void) {
  *
  * ECDSA-SHA3-384 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(EcdsaSha3_384)
 
 /**
@@ -2210,7 +2210,7 @@ xmlSecMSCngTransformEcdsaSha3_384GetKlass(void) {
  *
  * ECDSA-SHA3-512 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(EcdsaSha3_512)
 
 /**
@@ -2234,14 +2234,14 @@ xmlSecMSCngTransformEcdsaSha3_512GetKlass(void) {
  * The ML-DSA algorithm signs the message directly, without a hash; the
  * signature is the base64 encoding of the raw PQDSA signature value.
  *
-   *****************************************************************************/
+  *****************************************************************************/
 #ifndef XMLSEC_NO_MLDSA
 
 /******************************************************************************
  *
  * ML-DSA-44 signature transform
  *
-   *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(MLDSA44)
 
 /**
@@ -2257,7 +2257,7 @@ xmlSecMSCngTransformMLDSA44GetKlass(void) {
  *
  * ML-DSA-65 signature transform
  *
-   *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(MLDSA65)
 
 /**
@@ -2273,7 +2273,7 @@ xmlSecMSCngTransformMLDSA65GetKlass(void) {
  *
  * ML-DSA-87 signature transform
  *
-   *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(MLDSA87)
 
 /**

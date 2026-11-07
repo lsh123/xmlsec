@@ -28,7 +28,7 @@
  *
  * xmlSecTransform + xmlSecStringList (inclusive namespaces list for ExclC14N).
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(C14N, xmlSecPtrList)
 #define xmlSecC14NSize XMLSEC_TRANSFORM_SIZE(C14N)
 
@@ -394,7 +394,7 @@ xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlSecP
  *
  * C14N
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecTransformInclC14NKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -439,7 +439,7 @@ xmlSecTransformInclC14NGetKlass(void) {
  *
  * C14N With Comments
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecTransformInclC14NWithCommentsKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -484,7 +484,7 @@ xmlSecTransformInclC14NWithCommentsGetKlass(void) {
  *
  * C14N v1.1
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecTransformInclC14N11Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -527,7 +527,7 @@ xmlSecTransformInclC14N11GetKlass(void) {
  *
  * C14N v1.1 With Comments
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecTransformInclC14N11WithCommentsKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -571,7 +571,7 @@ xmlSecTransformInclC14N11WithCommentsGetKlass(void) {
  *
  * Excl C14N
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecTransformExclC14NKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -615,7 +615,7 @@ xmlSecTransformExclC14NGetKlass(void) {
  *
  * Excl C14N With Comments
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecTransformExclC14NWithCommentsKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -659,7 +659,7 @@ xmlSecTransformExclC14NWithCommentsGetKlass(void) {
  *
  * Remove XML tags C14N
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecTransformRemoveXmlTagsC14NKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */

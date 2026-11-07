@@ -139,7 +139,7 @@ typedef int xmlSecOpenSSLSizeT;
        XMLSEC_SAFE_CAST_INT_TO_UINT((srcVal), (dstVal), errorAction, (errorObject))
 
 #define XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_INT(srcVal, dstVal, errorAction, errorObject) \
-        (dstVal) = (srcVal)
+       (dstVal) = (srcVal)
 
 #endif /* defined(XMLSEC_OPENSSL_IS_BORINGSSL) || defined(XMLSEC_OPENSSL_IS_AWSLC) */
 
@@ -148,7 +148,7 @@ typedef int xmlSecOpenSSLSizeT;
  *
  * LibreSSL compatibility (implements most of OpenSSL 1.1 API)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #if defined(XMLSEC_OPENSSL_IS_LIBRESSL)
 
 /* Not implemented by LibreSSL (yet?) */
@@ -174,7 +174,7 @@ typedef int xmlSecOpenSSLSizeT;
  *
  * OpenSSL 4.0.0 compatibility
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #if !defined(XMLSEC_OPENSSL_API_400)
 #define XMLSEC_OPENSSL400_CONST
 #else   /* !defined(XMLSEC_OPENSSL_API_400) */
@@ -186,7 +186,7 @@ typedef int xmlSecOpenSSLSizeT;
  *
  * OpenSSL 3.5.0 compatibility
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #if !defined(XMLSEC_OPENSSL_API_350)
 
 #if defined(XMLSEC_OPENSSL_IS_OPENSSL)
@@ -199,7 +199,7 @@ typedef int xmlSecOpenSSLSizeT;
  *
  * OpenSSL 3.0.0 compatibility
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #if !defined(XMLSEC_OPENSSL_API_300)
 
 #define BIO_new_ex(libctx,type)                                     BIO_new((type))
@@ -220,7 +220,7 @@ typedef int xmlSecOpenSSLSizeT;
  *
  * Common constants that aren't defined anywhere.
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_GOST
 #define XMLSEC_OPENSSL_DIGEST_NAME_GOST94       "md_gost94"
 #endif /* XMLSEC_NO_GOST */

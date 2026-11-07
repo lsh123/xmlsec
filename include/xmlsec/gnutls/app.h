@@ -28,7 +28,7 @@ extern "C" {
  *
  * Init/shutdown
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSAppInit                     (const char* config);
 XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSAppShutdown                 (void);
 
@@ -36,7 +36,7 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSAppShutdown                 (void);
  *
  * Keys Manager
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSAppDefaultKeysMngrInit      (xmlSecKeysMngrPtr mngr);
 XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSAppDefaultKeysMngrAdoptKey  (xmlSecKeysMngrPtr mngr,
                                                                          xmlSecKeyPtr key);
@@ -76,7 +76,7 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSAppKeysMngrCrlLoadAndVerify (xmlSecK
  *
  * Keys
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 /*
  * The functions in this section that accept a pwdCallback argument use the

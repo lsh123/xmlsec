@@ -88,7 +88,7 @@ typedef unsigned int                    xmlSecKeyUsage;
  *
  * xmlSecKeyUseWith
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecKeyUseWith                xmlSecKeyUseWith, *xmlSecKeyUseWithPtr;
 XMLSEC_EXPORT int       xmlSecKeyUseWithInitialize              (xmlSecKeyUseWithPtr keyUseWith);
 XMLSEC_EXPORT void      xmlSecKeyUseWithFinalize                (xmlSecKeyUseWithPtr keyUseWith);
@@ -128,7 +128,7 @@ XMLSEC_EXPORT xmlSecPtrListId   xmlSecKeyUseWithPtrListGetKlass (void);
  *
  * xmlSecKeyReq - what key are we looking for?
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecKeyReq                    xmlSecKeyReq, *xmlSecKeyReqPtr;
 
 /**
@@ -251,7 +251,7 @@ XMLSEC_EXPORT xmlSecKeyPtr      xmlSecKeyReadMemory     (xmlSecKeyDataId dataId,
  *
  * Keys list
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief The keys list klass.
  */

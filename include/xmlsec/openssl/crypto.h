@@ -171,7 +171,7 @@ extern "C" {
  *
  * Common functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT xmlSecCryptoDLFunctionsPtr xmlSecCryptoGetFunctions_openssl(void);
 
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLInit               (void);
@@ -193,7 +193,7 @@ XMLSEC_CRYPTO_EXPORT OSSL_LIB_CTX*      xmlSecOpenSSLGetLibCtx(void);
  *
  * BIO helpers
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateMemBio      (void);
 XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateMemBufBio   (const xmlSecByte* buf,
                                                                         xmlSecSize bufSize);
@@ -202,7 +202,7 @@ XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateReadFileBio (const ch
  *
  * What is supported by the OpenSSL build?
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifdef OPENSSL_NO_AES
 #define XMLSEC_NO_AES       1
 #endif /* OPENSSL_NO_AES */
@@ -298,7 +298,7 @@ XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateReadFileBio (const ch
  *
  * AES transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_AES
 /**
  * @brief The AES key data klass.
@@ -379,7 +379,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformKWAes256GetKlass(vo
  *
  * Camellia transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_CAMELLIA
 /**
  * @brief The Camellia key data klass.
@@ -438,7 +438,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformKWCamellia256GetKla
  *
  * ChaCha20 transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_CHACHA20
 
 /**
@@ -461,7 +461,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformChaCha20Poly1305Get
  *
  * ChaCha20 key data
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_CHACHA20
 
 /**
@@ -480,7 +480,7 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataChaCha20Set     (xml
  *
  * ConcatKDF key derivation transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_CONCATKDF
 
 /**
@@ -507,7 +507,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformConcatKdfGetKlass(v
  *
  * DES transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_DES
 /**
  * @brief The DES key data klass.
@@ -538,7 +538,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformKWDes3GetKlass(void
  *
  * DSA key and transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_DSA
 
 /**
@@ -577,7 +577,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformDsaSha256GetKlass(v
  *
  * DH key and key agreement transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_DH
 
 /**
@@ -605,13 +605,13 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformDhEsGetKlass(void);
  *
  * DEREncodedKeyValue data klass.
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 /**
  * @brief The OpenSSL DEREncodedKeyValue data klass.
  */
 #define xmlSecOpenSSLKeyDataDEREncodedKeyValueId \
-xmlSecOpenSSLKeyDataDEREncodedKeyValueGetKlass()
+        xmlSecOpenSSLKeyDataDEREncodedKeyValueGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecOpenSSLKeyDataDEREncodedKeyValueGetKlass(void);
 
 
@@ -619,7 +619,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecOpenSSLKeyDataDEREncodedKeyValueGetKl
  *
  * EC keys and transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_EC
 
 /**
@@ -736,7 +736,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformEcdhGetKlass(void);
  *
  * GOST 2001 keys and transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 /**
  * @brief The GOST2001 key klass.
@@ -767,14 +767,14 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformGost2001GostR3411_9
  *
  * GOST R 34.10-2012 keys and transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 /**
  * @brief The GOST R 34.10-2012 256 key klass.
  */
 #define xmlSecOpenSSLKeyDataGostR3410_2012_256Id \
         xmlSecOpenSSLKeyDataGostR3410_2012_256GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataGostR3410_2012_256GetKlass   (void);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataGostR3410_2012_256GetKlass(void);
 
 
 /**
@@ -782,7 +782,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataGostR3410_2012_256Ge
  */
 #define xmlSecOpenSSLKeyDataGostR3410_2012_512Id \
         xmlSecOpenSSLKeyDataGostR3410_2012_512GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataGostR3410_2012_512GetKlass   (void);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataGostR3410_2012_512GetKlass(void);
 
 
 /**
@@ -805,7 +805,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformGostR3410_2012GostR
 
 /**
  * @brief The GOST R 34.11-2012 256 bit hash transform klass.
- * @details The GOST R 34.11-2012 256 bit hash transform klass.
  */
 #define xmlSecOpenSSLTransformGostR3411_2012_256Id \
         xmlSecOpenSSLTransformGostR3411_2012_256GetKlass()
@@ -814,7 +813,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformGostR3411_2012_256G
 
 /**
  * @brief The GOST R 34.11-2012 512 bit hash transform klass.
- * @details The GOST R 34.11-2012 512 bit hash transform klass.
  */
 #define xmlSecOpenSSLTransformGostR3411_2012_512Id \
         xmlSecOpenSSLTransformGostR3411_2012_512GetKlass()
@@ -826,7 +824,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformGostR3411_2012_512G
  *
  * HMAC transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_HMAC
 
 /**
@@ -908,7 +906,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformHmacSha512GetKlass(
  *
  * MD5 transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_MD5
 /**
  * @brief The MD5 digest transform klass.
@@ -922,7 +920,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformMd5GetKlass(void);
  *
  * PBKDF2 key derivation transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_PBKDF2
 
 /**
@@ -948,7 +946,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformPbkdf2GetKlass(void
  *
  * HKDF key derivation transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_HKDF
 
 /**
@@ -974,7 +972,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformHkdfGetKlass(void);
  *
  * RIPEMD160 transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_RIPEMD160
 /**
  * @brief The RIPEMD160 digest transform klass.
@@ -988,7 +986,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRipemd160GetKlass(v
  *
  * RSA transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_RSA
 
 /**
@@ -1182,7 +1180,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaPssSha3_512GetKl
  *
  * ML-DSA key and transforms (EXPERIMENTAL)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_MLDSA
 
 /**
@@ -1227,7 +1225,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformMLDSA87GetKlass(voi
  *
  * ML-KEM key and transforms (EXPERIMENTAL)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_MLKEM
 
 /**
@@ -1272,7 +1270,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformMLKEM1024GetKlass(v
  *
  * SLH-DSA key and transforms (EXPERIMENTAL)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_SLHDSA
 
 /**
@@ -1331,7 +1329,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformSLHDSA_SHA2_256sGet
  *
  * EdDSA key and transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_EDDSA
 
 /**
@@ -1384,7 +1382,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformEdDSAEd448phGetKlas
  *
  * XDH key and transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_XDH
 
 /**
@@ -1419,7 +1417,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformX448GetKlass(void);
  *
  * SHA1 transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_SHA1
 /**
  * @brief The SHA1 digest transform klass.
@@ -1434,7 +1432,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformSha1GetKlass(void);
  *
  * SHA2-224 transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_SHA224
 /**
  * @brief The SHA2-224 digest transform klass.
@@ -1449,7 +1447,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformSha224GetKlass(void
  *
  * SHA2-256 transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_SHA256
 /**
  * @brief The SHA2-256 digest transform klass.
@@ -1463,7 +1461,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformSha256GetKlass(void
  *
  * SHA2-384 transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_SHA384
 /**
  * @brief The SHA2-384 digest transform klass.
@@ -1477,7 +1475,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformSha384GetKlass(void
  *
  * SHA2-512 transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_SHA512
 /**
  * @brief The SHA2-512 digest transform klass.
@@ -1491,7 +1489,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformSha512GetKlass(void
  *
  * SHA3 digest transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_SHA3
 /**
  * @brief The SHA3-224 digest transform klass.

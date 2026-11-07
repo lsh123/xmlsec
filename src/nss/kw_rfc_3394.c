@@ -44,7 +44,7 @@
  *
  * AES/Camellia KW implementation (RFC 3394)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int        xmlSecNssKWRfc3394BlockEncrypt            (xmlSecTransformPtr transform,
                                                              const xmlSecByte * in,
                                                              xmlSecSize inSize,
@@ -71,7 +71,7 @@ static xmlSecKWRfc3394Klass xmlSecNssKWRfc3394Klass = {
  *
  * AES/Camellia KW transforms context
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecNssKWRfc3394Ctx   xmlSecNssKWRfc3394Ctx,
                                         *xmlSecNssKWRfc3394CtxPtr;
 
@@ -95,7 +95,7 @@ static int              xmlSecNssKWRfc3394CipherOp      (xmlSecNssKWRfc3394CtxPt
  *
  * AES/Camellia KW transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(NssKWRfc3394, xmlSecNssKWRfc3394Ctx)
 #define xmlSecNssKWRfc3394Size XMLSEC_TRANSFORM_SIZE(NssKWRfc3394)
 
@@ -215,8 +215,10 @@ xmlSecNssKWRfc3394Initialize(xmlSecTransformPtr transform) {
 
     /* the cipher mechanism is fixed for the lifetime of the transform, so
        the mechanism parameter is created once and reused for every block
-       operation; PK11_CreateContextBySymKey copies the parameter into each
-       PKCS#11 context, so it is not modified or freed by NSS */
+       operation; the parameter is empty (len == 0), so NSS does not retain
+       a copy of it (an empty parameter maps to a static pk11_null_params
+       inside the PKCS#11 context), and it is safe to free it here in
+       Finalize */
     ctx->secParam = PK11_ParamFromIV(ctx->cipherMech, NULL);
     if(ctx->secParam == NULL) {
         xmlSecNssError("PK11_ParamFromIV", NULL);
@@ -531,7 +533,7 @@ done:
  *
  * AES KW implementation
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_AES
 XMLSEC_NSS_KW_RFC3394_KLASS(Aes128)
 
@@ -572,7 +574,7 @@ xmlSecNssTransformKWAes256GetKlass(void) {
  *
  * Camellia KW implementation
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_CAMELLIA
 XMLSEC_NSS_KW_RFC3394_KLASS(Camellia128)
 

@@ -72,14 +72,14 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngX509StoreAdoptTrustedStore (x
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngX509StoreAdoptUntrustedStore (xmlSecKeyDataStorePtr store,
                                                                                  HCERTSTORE untrustedStore);
 XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT     xmlSecMSCngX509StoreVerify           (xmlSecKeyDataStorePtr store,
-                                                                               HCERTSTORE certs,
-                                                                               xmlSecKeyInfoCtxPtr keyInfoCtx);
+                                                                              HCERTSTORE certs,
+                                                                              xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 /******************************************************************************
  *
  * DEPRECATED
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED PCCERT_CONTEXT xmlSecMSCngX509StoreFindCert     (xmlSecKeyDataStorePtr store,
                                                                                         xmlChar *subjectName,
                                                                                         xmlChar *issuerName,
@@ -94,8 +94,8 @@ XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED PCCERT_CONTEXT xmlSecMSCngX509StoreFindCe
                                                                                         xmlSecSize skiSize,
                                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED PCCERT_CONTEXT xmlSecMSCngX509FindCertBySubject (HCERTSTORE store,
-                                                                                         LPTSTR wcSubject,
-                                                                                         DWORD dwCertEncodingType);
+                                                                                        LPTSTR wcSubject,
+                                                                                        DWORD dwCertEncodingType);
 
 #ifdef __cplusplus
 }

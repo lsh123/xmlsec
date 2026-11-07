@@ -29,7 +29,7 @@ extern "C" {
  *
  * &lt;dsig:Signature/&gt; node
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplSignatureCreate              (xmlDocPtr doc,
                                                                  xmlSecTransformId c14nMethodId,
                                                                  xmlSecTransformId signMethodId,
@@ -70,7 +70,7 @@ XMLSEC_EXPORT xmlNodePtr xmlSecTmplManifestAddReference         (xmlNodePtr mani
  *
  * &lt;enc:EncryptedData/&gt; node
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplEncDataCreate                (xmlDocPtr doc,
                                                                  xmlSecTransformId encMethodId,
                                                                  const xmlChar *id,
@@ -95,7 +95,7 @@ XMLSEC_EXPORT xmlNodePtr xmlSecTmplCipherReferenceAddTransform  (xmlNodePtr ciph
  *
  * &lt;enc:EncryptedKey/&gt; node
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplReferenceListAddDataReference(xmlNodePtr encNode,
                                                                  const xmlChar *uri);
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplReferenceListAddKeyReference (xmlNodePtr encNode,
@@ -105,7 +105,7 @@ XMLSEC_EXPORT xmlNodePtr xmlSecTmplReferenceListAddKeyReference (xmlNodePtr encN
  *
  * &lt;dsig:KeyInfo/&gt; node
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplKeyInfoAddKeyName            (xmlNodePtr keyInfoNode,
                                                                  const xmlChar *name);
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplKeyInfoAddKeyValue           (xmlNodePtr keyInfoNode);
@@ -125,7 +125,7 @@ XMLSEC_EXPORT xmlNodePtr xmlSecTmplKeyInfoAddEncryptedKey       (xmlNodePtr keyI
  *
  * &lt;dsig:X509Data/&gt; node
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509DataAddIssuerSerial      (xmlNodePtr x509DataNode);
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509IssuerSerialAddIssuerName(xmlNodePtr x509IssuerSerialNode, const xmlChar *issuerName);
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509IssuerSerialAddSerialNumber (xmlNodePtr x509IssuerSerialNode, const xmlChar *serial);
@@ -139,7 +139,7 @@ XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509DataAddCRL               (xmlNodePtr x509
  *
  * &lt;dsig:Transform/&gt; node
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_EXPORT int       xmlSecTmplTransformAddHmacOutputLength  (xmlNodePtr transformNode,
                                                                  xmlSecSize bitsLen);
 XMLSEC_EXPORT int       xmlSecTmplTransformAddRsaOaepParam      (xmlNodePtr transformNode,

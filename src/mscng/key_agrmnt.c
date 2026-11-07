@@ -37,7 +37,7 @@
  * KeyAgreement context.
  * - XMLEnc spec: https://www.w3.org/TR/xmlenc-core1/#sec-ECDH-ES
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 typedef struct _xmlSecMSCngKeyAgreementCtx    xmlSecMSCngKeyAgreementCtx, *xmlSecMSCngKeyAgreementCtxPtr;
 struct _xmlSecMSCngKeyAgreementCtx {
@@ -49,7 +49,7 @@ struct _xmlSecMSCngKeyAgreementCtx {
  *
  * KeyAgreement transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MSCngKeyAgreement, xmlSecMSCngKeyAgreementCtx)
 #define xmlSecMSCngKeyAgreementSize XMLSEC_TRANSFORM_SIZE(MSCngKeyAgreement)
 
@@ -251,7 +251,7 @@ xmlSecMSCngKeyAgreementGetPublicKey(xmlSecKeyDataPtr keyValue, NCRYPT_KEY_HANDLE
 
     /* export bcrypt key */
     hBCryptKey = xmlSecMSCngKeyDataGetPubkey(keyValue);
-    if (hBCryptKey == 0) {
+    if(hBCryptKey == 0) {
         xmlSecInternalError("xmlSecMSCngKeyDataGetPubkey", NULL);
         goto done;
     }
@@ -262,12 +262,12 @@ xmlSecMSCngKeyAgreementGetPublicKey(xmlSecKeyDataPtr keyValue, NCRYPT_KEY_HANDLE
         0,
         &cbBlob,
         0);
-    if (status != STATUS_SUCCESS) {
+    if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptExportKey", NULL, status);
         goto done;
     }
     pbBlob = (PUCHAR)xmlMalloc(cbBlob);
-    if (pbBlob == NULL) {
+    if(pbBlob == NULL) {
         xmlSecMallocError(cbBlob, NULL);
         goto done;
     }
@@ -278,7 +278,7 @@ xmlSecMSCngKeyAgreementGetPublicKey(xmlSecKeyDataPtr keyValue, NCRYPT_KEY_HANDLE
         cbBlob,
         &cbBlob,
         0);
-    if (status != STATUS_SUCCESS) {
+    if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptExportKey", NULL, status);
         goto done;
     }
@@ -293,7 +293,7 @@ xmlSecMSCngKeyAgreementGetPublicKey(xmlSecKeyDataPtr keyValue, NCRYPT_KEY_HANDLE
      * 0x31534345 'ECS1' vs 0x314B4345 'ECK1'), so this is a required
      * conversion, not a no-op. */
     /* the blob must hold at least the key-blob header before Magic is read */
-    if (cbBlob < sizeof(BCRYPT_KEY_BLOB)) {
+    if(cbBlob < sizeof(BCRYPT_KEY_BLOB)) {
         xmlSecInvalidSizeLessThanError("BCryptExportKey blob size",
             (xmlSecSize)cbBlob, (xmlSecSize)sizeof(BCRYPT_KEY_BLOB), NULL);
         goto done;
@@ -344,7 +344,7 @@ xmlSecMSCngKeyAgreementGetPublicKey(xmlSecKeyDataPtr keyValue, NCRYPT_KEY_HANDLE
         sizeof(hProvider),
         &size,
         0);
-    if ((status != STATUS_SUCCESS) || (hProvider == 0) || (size != sizeof(hProvider))) {
+    if((status != STATUS_SUCCESS) || (hProvider == 0) || (size != sizeof(hProvider))) {
         xmlSecMSCngNtError("NCryptGetProperty(provider handle)",
             NULL, status);
         goto done;
@@ -358,7 +358,7 @@ xmlSecMSCngKeyAgreementGetPublicKey(xmlSecKeyDataPtr keyValue, NCRYPT_KEY_HANDLE
         pbBlob,
         cbBlob,
         0);
-    if ((status != STATUS_SUCCESS) || (hNCryptKey == 0)) {
+    if((status != STATUS_SUCCESS) || (hNCryptKey == 0)) {
         xmlSecMSCngNtError("NCryptImportKey",
             NULL, status);
         goto done;
@@ -367,10 +367,10 @@ xmlSecMSCngKeyAgreementGetPublicKey(xmlSecKeyDataPtr keyValue, NCRYPT_KEY_HANDLE
     /* success! */
 
 done:
-    if (pbBlob != NULL) {
+    if(pbBlob != NULL) {
         xmlFree(pbBlob);
     }
-    if (hProvider != 0) {
+    if(hProvider != 0) {
         NCryptFreeObject(hProvider);
     }
     return(hNCryptKey);
@@ -384,7 +384,7 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
     NCRYPT_KEY_HANDLE hOtherPubKey = 0;
     NCRYPT_SECRET_HANDLE hSecret = 0;
     DWORD dwSecretLen = 0;
-    xmlSecByte * secretData;
+    xmlSecByte* secretData;
     xmlSecSize secretSize;
     NTSTATUS status;
     int ret;
@@ -525,19 +525,19 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
 #endif /* !defined(XMLSEC_NO_DH) || !defined(XMLSEC_NO_XDH) */
 
     hMyPrivKey = xmlSecMSCngKeyDataGetPrivkey(myKeyValue);
-    if (hMyPrivKey == 0) {
+    if(hMyPrivKey == 0) {
         xmlSecInternalError("xmlSecMSCngKeyDataGetPrivkey", NULL);
         goto done;
     }
     /* pubkey is BCRYPT handle, we need to convert it to NCRYPT handle */
     hOtherPubKey = xmlSecMSCngKeyAgreementGetPublicKey(otherKeyValue, hMyPrivKey);
-    if (hOtherPubKey == 0) {
+    if(hOtherPubKey == 0) {
         xmlSecInternalError("xmlSecMSCngKeyAgreementGetPublicKey", NULL);
         goto done;
     }
 
     status = NCryptSecretAgreement(hMyPrivKey, hOtherPubKey, &hSecret, NCRYPT_SILENT_FLAG);
-    if ((status != STATUS_SUCCESS) || (hSecret == 0)) {
+    if((status != STATUS_SUCCESS) || (hSecret == 0)) {
         xmlSecMSCngNtError("NCryptSecretAgreement", NULL, status);
         goto done;
     }
@@ -551,19 +551,19 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
         0,
         &dwSecretLen,
         0);
-    if ((status != STATUS_SUCCESS) || (dwSecretLen == 0)) {
+    if((status != STATUS_SUCCESS) || (dwSecretLen == 0)) {
         xmlSecMSCngNtError("NCryptDeriveKey(size)", NULL, status);
         goto done;
     }
     XMLSEC_SAFE_CAST_UINT_TO_SIZE(dwSecretLen, secretSize, goto done, NULL);
     ret = xmlSecBufferSetSize(secret, secretSize);
-    if (ret < 0) {
+    if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL,
             "size=" XMLSEC_SIZE_FMT, secretSize);
         goto done;
     }
     secretData = xmlSecBufferGetData(secret);
-    if (secretData == NULL) {
+    if(secretData == NULL) {
         xmlSecInternalError("xmlSecBufferGetData", NULL);
         goto done;
     }
@@ -577,7 +577,7 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
         dwSecretLen,
         &dwSecretLen,
         0);
-    if ((status != STATUS_SUCCESS) || (dwSecretLen == 0)) {
+    if((status != STATUS_SUCCESS) || (dwSecretLen == 0)) {
         xmlSecMSCngNtError("NCryptDeriveKey(data)", NULL, status);
         goto done;
     }
@@ -585,7 +585,7 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
     /* set size again just in case */
     XMLSEC_SAFE_CAST_UINT_TO_SIZE(dwSecretLen, secretSize, goto done, NULL);
     ret = xmlSecBufferSetSize(secret, secretSize);
-    if (ret < 0) {
+    if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL,
             "size=" XMLSEC_SIZE_FMT, secretSize);
         goto done;
@@ -593,7 +593,7 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
     /* re-fetch: xmlSecBufferSetSize above may have reallocated the buffer,
      * so the old secretData pointer would be dangling (use-after-free) */
     secretData = xmlSecBufferGetData(secret);
-    if (secretData == NULL) {
+    if(secretData == NULL) {
         xmlSecInternalError("xmlSecBufferGetData", NULL);
         goto done;
     }
@@ -612,16 +612,16 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
     res = 0;
 
 done:
-    if (hSecret) {
+    if(hSecret) {
         status = NCryptFreeObject(hSecret);
-        if (status != STATUS_SUCCESS) {
+        if(status != STATUS_SUCCESS) {
             xmlSecMSCngNtError("NCryptFreeObject(hSecret)", NULL, status);
             /* ignore error */
         }
     }
-    if (hOtherPubKey) {
+    if(hOtherPubKey) {
         status = NCryptFreeObject(hOtherPubKey);
-        if (status != STATUS_SUCCESS) {
+        if(status != STATUS_SUCCESS) {
             xmlSecMSCngNtError("NCryptFreeObject(hOtherPubKey)", NULL, status);
             /* ignore error */
         }
@@ -709,7 +709,7 @@ xmlSecMSCngKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTra
  *
  * ECDH key agreement klass
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_EC
 XMLSEC_MSCNG_KEY_AGREEMENT_KLASS_EX(Ecdh)
 
@@ -727,7 +727,7 @@ xmlSecMSCngTransformEcdhGetKlass(void) {
  *
  * DH-ES key agreement klass
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_DH
 XMLSEC_MSCNG_KEY_AGREEMENT_KLASS_EX(DhEs)
 
@@ -745,7 +745,7 @@ xmlSecMSCngTransformDhEsGetKlass(void) {
  *
  * X25519 key agreement klass
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_XDH
 XMLSEC_MSCNG_KEY_AGREEMENT_KLASS_EX(X25519)
 

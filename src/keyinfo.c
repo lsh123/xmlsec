@@ -75,7 +75,7 @@
  *
  * High-level functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Reads and parses a KeyInfo node to extract key data.
  * @details Parses the &lt;dsig:KeyInfo/&gt; element @p keyInfoNode, extracts the key data
@@ -216,7 +216,7 @@ xmlSecKeyInfoNodeWrite(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCt
  *
  * KeyInfo context
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Allocates and initializes a KeyInfo processing context.
  * @details Allocates and initializes &lt;dsig:KeyInfo/&gt; element processing context.
@@ -611,7 +611,7 @@ xmlSecKeyInfoCtxDebugXmlDump(xmlSecKeyInfoCtxPtr keyInfoCtx, FILE* output) {
  *
  * &lt;dsig:KeyName/&gt; processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int                      xmlSecKeyDataNameXmlRead        (xmlSecKeyDataId id,
                                                                  xmlSecKeyPtr key,
                                                                  xmlNodePtr node,
@@ -797,7 +797,7 @@ xmlSecKeyDataNameXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node,
  *
  * &lt;dsig:KeyValue/&gt; processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int                      xmlSecKeyDataValueXmlRead       (xmlSecKeyDataId id,
                                                                  xmlSecKeyPtr key,
                                                                  xmlNodePtr node,
@@ -997,7 +997,7 @@ xmlSecKeyDataValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node
  *
  * &lt;dsig:RetrievalMethod/&gt; processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int                      xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id,
                                                                  xmlSecKeyPtr key,
                                                                  xmlNodePtr node,
@@ -1295,7 +1295,7 @@ xmlSecKeyDataRetrievalMethodReadXmlResult(xmlSecKeyDataId typeId, xmlSecKeyPtr k
  *
  * &lt;dsig11:KeyInfoReference/&gt; element processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int                      xmlSecKeyDataKeyInfoReferenceXmlRead(xmlSecKeyDataId id,
                                                                  xmlSecKeyPtr key,
                                                                  xmlNodePtr node,
@@ -1528,7 +1528,7 @@ xmlSecKeyDataKeyInfoReferenceReadXmlResult(xmlSecKeyDataId typeId, xmlSecKeyPtr 
  *
  * &lt;enc:EncryptedKey/&gt; processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int      xmlSecKeyDataEncryptedKeyXmlRead        (xmlSecKeyDataId id,
                                                          xmlSecKeyPtr key,
                                                          xmlNodePtr node,
@@ -1701,7 +1701,7 @@ xmlSecKeyDataEncryptedKeyXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodeP
  *
  * &lt;enc11:DerivedKey/&gt; element processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int      xmlSecKeyDataDerivedKeyXmlRead          (xmlSecKeyDataId id,
                                                          xmlSecKeyPtr key,
                                                          xmlNodePtr node,
@@ -1870,7 +1870,7 @@ xmlSecKeyDataDerivedKeyXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr
  *
  * &lt;enc:AgreementMethod/&gt; processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int      xmlSecKeyDataAgreementMethodXmlRead     (xmlSecKeyDataId id,
                                                          xmlSecKeyPtr key,
                                                          xmlNodePtr node,

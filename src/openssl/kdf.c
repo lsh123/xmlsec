@@ -39,7 +39,7 @@
  *
  * Internal KDF CTX for OpenSSL 3.0 or newer (https://www.openssl.org/docs/man3.0/man3/EVP_KDF_CTX_new.html)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 #define XMLSEC_OPENSSL_KDF_DEFAULT_BUF_SIZE     64
 #define XMLSEC_OPENSSL_KDF_MAX_PARAMS           16
@@ -174,7 +174,7 @@ xmlSecOpenSSLKdfInitialize(xmlSecTransformPtr transform) {
     /* init the rest */
     ret = xmlSecBufferInitialize(&(ctx->buffer), XMLSEC_OPENSSL_KDF_DEFAULT_BUF_SIZE);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferInitialize", NULL);
+        xmlSecInternalError("xmlSecBufferInitialize(buffer)", NULL);
         xmlSecOpenSSLKdfFinalize(transform);
         return(-1);
     }
@@ -353,7 +353,7 @@ xmlSecOpenSSLKdfExecute(
             return(-1);
         }
         if((ctx->expectedOutputSize > 0) && (ctx->expectedOutputSize != transform->expectedOutputSize)) {
-            xmlSecInvalidSizeError("Output KDF size doesn't match the expected size",
+            xmlSecInvalidSizeError("expectedOutputSize",
                 transform->expectedOutputSize, ctx->expectedOutputSize, xmlSecTransformGetName(transform));
             return(-1);
         }
@@ -440,8 +440,8 @@ xmlSecOpenSSLConcatKdfSetDigestNameFromHref(xmlSecOpenSSLKdfCtxPtr ctx, const xm
 #ifndef XMLSEC_NO_SHA256
         digestName = SN_sha256;
 #else  /* XMLSEC_NO_SHA256 */
-        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
-            "SHA256 is disabled; href=%s", xmlSecErrorsSafeString(href));
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
+            "No digest algorithm is specified and the default SHA256 digest is disabled");
         return(-1);
 #endif /* XMLSEC_NO_SHA256 */
     } else
@@ -641,8 +641,8 @@ xmlSecOpenSSLPbkdf2SetDigestNameFromHref(xmlSecOpenSSLKdfCtxPtr ctx, const xmlCh
 #ifndef XMLSEC_NO_SHA256
         digestName = SN_sha256;
 #else  /* XMLSEC_NO_SHA256 */
-        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
-            "SHA256 is disabled; href=%s", xmlSecErrorsSafeString(href));
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
+            "No digest algorithm is specified and the default SHA256 digest is disabled");
         return(-1);
 #endif /* XMLSEC_NO_SHA256 */
     } else
@@ -848,8 +848,8 @@ xmlSecOpenSSLHkdfSetDigestNameFromHref(xmlSecOpenSSLKdfCtxPtr ctx, const xmlChar
 #ifndef XMLSEC_NO_SHA256
         digestName = SN_sha256;
 #else  /* XMLSEC_NO_SHA256 */
-        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
-            "SHA256 is disabled; href=%s", xmlSecErrorsSafeString(href));
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
+            "No digest algorithm is specified and the default SHA256 digest is disabled");
         return(-1);
 #endif /* XMLSEC_NO_SHA256 */
     } else

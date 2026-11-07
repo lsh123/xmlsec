@@ -30,7 +30,7 @@
  *
  * xmlSecKeyStore + xmlSecKeyStorePtr(Simple Keys Store ptr)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_KEY_STORE_DECLARE(OpenSSLKeysStore, xmlSecKeyStorePtr)
 #define xmlSecOpenSSLKeysStoreSize XMLSEC_KEY_STORE_SIZE(OpenSSLKeysStore)
 

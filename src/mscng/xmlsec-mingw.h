@@ -139,7 +139,7 @@
 
 /* MinGW may ship older wincrypt.h that lacks PKCS12_NO_PERSIST_KEY */
 #ifndef PKCS12_NO_PERSIST_KEY
-#define PKCS12_NO_PERSIST_KEY    0x00008000
+#define PKCS12_NO_PERSIST_KEY               0x00008000
 #endif /* PKCS12_NO_PERSIST_KEY */
 
 #endif /* XMLSEC_MSCNG_XMLSEC_MINGW_H */

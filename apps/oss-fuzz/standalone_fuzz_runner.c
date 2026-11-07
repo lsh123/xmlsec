@@ -34,7 +34,8 @@ int wmain(int argc, wchar_t* argv[]);
 #endif /* defined(_WIN32) && defined(UNICODE) */
 
 /* Declared by the fuzzer harness (xmlsec_target.c / xmlsec_dsig_verify_target.c /
-   xmlsec_keyload_target.c / xmlsec_keyinfo_target.c / xmlsec_enc_target.c). */
+   xmlsec_keyload_target.c / xmlsec_keyinfo_target.c / xmlsec_enc_target.c /
+   xmlsec_relationship_target.c). */
 extern int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size);
 
 /* The UNICODE branch uses fwprintf() with the %hs conversion (a Microsoft

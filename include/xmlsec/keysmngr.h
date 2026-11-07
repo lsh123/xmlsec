@@ -41,7 +41,7 @@ typedef const struct _xmlSecKeyStoreKlass               *xmlSecKeyStoreId;
  *
  * Keys Manager
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_EXPORT xmlSecKeysMngrPtr         xmlSecKeysMngrCreate            (void);
 XMLSEC_EXPORT void                      xmlSecKeysMngrDestroy           (xmlSecKeysMngrPtr mngr);
 
@@ -92,7 +92,7 @@ XMLSEC_EXPORT xmlSecKeyPtr      xmlSecKeysMngrGetKey    (xmlNodePtr keyInfoNode,
  *
  * xmlSecKeyStore
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief The keys store.
  */
@@ -159,7 +159,7 @@ XMLSEC_EXPORT xmlSecKeyPtr      xmlSecKeyStoreFindKeyFromX509Data(xmlSecKeyStore
  *
  * xmlSecKeyStoreKlass
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief The "unknown" id.
  */
@@ -239,7 +239,7 @@ struct _xmlSecKeyStoreKlass {
  *
  * Simple Keys Store
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 
 /**

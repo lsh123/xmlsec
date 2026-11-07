@@ -73,7 +73,7 @@ xmlSecMSCngReverseCopy(BYTE* dst, const BYTE* src, DWORD len) {
  *
  * Key data functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 xmlSecKeyDataPtr   xmlSecMSCngKeyDataFromAlgorithm                  (LPSTR pszObjId);
 
 int                xmlSecMSCngKeyDataAdoptKey                       (xmlSecKeyDataPtr data,
@@ -102,7 +102,7 @@ int                xmlSecMSCngCreateDerForBCryptPubkey              (xmlSecKeyDa
  *
  * DH Util functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_DH
 
 /* Maximum DH prime (P) size in bytes. CNG DH keys are at most a few KB; this bound
@@ -155,7 +155,7 @@ xmlSecKeyDataPtr   xmlSecMSCngKeyDataDhReadFromPkcs8Der             (const xmlSe
  *
  * DSA Util functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_DSA
 
 /* ---- DSA v2 feature detection ---------------------------------- */
@@ -193,7 +193,7 @@ int                xmlSecMSCngKeyDataDsaPubkeyWrite                 (BCRYPT_KEY_
  *
  * XDH Util functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 #ifndef XMLSEC_NO_XDH
 
@@ -238,7 +238,7 @@ int                xmlSecMSCngKeyDataCertGetXdhPubkey               (PCERT_PUBLI
  *
  * ML-DSA (FIPS 204) Util functions
  *
-   *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_MLDSA
 
 /* CNG ML-DSA (PQDSA) definitions. The Windows SDK used at build time may lack
@@ -289,7 +289,7 @@ int                xmlSecMSCngKeyDataCertGetMlDsaPubkey               (PCERT_PUB
  *
  * ML-KEM (FIPS 203) Util functions
  *
-   *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_MLKEM
 
 /* CNG ML-KEM definitions. The Windows SDK used at build time may lack
@@ -385,7 +385,7 @@ xmlSecKeyDataPtr   xmlSecMSCngKeyDataMlKemReadFromPkcs8Der            (const xml
  *
  * X509 Util functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_X509
 
 int                xmlSecMSCngX509StoreVerifyKey                    (xmlSecKeyDataStorePtr store,

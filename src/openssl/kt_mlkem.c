@@ -55,11 +55,11 @@
  *
  * Internal OpenSSL ML-KEM CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecOpenSSLMLKEMCtx        xmlSecOpenSSLMLKEMCtx,
                                              *xmlSecOpenSSLMLKEMCtxPtr;
 struct _xmlSecOpenSSLMLKEMCtx {
-    EVP_PKEY*           pKey;             /**< recipient key (public for encrypt, private for decrypt) */
+    EVP_PKEY*           pKey;             /**< recipient key (public for encapsulation, private for decapsulation) */
     xmlSecSize          ciphertextSize;   /**< size of the FIPS 203 ciphertext for this variant */
 };
 
@@ -67,7 +67,7 @@ struct _xmlSecOpenSSLMLKEMCtx {
  *
  * ML-KEM key transport transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(OpenSSLMLKEM, xmlSecOpenSSLMLKEMCtx)
 #define xmlSecOpenSSLMLKEMSize XMLSEC_TRANSFORM_SIZE(OpenSSLMLKEM)
 

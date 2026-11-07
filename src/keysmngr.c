@@ -33,7 +33,7 @@
  *
  * Keys Manager
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Creates a new keys manager.
  * @details Creates new keys manager. Caller is responsible for freeing it with
@@ -245,7 +245,7 @@ xmlSecKeysMngrGetDataStore(xmlSecKeysMngrPtr mngr, xmlSecKeyDataStoreId id) {
  *
  * xmlSecKeyStore functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Creates a new keys store of the specified klass.
  * @details Creates new store of the specified klass @p id. Caller is responsible
@@ -353,7 +353,7 @@ xmlSecKeyStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509DataValu
  *
  * xmlSecKeyStore + xmlSecPtrList (keys list)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_KEY_STORE_DECLARE(SimpleKeysStore, xmlSecPtrList)
 #define xmlSecSimpleKeysStoreSize XMLSEC_KEY_STORE_SIZE(SimpleKeysStore)
 

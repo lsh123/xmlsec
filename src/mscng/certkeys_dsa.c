@@ -576,8 +576,8 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     yData = xmlSecMSCngDsaStripLeadingZeros(xmlSecBufferGetData(&(dsaValue->y)), ySize, &ySize);
 
     /* turn the read data into a public key blob.
-      * We support both V1 (BCRYPT_DSA_KEY_BLOB, q up to 20 bytes, keys up to 1024-bit)
-      * and V2 (BCRYPT_DSA_KEY_BLOB_V2, q up to 32 bytes, keys up to 4096-bit).
+     * We support both V1 (BCRYPT_DSA_KEY_BLOB, q up to 20 bytes, keys up to 1024-bit)
+     * and V2 (BCRYPT_DSA_KEY_BLOB_V2, q up to 32 bytes, keys up to 4096-bit).
      * Both use BCRYPT_DSA_ALGORITHM and BCRYPT_DSA_PUBLIC_BLOB; the magic field
      * distinguishes them.
      */

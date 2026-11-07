@@ -196,7 +196,7 @@ load_aes_keys(char** files, int files_size) {
 }
 
 /**
- * @brief Decrypts an encrypted XML file using an AES key from keys manager.
+ * @brief Decrypts an encrypted XML file using AES keys from the keys manager.
  * @details Decrypts the XML file #enc_file using AES keys from the keys manager
  * and prints results to stdout.
  * @param mngr the pointer to keys manager.

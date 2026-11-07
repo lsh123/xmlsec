@@ -116,7 +116,8 @@ xmlSecCryptoGetFunctions_mscng(void) {
      * a SHA-256 hash with STATUS_INVALID_PARAMETER; this is a point-in-time observation on
      * one OS build, not a guarantee for future releases. The runtime probe above is
      * authoritative: if a future OS build changes the provider's capabilities, the probe
-     * result follows it. (xmlsec does not support Windows 7, so no Win7-specific handling
+     * result follows it. (On Windows 7 the CNG DSA provider is absent, so the probe
+     * simply fails there and DSA-SHA256 is not published; no Win7-specific handling
      * is required.) */
 #if !defined(XMLSEC_NO_DSA) && !defined(XMLSEC_NO_SHA256)
     int isDsaSha256Supported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_DSA_ALGORITHM, 2048, NULL);
@@ -178,7 +179,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
      *
      * Crypto Init/shutdown
      *
-      *****************************************************************************/
+     *****************************************************************************/
     gXmlSecMSCngFunctions->cryptoInit                   = xmlSecMSCngInit;
     gXmlSecMSCngFunctions->cryptoShutdown               = xmlSecMSCngShutdown;
     gXmlSecMSCngFunctions->cryptoKeysMngrInit           = xmlSecMSCngKeysMngrInit;
@@ -187,7 +188,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
      *
      * Key data ids
      *
-      *****************************************************************************/
+     *****************************************************************************/
 #ifndef XMLSEC_NO_AES
     gXmlSecMSCngFunctions->keyDataAesGetKlass           = xmlSecMSCngKeyDataAesGetKlass;
 #endif /* XMLSEC_NO_AES */
@@ -271,7 +272,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
      *
      * Key data store ids
      *
-      *****************************************************************************/
+     *****************************************************************************/
 #ifndef XMLSEC_NO_X509
     gXmlSecMSCngFunctions->x509StoreGetKlass            = xmlSecMSCngX509StoreGetKlass;
 #endif /* XMLSEC_NO_X509 */
@@ -280,7 +281,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
      *
      * Crypto transforms ids
      *
-      *****************************************************************************/
+     *****************************************************************************/
 
     /* AES */
 #ifndef XMLSEC_NO_AES
@@ -519,7 +520,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
      *
      * High-level routines for the xmlsec command-line utility
      *
-      *****************************************************************************/
+     *****************************************************************************/
     gXmlSecMSCngFunctions->cryptoAppInit                        = xmlSecMSCngAppInit;
     gXmlSecMSCngFunctions->cryptoAppShutdown                    = xmlSecMSCngAppShutdown;
     gXmlSecMSCngFunctions->cryptoAppDefaultKeysMngrInit         = xmlSecMSCngAppDefaultKeysMngrInit;

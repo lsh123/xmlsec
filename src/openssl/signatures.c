@@ -61,7 +61,7 @@
  *
  * Internal OpenSSL evp signatures ctx
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 typedef enum {
     xmlSecOpenSSLEvpSignatureFormat_DoNothing,        /* do nothing */
@@ -123,7 +123,7 @@ static int      xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig  (xmlSecTransform
  *
  * EVP Signature transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(OpenSSLEvpSignature, xmlSecOpenSSLEvpSignatureCtx)
 #define xmlSecOpenSSLEvpSignatureSize XMLSEC_TRANSFORM_SIZE(OpenSSLEvpSignature)
 
@@ -178,7 +178,7 @@ xmlSecOpenSSLEvpSignatureCheckId(xmlSecTransformPtr transform) {
      *
      * RSA
      *
-      *****************************************************************************/
+     *****************************************************************************/
 #ifndef XMLSEC_NO_RSA
 
 #ifndef XMLSEC_NO_MD5
@@ -275,7 +275,7 @@ xmlSecOpenSSLEvpSignatureCheckId(xmlSecTransformPtr transform) {
      *
      * DSA
      *
-      *****************************************************************************/
+     *****************************************************************************/
 #ifndef XMLSEC_NO_DSA
 
 #ifndef XMLSEC_NO_SHA1
@@ -296,7 +296,7 @@ xmlSecOpenSSLEvpSignatureCheckId(xmlSecTransformPtr transform) {
      *
      * EC
      *
-      *****************************************************************************/
+     *****************************************************************************/
 #ifndef XMLSEC_NO_EC
 
 #ifndef XMLSEC_NO_RIPEMD160
@@ -356,7 +356,7 @@ xmlSecOpenSSLEvpSignatureCheckId(xmlSecTransformPtr transform) {
      *
      * GOST
      *
-      *****************************************************************************/
+     *****************************************************************************/
 #ifndef XMLSEC_NO_GOST
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformGost2001GostR3411_94Id)) {
         return(1);
@@ -376,7 +376,7 @@ xmlSecOpenSSLEvpSignatureCheckId(xmlSecTransformPtr transform) {
      *
      * ML-DSA
      *
-      *****************************************************************************/
+     *****************************************************************************/
 #ifndef XMLSEC_NO_MLDSA
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformMLDSA44Id)) {
         return(1);
@@ -393,7 +393,7 @@ xmlSecOpenSSLEvpSignatureCheckId(xmlSecTransformPtr transform) {
      *
      * SLH-DSA
      *
-      *****************************************************************************/
+     *****************************************************************************/
 #ifndef XMLSEC_NO_SLHDSA
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSLHDSA_SHA2_128fId)) {
         return(1);
@@ -419,7 +419,7 @@ xmlSecOpenSSLEvpSignatureCheckId(xmlSecTransformPtr transform) {
      *
      * EdDSA
      *
-      *****************************************************************************/
+     *****************************************************************************/
 #ifndef XMLSEC_NO_EDDSA
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformEdDSAEd25519Id)) {
         return(1);
@@ -442,7 +442,7 @@ xmlSecOpenSSLEvpSignatureCheckId(xmlSecTransformPtr transform) {
      *
      * Unknown
      *
-      *****************************************************************************/
+     *****************************************************************************/
     {
         return(0);
     }
@@ -525,7 +525,7 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
      *
      * RSA
      *
-      *****************************************************************************/
+     *****************************************************************************/
 #ifndef XMLSEC_NO_RSA
 
 #ifndef XMLSEC_NO_MD5
@@ -669,7 +669,7 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
      *
      * DSA
      *
-      *****************************************************************************/
+     *****************************************************************************/
 #ifndef XMLSEC_NO_DSA
 
 #ifndef XMLSEC_NO_SHA1
@@ -694,7 +694,7 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
      *
      * EC
      *
-      *****************************************************************************/
+     *****************************************************************************/
 
 #ifndef XMLSEC_NO_EC
 
@@ -776,7 +776,7 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
      *
      * ML-DSA
      *
-      *****************************************************************************/
+     *****************************************************************************/
 #ifndef XMLSEC_NO_MLDSA
     /* ML-DSA uses hard coded SHAKE-128 and SHAKE-256 so no need to have digest here */
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformMLDSA44Id)) {
@@ -798,7 +798,7 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
      *
      * SLH-DSA
      *
-      *****************************************************************************/
+     *****************************************************************************/
 #ifndef XMLSEC_NO_SLHDSA
     /* SLH-DSA uses hard coded SHA2 so no need to have digest here */
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSLHDSA_SHA2_128fId)) {
@@ -837,7 +837,7 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
      *
      * EdDSA
      *
-      *****************************************************************************/
+     *****************************************************************************/
 #ifndef XMLSEC_NO_EDDSA
     /* EdDSA does not use a separate digest */
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformEdDSAEd25519Id)) {
@@ -871,7 +871,7 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
      *
      * GOST
      *
-      *****************************************************************************/
+     *****************************************************************************/
 #ifndef XMLSEC_NO_GOST
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformGost2001GostR3411_94Id)) {
         XMLSEC_OPENSSL_EVP_SIGNATURE_SET_GOST_DIGEST(transform, ctx, XMLSEC_OPENSSL_DIGEST_NAME_GOST94);
@@ -900,7 +900,7 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
      *
      * Unknown
      *
-      *****************************************************************************/
+     *****************************************************************************/
     if(1) {
         xmlSecInvalidTransformError(transform);
         xmlSecOpenSSLEvpSignatureFinalize(transform);
@@ -911,7 +911,7 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
      *
      * Finish setup
      *
-      *****************************************************************************/
+     *****************************************************************************/
 
     /* create digest CTX if needed */
     if(ctx->digest != NULL) {
@@ -1601,7 +1601,7 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
  *
  * RSA
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 #ifndef XMLSEC_NO_RSA
 
@@ -1850,7 +1850,7 @@ xmlSecOpenSSLTransformRsaPssSha3_512GetKlass(void) {
  * DSA-SHA1: Integer to octet-stream conversion must be done according to the I2OSP operation defined
  *           in the RFC 3447 [PKCS1] specification with a l parameter equal to 20
  * DSA-SHA256: The pairs (2048, 256) and (3072, 256) correspond to the algorithm DSAwithSHA256
-  *****************************************************************************/
+ *****************************************************************************/
 
 #define XMLSEC_OPENSSL_EVP_SIGNATURE_DSA_SHA1_HALF_LEN              20
 #define XMLSEC_OPENSSL_EVP_SIGNATURE_DSA_SHA256_HALF_LEN            (256 / 8)
@@ -1928,12 +1928,12 @@ xmlSecOpenSSLEvpSignatureDsa_XmlDSig2OpenSSL(const xmlSecTransformId transformId
     /* create/read signature */
     rr = BN_bin2bn(data, signHalfLen, NULL);
     if(rr == NULL) {
-        xmlSecOpenSSLError("BN_bin2bn(sig->r)", NULL);
+        xmlSecOpenSSLError("BN_bin2bn(rr)", NULL);
         goto done;
     }
     ss = BN_bin2bn(data + signHalfLen, signHalfLen, NULL);
     if(ss == NULL) {
-        xmlSecOpenSSLError("BN_bin2bn(sig->s)", NULL);
+        xmlSecOpenSSLError("BN_bin2bn(ss)", NULL);
         goto done;
     }
 
@@ -2137,7 +2137,7 @@ xmlSecOpenSSLTransformDsaSha256GetKlass(void) {
  * the base point order of the curve in bytes (e.g. 32 for the P-256 curve and 66
  * for the P-521 curve).
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_EC
 
 /* however some implementations (e.g. Java) just put ASN1 structure in the signature
@@ -2256,12 +2256,12 @@ xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(
     /* create/read signature */
     rr = BN_bin2bn(data, signHalfLen, NULL);
     if(rr == NULL) {
-        xmlSecOpenSSLError("BN_bin2bn(sig->r)", NULL);
+        xmlSecOpenSSLError("BN_bin2bn(rr)", NULL);
         goto done;
     }
     ss = BN_bin2bn(data + signHalfLen, signHalfLen, NULL);
     if(ss == NULL) {
-        xmlSecOpenSSLError("BN_bin2bn(sig->s)", NULL);
+        xmlSecOpenSSLError("BN_bin2bn(ss)", NULL);
         goto done;
     }
 
@@ -2573,7 +2573,7 @@ xmlSecOpenSSLTransformEcdsaSha3_512GetKlass(void) {
  *
  * ML-DSA (https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 #ifndef XMLSEC_NO_MLDSA
 
@@ -2656,7 +2656,7 @@ xmlSecOpenSSLTransformMLDSA87GetKlass(void) {
  *
  * SLH-DSA (https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 #ifndef XMLSEC_NO_SLHDSA
 
@@ -2774,7 +2774,7 @@ xmlSecOpenSSLTransformSLHDSA_SHA2_256sGetKlass(void) {
  *
  * EdDSA
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 #ifndef XMLSEC_NO_EDDSA
 
@@ -2884,7 +2884,7 @@ xmlSecOpenSSLTransformEdDSAEd448phGetKlass(void) {
  *
  * GOST
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_GOST
 /* GOST2001-GOSTR3411_94 signature transform: xmlSecOpenSSLGost2001GostR3411_94Klass */
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(Gost2001GostR3411_94)

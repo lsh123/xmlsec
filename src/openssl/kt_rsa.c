@@ -48,7 +48,7 @@
  *
  * Internal OpenSSL RSA PKCS1 CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecOpenSSLRsaPkcs1Ctx        xmlSecOpenSSLRsaPkcs1Ctx,
                                                 *xmlSecOpenSSLRsaPkcs1CtxPtr;
 struct _xmlSecOpenSSLRsaPkcs1Ctx {
@@ -66,7 +66,7 @@ struct _xmlSecOpenSSLRsaPkcs1Ctx {
  *
  * RSA PKCS1 key transport transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(OpenSSLRsaPkcs1, xmlSecOpenSSLRsaPkcs1Ctx)
 #define xmlSecOpenSSLRsaPkcs1Size XMLSEC_TRANSFORM_SIZE(OpenSSLRsaPkcs1)
 
@@ -532,7 +532,7 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform) {
  *
  * Internal OpenSSL RSA OAEP CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecOpenSSLRsaOaepCtx         xmlSecOpenSSLRsaOaepCtx,
                                                 *xmlSecOpenSSLRsaOaepCtxPtr;
 struct _xmlSecOpenSSLRsaOaepCtx {
@@ -554,7 +554,7 @@ struct _xmlSecOpenSSLRsaOaepCtx {
  *
  * RSA OAEP key transport transform (both XMLEnc 1.0 and XMLEnc 1.1)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(OpenSSLRsaOaep, xmlSecOpenSSLRsaOaepCtx)
 #define xmlSecOpenSSLRsaOaepSize XMLSEC_TRANSFORM_SIZE(OpenSSLRsaOaep)
 

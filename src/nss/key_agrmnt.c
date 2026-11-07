@@ -50,7 +50,7 @@
  * - ECDH spec: https://www.w3.org/TR/xmlenc-core1/#sec-ECDH-ES
  * - XDH spec: https://www.w3.org/2021/04/xmldsig-more (X25519, RFC 7748)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 typedef struct _xmlSecNssKeyAgreementCtx    xmlSecNssKeyAgreementCtx, *xmlSecNssKeyAgreementCtxPtr;
 struct _xmlSecNssKeyAgreementCtx {
@@ -84,7 +84,7 @@ static int              xmlSecNssKeyAgreementGenerateSecret     (xmlSecNssKeyAgr
  *
  * Key Agreement unified context
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(NssKeyAgreement, xmlSecNssKeyAgreementCtx)
 #define xmlSecNssKeyAgreementSize XMLSEC_TRANSFORM_SIZE(NssKeyAgreement)
 
@@ -92,7 +92,7 @@ XMLSEC_TRANSFORM_DECLARE(NssKeyAgreement, xmlSecNssKeyAgreementCtx)
  *
  * Unified transform lifecycle functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 static int
 xmlSecNssKeyAgreementInitialize(xmlSecTransformPtr transform) {
@@ -530,7 +530,7 @@ static xmlSecTransformKlass xmlSecNss ## name ## Klass = {                      
  *
  * ECDH key agreement transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_EC
 XMLSEC_NSS_KEY_AGREEMENT_KLASS(Ecdh)
 
@@ -549,7 +549,7 @@ xmlSecNssTransformEcdhGetKlass(void) {
  *
  * X25519 key agreement transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_XDH
 XMLSEC_NSS_KEY_AGREEMENT_KLASS(X25519)
 

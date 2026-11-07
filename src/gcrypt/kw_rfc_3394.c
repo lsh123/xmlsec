@@ -33,7 +33,7 @@
  *
  * AES KW implementation
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int        xmlSecGCryptKWAesBlockEncrypt                 (xmlSecTransformPtr transform,
                                                                  const xmlSecByte * in,
                                                                  xmlSecSize inSize,
@@ -61,7 +61,7 @@ static xmlSecKWRfc3394Klass xmlSecGCryptKWAesKlass = {
  *
  * AES KW transform context
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecGCryptKWAesCtx              xmlSecGCryptKWAesCtx,
                                                   *xmlSecGCryptKWAesCtxPtr;
 struct _xmlSecGCryptKWAesCtx {
@@ -80,7 +80,7 @@ struct _xmlSecGCryptKWAesCtx {
  *
  * xmlSecTransform + xmlSecGCryptKWAesCtx
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GCryptKWAes, xmlSecGCryptKWAesCtx)
 #define xmlSecGCryptKWAesSize XMLSEC_TRANSFORM_SIZE(GCryptKWAes)
 
@@ -361,7 +361,7 @@ xmlSecGCryptTransformKWAes256GetKlass(void) {
  *
  * AES KW implementation
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static const unsigned char xmlSecGCryptKWRfc3394ZeroIv[XMLSEC_KW_RFC3394_BLOCK_SIZE] =
     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 

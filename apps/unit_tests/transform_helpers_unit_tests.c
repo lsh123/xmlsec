@@ -20,7 +20,7 @@
 #include <xmlsec/xmltree.h>
 #include "../../src/transform_helpers.h"
 
- #if !defined(XMLSEC_NO_CHACHA20) || !defined(XMLSEC_NO_MLDSA) || !defined(XMLSEC_NO_SLHDSA) || !defined(XMLSEC_NO_EDDSA)
+#if !defined(XMLSEC_NO_CHACHA20) || !defined(XMLSEC_NO_MLDSA) || !defined(XMLSEC_NO_SLHDSA) || !defined(XMLSEC_NO_EDDSA)
 static xmlNodePtr
 xmlSecUnitTestParseNode(const char* xml, xmlDocPtr* doc) {
     xmlNodePtr node;

@@ -29,7 +29,7 @@
  *
  * Internal MSCrypto Block cipher CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecMSCryptoBlockCipherCtx            xmlSecMSCryptoBlockCipherCtx,
                                                         *xmlSecMSCryptoBlockCipherCtxPtr;
 struct _xmlSecMSCryptoBlockCipherCtx {
@@ -217,7 +217,7 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
             return(-1);
         }
     }
-    /* Check if we really have de/encrypted the numbers of bytes that we requested */
+    /* Check if we really have de/encrypted the number of bytes that we requested */
     if (dwCLen != inSize) {
         xmlSecInternalError3("CryptEn/Decrypt", cipherName,
             "inLen=" XMLSEC_SIZE_FMT "; outLen=%lu", inSize, dwCLen);
@@ -340,7 +340,7 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
         }
     }
 
-    /* Check if we really have de/encrypted the numbers of bytes that we requested */
+    /* Check if we really have de/encrypted the number of bytes that we requested */
     if (dwCLen != inSize) {
         xmlSecInternalError3("CryptEn/Decrypt", cipherName,
             "inLen=" XMLSEC_SIZE_FMT "; outLen=%lu", inSize, dwCLen);
@@ -387,7 +387,7 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
  *
  *  Block Cipher transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MSCryptoBlockCipher, xmlSecMSCryptoBlockCipherCtx)
 #define xmlSecMSCryptoBlockCipherSize XMLSEC_TRANSFORM_SIZE(MSCryptoBlockCipher)
 
@@ -689,7 +689,7 @@ xmlSecMSCryptoBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecT
  *
  * AES CBC cipher transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoAes128CbcKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */

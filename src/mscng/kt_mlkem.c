@@ -50,7 +50,7 @@
  *
  * Internal MSCng ML-KEM CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecMSCngMLKEMCtx        xmlSecMSCngMLKEMCtx,
                                            *xmlSecMSCngMLKEMCtxPtr;
 struct _xmlSecMSCngMLKEMCtx {
@@ -64,7 +64,7 @@ struct _xmlSecMSCngMLKEMCtx {
  *
  * ML-KEM key transport transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MSCngMLKEM, xmlSecMSCngMLKEMCtx)
 #define xmlSecMSCngMLKEMSize XMLSEC_TRANSFORM_SIZE(MSCngMLKEM)
 
@@ -362,7 +362,7 @@ xmlSecMSCngMLKEMEncapsulate(xmlSecMSCngMLKEMCtxPtr ctx, xmlSecBufferPtr cipherTe
     /* create ct buffer */
     ret = xmlSecBufferSetSize(cipherTextOut, ctx->ciphertextSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize(ct)", NULL, "size=" XMLSEC_SIZE_FMT, ctx->ciphertextSize);
+        xmlSecInternalError2("xmlSecBufferSetSize(ct)", NULL, "size=" XMLSEC_SIZE_FMT, (xmlSecSize)ctx->ciphertextSize);
         goto done;
     }
     ctBuf = xmlSecBufferGetData(cipherTextOut);

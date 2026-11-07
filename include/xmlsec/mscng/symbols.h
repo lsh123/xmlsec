@@ -26,7 +26,7 @@ extern "C" {
  *
  * Crypto Init/shutdown
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #define xmlSecCryptoInit                        xmlSecMSCngInit
 #define xmlSecCryptoShutdown                    xmlSecMSCngShutdown
 
@@ -36,7 +36,7 @@ extern "C" {
  *
  * Key data ids
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #define xmlSecKeyDataAesId                      xmlSecMSCngKeyDataAesId
 #define xmlSecKeyDataChaCha20Id                 xmlSecMSCngKeyDataChaCha20Id
 #define xmlSecKeyDataConcatKdfId                xmlSecMSCngKeyDataConcatKdfId
@@ -48,10 +48,10 @@ extern "C" {
 #define xmlSecKeyDataEcdsaId                    xmlSecMSCngKeyDataEcId
 #define xmlSecKeyDataHkdfId                     xmlSecMSCngKeyDataHkdfId
 #define xmlSecKeyDataHmacId                     xmlSecMSCngKeyDataHmacId
-#define xmlSecKeyDataPbkdf2Id                   xmlSecMSCngKeyDataPbkdf2Id
-#define xmlSecKeyDataRawX509CertId              xmlSecMSCngKeyDataRawX509CertId
 #define xmlSecKeyDataMLDSAId                    xmlSecMSCngKeyDataMLDSAId
 #define xmlSecKeyDataMLKEMId                    xmlSecMSCngKeyDataMLKEMId
+#define xmlSecKeyDataPbkdf2Id                   xmlSecMSCngKeyDataPbkdf2Id
+#define xmlSecKeyDataRawX509CertId              xmlSecMSCngKeyDataRawX509CertId
 #define xmlSecKeyDataRsaId                      xmlSecMSCngKeyDataRsaId
 #define xmlSecKeyDataX509Id                     xmlSecMSCngKeyDataX509Id
 #define xmlSecKeyDataXdhId                      xmlSecMSCngKeyDataXdhId
@@ -60,7 +60,7 @@ extern "C" {
  *
  * Key data store ids
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #define xmlSecX509StoreId                       xmlSecMSCngX509StoreId
 
 /******************************************************************************
@@ -70,7 +70,7 @@ extern "C" {
  * https://www.aleksey.com/xmlsec/xmldsig.html
  * https://www.aleksey.com/xmlsec/xmlenc.html
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #define xmlSecTransformAes128CbcId              xmlSecMSCngTransformAes128CbcId
 #define xmlSecTransformAes192CbcId              xmlSecMSCngTransformAes192CbcId
 #define xmlSecTransformAes256CbcId              xmlSecMSCngTransformAes256CbcId
@@ -157,7 +157,7 @@ extern "C" {
  *
  * High-level routines for the xmlsec command-line utility
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #define xmlSecCryptoAppInit                     xmlSecMSCngAppInit
 #define xmlSecCryptoAppShutdown                 xmlSecMSCngAppShutdown
 #define xmlSecCryptoAppDefaultKeysMngrInit      xmlSecMSCngAppDefaultKeysMngrInit

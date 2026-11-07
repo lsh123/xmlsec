@@ -37,7 +37,7 @@
  *
  * Internal MSCRYPTO RSA PKCS1/OAEP CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecMSCryptoRsaPkcs1OaepCtx    xmlSecMSCryptoRsaPkcs1OaepCtx,
                                                 *xmlSecMSCryptoRsaPkcs1OaepCtxPtr;
 struct _xmlSecMSCryptoRsaPkcs1OaepCtx {
@@ -50,7 +50,7 @@ struct _xmlSecMSCryptoRsaPkcs1OaepCtx {
  *
  * RSA PKCS1 key transport transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MSCryptoRsaPkcs1Oaep, xmlSecMSCryptoRsaPkcs1OaepCtx)
 #define xmlSecMSCryptoRsaPkcs1OaepSize XMLSEC_TRANSFORM_SIZE(MSCryptoRsaPkcs1Oaep)
 
@@ -319,7 +319,7 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
 
         XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwInLen, return(-1), xmlSecTransformGetName(transform));
         XMLSEC_SAFE_CAST_SIZE_TO_ULONG(outSize, dwBufLen, return(-1), xmlSecTransformGetName(transform));
-        
+
         hKey = xmlSecMSCryptoKeyDataGetKey(ctx->data, xmlSecKeyDataTypePublic);
         if (0 == hKey) {
             xmlSecInternalError("xmlSecMSCryptoKeyDataGetKey", xmlSecTransformGetName(transform));
@@ -531,7 +531,7 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
  *
  * RSA/PKCS1 transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoRsaPkcs1Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -576,7 +576,7 @@ xmlSecMSCryptoTransformRsaPkcs1GetKlass(void) {
  *
  * RSA/OAEP transform: only SHA1 is supported for digest and MGF1!
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 static int          xmlSecMSCryptoRsaOaepNodeRead               (xmlSecTransformPtr transform,
                                                                  xmlNodePtr node,

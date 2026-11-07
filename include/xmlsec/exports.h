@@ -78,13 +78,13 @@ extern "C" {
 #    endif /* defined(IN_XMLSEC_CRYPTO) */
    /* This holds on all other platforms/compilers, which are easier to
       handle in regard to this. */
-#  else  /* defined(XMLSEC_WINDOWS) */
+#  else /* defined(XMLSEC_WINDOWS) */
 #    if defined(__GNUC__) || defined(__clang__)
 #      define XMLSEC_CRYPTO_EXPORT __attribute__((visibility("default")))
 #    else
 #      define XMLSEC_CRYPTO_EXPORT
 #    endif
-#  endif  /* defined(XMLSEC_WINDOWS) */
+#  endif /* defined(XMLSEC_WINDOWS) */
 #endif /* !defined XMLSEC_CRYPTO_EXPORT */
 
 
@@ -121,7 +121,7 @@ extern "C" {
 #    else
 #      define XMLSEC_EXPORT_VAR extern
 #    endif
-#  endif  /* defined(XMLSEC_WINDOWS) */
+#  endif /* defined(XMLSEC_WINDOWS) */
 #endif /* !defined XMLSEC_EXPORT_VAR */
 
 #ifdef __cplusplus

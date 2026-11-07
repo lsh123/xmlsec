@@ -42,7 +42,7 @@
  *
  * X509 crt list
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecPtr        xmlSecGnuTLSX509CrtListDuplicateItem    (xmlSecPtr ptr);
 static void             xmlSecGnuTLSX509CrtListDestroyItem      (xmlSecPtr ptr);
 static void             xmlSecGnuTLSX509CrtListDebugDumpItem    (xmlSecPtr ptr,
@@ -98,7 +98,7 @@ xmlSecGnuTLSX509CrtListDebugXmlDumpItem(xmlSecPtr ptr, FILE* output) {
  *
  * X509 crl list
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecPtr        xmlSecGnuTLSX509CrlListDuplicateItem    (xmlSecPtr ptr);
 static void             xmlSecGnuTLSX509CrlListDestroyItem      (xmlSecPtr ptr);
 static void             xmlSecGnuTLSX509CrlListDebugDumpItem    (xmlSecPtr ptr,
@@ -154,7 +154,7 @@ xmlSecGnuTLSX509CrlListDebugXmlDumpItem(xmlSecPtr ptr, FILE* output) {
  *
  * x509 certs utils/helpers
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 /* HACK: gnutls doesn't have cert duplicate function, so we simply
  write cert out and then read it back */
@@ -510,7 +510,7 @@ xmlSecGnuTLSX509CertDebugXmlDump(gnutls_x509_crt_t cert, FILE* output) {
  *
  * x509 certs search ctx
  *
-  *****************************************************************************/
+ *****************************************************************************/
 int xmlSecGnuTLSX509FindCertCtxInitialize(xmlSecGnuTLSX509FindCertCtxPtr ctx,
     const xmlChar *subjectName,
     const xmlChar *issuerName, const xmlChar *issuerSerial,
@@ -817,7 +817,7 @@ xmlSecGnuTLSX509GetDigestFromAlgorithm(const xmlChar* href) {
  *
  * x509 crls utils/helpers
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 /* HACK: gnutls doesn't have crl duplicate function, so we simply
  write crl out and then read it back */
@@ -1012,7 +1012,7 @@ xmlSecGnuTLSX509CrlDebugXmlDump(gnutls_x509_crl_t crl, FILE* output) {
  *
  * pkcs12 utils/helpers
  *
-  *****************************************************************************/
+ *****************************************************************************/
 int
 xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const char *pwd,
     gnutls_x509_privkey_t * priv_key, gnutls_x509_crt_t * key_cert, xmlSecPtrListPtr certsList,
@@ -1311,7 +1311,7 @@ done:
  *
  * LDAP DN parser
  *
-  *****************************************************************************/
+ *****************************************************************************/
 void
 xmlSecGnuTLSDnAttrsInitialize(xmlSecGnuTLSDnAttr * attrs, xmlSecSize attrsSize) {
     xmlSecAssert(attrs != NULL);
@@ -1417,8 +1417,9 @@ xmlSecGnuTLSDnAttrsEqual(const xmlSecGnuTLSDnAttr * left, xmlSecSize leftSize,
     memset(rightUsed, 0, sizeof(int) * rightSize);
 
     /* make sure that each left attr matches a unique right attr with the
-     * same key and value; a right attr may be matched at most once, so
-     * duplicate keys are compared positionally as well */
+     * same key and value; matching is order-independent (multiset
+     * comparison), the rightUsed array only prevents a right attr from
+     * being matched more than once */
     for(ii = 0; (ii < leftSize) && (res == -1); ++ii) {
         if(left[ii].key == NULL) {
             continue;

@@ -40,7 +40,7 @@
  *
  * Internal GNUTLS signatures ctx
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef gnutls_pubkey_t     (*xmlSecGnuTLSKeyDataGetPublicKeyMethod)      (xmlSecKeyDataPtr data);
 typedef gnutls_privkey_t    (*xmlSecGnuTLSKeyDataGetPrivateKeyMethod)     (xmlSecKeyDataPtr data);
 
@@ -68,7 +68,7 @@ struct _xmlSecGnuTLSSignatureCtx {
  *
  * Signature transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GnuTLSSignature, xmlSecGnuTLSSignatureCtx)
 #define xmlSecGnuTLSSignatureSize XMLSEC_TRANSFORM_SIZE(GnuTLSSignature)
 
@@ -1420,7 +1420,7 @@ static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                   
  *
  * DSA-SHA1 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 XMLSEC_GNUTLS_SIGNATURE_KLASS(DsaSha1)
 
@@ -1440,7 +1440,7 @@ xmlSecGnuTLSTransformDsaSha1GetKlass(void) {
  *
  * DSA-SHA2-256 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 XMLSEC_GNUTLS_SIGNATURE_KLASS(DsaSha256)
 
@@ -1473,7 +1473,7 @@ xmlSecGnuTLSTransformDsaSha256GetKlass(void) {
  *
  * ECDSA-SHA1 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_SIGNATURE_KLASS(EcdsaSha1)
 
 /**
@@ -1493,7 +1493,7 @@ xmlSecGnuTLSTransformEcdsaSha1GetKlass(void) {
  *
  * ECDSA-SHA2-224 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_SIGNATURE_KLASS(EcdsaSha224)
 
 /**
@@ -1513,7 +1513,7 @@ xmlSecGnuTLSTransformEcdsaSha224GetKlass(void) {
  *
  * ECDSA-SHA2-256 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_SIGNATURE_KLASS(EcdsaSha256)
 
 /**
@@ -1532,7 +1532,7 @@ xmlSecGnuTLSTransformEcdsaSha256GetKlass(void) {
  *
  * ECDSA-SHA2-384 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_SIGNATURE_KLASS(EcdsaSha384)
 
 /**
@@ -1551,7 +1551,7 @@ xmlSecGnuTLSTransformEcdsaSha384GetKlass(void) {
  *
  * ECDSA-SHA2-512 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_SIGNATURE_KLASS(EcdsaSha512)
 
 /**
@@ -1572,7 +1572,7 @@ xmlSecGnuTLSTransformEcdsaSha512GetKlass(void) {
  *
  * ECDSA-SHA3-224 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_SIGNATURE_KLASS(EcdsaSha3_224)
 
 /**
@@ -1588,7 +1588,7 @@ xmlSecGnuTLSTransformEcdsaSha3_224GetKlass(void) {
  *
  * ECDSA-SHA3-256 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_SIGNATURE_KLASS(EcdsaSha3_256)
 
 /**
@@ -1604,7 +1604,7 @@ xmlSecGnuTLSTransformEcdsaSha3_256GetKlass(void) {
  *
  * ECDSA-SHA3-384 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_SIGNATURE_KLASS(EcdsaSha3_384)
 
 /**
@@ -1620,7 +1620,7 @@ xmlSecGnuTLSTransformEcdsaSha3_384GetKlass(void) {
  *
  * ECDSA-SHA3-512 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_SIGNATURE_KLASS(EcdsaSha3_512)
 
 /**
@@ -1644,7 +1644,7 @@ xmlSecGnuTLSTransformEcdsaSha3_512GetKlass(void) {
  *
  * GOST2001 GOSTR3411_94 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_SIGNATURE_KLASS(Gost2001GostR3411_94)
 
 /**
@@ -1666,7 +1666,7 @@ xmlSecGnuTLSTransformGost2001GostR3411_94GetKlass(void) {
  *
  * GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_SIGNATURE_KLASS(GostR3410_2012GostR3411_2012_256)
 
 /**
@@ -1683,7 +1683,7 @@ xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_256GetKlass(void) {
  *
  * GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_SIGNATURE_KLASS(GostR3410_2012GostR3411_2012_512)
 
 /**
@@ -1709,7 +1709,7 @@ xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_512GetKlass(void) {
  *
  * RSA-SHA1 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 XMLSEC_GNUTLS_SIGNATURE_KLASS(RsaSha1)
 
@@ -1728,7 +1728,7 @@ xmlSecGnuTLSTransformRsaSha1GetKlass(void) {
  *
  * RSA-SHA2-224 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 XMLSEC_GNUTLS_SIGNATURE_KLASS(RsaSha224)
 
@@ -1747,7 +1747,7 @@ xmlSecGnuTLSTransformRsaSha224GetKlass(void) {
  *
  * RSA-SHA2-256 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 XMLSEC_GNUTLS_SIGNATURE_KLASS(RsaSha256)
 
@@ -1767,7 +1767,7 @@ xmlSecGnuTLSTransformRsaSha256GetKlass(void) {
  *
  * RSA-SHA2-384 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 XMLSEC_GNUTLS_SIGNATURE_KLASS(RsaSha384)
 
@@ -1787,7 +1787,7 @@ xmlSecGnuTLSTransformRsaSha384GetKlass(void) {
  *
  * RSA-SHA2-512 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 XMLSEC_GNUTLS_SIGNATURE_KLASS(RsaSha512)
 
@@ -1808,7 +1808,7 @@ xmlSecGnuTLSTransformRsaSha512GetKlass(void) {
  *
  * RSA-PSS-SHA2-256 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 XMLSEC_GNUTLS_SIGNATURE_KLASS(RsaPssSha256)
 
@@ -1828,7 +1828,7 @@ xmlSecGnuTLSTransformRsaPssSha256GetKlass(void) {
  *
  * RSA-PSS-SHA2-384 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 XMLSEC_GNUTLS_SIGNATURE_KLASS(RsaPssSha384)
 
@@ -1848,7 +1848,7 @@ xmlSecGnuTLSTransformRsaPssSha384GetKlass(void) {
  *
  * RSA-PSS-SHA2-512 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 XMLSEC_GNUTLS_SIGNATURE_KLASS(RsaPssSha512)
 
@@ -1869,14 +1869,14 @@ xmlSecGnuTLSTransformRsaPssSha512GetKlass(void) {
  *
  * ML-DSA signatures
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_MLDSA
 
 /******************************************************************************
  *
  * ML-DSA-44 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 XMLSEC_GNUTLS_SIGNATURE_KLASS(MLDSA44)
 
@@ -1894,7 +1894,7 @@ xmlSecGnuTLSTransformMLDSA44GetKlass(void) {
  *
  * ML-DSA-65 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 XMLSEC_GNUTLS_SIGNATURE_KLASS(MLDSA65)
 
@@ -1912,7 +1912,7 @@ xmlSecGnuTLSTransformMLDSA65GetKlass(void) {
  *
  * ML-DSA-87 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 XMLSEC_GNUTLS_SIGNATURE_KLASS(MLDSA87)
 
@@ -1932,14 +1932,14 @@ xmlSecGnuTLSTransformMLDSA87GetKlass(void) {
  *
  * EdDSA signatures
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_EDDSA
 
 /******************************************************************************
  *
  * EdDSA-Ed25519 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 XMLSEC_GNUTLS_SIGNATURE_KLASS(EdDSAEd25519)
 
@@ -1957,7 +1957,7 @@ xmlSecGnuTLSTransformEdDSAEd25519GetKlass(void) {
  *
  * EdDSA-Ed448 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 XMLSEC_GNUTLS_SIGNATURE_KLASS(EdDSAEd448)
 

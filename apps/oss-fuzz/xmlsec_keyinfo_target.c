@@ -7,10 +7,6 @@
  * is reachable from a very small document, so a mutator makes progress from the
  * first input.
  *
- * The code it drives is the largest cold area in the library: keysdata_helpers.c
- * (the KeyValue and EncryptedKey structure readers), keyinfo.c and the OpenSSL
- * key-data implementations.
- *
  * An initialized, empty keys manager enables X509Data child processing without
  * trusting input certificates. A general-key pass accepts KeyValue classes;
  * a separate fresh AES pass preserves EncryptedKey's concrete extraction

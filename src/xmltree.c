@@ -895,12 +895,12 @@ xmlSecReplaceNodeBuffer(xmlNodePtr node, const xmlSecByte *buffer, xmlSecSize si
 }
 
 /**
- * @brief Replaces a node with parsed XML data from a buffer, optionally returning replaced nodes.
+ * @brief Replaces a node with parsed XML data from a buffer, optionally returning the replaced node.
  * @details Swaps the @p node and the parsed XML data from the @p buffer in the XML tree.
  * @param node the current node.
  * @param buffer the XML data.
  * @param size the XML data size.
- * @param replaced the replaced nodes, or release them if NULL is given
+ * @param replaced the replaced node, or release it if NULL is given
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -1390,9 +1390,9 @@ xmlSecGetQName(xmlNodePtr node, const xmlChar* href, const xmlChar* local) {
  *
  * QName <-> Integer mapping
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
- * @brief Maps integer @p intValue to a QName prefix.
+ * @brief Maps integer @p intValue to a QName.
  * @param info the qname<->integer mapping information.
  * @param intValue the integer value.
  * @return the QName info that is mapped to @p intValue or NULL if such value
@@ -1542,7 +1542,7 @@ xmlSecQName2IntegerGetStringFromInteger(xmlSecQName2IntegerInfoConstPtr info,
         return(NULL);
     }
 
-    return (xmlSecGetQName(node, qnameInfo->qnameHref, qnameInfo->qnameLocalPart));
+    return(xmlSecGetQName(node, qnameInfo->qnameHref, qnameInfo->qnameLocalPart));
 }
 
 /**
@@ -1784,7 +1784,7 @@ xmlSecQName2IntegerDebugXmlDump(xmlSecQName2IntegerInfoConstPtr info, int intVal
  *
  * QName <-> Bits mask mapping
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Converts @p mask to qname.
  * @param info the qname<->bit mask mapping information.
@@ -2137,7 +2137,7 @@ xmlSecQName2BitMaskDebugXmlDump(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitM
  *
  * Windows string conversions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #if defined(XMLSEC_WINDOWS)
 
 /**

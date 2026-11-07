@@ -52,7 +52,7 @@ static int      xmlSecKWDes3BufferReverse                       (xmlSecByte *buf
  *
  * Triple DES Key Wrap transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 int
 xmlSecTransformKWDes3Initialize(xmlSecTransformPtr transform, xmlSecTransformKWDes3CtxPtr ctx,
                     xmlSecKWDes3Id kwDes3Id, xmlSecKeyDataId keyId) {
@@ -283,7 +283,7 @@ xmlSecTransformKWDes3Execute(xmlSecTransformPtr transform, xmlSecTransformKWDes3
  *    error.
  * 8. WK is the wrapped key, now extracted for use in data decryption.
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static const xmlSecByte xmlSecKWDes3Iv[XMLSEC_KW_DES3_IV_LENGTH] = {
     0x4a, 0xdd, 0xa2, 0x2c, 0x79, 0xe8, 0x21, 0x05
 };
@@ -792,7 +792,7 @@ xmlSecTransformKWRfc3394Execute(xmlSecTransformPtr transform, xmlSecTransformKWR
  *            P(i)=R(i)
  *          * If A is 0xA6A6A6A6A6A6A6A6, return success. Otherwise, return
  *            an integrity check failure error.
-  *****************************************************************************/
+ *****************************************************************************/
 static const xmlSecByte xmlSecKWRfc3394MagicBlock[XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE] = {
     0xA6,  0xA6,  0xA6,  0xA6,  0xA6,  0xA6,  0xA6,  0xA6
 };

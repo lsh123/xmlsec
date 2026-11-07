@@ -33,7 +33,7 @@
  *
  * Symmetric (binary) keys - just a wrapper for xmlSecKeyDataBinary
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int      xmlSecGCryptSymKeyDataInitialize        (xmlSecKeyDataPtr data);
 static int      xmlSecGCryptSymKeyDataDuplicate         (xmlSecKeyDataPtr dst,
                                                          xmlSecKeyDataPtr src);
@@ -208,7 +208,7 @@ xmlSecGCryptSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
  *
  * <xmlsec:AESKeyValue> processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecKeyDataKlass xmlSecGCryptKeyDataAesKlass = {
     sizeof(xmlSecKeyDataKlass),
     xmlSecKeyDataBinarySize,
@@ -283,7 +283,7 @@ xmlSecGCryptKeyDataAesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSi
  *
  * <xmlsec:DESKeyValue> processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecKeyDataKlass xmlSecGCryptKeyDataDesKlass = {
     sizeof(xmlSecKeyDataKlass),
     xmlSecKeyDataBinarySize,
@@ -359,7 +359,7 @@ xmlSecGCryptKeyDataDesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSi
  *
  * <xmlsec:HMACKeyValue> processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecKeyDataKlass xmlSecGCryptKeyDataHmacKlass = {
     sizeof(xmlSecKeyDataKlass),
     xmlSecKeyDataBinarySize,

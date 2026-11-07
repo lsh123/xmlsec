@@ -46,7 +46,7 @@
  *
  * Internal NSS X509 store CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecNssX509StoreCtx           xmlSecNssX509StoreCtx,
                                                 *xmlSecNssX509StoreCtxPtr;
 struct _xmlSecNssX509StoreCtx {
@@ -67,7 +67,7 @@ struct _xmlSecNssX509StoreCtx {
  *
  * xmlSecNssKeyDataStoreX509Id:
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_KEY_DATA_STORE_DECLARE(NssX509Store, xmlSecNssX509StoreCtx)
 #define xmlSecNssX509StoreSize XMLSEC_KEY_DATA_STORE_SIZE(NssX509Store)
 
@@ -107,7 +107,7 @@ xmlSecNssX509StoreGetKlass(void) {
 }
 
 /**
- * @brief Searches @p store for a certificate that matches given criteria.
+ * @brief Deprecated. Searches @p store for a certificate that matches given criteria.
  * @param store the pointer to X509 key data store.
  * @param subjectName the desired certificate name.
  * @param issuerName the desired certificate issuer name.
@@ -1076,7 +1076,7 @@ xmlSecNssX509VerifyCRLSignature(xmlSecNssX509StoreCtxPtr ctx, CERTSignedCrl* crl
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     if((crl->crl.derName.data == NULL) || (crl->crl.derName.len <= 0)) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_FOUND, NULL, "CRL issuer certificate not found");
+        xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_FOUND, NULL, "CRL has no issuer name");
         goto done;
     }
 
@@ -1268,7 +1268,7 @@ xmlSecNssX509StoreFinalize(xmlSecKeyDataStorePtr store) {
  *
  * Low-level x509 functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static CERTName *
 xmlSecNssGetCertName(const xmlChar * name) {
     xmlChar *name2;
@@ -1420,7 +1420,7 @@ xmlSecNssX509FindKeyByValue(CERTCertDBHandle *certDb, xmlSecPtrListPtr keysList,
  *
  * xmlSecNssX509FindCertCtx
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int
 xmlSecNssX509SerialNumberRead(const xmlChar *str, SECItem *res, PLArenaPool *arena) {
     xmlSecByte buf[XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES];

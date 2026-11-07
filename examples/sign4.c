@@ -104,7 +104,7 @@ main(int argc, char **argv) {
 
     /* Load default crypto engine if we are supporting dynamic
      * loading for xmlsec-crypto libraries. Use the crypto library
-     * name ("openssl", "nss", etc.) to load corresponding
+     * name ("openssl", "nss", etc.) to load the corresponding
      * xmlsec-crypto library.
      */
 #ifdef XMLSEC_CRYPTO_DYNAMIC_LOADING
@@ -249,7 +249,7 @@ sign_file(const char* xml_file, const char* id_attr, const char* key_file, const
      * xmlSecAddIDs() returns no value */
     xmlSecAddIDs(doc, NULL, id_attributes);
 
-    /* create signature context, we don't need keys manager in this example */
+    /* create signature context, we don't need a keys manager in this example */
     dsigCtx = xmlSecDSigCtxCreate(NULL);
     if(dsigCtx == NULL) {
         fprintf(stderr, "Error: failed to create signature context\n");

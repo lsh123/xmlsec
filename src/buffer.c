@@ -33,7 +33,7 @@
 #include "cast_helpers.h"
 
 /* SecureZeroMemory() is declared in <windows.h>, this must be included
- * after xmlsec/exports.h file that defines XMLSEC_WINDOWS . */
+ * after xmlsec/exports.h file that defines XMLSEC_WINDOWS. */
 #if defined(XMLSEC_WINDOWS)
 #include <windows.h>
 #endif /* defined(XMLSEC_WINDOWS) */
@@ -55,7 +55,7 @@
  *
  * xmlSecBuffer
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecAllocMode gAllocMode = xmlSecAllocModeDouble;
 static xmlSecSize gInitialSize = 1024;
 
@@ -194,6 +194,7 @@ xmlSecBufferIsSecure(xmlSecBufferPtr buf) {
 
     return((buf->flags & XMLSEC_BUFFER_FLAG_SECURE) ? 1 : 0);
 }
+
 /**
  * @brief Empties the buffer.
  * @param buf the pointer to buffer object.
@@ -508,7 +509,7 @@ xmlSecBufferRemoveHead(xmlSecBufferPtr buf, xmlSecSize size) {
 
 /**
  * @brief Removes bytes from the end of the buffer.
- * @details Removes @p size bytes from the end of current buffer.
+ * @details Removes @p size bytes from the end of the current buffer.
  * @param buf the pointer to buffer object.
  * @param size the number of bytes to be removed.
  * @return 0 on success or a negative value if an error occurs.
@@ -823,7 +824,7 @@ xmlSecBufferDebugHexDump(xmlSecBufferPtr buf, FILE* output) {
  *
  * IO buffer
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int      xmlSecBufferIOWrite                             (xmlSecBufferPtr buf,
                                                                  const xmlSecByte *data,
                                                                  int len);

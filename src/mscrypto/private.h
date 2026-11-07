@@ -117,13 +117,8 @@ PCCERT_CONTEXT     xmlSecMSCryptoX509FindCertBySubject          (HCERTSTORE stor
                                                                  LPCTSTR wcSubject,
                                                                  DWORD dwCertEncodingType);
 
+
 PCCERT_CONTEXT     xmlSecMSCryptoX509StoreFindCert              (xmlSecKeyDataStorePtr store,
-                                                                 const xmlChar *subjectName,
-                                                                 const xmlChar *issuerName,
-                                                                 const xmlChar *issuerSerial,
-                                                                 xmlChar *ski,
-                                                                 xmlSecKeyInfoCtx* keyInfoCtx);
-PCCERT_CONTEXT     xmlSecMSCryptoX509StoreFindCert_ex           (xmlSecKeyDataStorePtr store,
                                                                  const xmlChar *subjectName,
                                                                  const xmlChar *issuerName,
                                                                  const xmlChar *issuerSerial,

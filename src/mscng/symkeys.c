@@ -273,7 +273,7 @@ xmlSecMSCngKeyDataAesGetKlass(void) {
  *
  * <xmlsec:ChaCha20KeyValue> processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_SYMKEY_WITH_XML(ChaCha20,
     xmlSecNameChaCha20KeyValue,
     xmlSecHrefChaCha20KeyValue,

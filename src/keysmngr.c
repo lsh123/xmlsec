@@ -535,7 +535,7 @@ xmlSecSimpleKeysStoreLoad_ex(
                                     XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS;
         keyInfoCtx.keyReq.keyId   = xmlSecKeyDataIdUnknown;
         keyInfoCtx.keyReq.keyType = xmlSecKeyDataTypeAny;
-        keyInfoCtx.keyReq.keyUsage= xmlSecKeyDataUsageAny;
+        keyInfoCtx.keyReq.keyUsage= xmlSecKeyUsageAny;
 
         /* enable all keydata for store */
         ret = xmlSecSimpleKeysStoreEnableAllKeyData(&keyInfoCtx);
@@ -677,7 +677,7 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecK
         keyInfoCtx.mode                 = xmlSecKeyInfoModeWrite;
         keyInfoCtx.keyReq.keyId         = xmlSecKeyDataIdUnknown;
         keyInfoCtx.keyReq.keyType       = type;
-        keyInfoCtx.keyReq.keyUsage      = xmlSecKeyDataUsageAny;
+        keyInfoCtx.keyReq.keyUsage      = xmlSecKeyUsageAny;
 
         /* enable all keydata for store */
         ret = xmlSecSimpleKeysStoreEnableAllKeyData(&keyInfoCtx);

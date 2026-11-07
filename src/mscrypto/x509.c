@@ -743,7 +743,7 @@ xmlSecMSCryptoKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x
         }
     }
     else if (xmlSecBufferGetSize(&(x509Value->ski)) > 0) {
-        cert = xmlSecMSCryptoX509StoreFindCert_ex(x509Store, NULL, NULL, NULL,
+        cert = xmlSecMSCryptoX509StoreFindCert(x509Store, NULL, NULL, NULL,
             xmlSecBufferGetData(&(x509Value->ski)), xmlSecBufferGetSize(&(x509Value->ski)),
             NULL /* unused */);
         if ((cert == NULL) && (stopOnUnknownCert != 0)) {
@@ -753,7 +753,7 @@ xmlSecMSCryptoKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x
         }
     }
     else if (x509Value->subject != NULL) {
-        cert = xmlSecMSCryptoX509StoreFindCert_ex(x509Store, x509Value->subject,
+        cert = xmlSecMSCryptoX509StoreFindCert(x509Store, x509Value->subject,
             NULL, NULL, NULL, 0, NULL /* unused */);
         if ((cert == NULL) && (stopOnUnknownCert != 0)) {
             xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data),
@@ -762,7 +762,7 @@ xmlSecMSCryptoKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x
         }
     }
     else if ((x509Value->issuerName != NULL) && (x509Value->issuerSerial != NULL)) {
-        cert = xmlSecMSCryptoX509StoreFindCert_ex(x509Store, NULL,
+        cert = xmlSecMSCryptoX509StoreFindCert(x509Store, NULL,
             x509Value->issuerName, x509Value->issuerSerial,
             NULL, 0, NULL /* unused */);
         if ((cert == NULL) && (stopOnUnknownCert != 0)) {

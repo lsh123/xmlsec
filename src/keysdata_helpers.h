@@ -21,6 +21,10 @@
 #include <xmlsec/transforms.h>
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 XMLSEC_EXPORT void              xmlSecKeyDataDebugDumpImpl      (xmlSecKeyDataPtr data,
                                                                  FILE* output);
 XMLSEC_EXPORT void              xmlSecKeyDataDebugXmlDumpImpl   (xmlSecKeyDataPtr data,
@@ -206,7 +210,7 @@ typedef struct _xmlSecKeyValueDh {
     xmlSecBuffer p;  /**< the DH prime. */
     xmlSecBuffer q;  /**< the DH subgroup order. */
     xmlSecBuffer generator;  /**< the DH generator. */
-    xmlSecBuffer public;  /**< the DH public value. */
+    xmlSecBuffer pub;  /**< the DH public value. */
     xmlSecBuffer seed;  /**< the DH seed. */
     xmlSecBuffer pgenCounter;  /**< the DH pgen counter. */
 } xmlSecKeyValueDh, *xmlSecKeyValueDhPtr;
@@ -347,5 +351,10 @@ XMLSEC_EXPORT xmlSecKeyDataId   xmlSecKeyDataKEMGetKlass        (void);
 XMLSEC_EXPORT xmlSecBufferPtr   xmlSecKeyDataKEMGetCiphertext   (xmlSecKeyDataPtr data);
 
 #endif /* !defined(XMLSEC_NO_MLKEM) */
+
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* XMLSEC_KEYSDATA_HELPERS_H */

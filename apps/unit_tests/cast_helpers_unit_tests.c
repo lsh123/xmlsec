@@ -466,7 +466,9 @@ failed:
 
 static void
 test_safe_cast_size_t_to_int(void) {
+#if (SIZE_MAX > INT_MAX)
     size_t src;
+#endif /* (SIZE_MAX > INT_MAX) */
     int dst = 0;
     int ret;
 
@@ -505,7 +507,9 @@ failed:
 
 static void
 test_safe_cast_size_to_int(void) {
+#if (XMLSEC_SIZE_MAX > INT_MAX)
     xmlSecSize src;
+#endif /* (XMLSEC_SIZE_MAX > INT_MAX) */
     int dst = 0;
     int ret;
 

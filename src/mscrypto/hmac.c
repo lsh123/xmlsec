@@ -209,7 +209,6 @@ xmlSecMSCryptoHmacInitialize(xmlSecTransformPtr transform) {
     if (!xmlSecMSCryptoCreatePrivateExponentOneKey(ctx->provider, &(ctx->pubPrivKey))) {
         xmlSecMSCryptoError("xmlSecMSCryptoCreatePrivateExponentOneKey",
                             xmlSecTransformGetName(transform));
-
         /* release the provider acquired above so it is not held until the
          * caller's finalize */
         if (!CryptReleaseContext(ctx->provider, 0)) {

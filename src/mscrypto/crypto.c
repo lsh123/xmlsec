@@ -430,8 +430,10 @@ xmlSecMSCryptoGetErrorMessage(DWORD dwError, xmlChar * out, size_t outLen) {
 
     ret = WideCharToMultiByte(CP_UTF8, 0, errorTextW, -1, (LPSTR)out, cbOutLen, NULL, NULL);
     if(ret <= 0) {
+        out[0] = '\0'; /* just in case */
         goto done;
     }
+
     /* MSDN: when the output buffer is too small, WideCharToMultiByte performs a
      * partial conversion and does NOT NUL-terminate; force termination so `out`
      * is always a valid C string (truncated to cbOutLen-1 characters) */
@@ -490,10 +492,6 @@ xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
     xmlSecAssert2(providers != NULL, 0);
 
     for(ii = 0; (res == 0) && (providers[ii].providerName != NULL) && (providers[ii].providerType != 0); ++ii) {
-        /* CryptAcquireContext is not documented to zero *phProv on failure, so
-         * reset it before each attempt to keep the loop condition correct. */
-        res = 0;
-
         /* first try */
         ret = CryptAcquireContext(&res,
                     pszContainer,
@@ -503,6 +501,10 @@ xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
         if((ret == TRUE) && (res != 0)) {
             return (res);
         }
+
+        /* CryptAcquireContext is not documented to zero *phProv on failure, so
+         * reset it after each attempt. */
+        res = 0;
 
         /* CryptoAPI sets the last error to an NTE_* code, so compare against it directly. */
         dwLastError = GetLastError();
@@ -514,7 +516,6 @@ xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
              * This is also referenced in
              * http://www.microsoft.com/mind/0697/crypto.asp (inituser)
              */
-            res = 0;
             ret = CryptAcquireContext(&res,
                         pszContainer,
                         providers[ii].providerName,
@@ -528,6 +529,11 @@ xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
                  * CRYPT_DELETEKEYSET cleanup exists). */
                 return (res);
             }
+
+            /* CryptAcquireContext is not documented to zero *phProv on failure, so
+            * reset it after each attempt. */
+            res = 0;
+
             break;
 
         case (DWORD)NTE_EXISTS:
@@ -536,7 +542,6 @@ xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
              * future callers that request a persistent container. */
             /* If we can, try our container */
             if(bUseXmlSecContainer == TRUE) {
-                res = 0;
                 ret = CryptAcquireContext(&res,
                             XMLSEC_CONTAINER_NAME,
                             providers[ii].providerName,
@@ -555,6 +560,10 @@ xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
                      */
                     return (res);
                 }
+
+                /* CryptAcquireContext is not documented to zero *phProv on failure, so
+                * reset it after each attempt. */
+                res = 0;
             }
             break;
 

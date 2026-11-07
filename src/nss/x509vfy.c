@@ -607,22 +607,22 @@ xmlSecNssX509StoreVerifyCert(
         case SEC_ERROR_UNKNOWN_SIGNER:
             xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_ISSUER_FAILED, NULL,
                 "subject=\"%s\"; reason=the issuer's cert is expired/invalid or not found",
-                xmlSecErrorsSafeString(cert != NULL ? cert->subjectName : NULL));
+                xmlSecErrorsSafeString(cert->subjectName));
             break;
         case SEC_ERROR_EXPIRED_CERTIFICATE:
             xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_HAS_EXPIRED, NULL,
                 "subject=\"%s\"; reason=expired",
-                xmlSecErrorsSafeString(cert != NULL ? cert->subjectName : NULL));
+                xmlSecErrorsSafeString(cert->subjectName));
             break;
         case SEC_ERROR_REVOKED_CERTIFICATE:
             xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_REVOKED, NULL,
                 "subject=\"%s\"; reason=revoked",
-                xmlSecErrorsSafeString(cert != NULL ? cert->subjectName : NULL));
+                xmlSecErrorsSafeString(cert->subjectName));
             break;
         default:
             xmlSecOtherError3(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL,
                 "subject=\"%s\"; reason=%d",
-                xmlSecErrorsSafeString(cert != NULL ? cert->subjectName : NULL),
+                xmlSecErrorsSafeString(cert->subjectName),
                 err);
             break;
     }

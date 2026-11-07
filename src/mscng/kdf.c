@@ -28,12 +28,6 @@
 #include "../transform_helpers.h"
 #include "private.h"
 
-/* SHA224 algorithm identifier is not defined in the Windows SDK bcrypt.h;
- * provide a fallback so the code compiles. */
-#ifndef BCRYPT_SHA224_ALGORITHM
-#define BCRYPT_SHA224_ALGORITHM             L"SHA224"
-#endif /* BCRYPT_SHA224_ALGORITHM */
-
 /******************************************************************************
  *
  * Unified KDF transform context (used for both PBKDF2 and HKDF)
@@ -253,7 +247,7 @@ xmlSecMSCngKdfSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 }
 
 
-/* convert PRF algorithm href to MSCng hash algo */
+/* Convert PRF algorithm href to MSCNG hash algo. MSCNG does not support SHA224. */
 static LPCWSTR
 xmlSecMSCngKdfGetHashAlgoFromHref(const xmlChar* href) {
     /* xmlSecTransformPbkdf2ParamsRead and xmlSecTransformHkdfParamsRead require a non-NULL PRF href */
@@ -264,12 +258,6 @@ xmlSecMSCngKdfGetHashAlgoFromHref(const xmlChar* href) {
         return(BCRYPT_SHA1_ALGORITHM);
     } else
 #endif /* XMLSEC_NO_SHA1 */
-
-#ifndef XMLSEC_NO_SHA224
-    if(xmlStrcmp(href, xmlSecHrefHmacSha224) == 0) {
-        return(BCRYPT_SHA224_ALGORITHM);
-    } else
-#endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA256
     if(xmlStrcmp(href, xmlSecHrefHmacSha256) == 0) {

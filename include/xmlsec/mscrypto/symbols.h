@@ -45,19 +45,15 @@ extern "C" {
 #define xmlSecKeyDataGostR3410_2012_512Id       xmlSecMSCryptoKeyDataGost2012_512Id
 #define xmlSecKeyDataHmacId                     xmlSecMSCryptoKeyDataHmacId
 #define xmlSecKeyDataRsaId                      xmlSecMSCryptoKeyDataRsaId
-#ifndef XMLSEC_NO_X509
 #define xmlSecKeyDataX509Id                     xmlSecMSCryptoKeyDataX509Id
 #define xmlSecKeyDataRawX509CertId              xmlSecMSCryptoKeyDataRawX509CertId
-#endif /* XMLSEC_NO_X509 */
 
 /******************************************************************************
  *
  * Key data store ids
  *
  *****************************************************************************/
-#ifndef XMLSEC_NO_X509
 #define xmlSecX509StoreId                       xmlSecMSCryptoX509StoreId
-#endif /* XMLSEC_NO_X509 */
 
 /******************************************************************************
  *
@@ -138,23 +134,17 @@ extern "C" {
 #define xmlSecCryptoAppDefaultKeysMngrVerifyKey xmlSecMSCryptoAppDefaultKeysMngrVerifyKey
 #define xmlSecCryptoAppDefaultKeysMngrLoad      xmlSecMSCryptoAppDefaultKeysMngrLoad
 #define xmlSecCryptoAppDefaultKeysMngrSave      xmlSecMSCryptoAppDefaultKeysMngrSave
-#ifndef XMLSEC_NO_X509
 #define xmlSecCryptoAppKeysMngrCertLoad         xmlSecMSCryptoAppKeysMngrCertLoad
 #define xmlSecCryptoAppKeysMngrCertLoadMemory   xmlSecMSCryptoAppKeysMngrCertLoadMemory
 #define xmlSecCryptoAppKeysMngrCrlLoad          xmlSecMSCryptoAppKeysMngrCrlLoad
 #define xmlSecCryptoAppKeysMngrCrlLoadMemory    xmlSecMSCryptoAppKeysMngrCrlLoadMemory
 #define xmlSecCryptoAppKeysMngrCrlLoadAndVerify xmlSecMSCryptoAppKeysMngrCrlLoadAndVerify
-#endif /* XMLSEC_NO_X509 */
 #define xmlSecCryptoAppKeyLoadEx                xmlSecMSCryptoAppKeyLoadEx
-#ifndef XMLSEC_NO_X509
 #define xmlSecCryptoAppPkcs12Load               xmlSecMSCryptoAppPkcs12Load
 #define xmlSecCryptoAppKeyCertLoad              xmlSecMSCryptoAppKeyCertLoad
-#endif /* XMLSEC_NO_X509 */
 #define xmlSecCryptoAppKeyLoadMemory            xmlSecMSCryptoAppKeyLoadMemory
-#ifndef XMLSEC_NO_X509
 #define xmlSecCryptoAppPkcs12LoadMemory         xmlSecMSCryptoAppPkcs12LoadMemory
 #define xmlSecCryptoAppKeyCertLoadMemory        xmlSecMSCryptoAppKeyCertLoadMemory
-#endif /* XMLSEC_NO_X509 */
 #define xmlSecCryptoAppGetDefaultPwdCallback    xmlSecMSCryptoAppGetDefaultPwdCallback
 
 #endif /* XMLSEC_CRYPTO_MSCRYPTO */

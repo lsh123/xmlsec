@@ -17,6 +17,10 @@
 
 #include <xmlsec/buffer.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 /**
  * @brief The content of a child of an &lt;X509Data&gt; node.
  * @details Not all values will be set!
@@ -50,6 +54,10 @@ typedef struct _xmlSecKeyX509DataValue                  xmlSecKeyX509DataValue;
  * @brief Pointer to xmlSecKeyX509DataValue.
  */
 typedef struct _xmlSecKeyX509DataValue                  *xmlSecKeyX509DataValuePtr;
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 /** @} */ /* xmlsec_core_x509 */
 

@@ -991,9 +991,11 @@ typedef struct xmlSecUnitTestContextStringParams {
  * pointer to the name, so the name is built in a static buffer; the harness
  * runs the tests sequentially, so this is safe. If the combined name does
  * not fit into the buffer, the label alone is used to start the test and the
- * test is marked as failed.
+ * test is marked as failed. Returns 0 on success and a negative value if the
+ * combined name does not fit into the buffer; in that case the caller must
+ * stop executing the test body immediately (the test is already finished).
  */
-static void
+static int
 xmlSecUnitTestStartTest(const char* label, const char* suffix) {
     static char name[128];
     int ret;
@@ -1003,9 +1005,10 @@ xmlSecUnitTestStartTest(const char* label, const char* suffix) {
         testStart(label);
         testLog("Error: failed to build test name\n");
         testFinishedFailure();
-        return;
+        return(-1);
     }
     testStart(name);
+    return(0);
 }
 
 /*
@@ -1095,7 +1098,9 @@ test_xmlSecTransformContextStringRead_null_node(const xmlSecUnitTestContextStrin
     xmlSecBuffer buf;
     int ret;
 
-    xmlSecUnitTestStartTest(params->label, "null node");
+    if(xmlSecUnitTestStartTest(params->label, "null node") < 0) {
+        return;
+    }
 
     ret = xmlSecBufferInitialize(&buf, 0);
     if(ret < 0) {
@@ -1124,7 +1129,9 @@ test_xmlSecTransformContextStringRead_null_buffer(const xmlSecUnitTestContextStr
     xmlNodePtr node;
     int ret;
 
-    xmlSecUnitTestStartTest(params->label, "null buffer");
+    if(xmlSecUnitTestStartTest(params->label, "null buffer") < 0) {
+        return;
+    }
 
     ret = xmlSecUnitTestBuildContextElementXml(XMLSEC_UNIT_TEST_CONTEXT_NS_URI,
         XMLSEC_UNIT_TEST_CONTEXT_B64, contextXml, sizeof(contextXml));
@@ -1167,7 +1174,9 @@ test_xmlSecTransformContextStringRead_no_context(const xmlSecUnitTestContextStri
     xmlSecBuffer buf;
     int ret;
 
-    xmlSecUnitTestStartTest(params->label, "no context string");
+    if(xmlSecUnitTestStartTest(params->label, "no context string") < 0) {
+        return;
+    }
 
     ret = xmlSecUnitTestBuildSignatureMethodXml(params->algorithm, "", xml, sizeof(xml));
     if(ret < 0) {
@@ -1214,7 +1223,9 @@ test_xmlSecTransformContextStringRead_signature_method(const xmlSecUnitTestConte
     const xmlSecByte* data;
     int ret;
 
-    xmlSecUnitTestStartTest(params->label, "valid context string in SignatureMethod");
+    if(xmlSecUnitTestStartTest(params->label, "valid context string in SignatureMethod") < 0) {
+        return;
+    }
 
     ret = xmlSecUnitTestBuildContextElementXml(XMLSEC_UNIT_TEST_CONTEXT_NS_URI,
         XMLSEC_UNIT_TEST_CONTEXT_B64, contextXml, sizeof(contextXml));
@@ -1286,7 +1297,9 @@ test_xmlSecTransformContextStringRead_signature_method_max_size(const xmlSecUnit
     xmlSecBuffer buf;
     int ret;
 
-    xmlSecUnitTestStartTest(params->label, "SignatureMethod context string at max size");
+    if(xmlSecUnitTestStartTest(params->label, "SignatureMethod context string at max size") < 0) {
+        return;
+    }
 
     contextB64 = xmlSecUnitTestBuildBase64Payload(params->maxSize);
     if(contextB64 == NULL) {
@@ -1364,7 +1377,9 @@ test_xmlSecTransformContextStringRead_signature_method_exceeds_max(const xmlSecU
     xmlSecBuffer buf;
     int ret;
 
-    xmlSecUnitTestStartTest(params->label, "SignatureMethod context string exceeds max size");
+    if(xmlSecUnitTestStartTest(params->label, "SignatureMethod context string exceeds max size") < 0) {
+        return;
+    }
 
     contextB64 = xmlSecUnitTestBuildBase64Payload(params->maxSize + 1);
     if(contextB64 == NULL) {
@@ -1431,7 +1446,9 @@ test_xmlSecTransformContextStringRead_invalid_base64(const xmlSecUnitTestContext
     xmlSecBuffer buf;
     int ret;
 
-    xmlSecUnitTestStartTest(params->label, "invalid base64 content in SignatureMethod");
+    if(xmlSecUnitTestStartTest(params->label, "invalid base64 content in SignatureMethod") < 0) {
+        return;
+    }
 
     ret = xmlSecUnitTestBuildContextElementXml(XMLSEC_UNIT_TEST_CONTEXT_NS_URI,
         "QQ!Q", contextXml, sizeof(contextXml));
@@ -1485,7 +1502,9 @@ test_xmlSecTransformContextStringRead_unexpected_first_child(const xmlSecUnitTes
     xmlSecBuffer buf;
     int ret;
 
-    xmlSecUnitTestStartTest(params->label, "unexpected first child in SignatureMethod");
+    if(xmlSecUnitTestStartTest(params->label, "unexpected first child in SignatureMethod") < 0) {
+        return;
+    }
 
     ret = xmlSecUnitTestBuildSignatureMethodXml(params->algorithm, extraXml, xml, sizeof(xml));
     if(ret < 0) {
@@ -1533,7 +1552,9 @@ test_xmlSecTransformContextStringRead_extra_child_after_context(const xmlSecUnit
     xmlSecBuffer buf;
     int ret;
 
-    xmlSecUnitTestStartTest(params->label, "extra child after context string in SignatureMethod");
+    if(xmlSecUnitTestStartTest(params->label, "extra child after context string in SignatureMethod") < 0) {
+        return;
+    }
 
     ret = xmlSecUnitTestBuildContextElementXml(XMLSEC_UNIT_TEST_CONTEXT_NS_URI,
         XMLSEC_UNIT_TEST_CONTEXT_B64, contextXml, sizeof(contextXml));
@@ -1594,7 +1615,9 @@ test_xmlSecTransformContextStringRead_wrong_namespace(const xmlSecUnitTestContex
     xmlSecBuffer buf;
     int ret;
 
-    xmlSecUnitTestStartTest(params->label, "context string with wrong namespace");
+    if(xmlSecUnitTestStartTest(params->label, "context string with wrong namespace") < 0) {
+        return;
+    }
 
     ret = xmlSecUnitTestBuildContextElementXml(XMLSEC_UNIT_TEST_WRONG_NS_URI,
         XMLSEC_UNIT_TEST_CONTEXT_B64, contextXml, sizeof(contextXml));
@@ -1651,7 +1674,9 @@ test_xmlSecTransformContextStringRead_object(const xmlSecUnitTestContextStringPa
     const xmlSecByte* data;
     int ret;
 
-    xmlSecUnitTestStartTest(params->label, "valid context string in Object");
+    if(xmlSecUnitTestStartTest(params->label, "valid context string in Object") < 0) {
+        return;
+    }
 
     ret = xmlSecUnitTestBuildContextElementXml(XMLSEC_UNIT_TEST_CONTEXT_NS_URI,
         XMLSEC_UNIT_TEST_CONTEXT_B64, contextXml, sizeof(contextXml));
@@ -1735,7 +1760,9 @@ test_xmlSecTransformContextStringRead_object_exceeds_max(const xmlSecUnitTestCon
     xmlSecBuffer buf;
     int ret;
 
-    xmlSecUnitTestStartTest(params->label, "Object context string exceeds max size");
+    if(xmlSecUnitTestStartTest(params->label, "Object context string exceeds max size") < 0) {
+        return;
+    }
 
     contextB64 = xmlSecUnitTestBuildBase64Payload(params->maxSize + 1);
     if(contextB64 == NULL) {
@@ -1815,7 +1842,9 @@ test_xmlSecTransformContextStringRead_both_method_and_object(const xmlSecUnitTes
     xmlSecBuffer buf;
     int ret;
 
-    xmlSecUnitTestStartTest(params->label, "context strings in both SignatureMethod and Object");
+    if(xmlSecUnitTestStartTest(params->label, "context strings in both SignatureMethod and Object") < 0) {
+        return;
+    }
 
     ret = xmlSecUnitTestBuildContextElementXml(XMLSEC_UNIT_TEST_CONTEXT_NS_URI,
         XMLSEC_UNIT_TEST_CONTEXT_B64, contextXml, sizeof(contextXml));
@@ -1879,7 +1908,9 @@ test_xmlSecTransformContextStringRead_non_empty_buffer(const xmlSecUnitTestConte
     xmlSecBuffer buf;
     int ret;
 
-    xmlSecUnitTestStartTest(params->label, "non-empty result buffer");
+    if(xmlSecUnitTestStartTest(params->label, "non-empty result buffer") < 0) {
+        return;
+    }
 
     ret = xmlSecUnitTestBuildSignatureMethodXml(params->algorithm, "", xml, sizeof(xml));
     if(ret < 0) {

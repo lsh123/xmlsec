@@ -329,70 +329,6 @@ test_xmlSecBnFromString_emptyAndWhitespaceBothZero(void) {
 }
 
 static void
-test_xmlSecBnAdd_mulMsbNoPrefix(void) {
-    static const xmlSecByte expectedAdd[] = { 0x80 };
-    static const xmlSecByte expectedMul[] = { 0xFE };
-    xmlSecBn bn;
-    int ret;
-
-    testStart("xmlSecBnAdd/xmlSecBnMul: no 0x00 prefix when MSB set");
-
-    ret = xmlSecBnInitialize(&bn, 0);
-    if(ret < 0) {
-        testLog("Error: xmlSecBnInitialize failed\n");
-        testFinishedFailure();
-        return;
-    }
-
-    /* 0x7F + 1 = 0x80 (MSB set) must not carry a 0x00 prefix */
-    ret = xmlSecBnFromHexString(&bn, BAD_CAST "7F");
-    if(ret < 0) {
-        testLog("Error: xmlSecBnFromHexString failed for '7F'\n");
-        xmlSecBnFinalize(&bn);
-        testFinishedFailure();
-        return;
-    }
-    ret = xmlSecBnAdd(&bn, 1);
-    if(ret < 0) {
-        testLog("Error: xmlSecBnAdd failed for 0x7F + 1\n");
-        xmlSecBnFinalize(&bn);
-        testFinishedFailure();
-        return;
-    }
-    if(!bnTestCheckData(&bn, expectedAdd, sizeof(expectedAdd))) {
-        testLog("Error: 0x7F + 1 produced an unexpected 0x00 prefix\n");
-        xmlSecBnFinalize(&bn);
-        testFinishedFailure();
-        return;
-    }
-
-    /* 0x7F * 2 = 0xFE (MSB set) must not carry a 0x00 prefix */
-    ret = xmlSecBnFromHexString(&bn, BAD_CAST "7F");
-    if(ret < 0) {
-        testLog("Error: xmlSecBnFromHexString failed for '7F'\n");
-        xmlSecBnFinalize(&bn);
-        testFinishedFailure();
-        return;
-    }
-    ret = xmlSecBnMul(&bn, 2);
-    if(ret < 0) {
-        testLog("Error: xmlSecBnMul failed for 0x7F * 2\n");
-        xmlSecBnFinalize(&bn);
-        testFinishedFailure();
-        return;
-    }
-    if(!bnTestCheckData(&bn, expectedMul, sizeof(expectedMul))) {
-        testLog("Error: 0x7F * 2 produced an unexpected 0x00 prefix\n");
-        xmlSecBnFinalize(&bn);
-        testFinishedFailure();
-        return;
-    }
-
-    xmlSecBnFinalize(&bn);
-    testFinishedSuccess();
-}
-
-static void
 test_xmlSecBnFromString_base2AndBase8_roundTrip(void) {
     xmlSecBn bn;
     xmlChar* str;
@@ -631,6 +567,43 @@ test_xmlSecBnToString_largeMultiByte_roundTrip(void) {
         testFinishedFailure();
         return;
     }
+
+    xmlSecBnFinalize(&bn);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecBnToString_zeroBnProducesZero(void) {
+    xmlSecBn bn;
+    xmlChar* str;
+    int ret;
+
+    testStart("xmlSecBnToHexString/xmlSecBnToDecString: empty BN produces '0'");
+
+    ret = xmlSecBnInitialize(&bn, 0);
+    if(ret < 0) {
+        testLog("Error: xmlSecBnInitialize failed\n");
+        testFinishedFailure();
+        return;
+    }
+
+    str = xmlSecBnToHexString(&bn);
+    if(!bnTestCheckString(str, "0")) {
+        xmlFree(str);
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(str);
+
+    str = xmlSecBnToDecString(&bn);
+    if(!bnTestCheckString(str, "0")) {
+        xmlFree(str);
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(str);
 
     xmlSecBnFinalize(&bn);
     testFinishedSuccess();
@@ -1585,6 +1558,392 @@ test_xmlSecBnReverse_emptyAndSingleByte(void) {
     testFinishedSuccess();
 }
 
+static void
+test_xmlSecBnAdd_mulMsbNoPrefix(void) {
+    static const xmlSecByte expectedAdd[] = { 0x80 };
+    static const xmlSecByte expectedMul[] = { 0xFE };
+    xmlSecBn bn;
+    int ret;
+
+    testStart("xmlSecBnAdd/xmlSecBnMul: no 0x00 prefix when MSB set");
+
+    ret = xmlSecBnInitialize(&bn, 0);
+    if(ret < 0) {
+        testLog("Error: xmlSecBnInitialize failed\n");
+        testFinishedFailure();
+        return;
+    }
+
+    /* 0x7F + 1 = 0x80 (MSB set) must not carry a 0x00 prefix */
+    ret = xmlSecBnFromHexString(&bn, BAD_CAST "7F");
+    if(ret < 0) {
+        testLog("Error: xmlSecBnFromHexString failed for '7F'\n");
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+    ret = xmlSecBnAdd(&bn, 1);
+    if(ret < 0) {
+        testLog("Error: xmlSecBnAdd failed for 0x7F + 1\n");
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+    if(!bnTestCheckData(&bn, expectedAdd, sizeof(expectedAdd))) {
+        testLog("Error: 0x7F + 1 produced an unexpected 0x00 prefix\n");
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+
+    /* 0x7F * 2 = 0xFE (MSB set) must not carry a 0x00 prefix */
+    ret = xmlSecBnFromHexString(&bn, BAD_CAST "7F");
+    if(ret < 0) {
+        testLog("Error: xmlSecBnFromHexString failed for '7F'\n");
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+    ret = xmlSecBnMul(&bn, 2);
+    if(ret < 0) {
+        testLog("Error: xmlSecBnMul failed for 0x7F * 2\n");
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+    if(!bnTestCheckData(&bn, expectedMul, sizeof(expectedMul))) {
+        testLog("Error: 0x7F * 2 produced an unexpected 0x00 prefix\n");
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecBnFinalize(&bn);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecBnAdd_cascadingBorrow(void) {
+    xmlSecBn bn;
+    int ret;
+
+    testStart("xmlSecBnAdd: 3-byte cascading borrow 0x010000 - 1 = 0xFFFF");
+
+    ret = xmlSecBnInitialize(&bn, 0);
+    if(ret < 0) {
+        testLog("Error: xmlSecBnInitialize failed\n");
+        testFinishedFailure();
+        return;
+    }
+
+    if(testBnAdd(&bn, "010000", -1, "FFFF") < 0) {
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecBnFinalize(&bn);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecBnAdd_toEmptyBn(void) {
+    xmlSecBn bn;
+    xmlChar* str;
+    int ret;
+
+    testStart("xmlSecBnAdd: positive delta to empty BN");
+
+    ret = xmlSecBnInitialize(&bn, 0);
+    if(ret < 0) {
+        testLog("Error: xmlSecBnInitialize failed\n");
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecBnAdd(&bn, 5);
+    if(ret < 0) {
+        testLog("Error: xmlSecBnAdd failed\n");
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+
+    str = xmlSecBnToDecString(&bn);
+    if(!bnTestCheckString(str, "5")) {
+        xmlFree(str);
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(str);
+
+    xmlSecBnFinalize(&bn);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecBnCompare_lessThanLongerData(void) {
+    static const xmlSecByte initial[] = { 0x01 };
+    static const xmlSecByte larger[] = { 0x01, 0x00 };
+    xmlSecBn bn;
+    int ret;
+
+    testStart("xmlSecBnCompare: less than value with longer data");
+
+    ret = xmlSecBnInitialize(&bn, sizeof(initial));
+    if(ret < 0) {
+        testLog("Error: xmlSecBnInitialize failed\n");
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecBnSetData(&bn, initial, sizeof(initial));
+    if(ret < 0) {
+        testLog("Error: xmlSecBnSetData failed\n");
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecBnCompare(&bn, larger, sizeof(larger));
+    if(ret >= 0) {
+        testLog("Error: expected negative compare result, got %d\n", ret);
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecBnFinalize(&bn);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecBnCompareReverse_equalAndLessThan(void) {
+    static const xmlSecByte initial_eq[] = { 0x01, 0x02 };
+    static const xmlSecByte dataReverse_eq[] = { 0x02, 0x01 };
+    static const xmlSecByte initial_lt[] = { 0x01 };
+    static const xmlSecByte dataReverse_lt[] = { 0x00, 0x01 };
+    xmlSecBn bn;
+    int ret;
+
+    testStart("xmlSecBnCompareReverse: equal and less-than cases");
+
+    ret = xmlSecBnInitialize(&bn, 0);
+    if(ret < 0) {
+        testLog("Error: xmlSecBnInitialize failed\n");
+        testFinishedFailure();
+        return;
+    }
+
+    /* equal case: BN {0x01, 0x02} vs reverse data {0x02, 0x01} */
+    ret = xmlSecBnSetData(&bn, initial_eq, sizeof(initial_eq));
+    if(ret < 0) {
+        testLog("Error: xmlSecBnSetData failed\n");
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+    ret = xmlSecBnCompareReverse(&bn, dataReverse_eq, sizeof(dataReverse_eq));
+    if(ret != 0) {
+        testLog("Error: expected compare result 0 (equal), got %d\n", ret);
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+
+    /* less-than case: BN {0x01} (=1) vs reverse data {0x00, 0x01} (=256) */
+    ret = xmlSecBnSetData(&bn, initial_lt, sizeof(initial_lt));
+    if(ret < 0) {
+        testLog("Error: xmlSecBnSetData failed\n");
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+    ret = xmlSecBnCompareReverse(&bn, dataReverse_lt, sizeof(dataReverse_lt));
+    if(ret >= 0) {
+        testLog("Error: expected negative compare result (less-than), got %d\n", ret);
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecBnFinalize(&bn);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecBnDiv_zeroBn(void) {
+    xmlSecBn bn;
+    int ret;
+
+    testStart("xmlSecBnDiv: zero BN divided gives zero quotient and zero modulus");
+
+    ret = xmlSecBnInitialize(&bn, 0);
+    if(ret < 0) {
+        testLog("Error: xmlSecBnInitialize failed\n");
+        testFinishedFailure();
+        return;
+    }
+
+    if(testBnDiv(&bn, "0", 2, "0", 0) < 0) {
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecBnFinalize(&bn);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecBnAdd_zeroDeltaIsNoop(void) {
+    xmlSecBn bn;
+    xmlChar* str;
+    int ret;
+
+    testStart("xmlSecBnAdd: delta=0 is a no-op");
+
+    ret = xmlSecBnInitialize(&bn, 0);
+    if(ret < 0) {
+        testLog("Error: xmlSecBnInitialize failed\n");
+        testFinishedFailure();
+        return;
+    }
+
+    /* all strings are hexadecimal */
+    ret = xmlSecBnFromHexString(&bn, BAD_CAST "1234");
+    if(ret < 0) {
+        testLog("Error: xmlSecBnFromHexString failed for '1234'\n");
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecBnAdd(&bn, 0);
+    if(ret < 0) {
+        testLog("Error: xmlSecBnAdd with delta=0 failed\n");
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+
+    str = xmlSecBnToHexString(&bn);
+    if(!bnTestCheckString(str, "1234")) {
+        testLog("Error: xmlSecBnAdd with delta=0 changed the value\n");
+        xmlFree(str);
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(str);
+
+    /* delta=0 on an empty (zero) BN must also succeed */
+    xmlSecBnZero(&bn);
+    ret = xmlSecBnAdd(&bn, 0);
+    if(ret < 0) {
+        testLog("Error: xmlSecBnAdd with delta=0 on an empty BN failed\n");
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecBnFinalize(&bn);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecBnMul_invalidMultiplierReturnsError(void) {
+    xmlSecBn bn;
+    int ret;
+
+    testStart("xmlSecBnMul: zero and negative multipliers are rejected");
+
+    ret = xmlSecBnInitialize(&bn, 0);
+    if(ret < 0) {
+        testLog("Error: xmlSecBnInitialize failed\n");
+        testFinishedFailure();
+        return;
+    }
+
+    /* all strings are hexadecimal */
+    ret = xmlSecBnFromHexString(&bn, BAD_CAST "1234");
+    if(ret < 0) {
+        testLog("Error: xmlSecBnFromHexString failed for '1234'\n");
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+
+    /* multiplier=0 must be rejected */
+    ret = xmlSecBnMul(&bn, 0);
+    if(ret >= 0) {
+        testLog("Error: xmlSecBnMul unexpectedly succeeded with multiplier=0\n");
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+
+    /* a negative multiplier must be rejected */
+    ret = xmlSecBnMul(&bn, -1);
+    if(ret >= 0) {
+        testLog("Error: xmlSecBnMul unexpectedly succeeded with multiplier=-1\n");
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecBnFinalize(&bn);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecBnDiv_invalidArgsReturnError(void) {
+    xmlSecBn bn;
+    int mod;
+    int ret;
+
+    testStart("xmlSecBnDiv: zero divider and NULL mod are rejected");
+
+    ret = xmlSecBnInitialize(&bn, 0);
+    if(ret < 0) {
+        testLog("Error: xmlSecBnInitialize failed\n");
+        testFinishedFailure();
+        return;
+    }
+
+    /* all strings are hexadecimal */
+    ret = xmlSecBnFromHexString(&bn, BAD_CAST "1234");
+    if(ret < 0) {
+        testLog("Error: xmlSecBnFromHexString failed for '1234'\n");
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+
+    /* divider=0 must be rejected */
+    mod = -1;
+    ret = xmlSecBnDiv(&bn, 0, &mod);
+    if(ret >= 0) {
+        testLog("Error: xmlSecBnDiv unexpectedly succeeded with divider=0\n");
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+
+    /* a NULL mod pointer must be rejected */
+    ret = xmlSecBnDiv(&bn, 2, NULL);
+    if(ret >= 0) {
+        testLog("Error: xmlSecBnDiv unexpectedly succeeded with a NULL mod pointer\n");
+        xmlSecBnFinalize(&bn);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecBnFinalize(&bn);
+    testFinishedSuccess();
+}
+
 /******************************************************************************
  * XML node helpers
  *****************************************************************************/
@@ -1907,217 +2266,6 @@ test_xmlSecBnSetNodeValue_base64AndBlob_hexDec(void) {
 }
 
 static void
-test_xmlSecBnToString_zeroBnProducesZero(void) {
-    xmlSecBn bn;
-    xmlChar* str;
-    int ret;
-
-    testStart("xmlSecBnToHexString/xmlSecBnToDecString: empty BN produces '0'");
-
-    ret = xmlSecBnInitialize(&bn, 0);
-    if(ret < 0) {
-        testLog("Error: xmlSecBnInitialize failed\n");
-        testFinishedFailure();
-        return;
-    }
-
-    str = xmlSecBnToHexString(&bn);
-    if(!bnTestCheckString(str, "0")) {
-        xmlFree(str);
-        xmlSecBnFinalize(&bn);
-        testFinishedFailure();
-        return;
-    }
-    xmlFree(str);
-
-    str = xmlSecBnToDecString(&bn);
-    if(!bnTestCheckString(str, "0")) {
-        xmlFree(str);
-        xmlSecBnFinalize(&bn);
-        testFinishedFailure();
-        return;
-    }
-    xmlFree(str);
-
-    xmlSecBnFinalize(&bn);
-    testFinishedSuccess();
-}
-
-static void
-test_xmlSecBnAdd_cascadingBorrow(void) {
-    xmlSecBn bn;
-    int ret;
-
-    testStart("xmlSecBnAdd: 3-byte cascading borrow 0x010000 - 1 = 0xFFFF");
-
-    ret = xmlSecBnInitialize(&bn, 0);
-    if(ret < 0) {
-        testLog("Error: xmlSecBnInitialize failed\n");
-        testFinishedFailure();
-        return;
-    }
-
-    if(testBnAdd(&bn, "010000", -1, "FFFF") < 0) {
-        xmlSecBnFinalize(&bn);
-        testFinishedFailure();
-        return;
-    }
-
-    xmlSecBnFinalize(&bn);
-    testFinishedSuccess();
-}
-
-static void
-test_xmlSecBnAdd_toEmptyBn(void) {
-    xmlSecBn bn;
-    xmlChar* str;
-    int ret;
-
-    testStart("xmlSecBnAdd: positive delta to empty BN");
-
-    ret = xmlSecBnInitialize(&bn, 0);
-    if(ret < 0) {
-        testLog("Error: xmlSecBnInitialize failed\n");
-        testFinishedFailure();
-        return;
-    }
-
-    ret = xmlSecBnAdd(&bn, 5);
-    if(ret < 0) {
-        testLog("Error: xmlSecBnAdd failed\n");
-        xmlSecBnFinalize(&bn);
-        testFinishedFailure();
-        return;
-    }
-
-    str = xmlSecBnToDecString(&bn);
-    if(!bnTestCheckString(str, "5")) {
-        xmlFree(str);
-        xmlSecBnFinalize(&bn);
-        testFinishedFailure();
-        return;
-    }
-    xmlFree(str);
-
-    xmlSecBnFinalize(&bn);
-    testFinishedSuccess();
-}
-
-static void
-test_xmlSecBnCompare_lessThanLongerData(void) {
-    static const xmlSecByte initial[] = { 0x01 };
-    static const xmlSecByte larger[] = { 0x01, 0x00 };
-    xmlSecBn bn;
-    int ret;
-
-    testStart("xmlSecBnCompare: less than value with longer data");
-
-    ret = xmlSecBnInitialize(&bn, sizeof(initial));
-    if(ret < 0) {
-        testLog("Error: xmlSecBnInitialize failed\n");
-        testFinishedFailure();
-        return;
-    }
-
-    ret = xmlSecBnSetData(&bn, initial, sizeof(initial));
-    if(ret < 0) {
-        testLog("Error: xmlSecBnSetData failed\n");
-        xmlSecBnFinalize(&bn);
-        testFinishedFailure();
-        return;
-    }
-
-    ret = xmlSecBnCompare(&bn, larger, sizeof(larger));
-    if(ret >= 0) {
-        testLog("Error: expected negative compare result, got %d\n", ret);
-        xmlSecBnFinalize(&bn);
-        testFinishedFailure();
-        return;
-    }
-
-    xmlSecBnFinalize(&bn);
-    testFinishedSuccess();
-}
-
-static void
-test_xmlSecBnCompareReverse_equalAndLessThan(void) {
-    static const xmlSecByte initial_eq[] = { 0x01, 0x02 };
-    static const xmlSecByte dataReverse_eq[] = { 0x02, 0x01 };
-    static const xmlSecByte initial_lt[] = { 0x01 };
-    static const xmlSecByte dataReverse_lt[] = { 0x00, 0x01 };
-    xmlSecBn bn;
-    int ret;
-
-    testStart("xmlSecBnCompareReverse: equal and less-than cases");
-
-    ret = xmlSecBnInitialize(&bn, 0);
-    if(ret < 0) {
-        testLog("Error: xmlSecBnInitialize failed\n");
-        testFinishedFailure();
-        return;
-    }
-
-    /* equal case: BN {0x01, 0x02} vs reverse data {0x02, 0x01} */
-    ret = xmlSecBnSetData(&bn, initial_eq, sizeof(initial_eq));
-    if(ret < 0) {
-        testLog("Error: xmlSecBnSetData failed\n");
-        xmlSecBnFinalize(&bn);
-        testFinishedFailure();
-        return;
-    }
-    ret = xmlSecBnCompareReverse(&bn, dataReverse_eq, sizeof(dataReverse_eq));
-    if(ret != 0) {
-        testLog("Error: expected compare result 0 (equal), got %d\n", ret);
-        xmlSecBnFinalize(&bn);
-        testFinishedFailure();
-        return;
-    }
-
-    /* less-than case: BN {0x01} (=1) vs reverse data {0x00, 0x01} (=256) */
-    ret = xmlSecBnSetData(&bn, initial_lt, sizeof(initial_lt));
-    if(ret < 0) {
-        testLog("Error: xmlSecBnSetData failed\n");
-        xmlSecBnFinalize(&bn);
-        testFinishedFailure();
-        return;
-    }
-    ret = xmlSecBnCompareReverse(&bn, dataReverse_lt, sizeof(dataReverse_lt));
-    if(ret >= 0) {
-        testLog("Error: expected negative compare result (less-than), got %d\n", ret);
-        xmlSecBnFinalize(&bn);
-        testFinishedFailure();
-        return;
-    }
-
-    xmlSecBnFinalize(&bn);
-    testFinishedSuccess();
-}
-
-static void
-test_xmlSecBnDiv_zeroBn(void) {
-    xmlSecBn bn;
-    int ret;
-
-    testStart("xmlSecBnDiv: zero BN divided gives zero quotient and zero modulus");
-
-    ret = xmlSecBnInitialize(&bn, 0);
-    if(ret < 0) {
-        testLog("Error: xmlSecBnInitialize failed\n");
-        testFinishedFailure();
-        return;
-    }
-
-    if(testBnDiv(&bn, "0", 2, "0", 0) < 0) {
-        xmlSecBnFinalize(&bn);
-        testFinishedFailure();
-        return;
-    }
-
-    xmlSecBnFinalize(&bn);
-    testFinishedSuccess();
-}
-
-static void
 test_xmlSecBnSetGetNodeValue_decRoundTrip(void) {
     static const xmlSecByte initial[] = { 0x01, 0x02 };
     xmlDocPtr doc;
@@ -2282,154 +2430,6 @@ test_xmlSecBnGetNodeValue_hexReverse(void) {
     xmlSecBnFinalize(&bn2);
     xmlSecBnFinalize(&bn);
     xmlFreeDoc(doc);
-    testFinishedSuccess();
-}
-
-static void
-test_xmlSecBnAdd_zeroDeltaIsNoop(void) {
-    xmlSecBn bn;
-    xmlChar* str;
-    int ret;
-
-    testStart("xmlSecBnAdd: delta=0 is a no-op");
-
-    ret = xmlSecBnInitialize(&bn, 0);
-    if(ret < 0) {
-        testLog("Error: xmlSecBnInitialize failed\n");
-        testFinishedFailure();
-        return;
-    }
-
-    /* all strings are hexadecimal */
-    ret = xmlSecBnFromHexString(&bn, BAD_CAST "1234");
-    if(ret < 0) {
-        testLog("Error: xmlSecBnFromHexString failed for '1234'\n");
-        xmlSecBnFinalize(&bn);
-        testFinishedFailure();
-        return;
-    }
-
-    ret = xmlSecBnAdd(&bn, 0);
-    if(ret < 0) {
-        testLog("Error: xmlSecBnAdd with delta=0 failed\n");
-        xmlSecBnFinalize(&bn);
-        testFinishedFailure();
-        return;
-    }
-
-    str = xmlSecBnToHexString(&bn);
-    if(!bnTestCheckString(str, "1234")) {
-        testLog("Error: xmlSecBnAdd with delta=0 changed the value\n");
-        xmlFree(str);
-        xmlSecBnFinalize(&bn);
-        testFinishedFailure();
-        return;
-    }
-    xmlFree(str);
-
-    /* delta=0 on an empty (zero) BN must also succeed */
-    xmlSecBnZero(&bn);
-    ret = xmlSecBnAdd(&bn, 0);
-    if(ret < 0) {
-        testLog("Error: xmlSecBnAdd with delta=0 on an empty BN failed\n");
-        xmlSecBnFinalize(&bn);
-        testFinishedFailure();
-        return;
-    }
-
-    xmlSecBnFinalize(&bn);
-    testFinishedSuccess();
-}
-
-static void
-test_xmlSecBnMul_invalidMultiplierReturnsError(void) {
-    xmlSecBn bn;
-    int ret;
-
-    testStart("xmlSecBnMul: zero and negative multipliers are rejected");
-
-    ret = xmlSecBnInitialize(&bn, 0);
-    if(ret < 0) {
-        testLog("Error: xmlSecBnInitialize failed\n");
-        testFinishedFailure();
-        return;
-    }
-
-    /* all strings are hexadecimal */
-    ret = xmlSecBnFromHexString(&bn, BAD_CAST "1234");
-    if(ret < 0) {
-        testLog("Error: xmlSecBnFromHexString failed for '1234'\n");
-        xmlSecBnFinalize(&bn);
-        testFinishedFailure();
-        return;
-    }
-
-    /* multiplier=0 must be rejected */
-    ret = xmlSecBnMul(&bn, 0);
-    if(ret >= 0) {
-        testLog("Error: xmlSecBnMul unexpectedly succeeded with multiplier=0\n");
-        xmlSecBnFinalize(&bn);
-        testFinishedFailure();
-        return;
-    }
-
-    /* a negative multiplier must be rejected */
-    ret = xmlSecBnMul(&bn, -1);
-    if(ret >= 0) {
-        testLog("Error: xmlSecBnMul unexpectedly succeeded with multiplier=-1\n");
-        xmlSecBnFinalize(&bn);
-        testFinishedFailure();
-        return;
-    }
-
-    xmlSecBnFinalize(&bn);
-    testFinishedSuccess();
-}
-
-static void
-test_xmlSecBnDiv_invalidArgsReturnError(void) {
-    xmlSecBn bn;
-    int mod;
-    int ret;
-
-    testStart("xmlSecBnDiv: zero divider and NULL mod are rejected");
-
-    ret = xmlSecBnInitialize(&bn, 0);
-    if(ret < 0) {
-        testLog("Error: xmlSecBnInitialize failed\n");
-        testFinishedFailure();
-        return;
-    }
-
-    /* all strings are hexadecimal */
-    ret = xmlSecBnFromHexString(&bn, BAD_CAST "1234");
-    if(ret < 0) {
-        testLog("Error: xmlSecBnFromHexString failed for '1234'\n");
-        xmlSecBnFinalize(&bn);
-        testFinishedFailure();
-        return;
-    }
-
-    /* divider=0 must be rejected */
-    mod = -1;
-    ret = xmlSecBnDiv(&bn, 0, &mod);
-    if(ret >= 0) {
-        testLog("Error: xmlSecBnDiv unexpectedly succeeded with divider=0\n");
-        xmlSecBnFinalize(&bn);
-        testFinishedFailure();
-        return;
-    }
-
-    /* a NULL mod pointer must be rejected */
-    ret = xmlSecBnDiv(&bn, 2, NULL);
-    if(ret >= 0) {
-        testLog("Error: xmlSecBnDiv unexpectedly succeeded with a NULL mod pointer\n");
-        xmlSecBnFinalize(&bn);
-        testFinishedFailure();
-        return;
-    }
-
-    xmlSecBnFinalize(&bn);
     testFinishedSuccess();
 }
 

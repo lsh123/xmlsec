@@ -250,9 +250,9 @@ XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateReadFileBio (const ch
 #define XMLSEC_NO_MD5       1
 #endif /* OPENSSL_NO_MD5 */
 
-#ifdef OPENSSL_NO_RIPEMD160
+#ifdef OPENSSL_NO_RMD160
 #define XMLSEC_NO_RIPEMD160 1
-#endif /* OPENSSL_NO_RIPEMD160 */
+#endif /* OPENSSL_NO_RMD160 */
 
 #ifdef OPENSSL_NO_RSA
 #define XMLSEC_NO_RSA       1

@@ -35,7 +35,7 @@
  *
  * DES KW implementation
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int       xmlSecGnuTLSKWDes3GenerateRandom               (xmlSecTransformPtr transform,
                                                                  xmlSecByte * out,
                                                                  xmlSecSize outSize,
@@ -91,7 +91,7 @@ static int      xmlSecGnuTLSKWDes3Encrypt                       (const xmlSecByt
  *
  * Triple DES Key Wrap transform context
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef xmlSecTransformKWDes3Ctx  xmlSecGnuTLSKWDes3Ctx,
                                  *xmlSecGnuTLSKWDes3CtxPtr;
 
@@ -99,7 +99,7 @@ typedef xmlSecTransformKWDes3Ctx  xmlSecGnuTLSKWDes3Ctx,
  *
  * Triple DES Key Wrap transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GnuTLSKWDes3, xmlSecGnuTLSKWDes3Ctx)
 #define xmlSecGnuTLSKWDes3Size XMLSEC_TRANSFORM_SIZE(GnuTLSKWDes3)
 
@@ -180,7 +180,7 @@ xmlSecGnuTLSKWDes3Finalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     xmlSecTransformKWDes3Finalize(transform, ctx);
-    gnutls_memset(ctx, 0, sizeof(xmlSecGnuTLSKWDes3Ctx));
+    xmlSecMemCleanse(ctx, sizeof(xmlSecGnuTLSKWDes3Ctx));
 }
 
 static int
@@ -246,7 +246,7 @@ xmlSecGnuTLSKWDes3Execute(xmlSecTransformPtr transform, int last,
  *
  * DES KW implementation
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 static int
 xmlSecGnuTLSKWDes3Sha1(xmlSecTransformPtr transform,

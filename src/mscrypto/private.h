@@ -42,7 +42,7 @@ extern "C" {
  *
  * Utils
  *
-  *****************************************************************************/
+ *****************************************************************************/
 int                xmlSecMSCryptoConvertEndian                  (const xmlSecByte * src,
                                                                  xmlSecByte * dst,
                                                                  xmlSecSize size);
@@ -53,7 +53,7 @@ int                xmlSecMSCryptoConvertEndianInPlace           (xmlSecByte * bu
  *
  * Crypto Providers
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 /* Both ANSI and wide variants are defined; the correct one is selected at compile time based on UNICODE */
 #define XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE_A     "Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)"
@@ -90,12 +90,12 @@ HCRYPTPROV         xmlSecMSCryptoFindProvider                   (const xmlSecMSC
  *
  * SymKey Util functions
  *
- * Low level helper routines for importing plain text keys into an MS HKEY handle,
+ * Low level helper routines for importing plain text keys into an HCRYPTKEY handle,
  * since the MSCrypto API does not support importing plain text (session) keys
  * directly. These functions are based upon MS KB article # 228786
  * and "Base Provider Key BLOBs" article for priv key blob format.
  *
-  *****************************************************************************/
+ *****************************************************************************/
 BOOL               xmlSecMSCryptoCreatePrivateExponentOneKey    (HCRYPTPROV hProv,
                                                                  HCRYPTKEY *hPrivateKey);
 
@@ -111,7 +111,7 @@ BOOL               xmlSecMSCryptoImportPlainSessionBlob         (HCRYPTPROV hPro
  *
  * X509 Util functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_X509
 PCCERT_CONTEXT     xmlSecMSCryptoX509FindCertBySubject          (HCERTSTORE store,
                                                                  LPCTSTR wcSubject,

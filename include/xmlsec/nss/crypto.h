@@ -101,7 +101,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecCryptoDLFunctionsPtr xmlSecCryptoGetFunctions_nss(voi
  *
  * Init shutdown
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT int                xmlSecNssInit                   (void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecNssShutdown               (void);
 
@@ -130,7 +130,7 @@ XMLSEC_CRYPTO_EXPORT PK11SlotInfo *     xmlSecNssGetInternalKeySlot     (void);
  *
  * AES transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_AES
 /**
  * @brief The AES key data klass.
@@ -212,7 +212,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecNssTransformKWAes256GetKlass(void)
  *
  * Camellia transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_CAMELLIA
 /**
  * @brief The Camellia key data klass.
@@ -272,7 +272,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecNssTransformKWCamellia256GetKlass(
  *
  * DES transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_DES
 /**
  * @brief The DES key data klass.
@@ -305,7 +305,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformKWDes3GetKlass(void);
  *
  * ChaCha20 transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_CHACHA20
 
 /**
@@ -331,7 +331,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecNssTransformChaCha20Poly1305GetKla
  *
  * DSA transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_DSA
 
 /**
@@ -366,7 +366,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformDsaSha256GetKlass(void)
  *
  * ECDSA transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_EC
 
 /**
@@ -449,7 +449,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEcdsaSha512GetKlass(voi
  *
  * EdDSA keys and signatures
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_EDDSA
 
 /**
@@ -472,7 +472,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEdDSAEd25519GetKlass(vo
  *
  * ML-DSA keys and signatures
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_MLDSA
 
 /**
@@ -510,7 +510,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformMLDSA87GetKlass(void);
  *
  * ML-KEM keys and key transport
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_MLKEM
 
 /**
@@ -548,7 +548,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformMLKEM1024GetKlass(void)
  *
  * XDH key agreement (X25519)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_XDH
 
 /**
@@ -572,7 +572,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecNssTransformX25519GetKlass(void);
  *
  * HMAC transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_HMAC
 
 /**
@@ -660,7 +660,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHmacSha512GetKlass(void
  *
  * MD5 transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_MD5
 /**
  * @brief Deprecated. The MD5 digest transform klass.
@@ -676,7 +676,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHmacSha512GetKlass(void
  *
  * PBKDF2 key and transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_PBKDF2
 
 /**
@@ -701,7 +701,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformPbkdf2GetKlass(void);
  *
  * ConcatKDF key and transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_CONCATKDF
 
 /**
@@ -726,7 +726,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformConcatKdfGetKlass(void)
  *
  * HKDF key and transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_HKDF
 
 /**
@@ -752,7 +752,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHkdfGetKlass(void);
  *
  * RSA transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_RSA
 
 /**
@@ -897,7 +897,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaOaepEnc11GetKlass(vo
  *
  * SHA1 transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_SHA1
 /**
  * @brief The SHA1 digest transform klass.
@@ -911,7 +911,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha1GetKlass   (void);
  *
  * SHA224 transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_SHA224
 /**
  * @brief The SHA2-224 digest transform klass.
@@ -925,7 +925,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha224GetKlass(void);
  *
  * SHA256 transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_SHA256
 /**
  * @brief The SHA2-256 digest transform klass.
@@ -939,7 +939,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha256GetKlass(void);
  *
  * SHA384 transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_SHA384
 /**
  * @brief The SHA2-384 digest transform klass.
@@ -953,7 +953,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha384GetKlass(void);
  *
  * SHA512 transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_SHA512
 /**
  * @brief The SHA2-512 digest transform klass.
@@ -967,7 +967,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha512GetKlass(void);
  *
  * SHA3 transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_SHA3
 /**
  * @brief The SHA3-224 digest transform klass.
@@ -1002,7 +1002,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha3_512GetKlass(void);
  *
  * DEREncodedKeyValue
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief The NSS DEREncodedKeyValue key data klass.
  */

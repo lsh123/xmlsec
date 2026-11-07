@@ -35,10 +35,10 @@
 /*! GOST 34.10-2001 Diffie-Hellman public key Cryptocom LTD */
 #define szOID_MAGPRO_PUBKEY_DH_R3410_2001 "1.2.643.2.9.1.5.2"
 
-/*! GOST 34.10-94 digital signature algorithm Cryptocom LTD */
+/*! GOST 34.10-94 digital signature algorithm Cryptocom LTD public key */
 #define szOID_MAGPRO_PUBKEY_SIGN_R3410_94 "1.2.643.2.9.1.5.3"
 
-/*! GOST 34.10-2001 digital signature algorithm Cryptocom LTD */
+/*! GOST 34.10-2001 digital signature algorithm Cryptocom LTD public key */
 #define szOID_MAGPRO_PUBKEY_SIGN_R3410_2001 "1.2.643.2.9.1.5.4"
 
 /*! GOST 28147-89 encryption parameters */

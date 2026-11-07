@@ -31,7 +31,7 @@
  *
  * Symmetric (binary) keys - just a wrapper for xmlSecKeyDataBinary
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int      xmlSecGnuTLSSymKeyDataInitialize       (xmlSecKeyDataPtr data);
 static int      xmlSecGnuTLSSymKeyDataDuplicate        (xmlSecKeyDataPtr dst,
                                                          xmlSecKeyDataPtr src);
@@ -282,7 +282,7 @@ static xmlSecKeyDataKlass xmlSecGnuTLSKeyData ## klassName ## Klass = {         
  *
  * <xmlsec:AESKeyValue> processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_SYMKEY_KLASS(Aes, AES)
 
 /**
@@ -324,7 +324,7 @@ xmlSecGnuTLSKeyDataAesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSi
  *
  * <xmlsec:CamelliaKeyValue> processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_SYMKEY_KLASS(Camellia, Camellia)
 
 /**
@@ -366,7 +366,7 @@ xmlSecGnuTLSKeyDataCamelliaSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xml
  *
  * <xmlsec:DESKeyValue> processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_SYMKEY_KLASS(Des, DES)
 
 /**
@@ -409,7 +409,7 @@ xmlSecGnuTLSKeyDataDesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSi
  *
  * <xmlsec:HMACKeyValue> processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_SYMKEY_KLASS(Hmac, HMAC)
 
 /**
@@ -451,7 +451,7 @@ xmlSecGnuTLSKeyDataHmacSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecS
  *
  * PBKDF2 key klass
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_SYMKEY_KLASS_EX(Pbkdf2, xmlSecNamePbkdf2, xmlSecHrefPbkdf2, xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml, NULL, NULL, NULL, NULL)
 
 /**
@@ -492,7 +492,7 @@ xmlSecGnuTLSKeyDataPbkdf2Set(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSe
  *
  * ConcatKDF key klass
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_SYMKEY_KLASS_EX(ConcatKdf, xmlSecNameConcatKdf, xmlSecHrefConcatKdf, xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml, NULL, NULL, NULL, NULL)
 
 /**
@@ -533,7 +533,7 @@ xmlSecGnuTLSKeyDataConcatKdfSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xm
  *
  * HKDF key klass
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_SYMKEY_KLASS_EX(Hkdf, xmlSecNameHkdf, xmlSecHrefHkdf, xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml, NULL, NULL, NULL, NULL)
 
 /**
@@ -574,7 +574,7 @@ xmlSecGnuTLSKeyDataHkdfSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecS
  *
  * <xmlsec:ChaCha20KeyValue> processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_SYMKEY_KLASS(ChaCha20, ChaCha20)
 
 /**

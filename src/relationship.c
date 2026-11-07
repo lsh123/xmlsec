@@ -98,7 +98,7 @@
  *
  * xmlSecTransform + xmlSecRelationshipCtx
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecRelationshipCtx           xmlSecRelationshipCtx,
                                                 *xmlSecRelationshipCtxPtr;
 struct _xmlSecRelationshipCtx {

@@ -30,7 +30,7 @@
  *
  * Symmetric (binary) keys - just a wrapper for xmlSecKeyDataBinary
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #define xmlSecMSCngSymKeyDataCheckId(data) \
     (xmlSecKeyDataIsValid((data)) && \
      xmlSecMSCngSymKeyDataKlassCheck((data)->id))
@@ -249,7 +249,7 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyData ## klassName ## Klass = {          
  *
  * <xmlsec:AESKeyValue> processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_SYMKEY_WITH_XML(Aes,
     xmlSecNameAESKeyValue,
     xmlSecHrefAESKeyValue,
@@ -273,7 +273,7 @@ xmlSecMSCngKeyDataAesGetKlass(void) {
  *
  * <xmlsec:ChaCha20KeyValue> processing
  *
-   *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_SYMKEY_WITH_XML(ChaCha20,
     xmlSecNameChaCha20KeyValue,
     xmlSecHrefChaCha20KeyValue,
@@ -297,7 +297,7 @@ xmlSecMSCngKeyDataChaCha20GetKlass(void) {
  *
  * ConcatKdf klass
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_SYMKEY(ConcatKdf, xmlSecNameConcatKdf, xmlSecHrefConcatKdf)
 
 /**
@@ -317,7 +317,7 @@ xmlSecMSCngKeyDataConcatKdfGetKlass(void) {
  *
  * <xmlsec:DESKeyValue> processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_SYMKEY_WITH_XML(Des,
     xmlSecNameDESKeyValue,
     xmlSecHrefDESKeyValue,
@@ -342,7 +342,7 @@ xmlSecMSCngKeyDataDesGetKlass(void) {
  *
  * <xmlsec:HMACKeyValue> processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_SYMKEY_WITH_XML(Hmac,
     xmlSecNameHMACKeyValue,
     xmlSecHrefHMACKeyValue,
@@ -366,7 +366,7 @@ xmlSecMSCngKeyDataHmacGetKlass(void) {
  *
  * PBKDF2 klass
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_SYMKEY(Pbkdf2, xmlSecNamePbkdf2, xmlSecHrefPbkdf2)
 
 /**
@@ -386,7 +386,7 @@ xmlSecMSCngKeyDataPbkdf2GetKlass(void) {
  *
  * HKDF klass
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_MSCNG_SYMKEY(Hkdf, xmlSecNameHkdf, xmlSecHrefHkdf)
 
 /**

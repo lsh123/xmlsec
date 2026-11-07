@@ -42,7 +42,7 @@
  *
  * Unified RFC 3394 KW implementation
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #if !defined(XMLSEC_NO_AES) || !defined(XMLSEC_NO_CAMELLIA)
 
 static int        xmlSecOpenSSLKWRfc3394BlockEncrypt            (xmlSecTransformPtr transform,
@@ -78,7 +78,7 @@ typedef struct _xmlSecOpenSSLKWRfc3394Ctx   xmlSecOpenSSLKWRfc3394Ctx,
  *
  * Unified callback for old OpenSSL versions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_OPENSSL_API_300
 
 /* Function pointer type for encrypt/decrypt operations */
@@ -119,7 +119,7 @@ static int      xmlSecOpenSSLKWCamelliaEncryptDecrypt          (xmlSecOpenSSLKWR
  *
  * Unified RFC 3394 KW transforms context
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 struct _xmlSecOpenSSLKWRfc3394Ctx {
     xmlSecTransformKWRfc3394Ctx parentCtx;
@@ -148,7 +148,7 @@ struct _xmlSecOpenSSLKWRfc3394Ctx {
  *
  * Unified RFC 3394 KW transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 
 XMLSEC_TRANSFORM_DECLARE(OpenSSLKWRfc3394, xmlSecOpenSSLKWRfc3394Ctx)
@@ -172,7 +172,7 @@ static int      xmlSecOpenSSLKWRfc3394Execute                  (xmlSecTransformP
  *
  * Unified RFC 3394 KW transform class macro
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #define XMLSEC_OPENSSL_KW_RFC3394_KLASS(name)                                                                           \
 static xmlSecTransformKlass xmlSecOpenSSLKW ## name ## Klass = {                                                        \
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                              \
@@ -383,7 +383,7 @@ xmlSecOpenSSLKWRfc3394Execute(xmlSecTransformPtr transform, int last,
  *
  * RFC 3394 KW encrypt/decrypt implementation
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifdef XMLSEC_OPENSSL_API_300
 
 /* RFC 3394 specifies single-block (ECB) encryption. We use a CBC cipher with an
@@ -593,7 +593,7 @@ xmlSecOpenSSLKWRfc3394BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByt
  *
  * AES KW transform classes
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_AES
 
 #ifndef XMLSEC_OPENSSL_API_300
@@ -693,7 +693,7 @@ xmlSecOpenSSLTransformKWAes256GetKlass(void) {
  *
  * Camellia KW transform classes
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_CAMELLIA
 
 #ifndef XMLSEC_OPENSSL_API_300

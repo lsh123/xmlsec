@@ -37,7 +37,7 @@
  *
  * Internal KDF CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 #define XMLSEC_GNUTLS_KDF_DEFAULT_BUF_SIZE          64
 #define XMLSEC_GNUTLS_KDF_MAX_HASH_SIZE             64   /* SHA-512 output = 64 bytes */
@@ -376,7 +376,7 @@ static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                   
  * ConcatKDF (SP 800-56A single-step KDF) transform
  * https://www.w3.org/TR/xmlenc-core1/#sec-ConcatKDF
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 static int      xmlSecGnuTLSConcatKdfNodeRead           (xmlSecTransformPtr transform,
                                                          xmlNodePtr node,
@@ -480,7 +480,7 @@ xmlSecGnuTLSConcatKdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
         return(-1);
     }
 
-    /* pre-compute fixedInfo = AlgorithmID || PartyUInfo || PartyVInfo [|| SuppPubInfo [|| SuppPrivInfo]] */
+    /* pre-compute fixedInfo = AlgorithmID || PartyUInfo || PartyVInfo {|| SuppPubInfo }{|| SuppPrivInfo } */
     ret = xmlSecTransformConcatKdfParamsGetFixedInfo(&(ctx->u.concatKdf.params), &(ctx->u.concatKdf.fixedInfo));
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformConcatKdfParamsGetFixedInfo", xmlSecTransformGetName(transform));
@@ -625,7 +625,7 @@ done:
  *
  * ConcatKDF key derivation transform klass
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_KDF_KLASS(ConcatKdf, xmlSecGnuTLSConcatKdfNodeRead)
 
 /**
@@ -648,7 +648,7 @@ xmlSecGnuTLSTransformConcatKdfGetKlass(void) {
  *
  * PBKDF2 transform (https://gnutls.org/reference/gnutls-crypto.html#gnutls-pbkdf2)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 static int      xmlSecGnuTLSPbkdf2NodeRead              (xmlSecTransformPtr transform,
                                                          xmlNodePtr node,
@@ -807,7 +807,7 @@ xmlSecGnuTLSPbkdf2GenerateKey(
  *
  * PBKDF2 key derivation algorithm
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_KDF_KLASS(Pbkdf2, xmlSecGnuTLSPbkdf2NodeRead)
 
 /**
@@ -830,7 +830,7 @@ xmlSecGnuTLSTransformPbkdf2GetKlass(void) {
  *
  * HKDF transform (https://gnutls.org/reference/gnutls-crypto.html#gnutls-hkdf-extract)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 static int      xmlSecGnuTLSHkdfNodeRead                (xmlSecTransformPtr transform,
                                                          xmlNodePtr node,
@@ -1032,7 +1032,7 @@ xmlSecGnuTLSHkdfGenerateKey(
      * when the buffer is released) */
     prkBuffer = xmlSecBufferCreate(prkLen);
     if(prkBuffer == NULL) {
-        xmlSecInternalError("xmlSecBufferCreate()", transformName);
+        xmlSecInternalError("xmlSecBufferCreate", transformName);
         return(-1);
     }
     xmlSecBufferMakeSecure(prkBuffer);
@@ -1074,7 +1074,7 @@ xmlSecGnuTLSHkdfGenerateKey(
  *
  * HKDF key derivation algorithm
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_KDF_KLASS(Hkdf, xmlSecGnuTLSHkdfNodeRead)
 
 /**
@@ -1095,7 +1095,7 @@ xmlSecGnuTLSTransformHkdfGetKlass(void) {
  *
  * Common KDF Execute
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 static int
 xmlSecGnuTLSKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {

@@ -36,7 +36,7 @@
  *
  * Internal GNUTLS HMAC CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecGnuTLSHmacCtx                xmlSecGnuTLSHmacCtx, *xmlSecGnuTLSHmacCtxPtr;
 struct _xmlSecGnuTLSHmacCtx {
     gnutls_hmac_hd_t            hmac;
@@ -51,7 +51,7 @@ struct _xmlSecGnuTLSHmacCtx {
  *
  * xmlSecTransform + xmlSecGnuTLSHmacCtx
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GnuTLSHmac, xmlSecGnuTLSHmacCtx)
 #define xmlSecGnuTLSHmacSize XMLSEC_TRANSFORM_SIZE(GnuTLSHmac)
 
@@ -446,7 +446,7 @@ static xmlSecTransformKlass xmlSecGnuTLSHmac ## name ## Klass = {               
  *
  * HMAC SHA1
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_HMAC_KLASS(Sha1)
 
 /**
@@ -464,7 +464,7 @@ xmlSecGnuTLSTransformHmacSha1GetKlass(void) {
  *
  * HMAC SHA224
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_HMAC_KLASS(Sha224)
 
 /**
@@ -482,7 +482,7 @@ xmlSecGnuTLSTransformHmacSha224GetKlass(void) {
  *
  * HMAC SHA256
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_HMAC_KLASS(Sha256)
 
 /**
@@ -500,7 +500,7 @@ xmlSecGnuTLSTransformHmacSha256GetKlass(void) {
  *
  * HMAC SHA384
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_HMAC_KLASS(Sha384)
 
 /**
@@ -518,7 +518,7 @@ xmlSecGnuTLSTransformHmacSha384GetKlass(void) {
  *
  * HMAC SHA512
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_HMAC_KLASS(Sha512)
 
 /**

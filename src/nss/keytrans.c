@@ -37,7 +37,7 @@
  *
  * Key transport transforms context
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecNssKeyTransportCtx       xmlSecNssKeyTransportCtx;
 typedef struct _xmlSecNssKeyTransportCtx*      xmlSecNssKeyTransportCtxPtr;
 
@@ -60,7 +60,7 @@ struct _xmlSecNssKeyTransportCtx {
  *
  * Key transport transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(NssKeyTransport, xmlSecNssKeyTransportCtx)
 #define xmlSecNssKeyTransportSize XMLSEC_TRANSFORM_SIZE(NssKeyTransport)
 
@@ -470,7 +470,7 @@ xmlSecNssKeyTransportCtxInit(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr in
 }
 
 static int
-xmlSecNssKeyTransportCtxUpdate(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr  in, xmlSecBufferPtr out,
+xmlSecNssKeyTransportCtxUpdate(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out,
                                int encrypt, xmlSecTransformCtxPtr transformCtx) {
     xmlSecSize blockSize;
     int ret;
@@ -539,7 +539,7 @@ xmlSecNssKeyTransportSetOaepParams(xmlSecNssKeyTransportCtxPtr ctx, CK_RSA_PKCS_
     }
 
     oaepParams->hashAlg = ctx->oaepHashAlg;
-    oaepParams->mgf     = ctx->oaepMgf ;
+    oaepParams->mgf     = ctx->oaepMgf;
     oaepParams->source  = CKZ_DATA_SPECIFIED;
 
     /* NSS (softoken) rejects a zero-length label passed with a non-NULL

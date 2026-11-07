@@ -32,7 +32,7 @@
  *
  * <dsig11:DEREncodedKeyValue /> processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int                      xmlSecGnuTLSKeyDataDEREncodedKeyValueXmlRead(xmlSecKeyDataId id,
                                                                  xmlSecKeyPtr key,
                                                                  xmlNodePtr node,

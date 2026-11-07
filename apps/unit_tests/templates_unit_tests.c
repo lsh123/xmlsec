@@ -32,7 +32,7 @@
 
 /******************************************************************************
  * xmlSecTmplSignatureCreate
-  *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecTmplSignatureCreate_structure(void) {
     xmlNodePtr signNode = NULL;
@@ -154,7 +154,7 @@ test_xmlSecTmplSignatureCreate_with_id(void) {
 
 /******************************************************************************
  * xmlSecTmplSignatureCreateNsPref
-  *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecTmplSignatureCreateNsPref_prefix_applied(void) {
     xmlNodePtr signNode = NULL;
@@ -222,7 +222,7 @@ test_xmlSecTmplSignatureCreateNsPref_null_prefix(void) {
 
 /******************************************************************************
  * xmlSecTmplSignatureGetSignMethodNode / xmlSecTmplSignatureGetC14NMethodNode
-  *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecTmplSignatureGetSignMethodNode(void) {
     xmlNodePtr signNode = NULL;
@@ -313,7 +313,7 @@ test_xmlSecTmplSignatureGetC14NMethodNode(void) {
 
 /******************************************************************************
  * xmlSecTmplSignatureEnsureKeyInfo
-  *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecTmplSignatureEnsureKeyInfo_adds_node(void) {
     xmlNodePtr signNode = NULL;
@@ -389,7 +389,7 @@ test_xmlSecTmplSignatureEnsureKeyInfo_idempotent(void) {
 
 /******************************************************************************
  * xmlSecTmplSignatureAddReference
-  *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecTmplSignatureAddReference_with_uri(void) {
     xmlNodePtr signNode = NULL;
@@ -507,7 +507,7 @@ test_xmlSecTmplSignatureAddReference_multiple(void) {
 
 /******************************************************************************
  * xmlSecTmplEncDataCreate
-  *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecTmplEncDataCreate_structure(void) {
     xmlNodePtr encNode = NULL;
@@ -618,7 +618,7 @@ test_xmlSecTmplEncDataCreate_null_method(void) {
 
 /******************************************************************************
  * xmlSecTmplEncDataEnsureCipherValue
-  *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecTmplEncDataEnsureCipherValue_adds_node(void) {
     xmlNodePtr encNode = NULL;
@@ -680,7 +680,7 @@ test_xmlSecTmplEncDataEnsureCipherValue_idempotent(void) {
 
 /******************************************************************************
  * xmlSecTmplEncDataEnsureKeyInfo
-  *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecTmplEncDataEnsureKeyInfo_adds_node(void) {
     xmlNodePtr encNode = NULL;
@@ -767,7 +767,7 @@ test_xmlSecTmplEncDataEnsureKeyInfo_idempotent(void) {
 
 /******************************************************************************
  * xmlSecTmplKeyInfoAddKeyName
-  *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecTmplKeyInfoAddKeyName_with_name(void) {
     xmlDocPtr doc = NULL;
@@ -879,7 +879,7 @@ test_xmlSecTmplKeyInfoAddKeyName_null_name(void) {
 
 /******************************************************************************
  * xmlSecTmplEncDataEnsureCipherReference
-   *****************************************************************************/
+  *****************************************************************************/
 static void
 test_xmlSecTmplEncDataEnsureCipherReference_with_uri(void) {
     xmlNodePtr encNode = NULL;
@@ -963,7 +963,7 @@ test_xmlSecTmplEncDataEnsureCipherReference_idempotent(void) {
 
 /******************************************************************************
  * helper to build a <dsig:Transform> node attached to a real document
-   *****************************************************************************/
+  *****************************************************************************/
 static xmlNodePtr
 testCreateTransformNode(xmlDocPtr* doc) {
     xmlNodePtr transformNode;
@@ -993,7 +993,7 @@ testCreateTransformNode(xmlDocPtr* doc) {
 
 /******************************************************************************
  * xmlSecTmplTransformAddC14NInclNamespaces
-   *****************************************************************************/
+  *****************************************************************************/
 static void
 test_xmlSecTmplTransformAddC14NInclNamespaces_prefix_list(void) {
     xmlDocPtr doc = NULL;
@@ -1072,7 +1072,7 @@ test_xmlSecTmplTransformAddC14NInclNamespaces_already_present(void) {
 
 /******************************************************************************
  * xmlSecTmplTransformAddXPath
-   *****************************************************************************/
+  *****************************************************************************/
 static void
 test_xmlSecTmplTransformAddXPath_expression(void) {
     xmlDocPtr doc = NULL;
@@ -1151,7 +1151,7 @@ test_xmlSecTmplTransformAddXPath_already_present(void) {
 
 /******************************************************************************
  * xmlSecTmplTransformAddXPath2
-   *****************************************************************************/
+  *****************************************************************************/
 static void
 test_xmlSecTmplTransformAddXPath2_filter_and_expression(void) {
     xmlDocPtr doc = NULL;
@@ -1261,7 +1261,7 @@ test_xmlSecTmplTransformAddXPath2_multiple_children(void) {
 
 /******************************************************************************
  * xmlSecTmplTransformAddXPointer
-   *****************************************************************************/
+  *****************************************************************************/
 static void
 test_xmlSecTmplTransformAddXPointer_expression(void) {
     xmlDocPtr doc = NULL;
@@ -1340,7 +1340,7 @@ test_xmlSecTmplTransformAddXPointer_already_present(void) {
 
 /******************************************************************************
  * xmlSecTmplX509IssuerSerialAddIssuerName / AddSerialNumber
-   *****************************************************************************/
+  *****************************************************************************/
 static void
 test_xmlSecTmplX509IssuerSerialAddIssuerName_content(void) {
     xmlDocPtr doc = NULL;
@@ -1509,7 +1509,7 @@ test_xmlSecTmplX509IssuerSerialAddSerialNumber_content(void) {
 
 /******************************************************************************
  * xmlSecTmplTransformAddXPath nsList
-    *****************************************************************************/
+   *****************************************************************************/
 static void
 test_xmlSecTmplTransformAddXPath_ns_list(void) {
     xmlDocPtr doc = NULL;
@@ -1604,7 +1604,7 @@ test_xmlSecTmplTransformAddXPath_ns_list_malformed(void) {
 
 /******************************************************************************
  * optional attributes
-    *****************************************************************************/
+   *****************************************************************************/
 static void
 test_xmlSecTmplSignatureAddReference_with_type(void) {
     xmlNodePtr signNode = NULL;
@@ -1787,7 +1787,7 @@ test_xmlSecTmplEncDataCreate_optional_attributes(void) {
 /******************************************************************************
  * xmlSecTmplSignatureAddObject / xmlSecTmplReferenceAddTransform /
  * xmlSecTmplObjectAddSignProperties / xmlSecTmplObjectAddManifest
-    *****************************************************************************/
+   *****************************************************************************/
 static void
 test_xmlSecTmplSignatureAddObject_attributes(void) {
     xmlNodePtr signNode = NULL;
@@ -2092,7 +2092,7 @@ test_xmlSecTmplObjectAddManifest_with_reference(void) {
  * xmlSecTmplEncDataEnsureEncProperties / xmlSecTmplEncDataAddEncProperty /
  * xmlSecTmplEncDataGetEncMethodNode / xmlSecTmplCipherReferenceAddTransform /
  * xmlSecTmplReferenceListAddDataReference / xmlSecTmplReferenceListAddKeyReference
-    *****************************************************************************/
+   *****************************************************************************/
 static void
 test_xmlSecTmplEncDataEnsureEncProperties_and_AddEncProperty(void) {
     xmlNodePtr encNode = NULL;
@@ -2400,7 +2400,7 @@ test_xmlSecTmplReferenceListAddDataReference_and_KeyReference(void) {
 /******************************************************************************
  * xmlSecTmplKeyInfoAddKeyValue / xmlSecTmplKeyInfoAddRetrievalMethod /
  * xmlSecTmplKeyInfoAddEncryptedKey / xmlSecTmplX509DataAdd*
-    *****************************************************************************/
+   *****************************************************************************/
 static void
 test_xmlSecTmplKeyInfoAddKeyValue(void) {
     xmlNodePtr signNode = NULL;
@@ -3036,7 +3036,7 @@ test_xmlSecTmplX509DataAddCRL(void) {
  * xmlSecTmplTransformAddHmacOutputLength / xmlSecTmplTransformAddRsaOaepParam /
  * xmlSecTmplTransformAddRsaMgf / xmlSecTmplTransformAddRsaDigest /
  * xmlSecTmplTransformAddXsltStylesheet
-    *****************************************************************************/
+   *****************************************************************************/
 static void
 test_xmlSecTmplTransformAddHmacOutputLength(void) {
     xmlDocPtr doc = NULL;
@@ -3317,7 +3317,7 @@ test_xmlSecTmplTransformAddXsltStylesheet_malformed(void) {
 
 /******************************************************************************
  * exported entry point
-    *****************************************************************************/
+   *****************************************************************************/
 int
 test_templates(void) {
     int success = 1;

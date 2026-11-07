@@ -39,7 +39,7 @@ struct _xmlSecMSCngKeyDataCtx {
     NCRYPT_KEY_HANDLE privkey;
     BCRYPT_KEY_HANDLE pubkey;
     BOOL privkeyNeedsFree;
-    BCRYPT_KEY_HANDLE bcryptPrivkey; /* BCrypt DH/XDH private key (loaded from DER/PKCS8) */
+    BCRYPT_KEY_HANDLE bcryptPrivkey; /* BCrypt DH/XDH/ML-KEM private key (loaded from DER/PKCS8) */
     xmlSecBuffer dhQ;
 };
 
@@ -445,8 +445,8 @@ xmlSecMSCngKeyDataGetPubkey(xmlSecKeyDataPtr data) {
  * @param data the key data to retrieve the private key from.
  *
  * @return the private key on success or 0 otherwise. The returned key is
- * owned by the key data; the caller must not destroy it. Note that DH and
- * X25519 private keys are stored as a BCRYPT_KEY_HANDLE (not an
+ * owned by the key data; the caller must not destroy it. Note that DH, X25519
+ * and ML-KEM private keys are stored as a BCRYPT_KEY_HANDLE (not an
  * NCRYPT_KEY_HANDLE) and are not accessible via this function; it returns 0
  * for such keys.
  */
@@ -1309,7 +1309,7 @@ xmlSecMSCngKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         0,
         &bufLen,
         0);
-    if ((status != STATUS_SUCCESS) || (bufLen <= 0)) {
+    if ((status != STATUS_SUCCESS) || (bufLen == 0)) {
         xmlSecMSCngNtError2("BCryptExportKey", xmlSecKeyDataKlassGetName(id),
             status, "bufLen=%lu", bufLen);
         goto done;
@@ -1336,7 +1336,7 @@ xmlSecMSCngKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         bufLen,
         &bufLen,
         0);
-    if ((status != STATUS_SUCCESS) || (bufLen <= 0)) {
+    if ((status != STATUS_SUCCESS) || (bufLen == 0)) {
         xmlSecMSCngNtError2("BCryptExportKey", xmlSecKeyDataKlassGetName(id),
             status, "bufLen=%lu", bufLen);
         goto done;
@@ -1723,7 +1723,7 @@ xmlSecMSCngKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyVa
         0,
         &bufLen,
         0);
-    if ((status != STATUS_SUCCESS) || (bufLen <= 0)) {
+    if ((status != STATUS_SUCCESS) || (bufLen == 0)) {
         xmlSecMSCngNtError2("BCryptExportKey", xmlSecKeyDataKlassGetName(id),
             status, "bufLen=%lu", bufLen);
         goto done;
@@ -1750,7 +1750,7 @@ xmlSecMSCngKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyVa
         bufLen,
         &bufLen,
         0);
-    if ((status != STATUS_SUCCESS) || (bufLen <= 0)) {
+    if ((status != STATUS_SUCCESS) || (bufLen == 0)) {
         xmlSecMSCngNtError2("BCryptExportKey", xmlSecKeyDataKlassGetName(id),
             status, "bufLen=%lu", bufLen);
         goto done;
@@ -1850,7 +1850,7 @@ xmlSecMSCngKeyDataEcGetKlass(void) {
  *
  * DH key data
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_DH
 
 static int
@@ -2428,7 +2428,7 @@ xmlSecMSCngCreateDerForBCryptPubkey(xmlSecKeyDataPtr data, LPVOID* ppDer, DWORD*
         NULL,
         &cbInfo
     );
-    if((status != TRUE) || (cbInfo <= 0)) {
+    if((status != TRUE) || (cbInfo == 0)) {
         xmlSecMSCngLastError("CryptExportPublicKeyInfoFromBCryptKeyHandle", NULL);
         goto done;
     }
@@ -2448,7 +2448,7 @@ xmlSecMSCngCreateDerForBCryptPubkey(xmlSecKeyDataPtr data, LPVOID* ppDer, DWORD*
         (PCERT_PUBLIC_KEY_INFO)pInfo,
         &cbInfo
     );
-    if((status != TRUE) || (cbInfo <= 0)) {
+    if((status != TRUE) || (cbInfo == 0)) {
         xmlSecMSCngLastError("CryptExportPublicKeyInfoFromBCryptKeyHandle", NULL);
         goto done;
     }
@@ -2764,7 +2764,7 @@ done:
 
 /******************************************************************************
  * XDH (X25519) key data
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_XDH
 
 XMLSEC_MSCNG_CERTKEY_KLASS_EX(Xdh, XDH,
@@ -2789,7 +2789,7 @@ xmlSecMSCngKeyDataXdhGetKlass(void) {
 
 /******************************************************************************
  * ML-DSA (FIPS 204) key data
-   *****************************************************************************/
+  *****************************************************************************/
 #ifndef XMLSEC_NO_MLDSA
 
 XMLSEC_MSCNG_CERTKEY_KLASS_EX2(
@@ -2817,7 +2817,7 @@ xmlSecMSCngKeyDataMLDSAGetKlass(void) {
 
 /******************************************************************************
  * ML-KEM (FIPS 203) key data
-   *****************************************************************************/
+  *****************************************************************************/
 #ifndef XMLSEC_NO_MLKEM
 
 XMLSEC_MSCNG_CERTKEY_KLASS_EX2(

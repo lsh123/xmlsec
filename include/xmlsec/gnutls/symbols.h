@@ -25,7 +25,7 @@ extern "C" {
  *
  * Crypto Init/shutdown
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #define xmlSecCryptoInit                        xmlSecGnuTLSInit
 #define xmlSecCryptoShutdown                    xmlSecGnuTLSShutdown
 
@@ -35,7 +35,7 @@ extern "C" {
  *
  * Key data ids
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #define xmlSecKeyDataAesId                      xmlSecGnuTLSKeyDataAesId
 #define xmlSecKeyDataCamelliaId                 xmlSecGnuTLSKeyDataCamelliaId
 #define xmlSecKeyDataChaCha20Id                 xmlSecGnuTLSKeyDataChaCha20Id
@@ -62,7 +62,7 @@ extern "C" {
  *
  * Key data store ids
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #define xmlSecX509StoreId                       xmlSecGnuTLSX509StoreId
 
 /******************************************************************************
@@ -72,7 +72,7 @@ extern "C" {
  * https://www.aleksey.com/xmlsec/xmldsig.html
  * https://www.aleksey.com/xmlsec/xmlenc.html
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #define xmlSecTransformAes128CbcId              xmlSecGnuTLSTransformAes128CbcId
 #define xmlSecTransformAes192CbcId              xmlSecGnuTLSTransformAes192CbcId
 #define xmlSecTransformAes256CbcId              xmlSecGnuTLSTransformAes256CbcId
@@ -172,7 +172,7 @@ extern "C" {
  *
  * High-level routines for the xmlsec command-line utility
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #define xmlSecCryptoAppInit                     xmlSecGnuTLSAppInit
 #define xmlSecCryptoAppShutdown                 xmlSecGnuTLSAppShutdown
 #define xmlSecCryptoAppDefaultKeysMngrInit      xmlSecGnuTLSAppDefaultKeysMngrInit

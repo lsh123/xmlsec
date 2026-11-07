@@ -552,7 +552,7 @@ xmlSecGnuTLSAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     /* prepare */
     ret = xmlSecPtrListInitialize(&(certsList), xmlSecGnuTLSX509CrtListId);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecPtrListInitialize(certsListId)", NULL);
+        xmlSecInternalError("xmlSecPtrListInitialize(certsList)", NULL);
         xmlSecMemCleanse(pwdBuf, sizeof(pwdBuf));
         return(NULL);
     }

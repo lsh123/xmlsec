@@ -77,10 +77,10 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoX509StoreAdoptTrustedStore
                                                                                  HCERTSTORE trustedStore);
 
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoX509StoreAdoptUntrustedStore(xmlSecKeyDataStorePtr store,
-                                                                                 HCERTSTORE untrustedStore);
+                                                                                   HCERTSTORE untrustedStore);
 
 XMLSEC_CRYPTO_EXPORT void               xmlSecMSCryptoX509StoreEnableSystemTrustedCerts(xmlSecKeyDataStorePtr store,
-                                                                                  int val);
+                                                                                        int val);
 
 
 #ifdef __cplusplus

@@ -33,7 +33,7 @@
  *
  * Symmetric (binary) keys - just a wrapper for xmlSecKeyDataBinary
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int      xmlSecMSCryptoSymKeyDataInitialize      (xmlSecKeyDataPtr data);
 static int      xmlSecMSCryptoSymKeyDataDuplicate       (xmlSecKeyDataPtr dst,
                                                          xmlSecKeyDataPtr src);
@@ -215,12 +215,12 @@ xmlSecMSCryptoSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
  *
  * Utils
  *
- * Low level helper routines for importing plain text keys in MS HKEY handle,
+ * Low level helper routines for importing plain text keys in an HCRYPTKEY handle,
  * since MSCrypto API does not support import of plain text (session) keys
  * just like that. These functions are based upon MS kb article #228786
  * and "Base Provider Key BLOBs" article for priv key blob format.
  *
-  *****************************************************************************/
+ *****************************************************************************/
 BOOL
 xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateKey)
 {
@@ -555,7 +555,7 @@ done:
  *
  * <xmlsec:AESKeyValue> processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataAesKlass = {
     sizeof(xmlSecKeyDataKlass),
     xmlSecKeyDataBinarySize,
@@ -632,7 +632,7 @@ xmlSecMSCryptoKeyDataAesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSec
  *
  * <xmlsec:DESKeyValue> processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataDesKlass = {
     sizeof(xmlSecKeyDataKlass),
     xmlSecKeyDataBinarySize,
@@ -686,7 +686,7 @@ xmlSecMSCryptoKeyDataDesGetKlass(void) {
  *
  * <xmlsec:HMACKeyValue> processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataHmacKlass = {
     sizeof(xmlSecKeyDataKlass),
     xmlSecKeyDataBinarySize,

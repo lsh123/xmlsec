@@ -28,7 +28,7 @@
  *
  * <dsig11:DEREncodedKeyValue /> processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int                      xmlSecMSCngKeyDataDEREncodedKeyValueXmlRead(xmlSecKeyDataId id,
     xmlSecKeyPtr key,
     xmlNodePtr node,

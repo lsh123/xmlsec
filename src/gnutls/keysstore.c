@@ -29,7 +29,7 @@
  *
  * xmlSecKeyStore + xmlSecKeyStorePtr(Simple Keys Store ptr)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_KEY_STORE_DECLARE(GnuTLSKeysStore, xmlSecKeyStorePtr)
 #define xmlSecGnuTLSKeysStoreSize XMLSEC_KEY_STORE_SIZE(GnuTLSKeysStore)
 

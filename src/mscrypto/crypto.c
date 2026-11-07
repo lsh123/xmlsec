@@ -60,7 +60,7 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
      *
      * Crypto Init/shutdown
      *
-      *****************************************************************************/
+     *****************************************************************************/
     gXmlSecMSCryptoFunctions->cryptoInit                        = xmlSecMSCryptoInit;
     gXmlSecMSCryptoFunctions->cryptoShutdown                    = xmlSecMSCryptoShutdown;
     gXmlSecMSCryptoFunctions->cryptoKeysMngrInit                = xmlSecMSCryptoKeysMngrInit;
@@ -69,7 +69,7 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
      *
      * Key data ids
      *
-      *****************************************************************************/
+     *****************************************************************************/
 #ifndef XMLSEC_NO_DES
     gXmlSecMSCryptoFunctions->keyDataDesGetKlass                = xmlSecMSCryptoKeyDataDesGetKlass;
 #endif /* XMLSEC_NO_DES */
@@ -108,7 +108,7 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
      *
      * Key data store ids
      *
-      *****************************************************************************/
+     *****************************************************************************/
 #ifndef XMLSEC_NO_X509
     gXmlSecMSCryptoFunctions->x509StoreGetKlass                 = xmlSecMSCryptoX509StoreGetKlass;
 #endif /* XMLSEC_NO_X509 */
@@ -117,7 +117,7 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
      *
      * Crypto transforms ids
      *
-      *****************************************************************************/
+     *****************************************************************************/
 
     /* AES */
 #ifndef XMLSEC_NO_AES
@@ -238,7 +238,7 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
      *
      * High-level routines for the xmlsec command-line utility
      *
-      *****************************************************************************/
+     *****************************************************************************/
     gXmlSecMSCryptoFunctions->cryptoAppInit                     = xmlSecMSCryptoAppInit;
     gXmlSecMSCryptoFunctions->cryptoAppShutdown                 = xmlSecMSCryptoAppShutdown;
     gXmlSecMSCryptoFunctions->cryptoAppDefaultKeysMngrInit      = xmlSecMSCryptoAppDefaultKeysMngrInit;
@@ -315,7 +315,7 @@ xmlSecMSCryptoKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 
     xmlSecAssert2(mngr != NULL, -1);
 
-#ifndef XMLSEC_NO_X509    
+#ifndef XMLSEC_NO_X509
     /* create x509 store if needed */
     if(xmlSecKeysMngrGetDataStore(mngr, xmlSecMSCryptoX509StoreId) == NULL) {
         xmlSecKeyDataStorePtr x509Store;
@@ -467,7 +467,7 @@ xmlSecMSCryptoErrorsDefaultCallback(const char* file, int line, const char* func
  *
  * Crypto Providers
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Finds the first provider from the list
  * @param providers the pointer to list of providers, last provider should have NULL for name.
@@ -510,7 +510,7 @@ xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
         case (DWORD)NTE_BAD_KEYSET:
             /* This error can indicate that a newly installed provider
              * does not have a usable key container yet. It needs to be
-             * created, and then we have to try again CryptAcquireContext.
+             * created, and then we have to call CryptAcquireContext again.
              * This is also referenced in
              * http://www.microsoft.com/mind/0697/crypto.asp (inituser)
              */
@@ -572,7 +572,7 @@ xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
  *
  * Utils
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Reverses the byte order of @p src into @p dst.
  * @details Copies @p size bytes from @p src to @p dst in reversed order.

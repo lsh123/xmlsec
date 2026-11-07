@@ -729,7 +729,8 @@ done:
 
 #ifndef XMLSEC_NO_X509
 
-/* this function will set input parameters to NULL if it adopts them */
+/* this function will set the adopted input parameters to NULL; note that
+ * *certs is left pointing at the (emptied) stack rather than set to NULL */
 static xmlSecKeyPtr
 xmlSecOpenSSLCreateKey(EVP_PKEY ** pKey,  X509 ** keyCert, STACK_OF(X509) ** certs) {
     xmlSecKeyDataPtr keyValue = NULL;
@@ -1051,7 +1052,8 @@ xmlSecOpenSSLAppStoreKeyLoad(const char *uri, xmlSecKeyDataType type, const char
      * otherwise it is freed in the done block */
     keyCert = xmlSecOpenSSLAppFindKeyCert(pKey, certs);
 
-    /* finally create a key, xmlSecOpenSSLCreateKey will set values to NULL as it uses them */
+    /* finally create a key, xmlSecOpenSSLCreateKey will set the values to NULL
+     * as it uses them (except *certs, which is left pointing at the emptied stack) */
     res = xmlSecOpenSSLCreateKey(&pKey, &keyCert, &certs);
     if(res == NULL) {
         xmlSecInternalError("xmlSecOpenSSLCreateKey", NULL);
@@ -1530,7 +1532,8 @@ xmlSecOpenSSLAppPkcs12LoadBIO(
      * functions.
      */
 
-    /* finally create a key, xmlSecOpenSSLCreateKey will set values to NULL as it uses them */
+    /* finally create a key, xmlSecOpenSSLCreateKey will set the values to NULL
+     * as it uses them (except *certs, which is left pointing at the emptied stack) */
     res = xmlSecOpenSSLCreateKey(&pKey, &keyCert, &chain);
     if(res == NULL) {
         xmlSecInternalError("xmlSecOpenSSLCreateKey", NULL);
@@ -1633,7 +1636,7 @@ done:
 
 /**
  * @brief Adds the certificate to the key store.
- * @details Adds @p cert to the list of trusted or known untrusted certs in @p store.
+ * @details Adds @p cert to the list of trusted or known untrusted certs in @p mngr.
  * The function takes ownership of @p cert on success.
  *
  * @param mngr the keys manager.
@@ -1667,7 +1670,7 @@ xmlSecOpenSSLAppKeysMngrCertAdopt(xmlSecKeysMngrPtr mngr, X509* cert, xmlSecKeyD
 
 /**
  * @brief Adds the CRL to the key store.
- * @details Adds @p crl to the list of crls in @p store.
+ * @details Adds @p crl to the list of crls in @p mngr.
  * The function takes ownership of @p crl on success.
  *
  * @param mngr the keys manager.
@@ -1700,7 +1703,7 @@ xmlSecOpenSSLAppKeysMngrCrlAdopt(xmlSecKeysMngrPtr mngr, X509_CRL* crl) {
 /**
  * @brief Reads a cert from a file and adds to the key store.
  * @details Reads cert from @p filename and adds to the list of trusted or known
- * untrusted certs in @p store.
+ * untrusted certs in @p mngr.
  *
  * @param mngr the keys manager.
  * @param filename the certificate file.
@@ -1753,7 +1756,7 @@ xmlSecOpenSSLAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename, x
 /**
  * @brief Reads cert from buffer and adds to the key store.
  * @details Reads cert from binary buffer @p data and adds to the list of trusted or known
- * untrusted certs in @p store.
+ * untrusted certs in @p mngr.
  *
  * @param mngr the keys manager.
  * @param data the certificate binary data.
@@ -1814,7 +1817,7 @@ xmlSecOpenSSLAppKeysMngrCertLoadMemory(
 /**
  * @brief Reads cert from BIO and adds to the key store.
  * @details Reads cert from an OpenSSL BIO object and adds to the list of trusted or known
- * untrusted certs in @p store.
+ * untrusted certs in @p mngr.
  *
  * @param mngr the keys manager.
  * @param bio the certificate BIO.
@@ -1847,7 +1850,7 @@ xmlSecOpenSSLAppKeysMngrCertLoadBIO(xmlSecKeysMngrPtr mngr, BIO* bio, xmlSecKeyD
 
 /**
  * @brief Reads a CRL from a file and adds it to the store.
- * @details Reads crl from @p filename and adds to the list of crls in @p store.
+ * @details Reads crl from @p filename and adds to the list of crls in @p mngr.
  *
  * @param mngr the keys manager.
  * @param filename the CRL file.
@@ -1898,7 +1901,7 @@ xmlSecOpenSSLAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xm
 
 /**
  * @brief Reads a CRL from memory and adds it to the store.
- * @details Reads crl from binary buffer @p data and adds to the list of crls in @p store.
+ * @details Reads crl from binary buffer @p data and adds to the list of crls in @p mngr.
  *
  * @param mngr the keys manager.
  * @param data the CRL binary data.
@@ -1956,7 +1959,7 @@ xmlSecOpenSSLAppKeysMngrCrlLoadMemory(
 
 /**
  * @brief Reads a CRL from a BIO and adds it to the store.
- * @details Reads crl from an OpenSSL BIO object and adds to the list of crls in @p store.
+ * @details Reads crl from an OpenSSL BIO object and adds to the list of crls in @p mngr.
  *
  * @param mngr the keys manager.
  * @param bio the CRL BIO.

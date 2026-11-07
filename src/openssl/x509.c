@@ -56,7 +56,7 @@
  *
  * X509 utility functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int              xmlSecOpenSSLVerifyAndAdoptX509KeyData  (xmlSecKeyPtr key,
                                                                  xmlSecKeyDataPtr data,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
@@ -73,7 +73,7 @@ static void             xmlSecOpenSSLX509CertDebugXmlDump       (X509* cert,
  *
  * Internal OpenSSL X509 data CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecOpenSSLX509DataCtx                xmlSecOpenSSLX509DataCtx,
                                                         *xmlSecOpenSSLX509DataCtxPtr;
 struct _xmlSecOpenSSLX509DataCtx {
@@ -86,7 +86,7 @@ struct _xmlSecOpenSSLX509DataCtx {
  *
  * &lt;dsig:X509Data/&gt; processing (http://www.w3.org/TR/xmldsig-core/#sec-X509Data)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(OpenSSLX509Data, xmlSecOpenSSLX509DataCtx)
 #define xmlSecOpenSSLX509DataSize XMLSEC_KEY_DATA_SIZE(OpenSSLX509Data)
 
@@ -305,9 +305,9 @@ xmlSecOpenSSLKeyDataX509AdoptCert(xmlSecKeyDataPtr data, X509* cert) {
 /**
  * @brief Gets a certificate from X509 key data.
  * @param data the pointer to X509 key data.
- * @param pos the desired certificate position.
- * @return a borrowed pointer to the certificate, or NULL if @p pos is larger than the
- * number of certificates in @p data or an error occurs; the caller must NOT free it.
+ * @param pos the desired certificate position, must be less than the number of
+ * certificates in @p data (see xmlSecOpenSSLKeyDataX509GetCertsSize).
+ * @return a borrowed pointer to the certificate; the caller must NOT free it.
  */
 X509*
 xmlSecOpenSSLKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
@@ -390,9 +390,9 @@ xmlSecOpenSSLKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, X509_CRL* crl) {
 /**
  * @brief Gets a CRL from X509 key data.
  * @param data the pointer to X509 key data.
- * @param pos the desired CRL position.
- * @return a borrowed pointer to the CRL, or NULL if @p pos is larger than the
- * number of CRLs in @p data or an error occurs; the caller must NOT free it.
+ * @param pos the desired CRL position, must be less than the number of CRLs
+ * in @p data (see xmlSecOpenSSLKeyDataX509GetCrlsSize).
+ * @return a borrowed pointer to the CRL; the caller must NOT free it.
  */
 X509_CRL*
 xmlSecOpenSSLKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {
@@ -545,7 +545,7 @@ xmlSecOpenSSLKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
             }
             ret = sk_X509_push(ctxDst->certsList, certDst);
             if(ret <= 0) {
-                xmlSecOpenSSLError("sk_X509_push", NULL);
+                xmlSecOpenSSLError("sk_X509_push", xmlSecKeyDataGetName(dst));
                 X509_free(certDst);
                 return(-1);
             }
@@ -589,7 +589,7 @@ xmlSecOpenSSLKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
             }
             ret = sk_X509_CRL_push(ctxDst->crlsList, crlDst);
             if(ret <= 0) {
-                xmlSecOpenSSLError("sk_X509_CRL_push", NULL);
+                xmlSecOpenSSLError("sk_X509_CRL_push", xmlSecKeyDataGetName(dst));
                 X509_CRL_free(crlDst);
                 return(-1);
             }
@@ -1607,7 +1607,7 @@ xmlSecOpenSSLVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, 
         return(0);
     }
 
-    /* lets find a cert we can verify */
+    /* let's find a cert we can verify */
     x509Store = xmlSecKeysMngrGetDataStore(keyInfoCtx->keysMngr, xmlSecOpenSSLX509StoreId);
     if(x509Store == NULL) {
         xmlSecInternalError("xmlSecKeysMngrGetDataStore", xmlSecKeyDataGetName(data));
@@ -2084,7 +2084,7 @@ xmlSecOpenSSLX509CertDebugXmlDump(X509* cert, FILE* output) {
  * Raw X509 Certificate processing
  *
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int              xmlSecOpenSSLKeyDataRawX509CertBinRead  (xmlSecKeyDataId id,
                                                                  xmlSecKeyPtr key,
                                                                  const xmlSecByte* buf,

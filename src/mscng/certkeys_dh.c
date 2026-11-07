@@ -825,7 +825,7 @@ xmlSecMSCngDhDerivePubKeyY(BCRYPT_ALG_HANDLE hAlg, BCRYPT_KEY_HANDLE hPrivKey, P
         goto done;
     }
     if(cbY > cbKey) {
-        cbY = cbKey; /* safety (min() written out: lowercase min() is MSVC-specific, not standard C) */
+        cbY = cbKey; /* safety (min() written out: the lowercase min() macro comes from the Windows SDK headers, it is not standard C) */
     }
 
     /* derive into Y field of the private blob (right-aligned) */
@@ -1094,9 +1094,9 @@ xmlSecMSCngKeyDataDhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLen
     data = NULL;
 
 done:
-    /* Retry-on-failure, not a double-destroy: hPrivKey is only non-NULL here if the
-     * earlier BCryptDestroyKey(hPrivKey) failed (on success it is set to NULL above),
-     * in which case the handle is still valid and this is a legitimate retry. */
+    /* hPrivKey is only non-NULL here if one of the steps above that transfer
+     * it to the key data failed (or if the earlier BCryptDestroyKey(hPrivKey)
+     * failed), in which case the handle is still live and must be destroyed. */
     if(hPrivKey != NULL) {
         status = BCryptDestroyKey(hPrivKey);
         if(status != STATUS_SUCCESS) {

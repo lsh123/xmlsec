@@ -41,7 +41,7 @@
  *
  * Internal OpenSSL signatures ctx: forward declarations
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecOpenSSLSignatureLegacyCtx    xmlSecOpenSSLSignatureLegacyCtx,
                                                   *xmlSecOpenSSLSignatureLegacyCtxPtr;
 
@@ -60,7 +60,7 @@ static int  xmlSecOpenSSLSignatureLegacyEcdsaVerify          (xmlSecOpenSSLSigna
  *
  * Sign/verify callbacks
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef int  (*xmlSecOpenSSLSignatureLegacySignCallback)     (xmlSecOpenSSLSignatureLegacyCtxPtr ctx,
                                                               xmlSecTransformCtxPtr transformCtx,
                                                               xmlSecBufferPtr out);
@@ -73,7 +73,7 @@ typedef int  (*xmlSecOpenSSLSignatureLegacyVerifyCallback)   (xmlSecOpenSSLSigna
  *
  * Internal OpenSSL signatures ctx
  *
-  *****************************************************************************/
+ *****************************************************************************/
 struct _xmlSecOpenSSLSignatureLegacyCtx {
     const EVP_MD*                        digest;
     EVP_MD_CTX*                          digestCtx;
@@ -91,7 +91,7 @@ struct _xmlSecOpenSSLSignatureLegacyCtx {
  *
  * Signature transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(OpenSSLSignatureLegacy, xmlSecOpenSSLSignatureLegacyCtx)
 #define xmlSecOpenSSLSignatureLegacySize XMLSEC_TRANSFORM_SIZE(OpenSSLSignatureLegacy)
 
@@ -542,7 +542,7 @@ xmlSecOpenSSLSignatureLegacyExecute(xmlSecTransformPtr transform, int last, xmlS
  * to the size of the base point order of the curve in bytes (32 for the
  * P-256 curve and 66 for the P-521 curve).
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecOpenSSLSizeT
 xmlSecOpenSSLSignatureLegacyEcdsaSignatureHalfLen(EVP_PKEY* pKey) {
     const EC_GROUP *group = NULL;
@@ -872,17 +872,17 @@ xmlSecOpenSSLSignatureLegacyEcdsa_XmlDSigToOpenSSL(
         keyHalfLen = signHalfLen;  /* key-based half length before the lenient split below */
 
         /* check size: we expect the r and s to be the same size and match the size of
-        * the key (RFC 6931) */
+         * the key (RFC 6931) */
         XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_SIZE_T(signSize, signLen, goto done, NULL);
         if(signLen == 2 * signHalfLen) {
             /* good, do nothing */
         } else if((signLen < 2 * signHalfLen) && (signLen % 2 == 0)) {
             /* however some implementations (e.g. Java) cut leading zeros:
-            * https://github.com/lsh123/xmlsec/issues/228 */
+             * https://github.com/lsh123/xmlsec/issues/228 */
             signHalfLen = signLen / 2;
         } else if((signLen > 2 * signHalfLen) && (signLen % 2 == 0)) {
             /* however some implementations (e.g. Java) add leading zeros:
-            * https://github.com/lsh123/xmlsec/issues/941 */
+             * https://github.com/lsh123/xmlsec/issues/941 */
             signHalfLen = signLen / 2;
         } else {
             xmlSecInvalidDataError("Signature length doesn't match key size", NULL);
@@ -986,7 +986,7 @@ xmlSecOpenSSLSignatureLegacyEcdsaVerify(
  *
  * ECDSA-RIPEMD160 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS(EcdsaRipemd160)
 
@@ -1006,7 +1006,7 @@ xmlSecOpenSSLTransformEcdsaRipemd160GetKlass(void) {
  *
  * ECDSA-SHA1 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS(EcdsaSha1)
 
@@ -1026,7 +1026,7 @@ xmlSecOpenSSLTransformEcdsaSha1GetKlass(void) {
  *
  * ECDSA-SHA2-224 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS(EcdsaSha224)
 
@@ -1046,7 +1046,7 @@ xmlSecOpenSSLTransformEcdsaSha224GetKlass(void) {
  *
  * ECDSA-SHA2-256 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS(EcdsaSha256)
 
@@ -1066,7 +1066,7 @@ xmlSecOpenSSLTransformEcdsaSha256GetKlass(void) {
  *
  * ECDSA-SHA2-384 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS(EcdsaSha384)
 
@@ -1086,7 +1086,7 @@ xmlSecOpenSSLTransformEcdsaSha384GetKlass(void) {
  *
  * ECDSA-SHA2-512 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS(EcdsaSha512)
 
@@ -1107,7 +1107,7 @@ xmlSecOpenSSLTransformEcdsaSha512GetKlass(void) {
  *
  * ECDSA-SHA3-224 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS(EcdsaSha3_224)
 

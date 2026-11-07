@@ -689,7 +689,7 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
      *
      * Register keys
      *
-     *****************************************************************************/
+    *****************************************************************************/
 
     /* raw key values should not be used in production w/o understanding of the security risks */
     XMLSEC_REGISTER_DISABLED_KEY_DATA(Aes);                         /* keyDataAesGetKlass */
@@ -724,7 +724,7 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
      *
      * Register transforms
      *
-     *****************************************************************************/
+    *****************************************************************************/
     XMLSEC_REGISTER_TRANSFORM(Aes128Cbc);                           /* transformAes128CbcGetKlass */
     XMLSEC_REGISTER_TRANSFORM(Aes192Cbc);                           /* transformAes192CbcGetKlass */
     XMLSEC_REGISTER_TRANSFORM(Aes256Cbc);                           /* transformAes256CbcGetKlass */

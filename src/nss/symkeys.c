@@ -31,7 +31,7 @@
  *
  * Symmetric (binary) keys - just a wrapper for xmlSecKeyDataBinary
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int      xmlSecNssSymKeyDataInitialize           (xmlSecKeyDataPtr data);
 static int      xmlSecNssSymKeyDataDuplicate            (xmlSecKeyDataPtr dst,
                                                          xmlSecKeyDataPtr src);
@@ -235,7 +235,7 @@ xmlSecNssSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
  *
  * Symmetric keys Klasses
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #define XMLSEC_NSS_SYMKEY_KLASS_EX(name, keyName, usage, keyHref, keyNodeName, keyNodeNs, xmlRead, xmlWrite) \
 static xmlSecKeyDataKlass xmlSecNss ## name ## Klass = {                                                 \
     sizeof(xmlSecKeyDataKlass),             /* xmlSecSize klassSize */                                   \
@@ -300,7 +300,7 @@ static xmlSecKeyDataKlass xmlSecNss ## name ## Klass = {                        
  *
  * <xmlsec:AESKeyValue> processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_NSS_SYMKEY_WITH_XML_SUPPORT_KLASS(KeyDataAes, xmlSecNameAESKeyValue, xmlSecHrefAESKeyValue, xmlSecNodeAESKeyValue, xmlSecNs)
 
 /**
@@ -339,7 +339,7 @@ xmlSecNssKeyDataAesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize 
  *
  * <xmlsec:CamelliaKeyValue> processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_NSS_SYMKEY_WITH_XML_SUPPORT_KLASS(KeyDataCamellia, xmlSecNameCamelliaKeyValue, xmlSecHrefCamelliaKeyValue, xmlSecNodeCamelliaKeyValue, xmlSecNs)
 
 /**
@@ -378,7 +378,7 @@ xmlSecNssKeyDataCamelliaSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSec
  *
  * <xmlsec:DESKeyValue> processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_NSS_SYMKEY_WITH_XML_SUPPORT_KLASS(KeyDataDes, xmlSecNameDESKeyValue, xmlSecHrefDESKeyValue, xmlSecNodeDESKeyValue, xmlSecNs)
 
 /**
@@ -418,7 +418,7 @@ xmlSecNssKeyDataDesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize 
  *
  * <xmlsec:ChaCha20KeyValue> processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_NSS_SYMKEY_WITH_XML_SUPPORT_KLASS(KeyDataChaCha20, xmlSecNameChaCha20KeyValue, xmlSecHrefChaCha20KeyValue, xmlSecNodeChaCha20KeyValue, xmlSecNs)
 
 /**
@@ -458,7 +458,7 @@ xmlSecNssKeyDataChaCha20Set(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSec
  *
  * <xmlsec:HMACKeyValue> processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_NSS_SYMKEY_WITH_XML_SUPPORT_KLASS(KeyDataHmac, xmlSecNameHMACKeyValue, xmlSecHrefHMACKeyValue, xmlSecNodeHMACKeyValue, xmlSecNs)
 
 /**
@@ -498,7 +498,7 @@ xmlSecNssKeyDataHmacSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize
  *
  * The PBKDF2 key derivation key
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_NSS_SYMKEY_KLASS(KeyDataPbkdf2, xmlSecNamePbkdf2, xmlSecHrefPbkdf2)
 
 /**
@@ -538,7 +538,7 @@ xmlSecNssKeyDataPbkdf2Set(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSi
  *
  * The ConcatKDF key derivation key
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_NSS_SYMKEY_KLASS(KeyDataConcatKdf, xmlSecNameConcatKdf, xmlSecHrefConcatKdf)
 
 /**
@@ -578,7 +578,7 @@ xmlSecNssKeyDataConcatKdfSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSe
  *
  * The HKDF key derivation key
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_NSS_SYMKEY_KLASS(KeyDataHkdf, xmlSecNameHkdf, xmlSecHrefHkdf)
 
 /**

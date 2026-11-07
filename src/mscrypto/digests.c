@@ -46,7 +46,7 @@ struct _xmlSecMSCryptoDigestCtx {
  *
  * MSCrypto Digest transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MSCryptoDigest, xmlSecMSCryptoDigestCtx)
 #define xmlSecMSCryptoDigestSize XMLSEC_TRANSFORM_SIZE(MSCryptoDigest)
 
@@ -423,7 +423,7 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
  *
  * MD5
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoMd5Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* size_t klassSize */
@@ -464,7 +464,7 @@ xmlSecMSCryptoTransformMd5GetKlass(void) {
  *
  * SHA1
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoSha1Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* size_t klassSize */
@@ -505,7 +505,7 @@ xmlSecMSCryptoTransformSha1GetKlass(void) {
  *
  * SHA256
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoSha256Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),              /* size_t klassSize */
@@ -546,7 +546,7 @@ xmlSecMSCryptoTransformSha256GetKlass(void) {
  *
  * SHA384
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoSha384Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),              /* size_t klassSize */
@@ -587,7 +587,7 @@ xmlSecMSCryptoTransformSha384GetKlass(void) {
  *
  * SHA512
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoSha512Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),              /* size_t klassSize */
@@ -628,7 +628,7 @@ xmlSecMSCryptoTransformSha512GetKlass(void) {
  *
  * GOSTR3411_94
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoGostR3411_94Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* size_t klassSize */
@@ -670,7 +670,7 @@ xmlSecMSCryptoTransformGostR3411_94GetKlass(void) {
  *
  * GOSTR3411-2012/256
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoGostR3411_2012_256Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* size_t klassSize */
@@ -710,7 +710,7 @@ xmlSecMSCryptoTransformGostR3411_2012_256GetKlass(void) {
  *
  * GOSTR3411-2012/512
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoGostR3411_2012_512Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* size_t klassSize */

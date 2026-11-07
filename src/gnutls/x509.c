@@ -42,7 +42,7 @@
  *
  * X509 utility functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int              xmlSecGnuTLSVerifyAndAdoptX509KeyData  (xmlSecKeyPtr key,
                                                                  xmlSecKeyDataPtr data,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
@@ -51,7 +51,7 @@ static int              xmlSecGnuTLSVerifyAndAdoptX509KeyData  (xmlSecKeyPtr key
  *
  * Internal GnuTLS X509 data CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecGnuTLSX509DataCtx                         xmlSecGnuTLSX509DataCtx,
                                                                 *xmlSecGnuTLSX509DataCtxPtr;
 struct _xmlSecGnuTLSX509DataCtx {
@@ -65,7 +65,7 @@ struct _xmlSecGnuTLSX509DataCtx {
  *
  * &lt;dsig:X509Data/&gt; processing (http://www.w3.org/TR/xmldsig-core/#sec-X509Data)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(GnuTLSX509Data, xmlSecGnuTLSX509DataCtx)
 #define xmlSecGnuTLSX509DataSize XMLSEC_KEY_DATA_SIZE(GnuTLSX509Data)
 
@@ -984,7 +984,7 @@ xmlSecGnuTLSVerifyAndAdoptX509KeyData(
         return(0);
     }
 
-    /* lets find a cert we can verify */
+    /* let's find a cert we can verify */
     x509Store = xmlSecKeysMngrGetDataStore(keyInfoCtx->keysMngr, xmlSecGnuTLSX509StoreId);
     if(x509Store == NULL) {
         xmlSecInternalError("xmlSecKeysMngrGetDataStore", xmlSecKeyDataGetName(data));
@@ -1127,7 +1127,7 @@ xmlSecGnuTLSX509CertGetKey(gnutls_x509_crt_t cert) {
  * Raw X509 Certificate processing
  *
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int              xmlSecGnuTLSKeyDataRawX509CertBinRead  (xmlSecKeyDataId id,
                                                                  xmlSecKeyPtr key,
                                                                  const xmlSecByte* buf,

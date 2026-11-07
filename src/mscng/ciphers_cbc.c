@@ -28,7 +28,7 @@
  *
  * Internal MSCng CBC Block cipher CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecMSCngCbcBlockCipherCtx xmlSecMSCngCbcBlockCipherCtx, *xmlSecMSCngCbcBlockCipherCtxPtr;
 
 struct _xmlSecMSCngCbcBlockCipherCtx {

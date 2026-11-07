@@ -34,7 +34,7 @@
  *
  * AES KW implementation
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int      xmlSecMSCryptoKWAesBlockEncrypt         (xmlSecTransformPtr transform,
                                                          const xmlSecByte * in,
                                                          xmlSecSize inSize,
@@ -63,7 +63,7 @@ static xmlSecKWRfc3394Klass xmlSecMSCryptoKWAesKlass = {
  *
  * Internal MSCrypto KW AES cipher CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecMSCryptoKWAesCtx                  xmlSecMSCryptoKWAesCtx,
                                                         *xmlSecMSCryptoKWAesCtxPtr;
 struct _xmlSecMSCryptoKWAesCtx {
@@ -79,7 +79,7 @@ struct _xmlSecMSCryptoKWAesCtx {
  *
  *  KW AES transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MSCryptoKWAes, xmlSecMSCryptoKWAesCtx)
 #define xmlSecMSCryptoKWAesSize XMLSEC_TRANSFORM_SIZE(MSCryptoKWAes)
 
@@ -266,7 +266,7 @@ xmlSecMSCryptoKWAesExecute(xmlSecTransformPtr transform, int last,
  *
  * AES KW implementation
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int
 xmlSecMSCryptoKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSecSize inSize,
                                 xmlSecByte * out, xmlSecSize outSize,
@@ -298,9 +298,9 @@ xmlSecMSCryptoKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte *
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(keySize, dwKeySize, goto done, NULL);
 
     /* Import this key and get an HCRYPTKEY handle. We do it again and again
-     * to obtain a fresh session key per call; AES KW runs in ECB mode, so
-     * there is no chaining state to reset between calls. We do not want to
-     * cache the key */
+     * to obtain a fresh session key per call; each call encrypts a single
+     * 16-byte block, so there is no chaining state to reset between calls.
+     * We do not want to cache the key */
     if (!xmlSecMSCryptoImportPlainSessionBlob(ctx->cryptProvider,
         ctx->pubPrivKey,
         ctx->algorithmIdentifier,
@@ -370,9 +370,9 @@ xmlSecMSCryptoKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte *
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(keySize, dwKeySize, goto done, NULL);
 
     /* Import this key and get an HCRYPTKEY handle. We do it again and again
-     * to obtain a fresh session key per call; AES KW runs in ECB mode, so
-     * there is no chaining state to reset between calls. We do not want to
-     * cache the key */
+     * to obtain a fresh session key per call; each call encrypts a single
+     * 16-byte block, so there is no chaining state to reset between calls.
+     * We do not want to cache the key */
     if (!xmlSecMSCryptoImportPlainSessionBlob(ctx->cryptProvider,
         ctx->pubPrivKey,
         ctx->algorithmIdentifier,
@@ -413,7 +413,7 @@ done:
  *
  * AES KW cipher transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 /*
  * The AES-128 key wrapper transform klass.

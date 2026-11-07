@@ -25,7 +25,7 @@ extern "C" {
  *
  * Crypto Init/shutdown
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #define xmlSecCryptoInit                        xmlSecOpenSSLInit
 #define xmlSecCryptoShutdown                    xmlSecOpenSSLShutdown
 
@@ -35,7 +35,7 @@ extern "C" {
  *
  * Key data ids
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #define xmlSecKeyDataAesId                      xmlSecOpenSSLKeyDataAesId
 #define xmlSecKeyDataCamelliaId                 xmlSecOpenSSLKeyDataCamelliaId
 #define xmlSecKeyDataChaCha20Id                 xmlSecOpenSSLKeyDataChaCha20Id
@@ -65,7 +65,7 @@ extern "C" {
  *
  * Key data store ids
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #define xmlSecX509StoreId                       xmlSecOpenSSLX509StoreId
 
 /******************************************************************************
@@ -75,7 +75,7 @@ extern "C" {
  * https://www.aleksey.com/xmlsec/xmldsig.html
  * https://www.aleksey.com/xmlsec/xmlenc.html
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #define xmlSecTransformAes128CbcId              xmlSecOpenSSLTransformAes128CbcId
 #define xmlSecTransformAes192CbcId              xmlSecOpenSSLTransformAes192CbcId
 #define xmlSecTransformAes256CbcId              xmlSecOpenSSLTransformAes256CbcId
@@ -212,7 +212,7 @@ extern "C" {
  *
  * High-level routines for the xmlsec command-line utility
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #define xmlSecCryptoAppInit                     xmlSecOpenSSLAppInit
 #define xmlSecCryptoAppShutdown                 xmlSecOpenSSLAppShutdown
 #define xmlSecCryptoAppDefaultKeysMngrInit      xmlSecOpenSSLAppDefaultKeysMngrInit

@@ -36,21 +36,21 @@
  *
  * Internal NSS signatures ctx
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecNssSignatureCtx   xmlSecNssSignatureCtx,
                                         *xmlSecNssSignatureCtxPtr;
 struct _xmlSecNssSignatureCtx {
     xmlSecKeyDataId     keyId;
     SECOidTag           alg;
 
-    /* rsa pss */
+    /* RSA-PSS */
     SECAlgorithmID      algId;
     PLArenaPool*        arena;
     SECOidTag           pssHashAlgTag;
     SECOidTag           pssMaskAlgTag;
     unsigned int        pssSaltLength;
 
-    /* ML-DSA and EdDSA uses PK11 APIs directly without streaming contexts
+    /* ML-DSA and EdDSA use PK11 APIs directly without streaming contexts
      * and require the complete signed data in a buffer */
     xmlSecBuffer        dataBuffer;
 
@@ -75,7 +75,7 @@ struct _xmlSecNssSignatureCtx {
  *
  * Signature transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(NssSignature, xmlSecNssSignatureCtx)
 #define xmlSecNssSignatureSize XMLSEC_TRANSFORM_SIZE(NssSignature)
 

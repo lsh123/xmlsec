@@ -38,7 +38,7 @@
  *
  * xmlSecDSigCtx
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int      xmlSecDSigCtxProcessSignatureNode       (xmlSecDSigCtxPtr dsigCtx,
                                                          xmlNodePtr node);
 static int      xmlSecDSigCtxProcessSignedInfoNode      (xmlSecDSigCtxPtr dsigCtx,
@@ -893,7 +893,7 @@ xmlSecDSigCtxProcessObjectNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     while(cur != NULL) {
         if(xmlSecCheckNodeName(cur, xmlSecNodeManifest, xmlSecDSigNs)) {
             ret = xmlSecDSigCtxProcessManifestNode(dsigCtx, cur);
-            if(ret < 0){
+            if(ret < 0) {
                 xmlSecInternalError("xmlSecDSigCtxProcessManifestNode", NULL);
                 return(-1);
             }
@@ -1183,7 +1183,7 @@ xmlSecDSigCtxDebugXmlDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
  *
  * xmlSecDSigReferenceCtx
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Creates a dsig:Reference processing context.
  * @details Creates new &lt;dsig:Reference/&gt; element processing context. Caller is responsible
@@ -1290,7 +1290,7 @@ xmlSecDSigReferenceCtxInitialize(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlSecDSi
 
 /**
  * @brief Cleans up a dsig:Reference processing context.
- * @details Cleans up context object created with #xmlSecDSigReferenceCtxInitialize function.
+ * @details Cleans up context object initialized with #xmlSecDSigReferenceCtxInitialize function.
  * @param dsigRefCtx the pointer to &lt;dsig:Reference/&gt; element processing context.
  */
 void
@@ -1638,7 +1638,7 @@ xmlSecDSigReferenceCtxDebugXmlDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* o
  *
  * xmlSecDSigReferenceCtxListKlass
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecPtrListKlass xmlSecDSigReferenceCtxListKlass = {
     BAD_CAST "dsig-reference-list",
     NULL,                                                               /* xmlSecPtrDuplicateItemMethod duplicateItem; */

@@ -380,10 +380,12 @@ xmlSecNodeSetWalkRootIsAncestor(xmlNodeSetPtr roots, xmlNodePtr node) {
 /*
  * Checks if the node set contains any namespace nodes.
  *
- * Namespace nodes in an XPath node set are copies (see libxml2's
- * xmlXPathNodeSetDupNs) rather than the actual namespace nodes from the
- * document tree, so they must not be used as fast-path walk roots: the fast
- * path would report the copies while the slow path reports the document nodes.
+ * Namespace nodes in an XPath node set may be copies (sets populated by the
+ * XPath engine) or the actual namespace nodes from the document tree (sets
+ * built via the public API, since xmlXPathNodeSetDupNs returns the original
+ * node for NS nodes), so the presence of any ns node disables the fast path:
+ * for sets holding copies the fast path would report the copies while the
+ * slow path reports the document nodes.
  */
 static int
 xmlSecNodeSetContainsNamespaceNode(xmlNodeSetPtr nodes) {

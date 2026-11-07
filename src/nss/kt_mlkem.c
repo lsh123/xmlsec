@@ -53,7 +53,7 @@
  *
  * Internal NSS ML-KEM CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecNssMLKEMCtx             xmlSecNssMLKEMCtx,
                                              *xmlSecNssMLKEMCtxPtr;
 struct _xmlSecNssMLKEMCtx {
@@ -67,7 +67,7 @@ struct _xmlSecNssMLKEMCtx {
  *
  * ML-KEM key transport transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(NssMLKEM, xmlSecNssMLKEMCtx)
 #define xmlSecNssMLKEMSize XMLSEC_TRANSFORM_SIZE(NssMLKEM)
 

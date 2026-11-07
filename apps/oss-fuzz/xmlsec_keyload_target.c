@@ -4,9 +4,7 @@
  * The other targets all start from an XML document. This one starts from raw
  * key material, which is the other half of what xmlsec reads from untrusted
  * sources: PEM and DER private keys, PKCS#8, PKCS#12 bags and X509
- * certificates. Together those loaders are the largest cold area in the
- * library, roughly 7000 lines across openssl/app.c, openssl/evp.c,
- * openssl/x509.c, x509_helpers.c and openssl/kt_rsa.c.
+ * certificates.
  *
  * The first input byte picks the format, the rest is the key material, so a
  * mutator reaches a loader on its very first input. No XML wrapper and no

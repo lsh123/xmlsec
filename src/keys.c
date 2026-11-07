@@ -31,7 +31,7 @@
  *
  * xmlSecKeyUseWith
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Initializes @p keyUseWith object.
  * @param keyUseWith the pointer to information about key application/user.
@@ -256,7 +256,7 @@ xmlSecKeyUseWithDebugXmlDump(xmlSecKeyUseWithPtr keyUseWith, FILE* output) {
  *
  * KeyUseWith list
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecPtrListKlass xmlSecKeyUseWithPtrListKlass = {
     BAD_CAST "key-use-with-list",
     (xmlSecPtrDuplicateItemMethod)xmlSecKeyUseWithDuplicate,    /* xmlSecPtrDuplicateItemMethod duplicateItem; */
@@ -279,7 +279,7 @@ xmlSecKeyUseWithPtrListGetKlass(void) {
  *
  * xmlSecKeyReq - what key are we looking for?
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Initializes a key requirements object.
  * @details Initializes key requirements object. Caller is responsible for
@@ -486,7 +486,7 @@ xmlSecKeyReqDebugXmlDump(xmlSecKeyReqPtr keyReq, FILE* output) {
  *
  * xmlSecKey
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Allocates and initializes a new key object.
  * @details Allocates and initializes new key. Caller is responsible for
@@ -961,7 +961,7 @@ xmlSecKeyDebugDump(xmlSecKeyPtr key, FILE *output) {
     xmlSecAssert(key != NULL);
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "== KEY\n");
+    fprintf(output, "=== KEY\n");
     if(key->value != NULL) {
         fprintf(output, "=== method: %s\n",
                 (key->value->id->dataNodeName != NULL) ?
@@ -1142,7 +1142,7 @@ xmlSecKeyReadBuffer(xmlSecKeyDataId dataId, xmlSecBuffer* buffer) {
     xmlSecAssert2(dataId != xmlSecKeyDataIdUnknown, NULL);
     xmlSecAssert2(buffer != NULL, NULL);
 
-    /* create key data */
+    /* create key */
     key = xmlSecKeyCreate();
     if(key == NULL) {
         xmlSecInternalError("xmlSecKeyCreate",
@@ -1323,7 +1323,7 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {
  *
  * Keys list
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecPtrListKlass xmlSecKeyPtrListKlass = {
     BAD_CAST "keys-list",
     (xmlSecPtrDuplicateItemMethod)xmlSecKeyDuplicate,   /* xmlSecPtrDuplicateItemMethod duplicateItem; */

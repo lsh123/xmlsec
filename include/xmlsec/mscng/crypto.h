@@ -37,7 +37,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecCryptoDLFunctionsPtr xmlSecCryptoGetFunctions_mscng(v
  *
  * Init shutdown
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngInit              (void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngShutdown          (void);
 
@@ -49,7 +49,7 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngGenerateRandom    (xmlSecBuff
  *
  * ConcatKDF key and transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_CONCATKDF
 
 /**
@@ -71,7 +71,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformConcatKdfGetKlass(voi
  *
  * DSA transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_DSA
 
 /**
@@ -105,7 +105,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformDsaSha256GetKlass(voi
  *
  * RSA transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_RSA
 
 /**
@@ -236,7 +236,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaPkcs1GetKlass(void
         xmlSecMSCngTransformRsaOaepGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaOaepGetKlass(void);
 
-
 /**
  * @brief The RSA OAEP-Enc11 key transport transform klass.
  */
@@ -251,7 +250,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaOaepEnc11GetKlass(
  *
  * EC key and transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_EC
 
 /**
@@ -332,7 +331,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformEcdhGetKlass(void);
  *
  * DH transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_DH
 
 /**
@@ -355,7 +354,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformDhEsGetKlass(void);
  *
  * XDH key and transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_XDH
 
 /**
@@ -378,7 +377,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformX25519GetKlass(void);
  *
  * ML-DSA (FIPS 204) key and signature transforms
  *
-   *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_MLDSA
 
 /**
@@ -415,7 +414,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformMLDSA87GetKlass(void)
  *
  * ML-KEM (FIPS 203) key and key transport transforms
  *
-   *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_MLKEM
 
 /**
@@ -452,7 +451,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformMLKEM1024GetKlass(voi
  *
  * DES transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_DES
 
 /**
@@ -482,7 +481,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformKWDes3GetKlass(void);
  *
  * HMAC transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_HMAC
 
 /**
@@ -543,7 +542,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformHmacSha512GetKlass(vo
  *
  * MD5 transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_MD5
 /**
  * @brief The MD5 digest transform klass.
@@ -557,7 +556,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformMd5GetKlass(void);
  *
  * PBKDF2 key and transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_PBKDF2
 
 /**
@@ -579,7 +578,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformPbkdf2GetKlass(void);
  *
  * HKDF key and transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_HKDF
 
 /**
@@ -601,7 +600,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformHkdfGetKlass(void);
  *
  * SHA1 transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_SHA1
 /**
  * @brief The SHA1 digest transform klass.
@@ -615,7 +614,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformSha1GetKlass(void);
  *
  * SHA256 transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_SHA256
 /**
  * @brief The SHA2-256 digest transform klass.
@@ -629,7 +628,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformSha256GetKlass(void);
  *
  * SHA384 transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_SHA384
 /**
  * @brief The SHA2-384 digest transform klass.
@@ -643,7 +642,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformSha384GetKlass(void);
  *
  * SHA512 transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_SHA512
 /**
  * @brief The SHA2-512 digest transform klass.
@@ -658,7 +657,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformSha512GetKlass(void);
  * SHA3 transforms (SHA3-256, SHA3-384, SHA3-512 are natively supported
  * in Windows CNG; SHA3-224 is not supported and therefore not implemented here)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_SHA3
 /**
  * @brief The SHA3-256 digest transform klass.
@@ -686,7 +685,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformSha3_512GetKlass(void
  *
  * AES transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_AES
 /**
  * @brief The AES key data klass.
@@ -759,7 +758,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformKWAes192GetKlass(void
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformKWAes256GetKlass(void);
 #endif /* XMLSEC_NO_AES */
 
-
 /******************************************************************************
  *
  * ChaCha20-Poly1305 transforms
@@ -781,13 +779,11 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCngKeyDataChaCha20GetKlass(void);
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformChaCha20Poly1305GetKlass(void);
 #endif /* XMLSEC_NO_CHACHA20 */
 
-
 /**
  * @brief The MSCng DEREncodedKeyValue data klass.
  */
 #define xmlSecMSCngKeyDataDEREncodedKeyValueId xmlSecMSCngKeyDataDEREncodedKeyValueGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCngKeyDataDEREncodedKeyValueGetKlass(void);
-
 
 #ifdef __cplusplus
 }

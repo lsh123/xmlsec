@@ -147,7 +147,7 @@ static const char helpCheckTransforms[] =
  *
  * General configuration params
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecAppCmdLineParam helpParam = {
     xmlSecAppCmdLineTopicGeneral,
     "--help",
@@ -263,7 +263,7 @@ static xmlSecAppCmdLineParam printCryptoErrorsParam = {
  *
  * Keys Manager params
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecAppCmdLineParam genKeyParam = {
     xmlSecAppCmdLineTopicKeysMngr,
     "--gen-key",
@@ -549,7 +549,7 @@ static xmlSecAppCmdLineParam enabledKeyDataParam = {
     "\n\t  rsa,key-value,x509  -> populates <RSAKeyValue> and keeps <X509Data>"
     "\n\t                         when <KeyValue/> and <X509Data/> placeholders"
     "\n\t                         are present in the template."
-    "\n\tUse \"--list-key-data\" to view full list of registered key data klasses."
+    "\n\tUse \"--list-key-data\" to view the full list of registered key data klasses."
     "\n\tBy default, all registered key data are enabled.",
     xmlSecAppCmdLineParamTypeStringList,
     xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
@@ -610,7 +610,7 @@ static xmlSecAppCmdLineParam verifyKeysParam = {
  *
  * Common params
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecAppCmdLineParam sessionKeyParam = {
     xmlSecAppCmdLineTopicDSigSign | xmlSecAppCmdLineTopicEncEncrypt,
     "--session-key",
@@ -786,7 +786,7 @@ static xmlSecAppCmdLineParam maxEncryptedKeyLevelParam = {
  *
  * Common dsig params
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_XMLDSIG
 static xmlSecAppCmdLineParam ignoreManifestsParam = {
     xmlSecAppCmdLineTopicDSigCommon,
@@ -895,7 +895,7 @@ static xmlSecAppCmdLineParam allowEmptyInputParam = {
  *
  * Enc params
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_XMLENC
 static xmlSecAppCmdLineParam enabledCipherRefUrisParam = {
     xmlSecAppCmdLineTopicEncCommon,
@@ -938,7 +938,7 @@ static xmlSecAppCmdLineParam xmlDataParam = {
  *
  * X509 params
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_X509
 static xmlSecAppCmdLineParam pkcs12Param = {
     xmlSecAppCmdLineTopicKeysMngr,
@@ -1528,10 +1528,10 @@ done:
         /* Use checkpoint-based comparison to exclude crypto library init
          * allocations that survive their own cleanup (e.g. OpenSSL 3.x
          * providers loaded via OPENSSL_CONF). _CrtMemDifference() computes
-         * (state2 - state3), so the (now, after-init) order makes blocks
-         * leaked after the checkpoint positive. Use (ptrdiff_t) cast
-         * because lCounts is size_t (unsigned) and the difference can
-         * be negative when pre-checkpoint blocks are freed. */
+         * the third argument minus the second, so the (after-init, now)
+         * argument order makes blocks leaked after the checkpoint positive.
+         * Use (ptrdiff_t) cast because lCounts is size_t (unsigned) and the
+         * difference can be negative when pre-checkpoint blocks are freed. */
         _CrtMemState memStateNow, memStateDiff;
         _CrtMemCheckpoint(&memStateNow);
         if (_CrtMemDifference(&memStateDiff, &g_memStateAfterInit, &memStateNow)
@@ -2430,7 +2430,7 @@ xmlSecAppLoadKeys(void) {
     /* create and initialize key info ctx */
     keyInfoCtx = xmlSecKeyInfoCtxCreate(g_keysManager);
     if(keyInfoCtx == NULL) {
-        fprintf(stderr, "Error: failed to initialize key info ctx.\n");
+        fprintf(stderr, "Error: failed to create key info ctx.\n");
         return(-1);
     }
     ret = xmlSecAppPrepareKeyInfoCtx(keyInfoCtx);
@@ -2471,7 +2471,7 @@ xmlSecAppLoadKeys(void) {
      *
      * FIRST, READ ALL CERTIFICATES
      *
-      *****************************************************************************/
+     *****************************************************************************/
 
 #ifndef XMLSEC_NO_X509
     /* read all trusted certs */
@@ -2594,7 +2594,7 @@ xmlSecAppLoadKeys(void) {
      *
      * XMLSEC KEY FILE
      *
-      *****************************************************************************/
+     *****************************************************************************/
     for(value = keysFileParam.value; value != NULL; value = value->next) {
         if(value->strValue == NULL) {
             fprintf(stderr, "Error: invalid value for option \"%s\".\n", keysFileParam.fullName);
@@ -2611,7 +2611,7 @@ xmlSecAppLoadKeys(void) {
      *
      * PRIVATE KEYS
      *
-      *****************************************************************************/
+     *****************************************************************************/
     for(value = privkeyParam.value; value != NULL; value = value->next) {
         if(value->strListValue == NULL) {
             fprintf(stderr, "Error: invalid value for option \"%s\".\n",
@@ -2771,7 +2771,7 @@ xmlSecAppLoadKeys(void) {
      *
      * PUBLIC KEYS
      *
-      *****************************************************************************/
+     *****************************************************************************/
     for(value = pubkeyParam.value; value != NULL; value = value->next) {
         if(value->strListValue == NULL) {
             fprintf(stderr, "Error: invalid value for option \"%s\".\n",
@@ -2910,7 +2910,7 @@ xmlSecAppLoadKeys(void) {
      *
      * SYMMETRICAL KEYS
      *
-      *****************************************************************************/
+     *****************************************************************************/
 
 #ifndef XMLSEC_NO_AES
     /* read all AES keys */
@@ -2985,7 +2985,7 @@ xmlSecAppLoadKeys(void) {
 #endif /* XMLSEC_NO_CONCATKDF */
 
 #ifndef XMLSEC_NO_DES
-    /* read all des keys */
+    /* read all DES keys */
     for(value = desKeyParam.value; value != NULL; value = value->next) {
         if(value->strValue == NULL) {
             fprintf(stderr, "Error: invalid value for option \"%s\".\n",
@@ -2994,7 +2994,7 @@ xmlSecAppLoadKeys(void) {
             return(-1);
         } else if(xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(g_keysManager,
                     (const char*)xmlSecNameDESKeyValue, value->strValue, value->paramNameValue) < 0) {
-            fprintf(stderr, "Error: failed to load des key from \"%s\".\n",
+            fprintf(stderr, "Error: failed to load DES key from \"%s\".\n",
                     value->strValue);
             xmlSecKeyInfoCtxDestroy(keyInfoCtx);
             return(-1);
@@ -3379,7 +3379,7 @@ xmlSecAppXmlDataCreate(const char* filename, const xmlChar* defStartNodeName, co
 
         buf = xmlStrdup(BAD_CAST xmlSecAppCmdLineParamGetString(&nodeNameParam));
         if(buf == NULL) {
-            fprintf(stderr, "Error: failed to duplicate node \"%s\"\n",
+            fprintf(stderr, "Error: failed to duplicate the string \"%s\"\n",
                     xmlSecAppCmdLineParamGetString(&nodeNameParam));
             xmlSecAppXmlDataDestroy(data);
             return(NULL);

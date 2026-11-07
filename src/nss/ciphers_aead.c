@@ -45,7 +45,7 @@
  *
  * Internal NSS AEAD cipher CTX (GCM, ChaCha20-Poly1305)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecNssAeadCipherCtx           xmlSecNssAeadCipherCtx,
                                                 *xmlSecNssAeadCipherCtxPtr;
 
@@ -92,7 +92,7 @@ struct _xmlSecNssAeadCipherCtx {
  *
  * Cipher transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(NssAeadCipher, xmlSecNssAeadCipherCtx)
 #define xmlSecNssAeadCipherSize XMLSEC_TRANSFORM_SIZE(NssAeadCipher)
 
@@ -626,7 +626,7 @@ xmlSecNssAeadCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTransfo
  *
  * AES GCM cipher transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int
 xmlSecNssAeadCipherCtxSetupParamsGcm(xmlSecNssAeadCipherCtxPtr ctx, SECItem* param) {
     xmlSecAssert2(ctx != NULL, -1);
@@ -687,7 +687,7 @@ xmlSecNssTransformAes256GcmGetKlass(void) {
  *
  * ChaCha20-Poly1305 AEAD cipher transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int
 xmlSecNssAeadCipherCtxSetupParamsChaCha20Poly1305(xmlSecNssAeadCipherCtxPtr ctx, SECItem* param) {
     xmlSecAssert2(ctx != NULL, -1);

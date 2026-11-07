@@ -48,7 +48,7 @@
  *
  * MSCrypto Keys Store. Uses Simple Keys Store under the hood
  *
-  *****************************************************************************/
+ *****************************************************************************/
  typedef struct _xmlSecMSCryptoKeysStoreCtx {
     xmlSecKeyStorePtr   simpleKeyStore;
     HCERTSTORE          hStoreHandle;
@@ -228,8 +228,7 @@ xmlSecMSCryptoKeysStoreFinalize(xmlSecKeyStorePtr store) {
     if(ctx->hStoreHandle != NULL) {
         if (!CertCloseStore(ctx->hStoreHandle, XMLSEC_CLOSE_STORE_FLAG)) {
             xmlSecMSCryptoError("CertCloseStore", xmlSecKeyStoreGetName(store));
-            /* cleanup: the returned cert context may still reference the closed store;
-            * nothing else can be done here */
+            /* the store could not be closed; nothing else can be done here */
         }
         ctx->hStoreHandle = NULL;
     }

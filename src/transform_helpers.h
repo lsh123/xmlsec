@@ -40,6 +40,10 @@ xmlSecKeyPtr                xmlSecTransformReadKeyInfoNode       (xmlSecKeyDataT
                                                                   xmlNodePtr node,
                                                                   xmlSecTransformPtr transform,
                                                                   xmlSecTransformCtxPtr transformCtx);
+/**
+ * @brief Writes the key to a key info node.
+ * @return 0 on success or a negative value if an error occurs.
+ */
 int                         xmlSecTransformWriteKeyInfoNode      (xmlSecKeyPtr key,
                                                                   xmlNodePtr node,
                                                                   xmlSecTransformPtr transform,
@@ -55,7 +59,7 @@ int                         xmlSecTransformWriteKeyInfoNode      (xmlSecKeyPtr k
  * structure which is attached to the derived-key object and passed around
  * to avoid (potentially expensive) re-lookup of the keys.
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Key Agreement transform parameters.
  *
@@ -155,7 +159,7 @@ XMLSEC_EXPORT int xmlSecTransformMLDSAReadContextString(xmlNodePtr node,
 #endif /* XMLSEC_NO_MLDSA */
 
 
-/* SLH-DSA (https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/)*/
+/* SLH-DSA (https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/) */
 #ifndef XMLSEC_NO_SLHDSA
 
 #define XMLSEC_SLHDSA_MAX_SIZE  ((xmlSecSize)255)
@@ -224,7 +228,7 @@ XMLSEC_EXPORT int   xmlSecTransformPbkdf2ParamsRead          (xmlSecTransformPbk
  * limit are rejected to protect against oversized derived-key
  * buffer allocations (denial of service) when processing
  * untrusted documents. RFC 5869 permits up to 255 × HashLen bytes
- * (for SHA-512, 16320 bytes)
+ * (for SHA-512, 16320 bytes).
  */
 #if !defined(XMLSEC_HKDF_MAX_KEY_LENGTH)
 #define XMLSEC_HKDF_MAX_KEY_LENGTH  ((xmlSecSize)16320)

@@ -33,7 +33,7 @@
  *
  * Symmetric (binary) keys - just a wrapper for xmlSecKeyDataBinary
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int      xmlSecOpenSSLSymKeyDataInitialize       (xmlSecKeyDataPtr data);
 static int      xmlSecOpenSSLSymKeyDataDuplicate        (xmlSecKeyDataPtr dst,
                                                          xmlSecKeyDataPtr src);
@@ -287,7 +287,7 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyData ## name ## Klass = {             
  *
  * <xmlsec:AESKeyValue> processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_OPENSSL_SYMKEY_KLASS(Aes, AES)
 
 /**
@@ -326,7 +326,7 @@ xmlSecOpenSSLKeyDataAesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecS
  *
  * <xmlsec:CamelliaKeyValue> processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_OPENSSL_SYMKEY_KLASS(Camellia, Camellia)
 
 /**
@@ -365,7 +365,7 @@ xmlSecOpenSSLKeyDataCamelliaSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xm
  *
  * <xmlsec:ChaCha20KeyValue> processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_OPENSSL_SYMKEY_KLASS(ChaCha20, ChaCha20)
 
 /**
@@ -405,7 +405,7 @@ xmlSecOpenSSLKeyDataChaCha20Set(xmlSecKeyDataPtr data, const xmlSecByte* buf, xm
  *
  * The ConcatKDF key derivation key
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_OPENSSL_SYMKEY_KLASS_EX(ConcatKdf,
     xmlSecNameConcatKdf,
     xmlSecHrefConcatKdf,
@@ -452,7 +452,7 @@ xmlSecOpenSSLKeyDataConcatKdfSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, x
  *
  * <xmlsec:DESKeyValue> processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_OPENSSL_SYMKEY_KLASS(Des, DES)
 
 /**
@@ -492,7 +492,7 @@ xmlSecOpenSSLKeyDataDesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecS
  *
  * <xmlsec:HMACKeyValue> processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_OPENSSL_SYMKEY_KLASS(Hmac, HMAC)
 
 /**
@@ -532,7 +532,7 @@ xmlSecOpenSSLKeyDataHmacSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSec
  *
  * The PBKDF2 key derivation key
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_OPENSSL_SYMKEY_KLASS_EX(Pbkdf2,
     xmlSecNamePbkdf2,
     xmlSecHrefPbkdf2,
@@ -578,7 +578,7 @@ xmlSecOpenSSLKeyDataPbkdf2Set(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlS
  *
  * The HKDF key derivation key
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_OPENSSL_SYMKEY_KLASS_EX(Hkdf,
     xmlSecNameHkdf,
     xmlSecHrefHkdf,

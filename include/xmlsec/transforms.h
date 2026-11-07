@@ -49,7 +49,7 @@ typedef const struct _xmlSecTransformKlass              *xmlSecTransformId;
  *
  * High-level functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_EXPORT xmlSecPtrListPtr  xmlSecTransformIdsGet           (void);
 XMLSEC_EXPORT int               xmlSecTransformIdsInit          (void);
 XMLSEC_EXPORT void              xmlSecTransformIdsShutdown      (void);
@@ -95,7 +95,7 @@ typedef enum  {
  *
  * xmlSecTransformUriType:
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief URI transform type bit mask.
  */
@@ -137,7 +137,7 @@ XMLSEC_EXPORT int                       xmlSecTransformUriTypeCheck     (xmlSecT
  *
  * xmlSecTransformDataType
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Transform data type bit mask.
  */
@@ -163,7 +163,7 @@ typedef xmlSecByte                              xmlSecTransformDataType;
  *
  * xmlSecTransformUsage
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief The transform usage bit mask.
  */
@@ -225,7 +225,7 @@ typedef unsigned int                            xmlSecTransformUsage;
  *
  * xmlSecTransformCtx
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Callback called before data processing to verify/modify transforms.
  * @details The callback called after creating transforms chain but before
@@ -373,7 +373,7 @@ XMLSEC_EXPORT int                       xmlSecTransformCtxExtraKeyDataAdopt     
  *
  * xmlSecTransform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief The transform structure.
  */
@@ -381,7 +381,7 @@ struct _xmlSecTransform {
     xmlSecTransformId                   id;  /**< the transform id (pointer to the transform klass). */
     xmlSecTransformOperation            operation;  /**< the transform's operation. */
     xmlSecTransformStatus               status;  /**< the current status. */
-    xmlNodePtr                          hereNode;  /**< the pointer to transform's <dsig:Transform /> node. */
+    xmlNodePtr                          hereNode;  /**< the pointer to transform's &lt;dsig:Transform/&gt; node. */
 
     /* transforms chain */
     xmlSecTransformPtr                  next;  /**< the pointer to next transform in the chain. */
@@ -500,7 +500,7 @@ XMLSEC_EXPORT void                      xmlSecTransformDebugXmlDump(xmlSecTransf
  *
  * Operations on transforms chain
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_EXPORT int                       xmlSecTransformConnect  (xmlSecTransformPtr left,
                                                                  xmlSecTransformPtr right,
                                                                  xmlSecTransformCtxPtr transformCtx);
@@ -510,7 +510,7 @@ XMLSEC_EXPORT void                      xmlSecTransformRemove   (xmlSecTransform
  *
  * Default callbacks, most of the transforms can use them
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_EXPORT xmlSecTransformDataType   xmlSecTransformDefaultGetDataType(xmlSecTransformPtr transform,
                                                                  xmlSecTransformMode mode,
                                                                  xmlSecTransformCtxPtr transformCtx);
@@ -535,7 +535,7 @@ XMLSEC_EXPORT int                       xmlSecTransformDefaultPopXml(xmlSecTrans
  *
  * IO buffers for transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_EXPORT xmlOutputBufferPtr        xmlSecTransformCreateOutputBuffer(xmlSecTransformPtr transform,
                                                                  xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT xmlParserInputBufferPtr   xmlSecTransformCreateInputBuffer(xmlSecTransformPtr transform,
@@ -545,7 +545,7 @@ XMLSEC_EXPORT xmlParserInputBufferPtr   xmlSecTransformCreateInputBuffer(xmlSecT
  *
  * Transform Klass
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief The transform specific initialization method.
  * @param transform the pointer to transform object.
@@ -750,7 +750,7 @@ struct _xmlSecTransformKlass {
  *
  * Transform Ids list
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Transform klasses list klass.
  */
@@ -774,7 +774,7 @@ XMLSEC_EXPORT void              xmlSecTransformIdListDebugXmlDump(xmlSecPtrListP
  *
  * XML Sec Library Transform Ids
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief The "unknown" transform id (NULL).
  */
@@ -917,7 +917,7 @@ XMLSEC_EXPORT int               xmlSecTransformVisa3DHackSetID          (xmlSecT
  *
  * Helper transform functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 #ifndef XMLSEC_NO_HMAC
 XMLSEC_EXPORT xmlSecSize        xmlSecTransformHmacGetMinOutputBitsSize(void);

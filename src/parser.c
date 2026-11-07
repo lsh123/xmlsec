@@ -35,7 +35,7 @@
  *
  * Internal parser
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecParserCtx                                 xmlSecParserCtx,
                                                                 *xmlSecParserCtxPtr;
 struct _xmlSecParserCtx {
@@ -48,7 +48,7 @@ struct _xmlSecParserCtx {
  *
  * xmlSecTransform + xmlSecParserCtx
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(Parser, xmlSecParserCtx)
 #define xmlSecParserSize XMLSEC_TRANSFORM_SIZE(Parser)
 
@@ -353,7 +353,7 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes, xmlSec
  *
  * XML Parser functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Loads an XML document from a file.
  * @details Loads an XML document from the file @p filename. The caller owns

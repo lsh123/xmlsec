@@ -35,7 +35,7 @@
  *
  * Internal OpenSSL EVP Digest CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecOpenSSLEvpDigestCtx xmlSecOpenSSLEvpDigestCtx, *xmlSecOpenSSLEvpDigestCtxPtr;
 struct _xmlSecOpenSSLEvpDigestCtx {
     EVP_MD*             digest;
@@ -49,7 +49,7 @@ struct _xmlSecOpenSSLEvpDigestCtx {
  *
  * EVP Digest transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(OpenSSLEvpDigest, xmlSecOpenSSLEvpDigestCtx)
 #define xmlSecOpenSSLEvpDigestSize XMLSEC_TRANSFORM_SIZE(OpenSSLEvpDigest)
 
@@ -508,7 +508,7 @@ static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                  
  *
  * MD5
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /* MD5 digest transform: xmlSecOpenSSLMd5Klass */
 XMLSEC_OPENSSL_EVP_DIGEST_KLASS(Md5)
 
@@ -527,7 +527,7 @@ xmlSecOpenSSLTransformMd5GetKlass(void) {
  *
  * RIPEMD160
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /* RIPEMD-160 digest transform: xmlSecOpenSSLRipemd160Klass */
 XMLSEC_OPENSSL_EVP_DIGEST_KLASS(Ripemd160)
 
@@ -547,7 +547,7 @@ xmlSecOpenSSLTransformRipemd160GetKlass(void) {
  *
  * SHA1
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /* SHA-1 digest transform: xmlSecOpenSSLSha1Klass */
 XMLSEC_OPENSSL_EVP_DIGEST_KLASS(Sha1)
 
@@ -566,7 +566,7 @@ xmlSecOpenSSLTransformSha1GetKlass(void) {
  *
  * SHA2-224
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /* SHA2-224 digest transform: xmlSecOpenSSLSha224Klass */
 XMLSEC_OPENSSL_EVP_DIGEST_KLASS(Sha224)
 
@@ -585,7 +585,7 @@ xmlSecOpenSSLTransformSha224GetKlass(void) {
  *
  * SHA2-256
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /* SHA2-256 digest transform: xmlSecOpenSSLSha256Klass */
 XMLSEC_OPENSSL_EVP_DIGEST_KLASS(Sha256)
 
@@ -604,7 +604,7 @@ xmlSecOpenSSLTransformSha256GetKlass(void) {
  *
  * SHA2-384
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /* SHA2-384 digest transform: xmlSecOpenSSLSha384Klass */
 XMLSEC_OPENSSL_EVP_DIGEST_KLASS(Sha384)
 
@@ -623,7 +623,7 @@ xmlSecOpenSSLTransformSha384GetKlass(void) {
  *
  * SHA2-512
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /* SHA2-512 digest transform: xmlSecOpenSSLSha512Klass */
 XMLSEC_OPENSSL_EVP_DIGEST_KLASS(Sha512)
 
@@ -643,7 +643,7 @@ xmlSecOpenSSLTransformSha512GetKlass(void) {
  *
  * SHA3-224
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /* SHA3-224 digest transform: xmlSecOpenSSLSha3_224Klass */
 XMLSEC_OPENSSL_EVP_DIGEST_KLASS(Sha3_224)
 
@@ -660,7 +660,7 @@ xmlSecOpenSSLTransformSha3_224GetKlass(void) {
  *
  * SHA3-256
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /* SHA3-256 digest transform: xmlSecOpenSSLSha3_256Klass */
 XMLSEC_OPENSSL_EVP_DIGEST_KLASS(Sha3_256)
 
@@ -677,7 +677,7 @@ xmlSecOpenSSLTransformSha3_256GetKlass(void) {
  *
  * SHA3-384
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /* SHA3-384 digest transform: xmlSecOpenSSLSha3_384Klass */
 XMLSEC_OPENSSL_EVP_DIGEST_KLASS(Sha3_384)
 
@@ -694,7 +694,7 @@ xmlSecOpenSSLTransformSha3_384GetKlass(void) {
  *
  * SHA3-512
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /* SHA3-512 digest transform: xmlSecOpenSSLSha3_512Klass */
 XMLSEC_OPENSSL_EVP_DIGEST_KLASS(Sha3_512)
 
@@ -713,7 +713,7 @@ xmlSecOpenSSLTransformSha3_512GetKlass(void) {
  *
  * GOSTR3411_94
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /* GOSTR3411-94 digest transform: xmlSecOpenSSLGostR3411_94Klass */
 XMLSEC_OPENSSL_EVP_DIGEST_KLASS(GostR3411_94)
 
@@ -733,7 +733,7 @@ xmlSecOpenSSLTransformGostR3411_94GetKlass(void) {
  *
  * GOST R 34.11-2012 256 bit
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /* GOST R 34.11-2012 256 bit digest transform: xmlSecOpenSSLGostR3411_2012_256Klass */
 XMLSEC_OPENSSL_EVP_DIGEST_KLASS(GostR3411_2012_256)
 
@@ -750,7 +750,7 @@ xmlSecOpenSSLTransformGostR3411_2012_256GetKlass(void) {
  *
  * GOST R 34.11-2012 512 bit
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /* GOST R 34.11-2012 512 bit digest transform: xmlSecOpenSSLGostR3411_2012_512Klass */
 XMLSEC_OPENSSL_EVP_DIGEST_KLASS(GostR3411_2012_512)
 

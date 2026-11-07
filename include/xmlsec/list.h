@@ -36,7 +36,7 @@ typedef const struct _xmlSecPtrListKlass                        *xmlSecPtrListId
 typedef struct _xmlSecPtrList                                   xmlSecPtrList,
                                                                 *xmlSecPtrListPtr;
 
-                                                                /**
+/**
  * @brief Compares two list items.
  * @details A comparison function used by #xmlSecPtrListSort.
  * @param item1 the first list item.

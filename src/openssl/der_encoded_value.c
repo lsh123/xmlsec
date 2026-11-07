@@ -39,7 +39,7 @@
  *
  * <dsig11:DEREncodedKeyValue /> processing
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int                      xmlSecOpenSSLKeyDataDEREncodedKeyValueXmlRead(xmlSecKeyDataId id,
                                                                  xmlSecKeyPtr key,
                                                                  xmlNodePtr node,

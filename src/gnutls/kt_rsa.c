@@ -34,7 +34,7 @@
  *
  * Key transport transforms context
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecGnuTLSKeyTransportCtx       xmlSecGnuTLSKeyTransportCtx;
 typedef struct _xmlSecGnuTLSKeyTransportCtx*      xmlSecGnuTLSKeyTransportCtxPtr;
 
@@ -47,7 +47,7 @@ struct _xmlSecGnuTLSKeyTransportCtx {
  *
  * Key transport transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GnuTLSKeyTransport, xmlSecGnuTLSKeyTransportCtx)
 #define xmlSecGnuTLSKeyTransportSize XMLSEC_TRANSFORM_SIZE(GnuTLSKeyTransport)
 
@@ -207,7 +207,7 @@ xmlSecGnuTLSKeyTransportEncrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
         return(-1);
     }
 
-    /* encrypt: gnutls_pubkey_encrypt_data uses PKCS 1.5 padding by default */
+    /* encrypt: gnutls_pubkey_encrypt_data uses PKCS#1 v1.5 padding by default */
     plaintext.data = xmlSecBufferGetData(inBuf);
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(inSize, plaintext.size, return(-1), NULL);
     err = gnutls_pubkey_encrypt_data(pubkey,
@@ -269,7 +269,7 @@ xmlSecGnuTLSKeyTransportDecrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
         return(-1);
     }
 
-    /* decrypt: gnutls_privkey_decrypt_data uses PKCS 1.5 padding by default */
+    /* decrypt: gnutls_privkey_decrypt_data uses PKCS#1 v1.5 padding by default */
     ciphertext.data = xmlSecBufferGetData(inBuf);
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(inSize, ciphertext.size, return(-1), NULL);
     err = gnutls_privkey_decrypt_data(privkey,
@@ -412,7 +412,7 @@ xmlSecGnuTLSTransformRsaPkcs1GetKlass(void) {
  *
  * RSA OAEP key transport context
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecGnuTLSRsaOaepCtx         xmlSecGnuTLSRsaOaepCtx,
                                                 *xmlSecGnuTLSRsaOaepCtxPtr;
 struct _xmlSecGnuTLSRsaOaepCtx {
@@ -426,7 +426,7 @@ struct _xmlSecGnuTLSRsaOaepCtx {
  *
  * RSA OAEP key transport transform (XMLEnc 1.0 and 1.1)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GnuTLSRsaOaep, xmlSecGnuTLSRsaOaepCtx)
 #define xmlSecGnuTLSRsaOaepSize XMLSEC_TRANSFORM_SIZE(GnuTLSRsaOaep)
 

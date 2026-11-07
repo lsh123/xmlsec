@@ -34,7 +34,7 @@
  *
  * Helper functions for GCrypt RSA encrypt/decrypt KT
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int
 xmlSecGCryptRsaExtractData(gcry_sexp_t s_data, const char* name, xmlSecBufferPtr out) {
     gcry_sexp_t s_tmp;
@@ -169,7 +169,7 @@ done:
  *
  * Internal GCrypt RSA PKCS1 CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecGCryptRsaPkcs1Ctx        xmlSecGCryptRsaPkcs1Ctx,
                                                 *xmlSecGCryptRsaPkcs1CtxPtr;
 struct _xmlSecGCryptRsaPkcs1Ctx {
@@ -180,7 +180,7 @@ struct _xmlSecGCryptRsaPkcs1Ctx {
  *
  * RSA PKCS1 key transport transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GCryptRsaPkcs1, xmlSecGCryptRsaPkcs1Ctx)
 #define xmlSecGCryptRsaPkcs1Size XMLSEC_TRANSFORM_SIZE(GCryptRsaPkcs1)
 
@@ -578,7 +578,7 @@ xmlSecGCryptRsaPkcs1Execute(xmlSecTransformPtr transform, int last,
  *
  * Internal GCrypt RSA OAEP CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecGCryptRsaOaepCtx        xmlSecGCryptRsaOaepCtx,
                                                 *xmlSecGCryptRsaOaepCtxPtr;
 struct _xmlSecGCryptRsaOaepCtx {
@@ -597,7 +597,7 @@ struct _xmlSecGCryptRsaOaepCtx {
  *
  * RSA OAEP key transport transform (both XMLEnc 1.0 and XMLEnc 1.1)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GCryptRsaOaep, xmlSecGCryptRsaOaepCtx)
 #define xmlSecGCryptRsaOaepSize XMLSEC_TRANSFORM_SIZE(GCryptRsaOaep)
 

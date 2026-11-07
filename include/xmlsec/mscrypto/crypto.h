@@ -41,7 +41,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecCryptoDLFunctionsPtr xmlSecCryptoGetFunctions_mscrypt
  *
  * Init shutdown
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoInit              (void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoShutdown          (void);
 
@@ -61,7 +61,7 @@ XMLSEC_CRYPTO_EXPORT void               xmlSecMSCryptoErrorsDefaultCallback (con
  *
  * DSA transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_DSA
 
 /**
@@ -84,7 +84,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCryptoTransformDsaSha1GetKlass(v
  *
  * GOST2001 transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_GOST
 
 /**
@@ -109,7 +109,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCryptoTransformGost2001GostR3411
  *
  * GOST R 34.10-2012 transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 /**
  * @brief The GOST R 34.10-2012 256 key klass.
@@ -147,7 +147,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCryptoTransformGost2012_512GetKl
  *
  * RSA transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_RSA
 
 /**
@@ -227,7 +227,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCryptoTransformRsaOaepGetKlass(v
  *
  * MD5 transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_MD5
 /**
  * @brief The MD5 digest transform klass.
@@ -242,7 +242,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCryptoTransformMd5GetKlass(void)
  *
  * SHA1 transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_SHA1
 
 /**
@@ -257,7 +257,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCryptoTransformSha1GetKlass(void
  *
  * SHA256 transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_SHA256
 
 /**
@@ -272,7 +272,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCryptoTransformSha256GetKlass(vo
  *
  * SHA384 transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_SHA384
 
 /**
@@ -287,7 +287,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCryptoTransformSha384GetKlass(vo
  *
  * SHA512 transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_SHA512
 
 /**
@@ -302,7 +302,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCryptoTransformSha512GetKlass(vo
  *
  * GOSTR3411_94 transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_GOST
 
 /**
@@ -320,7 +320,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCryptoTransformGostR3411_94GetKl
  *
  * GOST R 34.11-2012 256 and 512-bit digests
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 /**
  * @brief The GOST R 34.11-2012 256 digest transform klass.
@@ -343,7 +343,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCryptoTransformGostR3411_2012_51
  *
  * AES transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_AES
 /**
  * @brief The AES key data klass.
@@ -403,7 +403,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCryptoTransformKWAes256GetKlass(
  *
  * DES transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_DES
 
 /**
@@ -434,7 +434,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCryptoTransformKWDes3GetKlass(vo
  *
  * HMAC transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_HMAC
 
 /**
@@ -458,11 +458,11 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCryptoTransformHmacMd5GetKlass(v
 
 #ifndef XMLSEC_NO_RIPEMD160
 /**
- * @brief The HMAC with RIPEMD160 signature transform klass.
+ * @brief Deprecated. The HMAC with RIPEMD160 signature transform klass.
  */
 #define xmlSecMSCryptoTransformHmacRipemd160Id          ((xmlSecTransformId)NULL)
 /**
- * @brief The HMAC with RIPEMD160 signature transform klass.
+ * @brief Deprecated. The HMAC with RIPEMD160 signature transform klass.
  */
 #define xmlSecMSCryptoTransformHmacRipemd160GetKlass() ((xmlSecTransformId)NULL)
 #endif /* XMLSEC_NO_RIPEMD160 */
@@ -488,11 +488,11 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCryptoTransformHmacSha256GetKlas
 
 #ifndef XMLSEC_NO_SHA224
 /**
- * @brief The HMAC with SHA2-224 signature transform klass.
+ * @brief Deprecated. The HMAC with SHA2-224 signature transform klass.
  */
 #define xmlSecMSCryptoTransformHmacSha224Id             ((xmlSecTransformId)NULL)
 /**
- * @brief The HMAC with SHA2-224 signature transform klass.
+ * @brief Deprecated. The HMAC with SHA2-224 signature transform klass.
  */
 #define xmlSecMSCryptoTransformHmacSha224GetKlass()     ((xmlSecTransformId)NULL)
 #endif /* XMLSEC_NO_SHA224 */

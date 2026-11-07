@@ -31,7 +31,7 @@
  *
  * Triple DES Key Wrap transform context
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef xmlSecTransformKWDes3Ctx xmlSecMSCngKWDes3Ctx,
                                 *xmlSecMSCngKWDes3CtxPtr;
 
@@ -39,7 +39,7 @@ typedef xmlSecTransformKWDes3Ctx xmlSecMSCngKWDes3Ctx,
  *
  * Triple DES Key Wrap transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MSCngKWDes3, xmlSecMSCngKWDes3Ctx)
 #define xmlSecMSCngKWDes3Size XMLSEC_TRANSFORM_SIZE(MSCngKWDes3)
 

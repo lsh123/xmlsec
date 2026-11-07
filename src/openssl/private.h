@@ -38,7 +38,7 @@ extern "C" {
  *
  * RSA Util functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_RSA
 
 int             xmlSecOpenSSLKeyValueRsaCheckKeyType            (EVP_PKEY* pKey);
@@ -49,7 +49,7 @@ int             xmlSecOpenSSLKeyValueRsaCheckKeyType            (EVP_PKEY* pKey)
  *
  * X509 Util functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_X509
 
 typedef struct _xmlSecOpenSSLX509FindCertCtx {
@@ -110,7 +110,7 @@ STACK_OF(X509_CRL)*    xmlSecOpenSSLKeyDataX509GetCrls          (xmlSecKeyDataPt
  *
  * EVP Util functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #if defined(XMLSEC_OPENSSL_API_350)
 
 const xmlChar*  xmlSecOpenSSLEvpGetProviderQuery                 (EVP_PKEY_CTX* pKeyCtx,

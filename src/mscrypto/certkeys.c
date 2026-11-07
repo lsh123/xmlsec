@@ -49,7 +49,7 @@
  *
  * Internal MSCrypto PCCERT_CONTEXT key CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecMSCryptoKeyDataCtx xmlSecMSCryptoKeyDataCtx,
                                                 *xmlSecMSCryptoKeyDataCtxPtr;
 
@@ -393,7 +393,7 @@ xmlSecMSCryptoKeyDataCtxDuplicateCert(xmlSecMSCryptoKeyDataCtxPtr ctxDst, xmlSec
  *
  * xmlSecMSCryptoKeyData
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(MSCryptoKeyData, xmlSecMSCryptoKeyDataCtx)
 #define xmlSecMSCryptoKeyDataSize XMLSEC_KEY_DATA_SIZE(MSCryptoKeyData)
 
@@ -405,7 +405,7 @@ static xmlSecSize xmlSecMSCryptoKeyDataGetSize    (xmlSecKeyDataPtr data);
  * @brief Sets the value of key data.
  * @param data the pointer to MSCrypto pccert data.
  * @param pCert the pointer to PCCERT key.
- * @param type the certificate type (trusted/untrusted).
+ * @param type the key type.
  * @return 0 on success or a negative value otherwise.
  */
 static int
@@ -541,7 +541,7 @@ xmlSecMSCryptoKeyDataAdoptKey(xmlSecKeyDataPtr data,
         xmlSecInternalError("xmlSecMSCryptoKeyDataCtxSetProvider", NULL);
         return(-1);
     }
-    
+
     ret = xmlSecMSCryptoKeyDataCtxSetKey(ctx, hKey);
     if(ret != 0) {
         xmlSecInternalError("xmlSecMSCryptoKeyDataCtxSetKey", NULL);
@@ -977,44 +977,10 @@ xmlSecMSCryptoCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
 #ifndef XMLSEC_NO_RSA
 /******************************************************************************
  *
- * &lt;dsig:RSAKeyValue/&gt; processing
+ * The RSAKeyValue Element (http://www.w3.org/TR/xmldsig-core/#sec-RSAKeyValue)
  *
- * http://www.w3.org/TR/xmldsig-core/#sec-RSAKeyValue
- * The RSAKeyValue Element
- *
- * RSA key values have two fields: Modulus and Exponent.
- *
- * <RSAKeyValue>
- *   <Modulus>xA7SEU+e0yQH5rm9kbCDN9o3aPIo7HbP7tX6WOocLZAtNfyxSZDU16ksL6W
- *     jubafOqNEpcwR3RdFsT7bCqnXPBe5ELh5u4VEy19MzxkXRgrMvavzyBpVRgBUwUlV
- *        5foK5hhmbktQhyNdy/6LpQRhDUDsTvK+g9Ucj47es9AQJ3U=
- *   </Modulus>
- *   <Exponent>AQAB</Exponent>
- * </RSAKeyValue>
- *
- * Arbitrary-length integers (e.g. "bignums" such as RSA moduli) are
- * represented in XML as octet strings as defined by the ds:CryptoBinary type.
- *
- * Schema Definition:
- *
- * <element name="RSAKeyValue" type="ds:RSAKeyValueType"/>
- * <complexType name="RSAKeyValueType">
- *   <sequence>
- *     <element name="Modulus" type="ds:CryptoBinary"/>
- *     <element name="Exponent" type="ds:CryptoBinary"/>
- *   </sequence>
- * </complexType>
- *
- * DTD Definition:
- *
- * <!ELEMENT RSAKeyValue (Modulus, Exponent) >
- * <!ELEMENT Modulus (#PCDATA) >
- * <!ELEMENT Exponent (#PCDATA) >
- *
- * ============================================================================
- *
- *
-  *****************************************************************************/
+ *****************************************************************************/
+
 
 static int          xmlSecMSCryptoKeyDataRsaInitialize      (xmlSecKeyDataPtr data);
 static int          xmlSecMSCryptoKeyDataRsaDuplicate       (xmlSecKeyDataPtr dst,
@@ -1559,78 +1525,9 @@ done:
 #ifndef XMLSEC_NO_DSA
 /******************************************************************************
  *
- * &lt;dsig:DSAKeyValue/&gt; processing
- *
- *
  * The DSAKeyValue Element (http://www.w3.org/TR/xmldsig-core/#sec-DSAKeyValue)
  *
- * DSA keys and the DSA signature algorithm are specified in [DSS].
- * DSA public key values can have the following fields:
- *
- *   * P - a prime modulus meeting the [DSS] requirements
- *   * Q - an integer in the range 2**159 < Q < 2**160 which is a prime
- *         divisor of P-1
- *   * G - an integer with certain properties with respect to P and Q
- *   * Y - G**X mod P (where X is part of the private key and not made
- *         public)
- *   * J - (P - 1) / Q
- *   * seed - a DSA prime generation seed
- *   * pgenCounter - a DSA prime generation counter
- *
- * Parameter J is available for inclusion solely for efficiency as it is
- * calculatable from P and Q. Parameters seed and pgenCounter are used in the
- * DSA prime number generation algorithm specified in [DSS]. As such, they are
- * optional but must either both be present or both be absent. This prime
- * generation algorithm is designed to provide assurance that a weak prime is
- * not being used and it yields a P and Q value. Parameters P, Q, and G can be
- * public and common to a group of users. They might be known from application
- * context. As such, they are optional but P and Q must either both appear or
- * both be absent. If all of P, Q, seed, and pgenCounter are present,
- * implementations are not required to check if they are consistent and are
- * free to use either P and Q or seed and pgenCounter. All parameters are
- * encoded as base64 [MIME] values.
- *
- * Arbitrary-length integers (e.g. "bignums" such as RSA moduli) are
- * represented in XML as octet strings as defined by the ds:CryptoBinary type.
- *
- * Schema Definition:
- *
- * <element name="DSAKeyValue" type="ds:DSAKeyValueType"/>
- * <complexType name="DSAKeyValueType">
- *   <sequence>
- *     <sequence minOccurs="0">
- *        <element name="P" type="ds:CryptoBinary"/>
- *        <element name="Q" type="ds:CryptoBinary"/>
- *     </sequence>
- *     <element name="G" type="ds:CryptoBinary" minOccurs="0"/>
- *     <element name="Y" type="ds:CryptoBinary"/>
- *     <element name="J" type="ds:CryptoBinary" minOccurs="0"/>
- *     <sequence minOccurs="0">
- *       <element name="Seed" type="ds:CryptoBinary"/>
- *       <element name="PgenCounter" type="ds:CryptoBinary"/>
- *     </sequence>
- *   </sequence>
- * </complexType>
- *
- * DTD Definition:
- *
- *  <!ELEMENT DSAKeyValue ((P, Q)?, G?, Y, J?, (Seed, PgenCounter)?) >
- *  <!ELEMENT P (#PCDATA) >
- *  <!ELEMENT Q (#PCDATA) >
- *  <!ELEMENT G (#PCDATA) >
- *  <!ELEMENT Y (#PCDATA) >
- *  <!ELEMENT J (#PCDATA) >
- *  <!ELEMENT Seed (#PCDATA) >
- *  <!ELEMENT PgenCounter (#PCDATA) >
- *
- * ============================================================================
- *
- * To support reading/writing private keys an X element is added (before Y).
- *
- * The current implementation does not support Seed and PgenCounter!
- * by this the P, Q and G are *required*!
- *
-  *****************************************************************************/
+ *****************************************************************************/
 static int               xmlSecMSCryptoKeyDataDsaInitialize (xmlSecKeyDataPtr data);
 static int               xmlSecMSCryptoKeyDataDsaDuplicate  (xmlSecKeyDataPtr dst,
                                                             xmlSecKeyDataPtr src);
@@ -2199,7 +2096,7 @@ xmlSecMSCryptoKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     ret = xmlSecBufferSetData(&(dsaValue->q), blob, len);
     if (ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetData(q)", xmlSecKeyDataKlassGetName(id),
-            "keyLen=" XMLSEC_SIZE_FMT, keyLen);
+            "len=" XMLSEC_SIZE_FMT, len);
         goto done;
     }
     blob += XMLSEC_MSCRYPTO_DSA_MAX_Q_SIZE;
@@ -2209,7 +2106,7 @@ xmlSecMSCryptoKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     ret = xmlSecBufferSetData(&(dsaValue->g), blob, len);
     if (ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetData(g)", xmlSecKeyDataKlassGetName(id),
-                "keyLen=" XMLSEC_SIZE_FMT, keyLen);
+                "len=" XMLSEC_SIZE_FMT, len);
         goto done;
     }
     blob += keyLen;
@@ -2222,7 +2119,7 @@ xmlSecMSCryptoKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     ret = xmlSecBufferSetData(&(dsaValue->y), blob, len);
     if (ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetData(y)", xmlSecKeyDataKlassGetName(id),
-            "keyLen=" XMLSEC_SIZE_FMT, keyLen);
+            "len=" XMLSEC_SIZE_FMT, len);
         goto done;
     }
     blob += keyLen;
@@ -2252,7 +2149,7 @@ done:
  *
  * GOST2001 xml key representation processing.
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int              xmlSecMSCryptoKeyDataGost2001Initialize(xmlSecKeyDataPtr data);
 static int              xmlSecMSCryptoKeyDataGost2001Duplicate(xmlSecKeyDataPtr dst,
                                                          xmlSecKeyDataPtr src);
@@ -2398,7 +2295,7 @@ xmlSecMSCryptoKeyDataGost2001DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
  *
  * GOST2012 256 xml key representation processing.
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int              xmlSecMSCryptoKeyDataGost2012_256Initialize(xmlSecKeyDataPtr data);
 static int              xmlSecMSCryptoKeyDataGost2012_256Duplicate(xmlSecKeyDataPtr dst,
                                                          xmlSecKeyDataPtr src);
@@ -2539,7 +2436,7 @@ xmlSecMSCryptoKeyDataGost2012_256DebugXmlDump(xmlSecKeyDataPtr data, FILE* outpu
  *
  * GOST2012 512 xml key representation processing.
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int              xmlSecMSCryptoKeyDataGost2012_512Initialize(xmlSecKeyDataPtr data);
 static int              xmlSecMSCryptoKeyDataGost2012_512Duplicate(xmlSecKeyDataPtr dst,
                                                          xmlSecKeyDataPtr src);

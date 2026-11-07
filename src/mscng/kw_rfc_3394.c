@@ -31,7 +31,7 @@
   *
   * AES KW forward declarations
   *
-   *****************************************************************************/
+  *****************************************************************************/
 static int        xmlSecMSCngKWAesBlockEncrypt              (xmlSecTransformPtr transform,
                                                             const xmlSecByte* in,
                                                             xmlSecSize inSize,
@@ -49,7 +49,7 @@ static int        xmlSecMSCngKWAesBlockDecrypt              (xmlSecTransformPtr 
  *
  * Internal MSCng KW AES cipher CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecMSCngKWAesCtx xmlSecMSCngKWAesCtx, *xmlSecMSCngKWAesCtxPtr;
 struct _xmlSecMSCngKWAesCtx {
     xmlSecTransformKWRfc3394Ctx parentCtx;
@@ -62,7 +62,7 @@ struct _xmlSecMSCngKWAesCtx {
  *
  *  KW AES transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MSCngKWAes, xmlSecMSCngKWAesCtx)
 #define xmlSecMSCngKWAesSize XMLSEC_TRANSFORM_SIZE(MSCngKWAes)
 
@@ -421,7 +421,7 @@ xmlSecMSCngTransformKWAes256GetKlass(void) {
  *
  * AES KW implementation
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /* The AES provider handle and the wrapped-key blob (ctx->blob) plus the key
  * object buffer (ctx->keyObject) are cached in the ctx and released in Finalize,
  * so no memory is re-allocated per block call. The key itself is still imported

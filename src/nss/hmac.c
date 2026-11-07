@@ -38,13 +38,13 @@
  *
  * Configuration
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 /******************************************************************************
  *
  * Internal NSS HMAC CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecNssHmacCtx                xmlSecNssHmacCtx, *xmlSecNssHmacCtxPtr;
 struct _xmlSecNssHmacCtx {
     CK_MECHANISM_TYPE   digestType;
@@ -59,7 +59,7 @@ struct _xmlSecNssHmacCtx {
  *
  * xmlSecTransform + xmlSecNssHmacCtx
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(NssHmac, xmlSecNssHmacCtx)
 #define xmlSecNssHmacSize XMLSEC_TRANSFORM_SIZE(NssHmac)
 
@@ -192,7 +192,7 @@ xmlSecNssHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
     xmlSecAssert2(xmlSecNssHmacCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssHmacSize), -1);
-    xmlSecAssert2(node!= NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
     XMLSEC_UNREFERENCED(transformCtx);
 
     ctx = xmlSecNssHmacGetCtx(transform);
@@ -223,7 +223,7 @@ xmlSecNssHmacSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq) {
     xmlSecAssert2(ctx != NULL, -1);
 
     keyReq->keyId  = xmlSecNssKeyDataHmacId;
-    keyReq->keyType= xmlSecKeyDataTypeSymmetric;
+    keyReq->keyType = xmlSecKeyDataTypeSymmetric;
     if(transform->operation == xmlSecTransformOperationSign) {
         keyReq->keyUsage = xmlSecKeyUsageSign;
     } else {
@@ -475,7 +475,7 @@ static xmlSecTransformKlass xmlSecNssHmac ## name ## Klass = {                  
  *
  * HMAC SHA1
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_NSS_HMAC_KLASS(Sha1)
 
 /**
@@ -493,7 +493,7 @@ xmlSecNssTransformHmacSha1GetKlass(void) {
  *
  * HMAC SHA224
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_NSS_HMAC_KLASS(Sha224)
 
 /**
@@ -511,7 +511,7 @@ xmlSecNssTransformHmacSha224GetKlass(void) {
  *
  * HMAC SHA256
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_NSS_HMAC_KLASS(Sha256)
 
 /**
@@ -529,7 +529,7 @@ xmlSecNssTransformHmacSha256GetKlass(void) {
  *
  * HMAC SHA384
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_NSS_HMAC_KLASS(Sha384)
 
 /**
@@ -547,7 +547,7 @@ xmlSecNssTransformHmacSha384GetKlass(void) {
  *
  * HMAC SHA512
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_NSS_HMAC_KLASS(Sha512)
 
 /**

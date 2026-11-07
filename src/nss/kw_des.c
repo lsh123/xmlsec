@@ -37,7 +37,7 @@
  *
  * DES KW implementation
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int       xmlSecNssKWDes3GenerateRandom                  (xmlSecTransformPtr transform,
                                                                  xmlSecByte * out,
                                                                  xmlSecSize outSize,
@@ -81,7 +81,7 @@ static xmlSecKWDes3Klass xmlSecNssKWDes3ImplKlass = {
  *
  * Triple DES Key Wrap transform context
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /* the cipher mechanism used by the implementation; the slot and the
    symmetric key cached in the transform context are bound to it */
 #define XMLSEC_NSS_KW_DES3_CIPHER_MECH  CKM_DES3_CBC
@@ -113,7 +113,7 @@ static int      xmlSecNssKWDes3Encrypt      (xmlSecNssKWDes3CtxPtr ctx,
  *
  * Triple DES Key Wrap transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(NssKWDes3, xmlSecNssKWDes3Ctx)
 #define xmlSecNssKWDes3Size XMLSEC_TRANSFORM_SIZE(NssKWDes3)
 
@@ -299,7 +299,7 @@ xmlSecNssKWDes3Execute(xmlSecTransformPtr transform, int last,
  *
  * DES KW implementation
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int
 xmlSecNssKWDes3Sha1(xmlSecTransformPtr transform XMLSEC_ATTRIBUTE_UNUSED,
                     const xmlSecByte * in, xmlSecSize inSize,

@@ -58,8 +58,8 @@ typedef enum {
  * @brief XML Encryption processing failure reason.
  * @details XML Encryption processing failure reason. The application should use the
  * returned value from the encrypt/decrypt functions to find out whether the operation
- * succeeded or failed first; on failure the specific reason is stored in the
- * failureReason field of #_xmlSecEncCtx.
+ * succeeded or failed first; on failure the specific reason (if known) is
+ * stored in the failureReason field of #_xmlSecEncCtx.
  */
 typedef enum {
     xmlSecEncFailureReasonUnknown = 0,  /**< the failure reason is unknown. */
@@ -106,7 +106,7 @@ struct _xmlSecEncCtx {
     xmlChar*                    recipient;  /**< the Recipient attribute of &lt;enc:EncryptedKey/&gt; node. */
     xmlChar*                    carriedKeyName;  /**< the CarriedKeyName attribute of &lt;enc:EncryptedKey/&gt; node. */
 
-    /* these are internal data, nobody should change that except us */
+    /* these are internal data, nobody should change them except us */
     xmlNodePtr                  encDataNode;  /**< the pointer to &lt;enc:EncryptedData/&gt; or &lt;enc:EncryptedKey/&gt; node. */
     xmlNodePtr                  encMethodNode;  /**< the pointer to &lt;enc:EncryptionMethod/&gt; node. */
     xmlNodePtr                  keyInfoNode;  /**< the pointer to &lt;enc:KeyInfo/&gt; node. */

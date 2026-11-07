@@ -204,7 +204,7 @@ create_files_keys_mngr(void) {
  * with a key in the current folder.
  * Attention: this is probably not a good solution for high traffic systems.
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecKeyPtr             files_keys_store_find_key       (xmlSecKeyStorePtr store,
                                                                  const xmlChar* name,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);

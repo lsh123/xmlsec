@@ -38,7 +38,7 @@
  *
  * Unified KDF transform context (used for both PBKDF2 and HKDF)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #define XMLSEC_MSCNG_KDF_DEFAULT_BUF_SIZE 64
 
 typedef struct _xmlSecMSCngKdfCtx    xmlSecMSCngKdfCtx, *xmlSecMSCngKdfCtxPtr;
@@ -89,7 +89,7 @@ static int      xmlSecMSCngHkdfDerive                      (xmlSecMSCngKdfCtxPtr
  *
  * Shared KDF functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 static int
 xmlSecMSCngKdfCheckId(xmlSecTransformPtr transform) {
@@ -301,7 +301,7 @@ xmlSecMSCngKdfGetHashAlgoFromHref(const xmlChar* href) {
  *
  * PBKDF2 specific functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_PBKDF2
 
 static int
@@ -401,7 +401,7 @@ xmlSecMSCngPbkdf2PerformKeyDerivation(
         goto done;
     }
 
-    /* create key for pbkdf2 */
+    /* create key for PBKDF2 */
     status = BCryptGenerateSymmetricKey(
         hKdfAlg,
         &hKey,
@@ -515,7 +515,7 @@ xmlSecMSCngPbkdf2Derive(xmlSecMSCngKdfCtxPtr ctx, xmlSecBufferPtr out) {
  *
  * HKDF specific functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_HKDF
 
 static int
@@ -636,13 +636,13 @@ xmlSecMSCngHkdfPerformKeyDerivation(
     }
 
     /* If no salt is provided, use a zero-filled salt of HashLen bytes (per
-     * RFC 586 section 3.2, HKDF-extract). This branch is mandatory: CNG's HKDF provider
+     * RFC 5869 section 2.2, HKDF-Extract). This branch is mandatory: CNG's HKDF provider
      * requires the salt property to be set (BCryptKeyDerivation fails with
      * STATUS_INVALID_PARAMETER otherwise). The core param reader yields an
      * empty salt for both a missing and an empty <enc:Salt> element, so both
      * cases reach this branch. Salts of any length are passed to CNG as-is:
      * CNG uses the salt as the HMAC key and normalizes over-long keys per
-     * RFC 2104, which reproduces the RFC 586 A.2 test vector (its 80-byte
+     * RFC 2104, which reproduces the RFC 5869 A.2 test vector (its 80-byte
      * salt is used as the full HMAC key). Verified empirically against a
      * reference HKDF implementation for salt lengths 16..80 bytes. */
     if((pbSalt == NULL) || (cbSalt == 0)) {
@@ -828,7 +828,7 @@ xmlSecMSCngHkdfDerive(xmlSecMSCngKdfCtxPtr ctx, xmlSecBufferPtr out, xmlSecSize 
  *
  * Unified KDF execute function
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 static int
 xmlSecMSCngKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
@@ -852,7 +852,7 @@ xmlSecMSCngKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
     xmlSecAssert2(ctx != NULL, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
-        /* we should be already initialized when we set key */
+        /* we should already be initialized when we set key */
         transform->status = xmlSecTransformStatusWorking;
     }
 
@@ -924,7 +924,7 @@ xmlSecMSCngKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
  *
  * PBKDF2 key derivation algorithm klass
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_PBKDF2
 
 static xmlSecTransformKlass xmlSecMSCngPbkdf2Klass = {
@@ -971,7 +971,7 @@ xmlSecMSCngTransformPbkdf2GetKlass(void) {
  *
  * HKDF key derivation algorithm klass
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_HKDF
 
 static xmlSecTransformKlass xmlSecMSCngHkdfKlass = {

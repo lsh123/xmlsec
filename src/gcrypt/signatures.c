@@ -29,7 +29,7 @@
  *
  * Forward declarations for actual sign/verify implementations
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef int     (*xmlSecGCryptPkSignMethod)     (int digest,
                                                  xmlSecKeyDataPtr key_data,
                                                  const xmlSecByte* dgst,
@@ -105,7 +105,7 @@ static int      xmlSecGCryptEcdsaVerify         (int digest,
  *
  * Internal GCrypt signatures ctx
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecGCryptPkSignatureCtx      xmlSecGCryptPkSignatureCtx,
                                                 *xmlSecGCryptPkSignatureCtxPtr;
 
@@ -130,7 +130,7 @@ struct _xmlSecGCryptPkSignatureCtx {
  *
  * xmlSecTransform + xmlSecGCryptPkSignatureCtx
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GCryptPkSignature, xmlSecGCryptPkSignatureCtx)
 #define xmlSecGCryptPkSignatureSize XMLSEC_TRANSFORM_SIZE(GCryptPkSignature)
 
@@ -782,7 +782,7 @@ xmlSecGCryptPkSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
  *
  * Helper
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int
 xmlSecGCryptAppendMpi(gcry_mpi_t a, xmlSecBufferPtr out, xmlSecSize min_size) {
     xmlSecSize outSize;
@@ -1194,7 +1194,7 @@ xmlSecGCryptTransformDsaSha1GetKlass(void) {
  * that the value of the quantity being CRYPTed is one octet shorter than
  * the RSA modulus.
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int
 xmlSecGCryptRsaPkcs1Sign(int digest, xmlSecKeyDataPtr key_data,
                             const xmlSecByte* dgst, xmlSecSize dgstSize,
@@ -1400,7 +1400,7 @@ done:
  *
  * RSA-PSS
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int
 xmlSecGCryptRsaPssSign(int digest, xmlSecKeyDataPtr key_data,
                         const xmlSecByte* dgst, xmlSecSize dgstSize,
@@ -1615,7 +1615,7 @@ done:
  *
  * RSA-MD5 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptRsaMd5Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -1659,7 +1659,7 @@ xmlSecGCryptTransformRsaMd5GetKlass(void) {
  *
  * RSA-RIPEMD160 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptRsaRipemd160Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -1703,7 +1703,7 @@ xmlSecGCryptTransformRsaRipemd160GetKlass(void) {
  *
  * RSA-SHA1 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptRsaSha1Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -1748,7 +1748,7 @@ xmlSecGCryptTransformRsaSha1GetKlass(void) {
  *
  * RSA-SHA2-256 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptRsaSha256Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -1792,7 +1792,7 @@ xmlSecGCryptTransformRsaSha256GetKlass(void) {
  *
  * RSA-SHA2-384 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptRsaSha384Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -1836,7 +1836,7 @@ xmlSecGCryptTransformRsaSha384GetKlass(void) {
  *
  * RSA-SHA2-512 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptRsaSha512Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -1881,7 +1881,7 @@ xmlSecGCryptTransformRsaSha512GetKlass(void) {
  *
  * RSA-PSS-SHA1 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptRsaPssSha1Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -1926,7 +1926,7 @@ xmlSecGCryptTransformRsaPssSha1GetKlass(void) {
  *
  * RSA-PSS-SHA2-256 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptRsaPssSha256Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -1970,7 +1970,7 @@ xmlSecGCryptTransformRsaPssSha256GetKlass(void) {
  *
  * RSA-PSS-SHA2-384 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptRsaPssSha384Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -2014,7 +2014,7 @@ xmlSecGCryptTransformRsaPssSha384GetKlass(void) {
  *
  * RSA-PSS-SHA2-512 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptRsaPssSha512Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -2060,7 +2060,7 @@ xmlSecGCryptTransformRsaPssSha512GetKlass(void) {
  *
  * RSA-PSS-SHA3-256 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptRsaPssSha3_256Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -2101,7 +2101,7 @@ xmlSecGCryptTransformRsaPssSha3_256GetKlass(void) {
  *
  * RSA-PSS-SHA3-384 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptRsaPssSha3_384Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -2142,7 +2142,7 @@ xmlSecGCryptTransformRsaPssSha3_384GetKlass(void) {
  *
  * RSA-PSS-SHA3-512 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptRsaPssSha3_512Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -2458,7 +2458,7 @@ done:
  *
  * ECDSA-SHA1 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptEcdsaSha1Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -2503,7 +2503,7 @@ xmlSecGCryptTransformEcdsaSha1GetKlass(void) {
  *
  * ECDSA-SHA2-256 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptEcdsaSha256Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -2547,7 +2547,7 @@ xmlSecGCryptTransformEcdsaSha256GetKlass(void) {
  *
  * ECDSA-SHA2-384 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptEcdsaSha384Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -2591,7 +2591,7 @@ xmlSecGCryptTransformEcdsaSha384GetKlass(void) {
  *
  * ECDSA-SHA2-512 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptEcdsaSha512Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -2638,7 +2638,7 @@ xmlSecGCryptTransformEcdsaSha512GetKlass(void) {
  *
  * ECDSA-SHA3-256 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptEcdsaSha3_256Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -2679,7 +2679,7 @@ xmlSecGCryptTransformEcdsaSha3_256GetKlass(void) {
  *
  * ECDSA-SHA3-384 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptEcdsaSha3_384Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -2720,7 +2720,7 @@ xmlSecGCryptTransformEcdsaSha3_384GetKlass(void) {
  *
  * ECDSA-SHA3-512 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptEcdsaSha3_512Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */

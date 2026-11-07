@@ -32,7 +32,7 @@
  *
  * Helpers
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static gcry_sexp_t             xmlSecGCryptAsymSExpDup    (gcry_sexp_t sexp);
 
 
@@ -40,7 +40,7 @@ static gcry_sexp_t             xmlSecGCryptAsymSExpDup    (gcry_sexp_t sexp);
  *
  * Internal GCrypt asym key CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecGCryptAsymKeyDataCtx       xmlSecGCryptAsymKeyDataCtx,
                                                 *xmlSecGCryptAsymKeyDataCtxPtr;
 struct _xmlSecGCryptAsymKeyDataCtx {
@@ -52,7 +52,7 @@ struct _xmlSecGCryptAsymKeyDataCtx {
  *
  * GCrypt asym key data (dsa/rsa/ec)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(GCryptAsymKeyData, xmlSecGCryptAsymKeyDataCtx)
 #define xmlSecGCryptAsymKeyDataSize XMLSEC_KEY_DATA_SIZE(GCryptAsymKeyData)
 
@@ -206,7 +206,7 @@ xmlSecGCryptAsymKeyDataAdoptKeyPair(xmlSecKeyDataPtr data, gcry_sexp_t pub_key, 
     xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecGCryptAsymKeyDataSize), -1);
     xmlSecAssert2(pub_key != NULL, -1); /* public key should present always */
 /*
-    aleksey - we don't set optional parameters for RSA keys (p, k, u) and
+    aleksey - we don't set optional parameters for RSA keys (p, q, u) and
     because of that we can't actually test the key
 
     xmlSecAssert2(((priv_key == NULL) || (gcry_pk_testkey(priv_key) == GPG_ERR_NO_ERROR)), -1);
@@ -352,7 +352,7 @@ xmlSecGCryptAsymKeyDataGetSize(xmlSecKeyDataPtr data) {
  *
  * helper functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static gcry_sexp_t
 xmlSecGCryptAsymSExpDup(gcry_sexp_t pKey) {
     gcry_sexp_t res = NULL;
@@ -513,78 +513,9 @@ done:
 #ifndef XMLSEC_NO_DSA
 /******************************************************************************
  *
- * &lt;dsig:DSAKeyValue/&gt; processing
- *
- *
  * The DSAKeyValue Element (http://www.w3.org/TR/xmldsig-core/#sec-DSAKeyValue)
  *
- * DSA keys and the DSA signature algorithm are specified in [DSS].
- * DSA public key values can have the following fields:
- *
- *   * P - a prime modulus meeting the [DSS] requirements
- *   * Q - an integer in the range 2**159 < Q < 2**160 which is a prime
- *         divisor of P-1
- *   * G - an integer with certain properties with respect to P and Q
- *   * Y - G**X mod P (where X is part of the private key and not made
- *         public)
- *   * J - (P - 1) / Q
- *   * seed - a DSA prime generation seed
- *   * pgenCounter - a DSA prime generation counter
- *
- * Parameter J is available for inclusion solely for efficiency as it is
- * calculatable from P and Q. Parameters seed and pgenCounter are used in the
- * DSA prime number generation algorithm specified in [DSS]. As such, they are
- * optional but must either both be present or both be absent. This prime
- * generation algorithm is designed to provide assurance that a weak prime is
- * not being used and it yields a P and Q value. Parameters P, Q, and G can be
- * public and common to a group of users. They might be known from application
- * context. As such, they are optional but P and Q must either both appear or
- * both be absent. If all of P, Q, seed, and pgenCounter are present,
- * implementations are not required to check if they are consistent and are
- * free to use either P and Q or seed and pgenCounter. All parameters are
- * encoded as base64 [MIME] values.
- *
- * Arbitrary-length integers (e.g. "bignums" such as RSA moduli) are
- * represented in XML as octet strings as defined by the ds:CryptoBinary type.
- *
- * Schema Definition:
- *
- * <element name="DSAKeyValue" type="ds:DSAKeyValueType"/>
- * <complexType name="DSAKeyValueType">
- *   <sequence>
- *     <sequence minOccurs="0">
- *        <element name="P" type="ds:CryptoBinary"/>
- *        <element name="Q" type="ds:CryptoBinary"/>
- *     </sequence>
- *     <element name="G" type="ds:CryptoBinary" minOccurs="0"/>
- *     <element name="Y" type="ds:CryptoBinary"/>
- *     <element name="J" type="ds:CryptoBinary" minOccurs="0"/>
- *     <sequence minOccurs="0">
- *       <element name="Seed" type="ds:CryptoBinary"/>
- *       <element name="PgenCounter" type="ds:CryptoBinary"/>
- *     </sequence>
- *   </sequence>
- * </complexType>
- *
- * DTD Definition:
- *
- *  <!ELEMENT DSAKeyValue ((P, Q)?, G?, Y, J?, (Seed, PgenCounter)?) >
- *  <!ELEMENT P (#PCDATA) >
- *  <!ELEMENT Q (#PCDATA) >
- *  <!ELEMENT G (#PCDATA) >
- *  <!ELEMENT Y (#PCDATA) >
- *  <!ELEMENT J (#PCDATA) >
- *  <!ELEMENT Seed (#PCDATA) >
- *  <!ELEMENT PgenCounter (#PCDATA) >
- *
- * ============================================================================
- *
- * To support reading/writing private keys an X element is added (before Y).
- *
- * The current implementation does not support Seed and PgenCounter!
- * by this the P, Q and G are *required*!
- *
-  *****************************************************************************/
+ *****************************************************************************/
 static int              xmlSecGCryptKeyDataDsaInitialize        (xmlSecKeyDataPtr data);
 static int              xmlSecGCryptKeyDataDsaDuplicate         (xmlSecKeyDataPtr dst,
                                                                  xmlSecKeyDataPtr src);
@@ -1062,47 +993,9 @@ done:
 #ifndef XMLSEC_NO_RSA
 /******************************************************************************
  *
- * &lt;dsig:RSAKeyValue/&gt; processing
+ * The RSAKeyValue Element (http://www.w3.org/TR/xmldsig-core/#sec-RSAKeyValue)
  *
- * http://www.w3.org/TR/xmldsig-core/#sec-RSAKeyValue
- * The RSAKeyValue Element
- *
- * RSA key values have two fields: Modulus and Exponent.
- *
- * <RSAKeyValue>
- *   <Modulus>xA7SEU+e0yQH5rm9kbCDN9o3aPIo7HbP7tX6WOocLZAtNfyxSZDU16ksL6W
- *     jubafOqNEpcwR3RdFsT7bCqnXPBe5ELh5u4VEy19MzxkXRgrMvavzyBpVRgBUwUlV
- *        5foK5hhmbktQhyNdy/6LpQRhDUDsTvK+g9Ucj47es9AQJ3U=
- *   </Modulus>
- *   <Exponent>AQAB</Exponent>
- * </RSAKeyValue>
- *
- * Arbitrary-length integers (e.g. "bignums" such as RSA moduli) are
- * represented in XML as octet strings as defined by the ds:CryptoBinary type.
- *
- * Schema Definition:
- *
- * <element name="RSAKeyValue" type="ds:RSAKeyValueType"/>
- * <complexType name="RSAKeyValueType">
- *   <sequence>
- *     <element name="Modulus" type="ds:CryptoBinary"/>
- *     <element name="Exponent" type="ds:CryptoBinary"/>
- *   </sequence>
- * </complexType>
- *
- * DTD Definition:
- *
- * <!ELEMENT RSAKeyValue (Modulus, Exponent) >
- * <!ELEMENT Modulus (#PCDATA) >
- * <!ELEMENT Exponent (#PCDATA) >
- *
- * ============================================================================
- *
- * To support reading/writing private keys a PrivateExponent element is added
- * to the end
- *
-  *****************************************************************************/
-
+ *****************************************************************************/
 static int              xmlSecGCryptKeyDataRsaInitialize       (xmlSecKeyDataPtr data);
 static int              xmlSecGCryptKeyDataRsaDuplicate        (xmlSecKeyDataPtr dst,
                                                                  xmlSecKeyDataPtr src);
@@ -1533,7 +1426,7 @@ done:
  *
  * EC Keys.
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 static int              xmlSecGCryptKeyDataEcInitialize         (xmlSecKeyDataPtr data);
 static int              xmlSecGCryptKeyDataEcDuplicate          (xmlSecKeyDataPtr dst,
@@ -1929,7 +1822,7 @@ xmlSecGCryptKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
         xmlSecInternalError("xmlSecGCryptKeyDataEcAdoptKeyPair", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
-    s_pub_key = NULL; /* pub_key is owned by data now */
+    s_pub_key = NULL; /* s_pub_key is owned by data now */
 
     /* success */
     res = data;
@@ -1998,7 +1891,7 @@ xmlSecGCryptKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyV
     /* find the private or public key */
     s_pub_key = xmlSecGCryptKeyDataEcGetPublicKey(data);
     if(s_pub_key == NULL) {
-        xmlSecInternalError("xmlSecGCryptKeyDataEcGetPublicKey()", xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecGCryptKeyDataEcGetPublicKey", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 

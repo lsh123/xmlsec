@@ -103,7 +103,7 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLX509StoreAddCertsFile(xmlSe
  *
  * DEPRECATED
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED X509* xmlSecOpenSSLX509StoreFindCert(xmlSecKeyDataStorePtr store,
                                                                             xmlChar* subjectName,
                                                                             xmlChar* issuerName,

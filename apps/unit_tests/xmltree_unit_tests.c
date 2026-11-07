@@ -23,7 +23,7 @@
 
 /******************************************************************************
  * helpers
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlDocPtr
 xmltreeTestCreateDoc(const xmlChar* rootName, const xmlChar* rootNs) {
     xmlDocPtr doc;
@@ -48,7 +48,7 @@ xmltreeTestCreateDoc(const xmlChar* rootName, const xmlChar* rootNs) {
 
 /******************************************************************************
  * xmlSecIsEmptyString
-  *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecIsEmptyString_empty(void) {
     testStart("xmlSecIsEmptyString: empty string");
@@ -95,7 +95,7 @@ test_xmlSecIsEmptyString_embedded_text(void) {
 
 /******************************************************************************
  * xmlSecGetNodeContentAndTrim
-  *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecGetNodeContentAndTrim_plain(void) {
     xmlDocPtr doc;
@@ -374,7 +374,7 @@ test_xmlSecGetNodeContentAndTrim_mixed_content_concatenates_text_nodes(void) {
 
 /******************************************************************************
  * xmlSecGetNodeContentAsSize
-  *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecGetNodeContentAsSize_valid(void) {
     xmlDocPtr doc;
@@ -720,7 +720,7 @@ test_xmlSecGetNodeContentAsSize_trailing_garbage_fails(void) {
 
 /******************************************************************************
  * xmlSecGetNodeContentAsHex / xmlSecSetNodeContentAsHex
-  *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecNodeContentHex_roundtrip(void) {
     static const xmlSecByte data[] = { 0x00, 0x11, 0xAB, 0xCD, 0xEF, 0xFF };
@@ -1014,7 +1014,7 @@ test_xmlSecGetNodeContentAsHex_empty_node_succeeds_with_zero_bytes(void) {
 
 /******************************************************************************
  * xmlSecIsEmptyNode
-  *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecIsEmptyNode_no_children(void) {
     xmlDocPtr doc;
@@ -1153,7 +1153,7 @@ test_xmlSecIsEmptyNode_child_element(void) {
 
 /******************************************************************************
  * xmlSecCreateTree
-  *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecCreateTree_with_ns(void) {
     xmlDocPtr doc;
@@ -1219,7 +1219,7 @@ test_xmlSecCreateTree_null_ns(void) {
 
 /******************************************************************************
  * xmlSecAddChild
-  *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecAddChild_name_and_ns(void) {
     xmlDocPtr doc;
@@ -1290,7 +1290,7 @@ test_xmlSecAddChild_multiple_distinct(void) {
 
 /******************************************************************************
  * xmlSecCheckNodeName
-  *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecCheckNodeName_match(void) {
     xmlDocPtr doc;
@@ -1389,7 +1389,7 @@ test_xmlSecCheckNodeName_wrong_ns(void) {
 
 /******************************************************************************
  * xmlSecFindChild
-  *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecFindChild_found(void) {
     xmlDocPtr doc;
@@ -1486,7 +1486,7 @@ test_xmlSecFindChild_first_of_two(void) {
 
 /******************************************************************************
  * xmlSecFindSibling
-  *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecFindSibling_finds_next(void) {
     xmlDocPtr doc;
@@ -1556,7 +1556,7 @@ test_xmlSecFindSibling_matches_self(void) {
 
 /******************************************************************************
  * xmlSecFindParent
-  *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecFindParent_matches_self(void) {
     xmlDocPtr doc;
@@ -1657,7 +1657,7 @@ test_xmlSecFindParent_not_found(void) {
 
 /******************************************************************************
  * xmlSecFindNode
-  *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecFindNode_direct_child(void) {
     xmlDocPtr doc;
@@ -1756,7 +1756,7 @@ test_xmlSecFindNode_not_found(void) {
 
 /******************************************************************************
  * xmlSecGetNextElementNode
-  *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecGetNextElementNode_already_element(void) {
     xmlDocPtr doc;
@@ -1886,7 +1886,7 @@ test_xmlSecGetNextElementNode_no_elements(void) {
 
 /******************************************************************************
  * xmlSecDepthFirstTreeWalk
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct {
     int count;
     xmlNodePtr nodes[32];
@@ -2186,7 +2186,7 @@ test_xmlSecDepthFirstTreeWalk_skips_siblings(void) {
 
 /******************************************************************************
  * exported entry point
-  *****************************************************************************/
+ *****************************************************************************/
 int
 test_xmltree(void) {
     int success = 1;

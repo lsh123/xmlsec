@@ -33,7 +33,7 @@
  *
  * Internal GNUTLS Digest CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecGnuTLSDigestCtx              xmlSecGnuTLSDigestCtx, *xmlSecGnuTLSDigestCtxPtr;
 struct _xmlSecGnuTLSDigestCtx {
     gnutls_hash_hd_t            hash;
@@ -48,7 +48,7 @@ struct _xmlSecGnuTLSDigestCtx {
  *
  * xmlSecTransform + xmlSecGnuTLSDigestCtx
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GnuTLSDigest, xmlSecGnuTLSDigestCtx)
 #define xmlSecGnuTLSDigestSize XMLSEC_TRANSFORM_SIZE(GnuTLSDigest)
 
@@ -400,7 +400,7 @@ static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                   
  *
  * SHA1 Digest transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_DIGEST_KLASS(Sha1)
 
 /**
@@ -418,7 +418,7 @@ xmlSecGnuTLSTransformSha1GetKlass(void) {
  *
  * SHA2-224 Digest transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_DIGEST_KLASS(Sha224)
 
 /**
@@ -436,7 +436,7 @@ xmlSecGnuTLSTransformSha224GetKlass(void) {
  *
  * SHA2-256 Digest transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_DIGEST_KLASS(Sha256)
 
 /**
@@ -455,7 +455,7 @@ xmlSecGnuTLSTransformSha256GetKlass(void) {
  *
  * SHA2-384 Digest transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_DIGEST_KLASS(Sha384)
 
 /**
@@ -473,7 +473,7 @@ xmlSecGnuTLSTransformSha384GetKlass(void) {
  *
  * SHA2-512 digest transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_DIGEST_KLASS(Sha512)
 
 /**
@@ -492,7 +492,7 @@ xmlSecGnuTLSTransformSha512GetKlass(void) {
  *
  * SHA3-224 Digest transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_DIGEST_KLASS(Sha3_224)
 
 /**
@@ -508,7 +508,7 @@ xmlSecGnuTLSTransformSha3_224GetKlass(void) {
  *
  * SHA3-256 Digest transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_DIGEST_KLASS(Sha3_256)
 
 /**
@@ -524,7 +524,7 @@ xmlSecGnuTLSTransformSha3_256GetKlass(void) {
  *
  * SHA3-384 Digest transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_DIGEST_KLASS(Sha3_384)
 
 /**
@@ -540,7 +540,7 @@ xmlSecGnuTLSTransformSha3_384GetKlass(void) {
  *
  * SHA3-512 Digest transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_DIGEST_KLASS(Sha3_512)
 
 /**
@@ -558,7 +558,7 @@ xmlSecGnuTLSTransformSha3_512GetKlass(void) {
  *
  * GOSTR3411_94 Digest transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_DIGEST_KLASS(GostR3411_94)
 
 /**
@@ -577,7 +577,7 @@ xmlSecGnuTLSTransformGostR3411_94GetKlass(void) {
  *
  * GOST R 34.11-2012 256 bit
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_DIGEST_KLASS(GostR3411_2012_256)
 
 /**
@@ -593,7 +593,7 @@ xmlSecGnuTLSTransformGostR3411_2012_256GetKlass(void) {
  *
  * GOST R 34.11-2012 512 bit
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_DIGEST_KLASS(GostR3411_2012_512)
 
 /**

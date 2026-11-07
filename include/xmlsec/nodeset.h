@@ -58,8 +58,9 @@ typedef enum {
  * #xmlSecNodeSetDestroy frees it and the caller must not free it. The document
  * is adopted (and freed by #xmlSecNodeSetDestroy) only if
  * #xmlSecNodeSetDocDestroy was called; otherwise the caller must free the
- * document itself. Node sets are linked into a chain via #next and #prev;
- * #xmlSecNodeSetDestroy destroys the entire chain. Destroying a member that is
+ * document itself. Node sets are linked into a circular doubly-linked list
+ * via #next and #prev; #xmlSecNodeSetDestroy destroys the entire list.
+ * Destroying a member that is
  * also reachable through a second pointer double-frees the chain.
  */
 struct _xmlSecNodeSet {
@@ -74,8 +75,11 @@ struct _xmlSecNodeSet {
 };
 
 /**
- * @brief Node walk callback, called once per node in the node set (namespace nodes once per descendant element).
- * @details The callback function called once per node in the node set (namespace nodes once per descendant element).
+ * @brief Node walk callback, called once per node in the node set.
+ * @details The callback function called once per node in the node set. For Tree and
+ * TreeWithoutComments sets, namespace nodes are reported once per descendant element
+ * in which they are in scope; for Normal sets the namespace copies are reported
+ * at most once each.
  * @param nset the pointer to the xmlSecNodeSet structure.
  * @param cur the pointer to the current XML node.
  * @param parent the pointer to the parent node of @p cur.

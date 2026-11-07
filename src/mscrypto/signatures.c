@@ -37,7 +37,7 @@
  *
  * Internal MSCrypto signatures ctx
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecMSCryptoSignatureCtx      xmlSecMSCryptoSignatureCtx,
                                                 *xmlSecMSCryptoSignatureCtxPtr;
 struct _xmlSecMSCryptoSignatureCtx {
@@ -52,7 +52,7 @@ struct _xmlSecMSCryptoSignatureCtx {
  *
  * Signature transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MSCryptoSignature, xmlSecMSCryptoSignatureCtx)
 #define xmlSecMSCryptoSignatureSize XMLSEC_TRANSFORM_SIZE(MSCryptoSignature)
 
@@ -438,7 +438,7 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
         res = 0;
         goto done;
     }
-    
+
     ret = xmlSecBufferInitialize(&tmp, dataSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferInitialize", xmlSecTransformGetName(transform),
@@ -608,7 +608,8 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
         if(!bOk) {
             pProviderInfo = xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo(ctx->data);
             if(pProviderInfo == NULL) {
-                xmlSecInternalError("xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo", NULL);
+                xmlSecInternalError("xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo",
+                                   xmlSecTransformGetName(transform));
                 return(-1);
             }
 
@@ -618,7 +619,8 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
                 pProviderInfo->dwProvType,
                 0)) {
 
-                xmlSecMSCryptoError("CryptAcquireContext", NULL);
+                xmlSecMSCryptoError("CryptAcquireContext",
+                                    xmlSecTransformGetName(transform));
                 xmlFree(pProviderInfo);
                 return(-1);
             }
@@ -639,7 +641,8 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
                 NULL,
                 PROV_RSA_AES,
                 0)) {
-                xmlSecMSCryptoError("CryptAcquireContext", NULL);
+                xmlSecMSCryptoError("CryptAcquireContext",
+                                    xmlSecTransformGetName(transform));
                 xmlFree(pProviderInfo);
                 return(-1);
             }
@@ -656,7 +659,8 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             if (hFallbackProv != 0) {
                 CryptReleaseContext(hFallbackProv, 0);
             }
-            xmlSecMSCryptoError("CryptCreateHash", NULL);
+            xmlSecMSCryptoError("CryptCreateHash",
+                                xmlSecTransformGetName(transform));
             return(-1);
         }
 
@@ -671,9 +675,11 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
 
         xmlSecAssert2(outSize == 0, -1);
 
-        XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwInSize, return(-1), NULL);
+        XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwInSize, return(-1),
+                                       xmlSecTransformGetName(transform));
         if (!CryptHashData(ctx->mscHash, xmlSecBufferGetData(in), dwInSize, 0)) {
-            xmlSecMSCryptoError("CryptHashData", NULL);
+            xmlSecMSCryptoError("CryptHashData",
+                                xmlSecTransformGetName(transform));
             return(-1);
         }
 
@@ -697,11 +703,13 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
                 return(-1);
             }
             if (!CryptSignHash(ctx->mscHash, dwKeySpec, NULL, 0, NULL, &dwSigLen)) {
-                xmlSecMSCryptoError("CryptSignHash", NULL);
+                xmlSecMSCryptoError("CryptSignHash",
+                                    xmlSecTransformGetName(transform));
                 return(-1);
             }
             dwProbeSigLen = dwSigLen;
-            XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwSigLen, outSize, return(-1), NULL);
+            XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwSigLen, outSize, return(-1),
+                                           xmlSecTransformGetName(transform));
 
             ret = xmlSecBufferInitialize(&tmp, outSize);
             if(ret < 0) {
@@ -714,16 +722,19 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             xmlSecAssert2(tmpBuf != NULL, -1);
 
             if (!CryptSignHash(ctx->mscHash, dwKeySpec, NULL, 0, tmpBuf, &dwSigLen)) {
-                xmlSecMSCryptoError("CryptSignHash", NULL);
+                xmlSecMSCryptoError("CryptSignHash",
+                                    xmlSecTransformGetName(transform));
                 xmlSecBufferFinalize(&tmp);
                 return(-1);
             }
             if(dwSigLen > dwProbeSigLen) {
-                xmlSecInvalidSizeMoreThanError("Signature", (xmlSecSize)dwSigLen, (xmlSecSize)dwProbeSigLen, NULL);
+                xmlSecInvalidSizeMoreThanError("Signature", (xmlSecSize)dwSigLen, (xmlSecSize)dwProbeSigLen,
+                                               xmlSecTransformGetName(transform));
                 xmlSecBufferFinalize(&tmp);
                 return(-1);
             }
-            XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwSigLen, outSize, { xmlSecBufferFinalize(&tmp); return(-1); }, NULL);
+            XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwSigLen, outSize, { xmlSecBufferFinalize(&tmp); return(-1); },
+                                           xmlSecTransformGetName(transform));
 
             ret = xmlSecBufferSetSize(out, outSize);
             if(ret < 0) {
@@ -801,7 +812,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
 #endif /* XMLSEC_NO_GOST2012 */
 
             {
-                /* We shouldn't get at this place */
+                /* We shouldn't get to this place */
                 xmlSecInvalidTypeError("Invalid signature algorithm", xmlSecTransformGetName(transform));
                 xmlSecBufferFinalize(&tmp);
                 return(-1);
@@ -839,7 +850,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
  *
  * RSA-MD5 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoRsaMd5Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -882,7 +893,7 @@ xmlSecMSCryptoTransformRsaMd5GetKlass(void) {
  *
  * RSA-SHA1 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoRsaSha1Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -925,7 +936,7 @@ xmlSecMSCryptoTransformRsaSha1GetKlass(void) {
  *
  * RSA-SHA2-256 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoRsaSha256Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -968,7 +979,7 @@ xmlSecMSCryptoTransformRsaSha256GetKlass(void) {
  *
  * RSA-SHA2-384 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoRsaSha384Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -1011,7 +1022,7 @@ xmlSecMSCryptoTransformRsaSha384GetKlass(void) {
  *
  * RSA-SHA2-512 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoRsaSha512Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -1056,7 +1067,7 @@ xmlSecMSCryptoTransformRsaSha512GetKlass(void) {
  *
  * DSA-SHA1 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 static xmlSecTransformKlass xmlSecMSCryptoDsaSha1Klass = {
     /* klass/object sizes */
@@ -1101,7 +1112,7 @@ xmlSecMSCryptoTransformDsaSha1GetKlass(void) {
  *
  * GOST2001-GOSTR3411_94 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 static xmlSecTransformKlass xmlSecMSCryptoGost2001GostR3411_94Klass = {
     /* klass/object sizes */
@@ -1149,7 +1160,7 @@ xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass(void) {
  *
  * GOST R 34.10-2012 256 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 static xmlSecTransformKlass xmlSecMSCryptoGost2012_256Klass = {
     /* klass/object sizes */
@@ -1191,7 +1202,7 @@ xmlSecMSCryptoTransformGost2012_256GetKlass(void) {
  *
  * GOST R 34.10-2012 512 signature transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 static xmlSecTransformKlass xmlSecMSCryptoGost2012_512Klass = {
     /* klass/object sizes */

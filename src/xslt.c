@@ -36,7 +36,7 @@
  *
  * Internal xslt ctx
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecXsltCtx                   xmlSecXsltCtx, *xmlSecXsltCtxPtr;
 struct _xmlSecXsltCtx {
     xsltStylesheetPtr   xslt;
@@ -49,7 +49,7 @@ struct _xmlSecXsltCtx {
  *
  * xmlSecTransform + xmlSecXsltCtx
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(Xslt, xmlSecXsltCtx)
 #define xmlSecXsltSize XMLSEC_TRANSFORM_SIZE(Xslt)
 
@@ -183,7 +183,7 @@ xmlSecTransformXsltSetDefaultSecurityPrefs(xsltSecurityPrefsPtr sec) {
  * the sole child of the Transform element, indicates that the specified style
  * sheet should be used. Whether this instantiates in-line processing of local
  * XSLT declarations within the resource is determined by the XSLT processing
- * model; the ordered application of multiple stylesheet may require multiple
+ * model; the ordered application of multiple stylesheets may require multiple
  * Transforms. No special provision is made for the identification of a remote
  * stylesheet at a given URI because it can be communicated via an xsl:include
  * or xsl:import within the stylesheet child of the Transform.
@@ -298,7 +298,7 @@ xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransfor
     /* pre-process stylesheet: xmlsec installs its own forbid-all default security
      * preferences application-wide for the lifetime of the library (from
      * xmlSecTransformXsltInitialize() to xmlSecTransformXsltShutdown()); the
-     * application's previous default is saved and restored during that time */
+     * application's previous default is saved and restored at shutdown */
     ctx->xslt = xsltParseStylesheetDoc(doc);
     if(ctx->xslt == NULL) {
         xmlSecXsltError("xsltParseStylesheetDoc", xmlSecTransformGetName(transform));

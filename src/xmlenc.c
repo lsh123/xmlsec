@@ -82,7 +82,7 @@ xmlSecEncCtxCreate(xmlSecKeysMngrPtr keysMngr) {
 
 /**
  * @brief Destroys an enc:EncryptedData processing context.
- * @details Destroy context object created with #xmlSecEncCtxCreate function.
+ * @details Destroys context object created with #xmlSecEncCtxCreate function.
  * @param encCtx the pointer to &lt;enc:EncryptedData/&gt; processing context.
  */
 void
@@ -1188,7 +1188,7 @@ xmlSecEncCtxDebugXmlDump(xmlSecEncCtxPtr encCtx, FILE* output) {
  *
  * Generate key (used in DerivedKey and AgreementMethod nodes processing)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 static xmlSecKeyPtr
 xmlSecEncCtxGenerateKey(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xmlSecKeyInfoCtxPtr keyInfoCtx) {
@@ -1249,7 +1249,7 @@ xmlSecEncCtxMapOperation(xmlSecTransformOperation operation) {
 
 /**
  * @brief Generates (derives) a key from the DerivedKey node.
- * @details Generates (derives) key from @p node (https://www.w3.org/TR/xmlenc-core1/#sec-DerivedKey):
+ * @details Generates (derives) a key from @p node (https://www.w3.org/TR/xmlenc-core1/#sec-DerivedKey):
  * @code{.xml}
  *  <element name="DerivedKey" type="xenc11:DerivedKeyType"/>
  *  <complexType name="DerivedKeyType">
@@ -1425,7 +1425,7 @@ done:
 
 /**
  * @brief Generates a key from the AgreementMethod node.
- * @details Generates (derives) key from @p node (https://www.w3.org/TR/xmlenc-core1/#sec-AgreementMethod):
+ * @details Generates (derives) a key from @p node (https://www.w3.org/TR/xmlenc-core1/#sec-AgreementMethod):
  *
  * @param encCtx the pointer to encryption processing context.
  * @param keyId the expected key id, the actual derived key might have a different id.

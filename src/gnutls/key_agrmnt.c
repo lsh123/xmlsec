@@ -20,7 +20,6 @@
 #include <gnutls/crypto.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/base64.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/membuf.h>
@@ -40,7 +39,7 @@
  * - ECDH spec: https://www.w3.org/TR/xmlenc-core1/#sec-ECDH-ES
  * - XDH spec: https://www.w3.org/2021/04/xmldsig-more
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 typedef struct _xmlSecGnuTLSKeyAgreementCtx    xmlSecGnuTLSKeyAgreementCtx, *xmlSecGnuTLSKeyAgreementCtxPtr;
 struct _xmlSecGnuTLSKeyAgreementCtx {
@@ -75,7 +74,7 @@ static int              xmlSecGnuTLSKeyAgreementGenerateSecret  (xmlSecGnuTLSKey
  *
  * Key Agreement unified context
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GnuTLSKeyAgreement, xmlSecGnuTLSKeyAgreementCtx)
 #define xmlSecGnuTLSKeyAgreementSize XMLSEC_TRANSFORM_SIZE(GnuTLSKeyAgreement)
 
@@ -83,7 +82,7 @@ XMLSEC_TRANSFORM_DECLARE(GnuTLSKeyAgreement, xmlSecGnuTLSKeyAgreementCtx)
  *
  * Unified transform lifecycle functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 static int
 xmlSecGnuTLSKeyAgreementInitialize(xmlSecTransformPtr transform) {
@@ -554,7 +553,7 @@ static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                   
  *
  * ECDH key agreement transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_EC
 XMLSEC_GNUTLS_KEY_AGREEMENT_KLASS(Ecdh)
 
@@ -572,7 +571,7 @@ xmlSecGnuTLSTransformEcdhGetKlass(void) {
  *
  * X25519 key agreement transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_XDH
 XMLSEC_GNUTLS_KEY_AGREEMENT_KLASS(X25519)
 
@@ -590,7 +589,7 @@ xmlSecGnuTLSTransformX25519GetKlass(void) {
  *
  * X448 key agreement transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_KEY_AGREEMENT_KLASS(X448)
 
 /**

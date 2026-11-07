@@ -431,6 +431,7 @@ xmlSecMSCngKeyDataMlKemReadFromPkcs8Der(const xmlSecByte* derData, DWORD derData
     DWORD lenConsumed = 0;
     DWORD firstLen = 0;
     DWORD skLen = 0;
+    DWORD expectedSkLen;
     BCRYPT_KEY_HANDLE hPrivKey = NULL;
     BCRYPT_KEY_HANDLE hPubKey = NULL;
     PUCHAR pbPubBlob = NULL;
@@ -456,7 +457,6 @@ xmlSecMSCngKeyDataMlKemReadFromPkcs8Der(const xmlSecByte* derData, DWORD derData
     }
     /* Must be an ML-KEM OID; remember the expected secret key size for the
      * parameter set so it can be cross-checked against the parsed size */
-    DWORD expectedSkLen;
     if(strcmp(pki->Algorithm.pszObjId, XMLSEC_MSCNG_OID_MLKEM_512) == 0) {
         expectedSkLen = XMLSEC_MSCNG_MLKEM_512_SK_SIZE;
     } else if(strcmp(pki->Algorithm.pszObjId, XMLSEC_MSCNG_OID_MLKEM_768) == 0) {

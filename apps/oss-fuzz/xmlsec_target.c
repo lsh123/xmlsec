@@ -48,7 +48,8 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
     }
     /* A zero-size buffer never allocates data, so xmlSecBufferGetData() would
      * return NULL; skip empty inputs like the sibling targets do. Also skip
-     * inputs too large to fit in the int length expected by xmlSecBuffer*. */
+     * inputs too large to fit in the int length expected by
+     * xmlCreateMemoryParserCtxt(), which xmlSecParseMemory() uses. */
     if (g_init_failed || size == 0 || size > (size_t)INT_MAX) {
         return 0;
     }

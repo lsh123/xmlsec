@@ -32,13 +32,13 @@ XMLSEC_EXPORT void              xmlSecKeyDataDebugXmlDumpImpl   (xmlSecKeyDataPt
  *
  * xmlSecKeyData + xmlSecBuffer (key)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 /******************************************************************************
  *
  * Binary key sizes (in bytes)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #define XMLSEC_BINARY_KEY_BYTES_SIZE_128            ((xmlSecSize)16)
 #define XMLSEC_BINARY_KEY_BYTES_SIZE_192            ((xmlSecSize)24)
 #define XMLSEC_BINARY_KEY_BYTES_SIZE_256            ((xmlSecSize)32)
@@ -146,7 +146,7 @@ XMLSEC_EXPORT int               xmlSecKeyDataEcXmlWrite                 (xmlSecK
  *
  * Helper functions to read/write RSA keys
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief The RSA key value.
  */
@@ -198,7 +198,7 @@ XMLSEC_EXPORT int               xmlSecKeyDataRsaXmlWrite                (xmlSecK
  *
  * Helper functions to read/write DH keys
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief The DH key value.
  */
@@ -253,7 +253,7 @@ XMLSEC_EXPORT int               xmlSecKeyDataDhXmlWrite                 (xmlSecK
  *
  * Helper functions to read/write DSA keys
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief The DSA key value.
  */
@@ -319,7 +319,7 @@ typedef struct _xmlSecKeyDataKAM {
 } xmlSecKeyDataKAM;
 
 
-/** @brief The KA params key data klass ID. */
+/** @brief The KAM params key data klass ID. */
 #define xmlSecKeyDataKAMId      xmlSecKeyDataKAMGetKlass()
 
 XMLSEC_EXPORT xmlSecKeyDataId   xmlSecKeyDataKAMGetKlass           (void);
@@ -341,6 +341,7 @@ typedef struct _xmlSecKeyDataKEM {
     xmlSecBuffer    ciphertext;       /**< KEM ciphertext written into enc:CipherData/enc:CipherValue */
 } xmlSecKeyDataKEM;
 
+/** @brief The KEM key data klass ID. */
 #define xmlSecKeyDataKEMId      xmlSecKeyDataKEMGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId   xmlSecKeyDataKEMGetKlass        (void);
 XMLSEC_EXPORT xmlSecBufferPtr   xmlSecKeyDataKEMGetCiphertext   (xmlSecKeyDataPtr data);

@@ -1250,8 +1250,8 @@ xmlSecMSCngAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* da
 
 /**
  * @brief Initializes the default key manager for MSCng.
- * @details Initializes @p mngr with simple keys store #xmlSecSimpleKeysStoreId
- * and a default MSCng crypto key data stores.
+ * @details Initializes @p mngr with the MSCng keys store #xmlSecMSCngKeysStoreId
+ * and the default MSCng crypto key data stores.
  *
  * @param mngr the pointer to keys manager.
  * @return 0 on success or a negative value otherwise.

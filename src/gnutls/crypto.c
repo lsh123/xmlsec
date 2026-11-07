@@ -85,7 +85,7 @@ xmlSecCryptoGetFunctions_gnutls(void) {
      *
      * Crypto Init/shutdown
      *
-      *****************************************************************************/
+     *****************************************************************************/
     gXmlSecGnuTLSFunctions->cryptoInit                  = xmlSecGnuTLSInit;
     gXmlSecGnuTLSFunctions->cryptoShutdown              = xmlSecGnuTLSShutdown;
     gXmlSecGnuTLSFunctions->cryptoKeysMngrInit          = xmlSecGnuTLSKeysMngrInit;
@@ -94,7 +94,7 @@ xmlSecCryptoGetFunctions_gnutls(void) {
      *
      * Key data ids
      *
-      *****************************************************************************/
+     *****************************************************************************/
 #ifndef XMLSEC_NO_AES
     gXmlSecGnuTLSFunctions->keyDataAesGetKlass          = xmlSecGnuTLSKeyDataAesGetKlass;
 #endif /* XMLSEC_NO_AES */
@@ -173,7 +173,7 @@ xmlSecCryptoGetFunctions_gnutls(void) {
      *
      * Key data store ids
      *
-      *****************************************************************************/
+     *****************************************************************************/
 #ifndef XMLSEC_NO_X509
     gXmlSecGnuTLSFunctions->x509StoreGetKlass           = xmlSecGnuTLSX509StoreGetKlass;
 #endif /* XMLSEC_NO_X509 */
@@ -182,7 +182,7 @@ xmlSecCryptoGetFunctions_gnutls(void) {
      *
      * Crypto transforms ids
      *
-      *****************************************************************************/
+     *****************************************************************************/
 
     /* AES */
 #ifndef XMLSEC_NO_AES
@@ -427,7 +427,7 @@ xmlSecCryptoGetFunctions_gnutls(void) {
      *
      * High-level routines for the xmlsec command-line utility
      *
-      *****************************************************************************/
+     *****************************************************************************/
     gXmlSecGnuTLSFunctions->cryptoAppInit                       = xmlSecGnuTLSAppInit;
     gXmlSecGnuTLSFunctions->cryptoAppShutdown                   = xmlSecGnuTLSAppShutdown;
     gXmlSecGnuTLSFunctions->cryptoAppDefaultKeysMngrInit        = xmlSecGnuTLSAppDefaultKeysMngrInit;

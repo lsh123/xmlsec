@@ -1195,7 +1195,7 @@ xmlSecMSCngKeyDataX509GetKlass(void) {
  * Raw X509 Certificate processing
  *
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int
 xmlSecMSCngKeyDataRawX509CertBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         const xmlSecByte* buf, xmlSecSize bufSize,

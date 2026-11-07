@@ -32,7 +32,7 @@ extern "C" {
  *
  * Init/shutdown
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppInit                           (const char* config);
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppShutdown                       (void);
 
@@ -50,7 +50,7 @@ XMLSEC_CRYPTO_EXPORT LPCTSTR    xmlSecMSCryptoAppGetCertStoreName               
  *
  * Keys Manager
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppDefaultKeysMngrInit            (xmlSecKeysMngrPtr mngr);
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppDefaultKeysMngrAdoptKey        (xmlSecKeysMngrPtr mngr,
                                                                                  xmlSecKeyPtr key);
@@ -106,7 +106,7 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppKeysMngrCrlLoadAndVerify       
  *
  * Keys
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCryptoAppKeyLoadEx            (const char *filename,
                                                                          xmlSecKeyDataType type,
                                                                          xmlSecKeyDataFormat format,

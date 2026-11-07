@@ -35,7 +35,7 @@ extern "C" {
  *
  * Crypto Init/shutdown
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_EXPORT int                               xmlSecCryptoInit(void);
 XMLSEC_EXPORT int                               xmlSecCryptoShutdown(void);
 XMLSEC_EXPORT int                               xmlSecCryptoKeysMngrInit(xmlSecKeysMngrPtr mngr);
@@ -44,7 +44,7 @@ XMLSEC_EXPORT int                               xmlSecCryptoKeysMngrInit(xmlSecK
  *
  * Key data ids
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief The AES key klass.
  * Returns #xmlSecKeyDataIdUnknown if the crypto engine is not loaded or the klass is not implemented.
@@ -188,7 +188,7 @@ XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataDEREncodedKeyValueG
  *
  * Key data store ids
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief The X509 store klass.
  * Returns #xmlSecKeyDataStoreIdUnknown if the crypto engine is not loaded or the klass is not implemented.
@@ -203,7 +203,7 @@ XMLSEC_EXPORT xmlSecKeyDataStoreId              xmlSecX509StoreGetKlass(void);
  * https://www.aleksey.com/xmlsec/xmldsig.html
  * https://www.aleksey.com/xmlsec/xmlenc.html
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief The AES128 CBC cipher transform klass.
  * Returns #xmlSecTransformIdUnknown if the crypto engine is not loaded or the klass is not implemented.
@@ -816,7 +816,7 @@ XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformSha3_512GetKlass(
  *
  * High-level routines for the xmlsec command-line utility
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_EXPORT int                               xmlSecCryptoAppInit             (const char* config);
 XMLSEC_EXPORT int                               xmlSecCryptoAppShutdown         (void);
 XMLSEC_EXPORT int                               xmlSecCryptoAppDefaultKeysMngrInit      (xmlSecKeysMngrPtr mngr);

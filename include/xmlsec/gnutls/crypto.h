@@ -36,7 +36,7 @@ extern "C" {
  *
  * Check for features available in the current version of GnuTLS.
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /* RSA-OAEP was added in GnuTLS 3.8.4 (2024) */
 #if GNUTLS_VERSION_NUMBER < 0x030804
 #define XMLSEC_NO_RSA_OAEP      1
@@ -52,7 +52,7 @@ extern "C" {
  *
  * Init shutdown
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSInit                (void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSShutdown            (void);
 
@@ -68,7 +68,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecCryptoDLFunctionsPtr xmlSecCryptoGetFunctions_gnutls(
  *
  * Asymmetric keys helpers
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr       xmlSecGnuTLSAsymmetricKeyCreatePub       (gnutls_pubkey_t pubkey);
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr       xmlSecGnuTLSAsymmetricKeyCreatePriv      (gnutls_privkey_t privkey);
@@ -80,7 +80,7 @@ XMLSEC_CRYPTO_EXPORT gnutls_privkey_t   xmlSecGnuTLSAsymmetricKeyGetPriv        
  *
  * DEPRECATED
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Deprecated alias for xmlSecGnuTLSAsymmetricKeyCreatePub.
  */
@@ -103,7 +103,7 @@ XMLSEC_CRYPTO_EXPORT gnutls_privkey_t   xmlSecGnuTLSAsymmetricKeyGetPriv        
  *
  * AES transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_AES
 /**
  * @brief The AES key data klass.
@@ -186,7 +186,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecGnuTLSTransformKWAes256GetKlass(vo
  *
  * ChaCha20 transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_CHACHA20
 /**
  * @brief The ChaCha20 key data klass.
@@ -218,7 +218,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecGnuTLSTransformChaCha20Poly1305Get
  *
  * DES transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_DES
 /**
  * @brief The DES key data klass.
@@ -250,7 +250,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformKWDes3GetKlass(void)
  *
  * Camellia transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_CAMELLIA
 /**
  * @brief The Camellia key data klass.
@@ -310,7 +310,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecGnuTLSTransformKWCamellia256GetKla
  *
  * DSA transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_DSA
 
 /**
@@ -350,7 +350,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformDsaSha256GetKlass(vo
  *
  * EC key and transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_EC
 
 /**
@@ -447,7 +447,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformEcdsaSha3_512GetKlas
  *
  * GOST 2001 keys and transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_GOST
 
 /**
@@ -482,7 +482,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformGost2001GostR3411_94
  *
  * GOST 2012 keys and transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_GOST2012
 
 /**
@@ -549,7 +549,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformGostR3410_2012GostR3
  *
  * ML-DSA keys and transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_MLDSA
 
 /**
@@ -595,7 +595,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformMLDSA87GetKlass(void
  *
  * EdDSA keys and transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_EDDSA
 
 /**
@@ -631,7 +631,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformEdDSAEd448GetKlass(v
  *
  * XDH keys and transforms (X25519 and X448)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_XDH
 
 /**
@@ -667,7 +667,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformX448GetKlass(void);
  *
  * ECDH transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_EC
 
 /**
@@ -683,7 +683,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformEcdhGetKlass(void);
  *
  * ConcatKDF transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_CONCATKDF
 
 /**
@@ -709,7 +709,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformConcatKdfGetKlass(vo
  *
  * HMAC transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_HMAC
 
 /**
@@ -774,7 +774,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacSha512GetKlass(v
  *
  * PBKDF2 transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_PBKDF2
 
 /**
@@ -800,7 +800,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformPbkdf2GetKlass(void)
  *
  * HKDF transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_HKDF
 
 /**
@@ -826,7 +826,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHkdfGetKlass(void);
  *
  * RSA transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_RSA
 
 /**
@@ -947,7 +947,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformRsaOaepEnc11GetKlass
  *
  * SHA transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_SHA1
 /**
  * @brief The SHA1 digest transform klass.

@@ -31,7 +31,7 @@
  *
  * DES KW implementation
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int       xmlSecMSCryptoKWDes3GenerateRandom              (xmlSecTransformPtr transform,
                                                                  xmlSecByte * out,
                                                                  xmlSecSize outSize,
@@ -75,7 +75,7 @@ static xmlSecKWDes3Klass xmlSecMSCryptoKWDes3ImplKlass = {
  *
  * Triple DES Key Wrap transform context
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecMSCryptoKWDes3Ctx              xmlSecMSCryptoKWDes3Ctx,
                                                   *xmlSecMSCryptoKWDes3CtxPtr;
 struct _xmlSecMSCryptoKWDes3Ctx {
@@ -95,7 +95,7 @@ struct _xmlSecMSCryptoKWDes3Ctx {
  *
  * Triple DES Key Wrap transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MSCryptoKWDes3, xmlSecMSCryptoKWDes3Ctx)
 #define xmlSecMSCryptoKWDes3Size XMLSEC_TRANSFORM_SIZE(MSCryptoKWDes3)
 
@@ -303,7 +303,7 @@ xmlSecMSCryptoKWDes3Execute(xmlSecTransformPtr transform, int last,
  *
  * DES KW implementation
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int
 xmlSecMSCryptoKWDes3Sha1(xmlSecTransformPtr transform,
                        const xmlSecByte * in, xmlSecSize inSize,
@@ -341,15 +341,15 @@ xmlSecMSCryptoKWDes3Sha1(xmlSecTransformPtr transform,
 
     /* hash */
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwInSize, goto done, NULL);
-    ret = CryptHashData(mscHash, in,  dwInSize, 0);
+    ret = CryptHashData(mscHash, in, dwInSize, 0);
     if(ret == 0) {
         xmlSecMSCryptoError2("CryptHashData", NULL, "size=" XMLSEC_SIZE_FMT, inSize);
         goto done;
     }
 
     /* the output buffer must fit the 20-byte SHA-1 digest */
-    if(outSize < 20) {
-        xmlSecInvalidSizeLessThanError("outSize", outSize, (xmlSecSize)20, NULL);
+    if(outSize < XMLSEC_KW_DES3_SHA_DIGEST_LENGTH) {
+        xmlSecInvalidSizeLessThanError("outSize", outSize, XMLSEC_KW_DES3_SHA_DIGEST_LENGTH, NULL);
         goto done;
     }
 
@@ -460,8 +460,12 @@ xmlSecMSCryptoKWDes3BlockEncrypt(xmlSecTransformPtr transform,
 
     /* the provider must report a non-zero block size that is a multiple of 8 bits,
      * otherwise the size checks below would divide by zero */
-    if((blockSizeInBits == 0) || ((blockSizeInBits % 8) != 0)) {
-        xmlSecInvalidSizeError("blockSizeInBits", blockSizeInBits, (xmlSecSize)8, NULL);
+    if(blockSizeInBits == 0) {
+        xmlSecInvalidSizeLessThanError("blockSizeInBits", blockSizeInBits, (xmlSecSize)8, NULL);
+        goto done;
+    }
+    if((blockSizeInBits % 8) != 0) {
+        xmlSecInvalidSizeNotMultipleOfError("blockSizeInBits", blockSizeInBits, (xmlSecSize)8, NULL);
         goto done;
     }
 
@@ -566,8 +570,12 @@ xmlSecMSCryptoKWDes3BlockDecrypt(xmlSecTransformPtr transform,
 
     /* the provider must report a non-zero block size that is a multiple of 8 bits,
      * otherwise the size checks below would divide by zero */
-    if((blockSizeInBits == 0) || ((blockSizeInBits % 8) != 0)) {
-        xmlSecInvalidSizeError("blockSizeInBits", blockSizeInBits, (xmlSecSize)8, NULL);
+    if(blockSizeInBits == 0) {
+        xmlSecInvalidSizeLessThanError("blockSizeInBits", blockSizeInBits, (xmlSecSize)8, NULL);
+        goto done;
+    }
+    if((blockSizeInBits % 8) != 0) {
+        xmlSecInvalidSizeNotMultipleOfError("blockSizeInBits", blockSizeInBits, (xmlSecSize)8, NULL);
         goto done;
     }
 

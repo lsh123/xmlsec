@@ -38,7 +38,7 @@
  *
  * Internal NSS PKI key CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecNssPKIKeyDataCtx  xmlSecNssPKIKeyDataCtx,
                                                 *xmlSecNssPKIKeyDataCtxPtr;
 struct _xmlSecNssPKIKeyDataCtx {
@@ -50,7 +50,7 @@ struct _xmlSecNssPKIKeyDataCtx {
  *
  * PKI key data
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(NssPKIKeyData, xmlSecNssPKIKeyDataCtx)
 #define xmlSecNssPKIKeyDataSize XMLSEC_KEY_DATA_SIZE(NssPKIKeyData)
 
@@ -306,7 +306,7 @@ xmlSecNssPKIAdoptKey(SECKEYPrivateKey *privkey,
     xmlSecAssert2(data != NULL, NULL);
     ret = xmlSecNssPKIKeyDataAdoptKey(data, privkey, pubkey);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecNssPKIKeyDataAdoptKey", NULL);
+        xmlSecInternalError("xmlSecNssPKIKeyDataAdoptKey", xmlSecKeyDataGetName(data));
         xmlSecKeyDataDestroy(data);
         return(NULL);
     }
@@ -444,13 +444,10 @@ xmlSecNssPKIKeyDataGetKeyType(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecNssPKIKeyDataDuplicate
- * @param dst the pointer to NSS Key data to copy to.
- * @param src the pointer to NSS Key data to copy from.
- *
- * @brief Duplicates the keydata from src to dst
- *
- * @return -1 on error, 0 on success
+ * @brief Duplicates the key data from @p src to @p dst.
+ * @param dst the pointer to NSS key data to copy to.
+ * @param src the pointer to NSS key data to copy from.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecNssPKIKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
@@ -557,7 +554,7 @@ xmlSecNssPKIKeyDataGetSize(xmlSecKeyDataPtr data) {
  *
  * Helpers
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int
 xmlSecNssGetBigNumValue(xmlSecBufferPtr buf, PRArenaPool *arena, SECItem *val) {
     xmlSecByte* data;
@@ -607,7 +604,7 @@ xmlSecNssSetBigNumValue(const SECItem *val, xmlSecBufferPtr buf) {
  *
  * Helper macro to declare PKI key data klass
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #define XMLSEC_NSS_PKI_KEY_KLASS_EX(lcname, ucname, ns, generate, xmlRead, xmlWrite)           \
 static xmlSecKeyDataKlass xmlSecNssKeyData ## lcname ## Klass = {                               \
     sizeof(xmlSecKeyDataKlass),                 /* xmlSecSize klassSize */                       \
@@ -645,78 +642,9 @@ static xmlSecKeyDataKlass xmlSecNssKeyData ## lcname ## Klass = {               
 #ifndef XMLSEC_NO_DSA
 /******************************************************************************
  *
- * &lt;dsig:DSAKeyValue/&gt; processing
- *
- *
  * The DSAKeyValue Element (http://www.w3.org/TR/xmldsig-core/#sec-DSAKeyValue)
  *
- * DSA keys and the DSA signature algorithm are specified in [DSS].
- * DSA public key values can have the following fields:
- *
- *   * P - a prime modulus meeting the [DSS] requirements
- *   * Q - an integer in the range 2**159 < Q < 2**160 which is a prime
- *         divisor of P-1
- *   * G - an integer with certain properties with respect to P and Q
- *   * Y - G**X mod P (where X is part of the private key and not made
- *         public)
- *   * J - (P - 1) / Q
- *   * seed - a DSA prime generation seed
- *   * pgenCounter - a DSA prime generation counter
- *
- * Parameter J is available for inclusion solely for efficiency as it is
- * calculatable from P and Q. Parameters seed and pgenCounter are used in the
- * DSA prime number generation algorithm specified in [DSS]. As such, they are
- * optional but must either both be present or both be absent. This prime
- * generation algorithm is designed to provide assurance that a weak prime is
- * not being used and it yields a P and Q value. Parameters P, Q, and G can be
- * public and common to a group of users. They might be known from application
- * context. As such, they are optional but P and Q must either both appear or
- * both be absent. If all of P, Q, seed, and pgenCounter are present,
- * implementations are not required to check if they are consistent and are
- * free to use either P and Q or seed and pgenCounter. All parameters are
- * encoded as base64 [MIME] values.
- *
- * Arbitrary-length integers (e.g. "bignums" such as RSA moduli) are
- * represented in XML as octet strings as defined by the ds:CryptoBinary type.
- *
- * Schema Definition:
- *
- * <element name="DSAKeyValue" type="ds:DSAKeyValueType"/>
- * <complexType name="DSAKeyValueType">
- *   <sequence>
- *     <sequence minOccurs="0">
- *        <element name="P" type="ds:CryptoBinary"/>
- *        <element name="Q" type="ds:CryptoBinary"/>
- *     </sequence>
- *     <element name="G" type="ds:CryptoBinary" minOccurs="0"/>
- *     <element name="Y" type="ds:CryptoBinary"/>
- *     <element name="J" type="ds:CryptoBinary" minOccurs="0"/>
- *     <sequence minOccurs="0">
- *       <element name="Seed" type="ds:CryptoBinary"/>
- *       <element name="PgenCounter" type="ds:CryptoBinary"/>
- *     </sequence>
- *   </sequence>
- * </complexType>
- *
- * DTD Definition:
- *
- *  <!ELEMENT DSAKeyValue ((P, Q)?, G?, Y, J?, (Seed, PgenCounter)?) >
- *  <!ELEMENT P (#PCDATA) >
- *  <!ELEMENT Q (#PCDATA) >
- *  <!ELEMENT G (#PCDATA) >
- *  <!ELEMENT Y (#PCDATA) >
- *  <!ELEMENT J (#PCDATA) >
- *  <!ELEMENT Seed (#PCDATA) >
- *  <!ELEMENT PgenCounter (#PCDATA) >
- *
- * ============================================================================
- *
- * To support reading/writing private keys an X element is added (before Y).
- *
- * The current implementation does not support Seed and PgenCounter!
- * As a result, P, Q and G are *required*!
- *
-  *****************************************************************************/
+ *****************************************************************************/
 static int              xmlSecNssKeyDataDsaXmlRead      (xmlSecKeyDataId id,
                                                          xmlSecKeyPtr key,
                                                          xmlNodePtr node,
@@ -1015,46 +943,10 @@ xmlSecNssKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
 #ifndef XMLSEC_NO_RSA
 /******************************************************************************
  *
- * &lt;dsig:RSAKeyValue/&gt; processing
+ * The RSAKeyValue Element (http://www.w3.org/TR/xmldsig-core/#sec-RSAKeyValue)
  *
- * http://www.w3.org/TR/xmldsig-core/#sec-RSAKeyValue
- * The RSAKeyValue Element
- *
- * RSA key values have two fields: Modulus and Exponent.
- *
- * <RSAKeyValue>
- *   <Modulus>xA7SEU+e0yQH5rm9kbCDN9o3aPIo7HbP7tX6WOocLZAtNfyxSZDU16ksL6W
- *     jubafOqNEpcwR3RdFsT7bCqnXPBe5ELh5u4VEy19MzxkXRgrMvavzyBpVRgBUwUlV
- *        5foK5hhmbktQhyNdy/6LpQRhDUDsTvK+g9Ucj47es9AQJ3U=
- *   </Modulus>
- *   <Exponent>AQAB</Exponent>
- * </RSAKeyValue>
- *
- * Arbitrary-length integers (e.g. "bignums" such as RSA moduli) are
- * represented in XML as octet strings as defined by the ds:CryptoBinary type.
- *
- * Schema Definition:
- *
- * <element name="RSAKeyValue" type="ds:RSAKeyValueType"/>
- * <complexType name="RSAKeyValueType">
- *   <sequence>
- *     <element name="Modulus" type="ds:CryptoBinary"/>
- *     <element name="Exponent" type="ds:CryptoBinary"/>
- *   </sequence>
- * </complexType>
- *
- * DTD Definition:
- *
- * <!ELEMENT RSAKeyValue (Modulus, Exponent) >
- * <!ELEMENT Modulus (#PCDATA) >
- * <!ELEMENT Exponent (#PCDATA) >
- *
- * ============================================================================
- *
- * To support reading/writing private keys a PrivateExponent element is added
- * to the end
- *
-  *****************************************************************************/
+ *****************************************************************************/
+
 
 static int              xmlSecNssKeyDataRsaXmlRead      (xmlSecKeyDataId id,
                                                          xmlSecKeyPtr key,
@@ -1571,7 +1463,7 @@ xmlSecNssKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyValu
  *
  * EdDSA key data (Ed25519 and Ed448)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 /* EdDSA klass: no XML KeyValue representation, load from file/DER/PEM only */
 #define XMLSEC_NSS_PKI_KEY_KLASS_EDDSA(lcname, ucname, generate)                          \
@@ -1626,7 +1518,7 @@ xmlSecNssKeyDataEdDSAGetKlass(void) {
  *
  * XDH key data (X25519 only, RFC 7748)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 /* XDH klass: no XML KeyValue representation, load from file/DER/PEM only */
 #define XMLSEC_NSS_PKI_KEY_KLASS_XDH(lcname, ucname, generate)                          \
@@ -1680,7 +1572,7 @@ xmlSecNssKeyDataXdhGetKlass(void) {
  *
  * ML-DSA key data
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 /* ML-DSA klass: no XML KeyValue representation, load from file/DER/PEM only */
 #define XMLSEC_NSS_PKI_KEY_KLASS_MLDSA(lcname, ucname, generate)                          \
@@ -1735,7 +1627,7 @@ xmlSecNssKeyDataMLDSAGetKlass(void) {
  *
  * ML-KEM key data
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 /* ML-KEM klass: no XML KeyValue representation, load from file/DER/PEM only */
 #define XMLSEC_NSS_PKI_KEY_KLASS_MLKEM(lcname, ucname, generate)                          \

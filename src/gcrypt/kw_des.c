@@ -34,7 +34,7 @@
  *
  * DES KW implementation
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int       xmlSecGCryptKWDes3GenerateRandom               (xmlSecTransformPtr transform,
                                                                  xmlSecByte * out,
                                                                  xmlSecSize outSize,
@@ -90,7 +90,7 @@ static int      xmlSecGCryptKWDes3Encrypt                       (const xmlSecByt
  *
  * Triple DES Key Wrap transform context
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef xmlSecTransformKWDes3Ctx xmlSecGCryptKWDes3Ctx,
                                 *xmlSecGCryptKWDes3CtxPtr;
 
@@ -100,7 +100,7 @@ typedef xmlSecTransformKWDes3Ctx xmlSecGCryptKWDes3Ctx,
  *
  * xmlSecTransform + xmlSecGCryptKWDes3Ctx
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GCryptKWDes3, xmlSecGCryptKWDes3Ctx)
 #define xmlSecGCryptKWDes3Size XMLSEC_TRANSFORM_SIZE(GCryptKWDes3)
 
@@ -247,7 +247,7 @@ xmlSecGCryptKWDes3Execute(xmlSecTransformPtr transform, int last,
  *
  * DES KW implementation
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int
 xmlSecGCryptKWDes3Sha1(xmlSecTransformPtr transform,
                        const xmlSecByte * in, xmlSecSize inSize,

@@ -31,7 +31,7 @@ extern "C" {
  *
  * Crypto Init/shutdown
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief xmlsec-crypto library initialization method.
  * @return 0 on success or a negative value otherwise.
@@ -55,14 +55,14 @@ typedef int                     (*xmlSecCryptoKeysMngrInitMethod)       (xmlSecK
  *
  * Errors
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_EXPORT void              xmlSecErrorsSetSystemCallback         (xmlSecErrorsCallback callback);
 
 /******************************************************************************
  *
  * Key data ids
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Gets the key data klass.
  * @return pointer to key data klass or NULL if an error occurs
@@ -75,7 +75,7 @@ typedef xmlSecKeyDataId         (*xmlSecCryptoKeyDataGetKlassMethod)    (void);
  *
  * Key data store ids
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Gets the key data store klass.
  * @return pointer to key data store klass or NULL if an error occurs
@@ -89,7 +89,7 @@ typedef xmlSecKeyDataStoreId    (*xmlSecCryptoKeyDataStoreGetKlassMethod)
  *
  * Crypto transforms ids
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Gets the transform klass.
  * @return pointer to transform klass or NULL if an error occurs
@@ -102,20 +102,20 @@ typedef xmlSecTransformId       (*xmlSecCryptoTransformGetKlassMethod)  (void);
  *
  * High-level routines for the xmlsec command-line utility
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
- * @brief General crypto engine initialization (called before xmlSecInit).
+ * @brief General crypto engine initialization (called after xmlSecInit).
  * @details General crypto engine initialization. This function is used
- * by the XMLSec command-line utility and is called before the
+ * by the XMLSec command-line utility and is called after the
  * #xmlSecInit function.
  * @param config the path to crypto library configuration.
  * @return 0 on success or a negative value otherwise.
  */
 typedef int                     (*xmlSecCryptoAppInitMethod)            (const char* config);
 /**
- * @brief General crypto engine shutdown (called after xmlSecShutdown).
+ * @brief General crypto engine shutdown (called before xmlSecShutdown).
  * @details General crypto engine shutdown. This function is used
- * by the XMLSec command-line utility and is called after the
+ * by the XMLSec command-line utility and is called before the
  * #xmlSecShutdown function.
  * @return 0 on success or a negative value otherwise.
  */
@@ -569,8 +569,8 @@ struct _xmlSecCryptoDLFunctions {
  * @brief The maximum length of the input string for #xmlSecBnFromString.
  * @details The BN string parsing routines process the input digit by digit and
  * the total cost grows with the square of the string length. The actual
- * usage in the XMLSec library is limited to parsing X509 serial numbers
- * which length is limited to 20 octets (160 bits) by RFC 5280 which is
+ * usage in the XMLSec library is limited to parsing X509 serial numbers,
+ * whose length is limited to 20 octets (160 bits) by RFC 5280, which is
  * less than 50 dec/hex digits.
  */
 #ifndef XMLSEC_BN_FROM_STRING_MAX_LEN
@@ -591,7 +591,7 @@ struct _xmlSecCryptoDLFunctions {
  * pointers have the same representation, so this is technically undefined
  * behavior; in practice it works on all supported platforms.
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 /**
  * @brief Declares helper functions to convert void* to function pointer.

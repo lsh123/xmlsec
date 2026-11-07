@@ -72,7 +72,7 @@ static STACK_OF(X509)*  xmlSecOpenSSLX509StoreCombineCerts              (STACK_O
  *
  * Internal OpenSSL X509 store CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecOpenSSLX509StoreCtx               xmlSecOpenSSLX509StoreCtx,
                                                         *xmlSecOpenSSLX509StoreCtxPtr;
 struct _xmlSecOpenSSLX509StoreCtx {
@@ -87,7 +87,7 @@ struct _xmlSecOpenSSLX509StoreCtx {
  *
  * xmlSecOpenSSLKeyDataStoreX509Id:
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_KEY_DATA_STORE_DECLARE(OpenSSLX509Store, xmlSecOpenSSLX509StoreCtx)
 #define xmlSecOpenSSLX509StoreSize XMLSEC_KEY_DATA_STORE_SIZE(OpenSSLX509Store)
 
@@ -498,7 +498,7 @@ xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked(X509 * cert, STACK_OF(X509_REVOKE
         return(0);
     }
 
-    /* success: nomatch */
+    /* success: no match */
     return(1);
 }
 
@@ -1477,7 +1477,7 @@ xmlSecOpenSSLX509StoreFinalize(xmlSecKeyDataStorePtr store) {
  *
  * Low-level x509 functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static X509*
 xmlSecOpenSSLX509FindTrustedIssuer(X509_STORE* xst, XMLSEC_OPENSSL400_CONST X509_NAME* issuer) {
     STACK_OF(X509_OBJECT)* objects = NULL;

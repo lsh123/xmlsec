@@ -40,7 +40,7 @@ static xmlNodePtr       xmlSecTmplEncDataEnsureReferenceList(xmlNodePtr encNode)
  *
  * &lt;dsig:Signature/&gt; node
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Creates a new &lt;dsig:Signature/&gt; node with required children.
  * @details Creates new &lt;dsig:Signature/&gt; node with the mandatory &lt;dsig:SignedInfo/&gt;,
@@ -591,7 +591,7 @@ xmlSecTmplManifestAddReference(xmlNodePtr manifestNode, xmlSecTransformId digest
  *
  * &lt;enc:EncryptedData/&gt; node
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Creates a new &lt;enc:EncryptedData/&gt; node for encryption template.
  * @details Creates new &lt;enc:EncryptedData/&gt; node for encryption template.
@@ -983,7 +983,7 @@ xmlSecTmplEncDataGetEncMethodNode(xmlNodePtr encNode) {
 
 /**
  * @brief Adds a &lt;dsig:Transform/&gt; node to the &lt;enc:CipherReference/&gt; node.
- * @details Adds &lt;dsig:Transform/&gt; node (and the parent &lt;dsig:Transforms/&gt; node)
+ * @details Adds &lt;dsig:Transform/&gt; node (and the parent &lt;enc:Transforms/&gt; node)
  * with specified transform methods @p transform to the &lt;enc:CipherReference/&gt;
  * child node of the &lt;enc:EncryptedData/&gt; node @p encNode.
  * @param cipherReferenceNode the pointer to &lt;enc:CipherReference/&gt; node.
@@ -1046,7 +1046,7 @@ xmlSecTmplCipherReferenceAddTransform(xmlNodePtr cipherReferenceNode,
  *
  * &lt;enc:EncryptedKey/&gt; node
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlNodePtr
 xmlSecTmplEncDataEnsureReferenceList(xmlNodePtr encNode) {
     xmlNodePtr refListNode;
@@ -1172,7 +1172,7 @@ xmlSecTmplReferenceListAddKeyReference(xmlNodePtr encNode, const xmlChar *uri) {
  *
  * &lt;dsig:KeyInfo/&gt; node
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 /**
  * @brief Adds a &lt;dsig:KeyName/&gt; node to the &lt;dsig:KeyInfo/&gt; node.
@@ -1418,7 +1418,7 @@ xmlSecTmplKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, xmlSecTransformId encMe
  *
  * &lt;dsig:X509Data/&gt; node
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Adds a &lt;dsig:X509IssuerSerial/&gt; node to the &lt;dsig:X509Data/&gt; node.
  * @details Adds &lt;dsig:X509IssuerSerial/&gt; node to the given &lt;dsig:X509Data/&gt; node.
@@ -1667,7 +1667,7 @@ xmlSecTmplX509DataAddCRL(xmlNodePtr x509DataNode) {
  *
  * &lt;dsig:Transform/&gt; node
  *
-  *****************************************************************************/
+ *****************************************************************************/
 
 /**
  * @brief Creates a &lt;dsig:HMACOutputLength/&gt; child for the HMAC transform node.

@@ -26,7 +26,7 @@ extern "C" {
  *
  * Crypto Init/shutdown
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #define xmlSecCryptoInit                        xmlSecMSCryptoInit
 #define xmlSecCryptoShutdown                    xmlSecMSCryptoShutdown
 
@@ -36,7 +36,7 @@ extern "C" {
  *
  * Key data ids
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #define xmlSecKeyDataAesId                      xmlSecMSCryptoKeyDataAesId
 #define xmlSecKeyDataDesId                      xmlSecMSCryptoKeyDataDesId
 #define xmlSecKeyDataDsaId                      xmlSecMSCryptoKeyDataDsaId
@@ -53,8 +53,8 @@ extern "C" {
 /******************************************************************************
  *
  * Key data store ids
-  *
-   *****************************************************************************/
+ *
+ *****************************************************************************/
 #ifndef XMLSEC_NO_X509
 #define xmlSecX509StoreId                       xmlSecMSCryptoX509StoreId
 #endif /* XMLSEC_NO_X509 */
@@ -66,7 +66,7 @@ extern "C" {
  * https://www.aleksey.com/xmlsec/xmldsig.html
  * https://www.aleksey.com/xmlsec/xmlenc.html
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #define xmlSecTransformAes128CbcId              xmlSecMSCryptoTransformAes128CbcId
 #define xmlSecTransformAes192CbcId              xmlSecMSCryptoTransformAes192CbcId
 #define xmlSecTransformAes256CbcId              xmlSecMSCryptoTransformAes256CbcId

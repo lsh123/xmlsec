@@ -28,7 +28,7 @@
 
 #include "cast_helpers.h"
 
-/* table for converting hex digits back to bytes */
+/* table for converting character codes to 4-bit values */
 static const int xmlSecBnLookupTable[] =
 {
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -60,13 +60,13 @@ static const xmlChar xmlSecBnRevLookupTable[XMLSEC_BN_REV_MAX] =
  *
  * xmlSecBn
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Creates a new BN object.
  * @details Creates a new BN object. Caller is responsible for destroying it
  * by calling #xmlSecBnDestroy function.
  * @param size the initial allocated BN size.
- * @return the new BN or a NULL if an error occurs.
+ * @return the new BN or NULL if an error occurs.
  */
 xmlSecBnPtr
 xmlSecBnCreate(xmlSecSize size) {
@@ -109,7 +109,7 @@ xmlSecBnFinalize(xmlSecBnPtr bn) {
 /**
  * @brief Gets pointer to the binary @p bn representation.
  * @param bn the pointer to BN.
- * @return pointer to binary BN data or NULL if an error occurs.
+ * @return pointer to binary BN data or NULL if the BN buffer is empty.
  */
 xmlSecByte*
 xmlSecBnGetData(xmlSecBnPtr bn) {
@@ -259,7 +259,7 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
  * for freeing returned string with xmlFree.
  * @param bn the pointer to BN.
  * @param base the base for returned string.
- * @return the string representation of BN or a NULL if an error occurs.
+ * @return the string representation of BN or NULL if an error occurs.
  */
 xmlChar*
 xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
@@ -358,7 +358,7 @@ xmlSecBnFromHexString(xmlSecBnPtr bn, const xmlChar* str) {
  * @details Writes @p bn to hex string. Caller is responsible for
  * freeing returned string with xmlFree.
  * @param bn the pointer to BN.
- * @return the string representation of BN or a NULL if an error occurs.
+ * @return the string representation of BN or NULL if an error occurs.
  */
 xmlChar*
 xmlSecBnToHexString(xmlSecBnPtr bn) {
@@ -381,7 +381,7 @@ xmlSecBnFromDecString(xmlSecBnPtr bn, const xmlChar* str) {
  * @details Writes @p bn to decimal string. Caller is responsible for
  * freeing returned string with xmlFree.
  * @param bn the pointer to BN.
- * @return the string representation of BN or a NULL if an error occurs.
+ * @return the string representation of BN or NULL if an error occurs.
  */
 xmlChar*
 xmlSecBnToDecString(xmlSecBnPtr bn) {

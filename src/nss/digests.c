@@ -35,7 +35,7 @@
  *
  * Internal NSS Digest CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecNssDigestCtx              xmlSecNssDigestCtx, *xmlSecNssDigestCtxPtr;
 struct _xmlSecNssDigestCtx {
     PK11Context*        digestCtx;
@@ -49,7 +49,7 @@ struct _xmlSecNssDigestCtx {
  *
  * xmlSecTransform + xmlSecNssDigestCtx
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(NssDigest, xmlSecNssDigestCtx)
 #define xmlSecNssDigestSize XMLSEC_TRANSFORM_SIZE(NssDigest)
 
@@ -432,7 +432,7 @@ xmlSecNssDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
  *
  * SHA1 Digest transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_NSS_DIGEST_KLASS(Sha1)
 
 /**
@@ -450,7 +450,7 @@ xmlSecNssTransformSha1GetKlass(void) {
  *
  * SHA-224 digest transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_NSS_DIGEST_KLASS(Sha224)
 
 /**
@@ -468,7 +468,7 @@ xmlSecNssTransformSha224GetKlass(void) {
  *
  * SHA-256 digest transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_NSS_DIGEST_KLASS(Sha256)
 
 /**
@@ -486,7 +486,7 @@ xmlSecNssTransformSha256GetKlass(void) {
  *
  * SHA-384 digest transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_NSS_DIGEST_KLASS(Sha384)
 
 /**
@@ -504,7 +504,7 @@ xmlSecNssTransformSha384GetKlass(void) {
  *
  * SHA-512 digest transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_NSS_DIGEST_KLASS(Sha512)
 
 /**
@@ -522,7 +522,7 @@ xmlSecNssTransformSha512GetKlass(void) {
  *
  * SHA3 digest transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_NSS_DIGEST_KLASS(Sha3_224)
 
 /**

@@ -28,7 +28,7 @@
  *
  *  Enveloped transform
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int      xmlSecTransformEnvelopedExecute         (xmlSecTransformPtr transform,
                                                          int last,
                                                          xmlSecTransformCtxPtr transformCtx);

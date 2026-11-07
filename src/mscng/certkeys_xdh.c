@@ -35,7 +35,7 @@
  * @details Imports a raw 32-byte Curve25519 u-coordinate as a BCrypt X25519 public key handle.
  * @param pubKeyBytes pointer to 32-byte X25519 public key (u-coordinate, little-endian).
  * @param pubKeyLen must be 32.
- * @return BCrypt key handle on success, or 0 on failure.
+ * @return BCrypt key handle on success, or NULL on failure.
  */
 BCRYPT_KEY_HANDLE
 xmlSecMSCngKeyDataXdhImportPublicKey(const xmlSecByte* pubKeyBytes, DWORD pubKeyLen) {
@@ -158,7 +158,7 @@ xmlSecMSCngKeyDataDuplicateBCryptXdhPrivKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HA
         goto done;
     }
 
-    /* success  */
+    /* success */
     res = 0;
 
 done:

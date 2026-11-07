@@ -38,7 +38,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecCryptoDLFunctionsPtr xmlSecCryptoGetFunctions_gcrypt(
  *
  * Init shutdown
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT int                xmlSecGCryptInit                (void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecGCryptShutdown            (void);
 
@@ -51,7 +51,7 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecGCryptGenerateRandom      (xmlSecB
  *
  * AES transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_AES
 /**
  * @brief The AES key data klass.
@@ -111,7 +111,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecGCryptTransformKWAes256GetKlass(vo
  *
  * DES transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_DES
 /**
  * @brief The DES key data klass.
@@ -143,7 +143,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformKWDes3GetKlass(void)
  *
  * DSA key and transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_DSA
 
 /**
@@ -176,7 +176,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformDsaSha1GetKlass(void
  *
  * EC key and transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_EC
 
 /**
@@ -264,7 +264,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformEcdsaSha3_512GetKlas
  *
  * HMAC transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_HMAC
 
 /**
@@ -338,7 +338,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformHmacSha512GetKlass(v
  *
  * RSA key and transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_RSA
 
 /**
@@ -504,7 +504,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformRsaOaepEnc11GetKlass
  *
  * SHA transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_SHA1
 /**
  * @brief The SHA1 digest transform klass.
@@ -570,7 +570,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformSha3_512GetKlass(voi
  *
  * MD5 transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_MD5
 /**
  * @brief The MD5 digest transform klass.
@@ -585,7 +585,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformMd5GetKlass(void);
  *
  * RIPEMD160 transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 #ifndef XMLSEC_NO_RIPEMD160
 /**
  * @brief The RIPEMD160 digest transform klass.

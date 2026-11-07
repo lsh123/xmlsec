@@ -111,7 +111,7 @@ xmlSecMSCryptoAppGetCertStoreName(void) {
 
 /******************************************************************************
  * Keys
-  *****************************************************************************/
+ *****************************************************************************/
 
 /**
  * @brief Reads a key from a file.
@@ -325,7 +325,7 @@ done:
 
 /******************************************************************************
  * X509 certificates
-  *****************************************************************************/
+ *****************************************************************************/
 
 #ifndef XMLSEC_NO_X509
 
@@ -532,8 +532,10 @@ xmlSecMSCryptoAppPkcs12Load(const char *filename,
  * @param data the binary PKCS12 key in data.
  * @param dataSize size of binary pkcs12 data
  * @param pwd the PKCS12 file password.
- * @param pwdCallback the password callback.
- * @param pwdCallbackCtx the user context for password callback.
+ * @param pwdCallback the password callback. Not supported by the MSCrypto
+ * back-end and ignored; the password must be supplied via @p pwd.
+ * @param pwdCallbackCtx the user context for password callback. Not supported
+ * by the MSCrypto back-end and ignored.
  * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
@@ -787,7 +789,7 @@ xmlSecMSCryptoAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
  * @param data the binary certificate.
  * @param dataSize size of binary certificate (data)
  * @param format the certificate file format.
- * @param type the flag that indicates if the certificate in @p data trusted or not.
+ * @param type the flag that indicates if the certificate in @p data is trusted or not.
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -1069,14 +1071,13 @@ xmlSecMSCryptoAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr ke
 /**
  * @brief Verifies @p key using the keys manager.
  * @details Verifies @p key with the keys manager @p mngr created with #xmlSecMSCryptoAppDefaultKeysMngrInit
- * function:
- * - Checks that key certificate is present
- * - Checks that key certificate is valid
+ * function. Not supported by the MSCrypto back-end; the function always
+ * returns a negative value.
  *
  * @param mngr the pointer to keys manager.
  * @param key the pointer to key.
  * @param keyInfoCtx the key info context for verification.
- * @return 1 if key is verified, 0 otherwise, or a negative value if an error occurs.
+ * @return a negative value if an error occurs.
  */
 int
 xmlSecMSCryptoAppDefaultKeysMngrVerifyKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key, xmlSecKeyInfoCtxPtr keyInfoCtx) {

@@ -32,7 +32,7 @@
  *
  * Internal GCRYPT HMAC CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecGCryptHmacCtx             xmlSecGCryptHmacCtx, *xmlSecGCryptHmacCtxPtr;
 struct _xmlSecGCryptHmacCtx {
     int                 digest;
@@ -47,7 +47,7 @@ struct _xmlSecGCryptHmacCtx {
  *
  * xmlSecTransform + xmlSecGCryptHmacCtx
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GCryptHmac, xmlSecGCryptHmacCtx)
 #define xmlSecGCryptHmacSize XMLSEC_TRANSFORM_SIZE(GCryptHmac)
 
@@ -448,7 +448,7 @@ xmlSecGCryptHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
  *
  * HMAC SHA1
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptHmacSha1Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -491,7 +491,7 @@ xmlSecGCryptTransformHmacSha1GetKlass(void) {
  *
  * HMAC SHA256
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptHmacSha256Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -534,7 +534,7 @@ xmlSecGCryptTransformHmacSha256GetKlass(void) {
  *
  * HMAC SHA384
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptHmacSha384Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -577,7 +577,7 @@ xmlSecGCryptTransformHmacSha384GetKlass(void) {
  *
  * HMAC SHA512
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptHmacSha512Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -621,7 +621,7 @@ xmlSecGCryptTransformHmacSha512GetKlass(void) {
  *
  * HMAC Ripemd160
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptHmacRipemd160Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -664,7 +664,7 @@ xmlSecGCryptTransformHmacRipemd160GetKlass(void) {
  *
  * HMAC MD5
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptHmacMd5Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */

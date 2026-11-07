@@ -42,7 +42,7 @@
  *
  * Internal MSCRYPTO X509 store CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecMSCryptoX509StoreCtx    xmlSecMSCryptoX509StoreCtx,
                         *xmlSecMSCryptoX509StoreCtxPtr;
 struct _xmlSecMSCryptoX509StoreCtx {
@@ -55,7 +55,7 @@ struct _xmlSecMSCryptoX509StoreCtx {
  *
  * xmlSecMSCryptoKeyDataStoreX509Id:
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_KEY_DATA_STORE_DECLARE(MSCryptoX509Store, xmlSecMSCryptoX509StoreCtx)
 #define xmlSecMSCryptoX509StoreSize XMLSEC_KEY_DATA_STORE_SIZE(MSCryptoX509Store)
 
@@ -1233,7 +1233,7 @@ xmlSecMSCryptoX509StoreEnableSystemTrustedCerts (xmlSecKeyDataStorePtr store, in
      * xmlSecBuildChainUsingWinapi(), which consumes ctx->untrusted. */
     xmlSecAssert(ctx->untrusted != NULL);
 
-    /* it is other way around to make default value 0 mimic old behaviour */
+    /* it is the other way around to make default value 0 mimic old behaviour */
     ctx->dont_use_system_trusted_certs = !val;
 }
 
@@ -1354,7 +1354,7 @@ xmlSecMSCryptoX509StoreFinalize(xmlSecKeyDataStorePtr store) {
  *
  * Low-level x509 functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Converts an input string to a cert name.
  * @details Converts input string to name by calling CertStrToName function.
@@ -1394,10 +1394,10 @@ xmlSecMSCryptoCertStrToName(DWORD dwCertEncodingType, LPCTSTR pszX500, DWORD dwS
 
 
 /**
- * @brief Searches for a cert by @p subject in the @p store.
- * @details Searches for a cert with given @p subject in the @p store
+ * @brief Searches for a cert by @p wcSubject in the @p store.
+ * @details Searches for a cert with given @p wcSubject in the @p store
  * @param store the pointer to certs store
- * @param wcSubject the cert subject (Unicode)
+ * @param wcSubject the cert subject
  * @param dwCertEncodingType the cert encoding type
  * @return cert handle on success or NULL otherwise
  */

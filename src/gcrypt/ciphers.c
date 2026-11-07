@@ -29,7 +29,7 @@
  *
  * Internal GCrypt Block cipher CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecGCryptBlockCipherCtx              xmlSecGCryptBlockCipherCtx,
                                                         *xmlSecGCryptBlockCipherCtxPtr;
 struct _xmlSecGCryptBlockCipherCtx {
@@ -354,7 +354,7 @@ xmlSecGCryptBlockCipherCtxFinal(xmlSecGCryptBlockCipherCtxPtr ctx,
  *
  *  xmlSecTransform + xmlSecGCryptBlockCipherCtx
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GCryptBlockCipher, xmlSecGCryptBlockCipherCtx)
 #define xmlSecGCryptBlockCipherSize XMLSEC_TRANSFORM_SIZE(GCryptBlockCipher)
 
@@ -612,7 +612,7 @@ xmlSecGCryptBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTra
  *
  * AES CBC cipher transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptAes128CbcKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */

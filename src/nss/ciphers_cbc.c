@@ -36,7 +36,7 @@
  *
  * Internal NSS Block cipher CTX
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecNssCbcCipherCtx                   xmlSecNssCbcCipherCtx,
                                                         *xmlSecNssCbcCipherCtxPtr;
 struct _xmlSecNssCbcCipherCtx {
@@ -386,7 +386,7 @@ xmlSecNssCbcCipherCtxFinal(xmlSecNssCbcCipherCtxPtr ctx,
  *
  * xmlSecTransform + xmlSecNssCbcCipherCtx
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(NssCbcCipher, xmlSecNssCbcCipherCtx)
 #define xmlSecNssCbcCipherSize XMLSEC_TRANSFORM_SIZE(NssCbcCipher)
 
@@ -677,7 +677,7 @@ static xmlSecTransformKlass xmlSecNss ## name ## Klass = {                      
  *
  * AES CBC cipher transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_NSS_CIPHER_CBC_KLASS(Aes128Cbc)
 
 /**
@@ -718,7 +718,7 @@ xmlSecNssTransformAes256CbcGetKlass(void) {
  *
  * Camellia CBC cipher transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_NSS_CIPHER_CBC_KLASS(Camellia128Cbc)
 
 /**

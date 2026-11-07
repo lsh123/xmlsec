@@ -8,7 +8,7 @@
 /**
  * @brief XML Security Library example: Decrypting an encrypted file using a custom keys manager.
  * @details Decrypts encrypted XML file using a custom files based keys manager.
- * We assume that key's name in <xenc:KeyName/> element is just
+ * We assume that key's name in <dsig:KeyName/> element is just
  * key's file name in the current folder.
  *
  * Usage:
@@ -293,11 +293,11 @@ create_files_keys_mngr(void) {
 /******************************************************************************
  *
  * Files Keys Store: we assume that key's name (content of the
- * <xenc:KeyName/> element) is a name of the file with a key (in the
+ * <dsig:KeyName/> element) is a name of the file with a key (in the
  * current folder).
  * Attention: this is probably not a good solution for high traffic systems.
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecKeyPtr             files_keys_store_find_key       (xmlSecKeyStorePtr store,
                                                                  const xmlChar* name,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);

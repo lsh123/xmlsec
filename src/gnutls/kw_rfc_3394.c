@@ -35,7 +35,7 @@
  *
  * AES/Camellia KW implementation (RFC 3394)
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static int        xmlSecGnuTLSKWRfc3394BlockEncrypt            (xmlSecTransformPtr transform,
                                                                  const xmlSecByte * in,
                                                                  xmlSecSize inSize,
@@ -62,7 +62,7 @@ static xmlSecKWRfc3394Klass xmlSecGnuTLSKWRfc3394Klass = {
  *
  * AES/Camellia KW transforms context
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecGnuTLSKWRfc3394Ctx   xmlSecGnuTLSKWRfc3394Ctx,
                                             *xmlSecGnuTLSKWRfc3394CtxPtr;
 struct _xmlSecGnuTLSKWRfc3394Ctx {
@@ -78,7 +78,7 @@ struct _xmlSecGnuTLSKWRfc3394Ctx {
  *
  * AES/Camellia KW transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GnuTLSKWRfc3394, xmlSecGnuTLSKWRfc3394Ctx)
 #define xmlSecGnuTLSKWRfc3394Size XMLSEC_TRANSFORM_SIZE(GnuTLSKWRfc3394)
 
@@ -435,7 +435,7 @@ xmlSecGnuTLSKWRfc3394BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte
  *
  * AES KW transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_KW_RFC3394_KLASS(KWAes128)
 
 /**
@@ -477,7 +477,7 @@ xmlSecGnuTLSTransformKWAes256GetKlass(void) {
  *
  * Camellia KW transforms
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_GNUTLS_KW_RFC3394_KLASS(KWCamellia128)
 
 /**

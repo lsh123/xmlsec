@@ -32,7 +32,7 @@ extern "C" {
  *
  * Init/shutdown
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppInit                (const char* config);
 XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppShutdown            (void);
 
@@ -40,7 +40,7 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppShutdown            (void);
  *
  * Keys Manager
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppDefaultKeysMngrInit (xmlSecKeysMngrPtr mngr);
 XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppDefaultKeysMngrAdoptKey (xmlSecKeysMngrPtr mngr,
                                                                          xmlSecKeyPtr key);
@@ -93,7 +93,7 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppKeysMngrCrlLoadAndVerify (xm
  * to 0, must write the password to buf (up to bufSize - 1 characters),
  * and must return the number of characters written.
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr       xmlSecNssAppKeyLoadEx           (const char *filename,
                                                                          xmlSecKeyDataType type,
                                                                          xmlSecKeyDataFormat format,

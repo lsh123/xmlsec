@@ -63,7 +63,7 @@
   * logged but the other store is still tried.  Returns 0 on success or -1 if
  * neither store could be opened.
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecMSCngCertStoreCtx {
     HCERTSTORE hCollection;
     HCERTSTORE hLocalMachine;
@@ -185,7 +185,7 @@ xmlSecMSCngCertStoreCtxFinalize(xmlSecMSCngCertStoreCtx* ctx) {
  *
  * MSCng Keys Store. Uses Simple Keys Store under the hood
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecMSCngKeysStoreCtx {
     xmlSecKeyStorePtr       simpleKeyStore;
     xmlSecMSCngCertStoreCtx certStoreCtx;
@@ -326,7 +326,7 @@ xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name, xmlSe
         }
     }
 
-    /* find cert based on the full subject string (case-insensitive) */
+    /* find cert based on the subject string (case-insensitive substring match) */
     if(cert == NULL) {
         cert = CertFindCertificateInStore(
             ctx->certStoreCtx.hCollection,

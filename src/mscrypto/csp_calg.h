@@ -42,9 +42,10 @@
 #  define CALG_GR3411_2012_512        (ALG_CLASS_HASH | ALG_TYPE_ANY | ALG_SID_GR3411_2012_512)
 #endif
 
-/* Vendor-specific CSP provider type IDs from the CryptoPro documentation; the
- * Windows SDK does not define them. A mismatch with an installed CSP only makes
- * CryptAcquireContext fail (GOST disabled), it cannot select a different provider. */
+/* Vendor-specific CSP provider type IDs from the vendor (MagPro/CryptoPro)
+ * documentation; the Windows SDK does not define them. A mismatch with an
+ * installed CSP only makes CryptAcquireContext fail (GOST disabled) and
+ * cannot cause a different provider to be selected. */
 #ifndef PROV_MAGPRO_GOST
 #  define PROV_MAGPRO_GOST            501
 #endif

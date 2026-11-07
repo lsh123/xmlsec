@@ -25,7 +25,7 @@
  *
  * Global xmlSecKeyDataIds list functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecPtrList xmlSecAllKeyDataIds;
 static xmlSecPtrList xmlSecEnabledKeyDataIds;
 static int xmlSecImportPersistKey = 0;
@@ -205,7 +205,7 @@ xmlSecKeyDataIdsRegisterDefault(void) {
  *
  * xmlSecKeyData functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Allocates and initializes new key data of the specified type.
  * @details Allocates and initializes new key data of the specified type @p id.
@@ -484,7 +484,7 @@ xmlSecKeyDataDebugXmlDump(xmlSecKeyDataPtr data, FILE *output) {
  *
  * Keys Data list
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecPtrListKlass xmlSecKeyDataListKlass = {
     BAD_CAST "key-data-list",
     (xmlSecPtrDuplicateItemMethod)xmlSecKeyDataDuplicate,       /* xmlSecPtrDuplicateItemMethod duplicateItem; */
@@ -508,7 +508,7 @@ xmlSecKeyDataListGetKlass(void) {
  *
  * Keys Data Ids list
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecPtrListKlass xmlSecKeyDataIdListKlass = {
     BAD_CAST "key-data-ids-list",
     NULL,                                                       /* xmlSecPtrDuplicateItemMethod duplicateItem; */
@@ -712,7 +712,7 @@ xmlSecKeyDataIdListDebugXmlDump(xmlSecPtrListPtr list, FILE* output) {
  *
  * xmlSecKeyDataStore functions
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Creates a new key data store of the specified klass.
  * @details Creates new key data store of the specified klass @p id. Caller is responsible
@@ -777,7 +777,7 @@ xmlSecKeyDataStoreDestroy(xmlSecKeyDataStorePtr store) {
  *
  * Keys Data Store list
  *
-  *****************************************************************************/
+ *****************************************************************************/
 static xmlSecPtrListKlass xmlSecKeyDataStorePtrListKlass = {
     BAD_CAST "keys-data-store-list",
     NULL,                                                       /* xmlSecPtrDuplicateItemMethod duplicateItem; */

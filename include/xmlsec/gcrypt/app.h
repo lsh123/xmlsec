@@ -28,7 +28,7 @@ extern "C" {
  *
  * Init/shutdown
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppInit                     (const char* config);
 XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppShutdown                 (void);
 
@@ -36,7 +36,7 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppShutdown                 (void);
  *
  * Keys Manager
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppDefaultKeysMngrInit      (xmlSecKeysMngrPtr mngr);
 XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppDefaultKeysMngrAdoptKey  (xmlSecKeysMngrPtr mngr,
                                                                          xmlSecKeyPtr key);
@@ -76,7 +76,7 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppKeysMngrCrlLoadAndVerify (xmlSecK
  *
  * Keys
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecGCryptAppKeyLoadEx              (const char* filename,
                                                                          xmlSecKeyDataType type,
                                                                          xmlSecKeyDataFormat format,

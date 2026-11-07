@@ -18,9 +18,7 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
-#include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
-#include <xmlsec/base64.h>
 #include <xmlsec/membuf.h>
 #include <xmlsec/errors.h>
 
@@ -32,7 +30,7 @@
  *
  * xmlSecTransform + xmlSecBuffer
  *
-  *****************************************************************************/
+ *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MemBuf, xmlSecBuffer)
 #define xmlSecMemBufSize XMLSEC_TRANSFORM_SIZE(MemBuf)
 

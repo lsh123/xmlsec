@@ -2175,49 +2175,122 @@ xmlSecOpenSSLX509FindCertCtxMatch(xmlSecOpenSSLX509FindCertCtxPtr ctx, X509* cer
     return(0);
 }
 
-static unsigned long
-xmlSecOpenSSLX509GetSubjectHash(X509* x) {
-    XMLSEC_OPENSSL400_CONST X509_NAME* name;
-    unsigned long res;
+#if !defined(XMLSEC_OPENSSL_API_300)
 
-    xmlSecAssert2(x != NULL, 0);
+/* Returns 0 on success or a negative value on failure. */
+static int
+xmlSecOpenSSLX509GetSubjectHash(X509* x, unsigned long * res) {
+    X509_NAME* name;
+    unsigned long hash;
+
+    xmlSecAssert2(x != NULL, -1);
+    xmlSecAssert2(res != NULL, -1);
 
     name = X509_get_subject_name(x);
     if(name == NULL) {
         xmlSecOpenSSLError("X509_get_subject_name", NULL);
-        return(0);
+        return(-1);
     }
 
-    res = X509_NAME_hash_ex(name, xmlSecOpenSSLGetLibCtx(), NULL, NULL);
-    if(res == 0) {
-        xmlSecOpenSSLError("X509_NAME_hash_ex", NULL);
-        return(0);
+    /* returns 0 on both failure and real 0 hash, and cannot distinguish
+    * the two cases. If you have a 0 hash, then you are out of luck */
+    hash = X509_NAME_hash(name);
+    if(hash == 0) {
+        xmlSecOpenSSLError("X509_NAME_hash", NULL);
+        return(-1);
     }
 
-    return(res);
+    /* done */
+    (*res) = hash;
+    return(0);
 }
 
-static unsigned long
-xmlSecOpenSSLX509GetIssuerHash(X509* x) {
-    XMLSEC_OPENSSL400_CONST X509_NAME* name;
-    unsigned long res;
+/* Returns 0 on success or a negative value on failure. */
+static int
+xmlSecOpenSSLX509GetIssuerHash(X509* x, unsigned long * res) {
+    X509_NAME* name;
+    unsigned long hash;
 
-    xmlSecAssert2(x != NULL, 0);
+    xmlSecAssert2(x != NULL, -1);
+    xmlSecAssert2(res != NULL, -1);
 
     name = X509_get_issuer_name(x);
     if(name == NULL) {
         xmlSecOpenSSLError("X509_get_issuer_name", NULL);
-        return(0);
+        return(-1);
     }
 
-    res = X509_NAME_hash_ex(name, xmlSecOpenSSLGetLibCtx(), NULL, NULL);
-    if(res == 0) {
-        xmlSecOpenSSLError("X509_NAME_hash_ex", NULL);
-        return(0);
+    /* returns 0 on both failure and real 0 hash, and cannot distinguish
+    * the two cases. If you have a 0 hash, then you are out of luck */
+    hash = X509_NAME_hash(name);
+    if(hash == 0) {
+        xmlSecOpenSSLError("X509_NAME_hash", NULL);
+        return(-1);
     }
 
-    return(res);
+    /* done */
+    (*res) = hash;
+    return(0);
 }
+
+#else  /* !defined(XMLSEC_OPENSSL_API_300) */
+
+/* Returns 0 on success or a negative value on failure. */
+static int
+xmlSecOpenSSLX509GetSubjectHash(X509* x, unsigned long * res) {
+    XMLSEC_OPENSSL400_CONST X509_NAME* name;
+    unsigned long hash;
+    int ok = 0;
+
+    xmlSecAssert2(x != NULL, -1);
+    xmlSecAssert2(res != NULL, -1);
+
+    name = X509_get_subject_name(x);
+    if(name == NULL) {
+        xmlSecOpenSSLError("X509_get_subject_name", NULL);
+        return(-1);
+    }
+
+    hash = X509_NAME_hash_ex(name, xmlSecOpenSSLGetLibCtx(), NULL, &ok);
+    if(ok == 0) {
+        xmlSecOpenSSLError("X509_NAME_hash_ex", NULL);
+        return(-1);
+    }
+
+    /* done */
+    (*res) = hash;
+    return(0);
+}
+
+/* Returns 0 on success or a negative value on failure. */
+static int
+xmlSecOpenSSLX509GetIssuerHash(X509* x, unsigned long * res) {
+    XMLSEC_OPENSSL400_CONST X509_NAME* name;
+    unsigned long hash;
+    int ok = 0;
+
+    xmlSecAssert2(x != NULL, -1);
+    xmlSecAssert2(res != NULL, -1);
+
+    name = X509_get_issuer_name(x);
+    if(name == NULL) {
+        xmlSecOpenSSLError("X509_get_issuer_name", NULL);
+        return(-1);
+    }
+
+    hash = X509_NAME_hash_ex(name, xmlSecOpenSSLGetLibCtx(), NULL, &ok);
+    if(ok == 0) {
+        xmlSecOpenSSLError("X509_NAME_hash_ex", NULL);
+        return(-1);
+    }
+
+    /* done */
+    (*res) = hash;
+    return(0);
+}
+
+#endif /* !defined(XMLSEC_OPENSSL_API_300) */
+
 
 /* new list doesn't OWN certs */
 static STACK_OF(X509)*
@@ -2313,12 +2386,13 @@ xmlSecOpenSSLX509FindChildCert(STACK_OF(X509) *chain, X509 *cert) {
     unsigned long certNameHash;
     unsigned long certNameHash2;
     xmlSecOpenSSLSizeT ii;
+    int ret;
 
     xmlSecAssert2(chain != NULL, NULL);
     xmlSecAssert2(cert != NULL, NULL);
 
-    certNameHash = xmlSecOpenSSLX509GetSubjectHash(cert);
-    if(certNameHash == 0) {
+    ret = xmlSecOpenSSLX509GetSubjectHash(cert, &certNameHash);
+    if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLX509GetSubjectHash", NULL);
         return(NULL);
     }
@@ -2336,23 +2410,22 @@ xmlSecOpenSSLX509FindChildCert(STACK_OF(X509) *chain, X509 *cert) {
             continue;
         }
 
-        certNameHash2 = xmlSecOpenSSLX509GetSubjectHash(cert_ii);
-        if(certNameHash2 == 0) {
+        ret = xmlSecOpenSSLX509GetSubjectHash(cert_ii, &certNameHash2);
+        if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLX509GetSubjectHash", NULL);
             return(NULL);
         }
-        if((certNameHash == certNameHash2) &&
-           (X509_NAME_cmp(X509_get_subject_name(cert), X509_get_subject_name(cert_ii)) == 0)) {
-            /*
-             * same cert but different copy, skip for self-signed certs;
+        if(certNameHash == certNameHash2) {
+            /* same cert but different copy, skip for self-signed certs;
              * the name hash is only 32 bits, so a full name comparison is
-             * used to avoid skipping a cert on a hash collision
-             */
-            continue;
+             * used to avoid skipping a cert on a hash collision */
+            if(X509_NAME_cmp(X509_get_subject_name(cert), X509_get_subject_name(cert_ii)) == 0) {
+                continue;
+            }
         }
 
-        certNameHash2 = xmlSecOpenSSLX509GetIssuerHash(cert_ii);
-        if(certNameHash2 == 0) {
+        ret = xmlSecOpenSSLX509GetIssuerHash(cert_ii, &certNameHash2);
+        if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLX509GetIssuerHash", NULL);
             return(NULL);
         }

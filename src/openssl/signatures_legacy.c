@@ -36,6 +36,7 @@
 #include "../cast_helpers.h"
 
 #if !defined(XMLSEC_OPENSSL_API_300) && !defined(XMLSEC_NO_EC)
+#include <openssl/ec.h>
 
 /******************************************************************************
  *

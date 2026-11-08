@@ -184,16 +184,16 @@ typedef int xmlSecOpenSSLSizeT;
 
 /******************************************************************************
  *
- * OpenSSL 3.5.0 compatibility
+ * OpenSSL 3.3.0 compatibility
  *
  *****************************************************************************/
-#if !defined(XMLSEC_OPENSSL_API_350)
+#if !defined(XMLSEC_OPENSSL_API_330)
 
 #if defined(XMLSEC_OPENSSL_IS_OPENSSL)
 #define XMLSEC_OPENSSL_NO_X509_STORE_GET1_OBJECTS 1
 #endif /* defined(XMLSEC_OPENSSL_IS_OPENSSL) */
 
-#endif /* !defined(XMLSEC_OPENSSL_API_350) */
+#endif /* !defined(XMLSEC_OPENSSL_API_330) */
 
 /******************************************************************************
  *
@@ -211,7 +211,6 @@ typedef int xmlSecOpenSSLSizeT;
 #define X509_CRL_new_ex(libctx,propq)                               X509_CRL_new()
 #define X509_STORE_CTX_new_ex(libctx,propq)                         X509_STORE_CTX_new()
 #define X509_STORE_set_default_paths_ex(ctx,libctx,propq)           X509_STORE_set_default_paths((ctx))
-#define X509_NAME_hash_ex(x,libctx,propq,ok)                        X509_NAME_hash((x))
 
 #endif /* !defined(XMLSEC_OPENSSL_API_300) */
 

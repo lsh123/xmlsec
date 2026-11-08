@@ -583,6 +583,22 @@ xmlSecOpenSSLEvpKeyDataGetType(xmlSecKeyDataPtr data) {
         return(xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate);
 #endif /* XMLSEC_NO_GOST2012 */
 
+#ifndef XMLSEC_NO_EDDSA
+    case EVP_PKEY_ED25519:
+    case EVP_PKEY_ED448:
+        /* I don't know how to find whether we have both private and public key
+        or the public only (see https://github.com/lsh123/xmlsec/issues/588) */
+        return(xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate);
+#endif /* XMLSEC_NO_EDDSA */
+
+#ifndef XMLSEC_NO_XDH
+    case EVP_PKEY_X25519:
+    case EVP_PKEY_X448:
+        /* I don't know how to find whether we have both private and public key
+        or the public only (see https://github.com/lsh123/xmlsec/issues/588) */
+        return(xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate);
+#endif /* XMLSEC_NO_XDH */
+
     default:
         {
             /* for other keys we don't have a good way to get the key type, so return the unknown key type */

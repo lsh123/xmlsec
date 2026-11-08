@@ -200,7 +200,7 @@ typedef int xmlSecOpenSSLSizeT;
  * OpenSSL 3.0.0 compatibility
  *
  *****************************************************************************/
-#if !defined(XMLSEC_OPENSSL_API_300)
+#if defined(XMLSEC_OPENSSL_API_111)
 
 #define BIO_new_ex(libctx,type)                                     BIO_new((type))
 #define PEM_read_bio_PrivateKey_ex(bp,x,cb,u,libctx,propq)          PEM_read_bio_PrivateKey((bp),(x),(cb),(u))
@@ -212,7 +212,7 @@ typedef int xmlSecOpenSSLSizeT;
 #define X509_STORE_CTX_new_ex(libctx,propq)                         X509_STORE_CTX_new()
 #define X509_STORE_set_default_paths_ex(ctx,libctx,propq)           X509_STORE_set_default_paths((ctx))
 
-#endif /* !defined(XMLSEC_OPENSSL_API_300) */
+#endif /* defined(XMLSEC_OPENSSL_API_111) */
 
 
 /******************************************************************************
@@ -230,7 +230,7 @@ typedef int xmlSecOpenSSLSizeT;
 #endif /* XMLSEC_NO_GOST2012 */
 
 
-#ifdef XMLSEC_OPENSSL_API_300
+#if !defined(XMLSEC_OPENSSL_API_111)
 
 /* Cipher names, hopefully OpenSSL defines them one day */
 #define XMLSEC_OPENSSL_CIPHER_NAME_DES3_EDE         "DES3"
@@ -242,7 +242,7 @@ typedef int xmlSecOpenSSLSizeT;
 #define XMLSEC_OPENSSL_CIPHER_NAME_AES256_GCM       "AES-256-GCM"
 
 
-#endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
 
 #endif /* XMLSEC_OPENSSL_COMPAT_H */

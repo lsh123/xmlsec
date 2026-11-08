@@ -38,11 +38,11 @@ static void             xmlSecOpenSSLErrorsShutdown             (void);
 static xmlSecCryptoDLFunctionsPtr gXmlSecOpenSSLFunctions = NULL;
 static xmlChar* gXmlSecOpenSSLTrustedCertsFolder = NULL;
 
-#ifdef XMLSEC_OPENSSL_API_300
+#if !defined(XMLSEC_OPENSSL_API_111)
 static OSSL_LIB_CTX* gXmlSecOpenSSLLibCtx = NULL;
-#endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
-#if !defined(XMLSEC_OPENSSL_API_300) && !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR)
+#if defined(XMLSEC_OPENSSL_API_111) && !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR)
 
 #define XMLSEC_OPENSSL_ERRORS_FUNCTION              0
 #define XMLSEC_OPENSSL_ERRORS_MAX_NUMBER            1024
@@ -53,7 +53,7 @@ static char gXmlSecOpenSSLErrorsDefault[] = "xmlsec routines";
 static ERR_STRING_DATA xmlSecOpenSSLStrLib[2];
 static ERR_STRING_DATA xmlSecOpenSSLStrDefReason[2];
 static ERR_STRING_DATA xmlSecOpenSSLStrReasons[XMLSEC_OPENSSL_ERRORS_MAX_NUMBER + 1];
-#endif /* !defined(XMLSEC_OPENSSL_API_300) && !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR) */
+#endif /* defined(XMLSEC_OPENSSL_API_111) && !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR) */
 
 /**
  * @brief Gets the xmlsec-openssl functions table.
@@ -563,11 +563,11 @@ xmlSecOpenSSLShutdown(void) {
     int ret;
     int res = 0;
 
-#ifdef XMLSEC_OPENSSL_API_300
+#if !defined(XMLSEC_OPENSSL_API_111)
     /* drop the reference to the caller-owned library context so that
      * it can be safely freed after shutdown */
     gXmlSecOpenSSLLibCtx = NULL;
-#endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
     ret = xmlSecOpenSSLSetDefaultTrustedCertsFolder(NULL);
     if(ret < 0) {
@@ -618,7 +618,7 @@ xmlSecOpenSSLKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     return(0);
 }
 
-#if defined(XMLSEC_OPENSSL_API_300)
+#if !defined(XMLSEC_OPENSSL_API_111)
 
 #define XMLSEC_OPENSSL_RAND_BYTES_STRENGTH     0
 
@@ -647,7 +647,7 @@ xmlSecOpenSSLGenerateRandomBytes(xmlSecByte* buffer, xmlSecSize size) {
     return(0);
 }
 
-#else /* XMLSEC_OPENSSL_API_300 */
+#else /* !defined(XMLSEC_OPENSSL_API_111) */
 
 /**
  * @brief Generates random bytes into @p buffer.
@@ -677,7 +677,7 @@ xmlSecOpenSSLGenerateRandomBytes(xmlSecByte* buffer, xmlSecSize size) {
     return(0);
 }
 
-#endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
 /**
  * @brief Generates random bytes into @p buffer.
@@ -725,11 +725,11 @@ void
 xmlSecOpenSSLErrorsDefaultCallback(const char* file, int line, const char* func,
                                 const char* errorObject, const char* errorSubject,
                                 int reason, const char* msg) {
-#if !defined(XMLSEC_OPENSSL_API_300) && !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR)
+#if defined(XMLSEC_OPENSSL_API_111) && !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR)
     ERR_put_error(gXmlSecOpenSSLErrorsLib,
                 XMLSEC_OPENSSL_ERRORS_FUNCTION,
                 reason, file, line);
-#endif /* !defined(XMLSEC_OPENSSL_API_300) && !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR) */
+#endif /* defined(XMLSEC_OPENSSL_API_111) && !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR) */
 
     xmlSecErrorsDefaultCallback(file, line, func,
                 errorObject, errorSubject,
@@ -738,7 +738,7 @@ xmlSecOpenSSLErrorsDefaultCallback(const char* file, int line, const char* func,
 
 static int
 xmlSecOpenSSLErrorsInit(void) {
-#if !defined(XMLSEC_OPENSSL_API_300) && !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR)
+#if defined(XMLSEC_OPENSSL_API_111) && !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR)
     xmlSecSize pos;
 
     /*
@@ -775,7 +775,7 @@ xmlSecOpenSSLErrorsInit(void) {
     (void) ERR_load_strings(gXmlSecOpenSSLErrorsLib, xmlSecOpenSSLStrLib); /* define xmlsec lib name */
     (void) ERR_load_strings(gXmlSecOpenSSLErrorsLib, xmlSecOpenSSLStrDefReason); /* define default reason */
     (void) ERR_load_strings(gXmlSecOpenSSLErrorsLib, xmlSecOpenSSLStrReasons);
-#endif /* !defined(XMLSEC_OPENSSL_API_300) && !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR) */
+#endif /* defined(XMLSEC_OPENSSL_API_111) && !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR) */
 
     /* and set default errors callback for xmlsec to use OpenSSL specific callback */
     xmlSecErrorsSetSystemCallback(xmlSecOpenSSLErrorsDefaultCallback);
@@ -789,12 +789,12 @@ xmlSecOpenSSLErrorsShutdown(void) {
     /* remove callback */
     xmlSecErrorsSetSystemCallback(xmlSecErrorsDefaultCallback);
 
-#if !defined(XMLSEC_OPENSSL_API_300) && !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR)
+#if defined(XMLSEC_OPENSSL_API_111) && !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR)
     /* Unload the xmlsec strings from OpenSSL: this is a best-effort cleanup. */
     (void) ERR_unload_strings(gXmlSecOpenSSLErrorsLib, xmlSecOpenSSLStrLib);
     (void) ERR_unload_strings(gXmlSecOpenSSLErrorsLib, xmlSecOpenSSLStrDefReason);
     (void) ERR_unload_strings(gXmlSecOpenSSLErrorsLib, xmlSecOpenSSLStrReasons);
-#endif /* !defined(XMLSEC_OPENSSL_API_300) && !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR) */
+#endif /* defined(XMLSEC_OPENSSL_API_111) && !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR) */
 }
 
 /**
@@ -837,7 +837,7 @@ xmlSecOpenSSLGetDefaultTrustedCertsFolder(void) {
     return(gXmlSecOpenSSLTrustedCertsFolder);
 }
 
-#ifdef XMLSEC_OPENSSL_API_300
+#if !defined(XMLSEC_OPENSSL_API_111)
 
 /**
  * @brief Sets the OpenSSL library context used by xmlsec.
@@ -861,7 +861,7 @@ OSSL_LIB_CTX*
 xmlSecOpenSSLGetLibCtx(void) {
     return(gXmlSecOpenSSLLibCtx);
 }
-#endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
 /******************************************************************************
  *

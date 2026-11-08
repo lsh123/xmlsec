@@ -28,7 +28,7 @@
 #include "../transform_helpers.h"
 
 /* KDF is only supported in OpenSSL 3.0.0+ */
-#if defined(XMLSEC_OPENSSL_API_300)
+#if !defined(XMLSEC_OPENSSL_API_111)
 
 #include <openssl/kdf.h>
 #include <openssl/core_names.h>
@@ -1037,9 +1037,9 @@ xmlSecOpenSSLTransformHkdfGetKlass(void) {
 
 #endif /* XMLSEC_NO_HKDF */
 
-#else /* defined(XMLSEC_OPENSSL_API_300) */
+#else /* !defined(XMLSEC_OPENSSL_API_111) */
 
 /* ISO C forbids an empty translation unit */
 typedef int make_iso_compilers_happy;
 
-#endif /* defined(XMLSEC_OPENSSL_API_300) */
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */

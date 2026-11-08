@@ -364,19 +364,19 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
     }
 
     /* create and init pkey ctx */
-#ifndef XMLSEC_OPENSSL_API_300
-    pKeyCtx = EVP_PKEY_CTX_new(myPrivKey, NULL);
-    if(pKeyCtx == NULL) {
-        xmlSecOpenSSLError("EVP_PKEY_CTX_new", NULL);
-        goto done;
-    }
-#else /* XMLSEC_OPENSSL_API_300 */
+#if !defined(XMLSEC_OPENSSL_API_111)
     pKeyCtx = EVP_PKEY_CTX_new_from_pkey(xmlSecOpenSSLGetLibCtx(), myPrivKey, NULL);
     if(pKeyCtx == NULL) {
         xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_pkey", NULL);
         goto done;
     }
-#endif /* XMLSEC_OPENSSL_API_300 */
+#else /* !defined(XMLSEC_OPENSSL_API_111) */
+    pKeyCtx = EVP_PKEY_CTX_new(myPrivKey, NULL);
+    if(pKeyCtx == NULL) {
+        xmlSecOpenSSLError("EVP_PKEY_CTX_new", NULL);
+        goto done;
+    }
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
     ret = EVP_PKEY_derive_init(pKeyCtx);
     if(ret != 1) {
@@ -395,7 +395,7 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
         goto done;
     }
 
-#ifndef XMLSEC_OPENSSL_API_300
+#if defined(XMLSEC_OPENSSL_API_111)
 #ifndef XMLSEC_NO_DH
     /*
      * On OpenSSL < 3.0 the peer DH public value is not validated by
@@ -428,7 +428,7 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
         }
     }
 #endif /* XMLSEC_NO_DH */
-#endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* defined(XMLSEC_OPENSSL_API_111) */
 
     /* determine output buffer size */
     ret = EVP_PKEY_derive(pKeyCtx, NULL, &secretSize);

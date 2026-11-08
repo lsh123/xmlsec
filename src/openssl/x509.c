@@ -492,6 +492,86 @@ xmlSecOpenSSLKeyDataX509Finalize(xmlSecKeyDataPtr data) {
     OPENSSL_cleanse(ctx, sizeof(xmlSecOpenSSLX509DataCtx));
 }
 
+#if defined(XMLSEC_OPENSSL_NO_DEEP_COPY)
+
+static STACK_OF(X509)*
+xmlSecOpenSSLKeyDataX509DeepCopyCerts(STACK_OF(X509)* certsListSrc) {
+    xmlSecOpenSSLSizeT size, ii;
+    STACK_OF(X509)* certsListDst;
+    X509* certSrc;
+    X509* certDst;
+    xmlSecOpenSSLSizeT ret;
+
+    xmlSecAssert2(certsListSrc != NULL, NULL);
+
+    certsListDst = sk_X509_new_null();
+    if(certsListDst == NULL) {
+        xmlSecOpenSSLError("sk_X509_new_null", NULL);
+        return(NULL);
+    }
+    size = sk_X509_num(certsListSrc);
+    for(ii = 0; ii < size; ++ii) {
+        certSrc = sk_X509_value(certsListSrc, ii);
+        if(certSrc == NULL) {
+            continue;
+        }
+        certDst = X509_dup(certSrc);
+        if(certDst == NULL) {
+            xmlSecOpenSSLError("X509_dup", NULL);
+            sk_X509_pop_free(certsListDst, X509_free);
+            return(NULL);
+        }
+        ret = sk_X509_push(certsListDst, certDst);
+        if(ret <= 0) {
+            xmlSecOpenSSLError("sk_X509_push", NULL);
+            X509_free(certDst);
+            sk_X509_pop_free(certsListDst, X509_free);
+            return(NULL);
+        }
+    }
+    return(certsListDst);
+}
+
+static STACK_OF(X509_CRL)*
+xmlSecOpenSSLKeyDataX509DeepCopyCrls(STACK_OF(X509_CRL)* crlsListSrc) {
+    xmlSecOpenSSLSizeT size, ii;
+    STACK_OF(X509_CRL)* crlsListDst;
+    X509_CRL* crlSrc;
+    X509_CRL* crlDst;
+    xmlSecOpenSSLSizeT ret;
+
+    xmlSecAssert2(crlsListSrc != NULL, NULL);
+
+    crlsListDst = sk_X509_CRL_new_null();
+    if(crlsListDst == NULL) {
+        xmlSecOpenSSLError("sk_X509_CRL_new_null", NULL);
+        return(NULL);
+    }
+    size = sk_X509_CRL_num(crlsListSrc);
+    for(ii = 0; ii < size; ++ii) {
+        crlSrc = sk_X509_CRL_value(crlsListSrc, ii);
+        if(crlSrc == NULL) {
+            continue;
+        }
+        crlDst = X509_CRL_dup(crlSrc);
+        if(crlDst == NULL) {
+            xmlSecOpenSSLError("X509_CRL_dup", NULL);
+            sk_X509_CRL_pop_free(crlsListDst, X509_CRL_free);
+            return(NULL);
+        }
+        ret = sk_X509_CRL_push(crlsListDst, crlDst);
+        if(ret <= 0) {
+            xmlSecOpenSSLError("sk_X509_CRL_push", NULL);
+            X509_CRL_free(crlDst);
+            sk_X509_CRL_pop_free(crlsListDst, X509_CRL_free);
+            return(NULL);
+        }
+    }
+    return(crlsListDst);
+}
+
+#endif /* defined(XMLSEC_OPENSSL_NO_DEEP_COPY) */
+
 static int
 xmlSecOpenSSLKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     xmlSecOpenSSLX509DataCtxPtr ctxSrc, ctxDst;
@@ -512,43 +592,20 @@ xmlSecOpenSSLKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     /* certs */
     if(ctxSrc->certsList != NULL) {
 #ifndef XMLSEC_OPENSSL_NO_DEEP_COPY
-#ifndef XMLSEC_OPENSSL_API_300
-        ctxDst->certsList = sk_X509_deep_copy(ctxSrc->certsList, (sk_X509_copyfunc)X509_dup, X509_free);
-#else  /* XMLSEC_OPENSSL_API_300 */
+#if !defined(XMLSEC_OPENSSL_API_111)
         ctxDst->certsList = sk_X509_deep_copy(ctxSrc->certsList, X509_dup, X509_free);
-#endif /* XMLSEC_OPENSSL_API_300 */
+#else  /* !defined(XMLSEC_OPENSSL_API_111) */
+        ctxDst->certsList = sk_X509_deep_copy(ctxSrc->certsList, (sk_X509_copyfunc)X509_dup, X509_free);
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
         if(ctxDst->certsList == NULL) {
             xmlSecOpenSSLError("sk_X509_deep_copy", xmlSecKeyDataGetName(dst));
             return(-1);
         }
 #else /* XMLSEC_OPENSSL_NO_DEEP_COPY */
-        xmlSecOpenSSLSizeT size, ii;
-        X509* certSrc;
-        X509* certDst;
-        xmlSecOpenSSLSizeT ret;
-
-        ctxDst->certsList = sk_X509_new_null();
+        ctxDst->certsList = xmlSecOpenSSLKeyDataX509DeepCopyCerts(ctxSrc->certsList);
         if(ctxDst->certsList == NULL) {
-            xmlSecOpenSSLError("sk_X509_new_null", xmlSecKeyDataGetName(dst));
+            xmlSecOpenSSLError("xmlSecOpenSSLKeyDataX509DeepCopyCerts", xmlSecKeyDataGetName(dst));
             return(-1);
-        }
-        size = sk_X509_num(ctxSrc->certsList);
-        for(ii = 0; ii < size; ++ii) {
-            certSrc = sk_X509_value(ctxSrc->certsList, ii);
-            if(certSrc == NULL) {
-                continue;
-            }
-            certDst = X509_dup(certSrc);
-            if(certDst == NULL) {
-                xmlSecOpenSSLError("X509_dup", xmlSecKeyDataGetName(dst));
-                return(-1);
-            }
-            ret = sk_X509_push(ctxDst->certsList, certDst);
-            if(ret <= 0) {
-                xmlSecOpenSSLError("sk_X509_push", xmlSecKeyDataGetName(dst));
-                X509_free(certDst);
-                return(-1);
-            }
         }
 #endif /* XMLSEC_OPENSSL_NO_DEEP_COPY */
     }
@@ -556,43 +613,20 @@ xmlSecOpenSSLKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     /* crls */
     if(ctxSrc->crlsList != NULL) {
 #ifndef XMLSEC_OPENSSL_NO_DEEP_COPY
-#ifndef XMLSEC_OPENSSL_API_300
-        ctxDst->crlsList = sk_X509_CRL_deep_copy(ctxSrc->crlsList, (sk_X509_CRL_copyfunc)X509_CRL_dup, X509_CRL_free);
-#else  /* XMLSEC_OPENSSL_API_300 */
+#if !defined(XMLSEC_OPENSSL_API_111)
         ctxDst->crlsList = sk_X509_CRL_deep_copy(ctxSrc->crlsList, X509_CRL_dup, X509_CRL_free);
-#endif /* XMLSEC_OPENSSL_API_300 */
+#else  /* !defined(XMLSEC_OPENSSL_API_111) */
+        ctxDst->crlsList = sk_X509_CRL_deep_copy(ctxSrc->crlsList, (sk_X509_CRL_copyfunc)X509_CRL_dup, X509_CRL_free);
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
         if(ctxDst->crlsList == NULL) {
             xmlSecOpenSSLError("sk_X509_CRL_deep_copy", xmlSecKeyDataGetName(dst));
             return(-1);
         }
 #else /* XMLSEC_OPENSSL_NO_DEEP_COPY */
-        xmlSecOpenSSLSizeT size, ii;
-        X509_CRL* crlSrc;
-        X509_CRL* crlDst;
-        xmlSecOpenSSLSizeT ret;
-
-        ctxDst->crlsList = sk_X509_CRL_new_null();
+        ctxDst->crlsList = xmlSecOpenSSLKeyDataX509DeepCopyCrls(ctxSrc->crlsList);
         if(ctxDst->crlsList == NULL) {
-            xmlSecOpenSSLError("sk_X509_CRL_new_null", xmlSecKeyDataGetName(dst));
+            xmlSecOpenSSLError("xmlSecOpenSSLKeyDataX509DeepCopyCrls", xmlSecKeyDataGetName(dst));
             return(-1);
-        }
-        size = sk_X509_CRL_num(ctxSrc->crlsList);
-        for(ii = 0; ii < size; ++ii) {
-            crlSrc = sk_X509_CRL_value(ctxSrc->crlsList, ii);
-            if(crlSrc == NULL) {
-                continue;
-            }
-            crlDst = X509_CRL_dup(crlSrc);
-            if(crlDst == NULL) {
-                xmlSecOpenSSLError("X509_CRL_dup", xmlSecKeyDataGetName(dst));
-                return(-1);
-            }
-            ret = sk_X509_CRL_push(ctxDst->crlsList, crlDst);
-            if(ret <= 0) {
-                xmlSecOpenSSLError("sk_X509_CRL_push", xmlSecKeyDataGetName(dst));
-                X509_CRL_free(crlDst);
-                return(-1);
-            }
         }
 #endif /* XMLSEC_OPENSSL_NO_DEEP_COPY */
     }

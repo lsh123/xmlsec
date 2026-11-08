@@ -29,10 +29,10 @@
 #include "openssl_compat.h"
 
 
-#ifdef XMLSEC_OPENSSL_API_300
+#if !defined(XMLSEC_OPENSSL_API_111)
 #include <openssl/core_names.h>
 #include <openssl/provider.h>
-#endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
 #include "../cast_helpers.h"
 #include "../transform_helpers.h"
@@ -44,9 +44,9 @@
  *
  * OpenSSL 1.1.x implementation is in src/openssl/signatures_legacy.c
  */
-#ifndef XMLSEC_OPENSSL_API_300
+#if defined(XMLSEC_OPENSSL_API_111)
 #define XMLSEC_NO_EC 1
-#endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* defined(XMLSEC_OPENSSL_API_111) */
 
 
 #ifndef XMLSEC_NO_DSA
@@ -449,12 +449,7 @@ xmlSecOpenSSLEvpSignatureCheckId(xmlSecTransformPtr transform) {
 }
 
 /* small helper macro to reduce clutter in the code */
-#ifndef XMLSEC_OPENSSL_API_300
-
-#define XMLSEC_OPENSSL_EVP_SIGNATURE_SET_DIGEST(transform, ctx, digestVal, digestName)          \
-    (ctx)->digest = (EVP_MD*)(digestVal)
-
-#else /* XMLSEC_OPENSSL_API_300 */
+#if !defined(XMLSEC_OPENSSL_API_111)
 
 static int
 xmlSecOpenSSLEvpSignatureSetByName(xmlSecOpenSSLEvpSignatureCtxPtr ctx, const char * digestName) {
@@ -479,7 +474,12 @@ xmlSecOpenSSLEvpSignatureSetByName(xmlSecOpenSSLEvpSignatureCtxPtr ctx, const ch
         return(-1);                                                                         \
     }
 
-#endif /* XMLSEC_OPENSSL_API_300 */
+#else /* !defined(XMLSEC_OPENSSL_API_111) */
+
+#define XMLSEC_OPENSSL_EVP_SIGNATURE_SET_DIGEST(transform, ctx, digestVal, digestName)          \
+    (ctx)->digest = (EVP_MD*)(digestVal)
+
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
 #if !defined(XMLSEC_NO_GOST) || !defined(XMLSEC_NO_GOST2012)
 /* Not all algorithms have been converted to the new providers design (e.g. GOST) */
@@ -951,11 +951,11 @@ xmlSecOpenSSLEvpSignatureFinalize(xmlSecTransformPtr transform) {
     if(ctx->digestCtx != NULL) {
         EVP_MD_CTX_free(ctx->digestCtx);
     }
-#ifdef XMLSEC_OPENSSL_API_300
+#if !defined(XMLSEC_OPENSSL_API_111)
     if((ctx->digest != NULL) && (ctx->digestNeedsToBeFreed == 1)) {
         EVP_MD_free(ctx->digest);
     }
-#endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
     /* cleanup buffer if needed */
     xmlSecBufferFinalize(&(ctx->preSignBuffer));
@@ -1042,19 +1042,19 @@ xmlSecOpenSSLEvpSignatureCreatePkeyCtx(xmlSecTransformPtr transform, xmlSecOpenS
     xmlSecAssert2(ctx != NULL, NULL);
     xmlSecAssert2(ctx->pKey != NULL, NULL);
 
-#ifndef XMLSEC_OPENSSL_API_300
-    pKeyCtx = EVP_PKEY_CTX_new(ctx->pKey, NULL);
-    if (pKeyCtx == NULL) {
-        xmlSecOpenSSLError("EVP_PKEY_CTX_new", xmlSecTransformGetName(transform));
-        goto error;
-    }
-#else  /* XMLSEC_OPENSSL_API_300 */
+#if !defined(XMLSEC_OPENSSL_API_111)
     pKeyCtx = EVP_PKEY_CTX_new_from_pkey(xmlSecOpenSSLGetLibCtx(), ctx->pKey, NULL);
     if (pKeyCtx == NULL) {
         xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_pkey", xmlSecTransformGetName(transform));
         goto error;
     }
-#endif /* XMLSEC_OPENSSL_API_300 */
+#else  /* !defined(XMLSEC_OPENSSL_API_111) */
+    pKeyCtx = EVP_PKEY_CTX_new(ctx->pKey, NULL);
+    if (pKeyCtx == NULL) {
+        xmlSecOpenSSLError("EVP_PKEY_CTX_new", xmlSecTransformGetName(transform));
+        goto error;
+    }
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
     if(ctx->digest != NULL) {
         if(transform->operation == xmlSecTransformOperationSign) {

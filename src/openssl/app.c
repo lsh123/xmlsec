@@ -39,9 +39,9 @@
 #include <openssl/x509_vfy.h>
 #include <openssl/x509.h>
 
-#if !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES))
+#if !defined(OPENSSL_NO_ENGINE) && (defined(XMLSEC_OPENSSL_API_111) || defined(XMLSEC_OPENSSL3_ENGINES))
 #include <openssl/engine.h>
-#endif /* !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES)) */
+#endif /* !defined(OPENSSL_NO_ENGINE) && (defined(XMLSEC_OPENSSL_API_111) || defined(XMLSEC_OPENSSL3_ENGINES)) */
 
 #if !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC)
 #include <openssl/ui.h>
@@ -51,9 +51,9 @@
 #include <openssl/store.h>
 #endif /* XMLSEC_OPENSSL_NO_STORE */
 
-#ifdef XMLSEC_OPENSSL_API_300
+#if !defined(XMLSEC_OPENSSL_API_111)
 #include <openssl/provider.h>
-#endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
 #include "../cast_helpers.h"
 #include "private.h"
@@ -87,7 +87,7 @@ XMLSEC_PTR_TO_FUNC_IMPL(pem_password_cb)
 XMLSEC_FUNC_TO_PTR_IMPL(pem_password_cb)
 
 /* helpers to overwrite global context temporarily for OpenSSL 3.0 */
-#ifdef XMLSEC_OPENSSL_API_300
+#if !defined(XMLSEC_OPENSSL_API_111)
 #define XMLSEC_OPENSSL_PUSH_LIB_CTX(on_error)      \
     {                                              \
         OSSL_LIB_CTX* savedDefaultLibCtx = NULL;   \
@@ -102,13 +102,13 @@ XMLSEC_FUNC_TO_PTR_IMPL(pem_password_cb)
             OSSL_LIB_CTX_set0_default(savedDefaultLibCtx); \
         }                                          \
     }
-#else  /* XMLSEC_OPENSSL_API_300 */
+#else  /* !defined(XMLSEC_OPENSSL_API_111) */
 
 /* noop */
 #define XMLSEC_OPENSSL_PUSH_LIB_CTX(on_error)
 #define XMLSEC_OPENSSL_POP_LIB_CTX()
 
-#endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
 /**
  * @brief Initializes the OpenSSL crypto engine.
@@ -121,7 +121,7 @@ XMLSEC_FUNC_TO_PTR_IMPL(pem_password_cb)
  */
 int
 xmlSecOpenSSLAppInit(const char* config) {
-#ifdef XMLSEC_OPENSSL_API_300
+#if !defined(XMLSEC_OPENSSL_API_111)
     /* This code can be used to check that custom xmlsec LibCtx is propagated
      everywhere as expected (see https://github.com/lsh123/xmlsec/issues/346) */
     /*
@@ -134,7 +134,7 @@ xmlSecOpenSSLAppInit(const char* config) {
     }
     xmlSecOpenSSLSetLibCtx(libCtx);
     */
-#endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
     int ret;
     uint64_t opts = 0;
 
@@ -147,9 +147,9 @@ xmlSecOpenSSLAppInit(const char* config) {
     opts |= OPENSSL_INIT_ASYNC;
 #endif /* !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC) */
 
-#if !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_API_300) && !defined(XMLSEC_OPENSSL_IS_AWSLC)
+#if !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && defined(XMLSEC_OPENSSL_API_111) && !defined(XMLSEC_OPENSSL_IS_AWSLC)
     opts |= OPENSSL_INIT_ENGINE_ALL_BUILTIN;
-#endif /* !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_API_300) && !defined(XMLSEC_OPENSSL_IS_AWSLC) */
+#endif /* !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && defined(XMLSEC_OPENSSL_API_111) && !defined(XMLSEC_OPENSSL_IS_AWSLC) */
 
     ret = OPENSSL_init_crypto(opts, NULL);
     if(ret != 1) {
@@ -481,11 +481,11 @@ xmlSecOpenSSLAppKeyLoadBIO(
             XMLSEC_OPENSSL_POP_LIB_CTX();
         }
         if(pKey == NULL) {
-#ifndef XMLSEC_OPENSSL_API_300
-            xmlSecOpenSSLError("d2i_PrivateKey_bio and d2i_PUBKEY_bio", NULL);
-#else /* XMLSEC_OPENSSL_API_300 */
+#if !defined(XMLSEC_OPENSSL_API_111)
             xmlSecOpenSSLError("d2i_PrivateKey_ex_bio and d2i_PUBKEY_bio", NULL);
-#endif /* XMLSEC_OPENSSL_API_300 */
+#else /* !defined(XMLSEC_OPENSSL_API_111) */
+            xmlSecOpenSSLError("d2i_PrivateKey_bio and d2i_PUBKEY_bio", NULL);
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
             return(NULL);
         }
         break;
@@ -493,11 +493,11 @@ xmlSecOpenSSLAppKeyLoadBIO(
         /* read private key */
         pKey = PEM_read_bio_PrivateKey_ex(bio, NULL, pwdCb, pwdCbCtx, xmlSecOpenSSLGetLibCtx(), NULL);
         if(pKey == NULL) {
-#ifndef XMLSEC_OPENSSL_API_300
-            xmlSecOpenSSLError("PEM_read_bio_PrivateKey", NULL);
-#else /* XMLSEC_OPENSSL_API_300 */
+#if !defined(XMLSEC_OPENSSL_API_111)
             xmlSecOpenSSLError("PEM_read_bio_PrivateKey_ex", NULL);
-#endif /* XMLSEC_OPENSSL_API_300 */
+#else /* !defined(XMLSEC_OPENSSL_API_111) */
+            xmlSecOpenSSLError("PEM_read_bio_PrivateKey", NULL);
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
             return(NULL);
         }
         break;
@@ -568,7 +568,7 @@ xmlSecOpenSSLAppEngineKeyLoad(const char *engineName, const char *engineKeyId,
     xmlSecKeyDataType type, xmlSecKeyDataFormat format,
     const char *pwd, void* pwdCallback, void* pwdCallbackCtx
 ) {
-#if !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES))
+#if !defined(OPENSSL_NO_ENGINE) && (defined(XMLSEC_OPENSSL_API_111) || defined(XMLSEC_OPENSSL3_ENGINES))
     UI_METHOD * ui_method  = NULL;
     void * pwdCbCtx;
 #ifndef XMLSEC_OPENSSL_NO_PWD_CALLBACK
@@ -714,7 +714,7 @@ done:
     /* result */
     return(key);
 
-#else /* !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES)) */
+#else /* !defined(OPENSSL_NO_ENGINE) && (defined(XMLSEC_OPENSSL_API_111) || defined(XMLSEC_OPENSSL3_ENGINES)) */
     XMLSEC_UNREFERENCED(engineName);
     XMLSEC_UNREFERENCED(engineKeyId);
     XMLSEC_UNREFERENCED(type);
@@ -724,7 +724,7 @@ done:
     XMLSEC_UNREFERENCED(pwdCallbackCtx);
     xmlSecNotImplementedError("OpenSSL Engine interface is disabled during compilation");
     return (NULL);
-#endif /* !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES)) */
+#endif /* !defined(OPENSSL_NO_ENGINE) && (defined(XMLSEC_OPENSSL_API_111) || defined(XMLSEC_OPENSSL3_ENGINES)) */
 }
 
 #ifndef XMLSEC_NO_X509
@@ -855,11 +855,11 @@ xmlSecOpenSSLAppCheckCertMatchesKey(EVP_PKEY * pKey,  X509 * cert) {
         return(-1);
     }
 
-#ifndef XMLSEC_OPENSSL_API_300
-    res = (EVP_PKEY_cmp(pKey, certKey) == 1) ? 1 : 0;
-#else /* XMLSEC_OPENSSL_API_300 */
+#if !defined(XMLSEC_OPENSSL_API_111)
     res = (EVP_PKEY_eq(pKey, certKey) == 1) ? 1 : 0;
-#endif /* XMLSEC_OPENSSL_API_300 */
+#else /* !defined(XMLSEC_OPENSSL_API_111) */
+    res = (EVP_PKEY_cmp(pKey, certKey) == 1) ? 1 : 0;
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
 #if defined(XMLSEC_OPENSSL_IS_BORINGSSL)
     EVP_PKEY_free(certKey);
@@ -939,16 +939,7 @@ xmlSecOpenSSLAppStoreKeyLoad(const char *uri, xmlSecKeyDataType type, const char
         goto done;
     }
 
-#if !defined(XMLSEC_OPENSSL_API_300)
-    storeCtx = OSSL_STORE_open(uri,
-                ui_method, pwdCbCtx,
-                NULL, NULL);
-    if(storeCtx == NULL) {
-        xmlSecOpenSSLError2("OSSL_STORE_open", NULL,
-            "uri=%s", xmlSecErrorsSafeString(uri));
-        goto done;
-    }
-#else  /* !defined(XMLSEC_OPENSSL_API_300) */
+#if !defined(XMLSEC_OPENSSL_API_111)
     storeCtx = OSSL_STORE_open_ex(uri,
                 xmlSecOpenSSLGetLibCtx(), NULL,
                 ui_method, pwdCbCtx,
@@ -958,7 +949,16 @@ xmlSecOpenSSLAppStoreKeyLoad(const char *uri, xmlSecKeyDataType type, const char
             "uri=%s", xmlSecErrorsSafeString(uri));
         goto done;
     }
-#endif /* !defined(XMLSEC_OPENSSL_API_300) */
+#else  /* !defined(XMLSEC_OPENSSL_API_111) */
+    storeCtx = OSSL_STORE_open(uri,
+                ui_method, pwdCbCtx,
+                NULL, NULL);
+    if(storeCtx == NULL) {
+        xmlSecOpenSSLError2("OSSL_STORE_open", NULL,
+            "uri=%s", xmlSecErrorsSafeString(uri));
+        goto done;
+    }
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
 
     certs = sk_X509_new_null();
@@ -990,7 +990,7 @@ xmlSecOpenSSLAppStoreKeyLoad(const char *uri, xmlSecKeyDataType type, const char
             }
             break;
 
-#if defined(XMLSEC_OPENSSL_API_300)
+#if !defined(XMLSEC_OPENSSL_API_111)
         case OSSL_STORE_INFO_PUBKEY:
             /* only take the first public key */
             if(pPubKey == NULL) {
@@ -1001,7 +1001,7 @@ xmlSecOpenSSLAppStoreKeyLoad(const char *uri, xmlSecKeyDataType type, const char
                 }
             }
             break;
-#endif /* defined(XMLSEC_OPENSSL_API_300) */
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
         case OSSL_STORE_INFO_CERT:
             cert = OSSL_STORE_INFO_get1_CERT(info);
             if(cert == NULL) {

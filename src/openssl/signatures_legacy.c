@@ -35,7 +35,7 @@
 
 #include "../cast_helpers.h"
 
-#if !defined(XMLSEC_OPENSSL_API_300) && !defined(XMLSEC_NO_EC)
+#if defined(XMLSEC_OPENSSL_API_111) && !defined(XMLSEC_NO_EC)
 #include <openssl/ec.h>
 
 /******************************************************************************
@@ -1156,9 +1156,9 @@ xmlSecOpenSSLTransformEcdsaSha3_512GetKlass(void) {
 
 #endif /* XMLSEC_NO_SHA3 */
 
-#else /* !defined(XMLSEC_OPENSSL_API_300) && !defined(XMLSEC_NO_EC) */
+#else /* defined(XMLSEC_OPENSSL_API_111) && !defined(XMLSEC_NO_EC) */
 
 /* ISO C forbids an empty translation unit */
 typedef int make_iso_compilers_happy;
 
-#endif /* !defined(XMLSEC_OPENSSL_API_300) && !defined(XMLSEC_NO_EC) */
+#endif /* defined(XMLSEC_OPENSSL_API_111) && !defined(XMLSEC_NO_EC) */

@@ -30,10 +30,10 @@
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/evp.h>
 
-#ifdef XMLSEC_OPENSSL_API_300
+#if !defined(XMLSEC_OPENSSL_API_111)
 #include <openssl/core_names.h>
 #include <openssl/param_build.h>
-#endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
 #include "../cast_helpers.h"
 #include "../transform_helpers.h"
@@ -52,11 +52,11 @@
 typedef struct _xmlSecOpenSSLRsaPkcs1Ctx        xmlSecOpenSSLRsaPkcs1Ctx,
                                                 *xmlSecOpenSSLRsaPkcs1CtxPtr;
 struct _xmlSecOpenSSLRsaPkcs1Ctx {
-#ifndef XMLSEC_OPENSSL_API_300
-    EVP_PKEY*           pKey;
-#else /* XMLSEC_OPENSSL_API_300 */
+#if !defined(XMLSEC_OPENSSL_API_111)
     EVP_PKEY_CTX*       pKeyCtx;
-#endif /* XMLSEC_OPENSSL_API_300 */
+#else /* !defined(XMLSEC_OPENSSL_API_111) */
+    EVP_PKEY*           pKey;
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
     xmlSecSize          keySize;
 };
 
@@ -117,81 +117,7 @@ xmlSecOpenSSLTransformRsaPkcs1GetKlass(void) {
     return(&xmlSecOpenSSLRsaPkcs1Klass);
 }
 
-#if !defined(XMLSEC_OPENSSL_API_300)
-
-static int
-xmlSecOpenSSLRsaPkcs1SetKeyImpl(xmlSecOpenSSLRsaPkcs1CtxPtr ctx, EVP_PKEY* pKey,
-                                int encrypt XMLSEC_ATTRIBUTE_UNUSED) {
-    RSA *rsa = NULL;
-    xmlSecOpenSSLSizeT keyLen;
-
-    xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->pKey == NULL, -1);
-    xmlSecAssert2(pKey != NULL, -1);
-    XMLSEC_UNREFERENCED(encrypt);
-
-    rsa = EVP_PKEY_get0_RSA(pKey);
-    xmlSecAssert2(rsa != NULL, -1);
-
-    keyLen = RSA_size(rsa);
-    if(keyLen <= 0) {
-        xmlSecOpenSSLError("RSA_size", NULL);
-        return (-1);
-    }
-    XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_SIZE(keyLen, ctx->keySize, return(-1), NULL);
-
-    ctx->pKey = xmlSecOpenSSLEvpKeyDup(pKey);
-    if(ctx->pKey == NULL) {
-        xmlSecInternalError("xmlSecOpenSSLEvpKeyDup", NULL);
-        return(-1);
-    }
-
-    /* success */
-    return(0);
-}
-
-static int
-xmlSecOpenSSLRsaPkcs1ProcessImpl(xmlSecOpenSSLRsaPkcs1CtxPtr ctx, const xmlSecByte* inBuf, xmlSecSize inSize,
-                                 xmlSecByte* outBuf, xmlSecSize* outSize, int encrypt) {
-    RSA* rsa;
-    xmlSecOpenSSLSizeT inLen;
-    int ret;
-
-    xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->pKey != NULL, -1);
-    xmlSecAssert2(xmlSecOpenSSLKeyValueRsaCheckKeyType(ctx->pKey) == 0, -1);
-    xmlSecAssert2(inBuf != NULL, -1);
-    xmlSecAssert2(inSize > 0, -1);
-    xmlSecAssert2(outBuf != NULL, -1);
-    xmlSecAssert2(outSize != NULL, -1);
-
-    rsa = EVP_PKEY_get0_RSA(ctx->pKey);
-    xmlSecAssert2(rsa != NULL, -1);
-
-    XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_SIZE_T(inSize, inLen, return(-1), NULL);
-    if(encrypt != 0) {
-        ret = RSA_public_encrypt(inLen, inBuf, outBuf, rsa, RSA_PKCS1_PADDING);
-        if(ret <= 0) {
-            xmlSecOpenSSLError2("RSA_public_encrypt", NULL,
-                "size=" XMLSEC_SIZE_FMT, inSize);
-            return(-1);
-        }
-
-    } else {
-        ret = RSA_private_decrypt(inLen, inBuf, outBuf, rsa, RSA_PKCS1_PADDING);
-        if(ret <= 0) {
-            xmlSecOpenSSLError2("RSA_private_decrypt", NULL,
-                "size=" XMLSEC_SIZE_FMT, inSize);
-            return(-1);
-        }
-   }
-   XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, (*outSize), return(-1), NULL);
-
-   /* success */
-   return(0);
-}
-
-#else /* !defined(XMLSEC_OPENSSL_API_300) */
+#if !defined(XMLSEC_OPENSSL_API_111)
 
 static int
 xmlSecOpenSSLRsaPkcs1SetKeyImpl(xmlSecOpenSSLRsaPkcs1CtxPtr ctx, EVP_PKEY* pKey,
@@ -280,7 +206,81 @@ xmlSecOpenSSLRsaPkcs1ProcessImpl(xmlSecOpenSSLRsaPkcs1CtxPtr ctx, const xmlSecBy
     /* success */
     return(0);
 }
-#endif /* !defined(XMLSEC_OPENSSL_API_300) */
+#else /* !defined(XMLSEC_OPENSSL_API_111) */
+
+static int
+xmlSecOpenSSLRsaPkcs1SetKeyImpl(xmlSecOpenSSLRsaPkcs1CtxPtr ctx, EVP_PKEY* pKey,
+                                int encrypt XMLSEC_ATTRIBUTE_UNUSED) {
+    RSA *rsa = NULL;
+    xmlSecOpenSSLSizeT keyLen;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->pKey == NULL, -1);
+    xmlSecAssert2(pKey != NULL, -1);
+    XMLSEC_UNREFERENCED(encrypt);
+
+    rsa = EVP_PKEY_get0_RSA(pKey);
+    xmlSecAssert2(rsa != NULL, -1);
+
+    keyLen = RSA_size(rsa);
+    if(keyLen <= 0) {
+        xmlSecOpenSSLError("RSA_size", NULL);
+        return (-1);
+    }
+    XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_SIZE(keyLen, ctx->keySize, return(-1), NULL);
+
+    ctx->pKey = xmlSecOpenSSLEvpKeyDup(pKey);
+    if(ctx->pKey == NULL) {
+        xmlSecInternalError("xmlSecOpenSSLEvpKeyDup", NULL);
+        return(-1);
+    }
+
+    /* success */
+    return(0);
+}
+
+static int
+xmlSecOpenSSLRsaPkcs1ProcessImpl(xmlSecOpenSSLRsaPkcs1CtxPtr ctx, const xmlSecByte* inBuf, xmlSecSize inSize,
+                                 xmlSecByte* outBuf, xmlSecSize* outSize, int encrypt) {
+    RSA* rsa;
+    xmlSecOpenSSLSizeT inLen;
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->pKey != NULL, -1);
+    xmlSecAssert2(xmlSecOpenSSLKeyValueRsaCheckKeyType(ctx->pKey) == 0, -1);
+    xmlSecAssert2(inBuf != NULL, -1);
+    xmlSecAssert2(inSize > 0, -1);
+    xmlSecAssert2(outBuf != NULL, -1);
+    xmlSecAssert2(outSize != NULL, -1);
+
+    rsa = EVP_PKEY_get0_RSA(ctx->pKey);
+    xmlSecAssert2(rsa != NULL, -1);
+
+    XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_SIZE_T(inSize, inLen, return(-1), NULL);
+    if(encrypt != 0) {
+        ret = RSA_public_encrypt(inLen, inBuf, outBuf, rsa, RSA_PKCS1_PADDING);
+        if(ret <= 0) {
+            xmlSecOpenSSLError2("RSA_public_encrypt", NULL,
+                "size=" XMLSEC_SIZE_FMT, inSize);
+            return(-1);
+        }
+
+    } else {
+        ret = RSA_private_decrypt(inLen, inBuf, outBuf, rsa, RSA_PKCS1_PADDING);
+        if(ret <= 0) {
+            xmlSecOpenSSLError2("RSA_private_decrypt", NULL,
+                "size=" XMLSEC_SIZE_FMT, inSize);
+            return(-1);
+        }
+   }
+   XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, (*outSize), return(-1), NULL);
+
+   /* success */
+   return(0);
+}
+
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
 static int
 xmlSecOpenSSLRsaPkcs1Initialize(xmlSecTransformPtr transform) {
@@ -307,15 +307,15 @@ xmlSecOpenSSLRsaPkcs1Finalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
 
-#ifndef XMLSEC_OPENSSL_API_300
-    if(ctx->pKey != NULL) {
-        EVP_PKEY_free(ctx->pKey);
-    }
-#else /* XMLSEC_OPENSSL_API_300 */
+#if !defined(XMLSEC_OPENSSL_API_111)
     if(ctx->pKeyCtx != NULL) {
         EVP_PKEY_CTX_free(ctx->pKeyCtx);
     }
-#endif /* XMLSEC_OPENSSL_API_300 */
+#else /* !defined(XMLSEC_OPENSSL_API_111) */
+    if(ctx->pKey != NULL) {
+        EVP_PKEY_free(ctx->pKey);
+    }
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
     OPENSSL_cleanse(ctx, sizeof(xmlSecOpenSSLRsaPkcs1Ctx));
 }
@@ -536,16 +536,16 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform) {
 typedef struct _xmlSecOpenSSLRsaOaepCtx         xmlSecOpenSSLRsaOaepCtx,
                                                 *xmlSecOpenSSLRsaOaepCtxPtr;
 struct _xmlSecOpenSSLRsaOaepCtx {
-#ifndef XMLSEC_OPENSSL_API_300
-    EVP_PKEY*           pKey;
-    const EVP_MD*       md;
-    const EVP_MD*       mgf1md;
-#else /* XMLSEC_OPENSSL_API_300 */
+#if !defined(XMLSEC_OPENSSL_API_111)
     EVP_PKEY_CTX*       pKeyCtx;
     const char*         mdName;
     const char*         mgf1mdName;
     int                 paramsInitialized;
-#endif /* XMLSEC_OPENSSL_API_300 */
+#else /* !defined(XMLSEC_OPENSSL_API_111) */
+    EVP_PKEY*           pKey;
+    const EVP_MD*       md;
+    const EVP_MD*       mgf1md;
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
     xmlSecSize          keySize;
     xmlSecBuffer        oaepParams;
 };
@@ -660,179 +660,7 @@ xmlSecOpenSSLRsaOaepCheckId(xmlSecTransformPtr transform) {
     return(0);
 }
 
-#ifndef XMLSEC_OPENSSL_API_300
-
-static int
-xmlSecOpenSSLRsaOaepSetKeyImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, EVP_PKEY* pKey,
-                            int encrypt XMLSEC_ATTRIBUTE_UNUSED) {
-    RSA *rsa = NULL;
-    int keyLen;
-
-    xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->pKey == NULL, -1);
-    xmlSecAssert2(pKey != NULL, -1);
-    XMLSEC_UNREFERENCED(encrypt);
-
-    rsa = EVP_PKEY_get0_RSA(pKey);
-    xmlSecAssert2(rsa != NULL, -1);
-
-    keyLen = RSA_size(rsa);
-    if(keyLen <= 0) {
-        xmlSecOpenSSLError("RSA_size", NULL);
-        return (-1);
-    }
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(keyLen, ctx->keySize, return(-1), NULL);
-
-    ctx->pKey = xmlSecOpenSSLEvpKeyDup(pKey);
-    if(ctx->pKey == NULL) {
-        xmlSecInternalError("xmlSecOpenSSLEvpKeyDup", NULL);
-        return(-1);
-    }
-
-    /* success */
-    return(0);
-}
-
-static int
-xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte* inBuf, xmlSecSize inSize,
-                            xmlSecByte* outBuf, xmlSecSize* outSize, int encrypt) {
-    xmlSecByte* oaepLabel;
-    xmlSecSize oaepLabelSize;
-    RSA* rsa;
-    int inLen, keyLen, oaepLabelLen;
-    int ret;
-
-    xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->pKey != NULL, -1);
-    xmlSecAssert2(xmlSecOpenSSLKeyValueRsaCheckKeyType(ctx->pKey) == 0, -1);
-    xmlSecAssert2(inBuf != NULL, -1);
-    xmlSecAssert2(inSize > 0, -1);
-    xmlSecAssert2(outBuf != NULL, -1);
-    xmlSecAssert2(outSize != NULL, -1);
-
-    /*
-     * the digest algorithms must have been set either by
-     * xmlSecOpenSSLRsaOaepNodeRead or by the defaults in
-     * xmlSecOpenSSLRsaOaepInitialize; a NULL value means the default
-     * SHA-1 digest is disabled and no explicit digest was specified
-     */
-    if((ctx->md == NULL) || (ctx->mgf1md == NULL)) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_DISABLED, NULL,
-            "No OAEP digest algorithm is specified and the default SHA1 digest is disabled");
-        return(-1);
-    }
-
-    rsa = EVP_PKEY_get0_RSA(ctx->pKey);
-    xmlSecAssert2(rsa != NULL, -1);
-
-    oaepLabel = xmlSecBufferGetData(&(ctx->oaepParams));
-    oaepLabelSize = xmlSecBufferGetSize(&(ctx->oaepParams));
-
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, return(-1), NULL);
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(ctx->keySize, keyLen, return(-1), NULL);
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(oaepLabelSize, oaepLabelLen, return(-1), NULL);
-
-    if(encrypt != 0) {
-        /* encrypt */
-        xmlSecBuffer tmp;
-
-        /* allocate space for temp buffer */
-        ret = xmlSecBufferInitialize(&tmp, ctx->keySize);
-        if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferInitialize", NULL,
-                "size=" XMLSEC_SIZE_FMT, ctx->keySize);
-            return(-1);
-        }
-        xmlSecBufferMakeSecure(&tmp);
-
-        /* add padding */
-        ret = RSA_padding_add_PKCS1_OAEP_mgf1(
-            xmlSecBufferGetData(&tmp), keyLen,
-            inBuf, inLen,
-            oaepLabel, oaepLabelLen,
-            ctx->md, ctx->mgf1md);
-        if(ret != 1) {
-            xmlSecOpenSSLError("RSA_padding_add_PKCS1_OAEP_mgf1", NULL);
-            OPENSSL_cleanse(xmlSecBufferGetData(&tmp), ctx->keySize);
-            xmlSecBufferFinalize(&tmp);
-            return(-1);
-        }
-
-        /* encode with OAEPParams */
-        ret = RSA_public_encrypt(keyLen, xmlSecBufferGetData(&tmp),
-            outBuf, rsa, RSA_NO_PADDING);
-        if(ret <= 0) {
-            xmlSecOpenSSLError("RSA_public_encrypt(RSA_NO_PADDING)", NULL);
-            OPENSSL_cleanse(xmlSecBufferGetData(&tmp), ctx->keySize);
-            xmlSecBufferFinalize(&tmp);
-            return(-1);
-        }
-        OPENSSL_cleanse(xmlSecBufferGetData(&tmp), ctx->keySize);
-        xmlSecBufferFinalize(&tmp);
-
-        /* success */
-        XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, (*outSize), return(-1), NULL);
-    } else {
-        /* decrypt */
-        xmlSecSize outResSize;
-        int outLen;
-        int pos;
-
-        ret = RSA_private_decrypt(inLen, inBuf, outBuf, rsa, RSA_NO_PADDING);
-        if(ret <= 0) {
-            xmlSecOpenSSLError("RSA_private_decrypt(RSA_NO_PADDING)", NULL);
-            return(-1);
-        }
-        outLen = ret;
-
-        /*
-         * the private decrypt w/o padding left-pads the result with '0's
-         * up to the key length: strip the leading zeros in place.
-         */
-        for(pos = 0; pos < outLen && outBuf[pos] == 0; ++pos) {
-            /* nothing */
-        }
-        if(pos >= outLen) {
-            /* the recovered block is all zeros: not a valid OAEP block */
-            xmlSecInvalidDataError("recovered OAEP block is all zeros", NULL);
-            OPENSSL_cleanse(outBuf, (*outSize));
-            return(-1);
-        }
-        if(pos > 0) {
-            memmove(outBuf, outBuf + pos, (unsigned int)(outLen - pos));
-            outLen -= pos;
-        }
-
-        /* accept 0-length recovered message */
-        ret = RSA_padding_check_PKCS1_OAEP_mgf1(
-            outBuf, outLen, outBuf, outLen, keyLen,
-            oaepLabel, oaepLabelLen,
-            ctx->md, ctx->mgf1md);
-        if(ret < 0) {
-            xmlSecOpenSSLError("RSA_padding_check_PKCS1_OAEP_mgf1", NULL);
-            OPENSSL_cleanse(outBuf, (*outSize));
-            return(-1);
-        }
-        XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outResSize, return(-1), NULL);
-
-        /*
-         * cleanse the tail of the output buffer that held the raw
-         * OAEP-encoded message; only the first 'ret' bytes contain the
-         * recovered plaintext
-         */
-        if((*outSize) > outResSize) {
-            OPENSSL_cleanse(outBuf + outResSize, ((*outSize) - outResSize));
-        }
-
-        /* success */
-        (*outSize) = outResSize;
-    }
-
-    /* success */
-    return(0);
-}
-
-#else /* XMLSEC_OPENSSL_API_300 */
+#if !defined(XMLSEC_OPENSSL_API_111)
 
 static int
 xmlSecOpenSSLRsaOaepSetKeyImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, EVP_PKEY* pKey,
@@ -1008,7 +836,179 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
     (*outSize) = outSizeT;
     return(0);
 }
-#endif /* XMLSEC_OPENSSL_API_300 */
+#else /* !defined(XMLSEC_OPENSSL_API_111) */
+
+static int
+xmlSecOpenSSLRsaOaepSetKeyImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, EVP_PKEY* pKey,
+                            int encrypt XMLSEC_ATTRIBUTE_UNUSED) {
+    RSA *rsa = NULL;
+    int keyLen;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->pKey == NULL, -1);
+    xmlSecAssert2(pKey != NULL, -1);
+    XMLSEC_UNREFERENCED(encrypt);
+
+    rsa = EVP_PKEY_get0_RSA(pKey);
+    xmlSecAssert2(rsa != NULL, -1);
+
+    keyLen = RSA_size(rsa);
+    if(keyLen <= 0) {
+        xmlSecOpenSSLError("RSA_size", NULL);
+        return (-1);
+    }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(keyLen, ctx->keySize, return(-1), NULL);
+
+    ctx->pKey = xmlSecOpenSSLEvpKeyDup(pKey);
+    if(ctx->pKey == NULL) {
+        xmlSecInternalError("xmlSecOpenSSLEvpKeyDup", NULL);
+        return(-1);
+    }
+
+    /* success */
+    return(0);
+}
+
+static int
+xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte* inBuf, xmlSecSize inSize,
+                            xmlSecByte* outBuf, xmlSecSize* outSize, int encrypt) {
+    xmlSecByte* oaepLabel;
+    xmlSecSize oaepLabelSize;
+    RSA* rsa;
+    int inLen, keyLen, oaepLabelLen;
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->pKey != NULL, -1);
+    xmlSecAssert2(xmlSecOpenSSLKeyValueRsaCheckKeyType(ctx->pKey) == 0, -1);
+    xmlSecAssert2(inBuf != NULL, -1);
+    xmlSecAssert2(inSize > 0, -1);
+    xmlSecAssert2(outBuf != NULL, -1);
+    xmlSecAssert2(outSize != NULL, -1);
+
+    /*
+     * the digest algorithms must have been set either by
+     * xmlSecOpenSSLRsaOaepNodeRead or by the defaults in
+     * xmlSecOpenSSLRsaOaepInitialize; a NULL value means the default
+     * SHA-1 digest is disabled and no explicit digest was specified
+     */
+    if((ctx->md == NULL) || (ctx->mgf1md == NULL)) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_DISABLED, NULL,
+            "No OAEP digest algorithm is specified and the default SHA1 digest is disabled");
+        return(-1);
+    }
+
+    rsa = EVP_PKEY_get0_RSA(ctx->pKey);
+    xmlSecAssert2(rsa != NULL, -1);
+
+    oaepLabel = xmlSecBufferGetData(&(ctx->oaepParams));
+    oaepLabelSize = xmlSecBufferGetSize(&(ctx->oaepParams));
+
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, return(-1), NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(ctx->keySize, keyLen, return(-1), NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(oaepLabelSize, oaepLabelLen, return(-1), NULL);
+
+    if(encrypt != 0) {
+        /* encrypt */
+        xmlSecBuffer tmp;
+
+        /* allocate space for temp buffer */
+        ret = xmlSecBufferInitialize(&tmp, ctx->keySize);
+        if(ret < 0) {
+            xmlSecInternalError2("xmlSecBufferInitialize", NULL,
+                "size=" XMLSEC_SIZE_FMT, ctx->keySize);
+            return(-1);
+        }
+        xmlSecBufferMakeSecure(&tmp);
+
+        /* add padding */
+        ret = RSA_padding_add_PKCS1_OAEP_mgf1(
+            xmlSecBufferGetData(&tmp), keyLen,
+            inBuf, inLen,
+            oaepLabel, oaepLabelLen,
+            ctx->md, ctx->mgf1md);
+        if(ret != 1) {
+            xmlSecOpenSSLError("RSA_padding_add_PKCS1_OAEP_mgf1", NULL);
+            OPENSSL_cleanse(xmlSecBufferGetData(&tmp), ctx->keySize);
+            xmlSecBufferFinalize(&tmp);
+            return(-1);
+        }
+
+        /* encode with OAEPParams */
+        ret = RSA_public_encrypt(keyLen, xmlSecBufferGetData(&tmp),
+            outBuf, rsa, RSA_NO_PADDING);
+        if(ret <= 0) {
+            xmlSecOpenSSLError("RSA_public_encrypt(RSA_NO_PADDING)", NULL);
+            OPENSSL_cleanse(xmlSecBufferGetData(&tmp), ctx->keySize);
+            xmlSecBufferFinalize(&tmp);
+            return(-1);
+        }
+        OPENSSL_cleanse(xmlSecBufferGetData(&tmp), ctx->keySize);
+        xmlSecBufferFinalize(&tmp);
+
+        /* success */
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, (*outSize), return(-1), NULL);
+    } else {
+        /* decrypt */
+        xmlSecSize outResSize;
+        int outLen;
+        int pos;
+
+        ret = RSA_private_decrypt(inLen, inBuf, outBuf, rsa, RSA_NO_PADDING);
+        if(ret <= 0) {
+            xmlSecOpenSSLError("RSA_private_decrypt(RSA_NO_PADDING)", NULL);
+            return(-1);
+        }
+        outLen = ret;
+
+        /*
+         * the private decrypt w/o padding left-pads the result with '0's
+         * up to the key length: strip the leading zeros in place.
+         */
+        for(pos = 0; pos < outLen && outBuf[pos] == 0; ++pos) {
+            /* nothing */
+        }
+        if(pos >= outLen) {
+            /* the recovered block is all zeros: not a valid OAEP block */
+            xmlSecInvalidDataError("recovered OAEP block is all zeros", NULL);
+            OPENSSL_cleanse(outBuf, (*outSize));
+            return(-1);
+        }
+        if(pos > 0) {
+            memmove(outBuf, outBuf + pos, (unsigned int)(outLen - pos));
+            outLen -= pos;
+        }
+
+        /* accept 0-length recovered message */
+        ret = RSA_padding_check_PKCS1_OAEP_mgf1(
+            outBuf, outLen, outBuf, outLen, keyLen,
+            oaepLabel, oaepLabelLen,
+            ctx->md, ctx->mgf1md);
+        if(ret < 0) {
+            xmlSecOpenSSLError("RSA_padding_check_PKCS1_OAEP_mgf1", NULL);
+            OPENSSL_cleanse(outBuf, (*outSize));
+            return(-1);
+        }
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outResSize, return(-1), NULL);
+
+        /*
+         * cleanse the tail of the output buffer that held the raw
+         * OAEP-encoded message; only the first 'ret' bytes contain the
+         * recovered plaintext
+         */
+        if((*outSize) > outResSize) {
+            OPENSSL_cleanse(outBuf + outResSize, ((*outSize) - outResSize));
+        }
+
+        /* success */
+        (*outSize) = outResSize;
+    }
+
+    /* success */
+    return(0);
+}
+
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
 static int
 xmlSecOpenSSLRsaOaepInitialize(xmlSecTransformPtr transform) {
@@ -1027,13 +1027,13 @@ xmlSecOpenSSLRsaOaepInitialize(xmlSecTransformPtr transform) {
      * default digest algorithm (overridden by NodeRead if specified)
      */
 #ifndef XMLSEC_NO_SHA1
-#ifndef XMLSEC_OPENSSL_API_300
-    ctx->md = EVP_sha1();
-    ctx->mgf1md = EVP_sha1();
-#else /* XMLSEC_OPENSSL_API_300 */
+#if !defined(XMLSEC_OPENSSL_API_111)
     ctx->mdName = OSSL_DIGEST_NAME_SHA1;
     ctx->mgf1mdName = OSSL_DIGEST_NAME_SHA1;
-#endif /* XMLSEC_OPENSSL_API_300 */
+#else /* !defined(XMLSEC_OPENSSL_API_111) */
+    ctx->md = EVP_sha1();
+    ctx->mgf1md = EVP_sha1();
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 #endif /* XMLSEC_NO_SHA1 */
 
     ret = xmlSecBufferInitialize(&(ctx->oaepParams), 0);
@@ -1055,32 +1055,32 @@ xmlSecOpenSSLRsaOaepFinalize(xmlSecTransformPtr transform) {
     ctx = xmlSecOpenSSLRsaOaepGetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
-#ifndef XMLSEC_OPENSSL_API_300
-    if(ctx->pKey != NULL) {
-        EVP_PKEY_free(ctx->pKey);
-    }
-#else /* XMLSEC_OPENSSL_API_300 */
+#if !defined(XMLSEC_OPENSSL_API_111)
     if(ctx->pKeyCtx != NULL) {
         EVP_PKEY_CTX_free(ctx->pKeyCtx);
     }
-#endif /* XMLSEC_OPENSSL_API_300 */
+#else /* !defined(XMLSEC_OPENSSL_API_111) */
+    if(ctx->pKey != NULL) {
+        EVP_PKEY_free(ctx->pKey);
+    }
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
     xmlSecBufferFinalize(&(ctx->oaepParams));
     OPENSSL_cleanse(ctx, sizeof(xmlSecOpenSSLRsaOaepCtx));
 }
 
 /* small helper macros to reduce clutter in the code */
-#ifndef XMLSEC_OPENSSL_API_300
-#define XMLSEC_OPENSSL_OAEP_DIGEST_SETUP(ctx, digestVal, digestNameVal) \
-    (ctx)->md = (digestVal)
-#define XMLSEC_OPENSSL_OAEP_MGF1_DIGEST_SETUP(ctx, digestVal, digestNameVal) \
-    (ctx)->mgf1md = (digestVal)
-#else /* XMLSEC_OPENSSL_API_300 */
+#if !defined(XMLSEC_OPENSSL_API_111)
 #define XMLSEC_OPENSSL_OAEP_DIGEST_SETUP(ctx, digestVal, digestNameVal) \
     (ctx)->mdName = (digestNameVal)
 #define XMLSEC_OPENSSL_OAEP_MGF1_DIGEST_SETUP(ctx, digestVal, digestNameVal) \
     (ctx)->mgf1mdName = (digestNameVal)
-#endif /* XMLSEC_OPENSSL_API_300 */
+#else /* !defined(XMLSEC_OPENSSL_API_111) */
+#define XMLSEC_OPENSSL_OAEP_DIGEST_SETUP(ctx, digestVal, digestNameVal) \
+    (ctx)->md = (digestVal)
+#define XMLSEC_OPENSSL_OAEP_MGF1_DIGEST_SETUP(ctx, digestVal, digestNameVal) \
+    (ctx)->mgf1md = (digestVal)
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
 static int
 xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,

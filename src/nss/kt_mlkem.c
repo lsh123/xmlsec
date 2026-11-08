@@ -182,6 +182,9 @@ xmlSecNssMLKEMInitialize(xmlSecTransformPtr transform) {
         ctx->ciphertextSize = MLKEM512_CIPHERTEXT_BYTES;
     } else if(xmlSecTransformCheckId(transform, xmlSecNssTransformMLKEM768Id)) {
         ctx->params = params_ml_kem768;
+        /* NSS kyber.h ships no MLKEM768 macros (the 768 variant kept the
+         * legacy KYBER768 names); align these lines with the MLKEM512 and
+         * MLKEM1024 naming above if a future NSS adds the MLKEM768 macros */
         ctx->ciphertextSize = KYBER768_CIPHERTEXT_BYTES;
     } else if(xmlSecTransformCheckId(transform, xmlSecNssTransformMLKEM1024Id)) {
         ctx->params = params_ml_kem1024;

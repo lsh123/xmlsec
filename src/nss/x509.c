@@ -1528,7 +1528,7 @@ xmlSecNssX509CrlListAdoptCrl(xmlSecNssX509CrlNodePtr * head, CERTSignedCrl* crl)
 
     crlnode = (xmlSecNssX509CrlNodePtr)PR_Malloc(sizeof(xmlSecNssX509CrlNode));
     if(crlnode == NULL) {
-        xmlSecNssError("PR_Malloc", NULL);
+        xmlSecMallocError(sizeof(xmlSecNssX509CrlNode), NULL);
         return(-1);
     }
 

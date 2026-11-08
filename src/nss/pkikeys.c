@@ -839,7 +839,8 @@ xmlSecNssKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         goto done;
     }
 
-    /* next is X (priv key). NSS does not support it, we just ignore it */
+    /* next is X (priv key): ignored, the read path creates a public key
+     * object only */
 
     /* y */
     ret = xmlSecNssGetBigNumValue(&(dsaValue->y), pubkey->arena, &(pubkey->u.dsa.publicValue));
@@ -889,7 +890,7 @@ done:
 static int
 xmlSecNssKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
                          xmlSecKeyValueDsaPtr dsaValue,
-                         int writePrivateKey XMLSEC_ATTRIBUTE_UNUSED) {
+                         int writePrivateKey) {
     xmlSecNssPKIKeyDataCtxPtr ctx;
     int ret;
 
@@ -897,7 +898,6 @@ xmlSecNssKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataDsaId), -1);
     xmlSecAssert2(dsaValue != NULL, -1);
-    XMLSEC_UNREFERENCED(writePrivateKey);
 
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
@@ -925,7 +925,13 @@ xmlSecNssKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         return(-1);
     }
 
-    /* x: not supported in NSS */
+    /* x: NSS has no public API to export the DSA private value, so writing
+     * the private part is not possible; fail instead of silently dropping
+     * the requested private component */
+    if((writePrivateKey != 0) && (ctx->privkey != NULL)) {
+        xmlSecNotImplementedError("writing the DSA private value x is not supported in NSS");
+        return(-1);
+    }
 
     /* y */
     ret = xmlSecNssSetBigNumValue(&(ctx->pubkey->u.dsa.publicValue), &(dsaValue->y));
@@ -982,16 +988,24 @@ xmlSecNssKeyDataRsaGetKlass(void) {
 }
 
 static int
-xmlSecNssKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
-                           xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecNssKeyDataRsaXmlRead(
+    xmlSecKeyDataId id,
+    xmlSecKeyPtr key,
+    xmlNodePtr node,
+    xmlSecKeyInfoCtxPtr keyInfoCtx
+) {
     xmlSecAssert2(id == xmlSecNssKeyDataRsaId, -1);
     return(xmlSecKeyDataRsaXmlRead(id, key, node, keyInfoCtx,
         xmlSecNssKeyDataRsaRead));
 }
 
 static int
-xmlSecNssKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
-                            xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecNssKeyDataRsaXmlWrite(
+    xmlSecKeyDataId id,
+    xmlSecKeyPtr key,
+    xmlNodePtr node,
+    xmlSecKeyInfoCtxPtr keyInfoCtx
+) {
     xmlSecAssert2(id == xmlSecNssKeyDataRsaId, -1);
     return(xmlSecKeyDataRsaXmlWrite(id, key, node, keyInfoCtx,
         xmlSecBase64GetDefaultLineSize(), 1, /* add line breaks */
@@ -999,7 +1013,10 @@ xmlSecNssKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 }
 
 static xmlSecKeyDataPtr
-xmlSecNssKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
+xmlSecNssKeyDataRsaRead(
+    xmlSecKeyDataId id,
+    xmlSecKeyValueRsaPtr rsaValue
+) {
     xmlSecKeyDataPtr data = NULL;
     xmlSecKeyDataPtr res = NULL;
     SECKEYPublicKey *pubkey=NULL;
@@ -1039,7 +1056,8 @@ xmlSecNssKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
         goto done;
     }
 
-    /* next is PrivateExponent (priv key). NSS does not support it, we just ignore it */
+    /* next is PrivateExponent (priv key): ignored, the read path creates a
+     * public key object only */
 
     /* create key */
     data = xmlSecKeyDataCreate(id);
@@ -1073,9 +1091,12 @@ done:
 }
 
 static int
-xmlSecNssKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
-                         xmlSecKeyValueRsaPtr rsaValue,
-                         int writePrivateKey XMLSEC_ATTRIBUTE_UNUSED) {
+xmlSecNssKeyDataRsaWrite(
+    xmlSecKeyDataId id,
+    xmlSecKeyDataPtr data,
+    xmlSecKeyValueRsaPtr rsaValue,
+    int writePrivateKey
+) {
     xmlSecNssPKIKeyDataCtxPtr ctx;
     int ret;
 
@@ -1083,7 +1104,6 @@ xmlSecNssKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataRsaId), -1);
     xmlSecAssert2(rsaValue != NULL, -1);
-    XMLSEC_UNREFERENCED(writePrivateKey);
 
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
@@ -1105,7 +1125,12 @@ xmlSecNssKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     }
 
     /* next is PrivateExponent node: not supported in NSS */
+    if((writePrivateKey != 0) && (ctx->privkey != NULL)) {
+        xmlSecNotImplementedError("writing the RSA private exponent is not supported in NSS");
+        return(-1);
+    }
 
+    /* done */
     return(0);
 }
 

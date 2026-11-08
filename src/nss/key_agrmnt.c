@@ -38,10 +38,12 @@
 
 /*
  * NSS uses CKM_ECDH1_DERIVE (0x00001050) for key agreement on all elliptic-curve
- * types, including Montgomery-curve keys (X25519).  The PKCS#11 v3.0 constant
- * CKM_XEDDH (0x00001044) is NOT defined by NSS and, worse, its numeric value
- * conflicts with CKM_ECDSA_SHA256 in NSS's own pkcs11t.h header, causing
- * SEC_ERROR_INVALID_ALGORITHM at runtime.  Use CKM_ECDH1_DERIVE instead.
+ * types, including Montgomery-curve keys (X25519). This matches the PKCS#11
+ * v3.0 design: Montgomery-curve key agreement (X25519/X448) uses the generic
+ * CKM_ECDH1_DERIVE mechanism with CKK_EC_MONTGOMERY keys, and the standard
+ * defines no dedicated X25519/X448 key-agreement mechanism. (Note that the
+ * value 0x00001044 is CKM_ECDSA_SHA256 in both the PKCS#11 and NSS pkcs11t.h
+ * headers, so a mechanism at that numeric value would be unusable anyway.)
  */
 
 /******************************************************************************

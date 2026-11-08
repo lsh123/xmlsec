@@ -526,13 +526,22 @@ xmlSecMSCryptoBlockCipherFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     if (ctx->cryptKey) {
-        CryptDestroyKey(ctx->cryptKey);
+        if (!CryptDestroyKey(ctx->cryptKey)) {
+            xmlSecMSCryptoError("CryptDestroyKey", NULL);
+            /* teardown: best-effort */
+        }
     }
     if (ctx->pubPrivKey) {
-        CryptDestroyKey(ctx->pubPrivKey);
+        if (!CryptDestroyKey(ctx->pubPrivKey)) {
+            xmlSecMSCryptoError("CryptDestroyKey", NULL);
+            /* teardown: best-effort */
+        }
     }
     if (ctx->cryptProvider) {
-        CryptReleaseContext(ctx->cryptProvider, 0);
+        if (!CryptReleaseContext(ctx->cryptProvider, 0)) {
+            xmlSecMSCryptoError("CryptReleaseContext", NULL);
+            /* teardown: best-effort */
+        }
     }
 
     memset(ctx, 0, sizeof(xmlSecMSCryptoBlockCipherCtx));

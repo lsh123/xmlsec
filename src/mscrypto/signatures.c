@@ -593,7 +593,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
         xmlSecAssert2(outSize == 0, -1);
 
         if (0 == (hProv = xmlSecMSCryptoKeyDataGetMSCryptoProvider(ctx->data))) {
-            xmlSecMSCryptoError("xmlSecMSCryptoKeyDataGetMSCryptoProvider",
+            xmlSecInternalError("xmlSecMSCryptoKeyDataGetMSCryptoProvider",
                                 xmlSecTransformGetName(transform));
             return (-1);
         }

@@ -239,14 +239,13 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
     /* just in case */
     *hPrivateKey = 0;
 
-    /* Generate the private key.
-     * NOTE: the third CryptGenKey parameter is dwExportBits (the RSA key length
-     * in bits for AT_KEYEXCHANGE; 0 = provider default), but upstream has always
-     * passed the CRYPT_EXPORTABLE export-mask constant here by mistake. The base
-     * CSP ignores the bogus value and uses its default RSA length, which is also
-     * what the matching CryptExportKey/KP_KEYLEN round-trip below assumes.
-     * Kept as-is for provider-compatibility; a future strict provider that
-     * honors dwExportBits would need a real RSA bit length (>= 8 * (keyMaterialLen + 3)). */
+    /* Generate the private key. In the dwFlags parameter the upper 16 bits
+     * select the RSA key length in bits (0 = provider default key size, which
+     * is also what the matching CryptExportKey/KP_KEYLEN round-trip below
+     * assumes); the lower 16 bits select the key flags. CRYPT_EXPORTABLE is
+     * required: the key is exported as a PRIVATEKEYBLOB below, and exporting a
+     * private key generated without the flag would fail.
+     * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptgenkey */
     if(!CryptGenKey(hProv, AT_KEYEXCHANGE, CRYPT_EXPORTABLE, &hKey)) {
         xmlSecMSCryptoError("CryptGenKey", NULL);
         goto done;
@@ -258,16 +257,21 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
         goto done;
     }
 
+    /* Validate the probed blob size before allocating and writing: the real
+     * export below writes keyBlobLen bytes into the buffer, which must at
+     * least hold the PUBLICKEYSTRUC + RSAPUBKEY header. */
+    if(keyBlobLen < sizeof(PUBLICKEYSTRUC) + sizeof(RSAPUBKEY)) {
+        xmlSecMSCryptoError2("CryptExportKey", NULL,
+            "len=%lu", keyBlobLen);
+        goto done;
+    }
+
     keyBlob = (LPBYTE)xmlMalloc(sizeof(BYTE) * keyBlobLen);
     if(keyBlob == NULL) {
         xmlSecMallocError(sizeof(BYTE) * keyBlobLen, NULL);
         goto done;
     }
 
-    /* NOTE: the real export below writes into keyBlob before the sanity checks;
-     * this is safe only because the provider returns the exact same size for the
-     * NULL-probe call and the real call. The checks are kept after the write for
-     * upstream compatibility; a misbehaving provider would overflow the buffer. */
     if(!CryptExportKey(hKey, 0, PRIVATEKEYBLOB, 0, keyBlob, &keyBlobLen)) {
         xmlSecMSCryptoError("CryptExportKey", NULL);
         goto done;
@@ -275,12 +279,8 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
     CryptDestroyKey(hKey);
     hKey = 0;
 
-    /* Get the bit length of the key */
-    if(keyBlobLen < sizeof(PUBLICKEYSTRUC) + sizeof(RSAPUBKEY)) {
-        xmlSecMSCryptoError2("CryptExportKey", NULL,
-            "len=%lu", keyBlobLen);
-        goto done;
-    }
+    /* The blob content checks below can only be done once the real export
+     * has written the data. */
     pubKeyStruc = (PUBLICKEYSTRUC*)keyBlob;
     if(pubKeyStruc->bVersion != 0x02) {
         xmlSecMSCryptoError2("CryptExportKey", NULL,

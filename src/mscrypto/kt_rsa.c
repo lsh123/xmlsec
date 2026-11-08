@@ -345,25 +345,19 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_RSA_OAEP
         if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaOaepId)) {
-            xmlSecSize oaepParamsSize;
-            xmlSecSize oaepMaxPlainSize;
-
-            oaepParamsSize = xmlSecBufferGetSize(&(ctx->oaepParams));
-
             /* RSA-OAEP (EME-OAEP) https://www.rfc-editor.org/info/rfc8017/
-             * "RSAES-OAEP can operate on messages of length up to
-             * (k - 2 * hLen - 2 - l) octets, where hLen is the length of the
-             * output from the underlying hash function, k is the length in
-             * octets of the recipient's RSA modulus, and l is the length in
-             * octets of the label." CAPI's OAEP implementation always uses
-             * SHA-1, so hLen = 20.
+             * "the maximum message length mLen is k - 2*hLen - 2", where hLen is
+             * the length of the output from the underlying hash function and k
+             * is the length in octets of the RSA modulus (RFC 8017, section 9.1).
+             * The OAEP label does not reduce this limit: it only feeds lHash,
+             * which is always hLen bytes long. CAPI's OAEP implementation always
+             * uses SHA-1, so hLen = 20.
              *
-             * CAPI would reject an oversized plaintext with an opaque Win32
-             * error, so check the bound explicitly */
-            oaepMaxPlainSize = (keySize > (2 * 20 + 2 + oaepParamsSize))
-                ? (keySize - (2 * 20 + 2 + oaepParamsSize)) : 0;
-            if(inSize > oaepMaxPlainSize) {
-                xmlSecInvalidSizeMoreThanError("Input data", inSize, oaepMaxPlainSize,
+             * We simply check that the input size does not exceed the key size
+             * and the exact padding-size enforcement is delegated to MSCrypto.
+             */
+            if(inSize > (keySize - 2)) {
+                xmlSecInvalidSizeMoreThanError("Input data", inSize, keySize,
                     xmlSecTransformGetName(transform));
                 return(-1);
             }

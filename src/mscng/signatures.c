@@ -824,6 +824,7 @@ xmlSecMSCngSignatureFixBrokenJava(xmlSecMSCngSignatureCtxPtr ctx,
     return(0);
 }
 
+#ifndef XMLSEC_NO_EC
 static int
 xmlSecMSCngSignatureFixBrokenASN1(xmlSecMSCngSignatureCtxPtr ctx,
     const xmlSecByte* data, xmlSecSize dataSize,
@@ -943,6 +944,7 @@ xmlSecMSCngSignatureFixBrokenASN1(xmlSecMSCngSignatureCtxPtr ctx,
     LocalFree(eccSignature);
     return(0);
 }
+#endif /* XMLSEC_NO_EC */
 
 static int
 xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
@@ -1045,7 +1047,10 @@ xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
         pssPaddingInfo.pszAlgId = ctx->pszHashAlgId;
         pssPaddingInfo.cbSalt = ctx->dwRsaPssSaltSize;
         pPaddingInfo = &pssPaddingInfo;
-    } else if ((ctx->keyId == xmlSecMSCngKeyDataEcId) &&
+    } else
+
+#ifndef XMLSEC_NO_EC
+    if ((ctx->keyId == xmlSecMSCngKeyDataEcId) &&
             ((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_SUPPORT_ASN1_SIGNATURE_VALUES) != 0)) {
         /* however some implementations (e.g. Java) just put ASN1 structure in the signature
          * https://github.com/lsh123/xmlsec/issues/995 */
@@ -1058,7 +1063,10 @@ xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
             data = fixedData;
             dataSize = fixedDataSize;
         }
-    } else {
+    } else
+#endif /* XMLSEC_NO_EC */
+
+    {
         /* we expect the DSA/ECDSA r and s to be the same size and either have fixed size (DSA) or match
          * the size of the key (ECDSA); however some implementations (e.g. Java) cut or add leading zeros */
         ret = xmlSecMSCngSignatureFixBrokenJava(ctx, data, dataSize, (const xmlSecByte**)&fixedData, &fixedDataSize);
@@ -1082,6 +1090,8 @@ xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
 #ifndef XMLSEC_NO_DSA
     if((ctx->keyId == xmlSecMSCngKeyDataDsaId) && (ctx->cbHash > XMLSEC_MSCNG_DSA_MAX_Q_SIZE)) {
         DWORD qSize = 0;
+        xmlSecSize stripSize;
+        xmlSecSize ii;
 
         ret = xmlSecMSCngDsaGetQSizeInBytes(pubkey, &qSize);
         if(ret < 0) {
@@ -1107,10 +1117,19 @@ xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
                 xmlSecMallocError(2 * qSize, NULL);
                 goto done;
             }
-            /* drop the leading bytes of each half (they are zero for a valid
-             * signature; otherwise the signature will be rejected by CNG) */
-            memcpy(dsaSig, data + (ctx->signatureHalfSize - qSize), qSize);
-            memcpy(dsaSig + qSize, data + ctx->signatureHalfSize + (ctx->signatureHalfSize - qSize), qSize);
+            /* drop the leading bytes of each half; they must actually be zeros,
+             * otherwise the original r or s value is out of range (>= q) and
+             * the signature must be rejected instead of being reduced modulo
+             * q before being handed to CNG */
+            stripSize = ctx->signatureHalfSize - (xmlSecSize)qSize;
+            for(ii = 0; ii < stripSize; ii++) {
+                if((data[ii] != 0) || (data[ctx->signatureHalfSize + ii] != 0)) {
+                    xmlSecInvalidDataError("DSA signature has non-zero leading bytes", NULL);
+                    goto done;
+                }
+            }
+            memcpy(dsaSig, data + stripSize, qSize);
+            memcpy(dsaSig + qSize, data + ctx->signatureHalfSize + stripSize, qSize);
             data = dsaSig;
             dataSize = 2 * qSize;
         }
@@ -1159,6 +1178,7 @@ done:
     return(res);
 }
 
+#ifndef XMLSEC_NO_EC
 static int
 xmlSecMSCngSignatureConvertToASN1(xmlSecMSCngSignatureCtxPtr ctx, xmlSecBufferPtr buf) {
     xmlSecByte* data;
@@ -1179,7 +1199,11 @@ xmlSecMSCngSignatureConvertToASN1(xmlSecMSCngSignatureCtxPtr ctx, xmlSecBufferPt
         return(-1);
     }
 
-    /* CERT_ECC_SIGNATURE carries little-endian integers */
+    /* CERT_ECC_SIGNATURE carries little-endian integers; CryptEncodeObjectEx
+     * encodes them as minimal DER INTEGERs (leading zero bytes are stripped; see
+     * the X509_MULTI_BYTE_UINT entry of
+     * https://learn.microsoft.com/en-us/windows/win32/seccrypto/constants-for-cryptencodeobject-and-cryptdecodeobject,
+     * verified empirically), so full half-size r/s values are safe. */
     data = xmlSecBufferGetData(buf);
     dataSize = xmlSecBufferGetSize(buf);
     halfSize = dataSize / 2;
@@ -1226,6 +1250,7 @@ xmlSecMSCngSignatureConvertToASN1(xmlSecMSCngSignatureCtxPtr ctx, xmlSecBufferPt
     LocalFree(encodedData);
     return(0);
 }
+#endif /* XMLSEC_NO_EC */
 
 static int
 xmlSecMSCngSignatureSign(
@@ -1502,6 +1527,7 @@ xmlSecMSCngSignatureSign(
         }
     }
 
+#ifndef XMLSEC_NO_EC
     if ((ctx->keyId == xmlSecMSCngKeyDataEcId) &&
             ((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_SUPPORT_ASN1_SIGNATURE_VALUES) != 0)
     ) {
@@ -1514,6 +1540,7 @@ xmlSecMSCngSignatureSign(
             return(-1);
         }
     }
+#endif /* XMLSEC_NO_EC */
 
     /* done */
     return(0);

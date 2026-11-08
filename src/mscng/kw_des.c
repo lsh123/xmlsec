@@ -393,6 +393,10 @@ xmlSecMSCngKWDes3BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwInSize, goto done, NULL);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(ivSize, dwIvSize, goto done, NULL);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(outSize, dwOutSize, goto done, NULL);
+
+    /* the caller may pass in == out; BCryptEncrypt supports in-place operation
+     * when pbInput == pbOutput:
+     * https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/nf-bcrypt-bcryptencrypt */
     status = BCryptEncrypt(hKey,
         (PUCHAR)in,
         dwInSize,
@@ -616,6 +620,9 @@ xmlSecMSCngKWDes3BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(ivSize, dwIvSize, goto done, NULL);
     dwOutSize = dwInSize;
 
+    /* the caller may pass in == out; BCryptDecrypt supports in-place operation
+     * when pbInput == pbOutput:
+     * https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/nf-bcrypt-bcryptdecrypt */
     status = BCryptDecrypt(hKey,
         (PUCHAR)in,
         dwInSize,

@@ -141,7 +141,11 @@ xmlSecMSCngKeyDataCertGetMlDsaPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HAND
 
 done:
     if(hKey != NULL) {
-        BCryptDestroyKey(hKey);
+        status = BCryptDestroyKey(hKey);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptDestroyKey(ML-DSA pub)", NULL, status);
+            /* ignore error */
+        }
     }
     if(hAlg != NULL) {
         status = BCryptCloseAlgorithmProvider(hAlg, 0);

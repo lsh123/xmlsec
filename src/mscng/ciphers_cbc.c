@@ -717,18 +717,19 @@ xmlSecMSCngCbcBlockCipherCtxFinal(xmlSecMSCngCbcBlockCipherCtxPtr ctx,
     }
 
     if(encrypt == 0) {
+        xmlSecSize padding;
+
         /* check padding: only the final padding byte is range-checked since
          * the XML Encryption spec (https://www.w3.org/TR/xmlenc-core1/#sec-Padding)
-         * doesn't follow PKCS#5/PKCS#7  padding. */
-        if(outBuf[blockSize - 1] == 0) {
-            xmlSecInvalidSizeOtherError("Input data padding is zero", cipherName);
+         * doesn't follow PKCS#5/PKCS#7 padding; a single generic error is used
+         * for both the zero and the out-of-range padding values so that the
+         * two failure outcomes are not distinguishable (padding oracle mitigation). */
+        padding = (xmlSecSize)outBuf[blockSize - 1];
+        if((padding == 0) || (inSize < padding)) {
+            xmlSecInvalidDataError("invalid padding length for the cipher", cipherName);
             return(-1);
         }
-        if(inSize < outBuf[blockSize - 1]) {
-            xmlSecInvalidSizeLessThanError("Input data padding", inSize, (xmlSecSize)(outBuf[blockSize - 1]), cipherName);
-            return(-1);
-        }
-        outSize += (inSize - outBuf[blockSize - 1]);
+        outSize += (inSize - padding);
     } else {
         outSize += inSize;
     }

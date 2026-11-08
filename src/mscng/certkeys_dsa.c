@@ -261,7 +261,11 @@ xmlSecMSCngKeyDataCertGetDsaPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE
 
 done:
     if(hAlg != NULL) {
-        BCryptCloseAlgorithmProvider(hAlg, 0);
+        status = BCryptCloseAlgorithmProvider(hAlg, 0);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptCloseAlgorithmProvider(hAlg)", NULL, status);
+            /* ignore error */
+        }
     }
     if(blobData != NULL) {
         LocalFree(blobData);
@@ -382,7 +386,12 @@ xmlSecMSCngDsaBuildSubjectPublicKeyInfoDer(BCRYPT_KEY_HANDLE hKey, LPVOID* ppDer
     }
 
     /* Reverse each big-endian BCrypt value to little-endian for CryptEncodeObjectEx
-     * (CRYPT_UINT_BLOB values are expected in little-endian / LSB-first order). */
+     * (CRYPT_UINT_BLOB values are expected in little-endian / LSB-first order).
+     * CryptEncodeObjectEx emits minimal DER INTEGERs (leading zero bytes are
+     * stripped, a 0x00 sign byte is added only when the MSB is set; see the
+     * X509_MULTI_BYTE_UINT entry of
+     * https://learn.microsoft.com/en-us/windows/win32/seccrypto/constants-for-cryptencodeobject-and-cryptdecodeobject,
+     * verified empirically), so the full-width, zero-padded blobs are safe. */
     pLE = (BYTE*)LocalAlloc(LMEM_ZEROINIT, pSize);
     qLE = (BYTE*)LocalAlloc(LMEM_ZEROINIT, qSize);
     gLE = (BYTE*)LocalAlloc(LMEM_ZEROINIT, gSize);
@@ -751,10 +760,18 @@ done:
         xmlSecKeyDataDestroy(data);
     }
     if (hAlg != 0) {
-        BCryptCloseAlgorithmProvider(hAlg, 0);
+        status = BCryptCloseAlgorithmProvider(hAlg, 0);
+        if (status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptCloseAlgorithmProvider(hAlg)", NULL, status);
+            /* ignore error */
+        }
     }
     if (hKey != 0) {
-        BCryptDestroyKey(hKey);
+        status = BCryptDestroyKey(hKey);
+        if (status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptDestroyKey(hKey)", NULL, status);
+            /* ignore error */
+        }
     }
     if (blobInitialized != 0) {
         xmlSecBufferFinalize(&blob);

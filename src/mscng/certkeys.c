@@ -1165,14 +1165,18 @@ xmlSecMSCngKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
 
     xmlSecAssert2(id == xmlSecMSCngKeyDataRsaId, NULL);
     xmlSecAssert2(rsaValue != NULL, NULL);
-    xmlSecAssert2(xmlSecBufferGetData(&(rsaValue->modulus)) != NULL, NULL);
-    xmlSecAssert2(xmlSecBufferGetData(&(rsaValue->publicExponent)) != NULL, NULL);
 
     /* don't reverse blobs as both the XML and CNG work with big-endian */
     mSize = xmlSecBufferGetSize(&(rsaValue->modulus));
     peSize = xmlSecBufferGetSize(&(rsaValue->publicExponent));
-    xmlSecAssert2(mSize > 0, NULL);
-    xmlSecAssert2(peSize > 0, NULL);
+    if((xmlSecBufferGetData(&(rsaValue->modulus)) == NULL) || (mSize <= 0) ||
+       (xmlSecBufferGetData(&(rsaValue->publicExponent)) == NULL) || (peSize <= 0)) {
+        /* the base64 node reader succeeds on empty node content, so an empty
+         * <Modulus> or <Exponent> element reaches here; report it as invalid
+         * key data instead of an internal error */
+        xmlSecInvalidDataError("invalid RSA key data (empty modulus or public exponent)", NULL);
+        goto done;
+    }
 
     /* turn the read data into a public key blob, as documented at
      * <https://msdn.microsoft.com/en-us/library/windows/desktop/aa375531(v=vs.85).aspx>:
@@ -1576,8 +1580,13 @@ xmlSecMSCngKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
     /* first byte in ecValue->pubkey is the uncompressed point marker (0x04), we don't need it */
     pubkeyData = xmlSecBufferGetData(&(ecValue->pubkey));
     pubkeySize = xmlSecBufferGetSize(&(ecValue->pubkey));
-    xmlSecAssert2(pubkeyData != NULL, NULL);
-    xmlSecAssert2(pubkeySize > 1, NULL);
+    if((pubkeyData == NULL) || (pubkeySize <= 1)) {
+        /* the base64 node reader succeeds on empty node content, so an empty
+         * <PublicKey> element reaches here; report it as invalid key data
+         * instead of an internal error */
+        xmlSecInvalidDataError("invalid EC key data (empty public key)", NULL);
+        goto done;
+    }
     if(pubkeyData[0] != 0x04) {
         xmlSecInvalidIntegerDataError("EC public key point marker", (int)pubkeyData[0],
             "0x04 (uncompressed point)", xmlSecKeyDataKlassGetName(id));

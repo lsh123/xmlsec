@@ -429,9 +429,10 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
     }
     xmlSecAssert2(bytesRead == sizeof(authTagLengths), -1);
 
-    /* The BCRYPT_AUTH_TAG_LENGTHS_STRUCT fields are documented in bits, but the CNG
-     * AES-GCM provider reports them in bytes (verified empirically: min=12,
-     * max=16, inc=1). A GCM tag is at most 16 bytes, so dwMaxLength > 16 can
+    /* The BCRYPT_AUTH_TAG_LENGTHS_STRUCT fields are documented in bits
+     * (https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/ns-bcrypt-bcrypt_key_lengths_struct),
+     * but the CNG AES-GCM provider reports them in bytes (verified empirically:
+     * min=12, max=16, inc=1). A GCM tag is at most 16 bytes, so dwMaxLength > 16 can
      * only be a bits-unit report; normalize it to bytes so the checks below
      * work regardless of the provider's unit. A bits-unit report with
      * dwMaxLength <= 16 (a maximum tag of 2 bytes or less) is indistinguishable

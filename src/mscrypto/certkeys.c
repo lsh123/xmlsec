@@ -423,10 +423,11 @@ xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlS
     ctx = xmlSecMSCryptoKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
-    /* cleanup old stuff */
-    xmlSecMSCryptoKeyDataCtxDestroyProvider(ctx);
+    /* cleanup old stuff; destroy the key before releasing the provider it
+     * belongs to (same order as xmlSecMSCryptoKeyDataFinalize) */
     xmlSecMSCryptoKeyDataCtxDestroyKey(ctx);
     xmlSecMSCryptoKeyDataCtxDestroyCert(ctx);
+    xmlSecMSCryptoKeyDataCtxDestroyProvider(ctx);
 
     ctx->type = type;
     ctx->dwKeySpec = 0;
@@ -531,10 +532,11 @@ xmlSecMSCryptoKeyDataAdoptKey(xmlSecKeyDataPtr data,
     ctx = xmlSecMSCryptoKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
-    /* cleanup old stuff */
-    xmlSecMSCryptoKeyDataCtxDestroyProvider(ctx);
+    /* cleanup old stuff; destroy the key before releasing the provider it
+     * belongs to (same order as xmlSecMSCryptoKeyDataFinalize) */
     xmlSecMSCryptoKeyDataCtxDestroyKey(ctx);
     xmlSecMSCryptoKeyDataCtxDestroyCert(ctx);
+    xmlSecMSCryptoKeyDataCtxDestroyProvider(ctx);
 
     ret = xmlSecMSCryptoKeyDataCtxSetProvider(ctx, hProv, fCallerFreeProv);
     if(ret != 0) {
@@ -1829,11 +1831,6 @@ xmlSecMSCryptoKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) 
         goto done;
     }
 
-    /** we assume that:
-     *    sizeof(q) <= XMLSEC_MSCRYPTO_DSA_MAX_Q_SIZE,
-     *    sizeof(g) <= sizeof(p)
-     *    sizeof(y) <= sizeof(p)
-     */
     pSize = xmlSecBufferGetSize(&(dsaValue->p));
     qSize = xmlSecBufferGetSize(&(dsaValue->q));
     gSize = xmlSecBufferGetSize(&(dsaValue->g));

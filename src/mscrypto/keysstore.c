@@ -310,7 +310,7 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, HCERTSTORE hStoreHandle
             }
             /* guard the DWORD addition: an out-of-range property size would
              * wrap dwAllocSize into a tiny allocation */
-            if (dwPropSize > 0xFFFFFFFE) {
+            if (dwPropSize >= 0xFFFFFFFE) {
                 xmlSecMSCryptoError("CertGetCertificateContextProperty", xmlSecKeyStoreGetName(store));
                 continue;
             }

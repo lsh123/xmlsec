@@ -370,6 +370,16 @@ xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSe
                                    SPKI/SubjectPublicKeyInfo form; only the
                                    traditional (PKCS#1) RSA formats are supported */
                                 xmlSecInvalidDataError("unsupported key format: a SEQUENCE was found inside a BIT STRING (e.g. an RSA key in SPKI/SubjectPublicKeyInfo form); use the traditional PKCS#1 format instead", NULL);
+                            } else if((remaining >= 1) && ((*p == 0x04) || (*p == 0x03) || (*p == 0x02))) {
+                                /* the EC point prefixes (0x04 uncompressed,
+                                   0x03 or 0x02 compressed; 0x03 is also the BIT STRING
+                                   tag value but here it is data, not a tag)
+                                   indicate an EC key without a curve OID: this
+                                   branch is only reached when no EC curve OID
+                                   was seen, so the optional [0] ECParameters
+                                   element is missing and the key cannot be
+                                   loaded without it */
+                                xmlSecInvalidDataError("EC key is missing the curve OID (the [0] ECParameters element in an ECPrivateKey); the key cannot be loaded without it", NULL);
                             } else {
                                 xmlSecInternalError2("xmlSecGCryptAsn1ParseIntegerSequence", NULL, "INTEGER expected inside BIT STRING, remaining=%lu", remaining);
                             }

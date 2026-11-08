@@ -1064,6 +1064,7 @@ xmlSecGnuTLSSignatureGetDerHalfSize(gnutls_sign_algorithm_t algo, xmlSecSize key
 static int
 xmlSecGnuTLSSignatureGetDataToSign(xmlSecGnuTLSSignatureCtxPtr ctx, gnutls_datum_t* dataToSign)
 {
+    static xmlSecByte dummy = 0;
     int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
@@ -1092,15 +1093,23 @@ xmlSecGnuTLSSignatureGetDataToSign(xmlSecGnuTLSSignatureCtxPtr ctx, gnutls_datum
     } else {
         xmlSecSize dataSize;
 
-        /* get data size -- we should have SOME data and zero size is an error */
+        /* get data size; empty (0-length) input is only allowed when the
+         * XMLSEC_TRANSFORMCTX_FLAGS_ALLOW_EMPTY_INPUT flag is set in the
+         * transform context (checked by the framework before the transform
+         * is executed) */
         dataSize = xmlSecBufferGetSize(&(ctx->preSignBuffer));
-        if(dataSize <= 0) {
-            xmlSecInternalError("xmlSecBufferGetSize", NULL);
+
+        /* no hash, sign the whole data; GnuTLS requires a non-NULL pointer
+         * even when the size is zero */
+        dataToSign->data = xmlSecBufferGetData(&(ctx->preSignBuffer));
+        if((dataToSign->data == NULL) && (dataSize == 0)) {
+            /* empty input: pass a dummy non-NULL pointer */
+            dataToSign->data = &dummy;
+        }
+        if(dataToSign->data == NULL) {
+            xmlSecInternalError("xmlSecBufferGetData", NULL);
             return(-1);
         }
-
-        /* no hash, sign the whole data */
-        dataToSign->data = xmlSecBufferGetData(&(ctx->preSignBuffer));
         XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, dataToSign->size, return(-1), NULL);
    }
 

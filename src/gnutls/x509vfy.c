@@ -1273,6 +1273,7 @@ xmlSecGnuTLSX509StoreVerifyCrlSignature(
     xmlChar *issuer_dn = NULL;
     unsigned int verify_result = 0;
     unsigned int flags = 0;
+    int issuer_from_trusted = 0;
     int err;
     int res = -1;
     int ret;
@@ -1287,6 +1288,9 @@ xmlSecGnuTLSX509StoreVerifyCrlSignature(
     if(ret < 0) {
         xmlSecInternalError("xmlSecGnuTLSX509StoreFindCrlIssuerCert(trusted)", storeName);
         goto done;
+    }
+    if(ret == 1) {
+        issuer_from_trusted = 1;
     }
 
     /* Then untrusted certs and make sure their chain verifies. */
@@ -1320,6 +1324,27 @@ xmlSecGnuTLSX509StoreVerifyCrlSignature(
         }
         res = 0;
         goto done;
+    }
+
+    /* gnutls_x509_crl_verify() never checks the issuer cert's own validity
+     * period (unlike gnutls_x509_crt_list_verify()). The untrusted/extra
+     * issuer paths above verify the issuer's chain, which includes its time
+     * window, so only the trusted issuer cert still needs to be checked. This
+     * mirrors the chain path's manual time check of the trust anchor(s)
+     * (xmlSecGnuTLSX509CheckChainAnchorTime), which applies under the same
+     * conditions. */
+    if((issuer_from_trusted != 0) &&
+       (keyInfoCtx->certsVerificationTime > 0) &&
+       ((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS) == 0)) {
+        ret = xmlSecGnuTLSX509CheckCrtsTime(&issuer_cert, 1, keyInfoCtx->certsVerificationTime);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGnuTLSX509CheckCrtsTime(trusted CRL issuer)", storeName);
+            goto done;
+        } else if(ret != 1) {
+            /* trusted CRL issuer cert is not yet valid or has expired */
+            res = 0;
+            goto done;
+        }
     }
 
     ret = xmlSecGnuTLSX509GetVerificationFlags(keyInfoCtx, &flags);
@@ -1576,7 +1601,7 @@ done:
 
 
 /**
- * @brief Returns 0 if SKI matches, 1 if SKI doesn't match, and a negative value if an error occurs.
+ * @brief Returns 1 if SKI matches, 0 if SKI doesn't match, and a negative value if an error occurs.
  */
 int
 xmlSecGnuTLSX509CertCompareSKI(gnutls_x509_crt_t cert, const xmlSecByte * ski, xmlSecSize skiSize) {
@@ -1594,7 +1619,7 @@ xmlSecGnuTLSX509CertCompareSKI(gnutls_x509_crt_t cert, const xmlSecByte * ski, x
     err = gnutls_x509_crt_get_subject_key_id(cert, NULL, &bufSize, &critical);
     if(err == GNUTLS_E_REQUESTED_DATA_NOT_AVAILABLE) {
         /* no SKI extension in the certificate, no match */
-        res = 1;
+        res = 0;
         goto done;
     } else if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSize <= 0)) {
         xmlSecGnuTLSError("gnutls_x509_crt_get_subject_key_id", err, NULL);
@@ -1603,7 +1628,7 @@ xmlSecGnuTLSX509CertCompareSKI(gnutls_x509_crt_t cert, const xmlSecByte * ski, x
 
     if(skiSize != bufSize) {
         /* doesn't match */
-        res = 1;
+        res = 0;
         goto done;
     }
 
@@ -1624,12 +1649,12 @@ xmlSecGnuTLSX509CertCompareSKI(gnutls_x509_crt_t cert, const xmlSecByte * ski, x
     /* compare */
     if(memcmp(ski, buf, bufSize) != 0) {
         /* doesn't match */
-        res = 1;
+        res = 0;
         goto done;
     }
 
     /* match! */
-    res = 0;
+    res = 1;
 
 done:
     /* cleanup */

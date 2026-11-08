@@ -35,6 +35,7 @@
  * Helper functions for GCrypt RSA encrypt/decrypt KT
  *
  *****************************************************************************/
+#if !defined(XMLSEC_NO_RSA_PKCS15) || !defined(XMLSEC_NO_RSA_OAEP)
 static int
 xmlSecGCryptRsaExtractData(gcry_sexp_t s_data, const char* name, xmlSecBufferPtr out) {
     gcry_sexp_t s_tmp;
@@ -162,6 +163,51 @@ done:
     /* done */
     return(res);
 }
+
+/**
+ * @brief Verifies that the input size matches the size of the RSA modulus.
+ * @details Finds the "n" (modulus) token in the private key S-expression,
+ * normalizes its size (stripping the leading 0x00 byte that libgcrypt may
+ * prepend to positive integers) and reports an error unless it matches
+ * @p inSize.
+ * @param s_priv_key the private key S-expression.
+ * @param inSize the input size to verify.
+ * @return 0 if the input size matches the modulus size or a negative value otherwise.
+ */
+static int
+xmlSecGCryptRsaKtCheckModulusSize(gcry_sexp_t s_priv_key, xmlSecSize inSize) {
+    size_t modulusSize = 0;
+    const void *modulusData;
+    gcry_sexp_t s_modulus;
+
+    xmlSecAssert2(s_priv_key != NULL, -1);
+
+    s_modulus = gcry_sexp_find_token(s_priv_key, "n", 0);
+    if(s_modulus == NULL) {
+        xmlSecGCryptError("gcry_sexp_find_token(n)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
+        return(-1);
+    }
+    modulusData = gcry_sexp_nth_data(s_modulus, 1, &modulusSize);
+    if(modulusData == NULL) {
+        xmlSecGCryptError("gcry_sexp_nth_data()", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
+        gcry_sexp_release(s_modulus);
+        return(-1);
+    }
+    /* libgcrypt may prepend a leading 0x00 byte to positive integers; strip
+     * it so the size matches the actual modulus size */
+    if((modulusSize > 0) && (((const xmlSecByte*)modulusData)[0] == 0x00)) {
+        modulusSize--;
+    }
+    gcry_sexp_release(s_modulus);
+
+    if(inSize != modulusSize) {
+        xmlSecInvalidSizeError("Input data", inSize, modulusSize, NULL);
+        return(-1);
+    }
+    return(0);
+}
+
+#endif /* !defined(XMLSEC_NO_RSA_PKCS15) || !defined(XMLSEC_NO_RSA_OAEP) */
 
 #ifndef XMLSEC_NO_RSA_PKCS15
 
@@ -403,49 +449,6 @@ done:
 
     /* done */
     return(res);
-}
-
-/**
- * @brief Verifies that the input size matches the size of the RSA modulus.
- * @details Finds the "n" (modulus) token in the private key S-expression,
- * normalizes its size (stripping the leading 0x00 byte that libgcrypt may
- * prepend to positive integers) and reports an error unless it matches
- * @p inSize.
- * @param s_priv_key the private key S-expression.
- * @param inSize the input size to verify.
- * @return 0 if the input size matches the modulus size or a negative value otherwise.
- */
-static int
-xmlSecGCryptRsaKtCheckModulusSize(gcry_sexp_t s_priv_key, xmlSecSize inSize) {
-    size_t modulusSize = 0;
-    const void *modulusData;
-    gcry_sexp_t s_modulus;
-
-    xmlSecAssert2(s_priv_key != NULL, -1);
-
-    s_modulus = gcry_sexp_find_token(s_priv_key, "n", 0);
-    if(s_modulus == NULL) {
-        xmlSecGCryptError("gcry_sexp_find_token(n)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
-        return(-1);
-    }
-    modulusData = gcry_sexp_nth_data(s_modulus, 1, &modulusSize);
-    if(modulusData == NULL) {
-        xmlSecGCryptError("gcry_sexp_nth_data()", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
-        gcry_sexp_release(s_modulus);
-        return(-1);
-    }
-    /* libgcrypt may prepend a leading 0x00 byte to positive integers; strip
-     * it so the size matches the actual modulus size */
-    if((modulusSize > 0) && (((const xmlSecByte*)modulusData)[0] == 0x00)) {
-        modulusSize--;
-    }
-    gcry_sexp_release(s_modulus);
-
-    if(inSize != modulusSize) {
-        xmlSecInvalidSizeError("Input data", inSize, modulusSize, NULL);
-        return(-1);
-    }
-    return(0);
 }
 
 static int
@@ -1022,7 +1025,7 @@ xmlSecGCryptRsaOaepEncrypt(xmlSecGCryptRsaOaepCtxPtr ctx, xmlSecBufferPtr in, xm
 
     /* check that the input fits into the key
      * (OAEP: the maximum plaintext size is the key size - 2 * hash size
-     * - 2 - label size, RFC 8017 EME-OAEP) */
+     * - 2, RFC 8017 EME-OAEP; the label size is not included) */
     keySize = XMLSEC_BITS_TO_BYTES(xmlSecKeyDataGetSize(ctx->keyData));
     if(keySize <= 0) {
         xmlSecInternalError("xmlSecKeyDataGetSize", NULL);
@@ -1034,12 +1037,12 @@ xmlSecGCryptRsaOaepEncrypt(xmlSecGCryptRsaOaepCtxPtr ctx, xmlSecBufferPtr in, xm
             "hashAlg=%s", xmlSecErrorsSafeString(ctx->hashAlg));
         return(-1);
     }
-    if(keySize <= (2 * hashLen + 2 + oaepParamSize)) {
+    if(keySize <= (2 * hashLen + 2)) {
         xmlSecInternalError2("xmlSecGCryptRsaOaepEncrypt", NULL,
-            "key size is too small for the OAEP digest and label: keySize=" XMLSEC_SIZE_FMT, keySize);
+            "key size is too small for the OAEP digest: keySize=" XMLSEC_SIZE_FMT, keySize);
         return(-1);
     }
-    maxPlaintextSize = keySize - (2 * hashLen + 2 + oaepParamSize);
+    maxPlaintextSize = keySize - (2 * hashLen + 2);
     if(inSize > maxPlaintextSize) {
         xmlSecInvalidSizeMoreThanError("Input data", inSize, maxPlaintextSize, NULL);
         return(-1);

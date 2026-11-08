@@ -138,16 +138,14 @@ int
 xmlSecGCryptAppShutdown(void) {
     gcry_error_t err;
 
-    /* only terminate the secure memory if it was actually initialized;
-       GCRYCTL_TERM_SECMEM can fail (e.g. GPG_ERR_CONFLICT) when the
-       secure memory was never allocated (e.g. because the ignored
-       GCRYCTL_INIT_SECMEM failure happened during initialization) */
+    /* only terminate the secure memory if it was actually initialized */
     if(g_xmlSecGCryptSecureMemoryInitialized) {
         err = gcry_control(GCRYCTL_TERM_SECMEM);
         if(err != GPG_ERR_NO_ERROR) {
             xmlSecGCryptError("gcry_control(GCRYCTL_TERM_SECMEM)", err, NULL);
             return(-1);
         }
+        g_xmlSecGCryptSecureMemoryInitialized = 0;
     }
 
     /* done */

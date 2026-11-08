@@ -1039,9 +1039,8 @@ xmlSecGCryptDsaVerify(int digest XMLSEC_ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_d
 
     /* check signature size: a DSA signature is two fixed-size components (r and s) */
     if(dataSize != (XMLSEC_GCRYPT_DSA_SIG_SIZE + XMLSEC_GCRYPT_DSA_SIG_SIZE)) {
-        xmlSecInternalError3("Invalid signature size", NULL,
-            "actual=" XMLSEC_SIZE_FMT "; expected=" XMLSEC_SIZE_FMT, dataSize,
-            (xmlSecSize)(XMLSEC_GCRYPT_DSA_SIG_SIZE + XMLSEC_GCRYPT_DSA_SIG_SIZE));
+        xmlSecInvalidSizeError("Signature", dataSize,
+            (xmlSecSize)(XMLSEC_GCRYPT_DSA_SIG_SIZE + XMLSEC_GCRYPT_DSA_SIG_SIZE), NULL);
         goto done;
     }
 
@@ -1088,7 +1087,10 @@ xmlSecGCryptDsaVerify(int digest XMLSEC_ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_d
     err = gcry_pk_verify(s_sig, s_data, s_key);
     if(err == GPG_ERR_NO_ERROR) {
         res = 1; /* good signature */
-    } else if(err == GPG_ERR_BAD_SIGNATURE) {
+    } else if(gcry_err_code(err) == GPG_ERR_BAD_SIGNATURE) {
+        /* compare only the code part: newer libgcrypt versions tag error
+           codes with a source (e.g. GPG_ERR_SOURCE_GCRYPT), so the raw
+           value of err is not equal to GPG_ERR_BAD_SIGNATURE */
         res = 0; /* bad signature */
     } else {
         xmlSecGCryptError("gcry_pk_verify", err, NULL);
@@ -1332,8 +1334,7 @@ xmlSecGCryptRsaPkcs1Verify(int digest, xmlSecKeyDataPtr key_data,
 
     /* check signature size: an RSA signature is exactly the size of the modulus */
     if(dataSize != keySize) {
-        xmlSecInternalError3("Invalid signature size", NULL,
-            "actual=" XMLSEC_SIZE_FMT "; expected=" XMLSEC_SIZE_FMT, dataSize, keySize);
+        xmlSecInvalidSizeError("Signature", dataSize, keySize, NULL);
         goto done;
     }
 
@@ -1373,7 +1374,10 @@ xmlSecGCryptRsaPkcs1Verify(int digest, xmlSecKeyDataPtr key_data,
     err = gcry_pk_verify(s_sig, s_data, s_key);
     if(err == GPG_ERR_NO_ERROR) {
         res = 1; /* good signature */
-    } else if(err == GPG_ERR_BAD_SIGNATURE) {
+    } else if(gcry_err_code(err) == GPG_ERR_BAD_SIGNATURE) {
+        /* compare only the code part: newer libgcrypt versions tag error
+           codes with a source (e.g. GPG_ERR_SOURCE_GCRYPT), so the raw
+           value of err is not equal to GPG_ERR_BAD_SIGNATURE */
         res = 0; /* bad signature */
     } else {
         xmlSecGCryptError("gcry_pk_verify", err, NULL);
@@ -1542,8 +1546,7 @@ xmlSecGCryptRsaPssVerify(int digest, xmlSecKeyDataPtr key_data,
 
     /* check signature size: an RSA signature is exactly the size of the modulus */
     if(dataSize != keySize) {
-        xmlSecInternalError3("Invalid signature size", NULL,
-            "actual=" XMLSEC_SIZE_FMT "; expected=" XMLSEC_SIZE_FMT, dataSize, keySize);
+        xmlSecInvalidSizeError("Signature", dataSize, keySize, NULL);
         goto done;
     }
 
@@ -1586,7 +1589,10 @@ xmlSecGCryptRsaPssVerify(int digest, xmlSecKeyDataPtr key_data,
     err = gcry_pk_verify(s_sig, s_data, s_key);
     if(err == GPG_ERR_NO_ERROR) {
         res = 1; /* good signature */
-    } else if(err == GPG_ERR_BAD_SIGNATURE) {
+    } else if(gcry_err_code(err) == GPG_ERR_BAD_SIGNATURE) {
+        /* compare only the code part: newer libgcrypt versions tag error
+           codes with a source (e.g. GPG_ERR_SOURCE_GCRYPT), so the raw
+           value of err is not equal to GPG_ERR_BAD_SIGNATURE */
         res = 0; /* bad signature */
     } else {
         xmlSecGCryptError("gcry_pk_verify", err, NULL);
@@ -2199,7 +2205,6 @@ xmlSecGCryptEcdsaSign(int digest, xmlSecKeyDataPtr key_data,
     const xmlSecByte* dgst, xmlSecSize dgstSize,
     xmlSecBufferPtr out)
 {
-    gcry_mpi_t m_hash = NULL;
     gcry_sexp_t s_data = NULL;
     gcry_sexp_t s_sig = NULL;
     gcry_sexp_t s_r = NULL;
@@ -2211,6 +2216,7 @@ xmlSecGCryptEcdsaSign(int digest, xmlSecKeyDataPtr key_data,
     gpg_error_t err;
     const char * algo_name;
     xmlSecSize keySize;
+    int dgstLen;
     int ret;
     int res = -1;
 
@@ -2233,16 +2239,17 @@ xmlSecGCryptEcdsaSign(int digest, xmlSecKeyDataPtr key_data,
         goto done;
     }
 
-    err = gcry_mpi_scan(&m_hash, GCRYMPI_FMT_USG, dgst, dgstSize, NULL);
-    if((err != GPG_ERR_NO_ERROR) || (m_hash == NULL)) {
-        xmlSecGCryptError("gcry_mpi_scan(hash)", err, NULL);
-        goto done;
-    }
+    /* get the current digest; pass it as a raw byte string so that
+       libgcrypt sees the full digest length (a USG MPI would drop
+       leading zero bytes, breaking the hash truncation applied by
+       libgcrypt's ECDSA code) */
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(dgstSize, dgstLen, return(-1), NULL);
 
     err = gcry_sexp_build (&s_data, NULL,
                            "(data (flags raw)"
-                           "(hash %s %M))",
-                           algo_name, m_hash);
+                           "(hash %s %b))",
+                           algo_name,
+                           dgstLen, dgst);
     if((err != GPG_ERR_NO_ERROR) || (s_data == NULL)) {
         xmlSecGCryptError("gcry_sexp_build(data)", err, NULL);
         goto done;
@@ -2317,9 +2324,6 @@ xmlSecGCryptEcdsaSign(int digest, xmlSecKeyDataPtr key_data,
     res = 0;
 
 done:
-    if(m_hash != NULL) {
-        gcry_mpi_release(m_hash);
-    }
     if(m_r != NULL) {
         gcry_mpi_release(m_r);
     }
@@ -2348,7 +2352,6 @@ xmlSecGCryptEcdsaVerify(int digest, xmlSecKeyDataPtr key_data,
     const xmlSecByte* dgst, xmlSecSize dgstSize,
     const xmlSecByte* data, xmlSecSize dataSize)
 {
-    gcry_mpi_t m_hash = NULL;
     gcry_sexp_t s_data = NULL;
     gcry_mpi_t m_sig_r = NULL;
     gcry_mpi_t m_sig_s = NULL;
@@ -2356,6 +2359,7 @@ xmlSecGCryptEcdsaVerify(int digest, xmlSecKeyDataPtr key_data,
     gcry_sexp_t s_key;
     const char * algo_name;
     xmlSecSize keySize;
+    int dgstLen;
     gpg_error_t err;
     int res = -1;
 
@@ -2373,8 +2377,7 @@ xmlSecGCryptEcdsaVerify(int digest, xmlSecKeyDataPtr key_data,
 
     /* check signature size */
     if(dataSize != 2 * keySize) {
-        xmlSecInternalError3("Invalid signature size", NULL,
-            "actual=" XMLSEC_SIZE_FMT "; expected=" XMLSEC_SIZE_FMT, dataSize, 2 * keySize);
+        xmlSecInvalidSizeError("Signature", dataSize, 2 * keySize, NULL);
         goto done;
     }
 
@@ -2385,16 +2388,17 @@ xmlSecGCryptEcdsaVerify(int digest, xmlSecKeyDataPtr key_data,
         goto done;
     }
 
-    err = gcry_mpi_scan(&m_hash, GCRYMPI_FMT_USG, dgst, dgstSize, NULL);
-    if((err != GPG_ERR_NO_ERROR) || (m_hash == NULL)) {
-        xmlSecGCryptError("gcry_mpi_scan(hash)", err, NULL);
-        goto done;
-    }
+    /* get the current digest; pass it as a raw byte string so that
+       libgcrypt sees the full digest length (a USG MPI would drop
+       leading zero bytes, breaking the hash truncation applied by
+       libgcrypt's ECDSA code) */
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(dgstSize, dgstLen, return(-1), NULL);
 
     err = gcry_sexp_build (&s_data, NULL,
                            "(data (flags raw)"
-                           "(hash %s %M))",
-                           algo_name, m_hash);
+                           "(hash %s %b))",
+                           algo_name,
+                           dgstLen, dgst);
     if((err != GPG_ERR_NO_ERROR) || (s_data == NULL)) {
         xmlSecGCryptError("gcry_sexp_build(data)", err, NULL);
         goto done;
@@ -2424,7 +2428,10 @@ xmlSecGCryptEcdsaVerify(int digest, xmlSecKeyDataPtr key_data,
     err = gcry_pk_verify(s_sig, s_data, s_key);
     if(err == GPG_ERR_NO_ERROR) {
         res = 1; /* good signature */
-    } else if(err == GPG_ERR_BAD_SIGNATURE) {
+    } else if(gcry_err_code(err) == GPG_ERR_BAD_SIGNATURE) {
+        /* compare only the code part: newer libgcrypt versions tag error
+           codes with a source (e.g. GPG_ERR_SOURCE_GCRYPT), so the raw
+           value of err is not equal to GPG_ERR_BAD_SIGNATURE */
         res = 0; /* bad signature */
     } else {
         xmlSecGCryptError("gcry_pk_verify", err, NULL);
@@ -2433,9 +2440,6 @@ xmlSecGCryptEcdsaVerify(int digest, xmlSecKeyDataPtr key_data,
 
     /* done */
 done:
-    if(m_hash != NULL) {
-        gcry_mpi_release(m_hash);
-    }
     if(m_sig_r != NULL) {
         gcry_mpi_release(m_sig_r);
     }

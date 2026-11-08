@@ -2399,6 +2399,334 @@ test_xmlSecTmplReferenceListAddDataReference_and_KeyReference(void) {
 }
 
 /******************************************************************************
+ * helper to build an <enc:EncryptedKey> node with <enc:EncryptionMethod> and
+ * <enc:CipherData> children attached to a real document
+ *****************************************************************************/
+static xmlNodePtr
+testCreateEncKeyNode(xmlDocPtr* doc) {
+    xmlNodePtr encKeyNode;
+    xmlNodePtr cur;
+    xmlNsPtr ns;
+
+    (*doc) = xmlNewDoc(BAD_CAST "1.0");
+    if((*doc) == NULL) {
+        return(NULL);
+    }
+    encKeyNode = xmlNewDocNode((*doc), NULL, xmlSecNodeEncryptedKey, NULL);
+    if(encKeyNode == NULL) {
+        xmlFreeDoc((*doc));
+        (*doc) = NULL;
+        return(NULL);
+    }
+    ns = xmlNewNs(encKeyNode, xmlSecEncNs, NULL);
+    if(ns == NULL) {
+        xmlFreeNode(encKeyNode);
+        xmlFreeDoc((*doc));
+        (*doc) = NULL;
+        return(NULL);
+    }
+    xmlSetNs(encKeyNode, ns);
+    xmlDocSetRootElement((*doc), encKeyNode);
+
+    cur = xmlSecAddChild(encKeyNode, xmlSecNodeEncryptionMethod, xmlSecEncNs);
+    if(cur == NULL) {
+        xmlFreeDoc((*doc));
+        (*doc) = NULL;
+        return(NULL);
+    }
+    if(xmlSetProp(cur, xmlSecAttrAlgorithm, xmlSecTransformExclC14NId->href) == NULL) {
+        xmlFreeDoc((*doc));
+        (*doc) = NULL;
+        return(NULL);
+    }
+
+    cur = xmlSecAddChild(encKeyNode, xmlSecNodeCipherData, xmlSecEncNs);
+    if(cur == NULL) {
+        xmlFreeDoc((*doc));
+        (*doc) = NULL;
+        return(NULL);
+    }
+
+    return(encKeyNode);
+}
+
+/*
+ * returns the next element sibling of the @p node (skipping non-element
+ * siblings) or NULL if there is none
+ */
+static xmlNodePtr
+testGetNextElementSibling(xmlNodePtr node) {
+    return(xmlSecGetNextElementNode(node->next));
+}
+
+static void
+test_xmlSecTmplEncDataEnsureEncProperties_insertion_order(void) {
+    xmlNodePtr encNode = NULL;
+    xmlNodePtr cipherDataNode;
+    xmlNodePtr refListNode;
+    xmlNodePtr carriedKeyNameNode;
+    xmlNodePtr propsNode;
+
+    testStart("xmlSecTmplEncDataEnsureEncProperties: inserts EncryptionProperties after CipherData and before ReferenceList/CarriedKeyName");
+
+    /* case 1: no <enc:ReferenceList> or <enc:CarriedKeyName> - the
+     * <enc:EncryptionProperties> node must be appended after the
+     * <enc:CipherData> node (i.e. become the last child) */
+    encNode = xmlSecTmplEncDataCreate(NULL, xmlSecTransformExclC14NId,
+        NULL, NULL, NULL, NULL);
+    if(encNode == NULL) {
+        testLog("Error: xmlSecTmplEncDataCreate returned NULL\n");
+        testFinishedFailure();
+        return;
+    }
+    cipherDataNode = xmlSecFindChild(encNode, xmlSecNodeCipherData, xmlSecEncNs);
+    propsNode = xmlSecTmplEncDataEnsureEncProperties(encNode, NULL);
+    if(cipherDataNode == NULL || propsNode == NULL) {
+        testLog("Error: failed to find <enc:CipherData> or create <enc:EncryptionProperties>\n");
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+    if(testGetNextElementSibling(cipherDataNode) != propsNode) {
+        testLog("Error: <enc:EncryptionProperties> is not placed after <enc:CipherData>\n");
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+    if(testGetNextElementSibling(propsNode) != NULL) {
+        testLog("Error: <enc:EncryptionProperties> is not the last child\n");
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+    xmlFreeNode(encNode);
+
+    /* case 2: existing <enc:ReferenceList> - the <enc:EncryptionProperties>
+     * node must be inserted before it */
+    encNode = xmlSecTmplEncDataCreate(NULL, xmlSecTransformExclC14NId,
+        NULL, NULL, NULL, NULL);
+    if(encNode == NULL) {
+        testLog("Error: xmlSecTmplEncDataCreate returned NULL\n");
+        testFinishedFailure();
+        return;
+    }
+    refListNode = xmlSecAddChild(encNode, xmlSecNodeReferenceList, xmlSecEncNs);
+    if(refListNode == NULL) {
+        testLog("Error: xmlSecAddChild(xmlSecNodeReferenceList) returned NULL\n");
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+    cipherDataNode = xmlSecFindChild(encNode, xmlSecNodeCipherData, xmlSecEncNs);
+    propsNode = xmlSecTmplEncDataEnsureEncProperties(encNode, NULL);
+    if(cipherDataNode == NULL || propsNode == NULL) {
+        testLog("Error: failed to find <enc:CipherData> or create <enc:EncryptionProperties>\n");
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+    if(testGetNextElementSibling(cipherDataNode) != propsNode) {
+        testLog("Error: <enc:EncryptionProperties> is not placed after <enc:CipherData>\n");
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+    if(testGetNextElementSibling(propsNode) != refListNode) {
+        testLog("Error: <enc:EncryptionProperties> is not placed before <enc:ReferenceList>\n");
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+    xmlFreeNode(encNode);
+
+    /* case 3: existing <enc:CarriedKeyName> - the <enc:EncryptionProperties>
+     * node must be inserted before it */
+    encNode = xmlSecTmplEncDataCreate(NULL, xmlSecTransformExclC14NId,
+        NULL, NULL, NULL, NULL);
+    if(encNode == NULL) {
+        testLog("Error: xmlSecTmplEncDataCreate returned NULL\n");
+        testFinishedFailure();
+        return;
+    }
+    carriedKeyNameNode = xmlSecAddChild(encNode, xmlSecNodeCarriedKeyName, xmlSecEncNs);
+    if(carriedKeyNameNode == NULL) {
+        testLog("Error: xmlSecAddChild(xmlSecNodeCarriedKeyName) returned NULL\n");
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+    cipherDataNode = xmlSecFindChild(encNode, xmlSecNodeCipherData, xmlSecEncNs);
+    propsNode = xmlSecTmplEncDataEnsureEncProperties(encNode, NULL);
+    if(cipherDataNode == NULL || propsNode == NULL) {
+        testLog("Error: failed to find <enc:CipherData> or create <enc:EncryptionProperties>\n");
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+    if(testGetNextElementSibling(cipherDataNode) != propsNode) {
+        testLog("Error: <enc:EncryptionProperties> is not placed after <enc:CipherData>\n");
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+    if(testGetNextElementSibling(propsNode) != carriedKeyNameNode) {
+        testLog("Error: <enc:EncryptionProperties> is not placed before <enc:CarriedKeyName>\n");
+        xmlFreeNode(encNode);
+        testFinishedFailure();
+        return;
+    }
+    xmlFreeNode(encNode);
+
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTmplReferenceListAdd_insertion_order(void) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr encKeyNode;
+    xmlNodePtr cipherDataNode;
+    xmlNodePtr carriedKeyNameNode;
+    xmlNodePtr propsNode;
+    xmlNodePtr refListNode;
+    xmlNodePtr dataRefNode;
+
+    testStart("xmlSecTmplReferenceListAddDataReference: inserts ReferenceList after CipherData and before CarriedKeyName");
+
+    /* case 1: no <enc:CarriedKeyName> - the <enc:ReferenceList> node must be
+     * appended after the <enc:CipherData> node (i.e. become the last child) */
+    encKeyNode = testCreateEncKeyNode(&doc);
+    if(encKeyNode == NULL) {
+        testLog("Error: failed to create <enc:EncryptedKey> node\n");
+        testFinishedFailure();
+        return;
+    }
+    dataRefNode = xmlSecTmplReferenceListAddDataReference(encKeyNode, BAD_CAST "#data");
+    if(dataRefNode == NULL) {
+        testLog("Error: xmlSecTmplReferenceListAddDataReference returned NULL\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    refListNode = xmlSecFindChild(encKeyNode, xmlSecNodeReferenceList, xmlSecEncNs);
+    cipherDataNode = xmlSecFindChild(encKeyNode, xmlSecNodeCipherData, xmlSecEncNs);
+    if(refListNode == NULL || cipherDataNode == NULL) {
+        testLog("Error: failed to find <enc:ReferenceList> or <enc:CipherData>\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(testGetNextElementSibling(cipherDataNode) != refListNode) {
+        testLog("Error: <enc:ReferenceList> is not placed after <enc:CipherData>\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(testGetNextElementSibling(refListNode) != NULL) {
+        testLog("Error: <enc:ReferenceList> is not the last child\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlFreeDoc(doc);
+
+    /* case 2: existing <enc:CarriedKeyName> - the <enc:ReferenceList> node
+     * must be inserted before it */
+    encKeyNode = testCreateEncKeyNode(&doc);
+    if(encKeyNode == NULL) {
+        testLog("Error: failed to create <enc:EncryptedKey> node\n");
+        testFinishedFailure();
+        return;
+    }
+    carriedKeyNameNode = xmlSecAddChild(encKeyNode, xmlSecNodeCarriedKeyName, xmlSecEncNs);
+    if(carriedKeyNameNode == NULL) {
+        testLog("Error: xmlSecAddChild(xmlSecNodeCarriedKeyName) returned NULL\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    dataRefNode = xmlSecTmplReferenceListAddDataReference(encKeyNode, BAD_CAST "#data");
+    if(dataRefNode == NULL) {
+        testLog("Error: xmlSecTmplReferenceListAddDataReference returned NULL\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    refListNode = xmlSecFindChild(encKeyNode, xmlSecNodeReferenceList, xmlSecEncNs);
+    cipherDataNode = xmlSecFindChild(encKeyNode, xmlSecNodeCipherData, xmlSecEncNs);
+    if(refListNode == NULL || cipherDataNode == NULL) {
+        testLog("Error: failed to find <enc:ReferenceList> or <enc:CipherData>\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(testGetNextElementSibling(cipherDataNode) != refListNode) {
+        testLog("Error: <enc:ReferenceList> is not placed after <enc:CipherData>\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(testGetNextElementSibling(refListNode) != carriedKeyNameNode) {
+        testLog("Error: <enc:ReferenceList> is not placed before <enc:CarriedKeyName>\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlFreeDoc(doc);
+
+    /* case 3: existing <enc:EncryptionProperties> and <enc:CarriedKeyName> -
+     * the <enc:ReferenceList> node must be inserted between them */
+    encKeyNode = testCreateEncKeyNode(&doc);
+    if(encKeyNode == NULL) {
+        testLog("Error: failed to create <enc:EncryptedKey> node\n");
+        testFinishedFailure();
+        return;
+    }
+    carriedKeyNameNode = xmlSecAddChild(encKeyNode, xmlSecNodeCarriedKeyName, xmlSecEncNs);
+    if(carriedKeyNameNode == NULL) {
+        testLog("Error: xmlSecAddChild(xmlSecNodeCarriedKeyName) returned NULL\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    propsNode = xmlSecTmplEncDataEnsureEncProperties(encKeyNode, NULL);
+    if(propsNode == NULL) {
+        testLog("Error: xmlSecTmplEncDataEnsureEncProperties returned NULL\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    dataRefNode = xmlSecTmplReferenceListAddDataReference(encKeyNode, BAD_CAST "#data");
+    if(dataRefNode == NULL) {
+        testLog("Error: xmlSecTmplReferenceListAddDataReference returned NULL\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    refListNode = xmlSecFindChild(encKeyNode, xmlSecNodeReferenceList, xmlSecEncNs);
+    if(refListNode == NULL) {
+        testLog("Error: failed to find <enc:ReferenceList>\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(testGetNextElementSibling(propsNode) != refListNode) {
+        testLog("Error: <enc:ReferenceList> is not placed after <enc:EncryptionProperties>\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(testGetNextElementSibling(refListNode) != carriedKeyNameNode) {
+        testLog("Error: <enc:ReferenceList> is not placed before <enc:CarriedKeyName>\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlFreeDoc(doc);
+
+    testFinishedSuccess();
+}
+
+/******************************************************************************
  * xmlSecTmplKeyInfoAddKeyValue / xmlSecTmplKeyInfoAddRetrievalMethod /
  * xmlSecTmplKeyInfoAddEncryptedKey / xmlSecTmplX509DataAdd*
    *****************************************************************************/
@@ -3422,6 +3750,7 @@ test_templates(void) {
 
     testGroupStart("xmlSecTmplEncDataEnsureEncProperties");
     test_xmlSecTmplEncDataEnsureEncProperties_and_AddEncProperty();
+    test_xmlSecTmplEncDataEnsureEncProperties_insertion_order();
     if(testGroupFinished() != 1) { success = 0; }
 
     testGroupStart("xmlSecTmplEncDataGetEncMethodNode");
@@ -3434,6 +3763,7 @@ test_templates(void) {
 
     testGroupStart("xmlSecTmplReferenceListAdd");
     test_xmlSecTmplReferenceListAddDataReference_and_KeyReference();
+    test_xmlSecTmplReferenceListAdd_insertion_order();
     if(testGroupFinished() != 1) { success = 0; }
 
     testGroupStart("xmlSecTmplKeyInfoAddKeyValue");

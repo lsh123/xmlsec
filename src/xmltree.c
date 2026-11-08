@@ -81,12 +81,12 @@ xmlSecGetNodeContentAndTrim(const xmlNodePtr cur) {
 
     /* ltrim */
     bb = content;
-    while(((*bb) != '\0') && isspace(*bb)) { ++bb; }
+    while(((*bb) != '\0') && isspace((unsigned char)(*bb))) { ++bb; }
 
     /* rtrim */
     if((*bb) != '\0') {
         ee = bb + xmlStrlen(bb) - 1;
-        while((bb <= ee) && isspace(*ee)) { --ee; }
+        while((bb <= ee) && isspace((unsigned char)(*ee))) { --ee; }
         *(ee + 1) = '\0';
     }
 
@@ -896,7 +896,8 @@ xmlSecReplaceNodeBuffer(xmlNodePtr node, const xmlSecByte *buffer, xmlSecSize si
 
 /**
  * @brief Replaces a node with parsed XML data from a buffer, optionally returning the replaced node.
- * @details Swaps the @p node and the parsed XML data from the @p buffer in the XML tree.
+ * @details Swaps the @p node and the parsed XML data from the @p buffer in the XML tree. If @p buffer
+ * is empty then the old node is simply removed without replacement.
  * @param node the current node.
  * @param buffer the XML data.
  * @param size the XML data size.
@@ -907,36 +908,36 @@ int
 xmlSecReplaceNodeBufferAndReturn(xmlNodePtr node, const xmlSecByte *buffer, xmlSecSize size, xmlNodePtr *replaced) {
     xmlNodePtr results = NULL;
     xmlNodePtr next = NULL;
-#if (LIBXML_VERSION >= 21500)
-    xmlChar *oldenc;
-#else  /* (LIBXML_VERSION >= 21500) */
-    const xmlChar *oldenc;
-#endif /* (LIBXML_VERSION >= 21500) */
     int len;
     xmlParserErrors ret;
 
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(node->parent != NULL, -1);
     xmlSecAssert2(node->doc != NULL, -1);
-    xmlSecAssert2(buffer != NULL, -1);
+    xmlSecAssert2((buffer != NULL) || (size == 0), -1);
 
     /* parse buffer in the context of node's parent */
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(size, len, return(-1), NULL);
-    oldenc = node->doc->encoding;
-    node->doc->encoding = NULL;
-    ret = xmlParseInNodeContext(node->parent, (const char*)buffer, len,
-            xmlSecParserGetDefaultOptions(), &results);
-    node->doc->encoding = oldenc;
-    if(ret != XML_ERR_OK) {
-        xmlSecXmlError("xmlParseInNodeContext", NULL);
-        return(-1);
-    }
-    /* xmlParseInNodeContext() returns XML_ERR_OK with a NULL result list for
-     * an empty buffer; fail instead of silently deleting @p node without
-     * replacing it */
-    if(results == NULL) {
-        xmlSecInvalidDataError("buffer does not contain any XML nodes", xmlSecNodeGetName(node));
-        return(-1);
+    if((buffer != NULL) && (size > 0)) {
+#if (LIBXML_VERSION >= 21500)
+        xmlChar *oldenc;
+#else  /* (LIBXML_VERSION >= 21500) */
+        const xmlChar *oldenc;
+#endif /* (LIBXML_VERSION >= 21500) */
+
+        XMLSEC_SAFE_CAST_SIZE_TO_INT(size, len, return(-1), NULL);
+        oldenc = node->doc->encoding;
+        node->doc->encoding = NULL;
+        ret = xmlParseInNodeContext(node->parent, (const char*)buffer, len,
+                xmlSecParserGetDefaultOptions(), &results);
+        node->doc->encoding = oldenc;
+        if(ret != XML_ERR_OK) {
+            xmlSecXmlError("xmlParseInNodeContext", NULL);
+            return(-1);
+        }
+        if(results == NULL) {
+            xmlSecInvalidDataError("buffer does not contain any XML nodes", xmlSecNodeGetName(node));
+            return(-1);
+        }
     }
 
     /* add new nodes */
@@ -1177,7 +1178,9 @@ xmlSecIsEmptyNode(xmlNodePtr node) {
      * without content yields an empty string) */
     content = xmlNodeGetContent(node);
     if(content == NULL) {
-        return(1);
+        xmlSecError(XMLSEC_ERRORS_HERE, NULL, "xmlNodeGetContent",
+                    XMLSEC_ERRORS_R_MALLOC_FAILED, NULL);
+        return(-1);
     }
 
     res = xmlSecIsEmptyString(content);
@@ -1196,7 +1199,7 @@ xmlSecIsEmptyString(const xmlChar* str) {
     xmlSecAssert2(str != NULL, -1);
 
     for( ;*str != '\0'; ++str) {
-        if(!isspace((*str))) {
+        if(!isspace((unsigned char)(*str))) {
             return(0);
         }
     }

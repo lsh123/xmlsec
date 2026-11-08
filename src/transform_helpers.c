@@ -1481,6 +1481,7 @@ xmlSecTransformPbkdf2ParamsReadSalt(xmlSecTransformPbkdf2ParamsPtr params, xmlNo
 int
 xmlSecTransformPbkdf2ParamsRead(xmlSecTransformPbkdf2ParamsPtr params, xmlNodePtr node) {
     xmlNodePtr cur;
+    xmlNodePtr prfChild;
     int ret;
 
     xmlSecAssert2(params != NULL, -1);
@@ -1542,7 +1543,12 @@ xmlSecTransformPbkdf2ParamsRead(xmlSecTransformPbkdf2ParamsPtr params, xmlNodePt
         xmlSecInvalidNodeAttributeError(cur, xmlSecAttrAlgorithm, NULL, "empty");
         return(-1);
     }
-    /* PRF algorithm parameters are not supported */
+    /* PRF algorithm parameters are not supported: the PRF node must have no children */
+    prfChild = xmlSecGetNextElementNode(cur->children);
+    if(prfChild != NULL) {
+        xmlSecUnexpectedNodeError(prfChild, NULL);
+        return(-1);
+    }
 
     /* if we have something else then it's an error */
     cur = xmlSecGetNextElementNode(cur->next);
@@ -1606,6 +1612,7 @@ xmlSecTransformHkdfParamsFinalize(xmlSecTransformHkdfParamsPtr params) {
 int
 xmlSecTransformHkdfParamsRead(xmlSecTransformHkdfParamsPtr params, xmlNodePtr node) {
     xmlNodePtr cur;
+    xmlNodePtr prfChild;
     int ret;
 
     xmlSecAssert2(params != NULL, -1);
@@ -1623,6 +1630,12 @@ xmlSecTransformHkdfParamsRead(xmlSecTransformHkdfParamsPtr params, xmlNodePtr no
     params->prfAlgorithmHref = xmlGetProp(cur, xmlSecAttrAlgorithm);
     if(params->prfAlgorithmHref == NULL) {
         xmlSecInvalidNodeAttributeError(cur, xmlSecAttrAlgorithm, NULL, "empty");
+        return(-1);
+    }
+    /* PRF algorithm parameters are not supported: the PRF node must have no children */
+    prfChild = xmlSecGetNextElementNode(cur->children);
+    if(prfChild != NULL) {
+        xmlSecUnexpectedNodeError(prfChild, NULL);
         return(-1);
     }
     cur = xmlSecGetNextElementNode(cur->next);

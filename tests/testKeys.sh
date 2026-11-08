@@ -73,6 +73,7 @@ execKeysTestWithCryptoConfig() {
         xmlsec_feature_privkey_pem="no"
         xmlsec_feature_privkey_der="no"
         xmlsec_feature_pubkey_pem="no"
+        xmlsec_feature_gen_key="no"
 
         case "$alg_name" in
             eddsa-ed25519)

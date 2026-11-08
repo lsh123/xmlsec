@@ -553,17 +553,18 @@ xmlSecNssAppAscii2UCS2Conv(PRBool toUnicode,
 #ifndef XMLSEC_NO_X509
 /* rename certificate if needed */
 static SECItem *
-xmlSecNssAppNicknameCollisionCallback(SECItem *old_nick XMLSEC_ATTRIBUTE_UNUSED,
-    PRBool *cancel, void *wincx
+xmlSecNssAppNicknameCollisionCallback(
+    SECItem *old_nick XMLSEC_ATTRIBUTE_UNUSED,
+    PRBool *cancel,
+    void *wincx
 ) {
     CERTCertificate *cert = (CERTCertificate *)wincx;
     char *nick = NULL;
     SECItem *ret_nick = NULL;
 
-    if((cancel == NULL) || (cert == NULL)) {
-        xmlSecNssError("cert is missing", NULL);
-        return(NULL);
-    }
+    xmlSecAssert2(cancel != NULL, NULL);
+    xmlSecAssert2(cert != NULL, NULL);
+
 
     /*
      * NSS's sec_pkcs12_validate_cert_nickname() (lib/pkcs12/p12d.c) loops
@@ -582,20 +583,32 @@ xmlSecNssAppNicknameCollisionCallback(SECItem *old_nick XMLSEC_ATTRIBUTE_UNUSED,
     nick = CERT_MakeCANickname(cert);
     if (!nick) {
         xmlSecNssError("CERT_MakeCANickname", NULL);
+        (*cancel) = PR_TRUE;
         return(NULL);
     }
 
-    ret_nick = PORT_ZNew(SECItem);
+    /*
+     * The NSS contract for this callback (nss/p12.h) requires the returned
+     * SECItem to be of type siAsciiString, allocated via
+     * SECITEM_AllocItem(NULL, NULL, length + 1), with data containing the
+     * nickname as a zero-terminated string.
+     */
+    ret_nick = SECITEM_AllocItem(NULL, NULL, (unsigned int)PORT_Strlen(nick) + 1);
     if (ret_nick == NULL) {
-        xmlSecNssError("PORT_ZNew", NULL);
+        xmlSecNssError("SECITEM_AllocItem", NULL);
         PORT_Free(nick);
-        return NULL;
+        (*cancel) = PR_TRUE;
+        return(NULL);
     }
 
+    /* setup returned SECItem */
+    ret_nick->type = siAsciiString;
+    memcpy(ret_nick->data, nick, ret_nick->len);
+    PORT_Free(nick);
+
     /* done */
-    ret_nick->data = (unsigned char *)nick;
-    ret_nick->len = (unsigned int)PORT_Strlen(nick);
-    return ret_nick;
+    (*cancel) = PR_FALSE;
+    return(ret_nick);
 }
 #endif /* XMLSEC_NO_X509 */
 

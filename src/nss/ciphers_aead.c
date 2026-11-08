@@ -234,8 +234,9 @@ xmlSecNssAeadCipherFinalize(xmlSecTransformPtr transform) {
 
     xmlSecBufferFinalize(&(ctx->aad));
 
-    /* done */
-    memset(ctx, 0, sizeof(xmlSecNssAeadCipherCtx));
+    /* the context holds the random IV/nonce in ctx->iv[], so wipe it with
+     * a compiler-non-elidable cleanse */
+    xmlSecMemCleanse(ctx, sizeof(xmlSecNssAeadCipherCtx));
 }
 
 static int

@@ -19,6 +19,7 @@
 #include <pk11pub.h>
 #include <prinit.h>
 #include <prtypes.h>
+#include <secoid.h>
 #include <secoidt.h>
 
 

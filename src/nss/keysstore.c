@@ -111,8 +111,8 @@ xmlSecNssKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
 int
 xmlSecNssKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
                             xmlSecKeysMngrPtr keysMngr XMLSEC_ATTRIBUTE_UNUSED) {
-    return(xmlSecSimpleKeysStoreLoad_ex(store, uri, keysMngr,
-        xmlSecNssKeysStoreAdoptKey));
+    xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecNssKeysStoreId), -1);
+    return(xmlSecSimpleKeysStoreLoad_ex(store, uri, keysMngr, xmlSecNssKeysStoreAdoptKey));
 }
 
 /**

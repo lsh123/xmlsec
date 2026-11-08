@@ -682,6 +682,7 @@ xmlSecMSCngKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
  */
 int
 xmlSecMSCngKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri, xmlSecKeysMngrPtr keysMngr) {
+    xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCngKeysStoreId), -1);
     return(xmlSecSimpleKeysStoreLoad_ex(store, uri, keysMngr, xmlSecMSCngKeysStoreAdoptKey));
 }
 

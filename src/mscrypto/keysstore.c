@@ -120,8 +120,8 @@ xmlSecMSCryptoKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
 int
 xmlSecMSCryptoKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
                             xmlSecKeysMngrPtr keysMngr) {
-    return(xmlSecSimpleKeysStoreLoad_ex(store, uri, keysMngr,
-        xmlSecMSCryptoKeysStoreAdoptKey));
+    xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCryptoKeysStoreId), -1);
+    return(xmlSecSimpleKeysStoreLoad_ex(store, uri, keysMngr, xmlSecMSCryptoKeysStoreAdoptKey));
 }
 
 /**

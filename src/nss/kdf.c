@@ -906,11 +906,16 @@ xmlSecNssHkdfGenerateKey(xmlSecNssKdfCtxPtr ctx, xmlSecSize outLen, xmlSecBuffer
     }
 
     XMLSEC_SAFE_CAST_SIZE_TO_INT(outLen, outputLen, goto done, NULL);
-    derived = PK11_DeriveWithFlags(ikm, CKM_HKDF_DATA, &paramsItem,
-                CKM_HKDF_DERIVE, CKA_DERIVE, outputLen,
-                CKF_SIGN | CKF_VERIFY);
+    /*
+     * CKM_HKDF_DATA produces a CKO_DATA object, which does not support
+     * cryptographic operation attributes (CKA_SIGN/CKA_VERIFY), so pass
+     * no operation flags; the derived key is used only as a raw-value
+     * carrier via PK11_ExtractKeyValue/PK11_GetKeyData below.
+     */
+    derived = PK11_Derive(ikm, CKM_HKDF_DATA, &paramsItem,
+                CKM_HKDF_DERIVE, CKA_DERIVE, outputLen);
     if(derived == NULL) {
-        xmlSecNssError("PK11_DeriveWithFlags", NULL);
+        xmlSecNssError("PK11_Derive", NULL);
         goto done;
     }
 

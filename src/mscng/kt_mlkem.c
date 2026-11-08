@@ -434,6 +434,7 @@ xmlSecMSCngMLKEMDecapsulate(xmlSecMSCngMLKEMCtxPtr ctx, xmlSecBufferPtr cipherTe
     xmlSecAssert2(ctx->sharedSecretSize > 0, -1);
     xmlSecAssert2(cipherTextIn != NULL, -1);
     xmlSecAssert2(sharedSecretOut != NULL, -1);
+    xmlSecAssert2(xmlSecBufferIsSecure(sharedSecretOut), -1);
 
     /* zero-initialized so that the xmlSecBufferFinalize() call below is
      * safe even on error paths where the buffer was never initialized */

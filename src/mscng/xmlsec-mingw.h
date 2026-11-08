@@ -142,4 +142,9 @@
 #define PKCS12_NO_PERSIST_KEY               0x00008000
 #endif /* PKCS12_NO_PERSIST_KEY */
 
+/* MinGW may ship older wincrypt.h that lacks PKCS12_ALWAYS_CNG_KSP */
+#ifndef PKCS12_ALWAYS_CNG_KSP
+#define PKCS12_ALWAYS_CNG_KSP               0x00000200
+#endif /* PKCS12_ALWAYS_CNG_KSP */
+
 #endif /* XMLSEC_MSCNG_XMLSEC_MINGW_H */

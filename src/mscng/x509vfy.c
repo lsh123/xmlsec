@@ -1121,8 +1121,14 @@ xmlSecMSCngX509StoreVerifyCertChainAtTime(PCCERT_CONTEXT cert, FILETIME* time, H
     ret = CertGetCertificateChain(NULL, cert, time, chainStore, &chainPara,
         CERT_CHAIN_REVOCATION_CHECK_CHAIN, NULL, &pChainContext);
     if(ret == FALSE) {
+        /* A chain-build failure (e.g. missing intermediate certificates or no
+         * trusted root) is a normal "the chain can't be verified" outcome
+         * rather than an error; report it for diagnostics and return 0 so
+         * the caller treats the certificate as untrusted. 
+         * The other root cause for failure might be a system error (e.g. OOM)
+         * but we can't easily distinguish them from normal chain-build failures. */
         xmlSecMSCngLastError("CertGetCertificateChain", NULL);
-        return(-1);
+        return(0);
     }
 
     /* retry excluding the root if the revocation status is unknown; the
@@ -1135,8 +1141,10 @@ xmlSecMSCngX509StoreVerifyCertChainAtTime(PCCERT_CONTEXT cert, FILETIME* time, H
             CERT_CHAIN_REVOCATION_CHECK_CHAIN_EXCLUDE_ROOT, NULL,
             &pChainContext);
         if(ret == FALSE) {
+            /* same as above: report for diagnostics and treat the chain as
+             * unverifiable rather than an error */
             xmlSecMSCngLastError("CertGetCertificateChain", NULL);
-            return(-1);
+            return(0);
         }
     }
 

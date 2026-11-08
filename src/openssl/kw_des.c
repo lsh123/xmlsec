@@ -30,9 +30,9 @@
 #include "../cast_helpers.h"
 #include "openssl_compat.h"
 
-#ifdef XMLSEC_OPENSSL_API_300
+#if !defined(XMLSEC_OPENSSL_API_111)
 #include <openssl/core_names.h>
-#endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
 #ifndef XMLSEC_NO_DES
 
@@ -100,9 +100,9 @@ static int      xmlSecOpenSSLKWDes3Encrypt                      (xmlSecOpenSSLKW
 struct _xmlSecOpenSSLKWDes3Ctx {
     xmlSecTransformKWDes3Ctx parentCtx;
 
-#ifdef XMLSEC_OPENSSL_API_300
+#if !defined(XMLSEC_OPENSSL_API_111)
     EVP_CIPHER*  cipher;
-#endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 };
 
 /******************************************************************************
@@ -177,7 +177,7 @@ xmlSecOpenSSLKWDes3Initialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-#ifdef XMLSEC_OPENSSL_API_300
+#if !defined(XMLSEC_OPENSSL_API_111)
     /* fetch cipher */
     ctx->cipher = EVP_CIPHER_fetch(xmlSecOpenSSLGetLibCtx(), XMLSEC_OPENSSL_CIPHER_NAME_DES3_EDE, NULL);
     if(ctx->cipher == NULL) {
@@ -186,7 +186,7 @@ xmlSecOpenSSLKWDes3Initialize(xmlSecTransformPtr transform) {
         xmlSecOpenSSLKWDes3Finalize(transform);
         return(-1);
     }
-#endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
     return(0);
 }
@@ -201,11 +201,11 @@ xmlSecOpenSSLKWDes3Finalize(xmlSecTransformPtr transform) {
     ctx = xmlSecOpenSSLKWDes3GetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
-#ifdef XMLSEC_OPENSSL_API_300
+#if !defined(XMLSEC_OPENSSL_API_111)
     if(ctx->cipher != NULL) {
         EVP_CIPHER_free(ctx->cipher);
     }
-#endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
     xmlSecTransformKWDes3Finalize(transform, &(ctx->parentCtx));
     OPENSSL_cleanse(ctx, sizeof(xmlSecOpenSSLKWDes3Ctx));
@@ -275,31 +275,7 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last,
  * DES KW implementation
  *
  *****************************************************************************/
-#ifndef XMLSEC_OPENSSL_API_300
-
-static int
-xmlSecOpenSSLKWDes3Sha1(xmlSecTransformPtr transform XMLSEC_ATTRIBUTE_UNUSED,
-                       const xmlSecByte * in, xmlSecSize inSize,
-                       xmlSecByte * out, xmlSecSize outSize,
-                       xmlSecSize * outWritten) {
-    XMLSEC_UNREFERENCED(transform);
-    xmlSecAssert2(in != NULL, -1);
-    xmlSecAssert2(inSize > 0, -1);
-    xmlSecAssert2(out != NULL, -1);
-    xmlSecAssert2(outSize >= SHA_DIGEST_LENGTH, -1);
-    xmlSecAssert2(outWritten != NULL, -1);
-
-    if(SHA1(in, inSize, out) == NULL) {
-        xmlSecOpenSSLError("SHA1", NULL);
-        return(-1);
-    }
-
-    /* success */
-    (*outWritten) = SHA_DIGEST_LENGTH;
-    return(0);
-}
-
-#else /* XMLSEC_OPENSSL_API_300 */
+#if !defined(XMLSEC_OPENSSL_API_111)
 
 static int
 xmlSecOpenSSLKWDes3Sha1(xmlSecTransformPtr transform XMLSEC_ATTRIBUTE_UNUSED,
@@ -326,7 +302,31 @@ xmlSecOpenSSLKWDes3Sha1(xmlSecTransformPtr transform XMLSEC_ATTRIBUTE_UNUSED,
     return(0);
 }
 
-#endif /* XMLSEC_OPENSSL_API_300 */
+#else /* !defined(XMLSEC_OPENSSL_API_111) */
+
+static int
+xmlSecOpenSSLKWDes3Sha1(xmlSecTransformPtr transform XMLSEC_ATTRIBUTE_UNUSED,
+                       const xmlSecByte * in, xmlSecSize inSize,
+                       xmlSecByte * out, xmlSecSize outSize,
+                       xmlSecSize * outWritten) {
+    XMLSEC_UNREFERENCED(transform);
+    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2(inSize > 0, -1);
+    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(outSize >= SHA_DIGEST_LENGTH, -1);
+    xmlSecAssert2(outWritten != NULL, -1);
+
+    if(SHA1(in, inSize, out) == NULL) {
+        xmlSecOpenSSLError("SHA1", NULL);
+        return(-1);
+    }
+
+    /* success */
+    (*outWritten) = SHA_DIGEST_LENGTH;
+    return(0);
+}
+
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
 
 static int
@@ -453,16 +453,16 @@ xmlSecOpenSSLKWDes3Encrypt(xmlSecOpenSSLKWDes3CtxPtr ctx,
     xmlSecAssert2(outSize >= inSize, -1);
     xmlSecAssert2(outWritten != NULL, -1);
 
-#ifndef XMLSEC_OPENSSL_API_300
+#if !defined(XMLSEC_OPENSSL_API_111)
+    xmlSecAssert2(ctx->cipher != NULL, -1);
+    cipher = ctx->cipher;
+#else /* !defined(XMLSEC_OPENSSL_API_111) */
     cipher = EVP_des_ede3_cbc();
     if(cipher == NULL) {
         xmlSecOpenSSLError("EVP_des_ede3_cbc", NULL);
         goto done;
     }
-#else /* XMLSEC_OPENSSL_API_300 */
-    xmlSecAssert2(ctx->cipher != NULL, -1);
-    cipher = ctx->cipher;
-#endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
     len = EVP_CIPHER_key_length(cipher);
     if(len <= 0) {

@@ -37,19 +37,21 @@
  *
  *****************************************************************************/
 #if defined(LIBRESSL_VERSION_NUMBER)
+/* LibreSSL is based on OpenSSL 1.1 API. */
 #define XMLSEC_OPENSSL_IS_LIBRESSL      1
-#elif defined(OPENSSL_IS_BORINGSSL)
-#define XMLSEC_OPENSSL_IS_BORINGSSL     1
-#elif defined(OPENSSL_IS_AWSLC)
-#define XMLSEC_OPENSSL_IS_AWSLC         1
-#else  /* */
-#define XMLSEC_OPENSSL_IS_OPENSSL       1
-#endif /* */
-
-#if defined(XMLSEC_OPENSSL_IS_LIBRESSL)
-/* LibreSSL implements (most of) OpenSSL 1.1 API */
 #define XMLSEC_OPENSSL_API_111          1
-#elif OPENSSL_VERSION_NUMBER >= 0x40000000L
+#elif defined(OPENSSL_IS_BORINGSSL)
+/* BoringSSL is based on OpenSSL 1.1 API. */
+#define XMLSEC_OPENSSL_IS_BORINGSSL     1
+#define XMLSEC_OPENSSL_API_111          1
+#elif defined(OPENSSL_IS_AWSLC)
+/* AWS-LC is based on OpenSSL 1.1 API.*/
+#define XMLSEC_OPENSSL_IS_AWSLC         1
+#define XMLSEC_OPENSSL_API_111          1
+#else  /* This is OpenSSL */
+/* OpenSSL supports multiple API versions, starting from 3.0.0. */
+#define XMLSEC_OPENSSL_IS_OPENSSL       1
+#if OPENSSL_VERSION_NUMBER >= 0x40000000L
 #define XMLSEC_OPENSSL_API_400          1
 #define XMLSEC_OPENSSL_API_350          1
 #define XMLSEC_OPENSSL_API_330          1
@@ -68,6 +70,8 @@
 #else  /* OPENSSL_VERSION_NUMBER */
 #error "This version of OpenSSL library is not supported"
 #endif /* OPENSSL_VERSION_NUMBER */
+#endif /* This is OpenSSL */
+
 
 /******************************************************************************
  *
@@ -107,11 +111,11 @@
 #define XMLSEC_NO_EDDSA                 1
 #endif /* !defined(XMLSEC_OPENSSL_API_350) */
 
-#if !defined(XMLSEC_OPENSSL_API_300)
+#if defined(XMLSEC_OPENSSL_API_111)
 #define XMLSEC_NO_CONCATKDF             1
 #define XMLSEC_NO_PBKDF2                1
 #define XMLSEC_NO_HKDF                  1
-#endif /* !defined(XMLSEC_OPENSSL_API_300) */
+#endif /* defined(XMLSEC_OPENSSL_API_111) */
 /* \endcond End exclude from Doxygen */
 
 
@@ -189,10 +193,10 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLGenerateRandom     (xmlSecB
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLSetDefaultTrustedCertsFolder(const xmlChar* path);
 XMLSEC_CRYPTO_EXPORT const xmlChar*     xmlSecOpenSSLGetDefaultTrustedCertsFolder(void);
 
-#ifdef XMLSEC_OPENSSL_API_300
+#if !defined(XMLSEC_OPENSSL_API_111)
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLSetLibCtx(OSSL_LIB_CTX* libctx);
 XMLSEC_CRYPTO_EXPORT OSSL_LIB_CTX*      xmlSecOpenSSLGetLibCtx(void);
-#endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
 /******************************************************************************
  *

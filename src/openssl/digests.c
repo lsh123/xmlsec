@@ -25,9 +25,9 @@
 #include <xmlsec/openssl/evp.h>
 #include "openssl_compat.h"
 
-#ifdef XMLSEC_OPENSSL_API_300
+#if !defined(XMLSEC_OPENSSL_API_111)
 #include <openssl/core_names.h>
-#endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
 #include "../cast_helpers.h"
 
@@ -146,11 +146,7 @@ xmlSecOpenSSLEvpDigestCheckId(xmlSecTransformPtr transform) {
 }
 
 /* small helper macro to reduce clutter in the code */
-#ifndef XMLSEC_OPENSSL_API_300
-#define XMLSEC_OPENSSL_EVP_DIGEST_SETUP(transform, ctx, digestVal, digestName) \
-    (ctx)->digest = (EVP_MD*)(digestVal)
-
-#else /* XMLSEC_OPENSSL_API_300 */
+#if !defined(XMLSEC_OPENSSL_API_111)
 
 static int
 xmlSecOpenSSLEvpDigestSetDigestByName(xmlSecOpenSSLEvpDigestCtxPtr ctx, const char * digestName) {
@@ -177,7 +173,11 @@ xmlSecOpenSSLEvpDigestSetDigestByName(xmlSecOpenSSLEvpDigestCtxPtr ctx, const ch
     }
 
 
-#endif /* XMLSEC_OPENSSL_API_300 */
+#else /* !defined(XMLSEC_OPENSSL_API_111) */
+#define XMLSEC_OPENSSL_EVP_DIGEST_SETUP(transform, ctx, digestVal, digestName) \
+    (ctx)->digest = (EVP_MD*)(digestVal)
+
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
 #if !defined(XMLSEC_NO_GOST) || !defined(XMLSEC_NO_GOST2012)
 
@@ -327,11 +327,11 @@ xmlSecOpenSSLEvpDigestFinalize(xmlSecTransformPtr transform) {
         EVP_MD_CTX_free(ctx->digestCtx);
     }
 
-#ifdef XMLSEC_OPENSSL_API_300
+#if !defined(XMLSEC_OPENSSL_API_111)
     if((ctx->digest != NULL) && (ctx->digestNeedsToBeFreed != 0)) {
         EVP_MD_free(ctx->digest);
     }
-#endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
     OPENSSL_cleanse(ctx, sizeof(xmlSecOpenSSLEvpDigestCtx));
 }

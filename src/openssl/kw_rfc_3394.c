@@ -79,7 +79,7 @@ typedef struct _xmlSecOpenSSLKWRfc3394Ctx   xmlSecOpenSSLKWRfc3394Ctx,
  * Unified callback for old OpenSSL versions
  *
  *****************************************************************************/
-#ifndef XMLSEC_OPENSSL_API_300
+#if defined(XMLSEC_OPENSSL_API_111)
 
 /* Function pointer type for encrypt/decrypt operations */
 typedef int (*xmlSecOpenSSLKWRfc3394EncryptDecryptFunc)(
@@ -112,7 +112,7 @@ static int      xmlSecOpenSSLKWCamelliaEncryptDecrypt          (xmlSecOpenSSLKWR
                                                                  int encrypt);
 #endif /* XMLSEC_NO_CAMELLIA */
 
-#endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* defined(XMLSEC_OPENSSL_API_111) */
 
 
 /******************************************************************************
@@ -124,24 +124,24 @@ static int      xmlSecOpenSSLKWCamelliaEncryptDecrypt          (xmlSecOpenSSLKWR
 struct _xmlSecOpenSSLKWRfc3394Ctx {
     xmlSecTransformKWRfc3394Ctx parentCtx;
 
-#ifdef XMLSEC_OPENSSL_API_300
+#if !defined(XMLSEC_OPENSSL_API_111)
     const char*  cipherName;
     EVP_CIPHER*  cipher;
     EVP_CIPHER_CTX* cctx;
-#else /* !XMLSEC_OPENSSL_API_300 */
+#else /* !defined(XMLSEC_OPENSSL_API_111) */
     xmlSecOpenSSLKWRfc3394EncryptDecryptFunc encryptDecrypt;
-#endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 };
 
 /* small helper macro to reduce clutter in the code */
-#ifndef XMLSEC_OPENSSL_API_300
+#if !defined(XMLSEC_OPENSSL_API_111)
+#define XMLSEC_OPENSSL_KW_RFC3394_SET_CIPHER(ctx, cipherNameVal, encryptDecryptVal) \
+    (ctx)->cipherName = (cipherNameVal);
+#else /* !defined(XMLSEC_OPENSSL_API_111) */
 #define XMLSEC_OPENSSL_KW_RFC3394_SET_CIPHER(ctx, cipherNameVal, encryptDecryptVal) \
     (ctx)->encryptDecrypt = (encryptDecryptVal);
 
-#else /* XMLSEC_OPENSSL_API_300 */
-#define XMLSEC_OPENSSL_KW_RFC3394_SET_CIPHER(ctx, cipherNameVal, encryptDecryptVal) \
-    (ctx)->cipherName = (cipherNameVal);
-#endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
 
 /******************************************************************************
@@ -281,7 +281,7 @@ xmlSecOpenSSLKWRfc3394Initialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-#ifdef XMLSEC_OPENSSL_API_300
+#if !defined(XMLSEC_OPENSSL_API_111)
     /* fetch cipher */
     xmlSecAssert2(ctx->cipherName != NULL, -1);
     ctx->cipher = EVP_CIPHER_fetch(xmlSecOpenSSLGetLibCtx(), ctx->cipherName, NULL);
@@ -291,7 +291,7 @@ xmlSecOpenSSLKWRfc3394Initialize(xmlSecTransformPtr transform) {
         xmlSecOpenSSLKWRfc3394Finalize(transform);
         return(-1);
     }
-#endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
     return(0);
 }
@@ -306,14 +306,14 @@ xmlSecOpenSSLKWRfc3394Finalize(xmlSecTransformPtr transform) {
     ctx = xmlSecOpenSSLKWRfc3394GetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
-#ifdef XMLSEC_OPENSSL_API_300
+#if !defined(XMLSEC_OPENSSL_API_111)
     if(ctx->cctx != NULL) {
         EVP_CIPHER_CTX_free(ctx->cctx);
     }
     if(ctx->cipher != NULL) {
         EVP_CIPHER_free(ctx->cipher);
     }
-#endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
     xmlSecTransformKWRfc3394Finalize(transform, &(ctx->parentCtx));
     OPENSSL_cleanse(ctx, sizeof(xmlSecOpenSSLKWRfc3394Ctx));
@@ -384,7 +384,7 @@ xmlSecOpenSSLKWRfc3394Execute(xmlSecTransformPtr transform, int last,
  * RFC 3394 KW encrypt/decrypt implementation
  *
  *****************************************************************************/
-#ifdef XMLSEC_OPENSSL_API_300
+#if !defined(XMLSEC_OPENSSL_API_111)
 
 /* RFC 3394 specifies single-block (ECB) encryption. We use a CBC cipher with an
  * explicit all-zero IV so the behavior is well-defined and portable rather than
@@ -527,7 +527,7 @@ xmlSecOpenSSLKWRfc3394BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByt
     return(0);
 }
 
-#else /* XMLSEC_OPENSSL_API_300 */
+#else /* !defined(XMLSEC_OPENSSL_API_111) */
 
 static int
 xmlSecOpenSSLKWRfc3394BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSecSize inSize,
@@ -585,7 +585,7 @@ xmlSecOpenSSLKWRfc3394BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByt
     return(0);
 }
 
-#endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
 
 
@@ -596,7 +596,7 @@ xmlSecOpenSSLKWRfc3394BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByt
  *****************************************************************************/
 #ifndef XMLSEC_NO_AES
 
-#ifndef XMLSEC_OPENSSL_API_300
+#if defined(XMLSEC_OPENSSL_API_111)
 static int
 xmlSecOpenSSLKWAesEncryptDecrypt(xmlSecOpenSSLKWRfc3394CtxPtr ctx, const xmlSecByte * in, xmlSecSize inSize,
                                 xmlSecByte * out, xmlSecSize outSize, xmlSecSize * outWritten,
@@ -648,7 +648,7 @@ done:
     OPENSSL_cleanse(&aesKey, sizeof(aesKey));
     return(res);
 }
-#endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* defined(XMLSEC_OPENSSL_API_111) */
 
 
 
@@ -696,7 +696,7 @@ xmlSecOpenSSLTransformKWAes256GetKlass(void) {
  *****************************************************************************/
 #ifndef XMLSEC_NO_CAMELLIA
 
-#ifndef XMLSEC_OPENSSL_API_300
+#if defined(XMLSEC_OPENSSL_API_111)
 static int
 xmlSecOpenSSLKWCamelliaEncryptDecrypt(xmlSecOpenSSLKWRfc3394CtxPtr ctx, const xmlSecByte * in, xmlSecSize inSize,
                                       xmlSecByte * out, xmlSecSize outSize, xmlSecSize * outWritten,
@@ -741,7 +741,7 @@ xmlSecOpenSSLKWCamelliaEncryptDecrypt(xmlSecOpenSSLKWRfc3394CtxPtr ctx, const xm
     OPENSSL_cleanse(&camelliaKey, sizeof(camelliaKey));
     return(0);
 }
-#endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* defined(XMLSEC_OPENSSL_API_111) */
 
 
 XMLSEC_OPENSSL_KW_RFC3394_KLASS(Camellia128)

@@ -27,9 +27,9 @@
 #include <openssl/evp.h>
 #include <openssl/x509.h>
 
-#ifdef XMLSEC_OPENSSL_API_300
+#if !defined(XMLSEC_OPENSSL_API_111)
 #include <openssl/provider.h>
-#endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
 #include "../cast_helpers.h"
 #include "private.h"
@@ -165,21 +165,21 @@ xmlSecOpenSSLKeyDataDEREncodedKeyValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr k
     /* read pkey */
     XMLSEC_SAFE_CAST_SIZE_TO_LONG(dataSize, dataLen, goto done, xmlSecKeyDataKlassGetName(id));
 
-#ifndef XMLSEC_OPENSSL_API_300
-    pKey = d2i_PUBKEY(NULL, &data, dataLen);
-    if(pKey == NULL) {
-        xmlSecOpenSSLError2("d2i_PUBKEY", xmlSecKeyDataKlassGetName(id),
-            "size=" XMLSEC_SIZE_FMT, dataSize);
-        goto done;
-    }
-#else /* XMLSEC_OPENSSL_API_300 */
+#if !defined(XMLSEC_OPENSSL_API_111)
     pKey = d2i_PUBKEY_ex(NULL, &data, dataLen, xmlSecOpenSSLGetLibCtx(), NULL);
     if(pKey == NULL) {
         xmlSecOpenSSLError2("d2i_PUBKEY_ex", xmlSecKeyDataKlassGetName(id),
             "size=" XMLSEC_SIZE_FMT, dataSize);
         goto done;
     }
-#endif /* XMLSEC_OPENSSL_API_300 */
+#else /* !defined(XMLSEC_OPENSSL_API_111) */
+    pKey = d2i_PUBKEY(NULL, &data, dataLen);
+    if(pKey == NULL) {
+        xmlSecOpenSSLError2("d2i_PUBKEY", xmlSecKeyDataKlassGetName(id),
+            "size=" XMLSEC_SIZE_FMT, dataSize);
+        goto done;
+    }
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
     /* check if any bytes remaining */
     consumed = data - (xmlSecBufferGetData(&buffer));

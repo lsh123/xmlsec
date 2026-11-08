@@ -3,6 +3,8 @@
 ## What version of OpenSSL?
 OpenSSL 3.0.13 or newer (3.5.0 or newer is strongly recommended).
 
+OpenSSL 1.1.1 support is deprecated but it should still work.
+
 Also AWS-LC (>=v1.66.0), LibreSSL (>= 4.0.0) and BoringSSL (later than Oct 2024)
 should work but those libraries have less stable API/ABI and are not tested
 as frequently as OpenSSL.

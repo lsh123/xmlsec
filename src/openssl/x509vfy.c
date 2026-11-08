@@ -2175,7 +2175,63 @@ xmlSecOpenSSLX509FindCertCtxMatch(xmlSecOpenSSLX509FindCertCtxPtr ctx, X509* cer
     return(0);
 }
 
-#if !defined(XMLSEC_OPENSSL_API_300)
+#if !defined(XMLSEC_OPENSSL_API_111)
+
+/* Returns 0 on success or a negative value on failure. */
+static int
+xmlSecOpenSSLX509GetSubjectHash(X509* x, unsigned long * res) {
+    XMLSEC_OPENSSL400_CONST X509_NAME* name;
+    unsigned long hash;
+    int ok = 0;
+
+    xmlSecAssert2(x != NULL, -1);
+    xmlSecAssert2(res != NULL, -1);
+
+    name = X509_get_subject_name(x);
+    if(name == NULL) {
+        xmlSecOpenSSLError("X509_get_subject_name", NULL);
+        return(-1);
+    }
+
+    hash = X509_NAME_hash_ex(name, xmlSecOpenSSLGetLibCtx(), NULL, &ok);
+    if(ok == 0) {
+        xmlSecOpenSSLError("X509_NAME_hash_ex", NULL);
+        return(-1);
+    }
+
+    /* done */
+    (*res) = hash;
+    return(0);
+}
+
+/* Returns 0 on success or a negative value on failure. */
+static int
+xmlSecOpenSSLX509GetIssuerHash(X509* x, unsigned long * res) {
+    XMLSEC_OPENSSL400_CONST X509_NAME* name;
+    unsigned long hash;
+    int ok = 0;
+
+    xmlSecAssert2(x != NULL, -1);
+    xmlSecAssert2(res != NULL, -1);
+
+    name = X509_get_issuer_name(x);
+    if(name == NULL) {
+        xmlSecOpenSSLError("X509_get_issuer_name", NULL);
+        return(-1);
+    }
+
+    hash = X509_NAME_hash_ex(name, xmlSecOpenSSLGetLibCtx(), NULL, &ok);
+    if(ok == 0) {
+        xmlSecOpenSSLError("X509_NAME_hash_ex", NULL);
+        return(-1);
+    }
+
+    /* done */
+    (*res) = hash;
+    return(0);
+}
+
+#else  /* !defined(XMLSEC_OPENSSL_API_111) */
 
 /* Returns 0 on success or a negative value on failure. */
 static int
@@ -2233,69 +2289,13 @@ xmlSecOpenSSLX509GetIssuerHash(X509* x, unsigned long * res) {
     return(0);
 }
 
-#else  /* !defined(XMLSEC_OPENSSL_API_300) */
-
-/* Returns 0 on success or a negative value on failure. */
-static int
-xmlSecOpenSSLX509GetSubjectHash(X509* x, unsigned long * res) {
-    XMLSEC_OPENSSL400_CONST X509_NAME* name;
-    unsigned long hash;
-    int ok = 0;
-
-    xmlSecAssert2(x != NULL, -1);
-    xmlSecAssert2(res != NULL, -1);
-
-    name = X509_get_subject_name(x);
-    if(name == NULL) {
-        xmlSecOpenSSLError("X509_get_subject_name", NULL);
-        return(-1);
-    }
-
-    hash = X509_NAME_hash_ex(name, xmlSecOpenSSLGetLibCtx(), NULL, &ok);
-    if(ok == 0) {
-        xmlSecOpenSSLError("X509_NAME_hash_ex", NULL);
-        return(-1);
-    }
-
-    /* done */
-    (*res) = hash;
-    return(0);
-}
-
-/* Returns 0 on success or a negative value on failure. */
-static int
-xmlSecOpenSSLX509GetIssuerHash(X509* x, unsigned long * res) {
-    XMLSEC_OPENSSL400_CONST X509_NAME* name;
-    unsigned long hash;
-    int ok = 0;
-
-    xmlSecAssert2(x != NULL, -1);
-    xmlSecAssert2(res != NULL, -1);
-
-    name = X509_get_issuer_name(x);
-    if(name == NULL) {
-        xmlSecOpenSSLError("X509_get_issuer_name", NULL);
-        return(-1);
-    }
-
-    hash = X509_NAME_hash_ex(name, xmlSecOpenSSLGetLibCtx(), NULL, &ok);
-    if(ok == 0) {
-        xmlSecOpenSSLError("X509_NAME_hash_ex", NULL);
-        return(-1);
-    }
-
-    /* done */
-    (*res) = hash;
-    return(0);
-}
-
-#endif /* !defined(XMLSEC_OPENSSL_API_300) */
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
 
 /* new list doesn't OWN certs */
 static STACK_OF(X509)*
 xmlSecOpenSSLX509StoreCombineCerts(STACK_OF(X509)* certs1, STACK_OF(X509)* certs2) {
-#if defined(XMLSEC_OPENSSL_API_300)
+#if !defined(XMLSEC_OPENSSL_API_111)
     STACK_OF(X509)* res = NULL;
     int ret;
 
@@ -2326,7 +2326,7 @@ xmlSecOpenSSLX509StoreCombineCerts(STACK_OF(X509)* certs1, STACK_OF(X509)* certs
     */
     return (res);
 
-#else /* defined(XMLSEC_OPENSSL_API_300) */
+#else /* !defined(XMLSEC_OPENSSL_API_111) */
     STACK_OF(X509)* res = NULL;
 
     /* certs1 */
@@ -2376,7 +2376,7 @@ xmlSecOpenSSLX509StoreCombineCerts(STACK_OF(X509)* certs1, STACK_OF(X509)* certs
 
     /* done */
     return(res);
-#endif /* defined(XMLSEC_OPENSSL_API_300) */
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 }
 
 

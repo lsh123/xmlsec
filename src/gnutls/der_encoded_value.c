@@ -137,6 +137,11 @@ xmlSecGnuTLSDerSingleTlvCheck(const xmlSecByte* data, xmlSecSize dataSize) {
             /* no length field follows the tag continuation */
             return(0);
         }
+        pos++; /* skip the last tag byte (the first byte with the high bit clear) */
+        if(pos >= dataSize) {
+            /* no length field follows the tag */
+            return(0);
+        }
     }
 
     /* length */

@@ -663,12 +663,11 @@ xmlSecGnuTLSX509MatchBySki(gnutls_x509_crt_t cert, const xmlSecByte* ski, xmlSec
         return(0);
     }
 
-    /* returns 0 if matched */
     ret = xmlSecGnuTLSX509CertCompareSKI(cert, ski, skiSize);
     if(ret < 0) {
         xmlSecInternalError("xmlSecGnuTLSX509CertCompareSKI", NULL);
         return(-1);
-    } else if(ret != 0) {
+    } else if(ret != 1) {
         /* not match */
         return(0);
     }

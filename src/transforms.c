@@ -930,6 +930,19 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
         /* nothing else to do */
         res = 0;
         goto done;
+    } else if(xptr[1] == '\0') {
+        /* a trailing empty fragment ("#" or "uri#") identifies the whole
+         * document, so treat it as a URI with no fragment at all
+         * (RFC 3986 4.1/5); ctx->xptrExpr stays NULL */
+        XMLSEC_SAFE_CAST_PTRDIFF_TO_INT((xptr - uri), uriLen, return(-1), NULL);
+        ctx->uri = xmlStrndup(uri, uriLen);
+        if(ctx->uri == NULL) {
+            xmlSecStrdupError(uri, NULL);
+            goto done;
+        }
+        /* nothing else to do */
+        res = 0;
+        goto done;
     }
 
     XMLSEC_SAFE_CAST_PTRDIFF_TO_INT((xptr - uri), uriLen, return(-1), NULL);

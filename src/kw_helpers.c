@@ -492,6 +492,10 @@ xmlSecKWDes3Decode(xmlSecKWDes3Id kwDes3Id, xmlSecTransformPtr transform,
 done:
     /* the key checksum (sha1) is not needed anymore; wipe it from the stack */
     xmlSecMemCleanse(sha1, sizeof(sha1));
+    if(res < 0) {
+        /* wipe the unwrapped key from the output buffer before returning */
+        xmlSecMemCleanse(out, outSize);
+    }
     if(tmp != NULL) {
         xmlSecBufferDestroy(tmp);
     }
@@ -847,6 +851,8 @@ xmlSecKWRfc3394Encode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transfor
         if((ret < 0) || (outWritten2 != XMLSEC_KW_RFC3394_BLOCK_SIZE)) {
             xmlSecInternalError2("kwRfc3394Id->encrypt", NULL,
                 "outWritten2=" XMLSEC_SIZE_FMT, outWritten2);
+            /* wipe the plaintext key from the output buffer before returning */
+            xmlSecMemCleanse(out, inSize + XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE);
             return(-1);
         }
     } else {
@@ -863,6 +869,8 @@ xmlSecKWRfc3394Encode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transfor
                 if((ret < 0) || (outWritten2 != XMLSEC_KW_RFC3394_BLOCK_SIZE)) {
                     xmlSecInternalError2("kwRfc3394Id->encrypt", NULL,
                         "outWritten2=" XMLSEC_SIZE_FMT, outWritten2);
+                    /* wipe the plaintext key from the output buffer before returning */
+                    xmlSecMemCleanse(out, inSize + XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE);
                     /* wipe the local temporary block before returning */
                     xmlSecMemCleanse(block, sizeof(block));
                     return(-1);
@@ -957,10 +965,14 @@ xmlSecKWRfc3394Decode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transfor
     ret = xmlSecMemEqual(xmlSecKWRfc3394MagicBlock, out, XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE);
     if(ret < 0) {
         xmlSecInternalError("xmlSecMemEqual", NULL);
+        /* wipe the unwrapped key from the output buffer before returning */
+        xmlSecMemCleanse(out, inSize);
         return(-1);
     }
     if(ret == 0) {
         xmlSecInvalidDataError("bad magic block", NULL);
+        /* wipe the unwrapped key from the output buffer before returning */
+        xmlSecMemCleanse(out, inSize);
         return(-1);
     }
 

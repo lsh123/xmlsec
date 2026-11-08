@@ -541,6 +541,7 @@ xmlSecTransformRelationshipProcessNodeList(xmlSecTransformPtr transform, xmlOutp
  * Writes an attribute value, escaping the XML special characters (&, <, >, ") so that the
  * generated document stays well-formed. Without this, a Target value containing e.g. '&' or '"'
  * would produce invalid XML that fails to re-parse ("EntityRef: expecting ';'").
+ * Returns 0 on success and a negative value otherwise.
  */
 static int
 xmlSecTransformRelationshipWriteEscapedValue(xmlOutputBufferPtr buf, const xmlChar* value) {
@@ -592,8 +593,15 @@ xmlSecTransformRelationshipWriteEscapedValue(xmlOutputBufferPtr buf, const xmlCh
     *dst = '\0';
 
     ret = xmlOutputBufferWriteString(buf, (const char*)escaped);
+    if(ret < 0) {
+        xmlSecInternalError("xmlOutputBufferWriteString", NULL);
+        xmlFree(escaped);
+        return(-1);
+    }
     xmlFree(escaped);
-    return(ret);
+
+    /* success */
+    return(0);
 }
 
 static int

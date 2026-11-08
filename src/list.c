@@ -186,6 +186,16 @@ xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
         xmlSecInternalError("list klass is not copyable (destroyItem set without duplicateItem)", xmlSecPtrListGetName(dst));
         return(-1);
     }
+    /*
+     * A list klass that provides duplicateItem without destroyItem cannot
+     * release the already-duplicated items if duplicateItem fails mid-copy,
+     * so such klasses are not copyable (the klass documentation requires
+     * destroyItem when duplicateItem is set).
+     */
+    if((dst->id->duplicateItem != NULL) && (dst->id->destroyItem == NULL)) {
+        xmlSecInternalError("list klass is not copyable (duplicateItem set without destroyItem)", xmlSecPtrListGetName(dst));
+        return(-1);
+    }
     if(dst->use > (XMLSEC_SIZE_MAX - src->use)) {
         xmlSecInternalError3("xmlSecPtrListCopy", xmlSecPtrListGetName(dst),
             "dst->use=" XMLSEC_SIZE_FMT "; src->use=" XMLSEC_SIZE_FMT, dst->use, src->use);

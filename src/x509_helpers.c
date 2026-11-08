@@ -1212,10 +1212,38 @@ xmlSecX509NameRead(const xmlChar *str, xmlSecX509NameReplacements *replacements,
         /* reject an unescaped '+' in the value: per RFC 4514 it separates the
          * values of a multi-valued RDN (eg "OU=Sales+CN=J. Smith"), which is
          * not supported; a backslash escapes the next character, an unescaped
-         * ',' terminates the value, and inside a double-quoted string (which
-         * ends at the next unescaped quote) ',' and '+' are literal */
+         * ',' terminates the value, and ',' and '+' inside a double-quoted
+         * string are literal. The quoted form applies only when the value
+         * starts with '"' (a '"' in the middle of a plain string is a regular
+         * character, the same way the value reader below treats it) */
         scan = str;
         scanSize = strSize;
+        if((scanSize > 0) && (*scan == '\"')) {
+            /* the value is a quoted string: skip to the closing unescaped
+             * quote, if any; if the quoted string is unterminated the value
+             * reader below will report it */
+            ++scan;
+            --scanSize;
+            while((scanSize > 0) && (*scan != '\"')) {
+                if(*scan == '\\') {
+                    /* the backslash escapes the next character, so skip both;
+                     * if it is the last character of the region the value
+                     * reader below will report the incomplete escape sequence */
+                    if(scanSize == 1) {
+                        break;
+                    }
+                    scan += 2;
+                    scanSize -= 2;
+                } else {
+                    ++scan;
+                    --scanSize;
+                }
+            }
+            if((scanSize > 0) && (*scan == '\"')) {
+                ++scan;
+                --scanSize;
+            }
+        }
         while((scanSize > 0) && (*scan != ',')) {
             if(*scan == '\\') {
                 /* the backslash escapes the next character, so skip both; if
@@ -1226,28 +1254,6 @@ xmlSecX509NameRead(const xmlChar *str, xmlSecX509NameReplacements *replacements,
                 }
                 scan += 2;
                 scanSize -= 2;
-            } else if(*scan == '\"') {
-                /* skip the double-quoted string: ',' and '+' inside the quotes
-                 * are literal; if the quoted string is unterminated the value
-                 * reader below will report it */
-                ++scan;
-                --scanSize;
-                while((scanSize > 0) && (*scan != '\"')) {
-                    if(*scan == '\\') {
-                        if(scanSize == 1) {
-                            break;
-                        }
-                        scan += 2;
-                        scanSize -= 2;
-                    } else {
-                        ++scan;
-                        --scanSize;
-                    }
-                }
-                if((scanSize > 0) && (*scan == '\"')) {
-                    ++scan;
-                    --scanSize;
-                }
             } else if(*scan == '+') {
                 xmlSecInvalidDataError("an unescaped '+' is not allowed in the value of a name/value pair since multi-valued RDNs are not supported", NULL);
                 return(-1);
@@ -1456,7 +1462,7 @@ xmlSecX509SerialNumberRead(const xmlChar *str, xmlSecByte *res, xmlSecSize resSi
 
     /* reject empty string */
     if(str[0] == '\0') {
-        xmlSecInternalError("empty integer string", NULL);
+        xmlSecInvalidDataError("empty integer string", NULL);
         return(-1);
     }
 
@@ -1470,7 +1476,7 @@ xmlSecX509SerialNumberRead(const xmlChar *str, xmlSecByte *res, xmlSecSize resSi
      * XMLSEC_X509_MAX_SERIAL_NUMBER_CHARS decimal digits; reject anything longer
      * to avoid unnecessary CPU work on untrusted input */
     if(xmlStrlen(str) >= XMLSEC_X509_MAX_SERIAL_NUMBER_CHARS) {
-        xmlSecInternalError("integer string is too long", NULL);
+        xmlSecInvalidSizeOtherError("integer string is too long", NULL);
         return(-1);
     }
 
@@ -1479,7 +1485,7 @@ xmlSecX509SerialNumberRead(const xmlChar *str, xmlSecByte *res, xmlSecSize resSi
 
     for(idx = 0; str[idx] != '\0'; ++idx) {
         if((str[idx] < '0') || (str[idx] > '9')) {
-            xmlSecInternalError("invalid integer string", NULL);
+            xmlSecInvalidDataError("invalid integer string", NULL);
             return(-1);
         }
 
@@ -1497,7 +1503,7 @@ xmlSecX509SerialNumberRead(const xmlChar *str, xmlSecByte *res, xmlSecSize resSi
 
         while(carry > 0U) {
             if(start == 0U) {
-                xmlSecInternalError("integer value is too large", NULL);
+                xmlSecInvalidDataError("integer value is too large", NULL);
                 return(-1);
             }
             --start;
@@ -1518,7 +1524,7 @@ xmlSecX509SerialNumberRead(const xmlChar *str, xmlSecByte *res, xmlSecSize resSi
             --start;
             buf[start] = 0U;
         } else {
-            xmlSecInternalError("integer value is too large", NULL);
+            xmlSecInvalidDataError("integer value is too large", NULL);
             return(-1);
         }
     }

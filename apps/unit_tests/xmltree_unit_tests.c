@@ -2185,6 +2185,318 @@ test_xmlSecDepthFirstTreeWalk_skips_siblings(void) {
 
 
 /******************************************************************************
+ * xmlSecReplaceNodeBuffer / xmlSecReplaceNodeBufferAndReturn
+ *****************************************************************************/
+static void
+test_xmlSecReplaceNodeBuffer_empty_buffer_removes_node(void) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr root;
+    xmlNodePtr target;
+    static const xmlSecByte emptyBuf[] = {0};
+    int ret;
+
+    testStart("xmlSecReplaceNodeBuffer: zero-size buffer removes the node");
+
+    doc = xmltreeTestCreateDoc(BAD_CAST "root", NULL);
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        testFinishedFailure();
+        return;
+    }
+    root = xmlDocGetRootElement(doc);
+    target = xmlNewChild(root, NULL, BAD_CAST "target", BAD_CAST "content");
+    if(target == NULL) {
+        testLog("Error: failed to create target node\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecReplaceNodeBuffer(target, emptyBuf, 0);
+    if(ret < 0) {
+        testLog("Error: xmlSecReplaceNodeBuffer returned %d for a zero-size buffer\n", ret);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* the node must be removed from the tree (and freed by the function) */
+    if(xmlSecFindChild(root, BAD_CAST "target", NULL) != NULL) {
+        testLog("Error: the target node was not removed from the tree\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(root->children != NULL) {
+        testLog("Error: expected the root node to have no children\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecReplaceNodeBuffer_nonempty_buffer_replaces_node(void) {
+    static const xmlChar buffer[] = "<replaced>new</replaced>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr root;
+    xmlNodePtr target;
+    xmlNodePtr replNode;
+    xmlChar* content;
+    int len;
+    int ret;
+
+    testStart("xmlSecReplaceNodeBuffer: non-empty buffer replaces the node");
+
+    doc = xmltreeTestCreateDoc(BAD_CAST "root", NULL);
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        testFinishedFailure();
+        return;
+    }
+    root = xmlDocGetRootElement(doc);
+    target = xmlNewChild(root, NULL, BAD_CAST "target", BAD_CAST "old");
+    if(target == NULL) {
+        testLog("Error: failed to create target node\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    len = xmlStrlen(buffer);
+    if(len <= 0) {
+        testLog("Error: buffer length is zero\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecReplaceNodeBuffer(target, buffer, (xmlSecSize)len);
+    if(ret < 0) {
+        testLog("Error: xmlSecReplaceNodeBuffer returned %d\n", ret);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* the old node must be gone and the parsed content in its place */
+    if(xmlSecFindChild(root, BAD_CAST "target", NULL) != NULL) {
+        testLog("Error: the target node was not removed from the tree\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    replNode = xmlSecFindChild(root, BAD_CAST "replaced", NULL);
+    if(replNode == NULL) {
+        testLog("Error: the parsed <replaced> node was not found\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    content = xmlNodeGetContent(replNode);
+    if(content == NULL || xmlStrcmp(content, BAD_CAST "new") != 0) {
+        testLog("Error: unexpected content of the replaced node: '%s'\n",
+                content ? (const char*)content : "NULL");
+        xmlFree(content);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(content);
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecReplaceNodeBuffer_plain_text_replaces_with_text_node(void) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr root;
+    xmlNodePtr target;
+    xmlNodePtr cur;
+    xmlChar* content;
+    int ret;
+
+    testStart("xmlSecReplaceNodeBuffer: plain text buffer replaces the node with a text node");
+
+    doc = xmltreeTestCreateDoc(BAD_CAST "root", NULL);
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        testFinishedFailure();
+        return;
+    }
+    root = xmlDocGetRootElement(doc);
+    target = xmlNewChild(root, NULL, BAD_CAST "target", BAD_CAST "old");
+    if(target == NULL) {
+        testLog("Error: failed to create target node\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* a non-XML (plain text) buffer is parsed as a text node: this is the
+     * case when the decrypted content is not an XML fragment */
+    ret = xmlSecReplaceNodeBuffer(target, BAD_CAST "hello world", 11);
+    if(ret < 0) {
+        testLog("Error: xmlSecReplaceNodeBuffer returned %d for a plain text buffer\n", ret);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* the old node must be gone and replaced by a single text node */
+    if(xmlSecFindChild(root, BAD_CAST "target", NULL) != NULL) {
+        testLog("Error: the target node was not removed from the tree\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    for(cur = root->children; cur != NULL; cur = cur->next) {
+        if(cur->type != XML_TEXT_NODE) {
+            testLog("Error: expected only a text node to replace the target node\n");
+            xmlFreeDoc(doc);
+            testFinishedFailure();
+            return;
+        }
+    }
+    content = xmlNodeGetContent(root);
+    if(content == NULL || xmlStrcmp(content, BAD_CAST "hello world") != 0) {
+        testLog("Error: unexpected content of the root node: '%s'\n",
+                content ? (const char*)content : "NULL");
+        xmlFree(content);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(content);
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecReplaceNodeBufferAndReturn_empty_buffer_returns_node(void) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr root;
+    xmlNodePtr target;
+    xmlNodePtr replaced = NULL;
+    xmlChar* content;
+    static const xmlSecByte emptyBuf[] = {0};
+    int ret;
+
+    testStart("xmlSecReplaceNodeBufferAndReturn: zero-size buffer returns the detached node");
+
+    doc = xmltreeTestCreateDoc(BAD_CAST "root", NULL);
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        testFinishedFailure();
+        return;
+    }
+    root = xmlDocGetRootElement(doc);
+    target = xmlNewChild(root, NULL, BAD_CAST "target", BAD_CAST "content");
+    if(target == NULL) {
+        testLog("Error: failed to create target node\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecReplaceNodeBufferAndReturn(target, emptyBuf, 0, &replaced);
+    if(ret < 0) {
+        testLog("Error: xmlSecReplaceNodeBufferAndReturn returned %d for a zero-size buffer\n", ret);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* the original node must be returned and detached from the tree */
+    if(replaced != target) {
+        testLog("Error: expected the original node to be returned\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(xmlSecFindChild(root, BAD_CAST "target", NULL) != NULL) {
+        testLog("Error: the returned node is still attached to the tree\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* the returned node keeps its original content and is owned by the caller */
+    content = xmlNodeGetContent(replaced);
+    if(content == NULL || xmlStrcmp(content, BAD_CAST "content") != 0) {
+        testLog("Error: unexpected content of the returned node: '%s'\n",
+                content ? (const char*)content : "NULL");
+        xmlFree(content);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(content);
+
+    xmlFreeNode(replaced);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecReplaceNodeBufferAndReturn_null_buffer_zero_size(void) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr root;
+    xmlNodePtr target;
+    xmlNodePtr replaced = NULL;
+    int ret;
+
+    testStart("xmlSecReplaceNodeBufferAndReturn: NULL buffer with zero size is accepted");
+
+    doc = xmltreeTestCreateDoc(BAD_CAST "root", NULL);
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        testFinishedFailure();
+        return;
+    }
+    root = xmlDocGetRootElement(doc);
+    target = xmlNewChild(root, NULL, BAD_CAST "target", BAD_CAST "content");
+    if(target == NULL) {
+        testLog("Error: failed to create target node\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* a NULL buffer is allowed when the size is zero */
+    ret = xmlSecReplaceNodeBufferAndReturn(target, NULL, 0, &replaced);
+    if(ret < 0) {
+        testLog("Error: xmlSecReplaceNodeBufferAndReturn returned %d for a NULL buffer with zero size\n", ret);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* the node must be returned and detached from the tree */
+    if(replaced != target) {
+        testLog("Error: expected the original node to be returned\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(xmlSecFindChild(root, BAD_CAST "target", NULL) != NULL) {
+        testLog("Error: the returned node is still attached to the tree\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeNode(replaced);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+/******************************************************************************
  * exported entry point
  *****************************************************************************/
 int
@@ -2288,6 +2600,14 @@ test_xmltree(void) {
     test_xmlSecDepthFirstTreeWalk_stop();
     test_xmlSecDepthFirstTreeWalk_callback_error();
     test_xmlSecDepthFirstTreeWalk_skips_siblings();
+    if(testGroupFinished() != 1) { success = 0; }
+
+    testGroupStart("xmlSecReplaceNodeBuffer");
+    test_xmlSecReplaceNodeBuffer_empty_buffer_removes_node();
+    test_xmlSecReplaceNodeBuffer_nonempty_buffer_replaces_node();
+    test_xmlSecReplaceNodeBuffer_plain_text_replaces_with_text_node();
+    test_xmlSecReplaceNodeBufferAndReturn_empty_buffer_returns_node();
+    test_xmlSecReplaceNodeBufferAndReturn_null_buffer_zero_size();
     if(testGroupFinished() != 1) { success = 0; }
 
     return(success);

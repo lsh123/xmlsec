@@ -20,7 +20,7 @@
 #include <xmlsec/xmltree.h>
 #include "../../src/transform_helpers.h"
 
-#if !defined(XMLSEC_NO_CHACHA20) || !defined(XMLSEC_NO_MLDSA) || !defined(XMLSEC_NO_SLHDSA) || !defined(XMLSEC_NO_EDDSA)
+#if !defined(XMLSEC_NO_CHACHA20) || !defined(XMLSEC_NO_MLDSA) || !defined(XMLSEC_NO_SLHDSA) || !defined(XMLSEC_NO_EDDSA) || !defined(XMLSEC_NO_PBKDF2) || !defined(XMLSEC_NO_HKDF)
 static xmlNodePtr
 xmlSecUnitTestParseNode(const char* xml, xmlDocPtr* doc) {
     xmlNodePtr node;
@@ -44,7 +44,7 @@ xmlSecUnitTestParseNode(const char* xml, xmlDocPtr* doc) {
     }
     return(node);
 }
-#endif /* !defined(XMLSEC_NO_CHACHA20) || !defined(XMLSEC_NO_MLDSA) || !defined(XMLSEC_NO_SLHDSA) || !defined(XMLSEC_NO_EDDSA) */
+#endif /* !defined(XMLSEC_NO_CHACHA20) || !defined(XMLSEC_NO_MLDSA) || !defined(XMLSEC_NO_SLHDSA) || !defined(XMLSEC_NO_EDDSA) || !defined(XMLSEC_NO_PBKDF2) || !defined(XMLSEC_NO_HKDF) */
 
 #ifndef XMLSEC_NO_CHACHA20
 
@@ -1958,6 +1958,852 @@ test_xmlSecTransformContextStringRead_non_empty_buffer(const xmlSecUnitTestConte
 
 #endif /* !XMLSEC_NO_MLDSA || !XMLSEC_NO_SLHDSA || !XMLSEC_NO_EDDSA */
 
+
+#ifndef XMLSEC_NO_PBKDF2
+
+/******************************************************************************
+ * xmlSecTransformPbkdf2ParamsRead
+ *****************************************************************************/
+static void
+test_xmlSecTransformPbkdf2ParamsRead_valid(void) {
+    static const char xml[] =
+        "<PBKDF2-params xmlns=\"http://www.w3.org/2009/xmlenc11#\">"
+        "<Salt><Specified>AQIDBAUGBwg=</Specified></Salt>"
+        "<IterationCount>1000</IterationCount>"
+        "<KeyLength>32</KeyLength>"
+        "<PRF Algorithm=\"http://www.w3.org/2009/xmlenc11#hmac-sha256\"/>"
+        "</PBKDF2-params>";
+    static const xmlChar* expectedHref = BAD_CAST "http://www.w3.org/2009/xmlenc11#hmac-sha256";
+    static const xmlSecByte expectedSalt[] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecTransformPbkdf2Params params;
+    int ret;
+
+    testStart("PBKDF2 params read valid");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformPbkdf2ParamsInitialize(&params);
+    if(ret < 0) {
+        testLog("Error: xmlSecTransformPbkdf2ParamsInitialize failed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformPbkdf2ParamsRead(&params, node);
+    if(ret < 0) {
+        testLog("Error: xmlSecTransformPbkdf2ParamsRead failed for a valid params node\n");
+        xmlSecTransformPbkdf2ParamsFinalize(&params);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    if((params.iterationCount != 1000) || (params.keyLength != 32)) {
+        testLog("Error: unexpected iterationCount=%u / keyLength=%u\n",
+                (unsigned int)params.iterationCount, (unsigned int)params.keyLength);
+        xmlSecTransformPbkdf2ParamsFinalize(&params);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if((params.prfAlgorithmHref == NULL) ||
+       (xmlStrcmp(params.prfAlgorithmHref, BAD_CAST expectedHref) != 0)) {
+        testLog("Error: unexpected PRF algorithm href '%s'\n",
+                (params.prfAlgorithmHref != NULL) ? (const char*)params.prfAlgorithmHref : "NULL");
+        xmlSecTransformPbkdf2ParamsFinalize(&params);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if((xmlSecBufferGetSize(&(params.salt)) != sizeof(expectedSalt)) ||
+       (params.salt.data == NULL) ||
+       (memcmp(params.salt.data, expectedSalt, sizeof(expectedSalt)) != 0)) {
+        testLog("Error: unexpected salt content\n");
+        xmlSecTransformPbkdf2ParamsFinalize(&params);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecTransformPbkdf2ParamsFinalize(&params);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformPbkdf2ParamsRead_prf_with_child_fails(void) {
+    /* PRF algorithm parameters are not supported: the PRF node must have no children */
+    static const char xml[] =
+        "<PBKDF2-params xmlns=\"http://www.w3.org/2009/xmlenc11#\">"
+        "<Salt><Specified>AQIDBAUG</Specified></Salt>"
+        "<IterationCount>1000</IterationCount>"
+        "<KeyLength>32</KeyLength>"
+        "<PRF Algorithm=\"http://www.w3.org/2009/xmlenc11#hmac-sha256\">"
+        "<Parameters>00112233</Parameters>"
+        "</PRF>"
+        "</PBKDF2-params>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecTransformPbkdf2Params params;
+    int ret;
+
+    testStart("PBKDF2 params read PRF with a child element is rejected");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformPbkdf2ParamsInitialize(&params);
+    if(ret < 0) {
+        testLog("Error: xmlSecTransformPbkdf2ParamsInitialize failed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformPbkdf2ParamsRead(&params, node);
+    if(ret >= 0) {
+        testLog("Error: xmlSecTransformPbkdf2ParamsRead accepted a PRF node with a child element\n");
+        xmlSecTransformPbkdf2ParamsFinalize(&params);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecTransformPbkdf2ParamsFinalize(&params);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformPbkdf2ParamsRead_prf_missing_algorithm_fails(void) {
+    static const char xml[] =
+        "<PBKDF2-params xmlns=\"http://www.w3.org/2009/xmlenc11#\">"
+        "<Salt><Specified>AQIDBAUG</Specified></Salt>"
+        "<IterationCount>1000</IterationCount>"
+        "<KeyLength>32</KeyLength>"
+        "<PRF/>"
+        "</PBKDF2-params>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecTransformPbkdf2Params params;
+    int ret;
+
+    testStart("PBKDF2 params read PRF without the Algorithm attribute is rejected");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformPbkdf2ParamsInitialize(&params);
+    if(ret < 0) {
+        testLog("Error: xmlSecTransformPbkdf2ParamsInitialize failed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformPbkdf2ParamsRead(&params, node);
+    if(ret >= 0) {
+        testLog("Error: xmlSecTransformPbkdf2ParamsRead accepted a PRF node without the Algorithm attribute\n");
+        xmlSecTransformPbkdf2ParamsFinalize(&params);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecTransformPbkdf2ParamsFinalize(&params);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformPbkdf2ParamsRead_missing_salt_fails(void) {
+    static const char xml[] =
+        "<PBKDF2-params xmlns=\"http://www.w3.org/2009/xmlenc11#\">"
+        "<IterationCount>1000</IterationCount>"
+        "<KeyLength>32</KeyLength>"
+        "<PRF Algorithm=\"http://www.w3.org/2009/xmlenc11#hmac-sha256\"/>"
+        "</PBKDF2-params>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecTransformPbkdf2Params params;
+    int ret;
+
+    testStart("PBKDF2 params read missing Salt is rejected");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformPbkdf2ParamsInitialize(&params);
+    if(ret < 0) {
+        testLog("Error: xmlSecTransformPbkdf2ParamsInitialize failed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformPbkdf2ParamsRead(&params, node);
+    if(ret >= 0) {
+        testLog("Error: xmlSecTransformPbkdf2ParamsRead accepted a node without the Salt element\n");
+        xmlSecTransformPbkdf2ParamsFinalize(&params);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecTransformPbkdf2ParamsFinalize(&params);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformPbkdf2ParamsRead_empty_salt_fails(void) {
+    static const char xml[] =
+        "<PBKDF2-params xmlns=\"http://www.w3.org/2009/xmlenc11#\">"
+        "<Salt><Specified></Specified></Salt>"
+        "<IterationCount>1000</IterationCount>"
+        "<KeyLength>32</KeyLength>"
+        "<PRF Algorithm=\"http://www.w3.org/2009/xmlenc11#hmac-sha256\"/>"
+        "</PBKDF2-params>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecTransformPbkdf2Params params;
+    int ret;
+
+    testStart("PBKDF2 params read empty Salt is rejected");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformPbkdf2ParamsInitialize(&params);
+    if(ret < 0) {
+        testLog("Error: xmlSecTransformPbkdf2ParamsInitialize failed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformPbkdf2ParamsRead(&params, node);
+    if(ret >= 0) {
+        testLog("Error: xmlSecTransformPbkdf2ParamsRead accepted an empty Salt\n");
+        xmlSecTransformPbkdf2ParamsFinalize(&params);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecTransformPbkdf2ParamsFinalize(&params);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformPbkdf2ParamsRead_iteration_count_zero_fails(void) {
+    static const char xml[] =
+        "<PBKDF2-params xmlns=\"http://www.w3.org/2009/xmlenc11#\">"
+        "<Salt><Specified>AQIDBAUG</Specified></Salt>"
+        "<IterationCount>0</IterationCount>"
+        "<KeyLength>32</KeyLength>"
+        "<PRF Algorithm=\"http://www.w3.org/2009/xmlenc11#hmac-sha256\"/>"
+        "</PBKDF2-params>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecTransformPbkdf2Params params;
+    int ret;
+
+    testStart("PBKDF2 params read zero iteration count is rejected");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformPbkdf2ParamsInitialize(&params);
+    if(ret < 0) {
+        testLog("Error: xmlSecTransformPbkdf2ParamsInitialize failed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformPbkdf2ParamsRead(&params, node);
+    if(ret >= 0) {
+        testLog("Error: xmlSecTransformPbkdf2ParamsRead accepted a zero iteration count\n");
+        xmlSecTransformPbkdf2ParamsFinalize(&params);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecTransformPbkdf2ParamsFinalize(&params);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformPbkdf2ParamsRead_iteration_count_too_big_fails(void) {
+    /* 1000001 = XMLSEC_PBKDF2_MAX_ITERATIONS + 1 */
+    static const char xml[] =
+        "<PBKDF2-params xmlns=\"http://www.w3.org/2009/xmlenc11#\">"
+        "<Salt><Specified>AQIDBAUG</Specified></Salt>"
+        "<IterationCount>1000001</IterationCount>"
+        "<KeyLength>32</KeyLength>"
+        "<PRF Algorithm=\"http://www.w3.org/2009/xmlenc11#hmac-sha256\"/>"
+        "</PBKDF2-params>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecTransformPbkdf2Params params;
+    int ret;
+
+    testStart("PBKDF2 params read too big iteration count is rejected");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformPbkdf2ParamsInitialize(&params);
+    if(ret < 0) {
+        testLog("Error: xmlSecTransformPbkdf2ParamsInitialize failed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformPbkdf2ParamsRead(&params, node);
+    if(ret >= 0) {
+        testLog("Error: xmlSecTransformPbkdf2ParamsRead accepted an iteration count above XMLSEC_PBKDF2_MAX_ITERATIONS\n");
+        xmlSecTransformPbkdf2ParamsFinalize(&params);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecTransformPbkdf2ParamsFinalize(&params);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformPbkdf2ParamsRead_key_length_too_big_fails(void) {
+    /* 4097 = XMLSEC_PBKDF2_MAX_KEY_LENGTH + 1 */
+    static const char xml[] =
+        "<PBKDF2-params xmlns=\"http://www.w3.org/2009/xmlenc11#\">"
+        "<Salt><Specified>AQIDBAUG</Specified></Salt>"
+        "<IterationCount>1000</IterationCount>"
+        "<KeyLength>4097</KeyLength>"
+        "<PRF Algorithm=\"http://www.w3.org/2009/xmlenc11#hmac-sha256\"/>"
+        "</PBKDF2-params>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecTransformPbkdf2Params params;
+    int ret;
+
+    testStart("PBKDF2 params read too big key length is rejected");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformPbkdf2ParamsInitialize(&params);
+    if(ret < 0) {
+        testLog("Error: xmlSecTransformPbkdf2ParamsInitialize failed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformPbkdf2ParamsRead(&params, node);
+    if(ret >= 0) {
+        testLog("Error: xmlSecTransformPbkdf2ParamsRead accepted a key length above XMLSEC_PBKDF2_MAX_KEY_LENGTH\n");
+        xmlSecTransformPbkdf2ParamsFinalize(&params);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecTransformPbkdf2ParamsFinalize(&params);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformPbkdf2ParamsRead_unexpected_trailing_node_fails(void) {
+    static const char xml[] =
+        "<PBKDF2-params xmlns=\"http://www.w3.org/2009/xmlenc11#\">"
+        "<Salt><Specified>AQIDBAUG</Specified></Salt>"
+        "<IterationCount>1000</IterationCount>"
+        "<KeyLength>32</KeyLength>"
+        "<PRF Algorithm=\"http://www.w3.org/2009/xmlenc11#hmac-sha256\"/>"
+        "<Nonce>01020304</Nonce>"
+        "</PBKDF2-params>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecTransformPbkdf2Params params;
+    int ret;
+
+    testStart("PBKDF2 params read unexpected node after PRF is rejected");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformPbkdf2ParamsInitialize(&params);
+    if(ret < 0) {
+        testLog("Error: xmlSecTransformPbkdf2ParamsInitialize failed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformPbkdf2ParamsRead(&params, node);
+    if(ret >= 0) {
+        testLog("Error: xmlSecTransformPbkdf2ParamsRead accepted an unexpected node after the PRF element\n");
+        xmlSecTransformPbkdf2ParamsFinalize(&params);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecTransformPbkdf2ParamsFinalize(&params);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+#endif /* XMLSEC_NO_PBKDF2 */
+
+
+#ifndef XMLSEC_NO_HKDF
+
+/******************************************************************************
+ * xmlSecTransformHkdfParamsRead
+ *****************************************************************************/
+static void
+test_xmlSecTransformHkdfParamsRead_valid_prf_only(void) {
+    static const char xml[] =
+        "<HKDFParams xmlns=\"http://www.w3.org/2021/04/xmldsig-more#\">"
+        "<PRF Algorithm=\"http://www.w3.org/2021/04/xmldsig-more#hmac-sha256\"/>"
+        "</HKDFParams>";
+    static const xmlChar* expectedHref = BAD_CAST "http://www.w3.org/2021/04/xmldsig-more#hmac-sha256";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecTransformHkdfParams params;
+    int ret;
+
+    testStart("HKDF params read valid (PRF only)");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformHkdfParamsInitialize(&params);
+    if(ret < 0) {
+        testLog("Error: xmlSecTransformHkdfParamsInitialize failed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformHkdfParamsRead(&params, node);
+    if(ret < 0) {
+        testLog("Error: xmlSecTransformHkdfParamsRead failed for a valid params node\n");
+        xmlSecTransformHkdfParamsFinalize(&params);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    if((params.prfAlgorithmHref == NULL) ||
+       (xmlStrcmp(params.prfAlgorithmHref, BAD_CAST expectedHref) != 0)) {
+        testLog("Error: unexpected PRF algorithm href '%s'\n",
+                (params.prfAlgorithmHref != NULL) ? (const char*)params.prfAlgorithmHref : "NULL");
+        xmlSecTransformHkdfParamsFinalize(&params);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if((params.keyLength != 0) ||
+       (xmlSecBufferGetSize(&(params.salt)) != 0) ||
+       (xmlSecBufferGetSize(&(params.info)) != 0)) {
+        testLog("Error: unexpected optional params (keyLength=%u, salt size=%u, info size=%u)\n",
+                (unsigned int)params.keyLength,
+                (unsigned int)xmlSecBufferGetSize(&(params.salt)),
+                (unsigned int)xmlSecBufferGetSize(&(params.info)));
+        xmlSecTransformHkdfParamsFinalize(&params);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecTransformHkdfParamsFinalize(&params);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformHkdfParamsRead_valid_all(void) {
+    static const char xml[] =
+        "<HKDFParams xmlns=\"http://www.w3.org/2021/04/xmldsig-more#\">"
+        "<PRF Algorithm=\"http://www.w3.org/2021/04/xmldsig-more#hmac-sha256\"/>"
+        "<Salt>AQID</Salt>"
+        "<Info>BQY=</Info>"
+        "<KeyLength>64</KeyLength>"
+        "</HKDFParams>";
+    static const xmlChar* expectedHref = BAD_CAST "http://www.w3.org/2021/04/xmldsig-more#hmac-sha256";
+    static const xmlSecByte expectedSalt[] = {0x01, 0x02, 0x03};
+    static const xmlSecByte expectedInfo[] = {0x05, 0x06};
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecTransformHkdfParams params;
+    int ret;
+
+    testStart("HKDF params read valid (all elements)");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformHkdfParamsInitialize(&params);
+    if(ret < 0) {
+        testLog("Error: xmlSecTransformHkdfParamsInitialize failed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformHkdfParamsRead(&params, node);
+    if(ret < 0) {
+        testLog("Error: xmlSecTransformHkdfParamsRead failed for a valid params node\n");
+        xmlSecTransformHkdfParamsFinalize(&params);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    if((params.prfAlgorithmHref == NULL) ||
+       (xmlStrcmp(params.prfAlgorithmHref, BAD_CAST expectedHref) != 0)) {
+        testLog("Error: unexpected PRF algorithm href '%s'\n",
+                (params.prfAlgorithmHref != NULL) ? (const char*)params.prfAlgorithmHref : "NULL");
+        xmlSecTransformHkdfParamsFinalize(&params);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(params.keyLength != 64) {
+        testLog("Error: unexpected keyLength=%u\n", (unsigned int)params.keyLength);
+        xmlSecTransformHkdfParamsFinalize(&params);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if((xmlSecBufferGetSize(&(params.salt)) != sizeof(expectedSalt)) ||
+       (params.salt.data == NULL) ||
+       (memcmp(params.salt.data, expectedSalt, sizeof(expectedSalt)) != 0)) {
+        testLog("Error: unexpected salt content\n");
+        xmlSecTransformHkdfParamsFinalize(&params);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if((xmlSecBufferGetSize(&(params.info)) != sizeof(expectedInfo)) ||
+       (params.info.data == NULL) ||
+       (memcmp(params.info.data, expectedInfo, sizeof(expectedInfo)) != 0)) {
+        testLog("Error: unexpected info content\n");
+        xmlSecTransformHkdfParamsFinalize(&params);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecTransformHkdfParamsFinalize(&params);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformHkdfParamsRead_prf_with_child_fails(void) {
+    /* PRF algorithm parameters are not supported: the PRF node must have no children */
+    static const char xml[] =
+        "<HKDFParams xmlns=\"http://www.w3.org/2021/04/xmldsig-more#\">"
+        "<PRF Algorithm=\"http://www.w3.org/2021/04/xmldsig-more#hmac-sha256\">"
+        "<Parameters>00112233</Parameters>"
+        "</PRF>"
+        "</HKDFParams>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecTransformHkdfParams params;
+    int ret;
+
+    testStart("HKDF params read PRF with a child element is rejected");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformHkdfParamsInitialize(&params);
+    if(ret < 0) {
+        testLog("Error: xmlSecTransformHkdfParamsInitialize failed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformHkdfParamsRead(&params, node);
+    if(ret >= 0) {
+        testLog("Error: xmlSecTransformHkdfParamsRead accepted a PRF node with a child element\n");
+        xmlSecTransformHkdfParamsFinalize(&params);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecTransformHkdfParamsFinalize(&params);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformHkdfParamsRead_prf_missing_algorithm_fails(void) {
+    static const char xml[] =
+        "<HKDFParams xmlns=\"http://www.w3.org/2021/04/xmldsig-more#\">"
+        "<PRF/>"
+        "</HKDFParams>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecTransformHkdfParams params;
+    int ret;
+
+    testStart("HKDF params read PRF without the Algorithm attribute is rejected");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformHkdfParamsInitialize(&params);
+    if(ret < 0) {
+        testLog("Error: xmlSecTransformHkdfParamsInitialize failed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformHkdfParamsRead(&params, node);
+    if(ret >= 0) {
+        testLog("Error: xmlSecTransformHkdfParamsRead accepted a PRF node without the Algorithm attribute\n");
+        xmlSecTransformHkdfParamsFinalize(&params);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecTransformHkdfParamsFinalize(&params);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformHkdfParamsRead_missing_prf_fails(void) {
+    static const char xml[] =
+        "<HKDFParams xmlns=\"http://www.w3.org/2021/04/xmldsig-more#\">"
+        "<Salt>AQID</Salt>"
+        "</HKDFParams>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecTransformHkdfParams params;
+    int ret;
+
+    testStart("HKDF params read missing PRF is rejected");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformHkdfParamsInitialize(&params);
+    if(ret < 0) {
+        testLog("Error: xmlSecTransformHkdfParamsInitialize failed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformHkdfParamsRead(&params, node);
+    if(ret >= 0) {
+        testLog("Error: xmlSecTransformHkdfParamsRead accepted a node without the PRF element\n");
+        xmlSecTransformHkdfParamsFinalize(&params);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecTransformHkdfParamsFinalize(&params);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformHkdfParamsRead_key_length_zero_fails(void) {
+    static const char xml[] =
+        "<HKDFParams xmlns=\"http://www.w3.org/2021/04/xmldsig-more#\">"
+        "<PRF Algorithm=\"http://www.w3.org/2021/04/xmldsig-more#hmac-sha256\"/>"
+        "<KeyLength>0</KeyLength>"
+        "</HKDFParams>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecTransformHkdfParams params;
+    int ret;
+
+    testStart("HKDF params read zero key length is rejected");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformHkdfParamsInitialize(&params);
+    if(ret < 0) {
+        testLog("Error: xmlSecTransformHkdfParamsInitialize failed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformHkdfParamsRead(&params, node);
+    if(ret >= 0) {
+        testLog("Error: xmlSecTransformHkdfParamsRead accepted a zero key length\n");
+        xmlSecTransformHkdfParamsFinalize(&params);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecTransformHkdfParamsFinalize(&params);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformHkdfParamsRead_key_length_too_big_fails(void) {
+    /* 16321 = XMLSEC_HKDF_MAX_KEY_LENGTH + 1 */
+    static const char xml[] =
+        "<HKDFParams xmlns=\"http://www.w3.org/2021/04/xmldsig-more#\">"
+        "<PRF Algorithm=\"http://www.w3.org/2021/04/xmldsig-more#hmac-sha256\"/>"
+        "<KeyLength>16321</KeyLength>"
+        "</HKDFParams>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecTransformHkdfParams params;
+    int ret;
+
+    testStart("HKDF params read too big key length is rejected");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformHkdfParamsInitialize(&params);
+    if(ret < 0) {
+        testLog("Error: xmlSecTransformHkdfParamsInitialize failed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformHkdfParamsRead(&params, node);
+    if(ret >= 0) {
+        testLog("Error: xmlSecTransformHkdfParamsRead accepted a key length above XMLSEC_HKDF_MAX_KEY_LENGTH\n");
+        xmlSecTransformHkdfParamsFinalize(&params);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecTransformHkdfParamsFinalize(&params);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformHkdfParamsRead_unexpected_trailing_node_fails(void) {
+    static const char xml[] =
+        "<HKDFParams xmlns=\"http://www.w3.org/2021/04/xmldsig-more#\">"
+        "<PRF Algorithm=\"http://www.w3.org/2021/04/xmldsig-more#hmac-sha256\"/>"
+        "<Nonce>01020304</Nonce>"
+        "</HKDFParams>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecTransformHkdfParams params;
+    int ret;
+
+    testStart("HKDF params read unexpected node after PRF is rejected");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformHkdfParamsInitialize(&params);
+    if(ret < 0) {
+        testLog("Error: xmlSecTransformHkdfParamsInitialize failed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformHkdfParamsRead(&params, node);
+    if(ret >= 0) {
+        testLog("Error: xmlSecTransformHkdfParamsRead accepted an unexpected node after the PRF element\n");
+        xmlSecTransformHkdfParamsFinalize(&params);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecTransformHkdfParamsFinalize(&params);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+#endif /* XMLSEC_NO_HKDF */
+
+
 int
 test_transform_helpers(void) {
     int success = 1;
@@ -2086,6 +2932,37 @@ test_transform_helpers(void) {
     }
 #endif /* XMLSEC_NO_EDDSA */
 #endif /* !XMLSEC_NO_MLDSA || !XMLSEC_NO_SLHDSA || !XMLSEC_NO_EDDSA */
+
+#ifndef XMLSEC_NO_PBKDF2
+    testGroupStart("xmlSecTransformPbkdf2ParamsRead");
+
+    test_xmlSecTransformPbkdf2ParamsRead_valid();
+    test_xmlSecTransformPbkdf2ParamsRead_prf_with_child_fails();
+    test_xmlSecTransformPbkdf2ParamsRead_prf_missing_algorithm_fails();
+    test_xmlSecTransformPbkdf2ParamsRead_missing_salt_fails();
+    test_xmlSecTransformPbkdf2ParamsRead_empty_salt_fails();
+    test_xmlSecTransformPbkdf2ParamsRead_iteration_count_zero_fails();
+    test_xmlSecTransformPbkdf2ParamsRead_iteration_count_too_big_fails();
+    test_xmlSecTransformPbkdf2ParamsRead_key_length_too_big_fails();
+    test_xmlSecTransformPbkdf2ParamsRead_unexpected_trailing_node_fails();
+
+    if(testGroupFinished() != 1) { success = 0; }
+#endif /* XMLSEC_NO_PBKDF2 */
+
+#ifndef XMLSEC_NO_HKDF
+    testGroupStart("xmlSecTransformHkdfParamsRead");
+
+    test_xmlSecTransformHkdfParamsRead_valid_prf_only();
+    test_xmlSecTransformHkdfParamsRead_valid_all();
+    test_xmlSecTransformHkdfParamsRead_prf_with_child_fails();
+    test_xmlSecTransformHkdfParamsRead_prf_missing_algorithm_fails();
+    test_xmlSecTransformHkdfParamsRead_missing_prf_fails();
+    test_xmlSecTransformHkdfParamsRead_key_length_zero_fails();
+    test_xmlSecTransformHkdfParamsRead_key_length_too_big_fails();
+    test_xmlSecTransformHkdfParamsRead_unexpected_trailing_node_fails();
+
+    if(testGroupFinished() != 1) { success = 0; }
+#endif /* XMLSEC_NO_HKDF */
 
     return(success);
 }

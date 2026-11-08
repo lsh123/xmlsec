@@ -45,6 +45,7 @@ int test_buffer(void);
 int test_cast_helpers(void);
 int test_list(void);
 int test_transform_helpers(void);
+int test_transforms(void);
 int test_xmlSecX509EscapedStringRead(void);
 int test_xmlSecX509AttrValueStringRead(void);
 int test_xmlSecX509NameRead(void);

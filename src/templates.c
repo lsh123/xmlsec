@@ -768,22 +768,17 @@ xmlSecTmplEncDataEnsureEncProperties(xmlNodePtr encNode, const xmlChar *id) {
     res = xmlSecFindChild(encNode, xmlSecNodeEncryptionProperties, xmlSecEncNs);
     if(res == NULL) {
         /* Per the XML-Enc schema (https://www.w3.org/TR/xmlenc-core/#sec-EncryptedType),
-         * the EncryptedType sequence is: EncryptionMethod?, EncryptionProperties?,
-         * KeyInfo?, ReferenceList?, CarriedKeyName?, CipherData; insert the
-         * EncryptionProperties node before the first of its following siblings
-         * (KeyInfo, ReferenceList, CarriedKeyName, CipherData) that is present,
-         * or append it as the last child if none of them is present. */
+         * the EncryptedType sequence is: EncryptionMethod?, KeyInfo?, CipherData,
+         * EncryptionProperties?, and (for EncryptedKey) ReferenceList?,
+         * CarriedKeyName?. The EncryptionProperties node must follow the
+         * (required) CipherData node, so insert it before the first of its
+         * following siblings (ReferenceList, CarriedKeyName) that is present,
+         * or append it as the last child if neither is present. */
         xmlNodePtr nextSiblingNode = NULL;
 
-        nextSiblingNode = xmlSecFindChild(encNode, xmlSecNodeKeyInfo, xmlSecDSigNs);
-        if(nextSiblingNode == NULL) {
-            nextSiblingNode = xmlSecFindChild(encNode, xmlSecNodeReferenceList, xmlSecEncNs);
-        }
+        nextSiblingNode = xmlSecFindChild(encNode, xmlSecNodeReferenceList, xmlSecEncNs);
         if(nextSiblingNode == NULL) {
             nextSiblingNode = xmlSecFindChild(encNode, xmlSecNodeCarriedKeyName, xmlSecEncNs);
-        }
-        if(nextSiblingNode == NULL) {
-            nextSiblingNode = xmlSecFindChild(encNode, xmlSecNodeCipherData, xmlSecEncNs);
         }
 
         if(nextSiblingNode != NULL) {
@@ -1070,7 +1065,6 @@ xmlSecTmplCipherReferenceAddTransform(xmlNodePtr cipherReferenceNode,
  *    </extension>
  *  </complexContent>
  * </complexType>
- * </complexType>
  *
  * <element name="EncryptedKey" type="xenc:EncryptedKeyType"/>
  * <complexType name="EncryptedKeyType">
@@ -1098,13 +1092,11 @@ xmlSecTmplEncDataEnsureReferenceList(xmlNodePtr encNode) {
         return(refListNode);
     }
 
-    /* the ReferenceList node precedes CarriedKeyName and CipherData,
-     * so insert it before the first of them that is present, or append it as the last child if neither
-     * of them is present. */
+    /* Per the XML-Enc schema (see the EncryptedKeyType definition above),
+     * the ReferenceList node follows CipherData/EncryptionProperties and
+     * precedes CarriedKeyName, so insert it before CarriedKeyName if the
+     * latter is present, or append it as the last child otherwise. */
     nextSiblingNode = xmlSecFindChild(encNode, xmlSecNodeCarriedKeyName, xmlSecEncNs);
-    if(nextSiblingNode == NULL) {
-        nextSiblingNode = xmlSecFindChild(encNode, xmlSecNodeCipherData, xmlSecEncNs);
-    }
 
     if(nextSiblingNode != NULL) {
         refListNode = xmlSecAddPrevSibling(nextSiblingNode, xmlSecNodeReferenceList, xmlSecEncNs);

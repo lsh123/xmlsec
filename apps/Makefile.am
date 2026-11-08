@@ -101,6 +101,7 @@ xmlsec_unit_tests_SOURCES = \
 	unit_tests/list_unit_tests.c \
 	unit_tests/nodeset_unit_tests.c \
 	unit_tests/transform_helpers_unit_tests.c \
+	unit_tests/transforms_unit_tests.c \
 	unit_tests/x509_unit_tests.c \
 	unit_tests/xmltree_unit_tests.c \
 	unit_tests/templates_unit_tests.c \

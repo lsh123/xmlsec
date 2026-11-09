@@ -49,6 +49,7 @@
 #ifndef PROV_MAGPRO_GOST
 #  define PROV_MAGPRO_GOST            501
 #endif
+
 #define MAGPRO_CSP_A                "MagPro CSP"
 #define MAGPRO_CSP_W                L"MagPro CSP"
 #ifdef UNICODE
@@ -68,6 +69,7 @@
 #ifndef PROV_GOST_2012_512
 #  define PROV_GOST_2012_512          81
 #endif
+
 #define CRYPTOPRO_CSP_A             "Crypto-Pro GOST R 34.10-2001 Cryptographic Service Provider"
 #define CRYPTOPRO_CSP_W             L"Crypto-Pro GOST R 34.10-2001 Cryptographic Service Provider"
 #define CRYPTOPRO_CSP_256_A         "Crypto-Pro GOST R 34.10-2012 Cryptographic Service Provider"

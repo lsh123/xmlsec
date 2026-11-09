@@ -273,7 +273,7 @@ xmlSecOpenSSLAppCheckFileBioConsumed(BIO* bio, xmlSecKeyDataFormat format) {
             return(0);
         }
 
-        /* good: this is EOF and we are done*/
+        /* good: this is EOF and we are done */
         return (1);
     default:
         /* unexpected file bio format */
@@ -285,7 +285,7 @@ xmlSecOpenSSLAppCheckFileBioConsumed(BIO* bio, xmlSecKeyDataFormat format) {
 /**
  * @brief Reads a key from a file.
  * @param filename the key filename.
- * @param type the expected key type.
+ * @param type the expected key type; only used for the engine and store formats.
  * @param format the key file format.
  * @param pwd the key file password.
  * @param pwdCallback the key password callback.
@@ -465,7 +465,11 @@ xmlSecOpenSSLAppKeyLoadBIO(
         }
 
         if(pKey == NULL) {
+#if !defined(XMLSEC_OPENSSL_API_111)
+            xmlSecOpenSSLError("PEM_read_bio_PrivateKey_ex and PEM_read_bio_PUBKEY_ex", NULL);
+#else /* !defined(XMLSEC_OPENSSL_API_111) */
             xmlSecOpenSSLError("PEM_read_bio_PrivateKey and PEM_read_bio_PUBKEY", NULL);
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
             return(NULL);
         }
         break;

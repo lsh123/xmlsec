@@ -60,9 +60,9 @@ typedef struct _xmlSecMSCryptoKeyDataCtx xmlSecMSCryptoKeyDataCtx,
  * by WINNT 4.0, the wrapper will enable the library to work on WINNT 4.0
  */
 struct _mscrypt_key {
-        HCRYPTKEY hKey ;
-        volatile LONG refcnt ;
-} ;
+        HCRYPTKEY hKey;
+        volatile LONG refcnt;
+};
 
 /*-
  * A wrapper of HCRYPTPROV, a reference counter is introduced, the function is
@@ -70,10 +70,10 @@ struct _mscrypt_key {
  * by WINNT 4.0, the wrapper will enable the library to work on WINNT 4.0
  */
 struct _mscrypt_prov {
-        HCRYPTPROV hProv ;
-        BOOL fCallerFreeProv ;
-        volatile LONG refcnt ;
-} ;
+        HCRYPTPROV hProv;
+        BOOL fCallerFreeProv;
+        volatile LONG refcnt;
+};
 #endif /* XMLSEC_MSCRYPTO_CUSTOM_REFCOUNT */
 
 /*
@@ -85,8 +85,8 @@ struct _mscrypt_prov {
  */
 struct _xmlSecMSCryptoKeyDataCtx {
 #ifdef XMLSEC_MSCRYPTO_CUSTOM_REFCOUNT
-    struct _mscrypt_prov*               p_prov ;
-    struct _mscrypt_key*                p_key ;
+    struct _mscrypt_prov*               p_prov;
+    struct _mscrypt_key*                p_key;
 #else /* XMLSEC_MSCRYPTO_CUSTOM_REFCOUNT */
     HCRYPTPROV                          hProv;
     BOOL                                fCallerFreeProv;
@@ -124,10 +124,10 @@ xmlSecMSCryptoKeyDataCtxDestroyProvider(xmlSecMSCryptoKeyDataCtxPtr ctx) {
     if(ctx->p_prov != NULL) {
         if(InterlockedDecrement(&(ctx->p_prov->refcnt)) <= 0) {
             if((ctx->p_prov->hProv != 0) && (ctx->p_prov->fCallerFreeProv)) {
-                CryptReleaseContext(ctx->p_prov->hProv, 0) ;
+                CryptReleaseContext(ctx->p_prov->hProv, 0);
             }
             memset(ctx->p_prov, 0, sizeof(struct _mscrypt_prov));
-            xmlFree(ctx->p_prov) ;
+            xmlFree(ctx->p_prov);
         }
         ctx->p_prov = NULL;
     }
@@ -192,10 +192,10 @@ xmlSecMSCryptoKeyDataCtxDestroyKey(xmlSecMSCryptoKeyDataCtxPtr ctx) {
     if(ctx->p_key != NULL) {
         if(InterlockedDecrement(&(ctx->p_key->refcnt)) <= 0) {
             if(ctx->p_key->hKey != 0) {
-                CryptDestroyKey(ctx->p_key->hKey) ;
+                CryptDestroyKey(ctx->p_key->hKey);
             }
             memset(ctx->p_key, 0, sizeof(struct _mscrypt_key));
-            xmlFree(ctx->p_key) ;
+            xmlFree(ctx->p_key);
         }
         ctx->p_key = NULL;
     }
@@ -208,7 +208,7 @@ xmlSecMSCryptoKeyDataCtxSetKey(xmlSecMSCryptoKeyDataCtxPtr ctx, HCRYPTKEY hKey) 
 
     if((ctx->p_key != NULL) && (ctx->p_key->refcnt == 1)) {
         if(ctx->p_key->hKey != 0) {
-            CryptDestroyKey(ctx->p_key->hKey) ;
+            CryptDestroyKey(ctx->p_key->hKey);
         }
         memset(ctx->p_key, 0, sizeof(struct _mscrypt_key));
     } else {
@@ -571,9 +571,9 @@ xmlSecMSCryptoKeyDataAdoptKey(xmlSecKeyDataPtr data,
  * @param data the key data to retrieve the key from.
  * @param type type of key requested (public/private); currently ignored, the key is returned regardless of the requested type.
  *
- * Returned HKEY must not be destroyed by the caller.
+ * Returned HCRYPTKEY must not be destroyed by the caller.
  *
- * @return HKEY on success or NULL otherwise.
+ * @return HCRYPTKEY on success or NULL otherwise.
  */
 HCRYPTKEY
 xmlSecMSCryptoKeyDataGetKey(xmlSecKeyDataPtr data, xmlSecKeyDataType type) {
@@ -593,7 +593,7 @@ xmlSecMSCryptoKeyDataGetKey(xmlSecKeyDataPtr data, xmlSecKeyDataType type) {
  * @brief Native MSCrypto decrypt key retrieval from xmlsec keydata.
  * @param data the key data pointer
  *
- * Returned HKEY must be destroyed by the caller using CryptDestroyKey.
+ * Returned HCRYPTKEY must be destroyed by the caller using CryptDestroyKey.
  *
  * The keyspec recorded in the key data (ctx->dwKeySpec) is used to retrieve the
  * user key: certificate-based and generated key pairs are acquired/created as
@@ -601,7 +601,7 @@ xmlSecMSCryptoKeyDataGetKey(xmlSecKeyDataPtr data, xmlSecKeyDataType type) {
  * with "wrong key type" on CSPs that enforce aiKeyAlg. When no keyspec was
  * recorded, the legacy AT_KEYEXCHANGE default is kept.
  *
- * @return HKEY on success or NULL otherwise.
+ * @return HCRYPTKEY on success or NULL otherwise.
  */
 HCRYPTKEY
 xmlSecMSCryptoKeyDataGetDecryptKey(xmlSecKeyDataPtr data) {
@@ -708,9 +708,9 @@ xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo(xmlSecKeyDataPtr data) {
     }
 
     if(dwInfoDataLength > 0) {
-        pInfoData = (LPBYTE)xmlMalloc(dwInfoDataLength * sizeof(BYTE));
+        pInfoData = (LPBYTE)xmlMalloc(dwInfoDataLength);
         if(pInfoData == NULL) {
-            xmlSecMallocError(dwInfoDataLength * sizeof(BYTE), NULL);
+            xmlSecMallocError(dwInfoDataLength, NULL);
             return NULL;
         }
 
@@ -1269,7 +1269,7 @@ xmlSecMSCryptoKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) 
     /* reverse all */
     ret = xmlSecMSCryptoKeyValueRsaReverse(rsaValue);
     if (ret < 0) {
-        xmlSecInternalError("xmlSecMSCryptoKeyValueRsaReverse()", NULL);
+        xmlSecInternalError("xmlSecMSCryptoKeyValueRsaReverse", NULL);
         goto done;
     }
     mSize = xmlSecBufferGetSize(&(rsaValue->modulus));
@@ -1331,7 +1331,7 @@ xmlSecMSCryptoKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) 
     }
     memcpy(&(pubKey->pubexp), xmlSecBufferGetData(&(rsaValue->publicExponent)), peSize);
 
-    /* PrivateExponent is REQUIRED for private key but MSCrypto does not support it,
+    /* PrivateExponent is REQUIRED for a private key but MSCrypto does not support it,
      * so we just ignore it */
 
     /* Now that we have the blob, import */
@@ -1507,7 +1507,7 @@ xmlSecMSCryptoKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     /* reverse all */
     ret = xmlSecMSCryptoKeyValueRsaReverse(rsaValue);
     if (ret < 0) {
-        xmlSecInternalError("xmlSecMSCryptoKeyValueRsaReverse()", NULL);
+        xmlSecInternalError("xmlSecMSCryptoKeyValueRsaReverse", NULL);
         goto done;
     }
 
@@ -1827,7 +1827,7 @@ xmlSecMSCryptoKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) 
     /* reverse all */
     ret = xmlSecMSCryptoKeyValueDsaReverse(dsaValue);
     if (ret < 0) {
-        xmlSecInternalError("xmlSecMSCryptoKeyValueDsaReverse()", NULL);
+        xmlSecInternalError("xmlSecMSCryptoKeyValueDsaReverse", NULL);
         goto done;
     }
 
@@ -1901,7 +1901,7 @@ xmlSecMSCryptoKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) 
     memcpy(buf, xmlSecBufferGetData(&(dsaValue->g)), gSize);
     buf += pSize; /* gSize <= pSize */
 
-    /* X is REQUIRED for private key but MSCrypto does not support it,
+    /* X is REQUIRED for a private key but MSCrypto does not support it,
      * so we just ignore it */
 
     /* set public key and pad with zeros */
@@ -1911,7 +1911,7 @@ xmlSecMSCryptoKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) 
     /* Zero the seed and set the counter to 0xFFFFFFFF so the seed is ignored */
     seed = (DSSSEED*)buf;
     memset(seed, 0, sizeof(*seed));
-    seed->counter = 0xFFFFFFFF; /* SEED Counter set to 0xFFFFFFFF will cause seed to be ignored */
+    seed->counter = 0xFFFFFFFF; /* setting the SEED counter to 0xFFFFFFFF causes the seed to be ignored */
 
     hProv = xmlSecMSCryptoFindProvider(xmlSecMSCryptoProviderInfo_Dss, NULL, CRYPT_VERIFYCONTEXT, TRUE);
     if (hProv == 0) {
@@ -2108,7 +2108,7 @@ xmlSecMSCryptoKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     }
     blob += keyLen;
 
-    /* X is REQUIRED for private key but MSCrypto does not support it,
+    /* X is REQUIRED for a private key but MSCrypto does not support it,
      * so we just ignore it */
 
     /* y */
@@ -2124,7 +2124,7 @@ xmlSecMSCryptoKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     /* reverse all */
     ret = xmlSecMSCryptoKeyValueDsaReverse(dsaValue);
     if (ret < 0) {
-        xmlSecInternalError("xmlSecMSCryptoKeyValueDsaReverse()", NULL);
+        xmlSecInternalError("xmlSecMSCryptoKeyValueDsaReverse", NULL);
         goto done;
     }
 

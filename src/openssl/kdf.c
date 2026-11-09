@@ -349,7 +349,7 @@ xmlSecOpenSSLKdfExecute(
         xmlSecByte * outData;
 
         if(transform->expectedOutputSize <= 0) {
-            xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL, "KDF output key size is not specified");
+            xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_SIZE, NULL, "KDF output key size is not specified");
             return(-1);
         }
         if((ctx->expectedOutputSize > 0) && (ctx->expectedOutputSize != transform->expectedOutputSize)) {
@@ -561,7 +561,7 @@ xmlSecOpenSSLConcatKdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
         goto done;
     }
 
-    /* set fixedinfo from params and save in the context, params just holds a pointer */
+    /* set FixedInfo from params and save in the context, params just holds a pointer */
     ret = xmlSecTransformConcatKdfParamsGetFixedInfo(&params, &(ctx->buffer));
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformConcatKdfParamsGetFixedInfo", xmlSecTransformGetName(transform));
@@ -580,7 +580,7 @@ xmlSecOpenSSLConcatKdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
         ctx->params[ctx->paramsPos++] = OSSL_PARAM_construct_octet_string(OSSL_KDF_PARAM_INFO, fixedInfoData, fixedInfoSize);
     }
 
-    /* set openssl digest name from params */
+    /* set OpenSSL digest name from params */
     ret = xmlSecOpenSSLConcatKdfSetDigestNameFromHref(ctx, params.digestMethod);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLConcatKdfSetDigestNameFromHref", xmlSecTransformGetName(transform));
@@ -793,7 +793,7 @@ xmlSecOpenSSLPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     }
     ctx->params[ctx->paramsPos++] = OSSL_PARAM_construct_octet_string(OSSL_KDF_PARAM_SALT, saltData, saltSize);
 
-    /* set openssl digest algorithm name from params */
+    /* set OpenSSL digest algorithm name from params */
     ret = xmlSecOpenSSLPbkdf2SetDigestNameFromHref(ctx, params.prfAlgorithmHref);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLPbkdf2SetDigestNameFromHref", xmlSecTransformGetName(transform));
@@ -964,7 +964,7 @@ xmlSecOpenSSLHkdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
         goto done;
     }
 
-    /* set HKDF mode: EXTRACT_AND_EXPAND (stored in ctx->mac, which is unused by HKDF; a transform instance is only ever one KDF type) */
+    /* set HKDF mode: EXTRACT_AND_EXPAND (the mode string is stored in ctx->mac, which has no HKDF-specific meaning; a transform instance is only ever one KDF type) */
     ctx->mac = xmlStrdup(BAD_CAST "EXTRACT_AND_EXPAND");
     if(ctx->mac == NULL) {
         xmlSecStrdupError(BAD_CAST "EXTRACT_AND_EXPAND", NULL);

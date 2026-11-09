@@ -1284,7 +1284,7 @@ xmlSecKeyValueDhInitialize(xmlSecKeyValueDhPtr data) {
     }
     ret = xmlSecBufferInitialize(&(data->pub), XMLSEC_KEY_DATA_DH_INIT_BUF_SIZE);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferInitialize(public)", NULL);
+        xmlSecInternalError("xmlSecBufferInitialize(pub)", NULL);
         xmlSecKeyValueDhFinalize(data);
         return(-1);
     }
@@ -2040,7 +2040,7 @@ xmlSecKeyValueDsaXmlRead(xmlSecKeyValueDsaPtr data, xmlNodePtr node) {
     cur = xmlSecGetNextElementNode(cur->next);
 
     /* DSA X node is proprietary extension by XMLSec library and uses xmlSecNs namespace.
-    * DEPRECATED and will be removed in the future. */
+     * DEPRECATED and will be removed in the future. */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSAX, xmlSecNs))) {
         /* next is X node. It is REQUIRED for private key but
          * we are not sure exactly what we are reading */

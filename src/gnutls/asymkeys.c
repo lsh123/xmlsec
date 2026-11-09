@@ -617,8 +617,8 @@ xmlSecGnuTLSKeyDataDsaGetKlass(void) {
  * @brief Sets the value of DSA key data.
  * @details Sets the value of DSA key data. The @p pubkey and @p privkey will be owned by the @p data on success.
  * @param data the pointer to DSA key data.
- * @param pubkey the pointer to GnuTLS DSA key.
- * @param privkey the pointer to GnuTLS DSA key.
+ * @param pubkey the pointer to GnuTLS DSA public key.
+ * @param privkey the pointer to GnuTLS DSA private key.
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -979,8 +979,8 @@ xmlSecGnuTLSKeyDataEcGetKlass(void) {
  * @brief Sets the value of EC key data.
  * @details Sets the value of EC key data. The @p pubkey and @p privkey will be owned by the @p data on success.
  * @param data the pointer to EC key data.
- * @param pubkey the pointer to GnuTLS EC key.
- * @param privkey the pointer to GnuTLS EC key.
+ * @param pubkey the pointer to GnuTLS EC public key.
+ * @param privkey the pointer to GnuTLS EC private key.
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -1296,8 +1296,8 @@ xmlSecGnuTLSKeyDataRsaGetKlass(void) {
  * @brief Sets the value of RSA key data.
  * @details Sets the value of RSA key data. The @p pubkey and @p privkey will be owned by the @p data on success.
  * @param data the pointer to RSA key data.
- * @param pubkey the pointer to GnuTLS RSA key.
- * @param privkey the pointer to GnuTLS RSA key.
+ * @param pubkey the pointer to GnuTLS RSA public key.
+ * @param privkey the pointer to GnuTLS RSA private key.
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -1410,11 +1410,11 @@ xmlSecGnuTLSKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     /* privateExponent (only for private key) */
     size = xmlSecBufferGetSize(&(rsaValue->privateExponent));
     if(size > 0) {
-        /* GnuTLS requires the RSA CRT parameters (p, q) to import a private
+        /* GnuTLS requires the RSA prime factors (p, q) to import a private
          * key, and they cannot be derived from (modulus, e, d) alone. As a
          * result, a private RSA key written by xmlSecGnuTLSKeyDataRsaWrite
          * (which emits privateExponent) cannot be read back by this function. */
-        xmlSecInvalidDataError("private RSA keys are not supported: GnuTLS requires the RSA CRT parameters "
+        xmlSecInvalidDataError("private RSA keys are not supported: GnuTLS requires the RSA prime factors "
             "(Prime1 and Prime2), which are not available in the RSAKeyValue format",
             xmlSecKeyDataKlassGetName(id));
         goto done;
@@ -1635,8 +1635,8 @@ xmlSecGnuTLSKeyDataGost2001GetKlass(void) {
  * @brief Sets the value of GOST 2001 key data.
  * @details Sets the value of GOST 2001 key data. The @p pubkey and @p privkey will be owned by the @p data on success.
  * @param data the pointer to GOST 2001 key data.
- * @param pubkey the pointer to GnuTLS GOST 2001 key.
- * @param privkey the pointer to GnuTLS GOST 2001 key.
+ * @param pubkey the pointer to GnuTLS GOST 2001 public key.
+ * @param privkey the pointer to GnuTLS GOST 2001 private key.
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -1695,8 +1695,8 @@ xmlSecGnuTLSKeyDataGost2012_256GetKlass(void) {
  * @brief Sets the value of GOST 2012 (256 bits) key data.
  * @details Sets the value of GOST 2012 (256 bits) key data. The @p pubkey and @p privkey will be owned by the @p data on success.
  * @param data the pointer to GOST 2012 (256 bits) key data.
- * @param pubkey the pointer to GnuTLS GOST 2012 (256 bits) key.
- * @param privkey the pointer to GnuTLS GOST 2012 (256 bits) key.
+ * @param pubkey the pointer to GnuTLS GOST 2012 (256 bits) public key.
+ * @param privkey the pointer to GnuTLS GOST 2012 (256 bits) private key.
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -1749,8 +1749,8 @@ xmlSecGnuTLSKeyDataGost2012_512GetKlass(void) {
  * @brief Sets the value of GOST 2012 (512 bits) key data.
  * @details Sets the value of GOST 2012 (512 bits) key data. The @p pubkey and @p privkey will be owned by the @p data on success.
  * @param data the pointer to GOST 2012 (512 bits) key data.
- * @param pubkey the pointer to GnuTLS GOST 2012 (512 bits) key.
- * @param privkey the pointer to GnuTLS GOST 2012 (512 bits) key.
+ * @param pubkey the pointer to GnuTLS GOST 2012 (512 bits) public key.
+ * @param privkey the pointer to GnuTLS GOST 2012 (512 bits) private key.
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -1812,8 +1812,8 @@ xmlSecGnuTLSKeyDataMLDSAGetKlass(void) {
  * @brief Sets the value of ML-DSA key data.
  * @details Sets the value of ML-DSA key data. The @p pubkey and @p privkey will be owned by the @p data on success.
  * @param data the pointer to ML-DSA key data.
- * @param pubkey the pointer to GnuTLS ML-DSA key.
- * @param privkey the pointer to GnuTLS ML-DSA key.
+ * @param pubkey the pointer to GnuTLS ML-DSA public key.
+ * @param privkey the pointer to GnuTLS ML-DSA private key.
  * @return 0 on success or a negative value otherwise.
  */
 int

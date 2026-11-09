@@ -727,9 +727,10 @@ xmlSecGnuTLSX509StoreVerifyCert(xmlSecGnuTLSX509StoreCtxPtr ctx,
         return(1);
     }
 
-    /* enforce the requested maximum certificate chain length (the OpenSSL
-     * backend enforces the analogous limit via X509_VERIFY_PARAM_set_depth,
-     * which counts intermediate certificates only) */
+    /* enforce the requested maximum certificate chain length: this backend
+     * compares the whole chain size (including the leaf certificate) against
+     * the limit, while the OpenSSL backend enforces it via
+     * X509_VERIFY_PARAM_set_depth, which counts intermediate certificates only */
     if((keyInfoCtx->certsVerificationDepth > 0) &&
        (certs_chain_size > (xmlSecSize)keyInfoCtx->certsVerificationDepth)) {
         xmlSecOtherError3(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL,
@@ -805,7 +806,7 @@ xmlSecGnuTLSX509StoreVerifyCert(xmlSecGnuTLSX509StoreCtxPtr ctx,
  * @details Checks that the key's X509 data contains a key certificate and verifies
  * that certificate (using the other certificates and CRLs from the key's X509 data)
  * against the trusted certificates and CRLs in the store.
- * @param store the pointer to X509 key data store klass.
+ * @param store the pointer to X509 key data store.
  * @param key the pointer to key.
  * @param keyInfoCtx the key info context for verification.
  * @return 1 if key is verified, 0 otherwise, or a negative value if an error occurs.
@@ -927,7 +928,7 @@ done:
  * @details Unlike the OpenSSL back-end equivalent, @p crls must not be NULL:
  * verification is always performed against the given CRLs, and a NULL @p crls
  * results in an immediate failure (NULL return).
- * @param store the pointer to X509 key data store klass.
+ * @param store the pointer to X509 key data store.
  * @param certs the untrusted certificates.
  * @param crls the CRLs (must not be NULL).
  * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.

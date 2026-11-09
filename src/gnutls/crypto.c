@@ -489,8 +489,8 @@ xmlSecGnuTLSShutdown(void) {
 }
 
 /**
- * @brief Adds GnuTLS specific key data stores.
- * @details Adds GnuTLS specific key data stores in keys manager.
+ * @brief Adds the GnuTLS specific key data store.
+ * @details Adds the GnuTLS specific key data store in the keys manager.
  * @param mngr the pointer to keys manager.
  * @return 0 on success or a negative value otherwise.
  */

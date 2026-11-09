@@ -54,7 +54,7 @@ xmlSecOpenSSLGetBNValue(const xmlSecBufferPtr buf, BIGNUM **bigNum) {
     xmlSecOpenSSLSizeT bufLen;
 
     xmlSecAssert2(buf != NULL, -1);
-    xmlSecAssert2(bigNum!= NULL, -1);
+    xmlSecAssert2(bigNum != NULL, -1);
 
     bufPtr = xmlSecBufferGetData(buf);
     bufSize = xmlSecBufferGetSize(buf);
@@ -910,7 +910,7 @@ xmlSecOpenSSLEvpKeyAdopt(EVP_PKEY *pKey) {
 
     id = xmlSecOpenSSLEvpKeyGetKeyDataId(pKey);
     if(id == NULL) {
-        xmlSecInvalidIntegerTypeError("evp key type", EVP_PKEY_base_id(pKey), "unsupported evp key type", NULL);
+        xmlSecInvalidIntegerTypeError("evp key type", xmlSecOpenSSLEvpKeyGetId(pKey), "unsupported evp key type", NULL);
         return(NULL);
     }
 
@@ -3352,7 +3352,7 @@ xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     }
 
     ret = BN_set_word(publicExponent, RSA_F4);
-    if(ret != 1){
+    if(ret != 1) {
         xmlSecOpenSSLError("BN_set_word",
             xmlSecKeyDataGetName(data));
         goto done;
@@ -3638,7 +3638,7 @@ xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     }
 
     ret = BN_set_word(publicExponent, RSA_F4);
-    if(ret != 1){
+    if(ret != 1) {
         xmlSecOpenSSLError("BN_set_word", xmlSecKeyDataGetName(data));
         goto done;
     }
@@ -4304,17 +4304,9 @@ xmlSecOpenSSLKeyDataXdhGetKlass(void) {
  */
 int
 xmlSecOpenSSLKeyDataXdhAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
-    int ret;
-
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataXdhId), -1);
     xmlSecAssert2(pKey != NULL, -1);
-
-    ret = xmlSecOpenSSLKeyValueXdhCheckKeyType(pKey);
-    if(ret != 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyValueXdhCheckKeyType",
-                            xmlSecKeyDataGetName(data));
-        return(-1);
-    }
+    xmlSecAssert2(xmlSecOpenSSLKeyValueXdhCheckKeyType(pKey) == 0, -1);
 
     return(xmlSecOpenSSLEvpKeyDataAdoptEvp(data, pKey));
 }

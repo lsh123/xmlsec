@@ -662,7 +662,7 @@ xmlSecTransformKWRfc3394Execute(xmlSecTransformPtr transform, xmlSecTransformKWR
 
         xmlSecAssert2(outSize == 0, -1);
         if(transform->operation == xmlSecTransformOperationEncrypt) {
-            /* the encoded key might be 8 bytes longer plus 8 bytes just in case */
+            /* the encoded key might be 8 bytes longer plus 16 bytes just in case */
             outSize = inSize + XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE +
                                XMLSEC_KW_RFC3394_BLOCK_SIZE;
         } else {
@@ -709,7 +709,7 @@ xmlSecTransformKWRfc3394Execute(xmlSecTransformPtr transform, xmlSecTransformKWR
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferRemoveHead",
                                  xmlSecTransformGetName(transform),
-                                  "size=" XMLSEC_SIZE_FMT, inSize);
+                                 "size=" XMLSEC_SIZE_FMT, inSize);
             return(-1);
         }
 

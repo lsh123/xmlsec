@@ -564,7 +564,7 @@ xmlSecOpenSSLShutdown(void) {
     int res = 0;
 
 #if !defined(XMLSEC_OPENSSL_API_111)
-    /* drop the reference to the caller-owned library context so that
+    /* clear the borrowed reference to the caller-owned library context so that
      * it can be safely freed after shutdown */
     gXmlSecOpenSSLLibCtx = NULL;
 #endif /* !defined(XMLSEC_OPENSSL_API_111) */

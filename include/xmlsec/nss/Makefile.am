@@ -5,9 +5,9 @@ xmlsecnssincdir = $(includedir)/xmlsec1/xmlsec/nss
 xmlsecnssinc_HEADERS = \
 	app.h \
 	crypto.h \
-	symbols.h \
 	keysstore.h \
 	pkikeys.h \
+	symbols.h \
 	x509.h \
 	$(NULL)
 

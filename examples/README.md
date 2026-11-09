@@ -10,9 +10,9 @@ all other required libraries are already installed).
 
 ### Windows
 - Add paths to include and library files for xmlsec, libxml2, libxslt and
-openssl, nss or mscrypto to the environment variables INCLUDE and LIB.
-- Edit `Makefile.w32` file and specify correct crypto engine (openssl, nss
-or mscrypto). You can also specify necessary include and library paths
+openssl, nss, mscng or mscrypto to the environment variables INCLUDE and LIB.
+- Edit `Makefile.w32` file and specify correct crypto engine (openssl, nss,
+mscng or mscrypto). You can also specify necessary include and library paths
 or change from static linking to using DLLs.
 - Run `nmake -f Makefile.w32`
 
@@ -164,7 +164,7 @@ xmlsec1 verify --add-id-attr ID --untrusted ca2cert.pem --trusted cacert.pem sig
 Files:
 ```
 verify-saml.c           The source code
-verify-saml-tmpl.xml    An example template file with a simple SAML response for verify-saml example
+verify-saml-tmpl.xml    An example template file with a simple SAML response for the verify-saml example
 verify-saml-res.xml     Signed simple SAML response for verification by verify-saml.c
 ```
 
@@ -229,7 +229,7 @@ key to make decrypt3 example work):
 ./encrypt3 encrypt3-doc.xml rsakey.pem
 ```
 
-### decrypt1: decrypting binary data using a single key
+### decrypt1: decrypting an encrypted file using a single key
 
 Files:
 ```
@@ -242,7 +242,7 @@ To run this example:
 ./decrypt1 encrypt2-res.xml aeskey.bin
 ```
 
-### decrypt2: decrypting binary data using keys manager
+### decrypt2: decrypting an encrypted file using a keys manager
 
 Files:
 ```
@@ -264,7 +264,7 @@ xmlsec1 decrypt --aes-key:aeskey.bin aeskey.bin encrypt2-res.xml
 xmlsec1 decrypt --privkey:rsakey.pem rsakey.pem encrypt3-res.xml
 ```
 
-### decrypt3: decrypting binary file using custom keys manager
+### decrypt3: decrypting an encrypted file using a custom keys manager
 
 Files:
 ```

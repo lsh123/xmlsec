@@ -531,7 +531,8 @@ xmlSecGnuTLSConcatKdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen,
     /* get hash output length */
     hashLen = (xmlSecSize)gnutls_hash_get_len(ctx->u.concatKdf.dgstAlgo);
     if(hashLen == 0) {
-        xmlSecInternalError2("gnutls_hash_get_len", NULL, "hashLen=" XMLSEC_SIZE_FMT, hashLen);
+        xmlSecInternalError2("gnutls_hash_get_len", transformName,
+            "hashLen=" XMLSEC_SIZE_FMT, hashLen);
         return(-1);
     }
     if(hashLen > XMLSEC_GNUTLS_KDF_MAX_HASH_SIZE) {
@@ -555,7 +556,7 @@ xmlSecGnuTLSConcatKdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen,
     while(pos < outLen) {
         /* detect counter wrap: counters start at 1 and must not wrap (NIST SP 800-56A) */
         if(counterVal == 0) {
-            xmlSecInternalError("ConcatKDF counter overflow", NULL);
+            xmlSecInternalError("ConcatKDF counter overflow", transformName);
             goto done;
         }
 
@@ -568,21 +569,21 @@ xmlSecGnuTLSConcatKdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen,
         /* init hash */
         err = gnutls_hash_init(&hash, ctx->u.concatKdf.dgstAlgo);
         if(err != GNUTLS_E_SUCCESS) {
-            xmlSecGnuTLSError("gnutls_hash_init", err, NULL);
+            xmlSecGnuTLSError("gnutls_hash_init", err, transformName);
             goto done;
         }
 
         /* hash: counter || Z || OtherInfo */
         err = gnutls_hash(hash, counter, 4);
         if(err != GNUTLS_E_SUCCESS) {
-            xmlSecGnuTLSError("gnutls_hash(counter)", err, NULL);
+            xmlSecGnuTLSError("gnutls_hash(counter)", err, transformName);
             gnutls_hash_deinit(hash, NULL);
             goto done;
         }
 
         err = gnutls_hash(hash, keyData, keySize);
         if(err != GNUTLS_E_SUCCESS) {
-            xmlSecGnuTLSError("gnutls_hash(Z)", err, NULL);
+            xmlSecGnuTLSError("gnutls_hash(Z)", err, transformName);
             gnutls_hash_deinit(hash, NULL);
             goto done;
         }
@@ -590,7 +591,7 @@ xmlSecGnuTLSConcatKdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen,
         if((fixedInfoData != NULL) && (fixedInfoSize > 0)) {
             err = gnutls_hash(hash, fixedInfoData, fixedInfoSize);
             if(err != GNUTLS_E_SUCCESS) {
-                xmlSecGnuTLSError("gnutls_hash(OtherInfo)", err, NULL);
+                xmlSecGnuTLSError("gnutls_hash(OtherInfo)", err, transformName);
                 gnutls_hash_deinit(hash, NULL);
                 goto done;
             }
@@ -795,7 +796,7 @@ xmlSecGnuTLSPbkdf2GenerateKey(
     /* do the work! */
     err = gnutls_pbkdf2(ctx->u.pbkdf2.mac, &key, &salt, iterCount, outData, ctx->u.pbkdf2.params.keyLength);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_pbkdf2", err, NULL);
+        xmlSecGnuTLSError("gnutls_pbkdf2", err, transformName);
         return(-1);
     }
 

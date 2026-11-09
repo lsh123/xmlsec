@@ -1964,7 +1964,7 @@ xmlSecMSCngDhValueInitialize(xmlSecKeyValueDhPtr dhValue) {
     }
     ret = xmlSecBufferInitialize(&(dhValue->pub), 0);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferInitialize(public)", NULL);
+        xmlSecInternalError("xmlSecBufferInitialize(pub)", NULL);
         xmlSecBufferFinalize(&(dhValue->generator));
         xmlSecBufferFinalize(&(dhValue->q));
         xmlSecBufferFinalize(&(dhValue->p));

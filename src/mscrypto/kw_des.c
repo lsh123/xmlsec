@@ -430,7 +430,7 @@ xmlSecMSCryptoKWDes3BlockEncrypt(xmlSecTransformPtr transform,
 
     keyBuf = xmlSecBufferGetData(&(ctx->parentCtx.keyBuffer));
     keyBufSize = xmlSecBufferGetSize(&(ctx->parentCtx.keyBuffer));
-    xmlSecAssert2(keyBuf  != NULL, -1);
+    xmlSecAssert2(keyBuf != NULL, -1);
     xmlSecAssert2(keyBufSize >= XMLSEC_KW_DES3_KEY_LENGTH, -1);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(keyBufSize, dwKeyBufSize, goto done, NULL);
 
@@ -443,8 +443,7 @@ xmlSecMSCryptoKWDes3BlockEncrypt(xmlSecTransformPtr transform,
         keyBuf,
         dwKeyBufSize,
         TRUE,
-        &cryptKey)
-    )  {
+        &cryptKey))  {
         xmlSecInternalError("xmlSecMSCryptoImportPlainSessionBlob", NULL);
         goto done;
     }
@@ -554,7 +553,6 @@ xmlSecMSCryptoKWDes3BlockDecrypt(xmlSecTransformPtr transform,
         dwKeyBufSize,
         TRUE,
         &cryptKey))  {
-
         xmlSecInternalError("xmlSecMSCryptoImportPlainSessionBlob", NULL);
         goto done;
     }

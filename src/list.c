@@ -422,7 +422,7 @@ xmlSecPtrListRemove(xmlSecPtrListPtr list, xmlSecSize pos) {
 
 /**
  * @brief Removes and returns a list item.
- * @details Removes the list item at the position @p pos, shift all following
+ * @details Removes the list item at the position @p pos, shifts all following
  * items towards the beginning of the list, and return the removed item.
  * @param list the pointer to list.
  * @param pos the position.

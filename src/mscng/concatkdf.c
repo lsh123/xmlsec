@@ -301,10 +301,10 @@ xmlSecMSCngConcatKdfPerformKeyDerivation(
     xmlSecAssert2(pbOut != NULL, -1);
     xmlSecAssert2(cbOut > 0, -1);
 
-    /* build params: fixedInfo (the packed KDF_GENERIC_PARAMETER) and hash algorithm.
-     * Per the SDK, KDF_ALGORITHMID, KDF_PARTYUINFO and KDF_PARTYVINFO are required for
-     * BCRYPT_SP80056A_CONCAT_ALGORITHM, so the KDF_GENERIC_PARAMETER buffer is always
-     * provided; when the FixedInfo is empty it is a zero-length buffer. */
+    /* build params: the KDF_GENERIC_PARAMETER buffer always carries the
+     * FixedInfo context data (it is a zero-length buffer with a valid dummy
+     * pointer when the FixedInfo is empty) and the KDF_HASH_ALGORITHM buffer
+     * carries the hash algorithm name. */
     paramsCONCATKDF.ulVersion = BCRYPTBUFFER_VERSION;
     paramBufferCONCATKDF[0].cbBuffer = cbFixedInfo;
     paramBufferCONCATKDF[0].BufferType = KDF_GENERIC_PARAMETER;

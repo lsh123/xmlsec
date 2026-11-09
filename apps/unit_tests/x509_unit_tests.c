@@ -883,9 +883,8 @@ test_xmlSecKeyDataX509XmlRead_null_key_fails(void) {
 
     testStart("xmlSecKeyDataX509XmlRead: NULL key is rejected");
 
-    /* the 'key' parameter must be validated (and rejected) before it is
-     * dereferenced via xmlSecKeySwap(); passing NULL must yield an error,
-     * not a crash */
+    /* passing all arguments as NULL must yield an error, not a crash;
+     * this smoke test does not isolate the 'key' parameter */
     ret = xmlSecKeyDataX509XmlRead(NULL, NULL, NULL, NULL, NULL);
     if(ret >= 0) {
         testLog("Error: expected failure for NULL key, got ret=%d\n", ret);

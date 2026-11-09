@@ -615,7 +615,7 @@ xmlSecParsePrepareCtxt(xmlParserCtxtPtr ctxt) {
  * To block network access and loading of external entities:
  * - XML_PARSE_NO_XXE: disable loading of external content (available >= 2.13.0),
  *   it disables XML_PARSE_DTDLOAD | XML_PARSE_DTDATTR but we keep those in defaults
- *   to make it work if XML_PARSE_NO_XXE is disabled (e.g. with --xxe option)
+ *   to make it work if XML_PARSE_NO_XXE is disabled via xmlSecParserSetDefaultOptions()
  * - XML_PARSE_NONET: forbid network access
  *
  * To support c14n:

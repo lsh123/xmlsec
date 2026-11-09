@@ -641,7 +641,7 @@ xmlSecTransformRelationshipWriteProp(xmlOutputBufferPtr buf, const xmlChar * nam
         }
     }
 
-    return (0);
+    return(0);
 }
 
 /*

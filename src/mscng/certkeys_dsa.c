@@ -842,7 +842,7 @@ xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDsaPtr 
 
     /* check minimum blob size and detect V1 vs V2 by magic */
     if (bufLen < sizeof(BCRYPT_DSA_KEY_BLOB)) {
-        xmlSecInvalidSizeLessThanError("BCryptExportKey(V1) blob size", (xmlSecSize)bufLen, (xmlSecSize)sizeof(BCRYPT_DSA_KEY_BLOB), NULL);
+        xmlSecInvalidSizeLessThanError("BCryptExportKey blob size", (xmlSecSize)bufLen, (xmlSecSize)sizeof(BCRYPT_DSA_KEY_BLOB), NULL);
         goto done;
     }
     dsakey = (BCRYPT_DSA_KEY_BLOB*)bufData;

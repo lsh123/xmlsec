@@ -42,7 +42,7 @@ static const xmlSecByte base64[] =
 };
 
 
-/* few macros to simplify the code */
+/* a few macros to simplify the code */
 #define xmlSecBase64Encode1(a)          (((a) >> 2) & 0x3F)
 #define xmlSecBase64Encode2(a, b)       ((((a) << 4) & 0x30) + (((b) >> 4) & 0x0F))
 #define xmlSecBase64Encode3(b, c)       ((((b) << 2) & 0x3c) + (((c) >> 6) & 0x03))
@@ -256,8 +256,11 @@ xmlSecBase64CtxUpdate_ex(xmlSecBase64CtxPtr ctx, const xmlSecByte *in, xmlSecSiz
 
     if(ctx->encode != 0) {
         ret = xmlSecBase64CtxEncode(ctx, in, inSize, &inRead, out, outSize, outWritten);
-        if((ret < 0) || (inRead != inSize)) {
+        if(ret < 0) {
             xmlSecInternalError("xmlSecBase64CtxEncode", NULL);
+            return(-1);
+        } else if(inRead != inSize) {
+            xmlSecInvalidSizeOtherError("output base64 buffer size is too small", NULL);
             return(-1);
         }
     } else {

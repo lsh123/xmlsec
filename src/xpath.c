@@ -271,10 +271,10 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
             return(NULL);
         }
         break;
-#else
-        xmlSecXmlError("XPointer support is not enabled in the libxml2 build", NULL);
+#else /* LIBXML_XPTR_ENABLED */
+        xmlSecNotImplementedError("XPointer support is not enabled in the libxml2 build");
         return(NULL);
-#endif
+#endif /* LIBXML_XPTR_ENABLED */
     default:
         xmlSecInternalError("Invalid XPath transform type", NULL);
         return(NULL);

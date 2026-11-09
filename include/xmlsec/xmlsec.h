@@ -42,10 +42,10 @@ extern "C" {
 #      define XMLSEC_DEPRECATED __attribute__((deprecated))
 #    elif defined(_MSC_VER)
 #      define XMLSEC_DEPRECATED __declspec(deprecated)
-#    else /* defined(_MSC_VER) */
+#    else /* !defined(__GNUC__) && !defined(__clang__) && !defined(_MSC_VER) */
 /* No deprecation attribute is available for this compiler; XMLSEC_DEPRECATED is a no-op. */
 #      define XMLSEC_DEPRECATED
-#    endif /* defined(_MSC_VER) */
+#    endif /* defined(__GNUC__) || defined(__clang__) */
 #  else  /* !defined(IN_XMLSEC) && !defined(IN_XMLSEC_CRYPTO) */
 #    define XMLSEC_DEPRECATED
 #  endif /* !defined(IN_XMLSEC) && !defined(IN_XMLSEC_CRYPTO) */
@@ -71,9 +71,9 @@ typedef void*                                   xmlSecPtr;
 #define XMLSEC_SIZE_T_FMT                      "%llu"
 #elif defined(__MINGW32__)
 #define XMLSEC_SIZE_T_FMT                      "%lu"
-#else /* defined(__MINGW32__) */
+#else /* !defined(__MINGW64__) && !defined(__MINGW32__) */
 #define XMLSEC_SIZE_T_FMT                      "%zu"
-#endif /* defined(__MINGW32__) */
+#endif /* defined(__MINGW64__) */
 
 /**
  * @brief Size of something.

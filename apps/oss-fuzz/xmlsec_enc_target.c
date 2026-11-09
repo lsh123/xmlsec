@@ -13,7 +13,6 @@
  */
 #include <stdint.h>
 #include <stddef.h>
-#include <stdio.h>
 #include <string.h>
 #include <limits.h>
 
@@ -147,7 +146,7 @@ static int load_rsa_key(void) {
         }
         memcpy(pem + off, g_key_lines[i], len);
         off += len;
-        pem[off++] = 0x0A;  /* newline; avoid escape sequences (see note above) */
+        pem[off++] = 0x0A;  /* newline; avoid escape sequences */
     }
 
     key = xmlSecOpenSSLAppKeyLoadMemory((const xmlSecByte*)pem, (xmlSecSize)off,

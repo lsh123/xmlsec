@@ -63,9 +63,9 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppDefaultKeysMngrVerifyKey(xmlSecKey
                                                                       xmlSecKeyPtr key,
                                                                       xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppDefaultKeysMngrLoad    (xmlSecKeysMngrPtr mngr,
-                                                                      const char* uri);
+                                                                      const char *uri);
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppDefaultKeysMngrSave    (xmlSecKeysMngrPtr mngr,
-                                                                      const char* filename,
+                                                                      const char *filename,
                                                                       xmlSecKeyDataType type);
 #ifndef XMLSEC_NO_X509
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppKeysMngrCertLoad       (xmlSecKeysMngrPtr mngr,
@@ -120,7 +120,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCngAppPkcs12LoadMemory     (const xmlS
                                                                       void* pwdCallback,
                                                                       void* pwdCallbackCtx);
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppKeyCertLoad            (xmlSecKeyPtr key,
-                                                                      const char* filename,
+                                                                      const char *filename,
                                                                       xmlSecKeyDataFormat format);
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppKeyCertLoadMemory      (xmlSecKeyPtr key,
                                                                       const xmlSecByte *data,

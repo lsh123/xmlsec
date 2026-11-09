@@ -1137,7 +1137,7 @@ xmlSecCreateTree(const xmlChar* rootNodeName, const xmlChar* rootNodeNs) {
 
     /* make sure to remove old root */
     oldRoot = xmlDocSetRootElement(doc, root);
-    if(oldRoot  != NULL) {
+    if(oldRoot != NULL) {
         xmlUnlinkNode(oldRoot);
         xmlFreeNode(oldRoot);
     }

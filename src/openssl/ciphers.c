@@ -379,7 +379,7 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdate(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
             inBlocksSize = inSize;
         }
     } else {
-        /* GCM mode: we want to keep the last bytes in input until the Final() call to verify the tag */
+        /* GCM mode: we want to keep the last bytes in input until the Final() call to verify the tag (decryption) or compute the tag (encryption) */
         if(inSize <= XMLSEC_OPENSSL_GCM_TAG_SIZE) {
             /* In GCM mode during decryption the last 16 bytes of the buffer are the tag.
              * Make sure there are always at least 16 bytes left over until we know we're
@@ -1144,6 +1144,11 @@ xmlSecOpenSSLTransformAes256CbcGetKlass(void) {
     return(&xmlSecOpenSSLAes256CbcKlass);
 }
 
+/******************************************************************************
+ *
+ * AES GCM cipher transforms
+ *
+ *****************************************************************************/
 /* AES 128 GCM cipher transform: xmlSecOpenSSLAes128GcmKlass */
 XMLSEC_OPENSSL_BLOCK_CIPHER_KLASS(Aes128Gcm)
 

@@ -411,7 +411,7 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
 
     /*  ML-DSA  */
 #ifndef XMLSEC_NO_MLDSA
-    /* ML-DSA uses hard coded SHAKE-128 and SHAKE-256 so no need to have digest here */
+    /* ML-DSA uses hardcoded SHAKE-128 and SHAKE-256 so no need to have digest here */
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformMLDSA44Id)) {
         ctx->keyId      = xmlSecGnuTLSKeyDataMLDSAId;
         ctx->dgstAlgo   = GNUTLS_DIG_UNKNOWN;
@@ -550,7 +550,7 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-    /* create hash (skip for algorithms that don't use separate digest like ML-DSA) */
+    /* create hash (skip for algorithms that don't use a separate digest, like ML-DSA and EdDSA) */
     if(ctx->dgstAlgo != GNUTLS_DIG_UNKNOWN) {
         err = gnutls_hash_init(&(ctx->hash), ctx->dgstAlgo);
         if(err != GNUTLS_E_SUCCESS) {
@@ -789,7 +789,8 @@ xmlSecGnuTLSToDer(const gnutls_datum_t* src, gnutls_datum_t* dst, xmlSecSize siz
         size = src->size / 2;
     } else {
         xmlSecInternalError3("xmlSecGnuTLSToDer", NULL,
-            "invalid signature size: actual=%u; expected=" XMLSEC_SIZE_FMT, src->size, 2 * size);
+            "invalid signature size: actual=" XMLSEC_SIZE_FMT "; expected=" XMLSEC_SIZE_FMT,
+            (xmlSecSize)src->size, 2 * size);
         return(-1);
     }
 
@@ -1200,7 +1201,7 @@ xmlSecGnuTLSSignatureVerify(
     }
 
     /* In case of a verification failure GNUTLS_E_PK_SIG_VERIFY_FAILED
-       is returned, and zero or positive code on success. */
+       is returned, and GNUTLS_E_SUCCESS (0) on success. */
     if(err >= 0) {
         /* signature is good */
         transform->status = xmlSecTransformStatusOk;

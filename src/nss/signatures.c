@@ -772,7 +772,7 @@ xmlSecNssSignatureSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyRe
 static int
 xmlSecNssSignatureAlgorithmEncoded(xmlSecTransformCtxPtr transformCtx, SECOidTag alg) {
 
-    /* however some implementations (e.g. Java) just put ASN1 structure in the signature
+    /* However, some implementations (e.g. Java) just put the ASN1 structure in the signature
      * and in this case we ALREADY have ASN1
      * https://github.com/lsh123/xmlsec/issues/995 */
     if((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_SUPPORT_ASN1_SIGNATURE_VALUES) != 0) {

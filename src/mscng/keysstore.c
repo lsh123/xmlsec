@@ -59,8 +59,8 @@
  * before the lower one (1):
  * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddstoretocollection
  * (empirically verified: the higher-priority store is searched first)
-  * Opening either individual store is treated as a soft failure - an error is
-  * logged but the other store is still tried.  Returns 0 on success or -1 if
+ * Opening either individual store is treated as a soft failure - an error is
+ * logged but the other store is still tried.  Returns 0 on success or -1 if
  * neither store could be opened.
  *
  *****************************************************************************/
@@ -304,7 +304,7 @@ xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name, xmlSe
         while (1) {
             LPCWSTR lpwFriendlyName;
 
-            /*CertEnumCertificatesInStore automatically frees the previous certificate context (see
+            /* CertEnumCertificatesInStore automatically frees the previous certificate context (see
              * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcertificatesinstore) */
             pCertCtxIter = CertEnumCertificatesInStore(ctx->certStoreCtx.hCollection, pCertCtxIter);
             if(pCertCtxIter == NULL) {

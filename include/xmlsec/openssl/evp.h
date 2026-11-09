@@ -9,10 +9,8 @@
 #define XMLSEC_OPENSSL_EVP_H
 
 /**
- * @defgroup xmlsec_openssl_evp OpenSSL EVP Helpers
- * @ingroup xmlsec_openssl
+ * @addtogroup xmlsec_openssl_crypto
  * @brief Key and key data helpers using the OpenSSL EVP interface.
- * @{
  */
 
 #include <openssl/evp.h>
@@ -49,7 +47,5 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr   xmlSecOpenSSLEvpKeyAdopt        (EVP_PKE
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
-
-/** @} */ /* xmlsec_openssl_evp */
 
 #endif /* XMLSEC_OPENSSL_EVP_H */

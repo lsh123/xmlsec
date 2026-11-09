@@ -387,7 +387,7 @@ xmlSecKeyInfoCtxCreateEncCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(keyInfoCtx->encCtx == NULL, -1);
 
-    /* we have to use tmp variable to avoid a recursive loop */
+    /* use a temporary variable so that keyInfoCtx->encCtx stays NULL on failure */
     tmp = xmlSecEncCtxCreate(keyInfoCtx->keysMngr);
     if(tmp == NULL) {
         xmlSecInternalError("xmlSecEncCtxCreate", NULL);
@@ -1635,7 +1635,7 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
 
     /* keep a pointer to the parent key info context so that the key transport
      * transforms (e.g. ML-KEM) can derive the expected CEK size from the
-     * uplevel key requirements and trim the shared secret to match it */
+     * up-level key requirements and trim the shared secret to match it */
     keyInfoCtx->encCtx->transformCtx.parentKeyInfoCtx = keyInfoCtx;
 
     /* read the EncryptedKey node */
@@ -2043,8 +2043,6 @@ xmlSecKeyDataAgreementMethodXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNo
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeWrite, -1);
-
-    /* there might be several nodes that can re-use encCtx, we need to re-read the node before writing it */
 
     /* check the enc level */
     if(keyInfoCtx->curEncryptedKeyLevel >= keyInfoCtx->maxEncryptedKeyLevel) {

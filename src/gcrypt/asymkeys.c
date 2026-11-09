@@ -179,7 +179,7 @@ xmlSecGCryptAsymKeyDataAdoptKey(xmlSecKeyDataPtr data, gcry_sexp_t key_pair) {
     pub_key = NULL; /* data owns it now */
     priv_key = NULL; /* data owns it now */
 
-   /* Adopt functions assume ownership on success thus the caller would expect this to be released */
+    /* Adopt functions assume ownership on success thus the caller would expect this to be released */
     gcry_sexp_release(key_pair);
 
     /* success */
@@ -204,7 +204,7 @@ xmlSecGCryptAsymKeyDataAdoptKeyPair(xmlSecKeyDataPtr data, gcry_sexp_t pub_key, 
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
     xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecGCryptAsymKeyDataSize), -1);
-    xmlSecAssert2(pub_key != NULL, -1); /* public key should present always */
+    xmlSecAssert2(pub_key != NULL, -1); /* public key should be present always */
 /*
     aleksey - we don't set optional parameters for RSA keys (p, q, u) and
     because of that we can't actually test the key

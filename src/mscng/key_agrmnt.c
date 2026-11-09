@@ -234,6 +234,17 @@ xmlSecMSCngKeyAgreementNodeWrite(xmlSecTransformPtr transform, xmlNodePtr node, 
     return(0);
 }
 
+/**
+ * @brief Imports a key value's public key as an NCrypt key handle.
+ * @details Exports the public key of @p keyValue as a BCRYPT public key blob
+ *          (re-tagging an ECDSA magic to the corresponding ECDH magic when
+ *          needed) and imports it via NCryptImportKey() into the same
+ *          provider as @p hPrivKey.
+ * @param keyValue the key data to get the public key from (EC, DH or XDH).
+ * @param hPrivKey the local NCrypt private key handle; its provider is reused.
+ * @return the imported NCrypt public key handle, or 0 on failure. The caller
+ *         is responsible for freeing the handle with NCryptFreeObject.
+ */
 static NCRYPT_KEY_HANDLE
 xmlSecMSCngKeyAgreementGetPublicKey(xmlSecKeyDataPtr keyValue, NCRYPT_KEY_HANDLE hPrivKey) {
     BCRYPT_KEY_HANDLE hBCryptKey = 0;
@@ -376,6 +387,21 @@ done:
     return(hNCryptKey);
 }
 
+/**
+ * @brief Generates the key agreement secret (the raw shared value Z).
+ * @details Computes the shared secret between the local private key and the
+ *          other party's public key from the KAM key data @p kamKeyData
+ *          (EC, DH or XDH). The BCrypt path is used when the local private
+ *          key is a BCrypt key (e.g. loaded from DER/PKCS8); otherwise the
+ *          NCrypt path is used. The resulting secret is written to @p secret
+ *          (a secure buffer) in the standard wire-format representation.
+ * @param ctx the key agreement transform context.
+ * @param operation the transform operation (encrypt or decrypt), selecting
+ *          which side holds the local private key.
+ * @param kamKeyData the KAM key data (keyOriginator and keyRecipient).
+ * @param secret the secure buffer to receive the secret.
+ * @return 0 on success, -1 on failure.
+ */
 static int
 xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecTransformOperation operation, xmlSecKeyDataPtr kamKeyData, xmlSecBufferPtr secret) {
     xmlSecKeyDataKAM* kamData;
@@ -510,12 +536,14 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
 
             /* CNG returns the raw shared secret as the byte reversal of the standard
              * wire format, so reverse it to produce Z in the standard representation
-             * that ConcatKDF / other backends expect. This applies to all key-agreement
-             * types (DH/ECDH/X25519): the X25519 wire format per RFC 7748/8410 is
-             * little-endian, so CNG returns it big-endian (byte-reversed) and we reverse
-             * it to the standard little-endian wire format; for DH it returns
-             * little-endian (the byte reversal of the big-endian wire format). Verified
-             * with known-answer tests against the Python cryptography library. */
+             * that ConcatKDF / other backends expect. This branch is only reachable
+             * for DH/X25519 private keys (EC private keys are stored as NCRYPT
+             * handles and take the NCryptDeriveSecret path below): the X25519 wire
+             * format per RFC 7748/8410 is little-endian, so CNG returns it big-endian
+             * (byte-reversed) and we reverse it to the standard little-endian wire
+             * format; for DH it returns little-endian (the byte reversal of the
+             * big-endian wire format). Verified with known-answer tests against the
+             * Python cryptography library. */
             xmlSecMSCngReverseBytes(secretData, dwBCryptSecretLen);
 
             res = 0;

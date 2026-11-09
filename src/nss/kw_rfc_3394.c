@@ -34,11 +34,13 @@
 
 
 /*
- * NSS needs to implement AES KW internally and then the code
- * needs to change to use the direct implementation instead.
+ * NSS (softoken) natively supports CKM_AES_KEY_WRAP, but this
+ * implementation performs the RFC 3394 key wrap block by block through
+ * the shared xmlSecKWRfc3394 helpers, the same way the other backends do;
+ * see the note in xmlSecNssKWRfc3394CipherOp for why a new PKCS#11 context
+ * is needed for each block.
  *
- * Follow the NSS bug system for more details on the fix
- * http://bugzilla.mozilla.org/show_bug.cgi?id=213795
+ * Also see http://bugzilla.mozilla.org/show_bug.cgi?id=213795
  */
 /******************************************************************************
  *
@@ -482,12 +484,11 @@ xmlSecNssKWRfc3394CipherOp(xmlSecNssKWRfc3394CtxPtr ctx, const xmlSecByte *in, x
 
     /* note: the PKCS#11 context is created per block. RFC 3394 performs many
        block operations per key (24 for a 256-bit key) and a new context is
-       needed each time: the softoken has no native CKM_AES_KEY_WRAP and
-       PK11_Finalize terminates the token operation, so a context cannot be
-       reused across blocks (caching one would require bypassing the PK11
-       layer). This makes a wrap/unwrap noticeably slower than the
-       OpenSSL/gcrypt parallels, but is a characteristic of the NSS PK11
-       API, not a defect */
+       needed each time: PK11_Finalize terminates the token operation, so a
+       context cannot be reused across blocks (caching one would require
+       bypassing the PK11 layer). This makes a wrap/unwrap noticeably slower
+       than the OpenSSL/gcrypt parallels, but is a characteristic of the NSS
+       PK11 API, not a defect */
     ctxt = PK11_CreateContextBySymKey(ctx->cipherMech, ctx->symKeyOp, ctx->symKey, ctx->secParam);
     if (ctxt == NULL) {
         xmlSecNssError("PK11_CreateContextBySymKey", NULL);

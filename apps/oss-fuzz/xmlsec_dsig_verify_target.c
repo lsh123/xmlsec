@@ -184,7 +184,8 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
     }
 
     /* Restrict reference URIs to same-document / empty: never fetch remote or
-     * local files. This is the critical no-network guard. */
+     * local files. The library defaults already impose the same
+     * restrictions, so these assignments are defensive redundancy. */
     dsigCtx->enabledReferenceUris =
         xmlSecTransformUriTypeEmpty | xmlSecTransformUriTypeSameDocument;
     /* Also restrict key-info reference / retrieval-method processing so that

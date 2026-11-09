@@ -18,7 +18,7 @@ not possible to store keys via the keys store into the MS certificate store.
 When the xmlsec application is started, with the `--crypto-config` parameter the name of
 the (system) keystore can be given. That keystore will be used for certificates
 and keys lookup. For the key name, two types of values can be given:
-- simple name (called friendly name with MS);
+- simple name (called the friendly name by MS);
 - full subject name (recommended) of the key's certificate.
 
 

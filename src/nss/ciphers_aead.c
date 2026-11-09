@@ -51,7 +51,7 @@ typedef struct _xmlSecNssAeadCipherCtx           xmlSecNssAeadCipherCtx,
 
 
 
-typedef int   (*xmlSecAeadCipherCtxSetupParamsMethod)      (xmlSecNssAeadCipherCtxPtr ctx, SECItem* param);
+typedef int   (*xmlSecNssAeadCipherCtxSetupParamsMethod)      (xmlSecNssAeadCipherCtxPtr ctx, SECItem* param);
 
 #ifndef XMLSEC_NO_AES
 static int xmlSecNssAeadCipherCtxSetupParamsGcm              (xmlSecNssAeadCipherCtxPtr ctx, SECItem* param);
@@ -63,7 +63,7 @@ static int xmlSecNssAeadCipherCtxSetupParamsChaCha20Poly1305 (xmlSecNssAeadCiphe
 
 struct _xmlSecNssAeadCipherCtx {
     CK_MECHANISM_TYPE       mechanism;      /* CKM_AES_GCM or CKM_CHACHA20_POLY1305 */
-    xmlSecAeadCipherCtxSetupParamsMethod setupParams;    /* mechanism-specific params setup method */
+    xmlSecNssAeadCipherCtxSetupParamsMethod setupParams;    /* mechanism-specific params setup method */
 
     xmlSecKeyDataId         keyId;
     xmlSecSize              keySize;

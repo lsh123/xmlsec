@@ -1402,11 +1402,12 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform) {
          * bytes, so the plaintext must be at most (keySize - (2*mdSize + 2))
          * bytes long.
          *
-         * We simply check that the input size does not exceed the key size
+         * We simply check that the input size is strictly less than
+         * (keySize - 2), which is always above the true OAEP maximum,
          * and the exact padding-size enforcement is delegated to OpenSSL.
          */
-        if(inSize >= (ctx->keySize - 2)) {
-            xmlSecInvalidSizeMoreThanError("Input data", inSize, ctx->keySize,
+        if(inSize > (ctx->keySize - 2)) {
+            xmlSecInvalidSizeMoreThanError("Input data", inSize, (ctx->keySize - 2),
                 xmlSecTransformGetName(transform));
             return(-1);
         }

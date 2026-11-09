@@ -176,6 +176,11 @@ xmlSecGnuTLSKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
     return(ctx->keyCert);
 }
 
+/**
+ * @brief Gets the list of certificates from X509 key data.
+ * @param data the pointer to X509 key data.
+ * @return a borrowed pointer to the list of certificates in @p data; the caller must NOT free it.
+ */
 xmlSecPtrListPtr
 xmlSecGnuTLSKeyDataX509GetCerts(xmlSecKeyDataPtr data) {
     xmlSecGnuTLSX509DataCtxPtr ctx;
@@ -188,6 +193,11 @@ xmlSecGnuTLSKeyDataX509GetCerts(xmlSecKeyDataPtr data) {
     return(&(ctx->certsList));
 }
 
+/**
+ * @brief Gets the list of crls from X509 key data.
+ * @param data the pointer to X509 key data.
+ * @return a borrowed pointer to the list of crls in @p data; the caller must NOT free it.
+ */
 xmlSecPtrListPtr
 xmlSecGnuTLSKeyDataX509GetCrls(xmlSecKeyDataPtr data) {
     xmlSecGnuTLSX509DataCtxPtr ctx;

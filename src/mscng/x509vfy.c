@@ -444,7 +444,7 @@ xmlSecMSCngX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, PCCRL_CONTEXT crl) {
         return(-1);
     }
 
-    /* caller expects data to own the crl on success. */
+    /* caller expects store to own the crl on success. */
     CertFreeCRLContext(crl);
     return(0);
 }
@@ -688,12 +688,14 @@ xmlSecMSCngX509StoreVerifySubject(PCCERT_CONTEXT cert, PCCERT_CONTEXT issuerCert
 }
 
 /**
- * @brief Determines if cert is found in store.
+ * @brief Searches the store for a certificate with the given subject name and
+ * checks whether it signs @p cert.
  * @param store the certificate store
- * @param name the name of the subject or issuer to find
+ * @param name the name of the subject to search for
  * @param cert the certificate
- * @return 1 or 0 if find does or does not succeed, or a negative value if an
- * error occurs.
+ * @return 1 if a certificate with the subject name @p name is found and
+ * successfully signs @p cert (xmlSecMSCngX509StoreVerifySubject), 0 if no
+ * such certificate exists, or a negative value if an error occurs..
  */
 static int
 xmlSecMSCngX509StoreContainsCert(HCERTSTORE store, CERT_NAME_BLOB* name, PCCERT_CONTEXT cert)
@@ -863,7 +865,7 @@ xmlSecMSCngX509StoreFindIssuer(HCERTSTORE store, PCCERT_CONTEXT cert) {
             /* success: the enumerated handle is owned by the caller */
             return(candidate);
         }
-        /* verification failed keep scanning other candidates
+        /* verification failed; keep scanning other candidates
          * with the same issuer name */
     }
 
@@ -1124,7 +1126,7 @@ xmlSecMSCngX509StoreVerifyCertChainAtTime(PCCERT_CONTEXT cert, FILETIME* time, H
         /* A chain-build failure (e.g. missing intermediate certificates or no
          * trusted root) is a normal "the chain can't be verified" outcome
          * rather than an error; report it for diagnostics and return 0 so
-         * the caller treats the certificate as untrusted. 
+         * the caller treats the certificate as untrusted.
          * The other root cause for failure might be a system error (e.g. OOM)
          * but we can't easily distinguish them from normal chain-build failures. */
         xmlSecMSCngLastError("CertGetCertificateChain", NULL);

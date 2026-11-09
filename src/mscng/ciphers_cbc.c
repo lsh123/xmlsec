@@ -664,8 +664,10 @@ xmlSecMSCngCbcBlockCipherCtxFinal(xmlSecMSCngCbcBlockCipherCtxPtr ctx,
     dwCLen = 0;
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwInSize, return(-1), cipherName);
 
-    /* ctx->pbIV still holds the last ciphertext block from the previous call(s)
-     * (CNG updates it in place), so the final block chains correctly. */
+    /* ctx->pbIV holds the chaining state for the final block: either the last
+     * ciphertext block left by the previous CtxUpdate call(s) (CNG updates it
+     * in place), or, if no data was processed yet, the original IV set in
+     * CtxInit. Either way the final block chains correctly. */
     if(encrypt) {
         XMLSEC_SAFE_CAST_SIZE_TO_ULONG((inSize + blockSize), dwOutSize, return(-1), cipherName);
         status = BCryptEncrypt(ctx->hKey,

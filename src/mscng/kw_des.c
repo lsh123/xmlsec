@@ -380,6 +380,13 @@ xmlSecMSCngKWDes3BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         goto done;
     }
 
+    /* CBC requires the input to be a whole number of blocks; reject any other
+     * size instead of relying on the provider's error code */
+    if((inSize % blockLen) != 0) {
+        xmlSecInvalidSizeNotMultipleOfError("inSize", inSize, blockLen, NULL);
+        goto done;
+    }
+
     /* caller handles iv manually, so let CNG work on a copy */
     ret = xmlSecBufferInitialize(&ivCopy, ivSize);
     if(ret < 0) {
@@ -605,6 +612,13 @@ xmlSecMSCngKWDes3BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
      * blockLen) */
     if(ivSize != blockLen) {
         xmlSecInvalidSizeError("ivSize", ivSize, blockLen, NULL);
+        goto done;
+    }
+
+    /* CBC requires the input to be a whole number of blocks; reject any other
+     * size instead of relying on the provider's error code */
+    if((inSize % blockLen) != 0) {
+        xmlSecInvalidSizeNotMultipleOfError("inSize", inSize, blockLen, NULL);
         goto done;
     }
 

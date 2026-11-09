@@ -132,10 +132,19 @@
 #define CERT_FIND_SHA256_HASH               (22 << 16)
 #endif /* CERT_FIND_SHA256_HASH */
 
-/* MinGW may ship older wincrypt.h that lacks the NCRYPT key spec identifier */
+/* MinGW may ship older wincrypt.h that lacks the NCRYPT key spec identifier.
+ * The value 0xFFFFFFFF matches the Windows SDK wincrypt.h (10.0.22621.0 and
+ * 10.0.26100.0). */
 #ifndef CERT_NCRYPT_KEY_SPEC
-#define CERT_NCRYPT_KEY_SPEC                0x00000001
+#define CERT_NCRYPT_KEY_SPEC                0xFFFFFFFF
 #endif /* CERT_NCRYPT_KEY_SPEC */
+
+/* MinGW may ship older wincrypt.h that lacks CRYPT_ACQUIRE_ONLY_NCRYPT_KEY_FLAG.
+ * The value 0x00040000 matches the Windows SDK wincrypt.h (10.0.22621.0 and
+ * 10.0.26100.0). */
+#ifndef CRYPT_ACQUIRE_ONLY_NCRYPT_KEY_FLAG
+#define CRYPT_ACQUIRE_ONLY_NCRYPT_KEY_FLAG  0x00040000
+#endif /* CRYPT_ACQUIRE_ONLY_NCRYPT_KEY_FLAG */
 
 /* MinGW may ship older wincrypt.h that lacks PKCS12_NO_PERSIST_KEY */
 #ifndef PKCS12_NO_PERSIST_KEY

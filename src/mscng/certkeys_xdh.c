@@ -468,6 +468,14 @@ xmlSecMSCngKeyDataXdhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLe
         goto done;
     }
 
+    /* RFC 8410: the parameters field of the AlgorithmIdentifier must be absent
+     * for X25519.  CryptDecodeObjectEx leaves Parameters empty when the field
+     * is absent or explicitly NULL, so only a non-empty value is rejected. */
+    if(pki->Algorithm.Parameters.cbData != 0) {
+        xmlSecInvalidDataError("X25519 PKCS8: AlgorithmIdentifier.Parameters must be absent", NULL);
+        goto done;
+    }
+
     /* PrivateKey field (RFC 8410): outer OCTET STRING wraps inner CurvePrivateKey ::= OCTET STRING */
     if(pki->PrivateKey.cbData < 2 ||
        pki->PrivateKey.pbData == NULL ||
@@ -641,6 +649,14 @@ xmlSecMSCngKeyDataCertGetXdhPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE
     (*key) = NULL;
     if((spki->PublicKey.cbData == 0) || (spki->PublicKey.pbData == NULL)) {
         xmlSecInvalidDataError("X25519 SPKI: PublicKey empty", NULL);
+        return(-1);
+    }
+
+    /* The X25519 SubjectPublicKey BIT STRING has no unused bits; a non-zero
+     * value would leave trailing padding bits in the last byte of the 32-byte
+     * key, so reject such SPKIs. */
+    if(spki->PublicKey.cUnusedBits != 0) {
+        xmlSecInvalidDataError("X25519 SPKI: PublicKey BIT STRING has unused bits", NULL);
         return(-1);
     }
 

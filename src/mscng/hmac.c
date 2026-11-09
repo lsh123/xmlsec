@@ -163,6 +163,7 @@ xmlSecMSCngHmacInitialize(xmlSecTransformPtr transform) {
 static void
 xmlSecMSCngHmacFinalize(xmlSecTransformPtr transform) {
     xmlSecMSCngHmacCtxPtr ctx;
+    NTSTATUS status;
 
     xmlSecAssert(xmlSecMSCngHmacCheckId(transform));
     xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecMSCngHmacSize));
@@ -175,12 +176,20 @@ xmlSecMSCngHmacFinalize(xmlSecTransformPtr transform) {
         xmlFree(ctx->hash);
     }
 
+    /* NTSTATUS is logged but ignored: failures at finalization time are not
+     * recoverable and cannot be returned from a void finalize method */
     if(ctx->hHash != NULL) {
-        BCryptDestroyHash(ctx->hHash);
+        status = BCryptDestroyHash(ctx->hHash);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptDestroyHash", NULL, status);
+        }
     }
 
     if(ctx->hAlg != NULL) {
-        BCryptCloseAlgorithmProvider(ctx->hAlg, 0);
+        status = BCryptCloseAlgorithmProvider(ctx->hAlg, 0);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptCloseAlgorithmProvider", NULL, status);
+        }
     }
 
     memset(ctx, 0, sizeof(xmlSecMSCngHmacCtx));
@@ -409,10 +418,18 @@ done:
         xmlFree(ctx->hash);
     }
     if(ctx->hHash != NULL) {
-        BCryptDestroyHash(ctx->hHash);
+        status = BCryptDestroyHash(ctx->hHash);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptDestroyHash", xmlSecTransformGetName(transform), status);
+            /* ignore error */
+        }
     }
     if(ctx->hAlg != NULL) {
-        BCryptCloseAlgorithmProvider(ctx->hAlg, 0);
+        status = BCryptCloseAlgorithmProvider(ctx->hAlg, 0);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptCloseAlgorithmProvider", xmlSecTransformGetName(transform), status);
+            /* ignore error */
+        }
     }
     memset(ctx, 0, sizeof(xmlSecMSCngHmacCtx));
     /* restore the algorithm identifier and the digest size; see the comment

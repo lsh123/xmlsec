@@ -13,6 +13,8 @@ EXTRA_DIST = \
 	oss-fuzz/config/xmlsec_keyload_fuzzer.options \
 	oss-fuzz/config/xmlsec_enc_fuzzer.options \
 	oss-fuzz/config/xmlsec_relationship_fuzzer.options \
+	$(wildcard oss-fuzz/*_seed_corpus.txt) \
+	$(wildcard oss-fuzz/corpus/*/*) \
 	$(NULL)
 
 

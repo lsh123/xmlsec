@@ -3439,8 +3439,11 @@ xmlSecAppXmlDataCreate(const char* filename, const xmlChar* defStartNodeName, co
             return(NULL);
         }
 
+        /* the start point is the first node selected by the XPath expression
+         * (see the --node-xpath help); we expect (and use) exactly one node
+         * selected. */
         if((obj->nodesetval == NULL) || (obj->nodesetval->nodeNr != 1)) {
-            fprintf(stderr, "Error: xpath expression evaluation does not return a single node as expected\n");
+            fprintf(stderr, "Error: xpath expression evaluation did not return a single node as expected\n");
             xmlXPathFreeObject(obj);
             xmlXPathFreeContext(ctx);
             xmlSecAppXmlDataDestroy(data);
@@ -3450,7 +3453,6 @@ xmlSecAppXmlDataCreate(const char* filename, const xmlChar* defStartNodeName, co
         cur = obj->nodesetval->nodeTab[0];
         xmlXPathFreeContext(ctx);
         xmlXPathFreeObject(obj);
-
     } else {
         cur = xmlDocGetRootElement(data->doc);
         if(cur == NULL) {

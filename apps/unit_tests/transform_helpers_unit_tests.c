@@ -748,6 +748,53 @@ test_xmlSecTransformChaCha20Poly1305ParamsRead_unexpected_extra_child(void) {
     testFinishedSuccess();
 }
 
+static void
+test_xmlSecTransformChaCha20Poly1305ParamsRead_aad_before_nonce(void) {
+    static const char xml[] =
+        "<EncryptionMethod xmlns=\"http://www.w3.org/2001/04/xmlenc#\" "
+        "xmlns:dsig-more=\"http://www.w3.org/2021/04/xmldsig-more#\">"
+        "<dsig-more:AAD>0123456789abcdef</dsig-more:AAD>"
+        "<dsig-more:Nonce>000102030405060708090a0b</dsig-more:Nonce>"
+        "</EncryptionMethod>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecBuffer aad;
+    xmlSecByte iv[XMLSEC_CHACHA20_NONCE_SIZE];
+    xmlSecSize ivSize = 0;
+    int noncePresent = 0;
+    int ret;
+
+    testStart("ChaCha20-Poly1305 read AAD before nonce");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecBufferInitialize(&aad, 0);
+    if(ret < 0) {
+        testLog("Error: failed to initialize AAD buffer\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    memset(iv, 0xFF, sizeof(iv));
+    ret = xmlSecTransformChaCha20Poly1305ParamsRead(node, &aad, iv, sizeof(iv), &ivSize, &noncePresent);
+    if(ret >= 0) {
+        testLog("Error: ChaCha20-Poly1305 params read accepted AAD appearing before nonce\n");
+        xmlSecBufferFinalize(&aad);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecBufferFinalize(&aad);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
 #endif /* XMLSEC_NO_CHACHA20 */
 
 #ifndef XMLSEC_NO_HMAC
@@ -950,6 +997,268 @@ test_xmlSecTransformHmacWriteOutput_prefilled_full_bytes(void) {
     }
 
     xmlSecBufferFinalize(&buf);
+    testFinishedSuccess();
+}
+
+/******************************************************************************
+ * xmlSecTransformHmacVerify
+ *****************************************************************************/
+static void
+test_xmlSecTransformHmacVerify_full_bytes_match(void) {
+    static const xmlSecByte data[3] = { 0x12, 0x34, 0xAB };
+    static const xmlSecByte hmac[3] = { 0x12, 0x34, 0xAB };
+    int ret;
+
+    testStart("xmlSecTransformHmacVerify: full byte length, digests match");
+
+    ret = xmlSecTransformHmacVerify(data, sizeof(data), hmac, 24, 3);
+    if(ret != 1) {
+        testLog("Error: matching digests were not verified (ret=%d)\n", ret);
+        testFinishedFailure();
+        return;
+    }
+
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformHmacVerify_full_bytes_mismatch(void) {
+    static const xmlSecByte data[3] = { 0x12, 0x34, 0xAB };
+    static const xmlSecByte hmac[3] = { 0x12, 0x34, 0xCD };
+    int ret;
+
+    testStart("xmlSecTransformHmacVerify: full byte length, digests differ");
+
+    ret = xmlSecTransformHmacVerify(data, sizeof(data), hmac, 24, 3);
+    if(ret != 0) {
+        testLog("Error: differing digests were verified (ret=%d)\n", ret);
+        testFinishedFailure();
+        return;
+    }
+
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformHmacVerify_partial_bytes_match_masked_low_bits(void) {
+    static const xmlSecByte data[3] = { 0x12, 0x34, 0xAB };
+    static const xmlSecByte hmac[3] = { 0x12, 0x34, 0xAF };
+    int ret;
+
+    testStart("xmlSecTransformHmacVerify: truncated length, masked low bits differ");
+
+    /* 20 bits => 3 bytes with the last byte masked with 0xF0, so the low
+     * 4 bits (0xAB vs 0xAF) must be ignored */
+    ret = xmlSecTransformHmacVerify(data, sizeof(data), hmac, 20, 3);
+    if(ret != 1) {
+        testLog("Error: matching truncated digests were not verified (ret=%d)\n", ret);
+        testFinishedFailure();
+        return;
+    }
+
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformHmacVerify_partial_bytes_mismatch(void) {
+    static const xmlSecByte data[3] = { 0x12, 0x34, 0xAB };
+    static const xmlSecByte hmac[3] = { 0x12, 0x34, 0xBF };
+    int ret;
+
+    testStart("xmlSecTransformHmacVerify: truncated length, unmasked bits differ");
+
+    /* 20 bits => 3 bytes with the last byte masked with 0xF0, so the high
+     * nibble difference (0xA vs 0xB) must be detected */
+    ret = xmlSecTransformHmacVerify(data, sizeof(data), hmac, 20, 3);
+    if(ret != 0) {
+        testLog("Error: differing truncated digests were verified (ret=%d)\n", ret);
+        testFinishedFailure();
+        return;
+    }
+
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformHmacVerify_size_mismatch(void) {
+    static const xmlSecByte data[2] = { 0x12, 0x34 };
+    static const xmlSecByte hmac[3] = { 0x12, 0x34, 0xAB };
+    int ret;
+
+    testStart("xmlSecTransformHmacVerify: data size does not match the digest size");
+
+    /* 24 bits => 3 bytes, so the 2-byte data must not verify */
+    ret = xmlSecTransformHmacVerify(data, sizeof(data), hmac, 24, 3);
+    if(ret != 0) {
+        testLog("Error: size-mismatched digests were verified (ret=%d)\n", ret);
+        testFinishedFailure();
+        return;
+    }
+
+    testFinishedSuccess();
+}
+
+/******************************************************************************
+ * xmlSecTransformHmacReadOutputBitsSize
+ *****************************************************************************/
+static void
+test_xmlSecTransformHmacReadOutputBitsSize_no_child_uses_default(void) {
+    static const char xml[] =
+        "<SignatureMethod xmlns=\"http://www.w3.org/2000/09/xmldsig#\" "
+        "Algorithm=\"http://www.w3.org/2000/09/xmldsig#hmac-sha1\"/>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecSize res = 0;
+    int ret;
+
+    testStart("xmlSecTransformHmacReadOutputBitsSize: no child uses the default size");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformHmacReadOutputBitsSize(node, 160, &res);
+    if((ret < 0) || (res != 160)) {
+        testLog("Error: expected the default size 160, got %u (ret=%d)\n", (unsigned)res, ret);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformHmacReadOutputBitsSize_valid(void) {
+    static const char xml[] =
+        "<SignatureMethod xmlns=\"http://www.w3.org/2000/09/xmldsig#\" "
+        "Algorithm=\"http://www.w3.org/2000/09/xmldsig#hmac-sha1\">"
+        "<HMACOutputLength>128</HMACOutputLength>"
+        "</SignatureMethod>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecSize res = 0;
+    int ret;
+
+    testStart("xmlSecTransformHmacReadOutputBitsSize: valid value");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformHmacReadOutputBitsSize(node, 160, &res);
+    if((ret < 0) || (res != 128)) {
+        testLog("Error: expected size 128, got %u (ret=%d)\n", (unsigned)res, ret);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformHmacReadOutputBitsSize_below_min(void) {
+    static const char xml[] =
+        "<SignatureMethod xmlns=\"http://www.w3.org/2000/09/xmldsig#\" "
+        "Algorithm=\"http://www.w3.org/2000/09/xmldsig#hmac-sha1\">"
+        "<HMACOutputLength>64</HMACOutputLength>"
+        "</SignatureMethod>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecSize res = 0;
+    int ret;
+
+    testStart("xmlSecTransformHmacReadOutputBitsSize: value below the minimum");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    /* the default minimum output size is 80 bits */
+    ret = xmlSecTransformHmacReadOutputBitsSize(node, 160, &res);
+    if(ret >= 0) {
+        testLog("Error: HMAC output length 64 bits was accepted\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformHmacReadOutputBitsSize_above_max(void) {
+    static const char xml[] =
+        "<SignatureMethod xmlns=\"http://www.w3.org/2000/09/xmldsig#\" "
+        "Algorithm=\"http://www.w3.org/2000/09/xmldsig#hmac-sha1\">"
+        "<HMACOutputLength>2048</HMACOutputLength>"
+        "</SignatureMethod>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecSize res = 0;
+    int ret;
+
+    testStart("xmlSecTransformHmacReadOutputBitsSize: value above the maximum");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    /* the maximum output size is XMLSEC_TRANSFORM_HMAC_MAX_OUTPUT_SIZE * 8 = 1024 bits */
+    ret = xmlSecTransformHmacReadOutputBitsSize(node, 160, &res);
+    if(ret >= 0) {
+        testLog("Error: HMAC output length 2048 bits was accepted\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformHmacReadOutputBitsSize_unexpected_sibling(void) {
+    static const char xml[] =
+        "<SignatureMethod xmlns=\"http://www.w3.org/2000/09/xmldsig#\" "
+        "Algorithm=\"http://www.w3.org/2000/09/xmldsig#hmac-sha1\">"
+        "<HMACOutputLength>128</HMACOutputLength>"
+        "<Extra>unexpected</Extra>"
+        "</SignatureMethod>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecSize res = 0;
+    int ret;
+
+    testStart("xmlSecTransformHmacReadOutputBitsSize: unexpected sibling element");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformHmacReadOutputBitsSize(node, 160, &res);
+    if(ret >= 0) {
+        testLog("Error: unexpected sibling element after HMACOutputLength was accepted\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeDoc(doc);
     testFinishedSuccess();
 }
 
@@ -2827,17 +3136,28 @@ test_transform_helpers(void) {
     test_xmlSecTransformChaCha20Poly1305ParamsRead_invalid_nonce_hex_odd_length();
     test_xmlSecTransformChaCha20Poly1305ParamsRead_invalid_nonce_size();
     test_xmlSecTransformChaCha20Poly1305ParamsRead_unexpected_extra_child();
+    test_xmlSecTransformChaCha20Poly1305ParamsRead_aad_before_nonce();
 
     if(testGroupFinished() != 1) { success = 0; }
 #endif /* XMLSEC_NO_CHACHA20 */
 
 #ifndef XMLSEC_NO_HMAC
-    testGroupStart("xmlSecTransformHmacWriteOutput");
+    testGroupStart("xmlSecTransformHmac helpers");
 
     test_xmlSecTransformHmacWriteOutput_empty_full_bytes();
     test_xmlSecTransformHmacWriteOutput_empty_partial_bytes();
     test_xmlSecTransformHmacWriteOutput_prefilled_partial_bytes();
     test_xmlSecTransformHmacWriteOutput_prefilled_full_bytes();
+    test_xmlSecTransformHmacVerify_full_bytes_match();
+    test_xmlSecTransformHmacVerify_full_bytes_mismatch();
+    test_xmlSecTransformHmacVerify_partial_bytes_match_masked_low_bits();
+    test_xmlSecTransformHmacVerify_partial_bytes_mismatch();
+    test_xmlSecTransformHmacVerify_size_mismatch();
+    test_xmlSecTransformHmacReadOutputBitsSize_no_child_uses_default();
+    test_xmlSecTransformHmacReadOutputBitsSize_valid();
+    test_xmlSecTransformHmacReadOutputBitsSize_below_min();
+    test_xmlSecTransformHmacReadOutputBitsSize_above_max();
+    test_xmlSecTransformHmacReadOutputBitsSize_unexpected_sibling();
 
     if(testGroupFinished() != 1) { success = 0; }
 #endif /* XMLSEC_NO_HMAC */

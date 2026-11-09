@@ -2414,12 +2414,14 @@ test_xmlSecReplaceNodeBufferAndReturn_empty_buffer_returns_node(void) {
     /* the original node must be returned and detached from the tree */
     if(replaced != target) {
         testLog("Error: expected the original node to be returned\n");
+        xmlFreeNode(replaced);
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
     }
     if(xmlSecFindChild(root, BAD_CAST "target", NULL) != NULL) {
         testLog("Error: the returned node is still attached to the tree\n");
+        xmlFreeNode(replaced);
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
@@ -2431,6 +2433,7 @@ test_xmlSecReplaceNodeBufferAndReturn_empty_buffer_returns_node(void) {
         testLog("Error: unexpected content of the returned node: '%s'\n",
                 content ? (const char*)content : "NULL");
         xmlFree(content);
+        xmlFreeNode(replaced);
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
@@ -2479,12 +2482,14 @@ test_xmlSecReplaceNodeBufferAndReturn_null_buffer_zero_size(void) {
     /* the node must be returned and detached from the tree */
     if(replaced != target) {
         testLog("Error: expected the original node to be returned\n");
+        xmlFreeNode(replaced);
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
     }
     if(xmlSecFindChild(root, BAD_CAST "target", NULL) != NULL) {
         testLog("Error: the returned node is still attached to the tree\n");
+        xmlFreeNode(replaced);
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;

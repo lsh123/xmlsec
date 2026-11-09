@@ -129,13 +129,11 @@ xmlSecTransformC14NNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSe
             return(-1);
         }
 
+        /* per the W3C Exclusive Canonicalization specification the
+         * PrefixList attribute is optional (its value "may be null"); a
+         * missing attribute is treated the same as an empty string, i.e.
+         * no extra namespaces are included */
         list = xmlGetProp(cur, xmlSecAttrPrefixList);
-        if(list == NULL) {
-            xmlSecInvalidNodeAttributeError(cur, xmlSecAttrPrefixList,
-                                            xmlSecTransformGetName(transform),
-                                            "missing");
-            return(-1);
-        }
 
         /* the list of namespaces is XML whitespace separated.
          * The tokens are not validated as NCNames and duplicates are not

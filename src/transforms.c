@@ -2624,9 +2624,9 @@ xmlSecTransformIdListDebugDump(xmlSecPtrListPtr list, FILE* output) {
         xmlSecAssert(transformId->name != NULL);
 
         if(i > 0) {
-            fprintf(output, ",\"%s\"", transformId->name);
+            fprintf(output, ",\"%s\"", (const char*)transformId->name);
         } else {
-            fprintf(output, "\"%s\"", transformId->name);
+            fprintf(output, "\"%s\"", (const char*)transformId->name);
         }
     }
     fprintf(output, "\n");

@@ -226,12 +226,11 @@ done:
 
 
 static int
-xmlSecX509DataGetNodeContent(xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx, xmlChar** digestAlgorithm) {
+xmlSecX509DataGetNodeContent(xmlNodePtr node, xmlChar** digestAlgorithm) {
     xmlNodePtr cur;
     int content = 0;
 
     xmlSecAssert2(node != NULL, -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(digestAlgorithm != NULL, -1);
     xmlSecAssert2((*digestAlgorithm) == NULL, -1);
 
@@ -334,7 +333,7 @@ xmlSecKeyDataX509XmlWrite(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInfoC
     x509ValueInitialized = 1;
 
 
-    content = xmlSecX509DataGetNodeContent(node, keyInfoCtx, &(x509Value.digestAlgorithm));
+    content = xmlSecX509DataGetNodeContent(node, &(x509Value.digestAlgorithm));
     if (content < 0) {
         xmlSecInternalError2("xmlSecX509DataGetNodeContent",
             xmlSecKeyDataGetName(data), "content=%d", content);

@@ -415,7 +415,7 @@ xmlSecIOFileClose(void* context) {
  */
 int
 xmlSecIORegisterDefaultCallbacks(void) {
-    int ret;
+    int ret = 0;
 
 #ifndef XMLSEC_NO_FILES
     /* Callbacks added later are picked up first */
@@ -449,6 +449,7 @@ xmlSecIORegisterDefaultCallbacks(void) {
     }
 #endif /* XMLSEC_NO_FTP */
 
+    /* ret can be unused here if all of the above is disabled */
     XMLSEC_UNREFERENCED(ret);
 
     /* done */

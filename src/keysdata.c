@@ -672,9 +672,9 @@ xmlSecKeyDataIdListDebugDump(xmlSecPtrListPtr list, FILE* output) {
         xmlSecAssert(dataId->name != NULL);
 
         if(i > 0) {
-            fprintf(output, ",\"%s\"", dataId->name);
+            fprintf(output, ",\"%s\"", (const char*)dataId->name);
         } else {
-            fprintf(output, "\"%s\"", dataId->name);
+            fprintf(output, "\"%s\"", (const char*)dataId->name);
         }
     }
     fprintf(output, "\n");

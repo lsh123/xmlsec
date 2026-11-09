@@ -17,11 +17,6 @@
 #include <libgen.h>
 #endif /* defined(_MSC_VER) */
 
-#if defined(_MSC_VER) && _MSC_VER < 1900
-#define snprintf _snprintf
-#endif /* defined(_MSC_VER) && _MSC_VER < 1900 */
-
-
 #include <libxml/tree.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
@@ -3845,7 +3840,7 @@ xmlSecAppWriteResult(const char* inputFileName, const char* outputFileNameTmpl, 
 
     /* open file */
     outBuffer = xmlSecAppOpenFile(outputFileName != NULL ? outputFileName : outputFileNameTmpl, (const char *)encoding);
-    if ((outputFileName != NULL) && (outputFileName != outputFileNameTmpl)) {
+    if (outputFileName != NULL) {
         xmlFree(outputFileName);
     }
     if(outBuffer == NULL) {

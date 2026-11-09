@@ -290,7 +290,6 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
     /* limit allowed transforms for signature and reference processing */
     if((xmlSecDSigCtxEnableSignatureTransform(dsigCtx, xmlSecTransformInclC14NId) < 0) ||
        (xmlSecDSigCtxEnableSignatureTransform(dsigCtx, xmlSecTransformExclC14NId) < 0) ||
-       (xmlSecDSigCtxEnableSignatureTransform(dsigCtx, xmlSecTransformSha1Id) < 0) ||
        (xmlSecDSigCtxEnableSignatureTransform(dsigCtx, xmlSecTransformRsaSha1Id) < 0)) {
 
         fprintf(stderr, "Error: failed to limit allowed signature transforms\n");

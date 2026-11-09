@@ -386,11 +386,9 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
     PUBLICKEYSTRUC* pubKeyStruc;
     ALG_ID* pAlgId;
     DWORD dwPublicKeySize;
-    DWORD dwProvSessionKeySize = 0;
     LPBYTE pbPtr;
     DWORD dwFlags;
     PROV_ENUMALGS_EX ProvEnum;
-    HCRYPTKEY hTempKey = 0;
     BOOL fFound;
     BOOL res = FALSE;
 
@@ -425,6 +423,9 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
     }
 
     if(bCheckKeyLength) {
+        HCRYPTKEY hTempKey = 0;
+        DWORD dwProvSessionKeySize = 0;
+
         /* We have to get the key size(including padding) from an HCRYPTKEY handle.
          * PP_ENUMALGS_EX contains the key size without the padding so we can't use it.
          */
@@ -436,10 +437,10 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
         dwSize = sizeof(dwProvSessionKeySize);
         if(!CryptGetKeyParam(hTempKey, KP_KEYLEN, (LPBYTE)&dwProvSessionKeySize, &dwSize, 0)) {
             xmlSecMSCryptoError2("CryptGetKeyParam(KP_KEYLEN)", NULL, "algId=%u", algId);
+            CryptDestroyKey(hTempKey);
             goto done;
         }
         CryptDestroyKey(hTempKey);
-        hTempKey = 0;
 
         /* yell if key is too big (use 64-bit arithmetic to avoid overflow) */
         if ((LONGLONG)dwKeyMaterialLen * 8 > (LONGLONG)dwProvSessionKeySize) {
@@ -448,8 +449,6 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
                 (unsigned long long)((LONGLONG)dwKeyMaterialLen * 8), dwProvSessionKeySize);
             goto done;
         }
-    } else {
-        dwProvSessionKeySize = dwKeyMaterialLen * 8;
     }
 
     /* Get private key's algorithm */
@@ -540,9 +539,6 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
     res = TRUE;
 
 done:
-    if(hTempKey != 0) {
-        CryptDestroyKey(hTempKey);
-    }
     if(keyBlob != NULL) {
         xmlSecMemCleanse(keyBlob, keyBlobLen);
         xmlFree(keyBlob);

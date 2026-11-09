@@ -676,6 +676,7 @@ xmlSecGnuTLSSignatureSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr key
 #define XMLSEC_GNUTLS_ASN1_TAG_SEQUENCE 0x30
 #define XMLSEC_GNUTLS_ASN1_TAG_INTEGER  0x02
 
+/* (size) never exceeds 0xFFFF in practice, the else branch is defensive only for future use cases */
 #define XMLSEC_GNUTLS_GET_SIZE_OF_SIZE(size, sizeOfSize) \
     if((size) <= 0x7F) {                                 \
         (sizeOfSize) = 1;                                \
@@ -689,6 +690,7 @@ xmlSecGnuTLSSignatureSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr key
     }
 
 
+/* (size) never exceeds 0xFFFF in practice, the else branch is defensive only for future use cases */
 #define XMLSEC_GNUTLS_PUT_LENGTH(pp, size)               \
     if((size) <= 0x7F) {                                 \
         (*(pp)++) = (xmlSecByte)(size);                  \

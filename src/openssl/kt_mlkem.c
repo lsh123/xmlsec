@@ -28,7 +28,6 @@
 #include <string.h>
 
 #include <openssl/evp.h>
-#include <openssl/objects.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>

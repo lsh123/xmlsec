@@ -246,7 +246,7 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
     if (keyReq->keyType & (xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate)) {
         certDb = CERT_GetDefaultCertDB();
         if (certDb == NULL) {
-            xmlSecNssError("CERT_GetDefaultCertDB", NULL);
+            xmlSecNssError("CERT_GetDefaultCertDB", xmlSecKeyStoreGetName(store));
             goto done;
         }
 
@@ -258,7 +258,7 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
         if (keyReq->keyType & xmlSecKeyDataTypePublic) {
             pubkey = CERT_ExtractPublicKey(cert);
             if (pubkey == NULL) {
-                xmlSecNssError("CERT_ExtractPublicKey", NULL);
+                xmlSecNssError("CERT_ExtractPublicKey", xmlSecKeyStoreGetName(store));
                 goto done;
             }
         }
@@ -269,7 +269,7 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
                 /* no private key found; if a public key was requested and
                  * extracted, fall back to a public-only key instead of failing */
                 if(((keyReq->keyType & xmlSecKeyDataTypePublic) == 0) || (pubkey == NULL)) {
-                    xmlSecNssError("PK11_FindKeyByAnyCert", NULL);
+                    xmlSecNssError("PK11_FindKeyByAnyCert", xmlSecKeyStoreGetName(store));
                     goto done;
                 }
             }
@@ -277,7 +277,7 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
 
         data = xmlSecNssPKIAdoptKey(privkey, pubkey);
         if(data == NULL) {
-            xmlSecInternalError("xmlSecNssPKIAdoptKey", NULL);
+            xmlSecInternalError("xmlSecNssPKIAdoptKey", xmlSecKeyStoreGetName(store));
             goto done;
         }
         privkey = NULL;
@@ -285,20 +285,20 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
 
         key = xmlSecKeyCreate();
         if (key == NULL) {
-            xmlSecInternalError("xmlSecKeyCreate", NULL);
+            xmlSecInternalError("xmlSecKeyCreate", xmlSecKeyStoreGetName(store));
             goto done;
         }
 
 #ifndef XMLSEC_NO_X509
         x509Data = xmlSecKeyDataCreate(xmlSecNssKeyDataX509Id);
         if(x509Data == NULL) {
-            xmlSecInternalError("xmlSecKeyDataCreate", NULL);
+            xmlSecInternalError("xmlSecKeyDataCreate", xmlSecKeyStoreGetName(store));
             goto done;
         }
 
         ret = xmlSecNssKeyDataX509AdoptKeyCert(x509Data, cert);
         if (ret < 0) {
-            xmlSecInternalError("xmlSecNssKeyDataX509AdoptKeyCert", NULL);
+            xmlSecInternalError("xmlSecNssKeyDataX509AdoptKeyCert", xmlSecKeyStoreGetName(store));
             goto done;
         }
 
@@ -310,7 +310,7 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
 
         ret = xmlSecKeyAdoptData(key, x509Data);
         if (ret < 0) {
-            xmlSecInternalError("xmlSecKeyAdoptData", NULL);
+            xmlSecInternalError("xmlSecKeyAdoptData", xmlSecKeyStoreGetName(store));
             goto done;
         }
         x509Data = NULL;
@@ -318,7 +318,7 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
 
         ret = xmlSecKeySetValue(key, data);
         if (ret < 0) {
-            xmlSecInternalError("xmlSecKeySetValue", NULL);
+            xmlSecInternalError("xmlSecKeySetValue", xmlSecKeyStoreGetName(store));
             goto done;
         }
         data = NULL;

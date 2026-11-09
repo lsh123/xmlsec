@@ -14,17 +14,12 @@
 
 #ifndef XMLSEC_NO_X509
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
-#include <ctype.h>
-#include <errno.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/keysmngr.h>
-#include <xmlsec/base64.h>
 #include <xmlsec/bn.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/xmltree.h>
@@ -616,10 +611,13 @@ xmlSecMSCryptoX509GetCertHash(PCCERT_CONTEXT pCert, BYTE* pHash, DWORD* hashSize
     return(0);
 }
 
-/* Returns 1 if @p cert chains to @p trustedStore without using revocation,
- * 0 if no trusted chain is found, or a negative value on error. This is used
- * only for CRL issuer certificates to avoid recursively consulting the CRL
- * currently being verified. */
+/* Builds the certificate chain for @p theCert, searching for issuers in @p certStore
+ * and @p untrustedStore until a certificate (or its issuer) is found in @p trustedStore.
+ * Each certificate is checked for time validity and, when @p checkRevocation is
+ * non-zero, also for revocation. Passing 0 for @p checkRevocation skips the revocation
+ * checks; this is used for CRL issuer certificates to avoid recursively consulting
+ * the CRL currently being verified. Returns 1 if @p theCert chains to @p trustedStore,
+ * 0 if no trusted chain is found, or a negative value on error. */
 static int
 xmlSecMSCryptoBuildCertChain(
     PCCERT_CONTEXT theCert,
@@ -1450,7 +1448,7 @@ xmlSecMSCryptoX509FindCertBySubject(HCERTSTORE store, LPCTSTR wcSubject, DWORD d
         }
     }
 
-    /* CASE 3: UTF8, DN */
+    /* CASE 3: FORCE UTF8, DN */
     if (NULL == res) {
         bdata = xmlSecMSCryptoCertStrToName(dwCertEncodingType,
                     wcSubject,
@@ -1470,7 +1468,7 @@ xmlSecMSCryptoX509FindCertBySubject(HCERTSTORE store, LPCTSTR wcSubject, DWORD d
         }
     }
 
-    /* CASE 4: UTF8, REVERSE DN */
+    /* CASE 4: FORCE UTF8, REVERSE DN */
     if (NULL == res) {
         bdata = xmlSecMSCryptoCertStrToName(dwCertEncodingType,
                     wcSubject,
@@ -1610,7 +1608,7 @@ xmlSecMSCryptoX509FindCertByIssuer(HCERTSTORE store, const LPTSTR wcIssuer,
         }
     }
 
-    /* CASE 3: UTF8, DN */
+    /* CASE 3: FORCE UTF8, DN */
     if (NULL == res) {
         bdata = xmlSecMSCryptoCertStrToName(dwCertEncodingType,
                     wcIssuer,
@@ -1630,7 +1628,7 @@ xmlSecMSCryptoX509FindCertByIssuer(HCERTSTORE store, const LPTSTR wcIssuer,
         }
     }
 
-    /* CASE 4: UTF8, REVERSE DN */
+    /* CASE 4: FORCE UTF8, REVERSE DN */
     if (NULL == res) {
         bdata = xmlSecMSCryptoCertStrToName(dwCertEncodingType,
                     wcIssuer,

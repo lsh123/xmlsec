@@ -381,7 +381,7 @@ xmlSecOpenSSLX509StoreVerifyAndCopyCrls(X509_STORE* xst, X509_STORE_CTX* xsc, ST
             return(-1);
         }
         /* don't duplicate or up_ref the crl since we own
-         * pointer to it */
+         * the pointer to it */
         num2 = sk_X509_CRL_push(verified_crls, crl);
         if(num2 <= 0) {
             xmlSecOpenSSLError("sk_X509_CRL_push", NULL);

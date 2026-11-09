@@ -9,8 +9,8 @@
  * @brief Internal header defining the compile-time marker macros IN_XMLSEC and XMLSEC_PRIVATE, conditionally including the config.h file, and including the error-reporting helper macros.
  */
 
-#ifndef XMLSEC_CORE_GLOBALS_H
-#define XMLSEC_CORE_GLOBALS_H
+#ifndef XMLSEC_GLOBALS_H
+#define XMLSEC_GLOBALS_H
 
 /**
  * Use autoconf defines if present.
@@ -30,4 +30,4 @@
 /* Include common error helper macros and functions. */
 #include "errors_helpers.h"
 
-#endif /* XMLSEC_CORE_GLOBALS_H */
+#endif /* XMLSEC_GLOBALS_H */

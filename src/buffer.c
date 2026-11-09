@@ -336,14 +336,14 @@ xmlSecBufferSetMaxSize(xmlSecBufferPtr buf, xmlSecSize size) {
     switch(buf->allocMode) {
     case xmlSecAllocModeExact:
         if(size > XMLSEC_SIZE_MAX - 8) {
-            xmlSecInvalidSizeError("size", size, (XMLSEC_SIZE_MAX - 8), NULL);
+            xmlSecInvalidSizeMoreThanError("size", size, (XMLSEC_SIZE_MAX - 8), NULL);
             return(-1);
         }
         newSize = size + 8;
         break;
     case xmlSecAllocModeDouble:
         if(size > ((XMLSEC_SIZE_MAX - 32) / 2)) {
-            xmlSecInvalidSizeError("size", size, ((XMLSEC_SIZE_MAX - 32) / 2), NULL);
+            xmlSecInvalidSizeMoreThanError("size", size, ((XMLSEC_SIZE_MAX - 32) / 2), NULL);
             return(-1);
         }
         newSize = 2 * size + 32;
@@ -427,7 +427,7 @@ xmlSecBufferAppend(xmlSecBufferPtr buf, const xmlSecByte* data, xmlSecSize size)
     if(size > 0) {
         xmlSecAssert2(data != NULL, -1);
         if(buf->size > XMLSEC_SIZE_MAX - size) {
-            xmlSecInvalidSizeError("size", size, (XMLSEC_SIZE_MAX - buf->size), NULL);
+            xmlSecInvalidSizeMoreThanError("size", size, (XMLSEC_SIZE_MAX - buf->size), NULL);
             return(-1);
         }
 
@@ -462,7 +462,7 @@ xmlSecBufferPrepend(xmlSecBufferPtr buf, const xmlSecByte* data, xmlSecSize size
     if(size > 0) {
         xmlSecAssert2(data != NULL, -1);
         if(buf->size > XMLSEC_SIZE_MAX - size) {
-            xmlSecInvalidSizeError("size", size, (XMLSEC_SIZE_MAX - buf->size), NULL);
+            xmlSecInvalidSizeMoreThanError("size", size, (XMLSEC_SIZE_MAX - buf->size), NULL);
             return(-1);
         }
 

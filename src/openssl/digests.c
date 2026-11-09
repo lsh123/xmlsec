@@ -17,7 +17,6 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
-#include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
 

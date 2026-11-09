@@ -198,10 +198,10 @@ int main(int argc, const char **argv) {
 
     if(success == 1) {
         /* success! */
-        fprintf(stdout, "=================== Checking xmlsec-core: SUCCESS =================================\n");
+        fprintf(stdout, "=================== Checking xmlsec-core: SUCCESS ========================\n");
         res = 0;
     } else {
-        fprintf(stdout, "=================== Checking xmlsec-core: FAILURE =================================\n");
+        fprintf(stdout, "=================== Checking xmlsec-core: FAILURE ========================\n");
         res = 1;
     }
 

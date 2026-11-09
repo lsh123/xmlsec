@@ -450,8 +450,8 @@ static xmlSecTransformKlass xmlSecMSCryptoMd5Klass = {
 };
 
 /**
- * @brief MD-5 digest transform klass.
- * @return pointer to MD-5 digest transform klass.
+ * @brief MD5 digest transform klass.
+ * @return pointer to MD5 digest transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformMd5GetKlass(void) {
@@ -532,8 +532,8 @@ static xmlSecTransformKlass xmlSecMSCryptoSha256Klass = {
 };
 
 /**
- * @brief SHA-256 digest transform klass.
- * @return pointer to SHA-256 digest transform klass.
+ * @brief SHA2-256 digest transform klass.
+ * @return pointer to SHA2-256 digest transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformSha256GetKlass(void) {
@@ -573,8 +573,8 @@ static xmlSecTransformKlass xmlSecMSCryptoSha384Klass = {
 };
 
 /**
- * @brief SHA-384 digest transform klass.
- * @return pointer to SHA-384 digest transform klass.
+ * @brief SHA2-384 digest transform klass.
+ * @return pointer to SHA2-384 digest transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformSha384GetKlass(void) {
@@ -614,8 +614,8 @@ static xmlSecTransformKlass xmlSecMSCryptoSha512Klass = {
 };
 
 /**
- * @brief SHA-512 digest transform klass.
- * @return pointer to SHA-512 digest transform klass.
+ * @brief SHA2-512 digest transform klass.
+ * @return pointer to SHA2-512 digest transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformSha512GetKlass(void) {

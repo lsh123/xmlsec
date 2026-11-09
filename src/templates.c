@@ -175,7 +175,7 @@ xmlSecTmplSignatureCreateNsPref(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
  * @brief Ensures a &lt;dsig:KeyInfo/&gt; child node in the &lt;dsig:Signature/&gt; node.
  * @details Adds (if necessary) &lt;dsig:KeyInfo/&gt; node to the &lt;dsig:Signature/&gt;
  * node @p signNode.
- * @param signNode the  pointer to &lt;dsig:Signature/&gt; node.
+ * @param signNode the pointer to &lt;dsig:Signature/&gt; node.
  * @param id the node id (may be NULL).
  *
  * @return the pointer to newly created &lt;dsig:KeyInfo/&gt; node or NULL if an
@@ -499,7 +499,7 @@ xmlSecTmplReferenceAddTransform(xmlNodePtr referenceNode, xmlSecTransformId tran
 /**
  * @brief Adds a &lt;dsig:SignatureProperties/&gt; node to the &lt;dsig:Object/&gt; node.
  * @details Adds &lt;dsig:SignatureProperties/&gt; node to the &lt;dsig:Object/&gt; node @p objectNode.
- * @param objectNode the  pointer to &lt;dsig:Object/&gt; node.
+ * @param objectNode the pointer to &lt;dsig:Object/&gt; node.
  * @param id the node id (may be NULL).
  * @param target the Target (may be NULL).
  *
@@ -539,7 +539,7 @@ xmlSecTmplObjectAddSignProperties(xmlNodePtr objectNode, const xmlChar *id, cons
 /**
  * @brief Adds a &lt;dsig:Manifest/&gt; node to the &lt;dsig:Object/&gt; node.
  * @details Adds &lt;dsig:Manifest/&gt; node to the &lt;dsig:Object/&gt; node @p objectNode.
- * @param objectNode the  pointer to &lt;dsig:Object/&gt; node.
+ * @param objectNode the pointer to &lt;dsig:Object/&gt; node.
  * @param id the node id (may be NULL).
  *
  * @return the pointer to newly created &lt;dsig:Manifest/&gt; node or NULL
@@ -701,7 +701,7 @@ xmlSecTmplPrepareEncData(xmlNodePtr parentNode, xmlSecTransformId encMethodId) {
 
 /**
  * @brief Ensures a &lt;dsig:KeyInfo/&gt; child in the &lt;enc:EncryptedData/&gt; node.
- * @details Adds &lt;dsig:KeyInfo/&gt; to the  &lt;enc:EncryptedData/&gt; node @p encNode.
+ * @details Adds &lt;dsig:KeyInfo/&gt; to the &lt;enc:EncryptedData/&gt; node @p encNode.
  * @param encNode the pointer to &lt;enc:EncryptedData/&gt; node.
  * @param id the Id attribute (optional).
  *
@@ -1755,7 +1755,7 @@ xmlSecTmplTransformAddHmacOutputLength(xmlNodePtr transformNode, xmlSecSize bits
 /**
  * @brief Creates a &lt;enc:OAEPparams/&gt; child node in the @p transformNode.
  * @details Creates &lt;enc:OAEPparams/&gt; child node in the @p transformNode.
- * @param transformNode the pointer to &lt;dsig:Transform/&gt; node.
+ * @param transformNode the pointer to &lt;enc:EncryptionMethod/&gt; node.
  * @param buf the OAEP param buffer.
  * @param size the OAEP param buffer size.
  *
@@ -1808,7 +1808,7 @@ xmlSecTmplTransformAddRsaOaepParam(xmlNodePtr transformNode, const xmlSecByte *b
 
 /**
  * @brief Creates &lt;enc11:MGF/&gt; child node in the @p transformNode.
- * @param transformNode the pointer to &lt;dsig:Transform/&gt; node.
+ * @param transformNode the pointer to &lt;enc:EncryptionMethod/&gt; node.
  * @param algorithm MGF1 algorithm href.
  *
  * @return 0 on success or a negative value if an error occurs.
@@ -1845,7 +1845,7 @@ xmlSecTmplTransformAddRsaMgf(xmlNodePtr transformNode, const xmlChar *algorithm)
 /**
  * @brief Creates a &lt;dsig:DigestMethod/&gt; child node in the @p transformNode.
  * @details Creates &lt;dsig:DigestMethod/&gt; child node in the @p transformNode.
- * @param transformNode the pointer to &lt;dsig:Transform/&gt; node.
+ * @param transformNode the pointer to &lt;enc:EncryptionMethod/&gt; node.
  * @param algorithm digest algorithm href.
  *
  * @return 0 on success or a negative value if an error occurs.

@@ -372,7 +372,7 @@ test_xmlSecNodeSetWalk_visits_elements_attributes_and_namespaces(void) {
     struct nodesetWalkStats stats;
     int ret;
 
-    testStart("xmlSecNodeSetWalk visits elements attributes and namespaces");
+    testStart("xmlSecNodeSetWalk visits elements, attributes and namespaces");
 
     memset(&stats, 0, sizeof(stats));
     doc = nodesetTestParseDoc("<p:Root xmlns:p=\"urn:test\" attr=\"1\"/>");

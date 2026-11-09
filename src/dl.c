@@ -179,7 +179,7 @@ xmlSecCryptoOpenLibraryAndGetFunctions(xmlSecCryptoDLLibraryPtr lib)  {
         xmlFree(wcLibFilename);
         return(NULL);
     }
-#else /* !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)*/
+#else /* !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP) */
     lib->handle = LoadPackagedLibrary(wcLibFilename, 0);
     if(lib->handle == NULL) {
         xmlSecDLErrorWin32("LoadPackagedLibrary", lib->filename);
@@ -293,7 +293,7 @@ xmlSecCryptoDLLibraryDestroy(xmlSecCryptoDLLibraryPtr lib) {
 
         ret = lt_dlclose(lib->handle);
         if(ret != 0) {
-            xmlSecIOError("lt_dlclose", NULL, NULL);
+            xmlSecDLErrorLibLTDL("lt_dlclose", lib->filename);
             /* ignore error */
         }
     }
@@ -305,7 +305,7 @@ xmlSecCryptoDLLibraryDestroy(xmlSecCryptoDLLibraryPtr lib) {
 
         res = FreeLibrary(lib->handle);
         if(!res) {
-            xmlSecIOError("FreeLibrary", NULL, NULL);
+            xmlSecDLErrorWin32("FreeLibrary", lib->filename);
             /* ignore error */
         }
     }
@@ -446,7 +446,7 @@ xmlSecCryptoDLInit(void) {
 #ifdef XMLSEC_DL_LIBLTDL
     ret = lt_dlinit();
     if(ret != 0) {
-        xmlSecIOError("lt_dlinit", NULL, NULL);
+        xmlSecDLErrorLibLTDL("lt_dlinit", NULL);
         return(-1);
     }
 #endif /* XMLSEC_DL_LIBLTDL */
@@ -481,7 +481,7 @@ xmlSecCryptoDLShutdown(void) {
 #ifdef XMLSEC_DL_LIBLTDL
     ret = lt_dlexit();
     if(ret != 0) {
-        xmlSecIOError("lt_dlexit", NULL, NULL);
+        xmlSecDLErrorLibLTDL("lt_dlexit", NULL);
         res = -1;
     }
 #endif /* XMLSEC_DL_LIBLTDL */

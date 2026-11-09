@@ -647,8 +647,11 @@ xmlSecMSCngKeyDataCertGetXdhPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE
     pKeyBytes   = spki->PublicKey.pbData;
     keyBytesLen = spki->PublicKey.cbData;
 
-    /* The SPKI BIT STRING content (decoded by CryptDecodeObjectEx) may or may not
-     * include the DER unused-bits prefix byte (0x00).  Skip it when present. */
+    /* CryptDecodeObjectEx() decodes the BIT STRING content without the
+     * unused-bits prefix byte: the unused-bits count is tracked separately
+     * in spki->PublicKey.cUnusedBits, so the content of a well-formed
+     * X25519 SPKI is exactly the 32-byte key. The skip below is a defensive
+     * check that is not expected to trigger for valid data. */
     if((keyBytesLen > XMLSEC_MSCNG_XDH_CBKEY_SIZE) && (pKeyBytes[0] == 0x00)) {
         pKeyBytes++;
         keyBytesLen--;

@@ -904,7 +904,7 @@ xmlSecEncCtxCipherDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     /* we either have CipherValue or CipherReference node */
     xmlSecAssert2(encCtx->cipherValueNode == NULL, -1);
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeCipherValue, xmlSecEncNs))) {
-        /* don't need data from CipherData node when we are encrypting */
+        /* don't need data from CipherValue node when we are encrypting */
         if(encCtx->operation == xmlSecTransformOperationDecrypt) {
             xmlSecTransformPtr base64Decode;
 
@@ -1277,7 +1277,7 @@ xmlSecEncCtxMapOperation(xmlSecTransformOperation operation) {
  * @param keyId the expected key id, the actual derived key might have a different id.
  * @param node the pointer to &lt;enc11:DerivedKey/&gt; node.
  * @param keyInfoCtx the pointer to the "parent" key info context.
- * @return the derived key on success or NULL  if an error occurs.
+ * @return the derived key on success or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecEncCtxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {

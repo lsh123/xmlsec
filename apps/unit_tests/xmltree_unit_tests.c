@@ -2183,7 +2183,6 @@ test_xmlSecDepthFirstTreeWalk_skips_siblings(void) {
     testFinishedSuccess();
 }
 
-
 /******************************************************************************
  * xmlSecReplaceNodeBuffer / xmlSecReplaceNodeBufferAndReturn
  *****************************************************************************/

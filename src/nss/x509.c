@@ -194,6 +194,11 @@ xmlSecNssKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
     return(ctx->keyCert);
 }
 
+/**
+ * @brief Gets the list of certificates in @p data.
+ * @param data the pointer to X509 key data.
+ * @return the list of certificates or NULL if there are no certificates.
+ */
 CERTCertList*
 xmlSecNssKeyDataX509GetCerts(xmlSecKeyDataPtr data) {
     xmlSecNssX509DataCtxPtr ctx;
@@ -206,6 +211,11 @@ xmlSecNssKeyDataX509GetCerts(xmlSecKeyDataPtr data) {
     return(ctx->certsList);
 }
 
+/**
+ * @brief Gets the list of CRLs in @p data.
+ * @param data the pointer to X509 key data.
+ * @return the list of CRLs or NULL if there are no CRLs.
+ */
 xmlSecNssX509CrlNodePtr
 xmlSecNssKeyDataX509GetCrls(xmlSecKeyDataPtr data) {
     xmlSecNssX509DataCtxPtr ctx;
@@ -1162,6 +1172,12 @@ restore:
     return(-1);
 }
 
+/**
+ * @brief Converts an NSS PRTime timestamp to seconds since the epoch.
+ * @param t the pointer to the PRTime timestamp (microseconds since the epoch).
+ * @param res the pointer to the result (seconds since the epoch).
+ * @return 0 on success or a negative value if an error occurs.
+ */
 int
 xmlSecNssX509CertGetTime(PRTime* t, time_t* res) {
     xmlSecAssert2(t != NULL, -1);
@@ -1230,6 +1246,13 @@ xmlSecNssX509SECItemWrite(SECItem* secItem, xmlSecBufferPtr buf) {
     return(0);
 }
 
+/**
+ * @brief Reads a DER-encoded X509 certificate.
+ * @param handle the certificate database handle.
+ * @param buf the buffer with the DER-encoded certificate.
+ * @param size the size of the buffer in bytes.
+ * @return the certificate or NULL if an error occurs.
+ */
 CERTCertificate*
 xmlSecNssX509CertDerRead(CERTCertDBHandle *handle, xmlSecByte* buf, xmlSecSize size) {
     CERTCertificate *cert;
@@ -1252,6 +1275,13 @@ xmlSecNssX509CertDerRead(CERTCertDBHandle *handle, xmlSecByte* buf, xmlSecSize s
     return(cert);
 }
 
+/**
+ * @brief Reads a DER-encoded X509 CRL.
+ * @param buf the buffer with the DER-encoded CRL.
+ * @param size the size of the buffer in bytes.
+ * @param flags the flags for CRL processing.
+ * @return the CRL or NULL if an error occurs.
+ */
 CERTSignedCrl*
 xmlSecNssX509CrlDerRead(xmlSecByte* buf, xmlSecSize size, unsigned int flags) {
     CERTSignedCrl *crl = NULL;
@@ -1314,6 +1344,13 @@ xmlSecNssX509CertReadCallback(void *arg, SECItem **certs, int numcerts) {
 }
 
 
+/**
+ * @brief Reads a PEM-encoded X509 certificate.
+ * @param handle the certificate database handle.
+ * @param buf the buffer with the PEM-encoded certificate.
+ * @param size the size of the buffer in bytes.
+ * @return the certificate or NULL if an error occurs.
+ */
 CERTCertificate*
 xmlSecNssX509CertPemRead(CERTCertDBHandle *handle, xmlSecByte* buf, xmlSecSize size) {
     xmlSecNssX509CertReadResult result;
@@ -1474,6 +1511,11 @@ xmlSecNssX509CertDebugXmlDump(CERTCertificate* cert, FILE* output) {
     fprintf(output, "</SerialNumber>\n");
 }
 
+/**
+ * @brief Duplicates the list of CRLs.
+ * @param head the pointer to the head of the list.
+ * @return the duplicated list or NULL if an error occurs.
+ */
 xmlSecNssX509CrlNodePtr
 xmlSecNssX509CrlListDuplicate(xmlSecNssX509CrlNodePtr head) {
     xmlSecNssX509CrlNodePtr newHead = NULL;
@@ -1507,6 +1549,10 @@ xmlSecNssX509CrlListDuplicate(xmlSecNssX509CrlNodePtr head) {
     return(newHead);
 }
 
+/**
+ * @brief Destroys the list of CRLs.
+ * @param head the pointer to the head of the list.
+ */
 void
 xmlSecNssX509CrlListDestroy(xmlSecNssX509CrlNodePtr head) {
     xmlSecNssX509CrlNodePtr tmp;
@@ -1519,6 +1565,12 @@ xmlSecNssX509CrlListDestroy(xmlSecNssX509CrlNodePtr head) {
     }
 }
 
+/**
+ * @brief Appends a CRL to the list.
+ * @param head the pointer to the head of the list.
+ * @param crl the pointer to the CRL to append.
+ * @return 0 on success or a negative value if an error occurs.
+ */
 int
 xmlSecNssX509CrlListAdoptCrl(xmlSecNssX509CrlNodePtr * head, CERTSignedCrl* crl) {
     xmlSecNssX509CrlNodePtr crlnode;

@@ -286,7 +286,7 @@ xmlSecMSCngAppKeyLoadEx(const char *filename, xmlSecKeyDataType type, xmlSecKeyD
             xmlSecBufferFinalize(&buffer);
             return(NULL);
         }
-        
+
         /* Try to read private key first and if no luck, try public key
          *
          * Note: xmlSecMSCngAppKeyReadPrivKeyFromDer() only supports DH, X25519, and ML-KEM
@@ -297,12 +297,11 @@ xmlSecMSCngAppKeyLoadEx(const char *filename, xmlSecKeyDataType type, xmlSecKeyD
             keyData = xmlSecMSCngAppKeyReadPubKeyFromDer(bufferData, bufferSize);
         }
         if(keyData == NULL) {
-            xmlSecInternalError("unable to read private or public key from DER data", NULL);
             xmlSecBufferFinalize(&buffer);
             return(NULL);
         }
         xmlSecBufferFinalize(&buffer);
-        
+
         key = xmlSecKeyCreate();
         if(key == NULL) {
             xmlSecInternalError("xmlSecKeyCreate", NULL);

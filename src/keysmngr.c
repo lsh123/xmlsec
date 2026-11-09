@@ -535,7 +535,7 @@ xmlSecSimpleKeysStoreLoad_ex(
                                     XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS;
         keyInfoCtx.keyReq.keyId   = xmlSecKeyDataIdUnknown;
         keyInfoCtx.keyReq.keyType = xmlSecKeyDataTypeAny;
-        keyInfoCtx.keyReq.keyUsage= xmlSecKeyUsageAny;
+        keyInfoCtx.keyReq.keyUsage = xmlSecKeyUsageAny;
 
         /* enable all keydata for store */
         ret = xmlSecSimpleKeysStoreEnableAllKeyData(&keyInfoCtx);
@@ -566,7 +566,7 @@ xmlSecSimpleKeysStoreLoad_ex(
                 return(-1);
             }
         } else {
-            /* we have an unknown key in our file, just ignore it and don't print error */
+            /* we have an unknown key in our file, just ignore it and don't print an error */
             xmlSecKeyDestroy(key);
         }
         cur = xmlSecGetNextElementNode(cur->next);

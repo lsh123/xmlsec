@@ -709,16 +709,16 @@ static int xmlSecMSCngSignatureSetKeyReq(xmlSecTransformPtr transform,  xmlSecKe
 }
 
 /*
- * https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA
- *
- * The output of the ECDSA algorithm consists of a pair of integers usually
- * referred to as the pair (r, s). The signature value consists of the base64
- * encoding of the concatenation of two octet-streams that respectively result
- * from the octet-encoding of the values r and s in that order. Integer to
- * octet-stream conversion must be done according to the I2OSP operation defined
- * in the RFC 3447 [PKCS1] specification with the l parameter equal to the size of
- * the base point order of the curve in bytes (e.g. 32 for the P-256 curve and 66
- * for the P-521 curve).
+ * Fixes DSA/ECDSA signature values produced by implementations (e.g. Java)
+ * that cut or add leading zeros to r and s. Per
+ * https://www.w3.org/TR/xmldsig-core1/#sec-DSA and
+ * https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA the signature value consists
+ * of the concatenation of the octet-encodings of r and s, each of a fixed
+ * size: the size of the group order q for DSA or the size of the base point
+ * order of the curve in bytes for ECDSA (e.g. 32 for the P-256 curve and 66
+ * for the P-521 curve). The input is left unchanged when it already has the
+ * expected length; otherwise the leading zeros are added (too short) or
+ * stripped (too long, after verifying they are actually zero).
 */
 static int
 xmlSecMSCngSignatureFixBrokenJava(xmlSecMSCngSignatureCtxPtr ctx,

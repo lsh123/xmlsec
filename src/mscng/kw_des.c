@@ -326,9 +326,11 @@ xmlSecMSCngKWDes3BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     memcpy(xmlSecBufferGetData(&blob) + sizeof(BCRYPT_KEY_DATA_BLOB_HEADER),
         xmlSecBufferGetData(&ctx->keyBuffer), keySize);
 
-    /* all BCRYPT_KEY_DATA_BLOB_HEADER fields are set explicitly above and
-     * the blob buffer is grown via xmlSecBufferSetSize(), which zeroes the
-     * newly allocated region, so no stale data remains in the blob. */
+    /* dwMagic, dwVersion, and cbKeyData of the BCRYPT_KEY_DATA_BLOB_HEADER
+     * are set explicitly above; the remaining fields (dwFlags, cbPublicKey,
+     * cbMacData) are zero because the blob buffer is grown via
+     * xmlSecBufferSetSize(), which zeroes the newly allocated region, so no
+     * stale data remains in the blob. */
 
     blobSize = xmlSecBufferGetSize(&blob);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(blobSize, dwBlobSize, goto done, NULL);
@@ -552,9 +554,11 @@ xmlSecMSCngKWDes3BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     memcpy(xmlSecBufferGetData(&blob) + sizeof(BCRYPT_KEY_DATA_BLOB_HEADER),
         xmlSecBufferGetData(&ctx->keyBuffer), keySize);
 
-    /* all BCRYPT_KEY_DATA_BLOB_HEADER fields are set explicitly above and
-     * the blob buffer is grown via xmlSecBufferSetSize(), which zeroes the
-     * newly allocated region, so no stale data remains in the blob. */
+    /* dwMagic, dwVersion, and cbKeyData of the BCRYPT_KEY_DATA_BLOB_HEADER
+     * are set explicitly above; the remaining fields (dwFlags, cbPublicKey,
+     * cbMacData) are zero because the blob buffer is grown via
+     * xmlSecBufferSetSize(), which zeroes the newly allocated region, so no
+     * stale data remains in the blob. */
 
     blobSize = xmlSecBufferGetSize(&blob);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(blobSize, dwBlobSize, goto done, NULL);

@@ -83,8 +83,8 @@
 /*
  * BoringSSL and AWS-LC do not provide a usable opensslconf.h, so the
  * OPENSSL_NO_* capability mappings below are not available for them and the
- * missing features have to be listed here explicitly (their opensslconf.h
- * defines OPENSSL_NO_CAMELLIA, OPENSSL_NO_GOST and OPENSSL_NO_RMD160).
+ * missing features have to be listed here explicitly (these builds do not
+ * support Camellia, GOST and RIPEMD160).
  */
 #define XMLSEC_NO_RSA_OAEP              1
 #define XMLSEC_NO_DH                    1

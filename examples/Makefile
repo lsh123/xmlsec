@@ -61,7 +61,7 @@ clean:
 
 check: check-sign check-verify check-enc check-dec
 
-# Do not redirect ouput to overwrite the result files
+# Do not redirect output to overwrite the result files
 check-sign: $(PROGRAMS_SIGN)
 	./sign1    sign1-tmpl.xml    rsakey.pem test-key-name
 	./sign2    sign2-doc.xml     rsakey.pem test-key-name
@@ -77,7 +77,7 @@ check-verify: check-sign $(PROGRAMS_VERIFY)
 	./verify4  sign4-res.xml "data" ca2cert.pem cacert.pem
 	./verify-saml verify-saml-res.xml ca2cert.pem cacert.pem
 
-# Do not redirect ouput to overwrite the result files
+# Do not redirect output to overwrite the result files
 check-enc: $(PROGRAMS_ENC)
 	./encrypt1 encrypt1-tmpl.xml aeskey.bin
 	./encrypt2 encrypt2-doc.xml  aeskey.bin

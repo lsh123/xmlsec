@@ -95,13 +95,19 @@ static xmlSecTransformKlass xmlSecNss ## name ## Klass = {                      
 #define XMLSEC_NSS_DIGEST_KLASS(name)                                                                   \
     XMLSEC_NSS_DIGEST_KLASS_EX(name, NULL)
 
+/**
+ * @brief Gets the NSS OID tag for the given digest href.
+ * @param href the digest href, or NULL to use the default digest (SHA-256).
+ * @return the SECOidTag corresponding to @p href, or SEC_OID_UNKNOWN if the
+ * href is not recognized or the corresponding digest algorithm is disabled.
+ */
 SECOidTag
 xmlSecNssGetDigestFromHref(const xmlChar* href) {
     if(href == NULL) {
 #ifndef XMLSEC_NO_SHA256
         return(SEC_OID_SHA256);
 #else  /* XMLSEC_NO_SHA256 */
-        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL, "SHA256 is disabled; href=%s", xmlSecErrorsSafeString(href));
+        xmlSecOtherError2(XMLSEC_ERRORS_R_DISABLED, NULL, "SHA256 is disabled; href=%s", xmlSecErrorsSafeString(href));
         return(SEC_OID_UNKNOWN);
 #endif /* XMLSEC_NO_SHA256 */
     } else
@@ -401,8 +407,9 @@ xmlSecNssDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
                 return(-1);
             }
             xmlSecAssert2(dgstSize > 0, -1);
-            /* NSS honors the maxResultLen passed to PK11_DigestFinal, so the
-             * digest size cannot exceed the buffer; keep the invariant explicit */
+            /* the dgst buffer is XMLSEC_NSS_MAX_DIGEST_SIZE bytes, which is
+             * larger than the output of any NSS digest, so it cannot be
+             * overflowed; keep the invariant explicit */
             xmlSecAssert2(dgstSize <= sizeof(ctx->dgst), -1);
             ctx->dgstSize = dgstSize;
 

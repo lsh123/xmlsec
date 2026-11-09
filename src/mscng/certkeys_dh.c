@@ -29,6 +29,15 @@
 
 #ifndef XMLSEC_NO_DH
 
+/**
+ * @brief Duplicates a BCRYPT DH private key handle.
+ * @details Exports the private key from @p src as a BCRYPT_DH_PRIVATE_BLOB
+ *          and imports it as a new key handle stored in @p dst.
+ * @param src the source BCRYPT DH private key handle.
+ * @param dst receives the new BCRYPT DH private key handle; the caller owns
+ *          it and must destroy it with BCryptDestroyKey.
+ * @return 0 on success, -1 on failure.
+ */
 int
 xmlSecMSCngKeyDataDuplicateBCryptDhPrivKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HANDLE* dst) {
     BCRYPT_ALG_HANDLE hDhAlg = NULL;
@@ -400,6 +409,18 @@ xmlSecMSCngBufferTrimLeadingZeros(xmlSecBufferPtr buffer) {
     return(0);
 }
 
+/**
+ * @brief Reads an X9.42 DH public key from the given DH key value.
+ * @param id the key data klass id; must be xmlSecMSCngKeyDataDhId.
+ * @param dhValue the DH key value to read (P, G and the public value).
+ *
+ * Builds a BCRYPT_DH_PUBLIC_BLOB from P, G and the public value (validated
+ * against 2 <= Y <= P - 2 before import), imports it and creates a new DH
+ * key data from the resulting key handle. If the q value is present in
+ * @p dhValue, it is stored in the key data as well.
+ *
+ * @return new key data or NULL on failure.
+ */
 xmlSecKeyDataPtr
 xmlSecMSCngKeyDataDhRead(xmlSecKeyDataId id, xmlSecKeyValueDhPtr dhValue) {
     xmlSecKeyDataPtr data = NULL;
@@ -549,6 +570,18 @@ done:
     return(res);
 }
 
+/**
+ * @brief Writes a BCRYPT DH public key into the given DH key value.
+ * @param pubkey the BCRYPT DH public key handle.
+ * @param dhValue the DH key value to fill in (P, G and the public value).
+ *
+ * Exports the key as a BCRYPT_DH_PUBLIC_BLOB and copies its P, G and
+ * public-value fields into @p dhValue (G and the public value are trimmed
+ * of leading zeros). The q value is not present in the BCrypt DH key blob
+ * and is left empty.
+ *
+ * @return 0 on success, -1 on failure.
+ */
 int
 xmlSecMSCngKeyDataDhPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDhPtr dhValue) {
     NTSTATUS status;

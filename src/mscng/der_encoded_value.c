@@ -194,7 +194,7 @@ xmlSecMSCngKeyDataDEREncodedKeyValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key
      * See https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptdecodeobjectex */
     tlvEnd = xmlSecMSCngDerReadTopLevelTlv(data, data + dataSize);
     if(tlvEnd == NULL) {
-        xmlSecInternalError("xmlSecMSCngDerReadTopLevelTlv", xmlSecKeyDataKlassGetName(id));
+        xmlSecInvalidDataError("invalid DER encoded value: expected a single complete DER TLV", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
     if(tlvEnd != data + dataSize) {

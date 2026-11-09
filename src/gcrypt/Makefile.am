@@ -21,19 +21,19 @@ libxmlsec1_gcrypt_la_CPPFLAGS = \
 
 libxmlsec1_gcrypt_la_SOURCES =\
 	app.c \
-	asn1.h \
 	asn1.c \
+	asn1.h \
+	asymkeys.c \
 	ciphers.c \
 	crypto.c \
 	digests.c \
+	globals.h \
 	hmac.c \
 	kt_rsa.c \
-	kw_rfc_3394.c \
 	kw_des.c \
-	symkeys.c \
-	asymkeys.c \
+	kw_rfc_3394.c \
 	signatures.c \
-	globals.h \
+	symkeys.c \
 	$(NULL)
 
 libxmlsec1_gcrypt_la_LIBADD = \

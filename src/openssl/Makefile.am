@@ -25,12 +25,12 @@ libxmlsec1_openssl_la_SOURCES =\
 	der_encoded_value.c \
 	digests.c \
 	evp.c \
+	hmac.c \
 	kdf.c \
 	key_agrmnt.c \
 	keysstore.c \
-	hmac.c \
-	kw_rfc_3394.c \
 	kw_des.c \
+	kw_rfc_3394.c \
 	kt_mlkem.c \
 	kt_rsa.c \
 	signatures.c \

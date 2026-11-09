@@ -640,7 +640,7 @@ xmlSecOpenSSLKWAesEncryptDecrypt(xmlSecOpenSSLKWRfc3394CtxPtr ctx, const xmlSecB
     }
 
     /* success */
-    (*outWritten) = AES_BLOCK_SIZE;
+    (*outWritten) = XMLSEC_KW_RFC3394_BLOCK_SIZE;
     res = 0;
 
 done:

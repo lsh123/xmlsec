@@ -963,9 +963,10 @@ test_xmlSecTransformHmacWriteOutput_prefilled_full_bytes(void) {
  *
  * All three functions read a base64 encoded context string either from the
  * first child of a <SignatureMethod> element or from a <ds:Object> element
- * of the containing <ds:Signature> element. They are identical apart from
- * the maximum allowed context string size, so the tests below are shared
- * and parameterized by the reader function and the expected limits.
+ * of the containing <ds:Signature> element. The three readers are
+ * identical; the maximum allowed context string size is currently the
+ * same for all of them, so the tests below are shared and parameterized
+ * by the reader function and the expected limits.
  *****************************************************************************/
 
 #define XMLSEC_UNIT_TEST_DSIG_NS_URI      "http://www.w3.org/2000/09/xmldsig#"

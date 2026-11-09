@@ -11,8 +11,6 @@
  */
 #include "globals.h"
 
-#include <string.h>
-
 #include <gcrypt.h>
 
 #include <xmlsec/xmlsec.h>
@@ -157,7 +155,7 @@ xmlSecGCryptAppShutdown(void) {
  * @details Reads only unencrypted traditional DER key formats (PKCS#1/DSA/EC);
  * the password parameters are not used by the GCrypt back-end.
  * @param filename the key filename.
- * @param type the expected key type.
+ * @param type the expected key type (ignored by the GCrypt back-end).
  * @param format the key file format.
  * @param pwd the key file password (not used by the GCrypt back-end).
  * @param pwdCallback the key password callback (not used by the GCrypt back-end).

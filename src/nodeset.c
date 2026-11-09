@@ -41,7 +41,7 @@ static int      xmlSecNodeSetWalkRecursive              (xmlSecNodeSetPtr nset,
  * @brief Creates a new nodes set.
  * @details Creates a new nodes set. Caller is responsible for freeing returned object
  * by calling #xmlSecNodeSetDestroy function.
- * @param doc the pointer to parent XML document.
+ * @param doc the pointer to a parent XML document.
  * @param nodes the list of nodes.
  * @param type the nodes set type.
  * @return pointer to newly allocated node set or NULL if an error occurs.
@@ -103,8 +103,8 @@ xmlSecNodeSetDestroy(xmlSecNodeSetPtr nset) {
 }
 
 /**
- * @brief Marks node set to destroy the parent document.
- * @details Instructs node set to destroy the node's parent doc when node set is destroyed.
+ * @brief Marks the node set to destroy the parent document.
+ * @details Instructs the node set to destroy the node's parent doc when the node set is destroyed.
  * @param nset the pointer to node set.
  */
 void

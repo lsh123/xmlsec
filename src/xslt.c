@@ -157,7 +157,7 @@ xmlSecXsltCopySecPref(xsltSecurityPrefsPtr src, xsltSecurityPrefsPtr dst, xsltSe
  * @details Sets the new default security preferences. The xmlsec default security policy is
  * to disable everything. This function modifies the library-wide default security
  * preferences object in place and therefore must be called before any XSLT
- * transformations are running, since the change affects all subsequent and concurrent
+ * transformations are run, since the change affects all subsequent and concurrent
  * transformations.
  * @param sec the new security preferences
  */
@@ -425,7 +425,10 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
             (void)xmlOutputBufferClose(output);
             xmlFreeDoc(docOut);
             /* discard any partial output kept in our own output buffer so it
-             * cannot be picked up by a later operation and mark the
+             * cannot be picked up by a later operation (when a next transform
+             * is present the output buffer belongs to the next transform's
+             * input, so the partial data left there is not cleared, but the
+             * whole operation is aborted, so it is of no use) and mark the
              * transform as failed */
             xmlSecBufferEmpty(&(transform->outBuf));
             transform->status = xmlSecTransformStatusFail;
@@ -436,7 +439,10 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
             xmlSecXmlError("xmlOutputBufferClose", xmlSecTransformGetName(transform));
             xmlFreeDoc(docOut);
             /* discard any partial output kept in our own output buffer so it
-             * cannot be picked up by a later operation and mark the
+             * cannot be picked up by a later operation (when a next transform
+             * is present the output buffer belongs to the next transform's
+             * input, so the partial data left there is not cleared, but the
+             * whole operation is aborted, so it is of no use) and mark the
              * transform as failed */
             xmlSecBufferEmpty(&(transform->outBuf));
             transform->status = xmlSecTransformStatusFail;

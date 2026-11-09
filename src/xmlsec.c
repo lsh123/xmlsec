@@ -39,8 +39,8 @@ static xmlExternalEntityLoader xmlSecDefaultExternalEntityLoader = NULL;
  * on the stack (ctxt->input != NULL) and ctxt->inputNr > 0.
  */
 static xmlParserInputPtr
-xmlSecNoXxeExternalEntityLoader(const char *URL, const char *ID,
-                          xmlParserCtxtPtr ctxt) {
+xmlSecNoXxeExternalEntityLoader(
+    const char *URL, const char *ID, xmlParserCtxtPtr ctxt) {
     if(ctxt == NULL) {
         return(NULL);
     }

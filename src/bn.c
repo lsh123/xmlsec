@@ -586,7 +586,7 @@ xmlSecBnAdd(xmlSecBnPtr bn, int delta) {
 }
 
 /**
- * @brief Reverses bytes order in @p bn.
+ * @brief Reverses the byte order in @p bn.
  * @param bn the pointer to BN.
  * @return 0 on success or a negative value if an error occurs.
  */

@@ -246,7 +246,7 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
     if((transform->operation == xmlSecTransformOperationEncrypt) && (inSize == 0)) {
         /* empty input is not a valid message to encrypt: the resulting
          * empty key cannot be applied to any content cipher, so reject
-         * it early (matches the other back-ends) */
+         * it early (matches the other backends) */
         xmlSecInvalidSizeOtherError("input data is empty",
             xmlSecTransformGetName(transform));
         return(-1);
@@ -255,8 +255,8 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
     /* the encoded size is equal to the key's size so we could not
      * process more than that. Decryption is guarded by the
      * inSize != keySize check below. */
-    if((transform->operation == xmlSecTransformOperationEncrypt) && (inSize >= keySize)) {
-        xmlSecInvalidSizeLessThanError("Input data", inSize, keySize,
+    if((transform->operation == xmlSecTransformOperationEncrypt) && (inSize > keySize)) {
+        xmlSecInvalidSizeMoreThanError("Input data", inSize, keySize,
             xmlSecTransformGetName(transform));
         return(-1);
     } else if((transform->operation == xmlSecTransformOperationDecrypt) && (inSize != keySize)) {
@@ -458,8 +458,8 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         outSize = dwOutLen;
 
         /* wipe the tail of the output buffer beyond the recovered plaintext;
-         * CNG wrote exactly 'outSize' bytes of the CEK into the buffer, so
-         * the remaining space is unwritten and must not retain stale data */
+         * the buffer may hold stale bytes from a previous allocation or use,
+         * so cleanse the region that CNG did not write */
         if (keySize > outSize) {
             xmlSecMemCleanse(outBuf + outSize, keySize - outSize);
         }
@@ -594,7 +594,7 @@ xmlSecMSCngRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
          * CNG and it is rejected by the provider at use time (for example,
          * NCryptEncrypt/NCryptDecrypt fails with NTSTATUS 0x80090027). Reject
          * it here so that the error is clear; note that mscng does not define
-         * the SHA-224 digest klass transform at all, so this algorithm cannot
+         * the SHA-224 digest transform at all, so this algorithm cannot
          * be used with this backend. */
         xmlSecInvalidTransformError2(transform,
             "digest algorithm=\"%s\" is not supported for rsa/oaep",

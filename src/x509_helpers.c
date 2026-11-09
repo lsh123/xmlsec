@@ -284,7 +284,7 @@ xmlSecX509DataGetNodeContent(xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx, xm
                 content |= (XMLSEC_X509DATA_CRL_NODE << XMLSEC_X509DATA_SHIFT_IF_NOT_EMPTY);
             }
         } else {
-            /* todo: fail on unknown child node? */
+            /* unknown child nodes are ignored here (strict rejection is handled in the read path) */
         }
         cur = xmlSecGetNextElementNode(cur->next);
     }
@@ -654,7 +654,7 @@ xmlSecKeyX509DataValueXmlRead(xmlSecKeyX509DataValuePtr x509Value, xmlNodePtr no
     } else if(xmlSecCheckNodeName(node, xmlSecNodeX509Digest, xmlSecDSig11Ns)) {
         xmlSecAssert2(x509Value->digestAlgorithm == NULL, -1);
 
-        /*  The digest algorithm URI is identified with a required Algorithm attribute */
+        /* The digest algorithm URI is identified with a required Algorithm attribute */
         x509Value->digestAlgorithm = xmlGetProp(node, xmlSecAttrAlgorithm);
         if(x509Value->digestAlgorithm == NULL) {
             xmlSecInvalidNodeAttributeError(node, xmlSecAttrAlgorithm, NULL, "empty");

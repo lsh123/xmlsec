@@ -16,7 +16,7 @@
 #define XMLSEC_MSCNG_XMLSEC_MINGW_H
 
 #ifndef XMLSEC_PRIVATE
-#error "xmlsec-mingw.h file contains private xmlsec definitions for mingw build and should not be used outside the xmlsec or xmlsec-mscng libraries"
+#error "xmlsec-mingw.h file contains private xmlsec fallback definitions for symbols missing from older MinGW headers and from older Windows SDKs and should not be used outside the xmlsec or xmlsec-mscng libraries"
 #endif /* XMLSEC_PRIVATE */
 
 /* This header provides fallback definitions for symbols missing from older MinGW headers and

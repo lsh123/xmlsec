@@ -215,7 +215,7 @@ xmlSecMSCryptoSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
  *
  * Utils
  *
- * Low level helper routines for importing plain text keys in an HCRYPTKEY handle,
+ * Low level helper routines for importing plain text keys into an HCRYPTKEY handle,
  * since MSCrypto API does not support import of plain text (session) keys
  * just like that. These functions are based upon MS kb article #228786
  * and "Base Provider Key BLOBs" article for priv key blob format.
@@ -531,7 +531,7 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
     /* set magic number at the end */
     keyBlob[keyBlobLen - 2] = 2;
 
-    if(!CryptImportKey(hProv, keyBlob , keyBlobLen, hPrivateKey, CRYPT_EXPORTABLE, hSessionKey)) {
+    if(!CryptImportKey(hProv, keyBlob, keyBlobLen, hPrivateKey, CRYPT_EXPORTABLE, hSessionKey)) {
         xmlSecMSCryptoError2("CryptImportKey", NULL, "algId=%u", algId);
         goto done;
     }

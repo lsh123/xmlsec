@@ -1740,7 +1740,7 @@ xmlSecAppExecute(xmlSecAppCommand command, const char** utf8_argv, int argc) {
         case xmlSecAppCommandEncrypt:
             for(ii = 0; ii < argc; ++ii) {
                 if(xmlSecAppEncryptFile(utf8_argv[ii], gOutputFilename) < 0) {
-                    fprintf(stderr, "Error: failed to encrypt file with template \"%s\"\n", utf8_argv[ii]);
+                    fprintf(stderr, "Error: failed to encrypt using template \"%s\"\n", utf8_argv[ii]);
                     goto done;
                 }
             }
@@ -2534,7 +2534,7 @@ xmlSecAppLoadKeys(void) {
         }
     }
 
-    /* read all crls*/
+    /* read all crls */
     if((verifyCrls == 0) &&
        ((crlPemParam.value != NULL) || (crlDerParam.value != NULL))) {
         fprintf(stderr, "Warning: CRLs are loaded without verification;"
@@ -2922,7 +2922,7 @@ xmlSecAppLoadKeys(void) {
             return(-1);
         } else if(xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(g_keysManager,
                     (const char*)xmlSecNameAESKeyValue, value->strValue, value->paramNameValue) < 0) {
-            fprintf(stderr, "Error: failed to load aes key from \"%s\".\n",
+            fprintf(stderr, "Error: failed to load AES key from \"%s\".\n",
                     value->strValue);
             xmlSecKeyInfoCtxDestroy(keyInfoCtx);
             return(-1);
@@ -3012,7 +3012,7 @@ xmlSecAppLoadKeys(void) {
             return(-1);
         } else if(xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(g_keysManager,
                    (const char*)xmlSecNameHMACKeyValue, value->strValue, value->paramNameValue) < 0) {
-            fprintf(stderr, "Error: failed to load hmac key from \"%s\".\n",
+            fprintf(stderr, "Error: failed to load HMAC key from \"%s\".\n",
                     value->strValue);
             xmlSecKeyInfoCtxDestroy(keyInfoCtx);
             return(-1);
@@ -3302,7 +3302,7 @@ xmlSecAppXmlDataCreate(const char* filename, const xmlChar* defStartNodeName, co
         }
 
         memset(&ctx, 0, sizeof(ctx));
-        /* we don't care is doc actually valid or not */
+        /* we don't care whether the doc is actually valid or not */
         xmlValidateDtd(&ctx, data->doc, data->dtd);
     }
 
@@ -3779,7 +3779,7 @@ xmlSecAppGetOutputFilename(const char* inputFileName, const char* outputFileName
     resSize = strlen(outputFileNameTmpl) + strlen(inputBasename) + 1;
     res = (char*)xmlMalloc(resSize);
     if(res == NULL) {
-        fprintf(stderr, "Error: cannot allocate %d bytes for the output filename\n", (int)resSize);
+        fprintf(stderr, "Error: cannot allocate " XMLSEC_SIZE_FMT " bytes for the output filename\n", resSize);
         goto done;
     }
     memset(res, 0, resSize);

@@ -964,7 +964,7 @@ static int              xmlSecNssKeyDataRsaXmlWrite     (xmlSecKeyDataId id,
                                                          xmlSecKeyInfoCtxPtr keyInfoCtx);
 static int              xmlSecNssKeyDataRsaGenerate     (xmlSecKeyDataPtr data,
                                                          xmlSecSize sizeBits,
-                                                        xmlSecKeyDataType type);
+                                                         xmlSecKeyDataType type);
 
 static xmlSecKeyDataPtr xmlSecNssKeyDataRsaRead         (xmlSecKeyDataId id,
                                                          xmlSecKeyValueRsaPtr rsaValue);

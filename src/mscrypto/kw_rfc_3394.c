@@ -370,7 +370,7 @@ xmlSecMSCryptoKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte *
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(keySize, dwKeySize, goto done, NULL);
 
     /* Import this key and get an HCRYPTKEY handle. We do it again and again
-     * to obtain a fresh session key per call; each call encrypts a single
+     * to obtain a fresh session key per call; each call decrypts a single
      * 16-byte block, so there is no chaining state to reset between calls.
      * We do not want to cache the key */
     if (!xmlSecMSCryptoImportPlainSessionBlob(ctx->cryptProvider,

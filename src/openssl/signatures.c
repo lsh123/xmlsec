@@ -39,10 +39,11 @@
 #include "private.h"
 
 /*
- * The ECDSA signature was added to EVP interface in 3.0.0
- * https://www.openssl.org/docs/manmaster/man7/EVP_SIGNATURE-ECDSA.html
+ * The ECDSA signatures are implemented in this file for OpenSSL 3.0.0 and newer;
+ * on OpenSSL 1.1.x the ECDSA support is disabled here and is provided by
+ * src/openssl/signatures_legacy.c instead.
  *
- * OpenSSL 1.1.x implementation is in src/openssl/signatures_legacy.c
+ * https://www.openssl.org/docs/manmaster/man7/EVP_SIGNATURE-ECDSA.html
  */
 #if defined(XMLSEC_OPENSSL_API_111)
 #define XMLSEC_NO_EC 1
@@ -91,7 +92,7 @@ struct _xmlSecOpenSSLEvpSignatureCtx {
     xmlSecBufferPtr     contextString;
 #endif /* defined(XMLSEC_OPENSSL_API_350) */
 
-    /* signature format and padding (if any)*/
+    /* signature format and padding (if any) */
     xmlSecOpenSSLEvpSignatureFormat signatureFormat;
     int                 rsaPadding;
 };
@@ -1142,7 +1143,7 @@ xmlSecOpenSSLEvpSignatureCreatePkeyCtx(xmlSecTransformPtr transform, xmlSecOpenS
             xmlSecOpenSSLSizeT mdSize;
             int saltlen;
 
-            /*  The default salt length is the length of the hash function.*/
+            /* The default salt length is the length of the hash function. */
             mdSize = EVP_MD_size(ctx->digest);
             if (mdSize <= 0) {
                 xmlSecOpenSSLError("EVP_MD_size", xmlSecTransformGetName(transform));
@@ -1226,7 +1227,7 @@ xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
     case xmlSecOpenSSLEvpSignatureFormat_Dsa:
 #ifndef XMLSEC_NO_DSA
         /* convert XMLDSig data to the format expected by OpenSSL */
-        ret =  xmlSecOpenSSLEvpSignatureDsa_XmlDSig2OpenSSL(transform->id, data, dataSize, &fixedData, &fixedDataLen);
+        ret = xmlSecOpenSSLEvpSignatureDsa_XmlDSig2OpenSSL(transform->id, data, dataSize, &fixedData, &fixedDataLen);
         if((ret < 0) || (fixedData == NULL) || (fixedDataLen <= 0)) {
             xmlSecInternalError("xmlSecOpenSSLEvpSignatureDsa_XmlDSig2OpenSSL", xmlSecTransformGetName(transform));
             goto done;
@@ -1242,7 +1243,7 @@ xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
     case xmlSecOpenSSLEvpSignatureFormat_Ecdsa:
 #ifndef XMLSEC_NO_EC
         /* convert XMLDSig data to the format expected by OpenSSL */
-        ret =  xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(transformCtx, ctx->keySizeBits, data, dataSize, &fixedData, &fixedDataLen);
+        ret = xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(transformCtx, ctx->keySizeBits, data, dataSize, &fixedData, &fixedDataLen);
         if((ret < 0) || (fixedData == NULL) || (fixedDataLen <= 0)) {
             xmlSecInternalError("xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL", xmlSecTransformGetName(transform));
             goto done;
@@ -1364,7 +1365,7 @@ xmlSecOpenSSLEvpSignatureSign(xmlSecTransformPtr transform, xmlSecTransformCtxPt
     case xmlSecOpenSSLEvpSignatureFormat_Dsa:
 #ifndef XMLSEC_NO_DSA
         /* convert OpenSSL data to the format expected by XMLDSig */
-        ret =  xmlSecOpenSSLEvpSignatureDsa_OpenSSL2XmlDSig(transform->id, out);
+        ret = xmlSecOpenSSLEvpSignatureDsa_OpenSSL2XmlDSig(transform->id, out);
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLEvpSignatureDsa_OpenSSL2XmlDSig", xmlSecTransformGetName(transform));
             goto done;
@@ -1378,7 +1379,7 @@ xmlSecOpenSSLEvpSignatureSign(xmlSecTransformPtr transform, xmlSecTransformCtxPt
     case xmlSecOpenSSLEvpSignatureFormat_Ecdsa:
 #ifndef XMLSEC_NO_EC
         /* convert OpenSSL data to the format expected by XMLDSig */
-        ret =  xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig(transformCtx, ctx->keySizeBits, out);
+        ret = xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig(transformCtx, ctx->keySizeBits, out);
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig", xmlSecTransformGetName(transform));
             goto done;
@@ -1788,7 +1789,7 @@ xmlSecOpenSSLTransformRsaPssSha512GetKlass(void) {
 
 
 #ifndef XMLSEC_NO_SHA3
-/* RSA-PSS-SHA3-224 signature transform: xmlSecOpenSSLRsaPssSha3_224Klass*/
+/* RSA-PSS-SHA3-224 signature transform: xmlSecOpenSSLRsaPssSha3_224Klass */
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(RsaPssSha3_224)
 
 

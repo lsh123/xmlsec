@@ -9,7 +9,7 @@ NSS 3.91 or newer and NSPR 4.34.1 or newer are required.
 The custom Keys Store and the X509 Store use the NSS database as the underlying
 store for public/private keys, Certs and CRLs.
 
-The NSS Keys store uses the XMLSEC Simple Keys Store on top of the NSS repository.
+The NSS Keys Store uses the XMLSEC Simple Keys Store on top of the NSS repository.
 The reason for this is that XMLSEC's generic adoptkey/getKey functions use a
 XMLSEC key object that contains more attributes than the raw NSS key object,
 and the getkey function may use a combination of one or more of these attributes
@@ -48,7 +48,7 @@ in src/nss/x509vfy.c needs to be re-implemented using NSS APIs (the write direct
 is now handled by `xmlSecX509SerialNumberWrite` in src/x509_helpers.c). Also see:
     - [NSS bug](https://bugzilla.mozilla.org/show_bug.cgi?id=212864)
 
-2) `CERT_FindCertByNameString` does not work in all cases. Also see:
+2) `CERT_FindCertByName` does not work in all cases. Also see:
     - [NSS bug](https://bugzilla.mozilla.org/show_bug.cgi?id=210709)
 
 3) `CERT_FindCertBySubjectKeyID` does not work in all cases. Also see:
@@ -63,11 +63,11 @@ when the bug is fixed. Also see:
 5) Not all file formats are supported
     - `xmlSecNssAppKeyLoadEx()`: This function loads a PKI key from a file.
         - `xmlSecKeyDataFormatDer`: supported (note that `xmlsec-nss` expects
-        private key in DER file to be in PrivateKeyInfo format and private keys
+        the private key in a DER file to be in PrivateKeyInfo format and private keys
         in the xmlsec test suite aren't in that format);
         - `xmlSecKeyDataFormatPkcs12`: supported;
         - `xmlSecKeyDataFormatPkcs8Pem`: NOT supported
-        - `xmlSecKeyDataFormatPkcs8Der`: NOT supported
+        - `xmlSecKeyDataFormatPkcs8Der`: supported
 
     - `xmlSecNssAppKeyCertLoad()`: This function loads an X509 cert from a file.
         - `xmlSecKeyDataFormatDer`: supported
@@ -81,8 +81,6 @@ application. (Note from Aleksey: Not sure that I understand this point but that'
 what Tej wrote).
 
 7) NSS doesn't support `emailAddress` in the cert subject. There is a hack
-that needs to be removed in `xmlSecNssX509FindCert` function (`nss/x509vfy.c`).
+that needs to be removed in `xmlSecNssGetCertName` function (`nss/x509vfy.c`).
  Also see:
     - [NSS bug](https://bugzilla.mozilla.org/show_bug.cgi?id=561689)
-
-8) Support for CRLs from XML documents is not working at all.

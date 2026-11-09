@@ -126,7 +126,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCryptoAppPkcs12Load           (const c
                                                                          void* pwdCallbackCtx);
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCryptoAppPkcs12LoadMemory     (const xmlSecByte* data,
                                                                          xmlSecSize dataSize,
-                                                                         const char* pwd,
+                                                                         const char *pwd,
                                                                          void* pwdCallback,
                                                                          void* pwdCallbackCtx);
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppKeyCertLoad            (xmlSecKeyPtr key,

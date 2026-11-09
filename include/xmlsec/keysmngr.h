@@ -67,7 +67,7 @@ XMLSEC_EXPORT xmlSecKeyDataStorePtr     xmlSecKeysMngrGetDataStore      (xmlSecK
  * @details Reads the &lt;dsig:KeyInfo/&gt; node @p keyInfoNode and extracts the key.
  * The caller is responsible for destroying the returned key using
  * #xmlSecKeyDestroy method.
- * @param keyInfoNode the pointer to the &lt;dsig:KeyInfo/&gt; node.
+ * @param keyInfoNode the pointer to the &lt;dsig:KeyInfo/&gt; node or NULL.
  * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; node processing context.
  * @return the pointer to a key or NULL if the key is not found or an error occurs.
  */

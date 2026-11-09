@@ -357,8 +357,7 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
          * strict PKCS#7 decoders is intentional for legacy MS CSP interop. */
         padLen = outBuf[blockSize - 1];
         if((padLen == 0) || (inSize < padLen)) {
-            xmlSecInvalidSizeLessThanError("Input data padding",
-                    inSize, padLen, cipherName);
+            xmlSecInvalidDataError("invalid padding length for the cipher", cipherName);
             return(-1);
         }
         outSize += inSize - padLen;

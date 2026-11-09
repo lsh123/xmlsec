@@ -99,7 +99,7 @@ xmlSecTransformConcatKdfParamsReadBitsAttr(xmlSecBufferPtr buf, xmlNodePtr node,
 
     /* only byte aligned bit strings are supported */
     if(data[0] != 0) {
-        xmlSecInvalidDataError("The first bit string byte should be 0 (only byte aligned bit strings are supported)", NULL);
+        xmlSecInvalidDataError("The padding bits count must be 0 (only byte aligned bit strings are supported)", NULL);
         return (-1);
     }
 

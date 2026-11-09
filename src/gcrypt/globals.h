@@ -51,7 +51,9 @@
 #include "../errors_helpers.h"
 
 /**
- * @brief The maximum digest size (in bytes) supported by the GCrypt backend.
+ * @brief The maximum digest buffer size (in bytes) used by the GCrypt backend;
+ * it is a conservative upper bound, as the largest digest libgcrypt can
+ * produce is 64 bytes.
  */
 #define XMLSEC_GCRYPT_MAX_DIGEST_SIZE           256
 

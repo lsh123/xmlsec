@@ -454,7 +454,7 @@ xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSe
                     break;
 
                 default:
-                    xmlSecInternalError3("xmlSecGCryptAsn1ParseTag", NULL,
+                    xmlSecInternalError3("xmlSecGCryptAsn1ParseIntegerSequence", NULL,
                         "Unexpected ASN1 tag=%lu at index=%d", ti.tag, idx);
                     return(-1);
             }

@@ -283,9 +283,9 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-    /* the encoded size is equal to the keys size so we could not
+    /* the encoded size is equal to the key's size so we could not
      * process more than that */
-    if((transform->operation == xmlSecTransformOperationEncrypt) && (inSize >= keySize)) {
+    if((transform->operation == xmlSecTransformOperationEncrypt) && (inSize > keySize)) {
         xmlSecInvalidSizeMoreThanError("Input data", inSize, keySize,
             xmlSecTransformGetName(transform));
         return(-1);
@@ -353,11 +353,12 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
              * which is always hLen bytes long. CAPI's OAEP implementation always
              * uses SHA-1, so hLen = 20.
              *
-             * We simply check that the input size does not exceed the key size
-             * and the exact padding-size enforcement is delegated to MSCrypto.
+             * We perform a coarse pre-check here that rejects inputs larger than
+             * the (key size - 2); the full RFC 8017 plaintext bound is enforced by
+             * MSCrypto itself.
              */
             if(inSize > (keySize - 2)) {
-                xmlSecInvalidSizeMoreThanError("Input data", inSize, keySize,
+                xmlSecInvalidSizeMoreThanError("Input data", inSize, (keySize - 2),
                     xmlSecTransformGetName(transform));
                 return(-1);
             }

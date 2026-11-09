@@ -332,9 +332,9 @@ xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlSecP
         xmlChar** nsListData;
         xmlSecSize nsListSize;
 
-        /* LibXML2 expects the list of inclusive namespace prefixes ended with a NULL.
+        /* LibXML2 expects the list of inclusive namespace prefixes terminated with a NULL.
          * We already add the NULL at the end in xmlSecTransformC14NNodeRead() but
-         * let's double check just in case */
+         * let's double-check just in case */
         nsListSize = xmlSecPtrListGetSize(nsList);
         if((nsListSize == 0) || (xmlSecPtrListGetItem(nsList, nsListSize - 1) != NULL)) {
             ret = xmlSecPtrListAdd(nsList, NULL);
@@ -354,9 +354,9 @@ xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlSecP
         xmlChar** nsListData;
         xmlSecSize nsListSize;
 
-        /* LibXML2 expects the list of inclusive namespace prefixes ended with a NULL.
+        /* LibXML2 expects the list of inclusive namespace prefixes terminated with a NULL.
          * We already add the NULL at the end in xmlSecTransformC14NNodeRead() but
-         * let's double check just in case */
+         * let's double-check just in case */
         nsListSize = xmlSecPtrListGetSize(nsList);
         if((nsListSize == 0) || (xmlSecPtrListGetItem(nsList, nsListSize - 1) != NULL)) {
             ret = xmlSecPtrListAdd(nsList, NULL);

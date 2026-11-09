@@ -416,7 +416,7 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
     ctx->cbIV = ctx->dwBlockLen;
     memset(ctx->pbIV, 0, blockSize);
 
-    /* Set up an empty MAC context; the chaining flag is set unconditionally */
+    /* Query the authentication tag length limits supported by the provider */
     status = BCryptGetProperty(ctx->hAlg,
         BCRYPT_AUTH_TAG_LENGTH,
         (PUCHAR)&authTagLengths,
@@ -430,7 +430,7 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
     xmlSecAssert2(bytesRead == sizeof(authTagLengths), -1);
 
     /* The BCRYPT_AUTH_TAG_LENGTHS_STRUCT fields are documented in bits
-     * (https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/ns-bcrypt-bcrypt_key_lengths_struct),
+     * (https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/ns-bcrypt-bcrypt_auth_tag_lengths_struct),
      * but the CNG AES-GCM provider reports them in bytes (verified empirically:
      * min=12, max=16, inc=1). A GCM tag is at most 16 bytes, so dwMaxLength > 16 can
      * only be a bits-unit report; normalize it to bytes so the checks below
@@ -463,6 +463,7 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
         return(-1);
     }
 
+    /* Set up an empty MAC context; the chaining flag is set unconditionally */
     if (ctx->authInfo.pbMacContext == NULL) {
         ctx->authInfo.pbMacContext = xmlMalloc(authTagLengths.dwMaxLength);
         if (ctx->authInfo.pbMacContext == NULL) {

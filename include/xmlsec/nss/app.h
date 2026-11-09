@@ -84,10 +84,10 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppKeysMngrCrlLoadAndVerify (xm
  *
  * Keys
  *
- * The following key loading functions accept a password (pwd) and a
- * password callback (pwdCallback). The password callback is used only
- * when pwd is NULL; an explicit password (even an empty one) wins. The
- * callback is expected to have the signature
+ * The following key loading functions that accept a password (pwd) and a
+ * password callback (pwdCallback) use the callback only when pwd is NULL;
+ * an explicit password (even an empty one) wins. The callback is expected
+ * to have the signature
  * int (*callback)(char* buf, int bufSize, int verify, void* userdata)
  * (the same as OpenSSL's pem_password_cb); it is called with verify set
  * to 0, must write the password to buf (up to bufSize - 1 characters),

@@ -449,113 +449,74 @@ xmlSecMSCngX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, PCCRL_CONTEXT crl) {
     return(0);
 }
 
-/* Returns 1 if the CRL signature verifies against an issuer certificate that
- * chains to a trusted root (time validity is checked when @p time is not
- * NULL), 0 if it does not, or a negative value if an error occurs. The issuer
- * chain validation skips revocation to avoid recursively consulting the CRL
- * being verified. */
+/* Searches the given stores for a certificate whose subject name matches the
+ * CRL issuer, verifies the CRL signature against it, and checks that the
+ * issuer certificate itself chains to a trusted root (time validity is
+ * checked when @p time is not NULL). The issuer chain validation skips
+ * revocation to avoid recursively consulting the CRL being verified.
+ * Returns 1 if a verifying issuer certificate is found, 0 if none does, or a
+ * negative value if an error occurs. */
 static int
-xmlSecMSCngX509StoreVerifyCrlSignature(
+xmlSecMSCngX509StoreVerifyCrlIssuerInStores(
+    const HCERTSTORE* searchStores,
+    int numSearchStores,
     HCERTSTORE trustedStore,
     HCERTSTORE untrustedStore,
     HCERTSTORE certStore,
     PCCRL_CONTEXT crl,
     FILETIME* time
 ) {
-    PCCERT_CONTEXT issuerCert = NULL;
-    HCERTSTORE stores[2];
-    int numStores = 0;
     int ii;
-    BOOL verified = FALSE;
 
+    xmlSecAssert2(searchStores != NULL, -1);
+    xmlSecAssert2(numSearchStores > 0, -1);
     xmlSecAssert2(trustedStore != NULL, -1);
+    xmlSecAssert2(untrustedStore != NULL, -1);
+    xmlSecAssert2(certStore != NULL, -1);
     xmlSecAssert2(crl != NULL, -1);
     xmlSecAssert2(crl->pCrlInfo != NULL, -1);
 
-    /* find the issuer certificate in the trusted store and verify the CRL signature */
-    issuerCert = CertFindCertificateInStore(trustedStore,
-        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-        0,
-        CERT_FIND_SUBJECT_NAME,
-        &(crl->pCrlInfo->Issuer),
-        NULL);
-    while (issuerCert != NULL) {
-        verified = CryptVerifyCertificateSignatureEx(
-            (HCRYPTPROV_LEGACY)NULL,
-            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-            CRYPT_VERIFY_CERT_SIGN_SUBJECT_CRL, (void*)crl,
-            CRYPT_VERIFY_CERT_SIGN_ISSUER_CERT, (void*)issuerCert,
-            0, NULL);
-        if (verified == TRUE) {
-            int ret;
+    for(ii = 0; ii < numSearchStores; ++ii) {
+        PCCERT_CONTEXT issuerCert = NULL;
+        BOOL verified;
 
-            /* verify that the issuer cert itself is valid (time) and chains
-             * to a trusted root, matching the untrusted-store path below and
-             * xmlSecMSCngX509StoreVerifyCrl(); do not check for revocation
-             * while verifying the CRL to avoid circular dependency */
-            ret = xmlSecMSCngX509StoreVerifyCertificateChain(
-                issuerCert, time, trustedStore, untrustedStore, certStore,
-                NULL, 0);
-            if (ret < 0) {
-                xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateChain", NULL);
-                CertFreeCertificateContext(issuerCert);
-                return(-1);
-            }
-            if (ret == 1) {
-                CertFreeCertificateContext(issuerCert);
-                return(1);
-            }
-            /* issuer cert failed chain verification; the next
-             * CertFindCertificateInStore call below frees issuerCert */
-        }
-        /* try next matching cert; CertFindCertificateInStore frees issuerCert
-         * (see https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certfindcertificateinstore) */
-        issuerCert = CertFindCertificateInStore(trustedStore,
-            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-            0,
-            CERT_FIND_SUBJECT_NAME,
-            &(crl->pCrlInfo->Issuer),
-            issuerCert);
-    }
-
-    if ((certStore != NULL) && (certStore != trustedStore)) {
-        stores[numStores++] = certStore;
-    }
-    if ((untrustedStore != NULL) && (untrustedStore != trustedStore) && (untrustedStore != certStore)) {
-        stores[numStores++] = untrustedStore;
-    }
-
-    for (ii = 0; ii < numStores; ++ii) {
-        issuerCert = CertFindCertificateInStore(stores[ii],
+        issuerCert = CertFindCertificateInStore(searchStores[ii],
             X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
             0,
             CERT_FIND_SUBJECT_NAME,
             &(crl->pCrlInfo->Issuer),
             NULL);
-        while (issuerCert != NULL) {
+        while(issuerCert != NULL) {
             verified = CryptVerifyCertificateSignatureEx(
                 (HCRYPTPROV_LEGACY)NULL,
                 X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
                 CRYPT_VERIFY_CERT_SIGN_SUBJECT_CRL, (void*)crl,
                 CRYPT_VERIFY_CERT_SIGN_ISSUER_CERT, (void*)issuerCert,
                 0, NULL);
-            if (verified == TRUE) {
+            if(verified == TRUE) {
                 int ret;
 
+                /* verify that the issuer cert itself is valid (time) and chains
+                 * to a trusted root; do not check for revocation while verifying
+                 * the CRL to avoid circular dependency */
                 ret = xmlSecMSCngX509StoreVerifyCertificateChain(
                     issuerCert, time, trustedStore, untrustedStore, certStore,
-                    NULL, 0); /* do not check for revocation while verifying the CRL to avoid circular dependency */
-                if (ret < 0) {
+                    NULL, 0);
+                if(ret < 0) {
                     xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateChain", NULL);
                     CertFreeCertificateContext(issuerCert);
                     return(-1);
                 }
-                if (ret == 1) {
+                if(ret == 1) {
                     CertFreeCertificateContext(issuerCert);
                     return(1);
                 }
+                /* issuer cert failed chain verification; the next
+                 * CertFindCertificateInStore call below frees issuerCert */
             }
-            issuerCert = CertFindCertificateInStore(stores[ii],
+            /* try next matching cert; CertFindCertificateInStore frees issuerCert
+             * (see https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certfindcertificateinstore) */
+            issuerCert = CertFindCertificateInStore(searchStores[ii],
                 X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
                 0,
                 CERT_FIND_SUBJECT_NAME,
@@ -564,9 +525,50 @@ xmlSecMSCngX509StoreVerifyCrlSignature(
         }
     }
 
+    return(0);
+}
+
+/* Returns 1 if the CRL signature verifies against an issuer certificate that
+ * chains to a trusted root (time validity is checked when @p time is not
+ * NULL), 0 if it does not, or a negative value if an error occurs. */
+static int
+xmlSecMSCngX509StoreVerifyCrlSignature(
+    HCERTSTORE trustedStore,
+    HCERTSTORE untrustedStore,
+    HCERTSTORE certStore,
+    PCCRL_CONTEXT crl,
+    FILETIME* time
+) {
+    HCERTSTORE stores[3];
+    int numStores = 0;
+    int ret;
+
+    xmlSecAssert2(trustedStore != NULL, -1);
+    xmlSecAssert2(untrustedStore != NULL, -1);
+    xmlSecAssert2(certStore != NULL, -1);
+    xmlSecAssert2(crl != NULL, -1);
+    xmlSecAssert2(crl->pCrlInfo != NULL, -1);
+
+    /* the trusted store is always searched; certStore and untrustedStore are
+     * added when they differ from the stores already listed */
+    stores[numStores++] = trustedStore;
+    if((certStore != NULL) && (certStore != trustedStore)) {
+        stores[numStores++] = certStore;
+    }
+    if((untrustedStore != NULL) && (untrustedStore != trustedStore) && (untrustedStore != certStore)) {
+        stores[numStores++] = untrustedStore;
+    }
+
+    ret = xmlSecMSCngX509StoreVerifyCrlIssuerInStores(stores, numStores,
+        trustedStore, untrustedStore, certStore, crl, time);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngX509StoreVerifyCrlIssuerInStores", NULL);
+        return(-1);
+    }
+
     /* CRL issuer certificate not found or signature does not verify, or the
      * issuer certificate does not chain to a trusted root. */
-    return(0);
+    return(ret);
 }
 
 /**
@@ -596,6 +598,10 @@ xmlSecMSCngCheckRevocation(
 
     xmlSecAssert2(store != NULL, -1);
     xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(cert->pCertInfo != NULL, -1);
+    xmlSecAssert2(trustedStore != NULL, -1);
+    xmlSecAssert2(untrustedStore != NULL, -1);
+    xmlSecAssert2(certStore != NULL, -1);
 
     /* CertEnumCRLsInStore automatically frees the previous CRL context (see
      * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certenumcrlsinstore) */
@@ -620,6 +626,14 @@ xmlSecMSCngCheckRevocation(
             return(-1);
         } else if(isCrlTimeValid == 0) {
             /* CRL is not valid at the given time, skip it */
+            continue;
+        }
+
+        /* a CRL can only list certificates issued by its own issuer; a CRL
+         * issued by a different CA must not affect this certificate */
+        if(!CertCompareCertificateName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                &(crlCtx->pCrlInfo->Issuer),
+                &(cert->pCertInfo->Issuer))) {
             continue;
         }
 
@@ -1415,9 +1429,10 @@ xmlSecMSCngX509StoreVerifyCrl(xmlSecKeyDataStorePtr store, PCCRL_CONTEXT crl,
 ) {
     xmlSecMSCngX509StoreCtxPtr ctx;
     PCCERT_CONTEXT issuerCert = NULL;
+    HCERTSTORE stores[2];
+    int numStores = 0;
     FILETIME timeContainer;
     FILETIME* time;
-    BOOL verified = FALSE;
     BOOL issuerFound = FALSE;
     int ret;
 
@@ -1441,96 +1456,39 @@ xmlSecMSCngX509StoreVerifyCrl(xmlSecKeyDataStorePtr store, PCCRL_CONTEXT crl,
         xmlSecAssert2((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS) != 0, -1);
     }
 
-    /* find the issuer certificate in the trusted store and verify the CRL signature */
-    issuerCert = CertFindCertificateInStore(ctx->trusted,
-        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-        0,
-        CERT_FIND_SUBJECT_NAME,
-        &(crl->pCrlInfo->Issuer),
-        NULL);
-    while (issuerCert != NULL) {
-        issuerFound = TRUE;
-        verified = CryptVerifyCertificateSignatureEx(
-            (HCRYPTPROV_LEGACY)NULL,
-            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-            CRYPT_VERIFY_CERT_SIGN_SUBJECT_CRL, (void*)crl,
-            CRYPT_VERIFY_CERT_SIGN_ISSUER_CERT, (void*)issuerCert,
-            0, NULL);
-        if (verified == TRUE) {
-            /* verify that the issuer cert itself is valid (time) and chains
-             * to a trusted root, matching the untrusted-store path below; do
-             * not check for revocation while verifying the issuer cert to
-             * avoid circular dependency */
-            ret = xmlSecMSCngX509StoreVerifyCertificateChain(issuerCert,
-                time, ctx->trusted, ctx->untrusted, ctx->untrusted, NULL, 0);
-            if (ret < 0) {
-                xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateChain", NULL);
-                CertFreeCertificateContext(issuerCert);
-                return(-1);
-            }
-            if (ret == 1) {
-                verified = TRUE;
-                CertFreeCertificateContext(issuerCert);
-                issuerCert = NULL;
-                break;
-            }
-            /* issuer cert failed chain verification; try the next matching
-             * cert (the next CertFindCertificateInStore call frees issuerCert) */
-            verified = FALSE;
-        }
-        /* try next matching cert; CertFindCertificateInStore frees issuerCert
-         * (see https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certfindcertificateinstore) */
+    /* find the issuer certificate in the trusted store first, then in the
+     * untrusted store (e.g. intermediate CAs), and verify the CRL signature */
+    stores[numStores++] = ctx->trusted;
+    if(ctx->untrusted != ctx->trusted) {
+        stores[numStores++] = ctx->untrusted;
+    }
+    ret = xmlSecMSCngX509StoreVerifyCrlIssuerInStores(stores, numStores,
+        ctx->trusted, ctx->untrusted, ctx->untrusted, crl, time);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngX509StoreVerifyCrlIssuerInStores", NULL);
+        return(-1);
+    }
+    if(ret != 1) {
+        /* check whether an issuer cert exists at all to produce a meaningful
+         * error message: a failed signature check vs a missing issuer cert */
         issuerCert = CertFindCertificateInStore(ctx->trusted,
             X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
             0,
             CERT_FIND_SUBJECT_NAME,
             &(crl->pCrlInfo->Issuer),
-            issuerCert);
-    }
-
-    /* if not verified via trusted store, also search untrusted store (e.g. intermediate CAs) */
-    if (verified == FALSE) {
-        issuerCert = CertFindCertificateInStore(ctx->untrusted,
-            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-            0,
-            CERT_FIND_SUBJECT_NAME,
-            &(crl->pCrlInfo->Issuer),
             NULL);
-        while (issuerCert != NULL) {
-            issuerFound = TRUE;
-            if (CryptVerifyCertificateSignatureEx(
-                    (HCRYPTPROV_LEGACY)NULL,
-                    X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-                    CRYPT_VERIFY_CERT_SIGN_SUBJECT_CRL, (void*)crl,
-                    CRYPT_VERIFY_CERT_SIGN_ISSUER_CERT, (void*)issuerCert,
-                    0, NULL) == TRUE) {
-                /* verify that the issuer cert itself chains to a trusted root */
-                ret = xmlSecMSCngX509StoreVerifyCertificateChain(issuerCert,
-                    time, ctx->trusted, ctx->untrusted, ctx->untrusted, NULL, 0); /* do not check for revocation while verifying the issuer cert to avoid circular dependency */
-                if (ret < 0) {
-                    xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateChain", NULL);
-                    CertFreeCertificateContext(issuerCert);
-                    return(-1);
-                }
-                if (ret == 1) {
-                    verified = TRUE;
-                    CertFreeCertificateContext(issuerCert);
-                    issuerCert = NULL;
-                    break;
-                }
-            }
-            /* try next matching cert; CertFindCertificateInStore frees issuerCert
-             * (see https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certfindcertificateinstore) */
+        if(issuerCert == NULL) {
             issuerCert = CertFindCertificateInStore(ctx->untrusted,
                 X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
                 0,
                 CERT_FIND_SUBJECT_NAME,
                 &(crl->pCrlInfo->Issuer),
-                issuerCert);
+                NULL);
         }
-    }
-
-    if (verified == FALSE) {
+        if(issuerCert != NULL) {
+            issuerFound = TRUE;
+            CertFreeCertificateContext(issuerCert);
+        }
         if (issuerFound) {
             xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
                 xmlSecKeyDataStoreGetName(store),
@@ -1605,8 +1563,10 @@ xmlSecMSCngX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs, xmlSec
                 CERT_FIND_ISSUER_NAME,
                 &(cert->pCertInfo->Subject),
                 foundCert);
-            /* don't skip self-signed certificates */
-            if((foundCert != NULL) &&
+            /* don't skip self-signed certificates; also skip malformed store
+             * contexts without a CERT_INFO so the name comparison below cannot
+             * dereference a NULL pCertInfo */
+            if((foundCert != NULL) && (foundCert->pCertInfo != NULL) &&
                     !CertCompareCertificateName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
                                                 &(foundCert->pCertInfo->Subject),
                                                 &(foundCert->pCertInfo->Issuer))) {

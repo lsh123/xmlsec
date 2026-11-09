@@ -218,9 +218,13 @@ xmlSecMSCngDhValidatePrivateExponent(const xmlSecByte* x, DWORD xLen,
 }
 
 /* Validate the DH public value Y against the prime P: reject Y < 2 or Y > P - 2.
+ * The values are big-endian, as in the DER encoding and the CNG key blob layout.
  * Mirrors the check performed on the SPKI import path in certkeys.c. */
 static int
-xmlSecMSCngDhValidatePublicValue(xmlSecBufferPtr p, xmlSecBufferPtr publicValue) {
+xmlSecMSCngDhValidatePublicValue(
+    const xmlSecByte* p, xmlSecSize pLen,
+    const xmlSecByte* publicValue, xmlSecSize publicValueLen
+) {
     static const xmlSecByte two[] = { 0x02 };
     xmlSecBn pMinusTwo;
     int bnInitialized = 0;
@@ -228,26 +232,24 @@ xmlSecMSCngDhValidatePublicValue(xmlSecBufferPtr p, xmlSecBufferPtr publicValue)
     int ret;
 
     xmlSecAssert2(p != NULL, -1);
+    xmlSecAssert2(pLen > 0, -1);
     xmlSecAssert2(publicValue != NULL, -1);
-    xmlSecAssert2(xmlSecBufferGetSize(p) > 0, -1);
-    xmlSecAssert2(xmlSecBufferGetSize(publicValue) > 0, -1);
+    xmlSecAssert2(publicValueLen > 0, -1);
 
-    cmp = xmlSecMSCngDhCompareBigNums(
-        xmlSecBufferGetData(publicValue), xmlSecBufferGetSize(publicValue),
-        two, sizeof(two));
+    cmp = xmlSecMSCngDhCompareBigNums(publicValue, publicValueLen, two, sizeof(two));
     if(cmp < 0) {
         xmlSecInvalidDataError("DH public key is smaller than 2", NULL);
         return(-1);
     }
 
-    ret = xmlSecBnInitialize(&pMinusTwo, xmlSecBufferGetSize(p));
+    ret = xmlSecBnInitialize(&pMinusTwo, pLen);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBnInitialize", NULL);
         return(-1);
     }
     bnInitialized = 1;
 
-    ret = xmlSecBnSetData(&pMinusTwo, xmlSecBufferGetData(p), xmlSecBufferGetSize(p));
+    ret = xmlSecBnSetData(&pMinusTwo, p, pLen);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBnSetData", NULL);
         goto done;
@@ -259,8 +261,7 @@ xmlSecMSCngDhValidatePublicValue(xmlSecBufferPtr p, xmlSecBufferPtr publicValue)
         goto done;
     }
 
-    cmp = xmlSecBnCompare(&pMinusTwo,
-        xmlSecBufferGetData(publicValue), xmlSecBufferGetSize(publicValue));
+    cmp = xmlSecBnCompare(&pMinusTwo, publicValue, publicValueLen);
     if(cmp < 0) {
         xmlSecInvalidDataError("DH public key is greater than p - 2", NULL);
         ret = -1;
@@ -500,8 +501,23 @@ xmlSecMSCngKeyDataDhRead(xmlSecKeyDataId id, xmlSecKeyValueDhPtr dhValue) {
     offset += pSize;
 
     /* validate the public value before import: 2 <= Y <= P - 2 (same check
-     * as the SPKI import path in certkeys.c) */
-    ret = xmlSecMSCngDhValidatePublicValue(&(dhValue->p), &(dhValue->pub));
+     * as the SPKI import path in certkeys.c).
+     *
+     * Note: the DH parameters themselves (P, G and the optional Q) are not
+     * cryptographically validated on import (e.g. G^Q mod P == 1, G != 1).
+     * This matches the OpenSSL backend, which also does not validate DH
+     * parameters on import and only checks the peer's public value
+     * (DH_check_pub_key) at agreement time. A remote peer cannot exploit the
+     * missing checks, because xmlSecMSCngKeyDataDhEnsureValidAgreement()
+     * requires the peer's P/G/Q to be identical to the own (trusted) key's
+     * and validates both public values' range and subgroup membership before
+     * any derivation. The residual risk only applies if the application
+     * imports its own DH key material from an attacker-influenced source
+     * with a small-subgroup generator. */
+    ret = xmlSecMSCngDhValidatePublicValue(
+        xmlSecBufferGetData(&(dhValue->p)), pSize,
+        xmlSecBufferGetData(&(dhValue->pub)), publicSize
+    );
     if(ret < 0) {
         goto done;
     }
@@ -884,10 +900,18 @@ xmlSecMSCngDhDerivePubKeyY(BCRYPT_ALG_HANDLE hAlg, BCRYPT_KEY_HANDLE hPrivKey, P
 
 done:
     if(hSelfSecret != NULL) {
-        BCryptDestroySecret(hSelfSecret);
+        status = BCryptDestroySecret(hSelfSecret);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptDestroySecret(hSelfSecret)", NULL, status);
+            /* ignore error */
+        }
     }
     if(hGPubKey != NULL) {
-        BCryptDestroyKey(hGPubKey);
+        status = BCryptDestroyKey(hGPubKey);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptDestroyKey(hGPubKey)", NULL, status);
+            /* ignore error */
+        }
     }
     if(pbGPubBlob != NULL) {
         xmlFree(pbGPubBlob);
@@ -982,6 +1006,7 @@ xmlSecMSCngKeyDataDhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLen
     BCRYPT_KEY_HANDLE hPrivKey = NULL;
     BCRYPT_KEY_HANDLE hPubKey = NULL;
     BCRYPT_ALG_HANDLE hAlg = NULL;
+    DWORD cbKey;
     NTSTATUS status;
     int ret;
 
@@ -1012,7 +1037,10 @@ xmlSecMSCngKeyDataDhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLen
         goto done;
     }
 
-    /* Parse P and G from AlgorithmIdentifier.Parameters */
+    /* Parse P and G from AlgorithmIdentifier.Parameters. Like the XML import
+     * path, the parsed DH parameters (P, G and the optional Q) are not
+     * cryptographically validated (e.g. G^Q mod P == 1, G != 1); see the note
+     * in xmlSecMSCngKeyDataDhRead(). */
     ret = xmlSecMSCngDhParseDhParameters(
         pki->Algorithm.Parameters.pbData, pki->Algorithm.Parameters.cbData,
         &pP, &pPLen,
@@ -1072,6 +1100,17 @@ xmlSecMSCngKeyDataDhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLen
 
     /* Derive the real Y = G^X mod P and write it into the blob's Y field */
     ret = xmlSecMSCngDhDerivePubKeyY(hAlg, hPrivKey, pbPrivBlob);
+    if(ret < 0) {
+        goto done;
+    }
+
+    /* Validate the derived public value (2 <= Y <= P - 2), the same check the
+     * SPKI import path applies to an explicitly provided Y. The derived Y is
+     * stored right-justified in slot 2 of the private blob. */
+    cbKey = ((BCRYPT_DH_KEY_BLOB*)pbPrivBlob)->cbKey;
+    ret = xmlSecMSCngDhValidatePublicValue(
+        (const xmlSecByte*)(pbPrivBlob + sizeof(BCRYPT_DH_KEY_BLOB)), (xmlSecSize)cbKey,
+        (const xmlSecByte*)(pbPrivBlob + sizeof(BCRYPT_DH_KEY_BLOB) + ((size_t)cbKey * 2)), (xmlSecSize)cbKey);
     if(ret < 0) {
         goto done;
     }

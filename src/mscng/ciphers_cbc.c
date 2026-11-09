@@ -822,9 +822,6 @@ xmlSecMSCngCbcBlockCipherExecute(xmlSecTransformPtr transform, int last,
     } else if(transform->status == xmlSecTransformStatusFinished) {
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(in) == 0, -1);
-    } else if(transform->status == xmlSecTransformStatusNone) {
-        /* the only way we can get here is if there is not enough data in the input */
-        xmlSecAssert2(last == 0, -1);
     } else {
         xmlSecInvalidTransformStatusError(transform);
         return(-1);

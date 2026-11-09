@@ -255,7 +255,7 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
             goto done;
         }
 
-        if (keyReq->keyType & xmlSecKeyDataTypePublic) {
+        if ((keyReq->keyType & xmlSecKeyDataTypePublic) != 0) {
             pubkey = CERT_ExtractPublicKey(cert);
             if (pubkey == NULL) {
                 xmlSecNssError("CERT_ExtractPublicKey", xmlSecKeyStoreGetName(store));
@@ -263,15 +263,13 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
             }
         }
 
-        if (keyReq->keyType & xmlSecKeyDataTypePrivate) {
+        if ((keyReq->keyType & xmlSecKeyDataTypePrivate) != 0) {
             privkey = PK11_FindKeyByAnyCert(cert, NULL);
-            if (privkey == NULL) {
+            if ((privkey == NULL) && (pubkey == NULL)) {
                 /* no private key found; if a public key was requested and
                  * extracted, fall back to a public-only key instead of failing */
-                if(((keyReq->keyType & xmlSecKeyDataTypePublic) == 0) || (pubkey == NULL)) {
-                    xmlSecNssError("PK11_FindKeyByAnyCert", xmlSecKeyStoreGetName(store));
-                    goto done;
-                }
+                xmlSecNssError("PK11_FindKeyByAnyCert", xmlSecKeyStoreGetName(store));
+                goto done;
             }
         }
 

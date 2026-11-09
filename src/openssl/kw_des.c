@@ -291,6 +291,7 @@ xmlSecOpenSSLKWDes3Sha1(xmlSecTransformPtr transform XMLSEC_ATTRIBUTE_UNUSED,
     xmlSecAssert2(outSize >= SHA_DIGEST_LENGTH, -1);
     xmlSecAssert2(outWritten != NULL, -1);
 
+    /* set outWritten to the maximum available size for EVP_Q_digest */
     (*outWritten) = outSize;
     ret = EVP_Q_digest(xmlSecOpenSSLGetLibCtx(), OSSL_DIGEST_NAME_SHA1, NULL, in, inSize, out, outWritten);
     if(ret != 1) {

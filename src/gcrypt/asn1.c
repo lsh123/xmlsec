@@ -547,7 +547,9 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
     xmlSecGCryptAsn1ObjectId objectids[20];
     xmlSecSize objectids_num = 0;
     unsigned int idx;
+#ifndef XMLSEC_NO_EC
     const char* ecCurve = NULL;
+#endif /* XMLSEC_NO_EC */
     int ret;
 
     xmlSecAssert2(der != NULL, NULL);

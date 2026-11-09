@@ -448,7 +448,12 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
     tmp_buf_initialized = 1;
 
     tmpBuf = xmlSecBufferGetData(&tmp);
-    xmlSecAssert2(tmpBuf != NULL, -1);
+    if(tmpBuf == NULL) {
+        /* Defensive check: tmp was just initialized with a non-zero size, so
+         * the data pointer should not be NULL here. */
+        xmlSecInternalError("xmlSecBufferGetData", xmlSecTransformGetName(transform));
+        goto done;
+    }
 
     /* Reverse the sig - Windows stores integers as octet streams in little endian
      * order.  The I2OSP algorithm used by XMLDSig to store integers is big endian */
@@ -719,7 +724,13 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
                 return(-1);
             }
             tmpBuf = xmlSecBufferGetData(&tmp);
-            xmlSecAssert2(tmpBuf != NULL, -1);
+            if(tmpBuf == NULL) {
+                /* Defensive check: tmp was just initialized with a non-zero size, so
+                 * the data pointer should not be NULL here. */
+                xmlSecInternalError("xmlSecBufferGetData", xmlSecTransformGetName(transform));
+                xmlSecBufferFinalize(&tmp);
+                return(-1);
+            }
 
             if (!CryptSignHash(ctx->mscHash, dwKeySpec, NULL, 0, tmpBuf, &dwSigLen)) {
                 xmlSecMSCryptoError("CryptSignHash",
@@ -744,7 +755,13 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
                 return(-1);
             }
             outBuf = xmlSecBufferGetData(out);
-            xmlSecAssert2(outBuf != NULL, -1);
+            if(outBuf == NULL) {
+                /* Defensive check: out was just resized to a non-zero size, so
+                 * the data pointer should not be NULL here. */
+                xmlSecInternalError("xmlSecBufferGetData", xmlSecTransformGetName(transform));
+                xmlSecBufferFinalize(&tmp);
+                return(-1);
+            }
 
             /* Reverse the sig - Windows stores integers as octet streams in little endian
              * order.  The I2OSP algorithm used by XMLDSig to store integers is big endian */

@@ -245,6 +245,7 @@ load_trusted_certs(char** files, int files_size) {
 int
 verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
     xmlDocPtr doc = NULL;
+    xmlNodePtr rootNode = NULL;
     xmlNodePtr node = NULL;
     xmlSecDSigCtxPtr dsigCtx = NULL;
     int res = -1;
@@ -259,21 +260,28 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
 #else /* LIBXML_VERSION >= 21300 */
     doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT);
 #endif /* LIBXML_VERSION >= 21300 */
-    if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
+    if (doc == NULL) {
         fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
+        goto done;
+    }
+
+    /* check that the root node is a SAML Response */
+    rootNode = xmlDocGetRootElement(doc);
+    if(rootNode == NULL) {
+        fprintf(stderr, "Error: unable to get root element from file \"%s\"\n", xml_file);
+        goto done;
+    }
+    if(xmlSecCheckNodeName(rootNode, BAD_CAST "Response", BAD_CAST "urn:oasis:names:tc:SAML:1.0:protocol") != 1) {
+        fprintf(stderr, "Error: the root element is not a SAML Response\n");
         goto done;
     }
 
     /* find start node; per the SAML specification the signature must be a
      * direct child of the signed element, so the <dsig:Signature/> node
      * must be a direct child of the SAML Response (the document root) */
-    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
+    node = xmlSecFindChild(rootNode, xmlSecNodeSignature, xmlSecDSigNs);
     if(node == NULL) {
         fprintf(stderr, "Error: start node not found in \"%s\"\n", xml_file);
-        goto done;
-    }
-    if(node->parent != (xmlNodePtr)xmlDocGetRootElement(doc)) {
-        fprintf(stderr, "Error: the signature node is not a direct child of the SAML response\n");
         goto done;
     }
 

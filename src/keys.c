@@ -980,7 +980,7 @@ xmlSecKeyDebugDump(xmlSecKeyPtr key, FILE *output) {
     }
 
     if(key->name != NULL) {
-        fprintf(output, "=== key name: %s\n", key->name);
+        fprintf(output, "=== key name: %s\n", (const char*)key->name);
     }
     fprintf(output, "=== key usage: %u\n", key->usage);
     if(key->notValidBefore < key->notValidAfter) {

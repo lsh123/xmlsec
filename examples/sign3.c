@@ -33,6 +33,7 @@
  *      ./verify3 sign3-res.xml ca2cert.pem cacert.pem
  * \endcode
  */
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
@@ -83,11 +84,26 @@ main(int argc, char **argv) {
         fprintf(stderr, "Error: failed to create the xslt security prefs\n");
         goto done;
     }
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_NETWORK,     xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_NETWORK,    xsltSecurityForbid);
+    if(xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid) < 0) {
+        fprintf(stderr, "Error: failed to set XSLT security pref READ_FILE\n");
+        goto done;
+    }
+    if(xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid) < 0) {
+        fprintf(stderr, "Error: failed to set XSLT security pref WRITE_FILE\n");
+        goto done;
+    }
+    if(xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid) < 0) {
+        fprintf(stderr, "Error: failed to set XSLT security pref CREATE_DIRECTORY\n");
+        goto done;
+    }
+    if(xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_NETWORK,     xsltSecurityForbid) < 0) {
+        fprintf(stderr, "Error: failed to set XSLT security pref READ_NETWORK\n");
+        goto done;
+    }
+    if(xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_NETWORK,    xsltSecurityForbid) < 0) {
+        fprintf(stderr, "Error: failed to set XSLT security pref WRITE_NETWORK\n");
+        goto done;
+    }
     xsltSetDefaultSecurityPrefs(xsltSecPrefs);
 #endif /* XMLSEC_NO_XSLT */
 

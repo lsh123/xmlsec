@@ -1065,13 +1065,24 @@ xmlSecEncCtxDebugDump(xmlSecEncCtxPtr encCtx, FILE* output) {
         xmlSecKeyDebugDump(encCtx->encKey, output);
     }
 
-    if((encCtx->result != NULL) &&
-       (xmlSecBufferGetData(encCtx->result) != NULL) &&
-       (encCtx->resultBase64Encoded != 0)) {
+    if(encCtx->result != NULL) {
+        const xmlSecByte * result = xmlSecBufferGetData(encCtx->result);
+        xmlSecSize size = xmlSecBufferGetSize(encCtx->result);
 
-        fprintf(output, "== Result - start buffer:\n");
-        xmlSecBufferDebugHexDump(encCtx->result, output);
-        fprintf(output, "\n== Result - end buffer\n");
+        if((result == NULL) || (size == 0)) {
+            fprintf(output, "== Result - start buffer (empty):\n");
+            fprintf(output, "\n== Result - end buffer\n");
+        } else if(encCtx->resultBase64Encoded != 0) {
+            int sizeInt = (size > INT_MAX) ? INT_MAX : (int)size;
+
+            fprintf(output, "== Result - start buffer (base64):\n");
+            fprintf(output, "%.*s\n", sizeInt, result);
+            fprintf(output, "\n== Result - end buffer\n");
+        } else {
+            fprintf(output, "== Result - start buffer (hex):\n");
+            xmlSecBufferDebugHexDump(encCtx->result, output);
+            fprintf(output, "\n== Result - end buffer\n");
+        }
     }
 }
 
@@ -1157,13 +1168,25 @@ xmlSecEncCtxDebugXmlDump(xmlSecEncCtxPtr encCtx, FILE* output) {
         fprintf(output, "</EncryptionKey>\n");
     }
 
-    if((encCtx->result != NULL) &&
-       (xmlSecBufferGetData(encCtx->result) != NULL) &&
-       (encCtx->resultBase64Encoded != 0)) {
+    if(encCtx->result != NULL) {
+        const xmlSecByte * result = xmlSecBufferGetData(encCtx->result);
+        xmlSecSize size = xmlSecBufferGetSize(encCtx->result);
 
-        fprintf(output, "<Result>");
-        xmlSecBufferDebugHexDump(encCtx->result, output);
-        fprintf(output, "</Result>\n");
+        if((result == NULL) || (size == 0)) {
+            fprintf(output, "<Result>");
+            xmlSecBufferDebugHexDump(encCtx->result, output);
+            fprintf(output, "</Result>\n");
+        } else if(encCtx->resultBase64Encoded != 0) {
+            int sizeInt = (size > INT_MAX) ? INT_MAX : (int)size;
+
+            fprintf(output, "<Result format=\"base64\">");
+            fprintf(output, "%.*s\n", sizeInt, result);
+            fprintf(output, "</Result>\n");
+        } else {
+            fprintf(output, "<Result format=\"hex\">");
+            xmlSecBufferDebugHexDump(encCtx->result, output);
+            fprintf(output, "</Result>\n");
+        }
     }
 
     switch(encCtx->mode) {

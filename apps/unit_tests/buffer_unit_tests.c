@@ -704,6 +704,7 @@ test_buffer_swap(void) {
     xmlSecBuffer buf1, buf2;
     const xmlSecByte data1[] = { 0xAA, 0xBB, 0xCC };
     const xmlSecByte data2[] = { 0x11, 0x22 };
+    xmlSecSize max1, max2;
     int ret;
 
     memset(&buf1, 0, sizeof(buf1));
@@ -725,6 +726,12 @@ test_buffer_swap(void) {
         return;
     }
 
+    /* give the buffers different alloc modes and flags so the swap of
+     * the allocMode and flags fields can be verified */
+    buf1.allocMode = xmlSecAllocModeExact;
+    buf2.allocMode = xmlSecAllocModeDouble;
+    xmlSecBufferMakeSecure(&buf2);
+
     ret = xmlSecBufferSetData(&buf1, data1, sizeof(data1));
     if(ret < 0) {
         testLog("Error: xmlSecBufferSetData(buf1) failed\n");
@@ -736,9 +743,29 @@ test_buffer_swap(void) {
         goto done;
     }
 
+    /* grow the buffers to different max sizes (exact mode allocates
+     * size+8, double mode allocates 2*size+32) so the swap of the
+     * maxSize field can be verified */
+    ret = xmlSecBufferSetMaxSize(&buf1, 2048);
+    if(ret < 0) {
+        testLog("Error: xmlSecBufferSetMaxSize(buf1) failed\n");
+        goto done;
+    }
+    ret = xmlSecBufferSetMaxSize(&buf2, 2048);
+    if(ret < 0) {
+        testLog("Error: xmlSecBufferSetMaxSize(buf2) failed\n");
+        goto done;
+    }
+    max1 = xmlSecBufferGetMaxSize(&buf1);
+    max2 = xmlSecBufferGetMaxSize(&buf2);
+    if(max1 == max2) {
+        testLog("Error: max sizes are equal (" XMLSEC_SIZE_FMT ") before the swap, test is ineffective\n", max1);
+        goto done;
+    }
+
     xmlSecBufferSwap(&buf1, &buf2);
 
-    /* buf1 must now contain data2 */
+    /* buf1 must now contain data2 and buf2's allocation parameters */
     if(xmlSecBufferGetSize(&buf1) != sizeof(data2)) {
         testLog("Error: buf1 size=" XMLSEC_SIZE_FMT " after swap, expected=" XMLSEC_SIZE_T_FMT "\n",
             xmlSecBufferGetSize(&buf1), sizeof(data2));
@@ -748,8 +775,21 @@ test_buffer_swap(void) {
         testLog("Error: buf1 content mismatch after swap\n");
         goto done;
     }
+    if(xmlSecBufferGetMaxSize(&buf1) != max2) {
+        testLog("Error: buf1 maxSize=" XMLSEC_SIZE_FMT " after swap, expected=" XMLSEC_SIZE_FMT "\n",
+            xmlSecBufferGetMaxSize(&buf1), max2);
+        goto done;
+    }
+    if(buf1.allocMode != xmlSecAllocModeDouble) {
+        testLog("Error: buf1 allocation mode not swapped after xmlSecBufferSwap\n");
+        goto done;
+    }
+    if(xmlSecBufferIsSecure(&buf1) == 0) {
+        testLog("Error: buf1 flags not swapped after xmlSecBufferSwap\n");
+        goto done;
+    }
 
-    /* buf2 must now contain data1 */
+    /* buf2 must now contain data1 and buf1's allocation parameters */
     if(xmlSecBufferGetSize(&buf2) != sizeof(data1)) {
         testLog("Error: buf2 size=" XMLSEC_SIZE_FMT " after swap, expected=" XMLSEC_SIZE_T_FMT "\n",
             xmlSecBufferGetSize(&buf2), sizeof(data1));
@@ -757,6 +797,19 @@ test_buffer_swap(void) {
     }
     if(memcmp(xmlSecBufferGetData(&buf2), data1, sizeof(data1)) != 0) {
         testLog("Error: buf2 content mismatch after swap\n");
+        goto done;
+    }
+    if(xmlSecBufferGetMaxSize(&buf2) != max1) {
+        testLog("Error: buf2 maxSize=" XMLSEC_SIZE_FMT " after swap, expected=" XMLSEC_SIZE_FMT "\n",
+            xmlSecBufferGetMaxSize(&buf2), max1);
+        goto done;
+    }
+    if(buf2.allocMode != xmlSecAllocModeExact) {
+        testLog("Error: buf2 allocation mode not swapped after xmlSecBufferSwap\n");
+        goto done;
+    }
+    if(xmlSecBufferIsSecure(&buf2) != 0) {
+        testLog("Error: buf2 flags not swapped after xmlSecBufferSwap\n");
         goto done;
     }
 
@@ -950,6 +1003,20 @@ test_buffer_remove_head(void) {
         testLog("Error: data mismatch after RemoveHead(2)\n");
         goto done;
     }
+    /* the vacated region must be wiped */
+    {
+        const xmlSecByte* ptr = xmlSecBufferGetData(&buf);
+        xmlSecSize maxSize = xmlSecBufferGetMaxSize(&buf);
+        xmlSecSize ii;
+
+        for(ii = 3; ii < maxSize; ++ii) {
+            if(ptr[ii] != 0) {
+                testLog("Error: byte at offset " XMLSEC_SIZE_FMT " is 0x%02x after RemoveHead(2), expected 0x00\n",
+                    ii, (unsigned)ptr[ii]);
+                goto done;
+            }
+        }
+    }
 
     /* remove zero bytes - no-op */
     ret = xmlSecBufferRemoveHead(&buf, 0);
@@ -1038,6 +1105,20 @@ test_buffer_remove_tail(void) {
     if(memcmp(xmlSecBufferGetData(&buf), data, 3) != 0) {
         testLog("Error: data mismatch after RemoveTail(2): expected first 3 bytes unchanged\n");
         goto done;
+    }
+    /* the vacated region must be wiped */
+    {
+        const xmlSecByte* ptr = xmlSecBufferGetData(&buf);
+        xmlSecSize maxSize = xmlSecBufferGetMaxSize(&buf);
+        xmlSecSize ii;
+
+        for(ii = 3; ii < maxSize; ++ii) {
+            if(ptr[ii] != 0) {
+                testLog("Error: byte at offset " XMLSEC_SIZE_FMT " is 0x%02x after RemoveTail(2), expected 0x00\n",
+                    ii, (unsigned)ptr[ii]);
+                goto done;
+            }
+        }
     }
 
     /* remove zero bytes - no-op */

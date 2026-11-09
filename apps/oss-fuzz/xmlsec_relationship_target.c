@@ -129,7 +129,15 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
     if (relationships_copy == NULL) {
         goto done;
     }
-    xmlDocSetRootElement(relationships_doc, relationships_copy);
+    if (xmlDocSetRootElement(relationships_doc, relationships_copy) != 0) {
+        /*
+         * The copy is owned by the document only after it has been set
+         * as the root; on failure it is still detached and must be freed
+         * here.
+         */
+        xmlFreeNode(relationships_copy);
+        goto done;
+    }
 
     transform_ctx = xmlSecTransformCtxCreate();
     if (transform_ctx == NULL) {

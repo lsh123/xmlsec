@@ -163,6 +163,7 @@ test_xmlSecNodeSetCreate_destroy_doc_destroy(void) {
     xmlSecNodeSetDocDestroy(nset);
     if(nset->destroyDoc != 1) {
         testLog("Error: xmlSecNodeSetDocDestroy did not set destroyDoc flag\n");
+        nset->destroyDoc = 1;
         xmlSecNodeSetDestroy(nset);
         testFinishedFailure();
         return;

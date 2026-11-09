@@ -564,15 +564,23 @@ xmlSecParseMemory(const xmlSecByte *buffer, xmlSecSize size, int recovery) {
         return(NULL);
     }
 
-    if(!(ctxt->wellFormed) && !recovery) {
-        xmlSecInternalError("document is not well formed", NULL);
-        if(ctxt->myDoc != NULL) {
-            xmlFreeDoc(ctxt->myDoc);
-            ctxt->myDoc = NULL;
-        }
+    /* the parse ended without producing a document (e.g. empty or
+     * completely invalid input in recovery mode); log the parser error
+     * instead of returning NULL silently */
+    if(ctxt->myDoc == NULL) {
+        xmlSecXmlParserError("xmlParseDocument", ctxt, NULL);
         xmlFreeParserCtxt(ctxt);
         return(NULL);
     }
+
+    if(!(ctxt->wellFormed) && !recovery) {
+        xmlSecInternalError("document is not well formed", NULL);
+        xmlFreeDoc(ctxt->myDoc);
+        ctxt->myDoc = NULL;
+        xmlFreeParserCtxt(ctxt);
+        return(NULL);
+    }
+
 
     /* done */
     res = ctxt->myDoc;
@@ -589,12 +597,19 @@ xmlSecParseMemory(const xmlSecByte *buffer, xmlSecSize size, int recovery) {
 void
 xmlSecParsePrepareCtxt(xmlParserCtxtPtr ctxt) {
 #if (LIBXML_VERSION < 21300)
+    int ret;
+
     xmlSecAssert(ctxt != NULL);
 
     /* required for c14n! */
     ctxt->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
     ctxt->replaceEntities = 1;
-    xmlCtxtUseOptions(ctxt, xmlSecParserGetDefaultOptions());
+    ret = xmlCtxtUseOptions(ctxt, xmlSecParserGetDefaultOptions());
+    if(ret != 0) {
+        /* libxml2 ignores the unknown options and returns their mask */
+        xmlSecXmlError2("xmlCtxtUseOptions", NULL,
+            "unknown options mask=0x%lx", (unsigned long)ret);
+    }
 #else  /* (LIBXML_VERSION < 21300) */
     int ret;
 

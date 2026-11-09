@@ -1929,6 +1929,8 @@ xmlSecTmplTransformAddXsltStylesheet(xmlNodePtr transformNode, const xmlChar *xs
     ret = xmlSetTreeDoc(xsltRoot, transformNode->doc);
     if(ret < 0) {
         xmlSecInternalError("xmlSetTreeDoc", NULL);
+        xmlUnlinkNode(xsltRoot);
+        xmlFreeNode(xsltRoot);
         xmlFreeDoc(xsltDoc);
         return(-1);
     }

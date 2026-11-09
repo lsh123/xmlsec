@@ -504,6 +504,12 @@ xmlSecNodeSetWalk(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc, voi
     if(fastPathNodes != NULL) {
         int ii;
 
+        /* Note: the fast path walks every nodeTab entry independently. If
+         * the same node pointer appears twice in nodeTab (possible only via
+         * a hand-crafted xmlNodeSet; libxml2's xmlXPathNodeSetAdd/Merge
+         * deduplicate entries), the skip guard below checks only strict
+         * ancestors, so the node's subtree is walked twice and the callback
+         * fires twice, while the slow path visits each node exactly once. */
         for(ii = 0; (ret >= 0) && (ii < fastPathNodes->nodeNr); ++ii) {
             cur = fastPathNodes->nodeTab[ii];
 

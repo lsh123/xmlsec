@@ -965,7 +965,7 @@ xmlSecMSCryptoKeyDataX509Write(
     return(0);
 }
 
-/* Returns 0 if a key was successfully extracted, or a negative value on error
+/* Returns 0 on success (whether or not a key was extracted), or a negative value on error
  * (in case of error, the key state is undefined and the caller should not use it).
  */
 static int

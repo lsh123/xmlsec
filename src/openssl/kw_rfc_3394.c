@@ -128,6 +128,7 @@ struct _xmlSecOpenSSLKWRfc3394Ctx {
     const char*  cipherName;
     EVP_CIPHER*  cipher;
     EVP_CIPHER_CTX* cctx;
+    int          cctxEncDir;     /* direction the cached context key schedule was expanded for (0/1) */
 #else /* !defined(XMLSEC_OPENSSL_API_111) */
     xmlSecOpenSSLKWRfc3394EncryptDecryptFunc encryptDecrypt;
 #endif /* !defined(XMLSEC_OPENSSL_API_111) */
@@ -416,34 +417,58 @@ xmlSecOpenSSLKWRfc3394EncryptDecrypt(xmlSecOpenSSLKWRfc3394CtxPtr ctx, const xml
     xmlSecAssert2(keySize > 0, -1);
     xmlSecAssert2(keySize == ctx->parentCtx.keyExpectedSize, -1);
 
-    /* use a cached cipher context if available */
-    if(ctx->cctx == NULL) {
-        ctx->cctx = EVP_CIPHER_CTX_new();
+    /* use a cached cipher context if available; the key schedule is expanded
+     * only when the context is (re)initialized below (first block, or a
+     * direction change), so subsequent blocks use a cheap context reset with
+     * a NULL cipher/key/IV to avoid re-running the key setup for every block */
+    if((ctx->cctx == NULL) || (ctx->cctxEncDir != encrypt)) {
         if(ctx->cctx == NULL) {
-            xmlSecOpenSSLError("EVP_CIPHER_CTX_new", NULL);
+            ctx->cctx = EVP_CIPHER_CTX_new();
+            if(ctx->cctx == NULL) {
+                xmlSecOpenSSLError("EVP_CIPHER_CTX_new", NULL);
+                goto done;
+            }
+        }
+
+        /* EVP_CipherInit_ex2() is the OpenSSL 3.0+ variant of EVP_CipherInit_ex() with an
+         * OSSL_PARAM params array as its 6th argument (NULL here) */
+        ret = EVP_CipherInit_ex2(
+            ctx->cctx,
+            ctx->cipher,
+            keyData,
+            xmlSecOpenSSLKWRfc3394ZeroIv,
+            ((encrypt != 0) ? 1 : 0),
+            NULL
+        );
+        if (ret != 1) {
+            xmlSecOpenSSLError("EVP_CipherInit_ex2", NULL);
             goto done;
         }
-    }
 
-    /* EVP_CipherInit_ex2() is the OpenSSL 3.0+ variant of EVP_CipherInit_ex() with an
-     * OSSL_PARAM params array as its 6th argument (NULL here) */
-    ret = EVP_CipherInit_ex2(
-        ctx->cctx,
-        ctx->cipher,
-        keyData,
-        xmlSecOpenSSLKWRfc3394ZeroIv,
-        ((encrypt != 0) ? 1 : 0),
-        NULL
-    );
-    if (ret != 1) {
-        xmlSecOpenSSLError("EVP_CipherInit_ex2", NULL);
-        goto done;
-    }
+        ret = EVP_CIPHER_CTX_set_padding(ctx->cctx, 0);
+        if (ret != 1) {
+            xmlSecOpenSSLError("EVP_CIPHER_CTX_set_padding", NULL);
+            goto done;
+        }
 
-    ret = EVP_CIPHER_CTX_set_padding(ctx->cctx, 0);
-    if (ret != 1) {
-        xmlSecOpenSSLError("EVP_CIPHER_CTX_set_padding", NULL);
-        goto done;
+        /* record the direction the key schedule was expanded for; a later
+         * call with a different direction must reinitialize with a key */
+        ctx->cctxEncDir = (encrypt != 0) ? 1 : 0;
+    } else {
+        /* reset the context (restoring the all-zero IV) without re-expanding
+         * the key schedule; the no-padding flag set above survives the reset */
+        ret = EVP_CipherInit_ex2(
+            ctx->cctx,
+            NULL,
+            NULL,
+            NULL,
+            ((encrypt != 0) ? 1 : 0),
+            NULL
+        );
+        if (ret != 1) {
+            xmlSecOpenSSLError("EVP_CipherInit_ex2", NULL);
+            goto done;
+        }
     }
 
     XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, goto done, NULL);

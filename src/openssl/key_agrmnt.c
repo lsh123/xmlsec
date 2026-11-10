@@ -311,6 +311,7 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
     EVP_PKEY *otherPubKey;
     xmlSecByte * secretData;
     xmlSecSize secretSize;
+    xmlSecSize fullSecretSize;
     int ret;
     int res = -1;
 
@@ -436,6 +437,7 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
         xmlSecOpenSSLError("EVP_PKEY_derive", NULL);
         goto done;
     }
+    fullSecretSize = secretSize;
 
     /* Validate secret size matches expected value (if specified); this is
      * defense-in-depth since OpenSSL always reports the fixed sizes
@@ -453,9 +455,9 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
     }
 
     /* allocate buffer */
-    ret = xmlSecBufferSetSize(secret, secretSize);
+    ret = xmlSecBufferSetSize(secret, fullSecretSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, secretSize);
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, fullSecretSize);
         goto done;
     }
     secretData = xmlSecBufferGetData(secret);
@@ -466,15 +468,32 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
 
     /* derive the shared secret */
     ret = EVP_PKEY_derive(pKeyCtx, secretData, &secretSize);
-    if((ret != 1) || (secretSize == 0)) {
+    if((ret != 1) || (secretSize == 0) || (secretSize > fullSecretSize)) {
         xmlSecOpenSSLError("EVP_PKEY_derive", NULL);
         goto done;
     }
 
-    /* set the buffer size to the actual derived secret size */
-    ret = xmlSecBufferSetSize(secret, secretSize);
+    /*
+     * For DH, DH_compute_key() strips leading zero bytes, so
+     * EVP_PKEY_derive() may report a size smaller than the group modulus
+     * size, with the secret right-justified within the full-width
+     * buffer; ECDH and XDH secrets are always reported at the full
+     * field/key width (OpenSSL left-pads the ECDH shared X coordinate to
+     * the field size), so the padding below is a defensive no-op for
+     * them. xmlenc-core1 requires the shared secret as a fixed-width,
+     * left-padded octet string (as the sibling GnuTLS and NSS backends
+     * enforce), so left-pad with zero bytes to the full size reported by
+     * the size query.
+     */
+    if(secretSize < fullSecretSize) {
+        memmove(secretData + (fullSecretSize - secretSize), secretData, secretSize);
+        memset(secretData, 0, fullSecretSize - secretSize);
+    }
+
+    /* set the buffer size to the full derived secret size */
+    ret = xmlSecBufferSetSize(secret, fullSecretSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, secretSize);
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, fullSecretSize);
         goto done;
     }
 

@@ -418,14 +418,24 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
             xmlSecOpenSSLError("DH_get0_pub_key", NULL);
             goto done;
         }
-        ret = DH_check_pub_key(peerDh, peerPubKey, NULL);
-        if(ret != 1) {
-            /*
-             * DH_check_pub_key() returns 0 when the public key is invalid and
-             * 2 when the Yb^q mod P check fails; both cases are rejected
-             */
-            xmlSecInvalidDataError("Invalid peer DH public key", NULL);
-            goto done;
+        {
+            int codes = 0;
+
+            ret = DH_check_pub_key(peerDh, peerPubKey, &codes);
+            if((ret != 1) || (codes != 0)) {
+                /*
+                 * DH_check_pub_key() returns 1 even when the public key is
+                 * invalid; degenerate values (e.g. 0, 1, or a value outside
+                 * the valid range) are reported through the codes flags
+                 * (DH_CHECK_PUBKEY_TOO_SMALL, DH_CHECK_PUBKEY_TOO_LARGE,
+                 * DH_CHECK_PUBKEY_INVALID) and 0 is returned only on
+                 * internal error. Note that the function also unconditionally
+                 * dereferences the codes pointer, so a non-NULL local must
+                 * be passed.
+                 */
+                xmlSecInvalidDataError("Invalid peer DH public key", NULL);
+                goto done;
+            }
         }
     }
 #endif /* XMLSEC_NO_DH */
@@ -491,12 +501,7 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
         memset(secretData, 0, fullSecretSize - secretSize);
     }
 
-    /* set the buffer size to the full derived secret size */
-    ret = xmlSecBufferSetSize(secret, fullSecretSize);
-    if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, fullSecretSize);
-        goto done;
-    }
+    /* the buffer was already sized to fullSecretSize above */
 
     /* success */
     res = 0;

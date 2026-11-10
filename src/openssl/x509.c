@@ -1175,7 +1175,12 @@ xmlSecOpenSSLX509NameWrite(XMLSEC_OPENSSL400_CONST X509_NAME* nm) {
         goto done;
     }
 
-    if(X509_NAME_print_ex(mem, nm, 0, XN_FLAG_RFC2253) <= 0) {
+    /*
+     * X509_NAME_print_ex() returns the number of characters written on
+     * success and -1 on failure; 0 is a valid result for an empty name
+     * (RFC 5280 section 4.1.2.6 permits an empty subject name)
+     */
+    if(X509_NAME_print_ex(mem, nm, 0, XN_FLAG_RFC2253) < 0) {
         xmlSecOpenSSLError("X509_NAME_print_ex", NULL);
         goto done;
     }
@@ -1187,7 +1192,7 @@ xmlSecOpenSSLX509NameWrite(XMLSEC_OPENSSL400_CONST X509_NAME* nm) {
     }
 
     memBufSize = BIO_pending(mem);
-    if(memBufSize <= 0) {
+    if(memBufSize < 0) {
         xmlSecOpenSSLError("BIO_pending", NULL);
         goto done;
     }
@@ -1201,10 +1206,16 @@ xmlSecOpenSSLX509NameWrite(XMLSEC_OPENSSL400_CONST X509_NAME* nm) {
     }
     memset(buf, 0, sizeBuf + 1);
 
-    lenRead = BIO_read(mem, buf, lenBuf);
-    if(lenRead != lenBuf) {
-        xmlSecOpenSSLError("BIO_read", NULL);
-        goto done;
+    if(lenBuf > 0) {
+        /*
+         * BIO_read() returns -1 for a zero-length request on an empty
+         * memory BIO, so the read must be skipped for an empty name
+         */
+        lenRead = BIO_read(mem, buf, lenBuf);
+        if(lenRead != lenBuf) {
+            xmlSecOpenSSLError("BIO_read", NULL);
+            goto done;
+        }
     }
 
     /* success */
@@ -1977,12 +1988,17 @@ xmlSecOpenSSLX509NameToString(XMLSEC_OPENSSL400_CONST X509_NAME* name, char* buf
         xmlSecOpenSSLError("BIO_new", NULL);
         goto done;
     }
-    if(X509_NAME_print_ex(mem, name, 0, XN_FLAG_RFC2253) <= 0) {
+    /*
+     * X509_NAME_print_ex() returns the number of characters written on
+     * success and -1 on failure; 0 is a valid result for an empty name
+     * (RFC 5280 section 4.1.2.6 permits an empty subject name)
+     */
+    if(X509_NAME_print_ex(mem, name, 0, XN_FLAG_RFC2253) < 0) {
         xmlSecOpenSSLError("X509_NAME_print_ex", NULL);
         goto done;
     }
     len = BIO_get_mem_data(mem, &data);
-    if((data == NULL) || (len <= 0)) {
+    if((len < 0) || ((len > 0) && (data == NULL))) {
         xmlSecOpenSSLError("BIO_get_mem_data", NULL);
         goto done;
     }
@@ -2023,7 +2039,14 @@ xmlSecOpenSSLX509NameToString(XMLSEC_OPENSSL400_CONST X509_NAME* name, char* buf
         }
     }
     XMLSEC_SAFE_CAST_LONG_TO_SIZE(len, lenSize, goto done, NULL);
-    memcpy(buf, data, lenSize);
+    if(lenSize > 0) {
+        /*
+         * BIO_get_mem_data() returns a NULL data pointer together with a
+         * zero length for an empty memory BIO, so the copy is only
+         * performed for a non-empty name
+         */
+        memcpy(buf, data, lenSize);
+    }
     buf[len] = '\0';
 
     /* success */

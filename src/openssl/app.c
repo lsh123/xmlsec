@@ -2386,7 +2386,7 @@ xmlSecOpenSSLDefaultPasswordCallback(char *buf, int buflen, int verify, void *us
             xmlSecMallocError(bufsize, NULL);
             return(-1);
         }
-        ret = EVP_read_pw_string(buf2, buflen, (char*)prompt, 0);
+        ret = EVP_read_pw_string(buf2, buflen, prompt, 0);
         if(ret != 0) {
             xmlSecOpenSSLError("EVP_read_pw_string", NULL);
             OPENSSL_cleanse(buf2, bufsize);

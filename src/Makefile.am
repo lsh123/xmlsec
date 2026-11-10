@@ -21,7 +21,8 @@ EXTRA_DIST = \
 	x509_helpers.h \
 	globals.h \
 	kw_helpers.h \
-	xslt.h \
+	xmlenc_helpers.h \
+	xslt_helpers.h \
 	$(XMLSEC_CRYPTO_DISABLED_LIST) \
 	$(NULL)
 

@@ -8,11 +8,11 @@
 /**
  * @brief Internal XSLT transform initialization and shutdown functions.
  */
-#ifndef XMLSEC_XSLT_H
-#define XMLSEC_XSLT_H
+#ifndef XMLSEC_XSLT_HELPERS_H
+#define XMLSEC_XSLT_HELPERS_H
 
 #ifndef XMLSEC_PRIVATE
-#error "xslt.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-crypto libraries"
+#error "xslt_helpers.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-crypto libraries"
 #endif /* XMLSEC_PRIVATE */
 
 #ifndef XMLSEC_NO_XSLT
@@ -30,4 +30,4 @@ void xmlSecTransformXsltShutdown                             (void);
 
 #endif /* XMLSEC_NO_XSLT */
 
-#endif /* XMLSEC_XSLT_H */
+#endif /* XMLSEC_XSLT_HELPERS_H */

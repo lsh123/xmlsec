@@ -61,9 +61,9 @@
 #include <xmlsec/parser.h>
 #include <xmlsec/errors.h>
 
-#include "xslt.h"
 #include "cast_helpers.h"
 #include "transform_helpers.h"
+#include "xslt_helpers.h"
 
 #define XMLSEC_TRANSFORM_XPOINTER_TMPL "xpointer(id(\'%s\'))"
 

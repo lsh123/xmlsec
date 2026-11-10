@@ -32,13 +32,15 @@ see the Copyright file in the distribution for details.
     key requirements do not specify a key size.
   - (xmlsec-core, **not backward compatible**) Added hard cap (adjustable at build time) on
     maximum HKDF derived key length (`XMLSEC_HKDF_MAX_KEY_LENGTH`, 16320 bytes by default).
+  - (xmlsec-core, **not backward compatible**) Created `src/xmlenc_helpers.h` file and moved definitions
+    for several internal functions from public `xmlsec/xmlenc.h` file to this new file.
   - (xmlsec-core) Fixed the XPointer transform identifier, the original one is kept as deprecated and
     will be removed in the future.
-  - (xmlsec-mscng) Added support for ML-DSA signature (requires Windows 11 version 25H2 or Windows Server 2025)
-    and ChaCha20-Poly1305 encryption algorithm (requires Windows 10 version 1803 or newer).
-  - (xmlsec-nss) Added support for ML-DSA signature and ML-KEM key transport algorithms (requires NSS 3.129 or newer).
   - (xmlsec-openssl, **not backward compatible**) Bumped the minimum supported version of LibreSSL to 4.0.0
     and BoringSSL to later than Oct 2024.
+  - (xmlsec-nss) Added support for ML-DSA signature and ML-KEM key transport algorithms (requires NSS 3.129 or newer).
+  - (xmlsec-mscng) Added support for ML-DSA signature (requires Windows 11 version 25H2 or Windows Server 2025)
+    and ChaCha20-Poly1305 encryption algorithm (requires Windows 10 version 1803 or newer).
   - (xmlsec-build, **not backward compatible**) Disabled Triple DES and Triple DES KeyWrap
     by default (use `--enable-des` option to re-enable both).
   - (xmlsec-windows) Added per-algorithm options to `configure.ps1` (e.g. `aes=yes`, `md5=no`, `gost2012=yes`)

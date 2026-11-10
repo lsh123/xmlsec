@@ -304,12 +304,6 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
     }
 
     if(transform->operation == xmlSecTransformOperationEncrypt) {
-        if(inSize > outSize) {
-            xmlSecInvalidSizeLessThanError("Output data", outSize, inSize,
-                xmlSecTransformGetName(transform));
-            return(-1);
-        }
-
         ret = xmlSecBufferSetData(out, xmlSecBufferGetData(in), inSize);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetData", xmlSecTransformGetName(transform),

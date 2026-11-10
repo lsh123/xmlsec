@@ -179,7 +179,7 @@ xmlSecGnuTLSKeyDataDEREncodedKeyValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr ke
     xmlSecBuffer buffer;
     const xmlSecByte * data;
     xmlSecSize dataSize;
-    gnutls_datum_t datum;
+    gnutls_datum_t datum = { NULL, 0 };
     gnutls_pubkey_t pubkey = NULL;
     xmlSecKeyDataPtr keyData = NULL;
     xmlNodePtr cur;

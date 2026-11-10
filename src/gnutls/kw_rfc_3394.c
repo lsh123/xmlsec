@@ -307,8 +307,6 @@ xmlSecGnuTLSKWRfc3394Execute(xmlSecTransformPtr transform, int last,
     return(0);
 }
 
-static unsigned char xmlSecGnuTLSKWRfc3394ZeroIv[XMLSEC_KW_RFC3394_BLOCK_SIZE] =
-    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 static int
 xmlSecGnuTLSKWRfc3394InitCipher(xmlSecGnuTLSKWRfc3394CtxPtr ctx) {
@@ -344,7 +342,9 @@ static int
 xmlSecGnuTLSKWRfc3394BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSecSize inSize,
     xmlSecByte * out, xmlSecSize outSize, xmlSecSize * outWritten)
 {
+    unsigned char zero_iv[XMLSEC_KW_RFC3394_BLOCK_SIZE] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     xmlSecGnuTLSKWRfc3394CtxPtr ctx;
+
     int err;
     int ret;
 
@@ -372,7 +372,7 @@ xmlSecGnuTLSKWRfc3394BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte
     xmlSecAssert2(ctx->cipher != NULL, -1);
 
     /* always reset to zero IV for each block */
-    gnutls_cipher_set_iv(ctx->cipher, xmlSecGnuTLSKWRfc3394ZeroIv, ctx->ivSize);
+    gnutls_cipher_set_iv(ctx->cipher, zero_iv, ctx->ivSize);
 
     err = gnutls_cipher_encrypt2(ctx->cipher, in, inSize, out, outSize);
     if(err != GNUTLS_E_SUCCESS) {
@@ -389,6 +389,7 @@ static int
 xmlSecGnuTLSKWRfc3394BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSecSize inSize,
     xmlSecByte * out, xmlSecSize outSize, xmlSecSize * outWritten)
 {
+    unsigned char zero_iv[XMLSEC_KW_RFC3394_BLOCK_SIZE] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     xmlSecGnuTLSKWRfc3394CtxPtr ctx;
     int err;
     int ret;
@@ -417,7 +418,7 @@ xmlSecGnuTLSKWRfc3394BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte
     xmlSecAssert2(ctx->cipher != NULL, -1);
 
     /* always reset to zero IV for each block */
-    gnutls_cipher_set_iv(ctx->cipher, xmlSecGnuTLSKWRfc3394ZeroIv, ctx->ivSize);
+    gnutls_cipher_set_iv(ctx->cipher, zero_iv, ctx->ivSize);
 
     err = gnutls_cipher_decrypt2(ctx->cipher, in, inSize, out, outSize);
     if(err != GNUTLS_E_SUCCESS) {

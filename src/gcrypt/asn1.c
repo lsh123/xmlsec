@@ -405,7 +405,18 @@ xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSe
                                 return(-1);
                             }
                             p++; remaining--;
-                            for(unsigned int ii = 0; ii < num_len_bytes; ++ii) {
+                            int_len = *p & 0xff;
+                            /* DER requires minimal length encoding: the first
+                             * length byte must be non-zero, and a single
+                             * length byte is only allowed when the value
+                             * does not fit in the short form (the same
+                             * checks as in xmlSecGCryptAsn1ParseTag) */
+                            if((int_len == 0) || ((num_len_bytes == 1) && (int_len < 0x80))) {
+                                xmlSecInternalError2("xmlSecGCryptAsn1ParseIntegerSequence", NULL, "non-minimal INTEGER length inside BIT STRING, first_len_byte=%lu", int_len);
+                                return(-1);
+                            }
+                            p++; remaining--;
+                            for(unsigned int ii = 1; ii < num_len_bytes; ++ii) {
                                 int_len = (int_len << 8) | (*p & 0xff);
                                 p++; remaining--;
                             }

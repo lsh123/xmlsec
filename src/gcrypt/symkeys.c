@@ -182,17 +182,17 @@ xmlSecGCryptSymKeyDataDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 
 static int
 xmlSecGCryptSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
-#ifndef XMLSEC_NO_DES
-    if(klass == xmlSecGCryptKeyDataDesId) {
-        return(1);
-    }
-#endif /* XMLSEC_NO_DES */
-
 #ifndef XMLSEC_NO_AES
     if(klass == xmlSecGCryptKeyDataAesId) {
         return(1);
     }
 #endif /* XMLSEC_NO_AES */
+
+#ifndef XMLSEC_NO_DES
+    if(klass == xmlSecGCryptKeyDataDesId) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_DES */
 
 #ifndef XMLSEC_NO_HMAC
     if(klass == xmlSecGCryptKeyDataHmacId) {

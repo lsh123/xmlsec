@@ -1079,7 +1079,7 @@ xmlSecGnuTLSSignatureGetDataToSign(xmlSecGnuTLSSignatureCtxPtr ctx, gnutls_datum
 
         /* get hash size and setup buffer */
         hashSize = gnutls_hash_get_len(ctx->dgstAlgo);
-        if(hashSize <= 0) {
+        if(hashSize == 0) {
             xmlSecInternalError("gnutls_hash_get_len", NULL);
             return(-1);
         }

@@ -164,6 +164,7 @@ xmlSecGnuTLSKWDes3Initialize(xmlSecTransformPtr transform) {
         xmlSecGnuTLSKeyDataDesId);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformKWDes3Initialize", xmlSecTransformGetName(transform));
+        xmlSecGnuTLSKWDes3Finalize(transform);
         return(-1);
     }
     return(0);

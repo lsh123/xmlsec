@@ -604,6 +604,7 @@ xmlSecNssX509StoreVerifyCert(
     switch(err) {
         case SEC_ERROR_EXPIRED_ISSUER_CERTIFICATE:
         case SEC_ERROR_CA_CERT_INVALID:
+        case SEC_ERROR_UNKNOWN_ISSUER:
         case SEC_ERROR_UNKNOWN_SIGNER:
             xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_ISSUER_FAILED, NULL,
                 "subject=\"%s\"; reason=the issuer's cert is expired/invalid or not found",
@@ -1005,6 +1006,27 @@ xmlSecNssX509VerifyCRLTimeValidity(const CERTSignedCrl* crl, xmlSecKeyInfoCtxPtr
     return(1);
 }
 
+/*
+ * Checks whether the certificate may be used to sign CRLs.
+ * Returns 1 if the keyUsage extension is absent or asserts the cRLSign bit,
+ * 0 if the keyUsage extension is present but does not assert cRLSign
+ * (RFC 5280 section 6.3.3), or a negative value on error.
+ */
+static int
+xmlSecNssX509CertCanSignCrl(const CERTCertificate* cert) {
+    xmlSecAssert2(cert != NULL, -1);
+
+    if(!cert->keyUsagePresent) {
+        /* no keyUsage extension: no restriction on the key usage */
+        return(1);
+    }
+
+    /* cRLSign must be asserted (KU_CRL_SIGN, bit 7 of the keyUsage bit
+     * string, RFC 5280 section 4.2.1.3); NSS parses the keyUsage bits into
+     * cert->keyUsage when the certificate is decoded (CERT_DecodeDERCertificate) */
+    return(((cert->keyUsage & KU_CRL_SIGN) != 0) ? 1 : 0);
+}
+
 /* Verifies the CRL signature with a single candidate issuer certificate: the
  * issuer certificate is verified first (chain and validity), then the CRL
  * signature is checked against it. The caller retains ownership of
@@ -1039,6 +1061,20 @@ xmlSecNssX509VerifyCRLSignatureWithIssuerCert(
         return(-1);
     } else if(ret != 1) {
         /* the issuer cert is not verified, so the CRL signature cannot be verified */
+        return(0);
+    }
+
+    /* RFC 5280 section 6.3.3: if the keyUsage extension is present in the
+     * CRL issuer certificate, the cRLSign bit must be asserted; NSS does not
+     * enforce this for certificateUsageSSLCA, so check it explicitly */
+    ret = xmlSecNssX509CertCanSignCrl(issuer_cert);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNssX509CertCanSignCrl", NULL);
+        return(-1);
+    } else if(ret != 1) {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_CRL_VERIFY_FAILED, NULL,
+            "issuer=\"%s\"; cRLSign key usage is not asserted",
+            xmlSecErrorsSafeString(issuer_cert->subjectName));
         return(0);
     }
 

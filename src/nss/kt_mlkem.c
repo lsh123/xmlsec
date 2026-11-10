@@ -264,19 +264,23 @@ xmlSecNssMLKEMSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
      * Store both the public and the private key (if present), regardless of
      * the transform operation: the encapsulation/decapsulation direction is
      * determined by the transform operation at the execution time (see
-     * xmlSecNssMLKEMProcess).
+     * xmlSecNssMLKEMProcess). A public-only key cannot be used for
+     * decapsulation and a private-only key cannot be used for encapsulation;
+     * a clear error is reported at the execution time in either case.
      */
-    ctx->pubKey = xmlSecNssPKIKeyDataGetPubKey(xmlSecKeyGetValue(key));
-    if(ctx->pubKey == NULL) {
-        xmlSecInternalError("xmlSecNssPKIKeyDataGetPubKey",
-                            xmlSecTransformGetName(transform));
-        return(-1);
-    }
-    /* verify that the public key parameter set matches the transform variant */
-    if(ctx->pubKey->u.kyber.params != ctx->params) {
-        xmlSecInvalidTypeError("ML-KEM public key parameter set mismatch",
-                               xmlSecTransformGetName(transform));
-        return(-1);
+    if((xmlSecKeyGetType(key) & xmlSecKeyDataTypePublic) != 0) {
+        ctx->pubKey = xmlSecNssPKIKeyDataGetPubKey(xmlSecKeyGetValue(key));
+        if(ctx->pubKey == NULL) {
+            xmlSecInternalError("xmlSecNssPKIKeyDataGetPubKey",
+                                xmlSecTransformGetName(transform));
+            return(-1);
+        }
+        /* verify that the public key parameter set matches the transform variant */
+        if(ctx->pubKey->u.kyber.params != ctx->params) {
+            xmlSecInvalidTypeError("ML-KEM public key parameter set mismatch",
+                                   xmlSecTransformGetName(transform));
+            return(-1);
+        }
     }
 
     /*
@@ -315,6 +319,12 @@ xmlSecNssMLKEMSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
                                    xmlSecTransformGetName(transform));
             return(-1);
         }
+    }
+
+    if((ctx->pubKey == NULL) && (ctx->privKey == NULL)) {
+        xmlSecInternalError("the ML-KEM key has neither a public nor a private key",
+                            xmlSecTransformGetName(transform));
+        return(-1);
     }
 
     /* success */

@@ -819,6 +819,20 @@ xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
         xmlSecSize eddsaDataSize;
         SECItem dataItem = { siBuffer, NULL, 0 };
 
+        /* Ed25519 signatures have a fixed length (RFC 8032). A wrong-length
+         * signature would otherwise make NSS fail with SEC_ERROR_INVALID_ARGS,
+         * which is not classified as a verification failure below and would
+         * abort the run with a processing error. Report it up front as a
+         * verification failure, consistent with the DSA/ECDSA odd-length
+         * handling. */
+        if(signature.len != ED25519_SIGN_LEN) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
+                             xmlSecTransformGetName(transform),
+                             "signature verification failed");
+            transform->status = xmlSecTransformStatusFail;
+            return(0);
+        }
+
         eddsaDataSize = xmlSecBufferGetSize(&(ctx->dataBuffer));
         XMLSEC_SAFE_CAST_SIZE_TO_UINT(eddsaDataSize, dataItem.len, return(-1), xmlSecTransformGetName(transform));
 

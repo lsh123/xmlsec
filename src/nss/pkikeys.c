@@ -484,10 +484,17 @@ xmlSecNssPKIKeyDataGetType(xmlSecKeyDataPtr data) {
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, xmlSecKeyDataTypeUnknown);
 
-    if(ctx->pubkey == NULL) {
+    if((ctx->pubkey == NULL) && (ctx->privkey == NULL)) {
         return(xmlSecKeyDataTypeUnknown);
     }
-    return ((ctx->privkey != NULL) ? (xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic) : xmlSecKeyDataTypePublic);
+    if((ctx->pubkey != NULL) && (ctx->privkey != NULL)) {
+        return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
+    }
+    if(ctx->pubkey != NULL) {
+        return(xmlSecKeyDataTypePublic);
+    }
+    /* a private key without an associated public key */
+    return(xmlSecKeyDataTypePrivate);
 }
 
 static xmlSecSize

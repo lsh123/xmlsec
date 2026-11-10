@@ -1192,10 +1192,12 @@ xmlSecOpenSSLX509NameWrite(XMLSEC_OPENSSL400_CONST X509_NAME* nm) {
     }
 
     memBufSize = BIO_pending(mem);
+#if !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC)
     if(memBufSize < 0) {
         xmlSecOpenSSLError("BIO_pending", NULL);
         goto done;
     }
+#endif /* !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC) */
     XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_SIZE(memBufSize, sizeBuf, goto done, NULL);
     XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_INT(memBufSize, lenBuf, goto done, NULL);
 

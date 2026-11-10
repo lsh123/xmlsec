@@ -549,7 +549,15 @@ xmlSecMSCngMLKEMProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr tran
              * ciphertext is stored in the KEM key data of the transform context
              * and serialized into <enc:CipherValue/> by the EncryptedKey write code */
             if(inSize != 0) {
-                xmlSecInvalidDataError("Unexpected input for KEM encapsulation", NULL);
+                /*
+                 * encapsulation takes no input; in the EncryptedKey write
+                 * flow this means the recipient key does not carry the
+                 * ML-KEM key data with the pre-encapsulated ciphertext
+                 */
+                xmlSecInvalidDataError("Unexpected input for KEM encapsulation "
+                                       "(the recipient key does not carry the "
+                                       "ML-KEM key data with the "
+                                       "pre-encapsulated ciphertext)", NULL);
                 return(-1);
             }
             if(ctx->pubkey == 0) {

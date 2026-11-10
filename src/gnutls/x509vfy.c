@@ -266,8 +266,8 @@ xmlSecGnuTLSX509CheckCrtsTime(const gnutls_x509_crt_t * cert_list, xmlSecSize ce
  * not checked: an unrelated expired or future-dated cert in the store must
  * not break the verification of a valid chain.
  *
- * @return 1 if all anchor certs are time valid (or no anchor was found in the
- * trusted store), 0 if any anchor cert is not time valid, or a negative value
+ * @return 1 if at least one anchor cert is time valid (or no anchor was found
+ * in the trusted store), 0 if no anchor cert is time valid, or a negative value
  * if an error occurs.
  */
 static int
@@ -318,12 +318,28 @@ xmlSecGnuTLSX509CheckChainAnchorTime(
     /* time-check the collected anchor certs; if no trusted cert issued the
      * topmost chain cert (e.g. the topmost chain cert is a self-signed root
      * that is not in the store) there is nothing more to check, as the chain
-     * certs were already checked by the caller */
+     * certs were already checked by the caller. If several anchor candidates
+     * exist (e.g. cross-signed roots with different validity periods), the
+     * chain is accepted if at least one of them is time valid: GnuTLS itself
+     * picks a time valid issuer when several trusted certs match (the
+     * find_issuer() function in lib/x509/verify.c) */
     res = 1;
-    if(anchorsSize > 0) {
-        res = xmlSecGnuTLSX509CheckCrtsTime(anchors, anchorsSize, ts);
-        if(res < 0) {
-            xmlSecInternalError("xmlSecGnuTLSX509CheckCrtsTime(anchor)", NULL);
+    for(ii = 0; ii < anchorsSize; ++ii) {
+        int ret;
+
+        ret = xmlSecGnuTLSX509CheckCrtTime(anchors[ii], ts);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGnuTLSX509CheckCrtTime(anchor)", NULL);
+            res = -1;
+            break;
+        } else if(ret == 0) {
+            /* cert not valid yet or expired; keep looking for a time valid
+             * anchor candidate */
+            res = 0;
+        } else {
+            /* cert is time valid */
+            res = 1;
+            break;
         }
     }
 
@@ -590,10 +606,18 @@ xmlSecGnuTLSX509GetVerificationFlags(const xmlSecKeyInfoCtx* keyInfoCtx, unsigne
 
     (*flags) = 0;
 
-    /* gnutls doesn't allow to specify "verification" timestamp so
-     * we have to do it ourselves. Unfortunately it doesn't work
-     * for CRLs yet: https://github.com/lsh123/xmlsec/issues/579
-     */
+    /* gnutls doesn't allow to specify a "verification" timestamp, so when
+     * one is set the gnutls time checks are disabled here and the callers
+     * perform them manually: the certificate chain and trust anchor time
+     * checks (xmlSecGnuTLSX509CheckCrtsTime/
+     * xmlSecGnuTLSX509CheckChainAnchorTime) and the CRL time window check
+     * (xmlSecGnuTLSX509StoreVerifyCrlTimeValidity), plus the trusted CRL
+     * issuer cert validity period check, since gnutls_x509_crl_verify()
+     * never checks the issuer cert validity period. When no timestamp is
+     * set, gnutls checks the time windows against the current time (with
+     * the same exception for the trusted CRL issuer cert, which the CRL
+     * verification path checks manually as well).
+     * See https://github.com/lsh123/xmlsec/issues/579 */
     if(keyInfoCtx->certsVerificationTime > 0) {
         (*flags) |= GNUTLS_VERIFY_DISABLE_TIME_CHECKS;
     }
@@ -1328,16 +1352,25 @@ xmlSecGnuTLSX509StoreVerifyCrlSignature(
     }
 
     /* gnutls_x509_crl_verify() never checks the issuer cert's own validity
-     * period (unlike gnutls_x509_crt_list_verify()). The untrusted/extra
-     * issuer paths above verify the issuer's chain, which includes its time
-     * window, so only the trusted issuer cert still needs to be checked. This
-     * mirrors the chain path's manual time check of the trust anchor(s)
-     * (xmlSecGnuTLSX509CheckChainAnchorTime), which applies under the same
-     * conditions. */
+     * period (unlike gnutls_x509_crt_list_verify()), so it must be checked
+     * here. The untrusted/extra issuer paths above verify the issuer's chain,
+     * which includes its time window, so only the trusted issuer cert still
+     * needs to be checked. This mirrors the chain path's manual time check of
+     * the trust anchor(s) (xmlSecGnuTLSX509CheckChainAnchorTime), which
+     * applies under the same conditions: when a verification timestamp is set
+     * the check runs against it, and otherwise gnutls uses the current time
+     * for its own CRL time checks, so the issuer cert is checked against the
+     * current time as well. */
     if((issuer_from_trusted != 0) &&
-       (keyInfoCtx->certsVerificationTime > 0) &&
        ((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS) == 0)) {
-        ret = xmlSecGnuTLSX509CheckCrtsTime(&issuer_cert, 1, keyInfoCtx->certsVerificationTime);
+        time_t verification_time;
+
+        verification_time = xmlSecGnuTLSX509StoreGetCrlVerificationTime(keyInfoCtx, storeName);
+        if(verification_time == (time_t)-1) {
+            goto done;
+        }
+
+        ret = xmlSecGnuTLSX509CheckCrtsTime(&issuer_cert, 1, verification_time);
         if(ret < 0) {
             xmlSecInternalError("xmlSecGnuTLSX509CheckCrtsTime(trusted CRL issuer)", storeName);
             goto done;

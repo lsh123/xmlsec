@@ -58,6 +58,7 @@
 
 #include "cast_helpers.h"
 #include "keysdata_helpers.h"
+#include "xmlenc_helpers.h"
 
 /* default limits */
 #define XMLSEC_KEYINFO_DEFAULT_MAX_REFERENCE_LEVEL          1
@@ -371,9 +372,9 @@ xmlSecKeyInfoCtxReset(xmlSecKeyInfoCtxPtr keyInfoCtx) {
 }
 
 /**
- * @brief Creates an encryption context for KeyInfo processing.
- * @details Creates encryption context for processing &lt;enc:EncryptedKey/&gt; child
- * of &lt;dsig:KeyInfo/&gt; element.
+ * @brief Creates or resets an encryption context for KeyInfo processing.
+ * @details Creates or resets an encryption context for processing &lt;enc:EncryptedKey/&gt;
+ * child of the &lt;dsig:KeyInfo/&gt; element.
  * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
  * @return 0 on success or -1 if an error occurs.
@@ -381,43 +382,65 @@ xmlSecKeyInfoCtxReset(xmlSecKeyInfoCtxPtr keyInfoCtx) {
 int
 xmlSecKeyInfoCtxCreateEncCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
 #ifndef XMLSEC_NO_XMLENC
-    xmlSecEncCtxPtr tmp;
     int ret;
 
     xmlSecAssert2(keyInfoCtx != NULL, -1);
-    xmlSecAssert2(keyInfoCtx->encCtx == NULL, -1);
 
-    /* use a temporary variable so that keyInfoCtx->encCtx stays NULL on failure */
-    tmp = xmlSecEncCtxCreate(keyInfoCtx->keysMngr);
-    if(tmp == NULL) {
-        xmlSecInternalError("xmlSecEncCtxCreate", NULL);
-        return(-1);
+    /* create or reset enc context */
+    if(keyInfoCtx->encCtx == NULL) {
+        keyInfoCtx->encCtx = xmlSecEncCtxCreate(keyInfoCtx->keysMngr);
+        if(keyInfoCtx->encCtx == NULL) {
+            xmlSecInternalError("xmlSecEncCtxCreate", NULL);
+            return(-1);
+        }
+    } else {
+        xmlSecEncCtxReset(keyInfoCtx->encCtx);
     }
-    tmp->mode = xmlSecEncCtxModeEncryptedKey;
+
+    /* set the mode to indicate we are processing an EncryptedKey */
+    keyInfoCtx->encCtx->mode = xmlSecEncCtxModeEncryptedKey;
+
+    /* setup enc operation */
+    keyInfoCtx->encCtx->operation = xmlSecEncCtxMapOperation(keyInfoCtx->operation);
+    keyInfoCtx->encCtx->keyInfoReadCtx.operation = keyInfoCtx->encCtx->operation;
+    keyInfoCtx->encCtx->keyInfoWriteCtx.operation = keyInfoCtx->encCtx->operation;
+
+    /* setup current recursion levels for the read/write key info contexts */
+    keyInfoCtx->encCtx->keyInfoReadCtx.curKeyInfoReferenceLevel = keyInfoCtx->curKeyInfoReferenceLevel;
+    keyInfoCtx->encCtx->keyInfoWriteCtx.curKeyInfoReferenceLevel = keyInfoCtx->curKeyInfoReferenceLevel;
+
+    keyInfoCtx->encCtx->keyInfoReadCtx.curRetrievalMethodLevel = keyInfoCtx->curRetrievalMethodLevel;
+    keyInfoCtx->encCtx->keyInfoWriteCtx.curRetrievalMethodLevel = keyInfoCtx->curRetrievalMethodLevel;
+
+    keyInfoCtx->encCtx->keyInfoReadCtx.curEncryptedKeyLevel = keyInfoCtx->curEncryptedKeyLevel + 1;
+    keyInfoCtx->encCtx->keyInfoWriteCtx.curEncryptedKeyLevel = keyInfoCtx->curEncryptedKeyLevel + 1;
 
     /* copy user preferences from our current ctx */
     switch(keyInfoCtx->mode) {
         case xmlSecKeyInfoModeRead:
-            ret = xmlSecKeyInfoCtxCopyUserPref(&(tmp->keyInfoReadCtx), keyInfoCtx);
+            ret = xmlSecKeyInfoCtxCopyUserPref(&(keyInfoCtx->encCtx->keyInfoReadCtx), keyInfoCtx);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref", NULL);
-                xmlSecEncCtxDestroy(tmp);
+                xmlSecEncCtxDestroy(keyInfoCtx->encCtx);
+                keyInfoCtx->encCtx = NULL;
                 return(-1);
             }
             break;
         case xmlSecKeyInfoModeWrite:
-            ret = xmlSecKeyInfoCtxCopyUserPref(&(tmp->keyInfoWriteCtx), keyInfoCtx);
+            ret = xmlSecKeyInfoCtxCopyUserPref(&(keyInfoCtx->encCtx->keyInfoWriteCtx), keyInfoCtx);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref", NULL);
-                xmlSecEncCtxDestroy(tmp);
+                xmlSecEncCtxDestroy(keyInfoCtx->encCtx);
+                keyInfoCtx->encCtx = NULL;
                 return(-1);
             }
             /* the inner <enc:EncryptedKey> KeyInfo is read through the read
              * context, so the user preferences have to be copied there as well */
-            ret = xmlSecKeyInfoCtxCopyUserPref(&(tmp->keyInfoReadCtx), keyInfoCtx);
+            ret = xmlSecKeyInfoCtxCopyUserPref(&(keyInfoCtx->encCtx->keyInfoReadCtx), keyInfoCtx);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref", NULL);
-                xmlSecEncCtxDestroy(tmp);
+                xmlSecEncCtxDestroy(keyInfoCtx->encCtx);
+                keyInfoCtx->encCtx = NULL;
                 return(-1);
             }
             break;
@@ -425,10 +448,8 @@ xmlSecKeyInfoCtxCreateEncCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
             /* xmlSecKeyInfoMode only has Read and Write values */
             break;
     }
-    keyInfoCtx->encCtx = tmp;
-    tmp->keyInfoReadCtx.operation = keyInfoCtx->operation;
-    tmp->keyInfoWriteCtx.operation = keyInfoCtx->operation;
 
+    /* success */
     return(0);
 #else /* XMLSEC_NO_XMLENC */
 
@@ -1616,22 +1637,13 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
         return(-1);
     }
 
-    /* init Enc context */
-    if(keyInfoCtx->encCtx != NULL) {
-        xmlSecEncCtxReset(keyInfoCtx->encCtx);
-    } else {
-        ret = xmlSecKeyInfoCtxCreateEncCtx(keyInfoCtx);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecKeyInfoCtxCreateEncCtx", xmlSecKeyDataKlassGetName(id));
-            return(-1);
-        }
+    /* setup Enc context */
+    ret = xmlSecKeyInfoCtxCreateEncCtx(keyInfoCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyInfoCtxCreateEncCtx", xmlSecKeyDataKlassGetName(id));
+        return(-1);
     }
     xmlSecAssert2(keyInfoCtx->encCtx != NULL, -1);
-
-    /* setup current recursion levels for the read context */
-    keyInfoCtx->encCtx->keyInfoReadCtx.curKeyInfoReferenceLevel = keyInfoCtx->curKeyInfoReferenceLevel;
-    keyInfoCtx->encCtx->keyInfoReadCtx.curRetrievalMethodLevel = keyInfoCtx->curRetrievalMethodLevel;
-    keyInfoCtx->encCtx->keyInfoReadCtx.curEncryptedKeyLevel = keyInfoCtx->curEncryptedKeyLevel + 1;
 
     /* keep a pointer to the parent key info context so that the key transport
      * transforms (e.g. ML-KEM) can derive the expected CEK size from the
@@ -1667,24 +1679,13 @@ xmlSecKeyDataEncryptedKeyXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodeP
         return(-1);
     }
 
-    /* init Enc context */
-    if(keyInfoCtx->encCtx != NULL) {
-        xmlSecEncCtxReset(keyInfoCtx->encCtx);
-    } else {
-        ret = xmlSecKeyInfoCtxCreateEncCtx(keyInfoCtx);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecKeyInfoCtxCreateEncCtx", xmlSecKeyDataKlassGetName(id));
-            return(-1);
-        }
+    /* setup Enc context */
+    ret = xmlSecKeyInfoCtxCreateEncCtx(keyInfoCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyInfoCtxCreateEncCtx", xmlSecKeyDataKlassGetName(id));
+        return(-1);
     }
     xmlSecAssert2(keyInfoCtx->encCtx != NULL, -1);
-
-    /* setup current recursion levels for the write context */
-    keyInfoCtx->encCtx->keyInfoWriteCtx.curKeyInfoReferenceLevel = keyInfoCtx->curKeyInfoReferenceLevel;
-    keyInfoCtx->encCtx->keyInfoWriteCtx.curRetrievalMethodLevel = keyInfoCtx->curRetrievalMethodLevel;
-    keyInfoCtx->encCtx->keyInfoWriteCtx.curEncryptedKeyLevel = keyInfoCtx->curEncryptedKeyLevel + 1;
-
-
 
     /* write the EncryptedKey node */
     ret = xmlSecEncCtxEncryptedKeyXmlWrite(keyInfoCtx->encCtx, node, key, keyInfoCtx);
@@ -1792,22 +1793,13 @@ xmlSecKeyDataDerivedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr 
         return(-1);
     }
 
-    /* init enc context */
-    if(keyInfoCtx->encCtx != NULL) {
-        xmlSecEncCtxReset(keyInfoCtx->encCtx);
-    } else {
-        ret = xmlSecKeyInfoCtxCreateEncCtx(keyInfoCtx);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecKeyInfoCtxCreateEncCtx", xmlSecKeyDataKlassGetName(id));
-            return(-1);
-        }
+    /* setup Enc context */
+    ret = xmlSecKeyInfoCtxCreateEncCtx(keyInfoCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyInfoCtxCreateEncCtx", xmlSecKeyDataKlassGetName(id));
+        return(-1);
     }
     xmlSecAssert2(keyInfoCtx->encCtx != NULL, -1);
-
-    /* setup current recursion levels for the read context */
-    keyInfoCtx->encCtx->keyInfoReadCtx.curKeyInfoReferenceLevel = keyInfoCtx->curKeyInfoReferenceLevel;
-    keyInfoCtx->encCtx->keyInfoReadCtx.curRetrievalMethodLevel = keyInfoCtx->curRetrievalMethodLevel;
-    keyInfoCtx->encCtx->keyInfoReadCtx.curEncryptedKeyLevel = keyInfoCtx->curEncryptedKeyLevel + 1;
 
     /* generate derived key */
     generatedKey = xmlSecEncCtxDerivedKeyGenerate(keyInfoCtx->encCtx, keyInfoCtx->keyReq.keyId, node, keyInfoCtx);
@@ -1958,22 +1950,13 @@ xmlSecKeyDataAgreementMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
         return(-1);
     }
 
-    /* init enc context */
-    if(keyInfoCtx->encCtx != NULL) {
-        xmlSecEncCtxReset(keyInfoCtx->encCtx);
-    } else {
-        ret = xmlSecKeyInfoCtxCreateEncCtx(keyInfoCtx);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecKeyInfoCtxCreateEncCtx", xmlSecKeyDataKlassGetName(id));
-            return(-1);
-        }
+    /* setup Enc context */
+    ret = xmlSecKeyInfoCtxCreateEncCtx(keyInfoCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyInfoCtxCreateEncCtx", xmlSecKeyDataKlassGetName(id));
+        return(-1);
     }
     xmlSecAssert2(keyInfoCtx->encCtx != NULL, -1);
-
-    /* setup current recursion levels for the read context */
-    keyInfoCtx->encCtx->keyInfoReadCtx.curKeyInfoReferenceLevel = keyInfoCtx->curKeyInfoReferenceLevel;
-    keyInfoCtx->encCtx->keyInfoReadCtx.curRetrievalMethodLevel = keyInfoCtx->curRetrievalMethodLevel;
-    keyInfoCtx->encCtx->keyInfoReadCtx.curEncryptedKeyLevel = keyInfoCtx->curEncryptedKeyLevel + 1;
 
     /* generate key agreement key */
     generatedKey = xmlSecEncCtxAgreementMethodGenerate(keyInfoCtx->encCtx, keyInfoCtx->keyReq.keyId, node, keyInfoCtx);
@@ -2051,15 +2034,11 @@ xmlSecKeyDataAgreementMethodXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNo
         return(-1);
     }
 
-    /* init enc context */
-    if(keyInfoCtx->encCtx != NULL) {
-        xmlSecEncCtxReset(keyInfoCtx->encCtx);
-    } else {
-        ret = xmlSecKeyInfoCtxCreateEncCtx(keyInfoCtx);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecKeyInfoCtxCreateEncCtx", xmlSecKeyDataKlassGetName(id));
-            return(-1);
-        }
+    /* setup Enc context */
+    ret = xmlSecKeyInfoCtxCreateEncCtx(keyInfoCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyInfoCtxCreateEncCtx", xmlSecKeyDataKlassGetName(id));
+        return(-1);
     }
     xmlSecAssert2(keyInfoCtx->encCtx != NULL, -1);
 
@@ -2082,11 +2061,6 @@ xmlSecKeyDataAgreementMethodXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNo
         }
         /* kamKeyDataDup is now owned by the transform context */
     }
-
-    /* setup current recursion levels for the write context */
-    keyInfoCtx->encCtx->keyInfoWriteCtx.curKeyInfoReferenceLevel = keyInfoCtx->curKeyInfoReferenceLevel;
-    keyInfoCtx->encCtx->keyInfoWriteCtx.curRetrievalMethodLevel = keyInfoCtx->curRetrievalMethodLevel;
-    keyInfoCtx->encCtx->keyInfoWriteCtx.curEncryptedKeyLevel = keyInfoCtx->curEncryptedKeyLevel + 1;
 
     /* write the agreement method */
     ret = xmlSecEncCtxAgreementMethodXmlWrite(keyInfoCtx->encCtx, node, keyInfoCtx);

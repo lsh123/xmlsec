@@ -34,9 +34,11 @@
 
 #include "cast_helpers.h"
 #include "keysdata_helpers.h"
+#include "xmlenc_helpers.h"
 
 static int      xmlSecEncCtxEncDataNodeRead             (xmlSecEncCtxPtr encCtx,
-                                                         xmlNodePtr node);
+                                                         xmlNodePtr node,
+                                                         int addBase64IfNeeded);
 static int      xmlSecEncCtxEncDataNodeWrite            (xmlSecEncCtxPtr encCtx);
 static int      xmlSecEncCtxCipherDataNodeRead          (xmlSecEncCtxPtr encCtx,
                                                          xmlNodePtr node);
@@ -45,6 +47,9 @@ static int      xmlSecEncCtxCipherReferenceNodeRead     (xmlSecEncCtxPtr encCtx,
 
 static void     xmlSecEncCtxMarkAsFailed                (xmlSecEncCtxPtr encCtx,
                                                          xmlSecEncFailureReason failureReason);
+
+static xmlSecBufferPtr xmlSecEncCtxEncryptOrDecryptToBuffer     (xmlSecEncCtxPtr encCtx,
+                                                                 xmlNodePtr node);
 
 /* The ID attribute in XMLEnc is 'Id' */
 static const xmlChar*           xmlSecEncIds[] = { BAD_CAST "Id", NULL };
@@ -294,7 +299,7 @@ xmlSecEncCtxBinaryEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl,
     xmlSecAddIDs(tmpl->doc, tmpl, xmlSecEncIds);
 
     /* read the template and set encryption method, key, etc. */
-    ret = xmlSecEncCtxEncDataNodeRead(encCtx, tmpl);
+    ret = xmlSecEncCtxEncDataNodeRead(encCtx, tmpl, 1); /* add Base64 if needed */
     if(ret < 0) {
         xmlSecInternalError("xmlSecEncCtxEncDataNodeRead", NULL);
         return(-1);
@@ -349,7 +354,7 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
     xmlSecAddIDs(tmpl->doc, tmpl, xmlSecEncIds);
 
     /* read the template and set encryption method, key, etc. */
-    ret = xmlSecEncCtxEncDataNodeRead(encCtx, tmpl);
+    ret = xmlSecEncCtxEncDataNodeRead(encCtx, tmpl, 1); /* add Base64 if needed */
     if(ret < 0) {
         xmlSecInternalError("xmlSecEncCtxEncDataNodeRead", NULL);
         return(-1);
@@ -484,7 +489,7 @@ xmlSecEncCtxUriEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, const xmlChar* u
     encCtx->transformCtx.enabledUris = saved;
 
     /* read the template and set encryption method, key, etc. */
-    ret = xmlSecEncCtxEncDataNodeRead(encCtx, tmpl);
+    ret = xmlSecEncCtxEncDataNodeRead(encCtx, tmpl, 1); /* add Base64 if needed */
     if(ret < 0) {
         xmlSecInternalError("xmlSecEncCtxEncDataNodeRead", NULL);
         return(-1);
@@ -527,6 +532,9 @@ xmlSecEncCtxDecrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     xmlSecAssert2(encCtx != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(node->doc != NULL, -1);
+
+    /* initialize context */
+    encCtx->operation = xmlSecTransformOperationDecrypt;
 
     /* decrypt */
     buffer = xmlSecEncCtxDecryptToBuffer(encCtx, node);
@@ -596,6 +604,15 @@ xmlSecEncCtxDecrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
  */
 xmlSecBufferPtr
 xmlSecEncCtxDecryptToBuffer(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
+    xmlSecAssert2(encCtx != NULL, NULL);
+
+    /* force decrypt operation */
+    encCtx->operation = xmlSecTransformOperationDecrypt;
+    return xmlSecEncCtxEncryptOrDecryptToBuffer(encCtx, node);
+}
+
+static xmlSecBufferPtr
+xmlSecEncCtxEncryptOrDecryptToBuffer(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     xmlSecBufferPtr res = NULL;
     xmlChar* data = NULL;
     int ret;
@@ -606,10 +623,9 @@ xmlSecEncCtxDecryptToBuffer(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     xmlSecAssert2(node->doc != NULL, NULL);
 
     /* initialize context and add ID attributes to the list of known ids */
-    encCtx->operation = xmlSecTransformOperationDecrypt;
     xmlSecAddIDs(node->doc, node, xmlSecEncIds);
 
-    ret = xmlSecEncCtxEncDataNodeRead(encCtx, node);
+    ret = xmlSecEncCtxEncDataNodeRead(encCtx, node, 0); /* do not add base64 */
     if(ret < 0) {
         xmlSecInternalError("xmlSecEncCtxEncDataNodeRead", NULL);
         goto done;
@@ -648,7 +664,7 @@ done:
 }
 
 static int
-xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
+xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node, int addBase64IfNeeded) {
     xmlNodePtr cur;
     int ret;
 
@@ -817,7 +833,7 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     }
 
     /* if we need to write result to xml node then we need base64 encode it */
-    if((encCtx->operation == xmlSecTransformOperationEncrypt) && (encCtx->cipherValueNode != NULL)) {
+    if((addBase64IfNeeded == 1) && (encCtx->operation == xmlSecTransformOperationEncrypt) && (encCtx->cipherValueNode != NULL)) {
         xmlSecTransformPtr base64Encode;
 
         /* we need to add base64 encode transform */
@@ -1256,7 +1272,13 @@ xmlSecEncCtxGenerateKey(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xmlSecKey
     return(key);
 }
 
-static xmlSecTransformOperation
+/**
+ * @brief Maps a general transform operation to an XML Encryption specific operation.
+ * @details Maps @p operation to the corresponding XML Encryption operation.
+ * @param operation the general transform operation.
+ * @return the corresponding XML Encryption operation.
+ */
+xmlSecTransformOperation
 xmlSecEncCtxMapOperation(xmlSecTransformOperation operation) {
     switch(operation) {
         case xmlSecTransformOperationSign:
@@ -1660,15 +1682,15 @@ xmlSecEncCtxEncryptedKeyXmlRead(
     xmlSecAssert2(key->value == NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    /* decrypt */
-    result = xmlSecEncCtxDecryptToBuffer(encCtx, node);
+    /* encrypt or decrypt */
+    result = xmlSecEncCtxEncryptOrDecryptToBuffer(encCtx, node);
     if((result == NULL) || (xmlSecBufferGetData(result) == NULL)) {
         /* We might have multiple EncryptedKey elements, encrypted
          * for different recipients but application can enforce
          * correct enc key.
          */
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_ENCKEY_STOP_ON_FAILED_DECRYPTION) != 0) {
-            xmlSecInternalError("xmlSecEncCtxDecryptToBuffer", NULL);
+            xmlSecInternalError("xmlSecEncCtxEncryptOrDecryptToBuffer", NULL);
             return(-1);
         }
         return(0);
@@ -1785,7 +1807,7 @@ xmlSecEncCtxEncryptedKeyXmlWrite(
 
     /* read the EncryptedKey node: the EncryptionMethod and the KeyInfo (the recipient's public key);
      * this builds the transform and finds the recipient key */
-    ret = xmlSecEncCtxEncDataNodeRead(encCtx, node);
+    ret = xmlSecEncCtxEncDataNodeRead(encCtx, node, 1); /* add Base64 if needed */
     if(ret < 0) {
         xmlSecInternalError("xmlSecEncCtxEncDataNodeRead", NULL);
         goto done;

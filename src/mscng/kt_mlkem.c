@@ -205,16 +205,16 @@ xmlSecMSCngMLKEMSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq) 
     ctx = xmlSecMSCngMLKEMGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    keyReq->keyId = xmlSecMSCngKeyDataMLKEMId;
-
-    /* A KEM key is used for either encapsulation (public key) or decapsulation
-     * (private key). The transform operation flag is not a reliable indicator
-     * of which is needed: the <enc:EncryptedKey> read phase always runs as a
-     * "decrypt" operation even when a new ciphertext is being produced. So
-     * accept both key types here; the actual encapsulate/decapsulate decision
-     * is made in xmlSecMSCngMLKEMProcess based on the input buffer presence. */
-    keyReq->keyType  = xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate;
     keyReq->keyUsage = xmlSecKeyUsageKeyEncapsulate;
+    keyReq->keyId = xmlSecMSCngKeyDataMLKEMId;
+    if(transform->operation == xmlSecTransformOperationEncrypt) {
+        /* encapsulate: at least public key required */
+        keyReq->keyType  = xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic;
+    } else {
+        /* decapsulate: private key required */
+        keyReq->keyType  = xmlSecKeyDataTypePrivate;
+    }
+
     return(0);
 }
 
@@ -244,11 +244,9 @@ xmlSecMSCngMLKEMSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2((ctx->pubkey == 0) && (ctx->privkey == 0), -1);
 
     /* Capture both the public and the private key handles (whichever are
-     * present in the key data). The <enc:EncryptedKey> read phase always runs
-     * as a "decrypt" operation even when a new ciphertext is being produced,
-     * so the transform operation flag cannot be used to pick the handle; the
-     * actual encapsulate/decapsulate decision is made in
-     * xmlSecMSCngMLKEMProcess based on the input buffer presence. */
+     * present in the key data): the encapsulate/decapsulate decision is made
+     * in xmlSecMSCngMLKEMProcess based on the transform operation and the
+     * required key handle is checked there. */
     ctx->pubkey  = xmlSecMSCngKeyDataGetPubkey(keyValue);
     ctx->privkey = xmlSecMSCngKeyDataGetBCryptPrivKey(keyValue);
     if((ctx->pubkey == 0) && (ctx->privkey == 0)) {
@@ -495,23 +493,23 @@ done:
 
 /**
  * This function can be called either from xmlSecKeyDataEncryptedKeyXmlRead()
- * or from xmlSecEncCtxEncryptedKeyXmlWrite().
- * - When we read the key, we either encapsulate the key using the KEM and produce
- * a ciphertext and shared secret, or decapsulate the key from the ciphertext.
- * - When we write the key, we simply write the existing ciphertext.
+ * or from xmlSecEncCtxEncryptedKeyXmlWrite():
+ * - Sign read: Encrypt + no input -> encapsulate
+ * - Sign write: Encrypt + KEM key data present -> write ciphertext
+ * - Verify read: Decrypt + input present -> decapsulate
+ * - Encrypt read: Encrypt + no input -> encapsulate
+ * - Encrypt write: Encrypt + KEM key data present -> write ciphertext
+ * - Decrypt read: Decrypt + KEM key data present -> write ciphertext
  */
 static int
 xmlSecMSCngMLKEMProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr transformCtx) {
     xmlSecMSCngMLKEMCtxPtr ctx;
     xmlSecBufferPtr in, out;
     xmlSecSize inSize;
-    xmlSecKeyDataPtr kemKeyData;
-    xmlSecBufferPtr ciphertext;
     int ret;
 
     xmlSecAssert2(xmlSecMSCngMLKEMCheckId(transform), -1);
-    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) ||
-                  (transform->operation == xmlSecTransformOperationDecrypt), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngMLKEMSize), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
@@ -525,46 +523,40 @@ xmlSecMSCngMLKEMProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr tran
     inSize = xmlSecBufferGetSize(in);
     xmlSecAssert2(xmlSecBufferGetSize(out) == 0, -1);
 
-    kemKeyData = xmlSecTransformCtxExtraKeyDataGet(transformCtx, xmlSecKeyDataKEMId);
-    if(kemKeyData != NULL) {
-        /* we are writing the ciphertext */
+    /* encapsulate or decapsulate shared secret into output buffer,
+     * so it must be marked secure before the first allocation */
+    xmlSecBufferMakeSecure(out);
+
+    if(transform->operation == xmlSecTransformOperationEncrypt) {
+        xmlSecKeyDataPtr kemKeyData;
+        xmlSecBufferPtr ciphertext;
+
+        kemKeyData = xmlSecTransformCtxExtraKeyDataEnsure(transformCtx, xmlSecKeyDataKEMId);
+        if(kemKeyData == NULL) {
+            xmlSecInternalError("xmlSecTransformCtxExtraKeyDataEnsure(xmlSecKeyDataKEMId)", NULL);
+            return(-1);
+        }
+
         ciphertext = xmlSecKeyDataKEMGetCiphertext(kemKeyData);
         if(ciphertext == NULL) {
             xmlSecInternalError("xmlSecKeyDataKEMGetCiphertext", NULL);
             return(-1);
         }
-        if(xmlSecBufferGetSize(ciphertext) != ctx->ciphertextSize) {
-            xmlSecInvalidSizeError("KEM ciphertext", xmlSecBufferGetSize(ciphertext), ctx->ciphertextSize, NULL);
-            return(-1);
-        }
 
-        ret = xmlSecBufferSetData(out, xmlSecBufferGetData(ciphertext), xmlSecBufferGetSize(ciphertext));
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecBufferSetData(out)", NULL);
-            return(-1);
-        }
-    } else {
-        /* we are reading the key: encapsulate or decapsulate shared secret into output buffer,
-         * so it must be marked secure before the first allocation */
-        xmlSecBufferMakeSecure(out);
-
-        /* we ignore transform->operation flag and decide to do encapsulation or decapsulation based
-         * on the input buffer presence */
-        if(inSize == 0) {
+        /* check if we already have KEM key data available and we just need to write it */
+        if(xmlSecBufferIsEmpty(ciphertext)) {
             /* encapsulation takes no input and produces a fresh ciphertext; the
              * ciphertext is stored in the KEM key data of the transform context
              * and serialized into <enc:CipherValue/> by the EncryptedKey write code */
-            kemKeyData = xmlSecTransformCtxExtraKeyDataEnsure(transformCtx, xmlSecKeyDataKEMId);
-            if(kemKeyData == NULL) {
-                xmlSecInternalError("xmlSecTransformCtxExtraKeyDataEnsure(xmlSecKeyDataKEMId)", NULL);
+            if(inSize != 0) {
+                xmlSecInvalidDataError("Unexpected input for KEM encapsulation", NULL);
                 return(-1);
             }
-            ciphertext = xmlSecKeyDataKEMGetCiphertext(kemKeyData);
-            if(ciphertext == NULL) {
-                xmlSecInternalError("xmlSecKeyDataKEMGetCiphertext", NULL);
+            if(ctx->pubkey == 0) {
+                xmlSecInvalidDataError("encapsulation requires the ML-KEM public key",
+                                       xmlSecTransformGetName(transform));
                 return(-1);
             }
-            xmlSecBufferEmpty(ciphertext);
 
             ret = xmlSecMSCngMLKEMEncapsulate(ctx, ciphertext, out);
             if(ret < 0) {
@@ -572,23 +564,40 @@ xmlSecMSCngMLKEMProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr tran
                 return(-1);
             }
         } else {
-            /* decapsulation consumes the ciphertext from the input buffer */
-            if(transform->operation == xmlSecTransformOperationEncrypt) {
-                /* a key write (operation=Encrypt) must have the KEM data produced during
-                 * the read phase; reaching the decapsulation path means the KeyInfo was
-                 * not read (e.g. a session key was preset), so there is no KEM ciphertext
-                 * to write */
-                xmlSecInvalidTransformError2(transform,
-                    "cannot write the KEM ciphertext: no encapsulation was performed during the read phase (operation=%u)",
-                    transform->operation);
+            /* ignore input data, we are writing the ciphertext from previous encapsulation */
+            if(xmlSecBufferGetSize(ciphertext) != ctx->ciphertextSize) {
+                xmlSecInvalidSizeError("KEM ciphertext", xmlSecBufferGetSize(ciphertext), ctx->ciphertextSize, NULL);
                 return(-1);
             }
-            ret = xmlSecMSCngMLKEMDecapsulate(ctx, in, out);
+
+            ret = xmlSecBufferSetData(out, xmlSecBufferGetData(ciphertext), xmlSecBufferGetSize(ciphertext));
             if(ret < 0) {
-                xmlSecInternalError("xmlSecMSCngMLKEMDecapsulate", xmlSecTransformGetName(transform));
+                xmlSecInternalError("xmlSecBufferSetData(out)", NULL);
                 return(-1);
             }
         }
+    } else if(transform->operation == xmlSecTransformOperationDecrypt) {
+        /* decapsulation consumes the ciphertext from the input buffer */
+        if(inSize == 0) {
+            xmlSecInvalidDataError("Empty KEM ciphertext", NULL);
+            return(-1);
+        }
+        if(ctx->privkey == 0) {
+            xmlSecInvalidDataError("decapsulation requires the ML-KEM private key",
+                                   xmlSecTransformGetName(transform));
+            return(-1);
+        }
+
+        ret = xmlSecMSCngMLKEMDecapsulate(ctx, in, out);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecMSCngMLKEMDecapsulate", xmlSecTransformGetName(transform));
+            return(-1);
+        }
+    } else {
+        xmlSecInvalidTransformError2(transform,
+            "Unsupported operation for ML-KEM transform (operation=%u)",
+            transform->operation);
+        return(-1);
     }
 
     /* the input has been consumed */

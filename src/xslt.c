@@ -28,9 +28,9 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/parser.h>
 #include <xmlsec/errors.h>
-#include "xslt.h"
 
 #include "cast_helpers.h"
+#include "xslt_helpers.h"
 
 /******************************************************************************
  *

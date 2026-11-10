@@ -115,59 +115,34 @@ struct _xmlSecEncCtx {
     void*                       reserved1;  /**< reserved for the future. */
 };
 
-XMLSEC_EXPORT xmlSecEncCtxPtr   xmlSecEncCtxCreate              (xmlSecKeysMngrPtr keysMngr);
-XMLSEC_EXPORT void              xmlSecEncCtxDestroy             (xmlSecEncCtxPtr encCtx);
-XMLSEC_EXPORT int               xmlSecEncCtxInitialize          (xmlSecEncCtxPtr encCtx,
-                                                                 xmlSecKeysMngrPtr keysMngr);
-XMLSEC_EXPORT void              xmlSecEncCtxFinalize            (xmlSecEncCtxPtr encCtx);
-XMLSEC_EXPORT int               xmlSecEncCtxCopyUserPref        (xmlSecEncCtxPtr dst,
-                                                                 xmlSecEncCtxPtr src);
-XMLSEC_EXPORT void              xmlSecEncCtxReset               (xmlSecEncCtxPtr encCtx);
-XMLSEC_EXPORT int               xmlSecEncCtxBinaryEncrypt       (xmlSecEncCtxPtr encCtx,
-                                                                 xmlNodePtr tmpl,
-                                                                 const xmlSecByte* data,
-                                                                 xmlSecSize dataSize);
-XMLSEC_EXPORT int               xmlSecEncCtxXmlEncrypt          (xmlSecEncCtxPtr encCtx,
-                                                                 xmlNodePtr tmpl,
-                                                                 xmlNodePtr node);
-XMLSEC_EXPORT int               xmlSecEncCtxUriEncrypt          (xmlSecEncCtxPtr encCtx,
-                                                                 xmlNodePtr tmpl,
-                                                                 const xmlChar* uri);
-XMLSEC_EXPORT int               xmlSecEncCtxDecrypt             (xmlSecEncCtxPtr encCtx,
-                                                                 xmlNodePtr node);
-XMLSEC_EXPORT xmlSecBufferPtr   xmlSecEncCtxDecryptToBuffer     (xmlSecEncCtxPtr encCtx,
-                                                                 xmlNodePtr node);
-XMLSEC_EXPORT void              xmlSecEncCtxDebugDump           (xmlSecEncCtxPtr encCtx,
-                                                                 FILE* output);
-XMLSEC_EXPORT void              xmlSecEncCtxDebugXmlDump        (xmlSecEncCtxPtr encCtx,
-                                                                 FILE* output);
+XMLSEC_EXPORT xmlSecEncCtxPtr   xmlSecEncCtxCreate                  (xmlSecKeysMngrPtr keysMngr);
+XMLSEC_EXPORT void              xmlSecEncCtxDestroy                 (xmlSecEncCtxPtr encCtx);
+XMLSEC_EXPORT int               xmlSecEncCtxInitialize              (xmlSecEncCtxPtr encCtx,
+                                                                     xmlSecKeysMngrPtr keysMngr);
+XMLSEC_EXPORT void              xmlSecEncCtxFinalize                (xmlSecEncCtxPtr encCtx);
+XMLSEC_EXPORT int               xmlSecEncCtxCopyUserPref            (xmlSecEncCtxPtr dst,
+                                                                     xmlSecEncCtxPtr src);
+XMLSEC_EXPORT void              xmlSecEncCtxReset                   (xmlSecEncCtxPtr encCtx);
+XMLSEC_EXPORT int               xmlSecEncCtxBinaryEncrypt           (xmlSecEncCtxPtr encCtx,
+                                                                     xmlNodePtr tmpl,
+                                                                     const xmlSecByte* data,
+                                                                     xmlSecSize dataSize);
+XMLSEC_EXPORT int               xmlSecEncCtxXmlEncrypt              (xmlSecEncCtxPtr encCtx,
+                                                                     xmlNodePtr tmpl,
+                                                                     xmlNodePtr node);
+XMLSEC_EXPORT int               xmlSecEncCtxUriEncrypt              (xmlSecEncCtxPtr encCtx,
+                                                                     xmlNodePtr tmpl,
+                                                                     const xmlChar* uri);
+XMLSEC_EXPORT int               xmlSecEncCtxDecrypt                 (xmlSecEncCtxPtr encCtx,
+                                                                     xmlNodePtr node);
+XMLSEC_EXPORT xmlSecBufferPtr   xmlSecEncCtxDecryptToBuffer         (xmlSecEncCtxPtr encCtx,
+                                                                     xmlNodePtr node);
+XMLSEC_EXPORT void              xmlSecEncCtxDebugDump               (xmlSecEncCtxPtr encCtx,
+                                                                     FILE* output);
+XMLSEC_EXPORT void              xmlSecEncCtxDebugXmlDump            (xmlSecEncCtxPtr encCtx,
+                                                                     FILE* output);
 
-XMLSEC_EXPORT xmlSecKeyPtr      xmlSecEncCtxDerivedKeyGenerate  (xmlSecEncCtxPtr encCtx,
-                                                                 xmlSecKeyDataId keyId,
-                                                                 xmlNodePtr node,
-                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
-
-
-XMLSEC_EXPORT xmlSecKeyPtr      xmlSecEncCtxAgreementMethodGenerate        (xmlSecEncCtxPtr encCtx,
-                                                                            xmlSecKeyDataId keyId,
-                                                                            xmlNodePtr node,
-                                                                            xmlSecKeyInfoCtxPtr keyInfoCtx);
-
-XMLSEC_EXPORT int               xmlSecEncCtxAgreementMethodXmlWrite        (xmlSecEncCtxPtr encCtx,
-                                                                            xmlNodePtr node,
-                                                                            xmlSecKeyInfoCtxPtr keyInfoCtx);
-
-XMLSEC_EXPORT int               xmlSecEncCtxEncryptedKeyXmlRead            (xmlSecEncCtxPtr encCtx,
-                                                                            xmlNodePtr node,
-                                                                            xmlSecKeyPtr key,
-                                                                            xmlSecKeyInfoCtxPtr keyInfoCtx);
-
-XMLSEC_EXPORT int               xmlSecEncCtxEncryptedKeyXmlWrite           (xmlSecEncCtxPtr encCtx,
-                                                                            xmlNodePtr node,
-                                                                            xmlSecKeyPtr key,
-                                                                            xmlSecKeyInfoCtxPtr keyInfoCtx);
-
-XMLSEC_EXPORT const char*       xmlSecEncCtxGetFailureReasonString         (xmlSecEncFailureReason failureReason);
+XMLSEC_EXPORT const char*       xmlSecEncCtxGetFailureReasonString  (xmlSecEncFailureReason failureReason);
 
 #ifdef __cplusplus
 }

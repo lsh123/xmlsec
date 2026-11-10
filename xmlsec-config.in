@@ -273,7 +273,7 @@ esac
 # Assemble all the settings together
 #
 the_flags="$the_flags @XMLSEC_CORE_CFLAGS@ $the_xml_flags $the_xslt_flags $the_crypto_flags"
-the_libs="$the_libs -L${libdir} @XMLSEC_CORE_LIBS@ $the_xmlsec_crypto_lib $the_xml_libs $the_xslt_libs $the_crypto_libs"
+the_libs="$the_libs -L${libdir} @XMLSEC_CORE_LIBS@ @XMLSEC_CORE_PRIVATE_LIBS@ $the_xmlsec_crypto_lib $the_xml_libs $the_xslt_libs $the_crypto_libs"
 
 if $cflags ;
 then

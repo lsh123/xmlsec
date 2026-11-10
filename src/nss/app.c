@@ -21,8 +21,9 @@
 #include <certdb.h>
 #include <keyhi.h>
 #include <pk11pub.h>
-#include <pkcs12.h>
 #include <p12plcy.h>
+#include <pkcs12.h>
+#include <secpkcs5.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -347,6 +348,21 @@ xmlSecNssAppImportEncryptedPkcs8Key(PK11SlotInfo* slot, SECItem* derItem,
     goto done;
 
 import:
+    /* the EncryptedPrivateKeyInfo template also structurally matches a
+     * plain (unencrypted) PrivateKeyInfo (the version field is optional in
+     * both structures); a genuine EncryptedPrivateKeyInfo always has a PBE
+     * encryption algorithm in its "algorithm" field, so if the parsed
+     * algorithm is not a PBE algorithm, the item is not an encrypted
+     * PKCS#8 private key: the plain import above failed because the key
+     * type is unsupported, so report that instead of a misleading
+     * password/PBE error */
+    if(!SEC_PKCS5IsAlgorithmPBEAlg(&epkiInfo.algorithm)) {
+        xmlSecInvalidDataError("the data is a plain (unencrypted) PKCS#8 "
+            "container, not an encrypted PKCS#8 private key; the key type "
+            "is not supported", NULL);
+        goto done;
+    }
+
     memset(&epki, 0, sizeof(epki));
     epki.algorithm = epkiInfo.algorithm;
     epki.encryptedData = epkiInfo.encryptedData;

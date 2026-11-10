@@ -740,6 +740,11 @@ xmlSecMSCryptoKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     ctxSrc = xmlSecMSCryptoKeyDataGetCtx(src);
     xmlSecAssert2(ctxSrc != NULL, -1);
 
+    /* destroy the old key and cert before releasing the provider it belongs to
+     * (same order as xmlSecMSCryptoKeyDataFinalize) */
+    xmlSecMSCryptoKeyDataCtxDestroyKey(ctxDst);
+    xmlSecMSCryptoKeyDataCtxDestroyCert(ctxDst);
+
     if(xmlSecMSCryptoKeyDataCtxDuplicateProvider(ctxDst, ctxSrc) < 0) {
             xmlSecInternalError("xmlSecMSCryptoKeyDataCtxDuplicateProvider",
                                 xmlSecKeyDataGetName(dst));
@@ -1995,7 +2000,7 @@ xmlSecMSCryptoKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         0,
         NULL,
         &dwBlobLen);
-    if((status != TRUE) || (dwBlobLen <= 0)) {
+    if((status != TRUE) || (dwBlobLen == 0)) {
         xmlSecMSCryptoError2("CryptExportKey", xmlSecKeyDataKlassGetName(id),
             "dwBlobLen=%lu", dwBlobLen);
         goto done;
@@ -2023,7 +2028,7 @@ xmlSecMSCryptoKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         0,
         blob,
         &dwBlobLen);
-    if ((status != TRUE) || (dwBlobLen <= 0)) {
+    if ((status != TRUE) || (dwBlobLen == 0)) {
         xmlSecMSCryptoError2("CryptExportKey", xmlSecKeyDataKlassGetName(id),
             "dwBlobLen=%lu", dwBlobLen);
         goto done;

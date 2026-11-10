@@ -1092,7 +1092,7 @@ xmlSecEncCtxDebugDump(xmlSecEncCtxPtr encCtx, FILE* output) {
             int sizeInt = (size > INT_MAX) ? INT_MAX : (int)size;
 
             fprintf(output, "== Result - start buffer (base64):\n");
-            fprintf(output, "%.*s\n", sizeInt, result);
+            fprintf(output, "%.*s\n", sizeInt, (const char*)result);
             fprintf(output, "\n== Result - end buffer\n");
         } else {
             fprintf(output, "== Result - start buffer (hex):\n");
@@ -1196,7 +1196,7 @@ xmlSecEncCtxDebugXmlDump(xmlSecEncCtxPtr encCtx, FILE* output) {
             int sizeInt = (size > INT_MAX) ? INT_MAX : (int)size;
 
             fprintf(output, "<Result format=\"base64\">");
-            fprintf(output, "%.*s\n", sizeInt, result);
+            fprintf(output, "%.*s\n", sizeInt, (const char*)result);
             fprintf(output, "</Result>\n");
         } else {
             fprintf(output, "<Result format=\"hex\">");

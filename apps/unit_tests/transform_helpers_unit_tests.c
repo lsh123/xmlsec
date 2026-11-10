@@ -20,7 +20,7 @@
 #include <xmlsec/xmltree.h>
 #include "../../src/transform_helpers.h"
 
-#if !defined(XMLSEC_NO_CHACHA20) || !defined(XMLSEC_NO_MLDSA) || !defined(XMLSEC_NO_SLHDSA) || !defined(XMLSEC_NO_EDDSA) || !defined(XMLSEC_NO_PBKDF2) || !defined(XMLSEC_NO_HKDF)
+#if !defined(XMLSEC_NO_CHACHA20) || !defined(XMLSEC_NO_HMAC) || !defined(XMLSEC_NO_MLDSA) || !defined(XMLSEC_NO_SLHDSA) || !defined(XMLSEC_NO_EDDSA) || !defined(XMLSEC_NO_PBKDF2) || !defined(XMLSEC_NO_HKDF)
 static xmlNodePtr
 xmlSecUnitTestParseNode(const char* xml, xmlDocPtr* doc) {
     xmlNodePtr node;
@@ -44,7 +44,7 @@ xmlSecUnitTestParseNode(const char* xml, xmlDocPtr* doc) {
     }
     return(node);
 }
-#endif /* !defined(XMLSEC_NO_CHACHA20) || !defined(XMLSEC_NO_MLDSA) || !defined(XMLSEC_NO_SLHDSA) || !defined(XMLSEC_NO_EDDSA) || !defined(XMLSEC_NO_PBKDF2) || !defined(XMLSEC_NO_HKDF) */
+#endif /* !defined(XMLSEC_NO_CHACHA20) || !defined(XMLSEC_NO_HMAC) || !defined(XMLSEC_NO_MLDSA) || !defined(XMLSEC_NO_SLHDSA) || !defined(XMLSEC_NO_EDDSA) || !defined(XMLSEC_NO_PBKDF2) || !defined(XMLSEC_NO_HKDF) */
 
 #ifndef XMLSEC_NO_CHACHA20
 

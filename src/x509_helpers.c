@@ -1085,7 +1085,7 @@ xmlSecX509AttrValueStringRead(
 
         /* skip trailing spaces if needed */
         if(ignoreTrailingSpaces != 0) {
-            while(((*inSize) > 0) && isspace(**in)) {
+            while(((*inSize) > 0) && isspace((unsigned char)(**in))) {
                 ++(*in); --(*inSize);
             }
         }
@@ -1136,7 +1136,7 @@ xmlSecX509AttrValueStringRead(
 
         /* skip trailing spaces if needed */
         if(ignoreTrailingSpaces != 0) {
-            while(((*inSize) > 0) && isspace(**in)) {
+            while(((*inSize) > 0) && isspace((unsigned char)(**in))) {
                 ++(*in); --(*inSize);
             }
         }
@@ -1179,7 +1179,7 @@ xmlSecX509NameRead(const xmlChar *str, xmlSecX509NameReplacements *replacements,
     strSize = xmlSecStrlen(str);
     while(strSize > 0) {
         /* skip spaces after comma */
-        while((strSize > 0) && isspace(*str)) {
+        while((strSize > 0) && isspace((unsigned char)(*str))) {
             ++str; --strSize;
         }
 
@@ -1205,7 +1205,7 @@ xmlSecX509NameRead(const xmlChar *str, xmlSecX509NameReplacements *replacements,
         ++str; --strSize;
 
         /* skip spaces after '=' */
-        while((strSize > 0) && isspace(*str)) {
+        while((strSize > 0) && isspace((unsigned char)(*str))) {
             ++str; --strSize;
         }
 

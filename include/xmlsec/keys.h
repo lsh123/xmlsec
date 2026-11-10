@@ -15,6 +15,7 @@
  * @{
  */
 
+#include <stdio.h>
 #include <time.h>
 
 #include <xmlsec/exports.h>

@@ -154,6 +154,7 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         ctx->parserCtx = xmlCreatePushParserCtxt(NULL, NULL, NULL, 0, NULL);
         if(ctx->parserCtx == NULL) {
             xmlSecXmlError("xmlCreatePushParserCtxt", xmlSecTransformGetName(transform));
+            transform->status = xmlSecTransformStatusFail;
             return(-1);
         }
         xmlSecParsePrepareCtxt(ctx->parserCtx);
@@ -181,6 +182,7 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
             xmlSecXmlParserError2("xmlParseChunk", ctx->parserCtx,
                 xmlSecTransformGetName(transform),
                 "size=%d", dataLen);
+            transform->status = xmlSecTransformStatusFail;
             return(-1);
         }
     }
@@ -190,6 +192,7 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         ret = xmlParseChunk(ctx->parserCtx, NULL, 0, 1);
         if((ret != 0) || (ctx->parserCtx->myDoc == NULL)) {
             xmlSecXmlParserError("xmlParseChunk", ctx->parserCtx, xmlSecTransformGetName(transform));
+            transform->status = xmlSecTransformStatusFail;
             return(-1);
         }
 
@@ -197,6 +200,7 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
          * (same contract as xmlSecParseFile and xmlSecParseMemory) */
         if(!(ctx->parserCtx->wellFormed)) {
             xmlSecInternalError("document is not well formed", NULL);
+            transform->status = xmlSecTransformStatusFail;
             return(-1);
         }
 
@@ -212,6 +216,7 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
             xmlSecInternalError("xmlSecNodeSetCreate", xmlSecTransformGetName(transform));
             xmlFreeDoc(ctx->parserCtx->myDoc);
             ctx->parserCtx->myDoc = NULL;
+            transform->status = xmlSecTransformStatusFail;
             return(-1);
         }
         xmlSecNodeSetDocDestroy(transform->outNodes); /* this node set "owns" the doc pointer */
@@ -222,6 +227,7 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
             ret = xmlSecTransformPushXml(transform->next, transform->outNodes, transformCtx);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecTransformPushXml", xmlSecTransformGetName(transform));
+                transform->status = xmlSecTransformStatusFail;
                 return(-1);
             }
         }

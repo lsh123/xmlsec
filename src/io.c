@@ -411,6 +411,13 @@ xmlSecIOFileClose(void* context) {
 
 /**
  * @brief Registers the default compiled-in I/O handlers.
+ * @details Registers the file, http and ftp callback sets (the ones enabled
+ * at build time). If one of the registrations fails, the callback sets
+ * registered before the failure remain in the callback table; the caller
+ * can clear them by invoking #xmlSecIOCleanupCallbacks. Note that
+ * #xmlSecIOInit (which calls this function) rolls back the partially
+ * initialized state on failure, so only direct callers of this function
+ * are affected by a partial registration.
  * @return 0 on success or a negative value otherwise.
  */
 int
@@ -536,11 +543,17 @@ xmlSecTransformInputURIGetKlass(void) {
  * otherwise a subsequent call to this function will fail with an assertion
  * error (a failed internal consistency check) and return -1.
  *
+ * Note: the transform keeps its own copy of the matched callback set, so
+ * the global callback table may be cleared (#xmlSecIOCleanupCallbacks) or
+ * the IO subsystem shut down (#xmlSecIOShutdown) while the transform is
+ * open; the copy is freed by #xmlSecTransformInputURIClose.
+ *
  * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const xmlChar *uri) {
     xmlSecInputURICtxPtr ctx;
+    xmlSecIOCallbackPtr callbacks;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformInputURIId), -1);
     xmlSecAssert2(uri != NULL, -1);
@@ -564,21 +577,38 @@ xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const xmlChar *uri) {
      * "a/b", and for http/ftp URIs a decoded "%23"/"%3F" would become a
      * fragment/query delimiter, so a different resource would be fetched.
      */
-    ctx->clbks = xmlSecIOCallbackPtrListFind(&xmlSecAllIOCallbacks, (char*)uri);
-    if(ctx->clbks != NULL) {
-        if(ctx->clbks->opencallback != NULL) {
-            ctx->clbksCtx = ctx->clbks->opencallback((char*)uri);
-        } else {
-            ctx->clbksCtx = NULL;
-        }
+    callbacks = xmlSecIOCallbackPtrListFind(&xmlSecAllIOCallbacks, (char*)uri);
+    if(callbacks == NULL) {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_IO_FAILED, xmlSecTransformGetName(transform),
+            "no matching handler for URI='%s'", xmlSecErrorsSafeString(uri));
+        return(-1);
     }
-
-    if((ctx->clbks == NULL) || (ctx->clbksCtx == NULL)) {
-        xmlSecInternalError2("open callback", xmlSecTransformGetName(transform),
-                             "uri=%s", xmlSecErrorsSafeString(uri));
+    if(callbacks->opencallback == NULL) {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_IO_FAILED, xmlSecTransformGetName(transform),
+            "no open callback for URI='%s'", xmlSecErrorsSafeString(uri));
         return(-1);
     }
 
+    /* The xmlSecAllIOCallbacks list owns the original struct (it can be freed
+     * by xmlSecIOCleanupCallbacks or xmlSecIOShutdown at any time), so the transform
+     * keeps its own copy until it is closed */
+    ctx->clbks = (xmlSecIOCallbackPtr)xmlMalloc(sizeof(xmlSecIOCallback));
+    if(ctx->clbks == NULL) {
+        xmlSecMallocError(sizeof(xmlSecIOCallback), NULL);
+        return(-1);
+    }
+    memcpy(ctx->clbks, callbacks, sizeof(xmlSecIOCallback));
+
+    /* finally open the URI */
+    ctx->clbksCtx = ctx->clbks->opencallback((char*)uri);
+    if(ctx->clbksCtx == NULL) {
+        xmlSecInternalError2("open callback", xmlSecTransformGetName(transform), "uri=%s", xmlSecErrorsSafeString(uri));
+        xmlFree(ctx->clbks);
+        ctx->clbks = NULL;
+        return(-1);
+    }
+
+    /* success */
     return(0);
 }
 
@@ -594,6 +624,7 @@ xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const xmlChar *uri) {
 int
 xmlSecTransformInputURIClose(xmlSecTransformPtr transform) {
     xmlSecInputURICtxPtr ctx;
+    int res = 0;
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformInputURIId), -1);
@@ -606,14 +637,20 @@ xmlSecTransformInputURIClose(xmlSecTransformPtr transform) {
         ret = (ctx->clbks->closecallback)(ctx->clbksCtx);
         if(ret != 0) {
             xmlSecIOError("ctx->clbks->closecallback", xmlSecTransformGetName(transform), NULL);
-            return(-1);
+            res = -1;
+            /* continue with cleanups */
         }
     }
     ctx->clbksCtx = NULL;
-    ctx->clbks = NULL;
+
+    /* free the copy of the callback set owned by the transform */
+    if(ctx->clbks != NULL) {
+        xmlFree(ctx->clbks);
+        ctx->clbks = NULL;
+    }
 
     /* done */
-    return(0);
+    return(res);
 }
 
 static int

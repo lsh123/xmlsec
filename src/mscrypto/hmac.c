@@ -48,7 +48,7 @@
  *   <HMACOutputLength>128</HMACOutputLength>
  * </SignatureMethod>
  * @endcode
-
+ *
  *****************************************************************************/
 typedef struct _xmlSecMSCryptoHmacCtx            xmlSecMSCryptoHmacCtx, *xmlSecMSCryptoHmacCtxPtr;
 struct _xmlSecMSCryptoHmacCtx {
@@ -275,7 +275,7 @@ xmlSecMSCryptoHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
     ret = xmlSecTransformHmacReadOutputBitsSize(node, ctx->dgstSizeInBits, &ctx->dgstSizeInBits);
     if (ret < 0) {
-        xmlSecInternalError("xmlSecTransformHmacReadOutputBitsSize()",
+        xmlSecInternalError("xmlSecTransformHmacReadOutputBitsSize",
             xmlSecTransformGetName(transform));
         return(-1);
     }

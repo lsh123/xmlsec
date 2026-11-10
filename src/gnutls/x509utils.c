@@ -590,7 +590,7 @@ xmlSecGnuTLSX509MatchBySubjectName(gnutls_x509_crt_t cert, const xmlChar* subjec
         return(0);
     }
 
-    /* returns 1 if equal, -1 on error */
+    /* returns 1 if equal, 0 if not equal, -1 on error */
     ret = xmlSecGnuTLSX509DnsEqual(subjectName, certSubjectName);
     if(ret < 0) {
         xmlFree(certSubjectName);
@@ -625,7 +625,7 @@ xmlSecGnuTLSX509MatchByIssuer(gnutls_x509_crt_t cert, const xmlChar* issuerName,
         return(0);
     }
 
-    /* returns 1 if equal, -1 on error */
+    /* returns 1 if equal, 0 if not equal, -1 on error */
     ret = xmlSecGnuTLSX509DnsEqual(issuerName, certIssuerName);
     if(ret < 0) {
         xmlFree(certIssuerName);

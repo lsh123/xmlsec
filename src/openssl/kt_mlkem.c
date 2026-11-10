@@ -485,7 +485,7 @@ xmlSecOpenSSLMLKEMDecapsulate(xmlSecOpenSSLMLKEMCtxPtr ctx, xmlSecBufferPtr ciph
     /* write ss to output buffer: this becomes the CEK for content decryption */
     ret = xmlSecBufferSetData(sharedSecretOut, ssBuf, ssLen2);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetData", NULL, "size=" XMLSEC_SIZE_T_FMT, ssLen2);
+        xmlSecInternalError2("xmlSecBufferSetData(ss)", NULL, "size=" XMLSEC_SIZE_T_FMT, ssLen2);
         goto done;
     }
 
@@ -504,12 +504,12 @@ done:
 /**
  * This function can be called either from xmlSecKeyDataEncryptedKeyXmlRead()
  * or from xmlSecEncCtxEncryptedKeyXmlWrite():
- * - Sign read: Encrypt + no input -> encapsulate
- * - Sign write: Encrypt + KEM key data present -> write ciphertext
- * - Verify read: Decrypt + input present -> decapsulate
- * - Encrypt read: Encrypt + no input -> encapsulate
- * - Encrypt write: Encrypt + KEM key data present -> write ciphertext
- * - Decrypt read: Decrypt + KEM key data present -> write ciphertext
+ * - Parent Sign read: Encrypt + no input -> encapsulate
+ * - Parent Sign write: Encrypt + KEM key data present -> write ciphertext
+ * - Parent Verify read: Decrypt + input present -> decapsulate
+ * - Parent Encrypt read: Encrypt + no input -> encapsulate
+ * - Parent Encrypt write: Encrypt + KEM key data present -> write ciphertext
+ * - Parent Decrypt read: Decrypt + KEM key data present -> decapsulate
  */
 static int
 xmlSecOpenSSLMLKEMProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr transformCtx) {

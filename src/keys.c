@@ -660,7 +660,8 @@ xmlSecKeyDuplicate(xmlSecKeyPtr key) {
  * @param name the pointer to key name (may be NULL).
  * @param keyReq the pointer to key requirements.
  *
- * @return 1 if the key satisfies the given criteria or 0 otherwise.
+ * @return 1 if the key satisfies the given criteria, 0 if not and a negative
+ * value if an error occurs.
  */
 int
 xmlSecKeyMatch(xmlSecKeyPtr key, const xmlChar *name, xmlSecKeyReqPtr keyReq) {
@@ -782,7 +783,8 @@ xmlSecKeyGetValue(xmlSecKeyPtr key) {
 
 /**
  * @brief Sets the key value (crypto material).
- * @details Sets key value (see also #xmlSecKeyGetValue function).
+ * @details Sets key value (see also #xmlSecKeyGetValue function). The @p value
+ * object will be destroyed by @p key.
  * @param key the pointer to key.
  * @param value the new value.
  *

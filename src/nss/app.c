@@ -384,7 +384,7 @@ done:
 /**
  * @brief Initializes the NSS crypto engine.
  * @details General crypto engine initialization. This function is used
- * by the XMLSec command-line utility and is called before the
+ * by the XMLSec command-line utility and is called after the
  * #xmlSecInit function.
  *
  * @param config the path to NSS database files.
@@ -449,7 +449,7 @@ xmlSecNssAppInit(const char* config) {
 /**
  * @brief Shuts down the NSS crypto engine.
  * @details General crypto engine shutdown. This function is used
- * by the XMLSec command-line utility and is called after the
+ * by the XMLSec command-line utility and is called before the
  * #xmlSecShutdown function.
  *
  * @return 0 on success or a negative value otherwise.
@@ -1004,8 +1004,8 @@ xmlSecNssAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDataFor
  * @details Reads the certificate from @p data and adds it to key.
  *
  * @param key the pointer to key.
- * @param data the key binary data.
- * @param dataSize the key binary data size.
+ * @param data the certificate binary data.
+ * @param dataSize the certificate binary data size.
  * @param format the certificate format.
  * @return 0 on success or a negative value otherwise.
  */

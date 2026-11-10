@@ -95,8 +95,10 @@
 #define szOID_CP_PARAM_PK_R3410_2001_E0 "1.2.643.2.2.36.0"
 #define szOID_CP_PARAM_PK_R3410_2001_E1 "1.2.643.2.2.36.1"
 
-/* CRYPT_PUBKEY_ALG_OID_GROUP_ID: GOST R 34.10-2012 public key algorithm OIDs
- * (RFC 9215, Section 4.1, "Public Key Identifiers"); note that the GOST R
+/* CRYPT_PUBKEY_ALG_OID_GROUP_ID: GOST R 34.10-2012 public key algorithm OIDs;
+ * the RSA/EC entries are from RFC 9215, Section 4.1, "Public Key
+ * Identifiers", and the DH entries are CryptoPro-registered OIDs for the
+ * GOST R 34.10-2012 DH key-agreement algorithms. Note that the GOST R
  * 34.11-2012 hash OIDs are 1.2.643.7.1.1.2.2 / 1.2.643.7.1.1.2.3 (RFC 9215,
  * Section 3) and are different. */
 #define szOID_CP_GOST_R3410_12_256 "1.2.643.7.1.1.1.1"

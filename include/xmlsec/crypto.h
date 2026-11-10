@@ -62,7 +62,7 @@
 #include <xmlsec/gcrypt/crypto.h>
 #include <xmlsec/gcrypt/symbols.h>
 #else /* XMLSEC_CRYPTO_GCRYPT */
-#error No crypto library defined
+#error No crypto library defined (define one of the crypto back-end macros, e.g. XMLSEC_CRYPTO_OPENSSL, or XMLSEC_CRYPTO_DYNAMIC_LOADING)
 #endif /* XMLSEC_CRYPTO_GCRYPT */
 #endif /* XMLSEC_CRYPTO_GNUTLS */
 #endif /* XMLSEC_CRYPTO_NSS */

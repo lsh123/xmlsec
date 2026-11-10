@@ -431,6 +431,10 @@ xmlSecCheckNodeName(const xmlNodePtr cur, const xmlChar *name, const xmlChar *ns
  * @param parent the pointer to an XML node.
  * @param name the new node name.
  * @param ns the new node namespace.
+ *
+ * Note: in case of failure, the @p parent node might be left in an inconsistent
+ * state.
+ *
  * @return pointer to the new node or NULL if an error occurs.
  */
 xmlNodePtr
@@ -552,7 +556,7 @@ xmlSecAddChildNode(xmlNodePtr parent, xmlNodePtr child) {
 /**
  * @brief Finds or creates an empty child element by name and namespace.
  * @details Searches a direct child of the @p parent node having given name and
- * namespace href. If not found then element node with given name / namespace
+ * namespace href. If not found then an element node with given name / namespace
  * is added.
  * @param parent the pointer to XML node.
  * @param name the name.

@@ -368,6 +368,7 @@ xmlSecGnuTLSKeyDataX509GetCertsSize(xmlSecKeyDataPtr data) {
 
 /**
  * @brief Adds crl to the X509 key data.
+ * @details On success, ownership of @p crl transfers to xmlsec; on failure the caller retains ownership.
  * @param data the pointer to X509 key data.
  * @param crl the pointer to GnuTLS X509 crl.
  * @return 0 on success or a negative value if an error occurs.
@@ -472,7 +473,7 @@ xmlSecGnuTLSKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     ctxDst = xmlSecGnuTLSX509DataGetCtx(dst);
     xmlSecAssert2(ctxDst != NULL, -1);
 
-    /* copy certsList if exists */
+    /* copy certsList */
     xmlSecPtrListEmpty(&(ctxDst->certsList));
     ret = xmlSecPtrListCopy(&(ctxDst->certsList), &(ctxSrc->certsList));
     if(ret < 0) {
@@ -480,7 +481,7 @@ xmlSecGnuTLSKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
         return(-1);
     }
 
-    /* copy crlsList if exists */
+    /* copy crlsList */
     xmlSecPtrListEmpty(&(ctxDst->crlsList));
     ret = xmlSecPtrListCopy(&(ctxDst->crlsList), &(ctxSrc->crlsList));
     if(ret < 0) {

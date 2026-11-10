@@ -543,7 +543,7 @@ test_ptr_list_remove(void) {
     remaining = (xmlSecListTestItem*)xmlSecPtrListGetItem(&list, 0);
     if((g_listItemDestroyCount != 2) || (xmlSecPtrListGetSize(&list) != 1) ||
        (remaining == NULL) || (remaining->value != 1)) {
-        testLog("Error: xmlSecPtrListRemove did not update trailing item state\n");
+        testLog("Error: xmlSecPtrListRemove of the last item did not update list state as expected\n");
         goto done;
     }
 

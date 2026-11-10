@@ -45,7 +45,7 @@ static LPTSTR gXmlSecMSCryptoAppCertStoreName = NULL;
 /**
  * @brief Initializes the MSCrypto crypto engine.
  * @details General crypto engine initialization. This function is used
- * by the XMLSec command-line utility and is called before the
+ * by the XMLSec command-line utility and is called after the
  * #xmlSecInit function.
  *
  * @param config the name of a certificate store other than the default Microsoft certificate store.
@@ -81,7 +81,7 @@ xmlSecMSCryptoAppInit(const char* config) {
 /**
  * @brief Shuts down the MSCrypto crypto engine.
  * @details General crypto engine shutdown. This function is used
- * by the XMLSec command-line utility and is called after the
+ * by the XMLSec command-line utility and is called before the
  * #xmlSecShutdown function.
  *
  * @return 0 on success or a negative value otherwise.
@@ -534,8 +534,8 @@ xmlSecMSCryptoAppPkcs12Load(const char *filename,
  * @brief Reads key and certificates from PKCS12 binary.
  * @details Reads a key and all associated certificates from the PKCS12 binary.
  *
- * @param data the binary PKCS12 key in data.
- * @param dataSize size of binary pkcs12 data
+ * @param data the binary PKCS12 data.
+ * @param dataSize size of binary PKCS12 data
  * @param pwd the PKCS12 file password.
  * @param pwdCallback the password callback. Not supported by the MSCrypto
  * back-end and ignored; the password must be supplied via @p pwd.
@@ -849,7 +849,7 @@ xmlSecMSCryptoAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte
 
 /**
  * @brief Reads CRLs from a file and adds to the store.
- * @details Reads crl from @p filename and adds to the list of crls in @p store.
+ * @details Reads CRL from @p filename and adds to the list of CRLs in @p store.
  *
  * @param mngr the keys manager.
  * @param filename the CRL file.
@@ -890,7 +890,7 @@ xmlSecMSCryptoAppKeysMngrCrlLoadAndVerify(xmlSecKeysMngrPtr mngr, const char *fi
 
 /**
  * @brief Reads CRLs from memory and adds to the store.
- * @details Reads crl from @p data and adds to the list of crls in @p store.
+ * @details Reads CRL from @p data and adds to the list of CRLs in @p store.
  *
  * @param mngr the keys manager.
  * @param data the binary CRL.
@@ -1004,7 +1004,7 @@ xmlSecMSCryptoAppDefaultKeysMngrAdoptUntrustedStore(xmlSecKeysMngrPtr mngr, HCER
 /**
  * @brief Initializes the default key manager for MSCrypto.
  * @details Initializes @p mngr with keys store #xmlSecMSCryptoKeysStoreId
- * and a default MSCrypto crypto key data stores.
+ * and a default MSCrypto crypto key data store.
  *
  * @param mngr the pointer to keys manager.
  * @return 0 on success or a negative value otherwise.

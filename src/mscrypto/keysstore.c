@@ -12,7 +12,7 @@
  * MSCrypto keys store that uses Simple Keys Store under the hood. Uses the
  * MS Certificate store as a backing store for finding keys, but the
  * MS Certificate store is not written to by the keys store.
- * So, if store->findkey is done and the key is not found in the simple
+ * So, if store->findKey is done and the key is not found in the simple
  * keys store, the MS Certificate store is looked up.
  * Thus, the MS Certificate store can be used to pre-load keys and becomes
  * an alternate source of keys for xmlsec.
@@ -81,8 +81,8 @@ static xmlSecKeyStoreKlass xmlSecMSCryptoKeysStoreKlass = {
 };
 
 /**
- * @brief The MSCrypto list based keys store klass.
- * @return MSCrypto list based keys store klass.
+ * @brief The MSCrypto keys store klass.
+ * @return MSCrypto keys store klass.
  */
 xmlSecKeyStoreId
 xmlSecMSCryptoKeysStoreGetKlass(void) {

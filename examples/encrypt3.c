@@ -180,7 +180,7 @@ load_rsa_keys(const char* key_file) {
     assert(key_file);
 
     /* create and initialize keys manager, we use a simple list based
-     * keys manager, implement your own xmlSecKeysStore klass if you need
+     * keys manager, implement your own xmlSecKeyStoreKlass if you need
      * something more sophisticated
      */
     mngr = xmlSecKeysMngrCreate();
@@ -330,7 +330,7 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
     /* the template is inserted into the document */
     encDataNode = NULL;
 
-    /* print encrypted data with document to stdout */
+    /* print encrypted data with the document to stdout */
     if(xmlDocDump(stdout, doc) < 0) {
         fprintf(stderr, "Error: failed to write the encrypted document to stdout\n");
         goto done;

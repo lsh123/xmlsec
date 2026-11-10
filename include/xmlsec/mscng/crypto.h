@@ -17,7 +17,7 @@
 /**
  * @defgroup xmlsec_mscng_crypto MSCng Crypto Engine
  * @ingroup xmlsec_mscng
- * @brief Cryptographic operations provided by the MsCng back-end.
+ * @brief Cryptographic operations provided by the MSCng back-end.
  * @{
  */
 

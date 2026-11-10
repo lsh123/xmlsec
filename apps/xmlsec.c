@@ -64,7 +64,7 @@ static const char bugs[] =
     "Report bugs to http://www.aleksey.com/xmlsec/bugs.html\n";
 
 static const char helpCommands1[] =
-    "Usage: xmlsec <command> [<options>] [<files>]\n"
+    "Usage: xmlsec1 <command> [<options>] [<files>]\n"
     "\n"
     "xmlsec is a command line tool for signing, verifying, encrypting and\n"
     "decrypting XML documents. The allowed <command> values are:\n"
@@ -86,43 +86,43 @@ static const char helpCommands2[] =
     ;
 
 static const char helpVersion[] =
-    "Usage: xmlsec version\n"
+    "Usage: xmlsec1 version\n"
     "Prints version information and exits\n";
 
 static const char helpKeys[] =
-    "Usage: xmlsec keys [<options>] <file>\n"
+    "Usage: xmlsec1 keys [<options>] <file>\n"
     "Creates a new XML keys file <file>\n";
 
 static const char helpSign[] =
-    "Usage: xmlsec sign [<options>] <file>\n"
+    "Usage: xmlsec1 sign [<options>] <file>\n"
     "Calculates XML Digital Signature using template file <file>\n";
 
 static const char helpVerify[] =
-    "Usage: xmlsec verify [<options>] <file>\n"
+    "Usage: xmlsec1 verify [<options>] <file>\n"
     "Verifies XML Digital Signature in the <file>\n";
 
 static const char helpEncrypt[] =
-    "Usage: xmlsec encrypt [<options>] <file>\n"
+    "Usage: xmlsec1 encrypt [<options>] <file>\n"
     "Encrypts data and creates XML Encryption using template file <file>\n";
 
 static const char helpDecrypt[] =
-    "Usage: xmlsec decrypt [<options>] <file>\n"
+    "Usage: xmlsec1 decrypt [<options>] <file>\n"
     "Decrypts XML Encryption data in the <file>\n";
 
 static const char helpListKeyData[] =
-    "Usage: xmlsec list-key-data\n"
+    "Usage: xmlsec1 list-key-data\n"
     "Prints the list of known key data klasses\n";
 
 static const char helpCheckKeyData[] =
-    "Usage: xmlsec check-key-data <key-data-name> [<key-data-name> ... ]\n"
+    "Usage: xmlsec1 check-key-data <key-data-name> [<key-data-name> ... ]\n"
     "Checks the given key-data against the list of known key-data klasses\n";
 
 static const char helpListTransforms[] =
-    "Usage: xmlsec list-transforms\n"
+    "Usage: xmlsec1 list-transforms\n"
     "Prints the list of known transform klasses\n";
 
 static const char helpCheckTransforms[] =
-    "Usage: xmlsec check-transforms <transform-name> [<transform-name> ... ]\n"
+    "Usage: xmlsec1 check-transforms <transform-name> [<transform-name> ... ]\n"
     "Checks the given transforms against the list of known transform klasses\n";
 
 #define xmlSecAppCmdLineTopicGeneral            0x0001
@@ -557,7 +557,7 @@ static xmlSecAppCmdLineParam enabledRetrievalMethodUrisParam = {
     NULL,
     "--enabled-retrieval-method-uris <list>"
     "\n\tcomma separated list of the following values:"
-    "\n\t\"empty\", \"same-doc\", \"local\", \"remote\" to restrict possible URI"
+    "\n\t\"empty\", \"same-doc\", \"local\", \"remote\", \"any\" to restrict possible URI"
     "\n\tattribute values for the <dsig:RetrievalMethod> element.",
     xmlSecAppCmdLineParamTypeStringList,
     xmlSecAppCmdLineParamFlagNone,
@@ -570,7 +570,7 @@ static xmlSecAppCmdLineParam enabledKeyInfoReferenceUrisParam = {
     NULL,
     "--enabled-key-info-reference-uris <list>"
     "\n\tcomma separated list of the following values:"
-    "\n\t\"empty\", \"same-doc\", \"local\", \"remote\" to restrict possible URI"
+    "\n\t\"empty\", \"same-doc\", \"local\", \"remote\", \"any\" to restrict possible URI"
     "\n\tattribute values for the <dsig11:KeyInfoReference> element.",
     xmlSecAppCmdLineParamTypeStringList,
     xmlSecAppCmdLineParamFlagNone,
@@ -627,7 +627,8 @@ static xmlSecAppCmdLineParam outputParam = {
     "--output <filename>"
     "\n\twrite result document to file <filename>; the <filename> can"
     "\n\tbe a template and include '{inputfile}' which will be replaced"
-    "\n\twith the input filename",
+    "\n\twith the input file basename (on POSIX the file extension is"
+    "\n\tstripped)",
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagNone,
     NULL
@@ -824,7 +825,7 @@ static xmlSecAppCmdLineParam enabledRefUrisParam = {
     NULL,
     "--enabled-reference-uris <list>"
     "\n\tcomma separated list of the following values:"
-    "\n\t\"empty\", \"same-doc\", \"local\", \"remote\" to restrict possible URI"
+    "\n\t\"empty\", \"same-doc\", \"local\", \"remote\", \"any\" to restrict possible URI"
     "\n\tattribute values for the <dsig:Reference> element",
     xmlSecAppCmdLineParamTypeStringList,
     xmlSecAppCmdLineParamFlagNone,
@@ -898,7 +899,7 @@ static xmlSecAppCmdLineParam enabledCipherRefUrisParam = {
     NULL,
     "--enabled-cipher-reference-uris <list>"
     "\n\tcomma separated list of the following values:"
-    "\n\t\"empty\", \"same-doc\", \"local\", \"remote\" to restrict possible URI"
+    "\n\t\"empty\", \"same-doc\", \"local\", \"remote\", \"any\" to restrict possible URI"
     "\n\tattribute values for the <enc:CipherReference> element",
     xmlSecAppCmdLineParamTypeStringList,
     xmlSecAppCmdLineParamFlagNone,
@@ -1559,7 +1560,7 @@ xmlSecAppExecute(xmlSecAppCommand command, const char** utf8_argv, int argc) {
     int ii;
 
     /* now init the xmlsec and all other libs */
-    /* ignore "--crypto" if we don't have dynamic loading */
+    /* check "--crypto": if dynamic loading is unavailable, a non-default value is an error */
     tmp = xmlSecAppCmdLineParamGetString(&cryptoParam);
 #if !defined(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING)
     if((tmp != NULL) && (strcmp(tmp, "default") != 0)) {
@@ -2070,7 +2071,10 @@ xmlSecAppEncryptFile(const char* inputFileName, const char* outputFileNameTmpl) 
     /* parse the template and find the <EncryptedData> node to fill. The
      * --node-id/--node-name/--node-xpath options select the node in the
      * --xml-data file (handled below), not the template node, so the template
-     * always uses the default <EncryptedData> node. */
+     * always uses the default <EncryptedData> node. The --dtd-file, --id-attr
+     * and --add-id-attr options are also ignored for the template: they are
+     * applied only to the --xml-data document (via xmlSecAppXmlDataCreate())
+     * and not at all for --binary-data. */
     doc = xmlSecParseFile(inputFileName);
     if(doc == NULL) {
         fprintf(stderr, "Error: failed to parse xml file \"%s\"\n", inputFileName);
@@ -2168,10 +2172,10 @@ xmlSecAppDecryptFile(const char* inputFileName, const char* outputFileNameTmpl) 
         goto done;
     }
 
-    /* parse template and select start node */
+    /* parse the file to decrypt and select the start node */
     data = xmlSecAppXmlDataCreate(inputFileName, xmlSecNodeEncryptedData, xmlSecEncNs);
     if(data == NULL) {
-        fprintf(stderr, "Error: failed to load template \"%s\"\n", inputFileName);
+        fprintf(stderr, "Error: failed to load the file to decrypt \"%s\"\n", inputFileName);
         goto done;
     }
 

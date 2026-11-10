@@ -442,7 +442,7 @@ xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlS
         /* The Windows SDK (wincrypt.h) declares the key-spec output parameter
          * as DWORD* (not DWORD_PTR*), so passing &(ctx->dwKeySpec) (a DWORD)
          * is the correct, SDK-conformant usage and no 8-byte store occurs on
-          * 64-bit Windows. */
+         * 64-bit Windows. */
         if (!CryptAcquireCertificatePrivateKey(pCert,
                     CRYPT_ACQUIRE_COMPARE_KEY_FLAG,
                     NULL,
@@ -898,7 +898,7 @@ PCCERT_CONTEXT xmlSecMSCryptoCertDup(PCCERT_CONTEXT pCert) {
  * must not free it afterwards. On failure the function does not take ownership and the
  * caller must free @p pCert.
  *
- * @return pointer to newly created xmlsec key or NULL if an error occurs.
+ * @return pointer to the newly created xmlsec key data or NULL if an error occurs.
  */
 xmlSecKeyDataPtr
 xmlSecMSCryptoCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
@@ -2070,7 +2070,7 @@ xmlSecMSCryptoKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /* we assume that sizeof(q) < XMLSEC_MSCRYPTO_DSA_MAX_Q_SIZE, sizeof(g) <= sizeof(p) and sizeof(y) <= sizeof(p) */
+    /* we assume that sizeof(q) <= XMLSEC_MSCRYPTO_DSA_MAX_Q_SIZE, sizeof(g) <= sizeof(p) and sizeof(y) <= sizeof(p) */
     if (dwBlobLen < (sizeof(PUBLICKEYSTRUC) + sizeof(DSSPUBKEY) + 3 * keyLen + XMLSEC_MSCRYPTO_DSA_MAX_Q_SIZE + sizeof(DSSSEED))) {
         xmlSecMSCryptoError3("CryptExportKey", xmlSecKeyDataKlassGetName(id),
             "dwBlobLen: %lu; keyLen: " XMLSEC_SIZE_FMT, dwBlobLen, keyLen);

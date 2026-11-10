@@ -519,8 +519,10 @@ xmlSecNssPKIKeyDataGetSize(xmlSecKeyDataPtr data) {
 #endif /* XMLSEC_NO_EC */
 #ifndef XMLSEC_NO_EDDSA
     case edKey:
-        /* SECKEY_PublicKeyStrengthInBits doesn't handle EdDSA keys correctly so we compute the size
-         * from the public value length. */
+        /* We compute the key size explicitly from the public value length, which is
+         * 256 bits for the 32-byte Ed25519 public key. This matches the OpenSSL
+         * backend (EVP_PKEY_get_bits() reports 256 bits for Ed25519) and the
+         * GnuTLS backend (see src/gnutls/asymkeys.c). */
         return(8 * ctx->pubkey->u.ec.publicValue.len);
 #endif /* XMLSEC_NO_EDDSA */
 #ifndef XMLSEC_NO_XDH
@@ -534,14 +536,16 @@ xmlSecNssPKIKeyDataGetSize(xmlSecKeyDataPtr data) {
 #endif /* XMLSEC_NO_XDH */
 #ifndef XMLSEC_NO_MLDSA
     case mldsaKey:
-        /* SECKEY_PublicKeyStrengthInBits doesn't handle ML-DSA keys correctly so we compute the size
-         * from the public value length. */
+        /* We compute the key size explicitly from the public value length (8 bits per
+         * byte); SECKEY_PublicKeyStrengthInBits() reports the same value for ML-DSA
+         * keys on newer NSS versions. */
         return(8 * ctx->pubkey->u.mldsa.publicValue.len);
 #endif /* XMLSEC_NO_MLDSA */
 #ifndef XMLSEC_NO_MLKEM
     case kyberKey:
-        /* SECKEY_PublicKeyStrengthInBits doesn't handle ML-KEM keys correctly so we compute the size
-         * from the public value length. */
+        /* We compute the key size explicitly from the public value length (8 bits per
+         * byte); SECKEY_PublicKeyStrengthInBits() reports the same value for ML-KEM
+         * keys on newer NSS versions. */
         return(8 * ctx->pubkey->u.kyber.publicValue.len);
 #endif /* XMLSEC_NO_MLKEM */
     default:

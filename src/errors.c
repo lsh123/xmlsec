@@ -248,9 +248,10 @@ xmlSecErrorsGetMsg(xmlSecSize pos) {
 
 /**
  * @brief Reports an error to the error callback.
- * @details Reports an error to the default (#xmlSecErrorsDefaultCallback) or
- * application specific callback installed using #xmlSecErrorsSetCallback
- * function.
+ * @details Reports an error to the application specific callback installed
+ * using the #xmlSecErrorsSetCallback function (if set), or to the system
+ * callback set using the 'xmlSecErrorsSetSystemCallback' function (defaulting
+ * to #xmlSecErrorsDefaultCallback) otherwise.
  * @param file the error location filename (__FILE__).
  * @param line the error location line number (__LINE__).
  * @param func the error location function (__FUNCTION__).

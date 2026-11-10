@@ -345,7 +345,8 @@ test_buffer_initialize_finalize(void) {
 
     xmlSecBufferFinalize(&buf);
 
-    /* after finalize the struct should be fully reset */
+    /* after finalize the data/size/maxSize/flags fields should be reset;
+     * allocMode is intentionally not reset by xmlSecBufferFinalize */
     if((buf.data != NULL) || (buf.size != 0) || (buf.maxSize != 0) || (buf.flags != 0)) {
         testLog("Error: xmlSecBufferFinalize did not reset all fields\n");
         goto done_after_finalize;

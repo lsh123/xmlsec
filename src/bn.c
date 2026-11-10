@@ -154,6 +154,8 @@ xmlSecBnZero(xmlSecBnPtr bn) {
  * allowed and will be rejected as an invalid digit. The input string length is
  * hard-limited to XMLSEC_BN_FROM_STRING_MAX_LEN characters (64 by default);
  * a longer string is rejected with an error.
+ * On error, the value of @p bn is undefined (it may have been cleared or hold a
+ * partially parsed prefix) and must not be used.
  * @param bn the pointer to BN.
  * @param str the string with BN.
  * @param base the base for @p str.
@@ -699,7 +701,8 @@ xmlSecBnCompareReverse(xmlSecBnPtr bn, const xmlSecByte* data, xmlSecSize dataSi
     bnData = xmlSecBnGetData(bn);
     bnSize = xmlSecBnGetSize(bn);
 
-    /* skip zeros in the beginning */
+    /* skip leading zeros of the value
+     * (trailing zero bytes of the reversed @p data) */
     while((dataSize > 0) && (data != NULL) && (data[dataSize - 1] == 0)) {
         --dataSize;
     }

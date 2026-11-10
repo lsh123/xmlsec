@@ -331,7 +331,7 @@ xmlSecMSCryptoKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, PCCRL_CONTEXT crl) {
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->hMemStore != 0, -1);
 
-    /* CertAddCRLContextToStore creates a new copy of the certificate context
+    /* CertAddCRLContextToStore creates a new copy of the CRL context
      * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddcrlcontexttostore */
     if (!CertAddCRLContextToStore(ctx->hMemStore, crl, CERT_STORE_ADD_USE_EXISTING, NULL)) {
         xmlSecMSCryptoError("CertAddCRLContextToStore", xmlSecKeyDataGetName(data));

@@ -1212,7 +1212,7 @@ xmlSecTransformReadContextStringFromSignatureMethodOrObjectNodes(
      * is allowed per signature */
     ret = xmlSecTransformReadContextStringFromObject(signatureMethodNode, name, ns, maxSize, res, contextStringsFound);
     if (ret < 0) {
-        xmlSecInternalError("xmlSecTransformReadContextStringFromObject()", NULL);
+        xmlSecInternalError("xmlSecTransformReadContextStringFromObject", NULL);
         return(-1);
     }
 
@@ -1262,7 +1262,7 @@ xmlSecTransformMLDSAReadContextString(xmlNodePtr node, xmlSecBufferPtr res) {
         res
     );
     if (ret < 0) {
-        xmlSecInternalError("xmlSecTransformReadContextStringFromSignatureMethodOrObjectNodes()", NULL);
+        xmlSecInternalError("xmlSecTransformReadContextStringFromSignatureMethodOrObjectNodes", NULL);
         return(-1);
     }
 
@@ -1312,7 +1312,7 @@ xmlSecTransformSLHDSAReadContextString(xmlNodePtr node, xmlSecBufferPtr res) {
         res
     );
     if (ret < 0) {
-        xmlSecInternalError("xmlSecTransformReadContextStringFromSignatureMethodOrObjectNodes()", NULL);
+        xmlSecInternalError("xmlSecTransformReadContextStringFromSignatureMethodOrObjectNodes", NULL);
         return(-1);
     }
 
@@ -1361,7 +1361,7 @@ xmlSecTransformEdDSAReadContextString(xmlNodePtr node, xmlSecBufferPtr res) {
         res
     );
     if (ret < 0) {
-        xmlSecInternalError("xmlSecTransformReadContextStringFromSignatureMethodOrObjectNodes()", NULL);
+        xmlSecInternalError("xmlSecTransformReadContextStringFromSignatureMethodOrObjectNodes", NULL);
         return(-1);
     }
 

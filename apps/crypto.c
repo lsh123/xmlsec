@@ -180,7 +180,7 @@ xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
     key = xmlSecCryptoAppKeyLoadEx(files, type, format, pwd,
         xmlSecCryptoAppGetDefaultPwdCallback(), (void*)files);
     if(key == NULL) {
-        fprintf(stderr, "Error: xmlSecCryptoAppKeyLoadEx failed: file=%s\n",
+        fprintf(stderr, "Error: xmlSecCryptoAppKeyLoadEx failed: files=%s\n",
                 xmlSecErrorsSafeString(files));
         return(-1);
     }
@@ -221,12 +221,12 @@ xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
     if(verifyKey != 0) {
         ret = xmlSecCryptoAppDefaultKeysMngrVerifyKey(mngr, key, keyInfoCtx);
         if(ret < 0) {
-            fprintf(stderr, "Error: xmlSecCryptoAppDefaultKeysMngrVerifyKey failed: filename='%s'\n",
+            fprintf(stderr, "Error: xmlSecCryptoAppDefaultKeysMngrVerifyKey failed: files=%s\n",
                     xmlSecErrorsSafeString(files));
             xmlSecKeyDestroy(key);
             return(-1);
         } else if(ret != 1) {
-            fprintf(stderr, "Error: key cannot be verified: filename='%s'\n",
+            fprintf(stderr, "Error: key cannot be verified: files=%s\n",
                     xmlSecErrorsSafeString(files));
             xmlSecKeyDestroy(key);
             return(-1);

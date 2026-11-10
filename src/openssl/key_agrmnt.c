@@ -476,14 +476,15 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
     /*
      * For DH, DH_compute_key() strips leading zero bytes, so
      * EVP_PKEY_derive() may report a size smaller than the group modulus
-     * size, with the secret right-justified within the full-width
-     * buffer; ECDH and XDH secrets are always reported at the full
-     * field/key width (OpenSSL left-pads the ECDH shared X coordinate to
-     * the field size), so the padding below is a defensive no-op for
-     * them. xmlenc-core1 requires the shared secret as a fixed-width,
-     * left-padded octet string (as the sibling GnuTLS and NSS backends
-     * enforce), so left-pad with zero bytes to the full size reported by
-     * the size query.
+     * size, with the secret left-justified at the front of the buffer
+     * (the trailing bytes are undefined); ECDH and XDH secrets are
+     * always reported at the full field/key width (OpenSSL left-pads
+     * the ECDH shared X coordinate to the field size), so the padding
+     * below is a defensive no-op for them. xmlenc-core1 requires the
+     * shared secret as a fixed-width, left-padded octet string (as the
+     * sibling GnuTLS and NSS backends enforce), so the padding below
+     * right-justifies (left-pads with zero bytes) the secret to the
+     * full size reported by the size query.
      */
     if(secretSize < fullSecretSize) {
         memmove(secretData + (fullSecretSize - secretSize), secretData, secretSize);

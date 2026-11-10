@@ -2904,8 +2904,9 @@ xmlSecOpenSSLKeyDataEcGetEcKey(xmlSecKeyDataPtr data) {
     return((pKey != NULL) ? EVP_PKEY_get0_EC_KEY(pKey) : NULL);
 }
 
-/* on success, the ownership of @p ecKey is transferred to @p data,
- * on error, the caller is still responsible for destroying it
+/* on success, @p ecKey is copied into @p data and freed by this
+ * function, so the caller no longer owns it; on error, the caller
+ * is still responsible for destroying it
  */
 static int
 xmlSecOpenSSLKeyDataEcSetEcKey(xmlSecKeyDataPtr data,  EC_KEY* ecKey) {

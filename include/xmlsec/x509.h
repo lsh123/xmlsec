@@ -22,7 +22,7 @@ extern "C" {
 #endif /* __cplusplus */
 
 /**
- * @brief The content of a child of an &lt;X509Data&gt; node.
+ * @brief The content of an &lt;X509Data&gt; node.
  * @details Not all values will be set!
  * The structure (and its members) are allocated and freed by the caller;
  * a caller that builds a value for the public find APIs (e.g.

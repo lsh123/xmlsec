@@ -437,7 +437,7 @@ xmlSecMSCngX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, PCCRL_CONTEXT crl) {
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->crlMemStore != NULL, -1);
 
-    /* CertAddCRLContextToStore creates a new copy of the certificate context
+    /* CertAddCRLContextToStore creates a new copy of the CRL context
      * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddcrlcontexttostore */
     if(!CertAddCRLContextToStore(ctx->crlMemStore, crl, CERT_STORE_ADD_USE_EXISTING, NULL)) {
         xmlSecMSCngLastError("CertAddCRLContextToStore", xmlSecKeyDataStoreGetName(store));
@@ -709,7 +709,7 @@ xmlSecMSCngX509StoreVerifySubject(PCCERT_CONTEXT cert, PCCERT_CONTEXT issuerCert
  * @param cert the certificate
  * @return 1 if a certificate with the subject name @p name is found and
  * successfully signs @p cert (xmlSecMSCngX509StoreVerifySubject), 0 if no
- * such certificate exists, or a negative value if an error occurs..
+ * such certificate exists, or a negative value if an error occurs.
  */
 static int
 xmlSecMSCngX509StoreContainsCert(HCERTSTORE store, CERT_NAME_BLOB* name, PCCERT_CONTEXT cert)

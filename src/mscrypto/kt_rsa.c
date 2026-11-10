@@ -348,7 +348,7 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
             /* RSA-OAEP (EME-OAEP) https://www.rfc-editor.org/info/rfc8017/
              * "the maximum message length mLen is k - 2*hLen - 2", where hLen is
              * the length of the output from the underlying hash function and k
-             * is the length in octets of the RSA modulus (RFC 8017, section 9.1).
+             * is the length in octets of the RSA modulus (RFC 8017, sections 7.1 and 7.1.1).
              * The OAEP label does not reduce this limit: it only feeds lHash,
              * which is always hLen bytes long. CAPI's OAEP implementation always
              * uses SHA-1, so hLen = 20.

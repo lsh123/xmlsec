@@ -249,8 +249,8 @@ xmlSecKeyDataGost2001GetKlass(void) {
 /**
  * @brief The GOST R 34.10-2012 256 bit key data klass.
  * @return GOST R 34.10-2012 256 bit key data klass or NULL if an error occurs
- * (xmlsec-crypto library is not loaded or the GOST R 34.10-2012 key data
- * klass is not implemented).
+ * (xmlsec-crypto library is not loaded or the GOST R 34.10-2012 256 bit key
+ * data klass is not implemented).
  */
 xmlSecKeyDataId
 xmlSecKeyDataGostR3410_2012_256GetKlass(void) {
@@ -266,8 +266,8 @@ xmlSecKeyDataGostR3410_2012_256GetKlass(void) {
 /**
  * @brief The GOST R 34.10-2012 512 bit key data klass.
  * @return GOST R 34.10-2012 512 bit key data klass or NULL if an error occurs
- * (xmlsec-crypto library is not loaded or the GOST R 34.10-2012 key data
- * klass is not implemented).
+ * (xmlsec-crypto library is not loaded or the GOST R 34.10-2012 512 bit key
+ * data klass is not implemented).
  */
 xmlSecKeyDataId
 xmlSecKeyDataGostR3410_2012_512GetKlass(void) {
@@ -2202,7 +2202,7 @@ xmlSecTransformSha3_512GetKlass(void) {
 /**
  * @brief Initializes the crypto engine for the command-line utility.
  * @details General crypto engine initialization. This function is used
- * by the XMLSec command-line utility and is called before the
+ * by the XMLSec command-line utility and is called after the
  * #xmlSecInit function.
  *
  * Note: The application SHOULD NOT initialize the XML Security Library
@@ -2227,7 +2227,7 @@ xmlSecCryptoAppInit(const char* config) {
 /**
  * @brief Shuts down the crypto engine for the command-line utility.
  * @details General crypto engine shutdown. This function is used
- * by the XMLSec command-line utility and is called after the
+ * by the XMLSec command-line utility and is called before the
  * #xmlSecShutdown function.
  *
  * Note: Once this function has been called it might be

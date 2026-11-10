@@ -1400,11 +1400,11 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform) {
         }
 
         /*
-         * OAEP padding (RFC 8017 section 9.1) consumes (2*mdSize + 2)
-         * bytes, so the plaintext must be at most (keySize - (2*mdSize + 2))
-         * bytes long.
+         * OAEP padding (RFC 8017 section 7.1, enforced in 7.1.1)
+         * consumes (2*mdSize + 2) bytes, so the plaintext must be at
+         * most (keySize - (2*mdSize + 2)) bytes long.
          *
-         * We simply check that the input size is strictly less than
+         * We simply check that the input size is at most
          * (keySize - 2), which is always above the true OAEP maximum,
          * and the exact padding-size enforcement is delegated to OpenSSL.
          */

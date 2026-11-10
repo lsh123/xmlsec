@@ -1452,7 +1452,7 @@ xmlSecTmplKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, xmlSecTransformId encMe
  * @param x509DataNode the pointer to &lt;dsig:X509Data/&gt; node.
  *
  * Note: multiple &lt;dsig:X509IssuerSerial&gt; elements may be added, as the W3C
- * X509DataType permits repeated child elements (see https://www.w3.org/TR/xmldsig-core1/#sec-KeyInfo).
+ * X509DataType permits repeated child elements (see https://www.w3.org/TR/xmldsig-core1/#sec-X509Data).
  *
  * @return the pointer to the newly created &lt;dsig:X509IssuerSerial/&gt; node or
  * NULL if an error occurs.
@@ -1754,7 +1754,7 @@ xmlSecTmplTransformAddHmacOutputLength(xmlNodePtr transformNode, xmlSecSize bits
 
 /**
  * @brief Creates a &lt;enc:OAEPparams/&gt; child node in the @p transformNode.
- * @details Creates &lt;enc:OAEPparams/&gt; child node in the @p transformNode.
+ * @details Creates a &lt;enc:OAEPparams/&gt; child node in the @p transformNode.
  * @param transformNode the pointer to &lt;enc:EncryptionMethod/&gt; node.
  * @param buf the OAEP param buffer.
  * @param size the OAEP param buffer size.
@@ -1807,7 +1807,7 @@ xmlSecTmplTransformAddRsaOaepParam(xmlNodePtr transformNode, const xmlSecByte *b
 }
 
 /**
- * @brief Creates &lt;enc11:MGF/&gt; child node in the @p transformNode.
+ * @brief Creates a &lt;enc11:MGF/&gt; child node in the @p transformNode.
  * @param transformNode the pointer to &lt;enc:EncryptionMethod/&gt; node.
  * @param algorithm MGF1 algorithm href.
  *

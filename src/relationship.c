@@ -199,7 +199,7 @@ xmlSecRelationshipFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     if(ctx->sourceIdList != NULL) {
-       xmlSecPtrListDestroy(ctx->sourceIdList);
+        xmlSecPtrListDestroy(ctx->sourceIdList);
     }
 
     memset(ctx, 0, sizeof(xmlSecRelationshipCtx));
@@ -974,55 +974,55 @@ xmlSecTransformRelationshipPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPt
     /* check/update current transform status */
     switch(transform->status) {
     case xmlSecTransformStatusNone:
-       transform->status = xmlSecTransformStatusWorking;
-       break;
+        transform->status = xmlSecTransformStatusWorking;
+        break;
     case xmlSecTransformStatusWorking:
     case xmlSecTransformStatusFinished:
-       return(0);
+        return(0);
     default:
-       xmlSecInvalidTransformStatusError(transform);
-       return(-1);
+        xmlSecInvalidTransformStatusError(transform);
+        return(-1);
     }
     xmlSecAssert2(transform->status == xmlSecTransformStatusWorking, -1);
 
     /* prepare output buffer: next transform or ourselves */
     if(transform->next != NULL) {
-       buf = xmlSecTransformCreateOutputBuffer(transform->next, transformCtx);
-       if(buf == NULL) {
-           xmlSecInternalError("xmlSecTransformCreateOutputBuffer", xmlSecTransformGetName(transform));
-           transform->status = xmlSecTransformStatusFail;
-           return(-1);
-       }
+        buf = xmlSecTransformCreateOutputBuffer(transform->next, transformCtx);
+        if(buf == NULL) {
+            xmlSecInternalError("xmlSecTransformCreateOutputBuffer", xmlSecTransformGetName(transform));
+            transform->status = xmlSecTransformStatusFail;
+            return(-1);
+        }
     } else {
-       buf = xmlSecBufferCreateOutputBuffer(&(transform->outBuf));
-       if(buf == NULL) {
-           xmlSecInternalError("xmlSecBufferCreateOutputBuffer", xmlSecTransformGetName(transform));
-           transform->status = xmlSecTransformStatusFail;
-           return(-1);
-       }
+        buf = xmlSecBufferCreateOutputBuffer(&(transform->outBuf));
+        if(buf == NULL) {
+            xmlSecInternalError("xmlSecBufferCreateOutputBuffer", xmlSecTransformGetName(transform));
+            transform->status = xmlSecTransformStatusFail;
+            return(-1);
+        }
     }
 
     ret = xmlSecTransformRelationshipExecute(transform, buf, nodes->doc, transformCtx);
     if(ret < 0) {
-       xmlSecInternalError("xmlSecTransformRelationshipExecute", xmlSecTransformGetName(transform));
-       /* the buffer must be closed to release it (the IO buffer is only
-        * freed by its close callback). When a next transform exists, the
-        * close pushes the partial data into its input buffer, which is
-        * harmless here: the whole operation is aborted */
-       (void)xmlOutputBufferClose(buf);
-       /* discard any partial output kept in our own output buffer so it
-        * cannot be picked up by a later operation (this only applies when
-        * there is no next transform) and mark the transform as failed */
-       xmlSecBufferEmpty(&(transform->outBuf));
-       transform->status = xmlSecTransformStatusFail;
-       return(-1);
+        xmlSecInternalError("xmlSecTransformRelationshipExecute", xmlSecTransformGetName(transform));
+        /* the buffer must be closed to release it (the IO buffer is only
+         * freed by its close callback). When a next transform exists, the
+         * close pushes the partial data into its input buffer, which is
+         * harmless here: the whole operation is aborted */
+        (void)xmlOutputBufferClose(buf);
+        /* discard any partial output kept in our own output buffer so it
+         * cannot be picked up by a later operation (this only applies when
+         * there is no next transform) and mark the transform as failed */
+        xmlSecBufferEmpty(&(transform->outBuf));
+        transform->status = xmlSecTransformStatusFail;
+        return(-1);
     }
 
     ret = xmlOutputBufferClose(buf);
     if(ret < 0) {
-       xmlSecXmlError("xmlOutputBufferClose", xmlSecTransformGetName(transform));
-       transform->status = xmlSecTransformStatusFail;
-       return(-1);
+        xmlSecXmlError("xmlOutputBufferClose", xmlSecTransformGetName(transform));
+        transform->status = xmlSecTransformStatusFail;
+        return(-1);
     }
     transform->status = xmlSecTransformStatusFinished;
     return(0);

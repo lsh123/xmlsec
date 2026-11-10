@@ -986,7 +986,7 @@ xmlSecMSCryptoCertIsIssuerOfAnyOtherCert(HCERTSTORE certs, PCCERT_CONTEXT cert) 
             continue;
         }
 
-        /* make sure nextCert is actually signed by cert; the issuer name
+        /* make sure tmpCert is actually signed by cert; the issuer name
          * match alone can be forged and would skip a legitimate key cert */
         if(CryptVerifyCertificateSignatureEx(
                     (HCRYPTPROV_LEGACY)NULL,

@@ -12,7 +12,7 @@
 int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size);
 
 static void ignore(void* ctx, const char* msg, ...) {
-    /* Error handler to avoid spam of error messages from libxml parser. */
+    /* Error handler to avoid error message spam from the libxml parser. */
     (void)ctx;
     (void)msg;
 }

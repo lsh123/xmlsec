@@ -528,7 +528,7 @@ xmlSecMSCngKeyDataMlKemReadFromPkcs8Der(const xmlSecByte* derData, DWORD derData
     }
     pPos += lenConsumed;
     if((DWORD)(pInner + innerLen - pPos) != skLen) {
-        xmlSecInternalError("ML-KEM PKCS8: unexpected trailing data in PrivateKey field", NULL);
+        xmlSecInternalError("ML-KEM PKCS8: unexpected trailing data or truncated secret key OCTET STRING in PrivateKey field", NULL);
         goto done;
     }
     pSk = pPos;

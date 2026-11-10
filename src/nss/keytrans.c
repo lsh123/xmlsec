@@ -1048,15 +1048,14 @@ xmlSecNssRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
         return(-1);
     }
 
-    /* digest algorithm. Note: xmlenc#sha128 (MD5) and xmlenc#sha160
-     * (RIPEMD160) are intentionally not mapped: the NSS softoken only
-     * accepts the SHA-1/224/256/384/512 digests for OAEP, so any other
-     * mapping would be rejected at runtime anyway. The SHA-3 digests
-     * below are an exception to that rule: the softoken also rejects
-     * them for OAEP (verified against NSS 3.120), yet they are still
-     * mapped because the wrap/unwrap operations below go through the
-     * PK11 layer and the token that executes them is selected by NSS
-     * based on the mechanism, so a non-softoken token (e.g. a hardware
+    /* digest algorithm. Note: MD5 and RIPEMD160 are intentionally not
+     * mapped: the NSS softoken only accepts the SHA-1/224/256/384/512
+     * digests for OAEP, so any other mapping would be rejected at runtime
+     * anyway. The SHA-3 digests below are an exception to that rule:
+     * the softoken also rejects them for OAEP (verified against NSS 3.120),
+     * yet they are still mapped because the wrap/unwrap operations below
+     * go through the PK11 layer and the token that executes them is selected
+     * by NSS based on the mechanism, so a non-softoken token (e.g. a hardware
      * PKCS#11 module) whose OAEP implementation does support SHA-3
      * will handle such a request; with the softoken the operation is
      * simply rejected with an NSS crypto error (it fails closed, with

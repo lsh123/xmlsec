@@ -22,6 +22,11 @@
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/openssl/crypto.h>
 
+#ifndef XMLSEC_NO_X509
+#include <xmlsec/x509.h>
+#include <xmlsec/keysdata.h>
+#endif /* XMLSEC_NO_X509 */
+
 #include <openssl/evp.h>
 #include <openssl/x509.h>
 #include <openssl/bio.h>

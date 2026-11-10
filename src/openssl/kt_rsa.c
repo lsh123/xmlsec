@@ -35,6 +35,16 @@
 #include <openssl/param_build.h>
 #endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
+#if !defined(XMLSEC_OPENSSL_API_111)
+/* OSSL_PKEY_PARAM_IMPLICIT_REJECTION was added in OpenSSL 3.2; on the
+ * earlier 3.x releases the parameter does not exist (and neither does
+ * implicit rejection), so a fallback with the same value is safe: the
+ * settable-params lookup simply does not match on those releases */
+#ifndef OSSL_PKEY_PARAM_IMPLICIT_REJECTION
+#define OSSL_PKEY_PARAM_IMPLICIT_REJECTION "implicit-rejection"
+#endif /* OSSL_PKEY_PARAM_IMPLICIT_REJECTION */
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
+
 #include "../cast_helpers.h"
 #include "../transform_helpers.h"
 #include "openssl_compat.h"
@@ -168,6 +178,43 @@ xmlSecOpenSSLRsaPkcs1SetKeyImpl(xmlSecOpenSSLRsaPkcs1CtxPtr ctx, EVP_PKEY* pKey,
         return (-1);
     }
 
+    if(encrypt == 0) {
+        /*
+         * OpenSSL 3.2+ performs implicit rejection for PKCS#1 v1.5
+         * decryption: on invalid padding EVP_PKEY_decrypt() returns
+         * success together with a deterministic random "synthetic"
+         * plaintext of a random length, so a corrupted or
+         * attacker-tampered ciphertext would "decrypt" successfully and
+         * the synthetic data would be handed to the application as the
+         * recovered key. Disable implicit rejection so that padding
+         * failures are reported as errors; OpenSSL < 3.2 never
+         * implemented implicit rejection and does not expose the
+         * parameter, so there is nothing to disable there.
+         */
+        const OSSL_PARAM* settableParams;
+        unsigned int implicitRejection = 0;
+        OSSL_PARAM params[2];
+
+        settableParams = EVP_PKEY_CTX_settable_params(ctx->pKeyCtx);
+        if(settableParams == NULL) {
+            xmlSecOpenSSLError("EVP_PKEY_CTX_settable_params", NULL);
+            EVP_PKEY_CTX_free(ctx->pKeyCtx);
+            ctx->pKeyCtx = NULL;
+            return (-1);
+        }
+        if(OSSL_PARAM_locate_const(settableParams, OSSL_PKEY_PARAM_IMPLICIT_REJECTION) != NULL) {
+            params[0] = OSSL_PARAM_construct_uint(OSSL_PKEY_PARAM_IMPLICIT_REJECTION, &implicitRejection);
+            params[1] = OSSL_PARAM_construct_end();
+            ret = EVP_PKEY_CTX_set_params(ctx->pKeyCtx, params);
+            if(ret <= 0) {
+                xmlSecOpenSSLError("EVP_PKEY_CTX_set_params(implicit-rejection)", NULL);
+                EVP_PKEY_CTX_free(ctx->pKeyCtx);
+                ctx->pKeyCtx = NULL;
+                return (-1);
+            }
+        }
+    }
+
     /* success */
     return(0);
 }
@@ -194,6 +241,15 @@ xmlSecOpenSSLRsaPkcs1ProcessImpl(xmlSecOpenSSLRsaPkcs1CtxPtr ctx, const xmlSecBy
             return(-1);
         }
     } else {
+        /*
+         * EVP_PKEY_decrypt() returns the recovered message length on
+         * success (which may be 0 for a degenerate empty plaintext) and
+         * 0 on failure. Padding failures are guaranteed to be reported
+         * as errors: implicit rejection is disabled in
+         * xmlSecOpenSSLRsaPkcs1SetKeyImpl() and OpenSSL < 3.2 (the
+         * earliest version with implicit rejection is 3.2) never
+         * performed it.
+         */
         ret = EVP_PKEY_decrypt(ctx->pKeyCtx, outBuf, &outLen, inBuf, inSize);
         if (ret <= 0) {
             xmlSecOpenSSLError2("EVP_PKEY_decrypt", NULL,

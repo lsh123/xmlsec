@@ -713,18 +713,39 @@ xmlSecNssKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKe
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataDsaId), -1);
     xmlSecAssert2(sizeBits > 0, -1);
 
-    index = PQG_PBITS_TO_INDEX(sizeBits);
-    if(index < 0) {
-        xmlSecNssError2("PQG_PBITS_TO_INDEX", xmlSecKeyDataGetName(data),
-            "size=" XMLSEC_SIZE_FMT, sizeBits);
-        goto done;
-    }
-    XMLSEC_SAFE_CAST_INT_TO_UINT(index, uIndex, goto done, xmlSecKeyDataGetName(data));
+    if((sizeBits >= 512) && (sizeBits <= 1024)) {
+        /* legacy prime sizes (512..1024 in 64-bit increments) */
+        index = PQG_PBITS_TO_INDEX(sizeBits);
+        if(index < 0) {
+            xmlSecNssError2("PQG_PBITS_TO_INDEX", xmlSecKeyDataGetName(data),
+                "size=" XMLSEC_SIZE_FMT, sizeBits);
+            goto done;
+        }
+        XMLSEC_SAFE_CAST_INT_TO_UINT(index, uIndex, goto done, xmlSecKeyDataGetName(data));
 
-    rv = PK11_PQG_ParamGen(uIndex, &pqgParams, &pqgVerify);
-    if (rv != SECSuccess) {
-        xmlSecNssError2("PK11_PQG_ParamGen", xmlSecKeyDataGetName(data),
-            "size=" XMLSEC_SIZE_FMT, sizeBits);
+        rv = PK11_PQG_ParamGen(uIndex, &pqgParams, &pqgVerify);
+        if (rv != SECSuccess) {
+            xmlSecNssError2("PK11_PQG_ParamGen", xmlSecKeyDataGetName(data),
+                "size=" XMLSEC_SIZE_FMT, sizeBits);
+            goto done;
+        }
+    } else if((sizeBits == 2048) || (sizeBits == 3072)) {
+        /* FIPS 186-4/5 prime sizes: the legacy PQG_PBITS_TO_INDEX() /
+         * PK11_PQG_ParamGen() API only supports 512..1024-bit primes, so use
+         * PK11_PQG_ParamGenV2 with the standard 256-bit subprime (the FIPS
+         * 186-4/5 (L, N) = (2048, 256) / (3072, 256) parameter sets) */
+        XMLSEC_SAFE_CAST_SIZE_T_TO_UINT(sizeBits, uIndex, goto done, xmlSecKeyDataGetName(data));
+
+        rv = PK11_PQG_ParamGenV2(uIndex, 256, 0, &pqgParams, &pqgVerify);
+        if (rv != SECSuccess) {
+            xmlSecNssError2("PK11_PQG_ParamGenV2", xmlSecKeyDataGetName(data),
+                "size=" XMLSEC_SIZE_FMT, sizeBits);
+            goto done;
+        }
+    } else {
+        xmlSecInvalidSizeOtherError(
+            "unsupported DSA prime size (supported: 512-1024 in 64-bit increments, 2048, 3072)",
+            xmlSecKeyDataGetName(data));
         goto done;
     }
 
@@ -839,8 +860,10 @@ xmlSecNssKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         goto done;
     }
 
-    /* next is X (priv key): ignored, the read path creates a public key
-     * object only */
+    /* x (priv key): NSS has no import API for DSA private keys, so the
+     * read path creates a public key object only; the value is ignored
+     * (raising an error here would break loading of keys files that
+     * contain DSA private keys, which other backends import) */
 
     /* y */
     ret = xmlSecNssGetBigNumValue(&(dsaValue->y), pubkey->arena, &(pubkey->u.dsa.publicValue));

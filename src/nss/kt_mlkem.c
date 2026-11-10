@@ -401,6 +401,16 @@ xmlSecNssMLKEMEncapsulate(xmlSecNssMLKEMCtxPtr ctx, xmlSecBufferPtr cipherTextOu
         goto done;
     }
 
+    /* validate the shared secret size against the FIPS 203 value (32 bytes
+     * for all ML-KEM variants); an unexpected size would otherwise produce
+     * a malformed CEK that only fails later with a confusing error at
+     * content decryption */
+    if(keyItem->len != KYBER_SHARED_SECRET_BYTES) {
+        xmlSecInvalidSizeError("Shared secret", (xmlSecSize)keyItem->len,
+                               (xmlSecSize)KYBER_SHARED_SECRET_BYTES, NULL);
+        goto done;
+    }
+
     /* write the shared secret so the caller can use it as the CEK */
     if(xmlSecBufferSetData(sharedSecretOut, keyItem->data, keyItem->len) < 0) {
         xmlSecInternalError2("xmlSecBufferSetData(ss)", NULL,
@@ -474,6 +484,16 @@ xmlSecNssMLKEMDecapsulate(xmlSecNssMLKEMCtxPtr ctx, xmlSecBufferPtr cipherTextIn
     keyItem = PK11_GetKeyData(symKey);
     if(keyItem == NULL) {
         xmlSecNssError("PK11_GetKeyData", NULL);
+        goto done;
+    }
+
+    /* validate the shared secret size against the FIPS 203 value (32 bytes
+     * for all ML-KEM variants); an unexpected size would otherwise produce
+     * a malformed CEK that only fails later with a confusing error at
+     * content decryption */
+    if(keyItem->len != KYBER_SHARED_SECRET_BYTES) {
+        xmlSecInvalidSizeError("Shared secret", (xmlSecSize)keyItem->len,
+                               (xmlSecSize)KYBER_SHARED_SECRET_BYTES, NULL);
         goto done;
     }
 

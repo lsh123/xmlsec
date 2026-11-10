@@ -154,6 +154,7 @@ xmlSecNssKeyTransportInitialize(xmlSecTransformPtr transform) {
 
     /* not found */
     {
+        context->cipher = CKM_INVALID_MECHANISM;
         xmlSecInvalidTransformError(transform);
         return(-1);
     }
@@ -195,6 +196,9 @@ xmlSecNssKeyTransportFinalize(xmlSecTransformPtr transform) {
         xmlSecBufferDestroy(context->material);
         context->material = NULL;
     }
+
+    context->cipher = CKM_INVALID_MECHANISM;
+    context->keyId = NULL;
 
 #ifndef XMLSEC_NO_RSA_OAEP
     xmlSecBufferFinalize(&(context->oaepParams));

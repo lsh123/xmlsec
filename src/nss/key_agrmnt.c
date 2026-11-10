@@ -80,6 +80,7 @@ static int              xmlSecNssKeyAgreementExecute            (xmlSecTransform
 /* Helper functions */
 static int              xmlSecNssKeyAgreementGenerateSecret     (xmlSecNssKeyAgreementCtxPtr ctx,
                                                                   xmlSecTransformOperation operation,
+                                                                  xmlSecTransformPtr transform,
                                                                   xmlSecKeyDataPtr kamKeyData,
                                                                   xmlSecBufferPtr secret);
 /******************************************************************************
@@ -286,7 +287,7 @@ xmlSecNssKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
             xmlSecBufferFinalize(&secret);
             return(-1);
         }
-        ret = xmlSecNssKeyAgreementGenerateSecret(ctx, transform->operation, kamKeyData, &secret);
+        ret = xmlSecNssKeyAgreementGenerateSecret(ctx, transform->operation, transform, kamKeyData, &secret);
         if(ret < 0) {
             xmlSecInternalError("xmlSecNssKeyAgreementGenerateSecret", xmlSecTransformGetName(transform));
             xmlSecBufferFinalize(&secret);
@@ -321,6 +322,7 @@ xmlSecNssKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
 static int
 xmlSecNssKeyAgreementGenerateSecret(xmlSecNssKeyAgreementCtxPtr ctx,
                                      xmlSecTransformOperation operation,
+                                     xmlSecTransformPtr transform,
                                      xmlSecKeyDataPtr kamKeyData,
                                      xmlSecBufferPtr secret) {
     xmlSecKeyDataKAM* kamData;
@@ -332,6 +334,7 @@ xmlSecNssKeyAgreementGenerateSecret(xmlSecNssKeyAgreementCtxPtr ctx,
     SECStatus rv;
     xmlSecSize secretSize;
     xmlSecSize expectedSecretLen;
+    xmlSecKeyDataId expectedKeyId;
     unsigned int keyStrength;
     int ret;
     int res = -1;
@@ -339,6 +342,7 @@ xmlSecNssKeyAgreementGenerateSecret(xmlSecNssKeyAgreementCtxPtr ctx,
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(kamKeyData != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(kamKeyData, xmlSecKeyDataKAMId), -1);
+    xmlSecAssert2(transform != NULL, -1);
     xmlSecAssert2(secret != NULL, -1);
     xmlSecAssert2(xmlSecBufferIsSecure(secret), -1); /* we expect secure buffer for the secret */
 
@@ -364,6 +368,41 @@ xmlSecNssKeyAgreementGenerateSecret(xmlSecNssKeyAgreementCtxPtr ctx,
     }
     if(otherKeyValue == NULL) {
         xmlSecInternalError("xmlSecKeyGetValue(other key)", NULL);
+        goto done;
+    }
+
+    /* check that the KAM key data is compatible with the transform: the
+     * Ecdh transform is for regular EC keys and the X25519 transform is for
+     * Montgomery-curve (X25519) keys; without this check a key pair on a
+     * curve different from the one the algorithm identifier declares
+     * (e.g. a P-256 key pair with the X25519 transform) would be accepted,
+     * since its 32-byte shared secret passes the length check below */
+#ifndef XMLSEC_NO_EC
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformEcdhId)) {
+        expectedKeyId = xmlSecNssKeyDataEcId;
+    } else
+#endif /* XMLSEC_NO_EC */
+#ifndef XMLSEC_NO_XDH
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformX25519Id)) {
+        expectedKeyId = xmlSecNssKeyDataXdhId;
+    } else
+#endif /* XMLSEC_NO_XDH */
+    {
+        xmlSecInternalError("Unknown key agreement transform",
+                            xmlSecTransformGetName(transform));
+        goto done;
+    }
+
+    if(!xmlSecKeyDataCheckId(myKeyValue, expectedKeyId)) {
+        xmlSecInvalidTransformError2(transform,
+            "key data \"%s\" is not compatible with this key agreement transform",
+            xmlSecErrorsSafeString(xmlSecKeyDataGetName(myKeyValue)));
+        goto done;
+    }
+    if(!xmlSecKeyDataCheckId(otherKeyValue, expectedKeyId)) {
+        xmlSecInvalidTransformError2(transform,
+            "peer key data \"%s\" is not compatible with this key agreement transform",
+            xmlSecErrorsSafeString(xmlSecKeyDataGetName(otherKeyValue)));
         goto done;
     }
 

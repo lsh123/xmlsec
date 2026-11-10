@@ -940,12 +940,6 @@ xmlSecNssSignatureDecode(xmlSecNssSignatureCtxPtr ctx, SECItem* signature) {
 
     switch(ctx->alg) {
     case SEC_OID_ANSIX9_DSA_SIGNATURE_WITH_SHA1_DIGEST:
-        res = DSAU_DecodeDerSig(signature);
-        if(res == NULL) {
-            xmlSecNssError("DSAU_DecodeDerSig", NULL);
-            return(NULL);
-        }
-        break;
     case SEC_OID_NIST_DSA_SIGNATURE_WITH_SHA256_DIGEST:
     case SEC_OID_ANSIX962_ECDSA_SHA1_SIGNATURE:
     case SEC_OID_ANSIX962_ECDSA_SHA224_SIGNATURE:

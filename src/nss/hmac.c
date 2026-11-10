@@ -398,6 +398,7 @@ xmlSecNssHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxP
             unsigned int dgstLen;
             xmlSecSize dgstSize;
 
+            dgstLen = sizeof(ctx->dgst);
             rv = PK11_DigestFinal(ctx->digestCtx, ctx->dgst, &dgstLen, sizeof(ctx->dgst));
             if(rv != SECSuccess) {
                 xmlSecNssError("PK11_DigestFinal", xmlSecTransformGetName(transform));

@@ -314,6 +314,8 @@ xmlSecGnuTLSKeyAgreementGenerateSecret(xmlSecGnuTLSKeyAgreementCtxPtr ctx, xmlSe
     xmlSecSize expectedSecretLen;
 #ifndef XMLSEC_NO_EC
     unsigned int peerKeyBits;
+    gnutls_ecc_curve_t myKeyCurve = GNUTLS_ECC_CURVE_INVALID;
+    gnutls_ecc_curve_t peerKeyCurve = GNUTLS_ECC_CURVE_INVALID;
 #endif /* XMLSEC_NO_EC */
 #ifndef XMLSEC_NO_XDH
     int expectedPkAlgo;
@@ -389,6 +391,31 @@ xmlSecGnuTLSKeyAgreementGenerateSecret(xmlSecGnuTLSKeyAgreementCtxPtr ctx, xmlSe
         otherPubKey = xmlSecGnuTLSKeyDataEcGetPublicKey(otherKeyValue);
         if(otherPubKey == NULL) {
             xmlSecInternalError("xmlSecGnuTLSKeyDataEcGetPublicKey", NULL);
+            goto done;
+        }
+
+        /* check that the own and peer key curves match: the ecdh-es
+         * transform does not specify a curve (unlike the x25519/x448
+         * transforms checked below). gnutls_privkey_derive_secret() also
+         * rejects a mismatch, but check it explicitly for a precise error
+         * message */
+        err = gnutls_privkey_export_ecc_raw2(myPrivKey, &myKeyCurve, NULL, NULL, NULL, 0);
+        if(err != GNUTLS_E_SUCCESS) {
+            xmlSecGnuTLSError("gnutls_privkey_export_ecc_raw2", err, xmlSecTransformGetName(transform));
+            goto done;
+        }
+        err = gnutls_pubkey_export_ecc_raw2(otherPubKey, &peerKeyCurve, NULL, NULL, 0);
+        if(err != GNUTLS_E_SUCCESS) {
+            xmlSecGnuTLSError("gnutls_pubkey_export_ecc_raw2", err, xmlSecTransformGetName(transform));
+            goto done;
+        }
+        if(myKeyCurve != peerKeyCurve) {
+            const char *myCurveName = gnutls_ecc_curve_get_name(myKeyCurve);
+            const char *peerCurveName = gnutls_ecc_curve_get_name(peerKeyCurve);
+            xmlSecInvalidTransformError3(transform,
+                "key data curve \"%s\" does not match the peer key data curve \"%s\"",
+                xmlSecErrorsSafeString(myCurveName),
+                xmlSecErrorsSafeString(peerCurveName));
             goto done;
         }
 

@@ -557,7 +557,8 @@ xmlSecKeyDataIdListFind(xmlSecPtrListPtr list, xmlSecKeyDataId dataId) {
  * @p usage in the @p list.
  * @param list the pointer to key data ids list.
  * @param nodeName the desired key data klass XML node name.
- * @param nodeNs the desired key data klass XML node namespace.
+ * @param nodeNs the desired key data klass XML node namespace; if NULL, only
+ * klasses with no XML node namespace are matched.
  * @param usage the desired key data usage.
  *
  * @return the key data klass if found and xmlSecKeyDataIdUnknown otherwise.

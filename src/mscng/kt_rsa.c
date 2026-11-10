@@ -45,7 +45,7 @@ struct _xmlSecMSCngRsaPkcs1OaepCtx {
 
 /******************************************************************************
  *
- * RSA PKCS1 key transport transform
+ * RSA PKCS1/OAEP key transport transform
  *
  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MSCngRsaPkcs1Oaep, xmlSecMSCngRsaPkcs1OaepCtx)
@@ -108,7 +108,7 @@ xmlSecMSCngRsaPkcs1OaepFinalize(xmlSecTransformPtr transform) {
     ctx = xmlSecMSCngRsaPkcs1OaepGetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
-    if(ctx->data != NULL)  {
+    if(ctx->data != NULL) {
         xmlSecKeyDataDestroy(ctx->data);
         ctx->data = NULL;
     }
@@ -505,8 +505,8 @@ xmlSecMSCngRsaPkcs1OaepExecute(xmlSecTransformPtr transform, int last,
     }
 
     if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
-                /* just do nothing */
-    } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
+        /* just do nothing */
+    } else if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
         ret = xmlSecMSCngRsaPkcs1OaepProcess(transform);
         if(ret < 0) {
             xmlSecInternalError("xmlSecMSCngRsaPkcs1OaepProcess",

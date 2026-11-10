@@ -617,17 +617,17 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
 
         /* first is always 0, ignore */
 
-        /* The last two integers are the DSA private exponent x and public key y,
-         * but their order is not fixed by the encoding: OpenSSL writes p,q,g,y,x
-         * while other implementations may write p,q,g,x,y. Disambiguate by assuming x < y, i.e.
-         * take the smaller value as x (integers[4]) and the larger as y
-         * (integers[5]). This holds in practice because x < q is a short exponent
-         * while y = g^x mod p is a full-size field element, so y is almost always
-         * larger than x.
+        /* The last two integers are the DSA private exponent x and public key y.
+         * The traditional DSA-PrivateKey format (RFC 3279 / X.9.57 / PKCS#1) fixes
+         * their order as p, q, g, y, x, so integers[4] holds y and integers[5]
+         * holds x. The S-expression built below expects x first and y second, so
+         * when the two values are in the "wrong" order for it they are swapped,
+         * i.e. the smaller value is taken as x (integers[4]) and the larger as y
+         * (integers[5]). This is reliable in practice because x < y holds with
+         * probability ~1: x < q is a short exponent while y = g^x mod p is a
+         * full-size field element, so y is almost always larger than x.
          *
-         * This is a known, documented limitation (not a fixable defect): the
-         * encoding itself does not record which value is x and which is y, so an
-         * unambiguous determination is impossible without extra verification. For
+         * This is a known, documented limitation (not a fixable defect): for
          * a key where y < x (which can only happen when y < q, a probability of
          * roughly q/p, i.e. negligible for standard DSA parameters) the two values
          * are swapped and the resulting key is silently wrong. The heuristic is

@@ -8,7 +8,7 @@
  */
 /**
  * @addtogroup xmlsec_mscng_crypto
- * @brief DES Key Wrap transforms implementation for MSCng.
+ * @brief Triple DES Key Wrap transform implementation for MSCng.
  */
 #include "globals.h"
 

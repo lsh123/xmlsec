@@ -1175,6 +1175,7 @@ xmlSecGnuTLSKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
                     expectedOutputSize, ctx->u.hkdf.params.keyLength, xmlSecTransformGetName(transform));
                 return(-1);
             }
+            ctx->u.hkdf.params.keyLength = expectedOutputSize;
 
             ret = xmlSecGnuTLSHkdfGenerateKey(ctx, expectedOutputSize, out,
                                              xmlSecTransformGetName(transform));

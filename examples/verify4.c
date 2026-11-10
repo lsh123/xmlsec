@@ -196,7 +196,7 @@ load_trusted_certs(char** files, int files_size) {
     assert(files_size > 0);
 
     /* create and initialize keys manager, we use a simple list based
-     * keys manager, implement your own xmlSecKeysStore klass if you need
+     * keys manager, implement your own xmlSecKeyStoreKlass if you need
      * something more sophisticated
      */
     mngr = xmlSecKeysMngrCreate();
@@ -228,7 +228,7 @@ load_trusted_certs(char** files, int files_size) {
  * @brief Verifies XML signature in #xml_file.
  * @param mngr the pointer to keys manager.
  * @param xml_file the signed XML file name.
- * @param id_attr the expected ID attribute for the signed node
+ * @param id_attr the value of the ID attribute of the signed node.
  * @return 0 on success or a negative value if an error occurs.
  */
 int

@@ -243,7 +243,11 @@ xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
 }
 
 /**
- * @brief Creates a new copy of @p list and all its items.
+ * @brief Creates a new copy of @p list.
+ * @details Creates a new copy of @p list and copies its items using the
+ * #xmlSecPtrListCopy function. The items are duplicated only when the list
+ * klass provides a duplicateItem method; otherwise the new list shares the
+ * raw item pointers with @p list.
  * @param list the pointer to list.
  * @return pointer to newly allocated list or NULL if an error occurs.
  */
@@ -423,7 +427,7 @@ xmlSecPtrListRemove(xmlSecPtrListPtr list, xmlSecSize pos) {
 /**
  * @brief Removes and returns a list item.
  * @details Removes the list item at the position @p pos, shifts all following
- * items towards the beginning of the list, and return the removed item.
+ * items towards the beginning of the list, and returns the removed item.
  * @param list the pointer to list.
  * @param pos the position.
  * @return the pointer to the list item. The caller is responsible for destroying the returned item.

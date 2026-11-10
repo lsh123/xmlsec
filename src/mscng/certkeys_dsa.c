@@ -451,6 +451,9 @@ done:
     return(ret);
 }
 
+/* Checks whether a BCrypt key is a DSA key by comparing its
+ * BCRYPT_ALGORITHM_NAME property with BCRYPT_DSA_ALGORITHM.
+ * On success returns 1 for a DSA key or 0 otherwise; -1 on failure. */
 int
 xmlSecMSCngIsDsaBcryptKey(BCRYPT_KEY_HANDLE hKey) {
     WCHAR algName[64] = {0};
@@ -543,6 +546,12 @@ done:
     return(res);
 }
 
+/* Reads a DSA public key from the p, q, g, y values, builds the
+ * appropriate BCrypt DSA public key blob (V1 for keys up to 1024-bit,
+ * V2 for larger keys up to 4096-bit) and imports it via
+ * BCryptImportKeyPair. Returns a new key data object adopting the
+ * imported public key on success, or NULL on failure. The returned
+ * key data must be destroyed by the caller. */
 xmlSecKeyDataPtr
 xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     xmlSecKeyDataPtr data = NULL;
@@ -779,6 +788,11 @@ done:
     return(res);
 }
 
+/* Exports a DSA BCrypt public key as a BCRYPT_DSA_PUBLIC_BLOB and writes
+ * the p, q, g, y values (with leading zero bytes stripped) into the key
+ * value. Handles both V1 (BCRYPT_DSA_KEY_BLOB) and V2
+ * (BCRYPT_DSA_KEY_BLOB_V2) blob layouts, detected by the blob magic.
+ * On success returns 0; -1 on failure. */
 int
 xmlSecMSCngKeyDataDsaPubkeyWrite(BCRYPT_KEY_HANDLE pubkey, xmlSecKeyValueDsaPtr dsaValue) {
     NTSTATUS status;

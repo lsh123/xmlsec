@@ -33,7 +33,7 @@ static int g_xmlSecGCryptSecureMemoryInitialized = 0;
 /**
  * @brief Initializes the GCrypt crypto engine.
  * @details General crypto engine initialization. This function is used
- * by the XMLSec command-line utility and is called before the
+ * by the XMLSec command-line utility and is called after the
  * #xmlSecInit function.
  *
  * @param config the path to GCrypt configuration (unused).
@@ -127,7 +127,7 @@ Noteworthy changes in version 1.4.3 (2008-09-18)
 /**
  * @brief Shuts down the GCrypt crypto engine.
  * @details General crypto engine shutdown. This function is used
- * by the XMLSec command-line utility and is called after the
+ * by the XMLSec command-line utility and is called before the
  * #xmlSecShutdown function.
  *
  * @return 0 on success or a negative value otherwise.

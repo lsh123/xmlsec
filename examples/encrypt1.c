@@ -191,7 +191,7 @@ encrypt_file(const char* tmpl_file, const char* key_file,
         goto done;
     }
 
-    /* create encryption context, we don't need keys manager in this example */
+    /* create encryption context, we don't need a keys manager in this example */
     encCtx = xmlSecEncCtxCreate(NULL);
     if(encCtx == NULL) {
         fprintf(stderr, "Error: failed to create encryption context\n");

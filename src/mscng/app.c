@@ -113,7 +113,7 @@ xmlSecMSCngAppParseConfig(const char* config, LPTSTR* pCurrentUserStoreName, LPT
 /**
  * @brief Initializes the MSCng crypto engine.
  * @details General crypto engine initialization. This function is used
- * by the XMLSec command-line utility and is called before the
+ * by the XMLSec command-line utility and is called after the
  * #xmlSecInit function.
  *
  * @param config the cert store name (or a &lt;user&gt;:&lt;machine&gt; pair of names)
@@ -147,7 +147,7 @@ xmlSecMSCngAppInit(const char* config) {
 /**
  * @brief Shuts down the MSCng crypto engine.
  * @details General crypto engine shutdown. This function is used
- * by the XMLSec command-line utility and is called after the
+ * by the XMLSec command-line utility and is called before the
  * #xmlSecShutdown function.
  *
  * @return 0 on success or a negative value otherwise.
@@ -1029,8 +1029,8 @@ xmlSecMSCngAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* d
 }
 
 /**
- * @brief Reads CRLs from a file and adds to the store.
- * @details Reads crls from @p filename and adds to the list of crls in @p store.
+ * @brief Reads a CRL from a file and adds to the store.
+ * @details Reads crl from @p filename and adds to the list of crls in @p store.
  *
  * @param mngr the keys manager.
  * @param filename the CRL file.
@@ -1202,8 +1202,8 @@ done:
 }
 
 /**
- * @brief Reads CRLs from memory and adds to the store.
- * @details Reads crls from @p data and adds to the list of crls in @p store.
+ * @brief Reads a CRL from memory and adds to the store.
+ * @details Reads crl from @p data and adds to the list of crls in @p store.
  *
  * @param mngr the pointer to keys manager.
  * @param data the CRL data.

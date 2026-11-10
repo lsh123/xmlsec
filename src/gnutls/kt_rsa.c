@@ -627,11 +627,19 @@ xmlSecGnuTLSRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     /* GnuTLS limitation: MGF1 digest must equal the OAEP digest */
     if(mgf1DigestAlg != digestAlg) {
         if(oaepParams.mgf1DigestAlgorithm == NULL) {
-            xmlSecInvalidTransformError2(transform,
-                "No MGF1 digest algorithm is specified: the XMLEnc 1.1 default "
-                "(MGF1 with SHA1) differs from the specified OAEP digest \"%s\", "
-                "and GnuTLS requires the MGF1 digest to equal the OAEP digest",
-                xmlSecErrorsSafeString(oaepParams.digestAlgorithm));
+            if(transform->id == xmlSecGnuTLSTransformRsaOaepId) {
+                xmlSecInvalidTransformError2(transform,
+                    "the XMLEnc 1.0 transform fixes MGF1 to SHA1, which "
+                    "differs from the specified OAEP digest \"%s\", and "
+                    "GnuTLS requires the MGF1 digest to equal the OAEP digest",
+                    xmlSecErrorsSafeString(oaepParams.digestAlgorithm));
+            } else {
+                xmlSecInvalidTransformError2(transform,
+                    "No MGF1 digest algorithm is specified: the XMLEnc 1.1 default "
+                    "(MGF1 with SHA1) differs from the specified OAEP digest \"%s\", "
+                    "and GnuTLS requires the MGF1 digest to equal the OAEP digest",
+                    xmlSecErrorsSafeString(oaepParams.digestAlgorithm));
+            }
         } else {
             xmlSecInvalidTransformError3(transform,
                 "GnuTLS does not support different MGF1 and OAEP digests: "

@@ -456,6 +456,8 @@ xmlSecGnuTLSAsymKeyDataGetSize(xmlSecKeyDataPtr data) {
 
 /**
  * @brief Creates XMLSec key from GnuTLS public key.
+ * @details Creates an XMLSec key from the given GnuTLS public key. On success,
+ * the @p pubkey will be owned by the created key.
  * @param pubkey the pointer to GnuTLS public key.
  * @return pointer to newly created key or NULL if an error occurs.
  */
@@ -494,6 +496,8 @@ xmlSecGnuTLSAsymmetricKeyCreatePub(gnutls_pubkey_t pubkey) {
 
 /**
  * @brief Creates XMLSec key from GnuTLS private key.
+ * @details Creates an XMLSec key from the given GnuTLS private key. On success,
+ * the @p privkey will be owned by the created key.
  * @param privkey the pointer to GnuTLS private key.
  * @return pointer to newly created key or NULL if an error occurs.
  */
@@ -1410,10 +1414,11 @@ xmlSecGnuTLSKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     /* privateExponent (only for private key) */
     size = xmlSecBufferGetSize(&(rsaValue->privateExponent));
     if(size > 0) {
-        /* GnuTLS requires the RSA prime factors (p, q) to import a private
-         * key, and they cannot be derived from (modulus, e, d) alone. As a
-         * result, a private RSA key written by xmlSecGnuTLSKeyDataRsaWrite
-         * (which emits privateExponent) cannot be read back by this function. */
+        /* GnuTLS requires the RSA prime factors (p, q) as inputs to its
+         * private key import API (gnutls_privkey_import_rsa_raw), and the
+         * RSAKeyValue format does not carry them. As a result, a private RSA
+         * key written by xmlSecGnuTLSKeyDataRsaWrite (which emits
+         * privateExponent) cannot be read back by this function. */
         xmlSecInvalidDataError("private RSA keys are not supported: GnuTLS requires the RSA prime factors "
             "(Prime1 and Prime2), which are not available in the RSAKeyValue format",
             xmlSecKeyDataKlassGetName(id));

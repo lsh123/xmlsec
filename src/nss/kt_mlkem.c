@@ -513,12 +513,12 @@ done:
 /**
  * This function can be called either from xmlSecKeyDataEncryptedKeyXmlRead()
  * or from xmlSecEncCtxEncryptedKeyXmlWrite():
- * - Sign read: Encrypt + no input -> encapsulate
- * - Sign write: Encrypt + KEM key data present -> write ciphertext
- * - Verify read: Decrypt + input present -> decapsulate
- * - Encrypt read: Encrypt + no input -> encapsulate
- * - Encrypt write: Encrypt + KEM key data present -> write ciphertext
- * - Decrypt read: Decrypt + KEM key data present -> write ciphertext
+ * - Parent Sign read: Encrypt + no input -> encapsulate
+ * - Parent Sign write: Encrypt + KEM key data present -> write ciphertext
+ * - Parent Verify read: Decrypt + input present -> decapsulate
+ * - Parent Encrypt read: Encrypt + no input -> encapsulate
+ * - Parent Encrypt write: Encrypt + KEM key data present -> write ciphertext
+ * - Parent Decrypt read: Decrypt + KEM key data present -> decapsulate
  */
 static int
 xmlSecNssMLKEMProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr transformCtx) {

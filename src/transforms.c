@@ -1094,8 +1094,8 @@ xmlSecTransformCtxPrepare(xmlSecTransformCtxPtr ctx, xmlSecTransformDataType inp
         }
     }
 
-    /* finally let application a chance to verify that it's ok to execute
-     * this transforms chain */
+    /* finally give the application a chance to verify that it is ok to
+     * execute this transforms chain */
     if(ctx->preExecCallback != NULL) {
         ret = (ctx->preExecCallback)(ctx);
         if(ret < 0) {
@@ -2238,7 +2238,7 @@ xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, const xmlSecByte* da
         ret = xmlSecTransformExecute(transform, finalData, transformCtx);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecTransformExecute", xmlSecTransformGetName(transform),
-                "final=%d", final);
+                "finalData=%d", finalData);
             return(-1);
         }
 

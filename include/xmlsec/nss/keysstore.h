@@ -30,7 +30,7 @@ extern "C" {
  *
  *****************************************************************************/
 /**
- * @brief An Nss keys store klass id.
+ * @brief An NSS keys store klass id.
  */
 #define xmlSecNssKeysStoreId            xmlSecNssKeysStoreGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyStoreId   xmlSecNssKeysStoreGetKlass      (void);

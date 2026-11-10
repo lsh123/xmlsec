@@ -310,9 +310,11 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
 int
 xmlSecGCryptInit(void) {
     /* Note: the full libgcrypt initialization (secure memory, etc.) is
-     * performed by xmlSecGCryptAppInit (src/gcrypt/app.c), which the
-     * application invokes through xmlSecCryptoAppInit before calling
-     * xmlSecInit. Applications that skip the app-init step rely on
+     * performed by xmlSecGCryptAppInit (src/gcrypt/app.c). The standard
+     * initialization order is: the application calls xmlSecInit first,
+     * then xmlSecCryptoAppInit (which invokes xmlSecGCryptAppInit), and
+     * only then xmlSecCryptoInit (which invokes this function).
+     * Applications that skip the app-init step rely on
      * libgcrypt's self-initialization: the basic initialization is
      * triggered by the gcry_check_version() call below, and the rest
      * is performed by libgcrypt itself starting with libgcrypt 1.4.3.

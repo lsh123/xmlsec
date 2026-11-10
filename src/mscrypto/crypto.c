@@ -191,7 +191,7 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
 #ifndef XMLSEC_NO_RSA
 
 #ifndef XMLSEC_NO_MD5
-    gXmlSecMSCryptoFunctions->transformRsaMd5GetKlass          = xmlSecMSCryptoTransformRsaMd5GetKlass;
+    gXmlSecMSCryptoFunctions->transformRsaMd5GetKlass           = xmlSecMSCryptoTransformRsaMd5GetKlass;
 #endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_SHA1

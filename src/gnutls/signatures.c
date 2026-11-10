@@ -858,7 +858,8 @@ xmlSecGnuTLSReadDerLength(const xmlSecByte * data, xmlSecSize dataSize, xmlSecSi
         /* indefinite length not supported */
         return(-1);
     } else if (cc == 0xff) {
-        /* forbidden length value. */
+        /* 0xff means a 127-byte long-form length, which is not supported
+           (it exceeds the maximum supported size) */
         return(-1);
     } else {
         xmlSecSize length = 0;

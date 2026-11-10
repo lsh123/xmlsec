@@ -99,7 +99,7 @@ xmlSecGnuTLSAppResolvePwd(const char* pwd, void* pwdCallback, void* pwdCallbackC
 /**
  * @brief Initializes the GnuTLS crypto engine.
  * @details General crypto engine initialization. This function is used
- * by the XMLSec command-line utility and is called before the
+ * by the XMLSec command-line utility and is called after the
  * #xmlSecInit function.
  *
  * @param config the path to GnuTLS configuration (unused).
@@ -121,7 +121,7 @@ xmlSecGnuTLSAppInit(const char* config XMLSEC_ATTRIBUTE_UNUSED) {
 /**
  * @brief Shuts down the GnuTLS crypto engine.
  * @details General crypto engine shutdown. This function is used
- * by the XMLSec command-line utility and is called after the
+ * by the XMLSec command-line utility and is called before the
  * #xmlSecShutdown function.
  *
  * @return 0 on success or a negative value otherwise.
@@ -1119,8 +1119,8 @@ xmlSecGnuTLSAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xml
  * verifying it, and then adopting it to the store.
  *
  * The CRL is verified by:
- * 1. Checking the signature against the issuer's certificate in the store
- * 2. Validating thisUpdate and nextUpdate times
+ * 1. Validating thisUpdate and nextUpdate times
+ * 2. Checking the signature against the issuer's certificate in the store
  *
  * @param mngr the keys manager.
  * @param filename the CRL filename.

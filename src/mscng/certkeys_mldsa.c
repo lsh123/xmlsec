@@ -85,7 +85,7 @@ xmlSecMSCngKeyDataCertGetMlDsaPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HAND
     }
 
     /* The SubjectPublicKey field carries the raw ML-DSA public key. Some
-     * encoders (e.g. OpenSSL) prefix it with a single zero byte; strip one
+     * encoders may prefix it with a single leading zero byte; strip one
      * leading zero byte only when the resulting length matches a known
      * ML-DSA parameter set size. */
     pkData = spki->PublicKey.pbData;

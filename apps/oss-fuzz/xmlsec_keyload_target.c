@@ -105,8 +105,8 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
                                         format, FUZZ_KEY_PWD, NULL, NULL);
     if (key != NULL) {
 #ifndef XMLSEC_NO_X509
-        /* A loaded key can carry a certificate chain, which is a separate
-         * reader. Feed the same bytes to it. */
+        /* The same bytes may also be a certificate; try to load it into
+         * the key as well. */
         (void)xmlSecOpenSSLAppKeyCertLoadMemory(key, (const xmlSecByte*)data,
                                                 (xmlSecSize)size, format);
 #endif /* XMLSEC_NO_X509 */

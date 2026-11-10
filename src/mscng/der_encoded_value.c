@@ -246,7 +246,8 @@ xmlSecMSCngKeyDataDEREncodedKeyValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr ke
     /* get pubkey */
     keyData = xmlSecKeyGetValue(key);
     if(keyData == NULL) {
-        xmlSecInternalError("xmlSecKeyGetValue", xmlSecKeyDataKlassGetName(id));
+        xmlSecInvalidDataError("key value is missing or is not an MSCng key data object",
+                               xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 

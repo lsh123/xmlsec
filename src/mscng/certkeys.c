@@ -155,8 +155,8 @@ xmlSecMSCngKeyDataCertGetPrivkey(PCCERT_CONTEXT cert, NCRYPT_KEY_HANDLE* key, BO
 /**
  * @brief Sets the value of key data.
  * @param data the pointer to MSCng pccert data.
- * @param cert the pointer to PCCERT key.
- * @param type the certificate type (trusted/untrusted).
+ * @param cert the pointer to the certificate context.
+ * @param type the key data type (public/private) to mark the certificate's key as.
  * @return 0 on success or a negative value otherwise.
  */
 static int
@@ -237,7 +237,7 @@ xmlSecMSCngKeyDataAdoptBCryptPrivKey(xmlSecKeyDataPtr data, BCRYPT_KEY_HANDLE hK
 }
 
 /**
- * @brief BCrypt DH private key retrieval (for keys loaded from DER/PKCS8).
+ * @brief BCrypt private key retrieval for DH/XDH/ML-KEM keys loaded from DER/PKCS8.
  * @param data the key data.
  *
  * The returned key must not be destroyed by the caller.

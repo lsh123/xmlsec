@@ -398,7 +398,7 @@ static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                   
 #ifndef XMLSEC_NO_SHA1
 /******************************************************************************
  *
- * SHA1 Digest transforms
+ * SHA-1 Digest transforms
  *
  *****************************************************************************/
 XMLSEC_GNUTLS_DIGEST_KLASS(Sha1)
@@ -416,14 +416,14 @@ xmlSecGnuTLSTransformSha1GetKlass(void) {
 #ifndef XMLSEC_NO_SHA224
 /******************************************************************************
  *
- * SHA2-224 Digest transforms
+ * SHA-224 Digest transforms
  *
  *****************************************************************************/
 XMLSEC_GNUTLS_DIGEST_KLASS(Sha224)
 
 /**
- * @brief SHA2-224 digest transform klass.
- * @return pointer to SHA2-224 digest transform klass.
+ * @brief SHA-224 digest transform klass.
+ * @return pointer to SHA-224 digest transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformSha224GetKlass(void) {
@@ -434,14 +434,14 @@ xmlSecGnuTLSTransformSha224GetKlass(void) {
 #ifndef XMLSEC_NO_SHA256
 /******************************************************************************
  *
- * SHA2-256 Digest transforms
+ * SHA-256 Digest transforms
  *
  *****************************************************************************/
 XMLSEC_GNUTLS_DIGEST_KLASS(Sha256)
 
 /**
- * @brief SHA2-256 digest transform klass.
- * @return pointer to SHA2-256 digest transform klass.
+ * @brief SHA-256 digest transform klass.
+ * @return pointer to SHA-256 digest transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformSha256GetKlass(void) {
@@ -453,14 +453,14 @@ xmlSecGnuTLSTransformSha256GetKlass(void) {
 #ifndef XMLSEC_NO_SHA384
 /******************************************************************************
  *
- * SHA2-384 Digest transforms
+ * SHA-384 Digest transforms
  *
  *****************************************************************************/
 XMLSEC_GNUTLS_DIGEST_KLASS(Sha384)
 
 /**
- * @brief SHA2-384 digest transform klass.
- * @return pointer to SHA2-384 digest transform klass.
+ * @brief SHA-384 digest transform klass.
+ * @return pointer to SHA-384 digest transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformSha384GetKlass(void) {
@@ -471,14 +471,14 @@ xmlSecGnuTLSTransformSha384GetKlass(void) {
 #ifndef XMLSEC_NO_SHA512
 /******************************************************************************
  *
- * SHA2-512 digest transforms
+ * SHA-512 digest transforms
  *
  *****************************************************************************/
 XMLSEC_GNUTLS_DIGEST_KLASS(Sha512)
 
 /**
- * @brief SHA2-512 digest transform klass.
- * @return pointer to SHA2-512 digest transform klass.
+ * @brief SHA-512 digest transform klass.
+ * @return pointer to SHA-512 digest transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformSha512GetKlass(void) {

@@ -113,7 +113,7 @@ XMLSEC_FUNC_TO_PTR_IMPL(pem_password_cb)
 /**
  * @brief Initializes the OpenSSL crypto engine.
  * @details General crypto engine initialization. This function is used
- * by the XMLSec command-line utility and is called before the
+ * by the XMLSec command-line utility and is called after the
  * #xmlSecInit function.
  *
  * @param config the path to certs.
@@ -173,7 +173,7 @@ error:
 /**
  * @brief Shuts down the OpenSSL crypto engine.
  * @details General crypto engine shutdown. This function is used
- * by the XMLSec command-line utility and is called after the
+ * by the XMLSec command-line utility and is called before the
  * #xmlSecShutdown function.
  *
  * @return 0 on success or a negative value otherwise.
@@ -1032,7 +1032,7 @@ xmlSecOpenSSLAppStoreKeyLoad(const char *uri, xmlSecKeyDataType type, const char
     if(type == xmlSecKeyDataTypePrivate) {
         if(pPrivKey == NULL) {
             xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
-                "Private key is not found in the store");
+                "No private key was found in the store");
             goto done;
         }
         pKey = pPrivKey;

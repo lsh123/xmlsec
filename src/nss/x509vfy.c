@@ -58,7 +58,7 @@ struct _xmlSecNssX509StoreCtx {
      *          https://bugzilla.mozilla.org/show_bug.cgi?id=211051
      *    we use this list to perform search ourselves.
      */
-    CERTCertList* certsList; /* just keeping a reference to destroy later */
+    CERTCertList* certsList;
     xmlSecNssX509CrlNodePtr crlsList;
     CERTCertDBHandle *certDb;
 };

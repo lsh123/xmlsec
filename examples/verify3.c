@@ -192,7 +192,7 @@ load_trusted_certs(char** files, int files_size) {
     assert(files_size > 0);
 
     /* create and initialize keys manager, we use a simple list based
-     * keys manager, implement your own xmlSecKeysStore klass if you need
+     * keys manager, implement your own xmlSecKeyStoreKlass if you need
      * something more sophisticated
      */
     mngr = xmlSecKeysMngrCreate();

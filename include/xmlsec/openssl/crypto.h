@@ -49,7 +49,7 @@
 #define XMLSEC_OPENSSL_IS_AWSLC         1
 #define XMLSEC_OPENSSL_API_111          1
 #else  /* This is OpenSSL */
-/* OpenSSL supports multiple API versions, starting from 3.0.0. */
+/* OpenSSL supports multiple API versions, starting from 1.1.1 (the 1.1.1 API is deprecated). */
 #define XMLSEC_OPENSSL_IS_OPENSSL       1
 #if OPENSSL_VERSION_NUMBER >= 0x40000000L
 #define XMLSEC_OPENSSL_API_400          1
@@ -84,7 +84,7 @@
  * BoringSSL and AWS-LC do not provide a usable opensslconf.h, so the
  * OPENSSL_NO_* capability mappings below are not available for them and the
  * missing features have to be listed here explicitly (these builds do not
- * support Camellia, GOST and RIPEMD160).
+ * support RSA-OAEP, DH, DSA, SHA3, Camellia, ChaCha20, GOST, GOST2012 and RIPEMD160).
  */
 #define XMLSEC_NO_RSA_OAEP              1
 #define XMLSEC_NO_DH                    1

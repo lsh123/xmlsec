@@ -162,7 +162,8 @@ xmlSecKeyDataX509XmlRead(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xmlNodePtr nod
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     /* note: keyInfoCtx->keysMngr is optional (see xmlSecKeyInfoCtxCreate);
      * without it the key lookup and the readFunc fallback are skipped below
-     * and the key is left empty, the same way as in the KeyName path */
+     * and the key is left empty (unlike the KeyName path, which still sets
+     * the key name via xmlSecKeySetName) */
 
     ret = xmlSecKeyX509DataValueInitialize(&x509Value);
     if(ret < 0) {

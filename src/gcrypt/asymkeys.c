@@ -398,7 +398,7 @@ done:
 /**
  * @brief Checks that a GCrypt key S-expression is of the expected algorithm type.
  * @param key the pointer to the GCrypt key S-expression (public key, private key, or key pair).
- * @param alg the expected algorithm token ("dsa", "rsa", or "ecdsa").
+ * @param alg the expected algorithm token ("dsa" or "rsa").
  * @return 0 if the key is of the expected type or -1 otherwise.
  */
 static int

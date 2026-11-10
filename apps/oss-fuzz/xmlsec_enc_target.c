@@ -207,7 +207,7 @@ static int do_init(void) {
 }
 
 /* Keep a decryption context from reaching the network or the file system.
- * <CipherReference> and <RetrievalMethod> both take a URI. */
+ * <CipherReference>, <RetrievalMethod> and <KeyInfoReference> all take a URI. */
 static void restrict_uris(xmlSecEncCtxPtr encCtx) {
     encCtx->transformCtx.enabledUris =
         xmlSecTransformUriTypeEmpty | xmlSecTransformUriTypeSameDocument;

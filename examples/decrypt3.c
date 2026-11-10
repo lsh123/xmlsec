@@ -353,8 +353,10 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
     }
 
     /* we do not want to open files outside the current folder;
-     * to prevent that, limit the characters in the key name to letters, digits,
-     * '.', '-' or '_'.
+     * to limit that, restrict the characters in the key name to letters,
+     * digits, '.', '-' or '_'. This rejects the path separator '/', so
+     * the name cannot reference a path; note, however, that names
+     * containing ".." still pass the check.
      */
     for(p = name; (*p) != '\0'; ++p) {
         if(!isalnum((*p)) && ((*p) != '.') && ((*p) != '-') && ((*p) != '_')) {

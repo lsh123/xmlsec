@@ -217,7 +217,7 @@ xmlSecIOCleanupCallbacks(void) {
 /**
  * @brief Registers I/O callbacks for parser input.
  * @details Register a new set of I/O callbacks for handling parser input.
- * If an open callback is provided, the read and close callbacks must be
+ * If an open callback is provided, the read and close callbacks should be
  * provided as well; otherwise a successfully opened resource will never
  * be read from or closed.
  * @param matchFunc the protocol match callback.

@@ -155,7 +155,7 @@ struct _xmlSecDSigCtx {
     xmlSecTransformOperation    operation;  /**< the operation: sign or verify. */
     xmlSecBufferPtr             result;  /**< the pointer to signature (not valid for signature verification). The buffer is owned by the context and freed when the context is finalized or destroyed, so the pointer becomes invalid after #xmlSecDSigCtxFinalize or #xmlSecDSigCtxDestroy. */
     xmlSecDSigStatus            status;  /**< the &lt;dsig:Signature/&gt; processing status. */
-    xmlSecDSigFailureReason     failureReason;  /**< the detailed failure reason (if known); the application should check @p status first. */
+    xmlSecDSigFailureReason     failureReason;  /**< the detailed failure reason (if known); the application should check #status first. */
     xmlSecTransformPtr          signMethod;  /**< the pointer to signature transform. */
     xmlSecTransformPtr          c14nMethod;  /**< the pointer to c14n transform. */
     xmlSecTransformPtr          preSignMemBufMethod;  /**< the pointer to binary buffer right before signature (valid only if #XMLSEC_DSIG_FLAGS_STORE_SIGNATURE flag is set). The buffer is owned by the context and freed when the context is finalized or destroyed, so the pointer becomes invalid after #xmlSecDSigCtxFinalize or #xmlSecDSigCtxDestroy. */

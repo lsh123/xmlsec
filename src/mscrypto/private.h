@@ -122,9 +122,9 @@ PCCERT_CONTEXT     xmlSecMSCryptoX509StoreFindCert              (xmlSecKeyDataSt
                                                                  const xmlChar *subjectName,
                                                                  const xmlChar *issuerName,
                                                                  const xmlChar *issuerSerial,
-                                                                 const xmlSecByte* ski,
+                                                                 const xmlSecByte *ski,
                                                                  xmlSecSize skiSize,
-                                                                 xmlSecKeyInfoCtx* keyInfoCtx);
+                                                                 xmlSecKeyInfoCtx *keyInfoCtx);
 
 xmlChar *          xmlSecMSCryptoX509GetNameString              (PCCERT_CONTEXT pCertContext,
                                                                  DWORD dwType,
@@ -133,7 +133,7 @@ xmlChar *          xmlSecMSCryptoX509GetNameString              (PCCERT_CONTEXT 
 
 PCCERT_CONTEXT     xmlSecMSCryptoX509StoreVerify                (xmlSecKeyDataStorePtr store,
                                                                  HCERTSTORE certs,
-                                                                 xmlSecKeyInfoCtx* keyInfoCtx);
+                                                                 xmlSecKeyInfoCtx *keyInfoCtx);
 
 #endif /* XMLSEC_NO_X509 */
 

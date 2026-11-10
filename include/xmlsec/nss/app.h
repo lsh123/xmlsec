@@ -138,6 +138,15 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppKeyCertLoadSECItem  (xmlSecK
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr       xmlSecNssAppKeyFromCertLoadSECItem (SECItem* secItem,
                                                                          xmlSecKeyDataFormat format);
 #endif /* XMLSEC_NO_X509 */
+/**
+ * @brief Gets the default password callback.
+ *
+ * The NSS back-end does not provide a default password callback, so this
+ * function always returns NULL; the caller must supply their own callback
+ * when loading password-protected keys.
+ *
+ * @return the default password callback (always NULL).
+ */
 XMLSEC_CRYPTO_EXPORT void*              xmlSecNssAppGetDefaultPwdCallback (void);
 
 #ifdef __cplusplus

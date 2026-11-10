@@ -894,7 +894,7 @@ xmlSecMSCngDhDerivePubKeyY(BCRYPT_ALG_HANDLE hAlg, BCRYPT_KEY_HANDLE hPrivKey, P
      * raw-secret layout.
      * See https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/nf-bcrypt-bcryptderivekey */
     xmlSecMSCngReverseBytes(pbYtmp, cbY);
-    
+
     /* success */
     res = 0;
 

@@ -92,7 +92,7 @@ typedef struct _xmlSecX509NameReplacements {
 XMLSEC_EXPORT int       xmlSecX509NameRead              (const xmlChar *str,
                                                          xmlSecX509NameReplacements *replacements,
                                                          xmlSecX509NameReadCallback callback,
-                                                         void * context);
+                                                         void* context);
 
 
 

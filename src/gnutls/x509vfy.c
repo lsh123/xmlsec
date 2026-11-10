@@ -1062,7 +1062,7 @@ done:
 /**
  * @brief Adds cert to the trusted or untrusted store.
  * @details Adds trusted (root) or untrusted certificate to the store.
- * @param store the pointer to X509 key data store klass.
+ * @param store the pointer to X509 key data store.
  * @param cert the pointer to GnuTLS X509 certificate.
  * @param type the certificate type (trusted/untrusted).
  * @return 0 on success or a negative value if an error occurs.
@@ -1099,7 +1099,7 @@ xmlSecGnuTLSX509StoreAdoptCert(xmlSecKeyDataStorePtr store, gnutls_x509_crt_t ce
 
 /**
  * @brief Adds CRL to the store.
- * @param store the pointer to X509 key data store klass.
+ * @param store the pointer to X509 key data store.
  * @param crl the pointer to GnuTLS X509 CRL.
  * @return 0 on success or a negative value if an error occurs.
  */
@@ -1411,7 +1411,7 @@ done:
 
 /**
  * @brief Verifies @p crl by checking its time validity (thisUpdate/nextUpdate) first, then the CRL signature.
- * @param store the pointer to X509 key data store klass.
+ * @param store the pointer to X509 key data store.
  * @param crl the CRL to verify.
  * @param keyInfoCtx the key info context for verification parameters.
  * @return 1 if verified, 0 if not verified, or a negative value on error.

@@ -265,8 +265,11 @@ xmlSecBase64CtxUpdate_ex(xmlSecBase64CtxPtr ctx, const xmlSecByte *in, xmlSecSiz
         }
     } else {
         ret = xmlSecBase64CtxDecode(ctx, in, inSize, &inRead, out, outSize, outWritten);
-        if((ret < 0) || (inRead != inSize)) {
+        if(ret < 0) {
             xmlSecInternalError("xmlSecBase64CtxDecode", NULL);
+            return(-1);
+        } else if(inRead != inSize) {
+            xmlSecInvalidSizeOtherError("input base64 buffer size is too large", NULL);
             return(-1);
         }
     }

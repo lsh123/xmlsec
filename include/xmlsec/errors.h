@@ -318,7 +318,7 @@ extern "C" {
 #define XMLSEC_ERROR_R_CAST_IMPOSSIBLE                  XMLSEC_ERRORS_R_CAST_IMPOSSIBLE
 
 /**
- * @brief The maximum xmlsec errors number.
+ * @brief The legacy upper bound of the xmlsec error code space.
  * DEPRECATED. No longer used by the library; provided for source compatibility with xmlsec 1.3.12 and earlier.
  */
 #define XMLSEC_ERRORS_MAX_NUMBER                        256

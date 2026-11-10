@@ -35,6 +35,7 @@ static int                      xmlSecAppCmdLineIntParamRead    (const char* str
 static int                      xmlSecAppCmdLineTimeParamRead   (const char* str,
                                                                   time_t* t,
                                                                   int is_gmt_time);
+static const char*              xmlSecAppCmdLineParamGetName    (xmlSecAppCmdLineParamPtr param);
 
 #if defined(_MSC_VER)
 #define XMLSEC_MKGMTIME  _mkgmtime
@@ -49,6 +50,22 @@ xmlSecAppCmdLineParamIsSet(xmlSecAppCmdLineParamPtr param) {
     return(((param != NULL) && (param->value != NULL)) ? 1 : 0);
 }
 
+/*
+ * Returns a human-readable name for error messages: the full name if
+ * defined, otherwise the short name. The parameter struct allows either
+ * name to be NULL, so this must not be used as a plain "%s" argument.
+ */
+static const char*
+xmlSecAppCmdLineParamGetName(xmlSecAppCmdLineParamPtr param) {
+    if(param->fullName != NULL) {
+        return(param->fullName);
+    }
+    if(param->shortName != NULL) {
+        return(param->shortName);
+    }
+    return("unknown");
+}
+
 /**< Returns the value as a string. Prints an error message to stderr and returns NULL if the parameter is not a string. */
 const char*
 xmlSecAppCmdLineParamGetString(xmlSecAppCmdLineParamPtr param) {
@@ -57,7 +74,7 @@ xmlSecAppCmdLineParamGetString(xmlSecAppCmdLineParamPtr param) {
         return(NULL);
     }
     if(param->type != xmlSecAppCmdLineParamTypeString) {
-        fprintf(stderr, "Error: parameter \"%s\" is not string.\n", param->fullName);
+        fprintf(stderr, "Error: parameter \"%s\" is not string.\n", xmlSecAppCmdLineParamGetName(param));
         return(NULL);
     }
     return((param->value != NULL) ? param->value->strValue : NULL);
@@ -74,7 +91,7 @@ xmlSecAppCmdLineParamGetStringList(xmlSecAppCmdLineParamPtr param) {
         return(NULL);
     }
     if(param->type != xmlSecAppCmdLineParamTypeStringList) {
-        fprintf(stderr, "Error: parameter \"%s\" is not string list.\n", param->fullName);
+        fprintf(stderr, "Error: parameter \"%s\" is not string list.\n", xmlSecAppCmdLineParamGetName(param));
         return(NULL);
     }
     return((param->value != NULL) ? param->value->strListValue : NULL);
@@ -88,7 +105,7 @@ xmlSecAppCmdLineParamGetInt(xmlSecAppCmdLineParamPtr param, int def) {
         return(def);
     }
     if(param->type != xmlSecAppCmdLineParamTypeNumber) {
-        fprintf(stderr, "Error: parameter \"%s\" is not integer.\n", param->fullName);
+        fprintf(stderr, "Error: parameter \"%s\" is not integer.\n", xmlSecAppCmdLineParamGetName(param));
         return(def);
     }
     return((param->value != NULL) ? param->value->intValue : def);
@@ -102,7 +119,7 @@ xmlSecAppCmdLineParamGetTime(xmlSecAppCmdLineParamPtr param, time_t def) {
         return(def);
     }
     if((param->type != xmlSecAppCmdLineParamTypeTime) && (param->type != xmlSecAppCmdLineParamTypeGmtTime)) {
-        fprintf(stderr, "Error: parameter \"%s\" is not time.\n", param->fullName);
+        fprintf(stderr, "Error: parameter \"%s\" is not time.\n", xmlSecAppCmdLineParamGetName(param));
         return(def);
     }
     return((param->value != NULL) ? param->value->timeValue : def);

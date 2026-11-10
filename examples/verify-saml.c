@@ -66,6 +66,8 @@ int verify_signature_results(xmlSecDSigCtxPtr dsigCtx);
 int
 main(int argc, char **argv) {
     int xmlsec_initialized = 0;
+    int xmlsec_crypto_app_initialized = 0;
+    int xmlsec_crypto_initialized = 0;
 #ifndef XMLSEC_NO_XSLT
     xsltSecurityPrefsPtr xsltSecPrefs = NULL;
 #endif /* XMLSEC_NO_XSLT */
@@ -120,6 +122,7 @@ main(int argc, char **argv) {
         fprintf(stderr, "Error: xmlsec initialization failed.\n");
         goto done;
     }
+    xmlsec_initialized = 1;
 
     /* Check loaded library version */
     if(xmlSecCheckVersion() != 1) {
@@ -146,13 +149,14 @@ main(int argc, char **argv) {
         fprintf(stderr, "Error: crypto initialization failed.\n");
         goto done;
     }
+    xmlsec_crypto_app_initialized = 1;
 
     /* Init xmlsec-crypto library */
     if(xmlSecCryptoInit() < 0) {
         fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
         goto done;
     }
-    xmlsec_initialized = 1;
+    xmlsec_crypto_initialized = 1;
 
     /* create keys manager and load trusted certificates */
     mngr = load_trusted_certs(&(argv[2]), argc - 2);
@@ -172,10 +176,15 @@ done:
         xmlSecKeysMngrDestroy(mngr);
     }
 
-    /* shutdown xmlsec-crypto library and xmlsec itself */
-    if (xmlsec_initialized != 0) {
+    /* shutdown the crypto engine and the library, in the reverse order of
+     * initialization, skipping the steps that did not succeed */
+    if (xmlsec_crypto_initialized != 0) {
         xmlSecCryptoShutdown();
+    }
+    if (xmlsec_crypto_app_initialized != 0) {
         xmlSecCryptoAppShutdown();
+    }
+    if (xmlsec_initialized != 0) {
         xmlSecShutdown();
     }
 
@@ -282,6 +291,13 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
     node = xmlSecFindChild(rootNode, xmlSecNodeSignature, xmlSecDSigNs);
     if(node == NULL) {
         fprintf(stderr, "Error: start node not found in \"%s\"\n", xml_file);
+        goto done;
+    }
+
+    /* the SAML specification expects exactly one signature, so reject
+     * a response with more than one <dsig:Signature/> child */
+    if(xmlSecFindSibling(node->next, xmlSecNodeSignature, xmlSecDSigNs) != NULL) {
+        fprintf(stderr, "Error: the SAML Response contains more than one signature\n");
         goto done;
     }
 

@@ -275,18 +275,8 @@ static void
 xmlSecCryptoDLLibraryDestroy(xmlSecCryptoDLLibraryPtr lib) {
     xmlSecAssert(lib != NULL);
 
-    if(lib->name != NULL) {
-        xmlFree(lib->name);
-    }
-
-    if(lib->filename != NULL) {
-        xmlFree(lib->filename);
-    }
-
-    if(lib->getFunctionsName != NULL) {
-        xmlFree(lib->getFunctionsName);
-    }
-
+    /* close the library handle before freeing the string fields: the
+     * error reporting below uses lib->filename */
 #ifdef XMLSEC_DL_LIBLTDL
     if(lib->handle != NULL) {
         int ret;
@@ -310,6 +300,18 @@ xmlSecCryptoDLLibraryDestroy(xmlSecCryptoDLLibraryPtr lib) {
         }
     }
 #endif /* defined(XMLSEC_WINDOWS) && defined(XMLSEC_DL_WIN32) */
+
+    if(lib->name != NULL) {
+        xmlFree(lib->name);
+    }
+
+    if(lib->filename != NULL) {
+        xmlFree(lib->filename);
+    }
+
+    if(lib->getFunctionsName != NULL) {
+        xmlFree(lib->getFunctionsName);
+    }
 
     xmlFree(lib);
 }

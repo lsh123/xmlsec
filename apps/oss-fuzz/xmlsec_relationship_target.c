@@ -94,7 +94,7 @@ static xmlNodePtr find_relationships(xmlNodePtr node, int depth) {
 int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
     xmlDocPtr input_doc = NULL;
     xmlDocPtr relationships_doc = NULL;
-    xmlNodePtr root;
+    xmlNodePtr root, oldRoot;
     xmlNodePtr transform_node;
     xmlNodePtr relationships_node;
     xmlNodePtr relationships_copy;
@@ -129,12 +129,13 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
     if (relationships_copy == NULL) {
         goto done;
     }
-    if (xmlDocSetRootElement(relationships_doc, relationships_copy) != 0) {
-        /*
-         * The copy is owned by the document only after it has been set
-         * as the root; on failure it is still detached and must be freed
-         * here.
-         */
+
+    oldRoot = xmlDocSetRootElement(relationships_doc, relationships_copy);
+    if (oldRoot != NULL) {
+        xmlUnlinkNode(oldRoot);
+        xmlFreeNode(oldRoot);
+    }
+    if (xmlDocGetRootElement(relationships_doc) != relationships_copy) {
         xmlFreeNode(relationships_copy);
         goto done;
     }

@@ -289,10 +289,13 @@ static const xmlSecByte xmlSecKWDes3Iv[XMLSEC_KW_DES3_IV_LENGTH] = {
 };
 
 static int
-xmlSecKWDes3Encode(xmlSecKWDes3Id kwDes3Id, xmlSecTransformPtr transform,
-                  const xmlSecByte *in, xmlSecSize inSize,
-                  xmlSecByte *out, xmlSecSize outSize,
-                  xmlSecSize* outWritten) {
+xmlSecKWDes3Encode(
+    xmlSecKWDes3Id kwDes3Id,
+    xmlSecTransformPtr transform,
+    const xmlSecByte *in, const xmlSecSize inSize,
+    xmlSecByte *out, const xmlSecSize outSize,
+    xmlSecSize* outWritten
+) {
     xmlSecByte sha1[XMLSEC_KW_DES3_SHA_DIGEST_LENGTH];
     xmlSecByte iv[XMLSEC_KW_DES3_IV_LENGTH];
     xmlSecSize tmpSize, outWritten2;
@@ -331,8 +334,7 @@ xmlSecKWDes3Encode(xmlSecKWDes3Id kwDes3Id, xmlSecTransformPtr transform,
     if((ret < 0) || (outWritten2 != sizeof(iv))) {
         xmlSecInternalError2("kwDes3Id->generateRandom", NULL,
             "outWritten2=" XMLSEC_SIZE_FMT, outWritten2);
-        /* wipe the plaintext key from the output buffer before returning */
-        xmlSecMemCleanse(out, inSize);
+        xmlSecMemCleanse(out, outSize);
         return(-1);
     }
 
@@ -343,15 +345,13 @@ xmlSecKWDes3Encode(xmlSecKWDes3Id kwDes3Id, xmlSecTransformPtr transform,
         out, outSize, &outWritten2);
     if(ret < 0) {
         xmlSecInternalError("kwDes3Id->encrypt", NULL);
-        /* wipe the plaintext key from the output buffer before returning */
-        xmlSecMemCleanse(out, inSize);
+        xmlSecMemCleanse(out, outSize);
         return(-1);
     }
     if((inSize + XMLSEC_KW_DES3_BLOCK_LENGTH) != outWritten2) {
         xmlSecInvalidSizeError("kwDes3Id->encrypt",
             outWritten2, (inSize + XMLSEC_KW_DES3_BLOCK_LENGTH), NULL);
-        /* wipe the plaintext key from the output buffer before returning */
-        xmlSecMemCleanse(out, inSize);
+        xmlSecMemCleanse(out, outSize);
         return(-1);
     }
 
@@ -386,11 +386,13 @@ xmlSecKWDes3Encode(xmlSecKWDes3Id kwDes3Id, xmlSecTransformPtr transform,
 }
 
 static int
-xmlSecKWDes3Decode(xmlSecKWDes3Id kwDes3Id, xmlSecTransformPtr transform,
-                  const xmlSecByte *in, xmlSecSize inSize,
-                  xmlSecByte *out, xmlSecSize outSize,
-                  xmlSecSize* outWritten)
-{
+xmlSecKWDes3Decode(
+    xmlSecKWDes3Id kwDes3Id,
+    xmlSecTransformPtr transform,
+    const xmlSecByte *in, const xmlSecSize inSize,
+    xmlSecByte *out, const xmlSecSize outSize,
+    xmlSecSize* outWritten
+) {
     xmlSecByte sha1[XMLSEC_KW_DES3_SHA_DIGEST_LENGTH];
     xmlSecBufferPtr tmp = NULL;
     xmlSecByte* tmpBuf;

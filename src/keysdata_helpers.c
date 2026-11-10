@@ -11,9 +11,7 @@
 
 #include "globals.h"
 
-#include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 
 #include <libxml/tree.h>
 
@@ -47,9 +45,15 @@ xmlSecKeyDataDebugXmlDumpImpl(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(data->id->name != NULL);
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<%sKey size=\"" XMLSEC_SIZE_FMT "\"/>\n",
-        data->id->dataNodeName != NULL ? data->id->dataNodeName : data->id->name,
-        xmlSecKeyDataGetSize(data));
+    if(data->id->dataNodeName != NULL) {
+        fprintf(output, "<%sKey size=\"" XMLSEC_SIZE_FMT "\"/>\n",
+            data->id->dataNodeName, xmlSecKeyDataGetSize(data));
+    } else {
+        /* the klass has no dedicated data node name (e.g. the internal
+         * KAM and KEM key data klasses); use the klass name as-is */
+        fprintf(output, "<%s size=\"" XMLSEC_SIZE_FMT "\"/>\n",
+            data->id->name, xmlSecKeyDataGetSize(data));
+    }
 }
 
 /******************************************************************************
@@ -686,6 +690,12 @@ xmlSecKeyDataEcXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
         goto done;
     }
 
+    /* check that the required PublicKey component is not empty */
+    if(xmlSecBufferGetSize(&ecValue.pubkey) == 0) {
+        xmlSecInvalidZeroKeyDataSizeError(xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
     ret = xmlSecKeyValueEcXmlWrite(&ecValue, node, base64LineSize, addLineBreaks);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyValueEcXmlWrite",
@@ -1233,6 +1243,12 @@ xmlSecKeyDataDhXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyDataDhWrite",
             xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
+    /* check that the required Public component is not empty */
+    if(xmlSecBufferGetSize(&dhValue.pub) == 0) {
+        xmlSecInvalidZeroKeyDataSizeError(xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
@@ -1916,6 +1932,15 @@ xmlSecKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
         goto done;
     }
 
+    /* check that the required P, Q, G and Y components are not empty */
+    if((xmlSecBufferGetSize(&dsaValue.p) == 0) ||
+       (xmlSecBufferGetSize(&dsaValue.q) == 0) ||
+       (xmlSecBufferGetSize(&dsaValue.g) == 0) ||
+       (xmlSecBufferGetSize(&dsaValue.y) == 0)) {
+        xmlSecInvalidZeroKeyDataSizeError(xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
     ret = xmlSecKeyValueDsaXmlWrite(&dsaValue, node, writePrivateKey,
         base64LineSize, addLineBreaks);
     if(ret < 0) {
@@ -2530,6 +2555,13 @@ xmlSecKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyDataRsaWrite",
             xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
+    /* check that the required Modulus and Exponent components are not empty */
+    if((xmlSecBufferGetSize(&rsaValue.modulus) == 0) ||
+       (xmlSecBufferGetSize(&rsaValue.publicExponent) == 0)) {
+        xmlSecInvalidZeroKeyDataSizeError(xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 

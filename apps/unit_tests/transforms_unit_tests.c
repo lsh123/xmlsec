@@ -76,6 +76,12 @@ test_xmlSecTransformCtxSetUri_empty_uri(void) {
         return;
     }
     hereNode = xmlDocGetRootElement(doc);
+    if(hereNode == NULL) {
+        testLog("Error: parsed XML does not have a root node\n");
+        transformsTestCleanup(doc, NULL);
+        testFinishedFailure();
+        return;
+    }
     ctx = transformsTestCreateCtx();
     if(ctx == NULL) {
         transformsTestCleanup(doc, NULL);
@@ -121,6 +127,12 @@ test_xmlSecTransformCtxSetUri_null_uri(void) {
         return;
     }
     hereNode = xmlDocGetRootElement(doc);
+    if(hereNode == NULL) {
+        testLog("Error: parsed XML does not have a root node\n");
+        transformsTestCleanup(doc, NULL);
+        testFinishedFailure();
+        return;
+    }
     ctx = transformsTestCreateCtx();
     if(ctx == NULL) {
         transformsTestCleanup(doc, NULL);
@@ -167,6 +179,12 @@ test_xmlSecTransformCtxSetUri_plain_uri(void) {
         return;
     }
     hereNode = xmlDocGetRootElement(doc);
+    if(hereNode == NULL) {
+        testLog("Error: parsed XML does not have a root node\n");
+        transformsTestCleanup(doc, NULL);
+        testFinishedFailure();
+        return;
+    }
     ctx = transformsTestCreateCtx();
     if(ctx == NULL) {
         transformsTestCleanup(doc, NULL);
@@ -218,6 +236,12 @@ test_xmlSecTransformCtxSetUri_trailing_empty_fragment(void) {
         return;
     }
     hereNode = xmlDocGetRootElement(doc);
+    if(hereNode == NULL) {
+        testLog("Error: parsed XML does not have a root node\n");
+        transformsTestCleanup(doc, NULL);
+        testFinishedFailure();
+        return;
+    }
     ctx = transformsTestCreateCtx();
     if(ctx == NULL) {
         transformsTestCleanup(doc, NULL);
@@ -266,6 +290,12 @@ test_xmlSecTransformCtxSetUri_bare_empty_fragment(void) {
         return;
     }
     hereNode = xmlDocGetRootElement(doc);
+    if(hereNode == NULL) {
+        testLog("Error: parsed XML does not have a root node\n");
+        transformsTestCleanup(doc, NULL);
+        testFinishedFailure();
+        return;
+    }
     ctx = transformsTestCreateCtx();
     if(ctx == NULL) {
         transformsTestCleanup(doc, NULL);
@@ -312,6 +342,12 @@ test_xmlSecTransformCtxSetUri_xpointer_root_fragment(void) {
         return;
     }
     hereNode = xmlDocGetRootElement(doc);
+    if(hereNode == NULL) {
+        testLog("Error: parsed XML does not have a root node\n");
+        transformsTestCleanup(doc, NULL);
+        testFinishedFailure();
+        return;
+    }
     ctx = transformsTestCreateCtx();
     if(ctx == NULL) {
         transformsTestCleanup(doc, NULL);
@@ -359,6 +395,12 @@ test_xmlSecTransformCtxSetUri_bare_id_fragment(void) {
         return;
     }
     hereNode = xmlDocGetRootElement(doc);
+    if(hereNode == NULL) {
+        testLog("Error: parsed XML does not have a root node\n");
+        transformsTestCleanup(doc, NULL);
+        testFinishedFailure();
+        return;
+    }
     ctx = transformsTestCreateCtx();
     if(ctx == NULL) {
         transformsTestCleanup(doc, NULL);
@@ -407,6 +449,12 @@ test_xmlSecTransformCtxSetUri_uri_with_id_fragment(void) {
         return;
     }
     hereNode = xmlDocGetRootElement(doc);
+    if(hereNode == NULL) {
+        testLog("Error: parsed XML does not have a root node\n");
+        transformsTestCleanup(doc, NULL);
+        testFinishedFailure();
+        return;
+    }
     ctx = transformsTestCreateCtx();
     if(ctx == NULL) {
         transformsTestCleanup(doc, NULL);
@@ -456,6 +504,12 @@ test_xmlSecTransformCtxSetUri_uri_with_xpointer_fragment(void) {
         return;
     }
     hereNode = xmlDocGetRootElement(doc);
+    if(hereNode == NULL) {
+        testLog("Error: parsed XML does not have a root node\n");
+        transformsTestCleanup(doc, NULL);
+        testFinishedFailure();
+        return;
+    }
     ctx = transformsTestCreateCtx();
     if(ctx == NULL) {
         transformsTestCleanup(doc, NULL);
@@ -503,6 +557,12 @@ test_xmlSecTransformCtxSetUri_remote_uri_disabled_by_default(void) {
         return;
     }
     hereNode = xmlDocGetRootElement(doc);
+    if(hereNode == NULL) {
+        testLog("Error: parsed XML does not have a root node\n");
+        transformsTestCleanup(doc, NULL);
+        testFinishedFailure();
+        return;
+    }
     ctx = transformsTestCreateCtx();
     if(ctx == NULL) {
         transformsTestCleanup(doc, NULL);
@@ -548,6 +608,12 @@ test_xmlSecTransformCtxSetUri_local_uri_disabled_by_default(void) {
         return;
     }
     hereNode = xmlDocGetRootElement(doc);
+    if(hereNode == NULL) {
+        testLog("Error: parsed XML does not have a root node\n");
+        transformsTestCleanup(doc, NULL);
+        testFinishedFailure();
+        return;
+    }
     ctx = transformsTestCreateCtx();
     if(ctx == NULL) {
         transformsTestCleanup(doc, NULL);
@@ -594,6 +660,12 @@ test_xmlSecTransformCtxSetUri_local_uri_enabled(void) {
         return;
     }
     hereNode = xmlDocGetRootElement(doc);
+    if(hereNode == NULL) {
+        testLog("Error: parsed XML does not have a root node\n");
+        transformsTestCleanup(doc, NULL);
+        testFinishedFailure();
+        return;
+    }
     ctx = transformsTestCreateCtx();
     if(ctx == NULL) {
         transformsTestCleanup(doc, NULL);
@@ -642,6 +714,12 @@ test_xmlSecTransformCtxSetUri_visa3d_hack_bare_fragment(void) {
         return;
     }
     hereNode = xmlDocGetRootElement(doc);
+    if(hereNode == NULL) {
+        testLog("Error: parsed XML does not have a root node\n");
+        transformsTestCleanup(doc, NULL);
+        testFinishedFailure();
+        return;
+    }
     ctx = transformsTestCreateCtx();
     if(ctx == NULL) {
         transformsTestCleanup(doc, NULL);
@@ -691,6 +769,12 @@ test_xmlSecTransformCtxSetUri_visa3d_hack_uri_with_fragment(void) {
         return;
     }
     hereNode = xmlDocGetRootElement(doc);
+    if(hereNode == NULL) {
+        testLog("Error: parsed XML does not have a root node\n");
+        transformsTestCleanup(doc, NULL);
+        testFinishedFailure();
+        return;
+    }
     ctx = transformsTestCreateCtx();
     if(ctx == NULL) {
         transformsTestCleanup(doc, NULL);

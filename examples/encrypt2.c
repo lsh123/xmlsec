@@ -49,6 +49,8 @@ xmlNodePtr create_encryption_template(xmlDocPtr doc);
 int
 main(int argc, char **argv) {
     int xmlsec_initialized = 0;
+    int xmlsec_crypto_app_initialized = 0;
+    int xmlsec_crypto_initialized = 0;
     int res = -1;
 
     assert(argv);
@@ -68,6 +70,7 @@ main(int argc, char **argv) {
         fprintf(stderr, "Error: xmlsec initialization failed.\n");
         goto done;
     }
+    xmlsec_initialized = 1;
 
     /* Check loaded library version */
     if(xmlSecCheckVersion() != 1) {
@@ -94,13 +97,14 @@ main(int argc, char **argv) {
         fprintf(stderr, "Error: crypto initialization failed.\n");
         goto done;
     }
+    xmlsec_crypto_app_initialized = 1;
 
     /* Init xmlsec-crypto library */
     if(xmlSecCryptoInit() < 0) {
         fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
         goto done;
     }
-    xmlsec_initialized = 1;
+    xmlsec_crypto_initialized = 1;
 
     /* encrypt file */
     if(encrypt_file(argv[1], argv[2]) < 0) {
@@ -109,10 +113,15 @@ main(int argc, char **argv) {
     res = 0; /* success */
 
 done:
-    /* shutdown xmlsec-crypto library and xmlsec itself */
-    if (xmlsec_initialized != 0) {
+    /* shutdown the crypto engine and the library, in the reverse order of
+     * initialization, skipping the steps that did not succeed */
+    if (xmlsec_crypto_initialized != 0) {
         xmlSecCryptoShutdown();
+    }
+    if (xmlsec_crypto_app_initialized != 0) {
         xmlSecCryptoAppShutdown();
+    }
+    if (xmlsec_initialized != 0) {
         xmlSecShutdown();
     }
 

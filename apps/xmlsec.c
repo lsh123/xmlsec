@@ -490,7 +490,7 @@ static xmlSecAppCmdLineParam hmacMinOutputLenParam = {
     "--hmac-min-out-len <bits>"
     "\n\tsets minimum HMAC output length to <bits>",
     xmlSecAppCmdLineParamTypeNumber,
-    xmlSecAppCmdLineParamFlagParamNameValue,
+    xmlSecAppCmdLineParamFlagNone,
     NULL
 };
 #endif /* XMLSEC_NO_HMAC */
@@ -547,7 +547,7 @@ static xmlSecAppCmdLineParam enabledKeyDataParam = {
     "\n\tUse \"--list-key-data\" to view the full list of registered key data klasses."
     "\n\tBy default, all registered key data are enabled.",
     xmlSecAppCmdLineParamTypeStringList,
-    xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
+    xmlSecAppCmdLineParamFlagNone,
     NULL
 };
 
@@ -733,7 +733,7 @@ static xmlSecAppCmdLineParam addIdAttrParam = {
     "\n\tthis is a hack and if you can use DTD or schema to declare ID attributes"
     "\n\tinstead (see \"--dtd-file\" option)",
     xmlSecAppCmdLineParamTypeString,
-    xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
+    xmlSecAppCmdLineParamFlagMultipleValues,
     NULL
 };
 

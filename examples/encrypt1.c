@@ -35,11 +35,6 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 
-#ifndef XMLSEC_NO_XSLT
-#include <libxslt/xslt.h>
-#include <libxslt/security.h>
-#endif /* XMLSEC_NO_XSLT */
-
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/xmlenc.h>
@@ -52,10 +47,9 @@ int
 main(int argc, char **argv) {
     static const char secret_data[] = "Big secret";
     int xmlsec_initialized = 0;
+    int xmlsec_crypto_app_initialized = 0;
+    int xmlsec_crypto_initialized = 0;
     int res = -1;
-#ifndef XMLSEC_NO_XSLT
-    xsltSecurityPrefsPtr xsltSecPrefs = NULL;
-#endif /* XMLSEC_NO_XSLT */
 
     assert(argv);
 
@@ -69,27 +63,12 @@ main(int argc, char **argv) {
     xmlInitParser();
     LIBXML_TEST_VERSION
 
-    /* Init LibXSLT */
-#ifndef XMLSEC_NO_XSLT
-    /* disable all XSLT file and network access */
-    xsltSecPrefs = xsltNewSecurityPrefs();
-    if(xsltSecPrefs == NULL) {
-        fprintf(stderr, "Error: failed to create the xslt security prefs\n");
-        goto done;
-    }
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_NETWORK,     xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_NETWORK,    xsltSecurityForbid);
-    xsltSetDefaultSecurityPrefs(xsltSecPrefs);
-#endif /* XMLSEC_NO_XSLT */
-
     /* Init XMLSec */
     if(xmlSecInit() < 0) {
         fprintf(stderr, "Error: xmlsec initialization failed.\n");
         goto done;
     }
+    xmlsec_initialized = 1;
 
     /* Check loaded library version */
     if(xmlSecCheckVersion() != 1) {
@@ -116,13 +95,14 @@ main(int argc, char **argv) {
         fprintf(stderr, "Error: crypto initialization failed.\n");
         goto done;
     }
+    xmlsec_crypto_app_initialized = 1;
 
     /* Init xmlsec-crypto library */
     if(xmlSecCryptoInit() < 0) {
         fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
         goto done;
     }
-    xmlsec_initialized = 1;
+    xmlsec_crypto_initialized = 1;
 
     /* encrypt file */
     if(encrypt_file(argv[1], argv[2], BAD_CAST secret_data, strlen(secret_data)) < 0) {
@@ -134,18 +114,19 @@ main(int argc, char **argv) {
 
 done:
 
-    /* shutdown xmlsec-crypto library and xmlsec itself */
-    if (xmlsec_initialized != 0) {
+    /* shutdown the crypto engine and the library, in the reverse order of
+     * initialization, skipping the steps that did not succeed */
+    if (xmlsec_crypto_initialized != 0) {
         xmlSecCryptoShutdown();
+    }
+    if (xmlsec_crypto_app_initialized != 0) {
         xmlSecCryptoAppShutdown();
+    }
+    if (xmlsec_initialized != 0) {
         xmlSecShutdown();
     }
 
-    /* shutdown LibXSLT / LibXML2 */
-#ifndef XMLSEC_NO_XSLT
-    xsltFreeSecurityPrefs(xsltSecPrefs);
-    xsltCleanupGlobals();
-#endif /* XMLSEC_NO_XSLT */
+    /* shutdown LibXML2 */
     xmlCleanupParser();
 
     return(res);

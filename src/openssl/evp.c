@@ -76,6 +76,7 @@ static int
 xmlSecOpenSSLSetBNValue(const BIGNUM *bigNum, xmlSecBufferPtr buf) {
     xmlSecOpenSSLUInt numBytes;
     xmlSecOpenSSLSizeT numBytes2;
+    xmlSecByte* bufPtr;
     xmlSecSize size;
     int ret;
 
@@ -89,13 +90,16 @@ xmlSecOpenSSLSetBNValue(const BIGNUM *bigNum, xmlSecBufferPtr buf) {
     }
     XMLSEC_OPENSSL_SAFE_CAST_UINT_TO_SIZE(numBytes, size, return(-1), NULL);
 
-    ret = xmlSecBufferSetMaxSize(buf, size + 1);
+    ret = xmlSecBufferSetMaxSize(buf, size);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetMaxSize", NULL, "size=" XMLSEC_SIZE_FMT, (size + 1));
+        xmlSecInternalError2("xmlSecBufferSetMaxSize", NULL, "size=" XMLSEC_SIZE_FMT, size);
         return(-1);
     }
 
-    numBytes2 = BN_bn2bin(bigNum, xmlSecBufferGetData(buf));
+    bufPtr = xmlSecBufferGetData(buf);
+    xmlSecAssert2(bufPtr != NULL, -1);
+
+    numBytes2 = BN_bn2bin(bigNum, bufPtr);
     if(numBytes2 <= 0) {
         xmlSecOpenSSLError("BN_bn2bin", NULL);
         return(-1);

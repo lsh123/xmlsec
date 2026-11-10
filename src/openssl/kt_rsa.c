@@ -267,8 +267,10 @@ xmlSecOpenSSLRsaPkcs1ProcessImpl(xmlSecOpenSSLRsaPkcs1CtxPtr ctx, const xmlSecBy
         }
 
     } else {
+        /* RSA_private_decrypt() returns the recovered message length on success
+         * (which may be 0 for a degenerate empty plaintext) and -1 on failure */
         ret = RSA_private_decrypt(inLen, inBuf, outBuf, rsa, RSA_PKCS1_PADDING);
-        if(ret <= 0) {
+        if(ret < 0) {
             xmlSecOpenSSLError2("RSA_private_decrypt", NULL,
                 "size=" XMLSEC_SIZE_FMT, inSize);
             return(-1);

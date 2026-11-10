@@ -237,7 +237,9 @@ xmlSecMSCryptoKeyDataX509AdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
     /* pkcs12 files sometimes have key cert twice: as the key cert and as the cert in the chain */
     if ((ctx->keyCert != NULL) && (cert->pCertInfo != NULL) && (ctx->keyCert->pCertInfo != NULL) &&
         (CertCompareCertificate(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, cert->pCertInfo, ctx->keyCert->pCertInfo) == TRUE)) {
-        /* the cert is already owned by ctx->keyCert; caller expects data to own the cert on success. */
+        /* the cert content is already present in the store as the key cert
+         * (the pointer-identical case is handled above); the caller expects
+         * data to own the cert on success, so free the duplicate */
         CertFreeCertificateContext(cert);
         return(0);
     }

@@ -158,29 +158,16 @@ xmlSecMSCryptoOpenDefaultCertStore(void) {
 
     hStoreHandle = CertOpenSystemStore(0, storeName);
     if (NULL == hStoreHandle) {
-        DWORD dwLastError = GetLastError();
         xmlChar* storeNameUtf8;
-        xmlChar errBuf[XMLSEC_MSCRYPTO_ERROR_BUFFER_SIZE];
 
+        /* the conversion to UTF-8 may have overwritten GetLastError()
+         * for CertOpenSystemStore() failure. This is an edge case
+         * we ignore */
         storeNameUtf8 = xmlSecWin32ConvertTstrToUtf8(storeName);
+        xmlSecMSCryptoError2("CertOpenSystemStore", NULL,
+            "storeName=%s", xmlSecErrorsSafeString(storeNameUtf8));
         if(storeNameUtf8 != NULL) {
-            xmlSecMSCryptoError2("CertOpenSystemStore",
-                                 NULL,
-                                 "storeName=%s",
-                                 storeNameUtf8);
             xmlFree(storeNameUtf8);
-        } else {
-            /* the conversion above may have overwritten GetLastError();
-             * report the stored CertOpenSystemStore error instead */
-            xmlSecMSCryptoGetErrorMessage(dwLastError, errBuf, sizeof(errBuf));
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "CertOpenSystemStore",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "MSCrypto error: %lu (0x%08lx): %s",
-                        (unsigned long)dwLastError,
-                        (unsigned long)dwLastError,
-                        errBuf);
         }
         return(NULL);
     }

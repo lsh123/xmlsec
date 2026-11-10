@@ -279,6 +279,9 @@ xmlSecMSCryptoHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
             xmlSecTransformGetName(transform));
         return(-1);
     }
+
+    /* The actual check for the correct output size for the selected digest algorithm is done
+     * in the execute function. */
     xmlSecAssert2(XMLSEC_BITS_TO_BYTES(ctx->dgstSizeInBits) <= XMLSEC_TRANSFORM_HMAC_MAX_OUTPUT_SIZE, -1);
 
     return(0);

@@ -355,6 +355,14 @@ xmlSecMSCryptoCheckRevocation(HCERTSTORE hStore, PCCERT_CONTEXT pCert,
             continue;
         }
 
+        /* a CRL can only list certificates issued by its own issuer; a CRL
+         * issued by a different CA must not affect this certificate */
+        if (!CertCompareCertificateName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                &(pCrl->pCrlInfo->Issuer),
+                &(pCert->pCertInfo->Issuer))) {
+            continue;
+        }
+
         /* pCrlEntry will point to the entry for the certificate in the CRL if it exists, it doesn't need
          * to be freed manually (see https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certfindcertificateincrl) */
         ret = CertFindCertificateInCRL(pCert, pCrl, 0, NULL, &pCrlEntry);

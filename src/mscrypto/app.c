@@ -384,6 +384,11 @@ xmlSecMSCryptoAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
  * @brief Reads the certificate from memory and adds to key.
  * @details Reads the certificate from @p data and adds it to key.
  *
+ * Note: in case of failure, the key might be left in a partial state; for
+ * example, if the certificate was successfully added to the key's chain but
+ * the subsequent key certificate adoption fails, the function returns an
+ * error and the certificate remains in the chain.
+ *
  * @param key the pointer to key.
  * @param data the binary certificate.
  * @param dataSize size of certificate binary (data)

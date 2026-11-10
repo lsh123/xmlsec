@@ -455,7 +455,10 @@ xmlSecMSCngX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, PCCRL_CONTEXT crl) {
  * checked when @p time is not NULL). The issuer chain validation skips
  * revocation to avoid recursively consulting the CRL being verified.
  * Returns 1 if a verifying issuer certificate is found, 0 if none does, or a
- * negative value if an error occurs. */
+ * negative value if an error occurs. If @a sigVerified is not NULL, it is
+ * set to 1 when the CRL signature verifies against at least one candidate
+ * issuer (a return value of 0 then means the issuer certificate itself did
+ * not chain to a trusted root). */
 static int
 xmlSecMSCngX509StoreVerifyCrlIssuerInStores(
     const HCERTSTORE* searchStores,
@@ -464,7 +467,8 @@ xmlSecMSCngX509StoreVerifyCrlIssuerInStores(
     HCERTSTORE untrustedStore,
     HCERTSTORE certStore,
     PCCRL_CONTEXT crl,
-    FILETIME* time
+    FILETIME* time,
+    int* sigVerified
 ) {
     int ii;
 
@@ -495,6 +499,10 @@ xmlSecMSCngX509StoreVerifyCrlIssuerInStores(
                 0, NULL);
             if(verified == TRUE) {
                 int ret;
+
+                if(sigVerified != NULL) {
+                    *sigVerified = 1;
+                }
 
                 /* verify that the issuer cert itself is valid (time) and chains
                  * to a trusted root; do not check for revocation while verifying
@@ -560,7 +568,7 @@ xmlSecMSCngX509StoreVerifyCrlSignature(
     }
 
     ret = xmlSecMSCngX509StoreVerifyCrlIssuerInStores(stores, numStores,
-        trustedStore, untrustedStore, certStore, crl, time);
+        trustedStore, untrustedStore, certStore, crl, time, NULL);
     if(ret < 0) {
         xmlSecInternalError("xmlSecMSCngX509StoreVerifyCrlIssuerInStores", NULL);
         return(-1);
@@ -1434,6 +1442,7 @@ xmlSecMSCngX509StoreVerifyCrl(xmlSecKeyDataStorePtr store, PCCRL_CONTEXT crl,
     FILETIME timeContainer;
     FILETIME* time;
     BOOL issuerFound = FALSE;
+    int sigVerified = 0;
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCngX509StoreId), -1);
@@ -1463,7 +1472,7 @@ xmlSecMSCngX509StoreVerifyCrl(xmlSecKeyDataStorePtr store, PCCRL_CONTEXT crl,
         stores[numStores++] = ctx->untrusted;
     }
     ret = xmlSecMSCngX509StoreVerifyCrlIssuerInStores(stores, numStores,
-        ctx->trusted, ctx->untrusted, ctx->untrusted, crl, time);
+        ctx->trusted, ctx->untrusted, ctx->untrusted, crl, time, &sigVerified);
     if(ret < 0) {
         xmlSecInternalError("xmlSecMSCngX509StoreVerifyCrlIssuerInStores", NULL);
         return(-1);
@@ -1490,9 +1499,16 @@ xmlSecMSCngX509StoreVerifyCrl(xmlSecKeyDataStorePtr store, PCCRL_CONTEXT crl,
             CertFreeCertificateContext(issuerCert);
         }
         if (issuerFound) {
-            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-                xmlSecKeyDataStoreGetName(store),
-                "CRL signature verification failed");
+            if(sigVerified) {
+                xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+                    xmlSecKeyDataStoreGetName(store),
+                    "CRL signature verifies but the issuer certificate does "
+                    "not chain to a trusted root");
+            } else {
+                xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+                    xmlSecKeyDataStoreGetName(store),
+                    "CRL signature verification failed");
+            }
         } else {
             xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_FOUND,
                 xmlSecKeyDataStoreGetName(store),

@@ -144,6 +144,32 @@ XMLSEC_EXPORT void              xmlSecEncCtxDebugXmlDump            (xmlSecEncCt
 
 XMLSEC_EXPORT const char*       xmlSecEncCtxGetFailureReasonString  (xmlSecEncFailureReason failureReason);
 
+
+
+XMLSEC_EXPORT int               xmlSecEncCtxEncryptedKeyXmlRead     (xmlSecEncCtxPtr encCtx,
+                                                                     xmlNodePtr node,
+                                                                     xmlSecKeyPtr key,
+                                                                     xmlSecKeyInfoCtxPtr keyInfoCtx);
+
+XMLSEC_EXPORT int               xmlSecEncCtxEncryptedKeyXmlWrite    (xmlSecEncCtxPtr encCtx,
+                                                                     xmlNodePtr node,
+                                                                     xmlSecKeyPtr key,
+                                                                     xmlSecKeyInfoCtxPtr keyInfoCtx);
+
+XMLSEC_EXPORT xmlSecKeyPtr      xmlSecEncCtxDerivedKeyGenerate      (xmlSecEncCtxPtr encCtx,
+                                                                     xmlSecKeyDataId keyId,
+                                                                     xmlNodePtr node,
+                                                                     xmlSecKeyInfoCtxPtr keyInfoCtx);
+
+XMLSEC_EXPORT xmlSecKeyPtr      xmlSecEncCtxAgreementMethodGenerate (xmlSecEncCtxPtr encCtx,
+                                                                     xmlSecKeyDataId keyId,
+                                                                     xmlNodePtr node,
+                                                                     xmlSecKeyInfoCtxPtr keyInfoCtx);
+XMLSEC_EXPORT int               xmlSecEncCtxAgreementMethodXmlWrite (xmlSecEncCtxPtr encCtx,
+                                                                     xmlNodePtr node,
+                                                                     xmlSecKeyInfoCtxPtr keyInfoCtx);
+
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

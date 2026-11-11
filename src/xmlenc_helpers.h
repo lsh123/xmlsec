@@ -25,29 +25,6 @@ extern "C" {
 
 xmlSecTransformOperation        xmlSecEncCtxMapOperation                    (xmlSecTransformOperation operation);
 
-int                             xmlSecEncCtxEncryptedKeyXmlRead             (xmlSecEncCtxPtr encCtx,
-                                                                             xmlNodePtr node,
-                                                                             xmlSecKeyPtr key,
-                                                                             xmlSecKeyInfoCtxPtr keyInfoCtx);
-
-int                             xmlSecEncCtxEncryptedKeyXmlWrite            (xmlSecEncCtxPtr encCtx,
-                                                                             xmlNodePtr node,
-                                                                             xmlSecKeyPtr key,
-                                                                             xmlSecKeyInfoCtxPtr keyInfoCtx);
-
-xmlSecKeyPtr                    xmlSecEncCtxDerivedKeyGenerate              (xmlSecEncCtxPtr encCtx,
-                                                                             xmlSecKeyDataId keyId,
-                                                                             xmlNodePtr node,
-                                                                             xmlSecKeyInfoCtxPtr keyInfoCtx);
-
-xmlSecKeyPtr                    xmlSecEncCtxAgreementMethodGenerate         (xmlSecEncCtxPtr encCtx,
-                                                                             xmlSecKeyDataId keyId,
-                                                                             xmlNodePtr node,
-                                                                             xmlSecKeyInfoCtxPtr keyInfoCtx);
-int                             xmlSecEncCtxAgreementMethodXmlWrite         (xmlSecEncCtxPtr encCtx,
-                                                                             xmlNodePtr node,
-                                                                             xmlSecKeyInfoCtxPtr keyInfoCtx);
-
 
 
 #ifdef __cplusplus

@@ -421,8 +421,9 @@ xmlSecNssPKIKeyDataGetPrivKey(xmlSecKeyDataPtr data) {
 
 /**
  * @brief Gets the Key Type from the key data.
+ * @details Returns nullKey if an error occurs.
  * @param data the pointer to NSS Key data.
- * @return Key Type
+ * @return the key type or nullKey if an error occurs.
  */
 KeyType
 xmlSecNssPKIKeyDataGetKeyType(xmlSecKeyDataPtr data) {
@@ -701,7 +702,7 @@ xmlSecNssKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
 static int
 xmlSecNssKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
-                                xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+                           xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAssert2(id == xmlSecNssKeyDataDsaId, -1);
     return(xmlSecKeyDataDsaXmlWrite(id, key, node, keyInfoCtx,
         xmlSecBase64GetDefaultLineSize(), 1, /* add line breaks */
@@ -1273,7 +1274,7 @@ xmlSecNssKeyDataEcXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
 static int
 xmlSecNssKeyDataEcXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
-                                xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+                           xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAssert2(id == xmlSecNssKeyDataEcId, -1);
     return(xmlSecKeyDataEcXmlWrite(id, key, node, keyInfoCtx,
         xmlSecBase64GetDefaultLineSize(), 1, /* add line breaks */

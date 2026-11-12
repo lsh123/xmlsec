@@ -266,8 +266,8 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
         if ((keyReq->keyType & xmlSecKeyDataTypePrivate) != 0) {
             privkey = PK11_FindKeyByAnyCert(cert, NULL);
             if ((privkey == NULL) && (pubkey == NULL)) {
-                /* no private key found; if a public key was requested and
-                 * extracted, fall back to a public-only key instead of failing */
+                /* no private key found and no public key was requested,
+                 * so the lookup has failed */
                 xmlSecNssError("PK11_FindKeyByAnyCert", xmlSecKeyStoreGetName(store));
                 goto done;
             }
@@ -397,7 +397,7 @@ xmlSecNssKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509Data
 
     certDb = CERT_GetDefaultCertDB();
     if(certDb == NULL) {
-        xmlSecNssError("CERT_GetDefaultCertDB", NULL);
+        xmlSecNssError("CERT_GetDefaultCertDB", xmlSecKeyStoreGetName(store));
         return(NULL);
     }
 

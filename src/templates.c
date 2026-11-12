@@ -979,8 +979,8 @@ xmlSecTmplEncDataGetEncMethodNode(xmlNodePtr encNode) {
 /**
  * @brief Adds a &lt;dsig:Transform/&gt; node to the &lt;enc:CipherReference/&gt; node.
  * @details Adds &lt;dsig:Transform/&gt; node (and the parent &lt;enc:Transforms/&gt; node)
- * with specified transform methods @p transform to the &lt;enc:CipherReference/&gt;
- * child node of the &lt;enc:EncryptedData/&gt; node @p encNode.
+ * with specified transform methods @p transformId to the &lt;enc:CipherReference/&gt;
+ * child node of the &lt;enc:EncryptedData/&gt; node @p cipherReferenceNode.
  * @param cipherReferenceNode the pointer to &lt;enc:CipherReference/&gt; node.
  * @param transformId the transform id.
  *
@@ -1325,7 +1325,7 @@ xmlSecTmplKeyInfoAddRetrievalMethod(xmlNodePtr keyInfoNode, const xmlChar *uri,
 /**
  * @brief Adds a &lt;dsig:Transform/&gt; node to the &lt;dsig:RetrievalMethod/&gt; node.
  * @details Adds &lt;dsig:Transform/&gt; node (and the parent &lt;dsig:Transforms/&gt; node
- * if required) to the &lt;dsig:RetrievalMethod/&gt; node @p retrMethod.
+ * if required) to the &lt;dsig:RetrievalMethod/&gt; node @p retrMethodNode.
  * @param retrMethodNode the pointer to &lt;dsig:RetrievalMethod/&gt; node.
  * @param transformId the transform id.
  *
@@ -1699,7 +1699,7 @@ xmlSecTmplX509DataAddCRL(xmlNodePtr x509DataNode) {
 /**
  * @brief Creates a &lt;dsig:HMACOutputLength/&gt; child for the HMAC transform node.
  * @details Creates &lt;dsig:HMACOutputLength/&gt; child for the HMAC transform
- * node @p node.
+ * node @p transformNode.
  * @param transformNode the pointer to &lt;dsig:Transform/&gt; node
  * @param bitsLen the required length in bits
  *

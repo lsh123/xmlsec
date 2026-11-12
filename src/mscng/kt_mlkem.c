@@ -390,9 +390,12 @@ xmlSecMSCngMLKEMEncapsulate(xmlSecMSCngMLKEMCtxPtr ctx, xmlSecBufferPtr cipherTe
         xmlSecMSCngNtError("BCryptEncapsulate", NULL, status);
         goto done;
     }
-    if(ctSize != ctx->ciphertextSize || ssSize != ctx->sharedSecretSize) {
-        xmlSecInternalError3("ML-KEM encapsulation output sizes do not match the expected values", NULL,
-            "ct=" XMLSEC_SIZE_FMT " expected ct=" XMLSEC_SIZE_FMT, (xmlSecSize)ctSize, (xmlSecSize)ctx->ciphertextSize);
+    if(ctSize != ctx->ciphertextSize) {
+        xmlSecInvalidSizeError("ML-KEM output ciphertext", (xmlSecSize)ctSize, (xmlSecSize)ctx->ciphertextSize, NULL);
+        goto done;
+    }
+    if(ssSize != ctx->sharedSecretSize) {
+        xmlSecInvalidSizeError("ML-KEM output shared secret", (xmlSecSize)ssSize, (xmlSecSize)ctx->sharedSecretSize, NULL);
         goto done;
     }
 
@@ -499,7 +502,7 @@ done:
  * - Parent Verify read: Decrypt + input present -> decapsulate
  * - Parent Encrypt read: Encrypt + no input -> encapsulate
  * - Parent Encrypt write: Encrypt + KEM key data present -> write ciphertext
- * - Parent Decrypt read: Decrypt + KEM key data present -> decapsulate
+ * - Parent Decrypt read: Decrypt + input present -> decapsulate
  */
 static int
 xmlSecMSCngMLKEMProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr transformCtx) {

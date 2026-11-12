@@ -460,7 +460,7 @@ xmlSecMSCngConcatKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
     xmlSecAssert2(ctx != NULL, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
-        /* we should be already initialized when we set key */
+        /* we should already be initialized when we set key */
         transform->status = xmlSecTransformStatusWorking;
     }
 

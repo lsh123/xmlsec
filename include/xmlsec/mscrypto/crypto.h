@@ -14,7 +14,7 @@
  * @defgroup xmlsec_mscrypto (DEPRECATED) XML Security Library for Microsoft CryptoAPI
  * @brief API reference for the xmlsec-mscrypto back-end (Microsoft CryptoAPI).
  * @deprecated This back-end targets the legacy Microsoft CryptoAPI (VC6-era CSPs) and
- *   is deprecated. Use the xmlsec-mscng (Microsoft CryptoAPI Next Gen) or the
+ *   is deprecated. Use the xmlsec-mscng (Microsoft Cryptography API: Next Generation) or the
  *   xmlsec-openssl back-ends instead.
  */
 
@@ -155,7 +155,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCryptoTransformGost2012_512GetKl
  */
 #define xmlSecMSCryptoKeyDataRsaId \
         xmlSecMSCryptoKeyDataRsaGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCryptoKeyDataRsaGetKlass(void);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCryptoKeyDataRsaGetKlass(void);
 
 #ifndef XMLSEC_NO_MD5
 /**

@@ -497,12 +497,12 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     }
 
     /*
-    * The padding used in XML Enc does not follow RFC 1423
-    * and is not supported by OpenSSL. However, it is possible
-    * to disable padding and do it by yourself
-    *
-    * https://www.w3.org/TR/2002/REC-xmlenc-core-20021210/Overview.html#sec-Alg-Block
-    */
+     * The padding used in XML Enc does not follow RFC 1423
+     * and is not supported by OpenSSL. However, it is possible
+     * to disable padding and do it by yourself
+     *
+     * https://www.w3.org/TR/2002/REC-xmlenc-core-20021210/Overview.html#sec-Alg-Block
+     */
     XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_UINT(inSize, inLen, return(-1), NULL);
     xmlSecAssert2(inLen <= blockLen, -1);
 

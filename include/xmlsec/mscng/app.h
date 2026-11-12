@@ -101,13 +101,13 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCngAppKeyLoadEx            (const char
                                                                       xmlSecKeyDataType type,
                                                                       xmlSecKeyDataFormat format,
                                                                       const char *pwd,
-                                                                      void *pwdCallback,
+                                                                      void* pwdCallback,
                                                                       void* pwdCallbackCtx);
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCngAppKeyLoadMemory        (const xmlSecByte *data,
                                                                       xmlSecSize dataSize,
                                                                       xmlSecKeyDataFormat format,
                                                                       const char *pwd,
-                                                                      void *pwdCallback,
+                                                                      void* pwdCallback,
                                                                       void* pwdCallbackCtx);
 #ifndef XMLSEC_NO_X509
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCngAppPkcs12Load           (const char *filename,

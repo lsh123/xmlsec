@@ -10,14 +10,10 @@
  */
 
 #include "globals.h"
-#include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 #include <stddef.h>
 
 #include <libxml/tree.h>
-#include <libxml/xpath.h>
-#include <libxml/xpointer.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>

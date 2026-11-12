@@ -574,7 +574,7 @@ xmlSecTransformXPathNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
     dataLen = xmlStrlen(data->expr);
     tmplLen = xmlStrlen(BAD_CAST XMLSEC_TRANSFORM_XPATH_TMPL);
     if(dataLen > (INT_MAX - tmplLen - 1)) {
-        xmlSecInvalidSizeError("size", (xmlSecSize)dataLen, (xmlSecSize)(INT_MAX - tmplLen - 1), NULL);
+        xmlSecInvalidSizeMoreThanError("size", (xmlSecSize)dataLen, (xmlSecSize)(INT_MAX - tmplLen - 1), NULL);
         return(-1);
     }
     totalLen = dataLen + tmplLen + 1;

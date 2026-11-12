@@ -1366,9 +1366,10 @@ static _CrtMemState g_memStateAfterInit;
 static int g_memStateAfterInitSet = 0;
 #endif /* defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC) */
 
-/* returns 1 if the user requested debug output (via --verbose,
- * --print-debug, --print-xml-debug, or --store-references/--store-signatures
- * which enable debug output), and 0 otherwise */
+/* returns 1 if the user requested debug output (via --print-debug,
+ * --print-xml-debug, or --store-references/--store-signatures which
+ * enable debug output) or --verbose (which only enables verbose error
+ * output), and 0 otherwise */
 static int
 xmlSecAppDebugOutputRequested(void) {
     return ((g_printDebug != 0) ||
@@ -3410,7 +3411,7 @@ xmlSecAppXmlDataCreate(const char* filename, const xmlChar* defStartNodeName, co
 
         rootNode = xmlDocGetRootElement(data->doc);
         if(rootNode == NULL) {
-            fprintf(stderr, "Error: failed to find root node\n");
+            fprintf(stderr, "Error: the document has no root node\n");
             xmlSecAppXmlDataDestroy(data);
             return(NULL);
         }
@@ -3625,8 +3626,8 @@ static void
 xmlSecAppPrintHelp(xmlSecAppCommand command, xmlSecAppCmdLineTopic topics) {
     switch(command) {
     case xmlSecAppCommandUnknown:
-    fprintf(stderr, "Unknown command\n");
-    fprintf(stdout, "%s%s\n", helpCommands1, helpCommands2);
+        fprintf(stderr, "Unknown command\n");
+        fprintf(stdout, "%s%s\n", helpCommands1, helpCommands2);
         break;
     case xmlSecAppCommandHelp:
         fprintf(stdout, "%s%s\n", helpCommands1, helpCommands2);

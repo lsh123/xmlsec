@@ -116,7 +116,7 @@ xmlSecMSCryptoAppGetCertStoreName(void) {
 /**
  * @brief Reads a key from a file.
  * @param filename the key filename.
- * @param type the expected key type.
+ * @param type the expected key type. Not used by the MSCrypto back-end and ignored.
  * @param format the key file format.
  * @param pwd the key file password.
  * @param pwdCallback the key password callback.
@@ -270,7 +270,7 @@ xmlSecMSCryptoAppKeyLoadMemory(
     ret = xmlSecKeySetValue(key, keyData);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeySetValue",
-                            xmlSecKeyDataGetName(x509Data));
+                            xmlSecKeyDataGetName(keyData));
         goto done;
     }
     keyData = NULL;
@@ -689,7 +689,7 @@ xmlSecMSCryptoAppPkcs12LoadMemory(
 
     ret = xmlSecKeySetValue(key, keyData);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeySetValue", xmlSecKeyDataGetName(x509Data));
+        xmlSecInternalError("xmlSecKeySetValue", xmlSecKeyDataGetName(keyData));
         xmlSecKeyDestroy(key);
         key = NULL;
         goto done;
@@ -956,7 +956,7 @@ xmlSecMSCryptoAppDefaultKeysMngrAdoptTrustedStore(xmlSecKeysMngrPtr mngr, HCERTS
 
     x509Store = xmlSecKeysMngrGetDataStore(mngr, xmlSecMSCryptoX509StoreId);
     if(x509Store == NULL) {
-        xmlSecInternalError("xmlSecKeysMngrGetDataStore", NULL);
+        xmlSecInternalError("xmlSecKeysMngrGetDataStore(xmlSecMSCryptoX509StoreId)", NULL);
         return(-1);
     }
 
@@ -986,7 +986,7 @@ xmlSecMSCryptoAppDefaultKeysMngrAdoptUntrustedStore(xmlSecKeysMngrPtr mngr, HCER
 
     x509Store = xmlSecKeysMngrGetDataStore(mngr, xmlSecMSCryptoX509StoreId);
     if(x509Store == NULL) {
-        xmlSecInternalError("xmlSecKeysMngrGetDataStore", NULL);
+        xmlSecInternalError("xmlSecKeysMngrGetDataStore(xmlSecMSCryptoX509StoreId)", NULL);
         return(-1);
     }
 

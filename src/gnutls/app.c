@@ -1333,8 +1333,8 @@ xmlSecGnuTLSAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key)
  * @brief Verifies @p key using the keys manager.
  * @details Verifies @p key with the keys manager @p mngr created with #xmlSecGnuTLSAppDefaultKeysMngrInit
  * function:
- * - Checks that key certificate is present
- * - Checks that key certificate is valid
+ * - Checks that the key certificate is present
+ * - Checks that the key certificate is valid
  *
  * @param mngr the pointer to keys manager.
  * @param key the pointer to key.

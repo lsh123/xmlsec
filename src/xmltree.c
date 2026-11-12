@@ -18,8 +18,6 @@
 
 #include <libxml/tree.h>
 #include <libxml/valid.h>
-#include <libxml/xpath.h>
-#include <libxml/xpathInternals.h>
 #include <libxml/xmlversion.h>
 
 #include <xmlsec/xmlsec.h>
@@ -149,7 +147,7 @@ xmlSecSetNodeContentAsHex(xmlNodePtr node, const xmlSecByte* data, xmlSecSize si
 
     /* guard against integer overflow in 'contentSize = (2 * size) + 1' */
     if(size > ((XMLSEC_SIZE_MAX - 1) / 2)) {
-        xmlSecInvalidSizeError("size", size, ((XMLSEC_SIZE_MAX - 1) / 2), NULL);
+        xmlSecInvalidSizeMoreThanError("size", size, ((XMLSEC_SIZE_MAX - 1) / 2), NULL);
         return(-1);
     }
 
@@ -1362,7 +1360,7 @@ xmlSecGetQName(xmlNodePtr node, const xmlChar* href, const xmlChar* local) {
         localLen = xmlStrlen(local);
         prefixLen = xmlStrlen(ns->prefix);
         if(localLen > (INT_MAX - prefixLen - 2)) {
-            xmlSecInvalidSizeError("size", (xmlSecSize)localLen, (xmlSecSize)(INT_MAX - prefixLen - 2), NULL);
+            xmlSecInvalidSizeMoreThanError("size", (xmlSecSize)localLen, (xmlSecSize)(INT_MAX - prefixLen - 2), NULL);
             return(NULL);
         }
         len = localLen + prefixLen + 2;

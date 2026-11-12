@@ -191,7 +191,7 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr
     }
 
     data = xmlSecKeyDataCreate(id);
-    if(data == NULL ) {
+    if(data == NULL) {
         xmlSecInternalError("xmlSecKeyDataCreate", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
@@ -225,8 +225,9 @@ done:
     }
     if(str != NULL) {
         /* the buffer holds the key material: the base64-encoded value before
-         * the in-place decode and (partially) decoded bytes on a decode
-         * failure; cleanse it before freeing */
+         * the in-place decode, the fully decoded key on success, and
+         * (partially) decoded bytes on a decode failure; cleanse it before
+         * freeing */
         if(strSize > 0) {
             xmlSecMemCleanse(str, strSize);
         }
@@ -259,7 +260,7 @@ xmlSecKeyDataBinaryValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     if((xmlSecKeyDataTypeSymmetric & keyInfoCtx->keyReq.keyType) == 0) {
-        /* we can have only symmetric key */
+        /* we can have only a symmetric key */
         return(0);
     }
 
@@ -332,7 +333,7 @@ xmlSecKeyDataBinaryValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     data = xmlSecKeyDataCreate(id);
-    if(data == NULL ) {
+    if(data == NULL) {
         xmlSecInternalError("xmlSecKeyDataCreate", xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
@@ -389,7 +390,7 @@ xmlSecKeyDataBinaryValueBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     if((xmlSecKeyDataTypeSymmetric & keyInfoCtx->keyReq.keyType) == 0) {
-        /* we can have only symmetric key */
+        /* we can have only a symmetric key */
         return(0);
     }
 
@@ -664,7 +665,7 @@ xmlSecKeyDataEcXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2((base64LineSize == 0) || (base64LineSize > 1), -1); /* see xmlSecBase64IsValidColumns */
 
     if(((xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate) & keyInfoCtx->keyReq.keyType) == 0) {
-        /* we can have only private key or public key */
+        /* we can have only a private key or a public key */
         return(0);
     }
 
@@ -1220,7 +1221,7 @@ xmlSecKeyDataDhXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2((base64LineSize == 0) || (base64LineSize > 1), -1); /* see xmlSecBase64IsValidColumns */
 
     if(((xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate) & keyInfoCtx->keyReq.keyType) == 0) {
-        /* we can have only private key or public key */
+        /* we can have only a private key or a public key */
         return(0);
     }
 
@@ -1903,7 +1904,7 @@ xmlSecKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2((base64LineSize == 0) || (base64LineSize > 1), -1); /* see xmlSecBase64IsValidColumns */
 
     if(((xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate) & keyInfoCtx->keyReq.keyType) == 0) {
-        /* we can have only private key or public key */
+        /* we can have only a private key or a public key */
         return(0);
     }
     if((keyInfoCtx->keyReq.keyType & xmlSecKeyDataTypePrivate) != 0) {

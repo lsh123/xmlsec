@@ -253,7 +253,7 @@ xmlSecMSCngHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
     ret = xmlSecTransformHmacReadOutputBitsSize(node, ctx->dgstSizeInBits, &ctx->dgstSizeInBits);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformHmacReadOutputBitsSize()",
+        xmlSecInternalError("xmlSecTransformHmacReadOutputBitsSize",
             xmlSecTransformGetName(transform));
         return(-1);
     }

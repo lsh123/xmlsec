@@ -218,7 +218,7 @@ xmlSecBufferEmpty(xmlSecBufferPtr buf) {
  */
 int
 xmlSecBufferIsEmpty(xmlSecBufferPtr buf) {
-    return (((buf == NULL) || (buf->data == NULL) || (buf->size <= 0)) ? 1 : 0);
+    return (((buf == NULL) || (buf->data == NULL) || (buf->size == 0)) ? 1 : 0);
 }
 
 /**
@@ -756,7 +756,7 @@ xmlSecBufferHexRead(xmlSecBufferPtr buf, const xmlChar* hexStr) {
 
     /* trivial case */
     hexStrSize = xmlSecStrlen(hexStr);
-    if(hexStrSize <= 0) {
+    if(hexStrSize == 0) {
         xmlSecBufferEmpty(buf);
         return(0);
     }
@@ -894,7 +894,7 @@ xmlSecMemEqual(const xmlSecByte* buf1, const xmlSecByte* buf2, xmlSecSize size) 
     xmlSecByte diff = 0;
     xmlSecSize ii;
 
-    if(size <= 0) {
+    if(size == 0) {
         return(1);
     }
 

@@ -227,7 +227,7 @@ xmlSecGnuTLSBlockCipherCtxUpdate(xmlSecGnuTLSBlockCipherCtxPtr ctx, xmlSecBuffer
     inSize = xmlSecBufferGetSize(in);
     inBlocksSize = ctx->blockSize * (inSize / ctx->blockSize);
     if(inBlocksSize <= 0) {
-        /* wait for more data: we want to make sure we keep the last chunk in tmp buffer for
+        /* wait for more data: we want to make sure we keep the last chunk in the input buffer for
          * padding check/removal on decryption
          */
         return(0);
@@ -312,14 +312,14 @@ xmlSecGnuTLSBlockCipherCtxFinal(xmlSecGnuTLSBlockCipherCtxPtr ctx, xmlSecBufferP
     xmlSecAssert2(inSize <= ctx->blockSize, -1);
 
     /*
-    * The padding used in XML Enc does not follow RFC 1423
-    * and is not supported by GnuTLS. However, it is possible
-    * to disable padding and do it by yourself
-    *
-    * https://www.w3.org/TR/2002/REC-xmlenc-core-20021210/Overview.html#sec-Alg-Block
-    */
+     * The padding used in XML Enc does not follow RFC 1423
+     * and is not supported by GnuTLS. However, it is possible
+     * to disable padding and do it by yourself
+     *
+     * https://www.w3.org/TR/2002/REC-xmlenc-core-20021210/Overview.html#sec-Alg-Block
+     */
     if(encrypt) {
-        /* figure out pad length, if it is 0 (i.e. inLen == blockLen) then set it to blockLen */
+        /* figure out pad length, if it is 0 (i.e. inSize == blockSize) then set it to blockSize */
         padSize = ctx->blockSize - inSize;
         if(padSize == 0) {
             padSize = ctx->blockSize;
@@ -352,7 +352,7 @@ xmlSecGnuTLSBlockCipherCtxFinal(xmlSecGnuTLSBlockCipherCtxPtr ctx, xmlSecBufferP
             return(-1);
         }
     } else {
-        /* update the last block with padding */
+        /* decrypt the last block and remove the padding */
         if(inSize < ctx->blockSize) {
             xmlSecInvalidDataError("not enough data to decrypt the last block", xmlSecErrorsSafeString(cipherName));
             return(-1);

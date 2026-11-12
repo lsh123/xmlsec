@@ -651,8 +651,8 @@ test_xmlSecX509SerialNumberRead_success(
     }
 
     if(written != expectedLen) {
-        testLog("Error: xmlSecX509SerialNumberRead returned written=%u (expected: %u) for '%s'\n",
-            (unsigned)written, (unsigned)expectedLen, str);
+        testLog("Error: xmlSecX509SerialNumberRead returned written=" XMLSEC_SIZE_FMT " (expected: " XMLSEC_SIZE_FMT ") for '%s'\n",
+            written, expectedLen, str);
         testFinishedFailure();
         return;
     }

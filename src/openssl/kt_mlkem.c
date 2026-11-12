@@ -24,7 +24,6 @@
 
 #include "globals.h"
 
-#include <stdlib.h>
 #include <string.h>
 
 #include <openssl/evp.h>
@@ -509,7 +508,7 @@ done:
  * - Parent Verify read: Decrypt + input present -> decapsulate
  * - Parent Encrypt read: Encrypt + no input -> encapsulate
  * - Parent Encrypt write: Encrypt + KEM key data present -> write ciphertext
- * - Parent Decrypt read: Decrypt + KEM key data present -> decapsulate
+ * - Parent Decrypt read: Decrypt + input present -> decapsulate
  */
 static int
 xmlSecOpenSSLMLKEMProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr transformCtx) {

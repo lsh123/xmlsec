@@ -217,7 +217,7 @@ xmlSecMSCryptoSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
  *
  * Low level helper routines for importing plain text keys into an HCRYPTKEY handle,
  * since MSCrypto API does not support import of plain text (session) keys
- * just like that. These functions are based upon MS kb article #228786
+ * just like that. These functions are based upon MS KB article #228786
  * and "Base Provider Key BLOBs" article for priv key blob format.
  *
  *****************************************************************************/
@@ -304,7 +304,7 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
     }
     bitLen = rsaPubKey->bitlen;
 
-    /*  Modify the Exponent in Key BLOB format; Key BLOB format is documented in SDK */
+    /* Modify the Exponent in Key BLOB format; Key BLOB format is documented in SDK */
     rsaPubKey->pubexp = 1;
 
     /* Private-key BLOBs, type PRIVATEKEYBLOB, are used to store private keys outside a CSP.
@@ -401,7 +401,7 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
     /* just in case */
     (*hSessionKey) = 0;
 
-    /*  Double check to see if this provider supports this algorithm and key size */
+    /* Double check to see if this provider supports this algorithm and key size */
     fFound = FALSE;
     dwFlags = CRYPT_FIRST;
     dwSize = sizeof(ProvEnum);

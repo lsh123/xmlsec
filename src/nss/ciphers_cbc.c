@@ -512,7 +512,7 @@ xmlSecNssCbcCipherFinalize(xmlSecTransformPtr transform) {
 }
 
 static int
-xmlSecNssCbcCipherSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
+xmlSecNssCbcCipherSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq) {
     xmlSecNssCbcCipherCtxPtr ctx;
 
     xmlSecAssert2(xmlSecNssCbcCipherCheckId(transform), -1);

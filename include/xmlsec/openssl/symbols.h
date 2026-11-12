@@ -234,7 +234,7 @@ extern "C" {
 #define xmlSecCryptoAppGetDefaultPwdCallback    xmlSecOpenSSLAppGetDefaultPwdCallback
 
 
-/* todo: this should go away on next API refresh */
+/* DEPRECATED. this should go away on next API refresh */
 #define xmlSecCryptoAppKeysMngrAddCertsPath     xmlSecOpenSSLAppKeysMngrAddCertsPath
 
 #endif /* XMLSEC_CRYPTO_OPENSSL */

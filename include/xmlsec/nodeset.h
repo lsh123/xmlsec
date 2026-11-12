@@ -66,7 +66,7 @@ typedef enum {
 struct _xmlSecNodeSet {
     xmlNodeSetPtr       nodes;  /**< the nodes list (adopted from the caller; NULL means the whole document). */
     xmlDocPtr           doc;  /**< the parent XML document (adopted from the caller only if #xmlSecNodeSetDocDestroy was called). */
-    int                 destroyDoc;  /**< the flag: if set to 1 then @p doc will be destroyed when node set is destroyed. */
+    int                 destroyDoc;  /**< the flag: if set to 1 then @p doc will be destroyed when the node set is destroyed. */
     xmlSecNodeSetType   type;  /**< the node set type. */
     xmlSecNodeSetOp     op;  /**< the operation type. */
     xmlSecNodeSetPtr    next;  /**< the next node set. */

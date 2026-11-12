@@ -11,11 +11,11 @@
  */
 #include "globals.h"
 
-#include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
 
 #include <libxml/tree.h>
+#include <libxml/xmlstring.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/private.h>

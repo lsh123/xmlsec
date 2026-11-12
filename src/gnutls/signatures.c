@@ -411,7 +411,7 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
 
     /*  ML-DSA  */
 #ifndef XMLSEC_NO_MLDSA
-    /* ML-DSA uses hardcoded SHAKE-128 and SHAKE-256 so no need to have digest here */
+    /* ML-DSA uses hardcoded SHAKE-128 and SHAKE-256, so there is no need for a digest here */
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformMLDSA44Id)) {
         ctx->keyId      = xmlSecGnuTLSKeyDataMLDSAId;
         ctx->dgstAlgo   = GNUTLS_DIG_UNKNOWN;
@@ -437,7 +437,7 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
 
     /*  EdDSA  */
 #ifndef XMLSEC_NO_EDDSA
-    /* EdDSA uses its own internally defined hash so no need to have digest here */
+    /* EdDSA uses its own internally defined hash, so there is no need for a digest here */
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEdDSAEd25519Id)) {
         ctx->keyId      = xmlSecGnuTLSKeyDataEdDSAId;
         ctx->dgstAlgo   = GNUTLS_DIG_UNKNOWN;
@@ -777,7 +777,7 @@ xmlSecGnuTLSToDer(const gnutls_datum_t* src, gnutls_datum_t* dst, xmlSecSize siz
     xmlSecAssert2(size > 0, -1);
 
 
-    /* check size: we expect the r and s to be the same size and match the size of
+    /* check size: we expect r and s to be the same size and match the size of
      * the key (RFC 6931) */
     if(src->size == 2 * size) {
         /* good, do nothing */
@@ -1048,7 +1048,7 @@ xmlSecGnuTLSSignatureGetDerHalfSize(gnutls_sign_algorithm_t algo, xmlSecSize key
     case GNUTLS_SIGN_ECDSA_SHA3_384:
     case GNUTLS_SIGN_ECDSA_SHA3_512:
         if(keySize < 8) {
-            xmlSecInvalidSizeDataError("keySize", keySize, "EC key size", NULL);
+            xmlSecInvalidSizeDataError("keySize", keySize, ">= 8 bits", NULL);
             return(-1);
         }
         (*res) = XMLSEC_BITS_TO_BYTES(keySize);

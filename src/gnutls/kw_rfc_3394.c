@@ -13,7 +13,6 @@
 #include "globals.h"
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 
 #include <gnutls/gnutls.h>

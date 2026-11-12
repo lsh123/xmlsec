@@ -110,9 +110,9 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppKeysMngrCrlLoadAndVerify       
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCryptoAppKeyLoadEx            (const char *filename,
                                                                          xmlSecKeyDataType type,
                                                                          xmlSecKeyDataFormat format,
-                                                                          const char *pwd,
-                                                                          void* pwdCallback,
-                                                                          void* pwdCallbackCtx);
+                                                                         const char *pwd,
+                                                                         void* pwdCallback,
+                                                                         void* pwdCallbackCtx);
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCryptoAppKeyLoadMemory        (const xmlSecByte* data,
                                                                          xmlSecSize dataSize,
                                                                          xmlSecKeyDataFormat format,

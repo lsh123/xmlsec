@@ -42,7 +42,7 @@ XMLSEC_CRYPTO_EXPORT NCRYPT_KEY_HANDLE  xmlSecMSCngKeyDataGetPrivkey    (xmlSecK
 /**
  * @brief Deprecated alias for xmlSecMSCngKeyDataGetPrivkey.
  */
-#define xmlSecMSCngKeyDataGetPrivKey xmlSecMSCngKeyDataGetPrivkey
+#define xmlSecMSCngKeyDataGetPrivKey  xmlSecMSCngKeyDataGetPrivkey
 
 #ifdef __cplusplus
 }

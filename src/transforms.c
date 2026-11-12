@@ -976,7 +976,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
         tmplLen = xmlStrlen(BAD_CAST XMLSEC_TRANSFORM_XPOINTER_TMPL);
         xptrLen = xmlStrlen(xptr);
         if(xptrLen > (INT_MAX - tmplLen - 1)) {
-            xmlSecInvalidSizeError("size", (xmlSecSize)xptrLen, (xmlSecSize)(INT_MAX - tmplLen - 1), NULL);
+            xmlSecInvalidSizeMoreThanError("size", (xmlSecSize)xptrLen, (xmlSecSize)(INT_MAX - tmplLen - 1), NULL);
             goto done;
         }
         len = tmplLen + xptrLen + 1;
@@ -1148,7 +1148,7 @@ xmlSecTransformCtxBinaryExecute(xmlSecTransformCtxPtr ctx,
 
 /**
  * @brief Processes binary data from URI using transforms chain in @p ctx.
- * @details Process binary data from the URI using the transforms chain in @p ctx.
+ * @details Processes binary data from the URI using the transforms chain in @p ctx.
  * @param ctx the pointer to transforms chain processing context.
  * @param uri the URI.
  *
@@ -1210,7 +1210,7 @@ xmlSecTransformCtxUriExecute(xmlSecTransformCtxPtr ctx, const xmlChar* uri) {
 
 /**
  * @brief Processes nodes using transforms chain in @p ctx.
- * @details Process @p nodes using the transforms chain in @p ctx.
+ * @details Processes @p nodes using the transforms chain in @p ctx.
  * @param ctx the pointer to transforms chain processing context.
  * @param nodes the input node set.
  *
@@ -1819,7 +1819,7 @@ xmlSecTransformGetDataType(xmlSecTransformPtr transform, xmlSecTransformMode mod
 
 /**
  * @brief Processes binary data and pushes results to next transform.
- * @details Process binary @p data and pushes results to next transform.
+ * @details Processes binary @p data and pushes results to next transform.
  * @param transform the pointer to transform object.
  * @param data the input binary data.
  * @param dataSize the input data size.
@@ -2175,7 +2175,7 @@ xmlSecTransformDefaultGetDataType(xmlSecTransformPtr transform, xmlSecTransformM
 
 /**
  * @brief Processes binary data via execute method and pushes results.
- * @details Process binary @p data by calling transform's execute method and pushes
+ * @details Processes binary @p data by calling transform's execute method and pushes
  * results to next transform. When @p transform is the last in the chain (i.e. its
  * next transform is NULL), the produced output is consumed (removed from the
  * transform's output buffer) instead of being pushed; this is required for the

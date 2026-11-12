@@ -1006,7 +1006,8 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha3_512GetKlass(void);
 /**
  * @brief The NSS DEREncodedKeyValue key data klass.
  */
-#define xmlSecNssKeyDataDEREncodedKeyValueId    xmlSecNssKeyDataDEREncodedKeyValueGetKlass()
+#define xmlSecNssKeyDataDEREncodedKeyValueId \
+        xmlSecNssKeyDataDEREncodedKeyValueGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId             xmlSecNssKeyDataDEREncodedKeyValueGetKlass(void);
 
 #ifdef __cplusplus

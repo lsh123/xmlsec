@@ -627,7 +627,7 @@ xmlSecMSCngHkdfPerformKeyDerivation(
      * RFC 5869 section 2.2, HKDF-Extract). This branch is mandatory: CNG's HKDF provider
      * requires the salt property to be set (BCryptKeyDerivation fails with
      * STATUS_INVALID_PARAMETER otherwise). The core param reader yields an
-     * empty salt for both a missing and an empty <enc:Salt> element, so both
+     * empty salt for both a missing and an empty <dsig-more:Salt> element, so both
      * cases reach this branch. Salts of any length are passed to CNG as-is:
      * CNG uses the salt as the HMAC key and normalizes over-long keys per
      * RFC 2104, which reproduces the RFC 5869 A.2 test vector (its 80-byte

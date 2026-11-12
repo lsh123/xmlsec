@@ -55,7 +55,7 @@ xmlSecGCryptRsaExtractData(gcry_sexp_t s_data, const char* name, xmlSecBufferPtr
         goto done;
     }
 
-    data = gcry_sexp_nth_data (s_tmp, 1, &dataSize);
+    data = gcry_sexp_nth_data(s_tmp, 1, &dataSize);
     if(data == NULL) {
         xmlSecGCryptError("gcry_sexp_nth_data()", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         goto done;

@@ -134,18 +134,18 @@ XMLSEC_EXPORT int   xmlSecTransformConcatKdfParamsGetFixedInfo  (xmlSecTransform
 #define XMLSEC_TRANSFORM_HMAC_MAX_OUTPUT_SIZE       ((xmlSecSize)128)
 
 
-XMLSEC_EXPORT int xmlSecTransformHmacReadOutputBitsSize (xmlNodePtr node,
-                                                         xmlSecSize defaultSize,
-                                                         xmlSecSize* res);
-XMLSEC_EXPORT int xmlSecTransformHmacWriteOutput        (const xmlSecByte *hmac,
-                                                         xmlSecSize hmacSizeInBits,
-                                                         xmlSecSize hmacMaxSizeInBytes,
-                                                         xmlSecBufferPtr out);
-XMLSEC_EXPORT int xmlSecTransformHmacVerify             (const xmlSecByte* data,
-                                                         xmlSecSize dataSize,
-                                                         const xmlSecByte *hmac,
-                                                         xmlSecSize hmacSizeInBits,
-                                                         xmlSecSize hmacMaxSizeInBytes);
+XMLSEC_EXPORT int   xmlSecTransformHmacReadOutputBitsSize (xmlNodePtr node,
+                                                           xmlSecSize defaultSize,
+                                                           xmlSecSize* res);
+XMLSEC_EXPORT int   xmlSecTransformHmacWriteOutput        (const xmlSecByte *hmac,
+                                                           xmlSecSize hmacSizeInBits,
+                                                           xmlSecSize hmacMaxSizeInBytes,
+                                                           xmlSecBufferPtr out);
+XMLSEC_EXPORT int   xmlSecTransformHmacVerify             (const xmlSecByte* data,
+                                                           xmlSecSize dataSize,
+                                                           const xmlSecByte *hmac,
+                                                           xmlSecSize hmacSizeInBits,
+                                                           xmlSecSize hmacMaxSizeInBytes);
 
 #endif /* XMLSEC_NO_HMAC */
 
@@ -154,8 +154,8 @@ XMLSEC_EXPORT int xmlSecTransformHmacVerify             (const xmlSecByte* data,
 
 #define XMLSEC_MLDSA_MAX_SIZE   ((xmlSecSize)255)
 
-XMLSEC_EXPORT int xmlSecTransformMLDSAReadContextString(xmlNodePtr node,
-                                                        xmlSecBufferPtr res);
+XMLSEC_EXPORT int   xmlSecTransformMLDSAReadContextString (xmlNodePtr node,
+                                                           xmlSecBufferPtr res);
 #endif /* XMLSEC_NO_MLDSA */
 
 
@@ -164,8 +164,8 @@ XMLSEC_EXPORT int xmlSecTransformMLDSAReadContextString(xmlNodePtr node,
 
 #define XMLSEC_SLHDSA_MAX_SIZE  ((xmlSecSize)255)
 
-XMLSEC_EXPORT int xmlSecTransformSLHDSAReadContextString(xmlNodePtr node,
-                                                        xmlSecBufferPtr res);
+XMLSEC_EXPORT int   xmlSecTransformSLHDSAReadContextString (xmlNodePtr node,
+                                                            xmlSecBufferPtr res);
 #endif /* XMLSEC_NO_SLHDSA */
 
 
@@ -174,8 +174,8 @@ XMLSEC_EXPORT int xmlSecTransformSLHDSAReadContextString(xmlNodePtr node,
 
 #define XMLSEC_EDDSA_MAX_SIZE   ((xmlSecSize)255)
 
-XMLSEC_EXPORT int xmlSecTransformEdDSAReadContextString(xmlNodePtr node,
-                                                        xmlSecBufferPtr res);
+XMLSEC_EXPORT int   xmlSecTransformEdDSAReadContextString (xmlNodePtr node,
+                                                           xmlSecBufferPtr res);
 #endif /* XMLSEC_NO_EDDSA */
 
 

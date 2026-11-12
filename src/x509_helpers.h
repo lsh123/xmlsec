@@ -11,11 +11,11 @@
 #ifndef XMLSEC_X509_HELPERS_H
 #define XMLSEC_X509_HELPERS_H
 
-#ifndef XMLSEC_NO_X509
-
 #ifndef XMLSEC_PRIVATE
 #error "x509_helpers.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-crypto libraries"
 #endif /* XMLSEC_PRIVATE */
+
+#ifndef XMLSEC_NO_X509
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keysdata.h>

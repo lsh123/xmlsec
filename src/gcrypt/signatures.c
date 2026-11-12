@@ -1276,7 +1276,7 @@ xmlSecGCryptRsaPkcs1Sign(int digest, xmlSecKeyDataPtr key_data,
 
     m_sig = gcry_sexp_nth_mpi(s_sig, 1, GCRYMPI_FMT_USG);
     if(m_sig == NULL) {
-        xmlSecGCryptError("gcry_sexp_nth_mpi(1)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
+        xmlSecGCryptError("gcry_sexp_nth_mpi(s)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         goto done;
     }
 
@@ -1488,7 +1488,7 @@ xmlSecGCryptRsaPssSign(int digest, xmlSecKeyDataPtr key_data,
 
     m_sig = gcry_sexp_nth_mpi(s_sig, 1, GCRYMPI_FMT_USG);
     if(m_sig == NULL) {
-        xmlSecGCryptError("gcry_sexp_nth_mpi(1)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
+        xmlSecGCryptError("gcry_sexp_nth_mpi(s)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         goto done;
     }
 

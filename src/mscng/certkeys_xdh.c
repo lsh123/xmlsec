@@ -223,7 +223,7 @@ xmlSecMSCngXdhBuildPrivBlobAndImport(BCRYPT_ALG_HANDLE hAlg, const xmlSecByte* p
     pHdr->dwMagic = BCRYPT_ECDH_PRIVATE_GENERIC_MAGIC;
     pHdr->cbKey = XMLSEC_MSCNG_XDH_CBKEY_SIZE;
 
-    /* u-coord: base point u=9 (LE) as placeholder for u-coord */
+    /* u-coord: base point u=9 (LE), placeholder until the real public key is derived */
     pb[sizeof(BCRYPT_ECCKEY_BLOB)] = 0x09;
     /* v-coord (offset 40) stays zero (unused for Montgomery curve) */
     /* private scalar d */

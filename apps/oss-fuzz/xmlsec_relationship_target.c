@@ -130,6 +130,8 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
         goto done;
     }
 
+    /* defensive: relationships_doc was just created with no root, so the
+     * set always succeeds and both branches below are unreachable */
     oldRoot = xmlDocSetRootElement(relationships_doc, relationships_copy);
     if (oldRoot != NULL) {
         xmlUnlinkNode(oldRoot);
@@ -146,6 +148,10 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
     }
     transform_ctx->enabledUris = xmlSecTransformUriTypeEmpty |
                                  xmlSecTransformUriTypeSameDocument;
+    /* Deeper than the library default (16) so that deeply nested
+     * Relationships inputs are processed instead of being rejected by the
+     * recursion-depth check, which the fuzzer still exercises at greater
+     * nesting. */
     transform_ctx->maxDepth = 64;
     if (xmlSecTransformCtxNodeRead(transform_ctx, transform_node,
                                    xmlSecTransformUsageDSigTransform) == NULL) {

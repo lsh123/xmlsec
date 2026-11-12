@@ -209,7 +209,7 @@ xmlSecMSCngKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
 
     /* CertAddCertificateContextToStore creates a new copy of the certificate context
      * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddcertificatecontexttostore */
-    if (!CertAddCertificateContextToStore(ctx->hMemStore, cert, CERT_STORE_ADD_USE_EXISTING,  NULL)) {
+    if (!CertAddCertificateContextToStore(ctx->hMemStore, cert, CERT_STORE_ADD_USE_EXISTING, NULL)) {
         xmlSecMSCngLastError("CertAddCertificateContextToStore", NULL);
         return(-1);
     }
@@ -473,7 +473,7 @@ xmlSecMSCngVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xm
     }
     /* xmlSecMSCngX509CertGetTime() cannot fail here (it only fails when the out
      * parameter is NULL, which is asserted non-NULL), so the original values are
-     * not saved and restored on failure, unlike the openssl and mscrypto backends */
+     * not saved and restored on failure, unlike the openssl and gnutls backends */
     ret = xmlSecMSCngX509CertGetTime(ctx->keyCert->pCertInfo->NotBefore, &(key->notValidBefore));
     if(ret < 0) {
         xmlSecInternalError("xmlSecMSCngX509CertGetTime", xmlSecKeyDataGetName(data));

@@ -38,7 +38,7 @@
 
 #include "../cast_helpers.h"
 
-static xmlSecCryptoDLFunctionsPtr  gXmlSecNssFunctions = NULL;
+static xmlSecCryptoDLFunctionsPtr gXmlSecNssFunctions = NULL;
 
 /*
  * NSS 3.103 and later have dedicated OIDs (SEC_OID_ECDH_KEA and

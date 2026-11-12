@@ -565,11 +565,13 @@ xmlSecNssKWDes3Encrypt(
     /* NSS does not promise in-place (in == out) processing and the generic
        KW driver (src/kw_helpers.c) passes the same buffer as both input and
        output, so stage the input through the scratch buffer in the transform
-       context. The buffer is secure memory: between wipes (on any resize
-       and on context finalization) it retains the last block processed
-       (plaintext key material during wrap), so the exposure window is
-       bounded to a single wrap/unwrap operation; a per-block cleanse was
-       considered but not adopted to keep the change minimal (the sibling
+       context. The buffer holds the entire input to the cipher call (WK||CKS
+       on wrap, the ciphertext on unwrap), which is processed in a single
+       PK11_CipherOp call. The buffer is secure memory: between wipes (on any
+       resize and on context finalization) it retains the last input
+       processed (plaintext key material during wrap), so the exposure window
+       is bounded to a single wrap/unwrap operation; a per-operation cleanse
+       was considered but not adopted to keep the change minimal (the sibling
        kw_rfc_3394.c cleanses its scratch buffer on every path instead) */
     if(xmlSecBufferSetSize(&(ctx->scratchIn), inSize) < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, inSize);

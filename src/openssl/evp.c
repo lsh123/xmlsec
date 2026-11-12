@@ -1541,7 +1541,7 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     XMLSEC_SAFE_CAST_SIZE_TO_INT(sizeBits, bitsLen, goto done, NULL);
     ret = DSA_generate_parameters_ex(dsa, bitsLen, NULL, 0, &counter_ret, &h_ret, NULL);
     if(ret != 1) {
-        xmlSecOpenSSLError2("DSA_generate_parameters_ex",  xmlSecKeyDataGetName(data),
+        xmlSecOpenSSLError2("DSA_generate_parameters_ex", xmlSecKeyDataGetName(data),
             "sizeBits=" XMLSEC_SIZE_FMT, sizeBits);
         goto done;
     }
@@ -2352,7 +2352,7 @@ xmlSecOpenSSLKeyDataDhGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSe
     XMLSEC_SAFE_CAST_SIZE_TO_INT(sizeBits, bitsLen, goto done, NULL);
     ret = DH_generate_parameters_ex(dh, bitsLen, 2, NULL); /* set generator to 2 */
     if(ret != 1) {
-        xmlSecOpenSSLError2("DH_generate_parameters_ex",  xmlSecKeyDataGetName(data),
+        xmlSecOpenSSLError2("DH_generate_parameters_ex", xmlSecKeyDataGetName(data),
             "sizeBits=" XMLSEC_SIZE_FMT, sizeBits);
         goto done;
     }
@@ -2752,7 +2752,7 @@ xmlSecOpenSSLKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKey
     curve_name[curve_name_len] = '\0';
     curve_oid = xmlSecOpenSSLKeyDataEcGetOidFromName(BAD_CAST curve_name);
     if(curve_oid == NULL) {
-        xmlSecInternalError2("xmlSecOpenSSLKeyDataEcGetOidFromName",  xmlSecKeyDataGetName(data),
+        xmlSecInternalError2("xmlSecOpenSSLKeyDataEcGetOidFromName", xmlSecKeyDataGetName(data),
             "curve_name=%s", xmlSecErrorsSafeString(curve_name));
         return(-1);
     }
@@ -2986,7 +2986,7 @@ xmlSecOpenSSLKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKey
     }
     curve_oid = xmlSecOpenSSLKeyDataEcGetOidFromNid(nid);
     if(curve_oid == NULL) {
-        xmlSecInternalError2("xmlSecOpenSSLKeyDataEcGetOidFromNid",  xmlSecKeyDataGetName(data),
+        xmlSecInternalError2("xmlSecOpenSSLKeyDataEcGetOidFromNid", xmlSecKeyDataGetName(data),
             "curve_nid=%d", nid);
         return(-1);
     }
@@ -2999,14 +2999,14 @@ xmlSecOpenSSLKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKey
     /* public key */
     pubkey = EC_KEY_get0_public_key(ecKey);
     if(pubkey == NULL) {
-        xmlSecOpenSSLError("EC_KEY_get0_public_key",  xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("EC_KEY_get0_public_key", xmlSecKeyDataGetName(data));
         return(-1);
     }
 
     /* the point is encoded as z||x||y, where z is the octet 0x04  */
     pubkeySize = EC_POINT_point2oct(group, pubkey, POINT_CONVERSION_UNCOMPRESSED, NULL, 0, NULL);
     if(pubkeySize <= 0) {
-        xmlSecOpenSSLError("EC_POINT_point2oct(1)",  xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("EC_POINT_point2oct(1)", xmlSecKeyDataGetName(data));
         return(-1);
     }
 
@@ -3021,7 +3021,7 @@ xmlSecOpenSSLKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKey
 
     pubkeySize = EC_POINT_point2oct(group, pubkey, POINT_CONVERSION_UNCOMPRESSED, pubkeyData, pubkeySize, NULL);
     if(pubkeySize <= 0) {
-        xmlSecOpenSSLError("EC_POINT_point2oct(2)",  xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("EC_POINT_point2oct(2)", xmlSecKeyDataGetName(data));
         return(-1);
     }
 
@@ -3061,14 +3061,14 @@ xmlSecOpenSSLKeyDataEcSetValue(xmlSecKeyDataPtr data, const xmlChar* curveOid, x
     /* create group from curve oid */
     nid = xmlSecOpenSSLKeyDataEcGetNidFromOid(curveOid);
     if(nid == NID_undef) {
-        xmlSecInternalError2("xmlSecOpenSSLKeyDataEcGetNidFromOid",  xmlSecKeyDataGetName(data),
+        xmlSecInternalError2("xmlSecOpenSSLKeyDataEcGetNidFromOid", xmlSecKeyDataGetName(data),
             "curve_oid=%s", xmlSecErrorsSafeString(curveOid));
         goto done;
     }
 
     group = EC_GROUP_new_by_curve_name(nid);
     if (group == NULL) {
-        xmlSecOpenSSLError2("EC_GROUP_new_by_curve_name",  xmlSecKeyDataGetName(data),
+        xmlSecOpenSSLError2("EC_GROUP_new_by_curve_name", xmlSecKeyDataGetName(data),
             "nid=%d", nid);
         goto done;
     }
@@ -3076,32 +3076,32 @@ xmlSecOpenSSLKeyDataEcSetValue(xmlSecKeyDataPtr data, const xmlChar* curveOid, x
     /* get public key (point) */
     point = EC_POINT_new(group);
     if(point == NULL) {
-        xmlSecOpenSSLError("EC_POINT_new",  xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("EC_POINT_new", xmlSecKeyDataGetName(data));
         goto done;
     }
     /* EC_POINT_oct2point() validates that the point is on the curve */
     ret = EC_POINT_oct2point(group, point, pubkeyData, pubkeySize, NULL);
     if(ret != 1) {
-        xmlSecOpenSSLError("EC_POINT_oct2point",  xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("EC_POINT_oct2point", xmlSecKeyDataGetName(data));
         goto done;
     }
 
     /* finally create key */
     eckey = EC_KEY_new();
     if(eckey == NULL) {
-        xmlSecOpenSSLError("EC_KEY_new",  xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("EC_KEY_new", xmlSecKeyDataGetName(data));
         goto done;
     }
 
     ret = EC_KEY_set_group(eckey, group);
     if(ret != 1) {
-        xmlSecOpenSSLError("EC_KEY_set_group",  xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("EC_KEY_set_group", xmlSecKeyDataGetName(data));
         goto done;
     }
 
     ret = EC_KEY_set_public_key(eckey, point);
     if(ret != 1) {
-        xmlSecOpenSSLError("EC_KEY_set_public_key",  xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("EC_KEY_set_public_key", xmlSecKeyDataGetName(data));
         goto done;
     }
 

@@ -1153,7 +1153,7 @@ xmlSecGnuTLSKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
         } else if(ctx->kdfType == xmlSecGnuTLSKdfType_Pbkdf2) {
             /* PBKDF2 may have keyLength in params, verify it matches */
             if((ctx->u.pbkdf2.params.keyLength > 0) && (ctx->u.pbkdf2.params.keyLength != expectedOutputSize)) {
-                xmlSecInvalidSizeError("Output kdf size doesn't match expected",
+                xmlSecInvalidSizeError("Output KDF size doesn't match expected",
                     expectedOutputSize, ctx->u.pbkdf2.params.keyLength, xmlSecTransformGetName(transform));
                 return(-1);
             }
@@ -1171,7 +1171,7 @@ xmlSecGnuTLSKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
         } else if(ctx->kdfType == xmlSecGnuTLSKdfType_Hkdf) {
             /* HKDF may have keyLength in params, verify it matches */
             if((ctx->u.hkdf.params.keyLength > 0) && (ctx->u.hkdf.params.keyLength != expectedOutputSize)) {
-                xmlSecInvalidSizeError("Output kdf size doesn't match expected",
+                xmlSecInvalidSizeError("Output KDF size doesn't match expected",
                     expectedOutputSize, ctx->u.hkdf.params.keyLength, xmlSecTransformGetName(transform));
                 return(-1);
             }

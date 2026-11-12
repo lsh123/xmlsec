@@ -18,7 +18,6 @@
 
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/keysdata.h>
-#include <xmlsec/transforms.h>
 
 
 #ifdef __cplusplus

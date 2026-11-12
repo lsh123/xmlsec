@@ -44,7 +44,7 @@ extern "C" {
  */
 #define xmlSecOpenSSLKeyDataX509Id \
         xmlSecOpenSSLKeyDataX509GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataX509GetKlass        (void);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataX509GetKlass(void);
 
 XMLSEC_CRYPTO_EXPORT X509*              xmlSecOpenSSLKeyDataX509GetKeyCert      (xmlSecKeyDataPtr data);
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataX509AdoptKeyCert    (xmlSecKeyDataPtr data,

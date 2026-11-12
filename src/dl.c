@@ -69,7 +69,7 @@ struct _xmlSecCryptoDLLibrary {
 static xmlSecCryptoDLLibraryPtr xmlSecCryptoDLLibraryCreate             (const xmlChar* name);
 static void                     xmlSecCryptoDLLibraryDestroy            (xmlSecCryptoDLLibraryPtr lib);
 static xmlSecCryptoDLLibraryPtr xmlSecCryptoDLLibraryDuplicate          (xmlSecCryptoDLLibraryPtr lib);
-static xmlChar*                 xmlSecCryptoDLLibraryConstructFilename          (const xmlChar* name);
+static xmlChar*                 xmlSecCryptoDLLibraryConstructFilename  (const xmlChar* name);
 static xmlChar*                 xmlSecCryptoDLLibraryConstructGetFunctionsName  (const xmlChar* name);
 
 

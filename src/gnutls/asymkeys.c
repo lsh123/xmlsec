@@ -2183,7 +2183,7 @@ xmlSecGnuTLSAsymKeyDataCreate(gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) 
         return(NULL);
     }
     if(algo == GNUTLS_PK_UNKNOWN) {
-        xmlSecInternalError("cannot determine algorithm for public and private key", NULL);
+        xmlSecInternalError("cannot determine algorithm for public and private keys", NULL);
         return(NULL);
     }
 

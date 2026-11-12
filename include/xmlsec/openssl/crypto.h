@@ -45,7 +45,7 @@
 #define XMLSEC_OPENSSL_IS_BORINGSSL     1
 #define XMLSEC_OPENSSL_API_111          1
 #elif defined(OPENSSL_IS_AWSLC)
-/* AWS-LC is based on OpenSSL 1.1 API.*/
+/* AWS-LC is based on OpenSSL 1.1 API. */
 #define XMLSEC_OPENSSL_IS_AWSLC         1
 #define XMLSEC_OPENSSL_API_111          1
 #else  /* This is OpenSSL */
@@ -243,7 +243,7 @@ XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateReadFileBio (const ch
 #endif /* OPENSSL_NO_DSA */
 
 #ifdef OPENSSL_NO_EC
-#define XMLSEC_NO_EC     1
+#define XMLSEC_NO_EC        1
 #endif /* OPENSSL_NO_EC */
 
 #ifdef OPENSSL_NO_GOST
@@ -276,7 +276,7 @@ XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateReadFileBio (const ch
 #endif /* OPENSSL_NO_ML_KEM */
 
 #ifdef OPENSSL_NO_SLH_DSA
-#define XMLSEC_NO_SLHDSA 1
+#define XMLSEC_NO_SLHDSA    1
 #endif /* OPENSSL_NO_SLH_DSA */
 
 #ifdef OPENSSL_NO_ECX

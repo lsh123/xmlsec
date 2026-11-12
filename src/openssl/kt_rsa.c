@@ -242,9 +242,10 @@ xmlSecOpenSSLRsaPkcs1ProcessImpl(xmlSecOpenSSLRsaPkcs1CtxPtr ctx, const xmlSecBy
         }
     } else {
         /*
-         * EVP_PKEY_decrypt() returns the recovered message length on
-         * success (which may be 0 for a degenerate empty plaintext) and
-         * 0 on failure. Padding failures are guaranteed to be reported
+         * EVP_PKEY_decrypt() returns 1 on success and 0 or a negative
+         * value on failure, with the recovered message length (which
+         * may be 0 for a degenerate empty plaintext) delivered via the
+         * outLen parameter. Padding failures are guaranteed to be reported
          * as errors: implicit rejection is disabled in
          * xmlSecOpenSSLRsaPkcs1SetKeyImpl() and OpenSSL < 3.2 (the
          * earliest version with implicit rejection is 3.2) never

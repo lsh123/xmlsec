@@ -596,7 +596,7 @@ xmlSecKeyX509DataValueXmlReadIssuerSerial(xmlSecKeyX509DataValuePtr x509Value, x
         xmlSecInvalidNodeError(cur, xmlSecNodeX509SerialNumber, NULL);
         return(-1);
     }
-    x509Value->issuerSerial  = xmlSecGetNodeContentAndTrim(cur);
+    x509Value->issuerSerial = xmlSecGetNodeContentAndTrim(cur);
     if((x509Value->issuerSerial == NULL) || (xmlSecIsEmptyString(x509Value->issuerSerial) == 1)) {
         xmlSecInvalidNodeContentError(cur, NULL, "empty");
         return(-1);
@@ -929,7 +929,7 @@ xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
                 ++ii;
                 ++jj;
 
-                /* remember position of last non-spaceChar */
+                /* remember position of last non-space char */
                 if (ignoreTrailingSpaces && !isspace(inCh)) {
                     nonSpaceJJ = jj;
                 }

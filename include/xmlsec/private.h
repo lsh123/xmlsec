@@ -144,8 +144,8 @@ typedef int                     (*xmlSecCryptoAppDefaultKeysMngrAdoptKeyMethod)
 /**
  * @brief Verifies a key with the keys manager.
  * @details Verifies @p key with the keys manager @p mngr:
- * - Checks that key certificate is present
- * - Checks that key certificate is valid
+ * - Checks that the key certificate is present
+ * - Checks that the key certificate is valid
  * @param mngr the pointer to keys manager.
  * @param key the pointer to key.
  * @param keyInfoCtx the key info context for verification.
@@ -208,7 +208,7 @@ typedef int                     (*xmlSecCryptoAppKeysMngrCertLoadMemoryMethod)(x
                                                                          xmlSecKeyDataType type);
 /**
  * @brief Reads CRLs from a file and adds them to the keys manager.
- * @details Reads crls from @p filename and adds to the list of crls in @p mngr.
+ * @details Reads CRLs from @p filename and adds to the list of CRLs in @p mngr.
  * @param mngr the keys manager.
  * @param filename the CRL file.
  * @param format the CRL file format.
@@ -219,7 +219,7 @@ typedef int                     (*xmlSecCryptoAppKeysMngrCrlLoadMethod)(xmlSecKe
                                                                          xmlSecKeyDataFormat format);
 /**
  * @brief Reads CRLs from memory and adds them to the keys manager.
- * @details Reads crls from @p data and adds to the list of crls in @p mngr.
+ * @details Reads CRLs from @p data and adds to the list of CRLs in @p mngr.
  * @param mngr the keys manager.
  * @param data the CRL data.
  * @param dataSize the CRL data size.
@@ -332,7 +332,7 @@ typedef xmlSecKeyPtr            (*xmlSecCryptoAppPkcs12LoadMemoryMethod)(const x
                                                                          void* pwdCallbackCtx);
 /**
  * @brief Reads a cert from a file and adds it to the key.
- * @details Reads the certificate from @p filename and adds it to key.
+ * @details Reads the certificate from @p filename and adds it to the key.
  * @param key the pointer to key.
  * @param filename the certificate filename.
  * @param format the certificate file format.
@@ -344,7 +344,7 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMethod)     (xmlSecK
 
 /**
  * @brief Reads a cert from memory and adds it to the key.
- * @details Reads the certificate from binary @p data buffer and adds it to key.
+ * @details Reads the certificate from the binary @p data buffer and adds it to the key.
  * @param key the pointer to key.
  * @param data the cert data.
  * @param dataSize the cert data size.

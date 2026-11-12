@@ -281,9 +281,9 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(outSize, dwOutSize, return(-1), xmlSecTransformGetName(transform));
 
     if(transform->operation == xmlSecTransformOperationEncrypt) {
-        /* this should be true since we checked above, but let's double check */
+        /* expect inSize < outSize after the checks above; re-check defensively */
         if(inSize >= outSize) {
-            xmlSecInvalidSizeLessThanError("Output data", outSize, inSize,
+            xmlSecInvalidSizeMoreThanError("Input data", inSize, keySize,
                 xmlSecTransformGetName(transform));
             return(-1);
         }
@@ -386,7 +386,7 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         }
 
     } else {
-        /* this should be true since we checked above, but let's double check */
+        /* expect inSize == outSize after the checks above; re-check defensively */
         if (inSize != outSize) {
             xmlSecInvalidSizeError("Output data", outSize, inSize,
                 xmlSecTransformGetName(transform));

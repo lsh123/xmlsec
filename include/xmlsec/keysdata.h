@@ -238,8 +238,8 @@ XMLSEC_EXPORT int               xmlSecKeyDataIdsRegisterDisabled(xmlSecKeyDataId
  *
  *****************************************************************************/
 /**
- * @brief The key data (key value, x509 data, pgp data, etc.).
- * @details The key data: key value (crypto material), x509 data, pgp data, etc.
+ * @brief The key data (key value, x509 data, etc.).
+ * @details The key data: key value (crypto material), x509 data, etc.
  */
 struct _xmlSecKeyData {
     xmlSecKeyDataId                     id;  /**< the data id (#xmlSecKeyDataId). */
@@ -567,7 +567,7 @@ XMLSEC_EXPORT void              xmlSecKeyDataIdListDebugXmlDump (xmlSecPtrListPt
 /**
  * @brief The key data store (holds common data for key processing).
  * @details The key data store. Key data store holds common key data specific information
- * required for key data processing. For example, X509 data store may hold
+ * required for key data processing. For example, an X509 data store may hold
  * information about trusted (root) certificates.
  */
 struct _xmlSecKeyDataStore {

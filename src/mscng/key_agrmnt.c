@@ -674,7 +674,7 @@ xmlSecMSCngKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTra
     xmlSecAssert2(ctx != NULL, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
-        /* we should be already initialized when we set key */
+        /* we should already be initialized when the key is set */
         transform->status = xmlSecTransformStatusWorking;
     }
 

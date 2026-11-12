@@ -701,7 +701,7 @@ xmlSecGnuTLSKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
         fprintf(output, "</Certificate>\n");
     }
 
-    /* other crls */
+    /* crls */
     size = xmlSecGnuTLSKeyDataX509GetCrlsSize(data);
     for(pos = 0; pos < size; ++pos) {
         gnutls_x509_crl_t crl;
@@ -820,7 +820,7 @@ done:
  * or a negative value if an error occurs.
  */
 static int
-xmlSecGnuTLSKeyDataX509Write(xmlSecKeyDataPtr data,  xmlSecKeyX509DataValuePtr x509Value,
+xmlSecGnuTLSKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x509Value,
                             int content, void* context) {
     xmlSecGnuTLSKeyDataX509Context* ctx;
     int ret;

@@ -537,11 +537,7 @@ xmlSecTransformInputURIGetKlass(void) {
  * without a scheme is used as-is.
  *
  * Note: in case of failure, the transform is left in a well-defined
- * (unopened) state, but the failed open leaves the callback set recorded
- * in the transform; the #xmlSecTransformInputURIClose function must be
- * called to reset this state before the transform can be opened again,
- * otherwise a subsequent call to this function will fail with an assertion
- * error (a failed internal consistency check) and return -1.
+ * (unopened) state.
  *
  * Note: the transform keeps its own copy of the matched callback set, so
  * the global callback table may be cleared (#xmlSecIOCleanupCallbacks) or
@@ -616,8 +612,9 @@ xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const xmlChar *uri) {
 /**
  * @brief Closes the given @p transform.
  * @details Closes the given @p transform and frees up resources.
- * Note: in case of failure, the transform may be left in an inconsistent state and
- * the resources may not be properly released.
+ * Note: in case of failure, the transform's internal state is still reset,
+ * but the underlying resource (e.g. an open file handle) may not be
+ * properly released.
  * @param transform the pointer to IO transform.
  * @return 0 on success or a negative value otherwise.
  */

@@ -637,8 +637,8 @@ xmlSecNssX509StoreVerifyCert(
  * @param keyInfoCtx the key info context for verification.
  *
  * function:
- * - Checks that key certificate is present
- * - Checks that key certificate is valid
+ * - Checks that the key certificate is present
+ * - Checks that the key certificate is valid
  *
  * @return 1 if key is verified, 0 otherwise, or a negative value if an error occurs.
  */
@@ -1021,7 +1021,7 @@ xmlSecNssX509CertCanSignCrl(const CERTCertificate* cert) {
         return(1);
     }
 
-    /* cRLSign must be asserted (KU_CRL_SIGN, bit 7 of the keyUsage bit
+    /* cRLSign must be asserted (KU_CRL_SIGN, bit 6 of the keyUsage bit
      * string, RFC 5280 section 4.2.1.3); NSS parses the keyUsage bits into
      * cert->keyUsage when the certificate is decoded (CERT_DecodeDERCertificate) */
     return(((cert->keyUsage & KU_CRL_SIGN) != 0) ? 1 : 0);

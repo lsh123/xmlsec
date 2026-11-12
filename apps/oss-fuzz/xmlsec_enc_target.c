@@ -35,7 +35,7 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size);
 #include <xmlsec/openssl/crypto.h>
 
 /* Named symmetric test keys from tests/merlin-xmlenc-five/keys.xml and
- * tests/keys/keys.xml. Explicit sizes preserve binary AES-GCM key material. */
+ * tests/keys/keys.xml. Explicit sizes preserve binary AES key material. */
 static const struct {
     const char* name;
     const char* material;

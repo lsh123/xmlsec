@@ -61,7 +61,7 @@
 #include "xmlenc_helpers.h"
 
 /* default limits */
-#define XMLSEC_KEYINFO_DEFAULT_MAX_REFERENCE_LEVEL          1
+#define XMLSEC_KEYINFO_DEFAULT_MAX_KEYINFO_REFERENCE_LEVEL  1
 #define XMLSEC_KEYINFO_DEFAULT_MAX_RETRIEVAL_METHOD_LEVEL   1
 
 #ifndef XMLSEC_NO_XMLENC
@@ -293,7 +293,7 @@ xmlSecKeyInfoCtxInitialize(xmlSecKeyInfoCtxPtr keyInfoCtx, xmlSecKeysMngrPtr key
         return(-1);
     }
 
-    keyInfoCtx->maxKeyInfoReferenceLevel = XMLSEC_KEYINFO_DEFAULT_MAX_REFERENCE_LEVEL;
+    keyInfoCtx->maxKeyInfoReferenceLevel = XMLSEC_KEYINFO_DEFAULT_MAX_KEYINFO_REFERENCE_LEVEL;
     ret = xmlSecTransformCtxInitialize(&(keyInfoCtx->keyInfoReferenceCtx));
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformCtxInitialize(keyInfoReferenceCtx)", NULL);

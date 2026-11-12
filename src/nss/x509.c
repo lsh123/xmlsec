@@ -56,7 +56,7 @@ static int              xmlSecNssVerifyAndAdoptX509KeyData     (xmlSecKeyPtr key
                                                                 xmlSecKeyDataPtr data,
                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
 
-static int              xmlSecNssX509SECItemWrite               (SECItem * secItem,
+static int              xmlSecNssX509SECItemWrite               (SECItem* secItem,
                                                                  xmlSecBufferPtr buf);
 static xmlChar*         xmlSecNssX509NameWrite                  (CERTName* nm);
 

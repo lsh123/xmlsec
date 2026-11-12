@@ -458,7 +458,7 @@ xmlSecOpenSSLHmacVerify(xmlSecTransformPtr transform,
     }
 
     /* the digest to verify must not be empty */
-    if(dataSize <= 0) {
+    if(dataSize == 0) {
         xmlSecInvalidSizeError("HMAC digest", dataSize,
                                XMLSEC_BITS_TO_BYTES(ctx->dgstSizeInBits),
                                xmlSecTransformGetName(transform));

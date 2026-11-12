@@ -865,9 +865,10 @@ xmlSecMSCngX509StoreFindIssuer(HCERTSTORE store, PCCERT_CONTEXT cert) {
     xmlSecAssert2(cert != NULL, NULL);
     xmlSecAssert2(cert->pCertInfo != NULL, NULL);
 
-    /* scan every certificate in the store: CertFindCertificateInStore would only
-     * return the first name match, but another certificate with the same issuer
-     * name may actually verify (same iteration pattern as VerifyCrlSignature) */
+    /* scan every certificate in the store: the issuer name is compared
+     * directly with CertCompareCertificateName (no CERT_NAME_BLOB is built),
+     * and another certificate with the same issuer name may actually verify
+     * (same iteration pattern as VerifyCrlSignature) */
     while((candidate = CertEnumCertificatesInStore(store, candidate)) != NULL) {
         if (candidate->pCertInfo == NULL) {
             continue;
@@ -1365,8 +1366,8 @@ xmlSecMSCngX509StoreVerifyCertificate(xmlSecMSCngX509StoreCtxPtr ctx, PCCERT_CON
  * @param keyInfoCtx the key info context for verification.
  *
  * function:
- * - Checks that key certificate is present
- * - Checks that key certificate is valid
+ * - Checks that the key certificate is present
+ * - Checks that the key certificate is valid
  *
  * @return 1 if key is verified, 0 otherwise, or a negative value if an error occurs.
  */

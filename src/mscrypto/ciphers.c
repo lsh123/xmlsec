@@ -219,7 +219,7 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     }
     /* Check if we really have de/encrypted the number of bytes that we requested */
     if (dwCLen != inSize) {
-        xmlSecInternalError3("CryptEn/Decrypt", cipherName,
+        xmlSecInternalError3(encrypt ? "CryptEncrypt" : "CryptDecrypt", cipherName,
             "inLen=" XMLSEC_SIZE_FMT "; outLen=%lu", inSize, dwCLen);
         return(-1);
     }
@@ -327,7 +327,7 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     if(encrypt) {
         DWORD dwBufLen;
 
-        /* Padding is handled manually above; pass fFinal=FALSE and dwFlags=0 so the provider does not add its own padding. */
+        /* Padding is handled manually above; the call passes dwFlags=0 so the provider does not add its own padding. */
         XMLSEC_SAFE_CAST_SIZE_TO_ULONG((inSize + blockSize), dwBufLen, return(-1), cipherName);
         if(!CryptEncrypt(ctx->cryptKey, 0, FALSE, 0, outBuf, &dwCLen, dwBufLen)) {
             xmlSecMSCryptoError("CryptEncrypt", cipherName);
@@ -342,7 +342,7 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
 
     /* Check if we really have de/encrypted the number of bytes that we requested */
     if (dwCLen != inSize) {
-        xmlSecInternalError3("CryptEn/Decrypt", cipherName,
+        xmlSecInternalError3(encrypt ? "CryptEncrypt" : "CryptDecrypt", cipherName,
             "inLen=" XMLSEC_SIZE_FMT "; outLen=%lu", inSize, dwCLen);
         return(-1);
     }

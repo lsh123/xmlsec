@@ -1306,7 +1306,7 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     }
     xmlSecKeyDestroy(key);
 
-    /* if we have keys manager, try to find any key that matches the required key (if lax key search is allowed) */
+    /* if we have a keys manager, try to find any key that matches the required key (if lax key search is allowed) */
     if(((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_LAX_KEY_SEARCH) != 0) && (keyInfoCtx->keysMngr != NULL)) {
         key = xmlSecKeysMngrFindKey(keyInfoCtx->keysMngr, NULL, keyInfoCtx);
         if((key != NULL) && (xmlSecKeyGetValue(key) != NULL)) {

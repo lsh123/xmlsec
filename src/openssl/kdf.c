@@ -557,7 +557,7 @@ xmlSecOpenSSLConcatKdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     /* if we have something else then it's an error */
     cur = xmlSecGetNextElementNode(cur->next);
     if(cur != NULL) {
-        xmlSecUnexpectedNodeError(cur,  NULL);
+        xmlSecUnexpectedNodeError(cur, NULL);
         goto done;
     }
 
@@ -755,7 +755,7 @@ xmlSecOpenSSLPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     /* if we have something else then it's an error */
     cur = xmlSecGetNextElementNode(cur->next);
     if(cur != NULL) {
-        xmlSecUnexpectedNodeError(cur,  NULL);
+        xmlSecUnexpectedNodeError(cur, NULL);
         goto done;
     }
 

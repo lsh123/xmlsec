@@ -380,11 +380,11 @@ xmlSecMSCryptoKeyDataCtxDuplicateCert(xmlSecMSCryptoKeyDataCtxPtr ctxDst, xmlSec
 
     xmlSecMSCryptoKeyDataCtxDestroyCert(ctxDst);
     if(ctxSrc->pCert != NULL) {
-            ctxDst->pCert = xmlSecMSCryptoCertDup(ctxSrc->pCert);
-            if(ctxDst->pCert == NULL) {
-                xmlSecInternalError("xmlSecMSCryptoCertDup", NULL);
-                return(-1);
-            }
+        ctxDst->pCert = xmlSecMSCryptoCertDup(ctxSrc->pCert);
+        if(ctxDst->pCert == NULL) {
+            xmlSecInternalError("xmlSecMSCryptoCertDup", NULL);
+            return(-1);
+        }
     }
     return(0);
 }
@@ -1377,7 +1377,7 @@ done:
     if (hProv != 0) {
         CryptReleaseContext(hProv, 0);
     }
-    if (data != 0) {
+    if (data != NULL) {
         xmlSecKeyDataDestroy(data);
     }
     if (blobInitialized != 0) {

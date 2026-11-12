@@ -1017,7 +1017,7 @@ test_xmlSecNodeSetAdd_union_head_is_absolute_set(void) {
 }
 
 static void
-test_xmlSecNodeSetAdd_union_after_intersection_keeps_base_set(void) {
+test_xmlSecNodeSetAdd_union_after_subtraction_keeps_base_set(void) {
     xmlDocPtr doc;
     xmlNodePtr root;
     xmlNodePtr a;
@@ -1035,7 +1035,7 @@ test_xmlSecNodeSetAdd_union_after_intersection_keeps_base_set(void) {
     int retC;
     int retD;
 
-    testStart("xmlSecNodeSetAdd with a Union after an Intersection keeps the base set");
+    testStart("xmlSecNodeSetAdd with a Union after a Subtraction keeps the base set");
 
     doc = nodesetTestParseDoc("<Root><A><B><C/></B></A><D/></Root>");
     if(doc == NULL) {
@@ -1049,7 +1049,7 @@ test_xmlSecNodeSetAdd_union_after_intersection_keeps_base_set(void) {
     b = (a != NULL) ? nodesetTestFindChild(a, BAD_CAST "B") : NULL;
     c = (b != NULL) ? nodesetTestFindChild(b, BAD_CAST "C") : NULL;
     if((root == NULL) || (a == NULL) || (b == NULL) || (c == NULL) || (d == NULL)) {
-        testLog("Error: failed to prepare union-after-intersection test data\n");
+        testLog("Error: failed to prepare union-after-subtraction test data\n");
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
@@ -1136,7 +1136,7 @@ test_xmlSecNodeSetAdd_union_after_intersection_keeps_base_set(void) {
     retC = xmlSecNodeSetContains(nset, c, b);
     retD = xmlSecNodeSetContains(nset, d, root);
     if((retA != 1) || (retB != 0) || (retC != 1) || (retD != 0)) {
-        testLog("Error: union-after-intersection membership is incorrect "
+        testLog("Error: union-after-subtraction membership is incorrect "
             "(a=%d b=%d c=%d d=%d)\n", retA, retB, retC, retD);
         xmlSecNodeSetDestroy(nset);
         xmlFreeDoc(doc);
@@ -1169,7 +1169,7 @@ test_nodeset(void) {
     testGroupStart("xmlSecNodeSetAdd");
     test_xmlSecNodeSetAdd_subtraction_removes_subtree();
     test_xmlSecNodeSetAdd_union_head_is_absolute_set();
-    test_xmlSecNodeSetAdd_union_after_intersection_keeps_base_set();
+    test_xmlSecNodeSetAdd_union_after_subtraction_keeps_base_set();
     if(testGroupFinished() != 1) { success = 0; }
 
     testGroupStart("xmlSecNodeSetWalk");

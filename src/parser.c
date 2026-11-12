@@ -246,6 +246,7 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes, xmlSec
     xmlParserCtxtPtr ctxt;
     xmlDocPtr doc;
     int ret;
+    xmlSecTransformStatus origStatus;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXmlParserId), -1);
     xmlSecAssert2(nodes != NULL, -1);
@@ -255,6 +256,7 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes, xmlSec
     xmlSecAssert2(ctx != NULL, -1);
 
     /* check/update current transform status */
+    origStatus = transform->status;
     switch(transform->status) {
     case xmlSecTransformStatusNone:
         transform->status = xmlSecTransformStatusWorking;
@@ -274,7 +276,7 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes, xmlSec
     /* prepare parser context */
     if(transform->prev == NULL) {
         /* report status for debugging */
-        xmlSecInvalidTransformError2(transform, "transform has no previous transform: status=%d", (int)transform->status);
+        xmlSecInvalidTransformError2(transform, "transform has no previous transform: status=%d", (int)origStatus);
         return(-1);
     }
 

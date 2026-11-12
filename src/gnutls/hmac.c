@@ -205,7 +205,7 @@ xmlSecGnuTLSHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
     ret = xmlSecTransformHmacReadOutputBitsSize(node, ctx->hmacSizeInBits, &ctx->hmacSizeInBits);
     if (ret < 0) {
-        xmlSecInternalError("xmlSecTransformHmacReadOutputBitsSize()",
+        xmlSecInternalError("xmlSecTransformHmacReadOutputBitsSize",
             xmlSecTransformGetName(transform));
         return(-1);
     }

@@ -211,9 +211,9 @@ xmlSecGnuTLSKeyTransportEncrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
     plaintext.data = xmlSecBufferGetData(inBuf);
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(inSize, plaintext.size, return(-1), NULL);
     err = gnutls_pubkey_encrypt_data(pubkey,
-			     0 /* flags */,
-			     &plaintext,
-			     &encrypted);
+        0 /* flags */,
+        &plaintext,
+        &encrypted);
     if((err != GNUTLS_E_SUCCESS) || (encrypted.data == NULL)) {
         xmlSecGnuTLSError("gnutls_pubkey_encrypt_data", err, NULL);
         return(-1);
@@ -273,9 +273,9 @@ xmlSecGnuTLSKeyTransportDecrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
     ciphertext.data = xmlSecBufferGetData(inBuf);
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(inSize, ciphertext.size, return(-1), NULL);
     err = gnutls_privkey_decrypt_data(privkey,
-			     0 /* flags */,
-			     &ciphertext,
-			     &plaintext);
+        0 /* flags */,
+        &ciphertext,
+        &plaintext);
     if((err != GNUTLS_E_SUCCESS) || (plaintext.data == NULL)) {
         xmlSecGnuTLSError("gnutls_privkey_decrypt_data", err, NULL);
         return(-1);

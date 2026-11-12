@@ -136,7 +136,7 @@ typedef enum {
  * @brief XML DSig processing context.
  */
 struct _xmlSecDSigCtx {
-    /* these data user can set before performing the operation */
+    /* these data the user can set before performing the operation */
     void*                       userData;  /**< the pointer to user data (the library does not modify the pointed-to data; the pointer value is copied into each &lt;dsig:Reference/&gt; processing context and this field is zeroed when the context is finalized). */
     unsigned int                flags;  /**< the XML Digital Signature processing flags. */
     unsigned int                flags2;  /**< reserved for future. */

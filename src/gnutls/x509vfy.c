@@ -731,7 +731,7 @@ done:
 static int
 xmlSecGnuTLSX509StoreVerifyCert(xmlSecGnuTLSX509StoreCtxPtr ctx,
     gnutls_x509_crt_t* certs_chain, xmlSecSize certs_chain_size,
-    gnutls_x509_crt_t* trusted,  xmlSecSize trusted_size,
+    gnutls_x509_crt_t* trusted, xmlSecSize trusted_size,
     gnutls_x509_crl_t* crls, xmlSecSize crls_size,
     const xmlSecKeyInfoCtx* keyInfoCtx
 ) {

@@ -213,18 +213,18 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyData ## klassName ## Klass = {          
     xmlSecMSCngSymKeyDataFinalize,              /* xmlSecKeyDataFinalizeMethod finalize; */          \
     xmlSecMSCngSymKeyDataGenerate,              /* xmlSecKeyDataGenerateMethod generate; */          \
                                                                                                      \
-    /* get info */                                                                               \
+    /* get info */                                                                                   \
     xmlSecMSCngSymKeyDataGetType,               /* xmlSecKeyDataGetTypeMethod getType; */            \
     xmlSecMSCngSymKeyDataGetSize,               /* xmlSecKeyDataGetSizeMethod getSize; */            \
     NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */ \
                                                                                                      \
-    /* read/write */                                                                               \
+    /* read/write */                                                                                 \
     xmlRead,                                    /* xmlSecKeyDataXmlReadMethod xmlRead; */            \
     xmlWrite,                                   /* xmlSecKeyDataXmlWriteMethod xmlWrite; */          \
     xmlSecMSCngSymKeyDataBinRead,               /* xmlSecKeyDataBinReadMethod binRead; */            \
     xmlSecMSCngSymKeyDataBinWrite,              /* xmlSecKeyDataBinWriteMethod binWrite; */          \
                                                                                                      \
-    /* debug */                                                                                    \
+    /* debug */                                                                                      \
     xmlSecMSCngSymKeyDataDebugDump,             /* xmlSecKeyDataDebugDumpMethod debugDump; */        \
     xmlSecMSCngSymKeyDataDebugXmlDump,          /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */     \
                                                                                                      \

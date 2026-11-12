@@ -2289,7 +2289,7 @@ xmlSecCryptoAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key)
  * @details Verifies @p key with the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
  * function:
  * - Checks that the key certificate is present
- * - Checks that key certificate is valid
+ * - Checks that the key certificate is valid
  * @param mngr the pointer to keys manager.
  * @param key the pointer to key.
  * @param keyInfoCtx the key info context for verification.

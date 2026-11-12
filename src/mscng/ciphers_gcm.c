@@ -376,7 +376,7 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
     xmlSecAssert2(ctx->dwBlockLen > 0, -1);
 
     /* Check that we haven't already allocated space for the nonce. Might
-     * happen if the context is initialised more than once */
+     * happen if the context is initialized more than once */
     if (ctx->authInfo.pbNonce == NULL) {
         ctx->authInfo.pbNonce = xmlMalloc(xmlSecMSCngAesGcmNonceLengthInBytes);
         if (ctx->authInfo.pbNonce == NULL) {
@@ -449,14 +449,14 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
      * http://www.w3.org/TR/xmlenc-core1/#sec-AES-GCM); verify that the provider
      * can actually produce a tag of that size before allocating/using it. */
     if (authTagLengths.dwMinLength > (DWORD)xmlSecMSCngAesGcmTagLengthInBytes) {
-        xmlSecInvalidSizeError("AES-GCM provider minimum tag length",
+        xmlSecInvalidSizeMoreThanError("AES-GCM provider minimum tag length",
             (xmlSecSize)authTagLengths.dwMinLength,
             (xmlSecSize)xmlSecMSCngAesGcmTagLengthInBytes,
             cipherName);
         return(-1);
     }
     if (authTagLengths.dwMaxLength < (DWORD)xmlSecMSCngAesGcmTagLengthInBytes) {
-        xmlSecInvalidSizeError("AES-GCM provider maximum tag length",
+        xmlSecInvalidSizeLessThanError("AES-GCM provider maximum tag length",
             (xmlSecSize)authTagLengths.dwMaxLength,
             (xmlSecSize)xmlSecMSCngAesGcmTagLengthInBytes,
             cipherName);
@@ -866,7 +866,7 @@ xmlSecMSCngGcmBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecT
     xmlSecAssert2(ctx != NULL, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
-        /* This should only be done once, before the context has been initialised */
+        /* This should only be done once, before the context has been initialized */
         BCRYPT_INIT_AUTH_MODE_INFO(ctx->authInfo);
         transform->status = xmlSecTransformStatusWorking;
     }

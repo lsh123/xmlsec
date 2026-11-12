@@ -229,7 +229,7 @@ xmlSecNssKeyDataDEREncodedKeyValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
      * and returns NULL if it does not match */
     pubkey = xmlSecNssPKIKeyDataGetPubKey(keyData);
     if(pubkey == NULL) {
-        xmlSecInvalidDataError("key value is not an NSS PKI key data object",
+        xmlSecInvalidDataError("key value is missing or is not an NSS PKI key data object",
                                xmlSecKeyDataKlassGetName(id));
         goto done;
     }

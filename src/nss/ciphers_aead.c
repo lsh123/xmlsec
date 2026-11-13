@@ -334,9 +334,9 @@ xmlSecNssAeadCipherGetKey(xmlSecNssAeadCipherCtxPtr ctx, CK_ATTRIBUTE_TYPE opera
     key_item.data   = keyData;
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(ctx->keySize, key_item.len, return(NULL), NULL);
 
-    slot = PK11_GetInternalSlot();
+    slot = PK11_GetBestSlot(ctx->mechanism, NULL);
     if(slot == NULL) {
-        xmlSecNssError("PK11_GetInternalSlot", NULL);
+        xmlSecNssError("PK11_GetBestSlot", NULL);
         return(NULL);
     }
 

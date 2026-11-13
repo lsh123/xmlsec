@@ -451,7 +451,6 @@ xmlSecNssSignatureFinalize(xmlSecTransformPtr transform) {
 
     xmlSecAssert(xmlSecNssSignatureCheckId(transform));
     xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecNssSignatureSize));
-    xmlSecAssert((transform->operation == xmlSecTransformOperationSign) || (transform->operation == xmlSecTransformOperationVerify));
 
     ctx = xmlSecNssSignatureGetCtx(transform);
     xmlSecAssert(ctx != NULL);
@@ -465,7 +464,7 @@ xmlSecNssSignatureFinalize(xmlSecTransformPtr transform) {
             SECKEY_DestroyPrivateKey(ctx->u.sig.privkey);
             ctx->u.sig.privkey = NULL;
         }
-    } else {
+    } else if (transform->operation == xmlSecTransformOperationVerify) {
         if (ctx->u.vfy.vfyctx != NULL) {
             VFY_DestroyContext(ctx->u.vfy.vfyctx, PR_TRUE);
             ctx->u.vfy.vfyctx = NULL;
@@ -474,6 +473,9 @@ xmlSecNssSignatureFinalize(xmlSecTransformPtr transform) {
             SECKEY_DestroyPublicKey(ctx->u.vfy.pubkey);
             ctx->u.vfy.pubkey = NULL;
         }
+    } else if (transform->operation != xmlSecTransformOperationNone) {
+        xmlSecInternalError("invalid transform operation", xmlSecTransformGetName(transform));
+        /* ignore error and continue cleanup */
     }
 
     if(ctx->arena != NULL) {
@@ -918,8 +920,10 @@ xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
         /* SEC_ERROR_BAD_DER means the DSA/ECDSA signature value is malformed
          * (e.g. r or s exceeds the key field size); treat it the same as a
          * plain bad signature */
-        if((err == SEC_ERROR_BAD_SIGNATURE) || (err == SEC_ERROR_PKCS7_BAD_SIGNATURE) ||
-           (err == SEC_ERROR_BAD_DER)) {
+        if((err == SEC_ERROR_BAD_SIGNATURE) ||
+           (err == SEC_ERROR_PKCS7_BAD_SIGNATURE) ||
+           (err == SEC_ERROR_BAD_DER)
+        ) {
             xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
                              xmlSecTransformGetName(transform),
                              "signature verification failed");

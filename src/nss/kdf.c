@@ -533,6 +533,11 @@ done:
 #ifndef XMLSEC_NO_PBKDF2
 static SECOidTag
 xmlSecNssPbkdf2GetMacFromHref(const xmlChar* href) {
+    if(href == NULL) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL, "PBKDF2 PRF algorithm is required");
+        return(SEC_OID_UNKNOWN);
+    } else
+
 #ifndef XMLSEC_NO_SHA1
     if(xmlStrcmp(href, xmlSecHrefHmacSha1) == 0) {
         return(SEC_OID_HMAC_SHA1);
@@ -661,9 +666,9 @@ xmlSecNssPbkdf2Derive(xmlSecNssKdfCtxPtr ctx, xmlSecBufferPtr out) {
         goto done;
     }
 
-    slot = PK11_GetInternalSlot();
+    slot = PK11_GetBestSlot(CKM_PKCS5_PBKD2, NULL);
     if(slot == NULL) {
-        xmlSecNssError("PK11_GetInternalSlot", NULL);
+        xmlSecNssError("PK11_GetBestSlot", NULL);
         goto done;
     }
     symKey = PK11_PBEKeyGen(slot, pbkdf2AlgId, &passItem, PR_FALSE, NULL);

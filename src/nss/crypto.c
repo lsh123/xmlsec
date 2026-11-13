@@ -41,11 +41,16 @@
 static xmlSecCryptoDLFunctionsPtr gXmlSecNssFunctions = NULL;
 
 /*
- * NSS 3.103 and later have dedicated OIDs (SEC_OID_ECDH_KEA and
- * SEC_OID_X25519) that allow the ECDH and X25519 key agreement algorithms
- * to be checked against the NSS security policy; older NSS does not, so the
- * closest available proxy, the CKM_ECDH1_DERIVE mechanism, is used for the
- * policy check there.
+ * The version guard is driven by SEC_OID_X25519 (and the ecMontKey key type
+ * it requires), which was added in NSS 3.103; the XDH transform is disabled
+ * for older NSS (see include/xmlsec/nss/crypto.h). SEC_OID_ECDH_KEA, used
+ * below for the ECDH security policy check, was added in an earlier release
+ * (it is present in NSS 3.102 but absent from the minimum supported NSS
+ * 3.91), so on older NSS the CKM_ECDH1_DERIVE mechanism is used for the
+ * policy check instead. NSS's mechanism map keeps only the last OID
+ * carrying a mechanism, so the mechanism resolves to SEC_OID_ECDH_KEA on
+ * releases where that OID exists and to SEC_OID_ANSIX962_EC_PUBLIC_KEY
+ * (the closest available proxy) on the oldest releases.
  */
 #if (NSS_VMAJOR > 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR >= 103))
 # define XMLSEC_NSS_HAS_KEY_AGREEMENT_OIDS 1
@@ -595,9 +600,13 @@ xmlSecNssUpdateAvailableCryptoTransforms(xmlSecCryptoDLFunctionsPtr functions) {
     }
 #else
     /*
-     * Key agreement (ECDH-ES) uses the ECDH-derive mechanism; older NSS has
-     * no dedicated OID for it, so the mechanism itself is the closest
-     * available proxy for the NSS security policy check
+     * Key agreement (ECDH-ES) uses the ECDH-derive mechanism. On older NSS
+     * the SEC_OID_ECDH_KEA OID is not guaranteed to exist, so the mechanism
+     * itself is used for the NSS security policy check: NSS's mechanism map
+     * resolves CKM_ECDH1_DERIVE to the last OID carrying that mechanism,
+     * which is SEC_OID_ECDH_KEA on releases where the OID exists and
+     * SEC_OID_ANSIX962_EC_PUBLIC_KEY (the closest available proxy) on the
+     * oldest releases
      */
     if (xmlSecNssCryptoCheckMechanism(CKM_ECDH1_DERIVE) == 0) {
         functions->transformEcdhGetKlass = NULL;

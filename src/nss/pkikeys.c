@@ -176,7 +176,8 @@ xmlSecNssPKIKeyDataAdoptKey(xmlSecKeyDataPtr data,
         pubType = SECKEY_GetPublicKeyType(pubkey2);
     }
     if ((priType != nullKey) && (pubType != priType)) {
-        xmlSecInternalError3("private and public key types do not match", NULL, "pubType=%u; priType=%u", pubType, priType);
+        xmlSecInternalError3("private and public key types do not match", NULL,
+            "pubType=%u; priType=%u", (unsigned int)pubType, (unsigned int)priType);
         if (pubkey2 != NULL) {
             SECKEY_DestroyPublicKey(pubkey2);
         }
@@ -228,7 +229,7 @@ xmlSecNssPKIAdoptKey(SECKEYPrivateKey *privkey,
     if(priType != nullKey && pubType != nullKey) {
         if(pubType != priType) {
             xmlSecInternalError3("private and public key types do not match", NULL,
-                "pubType=%u; priType=%u", pubType, priType);
+                "pubType=%u; priType=%u", (unsigned int)pubType, (unsigned int)priType);
             return(NULL);
         }
     }

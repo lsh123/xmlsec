@@ -1187,11 +1187,14 @@ xmlSecNssX509VerifyCRLSignature(xmlSecNssX509StoreCtxPtr ctx, CERTSignedCrl* crl
 
     if(res != 1) {
         if(found == 0) {
+            /* no issuer certificate was found at all: report it but treat the
+               CRL as not verified (res = 0), not as an internal error, so that
+               a CRL whose issuer is simply not available does not abort the
+               whole verification (matching the OpenSSL backend and the
+               documented return contract) */
             xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_FOUND, NULL, "CRL issuer certificate not found");
-            /* res stays -1: no issuer certificate was found at all */
-        } else {
-            res = 0; /* none of the issuer certificates verified the CRL signature */
         }
+        res = 0; /* none of the issuer certificates (if any) verified the CRL signature */
     }
 
 done:

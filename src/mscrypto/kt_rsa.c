@@ -310,6 +310,9 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
                 "size=" XMLSEC_SIZE_FMT, inSize);
             return(-1);
         }
+        /* from this point on 'outBuf' holds the plaintext (the CEK) until
+         * CryptEncrypt overwrites it, so every error path below must wipe it */
+        xmlSecBufferMakeSecure(out);
 
         XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwInLen, return(-1), xmlSecTransformGetName(transform));
         XMLSEC_SAFE_CAST_SIZE_TO_ULONG(outSize, dwBufLen, return(-1), xmlSecTransformGetName(transform));

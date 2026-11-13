@@ -1149,9 +1149,11 @@ xmlSecMSCryptoX509NameWrite(PCERT_NAME_BLOB nm) {
         return(NULL);
     }
 
-    resT = (LPTSTR)xmlMalloc(sizeof(TCHAR) * (csz + 1));
+    /* cast to xmlSecSize before adding 1 so the allocation size cannot wrap on a
+     * (theoretical) maximum DWORD character count */
+    resT = (LPTSTR)xmlMalloc(sizeof(TCHAR) * ((xmlSecSize)csz + 1));
     if (NULL == resT) {
-        xmlSecMallocError(sizeof(TCHAR) * (csz + 1), NULL);
+        xmlSecMallocError(sizeof(TCHAR) * ((xmlSecSize)csz + 1), NULL);
         return (NULL);
     }
 
@@ -1181,7 +1183,9 @@ xmlSecMSCryptoASN1IntegerWrite(PCRYPT_INTEGER_BLOB num) {
 
     xmlSecAssert2(num != NULL, NULL);
 
-    ret = xmlSecBnInitialize(&bn, num->cbData + 1);
+    /* cast to xmlSecSize before adding 1 so the size cannot wrap on a
+     * (theoretical) maximum DWORD byte count */
+    ret = xmlSecBnInitialize(&bn, (xmlSecSize)num->cbData + 1);
     if (ret < 0) {
         xmlSecInternalError2("xmlSecBnInitialize", NULL, "size=%lu", num->cbData + 1);
         return(NULL);

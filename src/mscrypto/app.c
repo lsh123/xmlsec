@@ -676,8 +676,8 @@ xmlSecMSCryptoAppPkcs12LoadMemory(
 
     if (keyData == NULL) {
         /* private key not found in PKCS12 file */
-        xmlSecInternalError2("xmlSecMSCryptoAppPkcs12LoadMemory", xmlSecKeyDataGetName(x509Data),
-            "private key not found in PKCS12 file, size=%lu", pfx.cbData);
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
+            "private key not found in PKCS12 file, size=%lu", (unsigned long)pfx.cbData);
         goto done;
     }
 

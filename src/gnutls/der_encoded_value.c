@@ -156,8 +156,10 @@ xmlSecGnuTLSDerSingleTlvCheck(const xmlSecByte* data, xmlSecSize dataSize) {
         if((numLenBytes > 4) || ((pos + numLenBytes + 1) > dataSize)) {
             return(0);
         }
-        if(data[pos + 1] == 0) {
-            /* non-minimal length encoding */
+        /* strict DER requires minimal length encoding: the first length
+         * byte must be non-zero, and the long form is only used when the
+         * length does not fit in a single byte */
+        if((data[pos + 1] == 0) || ((numLenBytes == 1) && (data[pos + 1] < 0x80))) {
             return(0);
         }
         for(ii = 0; ii < numLenBytes; ++ii) {

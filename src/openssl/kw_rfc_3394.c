@@ -355,6 +355,17 @@ xmlSecOpenSSLKWRfc3394SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         xmlSecInternalError("xmlSecTransformKWRfc3394SetKey", xmlSecTransformGetName(transform));
         return(-1);
     }
+
+#if !defined(XMLSEC_OPENSSL_API_111)
+    /* the cached cipher context (if any) was initialized with the previous key;
+       release it so it is re-initialized with the new key on the next block
+       operation */
+    if(ctx->cctx != NULL) {
+        EVP_CIPHER_CTX_free(ctx->cctx);
+        ctx->cctx = NULL;
+    }
+#endif /* !defined(XMLSEC_OPENSSL_API_111) */
+
     return(0);
 }
 

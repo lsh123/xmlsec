@@ -17,6 +17,10 @@
 #include <openssl/dh.h>
 #endif /* XMLSEC_NO_DH */
 
+#if defined(XMLSEC_OPENSSL_API_111) && !defined(XMLSEC_NO_EC)
+#include <openssl/ec.h>
+#endif /* defined(XMLSEC_OPENSSL_API_111) && !defined(XMLSEC_NO_EC) */
+
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/errors.h>
@@ -387,8 +391,8 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
     /*
      * EVP_PKEY_derive_set_peer() validates the peer key: it checks that the peer
      * has the same key type and matching parameters (all OpenSSL versions), and
-     * performs a public key check (OpenSSL 3.0+; for DH keys on OpenSSL < 3.0
-     * the public key check is not performed and is done explicitly below).
+     * performs a public key check (OpenSSL 3.0+; for DH and EC keys on OpenSSL
+     * < 3.0 the public key check is not performed and is done explicitly below).
      */
     ret = EVP_PKEY_derive_set_peer(pKeyCtx, otherPubKey);
     if(ret != 1) {
@@ -439,6 +443,40 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
         }
     }
 #endif /* XMLSEC_NO_DH */
+#ifndef XMLSEC_NO_EC
+    /*
+     * On OpenSSL < 3.0 the peer EC public key is not validated by
+     * EVP_PKEY_derive_set_peer() either, so check it explicitly to reject an
+     * off-curve (or degenerate) peer point from an untrusted document.
+     */
+    if(EVP_PKEY_id(otherPubKey) == EVP_PKEY_EC) {
+        const EC_KEY* peerEc;
+        const EC_GROUP* peerGroup;
+        const EC_POINT* peerPubKey;
+
+        peerEc = EVP_PKEY_get0_EC_KEY(otherPubKey);
+        if(peerEc == NULL) {
+            xmlSecOpenSSLError("EVP_PKEY_get0_EC_KEY", NULL);
+            goto done;
+        }
+        peerGroup = EC_KEY_get0_group(peerEc);
+        peerPubKey = EC_KEY_get0_public_key(peerEc);
+        if((peerGroup == NULL) || (peerPubKey == NULL)) {
+            xmlSecOpenSSLError("EC_KEY_get0_group", NULL);
+            goto done;
+        }
+        /*
+         * EC_POINT_is_on_curve() returns 1 if the point is on the curve,
+         * 0 if it is not, and -1 on error; note that it also returns 1 for
+         * a point at infinity, so the latter is rejected explicitly.
+         */
+        if((EC_POINT_is_on_curve(peerGroup, peerPubKey, NULL) != 1)
+            || (EC_POINT_is_at_infinity(peerGroup, peerPubKey) == 1)) {
+            xmlSecInvalidDataError("Invalid peer EC public key", NULL);
+            goto done;
+        }
+    }
+#endif /* XMLSEC_NO_EC */
 #endif /* defined(XMLSEC_OPENSSL_API_111) */
 
     /* determine output buffer size */

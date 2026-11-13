@@ -972,7 +972,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs,
                 continue;
             }
 
-            if((all_untrusted_certs != NULL) && (xmlSecOpenSSLX509FindChildCert(all_untrusted_certs, cert) != NULL)) {
+            if(xmlSecOpenSSLX509FindChildCert(all_untrusted_certs, cert) != NULL) {
                 continue;
             }
 
@@ -1006,7 +1006,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs,
         }
 
         /* we only attempt to verify "leaf" certs without children */
-        if((all_untrusted_certs != NULL) && (xmlSecOpenSSLX509FindChildCert(all_untrusted_certs, cert) != NULL)) {
+        if(xmlSecOpenSSLX509FindChildCert(all_untrusted_certs, cert) != NULL) {
             continue;
         }
 

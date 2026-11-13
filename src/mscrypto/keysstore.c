@@ -298,7 +298,9 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, HCERTSTORE hStoreHandle
             /* guard the DWORD addition: an out-of-range property size would
              * wrap dwAllocSize into a tiny allocation */
             if (dwPropSize >= 0xFFFFFFFE) {
-                xmlSecMSCryptoError("CertGetCertificateContextProperty", xmlSecKeyStoreGetName(store));
+                xmlSecInternalError2("CertGetCertificateContextProperty(friendly name size)",
+                    xmlSecKeyStoreGetName(store),
+                    "size=" XMLSEC_SIZE_FMT, (xmlSecSize)dwPropSize);
                 continue;
             }
             dwAllocSize = dwPropSize + 2;   /* +2: guaranteed UTF-16 NUL terminator */
@@ -324,8 +326,10 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, HCERTSTORE hStoreHandle
              * size can theoretically differ between the probe and the fetch; reject
              * anything that does not fit the allocation made from the probe. */
             if ((dwFetchSize == 0) || (dwFetchSize > dwPropSize)) {
-                xmlSecMSCryptoError("CertGetCertificateContextProperty",
-                                    xmlSecKeyStoreGetName(store));
+                xmlSecInternalError3("CertGetCertificateContextProperty(friendly name size mismatch)",
+                    xmlSecKeyStoreGetName(store),
+                    "fetched=" XMLSEC_SIZE_FMT ", expected=" XMLSEC_SIZE_FMT,
+                    (xmlSecSize)dwFetchSize, (xmlSecSize)dwPropSize);
                 xmlFree(pbFriendlyName);
                 continue;
             }

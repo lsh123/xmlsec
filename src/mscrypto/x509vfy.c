@@ -546,7 +546,8 @@ xmlSecMSCryptoX509StoreContainsCert(HCERTSTORE store, CERT_NAME_BLOB* name, PCCE
         ret = xmlSecMSCryptoX509StoreVerifySubject(cert, storeCert);
         if (ret < 0) {
             xmlSecInternalError("xmlSecMSCryptoX509StoreVerifySubject", NULL);
-            continue;
+            CertFreeCertificateContext(storeCert);
+            return(-1);
         } else if (ret == 0) {
             xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL,
                 "xmlSecMSCryptoX509StoreVerifySubject");

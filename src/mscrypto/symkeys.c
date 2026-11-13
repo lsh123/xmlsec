@@ -443,10 +443,10 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
         CryptDestroyKey(hTempKey);
 
         /* yell if key is too big (use 64-bit arithmetic to avoid overflow) */
-        if ((LONGLONG)dwKeyMaterialLen * 8 > (LONGLONG)dwProvSessionKeySize) {
+        if ((8 * (LONGLONG)dwKeyMaterialLen) > (LONGLONG)dwProvSessionKeySize) {
             xmlSecMSCryptoError3("CryptGetKeyParam(KP_KEYLEN)", NULL,
                 "8*dwKeyMaterialLen=%llu; dwProvSessionKeySize=%lu",
-                (unsigned long long)((LONGLONG)dwKeyMaterialLen * 8), dwProvSessionKeySize);
+                (unsigned long long)(8 * (LONGLONG)dwKeyMaterialLen), dwProvSessionKeySize);
             goto done;
         }
     }
@@ -465,13 +465,15 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
         goto done;
     }
 
-    /* 3 is for the first reserved byte after the key material and the 2 reserved bytes at the end. */
-    if(dwPublicKeySize / 8 < dwKeyMaterialLen + 3) {
+    /* 3 is for the first reserved byte after the key material and the 2 reserved bytes at the end
+     * (use 64-bit arithmetic to avoid overflow in 'dwKeyMaterialLen + 3') */
+    if((LONGLONG)(dwPublicKeySize / 8) < ((LONGLONG)dwKeyMaterialLen + 3)) {
         xmlSecMSCryptoError3("CryptGetKeyParam(KP_KEYLEN)", NULL,
-            "dwKeyMaterialLen+3=%lu; dwPublicKeySize/8=%lu", (dwKeyMaterialLen + 3), (dwPublicKeySize / 8));
+            "dwKeyMaterialLen+3=%llu; dwPublicKeySize/8=%lu",
+            (unsigned long long)((LONGLONG)dwKeyMaterialLen + 3), (unsigned long)(dwPublicKeySize / 8));
         goto done;
     }
-    rndBlobSize = dwPublicKeySize / 8 - (dwKeyMaterialLen + 3);
+    rndBlobSize = (DWORD)((LONGLONG)(dwPublicKeySize / 8) - ((LONGLONG)dwKeyMaterialLen + 3));
 
     /* Simple key BLOBs, type SIMPLEBLOB, are used to store and transport session keys outside a CSP.
      * Base provider simple-key BLOBs are always encrypted with a key exchange public key. The pbData

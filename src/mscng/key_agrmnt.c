@@ -343,7 +343,8 @@ xmlSecMSCngKeyAgreementGetPublicKey(xmlSecKeyDataPtr keyValue, NCRYPT_KEY_HANDLE
         break;
 #endif /* XMLSEC_NO_DH */
     default:
-        xmlSecNotImplementedError2("Unexpected key magic value: %llu", (unsigned long long)(pKeyBlob->Magic));
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
+            "unexpected key magic value: %llu", (unsigned long long)(pKeyBlob->Magic));
         goto done;
     }
 

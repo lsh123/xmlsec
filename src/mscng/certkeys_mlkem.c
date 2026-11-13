@@ -152,7 +152,7 @@ xmlSecMSCngKeyDataMlKemImportPublicKey(const xmlSecByte* pubKeyBytes, DWORD pubK
 
     pszParamset = xmlSecMSCngMlKemGetParamsetByPkSize(pubKeyLen);
     if(pszParamset == NULL) {
-        xmlSecInvalidSizeDataError("ML-KEM public key size", pubKeyLen, "800, 1184 or 1568 bytes", NULL);
+        xmlSecInvalidSizeDataError("ML-KEM public key size", (xmlSecSize)pubKeyLen, "800, 1184 or 1568 bytes", NULL);
         goto done;
     }
 
@@ -198,7 +198,7 @@ xmlSecMSCngKeyDataMlKemImportPrivateKey(const xmlSecByte* privKeyBytes, DWORD pr
 
     pszParamset = xmlSecMSCngMlKemGetParamsetBySkSize(privKeyLen);
     if(pszParamset == NULL) {
-        xmlSecInvalidSizeDataError("ML-KEM secret key size", privKeyLen,
+        xmlSecInvalidSizeDataError("ML-KEM secret key size", (xmlSecSize)privKeyLen,
             "1632, 2400 or 3168 bytes", NULL);
         goto done;
     }
@@ -236,6 +236,7 @@ int
 xmlSecMSCngKeyDataDuplicateMlKemPubKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HANDLE* dst) {
     PUCHAR pbBlob = NULL;
     DWORD cbBlob = 0;
+    DWORD cbBlobAlloc = 0;
     NTSTATUS status;
     int res = -1;
 
@@ -255,7 +256,9 @@ xmlSecMSCngKeyDataDuplicateMlKemPubKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HANDLE*
         xmlSecMallocError(cbBlob, NULL);
         goto done;
     }
-    status = BCryptExportKey(src, NULL, BCRYPT_MLKEM_PUBLIC_BLOB, pbBlob, cbBlob, &cbBlob, 0);
+    cbBlobAlloc = cbBlob;
+
+    status = BCryptExportKey(src, NULL, BCRYPT_MLKEM_PUBLIC_BLOB, pbBlob, cbBlobAlloc, &cbBlob, 0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptExportKey(ML-KEM pub dup, data)", NULL, status);
         goto done;
@@ -273,7 +276,7 @@ xmlSecMSCngKeyDataDuplicateMlKemPubKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HANDLE*
 
 done:
     if(pbBlob != NULL) {
-        xmlSecMemCleanse(pbBlob, cbBlob);
+        xmlSecMemCleanse(pbBlob, cbBlobAlloc);
         xmlFree(pbBlob);
     }
 
@@ -500,7 +503,7 @@ xmlSecMSCngKeyDataMlKemReadFromPkcs8Der(const xmlSecByte* derData, DWORD derData
     }
     pPos += lenConsumed;
     if(firstLen != XMLSEC_MSCNG_MLKEM_PKCS8_PREFIX_SIZE) {
-        xmlSecInvalidSizeDataError("ML-KEM PKCS8 auxiliary value size", firstLen,
+        xmlSecInvalidSizeDataError("ML-KEM PKCS8 auxiliary value size", (xmlSecSize)firstLen,
             "64 bytes", NULL);
         goto done;
     }

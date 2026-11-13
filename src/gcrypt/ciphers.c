@@ -318,8 +318,10 @@ xmlSecGCryptBlockCipherCtxFinal(xmlSecGCryptBlockCipherCtxPtr ctx,
          * for details. */
         padding = (xmlSecSize)outBuf[blockSize - 1];
         if((padding == 0) || (inSize < padding)) {
-            xmlSecInvalidSizeLessThanError("Input data padding",
-                    inSize, padding, cipherName);
+            /* a generic message is used on purpose (the same as in the other
+             * backends): echoing the decrypted padding byte into the log would
+             * leak unauthenticated plaintext material */
+            xmlSecInvalidDataError("invalid padding length for the cipher", cipherName);
             return(-1);
         }
         outSize2 = inSize - padding;

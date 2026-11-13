@@ -144,7 +144,8 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, unsigned long *buflen, stru
             num_tag_bytes++;
         } while ( (c & 0x80) );
         /* DER requires minimal tag encoding: the tag value must not fit in
-         * the initial 5 bits (rejects e.g. 0x3f 0x02). */
+         * the initial 5 bits (rejects e.g. 0x3f 0x02); tag number 31 (0x1f)
+         * is the smallest value that requires the high form, so it is valid. */
         if(tag < 0x1f) {
             return(-1); /* Invalid tag encoding. */
         }
@@ -422,8 +423,11 @@ xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSe
                             }
                         }
 
-                        if(int_len > remaining) {
-                            xmlSecInternalError3("xmlSecGCryptAsn1ParseIntegerSequence", NULL, "INTEGER value larger than BIT STRING content, int_len=%lu, remaining=%lu", int_len, remaining);
+                        /* DER requires the INTEGER to consume the whole BIT STRING
+                         * content; both a value larger than the content and trailing
+                         * bytes after the value are rejected */
+                        if(int_len != remaining) {
+                            xmlSecInternalError3("xmlSecGCryptAsn1ParseIntegerSequence", NULL, "INTEGER does not consume the whole BIT STRING content, int_len=%lu, remaining=%lu", int_len, remaining);
                             return(-1);
                         }
                         value = p;
@@ -617,30 +621,17 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
 
         /* first is always 0, ignore */
 
-        /* The last two integers are the DSA private exponent x and public key y.
-         * The traditional DSA-PrivateKey format (RFC 3279 / X.9.57 / PKCS#1) fixes
-         * their order as p, q, g, y, x, so integers[4] holds y and integers[5]
-         * holds x. The S-expression built below expects x first and y second, so
-         * when the two values are in the "wrong" order for it they are swapped,
-         * i.e. the smaller value is taken as x (integers[4]) and the larger as y
-         * (integers[5]). This is reliable in practice because x < y holds with
-         * probability ~1: x < q is a short exponent while y = g^x mod p is a
-         * full-size field element, so y is almost always larger than x.
-         *
-         * This is a known, documented limitation (not a fixable defect): for
-         * a key where y < x (which can only happen when y < q, a probability of
-         * roughly q/p, i.e. negligible for standard DSA parameters) the two values
-         * are swapped and the resulting key is silently wrong. The heuristic is
-         * accepted because the trigger probability is negligible. */
-        if (gcry_mpi_cmp (integers[4], integers[5]) > 0) {
-            gcry_mpi_swap (integers[4], integers[5]);
-        }
+        /* The last two integers are the DSA public value y and the private
+         * exponent x. The traditional DSA-PrivateKey format (X.9.57 /
+         * OpenSSL DSAprivateinfo) fixes their order as p, q, g, y, x, so
+         * integers[4] holds y and integers[5] holds x; the S-expression
+         * built below expects x first and y second */
 
         /* Build the S-expressions  */
         /* order in the DER file: p, q, g, y, x */
         err = gcry_sexp_build (&s_priv_key, NULL,
                 "(private-key(dsa(p%m)(q%m)(g%m)(x%m)(y%m)))",
-                integers[1], integers[2], integers[3], integers[4], integers[5]
+                integers[1], integers[2], integers[3], integers[5], integers[4]
         );
         if((err != GPG_ERR_NO_ERROR) || (s_priv_key == NULL)) {
             xmlSecGCryptError("gcry_sexp_build(private-key/dsa)", err, NULL);
@@ -649,7 +640,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
 
         err = gcry_sexp_build (&s_pub_key, NULL,
                 "(public-key(dsa(p%m)(q%m)(g%m)(y%m)))",
-                integers[1], integers[2], integers[3], integers[5]
+                integers[1], integers[2], integers[3], integers[4]
         );
         if((err != GPG_ERR_NO_ERROR) || (s_pub_key == NULL)) {
             xmlSecGCryptError("gcry_sexp_build(public-key/dsa)", err, NULL);
@@ -875,8 +866,11 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
                 (xmlSecSize)objectids_num, (xmlSecSize)1U, NULL);
             goto done;
         }
-        if(integers_num < XMLSEC_GCRYPT_ASN1_ECDSA_PUB_NUM) {
-            xmlSecInvalidSizeLessThanError("Public EC key params",
+        /* a public key has exactly one integer (the public point q); any
+         * other count means the data is not a public key (e.g. an EC private
+         * key, whose last integer would be misparsed as the public point) */
+        if(integers_num != XMLSEC_GCRYPT_ASN1_ECDSA_PUB_NUM) {
+            xmlSecInvalidSizeError("Public EC key params",
                 (xmlSecSize)integers_num, (xmlSecSize)XMLSEC_GCRYPT_ASN1_ECDSA_PUB_NUM, NULL);
             goto done;
         }
@@ -891,14 +885,13 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         }
 
         /* Build the S-expression.  */
-        /* the q parameter is always the last one */
         err = gcry_sexp_build (&s_pub_key, NULL,
             "(public-key"
             " (ecdsa"
             " (curve %s)"
             " (q %m)"
             " ))",
-            ecCurve, integers[integers_num - 1]
+            ecCurve, integers[0]
         );
         if((err != GPG_ERR_NO_ERROR) || (s_pub_key == NULL)) {
             xmlSecGCryptError("gcry_sexp_build(public-key/ecdsa)", err, NULL);

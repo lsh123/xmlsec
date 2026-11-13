@@ -22,12 +22,12 @@
 
 
 /**
- * @brief The SHA3 (Keccak) digest algorithms (GCRY_MD_SHA3_*) are only
- * available in libgcrypt 1.8.0 and later.
+ * @brief The SHA3 digest algorithms (GCRY_MD_SHA3_*) are only
+ * available in libgcrypt 1.7.0 and later.
  */
-#if GCRYPT_VERSION_NUMBER >= 0x010800
+#if GCRYPT_VERSION_NUMBER >= 0x010700
 #define XMLSEC_GCRYPT_HAS_SHA3 1
-#endif /* GCRYPT_VERSION_NUMBER >= 0x010800 */
+#endif /* GCRYPT_VERSION_NUMBER >= 0x010700 */
 
 /*
  * If SHA3 is enabled by the build but the gcrypt version does not provide the

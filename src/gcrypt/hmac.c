@@ -37,6 +37,7 @@ typedef struct _xmlSecGCryptHmacCtx             xmlSecGCryptHmacCtx, *xmlSecGCry
 struct _xmlSecGCryptHmacCtx {
     int                 digest;
     gcry_md_hd_t        digestCtx;
+    int                 ctxInitialized;     /* set to 1 when the key has been set successfully */
     xmlSecByte          dgst[XMLSEC_TRANSFORM_HMAC_MAX_OUTPUT_SIZE];
     xmlSecSize          dgstSizeInBits;       /* dgst size in bits */
 };
@@ -298,6 +299,9 @@ xmlSecGCryptHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
                           xmlSecTransformGetName(transform));
         return(-1);
     }
+
+    /* success: the key is set, so the HMAC context is fully initialized */
+    ctx->ctxInitialized = 1;
     return(0);
 }
 
@@ -318,6 +322,7 @@ xmlSecGCryptHmacVerify(xmlSecTransformPtr transform,
     ctx = xmlSecGCryptHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->digestCtx != NULL, -1);
+    xmlSecAssert2(ctx->ctxInitialized != 0, -1);
     xmlSecAssert2(ctx->dgstSizeInBits > 0, -1);
 
     /* the digest to verify must not be empty */
@@ -359,6 +364,7 @@ xmlSecGCryptHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
     ctx = xmlSecGCryptHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->digestCtx != NULL, -1);
+    xmlSecAssert2(ctx->ctxInitialized != 0, -1);
 
     in = &(transform->inBuf);
     out = &(transform->outBuf);

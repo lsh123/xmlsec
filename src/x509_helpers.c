@@ -482,7 +482,11 @@ xmlSecKeyX509DataValueXmlReadBase64Blob(xmlSecBufferPtr buf, xmlNodePtr node, xm
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     content = xmlSecGetNodeContentAndTrim(node);
-    if((content == NULL) || (xmlSecIsEmptyString(content) == 1)) {
+    if(content == NULL) {
+        xmlSecInternalError("xmlSecGetNodeContentAndTrim", NULL);
+        goto done;
+    }
+    if(xmlSecIsEmptyString(content) == 1) {
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
             xmlSecInvalidNodeContentError(node, NULL, "empty");
             goto done;
@@ -534,7 +538,11 @@ xmlSecKeyX509DataValueXmlReadString(xmlChar **str, xmlNodePtr node, xmlSecKeyInf
 
     /* trim the string before checking if it is empty */
     content = xmlSecGetNodeContentAndTrim(node);
-    if((content == NULL) || (xmlStrlen(content) == 0)) {
+    if(content == NULL) {
+        xmlSecInternalError("xmlSecGetNodeContentAndTrim", NULL);
+        goto done;
+    }
+    if(xmlStrlen(content) == 0) {
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
             xmlSecInvalidNodeContentError(node, NULL, "empty");
             goto done;

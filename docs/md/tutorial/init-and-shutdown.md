@@ -31,11 +31,26 @@ initializing and shutting down the following dependencies:
 #ifndef XMLSEC_NO_XSLT
     /* disable all XSLT file and network access */
     xsltSecPrefs = xsltNewSecurityPrefs();
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_NETWORK,     xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_NETWORK,    xsltSecurityForbid);
+    if(xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid) < 0) {
+        fprintf(stderr, "Error: failed to set XSLT security pref READ_FILE\n");
+        return(-1);
+    }
+    if(xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid) < 0) {
+        fprintf(stderr, "Error: failed to set XSLT security pref WRITE_FILE\n");
+        return(-1);
+    }
+    if(xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid) < 0) {
+        fprintf(stderr, "Error: failed to set XSLT security pref CREATE_DIRECTORY\n");
+        return(-1);
+    }
+    if(xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_NETWORK,     xsltSecurityForbid) < 0) {
+        fprintf(stderr, "Error: failed to set XSLT security pref READ_NETWORK\n");
+        return(-1);
+    }
+    if(xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_NETWORK,    xsltSecurityForbid) < 0) {
+        fprintf(stderr, "Error: failed to set XSLT security pref WRITE_NETWORK\n");
+        return(-1);
+    }
     xsltSetDefaultSecurityPrefs(xsltSecPrefs);
 #endif /* XMLSEC_NO_XSLT */
 

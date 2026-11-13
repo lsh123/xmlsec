@@ -26,10 +26,12 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size);
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/strings.h>
 
 #include <xmlsec/openssl/app.h>
 #include <xmlsec/openssl/crypto.h>
 
+#ifndef XMLSEC_NO_XMLDSIG
 /* Fixed self-signed RSA test certificate (PEM), stored as individual lines so
  * the source contains no backslash-escape sequences; the PEM is re-assembled
  * (with real newline characters) at runtime. Loaded as a trusted cert so the
@@ -148,6 +150,7 @@ static int do_init(void) {
 }
 
 int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
+    const xmlChar* ids[] = { BAD_CAST "Id", NULL };
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
     xmlSecDSigCtxPtr dsigCtx = NULL;
@@ -178,6 +181,11 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
         return 0;
     }
 
+    /* Register ID attributes so same-document URI="#id" references resolve:
+     * libxml2 only auto-registers DTD-declared IDs, and fuzzer inputs carry
+     * no DTD. */
+    xmlSecAddIDs(doc, xmlDocGetRootElement(doc), ids);
+
     dsigCtx = xmlSecDSigCtxCreate(g_mngr);
     if (dsigCtx == NULL) {
         xmlFreeDoc(doc);
@@ -204,3 +212,14 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
     xmlFreeDoc(doc);
     return 0;
 }
+
+#else /* XMLSEC_NO_XMLDSIG */
+/* XML Digital Signature support is disabled, so there is nothing to fuzz.
+ * Provide a no-op entry point so the target still compiles and links when
+ * built against a feature-disabled configuration. */
+int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
+    (void)data;
+    (void)size;
+    return 0;
+}
+#endif /* XMLSEC_NO_XMLDSIG */

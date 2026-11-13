@@ -83,6 +83,7 @@ static const char helpCommands2[] =
     "  --encrypt   "    "\tencrypt data and output XML document\n"
     "  --decrypt   "    "\tdecrypt data from XML document\n"
 #endif /* XMLSEC_NO_XMLENC */
+    ""
     ;
 
 static const char helpVersion[] =
@@ -3156,20 +3157,14 @@ static int xmlSecAppInputCloseCallback(void* context) {
 }
 
 
-static int initialized = 0;
-
 #ifndef XMLSEC_NO_XSLT
 static xsltSecurityPrefsPtr xsltSecPrefs = NULL;
 #endif /* XMLSEC_NO_XSLT */
 
+/* This function must be called exactly once per process */
 static int
 xmlSecAppInit(void) {
     int ret;
-
-    if(initialized != 0) {
-        return(0);
-    }
-    initialized = 1;
 
     /* Init LibXML2 */
     xmlInitParser();
@@ -3183,11 +3178,26 @@ xmlSecAppInit(void) {
         fprintf(stderr, "Error: failed to create XSLT security preferences.\n");
         return(-1);
     }
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_NETWORK,     xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_NETWORK,    xsltSecurityForbid);
+    if(xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid) < 0) {
+        fprintf(stderr, "Error: failed to set XSLT security pref READ_FILE.\n");
+        return(-1);
+    }
+    if(xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid) < 0) {
+        fprintf(stderr, "Error: failed to set XSLT security pref WRITE_FILE.\n");
+        return(-1);
+    }
+    if(xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid) < 0) {
+        fprintf(stderr, "Error: failed to set XSLT security pref CREATE_DIRECTORY.\n");
+        return(-1);
+    }
+    if(xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_NETWORK,     xsltSecurityForbid) < 0) {
+        fprintf(stderr, "Error: failed to set XSLT security pref READ_NETWORK.\n");
+        return(-1);
+    }
+    if(xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_NETWORK,    xsltSecurityForbid) < 0) {
+        fprintf(stderr, "Error: failed to set XSLT security pref WRITE_NETWORK.\n");
+        return(-1);
+    }
     xsltSetDefaultSecurityPrefs(xsltSecPrefs);
 #endif /* XMLSEC_NO_XSLT */
 
@@ -3234,10 +3244,6 @@ xmlSecAppInit(void) {
 
 static void
 xmlSecAppShutdown(void) {
-    if(initialized == 0) {
-        return;
-    }
-
     /* Shutdown Crypto */
     if(xmlSecAppCryptoShutdown() < 0) {
         fprintf(stderr, "Error: xmlsec crypto shutdown failed.\n");

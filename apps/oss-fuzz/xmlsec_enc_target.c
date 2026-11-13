@@ -34,6 +34,7 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size);
 #include <xmlsec/openssl/app.h>
 #include <xmlsec/openssl/crypto.h>
 
+#ifndef XMLSEC_NO_XMLENC
 /* Named symmetric test keys from tests/merlin-xmlenc-five/keys.xml and
  * tests/keys/keys.xml. Explicit sizes preserve binary AES key material. */
 static const struct {
@@ -177,6 +178,7 @@ static int do_init(void) {
         return -1;
     }
     if (xmlSecOpenSSLInit() < 0) {
+        xmlSecOpenSSLShutdown();
         xmlSecOpenSSLAppShutdown();
         xmlSecShutdown();
         return -1;
@@ -289,3 +291,14 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
     xmlFreeDoc(doc);
     return 0;
 }
+
+#else /* XMLSEC_NO_XMLENC */
+/* XML Encryption support is disabled, so there is nothing to fuzz.
+ * Provide a no-op entry point so the target still compiles and links when
+ * built against a feature-disabled configuration. */
+int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
+    (void)data;
+    (void)size;
+    return 0;
+}
+#endif /* XMLSEC_NO_XMLENC */

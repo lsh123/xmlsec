@@ -33,10 +33,30 @@ static xmlExternalEntityLoader xmlSecDefaultExternalEntityLoader = NULL;
 #if LIBXML_VERSION < 21300
 /*
  * Custom external entity handler, denies all files except the initial
- * document we're parsing. The initial document is loaded before any input
- * is pushed on the parser context (ctxt->input == NULL), while external
- * entities and DTD subsets are loaded while the document input is already
- * on the stack (ctxt->input != NULL) and ctxt->inputNr > 0.
+ * document we're parsing. libxml2 (< 2.13) routes every external load
+ * through the process-wide loader set by xmlSetExternalEntityLoader():
+ * external general entities, external DTD subsets, and the initial
+ * document when loaded via xmlCreateURLParserCtxt() or xmlCtxtReadFile()
+ * (xmlCreateFileParserCtxt() and xmlCreateMemoryParserCtxt() create the
+ * document input directly and do not involve the loader). The initial
+ * document load invokes the loader on a context with no input on the
+ * stack (ctxt->input == NULL) before the document input stream is
+ * created; a fresh context starts with ctxt->input_id == 1 and every
+ * new input stream increments it (xmlNewInputStream()), so a
+ * fresh-context document load is the only case with input_id <= 1 at
+ * the loader call. External general entities are loaded in a freshly
+ * created context (xmlCreateEntityParserCtxtInternal()) that gets
+ * input_id from the context the entity is referenced in, which has
+ * input_id > 1 by then, so entity loads are always denied. External DTD
+ * subsets are loaded while the document input is already on the stack
+ * (ctxt->input != NULL) and are denied as well.
+ * Note: the initial document of a reused context (e.g. a second
+ * xmlCtxtReadFile() on the same context) is also denied:
+ * xmlCtxtReset() does not reset input_id, so at that point the context
+ * state (no input on the stack, input_id > 1) is indistinguishable from
+ * the fresh entity context above. xmlsec's own parse functions always
+ * use fresh parser contexts, so this only affects applications that
+ * reuse contexts for direct libxml2 loads.
  */
 static xmlParserInputPtr
 xmlSecNoXxeExternalEntityLoader(
@@ -44,7 +64,7 @@ xmlSecNoXxeExternalEntityLoader(
     if(ctxt == NULL) {
         return(NULL);
     }
-    if((ctxt->input == NULL) || (ctxt->inputNr == 0)) {
+    if((ctxt->input == NULL) && (ctxt->input_id <= 1)) {
         if(xmlSecDefaultExternalEntityLoader == NULL) {
             xmlSecXmlError("xmlSecNoXxeExternalEntityLoader", NULL);
             return(NULL);

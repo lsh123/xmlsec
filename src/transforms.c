@@ -1534,9 +1534,9 @@ xmlSecTransformNodeRead(xmlNodePtr node, xmlSecTransformUsage usage, xmlSecTrans
     xmlSecAssert2(transformCtx != NULL, NULL);
 
     href = xmlGetProp(node, xmlSecAttrAlgorithm);
-    if(href == NULL) {
-        xmlSecInvalidNodeAttributeError(node, xmlSecAttrAlgorithm,
-                                        NULL, "empty");
+    if((href == NULL) || (xmlStrlen(href) == 0)) {
+        xmlSecInvalidNodeAttributeError(node, xmlSecAttrAlgorithm, NULL, "empty");
+        xmlFree(href);
         return(NULL);
     }
 

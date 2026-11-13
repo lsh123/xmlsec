@@ -1458,8 +1458,13 @@ xmlSecTransformPbkdf2ParamsReadSalt(xmlSecTransformPbkdf2ParamsPtr params, xmlNo
         return(-1);
     }
     ret = xmlSecBufferBase64NodeContentRead(&(params->salt), cur);
-    if((ret < 0) || (xmlSecBufferGetSize(&(params->salt)) <= 0)) {
+    if(ret < 0) {
         xmlSecInternalError("xmlSecBufferBase64NodeContentRead(Salt)", NULL);
+        return(-1);
+    }
+    /* PBKDF2 requires a non-empty salt */
+    if(xmlSecBufferIsEmpty(&(params->salt))) {
+        xmlSecInvalidSizeDataError("Salt", xmlSecBufferGetSize(&(params->salt)), "non-empty", NULL);
         return(-1);
     }
 
@@ -1578,6 +1583,7 @@ xmlSecTransformHkdfParamsInitialize(xmlSecTransformHkdfParamsPtr params) {
     ret = xmlSecBufferInitialize(&(params->salt), 0);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize(salt)", NULL);
+        xmlSecTransformHkdfParamsFinalize(params);
         return(-1);
     }
     xmlSecBufferMakeSecure(&(params->salt));
@@ -2019,7 +2025,8 @@ xmlSecTransformRsaOaepParamsInitialize(xmlSecTransformRsaOaepParamsPtr oaepParam
 
     ret = xmlSecBufferInitialize(&(oaepParams->oaepParams), 0);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferInitialize", NULL);
+        xmlSecInternalError("xmlSecBufferInitialize(oaepParams)", NULL);
+        xmlSecTransformRsaOaepParamsFinalize(oaepParams);
         return(-1);
     }
 

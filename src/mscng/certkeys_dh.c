@@ -760,7 +760,6 @@ xmlSecMSCngDhBuildPrivBlobAndImport(BCRYPT_ALG_HANDLE hAlg,
         xmlSecMallocError(*cbPrivBlob, NULL);
         goto done;
     }
-    xmlSecMemCleanse(pb, (*cbPrivBlob));
 
     dhPriv = (BCRYPT_DH_KEY_BLOB*)pb;
     dhPriv->dwMagic = BCRYPT_DH_PRIVATE_MAGIC;

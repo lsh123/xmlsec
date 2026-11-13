@@ -99,6 +99,25 @@ xmlSecMSCngX509StoreIsCrlTimeValid(PCCRL_CONTEXT crlCtx, LPFILETIME time) {
     return(1);
 }
 
+static int
+xmlSecMSCngX509StoreIsCertTimeValid(PCCERT_CONTEXT cert, LPFILETIME time) {
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(cert->pCertInfo != NULL, -1);
+    xmlSecAssert2(time != NULL, -1);
+
+    if(CompareFileTime(&(cert->pCertInfo->NotBefore), time) == 1) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL, "certificate not yet valid");
+        return(0);
+    }
+
+    if(CompareFileTime(&(cert->pCertInfo->NotAfter), time) == -1) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL, "certificate expired");
+        return(0);
+    }
+
+    return(1);
+}
+
 static void
 xmlSecMSCngX509StoreFinalize(xmlSecKeyDataStorePtr store) {
     xmlSecMSCngX509StoreCtxPtr ctx;
@@ -450,15 +469,18 @@ xmlSecMSCngX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, PCCRL_CONTEXT crl) {
 }
 
 /* Searches the given stores for a certificate whose subject name matches the
- * CRL issuer, verifies the CRL signature against it, and checks that the
- * issuer certificate itself chains to a trusted root (time validity is
- * checked when @p time is not NULL). The issuer chain validation skips
- * revocation to avoid recursively consulting the CRL being verified.
+ * CRL issuer and verifies the CRL signature against it. An issuer found in
+ * the trusted store is a trust anchor: a valid CRL signature and (when @p time
+ * is not NULL) time validity are sufficient for it, and the issuer is not
+ * required to chain further to a trusted root; issuers found in the other
+ * stores must additionally be valid (time) and chain to a trusted root. The
+ * issuer chain validation skips revocation to avoid recursively consulting the
+ * CRL being verified.
  * Returns 1 if a verifying issuer certificate is found, 0 if none does, or a
  * negative value if an error occurs. If @a sigVerified is not NULL, it is
  * set to 1 when the CRL signature verifies against at least one candidate
- * issuer (a return value of 0 then means the issuer certificate itself did
- * not chain to a trusted root). */
+ * issuer (a return value of 0 then means the issuer certificate is not time
+ * valid or did not chain to a trusted root). */
 static int
 xmlSecMSCngX509StoreVerifyCrlIssuerInStores(
     const HCERTSTORE* searchStores,
@@ -504,23 +526,52 @@ xmlSecMSCngX509StoreVerifyCrlIssuerInStores(
                     *sigVerified = 1;
                 }
 
-                /* verify that the issuer cert itself is valid (time) and chains
-                 * to a trusted root; do not check for revocation while verifying
-                 * the CRL to avoid circular dependency */
-                ret = xmlSecMSCngX509StoreVerifyCertificateChain(
-                    issuerCert, time, trustedStore, untrustedStore, certStore,
-                    NULL, 0);
-                if(ret < 0) {
-                    xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateChain", NULL);
-                    CertFreeCertificateContext(issuerCert);
-                    return(-1);
+                if(searchStores[ii] == trustedStore) {
+                    /* an issuer certificate from the trusted store is a trust
+                     * anchor: the issuer must not be required to chain further
+                     * to a trusted root (a non-self-signed intermediate CA
+                     * added to the trusted store would never pass such a check,
+                     * which would silently skip the CRLs it issues). Its time
+                     * validity is still checked when time is specified (time
+                     * is NULL when XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS
+                     * is set); an issuer that is not time valid is skipped and
+                     * the next matching certificate or store is tried.
+                     */
+                    if(time != NULL) {
+                        ret = xmlSecMSCngX509StoreIsCertTimeValid(issuerCert, time);
+                        if(ret < 0) {
+                            xmlSecInternalError("xmlSecMSCngX509StoreIsCertTimeValid", NULL);
+                            CertFreeCertificateContext(issuerCert);
+                            return(-1);
+                        } else if(ret == 1) {
+                            CertFreeCertificateContext(issuerCert);
+                            return(1);
+                        }
+                    } else {
+                        CertFreeCertificateContext(issuerCert);
+                        return(1);
+                    }
+                    /* issuer cert is not time valid; the next
+                     * CertFindCertificateInStore call below frees issuerCert */
+                } else {
+                    /* verify that the issuer cert itself is valid (time) and
+                     * chains to a trusted root; do not check for revocation
+                     * while verifying the CRL to avoid circular dependency */
+                    ret = xmlSecMSCngX509StoreVerifyCertificateChain(
+                        issuerCert, time, trustedStore, untrustedStore, certStore,
+                        NULL, 0);
+                    if(ret < 0) {
+                        xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateChain", NULL);
+                        CertFreeCertificateContext(issuerCert);
+                        return(-1);
+                    }
+                    if(ret == 1) {
+                        CertFreeCertificateContext(issuerCert);
+                        return(1);
+                    }
+                    /* issuer cert failed chain verification; the next
+                     * CertFindCertificateInStore call below frees issuerCert */
                 }
-                if(ret == 1) {
-                    CertFreeCertificateContext(issuerCert);
-                    return(1);
-                }
-                /* issuer cert failed chain verification; the next
-                 * CertFindCertificateInStore call below frees issuerCert */
             }
             /* try next matching cert; CertFindCertificateInStore frees issuerCert
              * (see https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certfindcertificateinstore) */
@@ -536,9 +587,11 @@ xmlSecMSCngX509StoreVerifyCrlIssuerInStores(
     return(0);
 }
 
-/* Returns 1 if the CRL signature verifies against an issuer certificate that
- * chains to a trusted root (time validity is checked when @p time is not
- * NULL), 0 if it does not, or a negative value if an error occurs. */
+/* Returns 1 if the CRL signature verifies against a trusted issuer
+ * certificate (an issuer found in the trusted store must additionally be
+ * time valid when @p time is not NULL; issuers found in the other stores must
+ * chain to a trusted root), 0 if it does not, or a negative value
+ * if an error occurs. */
 static int
 xmlSecMSCngX509StoreVerifyCrlSignature(
     HCERTSTORE trustedStore,
@@ -745,7 +798,8 @@ xmlSecMSCngX509StoreContainsCert(HCERTSTORE store, CERT_NAME_BLOB* name, PCCERT_
         ret = xmlSecMSCngX509StoreVerifySubject(cert, storeCert);
         if (ret < 0) {
             xmlSecInternalError("xmlSecMSCngX509StoreVerifySubject", NULL);
-            continue;
+            CertFreeCertificateContext(storeCert);
+            return(-1);
         } else if (ret == 0) {
             xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL, "xmlSecMSCngX509StoreVerifySubject");
             continue;
@@ -778,17 +832,15 @@ xmlSecMSCngX509StoreVerifyCertificateValidityAndRevocation(
 
     /* if time is specified, check certificate notBefore/notAfter */
     if (time != NULL) {
-        if(CompareFileTime(&(cert->pCertInfo->NotBefore), time) == 1) {
-            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL, "certificate not yet valid");
-            return(0);
-        }
-
-        if(CompareFileTime(&(cert->pCertInfo->NotAfter), time) == -1) {
-            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL, "certificate expired");
+        ret = xmlSecMSCngX509StoreIsCertTimeValid(cert, time);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecMSCngX509StoreIsCertTimeValid", NULL);
+            return(-1);
+        } else if (ret == 0) {
+            /* certificate is not time valid */
             return(0);
         }
     }
-
     if(checkRevocation != 0) {
         /* check certificate revocation */
         ret = xmlSecMSCngCheckRevocation(certStore, trustedStore,
@@ -1503,8 +1555,8 @@ xmlSecMSCngX509StoreVerifyCrl(xmlSecKeyDataStorePtr store, PCCRL_CONTEXT crl,
             if(sigVerified) {
                 xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
                     xmlSecKeyDataStoreGetName(store),
-                    "CRL signature verifies but the issuer certificate does "
-                    "not chain to a trusted root");
+                    "CRL signature verifies but the issuer certificate is not "
+                    "time valid or does not chain to a trusted root");
             } else {
                 xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
                     xmlSecKeyDataStoreGetName(store),

@@ -436,6 +436,11 @@ xmlSecMSCngDsaBuildSubjectPublicKeyInfoDer(BCRYPT_KEY_HANDLE hKey, LPVOID* ppDer
     if(!CryptEncodeObjectEx(X509_ASN_ENCODING, X509_PUBLIC_KEY_INFO, &spki,
             CRYPT_ENCODE_ALLOC_FLAG, NULL, ppDer, pcbDer)) {
         xmlSecMSCngLastError("CryptEncodeObjectEx(X509_PUBLIC_KEY_INFO)", NULL);
+        if(*ppDer != NULL) {
+            LocalFree(*ppDer); /* CRYPT_ENCODE_ALLOC_FLAG may allocate even when the call fails */
+            *ppDer = NULL;
+        }
+        *pcbDer = 0;
         goto done;
     }
 

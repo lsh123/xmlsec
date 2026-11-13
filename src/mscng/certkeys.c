@@ -2696,6 +2696,9 @@ done:
  * @param dataSize length of @p data.
  *
  * Currently only DH, XDH (X25519), and ML-KEM private keys are supported.
+ * If @p data is not a PKCS8 PrivateKeyInfo blob at all, no error is logged
+ * (the caller is expected to fall back to a public key reader, which
+ * reports the failure in that case).
  *
  * @return new key data or NULL on failure.
  */
@@ -2711,13 +2714,15 @@ xmlSecMSCngAppKeyReadPrivKeyFromDer(const xmlSecByte* data, xmlSecSize dataSize)
 
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(dataSize, dwDataSize, return(NULL), NULL);
 
-    /* Decode the PKCS8 PrivateKeyInfo once so that we can dispatch on the OID. */
+    /* Decode the PKCS8 PrivateKeyInfo once so that we can dispatch on the OID.
+     * If this fails the data is not a PKCS8 PrivateKeyInfo blob at all (e.g. a
+     * SubjectPublicKeyInfo public key); do not log an error here, the caller
+     * falls back to the public key reader which reports the failure. */
     if(!CryptDecodeObjectEx(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
             PKCS_PRIVATE_KEY_INFO,
             data, dwDataSize,
             CRYPT_DECODE_ALLOC_FLAG | CRYPT_DECODE_NOCOPY_FLAG,
             NULL, &pki, &pkiLen)) {
-        xmlSecMSCngLastError("CryptDecodeObjectEx(PKCS8)", NULL);
         goto done;
     }
     if(pki == NULL || pki->Algorithm.pszObjId == NULL) {

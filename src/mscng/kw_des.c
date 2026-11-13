@@ -103,6 +103,9 @@ xmlSecMSCngKWDes3Sha1(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSe
         0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptOpenAlgorithmProvider", NULL, status);
+        /* the out-handle is not guaranteed to be zeroed on failure; reset it so
+         * the cleanup below does not attempt to close an indeterminate handle */
+        hAlg = NULL;
         goto done;
     }
 
@@ -119,6 +122,11 @@ xmlSecMSCngKWDes3Sha1(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSe
     if(cbData != sizeof(DWORD)) {
         xmlSecInternalError2("BCryptGetProperty", NULL,
             "size=" XMLSEC_SIZE_FMT, (xmlSecSize)cbData);
+        goto done;
+    }
+    if(cbHashObject == 0) {
+        xmlSecInternalError2("BCryptGetProperty", NULL,
+            "unexpected hash object size=" XMLSEC_SIZE_FMT, (xmlSecSize)cbHashObject);
         goto done;
     }
 
@@ -271,6 +279,9 @@ xmlSecMSCngKWDes3BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptOpenAlgorithmProvider", NULL, status);
+        /* the out-handle is not guaranteed to be zeroed on failure; reset it so
+         * the cleanup below does not attempt to close an indeterminate handle */
+        hAlg = NULL;
         goto done;
     }
 
@@ -298,6 +309,11 @@ xmlSecMSCngKWDes3BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     if(cbData != sizeof(DWORD)) {
         xmlSecInternalError2("BCryptGetProperty", NULL,
             "size=" XMLSEC_SIZE_FMT, (xmlSecSize)cbData);
+        goto done;
+    }
+    if(cbKeyObject == 0) {
+        xmlSecInternalError2("BCryptGetProperty", NULL,
+            "unexpected key object size=" XMLSEC_SIZE_FMT, (xmlSecSize)cbKeyObject);
         goto done;
     }
 
@@ -506,6 +522,9 @@ xmlSecMSCngKWDes3BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptOpenAlgorithmProvider", NULL, status);
+        /* the out-handle is not guaranteed to be zeroed on failure; reset it so
+         * the cleanup below does not attempt to close an indeterminate handle */
+        hAlg = NULL;
         goto done;
     }
 
@@ -533,6 +552,11 @@ xmlSecMSCngKWDes3BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     if(cbData != sizeof(DWORD)) {
         xmlSecInternalError2("BCryptGetProperty", NULL,
             "size=" XMLSEC_SIZE_FMT, (xmlSecSize)cbData);
+        goto done;
+    }
+    if(cbKeyObject == 0) {
+        xmlSecInternalError2("BCryptGetProperty", NULL,
+            "unexpected key object size=" XMLSEC_SIZE_FMT, (xmlSecSize)cbKeyObject);
         goto done;
     }
 

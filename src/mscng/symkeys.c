@@ -110,7 +110,7 @@ xmlSecMSCngSymKeyDataFinalize(xmlSecKeyDataPtr data) {
 }
 
 static int
-xmlSecMSCngSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type) {
+xmlSecMSCngSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecBufferPtr buffer;
     xmlSecSize sizeBytes;
 

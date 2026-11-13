@@ -2306,12 +2306,13 @@ xmlSecOpenSSLKeyDataDhSetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDhPtr
         dhKeyValue->generator = NULL;
     }
 
-    ret = DH_set0_key(dh, dhKeyValue->pub, NULL);
+    ret = DH_set0_key(dh, dhKeyValue->pub, dhKeyValue->priv);
     if(ret != 1) {
         xmlSecOpenSSLError("DH_set0_key", xmlSecKeyDataGetName(data));
         goto done;
     }
     dhKeyValue->pub = NULL;
+    dhKeyValue->priv = NULL;
 
     ret = xmlSecOpenSSLKeyDataDhAdoptDh(data, dh);
     if(ret < 0) {

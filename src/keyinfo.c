@@ -1626,6 +1626,7 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
 
     xmlSecAssert2(id == xmlSecKeyDataEncryptedKeyId, -1);
     xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(key->value == NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeRead, -1);

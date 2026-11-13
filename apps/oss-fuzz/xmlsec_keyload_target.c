@@ -75,6 +75,7 @@ static int do_init(void) {
         return -1;
     }
     if (xmlSecOpenSSLInit() < 0) {
+        xmlSecOpenSSLShutdown();
         xmlSecOpenSSLAppShutdown();
         xmlSecShutdown();
         return -1;

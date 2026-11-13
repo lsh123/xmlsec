@@ -46,7 +46,7 @@ xmlSecKeyDataDebugXmlDumpImpl(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(output != NULL);
 
     if(data->id->dataNodeName != NULL) {
-        fprintf(output, "<%sKey size=\"" XMLSEC_SIZE_FMT "\"/>\n",
+        fprintf(output, "<%s size=\"" XMLSEC_SIZE_FMT "\"/>\n",
             data->id->dataNodeName, xmlSecKeyDataGetSize(data));
     } else {
         /* the klass has no dedicated data node name (e.g. the internal

@@ -321,6 +321,7 @@ xmlSecPtrListAdd(xmlSecPtrListPtr list, xmlSecPtr item) {
     int ret;
 
     xmlSecAssert2(xmlSecPtrListIsValid(list), -1);
+    xmlSecAssert2(list->use < XMLSEC_SIZE_MAX, -1);
 
     ret = xmlSecPtrListEnsureSize(list, list->use + 1);
     if(ret < 0) {
@@ -348,6 +349,7 @@ xmlSecPtrListInsert(xmlSecPtrListPtr list, xmlSecPtr item, xmlSecSize pos) {
     int ret;
 
     xmlSecAssert2(xmlSecPtrListIsValid(list), -1);
+    xmlSecAssert2(list->use < XMLSEC_SIZE_MAX, -1);
 
     ret = xmlSecPtrListEnsureSize(list, list->use + 1);
     if(ret < 0) {

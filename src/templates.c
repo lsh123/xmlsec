@@ -1123,7 +1123,7 @@ xmlSecTmplEncDataEnsureReferenceList(xmlNodePtr encNode) {
  * @param uri uri to reference (optional)
  *
  * @return the pointer to newly created &lt;enc:DataReference/&gt; node or
- * NULL if an error occurs.
+ * NULL if an error occurs (the XML tree might be modified in error case).
  */
 xmlNodePtr
 xmlSecTmplReferenceListAddDataReference(xmlNodePtr encNode, const xmlChar *uri) {
@@ -1162,7 +1162,7 @@ xmlSecTmplReferenceListAddDataReference(xmlNodePtr encNode, const xmlChar *uri) 
  * @param uri uri to reference (optional)
  *
  * @return the pointer to newly created &lt;enc:KeyReference/&gt; node or
- * NULL if an error occurs.
+ * NULL if an error occurs (the XML tree might be modified in error case).
  */
 xmlNodePtr
 xmlSecTmplReferenceListAddKeyReference(xmlNodePtr encNode, const xmlChar *uri) {

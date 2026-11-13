@@ -1143,6 +1143,7 @@ xmlSecKeyReadBuffer(xmlSecKeyDataId dataId, xmlSecBuffer* buffer) {
 
     xmlSecAssert2(dataId != xmlSecKeyDataIdUnknown, NULL);
     xmlSecAssert2(buffer != NULL, NULL);
+    xmlSecAssert2(!xmlSecBufferIsEmpty(buffer), NULL);
 
     /* create key */
     key = xmlSecKeyCreate();

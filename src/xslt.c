@@ -7,7 +7,7 @@
  */
 /**
  * @addtogroup xmlsec_core_transforms
- * @brief [XSLT transform](https://www.w3.org/TR/xmldsig-core1/#sec-XSLT) implementation.
+ * @brief [XSLT transform](http://www.w3.org/TR/xmldsig-core/#sec-XSLT) implementation.
  */
 #include "globals.h"
 
@@ -24,7 +24,6 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
-#include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/parser.h>
 #include <xmlsec/errors.h>

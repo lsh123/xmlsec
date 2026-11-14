@@ -460,9 +460,13 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
             goto done;
         }
         peerGroup = EC_KEY_get0_group(peerEc);
-        peerPubKey = EC_KEY_get0_public_key(peerEc);
-        if((peerGroup == NULL) || (peerPubKey == NULL)) {
+        if(peerGroup == NULL) {
             xmlSecOpenSSLError("EC_KEY_get0_group", NULL);
+            goto done;
+        }
+        peerPubKey = EC_KEY_get0_public_key(peerEc);
+        if(peerPubKey == NULL) {
+            xmlSecOpenSSLError("EC_KEY_get0_public_key", NULL);
             goto done;
         }
         /*
@@ -516,8 +520,16 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
 
     /* derive the shared secret */
     ret = EVP_PKEY_derive(pKeyCtx, secretData, &secretSize);
-    if((ret != 1) || (secretSize == 0) || (secretSize > fullSecretSize)) {
+    if(ret != 1) {
         xmlSecOpenSSLError("EVP_PKEY_derive", NULL);
+        goto done;
+    }
+    if((secretSize == 0) || (secretSize > fullSecretSize)) {
+        /* defensive: the size must match the size query above; if it
+         * does not, the library misbehaved, not the key material */
+        xmlSecInternalError3("EVP_PKEY_derive secret size", NULL,
+            "size=" XMLSEC_SIZE_FMT " expected<=" XMLSEC_SIZE_FMT,
+            secretSize, fullSecretSize);
         goto done;
     }
 

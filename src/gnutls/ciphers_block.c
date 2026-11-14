@@ -150,7 +150,8 @@ xmlSecGnuTLSBlockCipherCtxInit(xmlSecGnuTLSBlockCipherCtxPtr ctx, xmlSecBufferPt
         }
     }
 
-    /* set iv */
+    /* set iv (gnutls_cipher_set_iv() returns void in all GnuTLS versions,
+     * so there is no return value to check) */
     gnutls_cipher_set_iv(ctx->cipher, ctx->iv, ctx->ivSize);
 
     /* done! */
@@ -374,12 +375,11 @@ xmlSecGnuTLSBlockCipherCtxFinal(xmlSecGnuTLSBlockCipherCtxPtr ctx, xmlSecBufferP
 
         /* get the pad length from the last byte */
         padSize = outBuf[outSize - 1];
-        if(padSize == 0) {
-            xmlSecInvalidDataError("invalid padding size: zero", xmlSecErrorsSafeString(cipherName));
-            return(-1);
-        }
-        if(padSize > ctx->blockSize) {
-            xmlSecInvalidSizeMoreThanError("Input pad size", padSize, ctx->blockSize, xmlSecErrorsSafeString(cipherName));
+        /* check padding: a single generic error is used for both the zero
+         * and the out-of-range padding values so that the two failure
+         * outcomes are not distinguishable (padding oracle mitigation) */
+        if((padSize == 0) || (padSize > ctx->blockSize)) {
+            xmlSecInvalidDataError("invalid padding length for the cipher", xmlSecErrorsSafeString(cipherName));
             return(-1);
         }
         xmlSecAssert2(padSize <= outSize, -1);

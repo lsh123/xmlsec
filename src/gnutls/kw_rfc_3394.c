@@ -370,7 +370,9 @@ xmlSecGnuTLSKWRfc3394BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte
     }
     xmlSecAssert2(ctx->cipher != NULL, -1);
 
-    /* always reset to zero IV for each block */
+    /* always reset to zero IV for each block (gnutls_cipher_set_iv()
+     * returns void in all GnuTLS versions, so there is no return value
+     * to check) */
     gnutls_cipher_set_iv(ctx->cipher, zero_iv, ctx->ivSize);
 
     err = gnutls_cipher_encrypt2(ctx->cipher, in, inSize, out, outSize);
@@ -416,7 +418,9 @@ xmlSecGnuTLSKWRfc3394BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte
     }
     xmlSecAssert2(ctx->cipher != NULL, -1);
 
-    /* always reset to zero IV for each block */
+    /* always reset to zero IV for each block (gnutls_cipher_set_iv()
+     * returns void in all GnuTLS versions, so there is no return value
+     * to check) */
     gnutls_cipher_set_iv(ctx->cipher, zero_iv, ctx->ivSize);
 
     err = gnutls_cipher_decrypt2(ctx->cipher, in, inSize, out, outSize);

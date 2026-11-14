@@ -24,9 +24,7 @@
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/base64.h>
-#include <xmlsec/io.h>
 #include <xmlsec/membuf.h>
-#include <xmlsec/parser.h>
 #include <xmlsec/errors.h>
 
 #include "cast_helpers.h"
@@ -88,7 +86,7 @@ xmlSecTransformConcatKdfParamsReadBitsAttr(xmlSecBufferPtr buf, xmlNodePtr node,
 
     data = xmlSecBufferGetData(buf);
     size = xmlSecBufferGetSize(buf);
-    if((data == NULL) || (size <= 0)) {
+    if((data == NULL) || (size == 0)) {
         /* ignore empty buffer */
         return(0);
     }
@@ -967,7 +965,7 @@ xmlSecTransformHmacReadOutputBitsSize(xmlNodePtr node, xmlSecSize defaultSize, x
     return(0);
 }
 
-static xmlSecByte g_hmac_last_byte_masks[] = { 0xFF, 0x80, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC, 0xFE };
+static const xmlSecByte g_hmac_last_byte_masks[] = { 0xFF, 0x80, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC, 0xFE };
 
 int
 xmlSecTransformHmacWriteOutput(const xmlSecByte * hmac, xmlSecSize hmacSizeInBits, xmlSecSize hmacMaxSizeInBytes, xmlSecBufferPtr out)
@@ -1508,8 +1506,11 @@ xmlSecTransformPbkdf2ParamsRead(xmlSecTransformPbkdf2ParamsPtr params, xmlNodePt
         return(-1);
     }
     ret = xmlSecGetNodeContentAsSize(cur, 0, &(params->iterationCount));
-    if((ret < 0) || (params->iterationCount <= 0)) {
-        xmlSecInternalError("xmlSecGetNodeContentAsSize(iterationCount)", NULL);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGetNodeContentAsSize", NULL);
+        return(-1);
+    } else if(params->iterationCount == 0) {
+        xmlSecInvalidNodeContentError(cur, NULL, "PBKDF2 iteration count is zero");
         return(-1);
     }
     if(params->iterationCount > XMLSEC_PBKDF2_MAX_ITERATIONS) {
@@ -1524,8 +1525,11 @@ xmlSecTransformPbkdf2ParamsRead(xmlSecTransformPbkdf2ParamsPtr params, xmlNodePt
         return(-1);
     }
     ret = xmlSecGetNodeContentAsSize(cur, 0, &(params->keyLength));
-    if((ret < 0) || (params->keyLength <= 0)) {
-        xmlSecInternalError("xmlSecGetNodeContentAsSize(keyLength)", NULL);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGetNodeContentAsSize", NULL);
+        return(-1);
+    } else if(params->keyLength == 0) {
+        xmlSecInvalidNodeContentError(cur, NULL, "PBKDF2 key length is zero");
         return(-1);
     }
     if(params->keyLength > XMLSEC_PBKDF2_MAX_KEY_LENGTH) {
@@ -1591,7 +1595,7 @@ xmlSecTransformHkdfParamsInitialize(xmlSecTransformHkdfParamsPtr params) {
     ret = xmlSecBufferInitialize(&(params->info), 0);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize(info)", NULL);
-        xmlSecBufferFinalize(&(params->salt));
+        xmlSecTransformHkdfParamsFinalize(params);
         return(-1);
     }
     xmlSecBufferMakeSecure(&(params->info));
@@ -1665,8 +1669,11 @@ xmlSecTransformHkdfParamsRead(xmlSecTransformHkdfParamsPtr params, xmlNodePtr no
     /* optional: KeyLength */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeHkdfKeyLength, xmlSecDSig2021MoreNs))) {
         ret = xmlSecGetNodeContentAsSize(cur, 0, &(params->keyLength));
-        if((ret < 0) || (params->keyLength == 0)) {
-            xmlSecInternalError("xmlSecGetNodeContentAsSize(KeyLength)", NULL);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGetNodeContentAsSize(keyLength)", NULL);
+            return(-1);
+        } else if(params->keyLength == 0) {
+            xmlSecInvalidNodeContentError(cur, NULL, "HKDF key length is zero");
             return(-1);
         }
         if(params->keyLength > XMLSEC_HKDF_MAX_KEY_LENGTH) {
@@ -2073,7 +2080,7 @@ xmlSecTransformRsaOaepParamsRead(xmlSecTransformRsaOaepParamsPtr oaepParams, xml
     while(cur != NULL) {
         if(xmlSecCheckNodeName(cur, xmlSecNodeRsaOAEPparams, xmlSecEncNs)) {
             if(oaepParamsPresent != 0) {
-                xmlSecInvalidNodeError(cur, NULL, "OAEPparams already set");
+                xmlSecNodeAlreadyPresentError(node, xmlSecNodeRsaOAEPparams, NULL);
                 return(-1);
             }
             ret = xmlSecBufferBase64NodeContentRead(&(oaepParams->oaepParams), cur);
@@ -2087,7 +2094,7 @@ xmlSecTransformRsaOaepParamsRead(xmlSecTransformRsaOaepParamsPtr oaepParams, xml
             oaepParamsPresent = 1;
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeDigestMethod, xmlSecDSigNs)) {
             if(oaepParams->digestAlgorithm != NULL) {
-                xmlSecInvalidNodeError(cur, NULL, "DigestMethod already set");
+                xmlSecNodeAlreadyPresentError(node, xmlSecNodeDigestMethod, NULL);
                 return(-1);
             }
             oaepParams->digestAlgorithm = xmlGetProp(cur, xmlSecAttrAlgorithm);
@@ -2097,7 +2104,7 @@ xmlSecTransformRsaOaepParamsRead(xmlSecTransformRsaOaepParamsPtr oaepParams, xml
             }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeRsaMGF, xmlSecEnc11Ns)) {
             if(oaepParams->mgf1DigestAlgorithm != NULL) {
-                xmlSecInvalidNodeError(cur, NULL, "MGF already set");
+                xmlSecNodeAlreadyPresentError(node, xmlSecNodeRsaMGF, NULL);
                 return(-1);
             }
             oaepParams->mgf1DigestAlgorithm = xmlGetProp(cur, xmlSecAttrAlgorithm);

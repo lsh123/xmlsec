@@ -594,8 +594,8 @@ xmlSecOpenSSLMLKEMProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr tr
         }
     } else {
         xmlSecInvalidTransformError2(transform,
-            "Unsupported operation for ML-KEM transform (operation=%u)",
-            transform->operation);
+            "Unsupported operation for ML-KEM transform (operation=%d)",
+            (int)transform->operation);
         return(-1);
     }
 
@@ -617,7 +617,8 @@ xmlSecOpenSSLMLKEMProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr tr
         if(transform->expectedOutputSize < outSize) {
             ret = xmlSecBufferSetSize(out, transform->expectedOutputSize);
             if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferSetSize", xmlSecTransformGetName(transform), "size=" XMLSEC_SIZE_FMT, transform->expectedOutputSize);
+                xmlSecInternalError2("xmlSecBufferSetSize", xmlSecTransformGetName(transform),
+                    "size=" XMLSEC_SIZE_FMT, transform->expectedOutputSize);
                 return(-1);
             }
         }

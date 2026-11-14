@@ -657,7 +657,7 @@ xmlSecMSCngSignatureGetMlDsaKeyParamSet(xmlSecKeyDataPtr data,
     memcpy(&cbParamSet, pbBlob + 4, sizeof(cbParamSet));
     if((cbParamSet < sizeof(WCHAR)) || (cbParamSet > (cbBlob - 12)) ||
        ((cbParamSet % sizeof(WCHAR)) != 0)) {
-        xmlSecInvalidSizeDataError("ML-DSA key param set size", cbParamSet,
+        xmlSecInvalidSizeDataError("ML-DSA key param set size", (xmlSecSize)cbParamSet,
             "a valid WCHAR string length", NULL);
         goto done;
     }

@@ -228,7 +228,7 @@ xmlSecNssKWDes3Finalize(xmlSecTransformPtr transform) {
 }
 
 static int
-xmlSecNssKWDes3SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
+xmlSecNssKWDes3SetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq) {
     xmlSecNssKWDes3CtxPtr ctx;
     int ret;
 
@@ -295,11 +295,6 @@ xmlSecNssKWDes3Execute(xmlSecTransformPtr transform, int last,
     return(0);
 }
 
-/******************************************************************************
- *
- * DES KW implementation
- *
- *****************************************************************************/
 static int
 xmlSecNssKWDes3Sha1(xmlSecTransformPtr transform XMLSEC_ATTRIBUTE_UNUSED,
                     const xmlSecByte * in, xmlSecSize inSize,

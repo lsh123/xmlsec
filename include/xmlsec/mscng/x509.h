@@ -10,9 +10,9 @@
 #define XMLSEC_MSCNG_X509_H
 
 /**
- * @defgroup xmlsec_mscng_x509 MsCng X.509 Support
+ * @defgroup xmlsec_mscng_x509 MSCng X.509 Support
  * @ingroup xmlsec_mscng
- * @brief X.509 certificate handling for the MsCng back-end.
+ * @brief X.509 certificate handling for the MSCng back-end.
  * @{
  */
 
@@ -72,7 +72,7 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngX509StoreAdoptTrustedStore (x
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngX509StoreAdoptUntrustedStore (xmlSecKeyDataStorePtr store,
                                                                                  HCERTSTORE untrustedStore);
 XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT     xmlSecMSCngX509StoreVerify           (xmlSecKeyDataStorePtr store,
-                                                                              HCERTSTORE certs,
+                                                                              HCERTSTORE certStore,
                                                                               xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 /******************************************************************************
@@ -81,10 +81,10 @@ XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT     xmlSecMSCngX509StoreVerify           (xm
  *
  *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED PCCERT_CONTEXT xmlSecMSCngX509StoreFindCert     (xmlSecKeyDataStorePtr store,
-                                                                                        xmlChar *subjectName,
-                                                                                        xmlChar *issuerName,
-                                                                                        xmlChar *issuerSerial,
-                                                                                        xmlChar *ski,
+                                                                                        xmlChar* subjectName,
+                                                                                        xmlChar* issuerName,
+                                                                                        xmlChar* issuerSerial,
+                                                                                        xmlChar* ski,
                                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED PCCERT_CONTEXT xmlSecMSCngX509StoreFindCert_ex  (xmlSecKeyDataStorePtr store,
                                                                                         xmlChar* subjectName,

@@ -805,7 +805,7 @@ xmlSecOpenSSLRsaOaepSetParamsIfNeeded(xmlSecOpenSSLRsaOaepCtxPtr ctx) {
 
         ret = EVP_PKEY_CTX_set_params(ctx->pKeyCtx, params);
         if(ret <= 0) {
-            xmlSecOpenSSLError("EVP_PKEY_CTX_set_params", NULL);
+            xmlSecOpenSSLError("EVP_PKEY_CTX_set_params(OAEP label)", NULL);
             goto done;
         }
     }
@@ -818,7 +818,7 @@ xmlSecOpenSSLRsaOaepSetParamsIfNeeded(xmlSecOpenSSLRsaOaepCtxPtr ctx) {
 
         ret = EVP_PKEY_CTX_set_params(ctx->pKeyCtx, params);
         if(ret <= 0) {
-            xmlSecOpenSSLError("EVP_PKEY_CTX_set_params", NULL);
+            xmlSecOpenSSLError("EVP_PKEY_CTX_set_params(OAEP digest)", NULL);
             goto done;
         }
     }
@@ -831,7 +831,7 @@ xmlSecOpenSSLRsaOaepSetParamsIfNeeded(xmlSecOpenSSLRsaOaepCtxPtr ctx) {
 
         ret = EVP_PKEY_CTX_set_params(ctx->pKeyCtx, params);
         if(ret <= 0) {
-            xmlSecOpenSSLError("EVP_PKEY_CTX_set_params", NULL);
+            xmlSecOpenSSLError("EVP_PKEY_CTX_set_params(MGF1 digest)", NULL);
             goto done;
         }
     }

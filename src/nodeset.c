@@ -67,6 +67,9 @@ xmlSecNodeSetCreate(xmlDocPtr doc, xmlNodeSetPtr nodes, xmlSecNodeSetType type) 
 /**
  * @brief Destroys a nodes set.
  * @details Destroys the nodes set created with #xmlSecNodeSetCreate function.
+ * Node sets are linked into a circular doubly-linked list and this function
+ * destroys the entire list, so destroying a node set that is also reachable
+ * through a second pointer double-frees the chain.
  * @param nset the pointer to node set.
  */
 void
@@ -255,8 +258,8 @@ xmlSecNodeSetContainsNode(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr par
  * @param nset the pointer to node set.
  * @param node the pointer to XML node to check.
  * @param parent the pointer to @p node parent node.
- * @return 1 if the @p node is in the nodes set @p nset, 0 if it is not
- * or if @p node is NULL or if an error occurs.
+ * @return 1 if the @p node is in the nodes set @p nset or if @p nset is NULL,
+ * 0 if the @p node is not in the set, if @p node is NULL, or if an error occurs.
  */
 int
 xmlSecNodeSetContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent) {
@@ -731,7 +734,7 @@ xmlSecNodeSetDumpTextNodesWalkCallback(xmlSecNodeSetPtr nset, xmlNodePtr cur,
         return(0);
     }
     ret = xmlOutputBufferWriteString((xmlOutputBufferPtr)data,
-            (char*)(cur->content));
+            (const char*)(cur->content));
     if(ret < 0) {
         xmlSecXmlError("xmlOutputBufferWriteString", NULL);
         return(-1);

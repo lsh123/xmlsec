@@ -21,6 +21,7 @@
 
 #include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/list.h>
 #include <xmlsec/keys.h>
 
 #ifdef __cplusplus

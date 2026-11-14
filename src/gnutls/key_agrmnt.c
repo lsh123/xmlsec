@@ -22,7 +22,6 @@
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/errors.h>
-#include <xmlsec/membuf.h>
 #include <xmlsec/private.h>
 #include <xmlsec/xmltree.h>
 

@@ -132,7 +132,7 @@ XMLSEC_EXPORT void              xmlSecPtrListDebugXmlDump       (xmlSecPtrListPt
 /**
  * @brief The "unknown" id.
  */
-#define xmlSecPtrListIdUnknown                  NULL
+#define xmlSecPtrListIdUnknown                  ((xmlSecPtrListId)NULL)
 
 /**
  * @brief Duplicates item @p ptr.

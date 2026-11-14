@@ -113,7 +113,7 @@ xmlSecMSCryptoBlockCipherCtxInit(xmlSecMSCryptoBlockCipherCtxPtr ctx,
         }
     } else {
         /* if we don't have enough data, exit and hope that
-        * we'll have iv next time */
+         * we'll have iv next time */
         if(inSize < blockSize) {
             return(0);
         }

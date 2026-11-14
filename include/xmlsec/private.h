@@ -440,8 +440,8 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod          transformEcdsaSha3_512GetKlass;  /**< the method to get pointer to ECDSA-SHA3-512 signature transform. */
 
     xmlSecCryptoTransformGetKlassMethod          transformGost2001GostR3411_94GetKlass;  /**< the method to get pointer to GOST 2001 - GOST R 34.11-94 signature transform. */
-    xmlSecCryptoTransformGetKlassMethod          transformGostR3410_2012GostR3411_2012_256GetKlass;  /**< the method to get pointer to GOST R 34.10-2012 - GOST R 34.11-2012 256bit transform. */
-    xmlSecCryptoTransformGetKlassMethod          transformGostR3410_2012GostR3411_2012_512GetKlass;  /**< the method to get pointer to GOST R 34.10-2012 - GOST R 34.11-2012 512bit transform. */
+    xmlSecCryptoTransformGetKlassMethod          transformGostR3410_2012GostR3411_2012_256GetKlass;  /**< the method to get pointer to GOST R 34.10-2012 - GOST R 34.11-2012 256 bit transform. */
+    xmlSecCryptoTransformGetKlassMethod          transformGostR3410_2012GostR3411_2012_512GetKlass;  /**< the method to get pointer to GOST R 34.10-2012 - GOST R 34.11-2012 512 bit transform. */
 
     xmlSecCryptoTransformGetKlassMethod          transformGostR3411_94GetKlass;  /**< the method to get pointer to GOST R 34.11-94 transform. */
     xmlSecCryptoTransformGetKlassMethod          transformGostR3411_2012_256GetKlass;  /**< the method to get pointer to GOST R 34.11-2012 256 bit transform. */

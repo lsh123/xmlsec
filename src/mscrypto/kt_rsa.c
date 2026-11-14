@@ -14,7 +14,6 @@
 
 #ifndef XMLSEC_NO_RSA
 
-#include <stdlib.h>
 #include <string.h>
 
 #include <xmlsec/xmlsec.h>
@@ -311,7 +310,9 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
             return(-1);
         }
         /* from this point on 'outBuf' holds the plaintext (the CEK) until
-         * CryptEncrypt overwrites it, so every error path below must wipe it */
+         * CryptEncrypt overwrites it; xmlSecBufferMakeSecure() below marks
+         * the buffer secure so that its contents are wiped when the buffer
+         * is finalized */
         xmlSecBufferMakeSecure(out);
 
         XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwInLen, return(-1), xmlSecTransformGetName(transform));
@@ -407,7 +408,7 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         }
 
         /* The output of CryptEncrypt is in little-endian format, so we have to convert to
-         * big-endian first.
+         * big-endian.
          */
         ret = xmlSecMSCryptoConvertEndianInPlace(outBuf, outSize);
         if (ret < 0) {

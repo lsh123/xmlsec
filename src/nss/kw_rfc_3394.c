@@ -89,8 +89,8 @@ struct _xmlSecNssKWRfc3394Ctx {
 static int              xmlSecNssKWRfc3394EnsureKey     (xmlSecNssKWRfc3394CtxPtr ctx,
                                                          CK_ATTRIBUTE_TYPE symKeyOp);
 static int              xmlSecNssKWRfc3394CipherOp      (xmlSecNssKWRfc3394CtxPtr ctx,
-                                                         const xmlSecByte *in,
-                                                         xmlSecByte *out);
+                                                         const xmlSecByte * in,
+                                                         xmlSecByte * out);
 
 
 /******************************************************************************
@@ -267,7 +267,7 @@ xmlSecNssKWRfc3394Finalize(xmlSecTransformPtr transform) {
 }
 
 static int
-xmlSecNssKWRfc3394SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
+xmlSecNssKWRfc3394SetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq) {
     xmlSecNssKWRfc3394CtxPtr ctx;
     int ret;
 
@@ -277,7 +277,7 @@ xmlSecNssKWRfc3394SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyRe
     ctx = xmlSecNssKWRfc3394GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ret = xmlSecTransformKWRfc3394SetKeyReq(transform, &(ctx->parentCtx),keyReq);
+    ret = xmlSecTransformKWRfc3394SetKeyReq(transform, &(ctx->parentCtx), keyReq);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformKWRfc3394SetKeyReq", xmlSecTransformGetName(transform));
         return(-1);
@@ -469,7 +469,7 @@ done:
    the same buffer (in-place processing is staged through the scratch buffer
    in the transform context) */
 static int
-xmlSecNssKWRfc3394CipherOp(xmlSecNssKWRfc3394CtxPtr ctx, const xmlSecByte *in, xmlSecByte *out) {
+xmlSecNssKWRfc3394CipherOp(xmlSecNssKWRfc3394CtxPtr ctx, const xmlSecByte * in, xmlSecByte * out) {
     PK11Context*       ctxt = NULL;
     SECStatus          rv;
     int                outlen;

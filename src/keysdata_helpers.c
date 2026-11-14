@@ -2065,7 +2065,7 @@ xmlSecKeyValueDsaXmlRead(xmlSecKeyValueDsaPtr data, xmlNodePtr node) {
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
-    /* DSA X node is proprietary extension by XMLSec library and uses xmlSecNs namespace.
+    /* DSA X node is a proprietary extension by XMLSec library and uses xmlSecNs namespace.
      * DEPRECATED and will be removed in the future. */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSAX, xmlSecNs))) {
         /* next is X node. It is REQUIRED for private key but
@@ -2264,7 +2264,7 @@ xmlSecKeyValueDsaXmlWrite(xmlSecKeyValueDsaPtr data, xmlNodePtr node,
     }
 
     /* next is X node: write it ONLY for private keys and ONLY if it is requested.
-     * DSA X node is proprietary extension by XMLSec library and uses xmlSecNs namespace.
+     * DSA X node is a proprietary extension by XMLSec library and uses xmlSecNs namespace.
      * DEPRECATED and will be removed in the future. */
     if((writePrivateKey != 0) && (xmlSecBufferGetSize(&(data->x)) > 0)) {
         cur = xmlSecAddChild(node, xmlSecNodeDSAX, xmlSecNs);
@@ -2666,7 +2666,7 @@ xmlSecKeyValueRsaXmlRead(xmlSecKeyValueRsaPtr data, xmlNodePtr node) {
 
     /* next is PrivateExponent node. It is REQUIRED for private key but
      * we are not sure exactly what we are reading.
-     * PrivateExponent node is proprietary extension by XMLSec library and uses xmlSecNs namespace.
+     * PrivateExponent node is a proprietary extension by XMLSec library and uses xmlSecNs namespace.
      * DEPRECATED and will be removed in the future. */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeRSAPrivateExponent, xmlSecNs))) {
         ret = xmlSecBufferBase64NodeContentRead(&(data->privateExponent), cur);
@@ -2791,7 +2791,7 @@ xmlSecKeyValueRsaXmlWrite(xmlSecKeyValueRsaPtr data, xmlNodePtr node,
     }
 
     /* next is PrivateExponent node: write it ONLY for private keys and ONLY if it is requested
-     * PrivateExponent node is proprietary extension by XMLSec library and uses xmlSecNs namespace.
+     * PrivateExponent node is a proprietary extension by XMLSec library and uses xmlSecNs namespace.
      * DEPRECATED and will be removed in the future. */
     if((writePrivateKey != 0) && (xmlSecBufferGetSize(&(data->privateExponent)) > 0)) {
         cur = xmlSecAddChild(node, xmlSecNodeRSAPrivateExponent, xmlSecNs);

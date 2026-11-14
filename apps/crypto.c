@@ -503,7 +503,7 @@ xmlSecAppCryptoKeyGenerate(const char* keyKlassAndSize, const char* name, xmlSec
     }
     size = (int)v;
     if(size <= 0) {
-        fprintf(stderr, "Error: key size should be greater than zero \"%s\"\n",
+        fprintf(stderr, "Error: key size should be greater than zero in the key definition \"%s\"\n",
                     xmlSecErrorsSafeString(keyKlassAndSize));
         xmlFree(buf);
         return(NULL);

@@ -9,8 +9,6 @@
  * @brief Helper functions for X509 certificate processing.
  */
 #include "globals.h"
-#include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 #include <stddef.h>
 #include <ctype.h>
@@ -225,10 +223,10 @@ done:
     return(res);
 }
 
-
 static int
 xmlSecX509DataGetNodeContent(xmlNodePtr node, xmlChar** digestAlgorithm) {
     xmlNodePtr cur;
+    int ret;
     int content = 0;
 
     xmlSecAssert2(node != NULL, -1);
@@ -239,32 +237,52 @@ xmlSecX509DataGetNodeContent(xmlNodePtr node, xmlChar** digestAlgorithm) {
     cur = xmlSecGetNextElementNode(node->children);
     while(cur != NULL) {
         if(xmlSecCheckNodeName(cur, xmlSecNodeX509Certificate, xmlSecDSigNs)) {
-            if(xmlSecIsEmptyNode(cur) == 1) {
+            ret = xmlSecIsEmptyNode(cur);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecIsEmptyNode", NULL);
+                return(-1);
+            } else if(ret == 1) {
                 content |= XMLSEC_X509DATA_CERTIFICATE_NODE;
             } else {
                 /* set the non-empty bit for this node type */
                 content |= (XMLSEC_X509DATA_CERTIFICATE_NODE << XMLSEC_X509DATA_SHIFT_IF_NOT_EMPTY);
             }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509SubjectName, xmlSecDSigNs)) {
-            if(xmlSecIsEmptyNode(cur) == 1) {
+            ret = xmlSecIsEmptyNode(cur);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecIsEmptyNode", NULL);
+                return(-1);
+            } else if(ret == 1) {
                 content |= XMLSEC_X509DATA_SUBJECTNAME_NODE;
             } else {
                 content |= (XMLSEC_X509DATA_SUBJECTNAME_NODE << XMLSEC_X509DATA_SHIFT_IF_NOT_EMPTY);
             }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509IssuerSerial, xmlSecDSigNs)) {
-            if(xmlSecIsEmptyNode(cur) == 1) {
+            ret = xmlSecIsEmptyNode(cur);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecIsEmptyNode", NULL);
+                return(-1);
+            } else if(ret == 1) {
                 content |= XMLSEC_X509DATA_ISSUERSERIAL_NODE;
             } else {
                 content |= (XMLSEC_X509DATA_ISSUERSERIAL_NODE << XMLSEC_X509DATA_SHIFT_IF_NOT_EMPTY);
             }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509SKI, xmlSecDSigNs)) {
-            if(xmlSecIsEmptyNode(cur) == 1) {
+            ret = xmlSecIsEmptyNode(cur);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecIsEmptyNode", NULL);
+                return(-1);
+            } else if(ret == 1) {
                 content |= XMLSEC_X509DATA_SKI_NODE;
             } else {
                 content |= (XMLSEC_X509DATA_SKI_NODE << XMLSEC_X509DATA_SHIFT_IF_NOT_EMPTY);
             }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509Digest, xmlSecDSig11Ns)) {
-            if(xmlSecIsEmptyNode(cur) == 1) {
+            ret = xmlSecIsEmptyNode(cur);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecIsEmptyNode", NULL);
+                return(-1);
+            } else if(ret == 1) {
                 content |= XMLSEC_X509DATA_DIGEST_NODE;
             } else {
                 content |= (XMLSEC_X509DATA_DIGEST_NODE << XMLSEC_X509DATA_SHIFT_IF_NOT_EMPTY);
@@ -278,7 +296,11 @@ xmlSecX509DataGetNodeContent(xmlNodePtr node, xmlChar** digestAlgorithm) {
                 }
             }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509CRL, xmlSecDSigNs)) {
-            if(xmlSecIsEmptyNode(cur) == 1) {
+            ret = xmlSecIsEmptyNode(cur);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecIsEmptyNode", NULL);
+                return(-1);
+            } else if(ret == 1) {
                 content |= XMLSEC_X509DATA_CRL_NODE;
             } else {
                 content |= (XMLSEC_X509DATA_CRL_NODE << XMLSEC_X509DATA_SHIFT_IF_NOT_EMPTY);

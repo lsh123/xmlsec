@@ -80,7 +80,7 @@
  *
  *   * We don't simply manipulate the XML tree, but do an XML tree -> output bytes transformation,
  *     because we never write characters inside XML elements, we implicitly remove all character
- *     contents, as required by step 3, point 1. It also simplifies the task of the situation that
+ *     contents, as required by step 3, points 1-4. It also simplifies the task of the situation that
  *     realistically the input of the transformation is always a document that conforms to the OOXML
  *     relationships XML schema, so in practice it'll never happen that the input document has e.g.
  *     characters, as the schema requires that the document has only XML elements and attributes,
@@ -594,7 +594,7 @@ xmlSecTransformRelationshipWriteEscapedValue(xmlOutputBufferPtr buf, const xmlCh
 
     ret = xmlOutputBufferWriteString(buf, (const char*)escaped);
     if(ret < 0) {
-        xmlSecInternalError("xmlOutputBufferWriteString", NULL);
+        xmlSecXmlError("xmlOutputBufferWriteString", NULL);
         xmlFree(escaped);
         return(-1);
     }
@@ -702,7 +702,7 @@ xmlSecTransformRelationshipWriteAttribute(xmlSecTransformPtr transform, xmlOutpu
      * nodes has an empty value, e.g. Target="" */
     ret = xmlSecTransformRelationshipWriteProp(buf, attrName, (value != NULL) ? value : BAD_CAST "");
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformRelationshipWriteProp", xmlSecTransformGetName(transform));
+        xmlSecXmlError("xmlSecTransformRelationshipWriteProp", xmlSecTransformGetName(transform));
         xmlFree(nameCopy);
         if(value != NULL) {
             xmlFree(value);

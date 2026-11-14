@@ -6,7 +6,7 @@
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * @brief Internal ASN1 helper functions for GCrypt.
+ * @brief Internal ASN1 helper function for GCrypt.
  */
 #ifndef XMLSEC_GCRYPT_ASN1_H
 #define XMLSEC_GCRYPT_ASN1_H
@@ -18,7 +18,6 @@
 
 #include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/keys.h>
 
 
 #ifdef __cplusplus

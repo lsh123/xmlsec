@@ -987,7 +987,7 @@ xmlSecOpenSSLEvpSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
     xmlSecAssert2(xmlSecKeyCheckId(key, ctx->keyId), -1);
 
     ctx->keySizeBits = xmlSecKeyGetSize(key);
-    if(ctx->keySizeBits <= 0) {
+    if(ctx->keySizeBits == 0) {
         xmlSecInternalError("xmlSecKeyGetSize", xmlSecTransformGetName(transform));
         return(-1);
     }
@@ -1438,7 +1438,7 @@ xmlSecOpenSSLEvpSignatureUpdate(xmlSecTransformPtr transform, xmlSecOpenSSLEvpSi
 
     inData = xmlSecBufferGetData(in);
     inSize = xmlSecBufferGetSize(in);
-    if((inData == NULL) || (inSize <= 0)) {
+    if((inData == NULL) || (inSize == 0)) {
         return(0);
     }
 

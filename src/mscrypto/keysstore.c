@@ -340,10 +340,10 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, HCERTSTORE hStoreHandle
 
             /* Compare FriendlyName to name */
             if (lstrcmpW(lpwName, (LPCWSTR)pbFriendlyName) == 0) {
-              pCertContext = pCertCtxIter;
-              pCertCtxIter = NULL; /* just in case */
-              xmlFree(pbFriendlyName);
-              break;
+                pCertContext = pCertCtxIter;
+                pCertCtxIter = NULL; /* just in case */
+                xmlFree(pbFriendlyName);
+                break;
             }
             xmlFree(pbFriendlyName);
         }

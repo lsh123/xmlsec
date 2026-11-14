@@ -3012,7 +3012,7 @@ xmlSecAppLoadKeys(void) {
             xmlSecKeyInfoCtxDestroy(keyInfoCtx);
             return(-1);
         } else if(xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(g_keysManager,
-                   (const char*)xmlSecNameHMACKeyValue, value->strValue, value->paramNameValue) < 0) {
+                    (const char*)xmlSecNameHMACKeyValue, value->strValue, value->paramNameValue) < 0) {
             fprintf(stderr, "Error: failed to load HMAC key from \"%s\".\n",
                     value->strValue);
             xmlSecKeyInfoCtxDestroy(keyInfoCtx);

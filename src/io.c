@@ -385,7 +385,7 @@ xmlSecIOFileRead(void* context, char* buffer, int len) {
 
     szBytes = fread(buffer, 1, szLen, fd);
     if ((szBytes < szLen) && (ferror(fd))) {
-        xmlSecInternalError("fread", NULL);
+        xmlSecIOError("fread", NULL, NULL);
         return(-1);
     }
 
@@ -402,7 +402,7 @@ xmlSecIOFileClose(void* context) {
 
     ret = fclose(fd);
     if (ret != 0) {
-        xmlSecInternalError("fclose", NULL);
+        xmlSecIOError("fclose", NULL, NULL);
         return(-1);
     }
     return(0);

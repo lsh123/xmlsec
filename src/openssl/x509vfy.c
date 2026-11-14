@@ -58,13 +58,13 @@ static X509_NAME*       xmlSecOpenSSLX509NameRead                       (const x
 static int              xmlSecOpenSSLX509NamesCompare                   (XMLSEC_OPENSSL400_CONST X509_NAME *a,
                                                                          XMLSEC_OPENSSL400_CONST X509_NAME *b,
                                                                          int* comparisonResult);
-static STACK_OF(X509_NAME_ENTRY)*  xmlSecOpenSSLX509_NAME_ENTRIES_copy  (XMLSEC_OPENSSL400_CONST X509_NAME *a);
 static int              xmlSecOpenSSLX509_NAME_ENTRIES_cmp              (STACK_OF(X509_NAME_ENTRY) * a,
                                                                          STACK_OF(X509_NAME_ENTRY) * b);
 static int              xmlSecOpenSSLX509_NAME_ENTRY_cmp                (const X509_NAME_ENTRY * const *a,
                                                                          const X509_NAME_ENTRY * const *b);
-
-static STACK_OF(X509)*  xmlSecOpenSSLX509StoreCombineCerts              (STACK_OF(X509)* certs1, STACK_OF(X509)* certs2);
+static STACK_OF(X509)*  xmlSecOpenSSLX509StoreCombineCerts              (STACK_OF(X509)* certs1,
+                                                                         STACK_OF(X509)* certs2);
+static STACK_OF(X509_NAME_ENTRY)*  xmlSecOpenSSLX509_NAME_ENTRIES_copy  (XMLSEC_OPENSSL400_CONST X509_NAME *a);
 
 
 
@@ -2493,9 +2493,9 @@ xmlSecOpenSSLX509NameReadCallback(
 
 
 /* OpenSSL doesn't accept "E" so we need to replace it */
-static xmlSecX509NameReplacements xmlSecOpenSSLX509NameReplacements[]  = {
-    { BAD_CAST "E", BAD_CAST  "emailAddress"},
-    { BAD_CAST "SERIALNUMBER", BAD_CAST  "serialNumber"},
+static xmlSecX509NameReplacements xmlSecOpenSSLX509NameReplacements[] = {
+    { BAD_CAST "E", BAD_CAST "emailAddress"},
+    { BAD_CAST "SERIALNUMBER", BAD_CAST "serialNumber"},
     { NULL, NULL }
 };
 
@@ -2561,7 +2561,7 @@ xmlSecOpenSSLX509_NAME_ENTRIES_copy(XMLSEC_OPENSSL400_CONST X509_NAME * a) {
 
 /* returns 0 if equal */
 static
-int xmlSecOpenSSLX509_NAME_ENTRIES_cmp(STACK_OF(X509_NAME_ENTRY)* a,  STACK_OF(X509_NAME_ENTRY)* b) {
+int xmlSecOpenSSLX509_NAME_ENTRIES_cmp(STACK_OF(X509_NAME_ENTRY)* a, STACK_OF(X509_NAME_ENTRY)* b) {
     const X509_NAME_ENTRY *na;
     const X509_NAME_ENTRY *nb;
     xmlSecOpenSSLSizeT ii;
@@ -2653,7 +2653,7 @@ xmlSecOpenSSLX509NamesCompare(XMLSEC_OPENSSL400_CONST X509_NAME *a, XMLSEC_OPENS
 static int
 xmlSecOpenSSLX509_NAME_ENTRY_cmp(const X509_NAME_ENTRY * const *a, const X509_NAME_ENTRY * const *b) {
     XMLSEC_OPENSSL400_CONST ASN1_STRING *a_value, *b_value;
-    XMLSEC_OPENSSL400_CONST ASN1_OBJECT *a_name,  *b_name;
+    XMLSEC_OPENSSL400_CONST ASN1_OBJECT *a_name, *b_name;
     int a_len, b_len;
     int ret;
 

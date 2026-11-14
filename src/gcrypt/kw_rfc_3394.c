@@ -359,7 +359,7 @@ xmlSecGCryptTransformKWAes256GetKlass(void) {
 
 /******************************************************************************
  *
- * AES KW implementation
+ * RFC 3394 KW encrypt/decrypt implementation
  *
  *****************************************************************************/
 static const unsigned char xmlSecGCryptKWRfc3394ZeroIv[XMLSEC_KW_RFC3394_BLOCK_SIZE] =
@@ -442,7 +442,7 @@ xmlSecGCryptKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     }
     xmlSecAssert2(ctx->cipherHandle != NULL, -1);
 
-    /* use zero IV and CBC mode to ensure we get result as-is */
+    /* use zero IV and CBC mode to ensure we get the result as-is */
     err = gcry_cipher_setiv(ctx->cipherHandle, xmlSecGCryptKWRfc3394ZeroIv, sizeof(xmlSecGCryptKWRfc3394ZeroIv));
     if(err != GPG_ERR_NO_ERROR) {
         xmlSecGCryptError("gcry_cipher_setiv", err, NULL);
@@ -506,7 +506,7 @@ xmlSecGCryptKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     }
     xmlSecAssert2(ctx->cipherHandle != NULL, -1);
 
-    /* use zero IV and CBC mode to ensure we get result as-is */
+    /* use zero IV and CBC mode to ensure we get the result as-is */
     err = gcry_cipher_setiv(ctx->cipherHandle, xmlSecGCryptKWRfc3394ZeroIv, sizeof(xmlSecGCryptKWRfc3394ZeroIv));
     if(err != GPG_ERR_NO_ERROR) {
         xmlSecGCryptError("gcry_cipher_setiv", err, NULL);

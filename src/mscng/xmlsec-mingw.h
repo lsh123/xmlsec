@@ -31,7 +31,6 @@
 #define BCRYPT_HKDF_ALGORITHM               L"HKDF"
 #endif /* BCRYPT_HKDF_ALGORITHM */
 
-
 /* SHA3 algorithm identifiers: available in Windows SDK 10.0.26100+ (Windows 11 24H2).
  * Define fallback values so the code compiles with older SDK versions; the calls will fail
  * at runtime on systems that do not support these algorithms. */

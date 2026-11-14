@@ -62,11 +62,10 @@ static int do_init(void) {
 
 /* Maximum recursion depth for find_relationships(). The input is parsed with
  * xmlSecParserGetDefaultOptions(), which includes XML_PARSE_HUGE (see
- * src/parser.c), so libxml2's element-nesting limit does not apply: inputs
- * nested beyond this cap parse fine and are then silently skipped by
- * find_relationships() (a coverage loss, not a crash). The cap bounds the
- * recursion as defense-in-depth so the stack cannot be exhausted regardless
- * of the parser depth limit. */
+ * src/parser.c), so how deeply the parser allows element nesting depends on
+ * the libxml2 version. The cap bounds find_relationships() recursion as
+ * defense-in-depth so the stack cannot be exhausted regardless of the
+ * parser's element-depth limit. */
 #define RELATIONSHIPS_MAX_DEPTH 10000
 
 static xmlNodePtr find_relationships(xmlNodePtr node, int depth) {

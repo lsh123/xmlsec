@@ -285,7 +285,8 @@ xmlSecGCryptAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
 #ifndef XMLSEC_NO_X509
 /**
  * @brief GCrypt does not support X509 certificates.
- * @details Reads the certificate from @p filename and adds it to key.
+ * @details This function is not implemented by the GCrypt back-end;
+ * it always returns a negative value.
  *
  * @param key the pointer to key.
  * @param filename the certificate filename.
@@ -305,7 +306,8 @@ xmlSecGCryptAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
 
 /**
  * @brief GCrypt does not support X509 certificates.
- * @details Reads the certificate from memory buffer and adds it to key.
+ * @details This function is not implemented by the GCrypt back-end;
+ * it always returns a negative value.
  *
  * @param key the pointer to key.
  * @param data the certificate binary data.
@@ -329,9 +331,8 @@ xmlSecGCryptAppKeyCertLoadMemory(xmlSecKeyPtr key,
 
 /**
  * @brief GCrypt does not support PKCS12.
- * @details Reads a key and all associated certificates from the PKCS12 file.
- * For uniformity, call #xmlSecGCryptAppKeyLoadEx instead of this function. Pass
- * in format=xmlSecKeyDataFormatPkcs12.
+ * @details This function is not implemented by the GCrypt back-end;
+ * it always returns NULL.
  *
  * @param filename the PKCS12 key filename.
  * @param pwd the PKCS12 file password (not used by the GCrypt back-end).
@@ -352,9 +353,8 @@ xmlSecGCryptAppPkcs12Load(const char *filename,
 
 /**
  * @brief GCrypt does not support PKCS12.
- * @details Reads a key and all associated certificates from the PKCS12 data in the memory buffer.
- * For uniformity, call #xmlSecGCryptAppKeyLoadMemory instead of this function. Pass
- * in format=xmlSecKeyDataFormatPkcs12.
+ * @details This function is not implemented by the GCrypt back-end;
+ * it always returns NULL.
  *
  * @param data the PKCS12 binary data.
  * @param dataSize the PKCS12 binary data size.
@@ -377,8 +377,8 @@ xmlSecGCryptAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
 
 /**
  * @brief GCrypt does not support X509 certificates.
- * @details Reads cert from @p filename and adds to the list of trusted or known
- * untrusted certs in @p mngr.
+ * @details This function is not implemented by the GCrypt back-end;
+ * it always returns a negative value.
  *
  * @param mngr the keys manager.
  * @param filename the certificate file.
@@ -401,7 +401,8 @@ xmlSecGCryptAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr,
 
 /**
  * @brief GCrypt does not support X509 certificates.
- * @details Reads crls from @p filename and adds to the list of crls in @p mngr.
+ * @details This function is not implemented by the GCrypt back-end;
+ * it always returns a negative value.
  *
  * @param mngr the keys manager.
  * @param filename the CRL file.
@@ -420,7 +421,8 @@ xmlSecGCryptAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xml
 
 /**
  * @brief GCrypt does not support X509 certificates.
- * @details Reads crls from binary buffer @p data and adds to the list of crls in @p mngr.
+ * @details This function is not implemented by the GCrypt back-end;
+ * it always returns a negative value.
  *
  * @param mngr the keys manager.
  * @param data the CRL binary data.
@@ -444,7 +446,8 @@ xmlSecGCryptAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr,
 
 /**
  * @brief GCrypt does not support X509 certificates.
- * @details Atomically loads and verifies a CRL from @p filename.
+ * @details This function is not implemented by the GCrypt back-end;
+ * it always returns a negative value.
  *
  * @param mngr the keys manager.
  * @param filename the CRL filename.
@@ -466,8 +469,8 @@ xmlSecGCryptAppKeysMngrCrlLoadAndVerify(xmlSecKeysMngrPtr mngr, const char *file
 
 /**
  * @brief GCrypt does not support X509 certificates.
- * @details Reads cert from binary buffer @p data and adds to the list of trusted or known
- * untrusted certs in @p mngr.
+ * @details This function is not implemented by the GCrypt back-end;
+ * it always returns a negative value.
  *
  * @param mngr the keys manager.
  * @param data the certificate binary data.
@@ -496,7 +499,7 @@ xmlSecGCryptAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr,
 /**
  * @brief Initializes the default key manager for GCrypt.
  * @details Initializes @p mngr with simple keys store #xmlSecSimpleKeysStoreId
- * and a default GCrypt crypto key data stores.
+ * and a default GCrypt crypto key data store.
  *
  * @param mngr the pointer to keys manager.
  * @return 0 on success or a negative value otherwise.
@@ -570,14 +573,13 @@ xmlSecGCryptAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key)
 /**
  * @brief Verifies @p key using the keys manager.
  * @details Verifies @p key with the keys manager @p mngr created with #xmlSecGCryptAppDefaultKeysMngrInit
- * function:
- * - Checks that the key certificate is present
- * - Checks that the key certificate is valid
+ * function. Not supported by the GCrypt back-end; the function always
+ * returns a negative value.
  *
  * @param mngr the pointer to keys manager.
  * @param key the pointer to key.
  * @param keyInfoCtx the key info context for verification.
- * @return 1 if key is verified, 0 otherwise, or a negative value if an error occurs.
+ * @return a negative value if an error occurs.
  */
 int
 xmlSecGCryptAppDefaultKeysMngrVerifyKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key, xmlSecKeyInfoCtxPtr keyInfoCtx) {

@@ -618,8 +618,8 @@ xmlSecNssMLKEMProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr transf
         }
     } else {
         xmlSecInvalidTransformError2(transform,
-            "Unsupported operation for ML-KEM transform (operation=%u)",
-            transform->operation);
+            "Unsupported operation for ML-KEM transform (operation=%d)",
+            (int)transform->operation);
         return(-1);
     }
 

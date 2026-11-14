@@ -17,7 +17,7 @@
 
 #ifndef XMLSEC_NO_XMLENC
 
-#include <xmlsec/keyinfo.h>
+#include <xmlsec/transforms.h>
 
 #ifdef __cplusplus
 extern "C" {

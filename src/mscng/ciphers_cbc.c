@@ -477,7 +477,7 @@ xmlSecMSCngCbcBlockCipherCtxUpdate(xmlSecMSCngCbcBlockCipherCtxPtr ctx,
         inBlocks = inSize / blockSize;
     } else {
         /* we want to have the last block in the input buffer
-        * for padding check */
+         * for padding check */
         if(inSize < 1) {
             return(0);
         }
@@ -533,7 +533,7 @@ xmlSecMSCngCbcBlockCipherCtxUpdate(xmlSecMSCngCbcBlockCipherCtxPtr ctx,
         }
 
         /* check if we really have encrypted the number of bytes that we
-        * requested */
+         * requested */
         if(dwCLen != dwInSize) {
             xmlSecInternalError3("BCryptEncrypt", cipherName,
                 "inLen=%lu; outLen=%lu", dwInSize, dwCLen);
@@ -556,7 +556,7 @@ xmlSecMSCngCbcBlockCipherCtxUpdate(xmlSecMSCngCbcBlockCipherCtxPtr ctx,
         }
 
         /* check if we really have decrypted the number of bytes that we
-        * requested */
+         * requested */
         if(dwCLen != dwInSize) {
             xmlSecInternalError3("BCryptDecrypt", cipherName,
                 "inLen=%lu; outLen=%lu", dwInSize, dwCLen);

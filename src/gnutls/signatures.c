@@ -858,8 +858,8 @@ xmlSecGnuTLSReadDerLength(const xmlSecByte * data, xmlSecSize dataSize, xmlSecSi
         /* indefinite length not supported */
         return(-1);
     } else if (cc == 0xff) {
-        /* 0xff means a 127-byte long-form length, which is not supported
-           (it exceeds the maximum supported size) */
+        /* 0xff means 127 following bytes encode the length, which is
+           not supported (it exceeds the maximum supported size) */
         return(-1);
     } else {
         xmlSecSize length = 0;
@@ -1017,9 +1017,9 @@ done:
     return(res);
 }
 
-/* returns res = 0 if no der conversion is expected or the half size of the resulting signature
-(i.e. size of each r and s integers)
-*/
+/* sets (*res) to the half size of the resulting signature (i.e. the size
+ * of each r and s integer) if DER conversion is expected, or to 0
+ * otherwise; returns 0 on success or a negative value otherwise */
 static int
 xmlSecGnuTLSSignatureGetDerHalfSize(gnutls_sign_algorithm_t algo, xmlSecSize keySize, xmlSecSize * res) {
     xmlSecAssert2(keySize > 0, -1);

@@ -99,7 +99,7 @@ xmlSecMSCryptoX509StoreGetKlass(void) {
 
 /**
  * @brief Searches @p store for a certificate that matches given criteria.
- * @param store the pointer to X509 key data store klass.
+ * @param store the pointer to the X509 key data store instance.
  * @param subjectName the desired certificate name.
  * @param issuerName the desired certificate issuer name.
  * @param issuerSerial the desired certificate issuer serial number.
@@ -400,7 +400,7 @@ xmlSecMSCryptoCheckRevocation(HCERTSTORE hStore, PCCERT_CONTEXT pCert,
  * @return TRUE on success or FALSE otherwise.
  */
 static BOOL
-xmlSecBuildChainUsingWinapi (PCCERT_CONTEXT cert, LPFILETIME pfTime,
+xmlSecMSCryptoBuildChainUsingWinapi (PCCERT_CONTEXT cert, LPFILETIME pfTime,
                 HCERTSTORE store_untrusted, HCERTSTORE store_doc)
 {
     PCCERT_CHAIN_CONTEXT     pChainContext = NULL;
@@ -740,13 +740,13 @@ xmlSecMSCryptoBuildCertChain(
             ret = xmlSecMSCryptoCheckRevocation(certStore, currentCert, pfTime,
                     trustedStore, untrustedStore, certStore);
             if(ret < 0) {
+                /* an internal error (e.g. CRL search or verification
+                 * failure): abort the whole chain build (the mscng sibling
+                 * does the same) instead of skipping this branch, so the
+                 * error is not masked by another branch that verifies
+                 * successfully */
                 xmlSecInternalError("xmlSecMSCryptoCheckRevocation", storeName);
-                if(freeCurrentCert == TRUE) {
-                    CertFreeCertificateContext(currentCert);
-                }
-                currentCert = NULL;
-                freeCurrentCert = FALSE;
-                continue;
+                goto done;
             } else if(ret == 0) {
                 xmlSecOtherError(XMLSEC_ERRORS_R_CRL_VERIFY_FAILED,
                     storeName,
@@ -869,7 +869,7 @@ done:
  * @param store_trusted trusted certificates added via API
  * @param store_untrusted untrusted certificates added via API
  * @param certs untrusted certificates/CRLs extracted from a document
- * @param store pointer to store klass passed to error functions
+ * @param store the pointer to the X509 key data store instance (passed to error functions)
  * @return TRUE on success or FALSE otherwise.
  */
 static BOOL
@@ -943,7 +943,7 @@ xmlSecMSCryptoX509StoreConstructCertsChain(xmlSecKeyDataStorePtr store, PCCERT_C
 
     /* try the certificates in the system */
     if(!res && !ctx->dont_use_system_trusted_certs) {
-        res = xmlSecBuildChainUsingWinapi(cert, pfTime, ctx->untrusted, certs);
+        res = xmlSecMSCryptoBuildChainUsingWinapi(cert, pfTime, ctx->untrusted, certs);
     }
 
     /* done */
@@ -1010,7 +1010,7 @@ xmlSecMSCryptoCertIsIssuerOfAnyOtherCert(HCERTSTORE certs, PCCERT_CONTEXT cert) 
 
 /**
  * @brief Verifies @p certs list.
- * @param store the pointer to X509 certificate context store klass.
+ * @param store the pointer to the X509 key data store instance.
  * @param certs the untrusted certificates stack.
  * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  * @return pointer to the first verified certificate from @p certs.
@@ -1055,7 +1055,7 @@ xmlSecMSCryptoX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs,
 /**
  * @brief Adds trusted or untrusted certificate to the store.
  * @details Adds trusted (root) or untrusted certificate to the store.
- * @param store the pointer to X509 key data store klass.
+ * @param store the pointer to the X509 key data store instance.
  * @param pCert the pointer to PCCERT_CONTEXT X509 certificate.
  * @param type the certificate type (trusted/untrusted).
  * @return 0 on success or a negative value if an error occurs.
@@ -1098,7 +1098,7 @@ xmlSecMSCryptoX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCe
 
 /**
  * @brief Adds @p keyStore to the list of key stores.
- * @param store the pointer to X509 key data store klass.
+ * @param store the pointer to the X509 key data store instance.
  * @param keyStore the pointer to keys store.
  * @return 0 on success or a negative value if an error occurs.
  */
@@ -1127,7 +1127,7 @@ xmlSecMSCryptoX509StoreAdoptKeyStore (xmlSecKeyDataStorePtr store, HCERTSTORE ke
 /**
  * @brief Adds @p trustedStore to the trusted certs list.
  * @details Adds @p trustedStore to the list of trusted certs stores.
- * @param store the pointer to X509 key data store klass.
+ * @param store the pointer to the X509 key data store instance.
  * @param trustedStore the pointer to certs store.
  * @return 0 on success or a negative value if an error occurs.
  */
@@ -1156,7 +1156,7 @@ xmlSecMSCryptoX509StoreAdoptTrustedStore (xmlSecKeyDataStorePtr store, HCERTSTOR
 /**
  * @brief Adds @p untrustedStore to the untrusted certs list.
  * @details Adds @p untrustedStore to the list of untrusted certs stores.
- * @param store the pointer to X509 key data store klass.
+ * @param store the pointer to the X509 key data store instance.
  * @param untrustedStore the pointer to certs store.
  * @return 0 on success or a negative value if an error occurs.
  */
@@ -1184,7 +1184,7 @@ xmlSecMSCryptoX509StoreAdoptUntrustedStore (xmlSecKeyDataStorePtr store, HCERTST
 
 /**
  * @brief Enables/disables the system trusted certs.
- * @param store the pointer to X509 key data store klass.
+ * @param store the pointer to the X509 key data store instance.
  * @param val the enable/disable flag
  *
  */
@@ -1197,7 +1197,7 @@ xmlSecMSCryptoX509StoreEnableSystemTrustedCerts (xmlSecKeyDataStorePtr store, in
     ctx = xmlSecMSCryptoX509StoreGetCtx(store);
     xmlSecAssert(ctx != NULL);
     /* ctx->untrusted is asserted because the flag set below gates
-     * xmlSecBuildChainUsingWinapi(), which consumes ctx->untrusted. */
+     * xmlSecMSCryptoBuildChainUsingWinapi(), which consumes ctx->untrusted. */
     xmlSecAssert(ctx->untrusted != NULL);
 
     /* it is the other way around to make default value 0 mimic old behaviour */

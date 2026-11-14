@@ -70,7 +70,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr   xmlSecOpenSSLX509CertGetKey             
  */
 #define xmlSecOpenSSLKeyDataRawX509CertId \
         xmlSecOpenSSLKeyDataRawX509CertGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataRawX509CertGetKlass (void);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataRawX509CertGetKlass(void);
 
 /**
  * @brief The OpenSSL X509 store klass.

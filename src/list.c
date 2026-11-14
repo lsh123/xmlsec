@@ -677,7 +677,7 @@ static xmlSecPtrListKlass xmlSecStringListKlass = {
 };
 
 /**
- * @brief The strings list class.
+ * @brief The strings list klass.
  * @return strings list klass.
  */
 xmlSecPtrListId

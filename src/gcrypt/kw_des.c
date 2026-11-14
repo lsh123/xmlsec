@@ -165,6 +165,7 @@ xmlSecGCryptKWDes3Initialize(xmlSecTransformPtr transform) {
         &xmlSecGCryptKWDes3ImplKlass, xmlSecGCryptKeyDataDesId);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformKWDes3Initialize", xmlSecTransformGetName(transform));
+        xmlSecGCryptKWDes3Finalize(transform);
         return(-1);
     }
     return(0);
@@ -245,7 +246,7 @@ xmlSecGCryptKWDes3Execute(xmlSecTransformPtr transform, int last,
 
 /******************************************************************************
  *
- * DES KW implementation
+ * DES KW encrypt/decrypt implementation
  *
  *****************************************************************************/
 static int
@@ -344,7 +345,7 @@ xmlSecGCryptKWDes3BlockEncrypt(xmlSecTransformPtr transform,
                                     out, outSize, outWritten,
                                     1); /* encrypt */
     if(ret < 0) {
-        xmlSecInternalError("xmlSecGCryptKWDes3Encrypt", NULL);
+        xmlSecInternalError("xmlSecGCryptKWDes3Encrypt", xmlSecTransformGetName(transform));
         return(-1);
     }
     return(0);
@@ -381,7 +382,7 @@ xmlSecGCryptKWDes3BlockDecrypt(xmlSecTransformPtr transform,
                                     out, outSize, outWritten,
                                     0); /* decrypt */
     if(ret < 0) {
-        xmlSecInternalError("xmlSecGCryptKWDes3Encrypt", NULL);
+        xmlSecInternalError("xmlSecGCryptKWDes3Encrypt", xmlSecTransformGetName(transform));
         return(-1);
     }
     return(0);

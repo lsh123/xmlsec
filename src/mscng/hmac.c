@@ -263,7 +263,7 @@ xmlSecMSCngHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
      * caught later in xmlSecMSCngHmacSetKey */
     dgstSizeInBits = xmlSecMSCngHmacDigestSizeInBits(transform);
     if(dgstSizeInBits < 0) {
-        xmlSecInternalError("xmlSecMSCngHmacDigestSizeInBits()", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecMSCngHmacDigestSizeInBits", xmlSecTransformGetName(transform));
         return(-1);
     }
     if((ctx->dgstSizeInBits != 0) && (ctx->dgstSizeInBits > (xmlSecSize)dgstSizeInBits)) {
@@ -454,12 +454,19 @@ xmlSecMSCngHmacVerify(
     xmlSecAssert2(transform->operation == xmlSecTransformOperationVerify, -1);
     xmlSecAssert2(transform->status == xmlSecTransformStatusFinished, -1);
     xmlSecAssert2(data != NULL, -1);
-    xmlSecAssert2(dataSize > 0, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
     ctx = xmlSecMSCngHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->dgstSizeInBits > 0, -1);
+
+    /* the digest to verify must not be empty */
+    if(dataSize == 0) {
+        xmlSecInvalidSizeError("HMAC digest", dataSize,
+                               XMLSEC_BITS_TO_BYTES(ctx->dgstSizeInBits),
+                               xmlSecTransformGetName(transform));
+        return(-1);
+    }
 
     /* Returns 1 for match, 0 for no match, <0 for errors. */
     ret = xmlSecTransformHmacVerify(data, dataSize, ctx->hash, ctx->dgstSizeInBits, ctx->hashSizeInBytes);

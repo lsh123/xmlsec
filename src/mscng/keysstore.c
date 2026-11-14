@@ -140,7 +140,7 @@ xmlSecMSCngCertStoreCtxInitialize(xmlSecMSCngCertStoreCtx* ctx, LPCTSTR localMac
     /* fail only if both individual stores are unavailable */
     if(ctx->hLocalMachine == NULL && ctx->hCurrentUser == NULL) {
         xmlSecOtherError(XMLSEC_ERRORS_R_CRYPTO_FAILED, NULL,
-            "neither LocalMachine nor CurrentUser store could be opened");
+            "neither LocalMachine nor CurrentUser store could be opened or added to the collection");
         if(!CertCloseStore(ctx->hCollection, XMLSEC_CLOSE_STORE_FLAG)) {
             xmlSecMSCngLastError("CertCloseStore", NULL);
             /* ignore error */
@@ -582,7 +582,7 @@ xmlSecMSCngKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509Da
         return(NULL);
     }
 
-    /* init find certs */
+    /* init find cert ctx */
     ret = xmlSecMSCngX509FindCertCtxInitializeFromValue(&findCertCtx, x509Data);
     if (ret < 0) {
         xmlSecInternalError("xmlSecMSCngX509FindCertCtxInitializeFromValue", xmlSecKeyStoreGetName(store));

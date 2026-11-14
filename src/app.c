@@ -1197,7 +1197,7 @@ xmlSecTransformGostR3410_2012GostR3411_2012_512GetKlass(void) {
 
 
 /**
- * @brief Gets the RSA-OAEP transform klass (XMLEnc 1.1).
+ * @brief Gets the RSA-OAEP key transport transform klass (XMLEnc 1.1).
  * @details The RSA-OAEP key transport transform klass (XMLEnc 1.1).
  * @return RSA-OAEP key transport transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not

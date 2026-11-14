@@ -141,7 +141,7 @@ XMLSEC_EXPORT int   xmlSecTransformHmacWriteOutput        (const xmlSecByte *hma
                                                            xmlSecSize hmacSizeInBits,
                                                            xmlSecSize hmacMaxSizeInBytes,
                                                            xmlSecBufferPtr out);
-XMLSEC_EXPORT int   xmlSecTransformHmacVerify             (const xmlSecByte* data,
+XMLSEC_EXPORT int   xmlSecTransformHmacVerify             (const xmlSecByte *data,
                                                            xmlSecSize dataSize,
                                                            const xmlSecByte *hmac,
                                                            xmlSecSize hmacSizeInBits,

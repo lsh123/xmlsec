@@ -26,7 +26,9 @@
 
 #include "cast_helpers.h"
 
-/* inputPush was renamed into xmlCtxtPushInput in libxml2 2.14.0 */
+/* inputPush was renamed into xmlCtxtPushInput in libxml2 2.14.0, which keeps
+ * inputPush as a deprecated alias for xmlCtxtPushInput, so the compatibility
+ * definition below also works on libxml2 2.14.x */
 #if (LIBXML_VERSION < 21500)
 #define xmlCtxtPushInput    inputPush
 #endif /* (LIBXML_VERSION < 21500) */
@@ -384,6 +386,8 @@ xmlSecParseFile(const char *filename) {
     }
     xmlSecParsePrepareCtxt(ctxt);
 
+    /* defensive: xmlCreateFileParserCtxt() already sets ctxt->directory
+     * (via xmlParserGetDirectory); only re-set it if it is missing */
     if (ctxt->directory == NULL) {
         ctxt->directory = xmlParserGetDirectory(filename);
         if(ctxt->directory == NULL) {
@@ -678,6 +682,7 @@ xmlSecParserGetDefaultOptions(void) {
  * threads may be parsing.
  * @param options the new parser options.
  */
-void xmlSecParserSetDefaultOptions(int options) {
+void
+xmlSecParserSetDefaultOptions(int options) {
     g_xmlsec_parser_default_options = options;
 }

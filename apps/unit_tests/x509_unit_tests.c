@@ -127,7 +127,7 @@ test_xmlSecX509EscapedStringRead(void) {
     test_xmlSecX509EscapedStringRead_success("check with trailing spaces", "Foo Bar  =Value", '=', 0, "=Value", "Foo Bar  ");
     test_xmlSecX509EscapedStringRead_success("check without trailing spaces", "Foo Bar  =Value", '=', 1, "=Value", "Foo Bar");
     test_xmlSecX509EscapedStringRead_success("check \\<char> converted to <char>", "Fo\\o Bar=Value", '=', 0, "=Value", "Foo Bar");
-    test_xmlSecX509EscapedStringRead_success("check \\XXX converted to <char>", "Fo\\6F Bar=Value", '=', 0, "=Value", "Foo Bar");
+    test_xmlSecX509EscapedStringRead_success("check \\XX converted to <char>", "Fo\\6F Bar=Value", '=', 0, "=Value", "Foo Bar");
     test_xmlSecX509EscapedStringRead_success("check escaped delimiter '=' converted to '='", "Fo\\=o Bar=Value", '=', 0, "=Value", "Fo=o Bar");
     test_xmlSecX509EscapedStringRead_success("check escaped hex pair at end of line", "Foo\\41", '=', 0, "", "FooA");
 

@@ -110,7 +110,7 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, unsigned long *buflen, stru
     ti->ndef = 0;
 
     /* Get the tag */
-    if (length <= 0) {
+    if (length == 0) {
         return(-1); /* Premature EOF.  */
     }
     c = *buf++;
@@ -130,7 +130,7 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, unsigned long *buflen, stru
                 return(-1); /* Tag too long. */
             }
             tag <<= 7;
-            if (length <= 0) {
+            if (length == 0) {
                 return(-1); /* Premature EOF.  */
             }
             c = *buf++;
@@ -153,7 +153,7 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, unsigned long *buflen, stru
     ti->tag = tag;
 
     /* Get the length */
-    if(length <= 0) {
+    if(length == 0) {
         return -1; /* Premature EOF. */
     }
     c = *buf++;
@@ -175,7 +175,7 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, unsigned long *buflen, stru
             return -1; /* Invalid length encoding. */
         }
 
-        if (length <= 0) {
+        if (length == 0) {
             return -1; /* Premature EOF.  */
         }
         len = *buf++; length--;
@@ -187,7 +187,7 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, unsigned long *buflen, stru
         }
         for(count--; count; count--) {
             len <<= 8;
-            if (length <= 0) {
+            if (length == 0) {
                 return -1; /* Premature EOF.  */
             }
             c = *buf++; length--;
@@ -219,7 +219,7 @@ typedef struct _xmlSecGCryptAsn1EcObjectIdToCurve {
     xmlSecGCryptAsn1ObjectId objectId;
 } xmlSecGCryptAsn1EcObjectIdToCurve;
 
-static xmlSecGCryptAsn1EcObjectIdToCurve g_xmlSecGCryptAsn1EcObjectIdToCurves[] = {
+static const xmlSecGCryptAsn1EcObjectIdToCurve g_xmlSecGCryptAsn1EcObjectIdToCurves[] = {
     { "prime192v1",     { 0x2A,0x86,0x48,0xCE,0x3D,0x03,0x01,0x01 } }, /* OBJ_X9_62_prime192v1 */
     { "secp224r1",      { 0x2B,0x81,0x04,0x00,0x21,0x00,0x00,0x00 } }, /* OBJ_secp224r1 */
     { "prime256v1",     { 0x2A,0x86,0x48,0xCE,0x3D,0x03,0x01,0x07 } }, /* OBJ_X9_62_prime256v1 */
@@ -377,10 +377,11 @@ xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSe
                                    tag value but here it is data, not a tag)
                                    indicate an EC key without a curve OID: this
                                    branch is only reached when no EC curve OID
-                                   was seen, so the optional [0] ECParameters
-                                   element is missing and the key cannot be
+                                   was seen, so the namedCurve OID (normally
+                                   carried in the [0] ECParameters field of an
+                                   ECPrivateKey) is missing and the key cannot be
                                    loaded without it */
-                                xmlSecInvalidDataError("EC key is missing the curve OID (the [0] ECParameters element in an ECPrivateKey); the key cannot be loaded without it", NULL);
+                                xmlSecInvalidDataError("EC key is missing the curve OID (the namedCurve OID in the [0] ECParameters field of an ECPrivateKey); the key cannot be loaded without it", NULL);
                             } else {
                                 xmlSecInternalError2("xmlSecGCryptAsn1ParseIntegerSequence", NULL, "INTEGER expected inside BIT STRING, remaining=%lu", remaining);
                             }
@@ -589,7 +590,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         if(type == xmlSecGCryptDerKeyTypeAuto) {
             /* unknown */
             xmlSecInvalidSizeDataError("integers_num", integers_num,
-                "the number of parameters matching key type", NULL);
+                "the number of parameters matching a key type", NULL);
             goto done;
         }
     }
@@ -601,9 +602,11 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
      * PKCS#8 DSA key flattens to more (the DSA parameters p, q, g are collected
      * from the algorithm-params SEQUENCE), so detect any such shape (version(0) +
      * >=1 more integer + an OID present) and fail instead of building a wrong key.
-     * No supported traditional format matches this: PKCS#1/traditional DSA/EC keys
-     * carry no OIDs, a SPKI DSA public key has integers[0]=p (non-zero), and a SPKI
-     * EC public key has exactly one integer. */
+     * No supported traditional format matches this shape: PKCS#1 RSA and
+     * traditional DSA keys carry no OIDs; an EC private key does carry the
+     * namedCurve OID, but its first integer is version(1), not version(0);
+     * a SPKI DSA public key has integers[0]=p (non-zero); and a SPKI EC
+     * public key has exactly one integer. */
     if((integers_num >= 2) && (objectids_num >= 1) && (gcry_mpi_get_nbits(integers[0]) == 0)) {
         xmlSecInvalidDataError("PKCS#8 private keys are not supported; use a traditional format (PKCS#1 RSAPrivateKey, DSAPrivateKey, or ECPrivateKey)", NULL);
         goto done;

@@ -474,8 +474,7 @@ xmlSecMSCngMLKEMDecapsulate(xmlSecMSCngMLKEMCtxPtr ctx, xmlSecBufferPtr cipherTe
         goto done;
     }
     if(ssSize != ctx->sharedSecretSize) {
-        xmlSecInternalError3("ML-KEM decapsulation output size does not match the expected value", NULL,
-            "ss=" XMLSEC_SIZE_FMT " expected ss=" XMLSEC_SIZE_FMT, (xmlSecSize)ssSize, (xmlSecSize)ctx->sharedSecretSize);
+        xmlSecInvalidSizeError("ML-KEM output shared secret", (xmlSecSize)ssSize, (xmlSecSize)ctx->sharedSecretSize, NULL);
         goto done;
     }
 
@@ -606,8 +605,8 @@ xmlSecMSCngMLKEMProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr tran
         }
     } else {
         xmlSecInvalidTransformError2(transform,
-            "Unsupported operation for ML-KEM transform (operation=%u)",
-            transform->operation);
+            "Unsupported operation for ML-KEM transform (operation=%d)",
+            (int)transform->operation);
         return(-1);
     }
 

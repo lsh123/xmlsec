@@ -435,7 +435,7 @@ xmlSecMSCngKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte* in,
     BCRYPT_KEY_HANDLE hKey = NULL;
     xmlSecByte* blobData;
     xmlSecSize blobSize;
-    xmlSecByte* keyObjectData;
+    xmlSecByte* keyObjectData = NULL;
     xmlSecSize keyObjectSize;
     DWORD dwBlobSize, dwKeyObjectSize, dwInSize, cbData = 0;
     int res = -1;

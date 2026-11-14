@@ -452,7 +452,8 @@ xmlSecMSCngKeyDataMlKemReadFromPkcs8Der(const xmlSecByte* derData, DWORD derData
             CRYPT_DECODE_ALLOC_FLAG | CRYPT_DECODE_NOCOPY_FLAG,
             NULL, &pki, &pkiLen)
     ) {
-        /* silently fail so callers can try other formats */
+        /* silently fail; the caller has already dispatched on the ML-KEM
+         * OID and reports the failure itself */
         goto done;
     }
     if(pki == NULL || pki->Algorithm.pszObjId == NULL) {

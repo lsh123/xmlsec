@@ -1477,7 +1477,7 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
         int outLen;
 
         if((dsigRefCtx->result == NULL) || (xmlSecBufferGetData(dsigRefCtx->result) == NULL)) {
-            xmlSecInternalError("dsigRefCtx->result is NULL or empty", NULL);
+            xmlSecInternalError("xmlSecTransformCtxExecute", NULL);
             return(-1);
         }
 

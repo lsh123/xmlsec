@@ -26,7 +26,7 @@
 /*! GOST 34.10-2001 digital signature algorithm Cryptocom LTD with digest */
 #define szOID_MAGPRO_SIGN_R3410_2001 "1.2.643.2.9.1.3.4"
 
-/*! GOST 28147-89 based HASH algorithm Cryptocom LTD */
+/*! GOST 28147-89 based hash algorithm Cryptocom LTD */
 #define szOID_MAGPRO_HASH_28147_89 "1.2.643.2.9.1.4.1"
 
 /*! GOST 34.10-94 Diffie-Hellman public key Cryptocom LTD */

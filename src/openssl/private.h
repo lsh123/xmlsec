@@ -20,6 +20,7 @@
 
 #include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/list.h>
 #include <xmlsec/openssl/crypto.h>
 
 #ifndef XMLSEC_NO_X509

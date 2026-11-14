@@ -96,23 +96,23 @@ static int      xmlSecGnuTLSAeadCipherCheckId      (xmlSecTransformPtr transform
 #define XMLSEC_GNUTLS_AEAD_CIPHER_KLASS_EX(name, readNodeFn, writeNodeFn)                                              \
 static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                                                          \
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                             \
-    xmlSecGnuTLSAeadCipherSize,                  /* xmlSecSize objSize */                                              \
+    xmlSecGnuTLSAeadCipherSize,                 /* xmlSecSize objSize */                                              \
     xmlSecName ## name,                         /* const xmlChar* name; */                                             \
     xmlSecHref ## name,                         /* const xmlChar* href; */                                             \
     xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                                      \
-    xmlSecGnuTLSAeadCipherInitialize,            /* xmlSecTransformInitializeMethod initialize; */                     \
-    xmlSecGnuTLSAeadCipherFinalize,              /* xmlSecTransformFinalizeMethod finalize; */                         \
+    xmlSecGnuTLSAeadCipherInitialize,           /* xmlSecTransformInitializeMethod initialize; */                     \
+    xmlSecGnuTLSAeadCipherFinalize,             /* xmlSecTransformFinalizeMethod finalize; */                         \
     (readNodeFn),                               /* xmlSecTransformNodeReadMethod readNode; */                          \
     (writeNodeFn),                              /* xmlSecTransformNodeWriteMethod writeNode; */                        \
-    xmlSecGnuTLSAeadCipherSetKeyReq,             /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */              \
-    xmlSecGnuTLSAeadCipherSetKey,                /* xmlSecTransformSetKeyMethod setKey; */                             \
+    xmlSecGnuTLSAeadCipherSetKeyReq,            /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */              \
+    xmlSecGnuTLSAeadCipherSetKey,               /* xmlSecTransformSetKeyMethod setKey; */                             \
     NULL,                                       /* xmlSecTransformVerifyMethod verify; */                              \
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */                    \
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                            \
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                              \
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                            \
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                              \
-    xmlSecGnuTLSAeadCipherExecute,               /* xmlSecTransformExecuteMethod execute; */                           \
+    xmlSecGnuTLSAeadCipherExecute,              /* xmlSecTransformExecuteMethod execute; */                           \
     NULL,                                       /* void* reserved0; */                                                 \
     NULL,                                       /* void* reserved1; */                                                 \
 };

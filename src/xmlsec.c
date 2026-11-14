@@ -7,8 +7,7 @@
  */
 /**
  * @addtogroup xmlsec_core_helpers
- * @brief Utility functions.
- * Various utility functions.
+ * @brief Library initialization, shutdown, configuration, and other helper functions and macros.
  */
 #include "globals.h"
 
@@ -23,8 +22,6 @@
 #include <xmlsec/io.h>
 #include <xmlsec/errors.h>
 
-#include "cast_helpers.h"
-
 
 /* default external entity loader, pointer saved during xmlSecInit */
 static xmlExternalEntityLoader xmlSecDefaultExternalEntityLoader = NULL;
@@ -36,9 +33,10 @@ static xmlExternalEntityLoader xmlSecDefaultExternalEntityLoader = NULL;
  * document we're parsing. libxml2 (< 2.13) routes every external load
  * through the process-wide loader set by xmlSetExternalEntityLoader():
  * external general entities, external DTD subsets, and the initial
- * document when loaded via xmlCreateURLParserCtxt() or xmlCtxtReadFile()
- * (xmlCreateFileParserCtxt() and xmlCreateMemoryParserCtxt() create the
- * document input directly and do not involve the loader). The initial
+ * document when loaded via xmlCreateURLParserCtxt(),
+ * xmlCreateFileParserCtxt() (an alias for xmlCreateURLParserCtxt()),
+ * or xmlCtxtReadFile() (xmlCreateMemoryParserCtxt() creates the
+ * document input directly and does not involve the loader). The initial
  * document load invokes the loader on a context with no input on the
  * stack (ctxt->input == NULL) before the document input stream is
  * created; a fresh context starts with ctxt->input_id == 1 and every

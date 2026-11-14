@@ -143,7 +143,7 @@ XMLSEC_EXPORT int               xmlSecPrintXmlString    (FILE * fd,
        (('A' <= (c)) && ((c) <= 'F')) ) ? 1 : 0)
 
 /**
- * @brief Deprecated. Returns the hex value of a character.
+ * @brief Deprecated. Use xmlSecFromHex() instead. Returns the hex value of a character.
  * @details Deprecated. Macro. Returns the hex value of the @p ch.
  * @param ch the character.
  */

@@ -56,6 +56,12 @@ test_buffer_get_env_copy(const char* name, char* out, size_t outSize) {
         return(-1);
     }
 
+    /* MSVC sprintf_s() invokes the invalid parameter handler (which aborts
+     * by default) when the value does not fit; fail instead of truncating */
+    if(strlen(value) >= outSize) {
+        free(value);
+        return(-1);
+    }
     if(sprintf_s(out, outSize, "%s", value) < 0) {
         free(value);
         return(-1);
@@ -165,6 +171,16 @@ test_buffer_make_temp_name(char* tmpName, size_t tmpNameSize, const char* suffix
         return(-1);
     }
 #ifdef _MSC_VER
+    /* MSVC sprintf_s() invokes the invalid parameter handler (which aborts
+     * by default) when the name does not fit instead of reporting it, so
+     * check the required length up front with snprintf() (which truncates
+     * safely and returns the would-be length) -- the same behavior as the
+     * POSIX branch below. */
+    ret = snprintf(NULL, 0, "%s%sxmlsec_unit_tests_%ld_%d_%ld_%s",
+        tmpDir, sep, now, pid, (long)ticks, suffix);
+    if((ret < 0) || ((size_t)ret >= tmpNameSize)) {
+        return(-1);
+    }
     /* sprintf_s() returns the number of characters written on success and -1
      * on failure, unlike snprintf() which returns the would-be length. */
     ret = sprintf_s(tmpName, tmpNameSize, "%s%sxmlsec_unit_tests_%ld_%d_%ld_%s",

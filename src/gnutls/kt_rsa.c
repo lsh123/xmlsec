@@ -167,7 +167,12 @@ xmlSecGnuTLSKeyTransportSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 }
 
 static int
-xmlSecGnuTLSKeyTransportEncrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBufferPtr inBuf, xmlSecBufferPtr outBuf) {
+xmlSecGnuTLSKeyTransportEncrypt(
+    xmlSecTransformPtr transform,
+    xmlSecGnuTLSKeyTransportCtxPtr ctx,
+    xmlSecBufferPtr inBuf,
+    xmlSecBufferPtr outBuf
+) {
     gnutls_pubkey_t pubkey;
     gnutls_datum_t plaintext;
     gnutls_datum_t encrypted = { NULL, 0 };
@@ -188,7 +193,7 @@ xmlSecGnuTLSKeyTransportEncrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
     /* get key */
     pubkey = xmlSecGnuTLSKeyDataRsaGetPublicKey(ctx->keyData);
     if(pubkey == NULL) {
-        xmlSecInternalError("xmlSecGnuTLSKeyDataRsaGetPublicKey", NULL);
+        xmlSecInternalError("xmlSecGnuTLSKeyDataRsaGetPublicKey", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -197,13 +202,13 @@ xmlSecGnuTLSKeyTransportEncrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
     keySize = xmlSecKeyDataGetSize(ctx->keyData);
     keySize = XMLSEC_BITS_TO_BYTES(keySize);
     if(keySize <= 11) {
-        xmlSecInternalError2("xmlSecGnuTLSKeyTransportEncrypt", NULL,
+        xmlSecInternalError2("xmlSecGnuTLSKeyTransportEncrypt", xmlSecTransformGetName(transform),
             "key size is too small for the PKCS#1 v1.5 padding: keySize=" XMLSEC_SIZE_FMT, keySize);
         return(-1);
     }
     maxPlaintextSize = keySize - 11;
     if(inSize > maxPlaintextSize) {
-        xmlSecInvalidSizeMoreThanError("Input data", inSize, maxPlaintextSize, NULL);
+        xmlSecInvalidSizeMoreThanError("Input data", inSize, maxPlaintextSize, xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -215,14 +220,14 @@ xmlSecGnuTLSKeyTransportEncrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
         &plaintext,
         &encrypted);
     if((err != GNUTLS_E_SUCCESS) || (encrypted.data == NULL)) {
-        xmlSecGnuTLSError("gnutls_pubkey_encrypt_data", err, NULL);
+        xmlSecGnuTLSError("gnutls_pubkey_encrypt_data", err, xmlSecTransformGetName(transform));
         return(-1);
     }
 
     /* append the ciphertext (the size is equal to the key size) */
     ret = xmlSecBufferAppend(outBuf, encrypted.data, encrypted.size);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferAppend", NULL);
+        xmlSecInternalError("xmlSecBufferAppend", xmlSecTransformGetName(transform));
         gnutls_free(encrypted.data);
         return(-1);
     }
@@ -233,7 +238,12 @@ xmlSecGnuTLSKeyTransportEncrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
 }
 
 static int
-xmlSecGnuTLSKeyTransportDecrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBufferPtr inBuf, xmlSecBufferPtr outBuf) {
+xmlSecGnuTLSKeyTransportDecrypt(
+    xmlSecTransformPtr transform,
+    xmlSecGnuTLSKeyTransportCtxPtr ctx,
+    xmlSecBufferPtr inBuf,
+    xmlSecBufferPtr outBuf
+) {
     gnutls_privkey_t privkey;
     gnutls_datum_t ciphertext;
     gnutls_datum_t plaintext = { NULL, 0 };
@@ -253,19 +263,19 @@ xmlSecGnuTLSKeyTransportDecrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
     /* get key */
     privkey = xmlSecGnuTLSKeyDataRsaGetPrivateKey(ctx->keyData);
     if(privkey == NULL) {
-        xmlSecInternalError("xmlSecGnuTLSKeyDataRsaGetPrivateKey", NULL);
+        xmlSecInternalError("xmlSecGnuTLSKeyDataRsaGetPrivateKey", xmlSecTransformGetName(transform));
         return(-1);
     }
 
     /* check that the ciphertext size matches the key size */
     keySize = xmlSecKeyDataGetSize(ctx->keyData);
     keySize = XMLSEC_BITS_TO_BYTES(keySize);
-    if(keySize <= 0) {
-        xmlSecInternalError("xmlSecKeyDataGetSize", NULL);
+    if(keySize == 0) {
+        xmlSecInternalError("xmlSecKeyDataGetSize", xmlSecTransformGetName(transform));
         return(-1);
     }
     if(inSize != keySize) {
-        xmlSecInvalidSizeError("Input data", inSize, keySize, NULL);
+        xmlSecInvalidSizeError("Input data", inSize, keySize, xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -277,14 +287,14 @@ xmlSecGnuTLSKeyTransportDecrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
         &ciphertext,
         &plaintext);
     if((err != GNUTLS_E_SUCCESS) || (plaintext.data == NULL)) {
-        xmlSecGnuTLSError("gnutls_privkey_decrypt_data", err, NULL);
+        xmlSecGnuTLSError("gnutls_privkey_decrypt_data", err, xmlSecTransformGetName(transform));
         return(-1);
     }
 
     /* add to output */
     ret = xmlSecBufferAppend(outBuf, plaintext.data, plaintext.size);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferAppend", NULL);
+        xmlSecInternalError("xmlSecBufferAppend", xmlSecTransformGetName(transform));
         xmlSecMemCleanse(plaintext.data, plaintext.size);
         gnutls_free(plaintext.data);
         return(-1);
@@ -328,19 +338,19 @@ xmlSecGnuTLSKeyTransportExecute(xmlSecTransformPtr transform, int last,
     if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
         xmlSecAssert2(outSize == 0, -1);
 
-        if(inSize <= 0) {
+        if(inSize == 0) {
             xmlSecInvalidTransformStatusError(transform);
             return(-1);
         }
 
         if(transform->operation == xmlSecTransformOperationEncrypt) {
-            ret = xmlSecGnuTLSKeyTransportEncrypt(ctx, inBuf, outBuf);
+            ret = xmlSecGnuTLSKeyTransportEncrypt(transform, ctx, inBuf, outBuf);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecGnuTLSKeyTransportEncrypt", xmlSecTransformGetName(transform));
                 return(-1);
             }
         } else {
-            ret = xmlSecGnuTLSKeyTransportDecrypt(ctx, inBuf, outBuf);
+            ret = xmlSecGnuTLSKeyTransportDecrypt(transform, ctx, inBuf, outBuf);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecGnuTLSKeyTransportDecrypt", xmlSecTransformGetName(transform));
                 return(-1);
@@ -736,7 +746,12 @@ xmlSecGnuTLSRsaOaepSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 }
 
 static int
-xmlSecGnuTLSRsaOaepEncrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx, xmlSecBufferPtr inBuf, xmlSecBufferPtr outBuf) {
+xmlSecGnuTLSRsaOaepEncrypt(
+    xmlSecTransformPtr transform,
+    xmlSecGnuTLSRsaOaepCtxPtr ctx,
+    xmlSecBufferPtr inBuf,
+    xmlSecBufferPtr outBuf
+) {
     gnutls_pubkey_t pubkey;
     gnutls_datum_t plaintext;
     gnutls_x509_spki_t spki = NULL;
@@ -759,7 +774,7 @@ xmlSecGnuTLSRsaOaepEncrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx, xmlSecBufferPtr inBuf,
     /* public key */
     pubkey = xmlSecGnuTLSKeyDataRsaGetPublicKey(ctx->keyData);
     if(pubkey == NULL) {
-        xmlSecInternalError("xmlSecGnuTLSKeyDataRsaGetPublicKey", NULL);
+        xmlSecInternalError("xmlSecGnuTLSKeyDataRsaGetPublicKey", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -771,19 +786,19 @@ xmlSecGnuTLSRsaOaepEncrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx, xmlSecBufferPtr inBuf,
      * (OAEP: the maximum plaintext size is the key size - 2 * hash size - 2) */
     keySize = xmlSecKeyDataGetSize(ctx->keyData);
     keySize = XMLSEC_BITS_TO_BYTES(keySize);
-    if(keySize <= 0) {
-        xmlSecInternalError("xmlSecKeyDataGetSize", NULL);
+    if(keySize == 0) {
+        xmlSecInternalError("xmlSecKeyDataGetSize", xmlSecTransformGetName(transform));
         return(-1);
     }
     hashLen = (xmlSecSize)gnutls_hash_get_len(ctx->digestAlg);
     if(keySize <= (2 * hashLen + 2)) {
-        xmlSecInternalError2("xmlSecGnuTLSRsaOaepEncrypt", NULL,
+        xmlSecInternalError2("xmlSecGnuTLSRsaOaepEncrypt", xmlSecTransformGetName(transform),
             "key size is too small for the OAEP digest: keySize=" XMLSEC_SIZE_FMT, keySize);
         return(-1);
     }
     maxPlaintextSize = keySize - (2 * hashLen + 2);
     if(inSize > maxPlaintextSize) {
-        xmlSecInvalidSizeMoreThanError("Input data", inSize, maxPlaintextSize, NULL);
+        xmlSecInvalidSizeMoreThanError("Input data", inSize, maxPlaintextSize, xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -802,13 +817,13 @@ xmlSecGnuTLSRsaOaepEncrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx, xmlSecBufferPtr inBuf,
     /* initialize SPKI structure */
     err = gnutls_x509_spki_init(&spki);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_x509_spki_init", err, NULL);
+        xmlSecGnuTLSError("gnutls_x509_spki_init", err, xmlSecTransformGetName(transform));
         return(-1);
     }
 
     err = gnutls_x509_spki_set_rsa_oaep_params(spki, ctx->digestAlg, &label);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_x509_spki_set_rsa_oaep_params", err, NULL);
+        xmlSecGnuTLSError("gnutls_x509_spki_set_rsa_oaep_params", err, xmlSecTransformGetName(transform));
         gnutls_x509_spki_deinit(spki);
         return(-1);
     }
@@ -816,7 +831,7 @@ xmlSecGnuTLSRsaOaepEncrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx, xmlSecBufferPtr inBuf,
     /* configure public key */
     err = gnutls_pubkey_set_spki(pubkey, spki, 0);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_pubkey_set_spki", err, NULL);
+        xmlSecGnuTLSError("gnutls_pubkey_set_spki", err, xmlSecTransformGetName(transform));
         gnutls_x509_spki_deinit(spki);
         return(-1);
     }
@@ -824,7 +839,7 @@ xmlSecGnuTLSRsaOaepEncrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx, xmlSecBufferPtr inBuf,
     /* encrypt */
     err = gnutls_pubkey_encrypt_data(pubkey, 0, &plaintext, &encrypted);
     if((err != GNUTLS_E_SUCCESS) || (encrypted.data == NULL)) {
-        xmlSecGnuTLSError("gnutls_pubkey_encrypt_data", err, NULL);
+        xmlSecGnuTLSError("gnutls_pubkey_encrypt_data", err, xmlSecTransformGetName(transform));
         gnutls_x509_spki_deinit(spki);
         return(-1);
     }
@@ -832,7 +847,7 @@ xmlSecGnuTLSRsaOaepEncrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx, xmlSecBufferPtr inBuf,
     /* set output buffer (ciphertext) */
     ret = xmlSecBufferAppend(outBuf, encrypted.data, encrypted.size);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferAppend", NULL);
+        xmlSecInternalError("xmlSecBufferAppend", xmlSecTransformGetName(transform));
         gnutls_x509_spki_deinit(spki);
         gnutls_free(encrypted.data);
         return(-1);
@@ -846,7 +861,12 @@ xmlSecGnuTLSRsaOaepEncrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx, xmlSecBufferPtr inBuf,
 }
 
 static int
-xmlSecGnuTLSRsaOaepDecrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx, xmlSecBufferPtr inBuf, xmlSecBufferPtr outBuf) {
+xmlSecGnuTLSRsaOaepDecrypt(
+    xmlSecTransformPtr transform,
+    xmlSecGnuTLSRsaOaepCtxPtr ctx,
+    xmlSecBufferPtr inBuf,
+    xmlSecBufferPtr outBuf
+) {
     gnutls_privkey_t privkey;
     gnutls_datum_t ciphertext;
     gnutls_x509_spki_t spki = NULL;
@@ -867,7 +887,7 @@ xmlSecGnuTLSRsaOaepDecrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx, xmlSecBufferPtr inBuf,
     /* private key */
     privkey = xmlSecGnuTLSKeyDataRsaGetPrivateKey(ctx->keyData);
     if(privkey == NULL) {
-        xmlSecInternalError("xmlSecGnuTLSKeyDataRsaGetPrivateKey", NULL);
+        xmlSecInternalError("xmlSecGnuTLSKeyDataRsaGetPrivateKey", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -878,12 +898,12 @@ xmlSecGnuTLSRsaOaepDecrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx, xmlSecBufferPtr inBuf,
     /* check that the ciphertext size matches the key size */
     keySize = xmlSecKeyDataGetSize(ctx->keyData);
     keySize = XMLSEC_BITS_TO_BYTES(keySize);
-    if(keySize <= 0) {
-        xmlSecInternalError("xmlSecKeyDataGetSize", NULL);
+    if(keySize == 0) {
+        xmlSecInternalError("xmlSecKeyDataGetSize", xmlSecTransformGetName(transform));
         return(-1);
     }
     if(inSize != keySize) {
-        xmlSecInvalidSizeError("Input data", inSize, keySize, NULL);
+        xmlSecInvalidSizeError("Input data", inSize, keySize, xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -902,13 +922,13 @@ xmlSecGnuTLSRsaOaepDecrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx, xmlSecBufferPtr inBuf,
     /* initialize SPKI structure */
     err = gnutls_x509_spki_init(&spki);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_x509_spki_init", err, NULL);
+        xmlSecGnuTLSError("gnutls_x509_spki_init", err, xmlSecTransformGetName(transform));
         return(-1);
     }
 
     err = gnutls_x509_spki_set_rsa_oaep_params(spki, ctx->digestAlg, &label);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_x509_spki_set_rsa_oaep_params", err, NULL);
+        xmlSecGnuTLSError("gnutls_x509_spki_set_rsa_oaep_params", err, xmlSecTransformGetName(transform));
         gnutls_x509_spki_deinit(spki);
         return(-1);
     }
@@ -916,7 +936,7 @@ xmlSecGnuTLSRsaOaepDecrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx, xmlSecBufferPtr inBuf,
     /* configure private key */
     err = gnutls_privkey_set_spki(privkey, spki, 0);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_privkey_set_spki", err, NULL);
+        xmlSecGnuTLSError("gnutls_privkey_set_spki", err, xmlSecTransformGetName(transform));
         gnutls_x509_spki_deinit(spki);
         return(-1);
     }
@@ -924,7 +944,7 @@ xmlSecGnuTLSRsaOaepDecrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx, xmlSecBufferPtr inBuf,
     /* decrypt */
     err = gnutls_privkey_decrypt_data(privkey, 0, &ciphertext, &plaintext);
     if((err != GNUTLS_E_SUCCESS) || (plaintext.data == NULL)) {
-        xmlSecGnuTLSError("gnutls_privkey_decrypt_data", err, NULL);
+        xmlSecGnuTLSError("gnutls_privkey_decrypt_data", err, xmlSecTransformGetName(transform));
         gnutls_x509_spki_deinit(spki);
         return(-1);
     }
@@ -933,7 +953,7 @@ xmlSecGnuTLSRsaOaepDecrypt(xmlSecGnuTLSRsaOaepCtxPtr ctx, xmlSecBufferPtr inBuf,
     ret = xmlSecBufferAppend(outBuf, plaintext.data, plaintext.size);
     xmlSecMemCleanse(plaintext.data, plaintext.size);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferAppend", NULL);
+        xmlSecInternalError("xmlSecBufferAppend", xmlSecTransformGetName(transform));
         gnutls_x509_spki_deinit(spki);
         gnutls_free(plaintext.data);
         return(-1);
@@ -995,20 +1015,20 @@ xmlSecGnuTLSRsaOaepExecute(xmlSecTransformPtr transform, int last,
     if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
         xmlSecAssert2(outSize == 0, -1);
 
-        if(inSize <= 0) {
+        if(inSize == 0) {
             xmlSecInvalidTransformStatusError(transform);
             return(-1);
         }
 
         if(transform->operation == xmlSecTransformOperationEncrypt) {
-            ret = xmlSecGnuTLSRsaOaepEncrypt(ctx, inBuf, outBuf);
+            ret = xmlSecGnuTLSRsaOaepEncrypt(transform, ctx, inBuf, outBuf);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecGnuTLSRsaOaepEncrypt",
                     xmlSecTransformGetName(transform));
                 return(-1);
             }
         } else {
-            ret = xmlSecGnuTLSRsaOaepDecrypt(ctx, inBuf, outBuf);
+            ret = xmlSecGnuTLSRsaOaepDecrypt(transform, ctx, inBuf, outBuf);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecGnuTLSRsaOaepDecrypt",
                     xmlSecTransformGetName(transform));

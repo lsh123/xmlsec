@@ -17,7 +17,6 @@
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/errors.h>
-#include <xmlsec/membuf.h>
 #include <xmlsec/private.h>
 #include <xmlsec/xmltree.h>
 
@@ -35,7 +34,8 @@
 /******************************************************************************
  *
  * KeyAgreement context.
- * - XMLEnc spec: https://www.w3.org/TR/xmlenc-core1/#sec-ECDH-ES
+ * - ECDH spec: https://www.w3.org/TR/xmlenc-core1/#sec-ECDH-ES
+ * - DH-ES and X25519 spec: https://www.w3.org/TR/xmldsig-more/
  *
  *****************************************************************************/
 

@@ -126,10 +126,11 @@ typedef enum {
 #define XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT      0x00000800
 
 /**
- * @brief Stop when key recovery from an encrypted key element fails.
- * @details If the flag is set then we'll stop when key recovery fails while
- * processing <enc:EncryptedKey />, <enc11:DerivedKey /> or <enc:AgreementMethod />
- * elements. Other processing errors always cause an abort regardless of this flag.
+ * @brief Stop when key recovery, derivation, or generation fails.
+ * @details If the flag is set then we'll stop when the key cannot be recovered from an
+ * <enc:EncryptedKey /> element, or derived from an <enc11:DerivedKey /> element, or
+ * generated from an <enc:AgreementMethod /> element. Other processing errors always
+ * cause an abort regardless of this flag.
  */
 #define XMLSEC_KEYINFO_FLAGS_ENCKEY_STOP_ON_FAILED_DECRYPTION   0x00001000
 
@@ -158,7 +159,7 @@ typedef enum {
 /**
  * @brief Try any key matching requirements, not just referenced keys.
  * @details If the flag is set then we'll try to find any key that matches requirements
- * (e.g. *any* RSA public key). In the default strict key search mode, only keys
+ * (e.g. any RSA public key). In the default strict key search mode, only keys
  * referenced in &lt;dsig:KeyInfo/&gt; (e.g. by KeyName value) are used.
  */
 #define XMLSEC_KEYINFO_FLAGS_LAX_KEY_SEARCH                     0x00008000
@@ -192,7 +193,7 @@ struct _xmlSecKeyInfoCtx {
 #ifndef XMLSEC_NO_XMLENC
     /* EncryptedKey or DerivedKey */
     xmlSecEncCtxPtr                     encCtx;  /**< the encryption context for <enc:EncryptedKey /> element processing. */
-    int                                 maxEncryptedKeyLevel;  /**< the max recursion level when processing &lt;enc:EncryptedKey/&gt;, &lt;enc11:DerivedKey/&gt; or &lt;enc:AgreementMethod/&gt; elements; default level is 1 (see #curEncryptedKeyLevel). */
+    int                                 maxEncryptedKeyLevel;  /**< the max recursion level when processing &lt;enc:EncryptedKey/&gt;, &lt;enc11:DerivedKey/&gt; or &lt;enc:AgreementMethod/&gt; elements; default level is 1 (see also #curEncryptedKeyLevel). */
 #endif /* XMLSEC_NO_XMLENC */
 
 #ifndef XMLSEC_NO_X509

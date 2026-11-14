@@ -111,13 +111,13 @@ XMLSEC_EXPORT int               xmlSecNodeSetWalk       (xmlSecNodeSetPtr nset,
                                                          xmlSecNodeSetWalkCallback walkFunc,
                                                          void* data);
 XMLSEC_EXPORT int               xmlSecNodeSetDumpTextNodes(xmlSecNodeSetPtr nset,
-                                                          xmlOutputBufferPtr out);
+                                                           xmlOutputBufferPtr out);
 XMLSEC_EXPORT void              xmlSecNodeSetDebugDump  (xmlSecNodeSetPtr nset,
                                                          FILE *output);
 
 XMLSEC_EXPORT XMLSEC_DEPRECATED xmlSecNodeSetPtr  xmlSecNodeSetAddList(xmlSecNodeSetPtr nset,
-                                                          xmlSecNodeSetPtr newNSet,
-                                                          xmlSecNodeSetOp op);
+                                                                       xmlSecNodeSetPtr newNSet,
+                                                                       xmlSecNodeSetOp op);
 
 #ifdef __cplusplus
 }

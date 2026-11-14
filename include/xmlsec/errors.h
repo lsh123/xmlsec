@@ -373,13 +373,14 @@ XMLSEC_EXPORT void              xmlSecErrorsPrintCryptoLibraryLogOnExitSet      
 
 /* __FUNCTION__ is defined for MSC compiler >= MS VS .NET 2003 */
 #if defined(_MSC_VER) && (_MSC_VER >= 1300)
+
+/** @brief The current function name (compiler-specific).
+ * @details This macro expands to the name of the current function as a string.
+ */
 #define XMLSEC_FUNCTION __FUNCTION__
 
 /* and for GCC too */
 #elif defined(__GNUC__)
-/**
- * @brief The current function name (compiler-specific).
- */
 #define XMLSEC_FUNCTION __func__
 
 /* fallback: empty string for other compilers */

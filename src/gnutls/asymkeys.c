@@ -221,6 +221,7 @@ xmlSecGnuTLSAsymKeyDataAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, g
         err = gnutls_pubkey_import_privkey(pubkey, privkey, 0, 0);
         if(err != GNUTLS_E_SUCCESS) {
             /* non-fatal: some key types may not support pubkey export */
+            xmlSecGnuTLSError("gnutls_pubkey_import_privkey", err, NULL);
             gnutls_pubkey_deinit(pubkey);
             pubkey = NULL;
         }
@@ -485,6 +486,7 @@ xmlSecGnuTLSAsymmetricKeyCreatePub(gnutls_pubkey_t pubkey) {
     ret = xmlSecKeySetValue(key, keyData);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeySetValue", NULL);
+        xmlSecKeyDataDestroy(keyData);
         xmlSecKeyDestroy(key);
         return(NULL);
     }
@@ -525,6 +527,7 @@ xmlSecGnuTLSAsymmetricKeyCreatePriv(gnutls_privkey_t privkey) {
     ret = xmlSecKeySetValue(key, keyData);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeySetValue", NULL);
+        xmlSecKeyDataDestroy(keyData);
         xmlSecKeyDestroy(key);
         return(NULL);
     }
@@ -1889,7 +1892,7 @@ xmlSecGnuTLSKeyDataMLDSAGetPrivateKey(xmlSecKeyDataPtr data) {
 }
 
 /**
- * @brief Gets ML-DSA key (k, l) value: 44 corresponds to (4,4), 65 to (6,5) or 87 to (8,7).
+ * @brief Gets ML-DSA key (k, l) value: 44 corresponds to (4,4), 65 to (6,3) or 87 to (8,7).
  * @param data the pointer to ML-DSA key data.
  * @return 44, 65, or 87 on success or a negative value otherwise.
  */

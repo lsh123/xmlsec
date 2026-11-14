@@ -319,7 +319,7 @@ xmlSecMSCngXdhDerivePubKeyU(BCRYPT_ALG_HANDLE hAlg, BCRYPT_KEY_HANDLE hPrivKeyTe
         xmlSecMSCngNtError("BCryptSecretAgreement(X25519 self u)", NULL, status);
         goto done;
     }
-    xmlSecAssert2(hSelfSecret != NULL, -1);
+    xmlSecAssert2(hSelfSecret != NULL, -1); /* defensive check */
 
     /* BCryptDeriveKey with BCRYPT_KDF_RAW_SECRET gives us X25519(d, 9) = u in big-endian
      * (CNG returns the raw secret as the byte-reverse of the standard wire format;

@@ -84,7 +84,7 @@ static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Sha2[] = {
     { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE,      PROV_RSA_AES },
     { NULL, 0 }
 };
-#endif /* !XMLSEC_NO_SHA256 || !XMLSEC_NO_SHA384 || !XMLSEC_NO_SHA512 */
+#endif /* !defined(XMLSEC_NO_SHA256) || !defined(XMLSEC_NO_SHA384) || !defined(XMLSEC_NO_SHA512) */
 
 #ifndef XMLSEC_NO_MD5
 static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Md5[] = {

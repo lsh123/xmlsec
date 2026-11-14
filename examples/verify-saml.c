@@ -6,14 +6,14 @@
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * @brief XML Security Library example: Verifying a simple SAML response with an X509 certificate
+ * @brief XML Security Library example: Verifying a simple SAML response with an X.509 certificate
  * @details Verifies a simple SAML response. In addition to regular verification
  * it also ensures that the <dsig:Signature/> element is a direct child of the
  * SAML Response element, that the signature has only one <dsig:Reference/>
  * element with an empty or NULL URI attribute and one enveloped signature
  * transform, as required by the SAML specification.
  *
- * This example was developed and tested with OpenSSL crypto library. The
+ * This example was developed and tested with the OpenSSL crypto library. The
  * certificate management policies for another crypto library may break it.
  *
  * Usage:
@@ -328,7 +328,7 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
         goto done;
     }
 
-    /* in addition, limit possible key data to valid X509 certificates and key names */
+    /* in addition, limit possible key data to valid X.509 certificates and key names */
     if(xmlSecPtrListAdd(&(dsigCtx->keyInfoReadCtx.enabledKeyData), BAD_CAST xmlSecKeyDataX509Id) < 0) {
         fprintf(stderr, "Error: failed to limit allowed key data\n");
         goto done;

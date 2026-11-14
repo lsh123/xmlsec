@@ -38,7 +38,7 @@
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
 
-/* GOST CSP doesn't support keys duplicating, so we use custom refcounting instead */
+/* GOST CSP does not support key duplication, so we use custom refcounting instead */
 #ifndef XMLSEC_NO_GOST
 #define XMLSEC_MSCRYPTO_CUSTOM_REFCOUNT
 #endif  /* XMLSEC_NO_GOST */
@@ -1307,7 +1307,7 @@ xmlSecMSCryptoKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) 
             "size=" XMLSEC_SIZE_FMT, blobBufferSize);
         goto done;
     }
-    memset(xmlSecBufferGetData(&blob), 0, blobBufferSize); // ensure all padding with 0s works
+    memset(xmlSecBufferGetData(&blob), 0, blobBufferSize); /* ensure all padding with 0s works */
 
     /* Set the PUBLICKEYSTRUC */
     pubKeyStruc = (PUBLICKEYSTRUC*)xmlSecBufferGetData(&blob);
@@ -1876,7 +1876,7 @@ xmlSecMSCryptoKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) 
             "size=" XMLSEC_SIZE_FMT, blobBufferSize);
         goto done;
     }
-    memset(xmlSecBufferGetData(&blob), 0, blobBufferSize); // ensure all padding with 0s works
+    memset(xmlSecBufferGetData(&blob), 0, blobBufferSize); /* ensure all padding with 0s works */
 
     /* Set PUBLICKEYSTRUC  */
     pubKeyStruc = (PUBLICKEYSTRUC*)xmlSecBufferGetData(&blob);

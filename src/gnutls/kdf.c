@@ -480,7 +480,7 @@ xmlSecGnuTLSConcatKdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
         return(-1);
     }
 
-    /* pre-compute fixedInfo = AlgorithmID || PartyUInfo || PartyVInfo {|| SuppPubInfo }{|| SuppPrivInfo } */
+    /* pre-compute fixedInfo = AlgorithmID || PartyUInfo || PartyVInfo {|| SuppPubInfo}{|| SuppPrivInfo} */
     ret = xmlSecTransformConcatKdfParamsGetFixedInfo(&(ctx->u.concatKdf.params), &(ctx->u.concatKdf.fixedInfo));
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformConcatKdfParamsGetFixedInfo", xmlSecTransformGetName(transform));
@@ -806,7 +806,7 @@ xmlSecGnuTLSPbkdf2GenerateKey(
 
 /******************************************************************************
  *
- * PBKDF2 key derivation algorithm
+ * PBKDF2 key derivation transform klass
  *
  *****************************************************************************/
 XMLSEC_GNUTLS_KDF_KLASS(Pbkdf2, xmlSecGnuTLSPbkdf2NodeRead)
@@ -1073,7 +1073,7 @@ xmlSecGnuTLSHkdfGenerateKey(
 
 /******************************************************************************
  *
- * HKDF key derivation algorithm
+ * HKDF key derivation transform klass
  *
  *****************************************************************************/
 XMLSEC_GNUTLS_KDF_KLASS(Hkdf, xmlSecGnuTLSHkdfNodeRead)

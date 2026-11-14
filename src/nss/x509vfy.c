@@ -794,10 +794,13 @@ xmlSecNssX509StoreVerifyCerts(
 
         ret = xmlSecNssX509StoreVerifyCert(ctx->certDb, cert, keyInfoCtx, certificateUsageEmailSigner);
         if(ret < 0) {
+            /* an internal error (as opposed to a clean "not verified"
+             * result): fail the whole verification (the openssl sibling
+             * treats it the same way) */
             xmlSecInternalError("xmlSecNssX509StoreVerifyCert", xmlSecKeyDataStoreGetName(store));
-            continue; /* ignore all errors and try other certs */
+            goto done;
         } else if(ret != 1) {
-            continue; /* ignore all errors and try other certs */
+            continue; /* the cert is not verified: try the other certs */
         }
 
         /* the revocation check above only covered the caller-supplied certs;
@@ -806,8 +809,11 @@ xmlSecNssX509StoreVerifyCerts(
          * database) is revoked by a store or key-info CRL */
         ret = xmlSecNssX509StoreVerifyChainAgainstCrls(ctx, cert, crls, keyInfoCtx);
         if(ret < 0) {
+            /* an internal error (as opposed to a "revoked" result):
+             * fail the whole verification (the openssl sibling treats it
+             * the same way) */
             xmlSecInternalError("xmlSecNssX509StoreVerifyChainAgainstCrls", xmlSecKeyDataStoreGetName(store));
-            continue; /* ignore all errors and try other certs */
+            goto done;
         } else if(ret != 1) {
             continue; /* a certificate in the chain was revoked */
         }

@@ -529,7 +529,7 @@ xmlSecTransformCtxInitialize(xmlSecTransformCtxPtr ctx) {
 
     /* Allow only empty and same-document URIs. Applications needing remote/local dereference
     can explicitly opt in. */
-    ctx->enabledUris =  xmlSecTransformUriTypeEmpty | xmlSecTransformUriTypeSameDocument;
+    ctx->enabledUris = xmlSecTransformUriTypeEmpty | xmlSecTransformUriTypeSameDocument;
     ctx->binaryChunkSize = xmlSecTransformCtxGetDefaultBinaryChunkSize();
     ctx->maxDepth = xmlSecTransformCtxGetDefaultMaxDepth();
 
@@ -976,7 +976,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
         tmplLen = xmlStrlen(BAD_CAST XMLSEC_TRANSFORM_XPOINTER_TMPL);
         xptrLen = xmlStrlen(xptr);
         if(xptrLen > (INT_MAX - tmplLen - 1)) {
-            xmlSecInvalidSizeMoreThanError("size", (xmlSecSize)xptrLen, (xmlSecSize)(INT_MAX - tmplLen - 1), NULL);
+            xmlSecInvalidSizeMoreThanError("xptrLen", (xmlSecSize)xptrLen, (xmlSecSize)(INT_MAX - tmplLen - 1), NULL);
             goto done;
         }
         len = tmplLen + xptrLen + 1;

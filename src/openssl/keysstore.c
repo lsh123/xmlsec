@@ -21,7 +21,6 @@
 #include <xmlsec/openssl/x509.h>
 
 #include "../cast_helpers.h"
-#include "openssl_compat.h"
 #include "private.h"
 
 /******************************************************************************
@@ -41,8 +40,8 @@ static xmlSecKeyPtr             xmlSecOpenSSLKeysStoreFindKey       (xmlSecKeySt
                                                                      xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 static xmlSecKeyPtr            xmlSecOpenSSLKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store,
-                                                                 xmlSecKeyX509DataValuePtr x509Data,
-                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
+                                                                         xmlSecKeyX509DataValuePtr x509Data,
+                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 static xmlSecKeyStoreKlass xmlSecOpenSSLKeysStoreKlass = {
     sizeof(xmlSecKeyStoreKlass),
@@ -62,8 +61,8 @@ static xmlSecKeyStoreKlass xmlSecOpenSSLKeysStoreKlass = {
 };
 
 /**
- * @brief The OpenSSL list based keys store klass.
- * @return OpenSSL list based keys store klass.
+ * @brief The OpenSSL keys store klass.
+ * @return OpenSSL keys store klass.
  */
 xmlSecKeyStoreId
 xmlSecOpenSSLKeysStoreGetKlass(void) {

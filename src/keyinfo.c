@@ -184,11 +184,11 @@ xmlSecKeyInfoNodeWrite(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCt
 
         /* use global enabled list only if we don't have a local one */
         if(xmlSecPtrListGetSize(&(keyInfoCtx->enabledKeyData)) > 0) {
-                dataId = xmlSecKeyDataIdListFindByNode(&(keyInfoCtx->enabledKeyData),
+            dataId = xmlSecKeyDataIdListFindByNode(&(keyInfoCtx->enabledKeyData),
                             nodeName, nodeNs,
                             xmlSecKeyDataUsageKeyInfoNodeWrite);
         } else {
-                dataId = xmlSecKeyDataIdListFindByNode(xmlSecKeyDataIdsGetEnabled(),
+            dataId = xmlSecKeyDataIdListFindByNode(xmlSecKeyDataIdsGetEnabled(),
                             nodeName, nodeNs,
                             xmlSecKeyDataUsageKeyInfoNodeWrite);
         }

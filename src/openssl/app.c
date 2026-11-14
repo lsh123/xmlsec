@@ -2152,7 +2152,7 @@ xmlSecOpenSSLAppKeysMngrAddCertsFile(xmlSecKeysMngrPtr mngr, const char *filenam
 /**
  * @brief Initializes the default key manager for OpenSSL.
  * @details Initializes @p mngr with openssl keys store #xmlSecOpenSSLKeysStoreId
- * and a default OpenSSL crypto key data stores.
+ * and a default OpenSSL crypto key data store.
  *
  * @param mngr the pointer to keys manager.
  * @return 0 on success or a negative value otherwise.

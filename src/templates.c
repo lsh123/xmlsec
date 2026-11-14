@@ -34,7 +34,7 @@ static xmlNodePtr       xmlSecTmplAddReference              (xmlNodePtr parentNo
 static int              xmlSecTmplPrepareEncData            (xmlNodePtr parentNode,
                                                              xmlSecTransformId encMethodId);
 static int              xmlSecTmplNodeWriteNsList           (xmlNodePtr parentNode,
-                                                             const xmlChar** namespaces);
+                                                             const xmlChar** nsList);
 static xmlNodePtr       xmlSecTmplEncDataEnsureReferenceList(xmlNodePtr encNode);
 /******************************************************************************
  *
@@ -50,8 +50,8 @@ static xmlNodePtr       xmlSecTmplEncDataEnsureReferenceList(xmlNodePtr encNode)
  * in the XML document.
  * @param doc the pointer to signature document or NULL; in the
  *                      second case, application must later call xmlSetTreeDoc
- *                      to ensure that all the children nodes have correct
- *                      pointer to XML document.
+ *                      to ensure that all the child nodes have the correct
+ *                      pointer to the XML document.
  * @param c14nMethodId the signature canonicalization method.
  * @param signMethodId the signature method.
  * @param id the node id (may be NULL).
@@ -77,8 +77,8 @@ xmlSecTmplSignatureCreate(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
  * inserting the returned node in the XML document.
  * @param doc the pointer to signature document or NULL; in the
  *                      second case, application must later call xmlSetTreeDoc
- *                      to ensure that all the children nodes have correct
- *                      pointer to XML document.
+ *                      to ensure that all the child nodes have the correct
+ *                      pointer to the XML document.
  * @param c14nMethodId the signature canonicalization method.
  * @param signMethodId the signature method.
  * @param id the node id (may be NULL).
@@ -597,7 +597,7 @@ xmlSecTmplManifestAddReference(xmlNodePtr manifestNode, xmlSecTransformId digest
  * @details Creates new &lt;enc:EncryptedData/&gt; node for encryption template.
  * @param doc the pointer to encryption document or NULL; in the second
  *                      case, application must later call xmlSetTreeDoc to ensure
- *                      that all the children nodes have correct pointer to XML document.
+ *                      that all the child nodes have the correct pointer to the XML document.
  * @param encMethodId the encryption method (may be NULL).
  * @param id the Id attribute (optional).
  * @param type the Type attribute (optional)

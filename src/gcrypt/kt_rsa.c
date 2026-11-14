@@ -1027,7 +1027,7 @@ xmlSecGCryptRsaOaepEncrypt(xmlSecGCryptRsaOaepCtxPtr ctx, xmlSecBufferPtr in, xm
      * (OAEP: the maximum plaintext size is the key size - 2 * hash size
      * - 2, RFC 8017 EME-OAEP; the label size is not included) */
     keySize = XMLSEC_BITS_TO_BYTES(xmlSecKeyDataGetSize(ctx->keyData));
-    if(keySize <= 0) {
+    if(keySize == 0) {
         xmlSecInternalError("xmlSecKeyDataGetSize", NULL);
         return(-1);
     }

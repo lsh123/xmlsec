@@ -72,13 +72,13 @@ static xmlSecKeyDataStoreKlass xmlSecGnuTLSX509StoreKlass = {
     NULL,                                       /* void* reserved1; */
 };
 
-static gnutls_x509_crt_t xmlSecGnuTLSX509FindCert                       (xmlSecPtrListPtr certs,
+static gnutls_x509_crt_t    xmlSecGnuTLSX509FindCert                    (xmlSecPtrListPtr certs,
                                                                          xmlSecGnuTLSX509FindCertCtxPtr findCertCtx);
-static gnutls_x509_crt_t xmlSecGnuTLSX509FindSignedCert                 (xmlSecPtrListPtr certs,
+static gnutls_x509_crt_t    xmlSecGnuTLSX509FindSignedCert              (xmlSecPtrListPtr certs,
                                                                          gnutls_x509_crt_t cert);
-static gnutls_x509_crt_t xmlSecGnuTLSX509FindSignerCert                 (xmlSecPtrListPtr certs,
+static gnutls_x509_crt_t    xmlSecGnuTLSX509FindSignerCert              (xmlSecPtrListPtr certs,
                                                                          gnutls_x509_crt_t cert);
-static int              xmlSecGnuTLSX509StoreVerifyCert                 (xmlSecGnuTLSX509StoreCtxPtr ctx,
+static int                  xmlSecGnuTLSX509StoreVerifyCert             (xmlSecGnuTLSX509StoreCtxPtr ctx,
                                                                          gnutls_x509_crt_t* certs_chain,
                                                                          xmlSecSize certs_chain_size,
                                                                          gnutls_x509_crt_t* trusted,
@@ -86,7 +86,7 @@ static int              xmlSecGnuTLSX509StoreVerifyCert                 (xmlSecG
                                                                          gnutls_x509_crl_t* crls,
                                                                          xmlSecSize crls_size,
                                                                          const xmlSecKeyInfoCtx* keyInfoCtx);
-static int              xmlSecGnuTLSX509StoreVerifyCrlInternal          (xmlSecKeyDataStorePtr store,
+static int                  xmlSecGnuTLSX509StoreVerifyCrlInternal      (xmlSecKeyDataStorePtr store,
                                                                          gnutls_x509_crl_t crl,
                                                                          xmlSecPtrListPtr extra_certs,
                                                                          const xmlSecKeyInfoCtx* keyInfoCtx);

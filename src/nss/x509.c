@@ -179,8 +179,9 @@ xmlSecNssKeyDataX509GetKlass(void) {
  * @param data the pointer to X509 key data.
  *
  *
- * @return the key's certificate or NULL if key data was not used for key
- * extraction or an error occurs.
+ * @return a borrowed pointer to the key's certificate, or NULL if key data
+ * was not used for key extraction or an error occurs; the caller must NOT
+ * free it.
  */
 CERTCertificate*
 xmlSecNssKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
@@ -434,8 +435,9 @@ xmlSecNssKeyDataX509AdoptCert(xmlSecKeyDataPtr data, CERTCertificate* cert) {
  * @param pos the desired certificate position.
  *
  *
- * @return the pointer to certificate or NULL if @p pos is larger than the
- * number of certificates in @p data or an error occurs.
+ * @return a borrowed pointer to the certificate, or NULL if @p pos is larger
+ * than the number of certificates in @p data or an error occurs; the caller
+ * must NOT free it.
  */
 CERTCertificate*
 xmlSecNssKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
@@ -511,8 +513,9 @@ xmlSecNssKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, CERTSignedCrl* crl) {
  * @param pos the desired CRL position.
  *
  *
- * @return the pointer to CRL or NULL if @p pos is larger than the
- * number of CRLs in @p data or an error occurs.
+ * @return a borrowed pointer to the CRL, or NULL if @p pos is larger than
+ * the number of CRLs in @p data or an error occurs; the caller must NOT free
+ * it.
  */
 CERTSignedCrl *
 xmlSecNssKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {

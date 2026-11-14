@@ -278,8 +278,8 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
         return 0;
     }
 
-    /* DecryptToBuffer runs on a copy because the in-place variant below
-     * rewrites the tree it is given. */
+    /* Run the buffer-based decryption on a copy of the document and the
+     * in-place variant on the original. */
     copy = xmlCopyDoc(doc, 1);
     if (copy != NULL) {
         decrypt_to_buffer(copy);

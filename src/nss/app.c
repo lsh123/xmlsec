@@ -2048,7 +2048,7 @@ xmlSecNssAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data
 /**
  * @brief Initializes the default key manager for NSS.
  * @details Initializes @p mngr with NSS keys store #xmlSecNssKeysStoreId
- * and a default NSS crypto key data stores.
+ * and a default NSS crypto key data store.
  *
  * @param mngr the pointer to keys manager.
  * @return 0 on success or a negative value otherwise.

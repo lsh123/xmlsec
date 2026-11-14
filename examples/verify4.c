@@ -6,9 +6,9 @@
  * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * @brief XML Security Library example: Verifying a file signed with an X509 certificate
+ * @brief XML Security Library example: Verifying a file signed with an X.509 certificate
  * and checking the signature Reference URI
- * @details Verifies a file signed with an X509 certificate and checks that the
+ * @details Verifies a file signed with an X.509 certificate and checks that the
  * signature Reference URI matches the expected ID attribute value.
  *
  * This example was developed and tested with the OpenSSL crypto library. The

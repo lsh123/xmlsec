@@ -109,7 +109,7 @@ xmlSecBnFinalize(xmlSecBnPtr bn) {
 /**
  * @brief Gets pointer to the binary @p bn representation.
  * @param bn the pointer to BN.
- * @return pointer to binary BN data or NULL if the BN buffer is empty.
+ * @return pointer to binary BN data or NULL if the BN buffer has no allocated data.
  */
 xmlSecByte*
 xmlSecBnGetData(xmlSecBnPtr bn) {

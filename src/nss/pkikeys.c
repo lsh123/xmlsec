@@ -1522,7 +1522,7 @@ xmlSecNssKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyValu
 #ifndef XMLSEC_NO_EDDSA
 /******************************************************************************
  *
- * EdDSA key data (Ed25519 and Ed448)
+ * EdDSA key data (Ed25519 only, RFC 8032)
  *
  *****************************************************************************/
 
@@ -1564,7 +1564,7 @@ static xmlSecKeyDataKlass xmlSecNssKeyData ## lcname ## Klass = {               
 XMLSEC_NSS_PKI_KEY_KLASS_EDDSA(EdDSA, EdDSA, NULL)
 
 /**
- * @brief The EdDSA key data klass (Ed25519 and Ed448).
+ * @brief The EdDSA key data klass (Ed25519 only; the NSS back-end has no Ed448 support).
  * @return pointer to EdDSA key data klass.
  */
 xmlSecKeyDataId

@@ -211,7 +211,7 @@ xmlSecOpenSSLKWDes3Finalize(xmlSecTransformPtr transform) {
 }
 
 static int
-xmlSecOpenSSLKWDes3SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
+xmlSecOpenSSLKWDes3SetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq) {
     xmlSecOpenSSLKWDes3CtxPtr ctx;
     int ret;
 
@@ -375,11 +375,11 @@ xmlSecOpenSSLKWDes3BlockEncrypt(xmlSecTransformPtr transform,
     xmlSecAssert2(xmlSecBufferGetSize(&(ctx->parentCtx.keyBuffer)) >= XMLSEC_KW_DES3_KEY_LENGTH, -1);
 
     ret = xmlSecOpenSSLKWDes3Encrypt(ctx,
-            xmlSecBufferGetData(&(ctx->parentCtx.keyBuffer)), XMLSEC_KW_DES3_KEY_LENGTH,
-            iv, XMLSEC_KW_DES3_IV_LENGTH,
-            in, inSize,
-            out, outSize, outWritten,
-            1); /* encrypt */
+        xmlSecBufferGetData(&(ctx->parentCtx.keyBuffer)), XMLSEC_KW_DES3_KEY_LENGTH,
+        iv, XMLSEC_KW_DES3_IV_LENGTH,
+        in, inSize,
+        out, outSize, outWritten,
+        1); /* encrypt */
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLKWDes3Encrypt", NULL);
         return(-1);

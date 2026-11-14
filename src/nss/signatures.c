@@ -745,7 +745,7 @@ xmlSecNssSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 }
 
 static int
-xmlSecNssSignatureSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
+xmlSecNssSignatureSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq) {
     xmlSecNssSignatureCtxPtr ctx;
 
     xmlSecAssert2(xmlSecNssSignatureCheckId(transform), -1);
@@ -854,6 +854,28 @@ xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
         CK_SIGN_ADDITIONAL_CONTEXT mldsaParam;
         SECItem mldsaParamItem;
         const SECItem* mldsaParamPtr = NULL;
+        unsigned int expectedSignatureLen;
+
+        /* ML-DSA signatures have a fixed length per parameter set
+         * (FIPS 204). A wrong-length signature would otherwise make NSS
+         * fail with an error outside the verification-failure whitelist
+         * below and abort the run with a processing error. Report it up
+         * front as a verification failure, consistent with the EdDSA
+         * pre-check. */
+        if (ctx->alg == SEC_OID_ML_DSA_44) {
+            expectedSignatureLen = ML_DSA_44_SIGNATURE_LEN;
+        } else if (ctx->alg == SEC_OID_ML_DSA_65) {
+            expectedSignatureLen = ML_DSA_65_SIGNATURE_LEN;
+        } else { /* ctx->alg == SEC_OID_ML_DSA_87 */
+            expectedSignatureLen = ML_DSA_87_SIGNATURE_LEN;
+        }
+        if (signature.len != expectedSignatureLen) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
+                             xmlSecTransformGetName(transform),
+                             "signature verification failed");
+            transform->status = xmlSecTransformStatusFail;
+            return(0);
+        }
 
         mldsaDataSize = xmlSecBufferGetSize(&(ctx->dataBuffer));
         XMLSEC_SAFE_CAST_SIZE_TO_UINT(mldsaDataSize, dataItem.len, return(-1), xmlSecTransformGetName(transform));

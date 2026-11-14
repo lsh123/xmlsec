@@ -15,22 +15,26 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/* There are many variations of Windows */
+/* There are many variations of Windows builds: MCVC, Cygwin, MinGW, etc.
+ * In most cases, the checks for WIN32/WIN64 are sufficient but just to
+ * be thorough, we also check for other Windows-specific macros. */
 #if !defined(XMLSEC_WINDOWS)
-
-#if defined(WIN32) || defined(_WIN32) || defined(__CYGWIN__) || defined(__MINGW32__) || defined(__MINGW64__) || defined(WINDOWS) || defined(_WINDOWS) || defined(_MSC_VER)
-#define XMLSEC_WINDOWS 1
-#endif /* defined(WIN32) || defined(_WIN32) || defined(__CYGWIN__) || defined(__MINGW32__) || defined(__MINGW64__) || defined(WINDOWS) || defined(_WINDOWS) || defined(_MSC_VER) */
-
+#    if defined(WIN32) || defined(_WIN32) || defined(_WIN64) || defined(WIN64)
+#         define XMLSEC_WINDOWS 1
+#    elif defined(_MSC_VER)
+#         define XMLSEC_WINDOWS 1
+#    elif defined(__CYGWIN__)
+#         define XMLSEC_WINDOWS 1
+#    elif defined(__MINGW32__) || defined(__MINGW64__)
+#         define XMLSEC_WINDOWS 1
+#    endif /*  */
 #endif /* !defined(XMLSEC_WINDOWS) */
 
-/**
- * The following must be done for the Windows platform to correctly
- * export / import functions from the DLL.
- */
+/* Windows platform REQUIRES export / import functions from the DLL,
+ * for other platforms it is not required. */
 
  /* XMLSEC_EXPORT macro should only be used in the "core" library */
-#if !defined XMLSEC_EXPORT
+#if !defined(XMLSEC_EXPORT)
 #  if defined(XMLSEC_WINDOWS)
      /* if we compile libxmlsec itself: */
 #    if defined(IN_XMLSEC)
@@ -47,8 +51,6 @@ extern "C" {
 #        define XMLSEC_EXPORT extern
 #      endif
 #    endif /* defined(IN_XMLSEC) */
-   /* This holds on all other platforms/compilers, which are easier to
-      handle in regard to this. */
 #  else /* defined(XMLSEC_WINDOWS) */
 #    if defined(__GNUC__) || defined(__clang__)
 #      define XMLSEC_EXPORT __attribute__((visibility("default")))
@@ -56,10 +58,10 @@ extern "C" {
 #      define XMLSEC_EXPORT
 #    endif
 #  endif /* defined(XMLSEC_WINDOWS) */
-#endif /* !defined XMLSEC_EXPORT */
+#endif /* !defined(XMLSEC_EXPORT) */
 
  /* XMLSEC_CRYPTO_EXPORT macro should only be used in the xmlsec-<crypto> libraries */
-#if !defined XMLSEC_CRYPTO_EXPORT
+#if !defined(XMLSEC_CRYPTO_EXPORT)
 #  if defined(XMLSEC_WINDOWS)
      /* if we compile libxmlsec-<crypto> itself: */
 #    if defined(IN_XMLSEC_CRYPTO)
@@ -85,11 +87,11 @@ extern "C" {
 #      define XMLSEC_CRYPTO_EXPORT
 #    endif
 #  endif /* defined(XMLSEC_WINDOWS) */
-#endif /* !defined XMLSEC_CRYPTO_EXPORT */
+#endif /* !defined(XMLSEC_CRYPTO_EXPORT) */
 
 
  /* XMLSEC_EXPORT_VAR macro should only be used in the "core" and xmlsec-<crypto> libraries */
-#if !defined XMLSEC_EXPORT_VAR
+#if !defined(XMLSEC_EXPORT_VAR)
 #  if defined(XMLSEC_WINDOWS)
      /* if we compile libxmlsec itself: */
 #    if defined(IN_XMLSEC)
@@ -122,7 +124,7 @@ extern "C" {
 #      define XMLSEC_EXPORT_VAR extern
 #    endif
 #  endif /* defined(XMLSEC_WINDOWS) */
-#endif /* !defined XMLSEC_EXPORT_VAR */
+#endif /* !defined(XMLSEC_EXPORT_VAR) */
 
 #ifdef __cplusplus
 }

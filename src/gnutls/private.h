@@ -21,7 +21,6 @@
 #include <gnutls/gnutls.h>
 #include <gnutls/x509.h>
 
-#include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
 #include <xmlsec/keys.h>
@@ -108,7 +107,7 @@ int                     xmlSecGnuTLSX509StoreVerifyKey          (xmlSecKeyDataSt
                                                                  xmlSecKeyPtr key,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
 
-gnutls_digest_algorithm_t xmlSecGnuTLSX509GetDigestFromAlgorithm(const xmlChar * href);
+gnutls_digest_algorithm_t xmlSecGnuTLSX509GetDigestFromAlgorithm (const xmlChar * href);
 
 /******************************************************************************
  *

@@ -177,7 +177,10 @@ xmlSecMSCngX509StoreFinalize(xmlSecKeyDataStorePtr store) {
 
 /**
  * @brief Adds @p keyStore to the list of key stores.
-  * @param store the pointer to the X509 key data store instance.
+ * @details Adds @p keyStore to the trusted certs collection. The adopted
+ * store is not closed by xmlSecMSCngX509StoreFinalize(); the caller
+ * retains ownership and is responsible for closing it.
+ * @param store the pointer to the X509 key data store instance.
  * @param keyStore the pointer to keys store.
  * @return 0 on success or a negative value if an error occurs.
  */
@@ -206,7 +209,9 @@ xmlSecMSCngX509StoreAdoptKeyStore(xmlSecKeyDataStorePtr store, HCERTSTORE keySto
 
 /**
  * @brief Adds @p trustedStore to the trusted certs list.
- * @details Adds @p trustedStore to the list of trusted certs stores.
+ * @details Adds @p trustedStore to the list of trusted certs stores. The
+ * adopted store is not closed by xmlSecMSCngX509StoreFinalize(); the
+ * caller retains ownership and is responsible for closing it.
  * @param store the pointer to the X509 key data store instance.
  * @param trustedStore the pointer to certs store.
  * @return 0 on success or a negative value if an error occurs.
@@ -236,7 +241,9 @@ xmlSecMSCngX509StoreAdoptTrustedStore(xmlSecKeyDataStorePtr store, HCERTSTORE tr
 
 /**
  * @brief Adds @p untrustedStore to the untrusted certs list.
- * @details Adds @p untrustedStore to the list of untrusted certs stores.
+ * @details Adds @p untrustedStore to the list of untrusted certs stores. The
+ * adopted store is not closed by xmlSecMSCngX509StoreFinalize(); the
+ * caller retains ownership and is responsible for closing it.
  * @param store the pointer to the X509 key data store instance.
  * @param untrustedStore the pointer to certs store.
  * @return 0 on success or a negative value if an error occurs.
@@ -396,7 +403,7 @@ xmlSecMSCngX509StoreGetKlass(void) {
 /**
  * @brief Adds trusted or untrusted certificate to the store.
  * @details Adds trusted (root) or untrusted certificate to the store.
-  * @param store the pointer to the X509 key data store instance.
+ * @param store the pointer to the X509 key data store instance.
  * @param pCert the pointer to PCCERT_CONTEXT X509 certificate.
  * @param type the certificate type (trusted/untrusted).
  * @return 0 on success or a negative value if an error occurs.
@@ -441,7 +448,7 @@ xmlSecMSCngX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCert,
 
 /**
  * @brief Adds CRL to the store for revocation checking.
-  * @param store the pointer to the X509 key data store instance.
+ * @param store the pointer to the X509 key data store instance.
  * @param crl the pointer to PCCRL_CONTEXT X509 CRL.
  * @return 0 on success or a negative value if an error occurs.
  */
@@ -1321,7 +1328,8 @@ done:
 }
 
 /**
- * @brief Converts time_t into FILETIME timestamp. See xmlSecMSCngX509CertGetTime()
+ * @brief Converts time_t into FILETIME timestamp. See
+ * <https://msdn.microsoft.com/en-us/library/windows/desktop/ms724284(v=vs.85).aspx>
  * for details.
  */
 static int
@@ -1413,7 +1421,7 @@ xmlSecMSCngX509StoreVerifyCertificate(xmlSecMSCngX509StoreCtxPtr ctx, PCCERT_CON
 
 /**
  * @brief Verifies @p key.
-  * @param store the pointer to the X509 key data store instance.
+ * @param store the pointer to the X509 key data store instance.
  * @param key the pointer to key.
  * @param keyInfoCtx the key info context for verification.
  *
@@ -1475,7 +1483,7 @@ xmlSecMSCngX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, xml
 
 /**
  * @brief Verifies @p crl.
-  * @param store the pointer to the X509 key data store instance.
+ * @param store the pointer to the X509 key data store instance.
  * @param crl the CRL to verify.
  * @param keyInfoCtx the key info context for verification parameters.
  *
@@ -1753,7 +1761,7 @@ xmlSecMSCngX509FindCertByIssuerNameAndSerial(HCERTSTORE store, LPTSTR wcIssuerNa
     issuerSerialSize  = xmlSecBnGetSize(issuerSerialBn);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(issuerSerialSize, certInfo.SerialNumber.cbData, return(NULL), NULL);
 
-    /* CASE 1: UTF8, DN */
+    /* CASE 1: UTF8 (CERT_NAME_STR_ENABLE_UTF8_UNICODE_FLAG), DN */
     if (NULL == res) {
         bdata = xmlSecMSCngCertStrToName(dwCertEncodingType,
             wcIssuerName,
@@ -1774,7 +1782,7 @@ xmlSecMSCngX509FindCertByIssuerNameAndSerial(HCERTSTORE store, LPTSTR wcIssuerNa
         }
     }
 
-    /* CASE 2: UTF8, REVERSE DN */
+    /* CASE 2: UTF8 (CERT_NAME_STR_ENABLE_UTF8_UNICODE_FLAG), REVERSE DN */
     if (NULL == res) {
         bdata = xmlSecMSCngCertStrToName(dwCertEncodingType,
             wcIssuerName,
@@ -1795,7 +1803,7 @@ xmlSecMSCngX509FindCertByIssuerNameAndSerial(HCERTSTORE store, LPTSTR wcIssuerNa
         }
     }
 
-    /* CASE 3: UTF8, DN */
+    /* CASE 3: UTF8 (CERT_NAME_STR_FORCE_UTF8_DIR_STR_FLAG), DN */
     if (NULL == res) {
         bdata = xmlSecMSCngCertStrToName(dwCertEncodingType,
             wcIssuerName,
@@ -1816,7 +1824,7 @@ xmlSecMSCngX509FindCertByIssuerNameAndSerial(HCERTSTORE store, LPTSTR wcIssuerNa
         }
     }
 
-    /* CASE 4: UTF8, REVERSE DN */
+    /* CASE 4: UTF8 (CERT_NAME_STR_FORCE_UTF8_DIR_STR_FLAG), REVERSE DN */
     if (NULL == res) {
         bdata = xmlSecMSCngCertStrToName(dwCertEncodingType,
             wcIssuerName,
@@ -2020,7 +2028,7 @@ xmlSecMSCngX509GetFriendlyNameUtf8(PCCERT_CONTEXT cert) {
 
 /**
  * @brief Searches @p store for a certificate that matches given criteria.
-  * @param store the pointer to the X509 key data store instance.
+ * @param store the pointer to the X509 key data store instance.
  * @param subjectName the desired certificate name.
  * @param issuerName the desired certificate issuer name.
  * @param issuerSerial the desired certificate issuer serial number.
@@ -2058,7 +2066,7 @@ xmlSecMSCngX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
 
 /**
  * @brief Searches @p store for a certificate that matches given criteria.
-  * @param store the pointer to the X509 key data store instance.
+ * @param store the pointer to the X509 key data store instance.
  * @param subjectName the desired certificate name.
  * @param issuerName the desired certificate issuer name.
  * @param issuerSerial the desired certificate issuer serial number.
@@ -2166,7 +2174,7 @@ xmlSecMSCngX509FindCertBySubject(HCERTSTORE store, LPTSTR wcSubject,
     xmlSecAssert2(store != NULL, NULL);
     xmlSecAssert2(wcSubject != NULL, NULL);
 
-    /* CASE 1: UTF8, DN */
+    /* CASE 1: UTF8 (CERT_NAME_STR_ENABLE_UTF8_UNICODE_FLAG), DN */
     if(res == NULL) {
         bdata = xmlSecMSCngCertStrToName(dwCertEncodingType,
                     wcSubject,
@@ -2187,7 +2195,7 @@ xmlSecMSCngX509FindCertBySubject(HCERTSTORE store, LPTSTR wcSubject,
         }
     }
 
-    /* CASE 2: UTF8, REVERSE DN */
+    /* CASE 2: UTF8 (CERT_NAME_STR_ENABLE_UTF8_UNICODE_FLAG), REVERSE DN */
     if(res == NULL) {
         bdata = xmlSecMSCngCertStrToName(dwCertEncodingType,
                     wcSubject,
@@ -2209,7 +2217,7 @@ xmlSecMSCngX509FindCertBySubject(HCERTSTORE store, LPTSTR wcSubject,
     }
 
 
-    /* CASE 3: UTF8, DN */
+    /* CASE 3: UTF8 (CERT_NAME_STR_FORCE_UTF8_DIR_STR_FLAG), DN */
     if(res == NULL) {
         bdata = xmlSecMSCngCertStrToName(dwCertEncodingType,
                     wcSubject,
@@ -2230,7 +2238,7 @@ xmlSecMSCngX509FindCertBySubject(HCERTSTORE store, LPTSTR wcSubject,
         }
     }
 
-    /* CASE 4: UTF8, REVERSE DN */
+    /* CASE 4: UTF8 (CERT_NAME_STR_FORCE_UTF8_DIR_STR_FLAG), REVERSE DN */
     if(res == NULL) {
         bdata = xmlSecMSCngCertStrToName(dwCertEncodingType,
                     wcSubject,

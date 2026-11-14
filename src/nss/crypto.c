@@ -971,6 +971,7 @@ xmlSecNssGetInternalKeySlot(void)
  */
 int
 xmlSecNssGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
+    xmlSecByte* data;
     SECStatus rv;
     int len;
     int ret;
@@ -987,8 +988,11 @@ xmlSecNssGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
         return(-1);
     }
 
-    /* get random data */
-    rv = PK11_GenerateRandom((xmlSecByte*)xmlSecBufferGetData(buffer), len);
+    data = xmlSecBufferGetData(buffer);
+    xmlSecAssert2(data != NULL, -1);
+
+    /* generate random data */
+    rv = PK11_GenerateRandom(data, len);
     if(rv != SECSuccess) {
         xmlSecNssError2("PK11_GenerateRandom", NULL, "size=" XMLSEC_SIZE_FMT, size);
         return(-1);

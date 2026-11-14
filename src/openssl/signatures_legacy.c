@@ -98,16 +98,16 @@ static int      xmlSecOpenSSLSignatureLegacyCheckId                (xmlSecTransf
 static int      xmlSecOpenSSLSignatureLegacyInitialize             (xmlSecTransformPtr transform);
 static void     xmlSecOpenSSLSignatureLegacyFinalize               (xmlSecTransformPtr transform);
 static int      xmlSecOpenSSLSignatureLegacySetKeyReq              (xmlSecTransformPtr transform,
-                                                              xmlSecKeyReqPtr keyReq);
+                                                                    xmlSecKeyReqPtr keyReq);
 static int      xmlSecOpenSSLSignatureLegacySetKey                 (xmlSecTransformPtr transform,
-                                                              xmlSecKeyPtr key);
+                                                                    xmlSecKeyPtr key);
 static int      xmlSecOpenSSLSignatureLegacyVerify                 (xmlSecTransformPtr transform,
-                                                                 const xmlSecByte* data,
-                                                                 xmlSecSize dataSize,
-                                                                 xmlSecTransformCtxPtr transformCtx);
+                                                                    const xmlSecByte* data,
+                                                                    xmlSecSize dataSize,
+                                                                    xmlSecTransformCtxPtr transformCtx);
 static int      xmlSecOpenSSLSignatureLegacyExecute                (xmlSecTransformPtr transform,
-                                                                 int last,
-                                                                 xmlSecTransformCtxPtr transformCtx);
+                                                                    int last,
+                                                                    xmlSecTransformCtxPtr transformCtx);
 
 static int
 xmlSecOpenSSLSignatureLegacyCheckId(xmlSecTransformPtr transform) {
@@ -301,6 +301,7 @@ xmlSecOpenSSLSignatureLegacyInitialize(xmlSecTransformPtr transform) {
 
     if(1) {
         xmlSecInvalidTransformError(transform);
+        xmlSecOpenSSLSignatureLegacyFinalize(transform);
         return(-1);
     }
 
@@ -380,7 +381,7 @@ xmlSecOpenSSLSignatureLegacySetKey(xmlSecTransformPtr transform, xmlSecKeyPtr ke
 }
 
 static int
-xmlSecOpenSSLSignatureLegacySetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
+xmlSecOpenSSLSignatureLegacySetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq) {
     xmlSecOpenSSLSignatureLegacyCtxPtr ctx;
 
     xmlSecAssert2(xmlSecOpenSSLSignatureLegacyCheckId(transform), -1);
@@ -948,7 +949,7 @@ xmlSecOpenSSLSignatureLegacyEcdsaVerify(
     xmlSecTransformCtxPtr transformCtx,
     const xmlSecByte* signData,
     xmlSecSize signSize
-){
+) {
     ECDSA_SIG* sig = NULL;
     int ret;
 

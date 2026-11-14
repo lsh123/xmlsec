@@ -194,9 +194,9 @@ xmlSecGnuTLSKeyDataX509GetCerts(xmlSecKeyDataPtr data) {
 }
 
 /**
- * @brief Gets the list of crls from X509 key data.
+ * @brief Gets the list of CRLs from X509 key data.
  * @param data the pointer to X509 key data.
- * @return a borrowed pointer to the list of crls in @p data; the caller must NOT free it.
+ * @return a borrowed pointer to the list of CRLs in @p data; the caller must NOT free it.
  */
 xmlSecPtrListPtr
 xmlSecGnuTLSKeyDataX509GetCrls(xmlSecKeyDataPtr data) {
@@ -367,10 +367,10 @@ xmlSecGnuTLSKeyDataX509GetCertsSize(xmlSecKeyDataPtr data) {
 }
 
 /**
- * @brief Adds crl to the X509 key data.
+ * @brief Adds CRL to the X509 key data.
  * @details On success, ownership of @p crl transfers to xmlsec; on failure the caller retains ownership.
  * @param data the pointer to X509 key data.
- * @param crl the pointer to GnuTLS X509 crl.
+ * @param crl the pointer to GnuTLS X509 CRL.
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -395,13 +395,12 @@ xmlSecGnuTLSKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, gnutls_x509_crl_t crl) {
 }
 
 /**
- * @brief Gets a crl from X509 key data.
+ * @brief Gets a CRL from X509 key data.
  * @param data the pointer to X509 key data.
- * @param pos the desired crl position.
+ * @param pos the desired CRL position.
  *
  *
- * @return the pointer to crl or NULL if @p pos is larger than the
- * number of crls in @p data or an error occurs.
+ * @return a borrowed pointer to the CRL; the caller must NOT free it.
  */
 gnutls_x509_crl_t
 xmlSecGnuTLSKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {
@@ -416,9 +415,9 @@ xmlSecGnuTLSKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {
 }
 
 /**
- * @brief Gets the number of crls in @p data.
+ * @brief Gets the number of CRLs in @p data.
  * @param data the pointer to X509 key data.
- * @return the number of crls in @p data.
+ * @return the number of CRLs in @p data.
  */
 xmlSecSize
 xmlSecGnuTLSKeyDataX509GetCrlsSize(xmlSecKeyDataPtr data) {

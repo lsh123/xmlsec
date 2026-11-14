@@ -316,9 +316,9 @@ static int xmlSecMSCryptoSignatureSetKeyReq(xmlSecTransformPtr transform,  xmlSe
 static int xmlSecMSCryptoSignatureGetExpectedSize(xmlSecTransformPtr transform,
                                                   HCRYPTKEY hKey,
                                                   xmlSecSize* expectedSize) {
+#ifndef XMLSEC_NO_RSA
     DWORD dwKeyLen;
     DWORD dwKeyLenSize;
-#ifndef XMLSEC_NO_RSA
     int isRsaTransform = 0;
 #endif /* XMLSEC_NO_RSA */
 
@@ -442,7 +442,7 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
     ret = xmlSecBufferInitialize(&tmp, dataSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferInitialize", xmlSecTransformGetName(transform),
-            "dataSize=" XMLSEC_SIZE_FMT,  dataSize);
+            "dataSize=" XMLSEC_SIZE_FMT, dataSize);
         goto done;
     }
     tmp_buf_initialized = 1;

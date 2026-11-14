@@ -203,7 +203,7 @@ typedef unsigned int                            xmlSecKeyDataType;
  *
  *****************************************************************************/
 /**
- * @brief The key data format (binary, der, pem, etc.).
+ * @brief The key data format (binary, DER, PEM, etc.).
  */
 typedef enum {
     xmlSecKeyDataFormatUnknown = 0,  /**< the key data format is unknown. */

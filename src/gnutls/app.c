@@ -1066,7 +1066,7 @@ xmlSecGnuTLSAppKeysMngrCertLoadMemory(
 
 /**
  * @brief Reads CRLs from a file and adds to the store.
- * @details Reads crls from @p filename and adds to the list of crls in @p mngr.
+ * @details Reads CRLs from @p filename and adds to the list of CRLs in @p mngr.
  *
  * @param mngr the keys manager.
  * @param filename the CRL file.

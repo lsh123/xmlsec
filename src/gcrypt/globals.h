@@ -75,7 +75,7 @@
                     (errorFunction),                                        \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,                          \
                     "gcrypt error: %u: %s: %s",                             \
-                    (_gcrypt_errCode),                                      \
+                    (unsigned int)(_gcrypt_errCode),                        \
                     xmlSecErrorsSafeString(_gcrypt_source),                 \
                     xmlSecErrorsSafeString(_gcrypt_message)                 \
         );                                                                  \
@@ -87,7 +87,7 @@
  * @param errorFunction the failed function name.
  * @param errCode the GCrypt error code.
  * @param errorObject the specific error object (e.g. transform, key data, etc).
- * @param msg the extra message.
+ * @param msg the extra message (must be a string literal, it is concatenated with the backend error suffix at compile time).
  * @param param the extra message param.
  */
 #define xmlSecGCryptError2(errorFunction, errCode, errorObject, msg, param) \
@@ -101,7 +101,7 @@
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,                          \
                     msg "; gcrypt error: %u: %s: %s",                       \
                     (param),                                                \
-                    (_gcrypt_errCode),                                      \
+                    (unsigned int)(_gcrypt_errCode),                        \
                     xmlSecErrorsSafeString(_gcrypt_source),                 \
                     xmlSecErrorsSafeString(_gcrypt_message)                 \
         );                                                                  \

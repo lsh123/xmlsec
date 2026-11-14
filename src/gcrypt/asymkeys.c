@@ -353,6 +353,13 @@ xmlSecGCryptAsymKeyDataGetSize(xmlSecKeyDataPtr data) {
  * helper functions
  *
  *****************************************************************************/
+/**
+ * @brief Duplicates a GCrypt key S-expression.
+ * @details Creates a new S-expression with the same content as @p pKey by
+ * serializing it to an S-expression string and parsing that string again.
+ * @param pKey the pointer to the GCrypt key S-expression to duplicate.
+ * @return pointer to the duplicated S-expression or NULL if an error occurs.
+ */
 static gcry_sexp_t
 xmlSecGCryptAsymSExpDup(gcry_sexp_t pKey) {
     gcry_sexp_t res = NULL;
@@ -470,10 +477,10 @@ xmlSecGCryptSetSExpTokValue(const gcry_sexp_t sexp, const char * tok,
     }
 
     /* allocate the output buffer */
-    ret = xmlSecBufferSetMaxSize(buf, writtenSize + 1);
+    ret = xmlSecBufferSetMaxSize(buf, writtenSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetMaxSize", NULL,
-            "size=" XMLSEC_SIZE_FMT, (writtenSize + 1));
+            "size=" XMLSEC_SIZE_FMT, writtenSize);
         goto done;
     }
 
@@ -1706,7 +1713,7 @@ typedef struct _xmlSecGCryptKeyDataEcCurveOidToName {
    keys it creates (e.g. "NIST P-256" for secp256r1/prime256v1), so that both
    the keys constructed by this back-end and the libgcrypt-created keys can be
    written to XML. */
-static xmlSecGCryptKeyDataEcCurveOidToName g_xmlSecGCryptKeyDataEcCurveOidToName[] = {
+static const xmlSecGCryptKeyDataEcCurveOidToName g_xmlSecGCryptKeyDataEcCurveOidToName[] = {
     { "prime192v1",      "1.2.840.10045.3.1.1" },
     { "prime256v1",      "1.2.840.10045.3.1.7" },
     { "secp192r1",       "1.3.132.0.32" },
@@ -1888,7 +1895,7 @@ xmlSecGCryptKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyV
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcId), -1);
     xmlSecAssert2(ecValue != NULL, -1);
 
-    /* find the private or public key */
+    /* get the public key */
     s_pub_key = xmlSecGCryptKeyDataEcGetPublicKey(data);
     if(s_pub_key == NULL) {
         xmlSecInternalError("xmlSecGCryptKeyDataEcGetPublicKey", xmlSecKeyDataKlassGetName(id));
@@ -1908,7 +1915,7 @@ xmlSecGCryptKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyV
     }
 
     /* curve */
-    curveName = xmlSecGCryptGetStringFromSExp(s_ecdsa,  "curve");
+    curveName = xmlSecGCryptGetStringFromSExp(s_ecdsa, "curve");
     if(curveName == NULL) {
         xmlSecInternalError("xmlSecGCryptGetStringFromSExp(curve)", xmlSecKeyDataKlassGetName(id));
         goto done;

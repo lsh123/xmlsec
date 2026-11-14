@@ -240,7 +240,7 @@ xmlSecNssAeadCipherFinalize(xmlSecTransformPtr transform) {
 }
 
 static int
-xmlSecNssAeadCipherSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
+xmlSecNssAeadCipherSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq) {
     xmlSecNssAeadCipherCtxPtr ctx;
 
     xmlSecAssert2(xmlSecNssAeadCipherCheckId(transform), -1);
@@ -311,7 +311,7 @@ xmlSecNssAeadCipherGetKey(xmlSecNssAeadCipherCtxPtr ctx, CK_ATTRIBUTE_TYPE opera
     xmlSecBufferPtr keyBuf;
     xmlSecSize keySize;
     xmlSecByte* keyData;
-    SECItem key_item = { siBuffer, NULL, 0 };
+    SECItem keyItem = { siBuffer, NULL, 0 };
     PK11SlotInfo *slot = NULL;
     PK11SymKey *symKey = NULL;
 
@@ -330,9 +330,9 @@ xmlSecNssAeadCipherGetKey(xmlSecNssAeadCipherCtxPtr ctx, CK_ATTRIBUTE_TYPE opera
     xmlSecAssert2(keyData != NULL, NULL);
 
     /* Import key into NSS. */
-    key_item.type   = siBuffer;
-    key_item.data   = keyData;
-    XMLSEC_SAFE_CAST_SIZE_TO_UINT(ctx->keySize, key_item.len, return(NULL), NULL);
+    keyItem.type   = siBuffer;
+    keyItem.data   = keyData;
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(ctx->keySize, keyItem.len, return(NULL), NULL);
 
     slot = PK11_GetBestSlot(ctx->mechanism, NULL);
     if(slot == NULL) {
@@ -340,7 +340,7 @@ xmlSecNssAeadCipherGetKey(xmlSecNssAeadCipherCtxPtr ctx, CK_ATTRIBUTE_TYPE opera
         return(NULL);
     }
 
-    symKey = PK11_ImportSymKey(slot, ctx->mechanism, PK11_OriginUnwrap, operation, &key_item, NULL);
+    symKey = PK11_ImportSymKey(slot, ctx->mechanism, PK11_OriginUnwrap, operation, &keyItem, NULL);
     if(symKey == NULL) {
         xmlSecNssError("PK11_ImportSymKey", NULL);
         PK11_FreeSlot(slot);

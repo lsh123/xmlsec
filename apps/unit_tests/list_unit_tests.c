@@ -26,7 +26,7 @@ static int g_listItemDestroyCount = 0;
 static int g_listItemDebugDumpCount = 0;
 static int g_listItemDebugXmlDumpCount = 0;
 
-static xmlSecListTestItem* test_list_item_create                 (int value);
+static xmlSecListTestItem* test_list_item_create                (int value);
 static xmlSecPtr          test_list_item_duplicate              (xmlSecPtr ptr);
 static void               test_list_item_destroy                (xmlSecPtr ptr);
 static void               test_list_item_debug_dump             (xmlSecPtr ptr, FILE* output);

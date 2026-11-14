@@ -36,11 +36,11 @@
  * DES KW implementation
  *
  *****************************************************************************/
-static int       xmlSecGnuTLSKWDes3GenerateRandom               (xmlSecTransformPtr transform,
+static int      xmlSecGnuTLSKWDes3GenerateRandom               (xmlSecTransformPtr transform,
                                                                  xmlSecByte * out,
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize * outWritten);
-static int       xmlSecGnuTLSKWDes3Sha1                         (xmlSecTransformPtr transform,
+static int      xmlSecGnuTLSKWDes3Sha1                         (xmlSecTransformPtr transform,
                                                                  const xmlSecByte * in,
                                                                  xmlSecSize inSize,
                                                                  xmlSecByte * out,
@@ -243,12 +243,6 @@ xmlSecGnuTLSKWDes3Execute(xmlSecTransformPtr transform, int last,
     return(0);
 }
 
-/******************************************************************************
- *
- * DES KW implementation
- *
- *****************************************************************************/
-
 static int
 xmlSecGnuTLSKWDes3Sha1(xmlSecTransformPtr transform,
     const xmlSecByte * in, xmlSecSize inSize,
@@ -320,11 +314,11 @@ xmlSecGnuTLSKWDes3BlockEncrypt(xmlSecTransformPtr transform,
     xmlSecAssert2(xmlSecBufferGetSize(&(ctx->keyBuffer)) >= XMLSEC_KW_DES3_KEY_LENGTH, -1);
 
     ret = xmlSecGnuTLSKWDes3Encrypt(
-            xmlSecBufferGetData(&(ctx->keyBuffer)), XMLSEC_KW_DES3_KEY_LENGTH,
-            iv, XMLSEC_KW_DES3_IV_LENGTH,
-            in, inSize,
-            out, outSize, outWritten,
-            1); /* encrypt */
+        xmlSecBufferGetData(&(ctx->keyBuffer)), XMLSEC_KW_DES3_KEY_LENGTH,
+        iv, XMLSEC_KW_DES3_IV_LENGTH,
+        in, inSize,
+        out, outSize, outWritten,
+        1); /* encrypt */
     if(ret < 0) {
         xmlSecInternalError("xmlSecGnuTLSKWDes3Encrypt", xmlSecTransformGetName(transform));
         return(-1);

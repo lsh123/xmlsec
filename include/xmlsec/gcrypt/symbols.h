@@ -41,7 +41,7 @@ extern "C" {
 #define xmlSecKeyDataDsaId                      xmlSecGCryptKeyDataDsaId
 #define xmlSecKeyDataEcId                       xmlSecGCryptKeyDataEcId
 #define xmlSecKeyDataEcdsaId                    xmlSecGCryptKeyDataEcId
-/** @brief Deprecated: use xmlSecKeyDataEcdsaId instead. Retained for source compatibility with the name released in 1.3.12. */
+/** @brief Deprecated: use xmlSecKeyDataEcdsaId instead. Retained for source compatibility with the name released in 1.3.3. */
 #define xmlSecKeyDataEcdId                      xmlSecGCryptKeyDataEcId
 #define xmlSecKeyDataHmacId                     xmlSecGCryptKeyDataHmacId
 #define xmlSecKeyDataRsaId                      xmlSecGCryptKeyDataRsaId

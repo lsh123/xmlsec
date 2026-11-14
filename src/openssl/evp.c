@@ -3006,7 +3006,7 @@ xmlSecOpenSSLKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKey
 
     /* the point is encoded as z||x||y, where z is the octet 0x04  */
     pubkeySize = EC_POINT_point2oct(group, pubkey, POINT_CONVERSION_UNCOMPRESSED, NULL, 0, NULL);
-    if(pubkeySize <= 0) {
+    if(pubkeySize == 0) {
         xmlSecOpenSSLError("EC_POINT_point2oct(1)", xmlSecKeyDataGetName(data));
         return(-1);
     }
@@ -3021,7 +3021,7 @@ xmlSecOpenSSLKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKey
     xmlSecAssert2(pubkeyData != NULL, -1);
 
     pubkeySize = EC_POINT_point2oct(group, pubkey, POINT_CONVERSION_UNCOMPRESSED, pubkeyData, pubkeySize, NULL);
-    if(pubkeySize <= 0) {
+    if(pubkeySize == 0) {
         xmlSecOpenSSLError("EC_POINT_point2oct(2)", xmlSecKeyDataGetName(data));
         return(-1);
     }

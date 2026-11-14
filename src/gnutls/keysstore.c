@@ -61,8 +61,8 @@ static xmlSecKeyStoreKlass xmlSecGnuTLSKeysStoreKlass = {
 };
 
 /**
- * @brief The GnuTLS list based keys store klass.
- * @return GnuTLS list based keys store klass.
+ * @brief The GnuTLS keys store klass.
+ * @return GnuTLS keys store klass.
  */
 xmlSecKeyStoreId
 xmlSecGnuTLSKeysStoreGetKlass(void) {
@@ -95,6 +95,9 @@ xmlSecGnuTLSKeysStoreFinalize(xmlSecKeyStorePtr store) {
     xmlSecAssert(xmlSecKeyStoreCheckId(store, xmlSecGnuTLSKeysStoreId));
 
     simplekeystore = xmlSecGnuTLSKeysStoreGetCtx(store);
+    /* (*simplekeystore) may be NULL if Initialize failed (e.g. OOM in
+     * xmlSecKeyStoreCreate); xmlSecKeyStoreCreate still calls finalize
+     * in that case, so guard against it. */
     if((simplekeystore != NULL) && (*simplekeystore != NULL)) {
         xmlSecKeyStoreDestroy(*simplekeystore);
         *simplekeystore = NULL;
@@ -162,7 +165,7 @@ xmlSecGnuTLSKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509D
 
 /**
  * @brief Adds @p key to the @p store.
- * @param store the pointer to GnuTLS keys store.
+ * @param store the pointer to the GnuTLS keys store.
  * @param key the pointer to key.
  * @return 0 on success or a negative value if an error occurs.
  */
@@ -182,7 +185,7 @@ xmlSecGnuTLSKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
 
 /**
  * @brief Reads keys from an XML file.
- * @param store the pointer to GnuTLS keys store.
+ * @param store the pointer to the GnuTLS keys store.
  * @param uri the filename.
  * @param keysMngr the pointer to associated keys manager.
  * @return 0 on success or a negative value if an error occurs.
@@ -190,6 +193,9 @@ xmlSecGnuTLSKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
 int
 xmlSecGnuTLSKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
                             xmlSecKeysMngrPtr keysMngr XMLSEC_ATTRIBUTE_UNUSED) {
+    /* xmlSecSimpleKeysStoreLoad_ex defers the store id check to the adopt
+     * callback, so a file with no keys would succeed even for a store of
+     * the wrong klass; validate the id up front like the other entry points */
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecGnuTLSKeysStoreId), -1);
 
     return(xmlSecSimpleKeysStoreLoad_ex(store, uri, keysMngr, xmlSecGnuTLSKeysStoreAdoptKey));
@@ -197,7 +203,7 @@ xmlSecGnuTLSKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
 
 /**
  * @brief Writes keys from @p store to an XML file.
- * @param store the pointer to GnuTLS keys store.
+ * @param store the pointer to the GnuTLS keys store.
  * @param filename the filename.
  * @param type the saved keys type (public, private, ...).
  * @return 0 on success or a negative value if an error occurs.

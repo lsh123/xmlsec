@@ -433,7 +433,7 @@ xmlSecKWDes3Decode(
         xmlSecInternalError("kwDes3Id->decrypt", NULL);
         goto done;
     }
-    if (outWritten2 < XMLSEC_KW_DES3_IV_LENGTH) {
+    if(outWritten2 < XMLSEC_KW_DES3_IV_LENGTH) {
         xmlSecInvalidSizeLessThanError("kwDes3Id->decrypt(iv)", outWritten2, XMLSEC_KW_DES3_IV_LENGTH, NULL);
         goto done;
     } else if(outWritten2 > tmpSize) {
@@ -460,7 +460,7 @@ xmlSecKWDes3Decode(
         xmlSecInternalError("kwDes3Id->decrypt", NULL);
         goto done;
     }
-    if (outWritten2 < XMLSEC_KW_DES3_BLOCK_LENGTH) {
+    if(outWritten2 < XMLSEC_KW_DES3_BLOCK_LENGTH) {
         xmlSecInvalidSizeLessThanError("kwDes3Id->decrypt(block)",
             outWritten2, XMLSEC_KW_DES3_BLOCK_LENGTH, NULL);
         goto done;
@@ -518,7 +518,7 @@ xmlSecKWDes3BufferReverse(xmlSecByte *buf, xmlSecSize size)
         (*p) = (*buf);
         (*buf) = ch;
     }
-    return (0);
+    return(0);
 }
 #endif /* XMLSEC_NO_DES */
 

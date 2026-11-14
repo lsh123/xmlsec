@@ -261,8 +261,10 @@ xmlSecMSCryptoKeyDataX509AdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
  * @param data the pointer to X509 key data.
  * @param pos the desired certificate position.
  *
- * @return the pointer to certificate or NULL if @p pos is larger than the
- * number of certificates in @p data or an error occurs.
+ * @return the pointer to certificate or NULL if @p pos is greater than or
+ * equal to the number of certificates in @p data or an error occurs. The
+ * returned context must be freed with CertFreeCertificateContext() and is
+ * invalidated once @p data is finalized (the internal store is closed).
  */
 PCCERT_CONTEXT
 xmlSecMSCryptoKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
@@ -348,8 +350,10 @@ xmlSecMSCryptoKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, PCCRL_CONTEXT crl) {
  * @param data the pointer to X509 key data.
  * @param pos the desired CRL position.
  *
- * @return the pointer to CRL or NULL if @p pos is larger than the
- * number of CRLs in @p data or an error occurs.
+ * @return the pointer to CRL or NULL if @p pos is greater than or equal to
+ * the number of CRLs in @p data or an error occurs. The returned context
+ * must be freed with CertFreeCRLContext() and is invalidated once @p data
+ * is finalized (the internal store is closed).
  */
 PCCRL_CONTEXT
 xmlSecMSCryptoKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {

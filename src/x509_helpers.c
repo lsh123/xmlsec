@@ -615,9 +615,18 @@ xmlSecKeyX509DataValueXmlReadIssuerSerial(xmlSecKeyX509DataValuePtr x509Value, x
         return(-1);
     }
     x509Value->issuerName = xmlSecGetNodeContentAndTrim(cur);
-    if((x509Value->issuerName == NULL) || (xmlSecIsEmptyString(x509Value->issuerName) == 1)) {
-        xmlSecInvalidNodeContentError(cur, NULL, "empty");
+    if(x509Value->issuerName == NULL) {
+        xmlSecInternalError("xmlSecGetNodeContentAndTrim", NULL);
         return(-1);
+    }
+    if(xmlSecIsEmptyString(x509Value->issuerName) == 1) {
+        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
+            xmlSecInvalidNodeContentError(cur, NULL, "empty");
+            return(-1);
+        }
+        /* intentionally ignored, issuerName stays NULL */
+        xmlFree(x509Value->issuerName);
+        x509Value->issuerName = NULL;
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
@@ -627,9 +636,18 @@ xmlSecKeyX509DataValueXmlReadIssuerSerial(xmlSecKeyX509DataValuePtr x509Value, x
         return(-1);
     }
     x509Value->issuerSerial = xmlSecGetNodeContentAndTrim(cur);
-    if((x509Value->issuerSerial == NULL) || (xmlSecIsEmptyString(x509Value->issuerSerial) == 1)) {
-        xmlSecInvalidNodeContentError(cur, NULL, "empty");
+    if(x509Value->issuerSerial == NULL) {
+        xmlSecInternalError("xmlSecGetNodeContentAndTrim", NULL);
         return(-1);
+    }
+    if(xmlSecIsEmptyString(x509Value->issuerSerial) == 1) {
+        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
+            xmlSecInvalidNodeContentError(cur, NULL, "empty");
+            return(-1);
+        }
+        /* intentionally ignored, issuerSerial stays NULL */
+        xmlFree(x509Value->issuerSerial);
+        x509Value->issuerSerial = NULL;
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
@@ -1472,13 +1490,13 @@ done:
  * the most-significant bit is set, per RFC 5280).
  * @param str the decimal string representation of the serial number.
  * @param res the output buffer for the DER-encoded big-endian bytes.
- * @param resSize the size of @p res in bytes (must be >= XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES).
+ * @param resSize the size of @p res in bytes (must be >= XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES + 1).
  * @param written the number of bytes written to @p res.
  * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecX509SerialNumberRead(const xmlChar *str, xmlSecByte *res, xmlSecSize resSize, xmlSecSize *written) {
-    unsigned char buf[XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES];
+    unsigned char buf[XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES + 1];
     size_t start;
     size_t len;
     size_t idx;
@@ -1487,7 +1505,6 @@ xmlSecX509SerialNumberRead(const xmlChar *str, xmlSecByte *res, xmlSecSize resSi
 
     xmlSecAssert2(str != NULL, -1);
     xmlSecAssert2(res != NULL, -1);
-    xmlSecAssert2(resSize >= XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES, -1);
     xmlSecAssert2(written != NULL, -1);
 
     /* reject empty string */
@@ -1510,6 +1527,8 @@ xmlSecX509SerialNumberRead(const xmlChar *str, xmlSecByte *res, xmlSecSize resSi
         return(-1);
     }
 
+    /* buf[0] is reserved for the DER sign prefix; the value occupies
+     * buf[1..sizeof(buf)-1], i.e. at most XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES bytes */
     memset(buf, 0, sizeof(buf));
     start = sizeof(buf) - 1;
 
@@ -1532,7 +1551,9 @@ xmlSecX509SerialNumberRead(const xmlChar *str, xmlSecByte *res, xmlSecSize resSi
         }
 
         while(carry > 0U) {
-            if(start == 0U) {
+            /* a carry out of the value region means the minimal representation
+             * needs one more byte, i.e. the value is >= 2^160 */
+            if(start == 1U) {
                 xmlSecInvalidDataError("integer value is too large", NULL);
                 return(-1);
             }
@@ -1563,6 +1584,7 @@ xmlSecX509SerialNumberRead(const xmlChar *str, xmlSecByte *res, xmlSecSize resSi
     xmlSecAssert2(start < sizeof(buf), -1);
     len = sizeof(buf) - start;
     xmlSecAssert2(len > 0, -1);
+    xmlSecAssert2(len <= resSize, -1);
 
     memcpy(res, buf + start, len);
     (*written) = (xmlSecSize)len;

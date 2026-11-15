@@ -586,6 +586,9 @@ xmlSecTransformCtxReset(xmlSecTransformCtxPtr ctx) {
         xmlSecTransformDestroy(transform);
     }
     ctx->first = ctx->last = NULL;
+
+    /* the parent key info context belongs to the caller and must not survive a reset */
+    ctx->parentKeyInfoCtx = NULL;
 }
 
 /**

@@ -3740,7 +3740,6 @@ xmlSecAppGetOutputFilename(const char* inputFileName, const char* outputFileName
     size_t resSize;
     char* res = NULL;
 #if !defined(_MSC_VER)
-    const char* tmp = NULL;
     char* tmp2;
 #else /* !defined(_MSC_VER) */
     errno_t err;
@@ -3800,11 +3799,7 @@ xmlSecAppGetOutputFilename(const char* inputFileName, const char* outputFileName
 
     /* input filename */
 #if !defined(_MSC_VER)
-    tmp = strcat(res, inputBasename);
-    if(tmp == NULL) {
-        fprintf(stderr, "Error: failed to append input basename\n");
-        goto done;
-    }
+    (void)strcat(res, inputBasename);
 #else /* !defined(_MSC_VER) */
     err = strcat_s(res, resSize, inputBasename);
     if(err != 0) {
@@ -3815,11 +3810,7 @@ xmlSecAppGetOutputFilename(const char* inputFileName, const char* outputFileName
 
     /* suffix */
 #if !defined(_MSC_VER)
-    tmp = strcat(res, outputFileNameTmplPointer);
-    if(tmp == NULL) {
-        fprintf(stderr, "Error: failed to append output template suffix\n");
-        goto done;
-    }
+    (void)strcat(res, outputFileNameTmplPointer);
 #else /* !defined(_MSC_VER) */
     err = strcat_s(res, resSize, outputFileNameTmplPointer);
     if(err != 0) {

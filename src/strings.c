@@ -303,7 +303,7 @@ const xmlChar xmlSecNodeDHP[]                   = "P";
 const xmlChar xmlSecNodeDHQ[]                   = "Q";
 const xmlChar xmlSecNodeDHGenerator[]           = "Generator";
 const xmlChar xmlSecNodeDHPublic[]              = "Public";
-const xmlChar xmlSecNodeDHSeed[]                = "Seed";
+const xmlChar xmlSecNodeDHSeed[]                = "seed";
 const xmlChar xmlSecNodeDHPgenCounter[]         = "pgenCounter";
 
 /******************************************************************************

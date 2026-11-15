@@ -803,9 +803,24 @@ xmlSecReplaceNodeAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr* repl
     return(0);
 }
 
+
+/* returns 1 if node is a descendant of potentialAncestor, 0 otherwise */
+static int
+xmlSecIsDescendant(xmlNodePtr node, xmlNodePtr potentialAncestor) {
+    xmlNodePtr cur;
+
+    for(cur = node->parent; cur != NULL; cur = cur->parent) {
+        if(cur == potentialAncestor) {
+            return(1);
+        }
+    }
+    return(0);
+}
+
 /**
  * @brief Swaps the content of @p node and @p newNode.
  * @details Swaps the content of @p node and @p newNode.
+ * The function returns an error if one node is a descendant of the other.
  *
  * Note: on error, the state of the @p newNode is undefined and the caller
  * should not make any assumptions about it. The recommended way is to
@@ -823,6 +838,7 @@ xmlSecReplaceContent(xmlNodePtr node, xmlNodePtr newNode) {
 /**
  * @brief Swaps the content of @p node and @p newNode, optionally returning replaced nodes.
  * @details Swaps the content of @p node and @p newNode, optionally returning replaced nodes.
+ * The function returns an error if one node is a descendant of the other.
  *
  * Note: on error, the state of the @p newNode is undefined and the caller
  * should not make any assumptions about it. The recommended way is to
@@ -838,6 +854,16 @@ xmlSecReplaceContentAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr *r
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(newNode != NULL, -1);
     xmlSecAssert2(node != newNode, -1);
+
+    /* neither node nor newNode may be a descendant of the other */
+    if(xmlSecIsDescendant(node, newNode)) {
+        xmlSecInvalidDataError("node is a descendant of newNode", NULL);
+        return(-1);
+    }
+    if(xmlSecIsDescendant(newNode, node)) {
+        xmlSecInvalidDataError("newNode is a descendant of node", NULL);
+        return(-1);
+    }
 
     /* return the old nodes if requested */
     if(replaced != NULL) {
@@ -1818,7 +1844,7 @@ xmlSecQName2BitMaskGetInfo(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitMask m
  * @param qnameLocalPart the qname LocalPart value.
  * @param qnameHref the qname Href value.
  * @param mask the pointer to result mask.
- * @return 0 on success or a negative value if an error occurs.
+ * @return 0 on success (an unknown qname results in a zero mask) or a negative value if an error occurs.
  */
 int
 xmlSecQName2BitMaskGetBitMask(
@@ -1843,6 +1869,7 @@ xmlSecQName2BitMaskGetBitMask(
         }
     }
 
+    /* unknown qname values should return an error */
     return(-1);
 }
 

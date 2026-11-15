@@ -421,12 +421,14 @@ xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(xmlSecKeysMngrPtr mngr, const char* k
         return(-1);
     }
 
-    ret = xmlSecKeySetName(key, BAD_CAST name);
-    if(ret < 0) {
-        fprintf(stderr, "Error: xmlSecKeySetName failed: name=%s\n",
-                xmlSecErrorsSafeString(name));
-        xmlSecKeyDestroy(key);
-        return(-1);
+    if(name != NULL) {
+        ret = xmlSecKeySetName(key, BAD_CAST name);
+        if(ret < 0) {
+            fprintf(stderr, "Error: xmlSecKeySetName failed: name=%s\n",
+                    xmlSecErrorsSafeString(name));
+            xmlSecKeyDestroy(key);
+            return(-1);
+        }
     }
 
     /* finally add it to keys manager */
@@ -517,13 +519,15 @@ xmlSecAppCryptoKeyGenerate(const char* keyKlassAndSize, const char* name, xmlSec
         return(NULL);
     }
 
-    ret = xmlSecKeySetName(key, BAD_CAST name);
-    if(ret < 0) {
-        fprintf(stderr, "Error: xmlSecKeySetName failed: name=%s\n",
-                xmlSecErrorsSafeString(name));
-        xmlSecKeyDestroy(key);
-        xmlFree(buf);
-        return(NULL);
+    if(name != NULL) {
+        ret = xmlSecKeySetName(key, BAD_CAST name);
+        if(ret < 0) {
+            fprintf(stderr, "Error: xmlSecKeySetName failed: name=%s\n",
+                    xmlSecErrorsSafeString(name));
+            xmlSecKeyDestroy(key);
+            xmlFree(buf);
+            return(NULL);
+        }
     }
 
     xmlFree(buf);

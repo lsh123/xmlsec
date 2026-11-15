@@ -26,6 +26,7 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size);
 #include <xmlsec/keys.h>
 #include <xmlsec/keysdata.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/parser.h>
 
 #include <xmlsec/openssl/app.h>
 #include <xmlsec/openssl/crypto.h>
@@ -61,6 +62,8 @@ static void ignore_xmlsec_error(const char* file, int line, const char* func,
 }
 
 static int do_init(void) {
+    int options;
+
     xmlInitParser();
 
     if (xmlSecInit() < 0) {
@@ -83,6 +86,16 @@ static int do_init(void) {
 
     xmlSetGenericErrorFunc(NULL, &ignore_error);
     xmlSecErrorsSetCallback(&ignore_xmlsec_error);
+
+    /* xmlSecParseMemory() parses with the process-wide default options, which
+     * include XML_PARSE_HUGE (see src/parser.c). Fuzz inputs are small, so the
+     * relaxation is unnecessary; on libxml2 < 2.13.0 it disables the parser
+     * depth limit, risking stack exhaustion on deeply nested fuzz input. */
+    options = xmlSecParserGetDefaultOptions();
+    options &= ~XML_PARSE_HUGE;
+    options |= XML_PARSE_PEDANTIC | XML_PARSE_NONET;
+    xmlSecParserSetDefaultOptions(options);
+
     return 0;
 }
 

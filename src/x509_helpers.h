@@ -73,11 +73,11 @@ XMLSEC_EXPORT int               xmlSecKeyDataX509XmlWrite               (xmlSecK
                                                                          void* writeFuncContext);
 
 
-#define XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES     20  /* RFC 5280: max 20-octet DER INTEGER content (positive value, MSB=0 => max ~159-bit) */
-#define XMLSEC_X509_MAX_SERIAL_NUMBER_CHARS     50  /* RFC 5280: conservative bound covering the full 160-bit range: ceil(20 * log10(256)) = 49 decimal digits + 1 for the NUL terminator (the actual max is 48 digits since the MSB is always 0) */
+#define XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES     20  /* RFC 5280: a serial number is a positive integer of at most 20 octets (up to 2^160-1); with the DER sign prefix the encoded form is up to 21 octets */
+#define XMLSEC_X509_MAX_SERIAL_NUMBER_CHARS     50  /* RFC 5280: conservative bound covering the full 160-bit range: ceil(20 * log10(256)) = 49 decimal digits + 1 for the NUL terminator */
 
-#define XMLSEC_X509_VALUE_TYPE_UTF8_STRING          0  /* the value is a string (empty, quoted, or plain) */
-#define XMLSEC_X509_VALUE_TYPE_OCTET_STRING         1  /* the value is a hex-encoded octet string (prefixed with '#') */
+#define XMLSEC_X509_VALUE_TYPE_UTF8_STRING      0  /* the value is a string (empty, quoted, or plain) */
+#define XMLSEC_X509_VALUE_TYPE_OCTET_STRING     1  /* the value is a hex-encoded octet string (prefixed with '#') */
 
 typedef int             (*xmlSecX509NameReadCallback)   (const xmlSecByte* name,
                                                          const xmlSecByte* value,

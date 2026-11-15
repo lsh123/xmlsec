@@ -434,14 +434,9 @@ xmlSecKeyDataBinaryValueBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
  */
 void
 xmlSecKeyDataBinaryValueDebugDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecBufferPtr buffer;
-
     xmlSecAssert(xmlSecKeyDataIsValid(data));
     xmlSecAssert(xmlSecKeyDataCheckSize(data, xmlSecKeyDataBinarySize));
     xmlSecAssert(output != NULL);
-
-    buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
-    xmlSecAssert(buffer != NULL);
 
     /* print only size, everything else is sensitive */
     fprintf(output, "=== %s: size=" XMLSEC_SIZE_FMT "\n",
@@ -457,14 +452,9 @@ xmlSecKeyDataBinaryValueDebugDump(xmlSecKeyDataPtr data, FILE* output) {
  */
 void
 xmlSecKeyDataBinaryValueDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecBufferPtr buffer;
-
     xmlSecAssert(xmlSecKeyDataIsValid(data));
     xmlSecAssert(xmlSecKeyDataCheckSize(data, xmlSecKeyDataBinarySize));
     xmlSecAssert(output != NULL);
-
-    buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
-    xmlSecAssert(buffer != NULL);
 
     /* print only size, everything else is sensitive */
     fprintf(output, "<%s size=\"" XMLSEC_SIZE_FMT "\" />\n",
@@ -2112,6 +2102,8 @@ xmlSecKeyValueDsaXmlRead(xmlSecKeyValueDsaPtr data, xmlNodePtr node) {
         /* intentionally ignored */
         cur = xmlSecGetNextElementNode(cur->next);
     }
+    /* we don't require BOTH seed and pgenCounter nodes to be present; or BOTH to be absent
+     * since we don't process those nodes anyway */
 
     if(cur != NULL) {
         xmlSecUnexpectedNodeError(cur, NULL);

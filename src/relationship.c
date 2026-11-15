@@ -655,8 +655,6 @@ xmlSecTransformRelationshipWriteAttribute(xmlSecTransformPtr transform, xmlOutpu
     xmlChar * value = NULL;
     xmlChar * nameCopy = NULL;
     const xmlChar * attrName;
-    size_t prefixLen;
-    size_t nameLen;
     int ret;
 
     xmlSecAssert2(transform != NULL, -1);
@@ -665,17 +663,32 @@ xmlSecTransformRelationshipWriteAttribute(xmlSecTransformPtr transform, xmlOutpu
 
     /* get correct attribute name */
     if((attr->ns != NULL) && (attr->ns->prefix != NULL)) {
-        prefixLen = strlen((const char*)attr->ns->prefix);
-        nameLen = strlen((const char*)attr->name);
-        nameCopy = xmlMalloc(prefixLen + nameLen + 2);
-        if(nameCopy == NULL) {
-            xmlSecXmlError("xmlMalloc", NULL);
+        xmlSecSize size, prefixSize, nameSize;
+        int prefixLen, nameLen;
+
+        prefixLen = xmlStrlen(attr->ns->prefix);
+        nameLen = xmlStrlen(attr->name);
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(prefixLen, prefixSize, return(-1), NULL);
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(nameLen, nameSize, return(-1), NULL);
+        if(prefixSize > (XMLSEC_SIZE_MAX - 2)) {
+            xmlSecInvalidSizeMoreThanError("size", prefixSize, (xmlSecSize)(XMLSEC_SIZE_MAX - 2), NULL);
             return(-1);
         }
-        memcpy(nameCopy, attr->ns->prefix, prefixLen);
-        nameCopy[prefixLen] = ':';
-        memcpy(nameCopy + prefixLen + 1, attr->name, nameLen);
-        nameCopy[prefixLen + nameLen + 1] = '\0';
+        if(nameSize > (XMLSEC_SIZE_MAX - (prefixSize + 2))) {
+            xmlSecInvalidSizeMoreThanError("size", nameSize, (xmlSecSize)(XMLSEC_SIZE_MAX - (prefixSize + 2)), NULL);
+            return(-1);
+        }
+        size = prefixSize + nameSize + 2;
+
+        nameCopy = (xmlChar *)xmlMalloc(size);
+        if(nameCopy == NULL) {
+            xmlSecMallocError(size, NULL);
+            return(-1);
+        }
+        memcpy(nameCopy, attr->ns->prefix, prefixSize);
+        nameCopy[prefixSize] = ':';
+        memcpy(nameCopy + prefixSize + 1, attr->name, nameSize);
+        nameCopy[prefixSize + nameSize + 1] = '\0';
         attrName = nameCopy;
     } else {
         attrName = attr->name;

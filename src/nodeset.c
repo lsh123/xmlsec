@@ -26,9 +26,13 @@
 
 #include "cast_helpers.h"
 
-#define xmlSecGetParent(node)           \
-    (((node)->type != XML_NAMESPACE_DECL) ? \
-        (node)->parent : \
+/* XPath nodeset namespace node copies point 'next' at the element owner
+ * (see libxml2 xmlXPathNodeSetDupNs); the fast-path walk roots are filtered
+ * by xmlSecNodeSetContainsNamespaceNode, so this branch is not taken for
+ * nodes from the tree */
+#define xmlSecGetParent(node)                       \
+    (((node)->type != XML_NAMESPACE_DECL) ?         \
+        (node)->parent :                            \
         (xmlNodePtr)((xmlNsPtr)(node))->next)
 
 
@@ -673,6 +677,7 @@ xmlSecNodeSetGetChildren(xmlDocPtr doc, const xmlNodePtr parent, int withComment
     xmlSecNodeSetType type;
 
     xmlSecAssert2(doc != NULL, NULL);
+    xmlSecAssert2((parent == NULL) || (parent->doc == doc), NULL);
 
     nodes = xmlXPathNodeSetCreate(parent);
     if(nodes == NULL) {

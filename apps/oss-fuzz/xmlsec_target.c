@@ -23,6 +23,8 @@ static int g_initialized = 0;
 static int g_init_failed = 0;
 
 static int do_init(void) {
+    int options;
+
     xmlInitParser();
 
     if (xmlSecInit() < 0) {
@@ -35,6 +37,17 @@ static int do_init(void) {
 
     /* Silence libxml2 error spam. */
     xmlSetGenericErrorFunc(NULL, &ignore);
+
+    /* xmlSecParseMemory() parses with the process-wide default options, which
+     * include XML_PARSE_HUGE (see src/parser.c). Fuzz inputs are small, so the
+     * relaxation is unnecessary; on libxml2 < 2.13.0 it disables the parser
+     * depth limit, risking stack exhaustion on deeply nested fuzz input. */
+    options = xmlSecParserGetDefaultOptions();
+    options &= ~XML_PARSE_HUGE;
+    options |= XML_PARSE_PEDANTIC | XML_PARSE_NONET;
+    xmlSecParserSetDefaultOptions(options);
+
+    /* done */
     return 0;
 }
 

@@ -1468,7 +1468,7 @@ xmlSecNssX509FindKeyByValue(CERTCertDBHandle *certDb, xmlSecPtrListPtr keysList,
  *****************************************************************************/
 static int
 xmlSecNssX509SerialNumberRead(const xmlChar *str, SECItem *res, PLArenaPool *arena) {
-    xmlSecByte buf[XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES];
+    xmlSecByte buf[XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES + 1];
     xmlSecSize written = 0;
     unsigned int uwritten;
     int ret;

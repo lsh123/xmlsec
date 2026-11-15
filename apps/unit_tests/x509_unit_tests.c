@@ -633,7 +633,7 @@ test_xmlSecX509SerialNumberRead_success(
     const xmlSecByte *expectedBytes,
     xmlSecSize expectedLen
 ) {
-    xmlSecByte res[XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES];
+    xmlSecByte res[XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES + 1];
     xmlSecSize written = 0;
     int ret;
 
@@ -673,7 +673,7 @@ test_xmlSecX509SerialNumberRead_roundtrip(
     const char *str,
     const char *expectedStr
 ) {
-    xmlSecByte res[XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES];
+    xmlSecByte res[XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES + 1];
     xmlSecSize written = 0;
     xmlChar *back = NULL;
     int ret;
@@ -757,7 +757,7 @@ test_xmlSecX509SerialNumberRead_failure_with_res_size(
     const char *str,
     xmlSecSize resSize
 ) {
-    xmlSecByte res[XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES];
+    xmlSecByte res[XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES + 1];
     xmlSecSize written = 0;
     int ret;
 
@@ -782,7 +782,7 @@ test_xmlSecX509SerialNumberRead_failure(
     const char *name,
     const char *str
 ) {
-    test_xmlSecX509SerialNumberRead_failure_with_res_size(name, str, XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES);
+    test_xmlSecX509SerialNumberRead_failure_with_res_size(name, str, XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES + 1U);
 }
 
 int
@@ -801,10 +801,22 @@ test_xmlSecX509SerialNumberRead(void) {
     static const xmlSecByte bytes_4294967296[]  = { 0x01, 0x00, 0x00, 0x00, 0x00 };
     static const xmlSecByte bytes_00_80[]       = { 0x00, 0x80 };
     static const xmlSecByte bytes_00_00[]       = { 0x00, 0x00 };
-    /* 2^159 - 1 = 730750818665451459101842416358141509827966271487 (20 bytes, MSB=0, max accepted) */
+    /* 2^159 - 1 = 730750818665451459101842416358141509827966271487 (20 bytes, MSB=0) */
     static const xmlSecByte bytes_2_159_minus_1[] = {
         0x7F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
         0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
+    };
+    /* 2^159 = 730750818665451459101842416358141509827966271488 (21 bytes: 0x00 sign prefix + 0x80 + 19 zero bytes) */
+    static const xmlSecByte bytes_2_159[] = {
+        0x00, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00
+    };
+    /* 2^160 - 1 = 1461501637330902918203684832716283019655932542975 (21 bytes: 0x00 sign prefix + 20 zeroxFF bytes) */
+    static const xmlSecByte bytes_2_160_minus_1[] = {
+        0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+        0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+        0xFF
     };
 
     /* start */
@@ -831,10 +843,16 @@ test_xmlSecX509SerialNumberRead(void) {
         "0730750818665451459101842416358141509827966271487",
         bytes_2_159_minus_1, 20);
 
-    /* positive tests: maximum accepted value (2^159-1, 20 bytes, first byte MSB=0) */
-    test_xmlSecX509SerialNumberRead_success("2^159-1 (max accepted, 20 bytes)",
+    /* positive tests: values that need the DER sign prefix (21 bytes) */
+    test_xmlSecX509SerialNumberRead_success("2^159-1 (20 bytes, MSB=0, no sign prefix)",
         "730750818665451459101842416358141509827966271487",
         bytes_2_159_minus_1, 20);
+    test_xmlSecX509SerialNumberRead_success("2^159 (21 bytes with 0x00 sign prefix)",
+        "730750818665451459101842416358141509827966271488",
+        bytes_2_159, 21);
+    test_xmlSecX509SerialNumberRead_success("2^160-1 (max accepted, 21 bytes with 0x00 sign prefix)",
+        "1461501637330902918203684832716283019655932542975",
+        bytes_2_160_minus_1, 21);
 
     /* round-trip tests: Read -> Write must recover the canonical (no leading zeros) decimal string */
     test_xmlSecX509SerialNumberRead_roundtrip("round-trip 0",          "0",    "0");
@@ -848,6 +866,9 @@ test_xmlSecX509SerialNumberRead(void) {
     test_xmlSecX509SerialNumberRead_roundtrip("round-trip 49 digits canonicalized",
         "0730750818665451459101842416358141509827966271487",
         "730750818665451459101842416358141509827966271487");
+    test_xmlSecX509SerialNumberRead_roundtrip("round-trip 2^160-1 (max value)",
+        "1461501637330902918203684832716283019655932542975",
+        "1461501637330902918203684832716283019655932542975");
 
     /* direct write tests: canonicalize DER encodings that the read helper does not produce */
     test_xmlSecX509SerialNumberWrite_success("write strips ASN.1 sign prefix", bytes_00_80, sizeof(bytes_00_80), "128");
@@ -865,10 +886,6 @@ test_xmlSecX509SerialNumberRead(void) {
         "12345678901234567890123456789012345678901234567890");
     test_xmlSecX509SerialNumberRead_failure("2^160 (too large during accumulation)",
         "1461501637330902918203684832716283019655932542976");
-    test_xmlSecX509SerialNumberRead_failure("2^159 (too large: MSB set, would need 21-byte DER)",
-        "730750818665451459101842416358141509827966271488");
-    test_xmlSecX509SerialNumberRead_failure_with_res_size("output buffer too small", "1",
-        XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES - 1U);
 
     /* done */
     return (testGroupFinished());

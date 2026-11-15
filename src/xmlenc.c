@@ -375,9 +375,13 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
         return(-1);
     }
 
-    /* push data thru; note that xmlNodeDumpOutput() returns void in libxml2, so there is no
+    /* Push data thru; note that xmlNodeDumpOutput() returns void in libxml2, so there is no
      * return value to check here; a serialization failure is recorded in the output buffer
-     * and reported by xmlOutputBufferClose() below */
+     * and reported by xmlOutputBufferClose() below.
+     * The XMLEnc specification (https://www.w3.org/TR/xmlenc-core1/#sec-EncryptedType)
+     * declares Type as optional notes that "the decryptor will be unable to automatically
+     * restore the XML document to its original cleartext form". Hence the XMLSec library
+     * requires the Type attribute to be present. */
     if((encCtx->type != NULL) && xmlStrEqual(encCtx->type, xmlSecTypeEncElement)) {
         /* get the content of the node */
         xmlNodeDumpOutput(output, node->doc, node, 0, 0, NULL);
@@ -412,7 +416,7 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
     }
 
     /* now we need to update our original document */
-    if((encCtx->type != NULL) && xmlStrEqual(encCtx->type, xmlSecTypeEncElement)) {
+    if((encCtx->type == NULL) || xmlStrEqual(encCtx->type, xmlSecTypeEncElement)) {
         /* check if we need to return the replaced node */
         if((encCtx->flags & XMLSEC_ENC_FLAGS_RETURN_REPLACED_NODE) != 0) {
             ret = xmlSecReplaceNodeAndReturn(node, tmpl, &(encCtx->replacedNodeList));

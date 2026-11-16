@@ -1,0 +1,9 @@
+# PEM armor names (OpenSSL PEM_read_bio_* headers). DER structure cannot be
+# mutated into existence, so seeds carry it; these tokens only help the PEM
+# path. All multi-byte and traceable to OpenSSL PEM names.
+"-----BEGIN CERTIFICATE-----"
+"-----END CERTIFICATE-----"
+"-----BEGIN X509 CRL-----"
+"-----END X509 CRL-----"
+"-----BEGIN TRUSTED CERTIFICATE-----"
+"-----END TRUSTED CERTIFICATE-----"

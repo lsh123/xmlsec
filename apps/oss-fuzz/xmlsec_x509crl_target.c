@@ -181,15 +181,11 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
         certs = sk_X509_new_null();
         crls = sk_X509_CRL_new_null();
         if (certs != NULL && crls != NULL) {
-            /* xmlSecOpenSSLX509StoreVerify() does not take ownership of the
-             * stack items, so push the parsed objects directly. On a failed
-             * push free the item here so the cleanup below does not double
-             * free it. */
-            if (sk_X509_push(certs, cert) < 0) {
+            if (sk_X509_push(certs, cert) <= 0) {
                 X509_free(cert);
                 cert = NULL;
             }
-            if (sk_X509_CRL_push(crls, crl) < 0) {
+            if (sk_X509_CRL_push(crls, crl) <= 0) {
                 X509_CRL_free(crl);
                 crl = NULL;
             }

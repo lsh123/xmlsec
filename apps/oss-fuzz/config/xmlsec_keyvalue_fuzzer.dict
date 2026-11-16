@@ -1,0 +1,22 @@
+# KeyValue element and namespace tokens from include/xmlsec/strings.h and
+# src/strings.c. keyinfo_fuzzer never requests a write, and its corpus has no
+# KeyValue children, so these names are mutation-resistant gates.
+"http://www.w3.org/2000/09/xmldsig#"
+"http://www.w3.org/2009/xmldsig11#"
+"http://www.aleksey.com/xmlsec/2002"
+"http://www.w3.org/2001/04/xmlenc#"
+"KeyInfo"
+"KeyValue"
+"RSAKeyValue"
+"DSAKeyValue"
+"ECKeyValue"
+"DHKeyValue"
+"AESKeyValue"
+"HMACKeyValue"
+"DESKeyValue"
+"Modulus"
+"Exponent"
+"NamedCurve"
+"PublicKey"
+"Seed"
+"PgenCounter"

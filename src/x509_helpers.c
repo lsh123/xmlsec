@@ -1569,15 +1569,12 @@ xmlSecX509SerialNumberRead(const xmlChar *str, xmlSecByte *res, xmlSecSize resSi
      *     but that case is guarded by start == sizeof(buf)-1 so no advancement is needed. */
     xmlSecAssert2((start == (sizeof(buf) - 1U)) || (buf[start] != 0U), -1);
 
-    /* ASN.1 INTEGER is signed: prepend 0x00 for positive values with MSB set. */
+    /* ASN.1 INTEGER is signed: prepend 0x00 for positive values with MSB set.
+     * start is always > 0 here (the carry loop above errors out before
+     * decrementing start below 1), so the sign prefix byte always fits */
     if((buf[start] & 0x80U) != 0U) {
-        if(start > 0) {
-            --start;
-            buf[start] = 0U;
-        } else {
-            xmlSecInvalidDataError("integer value is too large", NULL);
-            return(-1);
-        }
+        --start;
+        buf[start] = 0U;
     }
 
     /* start is always in [0, sizeof(buf)-1] at this point */

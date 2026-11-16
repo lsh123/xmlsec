@@ -26,16 +26,6 @@
 
 #include "cast_helpers.h"
 
-/* XPath nodeset namespace node copies point 'next' at the element owner
- * (see libxml2 xmlXPathNodeSetDupNs); the fast-path walk roots are filtered
- * by xmlSecNodeSetContainsNamespaceNode, so this branch is not taken for
- * nodes from the tree */
-#define xmlSecGetParent(node)                       \
-    (((node)->type != XML_NAMESPACE_DECL) ?         \
-        (node)->parent :                            \
-        (xmlNodePtr)((xmlNsPtr)(node))->next)
-
-
 static int      xmlSecNodeSetWalkRecursive              (xmlSecNodeSetPtr nset,
                                                          xmlNodePtr startNode,
                                                          xmlSecNodeSetWalkCallback walkFunc,
@@ -376,7 +366,7 @@ xmlSecNodeSetWalkRootIsAncestor(xmlNodeSetPtr roots, xmlNodePtr node) {
     xmlSecAssert2(roots != NULL, 0);
     xmlSecAssert2(node != NULL, 0);
 
-    for(cur = xmlSecGetParent(node); (cur != NULL) && (cur->type != XML_NAMESPACE_DECL); cur = cur->parent) {
+    for(cur = node->parent; (cur != NULL) && (cur->type != XML_NAMESPACE_DECL); cur = cur->parent) {
         if(xmlXPathNodeSetContains(roots, cur)) {
             return(1);
         }
@@ -491,11 +481,12 @@ xmlSecNodeSetGetFastPathNodes(xmlSecNodeSetPtr nset) {
  * on a common ancestor may be reported more than once; for Normal sets the
  * namespace copies are reported at most once each.
  * If the @p walkFunc returns a negative value, then the walk procedure
- * is interrupted.
+ * is interrupted; an interrupted walk is not an error.
  * @param nset the pointer to node set.
  * @param walkFunc the callback function.
  * @param data the application specific data passed to the @p walkFunc.
- * @return 0 on success or a negative value if an error occurs.
+ * @return 0 on success (including when the walk is interrupted by the
+ * callback) or a negative value if an error occurs.
  */
 int
 xmlSecNodeSetWalk(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc, void* data) {
@@ -518,7 +509,7 @@ xmlSecNodeSetWalk(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc, voi
          * deduplicate entries), the skip guard below checks only strict
          * ancestors, so the node's subtree is walked twice and the callback
          * fires twice, while the slow path visits each node exactly once. */
-        for(ii = 0; (ret >= 0) && (ii < fastPathNodes->nodeNr); ++ii) {
+        for(ii = 0; (ret == 0) && (ii < fastPathNodes->nodeNr); ++ii) {
             cur = fastPathNodes->nodeTab[ii];
 
             /* skip nodes that are covered by an ancestor walk root: that
@@ -538,7 +529,7 @@ xmlSecNodeSetWalk(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc, voi
             if(cur->type == XML_DOCUMENT_NODE) {
                 xmlNodePtr docChild;
 
-                for(docChild = cur->children; (docChild != NULL) && (ret >= 0); docChild = docChild->next) {
+                for(docChild = cur->children; (docChild != NULL) && (ret == 0); docChild = docChild->next) {
                     ret = xmlSecNodeSetWalkRecursive(nset, docChild, walkFunc, data);
                     if(ret < 0) {
                         xmlSecInternalError("xmlSecNodeSetWalkRecursive", NULL);
@@ -553,30 +544,31 @@ xmlSecNodeSetWalk(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc, voi
                 }
             }
         }
-        return(ret);
+        return(0);
     }
 
     /* if we can't do fast path, fall back to the slow path iterating through all doc nodes */
-    for(cur = nset->doc->children; (cur != NULL) && (ret >= 0); cur = cur->next) {
+    for(cur = nset->doc->children; (cur != NULL) && (ret == 0); cur = cur->next) {
         ret = xmlSecNodeSetWalkRecursive(nset, cur, walkFunc, data);
         if(ret < 0) {
             xmlSecInternalError("xmlSecNodeSetWalkRecursive", NULL);
             return(ret);
         }
     }
-    return(ret);
+    return(0);
 }
 
 typedef struct {
     xmlSecNodeSetPtr nset;
     xmlSecNodeSetWalkCallback walkFunc;
     void* data;
+    int interrupted;
 } xmlSecNodeSetWalkCtx;
 
 static int
 xmlSecNodeSetWalkRecursiveCallback(xmlNodePtr cur, void* data) {
     xmlSecNodeSetWalkCtx* ctx = (xmlSecNodeSetWalkCtx*)data;
-    xmlNodePtr parent = xmlSecGetParent(cur);
+    xmlNodePtr parent = cur->parent;
     int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
@@ -588,12 +580,15 @@ xmlSecNodeSetWalkRecursiveCallback(xmlNodePtr cur, void* data) {
     if(xmlSecNodeSetContains(ctx->nset, cur, parent) == 1) {
         ret = ctx->walkFunc(ctx->nset, cur, parent, ctx->data);
         if(ret < 0) {
-            return(-1);
+            /* a negative value from the callback interrupts the walk;
+             * stop the tree walk cleanly, without reporting an error */
+            ctx->interrupted = 1;
+            return(0);
         }
     }
 
-    /* element and document nodes have children */
-    if((cur->type == XML_ELEMENT_NODE) || (cur->type == XML_DOCUMENT_NODE)) {
+    /* element nodes have children */
+    if(cur->type == XML_ELEMENT_NODE) {
         xmlAttrPtr attr;
         xmlNodePtr node;
         xmlNsPtr ns, tmp;
@@ -603,7 +598,8 @@ xmlSecNodeSetWalkRecursiveCallback(xmlNodePtr cur, void* data) {
             if(xmlSecNodeSetContains(ctx->nset, (xmlNodePtr)attr, cur) == 1) {
                 ret = ctx->walkFunc(ctx->nset, (xmlNodePtr)attr, cur, ctx->data);
                 if(ret < 0) {
-                    return(-1);
+                    ctx->interrupted = 1;
+                    return(0);
                 }
             }
             attr = attr->next;
@@ -617,7 +613,8 @@ xmlSecNodeSetWalkRecursiveCallback(xmlNodePtr cur, void* data) {
                 if((tmp == ns) && (xmlSecNodeSetContains(ctx->nset, (xmlNodePtr)ns, cur) == 1)) {
                     ret = ctx->walkFunc(ctx->nset, (xmlNodePtr)ns, cur, ctx->data);
                     if(ret < 0) {
-                        return(-1);
+                        ctx->interrupted = 1;
+                        return(0);
                     }
                 }
                 ns = ns->next;
@@ -630,6 +627,9 @@ xmlSecNodeSetWalkRecursiveCallback(xmlNodePtr cur, void* data) {
     return(1);
 }
 
+/* walks the subtree rooted at startNode; returns 0 on completion,
+ * 1 if the walk was interrupted by the callback, or a negative value
+ * if an error occurs */
 static int
 xmlSecNodeSetWalkRecursive(xmlSecNodeSetPtr nset, xmlNodePtr startNode, xmlSecNodeSetWalkCallback walkFunc, void* data) {
     xmlSecNodeSetWalkCtx ctx;
@@ -642,6 +642,7 @@ xmlSecNodeSetWalkRecursive(xmlSecNodeSetPtr nset, xmlNodePtr startNode, xmlSecNo
     ctx.nset = nset;
     ctx.walkFunc = walkFunc;
     ctx.data = data;
+    ctx.interrupted = 0;
 
     ret = xmlSecDepthFirstTreeWalk(startNode, xmlSecNodeSetWalkRecursiveCallback, &ctx);
     if(ret < 0) {
@@ -649,7 +650,7 @@ xmlSecNodeSetWalkRecursive(xmlSecNodeSetPtr nset, xmlNodePtr startNode, xmlSecNo
         return(-1);
     }
 
-    return(0);
+    return(ctx.interrupted ? 1 : 0);
 }
 
 /**
@@ -722,14 +723,20 @@ xmlSecNodeSetGetChildren(xmlDocPtr doc, const xmlNodePtr parent, int withComment
     return(nset);
 }
 
+typedef struct {
+    xmlOutputBufferPtr out;
+    int error;
+} xmlSecNodeSetDumpTextNodesCtx;
+
 static int
 xmlSecNodeSetDumpTextNodesWalkCallback(xmlSecNodeSetPtr nset, xmlNodePtr cur,
                                    xmlNodePtr parent XMLSEC_ATTRIBUTE_UNUSED,
                                    void* data) {
+    xmlSecNodeSetDumpTextNodesCtx* ctx = (xmlSecNodeSetDumpTextNodesCtx*)data;
     int ret;
     xmlSecAssert2(nset != NULL, -1);
     xmlSecAssert2(cur != NULL, -1);
-    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(ctx != NULL, -1);
 
     XMLSEC_UNREFERENCED(parent);
 
@@ -739,10 +746,12 @@ xmlSecNodeSetDumpTextNodesWalkCallback(xmlSecNodeSetPtr nset, xmlNodePtr cur,
     if(cur->content == NULL) {
         return(0);
     }
-    ret = xmlOutputBufferWriteString((xmlOutputBufferPtr)data,
-            (const char*)(cur->content));
+    ret = xmlOutputBufferWriteString(ctx->out, (const char*)(cur->content));
     if(ret < 0) {
         xmlSecXmlError("xmlOutputBufferWriteString", NULL);
+        /* a negative value interrupts the walk without reporting an error,
+         * so record the failure in ctx and let the caller propagate it */
+        ctx->error = 1;
         return(-1);
     }
     return(0);
@@ -757,10 +766,24 @@ xmlSecNodeSetDumpTextNodesWalkCallback(xmlSecNodeSetPtr nset, xmlNodePtr cur,
  */
 int
 xmlSecNodeSetDumpTextNodes(xmlSecNodeSetPtr nset, xmlOutputBufferPtr out) {
+    xmlSecNodeSetDumpTextNodesCtx ctx;
+    int ret;
+
     xmlSecAssert2(nset != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
 
-    return(xmlSecNodeSetWalk(nset, xmlSecNodeSetDumpTextNodesWalkCallback, out));
+    ctx.out = out;
+    ctx.error = 0;
+
+    ret = xmlSecNodeSetWalk(nset, xmlSecNodeSetDumpTextNodesWalkCallback, &ctx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNodeSetWalk", NULL);
+        return(-1);
+    }
+    if(ctx.error != 0) {
+        return(-1);
+    }
+    return(0);
 }
 
 /**

@@ -965,6 +965,7 @@ xmlSecGnuTLSX509CertSKIWrite(gnutls_x509_crt_t cert, xmlSecBufferPtr buf) {
     return(0);
 }
 
+/* returns 1 if cert was found and verified and also data was adopted, 0 if not, or negative value if an error occurs */
 static int
 xmlSecGnuTLSVerifyAndAdoptX509KeyData(
     xmlSecKeyPtr key,
@@ -983,7 +984,11 @@ xmlSecGnuTLSVerifyAndAdoptX509KeyData(
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataX509Id), -1);
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
-    xmlSecAssert2(keyInfoCtx->keysMngr != NULL, -1);
+
+    /* keyInfoCtx->keysMngr is optional (see xmlSecKeyInfoCtxCreate) */
+    if(keyInfoCtx->keysMngr == NULL) {
+        return(0);
+    }
 
     ctx = xmlSecGnuTLSX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);

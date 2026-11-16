@@ -402,6 +402,13 @@ xmlSecParseFile(const char *filename) {
         goto done;
     }
 
+    /* the parse ended without producing a document; log the parser
+     * error instead of returning NULL silently */
+    if(ctxt->myDoc == NULL) {
+        xmlSecXmlParserError("xmlParseDocument", ctxt, NULL);
+        goto done;
+    }
+
     if(!ctxt->wellFormed) {
         xmlSecInternalError("document is not well formed", NULL);
         goto done;

@@ -544,8 +544,20 @@ xmlSecOpenSSLX509StoreFindBestCrl(XMLSEC_OPENSSL400_CONST X509_NAME *cert_issuer
         /* use the latest CRL we have */
         lastUpdate = X509_CRL_get0_lastUpdate(crl);
         if(lastUpdate == NULL) {
-            xmlSecOpenSSLError("X509_CRL_get0_lastUpdate", NULL);
-            return(-1);
+            /*
+             * lastUpdate is OPTIONAL in the CRL grammar and a CRL that
+             * omits it passes the time-validity check in
+             * xmlSecOpenSSLX509VerifyCRLTimeValidity() (it is treated as
+             * unbounded on that side), so it is not an error here. For
+             * the "latest CRL" selection below a missing lastUpdate means
+             * the CRL is the oldest possible: it is adopted only when no
+             * better CRL was found (resLastUpdateTime keeps its initial
+             * value 0, so any CRL with a lastUpdate is newer).
+             */
+            if((*res) == NULL) {
+                (*res) = crl;
+            }
+            continue;
         }
 
         if((*res) == NULL) {

@@ -345,6 +345,9 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
 
         if((ret == 0) || (ctx->mscHash == 0)) {
             xmlSecMSCryptoError("CryptCreateHash", xmlSecTransformGetName(transform));
+            /* the out-handle is not guaranteed to be zeroed on failure; reset it so
+             * finalize() does not attempt to destroy an indeterminate handle */
+            ctx->mscHash = 0;
             return(-1);
         }
 

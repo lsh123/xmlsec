@@ -989,7 +989,11 @@ xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataX509Id), -1);
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
-    xmlSecAssert2(keyInfoCtx->keysMngr != NULL, -1);
+
+    /* keyInfoCtx->keysMngr is optional (see xmlSecKeyInfoCtxCreate) */
+    if(keyInfoCtx->keysMngr == NULL) {
+        return(0);
+    }
 
     ctx = xmlSecMSCryptoX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);

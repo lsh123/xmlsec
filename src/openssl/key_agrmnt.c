@@ -72,6 +72,7 @@ static int              xmlSecOpenSSLKeyAgreementExecute                (xmlSecT
 /* Helper functions */
 static int              xmlSecOpenSSLKeyAgreementGenerateSecret         (xmlSecOpenSSLKeyAgreementCtxPtr ctx,
                                                                          xmlSecTransformOperation operation,
+                                                                         xmlSecTransformPtr transform,
                                                                          xmlSecKeyDataPtr kamKeyData,
                                                                          xmlSecBufferPtr secret);
 /******************************************************************************
@@ -273,7 +274,7 @@ xmlSecOpenSSLKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecT
             return(-1);
         }
 
-        ret = xmlSecOpenSSLKeyAgreementGenerateSecret(ctx, transform->operation, kamKeyData, &secret);
+        ret = xmlSecOpenSSLKeyAgreementGenerateSecret(ctx, transform->operation, transform, kamKeyData, &secret);
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLKeyAgreementGenerateSecret", xmlSecTransformGetName(transform));
             xmlSecBufferFinalize(&secret);
@@ -307,7 +308,7 @@ xmlSecOpenSSLKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecT
 
 /* Generate shared secret using key agreement (unified for ECDH/DH/XDH) */
 static int
-xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xmlSecTransformOperation operation, xmlSecKeyDataPtr kamKeyData, xmlSecBufferPtr secret) {
+xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xmlSecTransformOperation operation, xmlSecTransformPtr transform, xmlSecKeyDataPtr kamKeyData, xmlSecBufferPtr secret) {
     xmlSecKeyDataKAM* kamData;
     EVP_PKEY_CTX *pKeyCtx = NULL;
     xmlSecKeyDataPtr myKeyValue, otherKeyValue;
@@ -322,6 +323,7 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(kamKeyData != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(kamKeyData, xmlSecKeyDataKAMId), -1);
+    xmlSecAssert2(transform != NULL, -1);
     xmlSecAssert2(secret != NULL, -1);
     xmlSecAssert2(xmlSecBufferIsSecure(secret), -1); /* we expect secure buffer for the secret */
 
@@ -354,6 +356,30 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
             xmlSecInternalError("xmlSecKeyGetValue(keyOriginator)", NULL);
             goto done;
         }
+    }
+
+    /* check that the KAM key data is compatible with the transform: the
+     * ecdh-es transform is for EC key data, the dh-es transform is for DH
+     * key data, and the x25519/x448 transforms are for XDH key data
+     * (ctx->keyDataId is set from the transform id in Initialize). Without
+     * this check a pre-populated key of the wrong type (e.g. a P-256 EC key
+     * pair with the x25519 transform, or EC/DH/XDH key data with the
+     * ecdh-es/dh-es transform) would be accepted, since the generic
+     * EVP_PKEY_derive() path validates the secret size only for
+     * x25519/x448 (32/56 bytes) and not at all for ecdh-es/dh-es. Note that
+     * the x25519/x448 cross-mismatch (both are XDH key data) is not caught
+     * here and is caught by the secret size check below. */
+    if(!xmlSecKeyDataCheckId(myKeyValue, ctx->keyDataId)) {
+        xmlSecInvalidTransformError2(transform,
+            "key data \"%s\" is not compatible with this key agreement transform",
+            xmlSecErrorsSafeString(xmlSecKeyDataGetName(myKeyValue)));
+        goto done;
+    }
+    if(!xmlSecKeyDataCheckId(otherKeyValue, ctx->keyDataId)) {
+        xmlSecInvalidTransformError2(transform,
+            "peer key data \"%s\" is not compatible with this key agreement transform",
+            xmlSecErrorsSafeString(xmlSecKeyDataGetName(otherKeyValue)));
+        goto done;
     }
 
     /* get pkeys - use generic EVP getter that works for all key types */

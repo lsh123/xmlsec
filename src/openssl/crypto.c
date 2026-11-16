@@ -569,6 +569,7 @@ xmlSecOpenSSLShutdown(void) {
     gXmlSecOpenSSLLibCtx = NULL;
 #endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
+    /* defensive check for return value (it cannot fail) */
     ret = xmlSecOpenSSLSetDefaultTrustedCertsFolder(NULL);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLSetDefaultTrustedCertsFolder", NULL);

@@ -1873,6 +1873,57 @@ xmlSecQName2BitMaskGetBitMask(
     return(-1);
 }
 
+/* Resolves the qname string to a local part and a namespace href in the
+ * context of @p node. On success @p qnameLocalPart points to the local part
+ * of @p qname, @p qnameHref points to the href of the namespace the prefix
+ * resolves to (or NULL for an unprefixed qname) and @p qnamePrefix points to
+ * a newly allocated copy of the prefix (or NULL for an unprefixed qname) that
+ * the caller must free with xmlFree.
+ * Returns 0 on success or a negative value if an error occurs (allocation
+ * failure or the prefix does not resolve to a namespace).
+ */
+static int
+xmlSecQName2BitMaskQNameResolve(xmlNodePtr node, const xmlChar* qname,
+                                const xmlChar** qnameLocalPart,
+                                const xmlChar** qnameHref,
+                                xmlChar** qnamePrefix) {
+    const xmlChar* pos;
+    xmlNsPtr ns;
+    int qnameLen;
+
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(qname != NULL, -1);
+    xmlSecAssert2(qnameLocalPart != NULL, -1);
+    xmlSecAssert2(qnameHref != NULL, -1);
+    xmlSecAssert2(qnamePrefix != NULL, -1);
+
+    (*qnamePrefix) = NULL;
+    pos = xmlStrchr(qname, ':');
+    if(pos != NULL) {
+        XMLSEC_SAFE_CAST_PTRDIFF_TO_INT((pos - qname), qnameLen, return(-1), NULL);
+        (*qnamePrefix) = xmlStrndup(qname, qnameLen);
+        if((*qnamePrefix) == NULL) {
+            xmlSecStrdupError(qname, NULL);
+            return(-1);
+        }
+        (*qnameLocalPart) = pos + 1;
+    } else {
+        (*qnameLocalPart) = qname;
+    }
+
+    /* search namespace href */
+    ns = xmlSearchNs(node->doc, node, (*qnamePrefix));
+    if((ns == NULL) && ((*qnamePrefix) != NULL)) {
+        xmlSecXmlError2("xmlSearchNs", NULL,
+                        "node=%s", xmlSecErrorsSafeString(node->name));
+        xmlFree((*qnamePrefix));
+        (*qnamePrefix) = NULL;
+        return(-1);
+    }
+    (*qnameHref) = (ns != NULL) ? ns->href : BAD_CAST NULL;
+    return(0);
+}
+
 /**
  * @brief Converts a QName string to a bit mask value.
  * @details Converts @p qname into a bit mask value in context of @p node.
@@ -1887,9 +1938,8 @@ xmlSecQName2BitMaskGetBitMaskFromString(xmlSecQName2BitMaskInfoConstPtr info,
                                         xmlNodePtr node, const xmlChar* qname,
                                         xmlSecBitMask* mask) {
     const xmlChar* qnameLocalPart = NULL;
+    const xmlChar* qnameHref = NULL;
     xmlChar* qnamePrefix = NULL;
-    const xmlChar* qnameHref;
-    xmlNsPtr ns;
     int ret;
 
     xmlSecAssert2(info != NULL, -1);
@@ -1897,33 +1947,11 @@ xmlSecQName2BitMaskGetBitMaskFromString(xmlSecQName2BitMaskInfoConstPtr info,
     xmlSecAssert2(qname != NULL, -1);
     xmlSecAssert2(mask != NULL, -1);
 
-    qnameLocalPart = xmlStrchr(qname, ':');
-    if(qnameLocalPart != NULL) {
-        int qnameLen;
-
-        XMLSEC_SAFE_CAST_PTRDIFF_TO_INT((qnameLocalPart - qname), qnameLen, return(-1), NULL);
-        qnamePrefix = xmlStrndup(qname, qnameLen);
-        if(qnamePrefix == NULL) {
-            xmlSecStrdupError(qname, NULL);
-            return(-1);
-        }
-        qnameLocalPart++;
-    } else {
-        qnamePrefix = NULL;
-        qnameLocalPart = qname;
-    }
-
-    /* search namespace href */
-    ns = xmlSearchNs(node->doc, node, qnamePrefix);
-    if((ns == NULL) && (qnamePrefix != NULL)) {
-        xmlSecXmlError2("xmlSearchNs", NULL,
-                        "node=%s", xmlSecErrorsSafeString(node->name));
-        if(qnamePrefix != NULL) {
-            xmlFree(qnamePrefix);
-        }
+    ret = xmlSecQName2BitMaskQNameResolve(node, qname, &qnameLocalPart,
+                                          &qnameHref, &qnamePrefix);
+    if(ret < 0) {
         return(-1);
     }
-    qnameHref = (ns != NULL) ? ns->href : BAD_CAST NULL;
 
     /* and finally search for mask */
     ret = xmlSecQName2BitMaskGetBitMask(info, qnameLocalPart, qnameHref, mask);
@@ -1933,16 +1961,12 @@ xmlSecQName2BitMaskGetBitMaskFromString(xmlSecQName2BitMaskInfoConstPtr info,
                              xmlSecErrorsSafeString(node->name),
                              xmlSecErrorsSafeString(qnameLocalPart),
                              xmlSecErrorsSafeString(qnameHref));
-        if(qnamePrefix != NULL) {
-            xmlFree(qnamePrefix);
-        }
-        return(-1);
     }
 
     if(qnamePrefix != NULL) {
         xmlFree(qnamePrefix);
     }
-    return(0);
+    return(ret);
 }
 
 
@@ -1977,7 +2001,8 @@ xmlSecQName2BitMaskGetStringFromBitMask(xmlSecQName2BitMaskInfoConstPtr info,
  * @brief Reads QName elements and accumulates their values into a bit mask.
  * @details Reads <@p nodeNs:@p nodeName> elements and puts the result bit mask
  * into @p mask. When function exits, @p node points to the first element node
- * after all the <@p nodeNs:@p nodeName> elements.
+ * after all the <@p nodeNs:@p nodeName> elements. If the @p stopOnUnknown flag
+ * is not set, elements with unknown values are skipped.
  * @param info the qname<->bit mask mapping information.
  * @param node the start.
  * @param nodeName the mask nodes name.
@@ -1993,6 +2018,9 @@ xmlSecQName2BitMaskNodesRead(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr* n
                             int stopOnUnknown, xmlSecBitMask* mask) {
     xmlNodePtr cur;
     xmlChar* content;
+    const xmlChar* qnameLocalPart = NULL;
+    const xmlChar* qnameHref = NULL;
+    xmlChar* qnamePrefix = NULL;
     xmlSecBitMask tmp;
     int ret;
 
@@ -2011,21 +2039,34 @@ xmlSecQName2BitMaskNodesRead(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr* n
             return(-1);
         }
 
-        ret = xmlSecQName2BitMaskGetBitMaskFromString(info, cur, content, &tmp);
+        ret = xmlSecQName2BitMaskQNameResolve(cur, content, &qnameLocalPart,
+                                              &qnameHref, &qnamePrefix);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecQName2BitMaskGetBitMaskFromString", NULL,
-                                 "value=%s", xmlSecErrorsSafeString(content));
             xmlFree(content);
             return(-1);
         }
-        if((stopOnUnknown != 0) && (tmp == 0)) {
-            xmlSecInvalidNodeContentError(cur, NULL, "unknown value");
-            xmlFree(content);
-            return(-1);
+
+        ret = xmlSecQName2BitMaskGetBitMask(info, qnameLocalPart, qnameHref, &tmp);
+        if(ret < 0) {
+            /* unknown value */
+            if(stopOnUnknown != 0) {
+                xmlSecInvalidNodeContentError(cur, NULL, "unknown value");
+                if(qnamePrefix != NULL) {
+                    xmlFree(qnamePrefix);
+                }
+                xmlFree(content);
+                return(-1);
+            }
+            /* if stopOnUnknown is not set, skip the unknown value and
+             * continue reading the remaining mask nodes */
+        } else {
+            (*mask) |= tmp;
+        }
+        if(qnamePrefix != NULL) {
+            xmlFree(qnamePrefix);
         }
         xmlFree(content);
 
-        (*mask) |= tmp;
         cur = xmlSecGetNextElementNode(cur->next);
     }
 

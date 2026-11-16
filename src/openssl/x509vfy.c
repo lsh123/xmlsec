@@ -1169,7 +1169,8 @@ done:
  * @param crl the CRL to verify.
  * @param keyInfoCtx the key info context for verification parameters.
  *
- * 1. Signature is valid (signed by issuer cert in store)
+ * 1. Signature is valid (signed by an issuer cert found among the untrusted certificates or
+ *    the trusted store)
  * 2. thisUpdate <= verification_time <= nextUpdate
  *
  * @return 1 if verified, 0 if not verified, or a negative value on error.

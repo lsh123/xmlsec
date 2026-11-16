@@ -60,7 +60,7 @@ xmlSecGnuTLSIsMlDSASupported(void)
  * This matches the pattern used by all backends and only matters if this
  * function is invoked from multiple threads before the library is fully
  * initialized (the normal single-threaded init path is unaffected).
- * @return the xmlsec-gnutls functions table or NULL if an error occurs.
+ * @return the xmlsec-gnutls functions table.
  */
 xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoGetFunctions_gnutls(void) {

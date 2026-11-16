@@ -67,7 +67,7 @@ static xmlSecTransformKlass xmlSecTransformMemBufKlass = {
 };
 
 /**
- * @brief The memory buffer transform (used to store the data that go through it).
+ * @brief The memory buffer transform (used to store the data that goes through it).
  *
  * @return memory buffer transform klass.
  */

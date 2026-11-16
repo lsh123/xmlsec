@@ -470,9 +470,8 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
             goto done;
         }
         /*
-         * EC_POINT_is_on_curve() returns 1 if the point is on the curve,
-         * 0 if it is not, and -1 on error; note that it also returns 1 for
-         * a point at infinity, so the latter is rejected explicitly.
+         * EC_POINT_is_on_curve() returns 1 if the point is on the curve
+         * or a point is at infinity, so the latter is rejected explicitly.
          */
         if((EC_POINT_is_on_curve(peerGroup, peerPubKey, NULL) != 1)
             || (EC_POINT_is_at_infinity(peerGroup, peerPubKey) == 1)) {

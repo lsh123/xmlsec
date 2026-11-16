@@ -252,7 +252,7 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
         return(NULL);
     }
 
-    /* if compiler can't find xmlSecCryptoOpenLibraryAndGetFunctions() here then
+    /* if the compiler can't find xmlSecCryptoOpenLibraryAndGetFunctions() here then
      * the library is misconfigured. */
     getFunctions = xmlSecCryptoOpenLibraryAndGetFunctions(lib);
     if(getFunctions == NULL) {

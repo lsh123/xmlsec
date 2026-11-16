@@ -246,21 +246,21 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecNssTransformCamellia192CbcGetKlass
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecNssTransformCamellia256CbcGetKlass(void);
 
 /**
- * @brief The Camellia 128 key wrap transform klass.
+ * @brief The Camellia128 key wrap transform klass.
  */
 #define xmlSecNssTransformKWCamellia128Id \
         xmlSecNssTransformKWCamellia128GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecNssTransformKWCamellia128GetKlass(void);
 
 /**
- * @brief The Camellia 192 key wrap transform klass.
+ * @brief The Camellia192 key wrap transform klass.
  */
 #define xmlSecNssTransformKWCamellia192Id \
         xmlSecNssTransformKWCamellia192GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecNssTransformKWCamellia192GetKlass(void);
 
 /**
- * @brief The Camellia 256 key wrap transform klass.
+ * @brief The Camellia256 key wrap transform klass.
  */
 #define xmlSecNssTransformKWCamellia256Id \
         xmlSecNssTransformKWCamellia256GetKlass()
@@ -285,7 +285,7 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecNssKeyDataDesSet          (xmlSecK
                                                                          xmlSecSize bufSize);
 
 /**
- * @brief The Triple DES CBC cipher transform klass.
+ * @brief The DES3 CBC cipher transform klass.
  */
 #define xmlSecNssTransformDes3CbcId \
         xmlSecNssTransformDes3CbcGetKlass()

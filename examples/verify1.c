@@ -215,7 +215,7 @@ verify_file(const char* xml_file, const char* key_file, const char* key_name) {
         goto done;
     }
 
-    /* load public or private key */
+    /* load key (the type mask is ignored by the backends' file-based key loaders) */
     dsigCtx->signKey = xmlSecCryptoAppKeyLoadEx(key_file,
         xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic,
         xmlSecKeyDataFormatPem,

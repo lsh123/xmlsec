@@ -219,8 +219,8 @@ xmlSecNssKWRfc3394Initialize(xmlSecTransformPtr transform) {
        the mechanism parameter is created once and reused for every block
        operation; the parameter is empty (len == 0), so NSS does not retain
        a copy of it (an empty parameter maps to a static pk11_null_params
-       inside the PKCS#11 context), and it is safe to free it here in
-       Finalize */
+       inside the PKCS#11 context), and it is safe to free it in
+       xmlSecNssKWRfc3394Finalize */
     ctx->secParam = PK11_ParamFromIV(ctx->cipherMech, NULL);
     if(ctx->secParam == NULL) {
         xmlSecNssError("PK11_ParamFromIV", NULL);

@@ -228,13 +228,13 @@ typedef unsigned int                            xmlSecTransformUsage;
  *****************************************************************************/
 /**
  * @brief Callback called before data processing to verify/modify transforms.
- * @details The callback called after creating transforms chain but before
+ * @details The callback called after creating the transforms chain but before
  * starting data processing. Application can use this callback to
- * do additional transforms chain verification or modification and
+ * do additional verification or modification of the transforms chain and
  * abort transforms execution (if necessary).
  * @param transformCtx the pointer to the transforms context.
  * @return 0 on success and a negative value otherwise (in this case,
- * transforms chain will not be executed and xmlsec processing stops).
+ * the transforms chain will not be executed and xmlsec processing stops).
  */
 typedef int             (*xmlSecTransformCtxPreExecuteCallback)         (xmlSecTransformCtxPtr transformCtx);
 
@@ -287,8 +287,8 @@ struct _xmlSecTransformCtx {
     unsigned int                                maxDepth;  /**< the maximum depth for transforms (eg Relationship Transform) execution (if 0 then depth check is disabled). */
     xmlSecSize                                  binaryChunkSize;  /**< the chunk size for binary transforms processing. */
     xmlSecTransformUriType                      enabledUris;  /**< the allowed transform data source uri types. By default only the Empty and SameDocument URI types are enabled; dereferencing local or remote URIs requires explicit opt-in. */
-    xmlSecPtrList                               enabledTransforms;  /**< the list of enabled transforms; if list is empty (default) then all registered transforms are enabled. */
-    xmlSecTransformCtxPreExecuteCallback        preExecCallback;  /**< the callback called after preparing transform chain and right before actual data processing; application can use this callback to change transforms parameters, insert additional transforms in the chain or do additional validation (and abort transform execution if needed). */
+    xmlSecPtrList                               enabledTransforms;  /**< the list of enabled transforms; if the list is empty (default) then all registered transforms are enabled. */
+    xmlSecTransformCtxPreExecuteCallback        preExecCallback;  /**< the callback called after preparing the transform chain and right before actual data processing; application can use this callback to change transforms parameters, insert additional transforms in the chain or do additional validation (and abort transform execution if needed). */
 
     /* used by Key Agreement transforms */
     xmlSecKeyInfoCtxPtr                         parentKeyInfoCtx;  /**< the parent's key info ctx for key agreement, key encapsulation, etc. */
@@ -652,8 +652,8 @@ typedef int             (*xmlSecTransformPushBinMethod)         (xmlSecTransform
                                                                  xmlSecTransformCtxPtr transformCtx);
 /**
  * @brief The transform specific method to pop binary data from the chain.
- * @details The transform specific method to pop data from previous transform
- * in the chain and return result in the @p data buffer. The size of returned
+ * @details The transform specific method to pop data from the previous transform
+ * in the chain and return the result in the @p data buffer. The size of returned
  * data is placed in the @p dataSize.
  * @param transform the pointer to transform object.
  * @param data the buffer to store result data.
@@ -871,7 +871,7 @@ XMLSEC_EXPORT int               xmlSecTransformXPointerSetExpr          (xmlSecT
  */
 #define xmlSecTransformXPointerLegacyId \
         xmlSecTransformXPointerLegacyGetKlass()
-XMLSEC_EXPORT xmlSecTransformId xmlSecTransformXPointerLegacyGetKlass   (void);
+XMLSEC_EXPORT XMLSEC_DEPRECATED xmlSecTransformId xmlSecTransformXPointerLegacyGetKlass   (void);
 /**
  * @brief The Relationship transform klass.
  */

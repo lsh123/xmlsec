@@ -447,7 +447,8 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
 
     /* XML-ENC AES-GCM support uses a 128-bit tag only (see
      * http://www.w3.org/TR/xmlenc-core1/#sec-AES-GCM); verify that the provider
-     * can actually produce a tag of that size before allocating/using it. */
+     * can actually produce a tag of that size before using it (the tag buffer
+     * is already allocated above). */
     if (authTagLengths.dwMinLength > (DWORD)xmlSecMSCngAesGcmTagLengthInBytes) {
         xmlSecInvalidSizeMoreThanError("AES-GCM provider minimum tag length",
             (xmlSecSize)authTagLengths.dwMinLength,
@@ -702,7 +703,7 @@ xmlSecMSCngGcmBlockCipherCtxFinal(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
     if(encrypt) {
         xmlSecSize outMaxSize;
 
-        /* new out buf size: old out buf size + same as in buf size + space for the tag */
+        /* new out max size: old out max size + same as in buf size + space for the tag */
         if((inBufSize > XMLSEC_SIZE_MAX - xmlSecMSCngAesGcmTagLengthInBytes) ||
            (outBufSize > XMLSEC_SIZE_MAX - inBufSize - xmlSecMSCngAesGcmTagLengthInBytes)) {
             xmlSecInternalError3("xmlSecBufferSetMaxSize", cipherName,

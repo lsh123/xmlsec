@@ -337,7 +337,7 @@ xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlSecP
         if((nsListSize == 0) || (xmlSecPtrListGetItem(nsList, nsListSize - 1) != NULL)) {
             ret = xmlSecPtrListAdd(nsList, NULL);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecPtrListAdd", NULL);
+                xmlSecInternalError("xmlSecPtrListAdd", xmlSecTransformKlassGetName(id));
                 return(-1);
             }
         }
@@ -359,7 +359,7 @@ xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlSecP
         if((nsListSize == 0) || (xmlSecPtrListGetItem(nsList, nsListSize - 1) != NULL)) {
             ret = xmlSecPtrListAdd(nsList, NULL);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecPtrListAdd", NULL);
+                xmlSecInternalError("xmlSecPtrListAdd", xmlSecTransformKlassGetName(id));
                 return(-1);
             }
         }
@@ -688,7 +688,7 @@ static xmlSecTransformKlass xmlSecTransformRemoveXmlTagsC14NKlass = {
 
 /**
  * @brief Gets the 'remove xml tags' transform klass.
- * @details The "remove xml tags" transform klass (http://www.w3.org/TR/xmldsig-core/#sec-Base-64):
+ * @details The "remove xml tags" transform klass (http://www.w3.org/TR/xmldsig-core/#sec-remove-xml-tags):
  * Base64 transform requires an octet stream for input. If an XPath node-set
  * (or sufficiently functional alternative) is given as input, then it is
  * converted to an octet stream by performing operations logically equivalent

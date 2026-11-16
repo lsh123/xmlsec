@@ -16,7 +16,7 @@ extern "C" {
 #endif /* __cplusplus */
 
 /* There are many variations of Windows builds: MCVC, Cygwin, MinGW, etc.
- * In most cases, the checks for WIN32/WIN64 are sufficient but just to
+ * In most cases, the checks for WIN32/WIN64 are sufficient, but just to
  * be thorough, we also check for other Windows-specific macros. */
 #if !defined(XMLSEC_WINDOWS)
 #    if defined(WIN32) || defined(_WIN32) || defined(_WIN64) || defined(WIN64)
@@ -27,7 +27,7 @@ extern "C" {
 #         define XMLSEC_WINDOWS 1
 #    elif defined(__MINGW32__) || defined(__MINGW64__)
 #         define XMLSEC_WINDOWS 1
-#    endif /*  */
+#    endif /* defined(WIN32) || defined(_WIN32) || defined(_WIN64) || defined(WIN64) */
 #endif /* !defined(XMLSEC_WINDOWS) */
 
 /* Windows platform REQUIRES export / import functions from the DLL,
@@ -79,7 +79,7 @@ extern "C" {
 #      endif
 #    endif /* defined(IN_XMLSEC_CRYPTO) */
    /* This holds on all other platforms/compilers, which are easier to
-      handle in regard to this. */
+      handle with regard to this. */
 #  else /* defined(XMLSEC_WINDOWS) */
 #    if defined(__GNUC__) || defined(__clang__)
 #      define XMLSEC_CRYPTO_EXPORT __attribute__((visibility("default")))
@@ -116,7 +116,7 @@ extern "C" {
 #      endif
 #    endif
    /* This holds on all other platforms/compilers, which are easier to
-      handle in regard to this. */
+      handle with regard to this. */
 #  else /* defined(XMLSEC_WINDOWS) */
 #    if defined(__GNUC__) || defined(__clang__)
 #      define XMLSEC_EXPORT_VAR __attribute__((visibility("default"))) extern

@@ -477,7 +477,7 @@ xmlSecPtrListSwapItems(xmlSecPtr* item1, xmlSecPtr* item2) {
 }
 
 /*
- * Sifts the item at position @p root down the heap (data[0..size)) until the
+ * Sifts the item at position @p root down the heap (data[0..size) until the
  * max-heap property is restored.
  */
 static inline void

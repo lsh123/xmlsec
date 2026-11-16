@@ -22,7 +22,7 @@ extern "C" {
 #endif /* __cplusplus */
 
 /**
- * @brief The content of an &lt;X509Data&gt; node.
+ * @brief The content of an &lt;dsig:X509Data&gt; node.
  * @details Not all values will be set!
  * The structure (and its members) are allocated and freed by the caller;
  * a caller that builds a value for the public find APIs (e.g.
@@ -32,9 +32,9 @@ extern "C" {
  */
 struct _xmlSecKeyX509DataValue {
     xmlSecBuffer cert;  /**< the certificate from the &lt;dsig:X509Certificate/&gt; node. */
-    xmlSecBuffer crl;  /**< the crl from the &lt;dsig:X509CRL/&gt; node. */
+    xmlSecBuffer crl;  /**< the CRL from the &lt;dsig:X509CRL/&gt; node. */
 
-    xmlSecBuffer ski;  /**< the ski from the &lt;dsig:X509SKI/&gt; node. */
+    xmlSecBuffer ski;  /**< the SKI from the &lt;dsig:X509SKI/&gt; node. */
 
     xmlChar* subject;  /**< the subject name from the &lt;dsig:X509SubjectName/&gt; node. */
 
@@ -51,7 +51,7 @@ struct _xmlSecKeyX509DataValue {
 typedef struct _xmlSecKeyX509DataValue                  xmlSecKeyX509DataValue;
 
 /**
- * @brief Pointer to xmlSecKeyX509DataValue.
+ * @brief Pointer to #xmlSecKeyX509DataValue.
  */
 typedef struct _xmlSecKeyX509DataValue                  *xmlSecKeyX509DataValuePtr;
 

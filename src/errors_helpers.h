@@ -880,7 +880,7 @@ extern "C" {
 
 /**
  * @brief Macro. Reports invalid (zero) key data size errors.
- * @details Macro. The XMLSec library macro for reporting "invalid key data size" errors.
+ * @details Macro. The XMLSec library macro for reporting "invalid (zero) key data size" errors.
  * @param errorObject the specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecInvalidZeroKeyDataSizeError(errorObject)      \

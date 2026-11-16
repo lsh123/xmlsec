@@ -101,7 +101,7 @@ done:
 
 /* DER parsing helpers */
 
-/* Read a DER TLV: returns pointer to value bytes and sets *pLen.
+/* Read a DER TLV: returns a pointer to the value bytes and sets *pLen.
    Tag must match expectedTag. Returns NULL on error. */
 static const xmlSecByte*
 xmlSecMSCngDerReadTlv(const xmlSecByte* p, const xmlSecByte* end, BYTE expectedTag, DWORD* pLen) {
@@ -974,7 +974,7 @@ done:
 }
 
 /**
- * @brief Loads an X9.42 DH private key (and derives public key) from a PKCS8 DER blob.
+ * @brief Loads an X9.42 DH private key (and derives the public key) from a PKCS8 DER blob.
  * @param derData DER-encoded PKCS8 PrivateKeyInfo for an X9.42 DH key.
  * @param derDataLen length of @p derData.
  *

@@ -873,8 +873,8 @@ xmlSecNssKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         goto done;
     }
 
-    /* x (priv key): NSS has no import API for DSA private keys, so the
-     * read path creates a public key object only; the value is ignored
+    /* x (priv key): the read path creates a public key object only (the
+     * key is not imported into the slot; see below); the value is ignored
      * (raising an error here would break loading of keys files that
      * contain DSA private keys, which other backends import) */
 

@@ -98,7 +98,7 @@ test_xmlSecTransformCtxSetUri_empty_uri(void) {
     }
 
     if((ctx->uri != expectedUri) || (ctx->xptrExpr != expectedXptrExpr) || (ctx->first != NULL)) {
-        testLog("Error: unexpected ctx state for an empty uri (uri='%s', xptrExpr='%s', first set)\n",
+        testLog("Error: unexpected ctx state for an empty uri (uri='%s', xptrExpr='%s')\n",
                 (ctx->uri != NULL) ? (const char*)ctx->uri : "NULL",
                 (ctx->xptrExpr != NULL) ? (const char*)ctx->xptrExpr : "NULL");
         transformsTestCleanup(doc, ctx);
@@ -149,7 +149,7 @@ test_xmlSecTransformCtxSetUri_null_uri(void) {
     }
 
     if((ctx->uri != expectedUri) || (ctx->xptrExpr != expectedXptrExpr) || (ctx->first != NULL)) {
-        testLog("Error: unexpected ctx state for a NULL uri (uri='%s', xptrExpr='%s', first set)\n",
+        testLog("Error: unexpected ctx state for a NULL uri (uri='%s', xptrExpr='%s')\n",
                 (ctx->uri != NULL) ? (const char*)ctx->uri : "NULL",
                 (ctx->xptrExpr != NULL) ? (const char*)ctx->xptrExpr : "NULL");
         transformsTestCleanup(doc, ctx);

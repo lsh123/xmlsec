@@ -379,7 +379,7 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
      * return value to check here; a serialization failure is recorded in the output buffer
      * and reported by xmlOutputBufferClose() below.
      * The XMLEnc specification (https://www.w3.org/TR/xmlenc-core1/#sec-EncryptedType)
-     * declares Type as optional notes that "the decryptor will be unable to automatically
+     * declares Type as optional, and notes that "the decryptor will be unable to automatically
      * restore the XML document to its original cleartext form". Hence the XMLSec library
      * requires the Type attribute to be present. */
     if((encCtx->type != NULL) && xmlStrEqual(encCtx->type, xmlSecTypeEncElement)) {
@@ -984,7 +984,7 @@ xmlSecEncCtxCipherReferenceNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 
     cur = xmlSecGetNextElementNode(node->children);
 
-    /* the only one node is optional Transforms node */
+    /* the only node is the optional Transforms node */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeTransforms, xmlSecEncNs))) {
         ret = xmlSecTransformCtxNodesListRead(&(encCtx->transformCtx), cur,
                                     xmlSecTransformUsageDSigTransform);

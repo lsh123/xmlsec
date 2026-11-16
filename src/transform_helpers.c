@@ -1507,7 +1507,7 @@ xmlSecTransformPbkdf2ParamsRead(xmlSecTransformPbkdf2ParamsPtr params, xmlNodePt
     }
     ret = xmlSecGetNodeContentAsSize(cur, 0, &(params->iterationCount));
     if(ret < 0) {
-        xmlSecInternalError("xmlSecGetNodeContentAsSize", NULL);
+        xmlSecInternalError("xmlSecGetNodeContentAsSize(IterationCount)", NULL);
         return(-1);
     } else if(params->iterationCount == 0) {
         xmlSecInvalidNodeContentError(cur, NULL, "PBKDF2 iteration count is zero");
@@ -1526,7 +1526,7 @@ xmlSecTransformPbkdf2ParamsRead(xmlSecTransformPbkdf2ParamsPtr params, xmlNodePt
     }
     ret = xmlSecGetNodeContentAsSize(cur, 0, &(params->keyLength));
     if(ret < 0) {
-        xmlSecInternalError("xmlSecGetNodeContentAsSize", NULL);
+        xmlSecInternalError("xmlSecGetNodeContentAsSize(KeyLength)", NULL);
         return(-1);
     } else if(params->keyLength == 0) {
         xmlSecInvalidNodeContentError(cur, NULL, "PBKDF2 key length is zero");

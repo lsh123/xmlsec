@@ -912,7 +912,7 @@ cleanup:
 /**
  * @brief Reads a cert from a file and adds to the key store.
  * @details Reads cert from @p filename and adds to the list of trusted or known
- * untrusted certs in @p store.
+ * untrusted certs in @p mngr.
  *
  * @param mngr the keys manager.
  * @param filename the certificate file.
@@ -969,7 +969,7 @@ xmlSecMSCngAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
 /**
  * @brief Reads cert from buffer and adds to the key store.
  * @details Reads cert from @p data and adds to the list of trusted or known
- * untrusted certs in @p store.
+ * untrusted certs in @p mngr.
  *
  * @param mngr the pointer to keys manager.
  * @param data the certificate data.
@@ -1030,7 +1030,7 @@ xmlSecMSCngAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* d
 
 /**
  * @brief Reads a CRL from a file and adds to the store.
- * @details Reads crl from @p filename and adds to the list of crls in @p store.
+ * @details Reads crl from @p filename and adds to the list of crls in @p mngr.
  *
  * @param mngr the keys manager.
  * @param filename the CRL file.
@@ -1203,7 +1203,7 @@ done:
 
 /**
  * @brief Reads a CRL from memory and adds to the store.
- * @details Reads crl from @p data and adds to the list of crls in @p store.
+ * @details Reads crl from @p data and adds to the list of crls in @p mngr.
  *
  * @param mngr the pointer to keys manager.
  * @param data the CRL data.

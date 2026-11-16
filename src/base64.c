@@ -26,7 +26,7 @@
 
 
 /*
- * the table to map numbers to base64
+ * the table to map numbers to base64 characters
  */
 static const xmlSecByte base64[] =
 {
@@ -228,8 +228,8 @@ xmlSecBase64CtxFinalize(xmlSecBase64CtxPtr ctx) {
 }
 
 /**
- * @brief Encodes or decodes the next piece of data from input buffer.
- * @details Encodes or decodes the next piece of data from input buffer.
+ * @brief Encodes or decodes the next piece of data from the input buffer.
+ * @details Encodes or decodes the next piece of data from the input buffer.
  * @param ctx the pointer to xmlSecBase64Ctx structure
  * @param in the input buffer
  * @param inSize the input buffer size
@@ -642,7 +642,7 @@ xmlSecBase64GetDecodeSize(xmlSecSize inSize) {
 
     blocks = inSize / 4;
     if((inSize % 4) != 0) {
-        /* this only happens if we have line breaks, etc. so just to be safe */
+        /* this only happens if we have line breaks, etc., so just to be safe */
         ++blocks;
     }
 
@@ -654,7 +654,7 @@ xmlSecBase64GetDecodeSize(xmlSecSize inSize) {
 
 /**
  * @brief Encodes data to a base64 string.
- * @details Encodes the data from input buffer and allocates the string for the result.
+ * @details Encodes the data from the input buffer and allocates the string for the result.
  * The caller is responsible for freeing returned buffer using
  * xmlFree() function.
  * @param in the input buffer.

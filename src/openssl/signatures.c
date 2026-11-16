@@ -1492,7 +1492,7 @@ xmlSecOpenSSLEvpSignatureFinish(xmlSecTransformPtr transform, xmlSecOpenSSLEvpSi
             xmlSecOpenSSLError("EVP_MD_size", xmlSecTransformGetName(transform));
             return(-1);
         }
-        XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_UINT(mdSize, outSize,  return(-1), xmlSecTransformGetName(transform));
+        XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_UINT(mdSize, outSize, return(-1), xmlSecTransformGetName(transform));
         xmlSecAssert2(outSize > 0, -1);
 
         ret = xmlSecBufferSetSize(&(ctx->preSignBuffer), outSize);

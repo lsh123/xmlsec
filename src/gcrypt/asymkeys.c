@@ -162,7 +162,7 @@ xmlSecGCryptAsymKeyDataAdoptKey(xmlSecKeyDataPtr data, gcry_sexp_t key_pair) {
     ctx = xmlSecGCryptAsymKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
-    /* split the key pair, public part should be always present, private might
+    /* split the key pair, public part should always be present, private might
        not be present */
     pub_key = gcry_sexp_find_token(key_pair, "public-key", 0);
     if(pub_key == NULL) {
@@ -204,7 +204,7 @@ xmlSecGCryptAsymKeyDataAdoptKeyPair(xmlSecKeyDataPtr data, gcry_sexp_t pub_key, 
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
     xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecGCryptAsymKeyDataSize), -1);
-    xmlSecAssert2(pub_key != NULL, -1); /* public key should be present always */
+    xmlSecAssert2(pub_key != NULL, -1); /* public key should always be present */
 /*
     aleksey - we don't set optional parameters for RSA keys (p, q, u) and
     because of that we can't actually test the key

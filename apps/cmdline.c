@@ -74,7 +74,7 @@ xmlSecAppCmdLineParamGetString(xmlSecAppCmdLineParamPtr param) {
         return(NULL);
     }
     if(param->type != xmlSecAppCmdLineParamTypeString) {
-        fprintf(stderr, "Error: parameter \"%s\" is not string.\n", xmlSecAppCmdLineParamGetName(param));
+        fprintf(stderr, "Error: parameter \"%s\" is not a string.\n", xmlSecAppCmdLineParamGetName(param));
         return(NULL);
     }
     return((param->value != NULL) ? param->value->strValue : NULL);
@@ -91,7 +91,7 @@ xmlSecAppCmdLineParamGetStringList(xmlSecAppCmdLineParamPtr param) {
         return(NULL);
     }
     if(param->type != xmlSecAppCmdLineParamTypeStringList) {
-        fprintf(stderr, "Error: parameter \"%s\" is not string list.\n", xmlSecAppCmdLineParamGetName(param));
+        fprintf(stderr, "Error: parameter \"%s\" is not a string list.\n", xmlSecAppCmdLineParamGetName(param));
         return(NULL);
     }
     return((param->value != NULL) ? param->value->strListValue : NULL);
@@ -105,7 +105,7 @@ xmlSecAppCmdLineParamGetInt(xmlSecAppCmdLineParamPtr param, int def) {
         return(def);
     }
     if(param->type != xmlSecAppCmdLineParamTypeNumber) {
-        fprintf(stderr, "Error: parameter \"%s\" is not integer.\n", xmlSecAppCmdLineParamGetName(param));
+        fprintf(stderr, "Error: parameter \"%s\" is not an integer.\n", xmlSecAppCmdLineParamGetName(param));
         return(def);
     }
     return((param->value != NULL) ? param->value->intValue : def);
@@ -119,7 +119,7 @@ xmlSecAppCmdLineParamGetTime(xmlSecAppCmdLineParamPtr param, time_t def) {
         return(def);
     }
     if((param->type != xmlSecAppCmdLineParamTypeTime) && (param->type != xmlSecAppCmdLineParamTypeGmtTime)) {
-        fprintf(stderr, "Error: parameter \"%s\" is not time.\n", xmlSecAppCmdLineParamGetName(param));
+        fprintf(stderr, "Error: parameter \"%s\" is not a time.\n", xmlSecAppCmdLineParamGetName(param));
         return(def);
     }
     return((param->value != NULL) ? param->value->timeValue : def);

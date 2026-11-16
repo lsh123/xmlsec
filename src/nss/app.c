@@ -816,8 +816,8 @@ xmlSecNssAppDerKeyLoadSECItem(SECItem* secItem, const char *pwd,
                             PR_TRUE, KU_ALL, &privkey, NULL);
     if (status != SECSuccess) {
         /* the data is not a plain (unencrypted) PKCS#8 private key;
-         * if a password is available, try to import an encrypted
-         * PKCS#8 private key */
+         * try to import an encrypted PKCS#8 private key with the
+         * resolved password (which may be empty) */
         ret = xmlSecNssAppImportEncryptedPkcs8Key(slot, secItem, resolvedPwd, &privkey);
         if(ret < 0) {
             /* the data is a PKCS#8 container and the import failed; the

@@ -1570,7 +1570,7 @@ xmlSecAppExecute(xmlSecAppCommand command, const char** utf8_argv, int argc) {
     }
 #else /* !defined(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING) */
     if((tmp != NULL) && (xmlStrcmp(BAD_CAST tmp, xmlSecGetDefaultCrypto()) != 0) && (xmlStrcmp(BAD_CAST tmp, BAD_CAST "default") != 0)) {
-        fprintf(stderr, "Error: dynamic xmlsec-crypto library loading is disabled and the only available crypto library is '%s'\n", xmlSecGetDefaultCrypto());
+        fprintf(stderr, "Error: dynamic xmlsec-crypto library loading is disabled and the only available crypto library is '%s'\n", BAD_CAST xmlSecGetDefaultCrypto());
         xmlSecAppPrintUsage();
         goto done;
     }
@@ -2084,7 +2084,7 @@ xmlSecAppEncryptFile(const char* inputFileName, const char* outputFileNameTmpl) 
     }
     startTmplNode = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
     if(startTmplNode == NULL) {
-        fprintf(stderr, "Error: failed to find default node with name=\"%s\"\n", xmlSecNodeEncryptedData);
+        fprintf(stderr, "Error: failed to find default node with name=\"%s\"\n", BAD_CAST xmlSecNodeEncryptedData);
         goto done;
     }
 
@@ -3402,7 +3402,7 @@ xmlSecAppXmlDataCreate(const char* filename, const xmlChar* defStartNodeName, co
         cur = xmlSecFindNode(xmlDocGetRootElement(data->doc), name, ns);
         if(cur == NULL) {
             fprintf(stderr, "Error: failed to find node with name=\"%s\"\n",
-                    name);
+                    BAD_CAST name);
             xmlFree(buf);
             xmlSecAppXmlDataDestroy(data);
             return(NULL);
@@ -3434,7 +3434,7 @@ xmlSecAppXmlDataCreate(const char* filename, const xmlChar* defStartNodeName, co
             if(ns->prefix != NULL){
                 ret = xmlXPathRegisterNs(ctx, ns->prefix, ns->href);
                 if(ret != 0) {
-                    fprintf(stderr, "Error: failed to register namespace \"%s\"\n", ns->prefix);
+                    fprintf(stderr, "Error: failed to register namespace \"%s\"\n", BAD_CAST ns->prefix);
                     xmlXPathFreeContext(ctx);
                     xmlSecAppXmlDataDestroy(data);
                     return(NULL);
@@ -3477,7 +3477,7 @@ xmlSecAppXmlDataCreate(const char* filename, const xmlChar* defStartNodeName, co
         data->startNode = xmlSecFindNode(cur, defStartNodeName, defStartNodeNs);
         if(data->startNode == NULL) {
             fprintf(stderr, "Error: failed to find default node with name=\"%s\"\n",
-                    defStartNodeName);
+                    BAD_CAST defStartNodeName);
             xmlSecAppXmlDataDestroy(data);
             return(NULL);
         }

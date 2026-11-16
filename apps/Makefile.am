@@ -13,6 +13,10 @@ EXTRA_DIST = \
 	oss-fuzz/config/xmlsec_keyload_fuzzer.options \
 	oss-fuzz/config/xmlsec_enc_fuzzer.options \
 	oss-fuzz/config/xmlsec_relationship_fuzzer.options \
+	oss-fuzz/config/xmlsec_keyvalue_fuzzer.options \
+	oss-fuzz/config/xmlsec_keyvalue_fuzzer.dict \
+	oss-fuzz/config/xmlsec_x509crl_fuzzer.options \
+	oss-fuzz/config/xmlsec_x509crl_fuzzer.dict \
 	$(wildcard oss-fuzz/*_seed_corpus.txt) \
 	$(wildcard oss-fuzz/corpus/*/*) \
 	$(NULL)
@@ -336,6 +340,78 @@ xmlsec_enc_fuzzer_LDADD = \
 	$(NULL)
 
 xmlsec_enc_fuzzer_DEPENDENCIES = \
+	$(XMLSEC_OPENSSL_LIB) \
+	$(XMLSEC_LIBS) \
+	$(NULL)
+
+# xmlsec KeyValue fuzzer (OSS-Fuzz harness — OpenSSL only)
+noinst_PROGRAMS += xmlsec_keyvalue_fuzzer
+
+xmlsec_keyvalue_fuzzer_SOURCES = \
+	oss-fuzz/xmlsec_keyvalue_target.c \
+	oss-fuzz/standalone_fuzz_runner.c \
+	$(NULL)
+
+xmlsec_keyvalue_fuzzer_CFLAGS = \
+	-DPACKAGE=\"@PACKAGE@\" \
+	-I../include \
+	-I$(top_srcdir)/include \
+	$(XMLSEC_DEFINES) \
+	$(XMLSEC_CRYPTO_CFLAGS) \
+	$(CRYPTO_INCLUDES) \
+	$(LIBXML_CFLAGS) \
+	$(NULL)
+
+xmlsec_keyvalue_fuzzer_LDFLAGS = \
+	@XMLSEC_STATIC_BINARIES@ \
+	@XMLSEC_EXTRA_LDFLAGS@ \
+	@XMLSEC_APP_EXTRA_LDFLAGS@ \
+	$(NULL)
+
+xmlsec_keyvalue_fuzzer_LDADD = \
+	$(LIBXML_LIBS) \
+	$(OPENSSL_LIBS) \
+	$(XMLSEC_OPENSSL_LIB) \
+	$(XMLSEC_LIBS) \
+	$(NULL)
+
+xmlsec_keyvalue_fuzzer_DEPENDENCIES = \
+	$(XMLSEC_OPENSSL_LIB) \
+	$(XMLSEC_LIBS) \
+	$(NULL)
+
+# xmlsec X509 CRL fuzzer (OSS-Fuzz harness — OpenSSL only)
+noinst_PROGRAMS += xmlsec_x509crl_fuzzer
+
+xmlsec_x509crl_fuzzer_SOURCES = \
+	oss-fuzz/xmlsec_x509crl_target.c \
+	oss-fuzz/standalone_fuzz_runner.c \
+	$(NULL)
+
+xmlsec_x509crl_fuzzer_CFLAGS = \
+	-DPACKAGE=\"@PACKAGE@\" \
+	-I../include \
+	-I$(top_srcdir)/include \
+	$(XMLSEC_DEFINES) \
+	$(XMLSEC_CRYPTO_CFLAGS) \
+	$(CRYPTO_INCLUDES) \
+	$(LIBXML_CFLAGS) \
+	$(NULL)
+
+xmlsec_x509crl_fuzzer_LDFLAGS = \
+	@XMLSEC_STATIC_BINARIES@ \
+	@XMLSEC_EXTRA_LDFLAGS@ \
+	@XMLSEC_APP_EXTRA_LDFLAGS@ \
+	$(NULL)
+
+xmlsec_x509crl_fuzzer_LDADD = \
+	$(LIBXML_LIBS) \
+	$(OPENSSL_LIBS) \
+	$(XMLSEC_OPENSSL_LIB) \
+	$(XMLSEC_LIBS) \
+	$(NULL)
+
+xmlsec_x509crl_fuzzer_DEPENDENCIES = \
 	$(XMLSEC_OPENSSL_LIB) \
 	$(XMLSEC_LIBS) \
 	$(NULL)

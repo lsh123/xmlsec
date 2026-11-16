@@ -20,7 +20,6 @@
  */
 #include <stdint.h>
 #include <stddef.h>
-#include <limits.h>
 
 #include <libxml/parser.h>
 #include <libxml/tree.h>
@@ -42,6 +41,7 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size);
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/x509.h>
 
+#ifndef XMLSEC_NO_X509
 static int g_initialized = 0;
 static int g_init_failed = 0;
 
@@ -120,8 +120,8 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
     xmlSecKeyDataFormat fmt;
     X509* cert = NULL;
     X509_CRL* crl = NULL;
-    XMLSEC_STACK_OF_X509* certs = NULL;
-    XMLSEC_STACK_OF_X509_CRL* crls = NULL;
+    STACK_OF(X509)* certs = NULL;
+    STACK_OF(X509_CRL)* crls = NULL;
     size_t crlLen, certLen;
     int der;
 
@@ -181,10 +181,14 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
         certs = sk_X509_new_null();
         crls = sk_X509_CRL_new_null();
         if (certs != NULL && crls != NULL) {
-            X509* cert_dup = X509_dup(cert);
-            X509_CRL* crl_dup = X509_CRL_dup(crl);
-            if (cert_dup != NULL) sk_X509_push(certs, cert_dup);
-            if (crl_dup != NULL) sk_X509_CRL_push(crls, crl_dup);
+            if (sk_X509_push(certs, cert) <= 0) {
+                X509_free(cert);
+                cert = NULL;
+            }
+            if (sk_X509_CRL_push(crls, crl) <= 0) {
+                X509_CRL_free(crl);
+                crl = NULL;
+            }
             (void)xmlSecOpenSSLX509StoreVerify(store, certs, crls, keyInfoCtx);
         }
     }
@@ -197,3 +201,14 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
     xmlSecKeysMngrDestroy(mngr);
     return 0;
 }
+
+#else /* XMLSEC_NO_X509 */
+/* X.509 support is disabled, so there is nothing to fuzz.
+ * Provide a no-op entry point so the target still compiles and links when
+ * built against a feature-disabled configuration. */
+int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
+    (void)data;
+    (void)size;
+    return 0;
+}
+#endif /* XMLSEC_NO_X509 */

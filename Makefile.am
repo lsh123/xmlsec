@@ -130,6 +130,8 @@ FUZZ_TARGETS = \
 	$(ABS_BUILDDIR)/apps/xmlsec_keyinfo_fuzzer$(EXEEXT) \
 	$(ABS_BUILDDIR)/apps/xmlsec_keyload_fuzzer$(EXEEXT) \
 	$(ABS_BUILDDIR)/apps/xmlsec_enc_fuzzer$(EXEEXT) \
+	$(ABS_BUILDDIR)/apps/xmlsec_keyvalue_fuzzer$(EXEEXT) \
+	$(ABS_BUILDDIR)/apps/xmlsec_x509crl_fuzzer$(EXEEXT) \
 	$(NULL)
 else
 FUZZ_TARGETS = \

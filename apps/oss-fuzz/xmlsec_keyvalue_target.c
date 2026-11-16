@@ -14,7 +14,6 @@
  */
 #include <stdint.h>
 #include <stddef.h>
-#include <limits.h>
 
 int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size);
 
@@ -30,6 +29,7 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size);
 #include <xmlsec/parser.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/strings.h>
+#include <xmlsec/templates.h>
 
 #include <xmlsec/openssl/app.h>
 #include <xmlsec/openssl/crypto.h>
@@ -56,7 +56,10 @@ static void ignore_xmlsec_error(const char* file, int line, const char* func,
 }
 
 static int do_init(void) {
+    int options;
+
     xmlInitParser();
+
     if (xmlSecInit() < 0) {
         return -1;
     }
@@ -76,6 +79,17 @@ static int do_init(void) {
     }
     xmlSetGenericErrorFunc(NULL, &ignore_error);
     xmlSecErrorsSetCallback(&ignore_xmlsec_error);
+
+
+    /* xmlReadMemory() below uses xmlSecParserGetDefaultOptions(), which
+     * includes XML_PARSE_HUGE (see src/parser.c). Fuzz inputs are small, so
+     * the relaxation is unnecessary; on libxml2 < 2.13.0 it disables the
+     * parser depth limit, risking stack exhaustion on deeply nested fuzz
+     * input. */
+    options = xmlSecParserGetDefaultOptions();
+    options &= ~XML_PARSE_HUGE;
+    options |= XML_PARSE_PEDANTIC | XML_PARSE_NONET;
+    xmlSecParserSetDefaultOptions(options);
 
     g_mngr = xmlSecKeysMngrCreate();
     if (g_mngr == NULL) {
@@ -113,6 +127,15 @@ static void write_key(xmlSecKeyPtr key) {
     }
     xmlDocSetRootElement(doc, node);
     xmlSetNs(node, xmlNewNs(node, xmlSecDSigNs, NULL));
+
+    /* xmlSecKeyInfoNodeWrite() only writes into the child elements that
+     * already exist under <KeyInfo>, so add the <KeyValue> element the
+     * KeyValue writers are expected to fill in. */
+    node = xmlSecTmplKeyInfoAddKeyValue(node);
+    if (node == NULL) {
+        xmlFreeDoc(doc);
+        return;
+    }
 
     ctx = xmlSecKeyInfoCtxCreate(g_mngr);
     if (ctx == NULL) {

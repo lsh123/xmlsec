@@ -59,7 +59,7 @@ the necessary cryptographic operations.
  * @return pointer to the dsig:Signature node or NULL if an error occurs.
  */
 xmlNodePtr
-create_signature_template(xmlDocPtr doc){
+create_signature_template(xmlDocPtr doc) {
     xmlNodePtr signNode = NULL;
     xmlNodePtr refNode = NULL;
     xmlNodePtr keyInfoNode = NULL;
@@ -87,7 +87,7 @@ create_signature_template(xmlDocPtr doc){
         return(NULL);
     }
 
-    /* adds <dsig:Transform/> node with enveloped transform */
+    /* add <dsig:Transform/> node with enveloped transform */
     if(xmlSecTmplReferenceAddTransform(refNode, xmlSecTransformEnvelopedId) == NULL) {
         fprintf(stderr, "Error: failed to add enveloped transform to reference\n");
         return(NULL);
@@ -107,7 +107,6 @@ create_signature_template(xmlDocPtr doc){
     /* done */
     return(signNode);
 }
-
 ```
 [Full program listing](../examples/sign2.md)
 
@@ -161,7 +160,7 @@ create_encryption_template(xmlDocPtr doc) {
     assert(doc);
 
     /* add <enc:EncryptedData/> node to encrypt XML file and replace its content with encryption result */
-    encDataNode = xmlSecTmplEncDataCreate(doc, xmlSecTransformDes3CbcId, NULL, xmlSecTypeEncElement, NULL, NULL);
+    encDataNode = xmlSecTmplEncDataCreate(doc, xmlSecTransformAes128CbcId, NULL, xmlSecTypeEncElement, NULL, NULL);
     if(encDataNode == NULL) {
         fprintf(stderr, "Error: failed to create encryption template\n");
         return(NULL);

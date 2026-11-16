@@ -42,6 +42,7 @@ decryption.
 int
 verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
     xmlDocPtr doc = NULL;
+    xmlNodePtr rootNode = NULL;
     xmlNodePtr node = NULL;
     xmlSecDSigCtxPtr dsigCtx = NULL;
     int res = -1;
@@ -56,22 +57,42 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
 #else /* LIBXML_VERSION >= 21300 */
     doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT);
 #endif /* LIBXML_VERSION >= 21300 */
-    if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
+    if (doc == NULL) {
         fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
         goto done;
     }
 
-    /* find start node */
-    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
+    /* check that the root node is a SAML Response */
+    rootNode = xmlDocGetRootElement(doc);
+    if(rootNode == NULL) {
+        fprintf(stderr, "Error: unable to get root element from file \"%s\"\n", xml_file);
+        goto done;
+    }
+    if(xmlSecCheckNodeName(rootNode, BAD_CAST "Response", BAD_CAST "urn:oasis:names:tc:SAML:1.0:protocol") != 1) {
+        fprintf(stderr, "Error: the root element is not a SAML Response\n");
+        goto done;
+    }
+
+    /* find start node; per the SAML specification the signature must be a
+     * direct child of the signed element, so the <dsig:Signature/> node
+     * must be a direct child of the SAML Response (the document root) */
+    node = xmlSecFindChild(rootNode, xmlSecNodeSignature, xmlSecDSigNs);
     if(node == NULL) {
         fprintf(stderr, "Error: start node not found in \"%s\"\n", xml_file);
+        goto done;
+    }
+
+    /* the SAML specification expects exactly one signature, so reject
+     * a response with more than one <dsig:Signature/> child */
+    if(xmlSecFindSibling(node->next, xmlSecNodeSignature, xmlSecDSigNs) != NULL) {
+        fprintf(stderr, "Error: the SAML Response contains more than one signature\n");
         goto done;
     }
 
     /* create signature context */
     dsigCtx = xmlSecDSigCtxCreate(mngr);
     if(dsigCtx == NULL) {
-        fprintf(stderr,"Error: failed to create signature context\n");
+        fprintf(stderr, "Error: failed to create signature context\n");
         goto done;
     }
 
@@ -83,7 +104,7 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
        (xmlSecDSigCtxEnableSignatureTransform(dsigCtx, xmlSecTransformExclC14NId) < 0) ||
        (xmlSecDSigCtxEnableSignatureTransform(dsigCtx, xmlSecTransformRsaSha1Id) < 0)) {
 
-        fprintf(stderr,"Error: failed to limit allowed signature transforms\n");
+        fprintf(stderr, "Error: failed to limit allowed signature transforms\n");
         goto done;
     }
     if((xmlSecDSigCtxEnableReferenceTransform(dsigCtx, xmlSecTransformInclC14NId) < 0) ||
@@ -91,31 +112,23 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
        (xmlSecDSigCtxEnableReferenceTransform(dsigCtx, xmlSecTransformSha1Id) < 0) ||
        (xmlSecDSigCtxEnableReferenceTransform(dsigCtx, xmlSecTransformEnvelopedId) < 0)) {
 
-        fprintf(stderr,"Error: failed to limit allowed reference transforms\n");
+        fprintf(stderr, "Error: failed to limit allowed reference transforms\n");
         goto done;
     }
 
-    /* in addition, limit possible key data to valid X509 certificates and key names */
+    /* in addition, limit possible key data to valid X.509 certificates and key names */
     if(xmlSecPtrListAdd(&(dsigCtx->keyInfoReadCtx.enabledKeyData), BAD_CAST xmlSecKeyDataX509Id) < 0) {
-        fprintf(stderr,"Error: failed to limit allowed key data\n");
+        fprintf(stderr, "Error: failed to limit allowed key data\n");
         goto done;
     }
     if(xmlSecPtrListAdd(&(dsigCtx->keyInfoReadCtx.enabledKeyData), BAD_CAST xmlSecKeyDataNameId) < 0) {
-        fprintf(stderr,"Error: failed to limit allowed key data\n");
+        fprintf(stderr, "Error: failed to limit allowed key data\n");
         goto done;
     }
 
     /* Verify signature */
     if(xmlSecDSigCtxVerify(dsigCtx, node) < 0) {
-        fprintf(stderr,"Error: signature verify\n");
-        goto done;
-    }
-
-    /* check that we have only one Reference */
-    if((dsigCtx->status == xmlSecDSigStatusSucceeded) &&
-        (xmlSecPtrListGetSize(&(dsigCtx->signedInfoReferences)) != 1)) {
-
-        fprintf(stderr,"Error: only one reference is allowed\n");
+        fprintf(stderr, "Error: signature verification failed\n");
         goto done;
     }
 
@@ -141,7 +154,6 @@ done:
     }
     return(res);
 }
-
 ```
 [Full program listing](../examples/verify-saml.md)
 

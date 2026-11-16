@@ -44,7 +44,6 @@ some other key storage.
 ### Example: Initializing keys manager and loading keys from PEM files
 
 ```c
-
 /**
  * @brief Creates a keys manager and loads PEM keys from files.
  * @details Creates a simple keys manager and loads the PEM keys from #files into it.
@@ -66,7 +65,7 @@ load_keys(char** files, int files_size) {
     assert(files_size > 0);
 
     /* create and initialize keys manager, we use a simple list based
-     * keys manager, implement your own xmlSecKeysStore klass if you need
+     * keys manager, implement your own xmlSecKeyStoreKlass if you need
      * something more sophisticated
      */
     mngr = xmlSecKeysMngrCreate();
@@ -89,14 +88,14 @@ load_keys(char** files, int files_size) {
         /* load key */
         key = xmlSecCryptoAppKeyLoadEx(file, xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
         if(key == NULL) {
-            fprintf(stderr,"Error: failed to load pem key from \"%s\"\n", file);
+            fprintf(stderr, "Error: failed to load PEM key from \"%s\"\n", file);
             xmlSecKeysMngrDestroy(mngr);
             return(NULL);
         }
 
         /* set the key name */
         if(xmlSecKeySetName(key, BAD_CAST name) < 0) {
-            fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", file);
+            fprintf(stderr, "Error: failed to set key name for key from \"%s\"\n", file);
             xmlSecKeyDestroy(key);
             xmlSecKeysMngrDestroy(mngr);
             return(NULL);
@@ -106,7 +105,7 @@ load_keys(char** files, int files_size) {
          * is responsible for destroying it
          */
         if(xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key) < 0) {
-            fprintf(stderr,"Error: failed to add key from \"%s\" to keys manager\n", file);
+            fprintf(stderr, "Error: failed to add key from \"%s\" to keys manager\n", file);
             xmlSecKeyDestroy(key);
             xmlSecKeysMngrDestroy(mngr);
             return(NULL);
@@ -150,7 +149,6 @@ scalability, or support multithreaded environments more effectively.
 ### Example: Creating a custom keys manager
 
 ```c
-
 /**
  * @brief Creates a files-based keys manager.
  * @details Creates a files based keys manager: we assume that key name is
@@ -199,9 +197,9 @@ create_files_keys_mngr(void) {
 
 /******************************************************************************
  *
- * Files Keys Store: we assume that the key name (content of the
- * <dsig:KeyName/> or <xenc:KeyName/> element) is a name of the file
- * with a key in the current folder.
+ * Files Keys Store: we assume that key's name (content of the
+ * <dsig:KeyName/> element) is a name of the file with a key (in the
+ * current folder).
  * Attention: this is probably not a good solution for high traffic systems.
  *
  *****************************************************************************/
@@ -256,8 +254,10 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
     }
 
     /* we do not want to open files outside the current folder;
-     * to prevent that, limit the characters in the key name to letters, digits,
-     * '.', '-' or '_'.
+     * to limit that, restrict the characters in the key name to letters,
+     * digits, '.', '-' or '_'. This rejects the path separator '/', so
+     * the name cannot reference a path; note, however, that names
+     * containing ".." still pass the check.
      */
     for(p = name; (*p) != '\0'; ++p) {
         if(!isalnum((*p)) && ((*p) != '.') && ((*p) != '-') && ((*p) != '_')) {
@@ -266,31 +266,30 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
     }
 
     if((keyInfoCtx->keyReq.keyId == xmlSecKeyDataDsaId) || (keyInfoCtx->keyReq.keyId == xmlSecKeyDataRsaId)) {
-        /* load key from a pem file, if key is not found then it's an error */
+        /* load key from a PEM file, if key is not found then it's an error */
         key = xmlSecCryptoAppKeyLoadEx((const char*)name, xmlSecKeyDataTypePrivate, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
         if(key == NULL) {
-            fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", name);
+            fprintf(stderr, "Error: failed to load private PEM key from \"%s\"\n", name);
             return(NULL);
         }
     } else {
         /* otherwise it's a binary key, if key is not found then it's an error */
         key = xmlSecKeyReadBinaryFile(keyInfoCtx->keyReq.keyId, (const char*)name);
         if(key == NULL) {
-            fprintf(stderr,"Error: failed to load key from binary file \"%s\"\n", name);
+            fprintf(stderr, "Error: failed to load key from binary file \"%s\"\n", name);
             return(NULL);
         }
     }
 
     /* set key name */
     if(xmlSecKeySetName(key, name) < 0) {
-        fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", (const char*)name);
+        fprintf(stderr, "Error: failed to set key name for key from \"%s\"\n", (const char*)name);
         xmlSecKeyDestroy(key);
         return(NULL);
     }
 
     return(key);
 }
-
 ```
 [Full program listing](../examples/decrypt3.md)
 

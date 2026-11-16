@@ -2414,6 +2414,11 @@ test_xmlSecReplaceNodeBufferAndReturn_empty_buffer_returns_node(void) {
     /* the original node must be returned and detached from the tree */
     if(replaced != target) {
         testLog("Error: expected the original node to be returned\n");
+        /* on success the function detaches the target node from the tree,
+         * so release it explicitly: neither xmlFreeNode(replaced) nor
+         * xmlFreeDoc(doc) would free it in that case */
+        xmlUnlinkNode(target);
+        xmlFreeNode(target);
         xmlFreeNode(replaced);
         xmlFreeDoc(doc);
         testFinishedFailure();
@@ -2421,7 +2426,9 @@ test_xmlSecReplaceNodeBufferAndReturn_empty_buffer_returns_node(void) {
     }
     if(xmlSecFindChild(root, BAD_CAST "target", NULL) != NULL) {
         testLog("Error: the returned node is still attached to the tree\n");
-        xmlFreeNode(replaced);
+        /* here replaced == target and the node is still attached to the
+         * document, so xmlFreeDoc() releases it; freeing it explicitly as
+         * well would be a double-free */
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
@@ -2482,6 +2489,11 @@ test_xmlSecReplaceNodeBufferAndReturn_null_buffer_zero_size(void) {
     /* the node must be returned and detached from the tree */
     if(replaced != target) {
         testLog("Error: expected the original node to be returned\n");
+        /* on success the function detaches the target node from the tree,
+         * so release it explicitly: neither xmlFreeNode(replaced) nor
+         * xmlFreeDoc(doc) would free it in that case */
+        xmlUnlinkNode(target);
+        xmlFreeNode(target);
         xmlFreeNode(replaced);
         xmlFreeDoc(doc);
         testFinishedFailure();
@@ -2489,13 +2501,521 @@ test_xmlSecReplaceNodeBufferAndReturn_null_buffer_zero_size(void) {
     }
     if(xmlSecFindChild(root, BAD_CAST "target", NULL) != NULL) {
         testLog("Error: the returned node is still attached to the tree\n");
-        xmlFreeNode(replaced);
+        /* here replaced == target and the node is still attached to the
+         * document, so xmlFreeDoc() releases it; freeing it explicitly as
+         * well would be a double-free */
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
     }
 
     xmlFreeNode(replaced);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+/******************************************************************************
+ * xmlSecReplaceContent / xmlSecReplaceContentAndReturn
+ *****************************************************************************/
+/*
+ * Note: xmlSecReplaceContent() replaces the content of a node with the new
+ * node itself: after a successful call, the new node (name, namespace,
+ * attributes and subtree intact) becomes a child of the original node,
+ * i.e. <node><newNode>...</newNode></node>; the old content is removed
+ * (or detached into *replaced by the AndReturn variant). This is the behavior
+ * the callers rely on: src/xmlenc.c nests <enc:EncryptedData> inside the
+ * original element when encrypting its content, and
+ * xmlSecTmplTransformAddXsltStylesheet() in src/templates.c nests the
+ * <xsl:stylesheet> root inside the <ds:Transform> node.
+ */
+static void
+test_xmlSecReplaceContent_new_node_becomes_child(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    xmlNodePtr node;
+    xmlNodePtr x;
+    xmlNodePtr y;
+    xmlNodePtr newNode;
+    xmlNodePtr cur;
+    xmlChar* content;
+    int children;
+    int ret;
+
+    testStart("xmlSecReplaceContent: the new node itself becomes the node's content");
+
+    doc = xmltreeTestCreateDoc(BAD_CAST "root", NULL);
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        testFinishedFailure();
+        return;
+    }
+    root = xmlDocGetRootElement(doc);
+    node = xmlNewChild(root, NULL, BAD_CAST "node", NULL);
+    x = xmlNewChild(node, NULL, BAD_CAST "x", BAD_CAST "old-x");
+    y = xmlNewChild(node, NULL, BAD_CAST "y", BAD_CAST "old-y");
+    newNode = xmlNewChild(root, NULL, BAD_CAST "new", BAD_CAST "payload");
+    if((node == NULL) || (x == NULL) || (y == NULL) || (newNode == NULL)) {
+        testLog("Error: failed to create nodes\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecReplaceContent(node, newNode);
+    if(ret < 0) {
+        testLog("Error: xmlSecReplaceContent returned %d\n", ret);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* the old content must be removed */
+    if((xmlSecFindChild(node, BAD_CAST "x", NULL) != NULL) ||
+       (xmlSecFindChild(node, BAD_CAST "y", NULL) != NULL)) {
+        testLog("Error: the old content was not removed from the node\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* the new node itself (not its children) must be the only child of node */
+    if((node->children != newNode) || (node->last != newNode) ||
+       (newNode->prev != NULL) || (newNode->next != NULL)) {
+        testLog("Error: the new node is not the only child of the node\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(newNode->parent != node) {
+        testLog("Error: the new node's parent does not point to the node\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* the new node must keep its own name and subtree */
+    if(xmlStrcmp(newNode->name, BAD_CAST "new") != 0) {
+        testLog("Error: the new node's name was changed\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    children = 0;
+    for(cur = newNode->children; cur != NULL; cur = cur->next) {
+        children++;
+    }
+    if(children != 1) {
+        testLog("Error: expected the new node to keep its single child, got %d\n", children);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    content = xmlNodeGetContent(newNode);
+    if((content == NULL) || (xmlStrcmp(content, BAD_CAST "payload") != 0)) {
+        testLog("Error: unexpected content of the new node: '%s'\n",
+                content ? (const char*)content : "NULL");
+        xmlFree(content);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(content);
+
+    /* the new node must no longer be a child of the root */
+    if(xmlSecFindChild(root, BAD_CAST "new", NULL) != NULL) {
+        testLog("Error: the new node is still a child of the root node\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecReplaceContent_same_node_fails(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    xmlNodePtr node;
+    xmlNodePtr child;
+    int ret;
+
+    testStart("xmlSecReplaceContent: replacing a node's content with the node itself fails");
+
+    doc = xmltreeTestCreateDoc(BAD_CAST "root", NULL);
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        testFinishedFailure();
+        return;
+    }
+    root = xmlDocGetRootElement(doc);
+    node = xmlNewChild(root, NULL, BAD_CAST "node", NULL);
+    child = xmlNewChild(node, NULL, BAD_CAST "child", NULL);
+    if((node == NULL) || (child == NULL)) {
+        testLog("Error: failed to create nodes\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecReplaceContent(node, node);
+    if(ret >= 0) {
+        testLog("Error: xmlSecReplaceContent accepted a node as its own content\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* the check happens before the tree is modified */
+    if(xmlSecFindChild(node, BAD_CAST "child", NULL) != child) {
+        testLog("Error: the tree was modified after the failed replacement\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecReplaceContent_new_node_descendant_fails(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    xmlNodePtr node;
+    xmlNodePtr child;
+    int ret;
+
+    testStart("xmlSecReplaceContent: a descendant of the node cannot be the new content");
+
+    doc = xmltreeTestCreateDoc(BAD_CAST "root", NULL);
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        testFinishedFailure();
+        return;
+    }
+    root = xmlDocGetRootElement(doc);
+    node = xmlNewChild(root, NULL, BAD_CAST "node", NULL);
+    child = xmlNewChild(node, NULL, BAD_CAST "child", NULL);
+    if((node == NULL) || (child == NULL)) {
+        testLog("Error: failed to create nodes\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecReplaceContent(node, child);
+    if(ret >= 0) {
+        testLog("Error: xmlSecReplaceContent accepted a descendant of the node as the new content\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* on error the state of the tree is left as is; the caller owns the cleanup */
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecReplaceContent_new_node_ancestor_fails(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    xmlNodePtr node;
+    xmlNodePtr child;
+    int ret;
+
+    testStart("xmlSecReplaceContent: an ancestor of the node cannot be the new content");
+
+    doc = xmltreeTestCreateDoc(BAD_CAST "root", NULL);
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        testFinishedFailure();
+        return;
+    }
+    root = xmlDocGetRootElement(doc);
+    node = xmlNewChild(root, NULL, BAD_CAST "node", NULL);
+    child = xmlNewChild(node, NULL, BAD_CAST "child", NULL);
+    if((node == NULL) || (child == NULL)) {
+        testLog("Error: failed to create nodes\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecReplaceContent(child, node);
+    if(ret >= 0) {
+        testLog("Error: xmlSecReplaceContent accepted an ancestor of the node as the new content\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* on error the state of the tree is left as is; the caller owns the cleanup */
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecReplaceContent_cross_document_new_node(void) {
+    xmlDocPtr doc;
+    xmlDocPtr extDoc;
+    xmlNodePtr root;
+    xmlNodePtr node;
+    xmlNodePtr newNode;
+    xmlChar* content;
+    int ret;
+
+    testStart("xmlSecReplaceContent: the new node from a different document is moved into the node");
+
+    doc = xmltreeTestCreateDoc(BAD_CAST "root", NULL);
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        testFinishedFailure();
+        return;
+    }
+    root = xmlDocGetRootElement(doc);
+    node = xmlNewChild(root, NULL, BAD_CAST "node", BAD_CAST "old");
+    if(node == NULL) {
+        testLog("Error: failed to create node\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* the new node is the root of a different document (the
+     * xmlSecTmplTransformAddXsltStylesheet() case in src/templates.c) */
+    extDoc = xmlNewDoc(BAD_CAST "1.0");
+    if(extDoc == NULL) {
+        testLog("Error: failed to create the external doc\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    newNode = xmlNewDocNode(extDoc, NULL, BAD_CAST "imported", BAD_CAST "payload");
+    if(newNode == NULL) {
+        testLog("Error: failed to create the external node\n");
+        xmlFreeDoc(extDoc);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlDocSetRootElement(extDoc, newNode);
+
+    ret = xmlSecReplaceContent(node, newNode);
+    if(ret < 0) {
+        testLog("Error: xmlSecReplaceContent returned %d\n", ret);
+        xmlFreeDoc(extDoc);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    if((node->children != newNode) || (node->last != newNode) ||
+       (newNode->parent != node) || (newNode->next != NULL)) {
+        testLog("Error: the external node was not placed into the node\n");
+        xmlFreeDoc(extDoc);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* as in src/templates.c, make sure the moved subtree points at the
+     * target document */
+#if LIBXML_VERSION < 21300
+    xmlSetTreeDoc(newNode, doc);
+#else  /* LIBXML_VERSION < 21300 */
+    if(xmlSetTreeDoc(newNode, doc) < 0) {
+        testLog("Error: xmlSetTreeDoc returned an error\n");
+        xmlFreeDoc(extDoc);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+#endif /* LIBXML_VERSION < 21300 */
+
+    content = xmlNodeGetContent(node);
+    if((content == NULL) || (xmlStrcmp(content, BAD_CAST "payload") != 0)) {
+        testLog("Error: unexpected content of the node: '%s'\n",
+                content ? (const char*)content : "NULL");
+        xmlFree(content);
+        xmlFreeDoc(extDoc);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(content);
+
+    /* the external document no longer references the moved node */
+    if(extDoc->children != NULL) {
+        testLog("Error: the external document still references the moved node\n");
+        xmlFreeDoc(extDoc);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeDoc(extDoc);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecReplaceContentAndReturn_returns_old_content_in_order(void) {
+    static const xmlChar* expectedNames[] = { BAD_CAST "a", BAD_CAST "b", BAD_CAST "c" };
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    xmlNodePtr node;
+    xmlNodePtr newNode;
+    xmlNodePtr replaced;
+    xmlNodePtr cur;
+    int idx;
+    int ret;
+
+    testStart("xmlSecReplaceContentAndReturn: the old content is returned detached in the original order");
+
+    doc = xmltreeTestCreateDoc(BAD_CAST "root", NULL);
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        testFinishedFailure();
+        return;
+    }
+    root = xmlDocGetRootElement(doc);
+    node = xmlNewChild(root, NULL, BAD_CAST "node", NULL);
+    (void)xmlNewChild(node, NULL, BAD_CAST "a", BAD_CAST "1");
+    (void)xmlNewChild(node, NULL, BAD_CAST "b", BAD_CAST "2");
+    (void)xmlNewChild(node, NULL, BAD_CAST "c", BAD_CAST "3");
+    newNode = xmlNewChild(root, NULL, BAD_CAST "new", NULL);
+    if((node == NULL) || (newNode == NULL)) {
+        testLog("Error: failed to create nodes\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    replaced = NULL;
+    ret = xmlSecReplaceContentAndReturn(node, newNode, &replaced);
+    if(ret < 0) {
+        testLog("Error: xmlSecReplaceContentAndReturn returned %d\n", ret);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    if((node->children != newNode) || (newNode->parent != node)) {
+        testLog("Error: the new node was not placed into the node\n");
+        xmlFreeNodeList(replaced);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    if(replaced == NULL) {
+        testLog("Error: the replaced content was not returned\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* the old children must be detached and linked in the original order */
+    idx = 0;
+    for(cur = replaced; cur != NULL; cur = cur->next) {
+        if(cur->parent != NULL) {
+            testLog("Error: a replaced child is still attached to the tree\n");
+            xmlFreeNodeList(replaced);
+            xmlFreeDoc(doc);
+            testFinishedFailure();
+            return;
+        }
+        if(idx >= 3) {
+            testLog("Error: the replaced list has more children than expected\n");
+            xmlFreeNodeList(replaced);
+            xmlFreeDoc(doc);
+            testFinishedFailure();
+            return;
+        }
+        if(xmlStrcmp(cur->name, expectedNames[idx]) != 0) {
+            testLog("Error: unexpected name or order in the replaced list\n");
+            xmlFreeNodeList(replaced);
+            xmlFreeDoc(doc);
+            testFinishedFailure();
+            return;
+        }
+        idx++;
+    }
+    if(idx != 3) {
+        testLog("Error: expected 3 replaced children, got %d\n", idx);
+        xmlFreeNodeList(replaced);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(replaced->prev != NULL) {
+        testLog("Error: the first replaced child has a non-NULL prev pointer\n");
+        xmlFreeNodeList(replaced);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* the replaced list is owned by the caller */
+    xmlFreeNodeList(replaced);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecReplaceContentAndReturn_empty_node_returns_null(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    xmlNodePtr node;
+    xmlNodePtr newNode;
+    xmlNodePtr replaced;
+    int ret;
+
+    testStart("xmlSecReplaceContentAndReturn: an empty node yields a NULL replaced list");
+
+    doc = xmltreeTestCreateDoc(BAD_CAST "root", NULL);
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        testFinishedFailure();
+        return;
+    }
+    root = xmlDocGetRootElement(doc);
+    node = xmlNewChild(root, NULL, BAD_CAST "node", NULL);
+    newNode = xmlNewChild(root, NULL, BAD_CAST "new", NULL);
+    if((node == NULL) || (newNode == NULL)) {
+        testLog("Error: failed to create nodes\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* use a non-NULL sentinel to make sure the function initializes *replaced */
+    replaced = node;
+    ret = xmlSecReplaceContentAndReturn(node, newNode, &replaced);
+    if(ret < 0) {
+        testLog("Error: xmlSecReplaceContentAndReturn returned %d\n", ret);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    if(replaced != NULL) {
+        testLog("Error: expected a NULL replaced list for an empty node\n");
+        xmlFreeNodeList(replaced);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if((node->children != newNode) || (newNode->parent != node)) {
+        testLog("Error: the new node was not placed into the node\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
     xmlFreeDoc(doc);
     testFinishedSuccess();
 }
@@ -2612,6 +3132,19 @@ test_xmltree(void) {
     test_xmlSecReplaceNodeBuffer_plain_text_replaces_with_text_node();
     test_xmlSecReplaceNodeBufferAndReturn_empty_buffer_returns_node();
     test_xmlSecReplaceNodeBufferAndReturn_null_buffer_zero_size();
+    if(testGroupFinished() != 1) { success = 0; }
+
+    testGroupStart("xmlSecReplaceContent");
+    test_xmlSecReplaceContent_new_node_becomes_child();
+    test_xmlSecReplaceContent_same_node_fails();
+    test_xmlSecReplaceContent_new_node_descendant_fails();
+    test_xmlSecReplaceContent_new_node_ancestor_fails();
+    test_xmlSecReplaceContent_cross_document_new_node();
+    if(testGroupFinished() != 1) { success = 0; }
+
+    testGroupStart("xmlSecReplaceContentAndReturn");
+    test_xmlSecReplaceContentAndReturn_returns_old_content_in_order();
+    test_xmlSecReplaceContentAndReturn_empty_node_returns_null();
     if(testGroupFinished() != 1) { success = 0; }
 
     return(success);

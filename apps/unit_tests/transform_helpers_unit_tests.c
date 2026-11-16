@@ -2571,14 +2571,9 @@ test_xmlSecTransformPbkdf2ParamsRead_iteration_count_zero_fails(void) {
 
 static void
 test_xmlSecTransformPbkdf2ParamsRead_iteration_count_too_big_fails(void) {
-    /* 1000001 = XMLSEC_PBKDF2_MAX_ITERATIONS + 1 */
-    static const char xml[] =
-        "<PBKDF2-params xmlns=\"http://www.w3.org/2009/xmlenc11#\">"
-        "<Salt><Specified>AQIDBAUG</Specified></Salt>"
-        "<IterationCount>1000001</IterationCount>"
-        "<KeyLength>32</KeyLength>"
-        "<PRF Algorithm=\"http://www.w3.org/2009/xmlenc11#hmac-sha256\"/>"
-        "</PBKDF2-params>";
+    /* build the input from XMLSEC_PBKDF2_MAX_ITERATIONS so the test stays
+     * valid in builds that override the default limit */
+    char xmlInputBuf[512];
     xmlDocPtr doc = NULL;
     xmlNodePtr node;
     xmlSecTransformPbkdf2Params params;
@@ -2586,7 +2581,16 @@ test_xmlSecTransformPbkdf2ParamsRead_iteration_count_too_big_fails(void) {
 
     testStart("PBKDF2 params read too big iteration count is rejected");
 
-    node = xmlSecUnitTestParseNode(xml, &doc);
+    snprintf(xmlInputBuf, sizeof(xmlInputBuf),
+        "<PBKDF2-params xmlns=\"http://www.w3.org/2009/xmlenc11#\">"
+        "<Salt><Specified>AQIDBAUG</Specified></Salt>"
+        "<IterationCount>%llu</IterationCount>"
+        "<KeyLength>32</KeyLength>"
+        "<PRF Algorithm=\"http://www.w3.org/2009/xmlenc11#hmac-sha256\"/>"
+        "</PBKDF2-params>",
+        (unsigned long long)(XMLSEC_PBKDF2_MAX_ITERATIONS + 1));
+
+    node = xmlSecUnitTestParseNode(xmlInputBuf, &doc);
     if(node == NULL) {
         testFinishedFailure();
         return;
@@ -2616,14 +2620,9 @@ test_xmlSecTransformPbkdf2ParamsRead_iteration_count_too_big_fails(void) {
 
 static void
 test_xmlSecTransformPbkdf2ParamsRead_key_length_too_big_fails(void) {
-    /* 4097 = XMLSEC_PBKDF2_MAX_KEY_LENGTH + 1 */
-    static const char xml[] =
-        "<PBKDF2-params xmlns=\"http://www.w3.org/2009/xmlenc11#\">"
-        "<Salt><Specified>AQIDBAUG</Specified></Salt>"
-        "<IterationCount>1000</IterationCount>"
-        "<KeyLength>4097</KeyLength>"
-        "<PRF Algorithm=\"http://www.w3.org/2009/xmlenc11#hmac-sha256\"/>"
-        "</PBKDF2-params>";
+    /* build the input from XMLSEC_PBKDF2_MAX_KEY_LENGTH so the test stays
+     * valid in builds that override the default limit */
+    char xmlInputBuf[512];
     xmlDocPtr doc = NULL;
     xmlNodePtr node;
     xmlSecTransformPbkdf2Params params;
@@ -2631,7 +2630,16 @@ test_xmlSecTransformPbkdf2ParamsRead_key_length_too_big_fails(void) {
 
     testStart("PBKDF2 params read too big key length is rejected");
 
-    node = xmlSecUnitTestParseNode(xml, &doc);
+    snprintf(xmlInputBuf, sizeof(xmlInputBuf),
+        "<PBKDF2-params xmlns=\"http://www.w3.org/2009/xmlenc11#\">"
+        "<Salt><Specified>AQIDBAUG</Specified></Salt>"
+        "<IterationCount>1000</IterationCount>"
+        "<KeyLength>%llu</KeyLength>"
+        "<PRF Algorithm=\"http://www.w3.org/2009/xmlenc11#hmac-sha256\"/>"
+        "</PBKDF2-params>",
+        (unsigned long long)(XMLSEC_PBKDF2_MAX_KEY_LENGTH + 1));
+
+    node = xmlSecUnitTestParseNode(xmlInputBuf, &doc);
     if(node == NULL) {
         testFinishedFailure();
         return;
@@ -3028,12 +3036,9 @@ test_xmlSecTransformHkdfParamsRead_key_length_zero_fails(void) {
 
 static void
 test_xmlSecTransformHkdfParamsRead_key_length_too_big_fails(void) {
-    /* 16321 = XMLSEC_HKDF_MAX_KEY_LENGTH + 1 */
-    static const char xml[] =
-        "<HKDFParams xmlns=\"http://www.w3.org/2021/04/xmldsig-more#\">"
-        "<PRF Algorithm=\"http://www.w3.org/2021/04/xmldsig-more#hmac-sha256\"/>"
-        "<KeyLength>16321</KeyLength>"
-        "</HKDFParams>";
+    /* build the input from XMLSEC_HKDF_MAX_KEY_LENGTH so the test stays
+     * valid in builds that override the default limit */
+    char xmlInputBuf[512];
     xmlDocPtr doc = NULL;
     xmlNodePtr node;
     xmlSecTransformHkdfParams params;
@@ -3041,7 +3046,14 @@ test_xmlSecTransformHkdfParamsRead_key_length_too_big_fails(void) {
 
     testStart("HKDF params read too big key length is rejected");
 
-    node = xmlSecUnitTestParseNode(xml, &doc);
+    snprintf(xmlInputBuf, sizeof(xmlInputBuf),
+        "<HKDFParams xmlns=\"http://www.w3.org/2021/04/xmldsig-more#\">"
+        "<PRF Algorithm=\"http://www.w3.org/2021/04/xmldsig-more#hmac-sha256\"/>"
+        "<KeyLength>%llu</KeyLength>"
+        "</HKDFParams>",
+        (unsigned long long)(XMLSEC_HKDF_MAX_KEY_LENGTH + 1));
+
+    node = xmlSecUnitTestParseNode(xmlInputBuf, &doc);
     if(node == NULL) {
         testFinishedFailure();
         return;

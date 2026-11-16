@@ -372,6 +372,12 @@ int test_base64(void) {
     test_base64_success("check 6 chars", "Rm9vQmFy", 0, NULL);
     test_base64_success("check multiline", "Rm9vQmFyIE\nZvb0JhciBG\nb29CYXI=", 10, NULL);
     test_base64_success("check multiline with space characters", "Rm9vQmFyIE\n   Zvb0JhciBG\n   b29CYXI=", 10, "Rm9vQmFyIE\nZvb0JhciBG\nb29CYXI=");
+    /* vectors that exercise the '+' (62) and '/' (63) alphabet entries in
+     * both the decode and the encode tables */
+    test_base64_success("check 1 byte with '+' char", "+A==", 0, NULL);
+    test_base64_success("check 2 bytes with '+' char", "+P8=", 0, NULL);
+    test_base64_success("check 3 bytes with '+' and '/' chars", "+P8/", 0, NULL);
+    test_base64_success("check 3 bytes with '/' chars", "////", 0, NULL);
 
     /* decode into a buffer of exactly the decoded size */
     test_base64_decode_exact_size("decode exact size 1 byte", "Rg==", "F", 1);

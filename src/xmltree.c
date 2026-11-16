@@ -818,8 +818,11 @@ xmlSecIsDescendant(xmlNodePtr node, xmlNodePtr potentialAncestor) {
 }
 
 /**
- * @brief Swaps the content of @p node and @p newNode.
- * @details Swaps the content of @p node and @p newNode.
+ * @brief Replaces the content of @p node with @p newNode.
+ * @details Replaces the content of @p node with @p newNode. The @p newNode
+ * (name, namespace, attributes and subtree intact) is detached from its
+ * current position and appended as the only child of @p node. The previous
+ * content of @p node is removed.
  * The function returns an error if one node is a descendant of the other.
  *
  * Note: on error, the state of the @p newNode is undefined and the caller
@@ -836,8 +839,14 @@ xmlSecReplaceContent(xmlNodePtr node, xmlNodePtr newNode) {
 }
 
 /**
- * @brief Swaps the content of @p node and @p newNode, optionally returning replaced nodes.
- * @details Swaps the content of @p node and @p newNode, optionally returning replaced nodes.
+ * @brief Replaces the content of @p node with @p newNode, optionally returning the replaced content.
+ * @details Replaces the content of @p node with @p newNode. The @p newNode
+ * (name, namespace, attributes and subtree intact) is detached from its
+ * current position and appended as the only child of @p node. The previous
+ * content of @p node is detached and returned through @p replaced as a linked
+ * list in the original order, or removed if @p replaced is NULL. If @p node
+ * had no content, @p replaced is set to NULL. The caller owns the returned
+ * list and should release it with xmlFreeNodeList().
  * The function returns an error if one node is a descendant of the other.
  *
  * Note: on error, the state of the @p newNode is undefined and the caller
@@ -846,7 +855,7 @@ xmlSecReplaceContent(xmlNodePtr node, xmlNodePtr newNode) {
  *
  * @param node the current node.
  * @param newNode the new node.
- * @param replaced the replaced nodes, or release them if NULL is given
+ * @param replaced the replaced content, or release it if NULL is given
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -896,7 +905,7 @@ xmlSecReplaceContentAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr *r
 #endif /* LIBXML_VERSION >= 21300 */
     }
 
-    /* swap nodes */
+    /* move newNode into node */
     if((newNode->doc != NULL) && (newNode->doc->children == newNode)) {
         newNode->doc->children = newNode->next;
     }

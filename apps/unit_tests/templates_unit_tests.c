@@ -1177,7 +1177,7 @@ test_xmlSecTmplTransformAddXPath2_filter_and_expression(void) {
         return;
     }
 
-    xpathNode = xmlSecFindChild(transformNode, xmlSecNodeXPath, xmlSecXPath2Ns);
+    xpathNode = xmlSecFindChild(transformNode, xmlSecNodeXPath2, xmlSecXPath2Ns);
     if(xpathNode == NULL) {
         testLog("Error: XPath 2.0 Filter node not found\n");
         xmlFreeDoc(doc);
@@ -1243,7 +1243,7 @@ test_xmlSecTmplTransformAddXPath2_multiple_children(void) {
     }
 
     for(xpathNode = transformNode->children; xpathNode != NULL; xpathNode = xpathNode->next) {
-        if(xmlSecCheckNodeName(xpathNode, xmlSecNodeXPath, xmlSecXPath2Ns)) {
+        if(xmlSecCheckNodeName(xpathNode, xmlSecNodeXPath2, xmlSecXPath2Ns)) {
             ++count;
         }
     }

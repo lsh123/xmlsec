@@ -78,7 +78,8 @@ int main(int argc, const char **argv) {
         /* Smoke-test: run once with empty input. libFuzzer always passes a
          * valid pointer even for zero-length input, so use a dummy byte. */
         static uint8_t dummy = 0;
-        return LLVMFuzzerTestOneInput(&dummy, 0);
+        /* normalize the result to 0/1, the same as the file path below */
+        return (LLVMFuzzerTestOneInput(&dummy, 0) != 0);
     }
 
     for (i = 1; i < argc; i++) {
@@ -135,7 +136,12 @@ int main(int argc, const char **argv) {
             ret = 1;
             continue;
         }
-        rewind(f);
+        if (fuzzer_fseeko(f, 0, SEEK_SET) != 0) {
+            FUZZER_ERROR("cannot seek in", argv[i]);
+            fuzzer_close_file(f);
+            ret = 1;
+            continue;
+        }
 
         /* Allocate at least one byte so that zero-length inputs still get a
          * valid pointer, as libFuzzer guarantees. */

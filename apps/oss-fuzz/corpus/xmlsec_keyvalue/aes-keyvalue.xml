@@ -1,0 +1,5 @@
+<KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#" xmlns:xsec="http://www.aleksey.com/xmlsec/2002">
+  <KeyValue>
+    <xsec:AESKeyValue>MDEyMzQ1Njc4OUFCQ0RFRg==</xsec:AESKeyValue>
+  </KeyValue>
+</KeyInfo>

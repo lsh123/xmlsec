@@ -122,6 +122,9 @@ xmlSecMSCngChaCha20CipherInitialize(xmlSecTransformPtr transform) {
         xmlSecBufferFinalize(&ctx->aad);
         xmlSecMSCngNtError("BCryptOpenAlgorithmProvider",
             xmlSecTransformGetName(transform), status);
+        /* the out-handle is not guaranteed to be zeroed on failure; reset it so
+         * finalize() does not attempt to close an indeterminate handle */
+        ctx->hAlg = NULL;
         return(-1);
     }
 

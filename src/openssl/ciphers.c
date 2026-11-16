@@ -195,7 +195,11 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
      * https://www.w3.org/TR/2002/REC-xmlenc-core-20021210/Overview.html#sec-Alg-Block
      */
     if(ctx->cbcMode != 0) {
-        EVP_CIPHER_CTX_set_padding(ctx->cipherCtx, 0);
+        ret = EVP_CIPHER_CTX_set_padding(ctx->cipherCtx, 0);
+        if(ret != 1) {
+            xmlSecOpenSSLError("EVP_CIPHER_CTX_set_padding", cipherName);
+            return(-1);
+        }
     }
 
     return(0);

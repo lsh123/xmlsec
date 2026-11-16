@@ -116,6 +116,9 @@ xmlSecMSCngKeyDataCertGetPrivkey(PCCERT_CONTEXT cert, NCRYPT_KEY_HANDLE* key, BO
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(needsFree != NULL, -1);
 
+    /* make sure the output handle is clean on all failure paths */
+    (*key) = 0;
+
     /* try non persistent key */
     res = CertGetCertificateContextProperty(cert, CERT_KEY_CONTEXT_PROP_ID, &ckc, &dwCkcLen);
     /* CERT_KEY_CONTEXT is a union selected by dwKeySpec; only accept a CNG key

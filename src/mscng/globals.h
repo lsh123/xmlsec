@@ -109,29 +109,4 @@
         );                                                     \
     } while(0)
 
-/**
- * @brief Macro. Reports crypto errors from NTSTATUS.
- * @details Macro. The XMLSec library macro for reporting crypto errors from NTSTATUS.
- * See e.g. <http://errorco.de/win32/ntstatus-h/> to look up the matching define.
- * @param errorFunction the failed function name.
- * @param errorObject the specific error object (e.g. transform, key data, etc).
- * @param status the NTSTATUS error code.
- * @param msg the extra message (must be a string literal, it is concatenated with the backend error suffix at compile time).
- * @param param1 the extra message param1.
- * @param param2 the extra message param2.
- */
-#define xmlSecMSCngNtError3(errorFunction, errorObject, status, msg, param1, param2) \
-    do {                                                       \
-        xmlSecError(XMLSEC_ERRORS_HERE,                        \
-                    (const char*)(errorObject),                \
-                    (errorFunction),                           \
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,             \
-                    msg "; MSCng NTSTATUS: 0x%08lx",           \
-                    (param1),                                  \
-                    (param2),                                  \
-                    (unsigned long)(status)                    \
-        );                                                     \
-    } while(0)
-
-
 #endif /* XMLSEC_MSCNG_GLOBALS_H */

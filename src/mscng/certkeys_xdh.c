@@ -356,10 +356,18 @@ xmlSecMSCngXdhDerivePubKeyU(BCRYPT_ALG_HANDLE hAlg, BCRYPT_KEY_HANDLE hPrivKeyTe
 
 done:
     if(hSelfSecret != NULL) {
-        BCryptDestroySecret(hSelfSecret);
+        status = BCryptDestroySecret(hSelfSecret);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptDestroySecret", NULL, status);
+            /* ignore error */
+        }
     }
     if(hBasePoint != NULL) {
-        BCryptDestroyKey(hBasePoint);
+        status = BCryptDestroyKey(hBasePoint);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptDestroyKey", NULL, status);
+            /* ignore error */
+        }
     }
     return(res);
 }

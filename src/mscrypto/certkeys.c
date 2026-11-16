@@ -468,7 +468,7 @@ xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlS
     } else if((type & xmlSecKeyDataTypePublic) != 0){
         HCRYPTPROV hProv;
 
-        hProv = xmlSecMSCryptoFindProvider(ctx->providers, NULL, CRYPT_VERIFYCONTEXT, FALSE);
+        hProv = xmlSecMSCryptoFindProvider(ctx->providers, NULL, CRYPT_VERIFYCONTEXT, TRUE);
         if (hProv == 0) {
             xmlSecInternalError("xmlSecMSCryptoFindProvider", NULL);
             return(-1);

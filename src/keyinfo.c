@@ -371,6 +371,17 @@ xmlSecKeyInfoCtxReset(xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyReqReset(&(keyInfoCtx->keyReq));
 }
 
+#ifndef XMLSEC_NO_XMLENC
+static void
+xmlSecKeyInfoCtxClearUserPrefLists(xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecAssert(keyInfoCtx != NULL);
+
+    xmlSecPtrListEmpty(&(keyInfoCtx->enabledKeyData));
+    xmlSecPtrListEmpty(&(keyInfoCtx->retrievalMethodCtx.enabledTransforms));
+    xmlSecPtrListEmpty(&(keyInfoCtx->keyInfoReferenceCtx.enabledTransforms));
+}
+#endif /* XMLSEC_NO_XMLENC */
+
 /**
  * @brief Creates or resets an encryption context for KeyInfo processing.
  * @details Creates or resets an encryption context for processing &lt;enc:EncryptedKey/&gt;
@@ -395,6 +406,14 @@ xmlSecKeyInfoCtxCreateEncCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
         }
     } else {
         xmlSecEncCtxReset(keyInfoCtx->encCtx);
+
+        /*
+         * The reset above keeps the user settings in the inner keyinfo
+         * contexts; clear their lists so the user preferences copied
+         * below do not accumulate duplicates on subsequent calls.
+         */
+        xmlSecKeyInfoCtxClearUserPrefLists(&(keyInfoCtx->encCtx->keyInfoReadCtx));
+        xmlSecKeyInfoCtxClearUserPrefLists(&(keyInfoCtx->encCtx->keyInfoWriteCtx));
     }
 
     /* set the mode to indicate we are processing an EncryptedKey */

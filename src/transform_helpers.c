@@ -1933,21 +1933,30 @@ xmlSecTransformChaCha20Poly1305ParamsRead(xmlNodePtr node, xmlSecBufferPtr aad,
 
     /* second optional AAD node (plain text string) */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeChaCha20Poly1305AAD, xmlSecDSig2021MoreNs))) {
-        xmlChar* aadContent = xmlNodeGetContent(cur);
-        if(aadContent != NULL) {
-            int aadContentLen = xmlStrlen(aadContent);
+        int aadContentLen;
+        xmlChar* aadContent;
 
-            if(aadContentLen > 0) {
-                ret = xmlSecBufferSetData(aad, aadContent, (xmlSecSize)aadContentLen);
-                if(ret < 0) {
-                    xmlSecInternalError("xmlSecBufferSetData(aad)", NULL);
-                    xmlFree(aadContent);
-                    xmlSecBufferFinalize(&buf);
-                    return(-1);
-                }
-            }
-            xmlFree(aadContent);
+        /* xmlNodeGetContent returns NULL only on allocation failure
+         * (an empty element yields an empty string) */
+        aadContent = xmlNodeGetContent(cur);
+        if(aadContent == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE, NULL, "xmlNodeGetContent",
+                        XMLSEC_ERRORS_R_MALLOC_FAILED, NULL);
+            xmlSecBufferFinalize(&buf);
+            return(-1);
         }
+
+        aadContentLen = xmlStrlen(aadContent);
+        if(aadContentLen > 0) {
+            ret = xmlSecBufferSetData(aad, aadContent, (xmlSecSize)aadContentLen);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecBufferSetData(aad)", NULL);
+                xmlFree(aadContent);
+                xmlSecBufferFinalize(&buf);
+                return(-1);
+            }
+        }
+        xmlFree(aadContent);
 
         cur = xmlSecGetNextElementNode(cur->next);
     }

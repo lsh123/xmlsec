@@ -134,6 +134,12 @@ xmlSecNssPKIKeyDataCtxDup(xmlSecNssPKIKeyDataCtxPtr ctxDst,
         ctxDst->pubkey = SECKEY_CopyPublicKey(ctxSrc->pubkey);
         if(ctxDst->pubkey == NULL) {
             xmlSecNssError("SECKEY_CopyPublicKey", NULL);
+            /* the public key copy failed; free the already-copied private key
+             * so that the destination context is left in a clean state */
+            if(ctxDst->privkey != NULL) {
+                SECKEY_DestroyPrivateKey(ctxDst->privkey);
+                ctxDst->privkey = NULL;
+            }
             return(-1);
         }
     }

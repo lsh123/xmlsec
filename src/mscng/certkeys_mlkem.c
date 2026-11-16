@@ -365,7 +365,7 @@ xmlSecMSCngKeyDataCertGetMlKemPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HAND
     xmlSecAssert2(spki != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
 
-    (*key) = NULL;
+    (*key) = 0;
 
     if(spki->PublicKey.cbData == 0 || spki->PublicKey.pbData == NULL) {
         xmlSecInvalidDataError("ML-KEM SubjectPublicKeyInfo: missing PublicKey field", NULL);

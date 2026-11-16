@@ -1538,7 +1538,7 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
     xmlSecAssert2(attrs != NULL, -1);
     xmlSecAssert2(attrsSize > 0, -1);
 
-    /* allocate buffer, we don't need more than string */
+    /* allocate buffer, we don't need more than the string */
     size = xmlSecStrlen(dn);
     tmp = (xmlChar *)xmlMalloc(size + 1);
     if(tmp == NULL) {
@@ -1586,8 +1586,7 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
 
                 /* insert into the attrs */
                 if(pos >= attrsSize) {
-                    xmlSecInvalidSizeLessThanError("Attributes",
-                                                   attrsSize, pos, NULL);
+                    xmlSecInvalidSizeLessThanError("Attributes", attrsSize, pos + 1, NULL);
                     goto done;
                 }
                 attrs[pos].key = xmlStrdup(tmp);

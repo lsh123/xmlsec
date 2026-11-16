@@ -103,7 +103,7 @@ struct _xmlSecEncCtx {
     xmlChar*                    mimeType;  /**< the MimeType attribute of &lt;enc:EncryptedData/&gt; or &lt;enc:EncryptedKey/&gt; node. */
     xmlChar*                    encoding;  /**< the Encoding attribute of &lt;enc:EncryptedData/&gt; or &lt;enc:EncryptedKey/&gt; node. */
     xmlChar*                    recipient;  /**< the Recipient attribute of &lt;enc:EncryptedKey/&gt; node. */
-    xmlChar*                    carriedKeyName;  /**< the CarriedKeyName attribute of &lt;enc:EncryptedKey/&gt; node. */
+    xmlChar*                    carriedKeyName;  /**< the CarriedKeyName element of the &lt;enc:EncryptedKey/&gt; node. */
 
     /* these are internal data, nobody should change them except us */
     xmlNodePtr                  encDataNode;  /**< the pointer to &lt;enc:EncryptedData/&gt; or &lt;enc:EncryptedKey/&gt; node. */

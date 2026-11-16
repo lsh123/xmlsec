@@ -56,6 +56,16 @@ typedef int                     (*xmlSecCryptoKeysMngrInitMethod)       (xmlSecK
  * Errors
  *
  *****************************************************************************/
+/**
+ * @brief Sets the system errors callback function.
+ * @details Sets the system errors callback function to @p callback that will be
+ * called every time an error occurs, unless a custom errors callback is set
+ * using #xmlSecErrorsSetCallback (which takes precedence). If @p callback is NULL
+ * then the system errors output will be suppressed.
+ *
+ * Note that this function is not thread-safe (see the module notes).
+ * @param callback the new system errors callback function, or NULL to suppress error output.
+ */
 XMLSEC_EXPORT void              xmlSecErrorsSetSystemCallback         (xmlSecErrorsCallback callback);
 
 /******************************************************************************

@@ -830,7 +830,7 @@ xmlSecOpenSSLSetDefaultTrustedCertsFolder(const xmlChar* path) {
 
 /**
  * @brief Gets the default trusted certs folder.
- * @return the default trusted certs folder.
+ * @return the default trusted certs folder, or NULL if no folder has been set.
  */
 const xmlChar*
 xmlSecOpenSSLGetDefaultTrustedCertsFolder(void) {

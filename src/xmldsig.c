@@ -328,7 +328,7 @@ xmlSecDSigCtxSign(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr tmpl) {
  * in @p status member of the @p dsigCtx object.
  *
  * @param dsigCtx the pointer to &lt;dsig:Signature/&gt; processing context.
- * @param node the pointer with &lt;dsig:Signature/&gt; node.
+ * @param node the pointer to the &lt;dsig:Signature/&gt; node.
  * @return 0 on success (check @p status member of @p dsigCtx to get
  * the actual signature verification result) or a negative value if an error occurs.
  */
@@ -838,7 +838,7 @@ xmlSecDSigCtxProcessKeyInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
         return(-1);
     }
 
-    /* if we are signing document, update &lt;dsig:KeyInfo/&gt; node */
+    /* if we are signing a document, update &lt;dsig:KeyInfo/&gt; node */
     if((node != NULL) && (dsigCtx->operation == xmlSecTransformOperationSign)) {
         ret = xmlSecKeyInfoNodeWrite(node, dsigCtx->signKey, &(dsigCtx->keyInfoWriteCtx));
         if(ret < 0) {
@@ -944,7 +944,7 @@ xmlSecDSigCtxProcessManifestNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     xmlSecAssert2(dsigCtx->status == xmlSecDSigStatusUnknown, -1);
     xmlSecAssert2(node != NULL, -1);
 
-    /* calculate references */
+    /* process references */
     cur = xmlSecGetNextElementNode(node->children);
     while((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeReference, xmlSecDSigNs))) {
         /* create reference context */
@@ -1463,7 +1463,7 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
         base64Encode->operation = xmlSecTransformOperationEncode;
     }
 
-    /* finally get transforms results */
+    /* finally get transform results */
     ret = xmlSecTransformCtxExecute(transformCtx, node->doc);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformCtxExecute", NULL);

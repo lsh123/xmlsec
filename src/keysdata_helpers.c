@@ -1369,7 +1369,7 @@ xmlSecKeyValueDhXmlRead(xmlSecKeyValueDhPtr data, xmlNodePtr node) {
     }
     ret = xmlSecBufferBase64NodeContentRead(&(data->pub), cur);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferBase64NodeContentRead(public)", NULL);
+        xmlSecInternalError("xmlSecBufferBase64NodeContentRead(pub)", NULL);
         return(-1);
     }
     cur = xmlSecGetNextElementNode(cur->next);
@@ -1579,7 +1579,7 @@ xmlSecKeyValueDhXmlWrite(xmlSecKeyValueDhPtr data, xmlNodePtr node, int base64Li
     }
     ret = xmlSecBufferBase64NodeContentWrite(&(data->pub), cur, base64LineSize);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(public)", NULL);
+        xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(pub)", NULL);
         return(-1);
     }
     if(addLineBreaks) {

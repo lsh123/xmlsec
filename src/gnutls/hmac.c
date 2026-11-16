@@ -160,7 +160,7 @@ xmlSecGnuTLSHmacInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-    /* check hash output size */
+    /* check HMAC output size */
     hmacSize = gnutls_hmac_get_len(ctx->hmacAlgo);
     if(hmacSize == 0) {
         xmlSecInternalError2("gnutls_hmac_get_len", xmlSecTransformGetName(transform), "hmacSize=" XMLSEC_SIZE_FMT, hmacSize);

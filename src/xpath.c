@@ -31,7 +31,7 @@
  * @details The implementation of XPath "here()" function.
  * See xmlXPtrHereFunction() in xpointer.c. The only change is that
  * we return NodeSet instead of NodeInterval.
- * @param ctxt the pointer to XPath context.
+ * @param ctxt the pointer to the XPath parser context.
  * @param nargs the arguments number.
  */
 static void

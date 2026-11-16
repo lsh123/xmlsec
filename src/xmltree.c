@@ -1844,7 +1844,7 @@ xmlSecQName2BitMaskGetInfo(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitMask m
  * @param qnameLocalPart the qname LocalPart value.
  * @param qnameHref the qname Href value.
  * @param mask the pointer to result mask.
- * @return 0 on success (an unknown qname results in a zero mask) or a negative value if an error occurs.
+ * @return 0 on success (the bit mask is written to @p mask) or a negative value if an error occurs (including for an unknown qname).
  */
 int
 xmlSecQName2BitMaskGetBitMask(

@@ -91,8 +91,8 @@ static const xmlSecErrorDescription xmlSecErrorsTable[] = {
   { XMLSEC_ERRORS_R_CAST_IMPOSSIBLE,            "cast from one type to another is impossible" },
 };
 
-/* We have system callback that can be set by the xmlsec-crypto library and the user callback
- * that the user can set. We always prioritize user callback if set.
+/* We have a system callback that can be set by the xmlsec-crypto library and the user callback
+ * that the user can set. We always prioritize the user callback if set.
  *
  * NOTE: The global state below (the callbacks, xmlSecPrintErrorMessages and
  * gXmlSecErrorsPrintCryptoLibraryLogOnExitIsEnabled) is plain mutable state that is read
@@ -141,7 +141,7 @@ xmlSecErrorsSetCallback(xmlSecErrorsCallback callback) {
 
 /**
  * @brief Clears the custom errors callback function.
- * @details Clears the custom errors callback function and restores default.
+ * @details Clears the custom errors callback function and restores the default.
  * Note that this function is not thread-safe (see the module notes).
  */
 void

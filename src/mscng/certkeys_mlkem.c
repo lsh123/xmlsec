@@ -484,8 +484,8 @@ xmlSecMSCngKeyDataMlKemReadFromPkcs8Der(const xmlSecByte* derData, DWORD derData
         goto done;
     }
     pPos = pInner + 1 + lenConsumed;
-    /* seqLen < 2 rejects a sequence too short to hold the tag
-     * byte of the first OCTET STRING */
+    /* seqLen < 2 rejects a sequence too short to hold the tag and length
+     * bytes of the first OCTET STRING */
     if(seqLen < 2) {
         xmlSecInternalError("ML-KEM PKCS8: SEQUENCE in PrivateKey field is truncated", NULL);
         goto done;

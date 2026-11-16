@@ -949,7 +949,7 @@ done:
 
 /**
  * @brief Verifies @p certs list.
- * @details Unlike the OpenSSL back-end equivalent, @p crls must not be NULL:
+ * @details Unlike the OpenSSL backend equivalent, @p crls must not be NULL:
  * verification is always performed against the given CRLs, and a NULL @p crls
  * results in an immediate failure (NULL return).
  * @param store the pointer to X509 key data store.

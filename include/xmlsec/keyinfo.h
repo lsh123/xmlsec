@@ -191,8 +191,8 @@ struct _xmlSecKeyInfoCtx {
     int                                 maxKeyInfoReferenceLevel;  /**< the max recursion level when processing &lt;dsig11:KeyInfoReference/&gt; element; default level is 1 (see also #curKeyInfoReferenceLevel). */
 
 #ifndef XMLSEC_NO_XMLENC
-    /* EncryptedKey or DerivedKey */
-    xmlSecEncCtxPtr                     encCtx;  /**< the encryption context for <enc:EncryptedKey /> element processing. */
+    /* EncryptedKey, DerivedKey or AgreementMethod */
+    xmlSecEncCtxPtr                     encCtx;  /**< the encryption context for <enc:EncryptedKey />, <enc11:DerivedKey /> or <enc:AgreementMethod /> element processing. */
     int                                 maxEncryptedKeyLevel;  /**< the max recursion level when processing &lt;enc:EncryptedKey/&gt;, &lt;enc11:DerivedKey/&gt; or &lt;enc:AgreementMethod/&gt; elements; default level is 1 (see also #curEncryptedKeyLevel). */
 #endif /* XMLSEC_NO_XMLENC */
 

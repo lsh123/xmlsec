@@ -655,7 +655,8 @@ xmlSecGnuTLSRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
                 "GnuTLS does not support different MGF1 and OAEP digests: "
                 "mgf1=\"%s\" differs from oaep digest \"%s\"",
                 xmlSecErrorsSafeString(oaepParams.mgf1DigestAlgorithm),
-                xmlSecErrorsSafeString(oaepParams.digestAlgorithm));
+                (oaepParams.digestAlgorithm != NULL) ? xmlSecErrorsSafeString(oaepParams.digestAlgorithm)
+                                                     : (const char*)xmlSecHrefSha1);
         }
         xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
         return(-1);

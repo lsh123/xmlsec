@@ -778,8 +778,8 @@ test_xmlSecTmplKeyInfoAddKeyName_with_name(void) {
 
     testStart("xmlSecTmplKeyInfoAddKeyName: adds KeyName with correct content");
 
-    /* xmlSecNodeEncodeAndSetContent requires node->doc != NULL, so create a
-     * real document and attach the signature node to it. */
+    /* Create a real document: xmlSecTmplSignatureCreate() builds the
+     * <Signature> node in the given document. */
     doc = xmlNewDoc(BAD_CAST "1.0");
     if(doc == NULL) {
         testLog("Error: failed to create doc\n");
@@ -1179,7 +1179,7 @@ test_xmlSecTmplTransformAddXPath2_filter_and_expression(void) {
 
     xpathNode = xmlSecFindChild(transformNode, xmlSecNodeXPath, xmlSecXPath2Ns);
     if(xpathNode == NULL) {
-        testLog("Error: <xptr2:XPath> not found\n");
+        testLog("Error: XPath 2.0 Filter node not found\n");
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
@@ -1249,7 +1249,7 @@ test_xmlSecTmplTransformAddXPath2_multiple_children(void) {
     }
 
     if(count != 2) {
-        testLog("Error: expected 2 <xptr2:XPath> nodes, got '%d'\n", count);
+        testLog("Error: expected 2 XPath 2.0 Filter nodes, got '%d'\n", count);
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;

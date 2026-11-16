@@ -363,7 +363,7 @@ xmlSecMSCryptoCheckRevocation(HCERTSTORE hStore, PCCERT_CONTEXT pCert,
             continue;
         }
 
-        /* pCrlEntry will point to the entry for the certificate in the CRL if it exists, it doesn't need
+        /* pCrlEntry will point to the entry for the certificate in the CRL if it exists; it doesn't need
          * to be freed manually (see https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certfindcertificateincrl) */
         ret = CertFindCertificateInCRL(pCert, pCrl, 0, NULL, &pCrlEntry);
         if (ret == FALSE) {

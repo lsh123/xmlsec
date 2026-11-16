@@ -400,7 +400,7 @@ xmlSecGCryptAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr,
 }
 
 /**
- * @brief GCrypt does not support X509 certificates.
+ * @brief GCrypt does not support CRLs.
  * @details This function is not implemented by the GCrypt back-end;
  * it always returns a negative value.
  *
@@ -415,12 +415,12 @@ xmlSecGCryptAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xml
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    xmlSecNotImplementedError("GCrypt doesn't support X509 certificates");
+    xmlSecNotImplementedError("GCrypt doesn't support CRLs");
     return(-1);
 }
 
 /**
- * @brief GCrypt does not support X509 certificates.
+ * @brief GCrypt does not support CRLs.
  * @details This function is not implemented by the GCrypt back-end;
  * it always returns a negative value.
  *
@@ -440,12 +440,12 @@ xmlSecGCryptAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr,
     xmlSecAssert2(dataSize > 0, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    xmlSecNotImplementedError("GCrypt doesn't support X509 certificates");
+    xmlSecNotImplementedError("GCrypt doesn't support CRLs");
     return(-1);
 }
 
 /**
- * @brief GCrypt does not support X509 certificates.
+ * @brief GCrypt does not support CRLs.
  * @details This function is not implemented by the GCrypt back-end;
  * it always returns a negative value.
  *
@@ -463,7 +463,7 @@ xmlSecGCryptAppKeysMngrCrlLoadAndVerify(xmlSecKeysMngrPtr mngr, const char *file
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    xmlSecNotImplementedError("GCrypt doesn't support X509 certificates");
+    xmlSecNotImplementedError("GCrypt doesn't support CRLs");
     return(-1);
 }
 

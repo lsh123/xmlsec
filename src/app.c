@@ -2346,7 +2346,7 @@ xmlSecCryptoAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename,
 
 /**
  * @brief Loads a certificate into the keys manager.
- * @details Reads cert from @p filename and adds to the list of trusted or known
+ * @details Reads the certificate from @p filename and adds to the list of trusted or known
  * untrusted certs in @p mngr.
  * @param mngr the keys manager.
  * @param filename the certificate file.
@@ -2368,7 +2368,7 @@ xmlSecCryptoAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
 
 /**
  * @brief Loads a certificate from memory into the keys manager.
- * @details Reads cert from binary buffer @p data and adds to the list of trusted or known
+ * @details Reads the certificate from binary buffer @p data and adds to the list of trusted or known
  * untrusted certs in @p mngr.
  * @param mngr the keys manager.
  * @param data the certificate binary data.
@@ -2392,7 +2392,7 @@ xmlSecCryptoAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* 
 
 /**
  * @brief Loads CRLs from a file into the keys manager.
- * @details Reads crls from @p filename and adds to the list of crls in @p mngr.
+ * @details Reads CRLs from @p filename and adds to the list of CRLs in @p mngr.
  * @param mngr the keys manager.
  * @param filename the CRL file.
  * @param format the CRL file format.
@@ -2435,7 +2435,7 @@ xmlSecCryptoAppKeysMngrCrlLoadAndVerify(xmlSecKeysMngrPtr mngr, const char *file
 
 /**
  * @brief Loads CRLs from memory into the keys manager.
- * @details Reads CRLs from binary buffer @p data and adds to the list of crls in @p mngr.
+ * @details Reads CRLs from binary buffer @p data and adds to the list of CRLs in @p mngr.
  * @param mngr the keys manager.
  * @param data the CRL binary data.
  * @param dataSize the CRL binary data size.
@@ -2524,7 +2524,7 @@ xmlSecCryptoAppPkcs12Load(const char* filename, const char* pwd, void* pwdCallba
 }
 
 /**
- * @brief Reads a key and certificates from PKCS12 memory buffer.
+ * @brief Reads a key and certificates from a PKCS12 memory buffer.
  * @details Reads a key and all associated certificates from the PKCS12 data in the memory buffer.
  * For uniformity, call xmlSecCryptoAppKeyLoadMemory instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.

@@ -812,7 +812,7 @@ test_xmlSecX509SerialNumberRead(void) {
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
         0x00
     };
-    /* 2^160 - 1 = 1461501637330902918203684832716283019655932542975 (21 bytes: 0x00 sign prefix + 20 zeroxFF bytes) */
+    /* 2^160 - 1 = 1461501637330902918203684832716283019655932542975 (21 bytes: 0x00 sign prefix + 20 x 0xFF bytes) */
     static const xmlSecByte bytes_2_160_minus_1[] = {
         0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
         0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
@@ -870,7 +870,9 @@ test_xmlSecX509SerialNumberRead(void) {
         "1461501637330902918203684832716283019655932542975",
         "1461501637330902918203684832716283019655932542975");
 
-    /* direct write tests: canonicalize DER encodings that the read helper does not produce */
+    /* direct write tests: bytes_00_00 is the encoding the read helper does not
+     * produce (Read("0") yields a single 0x00 byte); bytes_00_80 matches the
+     * read test for 128 above */
     test_xmlSecX509SerialNumberWrite_success("write strips ASN.1 sign prefix", bytes_00_80, sizeof(bytes_00_80), "128");
     test_xmlSecX509SerialNumberWrite_success("write canonicalizes all-zero bytes", bytes_00_00, sizeof(bytes_00_00), "0");
 

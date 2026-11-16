@@ -2265,7 +2265,7 @@ xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, const xmlSecByte* da
                             transformCtx);
             if(ret < 0) {
                 xmlSecInternalError3("xmlSecTransformPushBin", xmlSecTransformGetName(transform->next),
-                    "final=%d;outSize=" XMLSEC_SIZE_FMT, final, outSize);
+                    "final=%d;outSize=" XMLSEC_SIZE_FMT, finalData, outSize);
                 return(-1);
             }
         }
@@ -2517,7 +2517,7 @@ xmlSecTransformIdListGetKlass(void) {
 }
 
 /**
- * @brief Lookups @p transformId in @p list.
+ * @brief Looks up @p transformId in @p list.
  * @param list the pointer to transform ids list.
  * @param transformId the transform klass.
  *

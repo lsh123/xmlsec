@@ -10,9 +10,9 @@
 #define XMLSEC_MSCNG_CERTKEYS_H
 
 /**
- * @defgroup xmlsec_mscng_certkeys MsCng Certificate Keys
+ * @defgroup xmlsec_mscng_certkeys MSCng Certificate Keys
  * @ingroup xmlsec_mscng
- * @brief Certificate-based key handling for the MsCng back-end.
+ * @brief Certificate-based key handling for the MSCng back-end.
  * @{
  */
 

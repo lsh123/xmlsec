@@ -20,9 +20,7 @@
 
 #include <nspr.h>
 #include <cert.h>
-#include <nss.h>
 
-#include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/list.h>
 #include <xmlsec/keys.h>

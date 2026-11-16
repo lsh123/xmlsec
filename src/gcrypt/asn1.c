@@ -136,7 +136,7 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, unsigned long *buflen, stru
             c = *buf++;
             length--;
             /* DER requires minimal tag encoding: the first continuation byte
-             * must have its 7 value bits set (rejects e.g. 0x3f 0x80 ...). */
+             * must not have its 7 value bits all zero (rejects e.g. 0x00 ...). */
             if((num_tag_bytes == 0) && ((c & 0x7f) == 0)) {
                 return(-1); /* Invalid tag encoding. */
             }

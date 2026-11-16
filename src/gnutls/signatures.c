@@ -411,7 +411,7 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
 
     /*  ML-DSA  */
 #ifndef XMLSEC_NO_MLDSA
-    /* ML-DSA uses hardcoded SHAKE-128 and SHAKE-256, so there is no need for a digest here */
+    /* ML-DSA uses hardcoded SHAKE-256, so there is no need for a digest here */
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformMLDSA44Id)) {
         ctx->keyId      = xmlSecGnuTLSKeyDataMLDSAId;
         ctx->dgstAlgo   = GNUTLS_DIG_UNKNOWN;

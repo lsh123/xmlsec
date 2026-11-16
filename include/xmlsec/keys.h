@@ -168,8 +168,8 @@ struct _xmlSecKey {
     xmlSecKeyDataPtr                    value;  /**< the key value. */
     xmlSecPtrListPtr                    dataList;  /**< the key data list. */
     xmlSecKeyUsage                      usage;  /**< the key usage. */
-    time_t                              notValidBefore;  /**< the start key validity interval. */
-    time_t                              notValidAfter;  /**< the end key validity interval. */
+    time_t                              notValidBefore;  /**< the start of the key validity interval. */
+    time_t                              notValidAfter;  /**< the end of the key validity interval. */
 };
 
 XMLSEC_EXPORT xmlSecKeyPtr      xmlSecKeyCreate         (void);

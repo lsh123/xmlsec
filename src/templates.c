@@ -979,8 +979,8 @@ xmlSecTmplEncDataGetEncMethodNode(xmlNodePtr encNode) {
 /**
  * @brief Adds a &lt;dsig:Transform/&gt; node to the &lt;enc:CipherReference/&gt; node.
  * @details Adds &lt;dsig:Transform/&gt; node (and the parent &lt;enc:Transforms/&gt; node)
- * with specified transform methods @p transformId to the &lt;enc:CipherReference/&gt;
- * child node of the &lt;enc:EncryptedData/&gt; node @p cipherReferenceNode.
+ * with specified transform method @p transformId to the &lt;enc:CipherReference/&gt;
+ * node @p cipherReferenceNode.
  * @param cipherReferenceNode the pointer to &lt;enc:CipherReference/&gt; node.
  * @param transformId the transform id.
  *
@@ -1123,7 +1123,7 @@ xmlSecTmplEncDataEnsureReferenceList(xmlNodePtr encNode) {
  * @param uri uri to reference (optional)
  *
  * @return the pointer to newly created &lt;enc:DataReference/&gt; node or
- * NULL if an error occurs (the XML tree might be modified in error case).
+ * NULL if an error occurs (the XML tree might be modified in an error case).
  */
 xmlNodePtr
 xmlSecTmplReferenceListAddDataReference(xmlNodePtr encNode, const xmlChar *uri) {
@@ -1162,7 +1162,7 @@ xmlSecTmplReferenceListAddDataReference(xmlNodePtr encNode, const xmlChar *uri) 
  * @param uri uri to reference (optional)
  *
  * @return the pointer to newly created &lt;enc:KeyReference/&gt; node or
- * NULL if an error occurs (the XML tree might be modified in error case).
+ * NULL if an error occurs (the XML tree might be modified in an error case).
  */
 xmlNodePtr
 xmlSecTmplReferenceListAddKeyReference(xmlNodePtr encNode, const xmlChar *uri) {
@@ -1945,8 +1945,8 @@ xmlSecTmplTransformAddXsltStylesheet(xmlNodePtr transformNode, const xmlChar *xs
  * @brief Adds inclusive namespaces to the ExcC14N transform node.
  * @details Adds "inclusive" namespaces to the ExcC14N transform node @p transformNode.
  * @param transformNode the pointer to &lt;dsig:Transform/&gt; node.
- * @param prefixList the white space delimited list of namespace prefixes,
- *                      where "#default" indicates the default namespace.
+ * @param prefixList the white space delimited list of namespace prefixes
+ *                      for the PrefixList attribute.
  *
  * @return 0 if success or a negative value otherwise.
  */

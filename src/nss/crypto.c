@@ -96,7 +96,7 @@ xmlSecNssCryptoCheckMechanism(CK_MECHANISM_TYPE type) {
  * This matches the pattern used by all backends and only matters if this
  * function is invoked from multiple threads before the library is fully
  * initialized (the normal single-threaded init path is unaffected).
- * @return the xmlsec-nss functions table or NULL if an error occurs.
+ * @return the xmlsec-nss functions table.
  */
 xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoGetFunctions_nss(void) {

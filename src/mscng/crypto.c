@@ -114,7 +114,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
      * exactly when DSA-SHA256 works. Observed on Windows 11 (build 26200): the maximum
      * key length is 3072, a 2048-bit key signs a SHA-256 hash, and a 1024-bit key rejects
      * a SHA-256 hash with STATUS_INVALID_PARAMETER; this is a point-in-time observation on
-     * one OS build, not a guarantee for future releases. The runtime probe above is
+     * one OS build, not a guarantee for future releases. The runtime probe below is
      * authoritative: if a future OS build changes the provider's capabilities, the probe
      * result follows it. (On Windows 7 the CNG DSA provider is absent, so the probe
      * simply fails there and DSA-SHA256 is not published; no Win7-specific handling

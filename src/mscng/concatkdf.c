@@ -326,7 +326,7 @@ xmlSecMSCngConcatKdfPerformKeyDerivation(
         goto done;
     }
 
-    /* create key for concatKdf */
+    /* create key for ConcatKDF */
     status = BCryptGenerateSymmetricKey(
         hKdfAlg,
         &hKey,

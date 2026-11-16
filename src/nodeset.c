@@ -111,7 +111,7 @@ xmlSecNodeSetDestroy(xmlSecNodeSetPtr nset) {
 
 /**
  * @brief Marks the node set to destroy the parent document.
- * @details Instructs the node set to destroy the node's parent doc when the node set is destroyed.
+ * @details Instructs the node set to destroy its parent document when the node set is destroyed.
  * @param nset the pointer to node set.
  */
 void
@@ -417,10 +417,11 @@ xmlSecNodeSetContainsNamespaceNode(xmlNodeSetPtr nodes) {
  * subtrees:
  *   - a single Normal/Tree/TreeWithoutComments set: its own nodes; or
  *   - a combined set whose operations are all intersections: the nodes of the
- *     first member that has a non-NULL node list. The intersection is a subset
+ *     first member that has a non-NULL node list and is a
+ *     Normal/Tree/TreeWithoutComments set. The intersection is a subset
  *     of every member, so it is fully covered by that member's subtrees.
  *     Members with a NULL node list (the whole document, e.g. the Normal input
- *     set of a "#fragment" reference) are skipped.
+ *     set of a "#fragment" reference) or with a different node set type are skipped.
  *
  * The fast path is also disabled when the candidate node set contains namespace
  * nodes, see xmlSecNodeSetContainsNamespaceNode.

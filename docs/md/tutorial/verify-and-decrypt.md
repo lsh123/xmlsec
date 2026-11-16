@@ -47,10 +47,10 @@ A typical signature verification process includes the following steps:
 ```c
 /**
  * @brief Verifies XML signature in a file using a public key.
- * @details Verifies XML signature in #xml_file using public key from #key_file.
+ * @details Verifies the XML signature in #xml_file using the public key from #key_file.
  * @param xml_file the signed XML file name.
  * @param key_file the PEM public key file name.
- * @param key_name the name to assign to the key (used to match the signature KeyName).
+ * @param key_name the name to assign to the key.
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -64,8 +64,7 @@ verify_file(const char* xml_file, const char* key_file, const char* key_name) {
     assert(key_file);
     assert(key_name);
 
-    /* load file: LIBXML_VERSION encodes major*10000+minor*100+micro,
-     * so 21300 is libxml2 2.13.0, where XML_PARSE_NO_XXE was introduced. */
+    /* load file */
 #if LIBXML_VERSION >= 21300
     doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT | XML_PARSE_NO_XXE);
 #else /* LIBXML_VERSION >= 21300 */
@@ -86,26 +85,31 @@ verify_file(const char* xml_file, const char* key_file, const char* key_name) {
     /* create signature context, we don't need keys manager in this example */
     dsigCtx = xmlSecDSigCtxCreate(NULL);
     if(dsigCtx == NULL) {
-        fprintf(stderr,"Error: failed to create signature context\n");
+        fprintf(stderr, "Error: failed to create signature context\n");
         goto done;
     }
 
-    /* load public or private key */
-    dsigCtx->signKey = xmlSecCryptoAppKeyLoadEx(key_file, xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
+    /* load key (the type mask is ignored by the backends' file-based key loaders) */
+    dsigCtx->signKey = xmlSecCryptoAppKeyLoadEx(key_file,
+        xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic,
+        xmlSecKeyDataFormatPem,
+        NULL,
+        NULL,
+        NULL);
     if(dsigCtx->signKey == NULL) {
-        fprintf(stderr,"Error: failed to load public pem key from \"%s\"\n", key_file);
+        fprintf(stderr, "Error: failed to load PEM key from \"%s\"\n", key_file);
         goto done;
     }
 
     /* set the key name */
     if(xmlSecKeySetName(dsigCtx->signKey, BAD_CAST key_name) < 0) {
-        fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
+        fprintf(stderr, "Error: failed to set key name for key from \"%s\"\n", key_file);
         goto done;
     }
 
     /* Verify signature */
     if(xmlSecDSigCtxVerify(dsigCtx, node) < 0) {
-        fprintf(stderr,"Error: signature verification failed\n");
+        fprintf(stderr, "Error: signature verification failed\n");
         goto done;
     }
 
@@ -148,33 +152,33 @@ verify_signature_results(xmlSecDSigCtxPtr dsigCtx) {
 
     /* check that signature verification succeeded */
     if(dsigCtx->status != xmlSecDSigStatusSucceeded) {
-        fprintf(stderr,"Error: Signature verification result is not SUCCESS\n");
+        fprintf(stderr, "Error: Signature verification result is not SUCCESS\n");
         return(-1);
     }
 
     /* in this example we expect exactly ONE reference with URI="" and
     *  exactly ONE enveloped signature transform (i.e. the whole document is signed)*/
     if(xmlSecPtrListGetSize(&(dsigCtx->signedInfoReferences)) != 1) {
-        fprintf(stderr,"Error: Exactly one Reference is expected\n");
+        fprintf(stderr, "Error: Exactly one Reference is expected\n");
         return(-1);
     }
     dsigRefCtx = (xmlSecDSigReferenceCtxPtr)xmlSecPtrListGetItem(&(dsigCtx->signedInfoReferences), 0);
     if((dsigRefCtx == NULL) || (dsigRefCtx->status != xmlSecDSigStatusSucceeded)) {
-        fprintf(stderr,"Error: Reference verification result is not SUCCESS\n");
+        fprintf(stderr, "Error: Reference verification result is not SUCCESS\n");
         return(-1);
     }
 
     /* check URI: a NULL URI (Reference without a URI attribute) means the whole document,
      * which xmlsec treats the same as an empty URI */
     if((dsigRefCtx->uri != NULL) && (!xmlStrEqual(dsigRefCtx->uri, BAD_CAST ""))) {
-        fprintf(stderr,"Error: Reference URI value doesn't match expected one\n");
+        fprintf(stderr, "Error: Reference URI value doesn't match expected one\n");
         return(-1);
     }
 
     /* check transforms: we expect only one "enveloped signature" transform */
     transform = dsigRefCtx->transformCtx.first;
     if((transform == NULL) || (!xmlStrEqual(transform->id->name, xmlSecNameEnveloped))) {
-        fprintf(stderr,"Error: First Transform name '%s' doesn't match expected '%s'\n", (transform != NULL ? transform->id->name : BAD_CAST "NULL"), xmlSecNameEnveloped);
+        fprintf(stderr, "Error: First Transform name '%s' doesn't match expected '%s'\n", (transform != NULL ? transform->id->name : BAD_CAST "NULL"), xmlSecNameEnveloped);
         return(-1);
     }
 
@@ -182,7 +186,7 @@ verify_signature_results(xmlSecDSigCtxPtr dsigCtx) {
     transform = transform->next;
     while(transform != NULL) {
         if((transform->flags & XMLSEC_TRANSFORM_FLAGS_USER_SPECIFIED) != 0) {
-            fprintf(stderr,"Error: Found unexpected Transform name '%s'\n", transform->id->name);
+            fprintf(stderr, "Error: Found unexpected Transform name '%s'\n", transform->id->name);
             return(-1);
         }
         transform = transform->next;
@@ -193,7 +197,7 @@ verify_signature_results(xmlSecDSigCtxPtr dsigCtx) {
 }
 ```
 
-[Full Program Listing](../examples/verify1.md)
+[Full program listing](../examples/verify1.md)
 
 
 ## Decrypting an encrypted document
@@ -222,10 +226,9 @@ A typical decryption process includes the following steps:
 ### Example: Decrypting a document
 
 ```c
-
 /**
- * @brief Decrypts an encrypted XML file using a AES key.
- * @details Decrypts the XML file #enc_file using AES key from #key_file and
+ * @brief Decrypts an encrypted XML file using an AES key.
+ * @details Decrypts the XML file #enc_file using an AES key from #key_file and
  * prints results to stdout.
  * @param enc_file the encrypted XML file name.
  * @param key_file the AES key file.
@@ -241,8 +244,7 @@ decrypt_file(const char* enc_file, const char* key_file) {
     assert(enc_file);
     assert(key_file);
 
-    /* load template: LIBXML_VERSION encodes major*10000+minor*100+micro,
-     * so 21300 is libxml2 2.13.0, where XML_PARSE_NO_XXE was introduced. */
+    /* load encrypted file */
 #if LIBXML_VERSION >= 21300
     doc = xmlReadFile(enc_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT | XML_PARSE_NO_XXE);
 #else /* LIBXML_VERSION >= 21300 */
@@ -263,41 +265,47 @@ decrypt_file(const char* enc_file, const char* key_file) {
     /* create encryption context, we don't need keys manager in this example */
     encCtx = xmlSecEncCtxCreate(NULL);
     if(encCtx == NULL) {
-        fprintf(stderr,"Error: failed to create encryption context\n");
+        fprintf(stderr, "Error: failed to create encryption context\n");
         goto done;
     }
 
     /* load AES key */
     encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataAesId, key_file);
     if(encCtx->encKey == NULL) {
-        fprintf(stderr,"Error: failed to load aes key from binary file \"%s\"\n", key_file);
+        fprintf(stderr, "Error: failed to load AES key from binary file \"%s\"\n", key_file);
         goto done;
     }
 
     /* set the key name to the file name; this is only an example */
     if(xmlSecKeySetName(encCtx->encKey, BAD_CAST key_file) < 0) {
-        fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
+        fprintf(stderr, "Error: failed to set key name for key from \"%s\"\n", key_file);
         goto done;
     }
 
     /* decrypt the data */
     if((xmlSecEncCtxDecrypt(encCtx, node) < 0) || (encCtx->result == NULL)) {
-        fprintf(stderr,"Error: decryption failed\n");
+        fprintf(stderr, "Error: decryption failed\n");
         goto done;
     }
 
     /* print decrypted data to stdout */
     if(encCtx->resultReplaced != 0) {
         fprintf(stdout, "Decrypted XML data:\n");
-        xmlDocDump(stdout, doc);
+        if(xmlDocDump(stdout, doc) < 0) {
+            fprintf(stderr, "Error: failed to write the decrypted document to stdout\n");
+            goto done;
+        }
     } else {
         fprintf(stdout, "Decrypted binary data (" XMLSEC_SIZE_FMT " bytes):\n",
             xmlSecBufferGetSize(encCtx->result));
         if(xmlSecBufferGetData(encCtx->result) != NULL) {
-            fwrite(xmlSecBufferGetData(encCtx->result),
-                  1,
-                  xmlSecBufferGetSize(encCtx->result),
-                  stdout);
+            if(fwrite(xmlSecBufferGetData(encCtx->result),
+                      1,
+                      xmlSecBufferGetSize(encCtx->result),
+                      stdout) != xmlSecBufferGetSize(encCtx->result)) {
+                fprintf(stderr, "Error: failed to write the decrypted data to stdout\n");
+                goto done;
+            }
         }
     }
     fprintf(stdout, "\n");
@@ -318,5 +326,5 @@ done:
 }
 ```
 
-[Full Program Listing](../examples/decrypt1.md)
+[Full program listing](../examples/decrypt1.md)
 

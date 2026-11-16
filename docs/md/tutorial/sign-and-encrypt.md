@@ -42,7 +42,6 @@ A typical signature process includes the following steps:
 ### Example: Signing a template
 
 ```c
-
 /**
  * @brief Signs an XML template file using a private key.
  * @details Signs the #tmpl_file using a private key from #key_file.
@@ -83,7 +82,7 @@ sign_file(const char* tmpl_file, const char* key_file, const char* key_name) {
     /* create signature context, we don't need keys manager in this example */
     dsigCtx = xmlSecDSigCtxCreate(NULL);
     if(dsigCtx == NULL) {
-        fprintf(stderr,"Error: failed to create signature context\n");
+        fprintf(stderr, "Error: failed to create signature context\n");
         goto done;
     }
 
@@ -95,19 +94,19 @@ sign_file(const char* tmpl_file, const char* key_file, const char* key_name) {
         NULL,
         NULL);
     if(dsigCtx->signKey == NULL) {
-        fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", key_file);
+        fprintf(stderr, "Error: failed to load private PEM key from \"%s\"\n", key_file);
         goto done;
     }
 
     /* set the key name */
     if(xmlSecKeySetName(dsigCtx->signKey, BAD_CAST key_name) < 0) {
-        fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
+        fprintf(stderr, "Error: failed to set key name for key from \"%s\"\n", key_file);
         goto done;
     }
 
     /* sign the template */
     if(xmlSecDSigCtxSign(dsigCtx, node) < 0) {
-        fprintf(stderr,"Error: signature failed\n");
+        fprintf(stderr, "Error: signature failed\n");
         goto done;
     }
 
@@ -161,9 +160,8 @@ A typical encryption process includes the following steps:
 ### Example: Encrypting binary data with a template
 
 ```c
-
 /**
- * @brief Encrypts binary data using a AES key and a template file.
+ * @brief Encrypts binary data using an AES key and a template file.
  * @details Encrypts binary #data using template from #tmpl_file and AES key from
  * #key_file.
  * @param tmpl_file the encryption template file name.
@@ -202,29 +200,29 @@ encrypt_file(const char* tmpl_file, const char* key_file,
         goto done;
     }
 
-    /* create encryption context, we don't need keys manager in this example */
+    /* create encryption context, we don't need a keys manager in this example */
     encCtx = xmlSecEncCtxCreate(NULL);
     if(encCtx == NULL) {
-        fprintf(stderr,"Error: failed to create encryption context\n");
+        fprintf(stderr, "Error: failed to create encryption context\n");
         goto done;
     }
 
     /* load AES key */
     encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataAesId, key_file);
     if(encCtx->encKey == NULL) {
-        fprintf(stderr,"Error: failed to load aes key from binary file \"%s\"\n", key_file);
+        fprintf(stderr, "Error: failed to load AES key from binary file \"%s\"\n", key_file);
         goto done;
     }
 
     /* set the key name to the file name; this is only an example */
     if(xmlSecKeySetName(encCtx->encKey, BAD_CAST key_file) < 0) {
-        fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
+        fprintf(stderr, "Error: failed to set key name for key from \"%s\"\n", key_file);
         goto done;
     }
 
     /* encrypt the data */
     if(xmlSecEncCtxBinaryEncrypt(encCtx, node, data, dataSize) < 0) {
-        fprintf(stderr,"Error: encryption failed\n");
+        fprintf(stderr, "Error: encryption failed\n");
         goto done;
     }
 
@@ -233,6 +231,7 @@ encrypt_file(const char* tmpl_file, const char* key_file,
         fprintf(stderr, "Error: failed to write the encrypted document to stdout\n");
         goto done;
     }
+    fprintf(stdout, "\n");
 
     /* success */
     res = 0;

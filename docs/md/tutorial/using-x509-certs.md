@@ -33,13 +33,13 @@ one of the following functions:
         NULL,
         NULL);
     if(dsigCtx->signKey == NULL) {
-        fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", key_file);
+        fprintf(stderr, "Error: failed to load private PEM key from \"%s\"\n", key_file);
         goto done;
     }
 
     /* load certificate and add to the key */
     if(xmlSecCryptoAppKeyCertLoad(dsigCtx->signKey, cert_file, xmlSecKeyDataFormatPem) < 0) {
-        fprintf(stderr,"Error: failed to load pem certificate \"%s\"\n", cert_file);
+        fprintf(stderr, "Error: failed to load PEM certificate \"%s\"\n", cert_file);
         goto done;
     }
 
@@ -131,7 +131,7 @@ load_trusted_certs(char** files, int files_size) {
     assert(files_size > 0);
 
     /* create and initialize keys manager, we use a simple list based
-     * keys manager, implement your own xmlSecKeysStore klass if you need
+     * keys manager, implement your own xmlSecKeyStoreKlass if you need
      * something more sophisticated
      */
     mngr = xmlSecKeysMngrCreate();
@@ -150,7 +150,7 @@ load_trusted_certs(char** files, int files_size) {
 
         /* load trusted cert */
         if(xmlSecCryptoAppKeysMngrCertLoad(mngr, files[ii], xmlSecKeyDataFormatPem, xmlSecKeyDataTypeTrusted) < 0) {
-            fprintf(stderr,"Error: failed to load pem certificate from \"%s\"\n", files[ii]);
+            fprintf(stderr, "Error: failed to load PEM certificate from \"%s\"\n", files[ii]);
             xmlSecKeysMngrDestroy(mngr);
             return(NULL);
         }

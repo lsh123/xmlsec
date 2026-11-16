@@ -1,0 +1,3 @@
+[libfuzzer]
+dict = xmlsec_x509crl_fuzzer.dict
+max_len = 65536

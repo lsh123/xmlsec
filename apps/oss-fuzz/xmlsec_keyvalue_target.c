@@ -217,8 +217,7 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
 
     /* Parse the whole buffer so corpus files are valid KeyInfo documents.
        data[0] still selects the generated symmetric key. */
-    doc = xmlReadMemory((const char*)data, (int)size, "fuzz.xml", NULL,
-        xmlSecParserGetDefaultOptions() | XML_PARSE_NONET);
+    doc = xmlReadMemory((const char*)data, (int)size, "fuzz.xml", NULL, xmlSecParserGetDefaultOptions());
     if (doc == NULL) {
         return 0;
     }

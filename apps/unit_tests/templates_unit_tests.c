@@ -3632,8 +3632,15 @@ test_xmlSecTmplTransformAddXsltStylesheet_malformed(void) {
         return;
     }
 
+    /*
+     * Use a stylesheet truncated inside the start tag: xmlReadMemory() fails
+     * on it with all supported libxml2 versions. A stylesheet truncated in
+     * the body (e.g. "<xsl:stylesheet><unclosed>") slips through the parser
+     * on libxml2 2.12.x, where the preceding namespace error suppresses the
+     * fatal "Premature end of data" error.
+     */
     if(xmlSecTmplTransformAddXsltStylesheet(transformNode,
-        BAD_CAST "<xsl:stylesheet><unclosed>") >= 0) {
+        BAD_CAST "<xsl:stylesheet") >= 0) {
         testLog("Error: expected xmlSecTmplTransformAddXsltStylesheet to fail with malformed XSLT\n");
         xmlFreeDoc(doc);
         testFinishedFailure();

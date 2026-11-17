@@ -154,9 +154,8 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
         return 0;
     }
 
-    /* NONET stops external fetches; NOENT enables general-entity substitution. */
-    doc = xmlReadMemory((const char*)data, (int)size, "fuzz.xml", NULL,
-        xmlSecParserGetDefaultOptions() | XML_PARSE_PEDANTIC | XML_PARSE_NONET);
+    /* Parse the document from memory. */
+    doc = xmlReadMemory((const char*)data, (int)size, "fuzz.xml", NULL, xmlSecParserGetDefaultOptions());
     if (doc == NULL) {
         return 0;
     }

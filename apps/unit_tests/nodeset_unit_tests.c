@@ -20,6 +20,7 @@
 /* must be included before any other xmlsec header */
 #include "xmlsec_unit_tests.h"
 #include <xmlsec/nodeset.h>
+#include <xmlsec/parser.h>
 
 static xmlDocPtr
 nodesetTestParseDoc(const char* xml) {
@@ -27,8 +28,7 @@ nodesetTestParseDoc(const char* xml) {
 
     xmlSecAssert2(xml != NULL, NULL);
 
-    doc = xmlReadMemory(xml, (int)strlen(xml), "nodeset-test.xml", NULL,
-        XML_PARSE_NONET);
+    doc = xmlReadMemory(xml, (int)strlen(xml), "nodeset-test.xml", NULL, xmlSecParserGetDefaultOptions());
     if(doc == NULL) {
         testLog("Error: failed to parse XML\n");
         return(NULL);

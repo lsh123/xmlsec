@@ -1899,7 +1899,7 @@ xmlSecTmplTransformAddXsltStylesheet(xmlNodePtr transformNode, const xmlChar *xs
     xmlSecAssert2(transformNode != NULL, -1);
     xmlSecAssert2(xslt != NULL, -1);
 
-    xsltDoc = xmlReadMemory((const char*)xslt, xmlStrlen(xslt), NULL, NULL, xmlSecParserGetDefaultOptions() | XML_PARSE_PEDANTIC);
+    xsltDoc = xmlReadMemory((const char*)xslt, xmlStrlen(xslt), NULL, NULL, xmlSecParserGetDefaultOptions());
     if(xsltDoc == NULL) {
         xmlSecXmlError("xmlReadMemory", NULL);
         return(-1);

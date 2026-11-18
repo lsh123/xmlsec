@@ -857,7 +857,12 @@ xmlSecNodeSetDebugDump(xmlSecNodeSetPtr nset, FILE *output) {
         }
 
         len = xmlXPathNodeSetGetLength(curNset->nodes);
-        fprintf(output, "  nodes: %d\n", len);
+        if(curNset->nodes == NULL) {
+            /* a NULL node list means the whole document (see include/xmlsec/nodeset.h) */
+            fprintf(output, "  nodes: (whole document)\n");
+        } else {
+            fprintf(output, "  nodes: %d\n", len);
+        }
 
         curNset = curNset->next;
         xmlSecAssert(curNset != NULL);

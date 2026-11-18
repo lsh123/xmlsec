@@ -523,7 +523,7 @@ static xmlSecTransformKlass xmlSecMSCryptoSha256Klass = {
     NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
     NULL,                                      /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     NULL,                                      /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCryptoDigestVerify,                        /* xmlSecTransformVerifyMethod verify; */
+    xmlSecMSCryptoDigestVerify,                /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
@@ -564,7 +564,7 @@ static xmlSecTransformKlass xmlSecMSCryptoSha384Klass = {
     NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
     NULL,                                      /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     NULL,                                      /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCryptoDigestVerify,                        /* xmlSecTransformVerifyMethod verify; */
+    xmlSecMSCryptoDigestVerify,                /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
@@ -605,7 +605,7 @@ static xmlSecTransformKlass xmlSecMSCryptoSha512Klass = {
     NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
     NULL,                                      /* xmlSecTransformSetKeyRequirementsMethod setKeyReq; */
     NULL,                                      /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCryptoDigestVerify,                        /* xmlSecTransformVerifyMethod verify; */
+    xmlSecMSCryptoDigestVerify,                /* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */

@@ -201,7 +201,7 @@ test_xmlSecTransformCtxSetUri_plain_uri(void) {
         return;
     }
 
-    if((ctx->uri == NULL) || (xmlStrcmp(ctx->uri, BAD_CAST expectedUri) != 0) ||
+    if((ctx->uri == NULL) || (xmlStrcmp(ctx->uri, expectedUri) != 0) ||
        (ctx->xptrExpr != expectedXptrExpr) || (ctx->first != NULL)) {
         testLog("Error: unexpected ctx state for a plain uri (uri='%s', xptrExpr='%s')\n",
                 (ctx->uri != NULL) ? (const char*)ctx->uri : "NULL",
@@ -258,7 +258,7 @@ test_xmlSecTransformCtxSetUri_trailing_empty_fragment(void) {
         return;
     }
 
-    if((ctx->uri == NULL) || (xmlStrcmp(ctx->uri, BAD_CAST expectedUri) != 0) ||
+    if((ctx->uri == NULL) || (xmlStrcmp(ctx->uri, expectedUri) != 0) ||
        (ctx->xptrExpr != expectedXptrExpr) || (ctx->first != NULL)) {
         testLog("Error: unexpected ctx state for a trailing empty fragment (uri='%s', xptrExpr='%s')\n",
                 (ctx->uri != NULL) ? (const char*)ctx->uri : "NULL",
@@ -364,7 +364,7 @@ test_xmlSecTransformCtxSetUri_xpointer_root_fragment(void) {
     }
 
     if((ctx->uri != NULL) ||
-       ((ctx->xptrExpr == NULL) || (xmlStrcmp(ctx->xptrExpr, BAD_CAST expectedXptrExpr) != 0)) ||
+       ((ctx->xptrExpr == NULL) || (xmlStrcmp(ctx->xptrExpr, expectedXptrExpr) != 0)) ||
        (ctx->first != NULL)) {
         testLog("Error: unexpected ctx state for a #xpointer(/) uri (uri='%s', xptrExpr='%s')\n",
                 (ctx->uri != NULL) ? (const char*)ctx->uri : "NULL",
@@ -417,7 +417,7 @@ test_xmlSecTransformCtxSetUri_bare_id_fragment(void) {
     }
 
     if((ctx->uri == NULL) || (ctx->uri[0] != '\0') ||
-       ((ctx->xptrExpr == NULL) || (xmlStrcmp(ctx->xptrExpr, BAD_CAST expectedXptrExpr) != 0)) ||
+       ((ctx->xptrExpr == NULL) || (xmlStrcmp(ctx->xptrExpr, expectedXptrExpr) != 0)) ||
        (ctx->first == NULL) || (!xmlSecTransformCheckId(ctx->first, xmlSecTransformXPointerId))) {
         testLog("Error: unexpected ctx state for a bare id fragment (uri='%s', xptrExpr='%s')\n",
                 (ctx->uri != NULL) ? (const char*)ctx->uri : "NULL",
@@ -471,8 +471,8 @@ test_xmlSecTransformCtxSetUri_uri_with_id_fragment(void) {
         return;
     }
 
-    if((ctx->uri == NULL) || (xmlStrcmp(ctx->uri, BAD_CAST expectedUri) != 0) ||
-       ((ctx->xptrExpr == NULL) || (xmlStrcmp(ctx->xptrExpr, BAD_CAST expectedXptrExpr) != 0)) ||
+    if((ctx->uri == NULL) || (xmlStrcmp(ctx->uri, expectedUri) != 0) ||
+       ((ctx->xptrExpr == NULL) || (xmlStrcmp(ctx->xptrExpr, expectedXptrExpr) != 0)) ||
        (ctx->first == NULL) || (!xmlSecTransformCheckId(ctx->first, xmlSecTransformXPointerId))) {
         testLog("Error: unexpected ctx state for a uri with an id fragment (uri='%s', xptrExpr='%s')\n",
                 (ctx->uri != NULL) ? (const char*)ctx->uri : "NULL",
@@ -526,8 +526,8 @@ test_xmlSecTransformCtxSetUri_uri_with_xpointer_fragment(void) {
         return;
     }
 
-    if((ctx->uri == NULL) || (xmlStrcmp(ctx->uri, BAD_CAST expectedUri) != 0) ||
-       ((ctx->xptrExpr == NULL) || (xmlStrcmp(ctx->xptrExpr, BAD_CAST expectedXptrExpr) != 0)) ||
+    if((ctx->uri == NULL) || (xmlStrcmp(ctx->uri, expectedUri) != 0) ||
+       ((ctx->xptrExpr == NULL) || (xmlStrcmp(ctx->xptrExpr, expectedXptrExpr) != 0)) ||
        (ctx->first == NULL) || (!xmlSecTransformCheckId(ctx->first, xmlSecTransformXPointerId))) {
         testLog("Error: unexpected ctx state for a uri with an xpointer fragment (uri='%s', xptrExpr='%s')\n",
                 (ctx->uri != NULL) ? (const char*)ctx->uri : "NULL",
@@ -683,7 +683,7 @@ test_xmlSecTransformCtxSetUri_local_uri_enabled(void) {
         return;
     }
 
-    if((ctx->uri == NULL) || (xmlStrcmp(ctx->uri, BAD_CAST expectedUri) != 0) ||
+    if((ctx->uri == NULL) || (xmlStrcmp(ctx->uri, expectedUri) != 0) ||
        (ctx->xptrExpr != NULL) || (ctx->first != NULL)) {
         testLog("Error: unexpected ctx state for a local uri (uri='%s', xptrExpr='%s')\n",
                 (ctx->uri != NULL) ? (const char*)ctx->uri : "NULL",
@@ -737,7 +737,7 @@ test_xmlSecTransformCtxSetUri_visa3d_hack_bare_fragment(void) {
     }
 
     if((ctx->uri == NULL) || (ctx->uri[0] != '\0') ||
-       ((ctx->xptrExpr == NULL) || (xmlStrcmp(ctx->xptrExpr, BAD_CAST expectedXptrExpr) != 0)) ||
+       ((ctx->xptrExpr == NULL) || (xmlStrcmp(ctx->xptrExpr, expectedXptrExpr) != 0)) ||
        (ctx->first == NULL) || (!xmlSecTransformCheckId(ctx->first, xmlSecTransformVisa3DHackId))) {
         testLog("Error: unexpected ctx state for a bare fragment with the visa3d hack (uri='%s', xptrExpr='%s')\n",
                 (ctx->uri != NULL) ? (const char*)ctx->uri : "NULL",
@@ -792,8 +792,8 @@ test_xmlSecTransformCtxSetUri_visa3d_hack_uri_with_fragment(void) {
         return;
     }
 
-    if((ctx->uri == NULL) || (xmlStrcmp(ctx->uri, BAD_CAST expectedUri) != 0) ||
-       ((ctx->xptrExpr == NULL) || (xmlStrcmp(ctx->xptrExpr, BAD_CAST expectedXptrExpr) != 0)) ||
+    if((ctx->uri == NULL) || (xmlStrcmp(ctx->uri, expectedUri) != 0) ||
+       ((ctx->xptrExpr == NULL) || (xmlStrcmp(ctx->xptrExpr, expectedXptrExpr) != 0)) ||
        (ctx->first == NULL) || (!xmlSecTransformCheckId(ctx->first, xmlSecTransformVisa3DHackId))) {
         testLog("Error: unexpected ctx state for a uri with a fragment and the visa3d hack (uri='%s', xptrExpr='%s')\n",
                 (ctx->uri != NULL) ? (const char*)ctx->uri : "NULL",

@@ -115,8 +115,8 @@ struct _xmlSecKeyUseWith {
     xmlChar*                    application;  /**< the application. */
     xmlChar*                    identifier;  /**< the identifier. */
 
-    void*                       reserved1;  /**< reserved for future use. */
-    void*                       reserved2;  /**< reserved for future use. */
+    void*                       reserved1;  /**< reserved for the future. */
+    void*                       reserved2;  /**< reserved for the future. */
 };
 
 /**
@@ -142,8 +142,8 @@ struct _xmlSecKeyReq {
     xmlSecSize                  keyBitsSize;  /**< the desired key size (in bits!). */
     xmlSecPtrList               keyUseWithList;  /**< the desired key use with application/identifier information. */
 
-    void*                       reserved1;  /**< reserved for future use. */
-    void*                       reserved2;  /**< reserved for future use. */
+    void*                       reserved1;  /**< reserved for the future. */
+    void*                       reserved2;  /**< reserved for the future. */
 };
 
 XMLSEC_EXPORT int       xmlSecKeyReqInitialize                  (xmlSecKeyReqPtr keyReq);

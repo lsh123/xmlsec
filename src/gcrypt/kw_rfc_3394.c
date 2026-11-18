@@ -449,10 +449,10 @@ xmlSecGCryptKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         return(-1);
     }
 
-    /* gcry_cipher_encrypt() in-place (in == out) processing is not
-       documented by libgcrypt, so stage the block through a scratch buffer
-       when the input and output are the same buffer; the buffer must stay
-       in scope for the duration of the call */
+    /* libgcrypt documents in-place operation only for in == NULL, so when
+       the input and output are the same buffer, stage the block through a
+       scratch buffer; the buffer must stay in scope for the duration of the
+       call */
     src = in;
     if(in == out) {
         memcpy(tmp, in, sizeof(tmp));
@@ -513,10 +513,10 @@ xmlSecGCryptKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
         return(-1);
     }
 
-    /* gcry_cipher_decrypt() in-place (in == out) processing is not
-       documented by libgcrypt, so stage the block through a scratch buffer
-       when the input and output are the same buffer; the buffer must stay
-       in scope for the duration of the call */
+    /* libgcrypt documents in-place operation only for in == NULL, so when
+       the input and output are the same buffer, stage the block through a
+       scratch buffer; the buffer must stay in scope for the duration of the
+       call */
     src = in;
     if(in == out) {
         memcpy(tmp, in, sizeof(tmp));

@@ -619,7 +619,7 @@ xmlSecGCryptPkSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 }
 
 static int
-xmlSecGCryptPkSignatureSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
+xmlSecGCryptPkSignatureSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq) {
     xmlSecGCryptPkSignatureCtxPtr ctx;
 
     xmlSecAssert2(xmlSecGCryptPkSignatureCheckId(transform), -1);

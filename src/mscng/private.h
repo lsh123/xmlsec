@@ -259,8 +259,8 @@ int                xmlSecMSCngKeyDataCertGetXdhPubkey               (PCERT_PUBLI
 
 /* PQDSA padding info. The layout matches BCRYPT_PQDSA_PADDING_INFO in the
  * Windows SDK, but it is defined locally because the type is not available
- * in all SDK versions. For a signature without a context string pbCtx and
- * cbCtx must be zero and pszPrehashAlgId must be NULL. */
+ * in all SDK versions. For a signature without a context string, pbCtx and
+ * pszPrehashAlgId must be NULL and cbCtx must be zero. */
 typedef struct _xmlSecMSCngPqdsaPaddingInfo {
     PUCHAR  pbCtx;
     ULONG   cbCtx;

@@ -1103,8 +1103,8 @@ xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
         }
         if(dataSize != (xmlSecSize)(2 * qSize)) {
             if(qSize > ctx->signatureHalfSize) {
-                xmlSecInvalidSizeMoreThanError("Signature", (xmlSecSize)(2 * qSize),
-                    (xmlSecSize)(2 * ctx->signatureHalfSize), xmlSecTransformGetName(transform));
+                xmlSecInvalidSizeLessThanError("Signature", (xmlSecSize)(2 * ctx->signatureHalfSize),
+                    (xmlSecSize)(2 * qSize), xmlSecTransformGetName(transform));
                 goto done;
             }
             if(dataSize < (xmlSecSize)(2 * ctx->signatureHalfSize)) {

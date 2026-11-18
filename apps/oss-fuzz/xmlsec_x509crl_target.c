@@ -185,10 +185,14 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
                 X509_free(cert);
                 cert = NULL;
             }
+            cert = NULL; /* owned by certs now */
+
             if (sk_X509_CRL_push(crls, crl) <= 0) {
                 X509_CRL_free(crl);
                 crl = NULL;
             }
+            crl = NULL; /* owned by crls now */
+
             (void)xmlSecOpenSSLX509StoreVerify(store, certs, crls, keyInfoCtx);
         }
     }

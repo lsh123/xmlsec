@@ -26,7 +26,7 @@ extern "C" {
 
 /******************************************************************************
  *
- * EVP_PKEY Util functions
+ * EVP_PKEY Utility functions
  *
  *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT EVP_PKEY*      xmlSecOpenSSLKeyGetEvp              (xmlSecKeyPtr key);

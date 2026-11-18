@@ -288,9 +288,9 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
      * no nodes, so a NULL nodesetval here means the result was not a node set
      * at all. */
     if(xpathObj->nodesetval == NULL) {
-        xmlSecInternalError2("xmlSecXPathDataExecute", NULL,
-                            "expression did not evaluate to a node set, expr=%s",
-                            xmlSecErrorsSafeString(data->expr));
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_RESULT, NULL,
+                          "expression did not evaluate to a node set, expr=%s",
+                          xmlSecErrorsSafeString(data->expr));
         xmlXPathFreeObject(xpathObj);
         return(NULL);
     }

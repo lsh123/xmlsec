@@ -94,9 +94,9 @@ static const xmlSecErrorDescription xmlSecErrorsTable[] = {
 /* We have a system callback that can be set by the xmlsec-crypto library and the user callback
  * that the user can set. We always prioritize the user callback if set.
  *
- * NOTE: The global state below (the callbacks, xmlSecPrintErrorMessages and
- * gXmlSecErrorsPrintCryptoLibraryLogOnExitIsEnabled) is plain mutable state that is read
- * and written without any synchronization. These functions are therefore NOT thread-safe:
+ * NOTE: The global state below (the callbacks, xmlSecErrorsClbkIsSetByUser,
+ * xmlSecPrintErrorMessages and gXmlSecErrorsPrintCryptoLibraryLogOnExitIsEnabled) is plain
+ * mutable state that is read and written without any synchronization. These functions are therefore NOT thread-safe:
  * a concurrent setter while another thread reports an error is a data race. Applications
  * must serialize access to the setters (e.g. configure them before spawning threads). */
 static xmlSecErrorsCallback xmlSecErrorsSystemClbk = xmlSecErrorsDefaultCallback;

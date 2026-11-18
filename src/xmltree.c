@@ -809,6 +809,12 @@ static int
 xmlSecIsDescendant(xmlNodePtr node, xmlNodePtr potentialAncestor) {
     xmlNodePtr cur;
 
+    /* fast path */
+    if(node->doc != potentialAncestor->doc) {
+        return(0);
+    }
+
+    /* slow path */
     for(cur = node->parent; cur != NULL; cur = cur->parent) {
         if(cur == potentialAncestor) {
             return(1);

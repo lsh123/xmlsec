@@ -175,7 +175,7 @@ extern "C" {
 
 /**
  * @brief The transform requires the same document as context.
- * @details The transform requires the input document to be the same as context.
+ * @details The transform requires the input document to be the same as the context.
  */
 #define XMLSEC_ERRORS_R_TRANSFORM_SAME_DOCUMENT_REQUIRED        34
 
@@ -371,7 +371,7 @@ XMLSEC_EXPORT void              xmlSecErrorsPrintCryptoLibraryLogOnExitSet      
 
 #if !defined(XMLSEC_FUNCTION)
 
-/* __FUNCTION__ is defined for MSC compiler >= MS VS .NET 2003 */
+/* __FUNCTION__ is supported by MSVC; the version guard is conservative. */
 #if defined(_MSC_VER) && (_MSC_VER >= 1300)
 #define XMLSEC_FUNCTION __FUNCTION__
 

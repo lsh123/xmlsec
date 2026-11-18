@@ -55,13 +55,13 @@ XMLSEC_EXPORT int                               xmlSecCryptoDLFunctionsRegisterK
  * Dynamic load functions
  *
  *****************************************************************************/
-XMLSEC_EXPORT int                               xmlSecCryptoDLInit              (void);
-XMLSEC_EXPORT int                               xmlSecCryptoDLShutdown          (void);
-XMLSEC_EXPORT int                               xmlSecCryptoDLLoadLibrary       (const xmlChar* crypto);
-XMLSEC_EXPORT xmlSecCryptoDLFunctionsPtr        xmlSecCryptoDLGetLibraryFunctions(const xmlChar* crypto);
-XMLSEC_EXPORT int                               xmlSecCryptoDLUnloadLibrary     (const xmlChar* crypto);
-XMLSEC_EXPORT int                               xmlSecCryptoDLSetFunctions      (xmlSecCryptoDLFunctionsPtr functions);
-XMLSEC_EXPORT xmlSecCryptoDLFunctionsPtr        xmlSecCryptoDLGetFunctions      (void);
+XMLSEC_EXPORT int                               xmlSecCryptoDLInit                  (void);
+XMLSEC_EXPORT int                               xmlSecCryptoDLShutdown              (void);
+XMLSEC_EXPORT int                               xmlSecCryptoDLLoadLibrary           (const xmlChar* crypto);
+XMLSEC_EXPORT xmlSecCryptoDLFunctionsPtr        xmlSecCryptoDLGetLibraryFunctions   (const xmlChar* crypto);
+XMLSEC_EXPORT int                               xmlSecCryptoDLUnloadLibrary         (const xmlChar* crypto);
+XMLSEC_EXPORT int                               xmlSecCryptoDLSetFunctions          (xmlSecCryptoDLFunctionsPtr functions);
+XMLSEC_EXPORT xmlSecCryptoDLFunctionsPtr        xmlSecCryptoDLGetFunctions          (void);
 
 #endif /* XMLSEC_NO_CRYPTO_DYNAMIC_LOADING */
 

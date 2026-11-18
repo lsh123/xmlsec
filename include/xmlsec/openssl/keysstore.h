@@ -32,16 +32,16 @@ extern "C" {
  * @brief An OpenSSL keys store klass id.
  */
 #define xmlSecOpenSSLKeysStoreId        xmlSecOpenSSLKeysStoreGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyStoreId   xmlSecOpenSSLKeysStoreGetKlass(void);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyStoreId   xmlSecOpenSSLKeysStoreGetKlass  (void);
 
-XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeysStoreAdoptKey(xmlSecKeyStorePtr store,
-                                                                       xmlSecKeyPtr key);
-XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeysStoreLoad    (xmlSecKeyStorePtr store,
-                                                                       const char *uri,
-                                                                       xmlSecKeysMngrPtr keysMngr);
-XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeysStoreSave    (xmlSecKeyStorePtr store,
-                                                                       const char *filename,
-                                                                       xmlSecKeyDataType type);
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeysStoreAdoptKey  (xmlSecKeyStorePtr store,
+                                                                         xmlSecKeyPtr key);
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeysStoreLoad      (xmlSecKeyStorePtr store,
+                                                                         const char *uri,
+                                                                         xmlSecKeysMngrPtr keysMngr);
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeysStoreSave      (xmlSecKeyStorePtr store,
+                                                                         const char *filename,
+                                                                         xmlSecKeyDataType type);
 
 #ifdef __cplusplus
 }

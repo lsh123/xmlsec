@@ -62,14 +62,14 @@ time_t          xmlSecAppCmdLineParamGetTime            (xmlSecAppCmdLineParamPt
  * must be a NULL-terminated array of parameter pointers.
  */
 int             xmlSecAppCmdLineParamsListParse         (xmlSecAppCmdLineParamPtr* params,
-                                                          xmlSecAppCmdLineTopic topics,
-                                                          int argc,
-                                                          const char** argv,
-                                                          int pos);
+                                                         xmlSecAppCmdLineTopic topics,
+                                                         int argc,
+                                                         const char** argv,
+                                                         int pos);
 void            xmlSecAppCmdLineParamsListClean         (xmlSecAppCmdLineParamPtr* params);
 void            xmlSecAppCmdLineParamsListPrint         (xmlSecAppCmdLineParamPtr* params,
-                                                           xmlSecAppCmdLineTopic topics,
-                                                          FILE* output);
+                                                         xmlSecAppCmdLineTopic topics,
+                                                         FILE* output);
 
 struct _xmlSecAppCmdLineValue {
     xmlSecAppCmdLineParamPtr    param;

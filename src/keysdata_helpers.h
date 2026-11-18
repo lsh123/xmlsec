@@ -346,8 +346,8 @@ typedef struct _xmlSecKeyDataKEM {
 
 /** @brief The KEM key data klass ID. */
 #define xmlSecKeyDataKEMId      xmlSecKeyDataKEMGetKlass()
-XMLSEC_EXPORT xmlSecKeyDataId   xmlSecKeyDataKEMGetKlass        (void);
-XMLSEC_EXPORT xmlSecBufferPtr   xmlSecKeyDataKEMGetCiphertext   (xmlSecKeyDataPtr data);
+XMLSEC_EXPORT xmlSecKeyDataId   xmlSecKeyDataKEMGetKlass           (void);
+XMLSEC_EXPORT xmlSecBufferPtr   xmlSecKeyDataKEMGetCiphertext      (xmlSecKeyDataPtr data);
 
 #endif /* !defined(XMLSEC_NO_MLKEM) */
 

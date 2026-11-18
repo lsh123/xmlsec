@@ -688,17 +688,20 @@ static xmlSecTransformKlass xmlSecTransformRemoveXmlTagsC14NKlass = {
 
 /**
  * @brief Gets the 'remove xml tags' transform klass.
- * @details The "remove xml tags" transform klass (http://www.w3.org/TR/xmldsig-core/#sec-remove-xml-tags):
- * Base64 transform requires an octet stream for input. If an XPath node-set
- * (or sufficiently functional alternative) is given as input, then it is
- * converted to an octet stream by performing operations logically equivalent
- * to 1) applying an XPath transform with expression self::text(), then 2)
- * taking the string-value of the node-set. Thus, if an XML element is
- * identified by a barename XPointer in the Reference URI, and its content
- * consists solely of base64 encoded character data, then this transform
- * automatically strips away the start and end tags of the identified element
- * and any of its descendant elements as well as any descendant comments and
- * processing instructions. The output of this transform is an octet stream.
+ * @details The "remove xml tags" transform is an xmlsec-specific helper that
+ * performs the node-set to octet stream conversion described in the Base64
+ * section of the XML Digital Signature specification
+ * (http://www.w3.org/TR/xmldsig-core/#sec-Base-64): the Base64 transform
+ * requires an octet stream for input, and if an XPath node-set (or
+ * sufficiently functional alternative) is given as input, it is converted to
+ * an octet stream by performing operations logically equivalent to 1)
+ * applying an XPath transform with expression self::text(), then 2) taking
+ * the string-value of the node-set. Thus, if an XML element is identified by
+ * a barename XPointer in the Reference URI, and its content consists solely
+ * of base64 encoded character data, then this transform automatically strips
+ * away the start and end tags of the identified element and any of its
+ * descendant elements as well as any descendant comments and processing
+ * instructions. The output of this transform is an octet stream.
  * @return "remove xml tags" transform id.
  */
 xmlSecTransformId

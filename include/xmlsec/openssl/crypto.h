@@ -127,7 +127,7 @@
 #include <openssl/err.h>
 #if !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC)
 #include <openssl/opensslconf.h>
-#endif /*  !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC) */
+#endif /* !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC) */
 
 
 #ifndef XMLSEC_NO_DSA

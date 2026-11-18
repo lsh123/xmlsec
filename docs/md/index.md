@@ -39,6 +39,10 @@ see the Copyright file in the distribution for details.
   - (xmlsec-nss) Added support for ML-DSA signature and ML-KEM key transport algorithms (requires NSS 3.129 or newer).
   - (xmlsec-mscng) Added support for ML-DSA signature (requires Windows 11 version 25H2 or Windows Server 2025)
     and ChaCha20-Poly1305 encryption algorithm (requires Windows 10 version 1803 or newer).
+  - (xmlsec-gnutls, **not backward compatible**) Bumped the minimum supported GnuTLS version from
+    3.8.3 to 3.8.4.
+  - (xmlsec-gcrypt, **not backward compatible**) Bumped the minimum supported libgcrypt version from
+    1.4.0 to 1.5.0.
   - (xmlsec-build, **not backward compatible**) Disabled Triple DES and Triple DES KeyWrap
     by default (use `--enable-des` option to re-enable both).
   - (xmlsec-windows) Added per-algorithm options to `configure.ps1` (e.g. `aes=yes`, `md5=no`, `gost2012=yes`)

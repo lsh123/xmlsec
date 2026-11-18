@@ -833,8 +833,17 @@ xmlSecMSCryptoKeyDataGetSize(xmlSecKeyDataPtr data) {
         length = CertGetPublicKeyLength(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
             &(pCertCtx->pCertInfo->SubjectPublicKeyInfo));
         if(length == 0) {
-            xmlSecMSCryptoError("CertGetPublicKeyLength", NULL);
-            return(0);
+            /* CertGetPublicKeyLength only understands RSA and some legacy EC/DSA
+             * encodings; it fails for other public key encodings (e.g. GOST).
+             * Fall back to the key length of the imported HCRYPTKEY when it is
+             * available. */
+            HCRYPTKEY cryptKey = xmlSecMSCryptoKeyDataCtxGetKey(ctx);
+            DWORD lenlen = sizeof(length);
+
+            if((cryptKey == 0) || (!CryptGetKeyParam(cryptKey, KP_KEYLEN, (BYTE *)&length, &lenlen, 0))) {
+                xmlSecMSCryptoError("CertGetPublicKeyLength", NULL);
+                return(0);
+            }
         }
     } else if (xmlSecMSCryptoKeyDataCtxGetKey(ctx) != 0) {
         HCRYPTKEY cryptKey = xmlSecMSCryptoKeyDataCtxGetKey(ctx);

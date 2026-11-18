@@ -303,6 +303,8 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
     }
 
     if(transform->operation == xmlSecTransformOperationEncrypt) {
+        /** ENCRYPT */
+
         ret = xmlSecBufferSetData(out, xmlSecBufferGetData(in), inSize);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetData", xmlSecTransformGetName(transform),
@@ -416,7 +418,14 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
             return (-1);
         }
     } else {
+        /** DECRYPT */
         XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwOutLen, return(-1), xmlSecTransformGetName(transform));
+
+        /* from this point on 'outBuf' will hold the recovered plaintext
+         * (the CEK) once CryptDecrypt overwrites the ciphertext;
+         * xmlSecBufferMakeSecure() below marks the buffer secure so that
+         * its contents are wiped when the buffer is finalized */
+        xmlSecBufferMakeSecure(out);
 
         /* The input of CryptDecrypt is expected to be little-endian,
          * so we have to convert from big-endian to little endian.
@@ -425,6 +434,7 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         outBuf  = xmlSecBufferGetData(out);
         xmlSecAssert2(inBuf != NULL, -1);
         xmlSecAssert2(outBuf != NULL, -1);
+
         ret = xmlSecMSCryptoConvertEndian(inBuf, outBuf, inSize);
         if (ret < 0) {
             xmlSecInternalError("xmlSecMSCryptoConvertEndian", xmlSecTransformGetName(transform));
@@ -493,13 +503,6 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         hKey = 0;
 
         outSize = dwOutLen;
-
-        /* wipe the tail of the output buffer that holds the leftover ciphertext
-         * bytes; only the first 'outSize' bytes contain the recovered
-         * plaintext (CEK) */
-        if (keySize > outSize) {
-            xmlSecMemCleanse(outBuf + outSize, keySize - outSize);
-        }
     }
 
     ret = xmlSecBufferSetSize(out, outSize);

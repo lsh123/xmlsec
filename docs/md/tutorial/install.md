@@ -11,7 +11,7 @@ And at least one of the following cryptographic libraries:
 - [BoringSSL](https://boringssl.googlesource.com/boringssl/) later than Oct 2024
 - [AWS-LC](https://github.com/aws/aws-lc) >= 1.66.0
 - [NSS](https://firefox-source-docs.mozilla.org/security/nss/index.html) >= 3.91 (with [NSPR](https://firefox-source-docs.mozilla.org/nspr/index.html) >= 4.34.1)
-- [GnuTLS](https://www.gnutls.org/) >= 3.8.3
+- [GnuTLS](https://www.gnutls.org/) >= 3.8.4
 - [Microsoft Cryptography API: Next Generation (CNG)](https://learn.microsoft.com/en-us/windows/win32/seccng/cng-portal)
 - (Deprecated) [Microsoft Cryptography API](https://learn.microsoft.com/en-us/windows/win32/seccrypto/cryptography-portal)
 - (Deprecated) [GCrypt](https://www.gnupg.org/software/libgcrypt/index.html)

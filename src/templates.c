@@ -1755,9 +1755,11 @@ xmlSecTmplTransformAddHmacOutputLength(xmlNodePtr transformNode, xmlSecSize bits
 /**
  * @brief Creates a &lt;enc:OAEPparams/&gt; child node in the @p transformNode.
  * @details Creates a &lt;enc:OAEPparams/&gt; child node in the @p transformNode.
+ * Empty params (@p buf == NULL and @p size == 0) are accepted and produce
+ * an empty &lt;enc:OAEPparams/&gt; element.
  * @param transformNode the pointer to &lt;enc:EncryptionMethod/&gt; node.
- * @param buf the OAEP param buffer.
- * @param size the OAEP param buffer size.
+ * @param buf the OAEP param buffer, or NULL if there are no params.
+ * @param size the OAEP param buffer size, or 0 if there are no params.
  *
  * Note: if xmlSecBase64Encode() or xmlNodeSetContent() fails, the (empty)
  * child node is left attached to @p transformNode; a retry will then fail
@@ -1771,8 +1773,7 @@ xmlSecTmplTransformAddRsaOaepParam(xmlNodePtr transformNode, const xmlSecByte *b
     xmlChar *base64;
 
     xmlSecAssert2(transformNode != NULL, -1);
-    xmlSecAssert2(buf != NULL, -1);
-    xmlSecAssert2(size > 0, -1);
+    xmlSecAssert2((buf != NULL) || (size == 0), -1);
 
     oaepParamNode = xmlSecFindChild(transformNode, xmlSecNodeRsaOAEPparams, xmlSecEncNs);
     if(oaepParamNode != NULL) {

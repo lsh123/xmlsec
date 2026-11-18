@@ -302,6 +302,9 @@ xmlSecGnuTLSKeyTransportDecrypt(
     xmlSecMemCleanse(plaintext.data, plaintext.size);
     gnutls_free(plaintext.data);
 
+    /* decrypted buffer contains key */
+    xmlSecBufferMakeSecure(outBuf);
+
     /* success */
     return(0);
 }
@@ -964,6 +967,10 @@ xmlSecGnuTLSRsaOaepDecrypt(
     gnutls_x509_spki_deinit(spki);
     gnutls_free(plaintext.data);
 
+    /* decrypted buffer contains key */
+    xmlSecBufferMakeSecure(outBuf);
+
+    /* done */
     return(0);
 }
 

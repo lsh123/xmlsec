@@ -280,7 +280,7 @@ test_xmlSecX509AttrValueStringRead(void) {
     /* negative tests */
     test_xmlSecX509AttrValueStringRead_failure("check NULL", NULL, ',', 0);
     test_xmlSecX509AttrValueStringRead_failure("check bad escaping", "\"Foo\\6XBar  ,name=value", ',', 0);
-    test_xmlSecX509AttrValueStringRead_failure("check missing closing quote", "\"Foo Bar  ,name=value", ',', 0);
+    test_xmlSecX509AttrValueStringRead_failure("check missing closing quote", "\"Foo,name=value", ',', 0);
     test_xmlSecX509AttrValueStringRead_failure("check output buffer too small", "FooBarFooBarFooBarFooBarFooBarFooBarFooBarFooBarFooBar,name=value", ',', 0);
     test_xmlSecX509AttrValueStringRead_failure("check octet/hex with missing char end of line", "#4", ',', 0);
     test_xmlSecX509AttrValueStringRead_failure("check octet/hex with missing chars", "#4,name=value", ',', 0);

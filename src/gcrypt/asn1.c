@@ -372,16 +372,24 @@ xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSe
                                    traditional (PKCS#1) RSA formats are supported */
                                 xmlSecInvalidDataError("unsupported key format: a SEQUENCE was found inside a BIT STRING (e.g. an RSA key in SPKI/SubjectPublicKeyInfo form); use the traditional PKCS#1 format instead", NULL);
                             } else if((remaining >= 1) && ((*p == 0x04) || (*p == 0x03) || (*p == 0x02))) {
-                                /* the EC point prefixes (0x04 uncompressed,
-                                   0x03 or 0x02 compressed; 0x03 is also the BIT STRING
-                                   tag value but here it is data, not a tag)
-                                   indicate an EC key without a curve OID: this
-                                   branch is only reached when no EC curve OID
-                                   was seen, so the namedCurve OID (normally
-                                   carried in the [0] ECParameters field of an
-                                   ECPrivateKey) is missing and the key cannot be
-                                   loaded without it */
-                                xmlSecInvalidDataError("EC key is missing the curve OID (the namedCurve OID in the [0] ECParameters field of an ECPrivateKey); the key cannot be loaded without it", NULL);
+                                if((*objectids_out_size) > 0) {
+                                    /* a curve OID was seen (the [0] ECParameters
+                                       namedCurve field) but it is not in the list
+                                       of supported curves */
+                                    xmlSecInvalidDataError("EC key curve OID is not supported (the namedCurve OID in the [0] ECParameters field is not in the list of supported curves); the key cannot be loaded", NULL);
+                                } else {
+                                    /* the EC point prefixes (0x04 uncompressed,
+                                       0x03 or 0x02 compressed; 0x03 is also the
+                                       BIT STRING tag value but here it is data,
+                                       not a tag) indicate an EC key without a
+                                       curve OID: this branch is only reached
+                                       when no EC curve OID was seen, so the
+                                       namedCurve OID (normally carried in the
+                                       [0] ECParameters field of an
+                                       ECPrivateKey) is missing and the key
+                                       cannot be loaded without it */
+                                    xmlSecInvalidDataError("EC key is missing the curve OID (the namedCurve OID in the [0] ECParameters field of an ECPrivateKey); the key cannot be loaded without it", NULL);
+                                }
                             } else {
                                 xmlSecInternalError2("xmlSecGCryptAsn1ParseIntegerSequence", NULL, "INTEGER expected inside BIT STRING, remaining=%lu", remaining);
                             }
@@ -435,13 +443,23 @@ xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSe
                         value_len = int_len;
                     } else if(ti.tag == TAG_BIT_STRING) {
                         /* EC key: the BIT STRING content is the raw point encoding,
-                           preceded by an unused-bits octet, which must be 0 */
-                        if((ti.length < 1) || (buf[0] != 0)) {
+                           preceded by an unused-bits octet, which must be 0;
+                           at least one point byte must follow the octet */
+                        if((ti.length < 2) || (buf[0] != 0)) {
                             xmlSecInternalError2("xmlSecGCryptAsn1ParseIntegerSequence", NULL, "invalid EC key BIT STRING, len=%lu", ti.length);
                             return(-1);
                         }
                         value = buf + 1;
                         value_len = ti.length - 1;
+                    }
+
+                    /* libgcrypt accepts a zero-length GCRYMPI_FMT_USG buffer and returns
+                       a zero MPI; reject empty values instead of building a key with
+                       zero-valued components */
+                    if(value_len == 0) {
+                        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
+                            "empty value (len=0) in key data (tag=0x%02x)", (unsigned int)ti.tag);
+                        return(-1);
                     }
 
                     err = gcry_mpi_scan(&(integers[(*integers_out_size)]), GCRYMPI_FMT_USG, value, value_len, NULL);

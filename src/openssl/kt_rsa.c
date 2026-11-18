@@ -557,6 +557,10 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform) {
             "size=" XMLSEC_SIZE_FMT, outSize);
         return(-1);
     }
+    if(encrypt == 0) {
+        /* decrypted buffer contains key */
+        xmlSecBufferMakeSecure(out);
+    }
 
     ret = xmlSecOpenSSLRsaPkcs1ProcessImpl(ctx, xmlSecBufferGetData(in), inSize,
         xmlSecBufferGetData(out), &outSize, encrypt);
@@ -845,8 +849,12 @@ done:
 }
 
 static int
-xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte* inBuf, xmlSecSize inSize,
-                            xmlSecByte* outBuf, xmlSecSize* outSize, int encrypt) {
+xmlSecOpenSSLRsaOaepProcessImpl(
+    xmlSecOpenSSLRsaOaepCtxPtr ctx,
+    const xmlSecByte* inBuf, xmlSecSize inSize,
+    xmlSecByte* outBuf, xmlSecSize* outSize,
+    int encrypt
+) {
     size_t outSizeT;
     int ret;
 
@@ -895,6 +903,7 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
     (*outSize) = outSizeT;
     return(0);
 }
+
 #else /* !defined(XMLSEC_OPENSSL_API_111) */
 
 static int
@@ -1483,6 +1492,10 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform) {
             xmlSecTransformGetName(transform),
             "size=" XMLSEC_SIZE_FMT, outSize);
         return(-1);
+    }
+    if(encrypt == 0) {
+        /* decrypted buffer contains key */
+        xmlSecBufferMakeSecure(out);
     }
 
     ret = xmlSecOpenSSLRsaOaepProcessImpl(ctx, xmlSecBufferGetData(in), inSize,

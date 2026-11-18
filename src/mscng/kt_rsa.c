@@ -281,6 +281,8 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(outSize, dwOutSize, return(-1), xmlSecTransformGetName(transform));
 
     if(transform->operation == xmlSecTransformOperationEncrypt) {
+        /** ENCRYPT */
+
         /* expect inSize < outSize after the checks above; re-check defensively */
         if(inSize >= outSize) {
             xmlSecInvalidSizeMoreThanError("Input data", inSize, keySize,
@@ -386,6 +388,14 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         }
 
     } else {
+        /** DECRYPT */
+
+        /* from this point on 'outBuf' will hold the recovered plaintext
+         * (the CEK) once CryptDecrypt overwrites the ciphertext;
+         * xmlSecBufferMakeSecure() below marks the buffer secure so that
+         * its contents are wiped when the buffer is finalized */
+        xmlSecBufferMakeSecure(out);
+
         /* expect inSize == outSize after the checks above; re-check defensively */
         if (inSize != outSize) {
             xmlSecInvalidSizeError("Output data", outSize, inSize,
@@ -456,20 +466,10 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         }
 
         outSize = dwOutLen;
-
-        /* wipe the tail of the output buffer beyond the recovered plaintext;
-         * the buffer may hold stale bytes from a previous allocation or use,
-         * so cleanse the region that CNG did not write */
-        if (keySize > outSize) {
-            xmlSecMemCleanse(outBuf + outSize, keySize - outSize);
-        }
     }
 
     ret = xmlSecBufferSetSize(out, outSize);
     if(ret < 0) {
-        /* wipe the recovered output (the CEK) before bailing out on
-         * error so key material does not linger in the buffer */
-        xmlSecMemCleanse(outBuf, outSize);
         xmlSecInternalError2("xmlSecBufferSetSize",
             xmlSecTransformGetName(transform), "size=" XMLSEC_SIZE_FMT, outSize);
         return(-1);
@@ -477,7 +477,6 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
 
     ret = xmlSecBufferRemoveHead(in, inSize);
     if(ret < 0) {
-        xmlSecMemCleanse(outBuf, outSize);
         xmlSecInternalError2("xmlSecBufferRemoveHead",
             xmlSecTransformGetName(transform), "size=" XMLSEC_SIZE_FMT, inSize);
         return(-1);

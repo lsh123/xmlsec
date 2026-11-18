@@ -84,6 +84,14 @@ xmlSecMSCngKeyDataCertGetMlDsaPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HAND
         goto done;
     }
 
+    /* The ML-DSA SubjectPublicKey BIT STRING has no unused bits; a non-zero
+     * value would make the trailing padding bits part of the key material,
+     * so reject such SPKIs. */
+    if(spki->PublicKey.cUnusedBits != 0) {
+        xmlSecInvalidDataError("ML-DSA SPKI: PublicKey BIT STRING has unused bits", NULL);
+        goto done;
+    }
+
     /* The SubjectPublicKey field carries the raw ML-DSA public key. Some
      * encoders may prefix it with a single leading zero byte; strip one
      * leading zero byte only when the resulting length matches a known

@@ -336,6 +336,9 @@ xmlSecMSCryptoKWDes3Sha1(xmlSecTransformPtr transform,
         &mscHash);
     if((ret == 0) || (mscHash == 0)) {
         xmlSecMSCryptoError("CryptCreateHash", NULL);
+        /* the out-handle is not guaranteed to be zeroed on failure; reset it so
+         * the cleanup below does not attempt to destroy an indeterminate handle */
+        mscHash = 0;
         goto done;
     }
 

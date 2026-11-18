@@ -44,7 +44,13 @@ static OSSL_LIB_CTX* gXmlSecOpenSSLLibCtx = NULL;
 
 #if defined(XMLSEC_OPENSSL_API_111) && !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR)
 
-#define XMLSEC_OPENSSL_ERRORS_FUNCTION              0
+/*
+ * The function value must be non-zero because OpenSSL 1.1.1 uses the
+ * ERR_PACK(lib, 0, 0) slot for the library name (see ERR_lib_error_string/
+ * ERR_func_error_string in crypto/err/err.c), so a zero function value
+ * would make the "xmlsec routines" string collide with the "xmlsec lib" name.
+ */
+#define XMLSEC_OPENSSL_ERRORS_FUNCTION              1
 #define XMLSEC_OPENSSL_ERRORS_MAX_NUMBER            1024
 static int gXmlSecOpenSSLErrorsLib = 0;
 static char gXmlSecOpenSSLErrorsLibName[] = "xmlsec lib";
@@ -768,7 +774,10 @@ xmlSecOpenSSLErrorsInit(void) {
     /* initialize reasons array */
     memset(xmlSecOpenSSLStrReasons, 0, sizeof(xmlSecOpenSSLStrReasons));
     for(pos = 0; (pos < XMLSEC_OPENSSL_ERRORS_MAX_NUMBER) && (xmlSecErrorsGetMsg(pos) != NULL); ++pos) {
-        xmlSecOpenSSLStrReasons[pos].error  = ERR_PACK(gXmlSecOpenSSLErrorsLib, XMLSEC_OPENSSL_ERRORS_FUNCTION, xmlSecErrorsGetCode(pos));
+        /* reason strings must use func=0 because OpenSSL 1.1.1 looks them up
+         * via ERR_reason_error_string() as ERR_PACK(lib, 0, reason), while
+         * the default string and the errors callback use func=1 */
+        xmlSecOpenSSLStrReasons[pos].error  = ERR_PACK(gXmlSecOpenSSLErrorsLib, 0, xmlSecErrorsGetCode(pos));
         xmlSecOpenSSLStrReasons[pos].string = xmlSecErrorsGetMsg(pos);
     }
 

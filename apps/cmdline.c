@@ -432,6 +432,11 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
                 return(-1);
             }
             break;
+        default:
+            fprintf(stderr, "Error: unsupported parameter type %d for parameter \"%s\".\n",
+                    (int)param->type, argv[pos]);
+            xmlSecAppCmdLineParamValueRemoveLast(param);
+            return(-1);
     }
     return(pos);
 }

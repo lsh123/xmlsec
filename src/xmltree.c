@@ -735,6 +735,25 @@ xmlSecGetNextElementNode(xmlNodePtr cur) {
     return(cur);
 }
 
+/* returns 1 if node is a descendant of potentialAncestor, 0 otherwise */
+static int
+xmlSecIsDescendant(xmlNodePtr node, xmlNodePtr potentialAncestor) {
+    xmlNodePtr cur;
+
+    /* fast path */
+    if(node->doc != potentialAncestor->doc) {
+        return(0);
+    }
+
+    /* slow path */
+    for(cur = node->parent; cur != NULL; cur = cur->parent) {
+        if(cur == potentialAncestor) {
+            return(1);
+        }
+    }
+    return(0);
+}
+
 /**
  * @brief Swaps a node with a new node in the XML tree.
  * @details Swaps the @p node and @p newNode in the XML tree. Both the old
@@ -776,6 +795,16 @@ xmlSecReplaceNodeAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr* repl
     xmlSecAssert2(node != newNode, -1);
     xmlSecAssert2(node->type == newNode->type, -1);
 
+    /* neither node nor newNode may be a descendant of the other */
+    if(xmlSecIsDescendant(node, newNode)) {
+        xmlSecInvalidDataError("node is a descendant of newNode", NULL);
+        return(-1);
+    }
+    if(xmlSecIsDescendant(newNode, node)) {
+        xmlSecInvalidDataError("newNode is a descendant of node", NULL);
+        return(-1);
+    }
+
     if((node->doc != NULL) && (xmlDocGetRootElement(node->doc) == node)) {
         /* Handle Root node */
         oldNode = xmlDocSetRootElement(node->doc, newNode);
@@ -803,25 +832,6 @@ xmlSecReplaceNodeAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr* repl
     return(0);
 }
 
-
-/* returns 1 if node is a descendant of potentialAncestor, 0 otherwise */
-static int
-xmlSecIsDescendant(xmlNodePtr node, xmlNodePtr potentialAncestor) {
-    xmlNodePtr cur;
-
-    /* fast path */
-    if(node->doc != potentialAncestor->doc) {
-        return(0);
-    }
-
-    /* slow path */
-    for(cur = node->parent; cur != NULL; cur = cur->parent) {
-        if(cur == potentialAncestor) {
-            return(1);
-        }
-    }
-    return(0);
-}
 
 /**
  * @brief Replaces the content of @p node with @p newNode.
@@ -1794,9 +1804,9 @@ xmlSecQName2IntegerDebugDump(xmlSecQName2IntegerInfoConstPtr info, int intValue,
 
     qnameInfo = xmlSecQName2IntegerGetInfo(info, intValue);
     if(qnameInfo != NULL) {
-        fprintf(output, "== %s: %d (name=\"%s\", href=\"%s\")\n", name, intValue,
-            (qnameInfo->qnameLocalPart) ? qnameInfo->qnameLocalPart : BAD_CAST "",
-            (qnameInfo->qnameHref) ? qnameInfo->qnameHref : BAD_CAST "");
+        fprintf(output, "== %s: %d (name=\"%s\", href=\"%s\")\n", (const char*)name, intValue,
+            ((const char*)((qnameInfo->qnameLocalPart) ? qnameInfo->qnameLocalPart : BAD_CAST "")),
+            ((const char*)((qnameInfo->qnameHref) ? qnameInfo->qnameHref : BAD_CAST "")));
     }
 }
 
@@ -1818,10 +1828,10 @@ xmlSecQName2IntegerDebugXmlDump(xmlSecQName2IntegerInfoConstPtr info, int intVal
 
     qnameInfo = xmlSecQName2IntegerGetInfo(info, intValue);
     if(qnameInfo != NULL) {
-        fprintf(output, "<%s value=\"%d\" href=\"%s\">%s</%s>\n", name, intValue,
-            (qnameInfo->qnameHref) ? qnameInfo->qnameHref : BAD_CAST "",
-            (qnameInfo->qnameLocalPart) ? qnameInfo->qnameLocalPart : BAD_CAST "",
-            name);
+        fprintf(output, "<%s value=\"%d\" href=\"%s\">%s</%s>\n", (const char*)name, intValue,
+            ((const char*)((qnameInfo->qnameHref) ? qnameInfo->qnameHref : BAD_CAST "")),
+            ((const char*)((qnameInfo->qnameLocalPart) ? qnameInfo->qnameLocalPart : BAD_CAST "")),
+            (const char*)name);
     }
 }
 
@@ -2171,7 +2181,7 @@ xmlSecQName2BitMaskDebugDump(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitMask
         return;
     }
 
-    fprintf(output, "== %s (0x%08x): ", name, mask);
+    fprintf(output, "== %s (0x%08x): ", (const char*)name, mask);
     for(ii = 0; info[ii].qnameLocalPart != NULL; ii++) {
         xmlSecAssert(info[ii].mask != 0);
 
@@ -2179,8 +2189,8 @@ xmlSecQName2BitMaskDebugDump(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitMask
             if(printed != 0) {
                 fprintf(output, ",");
             }
-            fprintf(output, "name=\"%s\" (href=\"%s\")", info[ii].qnameLocalPart,
-                    (info[ii].qnameHref != NULL) ? info[ii].qnameHref : BAD_CAST "");
+            fprintf(output, "name=\"%s\" (href=\"%s\")", (const char*)info[ii].qnameLocalPart,
+                    ((const char*)((info[ii].qnameHref != NULL) ? info[ii].qnameHref : BAD_CAST "")));
             printed = 1;
         }
     }
@@ -2208,17 +2218,17 @@ xmlSecQName2BitMaskDebugXmlDump(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitM
         return;
     }
 
-    fprintf(output, "<%sList>\n", name);
+    fprintf(output, "<%sList>\n", (const char*)name);
     for(ii = 0; info[ii].qnameLocalPart != NULL; ii++) {
         xmlSecAssert(info[ii].mask != 0);
 
         if((mask & info[ii].mask) != 0) {
-            fprintf(output, "<%s href=\"%s\">%s</%s>\n", name,
-                    (info[ii].qnameHref != NULL) ? info[ii].qnameHref : BAD_CAST "",
-                    info[ii].qnameLocalPart, name);
+            fprintf(output, "<%s href=\"%s\">%s</%s>\n", (const char*)name,
+                    ((const char*)((info[ii].qnameHref != NULL) ? info[ii].qnameHref : BAD_CAST "")),
+                    (const char*)info[ii].qnameLocalPart, (const char*)name);
         }
     }
-    fprintf(output, "</%sList>\n", name);
+    fprintf(output, "</%sList>\n", (const char*)name);
 }
 
 /******************************************************************************

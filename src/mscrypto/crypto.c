@@ -401,7 +401,7 @@ done:
  *   fit, the result is truncated and always NUL-terminated within outLen.
  */
 void
-xmlSecMSCryptoGetErrorMessage(DWORD dwError, xmlChar * out, size_t outLen) {
+xmlSecMSCryptoGetErrorMessage(DWORD dwError, char * out, size_t outLen) {
     LPWSTR errorTextW = NULL;
     DWORD dwRet;
     int ret;
@@ -428,7 +428,7 @@ xmlSecMSCryptoGetErrorMessage(DWORD dwError, xmlChar * out, size_t outLen) {
         goto done;
     }
 
-    ret = WideCharToMultiByte(CP_UTF8, 0, errorTextW, -1, (LPSTR)out, cbOutLen, NULL, NULL);
+    ret = WideCharToMultiByte(CP_UTF8, 0, errorTextW, -1, out, cbOutLen, NULL, NULL);
     if(ret <= 0) {
         out[0] = '\0'; /* just in case */
         goto done;

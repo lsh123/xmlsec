@@ -603,8 +603,13 @@ xmlSecNssKeyTransportLoadSymKeyUsingPublicKeySlot(
 }
 
 static int
-xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out,
-                              int encrypt, xmlSecTransformCtxPtr transformCtx) {
+xmlSecNssKeyTransportCtxFinal(
+    xmlSecNssKeyTransportCtxPtr ctx,
+    xmlSecBufferPtr in,
+    xmlSecBufferPtr out,
+    int encrypt,
+    xmlSecTransformCtxPtr transformCtx
+) {
     PK11SymKey* symKey = NULL;
     PK11SlotInfo* slot = NULL;
     SECItem oriskv = { siBuffer, NULL, 0 };
@@ -810,6 +815,10 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
         xmlSecInternalError2("xmlSecBufferAppend", NULL,
             "size=" XMLSEC_SIZE_FMT, xmlSecBufferGetSize(result));
         goto done;
+    }
+    if(encrypt == 0) {
+        /* decrypted buffer contains key */
+        xmlSecBufferMakeSecure(out);
     }
 
     /* success */

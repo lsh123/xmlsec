@@ -151,6 +151,9 @@ xmlSecGCryptRsaKtDecrypt(gcry_sexp_t s_encrypted_data, gcry_sexp_t s_priv_key, x
         goto done;
     }
 
+    /* decrypted buffer contains key */
+    xmlSecBufferMakeSecure(out);
+
     /* success */
     res = 0;
 

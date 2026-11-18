@@ -123,6 +123,13 @@ xmlSecGCryptKWAesInitialize(xmlSecTransformPtr transform) {
 
     ctx = xmlSecGCryptKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
+
+    /* a cached cipher handle (if any) was initialized with the previous key;
+       close it so the memset below does not leak it */
+    if(ctx->cipherHandle != NULL) {
+        gcry_cipher_close(ctx->cipherHandle);
+        ctx->cipherHandle = NULL;
+    }
     memset(ctx, 0, sizeof(xmlSecGCryptKWAesCtx));
 
     if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformKWAes128Id)) {

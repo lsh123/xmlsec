@@ -1055,7 +1055,7 @@ xmlSecDSigCtxDebugDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
     fprintf(output, "== flags2: 0x%08x\n", dsigCtx->flags2);
 
     if(dsigCtx->id != NULL) {
-        fprintf(output, "== Id: \"%s\"\n", dsigCtx->id);
+        fprintf(output, "== Id: \"%s\"\n", (const char*)dsigCtx->id);
     }
 
     fprintf(output, "== Key Info Read Ctx:\n");
@@ -1537,13 +1537,13 @@ xmlSecDSigReferenceCtxDebugDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* outp
     fprintf(output, "== Status: %s\n", xmlSecDSigCtxGetStatusString(dsigRefCtx->status));
 
     if(dsigRefCtx->id != NULL) {
-        fprintf(output, "== Id: \"%s\"\n", dsigRefCtx->id);
+        fprintf(output, "== Id: \"%s\"\n", (const char*)dsigRefCtx->id);
     }
     if(dsigRefCtx->uri != NULL) {
-        fprintf(output, "== URI: \"%s\"\n", dsigRefCtx->uri);
+        fprintf(output, "== URI: \"%s\"\n", (const char*)dsigRefCtx->uri);
     }
     if(dsigRefCtx->type != NULL) {
-        fprintf(output, "== Type: \"%s\"\n", dsigRefCtx->type);
+        fprintf(output, "== Type: \"%s\"\n", (const char*)dsigRefCtx->type);
     }
 
     fprintf(output, "== Reference Transform Ctx:\n");

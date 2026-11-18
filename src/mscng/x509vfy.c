@@ -62,14 +62,14 @@ xmlSecMSCngX509StoreGetVerificationTime(xmlSecKeyInfoCtxPtr keyInfoCtx, FILETIME
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
     xmlSecAssert2(timeContainer != NULL, NULL);
 
-    if(keyInfoCtx->certsVerificationTime > 0) {
+    if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS) != 0) {
+        return(NULL);
+    } else if(keyInfoCtx->certsVerificationTime > 0) {
         if(xmlSecMSCngUnixTimeToFileTime(keyInfoCtx->certsVerificationTime, timeContainer) < 0) {
             xmlSecInternalError("xmlSecMSCngUnixTimeToFileTime", NULL);
             return(NULL);
         }
         return(timeContainer);
-    } else if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS) != 0) {
-        return(NULL);
     } else {
         GetSystemTimeAsFileTime(timeContainer);
         return(timeContainer);

@@ -319,11 +319,7 @@ xmlSecGCryptInit(void) {
      * triggered by the gcry_check_version() call below, and the rest
      * is performed by libgcrypt itself starting with libgcrypt 1.4.3.
      * The version check makes sure that the linked libgcrypt is at
-     * least GCRYPT_MIN_VERSION (1.4.0, see configure.ac). In the
-     * 1.4.0 to 1.4.2 range the self-init does not exist, but the only
-     * libgcrypt subsystem used by this library without a full
-     * initialization is the random number generator (gcry_randomize),
-     * which libgcrypt initializes lazily on first use. */
+     * least GCRYPT_MIN_VERSION (1.5.0, see configure.ac). */
     if(gcry_check_version(GCRYPT_MIN_VERSION) == NULL) {
         xmlSecOtherError2(XMLSEC_ERRORS_R_CRYPTO_FAILED, NULL,
                           "gcry_check_version failed; min_version=%s", GCRYPT_MIN_VERSION);

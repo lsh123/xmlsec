@@ -397,6 +397,7 @@ done:
  *          NCrypt path is used. The resulting secret is written to @p secret
  *          (a secure buffer) in the standard wire-format representation.
  * @param ctx the key agreement transform context.
+ * @param transform the key agreement transform.
  * @param operation the transform operation (encrypt or decrypt), selecting
  *          which side holds the local private key.
  * @param kamKeyData the KAM key data (keyOriginator and keyRecipient).
@@ -404,7 +405,7 @@ done:
  * @return 0 on success, -1 on failure.
  */
 static int
-xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecTransformOperation operation, xmlSecKeyDataPtr kamKeyData, xmlSecBufferPtr secret) {
+xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecTransformPtr transform, xmlSecTransformOperation operation, xmlSecKeyDataPtr kamKeyData, xmlSecBufferPtr secret) {
     xmlSecKeyDataKAM* kamData;
     xmlSecKeyDataPtr myKeyValue, otherKeyValue;
     NCRYPT_KEY_HANDLE hMyPrivKey = 0;
@@ -453,6 +454,24 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
             xmlSecInternalError("xmlSecKeyGetValue(keyOriginator)", NULL);
             goto done;
         }
+    }
+
+    /* check that the KAM key data is compatible with the transform:
+     * ctx->keyDataId is set from the transform id in Initialize, so
+     * without this check a pre-populated KAM key of the wrong type
+     * (e.g. DH key data under an EC transform) would be silently used
+     * and derive a wrong secret */
+    if(!xmlSecKeyDataCheckId(myKeyValue, ctx->keyDataId)) {
+        xmlSecInvalidTransformError2(transform,
+            "key data \"%s\" is not compatible with this key agreement transform",
+            xmlSecErrorsSafeString(xmlSecKeyDataGetName(myKeyValue)));
+        goto done;
+    }
+    if(!xmlSecKeyDataCheckId(otherKeyValue, ctx->keyDataId)) {
+        xmlSecInvalidTransformError2(transform,
+            "peer key data \"%s\" is not compatible with this key agreement transform",
+            xmlSecErrorsSafeString(xmlSecKeyDataGetName(otherKeyValue)));
+        goto done;
     }
 
     /* get key handles */
@@ -700,7 +719,7 @@ xmlSecMSCngKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             xmlSecBufferFinalize(&secret);
             return(-1);
         }
-        ret = xmlSecMSCngKeyAgreementGenerateSecret(ctx, transform->operation, kamKeyData, &secret);
+        ret = xmlSecMSCngKeyAgreementGenerateSecret(ctx, transform, transform->operation, kamKeyData, &secret);
         if(ret < 0) {
             xmlSecInternalError("xmlSecMSCngKeyAgreementGenerateSecret", xmlSecTransformGetName(transform));
             xmlSecBufferFinalize(&secret);

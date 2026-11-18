@@ -44,7 +44,7 @@
 #define XMLSEC_MSCRYPTO_ERROR_BUFFER_SIZE           1024
 
 void xmlSecMSCryptoGetErrorMessage      (DWORD dwError,
-                                         xmlChar *out,
+                                         char *out,
                                          size_t outLen);
 
 
@@ -57,16 +57,16 @@ void xmlSecMSCryptoGetErrorMessage      (DWORD dwError,
 #define xmlSecMSCryptoError(errorFunction, errorObject)            \
     do {                                                           \
         DWORD _mscrypto_dwLastError = GetLastError();              \
-        xmlChar _mscrypto_errBuf[XMLSEC_MSCRYPTO_ERROR_BUFFER_SIZE]; \
+        char _mscrypto_errBuf[XMLSEC_MSCRYPTO_ERROR_BUFFER_SIZE];  \
         xmlSecMSCryptoGetErrorMessage(_mscrypto_dwLastError, _mscrypto_errBuf, sizeof(_mscrypto_errBuf)); \
         xmlSecError(XMLSEC_ERRORS_HERE,                            \
                     (const char*)(errorObject),                    \
                     (errorFunction),                               \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,                 \
-                    "MSCrypto error: %lu (0x%08lx): %s",          \
+                    "MSCrypto error: %lu (0x%08lx): %s",           \
                     (_mscrypto_dwLastError),                       \
                     (_mscrypto_dwLastError),                       \
-                    _mscrypto_errBuf                               \
+                    xmlSecErrorsSafeString(_mscrypto_errBuf)       \
         );                                                         \
     } while(0)
 
@@ -81,7 +81,7 @@ void xmlSecMSCryptoGetErrorMessage      (DWORD dwError,
 #define xmlSecMSCryptoError2(errorFunction, errorObject, msg, param) \
     do {                                                             \
         DWORD _mscrypto_dwLastError = GetLastError();                \
-        xmlChar _mscrypto_errBuf[XMLSEC_MSCRYPTO_ERROR_BUFFER_SIZE]; \
+        char _mscrypto_errBuf[XMLSEC_MSCRYPTO_ERROR_BUFFER_SIZE];    \
         xmlSecMSCryptoGetErrorMessage(_mscrypto_dwLastError, _mscrypto_errBuf, sizeof(_mscrypto_errBuf)); \
         xmlSecError(XMLSEC_ERRORS_HERE,                              \
                     (const char*)(errorObject),                      \
@@ -91,7 +91,7 @@ void xmlSecMSCryptoGetErrorMessage      (DWORD dwError,
                     (param),                                         \
                     (_mscrypto_dwLastError),                         \
                     (_mscrypto_dwLastError),                         \
-                    _mscrypto_errBuf                                 \
+                    xmlSecErrorsSafeString(_mscrypto_errBuf)         \
         );                                                           \
     } while(0)
 
@@ -107,7 +107,7 @@ void xmlSecMSCryptoGetErrorMessage      (DWORD dwError,
 #define xmlSecMSCryptoError3(errorFunction, errorObject, msg, param1, param2) \
     do {                                                                      \
         DWORD _mscrypto_dwLastError = GetLastError();                        \
-        xmlChar _mscrypto_errBuf[XMLSEC_MSCRYPTO_ERROR_BUFFER_SIZE];           \
+        char _mscrypto_errBuf[XMLSEC_MSCRYPTO_ERROR_BUFFER_SIZE];              \
         xmlSecMSCryptoGetErrorMessage(_mscrypto_dwLastError, _mscrypto_errBuf, sizeof(_mscrypto_errBuf)); \
         xmlSecError(XMLSEC_ERRORS_HERE,                                       \
                     (const char*)(errorObject),                               \
@@ -118,7 +118,7 @@ void xmlSecMSCryptoGetErrorMessage      (DWORD dwError,
                     (param2),                                                 \
                     (_mscrypto_dwLastError),                                  \
                     (_mscrypto_dwLastError),                                  \
-                    _mscrypto_errBuf                                          \
+                    xmlSecErrorsSafeString(_mscrypto_errBuf)                  \
         );                                                                    \
     } while(0)
 

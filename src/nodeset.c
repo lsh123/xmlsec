@@ -524,9 +524,9 @@ xmlSecNodeSetWalk(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc, voi
             }
             /* the doc node itself is never a match: the slow path starts at
              * the doc's children, so the fast path must not report the doc
-             * node either; walk all of the doc's top-level children (mirroring
-             * the slow path) */
-            if(cur->type == XML_DOCUMENT_NODE) {
+             * node either (including HTML document nodes); walk all of the
+             * doc's top-level children (mirroring the slow path) */
+            if((cur->type == XML_DOCUMENT_NODE) || (cur->type == XML_HTML_DOCUMENT_NODE)) {
                 xmlNodePtr docChild;
 
                 for(docChild = cur->children; (docChild != NULL) && (ret == 0); docChild = docChild->next) {
@@ -565,6 +565,29 @@ typedef struct {
     int interrupted;
 } xmlSecNodeSetWalkCtx;
 
+/* Returns 1 if the given namespace declaration is the closest
+ * declaration with the same prefix on the ancestor chain of cur
+ * (i.e. it is in scope at cur). Unlike xmlSearchNs(), this accounts
+ * for declarations with a NULL href (e.g. xmlns=""), which
+ * xmlSearchNs() ignores. */
+static int
+xmlSecNodeSetWalkNsIsNearest(xmlNodePtr cur, xmlNsPtr ns) {
+    xmlNodePtr node;
+    xmlNsPtr tmp;
+
+    xmlSecAssert2(cur != NULL, 0);
+    xmlSecAssert2(ns != NULL, 0);
+
+    for(node = cur; node != NULL; node = node->parent) {
+        for(tmp = node->nsDef; tmp != NULL; tmp = tmp->next) {
+            if(xmlStrEqual(tmp->prefix, ns->prefix)) {
+                return(tmp == ns);
+            }
+        }
+    }
+    return(0);
+}
+
 static int
 xmlSecNodeSetWalkRecursiveCallback(xmlNodePtr cur, void* data) {
     xmlSecNodeSetWalkCtx* ctx = (xmlSecNodeSetWalkCtx*)data;
@@ -591,7 +614,7 @@ xmlSecNodeSetWalkRecursiveCallback(xmlNodePtr cur, void* data) {
     if(cur->type == XML_ELEMENT_NODE) {
         xmlAttrPtr attr;
         xmlNodePtr node;
-        xmlNsPtr ns, tmp;
+        xmlNsPtr ns;
 
         attr = (xmlAttrPtr)cur->properties;
         while(attr != NULL) {
@@ -609,8 +632,7 @@ xmlSecNodeSetWalkRecursiveCallback(xmlNodePtr cur, void* data) {
         while(node != NULL) {
             ns = node->nsDef;
             while(ns != NULL) {
-                tmp = xmlSearchNs(ctx->nset->doc, cur, ns->prefix);
-                if((tmp == ns) && (xmlSecNodeSetContains(ctx->nset, (xmlNodePtr)ns, cur) == 1)) {
+                if((xmlSecNodeSetWalkNsIsNearest(cur, ns) == 1) && (xmlSecNodeSetContains(ctx->nset, (xmlNodePtr)ns, cur) == 1)) {
                     ret = ctx->walkFunc(ctx->nset, (xmlNodePtr)ns, cur, ctx->data);
                     if(ret < 0) {
                         ctx->interrupted = 1;

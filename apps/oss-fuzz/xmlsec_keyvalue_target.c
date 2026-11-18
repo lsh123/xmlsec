@@ -112,6 +112,7 @@ static void write_key(xmlSecKeyPtr key) {
     xmlSecKeyInfoCtxPtr ctx;
     xmlDocPtr doc;
     xmlNodePtr node;
+    xmlNodePtr keyInfoNode;
 
     if (key == NULL || xmlSecKeyGetValue(key) == NULL) {
         return;
@@ -131,6 +132,7 @@ static void write_key(xmlSecKeyPtr key) {
     /* xmlSecKeyInfoNodeWrite() only writes into the child elements that
      * already exist under <KeyInfo>, so add the <KeyValue> element the
      * KeyValue writers are expected to fill in. */
+    keyInfoNode = node;
     node = xmlSecTmplKeyInfoAddKeyValue(node);
     if (node == NULL) {
         xmlFreeDoc(doc);
@@ -146,7 +148,7 @@ static void write_key(xmlSecKeyPtr key) {
     ctx->keyReq.keyId = xmlSecKeyDataIdUnknown;
     ctx->keyReq.keyType = xmlSecKeyDataTypeAny;
     ctx->keyReq.keyUsage = xmlSecKeyUsageAny;
-    (void)xmlSecKeyInfoNodeWrite(node, key, ctx);
+    (void)xmlSecKeyInfoNodeWrite(keyInfoNode, key, ctx);
     xmlSecKeyInfoCtxDestroy(ctx);
     xmlFreeDoc(doc);
 }

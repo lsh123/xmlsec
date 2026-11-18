@@ -35,10 +35,10 @@ the following cryptographic libraries:
 | **xmlsec-openssl** with OpenSSL| [OpenSSL](http://www.openssl.org/) version 3.0.13 or newer. | **OpenSSL 3.5.0 or newer is recommended** (supports all REQUIRED and all RECOMMENDED [XML Digital Signature 1.1](xmldsig.md) and [XML Encryption 1.1](xmlenc.md) algorithms).|
 | **xmlsec-openssl** with OpenSSL forks| [AWS-LC](https://github.com/aws/aws-lc) v1.63.0 or newer; [LibreSSL](https://www.libressl.org/) version 4.0.0 or newer; [BoringSSL](https://boringssl.googlesource.com/boringssl/) later than Oct 2024.| Some of the OpenSSL forks do not have a stable API (e.g. BoringSSL) and the latest versions of the libraries might not work with XML Security Library. |
 | **xmlsec-nss** | [NSS](http://www.mozilla.org/projects/security/pki/nss/) (Mozilla cryptographic library) 3.91 or newer | Requires [NSPR](https://firefox-source-docs.mozilla.org/nspr/index.html) 4.34.1 or newer |
-| **xmlsec-gnutls** | [GnuTLS](http://www.gnu.org/software/gnutls/) 3.8.3 or newer | Supports multiple cryptographic backends; the exact feature set for xmlsec-gnutls depends on the backend in use. |
+| **xmlsec-gnutls** | [GnuTLS](http://www.gnu.org/software/gnutls/) 3.8.4 or newer | Supports multiple cryptographic backends; the exact feature set for xmlsec-gnutls depends on the backend in use. |
 | **xmlsec-mscng** | [Microsoft Cryptography API: Next Generation](https://learn.microsoft.com/en-us/windows/win32/seccng/cng-portal) (requires Windows 7, Windows Server 2008 R2, or newer) | xmlsec-mscng is the recommended version on the Windows platform. |
 | **xmlsec-mscrypto** | [Microsoft CryptoAPI (MSCrypto)](https://learn.microsoft.com/en-us/windows/win32/seccrypto/cryptography--cryptoapi--and-capicom) (requires Windows Server 2003, or newer) | In maintenance mode starting from xmlsec 1.3.0, April 2023. |
-| **xmlsec-gcrypt** | [LibGCrypt](https://www.gnupg.org/software/libgcrypt/index.html) 1.4.0 or newer | In maintenance mode starting from xmlsec 1.3.0, April 2023. |
+| **xmlsec-gcrypt** | [LibGCrypt](https://www.gnupg.org/software/libgcrypt/index.html) 1.5.0 or newer | In maintenance mode starting from xmlsec 1.3.0, April 2023. |
 
 The supported [key formats report](key-formats.md),
 [XML Digital Signature Interoperability report](xmldsig.md), and

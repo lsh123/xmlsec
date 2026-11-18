@@ -34,7 +34,10 @@
 
 static xmlSecKeyPtr     xmlSecGnuTLSAppPemDerKeyLoadMemory      (const xmlSecByte * data,
                                                                  xmlSecSize dataSize,
-                                                                 gnutls_x509_crt_fmt_t fmt);
+                                                                 gnutls_x509_crt_fmt_t fmt,
+                                                                 const char *pwd,
+                                                                 void* pwdCallback,
+                                                                 void* pwdCallbackCtx);
 
 static xmlSecKeyPtr     xmlSecGnuTLSAppPkcs8KeyLoadMemory       (const xmlSecByte * data,
                                                                  xmlSecSize dataSize,
@@ -221,10 +224,10 @@ xmlSecGnuTLSAppKeyLoadMemory(
     switch(format) {
     /* "raw" pem / der keys */
     case xmlSecKeyDataFormatPem:
-        key = xmlSecGnuTLSAppPemDerKeyLoadMemory(data, dataSize, GNUTLS_X509_FMT_PEM);
+        key = xmlSecGnuTLSAppPemDerKeyLoadMemory(data, dataSize, GNUTLS_X509_FMT_PEM, pwd, pwdCallback, pwdCallbackCtx);
         break;
     case xmlSecKeyDataFormatDer:
-        key = xmlSecGnuTLSAppPemDerKeyLoadMemory(data, dataSize, GNUTLS_X509_FMT_DER);
+        key = xmlSecGnuTLSAppPemDerKeyLoadMemory(data, dataSize, GNUTLS_X509_FMT_DER, pwd, pwdCallback, pwdCallbackCtx);
         break;
 
     case xmlSecKeyDataFormatPkcs8Pem:
@@ -676,7 +679,13 @@ done:
 
 
 static gnutls_privkey_t
-xmlSecGnuTLSAppPemDerPrivKeyLoadMemory(const gnutls_datum_t * datum, gnutls_x509_crt_fmt_t fmt) {
+xmlSecGnuTLSAppPemDerPrivKeyLoadMemory(
+    const gnutls_datum_t * datum,
+    gnutls_x509_crt_fmt_t fmt,
+    const char *pwd,
+    void* pwdCallback,
+    void* pwdCallbackCtx
+) {
     gnutls_x509_privkey_t x509_privkey = NULL;
     gnutls_privkey_t privkey = NULL;
     int err;
@@ -691,10 +700,43 @@ xmlSecGnuTLSAppPemDerPrivKeyLoadMemory(const gnutls_datum_t * datum, gnutls_x509
 
     err = gnutls_x509_privkey_import(x509_privkey, datum, fmt);
     if(err != GNUTLS_E_SUCCESS) {
-        /* ignore this error so we don't pollute logs when trying to read public keys */
-        /* xmlSecGnuTLSError("gnutls_x509_privkey_import", err, NULL); */
-        gnutls_x509_privkey_deinit(x509_privkey);
-        return(NULL);
+        /* the key may be an encrypted PKCS#8 key that the passwordless
+           import above cannot decrypt; if a password is available, retry
+           the import as an encrypted PKCS#8 key using it */
+        if(pwd != NULL) {
+            /* explicit password is provided by caller */
+            err = gnutls_x509_privkey_import_pkcs8(x509_privkey, datum, fmt, pwd, 0);
+        } else if(pwdCallback != NULL) {
+            /* probe PKCS#8 first without callback side effects; invoke callback
+             * only when GnuTLS reports password-related decryption failure */
+            err = gnutls_x509_privkey_import_pkcs8(x509_privkey, datum, fmt, "", 0);
+            if((err == GNUTLS_E_DECRYPTION_FAILED) ||
+               (err == GNUTLS_E_INVALID_PASSWORD) ||
+               (err == GNUTLS_E_INVALID_PASSWORD_STRING)
+            ) {
+                const char * effectivePwd;
+                const char * safePwd;
+                char pwdBuf[2048];
+
+                effectivePwd = xmlSecGnuTLSAppResolvePwd(pwd, pwdCallback, pwdCallbackCtx, pwdBuf, sizeof(pwdBuf));
+                if(effectivePwd == NULL) {
+                    /* the password callback failed; the error is reported by xmlSecGnuTLSAppResolvePwd */
+                    gnutls_x509_privkey_deinit(x509_privkey);
+                    xmlSecMemCleanse(pwdBuf, sizeof(pwdBuf));
+                    return(NULL);
+                }
+                safePwd = effectivePwd;
+                err = gnutls_x509_privkey_import_pkcs8(x509_privkey, datum, fmt, safePwd, 0);
+                /* clear the password buffer before returning */
+                xmlSecMemCleanse(pwdBuf, sizeof(pwdBuf));
+            }
+        }
+        if(err != GNUTLS_E_SUCCESS) {
+            /* ignore this error so we don't pollute logs when trying to read public keys */
+            /* xmlSecGnuTLSError("gnutls_x509_privkey_import", err, NULL); */
+            gnutls_x509_privkey_deinit(x509_privkey);
+            return(NULL);
+        }
     }
 
     err = gnutls_privkey_init(&privkey);
@@ -743,7 +785,14 @@ xmlSecGnuTLSAppPemDerPubKeyLoadMemory(const gnutls_datum_t * datum, gnutls_x509_
 }
 
 static xmlSecKeyPtr
-xmlSecGnuTLSAppPemDerKeyLoadMemory(const xmlSecByte * data, xmlSecSize dataSize, gnutls_x509_crt_fmt_t fmt) {
+xmlSecGnuTLSAppPemDerKeyLoadMemory(
+    const xmlSecByte * data,
+    xmlSecSize dataSize,
+    gnutls_x509_crt_fmt_t fmt,
+    const char *pwd,
+    void* pwdCallback,
+    void* pwdCallbackCtx
+) {
     gnutls_privkey_t privkey = NULL;
     gnutls_pubkey_t pubkey = NULL;
     xmlSecKeyPtr key = NULL;
@@ -756,7 +805,7 @@ xmlSecGnuTLSAppPemDerKeyLoadMemory(const xmlSecByte * data, xmlSecSize dataSize,
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, datum.size, return(NULL), NULL);
 
     /* try private key first */
-    privkey = xmlSecGnuTLSAppPemDerPrivKeyLoadMemory(&datum, fmt);
+    privkey = xmlSecGnuTLSAppPemDerPrivKeyLoadMemory(&datum, fmt, pwd, pwdCallback, pwdCallbackCtx);
     if(privkey != NULL) {
         key = xmlSecGnuTLSAsymmetricKeyCreatePriv(privkey);
         if(key == NULL) {

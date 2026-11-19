@@ -779,10 +779,12 @@ xmlSecKeyDataStoreDestroy(xmlSecKeyDataStorePtr store) {
  * Keys Data Store list
  *
  *****************************************************************************/
+static void             xmlSecKeyDataStorePtrListDestroyItem    (xmlSecPtr ptr);
+
 static xmlSecPtrListKlass xmlSecKeyDataStorePtrListKlass = {
     BAD_CAST "keys-data-store-list",
     NULL,                                                       /* xmlSecPtrDuplicateItemMethod duplicateItem; */
-    (xmlSecPtrDestroyItemMethod)xmlSecKeyDataStoreDestroy,      /* xmlSecPtrDestroyItemMethod destroyItem; */
+    xmlSecKeyDataStorePtrListDestroyItem,                       /* xmlSecPtrDestroyItemMethod destroyItem; */
     NULL,                                                       /* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
     NULL,                                                       /* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
 };
@@ -795,6 +797,12 @@ static xmlSecPtrListKlass xmlSecKeyDataStorePtrListKlass = {
 xmlSecPtrListId
 xmlSecKeyDataStorePtrListGetKlass(void) {
     return(&xmlSecKeyDataStorePtrListKlass);
+}
+
+/* the list calls destroyItem as xmlSecPtrDestroyItemMethod, see xmlSecKeyPtrListDestroyItem() */
+static void
+xmlSecKeyDataStorePtrListDestroyItem(xmlSecPtr ptr) {
+    xmlSecKeyDataStoreDestroy((xmlSecKeyDataStorePtr)ptr);
 }
 
 /**

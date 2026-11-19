@@ -257,12 +257,33 @@ xmlSecKeyUseWithDebugXmlDump(xmlSecKeyUseWithPtr keyUseWith, FILE* output) {
  * KeyUseWith list
  *
  *****************************************************************************/
+/* the list calls these through the xmlSecPtr*ItemMethod types, see xmlSecKeyPtrListDestroyItem() */
+static xmlSecPtr
+xmlSecKeyUseWithPtrListDuplicateItem(xmlSecPtr ptr) {
+    return(xmlSecKeyUseWithDuplicate((xmlSecKeyUseWithPtr)ptr));
+}
+
+static void
+xmlSecKeyUseWithPtrListDestroyItem(xmlSecPtr ptr) {
+    xmlSecKeyUseWithDestroy((xmlSecKeyUseWithPtr)ptr);
+}
+
+static void
+xmlSecKeyUseWithPtrListDebugDumpItem(xmlSecPtr ptr, FILE* output) {
+    xmlSecKeyUseWithDebugDump((xmlSecKeyUseWithPtr)ptr, output);
+}
+
+static void
+xmlSecKeyUseWithPtrListDebugXmlDumpItem(xmlSecPtr ptr, FILE* output) {
+    xmlSecKeyUseWithDebugXmlDump((xmlSecKeyUseWithPtr)ptr, output);
+}
+
 static xmlSecPtrListKlass xmlSecKeyUseWithPtrListKlass = {
     BAD_CAST "key-use-with-list",
-    (xmlSecPtrDuplicateItemMethod)xmlSecKeyUseWithDuplicate,    /* xmlSecPtrDuplicateItemMethod duplicateItem; */
-    (xmlSecPtrDestroyItemMethod)xmlSecKeyUseWithDestroy,        /* xmlSecPtrDestroyItemMethod destroyItem; */
-    (xmlSecPtrDebugDumpItemMethod)xmlSecKeyUseWithDebugDump,    /* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
-    (xmlSecPtrDebugDumpItemMethod)xmlSecKeyUseWithDebugXmlDump, /* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
+    xmlSecKeyUseWithPtrListDuplicateItem,                       /* xmlSecPtrDuplicateItemMethod duplicateItem; */
+    xmlSecKeyUseWithPtrListDestroyItem,                         /* xmlSecPtrDestroyItemMethod destroyItem; */
+    xmlSecKeyUseWithPtrListDebugDumpItem,                       /* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
+    xmlSecKeyUseWithPtrListDebugXmlDumpItem,                    /* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
 };
 
 /**

@@ -1639,12 +1639,28 @@ xmlSecDSigReferenceCtxDebugXmlDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* o
  * xmlSecDSigReferenceCtxListKlass
  *
  *****************************************************************************/
+/* the list calls these through the xmlSecPtr*ItemMethod types, see xmlSecKeyPtrListDestroyItem() */
+static void
+xmlSecDSigReferenceCtxListDestroyItem(xmlSecPtr ptr) {
+    xmlSecDSigReferenceCtxDestroy((xmlSecDSigReferenceCtxPtr)ptr);
+}
+
+static void
+xmlSecDSigReferenceCtxListDebugDumpItem(xmlSecPtr ptr, FILE* output) {
+    xmlSecDSigReferenceCtxDebugDump((xmlSecDSigReferenceCtxPtr)ptr, output);
+}
+
+static void
+xmlSecDSigReferenceCtxListDebugXmlDumpItem(xmlSecPtr ptr, FILE* output) {
+    xmlSecDSigReferenceCtxDebugXmlDump((xmlSecDSigReferenceCtxPtr)ptr, output);
+}
+
 static xmlSecPtrListKlass xmlSecDSigReferenceCtxListKlass = {
     BAD_CAST "dsig-reference-list",
     NULL,                                                               /* xmlSecPtrDuplicateItemMethod duplicateItem; */
-    (xmlSecPtrDestroyItemMethod)xmlSecDSigReferenceCtxDestroy,          /* xmlSecPtrDestroyItemMethod destroyItem; */
-    (xmlSecPtrDebugDumpItemMethod)xmlSecDSigReferenceCtxDebugDump,      /* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
-    (xmlSecPtrDebugDumpItemMethod)xmlSecDSigReferenceCtxDebugXmlDump,   /* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
+    xmlSecDSigReferenceCtxListDestroyItem,                              /* xmlSecPtrDestroyItemMethod destroyItem; */
+    xmlSecDSigReferenceCtxListDebugDumpItem,                            /* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
+    xmlSecDSigReferenceCtxListDebugXmlDumpItem,                         /* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
 };
 
 /**

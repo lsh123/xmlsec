@@ -322,10 +322,16 @@ static xmlSecNodeSetPtr xmlSecXPathDataListExecute              (xmlSecPtrListPt
                                                                  xmlNodePtr hereNode,
                                                                  xmlSecNodeSetPtr nodes);
 
+/* the list calls these through the xmlSecPtr*ItemMethod types, see xmlSecKeyPtrListDestroyItem() */
+static void
+xmlSecXPathDataListDestroyItem(xmlSecPtr ptr) {
+    xmlSecXPathDataDestroy((xmlSecXPathDataPtr)ptr);
+}
+
 static xmlSecPtrListKlass xmlSecXPathDataListKlass = {
     BAD_CAST "xpath-data-list",
     NULL,                                               /* xmlSecPtrDuplicateItemMethod duplicateItem; */
-    (xmlSecPtrDestroyItemMethod)xmlSecXPathDataDestroy, /* xmlSecPtrDestroyItemMethod destroyItem; */
+    xmlSecXPathDataListDestroyItem,                     /* xmlSecPtrDestroyItemMethod destroyItem; */
     NULL,                                               /* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
     NULL,                                               /* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
 };

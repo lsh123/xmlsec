@@ -1327,12 +1327,19 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {
  * Keys list
  *
  *****************************************************************************/
+static xmlSecPtr        xmlSecKeyPtrListDuplicateItem           (xmlSecPtr ptr);
+static void             xmlSecKeyPtrListDestroyItem             (xmlSecPtr ptr);
+static void             xmlSecKeyPtrListDebugDumpItem           (xmlSecPtr ptr,
+                                                                 FILE* output);
+static void             xmlSecKeyPtrListDebugXmlDumpItem        (xmlSecPtr ptr,
+                                                                 FILE* output);
+
 static xmlSecPtrListKlass xmlSecKeyPtrListKlass = {
     BAD_CAST "keys-list",
-    (xmlSecPtrDuplicateItemMethod)xmlSecKeyDuplicate,   /* xmlSecPtrDuplicateItemMethod duplicateItem; */
-    (xmlSecPtrDestroyItemMethod)xmlSecKeyDestroy,       /* xmlSecPtrDestroyItemMethod destroyItem; */
-    (xmlSecPtrDebugDumpItemMethod)xmlSecKeyDebugDump,   /* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
-    (xmlSecPtrDebugDumpItemMethod)xmlSecKeyDebugXmlDump,/* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
+    xmlSecKeyPtrListDuplicateItem,              /* xmlSecPtrDuplicateItemMethod duplicateItem; */
+    xmlSecKeyPtrListDestroyItem,                /* xmlSecPtrDestroyItemMethod destroyItem; */
+    xmlSecKeyPtrListDebugDumpItem,              /* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
+    xmlSecKeyPtrListDebugXmlDumpItem,           /* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
 };
 
 /**
@@ -1343,4 +1350,29 @@ static xmlSecPtrListKlass xmlSecKeyPtrListKlass = {
 xmlSecPtrListId
 xmlSecKeyPtrListGetKlass(void) {
     return(&xmlSecKeyPtrListKlass);
+}
+
+/*
+ * The list calls its item methods through the xmlSecPtr*ItemMethod types:
+ * calling xmlSecKeyDestroy() and the other key functions through a pointer
+ * of a different function type is undefined behavior.
+ */
+static xmlSecPtr
+xmlSecKeyPtrListDuplicateItem(xmlSecPtr ptr) {
+    return(xmlSecKeyDuplicate((xmlSecKeyPtr)ptr));
+}
+
+static void
+xmlSecKeyPtrListDestroyItem(xmlSecPtr ptr) {
+    xmlSecKeyDestroy((xmlSecKeyPtr)ptr);
+}
+
+static void
+xmlSecKeyPtrListDebugDumpItem(xmlSecPtr ptr, FILE* output) {
+    xmlSecKeyDebugDump((xmlSecKeyPtr)ptr, output);
+}
+
+static void
+xmlSecKeyPtrListDebugXmlDumpItem(xmlSecPtr ptr, FILE* output) {
+    xmlSecKeyDebugXmlDump((xmlSecKeyPtr)ptr, output);
 }

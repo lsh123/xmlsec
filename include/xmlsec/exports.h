@@ -15,7 +15,7 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/* There are many variations of Windows builds: MCVC, Cygwin, MinGW, etc.
+/* There are many variations of Windows builds: MSVC, Cygwin, MinGW, etc.
  * In most cases, the checks for WIN32/WIN64 are sufficient, but just to
  * be thorough, we also check for other Windows-specific macros. */
 #if !defined(XMLSEC_WINDOWS)
@@ -100,7 +100,7 @@ extern "C" {
 #      else
 #        define XMLSEC_EXPORT_VAR extern
 #      endif
-     /* if we compile libxmlsec-crypto itself: */
+     /* if we compile libxmlsec-<crypto> itself: */
 #    elif defined(IN_XMLSEC_CRYPTO)
 #      if !defined(XMLSEC_STATIC)
 #        define XMLSEC_EXPORT_VAR __declspec(dllexport) extern

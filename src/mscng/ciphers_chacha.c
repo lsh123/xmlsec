@@ -286,6 +286,7 @@ xmlSecMSCngChaCha20CipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
         0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptImportKey", xmlSecTransformGetName(transform), status);
+        ctx->hKey = NULL;
         goto done;
     }
 

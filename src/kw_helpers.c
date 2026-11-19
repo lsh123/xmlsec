@@ -198,6 +198,9 @@ xmlSecTransformKWDes3Execute(xmlSecTransformPtr transform, xmlSecTransformKWDes3
                 return(-1);
             }
         } else {
+            /* out buffer will contain the decrypted key data */
+            xmlSecBufferMakeSecure(out);
+
             ret = xmlSecKWDes3Decode(ctx->kwDes3Id, transform, xmlSecBufferGetData(in), inSize,
                 xmlSecBufferGetData(out), outSize, &outSize);
             if(ret < 0) {
@@ -689,6 +692,9 @@ xmlSecTransformKWRfc3394Execute(xmlSecTransformPtr transform, xmlSecTransformKWR
                 return(-1);
             }
         } else {
+            /* out buffer will contain the decrypted key data */
+            xmlSecBufferMakeSecure(out);
+
             ret = xmlSecKWRfc3394Decode(ctx->kwRfc3394Id, transform,
                 xmlSecBufferGetData(in), inSize,
                 xmlSecBufferGetData(out), outSize,

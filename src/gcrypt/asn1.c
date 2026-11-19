@@ -253,10 +253,13 @@ xmlSecGCryptAsn1IsECKey(xmlSecGCryptAsn1ObjectId * objectids, xmlSecSize objecti
 
 
 static int
-xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSecSize * buflen,
+xmlSecGCryptAsn1ParseIntegerSequence(
+    int level,
+    xmlSecByte const **buffer, xmlSecSize * buflen,
     gcry_mpi_t * integers, xmlSecSize integers_size, xmlSecSize * integers_out_size,
-    xmlSecGCryptAsn1ObjectId * objectids, xmlSecSize objectids_size, xmlSecSize * objectids_out_size)
-{
+    unsigned long * integers_tags,
+    xmlSecGCryptAsn1ObjectId * objectids, xmlSecSize objectids_size, xmlSecSize * objectids_out_size
+) {
     const xmlSecByte *buf;
     unsigned long length;
     struct tag_info ti;
@@ -270,6 +273,7 @@ xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSe
     xmlSecAssert2(integers != NULL, -1);
     xmlSecAssert2(integers_size > 0, -1);
     xmlSecAssert2(integers_out_size != NULL, -1);
+    xmlSecAssert2(integers_tags != NULL, -1);
     xmlSecAssert2(objectids != NULL, -1);
     xmlSecAssert2(objectids_size > 0, -1);
     xmlSecAssert2(objectids_out_size != NULL, -1);
@@ -324,6 +328,7 @@ xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSe
             ret = xmlSecGCryptAsn1ParseIntegerSequence(
                     level + 1, &buf2, &buf2len,
                     integers, integers_size, integers_out_size,
+                    integers_tags,
                     objectids, objectids_size, objectids_out_size);
             if(ret != 0) {
                 xmlSecInternalError3("xmlSecGCryptAsn1ParseIntegerSequence", NULL, "level=%d, index=%d", level, idx);
@@ -467,6 +472,11 @@ xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSe
                         xmlSecGCryptError("gcry_mpi_scan", err, NULL);
                         return(-1);
                     }
+                    /* record the tag of the TLV that carried the value: the
+                       key type checks below need to tell a public point
+                       (BIT STRING) apart from a version field or a private
+                       scalar (INTEGER / OCTET STRING) */
+                    integers_tags[(*integers_out_size)] = ti.tag;
                     ++(*integers_out_size);
                     break;
 
@@ -515,7 +525,10 @@ xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSe
 #define XMLSEC_GCRYPT_ASN1_RSA_PRIV_NUM         9U
 
 static enum xmlSecGCryptDerKeyType
-xmlSecGCryptAsn1GuessKeyType(gcry_mpi_t * integers, xmlSecSize integers_num, xmlSecGCryptAsn1ObjectId * objectids, xmlSecSize objectids_num) {
+xmlSecGCryptAsn1GuessKeyType(
+    gcry_mpi_t * integers, xmlSecSize integers_num,
+    xmlSecGCryptAsn1ObjectId * objectids, xmlSecSize objectids_num
+) {
     xmlSecAssert2(integers != NULL, xmlSecGCryptDerKeyTypeAuto);
     xmlSecAssert2(objectids != NULL, xmlSecGCryptDerKeyTypeAuto);
 
@@ -526,6 +539,9 @@ xmlSecGCryptAsn1GuessKeyType(gcry_mpi_t * integers, xmlSecSize integers_num, xml
              * optional [1] publicKey). A public key has exactly one integer (q). */
             return(xmlSecGCryptDerKeyTypePrivateEc);
         } else if(integers_num >= XMLSEC_GCRYPT_ASN1_ECDSA_PUB_NUM) {
+            /* a single integer may be the public point q of an SPKI public key;
+             * the Public EC case below rejects it when the integer is not a
+             * BIT STRING (e.g. an EC private key missing its version field) */
             return(xmlSecGCryptDerKeyTypePublicEc);
         } else {
             return(xmlSecGCryptDerKeyTypeAuto);
@@ -570,14 +586,18 @@ xmlSecGCryptAsn1GuessKeyType(gcry_mpi_t * integers, xmlSecSize integers_num, xml
  * @return pointer to the key data or NULL if an error occurs.
  */
 xmlSecKeyDataPtr
-xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
-                     enum xmlSecGCryptDerKeyType type) {
+xmlSecGCryptParseDer(
+    const xmlSecByte * der,
+    xmlSecSize derlen,
+    enum xmlSecGCryptDerKeyType type
+) {
     xmlSecKeyDataPtr key_data = NULL;
     gcry_sexp_t s_pub_key = NULL;
     gcry_sexp_t s_priv_key = NULL;
     gcry_error_t err;
     gcry_mpi_t integers[20];
     xmlSecSize integers_num = 0;
+    unsigned long integers_tags[20];
     xmlSecGCryptAsn1ObjectId objectids[20];
     xmlSecSize objectids_num = 0;
     unsigned int idx;
@@ -591,10 +611,12 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
 
     /* Parse the ASN.1 structure.  */
     memset(&integers, 0, sizeof(integers));
+    memset(&integers_tags, 0, sizeof(integers_tags));
     memset(&objectids, 0, sizeof(objectids));
     ret = xmlSecGCryptAsn1ParseIntegerSequence(
         0, &der, &derlen,
         integers,  sizeof(integers) / sizeof(integers[0]), &integers_num,
+        integers_tags,
         objectids,  sizeof(objectids) / sizeof(objectids[0]), &objectids_num
     );
     if(ret < 0) {
@@ -817,7 +839,24 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         }
         if(integers_num < XMLSEC_GCRYPT_ASN1_ECDSA_PRIV_NUM) {
             if(integers_num == XMLSEC_GCRYPT_ASN1_ECDSA_PRIV_NUM - 1) {
-                xmlSecInvalidDataError("EC private key is missing the optional [1] publicKey field; re-encode the key to include the public point", NULL);
+                if(integers_tags[1] == TAG_BIT_STRING) {
+                    /* the second integer is the public point q, so the first
+                       integer is either the version INTEGER or the private
+                       scalar d; the field that is absent is the other one.
+                       A conformant version field is always 1 (ecPrivkeyVer1),
+                       so an INTEGER with any other value can only be the
+                       private scalar (a non-conformant encoding) */
+                    if((integers_tags[0] == TAG_INTEGER)
+                            && (gcry_mpi_cmp_ui(integers[0], 1) == 0)) {
+                        xmlSecInvalidDataError("EC private key is missing the private scalar field; re-encode the key to include the private scalar OCTET STRING", NULL);
+                    } else {
+                        xmlSecInvalidDataError("EC private key is missing the version field; re-encode the key to include the version INTEGER", NULL);
+                    }
+                } else {
+                    /* two integers (version, d): the optional [1] publicKey
+                       field is missing */
+                    xmlSecInvalidDataError("EC private key is missing the optional [1] publicKey field; re-encode the key to include the public point", NULL);
+                }
             } else {
                 xmlSecInvalidSizeLessThanError("Private EC key params",
                     (xmlSecSize)integers_num, (xmlSecSize)XMLSEC_GCRYPT_ASN1_ECDSA_PRIV_NUM, NULL);
@@ -825,7 +864,13 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
             goto done;
         }
 
-        /* first integer is the version field (always 1), just skip it */
+        /* first integer is the version field, which must be 1 (ecPrivkeyVer1);
+           any other value means the data is not a valid ECPrivateKey and the
+           remaining integers cannot be trusted as (d, q) */
+        if(gcry_mpi_cmp_ui(integers[0], 1) != 0) {
+            xmlSecInvalidDataError("EC private key version must be 1 (ecPrivkeyVer1)", NULL);
+            goto done;
+        }
 
         /* search through all object ids to find the curve name */
         for(xmlSecSize ii = 0; (ii < objectids_num) && (ecCurve == NULL); ++ii) {
@@ -893,6 +938,16 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         if(integers_num != XMLSEC_GCRYPT_ASN1_ECDSA_PUB_NUM) {
             xmlSecInvalidSizeError("Public EC key params",
                 (xmlSecSize)integers_num, (xmlSecSize)XMLSEC_GCRYPT_ASN1_ECDSA_PUB_NUM, NULL);
+            goto done;
+        }
+
+        /* the public point must be the BIT STRING value (the SPKI
+         * subjectPublicKey field); a single INTEGER or OCTET STRING here is
+         * the private scalar d of an EC private key missing its version field
+         * (and its optional [1] publicKey field) and must not be treated as
+         * the public point, or the private key would leak as a "public key" */
+        if(integers_tags[0] != TAG_BIT_STRING) {
+            xmlSecInvalidDataError("EC public key point must be a BIT STRING; the data looks like an EC private key missing its version field (and its optional [1] publicKey field); the key cannot be loaded", NULL);
             goto done;
         }
 

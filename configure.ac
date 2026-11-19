@@ -857,7 +857,6 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
             #endif
         ],[
             XMLSEC_OPENSSL_VERSION="AWSLC >= 1.1.1"
-            enable_ripemd160=no
             enable_dsa=no
             enable_dh=no
             enable_sha3=no

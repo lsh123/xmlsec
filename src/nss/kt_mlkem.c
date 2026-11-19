@@ -28,7 +28,6 @@
 #include <nss.h>
 #include <pk11pub.h>
 #include <keyhi.h>
-#include <kyber.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
@@ -47,6 +46,8 @@
    XMLSEC_NO_MLKEM is defined (include/xmlsec/nss/crypto.h) and this file
    compiles to a no-op */
 #ifndef XMLSEC_NO_MLKEM
+
+#include <kyber.h>
 
 
 /******************************************************************************

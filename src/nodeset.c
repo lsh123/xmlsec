@@ -565,26 +565,78 @@ typedef struct {
     int interrupted;
 } xmlSecNodeSetWalkCtx;
 
-/* Returns 1 if the given namespace declaration is the closest
- * declaration with the same prefix on the ancestor chain of cur
- * (i.e. it is in scope at cur). Unlike xmlSearchNs(), this accounts
- * for declarations with a NULL href (e.g. xmlns=""), which
- * xmlSearchNs() ignores. */
+/* returns 0 on success (ctx->interrupted flag might be set), and a negative value on error */
 static int
-xmlSecNodeSetWalkNsIsNearest(xmlNodePtr cur, xmlNsPtr ns) {
-    xmlNodePtr node;
-    xmlNsPtr tmp;
+xmlSecNodeSetAttributesWalk(xmlNodePtr cur, xmlSecNodeSetWalkCtx* ctx) {
+    xmlAttrPtr attr;
+    int ret;
 
-    xmlSecAssert2(cur != NULL, 0);
-    xmlSecAssert2(ns != NULL, 0);
+    xmlSecAssert2(cur != NULL, -1);
+    xmlSecAssert2(cur->type == XML_ELEMENT_NODE, -1);
+    xmlSecAssert2(ctx != NULL, -1);
 
-    for(node = cur; node != NULL; node = node->parent) {
-        for(tmp = node->nsDef; tmp != NULL; tmp = tmp->next) {
-            if(xmlStrEqual(tmp->prefix, ns->prefix)) {
-                return(tmp == ns);
-            }
+    /* All attributes of the current element */
+    for(attr = (xmlAttrPtr)cur->properties; attr != NULL; attr = attr->next) {
+        if(xmlSecNodeSetContains(ctx->nset, (xmlNodePtr)attr, cur) != 1) {
+            continue;
+        }
+        ret = ctx->walkFunc(ctx->nset, (xmlNodePtr)attr, cur, ctx->data);
+        if(ret < 0) {
+            /* a negative value from the callback interrupts the walk;
+             * stop the tree walk cleanly, without reporting an error */
+            ctx->interrupted = 1;
+            return(0);
         }
     }
+
+    /* done with all attributes */
+    return(0);
+}
+
+/* returns 0 on success (ctx->interrupted flag might be set), and a negative value on error */
+static int
+xmlSecNodeSetNamespacesWalk(xmlNodePtr cur, xmlSecNodeSetWalkCtx* ctx) {
+    xmlNsPtr *nsList = NULL;
+    xmlNsPtr *ns;
+    int ret;
+
+    xmlSecAssert2(cur != NULL, -1);
+    xmlSecAssert2(cur->type == XML_ELEMENT_NODE, -1);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    /* Get the list of in-scope namespaces for the current element */
+#if LIBXML_VERSION >= 21300
+    ret = xmlGetNsListSafe(cur->doc, cur, &nsList);
+    if(ret < 0) {
+        xmlSecXmlError("xmlGetNsListSafe", NULL);
+        return(-1);
+    }
+#else /* LIBXML_VERSION >= 21300 */
+    /* can return NULL if there are no namespace declarations or if there is a failure */
+    nsList = xmlGetNsList(cur->doc, cur);
+#endif /* LIBXML_VERSION >= 21300 */
+
+    /* If there are no in-scope namespaces, nothing to do */
+    if(nsList == NULL) {
+        return(0);
+    }
+
+    for(ns = nsList; (*ns) != NULL; ns++) {
+        if(xmlSecNodeSetContains(ctx->nset, (xmlNodePtr)(*ns), cur) != 1) {
+            continue;
+        }
+        ret = ctx->walkFunc(ctx->nset, (xmlNodePtr)(*ns), cur, ctx->data);
+        if(ret < 0) {
+            /* a negative value from the callback interrupts the walk;
+             * stop the tree walk cleanly, without reporting an error */
+            ctx->interrupted = 1;
+            xmlFree(nsList);
+            return(0);
+        }
+    }
+
+    /* done with all in-scope namespace declarations */
+    xmlFree(nsList);
     return(0);
 }
 
@@ -594,12 +646,12 @@ xmlSecNodeSetWalkRecursiveCallback(xmlNodePtr cur, void* data) {
     xmlNodePtr parent = cur->parent;
     int ret;
 
+    xmlSecAssert2(cur != NULL, -1);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->nset != NULL, -1);
     xmlSecAssert2(ctx->walkFunc != NULL, -1);
-    xmlSecAssert2(cur != NULL, -1);
 
-    /* the node itself */
+    /* The node itself */
     if(xmlSecNodeSetContains(ctx->nset, cur, parent) == 1) {
         ret = ctx->walkFunc(ctx->nset, cur, parent, ctx->data);
         if(ret < 0) {
@@ -610,42 +662,24 @@ xmlSecNodeSetWalkRecursiveCallback(xmlNodePtr cur, void* data) {
         }
     }
 
-    /* element nodes have children */
+    /* Element nodes have attributes and namespaces */
     if(cur->type == XML_ELEMENT_NODE) {
-        xmlAttrPtr attr;
-        xmlNodePtr node;
-        xmlNsPtr ns;
-
-        attr = (xmlAttrPtr)cur->properties;
-        while(attr != NULL) {
-            if(xmlSecNodeSetContains(ctx->nset, (xmlNodePtr)attr, cur) == 1) {
-                ret = ctx->walkFunc(ctx->nset, (xmlNodePtr)attr, cur, ctx->data);
-                if(ret < 0) {
-                    ctx->interrupted = 1;
-                    return(0);
-                }
-            }
-            attr = attr->next;
+        /* Walk all attributes of the current element */
+        ret = xmlSecNodeSetAttributesWalk(cur, ctx);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecNodeSetAttributesWalk", NULL);
+            return(-1);
         }
 
-        node = cur;
-        while(node != NULL) {
-            ns = node->nsDef;
-            while(ns != NULL) {
-                if((xmlSecNodeSetWalkNsIsNearest(cur, ns) == 1) && (xmlSecNodeSetContains(ctx->nset, (xmlNodePtr)ns, cur) == 1)) {
-                    ret = ctx->walkFunc(ctx->nset, (xmlNodePtr)ns, cur, ctx->data);
-                    if(ret < 0) {
-                        ctx->interrupted = 1;
-                        return(0);
-                    }
-                }
-                ns = ns->next;
-            }
-            node = node->parent;
+        /* Walk all in-scope namespaces of the current element */
+        ret = xmlSecNodeSetNamespacesWalk(cur, ctx);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecNodeSetNamespacesWalk", NULL);
+            return(-1);
         }
     }
 
-    /* done and continue the walk */
+    /* done, continue the walk */
     return(1);
 }
 
@@ -819,7 +853,6 @@ xmlSecNodeSetDumpTextNodes(xmlSecNodeSetPtr nset, xmlOutputBufferPtr out) {
  */
 void
 xmlSecNodeSetDebugDump(xmlSecNodeSetPtr nset, FILE *output) {
-    int len;
     xmlSecNodeSetPtr curNset;
 
     xmlSecAssert(nset != NULL);
@@ -878,12 +911,13 @@ xmlSecNodeSetDebugDump(xmlSecNodeSetPtr nset, FILE *output) {
             }
         }
 
-        len = xmlXPathNodeSetGetLength(curNset->nodes);
-        if(curNset->nodes == NULL) {
+        if(curNset->nodes != NULL) {
+            int len;
+            len = xmlXPathNodeSetGetLength(curNset->nodes);
+            fprintf(output, "  nodes: %d\n", len);
+        } else {
             /* a NULL node list means the whole document (see include/xmlsec/nodeset.h) */
             fprintf(output, "  nodes: (whole document)\n");
-        } else {
-            fprintf(output, "  nodes: %d\n", len);
         }
 
         curNset = curNset->next;
